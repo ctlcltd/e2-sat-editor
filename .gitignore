@@ -1,0 +1,11 @@
+.DS_Store
+.project
+workflow
+src/Debug
+Makefile
+.xcode
+.qmake.stash
+*.app
+*.xcodeproj
+*.plist
+*.o
