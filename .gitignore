@@ -3,6 +3,7 @@
 workflow
 src/Debug
 Makefile
+moc_predefs.h
 .xcode
 .qmake.stash
 *.app

@@ -7,8 +7,11 @@
  */
 
 #include <iostream>
+#include "gui_qt6.h"
 
 int main(int argc, char* argv[])
 {
+	(new gui())->root(argc, argv);
+
 	return 0;
 }

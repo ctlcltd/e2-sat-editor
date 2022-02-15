@@ -18,7 +18,6 @@
 #include <regex>
 #include <cstdio>
 #include <cstring>
-#include "e2db.h"
 
 using namespace std;
 
@@ -330,7 +329,7 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname)
 		}
 		else if (step && line.find("#DESCRIPTION") != string::npos)
 		{
-//            ub.channels[chid] = line.substr(13); //TODO FIX index
+			// ub.channels[chid] = line.substr(13); //TODO FIX index
 			continue;
 		}
 
@@ -354,7 +353,7 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname)
 			sscanf(line.c_str(), "%d %d %3d %4s %4s %4s %8d", &i0, &i1, &btype, ssid, tsid, onid, &dvbns);
 
 			//py len(line[9:-7].upper().split(':')) > 6
-			char* c_chid;
+			char c_chid[24];
 
 			//TODO switch btype
 			if (i1 != 64)
@@ -466,15 +465,6 @@ void e2db_parser::load(string localdir)
 	get_e2db_localdir(localdir);
 	parse_e2db();
 
-//    chdata = get_channels_data(channels);
-//    txdata = get_transponders_data(channels);
+	//py chdata = get_channels_data(channels);
+	//py txdata = get_transponders_data(channels);
 }
-
-/*int main()
-{
-	e2db_parser parser;
-	parser.load("../seeds./enigma_db");
-	parser.debug();
-
-	return 0;
-}*/
