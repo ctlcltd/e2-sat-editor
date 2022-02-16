@@ -7,13 +7,14 @@
  */
 
 #include <iostream>
+#include <Qt>
 #include <QApplication>
 #include <QWidget>
-#include <QScreen>
-#include <QGridLayout>
-#include <QGroupBox>
 #include <QTreeWidget>
-#include <QToolBar>
+#include <QString>
+#include "commons.h"
+#include "e2db.h"
+
 
 using namespace std;
 
@@ -27,9 +28,13 @@ class gui
 		void tab(QWidget& ttab);
 		void newFile();
 		bool load(string filename = "");
-		void populate(QTreeWidgetItem& item);
-	private:
+		void populate();
 		QTreeWidget* bouquets_tree;
 		QTreeWidget* list_tree;
+    private:
+        e2db_parser* temp_parser;
+        map<string, e2db_parser::transponder> temp_transponders;
+        map<string, e2db_parser::service> temp_channels;
+        pair<map<string, e2db_parser::bouquet>, map<string, e2db_parser::userbouquet>> temp_bouquets;
 };
 #endif

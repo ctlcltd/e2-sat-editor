@@ -74,21 +74,40 @@ class e2db_parser
 			string tid;
 			string nid;
 			string type;
+			string freq;
+			string sr;
+			int pol;
+			int fec;
+			int pos;
+			int inv;
+			string flgs;
+			int sys;
+			int mod;
+			int rol;
+			int pil;
 			string data;
+		};
+		struct reference
+		{
+			string chid;
+			int reftype;
+			string refval;
+			bool orphan;
+			int index;
 		};
 		struct bouquet
 		{
 			string bname;
 			string name;
 			vector<string> userbouquets;
-			map<string, int> channels;
+			map<string, reference> channels;
 		};
 		struct userbouquet
 		{
 			string bname;
 			string name;
 			bool orphan;
-			map<string, int> channels;
+			map<string, reference> channels;
 		};
 		struct lamedb {
 			map<string, transponder> transponders;
@@ -96,10 +115,14 @@ class e2db_parser
 		};
 		void parse_e2db();
 		void parse_e2db_lamedb(ifstream& flamedb);
+		void parse_e2db_lamedb4(ifstream& flamedb);
 		void parse_e2db_bouquet(ifstream& fbouquet, string bname);
 		void parse_e2db_userbouquet(ifstream& fuserbouquet, string bname);
-		bool get_e2db_localdir(string localdir);
-		void load(string localdir);
+		map<string, transponder> get_transponders();
+		map<string, service> get_channels();
+		pair<map<string, bouquet>, map<string, userbouquet>> get_bouquets();
+		bool get_e2db_localdir(string localdir); //TODO rename no getter
+		void load(string localdir); //TODO rename
 		void debug();
 		string localdir;
 		e2db_parser()
@@ -124,7 +147,7 @@ void e2db_parser::parse_e2db()
 {
 	cout << "e2db_parser parse_e2db()" << endl;
 
-	ifstream flamedb(e2db["lamedb"]); //TODO ver. 4 & 5
+	ifstream flamedb(e2db["lamedb"]);
 	parse_e2db_lamedb(flamedb);
 	flamedb.close();
 
@@ -148,10 +171,34 @@ void e2db_parser::parse_e2db()
 	}
 }
 
-//TODO switch stype
 void e2db_parser::parse_e2db_lamedb(ifstream& flamedb)
 {
 	cout << "e2db_parser parse_e2db_lamedb()" << endl;
+
+	string hlamedb;
+	getline(flamedb, hlamedb);
+	char vlamedb = (hlamedb.substr(hlamedb.length() - 2, hlamedb.length() - 1))[0];
+	int dbver = isdigit(vlamedb) ? int (vlamedb) - 48 : 0;
+
+	cout << "e2db_parser \tlamedb \tFile header: " << hlamedb << endl;
+
+	switch (dbver) {
+		case 4:
+			parse_e2db_lamedb4(flamedb);
+		break;
+		case 5: //TODO ver. 5
+			cout << "e2db_parser \tlamedb \tNotice: Not supported, ver. 5 is not currently supported." << endl;
+		break;
+		default:
+			cout << "e2db_parser \tlamedb \tError: Unknown database format." << endl;
+		break;
+	}
+}
+
+//TODO switch stype
+void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
+{
+	cout << "e2db_parser parse_e2db_lamedb4()" << endl;
 
 	int step = 0;
 	int count = 0;
@@ -208,7 +255,7 @@ void e2db_parser::parse_e2db_lamedb(ifstream& flamedb)
 			{
 				//py txdata = list(map(lambda a: int(a.lstrip("0") or 0), line[3:].split(":")))
 				tx.type = line.substr(1, 2);
-				tx.data = line.substr(3);
+				tx.data = line.substr(3); //TODO transponder data
 			}
 			else if (count == 3)
 			{
@@ -231,7 +278,7 @@ void e2db_parser::parse_e2db_lamedb(ifstream& flamedb)
 				char ssid[5];
 				char dvbns[9];
 				char tsid[5];
-				char onid[5]; //TODO ? onid
+				char onid[5];
 				int stype;
 				int snum;
 
@@ -303,16 +350,17 @@ void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 	bouquets.emplace(bname, bs);
 }
 
-//TODO userbouquet struct
 void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname)
 {
 	cout << "e2db_parser parse_e2db_userbouquet()" << endl;
 
 	bool step = false;
 	int index = 0;
+	int idx = 0;
 	string line;
 	string chid = "";
 	userbouquet ub;
+	reference ref;
 
 	while (getline(fuserbouquet, line))
 	{
@@ -329,7 +377,7 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname)
 		}
 		else if (step && line.find("#DESCRIPTION") != string::npos)
 		{
-			// ub.channels[chid] = line.substr(13); //TODO FIX index
+			ref.refval = line.substr(13);
 			continue;
 		}
 
@@ -338,40 +386,61 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname)
 			// 1:0:2:32:2E18:B0:820000:0:0:0:
 			// 1:0:2:2CB:1B58:13E:820000:0:0:0:
 			// %d:%d:btype:ssid:tsid:onid:dvbns:?:?:?:
-			// %d:%d:btype:anum:0:0:0:?:?:?: //TODO 64 is marker ...
+			// %d:%d:btype:anum:0:0:0:?:?:?:
 
+			bool sseq = false;
+			
 			//py line[9:-7]
 			line = line.substr(9);
 			int i0, i1;
 			int btype;
 			char ssid[5];
 			char tsid[5];
-			char onid[5]; //TODO ? onid
+			char onid[5];
 			int dvbns;
 
 			transform(line.begin(), line.end(), line.begin(), [](unsigned char c){ return c == ':' ? ' ' : toupper(c); });
 			sscanf(line.c_str(), "%d %d %3d %4s %4s %4s %8d", &i0, &i1, &btype, ssid, tsid, onid, &dvbns);
 
 			//py len(line[9:-7].upper().split(':')) > 6
-			char c_chid[24];
+			char chid[24];
 
-			//TODO switch btype
-			if (i1 != 64)
+			switch (i1) {
+				case 64:  // regular marker
+				case 320: // numbered marker
+				case 512: // hidden marker
+				case 832: // hidden marker ? //TODO
+					sseq = false;
+					sprintf(chid, "%d:%d:%d:%s", i0, i1, btype, ssid);
+				break;
+				case 128: // group //TODO
+				default:  // service
+					sseq = true;
+					sprintf(chid, "%s:%s:%s:%d", ssid, tsid, onid, dvbns);
+			}
+			if (sseq)
 			{
 				index += 1;
-				sprintf(c_chid, "%s:%s:%s:%d", ssid, tsid, onid, dvbns);
+				idx = index;
 			}
 			else
 			{
-				sprintf(c_chid, "%d:%d:%d:%s", i0, i1, btype, ssid);
+				idx = 0;
 			}
 
-			chid = string (c_chid);
+			ref.chid = string (chid); //TODO redundance
+			ref.reftype = i0;
+			ref.index = idx;
 
-			//TODO ? chid in services and not in userbouquets list
-			ub.channels[chid] = index;
+			//TODO orphan : chid in services and not in userbouquets list
+
+			ub.channels[ref.chid] = ref;
+
+			reference ref;
 		}
 	}
+
+	//TODO insert in parent bouquet
 
 	userbouquets.emplace(bname, ub);
 }
@@ -421,12 +490,12 @@ void e2db_parser::debug()
 	cout << endl;
 	for (auto & x: userbouquets)
 	{
-		cout << "bname: " << x.first << endl;
+		cout << "filename: " << x.first << endl;
 		cout << "name: " << x.second.name << endl;
 		cout << "channels: [" << endl;
 		for (auto & q: x.second.channels)
 		{
-			cout << "{\"chid\":\"" << q.first << "\",\"index\":" << q.second << "}," << endl;
+			cout << "{\"chid\":\"" << q.first << "\",\"index\":" << q.second.index << "}," << endl;
 		}
 		cout << "]" << endl;
 		cout << endl;
@@ -440,7 +509,7 @@ bool e2db_parser::get_e2db_localdir(string _localdir)
 
 	if (! filesystem::exists(_localdir))
 	{
-		cout << "File not exists: " << _localdir << endl;
+		cout << "e2db_parser \tError: File not exists: \"" << _localdir << "\"." << endl;
 
 		return false;
 	}
@@ -451,11 +520,32 @@ bool e2db_parser::get_e2db_localdir(string _localdir)
 	{
 		//TODO is file & permissions check ...
 		string path = entry.path();
-		string filename = filesystem::path(path).filename(); //TODO FIX
+		string filename = filesystem::path(path).filename();
 		e2db[filename] = path;
 	}
 
 	return true;
+}
+
+map<string, e2db_parser::transponder> e2db_parser::get_transponders()
+{
+	cout << "e2db_parser get_transponders() " << endl;
+
+	return db.transponders;
+}
+
+map<string, e2db_parser::service> e2db_parser::get_channels()
+{
+	cout << "e2db_parser get_channels() " << endl;
+
+	return db.services;
+}
+
+pair<map<string, e2db_parser::bouquet>, map<string, e2db_parser::userbouquet>> e2db_parser::get_bouquets()
+{
+	cout << "e2db_parser get_bouquets() " << endl;
+
+	return pair (bouquets, userbouquets);
 }
 
 void e2db_parser::load(string localdir)
@@ -464,7 +554,4 @@ void e2db_parser::load(string localdir)
 
 	get_e2db_localdir(localdir);
 	parse_e2db();
-
-	//py chdata = get_channels_data(channels);
-	//py txdata = get_transponders_data(channels);
 }

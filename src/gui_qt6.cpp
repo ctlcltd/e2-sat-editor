@@ -47,11 +47,14 @@ class gui
 		void tab(QWidget& ttab);
 		void newFile();
 		bool load(string filename = "");
-		void populate(QTreeWidgetItem& item);
+		void populate();
 	private:
+		e2db_parser* temp_parser;
+		map<string, e2db_parser::transponder> temp_transponders;
+		map<string, e2db_parser::service> temp_channels;
+		pair<map<string, e2db_parser::bouquet>, map<string, e2db_parser::userbouquet>> temp_bouquets;
 		QTreeWidget* bouquets_tree;
 		QTreeWidget* list_tree;
-		e2db_parser temp_parser;
 };
 
 void gui::root(int argc, char* argv[])
@@ -90,9 +93,7 @@ void gui::main(QWidget& mwid)
 	cwd = cwd.substr(0, cwd.length() - 10); // rstrip /src/Debug
 	filesystem::path path = cwd + "/seeds./enigma_db";
 
-	e2db_parser* parser = new e2db_parser;
-	parser->load(filesystem::absolute(path));
-	parser->debug();
+	load(filesystem::absolute(path));
 	//TEST
 }
 
@@ -115,8 +116,8 @@ void gui::tab(QWidget& ttab)
 	container->addWidget(bouquets, 1, 0);
 	container->addWidget(channels, 1, 1);
 
-	QTreeWidget* bouquets_tree = new QTreeWidget;
-	QTreeWidget* list_tree = new QTreeWidget;
+	this->bouquets_tree = new QTreeWidget;
+	this->list_tree = new QTreeWidget;
 	bouquets_tree->setStyleSheet("::item { padding: 2px auto }");
 	list_tree->setStyleSheet("::item { padding: 4px auto }");
 
@@ -126,12 +127,14 @@ void gui::tab(QWidget& ttab)
 
 	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({"Index", "Name", "CHID", "TXID", "Type", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System", "DATA"});
 	list_tree->setHeaderItem(lheader_item);
-
+	
 	QToolBar* top_toolbar = new QToolBar();
 	top_toolbar->setStyleSheet("QToolButton { font: 20px }");
 
 	QToolBar* bottom_toolbar = new QToolBar;
 	bottom_toolbar->setStyleSheet("QToolButton { font: bold 16px }");
+
+	bottom_toolbar->addAction("§ Load seeds", todo);
 
 	QAction* anew = new QAction("New");
 
@@ -164,8 +167,8 @@ void gui::tab(QWidget& ttab)
 void gui::newFile()
 {
 	cout << "gui newFile()" << endl;
-
-	e2db_parser* temp_parser = new e2db_parser;
+	
+	this->temp_parser = new e2db_parser;
 
 	bouquets_tree->scrollToItem(bouquets_tree->topLevelItem(0));
 	bouquets_tree->clear();
@@ -192,122 +195,130 @@ bool gui::load(string filename)
 	if (dirname != "")
 	{
 		newFile();
-		temp_parser.load(dirname);
+		temp_parser->load(dirname);
+//		temp_parser->debug();
+		temp_transponders = temp_parser->get_transponders();
+		temp_channels = temp_parser->get_channels();
+		temp_bouquets = temp_parser->get_bouquets();
 	}
 	else
 	{
 		return false;
 	}
 
-	QTreeWidgetItem* titem = new QTreeWidgetItem;
+	QTreeWidgetItem* titem = new QTreeWidgetItem();
 	QVariantMap tdata;
 	tdata["bouquet_id"] = "all";
-	titem->setData(0, 1, QVariant (tdata));
+	titem->setData(0, Qt::UserRole, QVariant (tdata));
 	titem->setText(0, "All channels");
 
 	bouquets_tree->addTopLevelItem(titem);
 
-	map<string, map<string, string>> chdata;
-	map<string, QTreeWidgetItem> bgroups;
+	map<string, QTreeWidgetItem*> bgroups;
 
-	/*for (auto & bname : chdata)
+	for (auto & gboq : temp_bouquets.first)
 	{
-		cout << "gui load() bname " << bname << endl;
+		cout << "gui load() bouquet: " << gboq.first << endl;
 
-		if (bname == "transponders" || bname == "channels")
-		{
-			continue;
-		}
+		QString bgroup = QString::fromStdString(gboq.first); //py bname.split(":")[0]
 
-		string bdata = chdata[bname];
-		string bgroup = bname; //py bname.split(":")[0]
+		QTreeWidgetItem* pgroup = new QTreeWidgetItem();
+		QMap<QString, QVariant> tdata;
+		tdata["bouquet_id"] = bgroup;
+		pgroup->setData(0, Qt::UserRole, QVariant (tdata));
+		pgroup->setText(0, QString::fromStdString(gboq.second.name)); //TODO transform name tv & radio
+		bouquets_tree->addTopLevelItem(pgroup);
+		bouquets_tree->expandItem(pgroup);
 
-		// cout << "gui load() bdata " << bdata << endl;
-
-		if (bdata["name"] == "0")
-		{
-			QTreeWidgetItem* pgroup = new QTreeWidgetItem();
-			QMap<QString, QVariant> tdata;
-			tdata["bouquet_id"] = bgroup;
-			pgroup->setData(0, Qt::UserRole, QVariant (tdata));
-			pgroup->setText(0, bgroup); //py bgroup.upper()
-			bouquets_tree->addTopLevelItem(pgroup);
-			bouquets_tree->expandItem(pgroup);
-			bgroups[bgroup] = pgroup;
-		}
-		else
-		{
-			QTreeWidgetItem* pgroup = bgroups[bgroup];
-			QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
-			QMap<QString, QVariant> tdata;
-			tdata["bouquet_id"] = bgroup;
-			bitem->setData(0, Qt::UserRole, QVariant (tdata));
-			bitem->setText(0, bdata["name"]);
-			bouquets_tree.addTopLevelItem(bitem);
-		}
+		for (auto & ubname : gboq.second.userbouquets)
+			bgroups[ubname] = pgroup;
 	}
 
-	populate();*/
+	for (auto & uboq : temp_bouquets.second)
+	{
+		cout << "gui load() userbouquet: " << uboq.first << endl;
 
+		QString bgroup = QString::fromStdString(uboq.first);
+		QTreeWidgetItem* pgroup = bgroups[uboq.first];
+
+		QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
+		QMap<QString, QVariant> tdata;
+		tdata["bouquet_id"] = bgroup;
+		bitem->setData(0, Qt::UserRole, QVariant (tdata));
+		bitem->setText(0, QString::fromStdString(uboq.second.name));
+		bouquets_tree->addTopLevelItem(bitem);
+	}
+
+	populate();
 	return true;
 }
 
-void gui::populate(QTreeWidgetItem& item)
+void gui::populate()
 {
 	QTreeWidgetItem* selected = bouquets_tree->currentItem();
 	string cur_bouquet = "";
 
-	QVariantMap tdata = selected->data(0, Qt::UserRole).toMap();
-	QString qcur_bouquet = tdata["bouquet_id"].toString();
-
-	if (! qcur_bouquet.isEmpty())
+	if (selected != NULL)
 	{
+		QVariantMap tdata = selected->data(0, Qt::UserRole).toMap();
+		QString qcur_bouquet = tdata["bouquet_id"].toString();
 		cur_bouquet = qcur_bouquet.toStdString();
 	}
 
-	cout << "gui populate()" << cur_bouquet << endl;
-	
-	map<string, map<string, string>> chdata;
+	cout << "gui populate() " << cur_bouquet << endl;
 
-	string cur_chlist = "channels";
-	map<string, string> cur_chdata = chdata["channels"];
+	string cur_chlist = "all";
+	map<string, e2db_parser::service> cur_chdata = temp_channels;
 
 	if (cur_bouquet != "" && cur_bouquet != "all")
 	{
 		cur_chlist = cur_bouquet;
-		cur_chdata = chdata[cur_bouquet]; //py chdata[cur_bouquet]["list"]
+//		cur_chdata = chdata[cur_bouquet]; //py chdata[cur_bouquet]["list"]
 	}
 
 	list_tree->scrollToItem(list_tree->topLevelItem(0));
 	list_tree->clear();
 
-	// cout << "gui populate() chdata[cur_chlist] " << chdata[cur_chlist] << endl;
-
-	//py STYPES = {0: "Data", 1: "TV", 2: "Radio", 10: "Radio", 12: "TV", 17: "UHD", 22: "H.264", 25: "HD", 31: "UHD"}; //TODO move
-
-	/*for (auto & cid : cur_chdata)
+	for (auto & ch : cur_chdata)
 	{
-		//py if (cid in chdata["channels"])
+		//TODO markers
+		if (1)
 		{
-			cdata = chdata["channels"][cid];
+			auto cdata = ch.second;
+			auto txdata = temp_transponders[cdata.txid];
+			txdata.freq = ""; //TODO TEMP
+			txdata.pol = 0; //TODO TEMP
 
-			if cur_chlist != "channels"
-				idx = cur_chdata[cid];
-			else
-				idx = cdata["index"];
+			//py
+			// if cur_chlist != "channels"
+			// 	idx = cur_chdata[cid];
+			// else
+			// 	idx = cdata["index"];
+			QString idx = QString::fromStdString(to_string(cdata.index));
+			QString chname = QString::fromStdString(cdata.chname);
+			QString chid = QString::fromStdString(ch.first);
+			QString txid = QString::fromStdString(cdata.txid);
+			QString stype = ""; //py stype = cdata["stype"] in STYPES and STYPES[cdata["stype"]] or "Data";
+			QString pname = ""; //py cdata["data"][0][1];
+			QString freq = QString::fromStdString(txdata.freq);
+			QString pol = QString::fromStdString(to_string(txdata.pol));
+			QString sr = QString::fromStdString(txdata.sr);
+			QString fec = QString::fromStdString(to_string(txdata.fec));
+			QString pos = QString::fromStdString(to_string(txdata.pos));
+			QString sys = QString::fromStdString(to_string(txdata.sys));
+			QString data = QString::fromStdString(cdata.data);
 
-			pname = cdata["data"][0][1];
-			//py stype = cdata["stype"] in STYPES and STYPES[cdata["stype"]] or "Data";
-			txdata = txdata[cdata["txid"]];
-
-			QTreeWidgetItem* item = new QTreeWidgetItem((str(idx), cdata["chname"], cid, cdata["txid"], stype, pname, txdata["freq"], txdata["pol"], txdata["sr"], txdata["fec"], txdata["pos"], txdata["sys"], str(cdata["data"])))
+			QTreeWidgetItem* item = new QTreeWidgetItem({idx, chname, chid, txid, stype, pname, freq, pol, sr, fec, pos, sys, data});
 			item->setTextAlignment(12, Qt::AlignRight);
 			list_tree->addTopLevelItem(item);
 		}
 		else
 		{
-			QTreeWidgetItem* item = new QTreeWidgetItem(("", cur_chdata[cid], cid));
-			list_tree.addTopLevelItem(item);
+			QString chid = "";
+			QString refval = "";
+
+			QTreeWidgetItem* item = new QTreeWidgetItem({"", refval, chid});
+			list_tree->addTopLevelItem(item);
 		}
-	}*/
+	}
 }

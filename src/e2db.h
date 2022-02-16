@@ -45,21 +45,39 @@ class e2db_parser
 			string tid;
 			string nid;
 			string type;
+            string freq;
+            string sr;
+            int pol;
+            int fec;
+            int pos;
+            int inv;
+            string flgs;
+            int sys;
+            int mod;
+            int rol;
+            int pil;
 			string data;
+		};
+		struct reference
+		{
+			string chid;
+			int reftype;
+			string refval;
+			bool orphan;
 		};
 		struct bouquet
 		{
 			string bname;
 			string name;
 			vector<string> userbouquets;
-			map<string, int> channels;
+			map<reference, int> channels;
 		};
 		struct userbouquet
 		{
 			string bname;
 			string name;
 			bool orphan;
-			map<string, int> channels;
+			map<reference, int> channels;
 		};
 		struct lamedb {
 			map<string, transponder> transponders;
@@ -67,10 +85,14 @@ class e2db_parser
 		};
 		void parse_e2db();
 		void parse_e2db_lamedb(ifstream& flamedb);
+		void parse_e2db_lamedb4(ifstream& flamedb);
 		void parse_e2db_bouquet(ifstream& fbouquet, string bname);
 		void parse_e2db_userbouquet(ifstream& fuserbouquet, string bname);
-		bool get_e2db_localdir(string localdir);
-		void load(string localdir);
+		map<string, transponder> get_transponders();
+		map<string, service> get_channels();
+		pair<map<string, bouquet>, map<string, userbouquet>> get_bouquets();
+		bool get_e2db_localdir(string localdir); //TODO rename no getter
+		void load(string localdir); //TODO rename
 		void debug();
 		string localdir;
 		e2db_parser()
