@@ -176,6 +176,7 @@ void gui::newFile()
 	list_tree->clear();
 }
 
+//TODO remove filename from args
 bool gui::load(string filename)
 {
 	cout << "gui load() " << filename << endl;
@@ -220,20 +221,20 @@ bool gui::load(string filename)
 	{
 		cout << "gui load() bouquet: " << gboq.first << endl;
 
-		QString bgroup = QString::fromStdString(gboq.first); //py bname.split(":")[0]
+		QString bgroup = QString::fromStdString(gboq.first);
+		QString bcname = QString::fromStdString(gboq.second.nname.size() ? gboq.second.nname : gboq.second.name);
 
 		QTreeWidgetItem* pgroup = new QTreeWidgetItem();
 		QMap<QString, QVariant> tdata;
 		tdata["bouquet_id"] = bgroup;
 		pgroup->setData(0, Qt::UserRole, QVariant (tdata));
-		pgroup->setText(0, QString::fromStdString(gboq.second.name)); //TODO transform name tv & radio
+		pgroup->setText(0, bcname);
 		bouquets_tree->addTopLevelItem(pgroup);
 		bouquets_tree->expandItem(pgroup);
 
 		for (auto & ubname : gboq.second.userbouquets)
 			bgroups[ubname] = pgroup;
 	}
-
 	for (auto & uboq : temp_bouquets.second)
 	{
 		cout << "gui load() userbouquet: " << uboq.first << endl;
@@ -270,10 +271,11 @@ void gui::populate()
 	string cur_chlist = "all";
 	map<string, e2db_parser::service> cur_chdata = temp_channels;
 
+	//TODO
 	if (cur_bouquet != "" && cur_bouquet != "all")
 	{
 		cur_chlist = cur_bouquet;
-//		cur_chdata = chdata[cur_bouquet]; //py chdata[cur_bouquet]["list"]
+		//py cur_chdata = chdata[cur_bouquet]; //py chdata[cur_bouquet]["list"]
 	}
 
 	list_tree->scrollToItem(list_tree->topLevelItem(0));
@@ -297,14 +299,14 @@ void gui::populate()
 			QString chname = QString::fromStdString(cdata.chname);
 			QString chid = QString::fromStdString(ch.first);
 			QString txid = QString::fromStdString(cdata.txid);
-			QString stype = ""; //py stype = cdata["stype"] in STYPES and STYPES[cdata["stype"]] or "Data";
+			QString stype = STYPES.count(cdata.stype) ? QString::fromStdString(STYPES.at(cdata.stype)) : "Data";
 			QString pname = ""; //py cdata["data"][0][1];
 			QString freq = QString::fromStdString(txdata.freq);
-			QString pol = QString::fromStdString(to_string(txdata.pol));
+			QString pol = QString::fromStdString(SAT_POL[txdata.pol]);
 			QString sr = QString::fromStdString(txdata.sr);
-			QString fec = QString::fromStdString(to_string(txdata.fec));
+			QString fec = QString::fromStdString(SAT_FEC[txdata.fec]);
 			QString pos = QString::fromStdString(to_string(txdata.pos));
-			QString sys = QString::fromStdString(to_string(txdata.sys));
+			QString sys = QString::fromStdString(SAT_SYS[txdata.sys]);
 			QString data = QString::fromStdString(cdata.data);
 
 			QTreeWidgetItem* item = new QTreeWidgetItem({idx, chname, chid, txid, stype, pname, freq, pol, sr, fec, pos, sys, data});

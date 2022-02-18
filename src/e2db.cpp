@@ -98,6 +98,7 @@ class e2db_parser
 		{
 			string bname;
 			string name;
+			string nname;
 			vector<string> userbouquets;
 			map<string, reference> channels;
 		};
@@ -238,7 +239,6 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				char tsid[5];
 				char onid[5];
 
-				//py tx = list(map(lambda a: a.lstrip("0"), line.upper().split(":")))
 				sscanf(upCase(line).c_str(), "%8s:%4s:%4s", dvbns, tsid, onid);
 
 				tx.dvbns = dvbns;
@@ -253,8 +253,6 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 			{
 				//  s 11219000:29900000:0:0:130:0:0
 				//  s 10949000:29900000:1:7:130:2:0:1:2:0:2
-
-				//py txdata = list(map(lambda a: int(a.lstrip("0") or 0), line[3:].split(":")))
 
 				tx.ttype = line.substr(1, 2)[0];
 				string txdata = line.substr(3);
@@ -365,7 +363,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 
 void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 {
-	cout << "e2db_parser parse_e2db_bouquet()" << endl;
+	cout << "e2db_parser parse_e2db_bouquet() bname: " << bname << endl;
 
 	string line;
 	bouquet bs;
@@ -391,6 +389,8 @@ void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 		else if (line.find("#NAME") != string::npos)
 		{
 			bs.name = line.substr(6);
+			if (bname.find_last_of(".tv") != bname.size() - 1) bs.nname = "TV";
+			else if (bname.find_last_of(".radio") != bname.size() - 1) bs.nname = "Radio";
 		}
 	}
 
@@ -399,7 +399,7 @@ void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 
 void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname)
 {
-	cout << "e2db_parser parse_e2db_userbouquet()" << endl;
+	cout << "e2db_parser parse_e2db_userbouquet() bname: " << bname << endl;
 
 	bool step = false;
 	int index = 0;
@@ -435,10 +435,8 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname)
 			// %d:%d:btype:ssid:tsid:onid:dvbns:?:?:?:
 			// %d:%d:btype:anum:0:0:0:?:?:?:
 
-			bool sseq = false;
-			
-			//py line[9:-7]
 			line = line.substr(9);
+			bool sseq = false;
 			int i0, i1;
 			int btype;
 			char ssid[5];
@@ -450,7 +448,6 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname)
 			transform(line.begin(), line.end(), line.begin(), [](unsigned char c){ return c == ':' ? ' ' : toupper(c); });
 			sscanf(line.c_str(), "%d %d %3d %4s %4s %4s %8d", &i0, &i1, &btype, ssid, tsid, onid, &dvbns);
 
-			//py len(line[9:-7].upper().split(':')) > 6
 			char chid[24];
 
 			switch (i1) {
@@ -488,7 +485,7 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname)
 		}
 	}
 
-	//TODO insert in parent bouquet
+	//TODO ? insert in parent bouquet
 
 	userbouquets.emplace(bname, ub);
 }
@@ -537,6 +534,7 @@ void e2db_parser::debug()
 	{
 		cout << "filename: " << x.first << endl;
 		cout << "name: " << x.second.name << endl;
+		cout << "nname: " << x.second.nname << endl;
 		cout << "userbouquets: [";
 		for (auto & w: x.second.userbouquets)
 		{

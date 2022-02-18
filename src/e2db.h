@@ -69,6 +69,7 @@ class e2db_parser
 		{
 			string bname;
 			string name;
+            string nname;
 			vector<string> userbouquets;
 			map<reference, int> channels;
 		};
