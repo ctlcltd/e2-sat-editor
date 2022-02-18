@@ -125,7 +125,7 @@ void gui::tab(QWidget& ttab)
 	bheader_item->setText(0, "Bouquets");
 	bheader_item->setSizeHint(0, QSize(0, 0));
 
-	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({"Index", "Name", "CHID", "TXID", "Type", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System", "DATA"});
+	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({"Index", "Name", "CHID", "TXID", "Type", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"});
 	list_tree->setHeaderItem(lheader_item);
 	
 	QToolBar* top_toolbar = new QToolBar();
@@ -300,16 +300,16 @@ void gui::populate()
 			QString chid = QString::fromStdString(ch.first);
 			QString txid = QString::fromStdString(cdata.txid);
 			QString stype = STYPES.count(cdata.stype) ? QString::fromStdString(STYPES.at(cdata.stype)) : "Data";
-			QString pname = ""; //py cdata["data"][0][1];
+			QString pname = cdata.data.count('p') ? QString::fromStdString(cdata.data.at('p')[0]) : "";
 			QString freq = QString::fromStdString(txdata.freq);
 			QString pol = QString::fromStdString(SAT_POL[txdata.pol]);
 			QString sr = QString::fromStdString(txdata.sr);
 			QString fec = QString::fromStdString(SAT_FEC[txdata.fec]);
 			QString pos = QString::fromStdString(to_string(txdata.pos));
 			QString sys = QString::fromStdString(SAT_SYS[txdata.sys]);
-			QString data = QString::fromStdString(cdata.data);
+//			QString data = QString::fromStdString(cdata.data);
 
-			QTreeWidgetItem* item = new QTreeWidgetItem({idx, chname, chid, txid, stype, pname, freq, pol, sr, fec, pos, sys, data});
+			QTreeWidgetItem* item = new QTreeWidgetItem({idx, chname, chid, txid, stype, pname, freq, pol, sr, fec, pos, sys});
 			item->setTextAlignment(12, Qt::AlignRight);
 			list_tree->addTopLevelItem(item);
 		}

@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <filesystem>
 #include <algorithm>
 #include <string>
@@ -66,7 +67,7 @@ class e2db_parser
 			int index;
 			string txid;
 			string chname;
-			string data;
+			unordered_map<char, vector<string>> data;
 		};
 		struct transponder
 		{
@@ -276,7 +277,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 						rol = NULL;
 						pil = NULL;
 
-						sscanf(txdata.c_str(), "%9d:%9d:%1d:%1d:%3d:%1d:%1d:%1d:%1d:%1d:%1d", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil);
+						sscanf(txdata.c_str(), "%8d:%8d:%1d:%1d:%3d:%1d:%1d:%1d:%1d:%1d:%1d", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil);
 
 						tx.freq = to_string(int (freq / 1e3));
 						tx.sr = to_string(int (sr / 1e3));
@@ -317,7 +318,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				//
 				// 0082afc2:0065:0001 [transponder]
 
-				char ssid[5];
+				char ssid[5]; //TODO ? lpad '0'
 				char dvbns[9];
 				char tsid[5];
 				char onid[5];
@@ -349,8 +350,20 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 			}
 			else if (count == 3)
 			{
-				//TODO chdata list
-				ch.data = line;
+				if (line.size())
+				{
+					stringstream datas(line);
+					string l;
+					unordered_map<char, vector<string>> data;
+
+					while (getline(datas, l, ','))
+					{
+						char key = l.substr(0, 1)[0];
+						string value = l.substr(2);
+						data[key].push_back(value);
+					}
+					ch.data = data;
+				}
 
 				db.services.emplace(chid, ch);
 				count = 0;
@@ -439,7 +452,7 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname)
 			bool sseq = false;
 			int i0, i1;
 			int btype;
-			char ssid[5];
+			char ssid[5]; //TODO ? lpad '0'
 			char tsid[5];
 			char onid[5];
 			int dvbns;
@@ -525,7 +538,16 @@ void e2db_parser::debug()
 		cout << "stype: " << x.second.stype << endl;
 		cout << "snum: " << x.second.snum << endl;
 		cout << "chname: " << x.second.chname << endl;
-		cout << "data: " << x.second.data << endl;
+		cout << "data: [" << endl;
+ 		for (auto & q: x.second.data)
+		{
+			cout << "\"" << q.first << "\": [";
+			cout << q.second.size() << endl;
+			for (string & w: q.second)
+				cout << "\"" << w << "\",";
+			cout << "]";
+		}
+		cout << endl << "]" << endl;
 		cout << "index: " << x.second.index << endl;
 		cout << endl;
 	}
@@ -537,9 +559,7 @@ void e2db_parser::debug()
 		cout << "nname: " << x.second.nname << endl;
 		cout << "userbouquets: [";
 		for (auto & w: x.second.userbouquets)
-		{
 			cout << "\"" << w << "\",";
-		}
 		cout << "]" << endl;
 		cout << endl;
 	}
@@ -550,9 +570,7 @@ void e2db_parser::debug()
 		cout << "name: " << x.second.name << endl;
 		cout << "channels: [" << endl;
 		for (auto & q: x.second.channels)
-		{
 			cout << "{\"chid\":\"" << q.first << "\",\"index\":" << q.second.index << "}," << endl;
-		}
 		cout << "]" << endl;
 		cout << endl;
 	}

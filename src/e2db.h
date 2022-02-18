@@ -37,7 +37,7 @@ class e2db_parser
 			int index;
 			string txid;
 			string chname;
-			string data;
+            unordered_map<char, vector<string>> data;
 		};
 		struct transponder
 		{
