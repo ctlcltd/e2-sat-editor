@@ -71,9 +71,9 @@ class e2db_parser
 		struct transponder
 		{
 			string dvbns;
-			string tid;
-			string nid;
-			string type;
+			string tsid;
+			string onid;
+			char ttype;
 			string freq;
 			string sr;
 			int pol;
@@ -85,7 +85,6 @@ class e2db_parser
 			int mod;
 			int rol;
 			int pil;
-			string data;
 		};
 		struct reference
 		{
@@ -191,11 +190,10 @@ void e2db_parser::parse_e2db_lamedb(ifstream& flamedb)
 		break;
 		default:
 			cout << "e2db_parser \tlamedb \tError: Unknown database format." << endl;
-		break;
 	}
 }
 
-//TODO switch stype
+//TODO stype DVB-T & DVB-C
 void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 {
 	cout << "e2db_parser parse_e2db_lamedb4()" << endl;
@@ -237,25 +235,70 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				// 0082afc2:0065:0001
 
 				char dvbns[9];
-				char tid[5];
-				char nid[5];
+				char tsid[5];
+				char onid[5];
 
 				//py tx = list(map(lambda a: a.lstrip("0"), line.upper().split(":")))
-				sscanf(upCase(line).c_str(), "%8s:%4s:%4s", dvbns, tid, nid);
+				sscanf(upCase(line).c_str(), "%8s:%4s:%4s", dvbns, tsid, onid);
 
 				tx.dvbns = dvbns;
 				tx.dvbns.erase(0, tx.dvbns.find_first_not_of('0'));
-				tx.tid = string (tid);
-				tx.tid.erase(0, tx.tid.find_first_not_of('0'));
-				tx.nid = string (nid);
-				tx.nid.erase(0, tx.nid.find_first_not_of('0'));
-				txid = tx.tid + ":" + tx.nid + ":" + tx.dvbns;
+				tx.tsid = string (tsid); //TODO name
+				tx.tsid.erase(0, tx.tsid.find_first_not_of('0'));
+				tx.onid = string (onid); //TODO name
+				tx.onid.erase(0, tx.onid.find_first_not_of('0'));
+				txid = tx.tsid + ":" + tx.onid + ":" + tx.dvbns;
 			}
 			else if (count == 2)
 			{
+				//  s 11219000:29900000:0:0:130:0:0
+				//  s 10949000:29900000:1:7:130:2:0:1:2:0:2
+
 				//py txdata = list(map(lambda a: int(a.lstrip("0") or 0), line[3:].split(":")))
-				tx.type = line.substr(1, 2);
-				tx.data = line.substr(3); //TODO transponder data
+
+				tx.ttype = line.substr(1, 2)[0];
+				string txdata = line.substr(3);
+
+				switch (tx.ttype) {
+					case 's': // DVB-S
+						int freq;
+						int sr;
+						int pol;
+						int fec;
+						int pos;
+						int inv;
+						int flgs;
+						int sys;
+						int mod;
+						int rol;
+						int pil;
+						flgs = NULL;
+						sys = NULL;
+						mod = NULL;
+						rol = NULL;
+						pil = NULL;
+
+						sscanf(txdata.c_str(), "%9d:%9d:%1d:%1d:%3d:%1d:%1d:%1d:%1d:%1d:%1d", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil);
+
+						tx.freq = to_string(int (freq / 1e3));
+						tx.sr = to_string(int (sr / 1e3));
+						tx.pol = pol;
+						tx.fec = fec;
+						tx.pos = pos; //TODO satellites.xml
+						tx.inv = inv;
+						tx.flgs = to_string(flgs);
+						tx.sys = sys;
+						tx.mod = mod;
+						tx.rol = rol; // DVB-S2 only
+						tx.pil = pil; // DVB-S2 only
+					break;
+					case 't': // DVB-T
+						cout << "e2db_parser parse_e2db_lamedb4() txtype == 't' TODO" << endl;
+					break;
+					case 'c': // DVB-C
+						cout << "e2db_parser parse_e2db_lamedb4() txtype == 'c' TODO" << endl;
+					break;
+				}
 			}
 			else if (count == 3)
 			{
@@ -273,7 +316,8 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 			{
 				// 3b69:00820000:012c:013e:25:2381
 				// 32cd:00820000:0190:013e:1:2382
-				// 0082afc2:0065:0001
+				//
+				// 0082afc2:0065:0001 [transponder]
 
 				char ssid[5];
 				char dvbns[9];
@@ -281,6 +325,8 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				char onid[5];
 				int stype;
 				int snum;
+				stype = NULL;
+				snum = NULL;
 
 				sscanf(upCase(line).c_str(), "%4s:%8s:%4s:%4s:%3d:%4d", ssid, dvbns, tsid, onid, &stype, &snum);
 
@@ -288,6 +334,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				ch.dvbns = string (dvbns);
 				ch.dvbns.erase(0, ch.dvbns.find_first_not_of('0'));
 				ch.tsid = string (tsid);
+				ch.tsid.erase(0, ch.tsid.find_first_not_of('0'));
 				ch.onid = string (onid);
 				ch.onid.erase(0, ch.onid.find_first_not_of('0'));
 				ch.stype = stype;
@@ -299,7 +346,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 			else if (count == 2)
 			{
 				ch.index = index;
-				ch.txid = "";
+				ch.txid = txid;
 				ch.chname = line;
 			}
 			else if (count == 3)
@@ -398,6 +445,7 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname)
 			char tsid[5];
 			char onid[5];
 			int dvbns;
+			dvbns = NULL;
 
 			transform(line.begin(), line.end(), line.begin(), [](unsigned char c){ return c == ':' ? ' ' : toupper(c); });
 			sscanf(line.c_str(), "%d %d %3d %4s %4s %4s %8d", &i0, &i1, &btype, ssid, tsid, onid, &dvbns);
@@ -453,10 +501,20 @@ void e2db_parser::debug()
 	{
 		cout << "txid: " << x.first << endl;
 		cout << "dvbns: " << x.second.dvbns << endl;
-		cout << "tid: " << x.second.tid << endl;
-		cout << "nid: " << x.second.nid << endl;
-		cout << "type: " << x.second.type << endl;
-		cout << "data: " << x.second.data << endl;
+		cout << "tsid: " << x.second.tsid << endl;
+		cout << "onid: " << x.second.onid << endl;
+		cout << "ttype: " << x.second.ttype << endl;
+		cout << "freq: " << x.second.freq << endl;
+		cout << "sr: " << x.second.sr << endl;
+		cout << "pol: " << to_string(x.second.pol) << endl;
+		cout << "fec: " << to_string(x.second.fec) << endl;
+		cout << "pos: " << to_string(x.second.pos) << endl;
+		cout << "inv: " << to_string(x.second.inv) << endl;
+		cout << "flgs: " << x.second.flgs << endl;
+		cout << "sys: " << to_string(x.second.sys) << endl;
+		cout << "mod: " << to_string(x.second.mod) << endl;
+		cout << "rol: " << to_string(x.second.rol) << endl;
+		cout << "pil: " << to_string(x.second.pil) << endl;
 		cout << endl;
 	}
 	cout << endl;

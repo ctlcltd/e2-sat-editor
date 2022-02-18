@@ -44,7 +44,7 @@ class e2db_parser
 			string dvbns;
 			string tid;
 			string nid;
-			string type;
+			char type;
             string freq;
             string sr;
             int pol;

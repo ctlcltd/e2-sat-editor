@@ -282,12 +282,11 @@ void gui::populate()
 	for (auto & ch : cur_chdata)
 	{
 		//TODO markers
+		//TODO ? ttype
 		if (1)
 		{
 			auto cdata = ch.second;
 			auto txdata = temp_transponders[cdata.txid];
-			txdata.freq = ""; //TODO TEMP
-			txdata.pol = 0; //TODO TEMP
 
 			//py
 			// if cur_chlist != "channels"
