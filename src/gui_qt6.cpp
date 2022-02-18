@@ -275,7 +275,7 @@ void gui::populate()
 	if (cur_bouquet != "" && cur_bouquet != "all")
 	{
 		cur_chlist = cur_bouquet;
-		//py cur_chdata = chdata[cur_bouquet]; //py chdata[cur_bouquet]["list"]
+		//py cur_chdata = chdata[cur_bouquet];
 	}
 
 	list_tree->scrollToItem(list_tree->topLevelItem(0));
@@ -300,19 +300,18 @@ void gui::populate()
 			QString chid = QString::fromStdString(ch.first);
 			QString txid = QString::fromStdString(cdata.txid);
 			QString stype = STYPES.count(cdata.stype) ? QString::fromStdString(STYPES.at(cdata.stype)) : "Data";
-			QString pname = cdata.data.count('p') ? QString::fromStdString(cdata.data.at('p')[0]) : "";
+			QString pname = QString::fromStdString(cdata.data.at('p')[0]);
 			QString freq = QString::fromStdString(txdata.freq);
 			QString pol = QString::fromStdString(SAT_POL[txdata.pol]);
 			QString sr = QString::fromStdString(txdata.sr);
 			QString fec = QString::fromStdString(SAT_FEC[txdata.fec]);
 			QString pos = QString::fromStdString(to_string(txdata.pos));
 			QString sys = QString::fromStdString(SAT_SYS[txdata.sys]);
-//			QString data = QString::fromStdString(cdata.data);
 
 			QTreeWidgetItem* item = new QTreeWidgetItem({idx, chname, chid, txid, stype, pname, freq, pol, sr, fec, pos, sys});
-			item->setTextAlignment(12, Qt::AlignRight);
 			list_tree->addTopLevelItem(item);
 		}
+		//TODO QWidget
 		else
 		{
 			QString chid = "";

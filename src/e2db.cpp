@@ -22,36 +22,16 @@
 
 using namespace std;
 
-/*
-string upCase(string str)
-{
-	int i = 0;
-	int len = str.length() + 1;
-	char cstr[len];
-	std::strcpy(cstr, str.c_str());
-	while (i != len)
-	{
-		cstr[i] = toupper(cstr[i]);
-		i++;
-	}
-
-	return string (cstr);
-}
-*/
-
-string lowCase(string str)
+const string lowCase(string str)
 {
 	transform(str.begin(), str.end(), str.begin(), [](unsigned char c){ return tolower(c); });
 	return str;
 }
-
-string upCase(string str)
+const string upCase(string str)
 {
 	transform(str.begin(), str.end(), str.begin(), [](unsigned char c){ return toupper(c); });
 	return str;
 }
-
-
 
 class e2db_parser
 {
@@ -244,9 +224,9 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 
 				tx.dvbns = dvbns;
 				tx.dvbns.erase(0, tx.dvbns.find_first_not_of('0'));
-				tx.tsid = string (tsid); //TODO name
+				tx.tsid = string (tsid);
 				tx.tsid.erase(0, tx.tsid.find_first_not_of('0'));
-				tx.onid = string (onid); //TODO name
+				tx.onid = string (onid);
 				tx.onid.erase(0, tx.onid.find_first_not_of('0'));
 				txid = tx.tsid + ":" + tx.onid + ":" + tx.dvbns;
 			}
@@ -458,6 +438,7 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname)
 			int dvbns;
 			dvbns = NULL;
 
+			//TODO upCase call impact
 			transform(line.begin(), line.end(), line.begin(), [](unsigned char c){ return c == ':' ? ' ' : toupper(c); });
 			sscanf(line.c_str(), "%d %d %3d %4s %4s %4s %8d", &i0, &i1, &btype, ssid, tsid, onid, &dvbns);
 
