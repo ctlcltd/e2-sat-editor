@@ -36,7 +36,7 @@ class e2db_parser
 			int index;
 			string txid;
 			string chname;
-            unordered_map<char, vector<string>> data;
+			unordered_map<char, vector<string>> data;
 		};
 		struct transponder
 		{
@@ -44,31 +44,31 @@ class e2db_parser
 			string tsid;
 			string onid;
 			char ttype;
-            string freq;
-            string sr;
-            int pol;
-            int fec;
-            int pos;
-            int inv;
-            string flgs;
-            int sys;
-            int mod;
-            int rol;
-            int pil;
+			string freq;
+			string sr;
+			int pol;
+			int fec;
+			int pos;
+			int inv;
+			string flgs;
+			int sys;
+			int mod;
+			int rol;
+			int pil;
 		};
 		struct reference
 		{
-            string chid;
-            int reftype;
-            string refval;
-            bool orphan;
-            int index;
+			string chid;
+			int reftype;
+			string refval;
+			bool orphan;
+			int index;
 		};
 		struct bouquet
 		{
 			string bname;
 			string name;
-            string nname;
+			string nname;
 			vector<string> userbouquets;
 			map<string, reference> channels;
 		};

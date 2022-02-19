@@ -28,32 +28,32 @@ const unordered_map<int, string> STYPES = {{0, "Data"}, {1, "TV"}, {2, "Radio"},
 
 static void debug(string ns, string cmsg = "", string optk = "", string optv = "", string indt = " ")
 {
-    if (DEBUG)
-    {
-        cout << ns;
-        if (cmsg.size()) cout << indt << cmsg;
-        if (optk.size()) cout << indt << optk << ":";
-        if (optv.size()) cout << " " << optv;
-        cout << endl;
-    }
+	if (DEBUG)
+	{
+		cout << ns;
+		if (cmsg.size()) cout << indt << cmsg;
+		if (optk.size()) cout << indt << optk << ":";
+		if (optv.size()) cout << " " << optv;
+		cout << endl;
+	}
 }
 static void error(string ns, string cmsg = "", string optk = "", string optv = "", string indt = " ")
 {
-    cout << ns;
-    if (cmsg.size()) cout << indt << cmsg;
-    if (optk.size()) cout << indt << optk << ":";
-    if (optv.size()) cout << " " << optv;
-    cout << endl;
+	cout << ns;
+	if (cmsg.size()) cout << indt << cmsg;
+	if (optk.size()) cout << indt << optk << ":";
+	if (optv.size()) cout << " " << optv;
+	cout << endl;
 }
 
 inline string lowCase(string str)
 {
-    transform(str.begin(), str.end(), str.begin(), [](unsigned char c){ return tolower(c); });
-    return str;
+	transform(str.begin(), str.end(), str.begin(), [](unsigned char c){ return tolower(c); });
+	return str;
 }
 inline string upCase(string str)
 {
-    transform(str.begin(), str.end(), str.begin(), [](unsigned char c){ return toupper(c); });
-    return str;
+	transform(str.begin(), str.end(), str.begin(), [](unsigned char c){ return toupper(c); });
+	return str;
 }
 #endif /* commons_h */
