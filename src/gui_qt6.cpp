@@ -48,18 +48,20 @@ class gui
 		void newFile();
 		bool load(string filename = "");
 		void populate();
+		void loadSeeds();
 	private:
 		e2db_parser* temp_parser;
 		map<string, e2db_parser::transponder> temp_transponders;
 		map<string, e2db_parser::service> temp_channels;
 		pair<map<string, e2db_parser::bouquet>, map<string, e2db_parser::userbouquet>> temp_bouquets;
+		map<string, vector<pair<string, int>>> temp_index;
 		QTreeWidget* bouquets_tree;
 		QTreeWidget* list_tree;
 };
 
 void gui::root(int argc, char* argv[])
 {
-	cout << "gui qt6" << endl;
+	debug("gui", "qt6");
 
 	QApplication mroot = QApplication(argc, argv);
 
@@ -76,30 +78,21 @@ void gui::root(int argc, char* argv[])
 
 	mwid.show();
 
-	cout << "\tmroot.exec()" << endl;
+	debug("\t", "mroot.exec()");
 
 	mroot.exec();
 }
 
 void gui::main(QWidget& mwid)
 {
-	cout << "gui main()" << endl;
+	debug("gui", "main()");
 
 	tab(mwid);
-
-	//TEST
-	char* ccwd = getenv("DYLD_FRAMEWORK_PATH");
-	string cwd = string (ccwd);
-	cwd = cwd.substr(0, cwd.length() - 10); // rstrip /src/Debug
-	filesystem::path path = cwd + "/seeds./enigma_db";
-
-	load(filesystem::absolute(path));
-	//TEST
 }
 
 void gui::tab(QWidget& ttab)
 {
-	cout << "gui tab()" << endl;
+	debug("gui", "tab()");
 
 	QGridLayout* frm = new QGridLayout(&ttab);
 
@@ -134,15 +127,16 @@ void gui::tab(QWidget& ttab)
 	QToolBar* bottom_toolbar = new QToolBar;
 	bottom_toolbar->setStyleSheet("QToolButton { font: bold 16px }");
 
-	bottom_toolbar->addAction("§ Load seeds", todo);
-
-	QAction* anew = new QAction("New");
-
-	top_toolbar->addAction(anew);
-	top_toolbar->addAction("Open", todo);
+	top_toolbar->addAction("New", [=]() { this->newFile(); });
+	top_toolbar->addAction("Open", [=]() { this->load(); });
 	top_toolbar->addAction("Save", todo);
 	top_toolbar->addAction("Import", todo);
 	top_toolbar->addAction("Export", todo);
+
+	if (DEBUG)
+		bottom_toolbar->addAction("§ Load seeds", [=]() { this->loadSeeds(); });
+
+	bouquets_tree->connect(bouquets_tree, &QTreeWidget::itemSelectionChanged, [=]() { this->populate(); });
 
 	top->addWidget(top_toolbar);
 	bottom->addWidget(bottom_toolbar);
@@ -166,7 +160,7 @@ void gui::tab(QWidget& ttab)
 
 void gui::newFile()
 {
-	cout << "gui newFile()" << endl;
+	debug("gui", "newFile()");
 	
 	this->temp_parser = new e2db_parser;
 
@@ -179,7 +173,7 @@ void gui::newFile()
 //TODO remove filename from args
 bool gui::load(string filename)
 {
-	cout << "gui load() " << filename << endl;
+	debug("gui", "load()", filename);
 
 	string dirname;
 
@@ -197,10 +191,14 @@ bool gui::load(string filename)
 	{
 		newFile();
 		temp_parser->load(dirname);
-//		temp_parser->debug();
+		if (E2DB_DEBUG)
+			temp_parser->debugger();
 		temp_transponders = temp_parser->get_transponders();
 		temp_channels = temp_parser->get_channels();
 		temp_bouquets = temp_parser->get_bouquets();
+
+		for (auto & ch : temp_channels)
+			temp_index["all"].emplace_back(pair (ch.first, ch.second.index));
 	}
 	else
 	{
@@ -219,7 +217,7 @@ bool gui::load(string filename)
 
 	for (auto & gboq : temp_bouquets.first)
 	{
-		cout << "gui load() bouquet: " << gboq.first << endl;
+		debug("gui", "load()", "bouquet", gboq.first);
 
 		QString bgroup = QString::fromStdString(gboq.first);
 		QString bcname = QString::fromStdString(gboq.second.nname.size() ? gboq.second.nname : gboq.second.name);
@@ -237,7 +235,7 @@ bool gui::load(string filename)
 	}
 	for (auto & uboq : temp_bouquets.second)
 	{
-		cout << "gui load() userbouquet: " << uboq.first << endl;
+		debug("gui", "load()", "userbouquet", uboq.first);
 
 		QString bgroup = QString::fromStdString(uboq.first);
 		QTreeWidgetItem* pgroup = bgroups[uboq.first];
@@ -248,6 +246,10 @@ bool gui::load(string filename)
 		bitem->setData(0, Qt::UserRole, QVariant (tdata));
 		bitem->setText(0, QString::fromStdString(uboq.second.name));
 		bouquets_tree->addTopLevelItem(bitem);
+
+		for (auto & ch : uboq.second.channels)
+			temp_index[uboq.first].emplace_back(pair (ch.first, ch.second.index));
+		//TODO parent group index
 	}
 
 	populate();
@@ -266,36 +268,28 @@ void gui::populate()
 		cur_bouquet = qcur_bouquet.toStdString();
 	}
 
-	cout << "gui populate() " << cur_bouquet << endl;
+	debug("gui", "populate()", cur_bouquet);
 
 	string cur_chlist = "all";
-	map<string, e2db_parser::service> cur_chdata = temp_channels;
+	vector<pair<string, int>> cur_chdata;
 
-	//TODO
 	if (cur_bouquet != "" && cur_bouquet != "all")
-	{
 		cur_chlist = cur_bouquet;
-		//py cur_chdata = chdata[cur_bouquet];
-	}
+	cur_chdata = temp_index[cur_chlist];
 
 	list_tree->scrollToItem(list_tree->topLevelItem(0));
 	list_tree->clear();
 
+	//TODO FIX
 	for (auto & ch : cur_chdata)
 	{
-		//TODO markers
-		//TODO ? ttype
-		if (1)
+		//TODO ? transponder.ttype
+		if (temp_channels.count(ch.first))
 		{
-			auto cdata = ch.second;
+			e2db_parser::service cdata = temp_channels[ch.first];
 			auto txdata = temp_transponders[cdata.txid];
 
-			//py
-			// if cur_chlist != "channels"
-			// 	idx = cur_chdata[cid];
-			// else
-			// 	idx = cdata["index"];
-			QString idx = QString::fromStdString(to_string(cdata.index));
+			QString idx = QString::fromStdString(to_string(ch.second));
 			QString chname = QString::fromStdString(cdata.chname);
 			QString chid = QString::fromStdString(ch.first);
 			QString txid = QString::fromStdString(cdata.txid);
@@ -311,14 +305,27 @@ void gui::populate()
 			QTreeWidgetItem* item = new QTreeWidgetItem({idx, chname, chid, txid, stype, pname, freq, pol, sr, fec, pos, sys});
 			list_tree->addTopLevelItem(item);
 		}
-		//TODO QWidget
+		//TODO markers QWidget
 		else
 		{
-			QString chid = "";
-			QString refval = "";
+			e2db_parser::reference cref = temp_bouquets.second[cur_bouquet].channels[ch.first];
+			QString chid = QString::fromStdString(cref.chid);
+			QString refval = QString::fromStdString(cref.refval);
 
 			QTreeWidgetItem* item = new QTreeWidgetItem({"", refval, chid});
 			list_tree->addTopLevelItem(item);
 		}
 	}
 }
+
+//TEST
+void gui::loadSeeds()
+{
+	char* ccwd = getenv("DYLD_FRAMEWORK_PATH");
+	string cwd = string (ccwd);
+	cwd = cwd.substr(0, cwd.length() - 10); // rstrip /src/Debug
+	filesystem::path path = cwd + "/seeds./enigma_db";
+
+	load(filesystem::absolute(path));
+}
+//TEST

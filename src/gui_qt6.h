@@ -29,12 +29,14 @@ class gui
 		void newFile();
 		bool load(string filename = "");
 		void populate();
-		QTreeWidget* bouquets_tree;
-		QTreeWidget* list_tree;
+        void loadSeeds();
     private:
         e2db_parser* temp_parser;
         map<string, e2db_parser::transponder> temp_transponders;
         map<string, e2db_parser::service> temp_channels;
         pair<map<string, e2db_parser::bouquet>, map<string, e2db_parser::userbouquet>> temp_bouquets;
+        map<string, vector<pair<string, int>>> temp_index;
+        QTreeWidget* bouquets_tree;
+        QTreeWidget* list_tree;
 };
 #endif

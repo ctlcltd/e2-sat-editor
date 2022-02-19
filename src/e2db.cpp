@@ -19,19 +19,10 @@
 #include <regex>
 #include <cstdio>
 #include <cstring>
+#include "commons.h"
 
 using namespace std;
 
-const string lowCase(string str)
-{
-	transform(str.begin(), str.end(), str.begin(), [](unsigned char c){ return tolower(c); });
-	return str;
-}
-const string upCase(string str)
-{
-	transform(str.begin(), str.end(), str.begin(), [](unsigned char c){ return toupper(c); });
-	return str;
-}
 
 class e2db_parser
 {
@@ -104,7 +95,7 @@ class e2db_parser
 		pair<map<string, bouquet>, map<string, userbouquet>> get_bouquets();
 		bool get_e2db_localdir(string localdir); //TODO rename no getter
 		void load(string localdir); //TODO rename
-		void debug();
+		void debugger();
 		string localdir;
 		e2db_parser()
 		{
@@ -126,7 +117,7 @@ class e2db_parser
 
 void e2db_parser::parse_e2db()
 {
-	cout << "e2db_parser parse_e2db()" << endl;
+	debug("e2db_parser", "parse_e2db()");
 
 	ifstream flamedb(e2db["lamedb"]);
 	parse_e2db_lamedb(flamedb);
@@ -154,31 +145,31 @@ void e2db_parser::parse_e2db()
 
 void e2db_parser::parse_e2db_lamedb(ifstream& flamedb)
 {
-	cout << "e2db_parser parse_e2db_lamedb()" << endl;
+	debug("e2db_parser", "parse_e2db_lamedb()");
 
 	string hlamedb;
 	getline(flamedb, hlamedb);
 	char vlamedb = (hlamedb.substr(hlamedb.length() - 2, hlamedb.length() - 1))[0];
 	int dbver = isdigit(vlamedb) ? int (vlamedb) - 48 : 0;
 
-	cout << "e2db_parser \tlamedb \tFile header: " << hlamedb << endl;
+	debug("e2db_parser", "lamedb", "File header", hlamedb, "\t");
 
 	switch (dbver) {
 		case 4:
 			parse_e2db_lamedb4(flamedb);
 		break;
 		case 5: //TODO ver. 5
-			cout << "e2db_parser \tlamedb \tNotice: Not supported, ver. 5 is not currently supported." << endl;
+			error("e2db_parser", "lamedb", "Notice", "Not supported, ver. 5 is not currently supported.", "\t");
 		break;
 		default:
-			cout << "e2db_parser \tlamedb \tError: Unknown database format." << endl;
+			error("e2db_parser", "lamedb", "Error", "Unknown database format.", "\t");
 	}
 }
 
 //TODO stype DVB-T & DVB-C
 void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 {
-	cout << "e2db_parser parse_e2db_lamedb4()" << endl;
+	debug("e2db_parser", "parse_e2db_lamedb4()");
 
 	int step = 0;
 	int count = 0;
@@ -272,10 +263,10 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 						tx.pil = pil; // DVB-S2 only
 					break;
 					case 't': // DVB-T
-						cout << "e2db_parser parse_e2db_lamedb4() txtype == 't' TODO" << endl;
+						debug("e2db_parser", "parse_e2db_lamedb4()", "txtyp", "'t'\tTODO");
 					break;
 					case 'c': // DVB-C
-						cout << "e2db_parser parse_e2db_lamedb4() txtype == 'c' TODO" << endl;
+						debug("e2db_parser", "parse_e2db_lamedb4()", "txtyp", "'c'\tTODO");
 					break;
 				}
 			}
@@ -356,7 +347,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 
 void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 {
-	cout << "e2db_parser parse_e2db_bouquet() bname: " << bname << endl;
+	debug("e2db_parser", "parse_e2db_bouquet()", "bname", bname);
 
 	string line;
 	bouquet bs;
@@ -392,7 +383,7 @@ void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 
 void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname)
 {
-	cout << "e2db_parser parse_e2db_userbouquet() bname: " << bname << endl;
+	debug("e2db_parser", "parse_e2db_userbouquet()", "bname", bname);
 
 	bool step = false;
 	int index = 0;
@@ -484,9 +475,9 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname)
 	userbouquets.emplace(bname, ub);
 }
 
-void e2db_parser::debug()
+void e2db_parser::debugger()
 {
-	cout << "db" << endl;
+	cout << "e2db_parser debugger()" << endl;
 	cout << endl;
 	for (auto & x: db.transponders)
 	{
@@ -560,12 +551,11 @@ void e2db_parser::debug()
 // C++17
 bool e2db_parser::get_e2db_localdir(string _localdir)
 {
-	cout << "e2db_parser get_e2db_localdir() " << _localdir << endl;
+	debug("e2db_parser", "get_e2db_localdir()", "_localdir", _localdir);
 
 	if (! filesystem::exists(_localdir))
 	{
-		cout << "e2db_parser \tError: File not exists: \"" << _localdir << "\"." << endl;
-
+		error("e2db_parser", "get_e2db_localdir()", "Error", "File not exists: \"" + _localdir + "\".", "\t");
 		return false;
 	}
 
@@ -584,29 +574,25 @@ bool e2db_parser::get_e2db_localdir(string _localdir)
 
 map<string, e2db_parser::transponder> e2db_parser::get_transponders()
 {
-	cout << "e2db_parser get_transponders() " << endl;
-
+	debug("e2db_parser", "get_transponders()");
 	return db.transponders;
 }
 
 map<string, e2db_parser::service> e2db_parser::get_channels()
 {
-	cout << "e2db_parser get_channels() " << endl;
-
+	debug("e2db_parser", "get_channels()");
 	return db.services;
 }
 
 pair<map<string, e2db_parser::bouquet>, map<string, e2db_parser::userbouquet>> e2db_parser::get_bouquets()
 {
-	cout << "e2db_parser get_bouquets() " << endl;
-
+	debug("e2db_parser", "get_bouquets()");
 	return pair (bouquets, userbouquets);
 }
 
 void e2db_parser::load(string localdir)
 {
-	cout << "e2db_parser load() " << localdir << endl;
-
+	debug("e2db_parser", "load()", "localdir", localdir);
 	get_e2db_localdir(localdir);
 	parse_e2db();
 }
