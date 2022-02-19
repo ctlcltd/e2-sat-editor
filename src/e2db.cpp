@@ -63,7 +63,6 @@ class e2db_parser
 			string chid;
 			int reftype;
 			string refval;
-			bool orphan;
 			int index;
 		};
 		struct bouquet
@@ -72,13 +71,13 @@ class e2db_parser
 			string name;
 			string nname;
 			vector<string> userbouquets;
-			map<string, reference> channels;
+			int count;
 		};
 		struct userbouquet
 		{
 			string bname;
 			string name;
-			bool orphan;
+			string pname;
 			map<string, reference> channels;
 		};
 		struct lamedb {
@@ -89,13 +88,14 @@ class e2db_parser
 		void parse_e2db_lamedb(ifstream& flamedb);
 		void parse_e2db_lamedb4(ifstream& flamedb);
 		void parse_e2db_bouquet(ifstream& fbouquet, string bname);
-		void parse_e2db_userbouquet(ifstream& fuserbouquet, string bname);
+		void parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, string pname);
 		map<string, transponder> get_transponders();
 		map<string, service> get_channels();
 		pair<map<string, bouquet>, map<string, userbouquet>> get_bouquets();
 		bool get_e2db_localdir(string localdir); //TODO rename no getter
 		void load(string localdir); //TODO rename
 		void debugger();
+		map<string, vector<pair<int, string>>> index;
 		string localdir;
 		e2db_parser()
 		{
@@ -137,7 +137,7 @@ void e2db_parser::parse_e2db()
 		for (auto & w: x.second.userbouquets)
 		{
 			ifstream fuserbouquet(e2db[w]);
-			parse_e2db_userbouquet(fuserbouquet, w);
+			parse_e2db_userbouquet(fuserbouquet, w, x.first);
 			fuserbouquet.close();
 		}
 	}
@@ -173,7 +173,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 
 	int step = 0;
 	int count = 0;
-	int index = 0;
+	int idx = 0;
 	string line;
 	string txid = "";
 	string chid = "";
@@ -289,7 +289,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				//
 				// 0082afc2:0065:0001 [transponder]
 
-				char ssid[5]; //TODO ? lpad '0'
+				char ssid[5];
 				char dvbns[9];
 				char tsid[5];
 				char onid[5];
@@ -301,6 +301,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				sscanf(upCase(line).c_str(), "%4s:%8s:%4s:%4s:%3d:%4d", ssid, dvbns, tsid, onid, &stype, &snum);
 
 				ch.ssid = string (ssid);
+				ch.ssid.erase(0, ch.ssid.find_first_not_of('0'));
 				ch.dvbns = string (dvbns);
 				ch.dvbns.erase(0, ch.dvbns.find_first_not_of('0'));
 				ch.tsid = string (tsid);
@@ -311,11 +312,11 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				ch.snum = snum;
 				txid = ch.tsid + ":" + ch.onid + ":" + ch.dvbns;
 				chid = ch.ssid + ":" + ch.tsid + ":" + ch.onid + ":" + ch.dvbns;
-				index += 1;
+				idx += 1;
 			}
 			else if (count == 2)
 			{
-				ch.index = index;
+				ch.index = idx;
 				ch.txid = txid;
 				ch.chname = line;
 			}
@@ -337,6 +338,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				}
 
 				db.services.emplace(chid, ch);
+				index["all"].emplace_back(pair (idx, chid));
 				count = 0;
 				chid = "";
 				service ch;
@@ -373,29 +375,30 @@ void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 		else if (line.find("#NAME") != string::npos)
 		{
 			bs.name = line.substr(6);
-			if (bname.find_last_of(".tv") != bname.size() - 1) bs.nname = "TV";
-			else if (bname.find_last_of(".radio") != bname.size() - 1) bs.nname = "Radio";
+			if (bname.find(".tv") != string::npos) bs.nname = "TV";
+			else if (bname.find(".radio") != string::npos) bs.nname = "Radio";
+			bs.count = 1; //TODO FIX
 		}
 	}
 
 	bouquets.emplace(bname, bs);
 }
 
-void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname)
+void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, string pname)
 {
 	debug("e2db_parser", "parse_e2db_userbouquet()", "bname", bname);
 
 	bool step = false;
-	int index = 0;
 	int idx = 0;
+	int j = 0;
 	string line;
-	string chid = "";
+	string chid;
 	userbouquet ub;
 	reference ref;
 
 	while (getline(fuserbouquet, line))
 	{
-		if (step && line.find("#SORT") != string::npos)
+		if (step && line.find("#SORT") != string::npos) //TODO ? #SORT
 		{
 			step = false;
 			continue;
@@ -403,12 +406,13 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname)
 		else if (! step && line.find("#NAME") != string::npos)
 		{
 			ub.name = line.substr(6);
+			ub.pname = pname;
 			step = true;
 			continue;
 		}
 		else if (step && line.find("#DESCRIPTION") != string::npos)
 		{
-			ref.refval = line.substr(13);
+			ub.channels[chid].refval = line.substr(13);
 			continue;
 		}
 
@@ -421,19 +425,20 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname)
 
 			line = line.substr(9);
 			bool sseq = false;
+			char cchid[24];
 			int i0, i1;
-			int btype;
-			char ssid[5]; //TODO ? lpad '0'
+			char btype[5];
+			char ssid[5]; //TODO check lpad '0'
 			char tsid[5];
 			char onid[5];
 			int dvbns;
+			i0 = NULL;
+			i1 = NULL;
 			dvbns = NULL;
 
 			//TODO upCase call impact
 			transform(line.begin(), line.end(), line.begin(), [](unsigned char c){ return c == ':' ? ' ' : toupper(c); });
-			sscanf(line.c_str(), "%d %d %3d %4s %4s %4s %8d", &i0, &i1, &btype, ssid, tsid, onid, &dvbns);
-
-			char chid[24];
+			sscanf(line.c_str(), "%d %d %4s %4s %4s %4s %8d", &i0, &i1, btype, ssid, tsid, onid, &dvbns);
 
 			switch (i1) {
 				case 64:  // regular marker
@@ -441,36 +446,38 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname)
 				case 512: // hidden marker
 				case 832: // hidden marker ? //TODO
 					sseq = false;
-					sprintf(chid, "%d:%d:%d:%s", i0, i1, btype, ssid);
+					sprintf(cchid, "%d:%d:%s:%s", i0, i1, btype, ssid);
 				break;
 				case 128: // group //TODO
 				default:  // service
 					sseq = true;
-					sprintf(chid, "%s:%s:%s:%d", ssid, tsid, onid, dvbns);
+					sprintf(cchid, "%s:%s:%s:%d", ssid, tsid, onid, dvbns);
 			}
 			if (sseq)
 			{
-				index += 1;
-				idx = index;
+				j += 1;
+				idx = j;
 			}
 			else
 			{
 				idx = 0;
 			}
 
-			ref.chid = string (chid); //TODO redundance
+			chid = string (cchid);
+			ref.chid = chid;
 			ref.reftype = i0;
 			ref.index = idx;
 
-			//TODO orphan : chid in services and not in userbouquets list
+			ub.channels[chid] = ref;
+			index[bname].emplace_back(pair (idx, chid));
 
-			ub.channels[ref.chid] = ref;
+			//TODO convenient way
+			if (sseq)
+				index[pname].emplace_back(pair (bouquets[pname].count++, chid));
 
 			reference ref;
 		}
 	}
-
-	//TODO ? insert in parent bouquet
 
 	userbouquets.emplace(bname, ub);
 }

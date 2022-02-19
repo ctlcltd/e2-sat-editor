@@ -54,7 +54,7 @@ class gui
 		map<string, e2db_parser::transponder> temp_transponders;
 		map<string, e2db_parser::service> temp_channels;
 		pair<map<string, e2db_parser::bouquet>, map<string, e2db_parser::userbouquet>> temp_bouquets;
-		map<string, vector<pair<string, int>>> temp_index;
+		map<string, vector<pair<int, string>>> temp_index;
 		QTreeWidget* bouquets_tree;
 		QTreeWidget* list_tree;
 };
@@ -118,7 +118,11 @@ void gui::tab(QWidget& ttab)
 	bheader_item->setText(0, "Bouquets");
 	bheader_item->setSizeHint(0, QSize(0, 0));
 
-	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({"Index", "Name", "CHID", "TXID", "Type", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"});
+	QVector<QString> tcols;
+	if (DEBUG) tcols = {"Index", "Name", "CHID", "TXID", "Type", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"};
+		else tcols = {"Index", "Name", "Type", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"};
+
+	QTreeWidgetItem* lheader_item = new QTreeWidgetItem(tcols);
 	list_tree->setHeaderItem(lheader_item);
 	
 	QToolBar* top_toolbar = new QToolBar();
@@ -133,7 +137,7 @@ void gui::tab(QWidget& ttab)
 	top_toolbar->addAction("Import", todo);
 	top_toolbar->addAction("Export", todo);
 
-	if (DEBUG)
+	if (DEBUG_TOOLBAR)
 		bottom_toolbar->addAction("§ Load seeds", [=]() { this->loadSeeds(); });
 
 	bouquets_tree->connect(bouquets_tree, &QTreeWidget::itemSelectionChanged, [=]() { this->populate(); });
@@ -183,6 +187,7 @@ bool gui::load(string filename)
 	}
 	else
 	{
+		//TODO ~ $HOME
 		QString qdirname = QFileDialog::getExistingDirectory(nullptr, "Select enigma2 db folder", "~", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 		dirname = qdirname.toStdString();
 	}
@@ -191,14 +196,12 @@ bool gui::load(string filename)
 	{
 		newFile();
 		temp_parser->load(dirname);
-		if (E2DB_DEBUG)
+		if (DEBUG_E2DB)
 			temp_parser->debugger();
 		temp_transponders = temp_parser->get_transponders();
 		temp_channels = temp_parser->get_channels();
 		temp_bouquets = temp_parser->get_bouquets();
-
-		for (auto & ch : temp_channels)
-			temp_index["all"].emplace_back(pair (ch.first, ch.second.index));
+		temp_index = temp_parser->index;
 	}
 	else
 	{
@@ -215,6 +218,7 @@ bool gui::load(string filename)
 
 	map<string, QTreeWidgetItem*> bgroups;
 
+	//TODO order A-Z & parent
 	for (auto & gboq : temp_bouquets.first)
 	{
 		debug("gui", "load()", "bouquet", gboq.first);
@@ -246,10 +250,6 @@ bool gui::load(string filename)
 		bitem->setData(0, Qt::UserRole, QVariant (tdata));
 		bitem->setText(0, QString::fromStdString(uboq.second.name));
 		bouquets_tree->addTopLevelItem(bitem);
-
-		for (auto & ch : uboq.second.channels)
-			temp_index[uboq.first].emplace_back(pair (ch.first, ch.second.index));
-		//TODO parent group index
 	}
 
 	populate();
@@ -271,27 +271,26 @@ void gui::populate()
 	debug("gui", "populate()", cur_bouquet);
 
 	string cur_chlist = "all";
-	vector<pair<string, int>> cur_chdata;
+	vector<pair<int, string>> cur_chdata;
 
 	if (cur_bouquet != "" && cur_bouquet != "all")
 		cur_chlist = cur_bouquet;
-	cur_chdata = temp_index[cur_chlist];
+	cur_chdata = temp_index[cur_chlist]; //TODO reference
 
 	list_tree->scrollToItem(list_tree->topLevelItem(0));
 	list_tree->clear();
 
-	//TODO FIX
 	for (auto & ch : cur_chdata)
 	{
 		//TODO ? transponder.ttype
-		if (temp_channels.count(ch.first))
+		if (temp_channels.count(ch.second))
 		{
-			e2db_parser::service cdata = temp_channels[ch.first];
+			e2db_parser::service cdata = temp_channels[ch.second];
 			auto txdata = temp_transponders[cdata.txid];
 
-			QString idx = QString::fromStdString(to_string(ch.second));
+			QString idx = QString::fromStdString(to_string(ch.first));
 			QString chname = QString::fromStdString(cdata.chname);
-			QString chid = QString::fromStdString(ch.first);
+			QString chid = QString::fromStdString(ch.second);
 			QString txid = QString::fromStdString(cdata.txid);
 			QString stype = STYPES.count(cdata.stype) ? QString::fromStdString(STYPES.at(cdata.stype)) : "Data";
 			QString pname = QString::fromStdString(cdata.data.at('p')[0]);
@@ -302,13 +301,17 @@ void gui::populate()
 			QString pos = QString::fromStdString(to_string(txdata.pos));
 			QString sys = QString::fromStdString(SAT_SYS[txdata.sys]);
 
-			QTreeWidgetItem* item = new QTreeWidgetItem({idx, chname, chid, txid, stype, pname, freq, pol, sr, fec, pos, sys});
+			QVector<QString> irow;
+			if (DEBUG) irow = {idx, chname, chid, txid, stype, pname, freq, pol, sr, fec, pos, sys};
+			else irow = {idx, chname, stype, pname, freq, pol, sr, fec, pos, sys};
+
+			QTreeWidgetItem* item = new QTreeWidgetItem(irow);
 			list_tree->addTopLevelItem(item);
 		}
 		//TODO markers QWidget
 		else
 		{
-			e2db_parser::reference cref = temp_bouquets.second[cur_bouquet].channels[ch.first];
+			e2db_parser::reference cref = temp_bouquets.second[cur_bouquet].channels[ch.second];
 			QString chid = QString::fromStdString(cref.chid);
 			QString refval = QString::fromStdString(cref.refval);
 

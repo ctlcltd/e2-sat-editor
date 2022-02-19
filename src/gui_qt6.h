@@ -35,7 +35,7 @@ class gui
 		map<string, e2db_parser::transponder> temp_transponders;
 		map<string, e2db_parser::service> temp_channels;
 		pair<map<string, e2db_parser::bouquet>, map<string, e2db_parser::userbouquet>> temp_bouquets;
-		map<string, vector<pair<string, int>>> temp_index;
+        map<string, vector<pair<int, string>>> temp_index;
 		QTreeWidget* bouquets_tree;
 		QTreeWidget* list_tree;
 };

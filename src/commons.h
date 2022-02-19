@@ -14,7 +14,8 @@ using namespace std;
 #ifndef commons_h
 #define commons_h
 const bool DEBUG = true;
-const bool E2DB_DEBUG = false;
+const bool DEBUG_E2DB = false;
+const bool DEBUG_TOOLBAR = true;
 
 const string SAT_POL[4] = {"H", "V", "L", "R"};
 const string SAT_FEC[11] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "3/5", "4/5", "8/9", "9/10"};
@@ -46,11 +47,13 @@ static void error(string ns, string cmsg = "", string optk = "", string optv = "
 	cout << endl;
 }
 
+//C++ 17
 inline string lowCase(string str)
 {
 	transform(str.begin(), str.end(), str.begin(), [](unsigned char c){ return tolower(c); });
 	return str;
 }
+//C++ 17
 inline string upCase(string str)
 {
 	transform(str.begin(), str.end(), str.begin(), [](unsigned char c){ return toupper(c); });
