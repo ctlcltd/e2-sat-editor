@@ -93,10 +93,9 @@ class e2db_parser
 		map<string, service> get_channels();
 		pair<map<string, bouquet>, map<string, userbouquet>> get_bouquets();
 		bool get_e2db_localdir(string localdir); //TODO rename no getter
-		void load(string localdir); //TODO rename
+		bool load(string localdir); //TODO rename
 		void debugger();
 		map<string, vector<pair<int, string>>> index;
-		string localdir;
 		e2db_parser()
 		{
 			lamedb db;
@@ -104,8 +103,7 @@ class e2db_parser
 			map<string, userbouquet> userbouquets;
 		}
 	private:
-		string _localdir;
-		string dirlist;
+		string localdir;
 		unordered_map<string, string> e2db;
 		lamedb db;
 		map<string, bouquet> bouquets;
@@ -556,17 +554,17 @@ void e2db_parser::debugger()
 }
 
 // C++17
-bool e2db_parser::get_e2db_localdir(string _localdir)
+bool e2db_parser::get_e2db_localdir(string localdir)
 {
-	debug("e2db_parser", "get_e2db_localdir()", "_localdir", _localdir);
+	debug("e2db_parser", "get_e2db_localdir()", "localdir", localdir);
 
-	if (! filesystem::exists(_localdir))
+	if (! filesystem::exists(localdir))
 	{
-		error("e2db_parser", "get_e2db_localdir()", "Error", "File not exists: \"" + _localdir + "\".", "\t");
+		error("e2db_parser", "get_e2db_localdir()", "Error", "File not exists: \"" + localdir + "\".", "\t");
 		return false;
 	}
 
-	filesystem::directory_iterator dirlist(_localdir);
+	filesystem::directory_iterator dirlist(localdir);
 
 	for (const auto & entry : dirlist)
 	{
@@ -575,6 +573,12 @@ bool e2db_parser::get_e2db_localdir(string _localdir)
 		string filename = filesystem::path(path).filename();
 		e2db[filename] = path;
 	}
+	if (e2db.count("lamedb") < 1)
+	{
+		error("e2db_parser", "get_e2db_localdir()", "Error", "lamedb not found.", "\t");
+		return false;
+	}
+	this->localdir = localdir;
 
 	return true;
 }
@@ -597,9 +601,14 @@ pair<map<string, e2db_parser::bouquet>, map<string, e2db_parser::userbouquet>> e
 	return pair (bouquets, userbouquets);
 }
 
-void e2db_parser::load(string localdir)
+bool e2db_parser::load(string localdir)
 {
 	debug("e2db_parser", "load()", "localdir", localdir);
-	get_e2db_localdir(localdir);
-	parse_e2db();
+
+	if (get_e2db_localdir(localdir))
+		parse_e2db();
+	else
+		return false;
+
+	return true;
 }

@@ -8,15 +8,10 @@
 
 #include <iostream>
 #include <fstream>
-#include <filesystem>
-#include <algorithm>
 #include <string>
 #include <vector>
 #include <map>
 #include <unordered_map>
-#include <regex>
-#include <cstdio>
-#include <cstring>
 
 using namespace std;
 
@@ -91,10 +86,9 @@ class e2db_parser
 		map<string, service> get_channels();
 		pair<map<string, bouquet>, map<string, userbouquet>> get_bouquets();
 		bool get_e2db_localdir(string localdir); //TODO rename no getter
-		void load(string localdir); //TODO rename
+		bool load(string localdir); //TODO rename
 		void debugger();
 		map<string, vector<pair<int, string>>> index;
-		string localdir;
 		e2db_parser()
 		{
 			lamedb db;
@@ -102,8 +96,7 @@ class e2db_parser
 			map<string, userbouquet> userbouquets;
 		}
 	private:
-		string _localdir;
-		string dirlist;
+		string localdir;
 		unordered_map<string, string> e2db;
 		lamedb db;
 		map<string, bouquet> bouquets;

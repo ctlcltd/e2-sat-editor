@@ -118,11 +118,10 @@ void gui::tab(QWidget& ttab)
 	bheader_item->setText(0, "Bouquets");
 	bheader_item->setSizeHint(0, QSize(0, 0));
 
-	QVector<QString> tcols;
-	if (DEBUG) tcols = {"Index", "Name", "CHID", "TXID", "Type", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"};
-		else tcols = {"Index", "Name", "Type", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"};
+	QTreeWidgetItem* lheader_item; // Qt5
+	if (DEBUG) lheader_item = new QTreeWidgetItem({"Index", "Name", "CHID", "TXID", "Type", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"});
+	else new QTreeWidgetItem({"Index", "Name", "Type", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"});
 
-	QTreeWidgetItem* lheader_item = new QTreeWidgetItem(tcols);
 	list_tree->setHeaderItem(lheader_item);
 	
 	QToolBar* top_toolbar = new QToolBar();
@@ -195,13 +194,19 @@ bool gui::load(string filename)
 	if (dirname != "")
 	{
 		newFile();
-		temp_parser->load(dirname);
-		if (DEBUG_E2DB)
-			temp_parser->debugger();
-		temp_transponders = temp_parser->get_transponders();
-		temp_channels = temp_parser->get_channels();
-		temp_bouquets = temp_parser->get_bouquets();
-		temp_index = temp_parser->index;
+		if (temp_parser->load(dirname))
+		{
+			if (DEBUG_E2DB)
+				temp_parser->debugger();
+			temp_transponders = temp_parser->get_transponders();
+			temp_channels = temp_parser->get_channels();
+			temp_bouquets = temp_parser->get_bouquets();
+			temp_index = temp_parser->index;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	else
 	{
@@ -301,11 +306,10 @@ void gui::populate()
 			QString pos = QString::fromStdString(to_string(txdata.pos));
 			QString sys = QString::fromStdString(SAT_SYS[txdata.sys]);
 
-			QVector<QString> irow;
-			if (DEBUG) irow = {idx, chname, chid, txid, stype, pname, freq, pol, sr, fec, pos, sys};
-			else irow = {idx, chname, stype, pname, freq, pol, sr, fec, pos, sys};
+			QTreeWidgetItem* item; // Qt5
+			if (DEBUG) item = new QTreeWidgetItem({idx, chname, chid, txid, stype, pname, freq, pol, sr, fec, pos, sys});
+			else item = new QTreeWidgetItem({idx, chname, stype, pname, freq, pol, sr, fec, pos, sys});
 
-			QTreeWidgetItem* item = new QTreeWidgetItem(irow);
 			list_tree->addTopLevelItem(item);
 		}
 		//TODO markers QWidget
@@ -324,11 +328,26 @@ void gui::populate()
 //TEST
 void gui::loadSeeds()
 {
-	char* ccwd = getenv("DYLD_FRAMEWORK_PATH");
-	string cwd = string (ccwd);
-	cwd = cwd.substr(0, cwd.length() - 10); // rstrip /src/Debug
-	filesystem::path path = cwd + "/seeds./enigma_db";
+	string cwd;
 
-	load(filesystem::absolute(path));
+	// *ux
+	char* ccwd = getenv("PWD");
+	if (ccwd != NULL) cwd = string (ccwd);
+
+	// xcodeproj
+	if (cwd.empty())
+	{
+		char* ccwd = getenv("DYLD_FRAMEWORK_PATH");
+		if (ccwd != NULL) cwd = string (ccwd);
+		if (cwd.find("Debug") != string::npos) cwd = cwd.substr(0, cwd.length() - 6); // rstrip /Debug
+	}
+
+	cwd = cwd.substr(0, cwd.length() - 4); // rstrip /src
+
+	if (cwd != "")
+	{
+		filesystem::path path = cwd + "/seeds./enigma_db";
+		load(filesystem::absolute(path));
+	}
 }
 //TEST
