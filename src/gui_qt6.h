@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <QWidget>
+#include <QHeaderView>
 #include <QTreeWidget>
 #include "commons.h"
 #include "e2db.h"
@@ -26,6 +27,7 @@ class gui
 		void newFile();
 		bool load(string filename = "");
 		void populate();
+        void trickySortByColumn(int column);
 		void loadSeeds();
 	private:
 		e2db_parser* temp_parser;
@@ -35,5 +37,6 @@ class gui
 		map<string, vector<pair<int, string>>> temp_index;
 		QTreeWidget* bouquets_tree;
 		QTreeWidget* list_tree;
+        QHeaderView* lheaderv;
 };
 #endif

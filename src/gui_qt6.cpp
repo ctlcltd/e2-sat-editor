@@ -17,6 +17,7 @@
 #include <QScreen>
 #include <QGridLayout>
 #include <QGroupBox>
+#include <QHeaderView>
 #include <QTreeWidget>
 #include <QToolBar>
 #include <QMessageBox>
@@ -48,6 +49,7 @@ class gui
 		void newFile();
 		bool load(string filename = "");
 		void populate();
+		void trickySortByColumn(int column);
 		void loadSeeds();
 	private:
 		e2db_parser* temp_parser;
@@ -57,6 +59,7 @@ class gui
 		map<string, vector<pair<int, string>>> temp_index;
 		QTreeWidget* bouquets_tree;
 		QTreeWidget* list_tree;
+		QHeaderView* lheaderv;
 };
 
 void gui::root(int argc, char* argv[])
@@ -114,15 +117,21 @@ void gui::tab(QWidget& ttab)
 	bouquets_tree->setStyleSheet("::item { padding: 2px auto }");
 	list_tree->setStyleSheet("::item { padding: 4px auto }");
 
-	QTreeWidgetItem* bheader_item = bouquets_tree->headerItem();
-	bheader_item->setText(0, "Bouquets");
-	bheader_item->setSizeHint(0, QSize(0, 0));
+	bouquets_tree->setHeaderHidden(true);
+	bouquets_tree->setUniformRowHeights(true);
+	list_tree->setUniformRowHeights(true);
+//	QTreeWidgetItem* bheader_item = bouquets_tree->headerItem();
+//	bheader_item->setText(0, "Bouquets");
+//	bheader_item->setSizeHint(0, QSize(0, 0));
 
 	QTreeWidgetItem* lheader_item; // Qt5
-	if (DEBUG) lheader_item = new QTreeWidgetItem({"Index", "Name", "CHID", "TXID", "Type", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"});
-	else new QTreeWidgetItem({"Index", "Name", "Type", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"});
+	if (DEBUG) lheader_item = new QTreeWidgetItem({"", "Index", "Name", "CHID", "TXID", "Type", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"});
+	else lheader_item = new QTreeWidgetItem({"", "Index", "Name", "Type", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"});
 
 	list_tree->setHeaderItem(lheader_item);
+	list_tree->setColumnHidden(0, true);
+	this->lheaderv = list_tree->header();
+	lheaderv->connect(lheaderv, &::QHeaderView::sectionClicked, [=](int column) { this->trickySortByColumn(column); });
 	
 	QToolBar* top_toolbar = new QToolBar();
 	top_toolbar->setStyleSheet("QToolButton { font: 20px }");
@@ -169,6 +178,8 @@ void gui::newFile()
 
 	bouquets_tree->scrollToItem(bouquets_tree->topLevelItem(0));
 	bouquets_tree->clear();
+	lheaderv->setSortIndicatorShown(false);
+	lheaderv->setSectionsClickable(false);
 	list_tree->scrollToItem(list_tree->topLevelItem(0));
 	list_tree->clear();
 }
@@ -282,17 +293,23 @@ void gui::populate()
 		cur_chlist = cur_bouquet;
 	cur_chdata = temp_index[cur_chlist]; //TODO reference
 
+	lheaderv->setSortIndicatorShown(true);
+	lheaderv->setSectionsClickable(false);
 	list_tree->scrollToItem(list_tree->topLevelItem(0));
 	list_tree->clear();
 
 	for (auto & ch : cur_chdata)
 	{
+		char ci[6];
+		sprintf(ci, "%05d", ch.first);
+
 		//TODO ? transponder.ttype
 		if (temp_channels.count(ch.second))
 		{
 			e2db_parser::service cdata = temp_channels[ch.second];
 			auto txdata = temp_transponders[cdata.txid];
 
+			QString i = QString::fromStdString(ci);
 			QString idx = QString::fromStdString(to_string(ch.first));
 			QString chname = QString::fromStdString(cdata.chname);
 			QString chid = QString::fromStdString(ch.second);
@@ -307,22 +324,35 @@ void gui::populate()
 			QString sys = QString::fromStdString(SAT_SYS[txdata.sys]);
 
 			QTreeWidgetItem* item; // Qt5
-			if (DEBUG) item = new QTreeWidgetItem({idx, chname, chid, txid, stype, pname, freq, pol, sr, fec, pos, sys});
-			else item = new QTreeWidgetItem({idx, chname, stype, pname, freq, pol, sr, fec, pos, sys});
+			if (DEBUG) item = new QTreeWidgetItem({i, idx, chname, chid, txid, stype, pname, freq, pol, sr, fec, pos, sys});
+			else item = new QTreeWidgetItem({i, idx, chname, stype, pname, freq, pol, sr, fec, pos, sys});
 
 			list_tree->addTopLevelItem(item);
 		}
-		//TODO markers QWidget
+		//TODO marker QWidget ?
 		else
 		{
 			e2db_parser::reference cref = temp_bouquets.second[cur_bouquet].channels[ch.second];
+
+			QString i = QString::fromStdString(ci);
 			QString chid = QString::fromStdString(cref.chid);
 			QString refval = QString::fromStdString(cref.refval);
 
-			QTreeWidgetItem* item = new QTreeWidgetItem({"", refval, chid});
+			QTreeWidgetItem* item = new QTreeWidgetItem({i, "", refval, chid, "", "MARKER"});
 			list_tree->addTopLevelItem(item);
 		}
 	}
+
+	lheaderv->setSectionsClickable(true);
+}
+
+void gui::trickySortByColumn(int column)
+{
+	cout << column << endl;
+
+	Qt::SortOrder order = lheaderv->sortIndicatorOrder();
+	if (column == 1) list_tree->sortByColumn(0, Qt::DescendingOrder);
+	else list_tree->sortItems(column, order);
 }
 
 //TEST
