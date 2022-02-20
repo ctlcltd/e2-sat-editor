@@ -60,11 +60,12 @@ class gui
 		QTreeWidget* bouquets_tree;
 		QTreeWidget* list_tree;
 		QHeaderView* lheaderv;
+		pair<int, Qt::SortOrder> _state_sort;
 };
 
 void gui::root(int argc, char* argv[])
 {
-	debug("gui", "qt6");
+	debug("gui", "root() qt6");
 
 	QApplication mroot = QApplication(argc, argv);
 
@@ -114,8 +115,8 @@ void gui::tab(QWidget& ttab)
 
 	this->bouquets_tree = new QTreeWidget;
 	this->list_tree = new QTreeWidget;
-	bouquets_tree->setStyleSheet("::item { padding: 2px auto }");
-	list_tree->setStyleSheet("::item { padding: 4px auto }");
+	bouquets_tree->setStyleSheet("QTreeWidget { background: transparent } ::item { padding: 6px auto }");
+	list_tree->setStyleSheet("::item { padding: 6px auto }");
 
 	bouquets_tree->setHeaderHidden(true);
 	bouquets_tree->setUniformRowHeights(true);
@@ -130,6 +131,26 @@ void gui::tab(QWidget& ttab)
 
 	list_tree->setHeaderItem(lheader_item);
 	list_tree->setColumnHidden(0, true);
+	int col = 1;
+	list_tree->setColumnWidth(col++, 75);		// Index
+	list_tree->setColumnWidth(col++, 200);		// Name
+	if (DEBUG) {
+		list_tree->setColumnWidth(col++, 175);	// CHID
+		list_tree->setColumnWidth(col++, 150);	// TXID
+	}
+	else
+	{
+		col -= 2;
+	}
+	list_tree->setColumnWidth(col++, 85);		// Type
+	list_tree->setColumnWidth(col++, 150);		// Provider
+	list_tree->setColumnWidth(col++, 95);		// Frequency
+	list_tree->setColumnWidth(col++, 85);		// Polarization
+	list_tree->setColumnWidth(col++, 95);		// Symbol Rate
+	list_tree->setColumnWidth(col++, 50);		// FEC
+	list_tree->setColumnWidth(col++, 85);		// SAT
+	list_tree->setColumnWidth(col++, 75);		// System
+
 	this->lheaderv = list_tree->header();
 	lheaderv->connect(lheaderv, &::QHeaderView::sectionClicked, [=](int column) { this->trickySortByColumn(column); });
 	
@@ -187,7 +208,7 @@ void gui::newFile()
 //TODO remove filename from args
 bool gui::load(string filename)
 {
-	debug("gui", "load()", filename);
+	debug("gui", "load()", "filename", filename);
 
 	string dirname;
 
@@ -284,24 +305,26 @@ void gui::populate()
 		cur_bouquet = qcur_bouquet.toStdString();
 	}
 
-	debug("gui", "populate()", cur_bouquet);
-
-	string cur_chlist = "all";
-	vector<pair<int, string>> cur_chdata;
-
-	if (cur_bouquet != "" && cur_bouquet != "all")
-		cur_chlist = cur_bouquet;
-	cur_chdata = temp_index[cur_chlist]; //TODO reference
+	debug("gui", "populate()", "cur_bouquet", cur_bouquet);
 
 	lheaderv->setSortIndicatorShown(true);
 	lheaderv->setSectionsClickable(false);
 	list_tree->scrollToItem(list_tree->topLevelItem(0));
 	list_tree->clear();
 
+	string cur_chlist = "all";
+	vector<pair<int, string>> cur_chdata;
+	int i = 0;
+
+	if (cur_bouquet != "" && cur_bouquet != "all")
+		cur_chlist = cur_bouquet;
+	cur_chdata = temp_index[cur_chlist]; //TODO reference
+
 	for (auto & ch : cur_chdata)
 	{
 		char ci[6];
-		sprintf(ci, "%05d", ch.first);
+		sprintf(ci, "%05d", i++);
+		QString x = QString::fromStdString(ci);
 
 		//TODO ? transponder.ttype
 		if (temp_channels.count(ch.second))
@@ -309,7 +332,6 @@ void gui::populate()
 			e2db_parser::service cdata = temp_channels[ch.second];
 			auto txdata = temp_transponders[cdata.txid];
 
-			QString i = QString::fromStdString(ci);
 			QString idx = QString::fromStdString(to_string(ch.first));
 			QString chname = QString::fromStdString(cdata.chname);
 			QString chid = QString::fromStdString(ch.second);
@@ -324,8 +346,8 @@ void gui::populate()
 			QString sys = QString::fromStdString(SAT_SYS[txdata.sys]);
 
 			QTreeWidgetItem* item; // Qt5
-			if (DEBUG) item = new QTreeWidgetItem({i, idx, chname, chid, txid, stype, pname, freq, pol, sr, fec, pos, sys});
-			else item = new QTreeWidgetItem({i, idx, chname, stype, pname, freq, pol, sr, fec, pos, sys});
+			if (DEBUG) item = new QTreeWidgetItem({x, idx, chname, chid, txid, stype, pname, freq, pol, sr, fec, pos, sys});
+			else item = new QTreeWidgetItem({x, idx, chname, stype, pname, freq, pol, sr, fec, pos, sys});
 
 			list_tree->addTopLevelItem(item);
 		}
@@ -334,25 +356,39 @@ void gui::populate()
 		{
 			e2db_parser::reference cref = temp_bouquets.second[cur_bouquet].channels[ch.second];
 
-			QString i = QString::fromStdString(ci);
 			QString chid = QString::fromStdString(cref.chid);
 			QString refval = QString::fromStdString(cref.refval);
 
-			QTreeWidgetItem* item = new QTreeWidgetItem({i, "", refval, chid, "", "MARKER"});
+			QTreeWidgetItem* item = new QTreeWidgetItem({x, "", refval, chid, "", "MARKER"});
 			list_tree->addTopLevelItem(item);
 		}
 	}
 
+	if (_state_sort.first)
+	{
+		list_tree->sortByColumn(_state_sort.first, _state_sort.second);
+		if (_state_sort.first == 0) lheaderv->setSortIndicator(1, _state_sort.second); //TODO FIX Index sort
+	}
 	lheaderv->setSectionsClickable(true);
 }
 
 void gui::trickySortByColumn(int column)
 {
-	cout << column << endl;
+	debug("gui", "trickySortByColumn()", "column", to_string(column));
 
 	Qt::SortOrder order = lheaderv->sortIndicatorOrder();
-	if (column == 1) list_tree->sortByColumn(0, Qt::DescendingOrder);
-	else list_tree->sortItems(column, order);
+	column = column == 1 ? 0 : column;
+
+	if (column)
+	{
+		list_tree->sortItems(column, order);
+	}
+	else
+	{
+		list_tree->sortByColumn(column, order);
+		lheaderv->setSortIndicator(1, order);
+	}
+	_state_sort = pair (column, order);
 }
 
 //TEST

@@ -27,7 +27,7 @@ class gui
 		void newFile();
 		bool load(string filename = "");
 		void populate();
-        void trickySortByColumn(int column);
+		void trickySortByColumn(int column);
 		void loadSeeds();
 	private:
 		e2db_parser* temp_parser;
@@ -38,5 +38,6 @@ class gui
 		QTreeWidget* bouquets_tree;
 		QTreeWidget* list_tree;
         QHeaderView* lheaderv;
+		pair<int, Qt::SortOrder> _state_sort;
 };
 #endif

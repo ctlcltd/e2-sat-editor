@@ -58,6 +58,7 @@ class e2db_parser
 			int rol;
 			int pil;
 		};
+		//TODO reference "reserved
 		struct reference
 		{
 			string chid;
