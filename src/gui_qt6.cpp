@@ -7,6 +7,7 @@
  */
 
 #include <iostream>
+#include <filesystem>
 #include <algorithm>
 #include <string>
 #include <vector>
@@ -394,11 +395,10 @@ void tab::loadSeeds()
 
 	cwd = cwd.substr(0, cwd.length() - 4); // rstrip /src
 
-	// qmake in Qt5 wants std::filesystem instead of filesystem
 	if (cwd != "")
 	{
-		std::filesystem::path path = cwd + "/seeds./enigma_db";
-		load(std::filesystem::absolute(path));
+		filesystem::path path = cwd + "/seeds./enigma_db";
+		load(filesystem::absolute(path));
 	}
 }
 //TEST
