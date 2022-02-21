@@ -113,26 +113,20 @@ class e2db_parser : public e2db_abstract
 
 class e2db_maker : public e2db_abstract
 {
-	void make_lamedb();
-	void make_lamedb4();
-	void make_lamedb5();
-	void make_bouquet();
-	void make_userbouquet();
-	void write_e2db();
 	public:
-		e2db_maker()
-		{
-			debug("e2db_maker");
-		}
+		e2db_maker();
+		void make_lamedb();
+		void make_lamedb4();
+		void make_lamedb5();
+		void make_bouquet();
+		void make_userbouquet();
+		void write_e2db();
 };
 
 class e2db : e2db_parser
 {
-	void merge();
 	public:
-		e2db()
-		{
-			debug("e2db");
-		}
+		e2db();
+		void merge();
 };
 #endif /* e2db_h */

@@ -11,7 +11,7 @@
 
 int main(int argc, char* argv[])
 {
-	(new gui())->root(argc, argv);
+	new e2se_gui::gui(argc, argv);
 
 	return 0;
 }

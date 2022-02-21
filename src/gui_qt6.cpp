@@ -14,12 +14,18 @@
 #include <Qt>
 #include <QApplication>
 #include <QWidget>
+#include <QProxyStyle>
 #include <QScreen>
+#include <QStatusBar>
 #include <QGridLayout>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QGroupBox>
 #include <QHeaderView>
 #include <QTreeWidget>
 #include <QToolBar>
+#include <QPushButton>
+#include <QLabel>
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QString>
@@ -30,6 +36,8 @@
 
 using namespace std;
 
+namespace e2se_gui
+{
 
 void todo()
 {
@@ -40,18 +48,18 @@ void todo()
 }
 
 
-class gui
+class tab
 {
 	public:
-		void root(int argc, char* argv[]);
-		void main(QWidget& mwid);
-		void tab(QWidget& ttab);
+		tab(QWidget* wid);
 		void newFile();
 		bool load(string filename = "");
 		void populate();
 		void trickySortByColumn(int column);
 		void loadSeeds();
+		QWidget* widget;
 	private:
+		QWidget* cwid;
 		e2db_parser* temp_parser;
 		map<string, e2db_parser::transponder> temp_transponders;
 		map<string, e2db_parser::service> temp_channels;
@@ -63,42 +71,14 @@ class gui
 		pair<int, Qt::SortOrder> _state_sort;
 };
 
-void gui::root(int argc, char* argv[])
+tab::tab(QWidget* wid)
 {
-	debug("gui", "root() qt6");
+	debug("tab()");
 
-	QApplication mroot = QApplication(argc, argv);
+	this->cwid = wid;
+	QWidget* widget = new QWidget;
 
-	QScreen* screen = mroot.primaryScreen();
-	QSize wsize = screen->availableSize();
-
-	QWidget mwid = QWidget();
-	mwid.setWindowTitle("enigma2 channel editor");
-	mwid.resize(wsize);
-
-	mroot.setStyleSheet("QGroupBox { spacing: 0; padding: 20px 0 0 0; border: 0 } QGroupBox::title { margin: 0 12px }");
-
-	main(mwid);
-
-	mwid.show();
-
-	debug("\t", "mroot.exec()");
-
-	mroot.exec();
-}
-
-void gui::main(QWidget& mwid)
-{
-	debug("gui", "main()");
-
-	tab(mwid);
-}
-
-void gui::tab(QWidget& ttab)
-{
-	debug("gui", "tab()");
-
-	QGridLayout* frm = new QGridLayout(&ttab);
+	QGridLayout* frm = new QGridLayout(widget);
 
 	QHBoxLayout* top = new QHBoxLayout;
 	QGridLayout* container = new QGridLayout;
@@ -155,19 +135,19 @@ void gui::tab(QWidget& ttab)
 	lheaderv->connect(lheaderv, &::QHeaderView::sectionClicked, [=](int column) { this->trickySortByColumn(column); });
 	
 	QToolBar* top_toolbar = new QToolBar();
-	top_toolbar->setStyleSheet("QToolButton { font: 20px }");
+	top_toolbar->setStyleSheet("QToolBar { padding: 0 12px } QToolButton { font: 20px }");
 
 	QToolBar* bottom_toolbar = new QToolBar;
-	bottom_toolbar->setStyleSheet("QToolButton { font: bold 16px }");
+	bottom_toolbar->setStyleSheet("QToolBar { padding: 8px 12px } QToolButton { font: bold 16px }");
 
-	top_toolbar->addAction("New", [=]() { this->newFile(); });
 	top_toolbar->addAction("Open", [=]() { this->load(); });
 	top_toolbar->addAction("Save", todo);
-	top_toolbar->addAction("Import", todo);
-	top_toolbar->addAction("Export", todo);
 
 	if (DEBUG_TOOLBAR)
+	{
 		bottom_toolbar->addAction("§ Load seeds", [=]() { this->loadSeeds(); });
+		bottom_toolbar->addAction("§ Reset", [=]() { this->newFile(); });
+	}
 
 	bouquets_tree->connect(bouquets_tree, &QTreeWidget::itemSelectionChanged, [=]() { this->populate(); });
 
@@ -183,17 +163,21 @@ void gui::tab(QWidget& ttab)
 	bouquets->setFlat(true);
 	channels->setFlat(true);
 
+	container->setContentsMargins(8, 8, 8, 8);
 	container->setColumnStretch(0, 0);
 	container->setColumnStretch(1, 1);
 
+	frm->setContentsMargins(0, 0, 0, 0);
 	frm->addLayout(top, 0, 0);
 	frm->addLayout(container, 1, 0);
 	frm->addLayout(bottom, 2, 0);
+
+	this->widget = widget;
 }
 
-void gui::newFile()
+void tab::newFile()
 {
-	debug("gui", "newFile()");
+	debug("tab", "newFile()");
 	
 	this->temp_parser = new e2db_parser;
 
@@ -206,9 +190,9 @@ void gui::newFile()
 }
 
 //TODO remove filename from args
-bool gui::load(string filename)
+bool tab::load(string filename)
 {
-	debug("gui", "load()", "filename", filename);
+	debug("tab", "load()", "filename", filename);
 
 	string dirname;
 
@@ -258,7 +242,7 @@ bool gui::load(string filename)
 	//TODO order A-Z & parent
 	for (auto & gboq : temp_bouquets.first)
 	{
-		debug("gui", "load()", "bouquet", gboq.first);
+		debug("tab", "load()", "bouquet", gboq.first);
 
 		QString bgroup = QString::fromStdString(gboq.first);
 		QString bcname = QString::fromStdString(gboq.second.nname.size() ? gboq.second.nname : gboq.second.name);
@@ -276,7 +260,7 @@ bool gui::load(string filename)
 	}
 	for (auto & uboq : temp_bouquets.second)
 	{
-		debug("gui", "load()", "userbouquet", uboq.first);
+		debug("tab", "load()", "userbouquet", uboq.first);
 
 		QString bgroup = QString::fromStdString(uboq.first);
 		QTreeWidgetItem* pgroup = bgroups[uboq.first];
@@ -293,7 +277,7 @@ bool gui::load(string filename)
 	return true;
 }
 
-void gui::populate()
+void tab::populate()
 {
 	QTreeWidgetItem* selected = bouquets_tree->currentItem();
 	string cur_bouquet = "";
@@ -305,7 +289,7 @@ void gui::populate()
 		cur_bouquet = qcur_bouquet.toStdString();
 	}
 
-	debug("gui", "populate()", "cur_bouquet", cur_bouquet);
+	debug("tab", "populate()", "cur_bouquet", cur_bouquet);
 
 	lheaderv->setSortIndicatorShown(true);
 	lheaderv->setSectionsClickable(false);
@@ -372,9 +356,9 @@ void gui::populate()
 	lheaderv->setSectionsClickable(true);
 }
 
-void gui::trickySortByColumn(int column)
+void tab::trickySortByColumn(int column)
 {
-	debug("gui", "trickySortByColumn()", "column", to_string(column));
+	debug("tab", "trickySortByColumn()", "column", to_string(column));
 
 	Qt::SortOrder order = lheaderv->sortIndicatorOrder();
 	column = column == 1 ? 0 : column;
@@ -392,7 +376,7 @@ void gui::trickySortByColumn(int column)
 }
 
 //TEST
-void gui::loadSeeds()
+void tab::loadSeeds()
 {
 	string cwd;
 
@@ -417,3 +401,150 @@ void gui::loadSeeds()
 	}
 }
 //TEST
+
+
+
+class guiProxyStyle : public QProxyStyle
+{
+  public:
+	int styleHint(StyleHint hint, const QStyleOption *option = 0, const QWidget *widget = 0, QStyleHintReturn *returnData = 0) const override
+	{
+		if (hint == QStyle::SH_TabBar_CloseButtonPosition)
+			return QTabBar::RightSide;
+		return QProxyStyle::styleHint(hint, option, widget, returnData);
+	}
+};
+
+
+
+class gui
+{
+	public:
+		gui(int argc, char* argv[]);
+		void root();
+		void tabCtl();
+		void statusCtl();
+		void newTab();
+		void closeTab(int index);
+		void tabChanged(int index);
+	private:
+		QApplication* mroot;
+		QWidget* mwid;
+		QGridLayout* mfrm;
+		QHBoxLayout* mcnt;
+		QHBoxLayout* mstatusb;
+		QStatusBar* sbwid;
+		QTabWidget* twid;
+};
+
+gui::gui(int argc, char* argv[])
+{
+	debug("gui", "qt6");
+
+	this->mroot = new QApplication(argc, argv);
+	mroot->setStyle(new guiProxyStyle);
+
+	QScreen* screen = mroot->primaryScreen();
+	QSize wsize = screen->availableSize();
+
+	this->mwid = new QWidget;
+	mwid->setWindowTitle("enigma2 channel editor");
+	mwid->resize(wsize);
+
+	mroot->setStyleSheet("QGroupBox { spacing: 0; padding: 20px 0 0 0; border: 0 } QGroupBox::title { margin: 0 12px }");
+
+	root();
+
+	mwid->show();
+
+	mroot->exec();
+}
+
+void gui::root()
+{
+	debug("gui", "root()");
+
+	this->mfrm = new QGridLayout(mwid);
+
+	this->mcnt = new QHBoxLayout;
+	this->mstatusb = new QHBoxLayout;
+
+	mfrm->setContentsMargins(0, 0, 0, 0);
+	mfrm->setSpacing(0);
+
+	mfrm->addLayout(mcnt, 0, 0);
+	mfrm->addLayout(mstatusb, 1, 0);
+
+	statusCtl();
+	tabCtl();
+}
+
+//TODO FIX EXC_BAD_ACCESS
+void gui::tabCtl()
+{
+	debug("gui", "tabCtl()");
+
+	this->twid = new QTabWidget(mwid);
+	twid->setTabsClosable(true);
+	twid->setMovable(true);
+	twid->setStyleSheet("QTabWidget::tab-bar { left: 0px } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { height: 32px; padding: 5px; background: palette(mid); border: 1px solid transparent; border-radius: 0 } QTabBar::tab:selected { background: palette(highlight) } QTabWidget::tab QLabel { margin-left: 5px }");
+	twid->connect(twid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
+	twid->connect(twid, &QTabWidget::tabCloseRequested, [=] (int index) { this->closeTab(index); });
+
+	QPushButton* ttbnew = new QPushButton();
+	ttbnew->setText("+ New Tab");
+//	ttbnew->setFlat(true);
+	ttbnew->setStyleSheet("width: 8ex; height: 32px"); //TODO FIX height & ::left-corner padding
+	ttbnew->setMinimumHeight(32);
+	ttbnew->connect(ttbnew, &QPushButton::pressed, [=]() { this->newTab(); });
+	twid->setCornerWidget(ttbnew, Qt::TopLeftCorner);
+
+	newTab();
+
+	mcnt->addWidget(twid);
+}
+
+void gui::statusCtl()
+{
+	debug("gui", "statusCtl()");
+
+	this->sbwid = new QStatusBar(mwid);
+
+	mstatusb->addWidget(sbwid);
+}
+
+void gui::newTab()
+{
+	tab* ttab = new tab(mwid);
+	int ttcount = twid->count();
+	QString ttname = QString::fromStdString("Untitled" + (ttcount ? " " + to_string(ttcount++) : ""));
+	int index = twid->addTab(ttab->widget, ttname);
+	QTabBar* ttabbar = twid->tabBar();
+	QLabel* ttlabel = new QLabel;
+	ttlabel->setText(ttname);
+	ttabbar->setTabButton(index, QTabBar::LeftSide, ttlabel);
+	ttabbar->setTabText(index, "");
+	twid->setCurrentIndex(index);
+
+	debug("gui", "newTab()", "index", to_string(index));
+}
+
+void gui::closeTab(int index)
+{
+	debug("gui", "closeTab()", "index", to_string(index));
+
+	//TODO destruct
+	twid->removeTab(index);
+
+	if (twid->count() == 0) newTab();
+}
+
+void gui::tabChanged(int index)
+{
+	debug("gui", "tabChanged()", "index", to_string(index));
+
+	QString msg = QString::fromStdString("Current tab index: " + to_string(index));
+	sbwid->showMessage(msg);
+}
+
+}
