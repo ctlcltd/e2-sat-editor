@@ -24,7 +24,7 @@
 using namespace std;
 
 
-class e2db_parser
+struct e2db_abstract
 {
 	public:
 		struct service
@@ -85,26 +85,8 @@ class e2db_parser
 			map<string, transponder> transponders;
 			map<string, service> services;
 		};
-		void parse_e2db();
-		void parse_e2db_lamedb(ifstream& flamedb);
-		void parse_e2db_lamedb4(ifstream& flamedb);
-		void parse_e2db_bouquet(ifstream& fbouquet, string bname);
-		void parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, string pname);
-		map<string, transponder> get_transponders();
-		map<string, service> get_channels();
-		pair<map<string, bouquet>, map<string, userbouquet>> get_bouquets();
-		bool get_e2db_localdir(string localdir); //TODO rename no getter
-		bool load(string localdir); //TODO rename
-		void debugger();
 		map<string, vector<pair<int, string>>> index;
-		e2db_parser()
-		{
-			lamedb db;
-			map<string, bouquet> bouquets;
-			map<string, userbouquet> userbouquets;
-		}
-	private:
-		string localdir;
+	protected:
 		unordered_map<string, string> e2db;
 		lamedb db;
 		map<string, bouquet> bouquets;
@@ -112,7 +94,30 @@ class e2db_parser
 };
 
 
-
+class e2db_parser : public e2db_abstract
+{
+	public:
+		void parse_e2db();
+		void parse_e2db_lamedb(ifstream& flamedb);
+		void parse_e2db_lamedb4(ifstream& flamedb);
+		void parse_e2db_lamedb5(ifstream& flamedb);
+		void parse_e2db_bouquet(ifstream& fbouquet, string bname);
+		void parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, string pname);
+		map<string, transponder> get_transponders();
+		map<string, service> get_channels();
+		pair<map<string, bouquet>, map<string, userbouquet>> get_bouquets();
+		bool read_localdir(string localdir);
+		bool read(string localdir);
+		void debugger();
+		e2db_parser()
+		{
+			lamedb db;
+			map<string, bouquet> bouquets;
+			map<string, userbouquet> userbouquets;
+		}
+	protected:
+		string localdir;
+};
 
 void e2db_parser::parse_e2db()
 {
@@ -153,15 +158,11 @@ void e2db_parser::parse_e2db_lamedb(ifstream& flamedb)
 
 	debug("e2db_parser", "lamedb", "File header", hlamedb, "\t");
 
-	switch (dbver) {
-		case 4:
-			parse_e2db_lamedb4(flamedb);
-		break;
-		case 5: //TODO ver. 5
-			error("e2db_parser", "lamedb", "Notice", "Not supported, ver. 5 is not currently supported.", "\t");
-		break;
-		default:
-			error("e2db_parser", "lamedb", "Error", "Unknown database format.", "\t");
+	switch (dbver)
+	{
+		case 4: parse_e2db_lamedb4(flamedb); break;
+		case 5: parse_e2db_lamedb5(flamedb); break;
+		default: error("e2db_parser", "lamedb", "Error", "Unknown database format.", "\t");
 	}
 }
 
@@ -344,6 +345,12 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 			}
 		}
 	}
+}
+
+//TODO lamedb ver. 5
+void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
+{
+	error("e2db_parser", "parse_e2db_lamedb5()", "Notice", "Not supported, ver. 5 is not currently supported.", "\t");
 }
 
 void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
@@ -554,36 +561,6 @@ void e2db_parser::debugger()
 	}
 }
 
-// C++17
-bool e2db_parser::get_e2db_localdir(string localdir)
-{
-	debug("e2db_parser", "get_e2db_localdir()", "localdir", localdir);
-
-	if (! filesystem::exists(localdir))
-	{
-		error("e2db_parser", "get_e2db_localdir()", "Error", "File not exists: \"" + localdir + "\".", "\t");
-		return false;
-	}
-
-	filesystem::directory_iterator dirlist(localdir);
-
-	for (const auto & entry : dirlist)
-	{
-		//TODO is file & permissions check ...
-		string path = entry.path();
-		string filename = filesystem::path(path).filename();
-		e2db[filename] = path;
-	}
-	if (e2db.count("lamedb") < 1)
-	{
-		error("e2db_parser", "get_e2db_localdir()", "Error", "lamedb not found.", "\t");
-		return false;
-	}
-	this->localdir = localdir;
-
-	return true;
-}
-
 map<string, e2db_parser::transponder> e2db_parser::get_transponders()
 {
 	debug("e2db_parser", "get_transponders()");
@@ -602,14 +579,73 @@ pair<map<string, e2db_parser::bouquet>, map<string, e2db_parser::userbouquet>> e
 	return pair (bouquets, userbouquets);
 }
 
-bool e2db_parser::load(string localdir)
+// C++17
+bool e2db_parser::read_localdir(string localdir)
 {
-	debug("e2db_parser", "load()", "localdir", localdir);
+	debug("e2db_parser", "read_localdir()", "localdir", localdir);
 
-	if (get_e2db_localdir(localdir))
+	if (! filesystem::exists(localdir))
+	{
+		error("e2db_parser", "read_localdir()", "Error", "File not exists: \"" + localdir + "\".", "\t");
+		return false;
+	}
+
+	filesystem::directory_iterator dirlist(localdir);
+
+	for (const auto & entry : dirlist)
+	{
+		//TODO is file & permissions check ...
+		string path = entry.path();
+		string filename = filesystem::path(path).filename();
+		e2db[filename] = path;
+	}
+	if (e2db.count("lamedb") < 1)
+	{
+		error("e2db_parser", "read_localdir()", "Error", "lamedb not found.", "\t");
+		return false;
+	}
+	this->localdir = localdir;
+
+	return true;
+}
+
+bool e2db_parser::read(string localdir)
+{
+	debug("e2db_parser", "read()", "localdir", localdir);
+
+	if (read_localdir(localdir))
 		parse_e2db();
 	else
 		return false;
 
 	return true;
 }
+
+
+
+class e2db_maker : public e2db_abstract
+{
+	void make_lamedb();
+	void make_lamedb4();
+	void make_lamedb5();
+	void make_bouquet();
+	void make_userbouquet();
+	void write_e2db();
+	public:
+		e2db_maker()
+		{
+			debug("e2db_maker");
+		}
+};
+
+
+
+class e2db : e2db_parser
+{
+	void merge();
+	public:
+		e2db()
+		{
+			debug("e2db");
+		}
+};

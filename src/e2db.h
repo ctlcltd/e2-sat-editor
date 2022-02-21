@@ -17,7 +17,7 @@ using namespace std;
 
 #ifndef e2db_h
 #define e2db_h
-class e2db_parser
+struct e2db_abstract
 {
 	public:
 		struct service
@@ -51,6 +51,7 @@ class e2db_parser
 			int rol;
 			int pil;
 		};
+		//TODO reference "reserved
 		struct reference
 		{
 			string chid;
@@ -77,29 +78,61 @@ class e2db_parser
 			map<string, transponder> transponders;
 			map<string, service> services;
 		};
+		map<string, vector<pair<int, string>>> index;
+	protected:
+		unordered_map<string, string> e2db;
+		lamedb db;
+		map<string, bouquet> bouquets;
+		map<string, userbouquet> userbouquets;
+};
+
+class e2db_parser : public e2db_abstract
+{
+	public:
 		void parse_e2db();
 		void parse_e2db_lamedb(ifstream& flamedb);
 		void parse_e2db_lamedb4(ifstream& flamedb);
+		void parse_e2db_lamedb5(ifstream& flamedb);
 		void parse_e2db_bouquet(ifstream& fbouquet, string bname);
 		void parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, string pname);
 		map<string, transponder> get_transponders();
 		map<string, service> get_channels();
 		pair<map<string, bouquet>, map<string, userbouquet>> get_bouquets();
-		bool get_e2db_localdir(string localdir); //TODO rename no getter
-		bool load(string localdir); //TODO rename
+		bool read_localdir(string localdir);
+		bool read(string localdir);
 		void debugger();
-		map<string, vector<pair<int, string>>> index;
 		e2db_parser()
 		{
 			lamedb db;
 			map<string, bouquet> bouquets;
 			map<string, userbouquet> userbouquets;
 		}
-	private:
+	protected:
 		string localdir;
-		unordered_map<string, string> e2db;
-		lamedb db;
-		map<string, bouquet> bouquets;
-		map<string, userbouquet> userbouquets;
+};
+
+class e2db_maker : public e2db_abstract
+{
+	void make_lamedb();
+	void make_lamedb4();
+	void make_lamedb5();
+	void make_bouquet();
+	void make_userbouquet();
+	void write_e2db();
+	public:
+		e2db_maker()
+		{
+			debug("e2db_maker");
+		}
+};
+
+class e2db : e2db_parser
+{
+	void merge();
+	public:
+		e2db()
+		{
+			debug("e2db");
+		}
 };
 #endif /* e2db_h */

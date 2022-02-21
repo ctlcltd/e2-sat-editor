@@ -226,7 +226,7 @@ bool gui::load(string filename)
 	if (dirname != "")
 	{
 		newFile();
-		if (temp_parser->load(dirname))
+		if (temp_parser->read(dirname))
 		{
 			if (DEBUG_E2DB)
 				temp_parser->debugger();
