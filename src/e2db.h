@@ -89,6 +89,7 @@ struct e2db_abstract
 class e2db_parser : public e2db_abstract
 {
 	public:
+		e2db_parser();
 		void parse_e2db();
 		void parse_e2db_lamedb(ifstream& flamedb);
 		void parse_e2db_lamedb4(ifstream& flamedb);
@@ -101,12 +102,6 @@ class e2db_parser : public e2db_abstract
 		bool read_localdir(string localdir);
 		bool read(string localdir);
 		void debugger();
-		e2db_parser()
-		{
-			lamedb db;
-			map<string, bouquet> bouquets;
-			map<string, userbouquet> userbouquets;
-		}
 	protected:
 		string localdir;
 };
@@ -123,7 +118,7 @@ class e2db_maker : public e2db_abstract
 		void write_e2db();
 };
 
-class e2db : e2db_parser
+class e2db : public e2db_parser
 {
 	public:
 		e2db();

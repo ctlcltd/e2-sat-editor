@@ -50,13 +50,13 @@ static void error(string ns, string cmsg = "", string optk = "", string optv = "
 //C++ 17
 inline string lowCase(string str)
 {
-	transform(str.begin(), str.end(), str.begin(), [](unsigned char c){ return tolower(c); });
+	transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return tolower(c); });
 	return str;
 }
 //C++ 17
 inline string upCase(string str)
 {
-	transform(str.begin(), str.end(), str.begin(), [](unsigned char c){ return toupper(c); });
+	transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return toupper(c); });
 	return str;
 }
 #endif /* commons_h */

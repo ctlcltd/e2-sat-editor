@@ -7,7 +7,7 @@
  */
 
 #include <iostream>
-#include "gui_qt6.h"
+#include "gui/gui.h"
 
 int main(int argc, char* argv[])
 {
