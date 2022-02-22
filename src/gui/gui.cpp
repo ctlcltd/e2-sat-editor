@@ -17,6 +17,7 @@
 #include <QWidget>
 #include <QProxyStyle>
 #include <QScreen>
+#include <QMenuBar>
 #include <QStatusBar>
 #include <QGridLayout>
 #include <QHBoxLayout>
@@ -27,6 +28,7 @@
 #include <QTreeWidget>
 #include <QTabWidget>
 #include <QToolBar>
+#include <QAction>
 #include <QPushButton>
 #include <QLabel>
 #include <QFileDialog>
@@ -35,6 +37,7 @@
 #include "gui.h"
 #include "tab.h"
 #include "settings.h"
+#include "about.h"
 #include "todo.h"
 
 using namespace std;
@@ -92,8 +95,56 @@ void gui::root()
 	mfrm->addLayout(mcnt, 0, 0);
 	mfrm->addLayout(mstatusb, 1, 0);
 
+	menuCtl();
 	statusCtl();
 	tabCtl();
+}
+
+void gui::menuCtl()
+{
+	debug("gui", "menuCtl()");
+
+	QMenuBar* menu = new QMenuBar(nullptr);
+	menu->setNativeMenuBar(true);
+
+	QMenu* mfile = menu->addMenu("File");
+	mfile->addAction("New", [=]() { this->newTab(""); });
+	mfile->addAction("Open", [=]() { this->open(); });
+	mfile->addAction("Save", todo);
+	mfile->addSeparator();
+	mfile->addAction("Import", todo);
+	mfile->addAction("Export", todo);
+	mfile->addSeparator();
+	mfile->addAction("Close Tab", [=]() { this->closeTab(-1); });
+	mfile->addAction("Close All Tabs", [=]() { this->closeAllTabs(); });
+	mfile->addSeparator();
+	mfile->addAction("Settings", [=]() { this->settings(); });
+	mfile->addAction("About", [=]() { this->about(); });
+	mfile->addSeparator();
+	mfile->addAction("Quit", [=]() { this->mroot->quit(); });
+
+	QMenu* medit = menu->addMenu("Edit");
+	medit->addAction("TODO", todo);
+
+	QMenu* mwind = menu->addMenu("Window");
+	mwind->addAction("Minimize", [=]() { this->mwid->showMinimized(); });
+	mwind->addSeparator();
+
+	QMenu* mhelp = menu->addMenu("Help");
+	mhelp->addAction("TODO", todo);
+	mhelp->addAction("About", [=]() { this->about(); })->setMenuRole(QAction::NoRole);
+
+	this->menu = menu;
+	this->mwind = mwind;
+}
+
+void gui::statusCtl()
+{
+	debug("gui", "statusCtl()");
+
+	this->sbwid = new QStatusBar(mwid);
+
+	mstatusb->addWidget(sbwid);
 }
 
 //TODO FIX EXC_BAD_ACCESS
@@ -121,15 +172,6 @@ void gui::tabCtl()
 	mcnt->addWidget(twid);
 }
 
-void gui::statusCtl()
-{
-	debug("gui", "statusCtl()");
-
-	this->sbwid = new QStatusBar(mwid);
-
-	mstatusb->addWidget(sbwid);
-}
-
 int gui::newTab(string filename = "")
 {
 	tab* ttab = new tab(this, mwid, filename);
@@ -154,6 +196,7 @@ int gui::newTab(string filename = "")
 
 	ttab->setIndex(index);
 	twid->setCurrentIndex(index);
+//	mwind->addAction(tname, [=]() { this->twid->setCurrentIndex(index); });
 
 	debug("gui", "newTab()", "index", to_string(index));
 
@@ -164,9 +207,20 @@ void gui::closeTab(int index)
 {
 	debug("gui", "closeTab()", "index", to_string(index));
 
+	if (index == -1)
+		index = twid->currentIndex();
+
 	//TODO destruct
 	twid->removeTab(index);
+	if (twid->count() == 0) newTab();
+}
 
+void gui::closeAllTabs()
+{
+	debug("gui", "closeAllTabs()");
+
+	//TODO destruct
+	twid->clear();
 	if (twid->count() == 0) newTab();
 }
 
@@ -225,6 +279,11 @@ void gui::tabChangeName(int index, string filename)
 void gui::settings()
 {
 	settingsDialog(mwid);
+}
+
+void gui::about()
+{
+	aboutDialog(mwid);
 }
 
 }

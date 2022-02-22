@@ -10,6 +10,7 @@
 #include <string>
 #include <QApplication>
 #include <QWidget>
+#include <QMenuBar>
 #include <QStatusBar>
 #include <QGridLayout>
 #include <QHBoxLayout>
@@ -28,15 +29,18 @@ class gui
 	public:
 		gui(int argc, char* argv[]);
 		void root();
+		void menuCtl();
 		void tabCtl();
 		void statusCtl();
 		int newTab(string filename);
 		void closeTab(int index);
+		void closeAllTabs();
 		void tabChanged(int index);
 		void open();
 		string openFileDialog();
 		void tabChangeName(int index, string filename);
 		void settings();
+		void about();
 	private:
 		QApplication* mroot;
 		QWidget* mwid;
@@ -45,6 +49,8 @@ class gui
 		QHBoxLayout* mstatusb;
 		QStatusBar* sbwid;
 		QTabWidget* twid;
+		QMenuBar* menu;
+		QMenu* mwind;
 };
 }
 #define gui_h

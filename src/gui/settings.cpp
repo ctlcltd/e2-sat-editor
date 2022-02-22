@@ -18,7 +18,6 @@
 #include <QTabWidget>
 #include "../commons.h"
 #include "settings.h"
-#include "todo.h"
 
 using namespace std;
 
@@ -26,21 +25,21 @@ namespace e2se_gui
 {
 void settingsDialog(QWidget* mwid)
 {
-	debug("gui", "settings()");
+	debug("gui", "settingsDialog()");
 
 	QDialog* dial = new QDialog(mwid);
 	dial->setWindowTitle("Settings");
 	dial->setMinimumSize(530, 420);
 
 	QGridLayout* dfrm = new QGridLayout(dial);
-	QVBoxLayout* dvbox = new QVBoxLayout;
 	QHBoxLayout* dhbox = new QHBoxLayout;
+	QVBoxLayout* dvbox = new QVBoxLayout;
 	QTabWidget* dtwid = new QTabWidget;
 
 	QPushButton* dtsave = new QPushButton;
 	dtsave->setDefault(true);
 	dtsave->setText("Save Settings");
-	dtsave->connect(dtsave, &QPushButton::pressed, todo);
+	dtsave->connect(dtsave, &QPushButton::pressed, [=]() { dial->close(); });
 	QPushButton* dtcancel = new QPushButton;
 	dtcancel->setDefault(false);
 	dtcancel->setText("Cancel");

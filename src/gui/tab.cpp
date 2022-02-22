@@ -106,8 +106,10 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 
 	top_toolbar->addAction("Open", [=]() { this->open(); });
 	top_toolbar->addAction("Save", todo);
+	top_toolbar->addSeparator();
 	top_toolbar->addAction("Import", todo);
 	top_toolbar->addAction("Export", todo);
+	top_toolbar->addSeparator();
 	top_toolbar->addAction("Settings", [=]() { gid->settings(); });
 
 	if (DEBUG_TOOLBAR)
@@ -159,6 +161,9 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	frm->addLayout(bottom, 2, 0);
 
 	this->widget = widget;
+
+	if (filename != "")
+		load(filename);
 }
 
 void tab::newFile()
