@@ -24,18 +24,46 @@ using namespace std;
 #define gui_qt6_h
 namespace e2se_gui
 {
+class gui
+{
+	public:
+		gui(int argc, char* argv[]);
+		void root();
+		void tabCtl();
+		void statusCtl();
+		int newTab();
+		void closeTab(int index);
+		void tabChanged(int index);
+		void open();
+		string openFileDialog();
+		void tabChangeName(int index, string filename);
+		void settings();
+	private:
+		QApplication* mroot;
+		QWidget* mwid;
+		QVBoxLayout* mfrm;
+		QHBoxLayout* mcnt;
+		QHBoxLayout* mstatusb;
+		QStatusBar* sbwid;
+		QTabWidget* twid;
+};
+
 class tab
 {
 	public:
-		tab(QWidget* wid);
+		tab(gui* gid, QWidget* wid, string filename);
 		void newFile();
+		void open();
 		bool load(string filename = "");
 		void populate();
 		void trickySortByColumn(int column);
+		void setIndex(int index);
 		void loadSeeds();
 		QWidget* widget;
 	private:
+		gui* gidd;
 		QWidget* cwid;
+		int tid;
 		e2db_parser* temp_parser;
 		map<string, e2db_parser::transponder> temp_transponders;
 		map<string, e2db_parser::service> temp_channels;
@@ -45,26 +73,6 @@ class tab
 		QTreeWidget* list_tree;
         QHeaderView* lheaderv;
 		pair<int, Qt::SortOrder> _state_sort;
-};
-
-class gui
-{
-	public:
-		gui(int argc, char* argv[]);
-		void root();
-		void tabCtl();
-		void statusCtl();
-		void newTab();
-		void closeTab(int index);
-		void tabChanged(int index);
-	private:
-		QApplication* mroot;
-		QWidget* mwid;
-		QVBoxLayout* mfrm;
-		QHBoxLayout* mcnt;
-		QHBoxLayout* mstatusb;
-		QStatusBar* sbwid;
-		QTabWidget* twid;
 };
 }
 #endif

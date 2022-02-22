@@ -21,14 +21,16 @@
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QSplitter>
 #include <QGroupBox>
 #include <QHeaderView>
 #include <QTreeWidget>
 #include <QToolBar>
 #include <QPushButton>
 #include <QLabel>
-#include <QMessageBox>
+#include <QDialog>
 #include <QFileDialog>
+#include <QMessageBox>
 #include <QString>
 #include <cstdio>
 #include <stdlib.h>
@@ -49,18 +51,47 @@ void todo()
 }
 
 
+class gui
+{
+	public:
+		gui(int argc, char* argv[]);
+		void root();
+		void tabCtl();
+		void statusCtl();
+		int newTab(string filename);
+		void closeTab(int index);
+		void tabChanged(int index);
+		void open();
+		string openFileDialog();
+		void tabChangeName(int index, string filename);
+		void settings();
+	private:
+		QApplication* mroot;
+		QWidget* mwid;
+		QGridLayout* mfrm;
+		QHBoxLayout* mcnt;
+		QHBoxLayout* mstatusb;
+		QStatusBar* sbwid;
+		QTabWidget* twid;
+};
+
+
 class tab
 {
 	public:
-		tab(QWidget* wid);
+		tab(gui* gid, QWidget* wid, string filename);
 		void newFile();
+		void open();
 		bool load(string filename = "");
 		void populate();
 		void trickySortByColumn(int column);
+		void setIndex(int index);
 		void loadSeeds();
 		QWidget* widget;
 	private:
+		gui* gid;
 		QWidget* cwid;
+		int tid;
 		e2db_parser* temp_parser;
 		map<string, e2db_parser::transponder> temp_transponders;
 		map<string, e2db_parser::service> temp_channels;
@@ -72,10 +103,11 @@ class tab
 		pair<int, Qt::SortOrder> _state_sort;
 };
 
-tab::tab(QWidget* wid)
+tab::tab(gui* gid, QWidget* wid, string filename = "")
 {
 	debug("tab()");
 
+	this->gid = gid;
 	this->cwid = wid;
 	QWidget* widget = new QWidget;
 
@@ -85,26 +117,22 @@ tab::tab(QWidget* wid)
 	QGridLayout* container = new QGridLayout;
 	QHBoxLayout* bottom = new QHBoxLayout;
 
-	QGroupBox* bouquets = new QGroupBox("Bouquets");
-	QGroupBox* channels = new QGroupBox("Channels");
+	QSplitter* splitterc = new QSplitter;
 
 	QVBoxLayout* bouquets_box = new QVBoxLayout;
 	QVBoxLayout* list_box = new QVBoxLayout;
 
-	container->addWidget(bouquets, 1, 0);
-	container->addWidget(channels, 1, 1);
+	QGroupBox* bouquets = new QGroupBox("Bouquets");
+	QGroupBox* channels = new QGroupBox("Channels");
 
 	this->bouquets_tree = new QTreeWidget;
 	this->list_tree = new QTreeWidget;
 	bouquets_tree->setStyleSheet("QTreeWidget { background: transparent } ::item { padding: 6px auto }");
-	list_tree->setStyleSheet("::item { padding: 6px auto }");
+	list_tree->setStyleSheet("QTreeWidget { border: 3px solid red } ::item { padding: 6px auto }");
 
 	bouquets_tree->setHeaderHidden(true);
 	bouquets_tree->setUniformRowHeights(true);
 	list_tree->setUniformRowHeights(true);
-//	QTreeWidgetItem* bheader_item = bouquets_tree->headerItem();
-//	bheader_item->setText(0, "Bouquets");
-//	bheader_item->setSizeHint(0, QSize(0, 0));
 
 	QTreeWidgetItem* lheader_item; // Qt5
 	if (DEBUG) lheader_item = new QTreeWidgetItem({"", "Index", "Name", "CHID", "TXID", "Type", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"});
@@ -135,38 +163,60 @@ tab::tab(QWidget* wid)
 	this->lheaderv = list_tree->header();
 	lheaderv->connect(lheaderv, &::QHeaderView::sectionClicked, [=](int column) { this->trickySortByColumn(column); });
 	
-	QToolBar* top_toolbar = new QToolBar();
+	QToolBar* top_toolbar = new QToolBar;
 	top_toolbar->setStyleSheet("QToolBar { padding: 0 12px } QToolButton { font: 20px }");
 
 	QToolBar* bottom_toolbar = new QToolBar;
 	bottom_toolbar->setStyleSheet("QToolBar { padding: 8px 12px } QToolButton { font: bold 16px }");
 
-	top_toolbar->addAction("Open", [=]() { this->load(); });
+	top_toolbar->addAction("Open", [=]() { this->open(); });
 	top_toolbar->addAction("Save", todo);
+	top_toolbar->addAction("Import", todo);
+	top_toolbar->addAction("Export", todo);
+	top_toolbar->addAction("Settings", [=]() { gid->settings(); });
 
 	if (DEBUG_TOOLBAR)
 	{
 		bottom_toolbar->addAction("§ Load seeds", [=]() { this->loadSeeds(); });
-		bottom_toolbar->addAction("§ Reset", [=]() { this->newFile(); });
+		bottom_toolbar->addAction("§ Reset", [=]() { this->newFile(); gid->tabChangeName(tid, ""); });
 	}
+
+	QToolBar* bouquets_ats = new QToolBar;
+	QToolBar* list_ats = new QToolBar;
+
+	QLabel* list_ats_dndstatus = new QLabel;
+	list_ats_dndstatus->setText("• Drag&Drop actived");
+	QWidget* list_ats_spacer = new QWidget;
+	list_ats_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	
+	bouquets_ats->addAction("+ New Bouquet", todo);
+	list_ats->addAction("+ Add Channel", todo);
+	list_ats->addWidget(list_ats_spacer);
+	list_ats->addWidget(list_ats_dndstatus);
 
 	bouquets_tree->connect(bouquets_tree, &QTreeWidget::itemSelectionChanged, [=]() { this->populate(); });
 
 	top->addWidget(top_toolbar);
 	bottom->addWidget(bottom_toolbar);
 
+	bouquets_box->addWidget(bouquets_ats);
 	bouquets_box->addWidget(bouquets_tree);
 	bouquets->setLayout(bouquets_box);
 
 	list_box->addWidget(list_tree);
+	list_box->addWidget(list_ats);
 	channels->setLayout(list_box);
 
 	bouquets->setFlat(true);
 	channels->setFlat(true);
 
+	splitterc->addWidget(bouquets);
+	splitterc->addWidget(channels);
+	splitterc->setStretchFactor(0, 1.5);
+	splitterc->setStretchFactor(1, 4.5);
+
+	container->addWidget(splitterc, 0, 0, 1, 1);
 	container->setContentsMargins(8, 8, 8, 8);
-	container->setColumnStretch(0, 0);
-	container->setColumnStretch(1, 1);
 
 	frm->setContentsMargins(0, 0, 0, 0);
 	frm->addLayout(top, 0, 0);
@@ -190,6 +240,19 @@ void tab::newFile()
 	list_tree->clear();
 }
 
+void tab::open()
+{
+	debug("tab", "open()");
+
+	string dirname = gid->openFileDialog();
+
+	if (dirname != "")
+	{
+		load(dirname);
+		gid->tabChangeName(tid, dirname);
+	}
+}
+
 //TODO remove filename from args
 bool tab::load(string filename)
 {
@@ -198,15 +261,7 @@ bool tab::load(string filename)
 	string dirname;
 
 	if (filename != "")
-	{
 		dirname = filename;
-	}
-	else
-	{
-		//TODO ~ $HOME
-		QString qdirname = QFileDialog::getExistingDirectory(nullptr, "Select enigma2 db folder", "~", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-		dirname = qdirname.toStdString();
-	}
 
 	if (dirname != "")
 	{
@@ -376,6 +431,13 @@ void tab::trickySortByColumn(int column)
 	_state_sort = pair (column, order);
 }
 
+void tab::setIndex(int index)
+{
+	debug("tab", "setIndex()", "index", to_string(index));
+
+	tid = index;
+}
+
 //TEST
 void tab::loadSeeds()
 {
@@ -416,28 +478,6 @@ class guiProxyStyle : public QProxyStyle
 	}
 };
 
-
-
-class gui
-{
-	public:
-		gui(int argc, char* argv[]);
-		void root();
-		void tabCtl();
-		void statusCtl();
-		void newTab();
-		void closeTab(int index);
-		void tabChanged(int index);
-	private:
-		QApplication* mroot;
-		QWidget* mwid;
-		QGridLayout* mfrm;
-		QHBoxLayout* mcnt;
-		QHBoxLayout* mstatusb;
-		QStatusBar* sbwid;
-		QTabWidget* twid;
-};
-
 gui::gui(int argc, char* argv[])
 {
 	debug("gui", "qt6");
@@ -450,6 +490,7 @@ gui::gui(int argc, char* argv[])
 
 	this->mwid = new QWidget;
 	mwid->setWindowTitle("enigma2 channel editor");
+	mwid->setMinimumSize(680, 510);
 	mwid->resize(wsize);
 
 	mroot->setStyleSheet("QGroupBox { spacing: 0; padding: 20px 0 0 0; border: 0 } QGroupBox::title { margin: 0 12px }");
@@ -497,10 +538,10 @@ void gui::tabCtl()
 //	ttbnew->setFlat(true);
 	ttbnew->setStyleSheet("width: 8ex; height: 32px"); //TODO FIX height & ::left-corner padding
 	ttbnew->setMinimumHeight(32);
-	ttbnew->connect(ttbnew, &QPushButton::pressed, [=]() { this->newTab(); });
+	ttbnew->connect(ttbnew, &QPushButton::pressed, [=]() { this->newTab(""); });
 	twid->setCornerWidget(ttbnew, Qt::TopLeftCorner);
 
-	newTab();
+	newTab("");
 
 	mcnt->addWidget(twid);
 }
@@ -514,20 +555,34 @@ void gui::statusCtl()
 	mstatusb->addWidget(sbwid);
 }
 
-void gui::newTab()
+int gui::newTab(string filename = "")
 {
-	tab* ttab = new tab(mwid);
+	tab* ttab = new tab(this, mwid, filename);
+
 	int ttcount = twid->count();
-	QString ttname = QString::fromStdString("Untitled" + (ttcount ? " " + to_string(ttcount++) : ""));
+	string tname;
+
+	if (filename != "")
+		tname = filesystem::path(filename).filename();
+	else
+		tname = "Untitled" + (ttcount ? " " + to_string(ttcount++) : "");
+
+	QString ttname = QString::fromStdString(tname);
+
 	int index = twid->addTab(ttab->widget, ttname);
+
 	QTabBar* ttabbar = twid->tabBar();
 	QLabel* ttlabel = new QLabel;
 	ttlabel->setText(ttname);
 	ttabbar->setTabButton(index, QTabBar::LeftSide, ttlabel);
 	ttabbar->setTabText(index, "");
+
+	ttab->setIndex(index);
 	twid->setCurrentIndex(index);
 
 	debug("gui", "newTab()", "index", to_string(index));
+
+	return index;
 }
 
 void gui::closeTab(int index)
@@ -546,6 +601,100 @@ void gui::tabChanged(int index)
 
 	QString msg = QString::fromStdString("Current tab index: " + to_string(index));
 	sbwid->showMessage(msg);
+}
+
+void gui::open()
+{
+	debug("gui", "open()");
+
+	string dirname = openFileDialog();
+
+	if (dirname != "")
+		newTab(dirname);
+}
+
+string gui::openFileDialog()
+{
+	debug("gui", "openFileDialog()");
+	
+	string dirname;
+
+	//TODO ~ $HOME
+	QString qdirname = QFileDialog::getExistingDirectory(nullptr, "Select enigma2 db folder", "~", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+	dirname = qdirname.toStdString();
+
+	return dirname;
+}
+
+//TODO FIX index changes on move
+void gui::tabChangeName(int index, string filename)
+{
+	debug("gui", "tabChangeName()", "index", to_string(index));
+
+	string tname;
+
+	if (filename != "")
+		tname = filesystem::path(filename).filename();
+	else
+		tname = "Untitled" + (index ? " " + to_string(index) : "");
+
+	QString ttname = QString::fromStdString(tname);
+
+	//TODO accessing nested QLabel
+	QTabBar* ttabbar = twid->tabBar();
+	QLabel* ttlabel = new QLabel;
+	ttlabel->setText(ttname);
+	ttabbar->setTabButton(index, QTabBar::LeftSide, ttlabel);
+}
+
+void gui::settings()
+{
+	debug("gui", "settings()");
+
+	QDialog* dial = new QDialog;
+	dial->setWindowTitle("Settings");
+	dial->setMinimumSize(530, 420);
+
+	QGridLayout* dfrm = new QGridLayout(dial);
+	QVBoxLayout* dvbox = new QVBoxLayout;
+	QHBoxLayout* dhbox = new QHBoxLayout;
+	QTabWidget* dtwid = new QTabWidget;
+
+	QPushButton* dtsave = new QPushButton;
+	dtsave->setDefault(true);
+	dtsave->setText("Save");
+	dtsave->connect(dtsave, &QPushButton::pressed, todo);
+	QPushButton* dtcancel = new QPushButton;
+	dtcancel->setDefault(false);
+	dtcancel->setText("Cancel");
+	dtcancel->connect(dtcancel, &QPushButton::pressed, [=]() { dial->close(); });
+
+	QLabel* ttodo0 = new QLabel;
+	ttodo0->setText("General TODO");
+	ttodo0->setAlignment(Qt::AlignCenter);
+	QLabel* ttodo1 = new QLabel;
+	ttodo1->setText("Connections TODO");
+	ttodo1->setAlignment(Qt::AlignCenter);
+	QLabel* ttodo2 = new QLabel;
+	ttodo2->setText("App TODO");
+	ttodo2->setAlignment(Qt::AlignCenter);
+
+	dtwid->addTab(ttodo0, "General");
+	dtwid->addTab(ttodo1, "Connections");
+	dtwid->addTab(ttodo2, "TODO");
+
+	dfrm->setColumnStretch(0, 1);
+	dfrm->setRowStretch(0, 1);
+	dhbox->setAlignment(Qt::AlignRight);
+
+	dvbox->addWidget(dtwid);
+	dhbox->addWidget(dtcancel);
+	dhbox->addWidget(dtsave);
+	dvbox->addLayout(dhbox);
+
+	dfrm->addLayout(dvbox, 0, 0);
+	dial->setLayout(dfrm);
+	dial->exec();
 }
 
 }
