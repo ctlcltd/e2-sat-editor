@@ -105,7 +105,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	bottom_toolbar->setStyleSheet("QToolBar { padding: 8px 12px } QToolButton { font: bold 16px }");
 
 	top_toolbar->addAction("Open", [=]() { this->open(); });
-	top_toolbar->addAction("Save", todo);
+	top_toolbar->addAction("Save", [=]() { this->save(); });
 	top_toolbar->addSeparator();
 	top_toolbar->addAction("Import", todo);
 	top_toolbar->addAction("Export", todo);
@@ -376,6 +376,19 @@ void tab::setIndex(int index)
 	debug("tab", "setIndex()", "index", to_string(index));
 
 	tid = index;
+}
+
+void tab::save()
+{
+	debug("tab", "save()");
+
+	todoMsg("TEST\n\nFiles will be saved in this folder:\n/usr/local/var/tmp/e2-sat-editor");
+	e2db_maker* temp_maker = new e2db_maker;
+	temp_maker->set_transponders(temp_transponders);
+	temp_maker->set_channels(temp_channels);
+	temp_maker->set_bouquets(temp_bouquets);
+	temp_maker->tester(); //TODO TEST
+	todoMsg("Saved.");
 }
 
 //TEST

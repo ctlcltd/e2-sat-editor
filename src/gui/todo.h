@@ -7,6 +7,7 @@
  */
 
 #include <iostream>
+#include <string>
 #include <QMessageBox>
 
 using namespace std;
@@ -21,6 +22,12 @@ static void todo()
 	cout << "app TODO" << endl;
 	QMessageBox dial = QMessageBox();
 	dial.setText("app TODO");
+	dial.exec();
+}
+static void todoMsg(string msg)
+{
+	QMessageBox dial = QMessageBox();
+	dial.setText(QString::fromStdString(msg));
 	dial.exec();
 }
 }

@@ -538,8 +538,195 @@ bool e2db_parser::read(string localdir)
 e2db_maker::e2db_maker()
 {
 	debug("e2db_maker");
+
+	time_t curr_tst = time(0);
+	tm* _out_tst = localtime(&curr_tst);
+	this->_out_tst = _out_tst;
+
+	lamedb db;
+	map<string, bouquet> bouquets;
+	map<string, userbouquet> userbouquets;
 }
 
+void e2db_maker::make_lamedb()
+{
+	debug("e2db_maker", "make_lamedb()");
+
+	make_lamedb4();
+}
+
+void e2db_maker::make_lamedb4()
+{
+	debug("e2db_maker", "make_lamedb4()");
+
+	stringstream ss;
+
+	ss << "eDVB services /4/" << endl;
+
+	ss << "transponders" << endl;
+	for (auto & x: db.transponders)
+	{
+		string dvbns = x.second.dvbns;
+		string tsid = lowCase(x.second.tsid);
+		string onid = lowCase(x.second.onid);
+		dvbns.insert(dvbns.begin(), 8 - dvbns.length(), '0');
+		tsid.insert(tsid.begin(), 4 - tsid.length(), '0');
+		onid.insert(onid.begin(), 4 - onid.length(), '0');
+
+		ss << dvbns;
+		ss << ':' << tsid;
+		ss << ':' << onid;
+		ss << endl;
+		ss << '\t' << x.second.ttype;
+		ss << ' ' << to_string(int (stoi(x.second.freq) * 1e3));
+		ss << ':' << to_string(int (stoi(x.second.sr) * 1e3));
+		ss << ':' << x.second.pol;
+		ss << ':' << x.second.fec;
+		ss << ':' << x.second.pos; //TODO satellites.xml
+		ss << ':' << x.second.inv;
+		if (x.second.flgs != "")
+			ss << ':' << x.second.flgs;
+		if (x.second.sys)
+			ss << ':' << x.second.sys;
+		if (x.second.mod)
+			ss << ':' << x.second.mod;
+		if (x.second.rol) // DVB-S2 only
+			ss << ':' << x.second.rol;
+		if (x.second.pil) // DVB-S2 only
+			ss << ':' << x.second.pil;
+		ss << endl << '/' << endl;
+	}
+	ss << "end" << endl;
+
+	ss << "services" << endl;
+	for (auto & x: db.services)
+	{
+		ss << lowCase(x.second.ssid);
+		ss << ':' << x.second.dvbns;
+		ss << ':' << lowCase(x.second.tsid);
+		ss << ':' << lowCase(x.second.onid);
+		ss << ':' << x.second.stype;
+		ss << ':' << x.second.snum;
+		ss << endl << x.second.chname << endl;
+		for (auto & q: x.second.data)
+		{
+			ss << q.first << ":";
+			for (string & w: q.second)
+				ss << w << ",";
+		}
+		ss << endl;
+	}
+	ss << "end" << endl;
+
+	ss << "editor: e2-sat-editor 0.1 <https://github.com/ctlcltd/e2-sat-editor>" << endl;
+	ss << "datetime: " << asctime(_out_tst);
+	e2db_out["lamedb"] = ss.str();
+}
+
+void e2db_maker::make_bouquets()
+{
+	debug("e2db_maker", "make_bouquets()");
+
+	for (auto & x: bouquets)
+		make_bouquet(x.first);
+}
+
+void e2db_maker::make_userbouquets()
+{
+	debug("e2db_maker", "make_userbouquets()");
+
+	for (auto & x: userbouquets)
+		make_userbouquet(x.first);
+}
+
+void e2db_maker::make_bouquet(string bname)
+{
+	debug("e2db_maker", "make_bouquet()", "bname", bname);
+
+	bouquet bs = bouquets[bname];
+	stringstream ss;
+
+	ss << "#NAME " << bs.nname << endl;
+	for (auto & w: bs.userbouquets)
+	{
+		ss << "#SERVICE ";
+		ss << "1:7:0:0:0:0:0:0:0:0:"; //TODO 1:7:1: tv, 1:7:2: radio, ...
+		ss << "FROM BOUQUET ";
+		ss << "\"" << w << "\" ";
+		ss << "ORDER BY bouquet";
+		ss << endl;
+	}
+	ss << endl;
+	e2db_out[bname] = ss.str();
+}
+
+void e2db_maker::make_userbouquet(string bname)
+{
+	debug("e2db_maker", "make_userbouquet()", "bname", bname);
+
+	userbouquet ub = userbouquets[bname];
+	stringstream ss;
+
+	ss << "#NAME " << ub.name << endl;
+	for (auto & q: ub.channels)
+	{
+		ss << "#SERVICE " << q.first << endl; //TODO ("global markers index)
+	}
+	ss << endl;
+	e2db_out[bname] = ss.str();
+}
+
+//TEST
+void e2db_maker::write_e2db()
+{
+	debug("e2db_maker", "write_e2db()");
+
+	string basedir = "/usr/local/var/tmp/e2-sat-editor";
+
+	filesystem::create_directory(basedir);
+
+	if (! filesystem::is_directory(basedir))
+		error("e2db_maker", "write_e2db()", "Error", "Directory: \"/usr/local/var/tmp/e2-sat-editor\" not exists.");
+
+	for (auto & o: e2db_out)
+	{
+		string localfile = basedir + '/' + o.first;
+
+		ofstream out(localfile);
+		out << o.second;
+		out.close();
+	}
+}
+//TEST
+
+void e2db_maker::set_transponders(map<string, e2db_parser::transponder> transponders)
+{
+	debug("e2db_maker", "set_transponders()");
+	db.transponders = transponders;
+}
+
+void e2db_maker::set_channels(map<string, e2db_parser::service> services)
+{
+	debug("e2db_maker", "set_channels()");
+	db.services = services;
+}
+
+void e2db_maker::set_bouquets(pair<map<string, e2db_parser::bouquet>, map<string, e2db_parser::userbouquet>> bouquets)
+{
+	debug("e2db_maker", "set_bouquets()");
+	this->bouquets = bouquets.first;
+	this->userbouquets = bouquets.second;
+}
+
+void e2db_maker::tester()
+{
+	debug("e2db_maker", "tester()");
+
+	make_lamedb();
+	make_bouquets();
+	make_userbouquets();
+	write_e2db();
+}
 
 
 e2db::e2db()

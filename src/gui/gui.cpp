@@ -276,6 +276,11 @@ void gui::tabChangeName(int index, string filename)
 	ttabbar->setTabButton(index, QTabBar::LeftSide, ttlabel);
 }
 
+void gui::save()
+{
+	debug("gui", "save()");
+}
+
 void gui::settings()
 {
 	settingsDialog(mwid);

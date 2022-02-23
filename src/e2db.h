@@ -8,10 +8,12 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <vector>
 #include <map>
 #include <unordered_map>
+#include <ctime>
 
 using namespace std;
 
@@ -113,9 +115,18 @@ class e2db_maker : public e2db_abstract
 		void make_lamedb();
 		void make_lamedb4();
 		void make_lamedb5();
-		void make_bouquet();
-		void make_userbouquet();
+		void make_bouquets();
+		void make_userbouquets();
+		void make_bouquet(string bname);
+		void make_userbouquet(string bname);
 		void write_e2db();
+		void set_transponders(map<string, transponder> transponders);
+		void set_channels(map<string, service> services);
+		void set_bouquets(pair<map<string, bouquet>, map<string, userbouquet>> bouquets);
+		void tester();
+	private:
+		unordered_map<string, string> e2db_out;
+		tm* _out_tst;
 };
 
 class e2db : public e2db_parser

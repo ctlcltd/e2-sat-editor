@@ -35,6 +35,7 @@ class tab
 		void populate();
 		void trickySortByColumn(int column);
 		void setIndex(int index);
+		void save();
 		void loadSeeds();
 		QWidget* widget;
 	private:
