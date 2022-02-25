@@ -30,10 +30,11 @@ struct e2db_abstract
 			string onid;
 			int stype;
 			int snum;
+			int srcid;
 			int index;
 			string txid;
 			string chname;
-			unordered_map<char, vector<string>> data;
+			map<char, vector<string>> data;
 		};
 		struct transponder
 		{

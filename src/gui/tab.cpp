@@ -162,7 +162,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 
 	this->widget = widget;
 
-	if (filename != "")
+	if (! filename.empty())
 		load(filename);
 }
 
@@ -186,7 +186,7 @@ void tab::open()
 
 	string dirname = gid->openFileDialog();
 
-	if (dirname != "")
+	if (! dirname.empty())
 	{
 		load(dirname);
 		gid->tabChangeName(tid, dirname);
@@ -200,10 +200,14 @@ bool tab::load(string filename)
 
 	string dirname;
 
-	if (filename != "")
+	if (! filename.empty())
 		dirname = filename;
 
-	if (dirname != "")
+	if (dirname.empty())
+	{
+		return false;
+	}
+	else
 	{
 		newFile();
 		if (temp_parser->read(dirname))
@@ -219,10 +223,6 @@ bool tab::load(string filename)
 		{
 			return false;
 		}
-	}
-	else
-	{
-		return false;
 	}
 
 	QTreeWidgetItem* titem = new QTreeWidgetItem();
@@ -241,7 +241,7 @@ bool tab::load(string filename)
 		debug("tab", "load()", "bouquet", gboq.first);
 
 		QString bgroup = QString::fromStdString(gboq.first);
-		QString bcname = QString::fromStdString(gboq.second.nname.size() ? gboq.second.nname : gboq.second.name);
+		QString bcname = QString::fromStdString(gboq.second.nname.empty() ? gboq.second.name : gboq.second.nname);
 
 		QTreeWidgetItem* pgroup = new QTreeWidgetItem();
 		QMap<QString, QVariant> tdata;
@@ -296,7 +296,7 @@ void tab::populate()
 	vector<pair<int, string>> cur_chdata;
 	int i = 0;
 
-	if (cur_bouquet != "" && cur_bouquet != "chs")
+	if (! cur_bouquet.empty() && cur_bouquet != "chs")
 		cur_chlist = cur_bouquet;
 	cur_chdata = temp_index[cur_chlist]; //TODO reference
 
@@ -311,13 +311,14 @@ void tab::populate()
 		{
 			e2db_parser::service cdata = temp_channels[ch.second];
 			auto txdata = temp_transponders[cdata.txid];
+			if (txdata.ttype != 's') continue;
 
 			QString idx = QString::fromStdString(to_string(ch.first));
 			QString chname = QString::fromStdString(cdata.chname);
 			QString chid = QString::fromStdString(ch.second);
 			QString txid = QString::fromStdString(cdata.txid);
 			QString stype = STYPES.count(cdata.stype) ? QString::fromStdString(STYPES.at(cdata.stype)) : "Data";
-			QString pname = QString::fromStdString(cdata.data.at('p')[0]);
+			QString pname = QString::fromStdString(cdata.data.count(PVDR_DATA.at('p')) ? cdata.data[PVDR_DATA.at('p')][0] : "");
 			QString freq = QString::fromStdString(txdata.freq);
 			QString pol = QString::fromStdString(SAT_POL[txdata.pol]);
 			QString sr = QString::fromStdString(txdata.sr);

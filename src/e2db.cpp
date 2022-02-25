@@ -19,10 +19,13 @@
 #include <regex>
 #include <cstdio>
 #include <cstring>
+#include <ctime>
 #include "commons.h"
 #include "e2db.h"
 
 using namespace std;
+
+const string dbfilename = "lamedb";
 
 e2db_parser::e2db_parser()
 {
@@ -35,7 +38,7 @@ void e2db_parser::parse_e2db()
 {
 	debug("e2db_parser", "parse_e2db()");
 
-	ifstream flamedb(e2db["lamedb"]);
+	ifstream flamedb(e2db[dbfilename]);
 	parse_e2db_lamedb(flamedb);
 	flamedb.close();
 
@@ -111,6 +114,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 			continue;
 		}
 
+		// transponder
 		if (step == 1)
 		{
 			count += 1;
@@ -178,10 +182,10 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 						tx.pil = pil; // DVB-S2 only
 					break;
 					case 't': // DVB-T
-						debug("e2db_parser", "parse_e2db_lamedb4()", "txtyp", "'t'\tTODO");
+						debug("e2db_parser", "parse_e2db_lamedb4()", "txtype", "'t'\tTODO");
 					break;
 					case 'c': // DVB-C
-						debug("e2db_parser", "parse_e2db_lamedb4()", "txtyp", "'c'\tTODO");
+						debug("e2db_parser", "parse_e2db_lamedb4()", "txtype", "'c'\tTODO");
 					break;
 				}
 			}
@@ -194,6 +198,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				transponder tx;
 			}
 		}
+		// service
 		else if (step == 2)
 		{
 			count += 1;
@@ -234,24 +239,28 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 			{
 				ch.index = sidx;
 				ch.txid = txid;
-				ch.chname = line;
+				ch.chname = line; //TODO FIX "bad chars
 			}
 			else if (count == 3)
 			{
-				if (line.size())
-				{
-					stringstream datas(line);
-					string l;
-					unordered_map<char, vector<string>> data;
+				//TODO 256
+				// !p: provider
+				//  c: cache
+				//  C: ciad
+				//  f: flags
+				stringstream datas(line);
+				string l;
+				map<char, vector<string>> data;
 
-					while (getline(datas, l, ','))
-					{
-						char key = l.substr(0, 1)[0];
-						string value = l.substr(2);
-						data[key].push_back(value);
-					}
-					ch.data = data;
+				while (getline(datas, l, ','))
+				{
+					char d = l[0];
+					char key = PVDR_DATA.count(d) ? PVDR_DATA.at(d) : d;
+					string value = l.substr(2);
+					data[key].push_back(value);
 				}
+				ch.data = data;
+
 				if (db.services.count(chid))
 				{
 					int m;
@@ -259,7 +268,6 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 					if (ch.snum) m = ch.snum;
 					else m = collisions[kchid].size();
 					chid += ':' + to_string(m);
-					cout << chid << endl;
 					collisions[kchid].emplace_back(pair (chid, m));
 				}
 
@@ -273,10 +281,182 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 	}
 }
 
-//TODO lamedb ver. 5
+//TODO stype DVB-T & DVB-C
 void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 {
-	error("e2db_parser", "parse_e2db_lamedb5()", "Notice", "Not supported, ver. 5 is not currently supported.", "\t");
+	debug("e2db_parser", "parse_e2db_lamedb5()");
+
+	bool step;
+	int tidx = 0;
+	int sidx = 0;
+	string line;
+
+	while (getline(flamedb, line))
+	{
+		char type = line[0];
+		if (type == 't')
+			step = 1;
+		else if (type == 's')
+			step = 0;
+		else
+			continue;
+
+		size_t delimit = line.find(',');
+		string data = line.substr(2, delimit - 2);
+		string params = line.substr(delimit + 1);
+
+		// transponder
+		if (step)
+		{
+//			cout << data << " " << params << " " << type << endl;
+
+			transponder tx;
+			string txid = "";
+			tx.index = tidx;
+			tx.ttype = params[0];
+
+			int dvbns;
+			int tsid;
+			int onid;
+			dvbns = NULL;
+			tsid = NULL;
+			onid = NULL;
+
+			sscanf(data.c_str(), "%08x:%04x:%04x", &dvbns, &tsid, &onid);
+
+			tx.dvbns = to_string(dvbns);
+			tx.tsid = to_string(tsid);
+			tx.onid = to_string(onid);
+
+			switch (tx.ttype)
+			{
+				case 's':
+					int freq;
+					int sr;
+					int pol;
+					int fec;
+					int pos;
+					int inv;
+					int flgs;
+					int sys;
+					int mod;
+					int rol;
+					int pil;
+					flgs = NULL;
+					sys = NULL;
+					mod = NULL;
+					rol = NULL;
+					pil = NULL;
+
+					sscanf(params.substr(2).c_str(), "%8d:%8d:%1d:%1d:%3d:%1d:%1d:%1d:%1d:%1d:%1d", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil);
+
+					tx.freq = to_string(int (freq / 1e3));
+					tx.sr = to_string(int (sr / 1e3));
+					tx.pol = pol;
+					tx.fec = fec;
+					tx.pos = pos; //TODO satellites.xml
+					tx.inv = inv;
+					tx.flgs = to_string(flgs);
+					tx.sys = sys;
+					tx.mod = mod;
+					tx.rol = rol; // DVB-S2 only
+					tx.pil = pil; // DVB-S2 only
+					//TODO ,... other flags
+				break;
+				case 't': // DVB-T
+					debug("e2db_parser", "parse_e2db_lamedb5()", "txtype", "'t'\tTODO");
+				break;
+				case 'c': // DVB-C
+					debug("e2db_parser", "parse_e2db_lamedb5()", "txtype", "'c'\tTODO");
+				break;
+			}
+
+			txid = tx.tsid + ':' + tx.onid + ':' + tx.dvbns;
+			db.transponders.emplace(txid, tx);
+			index["txs"].emplace_back(pair (tidx, txid));
+			tidx += 1;
+		}
+		// service
+		else
+		{
+//			cout << data << " " << params << " " << type << endl;
+
+			service ch;
+			string chid = "";
+			string txid = "";
+			ch.index = sidx;
+
+			char ssid[5];
+			int dvbns;
+			int tsid;
+			int onid;
+			int stype;
+			int snum;
+			int srcid;
+			dvbns = NULL;
+			stype = NULL;
+			snum = NULL;
+			srcid = NULL;
+
+			sscanf(data.c_str(), "%4s:%08x:%04x:%04x:%3d:%4d:%d", ssid, &dvbns, &tsid, &onid, &stype, &snum, &srcid);
+
+			ch.tsid = to_string(tsid);
+			ch.onid = to_string(onid);
+			ch.dvbns = to_string(dvbns);
+			txid = ch.tsid + ':' + ch.onid + ':' + ch.dvbns;
+			ch.ssid = string (ssid);
+			ch.ssid.erase(0, ch.ssid.find_first_not_of('0'));
+			ch.dvbns.erase(0, ch.dvbns.find_first_not_of('0'));
+			ch.tsid.erase(0, ch.tsid.find_first_not_of('0'));
+			ch.onid.erase(0, ch.onid.find_first_not_of('0'));
+			ch.stype = stype;
+			ch.snum = snum;
+			ch.srcid = srcid;
+			chid = ch.ssid + ':' + ch.tsid + ':' + ch.onid + ':' + ch.dvbns;
+
+			size_t delimit = params.rfind('"');
+			string chname = params.substr(1, delimit - 1);
+			string chdata = params.rfind(',') != string::npos ? params.substr(delimit + 2) : "";
+
+			ch.txid = txid;
+			ch.chname = chname; //TODO FIX "bad chars
+
+			//TODO 256
+			// !p: provider
+			//  c: cache
+			//  C: ciad
+			//  f: flags
+			/*if (! chdata.empty())
+			{
+				stringstream datas(chdata);
+				string l;
+				map<char, vector<string>> data;
+
+				while (getline(datas, l, ','))
+				{
+					char d = l[0];
+					char key = PVDR_DATA.count(d) ? PVDR_DATA.at(d) : d;
+					string value = l.substr(2);
+					data[key].push_back(value);
+				}
+				ch.data = data;
+			}*/
+
+			if (db.services.count(chid))
+			{
+				int m;
+				string kchid = 's' + chid;
+				if (ch.snum) m = ch.snum;
+				else m = collisions[kchid].size();
+				chid += ':' + to_string(m);
+				collisions[kchid].emplace_back(pair (chid, m));
+			}
+
+			db.services.emplace(chid, ch);
+			index["chs"].emplace_back(pair (sidx, chid));
+			sidx += 1;
+		}
+	}
 }
 
 void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
@@ -449,6 +629,7 @@ void e2db_parser::debugger()
 	for (auto & x: db.services)
 	{
 		cout << "chid: " << x.first << endl;
+		cout << "txid: " << x.second.txid << endl;
 		cout << "ssid: " << x.second.ssid << endl;
 		cout << "dvbns: " << x.second.dvbns << endl;
 		cout << "tsid: " << x.second.tsid << endl;
@@ -533,7 +714,7 @@ bool e2db_parser::read_localdir(string localdir)
 		string filename = filesystem::path(path).filename();
 		e2db[filename] = path;
 	}
-	if (e2db.count("lamedb") < 1)
+	if (e2db.count(dbfilename) < 1)
 	{
 		error("e2db_parser", "read_localdir()", "Error", "lamedb not found.", "\t");
 		return false;
@@ -583,6 +764,10 @@ void e2db_maker::make_lamedb4()
 
 	stringstream ss;
 
+	//TODO
+	unordered_map<char, char> PVDR_DATA_DENUM;
+	for (auto & x: PVDR_DATA) PVDR_DATA_DENUM[x.second] = x.first;
+
 	ss << "eDVB services /4/" << endl;
 
 	ss << "transponders" << endl;
@@ -607,7 +792,7 @@ void e2db_maker::make_lamedb4()
 		ss << ':' << tx.fec;
 		ss << ':' << tx.pos; //TODO satellites.xml
 		ss << ':' << tx.inv;
-		if (tx.flgs != "")
+		if (! tx.flgs.empty())
 			ss << ':' << tx.flgs;
 		if (tx.sys)
 			ss << ':' << tx.sys;
@@ -640,12 +825,17 @@ void e2db_maker::make_lamedb4()
 		ss << ':' << ch.stype;
 		ss << ':' << ch.snum;
 		ss << endl << ch.chname << endl;
+		//TODO 256
+		auto last_key = (*prev(ch.data.cend()));
 		for (auto & q: ch.data)
 		{
-			ss << q.first << ':';
-			//TODO ,ending & order p|c|C|f|...
-			for (string & w: q.second)
-				ss << w << ',';
+			char d = PVDR_DATA_DENUM.count(q.first) ? PVDR_DATA_DENUM.at(q.first) : q.first;
+			for (unsigned int i = 0; i < q.second.size(); i++)
+			{
+				ss << d << ':' << q.second[i];
+				if (! q.second[i].empty() && (i != q.second.size() - 1 || q.first != last_key.first))
+					ss << ',';
+			}
 		}
 		ss << endl;
 	}

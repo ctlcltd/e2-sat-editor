@@ -88,16 +88,16 @@ void gui::root()
 
 	this->mcnt = new QHBoxLayout;
 	this->mstatusb = new QHBoxLayout;
+	
+	menuCtl();
+	statusCtl();
+	tabCtl();
 
 	mfrm->setContentsMargins(0, 0, 0, 0);
 	mfrm->setSpacing(0);
 
-	mfrm->addLayout(mcnt, 0, 0);
-	mfrm->addLayout(mstatusb, 1, 0);
-
-	menuCtl();
-	statusCtl();
-	tabCtl();
+	mfrm->addLayout(mcnt, 1, 0);
+	mfrm->addLayout(mstatusb, 2, 0);
 }
 
 void gui::menuCtl()
@@ -106,6 +106,13 @@ void gui::menuCtl()
 
 	QMenuBar* menu = new QMenuBar(nullptr);
 	menu->setNativeMenuBar(true);
+
+	QString osprod = QSysInfo::productType();
+	if (osprod != "macos" && osprod != "ubuntu")
+	{
+		menu->setParent(mwid);
+		mfrm->addWidget(menu);
+	}
 
 	QMenu* mfile = menu->addMenu("File");
 	mfile->addAction("New", [=]() { this->newTab(""); });
@@ -179,10 +186,10 @@ int gui::newTab(string filename = "")
 	int ttcount = twid->count();
 	string tname;
 
-	if (filename != "")
-		tname = filesystem::path(filename).filename();
-	else
+	if (filename.empty())
 		tname = "Untitled" + (ttcount ? " " + to_string(ttcount++) : "");
+	else
+		tname = filesystem::path(filename).filename();
 
 	QString ttname = QString::fromStdString(tname);
 
@@ -238,7 +245,7 @@ void gui::open()
 
 	string dirname = openFileDialog();
 
-	if (dirname != "")
+	if (! dirname.empty())
 		newTab(dirname);
 }
 
@@ -262,10 +269,10 @@ void gui::tabChangeName(int index, string filename)
 
 	string tname;
 
-	if (filename != "")
-		tname = filesystem::path(filename).filename();
-	else
+	if (filename.empty())
 		tname = "Untitled" + (index ? " " + to_string(index) : "");
+	else
+		tname = filesystem::path(filename).filename();
 
 	QString ttname = QString::fromStdString(tname);
 
