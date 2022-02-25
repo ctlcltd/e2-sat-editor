@@ -85,7 +85,8 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 
 	int step = 0;
 	int count = 0;
-	int idx = 0;
+	int tidx = 0;
+	int sidx = 0;
 	string line;
 	string txid = "";
 	string chid = "";
@@ -131,13 +132,15 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				tx.tsid.erase(0, tx.tsid.find_first_not_of('0'));
 				tx.onid = string (onid);
 				tx.onid.erase(0, tx.onid.find_first_not_of('0'));
-				txid = tx.tsid + ":" + tx.onid + ":" + tx.dvbns;
+				txid = tx.tsid + ':' + tx.onid + ':' + tx.dvbns;
+				tidx += 1;
 			}
 			else if (count == 2)
 			{
 				//  s 11219000:29900000:0:0:130:0:0
 				//  s 10949000:29900000:1:7:130:2:0:1:2:0:2
 
+				tx.index = tidx;
 				tx.ttype = line.substr(1, 2)[0];
 				string txdata = line.substr(3);
 
@@ -185,6 +188,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 			else if (count == 3)
 			{
 				db.transponders.emplace(txid, tx);
+				index["txs"].emplace_back(pair (tidx, txid));
 				count = 0;
 				txid = "";
 				transponder tx;
@@ -222,13 +226,13 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				ch.onid.erase(0, ch.onid.find_first_not_of('0'));
 				ch.stype = stype;
 				ch.snum = snum;
-				txid = ch.tsid + ":" + ch.onid + ":" + ch.dvbns;
-				chid = ch.ssid + ":" + ch.tsid + ":" + ch.onid + ":" + ch.dvbns;
-				idx += 1;
+				txid = ch.tsid + ':' + ch.onid + ':' + ch.dvbns;
+				chid = ch.ssid + ':' + ch.tsid + ':' + ch.onid + ':' + ch.dvbns;
+				sidx += 1;
 			}
 			else if (count == 2)
 			{
-				ch.index = idx;
+				ch.index = sidx;
 				ch.txid = txid;
 				ch.chname = line;
 			}
@@ -248,9 +252,19 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 					}
 					ch.data = data;
 				}
+				if (db.services.count(chid))
+				{
+					int m;
+					string kchid = 's' + chid;
+					if (ch.snum) m = ch.snum;
+					else m = collisions[kchid].size();
+					chid += ':' + to_string(m);
+					cout << chid << endl;
+					collisions[kchid].emplace_back(pair (chid, m));
+				}
 
 				db.services.emplace(chid, ch);
-				index["all"].emplace_back(pair (idx, chid));
+				index["chs"].emplace_back(pair (sidx, chid));
 				count = 0;
 				chid = "";
 				service ch;
@@ -293,8 +307,16 @@ void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 		else if (line.find("#NAME") != string::npos)
 		{
 			bs.name = line.substr(6);
-			if (bname.find(".tv") != string::npos) bs.nname = "TV";
-			else if (bname.find(".radio") != string::npos) bs.nname = "Radio";
+			if (bname.find(".tv") != string::npos)
+			{
+				bs.btype = 1;
+				bs.nname = "TV";
+			}
+			else if (bname.find(".radio") != string::npos)
+			{
+				bs.btype = 2;
+				bs.nname = "Radio";
+			}
 			bs.count = 1; //TODO FIX
 		}
 	}
@@ -338,15 +360,15 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 		{
 			// 1:0:2:32:2E18:B0:820000:0:0:0:
 			// 1:0:2:2CB:1B58:13E:820000:0:0:0:
-			// %d:%d:btype:ssid:tsid:onid:dvbns:?:?:?:
-			// %d:%d:btype:anum:0:0:0:?:?:?:
+			// i0:reftype:btype:ssid:tsid:onid:dvbns:?:?:?:
+			// i0:reftype:btype:anum:0:0:0:?:?:?:
 
 			line = line.substr(9);
 			bool sseq = false;
 			char cchid[24];
 			int i0, i1;
-			char btype[5];
-			char ssid[5]; //TODO check lpad '0'
+			char anum[5];
+			char ssid[5];
 			char tsid[5];
 			char onid[5];
 			int dvbns;
@@ -354,9 +376,8 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 			i1 = NULL;
 			dvbns = NULL;
 
-			//TODO upCase call impact
-			transform(line.begin(), line.end(), line.begin(), [](unsigned char c){ return c == ':' ? ' ' : toupper(c); });
-			sscanf(line.c_str(), "%d %d %4s %4s %4s %4s %8d", &i0, &i1, btype, ssid, tsid, onid, &dvbns);
+			transform(line.begin(), line.end(), line.begin(), [](unsigned char c){ return c == ':' ? ' ' : c; });
+			sscanf(upCase(line).c_str(), "%d %d %4s %4s %4s %4s %8d", &i0, &i1, anum, ssid, tsid, onid, &dvbns);
 
 			switch (i1) {
 				case 64:  // regular marker
@@ -364,7 +385,7 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 				case 512: // hidden marker
 				case 832: // hidden marker ? //TODO
 					sseq = false;
-					sprintf(cchid, "%d:%d:%s:%s", i0, i1, btype, ssid);
+					sprintf(cchid, "%d:%d:%s:%s", i0, i1, anum, ssid);
 				break;
 				case 128: // group //TODO
 				default:  // service
@@ -383,13 +404,13 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 
 			chid = string (cchid);
 			ref.chid = chid;
-			ref.reftype = i0;
+			ref.reftype = i1;
+			ref.refanum = anum;
 			ref.index = idx;
 
 			ub.channels[chid] = ref;
 			index[bname].emplace_back(pair (idx, chid));
 
-			//TODO convenient way
 			if (sseq)
 				index[pname].emplace_back(pair (bouquets[pname].count++, chid));
 
@@ -454,6 +475,7 @@ void e2db_parser::debugger()
 		cout << "filename: " << x.first << endl;
 		cout << "name: " << x.second.name << endl;
 		cout << "nname: " << x.second.nname << endl;
+		cout << "btype: " << x.second.btype << endl;
 		cout << "userbouquets: [";
 		for (auto & w: x.second.userbouquets)
 			cout << "\"" << w << "\",";
@@ -564,11 +586,12 @@ void e2db_maker::make_lamedb4()
 	ss << "eDVB services /4/" << endl;
 
 	ss << "transponders" << endl;
-	for (auto & x: db.transponders)
+	for (auto & x: index["txs"])
 	{
-		string dvbns = x.second.dvbns;
-		string tsid = lowCase(x.second.tsid);
-		string onid = lowCase(x.second.onid);
+		transponder tx = db.transponders[x.second];
+		string dvbns = tx.dvbns;
+		string tsid = lowCase(tx.tsid);
+		string onid = lowCase(tx.onid);
 		dvbns.insert(dvbns.begin(), 8 - dvbns.length(), '0');
 		tsid.insert(tsid.begin(), 4 - tsid.length(), '0');
 		onid.insert(onid.begin(), 4 - onid.length(), '0');
@@ -577,42 +600,52 @@ void e2db_maker::make_lamedb4()
 		ss << ':' << tsid;
 		ss << ':' << onid;
 		ss << endl;
-		ss << '\t' << x.second.ttype;
-		ss << ' ' << to_string(int (stoi(x.second.freq) * 1e3));
-		ss << ':' << to_string(int (stoi(x.second.sr) * 1e3));
-		ss << ':' << x.second.pol;
-		ss << ':' << x.second.fec;
-		ss << ':' << x.second.pos; //TODO satellites.xml
-		ss << ':' << x.second.inv;
-		if (x.second.flgs != "")
-			ss << ':' << x.second.flgs;
-		if (x.second.sys)
-			ss << ':' << x.second.sys;
-		if (x.second.mod)
-			ss << ':' << x.second.mod;
-		if (x.second.rol) // DVB-S2 only
-			ss << ':' << x.second.rol;
-		if (x.second.pil) // DVB-S2 only
-			ss << ':' << x.second.pil;
+		ss << '\t' << tx.ttype;
+		ss << ' ' << to_string(int (stoi(tx.freq) * 1e3));
+		ss << ':' << to_string(int (stoi(tx.sr) * 1e3));
+		ss << ':' << tx.pol;
+		ss << ':' << tx.fec;
+		ss << ':' << tx.pos; //TODO satellites.xml
+		ss << ':' << tx.inv;
+		if (tx.flgs != "")
+			ss << ':' << tx.flgs;
+		if (tx.sys)
+			ss << ':' << tx.sys;
+		if (tx.mod)
+			ss << ':' << tx.mod;
+		if (tx.rol) // DVB-S2 only
+			ss << ':' << tx.rol;
+		if (tx.pil) // DVB-S2 only
+			ss << ':' << tx.pil;
 		ss << endl << '/' << endl;
 	}
 	ss << "end" << endl;
 
 	ss << "services" << endl;
-	for (auto & x: db.services)
+	for (auto & x: index["chs"])
 	{
-		ss << lowCase(x.second.ssid);
-		ss << ':' << x.second.dvbns;
-		ss << ':' << lowCase(x.second.tsid);
-		ss << ':' << lowCase(x.second.onid);
-		ss << ':' << x.second.stype;
-		ss << ':' << x.second.snum;
-		ss << endl << x.second.chname << endl;
-		for (auto & q: x.second.data)
+		service ch = db.services[x.second];
+		string ssid = lowCase(ch.ssid);
+		string dvbns = ch.dvbns;
+		string tsid = lowCase(ch.tsid);
+		string onid = lowCase(ch.onid);
+		ssid.insert(ssid.begin(), 4 - ssid.length(), '0');
+		dvbns.insert(dvbns.begin(), 8 - dvbns.length(), '0');
+		tsid.insert(tsid.begin(), 4 - tsid.length(), '0');
+		onid.insert(onid.begin(), 4 - onid.length(), '0');
+		ss << ssid;
+		ss << ':' << dvbns;
+		ss << ':' << tsid;
+		ss << ':' << onid;
+		ss << ':' << ch.stype;
+		ss << ':' << ch.snum;
+		ss << endl << ch.chname << endl;
+		for (auto & q: ch.data)
 		{
-			ss << q.first << ":";
+			ss << q.first << ':';
+			//TODO ,ending & order p|c|C|f|...
 			for (string & w: q.second)
-				ss << w << ",";
+				ss << w << ',';
 		}
 		ss << endl;
 	}
@@ -646,11 +679,11 @@ void e2db_maker::make_bouquet(string bname)
 	bouquet bs = bouquets[bname];
 	stringstream ss;
 
-	ss << "#NAME " << bs.nname << endl;
+	ss << "#NAME " << bs.name << endl;
 	for (auto & w: bs.userbouquets)
 	{
 		ss << "#SERVICE ";
-		ss << "1:7:0:0:0:0:0:0:0:0:"; //TODO 1:7:1: tv, 1:7:2: radio, ...
+		ss << "1:7:" << bs.btype << ":0:0:0:0:0:0:0:";
 		ss << "FROM BOUQUET ";
 		ss << "\"" << w << "\" ";
 		ss << "ORDER BY bouquet";
@@ -668,11 +701,30 @@ void e2db_maker::make_userbouquet(string bname)
 	stringstream ss;
 
 	ss << "#NAME " << ub.name << endl;
-	for (auto & q: ub.channels)
+	for (auto & x: index[bname])
 	{
-		ss << "#SERVICE " << q.first << endl; //TODO ("global markers index)
+		e2db_parser::reference cref = userbouquets[bname].channels[x.second];
+		ss << "#SERVICE ";
+		ss << "1:";
+		ss << cref.reftype << ':';
+		ss << cref.refanum << ':'; //TODO ("global markers index)
+		
+		if (db.services.count(x.second))
+		{
+			e2db_parser::service cdata = db.services[x.second];
+			ss << cdata.ssid << ':';
+			ss << cdata.tsid << ':';
+			ss << cdata.onid << ':';
+			ss << cdata.dvbns << ':';
+			ss << "0:0:0:";
+		}
+		else
+		{
+			ss << "0:0:0:0:0:0:0:0:" << endl;
+			ss << "#DESCRIPTION " << cref.refval;
+		}
+		ss << endl;
 	}
-	ss << endl;
 	e2db_out[bname] = ss.str();
 }
 
@@ -698,6 +750,12 @@ void e2db_maker::write_e2db()
 	}
 }
 //TEST
+
+void e2db_maker::set_index(map<string, vector<pair<int, string>>> index)
+{
+	debug("e2db_maker", "set_index()");
+	this->index = index;
+}
 
 void e2db_maker::set_transponders(map<string, e2db_parser::transponder> transponders)
 {

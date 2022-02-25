@@ -52,13 +52,14 @@ struct e2db_abstract
 			int mod;
 			int rol;
 			int pil;
+			int index;
 		};
-		//TODO reference "reserved
 		struct reference
 		{
 			string chid;
 			int reftype;
 			string refval;
+			string refanum;
 			int index;
 		};
 		struct bouquet
@@ -66,6 +67,7 @@ struct e2db_abstract
 			string bname;
 			string name;
 			string nname;
+			int btype;
 			vector<string> userbouquets;
 			int count;
 		};
@@ -81,6 +83,7 @@ struct e2db_abstract
 			map<string, service> services;
 		};
 		map<string, vector<pair<int, string>>> index;
+		map<string, vector<pair<string, int>>> collisions;
 	protected:
 		unordered_map<string, string> e2db;
 		lamedb db;
@@ -120,6 +123,7 @@ class e2db_maker : public e2db_abstract
 		void make_bouquet(string bname);
 		void make_userbouquet(string bname);
 		void write_e2db();
+		void set_index(map<string, vector<pair<int, string>>> index);
 		void set_transponders(map<string, transponder> transponders);
 		void set_channels(map<string, service> services);
 		void set_bouquets(pair<map<string, bouquet>, map<string, userbouquet>> bouquets);

@@ -227,7 +227,7 @@ bool tab::load(string filename)
 
 	QTreeWidgetItem* titem = new QTreeWidgetItem();
 	QVariantMap tdata;
-	tdata["bouquet_id"] = "all";
+	tdata["bouquet_id"] = "chs";
 	titem->setData(0, Qt::UserRole, QVariant (tdata));
 	titem->setText(0, "All channels");
 
@@ -292,11 +292,11 @@ void tab::populate()
 	list_tree->scrollToItem(list_tree->topLevelItem(0));
 	list_tree->clear();
 
-	string cur_chlist = "all";
+	string cur_chlist = "chs";
 	vector<pair<int, string>> cur_chdata;
 	int i = 0;
 
-	if (cur_bouquet != "" && cur_bouquet != "all")
+	if (cur_bouquet != "" && cur_bouquet != "chs")
 		cur_chlist = cur_bouquet;
 	cur_chdata = temp_index[cur_chlist]; //TODO reference
 
@@ -384,6 +384,7 @@ void tab::save()
 
 	todoMsg("TEST\n\nFiles will be saved in this folder:\n/usr/local/var/tmp/e2-sat-editor");
 	e2db_maker* temp_maker = new e2db_maker;
+	temp_maker->set_index(temp_index);
 	temp_maker->set_transponders(temp_transponders);
 	temp_maker->set_channels(temp_channels);
 	temp_maker->set_bouquets(temp_bouquets);
