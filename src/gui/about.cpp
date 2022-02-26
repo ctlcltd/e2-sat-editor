@@ -6,14 +6,12 @@
  * @license MIT License
  */
 
-#include <iostream>
-#include <Qt>
-#include <QWidget>
 #include <QDialog>
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QLabel>
+
 #include "../commons.h"
 #include "about.h"
 

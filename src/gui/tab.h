@@ -6,25 +6,24 @@
  * @license MIT License
  */
 
-#include <iostream>
 #include <string>
 #include <vector>
 #include <map>
-#include <QWidget>
-#include <QStatusBar>
-#include <QGridLayout>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QHeaderView>
-#include <QTreeWidget>
-#include "../e2db.h"
-#include "gui.h"
 
 using namespace std;
 
 #ifndef tab_h
+#define tab_h
+#include <Qt>
+#include <QWidget>
+#include <QHeaderView>
+#include <QTreeWidget>
+#include "../e2db.h"
+
 namespace e2se_gui
 {
+class gui;
+
 class tab
 {
 	public:
@@ -34,14 +33,14 @@ class tab
 		bool load(string filename = "");
 		void populate();
 		void trickySortByColumn(int column);
-		void setIndex(int index);
+		void setTabId(int ttid);
 		void save();
 		void loadSeeds();
 		QWidget* widget;
 	private:
 		gui* gid;
 		QWidget* cwid;
-		int tid;
+		int ttid;
 		e2db_parser* temp_parser;
 		map<string, e2db_parser::transponder> temp_transponders;
 		map<string, e2db_parser::service> temp_channels;
@@ -53,5 +52,4 @@ class tab
 		pair<int, Qt::SortOrder> _state_sort;
 };
 }
-#define tab_h
-#endif /* tab_h*/
+#endif /* tab_h */

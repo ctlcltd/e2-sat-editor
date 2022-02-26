@@ -6,16 +6,8 @@
  * @license MIT License
  */
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <filesystem>
 #include <algorithm>
-#include <string>
-#include <vector>
-#include <map>
-#include <unordered_map>
-#include <tuple>
+#include <filesystem>
 #include <regex>
 #include <cstdio>
 #include <cstring>
@@ -917,7 +909,7 @@ void e2db_maker::make_lamedb5()
 		ss << ':' << ch.srcid;
 		ss << ',';
 		ss << '"' << ch.chname << '"';
-		if (! ch.cdata.empty())
+		if (! ch.data.empty())
 		{
 			ss << ',';
 			//TODO 256

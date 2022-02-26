@@ -6,13 +6,10 @@
  * @license MIT License
  */
 
-#include <iostream>
-#include <QWidget>
-
-using namespace std;
-
 #ifndef about_h
 #define about_h
+#include <QWidget>
+
 namespace e2se_gui
 {
 void aboutDialog(QWidget* mwid);

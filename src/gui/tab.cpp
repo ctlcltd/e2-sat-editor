@@ -6,29 +6,20 @@
  * @license MIT License
  */
 
-#include <iostream>
-#include <filesystem>
 #include <algorithm>
-#include <string>
-#include <vector>
-#include <map>
-#include <Qt>
-#include <QWidget>
+#include <filesystem>
+
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QSplitter>
 #include <QGroupBox>
-#include <QHeaderView>
-#include <QTreeWidget>
 #include <QToolBar>
 #include <QPushButton>
 #include <QLabel>
-#include <QString>
 #include <cstdio>
-#include <stdlib.h>
+
 #include "../commons.h"
-#include "../e2db.h"
 #include "tab.h"
 #include "gui.h"
 #include "todo.h"
@@ -76,24 +67,24 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	list_tree->setHeaderItem(lheader_item);
 	list_tree->setColumnHidden(0, true);
 	int col = 1;
-	list_tree->setColumnWidth(col++, 75);        // Index
-	list_tree->setColumnWidth(col++, 200);        // Name
+	list_tree->setColumnWidth(col++, 75);		// Index
+	list_tree->setColumnWidth(col++, 200);		// Name
 	if (DEBUG) {
-		list_tree->setColumnWidth(col++, 175);    // CHID
-		list_tree->setColumnWidth(col++, 150);    // TXID
+		list_tree->setColumnWidth(col++, 175);	// CHID
+		list_tree->setColumnWidth(col++, 150);	// TXID
 	}
 	else
 	{
 		col -= 2;
 	}
-	list_tree->setColumnWidth(col++, 85);        // Type
-	list_tree->setColumnWidth(col++, 150);        // Provider
-	list_tree->setColumnWidth(col++, 95);        // Frequency
-	list_tree->setColumnWidth(col++, 85);        // Polarization
-	list_tree->setColumnWidth(col++, 95);        // Symbol Rate
-	list_tree->setColumnWidth(col++, 50);        // FEC
-	list_tree->setColumnWidth(col++, 85);        // SAT
-	list_tree->setColumnWidth(col++, 75);        // System
+	list_tree->setColumnWidth(col++, 85);		// Type
+	list_tree->setColumnWidth(col++, 150);		// Provider
+	list_tree->setColumnWidth(col++, 95);		// Frequency
+	list_tree->setColumnWidth(col++, 85);		// Polarization
+	list_tree->setColumnWidth(col++, 95);		// Symbol Rate
+	list_tree->setColumnWidth(col++, 50);		// FEC
+	list_tree->setColumnWidth(col++, 85);		// SAT
+	list_tree->setColumnWidth(col++, 75);		// System
 
 	this->lheaderv = list_tree->header();
 	lheaderv->connect(lheaderv, &::QHeaderView::sectionClicked, [=](int column) { this->trickySortByColumn(column); });
@@ -115,7 +106,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	if (DEBUG_TOOLBAR)
 	{
 		bottom_toolbar->addAction("§ Load seeds", [=]() { this->loadSeeds(); });
-		bottom_toolbar->addAction("§ Reset", [=]() { this->newFile(); gid->tabChangeName(tid, ""); });
+		bottom_toolbar->addAction("§ Reset", [=]() { this->newFile(); gid->tabChangeName(ttid, ""); });
 	}
 
 	QToolBar* bouquets_ats = new QToolBar;
@@ -189,7 +180,7 @@ void tab::open()
 	if (! dirname.empty())
 	{
 		load(dirname);
-		gid->tabChangeName(tid, dirname);
+		gid->tabChangeName(ttid, dirname);
 	}
 }
 
@@ -372,11 +363,11 @@ void tab::trickySortByColumn(int column)
 	_state_sort = pair (column, order);
 }
 
-void tab::setIndex(int index)
+void tab::setTabId(int ttid)
 {
-	debug("tab", "setIndex()", "index", to_string(index));
+	debug("tab", "setIndex()", "id", to_string(ttid));
 
-	tid = index;
+	this->ttid = ttid;
 }
 
 void tab::save()

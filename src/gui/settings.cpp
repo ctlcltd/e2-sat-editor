@@ -6,9 +6,7 @@
  * @license MIT License
  */
 
-#include <iostream>
 #include <Qt>
-#include <QWidget>
 #include <QDialog>
 #include <QGridLayout>
 #include <QHBoxLayout>
@@ -16,6 +14,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QTabWidget>
+
 #include "../commons.h"
 #include "settings.h"
 

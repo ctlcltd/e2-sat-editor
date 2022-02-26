@@ -6,33 +6,17 @@
  * @license MIT License
  */
 
-#include <iostream>
-#include <filesystem>
-#include <algorithm>
-#include <string>
-#include <vector>
-#include <map>
 #include <Qt>
-#include <QApplication>
-#include <QWidget>
 #include <QProxyStyle>
 #include <QScreen>
-#include <QMenuBar>
-#include <QStatusBar>
-#include <QGridLayout>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
 #include <QSplitter>
 #include <QGroupBox>
-#include <QHeaderView>
-#include <QTreeWidget>
 #include <QTabWidget>
-#include <QToolBar>
 #include <QAction>
 #include <QPushButton>
 #include <QLabel>
 #include <QFileDialog>
-#include <QString>
+
 #include "../commons.h"
 #include "gui.h"
 #include "tab.h"
@@ -117,7 +101,7 @@ void gui::menuCtl()
 	QMenu* mfile = menu->addMenu("File");
 	mfile->addAction("New", [=]() { this->newTab(""); });
 	mfile->addAction("Open", [=]() { this->open(); });
-	mfile->addAction("Save", todo);
+	mfile->addAction("Save", [=]() { this->save(); });
 	mfile->addSeparator();
 	mfile->addAction("Import", todo);
 	mfile->addAction("Export", todo);
@@ -126,11 +110,18 @@ void gui::menuCtl()
 	mfile->addAction("Close All Tabs", [=]() { this->closeAllTabs(); });
 	mfile->addSeparator();
 	mfile->addAction("Settings", [=]() { this->settings(); });
-	mfile->addAction("About", [=]() { this->about(); });
+	if (osprod == "macos")
+		mfile->addAction("About", [=]() { this->about(); });
 	mfile->addSeparator();
 	mfile->addAction("Quit", [=]() { this->mroot->quit(); });
 
 	QMenu* medit = menu->addMenu("Edit");
+	medit->addAction("Cut", todo);
+	medit->addAction("Copy", todo);
+	medit->addAction("Paste", todo);
+	medit->addSeparator();
+	medit->addAction("Select All", todo);
+	medit->addSeparator();
 	medit->addAction("TODO", todo);
 
 	QMenu* mwind = menu->addMenu("Window");
@@ -182,6 +173,7 @@ void gui::tabCtl()
 int gui::newTab(string filename = "")
 {
 	tab* ttab = new tab(this, mwid, filename);
+	int ttid = ttidx++;
 
 	int ttcount = twid->count();
 	string tname;
@@ -201,11 +193,13 @@ int gui::newTab(string filename = "")
 	ttabbar->setTabButton(index, QTabBar::LeftSide, ttlabel);
 	ttabbar->setTabText(index, "");
 
-	ttab->setIndex(index);
+	ttab->setTabId(ttid);
 	twid->setCurrentIndex(index);
-//	mwind->addAction(tname, [=]() { this->twid->setCurrentIndex(index); });
 
-	debug("gui", "newTab()", "index", to_string(index));
+	mwind->addAction(ttname, [=]() { this->twid->setCurrentWidget(ttab->widget); });
+	ttabs[ttid] = ttab;
+
+	debug("gui", "newTab()", "ttid", to_string(ttid));
 
 	return index;
 }
@@ -262,11 +256,12 @@ string gui::openFileDialog()
 	return dirname;
 }
 
-//TODO FIX index changes on move
-void gui::tabChangeName(int index, string filename)
+void gui::tabChangeName(int ttid, string filename)
 {
-	debug("gui", "tabChangeName()", "index", to_string(index));
+	debug("gui", "tabChangeName()", "ttid", to_string(ttid));
 
+	tab* ttab = ttabs[ttid];
+	int index = twid->indexOf(ttab->widget);
 	string tname;
 
 	if (filename.empty())
@@ -286,6 +281,20 @@ void gui::tabChangeName(int index, string filename)
 void gui::save()
 {
 	debug("gui", "save()");
+
+	QWidget* curr_wid = twid->currentWidget();
+	tab* ttab;
+
+	for (auto & tb : ttabs)
+	{
+		if (curr_wid == tb.second->widget)
+		{
+			ttab = tb.second;
+			break;
+		}
+	}
+	if (ttab != nullptr)
+		ttab->save();
 }
 
 void gui::settings()

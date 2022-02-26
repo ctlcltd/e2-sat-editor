@@ -6,13 +6,10 @@
  * @license MIT License
  */
 
-#include <iostream>
-#include <QWidget>
-
-using namespace std;
-
 #ifndef settings_h
 #define settings_h
+#include <QWidget>
+
 namespace e2se_gui
 {
 void settingsDialog(QWidget* mwid);

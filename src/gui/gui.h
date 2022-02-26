@@ -6,8 +6,14 @@
  * @license MIT License
  */
 
-#include <iostream>
+#include <filesystem>
 #include <string>
+#include <unordered_map>
+
+using namespace std;
+
+#ifndef gui_h
+#define gui_h
 #include <QApplication>
 #include <QWidget>
 #include <QMenuBar>
@@ -15,15 +21,12 @@
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <QHeaderView>
-#include <QTreeWidget>
 #include <QTabWidget>
 
-using namespace std;
-
-#ifndef gui_h
 namespace e2se_gui
 {
+class tab;
+
 class gui
 {
 	public:
@@ -38,7 +41,7 @@ class gui
 		void tabChanged(int index);
 		void open();
 		string openFileDialog();
-		void tabChangeName(int index, string filename);
+		void tabChangeName(int ttid, string filename);
 		void save();
 		void settings();
 		void about();
@@ -52,7 +55,8 @@ class gui
 		QTabWidget* twid;
 		QMenuBar* menu;
 		QMenu* mwind;
+		int ttidx;
+		unordered_map<int, tab*> ttabs;
 };
 }
-#define gui_h
-#endif /* gui_hpp */
+#endif /* gui_h */

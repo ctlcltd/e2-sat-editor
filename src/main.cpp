@@ -6,7 +6,6 @@
  * @license MIT License
  */
 
-#include <iostream>
 #include "gui/gui.h"
 
 int main(int argc, char* argv[])

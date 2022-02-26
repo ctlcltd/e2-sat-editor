@@ -8,12 +8,12 @@
 
 #include <iostream>
 #include <string>
-#include <QMessageBox>
 
 using namespace std;
 
 #ifndef todo_h
 #define todo_h
+#include <QMessageBox>
 
 namespace e2se_gui
 {
