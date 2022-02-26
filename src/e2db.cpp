@@ -841,8 +841,106 @@ void e2db_maker::make_lamedb4()
 	}
 	ss << "end" << endl;
 
+	char datetime[80];
+	strftime(datetime, 80, "%F %T %Z", _out_tst);
+
 	ss << "editor: e2-sat-editor 0.1 <https://github.com/ctlcltd/e2-sat-editor>" << endl;
-	ss << "datetime: " << asctime(_out_tst);
+	ss << "datetime: " << string (datetime);
+	e2db_out["lamedb"] = ss.str();
+}
+
+void e2db_maker::make_lamedb5()
+{
+	debug("e2db_maker", "make_lamedb5()");
+
+	stringstream ss;
+
+	//TODO
+	unordered_map<char, char> PVDR_DATA_DENUM;
+	for (auto & x: PVDR_DATA) PVDR_DATA_DENUM[x.second] = x.first;
+
+	ss << "eDVB services /5/" << endl;
+
+	for (auto & x: index["txs"])
+	{
+		transponder tx = db.transponders[x.second];
+		string dvbns = tx.dvbns;
+		string tsid = lowCase(tx.tsid);
+		string onid = lowCase(tx.onid);
+		dvbns.insert(dvbns.begin(), 8 - dvbns.length(), '0');
+		tsid.insert(tsid.begin(), 4 - tsid.length(), '0');
+		onid.insert(onid.begin(), 4 - onid.length(), '0');
+
+		ss << 't';
+		ss << ':' << dvbns;
+		ss << ':' << tsid;
+		ss << ':' << onid;
+		ss << ',';
+		ss << tx.ttype;
+		ss << ':' << to_string(int (stoi(tx.freq) * 1e3));
+		ss << ':' << to_string(int (stoi(tx.sr) * 1e3));
+		ss << ':' << tx.pol;
+		ss << ':' << tx.fec;
+		ss << ':' << tx.pos; //TODO satellites.xml
+		ss << ':' << tx.inv;
+		if (! tx.flgs.empty())
+			ss << ':' << tx.flgs;
+		if (tx.sys)
+			ss << ':' << tx.sys;
+		if (tx.mod)
+			ss << ':' << tx.mod;
+		if (tx.rol) // DVB-S2 only
+			ss << ':' << tx.rol;
+		if (tx.pil) // DVB-S2 only
+			ss << ':' << tx.pil;
+		ss << endl;
+	}
+
+	for (auto & x: index["chs"])
+	{
+		service ch = db.services[x.second];
+		string ssid = lowCase(ch.ssid);
+		string dvbns = ch.dvbns;
+		string tsid = lowCase(ch.tsid);
+		string onid = lowCase(ch.onid);
+		ssid.insert(ssid.begin(), 4 - ssid.length(), '0');
+		dvbns.insert(dvbns.begin(), 8 - dvbns.length(), '0');
+		tsid.insert(tsid.begin(), 4 - tsid.length(), '0');
+		onid.insert(onid.begin(), 4 - onid.length(), '0');
+		ss << 's';
+		ss << ':' << ssid;
+		ss << ':' << dvbns;
+		ss << ':' << tsid;
+		ss << ':' << onid;
+		ss << ':' << ch.stype;
+		ss << ':' << ch.snum;
+		ss << ':' << ch.srcid;
+		ss << ',';
+		ss << '"' << ch.chname << '"';
+		if (! ch.cdata.empty())
+		{
+			ss << ',';
+			//TODO 256
+			auto last_key = (*prev(ch.data.cend()));
+			for (auto & q: ch.data)
+			{
+				char d = PVDR_DATA_DENUM.count(q.first) ? PVDR_DATA_DENUM.at(q.first) : q.first;
+				for (unsigned int i = 0; i < q.second.size(); i++)
+				{
+					ss << d << ':' << q.second[i];
+					if (! q.second[i].empty() && (i != q.second.size() - 1 || q.first != last_key.first))
+						ss << ',';
+				}
+			}
+		}
+		ss << endl;
+	}
+
+	char datetime[80];
+	strftime(datetime, 80, "%F %T %Z", _out_tst);
+
+	ss << "# editor: e2-sat-editor 0.1 <https://github.com/ctlcltd/e2-sat-editor>" << endl;
+	ss << "# datetime: " << string (datetime);
 	e2db_out["lamedb"] = ss.str();
 }
 
