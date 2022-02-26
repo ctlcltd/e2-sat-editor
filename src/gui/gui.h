@@ -22,6 +22,7 @@ using namespace std;
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QTabWidget>
+#include <QActionGroup>
 
 namespace e2se_gui
 {
@@ -39,6 +40,8 @@ class gui
 		void closeTab(int index);
 		void closeAllTabs();
 		void tabChanged(int index);
+		void tabClicked(int index);
+		void tabMoved(int from, int to);
 		void open();
 		string openFileDialog();
 		void tabChangeName(int ttid, string filename);
@@ -55,8 +58,10 @@ class gui
 		QTabWidget* twid;
 		QMenuBar* menu;
 		QMenu* mwind;
+		QActionGroup* mwtabs;
 		int ttidx;
 		unordered_map<int, tab*> ttabs;
+		unordered_map<int, QAction*> ttmenu;
 };
 }
 #endif /* gui_h */

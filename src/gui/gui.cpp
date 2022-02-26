@@ -12,10 +12,10 @@
 #include <QSplitter>
 #include <QGroupBox>
 #include <QTabWidget>
-#include <QAction>
 #include <QPushButton>
 #include <QLabel>
 #include <QFileDialog>
+#include <QTimer>
 
 #include "../commons.h"
 #include "gui.h"
@@ -127,6 +127,8 @@ void gui::menuCtl()
 	QMenu* mwind = menu->addMenu("Window");
 	mwind->addAction("Minimize", [=]() { this->mwid->showMinimized(); });
 	mwind->addSeparator();
+	QActionGroup* mwtabs = new QActionGroup(mwind);
+	mwtabs->setExclusive(true);
 
 	QMenu* mhelp = menu->addMenu("Help");
 	mhelp->addAction("TODO", todo);
@@ -134,6 +136,7 @@ void gui::menuCtl()
 
 	this->menu = menu;
 	this->mwind = mwind;
+	this->mwtabs = mwtabs;
 }
 
 void gui::statusCtl()
@@ -145,17 +148,20 @@ void gui::statusCtl()
 	mstatusb->addWidget(sbwid);
 }
 
-//TODO FIX EXC_BAD_ACCESS
 void gui::tabCtl()
 {
 	debug("gui", "tabCtl()");
+
+	ttidx = 0;
 
 	this->twid = new QTabWidget(mwid);
 	twid->setTabsClosable(true);
 	twid->setMovable(true);
 	twid->setStyleSheet("QTabWidget::tab-bar { left: 0px } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { height: 32px; padding: 5px; background: palette(mid); border: 1px solid transparent; border-radius: 0 } QTabBar::tab:selected { background: palette(highlight) } QTabWidget::tab QLabel { margin-left: 5px }");
 	twid->connect(twid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
-	twid->connect(twid, &QTabWidget::tabCloseRequested, [=] (int index) { this->closeTab(index); });
+	twid->connect(twid, &QTabWidget::tabBarClicked, [=](int index) { this->tabClicked(index); });
+	twid->connect(twid, &QTabWidget::tabCloseRequested, [=](int index) { this->closeTab(index); });
+	twid->tabBar()->connect(twid->tabBar(), &QTabBar::tabMoved, [=](int from, int to) { this->tabMoved(from, to); });
 
 	QPushButton* ttbnew = new QPushButton();
 	ttbnew->setText("+ New Tab");
@@ -174,6 +180,7 @@ int gui::newTab(string filename = "")
 {
 	tab* ttab = new tab(this, mwid, filename);
 	int ttid = ttidx++;
+	ttab->widget->setProperty("ttid", QVariant(ttid));
 
 	int ttcount = twid->count();
 	string tname;
@@ -196,8 +203,15 @@ int gui::newTab(string filename = "")
 	ttab->setTabId(ttid);
 	twid->setCurrentIndex(index);
 
-	mwind->addAction(ttname, [=]() { this->twid->setCurrentWidget(ttab->widget); });
+	QAction* action = new QAction(ttname);
+	action->connect(action, &QAction::triggered, [=]() { this->twid->setCurrentWidget(ttab->widget); });
+	action->setCheckable(true);
+	action->setActionGroup(mwtabs);
+	mwind->addAction(action);
+	ttmenu[ttid] = action;
 	ttabs[ttid] = ttab;
+
+	ttmenu[ttid]->setChecked(true);
 
 	debug("gui", "newTab()", "ttid", to_string(ttid));
 
@@ -211,6 +225,11 @@ void gui::closeTab(int index)
 	if (index == -1)
 		index = twid->currentIndex();
 
+	QWidget* curr_wid = twid->currentWidget();
+	int ttid = curr_wid->property("ttid").toInt();
+	//TODO FIX
+	mwind->removeAction(ttmenu[ttid]);
+	mwtabs->removeAction(ttmenu[ttid]);
 	//TODO destruct
 	twid->removeTab(index);
 	if (twid->count() == 0) newTab();
@@ -220,6 +239,11 @@ void gui::closeAllTabs()
 {
 	debug("gui", "closeAllTabs()");
 
+	for (auto & action : mwtabs->actions())
+	{
+		mwind->removeAction(action);
+		mwtabs->removeAction(action);
+	}
 	//TODO destruct
 	twid->clear();
 	if (twid->count() == 0) newTab();
@@ -231,6 +255,35 @@ void gui::tabChanged(int index)
 
 	QString msg = QString::fromStdString("Current tab index: " + to_string(index));
 	sbwid->showMessage(msg);
+}
+
+void gui::tabClicked(int index)
+{
+	debug("gui", "tabClicked()", "index", to_string(index));
+
+	//TODO FIX
+	// is prev. currentWidget on tabClicked
+	QTimer::singleShot(200, [=]() {
+		QWidget* curr_wid = twid->currentWidget();
+		int ttid = curr_wid->property("ttid").toInt();
+		ttmenu[ttid]->setChecked(true);
+	});
+}
+
+void gui::tabMoved(int from, int to)
+{
+	debug("gui", "tabMoved()", "from|to", (to_string(from) + '|' + to_string(to)));
+
+	auto actions = mwtabs->actions();
+	actions.move(from, to);
+
+	for (auto & action : actions)
+	{
+		mwind->removeAction(action);
+		mwtabs->removeAction(action);
+		mwind->addAction(action);
+		mwtabs->addAction(action);
+	}
 }
 
 void gui::open()
@@ -276,6 +329,8 @@ void gui::tabChangeName(int ttid, string filename)
 	QLabel* ttlabel = new QLabel;
 	ttlabel->setText(ttname);
 	ttabbar->setTabButton(index, QTabBar::LeftSide, ttlabel);
+
+	ttmenu[ttid]->setText(ttname);
 }
 
 void gui::save()
@@ -283,18 +338,8 @@ void gui::save()
 	debug("gui", "save()");
 
 	QWidget* curr_wid = twid->currentWidget();
-	tab* ttab;
-
-	for (auto & tb : ttabs)
-	{
-		if (curr_wid == tb.second->widget)
-		{
-			ttab = tb.second;
-			break;
-		}
-	}
-	if (ttab != nullptr)
-		ttab->save();
+	int ttid = curr_wid->property("ttid").toInt();
+	ttabs[ttid]->save();
 }
 
 void gui::settings()

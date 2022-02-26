@@ -365,7 +365,7 @@ void tab::trickySortByColumn(int column)
 
 void tab::setTabId(int ttid)
 {
-	debug("tab", "setIndex()", "id", to_string(ttid));
+	debug("tab", "setTabId()", "ttid", to_string(ttid));
 
 	this->ttid = ttid;
 }
