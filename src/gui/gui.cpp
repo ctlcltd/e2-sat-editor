@@ -344,7 +344,7 @@ void gui::save()
 
 void gui::settings()
 {
-	settingsDialog(mwid);
+	new e2se_gui_settings::settings(mwid);
 }
 
 void gui::about()

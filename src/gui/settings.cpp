@@ -7,33 +7,35 @@
  */
 
 #include <Qt>
-#include <QDialog>
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QFormLayout>
+#include <QListWidget>
+#include <QToolBar>
 #include <QPushButton>
 #include <QLabel>
-#include <QTabWidget>
+#include <QLineEdit>
 
 #include "../commons.h"
 #include "settings.h"
 
 using namespace std;
 
-namespace e2se_gui
+namespace e2se_gui_settings
 {
-void settingsDialog(QWidget* mwid)
+settings::settings(QWidget* mwid)
 {
 	debug("gui", "settingsDialog()");
 
-	QDialog* dial = new QDialog(mwid);
+	this->dial = new QDialog(mwid);
 	dial->setWindowTitle("Settings");
 	dial->setMinimumSize(530, 420);
 
 	QGridLayout* dfrm = new QGridLayout(dial);
 	QHBoxLayout* dhbox = new QHBoxLayout;
 	QVBoxLayout* dvbox = new QVBoxLayout;
-	QTabWidget* dtwid = new QTabWidget;
+	this->dtwid = new QTabWidget;
 
 	QPushButton* dtsave = new QPushButton;
 	dtsave->setDefault(true);
@@ -47,15 +49,13 @@ void settingsDialog(QWidget* mwid)
 	QLabel* ttodo0 = new QLabel;
 	ttodo0->setText("General TODO");
 	ttodo0->setAlignment(Qt::AlignCenter);
-	QLabel* ttodo1 = new QLabel;
-	ttodo1->setText("Connections TODO");
-	ttodo1->setAlignment(Qt::AlignCenter);
+
 	QLabel* ttodo2 = new QLabel;
 	ttodo2->setText("App TODO");
 	ttodo2->setAlignment(Qt::AlignCenter);
 
 	dtwid->addTab(ttodo0, "General");
-	dtwid->addTab(ttodo1, "Connections");
+	connections();
 	dtwid->addTab(ttodo2, "TODO");
 
 	dfrm->setColumnStretch(0, 1);
@@ -70,5 +70,46 @@ void settingsDialog(QWidget* mwid)
 	dfrm->addLayout(dvbox, 0, 0);
 	dial->setLayout(dfrm);
 	dial->exec();
+}
+
+void settings::connections()
+{
+	QWidget* dtpage = new QWidget;
+	QHBoxLayout* dtcnt = new QHBoxLayout(dtpage);
+
+	QVBoxLayout* dtvbox = new QVBoxLayout;
+	QListWidget* dtlist = new QListWidget;
+	new QListWidgetItem("Profile", dtlist);
+
+	QToolBar* dttbar = new QToolBar;
+	QWidget* dtspacer = new QWidget;
+	dtspacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	QPushButton* dtladd = new QPushButton;
+	dtladd->setText("+");
+	dtladd->connect(dtladd, &QPushButton::pressed, [=]() { new QListWidgetItem("Profile", dtlist); });
+	QPushButton* dtlremove = new QPushButton;
+	dtlremove->setText("-");
+	dtlremove->connect(dtlremove, &QPushButton::pressed, [=]() { dtlist->takeItem(dtlist->currentRow()); });
+
+	dttbar->addWidget(dtspacer);
+	dttbar->addWidget(dtladd);
+	dttbar->addWidget(dtlremove);
+
+	dtvbox->addWidget(dtlist);
+	dtvbox->addWidget(dttbar);
+
+	QFormLayout* dtform = new QFormLayout;
+	QLabel* legend = new QLabel;
+	legend->setText("Connections TODO");
+	dtform->addRow(legend);
+	dtform->addRow("Connection field", new QLineEdit);
+	dtform->addRow("Connection field", new QLineEdit);
+	dtform->addRow("Connection field", new QLineEdit);
+
+	dtcnt->addLayout(dtvbox, 0);
+	dtcnt->addLayout(dtform, 1);
+	dtpage->setLayout(dtcnt);
+
+	dtwid->addTab(dtpage, "Connections");
 }
 }
