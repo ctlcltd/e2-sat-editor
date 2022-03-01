@@ -55,8 +55,6 @@ gui::gui(int argc, char* argv[])
 	mwid->setMinimumSize(680, 510);
 	mwid->resize(wsize);
 
-	mroot->setStyleSheet("QGroupBox { spacing: 0; padding: 20px 0 0 0; border: 0 } QGroupBox::title { margin: 0 12px }");
-
 	root();
 
 	mwid->show();
@@ -92,7 +90,7 @@ void gui::menuCtl()
 	menu->setNativeMenuBar(true);
 
 	QString osprod = QSysInfo::productType();
-	if (osprod != "macos" && osprod != "ubuntu")
+	if (osprod != "macos")
 	{
 		menu->setParent(mwid);
 		mfrm->addWidget(menu);

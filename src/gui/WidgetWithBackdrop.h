@@ -1,0 +1,38 @@
+/*!
+ * e2-sat-editor/src/gui/WidgetWithBackdrop.h
+ *
+ * @author Leonardo Laureti
+ * @version 0.1
+ * @license MIT License
+ */
+
+#ifndef WidgetWithBackdrop_h
+#define WidgetWithBackdrop_h
+#include <QWidget>
+
+class WidgetWithBackdrop : public QWidget
+{
+	Q_OBJECT
+
+	public:
+		explicit WidgetWithBackdrop(QWidget* parent = nullptr);
+//		~WidgetWithBackdrop();
+		void activateBackdrop()
+		{
+			enabled = true;
+		}
+		void deactivateBackdrop()
+		{
+			enabled = false;
+		}
+	signals:
+		void backdrop();
+	protected:
+		void mousePressEvent(QMouseEvent* event)
+		{
+			if (enabled) emit backdrop();
+		}
+	private:
+		bool enabled = false;
+};
+#endif /* WidgetWithBackdrop_h */

@@ -3,3 +3,4 @@ QT += widgets
 SOURCES += main.cpp
 SOURCES += e2db.cpp
 SOURCES += gui/*.cpp
+HEADERS += gui/*.h

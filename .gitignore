@@ -4,6 +4,7 @@ workflow
 src/Debug
 Makefile
 moc_predefs.h
+moc_*.cpp
 .xcode
 .qmake.stash
 *.app

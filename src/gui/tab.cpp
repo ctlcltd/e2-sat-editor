@@ -36,6 +36,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	this->gid = gid;
 	this->cwid = wid;
 	QWidget* widget = new QWidget;
+	widget->setStyleSheet("QGroupBox { spacing: 0; padding: 20px 0 0 0; border: 0 } QGroupBox::title { margin: 0 12px }");
 
 	QGridLayout* frm = new QGridLayout(widget);
 
