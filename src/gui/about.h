@@ -10,8 +10,8 @@
 #define about_h
 #include <QWidget>
 
-namespace e2se_gui
+namespace e2se_gui_dialog
 {
-void aboutDialog(QWidget* mwid);
+void about(QWidget* mwid);
 }
 #endif /* about_h */

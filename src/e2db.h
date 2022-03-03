@@ -92,7 +92,7 @@ struct e2db_abstract
 		map<string, userbouquet> userbouquets;
 };
 
-class e2db_parser : public e2db_abstract
+class e2db_parser : virtual public e2db_abstract
 {
 	public:
 		e2db_parser();
@@ -112,10 +112,14 @@ class e2db_parser : public e2db_abstract
 		string localdir;
 };
 
-class e2db_maker : public e2db_abstract
+class e2db_maker : virtual public e2db_abstract
 {
 	public:
 		e2db_maker();
+		void begin_transaction();
+		void end_transaction();
+		string get_timestamp();
+		string get_editor_string();
 		void make_lamedb();
 		void make_lamedb4();
 		void make_lamedb5();
@@ -134,7 +138,7 @@ class e2db_maker : public e2db_abstract
 		tm* _out_tst;
 };
 
-class e2db : public e2db_parser
+class e2db : public e2db_parser, public e2db_maker
 {
 	public:
 		e2db();

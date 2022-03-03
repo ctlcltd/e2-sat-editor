@@ -70,7 +70,7 @@ void gui::root()
 
 	this->mcnt = new QHBoxLayout;
 	this->mstatusb = new QHBoxLayout;
-	
+
 	menuCtl();
 	statusCtl();
 	tabCtl();
@@ -155,7 +155,10 @@ void gui::tabCtl()
 	this->twid = new QTabWidget(mwid);
 	twid->setTabsClosable(true);
 	twid->setMovable(true);
-	twid->setStyleSheet("QTabWidget::tab-bar { left: 0px } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { height: 32px; padding: 5px; background: palette(mid); border: 1px solid transparent; border-radius: 0 } QTabBar::tab:selected { background: palette(highlight) } QTabWidget::tab QLabel { margin-left: 5px }");
+//	twid->setDocumentMode(true);
+//	twid->setUsesScrollButtons(true);
+//	twid->tabBar()->setDrawBase(false);
+	twid->setStyleSheet("QTabWidget::tab-bar { left: 0px } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { height: 32px; padding: 5px; background: palette(mid); border: 1px solid transparent; border-radius: 0 } QTabBar::tab:selected { background: palette(highlight) } QTabWidget::tab QLabel { margin-left: 5px } QTabBar { background: red }");
 	twid->connect(twid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
 	twid->connect(twid, &QTabWidget::tabBarClicked, [=](int index) { this->tabClicked(index); });
 	twid->connect(twid, &QTabWidget::tabCloseRequested, [=](int index) { this->closeTab(index); });
@@ -342,12 +345,12 @@ void gui::save()
 
 void gui::settings()
 {
-	new e2se_gui_settings::settings(mwid);
+	new e2se_gui_dialog::settings(mwid);
 }
 
 void gui::about()
 {
-	aboutDialog(mwid);
+	e2se_gui_dialog::about(mwid);
 }
 
 }

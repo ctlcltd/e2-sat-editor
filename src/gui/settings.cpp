@@ -24,15 +24,15 @@
 
 using namespace std;
 
-namespace e2se_gui_settings
+namespace e2se_gui_dialog
 {
 settings::settings(QWidget* mwid)
 {
 	debug("gui settings", "settings()");
 
 	this->dial = new QDialog(mwid);
-	dial->setWindowTitle("Settings");
 //	dial->setMinimumSize(530, 420);
+	dial->setWindowTitle("Settings");
 	dial->setStyleSheet("QGroupBox { spacing: 0; padding: 20px 0 0 0; border: 0 } QGroupBox::title { margin: 0 10px; font: bold }");
 
 	QGridLayout* dfrm = new QGridLayout(dial);

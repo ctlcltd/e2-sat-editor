@@ -8,6 +8,7 @@
 
 #include <algorithm>
 #include <filesystem>
+#include <cstdio>
 
 #include <QGridLayout>
 #include <QHBoxLayout>
@@ -17,17 +18,31 @@
 #include <QToolBar>
 #include <QPushButton>
 #include <QLabel>
-#include <cstdio>
 
 #include "../commons.h"
 #include "tab.h"
 #include "gui.h"
 #include "todo.h"
+#include "channelBook.h"
 
 using namespace std;
 
 namespace e2se_gui
 {
+void addChannel(QWidget* mwid)
+{
+	QDialog* dial = new QDialog(mwid);
+	dial->setMinimumSize(530, 420);
+	dial->setWindowTitle("Add Channel");
+
+	QGridLayout* layout = new QGridLayout;
+	channelBook* cb = new channelBook;
+
+	layout->addWidget(cb->widget);
+	layout->setContentsMargins(0, 0, 0, 0);
+	dial->setLayout(layout);
+	dial->exec();
+}
 
 tab::tab(gui* gid, QWidget* wid, string filename = "")
 {
@@ -119,7 +134,8 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	list_ats_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	
 	bouquets_ats->addAction("+ New Bouquet", todo);
-	list_ats->addAction("+ Add Channel", todo);
+	list_ats->addAction("+ Add Channel", [=]() { addChannel(wid); });
+	list_ats->addAction("+ Add Service", todo);
 	list_ats->addWidget(list_ats_spacer);
 	list_ats->addWidget(list_ats_dndstatus);
 
@@ -141,8 +157,8 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 
 	splitterc->addWidget(bouquets);
 	splitterc->addWidget(channels);
-	splitterc->setStretchFactor(0, 1.5);
-	splitterc->setStretchFactor(1, 4.5);
+	splitterc->setStretchFactor(0, 1);
+	splitterc->setStretchFactor(1, 4);
 
 	container->addWidget(splitterc, 0, 0, 1, 1);
 	container->setContentsMargins(8, 8, 8, 8);
@@ -162,7 +178,7 @@ void tab::newFile()
 {
 	debug("tab", "newFile()");
 	
-	this->temp_parser = new e2db_parser;
+	this->dbih = new e2db;
 
 	bouquets_tree->scrollToItem(bouquets_tree->topLevelItem(0));
 	bouquets_tree->clear();
@@ -202,14 +218,13 @@ bool tab::load(string filename)
 	else
 	{
 		newFile();
-		if (temp_parser->read(dirname))
+		if (dbih->read(dirname))
 		{
-			if (DEBUG_E2DB)
-				temp_parser->debugger();
-			temp_transponders = temp_parser->get_transponders();
-			temp_channels = temp_parser->get_channels();
-			temp_bouquets = temp_parser->get_bouquets();
-			temp_index = temp_parser->index;
+			if (DEBUG_E2DB) dbih->debugger();
+			temp_transponders = dbih->get_transponders();
+			temp_channels = dbih->get_channels();
+			temp_bouquets = dbih->get_bouquets();
+			temp_index = dbih->index;
 		}
 		else
 		{
@@ -301,7 +316,7 @@ void tab::populate()
 		//TODO ? transponder.ttype
 		if (temp_channels.count(ch.second))
 		{
-			e2db_parser::service cdata = temp_channels[ch.second];
+			e2db::service cdata = temp_channels[ch.second];
 			auto txdata = temp_transponders[cdata.txid];
 			if (txdata.ttype != 's') continue;
 
@@ -327,7 +342,7 @@ void tab::populate()
 		//TODO marker QWidget ?
 		else
 		{
-			e2db_parser::reference cref = temp_bouquets.second[cur_bouquet].channels[ch.second];
+			e2db::reference cref = temp_bouquets.second[cur_bouquet].channels[ch.second];
 
 			QString chid = QString::fromStdString(cref.chid);
 			QString refval = QString::fromStdString(cref.refval);
@@ -361,7 +376,7 @@ void tab::trickySortByColumn(int column)
 		list_tree->sortByColumn(column, order);
 		lheaderv->setSortIndicator(1, order);
 	}
-	_state_sort = pair (column, order);
+	_state_sort = pair (column, order); //C++ 17
 }
 
 void tab::setTabId(int ttid)
@@ -376,12 +391,7 @@ void tab::save()
 	debug("tab", "save()");
 
 	todoMsg("TEST\n\nFiles will be saved in this folder:\n/usr/local/var/tmp/e2-sat-editor");
-	e2db_maker* temp_maker = new e2db_maker;
-	temp_maker->set_index(temp_index);
-	temp_maker->set_transponders(temp_transponders);
-	temp_maker->set_channels(temp_channels);
-	temp_maker->set_bouquets(temp_bouquets);
-	temp_maker->tester(); //TODO TEST
+	dbih->tester(); //TODO TEST
 	todoMsg("Saved.");
 }
 

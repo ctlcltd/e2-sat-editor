@@ -11,7 +11,6 @@
 #include <regex>
 #include <cstdio>
 #include <cstring>
-#include <ctime>
 #include "commons.h"
 #include "e2db.h"
 
@@ -21,9 +20,7 @@ const string dbfilename = "lamedb";
 
 e2db_parser::e2db_parser()
 {
-	lamedb db;
-	map<string, bouquet> bouquets;
-	map<string, userbouquet> userbouquets;
+	debug("e2db_parser");
 }
 
 void e2db_parser::parse_e2db()
@@ -184,7 +181,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 			else if (count == 3)
 			{
 				db.transponders.emplace(txid, tx);
-				index["txs"].emplace_back(pair (tidx, txid));
+				index["txs"].emplace_back(pair (tidx, txid)); //C++ 17
 				count = 0;
 				txid = "";
 				transponder tx;
@@ -260,11 +257,11 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 					if (ch.snum) m = ch.snum;
 					else m = collisions[kchid].size();
 					chid += ':' + to_string(m);
-					collisions[kchid].emplace_back(pair (chid, m));
+					collisions[kchid].emplace_back(pair (chid, m)); //C++ 17
 				}
 
 				db.services.emplace(chid, ch);
-				index["chs"].emplace_back(pair (sidx, chid));
+				index["chs"].emplace_back(pair (sidx, chid)); //C++ 17
 				count = 0;
 				chid = "";
 				service ch;
@@ -365,7 +362,7 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 
 			txid = tx.tsid + ':' + tx.onid + ':' + tx.dvbns;
 			db.transponders.emplace(txid, tx);
-			index["txs"].emplace_back(pair (tidx, txid));
+			index["txs"].emplace_back(pair (tidx, txid)); //C++ 17
 			tidx += 1;
 		}
 		// service
@@ -441,11 +438,11 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 				if (ch.snum) m = ch.snum;
 				else m = collisions[kchid].size();
 				chid += ':' + to_string(m);
-				collisions[kchid].emplace_back(pair (chid, m));
+				collisions[kchid].emplace_back(pair (chid, m)); //C++ 17
 			}
 
 			db.services.emplace(chid, ch);
-			index["chs"].emplace_back(pair (sidx, chid));
+			index["chs"].emplace_back(pair (sidx, chid)); //C++ 17
 			sidx += 1;
 		}
 	}
@@ -581,10 +578,10 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 			ref.index = idx;
 
 			ub.channels[chid] = ref;
-			index[bname].emplace_back(pair (idx, chid));
+			index[bname].emplace_back(pair (idx, chid)); //C++ 17
 
 			if (sseq)
-				index[pname].emplace_back(pair (bouquets[pname].count++, chid));
+				index[pname].emplace_back(pair (bouquets[pname].count++, chid)); //C++ 17
 
 			reference ref;
 		}
@@ -683,7 +680,7 @@ map<string, e2db_parser::service> e2db_parser::get_channels()
 pair<map<string, e2db_parser::bouquet>, map<string, e2db_parser::userbouquet>> e2db_parser::get_bouquets()
 {
 	debug("e2db_parser", "get_bouquets()");
-	return pair (bouquets, userbouquets);
+	return pair (bouquets, userbouquets); //C++ 17
 }
 
 // C++17
@@ -733,14 +730,34 @@ bool e2db_parser::read(string localdir)
 e2db_maker::e2db_maker()
 {
 	debug("e2db_maker");
+}
+
+void e2db_maker::begin_transaction()
+{
+	debug("e2db_maker", "begin_transaction()");
 
 	time_t curr_tst = time(0);
 	tm* _out_tst = localtime(&curr_tst);
 	this->_out_tst = _out_tst;
+}
 
-	lamedb db;
-	map<string, bouquet> bouquets;
-	map<string, userbouquet> userbouquets;
+void e2db_maker::end_transaction()
+{
+	debug("e2db_maker", "end_transaction()");
+}
+
+string e2db_maker::get_timestamp()
+{
+	debug("e2db_maker", "get_timestamp()");
+
+	char datetime[80];
+	strftime(datetime, 80, "%F %T %Z", _out_tst);
+	return string (datetime);
+}
+
+string e2db_maker::get_editor_string()
+{
+	return "e2-sat-editor 0.1 <https://github.com/ctlcltd/e2-sat-editor>";
 }
 
 void e2db_maker::make_lamedb()
@@ -833,11 +850,8 @@ void e2db_maker::make_lamedb4()
 	}
 	ss << "end" << endl;
 
-	char datetime[80];
-	strftime(datetime, 80, "%F %T %Z", _out_tst);
-
-	ss << "editor: e2-sat-editor 0.1 <https://github.com/ctlcltd/e2-sat-editor>" << endl;
-	ss << "datetime: " << string (datetime);
+	ss << "editor: " << get_editor_string() << endl;
+	ss << "datetime: " << get_timestamp();
 	e2db_out["lamedb"] = ss.str();
 }
 
@@ -931,8 +945,8 @@ void e2db_maker::make_lamedb5()
 	char datetime[80];
 	strftime(datetime, 80, "%F %T %Z", _out_tst);
 
-	ss << "# editor: e2-sat-editor 0.1 <https://github.com/ctlcltd/e2-sat-editor>" << endl;
-	ss << "# datetime: " << string (datetime);
+	ss << "# editor: " << get_editor_string() << endl;
+	ss << "# datetime: " << get_timestamp();
 	e2db_out["lamedb"] = ss.str();
 }
 
@@ -1037,19 +1051,19 @@ void e2db_maker::set_index(map<string, vector<pair<int, string>>> index)
 	this->index = index;
 }
 
-void e2db_maker::set_transponders(map<string, e2db_parser::transponder> transponders)
+void e2db_maker::set_transponders(map<string, e2db_maker::transponder> transponders)
 {
 	debug("e2db_maker", "set_transponders()");
 	db.transponders = transponders;
 }
 
-void e2db_maker::set_channels(map<string, e2db_parser::service> services)
+void e2db_maker::set_channels(map<string, e2db_maker::service> services)
 {
 	debug("e2db_maker", "set_channels()");
 	db.services = services;
 }
 
-void e2db_maker::set_bouquets(pair<map<string, e2db_parser::bouquet>, map<string, e2db_parser::userbouquet>> bouquets)
+void e2db_maker::set_bouquets(pair<map<string, e2db_maker::bouquet>, map<string, e2db_maker::userbouquet>> bouquets)
 {
 	debug("e2db_maker", "set_bouquets()");
 	this->bouquets = bouquets.first;
@@ -1060,9 +1074,11 @@ void e2db_maker::tester()
 {
 	debug("e2db_maker", "tester()");
 
+	begin_transaction();
 	make_lamedb();
 	make_bouquets();
 	make_userbouquets();
+	end_transaction();
 	write_e2db();
 }
 

@@ -17,11 +17,11 @@
 
 using namespace std;
 
-namespace e2se_gui
+namespace e2se_gui_dialog
 {
-void aboutDialog(QWidget* mwid)
+void about(QWidget* mwid)
 {
-	debug("gui", "aboutDialog()");
+	debug("gui", "about()");
 
 	QDialog* dial = new QDialog(mwid);
 	dial->setWindowTitle("About e2-sat-editor");

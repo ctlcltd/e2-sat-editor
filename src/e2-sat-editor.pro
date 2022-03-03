@@ -4,3 +4,4 @@ SOURCES += main.cpp
 SOURCES += e2db.cpp
 SOURCES += gui/*.cpp
 HEADERS += gui/*.h
+QMAKE_CXXFLAGS += -std=c++17
