@@ -181,7 +181,7 @@ int gui::newTab(string filename = "")
 {
 	tab* ttab = new tab(this, mwid, filename);
 	int ttid = ttidx++;
-	ttab->widget->setProperty("ttid", QVariant(ttid));
+	ttab->widget->setProperty("ttid", QVariant (ttid));
 
 	int ttcount = twid->count();
 	string tname;

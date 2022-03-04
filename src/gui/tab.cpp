@@ -32,7 +32,7 @@ namespace e2se_gui
 void addChannel(QWidget* mwid, e2db* dbih)
 {
 	QDialog* dial = new QDialog(mwid);
-	dial->setMinimumSize(530, 420);
+	dial->setMinimumSize(680, 420);
 	dial->setWindowTitle("Add Channel");
 
 	QGridLayout* layout = new QGridLayout;
@@ -170,7 +170,9 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 
 	this->widget = widget;
 
-	if (! filename.empty())
+	if (filename.empty())
+		newFile();
+	else
 		load(filename);
 }
 
@@ -296,14 +298,12 @@ void tab::populate()
 	list_tree->clear();
 
 	string cur_chlist = "chs";
-	vector<pair<int, string>> cur_chdata;
 	int i = 0;
 
 	if (! cur_bouquet.empty() && cur_bouquet != "chs")
 		cur_chlist = cur_bouquet;
-	cur_chdata = dbih->index[cur_chlist]; //TODO reference
 
-	for (auto & ch : cur_chdata)
+	for (auto & ch : dbih->index[cur_chlist])
 	{
 		char ci[6];
 		sprintf(ci, "%05d", i++);

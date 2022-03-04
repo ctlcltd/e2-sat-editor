@@ -42,6 +42,8 @@ const unordered_map<char, char> PVDR_DATA = {{'p', '0'}, {'c', '1'}, {'C', '2'},
 
 const unordered_map<int, string> STYPES = {{0, "Data"}, {1, "TV"}, {2, "Radio"}, {10, "Radio"}, {12, "TV"}, {17, "UHD"}, {22, "H.264"}, {25, "HD"}, {31, "UHD"}};
 
+const unordered_map<string, string> SCAS = {{"01", "Seca"}, {"06", "Irdeto"}, {"05", "Viaccess"}, {"09", "NDS"}, {"0b", "Conax"}, {"0d", "Cryptoworks"}, {"0e", "PVU"}, {"18", "Nagra"}, {"26", "BISS"}, {"43", "Crypton"}, {"4a", "DRE"}};
+
 static void debug(string ns, string cmsg = "", string optk = "", string optv = "", string indt = " ")
 {
 	if (DEBUG)

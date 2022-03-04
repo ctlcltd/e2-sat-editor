@@ -22,9 +22,10 @@ class channelBook
     public:
     	channelBook(e2db* dbih);
 		void side();
-		void stacked();
+		void layout();
 		void sideRowChanged(int index);
-		void populate(int vv);
+		void stacker(int vv);
+		void populate();
 		QWidget* widget;
 	protected:
 		QListWidget* lwid;
@@ -41,9 +42,10 @@ class channelBook
 			Encryption,
 			A_Z
 		};
+		map<string, vector<pair<int, string>>> data;
 	private:
 		e2db* dbih;
-		int flag;
+		int vx;
 };
 }
 #endif

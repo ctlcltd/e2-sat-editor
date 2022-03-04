@@ -25,14 +25,12 @@ channelBook::channelBook(e2db* dbih)
 {
 	debug("channelBook");
 
-	//TODO FIX EXC_BAD_ACCESS
-	// this->dbih = dbih;
-	this->dbih = new e2db;
+	this->dbih = dbih;
 
 	QGridLayout* afrm = new QGridLayout();
 
 	side();
-	stacked();
+	layout();
 
 	afrm->addWidget(lwid, 0, 0);
 	afrm->addLayout(swid, 0, 1);
@@ -66,9 +64,9 @@ void channelBook::side()
 	lwid->connect(lwid, &QListWidget::currentRowChanged, [=](int index) { this->sideRowChanged(index); });
 }
 
-void channelBook::stacked()
+void channelBook::layout()
 {
-	debug("channelBook", "stacked()");
+	debug("channelBook", "layout()");
 
 	this->swid = new QHBoxLayout;
 	swid->setContentsMargins(0, 0, 0, 0);
@@ -89,18 +87,13 @@ void channelBook::stacked()
 	{
 		tabv->addTab("");
 		tabv->setTabButton(i, QTabBar::LeftSide, new QLabel(QString::fromStdString(chars[i])));
+		tabv->setTabData(i, QString::fromStdString(chars[i]));
 	}
 
 	this->tree = new QTreeWidget;
 	tree->setHidden(true);
 	tree->setHeaderHidden(true);
 	tree->setUniformRowHeights(true);
-
-	for (int i=0; i < 3; i++)
-	{
-		QTreeWidgetItem* item = new QTreeWidgetItem({QString::fromStdString("Dummy " + to_string(i + 1))});
-		tree->addTopLevelItem(item);
-	}
 
 	this->list = new QTreeWidget;
 	list->setHidden(true);
@@ -111,14 +104,21 @@ void channelBook::stacked()
 	list->setHeaderItem(thead);
 	list->setColumnHidden(0, true);
 
+	tree->connect(tree, &QTreeWidget::itemSelectionChanged, [=]() { this->populate(); });
+	tabv->connect(tabv, &QTabBar::currentChanged, [=]() { this->populate(); });
+
 	swid->addWidget(tabv);
 	swid->addWidget(tree);
 	swid->addWidget(list);
+
+	swid->setStretch(1, 2);
+	swid->setStretch(2, 4);
 }
 
+//TODO FIX SIGABRT tree->currentItem()
 void channelBook::sideRowChanged(int index)
 {
-	debug("channelBook", "sideRowChanged", "index", to_string(index));
+	debug("channelBook", "sideRowChanged()", "index", to_string(index));
 
 	switch (index)
 	{
@@ -126,53 +126,50 @@ void channelBook::sideRowChanged(int index)
 			tabv->setHidden(true);
 			tree->setHidden(true);
 			list->setVisible(true);
-			flag = 2;
+			vx = 2;
 		break;
 		case views::A_Z:
 			tabv->setVisible(true);
 			tree->setHidden(true);
 			list->setVisible(true);
-			flag = 0;
+			vx = 0;
 		break;
 		default:
 			tabv->setHidden(true);
 			tree->setVisible(true);
 			list->setVisible(true);
-			flag = 1;
-		break;
+			vx = 1;
 	}
 
-	populate(index);
+	stacker(index);
 }
 
-void channelBook::populate(int vv)
+void channelBook::stacker(int vv)
 {
-	debug("channelBook", "populate");
-
-	map<string, vector<pair<int, string>>> data;
+	debug("channelBook", "stacker()", "index", to_string(vv));
 
 	switch (vv)
 	{
 		case views::Services:
-			data = dbih->get_services_index();
+			this->data = dbih->get_services_index();
 		break;
 		case views::A_Z:
-			data = dbih->get_az_index();
+			this->data = dbih->get_az_index();
 		break;
 		case views::Bouquets:
-			data = dbih->get_bouquets_index();
+			this->data = dbih->get_userbouquets_index();
 		break;
 		case views::Satellites:
-			data = dbih->get_transponders_index();
+			this->data = dbih->get_transponders_index();
 		break;
 		case views::Providers:
-			data = dbih->get_packages_index();
+			this->data = dbih->get_packages_index();
 		break;
 		case views::Resolution:
-			data = dbih->get_resolution_index();
+			this->data = dbih->get_resolution_index();
 		break;
 		case views::Encryption:
-			data = dbih->get_encryption_index();
+			this->data = dbih->get_encryption_index();
 		break;
 	}
 
@@ -181,34 +178,91 @@ void channelBook::populate(int vv)
 	list->scrollToItem(list->topLevelItem(0));
 	list->clear();
 
+	//TODO FIX glitches
+	QString name;
+
 	for (auto & q: data)
 	{
-		//Qt5
-		QTreeWidgetItem* item = new QTreeWidgetItem({QString::fromStdString(q.first)});
-		tree->addTopLevelItem(item);
-
-		int i = 0;
-
-		for (auto & ch: q.second)
+		if (vv == views::Bouquets)
 		{
-			char ci[6];
-			sprintf(ci, "%05d", i++);
-			QString x = QString::fromStdString(ci);
+			e2db::userbouquet ub = dbih->userbouquets[q.first];
+			e2db::bouquet bs = dbih->bouquets[ub.pname];
+			name = QString::fromStdString(ub.name);
+			name.append(QString::fromStdString("\t[" + bs.nname + "]"));
+		}
+		else if (vv == views::Resolution)
+		{
+			int stype = stoi(q.first);
+			name = STYPES.count(stype) ? QString::fromStdString(STYPES.at(stype)) : "Data";
+			name.append(QString::fromStdString("\tid: " + q.first));
+		}
+		else
+		{
+			name = QString::fromStdString(q.first);
+		}
 
-			if (dbih->db.services.count(ch.second))
-			{
-				e2db::service chdata = dbih->db.services[ch.second];
-				e2db::transponder txdata = dbih->db.transponders[chdata.txid];
+		//Qt5
+		QTreeWidgetItem* item = new QTreeWidgetItem({name});
+		QString index = QString::fromStdString(q.first);
+		item->setData(0, Qt::UserRole, index);
+		tree->addTopLevelItem(item);
+	}
 
-				QString idx = QString::fromStdString(to_string(ch.first));
-				QString chname = QString::fromStdString(chdata.chname);
-				QString stype = STYPES.count(chdata.stype) ? QString::fromStdString(STYPES.at(chdata.stype)) : "Data";
-				QString pname = QString::fromStdString(chdata.data.count(PVDR_DATA.at('p')) ? chdata.data[PVDR_DATA.at('p')][0] : "");
+	populate();
+}
 
-				//Qt5
-				QTreeWidgetItem* item = new QTreeWidgetItem({x, idx, chname, stype, pname});
-				list->addTopLevelItem(item);
-			}
+void channelBook::populate()
+{
+	string curr = "";
+
+	if (vx == 2)
+	{
+		curr = "chs";
+	}
+	else if (vx == 1)
+	{
+		QTreeWidgetItem* selected;
+		selected = tree->currentItem();
+
+		if (selected == NULL)
+			selected = tree->topLevelItem(0);
+		
+		QString index = selected->data(0, Qt::UserRole).toString();
+		curr = index.toStdString();
+	}
+	else
+	{
+		int selected = tabv->currentIndex();
+		QString index = tabv->tabData(selected).toString();
+		curr = index.toStdString();
+	}
+
+	debug("channelBook", "populate()", "curr", curr);
+
+	list->scrollToItem(list->topLevelItem(0));
+	list->clear();
+
+	int i = 0;
+
+	for (auto & ch: data[curr])
+	{
+		char ci[6];
+		sprintf(ci, "%05d", i++);
+		QString x = QString::fromStdString(ci);
+
+		if (dbih->db.services.count(ch.second))
+		{
+			e2db::service chdata = dbih->db.services[ch.second];
+			e2db::transponder txdata = dbih->db.transponders[chdata.txid];
+
+			QString idx = QString::fromStdString(to_string(ch.first));
+			QString chname = QString::fromStdString(chdata.chname);
+			QString stype = STYPES.count(chdata.stype) ? QString::fromStdString(STYPES.at(chdata.stype)) : "Data";
+			QString pname = QString::fromStdString(chdata.data.count(PVDR_DATA.at('p')) ? chdata.data[PVDR_DATA.at('p')][0] : "");
+
+			//Qt5
+			QTreeWidgetItem* item = new QTreeWidgetItem({x, idx, chname, stype, pname});
+			list->addTopLevelItem(item);
 		}
 	}
 }

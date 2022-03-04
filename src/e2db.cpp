@@ -1088,6 +1088,7 @@ e2db::e2db()
 	debug("e2db");
 }
 
+//TODO
 map<string, vector<pair<int, string>>> e2db::get_transponders_index()
 {
 	debug("e2db", "get_transponders_index()");
@@ -1114,6 +1115,21 @@ map<string, vector<pair<int, string>>> e2db::get_bouquets_index()
 
 	map<string, vector<pair<int, string>>> _index;
 
+	for (auto & x: bouquets)
+		_index[x.first] = index[x.first];
+
+	return _index;
+}
+
+map<string, vector<pair<int, string>>> e2db::get_userbouquets_index()
+{
+	debug("e2db", "get_userbouquets_index()");
+
+	map<string, vector<pair<int, string>>> _index;
+
+	for (auto & x: userbouquets)
+		_index[x.first] = index[x.first];
+
 	return _index;
 }
 
@@ -1128,9 +1144,12 @@ map<string, vector<pair<int, string>>> e2db::get_packages_index()
 		service ch = db.services[x.second];
 
 		if (ch.data.count(PVDR_DATA.at('p')))
-			_index[ch.data[PVDR_DATA.at('p')][0]].emplace_back(x);
-		else
-			_index[""].emplace_back(x);
+		{
+			string pvdrn = ch.data[PVDR_DATA.at('p')][0];
+
+			if (pvdrn.empty()) _index["(Unknown)"].emplace_back(x);
+			else _index[pvdrn].emplace_back(x);
+		}
 	}
 
 	return _index;
@@ -1151,11 +1170,31 @@ map<string, vector<pair<int, string>>> e2db::get_resolution_index()
 	return _index;
 }
 
-//TODO
 map<string, vector<pair<int, string>>> e2db::get_encryption_index()
 {
-	debug("e2db", "get_encryption_index() TODO");
-	return index;
+	debug("e2db", "get_encryption_index()");
+
+	map<string, vector<pair<int, string>>> _index;
+
+	for (auto & x: index["chs"])
+	{
+		service ch = db.services[x.second];
+
+		if (ch.data.count('2'))
+		{
+			for (string & w : ch.data['2'])
+			{
+				string caidpx = w.substr(0, 2);
+				if (SCAS.count(caidpx)) _index[SCAS.at(caidpx)].emplace_back(x);
+			}
+		}
+		else
+		{
+			_index["(FTA)"].emplace_back(x);
+		}
+	}
+
+	return _index;
 }
 
 map<string, vector<pair<int, string>>> e2db::get_az_index()
@@ -1167,7 +1206,10 @@ map<string, vector<pair<int, string>>> e2db::get_az_index()
 	for (auto & x: index["chs"])
 	{
 		service ch = db.services[x.second];
-		_index[ch.chname.substr(0, 1)].emplace_back(x);
+		string lt = ch.chname.substr(0, 1);
+
+		if (isdigit(lt[0])) _index["0-9"].emplace_back(x);
+		else _index[lt].emplace_back(x);
 	}
 
 	return _index;

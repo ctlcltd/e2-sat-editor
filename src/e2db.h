@@ -146,6 +146,7 @@ class e2db : public e2db_parser, public e2db_maker
 		map<string, vector<pair<int, string>>> get_transponders_index();
 		map<string, vector<pair<int, string>>> get_services_index();
 		map<string, vector<pair<int, string>>> get_bouquets_index();
+		map<string, vector<pair<int, string>>> get_userbouquets_index();
 		map<string, vector<pair<int, string>>> get_packages_index();
 		map<string, vector<pair<int, string>>> get_resolution_index();
 		map<string, vector<pair<int, string>>> get_encryption_index();
