@@ -11,36 +11,39 @@ using namespace std;
 #ifndef channelBook_h
 #define channelBook_h
 #include <QWidget>
+#include <QHBoxLayout>
 #include <QListWidget>
-#include <QStackedWidget>
-#include <QTabWidget>
+#include "../e2db.h"
 
 namespace e2se_gui
 {
 class channelBook
 {
     public:
-    	channelBook();
+    	channelBook(e2db* dbih);
 		void side();
 		void stacked();
-		void listView(int vv, QLayout* layout = nullptr, QTabWidget* tw = nullptr, string tn = "");
-		void treeView(int vv);
-		void vtabView(int vv);
 		void sideRowChanged(int index);
-		void populate();
+		void populate(int vv);
 		QWidget* widget;
 	protected:
 		QListWidget* lwid;
-		QStackedWidget* swid;
+		QHBoxLayout* swid;
+		QTreeWidget* list;
+		QTreeWidget* tree;
+		QTabBar* tabv;
 		enum views {
 			Services,
 			Bouquets,
 			Satellites,
 			Providers,
-			Resolutions,
-			Encryptions,
+			Resolution,
+			Encryption,
 			A_Z
 		};
-	};
+	private:
+		e2db* dbih;
+		int flag;
+};
 }
 #endif

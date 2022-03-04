@@ -671,9 +671,9 @@ map<string, e2db_parser::transponder> e2db_parser::get_transponders()
 	return db.transponders;
 }
 
-map<string, e2db_parser::service> e2db_parser::get_channels()
+map<string, e2db_parser::service> e2db_parser::get_services()
 {
-	debug("e2db_parser", "get_channels()");
+	debug("e2db_parser", "get_services()");
 	return db.services;
 }
 
@@ -1086,4 +1086,89 @@ void e2db_maker::tester()
 e2db::e2db()
 {
 	debug("e2db");
+}
+
+map<string, vector<pair<int, string>>> e2db::get_transponders_index()
+{
+	debug("e2db", "get_transponders_index()");
+
+	map<string, vector<pair<int, string>>> _index;
+	_index["txs"] = index["txs"];
+
+	return _index;
+}
+
+map<string, vector<pair<int, string>>> e2db::get_services_index()
+{
+	debug("e2db", "get_services_index()");
+
+	map<string, vector<pair<int, string>>> _index;
+	_index["chs"] = index["chs"];
+
+	return _index;
+}
+
+map<string, vector<pair<int, string>>> e2db::get_bouquets_index()
+{
+	debug("e2db", "get_bouquets_index()");
+
+	map<string, vector<pair<int, string>>> _index;
+
+	return _index;
+}
+
+map<string, vector<pair<int, string>>> e2db::get_packages_index()
+{
+	debug("e2db", "get_packages_index()");
+
+	map<string, vector<pair<int, string>>> _index;
+
+	for (auto & x: index["chs"])
+	{
+		service ch = db.services[x.second];
+
+		if (ch.data.count(PVDR_DATA.at('p')))
+			_index[ch.data[PVDR_DATA.at('p')][0]].emplace_back(x);
+		else
+			_index[""].emplace_back(x);
+	}
+
+	return _index;
+}
+
+map<string, vector<pair<int, string>>> e2db::get_resolution_index()
+{
+	debug("e2db", "get_resolution_index()");
+
+	map<string, vector<pair<int, string>>> _index;
+
+	for (auto & x: index["chs"])
+	{
+		service ch = db.services[x.second];
+		_index[to_string(ch.stype)].emplace_back(x);
+	}
+
+	return _index;
+}
+
+//TODO
+map<string, vector<pair<int, string>>> e2db::get_encryption_index()
+{
+	debug("e2db", "get_encryption_index() TODO");
+	return index;
+}
+
+map<string, vector<pair<int, string>>> e2db::get_az_index()
+{
+	debug("e2db", "get_az_index()");
+
+	map<string, vector<pair<int, string>>> _index;
+
+	for (auto & x: index["chs"])
+	{
+		service ch = db.services[x.second];
+		_index[ch.chname.substr(0, 1)].emplace_back(x);
+	}
+
+	return _index;
 }

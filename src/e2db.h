@@ -83,13 +83,13 @@ struct e2db_abstract
 			map<string, transponder> transponders;
 			map<string, service> services;
 		};
+		lamedb db;
+		map<string, bouquet> bouquets;
+		map<string, userbouquet> userbouquets;
 		map<string, vector<pair<int, string>>> index;
 		map<string, vector<pair<string, int>>> collisions;
 	protected:
 		unordered_map<string, string> e2db;
-		lamedb db;
-		map<string, bouquet> bouquets;
-		map<string, userbouquet> userbouquets;
 };
 
 class e2db_parser : virtual public e2db_abstract
@@ -103,7 +103,7 @@ class e2db_parser : virtual public e2db_abstract
 		void parse_e2db_bouquet(ifstream& fbouquet, string bname);
 		void parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, string pname);
 		map<string, transponder> get_transponders();
-		map<string, service> get_channels();
+		map<string, service> get_services();
 		pair<map<string, bouquet>, map<string, userbouquet>> get_bouquets();
 		bool read_localdir(string localdir);
 		bool read(string localdir);
@@ -143,5 +143,12 @@ class e2db : public e2db_parser, public e2db_maker
 	public:
 		e2db();
 		void merge();
+		map<string, vector<pair<int, string>>> get_transponders_index();
+		map<string, vector<pair<int, string>>> get_services_index();
+		map<string, vector<pair<int, string>>> get_bouquets_index();
+		map<string, vector<pair<int, string>>> get_packages_index();
+		map<string, vector<pair<int, string>>> get_resolution_index();
+		map<string, vector<pair<int, string>>> get_encryption_index();
+		map<string, vector<pair<int, string>>> get_az_index();
 };
 #endif /* e2db_h */

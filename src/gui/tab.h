@@ -42,10 +42,6 @@ class tab
 		QWidget* cwid;
 		int ttid;
 		e2db* dbih;
-		map<string, e2db::transponder> temp_transponders;
-		map<string, e2db::service> temp_channels;
-		pair<map<string, e2db::bouquet>, map<string, e2db::userbouquet>> temp_bouquets;
-		map<string, vector<pair<int, string>>> temp_index;
 		QTreeWidget* bouquets_tree;
 		QTreeWidget* list_tree;
 		QHeaderView* lheaderv;

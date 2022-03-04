@@ -29,14 +29,14 @@ using namespace std;
 
 namespace e2se_gui
 {
-void addChannel(QWidget* mwid)
+void addChannel(QWidget* mwid, e2db* dbih)
 {
 	QDialog* dial = new QDialog(mwid);
 	dial->setMinimumSize(530, 420);
 	dial->setWindowTitle("Add Channel");
 
 	QGridLayout* layout = new QGridLayout;
-	channelBook* cb = new channelBook;
+	channelBook* cb = new channelBook(dbih);
 
 	layout->addWidget(cb->widget);
 	layout->setContentsMargins(0, 0, 0, 0);
@@ -134,7 +134,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	list_ats_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	
 	bouquets_ats->addAction("+ New Bouquet", todo);
-	list_ats->addAction("+ Add Channel", [=]() { addChannel(wid); });
+	list_ats->addAction("+ Add Channel", [=]() { addChannel(wid, dbih); });
 	list_ats->addAction("+ Add Service", todo);
 	list_ats->addWidget(list_ats_spacer);
 	list_ats->addWidget(list_ats_dndstatus);
@@ -221,10 +221,6 @@ bool tab::load(string filename)
 		if (dbih->read(dirname))
 		{
 			if (DEBUG_E2DB) dbih->debugger();
-			temp_transponders = dbih->get_transponders();
-			temp_channels = dbih->get_channels();
-			temp_bouquets = dbih->get_bouquets();
-			temp_index = dbih->index;
 		}
 		else
 		{
@@ -243,7 +239,7 @@ bool tab::load(string filename)
 	map<string, QTreeWidgetItem*> bgroups;
 
 	//TODO order A-Z & parent
-	for (auto & gboq : temp_bouquets.first)
+	for (auto & gboq : dbih->bouquets)
 	{
 		debug("tab", "load()", "bouquet", gboq.first);
 
@@ -261,7 +257,7 @@ bool tab::load(string filename)
 		for (auto & ubname : gboq.second.userbouquets)
 			bgroups[ubname] = pgroup;
 	}
-	for (auto & uboq : temp_bouquets.second)
+	for (auto & uboq : dbih->userbouquets)
 	{
 		debug("tab", "load()", "userbouquet", uboq.first);
 
@@ -305,7 +301,7 @@ void tab::populate()
 
 	if (! cur_bouquet.empty() && cur_bouquet != "chs")
 		cur_chlist = cur_bouquet;
-	cur_chdata = temp_index[cur_chlist]; //TODO reference
+	cur_chdata = dbih->index[cur_chlist]; //TODO reference
 
 	for (auto & ch : cur_chdata)
 	{
@@ -314,18 +310,18 @@ void tab::populate()
 		QString x = QString::fromStdString(ci);
 
 		//TODO ? transponder.ttype
-		if (temp_channels.count(ch.second))
+		if (dbih->db.services.count(ch.second))
 		{
-			e2db::service cdata = temp_channels[ch.second];
-			auto txdata = temp_transponders[cdata.txid];
+			e2db::service chdata = dbih->db.services[ch.second];
+			e2db::transponder txdata = dbih->db.transponders[chdata.txid];
 			if (txdata.ttype != 's') continue;
 
 			QString idx = QString::fromStdString(to_string(ch.first));
-			QString chname = QString::fromStdString(cdata.chname);
+			QString chname = QString::fromStdString(chdata.chname);
 			QString chid = QString::fromStdString(ch.second);
-			QString txid = QString::fromStdString(cdata.txid);
-			QString stype = STYPES.count(cdata.stype) ? QString::fromStdString(STYPES.at(cdata.stype)) : "Data";
-			QString pname = QString::fromStdString(cdata.data.count(PVDR_DATA.at('p')) ? cdata.data[PVDR_DATA.at('p')][0] : "");
+			QString txid = QString::fromStdString(chdata.txid);
+			QString stype = STYPES.count(chdata.stype) ? QString::fromStdString(STYPES.at(chdata.stype)) : "Data";
+			QString pname = QString::fromStdString(chdata.data.count(PVDR_DATA.at('p')) ? chdata.data[PVDR_DATA.at('p')][0] : "");
 			QString freq = QString::fromStdString(txdata.freq);
 			QString pol = QString::fromStdString(SAT_POL[txdata.pol]);
 			QString sr = QString::fromStdString(txdata.sr);
@@ -342,7 +338,7 @@ void tab::populate()
 		//TODO marker QWidget ?
 		else
 		{
-			e2db::reference cref = temp_bouquets.second[cur_bouquet].channels[ch.second];
+			e2db::reference cref = dbih->userbouquets[cur_bouquet].channels[ch.second];
 
 			QString chid = QString::fromStdString(cref.chid);
 			QString refval = QString::fromStdString(cref.refval);
