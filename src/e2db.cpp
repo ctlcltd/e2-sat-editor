@@ -16,26 +16,33 @@
 
 using namespace std;
 
-const string dbfilename = "lamedb";
-
 e2db_parser::e2db_parser()
 {
 	debug("e2db_parser");
+
+	dbfilename = PARSE_LAMEDB5 ? "lamedb5" : "lamedb";
 }
 
 void e2db_parser::parse_e2db()
 {
 	debug("e2db_parser", "parse_e2db()");
 
-	ifstream flamedb(e2db[dbfilename]);
+	ifstream flamedb (e2db[dbfilename]);
 	parse_e2db_lamedb(flamedb);
 	flamedb.close();
+
+	if (PARSE_TUNERSETS && e2db.count("satellites.xml"))
+	{
+		ifstream ftunxml (e2db["satellites.xml"]);
+		parse_tunersets_xml(0, ftunxml);
+		ftunxml.close();
+	}
 
 	for (auto & x: e2db)
 	{
 		if (x.second.find("bouquets.") != string::npos)
 		{
-			ifstream fbouquet(e2db[x.first]);
+			ifstream fbouquet (e2db[x.first]);
 			parse_e2db_bouquet(fbouquet, x.first);
 			fbouquet.close();
 		}
@@ -44,7 +51,7 @@ void e2db_parser::parse_e2db()
 	{
 		for (auto & w: x.second.userbouquets)
 		{
-			ifstream fuserbouquet(e2db[w]);
+			ifstream fuserbouquet (e2db[w]);
 			parse_e2db_userbouquet(fuserbouquet, w, x.first);
 			fuserbouquet.close();
 		}
@@ -587,10 +594,137 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 	userbouquets.emplace(bname, ub);
 }
 
+//TODO terrestrial.xml, cable.xml, ...
+void e2db_parser::parse_tunersets_xml(int ytype, ifstream& ftunxml)
+{
+	debug("e2db_parser", "parse_tunersets_xml()", "ytype", to_string(ytype));
+
+	string htunxml;
+	getline(ftunxml, htunxml);
+
+	if (htunxml.find("<?xml") == string::npos)
+	{
+		error("e2db_parser", "parse_tunersets_xml()", "Error", "Unknown file format.", "\t");
+		return;
+	}
+
+	tuner_sets tn;
+	tuner_reference tr;
+
+	switch (ytype)
+	{
+		case 0:
+			tn.ytype = 0;
+		break;
+		default:
+			error("e2db_parser", "parse_tunersets_xml()", "Error", "Not supported yet.", "\t");
+			return;
+	}
+
+	int step = 0;
+	string line;
+
+	while (getline(ftunxml, line))
+	{
+		if (line.find("<!") != string::npos) //TODO inline comments
+		{
+			step = 0;
+			continue;
+		}
+		else if (step && line.find("</") != string::npos)
+		{
+			step--;
+			string trid = tr.freq + ':' + to_string(tr.pol) + ':' + tr.sr;
+			tn.references.emplace(trid, tr);
+			tuners.emplace(tn.pos, tn);
+			tuner_sets tn;
+			tuner_reference tr;
+			continue;
+		}
+		else if (! step && line.find("<") != string::npos)
+		{
+			step++;
+		}
+
+		if (step)
+		{
+			string mkey;
+			string sline = line;
+			line.erase(0, line.find_first_not_of(' '));
+			char* token = strtok(line.data(), " ");
+			while (token != 0)
+			{
+				string pstr = string (token);
+				string key, val;
+				unsigned long pos = pstr.find('=');
+
+				if (pos != string::npos)
+				{
+					key = pstr.substr(0, pos);
+					val = pstr.substr(pos + 1);
+					pos = val.rfind('"');
+
+					if (pos)
+					{
+						val = val.substr(val.find('"') + 1, pos - 1);
+					}
+					else
+					{
+						val = sline.substr(sline.find(key));
+						val = val.substr(val.find('"') + 1);
+						val = val.substr(0, val.find('"'));
+					}
+				}
+				else if (pstr[0] == '<')
+				{
+					mkey = pstr.substr(1, pstr.rfind('>') - 1);
+				}
+
+				if (step != 2 && mkey == "sat")
+					step++;
+				else if (key == "name")
+					tn.name = val;
+				else if (key == "flags")
+					tn.flgs = stoi(val);
+				else if (key == "position")
+					tn.pos = stoi(val);
+				else if (key == "frequency")
+					tr.freq = to_string(int (stoi(val) / 1e3));
+				else if (key == "symbol_rate")
+					tr.sr = to_string(int (stoi(val) / 1e3));
+				else if (key == "polarization")
+					tr.pol = stoi(val);
+				else if (key == "fec_inner")
+					tr.fec = stoi(val);
+				else if (key == "modulation")
+					tr.mod = stoi(val);
+				else if (key == "rolloff")
+					tr.rol = stoi(val);
+				else if (key == "pilot")
+					tr.pil = stoi(val);
+				else if (key == "inversion")
+					tr.inv = stoi(val);
+				else if (key == "system")
+					tr.sys = stoi(val);
+				else if (key == "is_id")
+					tr.isid = stoi(val);
+				else if (key == "pls_mode")
+					tr.plsmode = stoi(val);
+				else if (key == "pls_code")
+					tr.plscode = stoi(val);
+
+				// cout << mkey << ':' << key << ':' << val << ' ' << step << endl;
+				token = strtok(NULL, " ");
+			}
+		}
+	}
+}
+
 void e2db_parser::debugger()
 {
-	cout << "e2db_parser debugger()" << endl;
-	cout << endl;
+	debug("e2db_parser", "debugger()");
+
+	cout << "transponders" << endl << endl;
 	for (auto & x: db.transponders)
 	{
 		cout << "txid: " << x.first << endl;
@@ -612,6 +746,7 @@ void e2db_parser::debugger()
 		cout << endl;
 	}
 	cout << endl;
+	cout << "services" << endl << endl;
 	for (auto & x: db.services)
 	{
 		cout << "chid: " << x.first << endl;
@@ -637,6 +772,7 @@ void e2db_parser::debugger()
 		cout << endl;
 	}
 	cout << endl;
+	cout << "bouquets" << endl << endl;
 	for (auto & x: bouquets)
 	{
 		cout << "filename: " << x.first << endl;
@@ -650,6 +786,7 @@ void e2db_parser::debugger()
 		cout << endl;
 	}
 	cout << endl;
+	cout << "userbouquets" << endl << endl;
 	for (auto & x: userbouquets)
 	{
 		cout << "filename: " << x.first << endl;
@@ -660,6 +797,36 @@ void e2db_parser::debugger()
 		cout << "]" << endl;
 		cout << endl;
 	}
+	cout << endl;
+	cout << "tunersets" << endl << endl;
+	for (auto & x: tuners)
+	{
+		cout << "tnid: " << x.first << endl;
+		cout << "ytype: " << x.second.ytype << endl;
+		cout << "name: " << x.second.name << endl;
+		cout << "flags: " << x.second.flgs << endl;
+		cout << "pos: " << x.second.pos << endl;
+		cout << "references: [" << endl << endl;
+		for (auto & q: x.second.references)
+		{
+			cout << "trid: " << q.first << endl;
+			cout << "freq: " << q.second.freq << endl;
+			cout << "sr: " << q.second.sr << endl;
+			cout << "pol: " << to_string(q.second.pol) << endl;
+			cout << "fec: " << to_string(q.second.fec) << endl;
+			cout << "mod: " << to_string(q.second.mod) << endl;
+			cout << "rol: " << to_string(q.second.rol) << endl;
+			cout << "pil: " << to_string(q.second.pil) << endl;
+			cout << "inv: " << to_string(q.second.inv) << endl;
+			cout << "sys: " << to_string(q.second.sys) << endl;
+			cout << "isid: " << to_string(q.second.isid) << endl;
+			cout << "plsmode: " << to_string(q.second.plsmode) << endl;
+			cout << "plscode: " << to_string(q.second.plscode) << endl;
+			cout << endl;
+		}
+		cout << "]" << endl << endl;
+	}
+	cout << endl;
 }
 
 map<string, e2db_parser::transponder> e2db_parser::get_transponders()

@@ -79,6 +79,29 @@ struct e2db_abstract
 			string pname;
 			map<string, reference> channels;
 		};
+		struct tuner_reference
+		{
+			string freq;
+			string sr;
+			int pol;
+			int fec;
+			int mod;
+			int rol;
+			int pil;
+			int inv;
+			int sys;
+			int isid;
+			int plsmode;
+			int plscode;
+		};
+		struct tuner_sets
+		{
+			int ytype;
+			string name;
+			int flgs;
+			int pos;
+			map<string, tuner_reference> references;
+		};
 		struct lamedb {
 			map<string, transponder> transponders;
 			map<string, service> services;
@@ -86,6 +109,7 @@ struct e2db_abstract
 		lamedb db;
 		map<string, bouquet> bouquets;
 		map<string, userbouquet> userbouquets;
+		unordered_map<int, tuner_sets> tuners;
 		map<string, vector<pair<int, string>>> index;
 		map<string, vector<pair<string, int>>> collisions;
 	protected:
@@ -107,9 +131,11 @@ class e2db_parser : virtual public e2db_abstract
 		pair<map<string, bouquet>, map<string, userbouquet>> get_bouquets();
 		bool read_localdir(string localdir);
 		bool read(string localdir);
+		void parse_tunersets_xml(int ytype, ifstream& ftunxml);
 		void debugger();
 	protected:
 		string localdir;
+		string dbfilename;
 };
 
 class e2db_maker : virtual public e2db_abstract

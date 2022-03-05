@@ -16,6 +16,8 @@ using namespace std;
 const bool DEBUG = true;
 const bool DEBUG_E2DB = false;
 const bool DEBUG_TOOLBAR = true;
+const bool PARSE_TUNERSETS = true;
+const bool PARSE_LAMEDB5 = false;
 
 const string SAT_POL[4] = {"H", "V", "L", "R"};
 const string SAT_FEC[11] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "3/5", "4/5", "8/9", "9/10"};

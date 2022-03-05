@@ -99,7 +99,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	list_tree->setColumnWidth(col++, 85);		// Polarization
 	list_tree->setColumnWidth(col++, 95);		// Symbol Rate
 	list_tree->setColumnWidth(col++, 50);		// FEC
-	list_tree->setColumnWidth(col++, 85);		// SAT
+	list_tree->setColumnWidth(col++, 125);		// SAT
 	list_tree->setColumnWidth(col++, 75);		// System
 
 	this->lheaderv = list_tree->header();
@@ -330,11 +330,16 @@ void tab::populate()
 			QString txid = QString::fromStdString(chdata.txid);
 			QString stype = STYPES.count(chdata.stype) ? QString::fromStdString(STYPES.at(chdata.stype)) : "Data";
 			QString pname = QString::fromStdString(chdata.data.count(PVDR_DATA.at('p')) ? chdata.data[PVDR_DATA.at('p')][0] : "");
+
 			QString freq = QString::fromStdString(txdata.freq);
 			QString pol = QString::fromStdString(SAT_POL[txdata.pol]);
 			QString sr = QString::fromStdString(txdata.sr);
 			QString fec = QString::fromStdString(SAT_FEC[txdata.fec]);
-			QString pos = QString::fromStdString(to_string(txdata.pos));
+			string ppos = dbih->tuners.count(txdata.pos) ? dbih->tuners.at(txdata.pos).name + ' ' : "";
+			char cposdeg[5];
+			sprintf(cposdeg, "%.1f", float(txdata.pos / 10));
+			ppos.append(string (cposdeg) + (txdata.pos ? 'E' : 'W'));
+			QString pos = QString::fromStdString(ppos);
 			QString sys = QString::fromStdString(SAT_SYS[txdata.sys]);
 
 			QTreeWidgetItem* item; // Qt5
