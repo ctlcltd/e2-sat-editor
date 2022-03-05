@@ -117,7 +117,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				char tsid[5];
 				char onid[5];
 
-				sscanf(upCase(line).c_str(), "%8s:%4s:%4s", dvbns, tsid, onid);
+				sscanf(line.c_str(), "%8s:%4s:%4s", dvbns, tsid, onid);
 
 				tx.dvbns = dvbns;
 				tx.dvbns.erase(0, tx.dvbns.find_first_not_of('0'));
@@ -164,9 +164,9 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 						tx.fec = fec;
 						tx.pos = pos; //TODO satellites.xml
 						tx.inv = inv;
-						tx.flgs = to_string(flgs);
-						tx.sys = sys;
-						tx.mod = mod;
+						tx.flgs = to_string(flgs); // ?
+						tx.sys = sys; // ?
+						tx.mod = mod; // ?
 						tx.rol = rol; // DVB-S2 only
 						tx.pil = pil; // DVB-S2 only
 					break;
@@ -208,7 +208,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				stype = NULL;
 				snum = NULL;
 
-				sscanf(upCase(line).c_str(), "%4s:%8s:%4s:%4s:%3d:%4d", ssid, dvbns, tsid, onid, &stype, &snum);
+				sscanf(line.c_str(), "%4s:%8s:%4s:%4s:%3d:%4d", ssid, dvbns, tsid, onid, &stype, &snum);
 
 				ch.ssid = string (ssid);
 				ch.ssid.erase(0, ch.ssid.find_first_not_of('0'));
@@ -228,7 +228,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 			{
 				ch.index = sidx;
 				ch.txid = txid;
-				ch.chname = line; //TODO FIX "bad chars
+				ch.chname = line;
 			}
 			else if (count == 3)
 			{
@@ -345,9 +345,9 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 					tx.fec = fec;
 					tx.pos = pos; //TODO satellites.xml
 					tx.inv = inv;
-					tx.flgs = to_string(flgs);
-					tx.sys = sys;
-					tx.mod = mod;
+					tx.flgs = to_string(flgs); // ?
+					tx.sys = sys; // ?
+					tx.mod = mod; // ?
 					tx.rol = rol; // DVB-S2 only
 					tx.pil = pil; // DVB-S2 only
 					//TODO ,... other flags
@@ -408,7 +408,7 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 			string chdata = params.rfind(',') != string::npos ? params.substr(delimit + 2) : "";
 
 			ch.txid = txid;
-			ch.chname = chname; //TODO FIX "bad chars
+			ch.chname = chname;
 
 			//TODO 256
 			// !p: provider
@@ -507,12 +507,8 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 
 	while (getline(fuserbouquet, line))
 	{
-		if (step && line.find("#SORT") != string::npos) //TODO ? #SORT
-		{
-			step = false;
-			continue;
-		}
-		else if (! step && line.find("#NAME") != string::npos)
+		//TODO #SERVICE
+		if (! step && line.find("#NAME") != string::npos)
 		{
 			ub.name = line.substr(6);
 			ub.pname = pname;
@@ -545,14 +541,15 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 			i1 = NULL;
 			dvbns = NULL;
 
-			transform(line.begin(), line.end(), line.begin(), [](unsigned char c){ return c == ':' ? ' ' : c; });
-			sscanf(upCase(line).c_str(), "%d %d %4s %4s %4s %4s %8d", &i0, &i1, anum, ssid, tsid, onid, &dvbns);
+			//TODO performance optimization selective tolower
+			transform(line.begin(), line.end(), line.begin(), [](unsigned char c){ return c == ':' ? ' ' : tolower(c); });
+			sscanf(line.c_str(), "%d %d %4s %4s %4s %4s %8d", &i0, &i1, anum, ssid, tsid, onid, &dvbns);
 
 			switch (i1) {
 				case 64:  // regular marker
 				case 320: // numbered marker
 				case 512: // hidden marker
-				case 832: // hidden marker ? //TODO
+				case 832: // hidden marker
 					sseq = false;
 					sprintf(cchid, "%d:%d:%s:%s", i0, i1, anum, ssid);
 				break;
@@ -784,8 +781,8 @@ void e2db_maker::make_lamedb4()
 	{
 		transponder tx = db.transponders[x.second];
 		string dvbns = tx.dvbns;
-		string tsid = lowCase(tx.tsid);
-		string onid = lowCase(tx.onid);
+		string tsid = tx.tsid;
+		string onid = tx.onid;
 		dvbns.insert(dvbns.begin(), 8 - dvbns.length(), '0');
 		tsid.insert(tsid.begin(), 4 - tsid.length(), '0');
 		onid.insert(onid.begin(), 4 - onid.length(), '0');
@@ -819,10 +816,10 @@ void e2db_maker::make_lamedb4()
 	for (auto & x: index["chs"])
 	{
 		service ch = db.services[x.second];
-		string ssid = lowCase(ch.ssid);
+		string ssid = ch.ssid;
 		string dvbns = ch.dvbns;
-		string tsid = lowCase(ch.tsid);
-		string onid = lowCase(ch.onid);
+		string tsid = ch.tsid;
+		string onid = ch.onid;
 		ssid.insert(ssid.begin(), 4 - ssid.length(), '0');
 		dvbns.insert(dvbns.begin(), 8 - dvbns.length(), '0');
 		tsid.insert(tsid.begin(), 4 - tsid.length(), '0');
@@ -871,8 +868,8 @@ void e2db_maker::make_lamedb5()
 	{
 		transponder tx = db.transponders[x.second];
 		string dvbns = tx.dvbns;
-		string tsid = lowCase(tx.tsid);
-		string onid = lowCase(tx.onid);
+		string tsid = tx.tsid;
+		string onid = tx.onid;
 		dvbns.insert(dvbns.begin(), 8 - dvbns.length(), '0');
 		tsid.insert(tsid.begin(), 4 - tsid.length(), '0');
 		onid.insert(onid.begin(), 4 - onid.length(), '0');
@@ -905,10 +902,10 @@ void e2db_maker::make_lamedb5()
 	for (auto & x: index["chs"])
 	{
 		service ch = db.services[x.second];
-		string ssid = lowCase(ch.ssid);
+		string ssid = ch.ssid;
 		string dvbns = ch.dvbns;
-		string tsid = lowCase(ch.tsid);
-		string onid = lowCase(ch.onid);
+		string tsid = ch.tsid;
+		string onid = ch.onid;
 		ssid.insert(ssid.begin(), 4 - ssid.length(), '0');
 		dvbns.insert(dvbns.begin(), 8 - dvbns.length(), '0');
 		tsid.insert(tsid.begin(), 4 - tsid.length(), '0');

@@ -135,7 +135,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	
 	bouquets_ats->addAction("+ New Bouquet", todo);
 	list_ats->addAction("+ Add Channel", [=]() { addChannel(wid, dbih); });
-	list_ats->addAction("+ Add Service", todo);
+	list_ats->addAction("+ New Service", todo);
 	list_ats->addWidget(list_ats_spacer);
 	list_ats->addWidget(list_ats_dndstatus);
 
@@ -182,10 +182,12 @@ void tab::newFile()
 	
 	this->dbih = new e2db;
 
+	bouquets_tree->setDragEnabled(false);
 	bouquets_tree->scrollToItem(bouquets_tree->topLevelItem(0));
 	bouquets_tree->clear();
 	lheaderv->setSortIndicatorShown(false);
 	lheaderv->setSectionsClickable(false);
+	list_tree->setDragEnabled(false);
 	list_tree->scrollToItem(list_tree->topLevelItem(0));
 	list_tree->clear();
 }
@@ -274,7 +276,9 @@ bool tab::load(string filename)
 		bouquets_tree->addTopLevelItem(bitem);
 	}
 
+	bouquets_tree->setDragEnabled(true);
 	populate();
+
 	return true;
 }
 
@@ -294,6 +298,7 @@ void tab::populate()
 
 	lheaderv->setSortIndicatorShown(true);
 	lheaderv->setSectionsClickable(false);
+	list_tree->setDragEnabled(false);
 	list_tree->scrollToItem(list_tree->topLevelItem(0));
 	list_tree->clear();
 
@@ -302,6 +307,8 @@ void tab::populate()
 
 	if (! cur_bouquet.empty() && cur_bouquet != "chs")
 		cur_chlist = cur_bouquet;
+
+	//TODO [API] cannot add handler to n from ns - dropping
 
 	for (auto & ch : dbih->index[cur_chlist])
 	{
@@ -317,6 +324,7 @@ void tab::populate()
 			if (txdata.ttype != 's') continue;
 
 			QString idx = QString::fromStdString(to_string(ch.first));
+			//TOOO FIX visual chname strip, extended glyphs slow down [qt.qpa.fonts] notice
 			QString chname = QString::fromStdString(chdata.chname);
 			QString chid = QString::fromStdString(ch.second);
 			QString txid = QString::fromStdString(chdata.txid);
@@ -354,6 +362,7 @@ void tab::populate()
 		if (_state_sort.first == 0) lheaderv->setSortIndicator(1, _state_sort.second); //TODO FIX Index sort
 	}
 	lheaderv->setSectionsClickable(true);
+	list_tree->setDragEnabled(true);
 }
 
 void tab::trickySortByColumn(int column)

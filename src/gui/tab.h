@@ -37,12 +37,11 @@ class tab
 		void save();
 		void loadSeeds();
 		QWidget* widget;
-		e2db* dbih;
 	private:
 		gui* gid;
 		QWidget* cwid;
 		int ttid;
-		
+		e2db* dbih;
 		QTreeWidget* bouquets_tree;
 		QTreeWidget* list_tree;
 		QHeaderView* lheaderv;

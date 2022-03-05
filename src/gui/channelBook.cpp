@@ -44,13 +44,13 @@ channelBook::channelBook(e2db* dbih)
 	widget->setLayout(afrm);
 }
 
-//TODO sortable application state
+//TODO dragable application state
 void channelBook::side()
 {
 	debug("channelBook", "side()");
 
 	this->lwid = new QListWidget;
-//	lwid->setSortingEnabled(true);
+	lwid->setDragEnabled(true);
 	lwid->setStyleSheet("QListWidget { background: transparent; font: 15px } QListView::item { height: 36px }");
 
 	lwid->addItem(" Services ");
@@ -81,7 +81,7 @@ void channelBook::layout()
 	tabv->setDrawBase(true);
 	tabv->setStyleSheet("QTabBar::tab { margin-top: 0; width: 48px }");
 
-	string chars[27] = {"0-9","A","B","C","D","E","F","G","H","I","J","L","K","M","N","O","P","Q","R","S","T","U","V","W","Z","Y","Z"};
+	string chars[27] = {"0-9","A","B","C","D","E","F","G","H","I","J","L","K","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
 	for (unsigned int i=0; i < 27; i++)
 	{
