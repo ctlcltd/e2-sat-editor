@@ -1,9 +1,12 @@
 /*!
  * e2-sat-editor/src/gui/todo.h
  *
+ * @link https://github.com/ctlcltd/e2-sat-editor
+ * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
  * @version 0.1
  * @license MIT License
+ * @license GNU GPLv3 License
  */
 
 #include <iostream>
@@ -22,12 +25,6 @@ static void todo()
 	cout << "app TODO" << endl;
 	QMessageBox dial = QMessageBox();
 	dial.setText("app TODO");
-	dial.exec();
-}
-static void todoMsg(string msg)
-{
-	QMessageBox dial = QMessageBox();
-	dial.setText(QString::fromStdString(msg));
 	dial.exec();
 }
 }

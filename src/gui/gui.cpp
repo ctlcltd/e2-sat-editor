@@ -1,9 +1,12 @@
 /*!
  * e2-sat-editor/src/gui/gui.cpp
  *
+ * @link https://github.com/ctlcltd/e2-sat-editor
+ * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
  * @version 0.1
  * @license MIT License
+ * @license GNU GPLv3 License
  */
 
 #include <Qt>
@@ -51,7 +54,7 @@ gui::gui(int argc, char* argv[])
 	QSize wsize = screen->availableSize();
 
 	this->mwid = new QWidget;
-	mwid->setWindowTitle("enigma2 channel editor");
+	mwid->setWindowTitle("e2 SAT Editor");
 	mwid->setMinimumSize(680, 510);
 	mwid->resize(wsize);
 

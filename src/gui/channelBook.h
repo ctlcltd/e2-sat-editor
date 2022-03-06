@@ -1,10 +1,17 @@
 /*!
  * e2-sat-editor/src/gui/channelBook.h
  *
+ * @link https://github.com/ctlcltd/e2-sat-editor
+ * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
  * @version 0.1
  * @license MIT License
+ * @license GNU GPLv3 License
  */
+
+#include <string>
+#include <vector>
+#include <map>
 
 using namespace std;
 
@@ -26,6 +33,7 @@ class channelBook
 		void sideRowChanged(int index);
 		void stacker(int vv);
 		void populate();
+		void trickySortByColumn(int column);
 		QWidget* widget;
 	protected:
 		QListWidget* lwid;
@@ -48,4 +56,4 @@ class channelBook
 		int vx;
 };
 }
-#endif
+#endif /* channelBook_h */

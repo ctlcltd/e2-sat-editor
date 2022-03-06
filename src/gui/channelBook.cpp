@@ -1,20 +1,23 @@
 /*!
  * e2-sat-editor/src/gui/channelBook.cpp
  *
+ * @link https://github.com/ctlcltd/e2-sat-editor
+ * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
  * @version 0.1
  * @license MIT License
+ * @license GNU GPLv3 License
  */
 
-#include <vector>
-#include <map>
 #include <cstdio>
 
 #include <QGridLayout>
 #include <QTreeWidget>
+#include <QHeaderView>
 #include <QLabel>
 
 #include "../commons.h"
+#include "../e2db.h"
 #include "channelBook.h"
 
 using namespace std;
@@ -36,7 +39,7 @@ channelBook::channelBook(e2db* dbih)
 	afrm->addLayout(swid, 0, 1);
 	afrm->setColumnMinimumWidth(0, 120);
 	afrm->setColumnStretch(0, 1);
-	afrm->setColumnStretch(1, 4);
+	afrm->setColumnStretch(1, 5);
 	afrm->setSpacing(0);
 	afrm->setContentsMargins(0, 0, 0, 0);
 
@@ -51,7 +54,9 @@ void channelBook::side()
 
 	this->lwid = new QListWidget;
 	lwid->setDragEnabled(true);
+	//TODO FIX rlpadding
 	lwid->setStyleSheet("QListWidget { background: transparent; font: 15px } QListView::item { height: 36px }");
+	lwid->setMaximumWidth(160);
 
 	lwid->addItem(" Services ");
 	lwid->addItem(" Bouquets ");
@@ -94,16 +99,24 @@ void channelBook::layout()
 	tree->setHidden(true);
 	tree->setHeaderHidden(true);
 	tree->setUniformRowHeights(true);
+	tree->setMinimumWidth(180);
 
 	this->list = new QTreeWidget;
 	list->setHidden(true);
 	list->setUniformRowHeights(true);
 
 	//Qt5
-	QTreeWidgetItem* thead = new QTreeWidgetItem({"", "Index", "Name", "Type", "Provider"});
+	QTreeWidgetItem* thead = new QTreeWidgetItem({"", "Index", "Name", "Type", "Provider", "Transponder", "SAT"});
 	list->setHeaderItem(thead);
 	list->setColumnHidden(0, true);
+	list->setColumnWidth(1, 65);	// Index
+	list->setColumnWidth(2, 175);	// Name
+	list->setColumnWidth(3, 70);	// Type
+	list->setColumnWidth(4, 125);	// Provider
+	list->setColumnWidth(5, 110);	// Transponder
+	list->setColumnWidth(6, 120);	// SAT
 
+	list->header()->connect(list->header(), &::QHeaderView::sectionClicked, [=](int column) { this->trickySortByColumn(column); });
 	tree->connect(tree, &QTreeWidget::itemSelectionChanged, [=]() { this->populate(); });
 	tabv->connect(tabv, &QTabBar::currentChanged, [=]() { this->populate(); });
 
@@ -111,14 +124,19 @@ void channelBook::layout()
 	swid->addWidget(tree);
 	swid->addWidget(list);
 
-	swid->setStretch(1, 2);
-	swid->setStretch(2, 4);
+	swid->setStretch(1, 1);
+	swid->setStretch(2, 5);
 }
 
-//TODO FIX SIGABRT tree->currentItem()
 void channelBook::sideRowChanged(int index)
 {
 	debug("channelBook", "sideRowChanged()", "index", to_string(index));
+
+	tree->scrollToItem(tree->topLevelItem(0));
+	tree->clear();
+	list->setSortingEnabled(false);
+	list->scrollToItem(list->topLevelItem(0));
+	list->clear();
 
 	switch (index)
 	{
@@ -173,12 +191,6 @@ void channelBook::stacker(int vv)
 		break;
 	}
 
-	tree->scrollToItem(tree->topLevelItem(0));
-	tree->clear();
-	list->scrollToItem(list->topLevelItem(0));
-	list->clear();
-
-	//TODO FIX glitches
 	QString name;
 
 	for (auto & q: data)
@@ -188,12 +200,12 @@ void channelBook::stacker(int vv)
 			e2db::userbouquet ub = dbih->userbouquets[q.first];
 			e2db::bouquet bs = dbih->bouquets[ub.pname];
 			name = QString::fromStdString(ub.name);
-			name.append(QString::fromStdString("\t[" + bs.nname + "]"));
+			name.prepend(QString::fromStdString("[" + bs.nname + "]\t"));
 		}
 		else if (vv == views::Resolution)
 		{
 			int stype = stoi(q.first);
-			name = STYPES.count(stype) ? QString::fromStdString(STYPES.at(stype)) : "Data";
+			name = e2db::STYPES.count(stype) ? QString::fromStdString(e2db::STYPES.at(stype)) : "Data";
 			name.append(QString::fromStdString("\tid: " + q.first));
 		}
 		else
@@ -226,7 +238,8 @@ void channelBook::populate()
 
 		if (selected == NULL)
 			selected = tree->topLevelItem(0);
-		
+
+		//TODO FIX EXC_BAD_ACCESS /w lists
 		QString index = selected->data(0, Qt::UserRole).toString();
 		curr = index.toStdString();
 	}
@@ -239,6 +252,7 @@ void channelBook::populate()
 
 	debug("channelBook", "populate()", "curr", curr);
 
+	list->setSortingEnabled(false);
 	list->scrollToItem(list->topLevelItem(0));
 	list->clear();
 
@@ -246,24 +260,58 @@ void channelBook::populate()
 
 	for (auto & ch: data[curr])
 	{
-		char ci[6];
-		sprintf(ci, "%05d", i++);
+		char ci[7];
+		sprintf(ci, "%06d", i++);
 		QString x = QString::fromStdString(ci);
 
 		if (dbih->db.services.count(ch.second))
 		{
 			e2db::service chdata = dbih->db.services[ch.second];
 			e2db::transponder txdata = dbih->db.transponders[chdata.txid];
+			if (txdata.ttype != 's') continue;
 
 			QString idx = QString::fromStdString(to_string(ch.first));
 			QString chname = QString::fromStdString(chdata.chname);
-			QString stype = STYPES.count(chdata.stype) ? QString::fromStdString(STYPES.at(chdata.stype)) : "Data";
-			QString pname = QString::fromStdString(chdata.data.count(PVDR_DATA.at('p')) ? chdata.data[PVDR_DATA.at('p')][0] : "");
+			QString stype = e2db::STYPES.count(chdata.stype) ? QString::fromStdString(e2db::STYPES.at(chdata.stype)) : "Data";
+			QString pname = QString::fromStdString(chdata.data.count(e2db::PVDR_DATA.at('p')) ? chdata.data[e2db::PVDR_DATA.at('p')][0] : "");
+
+			QString txp = QString::fromStdString(txdata.freq + '/' + e2db::SAT_POL[txdata.pol] + '/' + txdata.sr);
+			string ppos;
+			if (dbih->tuners.count(txdata.pos)) {
+				ppos = dbih->tuners.at(txdata.pos).name;
+			} else {
+				char cposdeg[5];
+				sprintf(cposdeg, "%.1f", float(txdata.pos / 10));
+				ppos = (string (cposdeg) + (txdata.pos ? 'E' : 'W'));
+			}
+			QString pos = QString::fromStdString(ppos);
 
 			//Qt5
-			QTreeWidgetItem* item = new QTreeWidgetItem({x, idx, chname, stype, pname});
+			QTreeWidgetItem* item = new QTreeWidgetItem({x, idx, chname, stype, pname, txp, pos});
 			list->addTopLevelItem(item);
 		}
+	}
+
+	list->setSortingEnabled(true);
+	if (vx) list->sortByColumn(0, Qt::AscendingOrder);
+}
+
+//TODO FIX
+void channelBook::trickySortByColumn(int column)
+{
+	debug("channelBook", "trickySortByColumn()", "column", to_string(column));
+
+	Qt::SortOrder order = list->header()->sortIndicatorOrder();
+	column = column == 1 ? 0 : column;
+
+	if (column)
+	{
+		list->sortItems(column, order);
+	}
+	else
+	{
+		list->sortByColumn(column, order);
+		list->header()->setSortIndicator(1, order);
 	}
 }
 }

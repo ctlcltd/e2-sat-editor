@@ -1,18 +1,21 @@
 /*!
  * e2-sat-editor/src/e2db.h
  * 
+ * @link https://github.com/ctlcltd/e2-sat-editor
+ * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
  * @version 0.1
  * @license MIT License
+ * @license GNU GPLv3 License
  */
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
 #include <string>
 #include <vector>
 #include <map>
 #include <unordered_map>
+#include <fstream>
+#include <sstream>
+#include <iostream>
 #include <ctime>
 
 using namespace std;
@@ -22,6 +25,62 @@ using namespace std;
 struct e2db_abstract
 {
 	public:
+		//C++17
+
+		inline static const string SAT_POL[4] = {"H", "V", "L", "R"};
+		inline static const string SAT_FEC[11] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "3/5", "4/5", "8/9", "9/10"};
+		inline static const string SAT_INV[3] = {"Auto", "On", "Off"};
+		inline static const string SAT_SYS[2] = {"DVB-S", "DVB-S2"};
+		inline static const string SAT_MOD[4] = {"Auto", "QPSK", "QAM16", "8PSK"};
+		inline static const string SAT_ROL[4] = {"Auto", "QPSK", "QAM16", "8PSK"};
+		inline static const string SAT_PIL[3] = {"Auto", "Off", "On"};
+
+		inline static const string TER_BAND[4] = {"Auto", "8Mhz", "7Mhz", "6Mhz"};
+		inline static const string TER_HPFEC[6] = {"Auto", "1/2", "2/3", "3/4", "5/6", "7/8"};
+		inline static const string TER_LPFEC[6] = {"Auto", "1/2", "2/3", "3/4", "5/6", "7/8"};
+		inline static const string TER_MOD[4] = {"Auto", "QPSK", "QAM16", "QAM64"};
+		inline static const string TER_TRXMODE[5] = {"Auto", "2k", "8k"};
+		inline static const string TER_GUARD[5] = {"Auto", "1/32", "1/16", "1/8", "1/4"};
+		inline static const string TER_HIER[5] = {"Auto", "", "1", "2", "4"};
+		inline static const string TER_INV[3] = {"Auto", "On", "Off"};
+
+		inline static const string CAB_INV[3] = {"Auto", "On", "Off"};
+		inline static const string CAB_MOD[6] = {"Auto", "QAM16", "QAM32", "QAM64", "QAM128", "QAM256"};
+		inline static const string CAB_IFEC[8] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "8/9"};
+
+		inline static const unordered_map<char, char> PVDR_DATA = {
+			{'p', '0'},
+			{'c', '1'},
+			{'C', '2'},
+			{'f', '3'}
+		};
+
+		inline static const unordered_map<int, string> STYPES = {
+			{0, "Data"},
+			{1, "TV"},
+			{2, "Radio"},
+			{10, "Radio"},
+			{12, "TV"},
+			{17, "UHD"},
+			{22, "H.264"},
+			{25, "HD"},
+			{31, "UHD"}
+		};
+
+		inline static const unordered_map<string, string> SCAS = {
+			{"01", "Seca"},
+			{"06", "Irdeto"},
+			{"05", "Viaccess"},
+			{"09", "NDS"},
+			{"0b", "Conax"},
+			{"0d", "Cryptoworks"},
+			{"0e", "PVU"},
+			{"18", "Nagra"},
+			{"26", "BISS"},
+			{"43", "Crypton"},
+			{"4a", "DRE"}
+		};
+
 		struct service
 		{
 			string ssid;

@@ -1,9 +1,12 @@
 /*!
  * e2-sat-editor/src/gui/about.cpp
  *
+ * @link https://github.com/ctlcltd/e2-sat-editor
+ * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
  * @version 0.1
  * @license MIT License
+ * @license GNU GPLv3 License
  */
 
 #include <QDialog>
@@ -24,7 +27,7 @@ void about(QWidget* mwid)
 	debug("gui", "about()");
 
 	QDialog* dial = new QDialog(mwid);
-	dial->setWindowTitle("About e2-sat-editor");
+	dial->setWindowTitle("About e2 SAT Editor");
 
 	QGridLayout* dfrm = new QGridLayout(dial);
 	QHBoxLayout* dhbox = new QHBoxLayout;
@@ -32,19 +35,24 @@ void about(QWidget* mwid)
 
 	QLabel* aicon = new QLabel;
 	aicon->setText("📡");
-	aicon->setStyleSheet("margin: 0 16px 96px 12px; font-size: 64px");
+	aicon->setStyleSheet("margin: 0 16px 172px 12px; font-size: 64px");
 	QLabel* aname = new QLabel;
-	aname->setText("e2-sat-editor");
+	aname->setText("e2 SAT Editor");
 	aname->setStyleSheet("font-size: 24px");
 	QLabel* aver = new QLabel;
 	aver->setText("Version 0.1");
 	aver->setStyleSheet("font-size: 16px");
 	QLabel* aauts = new QLabel;
-	aauts->setText("e2-sat-editor Team (Leonardo Laureti)");
+	aauts->setText("e2 SAT Editor Team [Leonardo Laureti]");
 	aauts->setStyleSheet("margin: 2px 0 0 0");
 	QLabel* acopy = new QLabel;
-	acopy->setText("Copyright © e2-sat-editor Team (Leonardo Laureti).");
+	acopy->setText("Copyright 2022 © e2 SAT Editor Team [Leonardo Laureti].");
 	acopy->setStyleSheet("margin: 10px 0 5px 0");
+	QLabel* alise = new QLabel;
+	alise->setText("This software is distributed under the terms of the <a href=\"https://www.gnu.org/licenses/gpl-3.0.html\">GNU GPLv3 License</a>.<br>\n\
+The source code of this free software is available here:<br>\n\
+<a href=\"https://github.com/ctlcltd/e2-sat-editor\">https://github.com/ctlcltd/e2-sat-editor</a>");
+	alise->setStyleSheet("margin: 10px 0 5px 0; font-size: 10px");
 	QLabel* anote = new QLabel;
 	anote->setStyleSheet("font-size: 8px");
 	anote->setText("THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, \n\
@@ -62,12 +70,14 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.");
 	dvbox->addWidget(aver);
 	dvbox->addWidget(aauts);
 	dvbox->addWidget(acopy);
+	dvbox->addWidget(alise);
 	dvbox->addWidget(anote);
 
 	dhbox->addWidget(aicon);
 	dhbox->addLayout(dvbox);
 
 	dfrm->addLayout(dhbox, 0, 0);
+	dfrm->setSizeConstraint(QGridLayout::SetFixedSize);
 	dial->setLayout(dfrm);
 	dial->exec();
 }

@@ -1,4 +1,4 @@
-# e2-sat-editor   📡
+# e2 SAT Editor   📡
 
 An enigma2 channel list editor – under development.
 

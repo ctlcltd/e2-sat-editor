@@ -1,12 +1,16 @@
 /*!
  * e2-sat-editor/src/gui/tab.cpp
  *
+ * @link https://github.com/ctlcltd/e2-sat-editor
+ * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
  * @version 0.1
  * @license MIT License
+ * @license GNU GPLv3 License
  */
 
 #include <algorithm>
+#include <map>
 #include <filesystem>
 #include <cstdio>
 
@@ -18,6 +22,7 @@
 #include <QToolBar>
 #include <QPushButton>
 #include <QLabel>
+#include <QMessageBox>
 
 #include "../commons.h"
 #include "tab.h"
@@ -32,7 +37,7 @@ namespace e2se_gui
 void addChannel(QWidget* mwid, e2db* dbih)
 {
 	QDialog* dial = new QDialog(mwid);
-	dial->setMinimumSize(680, 420);
+	dial->setMinimumSize(760, 420);
 	dial->setWindowTitle("Add Channel");
 
 	QGridLayout* layout = new QGridLayout;
@@ -312,8 +317,8 @@ void tab::populate()
 
 	for (auto & ch : dbih->index[cur_chlist])
 	{
-		char ci[6];
-		sprintf(ci, "%05d", i++);
+		char ci[7];
+		sprintf(ci, "%06d", i++);
 		QString x = QString::fromStdString(ci);
 
 		//TODO ? transponder.ttype
@@ -328,19 +333,23 @@ void tab::populate()
 			QString chname = QString::fromStdString(chdata.chname);
 			QString chid = QString::fromStdString(ch.second);
 			QString txid = QString::fromStdString(chdata.txid);
-			QString stype = STYPES.count(chdata.stype) ? QString::fromStdString(STYPES.at(chdata.stype)) : "Data";
-			QString pname = QString::fromStdString(chdata.data.count(PVDR_DATA.at('p')) ? chdata.data[PVDR_DATA.at('p')][0] : "");
+			QString stype = e2db::STYPES.count(chdata.stype) ? QString::fromStdString(e2db::STYPES.at(chdata.stype)) : "Data";
+			QString pname = QString::fromStdString(chdata.data.count(e2db::PVDR_DATA.at('p')) ? chdata.data[e2db::PVDR_DATA.at('p')][0] : "");
 
 			QString freq = QString::fromStdString(txdata.freq);
-			QString pol = QString::fromStdString(SAT_POL[txdata.pol]);
+			QString pol = QString::fromStdString(e2db::SAT_POL[txdata.pol]);
 			QString sr = QString::fromStdString(txdata.sr);
-			QString fec = QString::fromStdString(SAT_FEC[txdata.fec]);
-			string ppos = dbih->tuners.count(txdata.pos) ? dbih->tuners.at(txdata.pos).name + ' ' : "";
-			char cposdeg[5];
-			sprintf(cposdeg, "%.1f", float(txdata.pos / 10));
-			ppos.append(string (cposdeg) + (txdata.pos ? 'E' : 'W'));
+			QString fec = QString::fromStdString(e2db::SAT_FEC[txdata.fec]);
+			string ppos;
+			if (dbih->tuners.count(txdata.pos)) {
+				ppos = dbih->tuners.at(txdata.pos).name;
+			} else {
+				char cposdeg[5];
+				sprintf(cposdeg, "%.1f", float(txdata.pos / 10));
+				ppos = (string (cposdeg) + (txdata.pos ? 'E' : 'W'));
+			}
 			QString pos = QString::fromStdString(ppos);
-			QString sys = QString::fromStdString(SAT_SYS[txdata.sys]);
+			QString sys = QString::fromStdString(e2db::SAT_SYS[txdata.sys]);
 
 			QTreeWidgetItem* item; // Qt5
 			if (DEBUG) item = new QTreeWidgetItem({x, idx, chname, chid, txid, stype, pname, freq, pol, sr, fec, pos, sys});
@@ -370,6 +379,7 @@ void tab::populate()
 	list_tree->setDragEnabled(true);
 }
 
+//TODO FIX
 void tab::trickySortByColumn(int column)
 {
 	debug("tab", "trickySortByColumn()", "column", to_string(column));
@@ -400,9 +410,10 @@ void tab::save()
 {
 	debug("tab", "save()");
 
-	todoMsg("TEST\n\nFiles will be saved in this folder:\n/usr/local/var/tmp/e2-sat-editor");
-	dbih->tester(); //TODO TEST
-	todoMsg("Saved.");
+	QMessageBox dial = QMessageBox();
+	dial.setText("Files will be overwritten.");
+	dial.exec();
+	dbih->tester();
 }
 
 //TEST

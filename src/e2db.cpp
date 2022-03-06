@@ -1,14 +1,17 @@
 /*!
  * e2-sat-editor/src/e2db.cpp
  * 
+ * @link https://github.com/ctlcltd/e2-sat-editor
+ * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
  * @version 0.1
  * @license MIT License
+ * @license GNU GPLv3 License
  */
 
+#include <unordered_set>
 #include <algorithm>
 #include <filesystem>
-#include <regex>
 #include <cstdio>
 #include <cstring>
 #include "commons.h"
@@ -20,6 +23,7 @@ e2db_parser::e2db_parser()
 {
 	debug("e2db_parser");
 
+	//TODO
 	dbfilename = PARSE_LAMEDB5 ? "lamedb5" : "lamedb";
 }
 
@@ -117,9 +121,6 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 
 			if (count == 1)
 			{
-				// 00820000:005e:0055
-				// 0082afc2:0065:0001
-
 				char dvbns[9];
 				char tsid[5];
 				char onid[5];
@@ -137,9 +138,6 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 			}
 			else if (count == 2)
 			{
-				//  s 11219000:29900000:0:0:130:0:0
-				//  s 10949000:29900000:1:7:130:2:0:1:2:0:2
-
 				tx.index = tidx;
 				tx.ttype = line.substr(1, 2)[0];
 				string txdata = line.substr(3);
@@ -169,7 +167,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 						tx.sr = to_string(int (sr / 1e3));
 						tx.pol = pol;
 						tx.fec = fec;
-						tx.pos = pos; //TODO satellites.xml
+						tx.pos = pos;
 						tx.inv = inv;
 						tx.flgs = to_string(flgs); // ?
 						tx.sys = sys; // ?
@@ -201,11 +199,6 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 
 			if (count == 1)
 			{
-				// 3b69:00820000:012c:013e:25:2381
-				// 32cd:00820000:0190:013e:1:2382
-				//
-				// 0082afc2:0065:0001 [transponder]
-
 				char ssid[5];
 				char dvbns[9];
 				char tsid[5];
@@ -251,7 +244,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				while (getline(datas, l, ','))
 				{
 					char d = l[0];
-					char key = PVDR_DATA.count(d) ? PVDR_DATA.at(d) : d;
+					char key = e2db_parser::PVDR_DATA.count(d) ? e2db_parser::PVDR_DATA.at(d) : d;
 					string value = l.substr(2);
 					data[key].push_back(value);
 				}
@@ -350,7 +343,7 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 					tx.sr = to_string(int (sr / 1e3));
 					tx.pol = pol;
 					tx.fec = fec;
-					tx.pos = pos; //TODO satellites.xml
+					tx.pos = pos;
 					tx.inv = inv;
 					tx.flgs = to_string(flgs); // ?
 					tx.sys = sys; // ?
@@ -431,7 +424,7 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 				while (getline(datas, l, ','))
 				{
 					char d = l[0];
-					char key = PVDR_DATA.count(d) ? PVDR_DATA.at(d) : d;
+					char key = e2db_parser::PVDR_DATA.count(d) ? e2db_parser::PVDR_DATA.at(d) : d;
 					string value = l.substr(2);
 					data[key].push_back(value);
 				}
@@ -466,9 +459,6 @@ void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 	{
 		if (line.find("#SERVICE") != string::npos)
 		{
-			// #SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "userbouquet.dbe01.tv" ORDER BY bouquet
-			// #SERVICE 1:7:2:0:0:0:0:0:0:0:FROM BOUQUET "userbouquet.dbe01.radio" ORDER BY bouquet
-
 			char c_refid[33];
 			char c_fname[33];
 			char c_oby[13];
@@ -514,7 +504,6 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 
 	while (getline(fuserbouquet, line))
 	{
-		//TODO #SERVICE
 		if (! step && line.find("#NAME") != string::npos)
 		{
 			ub.name = line.substr(6);
@@ -530,11 +519,6 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 
 		if (step)
 		{
-			// 1:0:2:32:2E18:B0:820000:0:0:0:
-			// 1:0:2:2CB:1B58:13E:820000:0:0:0:
-			// i0:reftype:btype:ssid:tsid:onid:dvbns:?:?:?:
-			// i0:reftype:btype:anum:0:0:0:?:?:?:
-
 			line = line.substr(9);
 			bool sseq = false;
 			char cchid[24];
@@ -734,15 +718,15 @@ void e2db_parser::debugger()
 		cout << "ttype: " << x.second.ttype << endl;
 		cout << "freq: " << x.second.freq << endl;
 		cout << "sr: " << x.second.sr << endl;
-		cout << "pol: " << to_string(x.second.pol) << endl;
-		cout << "fec: " << to_string(x.second.fec) << endl;
-		cout << "pos: " << to_string(x.second.pos) << endl;
-		cout << "inv: " << to_string(x.second.inv) << endl;
+		cout << "pol: " << x.second.pol << endl;
+		cout << "fec: " << x.second.fec << endl;
+		cout << "pos: " << x.second.pos << endl;
+		cout << "inv: " << x.second.inv << endl;
 		cout << "flgs: " << x.second.flgs << endl;
-		cout << "sys: " << to_string(x.second.sys) << endl;
-		cout << "mod: " << to_string(x.second.mod) << endl;
-		cout << "rol: " << to_string(x.second.rol) << endl;
-		cout << "pil: " << to_string(x.second.pil) << endl;
+		cout << "sys: " << x.second.sys << endl;
+		cout << "mod: " << x.second.mod << endl;
+		cout << "rol: " << x.second.rol << endl;
+		cout << "pil: " << x.second.pil << endl;
 		cout << endl;
 	}
 	cout << endl;
@@ -758,16 +742,15 @@ void e2db_parser::debugger()
 		cout << "stype: " << x.second.stype << endl;
 		cout << "snum: " << x.second.snum << endl;
 		cout << "chname: " << x.second.chname << endl;
-		cout << "data: [" << endl;
+		cout << "data: [" << endl << endl;
  		for (auto & q: x.second.data)
 		{
-			cout << "\"" << q.first << "\": [";
-			cout << q.second.size() << endl;
+			cout << q.first << ": [" << endl;
 			for (string & w: q.second)
-				cout << "\"" << w << "\",";
-			cout << "]";
+				cout << w << ", ";
+			cout << endl << "]";
 		}
-		cout << endl << "]" << endl;
+		cout << "]" << endl << endl;
 		cout << "index: " << x.second.index << endl;
 		cout << endl;
 	}
@@ -779,11 +762,10 @@ void e2db_parser::debugger()
 		cout << "name: " << x.second.name << endl;
 		cout << "nname: " << x.second.nname << endl;
 		cout << "btype: " << x.second.btype << endl;
-		cout << "userbouquets: [";
+		cout << "userbouquets: [" << endl << endl;
 		for (auto & w: x.second.userbouquets)
-			cout << "\"" << w << "\",";
-		cout << "]" << endl;
-		cout << endl;
+			cout << w << endl;
+		cout << "]" << endl << endl;
 	}
 	cout << endl;
 	cout << "userbouquets" << endl << endl;
@@ -791,11 +773,13 @@ void e2db_parser::debugger()
 	{
 		cout << "filename: " << x.first << endl;
 		cout << "name: " << x.second.name << endl;
-		cout << "channels: [" << endl;
+		cout << "channels: [" << endl << endl;
 		for (auto & q: x.second.channels)
-			cout << "{\"chid\":\"" << q.first << "\",\"index\":" << q.second.index << "}," << endl;
-		cout << "]" << endl;
-		cout << endl;
+		{
+			cout << "chid: " << q.first << endl;
+			cout << "index: " << q.second.index << endl;
+		}
+		cout << "]" << endl << endl;
 	}
 	cout << endl;
 	cout << "tunersets" << endl << endl;
@@ -812,16 +796,16 @@ void e2db_parser::debugger()
 			cout << "trid: " << q.first << endl;
 			cout << "freq: " << q.second.freq << endl;
 			cout << "sr: " << q.second.sr << endl;
-			cout << "pol: " << to_string(q.second.pol) << endl;
-			cout << "fec: " << to_string(q.second.fec) << endl;
-			cout << "mod: " << to_string(q.second.mod) << endl;
-			cout << "rol: " << to_string(q.second.rol) << endl;
-			cout << "pil: " << to_string(q.second.pil) << endl;
-			cout << "inv: " << to_string(q.second.inv) << endl;
-			cout << "sys: " << to_string(q.second.sys) << endl;
-			cout << "isid: " << to_string(q.second.isid) << endl;
-			cout << "plsmode: " << to_string(q.second.plsmode) << endl;
-			cout << "plscode: " << to_string(q.second.plscode) << endl;
+			cout << "pol: " << q.second.pol << endl;
+			cout << "fec: " << q.second.fec << endl;
+			cout << "mod: " << q.second.mod << endl;
+			cout << "rol: " << q.second.rol << endl;
+			cout << "pil: " << q.second.pil << endl;
+			cout << "inv: " << q.second.inv << endl;
+			cout << "sys: " << q.second.sys << endl;
+			cout << "isid: " << q.second.isid << endl;
+			cout << "plsmode: " << q.second.plsmode << endl;
+			cout << "plscode: " << q.second.plscode << endl;
 			cout << endl;
 		}
 		cout << "]" << endl << endl;
@@ -939,7 +923,7 @@ void e2db_maker::make_lamedb4()
 
 	//TODO
 	unordered_map<char, char> PVDR_DATA_DENUM;
-	for (auto & x: PVDR_DATA) PVDR_DATA_DENUM[x.second] = x.first;
+	for (auto & x: e2db_maker::PVDR_DATA) PVDR_DATA_DENUM[x.second] = x.first;
 
 	ss << "eDVB services /4/" << endl;
 
@@ -963,7 +947,7 @@ void e2db_maker::make_lamedb4()
 		ss << ':' << to_string(int (stoi(tx.sr) * 1e3));
 		ss << ':' << tx.pol;
 		ss << ':' << tx.fec;
-		ss << ':' << tx.pos; //TODO satellites.xml
+		ss << ':' << tx.pos;
 		ss << ':' << tx.inv;
 		if (! tx.flgs.empty())
 			ss << ':' << tx.flgs;
@@ -1027,7 +1011,7 @@ void e2db_maker::make_lamedb5()
 
 	//TODO
 	unordered_map<char, char> PVDR_DATA_DENUM;
-	for (auto & x: PVDR_DATA) PVDR_DATA_DENUM[x.second] = x.first;
+	for (auto & x: e2db_maker::PVDR_DATA) PVDR_DATA_DENUM[x.second] = x.first;
 
 	ss << "eDVB services /5/" << endl;
 
@@ -1051,7 +1035,7 @@ void e2db_maker::make_lamedb5()
 		ss << ':' << to_string(int (stoi(tx.sr) * 1e3));
 		ss << ':' << tx.pol;
 		ss << ':' << tx.fec;
-		ss << ':' << tx.pos; //TODO satellites.xml
+		ss << ':' << tx.pos;
 		ss << ':' << tx.inv;
 		if (! tx.flgs.empty())
 			ss << ':' << tx.flgs;
@@ -1105,9 +1089,6 @@ void e2db_maker::make_lamedb5()
 		}
 		ss << endl;
 	}
-
-	char datetime[80];
-	strftime(datetime, 80, "%F %T %Z", _out_tst);
 
 	ss << "# editor: " << get_editor_string() << endl;
 	ss << "# datetime: " << get_timestamp();
@@ -1170,9 +1151,9 @@ void e2db_maker::make_userbouquet(string bname)
 		if (db.services.count(x.second))
 		{
 			e2db_parser::service cdata = db.services[x.second];
-			ss << cdata.ssid << ':';
-			ss << cdata.tsid << ':';
-			ss << cdata.onid << ':';
+			ss << upCase(cdata.ssid) << ':';
+			ss << upCase(cdata.tsid) << ':';
+			ss << upCase(cdata.onid) << ':';
 			ss << cdata.dvbns << ':';
 			ss << "0:0:0:";
 		}
@@ -1307,9 +1288,9 @@ map<string, vector<pair<int, string>>> e2db::get_packages_index()
 	{
 		service ch = db.services[x.second];
 
-		if (ch.data.count(PVDR_DATA.at('p')))
+		if (ch.data.count(e2db::PVDR_DATA.at('p')))
 		{
-			string pvdrn = ch.data[PVDR_DATA.at('p')][0];
+			string pvdrn = ch.data[e2db::PVDR_DATA.at('p')][0];
 
 			if (pvdrn.empty()) _index["(Unknown)"].emplace_back(x);
 			else _index[pvdrn].emplace_back(x);
@@ -1339,6 +1320,7 @@ map<string, vector<pair<int, string>>> e2db::get_encryption_index()
 	debug("e2db", "get_encryption_index()");
 
 	map<string, vector<pair<int, string>>> _index;
+	unordered_set<string> _unique;
 
 	for (auto & x: index["chs"])
 	{
@@ -1349,7 +1331,12 @@ map<string, vector<pair<int, string>>> e2db::get_encryption_index()
 			for (string & w : ch.data['2'])
 			{
 				string caidpx = w.substr(0, 2);
-				if (SCAS.count(caidpx)) _index[SCAS.at(caidpx)].emplace_back(x);
+				string cx = caidpx + '|' + to_string(x.first);
+				if (e2db::SCAS.count(caidpx) && ! _unique.count(cx))
+				{
+					_index[e2db::SCAS.at(caidpx)].emplace_back(x);
+					_unique.insert(cx);
+				}
 			}
 		}
 		else
@@ -1357,6 +1344,7 @@ map<string, vector<pair<int, string>>> e2db::get_encryption_index()
 			_index["(FTA)"].emplace_back(x);
 		}
 	}
+	_unique.clear();
 
 	return _index;
 }
