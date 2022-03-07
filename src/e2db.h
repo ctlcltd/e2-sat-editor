@@ -27,6 +27,10 @@ struct e2db_abstract
 	public:
 		//C++17
 
+		inline static bool DEBUG = false;
+		inline static bool PARSE_TUNERSETS = true;
+		inline static bool PARSE_LAMEDB5_PRIOR = false;
+
 		inline static const string SAT_POL[4] = {"H", "V", "L", "R"};
 		inline static const string SAT_FEC[11] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "3/5", "4/5", "8/9", "9/10"};
 		inline static const string SAT_INV[3] = {"Auto", "On", "Off"};
@@ -173,6 +177,11 @@ struct e2db_abstract
 		map<string, vector<pair<string, int>>> collisions;
 	protected:
 		unordered_map<string, string> e2db;
+		void options();
+		void debug(string ns, string cmsg = "", string optk = "", string optv = "", string indt = " ");
+		void error(string ns, string cmsg = "", string optk = "", string optv = "", string indt = " ");
+		static string lowCase(string str);
+		static string upCase(string str);
 };
 
 class e2db_parser : virtual public e2db_abstract

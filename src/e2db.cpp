@@ -14,17 +14,51 @@
 #include <filesystem>
 #include <cstdio>
 #include <cstring>
-#include "commons.h"
 #include "e2db.h"
 
 using namespace std;
+
+void e2db_abstract::debug(string ns, string cmsg, string optk, string optv, string indt)
+{
+	if (DEBUG) return;
+	cout << ns;
+	if (! cmsg.empty()) cout << indt << cmsg;
+	if (! optk.empty()) cout << indt << optk << ":";
+	if (! optv.empty()) cout << " " << optv;
+	cout << endl;
+}
+
+void e2db_abstract::error(string ns, string cmsg, string optk, string optv, string indt)
+{
+	cout << ns;
+	if (! cmsg.empty()) cout << indt << cmsg;
+	if (! optk.empty()) cout << indt << optk << ":";
+	if (! optv.empty()) cout << " " << optv;
+	cout << endl;
+}
+
+//C++ 17
+string e2db_abstract::lowCase(string str)
+{
+	transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return tolower(c); });
+	return str;
+}
+
+//C++ 17
+string e2db_abstract::upCase(string str)
+{
+	transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return toupper(c); });
+	return str;
+}
+
+
 
 e2db_parser::e2db_parser()
 {
 	debug("e2db_parser");
 
 	//TODO
-	dbfilename = PARSE_LAMEDB5 ? "lamedb5" : "lamedb";
+	dbfilename = e2db_parser::PARSE_LAMEDB5_PRIOR ? "lamedb5" : "lamedb";
 }
 
 void e2db_parser::parse_e2db()
@@ -35,7 +69,7 @@ void e2db_parser::parse_e2db()
 	parse_e2db_lamedb(flamedb);
 	flamedb.close();
 
-	if (PARSE_TUNERSETS && e2db.count("satellites.xml"))
+	if (e2db_parser::PARSE_TUNERSETS && e2db.count("satellites.xml"))
 	{
 		ifstream ftunxml (e2db["satellites.xml"]);
 		parse_tunersets_xml(0, ftunxml);
@@ -1151,9 +1185,9 @@ void e2db_maker::make_userbouquet(string bname)
 		if (db.services.count(x.second))
 		{
 			e2db_parser::service cdata = db.services[x.second];
-			ss << upCase(cdata.ssid) << ':';
-			ss << upCase(cdata.tsid) << ':';
-			ss << upCase(cdata.onid) << ':';
+			ss << e2db_parser::upCase(cdata.ssid) << ':';
+			ss << e2db_parser::upCase(cdata.tsid) << ':';
+			ss << e2db_parser::upCase(cdata.onid) << ':';
 			ss << cdata.dvbns << ':';
 			ss << "0:0:0:";
 		}

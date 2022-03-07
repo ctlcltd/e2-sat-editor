@@ -17,7 +17,6 @@
 #include <QLabel>
 
 #include "../commons.h"
-#include "../e2db.h"
 #include "channelBook.h"
 
 using namespace std;
