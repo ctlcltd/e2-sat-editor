@@ -20,7 +20,7 @@ using namespace std;
 #include <QWidget>
 #include <QHBoxLayout>
 #include <QListWidget>
-#include "e2db.h"
+#include "e2db_gui.h"
 
 namespace e2se_gui
 {

@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/gui/e2db.h
+ * e2-sat-editor/src/gui/e2db_gui.h
  * 
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -14,7 +14,6 @@
 #include "../commons.h"
 #include "../e2db.h"
 
-//TODO FIX init after declaration
 namespace e2se_gui
 {
 class e2db : public ::e2db
