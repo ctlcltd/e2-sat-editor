@@ -24,7 +24,7 @@ const bool PARSE_LAMEDB5 = false;
 
 static void debug(string ns, string cmsg = "", string optk = "", string optv = "", string indt = " ")
 {
-	if (DEBUG) return;
+	if (! DEBUG) return;
 	cout << ns;
 	if (! cmsg.empty()) cout << indt << cmsg;
 	if (! optk.empty()) cout << indt << optk << ":";

@@ -7,10 +7,10 @@ else
 	QMAKE="qmake"
 fi
 
-rm *.o
-rm moc_*.cpp
-rm moc_predefs.h
-rm Makefile
-rm .qmake.stash
+#rm *.o
+#rm moc_*.cpp
+#rm moc_predefs.h
+#rm Makefile
+#rm .qmake.stash
 $QMAKE
 make && $QMAKE

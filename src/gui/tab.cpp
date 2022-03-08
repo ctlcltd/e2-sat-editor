@@ -355,12 +355,13 @@ void tab::populate()
 			}
 			QString pos = QString::fromStdString(ppos);
 			string psys;
-			if (txdata.ttype == 's')
+			//TODO FIX SEGFAULT with loadSeeds()
+			/*if (txdata.ttype == 's')
 				psys = txdata.sys != -1 ? e2db::SAT_SYS[txdata.sys] : "";
 			else if (txdata.ttype == 't')
 				psys = "DVB-T"; //TODO terrestrial.xml
 			else if (txdata.ttype == 'c')
-				psys = "DVB-C";
+				psys = "DVB-C";*/
 			QString sys = QString::fromStdString(psys);
 
 			QTreeWidgetItem* item; // Qt5
