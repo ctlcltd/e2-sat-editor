@@ -37,14 +37,12 @@ void e2db_abstract::error(string ns, string cmsg, string optk, string optv, stri
 	cout << endl;
 }
 
-//C++ 17
 string e2db_abstract::lowCase(string str)
 {
 	transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return tolower(c); });
 	return str;
 }
 
-//C++ 17
 string e2db_abstract::upCase(string str)
 {
 	transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return toupper(c); });
@@ -115,6 +113,7 @@ void e2db_parser::parse_e2db_lamedb(ifstream& flamedb)
 	}
 }
 
+//TODO ATSC
 void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 {
 	debug("e2db_parser", "parse_e2db_lamedb4()");
@@ -195,11 +194,12 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 						tx.fec = fec;
 						tx.pos = pos;
 						tx.inv = inv;
-						tx.flgs = to_string(flgs);
+						tx.flgs = flgs;
 						tx.sys = sys;
 						tx.mod = mod;
 						tx.rol = rol;
 						tx.pil = pil;
+						sys = -1, mod = -1, rol = -1, pil = -1;
 					break;
 					case 't': // DVB-T
 						sscanf(txdata.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &band, &hpfec, &lpfec, &termod, &trxmod, &guard, &hier, &inv, oflgs);
@@ -225,6 +225,9 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 						tx.cabmod = cabmod;
 						tx.ifec = ifec;
 						tx.oflgs = string (oflgs);
+					break;
+					case 'a': // ATSC:
+						error("e2db_parser", "lamedb", "Error", "ATSC not supported yet.", "\t");
 					break;
 				}
 			}
@@ -313,6 +316,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 }
 
 //TODO test & transform hexdigit
+//TODO ATSC
 void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 {
 	debug("e2db_parser", "parse_e2db_lamedb5()");
@@ -341,8 +345,6 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 		// transponder
 		if (step)
 		{
-//			cout << data << " " << params << " " << type << endl;
-
 			tx = transponder ();
 			string txid = "";
 			tx.index = tidx;
@@ -368,7 +370,7 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 			switch (tx.ttype)
 			{
 				case 's':
-					sscanf(params.substr(2).c_str(), "%8d:%8d:%1d:%1d:%3d:%1d:%1d:%1d:%1d:%1d:%1d", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil);
+					sscanf(params.substr(2).c_str(), "%8d:%8d:%1d:%1d:%3d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil, oflgs);
 
 					tx.freq = to_string(int (freq / 1e3));
 					tx.sr = to_string(int (sr / 1e3));
@@ -376,17 +378,18 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 					tx.fec = fec;
 					tx.pos = pos;
 					tx.inv = inv;
-					tx.flgs = to_string(flgs);
+					tx.flgs = flgs;
 					tx.sys = sys;
 					tx.mod = mod;
 					tx.rol = rol;
 					tx.pil = pil;
-					//TODO ,... other flags
+					tx.oflgs = string (oflgs);
+					sys = -1, mod = -1, rol = -1, pil = -1;
 				break;
 				case 't': // DVB-T
 					sscanf(params.substr(2).c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &band, &hpfec, &lpfec, &termod, &trxmod, &guard, &hier, &inv, oflgs);
 
-					tx.freq = to_string(int (freq / 1e3));
+					tx.freq = to_string(int (freq / 1e6));
 					tx.band = band;
 					tx.hpfec = hpfec;
 					tx.lpfec = lpfec;
@@ -408,6 +411,9 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 					tx.ifec = ifec;
 					tx.oflgs = string (oflgs);
 				break;
+				case 'a': // ATSC:
+					error("e2db_parser", "lamedb", "Error", "ATSC not supported yet.", "\t");
+				break;
 			}
 
 			txid = tx.tsid + ':' + tx.onid + ':' + tx.dvbns;
@@ -418,8 +424,6 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 		// service
 		else
 		{
-//			cout << data << " " << params << " " << type << endl;
-
 			ch = service ();
 			string chid = "";
 			string txid = "";
@@ -761,13 +765,23 @@ void e2db_parser::debugger()
 		cout << "sr: " << x.second.sr << endl;
 		cout << "pol: " << x.second.pol << endl;
 		cout << "fec: " << x.second.fec << endl;
+		cout << "hpfec: " << x.second.hpfec << endl;
+		cout << "lpfec: " << x.second.lpfec << endl;
+		cout << "ifec: " << x.second.ifec << endl;
 		cout << "pos: " << x.second.pos << endl;
 		cout << "inv: " << x.second.inv << endl;
 		cout << "flgs: " << x.second.flgs << endl;
 		cout << "sys: " << x.second.sys << endl;
 		cout << "mod: " << x.second.mod << endl;
+		cout << "termod: " << x.second.termod << endl;
+		cout << "cabmod: " << x.second.cabmod << endl;
 		cout << "rol: " << x.second.rol << endl;
 		cout << "pil: " << x.second.pil << endl;
+		cout << "band: " << x.second.band << endl;
+		cout << "trxmod: " << x.second.trxmod << endl;
+		cout << "guard: " << x.second.guard << endl;
+		cout << "hier: " << x.second.hier << endl;
+		cout << "oflgs: " << x.second.oflgs << endl;
 		cout << endl;
 	}
 	cout << endl;
@@ -782,6 +796,7 @@ void e2db_parser::debugger()
 		cout << "onid: " << x.second.onid << endl;
 		cout << "stype: " << x.second.stype << endl;
 		cout << "snum: " << x.second.snum << endl;
+		cout << "srcid: " << x.second.srcid << endl;
 		cout << "chname: " << x.second.chname << endl;
 		cout << "data: [" << endl << endl;
  		for (auto & q: x.second.data)
@@ -984,22 +999,49 @@ void e2db_maker::make_lamedb4()
 		ss << ':' << onid;
 		ss << endl;
 		ss << '\t' << tx.ttype;
-		ss << ' ' << to_string(int (stoi(tx.freq) * 1e3));
-		ss << ':' << to_string(int (stoi(tx.sr) * 1e3));
-		ss << ':' << tx.pol;
-		ss << ':' << tx.fec;
-		ss << ':' << tx.pos;
-		ss << ':' << tx.inv;
-		if (! tx.flgs.empty())
-			ss << ':' << tx.flgs;
-		if (tx.sys)
-			ss << ':' << tx.sys;
-		if (tx.mod)
-			ss << ':' << tx.mod;
-		if (tx.rol) // DVB-S2 only
-			ss << ':' << tx.rol;
-		if (tx.pil) // DVB-S2 only
-			ss << ':' << tx.pil;
+		switch (tx.ttype)
+		{
+			case 's': // DVB-S
+				ss << ' ' << to_string(int (stoi(tx.freq) * 1e3));
+				ss << ':' << to_string(int (stoi(tx.sr) * 1e3));
+				ss << ':' << tx.pol;
+				ss << ':' << tx.fec;
+				ss << ':' << tx.pos;
+				ss << ':' << tx.inv;
+				ss << ':' << tx.flgs;
+				if (tx.sys)
+					ss << ':' << tx.sys;
+				if (tx.mod)
+					ss << ':' << tx.mod;
+				if (tx.rol)
+					ss << ':' << tx.rol;
+				if (tx.pil)
+					ss << ':' << tx.pil;
+			break;
+			case 't': // DVB-T
+				ss << ' ' << to_string(int (stoi(tx.freq) * 1e6));
+				ss << ':' << tx.band;
+				ss << ':' << tx.hpfec;
+				ss << ':' << tx.lpfec;
+				ss << ':' << tx.termod;
+				ss << ':' << tx.trxmod;
+				ss << ':' << tx.guard;
+				ss << ':' << tx.hier;
+				ss << ':' << tx.inv;
+				if (! tx.oflgs.empty())
+					ss << tx.oflgs;
+			break;
+			case 'c': // DVB-C
+				//TODO
+				ss << ' ' << to_string(int (stoi(tx.freq) * 1e3));
+				ss << ':' << to_string(int (stoi(tx.sr) * 1e3));
+				ss << ':' << tx.inv;
+				ss << ':' << tx.cabmod;
+				ss << ':' << tx.ifec;
+				if (! tx.oflgs.empty())
+					ss << tx.oflgs;
+			break;
+		}
 		ss << endl << '/' << endl;
 	}
 	ss << "end" << endl;
@@ -1072,22 +1114,47 @@ void e2db_maker::make_lamedb5()
 		ss << ':' << onid;
 		ss << ',';
 		ss << tx.ttype;
-		ss << ':' << to_string(int (stoi(tx.freq) * 1e3));
-		ss << ':' << to_string(int (stoi(tx.sr) * 1e3));
-		ss << ':' << tx.pol;
-		ss << ':' << tx.fec;
-		ss << ':' << tx.pos;
-		ss << ':' << tx.inv;
-		if (! tx.flgs.empty())
-			ss << ':' << tx.flgs;
-		if (tx.sys)
-			ss << ':' << tx.sys;
-		if (tx.mod)
-			ss << ':' << tx.mod;
-		if (tx.rol) // DVB-S2 only
-			ss << ':' << tx.rol;
-		if (tx.pil) // DVB-S2 only
-			ss << ':' << tx.pil;
+		switch (tx.ttype)
+		{
+			case 's': // DVB-S
+				ss << ':' << to_string(int (stoi(tx.freq) * 1e3));
+				ss << ':' << to_string(int (stoi(tx.sr) * 1e3));
+				ss << ':' << tx.pol;
+				ss << ':' << tx.fec;
+				ss << ':' << tx.pos;
+				ss << ':' << tx.inv;
+				ss << ':' << tx.flgs;
+				if (tx.sys)
+					ss << ':' << tx.sys;
+				if (tx.mod)
+					ss << ':' << tx.mod;
+				if (tx.rol)
+					ss << ':' << tx.rol;
+				if (tx.pil)
+					ss << ':' << tx.pil;
+			break;
+			case 't': // DVB-T
+				ss << ':' << to_string(int (stoi(tx.freq) * 1e6));
+				ss << ':' << tx.band;
+				ss << ':' << tx.hpfec;
+				ss << ':' << tx.lpfec;
+				ss << ':' << tx.termod;
+				ss << ':' << tx.trxmod;
+				ss << ':' << tx.guard;
+				ss << ':' << tx.hier;
+				ss << ':' << tx.inv;
+			break;
+			case 'c': // DVB-C
+				//TODO
+				ss << ':' << to_string(int (stoi(tx.freq) * 1e3));
+				ss << ':' << to_string(int (stoi(tx.sr) * 1e3));
+				ss << ':' << tx.inv;
+				ss << ':' << tx.cabmod;
+				ss << ':' << tx.ifec;
+			break;
+		}
+		if (! tx.oflgs.empty())
+			ss << tx.oflgs;
 		ss << endl;
 	}
 

@@ -114,7 +114,7 @@ struct e2db_abstract
 			int ifec; // DVB-C
 			int pos; // DVB-S
 			int inv;
-			string flgs; // ? DVB-S
+			int flgs; // DVB-S
 			int sys; // ? DVB-S
 			int mod; // ? DVB-S
 			int termod; // DVB-T
