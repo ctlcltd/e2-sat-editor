@@ -15,6 +15,7 @@
 #include <QVBoxLayout>
 #include <QGroupBox>
 #include <QFormLayout>
+#include <QTableWidget>
 #include <QToolBar>
 #include <QPushButton>
 #include <QLabel>
@@ -52,13 +53,9 @@ settings::settings(QWidget* mwid)
 	dtcancel->setText("Cancel");
 	dtcancel->connect(dtcancel, &QPushButton::pressed, [=]() { dial->close(); });
 
-	QLabel* ttodo0 = new QLabel;
-	ttodo0->setText("General TODO");
-	ttodo0->setAlignment(Qt::AlignCenter);
-
 	connections();
 	preferences();
-	todo();
+	advanced();
 
 	dfrm->setColumnStretch(0, 1);
 	dfrm->setRowStretch(0, 1);
@@ -189,13 +186,31 @@ void settings::connections()
 	dtwid->addTab(dtpage, "Connections");
 }
 
-void settings::todo()
+void settings::advanced()
 {
-	QLabel* ttodo = new QLabel;
-	ttodo->setText("App TODO");
-	ttodo->setAlignment(Qt::AlignCenter);
+	QWidget* dtpage = new QWidget;
+	QVBoxLayout* dtcnt = new QVBoxLayout(dtpage);
 
-	dtwid->addTab(ttodo, "TODO");
+	QTableWidget* dttbl = new QTableWidget(3, 1);
+	dttbl->setHidden(true);
+	QTableWidgetItem* item = new QTableWidgetItem({"dummy item"});
+	dttbl->setItem(0, 0, item);
+
+	QWidget* dtntc = new QWidget;
+	QGridLayout* dtntcg = new QGridLayout;
+	QLabel* dtntcl = new QLabel("<b>Please be carefull!</b><br>Modifing these settings could break the program.");
+	QPushButton* dtntcb = new QPushButton;
+	dtntcb->setText("OK, I understood this.");
+	dtntcb->connect(dtntcb, &QPushButton::pressed, [=]() { dtntc->setHidden(true); dttbl->setVisible(true); });
+	dtntcg->addWidget(dtntcl, 0, 0);
+	dtntcg->addWidget(dtntcb, 1, 0);
+	dtntc->setLayout(dtntcg);
+
+	dtcnt->addWidget(dtntc, 0);
+	dtcnt->addWidget(dttbl, 1);
+	dtpage->setLayout(dtcnt);
+
+	dtwid->addTab(dtpage, "Advanced");
 }
 
 void settings::newProfile(QListWidget* list, WidgetWithBackdrop* cnt)

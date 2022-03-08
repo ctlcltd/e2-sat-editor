@@ -26,7 +26,7 @@ class settings
 		settings(QWidget* mwid);
 		void preferences();
 		void connections();
-		void todo();
+		void advanced();
 		void newProfile(QListWidget* list, WidgetWithBackdrop* cnt);
 		void delProfile(QListWidget* list, WidgetWithBackdrop* cnt);
 		void renameProfile(QListWidget* list, bool dismiss, WidgetWithBackdrop* cnt);
