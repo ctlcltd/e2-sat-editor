@@ -193,7 +193,7 @@ void settings::advanced()
 
 	QTableWidget* dttbl = new QTableWidget(3, 1);
 	dttbl->setHidden(true);
-	QTableWidgetItem* item = new QTableWidgetItem({"dummy item"});
+	QTableWidgetItem* item = new QTableWidgetItem("dummy item");
 	dttbl->setItem(0, 0, item);
 
 	QWidget* dtntc = new QWidget;

@@ -180,6 +180,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				int band, hpfec, lpfec, termod, trxmod, guard, hier;
 				int cabmod, ifec;
 				char oflgs[33];
+				sys = -1, mod = -1, rol = -1, pil = -1;
 				tx.pol = -1, tx.fec = -1, tx.inv = -1, tx.sys = -1, tx.mod = -1, tx.rol = -1, tx.pil = -1;
 				tx.band = -1, tx.hpfec = -1, tx.lpfec = -1, tx.termod = -1, tx.trxmod = -1, tx.guard = -1, tx.hier = -1;
 				tx.cabmod = -1, tx.ifec = -1;
@@ -199,7 +200,6 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 						tx.mod = mod;
 						tx.rol = rol;
 						tx.pil = pil;
-						sys = -1, mod = -1, rol = -1, pil = -1;
 					break;
 					case 't': // DVB-T
 						sscanf(txdata.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &band, &hpfec, &lpfec, &termod, &trxmod, &guard, &hier, &inv, oflgs);
@@ -363,6 +363,7 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 			int band, hpfec, lpfec, termod, trxmod, guard, hier;
 			int cabmod, ifec;
 			char oflgs[33];
+			sys = -1, mod = -1, rol = -1, pil = -1;
 			tx.pol = -1, tx.fec = -1, tx.inv = -1, tx.sys = -1, tx.mod = -1, tx.rol = -1, tx.pil = -1;
 			tx.band = -1, tx.hpfec = -1, tx.lpfec = -1, tx.termod = -1, tx.trxmod = -1, tx.guard = -1, tx.hier = -1;
 			tx.cabmod = -1, tx.ifec = -1;
@@ -384,7 +385,6 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 					tx.rol = rol;
 					tx.pil = pil;
 					tx.oflgs = string (oflgs);
-					sys = -1, mod = -1, rol = -1, pil = -1;
 				break;
 				case 't': // DVB-T
 					sscanf(params.substr(2).c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &band, &hpfec, &lpfec, &termod, &trxmod, &guard, &hier, &inv, oflgs);
