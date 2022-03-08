@@ -195,7 +195,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 						tx.fec = fec;
 						tx.pos = pos;
 						tx.inv = inv;
-						tx.oflgs = to_string(flgs);
+						tx.flgs = to_string(flgs);
 						tx.sys = sys;
 						tx.mod = mod;
 						tx.rol = rol;
