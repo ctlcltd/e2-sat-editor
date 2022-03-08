@@ -34,21 +34,6 @@ using namespace std;
 
 namespace e2se_gui
 {
-void addChannel(QWidget* mwid, e2db* dbih)
-{
-	QDialog* dial = new QDialog(mwid);
-	dial->setMinimumSize(760, 420);
-	dial->setWindowTitle("Add Channel");
-
-	QGridLayout* layout = new QGridLayout;
-	channelBook* cb = new channelBook(dbih);
-
-	layout->addWidget(cb->widget);
-	layout->setContentsMargins(0, 0, 0, 0);
-	dial->setLayout(layout);
-	dial->exec();
-}
-
 tab::tab(gui* gid, QWidget* wid, string filename = "")
 {
 	debug("tab()");
@@ -139,12 +124,13 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	list_ats_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	
 	bouquets_ats->addAction("+ New Bouquet", todo);
-	list_ats->addAction("+ Add Channel", [=]() { addChannel(wid, dbih); });
+	list_ats->addAction("+ Add Channel", [=]() { this->addChannel(); });
 	list_ats->addAction("+ New Service", todo);
 	list_ats->addWidget(list_ats_spacer);
 	list_ats->addWidget(list_ats_dndstatus);
 
-	bouquets_tree->connect(bouquets_tree, &QTreeWidget::itemSelectionChanged, [=]() { this->populate(); });
+	// bouquets_tree->connect(bouquets_tree, &QTreeWidget::itemSelectionChanged, [=]() { this->populate(); });
+	bouquets_tree->connect(bouquets_tree, &QTreeWidget::currentItemChanged, [=]() { this->populate(); });
 
 	top->addWidget(top_toolbar);
 	bottom->addWidget(bottom_toolbar);
@@ -159,6 +145,8 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 
 	bouquets->setFlat(true);
 	channels->setFlat(true);
+	bouquets->setMinimumWidth(240);
+	channels->setMinimumWidth(520);
 
 	splitterc->addWidget(bouquets);
 	splitterc->addWidget(channels);
@@ -208,6 +196,21 @@ void tab::open()
 		load(dirname);
 		gid->tabChangeName(ttid, dirname);
 	}
+}
+
+void tab::addChannel()
+{
+	QDialog* dial = new QDialog(cwid);
+	dial->setMinimumSize(760, 420);
+	dial->setWindowTitle("Add Channel");
+
+	QGridLayout* layout = new QGridLayout;
+	channelBook* cb = new channelBook(dbih);
+
+	layout->addWidget(cb->widget);
+	layout->setContentsMargins(0, 0, 0, 0);
+	dial->setLayout(layout);
+	dial->exec();
 }
 
 //TODO remove filename from args
@@ -326,7 +329,6 @@ void tab::populate()
 		{
 			e2db::service chdata = dbih->db.services[ch.second];
 			e2db::transponder txdata = dbih->db.transponders[chdata.txid];
-			if (txdata.ttype != 's') continue;
 
 			QString idx = QString::fromStdString(to_string(ch.first));
 			//TOOO FIX visual chname strip, extended glyphs slow down [qt.qpa.fonts] notice
@@ -337,19 +339,29 @@ void tab::populate()
 			QString pname = QString::fromStdString(chdata.data.count(e2db::PVDR_DATA.at('p')) ? chdata.data[e2db::PVDR_DATA.at('p')][0] : "");
 
 			QString freq = QString::fromStdString(txdata.freq);
-			QString pol = QString::fromStdString(e2db::SAT_POL[txdata.pol]);
+			QString pol = QString::fromStdString(txdata.pol != -1 ? e2db::SAT_POL[txdata.pol] : "");
 			QString sr = QString::fromStdString(txdata.sr);
 			QString fec = QString::fromStdString(e2db::SAT_FEC[txdata.fec]);
 			string ppos;
-			if (dbih->tuners.count(txdata.pos)) {
-				ppos = dbih->tuners.at(txdata.pos).name;
-			} else {
-				char cposdeg[5];
-				sprintf(cposdeg, "%.1f", float(txdata.pos / 10));
-				ppos = (string (cposdeg) + (txdata.pos ? 'E' : 'W'));
+			if (txdata.ttype == 's')
+			{
+				if (dbih->tuners.count(txdata.pos)) {
+					ppos = dbih->tuners.at(txdata.pos).name;
+				} else {
+					char cposdeg[5];
+					sprintf(cposdeg, "%.1f", float(txdata.pos / 10));
+					ppos = (string (cposdeg) + (txdata.pos ? 'E' : 'W'));
+				}
 			}
 			QString pos = QString::fromStdString(ppos);
-			QString sys = QString::fromStdString(e2db::SAT_SYS[txdata.sys]);
+			string psys;
+			if (txdata.ttype == 's')
+				psys = txdata.sys != -1 ? e2db::SAT_SYS[txdata.sys] : "";
+			else if (txdata.ttype == 't')
+				psys = "DVB-T"; //TODO terrestrial.xml
+			else if (txdata.ttype == 'c')
+				psys = "DVB-C";
+			QString sys = QString::fromStdString(psys);
 
 			QTreeWidgetItem* item; // Qt5
 			if (DEBUG) item = new QTreeWidgetItem({x, idx, chname, chid, txid, stype, pname, freq, pol, sr, fec, pos, sys});
@@ -413,7 +425,8 @@ void tab::save()
 	QMessageBox dial = QMessageBox();
 	dial.setText("Files will be overwritten.");
 	dial.exec();
-	dbih->tester();
+	todo();
+	// dbih->tester();
 }
 
 //TEST

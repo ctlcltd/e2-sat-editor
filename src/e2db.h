@@ -106,16 +106,26 @@ struct e2db_abstract
 			string onid;
 			char ttype;
 			string freq;
-			string sr;
-			int pol;
-			int fec;
-			int pos;
+			string sr; // DVB-S
+			int pol; // DVB-S
+			int fec; // DVB-S
+			int hpfec; // DVB-T
+			int lpfec; // DVB-T
+			int ifec; // DVB-C
+			int pos; // DVB-S
 			int inv;
-			string flgs;
-			int sys;
-			int mod;
-			int rol;
-			int pil;
+			string flgs; // ? DVB-S
+			int sys; // ? DVB-S
+			int mod; // ? DVB-S
+			int termod; // DVB-T
+			int cabmod; // DVB-C
+			int rol; // DVB-S2
+			int pil; // DVB-S2
+			int band; // DVB-T
+			int trxmod; // DVB-T
+			int guard; // DVB-T
+			int hier; // DVB-T
+			string oflgs; // ?
 			int index;
 		};
 		struct reference

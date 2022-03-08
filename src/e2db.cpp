@@ -115,7 +115,6 @@ void e2db_parser::parse_e2db_lamedb(ifstream& flamedb)
 	}
 }
 
-//TODO stype DVB-T & DVB-C
 void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 {
 	debug("e2db_parser", "parse_e2db_lamedb4()");
@@ -125,8 +124,8 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 	int tidx = 0;
 	int sidx = 0;
 	string line;
-	string txid = "";
-	string chid = "";
+	string txid;
+	string chid;
 	transponder tx;
 	service ch;
 
@@ -155,6 +154,8 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 
 			if (count == 1)
 			{
+				txid = "";
+				tx = transponder ();
 				char dvbns[9];
 				char tsid[5];
 				char onid[5];
@@ -176,25 +177,16 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				tx.ttype = line.substr(1, 2)[0];
 				string txdata = line.substr(3);
 
+				int freq, sr, pol, fec, pos, inv, flgs, sys, mod, rol, pil;
+				int band, hpfec, lpfec, termod, trxmod, guard, hier;
+				int cabmod, ifec;
+				char oflgs[33];
+				tx.pol = -1, tx.fec = -1, tx.inv = -1, tx.sys = -1, tx.mod = -1, tx.rol = -1, tx.pil = -1;
+				tx.band = -1, tx.hpfec = -1, tx.lpfec = -1, tx.termod = -1, tx.trxmod = -1, tx.guard = -1, tx.hier = -1;
+				tx.cabmod = -1, tx.ifec = -1;
+
 				switch (tx.ttype) {
 					case 's': // DVB-S
-						int freq;
-						int sr;
-						int pol;
-						int fec;
-						int pos;
-						int inv;
-						int flgs;
-						int sys;
-						int mod;
-						int rol;
-						int pil;
-						flgs = NULL;
-						sys = NULL;
-						mod = NULL;
-						rol = NULL;
-						pil = NULL;
-
 						sscanf(txdata.c_str(), "%8d:%8d:%1d:%1d:%3d:%1d:%1d:%1d:%1d:%1d:%1d", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil);
 
 						tx.freq = to_string(int (freq / 1e3));
@@ -203,17 +195,36 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 						tx.fec = fec;
 						tx.pos = pos;
 						tx.inv = inv;
-						tx.flgs = to_string(flgs); // ?
-						tx.sys = sys; // ?
-						tx.mod = mod; // ?
-						tx.rol = rol; // DVB-S2 only
-						tx.pil = pil; // DVB-S2 only
+						tx.oflgs = to_string(flgs);
+						tx.sys = sys;
+						tx.mod = mod;
+						tx.rol = rol;
+						tx.pil = pil;
 					break;
 					case 't': // DVB-T
-						debug("e2db_parser", "parse_e2db_lamedb4()", "txtype", "'t'\tTODO");
+						sscanf(txdata.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &band, &hpfec, &lpfec, &termod, &trxmod, &guard, &hier, &inv, oflgs);
+
+						tx.freq = to_string(int (freq / 1e6));
+						tx.band = band;
+						tx.hpfec = hpfec;
+						tx.lpfec = lpfec;
+						tx.termod = termod;
+						tx.trxmod = trxmod;
+						tx.guard = guard;
+						tx.hier = hier;
+						tx.inv = inv;
+						tx.oflgs = string (oflgs);
 					break;
 					case 'c': // DVB-C
-						debug("e2db_parser", "parse_e2db_lamedb4()", "txtype", "'c'\tTODO");
+						//TODO
+						sscanf(txdata.c_str(), "%8d:%8d:%1d:%1d:%1d%s", &freq, &sr, &inv, &cabmod, &ifec, oflgs);
+
+						tx.freq = to_string(int (freq / 1e3));
+						tx.sr = to_string(int (sr / 1e3));
+						tx.inv = inv;
+						tx.cabmod = cabmod;
+						tx.ifec = ifec;
+						tx.oflgs = string (oflgs);
 					break;
 				}
 			}
@@ -222,8 +233,6 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				db.transponders.emplace(txid, tx);
 				index["txs"].emplace_back(pair (tidx, txid)); //C++ 17
 				count = 0;
-				txid = "";
-				transponder tx;
 			}
 		}
 		// service
@@ -233,14 +242,15 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 
 			if (count == 1)
 			{
+				chid = "";
+				ch = service ();
+
 				char ssid[5];
 				char dvbns[9];
 				char tsid[5];
 				char onid[5];
-				int stype;
-				int snum;
-				stype = NULL;
-				snum = NULL;
+				int stype, snum;
+				stype = -1, snum = -1;
 
 				sscanf(line.c_str(), "%4s:%8s:%4s:%4s:%3d:%4d", ssid, dvbns, tsid, onid, &stype, &snum);
 
@@ -297,14 +307,12 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				db.services.emplace(chid, ch);
 				index["chs"].emplace_back(pair (sidx, chid)); //C++ 17
 				count = 0;
-				chid = "";
-				service ch;
 			}
 		}
 	}
 }
 
-//TODO stype DVB-T & DVB-C
+//TODO test & transform hexdigit
 void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 {
 	debug("e2db_parser", "parse_e2db_lamedb5()");
@@ -313,6 +321,8 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 	int tidx = 0;
 	int sidx = 0;
 	string line;
+	transponder tx;
+	service ch;
 
 	while (getline(flamedb, line))
 	{
@@ -333,17 +343,13 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 		{
 //			cout << data << " " << params << " " << type << endl;
 
-			transponder tx;
+			tx = transponder ();
 			string txid = "";
 			tx.index = tidx;
 			tx.ttype = params[0];
 
-			int dvbns;
-			int tsid;
-			int onid;
-			dvbns = NULL;
-			tsid = NULL;
-			onid = NULL;
+			int dvbns, tsid, onid;
+			dvbns = 0, tsid = 0, onid = 0;
 
 			sscanf(data.c_str(), "%08x:%04x:%04x", &dvbns, &tsid, &onid);
 
@@ -351,26 +357,17 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 			tx.tsid = to_string(tsid);
 			tx.onid = to_string(onid);
 
+			int freq, sr, pol, fec, pos, inv, flgs, sys, mod, rol, pil;
+			int band, hpfec, lpfec, termod, trxmod, guard, hier;
+			int cabmod, ifec;
+			char oflgs[33];
+			tx.pol = -1, tx.fec = -1, tx.inv = -1, tx.sys = -1, tx.mod = -1, tx.rol = -1, tx.pil = -1;
+			tx.band = -1, tx.hpfec = -1, tx.lpfec = -1, tx.termod = -1, tx.trxmod = -1, tx.guard = -1, tx.hier = -1;
+			tx.cabmod = -1, tx.ifec = -1;
+
 			switch (tx.ttype)
 			{
 				case 's':
-					int freq;
-					int sr;
-					int pol;
-					int fec;
-					int pos;
-					int inv;
-					int flgs;
-					int sys;
-					int mod;
-					int rol;
-					int pil;
-					flgs = NULL;
-					sys = NULL;
-					mod = NULL;
-					rol = NULL;
-					pil = NULL;
-
 					sscanf(params.substr(2).c_str(), "%8d:%8d:%1d:%1d:%3d:%1d:%1d:%1d:%1d:%1d:%1d", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil);
 
 					tx.freq = to_string(int (freq / 1e3));
@@ -379,18 +376,37 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 					tx.fec = fec;
 					tx.pos = pos;
 					tx.inv = inv;
-					tx.flgs = to_string(flgs); // ?
-					tx.sys = sys; // ?
-					tx.mod = mod; // ?
-					tx.rol = rol; // DVB-S2 only
-					tx.pil = pil; // DVB-S2 only
+					tx.flgs = to_string(flgs);
+					tx.sys = sys;
+					tx.mod = mod;
+					tx.rol = rol;
+					tx.pil = pil;
 					//TODO ,... other flags
 				break;
 				case 't': // DVB-T
-					debug("e2db_parser", "parse_e2db_lamedb5()", "txtype", "'t'\tTODO");
+					sscanf(params.substr(2).c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &band, &hpfec, &lpfec, &termod, &trxmod, &guard, &hier, &inv, oflgs);
+
+					tx.freq = to_string(int (freq / 1e3));
+					tx.band = band;
+					tx.hpfec = hpfec;
+					tx.lpfec = lpfec;
+					tx.termod = termod;
+					tx.trxmod = trxmod;
+					tx.guard = guard;
+					tx.hier = hier;
+					tx.inv = inv;
+					tx.oflgs = string (oflgs);
 				break;
 				case 'c': // DVB-C
-					debug("e2db_parser", "parse_e2db_lamedb5()", "txtype", "'c'\tTODO");
+					//TODO
+					sscanf(params.substr(2).c_str(), "%8d:%8d:%1d:%1d:%1d%s", &freq, &sr, &inv, &cabmod, &ifec, oflgs);
+
+					tx.freq = to_string(int (freq / 1e3));
+					tx.sr = to_string(int (sr / 1e3));
+					tx.inv = inv;
+					tx.cabmod = cabmod;
+					tx.ifec = ifec;
+					tx.oflgs = string (oflgs);
 				break;
 			}
 
@@ -404,22 +420,14 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 		{
 //			cout << data << " " << params << " " << type << endl;
 
-			service ch;
+			ch = service ();
 			string chid = "";
 			string txid = "";
 			ch.index = sidx;
 
 			char ssid[5];
-			int dvbns;
-			int tsid;
-			int onid;
-			int stype;
-			int snum;
-			int srcid;
-			dvbns = NULL;
-			stype = NULL;
-			snum = NULL;
-			srcid = NULL;
+			int dvbns, tsid, onid, stype, snum, srcid;
+			dvbns = -1, stype = -1, snum = -1, srcid = -1;
 
 			sscanf(data.c_str(), "%4s:%08x:%04x:%04x:%3d:%4d:%d", ssid, &dvbns, &tsid, &onid, &stype, &snum, &srcid);
 
@@ -449,21 +457,18 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 			//  c: cache
 			//  C: ciad
 			//  f: flags
-			/*if (! chdata.empty())
-			{
-				stringstream datas(chdata);
-				string l;
-				map<char, vector<string>> data;
+			stringstream datas(chdata);
+			string l;
+			map<char, vector<string>> data;
 
-				while (getline(datas, l, ','))
-				{
-					char d = l[0];
-					char key = e2db_parser::PVDR_DATA.count(d) ? e2db_parser::PVDR_DATA.at(d) : d;
-					string value = l.substr(2);
-					data[key].push_back(value);
-				}
-				ch.data = data;
-			}*/
+			while (getline(datas, l, ','))
+			{
+				char d = l[0];
+				char key = e2db_parser::PVDR_DATA.count(d) ? e2db_parser::PVDR_DATA.at(d) : d;
+				string value = l.substr(2);
+				data[key].push_back(value);
+			}
+			ch.data = data;
 
 			if (db.services.count(chid))
 			{
@@ -506,6 +511,8 @@ void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 		}
 		else if (line.find("#NAME") != string::npos)
 		{
+			bs = bouquet ();
+
 			bs.name = line.substr(6);
 			if (bname.find(".tv") != string::npos)
 			{
@@ -540,6 +547,8 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 	{
 		if (! step && line.find("#NAME") != string::npos)
 		{
+			ub = userbouquet ();
+
 			ub.name = line.substr(6);
 			ub.pname = pname;
 			step = true;
@@ -562,9 +571,7 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 			char tsid[5];
 			char onid[5];
 			int dvbns;
-			i0 = NULL;
-			i1 = NULL;
-			dvbns = NULL;
+			i0 = -1, i1 = -1, dvbns = -1;
 
 			//TODO performance optimization selective tolower
 			transform(line.begin(), line.end(), line.begin(), [](unsigned char c){ return c == ':' ? ' ' : tolower(c); });
@@ -605,7 +612,7 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 			if (sseq)
 				index[pname].emplace_back(pair (bouquets[pname].count++, chid)); //C++ 17
 
-			reference ref;
+			ref = reference ();
 		}
 	}
 
@@ -655,8 +662,8 @@ void e2db_parser::parse_tunersets_xml(int ytype, ifstream& ftunxml)
 			string trid = tr.freq + ':' + to_string(tr.pol) + ':' + tr.sr;
 			tn.references.emplace(trid, tr);
 			tuners.emplace(tn.pos, tn);
-			tuner_sets tn;
-			tuner_reference tr;
+			tn = tuner_sets ();
+			tr = tuner_reference ();
 			continue;
 		}
 		else if (! step && line.find("<") != string::npos)

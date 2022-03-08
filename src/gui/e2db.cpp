@@ -15,10 +15,5 @@ using namespace std;
 
 namespace e2se_gui
 {
-void e2db::options()
-{
-	e2db::DEBUG = DEBUG;
-	e2db::PARSE_TUNERSETS = PARSE_TUNERSETS;
-	e2db::PARSE_LAMEDB5_PRIOR = PARSE_LAMEDB5;
-}
+//TODO FIX init after declaration
 }

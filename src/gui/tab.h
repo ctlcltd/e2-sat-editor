@@ -31,6 +31,7 @@ class tab
 		tab(gui* gid, QWidget* wid, string filename);
 		void newFile();
 		void open();
+		void addChannel();
 		bool load(string filename = "");
 		void populate();
 		void trickySortByColumn(int column);

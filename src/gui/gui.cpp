@@ -55,7 +55,7 @@ gui::gui(int argc, char* argv[])
 
 	this->mwid = new QWidget;
 	mwid->setWindowTitle("e2 SAT Editor");
-	mwid->setMinimumSize(680, 510);
+	mwid->setMinimumSize(760, 550);
 	mwid->resize(wsize);
 
 	root();
@@ -93,7 +93,8 @@ void gui::menuCtl()
 	menu->setNativeMenuBar(true);
 
 	QString osprod = QSysInfo::productType();
-	if (osprod != "macos")
+	// if (osprod != "macos")
+	if (! menu->isNativeMenuBar())
 	{
 		menu->setParent(mwid);
 		mfrm->addWidget(menu);

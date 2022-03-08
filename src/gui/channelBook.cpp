@@ -116,7 +116,7 @@ void channelBook::layout()
 	list->setColumnWidth(6, 120);	// SAT
 
 	list->header()->connect(list->header(), &::QHeaderView::sectionClicked, [=](int column) { this->trickySortByColumn(column); });
-	tree->connect(tree, &QTreeWidget::itemSelectionChanged, [=]() { this->populate(); });
+	tree->connect(tree, &QTreeWidget::currentItemChanged, [=]() { this->populate(); });
 	tabv->connect(tabv, &QTabBar::currentChanged, [=]() { this->populate(); });
 
 	swid->addWidget(tabv);
@@ -237,10 +237,11 @@ void channelBook::populate()
 
 		if (selected == NULL)
 			selected = tree->topLevelItem(0);
-
-		//TODO FIX EXC_BAD_ACCESS /w lists
-		QString index = selected->data(0, Qt::UserRole).toString();
-		curr = index.toStdString();
+		if (selected != NULL)
+		{
+			QString index = selected->data(0, Qt::UserRole).toString();
+			curr = index.toStdString();
+		}
 	}
 	else
 	{
@@ -267,21 +268,30 @@ void channelBook::populate()
 		{
 			e2db::service chdata = dbih->db.services[ch.second];
 			e2db::transponder txdata = dbih->db.transponders[chdata.txid];
-			if (txdata.ttype != 's') continue;
 
 			QString idx = QString::fromStdString(to_string(ch.first));
 			QString chname = QString::fromStdString(chdata.chname);
 			QString stype = e2db::STYPES.count(chdata.stype) ? QString::fromStdString(e2db::STYPES.at(chdata.stype)) : "Data";
 			QString pname = QString::fromStdString(chdata.data.count(e2db::PVDR_DATA.at('p')) ? chdata.data[e2db::PVDR_DATA.at('p')][0] : "");
 
-			QString txp = QString::fromStdString(txdata.freq + '/' + e2db::SAT_POL[txdata.pol] + '/' + txdata.sr);
+			string ptxp;
+			if (txdata.ttype == 's')
+				ptxp = txdata.freq + '/' + e2db::SAT_POL[txdata.pol] + '/' + txdata.sr;
+			else if (txdata.ttype == 't')
+				ptxp = txdata.freq + '/' + e2db::TER_MOD[txdata.termod] + '/' + e2db::TER_BAND[txdata.band];
+			else if (txdata.ttype == 'c')
+				ptxp = txdata.freq + '/' + e2db::CAB_MOD[txdata.cabmod] + '/' + txdata.sr;
+			QString txp = QString::fromStdString(ptxp);
 			string ppos;
-			if (dbih->tuners.count(txdata.pos)) {
-				ppos = dbih->tuners.at(txdata.pos).name;
-			} else {
-				char cposdeg[5];
-				sprintf(cposdeg, "%.1f", float(txdata.pos / 10));
-				ppos = (string (cposdeg) + (txdata.pos ? 'E' : 'W'));
+			if (txdata.ttype == 's')
+			{
+				if (dbih->tuners.count(txdata.pos)) {
+					ppos = dbih->tuners.at(txdata.pos).name;
+				} else {
+					char cposdeg[5];
+					sprintf(cposdeg, "%.1f", float(txdata.pos / 10));
+					ppos = (string (cposdeg) + (txdata.pos ? 'E' : 'W'));
+				}
 			}
 			QString pos = QString::fromStdString(ppos);
 
