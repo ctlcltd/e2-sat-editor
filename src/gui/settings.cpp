@@ -15,7 +15,6 @@
 #include <QVBoxLayout>
 #include <QGroupBox>
 #include <QFormLayout>
-#include <QTableWidget>
 #include <QToolBar>
 #include <QPushButton>
 #include <QLabel>
@@ -43,6 +42,8 @@ settings::settings(QWidget* mwid)
 	QHBoxLayout* dhbox = new QHBoxLayout;
 	QVBoxLayout* dvbox = new QVBoxLayout;
 	this->dtwid = new QTabWidget;
+	dtwid->connect(dtwid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
+	this->_state_previ = -1;
 
 	QPushButton* dtsave = new QPushButton;
 	dtsave->setDefault(true);
@@ -78,9 +79,9 @@ void settings::preferences()
 	
 	QFormLayout* dtform = new QFormLayout;
 
-	//TODO FIX connections tab interferes with focus
+	//TODO FIX [macos] connections tab interferes with focus
 	dtform->addRow(new QCheckBox("Suppress ask for confirmation messages (shown before deleting)"));
-	dtform->addRow(new QCheckBox("Non-destructive edit (try to preserve origin lists)"));
+	dtform->addRow(new QCheckBox("Non-destructive edit (try to preserve origin rplists)"));
 
 	dtcnt->setAlignment(Qt::AlignTop | Qt::AlignCenter);
 	dtcnt->addLayout(dtform, 0);
@@ -91,17 +92,17 @@ void settings::preferences()
 
 void settings::connections()
 {
-	WidgetWithBackdrop* dtpage = new WidgetWithBackdrop;
-	QHBoxLayout* dtcnt = new QHBoxLayout(dtpage);
+	this->rppage = new WidgetWithBackdrop;
+	QHBoxLayout* dtcnt = new QHBoxLayout(rppage);
 
 	QVBoxLayout* dtvbox = new QVBoxLayout;
-	QListWidget* dtlist = new QListWidget;
-	dtlist->setStyleSheet("QListView::item { height: 44px; font: 16px } QListView QLineEdit { border: 1px solid palette(alternate-base) }");
-	newProfile(dtlist, dtpage);
-	dtlist->connect(dtlist, &QListWidget::doubleClicked, [=]() { this->renameProfile(dtlist, false, dtpage); });
+	this->rplist = new QListWidget;
+	rplist->setStyleSheet("QListView::item { height: 44px; font: 16px } QListView QLineEdit { border: 1px solid palette(alternate-base) }");
+	newProfile();
+	rplist->connect(rplist, &QListWidget::doubleClicked, [=]() { this->renameProfile(false); });
 	//TODO inplace edit dismissed only under certain conditions (? needs mouse tracking enabled)
-	dtlist->connect(dtlist, &QAbstractItemView::viewportEntered, [=]() { this->renameProfile(dtlist, true, dtpage); });
-	dtpage->connect(dtpage, &WidgetWithBackdrop::backdrop, [=]() { this->renameProfile(dtlist, true, dtpage); });
+	rplist->connect(rplist, &QAbstractItemView::viewportEntered, [=]() { this->renameProfile(true); });
+	rppage->connect(rppage, &WidgetWithBackdrop::backdrop, [=]() { this->renameProfile(true); });
 
 	QToolBar* dttbar = new QToolBar;
 //	QWidget* dtspacer = new QWidget;
@@ -109,18 +110,18 @@ void settings::connections()
 	QPushButton* dtladd = new QPushButton;
 	dtladd->setText("+");
 	dtladd->setFlat(true);
-	dtladd->connect(dtladd, &QPushButton::pressed, [=]() { this->newProfile(dtlist, dtpage); });
+	dtladd->connect(dtladd, &QPushButton::pressed, [=]() { this->newProfile(); });
 	QPushButton* dtlremove = new QPushButton;
 	dtlremove->setText("-");
 	dtlremove->setFlat(true);
-	dtlremove->connect(dtlremove, &QPushButton::pressed, [=]() { this->delProfile(dtlist, dtpage); });
+	dtlremove->connect(dtlremove, &QPushButton::pressed, [=]() { this->delProfile(); });
 
 //	dttbar->addWidget(dtspacer);
 	dttbar->addWidget(dtladd);
 	dttbar->addWidget(dtlremove);
 
 	dtvbox->setSpacing(0);
-	dtvbox->addWidget(dtlist);
+	dtvbox->addWidget(rplist);
 	dtvbox->addWidget(dttbar);
 
 	QFormLayout* dtform = new QFormLayout;
@@ -181,9 +182,9 @@ void settings::connections()
 
 	dtcnt->addLayout(dtvbox, 0);
 	dtcnt->addLayout(dtform, 1);
-	dtpage->setLayout(dtcnt);
+	rppage->setLayout(dtcnt);
 
-	dtwid->addTab(dtpage, "Connections");
+	dtwid->addTab(rppage, "Connections");
 }
 
 void settings::advanced()
@@ -191,56 +192,76 @@ void settings::advanced()
 	QWidget* dtpage = new QWidget;
 	QVBoxLayout* dtcnt = new QVBoxLayout(dtpage);
 
-	QTableWidget* dttbl = new QTableWidget(3, 1);
-	dttbl->setHidden(true);
+	this->adtbl = new QTableWidget(3, 1);
+	adtbl->setHidden(true);
 	QTableWidgetItem* item = new QTableWidgetItem("dummy item");
-	dttbl->setItem(0, 0, item);
+	adtbl->setItem(0, 0, item);
 
-	QWidget* dtntc = new QWidget;
+	this->adntc = new QWidget;
 	QGridLayout* dtntcg = new QGridLayout;
 	QLabel* dtntcl = new QLabel("<b>Please be carefull!</b><br>Modifing these settings could break the program.");
 	QPushButton* dtntcb = new QPushButton;
 	dtntcb->setText("OK, I understood this.");
-	dtntcb->connect(dtntcb, &QPushButton::pressed, [=]() { dtntc->setHidden(true); dttbl->setVisible(true); });
+	dtntcb->connect(dtntcb, &QPushButton::pressed, [=]() { adntc->setHidden(true); adtbl->setVisible(true); });
 	dtntcg->addWidget(dtntcl, 0, 0);
 	dtntcg->addWidget(dtntcb, 1, 0);
-	dtntc->setLayout(dtntcg);
+	adntc->setLayout(dtntcg);
 
-	dtcnt->addWidget(dtntc, 0);
-	dtcnt->addWidget(dttbl, 1);
+	dtcnt->addWidget(adntc, 0);
+	dtcnt->addWidget(adtbl, 1);
 	dtpage->setLayout(dtcnt);
 
 	dtwid->addTab(dtpage, "Advanced");
 }
 
-void settings::newProfile(QListWidget* list, WidgetWithBackdrop* cnt)
+void settings::newProfile()
 {
-	QListWidgetItem* item = new QListWidgetItem("Profile", list);
-	renameProfile(list, true, cnt);
+	QListWidgetItem* item = new QListWidgetItem("Profile", rplist);
+	renameProfile(true);
 	item->setSelected(true);
 	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
-	list->setCurrentItem(item);
-	if (list->count() != 1) renameProfile(list, false, cnt);
+	rplist->setCurrentItem(item);
+	if (rplist->count() != 1) renameProfile(false);
 }
 
-void settings::delProfile(QListWidget* list, WidgetWithBackdrop* cnt)
+void settings::delProfile()
 {
-	renameProfile(list, true, cnt);
-	if (list->count() != 1) list->takeItem(list->currentRow());
+	renameProfile(true);
+	if (rplist->count() != 1) rplist->takeItem(rplist->currentRow());
 }
 
-void settings::renameProfile(QListWidget* list, bool dismiss, WidgetWithBackdrop* cnt)
+void settings::renameProfile(bool dismiss)
 {
-	QListWidgetItem* item = list->currentItem();
-	if (! dismiss && ! list->isPersistentEditorOpen(item))
+	QListWidgetItem* item = rplist->currentItem();
+	if (! dismiss && ! rplist->isPersistentEditorOpen(item))
 	{
-		list->openPersistentEditor(item);
-		cnt->activateBackdrop();
+		rplist->openPersistentEditor(item);
+		rppage->activateBackdrop();
 	}
 	else
 	{
-		list->closePersistentEditor(item);
-		cnt->deactivateBackdrop();
+		rplist->closePersistentEditor(item);
+		rppage->deactivateBackdrop();
 	}
+}
+
+void settings::tabChanged(int index)
+{
+	if (this->_state_previ == -1)
+	{
+		this->_state_previ = index;
+		return;
+	}
+	switch (this->_state_previ)
+	{
+		case 0:
+			renameProfile(true);
+		break;
+		case 2:
+			adntc->setVisible(true);
+			adtbl->setHidden(true);
+		break;
+	}
+	this->_state_previ = index;
 }
 }

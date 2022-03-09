@@ -107,7 +107,6 @@ void channelBook::layout()
 	list->setHidden(true);
 	list->setUniformRowHeights(true);
 
-	//Qt5
 	QTreeWidgetItem* thead = new QTreeWidgetItem({"", "Index", "Name", "Type", "Provider", "Transponder", "SAT"});
 	list->setHeaderItem(thead);
 	list->setColumnHidden(0, true);
@@ -247,7 +246,7 @@ void channelBook::stacker(int vv)
 		else if (vv == views::Resolution)
 		{
 			int stype = stoi(q.first);
-			name = e2db::STYPES.count(stype) ? QString::fromStdString(e2db::STYPES.at(stype)) : "Data";
+			name = e2db::STYPES.count(stype) ? QString::fromStdString(e2db::STYPES.at(stype).second) : "Data";
 			name.append(QString::fromStdString("\tid: " + q.first));
 			item = new QTreeWidgetItem({name});
 		}
@@ -319,7 +318,7 @@ void channelBook::populate()
 
 			QString idx = QString::fromStdString(to_string(ch.first));
 			QString chname = QString::fromStdString(chdata.chname);
-			QString stype = e2db::STYPES.count(chdata.stype) ? QString::fromStdString(e2db::STYPES.at(chdata.stype)) : "Data";
+			QString stype = e2db::STYPES.count(chdata.stype) ? QString::fromStdString(e2db::STYPES.at(chdata.stype).second) : "Data";
 			QString pname = QString::fromStdString(chdata.data.count(e2db::PVDR_DATA.at('p')) ? chdata.data[e2db::PVDR_DATA.at('p')][0] : "");
 
 			string ptxp;
@@ -346,7 +345,6 @@ void channelBook::populate()
 			}
 			QString pos = QString::fromStdString(ppos);
 
-			//Qt5
 			QTreeWidgetItem* item = new QTreeWidgetItem({x, idx, chname, stype, pname, txp, pos});
 			list->addTopLevelItem(item);
 		}

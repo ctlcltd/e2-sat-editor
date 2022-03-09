@@ -60,16 +60,16 @@ struct e2db_abstract
 			{'f', '3'}
 		};
 
-		inline static const unordered_map<int, string> STYPES = {
-			{0, "Data"},
-			{1, "TV"},
-			{2, "Radio"},
-			{10, "Radio"},
-			{12, "TV"},
-			{17, "UHD"},
-			{22, "H.264"},
-			{25, "HD"},
-			{31, "UHD"}
+		inline static const unordered_map<int, pair<int, string>> STYPES = {
+			{0, make_pair(0, "Data")},
+			{1, make_pair(1, "TV")},
+			{2, make_pair(2, "Radio")},
+			{10, make_pair(2, "Radio")},
+			{12, make_pair(1, "TV")},
+			{17, make_pair(1, "UHD")},
+			{22, make_pair(1, "H.264")},
+			{25, make_pair(1, "HD")},
+			{31, make_pair(1, "UHD")}
 		};
 
 		inline static const unordered_map<string, string> SCAS = {

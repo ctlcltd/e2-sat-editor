@@ -16,7 +16,6 @@
 #include <QGroupBox>
 #include <QTabWidget>
 #include <QPushButton>
-#include <QLabel>
 #include <QFileDialog>
 #include <QTimer>
 
@@ -140,11 +139,21 @@ void gui::menuCtl()
 	this->mwtabs = mwtabs;
 }
 
+//TODO dir:rtl
 void gui::statusCtl()
 {
 	debug("gui", "statusCtl()");
 
 	this->sbwid = new QStatusBar(mwid);
+	this->sbwidl = new QLabel;
+	this->sbwidr = new QLabel;
+
+	sbwid->setStyleSheet("QStatusBar QLabel { padding: 0 2ex }");
+	sbwidl->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+	sbwidr->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+
+	sbwid->addWidget(sbwidl, 1);
+	sbwid->addWidget(sbwidr, 1);
 
 	mstatusb->addWidget(sbwid);
 }
@@ -258,7 +267,7 @@ void gui::tabChanged(int index)
 	debug("gui", "tabChanged()", "index", to_string(index));
 
 	QString msg = QString::fromStdString("Current tab index: " + to_string(index));
-	sbwid->showMessage(msg);
+	sbwidl->setText(msg);
 }
 
 void gui::tabClicked(int index)
@@ -313,6 +322,7 @@ string gui::openFileDialog()
 	return dirname;
 }
 
+//TODO native file dialog button "Open"
 string gui::saveFileDialog(string filename)
 {
 	debug("gui", "saveFileDialog()", "filename", filename);
@@ -350,6 +360,17 @@ void gui::tabChangeName(int ttid, string filename)
 	ttabbar->setTabButton(index, QTabBar::LeftSide, ttlabel);
 
 	ttmenu[ttid]->setText(ttname);
+}
+
+void gui::loaded(int counters[4])
+{
+	QString qstr;
+	qstr.append("TV: " + QString::fromStdString(to_string(counters[1])) + "   ");
+	qstr.append("Radio: " + QString::fromStdString(to_string(counters[2])) + "   ");
+	qstr.append("Data: " + QString::fromStdString(to_string(counters[0])) + "   ");
+	qstr.append("   ");
+	qstr.append("Total: " + QString::fromStdString(to_string(counters[3])) + "   ");
+	sbwidr->setText(qstr);
 }
 
 void gui::save()

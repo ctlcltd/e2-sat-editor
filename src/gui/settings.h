@@ -15,6 +15,7 @@
 #include <QDialog>
 #include <QTabWidget>
 #include <QListWidget>
+#include <QTableWidget>
 
 #include "WidgetWithBackdrop.h"
 
@@ -27,12 +28,19 @@ class settings
 		void preferences();
 		void connections();
 		void advanced();
-		void newProfile(QListWidget* list, WidgetWithBackdrop* cnt);
-		void delProfile(QListWidget* list, WidgetWithBackdrop* cnt);
-		void renameProfile(QListWidget* list, bool dismiss, WidgetWithBackdrop* cnt);
+		void newProfile();
+		void delProfile();
+		void renameProfile(bool dismiss);
+		void tabChanged(int index);
 	protected:
 		QTabWidget* dtwid;
 		QDialog* dial;
+		WidgetWithBackdrop* rppage;
+		QListWidget* rplist;
+		QWidget* adntc;
+		QTableWidget* adtbl;
+	private:
+		int _state_previ;
 };
 }
 #endif /* settings_h */

@@ -24,6 +24,7 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QErrorMessage>
+#include <QStyle>
 
 #include "../commons.h"
 #include "tab.h"
@@ -102,13 +103,13 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	QToolBar* bottom_toolbar = new QToolBar;
 	bottom_toolbar->setStyleSheet("QToolBar { padding: 8px 12px } QToolButton { font: bold 16px }");
 
-	top_toolbar->addAction("Open", [=]() { this->open(); });
-	top_toolbar->addAction("Save", [=]() { this->save(false); });
+	top_toolbar->addAction(top_toolbar->style()->standardIcon(QStyle::SP_DialogOpenButton), "Open", [=]() { this->open(); });
+	top_toolbar->addAction(top_toolbar->style()->standardIcon(QStyle::SP_DialogSaveButton), "Save", [=]() { this->save(false); });
 	top_toolbar->addSeparator();
-	top_toolbar->addAction("Import", todo);
-	top_toolbar->addAction("Export", todo);
+	top_toolbar->addAction(top_toolbar->style()->standardIcon(QStyle::SP_ArrowLeft), "Import", todo);
+	top_toolbar->addAction(top_toolbar->style()->standardIcon(QStyle::SP_ArrowRight), "Export", todo);
 	top_toolbar->addSeparator();
-	top_toolbar->addAction("Settings", [=]() { gid->settings(); });
+	top_toolbar->addAction(top_toolbar->style()->standardIcon(QStyle::SP_FileDialogContentsView), "Settings", [=]() { gid->settings(); });
 
 	if (DEBUG_TOOLBAR)
 	{
@@ -215,7 +216,6 @@ void tab::addChannel()
 	dial->exec();
 }
 
-//TODO remove filename from args
 bool tab::load(string filename)
 {
 	debug("tab", "load()", "filename", filename);
@@ -254,15 +254,15 @@ bool tab::load(string filename)
 
 	bouquets_tree->addTopLevelItem(titem);
 
+	sort(dbih->index["bss"].begin(), dbih->index["bss"].end());
 	map<string, QTreeWidgetItem*> bgroups;
 
-	//TODO order A-Z & parent
-	for (auto & gboq : dbih->bouquets)
+	for (auto & bsi : dbih->index["bss"])
 	{
-		debug("tab", "load()", "bouquet", gboq.first);
-
-		QString bgroup = QString::fromStdString(gboq.first);
-		QString bcname = QString::fromStdString(gboq.second.nname.empty() ? gboq.second.name : gboq.second.nname);
+		debug("tab", "load()", "bouquet", bsi.second);
+		e2db::bouquet gboq = dbih->bouquets[bsi.second];
+		QString bgroup = QString::fromStdString(bsi.second);
+		QString bcname = QString::fromStdString(gboq.nname.empty() ? gboq.name : gboq.nname);
 
 		QTreeWidgetItem* pgroup = new QTreeWidgetItem();
 		QMap<QString, QVariant> tdata;
@@ -272,21 +272,21 @@ bool tab::load(string filename)
 		bouquets_tree->addTopLevelItem(pgroup);
 		bouquets_tree->expandItem(pgroup);
 
-		for (auto & ubname : gboq.second.userbouquets)
+		for (string & ubname : gboq.userbouquets)
 			bgroups[ubname] = pgroup;
 	}
-	for (auto & uboq : dbih->userbouquets)
+	for (auto & ubi : dbih->index["ubs"])
 	{
-		debug("tab", "load()", "userbouquet", uboq.first);
-
-		QString bgroup = QString::fromStdString(uboq.first);
-		QTreeWidgetItem* pgroup = bgroups[uboq.first];
+		debug("tab", "load()", "userbouquet", ubi.second);
+		e2db::userbouquet uboq = dbih->userbouquets[ubi.second];
+		QString bgroup = QString::fromStdString(ubi.second);
+		QTreeWidgetItem* pgroup = bgroups[ubi.second];
 
 		QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
 		QMap<QString, QVariant> tdata;
 		tdata["bouquet_id"] = bgroup;
 		bitem->setData(0, Qt::UserRole, QVariant (tdata));
-		bitem->setText(0, QString::fromStdString(uboq.second.name));
+		bitem->setText(0, QString::fromStdString(uboq.name));
 		bouquets_tree->addTopLevelItem(bitem);
 	}
 
@@ -340,7 +340,7 @@ void tab::populate()
 			QString chname = QString::fromStdString(chdata.chname);
 			QString chid = QString::fromStdString(ch.second);
 			QString txid = QString::fromStdString(chdata.txid);
-			QString stype = e2db::STYPES.count(chdata.stype) ? QString::fromStdString(e2db::STYPES.at(chdata.stype)) : "Data";
+			QString stype = e2db::STYPES.count(chdata.stype) ? QString::fromStdString(e2db::STYPES.at(chdata.stype).second) : "Data";
 			QString pname = QString::fromStdString(chdata.data.count(e2db::PVDR_DATA.at('p')) ? chdata.data[e2db::PVDR_DATA.at('p')][0] : "");
 
 			QString freq = QString::fromStdString(txdata.freq);
@@ -369,7 +369,7 @@ void tab::populate()
 				psys = "DVB-C";
 			QString sys = QString::fromStdString(psys);
 
-			QTreeWidgetItem* item; // Qt5
+			QTreeWidgetItem* item;
 			if (DEBUG) item = new QTreeWidgetItem({x, idx, chname, chid, txid, stype, pname, freq, pol, sr, fec, pos, sys});
 			else item = new QTreeWidgetItem({x, idx, chname, stype, pname, freq, pol, sr, fec, pos, sys});
 
@@ -395,13 +395,21 @@ void tab::populate()
 		}
 	}
 
-	if (_state_sort.first)
+	if (this->_state_sort.first)
 	{
-		list_tree->sortByColumn(_state_sort.first, _state_sort.second);
-		if (_state_sort.first == 0) lheaderv->setSortIndicator(1, _state_sort.second); //TODO FIX Index sort
+		list_tree->sortByColumn(this->_state_sort.first, this->_state_sort.second);
+		if (this->_state_sort.first == 0) lheaderv->setSortIndicator(1, this->_state_sort.second); //TODO FIX Index sort
 	}
 	lheaderv->setSectionsClickable(true);
 	list_tree->setDragEnabled(true);
+
+	int counters[4];
+	counters[0] = dbih->index["chs:0"].size();
+	counters[1] = dbih->index["chs:1"].size();
+	counters[2] = dbih->index["chs:2"].size();
+	counters[3] = dbih->index["chs"].size();
+
+	gid->loaded(counters);
 }
 
 //TODO FIX
@@ -421,7 +429,7 @@ void tab::trickySortByColumn(int column)
 		list_tree->sortByColumn(column, order);
 		lheaderv->setSortIndicator(1, order);
 	}
-	_state_sort = pair (column, order); //C++ 17
+	this->_state_sort = pair (column, order); //C++ 17
 }
 
 void tab::setTabId(int ttid)
@@ -437,7 +445,7 @@ void tab::save(bool saveas)
 
 	QMessageBox dial = QMessageBox();
 	string filename;
-	bool overwrite = ! saveas && (! _state_nwwr || _state_ovwr);
+	bool overwrite = ! saveas && (! this->_state_nwwr || this->_state_ovwr);
 
 	if (overwrite)
 	{

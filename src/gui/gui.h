@@ -26,6 +26,7 @@ using namespace std;
 #include <QVBoxLayout>
 #include <QTabWidget>
 #include <QActionGroup>
+#include <QLabel>
 
 namespace e2se_gui
 {
@@ -49,6 +50,7 @@ class gui
 		string openFileDialog();
 		string saveFileDialog(string filename);
 		void tabChangeName(int ttid, string filename);
+		void loaded(int counters[4]);
 		void save();
 		void settings();
 		void about();
@@ -59,6 +61,8 @@ class gui
 		QHBoxLayout* mcnt;
 		QHBoxLayout* mstatusb;
 		QStatusBar* sbwid;
+		QLabel* sbwidl;
+		QLabel* sbwidr;
 		QTabWidget* twid;
 		QMenuBar* menu;
 		QMenu* mwind;

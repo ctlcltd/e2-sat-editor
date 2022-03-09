@@ -125,6 +125,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 	string line;
 	string txid;
 	string chid;
+	string iname;
 	transponder tx;
 	service ch;
 
@@ -270,6 +271,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				ch.snum = snum;
 				txid = ch.tsid + ':' + ch.onid + ':' + ch.dvbns;
 				chid = ch.ssid + ':' + ch.tsid + ':' + ch.onid + ':' + ch.dvbns;
+				iname = "chs:" + (e2db_parser::STYPES.count(stype) ? to_string(e2db_parser::STYPES.at(stype).first) : "0");
 				sidx += 1;
 			}
 			else if (count == 2)
@@ -310,6 +312,8 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 
 				db.services.emplace(chid, ch);
 				index["chs"].emplace_back(pair (sidx, chid)); //C++ 17
+				index[iname].emplace_back(pair (sidx, chid)); //C++ 17
+				cout << iname << endl;
 				count = 0;
 			}
 		}
@@ -428,6 +432,7 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 			ch = service ();
 			string chid = "";
 			string txid = "";
+			string iname;
 			ch.index = sidx;
 
 			char ssid[5];
@@ -449,6 +454,7 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 			ch.snum = snum;
 			ch.srcid = srcid;
 			chid = ch.ssid + ':' + ch.tsid + ':' + ch.onid + ':' + ch.dvbns;
+			iname = "chs:" + (e2db_parser::STYPES.count(stype) ? to_string(e2db_parser::STYPES.at(stype).first) : "0");
 
 			size_t delimit = params.rfind('"');
 			string chname = params.substr(1, delimit - 1);
@@ -487,6 +493,7 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 
 			db.services.emplace(chid, ch);
 			index["chs"].emplace_back(pair (sidx, chid)); //C++ 17
+			index[iname].emplace_back(pair (sidx, chid)); //C++ 17
 			sidx += 1;
 		}
 	}
@@ -496,6 +503,7 @@ void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 {
 	debug("e2db_parser", "parse_e2db_bouquet()", "bname", bname);
 
+	int idx = 0;
 	string line;
 	bouquet bs;
 
@@ -512,13 +520,14 @@ void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 			string fname = string (c_fname);
 			fname = fname.substr(1, fname.length() - 2);
 
+			index["ubs"].emplace_back(pair (idx++, fname)); //C++ 17
 			bs.userbouquets.emplace_back(fname);
 		}
 		else if (line.find("#NAME") != string::npos)
 		{
 			bs = bouquet ();
 
-			bs.name = line.substr(6);
+			bs.name = line.substr(6); //TODO
 			if (bname.find(".tv") != string::npos)
 			{
 				bs.btype = 1;
@@ -529,7 +538,8 @@ void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 				bs.btype = 2;
 				bs.nname = "Radio";
 			}
-			bs.count = 1; //TODO FIX
+			bs.count = 1;
+			index["bss"].emplace_back(pair (bs.btype, bname)); //C++ 17
 		}
 	}
 
@@ -1242,6 +1252,7 @@ void e2db_maker::make_userbouquets()
 		make_userbouquet(x.first);
 }
 
+//TODO index
 void e2db_maker::make_bouquet(string bname)
 {
 	debug("e2db_maker", "make_bouquet()", "bname", bname);
@@ -1263,6 +1274,7 @@ void e2db_maker::make_bouquet(string bname)
 	e2db_out[bname] = ss.str();
 }
 
+//TODO upCase or lowCase
 void e2db_maker::make_userbouquet(string bname)
 {
 	debug("e2db_maker", "make_userbouquet()", "bname", bname);
