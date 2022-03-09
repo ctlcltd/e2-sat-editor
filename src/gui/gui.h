@@ -47,6 +47,7 @@ class gui
 		void tabMoved(int from, int to);
 		void open();
 		string openFileDialog();
+		string saveFileDialog(string filename);
 		void tabChangeName(int ttid, string filename);
 		void save();
 		void settings();

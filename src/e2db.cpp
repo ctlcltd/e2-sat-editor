@@ -574,12 +574,12 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 			char ssid[5];
 			char tsid[5];
 			char onid[5];
-			int dvbns;
-			i0 = -1, i1 = -1, dvbns = -1;
+			char dvbns[9];
+			i0 = -1, i1 = -1;
 
 			//TODO performance optimization selective tolower
 			transform(line.begin(), line.end(), line.begin(), [](unsigned char c){ return c == ':' ? ' ' : tolower(c); });
-			sscanf(line.c_str(), "%d %d %4s %4s %4s %4s %8d", &i0, &i1, anum, ssid, tsid, onid, &dvbns);
+			sscanf(line.c_str(), "%d %d %4s %4s %4s %4s %8s", &i0, &i1, anum, ssid, tsid, onid, dvbns);
 
 			switch (i1) {
 				case 64:  // regular marker
@@ -592,7 +592,7 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 				case 128: // group //TODO
 				default:  // service
 					sseq = true;
-					sprintf(cchid, "%s:%s:%s:%d", ssid, tsid, onid, dvbns);
+					sprintf(cchid, "%s:%s:%s:%s", ssid, tsid, onid, dvbns);
 			}
 			if (sseq)
 			{
@@ -607,6 +607,7 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 			chid = string (cchid);
 			ref.chid = chid;
 			ref.reftype = i1;
+			ref.refmrker = ! sseq;
 			ref.refanum = anum;
 			ref.index = idx;
 
@@ -888,13 +889,13 @@ pair<map<string, e2db_parser::bouquet>, map<string, e2db_parser::userbouquet>> e
 }
 
 // C++17
-bool e2db_parser::read_localdir(string localdir)
+bool e2db_parser::read_from_localdir(string localdir)
 {
-	debug("e2db_parser", "read_localdir()", "localdir", localdir);
+	debug("e2db_parser", "read_from_localdir()", "localdir", localdir);
 
 	if (! filesystem::exists(localdir))
 	{
-		error("e2db_parser", "read_localdir()", "Error", "File not exists: \"" + localdir + "\".", "\t");
+		error("e2db_parser", "read_from_localdir()", "Error", "Directory \"" + localdir + "\" not exists.", "\t");
 		return false;
 	}
 
@@ -909,7 +910,7 @@ bool e2db_parser::read_localdir(string localdir)
 	}
 	if (e2db.count(dbfilename) < 1)
 	{
-		error("e2db_parser", "read_localdir()", "Error", "lamedb not found.", "\t");
+		error("e2db_parser", "read_from_localdir()", "Error", "lamedb not found.", "\t");
 		return false;
 	}
 	this->localdir = localdir;
@@ -921,7 +922,7 @@ bool e2db_parser::read(string localdir)
 {
 	debug("e2db_parser", "read()", "localdir", localdir);
 
-	if (read_localdir(localdir))
+	if (read_from_localdir(localdir))
 		parse_e2db();
 	else
 		return false;
@@ -934,6 +935,17 @@ bool e2db_parser::read(string localdir)
 e2db_maker::e2db_maker()
 {
 	debug("e2db_maker");
+}
+
+void e2db_maker::make_e2db()
+{
+	debug("e2db_maker", "make_e2db()");
+
+	begin_transaction();
+	make_lamedb();
+	make_bouquets();
+	make_userbouquets();
+	end_transaction();
 }
 
 void e2db_maker::begin_transaction()
@@ -971,6 +983,7 @@ void e2db_maker::make_lamedb()
 	make_lamedb4();
 }
 
+//TODO FIX EOF
 void e2db_maker::make_lamedb4()
 {
 	debug("e2db_maker", "make_lamedb4()");
@@ -1009,13 +1022,13 @@ void e2db_maker::make_lamedb4()
 				ss << ':' << tx.pos;
 				ss << ':' << tx.inv;
 				ss << ':' << tx.flgs;
-				if (tx.sys)
+				if (tx.sys != -1)
 					ss << ':' << tx.sys;
-				if (tx.mod)
+				if (tx.mod != -1)
 					ss << ':' << tx.mod;
-				if (tx.rol)
+				if (tx.rol != -1)
 					ss << ':' << tx.rol;
-				if (tx.pil)
+				if (tx.pil != -1)
 					ss << ':' << tx.pil;
 			break;
 			case 't': // DVB-T
@@ -1124,13 +1137,13 @@ void e2db_maker::make_lamedb5()
 				ss << ':' << tx.pos;
 				ss << ':' << tx.inv;
 				ss << ':' << tx.flgs;
-				if (tx.sys)
+				if (tx.sys != -1)
 					ss << ':' << tx.sys;
-				if (tx.mod)
+				if (tx.mod != -1)
 					ss << ':' << tx.mod;
-				if (tx.rol)
+				if (tx.rol != -1)
 					ss << ':' << tx.rol;
-				if (tx.pil)
+				if (tx.pil != -1)
 					ss << ':' << tx.pil;
 			break;
 			case 't': // DVB-T
@@ -1219,6 +1232,7 @@ void e2db_maker::make_userbouquets()
 		make_userbouquet(x.first);
 }
 
+//TODO FIX EOF
 void e2db_maker::make_bouquet(string bname)
 {
 	debug("e2db_maker", "make_bouquet()", "bname", bname);
@@ -1275,28 +1289,45 @@ void e2db_maker::make_userbouquet(string bname)
 	e2db_out[bname] = ss.str();
 }
 
-//TEST
-void e2db_maker::write_e2db()
+//C++17
+bool e2db_maker::write_to_localdir(string localdir, bool overwrite)
 {
-	debug("e2db_maker", "write_e2db()");
+	debug("e2db_maker", "write_to_localdir()", "localdir", localdir);
 
-	string basedir = "/usr/local/var/tmp/e2-sat-editor";
-
-	filesystem::create_directory(basedir);
-
-	if (! filesystem::is_directory(basedir))
-		error("e2db_maker", "write_e2db()", "Error", "Directory: \"/usr/local/var/tmp/e2-sat-editor\" not exists.");
-
+	if (! filesystem::is_directory(localdir))
+	{
+		error("e2db_maker", "write_to_localdir()", "Error", "Directory \"" + localdir + "\" not exists.");
+		return false;
+	}
+	//TODO file exists and (force) overwrite
+	else if (! overwrite)
+	{
+		filesystem::create_directory(localdir);
+	}
+	//TODO permission check ...
 	for (auto & o: e2db_out)
 	{
-		string localfile = basedir + '/' + o.first;
+		string localfile = localdir + '/' + o.first;
 
 		ofstream out(localfile);
 		out << o.second;
 		out.close();
 	}
+
+	return true;
 }
-//TEST
+
+bool e2db_maker::write(string localdir, bool overwrite)
+{
+	debug("e2db_maker", "write()", "localdir", localdir);
+
+	make_e2db();
+
+	if (write_to_localdir(localdir, overwrite))
+		return true;
+	else
+		return false;
+}
 
 void e2db_maker::set_index(map<string, vector<pair<int, string>>> index)
 {
@@ -1323,17 +1354,6 @@ void e2db_maker::set_bouquets(pair<map<string, e2db_maker::bouquet>, map<string,
 	this->userbouquets = bouquets.second;
 }
 
-void e2db_maker::tester()
-{
-	debug("e2db_maker", "tester()");
-
-	begin_transaction();
-	make_lamedb();
-	make_bouquets();
-	make_userbouquets();
-	end_transaction();
-	write_e2db();
-}
 
 
 e2db::e2db()

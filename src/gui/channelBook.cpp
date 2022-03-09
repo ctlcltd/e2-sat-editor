@@ -12,6 +12,7 @@
 #include <cstdio>
 
 #include <QGridLayout>
+#include <QSplitter>
 #include <QTreeWidget>
 #include <QHeaderView>
 #include <QLabel>
@@ -35,7 +36,7 @@ channelBook::channelBook(e2db* dbih)
 	layout();
 
 	afrm->addWidget(lwid, 0, 0);
-	afrm->addLayout(swid, 0, 1);
+	afrm->addLayout(awid, 0, 1);
 	afrm->setColumnMinimumWidth(0, 120);
 	afrm->setColumnStretch(0, 1);
 	afrm->setColumnStretch(1, 5);
@@ -72,9 +73,11 @@ void channelBook::layout()
 {
 	debug("channelBook", "layout()");
 
-	this->swid = new QHBoxLayout;
-	swid->setContentsMargins(0, 0, 0, 0);
-	swid->setSpacing(0);
+	this->awid = new QHBoxLayout;
+	awid->setContentsMargins(0, 0, 0, 0);
+	awid->setSpacing(0);
+
+	QSplitter* swid = new QSplitter;
 
 	this->tabv = new QTabBar;
 	tabv->setHidden(true);
@@ -119,12 +122,14 @@ void channelBook::layout()
 	tree->connect(tree, &QTreeWidget::currentItemChanged, [=]() { this->populate(); });
 	tabv->connect(tabv, &QTabBar::currentChanged, [=]() { this->populate(); });
 
-	swid->addWidget(tabv);
 	swid->addWidget(tree);
 	swid->addWidget(list);
 
-	swid->setStretch(1, 1);
-	swid->setStretch(2, 5);
+	swid->setStretchFactor(0, 1);
+	swid->setStretchFactor(1, 5);
+
+	awid->addWidget(tabv);
+	awid->addWidget(swid);
 }
 
 void channelBook::sideRowChanged(int index)
@@ -161,6 +166,7 @@ void channelBook::sideRowChanged(int index)
 	stacker(index);
 }
 
+//TODO FIX *index() load
 void channelBook::stacker(int vv)
 {
 	debug("channelBook", "stacker()", "index", to_string(vv));

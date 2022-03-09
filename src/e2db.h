@@ -132,6 +132,7 @@ struct e2db_abstract
 		{
 			string chid;
 			int reftype;
+			bool refmrker;
 			string refval;
 			string refanum;
 			int index;
@@ -207,7 +208,7 @@ class e2db_parser : virtual public e2db_abstract
 		map<string, transponder> get_transponders();
 		map<string, service> get_services();
 		pair<map<string, bouquet>, map<string, userbouquet>> get_bouquets();
-		bool read_localdir(string localdir);
+		bool read_from_localdir(string localdir);
 		bool read(string localdir);
 		void parse_tunersets_xml(int ytype, ifstream& ftunxml);
 		void debugger();
@@ -220,6 +221,7 @@ class e2db_maker : virtual public e2db_abstract
 {
 	public:
 		e2db_maker();
+		void make_e2db();
 		void begin_transaction();
 		void end_transaction();
 		string get_timestamp();
@@ -231,12 +233,12 @@ class e2db_maker : virtual public e2db_abstract
 		void make_userbouquets();
 		void make_bouquet(string bname);
 		void make_userbouquet(string bname);
-		void write_e2db();
 		void set_index(map<string, vector<pair<int, string>>> index);
 		void set_transponders(map<string, transponder> transponders);
 		void set_channels(map<string, service> services);
 		void set_bouquets(pair<map<string, bouquet>, map<string, userbouquet>> bouquets);
-		void tester();
+		bool write_to_localdir(string localdir, bool overwrite);
+		bool write(string localdir, bool overwrite);
 	private:
 		unordered_map<string, string> e2db_out;
 		tm* _out_tst;

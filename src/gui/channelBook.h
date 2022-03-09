@@ -37,7 +37,7 @@ class channelBook
 		QWidget* widget;
 	protected:
 		QListWidget* lwid;
-		QHBoxLayout* swid;
+		QHBoxLayout* awid;
 		QTreeWidget* list;
 		QTreeWidget* tree;
 		QTabBar* tabv;

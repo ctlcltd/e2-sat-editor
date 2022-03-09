@@ -36,7 +36,7 @@ class tab
 		void populate();
 		void trickySortByColumn(int column);
 		void setTabId(int ttid);
-		void save();
+		void save(bool saveas);
 		void loadSeeds();
 		QWidget* widget;
 	private:
@@ -47,6 +47,9 @@ class tab
 		QTreeWidget* bouquets_tree;
 		QTreeWidget* list_tree;
 		QHeaderView* lheaderv;
+		string filename;
+		bool _state_nwwr;
+		bool _state_ovwr;
 		pair<int, Qt::SortOrder> _state_sort;
 };
 }

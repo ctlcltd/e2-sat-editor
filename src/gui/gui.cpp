@@ -314,6 +314,21 @@ string gui::openFileDialog()
 	return dirname;
 }
 
+string gui::saveFileDialog(string filename)
+{
+	debug("gui", "saveFileDialog()", "filename", filename);
+
+	string dirname;
+
+	QFileDialog qfdial = QFileDialog(nullptr, "Select where save", QString::fromStdString(filename));
+	qfdial.setFilter(QDir::AllDirs | QDir::NoSymLinks);
+	qfdial.setAcceptMode(QFileDialog::AcceptSave);
+	QString qdirname = qfdial.getExistingDirectory();
+	dirname = qdirname.toStdString();
+
+	return dirname;
+}
+
 void gui::tabChangeName(int ttid, string filename)
 {
 	debug("gui", "tabChangeName()", "ttid", to_string(ttid));
@@ -344,7 +359,7 @@ void gui::save()
 
 	QWidget* curr_wid = twid->currentWidget();
 	int ttid = curr_wid->property("ttid").toInt();
-	ttabs[ttid]->save();
+	ttabs[ttid]->save(true); //TODO temporarly set to save as
 }
 
 void gui::settings()

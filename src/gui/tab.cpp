@@ -23,6 +23,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QMessageBox>
+#include <QErrorMessage>
 
 #include "../commons.h"
 #include "tab.h"
@@ -102,7 +103,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	bottom_toolbar->setStyleSheet("QToolBar { padding: 8px 12px } QToolButton { font: bold 16px }");
 
 	top_toolbar->addAction("Open", [=]() { this->open(); });
-	top_toolbar->addAction("Save", [=]() { this->save(); });
+	top_toolbar->addAction("Save", [=]() { this->save(false); });
 	top_toolbar->addSeparator();
 	top_toolbar->addAction("Import", todo);
 	top_toolbar->addAction("Export", todo);
@@ -174,6 +175,7 @@ void tab::newFile()
 	debug("tab", "newFile()");
 	
 	this->dbih = new e2db;
+	this->_state_nwwr = true;
 
 	bouquets_tree->setDragEnabled(false);
 	bouquets_tree->scrollToItem(bouquets_tree->topLevelItem(0));
@@ -232,10 +234,14 @@ bool tab::load(string filename)
 		newFile();
 		if (dbih->read(dirname))
 		{
+			this->_state_nwwr = false;
+			this->filename = dirname;
 			if (DEBUG_E2DB) dbih->debugger();
 		}
 		else
 		{
+			QErrorMessage warn = QErrorMessage();
+			warn.showMessage("Error reading files.");
 			return false;
 		}
 	}
@@ -324,7 +330,6 @@ void tab::populate()
 		sprintf(ci, "%06d", i++);
 		QString x = QString::fromStdString(ci);
 
-		//TODO ? transponder.ttype
 		if (dbih->db.services.count(ch.second))
 		{
 			e2db::service chdata = dbih->db.services[ch.second];
@@ -369,16 +374,23 @@ void tab::populate()
 
 			list_tree->addTopLevelItem(item);
 		}
-		//TODO marker QWidget ?
 		else
 		{
 			e2db::reference cref = dbih->userbouquets[cur_bouquet].channels[ch.second];
 
-			QString chid = QString::fromStdString(cref.chid);
-			QString refval = QString::fromStdString(cref.refval);
+			//TODO marker QWidget ?
+			if (cref.refmrker)
+			{
+				QString chid = QString::fromStdString(cref.chid);
+				QString refval = QString::fromStdString(cref.refval);
 
-			QTreeWidgetItem* item = new QTreeWidgetItem({x, "", refval, chid, "", "MARKER"});
-			list_tree->addTopLevelItem(item);
+				QTreeWidgetItem* item = new QTreeWidgetItem({x, "", refval, chid, "", "MARKER"});
+				list_tree->addTopLevelItem(item);
+			}
+			else
+			{
+				error("tab", "populate()", "chid", ch.second, "\t");
+			}
 		}
 	}
 
@@ -418,15 +430,38 @@ void tab::setTabId(int ttid)
 	this->ttid = ttid;
 }
 
-void tab::save()
+void tab::save(bool saveas)
 {
-	debug("tab", "save()");
+	debug("tab", "save()", "saveas", to_string(saveas));
 
 	QMessageBox dial = QMessageBox();
-	dial.setText("Files will be overwritten.");
-	dial.exec();
-	todo();
-	// dbih->tester();
+	string filename;
+	bool overwrite = ! saveas && (! _state_nwwr || _state_ovwr);
+
+	if (overwrite)
+	{
+		filename = this->filename;
+		dial.setText("Files will be overwritten.");
+		dial.exec();
+	}
+	else
+	{
+		filename = gid->saveFileDialog(this->filename);
+	}
+
+	debug("tab", "save()", "overwrite", to_string(overwrite));
+	debug("tab", "save()", "filename", filename);
+
+	if (dbih->write(filename, overwrite))
+	{
+		dial.setText("Saved!");
+		dial.exec();
+	}
+	else
+	{
+		QErrorMessage warn = QErrorMessage();
+		warn.showMessage("Error writing files.");
+	}
 }
 
 //TEST
