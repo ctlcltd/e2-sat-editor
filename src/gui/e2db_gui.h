@@ -29,9 +29,10 @@ class e2db : public ::e2db
 		{
 			debug("e2se_gui::e2db", "options()");
 
-			e2db::DEBUG = DEBUG;
-			e2db_parser::PARSE_TUNERSETS = PARSE_TUNERSETS;
-			e2db_parser::PARSE_LAMEDB5_PRIOR = PARSE_LAMEDB5;
+			e2db::DEBUG = ::DEBUG;
+			e2db::PARSER_TUNERSETS = ::PARSER_TUNERSETS;
+			e2db::PARSER_LAMEDB5_PRIOR = ::PARSER_LAMEDB5;
+			e2db::MAKER_LAMEDB5 = ::MAKER_LAMEDB5;
 		}
 };
 }

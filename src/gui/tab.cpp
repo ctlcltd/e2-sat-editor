@@ -350,7 +350,8 @@ void tab::populate()
 			string ppos;
 			if (txdata.ttype == 's')
 			{
-				if (dbih->tuners.count(txdata.pos)) {
+				if (dbih->tuners.count(txdata.pos))
+				{
 					ppos = dbih->tuners.at(txdata.pos).name;
 				} else {
 					char cposdeg[5];
@@ -449,18 +450,21 @@ void tab::save(bool saveas)
 		filename = gid->saveFileDialog(this->filename);
 	}
 
-	debug("tab", "save()", "overwrite", to_string(overwrite));
-	debug("tab", "save()", "filename", filename);
+	if (! filename.empty())
+	{
+		debug("tab", "save()", "overwrite", to_string(overwrite));
+		debug("tab", "save()", "filename", filename);
 
-	if (dbih->write(filename, overwrite))
-	{
-		dial.setText("Saved!");
-		dial.exec();
-	}
-	else
-	{
-		QErrorMessage warn = QErrorMessage();
-		warn.showMessage("Error writing files.");
+		if (dbih->write(filename, overwrite))
+		{
+			dial.setText("Saved!");
+			dial.exec();
+		}
+		else
+		{
+			QErrorMessage warn = QErrorMessage();
+			warn.showMessage("Error writing files.");
+		}
 	}
 }
 

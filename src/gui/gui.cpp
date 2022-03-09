@@ -93,7 +93,6 @@ void gui::menuCtl()
 	menu->setNativeMenuBar(true);
 
 	QString osprod = QSysInfo::productType();
-	// if (osprod != "macos")
 	if (! menu->isNativeMenuBar())
 	{
 		menu->setParent(mwid);

@@ -19,8 +19,9 @@ using namespace std;
 const bool DEBUG = true;
 const bool DEBUG_E2DB = false;
 const bool DEBUG_TOOLBAR = true;
-const bool PARSE_TUNERSETS = true;
-const bool PARSE_LAMEDB5 = false;
+const bool PARSER_TUNERSETS = true;
+const bool PARSER_LAMEDB5 = false;
+const bool MAKER_LAMEDB5 = true;
 
 static void debug(string ns, string cmsg = "", string optk = "", string optv = "", string indt = " ")
 {

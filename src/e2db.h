@@ -28,8 +28,9 @@ struct e2db_abstract
 		//C++17
 
 		inline static bool DEBUG = false;
-		inline static bool PARSE_TUNERSETS = true;
-		inline static bool PARSE_LAMEDB5_PRIOR = false;
+		inline static bool PARSER_TUNERSETS = true;
+		inline static bool PARSER_LAMEDB5_PRIOR = false;
+		inline static bool MAKER_LAMEDB5 = false;
 
 		inline static const string SAT_POL[4] = {"H", "V", "L", "R"};
 		inline static const string SAT_FEC[11] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "3/5", "4/5", "8/9", "9/10"};
@@ -249,6 +250,7 @@ class e2db : public e2db_parser, public e2db_maker
 	public:
 		e2db();
 		void merge();
+		map<string, vector<pair<int, string>>> get_channels_index();
 		map<string, vector<pair<int, string>>> get_transponders_index();
 		map<string, vector<pair<int, string>>> get_services_index();
 		map<string, vector<pair<int, string>>> get_bouquets_index();

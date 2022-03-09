@@ -196,33 +196,74 @@ void channelBook::stacker(int vv)
 		break;
 	}
 
+	QString index;
 	QString name;
+	QTreeWidgetItem* item;
+	QTreeWidgetItem* subitem;
 
 	for (auto & q: data)
 	{
-		if (vv == views::Bouquets)
+		//TODO pos value & terrestrial, cable ...
+		if (vv == views::Satellites)
 		{
-			e2db::userbouquet ub = dbih->userbouquets[q.first];
-			e2db::bouquet bs = dbih->bouquets[ub.pname];
-			name = QString::fromStdString(ub.name);
-			name.prepend(QString::fromStdString("[" + bs.nname + "]\t"));
+			int pos = stoi(q.first);
+			if (dbih->tuners.count(pos))
+			{
+				e2db::tuner_sets tndata = dbih->tuners.at(stoi(q.first));
+				name = QString::fromStdString(tndata.name);
+			}
+			else
+			{
+				name = QString::fromStdString(q.first);
+			}
+			item = new QTreeWidgetItem({name});
+
+			for (auto & x: q.second)
+			{
+				e2db::transponder txdata = dbih->db.transponders[x.second];
+				QString subindex = QString::fromStdString(x.second);
+				string ptxp;
+				if (txdata.ttype == 's')
+					ptxp = txdata.freq + '/' + e2db::SAT_POL[txdata.pol] + '/' + txdata.sr;
+				else if (txdata.ttype == 't')
+					ptxp = txdata.freq + '/' + e2db::TER_MOD[txdata.termod] + '/' + e2db::TER_BAND[txdata.band];
+				else if (txdata.ttype == 'c')
+					ptxp = txdata.freq + '/' + e2db::CAB_MOD[txdata.cabmod] + '/' + txdata.sr;
+				QString txp = QString::fromStdString(ptxp);
+				subitem = new QTreeWidgetItem(item, {txp});
+				subitem->setData(0, Qt::UserRole, subindex);
+				tree->addTopLevelItem(subitem);
+			}
 		}
+		else if (vv == views::Bouquets)
+		{
+			e2db::userbouquet ubdata = dbih->userbouquets[q.first];
+			e2db::bouquet bsdata = dbih->bouquets[ubdata.pname];
+			name = QString::fromStdString(ubdata.name);
+			name.prepend(QString::fromStdString("[" + bsdata.nname + "]\t"));
+			item = new QTreeWidgetItem({name});
+		}
+		//TODO test
 		else if (vv == views::Resolution)
 		{
 			int stype = stoi(q.first);
 			name = e2db::STYPES.count(stype) ? QString::fromStdString(e2db::STYPES.at(stype)) : "Data";
 			name.append(QString::fromStdString("\tid: " + q.first));
+			item = new QTreeWidgetItem({name});
 		}
 		else
 		{
 			name = QString::fromStdString(q.first);
+			item = new QTreeWidgetItem({name});
 		}
 
-		//Qt5
-		QTreeWidgetItem* item = new QTreeWidgetItem({name});
-		QString index = QString::fromStdString(q.first);
+		index = QString::fromStdString(q.first);
 		item->setData(0, Qt::UserRole, index);
 		tree->addTopLevelItem(item);
+	}
+	if (vv == views::Satellites)
+	{
+		this->data = dbih->get_channels_index();
 	}
 
 	populate();
@@ -245,6 +286,7 @@ void channelBook::populate()
 			selected = tree->topLevelItem(0);
 		if (selected != NULL)
 		{
+			selected->setExpanded(true);
 			QString index = selected->data(0, Qt::UserRole).toString();
 			curr = index.toStdString();
 		}
@@ -291,9 +333,12 @@ void channelBook::populate()
 			string ppos;
 			if (txdata.ttype == 's')
 			{
-				if (dbih->tuners.count(txdata.pos)) {
+				if (dbih->tuners.count(txdata.pos))
+				{
 					ppos = dbih->tuners.at(txdata.pos).name;
-				} else {
+				}
+				else
+				{
 					char cposdeg[5];
 					sprintf(cposdeg, "%.1f", float(txdata.pos / 10));
 					ppos = (string (cposdeg) + (txdata.pos ? 'E' : 'W'));

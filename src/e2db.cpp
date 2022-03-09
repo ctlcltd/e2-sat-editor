@@ -20,7 +20,7 @@ using namespace std;
 
 void e2db_abstract::debug(string ns, string cmsg, string optk, string optv, string indt)
 {
-	if (DEBUG) return;
+	if (! DEBUG) return;
 	cout << ns;
 	if (! cmsg.empty()) cout << indt << cmsg;
 	if (! optk.empty()) cout << indt << optk << ":";
@@ -56,7 +56,7 @@ e2db_parser::e2db_parser()
 	debug("e2db_parser");
 
 	//TODO
-	dbfilename = e2db_parser::PARSE_LAMEDB5_PRIOR ? "lamedb5" : "lamedb";
+	dbfilename = PARSER_LAMEDB5_PRIOR ? "lamedb5" : "lamedb";
 }
 
 void e2db_parser::parse_e2db()
@@ -67,7 +67,7 @@ void e2db_parser::parse_e2db()
 	parse_e2db_lamedb(flamedb);
 	flamedb.close();
 
-	if (e2db_parser::PARSE_TUNERSETS && e2db.count("satellites.xml"))
+	if (PARSER_TUNERSETS && e2db.count("satellites.xml"))
 	{
 		ifstream ftunxml (e2db["satellites.xml"]);
 		parse_tunersets_xml(0, ftunxml);
@@ -185,7 +185,8 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				tx.band = -1, tx.hpfec = -1, tx.lpfec = -1, tx.termod = -1, tx.trxmod = -1, tx.guard = -1, tx.hier = -1;
 				tx.cabmod = -1, tx.ifec = -1;
 
-				switch (tx.ttype) {
+				switch (tx.ttype)
+				{
 					case 's': // DVB-S
 						sscanf(txdata.c_str(), "%8d:%8d:%1d:%1d:%3d:%1d:%1d:%1d:%1d:%1d:%1d", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil);
 
@@ -563,6 +564,10 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 			ub.channels[chid].refval = line.substr(13);
 			continue;
 		}
+		else if (step && line.empty())
+		{
+			continue;
+		}
 
 		if (step)
 		{
@@ -581,7 +586,8 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 			transform(line.begin(), line.end(), line.begin(), [](unsigned char c){ return c == ':' ? ' ' : tolower(c); });
 			sscanf(line.c_str(), "%d %d %4s %4s %4s %4s %8s", &i0, &i1, anum, ssid, tsid, onid, dvbns);
 
-			switch (i1) {
+			switch (i1)
+			{
 				case 64:  // regular marker
 				case 320: // numbered marker
 				case 512: // hidden marker
@@ -981,9 +987,13 @@ void e2db_maker::make_lamedb()
 	debug("e2db_maker", "make_lamedb()");
 
 	make_lamedb4();
+
+	//TEST
+	if (MAKER_LAMEDB5)
+		make_lamedb5();
+	//TEST
 }
 
-//TODO FIX EOF
 void e2db_maker::make_lamedb4()
 {
 	debug("e2db_maker", "make_lamedb4()");
@@ -1095,7 +1105,7 @@ void e2db_maker::make_lamedb4()
 	ss << "end" << endl;
 
 	ss << "editor: " << get_editor_string() << endl;
-	ss << "datetime: " << get_timestamp();
+	ss << "datetime: " << get_timestamp() << endl;
 	e2db_out["lamedb"] = ss.str();
 }
 
@@ -1212,8 +1222,8 @@ void e2db_maker::make_lamedb5()
 	}
 
 	ss << "# editor: " << get_editor_string() << endl;
-	ss << "# datetime: " << get_timestamp();
-	e2db_out["lamedb"] = ss.str();
+	ss << "# datetime: " << get_timestamp() << endl;
+	e2db_out["lamedb5"] = ss.str();
 }
 
 void e2db_maker::make_bouquets()
@@ -1232,7 +1242,6 @@ void e2db_maker::make_userbouquets()
 		make_userbouquet(x.first);
 }
 
-//TODO FIX EOF
 void e2db_maker::make_bouquet(string bname)
 {
 	debug("e2db_maker", "make_bouquet()", "bname", bname);
@@ -1250,7 +1259,7 @@ void e2db_maker::make_bouquet(string bname)
 		ss << "ORDER BY bouquet";
 		ss << endl;
 	}
-	ss << endl;
+	// ss << endl;
 	e2db_out[bname] = ss.str();
 }
 
@@ -1264,18 +1273,18 @@ void e2db_maker::make_userbouquet(string bname)
 	ss << "#NAME " << ub.name << endl;
 	for (auto & x: index[bname])
 	{
-		e2db_parser::reference cref = userbouquets[bname].channels[x.second];
+		reference cref = userbouquets[bname].channels[x.second];
 		ss << "#SERVICE ";
 		ss << "1:";
 		ss << cref.reftype << ':';
-		ss << cref.refanum << ':'; //TODO ("global markers index)
+		ss << e2db_maker::upCase(cref.refanum) << ':'; //TODO ("global markers index)
 		
 		if (db.services.count(x.second))
 		{
-			e2db_parser::service cdata = db.services[x.second];
-			ss << e2db_parser::upCase(cdata.ssid) << ':';
-			ss << e2db_parser::upCase(cdata.tsid) << ':';
-			ss << e2db_parser::upCase(cdata.onid) << ':';
+			service cdata = db.services[x.second];
+			ss << e2db_maker::upCase(cdata.ssid) << ':';
+			ss << e2db_maker::upCase(cdata.tsid) << ':';
+			ss << e2db_maker::upCase(cdata.onid) << ':';
 			ss << cdata.dvbns << ':';
 			ss << "0:0:0:";
 		}
@@ -1286,6 +1295,7 @@ void e2db_maker::make_userbouquet(string bname)
 		}
 		ss << endl;
 	}
+	// ss << endl;
 	e2db_out[bname] = ss.str();
 }
 
@@ -1361,13 +1371,35 @@ e2db::e2db()
 	debug("e2db");
 }
 
-//TODO
+//TODO unique (eg. terrestrial MUX)
+map<string, vector<pair<int, string>>> e2db::get_channels_index()
+{
+	debug("e2db", "get_channels_index()");
+
+	map<string, vector<pair<int, string>>> _index;
+
+	for (auto & x: index["chs"])
+	{
+		service ch = db.services[x.second];
+		transponder tx = db.transponders[ch.txid];
+		_index[to_string(tx.pos)].emplace_back(x);
+		_index[ch.txid].emplace_back(x);
+	}
+
+	return _index;
+}
+
 map<string, vector<pair<int, string>>> e2db::get_transponders_index()
 {
 	debug("e2db", "get_transponders_index()");
 
 	map<string, vector<pair<int, string>>> _index;
-	_index["txs"] = index["txs"];
+
+	for (auto & x: index["txs"])
+	{
+		transponder tx = db.transponders[x.second];
+		_index[to_string(tx.pos)].emplace_back(x);
+	}
 
 	return _index;
 }
