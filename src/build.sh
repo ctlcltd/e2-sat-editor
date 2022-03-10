@@ -12,5 +12,6 @@ fi
 #rm moc_predefs.h
 #rm Makefile
 #rm .qmake.stash
+#rm qrc_resources.cpp
 $QMAKE
 make && $QMAKE

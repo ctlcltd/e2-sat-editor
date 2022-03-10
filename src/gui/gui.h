@@ -54,6 +54,7 @@ class gui
 		void save();
 		void settings();
 		void about();
+		QString icopx;
 	private:
 		QApplication* mroot;
 		QWidget* mwid;

@@ -57,6 +57,8 @@ gui::gui(int argc, char* argv[])
 	mwid->setMinimumSize(760, 550);
 	mwid->resize(wsize);
 
+	//TODO theming QEvent::PaletteChange()
+
 	root();
 
 	mwid->show();
@@ -96,6 +98,12 @@ void gui::menuCtl()
 	{
 		menu->setParent(mwid);
 		mfrm->addWidget(menu);
+
+		icopx = ":/icons/light/"; //TODO temp
+	}
+	else
+	{
+		icopx = ":/icons/dark/"; //TODO temp
 	}
 
 	QMenu* mfile = menu->addMenu("File");
@@ -170,14 +178,13 @@ void gui::tabCtl()
 //	twid->setDocumentMode(true);
 //	twid->setUsesScrollButtons(true);
 //	twid->tabBar()->setDrawBase(false);
-	twid->setStyleSheet("QTabWidget::tab-bar { left: 0px } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { height: 32px; padding: 5px; background: palette(mid); border: 1px solid transparent; border-radius: 0 } QTabBar::tab:selected { background: palette(highlight) } QTabWidget::tab QLabel { margin-left: 5px } QTabBar { background: red }");
+	twid->setStyleSheet("QTabWidget::tab-bar { left: 0px } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { height: 32px; padding: 5px; background: palette(mid); border: 1px solid transparent; border-radius: 0 } QTabBar::tab:selected { background: palette(highlight) } QTabWidget::tab QLabel { margin-left: 5px } QTabBar { background: red } QTabBar::close-button { image: url(" + this->icopx + "close.png) }");
 	twid->connect(twid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
 	twid->connect(twid, &QTabWidget::tabBarClicked, [=](int index) { this->tabClicked(index); });
 	twid->connect(twid, &QTabWidget::tabCloseRequested, [=](int index) { this->closeTab(index); });
 	twid->tabBar()->connect(twid->tabBar(), &QTabBar::tabMoved, [=](int from, int to) { this->tabMoved(from, to); });
 
-	QPushButton* ttbnew = new QPushButton();
-	ttbnew->setText("+ New Tab");
+	QPushButton* ttbnew = new QPushButton(QIcon(this->icopx + "add.png"), "New Tab");
 //    ttbnew->setFlat(true);
 	ttbnew->setStyleSheet("width: 8ex; height: 32px"); //TODO FIX height & ::left-corner padding
 	ttbnew->setMinimumHeight(32);

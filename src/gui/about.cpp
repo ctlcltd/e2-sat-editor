@@ -14,6 +14,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QLabel>
+#include <QIcon>
 
 #include "../commons.h"
 #include "about.h"
@@ -33,9 +34,11 @@ void about(QWidget* mwid)
 	QHBoxLayout* dhbox = new QHBoxLayout;
 	QVBoxLayout* dvbox = new QVBoxLayout;
 
+	QPixmap apxm = QIcon(":/icons/e2-sat-editor.png").pixmap(QSize(96, 96));
 	QLabel* aicon = new QLabel;
-	aicon->setText("📡");
-	aicon->setStyleSheet("margin: 0 16px 172px 12px; font-size: 64px");
+	aicon->setPixmap(apxm);
+	aicon->setAlignment(Qt::AlignTop);
+	aicon->setStyleSheet("margin: 0 24px 0 10px");
 	QLabel* aname = new QLabel;
 	aname->setText("e2 SAT Editor");
 	aname->setStyleSheet("font-size: 24px");

@@ -5,6 +5,7 @@ src/Debug
 Makefile
 moc_predefs.h
 moc_*.cpp
+qrc_resources.cpp
 .xcode
 .qmake.stash
 *.app

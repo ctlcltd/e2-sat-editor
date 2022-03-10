@@ -103,13 +103,13 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	QToolBar* bottom_toolbar = new QToolBar;
 	bottom_toolbar->setStyleSheet("QToolBar { padding: 8px 12px } QToolButton { font: bold 16px }");
 
-	top_toolbar->addAction(top_toolbar->style()->standardIcon(QStyle::SP_DialogOpenButton), "Open", [=]() { this->open(); });
-	top_toolbar->addAction(top_toolbar->style()->standardIcon(QStyle::SP_DialogSaveButton), "Save", [=]() { this->save(false); });
+	top_toolbar->addAction(QIcon(gid->icopx + "file-open.png"), "Open", [=]() { this->open(); });
+	top_toolbar->addAction(QIcon(gid->icopx + "save.png"), "Save", [=]() { this->save(false); });
 	top_toolbar->addSeparator();
-	top_toolbar->addAction(top_toolbar->style()->standardIcon(QStyle::SP_ArrowLeft), "Import", todo);
-	top_toolbar->addAction(top_toolbar->style()->standardIcon(QStyle::SP_ArrowRight), "Export", todo);
+	top_toolbar->addAction(QIcon(gid->icopx + "import.png"), "Import", todo);
+	top_toolbar->addAction(QIcon(gid->icopx + "export.png"), "Export", todo);
 	top_toolbar->addSeparator();
-	top_toolbar->addAction(top_toolbar->style()->standardIcon(QStyle::SP_FileDialogContentsView), "Settings", [=]() { gid->settings(); });
+	top_toolbar->addAction(QIcon(gid->icopx + "settings.png"), "Settings", [=]() { gid->settings(); });
 
 	if (DEBUG_TOOLBAR)
 	{
