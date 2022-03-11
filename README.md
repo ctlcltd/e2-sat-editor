@@ -16,7 +16,7 @@ An enigma2 channel list editor – under development.
 
 - You might need libcurl installed with headers, details here: https://curl.se/download.html
 
-- *Please note:* depending on your OS environment, you should install some dependencies.
+- *Please note:* depending on your OS environment, you should install some dependencies (devel).
 
 - Then clone the repository:
 
@@ -30,7 +30,7 @@ An enigma2 channel list editor – under development.
 ## Dependencies
 
 * libstdc++ >= 3
-* libcurl (devel)
+* libcurl
 * qt6-base | qt5-base
 
  

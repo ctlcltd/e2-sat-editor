@@ -21,8 +21,8 @@ class ftpcom
 		void listDir();
 	protected:
 		size_t ftpcom::writeData(void* ptr, size_t size, size_t nmemb, void* ss);
-		void error();
-		void debug();
+		void error(string cmsg);
+		void debug(string cmsg, string rmsg);
 };
 }
 #endif /* ftpcom_h */

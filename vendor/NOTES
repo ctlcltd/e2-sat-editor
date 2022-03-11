@@ -1,0 +1,6 @@
+You might need libcurl installed with headers, details here: https://curl.se/download.html
+
+Build libcurl inside the folder vendor/curl or link symbolic to libcurl headers and library.
+
+Otherwise you should modify src/e2-sat-editor.pro to link against libcurl in INCLUDEPATH and LIBS fields.
+

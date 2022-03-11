@@ -1,5 +1,6 @@
 .DS_Store
 .project
+vendor/curl
 workflow
 workspace/.pythonenv
 src/Debug
