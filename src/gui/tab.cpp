@@ -14,9 +14,6 @@
 #include <filesystem>
 #include <cstdio>
 
-//#include <sstream>
-//#include <curl/curl.h>
-
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -39,54 +36,6 @@ using namespace std;
 
 namespace e2se_gui
 {
-//TEST
-/*size_t writeData(void* ptr, size_t size, size_t nmemb, void* ss)
-{
-	size_t relsize = size * nmemb;
-	string data ((const char*) ptr, relsize);
-	*((stringstream*) ss) << data << endl;
-	return relsize;
-}
-
-void testFtp()
-{
-	debug("testFtp()");
-
-	curl_global_init(CURL_GLOBAL_DEFAULT);
-
-	CURL* curl = curl_easy_init();
-
-	if (! curl)
-		return;
-
-	stringstream data;
-
-	curl_easy_setopt(curl, CURLOPT_URL, "ftp://root:dreambox@127.0.0.1:21/etc/enigma2/");
-	curl_easy_setopt(curl, CURLOPT_FTPLISTONLY, true);
-	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeData);
-	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &data);
-	// curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-	CURLcode response = curl_easy_perform(curl);
-	curl_easy_cleanup(curl);
-
-	if (response != CURLE_OK)
-	{
-		error("testFtp()", curl_easy_strerror(response));
-		return;
-	}
-
-	string line;
-
-	while (getline(data, line))
-	{
-		if (line.empty()) continue;
-		cout << line << endl;
-	}
-	
-	curl_global_cleanup();
-}*/
-//TEST
-
 tab::tab(gui* gid, QWidget* wid, string filename = "")
 {
 	debug("tab()");

@@ -1,6 +1,7 @@
 .DS_Store
 .project
 workflow
+workspace/.pythonenv
 src/Debug
 Makefile
 moc_predefs.h
