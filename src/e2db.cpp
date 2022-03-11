@@ -18,22 +18,25 @@
 
 using namespace std;
 
+namespace e2db
+{
+
 void e2db_abstract::debug(string ns, string cmsg, string optk, string optv, string indt)
 {
 	if (! DEBUG) return;
-	cout << ns;
+	cout << '[' << "e2db." << ns << ']';
 	if (! cmsg.empty()) cout << indt << cmsg;
-	if (! optk.empty()) cout << indt << optk << ":";
-	if (! optv.empty()) cout << " " << optv;
+	if (! optk.empty()) cout << indt << optk << ':';
+	if (! optv.empty()) cout << ' ' << optv;
 	cout << endl;
 }
 
 void e2db_abstract::error(string ns, string cmsg, string optk, string optv, string indt)
 {
-	cout << ns;
+	cout << '[' << "e2se." << ns << ']';
 	if (! cmsg.empty()) cout << indt << cmsg;
-	if (! optk.empty()) cout << indt << optk << ":";
-	if (! optv.empty()) cout << " " << optv;
+	if (! optk.empty()) cout << indt << optk << ':';
+	if (! optv.empty()) cout << ' ' << optv;
 	cout << endl;
 }
 
@@ -313,7 +316,6 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 				db.services.emplace(chid, ch);
 				index["chs"].emplace_back(pair (sidx, chid)); //C++ 17
 				index[iname].emplace_back(pair (sidx, chid)); //C++ 17
-				cout << iname << endl;
 				count = 0;
 			}
 		}
@@ -1537,4 +1539,6 @@ map<string, vector<pair<int, string>>> e2db::get_az_index()
 	}
 
 	return _index;
+}
+
 }

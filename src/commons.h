@@ -16,6 +16,8 @@ using namespace std;
 
 #ifndef commons_h
 #define commons_h
+namespace e2se
+{
 const bool DEBUG = true;
 const bool DEBUG_E2DB = false;
 const bool DEBUG_TOOLBAR = true;
@@ -26,18 +28,19 @@ const bool MAKER_LAMEDB5 = true;
 static void debug(string ns, string cmsg = "", string optk = "", string optv = "", string indt = " ")
 {
 	if (! DEBUG) return;
-	cout << ns;
+	cout << '[' << "e2se." << ns << ']';
 	if (! cmsg.empty()) cout << indt << cmsg;
-	if (! optk.empty()) cout << indt << optk << ":";
-	if (! optv.empty()) cout << " " << optv;
+	if (! optk.empty()) cout << indt << optk << ':';
+	if (! optv.empty()) cout << ' ' << optv;
 	cout << endl;
 }
 static void error(string ns, string cmsg = "", string optk = "", string optv = "", string indt = " ")
 {
-	cout << ns;
+	cout << '[' << "e2se." << ns << ']';
 	if (! cmsg.empty()) cout << indt << cmsg;
-	if (! optk.empty()) cout << indt << optk << ":";
-	if (! optv.empty()) cout << " " << optv;
+	if (! optk.empty()) cout << indt << optk << ':';
+	if (! optv.empty()) cout << ' ' << optv;
 	cout << endl;
+}
 }
 #endif /* commons_h */

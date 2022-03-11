@@ -22,6 +22,8 @@ using namespace std;
 
 #ifndef e2db_h
 #define e2db_h
+namespace e2db
+{
 struct e2db_abstract
 {
 	public:
@@ -260,4 +262,5 @@ class e2db : public e2db_parser, public e2db_maker
 		map<string, vector<pair<int, string>>> get_encryption_index();
 		map<string, vector<pair<int, string>>> get_az_index();
 };
+}
 #endif /* e2db_h */

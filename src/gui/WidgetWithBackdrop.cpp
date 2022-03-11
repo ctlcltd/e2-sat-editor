@@ -11,6 +11,11 @@
 
 #include "WidgetWithBackdrop.h"
 
+namespace e2se_gui
+{
+
 WidgetWithBackdrop::WidgetWithBackdrop(QWidget* parent) : QWidget(parent)
 {
+}
+
 }

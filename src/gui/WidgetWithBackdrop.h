@@ -13,6 +13,8 @@
 #define WidgetWithBackdrop_h
 #include <QWidget>
 
+namespace e2se_gui
+{
 class WidgetWithBackdrop : public QWidget
 {
 	Q_OBJECT
@@ -38,4 +40,5 @@ class WidgetWithBackdrop : public QWidget
 	private:
 		bool enabled = false;
 };
+}
 #endif /* WidgetWithBackdrop_h */

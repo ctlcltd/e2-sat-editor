@@ -25,8 +25,10 @@
 #include "settings.h"
 #include "about.h"
 #include "todo.h"
+#include "../ftpcom.h"
 
 using namespace std;
+using namespace e2se;
 
 namespace e2se_gui
 {
@@ -44,7 +46,7 @@ class guiProxyStyle : public QProxyStyle
 
 gui::gui(int argc, char* argv[])
 {
-	debug("gui", "qt6");
+	debug("gui");
 
 	this->mroot = new QApplication(argc, argv);
 	mroot->setStyle(new guiProxyStyle);
@@ -387,6 +389,25 @@ void gui::save()
 	QWidget* curr_wid = twid->currentWidget();
 	int ttid = curr_wid->property("ttid").toInt();
 	ttabs[ttid]->save(true); //TODO temporarly set to save as
+}
+
+void gui::ftpConnect()
+{
+	using e2se_ftpcom::ftpcom;
+
+	debug("gui", "ftpConnect()");
+
+	ftpcom::ftp_params params;
+	params.host = "127.0.0.1";
+	params.port = 2121;
+	params.user = "root";
+	params.pass = "test";
+	params.tpath = "/enigma_db/";
+	params.spath = "/enigma_db/";
+	params.bpath = "/enigma_db/";
+
+	ftpcom* ftp = new ftpcom(params);
+	ftp->listDir(ftpcom::path_param::services);
 }
 
 void gui::settings()

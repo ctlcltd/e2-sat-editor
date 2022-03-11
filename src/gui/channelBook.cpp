@@ -21,9 +21,11 @@
 #include "channelBook.h"
 
 using namespace std;
+using namespace e2se;
 
 namespace e2se_gui
 {
+
 channelBook::channelBook(e2db* dbih)
 {
 	debug("channelBook");
@@ -372,4 +374,5 @@ void channelBook::trickySortByColumn(int column)
 		list->header()->setSortIndicator(1, order);
 	}
 }
+
 }

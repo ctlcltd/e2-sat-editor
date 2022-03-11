@@ -20,9 +20,11 @@
 #include "about.h"
 
 using namespace std;
+using namespace e2se;
 
 namespace e2se_gui_dialog
 {
+
 void about(QWidget* mwid)
 {
 	debug("gui", "about()");
@@ -84,4 +86,5 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.");
 	dial->setLayout(dfrm);
 	dial->exec();
 }
+
 }

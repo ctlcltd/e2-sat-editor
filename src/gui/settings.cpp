@@ -26,12 +26,14 @@
 #include "settings.h"
 
 using namespace std;
+using namespace e2se;
 
 namespace e2se_gui_dialog
 {
+
 settings::settings(QWidget* mwid)
 {
-	debug("gui settings", "settings()");
+	debug("settings");
 
 	this->dial = new QDialog(mwid);
 //	dial->setMinimumSize(530, 420);
@@ -264,4 +266,5 @@ void settings::tabChanged(int index)
 	}
 	this->_state_previ = index;
 }
+
 }

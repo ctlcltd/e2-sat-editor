@@ -2,6 +2,7 @@ CONFIG += qt debug
 QT += widgets
 SOURCES += main.cpp
 SOURCES += e2db.cpp
+SOURCES += ftpcom.cpp
 SOURCES += gui/*.cpp
 HEADERS += gui/*.h
 INCLUDEPATH += ../vendor/curl/include

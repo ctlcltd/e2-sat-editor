@@ -52,6 +52,7 @@ class gui
 		void tabChangeName(int ttid, string filename);
 		void loaded(int counters[4]);
 		void save();
+		void ftpConnect();
 		void settings();
 		void about();
 		QString icopx;

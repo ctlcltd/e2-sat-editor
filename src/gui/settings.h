@@ -19,6 +19,8 @@
 
 #include "WidgetWithBackdrop.h"
 
+using e2se_gui::WidgetWithBackdrop;
+
 namespace e2se_gui_dialog
 {
 class settings

@@ -33,12 +33,14 @@
 #include "channelBook.h"
 
 using namespace std;
+using namespace e2se;
 
 namespace e2se_gui
 {
+
 tab::tab(gui* gid, QWidget* wid, string filename = "")
 {
-	debug("tab()");
+	debug("tab");
 
 	this->gid = gid;
 	this->cwid = wid;
@@ -118,7 +120,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 		bottom_toolbar->addAction("§ Load seeds", [=]() { this->loadSeeds(); });
 		bottom_toolbar->addAction("§ Reset", [=]() { this->newFile(); gid->tabChangeName(ttid, ""); });
 		bottom_toolbar->addWidget(bottom_toolbar_spacer);
-		// bottom_toolbar->addAction("FTP Test §", testFtp);
+		bottom_toolbar->addAction("FTP Test §", [=]() { gid->ftpConnect(); });
 	}
 
 	QToolBar* bouquets_ats = new QToolBar;

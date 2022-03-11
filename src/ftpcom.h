@@ -18,11 +18,35 @@ namespace e2se_ftpcom
 class ftpcom
 {
 	public:
-		void listDir();
+        struct ftp_params
+        {
+            string host;
+            int port;
+            string user;
+            string pass;
+            string tpath;
+            string spath;
+            string bpath;
+        };
+        enum path_param
+        {
+            transponders,
+            services,
+            bouquets
+		};
+        ftpcom(ftp_params params);
+		void listDir(int path);
 	protected:
-		size_t ftpcom::writeData(void* ptr, size_t size, size_t nmemb, void* ss);
-		void error(string cmsg);
-		void debug(string cmsg, string rmsg);
+		static size_t writeData(void* ptr, size_t size, size_t nmemb, void* ss);
+		void debug(string cmsg);
+		void error(string cmsg, string rmsg);
+		string trs(string str);
+		string trw(string str, string param);
+    private:
+        string uri;
+        string baset;
+        string bases;
+        string baseb;
 };
 }
 #endif /* ftpcom_h */
