@@ -49,6 +49,8 @@ gui::gui(int argc, char* argv[])
 	debug("gui");
 
 	this->mroot = new QApplication(argc, argv);
+	mroot->setOrganizationName("org.e2se");
+	mroot->setApplicationName("e2-sat-editor");
 	mroot->setStyle(new guiProxyStyle);
 
 	QScreen* screen = mroot->primaryScreen();
@@ -108,10 +110,10 @@ void gui::menuCtl()
 		icopx = ":/icons/dark/"; //TODO temp
 	}
 
-	QMenu* mfile = menu->addMenu("File");
-	mfile->addAction("New", [=]() { this->newTab(""); });
-	mfile->addAction("Open", [=]() { this->open(); });
-	mfile->addAction("Save", [=]() { this->save(); });
+	QMenu* mfile = menu->addMenu(tr("&File"));
+	mfile->addAction(tr("&New"), [=]() { this->newTab(""); })->setShortcut(QKeySequence::New);
+	mfile->addAction(tr("&Open"), [=]() { this->open(); })->setShortcut(QKeySequence::Open);
+	mfile->addAction(tr("&Save"), [=]() { this->save(); })->setShortcut(QKeySequence::Save);
 	mfile->addSeparator();
 	mfile->addAction("Import", todo);
 	mfile->addAction("Export", todo);
@@ -119,30 +121,30 @@ void gui::menuCtl()
 	mfile->addAction("Close Tab", [=]() { this->closeTab(-1); });
 	mfile->addAction("Close All Tabs", [=]() { this->closeAllTabs(); });
 	mfile->addSeparator();
-	mfile->addAction("Settings", [=]() { this->settings(); });
+	mfile->addAction("Settings", [=]() { this->settings(); })->setShortcut(QKeySequence::Preferences);
 	if (osprod == "macos")
-		mfile->addAction("About", [=]() { this->about(); });
+		mfile->addAction(tr("&About"), [=]() { this->about(); });
 	mfile->addSeparator();
-	mfile->addAction("Quit", [=]() { this->mroot->quit(); });
+	mfile->addAction((osprod == "macos" ? tr("&Exit") : tr("&Quit")), [=]() { this->mroot->quit(); })->setShortcut((osprod == "windows" ? QKeySequence::Close : QKeySequence::Quit));
 
-	QMenu* medit = menu->addMenu("Edit");
-	medit->addAction("Cut", todo);
-	medit->addAction("Copy", todo);
-	medit->addAction("Paste", todo);
+	QMenu* medit = menu->addMenu(tr("&Edit"));
+	medit->addAction(tr("Cu&t"), todo)->setShortcut(QKeySequence::Cut);
+	medit->addAction(tr("&Copy"), todo)->setShortcut(QKeySequence::Copy);
+	medit->addAction(tr("&Paste"), todo)->setShortcut(QKeySequence::Paste);
 	medit->addSeparator();
-	medit->addAction("Select All", todo);
+	medit->addAction(tr("Select &All"), todo)->setShortcut(QKeySequence::SelectAll);
 	medit->addSeparator();
 	medit->addAction("TODO", todo);
 
-	QMenu* mwind = menu->addMenu("Window");
-	mwind->addAction("Minimize", [=]() { this->mwid->showMinimized(); });
+	QMenu* mwind = menu->addMenu(tr("&Window"));
+	mwind->addAction("&Minimize", [=]() { this->mwid->showMinimized(); })->setShortcut(Qt::CTRL | Qt::Key_M);
 	mwind->addSeparator();
 	QActionGroup* mwtabs = new QActionGroup(mwind);
 	mwtabs->setExclusive(true);
 
-	QMenu* mhelp = menu->addMenu("Help");
+	QMenu* mhelp = menu->addMenu(tr("&Help"));
 	mhelp->addAction("TODO", todo);
-	mhelp->addAction("About", [=]() { this->about(); })->setMenuRole(QAction::NoRole);
+	mhelp->addAction(tr("&About"), [=]() { this->about(); })->setMenuRole(QAction::NoRole);
 
 	this->menu = menu;
 	this->mwind = mwind;
@@ -186,10 +188,10 @@ void gui::tabCtl()
 	twid->connect(twid, &QTabWidget::tabCloseRequested, [=](int index) { this->closeTab(index); });
 	twid->tabBar()->connect(twid->tabBar(), &QTabBar::tabMoved, [=](int from, int to) { this->tabMoved(from, to); });
 
-	QPushButton* ttbnew = new QPushButton(QIcon(this->icopx + "add.png"), "New Tab");
-//    ttbnew->setFlat(true);
-	ttbnew->setStyleSheet("width: 8ex; height: 32px"); //TODO FIX height & ::left-corner padding
+	QPushButton* ttbnew = new QPushButton(QIcon(this->icopx + "add.png"), tr("New &Tab"));
+	ttbnew->setShortcut(QKeySequence::AddTab);
 	ttbnew->setMinimumHeight(32);
+	ttbnew->setStyleSheet("width: 8ex; height: 32px"); //TODO FIX height & ::left-corner padding
 	ttbnew->connect(ttbnew, &QPushButton::pressed, [=]() { this->newTab(""); });
 	twid->setCornerWidget(ttbnew, Qt::TopLeftCorner);
 

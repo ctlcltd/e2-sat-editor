@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=e2 SAT Editor
+Comment=An enigma2 channel list editor
+TryExec=e2-sat-editor
+Exec=e2-sat-editor %F
+Icon=org.e2se.e2-sat-editor

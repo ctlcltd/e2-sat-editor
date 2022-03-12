@@ -22,6 +22,7 @@ class ftpcom
         {
             string host;
             int port;
+			bool actv;
             string user;
             string pass;
             string tpath;
@@ -43,6 +44,7 @@ class ftpcom
 		string trs(string str);
 		string trw(string str, string param);
     private:
+		bool actv;
         string uri;
         string baset;
         string bases;

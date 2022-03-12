@@ -21,7 +21,6 @@
 #include <QGroupBox>
 #include <QToolBar>
 #include <QPushButton>
-#include <QLabel>
 #include <QMessageBox>
 #include <QErrorMessage>
 #include <QStyle>
@@ -61,14 +60,32 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	QGroupBox* bouquets = new QGroupBox("Bouquets");
 	QGroupBox* channels = new QGroupBox("Channels");
 
+	QGridLayout* list_layout = new QGridLayout;
+	this->list_wrap = new QWidget;
+	list_wrap->setObjectName("channels_wrap");
+	list_wrap->setStyleSheet("#channels_wrap { background: transparent }");
+
 	this->bouquets_tree = new QTreeWidget;
 	this->list_tree = new QTreeWidget;
 	bouquets_tree->setStyleSheet("QTreeWidget { background: transparent } ::item { padding: 6px auto }");
-	list_tree->setStyleSheet("QTreeWidget { border: 3px solid red } ::item { padding: 6px auto }");
+	list_tree->setStyleSheet("::item { padding: 6px auto }");
 
 	bouquets_tree->setHeaderHidden(true);
 	bouquets_tree->setUniformRowHeights(true);
 	list_tree->setUniformRowHeights(true);
+
+	bouquets_tree->setSelectionBehavior(QAbstractItemView::SelectRows);
+	bouquets_tree->setDragDropMode(QAbstractItemView::InternalMove);
+	bouquets_tree->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	
+	list_tree->setRootIsDecorated(false);
+	list_tree->setSelectionBehavior(QAbstractItemView::SelectRows);
+	list_tree->setSelectionMode(QAbstractItemView::ContiguousSelection);
+	list_tree->setItemsExpandable(false);
+	list_tree->setExpandsOnDoubleClick(false);
+	list_tree->setDropIndicatorShown(true);
+	list_tree->setDragDropMode(QAbstractItemView::InternalMove);
+	list_tree->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 	QTreeWidgetItem* lheader_item; // Qt5
 	if (DEBUG) lheader_item = new QTreeWidgetItem({"", "Index", "Name", "CHID", "TXID", "Type", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"});
@@ -125,17 +142,18 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 
 	QToolBar* bouquets_ats = new QToolBar;
 	QToolBar* list_ats = new QToolBar;
+	this->ats = new actions;
 
-	QLabel* list_ats_dndstatus = new QLabel;
-	list_ats_dndstatus->setText("• Drag&Drop actived");
+	ats->list_dnd = new QLabel; //TODO QPushButton
+	ats->list_dnd->setText("• Drag&Drop actived");
 	QWidget* list_ats_spacer = new QWidget;
 	list_ats_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	
 	bouquets_ats->addAction("+ New Bouquet", todo);
-	list_ats->addAction("+ Add Channel", [=]() { this->addChannel(); });
-	list_ats->addAction("+ New Service", todo);
+	ats->list_addch = list_ats->addAction("+ Add Channel", [=]() { this->addChannel(); });
+	ats->list_newch = list_ats->addAction("+ New Service", todo);
 	list_ats->addWidget(list_ats_spacer);
-	list_ats->addWidget(list_ats_dndstatus);
+	list_ats->addWidget(ats->list_dnd);
 
 	// bouquets_tree->connect(bouquets_tree, &QTreeWidget::itemSelectionChanged, [=]() { this->populate(); });
 	bouquets_tree->connect(bouquets_tree, &QTreeWidget::currentItemChanged, [=]() { this->populate(); });
@@ -147,7 +165,11 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	bouquets_box->addWidget(bouquets_tree);
 	bouquets->setLayout(bouquets_box);
 
-	list_box->addWidget(list_tree);
+	list_layout->addWidget(list_tree);
+	list_layout->setContentsMargins(3, 3, 3, 3);
+	list_wrap->setLayout(list_layout);
+
+	list_box->addWidget(list_wrap);
 	list_box->addWidget(list_ats);
 	channels->setLayout(list_box);
 
@@ -185,11 +207,14 @@ void tab::newFile()
 	this->_state_nwwr = true;
 
 	bouquets_tree->setDragEnabled(false);
+	bouquets_tree->viewport()->setAcceptDrops(false);
+	this->_state_dnd = false;
 	bouquets_tree->scrollToItem(bouquets_tree->topLevelItem(0));
 	bouquets_tree->clear();
 	lheaderv->setSortIndicatorShown(false);
 	lheaderv->setSectionsClickable(false);
 	list_tree->setDragEnabled(false);
+	list_tree->viewport()->setAcceptDrops(false);
 	list_tree->scrollToItem(list_tree->topLevelItem(0));
 	list_tree->clear();
 }
@@ -271,6 +296,7 @@ bool tab::load(string filename)
 		QString bcname = QString::fromStdString(gboq.nname.empty() ? gboq.name : gboq.nname);
 
 		QTreeWidgetItem* pgroup = new QTreeWidgetItem();
+		pgroup->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 		QMap<QString, QVariant> tdata;
 		tdata["bouquet_id"] = bgroup;
 		pgroup->setData(0, Qt::UserRole, QVariant (tdata));
@@ -289,6 +315,7 @@ bool tab::load(string filename)
 		QTreeWidgetItem* pgroup = bgroups[ubi.second];
 
 		QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
+		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 		QMap<QString, QVariant> tdata;
 		tdata["bouquet_id"] = bgroup;
 		bitem->setData(0, Qt::UserRole, QVariant (tdata));
@@ -297,7 +324,16 @@ bool tab::load(string filename)
 	}
 
 	bouquets_tree->setDragEnabled(true);
+	bouquets_tree->viewport()->setAcceptDrops(true);
 	populate();
+
+	int counters[4];
+	counters[0] = dbih->index["chs:0"].size();
+	counters[1] = dbih->index["chs:1"].size();
+	counters[2] = dbih->index["chs:2"].size();
+	counters[3] = dbih->index["chs"].size();
+
+	gid->loaded(counters);
 
 	return true;
 }
@@ -319,6 +355,8 @@ void tab::populate()
 	lheaderv->setSortIndicatorShown(true);
 	lheaderv->setSectionsClickable(false);
 	list_tree->setDragEnabled(false);
+	this->_state_dnd = false;
+	list_tree->viewport()->setAcceptDrops(false);
 	list_tree->scrollToItem(list_tree->topLevelItem(0));
 	list_tree->clear();
 
@@ -378,6 +416,7 @@ void tab::populate()
 			QTreeWidgetItem* item;
 			if (DEBUG) item = new QTreeWidgetItem({x, idx, chname, chid, txid, stype, pname, freq, pol, sr, fec, pos, sys});
 			else item = new QTreeWidgetItem({x, idx, chname, stype, pname, freq, pol, sr, fec, pos, sys});
+			item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 
 			list_tree->addTopLevelItem(item);
 		}
@@ -392,6 +431,7 @@ void tab::populate()
 				QString refval = QString::fromStdString(cref.refval);
 
 				QTreeWidgetItem* item = new QTreeWidgetItem({x, "", refval, chid, "", "MARKER"});
+				item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 				list_tree->addTopLevelItem(item);
 			}
 			else
@@ -408,14 +448,8 @@ void tab::populate()
 	}
 	lheaderv->setSectionsClickable(true);
 	list_tree->setDragEnabled(true);
-
-	int counters[4];
-	counters[0] = dbih->index["chs:0"].size();
-	counters[1] = dbih->index["chs:1"].size();
-	counters[2] = dbih->index["chs:2"].size();
-	counters[3] = dbih->index["chs"].size();
-
-	gid->loaded(counters);
+	list_tree->viewport()->setAcceptDrops(true);
+	this->_state_dnd = true;
 }
 
 //TODO FIX
@@ -429,13 +463,42 @@ void tab::trickySortByColumn(int column)
 	if (column)
 	{
 		list_tree->sortItems(column, order);
+		disallowDnD();
 	}
 	else
 	{
 		list_tree->sortByColumn(column, order);
 		lheaderv->setSortIndicator(1, order);
+		allowDnD();
 	}
 	this->_state_sort = pair (column, order); //C++ 17
+}
+
+void tab::allowDnD()
+{
+	debug("tab", "allowDnd()");
+
+	if (this->_state_dnd) return;
+
+	list_tree->setDragEnabled(true);
+	list_tree->viewport()->setAcceptDrops(true);
+	list_wrap->setStyleSheet("#channels_wrap { background: transparent }");
+	ats->list_dnd->setText("• Drag&Drop activated");
+	this->_state_dnd = true;
+}
+
+//TODO FIX unexpect behav switchs to QAbstractItemView::MultiSelection
+void tab::disallowDnD()
+{
+	debug("tab", "disallowDnD()");
+
+	if (! this->_state_dnd) return;
+
+	list_tree->setDragEnabled(false);
+	list_tree->viewport()->setAcceptDrops(false);
+	list_wrap->setStyleSheet("#channels_wrap { background: rgba(255, 192, 0, 20%) }");
+	ats->list_dnd->setText("• Drag&Drop deactivated");
+	this->_state_dnd = false;
 }
 
 void tab::setTabId(int ttid)

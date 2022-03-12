@@ -34,6 +34,8 @@ ftpcom::ftpcom(ftp_params params)
 		error("ftpcom()", trw("Missing \"%s\" parameter.", "IP address"));
 	if (! params.port)
 		error("ftpcom()", trw("Missing \"%s\" parameter.", "port"));
+	if (params.actv)
+		actv = true;
 
 	uri  = "//";
 	uri += params.user + ':' + params.pass;
@@ -58,6 +60,7 @@ void ftpcom::listDir(int path)
 	curl_global_init(CURL_GLOBAL_DEFAULT);
 
 	CURL* curl = curl_easy_init();
+	curl_easy_setopt(curl, CURLOPT_PROTOCOLS, CURLPROTO_FTP);
 
 	if (! curl)
 		return error("listDir()", trs("ftpcom error."));
@@ -81,6 +84,8 @@ void ftpcom::listDir(int path)
 	}
 
 	curl_easy_setopt(curl, CURLOPT_URL, ("ftp:" + uri + base).c_str());
+	if (actv)
+		curl_easy_setopt(curl, CURLOPT_FTPPORT, "-");
 	curl_easy_setopt(curl, CURLOPT_FTPLISTONLY, true);
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeData);
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &data);

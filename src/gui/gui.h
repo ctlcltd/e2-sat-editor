@@ -34,6 +34,8 @@ class tab;
 
 class gui
 {
+	Q_DECLARE_TR_FUNCTIONS(gui)
+
 	public:
 		gui(int argc, char* argv[]);
 		void root();

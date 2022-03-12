@@ -19,6 +19,8 @@ using namespace std;
 #include <QWidget>
 #include <QHeaderView>
 #include <QTreeWidget>
+#include <QAction>
+#include <QLabel>
 #include "e2db_gui.h"
 
 namespace e2se_gui
@@ -38,18 +40,29 @@ class tab
 		void setTabId(int ttid);
 		void save(bool saveas);
 		void loadSeeds();
+		void allowDnD();
+		void disallowDnD();
 		QWidget* widget;
 	private:
+		struct actions {
+			QAction* bouquets_newbs;
+			QAction* list_addch;
+			QAction* list_newch;
+			QLabel* list_dnd;
+		};
 		gui* gid;
 		QWidget* cwid;
 		int ttid;
 		e2db* dbih;
 		QTreeWidget* bouquets_tree;
 		QTreeWidget* list_tree;
+		QWidget* list_wrap;
 		QHeaderView* lheaderv;
+		actions* ats;
 		string filename;
 		bool _state_nwwr;
 		bool _state_ovwr;
+		bool _state_dnd;
 		pair<int, Qt::SortOrder> _state_sort;
 };
 }
