@@ -99,12 +99,12 @@ void settings::connections()
 
 	QVBoxLayout* dtvbox = new QVBoxLayout;
 	this->rplist = new QListWidget;
+	rplist->setEditTriggers(QAbstractItemView::EditKeyPressed | QAbstractItemView::DoubleClicked);
 	rplist->setStyleSheet("QListView::item { height: 44px; font: 16px } QListView QLineEdit { border: 1px solid palette(alternate-base) }");
 	newProfile();
-	rplist->connect(rplist, &QListWidget::doubleClicked, [=]() { this->renameProfile(false); });
-	//TODO inplace edit dismissed only under certain conditions (? needs mouse tracking enabled)
-	rplist->connect(rplist, &QAbstractItemView::viewportEntered, [=]() { this->renameProfile(true); });
-	rppage->connect(rppage, &WidgetWithBackdrop::backdrop, [=]() { this->renameProfile(true); });
+	//TODO inplace edit dismissed only under certain conditions
+	rplist->connect(rplist, &QAbstractItemView::viewportEntered, [=]() { this->renameProfile(false); });
+	rppage->connect(rppage, &WidgetWithBackdrop::backdrop, [=]() { this->renameProfile(false); });
 
 	QToolBar* dttbar = new QToolBar;
 //	QWidget* dtspacer = new QWidget;
@@ -219,23 +219,25 @@ void settings::advanced()
 void settings::newProfile()
 {
 	QListWidgetItem* item = new QListWidgetItem("Profile", rplist);
-	renameProfile(true);
+	renameProfile(false);
 	item->setSelected(true);
 	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
 	rplist->setCurrentItem(item);
-	if (rplist->count() != 1) renameProfile(false);
+	if (rplist->count() != 1)
+		renameProfile();
 }
 
 void settings::delProfile()
 {
-	renameProfile(true);
-	if (rplist->count() != 1) rplist->takeItem(rplist->currentRow());
+	renameProfile(false);
+	if (rplist->count() != 1)
+		rplist->takeItem(rplist->currentRow());
 }
 
-void settings::renameProfile(bool dismiss)
+void settings::renameProfile(bool enabled)
 {
 	QListWidgetItem* item = rplist->currentItem();
-	if (! dismiss && ! rplist->isPersistentEditorOpen(item))
+	if (enabled && ! rplist->isPersistentEditorOpen(item))
 	{
 		rplist->openPersistentEditor(item);
 		rppage->activateBackdrop();
@@ -243,7 +245,7 @@ void settings::renameProfile(bool dismiss)
 	else
 	{
 		rplist->closePersistentEditor(item);
-		rppage->deactivateBackdrop();
+		rppage->activateBackdrop();
 	}
 }
 
@@ -257,7 +259,7 @@ void settings::tabChanged(int index)
 	switch (this->_state_previ)
 	{
 		case 0:
-			renameProfile(true);
+			renameProfile(false);
 		break;
 		case 2:
 			adntc->setVisible(true);

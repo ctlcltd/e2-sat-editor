@@ -32,7 +32,7 @@ class settings
 		void advanced();
 		void newProfile();
 		void delProfile();
-		void renameProfile(bool dismiss);
+		void renameProfile(bool enabled = true);
 		void tabChanged(int index);
 	protected:
 		QTabWidget* dtwid;
