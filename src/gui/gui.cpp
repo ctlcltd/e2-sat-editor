@@ -61,6 +61,15 @@ gui::gui(int argc, char* argv[])
 	mwid->setMinimumSize(760, 550);
 	mwid->resize(wsize);
 
+	if (QSysInfo::productType() == "macos")
+		unicode_fix = true;
+	else
+		unicode_fix = false;
+	unicode_fix = FIX_UNICODE_CHARS ? true : false;
+
+	// QFont font = QFont({"Arial", "Courier New"});
+	// font.families().append("Menlo");
+	// mroot->setFont(font);
 	//TODO theming QEvent::PaletteChange()
 
 	root();

@@ -84,6 +84,7 @@ void settings::preferences()
 	//TODO FIX [macos] connections tab interferes with focus
 	dtform->addRow(new QCheckBox("Suppress ask for confirmation messages (shown before deleting)"));
 	dtform->addRow(new QCheckBox("Non-destructive edit (try to preserve origin rplists)"));
+	dtform->addRow(new QCheckBox("Visually fix for unwanted unicode characters (less performant)"));
 
 	dtcnt->setAlignment(Qt::AlignTop | Qt::AlignCenter);
 	dtcnt->addLayout(dtform, 0);
@@ -245,7 +246,7 @@ void settings::renameProfile(bool enabled)
 	else
 	{
 		rplist->closePersistentEditor(item);
-		rppage->activateBackdrop();
+		rppage->deactivateBackdrop();
 	}
 }
 

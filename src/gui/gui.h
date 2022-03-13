@@ -58,6 +58,7 @@ class gui
 		void settings();
 		void about();
 		QString icopx;
+		bool unicode_fix;
 	private:
 		QApplication* mroot;
 		QWidget* mwid;

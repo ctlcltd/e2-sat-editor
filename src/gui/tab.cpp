@@ -293,14 +293,14 @@ bool tab::load(string filename)
 		debug("tab", "load()", "bouquet", bsi.second);
 		e2db::bouquet gboq = dbih->bouquets[bsi.second];
 		QString bgroup = QString::fromStdString(bsi.second);
-		QString bcname = QString::fromStdString(gboq.nname.empty() ? gboq.name : gboq.nname);
+		QString qbname = QString::fromStdString(gboq.nname.empty() ? gboq.name : gboq.nname);
 
 		QTreeWidgetItem* pgroup = new QTreeWidgetItem();
 		pgroup->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 		QMap<QString, QVariant> tdata;
 		tdata["bouquet_id"] = bgroup;
 		pgroup->setData(0, Qt::UserRole, QVariant (tdata));
-		pgroup->setText(0, bcname);
+		pgroup->setText(0, qbname);
 		bouquets_tree->addTopLevelItem(pgroup);
 		bouquets_tree->expandItem(pgroup);
 
@@ -313,13 +313,19 @@ bool tab::load(string filename)
 		e2db::userbouquet uboq = dbih->userbouquets[ubi.second];
 		QString bgroup = QString::fromStdString(ubi.second);
 		QTreeWidgetItem* pgroup = bgroups[ubi.second];
+		//macos: unwanted chars [qt.qpa.fonts] Menlo notice
+		QString qbname;
+		if (gid->unicode_fix)
+			qbname = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{N}\\p{Pc}\\p{M}\\p{P}\\s]+"));
+		else
+			qbname = QString::fromStdString(uboq.name);
 
 		QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
 		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 		QMap<QString, QVariant> tdata;
 		tdata["bouquet_id"] = bgroup;
 		bitem->setData(0, Qt::UserRole, QVariant (tdata));
-		bitem->setText(0, QString::fromStdString(uboq.name));
+		bitem->setText(0, qbname);
 		bouquets_tree->addTopLevelItem(bitem);
 	}
 
@@ -380,8 +386,12 @@ void tab::populate()
 			e2db::transponder txdata = dbih->db.transponders[chdata.txid];
 
 			QString idx = QString::fromStdString(to_string(ch.first));
-			//TOOO FIX visual chname strip, extended glyphs slow down [qt.qpa.fonts] notice
-			QString chname = QString::fromStdString(chdata.chname);
+			//macos: unwanted chars [qt.qpa.fonts] Menlo notice
+			QString chname;
+			if (gid->unicode_fix)
+				chname = QString::fromStdString(chdata.chname).remove(QRegularExpression("[^\\p{L}\\p{N}\\p{Pc}\\p{M}\\p{P}\\s]+"));
+			else
+				chname = QString::fromStdString(chdata.chname);
 			QString chid = QString::fromStdString(ch.second);
 			QString txid = QString::fromStdString(chdata.txid);
 			QString stype = e2db::STYPES.count(chdata.stype) ? QString::fromStdString(e2db::STYPES.at(chdata.stype).second) : "Data";
