@@ -10,6 +10,8 @@
  */
 
 #include <string>
+#include <map>
+#include <unordered_map>
 
 using namespace std;
 
@@ -22,6 +24,7 @@ using namespace std;
 #include <QAction>
 #include <QLabel>
 #include "e2db_gui.h"
+#include "TreeEventObserver.h"
 
 namespace e2se_gui
 {
@@ -36,13 +39,19 @@ class tab
 		void addChannel();
 		bool load(string filename = "");
 		void populate();
+		void listItemChanged();
+		void visualReindexList();
 		void trickySortByColumn(int column);
 		void setTabId(int ttid);
+		void updateListIndex();
 		void save(bool saveas);
 		void loadSeeds();
 		void allowDnD();
 		void disallowDnD();
 		QWidget* widget;
+	protected:
+		map<string, vector<pair<int, string>>> index;
+		unordered_map<string, bool> changes;
 	private:
 		struct actions {
 			QAction* bouquets_newbs;
@@ -54,6 +63,7 @@ class tab
 		QWidget* cwid;
 		int ttid;
 		e2db* dbih;
+		TreeEventObserver* list_evt;
 		QTreeWidget* bouquets_tree;
 		QTreeWidget* list_tree;
 		QWidget* list_wrap;
@@ -63,6 +73,8 @@ class tab
 		bool _state_nwwr;
 		bool _state_ovwr;
 		bool _state_dnd;
+		bool _state_changed;
+		string _state_curr;
 		pair<int, Qt::SortOrder> _state_sort;
 };
 }

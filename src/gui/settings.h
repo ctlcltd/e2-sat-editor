@@ -42,7 +42,7 @@ class settings
 		QWidget* adntc;
 		QTableWidget* adtbl;
 	private:
-		int _state_previ;
+		int _state_prev;
 };
 }
 #endif /* settings_h */

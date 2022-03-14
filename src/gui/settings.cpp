@@ -45,7 +45,7 @@ settings::settings(QWidget* mwid)
 	QVBoxLayout* dvbox = new QVBoxLayout;
 	this->dtwid = new QTabWidget;
 	dtwid->connect(dtwid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
-	this->_state_previ = -1;
+	this->_state_prev = -1;
 
 	QPushButton* dtsave = new QPushButton;
 	dtsave->setDefault(true);
@@ -252,12 +252,12 @@ void settings::renameProfile(bool enabled)
 
 void settings::tabChanged(int index)
 {
-	if (this->_state_previ == -1)
+	if (this->_state_prev == -1)
 	{
-		this->_state_previ = index;
+		this->_state_prev = index;
 		return;
 	}
-	switch (this->_state_previ)
+	switch (this->_state_prev)
 	{
 		case 0:
 			renameProfile(false);
@@ -267,7 +267,7 @@ void settings::tabChanged(int index)
 			adtbl->setHidden(true);
 		break;
 	}
-	this->_state_previ = index;
+	this->_state_prev = index;
 }
 
 }

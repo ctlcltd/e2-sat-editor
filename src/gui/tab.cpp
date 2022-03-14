@@ -24,10 +24,12 @@
 #include <QMessageBox>
 #include <QErrorMessage>
 #include <QStyle>
+#include <QTimer>
 
 #include "../commons.h"
 #include "tab.h"
 #include "gui.h"
+#include "DropEventHandler.h"
 #include "todo.h"
 #include "channelBook.h"
 
@@ -75,12 +77,12 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	list_tree->setUniformRowHeights(true);
 
 	bouquets_tree->setSelectionBehavior(QAbstractItemView::SelectRows);
-	bouquets_tree->setDragDropMode(QAbstractItemView::InternalMove);
+	bouquets_tree->setDragDropMode(QAbstractItemView::DragDrop);
 	bouquets_tree->setEditTriggers(QAbstractItemView::NoEditTriggers);
-	
+
 	list_tree->setRootIsDecorated(false);
 	list_tree->setSelectionBehavior(QAbstractItemView::SelectRows);
-	list_tree->setSelectionMode(QAbstractItemView::ContiguousSelection);
+	list_tree->setSelectionMode(QAbstractItemView::ExtendedSelection);
 	list_tree->setItemsExpandable(false);
 	list_tree->setExpandsOnDoubleClick(false);
 	list_tree->setDropIndicatorShown(true);
@@ -115,7 +117,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 
 	this->lheaderv = list_tree->header();
 	lheaderv->connect(lheaderv, &::QHeaderView::sectionClicked, [=](int column) { this->trickySortByColumn(column); });
-	
+
 	QToolBar* top_toolbar = new QToolBar;
 	top_toolbar->setStyleSheet("QToolBar { padding: 0 12px } QToolButton { font: 20px }");
 
@@ -155,8 +157,12 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	list_ats->addWidget(list_ats_spacer);
 	list_ats->addWidget(ats->list_dnd);
 
-	// bouquets_tree->connect(bouquets_tree, &QTreeWidget::itemSelectionChanged, [=]() { this->populate(); });
-	bouquets_tree->connect(bouquets_tree, &QTreeWidget::currentItemChanged, [=]() { this->populate(); });
+	DropEventHandler* bouquets_evt = new DropEventHandler;
+	this->list_evt = new TreeEventObserver;
+	bouquets_tree->viewport()->installEventFilter(bouquets_evt);
+	bouquets_tree->connect(bouquets_tree, &QTreeWidget::currentItemChanged, [=]() { this->updateListIndex(); this->populate(); });
+	list_tree->installEventFilter(list_evt);
+	list_tree->connect(list_tree, &QTreeWidget::currentItemChanged, [=]() { this->listItemChanged(); });
 
 	top->addWidget(top_toolbar);
 	bottom->addWidget(bottom_toolbar);
@@ -205,18 +211,29 @@ void tab::newFile()
 	
 	this->dbih = new e2db;
 	this->_state_nwwr = true;
+	this->_state_ovwr = false;
+	this->_state_changed = false;
 
 	bouquets_tree->setDragEnabled(false);
-	bouquets_tree->viewport()->setAcceptDrops(false);
+	bouquets_tree->setAcceptDrops(false);
 	this->_state_dnd = false;
 	bouquets_tree->scrollToItem(bouquets_tree->topLevelItem(0));
 	bouquets_tree->clear();
 	lheaderv->setSortIndicatorShown(false);
 	lheaderv->setSectionsClickable(false);
 	list_tree->setDragEnabled(false);
-	list_tree->viewport()->setAcceptDrops(false);
+	list_tree->setAcceptDrops(false);
 	list_tree->scrollToItem(list_tree->topLevelItem(0));
 	list_tree->clear();
+
+	QTreeWidgetItem* titem = new QTreeWidgetItem();
+	titem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+	QVariantMap tdata; //TODO
+	tdata["id"] = "chs";
+	titem->setData(0, Qt::UserRole, QVariant (tdata));
+	titem->setText(0, "All channels");
+
+	bouquets_tree->addTopLevelItem(titem);
 }
 
 void tab::open()
@@ -267,6 +284,7 @@ bool tab::load(string filename)
 		{
 			this->_state_nwwr = false;
 			this->filename = dirname;
+			this->index = dbih->index;
 			if (DEBUG_E2DB) dbih->debugger();
 		}
 		else
@@ -277,18 +295,10 @@ bool tab::load(string filename)
 		}
 	}
 
-	QTreeWidgetItem* titem = new QTreeWidgetItem();
-	QVariantMap tdata;
-	tdata["bouquet_id"] = "chs";
-	titem->setData(0, Qt::UserRole, QVariant (tdata));
-	titem->setText(0, "All channels");
-
-	bouquets_tree->addTopLevelItem(titem);
-
-	sort(dbih->index["bss"].begin(), dbih->index["bss"].end());
+	sort(index["bss"].begin(), index["bss"].end());
 	map<string, QTreeWidgetItem*> bgroups;
 
-	for (auto & bsi : dbih->index["bss"])
+	for (auto & bsi : index["bss"])
 	{
 		debug("tab", "load()", "bouquet", bsi.second);
 		e2db::bouquet gboq = dbih->bouquets[bsi.second];
@@ -297,8 +307,8 @@ bool tab::load(string filename)
 
 		QTreeWidgetItem* pgroup = new QTreeWidgetItem();
 		pgroup->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-		QMap<QString, QVariant> tdata;
-		tdata["bouquet_id"] = bgroup;
+		QMap<QString, QVariant> tdata; //TODO
+		tdata["id"] = bgroup;
 		pgroup->setData(0, Qt::UserRole, QVariant (tdata));
 		pgroup->setText(0, qbname);
 		bouquets_tree->addTopLevelItem(pgroup);
@@ -307,13 +317,13 @@ bool tab::load(string filename)
 		for (string & ubname : gboq.userbouquets)
 			bgroups[ubname] = pgroup;
 	}
-	for (auto & ubi : dbih->index["ubs"])
+	for (auto & ubi : index["ubs"])
 	{
 		debug("tab", "load()", "userbouquet", ubi.second);
 		e2db::userbouquet uboq = dbih->userbouquets[ubi.second];
 		QString bgroup = QString::fromStdString(ubi.second);
 		QTreeWidgetItem* pgroup = bgroups[ubi.second];
-		//macos: unwanted chars [qt.qpa.fonts] Menlo notice
+		// macos: unwanted chars [qt.qpa.fonts] Menlo notice
 		QString qbname;
 		if (gid->unicode_fix)
 			qbname = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{N}\\p{Pc}\\p{M}\\p{P}\\s]+"));
@@ -321,23 +331,23 @@ bool tab::load(string filename)
 			qbname = QString::fromStdString(uboq.name);
 
 		QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
-		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
-		QMap<QString, QVariant> tdata;
-		tdata["bouquet_id"] = bgroup;
+		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
+		QMap<QString, QVariant> tdata; //TODO
+		tdata["id"] = bgroup;
 		bitem->setData(0, Qt::UserRole, QVariant (tdata));
 		bitem->setText(0, qbname);
 		bouquets_tree->addTopLevelItem(bitem);
 	}
 
 	bouquets_tree->setDragEnabled(true);
-	bouquets_tree->viewport()->setAcceptDrops(true);
+	bouquets_tree->setAcceptDrops(true);
 	populate();
 
 	int counters[4];
-	counters[0] = dbih->index["chs:0"].size();
-	counters[1] = dbih->index["chs:1"].size();
-	counters[2] = dbih->index["chs:2"].size();
-	counters[3] = dbih->index["chs"].size();
+	counters[0] = index["chs:0"].size();
+	counters[1] = index["chs:1"].size();
+	counters[2] = index["chs:2"].size();
+	counters[3] = index["chs"].size();
 
 	gid->loaded(counters);
 
@@ -347,34 +357,34 @@ bool tab::load(string filename)
 void tab::populate()
 {
 	QTreeWidgetItem* selected = bouquets_tree->currentItem();
-	string cur_bouquet = "";
+	string cur_chlist;
 
+	if (selected == NULL)
+		selected = bouquets_tree->topLevelItem(0);
 	if (selected != NULL)
 	{
 		QVariantMap tdata = selected->data(0, Qt::UserRole).toMap();
-		QString qcur_bouquet = tdata["bouquet_id"].toString();
-		cur_bouquet = qcur_bouquet.toStdString();
+		QString qcur_bouquet = tdata["id"].toString();
+		cur_chlist = qcur_bouquet.toStdString();
+		this->_state_curr = cur_chlist;
+		cout << "_state_curr " << this->_state_curr << endl;
 	}
 
-	debug("tab", "populate()", "cur_bouquet", cur_bouquet);
+	debug("tab", "populate()", "cur_chlist", cur_chlist);
 
 	lheaderv->setSortIndicatorShown(true);
 	lheaderv->setSectionsClickable(false);
 	list_tree->setDragEnabled(false);
 	this->_state_dnd = false;
-	list_tree->viewport()->setAcceptDrops(false);
+	list_tree->setAcceptDrops(false);
 	list_tree->scrollToItem(list_tree->topLevelItem(0));
 	list_tree->clear();
 
-	string cur_chlist = "chs";
-	int i = 0;
-
-	if (! cur_bouquet.empty() && cur_bouquet != "chs")
-		cur_chlist = cur_bouquet;
-
 	//TODO [API] cannot add handler to n from ns - dropping
 
-	for (auto & ch : dbih->index[cur_chlist])
+	int i = 0;
+
+	for (auto & ch : index[cur_chlist])
 	{
 		char ci[7];
 		sprintf(ci, "%06d", i++);
@@ -386,7 +396,7 @@ void tab::populate()
 			e2db::transponder txdata = dbih->db.transponders[chdata.txid];
 
 			QString idx = QString::fromStdString(to_string(ch.first));
-			//macos: unwanted chars [qt.qpa.fonts] Menlo notice
+			// macos: unwanted chars [qt.qpa.fonts] Menlo notice
 			QString chname;
 			if (gid->unicode_fix)
 				chname = QString::fromStdString(chdata.chname).remove(QRegularExpression("[^\\p{L}\\p{N}\\p{Pc}\\p{M}\\p{P}\\s]+"));
@@ -427,12 +437,13 @@ void tab::populate()
 			if (DEBUG) item = new QTreeWidgetItem({x, idx, chname, chid, txid, stype, pname, freq, pol, sr, fec, pos, sys});
 			else item = new QTreeWidgetItem({x, idx, chname, stype, pname, freq, pol, sr, fec, pos, sys});
 			item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
-
+			item->setData(0, Qt::UserRole, chid);  // data: Index
+			item->setData(1, Qt::UserRole, false); // data: marker flag
 			list_tree->addTopLevelItem(item);
 		}
 		else
 		{
-			e2db::reference cref = dbih->userbouquets[cur_bouquet].channels[ch.second];
+			e2db::reference cref = dbih->userbouquets[cur_chlist].channels[ch.second];
 
 			//TODO marker QWidget ?
 			if (cref.refmrker)
@@ -442,6 +453,8 @@ void tab::populate()
 
 				QTreeWidgetItem* item = new QTreeWidgetItem({x, "", refval, chid, "", "MARKER"});
 				item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
+				item->setData(0, Qt::UserRole, chid); // data: Index
+				item->setData(1, Qt::UserRole, true); // data: marker flag
 				list_tree->addTopLevelItem(item);
 			}
 			else
@@ -458,11 +471,50 @@ void tab::populate()
 	}
 	lheaderv->setSectionsClickable(true);
 	list_tree->setDragEnabled(true);
-	list_tree->viewport()->setAcceptDrops(true);
+	list_tree->setAcceptDrops(true);
 	this->_state_dnd = true;
 }
 
-//TODO FIX
+void tab::listItemChanged()
+{
+	if (! list_evt->isChanged()) return;
+
+	debug("tab", "listItemChanged()");
+
+	QTimer::singleShot(0, [=]() { this->visualReindexList(); });
+	this->_state_changed = true;
+}
+
+//TODO improve by positions QAbstractItemView::indexAt(x, y) min|max
+void tab::visualReindexList()
+{
+	int i = 0, j = 0, idx = 0;
+	int maxs = list_tree->topLevelItemCount() - 1;
+
+	do
+	{
+		char ci[7];
+		sprintf(ci, "%06d", i + 1);
+		QString x = QString::fromStdString(ci);
+		QTreeWidgetItem* item = list_tree->topLevelItem(i);
+		bool mrkr = item->data(1, Qt::UserRole).toBool();
+		if (mrkr)
+		{
+			idx = 0;
+		}
+		else
+		{
+			j += 1;
+			idx = j;
+		}
+		item->setText(0, x);
+		if (! mrkr)
+			item->setText(1, QString::fromStdString(to_string(idx)));
+		i++;
+	}
+	while (i != maxs);
+}
+
 void tab::trickySortByColumn(int column)
 {
 	debug("tab", "trickySortByColumn()", "column", to_string(column));
@@ -491,7 +543,7 @@ void tab::allowDnD()
 	if (this->_state_dnd) return;
 
 	list_tree->setDragEnabled(true);
-	list_tree->viewport()->setAcceptDrops(true);
+	list_tree->setAcceptDrops(true);
 	list_wrap->setStyleSheet("#channels_wrap { background: transparent }");
 	ats->list_dnd->setText("• Drag&Drop activated");
 	this->_state_dnd = true;
@@ -505,7 +557,7 @@ void tab::disallowDnD()
 	if (! this->_state_dnd) return;
 
 	list_tree->setDragEnabled(false);
-	list_tree->viewport()->setAcceptDrops(false);
+	list_tree->setAcceptDrops(false);
 	list_wrap->setStyleSheet("#channels_wrap { background: rgba(255, 192, 0, 20%) }");
 	ats->list_dnd->setText("• Drag&Drop deactivated");
 	this->_state_dnd = false;
@@ -516,6 +568,39 @@ void tab::setTabId(int ttid)
 	debug("tab", "setTabId()", "ttid", to_string(ttid));
 
 	this->ttid = ttid;
+}
+
+void tab::updateListIndex()
+{
+	if (! this->_state_changed) return;
+
+	int i = 0, j = 0, idx = 0;
+	int maxs = list_tree->topLevelItemCount() - 1;
+	string cur_chlist = this->_state_curr;
+	index[cur_chlist].clear();
+
+	debug("tab", "updateListIndex()", "cur_chlist", cur_chlist);
+
+	do
+	{
+		QTreeWidgetItem* item = list_tree->topLevelItem(i);
+		QString chid = item->data(0, Qt::UserRole).toString();
+		bool mrkr = item->data(1, Qt::UserRole).toBool();
+		if (mrkr)
+		{
+			idx = 0;
+		}
+		else
+		{
+			j += 1;
+			idx = j;
+		}
+		index[cur_chlist].emplace_back(pair (idx, chid.toStdString())); //C++ 17
+		i++;
+	}
+	while (i != maxs);
+
+	this->_state_changed = false;
 }
 
 void tab::save(bool saveas)
