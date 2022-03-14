@@ -90,10 +90,10 @@ struct e2db_abstract
 
 		struct service
 		{
-			string ssid;
-			string dvbns;
-			string tsid;
-			string onid;
+			int ssid;
+			int dvbns;
+			int tsid;
+			string onid; //TODO to int
 			int stype;
 			int snum;
 			int srcid;
@@ -104,12 +104,12 @@ struct e2db_abstract
 		};
 		struct transponder
 		{
-			string dvbns;
-			string tsid;
-			string onid;
+			int dvbns;
+			int tsid;
+			int onid;
 			char ttype;
-			string freq;
-			string sr; // DVB-S
+			int freq;
+			int sr; // DVB-S
 			int pol; // DVB-S
 			int fec; // DVB-S
 			int hpfec; // DVB-T
@@ -137,7 +137,7 @@ struct e2db_abstract
 			int reftype;
 			bool refmrker;
 			string refval;
-			string refanum;
+			int refanum;
 			int index;
 		};
 		struct bouquet
@@ -158,8 +158,8 @@ struct e2db_abstract
 		};
 		struct tuner_reference
 		{
-			string freq;
-			string sr;
+			int freq;
+			int sr;
 			int pol;
 			int fec;
 			int mod;

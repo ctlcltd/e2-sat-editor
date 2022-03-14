@@ -225,11 +225,11 @@ void channelBook::stacker(int vv)
 				QString subindex = QString::fromStdString(x.second);
 				string ptxp;
 				if (txdata.ttype == 's')
-					ptxp = txdata.freq + '/' + e2db::SAT_POL[txdata.pol] + '/' + txdata.sr;
+					ptxp = to_string(txdata.freq) + '/' + e2db::SAT_POL[txdata.pol] + '/' + to_string(txdata.sr);
 				else if (txdata.ttype == 't')
-					ptxp = txdata.freq + '/' + e2db::TER_MOD[txdata.termod] + '/' + e2db::TER_BAND[txdata.band];
+					ptxp = to_string(txdata.freq) + '/' + e2db::TER_MOD[txdata.termod] + '/' + e2db::TER_BAND[txdata.band];
 				else if (txdata.ttype == 'c')
-					ptxp = txdata.freq + '/' + e2db::CAB_MOD[txdata.cabmod] + '/' + txdata.sr;
+					ptxp = to_string(txdata.freq) + '/' + e2db::CAB_MOD[txdata.cabmod] + '/' + to_string(txdata.sr);
 				QString txp = QString::fromStdString(ptxp);
 				subitem = new QTreeWidgetItem(item, {txp});
 				subitem->setData(0, Qt::UserRole, subindex);
@@ -325,11 +325,11 @@ void channelBook::populate()
 
 			string ptxp;
 			if (txdata.ttype == 's')
-				ptxp = txdata.freq + '/' + e2db::SAT_POL[txdata.pol] + '/' + txdata.sr;
+				ptxp = to_string(txdata.freq) + '/' + e2db::SAT_POL[txdata.pol] + '/' + to_string(txdata.sr);
 			else if (txdata.ttype == 't')
-				ptxp = txdata.freq + '/' + e2db::TER_MOD[txdata.termod] + '/' + e2db::TER_BAND[txdata.band];
+				ptxp = to_string(txdata.freq) + '/' + e2db::TER_MOD[txdata.termod] + '/' + e2db::TER_BAND[txdata.band];
 			else if (txdata.ttype == 'c')
-				ptxp = txdata.freq + '/' + e2db::CAB_MOD[txdata.cabmod] + '/' + txdata.sr;
+				ptxp = to_string(txdata.freq) + '/' + e2db::CAB_MOD[txdata.cabmod] + '/' + to_string(txdata.sr);
 			QString txp = QString::fromStdString(ptxp);
 			string ppos;
 			if (txdata.ttype == 's')

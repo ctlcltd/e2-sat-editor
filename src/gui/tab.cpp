@@ -407,9 +407,9 @@ void tab::populate()
 			QString stype = e2db::STYPES.count(chdata.stype) ? QString::fromStdString(e2db::STYPES.at(chdata.stype).second) : "Data";
 			QString pname = QString::fromStdString(chdata.data.count(e2db::PVDR_DATA.at('p')) ? chdata.data[e2db::PVDR_DATA.at('p')][0] : "");
 
-			QString freq = QString::fromStdString(txdata.freq);
+			QString freq = QString::fromStdString(to_string(txdata.freq));
 			QString pol = QString::fromStdString(txdata.pol != -1 ? e2db::SAT_POL[txdata.pol] : "");
-			QString sr = QString::fromStdString(txdata.sr);
+			QString sr = QString::fromStdString(to_string(txdata.sr));
 			QString fec = QString::fromStdString(e2db::SAT_FEC[txdata.fec]);
 			string ppos;
 			if (txdata.ttype == 's')
@@ -575,7 +575,7 @@ void tab::updateListIndex()
 	if (! this->_state_changed) return;
 
 	int i = 0, j = 0, idx = 0;
-	int maxs = list_tree->topLevelItemCount() - 1;
+	int count = list_tree->topLevelItemCount();
 	string cur_chlist = this->_state_curr;
 	index[cur_chlist].clear();
 
@@ -598,7 +598,7 @@ void tab::updateListIndex()
 		index[cur_chlist].emplace_back(pair (idx, chid.toStdString())); //C++ 17
 		i++;
 	}
-	while (i != maxs);
+	while (i != count);
 
 	this->_state_changed = false;
 }
@@ -613,6 +613,10 @@ void tab::save(bool saveas)
 
 	if (overwrite)
 	{
+		//TEST
+		this->updateListIndex();
+		dbih->set_index(index);
+		//TEST
 		filename = this->filename;
 		dial.setText("Files will be overwritten.");
 		dial.exec();
