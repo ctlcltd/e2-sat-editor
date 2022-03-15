@@ -10,7 +10,6 @@
  */
 
 #include <algorithm>
-#include <map>
 #include <filesystem>
 #include <cstdio>
 
@@ -296,7 +295,7 @@ bool tab::load(string filename)
 	}
 
 	sort(index["bss"].begin(), index["bss"].end());
-	map<string, QTreeWidgetItem*> bgroups;
+	unordered_map<string, QTreeWidgetItem*> bgroups;
 
 	for (auto & bsi : index["bss"])
 	{

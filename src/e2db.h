@@ -154,7 +154,7 @@ struct e2db_abstract
 			string bname;
 			string name;
 			string pname;
-			map<string, reference> channels;
+			unordered_map<string, reference> channels;
 		};
 		struct tuner_reference
 		{
@@ -177,18 +177,18 @@ struct e2db_abstract
 			string name;
 			int flgs;
 			int pos;
-			map<string, tuner_reference> references;
+			unordered_map<string, tuner_reference> references;
 		};
 		struct lamedb {
-			map<string, transponder> transponders;
-			map<string, service> services;
+			unordered_map<string, transponder> transponders;
+			unordered_map<string, service> services;
 		};
 		lamedb db;
-		map<string, bouquet> bouquets;
-		map<string, userbouquet> userbouquets;
+		unordered_map<string, bouquet> bouquets;
+		unordered_map<string, userbouquet> userbouquets;
 		unordered_map<int, tuner_sets> tuners;
-		map<string, vector<pair<int, string>>> index;
-		map<string, vector<pair<string, int>>> collisions;
+		unordered_map<string, vector<pair<int, string>>> index;
+		unordered_map<string, vector<pair<string, int>>> collisions;
 	protected:
 		unordered_map<string, string> e2db;
 		void options();
@@ -208,9 +208,9 @@ class e2db_parser : virtual public e2db_abstract
 		void parse_e2db_lamedb5(ifstream& flamedb);
 		void parse_e2db_bouquet(ifstream& fbouquet, string bname);
 		void parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, string pname);
-		map<string, transponder> get_transponders();
-		map<string, service> get_services();
-		pair<map<string, bouquet>, map<string, userbouquet>> get_bouquets();
+		unordered_map<string, transponder> get_transponders();
+		unordered_map<string, service> get_services();
+		pair<unordered_map<string, bouquet>, unordered_map<string, userbouquet>> get_bouquets();
 		bool read_from_localdir(string localdir);
 		bool read(string localdir);
 		void parse_tunersets_xml(int ytype, ifstream& ftunxml);
@@ -236,10 +236,10 @@ class e2db_maker : virtual public e2db_abstract
 		void make_userbouquets();
 		void make_bouquet(string bname);
 		void make_userbouquet(string bname);
-		void set_index(map<string, vector<pair<int, string>>> index);
-		void set_transponders(map<string, transponder> transponders);
-		void set_channels(map<string, service> services);
-		void set_bouquets(pair<map<string, bouquet>, map<string, userbouquet>> bouquets);
+		void set_index(unordered_map<string, vector<pair<int, string>>> index);
+		void set_transponders(unordered_map<string, transponder> transponders);
+		void set_channels(unordered_map<string, service> services);
+		void set_bouquets(pair<unordered_map<string, bouquet>, unordered_map<string, userbouquet>> bouquets);
 		bool write_to_localdir(string localdir, bool overwrite);
 		bool write(string localdir, bool overwrite);
 	private:

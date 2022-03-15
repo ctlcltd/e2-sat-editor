@@ -102,12 +102,14 @@ void e2db_parser::parse_e2db()
 	// seeds./enigma_db
 	// commit: 05db5bb	elapsed time: 86547
 	// commit: 6615a23	elapsed time: 83523
+	// commit: HEAD		elapsed time: 65520
 
 	// workflow/Vhannibal Motor 08 mar 2022
 	// commit: 05db5bb	elapsed time: 756600
 	// commit: 6615a23	elapsed time: 601638
+	// commit: HEAD		elapsed time: 421056
 
-	cout << "commit: 6615a23" << '\t' << "elapsed time: " << end - start << endl;
+	debug("e2db_parser", "parse_e2db()", "elapsed time", to_string(end - start));
 }
 
 void e2db_parser::parse_e2db_lamedb(ifstream& flamedb)
@@ -303,7 +305,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 					string value = l.substr(2);
 					data[key].push_back(value);
 				}
-				ch.data = data;
+				ch.data = data; //TODO lassign infinite loop
 
 				if (db.services.count(chid))
 				{
@@ -324,7 +326,6 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 	}
 }
 
-//TODO test & transform hexdigit
 //TODO ATSC
 void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 {
@@ -480,7 +481,7 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 				string value = l.substr(2);
 				data[key].push_back(value);
 			}
-			ch.data = data;
+			ch.data = data; //TODO lassign infinite loop
 
 			if (db.services.count(chid))
 			{
@@ -640,6 +641,7 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 
 //TODO terrestrial.xml, cable.xml, ...
 //TODO FIX wrong position
+//TODO needs index
 void e2db_parser::parse_tunersets_xml(int ytype, ifstream& ftunxml)
 {
 	debug("e2db_parser", "parse_tunersets_xml()", "ytype", to_string(ytype));
@@ -889,19 +891,19 @@ void e2db_parser::debugger()
 	cout << dec;
 }
 
-map<string, e2db_parser::transponder> e2db_parser::get_transponders()
+unordered_map<string, e2db_parser::transponder> e2db_parser::get_transponders()
 {
 	debug("e2db_parser", "get_transponders()");
 	return db.transponders;
 }
 
-map<string, e2db_parser::service> e2db_parser::get_services()
+unordered_map<string, e2db_parser::service> e2db_parser::get_services()
 {
 	debug("e2db_parser", "get_services()");
 	return db.services;
 }
 
-pair<map<string, e2db_parser::bouquet>, map<string, e2db_parser::userbouquet>> e2db_parser::get_bouquets()
+pair<unordered_map<string, e2db_parser::bouquet>, unordered_map<string, e2db_parser::userbouquet>> e2db_parser::get_bouquets()
 {
 	debug("e2db_parser", "get_bouquets()");
 	return pair (bouquets, userbouquets); //C++ 17
@@ -1334,25 +1336,25 @@ bool e2db_maker::write(string localdir, bool overwrite)
 		return false;
 }
 
-void e2db_maker::set_index(map<string, vector<pair<int, string>>> index)
+void e2db_maker::set_index(unordered_map<string, vector<pair<int, string>>> index)
 {
 	debug("e2db_maker", "set_index()");
 	this->index = index;
 }
 
-void e2db_maker::set_transponders(map<string, e2db_maker::transponder> transponders)
+void e2db_maker::set_transponders(unordered_map<string, e2db_maker::transponder> transponders)
 {
 	debug("e2db_maker", "set_transponders()");
 	db.transponders = transponders;
 }
 
-void e2db_maker::set_channels(map<string, e2db_maker::service> services)
+void e2db_maker::set_channels(unordered_map<string, e2db_maker::service> services)
 {
 	debug("e2db_maker", "set_channels()");
 	db.services = services;
 }
 
-void e2db_maker::set_bouquets(pair<map<string, e2db_maker::bouquet>, map<string, e2db_maker::userbouquet>> bouquets)
+void e2db_maker::set_bouquets(pair<unordered_map<string, e2db_maker::bouquet>, unordered_map<string, e2db_maker::userbouquet>> bouquets)
 {
 	debug("e2db_maker", "set_bouquets()");
 	this->bouquets = bouquets.first;

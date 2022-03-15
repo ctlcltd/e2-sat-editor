@@ -10,7 +10,6 @@
  */
 
 #include <string>
-#include <map>
 #include <unordered_map>
 
 using namespace std;
@@ -50,8 +49,7 @@ class tab
 		void disallowDnD();
 		QWidget* widget;
 	protected:
-		map<string, vector<pair<int, string>>> index;
-		unordered_map<string, bool> changes;
+		unordered_map<string, vector<pair<int, string>>> index;
 	private:
 		struct actions {
 			QAction* bouquets_newbs;
