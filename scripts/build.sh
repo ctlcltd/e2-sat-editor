@@ -1,7 +1,7 @@
 #!/bin/bash
 # Build in *ux with qmake and Qt 5|6
 
-cd ../src
+cd src
 
 cleanup () {
 	echo "cleanup."

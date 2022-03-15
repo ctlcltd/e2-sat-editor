@@ -1,7 +1,7 @@
 #!/bin/bash
 # Pre-build and initialize an xcodeproj with qmake
 
-cd ../src
+cd src
 
 cleanup () {
 	echo "cleanup."

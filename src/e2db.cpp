@@ -65,6 +65,7 @@ e2db_parser::e2db_parser()
 void e2db_parser::parse_e2db()
 {
 	debug("e2db_parser", "parse_e2db()");
+	clock_t start = clock();
 
 	ifstream flamedb (e2db[dbfilename]);
 	parse_e2db_lamedb(flamedb);
@@ -95,6 +96,18 @@ void e2db_parser::parse_e2db()
 			fuserbouquet.close();
 		}
 	}
+
+	clock_t end = clock();
+
+	// seeds./enigma_db
+	// commit: 05db5bb	elapsed time: 86547
+	// commit: 6615a23	elapsed time: 83523
+
+	// workflow/Vhannibal Motor 08 mar 2022
+	// commit: 05db5bb	elapsed time: 756600
+	// commit: 6615a23	elapsed time: 601638
+
+	cout << "commit: 6615a23" << '\t' << "elapsed time: " << end - start << endl;
 }
 
 void e2db_parser::parse_e2db_lamedb(ifstream& flamedb)
