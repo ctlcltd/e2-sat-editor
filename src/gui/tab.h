@@ -20,6 +20,7 @@ using namespace std;
 #include <QWidget>
 #include <QHeaderView>
 #include <QTreeWidget>
+#include <QList>
 #include <QAction>
 #include <QLabel>
 #include "e2db_gui.h"
@@ -34,22 +35,26 @@ class tab
 	public:
 		tab(gui* gid, QWidget* wid, string filename);
 		void newFile();
-		void open();
+		void openFile();
+		bool readFile(string filename = "");
+		void saveFile(bool saveas);
 		void addChannel();
-		bool load(string filename = "");
+		void load();
 		void populate();
 		void listItemChanged();
 		void visualReindexList();
 		void trickySortByColumn(int column);
-		void setTabId(int ttid);
-		void updateListIndex();
-		void save(bool saveas);
-		void loadSeeds();
 		void allowDnD();
 		void disallowDnD();
+		void updateListIndex();
+		void setCounters();
+		void setTabId(int ttid);
+		void initialize();
+		void loadSeeds();
 		QWidget* widget;
 	protected:
 		unordered_map<string, vector<pair<int, string>>> index;
+		unordered_map<string, QList<QTreeWidgetItem*>> cache;
 	private:
 		struct actions {
 			QAction* bouquets_newbs;

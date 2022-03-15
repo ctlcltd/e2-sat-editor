@@ -25,6 +25,8 @@
 #include <QStyle>
 #include <QTimer>
 
+#include <QList>
+
 #include "../commons.h"
 #include "tab.h"
 #include "gui.h"
@@ -88,22 +90,21 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	list_tree->setDragDropMode(QAbstractItemView::InternalMove);
 	list_tree->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-	QTreeWidgetItem* lheader_item; // Qt5
-	if (DEBUG) lheader_item = new QTreeWidgetItem({"", "Index", "Name", "CHID", "TXID", "Type", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"});
-	else lheader_item = new QTreeWidgetItem({"", "Index", "Name", "Type", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"});
+	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({"", "Index", "Name", "CHID", "TXID", "Type", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"});
 
+	int col = 0;
 	list_tree->setHeaderItem(lheader_item);
-	list_tree->setColumnHidden(0, true);
-	int col = 1;
+	list_tree->setColumnHidden(col++, true);
 	list_tree->setColumnWidth(col++, 75);		// Index
 	list_tree->setColumnWidth(col++, 200);		// Name
 	if (DEBUG) {
 		list_tree->setColumnWidth(col++, 175);	// CHID
-		list_tree->setColumnWidth(col++, 150);	// TXID
+		list_tree->setColumnWidth(col++, 150);	// TXIDs
 	}
 	else
 	{
-		col -= 2;
+		list_tree->setColumnHidden(col++, true);
+		list_tree->setColumnHidden(col++, true);
 	}
 	list_tree->setColumnWidth(col++, 85);		// Type
 	list_tree->setColumnWidth(col++, 150);		// Provider
@@ -123,8 +124,8 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	QToolBar* bottom_toolbar = new QToolBar;
 	bottom_toolbar->setStyleSheet("QToolBar { padding: 8px 12px } QToolButton { font: bold 16px }");
 
-	top_toolbar->addAction(QIcon(gid->icopx + "file-open.png"), "Open", [=]() { this->open(); });
-	top_toolbar->addAction(QIcon(gid->icopx + "save.png"), "Save", [=]() { this->save(false); });
+	top_toolbar->addAction(QIcon(gid->icopx + "file-open.png"), "Open", [=]() { this->openFile(); });
+	top_toolbar->addAction(QIcon(gid->icopx + "save.png"), "Save", [=]() { this->saveFile(false); });
 	top_toolbar->addSeparator();
 	top_toolbar->addAction(QIcon(gid->icopx + "import.png"), "Import", todo);
 	top_toolbar->addAction(QIcon(gid->icopx + "export.png"), "Export", todo);
@@ -201,50 +202,67 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	if (filename.empty())
 		newFile();
 	else
-		load(filename);
+		readFile(filename);
 }
 
 void tab::newFile()
 {
 	debug("tab", "newFile()");
-	
-	this->dbih = new e2db;
-	this->_state_nwwr = true;
-	this->_state_ovwr = false;
-	this->_state_changed = false;
 
-	bouquets_tree->setDragEnabled(false);
-	bouquets_tree->setAcceptDrops(false);
-	this->_state_dnd = false;
-	bouquets_tree->scrollToItem(bouquets_tree->topLevelItem(0));
-	bouquets_tree->clear();
-	lheaderv->setSortIndicatorShown(false);
-	lheaderv->setSectionsClickable(false);
-	list_tree->setDragEnabled(false);
-	list_tree->setAcceptDrops(false);
-	list_tree->scrollToItem(list_tree->topLevelItem(0));
-	list_tree->clear();
-
-	QTreeWidgetItem* titem = new QTreeWidgetItem();
-	titem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-	QVariantMap tdata; //TODO
-	tdata["id"] = "chs";
-	titem->setData(0, Qt::UserRole, QVariant (tdata));
-	titem->setText(0, "All channels");
-
-	bouquets_tree->addTopLevelItem(titem);
+	initialize();
 }
 
-void tab::open()
+void tab::openFile()
 {
-	debug("tab", "open()");
+	debug("tab", "openFile()");
 
 	string dirname = gid->openFileDialog();
 
 	if (! dirname.empty())
 	{
-		load(dirname);
+		readFile(dirname);
 		gid->tabChangeName(ttid, dirname);
+	}
+}
+
+void tab::saveFile(bool saveas)
+{
+	debug("tab", "saveFile()", "saveas", to_string(saveas));
+
+	QMessageBox dial = QMessageBox();
+	string filename;
+	bool overwrite = ! saveas && (! this->_state_nwwr || this->_state_ovwr);
+
+	if (overwrite)
+	{
+		//TEST
+		this->updateListIndex();
+		dbih->set_index(index);
+		//TEST
+		filename = this->filename;
+		dial.setText("Files will be overwritten.");
+		dial.exec();
+	}
+	else
+	{
+		filename = gid->saveFileDialog(this->filename);
+	}
+
+	if (! filename.empty())
+	{
+		debug("tab", "saveFile()", "overwrite", to_string(overwrite));
+		debug("tab", "saveFile()", "filename", filename);
+
+		if (dbih->write(filename, overwrite))
+		{
+			dial.setText("Saved!");
+			dial.exec();
+		}
+		else
+		{
+			QErrorMessage warn = QErrorMessage();
+			warn.showMessage("Error writing files.");
+		}
 	}
 }
 
@@ -263,36 +281,34 @@ void tab::addChannel()
 	dial->exec();
 }
 
-bool tab::load(string filename)
+bool tab::readFile(string filename)
 {
-	debug("tab", "load()", "filename", filename);
+	debug("tab", "readFile()", "filename", filename);
 
-	string dirname;
+	if (filename.empty())
+		return false;
 
-	if (! filename.empty())
-		dirname = filename;
+	initialize();
 
-	if (dirname.empty())
+	if (! dbih->prepare(filename))
 	{
+		QErrorMessage warn = QErrorMessage();
+		warn.showMessage("Error opening files.");
 		return false;
 	}
-	else
-	{
-		newFile();
-		if (dbih->read(dirname))
-		{
-			this->_state_nwwr = false;
-			this->filename = dirname;
-			this->index = dbih->index;
-			if (DEBUG_E2DB) dbih->debugger();
-		}
-		else
-		{
-			QErrorMessage warn = QErrorMessage();
-			warn.showMessage("Error reading files.");
-			return false;
-		}
-	}
+
+	this->_state_nwwr = false;
+	this->filename = filename;
+	this->index = dbih->index;
+
+	load();
+
+	return true;
+}
+
+void tab::load()
+{
+	debug("tab", "load()");
 
 	sort(index["bss"].begin(), index["bss"].end());
 	unordered_map<string, QTreeWidgetItem*> bgroups;
@@ -341,127 +357,105 @@ bool tab::load(string filename)
 	bouquets_tree->setDragEnabled(true);
 	bouquets_tree->setAcceptDrops(true);
 	populate();
-
-	int counters[4];
-	counters[0] = index["chs:0"].size();
-	counters[1] = index["chs:1"].size();
-	counters[2] = index["chs:2"].size();
-	counters[3] = index["chs"].size();
-
-	gid->loaded(counters);
-
-	return true;
+	setCounters();
 }
 
 void tab::populate()
 {
-	QTreeWidgetItem* selected = bouquets_tree->currentItem();
-	string cur_chlist;
+	string curr_chlist;
+	string prev_chlist;
+	bool precached = false;
+	QList<QTreeWidgetItem*> cachep;
+	
+	if (! cache.empty())
+	{
+		for (int i = 0; i < list_tree->topLevelItemCount(); i++)
+		{
+			QTreeWidgetItem* item = list_tree->topLevelItem(i);
+			cachep.append(item->clone());
+		}
+		precached = true;
+		prev_chlist = string (this->_state_curr);
+	}
 
+	QTreeWidgetItem* selected = bouquets_tree->currentItem();
 	if (selected == NULL)
 		selected = bouquets_tree->topLevelItem(0);
 	if (selected != NULL)
 	{
 		QVariantMap tdata = selected->data(0, Qt::UserRole).toMap();
-		QString qcur_bouquet = tdata["id"].toString();
-		cur_chlist = qcur_bouquet.toStdString();
-		this->_state_curr = cur_chlist;
-		cout << "_state_curr " << this->_state_curr << endl;
+		QString qcurr_bouquet = tdata["id"].toString();
+		curr_chlist = qcurr_bouquet.toStdString();
+		this->_state_curr = curr_chlist;
 	}
 
-	debug("tab", "populate()", "cur_chlist", cur_chlist);
+	debug("tab", "populate()", "curr_chlist", curr_chlist);
 
 	lheaderv->setSortIndicatorShown(true);
 	lheaderv->setSectionsClickable(false);
 	list_tree->setDragEnabled(false);
-	this->_state_dnd = false;
 	list_tree->setAcceptDrops(false);
-	list_tree->scrollToItem(list_tree->topLevelItem(0));
+	this->_state_dnd = false;
+	list_tree->scrollToItem(list_tree->topLevelItem(0)); //TODO FIX
 	list_tree->clear();
+	if (precached)
+	{
+		cache[prev_chlist].swap(cachep);
+	}
 
 	//TODO [API] cannot add handler to n from ns - dropping
 
 	int i = 0;
 
-	for (auto & ch : index[cur_chlist])
+	if (cache[curr_chlist].isEmpty())
 	{
-		char ci[7];
-		sprintf(ci, "%06d", i++);
-		QString x = QString::fromStdString(ci);
-
-		if (dbih->db.services.count(ch.second))
+	// QList<QTreeWidgetItem*> cache;
+		for (auto & ch : index[curr_chlist])
 		{
-			e2db::service chdata = dbih->db.services[ch.second];
-			e2db::transponder txdata = dbih->db.transponders[chdata.txid];
+			char ci[7];
+			sprintf(ci, "%06d", i++);
+			QString x = QString::fromStdString(ci);
+			QString idx;
+			QStringList qitem;
 
-			QString idx = QString::fromStdString(to_string(ch.first));
-			// macos: unwanted chars [qt.qpa.fonts] Menlo notice
-			QString chname;
-			if (gid->unicode_fix)
-				chname = QString::fromStdString(chdata.chname).remove(QRegularExpression("[^\\p{L}\\p{N}\\p{Pc}\\p{M}\\p{P}\\s]+"));
-			else
-				chname = QString::fromStdString(chdata.chname);
-			QString chid = QString::fromStdString(ch.second);
-			QString txid = QString::fromStdString(chdata.txid);
-			QString stype = e2db::STYPES.count(chdata.stype) ? QString::fromStdString(e2db::STYPES.at(chdata.stype).second) : "Data";
-			QString pname = QString::fromStdString(chdata.data.count(e2db::PVDR_DATA.at('p')) ? chdata.data[e2db::PVDR_DATA.at('p')][0] : "");
-
-			QString freq = QString::fromStdString(to_string(txdata.freq));
-			QString pol = QString::fromStdString(txdata.pol != -1 ? e2db::SAT_POL[txdata.pol] : "");
-			QString sr = QString::fromStdString(to_string(txdata.sr));
-			QString fec = QString::fromStdString(e2db::SAT_FEC[txdata.fec]);
-			string ppos;
-			if (txdata.ttype == 's')
+			if (dbih->db.services.count(ch.second))
 			{
-				if (dbih->tuners.count(txdata.pos))
+				qitem = dbih->entries.services[ch.second];
+				idx = QString::fromStdString(to_string(ch.first));
+				qitem.prepend(idx);
+				qitem.prepend(x);
+			}
+			else
+			{
+				e2db::reference cref = dbih->userbouquets[curr_chlist].channels[ch.second];
+
+				if (cref.refmrker)
 				{
-					ppos = dbih->tuners.at(txdata.pos).name;
-				} else {
-					char cposdeg[5];
-					sprintf(cposdeg, "%.1f", float(txdata.pos / 10));
-					ppos = (string (cposdeg) + (txdata.pos ? 'E' : 'W'));
+					qitem = dbih->entry_marker(cref);
+					idx = qitem[1];
+					qitem.prepend(x);
+				}
+				else
+				{
+					//TEST
+					qitem = QStringList({x, "", "", QString::fromStdString(ch.second), "", "ERROR"});
+					idx = 0;
+					error("tab", "populate()", "chid", ch.second, "\t");
+					//TEST
 				}
 			}
-			QString pos = QString::fromStdString(ppos);
-			string psys;
-			if (txdata.ttype == 's')
-				psys = txdata.sys != -1 ? e2db::SAT_SYS[txdata.sys] : "DVB-S";
-			else if (txdata.ttype == 't')
-				psys = "DVB-T"; //TODO terrestrial.xml
-			else if (txdata.ttype == 'c')
-				psys = "DVB-C";
-			QString sys = QString::fromStdString(psys);
 
-			QTreeWidgetItem* item;
-			if (DEBUG) item = new QTreeWidgetItem({x, idx, chname, chid, txid, stype, pname, freq, pol, sr, fec, pos, sys});
-			else item = new QTreeWidgetItem({x, idx, chname, stype, pname, freq, pol, sr, fec, pos, sys});
+			QTreeWidgetItem* item = new QTreeWidgetItem(qitem);
 			item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
-			item->setData(0, Qt::UserRole, chid);  // data: Index
+			item->setData(0, Qt::UserRole, idx);   // data: Index
 			item->setData(1, Qt::UserRole, false); // data: marker flag
-			list_tree->addTopLevelItem(item);
-		}
-		else
-		{
-			e2db::reference cref = dbih->userbouquets[cur_chlist].channels[ch.second];
-
-			//TODO marker QWidget ?
-			if (cref.refmrker)
-			{
-				QString chid = QString::fromStdString(cref.chid);
-				QString refval = QString::fromStdString(cref.refval);
-
-				QTreeWidgetItem* item = new QTreeWidgetItem({x, "", refval, chid, "", "MARKER"});
-				item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
-				item->setData(0, Qt::UserRole, chid); // data: Index
-				item->setData(1, Qt::UserRole, true); // data: marker flag
-				list_tree->addTopLevelItem(item);
-			}
-			else
-			{
-				error("tab", "populate()", "chid", ch.second, "\t");
-			}
+			cache[curr_chlist].append(item);
+			// cache.append(item);
 		}
 	}
+
+	list_tree->addTopLevelItems(cache[curr_chlist]);
+	// list_tree->addTopLevelItems(cache);
 
 	if (this->_state_sort.first)
 	{
@@ -543,9 +537,9 @@ void tab::allowDnD()
 
 	list_tree->setDragEnabled(true);
 	list_tree->setAcceptDrops(true);
+	this->_state_dnd = true;
 	list_wrap->setStyleSheet("#channels_wrap { background: transparent }");
 	ats->list_dnd->setText("• Drag&Drop activated");
-	this->_state_dnd = true;
 }
 
 //TODO FIX unexpect behav switchs to QAbstractItemView::MultiSelection
@@ -557,16 +551,9 @@ void tab::disallowDnD()
 
 	list_tree->setDragEnabled(false);
 	list_tree->setAcceptDrops(false);
+	this->_state_dnd = false;
 	list_wrap->setStyleSheet("#channels_wrap { background: rgba(255, 192, 0, 20%) }");
 	ats->list_dnd->setText("• Drag&Drop deactivated");
-	this->_state_dnd = false;
-}
-
-void tab::setTabId(int ttid)
-{
-	debug("tab", "setTabId()", "ttid", to_string(ttid));
-
-	this->ttid = ttid;
 }
 
 void tab::updateListIndex()
@@ -575,10 +562,10 @@ void tab::updateListIndex()
 
 	int i = 0, j = 0, idx = 0;
 	int count = list_tree->topLevelItemCount();
-	string cur_chlist = this->_state_curr;
-	index[cur_chlist].clear();
+	string curr_chlist = this->_state_curr;
+	index[curr_chlist].clear();
 
-	debug("tab", "updateListIndex()", "cur_chlist", cur_chlist);
+	debug("tab", "updateListIndex()", "curr_chlist", curr_chlist);
 
 	do
 	{
@@ -594,7 +581,7 @@ void tab::updateListIndex()
 			j += 1;
 			idx = j;
 		}
-		index[cur_chlist].emplace_back(pair (idx, chid.toStdString())); //C++ 17
+		index[curr_chlist].emplace_back(pair (idx, chid.toStdString())); //C++ 17
 		i++;
 	}
 	while (i != count);
@@ -602,45 +589,57 @@ void tab::updateListIndex()
 	this->_state_changed = false;
 }
 
-void tab::save(bool saveas)
+//TODO FIX
+void tab::setCounters()
 {
-	debug("tab", "save()", "saveas", to_string(saveas));
+	debug("tab", "setCounters()");
 
-	QMessageBox dial = QMessageBox();
-	string filename;
-	bool overwrite = ! saveas && (! this->_state_nwwr || this->_state_ovwr);
+	int counters[4];
+	counters[0] = index["chs:0"].size();
+	counters[1] = index["chs:1"].size();
+	counters[2] = index["chs:2"].size();
+	counters[3] = index["chs"].size();
 
-	if (overwrite)
-	{
-		//TEST
-		this->updateListIndex();
-		dbih->set_index(index);
-		//TEST
-		filename = this->filename;
-		dial.setText("Files will be overwritten.");
-		dial.exec();
-	}
-	else
-	{
-		filename = gid->saveFileDialog(this->filename);
-	}
+	gid->loaded(counters);
+}
 
-	if (! filename.empty())
-	{
-		debug("tab", "save()", "overwrite", to_string(overwrite));
-		debug("tab", "save()", "filename", filename);
+void tab::setTabId(int ttid)
+{
+	debug("tab", "setTabId()", "ttid", to_string(ttid));
 
-		if (dbih->write(filename, overwrite))
-		{
-			dial.setText("Saved!");
-			dial.exec();
-		}
-		else
-		{
-			QErrorMessage warn = QErrorMessage();
-			warn.showMessage("Error writing files.");
-		}
-	}
+	this->ttid = ttid;
+}
+
+void tab::initialize()
+{
+	debug("tab", "initialize()");
+
+	this->dbih = new e2db;
+	this->_state_nwwr = true;
+	this->_state_ovwr = false;
+	this->_state_changed = false;
+
+	bouquets_tree->setDragEnabled(false);
+	bouquets_tree->setAcceptDrops(false);
+	bouquets_tree->scrollToItem(bouquets_tree->topLevelItem(0));
+	bouquets_tree->clear();
+	lheaderv->setSortIndicatorShown(false);
+	lheaderv->setSectionsClickable(false);
+	list_tree->setDragEnabled(false);
+	list_tree->setAcceptDrops(false);
+	this->_state_dnd = false;
+	list_tree->scrollToItem(list_tree->topLevelItem(0));
+	list_tree->clear();
+	cache.clear();
+
+	QTreeWidgetItem* titem = new QTreeWidgetItem();
+	titem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+	QVariantMap tdata; //TODO
+	tdata["id"] = "chs";
+	titem->setData(0, Qt::UserRole, QVariant (tdata));
+	titem->setText(0, "All channels");
+
+	bouquets_tree->addTopLevelItem(titem);
 }
 
 //TEST
@@ -665,7 +664,7 @@ void tab::loadSeeds()
 	if (cwd != "")
 	{
 		filesystem::path path = cwd + "/seeds./enigma_db";
-		load(filesystem::absolute(path));
+		readFile(filesystem::absolute(path));
 	}
 }
 //TEST

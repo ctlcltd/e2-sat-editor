@@ -399,7 +399,7 @@ void gui::save()
 
 	QWidget* curr_wid = twid->currentWidget();
 	int ttid = curr_wid->property("ttid").toInt();
-	ttabs[ttid]->save(true); //TODO temporarly set to save as
+	ttabs[ttid]->saveFile(true); //TODO temporarly set to save as
 }
 
 void gui::ftpConnect()
