@@ -52,6 +52,32 @@ string e2db_abstract::upCase(string str)
 	return str;
 }
 
+void e2db_abstract::add_transponder(int idx, transponder& tx)
+{
+	tx.index = idx;
+	db.transponders.emplace(tx.txid, tx);
+	index["txs"].emplace_back(pair (idx, tx.txid)); //C++ 17
+}
+
+void e2db_abstract::add_service(int idx, service& ch)
+{
+	if (db.services.count(ch.chid))
+	{
+		int m;
+		string kchid = 's' + ch.chid;
+		if (ch.snum) m = ch.snum;
+		else m = collisions[kchid].size();
+		ch.chid += ':' + to_string(m);
+		collisions[kchid].emplace_back(pair (ch.chid, m)); //C++ 17
+	}
+
+	string iname = "chs:" + (STYPES.count(ch.stype) ? to_string(STYPES.at(ch.stype).first) : "0");
+	ch.index = idx;
+	db.services.emplace(ch.chid, ch);
+	index["chs"].emplace_back(pair (idx, ch.chid)); //C++ 17
+	index[iname].emplace_back(pair (idx, ch.chid)); //C++ 17
+}
+
 
 
 e2db_parser::e2db_parser()
@@ -102,12 +128,14 @@ void e2db_parser::parse_e2db()
 	// seeds./enigma_db
 	// commit: 05db5bb	elapsed time: 86547
 	// commit: 6615a23	elapsed time: 83523
-	// commit: HEAD		elapsed time: 65520
+	// commit: 67b6442	elapsed time: 65520
+	// commit: HEAD		elapsed time: 65313
 
 	// workflow/Vhannibal Motor 08 mar 2022
 	// commit: 05db5bb	elapsed time: 756600
 	// commit: 6615a23	elapsed time: 601638
-	// commit: HEAD		elapsed time: 421056
+	// commit: 67b6442	elapsed time: 421056
+	// commit: HEAD		elapsed time: 423214
 
 	debug("e2db_parser", "parse_e2db()", "elapsed time", to_string(end - start));
 }
@@ -131,13 +159,13 @@ void e2db_parser::parse_e2db_lamedb(ifstream& flamedb)
 	}
 }
 
-//TODO ATSC
 void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 {
 	debug("e2db_parser", "parse_e2db_lamedb4()");
-
+	
+	LAMEDB_VER = 4;
 	int step = 0;
-	int count = 0;
+	int s = 0;
 	int tidx = 0;
 	int sidx = 0;
 	string line;
@@ -165,172 +193,54 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 		// transponder
 		if (step == 1)
 		{
-			char txid[25];
-			count += 1;
-
-			if (count == 1)
+			if (s == 0)
 			{
 				tx = transponder ();
-				int dvbns, tsid, onid;
-				dvbns = 0, tsid = 0, onid = 0;
-
-				sscanf(line.c_str(), "%08x:%04x:%04x", &dvbns, &tsid, &onid);
-
-				tx.dvbns = dvbns;
-				tx.tsid = tsid;
-				tx.onid = onid;
-				sprintf(txid, "%x:%x:%x", tsid, onid, dvbns);
+				parse_lamedb_transponder_params(line, tx);
 				tidx += 1;
+				s++;
 			}
-			else if (count == 2)
+			else if (s == 1)
 			{
-				tx.index = tidx;
-				tx.ttype = line.substr(1, 2)[0];
-				string txdata = line.substr(3);
-
-				int freq, sr, pol, fec, pos, inv, flgs, sys, mod, rol, pil;
-				int band, hpfec, lpfec, termod, trxmod, guard, hier;
-				int cabmod, ifec;
-				char oflgs[33];
-				sys = -1, mod = -1, rol = -1, pil = -1;
-				tx.pol = -1, tx.fec = -1, tx.inv = -1, tx.sys = -1, tx.mod = -1, tx.rol = -1, tx.pil = -1;
-				tx.band = -1, tx.hpfec = -1, tx.lpfec = -1, tx.termod = -1, tx.trxmod = -1, tx.guard = -1, tx.hier = -1;
-				tx.cabmod = -1, tx.ifec = -1;
-
-				switch (tx.ttype)
-				{
-					case 's': // DVB-S
-						sscanf(txdata.c_str(), "%8d:%8d:%1d:%1d:%3d:%1d:%1d:%1d:%1d:%1d:%1d", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil);
-
-						tx.freq = int (freq / 1e3);
-						tx.sr = int (sr / 1e3);
-						tx.pol = pol;
-						tx.fec = fec;
-						tx.pos = pos;
-						tx.inv = inv;
-						tx.flgs = flgs;
-						tx.sys = sys;
-						tx.mod = mod;
-						tx.rol = rol;
-						tx.pil = pil;
-					break;
-					case 't': // DVB-T
-						sscanf(txdata.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &band, &hpfec, &lpfec, &termod, &trxmod, &guard, &hier, &inv, oflgs);
-
-						tx.freq = int (freq / 1e3);
-						tx.band = band;
-						tx.hpfec = hpfec;
-						tx.lpfec = lpfec;
-						tx.termod = termod;
-						tx.trxmod = trxmod;
-						tx.guard = guard;
-						tx.hier = hier;
-						tx.inv = inv;
-						tx.oflgs = string (oflgs);
-					break;
-					case 'c': // DVB-C
-						//TODO
-						sscanf(txdata.c_str(), "%8d:%8d:%1d:%1d:%1d%s", &freq, &sr, &inv, &cabmod, &ifec, oflgs);
-
-						tx.freq = int (freq / 1e3);
-						tx.sr = int (sr / 1e3);
-						tx.inv = inv;
-						tx.cabmod = cabmod;
-						tx.ifec = ifec;
-						tx.oflgs = string (oflgs);
-					break;
-					case 'a': // ATSC:
-						error("e2db_parser", "lamedb", "Error", "ATSC not supported yet.", "\t");
-					break;
-				}
+				parse_lamedb_transponder_feparms(line.substr(3), line.substr(1, 2)[0], tx);
+				s++;
 			}
-			else if (count == 3)
+			else if (s == 2)
 			{
-				db.transponders.emplace(txid, tx);
-				index["txs"].emplace_back(pair (tidx, txid)); //C++ 17
-				count = 0;
+				add_transponder(tidx, tx);
+				s = 0;
 			}
 		}
 		// service
 		else if (step == 2)
 		{
-			char txid[25];
-			char chid[25];
-			string iname;
-			count += 1;
-
-			if (count == 1)
+			if (s == 0)
 			{
 				ch = service ();
-
-				int ssid, dvbns, tsid, stype, snum;
-				char onid[5]; //TODO to int
-				ssid = 0, dvbns = 0, tsid = 0, stype = -1, snum = -1;
-
-				sscanf(line.c_str(), "%04x:%08x:%04x:%4s:%3d:%4d", &ssid, &dvbns, &tsid, onid, &stype, &snum);
-
-				ch.ssid = ssid;
-				ch.dvbns = dvbns;
-				ch.tsid = tsid;
-				ch.onid = onid;
-				ch.onid.erase(0, ch.onid.find_first_not_of('0'));
-				ch.stype = stype;
-				ch.snum = snum;
-				sprintf(txid, "%x:%s:%x", tsid, ch.onid.c_str(), dvbns);
-				sprintf(chid, "%x:%x:%s:%x", ssid, tsid, ch.onid.c_str(), dvbns);
-				iname = "chs:" + (e2db_parser::STYPES.count(stype) ? to_string(e2db_parser::STYPES.at(stype).first) : "0");
+				parse_lamedb_service_params(line, ch);
 				sidx += 1;
+				s++;
 			}
-			else if (count == 2)
+			else if (s == 1)
 			{
-				ch.index = sidx;
-				ch.txid = txid;
-				ch.chname = line;
+				parse_lamedb_service_params(line, ch, true);
+				s++;
 			}
-			else if (count == 3)
+			else if (s == 2)
 			{
-				//TODO 256
-				// !p: provider
-				//  c: cache
-				//  C: ciad
-				//  f: flags
-				stringstream datas(line);
-				string l;
-				map<char, vector<string>> data;
-
-				while (getline(datas, l, ','))
-				{
-					char d = l[0];
-					char key = e2db_parser::PVDR_DATA.count(d) ? e2db_parser::PVDR_DATA.at(d) : d;
-					string value = l.substr(2);
-					data[key].push_back(value);
-				}
-				ch.data = data; //TODO lassign infinite loop
-
-				if (db.services.count(chid))
-				{
-					int m;
-					string kchid = 's' + string (chid);
-					if (ch.snum) m = ch.snum;
-					else m = collisions[kchid].size();
-					strcat(chid, string (':' + to_string(m)).c_str());
-					collisions[kchid].emplace_back(pair (chid, m)); //C++ 17
-				}
-
-				db.services.emplace(chid, ch);
-				index["chs"].emplace_back(pair (sidx, chid)); //C++ 17
-				index[iname].emplace_back(pair (sidx, chid)); //C++ 17
-				count = 0;
+				parse_lamedb_service_data(line, ch);
+				add_service(sidx, ch);
+				s = 0;
 			}
 		}
 	}
 }
 
-//TODO ATSC
 void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 {
 	debug("e2db_parser", "parse_e2db_lamedb5()");
 
+	LAMEDB_VER = 5;
 	bool step;
 	int tidx = 0;
 	int sidx = 0;
@@ -356,149 +266,165 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 		if (step)
 		{
 			tx = transponder ();
-			char txid[25];
-			tx.index = tidx;
-			tx.ttype = params[0];
-
-			int dvbns, tsid, onid;
-			dvbns = 0, tsid = 0, onid = 0;
-
-			sscanf(data.c_str(), "%08x:%04x:%04x", &dvbns, &tsid, &onid);
-
-			tx.dvbns = dvbns;
-			tx.tsid = tsid;
-			tx.onid = onid;
-
-			int freq, sr, pol, fec, pos, inv, flgs, sys, mod, rol, pil;
-			int band, hpfec, lpfec, termod, trxmod, guard, hier;
-			int cabmod, ifec;
-			char oflgs[33];
-			sys = -1, mod = -1, rol = -1, pil = -1;
-			tx.pol = -1, tx.fec = -1, tx.inv = -1, tx.sys = -1, tx.mod = -1, tx.rol = -1, tx.pil = -1;
-			tx.band = -1, tx.hpfec = -1, tx.lpfec = -1, tx.termod = -1, tx.trxmod = -1, tx.guard = -1, tx.hier = -1;
-			tx.cabmod = -1, tx.ifec = -1;
-
-			switch (tx.ttype)
-			{
-				case 's':
-					sscanf(params.substr(2).c_str(), "%8d:%8d:%1d:%1d:%3d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil, oflgs);
-
-					tx.freq = int (freq / 1e3);
-					tx.sr = int (sr / 1e3);
-					tx.pol = pol;
-					tx.fec = fec;
-					tx.pos = pos;
-					tx.inv = inv;
-					tx.flgs = flgs;
-					tx.sys = sys;
-					tx.mod = mod;
-					tx.rol = rol;
-					tx.pil = pil;
-					tx.oflgs = string (oflgs);
-				break;
-				case 't': // DVB-T
-					sscanf(params.substr(2).c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &band, &hpfec, &lpfec, &termod, &trxmod, &guard, &hier, &inv, oflgs);
-
-					tx.freq = int (freq / 1e3);
-					tx.band = band;
-					tx.hpfec = hpfec;
-					tx.lpfec = lpfec;
-					tx.termod = termod;
-					tx.trxmod = trxmod;
-					tx.guard = guard;
-					tx.hier = hier;
-					tx.inv = inv;
-					tx.oflgs = string (oflgs);
-				break;
-				case 'c': // DVB-C
-					//TODO
-					sscanf(params.substr(2).c_str(), "%8d:%8d:%1d:%1d:%1d%s", &freq, &sr, &inv, &cabmod, &ifec, oflgs);
-
-					tx.freq = int (freq / 1e3);
-					tx.sr = int (sr / 1e3);
-					tx.inv = inv;
-					tx.cabmod = cabmod;
-					tx.ifec = ifec;
-					tx.oflgs = string (oflgs);
-				break;
-				case 'a': // ATSC:
-					error("e2db_parser", "lamedb", "Error", "ATSC not supported yet.", "\t");
-				break;
-			}
-
 			tidx += 1;
-			sprintf(txid, "%x:%x:%x", tsid, onid, dvbns);
-			db.transponders.emplace(txid, tx);
-			index["txs"].emplace_back(pair (tidx, txid)); //C++ 17
+			parse_lamedb_transponder_params(data, tx);
+			parse_lamedb_transponder_feparms(params.substr(2), params[0], tx);
+			add_transponder(tidx, tx);
 		}
 		// service
 		else
 		{
 			ch = service ();
-			char chid[25];
-			char txid[25];
-			string iname;
-			ch.index = sidx;
-
-			int ssid, dvbns, tsid, stype, snum, srcid;
-			char onid[5]; //TODO to int
-			ssid = 0, dvbns = 0, tsid = 0, stype = -1, snum = -1, srcid = -1;
-
-			sscanf(data.c_str(), "%04x:%08x:%04x:%4s:%3d:%4d:%d", &ssid, &dvbns, &tsid, onid, &stype, &snum, &srcid);
-
-			ch.tsid = tsid;
-			ch.onid = onid;
-			ch.onid.erase(0, ch.onid.find_first_not_of('0'));
-			ch.dvbns = dvbns;
-			sprintf(txid, "%x:%s:%x", tsid, ch.onid.c_str(), dvbns);
-			ch.ssid = ssid;
-			ch.stype = stype;
-			ch.snum = snum;
-			ch.srcid = srcid;
-			sprintf(chid, "%x:%x:%s:%x", ssid, tsid, ch.onid.c_str(), dvbns);
-			iname = "chs:" + (e2db_parser::STYPES.count(stype) ? to_string(e2db_parser::STYPES.at(stype).first) : "0");
-
+			sidx += 1;
 			size_t delimit = params.rfind('"');
 			string chname = params.substr(1, delimit - 1);
 			string chdata = params.rfind(',') != string::npos ? params.substr(delimit + 2) : "";
-
-			ch.txid = txid;
-			ch.chname = chname;
-
-			//TODO 256
-			// !p: provider
-			//  c: cache
-			//  C: ciad
-			//  f: flags
-			stringstream datas(chdata);
-			string l;
-			map<char, vector<string>> data;
-
-			while (getline(datas, l, ','))
-			{
-				char d = l[0];
-				char key = e2db_parser::PVDR_DATA.count(d) ? e2db_parser::PVDR_DATA.at(d) : d;
-				string value = l.substr(2);
-				data[key].push_back(value);
-			}
-			ch.data = data; //TODO lassign infinite loop
-
-			if (db.services.count(chid))
-			{
-				int m;
-				string kchid = 's' + string (chid);
-				if (ch.snum) m = ch.snum;
-				else m = collisions[kchid].size();
-				strcat(chid, string (':' + to_string(m)).c_str());
-				collisions[kchid].emplace_back(pair (chid, m)); //C++ 17
-			}
-
-			sidx += 1;
-			db.services.emplace(chid, ch);
-			index["chs"].emplace_back(pair (sidx, chid)); //C++ 17
-			index[iname].emplace_back(pair (sidx, chid)); //C++ 17
+			parse_lamedb_service_params(data, ch);
+			parse_lamedb_service_params(chname, ch, true);
+			parse_lamedb_service_data(chdata, ch);
+			add_service(sidx, ch);
 		}
 	}
+}
+
+void e2db_parser::parse_lamedb_transponder_params(string data, transponder& tx)
+{
+	char txid[25];
+	int dvbns, tsid, onid;
+	dvbns = 0, tsid = 0, onid = 0;
+
+	sscanf(data.c_str(), "%08x:%04x:%04x", &dvbns, &tsid, &onid);
+
+	tx.dvbns = dvbns;
+	tx.tsid = tsid;
+	tx.onid = onid;
+	sprintf(txid, "%x:%x:%x", tsid, onid, dvbns);
+	tx.txid = txid;
+}
+
+void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, transponder& tx)
+{
+	int freq, sr, pol, fec, pos, inv, flgs, sys, mod, rol, pil;
+	int band, hpfec, lpfec, termod, trxmod, guard, hier;
+	int cabmod, ifec;
+	char oflgs[33];
+	sys = -1, mod = -1, rol = -1, pil = -1;
+	tx.pol = -1, tx.fec = -1, tx.inv = -1, tx.sys = -1, tx.mod = -1, tx.rol = -1, tx.pil = -1;
+	tx.band = -1, tx.hpfec = -1, tx.lpfec = -1, tx.termod = -1, tx.trxmod = -1, tx.guard = -1, tx.hier = -1;
+	tx.cabmod = -1, tx.ifec = -1;
+
+	switch (ttype)
+	{
+		case 's':
+			sscanf(data.c_str(), "%8d:%8d:%1d:%1d:%3d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil, oflgs);
+
+			tx.freq = int (freq / 1e3);
+			tx.sr = int (sr / 1e3);
+			tx.pol = pol;
+			tx.fec = fec;
+			tx.pos = pos;
+			tx.inv = inv;
+			tx.flgs = flgs;
+			tx.sys = sys;
+			tx.mod = mod;
+			tx.rol = rol;
+			tx.pil = pil;
+			tx.oflgs = string (oflgs);
+		break;
+		case 't': // DVB-T
+			sscanf(data.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &band, &hpfec, &lpfec, &termod, &trxmod, &guard, &hier, &inv, oflgs);
+
+			tx.freq = int (freq / 1e3);
+			tx.band = band;
+			tx.hpfec = hpfec;
+			tx.lpfec = lpfec;
+			tx.termod = termod;
+			tx.trxmod = trxmod;
+			tx.guard = guard;
+			tx.hier = hier;
+			tx.inv = inv;
+			tx.oflgs = string (oflgs);
+		break;
+		case 'c': // DVB-C
+			//TODO
+			sscanf(data.c_str(), "%8d:%8d:%1d:%1d:%1d%s", &freq, &sr, &inv, &cabmod, &ifec, oflgs);
+
+			tx.freq = int (freq / 1e3);
+			tx.sr = int (sr / 1e3);
+			tx.inv = inv;
+			tx.cabmod = cabmod;
+			tx.ifec = ifec;
+			tx.oflgs = string (oflgs);
+		break;
+		//TODO ATSC
+		case 'a': // ATSC:
+			error("e2db_parser", "lamedb", "Error", "ATSC not supported yet.", "\t");
+		break;
+		default:
+			error("e2db_parser", "lamedb", "Error", "Transponder type is unknown.", "\t");
+			return;
+	}
+	tx.ttype = ttype;
+}
+
+void e2db_parser::parse_lamedb_service_params(string data, service& ch)
+{
+	char chid[25];
+	char txid[25];
+	int ssid, dvbns, tsid, stype, snum;
+	char onid[5]; //TODO to int
+	ssid = 0, dvbns = 0, tsid = 0, stype = -1, snum = -1;
+
+	if (LAMEDB_VER == 5)
+	{
+		int srcid = -1;
+		sscanf(data.c_str(), "%04x:%08x:%04x:%4s:%3d:%4d:%d", &ssid, &dvbns, &tsid, onid, &stype, &snum, &srcid);
+		ch.srcid = srcid;
+	}
+	else
+	{
+		sscanf(data.c_str(), "%04x:%08x:%04x:%4s:%3d:%4d", &ssid, &dvbns, &tsid, onid, &stype, &snum);
+	}
+
+	ch.ssid = ssid;
+	ch.dvbns = dvbns;
+	ch.tsid = tsid;
+	ch.onid = onid;
+	ch.onid.erase(0, ch.onid.find_first_not_of('0'));
+	ch.stype = stype;
+	ch.snum = snum;
+	sprintf(txid, "%x:%s:%x", tsid, ch.onid.c_str(), dvbns);
+	sprintf(chid, "%x:%x:%s:%x", ssid, tsid, ch.onid.c_str(), dvbns);
+	ch.txid = txid;
+	ch.chid = chid;
+}
+
+void e2db_parser::parse_lamedb_service_params(string data, service& ch, bool add)
+{
+	ch.chname = data;
+}
+
+void e2db_parser::parse_lamedb_service_data(string data, service& ch)
+{
+	if (data.empty()) return;
+
+	//TODO 256
+	// !p: provider
+	//  c: cache
+	//  C: ciad
+	//  f: flags
+	stringstream ss (data);
+	string line;
+	map<char, vector<string>> cdata;
+
+	while (getline(ss, line, ','))
+	{
+		char k = line[0];
+		char key = e2db_parser::PVDR_DATA.count(k) ? e2db_parser::PVDR_DATA.at(k) : k;
+		string val = line.substr(2);
+		cdata[key].push_back(val);
+	}
+	ch.data = cdata; //TODO lassign infinite loop
 }
 
 void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
@@ -963,9 +889,9 @@ void e2db_maker::make_e2db()
 	debug("e2db_maker", "make_e2db()");
 
 	begin_transaction();
-	make_lamedb();
-	make_bouquets();
-	make_userbouquets();
+	make_e2db_lamedb();
+	make_e2db_bouquets();
+	make_e2db_userbouquets();
 	end_transaction();
 }
 
@@ -997,45 +923,77 @@ string e2db_maker::get_editor_string()
 	return "e2-sat-editor 0.1 <https://github.com/ctlcltd/e2-sat-editor>";
 }
 
-void e2db_maker::make_lamedb()
+void e2db_maker::make_e2db_lamedb()
 {
-	debug("e2db_maker", "make_lamedb()");
+	debug("e2db_maker", "make_e2db_lamedb()");
 
-	make_lamedb4();
+	make_e2db_lamedb4();
 
 	//TEST
 	if (MAKER_LAMEDB5)
-		make_lamedb5();
+		make_e2db_lamedb5();
 	//TEST
 }
 
-void e2db_maker::make_lamedb4()
+void e2db_maker::make_e2db_lamedb4()
 {
-	debug("e2db_maker", "make_lamedb4()");
+	debug("e2db_maker", "make_e2db_lamedb4()");
+	LAMEDB_VER = 4;
+	make_lamedb("lamedb");
+}
 
-	stringstream ss;
+void e2db_maker::make_e2db_lamedb5()
+{
+	debug("e2db_maker", "make_e2db_lamedb5()");
+	LAMEDB_VER = 5;
+	make_lamedb("lamedb5");
+}
+
+//TODO ATSC
+void e2db_maker::make_lamedb(string filename)
+{
+	debug("e2db_maker", "make_lamedb()");
 
 	//TODO
 	unordered_map<char, char> PVDR_DATA_DENUM;
 	for (auto & x: e2db_maker::PVDR_DATA) PVDR_DATA_DENUM[x.second] = x.first;
 
-	ss << "eDVB services /4/" << endl;
+	// formatting
+	//
+	// [0]  comment
+	// [1]  transponders start
+	// [2]  services start
+	// [3]  section end
+	// [4]  delimiter
+	// [5]  transponder flag
+	// [6]  transponder params separator
+	// [7]  transponder space delimiter
+	// [8]  transponder endline
+	// [9]  service flag
+	// [10] service params separator
+	// [11] service param escape
+	// [12] service endline
+	const string (&formats)[13] = LAMEDB_VER < 5 ? LAMEDB4_FORMATS : LAMEDB5_FORMATS;
 
-	ss << "transponders" << endl;
+	stringstream ss;
+	ss << "eDVB services /" << LAMEDB_VER << "/" << endl;
+
+	ss << formats[1];
 	for (auto & x: index["txs"])
 	{
 		transponder tx = db.transponders[x.second];
+		ss << formats[5] << formats[4];
 		ss << hex;
 		ss << setfill('0') << setw(8) << tx.dvbns;
 		ss << ':' << setfill('0') << setw(4) << tx.tsid;
 		ss << ':' << setfill('0') << setw(4) << tx.onid;
 		ss << dec;
-		ss << endl;
-		ss << '\t' << tx.ttype;
+		ss << formats[6];
+		ss << tx.ttype << formats[7];
 		switch (tx.ttype)
 		{
 			case 's': // DVB-S
-				ss << ' ' << int (tx.freq * 1e3);
+				ss << int (tx.freq * 1e3);
 				ss << ':' << int (tx.sr * 1e3);
 				ss << ':' << tx.pol;
 				ss << ':' << tx.fec;
@@ -1052,7 +1010,7 @@ void e2db_maker::make_lamedb4()
 					ss << ':' << tx.pil;
 			break;
 			case 't': // DVB-T
-				ss << ' ' << int (tx.freq * 1e3);
+				ss << int (tx.freq * 1e3);
 				ss << ':' << tx.band;
 				ss << ':' << tx.hpfec;
 				ss << ':' << tx.lpfec;
@@ -1066,7 +1024,7 @@ void e2db_maker::make_lamedb4()
 			break;
 			case 'c': // DVB-C
 				//TODO
-				ss << ' ' << int (tx.freq * 1e3);
+				ss << int (tx.freq * 1e3);
 				ss << ':' << int (tx.sr * 1e3);
 				ss << ':' << tx.inv;
 				ss << ':' << tx.cabmod;
@@ -1075,14 +1033,15 @@ void e2db_maker::make_lamedb4()
 					ss << tx.oflgs;
 			break;
 		}
-		ss << endl << '/' << endl;
+		ss << formats[8];
 	}
-	ss << "end" << endl;
+	ss << formats[3];
 
-	ss << "services" << endl;
+	ss << formats[2];
 	for (auto & x: index["chs"])
 	{
 		service ch = db.services[x.second];
+		ss << formats[9] << formats[4];
 		ss << hex;
 		ss << setfill('0') << setw(4) << ch.ssid;
 		ss << ':' << setfill('0') << setw(8) << ch.dvbns;
@@ -1091,7 +1050,11 @@ void e2db_maker::make_lamedb4()
 		ss << dec;
 		ss << ':' << ch.stype;
 		ss << ':' << ch.snum;
-		ss << endl << ch.chname << endl;
+		if (LAMEDB_VER == 5)
+			ss << ':' << ch.srcid;
+		ss << formats[10];
+		ss << formats[11] << ch.chname << formats[11];
+		ss << formats[10];
 		//TODO 256
 		auto last_key = (*prev(ch.data.cend()));
 		for (auto & q: ch.data)
@@ -1104,132 +1067,26 @@ void e2db_maker::make_lamedb4()
 					ss << ',';
 			}
 		}
-		ss << endl;
+		ss << formats[12];
 	}
-	ss << "end" << endl;
+	ss << formats[3];
 
-	ss << "editor: " << get_editor_string() << endl;
-	ss << "datetime: " << get_timestamp() << endl;
-	e2db_out["lamedb"] = ss.str();
+	ss << formats[0] << "editor: " << get_editor_string() << endl;
+	ss << formats[0] << "datetime: " << get_timestamp() << endl;
+	e2db_out[filename] = ss.str();
 }
 
-void e2db_maker::make_lamedb5()
+void e2db_maker::make_e2db_bouquets()
 {
-	debug("e2db_maker", "make_lamedb5()");
-
-	stringstream ss;
-
-	//TODO
-	unordered_map<char, char> PVDR_DATA_DENUM;
-	for (auto & x: e2db_maker::PVDR_DATA) PVDR_DATA_DENUM[x.second] = x.first;
-
-	ss << "eDVB services /5/" << endl;
-
-	for (auto & x: index["txs"])
-	{
-		transponder tx = db.transponders[x.second];
-		ss << 't';
-		ss << hex;
-		ss << ':' << setfill('0') << setw(8) << tx.dvbns;
-		ss << ':' << setfill('0') << setw(4) << tx.tsid;
-		ss << ':' << setfill('0') << setw(4) << tx.onid;
-		ss << dec;
-		ss << ',';
-		ss << tx.ttype;
-		switch (tx.ttype)
-		{
-			case 's': // DVB-S
-				ss << ':' << int (tx.freq * 1e3);
-				ss << ':' << int (tx.sr * 1e3);
-				ss << ':' << tx.pol;
-				ss << ':' << tx.fec;
-				ss << ':' << tx.pos;
-				ss << ':' << tx.inv;
-				ss << ':' << tx.flgs;
-				if (tx.sys != -1)
-					ss << ':' << tx.sys;
-				if (tx.mod != -1)
-					ss << ':' << tx.mod;
-				if (tx.rol != -1)
-					ss << ':' << tx.rol;
-				if (tx.pil != -1)
-					ss << ':' << tx.pil;
-			break;
-			case 't': // DVB-T
-				ss << ':' << int (tx.freq * 1e3);
-				ss << ':' << tx.band;
-				ss << ':' << tx.hpfec;
-				ss << ':' << tx.lpfec;
-				ss << ':' << tx.termod;
-				ss << ':' << tx.trxmod;
-				ss << ':' << tx.guard;
-				ss << ':' << tx.hier;
-				ss << ':' << tx.inv;
-			break;
-			case 'c': // DVB-C
-				//TODO
-				ss << ':' << int (tx.freq * 1e3);
-				ss << ':' << int (tx.sr * 1e3);
-				ss << ':' << tx.inv;
-				ss << ':' << tx.cabmod;
-				ss << ':' << tx.ifec;
-			break;
-		}
-		if (! tx.oflgs.empty())
-			ss << tx.oflgs;
-		ss << endl;
-	}
-
-	for (auto & x: index["chs"])
-	{
-		service ch = db.services[x.second];
-		ss << 's';
-		ss << hex;
-		ss << ':' << setfill('0') << setw(4) << ch.ssid;
-		ss << ':' << setfill('0') << setw(8) << ch.dvbns;
-		ss << ':' << setfill('0') << setw(4) << ch.tsid;
-		ss << ':' << setfill('0') << setw(4) << ch.onid;
-		ss << dec;
-		ss << ':' << ch.stype;
-		ss << ':' << ch.snum;
-		ss << ':' << ch.srcid;
-		ss << ',';
-		ss << '"' << ch.chname << '"';
-		if (! ch.data.empty())
-		{
-			ss << ',';
-			//TODO 256
-			auto last_key = (*prev(ch.data.cend()));
-			for (auto & q: ch.data)
-			{
-				char d = PVDR_DATA_DENUM.count(q.first) ? PVDR_DATA_DENUM.at(q.first) : q.first;
-				for (unsigned int i = 0; i < q.second.size(); i++)
-				{
-					ss << d << ':' << q.second[i];
-					if (! q.second[i].empty() && (i != q.second.size() - 1 || q.first != last_key.first))
-						ss << ',';
-				}
-			}
-		}
-		ss << endl;
-	}
-
-	ss << "# editor: " << get_editor_string() << endl;
-	ss << "# datetime: " << get_timestamp() << endl;
-	e2db_out["lamedb5"] = ss.str();
-}
-
-void e2db_maker::make_bouquets()
-{
-	debug("e2db_maker", "make_bouquets()");
+	debug("e2db_maker", "make_e2db_bouquets()");
 
 	for (auto & x: bouquets)
 		make_bouquet(x.first);
 }
 
-void e2db_maker::make_userbouquets()
+void e2db_maker::make_e2db_userbouquets()
 {
-	debug("e2db_maker", "make_userbouquets()");
+	debug("e2db_maker", "make_e2db_userbouquets()");
 
 	for (auto & x: userbouquets)
 		make_userbouquet(x.first);

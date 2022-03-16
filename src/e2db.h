@@ -90,6 +90,7 @@ struct e2db_abstract
 
 		struct service
 		{
+			string chid;
 			int ssid;
 			int dvbns;
 			int tsid;
@@ -104,6 +105,7 @@ struct e2db_abstract
 		};
 		struct transponder
 		{
+			string txid;
 			int dvbns;
 			int tsid;
 			int onid;
@@ -189,6 +191,8 @@ struct e2db_abstract
 		unordered_map<int, tuner_sets> tuners;
 		unordered_map<string, vector<pair<int, string>>> index;
 		unordered_map<string, vector<pair<string, int>>> collisions;
+		void add_transponder(int idx, transponder& tx);
+		void add_service(int idx, service& ch);
 	protected:
 		unordered_map<string, string> e2db;
 		void options();
@@ -196,6 +200,7 @@ struct e2db_abstract
 		void error(string ns, string cmsg = "", string optk = "", string optv = "", string indt = " ");
 		static string lowCase(string str);
 		static string upCase(string str);
+		inline static int LAMEDB_VER = 0;
 };
 
 class e2db_parser : virtual public e2db_abstract
@@ -216,6 +221,11 @@ class e2db_parser : virtual public e2db_abstract
 		void parse_tunersets_xml(int ytype, ifstream& ftunxml);
 		void debugger();
 	protected:
+		void parse_lamedb_transponder_params(string data, transponder& tx);
+		void parse_lamedb_transponder_feparms(string data, char ttype, transponder& tx);
+		void parse_lamedb_service_params(string data, service& ch);
+		void parse_lamedb_service_params(string data, service& ch, bool add);
+		void parse_lamedb_service_data(string data, service& ch);
 		string localdir;
 		string dbfilename;
 };
@@ -223,25 +233,30 @@ class e2db_parser : virtual public e2db_abstract
 class e2db_maker : virtual public e2db_abstract
 {
 	public:
+		inline static const string LAMEDB4_FORMATS[13] = {"", "transponders\n", "services\n", "end\n", "", "", "\n\t", " ", "\n/\n", "", "\n", "", "\n"};
+		inline static const string LAMEDB5_FORMATS[13] = {"# ", "", "", "", ":", "t", ",", ":", "\n", "s", ",", "\"", "\n"};
+
 		e2db_maker();
 		void make_e2db();
 		void begin_transaction();
 		void end_transaction();
 		string get_timestamp();
 		string get_editor_string();
-		void make_lamedb();
-		void make_lamedb4();
-		void make_lamedb5();
-		void make_bouquets();
-		void make_userbouquets();
-		void make_bouquet(string bname);
-		void make_userbouquet(string bname);
+		void make_e2db_lamedb();
+		void make_e2db_lamedb4();
+		void make_e2db_lamedb5();
+		void make_e2db_bouquets();
+		void make_e2db_userbouquets();
 		void set_index(unordered_map<string, vector<pair<int, string>>> index);
 		void set_transponders(unordered_map<string, transponder> transponders);
 		void set_channels(unordered_map<string, service> services);
 		void set_bouquets(pair<unordered_map<string, bouquet>, unordered_map<string, userbouquet>> bouquets);
 		bool write_to_localdir(string localdir, bool overwrite);
 		bool write(string localdir, bool overwrite);
+	protected:
+		void make_lamedb(string filename);
+		void make_bouquet(string bname);
+		void make_userbouquet(string bname);
 	private:
 		unordered_map<string, string> e2db_out;
 		tm* _out_tst;

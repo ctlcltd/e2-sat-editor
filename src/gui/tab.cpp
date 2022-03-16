@@ -99,7 +99,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	list_tree->setColumnWidth(col++, 200);		// Name
 	if (DEBUG) {
 		list_tree->setColumnWidth(col++, 175);	// CHID
-		list_tree->setColumnWidth(col++, 150);	// TXIDs
+		list_tree->setColumnWidth(col++, 150);	// TXID
 	}
 	else
 	{
@@ -589,7 +589,6 @@ void tab::updateListIndex()
 	this->_state_changed = false;
 }
 
-//TODO FIX
 void tab::setCounters()
 {
 	debug("tab", "setCounters()");
@@ -614,6 +613,9 @@ void tab::initialize()
 {
 	debug("tab", "initialize()");
 
+	if (this->dbih != nullptr)
+	 	delete this->dbih;
+
 	this->dbih = new e2db;
 	this->_state_nwwr = true;
 	this->_state_ovwr = false;
@@ -631,6 +633,7 @@ void tab::initialize()
 	list_tree->scrollToItem(list_tree->topLevelItem(0));
 	list_tree->clear();
 	cache.clear();
+	index.clear();
 
 	QTreeWidgetItem* titem = new QTreeWidgetItem();
 	titem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
@@ -640,6 +643,8 @@ void tab::initialize()
 	titem->setText(0, "All channels");
 
 	bouquets_tree->addTopLevelItem(titem);
+
+	setCounters();
 }
 
 //TEST
