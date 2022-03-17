@@ -19,6 +19,7 @@ using namespace std;
 #define gui_h
 #include <QApplication>
 #include <QWidget>
+#include <QSettings>
 #include <QMenuBar>
 #include <QStatusBar>
 #include <QGridLayout>
@@ -57,8 +58,9 @@ class gui
 		void ftpConnect();
 		void settings();
 		void about();
+		void setDefaultSets();
+		QSettings* sets;
 		QString icopx;
-		bool unicode_fix;
 	private:
 		QApplication* mroot;
 		QWidget* mwid;

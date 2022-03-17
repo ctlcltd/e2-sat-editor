@@ -340,7 +340,7 @@ void tab::load()
 		QTreeWidgetItem* pgroup = bgroups[ubi.second];
 		// macos: unwanted chars [qt.qpa.fonts] Menlo notice
 		QString qbname;
-		if (gid->unicode_fix)
+		if (gid->sets->value("fixUnicodeChars").toBool())
 			qbname = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{N}\\p{Pc}\\p{M}\\p{P}\\s]+"));
 		else
 			qbname = QString::fromStdString(uboq.name);
@@ -613,8 +613,8 @@ void tab::initialize()
 {
 	debug("tab", "initialize()");
 
-	if (this->dbih != nullptr)
-	 	delete this->dbih;
+	// if (this->dbih != nullptr)
+	//  	delete this->dbih;
 
 	this->dbih = new e2db;
 	this->_state_nwwr = true;

@@ -49,9 +49,15 @@ gui::gui(int argc, char* argv[])
 	debug("gui");
 
 	this->mroot = new QApplication(argc, argv);
-	mroot->setOrganizationName("org.e2se");
+	mroot->setOrganizationName("e2 SAT Editor Team");
+	mroot->setOrganizationDomain("org.e2se");
 	mroot->setApplicationName("e2-sat-editor");
+	mroot->setApplicationVersion("0.1");
 	mroot->setStyle(new guiProxyStyle);
+
+	this->sets = new QSettings;
+	if (! sets->contains("application/version"))
+		setDefaultSets();
 
 	QScreen* screen = mroot->primaryScreen();
 	QSize wsize = screen->availableSize();
@@ -61,15 +67,6 @@ gui::gui(int argc, char* argv[])
 	mwid->setMinimumSize(760, 550);
 	mwid->resize(wsize);
 
-	if (QSysInfo::productType() == "macos")
-		unicode_fix = true;
-	else
-		unicode_fix = false;
-	unicode_fix = FIX_UNICODE_CHARS ? true : false;
-
-	// QFont font = QFont({"Arial", "Courier New"});
-	// font.families().append("Menlo");
-	// mroot->setFont(font);
 	//TODO theming QEvent::PaletteChange()
 
 	root();
@@ -429,6 +426,37 @@ void gui::settings()
 void gui::about()
 {
 	e2se_gui_dialog::about(mwid);
+}
+
+void gui::setDefaultSets()
+{
+	debug("gui", "setDefaultSets()");
+
+	sets->setValue("application/version", mroot->applicationVersion());
+
+	sets->beginGroup("preference");
+	sets->setValue("askConfirmation", true);
+	sets->setValue("nonDestructiveEdit", true);
+	sets->setValue("fixUnicodeChars", QSysInfo::productType() == "macos" ? true : false);
+	sets->endGroup();
+
+	
+	sets->beginWriteArray("profile");
+	sets->setArrayIndex(0);
+	sets->setValue("profileName", "Profile");
+	sets->setValue("ipAddress", "192.168.0.2");
+	sets->setValue("ftpPort", 21);
+	sets->setValue("ftpActive", false);
+	sets->setValue("httpPort", 80);
+	sets->setValue("username", "root");
+	sets->setValue("password", "");
+	sets->setValue("pathTransponders", "/etc/tuxbox");
+	sets->setValue("pathServices", "/etc/enigma2");
+	sets->setValue("pathBouquets", "/etc/enigma2");
+	sets->setValue("customWebifReloadUrl", "");
+	sets->setValue("customFallbackReloadCmd", "");
+	sets->endArray();
+	sets->setValue("profile/selected", 1);
 }
 
 }
