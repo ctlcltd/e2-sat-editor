@@ -50,12 +50,14 @@ class settings
 		void delProfile();
 		void renameProfile(bool enabled = true);
 		void profileNameChanged(QString text);
-		void currentProfileChanged(QListWidgetItem* previous);
+		void currentProfileChanged(QListWidgetItem* current, QListWidgetItem* previous);
 		void tabChanged(int index);
 		void store();
+		void store(QTableWidget* adtbl);
 		void retrieve();
 		void retrieve(QListWidgetItem* item);
 		void retrieve(QTableWidget* adtbl);
+		void save();
 		QSettings* sets;
 	protected:
 		QTabWidget* dtwid;

@@ -13,6 +13,7 @@
 #include <filesystem>
 #include <cstdio>
 
+#include <QGuiApplication>
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -253,8 +254,11 @@ void tab::saveFile(bool saveas)
 		debug("tab", "saveFile()", "overwrite", to_string(overwrite));
 		debug("tab", "saveFile()", "filename", filename);
 
-		if (dbih->write(filename, overwrite))
-		{
+		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+		bool wr = dbih->write(filename, overwrite);
+		QGuiApplication::restoreOverrideCursor();
+		
+		if (wr) {
 			dial.setText("Saved!");
 			dial.exec();
 		}
@@ -290,7 +294,11 @@ bool tab::readFile(string filename)
 
 	initialize();
 
-	if (! dbih->prepare(filename))
+	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	bool rr = dbih->prepare(filename);
+	QGuiApplication::restoreOverrideCursor();
+
+	if (! rr)
 	{
 		QErrorMessage warn = QErrorMessage();
 		warn.showMessage("Error opening files.");

@@ -53,7 +53,7 @@ settings::settings(QWidget* mwid)
 	QPushButton* dtsave = new QPushButton;
 	dtsave->setDefault(true);
 	dtsave->setText(tr("Save Settings"));
-	dtsave->connect(dtsave, &QPushButton::pressed, [=]() { dial->close(); });
+	dtsave->connect(dtsave, &QPushButton::pressed, [=]() { this->save(); });
 	QPushButton* dtcancel = new QPushButton;
 	dtcancel->setDefault(false);
 	dtcancel->setText(tr("Cancel"));
@@ -115,7 +115,7 @@ void settings::connections()
 	this->rplist = new QListWidget;
 	rplist->setEditTriggers(QAbstractItemView::EditKeyPressed | QAbstractItemView::DoubleClicked);
 	rplist->setStyleSheet("QListView::item { height: 44px; font: 16px } QListView QLineEdit { border: 1px solid palette(alternate-base) }");
-	rplist->connect(rplist, &QListWidget::currentItemChanged, [=](QListWidgetItem* previous) { this->currentProfileChanged(previous); });
+	rplist->connect(rplist, &QListWidget::currentItemChanged, [=](QListWidgetItem* current, QListWidgetItem* previous) { this->currentProfileChanged(current, previous); });
 	rplist->connect(rplist, &QListWidget::currentTextChanged, [=](QString text) { this->profileNameChanged(text); });
 	//TODO inplace edit dismissed only under certain conditions
 	rplist->connect(rplist, &QAbstractItemView::viewportEntered, [=]() { this->renameProfile(false); });
@@ -209,11 +209,11 @@ void settings::connections()
 	QGroupBox* dtl3 = new QGroupBox(tr("Commands"));
 	QFormLayout* dtf3 = new QFormLayout;
 	QLineEdit* dtf3ca = new QLineEdit;
-	dtf3ca->setProperty("pref", "customWebifUrl");
+	dtf3ca->setProperty("pref", "customWebifReloadUrl");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf3ca);
 	dtf3->addRow(tr("Custom webif reload URL address"), dtf3ca);
 	QLineEdit* dtf3cc = new QLineEdit;
-	dtf3cc->setProperty("pref", "customFallbackCmd");
+	dtf3cc->setProperty("pref", "customFallbackReloadCmd");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf3cc);
 	dtf3->addRow(tr("Fallback reload command"), dtf3cc);
 
@@ -241,6 +241,7 @@ void settings::advanced()
 	this->adtbl = new QTableWidget(0, 2);
 	adtbl->setHidden(true);
 	adtbl->setHorizontalHeaderLabels({"ID", "Value"});
+	adtbl->horizontalHeader()->setSectionsClickable(false);
 	adtbl->verticalHeader()->setVisible(false);
 
 	this->adntc = new QWidget;
@@ -271,6 +272,7 @@ QListWidgetItem* settings::addProfile(int id)
 	debug("settings", "addProfile()", "id", to_string(id));
 
 	QListWidgetItem* item = new QListWidgetItem(tr("Profile"), rplist);
+	item->setText(item->text() + " " + QString::fromStdString(to_string(id)));
 	item->setData(Qt::UserRole, id);
 	renameProfile(false);
 	item->setSelected(true);
@@ -285,6 +287,10 @@ void settings::delProfile()
 {
 	debug("settings", "delProfile()");
 
+	QListWidgetItem* curr = rplist->currentItem();
+	int id = curr->data(Qt::UserRole).toInt();
+	tmpps.erase(id);
+
 	renameProfile(false);
 	if (rplist->count() != 1)
 		rplist->takeItem(rplist->currentRow());
@@ -292,15 +298,15 @@ void settings::delProfile()
 
 void settings::renameProfile(bool enabled)
 {
-	QListWidgetItem* item = rplist->currentItem();
-	if (enabled && ! rplist->isPersistentEditorOpen(item))
+	QListWidgetItem* curr = rplist->currentItem();
+	if (enabled && ! rplist->isPersistentEditorOpen(curr))
 	{
-		rplist->openPersistentEditor(item);
+		rplist->openPersistentEditor(curr);
 		rppage->activateBackdrop();
 	}
 	else
 	{
-		rplist->closePersistentEditor(item);
+		rplist->closePersistentEditor(curr);
 		rppage->deactivateBackdrop();
 	}
 }
@@ -309,29 +315,28 @@ void settings::profileNameChanged(QString text)
 {
 	debug("settings", "profileNameChanged()");
 
-	QListWidgetItem* item = rplist->currentItem();
-	int id = item->data(Qt::UserRole).toInt();
+	QListWidgetItem* curr = rplist->currentItem();
+	int id = curr->data(Qt::UserRole).toInt();
 	tmpps[id]["profileName"] = text;
 }
 
-void settings::currentProfileChanged(QListWidgetItem* previous)
+void settings::currentProfileChanged(QListWidgetItem* current, QListWidgetItem* previous)
 {
 	debug("settings", "currentProfileChanged()");
 
-	int id = previous->data(Qt::UserRole).toInt();
-	for (auto & item : prefs[PREF_SECTIONS::Connections])
+	if (previous != nullptr)
 	{
-		QString pref = item->property("pref").toString();
-		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
+		int id = previous->data(Qt::UserRole).toInt();
+		for (auto & item : prefs[PREF_SECTIONS::Connections])
 		{
-			tmpps[id][pref] = field->text();
+			QString pref = item->property("pref").toString();
+			if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
+				tmpps[id][pref] = field->text();
+			else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
+				tmpps[id][pref] = field->isChecked();
 		}
-		else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
-		{
-			tmpps[id][pref] = field->isChecked();
-		}
+		this->retrieve(current);
 	}
-	this->retrieve(rplist->currentItem());
 }
 
 void settings::tabChanged(int index)
@@ -351,7 +356,6 @@ void settings::tabChanged(int index)
 		case PREF_SECTIONS::Advanced:
 			adntc->setVisible(true);
 			adtbl->setHidden(true);
-			//TODO settings::store(QTableWidget* adtbl)
 		break;
 	}
 	this->_state_prev = index;
@@ -361,7 +365,38 @@ void settings::store()
 {
 	debug("settings", "store()");
 
-	
+	sets->beginWriteArray("profile");
+	for (auto & item : tmpps)
+	{
+		sets->setArrayIndex(item.first);
+		for (auto & field : item.second)
+			sets->setValue(field.first, field.second);
+	}
+	sets->endArray();
+
+	for (auto & item : prefs[PREF_SECTIONS::Preferences])
+	{
+		QString pref = item->property("pref").toString();
+		if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
+			sets->setValue(pref, field->isChecked());
+		else if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
+			sets->setValue(pref, field->text());
+	}
+}
+
+void settings::store(QTableWidget* adtbl)
+{
+	debug("settings", "store()", "", to_string(PREF_SECTIONS::Advanced));
+
+	for (int i = 0; i < adtbl->rowCount(); i++)
+	{
+		QString pref = adtbl->item(i, 0)->text().replace(".", "/");
+		QString field = adtbl->item(i, 1)->text();
+		if (field.contains(QRegularExpression("false|true")))
+			sets->setValue(pref, (field == "true" ? true : false));
+		else
+			sets->setValue(pref, field);
+	}
 }
 
 void settings::retrieve()
@@ -400,39 +435,30 @@ void settings::retrieve()
 	{
 		QString pref = item->property("pref").toString();
 		if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
-		{
 			field->setChecked(sets->value(pref).toBool());
-		}
 		else if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
-		{
 			field->setText(sets->value(pref).toString());
-		}
 	}
 }
 
 void settings::retrieve(QListWidgetItem* item)
 {
-	debug("settings", "retrieve()", "choice", "connections");
+	debug("settings", "retrieve()", "", to_string(PREF_SECTIONS::Connections));
 
 	int id = item->data(Qt::UserRole).toInt();
 	for (auto & item : prefs[PREF_SECTIONS::Connections])
 	{
 		QString pref = item->property("pref").toString();
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
-		{
 			field->setText(tmpps[id][pref].toString());
-		}
 		else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
-		{
 			field->setChecked(tmpps[id][pref].toBool());
-		}
 	}
 }
 
-
 void settings::retrieve(QTableWidget* adtbl)
 {
-	debug("settings", "retrieve()", "choice", "advanced");
+	debug("settings", "retrieve()", "", to_string(PREF_SECTIONS::Advanced));
 
 	QStringList keys = sets->allKeys().filter(QRegularExpression("^(application|preference|profile)/"));
 	QStringList::const_iterator iq;
@@ -440,11 +466,25 @@ void settings::retrieve(QTableWidget* adtbl)
 	int i = 0;
 	for (iq = keys.constBegin(); iq != keys.constEnd(); ++iq)
 	{
-		adtbl->setItem(i, 0, new QTableWidgetItem((*iq).toLocal8Bit().replace("/", ".")));
+		QTableWidgetItem* field = new QTableWidgetItem((*iq).toLocal8Bit().replace("/", "."));
+		field->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+		adtbl->setItem(i, 0, field);
 		adtbl->setItem(i, 1, new QTableWidgetItem(sets->value(*iq).toString()));
 		i++;
 	}
 	adtbl->resizeColumnsToContents();
+}
+
+void settings::save()
+{
+	debug("settings", "save()");
+
+	if (dtwid->currentIndex() == PREF_SECTIONS::Advanced)
+		store(adtbl);
+	else
+		store();
+
+	dial->close();
 }
 
 }
