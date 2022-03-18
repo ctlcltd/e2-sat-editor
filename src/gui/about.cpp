@@ -25,12 +25,13 @@ using namespace e2se;
 namespace e2se_gui_dialog
 {
 
-void about(QWidget* mwid)
+about::about(QWidget* mwid)
 {
-	debug("gui", "about()");
+	debug("about");
 
 	QDialog* dial = new QDialog(mwid);
 	dial->setWindowTitle("About e2 SAT Editor");
+	dial->connect(dial, &QDialog::finished, [=]() { debug("about", "closed"); delete dial; delete this; });
 
 	QGridLayout* dfrm = new QGridLayout(dial);
 	QHBoxLayout* dhbox = new QHBoxLayout;

@@ -47,7 +47,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 
 	this->gid = gid;
 	this->cwid = wid;
-	QWidget* widget = new QWidget;
+	this->widget = new QWidget;
 	widget->setStyleSheet("QGroupBox { spacing: 0; padding: 20px 0 0 0; border: 0 } QGroupBox::title { margin: 0 12px }");
 
 	QGridLayout* frm = new QGridLayout(widget);
@@ -198,12 +198,17 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	frm->addLayout(container, 1, 0);
 	frm->addLayout(bottom, 2, 0);
 
-	this->widget = widget;
-
 	if (filename.empty())
 		newFile();
 	else
 		readFile(filename);
+}
+
+tab::~tab()
+{
+	delete dbih;
+	//TODO FIX deleting widget removes next tab
+	// delete widget;
 }
 
 void tab::newFile()
@@ -272,13 +277,15 @@ void tab::saveFile(bool saveas)
 
 void tab::addChannel()
 {
+	debug("tab", "addChannel()");
+
+	channelBook* cb = new channelBook(dbih);
 	QDialog* dial = new QDialog(cwid);
 	dial->setMinimumSize(760, 420);
 	dial->setWindowTitle("Add Channel");
+	dial->connect(dial, &QDialog::finished, [=]() { delete dial; delete cb; });
 
 	QGridLayout* layout = new QGridLayout;
-	channelBook* cb = new channelBook(dbih);
-
 	layout->addWidget(cb->widget);
 	layout->setContentsMargins(0, 0, 0, 0);
 	dial->setLayout(layout);
@@ -422,6 +429,7 @@ void tab::populate()
 		{
 			char ci[7];
 			sprintf(ci, "%06d", i++);
+			bool mrkr = false;
 			QString x = QString::fromStdString(ci);
 			QString idx;
 			QStringList qitem;
@@ -439,6 +447,7 @@ void tab::populate()
 
 				if (cref.refmrker)
 				{
+					mrkr = true;
 					qitem = dbih->entry_marker(cref);
 					idx = qitem[1];
 					qitem.prepend(x);
@@ -455,8 +464,8 @@ void tab::populate()
 
 			QTreeWidgetItem* item = new QTreeWidgetItem(qitem);
 			item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
-			item->setData(0, Qt::UserRole, idx);   // data: Index
-			item->setData(1, Qt::UserRole, false); // data: marker flag
+			item->setData(0, Qt::UserRole, idx);  // data: Index
+			item->setData(1, Qt::UserRole, mrkr); // data: marker flag
 			cache[curr_chlist].append(item);
 			// cache.append(item);
 		}
@@ -489,7 +498,7 @@ void tab::listItemChanged()
 //TODO improve by positions QAbstractItemView::indexAt(x, y) min|max
 void tab::visualReindexList()
 {
-	int i = 0, j = 0, idx = 0;
+	int i = 0, y = 0, idx = 0;
 	int maxs = list_tree->topLevelItemCount() - 1;
 
 	do
@@ -505,8 +514,8 @@ void tab::visualReindexList()
 		}
 		else
 		{
-			j += 1;
-			idx = j;
+			y++;
+			idx = y;
 		}
 		item->setText(0, x);
 		if (! mrkr)
@@ -568,7 +577,7 @@ void tab::updateListIndex()
 {
 	if (! this->_state_changed) return;
 
-	int i = 0, j = 0, idx = 0;
+	int i = 0, y = 0, idx = 0;
 	int count = list_tree->topLevelItemCount();
 	string curr_chlist = this->_state_curr;
 	index[curr_chlist].clear();
@@ -586,8 +595,8 @@ void tab::updateListIndex()
 		}
 		else
 		{
-			j += 1;
-			idx = j;
+			y++;
+			idx = y;
 		}
 		index[curr_chlist].emplace_back(pair (idx, chid.toStdString())); //C++ 17
 		i++;
@@ -621,8 +630,8 @@ void tab::initialize()
 {
 	debug("tab", "initialize()");
 
-	// if (this->dbih != nullptr)
-	//  	delete this->dbih;
+	if (this->dbih != nullptr)
+	  	delete this->dbih;
 
 	this->dbih = new e2db;
 	this->_state_nwwr = true;
@@ -653,6 +662,13 @@ void tab::initialize()
 	bouquets_tree->addTopLevelItem(titem);
 
 	setCounters();
+}
+
+void tab::destroy()
+{
+	debug("tab", "destroy()");
+
+	delete this;
 }
 
 //TEST

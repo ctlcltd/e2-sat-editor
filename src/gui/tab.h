@@ -9,6 +9,8 @@
  * @license GNU GPLv3 License
  */
 
+#include <iostream>
+
 #include <string>
 #include <unordered_map>
 
@@ -34,6 +36,7 @@ class tab
 {
 	public:
 		tab(gui* gid, QWidget* wid, string filename);
+		~tab();
 		void newFile();
 		void openFile();
 		bool readFile(string filename = "");
@@ -50,6 +53,7 @@ class tab
 		void setCounters();
 		void setTabId(int ttid);
 		void initialize();
+		void destroy();
 		void loadSeeds();
 		QWidget* widget;
 	protected:
@@ -65,7 +69,7 @@ class tab
 		gui* gid;
 		QWidget* cwid;
 		int ttid;
-		e2db* dbih;
+		e2db* dbih = nullptr;
 		TreeEventObserver* list_evt;
 		QTreeWidget* bouquets_tree;
 		QTreeWidget* list_tree;

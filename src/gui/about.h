@@ -15,6 +15,10 @@
 
 namespace e2se_gui_dialog
 {
-void about(QWidget* mwid);
+class about
+{
+	public:
+		about(QWidget* mwid);
+};
 }
 #endif /* about_h */

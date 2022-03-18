@@ -28,6 +28,10 @@ class e2db : public ::e2db::e2db
 			unordered_map<string, QStringList> services;
 		} entries;
 		e2db();
+		~e2db()
+		{
+			e2se::debug("e2db", "~destructor");
+		}
 		void options();
 		bool prepare(string localdir);
 		QStringList entry_transponder(transponder tx);

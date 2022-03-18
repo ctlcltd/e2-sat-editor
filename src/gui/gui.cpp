@@ -36,7 +36,7 @@ namespace e2se_gui
 class guiProxyStyle : public QProxyStyle
 {
 	public:
-		int styleHint(StyleHint hint, const QStyleOption *option = 0, const QWidget *widget = 0, QStyleHintReturn *returnData = 0) const override
+		int styleHint(StyleHint hint, const QStyleOption* option = 0, const QWidget* widget = 0, QStyleHintReturn* returnData = 0) const override
 		{
 			if (hint == QStyle::SH_TabBar_CloseButtonPosition)
 				return QTabBar::RightSide;
@@ -252,16 +252,21 @@ void gui::closeTab(int index)
 {
 	debug("gui", "closeTab()", "index", to_string(index));
 
-	if (index == -1)
-		index = twid->currentIndex();
+	//TODO ?
+	// if (index == -1)
+	//	index = twid->currentIndex();
 
 	QWidget* curr_wid = twid->currentWidget();
 	int ttid = curr_wid->property("ttid").toInt();
 	//TODO FIX
 	mwind->removeAction(ttmenu[ttid]);
 	mwtabs->removeAction(ttmenu[ttid]);
-	//TODO destruct
 	twid->removeTab(index);
+
+	ttabs[ttid]->destroy();
+	ttabs[ttid] = nullptr;
+	delete ttabs[ttid];
+
 	if (twid->count() == 0) newTab();
 }
 
@@ -274,8 +279,15 @@ void gui::closeAllTabs()
 		mwind->removeAction(action);
 		mwtabs->removeAction(action);
 	}
-	//TODO destruct
 	twid->clear();
+
+	for (unsigned int i = 0; i < ttabs.size(); i++)
+	{
+		ttabs[i]->destroy();
+		ttabs[i] = nullptr;
+		delete ttabs[i];
+	}
+
 	if (twid->count() == 0) newTab();
 }
 
@@ -369,12 +381,14 @@ void gui::tabChangeName(int ttid, string filename)
 		tname = filesystem::path(filename).filename();
 
 	QString ttname = QString::fromStdString(tname);
-
-	//TODO accessing nested QLabel
 	QTabBar* ttabbar = twid->tabBar();
-	QLabel* ttlabel = new QLabel;
-	ttlabel->setText(ttname);
-	ttabbar->setTabButton(index, QTabBar::LeftSide, ttlabel);
+	QWidget* ttabbls = ttabbar->tabButton(index, QTabBar::LeftSide);
+	if (QLabel* ttlabel = qobject_cast<QLabel*>(ttabbls))
+	{
+		ttlabel->setText(ttname);
+		ttlabel->adjustSize();
+	}
+	ttabbar->setTabText(index, "");
 
 	ttmenu[ttid]->setText(ttname);
 }
@@ -425,7 +439,7 @@ void gui::settings()
 
 void gui::about()
 {
-	e2se_gui_dialog::about(mwid);
+	new e2se_gui_dialog::about(mwid);
 }
 
 void gui::setDefaultSets()
@@ -439,11 +453,10 @@ void gui::setDefaultSets()
 	sets->setValue("nonDestructiveEdit", true);
 	sets->setValue("fixUnicodeChars", QSysInfo::productType() == "macos" ? true : false);
 	sets->endGroup();
-
 	
 	sets->beginWriteArray("profile");
 	sets->setArrayIndex(0);
-	sets->setValue("profileName", "Profile");
+	sets->setValue("profileName", "Default");
 	sets->setValue("ipAddress", "192.168.0.2");
 	sets->setValue("ftpPort", 21);
 	sets->setValue("ftpActive", false);

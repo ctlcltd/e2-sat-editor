@@ -28,6 +28,7 @@ class channelBook
 {
     public:
     	channelBook(e2db* dbih);
+		void load();
 		void side();
 		void layout();
 		void sideRowChanged(int index);

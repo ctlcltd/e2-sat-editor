@@ -40,6 +40,7 @@ settings::settings(QWidget* mwid)
 	this->dial = new QDialog(mwid);
 	dial->setWindowTitle(tr("Settings"));
 	dial->setStyleSheet("QGroupBox { spacing: 0; padding: 20px 0 0 0; border: 0 } QGroupBox::title { margin: 0 10px; font: bold }");
+	dial->connect(dial, &QDialog::finished, [=]() { delete dial; delete this; });
 
 	this->sets = new QSettings;
 

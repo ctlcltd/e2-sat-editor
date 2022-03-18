@@ -480,7 +480,7 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 
 	bool step = false;
 	int idx = 0;
-	int j = 0;
+	int y = 0;
 	string line;
 	string chid;
 	userbouquet ub;
@@ -537,8 +537,8 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 			}
 			if (sseq)
 			{
-				j += 1;
-				idx = j;
+				y++;
+				idx = y;
 			}
 			else
 			{
