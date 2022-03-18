@@ -71,7 +71,7 @@ struct e2db_abstract
 			{17, make_pair(1, "UHD")},
 			{22, make_pair(1, "H.264")},
 			{25, make_pair(1, "HD")},
-			{31, make_pair(1, "UHD")}
+			{31, make_pair(1, "H.265")}
 		};
 
 		inline static const unordered_map<string, string> SCAS = {

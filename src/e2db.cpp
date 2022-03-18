@@ -298,7 +298,7 @@ void e2db_parser::parse_lamedb_transponder_params(string data, transponder& tx)
 	tx.dvbns = dvbns;
 	tx.tsid = tsid;
 	tx.onid = onid;
-	sprintf(txid, "%x:%x:%x", tsid, onid, dvbns);
+	sprintf(txid, "%x:%x", tsid, dvbns);
 	tx.txid = txid;
 }
 
@@ -393,8 +393,8 @@ void e2db_parser::parse_lamedb_service_params(string data, service& ch)
 	ch.onid.erase(0, ch.onid.find_first_not_of('0'));
 	ch.stype = stype;
 	ch.snum = snum;
-	sprintf(txid, "%x:%s:%x", tsid, ch.onid.c_str(), dvbns);
-	sprintf(chid, "%x:%x:%s:%x", ssid, tsid, ch.onid.c_str(), dvbns);
+	sprintf(txid, "%x:%x", tsid, dvbns);
+	sprintf(chid, "%x:%x:%x", ssid, tsid, dvbns);
 	ch.txid = txid;
 	ch.chid = chid;
 }
@@ -528,12 +528,12 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 				case 512: // hidden marker
 				case 832: // hidden marker
 					sseq = false;
-					sprintf(cchid, "%d:%d:%x:%d", i0, i1, anum, ssid);
+					sprintf(cchid, "%d:%d:%x", i0, i1, anum);
 				break;
 				case 128: // group //TODO
 				default:  // service
 					sseq = true;
-					sprintf(cchid, "%x:%x:%s:%x", ssid, tsid, onid, dvbns);
+					sprintf(cchid, "%x:%x:%x", ssid, tsid, dvbns);
 			}
 			if (sseq)
 			{
