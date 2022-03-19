@@ -316,7 +316,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 	switch (ttype)
 	{
 		case 's':
-			sscanf(data.c_str(), "%8d:%8d:%1d:%1d:%3d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil, oflgs);
+			sscanf(data.c_str(), "%8d:%8d:%1d:%1d:%4d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil, oflgs);
 
 			tx.freq = int (freq / 1e3);
 			tx.sr = int (sr / 1e3);
@@ -478,7 +478,7 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 {
 	debug("e2db_parser", "parse_e2db_userbouquet()", "bname", bname);
 
-	bool step = false;
+	int step = 0;
 	int idx = 0;
 	int y = 0;
 	string line;
@@ -494,12 +494,14 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 
 			ub.name = line.substr(6);
 			ub.pname = pname;
-			step = true;
+			step = 1;
 			continue;
 		}
-		else if (step && line.find("#DESCRIPTION") != string::npos)
+		else if (step == 2)
 		{
-			ub.channels[chid].refval = line.substr(13);
+			if (line.find("#DESCRIPTION") != string::npos)
+				ub.channels[chid].refval = line.substr(13);
+			step = 1;
 			continue;
 		}
 		else if (step && line.empty())
@@ -528,6 +530,7 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 				case 512: // hidden marker
 				case 832: // hidden marker
 					sseq = false;
+					step = 2;
 					sprintf(cchid, "%d:%d:%x", i0, i1, anum);
 				break;
 				case 128: // group //TODO
@@ -599,7 +602,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, ifstream& ftunxml)
 
 	while (getline(ftunxml, line))
 	{
-		if (line.find("<!") != string::npos) //TODO inline comments
+		if (line.find("<!", 0, 2) != string::npos)
 		{
 			step = 0;
 			continue;
@@ -1173,7 +1176,7 @@ bool e2db_maker::write_to_localdir(string localdir, bool overwrite)
 	{
 		string localfile = localdir + '/' + o.first;
 
-		ofstream out(localfile);
+		ofstream out (localfile);
 		out << o.second;
 		out.close();
 	}

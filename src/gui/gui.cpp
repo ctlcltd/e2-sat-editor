@@ -413,6 +413,7 @@ void gui::save()
 	ttabs[ttid]->saveFile(true); //TODO temporarly set to save as
 }
 
+//TEST
 void gui::ftpConnect()
 {
 	using e2se_ftpcom::ftpcom;
@@ -429,8 +430,10 @@ void gui::ftpConnect()
 	params.bpath = "/enigma_db/";
 
 	ftpcom* ftp = new ftpcom(params);
+	ftp->connect();
 	ftp->listDir(ftpcom::path_param::services);
 }
+//TEST
 
 void gui::settings()
 {

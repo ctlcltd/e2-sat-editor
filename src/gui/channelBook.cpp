@@ -10,6 +10,7 @@
  */
 
 #include <cstdio>
+#include <cmath>
 
 #include <QGridLayout>
 #include <QSplitter>
@@ -341,8 +342,8 @@ void channelBook::populate()
 				else
 				{
 					char cposdeg[5];
-					sprintf(cposdeg, "%.1f", float(txdata.pos / 10));
-					ppos = (string (cposdeg) + (txdata.pos ? 'E' : 'W'));
+					sprintf(cposdeg, "%.1f", float (abs (txdata.pos)) / 10);
+					ppos = (string (cposdeg) + (txdata.pos > 0 ? 'E' : 'W'));
 				}
 			}
 			QString pos = QString::fromStdString(ppos);

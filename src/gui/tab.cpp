@@ -14,6 +14,11 @@
 #include <cstdio>
 
 #include <QGuiApplication>
+#include <QTimer>
+#include <QList>
+#include <QStyle>
+#include <QMessageBox>
+#include <QErrorMessage>
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -21,12 +26,7 @@
 #include <QGroupBox>
 #include <QToolBar>
 #include <QPushButton>
-#include <QMessageBox>
-#include <QErrorMessage>
-#include <QStyle>
-#include <QTimer>
-
-#include <QList>
+#include <QComboBox>
 
 #include "../commons.h"
 #include "tab.h"
@@ -125,6 +125,17 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	QToolBar* bottom_toolbar = new QToolBar;
 	bottom_toolbar->setStyleSheet("QToolBar { padding: 8px 12px } QToolButton { font: bold 16px }");
 
+	QWidget* top_toolbar_spacer = new QWidget;
+	top_toolbar_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	QComboBox* profile_combo = new QComboBox;
+	int size = gid->sets->beginReadArray("profile");
+	for (int i = 0; i < size; i++)
+	{
+		gid->sets->setArrayIndex(i);
+		profile_combo->addItem(gid->sets->value("profileName").toString(), i);
+	}
+	gid->sets->endArray();
+
 	top_toolbar->addAction(QIcon(gid->icopx + "file-open.png"), "Open", [=]() { this->openFile(); });
 	top_toolbar->addAction(QIcon(gid->icopx + "save.png"), "Save", [=]() { this->saveFile(false); });
 	top_toolbar->addSeparator();
@@ -132,15 +143,18 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	top_toolbar->addAction(QIcon(gid->icopx + "export.png"), "Export", todo);
 	top_toolbar->addSeparator();
 	top_toolbar->addAction(QIcon(gid->icopx + "settings.png"), "Settings", [=]() { gid->settings(); });
+	top_toolbar->addWidget(top_toolbar_spacer);
+	top_toolbar->addWidget(profile_combo);
+	top_toolbar->addAction("Connect", [=]() { gid->ftpConnect(); });
 
 	if (DEBUG_TOOLBAR)
 	{
 		QWidget* bottom_toolbar_spacer = new QWidget;
 		bottom_toolbar_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
 		bottom_toolbar->addAction("§ Load seeds", [=]() { this->loadSeeds(); });
 		bottom_toolbar->addAction("§ Reset", [=]() { this->newFile(); gid->tabChangeName(ttid, ""); });
 		bottom_toolbar->addWidget(bottom_toolbar_spacer);
-		bottom_toolbar->addAction("FTP Test §", [=]() { gid->ftpConnect(); });
 	}
 
 	QToolBar* bouquets_ats = new QToolBar;

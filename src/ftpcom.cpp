@@ -11,9 +11,6 @@
 
 #include <sstream>
 #include <string>
-#include <cstdio>
-
-#include <curl/curl.h>
 
 #include "commons.h"
 #include "ftpcom.h"
@@ -37,9 +34,10 @@ ftpcom::ftpcom(ftp_params params)
 	if (params.actv)
 		actv = true;
 
-	uri  = "//";
-	uri += params.user + ':' + params.pass;
-	uri += '@' + params.host + ':' + to_string(params.port);
+	host = params.host;
+	port = params.port;
+	user = params.user;
+	pass = params.pass;
 
 	if (params.tpath.empty())
 		error("ftpcom()", trw("Missing \"%s\" path parameter.", "Transponders"));
@@ -53,19 +51,166 @@ ftpcom::ftpcom(ftp_params params)
 	bases = params.spath;
 }
 
+bool ftpcom::handle()
+{
+	curl_global_init(CURL_GLOBAL_DEFAULT);
+
+	this->curl = curl_easy_init();
+	curl_easy_setopt(curl, CURLOPT_PROTOCOLS, CURLPROTO_FTP);
+
+	if (! curl)
+		return false;
+
+	this->urlp = curl_url();
+	curl_url_set(urlp, CURLUPART_SCHEME, "ftp", 0);
+	curl_url_set(urlp, CURLUPART_HOST, host.c_str(), 0);
+	curl_easy_setopt(curl, CURLOPT_CURLU, urlp);
+	curl_easy_setopt(curl, CURLOPT_USERNAME, user.c_str());
+	curl_easy_setopt(curl, CURLOPT_PASSWORD, pass.c_str());
+	curl_easy_setopt(curl, CURLOPT_PORT, port);
+	if (actv)
+		curl_easy_setopt(curl, CURLOPT_FTPPORT, "-");
+	// curl_easy_setopt(curl, CURLOPT_FTP_RESPONSE_TIMEOUT, 0); // 0 = default no timeout
+	// curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+
+	return true;
+}
+
+CURLcode ftpcom::perform(bool cleanup)
+{
+	CURLcode res = curl_easy_perform(curl);
+	if (cleanup) this->cleanup();
+	return res;
+}
+
+void ftpcom::cleanup()
+{
+	curl_url_cleanup(urlp);
+	curl_easy_cleanup(curl);
+	curl_global_cleanup();
+}
+
+bool ftpcom::connect()
+{
+	debug("connect()");
+
+	if (! handle())
+	{
+		error("connect()", trs("ftpcom error."));
+		return false;
+	}
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, discardData);
+	CURLcode res = perform();
+	return (res == CURLE_OK) ? true : false;
+}
+
 void ftpcom::listDir(int path)
 {
 	debug("list_dir()");
 
-	curl_global_init(CURL_GLOBAL_DEFAULT);
-
-	CURL* curl = curl_easy_init();
-	curl_easy_setopt(curl, CURLOPT_PROTOCOLS, CURLPROTO_FTP);
-
-	if (! curl)
+	if (! handle())
 		return error("listDir()", trs("ftpcom error."));
 
 	stringstream data;
+	string base = getBasePath(path);
+
+	curl_url_set(urlp, CURLUPART_PATH, base.c_str(), 0);
+	curl_easy_setopt(curl, CURLOPT_FTPLISTONLY, true);
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeData);
+	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &data);
+	CURLcode res = perform();
+
+	if (res != CURLE_OK)
+		return error("listDir()", trs(curl_easy_strerror(res))); // var error string
+
+	string line;
+
+	while (getline(data, line))
+	{
+		if (line.empty()) continue;
+		cout << line << endl;
+	}
+}
+
+void ftpcom::upload(int path, string filename, string os)
+{
+	debug("upload()");
+
+	if (! handle())
+		return error("upload()", trs("ftpcom error."));
+
+	string remotefile;
+	string base = getBasePath(path);
+	int attempts = 3;
+	long uplen = 0;
+	CURLcode res = CURLE_GOT_NOTHING;
+	remotefile = base + '/' + filename;
+
+	curl_url_set(urlp, CURLUPART_PATH, remotefile.c_str(), 0);
+	curl_easy_setopt(curl, CURLOPT_UPLOAD, true);
+	curl_easy_setopt(curl, CURLOPT_FTP_CREATE_MISSING_DIRS, false);
+	curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, getContentLength);
+	curl_easy_setopt(curl, CURLOPT_HEADERDATA, &uplen);
+	// curl_easy_setopt(curl, CURLOPT_READFUNCTION, readData);
+	curl_easy_setopt(curl, CURLOPT_READDATA, &os);
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, discardData);
+
+	for (int a = 0; (res != CURLE_OK) && (a < attempts); a++) {
+		debug("attempt: " + to_string(a));
+		if (a)
+		{
+			curl_easy_setopt(curl, CURLOPT_NOBODY, true);
+			curl_easy_setopt(curl, CURLOPT_HEADER, true);
+			res = perform(false);
+			if (res != CURLE_OK)
+			  continue;
+			curl_easy_setopt(curl, CURLOPT_NOBODY, false);
+			curl_easy_setopt(curl, CURLOPT_HEADER, false);
+			os = os.substr(0, uplen);
+			curl_easy_setopt(curl, CURLOPT_APPEND, true);
+		}
+		else
+		{
+			curl_easy_setopt(curl, CURLOPT_APPEND, false);
+		}
+		res = perform(false);
+	}
+
+	if (res != CURLE_OK)
+		return error("upload()", trs(curl_easy_strerror(res))); // var error string
+
+	cleanup();
+}
+
+size_t ftpcom::readData(void* ptr, size_t size, size_t nmemb, void* stream)
+{
+}
+
+size_t ftpcom::writeData(void* ptr, size_t size, size_t nmemb, void* stream)
+{
+	string data ((const char*) ptr, size * nmemb);
+	*((stringstream*) stream) << data << endl;
+	return size * nmemb;
+}
+
+size_t ftpcom::discardData(void* ptr, size_t size, size_t nmemb, void* stream)
+{
+  (void) ptr;
+  (void) stream;
+  return size * nmemb;
+}
+
+size_t ftpcom::getContentLength(void* ptr, size_t size, size_t nmemb, void* stream)
+{
+	string data ((const char*) ptr, size * nmemb);
+	size_t pos = 0;
+	if ((pos = data.find("Content-Length:")) != string::npos)
+		*((long*) stream) = stoi(data.substr(pos, data.length() - 1));
+	return size * nmemb;
+}
+
+string ftpcom::getBasePath(int path)
+{
 	string base;
 
 	switch (path)
@@ -80,39 +225,10 @@ void ftpcom::listDir(int path)
 			base = baseb;
 		break;
 		default:
-			return error("listDir()", trw("Unknown \"%s\" parameter.", "path"));
+			error("getBasePath()", trw("Unknown \"%s\" parameter.", "path"));
 	}
 
-	curl_easy_setopt(curl, CURLOPT_URL, ("ftp:" + uri + base).c_str());
-	if (actv)
-		curl_easy_setopt(curl, CURLOPT_FTPPORT, "-");
-	curl_easy_setopt(curl, CURLOPT_FTPLISTONLY, true);
-	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeData);
-	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &data);
-	// curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-	CURLcode response = curl_easy_perform(curl);
-	curl_easy_cleanup(curl);
-
-	if (response != CURLE_OK)
-		return error("listDir()", trs(curl_easy_strerror(response))); // var error string
-
-	string line;
-
-	while (getline(data, line))
-	{
-		if (line.empty()) continue;
-		cout << line << endl;
-	}
-
-	curl_global_cleanup();
-}
-
-size_t ftpcom::writeData(void* ptr, size_t size, size_t nmemb, void* ss)
-{
-	size_t relsize = size * nmemb;
-	string data ((const char*) ptr, relsize);
-	*((stringstream*) ss) << data << endl;
-	return relsize;
+	return base;
 }
 
 void ftpcom::debug(string cmsg)

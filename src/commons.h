@@ -24,8 +24,6 @@ const bool DEBUG_TOOLBAR = true;
 const bool PARSER_TUNERSETS = true;
 const bool PARSER_LAMEDB5 = false;
 const bool MAKER_LAMEDB5 = true;
-//TODO settings in macos default true
-const bool FIX_UNICODE_CHARS = true;
 
 static void debug(string ns, string cmsg = "", string optk = "", string optv = "", string indt = " ")
 {

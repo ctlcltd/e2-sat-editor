@@ -9,6 +9,9 @@
  * @license GNU GPLv3 License
  */
 
+#include <cstdio>
+#include <cmath>
+
 #include "e2db_gui.h"
 
 using namespace std;
@@ -62,8 +65,8 @@ QStringList e2db::entry_transponder(transponder tx)
 			ppos = tuners.at(tx.pos).name;
 		} else {
 			char cposdeg[5];
-			sprintf(cposdeg, "%.1f", float(tx.pos / 10));
-			ppos = (string (cposdeg) + (tx.pos ? 'E' : 'W'));
+			sprintf(cposdeg, "%.1f", float (abs (tx.pos)) / 10);
+			ppos = (string (cposdeg) + (tx.pos > 0 ? 'E' : 'W'));
 		}
 	}
 	QString pos = QString::fromStdString(ppos);
