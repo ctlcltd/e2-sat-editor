@@ -109,6 +109,11 @@ void channelBook::layout()
 	this->list = new QTreeWidget;
 	list->setHidden(true);
 	list->setUniformRowHeights(true);
+	list->setRootIsDecorated(false);
+	list->setSelectionBehavior(QAbstractItemView::SelectRows);
+	list->setSelectionMode(QAbstractItemView::ExtendedSelection);
+	list->setItemsExpandable(false);
+	list->setExpandsOnDoubleClick(false);
 
 	QTreeWidgetItem* thead = new QTreeWidgetItem({"", "Index", "Name", "Type", "Provider", "Transponder", "SAT"});
 	list->setHeaderItem(thead);
@@ -320,6 +325,7 @@ void channelBook::populate()
 			e2db::transponder txdata = dbih->db.transponders[chdata.txid];
 
 			QString idx = QString::fromStdString(to_string(ch.first));
+			QString chid = QString::fromStdString(ch.second);
 			QString chname = QString::fromStdString(chdata.chname);
 			QString stype = e2db::STYPES.count(chdata.stype) ? QString::fromStdString(e2db::STYPES.at(chdata.stype).second) : "Data";
 			QString pname = QString::fromStdString(chdata.data.count(e2db::PVDR_DATA.at('p')) ? chdata.data[e2db::PVDR_DATA.at('p')][0] : "");
@@ -349,6 +355,7 @@ void channelBook::populate()
 			QString pos = QString::fromStdString(ppos);
 
 			QTreeWidgetItem* item = new QTreeWidgetItem({x, idx, chname, stype, pname, txp, pos});
+			item->setData(0, Qt::UserRole, chid);
 			list->addTopLevelItem(item);
 		}
 	}
@@ -374,6 +381,19 @@ void channelBook::trickySortByColumn(int column)
 		list->sortByColumn(column, order);
 		list->header()->setSortIndicator(1, order);
 	}
+}
+
+vector<QString> channelBook::getSelected()
+{
+	debug("channelBook", "getSelected()");
+
+	vector<QString> channels;
+
+	for (auto & item : list->selectedItems())
+	{
+		channels.emplace_back(item->data(0, Qt::UserRole).toString());
+	}
+	return channels;
 }
 
 }

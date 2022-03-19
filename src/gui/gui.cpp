@@ -294,9 +294,6 @@ void gui::closeAllTabs()
 void gui::tabChanged(int index)
 {
 	debug("gui", "tabChanged()", "index", to_string(index));
-
-	QString msg = QString::fromStdString("Current tab index: " + to_string(index));
-	sbwidl->setText(msg);
 }
 
 void gui::tabClicked(int index)
@@ -393,15 +390,31 @@ void gui::tabChangeName(int ttid, string filename)
 	ttmenu[ttid]->setText(ttname);
 }
 
-void gui::loaded(int counters[4])
+void gui::loaded(int counters[5])
 {
 	QString qstr;
-	qstr.append("TV: " + QString::fromStdString(to_string(counters[1])) + "   ");
-	qstr.append("Radio: " + QString::fromStdString(to_string(counters[2])) + "   ");
-	qstr.append("Data: " + QString::fromStdString(to_string(counters[0])) + "   ");
-	qstr.append("   ");
-	qstr.append("Total: " + QString::fromStdString(to_string(counters[3])) + "   ");
-	sbwidr->setText(qstr);
+	if (counters[4])
+	{
+		qstr = "Channels: " + QString::fromStdString(to_string(counters[4]));
+		sbwidl->setText(qstr);
+	}
+	else
+	{
+		qstr.append("TV: " + QString::fromStdString(to_string(counters[1])) + "   ");
+		qstr.append("Radio: " + QString::fromStdString(to_string(counters[2])) + "   ");
+		qstr.append("Data: " + QString::fromStdString(to_string(counters[0])) + "   ");
+		qstr.append("   ");
+		qstr.append("Total: " + QString::fromStdString(to_string(counters[3])) + "   ");
+		sbwidr->setText(qstr);
+	}
+}
+
+void gui::reset()
+{
+	debug("gui", "reset()");
+
+	sbwidl->setText("");
+	sbwidr->setText("");
 }
 
 void gui::save()

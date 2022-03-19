@@ -53,7 +53,8 @@ class gui
 		string openFileDialog();
 		string saveFileDialog(string filename);
 		void tabChangeName(int ttid, string filename);
-		void loaded(int counters[4]);
+		void loaded(int counters[5]);
+		void reset();
 		void save();
 		void ftpConnect();
 		void settings();

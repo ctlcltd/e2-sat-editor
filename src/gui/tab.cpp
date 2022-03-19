@@ -149,12 +149,12 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 
 	if (DEBUG_TOOLBAR)
 	{
-		QWidget* bottom_toolbar_spacer = new QWidget;
-		bottom_toolbar_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+		QWidget* bottom_spacer = new QWidget;
+		bottom_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 		bottom_toolbar->addAction("§ Load seeds", [=]() { this->loadSeeds(); });
 		bottom_toolbar->addAction("§ Reset", [=]() { this->newFile(); gid->tabChangeName(ttid, ""); });
-		bottom_toolbar->addWidget(bottom_toolbar_spacer);
+		bottom_toolbar->addWidget(bottom_spacer);
 	}
 
 	QToolBar* bouquets_ats = new QToolBar;
@@ -175,7 +175,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	DropEventHandler* bouquets_evt = new DropEventHandler;
 	this->list_evt = new TreeEventObserver;
 	bouquets_tree->viewport()->installEventFilter(bouquets_evt);
-	bouquets_tree->connect(bouquets_tree, &QTreeWidget::currentItemChanged, [=]() { this->updateListIndex(); this->populate(); });
+	bouquets_tree->connect(bouquets_tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->bouquetsItemChanged(current); });
 	list_tree->installEventFilter(list_evt);
 	list_tree->connect(list_tree, &QTreeWidget::currentItemChanged, [=]() { this->listItemChanged(); });
 
@@ -300,7 +300,15 @@ void tab::addChannel()
 	dial->connect(dial, &QDialog::finished, [=]() { delete dial; delete cb; });
 
 	QGridLayout* layout = new QGridLayout;
+	QToolBar* bottom_toolbar = new QToolBar;
+	bottom_toolbar->setStyleSheet("QToolBar { padding: 0 8px } QToolButton { font: 16px }");
+	QWidget* bottom_spacer = new QWidget;
+	bottom_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	bottom_toolbar->addWidget(bottom_spacer);
+	bottom_toolbar->addAction("Add", [=]() { auto selected = cb->getSelected(); this->putChannels(selected); });
+
 	layout->addWidget(cb->widget);
+	layout->addWidget(bottom_toolbar);
 	layout->setContentsMargins(0, 0, 0, 0);
 	dial->setLayout(layout);
 	dial->exec();
@@ -424,7 +432,6 @@ void tab::populate()
 	lheaderv->setSectionsClickable(false);
 	list_tree->setDragEnabled(false);
 	list_tree->setAcceptDrops(false);
-	this->_state_dnd = false;
 	list_tree->scrollToItem(list_tree->topLevelItem(0)); //TODO FIX
 	list_tree->clear();
 	if (precached)
@@ -496,7 +503,44 @@ void tab::populate()
 	lheaderv->setSectionsClickable(true);
 	list_tree->setDragEnabled(true);
 	list_tree->setAcceptDrops(true);
-	this->_state_dnd = true;
+
+	setCounters(true);
+}
+
+void tab::bouquetsItemChanged(QTreeWidgetItem* current)
+{
+	debug("tab", "bouquetsItemChanged()");
+
+	if (current != NULL)
+	{
+		int ti = bouquets_tree->indexOfTopLevelItem(current);
+
+		// all | tv | radio
+		if (ti != -1)
+		{
+			ats->list_addch->setDisabled(true);
+			ats->list_newch->setEnabled(true);
+		}
+		// userbouquets
+		else
+		{
+			ats->list_addch->setEnabled(true);
+			ats->list_newch->setDisabled(true);
+		}
+		if (ti > 0)
+		{
+			cout << "disallow" << endl;
+			disallowDnD();
+		}
+		else if (ti < 1)
+		{
+			cout << "allow" << endl;
+			allowDnD();
+		}
+	}
+
+	updateListIndex();
+	populate();
 }
 
 void tab::listItemChanged()
@@ -587,6 +631,45 @@ void tab::disallowDnD()
 	ats->list_dnd->setText("• Drag&Drop deactivated");
 }
 
+//TODO allow duplicates
+void tab::putChannels(vector<QString> channels)
+{
+	debug("tab", "putChannels()");
+
+	lheaderv->setSectionsClickable(false);
+	list_tree->setDragEnabled(false);
+	list_tree->setAcceptDrops(false);
+	QList<QTreeWidgetItem*> clist;
+	int i = list_tree->topLevelItemCount() + 1;
+
+	for (QString & qchid : channels)
+	{
+		string chid = qchid.toStdString();
+		if (dbih->db.services.count(chid))
+		{
+			char ci[7];
+			sprintf(ci, "%06d", i);
+			QString x = QString::fromStdString(ci);
+			QString idx = QString::fromStdString(to_string(i));
+			QStringList qitem = dbih->entries.services[chid];
+			qitem.prepend(idx);
+			qitem.prepend(x);
+			QTreeWidgetItem* item = new QTreeWidgetItem(qitem);
+			item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
+			item->setData(1, Qt::UserRole, false); // data: marker flag
+			clist.append(item);
+			i++;
+		}
+	}
+	list_tree->addTopLevelItems(clist);
+
+	lheaderv->setSectionsClickable(true);
+	list_tree->setDragEnabled(true);
+	list_tree->setAcceptDrops(true);
+	this->_state_changed = true;
+	visualReindexList();
+}
+
 void tab::updateListIndex()
 {
 	if (! this->_state_changed) return;
@@ -620,15 +703,24 @@ void tab::updateListIndex()
 	this->_state_changed = false;
 }
 
-void tab::setCounters()
+void tab::setCounters(bool channels)
 {
 	debug("tab", "setCounters()");
 
-	int counters[4];
-	counters[0] = index["chs:0"].size();
-	counters[1] = index["chs:1"].size();
-	counters[2] = index["chs:2"].size();
-	counters[3] = index["chs"].size();
+	int counters[5] = {0, 0, 0, 0, 0};
+
+	if (channels)
+	{
+		string curr_chlist = this->_state_curr;
+		counters[4] = index[curr_chlist].size();
+	}
+	else
+	{
+		counters[0] = index["chs:0"].size(); // data
+		counters[1] = index["chs:1"].size(); // tv
+		counters[2] = index["chs:2"].size(); // radio
+		counters[3] = index["chs"].size();   // all
+	}
 
 	gid->loaded(counters);
 }
@@ -660,11 +752,13 @@ void tab::initialize()
 	lheaderv->setSectionsClickable(false);
 	list_tree->setDragEnabled(false);
 	list_tree->setAcceptDrops(false);
-	this->_state_dnd = false;
+	this->_state_dnd = true;
 	list_tree->scrollToItem(list_tree->topLevelItem(0));
 	list_tree->clear();
 	cache.clear();
 	index.clear();
+
+	gid->reset();
 
 	QTreeWidgetItem* titem = new QTreeWidgetItem();
 	titem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
@@ -674,8 +768,6 @@ void tab::initialize()
 	titem->setText(0, "All channels");
 
 	bouquets_tree->addTopLevelItem(titem);
-
-	setCounters();
 }
 
 void tab::destroy()

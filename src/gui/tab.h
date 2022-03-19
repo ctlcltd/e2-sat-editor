@@ -44,13 +44,15 @@ class tab
 		void addChannel();
 		void load();
 		void populate();
+		void bouquetsItemChanged(QTreeWidgetItem* current);
 		void listItemChanged();
 		void visualReindexList();
 		void trickySortByColumn(int column);
 		void allowDnD();
 		void disallowDnD();
+		void putChannels(vector<QString>);
 		void updateListIndex();
-		void setCounters();
+		void setCounters(bool userbouquet = false);
 		void setTabId(int ttid);
 		void initialize();
 		void destroy();

@@ -18,6 +18,7 @@ using namespace std;
 #ifndef channelBook_h
 #define channelBook_h
 #include <QWidget>
+#include <QString>
 #include <QHBoxLayout>
 #include <QListWidget>
 #include "e2db_gui.h"
@@ -34,6 +35,7 @@ class channelBook
 		void stacker(int vv);
 		void populate();
 		void trickySortByColumn(int column);
+		vector<QString> getSelected();
 		QWidget* widget;
 	protected:
 		QListWidget* lwid;
