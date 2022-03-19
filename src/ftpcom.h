@@ -21,6 +21,8 @@ namespace e2se_ftpcom
 class ftpcom
 {
 	public:
+		static const int MAX_RESUME_ATTEMPTS = 3;
+
         struct ftp_params
         {
             string host;
@@ -40,16 +42,21 @@ class ftpcom
 		};
         ftpcom(ftp_params params);
 		bool handle();
-		CURLcode perform(bool cleanup = true);
+		CURLcode perform(bool cleanup = false);
 		void cleanup();
 		bool connect();
+		void disconnect();
 		void listDir(int path);
-		void upload(int path, string filename, string os);
+		void uploadData(int path, string filename, string os);
 	protected:
-		static size_t writeData(void* ptr, size_t size, size_t nmemb, void* stream);
-		static size_t readData(void* ptr, size_t size, size_t nmemb, void* stream);
-		static size_t discardData(void* ptr, size_t size, size_t nmemb, void* stream);
-		static size_t getContentLength(void* ptr, size_t size, size_t nmemb, void* stream);
+		struct soi {
+			const char* data;
+			size_t sizel;
+		};
+		static size_t dataUpload_func(char* cso, size_t size, size_t nmemb, void* psi);
+		static size_t dataRead_func(void* csi, size_t size, size_t nmemb, void* pso);
+		static size_t dataDiscard_func(void* csi, size_t size, size_t nmemb, void* pso);
+		static size_t getContentLength_func(void* csi, size_t size, size_t nmemb, void* pso);
 		void debug(string cmsg);
 		void error(string cmsg, string rmsg);
 		string trs(string str);

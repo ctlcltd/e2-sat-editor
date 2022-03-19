@@ -432,6 +432,8 @@ void gui::ftpConnect()
 	ftpcom* ftp = new ftpcom(params);
 	ftp->connect();
 	ftp->listDir(ftpcom::path_param::services);
+	ftp->uploadData(ftpcom::path_param::services, "testfile", "test\ntest\n\n");
+	ftp->disconnect();
 }
 //TEST
 
