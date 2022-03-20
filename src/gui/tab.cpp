@@ -25,8 +25,11 @@
 #include <QSplitter>
 #include <QGroupBox>
 #include <QToolBar>
+#include <QMenu>
 #include <QPushButton>
 #include <QComboBox>
+#include <QClipboard>
+#include <QMimeData>
 
 #include "../commons.h"
 #include "tab.h"
@@ -118,6 +121,9 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 
 	this->lheaderv = list_tree->header();
 	lheaderv->connect(lheaderv, &::QHeaderView::sectionClicked, [=](int column) { this->trickySortByColumn(column); });
+
+	list_tree->setContextMenuPolicy(Qt::CustomContextMenu);
+	list_tree->connect(list_tree, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { this->showListEditContextMenu(pos); });
 
 	QToolBar* top_toolbar = new QToolBar;
 	top_toolbar->setStyleSheet("QToolBar { padding: 0 12px } QToolButton { font: 20px }");
@@ -294,6 +300,7 @@ void tab::addChannel()
 	debug("tab", "addChannel()");
 
 	channelBook* cb = new channelBook(dbih);
+	string curr_chlist = this->_state_curr;
 	QDialog* dial = new QDialog(cwid);
 	dial->setMinimumSize(760, 420);
 	dial->setWindowTitle("Add Channel");
@@ -305,7 +312,7 @@ void tab::addChannel()
 	QWidget* bottom_spacer = new QWidget;
 	bottom_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	bottom_toolbar->addWidget(bottom_spacer);
-	bottom_toolbar->addAction("Add", [=]() { auto selected = cb->getSelected(); this->putChannels(selected); });
+	bottom_toolbar->addAction("Add", [=]() { auto selected = cb->getSelected(); this->putChannels(selected, curr_chlist); });
 
 	layout->addWidget(cb->widget);
 	layout->addWidget(bottom_toolbar);
@@ -529,12 +536,10 @@ void tab::bouquetsItemChanged(QTreeWidgetItem* current)
 		}
 		if (ti > 0)
 		{
-			cout << "disallow" << endl;
 			disallowDnD();
 		}
 		else if (ti < 1)
 		{
-			cout << "allow" << endl;
 			allowDnD();
 		}
 	}
@@ -631,8 +636,132 @@ void tab::disallowDnD()
 	ats->list_dnd->setText("• Drag&Drop deactivated");
 }
 
+void tab::listItemCut()
+{
+	debug("tab", "listItemCut()");
+
+	listItemCopy(true);
+}
+
+void tab::listItemCopy(bool cut)
+{
+	debug("tab", "listItemCopy()");
+
+	QList<QTreeWidgetItem*> selected = list_tree->selectedItems();
+	
+	if (selected.empty())
+		return;
+
+	QClipboard* clipboard = QGuiApplication::clipboard();
+	QStringList text;
+	for (auto & item : selected)
+	{
+		QStringList data;
+		// skip column 0 = x index
+		for (int i = 1; i < list_tree->columnCount(); i++)
+			data.append(item->data(i, Qt::DisplayRole).toString());
+		text.append(data.join(",")); // CSV
+	}
+	clipboard->setText(text.join("\n")); // CSV
+
+	if (cut)
+		listItemDelete();
+}
+
+//TODO FIX chlist ERROR
+void tab::listItemPaste()
+{
+	debug("tab", "listItemPaste()");
+
+	QTreeWidgetItem* selected = list_tree->currentItem();
+
+	if (selected == NULL)
+		selected = list_tree->topLevelItem(list_tree->topLevelItemCount());
+	if (selected != NULL)
+	{
+		QClipboard* clipboard = QGuiApplication::clipboard();
+		const QMimeData* mimeData = clipboard->mimeData();
+		vector<QString> items;
+		string curr_chlist = this->_state_curr;
+
+		if (mimeData->hasText())
+		{
+			QStringList list = clipboard->text().split("\n");
+			for (QString & data : list)
+			{
+				//TODO validate
+				items.emplace_back(data.split(",")[2]);
+			}
+		}
+		if (! items.empty())
+			putChannels(items, curr_chlist);
+	}
+}
+
+void tab::listItemDelete()
+{
+	debug("tab", "listItemDelete()");
+
+	QList<QTreeWidgetItem*> selected = list_tree->selectedItems();
+	
+	if (selected.empty())
+		return;
+
+	lheaderv->setSectionsClickable(false);
+	list_tree->setDragEnabled(false);
+	list_tree->setAcceptDrops(false);
+
+	for (auto & item : selected)
+	{
+		int i = list_tree->indexOfTopLevelItem(item);
+		list_tree->takeTopLevelItem(i);
+	}
+
+	lheaderv->setSectionsClickable(true);
+	list_tree->setDragEnabled(true);
+	list_tree->setAcceptDrops(true);
+	this->_state_changed = true;
+	updateListIndex();
+	visualReindexList();
+	setCounters();
+}
+
+//TODO focus in
+void tab::listItemSelectAll()
+{
+	debug("tab", "listItemSelectAll()");
+
+	list_tree->selectAll();
+}
+
+void tab::listItemAction(int action)
+{
+	debug("tab", "listItemAction()", "action", to_string(action));
+
+	switch (action)
+	{
+		case LIST_EDIT_ATS::Cut:
+			listItemCut();
+		break;
+		case LIST_EDIT_ATS::Copy:
+			listItemCopy();
+		break;
+		case LIST_EDIT_ATS::Paste:
+			listItemPaste();
+		break;
+		case LIST_EDIT_ATS::Delete:
+			listItemDelete();
+		break;
+		case LIST_EDIT_ATS::SelectAll:
+			listItemSelectAll();
+		break;
+	}
+}
+
 //TODO allow duplicates
-void tab::putChannels(vector<QString> channels)
+//TODO put in selected place
+//TODO FIX chlist from Paste
+void tab::putChannels(vector<QString> channels, string chlist)
 {
 	debug("tab", "putChannels()");
 
@@ -645,21 +774,43 @@ void tab::putChannels(vector<QString> channels)
 	for (QString & qchid : channels)
 	{
 		string chid = qchid.toStdString();
+		char ci[7];
+		sprintf(ci, "%06d", i);
+		QString x = QString::fromStdString(ci);
+		QString idx = QString::fromStdString(to_string(i));
+		QStringList qitem;
+		bool mrkr = false;
 		if (dbih->db.services.count(chid))
 		{
-			char ci[7];
-			sprintf(ci, "%06d", i);
-			QString x = QString::fromStdString(ci);
-			QString idx = QString::fromStdString(to_string(i));
-			QStringList qitem = dbih->entries.services[chid];
+			qitem = dbih->entries.services[chid];
 			qitem.prepend(idx);
 			qitem.prepend(x);
-			QTreeWidgetItem* item = new QTreeWidgetItem(qitem);
-			item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
-			item->setData(1, Qt::UserRole, false); // data: marker flag
-			clist.append(item);
-			i++;
 		}
+		else
+		{
+			e2db::reference cref = dbih->userbouquets[chlist].channels[chid];
+
+			if (cref.refmrker)
+			{
+				mrkr = true;
+				qitem = dbih->entry_marker(cref);
+				idx = qitem[1];
+				qitem.prepend(x);
+			}
+			else
+			{
+				//TEST
+				qitem = QStringList({x, "", "", qchid, "", "ERROR"});
+				idx = 0;
+				error("tab", "putChannels()", "chid", chid, "\t");
+				//TEST
+			}
+		}
+		QTreeWidgetItem* item = new QTreeWidgetItem(qitem);
+		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
+		item->setData(1, Qt::UserRole, mrkr); // data: marker flag
+		clist.append(item);
+		i++;
 	}
 	list_tree->addTopLevelItems(clist);
 
@@ -667,7 +818,9 @@ void tab::putChannels(vector<QString> channels)
 	list_tree->setDragEnabled(true);
 	list_tree->setAcceptDrops(true);
 	this->_state_changed = true;
+	updateListIndex();
 	visualReindexList();
+	setCounters();
 }
 
 void tab::updateListIndex()
@@ -701,6 +854,20 @@ void tab::updateListIndex()
 	while (i != count);
 
 	this->_state_changed = false;
+}
+
+void tab::showListEditContextMenu(QPoint &pos)
+{
+	debug("tab", "showListEditContextMenu()");
+
+	QMenu* list_edit = new QMenu;
+	list_edit->addAction("Cut", [=]() { this->listItemCut(); });
+	list_edit->addAction("Copy", [=]() { this->listItemCopy(); });
+	list_edit->addAction("Paste", [=]() { this->listItemPaste(); });
+	list_edit->addSeparator();
+	list_edit->addAction("Delete", [=]() { this->listItemDelete(); });
+
+	list_edit->exec(list_tree->mapToGlobal(pos));
 }
 
 void tab::setCounters(bool channels)

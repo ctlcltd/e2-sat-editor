@@ -134,11 +134,11 @@ void gui::menuCtl()
 	mfile->addAction((osprod == "macos" ? tr("&Exit") : tr("&Quit")), [=]() { this->mroot->quit(); })->setShortcut((osprod == "windows" ? QKeySequence::Close : QKeySequence::Quit));
 
 	QMenu* medit = menu->addMenu(tr("&Edit"));
-	medit->addAction(tr("Cu&t"), todo)->setShortcut(QKeySequence::Cut);
-	medit->addAction(tr("&Copy"), todo)->setShortcut(QKeySequence::Copy);
-	medit->addAction(tr("&Paste"), todo)->setShortcut(QKeySequence::Paste);
+	medit->addAction(tr("Cu&t"), [=]() { this->tabEditAction(TAB_EDIT_ATS::Cut); })->setShortcut(QKeySequence::Cut);
+	medit->addAction(tr("&Copy"), [=]() { this->tabEditAction(TAB_EDIT_ATS::Copy); })->setShortcut(QKeySequence::Copy);
+	medit->addAction(tr("&Paste"), [=]() { this->tabEditAction(TAB_EDIT_ATS::Paste); })->setShortcut(QKeySequence::Paste);
 	medit->addSeparator();
-	medit->addAction(tr("Select &All"), todo)->setShortcut(QKeySequence::SelectAll);
+	medit->addAction(tr("Select &All"), [=]() { this->tabEditAction(TAB_EDIT_ATS::SelectAll); })->setShortcut(QKeySequence::SelectAll);
 	medit->addSeparator();
 	medit->addAction("TODO", todo);
 
@@ -421,9 +421,8 @@ void gui::save()
 {
 	debug("gui", "save()");
 
-	QWidget* curr_wid = twid->currentWidget();
-	int ttid = curr_wid->property("ttid").toInt();
-	ttabs[ttid]->saveFile(true); //TODO temporarly set to save as
+	tab* ttab = getCurrentTabHandler();
+	ttab->saveFile(true); //TODO temporarly set to save as
 }
 
 //TEST
@@ -450,6 +449,15 @@ void gui::ftpConnect()
 }
 //TEST
 
+//TODO tab actions ctl
+void gui::tabEditAction(int action)
+{
+	debug("gui", "tabEditAction()", "action", to_string(action));
+
+	tab* ttab = getCurrentTabHandler();
+	ttab->listItemAction(action);
+}
+
 void gui::settings()
 {
 	new e2se_gui_dialog::settings(mwid);
@@ -458,6 +466,13 @@ void gui::settings()
 void gui::about()
 {
 	new e2se_gui_dialog::about(mwid);
+}
+
+tab* gui::getCurrentTabHandler()
+{
+	QWidget* curr_wid = twid->currentWidget();
+	int ttid = curr_wid->property("ttid").toInt();
+	return ttabs[ttid];
 }
 
 void gui::setDefaultSets()

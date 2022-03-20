@@ -38,6 +38,14 @@ class gui
 	Q_DECLARE_TR_FUNCTIONS(gui)
 
 	public:
+		enum TAB_EDIT_ATS {
+			Cut,
+			Copy,
+			Paste,
+			Delete,
+			SelectAll
+		};
+
 		gui(int argc, char* argv[]);
 		void root();
 		void menuCtl();
@@ -57,8 +65,10 @@ class gui
 		void reset();
 		void save();
 		void ftpConnect();
+		void tabEditAction(int action);
 		void settings();
 		void about();
+		tab* getCurrentTabHandler();
 		void setDefaultSets();
 		QSettings* sets;
 		QString icopx;

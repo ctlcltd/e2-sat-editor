@@ -35,6 +35,14 @@ class gui;
 class tab
 {
 	public:
+		enum LIST_EDIT_ATS {
+			Cut,
+			Copy,
+			Paste,
+			Delete,
+			SelectAll
+		};
+
 		tab(gui* gid, QWidget* wid, string filename);
 		~tab();
 		void newFile();
@@ -50,9 +58,16 @@ class tab
 		void trickySortByColumn(int column);
 		void allowDnD();
 		void disallowDnD();
-		void putChannels(vector<QString>);
+		void listItemCut();
+		void listItemCopy(bool cut = false);
+		void listItemPaste();
+		void listItemDelete();
+		void listItemSelectAll();
+		void listItemAction(int action);
+		void putChannels(vector<QString> channels, string chlist);
 		void updateListIndex();
-		void setCounters(bool userbouquet = false);
+		void showListEditContextMenu(QPoint &pos);
+		void setCounters(bool channels = false);
 		void setTabId(int ttid);
 		void initialize();
 		void destroy();
