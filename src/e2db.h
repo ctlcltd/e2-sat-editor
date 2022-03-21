@@ -61,6 +61,12 @@ struct e2db_abstract
 			{'C', '2'},
 			{'f', '3'}
 		};
+		inline static const unordered_map<char, char> PVDR_DATA_DENUM = {
+			{'0', 'p'},
+			{'1', 'c'},
+			{'2', 'C'},
+			{'3', 'f'}
+		};
 
 		inline static const unordered_map<int, pair<int, string>> STYPES = {
 			{0, make_pair(0, "Data")},

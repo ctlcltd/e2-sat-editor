@@ -9,13 +9,18 @@
  * @license GNU GPLv3 License
  */
 
+#include <string>
+#include <vector>
+
 using namespace std;
 
 #ifndef editService_h
 #define editService_h
 #include <QApplication>
 #include <QWidget>
+#include <QDialog>
 #include <QGridLayout>
+#include <QComboBox>
 #include "e2db_gui.h"
 
 namespace e2se_gui
@@ -25,15 +30,30 @@ class editService
 	Q_DECLARE_TR_FUNCTIONS(editService)
 
 	public:
-		editService(e2db* dbih, QWidget* cwid, bool add = false);
+		editService(e2db* dbih);
+		void display(QWidget* cwid);
 		void serviceLayout();
 		void transponderLayout();
 		void paramsLayout();
+		void tunerComboChanged(int index);
+		void store();
+		void retrieve();
+		void save();
+		void setEditID(string chid);
 		QWidget* widget;
 	protected:
+		QDialog* dial;
 		QGridLayout* dtform;
+		QComboBox* dtf1tn;
+		QComboBox* dtf1tx;
+		map<string, vector<pair<int, string>>> txdata;
+		vector<QWidget*> fields;
 	private:
 		e2db* dbih;
+		bool _state_edit = false;
+		string _state_raw_C;
+		string _state_raw_data;
+		string chid;
 };
 }
 #endif /* editService_h */

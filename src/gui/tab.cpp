@@ -185,6 +185,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	bouquets_tree->connect(bouquets_tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->bouquetsItemChanged(current); });
 	list_tree->installEventFilter(list_evt);
 	list_tree->connect(list_tree, &QTreeWidget::currentItemChanged, [=]() { this->listItemChanged(); });
+	list_tree->connect(list_tree, &QTreeWidget::itemDoubleClicked, [=]() { this->editService(); });
 
 	top->addWidget(top_toolbar);
 	bottom->addWidget(bottom_toolbar);
@@ -326,7 +327,36 @@ void tab::addService()
 {
 	debug("tab", "addService()");
 
-	new e2se_gui::editService(dbih, cwid, true);
+	e2se_gui::editService* add = new e2se_gui::editService(dbih);
+	add->display(cwid);
+}
+
+void tab::editService()
+{
+	debug("tab", "editService()");
+
+	QList<QTreeWidgetItem*> selected = list_tree->selectedItems();
+	
+	if (selected.empty() || selected.count() > 1)
+		return;
+
+	QTreeWidgetItem* item = selected.first();
+	string chid = item->data(2, Qt::UserRole).toString().toStdString();
+	bool mrkr = item->data(1, Qt::UserRole).toBool();
+
+	if (! mrkr && dbih->db.services.count(chid))
+	{
+		e2se_gui::editService* add = new e2se_gui::editService(dbih);
+		add->setEditID(chid);
+		add->display(cwid);
+
+		//TODO e2db | e2db_gui
+		QStringList qitem = dbih->entries.services[chid];
+		qitem.prepend(item->text(1));
+		qitem.prepend(item->text(0));
+		for (int i = 0; i < qitem.count(); i++)
+			item->setText(i, qitem[i]);
+	}
 }
 
 bool tab::readFile(string filename)
@@ -466,6 +496,7 @@ void tab::populate()
 			char ci[7];
 			sprintf(ci, "%06d", i++);
 			bool mrkr = false;
+			QString chid = QString::fromStdString(ch.second);
 			QString x = QString::fromStdString(ci);
 			QString idx;
 			QStringList qitem;
@@ -491,7 +522,7 @@ void tab::populate()
 				else
 				{
 					//TEST
-					qitem = QStringList({x, "", "", QString::fromStdString(ch.second), "", "ERROR"});
+					qitem = QStringList({x, "", "", chid, "", "ERROR"});
 					idx = 0;
 					error("tab", "populate()", "chid", ch.second, "\t");
 					//TEST
@@ -502,6 +533,7 @@ void tab::populate()
 			item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 			item->setData(0, Qt::UserRole, idx);  // data: Index
 			item->setData(1, Qt::UserRole, mrkr); // data: marker flag
+			item->setData(2, Qt::UserRole, chid); // data: chid
 			cache[curr_chlist].append(item);
 			// cache.append(item);
 		}
@@ -845,7 +877,7 @@ void tab::updateListIndex()
 	do
 	{
 		QTreeWidgetItem* item = list_tree->topLevelItem(i);
-		QString chid = item->data(0, Qt::UserRole).toString();
+		string chid = item->data(2, Qt::UserRole).toString().toStdString();
 		bool mrkr = item->data(1, Qt::UserRole).toBool();
 		if (mrkr)
 		{
@@ -856,7 +888,7 @@ void tab::updateListIndex()
 			y++;
 			idx = y;
 		}
-		index[curr_chlist].emplace_back(pair (idx, chid.toStdString())); //C++ 17
+		index[curr_chlist].emplace_back(pair (idx, chid)); //C++ 17
 		i++;
 	}
 	while (i != count);
@@ -869,7 +901,7 @@ void tab::showListEditContextMenu(QPoint &pos)
 	debug("tab", "showListEditContextMenu()");
 
 	QMenu* list_edit = new QMenu;
-	// list_edit->addAction("Edit Service", [=]() { this->editService(); });
+	list_edit->addAction("Edit Service", [=]() { this->editService(); });
 	list_edit->addSeparator();
 	list_edit->addAction("Cut", [=]() { this->listItemCut(); });
 	list_edit->addAction("Copy", [=]() { this->listItemCopy(); });

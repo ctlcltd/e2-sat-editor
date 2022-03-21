@@ -957,10 +957,6 @@ void e2db_maker::make_lamedb(string filename)
 {
 	debug("e2db_maker", "make_lamedb()");
 
-	//TODO
-	unordered_map<char, char> PVDR_DATA_DENUM;
-	for (auto & x: e2db_maker::PVDR_DATA) PVDR_DATA_DENUM[x.second] = x.first;
-
 	// formatting
 	//
 	// [0]  comment

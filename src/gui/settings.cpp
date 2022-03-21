@@ -75,6 +75,7 @@ settings::settings(QWidget* mwid)
 	dvbox->addLayout(dhbox);
 
 	dfrm->addLayout(dvbox, 0, 0);
+	dfrm->setSizeConstraint(QGridLayout::SetFixedSize);
 	dial->setLayout(dfrm);
 	dial->exec();
 }
@@ -91,10 +92,12 @@ void settings::preferences()
 	dtfg0->setProperty("pref", "askConfirmation");
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtfg0);
 	dtform->addRow(dtfg0);
+
 	QCheckBox* dtfg1 = new QCheckBox(tr("Non-destructive edit (try to preserve origin rplists)"));
 	dtfg1->setProperty("pref", "nonDestructiveEdit");
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtfg1);
 	dtform->addRow(dtfg1);
+
 	QCheckBox* dtfg2 = new QCheckBox(tr("Visually fix for unwanted unicode characters (less performant)"));
 	dtfg2->setProperty("pref", "fixUnicodeChars");
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtfg2);
@@ -146,26 +149,30 @@ void settings::connections()
 
 	QGroupBox* dtl0 = new QGroupBox(tr("Connection"));
 	QFormLayout* dtf0 = new QFormLayout;
+
 	QLineEdit* dtf0ia = new QLineEdit("192.168.0.2");
 	dtf0ia->setProperty("pref", "ipAddress");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf0ia);
 	dtf0->addRow(tr("IP address"), dtf0ia);
+
 	QHBoxLayout* dtb0 = new QHBoxLayout;
-	QValidator* dtv0 = new QIntValidator(1, 65535);
 	dtf0->addRow(tr("FTP port"), dtb0);
+
 	QLineEdit* dtf0fp = new QLineEdit("21");
 	dtf0fp->setProperty("pref", "ftpPort");
-	dtf0fp->setValidator(dtv0);
+	dtf0fp->setValidator(new QIntValidator(1, 65535));
 	dtf0fp->setMaxLength(5);
+
 	QCheckBox* dtf0fa = new QCheckBox(tr("Use active FTP"));
 	dtf0fa->setProperty("pref", "ftpActive");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf0fp);
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf0fa);
 	dtb0->addWidget(dtf0fp);
 	dtb0->addWidget(dtf0fa);
+
 	QLineEdit* dtf0hp = new QLineEdit("80");
 	dtf0hp->setProperty("pref", "httpPort");
-	dtf0hp->setValidator(dtv0);
+	dtf0hp->setValidator(new QIntValidator(1, 65535));
 	dtf0hp->setMaxLength(5);
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf0hp);
 	dtf0->addRow(tr("HTTP port"), dtf0hp);
@@ -173,10 +180,12 @@ void settings::connections()
 	//TODO FIX left align
 	QGroupBox* dtl1 = new QGroupBox(tr("Login"));
 	QFormLayout* dtf1 = new QFormLayout;
+
 	QLineEdit* dtf1lu = new QLineEdit("root");
 	dtf1lu->setProperty("pref", "username");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf1lu);
 	dtf1->addRow(tr("Username"), dtf1lu);
+
 	QLineEdit* dtf1lp = new QLineEdit;
 	dtf1lp->setProperty("pref", "password");
 	dtf1lp->setEchoMode(QLineEdit::Password);
@@ -185,6 +194,7 @@ void settings::connections()
 
 	QGroupBox* dtl2 = new QGroupBox("Configuration");
 	QFormLayout* dtf2 = new QFormLayout;
+
 	QHBoxLayout* dtb20 = new QHBoxLayout;
 	dtf2->addRow(tr("Transponders"), dtb20);
 	QLineEdit* dtf2pt = new QLineEdit("/etc/tuxbox");
@@ -192,6 +202,7 @@ void settings::connections()
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2pt);
 	dtb20->addWidget(dtf2pt);
 	dtb20->addWidget(new QLabel("<small>(satellites.xml)</small>"));
+
 	QHBoxLayout* dtb21 = new QHBoxLayout;
 	dtf2->addRow(tr("Services"), dtb21);
 	QLineEdit* dtf2ps = new QLineEdit("/etc/enigma2");
@@ -199,6 +210,7 @@ void settings::connections()
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2ps);
 	dtb21->addWidget(dtf2ps);
 	dtb21->addWidget(new QLabel("<small>(lamedb)</small>"));
+
 	QHBoxLayout* dtb22 = new QHBoxLayout;
 	dtf2->addRow(tr("Bouquets"), dtb22);
 	QLineEdit* dtf2pb = new QLineEdit("/etc/enigma2");
@@ -209,10 +221,12 @@ void settings::connections()
 
 	QGroupBox* dtl3 = new QGroupBox(tr("Commands"));
 	QFormLayout* dtf3 = new QFormLayout;
+
 	QLineEdit* dtf3ca = new QLineEdit;
 	dtf3ca->setProperty("pref", "customWebifReloadUrl");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf3ca);
 	dtf3->addRow(tr("Custom webif reload URL address"), dtf3ca);
+
 	QLineEdit* dtf3cc = new QLineEdit;
 	dtf3cc->setProperty("pref", "customFallbackReloadCmd");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf3cc);
