@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <string>
 #include <sstream>
+#include <cstring>
 
 #include "commons.h"
 #include "ftpcom.h"

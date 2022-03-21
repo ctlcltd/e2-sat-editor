@@ -523,7 +523,7 @@ void tab::populate()
 				{
 					//TEST
 					qitem = QStringList({x, "", "", chid, "", "ERROR"});
-					idx = 0;
+					// idx = 0; //Qt5
 					error("tab", "populate()", "chid", ch.second, "\t");
 					//TEST
 				}
@@ -841,7 +841,7 @@ void tab::putChannels(vector<QString> channels, string chlist)
 			{
 				//TEST
 				qitem = QStringList({x, "", "", qchid, "", "ERROR"});
-				idx = 0;
+				// idx = 0; //Qt5
 				error("tab", "putChannels()", "chid", chid, "\t");
 				//TEST
 			}

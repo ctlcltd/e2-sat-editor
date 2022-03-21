@@ -9,6 +9,7 @@
  * @license GNU GPLv3 License
  */
 
+#include <QtGlobal>
 #include <QList>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -149,7 +150,10 @@ void editService::transponderLayout()
 	fields.emplace_back(dtf1tn);
 	dtf1tn->setMinimumWidth(180);
 	dtf1tn->setEditable(true);
+//TODO FIX
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
 	dtf1tn->connect(dtf1tn, &QComboBox::currentIndexChanged, [=](int index) { this->tunerComboChanged(index); });
+#endif
 
 	//TODO validator
 	this->dtf1tx = new QComboBox;

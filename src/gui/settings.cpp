@@ -481,7 +481,8 @@ void settings::retrieve(QTableWidget* adtbl)
 	int i = 0;
 	for (iq = keys.constBegin(); iq != keys.constEnd(); ++iq)
 	{
-		QTableWidgetItem* field = new QTableWidgetItem((*iq).toLocal8Bit().replace("/", "."));
+		QTableWidgetItem* field = new QTableWidgetItem;
+		field->setText((*iq).toLocal8Bit().replace("/", ".")); //Qt5
 		field->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 		adtbl->setItem(i, 0, field);
 		adtbl->setItem(i, 1, new QTableWidgetItem(sets->value(*iq).toString()));

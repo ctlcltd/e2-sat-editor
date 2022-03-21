@@ -15,7 +15,7 @@ cleanup () {
 
 if [[ -n $(type -t qmake6) ]]; then
 	QMAKE="qmake6"
-else [[ -n $(type -t qmake) ]]; then
+elif [[ -n $(type -t qmake) ]]; then
 	QMAKE="qmake"
 else
 	echo "qmake not found."
