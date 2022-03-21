@@ -50,6 +50,9 @@ class tab
 		bool readFile(string filename = "");
 		void saveFile(bool saveas);
 		void addChannel();
+		void addService();
+		void editService();
+		void delService();
 		void load();
 		void populate();
 		void bouquetsItemChanged(QTreeWidgetItem* current);

@@ -27,7 +27,7 @@ namespace e2se_gui
 {
 class channelBook
 {
-    public:
+	public:
 		channelBook(e2db* dbih);
 		void side();
 		void layout();

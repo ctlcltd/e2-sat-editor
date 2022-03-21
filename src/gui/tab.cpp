@@ -36,6 +36,7 @@
 #include "gui.h"
 #include "DropEventHandler.h"
 #include "todo.h"
+#include "editService.h"
 #include "channelBook.h"
 
 using namespace std;
@@ -174,7 +175,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	
 	bouquets_ats->addAction("+ New Bouquet", todo);
 	ats->list_addch = list_ats->addAction("+ Add Channel", [=]() { this->addChannel(); });
-	ats->list_newch = list_ats->addAction("+ New Service", todo);
+	ats->list_newch = list_ats->addAction("+ New Service", [=]() { this->addService(); });
 	list_ats->addWidget(list_ats_spacer);
 	list_ats->addWidget(ats->list_dnd);
 
@@ -299,7 +300,7 @@ void tab::addChannel()
 {
 	debug("tab", "addChannel()");
 
-	channelBook* cb = new channelBook(dbih);
+	e2se_gui::channelBook* cb = new e2se_gui::channelBook(dbih);
 	string curr_chlist = this->_state_curr;
 	QDialog* dial = new QDialog(cwid);
 	dial->setMinimumSize(760, 420);
@@ -319,6 +320,13 @@ void tab::addChannel()
 	layout->setContentsMargins(0, 0, 0, 0);
 	dial->setLayout(layout);
 	dial->exec();
+}
+
+void tab::addService()
+{
+	debug("tab", "addService()");
+
+	new e2se_gui::editService(dbih, cwid, true);
 }
 
 bool tab::readFile(string filename)
@@ -861,6 +869,8 @@ void tab::showListEditContextMenu(QPoint &pos)
 	debug("tab", "showListEditContextMenu()");
 
 	QMenu* list_edit = new QMenu;
+	// list_edit->addAction("Edit Service", [=]() { this->editService(); });
+	list_edit->addSeparator();
 	list_edit->addAction("Cut", [=]() { this->listItemCut(); });
 	list_edit->addAction("Copy", [=]() { this->listItemCopy(); });
 	list_edit->addAction("Paste", [=]() { this->listItemPaste(); });

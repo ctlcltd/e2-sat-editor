@@ -4,6 +4,7 @@ vendor/curl
 workflow
 workspace/.pythonenv
 src/Debug
+src/Release
 Makefile
 moc_predefs.h
 moc_*.cpp
