@@ -74,6 +74,8 @@ class tab
 		void setTabId(int ttid);
 		void initialize();
 		void destroy();
+		void profileComboChanged(int index);
+		void ftpConnect();
 		void loadSeeds();
 		QWidget* widget;
 	protected:

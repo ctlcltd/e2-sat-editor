@@ -22,6 +22,7 @@ e2db::e2db()
 {
 	e2se::debug("e2db");
 
+	this->sets = new QSettings;
 	options();
 }
 
@@ -86,8 +87,8 @@ QStringList e2db::entry_service(service ch)
 {
 	// macos: unwanted chars [qt.qpa.fonts] Menlo notice
 	QString chname;
-	if (1)
-		chname = QString::fromStdString(ch.chname).remove(QRegularExpression("[^\\p{L}\\p{N}\\p{Pc}\\p{M}\\p{P}\\s]+"));
+	if (sets->value("preference/fixUnicodeChars").toBool())
+		chname = QString::fromStdString(ch.chname).remove(QRegularExpression("[^\\p{L}\\p{N}\\p{Sm}\\p{M}\\p{P}\\s]+"));
 	else
 		chname = QString::fromStdString(ch.chname);
 	QString chid = QString::fromStdString(ch.chid);

@@ -11,7 +11,6 @@
 
 #include <vector>
 #include <map>
-#include <unordered_map>
 
 using namespace std;
 
@@ -46,7 +45,7 @@ class settings
 		void preferences();
 		void connections();
 		void advanced();
-		QListWidgetItem* addProfile(int id = 0);
+		QListWidgetItem* addProfile(int i = -1);
 		void delProfile();
 		void renameProfile(bool enabled = true);
 		void profileNameChanged(QString text);
@@ -66,10 +65,12 @@ class settings
 		QListWidget* rplist;
 		QWidget* adntc;
 		QTableWidget* adtbl;
-		map<int, unordered_map<QString, QVariant>> tmpps;
+		map<int, map<QString, QVariant>> tmpps; //Qt5
 		map<int, vector<QWidget*>> prefs;
 	private:
 		int _state_prev;
+		bool _state_retr;
+		bool _state_delt;
 };
 }
 #endif /* settings_h */

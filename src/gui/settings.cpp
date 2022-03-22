@@ -87,6 +87,9 @@ void settings::preferences()
 	QHBoxLayout* dtcnt = new QHBoxLayout(dtpage);
 	
 	QFormLayout* dtform = new QFormLayout;
+	dtform->setSpacing(20);
+	dtform->setFormAlignment(Qt::AlignLeft | Qt::AlignTop);
+	dtform->addItem(new QSpacerItem(0, 0));
 	
 	QCheckBox* dtfg0 = new QCheckBox(tr("Suppress ask for confirmation messages (shown before deleting)"));
 	dtfg0->setProperty("pref", "askConfirmation");
@@ -103,7 +106,8 @@ void settings::preferences()
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtfg2);
 	dtform->addRow(dtfg2);
 
-	dtcnt->setAlignment(Qt::AlignTop | Qt::AlignCenter);
+	dtform->addItem(new QSpacerItem(0, 0));
+	dtcnt->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 	dtcnt->addLayout(dtform, 0);
 	dtpage->setLayout(dtcnt);
 
@@ -149,10 +153,13 @@ void settings::connections()
 
 	QGroupBox* dtl0 = new QGroupBox(tr("Connection"));
 	QFormLayout* dtf0 = new QFormLayout;
+	dtf0->setFormAlignment(Qt::AlignLeft);
+	dtf0->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
 	QLineEdit* dtf0ia = new QLineEdit("192.168.0.2");
 	dtf0ia->setProperty("pref", "ipAddress");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf0ia);
+	dtf0ia->setMinimumWidth(140);
 	dtf0->addRow(tr("IP address"), dtf0ia);
 
 	QHBoxLayout* dtb0 = new QHBoxLayout;
@@ -162,6 +169,7 @@ void settings::connections()
 	dtf0fp->setProperty("pref", "ftpPort");
 	dtf0fp->setValidator(new QIntValidator(1, 65535));
 	dtf0fp->setMaxLength(5);
+	dtf0fp->setMaximumWidth(50);
 
 	QCheckBox* dtf0fa = new QCheckBox(tr("Use active FTP"));
 	dtf0fa->setProperty("pref", "ftpActive");
@@ -174,26 +182,31 @@ void settings::connections()
 	dtf0hp->setProperty("pref", "httpPort");
 	dtf0hp->setValidator(new QIntValidator(1, 65535));
 	dtf0hp->setMaxLength(5);
+	dtf0hp->setMaximumWidth(50);
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf0hp);
 	dtf0->addRow(tr("HTTP port"), dtf0hp);
 
-	//TODO FIX left align
 	QGroupBox* dtl1 = new QGroupBox(tr("Login"));
 	QFormLayout* dtf1 = new QFormLayout;
+	dtf1->setFormAlignment(Qt::AlignLeft);
+	dtf1->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
 	QLineEdit* dtf1lu = new QLineEdit("root");
 	dtf1lu->setProperty("pref", "username");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf1lu);
+	dtf1lu->setMinimumWidth(120);
 	dtf1->addRow(tr("Username"), dtf1lu);
 
 	QLineEdit* dtf1lp = new QLineEdit;
 	dtf1lp->setProperty("pref", "password");
 	dtf1lp->setEchoMode(QLineEdit::Password);
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf1lp);
+	dtf1lp->setMinimumWidth(120);
 	dtf1->addRow(tr("Password"), dtf1lp); // show/hide
 
 	QGroupBox* dtl2 = new QGroupBox("Configuration");
 	QFormLayout* dtf2 = new QFormLayout;
+	dtf2->setFormAlignment(Qt::AlignLeft);
 
 	QHBoxLayout* dtb20 = new QHBoxLayout;
 	dtf2->addRow(tr("Transponders"), dtb20);
@@ -221,6 +234,8 @@ void settings::connections()
 
 	QGroupBox* dtl3 = new QGroupBox(tr("Commands"));
 	QFormLayout* dtf3 = new QFormLayout;
+	dtf3->setFormAlignment(Qt::AlignLeft);
+	dtf3->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
 
 	QLineEdit* dtf3ca = new QLineEdit;
 	dtf3ca->setProperty("pref", "customWebifReloadUrl");
@@ -261,12 +276,21 @@ void settings::advanced()
 
 	this->adntc = new QWidget;
 	QGridLayout* dtntcg = new QGridLayout;
-	QLabel* dtntcl = new QLabel(tr("<b>Please be carefull!</b><br>Modifing these settings could break the program."));
+	QHBoxLayout* dtnthb = new QHBoxLayout;
+	QWidget* dtntsp = new QWidget;
+	dtntsp->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	QLabel* dtntcl = new QLabel(tr("<h2>Please be carefull!</h2><br><p>Modifing these settings could break the program.</p>"));
+	dtntcl->setAlignment(Qt::AlignCenter);
 	QPushButton* dtntcb = new QPushButton;
 	dtntcb->setText(tr("OK, I understood this."));
 	dtntcb->connect(dtntcb, &QPushButton::pressed, [=]() { adntc->setHidden(true); adtbl->setVisible(true); retrieve(adtbl); });
-	dtntcg->addWidget(dtntcl, 0, 0);
-	dtntcg->addWidget(dtntcb, 1, 0);
+	dtnthb->addWidget(dtntsp);
+	dtnthb->addWidget(dtntcb);
+	dtnthb->addWidget(dtntsp);
+	dtntcg->addItem(new QSpacerItem(0, 100), 0, 0);
+	dtntcg->addWidget(dtntcl, 1, 0);
+	dtntcg->addLayout(dtnthb, 2, 0);
+	dtntcg->addItem(new QSpacerItem(0, 100), 3, 0);
 	adntc->setLayout(dtntcg);
 
 	dtcnt->addWidget(adntc, 0);
@@ -276,25 +300,29 @@ void settings::advanced()
 	dtwid->addTab(dtpage, tr("Advanced"));
 }
 
-QListWidgetItem* settings::addProfile(int id)
+QListWidgetItem* settings::addProfile(int i)
 {
-	if (! id)
+	if (i == -1)
 	{
-		id = sets->beginReadArray("profile");
-		id++;
-		sets->endArray();
+		i = sets->value("profile/size").toInt();
+		// i++;
+		tmpps[i]["profileName"] = tr("Profile");
 	}
-	debug("settings", "addProfile()", "id", to_string(id));
+	debug("settings", "addProfile()", "i", to_string(i));
 
 	QListWidgetItem* item = new QListWidgetItem(tr("Profile"), rplist);
-	item->setText(item->text() + " " + QString::fromStdString(to_string(id)));
-	item->setData(Qt::UserRole, id);
-	renameProfile(false);
-	item->setSelected(true);
+	item->setText(item->text() + ' ' + QString::fromStdString(to_string(i)));
+	item->setData(Qt::UserRole, i);
 	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
-	rplist->setCurrentItem(item);
-	if (rplist->count() != 1)
-		renameProfile();
+	if (! this->_state_retr)
+	{
+		renameProfile(false);
+		item->setSelected(true);
+		rplist->setCurrentItem(item);
+	
+		if (rplist->count() != 1)
+			renameProfile();
+	}
 	return item;
 }
 
@@ -303,8 +331,9 @@ void settings::delProfile()
 	debug("settings", "delProfile()");
 
 	QListWidgetItem* curr = rplist->currentItem();
-	int id = curr->data(Qt::UserRole).toInt();
-	tmpps.erase(id);
+	int i = curr->data(Qt::UserRole).toInt();
+	tmpps[i].clear();
+	this->_state_delt = true;
 
 	renameProfile(false);
 	if (rplist->count() != 1)
@@ -331,27 +360,28 @@ void settings::profileNameChanged(QString text)
 	debug("settings", "profileNameChanged()");
 
 	QListWidgetItem* curr = rplist->currentItem();
-	int id = curr->data(Qt::UserRole).toInt();
-	tmpps[id]["profileName"] = text;
+	int i = curr->data(Qt::UserRole).toInt();
+	tmpps[i]["profileName"] = text;
 }
 
 void settings::currentProfileChanged(QListWidgetItem* current, QListWidgetItem* previous)
 {
 	debug("settings", "currentProfileChanged()");
 
-	if (previous != nullptr)
+	if (previous != nullptr && ! this->_state_delt)
 	{
-		int id = previous->data(Qt::UserRole).toInt();
+		int i = previous->data(Qt::UserRole).toInt();
 		for (auto & item : prefs[PREF_SECTIONS::Connections])
 		{
 			QString pref = item->property("pref").toString();
 			if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
-				tmpps[id][pref] = field->text();
+				tmpps[i][pref] = field->text();
 			else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
-				tmpps[id][pref] = field->isChecked();
+				tmpps[i][pref] = field->isChecked();
 		}
-		this->retrieve(current);
 	}
+	this->retrieve(current);
+	this->_state_delt = false;
 }
 
 void settings::tabChanged(int index)
@@ -380,15 +410,32 @@ void settings::store()
 {
 	debug("settings", "store()");
 
+	int size = sets->value("profile/size").toInt();
 	sets->beginWriteArray("profile");
-	for (auto & item : tmpps)
+	for (unsigned int i = 0; i < tmpps.size(); i++)
 	{
-		sets->setArrayIndex(item.first);
-		for (auto & field : item.second)
-			sets->setValue(field.first, field.second);
+		sets->setArrayIndex(i);
+		if (tmpps[i].size())
+		{
+			if (! sets->contains("profileName"))
+				size++;
+			for (auto & field : tmpps[i])
+				sets->setValue(field.first, field.second);
+		}
+		else
+		{
+			sets->remove("profileName");
+			for (auto & item : prefs[PREF_SECTIONS::Connections])
+			{
+				QString pref = item->property("pref").toString();
+				sets->remove(pref);
+			}
+		}
 	}
 	sets->endArray();
+	sets->setValue("profile/size", size);
 
+	sets->beginGroup("preference");
 	for (auto & item : prefs[PREF_SECTIONS::Preferences])
 	{
 		QString pref = item->property("pref").toString();
@@ -397,11 +444,12 @@ void settings::store()
 		else if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
 			sets->setValue(pref, field->text());
 	}
+	sets->endGroup();
 }
 
 void settings::store(QTableWidget* adtbl)
 {
-	debug("settings", "store()", "", to_string(PREF_SECTIONS::Advanced));
+	debug("settings", "store()", "", "advanced");
 
 	for (int i = 0; i < adtbl->rowCount(); i++)
 	{
@@ -418,34 +466,36 @@ void settings::retrieve()
 {
 	debug("settings", "retrieve()");
 
+	this->_state_retr = true;
 	int selected = sets->value("profile/selected").toInt();
 	int size = sets->beginReadArray("profile");
 	for (int i = 0; i < size; i++)
 	{
 		sets->setArrayIndex(i);
+		if (! sets->contains("profileName"))
+			continue;
+
+		tmpps[i]["profileName"] = sets->value("profileName");
 		QListWidgetItem* item = addProfile(i);
 		item->setText(sets->value("profileName").toString());
-		tmpps[i]["profileName"] = sets->value("profileName");
 
 		for (auto & item : prefs[PREF_SECTIONS::Connections])
 		{
 			QString pref = item->property("pref").toString();
-			if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
+			tmpps[i][pref] = sets->value(pref);
+			if (i == selected)
 			{
-				tmpps[i][pref] = field->text();
-				if (i == selected)
+				if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
 					field->setText(sets->value(pref).toString());
-			}
-			else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
-			{
-				tmpps[i][pref] = field->isChecked();
-				if (i == selected)
+				else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
 					field->setChecked(sets->value(pref).toBool());
 			}
 		}
 	}
 	sets->endArray();
+	this->_state_retr = false;
 
+	sets->beginGroup("preference");
 	for (auto & item : prefs[PREF_SECTIONS::Preferences])
 	{
 		QString pref = item->property("pref").toString();
@@ -454,26 +504,27 @@ void settings::retrieve()
 		else if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
 			field->setText(sets->value(pref).toString());
 	}
+	sets->endGroup();
 }
 
 void settings::retrieve(QListWidgetItem* item)
 {
-	debug("settings", "retrieve()", "", to_string(PREF_SECTIONS::Connections));
+	debug("settings", "retrieve()", "", "item");
 
-	int id = item->data(Qt::UserRole).toInt();
+	int i = item->data(Qt::UserRole).toInt();
 	for (auto & item : prefs[PREF_SECTIONS::Connections])
 	{
 		QString pref = item->property("pref").toString();
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
-			field->setText(tmpps[id][pref].toString());
+			field->setText(tmpps[i][pref].toString());
 		else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
-			field->setChecked(tmpps[id][pref].toBool());
+			field->setChecked(tmpps[i][pref].toBool());
 	}
 }
 
 void settings::retrieve(QTableWidget* adtbl)
 {
-	debug("settings", "retrieve()", "", to_string(PREF_SECTIONS::Advanced));
+	debug("settings", "retrieve()", "", "advanced");
 
 	QStringList keys = sets->allKeys().filter(QRegularExpression("^(application|preference|profile)/"));
 	QStringList::const_iterator iq;

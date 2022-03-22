@@ -25,7 +25,6 @@
 #include "settings.h"
 #include "about.h"
 #include "todo.h"
-#include "../ftpcom.h"
 
 using namespace std;
 using namespace e2se;
@@ -50,7 +49,7 @@ gui::gui(int argc, char* argv[])
 
 	this->mroot = new QApplication(argc, argv);
 	mroot->setOrganizationName("e2 SAT Editor Team");
-	mroot->setOrganizationDomain("org.e2se");
+	mroot->setOrganizationDomain("e2se.org");
 	mroot->setApplicationName("e2-sat-editor");
 	mroot->setApplicationVersion("0.1");
 	mroot->setStyle(new guiProxyStyle);
@@ -139,8 +138,6 @@ void gui::menuCtl()
 	medit->addAction(tr("&Paste"), [=]() { this->tabEditAction(TAB_EDIT_ATS::Paste); })->setShortcut(QKeySequence::Paste);
 	medit->addSeparator();
 	medit->addAction(tr("Select &All"), [=]() { this->tabEditAction(TAB_EDIT_ATS::SelectAll); })->setShortcut(QKeySequence::SelectAll);
-	medit->addSeparator();
-	medit->addAction("TODO", todo);
 
 	QMenu* mwind = menu->addMenu(tr("&Window"));
 	mwind->addAction("&Minimize", [=]() { this->mwid->showMinimized(); })->setShortcut(Qt::CTRL | Qt::Key_M);
@@ -149,7 +146,7 @@ void gui::menuCtl()
 	mwtabs->setExclusive(true);
 
 	QMenu* mhelp = menu->addMenu(tr("&Help"));
-	mhelp->addAction("TODO", todo);
+	mhelp->addAction("TODO", todo); //TODO FIX macos QAction::NoRole ignored
 	mhelp->addAction(tr("&About"), [=]() { this->about(); })->setMenuRole(QAction::NoRole);
 
 	this->menu = menu;
@@ -270,6 +267,7 @@ void gui::closeTab(int index)
 	if (twid->count() == 0) newTab();
 }
 
+//TODO FIX SEGFAULT
 void gui::closeAllTabs()
 {
 	debug("gui", "closeAllTabs()");
@@ -285,6 +283,7 @@ void gui::closeAllTabs()
 	{
 		ttabs[i]->destroy();
 		ttabs[i] = nullptr;
+		//TODO FIX not deleted
 		delete ttabs[i];
 	}
 
@@ -425,30 +424,6 @@ void gui::save()
 	ttab->saveFile(true); //TODO temporarly set to save as
 }
 
-//TEST
-void gui::ftpConnect()
-{
-	using e2se_ftpcom::ftpcom;
-
-	debug("gui", "ftpConnect()");
-
-	ftpcom::ftp_params params;
-	params.host = "127.0.0.1";
-	params.port = 2121;
-	params.user = "root";
-	params.pass = "test";
-	params.tpath = "/enigma_db/";
-	params.spath = "/enigma_db/";
-	params.bpath = "/enigma_db/";
-
-	ftpcom* ftp = new ftpcom(params);
-	ftp->connect();
-	ftp->listDir(ftpcom::path_param::services);
-	ftp->uploadData(ftpcom::path_param::services, "testfile", "test\ntest\n\n");
-	ftp->disconnect();
-}
-//TEST
-
 //TODO tab actions ctl
 void gui::tabEditAction(int action)
 {
@@ -490,15 +465,15 @@ void gui::setDefaultSets()
 	sets->beginWriteArray("profile");
 	sets->setArrayIndex(0);
 	sets->setValue("profileName", "Default");
-	sets->setValue("ipAddress", "192.168.0.2");
-	sets->setValue("ftpPort", 21);
+	sets->setValue("ipAddress", "127.0.0.1");
+	sets->setValue("ftpPort", 2121);
 	sets->setValue("ftpActive", false);
 	sets->setValue("httpPort", 80);
 	sets->setValue("username", "root");
-	sets->setValue("password", "");
-	sets->setValue("pathTransponders", "/etc/tuxbox");
-	sets->setValue("pathServices", "/etc/enigma2");
-	sets->setValue("pathBouquets", "/etc/enigma2");
+	sets->setValue("password", "test");
+	sets->setValue("pathTransponders", "/enigma_db");
+	sets->setValue("pathServices", "/enigma_db");
+	sets->setValue("pathBouquets", "/enigma_db");
 	sets->setValue("customWebifReloadUrl", "");
 	sets->setValue("customFallbackReloadCmd", "");
 	sets->endArray();

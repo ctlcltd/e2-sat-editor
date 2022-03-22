@@ -50,7 +50,7 @@ channelBook::channelBook(e2db* dbih)
 	widget->setLayout(afrm);
 }
 
-//TODO dragable application state
+//TODO draggable application state
 void channelBook::side()
 {
 	debug("channelBook", "side()");

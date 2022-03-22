@@ -14,6 +14,7 @@
 #include <QString>
 #include <QList>
 #include <QRegularExpression>
+#include <QSettings>
 
 #include "../commons.h"
 #include "../e2db.h"
@@ -37,6 +38,7 @@ class e2db : public ::e2db::e2db
 		QStringList entry_transponder(transponder tx);
 		QStringList entry_service(service ch);
 		QStringList entry_marker(reference cref);
+		QSettings* sets;
 };
 }
 #endif /* e2db_gui_h */

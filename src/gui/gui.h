@@ -64,7 +64,6 @@ class gui
 		void loaded(int counters[5]);
 		void reset();
 		void save();
-		void ftpConnect();
 		void tabEditAction(int action);
 		void settings();
 		void about();

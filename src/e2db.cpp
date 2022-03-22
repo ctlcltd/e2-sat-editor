@@ -40,7 +40,7 @@ void e2db_abstract::error(string ns, string cmsg, string optk, string optv, stri
 	cout << endl;
 }
 
-string e2db_abstract::lowCase(string str)
+string e2db_abstract::loCase(string str)
 {
 	transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return tolower(c); });
 	return str;
@@ -345,8 +345,8 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 			tx.inv = inv;
 			tx.oflgs = string (oflgs);
 		break;
+		//TODO
 		case 'c': // DVB-C
-			//TODO
 			sscanf(data.c_str(), "%8d:%8d:%1d:%1d:%1d%s", &freq, &sr, &inv, &cabmod, &ifec, oflgs);
 
 			tx.freq = int (freq / 1e3);
@@ -1021,8 +1021,8 @@ void e2db_maker::make_lamedb(string filename)
 				if (! tx.oflgs.empty())
 					ss << tx.oflgs;
 			break;
+			//TODO
 			case 'c': // DVB-C
-				//TODO
 				ss << int (tx.freq * 1e3);
 				ss << ':' << int (tx.sr * 1e3);
 				ss << ':' << tx.inv;
@@ -1113,7 +1113,7 @@ void e2db_maker::make_bouquet(string bname)
 	e2db_out[bname] = ss.str();
 }
 
-//TODO upCase or lowCase
+//TODO upCase or loCase
 void e2db_maker::make_userbouquet(string bname)
 {
 	debug("e2db_maker", "make_userbouquet()", "bname", bname);

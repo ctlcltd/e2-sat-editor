@@ -13,6 +13,7 @@
 #include <filesystem>
 #include <cstdio>
 
+#include <QtGlobal>
 #include <QGuiApplication>
 #include <QTimer>
 #include <QList>
@@ -38,6 +39,7 @@
 #include "todo.h"
 #include "editService.h"
 #include "channelBook.h"
+#include "../ftpcom.h"
 
 using namespace std;
 using namespace e2se;
@@ -60,6 +62,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	QGridLayout* container = new QGridLayout;
 	QHBoxLayout* bottom = new QHBoxLayout;
 
+	//TODO bouquets_box and scrollbar in GTK+3
 	QSplitter* splitterc = new QSplitter;
 
 	QVBoxLayout* bouquets_box = new QVBoxLayout;
@@ -121,7 +124,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	list_tree->setColumnWidth(col++, 75);		// System
 
 	this->lheaderv = list_tree->header();
-	lheaderv->connect(lheaderv, &::QHeaderView::sectionClicked, [=](int column) { this->trickySortByColumn(column); });
+	lheaderv->connect(lheaderv, &QHeaderView::sectionClicked, [=](int column) { this->trickySortByColumn(column); });
 
 	list_tree->setContextMenuPolicy(Qt::CustomContextMenu);
 	list_tree->connect(list_tree, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { this->showListEditContextMenu(pos); });
@@ -135,13 +138,22 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	QWidget* top_toolbar_spacer = new QWidget;
 	top_toolbar_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	QComboBox* profile_combo = new QComboBox;
+	int profile_sel = gid->sets->value("profile/selected").toInt();
 	int size = gid->sets->beginReadArray("profile");
 	for (int i = 0; i < size; i++)
 	{
 		gid->sets->setArrayIndex(i);
-		profile_combo->addItem(gid->sets->value("profileName").toString(), i);
+		if (! gid->sets->contains("profileName"))
+			continue;
+		profile_combo->addItem(gid->sets->value("profileName").toString(), i + 1); //TODO
 	}
 	gid->sets->endArray();
+	profile_combo->setCurrentIndex(profile_sel);
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+	profile_combo->connect(profile_combo, &QComboBox::currentIndexChanged, [=](int index) { this->profileComboChanged(index); });
+#else
+	profile_combo->connect(profile_combo, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) { this->profileComboChanged(index); });
+#endif
 
 	top_toolbar->addAction(QIcon(gid->icopx + "file-open.png"), "Open", [=]() { this->openFile(); });
 	top_toolbar->addAction(QIcon(gid->icopx + "save.png"), "Save", [=]() { this->saveFile(false); });
@@ -152,7 +164,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	top_toolbar->addAction(QIcon(gid->icopx + "settings.png"), "Settings", [=]() { gid->settings(); });
 	top_toolbar->addWidget(top_toolbar_spacer);
 	top_toolbar->addWidget(profile_combo);
-	top_toolbar->addAction("Connect", [=]() { gid->ftpConnect(); });
+	top_toolbar->addAction("Connect", [=]() { this->ftpConnect(); });
 
 	if (DEBUG_TOOLBAR)
 	{
@@ -178,6 +190,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	ats->list_newch = list_ats->addAction("+ New Service", [=]() { this->addService(); });
 	list_ats->addWidget(list_ats_spacer);
 	list_ats->addWidget(ats->list_dnd);
+	ats->list_addch->setDisabled(true);
 
 	DropEventHandler* bouquets_evt = new DropEventHandler;
 	this->list_evt = new TreeEventObserver;
@@ -306,7 +319,8 @@ void tab::addChannel()
 	QDialog* dial = new QDialog(cwid);
 	dial->setMinimumSize(760, 420);
 	dial->setWindowTitle("Add Channel");
-	dial->connect(dial, &QDialog::finished, [=]() { delete dial; delete cb; });
+	//TODO FIX SEGFAULT
+	// dial->connect(dial, &QDialog::finished, [=]() { delete dial; delete cb; });
 
 	QGridLayout* layout = new QGridLayout;
 	QToolBar* bottom_toolbar = new QToolBar;
@@ -351,11 +365,11 @@ void tab::editService()
 		add->display(cwid);
 
 		//TODO e2db | e2db_gui
-		QStringList qitem = dbih->entries.services[chid];
-		qitem.prepend(item->text(1));
-		qitem.prepend(item->text(0));
-		for (int i = 0; i < qitem.count(); i++)
-			item->setText(i, qitem[i]);
+		QStringList entry = dbih->entries.services[chid];
+		entry.prepend(item->text(1));
+		entry.prepend(item->text(0));
+		for (int i = 0; i < entry.count(); i++)
+			item->setText(i, entry[i]);
 	}
 }
 
@@ -484,8 +498,6 @@ void tab::populate()
 		cache[prev_chlist].swap(cachep);
 	}
 
-	//TODO [API] cannot add handler to n from ns - dropping
-
 	int i = 0;
 
 	if (cache[curr_chlist].isEmpty())
@@ -499,14 +511,14 @@ void tab::populate()
 			QString chid = QString::fromStdString(ch.second);
 			QString x = QString::fromStdString(ci);
 			QString idx;
-			QStringList qitem;
+			QStringList entry;
 
 			if (dbih->db.services.count(ch.second))
 			{
-				qitem = dbih->entries.services[ch.second];
+				entry = dbih->entries.services[ch.second];
 				idx = QString::fromStdString(to_string(ch.first));
-				qitem.prepend(idx);
-				qitem.prepend(x);
+				entry.prepend(idx);
+				entry.prepend(x);
 			}
 			else
 			{
@@ -515,21 +527,21 @@ void tab::populate()
 				if (cref.refmrker)
 				{
 					mrkr = true;
-					qitem = dbih->entry_marker(cref);
-					idx = qitem[1];
-					qitem.prepend(x);
+					entry = dbih->entry_marker(cref);
+					idx = entry[1];
+					entry.prepend(x);
 				}
 				else
 				{
 					//TEST
-					qitem = QStringList({x, "", "", chid, "", "ERROR"});
+					entry = QStringList({x, "", "", chid, "", "ERROR"});
 					// idx = 0; //Qt5
 					error("tab", "populate()", "chid", ch.second, "\t");
 					//TEST
 				}
 			}
 
-			QTreeWidgetItem* item = new QTreeWidgetItem(qitem);
+			QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 			item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 			item->setData(0, Qt::UserRole, idx);  // data: Index
 			item->setData(1, Qt::UserRole, mrkr); // data: marker flag
@@ -818,13 +830,13 @@ void tab::putChannels(vector<QString> channels, string chlist)
 		sprintf(ci, "%06d", i);
 		QString x = QString::fromStdString(ci);
 		QString idx = QString::fromStdString(to_string(i));
-		QStringList qitem;
+		QStringList entry;
 		bool mrkr = false;
 		if (dbih->db.services.count(chid))
 		{
-			qitem = dbih->entries.services[chid];
-			qitem.prepend(idx);
-			qitem.prepend(x);
+			entry = dbih->entries.services[chid];
+			entry.prepend(idx);
+			entry.prepend(x);
 		}
 		else
 		{
@@ -833,20 +845,20 @@ void tab::putChannels(vector<QString> channels, string chlist)
 			if (cref.refmrker)
 			{
 				mrkr = true;
-				qitem = dbih->entry_marker(cref);
-				idx = qitem[1];
-				qitem.prepend(x);
+				entry = dbih->entry_marker(cref);
+				idx = entry[1];
+				entry.prepend(x);
 			}
 			else
 			{
 				//TEST
-				qitem = QStringList({x, "", "", qchid, "", "ERROR"});
+				entry = QStringList({x, "", "", qchid, "", "ERROR"});
 				// idx = 0; //Qt5
 				error("tab", "putChannels()", "chid", chid, "\t");
 				//TEST
 			}
 		}
-		QTreeWidgetItem* item = new QTreeWidgetItem(qitem);
+		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 		item->setData(1, Qt::UserRole, mrkr); // data: marker flag
 		clist.append(item);
@@ -985,6 +997,41 @@ void tab::destroy()
 
 	delete this;
 }
+
+void tab::profileComboChanged(int index)
+{
+	debug("tab", "profileComboChanged()", "index", to_string(index));
+
+	gid->sets->setValue("profile/selected", index);
+}
+
+//TEST
+void tab::ftpConnect()
+{
+	using e2se_ftpcom::ftpcom;
+
+	debug("tab", "ftpConnect()");
+
+	int profile_sel = gid->sets->value("profile/selected").toInt();
+	gid->sets->beginReadArray("profile");
+	gid->sets->setArrayIndex(profile_sel);
+	ftpcom::ftp_params params;
+	params.host = gid->sets->value("ipAddress").toString().toStdString();
+	params.port = gid->sets->value("ftpPort").toInt();
+	params.user = gid->sets->value("username").toString().toStdString();
+	params.pass = gid->sets->value("password").toString().toStdString();
+	params.tpath = gid->sets->value("pathTransponders").toString().toStdString();
+	params.spath = gid->sets->value("pathServices").toString().toStdString();
+	params.bpath = gid->sets->value("pathBouquets").toString().toStdString();
+	gid->sets->endArray();
+
+	ftpcom* ftp = new ftpcom(params);
+	ftp->connect();
+	ftp->listDir(ftpcom::path_param::services);
+	ftp->uploadData(ftpcom::path_param::services, "testfile", "test\ntest\n\n");
+	ftp->disconnect();
+}
+//TEST
 
 //TEST
 void tab::loadSeeds()

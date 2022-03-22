@@ -204,7 +204,7 @@ struct e2db_abstract
 		void options();
 		void debug(string ns, string cmsg = "", string optk = "", string optv = "", string indt = " ");
 		void error(string ns, string cmsg = "", string optk = "", string optv = "", string indt = " ");
-		static string lowCase(string str);
+		static string loCase(string str);
 		static string upCase(string str);
 		inline static int LAMEDB_VER = 0;
 };

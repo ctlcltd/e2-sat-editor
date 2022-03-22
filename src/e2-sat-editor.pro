@@ -9,6 +9,10 @@ INCLUDEPATH += ../vendor/curl/include
 LIBS += -L../vendor/curl/lib -lcurl
 RESOURCES = ../res/resources.qrc
 QMAKE_CXXFLAGS += -std=c++17
-TARGET = e2" "SAT" "Editor
+macx {
+	TARGET = e2" "SAT" "Editor
+} else {
+	TARGET = e2-sat-editor
+}
 ICON = ../dist/macos/e2-sat-editor.icns
 RC_ICONS = ../dist/windows/e2-sat-editor.ico
