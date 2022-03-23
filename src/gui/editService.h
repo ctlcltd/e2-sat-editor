@@ -40,6 +40,7 @@ class editService
 		void retrieve();
 		void save();
 		void setEditID(string chid);
+		string getEditID();
 		QWidget* widget;
 	protected:
 		QDialog* dial;

@@ -79,7 +79,6 @@ class tab
 		void loadSeeds();
 		QWidget* widget;
 	protected:
-		unordered_map<string, vector<pair<int, string>>> index;
 		unordered_map<string, QList<QTreeWidgetItem*>> cache;
 	private:
 		struct actions {

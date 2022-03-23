@@ -273,6 +273,18 @@ class e2db : public e2db_parser, public e2db_maker
 	public:
 		e2db();
 		void merge();
+		void add_transponder(transponder& tx);
+		void edit_transponder(string txid, transponder& tx);
+		void remove_transponder(string txid);
+		void add_service(service& ch);
+		void edit_service(string chid, service& ch);
+		void remove_service(string chid);
+		void add_bouquet();
+		void edit_bouquet();
+		void remove_bouquet();
+		void add_userbouquet();
+		void edit_userbouquet();
+		void remove_userbouquet();
 		map<string, vector<pair<int, string>>> get_channels_index();
 		map<string, vector<pair<int, string>>> get_transponders_index();
 		map<string, vector<pair<int, string>>> get_services_index();

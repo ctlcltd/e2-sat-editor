@@ -276,10 +276,7 @@ void tab::saveFile(bool saveas)
 
 	if (overwrite)
 	{
-		//TEST
 		this->updateListIndex();
-		dbih->set_index(index);
-		//TEST
 		filename = this->filename;
 		dial.setText("Files will be overwritten.");
 		dial.exec();
@@ -356,20 +353,28 @@ void tab::editService()
 
 	QTreeWidgetItem* item = selected.first();
 	string chid = item->data(2, Qt::UserRole).toString().toStdString();
+	string nw_chid;
 	bool mrkr = item->data(1, Qt::UserRole).toBool();
+
+	debug("tab", "editService()", "chid", chid);
 
 	if (! mrkr && dbih->db.services.count(chid))
 	{
 		e2se_gui::editService* add = new e2se_gui::editService(dbih);
 		add->setEditID(chid);
 		add->display(cwid);
+		nw_chid = add->getEditID(); //TODO returned after dial.exec()
 
-		//TODO e2db | e2db_gui
-		QStringList entry = dbih->entries.services[chid];
+		debug("tab", "editService()", "nw_chid", nw_chid);
+
+		QStringList entry = dbih->entries.services[nw_chid];
 		entry.prepend(item->text(1));
 		entry.prepend(item->text(0));
 		for (int i = 0; i < entry.count(); i++)
 			item->setText(i, entry[i]);
+		item->setData(2, Qt::UserRole, QString::fromStdString(nw_chid)); // data: chid
+
+		dbih->updateUserbouquetIndexes(chid, nw_chid);
 	}
 }
 
@@ -395,7 +400,6 @@ bool tab::readFile(string filename)
 
 	this->_state_nwwr = false;
 	this->filename = filename;
-	this->index = dbih->index;
 
 	load();
 
@@ -406,10 +410,10 @@ void tab::load()
 {
 	debug("tab", "load()");
 
-	sort(index["bss"].begin(), index["bss"].end());
+	sort(dbih->gindex["bss"].begin(), dbih->gindex["bss"].end());
 	unordered_map<string, QTreeWidgetItem*> bgroups;
 
-	for (auto & bsi : index["bss"])
+	for (auto & bsi : dbih->gindex["bss"])
 	{
 		debug("tab", "load()", "bouquet", bsi.second);
 		e2db::bouquet gboq = dbih->bouquets[bsi.second];
@@ -428,7 +432,7 @@ void tab::load()
 		for (string & ubname : gboq.userbouquets)
 			bgroups[ubname] = pgroup;
 	}
-	for (auto & ubi : index["ubs"])
+	for (auto & ubi : dbih->gindex["ubs"])
 	{
 		debug("tab", "load()", "userbouquet", ubi.second);
 		e2db::userbouquet uboq = dbih->userbouquets[ubi.second];
@@ -503,7 +507,7 @@ void tab::populate()
 	if (cache[curr_chlist].isEmpty())
 	{
 	// QList<QTreeWidgetItem*> cache;
-		for (auto & ch : index[curr_chlist])
+		for (auto & ch : dbih->gindex[curr_chlist])
 		{
 			char ci[7];
 			sprintf(ci, "%06d", i++);
@@ -882,7 +886,7 @@ void tab::updateListIndex()
 	int i = 0, y = 0, idx = 0;
 	int count = list_tree->topLevelItemCount();
 	string curr_chlist = this->_state_curr;
-	index[curr_chlist].clear();
+	dbih->gindex[curr_chlist].clear();
 
 	debug("tab", "updateListIndex()", "curr_chlist", curr_chlist);
 
@@ -900,7 +904,7 @@ void tab::updateListIndex()
 			y++;
 			idx = y;
 		}
-		index[curr_chlist].emplace_back(pair (idx, chid)); //C++ 17
+		dbih->gindex[curr_chlist].emplace_back(pair (idx, chid)); //C++ 17
 		i++;
 	}
 	while (i != count);
@@ -933,14 +937,14 @@ void tab::setCounters(bool channels)
 	if (channels)
 	{
 		string curr_chlist = this->_state_curr;
-		counters[4] = index[curr_chlist].size();
+		counters[4] = dbih->gindex[curr_chlist].size();
 	}
 	else
 	{
-		counters[0] = index["chs:0"].size(); // data
-		counters[1] = index["chs:1"].size(); // tv
-		counters[2] = index["chs:2"].size(); // radio
-		counters[3] = index["chs"].size();   // all
+		counters[0] = dbih->gindex["chs:0"].size(); // data
+		counters[1] = dbih->gindex["chs:1"].size(); // tv
+		counters[2] = dbih->gindex["chs:2"].size(); // radio
+		counters[3] = dbih->gindex["chs"].size();   // all
 	}
 
 	gid->loaded(counters);
@@ -977,7 +981,6 @@ void tab::initialize()
 	list_tree->scrollToItem(list_tree->topLevelItem(0));
 	list_tree->clear();
 	cache.clear();
-	index.clear();
 
 	gid->reset();
 

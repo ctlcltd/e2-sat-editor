@@ -379,7 +379,9 @@ void editService::store()
 {
 	debug("editService", "store()");
 
-	e2db::service ch = dbih->db.services[chid];
+	e2db::service ch;
+	if (this->_state_edit)
+		ch = dbih->db.services[chid];
 
 	for (auto & item : fields)
 	{
@@ -408,8 +410,10 @@ void editService::store()
 			continue;
 	}
 
-	//TODO e2db | e2db_gui
-	dbih->entries.services[chid] = dbih->entry_service(ch);
+	if (this->_state_edit)
+		this->chid = dbih->edit_service(chid, ch);
+	else
+		this->chid = dbih->add_service(ch);
 }
 
 //TODO PIDs
@@ -500,6 +504,13 @@ void editService::setEditID(string chid)
 
 	this->chid = chid;
 	this->_state_edit = true;
+}
+
+string editService::getEditID()
+{
+	debug("editService", "getEditID()");
+
+	return this->chid;
 }
 
 }

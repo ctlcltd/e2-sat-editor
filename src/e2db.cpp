@@ -54,6 +54,10 @@ string e2db_abstract::upCase(string str)
 
 void e2db_abstract::add_transponder(int idx, transponder& tx)
 {
+	char txid[25];
+	sprintf(txid, "%x:%x", tx.tsid, tx.dvbns);
+	tx.txid = txid;
+
 	tx.index = idx;
 	db.transponders.emplace(tx.txid, tx);
 	index["txs"].emplace_back(pair (idx, tx.txid)); //C++ 17
@@ -61,6 +65,13 @@ void e2db_abstract::add_transponder(int idx, transponder& tx)
 
 void e2db_abstract::add_service(int idx, service& ch)
 {
+	char chid[25];
+	char txid[25];
+	sprintf(txid, "%x:%x", ch.tsid, ch.dvbns);
+	sprintf(chid, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
+	ch.txid = txid;
+	ch.chid = chid;
+
 	if (db.services.count(ch.chid))
 	{
 		int m;
@@ -289,7 +300,6 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 
 void e2db_parser::parse_lamedb_transponder_params(string data, transponder& tx)
 {
-	char txid[25];
 	int dvbns, tsid, onid;
 	dvbns = 0, tsid = 0, onid = 0;
 
@@ -298,8 +308,6 @@ void e2db_parser::parse_lamedb_transponder_params(string data, transponder& tx)
 	tx.dvbns = dvbns;
 	tx.tsid = tsid;
 	tx.onid = onid;
-	sprintf(txid, "%x:%x", tsid, dvbns);
-	tx.txid = txid;
 }
 
 void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, transponder& tx)
@@ -369,8 +377,6 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 
 void e2db_parser::parse_lamedb_service_params(string data, service& ch)
 {
-	char chid[25];
-	char txid[25];
 	int ssid, dvbns, tsid, stype, snum;
 	char onid[5]; //TODO to int
 	ssid = 0, dvbns = 0, tsid = 0, stype = -1, snum = -1;
@@ -393,10 +399,6 @@ void e2db_parser::parse_lamedb_service_params(string data, service& ch)
 	ch.onid.erase(0, ch.onid.find_first_not_of('0'));
 	ch.stype = stype;
 	ch.snum = snum;
-	sprintf(txid, "%x:%x", tsid, dvbns);
-	sprintf(chid, "%x:%x:%x", ssid, tsid, dvbns);
-	ch.txid = txid;
-	ch.chid = chid;
 }
 
 void e2db_parser::parse_lamedb_service_params(string data, service& ch, bool add)
@@ -602,12 +604,12 @@ void e2db_parser::parse_tunersets_xml(int ytype, ifstream& ftunxml)
 
 	while (getline(ftunxml, line))
 	{
-		if (line.find("<!", 0, 2) != string::npos)
+		/*if (line.find("<!", 0, 2) != string::npos)
 		{
 			step = 0;
 			continue;
-		}
-		else if (step && line.find("</") != string::npos)
+		}*/
+		if (step && line.find("</") != string::npos)
 		{
 			step--;
 			char trid[17];
@@ -1222,6 +1224,90 @@ void e2db_maker::set_bouquets(pair<unordered_map<string, e2db_maker::bouquet>, u
 e2db::e2db()
 {
 	debug("e2db");
+}
+
+void e2db::add_transponder(transponder& tx)
+{
+	debug("e2db", "add_transponder()", "txid", tx.txid);
+
+	tx.index = index.count("txs");
+	e2db_abstract::add_transponder(tx.index, tx);
+}
+
+void e2db::edit_transponder(string txid, transponder& tx)
+{
+	debug("e2db", "edit_transponder()", "txid", txid);
+
+	char nw_txid[25];
+	sprintf(nw_txid, "%x:%x", tx.tsid, tx.dvbns);
+	tx.txid = nw_txid;
+
+	debug("e2db", "edit_service()", "nw_txid", nw_txid);
+
+	if (tx.txid == txid)
+	{
+		db.transponders[tx.txid] = tx;
+	}
+	else
+	{
+		e2db_abstract::add_transponder(tx.index, tx);
+		remove_transponder(txid);
+	}
+}
+
+void e2db::remove_transponder(string txid)
+{
+	debug("e2db", "remove_transponder()", "txid", txid);
+
+	db.transponders.erase(txid);
+	//TODO remove from indexes
+	// index["txs"]
+}
+
+void e2db::add_service(service& ch)
+{
+	debug("e2db", "add_service()", "chid", ch.chid);
+
+	ch.index = index.count("chs");
+	e2db_abstract::add_service(ch.index, ch);
+}
+
+void e2db::edit_service(string chid, service& ch)
+{
+	debug("e2db", "edit_service()", "chid", chid);
+
+	char nw_chid[25];
+	char nw_txid[25];
+	sprintf(nw_txid, "%x:%x", ch.tsid, ch.dvbns);
+	sprintf(nw_chid, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
+	ch.txid = nw_txid;
+	ch.chid = nw_chid;
+
+	debug("e2db", "edit_service()", "nw_chid", nw_chid);
+
+	if (ch.chid == chid)
+	{
+		db.services[ch.chid] = ch;
+	}
+	else
+	{
+		e2db_abstract::add_service(ch.index, ch);
+		remove_service(chid);
+	}
+}
+
+void e2db::remove_service(string chid)
+{
+	debug("e2db", "remove_service()", "chid", chid);
+
+	service ch = db.services[chid];
+	string kchid = 's' + chid;
+	string iname = "chs:" + (STYPES.count(ch.stype) ? to_string(STYPES.at(ch.stype).first) : "0");
+	db.services.erase(chid);
+	//TODO remove from indexes
+	// index["chs"]
+	// index[iname]
+	// collisions
 }
 
 //TODO unique (eg. terrestrial MUX)

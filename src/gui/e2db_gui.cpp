@@ -36,10 +36,70 @@ void e2db::options()
 	e2db::MAKER_LAMEDB5 = e2se::MAKER_LAMEDB5;
 }
 
+string e2db::add_transponder(transponder& tx)
+{
+	e2se::debug("e2db", "add_transponder()", "txid", tx.txid);
+
+	this->::e2db::e2db::add_transponder(tx);
+	tx = db.transponders[tx.txid];
+	entries.transponders[tx.txid] = entry_transponder(tx);
+	return tx.txid;
+}
+
+string e2db::edit_transponder(string txid, transponder& tx)
+{
+	e2se::debug("e2db", "edit_transponder()", "txid", txid);
+
+	this->::e2db::e2db::edit_transponder(txid, tx);
+	tx = db.transponders[tx.txid];
+	entries.transponders[tx.txid] = entry_transponder(tx);
+	return tx.txid;
+}
+
+void e2db::remove_transponder(string txid)
+{
+	e2se::debug("e2db", "remove_transponder()", "txid", txid);
+
+	this->::e2db::e2db::remove_transponder(txid);
+	entries.transponders.erase(txid);
+}
+
+string e2db::add_service(service& ch)
+{
+	e2se::debug("e2db", "add_service()", "chid", ch.chid);
+
+	this->::e2db::e2db::add_service(ch);
+	ch = db.services[ch.chid];
+	entries.services[ch.chid] = entry_service(ch);
+	return ch.chid;
+}
+
+string e2db::edit_service(string chid, service& ch)
+{
+	e2se::debug("e2db", "edit_service()", "chid", chid);
+
+	this->::e2db::e2db::edit_service(chid, ch);
+	ch = db.services[ch.chid];
+	entries.services[ch.chid] = entry_service(ch);
+	return ch.chid;
+}
+
+void e2db::remove_service(string chid)
+{
+	e2se::debug("e2db", "remove_service()", "chid", chid);
+
+	this->::e2db::e2db::remove_service(chid);
+	entries.services.erase(chid);
+}
+
 bool e2db::prepare(string localdir)
 {
+	e2se::debug("e2db", "prepare()");
+
 	if (! this->read(localdir))
 		return false;
+
+	this->gindex = index;
 
 	for (auto & txdata : db.transponders)
 	{
@@ -50,6 +110,35 @@ bool e2db::prepare(string localdir)
 		entries.services[chdata.first] = entry_service(chdata.second);
 	}
 	return true;
+}
+
+bool e2db::write(string localdir, bool overwrite)
+{
+	e2se::debug("e2db", "write()");
+
+	this->set_index(gindex);
+
+	if (! this->::e2db::e2db::write(localdir, overwrite))
+		return false;
+
+	return true;
+}
+
+void e2db::updateUserbouquetIndexes(string chid, string nw_chid)
+{
+	e2se::debug("e2db", "updateUserbouquetIndexes()", "chid|nw_chid", chid + '|' + nw_chid);
+
+	for (auto & g : gindex)
+	{
+		if (g.first.find("chs") != string::npos || g.first == "txs")
+			continue;
+
+		for (auto & s : g.second)
+		{
+			if (s.second == chid)
+				s.second = nw_chid;
+		}
+	}
 }
 
 QStringList e2db::entry_transponder(transponder tx)
