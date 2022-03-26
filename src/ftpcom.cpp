@@ -17,7 +17,7 @@
 #include "commons.h"
 #include "ftpcom.h"
 
-using namespace std;
+using std::string, std::stringstream, std::min, std::cout, std::endl, std::to_string, std::stoi;
 
 namespace e2se_ftpcom
 {

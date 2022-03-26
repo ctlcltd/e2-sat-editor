@@ -19,7 +19,6 @@
 #include "../commons.h"
 #include "about.h"
 
-using namespace std;
 using namespace e2se;
 
 namespace e2se_gui_dialog

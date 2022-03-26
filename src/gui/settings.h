@@ -12,7 +12,7 @@
 #include <vector>
 #include <map>
 
-using namespace std;
+using std::vector, std::map;
 
 #ifndef settings_h
 #define settings_h

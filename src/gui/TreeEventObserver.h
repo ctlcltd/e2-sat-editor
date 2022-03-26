@@ -9,8 +9,6 @@
  * @license GNU GPLv3 License
  */
 
-using namespace std;
-
 #ifndef TreeEventObserver_h
 #define TreeEventObserver_h
 #include <QEvent>

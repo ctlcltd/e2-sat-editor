@@ -9,10 +9,12 @@
  * @license GNU GPLv3 License
  */
 
+#include <string>
 #include <cstdio>
+
 #include <curl/curl.h>
 
-using namespace std;
+using std::string;
 
 #ifndef ftpcom_h
 #define ftpcom_h

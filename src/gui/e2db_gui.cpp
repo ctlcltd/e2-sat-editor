@@ -14,7 +14,7 @@
 
 #include "e2db_gui.h"
 
-using namespace std;
+using std::to_string;
 
 namespace e2se_gui
 {

@@ -18,7 +18,7 @@
 #include <iostream>
 #include <ctime>
 
-using namespace std;
+using std::string, std::pair, std::make_pair, std::vector, std::map, std::unordered_map, std::ifstream, std::stringstream;
 
 #ifndef e2db_h
 #define e2db_h

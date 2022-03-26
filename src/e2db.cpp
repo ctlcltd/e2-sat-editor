@@ -16,7 +16,7 @@
 #include <cstring>
 #include "e2db.h"
 
-using namespace std;
+using std::string, std::pair, std::vector, std::map, std::unordered_map, std::unordered_set, std::cout, std::endl, std::ifstream, std::ofstream, std::stringstream, std::to_string, std::stoi, std::hex, std::dec, std::setfill, std::setw, std::uppercase;
 
 namespace e2db
 {
@@ -570,6 +570,7 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 	userbouquets.emplace(bname, ub);
 }
 
+//TODO FIX mingw32
 //TODO terrestrial.xml, cable.xml, ...
 //TODO FIX wrong position
 //TODO needs index
@@ -845,19 +846,19 @@ bool e2db_parser::read_from_localdir(string localdir)
 {
 	debug("e2db_parser", "read_from_localdir()", "localdir", localdir);
 
-	if (! filesystem::exists(localdir))
+	if (! std::filesystem::exists(localdir))
 	{
 		error("e2db_parser", "read_from_localdir()", "Error", "Directory \"" + localdir + "\" not exists.", "\t");
 		return false;
 	}
 
-	filesystem::directory_iterator dirlist(localdir);
+	std::filesystem::directory_iterator dirlist(localdir);
 
 	for (const auto & entry : dirlist)
 	{
 		//TODO is file & permissions check ...
-		string path = entry.path();
-		string filename = filesystem::path(path).filename();
+		string path = entry.path().u8string();
+		string filename = std::filesystem::path(path).filename().u8string();
 		e2db[filename] = path;
 	}
 	if (e2db.count(dbfilename) < 1)
@@ -914,13 +915,18 @@ void e2db_maker::end_transaction()
 	debug("e2db_maker", "end_transaction()");
 }
 
+//TODO FIX mingw32
 string e2db_maker::get_timestamp()
 {
 	debug("e2db_maker", "get_timestamp()");
 
+#ifdef _WIN32
+	return "1970-01-01 00:00:00 UTC";
+#else
 	char datetime[80];
 	strftime(datetime, 80, "%F %T %Z", _out_tst);
 	return string (datetime);
+#endif
 }
 
 string e2db_maker::get_editor_string()
@@ -1159,7 +1165,7 @@ bool e2db_maker::write_to_localdir(string localdir, bool overwrite)
 {
 	debug("e2db_maker", "write_to_localdir()", "localdir", localdir);
 
-	if (! filesystem::is_directory(localdir))
+	if (! std::filesystem::is_directory(localdir))
 	{
 		error("e2db_maker", "write_to_localdir()", "Error", "Directory \"" + localdir + "\" not exists.");
 		return false;
@@ -1167,7 +1173,7 @@ bool e2db_maker::write_to_localdir(string localdir, bool overwrite)
 	//TODO file exists and (force) overwrite
 	else if (! overwrite)
 	{
-		filesystem::create_directory(localdir);
+		std::filesystem::create_directory(localdir);
 	}
 	//TODO permission check ...
 	for (auto & o: e2db_out)

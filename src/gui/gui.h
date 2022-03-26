@@ -11,9 +11,8 @@
 
 #include <string>
 #include <unordered_map>
-#include <filesystem>
 
-using namespace std;
+using std::string, std::unordered_map;
 
 #ifndef gui_h
 #define gui_h

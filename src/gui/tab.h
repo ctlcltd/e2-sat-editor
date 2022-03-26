@@ -10,11 +10,10 @@
  */
 
 #include <iostream>
-
 #include <string>
 #include <unordered_map>
 
-using namespace std;
+using std::string, std::pair, std::unordered_map;
 
 #ifndef tab_h
 #define tab_h

@@ -12,7 +12,7 @@
 #include <string>
 #include <vector>
 
-using namespace std;
+using std::string, std::pair, std::vector;
 
 #ifndef editService_h
 #define editService_h

@@ -12,7 +12,7 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
+using std::cout, std::endl;
 
 #ifndef todo_h
 #define todo_h

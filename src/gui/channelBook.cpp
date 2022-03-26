@@ -21,7 +21,7 @@
 #include "../commons.h"
 #include "channelBook.h"
 
-using namespace std;
+using std::to_string, std::stoi;
 using namespace e2se;
 
 namespace e2se_gui

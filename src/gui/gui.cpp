@@ -9,6 +9,8 @@
  * @license GNU GPLv3 License
  */
 
+#include <filesystem>
+
 #include <Qt>
 #include <QProxyStyle>
 #include <QScreen>
@@ -26,7 +28,7 @@
 #include "about.h"
 #include "todo.h"
 
-using namespace std;
+using std::to_string;
 using namespace e2se;
 
 namespace e2se_gui
@@ -215,7 +217,7 @@ int gui::newTab(string filename = "")
 	if (filename.empty())
 		tname = "Untitled" + (ttcount ? " " + to_string(ttcount++) : "");
 	else
-		tname = filesystem::path(filename).filename();
+		tname = std::filesystem::path(filename).filename().u8string();
 
 	QString ttname = QString::fromStdString(tname);
 
@@ -374,7 +376,7 @@ void gui::tabChangeName(int ttid, string filename)
 	if (filename.empty())
 		tname = "Untitled" + (index ? " " + to_string(index) : "");
 	else
-		tname = filesystem::path(filename).filename();
+		tname = std::filesystem::path(filename).filename().u8string();
 
 	QString ttname = QString::fromStdString(tname);
 	QTabBar* ttabbar = twid->tabBar();

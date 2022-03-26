@@ -27,7 +27,7 @@
 #include "../commons.h"
 #include "settings.h"
 
-using namespace std;
+using std::to_string;
 using namespace e2se;
 
 namespace e2se_gui_dialog

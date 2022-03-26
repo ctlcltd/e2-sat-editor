@@ -5,7 +5,7 @@ An enigma2 channel list editor – under development.
  
 ## Requirements
 
-* build tools (gcc, g++, make, qmake)
+* build tools (gcc, g++, make, cmake, qmake)
 * C++ 17
 * Qt 6 / Qt 5
 
@@ -22,9 +22,11 @@ An enigma2 channel list editor – under development.
 
 ```git clone https://github.com/ctlcltd/e2-sat-editor.git```
 
-- In linux and \*bsd use src/build.sh to build
+- In linux and \*bsd use scripts/build.sh to build
 
-- In macos w/ xcode use src/darwin.sh to build
+- In macos w/ xcode use scripts/darwin.sh to build
+
+- With mingw32 use scripts/mingw32.sh to build
 
 
 ## Dependencies

@@ -13,7 +13,7 @@
 #include <vector>
 #include <map>
 
-using namespace std;
+using std::string, std::pair, std::vector, std::map;
 
 #ifndef channelBook_h
 #define channelBook_h

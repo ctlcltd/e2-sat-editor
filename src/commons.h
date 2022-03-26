@@ -12,7 +12,7 @@
 #include <string>
 #include <iostream>
 
-using namespace std;
+using std::string, std::cout, std::endl;
 
 #ifndef commons_h
 #define commons_h
@@ -21,7 +21,12 @@ namespace e2se
 const bool DEBUG = true;
 const bool DEBUG_E2DB = false;
 const bool DEBUG_TOOLBAR = true;
+//TODO FIX mingw32
+#ifdef _WIN32
+const bool PARSER_TUNERSETS = false;
+#else
 const bool PARSER_TUNERSETS = true;
+#endif
 const bool PARSER_LAMEDB5 = false;
 const bool MAKER_LAMEDB5 = true;
 

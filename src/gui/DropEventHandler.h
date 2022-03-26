@@ -9,8 +9,6 @@
  * @license GNU GPLv3 License
  */
 
-using namespace std;
-
 #ifndef DropEventHandler_h
 #define DropEventHandler_h
 #include <QEvent>

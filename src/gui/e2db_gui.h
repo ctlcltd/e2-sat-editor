@@ -9,6 +9,12 @@
  * @license GNU GPLv3 License
  */
 
+#include <string>
+#include <vector>
+#include <unordered_map>
+
+using std::string, std::pair, std::vector, std::unordered_map;
+
 #ifndef e2db_gui_h
 #define e2db_gui_h
 #include <QString>

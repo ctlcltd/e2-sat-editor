@@ -41,7 +41,7 @@
 #include "channelBook.h"
 #include "../ftpcom.h"
 
-using namespace std;
+using std::to_string;
 using namespace e2se;
 
 namespace e2se_gui
@@ -1057,8 +1057,8 @@ void tab::loadSeeds()
 
 	if (cwd != "")
 	{
-		filesystem::path path = cwd + "/seeds./enigma_db";
-		readFile(filesystem::absolute(path));
+		std::filesystem::path path = cwd + "/seeds./enigma_db";
+		readFile(std::filesystem::absolute(path).u8string());
 	}
 }
 //TEST
