@@ -16,7 +16,7 @@
 #include <cstring>
 #include "e2db.h"
 
-using std::string, std::pair, std::vector, std::map, std::unordered_map, std::unordered_set, std::cout, std::endl, std::ifstream, std::ofstream, std::stringstream, std::to_string, std::stoi, std::hex, std::dec, std::setfill, std::setw, std::uppercase;
+using std::string, std::pair, std::vector, std::map, std::unordered_map, std::unordered_set, std::cout, std::endl, std::ifstream, std::ofstream, std::stringstream, std::to_string, std::atoi, std::hex, std::dec, std::setfill, std::setw, std::uppercase;
 
 namespace e2db
 {
@@ -570,9 +570,7 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 	userbouquets.emplace(bname, ub);
 }
 
-//TODO FIX mingw32
 //TODO terrestrial.xml, cable.xml, ...
-//TODO FIX wrong position
 //TODO needs index
 void e2db_parser::parse_tunersets_xml(int ytype, ifstream& ftunxml)
 {
@@ -665,33 +663,33 @@ void e2db_parser::parse_tunersets_xml(int ytype, ifstream& ftunxml)
 				else if (key == "name")
 					tn.name = val;
 				else if (key == "flags")
-					tn.flgs = stoi(val);
+					tn.flgs = atoi(val.data());
 				else if (key == "position")
-					tn.pos = stoi(val);
+					tn.pos = atoi(val.data());
 				else if (key == "frequency")
-					tr.freq = int (stoi(val) / 1e3);
+					tr.freq = int (atoi(val.data()) / 1e3);
 				else if (key == "symbol_rate")
-					tr.sr = int (stoi(val) / 1e3);
+					tr.sr = int (atoi(val.data()) / 1e3);
 				else if (key == "polarization")
-					tr.pol = stoi(val);
+					tr.pol = atoi(val.data());
 				else if (key == "fec_inner")
-					tr.fec = stoi(val);
+					tr.fec = atoi(val.data());
 				else if (key == "modulation")
-					tr.mod = stoi(val);
+					tr.mod = atoi(val.data());
 				else if (key == "rolloff")
-					tr.rol = stoi(val);
+					tr.rol = atoi(val.data());
 				else if (key == "pilot")
-					tr.pil = stoi(val);
+					tr.pil = atoi(val.data());
 				else if (key == "inversion")
-					tr.inv = stoi(val);
+					tr.inv = atoi(val.data());
 				else if (key == "system")
-					tr.sys = stoi(val);
+					tr.sys = atoi(val.data());
 				else if (key == "is_id")
-					tr.isid = stoi(val);
+					tr.isid = atoi(val.data());
 				else if (key == "pls_mode")
-					tr.plsmode = stoi(val);
+					tr.plsmode = atoi(val.data());
 				else if (key == "pls_code")
-					tr.plscode = stoi(val);
+					tr.plscode = atoi(val.data());
 
 				// cout << mkey << ':' << key << ':' << val << ' ' << step << endl;
 				token = strtok(NULL, " ");
@@ -915,18 +913,15 @@ void e2db_maker::end_transaction()
 	debug("e2db_maker", "end_transaction()");
 }
 
-//TODO FIX mingw32
+//TODO FIX mingw32 wrong %z %Z
 string e2db_maker::get_timestamp()
 {
 	debug("e2db_maker", "get_timestamp()");
 
-#ifdef _WIN32
-	return "1970-01-01 00:00:00 UTC";
-#else
 	char datetime[80];
-	strftime(datetime, 80, "%F %T %Z", _out_tst);
+	// @link https://sourceforge.net/p/mingw-w64/bugs/793/
+	strftime(datetime, 80, "%Y-%m-%d %H:%M:%S %z", _out_tst);
 	return string (datetime);
-#endif
 }
 
 string e2db_maker::get_editor_string()
