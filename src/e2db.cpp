@@ -356,12 +356,19 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 			tx.ifec = ifec;
 			tx.oflgs = string (oflgs);
 		break;
-		//TODO ATSC
-		case 'a': // ATSC:
-			error("lamedb", "Error", "ATSC not supported yet.");
+		//TODO
+		case 'a': // ATSC
+			sscanf(data.c_str(), "%8d:%1d:%1d:%1d:%1d%s", &freq, &inv, &mod, &flgs, &sys, oflgs);
+
+			tx.freq = int (freq / 1e3);
+			tx.inv = inv;
+			tx.mod = mod;
+			tx.flgs = flgs;
+			tx.sys = sys;
+			tx.oflgs = string (oflgs);
 		break;
 		default:
-			error("lamedb", "Error", "Transponder type is unknown.");
+			error("lamedb", "Error", "Unknown transponder type.");
 			return;
 	}
 	tx.ttype = ttype;
@@ -508,13 +515,10 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 			line = line.substr(9);
 			bool sseq = false;
 			char cchid[24];
-			int i0, i1, anum, ssid, tsid, dvbns;
-			char onid[5];
-			i0 = -1, i1 = -1, anum = -1, ssid = 0, tsid = 0, dvbns = 0;
+			int i0, i1, anum, ssid, tsid, onid, dvbns;
+			i0 = -1, i1 = -1, anum = -1, ssid = 0, tsid = 0, onid = -1, dvbns = 0;
 
-			//TODO performance optimization selective tolower
-			transform(line.begin(), line.end(), line.begin(), [](unsigned char c){ return c == ':' ? ' ' : tolower(c); });
-			sscanf(line.c_str(), "%d %d %4x %4x %4x %4s %8x", &i0, &i1, &anum, &ssid, &tsid, onid, &dvbns);
+			sscanf(line.c_str(), "%d:%d:%4X:%4X:%4X:%4X:%8X", &i0, &i1, &anum, &ssid, &tsid, &onid, &dvbns);
 			//TODO other flags ?
 
 			switch (i1)
@@ -562,6 +566,7 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 	userbouquets.emplace(bname, ub);
 }
 
+//TODO FIX <!-- key="val" -->
 //TODO terrestrial.xml, cable.xml, ...
 //TODO needs index
 void e2db_parser::parse_tunersets_xml(int ytype, ifstream& ftunxml)
@@ -690,19 +695,19 @@ void e2db_parser::parse_tunersets_xml(int ytype, ifstream& ftunxml)
 	}
 }
 
-//TODO hex/dec values
 void e2db_parser::debugger()
 {
 	debug("debugger()");
 
-	cout << hex;
 	cout << "transponders" << endl << endl;
 	for (auto & x: db.transponders)
 	{
 		cout << "txid: " << x.first << endl;
+		cout << hex;
 		cout << "dvbns: " << x.second.dvbns << endl;
 		cout << "tsid: " << x.second.tsid << endl;
 		cout << "onid: " << x.second.onid << endl;
+		cout << dec;
 		cout << "ttype: " << x.second.ttype << endl;
 		cout << "freq: " << x.second.freq << endl;
 		cout << "sr: " << x.second.sr << endl;
@@ -733,9 +738,11 @@ void e2db_parser::debugger()
 	{
 		cout << "chid: " << x.first << endl;
 		cout << "txid: " << x.second.txid << endl;
+		cout << hex;
 		cout << "ssid: " << x.second.ssid << endl;
 		cout << "dvbns: " << x.second.dvbns << endl;
 		cout << "tsid: " << x.second.tsid << endl;
+		cout << dec;
 		cout << "onid: " << x.second.onid << endl;
 		cout << "stype: " << x.second.stype << endl;
 		cout << "snum: " << x.second.snum << endl;
@@ -810,7 +817,6 @@ void e2db_parser::debugger()
 		cout << "]" << endl << endl;
 	}
 	cout << endl;
-	cout << dec;
 }
 
 unordered_map<string, e2db_parser::transponder> e2db_parser::get_transponders()
@@ -1025,6 +1031,16 @@ void e2db_maker::make_lamedb(string filename)
 				ss << ':' << tx.inv;
 				ss << ':' << tx.cabmod;
 				ss << ':' << tx.ifec;
+				if (! tx.oflgs.empty())
+					ss << tx.oflgs;
+			break;
+			//TODO
+			case 'a': // ATSC
+				ss << int (tx.freq * 1e3);
+				ss << ':' << tx.inv;
+				ss << ':' << tx.mod;
+				ss << ':' << tx.flgs;
+				ss << ':' << tx.sys;
 				if (! tx.oflgs.empty())
 					ss << tx.oflgs;
 			break;
@@ -1260,8 +1276,12 @@ void e2db::remove_transponder(string txid)
 	debug("remove_transponder()", "txid", txid);
 
 	db.transponders.erase(txid);
-	//TODO remove from indexes
-	// index["txs"]
+
+	for (auto it = index["txs"].begin(); it != index["txs"].end(); it++)
+	{
+		if (it->second == txid)
+			index["txs"].erase(it);
+	}
 }
 
 void e2db::add_service(service& ch)
@@ -1304,10 +1324,18 @@ void e2db::remove_service(string chid)
 	string kchid = 's' + chid;
 	string iname = "chs:" + (STYPES.count(ch.stype) ? to_string(STYPES.at(ch.stype).first) : "0");
 	db.services.erase(chid);
-	//TODO remove from indexes
-	// index["chs"]
-	// index[iname]
-	// collisions
+
+	for (auto it = index["chs"].begin(); it != index["chs"].end(); it++)
+	{
+		if (it->second == chid)
+			index["chs"].erase(it);
+	}
+	for (auto it = index[iname].begin(); it != index[iname].end(); it++)
+	{
+		if (it->second == chid)
+			index[iname].erase(it);
+	}
+	collisions.erase(kchid);
 }
 
 //TODO unique (eg. terrestrial MUX)

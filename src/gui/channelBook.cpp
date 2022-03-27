@@ -236,6 +236,8 @@ void channelBook::stacker(int vv)
 					ptxp = to_string(txdata.freq) + '/' + e2db::TER_MOD[txdata.termod] + '/' + e2db::TER_BAND[txdata.band];
 				else if (txdata.ttype == 'c')
 					ptxp = to_string(txdata.freq) + '/' + e2db::CAB_MOD[txdata.cabmod] + '/' + to_string(txdata.sr);
+				else if (txdata.ttype == 'a')
+					ptxp = to_string(txdata.freq);
 				QString txp = QString::fromStdString(ptxp);
 				subitem = new QTreeWidgetItem(item, {txp});
 				subitem->setData(0, Qt::UserRole, subindex);

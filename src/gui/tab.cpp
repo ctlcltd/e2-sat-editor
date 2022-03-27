@@ -19,7 +19,6 @@
 #include <QList>
 #include <QStyle>
 #include <QMessageBox>
-#include <QErrorMessage>
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -172,7 +171,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 		bottom_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 		bottom_toolbar->addAction("§ Load seeds", [=]() { this->loadSeeds(); });
-		bottom_toolbar->addAction("§ Reset", [=]() { this->newFile(); gid->tabChangeName(ttid, ""); });
+		bottom_toolbar->addAction("§ Reset", [=]() { this->newFile(); gid->tabChangeName(ttid); });
 		bottom_toolbar->addWidget(bottom_spacer);
 	}
 
@@ -260,10 +259,7 @@ void tab::openFile()
 	string dirname = gid->openFileDialog();
 
 	if (! dirname.empty())
-	{
 		readFile(dirname);
-		gid->tabChangeName(ttid, dirname);
-	}
 }
 
 void tab::saveFile(bool saveas)
@@ -301,8 +297,7 @@ void tab::saveFile(bool saveas)
 		}
 		else
 		{
-			QErrorMessage warn = QErrorMessage();
-			warn.showMessage("Error writing files.");
+			QMessageBox::critical(cwid, NULL, "Error writing files.");
 		}
 	}
 }
@@ -391,10 +386,14 @@ bool tab::readFile(string filename)
 	bool rr = dbih->prepare(filename);
 	QGuiApplication::restoreOverrideCursor();
 
-	if (! rr)
+	if (rr)
 	{
-		QErrorMessage warn = QErrorMessage();
-		warn.showMessage("Error opening files.");
+		gid->tabChangeName(ttid, filename);
+	}
+	else
+	{
+		gid->tabChangeName(ttid);
+		QMessageBox::critical(cwid, NULL, "Error opening files.");
 		return false;
 	}
 
@@ -996,8 +995,6 @@ void tab::initialize()
 
 void tab::destroy()
 {
-	debug("destroy()");
-
 	delete this;
 }
 

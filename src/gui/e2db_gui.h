@@ -36,7 +36,7 @@ class e2db : public ::e2se_e2db::e2db
 		e2db();
 		~e2db()
 		{
-			// debug("e2db", "~destructor");
+			std::cout << "e2se_gui::~e2db()" << std::endl;
 		}
 		void options();
 		string add_transponder(transponder& tx);
@@ -53,6 +53,7 @@ class e2db : public ::e2se_e2db::e2db
 		void remove_userbouquet();
 		bool prepare(string localdir);
 		bool write(string localdir, bool overwrite);
+		void updateUserbouquetIndexes();
 		void updateUserbouquetIndexes(string chid, string nw_chid);
 		QStringList entry_transponder(transponder tx);
 		QStringList entry_service(service ch);

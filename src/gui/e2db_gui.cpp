@@ -30,10 +30,10 @@ void e2db::options()
 {
 	debug("options()");
 
-	// e2db::DEBUG = this->sets->value("debug", true).toBool();
-	e2db::PARSER_TUNERSETS = this->sets->value("parserTunerset", true).toBool();
-	e2db::PARSER_LAMEDB5_PRIOR = this->sets->value("parserLamedb5", false).toBool();
-	e2db::MAKER_LAMEDB5 = this->sets->value("makerLamedb5", true).toBool();
+	// e2db::DEBUG = sets->value("debug", true).toBool();
+	e2db::PARSER_TUNERSETS = sets->value("parserTunerset", true).toBool();
+	e2db::PARSER_LAMEDB5_PRIOR = sets->value("parserLamedb5", false).toBool();
+	e2db::MAKER_LAMEDB5 = sets->value("makerLamedb5", true).toBool();
 }
 
 string e2db::add_transponder(transponder& tx)
@@ -99,6 +99,9 @@ bool e2db::prepare(string localdir)
 	if (! this->read(localdir))
 		return false;
 
+	if (sets->value("parserDebugger", false).toBool())
+		this->debugger();
+
 	this->gindex = index;
 
 	for (auto & txdata : db.transponders)
@@ -122,6 +125,13 @@ bool e2db::write(string localdir, bool overwrite)
 		return false;
 
 	return true;
+}
+
+void e2db::updateUserbouquetIndexes()
+{
+	debug("updateUserbouquetIndexes()");
+
+	this->gindex = index;
 }
 
 void e2db::updateUserbouquetIndexes(string chid, string nw_chid)
@@ -167,6 +177,8 @@ QStringList e2db::entry_transponder(transponder tx)
 		psys = "DVB-T"; //TODO terrestrial.xml
 	else if (tx.ttype == 'c')
 		psys = "DVB-C";
+	else if (tx.ttype == 'a')
+		psys = "ATSC";
 	QString sys = QString::fromStdString(psys);
 
 	return QStringList ({freq, pol, sr, fec, pos, sys});

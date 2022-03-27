@@ -481,6 +481,7 @@ void editService::retrieve()
 			if (int index = field->findData(QString::fromStdString(val), Qt::UserRole))
 				field->setCurrentIndex(index);
 		}
+		//TODO
 		else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
 		{
 			continue;

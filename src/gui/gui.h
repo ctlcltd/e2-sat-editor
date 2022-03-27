@@ -61,7 +61,7 @@ class gui : protected e2se::log_factory
 		void open();
 		string openFileDialog();
 		string saveFileDialog(string filename);
-		void tabChangeName(int ttid, string filename);
+		void tabChangeName(int ttid, string filename = "");
 		void loaded(int counters[5]);
 		void reset();
 		void save();

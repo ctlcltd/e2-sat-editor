@@ -283,10 +283,10 @@ void gui::closeAllTabs()
 
 	for (unsigned int i = 0; i < ttabs.size(); i++)
 	{
+		debug("tab.destroy()");
 		ttabs[i]->destroy();
 		ttabs[i] = nullptr;
-		//TODO FIX not deleted
-		delete ttabs[i];
+		ttabs.erase(i);
 	}
 
 	if (twid->count() == 0) newTab();
