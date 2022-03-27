@@ -43,6 +43,7 @@ class editService : protected e2se::log_factory
 		void save();
 		void setEditID(string chid);
 		string getEditID();
+		void destroy();
 		QWidget* widget;
 	protected:
 		QDialog* dial;

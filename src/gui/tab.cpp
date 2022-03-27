@@ -85,6 +85,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	list_tree->setUniformRowHeights(true);
 
 	bouquets_tree->setSelectionBehavior(QAbstractItemView::SelectRows);
+	bouquets_tree->setDropIndicatorShown(true);
 	bouquets_tree->setDragDropMode(QAbstractItemView::DragDrop);
 	bouquets_tree->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
@@ -191,8 +192,11 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	list_ats->addWidget(ats->list_dnd);
 	ats->list_addch->setDisabled(true);
 
+	//TODO scroll to position
+	//TODO reindex userbouquets before saving
 	DropEventHandler* bouquets_evt = new DropEventHandler;
 	this->list_evt = new TreeEventObserver;
+	bouquets_evt->setEventCallback([=]() { this->visualReindexList(); });
 	bouquets_tree->viewport()->installEventFilter(bouquets_evt);
 	bouquets_tree->connect(bouquets_tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->bouquetsItemChanged(current); });
 	list_tree->installEventFilter(list_evt);
@@ -359,6 +363,7 @@ void tab::editService()
 		add->setEditID(chid);
 		add->display(cwid);
 		nw_chid = add->getEditID(); //TODO returned after dial.exec()
+		add->destroy();
 
 		debug("editService()", "nw_chid", nw_chid);
 
@@ -616,8 +621,10 @@ void tab::listItemChanged()
 //TODO improve by positions QAbstractItemView::indexAt(x, y) min|max
 void tab::visualReindexList()
 {
+	debug("visualReindexList()");
+
 	int i = 0, y = 0, idx = 0;
-	int maxs = list_tree->topLevelItemCount() - 1;
+	int maxs = list_tree->topLevelItemCount();
 
 	do
 	{

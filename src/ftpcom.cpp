@@ -93,6 +93,7 @@ void ftpcom::cleanup()
 	curl_global_cleanup();
 }
 
+//TODO FIX freezes with wrong parameters
 bool ftpcom::connect()
 {
 	debug("connect()");
