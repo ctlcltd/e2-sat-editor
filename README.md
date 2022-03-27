@@ -2,6 +2,8 @@
 
 An enigma2 channel list editor – under development.
 
+![screenshot](res/screenshot.png)
+
  
 ## Requirements
 

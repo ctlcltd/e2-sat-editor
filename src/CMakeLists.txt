@@ -10,6 +10,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui Widgets)
 find_package(CURL)
 
 qt_add_executable(e2-sat-editor WIN32 MACOSX_BUNDLE
+	logger.cpp
 	e2db.cpp
 	ftpcom.cpp
 	gui/about.cpp

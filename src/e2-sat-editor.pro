@@ -1,6 +1,7 @@
 CONFIG += qt debug
 QT += widgets
 SOURCES += main.cpp
+SOURCES += logger.cpp
 SOURCES += e2db.cpp
 SOURCES += ftpcom.cpp
 SOURCES += gui/*.cpp
