@@ -13,9 +13,11 @@
 #define about_h
 #include <QWidget>
 
+#include "../logger.h"
+
 namespace e2se_gui_dialog
 {
-class about
+class about : protected e2se::log_factory
 {
 	public:
 		about(QWidget* mwid);

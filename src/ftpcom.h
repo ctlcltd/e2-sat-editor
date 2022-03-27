@@ -14,6 +14,8 @@
 
 #include <curl/curl.h>
 
+#include "logger.h"
+
 using std::string;
 
 #ifndef ftpcom_h
@@ -59,10 +61,11 @@ class ftpcom
 		static size_t dataRead_func(void* csi, size_t size, size_t nmemb, void* pso);
 		static size_t dataDiscard_func(void* csi, size_t size, size_t nmemb, void* pso);
 		static size_t getContentLength_func(void* csi, size_t size, size_t nmemb, void* pso);
-		void debug(string cmsg);
-		void error(string cmsg, string rmsg);
 		string trs(string str);
 		string trw(string str, string param);
+		virtual void debug(string cmsg);
+		virtual void error(string cmsg, string rmsg);
+		e2se::logger* log;
     private:
 		bool actv;
         string host;

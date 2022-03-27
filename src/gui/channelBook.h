@@ -21,11 +21,13 @@ using std::string, std::pair, std::vector, std::map;
 #include <QString>
 #include <QHBoxLayout>
 #include <QListWidget>
+
+#include "../logger.h"
 #include "e2db_gui.h"
 
 namespace e2se_gui
 {
-class channelBook
+class channelBook : protected e2se::log_factory
 {
 	public:
 		channelBook(e2db* dbih);

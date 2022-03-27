@@ -18,18 +18,19 @@
 #include <iostream>
 #include <ctime>
 
+#include "logger.h"
+
 using std::string, std::pair, std::make_pair, std::vector, std::map, std::unordered_map, std::ifstream, std::stringstream;
 
 #ifndef e2db_h
 #define e2db_h
-namespace e2db
+namespace e2se_e2db
 {
 struct e2db_abstract
 {
 	public:
 		//C++17
 
-		inline static bool DEBUG = false;
 		inline static bool PARSER_TUNERSETS = true;
 		inline static bool PARSER_LAMEDB5_PRIOR = false;
 		inline static bool MAKER_LAMEDB5 = false;
@@ -202,11 +203,12 @@ struct e2db_abstract
 	protected:
 		unordered_map<string, string> e2db;
 		void options();
-		void debug(string ns, string cmsg = "", string optk = "", string optv = "", string indt = " ");
-		void error(string ns, string cmsg = "", string optk = "", string optv = "", string indt = " ");
-		static string loCase(string str);
-		static string upCase(string str);
 		inline static int LAMEDB_VER = 0;
+		virtual void debug(string cmsg);
+		virtual void debug(string cmsg, string optk, string optv);
+		virtual void error(string cmsg);
+		virtual void error(string cmsg, string optk, string optv);
+		e2se::logger* log;
 };
 
 class e2db_parser : virtual public e2db_abstract

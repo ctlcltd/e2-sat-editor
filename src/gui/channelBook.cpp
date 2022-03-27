@@ -18,7 +18,6 @@
 #include <QHeaderView>
 #include <QLabel>
 
-#include "../commons.h"
 #include "channelBook.h"
 
 using std::to_string, std::stoi;
@@ -29,7 +28,8 @@ namespace e2se_gui
 
 channelBook::channelBook(e2db* dbih)
 {
-	debug("channelBook");
+	this->log = new logger("channelBook");
+	debug("channelBook()");
 
 	this->dbih = dbih;
 
@@ -53,7 +53,7 @@ channelBook::channelBook(e2db* dbih)
 //TODO draggable application state
 void channelBook::side()
 {
-	debug("channelBook", "side()");
+	debug("side()");
 
 	this->lwid = new QListWidget;
 	lwid->setDragEnabled(true);
@@ -74,7 +74,7 @@ void channelBook::side()
 
 void channelBook::layout()
 {
-	debug("channelBook", "layout()");
+	debug("layout()");
 
 	this->awid = new QHBoxLayout;
 	awid->setContentsMargins(0, 0, 0, 0);
@@ -141,7 +141,7 @@ void channelBook::layout()
 
 void channelBook::sideRowChanged(int index)
 {
-	debug("channelBook", "sideRowChanged()", "index", to_string(index));
+	debug("sideRowChanged()", "index", to_string(index));
 
 	tree->scrollToItem(tree->topLevelItem(0));
 	tree->clear();
@@ -176,7 +176,7 @@ void channelBook::sideRowChanged(int index)
 //TODO FIX *index() load
 void channelBook::stacker(int vv)
 {
-	debug("channelBook", "stacker()", "index", to_string(vv));
+	debug("stacker()", "index", to_string(vv));
 
 	switch (vv)
 	{
@@ -305,7 +305,7 @@ void channelBook::populate()
 		curr = index.toStdString();
 	}
 
-	debug("channelBook", "populate()", "curr", curr);
+	debug("populate()", "curr", curr);
 
 	list->setSortingEnabled(false);
 	list->scrollToItem(list->topLevelItem(0));
@@ -367,7 +367,7 @@ void channelBook::populate()
 //TODO FIX
 void channelBook::trickySortByColumn(int column)
 {
-	debug("channelBook", "trickySortByColumn()", "column", to_string(column));
+	debug("trickySortByColumn()", "column", to_string(column));
 
 	Qt::SortOrder order = list->header()->sortIndicatorOrder();
 	column = column == 1 ? 0 : column;
@@ -385,7 +385,7 @@ void channelBook::trickySortByColumn(int column)
 
 vector<QString> channelBook::getSelected()
 {
-	debug("channelBook", "getSelected()");
+	debug("getSelected()");
 
 	vector<QString> channels;
 

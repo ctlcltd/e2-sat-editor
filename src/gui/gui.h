@@ -28,11 +28,13 @@ using std::string, std::unordered_map;
 #include <QActionGroup>
 #include <QLabel>
 
+#include "../logger.h"
+
 namespace e2se_gui
 {
 class tab;
 
-class gui
+class gui : protected e2se::log_factory
 {
 	Q_DECLARE_TR_FUNCTIONS(gui)
 

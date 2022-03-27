@@ -21,9 +21,7 @@
 #include <QLineEdit>
 #include <QCheckBox>
 
-#include "../commons.h"
 #include "editService.h"
-#include "todo.h"
 
 using std::to_string, std::stoi;
 using namespace e2se;
@@ -33,7 +31,8 @@ namespace e2se_gui
 
 editService::editService(e2db* dbih)
 {
-	debug("editService");
+	this->log = new logger("editService");
+	debug("editService()");
 	
 	this->dbih = dbih;
 	this->txdata = dbih->get_transponders_index();
@@ -41,7 +40,7 @@ editService::editService(e2db* dbih)
 
 void editService::display(QWidget* cwid)
 {
-	debug("editService", "display()");
+	debug("display()");
 
 	//TODO emit err
 	if (this->_state_edit && ! dbih->db.services.count(chid))
@@ -96,7 +95,7 @@ void editService::display(QWidget* cwid)
 
 void editService::serviceLayout()
 {
-	debug("editService", "layout()");
+	debug("layout()");
 
 	QGroupBox* dtl0 = new QGroupBox(tr("Service"));
 	QFormLayout* dtf0 = new QFormLayout;
@@ -138,7 +137,7 @@ void editService::serviceLayout()
 
 void editService::transponderLayout()
 {
-	debug("editService", "transponderLayout()");
+	debug("transponderLayout()");
 
 	QGroupBox* dtl1 = new QGroupBox(tr("Tuner"));
 	QFormLayout* dtf1 = new QFormLayout;
@@ -188,7 +187,7 @@ void editService::transponderLayout()
 //TODO delay flags
 void editService::paramsLayout()
 {
-	debug("editService", "paramsLayout()");
+	debug("paramsLayout()");
 
 	QGroupBox* dtl2 = new QGroupBox(tr("Parameters"));
 	dtl2->setMinimumWidth(250);
@@ -350,7 +349,7 @@ void editService::paramsLayout()
 
 void editService::tunerComboChanged(int index)
 {
-	debug("editService", "tunerComboChanged()", "index", to_string(index));
+	debug("tunerComboChanged()", "index", to_string(index));
 
 	QString qpos = dtf1tn->currentData().toString();
 	string pos = qpos.toStdString();
@@ -377,7 +376,7 @@ void editService::tunerComboChanged(int index)
 //TODO
 void editService::store()
 {
-	debug("editService", "store()");
+	debug("store()");
 
 	e2db::service ch;
 	if (this->_state_edit)
@@ -420,7 +419,7 @@ void editService::store()
 //TODO flags
 void editService::retrieve()
 {
-	debug("editService", "retrieve()");
+	debug("retrieve()");
 
 	e2db::service ch = dbih->db.services[chid];
 	e2db::transponder tx = dbih->db.transponders[ch.txid];
@@ -491,7 +490,7 @@ void editService::retrieve()
 
 void editService::save()
 {
-	debug("editService", "save()");
+	debug("save()");
 
 	store();
 
@@ -500,7 +499,7 @@ void editService::save()
 
 void editService::setEditID(string chid)
 {
-	debug("editService", "setEditID()");
+	debug("setEditID()");
 
 	this->chid = chid;
 	this->_state_edit = true;
@@ -508,7 +507,7 @@ void editService::setEditID(string chid)
 
 string editService::getEditID()
 {
-	debug("editService", "getEditID()");
+	debug("getEditID()");
 
 	return this->chid;
 }

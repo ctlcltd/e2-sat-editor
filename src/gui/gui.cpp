@@ -21,7 +21,6 @@
 #include <QFileDialog>
 #include <QTimer>
 
-#include "../commons.h"
 #include "gui.h"
 #include "tab.h"
 #include "settings.h"
@@ -47,7 +46,8 @@ class guiProxyStyle : public QProxyStyle
 
 gui::gui(int argc, char* argv[])
 {
-	debug("gui");
+	this->log = new logger("tab");
+	debug("gui()");
 
 	this->mroot = new QApplication(argc, argv);
 	mroot->setOrganizationName("e2 SAT Editor Team");
@@ -79,7 +79,7 @@ gui::gui(int argc, char* argv[])
 
 void gui::root()
 {
-	debug("gui", "root()");
+	debug("root()");
 
 	this->mfrm = new QGridLayout(mwid);
 
@@ -99,7 +99,7 @@ void gui::root()
 
 void gui::menuCtl()
 {
-	debug("gui", "menuCtl()");
+	debug("menuCtl()");
 
 	QMenuBar* menu = new QMenuBar(nullptr);
 	menu->setNativeMenuBar(true);
@@ -159,7 +159,7 @@ void gui::menuCtl()
 //TODO dir:rtl
 void gui::statusCtl()
 {
-	debug("gui", "statusCtl()");
+	debug("statusCtl()");
 
 	this->sbwid = new QStatusBar(mwid);
 	this->sbwidl = new QLabel;
@@ -177,7 +177,7 @@ void gui::statusCtl()
 
 void gui::tabCtl()
 {
-	debug("gui", "tabCtl()");
+	debug("tabCtl()");
 
 	ttidx = 0;
 
@@ -242,14 +242,14 @@ int gui::newTab(string filename = "")
 
 	ttmenu[ttid]->setChecked(true);
 
-	debug("gui", "newTab()", "ttid", to_string(ttid));
+	debug("newTab()", "ttid", to_string(ttid));
 
 	return index;
 }
 
 void gui::closeTab(int index)
 {
-	debug("gui", "closeTab()", "index", to_string(index));
+	debug("closeTab()", "index", to_string(index));
 
 	//TODO ?
 	// if (index == -1)
@@ -272,7 +272,7 @@ void gui::closeTab(int index)
 //TODO FIX SEGFAULT
 void gui::closeAllTabs()
 {
-	debug("gui", "closeAllTabs()");
+	debug("closeAllTabs()");
 
 	for (auto & action : mwtabs->actions())
 	{
@@ -294,12 +294,12 @@ void gui::closeAllTabs()
 
 void gui::tabChanged(int index)
 {
-	debug("gui", "tabChanged()", "index", to_string(index));
+	debug("tabChanged()", "index", to_string(index));
 }
 
 void gui::tabClicked(int index)
 {
-	debug("gui", "tabClicked()", "index", to_string(index));
+	debug("tabClicked()", "index", to_string(index));
 
 	//TODO FIX
 	// is prev. currentWidget on tabClicked
@@ -312,7 +312,7 @@ void gui::tabClicked(int index)
 
 void gui::tabMoved(int from, int to)
 {
-	debug("gui", "tabMoved()", "from|to", (to_string(from) + '|' + to_string(to)));
+	debug("tabMoved()", "from|to", (to_string(from) + '|' + to_string(to)));
 
 	auto actions = mwtabs->actions();
 	actions.move(from, to);
@@ -328,7 +328,7 @@ void gui::tabMoved(int from, int to)
 
 void gui::open()
 {
-	debug("gui", "open()");
+	debug("open()");
 
 	string dirname = openFileDialog();
 
@@ -338,7 +338,7 @@ void gui::open()
 
 string gui::openFileDialog()
 {
-	debug("gui", "openFileDialog()");
+	debug("openFileDialog()");
 	
 	string dirname;
 
@@ -352,7 +352,7 @@ string gui::openFileDialog()
 //TODO native file dialog button "Open"
 string gui::saveFileDialog(string filename)
 {
-	debug("gui", "saveFileDialog()", "filename", filename);
+	debug("saveFileDialog()", "filename", filename);
 
 	string dirname;
 
@@ -367,7 +367,7 @@ string gui::saveFileDialog(string filename)
 
 void gui::tabChangeName(int ttid, string filename)
 {
-	debug("gui", "tabChangeName()", "ttid", to_string(ttid));
+	debug("tabChangeName()", "ttid", to_string(ttid));
 
 	tab* ttab = ttabs[ttid];
 	int index = twid->indexOf(ttab->widget);
@@ -412,7 +412,7 @@ void gui::loaded(int counters[5])
 
 void gui::reset()
 {
-	debug("gui", "reset()");
+	debug("reset()");
 
 	sbwidl->setText("");
 	sbwidr->setText("");
@@ -420,7 +420,7 @@ void gui::reset()
 
 void gui::save()
 {
-	debug("gui", "save()");
+	debug("save()");
 
 	tab* ttab = getCurrentTabHandler();
 	ttab->saveFile(true); //TODO temporarly set to save as
@@ -429,7 +429,7 @@ void gui::save()
 //TODO tab actions ctl
 void gui::tabEditAction(int action)
 {
-	debug("gui", "tabEditAction()", "action", to_string(action));
+	debug("tabEditAction()", "action", to_string(action));
 
 	tab* ttab = getCurrentTabHandler();
 	ttab->listItemAction(action);
@@ -454,7 +454,7 @@ tab* gui::getCurrentTabHandler()
 
 void gui::setDefaultSets()
 {
-	debug("gui", "setDefaultSets()");
+	debug("setDefaultSets()");
 
 	sets->setValue("application/version", mroot->applicationVersion());
 

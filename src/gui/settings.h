@@ -12,6 +12,8 @@
 #include <vector>
 #include <map>
 
+#include "../logger.h"
+
 using std::vector, std::map;
 
 #ifndef settings_h
@@ -30,7 +32,7 @@ using e2se_gui::WidgetWithBackdrop;
 
 namespace e2se_gui_dialog
 {
-class settings
+class settings : protected e2se::log_factory
 {
 	Q_DECLARE_TR_FUNCTIONS(settings)
 

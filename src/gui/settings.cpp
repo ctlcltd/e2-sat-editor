@@ -24,7 +24,6 @@
 #include <QValidator>
 #include <QHeaderView>
 
-#include "../commons.h"
 #include "settings.h"
 
 using std::to_string;
@@ -35,7 +34,8 @@ namespace e2se_gui_dialog
 
 settings::settings(QWidget* mwid)
 {
-	debug("settings");
+	this->log = new logger("settings");
+	debug("settings()");
 
 	this->dial = new QDialog(mwid);
 	dial->setWindowTitle(tr("Settings"));
@@ -308,7 +308,7 @@ QListWidgetItem* settings::addProfile(int i)
 		// i++;
 		tmpps[i]["profileName"] = tr("Profile");
 	}
-	debug("settings", "addProfile()", "i", to_string(i));
+	debug("addProfile()", "i", to_string(i));
 
 	QListWidgetItem* item = new QListWidgetItem(tr("Profile"), rplist);
 	item->setText(item->text() + ' ' + QString::fromStdString(to_string(i)));
@@ -328,7 +328,7 @@ QListWidgetItem* settings::addProfile(int i)
 
 void settings::delProfile()
 {
-	debug("settings", "delProfile()");
+	debug("delProfile()");
 
 	QListWidgetItem* curr = rplist->currentItem();
 	int i = curr->data(Qt::UserRole).toInt();
@@ -357,7 +357,7 @@ void settings::renameProfile(bool enabled)
 
 void settings::profileNameChanged(QString text)
 {
-	debug("settings", "profileNameChanged()");
+	debug("profileNameChanged()");
 
 	QListWidgetItem* curr = rplist->currentItem();
 	int i = curr->data(Qt::UserRole).toInt();
@@ -366,7 +366,7 @@ void settings::profileNameChanged(QString text)
 
 void settings::currentProfileChanged(QListWidgetItem* current, QListWidgetItem* previous)
 {
-	debug("settings", "currentProfileChanged()");
+	debug("currentProfileChanged()");
 
 	if (previous != nullptr && ! this->_state_delt)
 	{
@@ -386,7 +386,7 @@ void settings::currentProfileChanged(QListWidgetItem* current, QListWidgetItem* 
 
 void settings::tabChanged(int index)
 {
-	debug("settings", "tabChanged()", "index", to_string(index));
+	debug("tabChanged()", "index", to_string(index));
 
 	if (this->_state_prev == -1)
 	{
@@ -408,7 +408,7 @@ void settings::tabChanged(int index)
 
 void settings::store()
 {
-	debug("settings", "store()");
+	debug("store()");
 
 	int size = sets->value("profile/size").toInt();
 	sets->beginWriteArray("profile");
@@ -449,7 +449,7 @@ void settings::store()
 
 void settings::store(QTableWidget* adtbl)
 {
-	debug("settings", "store()", "", "advanced");
+	debug("store()", "", "advanced");
 
 	for (int i = 0; i < adtbl->rowCount(); i++)
 	{
@@ -464,7 +464,7 @@ void settings::store(QTableWidget* adtbl)
 
 void settings::retrieve()
 {
-	debug("settings", "retrieve()");
+	debug("retrieve()");
 
 	this->_state_retr = true;
 	int selected = sets->value("profile/selected").toInt();
@@ -509,7 +509,7 @@ void settings::retrieve()
 
 void settings::retrieve(QListWidgetItem* item)
 {
-	debug("settings", "retrieve()", "", "item");
+	debug("retrieve()", "", "item");
 
 	int i = item->data(Qt::UserRole).toInt();
 	for (auto & item : prefs[PREF_SECTIONS::Connections])
@@ -524,7 +524,7 @@ void settings::retrieve(QListWidgetItem* item)
 
 void settings::retrieve(QTableWidget* adtbl)
 {
-	debug("settings", "retrieve()", "", "advanced");
+	debug("retrieve()", "", "advanced");
 
 	QStringList keys = sets->allKeys().filter(QRegularExpression("^(application|preference|profile)/"));
 	QStringList::const_iterator iq;
@@ -544,7 +544,7 @@ void settings::retrieve(QTableWidget* adtbl)
 
 void settings::save()
 {
-	debug("settings", "save()");
+	debug("save()");
 
 	if (dtwid->currentIndex() == PREF_SECTIONS::Advanced)
 		store(adtbl);

@@ -22,12 +22,11 @@ using std::string, std::pair, std::vector, std::unordered_map;
 #include <QRegularExpression>
 #include <QSettings>
 
-#include "../commons.h"
 #include "../e2db.h"
 
 namespace e2se_gui
 {
-class e2db : public ::e2db::e2db
+class e2db : public ::e2se_e2db::e2db
 {
 	public:
 		struct entry {
@@ -37,7 +36,7 @@ class e2db : public ::e2db::e2db
 		e2db();
 		~e2db()
 		{
-			e2se::debug("e2db", "~destructor");
+			// debug("e2db", "~destructor");
 		}
 		void options();
 		string add_transponder(transponder& tx);

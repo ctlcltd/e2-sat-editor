@@ -21,11 +21,13 @@ using std::string, std::pair, std::vector;
 #include <QDialog>
 #include <QGridLayout>
 #include <QComboBox>
+
+#include "../logger.h"
 #include "e2db_gui.h"
 
 namespace e2se_gui
 {
-class editService
+class editService : protected e2se::log_factory
 {
 	Q_DECLARE_TR_FUNCTIONS(editService)
 

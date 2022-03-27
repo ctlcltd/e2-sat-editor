@@ -14,15 +14,15 @@
 #include <sstream>
 #include <cstring>
 
-#include "commons.h"
 #include "ftpcom.h"
 
-using std::string, std::stringstream, std::min, std::cout, std::endl, std::to_string, std::stoi;
+using std::string, std::stringstream, std::min, std::endl, std::to_string, std::stoi;
 
 namespace e2se_ftpcom
 {
 ftpcom::ftpcom(ftp_params params)
 {
+	this->log = new e2se::logger("ftpcom");
 	debug("ftpcom()");
 
 	if (params.user.empty())
@@ -141,7 +141,7 @@ void ftpcom::listDir(int path)
 	while (getline(data, line))
 	{
 		if (line.empty()) continue;
-		cout << line << endl;
+		debug(line);
 	}
 }
 
@@ -262,13 +262,13 @@ string ftpcom::getBasePath(int path)
 
 void ftpcom::debug(string cmsg)
 {
-	e2se::debug("ftpcom", cmsg);
+	this->log->debug(cmsg);
 }
 
 void ftpcom::error(string cmsg, string rmsg)
 {
 	curl_global_cleanup();
-	e2se::error("ftpcom", cmsg, "Error", rmsg);
+	this->log->error(cmsg, "Error", rmsg);
 }
 
 string ftpcom::trs(string str)

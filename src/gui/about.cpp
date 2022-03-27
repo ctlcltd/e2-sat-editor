@@ -16,7 +16,6 @@
 #include <QLabel>
 #include <QIcon>
 
-#include "../commons.h"
 #include "about.h"
 
 using namespace e2se;
@@ -26,11 +25,12 @@ namespace e2se_gui_dialog
 
 about::about(QWidget* mwid)
 {
-	debug("about");
+	this->log = new logger("about");
+	debug("about()");
 
 	QDialog* dial = new QDialog(mwid);
 	dial->setWindowTitle("About e2 SAT Editor");
-	dial->connect(dial, &QDialog::finished, [=]() { debug("about", "closed"); delete dial; delete this; });
+	dial->connect(dial, &QDialog::finished, [=]() { debug("closed"); delete dial; delete this; });
 
 	QGridLayout* dfrm = new QGridLayout(dial);
 	QHBoxLayout* dhbox = new QHBoxLayout;

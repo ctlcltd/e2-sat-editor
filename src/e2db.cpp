@@ -14,42 +14,32 @@
 #include <filesystem>
 #include <cstdio>
 #include <cstring>
+
 #include "e2db.h"
 
 using std::string, std::pair, std::vector, std::map, std::unordered_map, std::unordered_set, std::cout, std::endl, std::ifstream, std::ofstream, std::stringstream, std::to_string, std::atoi, std::hex, std::dec, std::setfill, std::setw, std::uppercase;
 
-namespace e2db
+namespace e2se_e2db
 {
 
-void e2db_abstract::debug(string ns, string cmsg, string optk, string optv, string indt)
+void e2db_abstract::debug(string cmsg)
 {
-	if (! DEBUG) return;
-	cout << '[' << "e2db." << ns << ']';
-	if (! cmsg.empty()) cout << indt << cmsg;
-	if (! optk.empty()) cout << indt << optk << ':';
-	if (! optv.empty()) cout << ' ' << optv;
-	cout << endl;
+	this->log->debug(cmsg);
 }
 
-void e2db_abstract::error(string ns, string cmsg, string optk, string optv, string indt)
+void e2db_abstract::debug(string cmsg, string optk, string optv)
 {
-	cout << '[' << "e2se." << ns << ']';
-	if (! cmsg.empty()) cout << indt << cmsg;
-	if (! optk.empty()) cout << indt << optk << ':';
-	if (! optv.empty()) cout << ' ' << optv;
-	cout << endl;
+	this->log->debug(cmsg, optk, optv);
 }
 
-string e2db_abstract::loCase(string str)
+void e2db_abstract::error(string cmsg)
 {
-	transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return tolower(c); });
-	return str;
+	this->log->error(cmsg);
 }
 
-string e2db_abstract::upCase(string str)
+void e2db_abstract::error(string cmsg, string optk, string optv)
 {
-	transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return toupper(c); });
-	return str;
+	this->log->error(cmsg, optk, optv);
 }
 
 void e2db_abstract::add_transponder(int idx, transponder& tx)
@@ -93,7 +83,9 @@ void e2db_abstract::add_service(int idx, service& ch)
 
 e2db_parser::e2db_parser()
 {
-	debug("e2db_parser");
+	this->log = new e2se::logger("e2db");
+
+	debug("e2db_parser()");
 
 	//TODO
 	dbfilename = PARSER_LAMEDB5_PRIOR ? "lamedb5" : "lamedb";
@@ -101,7 +93,7 @@ e2db_parser::e2db_parser()
 
 void e2db_parser::parse_e2db()
 {
-	debug("e2db_parser", "parse_e2db()");
+	debug("parse_e2db()");
 	clock_t start = clock();
 
 	ifstream flamedb (e2db[dbfilename]);
@@ -148,31 +140,31 @@ void e2db_parser::parse_e2db()
 	// commit: 67b6442	elapsed time: 421056
 	// commit: HEAD		elapsed time: 423214
 
-	debug("e2db_parser", "parse_e2db()", "elapsed time", to_string(end - start));
+	debug("parse_e2db()", "elapsed time", to_string(end - start));
 }
 
 void e2db_parser::parse_e2db_lamedb(ifstream& flamedb)
 {
-	debug("e2db_parser", "parse_e2db_lamedb()");
+	debug("parse_e2db_lamedb()");
 
 	string hlamedb;
 	getline(flamedb, hlamedb);
 	char vlamedb = (hlamedb.substr(hlamedb.length() - 2, hlamedb.length() - 1))[0];
 	int dbver = isdigit(vlamedb) ? int (vlamedb) - 48 : 0;
 
-	debug("e2db_parser", "lamedb", "File header", hlamedb, "\t");
+	debug("lamedb", "File header", hlamedb);
 
 	switch (dbver)
 	{
 		case 4: parse_e2db_lamedb4(flamedb); break;
 		case 5: parse_e2db_lamedb5(flamedb); break;
-		default: error("e2db_parser", "lamedb", "Error", "Unknown database format.", "\t");
+		default: error("lamedb", "Error", "Unknown database format.");
 	}
 }
 
 void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 {
-	debug("e2db_parser", "parse_e2db_lamedb4()");
+	debug("parse_e2db_lamedb4()");
 	
 	LAMEDB_VER = 4;
 	int step = 0;
@@ -249,7 +241,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 
 void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 {
-	debug("e2db_parser", "parse_e2db_lamedb5()");
+	debug("parse_e2db_lamedb5()");
 
 	LAMEDB_VER = 5;
 	bool step;
@@ -366,10 +358,10 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 		break;
 		//TODO ATSC
 		case 'a': // ATSC:
-			error("e2db_parser", "lamedb", "Error", "ATSC not supported yet.", "\t");
+			error("lamedb", "Error", "ATSC not supported yet.");
 		break;
 		default:
-			error("e2db_parser", "lamedb", "Error", "Transponder type is unknown.", "\t");
+			error("lamedb", "Error", "Transponder type is unknown.");
 			return;
 	}
 	tx.ttype = ttype;
@@ -431,7 +423,7 @@ void e2db_parser::parse_lamedb_service_data(string data, service& ch)
 
 void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 {
-	debug("e2db_parser", "parse_e2db_bouquet()", "bname", bname);
+	debug("parse_e2db_bouquet()", "bname", bname);
 
 	int idx = 0;
 	string line;
@@ -478,7 +470,7 @@ void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 
 void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, string pname)
 {
-	debug("e2db_parser", "parse_e2db_userbouquet()", "bname", bname);
+	debug("parse_e2db_userbouquet()", "bname", bname);
 
 	int step = 0;
 	int idx = 0;
@@ -574,14 +566,14 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 //TODO needs index
 void e2db_parser::parse_tunersets_xml(int ytype, ifstream& ftunxml)
 {
-	debug("e2db_parser", "parse_tunersets_xml()", "ytype", to_string(ytype));
+	debug("parse_tunersets_xml()", "ytype", to_string(ytype));
 
 	string htunxml;
 	getline(ftunxml, htunxml);
 
 	if (htunxml.find("<?xml") == string::npos)
 	{
-		error("e2db_parser", "parse_tunersets_xml()", "Error", "Unknown file format.", "\t");
+		error("parse_tunersets_xml()", "Error", "Unknown file format.");
 		return;
 	}
 
@@ -594,7 +586,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, ifstream& ftunxml)
 			tn.ytype = 0;
 		break;
 		default:
-			error("e2db_parser", "parse_tunersets_xml()", "Error", "Not supported yet.", "\t");
+			error("parse_tunersets_xml()", "Error", "Not supported yet.");
 			return;
 	}
 
@@ -701,7 +693,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, ifstream& ftunxml)
 //TODO hex/dec values
 void e2db_parser::debugger()
 {
-	debug("e2db_parser", "debugger()");
+	debug("debugger()");
 
 	cout << hex;
 	cout << "transponders" << endl << endl;
@@ -823,30 +815,30 @@ void e2db_parser::debugger()
 
 unordered_map<string, e2db_parser::transponder> e2db_parser::get_transponders()
 {
-	debug("e2db_parser", "get_transponders()");
+	debug("get_transponders()");
 	return db.transponders;
 }
 
 unordered_map<string, e2db_parser::service> e2db_parser::get_services()
 {
-	debug("e2db_parser", "get_services()");
+	debug("get_services()");
 	return db.services;
 }
 
 pair<unordered_map<string, e2db_parser::bouquet>, unordered_map<string, e2db_parser::userbouquet>> e2db_parser::get_bouquets()
 {
-	debug("e2db_parser", "get_bouquets()");
+	debug("get_bouquets()");
 	return pair (bouquets, userbouquets); //C++ 17
 }
 
 // C++17
 bool e2db_parser::read_from_localdir(string localdir)
 {
-	debug("e2db_parser", "read_from_localdir()", "localdir", localdir);
+	debug("read_from_localdir()", "localdir", localdir);
 
 	if (! std::filesystem::exists(localdir))
 	{
-		error("e2db_parser", "read_from_localdir()", "Error", "Directory \"" + localdir + "\" not exists.", "\t");
+		error("read_from_localdir()", "Error", "Directory \"" + localdir + "\" not exists.");
 		return false;
 	}
 
@@ -861,7 +853,7 @@ bool e2db_parser::read_from_localdir(string localdir)
 	}
 	if (e2db.count(dbfilename) < 1)
 	{
-		error("e2db_parser", "read_from_localdir()", "Error", "lamedb not found.", "\t");
+		error("read_from_localdir()", "Error", "lamedb not found.");
 		return false;
 	}
 	this->localdir = localdir;
@@ -871,7 +863,7 @@ bool e2db_parser::read_from_localdir(string localdir)
 
 bool e2db_parser::read(string localdir)
 {
-	debug("e2db_parser", "read()", "localdir", localdir);
+	debug("read()", "localdir", localdir);
 
 	if (read_from_localdir(localdir))
 		parse_e2db();
@@ -885,12 +877,14 @@ bool e2db_parser::read(string localdir)
 
 e2db_maker::e2db_maker()
 {
-	debug("e2db_maker");
+	this->log = new e2se::logger("e2db");
+
+	debug("e2db_maker()");
 }
 
 void e2db_maker::make_e2db()
 {
-	debug("e2db_maker", "make_e2db()");
+	debug("make_e2db()");
 
 	begin_transaction();
 	make_e2db_lamedb();
@@ -901,7 +895,7 @@ void e2db_maker::make_e2db()
 
 void e2db_maker::begin_transaction()
 {
-	debug("e2db_maker", "begin_transaction()");
+	debug("begin_transaction()");
 
 	time_t curr_tst = time(0);
 	tm* _out_tst = localtime(&curr_tst);
@@ -910,13 +904,13 @@ void e2db_maker::begin_transaction()
 
 void e2db_maker::end_transaction()
 {
-	debug("e2db_maker", "end_transaction()");
+	debug("end_transaction()");
 }
 
 //TODO FIX mingw32 wrong %z %Z
 string e2db_maker::get_timestamp()
 {
-	debug("e2db_maker", "get_timestamp()");
+	debug("get_timestamp()");
 
 	char datetime[80];
 	// @link https://sourceforge.net/p/mingw-w64/bugs/793/
@@ -931,7 +925,7 @@ string e2db_maker::get_editor_string()
 
 void e2db_maker::make_e2db_lamedb()
 {
-	debug("e2db_maker", "make_e2db_lamedb()");
+	debug("make_e2db_lamedb()");
 
 	make_e2db_lamedb4();
 
@@ -943,14 +937,14 @@ void e2db_maker::make_e2db_lamedb()
 
 void e2db_maker::make_e2db_lamedb4()
 {
-	debug("e2db_maker", "make_e2db_lamedb4()");
+	debug("make_e2db_lamedb4()");
 	LAMEDB_VER = 4;
 	make_lamedb("lamedb");
 }
 
 void e2db_maker::make_e2db_lamedb5()
 {
-	debug("e2db_maker", "make_e2db_lamedb5()");
+	debug("make_e2db_lamedb5()");
 	LAMEDB_VER = 5;
 	make_lamedb("lamedb5");
 }
@@ -958,7 +952,7 @@ void e2db_maker::make_e2db_lamedb5()
 //TODO ATSC
 void e2db_maker::make_lamedb(string filename)
 {
-	debug("e2db_maker", "make_lamedb()");
+	debug("make_lamedb()");
 
 	// formatting
 	//
@@ -1080,7 +1074,7 @@ void e2db_maker::make_lamedb(string filename)
 
 void e2db_maker::make_e2db_bouquets()
 {
-	debug("e2db_maker", "make_e2db_bouquets()");
+	debug("make_e2db_bouquets()");
 
 	for (auto & x: bouquets)
 		make_bouquet(x.first);
@@ -1088,7 +1082,7 @@ void e2db_maker::make_e2db_bouquets()
 
 void e2db_maker::make_e2db_userbouquets()
 {
-	debug("e2db_maker", "make_e2db_userbouquets()");
+	debug("make_e2db_userbouquets()");
 
 	for (auto & x: userbouquets)
 		make_userbouquet(x.first);
@@ -1097,7 +1091,7 @@ void e2db_maker::make_e2db_userbouquets()
 //TODO index
 void e2db_maker::make_bouquet(string bname)
 {
-	debug("e2db_maker", "make_bouquet()", "bname", bname);
+	debug("make_bouquet()", "bname", bname);
 
 	bouquet bs = bouquets[bname];
 	stringstream ss;
@@ -1119,7 +1113,7 @@ void e2db_maker::make_bouquet(string bname)
 //TODO upCase or loCase
 void e2db_maker::make_userbouquet(string bname)
 {
-	debug("e2db_maker", "make_userbouquet()", "bname", bname);
+	debug("make_userbouquet()", "bname", bname);
 
 	userbouquet ub = userbouquets[bname];
 	stringstream ss;
@@ -1137,9 +1131,12 @@ void e2db_maker::make_userbouquet(string bname)
 		if (db.services.count(x.second))
 		{
 			service cdata = db.services[x.second];
+			string onid = cdata.onid;
+			transform(onid.begin(), onid.end(), onid.begin(), [](unsigned char c) { return toupper(c); });
+
 			ss << uppercase << cdata.ssid << ':';
 			ss << uppercase << cdata.tsid << ':';
-			ss << upCase(cdata.onid) << ':';
+			ss << onid << ':';
 			ss << uppercase << cdata.dvbns << ':';
 			ss << "0:0:0:";
 		}
@@ -1158,11 +1155,11 @@ void e2db_maker::make_userbouquet(string bname)
 //C++17
 bool e2db_maker::write_to_localdir(string localdir, bool overwrite)
 {
-	debug("e2db_maker", "write_to_localdir()", "localdir", localdir);
+	debug("write_to_localdir()", "localdir", localdir);
 
 	if (! std::filesystem::is_directory(localdir))
 	{
-		error("e2db_maker", "write_to_localdir()", "Error", "Directory \"" + localdir + "\" not exists.");
+		error("write_to_localdir()", "Error", "Directory \"" + localdir + "\" not exists.");
 		return false;
 	}
 	//TODO file exists and (force) overwrite
@@ -1185,7 +1182,7 @@ bool e2db_maker::write_to_localdir(string localdir, bool overwrite)
 
 bool e2db_maker::write(string localdir, bool overwrite)
 {
-	debug("e2db_maker", "write()", "localdir", localdir);
+	debug("write()", "localdir", localdir);
 
 	make_e2db();
 
@@ -1197,25 +1194,25 @@ bool e2db_maker::write(string localdir, bool overwrite)
 
 void e2db_maker::set_index(unordered_map<string, vector<pair<int, string>>> index)
 {
-	debug("e2db_maker", "set_index()");
+	debug("set_index()");
 	this->index = index;
 }
 
 void e2db_maker::set_transponders(unordered_map<string, e2db_maker::transponder> transponders)
 {
-	debug("e2db_maker", "set_transponders()");
+	debug("set_transponders()");
 	db.transponders = transponders;
 }
 
 void e2db_maker::set_channels(unordered_map<string, e2db_maker::service> services)
 {
-	debug("e2db_maker", "set_channels()");
+	debug("set_channels()");
 	db.services = services;
 }
 
 void e2db_maker::set_bouquets(pair<unordered_map<string, e2db_maker::bouquet>, unordered_map<string, e2db_maker::userbouquet>> bouquets)
 {
-	debug("e2db_maker", "set_bouquets()");
+	debug("set_bouquets()");
 	this->bouquets = bouquets.first;
 	this->userbouquets = bouquets.second;
 }
@@ -1224,12 +1221,14 @@ void e2db_maker::set_bouquets(pair<unordered_map<string, e2db_maker::bouquet>, u
 
 e2db::e2db()
 {
-	debug("e2db");
+	this->log = new e2se::logger("e2db");
+
+	debug("e2db()");
 }
 
 void e2db::add_transponder(transponder& tx)
 {
-	debug("e2db", "add_transponder()", "txid", tx.txid);
+	debug("add_transponder()", "txid", tx.txid);
 
 	tx.index = index.count("txs");
 	e2db_abstract::add_transponder(tx.index, tx);
@@ -1237,13 +1236,13 @@ void e2db::add_transponder(transponder& tx)
 
 void e2db::edit_transponder(string txid, transponder& tx)
 {
-	debug("e2db", "edit_transponder()", "txid", txid);
+	debug("edit_transponder()", "txid", txid);
 
 	char nw_txid[25];
 	sprintf(nw_txid, "%x:%x", tx.tsid, tx.dvbns);
 	tx.txid = nw_txid;
 
-	debug("e2db", "edit_service()", "nw_txid", nw_txid);
+	debug("edit_service()", "nw_txid", nw_txid);
 
 	if (tx.txid == txid)
 	{
@@ -1258,7 +1257,7 @@ void e2db::edit_transponder(string txid, transponder& tx)
 
 void e2db::remove_transponder(string txid)
 {
-	debug("e2db", "remove_transponder()", "txid", txid);
+	debug("remove_transponder()", "txid", txid);
 
 	db.transponders.erase(txid);
 	//TODO remove from indexes
@@ -1267,7 +1266,7 @@ void e2db::remove_transponder(string txid)
 
 void e2db::add_service(service& ch)
 {
-	debug("e2db", "add_service()", "chid", ch.chid);
+	debug("add_service()", "chid", ch.chid);
 
 	ch.index = index.count("chs");
 	e2db_abstract::add_service(ch.index, ch);
@@ -1275,7 +1274,7 @@ void e2db::add_service(service& ch)
 
 void e2db::edit_service(string chid, service& ch)
 {
-	debug("e2db", "edit_service()", "chid", chid);
+	debug("edit_service()", "chid", chid);
 
 	char nw_chid[25];
 	char nw_txid[25];
@@ -1284,7 +1283,7 @@ void e2db::edit_service(string chid, service& ch)
 	ch.txid = nw_txid;
 	ch.chid = nw_chid;
 
-	debug("e2db", "edit_service()", "nw_chid", nw_chid);
+	debug("edit_service()", "nw_chid", nw_chid);
 
 	if (ch.chid == chid)
 	{
@@ -1299,7 +1298,7 @@ void e2db::edit_service(string chid, service& ch)
 
 void e2db::remove_service(string chid)
 {
-	debug("e2db", "remove_service()", "chid", chid);
+	debug("remove_service()", "chid", chid);
 
 	service ch = db.services[chid];
 	string kchid = 's' + chid;
@@ -1314,7 +1313,7 @@ void e2db::remove_service(string chid)
 //TODO unique (eg. terrestrial MUX)
 map<string, vector<pair<int, string>>> e2db::get_channels_index()
 {
-	debug("e2db", "get_channels_index()");
+	debug("get_channels_index()");
 
 	map<string, vector<pair<int, string>>> _index;
 
@@ -1331,7 +1330,7 @@ map<string, vector<pair<int, string>>> e2db::get_channels_index()
 
 map<string, vector<pair<int, string>>> e2db::get_transponders_index()
 {
-	debug("e2db", "get_transponders_index()");
+	debug("get_transponders_index()");
 
 	map<string, vector<pair<int, string>>> _index;
 
@@ -1346,7 +1345,7 @@ map<string, vector<pair<int, string>>> e2db::get_transponders_index()
 
 map<string, vector<pair<int, string>>> e2db::get_services_index()
 {
-	debug("e2db", "get_services_index()");
+	debug("get_services_index()");
 
 	map<string, vector<pair<int, string>>> _index;
 	_index["chs"] = index["chs"];
@@ -1356,7 +1355,7 @@ map<string, vector<pair<int, string>>> e2db::get_services_index()
 
 map<string, vector<pair<int, string>>> e2db::get_bouquets_index()
 {
-	debug("e2db", "get_bouquets_index()");
+	debug("get_bouquets_index()");
 
 	map<string, vector<pair<int, string>>> _index;
 
@@ -1368,7 +1367,7 @@ map<string, vector<pair<int, string>>> e2db::get_bouquets_index()
 
 map<string, vector<pair<int, string>>> e2db::get_userbouquets_index()
 {
-	debug("e2db", "get_userbouquets_index()");
+	debug("get_userbouquets_index()");
 
 	map<string, vector<pair<int, string>>> _index;
 
@@ -1380,7 +1379,7 @@ map<string, vector<pair<int, string>>> e2db::get_userbouquets_index()
 
 map<string, vector<pair<int, string>>> e2db::get_packages_index()
 {
-	debug("e2db", "get_packages_index()");
+	debug("get_packages_index()");
 
 	map<string, vector<pair<int, string>>> _index;
 
@@ -1402,7 +1401,7 @@ map<string, vector<pair<int, string>>> e2db::get_packages_index()
 
 map<string, vector<pair<int, string>>> e2db::get_resolution_index()
 {
-	debug("e2db", "get_resolution_index()");
+	debug("get_resolution_index()");
 
 	map<string, vector<pair<int, string>>> _index;
 
@@ -1417,7 +1416,7 @@ map<string, vector<pair<int, string>>> e2db::get_resolution_index()
 
 map<string, vector<pair<int, string>>> e2db::get_encryption_index()
 {
-	debug("e2db", "get_encryption_index()");
+	debug("get_encryption_index()");
 
 	map<string, vector<pair<int, string>>> _index;
 	unordered_set<string> _unique;
@@ -1451,7 +1450,7 @@ map<string, vector<pair<int, string>>> e2db::get_encryption_index()
 
 map<string, vector<pair<int, string>>> e2db::get_az_index()
 {
-	debug("e2db", "get_az_index()");
+	debug("get_az_index()");
 
 	map<string, vector<pair<int, string>>> _index;
 

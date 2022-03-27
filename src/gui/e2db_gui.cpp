@@ -20,7 +20,7 @@ namespace e2se_gui
 {
 e2db::e2db()
 {
-	e2se::debug("e2db");
+	debug("gui.e2db()");
 
 	this->sets = new QSettings;
 	options();
@@ -28,19 +28,19 @@ e2db::e2db()
 
 void e2db::options()
 {
-	e2se::debug("e2db", "options()");
+	debug("options()");
 
-	e2db::DEBUG = e2se::DEBUG;
-	e2db::PARSER_TUNERSETS = e2se::PARSER_TUNERSETS;
-	e2db::PARSER_LAMEDB5_PRIOR = e2se::PARSER_LAMEDB5;
-	e2db::MAKER_LAMEDB5 = e2se::MAKER_LAMEDB5;
+	// e2db::DEBUG = this->sets->value("debug", true).toBool();
+	e2db::PARSER_TUNERSETS = this->sets->value("parserTunerset", true).toBool();
+	e2db::PARSER_LAMEDB5_PRIOR = this->sets->value("parserLamedb5", false).toBool();
+	e2db::MAKER_LAMEDB5 = this->sets->value("makerLamedb5", true).toBool();
 }
 
 string e2db::add_transponder(transponder& tx)
 {
-	e2se::debug("e2db", "add_transponder()", "txid", tx.txid);
+	debug("add_transponder()", "txid", tx.txid);
 
-	this->::e2db::e2db::add_transponder(tx);
+	this->::e2se_e2db::e2db::add_transponder(tx);
 	tx = db.transponders[tx.txid];
 	entries.transponders[tx.txid] = entry_transponder(tx);
 	return tx.txid;
@@ -48,9 +48,9 @@ string e2db::add_transponder(transponder& tx)
 
 string e2db::edit_transponder(string txid, transponder& tx)
 {
-	e2se::debug("e2db", "edit_transponder()", "txid", txid);
+	debug("edit_transponder()", "txid", txid);
 
-	this->::e2db::e2db::edit_transponder(txid, tx);
+	this->::e2se_e2db::e2db::edit_transponder(txid, tx);
 	tx = db.transponders[tx.txid];
 	entries.transponders[tx.txid] = entry_transponder(tx);
 	return tx.txid;
@@ -58,17 +58,17 @@ string e2db::edit_transponder(string txid, transponder& tx)
 
 void e2db::remove_transponder(string txid)
 {
-	e2se::debug("e2db", "remove_transponder()", "txid", txid);
+	debug("remove_transponder()", "txid", txid);
 
-	this->::e2db::e2db::remove_transponder(txid);
+	this->::e2se_e2db::e2db::remove_transponder(txid);
 	entries.transponders.erase(txid);
 }
 
 string e2db::add_service(service& ch)
 {
-	e2se::debug("e2db", "add_service()", "chid", ch.chid);
+	debug("add_service()", "chid", ch.chid);
 
-	this->::e2db::e2db::add_service(ch);
+	this->::e2se_e2db::e2db::add_service(ch);
 	ch = db.services[ch.chid];
 	entries.services[ch.chid] = entry_service(ch);
 	return ch.chid;
@@ -76,9 +76,9 @@ string e2db::add_service(service& ch)
 
 string e2db::edit_service(string chid, service& ch)
 {
-	e2se::debug("e2db", "edit_service()", "chid", chid);
+	debug("edit_service()", "chid", chid);
 
-	this->::e2db::e2db::edit_service(chid, ch);
+	this->::e2se_e2db::e2db::edit_service(chid, ch);
 	ch = db.services[ch.chid];
 	entries.services[ch.chid] = entry_service(ch);
 	return ch.chid;
@@ -86,15 +86,15 @@ string e2db::edit_service(string chid, service& ch)
 
 void e2db::remove_service(string chid)
 {
-	e2se::debug("e2db", "remove_service()", "chid", chid);
+	debug("remove_service()", "chid", chid);
 
-	this->::e2db::e2db::remove_service(chid);
+	this->::e2se_e2db::e2db::remove_service(chid);
 	entries.services.erase(chid);
 }
 
 bool e2db::prepare(string localdir)
 {
-	e2se::debug("e2db", "prepare()");
+	debug("prepare()");
 
 	if (! this->read(localdir))
 		return false;
@@ -114,11 +114,11 @@ bool e2db::prepare(string localdir)
 
 bool e2db::write(string localdir, bool overwrite)
 {
-	e2se::debug("e2db", "write()");
+	debug("write()");
 
 	this->set_index(gindex);
 
-	if (! this->::e2db::e2db::write(localdir, overwrite))
+	if (! this->::e2se_e2db::e2db::write(localdir, overwrite))
 		return false;
 
 	return true;
@@ -126,7 +126,7 @@ bool e2db::write(string localdir, bool overwrite)
 
 void e2db::updateUserbouquetIndexes(string chid, string nw_chid)
 {
-	e2se::debug("e2db", "updateUserbouquetIndexes()", "chid|nw_chid", chid + '|' + nw_chid);
+	debug("updateUserbouquetIndexes()", "chid|nw_chid", chid + '|' + nw_chid);
 
 	for (auto & g : gindex)
 	{

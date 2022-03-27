@@ -24,6 +24,8 @@ using std::string, std::pair, std::unordered_map;
 #include <QList>
 #include <QAction>
 #include <QLabel>
+
+#include "../logger.h"
 #include "e2db_gui.h"
 #include "TreeEventObserver.h"
 
@@ -31,7 +33,7 @@ namespace e2se_gui
 {
 class gui;
 
-class tab
+class tab : protected e2se::log_factory
 {
 	public:
 		enum LIST_EDIT_ATS {

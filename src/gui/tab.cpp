@@ -32,7 +32,6 @@
 #include <QClipboard>
 #include <QMimeData>
 
-#include "../commons.h"
 #include "tab.h"
 #include "gui.h"
 #include "DropEventHandler.h"
@@ -49,7 +48,8 @@ namespace e2se_gui
 
 tab::tab(gui* gid, QWidget* wid, string filename = "")
 {
-	debug("tab");
+	this->log = new logger("tab");
+	debug("tab()");
 
 	this->gid = gid;
 	this->cwid = wid;
@@ -105,7 +105,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	list_tree->setColumnHidden(col++, true);
 	list_tree->setColumnWidth(col++, 75);		// Index
 	list_tree->setColumnWidth(col++, 200);		// Name
-	if (DEBUG) {
+	if (gid->sets->value("debug", true).toBool()) {
 		list_tree->setColumnWidth(col++, 175);	// CHID
 		list_tree->setColumnWidth(col++, 150);	// TXID
 	}
@@ -166,7 +166,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	top_toolbar->addWidget(profile_combo);
 	top_toolbar->addAction("Connect", [=]() { this->ftpConnect(); });
 
-	if (DEBUG_TOOLBAR)
+	if (gid->sets->value("debug", true).toBool())
 	{
 		QWidget* bottom_spacer = new QWidget;
 		bottom_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -248,14 +248,14 @@ tab::~tab()
 
 void tab::newFile()
 {
-	debug("tab", "newFile()");
+	debug("newFile()");
 
 	initialize();
 }
 
 void tab::openFile()
 {
-	debug("tab", "openFile()");
+	debug("openFile()");
 
 	string dirname = gid->openFileDialog();
 
@@ -268,7 +268,7 @@ void tab::openFile()
 
 void tab::saveFile(bool saveas)
 {
-	debug("tab", "saveFile()", "saveas", to_string(saveas));
+	debug("saveFile()", "saveas", to_string(saveas));
 
 	QMessageBox dial = QMessageBox();
 	string filename;
@@ -288,8 +288,8 @@ void tab::saveFile(bool saveas)
 
 	if (! filename.empty())
 	{
-		debug("tab", "saveFile()", "overwrite", to_string(overwrite));
-		debug("tab", "saveFile()", "filename", filename);
+		debug("saveFile()", "overwrite", to_string(overwrite));
+		debug("saveFile()", "filename", filename);
 
 		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 		bool wr = dbih->write(filename, overwrite);
@@ -309,7 +309,7 @@ void tab::saveFile(bool saveas)
 
 void tab::addChannel()
 {
-	debug("tab", "addChannel()");
+	debug("addChannel()");
 
 	e2se_gui::channelBook* cb = new e2se_gui::channelBook(dbih);
 	string curr_chlist = this->_state_curr;
@@ -336,7 +336,7 @@ void tab::addChannel()
 
 void tab::addService()
 {
-	debug("tab", "addService()");
+	debug("addService()");
 
 	e2se_gui::editService* add = new e2se_gui::editService(dbih);
 	add->display(cwid);
@@ -344,7 +344,7 @@ void tab::addService()
 
 void tab::editService()
 {
-	debug("tab", "editService()");
+	debug("editService()");
 
 	QList<QTreeWidgetItem*> selected = list_tree->selectedItems();
 	
@@ -356,7 +356,7 @@ void tab::editService()
 	string nw_chid;
 	bool mrkr = item->data(1, Qt::UserRole).toBool();
 
-	debug("tab", "editService()", "chid", chid);
+	debug("editService()", "chid", chid);
 
 	if (! mrkr && dbih->db.services.count(chid))
 	{
@@ -365,7 +365,7 @@ void tab::editService()
 		add->display(cwid);
 		nw_chid = add->getEditID(); //TODO returned after dial.exec()
 
-		debug("tab", "editService()", "nw_chid", nw_chid);
+		debug("editService()", "nw_chid", nw_chid);
 
 		QStringList entry = dbih->entries.services[nw_chid];
 		entry.prepend(item->text(1));
@@ -380,7 +380,7 @@ void tab::editService()
 
 bool tab::readFile(string filename)
 {
-	debug("tab", "readFile()", "filename", filename);
+	debug("readFile()", "filename", filename);
 
 	if (filename.empty())
 		return false;
@@ -408,14 +408,14 @@ bool tab::readFile(string filename)
 
 void tab::load()
 {
-	debug("tab", "load()");
+	debug("load()");
 
 	sort(dbih->gindex["bss"].begin(), dbih->gindex["bss"].end());
 	unordered_map<string, QTreeWidgetItem*> bgroups;
 
 	for (auto & bsi : dbih->gindex["bss"])
 	{
-		debug("tab", "load()", "bouquet", bsi.second);
+		debug("load()", "bouquet", bsi.second);
 		e2db::bouquet gboq = dbih->bouquets[bsi.second];
 		QString bgroup = QString::fromStdString(bsi.second);
 		QString qbname = QString::fromStdString(gboq.nname.empty() ? gboq.name : gboq.nname);
@@ -434,7 +434,7 @@ void tab::load()
 	}
 	for (auto & ubi : dbih->gindex["ubs"])
 	{
-		debug("tab", "load()", "userbouquet", ubi.second);
+		debug("load()", "userbouquet", ubi.second);
 		e2db::userbouquet uboq = dbih->userbouquets[ubi.second];
 		QString bgroup = QString::fromStdString(ubi.second);
 		QTreeWidgetItem* pgroup = bgroups[ubi.second];
@@ -489,7 +489,7 @@ void tab::populate()
 		this->_state_curr = curr_chlist;
 	}
 
-	debug("tab", "populate()", "curr_chlist", curr_chlist);
+	debug("populate()", "curr_chlist", curr_chlist);
 
 	lheaderv->setSortIndicatorShown(true);
 	lheaderv->setSectionsClickable(false);
@@ -540,7 +540,7 @@ void tab::populate()
 					//TEST
 					entry = QStringList({x, "", "", chid, "", "ERROR"});
 					// idx = 0; //Qt5
-					error("tab", "populate()", "chid", ch.second, "\t");
+					error("populate()", "chid", ch.second);
 					//TEST
 				}
 			}
@@ -572,7 +572,7 @@ void tab::populate()
 
 void tab::bouquetsItemChanged(QTreeWidgetItem* current)
 {
-	debug("tab", "bouquetsItemChanged()");
+	debug("bouquetsItemChanged()");
 
 	if (current != NULL)
 	{
@@ -608,7 +608,7 @@ void tab::listItemChanged()
 {
 	if (! list_evt->isChanged()) return;
 
-	debug("tab", "listItemChanged()");
+	debug("listItemChanged()");
 
 	QTimer::singleShot(0, [=]() { this->visualReindexList(); });
 	this->_state_changed = true;
@@ -646,7 +646,7 @@ void tab::visualReindexList()
 
 void tab::trickySortByColumn(int column)
 {
-	debug("tab", "trickySortByColumn()", "column", to_string(column));
+	debug("trickySortByColumn()", "column", to_string(column));
 
 	Qt::SortOrder order = lheaderv->sortIndicatorOrder();
 	column = column == 1 ? 0 : column;
@@ -667,7 +667,7 @@ void tab::trickySortByColumn(int column)
 
 void tab::allowDnD()
 {
-	debug("tab", "allowDnd()");
+	debug("allowDnd()");
 
 	if (this->_state_dnd) return;
 
@@ -681,7 +681,7 @@ void tab::allowDnD()
 //TODO FIX unexpect behav switchs to QAbstractItemView::MultiSelection
 void tab::disallowDnD()
 {
-	debug("tab", "disallowDnD()");
+	debug("disallowDnD()");
 
 	if (! this->_state_dnd) return;
 
@@ -694,14 +694,14 @@ void tab::disallowDnD()
 
 void tab::listItemCut()
 {
-	debug("tab", "listItemCut()");
+	debug("listItemCut()");
 
 	listItemCopy(true);
 }
 
 void tab::listItemCopy(bool cut)
 {
-	debug("tab", "listItemCopy()");
+	debug("listItemCopy()");
 
 	QList<QTreeWidgetItem*> selected = list_tree->selectedItems();
 	
@@ -727,7 +727,7 @@ void tab::listItemCopy(bool cut)
 //TODO FIX chlist ERROR
 void tab::listItemPaste()
 {
-	debug("tab", "listItemPaste()");
+	debug("listItemPaste()");
 
 	QTreeWidgetItem* selected = list_tree->currentItem();
 
@@ -756,7 +756,7 @@ void tab::listItemPaste()
 
 void tab::listItemDelete()
 {
-	debug("tab", "listItemDelete()");
+	debug("listItemDelete()");
 
 	QList<QTreeWidgetItem*> selected = list_tree->selectedItems();
 	
@@ -785,14 +785,14 @@ void tab::listItemDelete()
 //TODO focus in
 void tab::listItemSelectAll()
 {
-	debug("tab", "listItemSelectAll()");
+	debug("listItemSelectAll()");
 
 	list_tree->selectAll();
 }
 
 void tab::listItemAction(int action)
 {
-	debug("tab", "listItemAction()", "action", to_string(action));
+	debug("listItemAction()", "action", to_string(action));
 
 	switch (action)
 	{
@@ -819,7 +819,7 @@ void tab::listItemAction(int action)
 //TODO FIX chlist from Paste
 void tab::putChannels(vector<QString> channels, string chlist)
 {
-	debug("tab", "putChannels()");
+	debug("putChannels()");
 
 	lheaderv->setSectionsClickable(false);
 	list_tree->setDragEnabled(false);
@@ -858,7 +858,7 @@ void tab::putChannels(vector<QString> channels, string chlist)
 				//TEST
 				entry = QStringList({x, "", "", qchid, "", "ERROR"});
 				// idx = 0; //Qt5
-				error("tab", "putChannels()", "chid", chid, "\t");
+				error("putChannels()", "chid", chid);
 				//TEST
 			}
 		}
@@ -888,7 +888,7 @@ void tab::updateListIndex()
 	string curr_chlist = this->_state_curr;
 	dbih->gindex[curr_chlist].clear();
 
-	debug("tab", "updateListIndex()", "curr_chlist", curr_chlist);
+	debug("updateListIndex()", "curr_chlist", curr_chlist);
 
 	do
 	{
@@ -914,7 +914,7 @@ void tab::updateListIndex()
 
 void tab::showListEditContextMenu(QPoint &pos)
 {
-	debug("tab", "showListEditContextMenu()");
+	debug("showListEditContextMenu()");
 
 	QMenu* list_edit = new QMenu;
 	list_edit->addAction("Edit Service", [=]() { this->editService(); });
@@ -930,7 +930,7 @@ void tab::showListEditContextMenu(QPoint &pos)
 
 void tab::setCounters(bool channels)
 {
-	debug("tab", "setCounters()");
+	debug("setCounters()");
 
 	int counters[5] = {0, 0, 0, 0, 0};
 
@@ -952,14 +952,14 @@ void tab::setCounters(bool channels)
 
 void tab::setTabId(int ttid)
 {
-	debug("tab", "setTabId()", "ttid", to_string(ttid));
+	debug("setTabId()", "ttid", to_string(ttid));
 
 	this->ttid = ttid;
 }
 
 void tab::initialize()
 {
-	debug("tab", "initialize()");
+	debug("initialize()");
 
 	if (this->dbih != nullptr)
 	  	delete this->dbih;
@@ -996,14 +996,14 @@ void tab::initialize()
 
 void tab::destroy()
 {
-	debug("tab", "destroy()");
+	debug("destroy()");
 
 	delete this;
 }
 
 void tab::profileComboChanged(int index)
 {
-	debug("tab", "profileComboChanged()", "index", to_string(index));
+	debug("profileComboChanged()", "index", to_string(index));
 
 	gid->sets->setValue("profile/selected", index);
 }
@@ -1013,7 +1013,7 @@ void tab::ftpConnect()
 {
 	using e2se_ftpcom::ftpcom;
 
-	debug("tab", "ftpConnect()");
+	debug("ftpConnect()");
 
 	int profile_sel = gid->sets->value("profile/selected").toInt();
 	gid->sets->beginReadArray("profile");
