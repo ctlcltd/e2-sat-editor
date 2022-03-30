@@ -9,8 +9,8 @@
  * @license GNU GPLv3 License
  */
 
-#include <QRegularExpression>
-#include <QSysInfo>
+#include <QGuiApplication>
+#include <QPalette>
 
 #include "theme.h"
 
@@ -19,26 +19,11 @@ namespace e2se_gui
 
 theme::theme()
 {
-	QString colors = "light";
 	QString icons = ":/icons/";
 
 	//experimental theme color detect
-	// windows
-	if (QSysInfo::productType().contains("windows"))
-	{
-		QSettings settings = QSettings(R"(HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize)",  QSettings::NativeFormat);
-		colors = settings.value("AppsUseLightTheme", 1).toInt() == 0 ? "dark" : "light";
-	}
-	// macos Qt 6
-	else if (QSysInfo::productType().contains(QRegularExpression("macos|osx")))
-	{
-		colors = QSettings().value("AppleInterfaceStyle").toString() == "Dark" ? "dark" : "light";
-	}
-	// icon theme based
-	else if (! QIcon::themeName().isEmpty())
-	{
-		colors = QIcon::themeName().contains("dark") ? "dark" : "light";
-	}
+	QColor bgcolor = QGuiApplication::palette().color(QPalette::Window).toHsl();
+	QString colors = bgcolor.lightness() > 128 ? "light" : "dark";
 
 	QSettings().setValue("application/icons", icons.append(colors));
 }

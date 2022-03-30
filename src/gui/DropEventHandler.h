@@ -13,10 +13,11 @@
 
 #ifndef DropEventHandler_h
 #define DropEventHandler_h
+#include <Qt>
 #include <QEvent>
+#include <QDropEvent>
 #include <QList>
 #include <QTreeWidget>
-#include <QDropEvent>
 
 namespace e2se_gui
 {
@@ -37,7 +38,11 @@ class DropEventHandler : public QObject
 				QDropEvent* evt = static_cast<QDropEvent*>(e);
 				QTreeWidget* tree0 = qobject_cast<QTreeWidget*>(o->parent());
 				QTreeWidget* tree1 = qobject_cast<QTreeWidget*>(evt->source());
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
 				QPoint pos = evt->position().toPoint();
+#else
+				QPoint pos = evt->pos();
+#endif
 
 				QTreeWidgetItem* current = tree0->itemAt(pos);
 				int ti = tree0->indexOfTopLevelItem(current);

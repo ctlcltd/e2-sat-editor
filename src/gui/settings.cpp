@@ -511,7 +511,7 @@ void settings::retrieve(QTableWidget* adtbl)
 {
 	debug("retrieve()", "", "advanced");
 
-	QStringList keys = sets->allKeys();//.filter(QRegularExpression("^(application|preference|profile)/"));
+	QStringList keys = sets->allKeys().filter(QRegularExpression("^(application|preference|profile)/"));
 	QStringList::const_iterator iq;
 	adtbl->setRowCount(keys.count());
 	int i = 0;

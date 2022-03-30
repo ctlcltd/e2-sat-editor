@@ -1114,10 +1114,11 @@ void tab::loadSeeds()
 		if (cwd.find("Debug") != string::npos) cwd = cwd.substr(0, cwd.length() - 6); // rstrip /Debug
 	}
 
-	cwd = cwd.substr(0, cwd.length() - 4); // rstrip /src
-
 	if (cwd != "")
 	{
+		if (cwd.find("/src") != string::npos)
+			cwd = cwd.substr(0, cwd.length() - 4); // rstrip /src
+
 		std::filesystem::path path = cwd + "/seeds./enigma_db";
 		readFile(std::filesystem::absolute(path).u8string());
 	}
