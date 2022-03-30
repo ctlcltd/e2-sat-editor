@@ -62,6 +62,7 @@ class tab : protected e2se::log_factory
 		void trickySortByColumn(int column);
 		void allowDnD();
 		void disallowDnD();
+		void reharmDnD();
 		void listItemCut();
 		void listItemCopy(bool cut = false);
 		void listItemPaste();
@@ -82,12 +83,21 @@ class tab : protected e2se::log_factory
 	protected:
 		unordered_map<string, QList<QTreeWidgetItem*>> cache;
 	private:
-		struct actions {
+		struct ats {
 			QAction* bouquets_newbs;
 			QAction* list_addch;
 			QAction* list_newch;
-			QLabel* list_dnd;
-		};
+			QPushButton* list_dnd;
+		} action;
+		struct sts {
+			bool nwwr;
+			bool ovwr;
+			bool dnd;
+			bool changed;
+			int ti;
+			string curr;
+			pair<int, Qt::SortOrder> sort;
+		} state;
 		gui* gid;
 		QWidget* cwid;
 		int ttid;
@@ -97,14 +107,7 @@ class tab : protected e2se::log_factory
 		QTreeWidget* list_tree;
 		QWidget* list_wrap;
 		QHeaderView* lheaderv;
-		actions* ats;
 		string filename;
-		bool _state_nwwr;
-		bool _state_ovwr;
-		bool _state_dnd;
-		bool _state_changed;
-		string _state_curr;
-		pair<int, Qt::SortOrder> _state_sort;
 };
 }
 #endif /* tab_h */

@@ -70,9 +70,11 @@ class settings : protected e2se::log_factory
 		map<int, map<QString, QVariant>> tmpps; //Qt5
 		map<int, vector<QWidget*>> prefs;
 	private:
-		int _state_prev;
-		bool _state_retr;
-		bool _state_delt;
+		struct sts {
+			int prev;
+			bool retr;
+			bool delt;
+		} state;
 };
 }
 #endif /* settings_h */

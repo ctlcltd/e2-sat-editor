@@ -53,10 +53,12 @@ class editService : protected e2se::log_factory
 		map<string, vector<pair<int, string>>> txdata;
 		vector<QWidget*> fields;
 	private:
+		struct sts {
+			bool edit = false;
+			string raw_C;
+			string raw_data;
+		} state;
 		e2db* dbih;
-		bool _state_edit = false;
-		string _state_raw_C;
-		string _state_raw_data;
 		string chid;
 };
 }

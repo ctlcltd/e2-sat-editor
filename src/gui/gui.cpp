@@ -21,6 +21,7 @@
 #include <QFileDialog>
 #include <QTimer>
 
+#include "theme.h"
 #include "gui.h"
 #include "tab.h"
 #include "settings.h"
@@ -68,7 +69,7 @@ gui::gui(int argc, char* argv[])
 	mwid->setMinimumSize(760, 550);
 	mwid->resize(wsize);
 
-	//TODO theming QEvent::PaletteChange()
+	theme();
 
 	root();
 
@@ -104,17 +105,10 @@ void gui::menuCtl()
 	QMenuBar* menu = new QMenuBar(nullptr);
 	menu->setNativeMenuBar(true);
 
-	QString osprod = QSysInfo::productType();
 	if (! menu->isNativeMenuBar())
 	{
 		menu->setParent(mwid);
 		mfrm->addWidget(menu);
-
-		icopx = ":/icons/light/"; //TODO temp
-	}
-	else
-	{
-		icopx = ":/icons/dark/"; //TODO temp
 	}
 
 	QMenu* mfile = menu->addMenu(tr("&File"));
@@ -129,10 +123,10 @@ void gui::menuCtl()
 	mfile->addAction("Close All Tabs", [=]() { this->closeAllTabs(); });
 	mfile->addSeparator();
 	mfile->addAction("Settings", [=]() { this->settings(); })->setShortcut(QKeySequence::Preferences);
-	if (osprod == "macos")
+	if (QSysInfo::productType().contains(QRegularExpression("macos|osx")))
 		mfile->addAction(tr("&About"), [=]() { this->about(); });
 	mfile->addSeparator();
-	mfile->addAction((osprod == "macos" ? tr("&Exit") : tr("&Quit")), [=]() { this->mroot->quit(); })->setShortcut((osprod == "windows" ? QKeySequence::Close : QKeySequence::Quit));
+	mfile->addAction(tr("&Exit"), [=]() { this->mroot->quit(); })->setShortcut((QSysInfo::productType().contains("windows") ? QKeySequence::Close : QKeySequence::Quit));
 
 	QMenu* medit = menu->addMenu(tr("&Edit"));
 	medit->addAction(tr("Cu&t"), [=]() { this->tabEditAction(TAB_EDIT_ATS::Cut); })->setShortcut(QKeySequence::Cut);
@@ -156,7 +150,6 @@ void gui::menuCtl()
 	this->mwtabs = mwtabs;
 }
 
-//TODO dir:rtl
 void gui::statusCtl()
 {
 	debug("statusCtl()");
@@ -187,16 +180,17 @@ void gui::tabCtl()
 //	twid->setDocumentMode(true);
 //	twid->setUsesScrollButtons(true);
 //	twid->tabBar()->setDrawBase(false);
-	twid->setStyleSheet("QTabWidget::tab-bar { left: 0px } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { height: 32px; padding: 5px; background: palette(mid); border: 1px solid transparent; border-radius: 0 } QTabBar::tab:selected { background: palette(highlight) } QTabWidget::tab QLabel { margin-left: 5px } QTabBar { background: red } QTabBar::close-button { image: url(" + this->icopx + "close.png) }");
+	twid->setStyleSheet("QTabWidget::tab-bar { left: 0px } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { height: 32px; padding: 5px; background: palette(mid); border: 1px solid transparent; border-radius: 0 } QTabBar::tab:selected { background: palette(highlight) } QTabWidget::tab QLabel { margin-left: 5px } QTabBar { background: red } QTabBar::close-button { margin: 0.4ex; image: url(" + theme::getIcon("close") + ") }");
 	twid->connect(twid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
 	twid->connect(twid, &QTabWidget::tabBarClicked, [=](int index) { this->tabClicked(index); });
 	twid->connect(twid, &QTabWidget::tabCloseRequested, [=](int index) { this->closeTab(index); });
 	twid->tabBar()->connect(twid->tabBar(), &QTabBar::tabMoved, [=](int from, int to) { this->tabMoved(from, to); });
 
-	QPushButton* ttbnew = new QPushButton(QIcon(this->icopx + "add.png"), tr("New &Tab"));
+	QPushButton* ttbnew = new QPushButton(theme::icon("add"), tr("New &Tab"));
+	ttbnew->setIconSize(QSize(12, 12));
 	ttbnew->setShortcut(QKeySequence::AddTab);
 	ttbnew->setMinimumHeight(32);
-	ttbnew->setStyleSheet("width: 8ex; height: 32px"); //TODO FIX height & ::left-corner padding
+	ttbnew->setStyleSheet("width: 8ex; height: 32px; font: bold 12px"); //TODO FIX height & ::left-corner padding
 	ttbnew->connect(ttbnew, &QPushButton::pressed, [=]() { this->newTab(""); });
 	twid->setCornerWidget(ttbnew, Qt::TopLeftCorner);
 

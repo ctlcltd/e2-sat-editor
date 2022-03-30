@@ -29,7 +29,7 @@ class logger
 		string ns;
 };
 
-class log_factory
+struct log_factory
 {
 	protected:
 		void debug(string cmsg)

@@ -24,9 +24,11 @@
 #include <QValidator>
 #include <QHeaderView>
 
+#include "theme.h"
 #include "settings.h"
 
 using std::to_string;
+using e2se_gui::theme;
 using namespace e2se;
 
 namespace e2se_gui_dialog
@@ -49,7 +51,7 @@ settings::settings(QWidget* mwid)
 	QVBoxLayout* dvbox = new QVBoxLayout;
 	this->dtwid = new QTabWidget;
 	dtwid->connect(dtwid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
-	this->_state_prev = -1;
+	this->state.prev = -1;
 
 	QPushButton* dtsave = new QPushButton;
 	dtsave->setDefault(true);
@@ -125,25 +127,14 @@ void settings::connections()
 	rplist->setStyleSheet("QListView::item { height: 44px; font: 16px } QListView QLineEdit { border: 1px solid palette(alternate-base) }");
 	rplist->connect(rplist, &QListWidget::currentItemChanged, [=](QListWidgetItem* current, QListWidgetItem* previous) { this->currentProfileChanged(current, previous); });
 	rplist->connect(rplist, &QListWidget::currentTextChanged, [=](QString text) { this->profileNameChanged(text); });
-	//TODO inplace edit dismissed only under certain conditions
 	rplist->connect(rplist, &QAbstractItemView::viewportEntered, [=]() { this->renameProfile(false); });
 	rppage->connect(rppage, &WidgetWithBackdrop::backdrop, [=]() { this->renameProfile(false); });
 
 	QToolBar* dttbar = new QToolBar;
-//	QWidget* dtspacer = new QWidget;
-//	dtspacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	QPushButton* dtladd = new QPushButton;
-	dtladd->setText("+");
-	dtladd->setFlat(true);
-	dtladd->connect(dtladd, &QPushButton::pressed, [=]() { this->addProfile(); });
-	QPushButton* dtlremove = new QPushButton;
-	dtlremove->setText("-");
-	dtlremove->setFlat(true);
-	dtlremove->connect(dtlremove, &QPushButton::pressed, [=]() { this->delProfile(); });
-
-//	dttbar->addWidget(dtspacer);
-	dttbar->addWidget(dtladd);
-	dttbar->addWidget(dtlremove);
+	dttbar->setIconSize(QSize(12, 12));
+	dttbar->setToolButtonStyle(Qt::ToolButtonIconOnly);
+	dttbar->addAction(theme::icon("add"), tr("Add"), [=]() { this->addProfile(); });
+	dttbar->addAction(theme::icon("remove"), tr("Remove"), [=]() { this->delProfile(); });
 
 	dtvbox->setSpacing(0);
 	dtvbox->addWidget(rplist);
@@ -314,7 +305,7 @@ QListWidgetItem* settings::addProfile(int i)
 	item->setText(item->text() + ' ' + QString::fromStdString(to_string(i)));
 	item->setData(Qt::UserRole, i);
 	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
-	if (! this->_state_retr)
+	if (! this->state.retr)
 	{
 		renameProfile(false);
 		item->setSelected(true);
@@ -333,7 +324,7 @@ void settings::delProfile()
 	QListWidgetItem* curr = rplist->currentItem();
 	int i = curr->data(Qt::UserRole).toInt();
 	tmpps[i].clear();
-	this->_state_delt = true;
+	this->state.delt = true;
 
 	renameProfile(false);
 	if (rplist->count() != 1)
@@ -344,15 +335,9 @@ void settings::renameProfile(bool enabled)
 {
 	QListWidgetItem* curr = rplist->currentItem();
 	if (enabled && ! rplist->isPersistentEditorOpen(curr))
-	{
 		rplist->openPersistentEditor(curr);
-		rppage->activateBackdrop();
-	}
 	else
-	{
 		rplist->closePersistentEditor(curr);
-		rppage->deactivateBackdrop();
-	}
 }
 
 void settings::profileNameChanged(QString text)
@@ -368,7 +353,7 @@ void settings::currentProfileChanged(QListWidgetItem* current, QListWidgetItem* 
 {
 	debug("currentProfileChanged()");
 
-	if (previous != nullptr && ! this->_state_delt)
+	if (previous != nullptr && ! this->state.delt)
 	{
 		int i = previous->data(Qt::UserRole).toInt();
 		for (auto & item : prefs[PREF_SECTIONS::Connections])
@@ -381,19 +366,19 @@ void settings::currentProfileChanged(QListWidgetItem* current, QListWidgetItem* 
 		}
 	}
 	this->retrieve(current);
-	this->_state_delt = false;
+	this->state.delt = false;
 }
 
 void settings::tabChanged(int index)
 {
 	debug("tabChanged()", "index", to_string(index));
 
-	if (this->_state_prev == -1)
+	if (this->state.prev == -1)
 	{
-		this->_state_prev = index;
+		this->state.prev = index;
 		return;
 	}
-	switch (this->_state_prev)
+	switch (this->state.prev)
 	{
 		case PREF_SECTIONS::Connections:
 			renameProfile(false);
@@ -403,7 +388,7 @@ void settings::tabChanged(int index)
 			adtbl->setHidden(true);
 		break;
 	}
-	this->_state_prev = index;
+	this->state.prev = index;
 }
 
 void settings::store()
@@ -466,7 +451,7 @@ void settings::retrieve()
 {
 	debug("retrieve()");
 
-	this->_state_retr = true;
+	this->state.retr = true;
 	int selected = sets->value("profile/selected").toInt();
 	int size = sets->beginReadArray("profile");
 	for (int i = 0; i < size; i++)
@@ -493,7 +478,7 @@ void settings::retrieve()
 		}
 	}
 	sets->endArray();
-	this->_state_retr = false;
+	this->state.retr = false;
 
 	sets->beginGroup("preference");
 	for (auto & item : prefs[PREF_SECTIONS::Preferences])
@@ -526,7 +511,7 @@ void settings::retrieve(QTableWidget* adtbl)
 {
 	debug("retrieve()", "", "advanced");
 
-	QStringList keys = sets->allKeys().filter(QRegularExpression("^(application|preference|profile)/"));
+	QStringList keys = sets->allKeys();//.filter(QRegularExpression("^(application|preference|profile)/"));
 	QStringList::const_iterator iq;
 	adtbl->setRowCount(keys.count());
 	int i = 0;

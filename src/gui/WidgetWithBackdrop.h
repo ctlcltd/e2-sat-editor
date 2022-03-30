@@ -21,23 +21,13 @@ class WidgetWithBackdrop : public QWidget
 
 	public:
 		explicit WidgetWithBackdrop(QWidget* parent = nullptr);
-		void activateBackdrop()
-		{
-			enabled = true;
-		}
-		void deactivateBackdrop()
-		{
-			enabled = false;
-		}
 	signals:
 		void backdrop();
 	protected:
 		void mousePressEvent(QMouseEvent* e)
 		{
-			if (enabled) emit backdrop();
+			emit backdrop();
 		}
-	private:
-		bool enabled = false;
 };
 }
 #endif /* WidgetWithBackdrop_h */

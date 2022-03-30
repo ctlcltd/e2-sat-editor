@@ -21,6 +21,7 @@ qt_add_executable(e2-sat-editor WIN32 MACOSX_BUNDLE
 	gui/gui.cpp
 	gui/settings.cpp
 	gui/tab.cpp
+	gui/theme.cpp
 	gui/TreeEventObserver.h
 	gui/WidgetWithBackdrop.cpp
 	main.cpp

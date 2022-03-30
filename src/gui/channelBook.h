@@ -39,6 +39,7 @@ class channelBook : protected e2se::log_factory
 		void trickySortByColumn(int column);
 		vector<QString> getSelected();
 		QWidget* widget;
+		QSettings* sets;
 	protected:
 		QListWidget* lwid;
 		QHBoxLayout* awid;

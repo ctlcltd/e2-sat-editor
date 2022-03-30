@@ -16,11 +16,12 @@
 #include <QFormLayout>
 #include <QGroupBox>
 #include <QToolBox>
-#include <QPushButton>
+#include <QToolBar>
 #include <QLabel>
 #include <QLineEdit>
 #include <QCheckBox>
 
+#include "theme.h"
 #include "editService.h"
 
 using std::to_string, std::stoi;
@@ -43,26 +44,25 @@ void editService::display(QWidget* cwid)
 	debug("display()");
 
 	//TODO emit err
-	if (this->_state_edit && ! dbih->db.services.count(chid))
+	if (this->state.edit && ! dbih->db.services.count(chid))
 		return;
 
-	QString wtitle = this->_state_edit ? "Edit Service" : "Add Service";
+	QString wtitle = this->state.edit ? "Edit Service" : "Add Service";
 	this->dial = new QDialog(cwid);
 	dial->setWindowTitle(wtitle);
 	dial->connect(dial, &QDialog::finished, [=]() { delete dial; });
 
 	QGridLayout* dfrm = new QGridLayout(dial);
-	QHBoxLayout* dhbox = new QHBoxLayout;
 	QVBoxLayout* dvbox = new QVBoxLayout;
 
-	QPushButton* dtsave = new QPushButton;
-	dtsave->setDefault(true);
-	dtsave->setText(tr("Save"));
-	dtsave->connect(dtsave, &QPushButton::pressed, [=]() { this->save(); });
-	QPushButton* dtcancel = new QPushButton;
-	dtcancel->setDefault(false);
-	dtcancel->setText(tr("Cancel"));
-	dtcancel->connect(dtcancel, &QPushButton::pressed, [=]() { dial->close(); });
+	QToolBar* dttbar = new QToolBar;
+	dttbar->setIconSize(QSize(16, 16));
+	dttbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+	dttbar->setStyleSheet("QToolBar { padding: 0 8px } QToolButton { font: 16px }");
+	QWidget* dtspacer = new QWidget;
+	dtspacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	dttbar->addWidget(dtspacer);
+	dttbar->addAction(theme::icon("edit"), tr("Save"), [=]() { this->save(); });
 
 	this->widget = new QWidget;
 	this->dtform = new QGridLayout;
@@ -70,21 +70,19 @@ void editService::display(QWidget* cwid)
 	serviceLayout();
 	transponderLayout();
 	paramsLayout();
-	if (this->_state_edit)
+	if (this->state.edit)
 		retrieve();
 
 	dtform->setVerticalSpacing(32);
-	dtform->setContentsMargins(0, 0, 0, 0);
+	widget->setContentsMargins(12, 12, 12, 12);
 	widget->setLayout(dtform);
 
 	dfrm->setColumnStretch(0, 1);
 	dfrm->setRowStretch(0, 1);
-	dhbox->setAlignment(Qt::AlignRight);
+	dfrm->setContentsMargins(0, 0, 0, 0);
 
 	dvbox->addWidget(widget);
-	dhbox->addWidget(dtcancel);
-	dhbox->addWidget(dtsave);
-	dvbox->addLayout(dhbox);
+	dvbox->addWidget(dttbar);
 
 	dfrm->addLayout(dvbox, 0, 0);
 
@@ -379,7 +377,7 @@ void editService::store()
 	debug("store()");
 
 	e2db::service ch;
-	if (this->_state_edit)
+	if (this->state.edit)
 		ch = dbih->db.services[chid];
 
 	for (auto & item : fields)
@@ -403,13 +401,13 @@ void editService::store()
 		else if (key == "txid")
 			ch.txid = val;
 
-		if (key == "raw_data" && this->_state_raw_data != val)
+		if (key == "raw_data" && this->state.raw_data != val)
 			continue;
-		else if (key == "raw_C" && this->_state_raw_C != val)
+		else if (key == "raw_C" && this->state.raw_C != val)
 			continue;
 	}
 
-	if (this->_state_edit)
+	if (this->state.edit)
 		this->chid = dbih->edit_service(chid, ch);
 	else
 		this->chid = dbih->add_service(ch);
@@ -453,7 +451,7 @@ void editService::retrieve()
 				if (w != last_key)
 					val += ',';
 			}
-			this->_state_raw_C = val;
+			this->state.raw_C = val;
 		}
 		else if (key == "raw_data")
 		{
@@ -469,7 +467,7 @@ void editService::retrieve()
 						val += ',';
 				}
 			}
-			this->_state_raw_data = val;
+			this->state.raw_data = val;
 		}
 
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
@@ -503,7 +501,7 @@ void editService::setEditID(string chid)
 	debug("setEditID()");
 
 	this->chid = chid;
-	this->_state_edit = true;
+	this->state.edit = true;
 }
 
 string editService::getEditID()

@@ -32,6 +32,7 @@ channelBook::channelBook(e2db* dbih)
 	debug("channelBook()");
 
 	this->dbih = dbih;
+	this->sets = new QSettings;
 
 	QGridLayout* afrm = new QGridLayout();
 
@@ -125,7 +126,7 @@ void channelBook::layout()
 	list->setColumnWidth(5, 110);	// Transponder
 	list->setColumnWidth(6, 120);	// SAT
 
-	list->header()->connect(list->header(), &::QHeaderView::sectionClicked, [=](int column) { this->trickySortByColumn(column); });
+	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->trickySortByColumn(column); });
 	tree->connect(tree, &QTreeWidget::currentItemChanged, [=]() { this->populate(); });
 	tabv->connect(tabv, &QTabBar::currentChanged, [=]() { this->populate(); });
 
@@ -143,10 +144,11 @@ void channelBook::sideRowChanged(int index)
 {
 	debug("sideRowChanged()", "index", to_string(index));
 
-	tree->scrollToItem(tree->topLevelItem(0));
+	tree->clearSelection();
+	tree->scrollToTop();
 	tree->clear();
-	list->setSortingEnabled(false);
-	list->scrollToItem(list->topLevelItem(0));
+	list->clearSelection();
+	list->scrollToTop();
 	list->clear();
 
 	switch (index)
@@ -216,8 +218,8 @@ void channelBook::stacker(int vv)
 			int pos = stoi(q.first);
 			if (dbih->tuners.count(pos))
 			{
-				e2db::tuner_sets tndata = dbih->tuners.at(stoi(q.first));
-				name = QString::fromStdString(tndata.name);
+				e2db::tuner_sets tn = dbih->tuners.at(stoi(q.first));
+				name = QString::fromStdString(tn.name);
 			}
 			else
 			{
@@ -227,17 +229,17 @@ void channelBook::stacker(int vv)
 
 			for (auto & x: q.second)
 			{
-				e2db::transponder txdata = dbih->db.transponders[x.second];
+				e2db::transponder tx = dbih->db.transponders[x.second];
 				QString subindex = QString::fromStdString(x.second);
 				string ptxp;
-				if (txdata.ttype == 's')
-					ptxp = to_string(txdata.freq) + '/' + e2db::SAT_POL[txdata.pol] + '/' + to_string(txdata.sr);
-				else if (txdata.ttype == 't')
-					ptxp = to_string(txdata.freq) + '/' + e2db::TER_MOD[txdata.termod] + '/' + e2db::TER_BAND[txdata.band];
-				else if (txdata.ttype == 'c')
-					ptxp = to_string(txdata.freq) + '/' + e2db::CAB_MOD[txdata.cabmod] + '/' + to_string(txdata.sr);
-				else if (txdata.ttype == 'a')
-					ptxp = to_string(txdata.freq);
+				if (tx.ttype == 's')
+					ptxp = to_string(tx.freq) + '/' + e2db::SAT_POL[tx.pol] + '/' + to_string(tx.sr);
+				else if (tx.ttype == 't')
+					ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.termod] + '/' + e2db::TER_BAND[tx.band];
+				else if (tx.ttype == 'c')
+					ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cabmod] + '/' + to_string(tx.sr);
+				else if (tx.ttype == 'a')
+					ptxp = to_string(tx.freq);
 				QString txp = QString::fromStdString(ptxp);
 				subitem = new QTreeWidgetItem(item, {txp});
 				subitem->setData(0, Qt::UserRole, subindex);
@@ -246,10 +248,10 @@ void channelBook::stacker(int vv)
 		}
 		else if (vv == views::Bouquets)
 		{
-			e2db::userbouquet ubdata = dbih->userbouquets[q.first];
-			e2db::bouquet bsdata = dbih->bouquets[ubdata.pname];
-			name = QString::fromStdString(ubdata.name);
-			name.prepend(QString::fromStdString("[" + bsdata.nname + "]\t"));
+			e2db::userbouquet ub = dbih->userbouquets[q.first];
+			e2db::bouquet bs = dbih->bouquets[ub.pname];
+			name = QString::fromStdString(ub.name);
+			name.prepend(QString::fromStdString("[" + bs.nname + "]\t"));
 			item = new QTreeWidgetItem({name});
 		}
 		//TODO test
@@ -309,49 +311,53 @@ void channelBook::populate()
 
 	debug("populate()", "curr", curr);
 
-	list->setSortingEnabled(false);
-	list->scrollToItem(list->topLevelItem(0));
+	list->header()->setSortIndicatorShown(false);
+	list->header()->setSectionsClickable(false);
 	list->clear();
 
 	int i = 0;
 
-	for (auto & ch: data[curr])
+	for (auto & chdata: data[curr])
 	{
 		char ci[7];
 		sprintf(ci, "%06d", i++);
 		QString x = QString::fromStdString(ci);
 
-		if (dbih->db.services.count(ch.second))
+		if (dbih->db.services.count(chdata.second))
 		{
-			e2db::service chdata = dbih->db.services[ch.second];
-			e2db::transponder txdata = dbih->db.transponders[chdata.txid];
+			e2db::service ch = dbih->db.services[chdata.second];
+			e2db::transponder tx = dbih->db.transponders[ch.txid];
 
-			QString idx = QString::fromStdString(to_string(ch.first));
-			QString chid = QString::fromStdString(ch.second);
-			QString chname = QString::fromStdString(chdata.chname);
-			QString stype = e2db::STYPES.count(chdata.stype) ? QString::fromStdString(e2db::STYPES.at(chdata.stype).second) : "Data";
-			QString pname = QString::fromStdString(chdata.data.count(e2db::PVDR_DATA.at('p')) ? chdata.data[e2db::PVDR_DATA.at('p')][0] : "");
+			QString idx = QString::fromStdString(to_string(chdata.first));
+			QString chid = QString::fromStdString(chdata.second);
+			QString chname;
+			if (sets->value("preference/fixUnicodeChars").toBool())
+				chname = QString::fromStdString(ch.chname).remove(QRegularExpression("[^\\p{L}\\p{N}\\p{Sm}\\p{M}\\p{P}\\s]+"));
+			else
+				chname = QString::fromStdString(ch.chname);
+			QString stype = e2db::STYPES.count(ch.stype) ? QString::fromStdString(e2db::STYPES.at(ch.stype).second) : "Data";
+			QString pname = QString::fromStdString(ch.data.count(e2db::PVDR_DATA.at('p')) ? ch.data[e2db::PVDR_DATA.at('p')][0] : "");
 
 			string ptxp;
-			if (txdata.ttype == 's')
-				ptxp = to_string(txdata.freq) + '/' + e2db::SAT_POL[txdata.pol] + '/' + to_string(txdata.sr);
-			else if (txdata.ttype == 't')
-				ptxp = to_string(txdata.freq) + '/' + e2db::TER_MOD[txdata.termod] + '/' + e2db::TER_BAND[txdata.band];
-			else if (txdata.ttype == 'c')
-				ptxp = to_string(txdata.freq) + '/' + e2db::CAB_MOD[txdata.cabmod] + '/' + to_string(txdata.sr);
+			if (tx.ttype == 's')
+				ptxp = to_string(tx.freq) + '/' + e2db::SAT_POL[tx.pol] + '/' + to_string(tx.sr);
+			else if (tx.ttype == 't')
+				ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.termod] + '/' + e2db::TER_BAND[tx.band];
+			else if (tx.ttype == 'c')
+				ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cabmod] + '/' + to_string(tx.sr);
 			QString txp = QString::fromStdString(ptxp);
 			string ppos;
-			if (txdata.ttype == 's')
+			if (tx.ttype == 's')
 			{
-				if (dbih->tuners.count(txdata.pos))
+				if (dbih->tuners.count(tx.pos))
 				{
-					ppos = dbih->tuners.at(txdata.pos).name;
+					ppos = dbih->tuners.at(tx.pos).name;
 				}
 				else
 				{
 					char cposdeg[5];
-					sprintf(cposdeg, "%.1f", float (abs (txdata.pos)) / 10);
-					ppos = (string (cposdeg) + (txdata.pos > 0 ? 'E' : 'W'));
+					sprintf(cposdeg, "%.1f", float (abs (tx.pos)) / 10);
+					ppos = (string (cposdeg) + (tx.pos > 0 ? 'E' : 'W'));
 				}
 			}
 			QString pos = QString::fromStdString(ppos);
@@ -362,11 +368,12 @@ void channelBook::populate()
 		}
 	}
 
-	list->setSortingEnabled(true);
-	if (vx) list->sortByColumn(0, Qt::AscendingOrder);
+	list->header()->setSectionsClickable(true);
+	// sorting default column 0|asc
+	if (vx)
+		list->sortByColumn(0, Qt::AscendingOrder);
 }
 
-//TODO FIX
 void channelBook::trickySortByColumn(int column)
 {
 	debug("trickySortByColumn()", "column", to_string(column));
@@ -374,14 +381,23 @@ void channelBook::trickySortByColumn(int column)
 	Qt::SortOrder order = list->header()->sortIndicatorOrder();
 	column = column == 1 ? 0 : column;
 
+	// sorting by
 	if (column)
 	{
 		list->sortItems(column, order);
+		list->header()->setSortIndicatorShown(true);
 	}
+	// sorting default
 	else
 	{
 		list->sortByColumn(column, order);
 		list->header()->setSortIndicator(1, order);
+
+		// default column 0|asc
+		if (order == Qt::AscendingOrder)
+			list->header()->setSortIndicatorShown(false);
+		else
+			list->header()->setSortIndicatorShown(true);
 	}
 }
 

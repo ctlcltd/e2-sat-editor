@@ -50,7 +50,7 @@ void e2db_abstract::add_transponder(int idx, transponder& tx)
 
 	tx.index = idx;
 	db.transponders.emplace(tx.txid, tx);
-	index["txs"].emplace_back(pair (idx, tx.txid)); //C++ 17
+	index["txs"].emplace_back(pair (idx, tx.txid)); //C++17
 }
 
 void e2db_abstract::add_service(int idx, service& ch)
@@ -69,14 +69,14 @@ void e2db_abstract::add_service(int idx, service& ch)
 		if (ch.snum) m = ch.snum;
 		else m = collisions[kchid].size();
 		ch.chid += ':' + to_string(m);
-		collisions[kchid].emplace_back(pair (ch.chid, m)); //C++ 17
+		collisions[kchid].emplace_back(pair (ch.chid, m)); //C++17
 	}
 
 	string iname = "chs:" + (STYPES.count(ch.stype) ? to_string(STYPES.at(ch.stype).first) : "0");
 	ch.index = idx;
 	db.services.emplace(ch.chid, ch);
-	index["chs"].emplace_back(pair (idx, ch.chid)); //C++ 17
-	index[iname].emplace_back(pair (idx, ch.chid)); //C++ 17
+	index["chs"].emplace_back(pair (idx, ch.chid)); //C++17
+	index[iname].emplace_back(pair (idx, ch.chid)); //C++17
 }
 
 
@@ -449,7 +449,7 @@ void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 			string fname = string (c_fname);
 			fname = fname.substr(1, fname.length() - 2);
 
-			index["ubs"].emplace_back(pair (idx++, fname)); //C++ 17
+			index["ubs"].emplace_back(pair (idx++, fname)); //C++17
 			bs.userbouquets.emplace_back(fname);
 		}
 		else if (line.find("#NAME") != string::npos)
@@ -468,7 +468,7 @@ void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 				bs.nname = "Radio";
 			}
 			bs.count = 1;
-			index["bss"].emplace_back(pair (bs.btype, bname)); //C++ 17
+			index["bss"].emplace_back(pair (bs.btype, bname)); //C++17
 		}
 	}
 
@@ -554,10 +554,10 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 			ref.index = idx;
 
 			ub.channels[chid] = ref;
-			index[bname].emplace_back(pair (idx, chid)); //C++ 17
+			index[bname].emplace_back(pair (idx, chid)); //C++17
 
 			if (sseq)
-				index[pname].emplace_back(pair (bouquets[pname].count++, chid)); //C++ 17
+				index[pname].emplace_back(pair (bouquets[pname].count++, chid)); //C++17
 
 			ref = reference ();
 		}
@@ -834,10 +834,10 @@ unordered_map<string, e2db_parser::service> e2db_parser::get_services()
 pair<unordered_map<string, e2db_parser::bouquet>, unordered_map<string, e2db_parser::userbouquet>> e2db_parser::get_bouquets()
 {
 	debug("get_bouquets()");
-	return pair (bouquets, userbouquets); //C++ 17
+	return pair (bouquets, userbouquets); //C++17
 }
 
-// C++17
+//C++17
 bool e2db_parser::read_from_localdir(string localdir)
 {
 	debug("read_from_localdir()", "localdir", localdir);

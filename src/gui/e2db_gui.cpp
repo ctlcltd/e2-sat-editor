@@ -31,9 +31,9 @@ void e2db::options()
 	debug("options()");
 
 	// e2db::DEBUG = sets->value("debug", true).toBool();
-	e2db::PARSER_TUNERSETS = sets->value("parserTunerset", true).toBool();
-	e2db::PARSER_LAMEDB5_PRIOR = sets->value("parserLamedb5", false).toBool();
-	e2db::MAKER_LAMEDB5 = sets->value("makerLamedb5", true).toBool();
+	e2db::PARSER_TUNERSETS = sets->value("application/parserTunerset", true).toBool();
+	e2db::PARSER_LAMEDB5_PRIOR = sets->value("application/parserLamedb5", false).toBool();
+	e2db::MAKER_LAMEDB5 = sets->value("application/makerLamedb5", true).toBool();
 }
 
 string e2db::add_transponder(transponder& tx)
@@ -99,7 +99,7 @@ bool e2db::prepare(string localdir)
 	if (! this->read(localdir))
 		return false;
 
-	if (sets->value("parserDebugger", false).toBool())
+	if (sets->value("application/parserDebugger", false).toBool())
 		this->debugger();
 
 	this->gindex = index;
