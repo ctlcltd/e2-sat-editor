@@ -21,6 +21,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QCheckBox>
+#include <QComboBox>
 #include <QValidator>
 #include <QHeaderView>
 
@@ -87,28 +88,56 @@ void settings::preferences()
 {
 	QWidget* dtpage = new QWidget;
 	QHBoxLayout* dtcnt = new QHBoxLayout(dtpage);
+	dtpage->setStyleSheet("QGroupBox { font: bold }");
 	
 	QFormLayout* dtform = new QFormLayout;
-	dtform->setSpacing(20);
+	dtform->setSpacing(10);
 	dtform->setFormAlignment(Qt::AlignLeft | Qt::AlignTop);
-	dtform->addItem(new QSpacerItem(0, 0));
-	
+
+	QGroupBox* dtl0 = new QGroupBox(tr("General"));
+	QFormLayout* dtf0 = new QFormLayout;
+	dtf0->setSpacing(20);
+	dtf0->setFormAlignment(Qt::AlignLeft);
+	dtf0->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+
 	QCheckBox* dtfg0 = new QCheckBox(tr("Suppress ask for confirmation messages (shown before deleting)"));
 	dtfg0->setProperty("pref", "askConfirmation");
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtfg0);
-	dtform->addRow(dtfg0);
+	dtf0->addRow(dtfg0);
 
-	QCheckBox* dtfg1 = new QCheckBox(tr("Non-destructive edit (try to preserve origin rplists)"));
+	QCheckBox* dtfg1 = new QCheckBox(tr("Non-destructive edit (try to preserve origin channel lists)"));
 	dtfg1->setProperty("pref", "nonDestructiveEdit");
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtfg1);
-	dtform->addRow(dtfg1);
+	dtf0->addRow(dtfg1);
 
 	QCheckBox* dtfg2 = new QCheckBox(tr("Visually fix for unwanted unicode characters (less performant)"));
 	dtfg2->setProperty("pref", "fixUnicodeChars");
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtfg2);
-	dtform->addRow(dtfg2);
+	dtf0->addRow(dtfg2);
 
+	QGroupBox* dtl1 = new QGroupBox(tr("Theming"));
+	QFormLayout* dtf1 = new QFormLayout;
+	dtf1->setSpacing(20);
+	dtf1->setFormAlignment(Qt::AlignLeft);
+	dtf1->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+
+	QComboBox* dtf1st = new QComboBox;
+	dtf1st->setProperty("pref", "theme");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf1st);
+	dtf1st->addItem(tr("Default (system theme)"), "");
+	dtf1st->addItem(tr("Dark"), "dark");
+	dtf1st->addItem(tr("Light"), "light");
+	dtf1->addRow(tr("Theme"), dtf1st);
+	dtf1->addRow(new QLabel(tr("<small>The program needs to be restarted after switching theme.</small>")));
+
+	dtl0->setLayout(dtf0);
+	dtl1->setLayout(dtf1);
 	dtform->addItem(new QSpacerItem(0, 0));
+	dtform->addWidget(dtl0);
+	dtform->addItem(new QSpacerItem(0, 5));
+	dtform->addWidget(dtl1);
+	dtform->addItem(new QSpacerItem(0, 0));
+
 	dtcnt->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 	dtcnt->addLayout(dtform, 0);
 	dtpage->setLayout(dtcnt);
@@ -428,6 +457,8 @@ void settings::store()
 			sets->setValue(pref, field->isChecked());
 		else if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
 			sets->setValue(pref, field->text());
+		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
+			sets->setValue(pref, field->currentData());
 	}
 	sets->endGroup();
 }
@@ -485,9 +516,18 @@ void settings::retrieve()
 	{
 		QString pref = item->property("pref").toString();
 		if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
+		{
 			field->setChecked(sets->value(pref).toBool());
+		}
 		else if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
+		{
 			field->setText(sets->value(pref).toString());
+		}
+		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
+		{
+			if (int index = field->findData(sets->value(pref).toString(), Qt::UserRole))
+				field->setCurrentIndex(index);
+		}
 	}
 	sets->endGroup();
 }

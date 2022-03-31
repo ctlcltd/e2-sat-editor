@@ -69,6 +69,7 @@ gui::gui(int argc, char* argv[])
 	mwid->setMinimumSize(760, 550);
 	mwid->resize(wsize);
 
+	// mroot->setLayoutDirection(Qt::RightToLeft);
 	theme();
 
 	root();
@@ -150,6 +151,7 @@ void gui::menuCtl()
 	this->mwtabs = mwtabs;
 }
 
+//TODO FIX dir:rtl
 void gui::statusCtl()
 {
 	debug("statusCtl()");

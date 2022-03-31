@@ -25,5 +25,13 @@ class theme
 		static QIcon icon(QString icon);
 		static QString getIcon(QString icon);
 };
+
+class style
+{
+	public:
+		static void light();
+		static void dark();
+};
+
 }
 #endif /* theme_h */
