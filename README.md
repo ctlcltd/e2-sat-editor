@@ -2,7 +2,7 @@
 
 An enigma2 channel list editor – under development.
 
-![screenshot](res/screenshot.png)
+![a screenshot of e2 SAT Editor running on linux, qt6ct fusion dark](res/screenshot.png)
 
  
 ## Requirements
@@ -38,7 +38,7 @@ An enigma2 channel list editor – under development.
 * qt6-base | qt5-base
 
  
-## Contributing
+## Get involved
 
 You can open [issues](https://github.com/ctlcltd/e2-sat-editor/issues) to report bug, request features or send a [Pull Request](https://github.com/ctlcltd/e2-sat-editor/pulls).
 
@@ -47,7 +47,7 @@ You can open [issues](https://github.com/ctlcltd/e2-sat-editor/issues) to report
 
 - [ ] stable build
 - [ ] search filters
-- [ ] satellite.xml editing
+- [ ] satellites.xml editing
 - [ ] multi-windowed gui
 - [ ] minisite and promotion
 - [ ] basic translations

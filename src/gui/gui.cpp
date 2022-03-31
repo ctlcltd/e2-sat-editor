@@ -9,6 +9,7 @@
  * @license GNU GPLv3 License
  */
 
+#include <clocale>
 #include <filesystem>
 
 #include <Qt>
@@ -47,6 +48,8 @@ class guiProxyStyle : public QProxyStyle
 
 gui::gui(int argc, char* argv[])
 {
+	std::setlocale(LC_NUMERIC, "C");
+
 	this->log = new logger("tab");
 	debug("gui()");
 
@@ -182,6 +185,8 @@ void gui::tabCtl()
 //	twid->setDocumentMode(true);
 //	twid->setUsesScrollButtons(true);
 //	twid->tabBar()->setDrawBase(false);
+
+	//TODO FIX label text color in dark theme
 	twid->setStyleSheet("QTabWidget::tab-bar { left: 0px } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { height: 32px; padding: 5px; background: palette(mid); border: 1px solid transparent; border-radius: 0 } QTabBar::tab:selected { background: palette(highlight) } QTabWidget::tab QLabel { margin-left: 5px } QTabBar { background: red } QTabBar::close-button { margin: 0.4ex; image: url(" + theme::getIcon("close") + ") }");
 	twid->connect(twid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
 	twid->connect(twid, &QTabWidget::tabBarClicked, [=](int index) { this->tabClicked(index); });

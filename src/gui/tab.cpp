@@ -10,7 +10,6 @@
  */
 
 #include <algorithm>
-#include <filesystem>
 #include <cstdio>
 
 #include <QtGlobal>
@@ -40,7 +39,7 @@
 #include "../ftpcom.h"
 #include "todo.h"
 
-using std::to_string;
+using std::to_string, std::sort;
 using namespace e2se;
 
 namespace e2se_gui
@@ -189,7 +188,6 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	list_ats->setStyleSheet("QToolButton { font: bold 14px }");
 
 	this->action.list_dnd = new QPushButton;
-	// this->action.list_dnd->setFlat(true);
 	this->action.list_dnd->setText("Drag&&Drop");
 	this->action.list_dnd->setDisabled(true);
 	this->action.list_dnd->connect(this->action.list_dnd, &QPushButton::pressed, [=]() { this->reharmDnD(); });
@@ -522,7 +520,7 @@ void tab::populate()
 		for (auto & ch : dbih->gindex[curr_chlist])
 		{
 			char ci[7];
-			sprintf(ci, "%06d", i++);
+			std::sprintf(ci, "%06d", i++);
 			bool mrkr = false;
 			QString chid = QString::fromStdString(ch.second);
 			QString x = QString::fromStdString(ci);
@@ -658,7 +656,7 @@ void tab::visualReindexList()
 	do
 	{
 		char ci[7];
-		sprintf(ci, "%06d", i + 1);
+		std::sprintf(ci, "%06d", i + 1);
 		QString x = QString::fromStdString(ci);
 		QTreeWidgetItem* item = list_tree->topLevelItem(i);
 		bool mrkr = item->data(1, Qt::UserRole).toBool();
@@ -887,7 +885,7 @@ void tab::putChannels(vector<QString> channels, string chlist)
 	{
 		string chid = qchid.toStdString();
 		char ci[7];
-		sprintf(ci, "%06d", i);
+		std::sprintf(ci, "%06d", i);
 		QString x = QString::fromStdString(ci);
 		QString idx = QString::fromStdString(to_string(i));
 		QStringList entry;
@@ -1100,27 +1098,14 @@ void tab::ftpConnect()
 //TEST
 void tab::loadSeeds()
 {
-	string cwd;
-
-	// *ux
-	char* ccwd = getenv("PWD");
-	if (ccwd != NULL) cwd = string (ccwd);
-
-	// xcodeproj
-	if (cwd.empty())
+	if (gid->sets->contains("application/seeds"))
 	{
-		char* ccwd = getenv("DYLD_FRAMEWORK_PATH");
-		if (ccwd != NULL) cwd = string (ccwd);
-		if (cwd.find("Debug") != string::npos) cwd = cwd.substr(0, cwd.length() - 6); // rstrip /Debug
+		readFile(gid->sets->value("application/seeds").toString().toStdString());
 	}
-
-	if (cwd != "")
+	else
 	{
-		if (cwd.find("/src") != string::npos)
-			cwd = cwd.substr(0, cwd.length() - 4); // rstrip /src
-
-		std::filesystem::path path = cwd + "/seeds./enigma_db";
-		readFile(std::filesystem::absolute(path).u8string());
+		gid->sets->setValue("application/seeds", "");
+		QMessageBox::information(cwid, NULL, "For debugging purpose, set application.seeds absolute path under Settings > Advanced tab, then restart software.");
 	}
 }
 //TEST

@@ -10,6 +10,7 @@
  */
 
 #include <cstdio>
+#include <clocale>
 #include <cmath>
 
 #include "e2db_gui.h"
@@ -20,6 +21,8 @@ namespace e2se_gui
 {
 e2db::e2db()
 {
+	std::setlocale(LC_NUMERIC, "C");
+
 	debug("gui.e2db()");
 
 	this->sets = new QSettings;
@@ -165,7 +168,7 @@ QStringList e2db::entry_transponder(transponder tx)
 			ppos = tuners.at(tx.pos).name;
 		} else {
 			char cposdeg[5];
-			sprintf(cposdeg, "%.1f", float (abs (tx.pos)) / 10);
+			std::sprintf(cposdeg, "%.1f", float (std::abs (tx.pos)) / 10);
 			ppos = (string (cposdeg) + (tx.pos > 0 ? 'E' : 'W'));
 		}
 	}

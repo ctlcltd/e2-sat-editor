@@ -320,7 +320,7 @@ void channelBook::populate()
 	for (auto & chdata: data[curr])
 	{
 		char ci[7];
-		sprintf(ci, "%06d", i++);
+		std::sprintf(ci, "%06d", i++);
 		QString x = QString::fromStdString(ci);
 
 		if (dbih->db.services.count(chdata.second))
@@ -356,7 +356,7 @@ void channelBook::populate()
 				else
 				{
 					char cposdeg[5];
-					sprintf(cposdeg, "%.1f", float (abs (tx.pos)) / 10);
+					std::sprintf(cposdeg, "%.1f", float (std::abs (tx.pos)) / 10);
 					ppos = (string (cposdeg) + (tx.pos > 0 ? 'E' : 'W'));
 				}
 			}

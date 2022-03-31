@@ -23,7 +23,7 @@ namespace e2se_gui
 theme::theme()
 {
 	QString icons = ":/icons/";
-	QString style = QSettings().value("preference/theme", "dark").toString();
+	QString style = QSettings().value("preference/theme").toString();
 
 	if (style == "light")
 		style::light();

@@ -16,7 +16,7 @@
 
 #include "ftpcom.h"
 
-using std::string, std::stringstream, std::min, std::endl, std::to_string, std::stoi;
+using std::string, std::stringstream, std::getline, std::min, std::endl, std::to_string, std::stoi;
 
 namespace e2se_ftpcom
 {
@@ -206,7 +206,7 @@ size_t ftpcom::dataUpload_func(char* cso, size_t size, size_t nmemb, void* psi)
 	  return 0;
 
 	size_t nsize = min(relsize, data->sizel);
-	memcpy(cso, data->data, nsize);
+	std::memcpy(cso, data->data, nsize);
 
 	data->data += nsize;
 	data->sizel = (data->sizel > nsize ? (data->sizel - nsize) : 0);

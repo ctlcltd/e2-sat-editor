@@ -17,7 +17,7 @@
 
 #include "e2db.h"
 
-using std::string, std::pair, std::vector, std::map, std::unordered_map, std::unordered_set, std::cout, std::endl, std::ifstream, std::ofstream, std::stringstream, std::to_string, std::atoi, std::hex, std::dec, std::setfill, std::setw, std::uppercase;
+using std::string, std::pair, std::vector, std::map, std::unordered_map, std::unordered_set, std::cout, std::endl, std::ifstream, std::ofstream, std::stringstream, std::getline, std::to_string, std::atoi, std::hex, std::dec, std::setfill, std::setw, std::uppercase;
 
 namespace e2se_e2db
 {
@@ -45,7 +45,7 @@ void e2db_abstract::error(string cmsg, string optk, string optv)
 void e2db_abstract::add_transponder(int idx, transponder& tx)
 {
 	char txid[25];
-	sprintf(txid, "%x:%x", tx.tsid, tx.dvbns);
+	std::sprintf(txid, "%x:%x", tx.tsid, tx.dvbns);
 	tx.txid = txid;
 
 	tx.index = idx;
@@ -57,8 +57,8 @@ void e2db_abstract::add_service(int idx, service& ch)
 {
 	char chid[25];
 	char txid[25];
-	sprintf(txid, "%x:%x", ch.tsid, ch.dvbns);
-	sprintf(chid, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
+	std::sprintf(txid, "%x:%x", ch.tsid, ch.dvbns);
+	std::sprintf(chid, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
 	ch.txid = txid;
 	ch.chid = chid;
 
@@ -94,7 +94,7 @@ e2db_parser::e2db_parser()
 void e2db_parser::parse_e2db()
 {
 	debug("parse_e2db()");
-	clock_t start = clock();
+	std::clock_t start = std::clock();
 
 	ifstream flamedb (e2db[dbfilename]);
 	parse_e2db_lamedb(flamedb);
@@ -126,7 +126,7 @@ void e2db_parser::parse_e2db()
 		}
 	}
 
-	clock_t end = clock();
+	std::clock_t end = std::clock();
 
 	// seeds./enigma_db
 	// commit: 05db5bb	elapsed time: 86547
@@ -518,7 +518,7 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 			int i0, i1, anum, ssid, tsid, onid, dvbns;
 			i0 = -1, i1 = -1, anum = -1, ssid = 0, tsid = 0, onid = -1, dvbns = 0;
 
-			sscanf(line.c_str(), "%d:%d:%4X:%4X:%4X:%4X:%8X", &i0, &i1, &anum, &ssid, &tsid, &onid, &dvbns);
+			std::sscanf(line.c_str(), "%d:%d:%4X:%4X:%4X:%4X:%8X", &i0, &i1, &anum, &ssid, &tsid, &onid, &dvbns);
 			//TODO other flags ?
 
 			switch (i1)
@@ -529,12 +529,12 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 				case 832: // hidden marker
 					sseq = false;
 					step = 2;
-					sprintf(cchid, "%d:%d:%x", i0, i1, anum);
+					std::sprintf(cchid, "%d:%d:%x", i0, i1, anum);
 				break;
 				case 128: // group //TODO
 				default:  // service
 					sseq = true;
-					sprintf(cchid, "%x:%x:%x", ssid, tsid, dvbns);
+					std::sprintf(cchid, "%x:%x:%x", ssid, tsid, dvbns);
 			}
 			if (sseq)
 			{
@@ -609,7 +609,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, ifstream& ftunxml)
 		{
 			step--;
 			char trid[17];
-			sprintf(trid, "%d:%d:%d", tr.freq, tr.pol, tr.sr);
+			std::sprintf(trid, "%d:%d:%d", tr.freq, tr.pol, tr.sr);
 			tn.references.emplace(trid, tr);
 			tuners.emplace(tn.pos, tn);
 			tn = tuner_sets ();
@@ -903,8 +903,8 @@ void e2db_maker::begin_transaction()
 {
 	debug("begin_transaction()");
 
-	time_t curr_tst = time(0);
-	tm* _out_tst = localtime(&curr_tst);
+	std::time_t curr_tst = std::time(0);
+	std::tm* _out_tst = std::localtime(&curr_tst);
 	this->_out_tst = _out_tst;
 }
 
@@ -920,7 +920,7 @@ string e2db_maker::get_timestamp()
 
 	char datetime[80];
 	// @link https://sourceforge.net/p/mingw-w64/bugs/793/
-	strftime(datetime, 80, "%Y-%m-%d %H:%M:%S %z", _out_tst);
+	std::strftime(datetime, 80, "%Y-%m-%d %H:%M:%S %z", _out_tst);
 	return string (datetime);
 }
 
@@ -1255,7 +1255,7 @@ void e2db::edit_transponder(string txid, transponder& tx)
 	debug("edit_transponder()", "txid", txid);
 
 	char nw_txid[25];
-	sprintf(nw_txid, "%x:%x", tx.tsid, tx.dvbns);
+	std::sprintf(nw_txid, "%x:%x", tx.tsid, tx.dvbns);
 	tx.txid = nw_txid;
 
 	debug("edit_service()", "nw_txid", nw_txid);
@@ -1298,8 +1298,8 @@ void e2db::edit_service(string chid, service& ch)
 
 	char nw_chid[25];
 	char nw_txid[25];
-	sprintf(nw_txid, "%x:%x", ch.tsid, ch.dvbns);
-	sprintf(nw_chid, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
+	std::sprintf(nw_txid, "%x:%x", ch.tsid, ch.dvbns);
+	std::sprintf(nw_chid, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
 	ch.txid = nw_txid;
 	ch.chid = nw_chid;
 

@@ -78,10 +78,17 @@ class DropEventHandler : public QObject
 
 			for (auto & item : selected)
 			{
+				if (item->parent() != parent)
+					return;
+
 				caches.append(item->clone());
-				delete item;
 			}
-			parent->insertChildren(parent->indexOfChild(current), caches);
+			int index = parent->indexOfChild(current);
+			for (auto & item : selected)
+				delete item;
+
+			parent->insertChildren(index, caches);
+			tree0->setCurrentItem(caches.first());
 		}
 		void dropFromList(QTreeWidgetItem* current, QTreeWidget* tree0, QTreeWidget* tree1)
 		{
