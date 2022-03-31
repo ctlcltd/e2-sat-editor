@@ -13,6 +13,15 @@ cleanup () {
 	rm qrc_resources.cpp
 }
 
+if [[ -z $(type -t qmake) ]]; then
+	echo "qmake not found."
+	exit 1;
+fi
+if [[ -z $(type -t make) ]]; then
+	echo "make not found."
+	exit 1;
+fi
+
 [[ "$1" == "cleanup" ]] && cleanup
 
 echo "preparing qmake ..."

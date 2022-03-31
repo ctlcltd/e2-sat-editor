@@ -115,7 +115,7 @@ void settings::preferences()
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtfg2);
 	dtf0->addRow(dtfg2);
 
-	QGroupBox* dtl1 = new QGroupBox(tr("Theming"));
+	QGroupBox* dtl1 = new QGroupBox(tr("Theme"));
 	QFormLayout* dtf1 = new QFormLayout;
 	dtf1->setSpacing(20);
 	dtf1->setFormAlignment(Qt::AlignLeft);
@@ -127,7 +127,7 @@ void settings::preferences()
 	dtf1st->addItem(tr("Default (system theme)"), "");
 	dtf1st->addItem(tr("Dark"), "dark");
 	dtf1st->addItem(tr("Light"), "light");
-	dtf1->addRow(tr("Theme"), dtf1st);
+	dtf1->addRow(dtf1st);
 	dtf1->addRow(new QLabel(tr("<small>The program needs to be restarted after switching theme.</small>")));
 
 	dtl0->setLayout(dtf0);

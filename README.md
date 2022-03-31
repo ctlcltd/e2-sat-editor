@@ -42,6 +42,23 @@ An enigma2 channel list editor – under development.
 
 You can open [issues](https://github.com/ctlcltd/e2-sat-editor/issues) to report bug, request features or send a [Pull Request](https://github.com/ctlcltd/e2-sat-editor/pulls).
 
+ 
+### TODO
+
+- [ ] stable build
+- [ ] search filters
+- [ ] satellite.xml editing
+- [ ] multi-windowed gui
+- [ ] minisite and promotion
+- [ ] basic translations
+- [ ] automated build
+- [ ] terrestrial.xml and cable.xml support
+- [ ] smart edit userbouquets
+- [ ] picons support
+- [ ] plug-in system
+- [ ] cli
+- [ ] optimizations
+
 
 ## License
 

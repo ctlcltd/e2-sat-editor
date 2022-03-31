@@ -13,12 +13,19 @@ cleanup () {
 	rm qrc_resources.cpp
 }
 
-if [[ -n $(type -t qmake6) ]]; then
-	QMAKE="qmake6"
-elif [[ -n $(type -t qmake) ]]; then
-	QMAKE="qmake"
-else
+if [[ -z $QMAKE ]]; then
+	if [[ -n $(type -t qmake6) ]]; then
+		QMAKE="qmake6"
+	elif [[ -n $(type -t qmake) ]]; then
+		QMAKE="qmake"
+	fi
+fi
+if [[ -z $(type -t $QMAKE) ]]; then
 	echo "qmake not found."
+	exit 1;
+fi
+if [[ -z $(type -t make) ]]; then
+	echo "make not found."
 	exit 1;
 fi
 
