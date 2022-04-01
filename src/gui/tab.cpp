@@ -33,7 +33,6 @@
 #include "theme.h"
 #include "tab.h"
 #include "gui.h"
-#include "DropEventHandler.h"
 #include "editService.h"
 #include "channelBook.h"
 #include "../ftpcom.h"
@@ -202,12 +201,14 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	this->action.list_addch->setDisabled(true);
 
 	//TODO reindex userbouquets before saving
-	DropEventHandler* bouquets_evt = new DropEventHandler;
-	this->list_evt = new TreeEventObserver;
-	bouquets_evt->setEventCallback([=]() { list_tree->scrollToBottom(); this->visualReindexList(); });
-	bouquets_tree->viewport()->installEventFilter(bouquets_evt);
+	this->bouquets_evth = new BouquetsEventHandler;
+	this->list_evth = new ListEventHandler;
+	this->list_evto = new ListEventObserver;
+	bouquets_evth->setEventCallback([=]() { list_tree->scrollToBottom(); this->visualReindexList(); });
+	bouquets_tree->viewport()->installEventFilter(bouquets_evth);
 	bouquets_tree->connect(bouquets_tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->bouquetsItemChanged(current); });
-	list_tree->installEventFilter(list_evt);
+	list_tree->installEventFilter(list_evto);
+	list_tree->viewport()->installEventFilter(list_evth);
 	list_tree->connect(list_tree, &QTreeWidget::currentItemChanged, [=]() { this->listItemChanged(); });
 	list_tree->connect(list_tree, &QTreeWidget::itemDoubleClicked, [=]() { this->editService(); });
 
@@ -637,7 +638,7 @@ void tab::bouquetsItemChanged(QTreeWidgetItem* current)
 
 void tab::listItemChanged()
 {
-	if (! list_evt->isChanged()) return;
+	if (! list_evto->isChanged()) return;
 
 	debug("listItemChanged()");
 
@@ -718,8 +719,7 @@ void tab::allowDnD()
 {
 	debug("allowDnd()");
 
-	list_tree->setDragEnabled(true);
-	list_tree->setAcceptDrops(true);
+	this->list_evth->allowInternalMove();
 	this->state.dnd = true;
 	// list_wrap->setStyleSheet("#channels_wrap { background: transparent }");
 }
@@ -728,8 +728,7 @@ void tab::disallowDnD()
 {
 	debug("disallowDnD()");
 
-	list_tree->setDragEnabled(false);
-	list_tree->setAcceptDrops(false);
+	this->list_evth->disallowInternalMove();
 	this->state.dnd = false;
 	// list_wrap->setStyleSheet("#channels_wrap { background: rgba(255, 192, 0, 20%) }");
 }
@@ -1022,7 +1021,7 @@ void tab::initialize()
 	this->state.nwwr = true;
 	this->state.ovwr = false;
 	this->state.changed = false;
-	this->state.dnd = false;
+	this->state.dnd = true;
 	this->state.sort = pair (-1, Qt::AscendingOrder); //C++17
 
 	bouquets_tree->clear();

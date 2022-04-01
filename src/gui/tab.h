@@ -27,7 +27,9 @@ using std::string, std::pair, std::unordered_map;
 
 #include "../logger.h"
 #include "e2db_gui.h"
-#include "TreeEventObserver.h"
+#include "BouquetsEventHandler.h"
+#include "ListEventHandler.h"
+#include "ListEventObserver.h"
 
 namespace e2se_gui
 {
@@ -102,7 +104,9 @@ class tab : protected e2se::log_factory
 		QWidget* cwid;
 		int ttid;
 		e2db* dbih = nullptr;
-		TreeEventObserver* list_evt;
+		BouquetsEventHandler* bouquets_evth;
+		ListEventHandler* list_evth;
+		ListEventObserver* list_evto;
 		QTreeWidget* bouquets_tree;
 		QTreeWidget* list_tree;
 		QWidget* list_wrap;
