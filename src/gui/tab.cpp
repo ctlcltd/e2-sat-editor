@@ -35,7 +35,7 @@
 #include "gui.h"
 #include "editService.h"
 #include "channelBook.h"
-#include "../ftpcom.h"
+#include "ftpcom_gui.h"
 #include "todo.h"
 
 using std::to_string, std::sort;
@@ -1069,8 +1069,6 @@ void tab::profileComboChanged(int index)
 //TEST
 void tab::ftpConnect()
 {
-	using e2se_ftpcom::ftpcom;
-
 	debug("ftpConnect()");
 
 	int profile_sel = gid->sets->value("profile/selected").toInt();
@@ -1086,11 +1084,14 @@ void tab::ftpConnect()
 	params.bpath = gid->sets->value("pathBouquets").toString().toStdString();
 	gid->sets->endArray();
 
-	ftpcom* ftp = new ftpcom(params);
-	ftp->connect();
-	ftp->listDir(ftpcom::path_param::services);
-	ftp->uploadData(ftpcom::path_param::services, "testfile", "test\ntest\n\n");
-	ftp->disconnect();
+	ftpcom* ftp = new ftpcom;
+	ftp->setup(params);
+	if (ftp->connect())
+	{
+		ftp->listDir(ftpcom::path_param::services);
+		ftp->uploadData(ftpcom::path_param::services, "testfile", "test\ntest\n\n");
+		ftp->disconnect();
+	}
 }
 //TEST
 

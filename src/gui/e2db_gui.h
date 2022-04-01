@@ -17,6 +17,7 @@ using std::string, std::pair, std::vector, std::unordered_map;
 
 #ifndef e2db_gui_h
 #define e2db_gui_h
+#include <QApplication>
 #include <QString>
 #include <QList>
 #include <QRegularExpression>
@@ -28,6 +29,8 @@ namespace e2se_gui
 {
 class e2db : public ::e2se_e2db::e2db
 {
+	Q_DECLARE_TR_FUNCTIONS(e2db)
+
 	public:
 		struct entry {
 			unordered_map<string, QStringList> transponders;
@@ -58,8 +61,9 @@ class e2db : public ::e2se_e2db::e2db
 		QStringList entry_transponder(transponder tx);
 		QStringList entry_service(service ch);
 		QStringList entry_marker(reference cref);
-		QSettings* sets;
 		unordered_map<string, vector<pair<int, string>>> gindex;
+	protected:
+		QSettings* sets;
 };
 }
 #endif /* e2db_gui_h */

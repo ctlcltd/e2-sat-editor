@@ -19,6 +19,7 @@ using std::to_string;
 
 namespace e2se_gui
 {
+
 e2db::e2db()
 {
 	std::setlocale(LC_NUMERIC, "C");

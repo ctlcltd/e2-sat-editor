@@ -428,7 +428,7 @@ void gui::save()
 }
 
 //TODO tab actions ctl
-void gui::tabEditAction(int action)
+void gui::tabEditAction(TAB_EDIT_ATS action)
 {
 	debug("tabEditAction()", "action", to_string(action));
 

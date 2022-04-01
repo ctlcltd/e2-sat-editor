@@ -22,8 +22,6 @@ bool ListEventHandler::eventFilter(QObject* o, QEvent* e)
 	if (e->type() == QEvent::Drop)
 	{
 		QDropEvent* evt = static_cast<QDropEvent*>(e);
-		/*QTreeWidget* list_tree = qobject_cast<QTreeWidget*>(o);
-		QTreeWidget* list_tree = qobject_cast<QTreeWidget*>(evt->source());*/
 
 		if (! this->dnd)
 			evt->setDropAction(Qt::DropAction::IgnoreAction);

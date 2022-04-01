@@ -65,7 +65,7 @@ class gui : protected e2se::log_factory
 		void loaded(int counters[5]);
 		void reset();
 		void save();
-		void tabEditAction(int action);
+		void tabEditAction(TAB_EDIT_ATS action);
 		void settings();
 		void about();
 		tab* getCurrentTabHandler();

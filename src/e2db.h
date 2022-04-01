@@ -267,7 +267,7 @@ class e2db_maker : virtual public e2db_abstract
 		void make_userbouquet(string bname);
 	private:
 		unordered_map<string, string> e2db_out;
-		tm* _out_tst;
+		std::tm* _out_tst;
 };
 
 class e2db : public e2db_parser, public e2db_maker

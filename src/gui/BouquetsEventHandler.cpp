@@ -41,13 +41,13 @@ bool BouquetsEventHandler::eventFilter(QObject* o, QEvent* e)
 		if (current == nullptr || ti != -1)
 		{
 		}
-		// drop from tree
+		// drop from bouquets tree
 		// userbouquets
 		else if (bouquets_tree == list_tree)
 		{
 			dropFromBouquets(current, bouquets_tree);
 		}
-		// drop from list
+		// drop from list tree
 		// userbouquets
 		else
 		{

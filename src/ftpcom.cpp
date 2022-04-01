@@ -20,10 +20,16 @@ using std::string, std::stringstream, std::getline, std::min, std::endl, std::to
 
 namespace e2se_ftpcom
 {
-ftpcom::ftpcom(ftp_params params)
+
+ftpcom::ftpcom()
 {
 	this->log = new e2se::logger("ftpcom");
 	debug("ftpcom()");
+}
+
+void ftpcom::setup(ftp_params params)
+{
+	debug("setup()");
 
 	if (params.user.empty())
 		error("ftpcom()", trw("Missing \"%s\" parameter.", "username"));
@@ -98,9 +104,8 @@ bool ftpcom::connect()
 {
 	debug("connect()");
 
-	if (! handle())
+	if (! curl || ! handle())
 	{
-		error("connect()", trs("ftpcom error."));
 		return false;
 	}
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, dataDiscard_func);
@@ -108,17 +113,18 @@ bool ftpcom::connect()
 	return (res == CURLE_OK) ? true : false;
 }
 
-void ftpcom::disconnect()
+bool ftpcom::disconnect()
 {
 	debug("disconnect()");
 
 	if (! curl)
-		return error("disconnect()", trs("ftpcom error."));
+		return false;
 
 	cleanup();
+	return true;
 }
 
-void ftpcom::listDir(int path)
+void ftpcom::listDir(path_param path)
 {
 	debug("list_dir()");
 
@@ -146,7 +152,7 @@ void ftpcom::listDir(int path)
 	}
 }
 
-void ftpcom::uploadData(int path, string filename, string os)
+void ftpcom::uploadData(path_param path, string filename, string os)
 {
 	debug("uploadData()");
 
@@ -239,19 +245,19 @@ size_t ftpcom::getContentLength_func(void* csi, size_t size, size_t nmemb, void*
 	return relsize;
 }
 
-string ftpcom::getBasePath(int path)
+string ftpcom::getBasePath(path_param path)
 {
 	string base;
 
 	switch (path)
 	{
-		case ftpcom::path_param::transponders:
+		case path_param::transponders:
 			base = baset;
 		break;
-		case ftpcom::path_param::services:
+		case path_param::services:
 			base = bases;
 		break;
-		case ftpcom::path_param::bouquets:
+		case path_param::bouquets:
 			base = baseb;
 		break;
 		default:
@@ -281,7 +287,7 @@ string ftpcom::trw(string str, string param)
 {
 	size_t tsize = str.length() + param.length();
 	char tstr[tsize];
-	sprintf(tstr, str.c_str(), param.c_str());
+	std::sprintf(tstr, str.c_str(), param.c_str());
 	return string (tstr);
 }
 
