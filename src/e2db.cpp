@@ -79,6 +79,47 @@ void e2db_abstract::add_service(int idx, service& ch)
 	index[iname].emplace_back(pair (idx, ch.chid)); //C++17
 }
 
+void e2db_abstract::add_bouquet(int idx, bouquet& bs)
+{
+	bs.index = idx;
+	index["bss"].emplace_back(pair (idx, bs.bname)); //C++17
+	bouquets.emplace(bs.bname, bs);
+}
+
+void e2db_abstract::add_userbouquet(int idx, userbouquet& ub)
+{
+	ub.index = idx;
+	index["ubs"].emplace_back(pair (idx, ub.bname)); //C++17
+	bouquets[ub.pname].userbouquets.emplace_back(ub.bname);
+	userbouquets.emplace(ub.bname, ub);
+}
+
+void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_reference& chref, service_reference& ref)
+{
+	char chid[25];
+
+	if (chref.marker)
+		std::sprintf(chid, "%d:%x:%d", chref.type, chref.anum, ub.index);
+	else
+		std::sprintf(chid, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
+
+	chref.chid = chid;
+	chref.index = idx;
+
+	ub.channels[chref.chid] = chref;
+	index[ub.bname].emplace_back(pair (idx, chref.chid)); //C++17
+
+	if (chref.marker)
+		index["mks"].emplace_back(pair (ub.index, chref.chid)); //C++17
+	else
+		index[ub.pname].emplace_back(pair ((index[ub.pname].size() + 1), chref.chid)); //C++17
+}
+
+void e2db_abstract::set_channel_reference_marker_value(userbouquet& ub, string chid, string value)
+{
+	ub.channels[chid].value = value;
+}
+
 
 
 e2db_parser::e2db_parser()
@@ -121,7 +162,7 @@ void e2db_parser::parse_e2db()
 		for (auto & w: x.second.userbouquets)
 		{
 			ifstream fuserbouquet (e2db[w]);
-			parse_e2db_userbouquet(fuserbouquet, w, x.first);
+			parse_e2db_userbouquet(fuserbouquet, w);
 			fuserbouquet.close();
 		}
 	}
@@ -226,7 +267,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 			}
 			else if (s == 1)
 			{
-				parse_lamedb_service_params(line, ch, true);
+				append_lamedb_service_name(line, ch);
 				s++;
 			}
 			else if (s == 2)
@@ -283,7 +324,7 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 			string chname = params.substr(1, delimit - 1);
 			string chdata = params.rfind(',') != string::npos ? params.substr(delimit + 2) : "";
 			parse_lamedb_service_params(data, ch);
-			parse_lamedb_service_params(chname, ch, true);
+			append_lamedb_service_name(chname, ch);
 			parse_lamedb_service_data(chdata, ch);
 			add_service(sidx, ch);
 		}
@@ -400,11 +441,6 @@ void e2db_parser::parse_lamedb_service_params(string data, service& ch)
 	ch.snum = snum;
 }
 
-void e2db_parser::parse_lamedb_service_params(string data, service& ch, bool add)
-{
-	ch.chname = data;
-}
-
 void e2db_parser::parse_lamedb_service_data(string data, service& ch)
 {
 	if (data.empty()) return;
@@ -428,34 +464,32 @@ void e2db_parser::parse_lamedb_service_data(string data, service& ch)
 	ch.data = cdata; //TODO lassign infinite loop
 }
 
+void e2db_parser::append_lamedb_service_name(string data, service& ch)
+{
+	ch.chname = data;
+}
+
 void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 {
 	debug("parse_e2db_bouquet()", "bname", bname);
 
-	int idx = 0;
 	string line;
 	bouquet bs;
+	userbouquet ub;
 
 	while (getline(fbouquet, line))
 	{
 		if (line.find("#SERVICE") != string::npos)
 		{
-			char c_refid[33];
-			char c_fname[33];
-			char c_oby[13];
-
-			sscanf(line.substr(9).c_str(), "%32s BOUQUET %32s ORDER BY %12s", c_refid, c_fname, c_oby);
-
-			string fname = string (c_fname);
-			fname = fname.substr(1, fname.length() - 2);
-
-			index["ubs"].emplace_back(pair (idx++, fname)); //C++17
-			bs.userbouquets.emplace_back(fname);
+			ub = userbouquet ();
+			parse_userbouquet_reference(line.substr(9), ub);
+			ub.pname = bname;
+			add_userbouquet(index["ubs"].size(), ub);
 		}
 		else if (line.find("#NAME") != string::npos)
 		{
 			bs = bouquet ();
-
+			bs.bname = bname;
 			bs.name = line.substr(6); //TODO
 			if (bname.find(".tv") != string::npos)
 			{
@@ -467,15 +501,13 @@ void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 				bs.btype = 2;
 				bs.nname = "Radio";
 			}
-			bs.count = 1;
-			index["bss"].emplace_back(pair (bs.btype, bname)); //C++17
+
+			add_bouquet(bs.btype, bs);
 		}
 	}
-
-	bouquets.emplace(bname, bs);
 }
 
-void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, string pname)
+void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname)
 {
 	debug("parse_e2db_userbouquet()", "bname", bname);
 
@@ -483,25 +515,22 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 	int idx = 0;
 	int y = 0;
 	string line;
-	string chid;
-	userbouquet ub;
-	reference ref;
+	userbouquet& ub = userbouquets[bname];
+	channel_reference chref;
+	service_reference ref;
 
 	while (getline(fuserbouquet, line))
 	{
 		if (! step && line.find("#NAME") != string::npos)
 		{
-			ub = userbouquet ();
-
 			ub.name = line.substr(6);
-			ub.pname = pname;
 			step = 1;
 			continue;
 		}
 		else if (step == 2)
 		{
 			if (line.find("#DESCRIPTION") != string::npos)
-				ub.channels[chid].refval = line.substr(13);
+				set_channel_reference_marker_value(ub, chref.chid, line.substr(13));
 			step = 1;
 			continue;
 		}
@@ -512,58 +541,67 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, s
 
 		if (step)
 		{
-			line = line.substr(9);
-			bool sseq = false;
-			char cchid[24];
-			int i0, i1, anum, ssid, tsid, onid, dvbns;
-			i0 = -1, i1 = -1, anum = -1, ssid = 0, tsid = 0, onid = -1, dvbns = 0;
+			chref = channel_reference ();
+			ref = service_reference ();
 
-			std::sscanf(line.c_str(), "%d:%d:%4X:%4X:%4X:%4X:%8X", &i0, &i1, &anum, &ssid, &tsid, &onid, &dvbns);
-			//TODO other flags ?
+			parse_channel_reference(line.substr(9), chref, ref);
 
-			switch (i1)
+			if (chref.marker)
 			{
-				case 64:  // regular marker
-				case 320: // numbered marker
-				case 512: // hidden marker
-				case 832: // hidden marker
-					sseq = false;
-					step = 2;
-					std::sprintf(cchid, "%d:%d:%x", i0, i1, anum);
-				break;
-				case 128: // group //TODO
-				default:  // service
-					sseq = true;
-					std::sprintf(cchid, "%x:%x:%x", ssid, tsid, dvbns);
+				step = 2;
+				idx = 0;
 			}
-			if (sseq)
+			else
 			{
 				y++;
 				idx = y;
 			}
-			else
-			{
-				idx = 0;
-			}
 
-			chid = string (cchid);
-			ref.chid = chid;
-			ref.reftype = i1;
-			ref.refmrker = ! sseq;
-			ref.refanum = anum;
-			ref.index = idx;
-
-			ub.channels[chid] = ref;
-			index[bname].emplace_back(pair (idx, chid)); //C++17
-
-			if (sseq)
-				index[pname].emplace_back(pair (bouquets[pname].count++, chid)); //C++17
-
-			ref = reference ();
+			add_channel_reference(idx, ub, chref, ref);
 		}
 	}
+}
 
-	userbouquets.emplace(bname, ub);
+void e2db_parser::parse_userbouquet_reference(string data, userbouquet& ub)
+{
+	char refid[33];
+	char fname[33];
+	char oby[13];
+
+	sscanf(data.c_str(), "%32s BOUQUET %32s ORDER BY %12s", refid, fname, oby);
+
+	ub.bname = string (fname);
+	ub.bname = ub.bname.substr(1, ub.bname.length() - 2);
+}
+
+void e2db_parser::parse_channel_reference(string data, channel_reference& chref, service_reference& ch)
+{
+	int i, type, anum, ssid, tsid, onid, dvbns;
+	i = -1, type = -1, anum = -1, ssid = 0, tsid = 0, onid = -1, dvbns = 0;
+
+	std::sscanf(data.c_str(), "%d:%d:%4X:%4X:%4X:%4X:%8X", &i, &type, &anum, &ssid, &tsid, &onid, &dvbns);
+	//TODO other flags ?
+
+	switch (type)
+	{
+		case 64:  // regular marker
+		case 320: // numbered marker
+		case 512: // hidden marker
+		case 832: // hidden marker
+			chref.marker = true;
+		break;
+		case 128: // group //TODO
+			error("parse_channel_reference()", "Error", "Not supported yet.");
+		break;
+		default:  // service
+			chref.marker = false;
+			ch.ssid = ssid;
+			ch.dvbns = dvbns;
+			ch.tsid = tsid;
+	}
+
+	chref.type = type;
+	chref.anum = anum;
 }
 
 //TODO FIX <!-- key="val" -->
@@ -583,7 +621,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, ifstream& ftunxml)
 	}
 
 	tuner_sets tn;
-	tuner_reference tr;
+	tuner_reference tnref;
 
 	switch (ytype)
 	{
@@ -609,11 +647,11 @@ void e2db_parser::parse_tunersets_xml(int ytype, ifstream& ftunxml)
 		{
 			step--;
 			char trid[17];
-			std::sprintf(trid, "%d:%d:%d", tr.freq, tr.pol, tr.sr);
-			tn.references.emplace(trid, tr);
+			std::sprintf(trid, "%d:%d:%d", tnref.freq, tnref.pol, tnref.sr);
+			tn.references.emplace(trid, tnref);
 			tuners.emplace(tn.pos, tn);
 			tn = tuner_sets ();
-			tr = tuner_reference ();
+			tnref = tuner_reference ();
 			continue;
 		}
 		else if (! step && line.find("<") != string::npos)
@@ -664,29 +702,29 @@ void e2db_parser::parse_tunersets_xml(int ytype, ifstream& ftunxml)
 				else if (key == "position")
 					tn.pos = atoi(val.data());
 				else if (key == "frequency")
-					tr.freq = int (atoi(val.data()) / 1e3);
+					tnref.freq = int (atoi(val.data()) / 1e3);
 				else if (key == "symbol_rate")
-					tr.sr = int (atoi(val.data()) / 1e3);
+					tnref.sr = int (atoi(val.data()) / 1e3);
 				else if (key == "polarization")
-					tr.pol = atoi(val.data());
+					tnref.pol = atoi(val.data());
 				else if (key == "fec_inner")
-					tr.fec = atoi(val.data());
+					tnref.fec = atoi(val.data());
 				else if (key == "modulation")
-					tr.mod = atoi(val.data());
+					tnref.mod = atoi(val.data());
 				else if (key == "rolloff")
-					tr.rol = atoi(val.data());
+					tnref.rol = atoi(val.data());
 				else if (key == "pilot")
-					tr.pil = atoi(val.data());
+					tnref.pil = atoi(val.data());
 				else if (key == "inversion")
-					tr.inv = atoi(val.data());
+					tnref.inv = atoi(val.data());
 				else if (key == "system")
-					tr.sys = atoi(val.data());
+					tnref.sys = atoi(val.data());
 				else if (key == "is_id")
-					tr.isid = atoi(val.data());
+					tnref.isid = atoi(val.data());
 				else if (key == "pls_mode")
-					tr.plsmode = atoi(val.data());
+					tnref.plsmode = atoi(val.data());
 				else if (key == "pls_code")
-					tr.plscode = atoi(val.data());
+					tnref.plscode = atoi(val.data());
 
 				// cout << mkey << ':' << key << ':' << val << ' ' << step << endl;
 				token = strtok(NULL, " ");
@@ -1137,29 +1175,29 @@ void e2db_maker::make_userbouquet(string bname)
 	ss << "#NAME " << ub.name << endl;
 	for (auto & x: index[bname])
 	{
-		reference cref = userbouquets[bname].channels[x.second];
+		channel_reference chref = userbouquets[bname].channels[x.second];
 		ss << "#SERVICE ";
 		ss << "1:";
-		ss << cref.reftype << ':';
+		ss << chref.type << ':';
 		ss << hex;
-		ss << uppercase << cref.refanum << ':'; //TODO ("global markers index)
+		ss << uppercase << chref.anum << ':'; //TODO ("global markers index)
 		
 		if (db.services.count(x.second))
 		{
-			service cdata = db.services[x.second];
-			string onid = cdata.onid;
+			service ch = db.services[x.second];
+			string onid = ch.onid;
 			transform(onid.begin(), onid.end(), onid.begin(), [](unsigned char c) { return toupper(c); });
 
-			ss << uppercase << cdata.ssid << ':';
-			ss << uppercase << cdata.tsid << ':';
+			ss << uppercase << ch.ssid << ':';
+			ss << uppercase << ch.tsid << ':';
 			ss << onid << ':';
-			ss << uppercase << cdata.dvbns << ':';
+			ss << uppercase << ch.dvbns << ':';
 			ss << "0:0:0:";
 		}
 		else
 		{
 			ss << "0:0:0:0:0:0:0:0:" << endl;
-			ss << "#DESCRIPTION " << cref.refval;
+			ss << "#DESCRIPTION " << chref.value;
 		}
 		ss << dec;
 		ss << endl;
@@ -1336,6 +1374,76 @@ void e2db::remove_service(string chid)
 			index[iname].erase(it);
 	}
 	collisions.erase(kchid);
+}
+
+void e2db::add_bouquet(bouquet& bs)
+{
+	debug("add_bouquet()", "bname", bs.bname);
+
+	e2db_abstract::add_bouquet(index.count("bss"), bs);
+}
+
+void e2db::edit_bouquet(bouquet& bs)
+{
+	debug("edit_bouquet()", "bname", bs.bname);
+
+	bouquets[bs.bname] = bs;
+}
+
+void e2db::remove_bouquet(string bname)
+{
+	debug("remove_bouquet()", "bname", bname);
+
+	bouquets.erase(bname);
+
+	for (auto it = index["bss"].begin(); it != index["bss"].end(); it++)
+	{
+		if (it->second == bname)
+			index["bss"].erase(it);
+	}
+	//TODO remove userbouquets from index ubs
+}
+
+void e2db::add_userbouquet(userbouquet& ub)
+{
+	debug("add_userbouquet()");
+
+	e2db_abstract::add_userbouquet(index.count("ubs"), ub);
+}
+
+void e2db::edit_userbouquet(userbouquet& ub)
+{
+	debug("edit_userbouquet()", "bname", ub.bname);
+
+	userbouquets[ub.bname] = ub;
+}
+
+void e2db::remove_userbouquet(string bname)
+{
+	debug("remove_userbouquet()", "bname", bname);
+
+	userbouquets.erase(bname);
+
+	for (auto it = index["ubs"].begin(); it != index["ubs"].end(); it++)
+	{
+		if (it->second == bname)
+			index["ubs"].erase(it);
+	}
+}
+
+void e2db::add_channel_reference(channel_reference& chref)
+{
+	debug("add_channel_reference()", "chid", chref.chid);
+}
+
+void e2db::edit_channel_reference(string chid, channel_reference& chref)
+{
+	debug("edit_channel_reference()", "chid", chid);
+}
+
+void e2db::remove_channel_reference(string chid)
+{
+	debug("remove_channel_reference()", "chid", chid);
 }
 
 //TODO unique (eg. terrestrial MUX)

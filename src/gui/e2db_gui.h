@@ -60,7 +60,7 @@ class e2db : public ::e2se_e2db::e2db
 		void updateUserbouquetIndexes(string chid, string nw_chid);
 		QStringList entry_transponder(transponder tx);
 		QStringList entry_service(service ch);
-		QStringList entry_marker(reference cref);
+		QStringList entry_marker(channel_reference chref);
 		unordered_map<string, vector<pair<int, string>>> gindex;
 	protected:
 		QSettings* sets;

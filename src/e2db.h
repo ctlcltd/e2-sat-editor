@@ -110,6 +110,11 @@ struct e2db_abstract
 			string chname;
 			map<char, vector<string>> data;
 		};
+		struct service_reference {
+			int ssid;
+			int dvbns;
+			int tsid;
+		};
 		struct transponder
 		{
 			string txid;
@@ -140,13 +145,13 @@ struct e2db_abstract
 			string oflgs; // ?
 			int index;
 		};
-		struct reference
+		struct channel_reference
 		{
 			string chid;
-			int reftype;
-			bool refmrker;
-			string refval;
-			int refanum;
+			int type;
+			bool marker;
+			string value;
+			int anum;
 			int index;
 		};
 		struct bouquet
@@ -156,14 +161,15 @@ struct e2db_abstract
 			string nname;
 			int btype;
 			vector<string> userbouquets;
-			int count;
+			int index;
 		};
 		struct userbouquet
 		{
 			string bname;
 			string name;
 			string pname;
-			unordered_map<string, reference> channels;
+			unordered_map<string, channel_reference> channels;
+			int index;
 		};
 		struct tuner_reference
 		{
@@ -200,6 +206,10 @@ struct e2db_abstract
 		unordered_map<string, vector<pair<string, int>>> collisions;
 		void add_transponder(int idx, transponder& tx);
 		void add_service(int idx, service& ch);
+		void add_bouquet(int idx, bouquet& bs);
+		void add_userbouquet(int idx, userbouquet& ub);
+		void add_channel_reference(int idx, userbouquet& ub, channel_reference& chref, service_reference& ch);
+		void set_channel_reference_marker_value(userbouquet& ub, string chid, string value);
 	protected:
 		unordered_map<string, string> e2db;
 		void options();
@@ -220,7 +230,7 @@ class e2db_parser : virtual public e2db_abstract
 		void parse_e2db_lamedb4(ifstream& flamedb);
 		void parse_e2db_lamedb5(ifstream& flamedb);
 		void parse_e2db_bouquet(ifstream& fbouquet, string bname);
-		void parse_e2db_userbouquet(ifstream& fuserbouquet, string bname, string pname);
+		void parse_e2db_userbouquet(ifstream& fuserbouquet, string bname);
 		unordered_map<string, transponder> get_transponders();
 		unordered_map<string, service> get_services();
 		pair<unordered_map<string, bouquet>, unordered_map<string, userbouquet>> get_bouquets();
@@ -232,8 +242,10 @@ class e2db_parser : virtual public e2db_abstract
 		void parse_lamedb_transponder_params(string data, transponder& tx);
 		void parse_lamedb_transponder_feparms(string data, char ttype, transponder& tx);
 		void parse_lamedb_service_params(string data, service& ch);
-		void parse_lamedb_service_params(string data, service& ch, bool add);
 		void parse_lamedb_service_data(string data, service& ch);
+		void append_lamedb_service_name(string data, service& ch);
+		void parse_userbouquet_reference(string data, userbouquet& ub);
+		void parse_channel_reference(string data, channel_reference& chref, service_reference& ch);
 		string localdir;
 		string dbfilename;
 };
@@ -281,12 +293,15 @@ class e2db : public e2db_parser, public e2db_maker
 		void add_service(service& ch);
 		void edit_service(string chid, service& ch);
 		void remove_service(string chid);
-		void add_bouquet();
-		void edit_bouquet();
-		void remove_bouquet();
-		void add_userbouquet();
-		void edit_userbouquet();
-		void remove_userbouquet();
+		void add_bouquet(bouquet& bs);
+		void edit_bouquet(bouquet& bs);
+		void remove_bouquet(string bname);
+		void add_userbouquet(userbouquet& ub);
+		void edit_userbouquet(userbouquet& ub);
+		void remove_userbouquet(string bname);
+		void add_channel_reference(channel_reference& chref);
+		void edit_channel_reference(string chid, channel_reference& chref);
+		void remove_channel_reference(string chid);
 		map<string, vector<pair<int, string>>> get_channels_index();
 		map<string, vector<pair<int, string>>> get_transponders_index();
 		map<string, vector<pair<int, string>>> get_services_index();

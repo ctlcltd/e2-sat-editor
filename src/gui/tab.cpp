@@ -215,8 +215,8 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	top->addWidget(top_toolbar);
 	bottom->addWidget(bottom_toolbar);
 
-	bouquets_box->addWidget(bouquets_ats);
 	bouquets_box->addWidget(bouquets_tree);
+	bouquets_box->addWidget(bouquets_ats);
 	bouquets->setLayout(bouquets_box);
 
 	list_layout->addWidget(list_tree);
@@ -335,7 +335,7 @@ void tab::addChannel()
 	QWidget* bottom_spacer = new QWidget;
 	bottom_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	bottom_toolbar->addWidget(bottom_spacer);
-	bottom_toolbar->addAction(theme::icon("add"), "Add", [=]() { auto selected = cb->getSelected(); this->putChannels(selected, curr_chlist); });
+	bottom_toolbar->addAction(theme::icon("add"), "Add", [=]() { auto selected = cb->getSelected(); this->putChannels(selected); });
 
 	layout->addWidget(cb->widget);
 	layout->addWidget(bottom_toolbar);
@@ -364,11 +364,11 @@ void tab::editService()
 	QTreeWidgetItem* item = selected.first();
 	string chid = item->data(2, Qt::UserRole).toString().toStdString();
 	string nw_chid;
-	bool mrkr = item->data(1, Qt::UserRole).toBool();
+	bool marker = item->data(1, Qt::UserRole).toBool();
 
 	debug("editService()", "chid", chid);
 
-	if (! mrkr && dbih->db.services.count(chid))
+	if (! marker && dbih->db.services.count(chid))
 	{
 		e2se_gui::editService* add = new e2se_gui::editService(dbih);
 		add->setEditID(chid);
@@ -522,7 +522,7 @@ void tab::populate()
 		{
 			char ci[7];
 			std::sprintf(ci, "%06d", i++);
-			bool mrkr = false;
+			bool marker = false;
 			QString chid = QString::fromStdString(ch.second);
 			QString x = QString::fromStdString(ci);
 			QString idx;
@@ -537,12 +537,12 @@ void tab::populate()
 			}
 			else
 			{
-				e2db::reference cref = dbih->userbouquets[curr_chlist].channels[ch.second];
+				e2db::channel_reference chref = dbih->userbouquets[curr_chlist].channels[ch.second];
 
-				if (cref.refmrker)
+				if (chref.marker)
 				{
-					mrkr = true;
-					entry = dbih->entry_marker(cref);
+					marker = true;
+					entry = dbih->entry_marker(chref);
 					idx = entry[1];
 					entry.prepend(x);
 				}
@@ -559,7 +559,7 @@ void tab::populate()
 			QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 			item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 			item->setData(0, Qt::UserRole, idx);  // data: Index
-			item->setData(1, Qt::UserRole, mrkr); // data: marker flag
+			item->setData(1, Qt::UserRole, marker); // data: marker flag
 			item->setData(2, Qt::UserRole, chid); // data: chid
 			cache[curr_chlist].append(item);
 		}
@@ -660,8 +660,8 @@ void tab::visualReindexList()
 		std::sprintf(ci, "%06d", i + 1);
 		QString x = QString::fromStdString(ci);
 		QTreeWidgetItem* item = list_tree->topLevelItem(i);
-		bool mrkr = item->data(1, Qt::UserRole).toBool();
-		if (mrkr)
+		bool marker = item->data(1, Qt::UserRole).toBool();
+		if (marker)
 		{
 			idx = 0;
 		}
@@ -671,7 +671,7 @@ void tab::visualReindexList()
 			idx = y;
 		}
 		item->setText(0, x);
-		if (! mrkr)
+		if (! marker)
 			item->setText(1, QString::fromStdString(to_string(idx)));
 		i++;
 	}
@@ -785,7 +785,7 @@ void tab::listItemPaste()
 	QTreeWidgetItem* selected = list_tree->currentItem();
 
 	if (selected == NULL)
-		selected = list_tree->topLevelItem(list_tree->topLevelItemCount());
+		selected = list_tree->topLevelItem(list_tree->topLevelItemCount() - 1);
 	if (selected != NULL)
 	{
 		QClipboard* clipboard = QGuiApplication::clipboard();
@@ -803,7 +803,7 @@ void tab::listItemPaste()
 			}
 		}
 		if (! items.empty())
-			putChannels(items, curr_chlist);
+			putChannels(items);
 	}
 }
 
@@ -869,8 +869,7 @@ void tab::listItemAction(int action)
 
 //TODO allow duplicates
 //TODO put in selected place
-//TODO FIX chlist from Paste
-void tab::putChannels(vector<QString> channels, string chlist)
+void tab::putChannels(vector<QString> channels)
 {
 	debug("putChannels()");
 
@@ -880,15 +879,15 @@ void tab::putChannels(vector<QString> channels, string chlist)
 	QList<QTreeWidgetItem*> clist;
 	int i = list_tree->topLevelItemCount() + 1;
 
-	for (QString & qchid : channels)
+	for (QString & w : channels)
 	{
-		string chid = qchid.toStdString();
+		string chid = w.toStdString();
 		char ci[7];
 		std::sprintf(ci, "%06d", i);
 		QString x = QString::fromStdString(ci);
 		QString idx = QString::fromStdString(to_string(i));
 		QStringList entry;
-		bool mrkr = false;
+		bool marker = false;
 		if (dbih->db.services.count(chid))
 		{
 			entry = dbih->entries.services[chid];
@@ -897,27 +896,37 @@ void tab::putChannels(vector<QString> channels, string chlist)
 		}
 		else
 		{
-			e2db::reference cref = dbih->userbouquets[chlist].channels[chid];
+			string chlist;
 
-			if (cref.refmrker)
+			for (auto & q : dbih->gindex["mks"])
 			{
-				mrkr = true;
-				entry = dbih->entry_marker(cref);
-				idx = entry[1];
-				entry.prepend(x);
+				if (q.second == chid)
+				{
+					for (auto & u : dbih->gindex["ubs"])
+					{
+						if (u.first == q.first)
+							chlist = u.second;
+					}
+				}
+			}
+
+			if (chlist.empty())
+			{
+				error("putChannels()", "chid", chid);
+				continue;
 			}
 			else
 			{
-				//TEST
-				entry = QStringList({x, "", "", qchid, "", "ERROR"});
-				// idx = 0; //Qt5
-				error("putChannels()", "chid", chid);
-				//TEST
+				e2db::channel_reference chref = dbih->userbouquets[chlist].channels[chid];
+				marker = true;
+				entry = dbih->entry_marker(chref);
+				idx = entry[1];
+				entry.prepend(x);
 			}
 		}
 		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
-		item->setData(1, Qt::UserRole, mrkr); // data: marker flag
+		item->setData(1, Qt::UserRole, marker); // data: marker flag
 		clist.append(item);
 		i++;
 	}
@@ -947,8 +956,8 @@ void tab::updateListIndex()
 	{
 		QTreeWidgetItem* item = list_tree->topLevelItem(i);
 		string chid = item->data(2, Qt::UserRole).toString().toStdString();
-		bool mrkr = item->data(1, Qt::UserRole).toBool();
-		if (mrkr)
+		bool marker = item->data(1, Qt::UserRole).toBool();
+		if (marker)
 		{
 			idx = 0;
 		}
@@ -1044,14 +1053,24 @@ void tab::initialize()
 
 	gid->reset();
 
-	QTreeWidgetItem* titem = new QTreeWidgetItem();
-	titem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-	QVariantMap tdata; //TODO
-	tdata["id"] = "chs";
-	titem->setData(0, Qt::UserRole, QVariant (tdata));
-	titem->setText(0, "All channels");
+	vector<pair<QString, QString>> tree = {
+		{"chs", "All channels"},
+		{"chs:1", "All TV"},
+		{"chs:2", "All Radio"},
+		{"chs:0", "All Data"}
+	};
 
-	bouquets_tree->addTopLevelItem(titem);
+	for (auto & item : tree)
+	{
+		QTreeWidgetItem* titem = new QTreeWidgetItem();
+		titem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+		QVariantMap tdata; //TODO
+		tdata["id"] = item.first;
+		titem->setData(0, Qt::UserRole, QVariant (tdata));
+		titem->setText(0, item.second);
+
+		bouquets_tree->addTopLevelItem(titem);
+	}
 }
 
 void tab::destroy()

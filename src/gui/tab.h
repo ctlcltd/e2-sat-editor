@@ -71,7 +71,7 @@ class tab : protected e2se::log_factory
 		void listItemDelete();
 		void listItemSelectAll();
 		void listItemAction(int action);
-		void putChannels(vector<QString> channels, string chlist);
+		void putChannels(vector<QString> channels);
 		void updateListIndex();
 		void showListEditContextMenu(QPoint &pos);
 		void setCounters(bool channels = false);

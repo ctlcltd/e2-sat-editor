@@ -139,6 +139,12 @@ void gui::menuCtl()
 	medit->addSeparator();
 	medit->addAction(tr("Select &All"), [=]() { this->tabEditAction(TAB_EDIT_ATS::SelectAll); })->setShortcut(QKeySequence::SelectAll);
 
+	QMenu* mtool = menu->addMenu(tr("Tools"));
+	mtool->addAction("Order services A-Z", todo);
+	mtool->addAction("Order userbouquets A-Z", todo);
+	mtool->addAction("Remove cached data from services", todo);
+	mtool->addAction("Delete all bouquets", todo);
+
 	QMenu* mwind = menu->addMenu(tr("&Window"));
 	mwind->addAction("&Minimize", [=]() { this->mwid->showMinimized(); })->setShortcut(Qt::CTRL | Qt::Key_M);
 	mwind->addSeparator();

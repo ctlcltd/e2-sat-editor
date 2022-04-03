@@ -207,12 +207,12 @@ QStringList e2db::entry_service(service ch)
 }
 
 //TODO marker QWidget ?
-QStringList e2db::entry_marker(reference cref)
+QStringList e2db::entry_marker(channel_reference chref)
 {
-	QString chid = QString::fromStdString(cref.chid);
-	QString refval = QString::fromStdString(cref.refval);
+	QString chid = QString::fromStdString(chref.chid);
+	QString value = QString::fromStdString(chref.value);
 
-	return QStringList({"", refval, chid, "", "MARKER"});
+	return QStringList({"", value, chid, "", "MARKER"});
 }
 
 }
