@@ -31,6 +31,8 @@ class ftpcom : public ::e2se_ftpcom::ftpcom
 			std::cout << "e2se_gui::~ftpcom()" << std::endl;
 		}
 		void options();
+		void upload();
+		void download();
 	protected:
 		string trs(string str) override;
 		string trw(string str, string param) override;

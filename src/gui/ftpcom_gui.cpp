@@ -23,6 +23,21 @@ ftpcom::ftpcom()
 
 	this->sets = new QSettings;
 	options();
+
+	int profile_sel = sets->value("profile/selected").toInt();
+	sets->beginReadArray("profile");
+	sets->setArrayIndex(profile_sel);
+	ftpcom::ftp_params params;
+	params.host = sets->value("ipAddress").toString().toStdString();
+	params.port = sets->value("ftpPort").toInt();
+	params.user = sets->value("username").toString().toStdString();
+	params.pass = sets->value("password").toString().toStdString();
+	params.tpath = sets->value("pathTransponders").toString().toStdString();
+	params.spath = sets->value("pathServices").toString().toStdString();
+	params.bpath = sets->value("pathBouquets").toString().toStdString();
+	sets->endArray();
+
+	this->setup(params);
 }
 
 void ftpcom::options()
@@ -51,6 +66,22 @@ string ftpcom::trw(string str, string param)
 	char tstr[tsize];
 	std::sprintf(tstr, trstr.c_str(), trparam.c_str());
 	return string (tstr);
+}
+
+void ftpcom::upload()
+{
+	debug("upload()");
+
+	listDir(ftpcom::path_param::services);
+	uploadData(ftpcom::path_param::services, "testfile", "test\ntest\n\n");
+}
+
+void ftpcom::download()
+{
+	debug("download()");
+
+	listDir(ftpcom::path_param::services);
+	uploadData(ftpcom::path_param::services, "testfile", "test\ntest\n\n");
 }
 
 }

@@ -207,6 +207,7 @@ void gui::tabCtl()
 	ttbnew->connect(ttbnew, &QPushButton::pressed, [=]() { this->newTab(""); });
 	twid->setCornerWidget(ttbnew, Qt::TopLeftCorner);
 
+	ttidx = 0;
 	newTab("");
 
 	mcnt->addWidget(twid);
@@ -214,20 +215,16 @@ void gui::tabCtl()
 
 int gui::newTab(string filename = "")
 {
-	tab* ttab = new tab(this, mwid, filename);
+	tab* ttab = new tab(this, mwid);
 	int ttid = ttidx++;
 	ttab->widget->setProperty("ttid", QVariant (ttid));
 
+	if (! filename.empty() && ! ttab->readFile(filename))
+		return -1;
+
+	bool read = ! filename.empty();
 	int ttcount = twid->count();
-	string tname;
-
-	if (filename.empty())
-		tname = "Untitled" + (ttcount ? " " + to_string(ttcount++) : "");
-	else
-		tname = std::filesystem::path(filename).filename().u8string();
-
-	QString ttname = QString::fromStdString(tname);
-
+	QString ttname = QString::fromStdString("Untitled" + (ttcount ? " " + to_string(ttcount++) : ""));
 	int index = twid->addTab(ttab->widget, ttname);
 
 	QTabBar* ttabbar = twid->tabBar();
@@ -237,6 +234,8 @@ int gui::newTab(string filename = "")
 	ttabbar->setTabText(index, "");
 
 	ttab->setTabId(ttid);
+	if (read)
+		tabChangeName(ttid, filename);
 	twid->setCurrentIndex(index);
 
 	QAction* action = new QAction(ttname);

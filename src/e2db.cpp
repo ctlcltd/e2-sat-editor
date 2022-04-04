@@ -473,8 +473,9 @@ void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 {
 	debug("parse_e2db_bouquet()", "bname", bname);
 
+	bool add = true;
 	string line;
-	bouquet bs;
+	bouquet& bs = bouquets[bname];
 	userbouquet ub;
 
 	while (getline(fbouquet, line))
@@ -488,7 +489,11 @@ void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 		}
 		else if (line.find("#NAME") != string::npos)
 		{
-			bs = bouquet ();
+			if (! bouquets.count(bname))
+				bs = bouquet ();
+			else
+				add = false;
+
 			bs.bname = bname;
 			bs.name = line.substr(6); //TODO
 			if (bname.find(".tv") != string::npos)
@@ -502,7 +507,8 @@ void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 				bs.nname = "Radio";
 			}
 
-			add_bouquet(bs.btype, bs);
+			if (add)
+				add_bouquet(bs.btype, bs);
 		}
 	}
 }
@@ -1380,7 +1386,7 @@ void e2db::add_bouquet(bouquet& bs)
 {
 	debug("add_bouquet()", "bname", bs.bname);
 
-	e2db_abstract::add_bouquet(index.count("bss"), bs);
+	e2db_abstract::add_bouquet(bs.index, bs);
 }
 
 void e2db::edit_bouquet(bouquet& bs)
@@ -1408,7 +1414,7 @@ void e2db::add_userbouquet(userbouquet& ub)
 {
 	debug("add_userbouquet()");
 
-	e2db_abstract::add_userbouquet(index.count("ubs"), ub);
+	e2db_abstract::add_userbouquet(ub.index, ub);
 }
 
 void e2db::edit_userbouquet(userbouquet& ub)

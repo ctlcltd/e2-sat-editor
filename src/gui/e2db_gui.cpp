@@ -28,6 +28,7 @@ e2db::e2db()
 
 	this->sets = new QSettings;
 	options();
+	initialize();
 }
 
 void e2db::options()
@@ -94,6 +95,29 @@ void e2db::remove_service(string chid)
 
 	this->::e2se_e2db::e2db::remove_service(chid);
 	entries.services.erase(chid);
+}
+
+void e2db::initialize()
+{
+	debug("initialize()");
+
+	e2db::bouquet bs;
+
+	bs = e2db::bouquet();
+	bs.bname = "bouquets.tv";
+	bs.name = "User - bouquet (TV)";
+	bs.btype = bs.index = 1;
+	bs.nname = "TV";
+	this->::e2se_e2db::e2db::add_bouquet(bs);
+
+	bs = e2db::bouquet();
+	bs.bname = "bouquets.radio";
+	bs.name = "User - bouquet (Radio)";
+	bs.btype = bs.index = 2;
+	bs.nname = "Radio";
+	this->::e2se_e2db::e2db::add_bouquet(bs);
+
+	this->gindex = index;
 }
 
 bool e2db::prepare(string localdir)

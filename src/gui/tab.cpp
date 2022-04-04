@@ -44,7 +44,7 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-tab::tab(gui* gid, QWidget* wid, string filename = "")
+tab::tab(gui* gid, QWidget* wid)
 {
 	this->log = new logger("tab");
 	debug("tab()");
@@ -63,22 +63,35 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	//TODO bouquets_box and scrollbar in GTK+
 	QSplitter* splitterc = new QSplitter;
 
-	QVBoxLayout* bouquets_box = new QVBoxLayout;
+	QVBoxLayout* side_box = new QVBoxLayout;
 	QVBoxLayout* list_box = new QVBoxLayout;
 
+	QWidget* side = new QWidget;
+	QVBoxLayout* services_box = new QVBoxLayout;
+	QVBoxLayout* bouquets_box = new QVBoxLayout;
+
+	QGroupBox* services = new QGroupBox("Services");
 	QGroupBox* bouquets = new QGroupBox("Bouquets");
 	QGroupBox* channels = new QGroupBox("Channels");
+
+	services->setFlat(true);
+	bouquets->setFlat(true);
+	channels->setFlat(true);
 
 	QGridLayout* list_layout = new QGridLayout;
 	this->list_wrap = new QWidget;
 	list_wrap->setObjectName("channels_wrap");
 	list_wrap->setStyleSheet("#channels_wrap { background: transparent }");
 
+	this->services_tree = new QTreeWidget;
 	this->bouquets_tree = new QTreeWidget;
 	this->list_tree = new QTreeWidget;
+	services_tree->setStyleSheet("QTreeWidget { background: transparent } ::item { padding: 6px auto }");
 	bouquets_tree->setStyleSheet("QTreeWidget { background: transparent } ::item { padding: 6px auto }");
 	list_tree->setStyleSheet("::item { padding: 6px auto }");
 
+	services_tree->setHeaderHidden(true);
+	services_tree->setUniformRowHeights(true);
 	bouquets_tree->setHeaderHidden(true);
 	bouquets_tree->setUniformRowHeights(true);
 	list_tree->setUniformRowHeights(true);
@@ -166,6 +179,9 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	top_toolbar->addWidget(top_toolbar_spacer);
 	top_toolbar->addWidget(profile_combo);
 	top_toolbar->addAction("Connect", [=]() { this->ftpConnect(); });
+	top_toolbar->addSeparator();
+	top_toolbar->addAction("Upload", [=]() { this->ftpUpload(); });
+	top_toolbar->addAction("Download", [=]() { this->ftpDownload(); });
 
 	if (gid->sets->value("application/debug", true).toBool())
 	{
@@ -173,7 +189,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 		bottom_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 		bottom_toolbar->addAction("§ Load seeds", [=]() { this->loadSeeds(); });
-		bottom_toolbar->addAction("§ Reset", [=]() { this->newFile(); gid->tabChangeName(ttid); });
+		bottom_toolbar->addAction("§ Reset", [=]() { this->newFile(); tabChangeName(); });
 		bottom_toolbar->addWidget(bottom_spacer);
 	}
 
@@ -204,6 +220,7 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	this->bouquets_evth = new BouquetsEventHandler;
 	this->list_evth = new ListEventHandler;
 	this->list_evto = new ListEventObserver;
+	services_tree->connect(services_tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->servicesItemChanged(current); });
 	bouquets_evth->setEventCallback([=]() { list_tree->scrollToBottom(); this->visualReindexList(); });
 	bouquets_tree->viewport()->installEventFilter(bouquets_evth);
 	bouquets_tree->connect(bouquets_tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->bouquetsItemChanged(current); });
@@ -215,9 +232,19 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	top->addWidget(top_toolbar);
 	bottom->addWidget(bottom_toolbar);
 
+	services_box->addWidget(services_tree);
+	services->setLayout(services_box);
+	//TODO FIX
+	services_tree->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
+
 	bouquets_box->addWidget(bouquets_tree);
 	bouquets_box->addWidget(bouquets_ats);
 	bouquets->setLayout(bouquets_box);
+
+	side_box->addWidget(services);
+	side_box->addWidget(bouquets);
+	side_box->setContentsMargins(0, 0, 0, 0);
+	side->setLayout(side_box);
 
 	list_layout->addWidget(list_tree);
 	list_layout->setContentsMargins(3, 3, 3, 3);
@@ -227,12 +254,10 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	list_box->addWidget(list_ats);
 	channels->setLayout(list_box);
 
-	bouquets->setFlat(true);
-	channels->setFlat(true);
-	bouquets->setMinimumWidth(240);
+	side->setMinimumWidth(240);
 	channels->setMinimumWidth(520);
 
-	splitterc->addWidget(bouquets);
+	splitterc->addWidget(side);
 	splitterc->addWidget(channels);
 	splitterc->setStretchFactor(0, 1);
 	splitterc->setStretchFactor(1, 4);
@@ -245,10 +270,26 @@ tab::tab(gui* gid, QWidget* wid, string filename = "")
 	frm->addLayout(container, 1, 0);
 	frm->addLayout(bottom, 2, 0);
 
-	if (filename.empty())
-		newFile();
-	else
-		readFile(filename);
+	vector<pair<QString, QString>> tree = {
+		{"chs", "All services"},
+		{"chs:1", "TV"},
+		{"chs:2", "Radio"},
+		{"chs:0", "Data"}
+	};
+
+	for (auto & item : tree)
+	{
+		QTreeWidgetItem* titem = new QTreeWidgetItem();
+		titem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+		QVariantMap tdata; //TODO
+		tdata["id"] = item.first;
+		titem->setData(0, Qt::UserRole, QVariant (tdata));
+		titem->setText(0, item.second);
+
+		services_tree->addTopLevelItem(titem);
+	}
+
+	newFile();
 }
 
 tab::~tab()
@@ -263,6 +304,7 @@ void tab::newFile()
 	debug("newFile()");
 
 	initialize();
+	load();
 }
 
 void tab::openFile()
@@ -404,11 +446,11 @@ bool tab::readFile(string filename)
 
 	if (rr)
 	{
-		gid->tabChangeName(ttid, filename);
+		tabChangeName(filename);
 	}
 	else
 	{
-		gid->tabChangeName(ttid);
+		tabChangeName();
 		QMessageBox::critical(cwid, NULL, "Error opening files.");
 		return false;
 	}
@@ -471,11 +513,11 @@ void tab::load()
 
 	bouquets_tree->setDragEnabled(true);
 	bouquets_tree->setAcceptDrops(true);
-	populate();
+	populate(services_tree);
 	setCounters();
 }
 
-void tab::populate()
+void tab::populate(QTreeWidget* side_tree)
 {
 	string curr_chlist;
 	string prev_chlist;
@@ -493,9 +535,9 @@ void tab::populate()
 		prev_chlist = string (this->state.curr);
 	}
 
-	QTreeWidgetItem* selected = bouquets_tree->currentItem();
+	QTreeWidgetItem* selected = side_tree->currentItem();
 	if (selected == NULL)
-		selected = bouquets_tree->topLevelItem(0);
+		selected = side_tree->topLevelItem(0);
 	if (selected != NULL)
 	{
 		QVariantMap tdata = selected->data(0, Qt::UserRole).toMap();
@@ -587,6 +629,38 @@ void tab::populate()
 	setCounters(true);
 }
 
+void tab::servicesItemChanged(QTreeWidgetItem* current)
+{
+	debug("servicesItemChanged()");
+
+	if (current != NULL)
+	{
+		int ti = services_tree->indexOfTopLevelItem(current);
+
+		this->action.list_addch->setDisabled(true);
+		this->action.list_newch->setEnabled(true);
+
+		// tv | radio | data
+		if (ti)
+		{
+			disallowDnD();
+		}
+		// all
+		else
+		{
+			// sorting default
+			if (this->state.sort.first == 0)
+				allowDnD();
+		}
+
+		list_tree->clearSelection();
+		list_tree->scrollToTop();
+	}
+
+	updateListIndex();
+	populate(services_tree);
+}
+
 void tab::bouquetsItemChanged(QTreeWidgetItem* current)
 {
 	debug("bouquetsItemChanged()");
@@ -596,30 +670,24 @@ void tab::bouquetsItemChanged(QTreeWidgetItem* current)
 		int ti = bouquets_tree->indexOfTopLevelItem(current);
 		this->state.ti = ti;
 
-		// all | tv | radio
+		// bouquet: tv | radio
 		if (ti != -1)
 		{
 			this->action.list_addch->setDisabled(true);
 			this->action.list_newch->setEnabled(true);
-		}
-		// userbouquets
-		else
-		{
-			this->action.list_addch->setEnabled(true);
-			this->action.list_newch->setDisabled(true);
-		}
-		// tv | radio
-		if (ti > 0)
-		{
+
 			disallowDnD();
 
 			// sorting by
 			if (this->state.sort.first > 0)
 				this->action.list_dnd->setDisabled(true);
 		}
-		// all | userbouquets
-		else if (ti < 1)
+		// userbouquet
+		else
 		{
+			this->action.list_addch->setEnabled(true);
+			this->action.list_newch->setDisabled(true);
+
 			// sorting by
 			if (this->state.sort.first > 0)
 				this->action.list_dnd->setEnabled(true);
@@ -633,7 +701,7 @@ void tab::bouquetsItemChanged(QTreeWidgetItem* current)
 	}
 
 	updateListIndex();
-	populate();
+	populate(bouquets_tree);
 }
 
 void tab::listItemChanged()
@@ -691,8 +759,8 @@ void tab::trickySortByColumn(int column)
 		list_tree->sortItems(column, order);
 		disallowDnD();
 
-		// all | userbouquet
-		if (this->state.ti < 1)
+		// userbouquet
+		if (this->state.ti == -1)
 			this->action.list_dnd->setEnabled(true);
 
 		lheaderv->setSortIndicatorShown(true);
@@ -777,7 +845,6 @@ void tab::listItemCopy(bool cut)
 		listItemDelete();
 }
 
-//TODO FIX chlist ERROR
 void tab::listItemPaste()
 {
 	debug("listItemPaste()");
@@ -1019,6 +1086,14 @@ void tab::setTabId(int ttid)
 	this->ttid = ttid;
 }
 
+void tab::tabChangeName(string filename)
+{
+	debug("tabChangeName()");
+
+	if (ttid != -1)
+		gid->tabChangeName(ttid, filename);
+}
+
 void tab::initialize()
 {
 	debug("initialize()");
@@ -1052,25 +1127,6 @@ void tab::initialize()
 	this->action.list_dnd->setDisabled(true);
 
 	gid->reset();
-
-	vector<pair<QString, QString>> tree = {
-		{"chs", "All channels"},
-		{"chs:1", "All TV"},
-		{"chs:2", "All Radio"},
-		{"chs:0", "All Data"}
-	};
-
-	for (auto & item : tree)
-	{
-		QTreeWidgetItem* titem = new QTreeWidgetItem();
-		titem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-		QVariantMap tdata; //TODO
-		tdata["id"] = item.first;
-		titem->setData(0, Qt::UserRole, QVariant (tdata));
-		titem->setText(0, item.second);
-
-		bouquets_tree->addTopLevelItem(titem);
-	}
 }
 
 void tab::destroy()
@@ -1085,36 +1141,51 @@ void tab::profileComboChanged(int index)
 	gid->sets->setValue("profile/selected", index);
 }
 
-//TEST
+bool tab::ftpHandle()
+{
+	debug("ftpHandle()");
+
+	if (ftph == nullptr)
+		ftph = new ftpcom;
+
+	if (ftph->connect())
+		return true;
+	else
+		QMessageBox::critical(nullptr, NULL, "Cannot connect to FTP Server!");
+
+	return false;
+}
+
 void tab::ftpConnect()
 {
 	debug("ftpConnect()");
 
-	int profile_sel = gid->sets->value("profile/selected").toInt();
-	gid->sets->beginReadArray("profile");
-	gid->sets->setArrayIndex(profile_sel);
-	ftpcom::ftp_params params;
-	params.host = gid->sets->value("ipAddress").toString().toStdString();
-	params.port = gid->sets->value("ftpPort").toInt();
-	params.user = gid->sets->value("username").toString().toStdString();
-	params.pass = gid->sets->value("password").toString().toStdString();
-	params.tpath = gid->sets->value("pathTransponders").toString().toStdString();
-	params.spath = gid->sets->value("pathServices").toString().toStdString();
-	params.bpath = gid->sets->value("pathBouquets").toString().toStdString();
-	gid->sets->endArray();
-
-	ftpcom* ftp = new ftpcom;
-	ftp->setup(params);
-	if (ftp->connect())
+	if (ftph != nullptr)
 	{
-		ftp->listDir(ftpcom::path_param::services);
-		ftp->uploadData(ftpcom::path_param::services, "testfile", "test\ntest\n\n");
-		ftp->disconnect();
+		ftph->disconnect();
+		delete ftph;
+		ftph = nullptr;
 	}
+	if (ftpHandle())
+		QMessageBox::information(nullptr, NULL, "Successfully connected!");
 }
-//TEST
 
-//TEST
+void tab::ftpUpload()
+{
+	debug("ftpUpload()");
+
+	if (ftpHandle())
+		ftph->upload();
+}
+
+void tab::ftpDownload()
+{
+	debug("ftpDownload()");
+
+	if (ftpHandle())
+		ftph->download();
+}
+
 void tab::loadSeeds()
 {
 	if (gid->sets->contains("application/seeds"))
@@ -1127,6 +1198,5 @@ void tab::loadSeeds()
 		QMessageBox::information(cwid, NULL, "For debugging purpose, set application.seeds absolute path under Settings > Advanced tab, then restart software.");
 	}
 }
-//TEST
 
 }

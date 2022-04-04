@@ -27,6 +27,7 @@ using std::string, std::pair, std::unordered_map;
 
 #include "../logger.h"
 #include "e2db_gui.h"
+#include "ftpcom_gui.h"
 #include "BouquetsEventHandler.h"
 #include "ListEventHandler.h"
 #include "ListEventObserver.h"
@@ -46,7 +47,7 @@ class tab : protected e2se::log_factory
 			SelectAll
 		};
 
-		tab(gui* gid, QWidget* wid, string filename);
+		tab(gui* gid, QWidget* wid);
 		~tab();
 		void newFile();
 		void openFile();
@@ -57,7 +58,8 @@ class tab : protected e2se::log_factory
 		void editService();
 		void delService();
 		void load();
-		void populate();
+		void populate(QTreeWidget* side_tree);
+		void servicesItemChanged(QTreeWidgetItem* current);
 		void bouquetsItemChanged(QTreeWidgetItem* current);
 		void listItemChanged();
 		void visualReindexList();
@@ -76,10 +78,14 @@ class tab : protected e2se::log_factory
 		void showListEditContextMenu(QPoint &pos);
 		void setCounters(bool channels = false);
 		void setTabId(int ttid);
+		void tabChangeName(string filename = "");
 		void initialize();
 		void destroy();
 		void profileComboChanged(int index);
+		bool ftpHandle();
 		void ftpConnect();
+		void ftpUpload();
+		void ftpDownload();
 		void loadSeeds();
 		QWidget* widget;
 	protected:
@@ -95,6 +101,7 @@ class tab : protected e2se::log_factory
 			bool nwwr;
 			bool ovwr;
 			bool dnd;
+			bool init;
 			bool changed;
 			int ti;
 			string curr;
@@ -102,11 +109,13 @@ class tab : protected e2se::log_factory
 		} state;
 		gui* gid;
 		QWidget* cwid;
-		int ttid;
+		int ttid = -1;
 		e2db* dbih = nullptr;
+		ftpcom* ftph = nullptr;
 		BouquetsEventHandler* bouquets_evth;
 		ListEventHandler* list_evth;
 		ListEventObserver* list_evto;
+		QTreeWidget* services_tree;
 		QTreeWidget* bouquets_tree;
 		QTreeWidget* list_tree;
 		QWidget* list_wrap;
