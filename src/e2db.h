@@ -20,12 +20,14 @@
 
 #include "logger.h"
 
-using std::string, std::pair, std::make_pair, std::vector, std::map, std::unordered_map, std::ifstream, std::stringstream;
+using std::string, std::pair, std::make_pair, std::vector, std::map, std::unordered_map, std::istream;
 
 #ifndef e2db_h
 #define e2db_h
 namespace e2se_e2db
 {
+using e2db_file = std::string;
+
 struct e2db_abstract
 {
 	public:
@@ -225,18 +227,21 @@ class e2db_parser : virtual public e2db_abstract
 {
 	public:
 		e2db_parser();
+		virtual ~e2db_parser() = default;
 		void parse_e2db();
-		void parse_e2db_lamedb(ifstream& flamedb);
-		void parse_e2db_lamedb4(ifstream& flamedb);
-		void parse_e2db_lamedb5(ifstream& flamedb);
-		void parse_e2db_bouquet(ifstream& fbouquet, string bname);
-		void parse_e2db_userbouquet(ifstream& fuserbouquet, string bname);
+		void parse_e2db(unordered_map<string, e2db_file> files); //C++17
+		void parse_e2db_lamedb(istream& ilamedb);
+		void parse_e2db_lamedb4(istream& ilamedb);
+		void parse_e2db_lamedb5(istream& ilamedb);
+		void parse_e2db_bouquet(istream& ibouquet, string bname);
+		void parse_e2db_userbouquet(istream& iuserbouquet, string bname);
+		void parse_tunersets_xml(int ytype, istream& itunxml);
 		unordered_map<string, transponder> get_transponders();
 		unordered_map<string, service> get_services();
 		pair<unordered_map<string, bouquet>, unordered_map<string, userbouquet>> get_bouquets();
-		bool read_from_localdir(string localdir);
+		bool list_localdir(string localdir);
 		bool read(string localdir);
-		void parse_tunersets_xml(int ytype, ifstream& ftunxml);
+		unordered_map<string, string> get_input();
 		void debugger();
 	protected:
 		void parse_lamedb_transponder_params(string data, transponder& tx);
@@ -257,6 +262,7 @@ class e2db_maker : virtual public e2db_abstract
 		inline static const string LAMEDB5_FORMATS[13] = {"# ", "", "", "", ":", "t", ",", ":", "\n", "s", ",", "\"", "\n"};
 
 		e2db_maker();
+		virtual ~e2db_maker() = default;
 		void make_e2db();
 		void begin_transaction();
 		void end_transaction();
@@ -273,12 +279,13 @@ class e2db_maker : virtual public e2db_abstract
 		void set_bouquets(pair<unordered_map<string, bouquet>, unordered_map<string, userbouquet>> bouquets);
 		bool write_to_localdir(string localdir, bool overwrite);
 		bool write(string localdir, bool overwrite);
+		unordered_map<string, e2db_file> get_output();
 	protected:
 		void make_lamedb(string filename);
 		void make_bouquet(string bname);
 		void make_userbouquet(string bname);
 	private:
-		unordered_map<string, string> e2db_out;
+		unordered_map<string, e2db_file> e2db_out;
 		std::tm* _out_tst;
 };
 
@@ -286,6 +293,7 @@ class e2db : public e2db_parser, public e2db_maker
 {
 	public:
 		e2db();
+		virtual ~e2db() = default;
 		void merge();
 		void add_transponder(transponder& tx);
 		void edit_transponder(string txid, transponder& tx);

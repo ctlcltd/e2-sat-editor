@@ -17,7 +17,7 @@
 
 #include "e2db.h"
 
-using std::string, std::pair, std::vector, std::map, std::unordered_map, std::unordered_set, std::cout, std::endl, std::ifstream, std::ofstream, std::stringstream, std::getline, std::to_string, std::atoi, std::hex, std::dec, std::setfill, std::setw, std::uppercase;
+using std::string, std::pair, std::vector, std::map, std::unordered_map, std::unordered_set, std::cout, std::endl, std::ifstream, std::ofstream, std::fstream, std::stringstream, std::getline, std::to_string, std::atoi, std::hex, std::dec, std::setfill, std::setw, std::uppercase;
 
 namespace e2se_e2db
 {
@@ -137,33 +137,33 @@ void e2db_parser::parse_e2db()
 	debug("parse_e2db()");
 	std::clock_t start = std::clock();
 
-	ifstream flamedb (e2db[dbfilename]);
-	parse_e2db_lamedb(flamedb);
-	flamedb.close();
+	ifstream ilamedb (e2db[dbfilename]);
+	parse_e2db_lamedb(ilamedb);
+	ilamedb.close();
 
 	if (PARSER_TUNERSETS && e2db.count("satellites.xml"))
 	{
-		ifstream ftunxml (e2db["satellites.xml"]);
-		parse_tunersets_xml(0, ftunxml);
-		ftunxml.close();
+		ifstream itunxml (e2db["satellites.xml"]);
+		parse_tunersets_xml(0, itunxml);
+		itunxml.close();
 	}
 
 	for (auto & x: e2db)
 	{
-		if (x.second.find("bouquets.") != string::npos)
+		if (x.first.find("bouquets.") != string::npos)
 		{
-			ifstream fbouquet (e2db[x.first]);
-			parse_e2db_bouquet(fbouquet, x.first);
-			fbouquet.close();
+			ifstream ibouquet (e2db[x.first]);
+			parse_e2db_bouquet(ibouquet, x.first);
+			ibouquet.close();
 		}
 	}
 	for (auto & x: bouquets)
 	{
 		for (auto & w: x.second.userbouquets)
 		{
-			ifstream fuserbouquet (e2db[w]);
-			parse_e2db_userbouquet(fuserbouquet, w);
-			fuserbouquet.close();
+			ifstream iuserbouquet (e2db[w]);
+			parse_e2db_userbouquet(iuserbouquet, w);
+			iuserbouquet.close();
 		}
 	}
 
@@ -184,26 +184,75 @@ void e2db_parser::parse_e2db()
 	debug("parse_e2db()", "elapsed time", to_string(end - start));
 }
 
-void e2db_parser::parse_e2db_lamedb(ifstream& flamedb)
+
+void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
+{
+	debug("parse_e2db()");
+	std::clock_t start = std::clock();
+
+	for (auto & x: files)
+	{
+		string filename = std::filesystem::path(x.first).filename().u8string(); //C++17
+		e2db[filename] = x.first;
+	}
+	
+	stringstream ilamedb;
+	ilamedb.write(&files[e2db[dbfilename]][0], files[e2db[dbfilename]].size());
+	parse_e2db_lamedb(ilamedb);
+
+	if (PARSER_TUNERSETS && e2db.count("satellites.xml"))
+	{
+		stringstream itunxml;
+		itunxml.write(&files[e2db["satellites.xml"]][0], files[e2db["satellites.xml"]].size());
+		parse_tunersets_xml(0, itunxml);
+	}
+
+	for (auto & x: e2db)
+	{
+		if (x.first.find("bouquets.") != string::npos)
+		{
+			stringstream ibouquet;
+			ibouquet.write(&files[x.second][0], files[x.second].size());
+			string filename = std::filesystem::path(x.first).filename().u8string();
+			parse_e2db_bouquet(ibouquet, filename);
+		}
+	}
+	for (auto & x: bouquets)
+	{
+		for (auto & w: x.second.userbouquets)
+		{
+			stringstream iuserbouquet;
+			iuserbouquet.write(&files[e2db[w]][0], files[e2db[w]].size());
+			string filename = std::filesystem::path(w).filename().u8string();
+			parse_e2db_userbouquet(iuserbouquet, filename);
+		}
+	}
+
+	std::clock_t end = std::clock();
+
+	debug("parse_e2db()", "elapsed time", to_string(end - start));
+}
+
+void e2db_parser::parse_e2db_lamedb(istream& ilamedb)
 {
 	debug("parse_e2db_lamedb()");
 
 	string hlamedb;
-	getline(flamedb, hlamedb);
+	getline(ilamedb, hlamedb);
 	char vlamedb = (hlamedb.substr(hlamedb.length() - 2, hlamedb.length() - 1))[0];
 	int dbver = isdigit(vlamedb) ? int (vlamedb) - 48 : 0;
 
-	debug("lamedb", "File header", hlamedb);
+	debug("parse_e2db_lamedb()", "File header", hlamedb);
 
 	switch (dbver)
 	{
-		case 4: parse_e2db_lamedb4(flamedb); break;
-		case 5: parse_e2db_lamedb5(flamedb); break;
-		default: error("lamedb", "Error", "Unknown database format.");
+		case 4: parse_e2db_lamedb4(ilamedb); break;
+		case 5: parse_e2db_lamedb5(ilamedb); break;
+		default: error("parse_e2db_lamedb()", "Error", "Unknown database format.");
 	}
 }
 
-void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
+void e2db_parser::parse_e2db_lamedb4(istream& ilamedb)
 {
 	debug("parse_e2db_lamedb4()");
 	
@@ -216,7 +265,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 	transponder tx;
 	service ch;
 
-	while (getline(flamedb, line))
+	while (getline(ilamedb, line))
 	{
 		if (! step && line == "transponders")
 		{
@@ -280,7 +329,7 @@ void e2db_parser::parse_e2db_lamedb4(ifstream& flamedb)
 	}
 }
 
-void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
+void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 {
 	debug("parse_e2db_lamedb5()");
 
@@ -292,7 +341,7 @@ void e2db_parser::parse_e2db_lamedb5(ifstream& flamedb)
 	transponder tx;
 	service ch;
 
-	while (getline(flamedb, line))
+	while (getline(ilamedb, line))
 	{
 		char type = line[0];
 		if (type == 't')
@@ -441,6 +490,7 @@ void e2db_parser::parse_lamedb_service_params(string data, service& ch)
 	ch.snum = snum;
 }
 
+//TODO FIX
 void e2db_parser::parse_lamedb_service_data(string data, service& ch)
 {
 	if (data.empty()) return;
@@ -469,7 +519,7 @@ void e2db_parser::append_lamedb_service_name(string data, service& ch)
 	ch.chname = data;
 }
 
-void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
+void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string bname)
 {
 	debug("parse_e2db_bouquet()", "bname", bname);
 
@@ -478,7 +528,7 @@ void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 	bouquet& bs = bouquets[bname];
 	userbouquet ub;
 
-	while (getline(fbouquet, line))
+	while (getline(ibouquet, line))
 	{
 		if (line.find("#SERVICE") != string::npos)
 		{
@@ -513,7 +563,7 @@ void e2db_parser::parse_e2db_bouquet(ifstream& fbouquet, string bname)
 	}
 }
 
-void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname)
+void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string bname)
 {
 	debug("parse_e2db_userbouquet()", "bname", bname);
 
@@ -525,7 +575,7 @@ void e2db_parser::parse_e2db_userbouquet(ifstream& fuserbouquet, string bname)
 	channel_reference chref;
 	service_reference ref;
 
-	while (getline(fuserbouquet, line))
+	while (getline(iuserbouquet, line))
 	{
 		if (! step && line.find("#NAME") != string::npos)
 		{
@@ -613,7 +663,7 @@ void e2db_parser::parse_channel_reference(string data, channel_reference& chref,
 //TODO FIX <!-- key="val" -->
 //TODO terrestrial.xml, cable.xml, ...
 //TODO needs index
-void e2db_parser::parse_tunersets_xml(int ytype, ifstream& ftunxml)
+void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 {
 	debug("parse_tunersets_xml()", "ytype", to_string(ytype));
 
@@ -737,6 +787,12 @@ void e2db_parser::parse_tunersets_xml(int ytype, ifstream& ftunxml)
 			}
 		}
 	}
+}
+
+unordered_map<string, string> e2db_parser::get_input() {
+	debug("get_input()");
+
+	return e2db;
 }
 
 void e2db_parser::debugger()
@@ -881,29 +937,28 @@ pair<unordered_map<string, e2db_parser::bouquet>, unordered_map<string, e2db_par
 	return pair (bouquets, userbouquets); //C++17
 }
 
-//C++17
-bool e2db_parser::read_from_localdir(string localdir)
+bool e2db_parser::list_localdir(string localdir)
 {
-	debug("read_from_localdir()", "localdir", localdir);
+	debug("list_localdir()", "localdir", localdir);
 
-	if (! std::filesystem::exists(localdir))
+	if (! std::filesystem::exists(localdir)) //C++17
 	{
-		error("read_from_localdir()", "Error", "Directory \"" + localdir + "\" not exists.");
+		error("list_localdir()", "Error", "Directory \"" + localdir + "\" not exists.");
 		return false;
 	}
 
-	std::filesystem::directory_iterator dirlist(localdir);
+	std::filesystem::directory_iterator dirlist(localdir); //C++17
 
 	for (const auto & entry : dirlist)
 	{
 		//TODO is file & permissions check ...
-		string path = entry.path().u8string();
-		string filename = std::filesystem::path(path).filename().u8string();
+		string path = entry.path().u8string(); //C++17
+		string filename = std::filesystem::path(path).filename().u8string(); //C++17
 		e2db[filename] = path;
 	}
 	if (e2db.count(dbfilename) < 1)
 	{
-		error("read_from_localdir()", "Error", "lamedb not found.");
+		error("list_localdir()", "Error", "lamedb not found.");
 		return false;
 	}
 	this->localdir = localdir;
@@ -915,7 +970,7 @@ bool e2db_parser::read(string localdir)
 {
 	debug("read()", "localdir", localdir);
 
-	if (read_from_localdir(localdir))
+	if (list_localdir(localdir))
 		parse_e2db();
 	else
 		return false;
@@ -1212,12 +1267,11 @@ void e2db_maker::make_userbouquet(string bname)
 	e2db_out[bname] = ss.str();
 }
 
-//C++17
 bool e2db_maker::write_to_localdir(string localdir, bool overwrite)
 {
 	debug("write_to_localdir()", "localdir", localdir);
 
-	if (! std::filesystem::is_directory(localdir))
+	if (! std::filesystem::is_directory(localdir)) //C++17
 	{
 		error("write_to_localdir()", "Error", "Directory \"" + localdir + "\" not exists.");
 		return false;
@@ -1225,7 +1279,7 @@ bool e2db_maker::write_to_localdir(string localdir, bool overwrite)
 	//TODO file exists and (force) overwrite
 	else if (! overwrite)
 	{
-		std::filesystem::create_directory(localdir);
+		std::filesystem::create_directory(localdir); //C++17
 	}
 	//TODO permission check ...
 	for (auto & o: e2db_out)
@@ -1250,6 +1304,14 @@ bool e2db_maker::write(string localdir, bool overwrite)
 		return true;
 	else
 		return false;
+}
+
+unordered_map<string, e2db_file> e2db_maker::get_output() {
+	debug("get_output()");
+	
+	make_e2db();
+
+	return e2db_out;
 }
 
 void e2db_maker::set_index(unordered_map<string, vector<pair<int, string>>> index)

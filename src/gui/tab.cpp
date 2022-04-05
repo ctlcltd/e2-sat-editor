@@ -1173,17 +1173,46 @@ void tab::ftpConnect()
 void tab::ftpUpload()
 {
 	debug("ftpUpload()");
-
+	
 	if (ftpHandle())
-		ftph->upload();
+	{
+		unordered_map<string, e2se_ftpcom::ftpcom_file> files = dbih->get_output();
+
+		for (auto & x : files)
+			debug("ftpUpload()", "file", x.first + " | " + to_string(x.second.size()));
+
+		ftph->putFiles(files);
+	}
 }
 
+//TODO temporary instance & merge
 void tab::ftpDownload()
 {
 	debug("ftpDownload()");
 
 	if (ftpHandle())
-		ftph->download();
+	{
+		if (dbih->get_input().size() != 0)
+			return;
+
+		unordered_map<string, e2se_ftpcom::ftpcom_file> files = ftph->getFiles();
+
+		for (auto & x : files)
+			debug("ftpDownload()", "file", x.first + " | " + to_string(x.second.size()));
+
+		dbih->parse_e2db(files);
+		// dbih->debugger();
+		dbih->gindex = dbih->index;
+		for (auto & txdata : dbih->db.transponders)
+		{
+			dbih->entries.transponders[txdata.first] = dbih->entry_transponder(txdata.second);
+		}
+		for (auto & chdata : dbih->db.services)
+		{
+			dbih->entries.services[chdata.first] = dbih->entry_service(chdata.second);
+		}
+		load();
+	}
 }
 
 void tab::loadSeeds()

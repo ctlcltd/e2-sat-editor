@@ -10,18 +10,24 @@
  */
 
 #include <string>
+#include <vector>
+#include <unordered_set>
+#include <unordered_map>
+#include <iostream>
 #include <cstdio>
 
 #include <curl/curl.h>
 
 #include "logger.h"
 
-using std::string;
+using std::string, std::vector, std::unordered_set, std::unordered_map, std::istream;
 
 #ifndef ftpcom_h
 #define ftpcom_h
 namespace e2se_ftpcom
 {
+using ftpcom_file = std::string;
+
 class ftpcom
 {
 	public:
@@ -38,26 +44,27 @@ class ftpcom
 			string spath;
 			string bpath;
 		};
-		enum path_param
-		{
-			transponders,
-			services,
-			bouquets
-		};
 		ftpcom();
+		virtual ~ftpcom() = default;
 		void setup(ftp_params params);
 		bool handle();
 		CURLcode perform(bool cleanup = false);
 		void cleanup();
 		bool connect();
 		bool disconnect();
-		void listDir(path_param path);
-		void uploadData(path_param path, string filename, string os);
+		vector<string> listDir(string base);
+		string downloadData(string base, string filename);
+		void uploadData(string base, string filename, ftpcom_file os);
+		void fetchPaths();
+		unordered_map<string, ftpcom_file> getFiles();
+		void putFiles(unordered_map<string, ftpcom_file> files);
 	protected:
 		struct soi {
 			const char* data;
 			size_t sizel;
 		};
+		vector<string> ftdb;
+		static size_t dataDownload_func(void* csi, size_t size, size_t nmemb, void* pso);
 		static size_t dataUpload_func(char* cso, size_t size, size_t nmemb, void* psi);
 		static size_t dataRead_func(void* csi, size_t size, size_t nmemb, void* pso);
 		static size_t dataDiscard_func(void* csi, size_t size, size_t nmemb, void* pso);
@@ -78,7 +85,6 @@ class ftpcom
 		string baseb;
 		CURL* curl = nullptr;
 		CURLU* urlp = nullptr;
-		string getBasePath(path_param path);
 };
 }
 #endif /* ftpcom_h */

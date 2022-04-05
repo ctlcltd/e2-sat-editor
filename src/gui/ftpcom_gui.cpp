@@ -68,20 +68,4 @@ string ftpcom::trw(string str, string param)
 	return string (tstr);
 }
 
-void ftpcom::upload()
-{
-	debug("upload()");
-
-	listDir(ftpcom::path_param::services);
-	uploadData(ftpcom::path_param::services, "testfile", "test\ntest\n\n");
-}
-
-void ftpcom::download()
-{
-	debug("download()");
-
-	listDir(ftpcom::path_param::services);
-	uploadData(ftpcom::path_param::services, "testfile", "test\ntest\n\n");
-}
-
 }

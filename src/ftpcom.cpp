@@ -11,6 +11,7 @@
 
 #include <algorithm>
 #include <string>
+#include <filesystem>
 #include <sstream>
 #include <cstring>
 
@@ -54,10 +55,12 @@ void ftpcom::setup(ftp_params params)
 	if (params.spath.empty())
 		error("ftpcom()", trw("Missing \"%s\" path parameter.", "Services"));
 
-	//TODO same path
+	//TODO remove trailing slash
 	baset = params.tpath;
 	baseb = params.bpath;
 	bases = params.spath;
+
+	std::cout << params.user << ':' << params.pass << '@' << params.host << ':' << params.port << '/' << params.spath << std::endl;
 }
 
 bool ftpcom::handle()
@@ -88,7 +91,8 @@ bool ftpcom::handle()
 CURLcode ftpcom::perform(bool cleanup)
 {
 	CURLcode res = curl_easy_perform(curl);
-	if (cleanup) this->cleanup();
+	if (cleanup)
+		this->cleanup();
 	return res;
 }
 
@@ -99,12 +103,11 @@ void ftpcom::cleanup()
 	curl_global_cleanup();
 }
 
-//TODO FIX freezes with wrong parameters
 bool ftpcom::connect()
 {
 	debug("connect()");
 
-	if (! curl || ! handle())
+	if (! handle())
 	{
 		return false;
 	}
@@ -124,49 +127,96 @@ bool ftpcom::disconnect()
 	return true;
 }
 
-void ftpcom::listDir(path_param path)
+vector<string> ftpcom::listDir(string base)
 {
-	debug("list_dir()");
+	debug("listDir()");
 
-	if (! curl)
-		return error("listDir()", trs("ftpcom error."));
+	vector<string> list;
+
+	if (! handle())
+	{
+		error("listDir()", trs("ftpcom error."));
+		return list;
+	}
 
 	stringstream data;
-	string base = getBasePath(path);
+	string remotedir = base + '/';
 
-	curl_url_set(urlp, CURLUPART_PATH, base.c_str(), 0);
+	curl_url_set(urlp, CURLUPART_PATH, remotedir.c_str(), 0);
 	curl_easy_setopt(curl, CURLOPT_FTPLISTONLY, true);
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, dataRead_func);
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &data);
 	CURLcode res = perform();
 
 	if (res != CURLE_OK)
-		return error("listDir()", trs(curl_easy_strerror(res))); // var error string
+	{
+		error("listDir()", trs(curl_easy_strerror(res))); // var error string
+		return list;
+	}
 
 	string line;
 
 	while (getline(data, line))
 	{
-		if (line.empty()) continue;
-		debug(line);
+		if (line.empty())
+			continue;
+		list.emplace_back(remotedir + line);
 	}
+
+	cleanup();
+
+	return list;
 }
 
-void ftpcom::uploadData(path_param path, string filename, string os)
+//TODO resuming
+string ftpcom::downloadData(string base, string filename)
+{
+	debug("downloadData()");
+
+	stringstream data;
+
+	if (! handle())
+	{
+		error("downloadData()", trs("ftpcom error."));
+		return data.str();
+	}
+
+	CURLcode res = CURLE_GOT_NOTHING;
+	string remotefile = base + '/' + filename;
+
+	debug("downloadData() file: " + remotefile);
+
+	curl_url_set(urlp, CURLUPART_PATH, remotefile.c_str(), 0);
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, dataDownload_func);
+	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &data);
+	res = perform();
+
+	if (res != CURLE_OK)
+	{
+		error("downloadData()", trs(curl_easy_strerror(res))); // var error string
+		return data.str();
+	}
+
+	cleanup();
+
+	return data.str();
+}
+
+void ftpcom::uploadData(string base, string filename, string os)
 {
 	debug("uploadData()");
 
-	if (! curl)
+	if (! handle())
 		return error("uploadData()", trs("ftpcom error."));
 
-	string remotefile;
-	string base = getBasePath(path);
 	soi data;
 	data.data = os.data();
 	data.sizel = os.length();
 	size_t uplen = 0;
 	CURLcode res = CURLE_GOT_NOTHING;
-	remotefile = base + '/' + filename;
+	string remotefile = base + '/' + filename;
+	
+	debug("uploadData() file: " + remotefile);
 
 	curl_url_set(urlp, CURLUPART_PATH, remotefile.c_str(), 0);
 	curl_easy_setopt(curl, CURLOPT_UPLOAD, true);
@@ -201,6 +251,31 @@ void ftpcom::uploadData(path_param path, string filename, string os)
 
 	if (res != CURLE_OK)
 		return error("uploadData()", trs(curl_easy_strerror(res))); // var error string
+
+	cleanup();
+}
+
+void ftpcom::fetchPaths()
+{
+	debug("fetchPaths()");
+
+	unordered_set<string> base = {baset, baseb, bases};
+	vector<string> list;
+
+	for (auto & w : base)
+	{
+		list = listDir(w);
+		ftdb.insert(ftdb.end(), list.begin(), list.end());
+	}
+}
+
+//TODO resuming
+size_t ftpcom::dataDownload_func(void* csi, size_t size, size_t nmemb, void* pso)
+{
+	size_t relsize = size * nmemb;
+	string data ((const char*) csi, relsize);
+	*((stringstream*) pso) << data << endl;
+	return relsize;
 }
 
 size_t ftpcom::dataUpload_func(char* cso, size_t size, size_t nmemb, void* psi)
@@ -230,9 +305,9 @@ size_t ftpcom::dataRead_func(void* csi, size_t size, size_t nmemb, void* pso)
 
 size_t ftpcom::dataDiscard_func(void* csi, size_t size, size_t nmemb, void* pso)
 {
-  (void) csi;
-  (void) pso;
-  return size * nmemb;
+	(void) csi;
+	(void) pso;
+	return size * nmemb;
 }
 
 size_t ftpcom::getContentLength_func(void* csi, size_t size, size_t nmemb, void* pso)
@@ -243,28 +318,6 @@ size_t ftpcom::getContentLength_func(void* csi, size_t size, size_t nmemb, void*
 	if ((pos = data.find("Content-Length:")) != string::npos)
 		*((size_t*) pso) = stoi(data.substr(pos, data.length() - 1));
 	return relsize;
-}
-
-string ftpcom::getBasePath(path_param path)
-{
-	string base;
-
-	switch (path)
-	{
-		case path_param::transponders:
-			base = baset;
-		break;
-		case path_param::services:
-			base = bases;
-		break;
-		case path_param::bouquets:
-			base = baseb;
-		break;
-		default:
-			error("getBasePath()", trw("Unknown \"%s\" parameter.", "path"));
-	}
-
-	return base;
 }
 
 void ftpcom::debug(string cmsg)
@@ -289,6 +342,41 @@ string ftpcom::trw(string str, string param)
 	char tstr[tsize];
 	std::sprintf(tstr, str.c_str(), param.c_str());
 	return string (tstr);
+}
+
+//TODO FIX EOL EOF
+unordered_map<string, ftpcom_file> ftpcom::getFiles()
+{
+	debug("getFiles()");
+
+	fetchPaths();
+
+	unordered_map<string, ftpcom_file> files;
+
+	for (auto & w : ftdb)
+	{
+		std::filesystem::path path = std::filesystem::path(w); //C++17
+		string base = path.parent_path().u8string(); //C++17
+		string filename = path.filename().u8string(); //C++17
+		files[w] = downloadData(base, filename);
+	}
+
+	return files;
+}
+
+void ftpcom::putFiles(unordered_map<string, ftpcom_file> files)
+{
+	debug("putFiles()");
+
+	fetchPaths();
+
+	for (auto & x : files)
+	{
+		std::filesystem::path path = std::filesystem::path(x.first); //C++17
+		string base = path.parent_path().u8string(); //C++17
+		string filename = path.filename().u8string(); //C++17
+		uploadData(base, x.first, x.second);
+	}
 }
 
 }
