@@ -41,62 +41,63 @@ void e2db::options()
 	e2db::MAKER_LAMEDB5 = sets->value("application/makerLamedb5", true).toBool();
 }
 
-string e2db::add_transponder(transponder& tx)
+string e2db::addTransponder(transponder& tx)
 {
-	debug("add_transponder()", "txid", tx.txid);
+	debug("addTransponder()", "txid", tx.txid);
 
 	this->::e2se_e2db::e2db::add_transponder(tx);
 	tx = db.transponders[tx.txid];
-	entries.transponders[tx.txid] = entry_transponder(tx);
+	entries.transponders[tx.txid] = entryTransponder(tx);
 	return tx.txid;
 }
 
-string e2db::edit_transponder(string txid, transponder& tx)
+string e2db::editTransponder(string txid, transponder& tx)
 {
-	debug("edit_transponder()", "txid", txid);
+	debug("editTransponder()", "txid", txid);
 
 	this->::e2se_e2db::e2db::edit_transponder(txid, tx);
 	tx = db.transponders[tx.txid];
-	entries.transponders[tx.txid] = entry_transponder(tx);
+	entries.transponders[tx.txid] = entryTransponder(tx);
 	return tx.txid;
 }
 
-void e2db::remove_transponder(string txid)
+void e2db::removeTransponder(string txid)
 {
-	debug("remove_transponder()", "txid", txid);
+	debug("removTransponder()", "txid", txid);
 
 	this->::e2se_e2db::e2db::remove_transponder(txid);
 	entries.transponders.erase(txid);
 }
 
-string e2db::add_service(service& ch)
+string e2db::addService(service& ch)
 {
-	debug("add_service()", "chid", ch.chid);
+	debug("addService()", "chid", ch.chid);
 
 	this->::e2se_e2db::e2db::add_service(ch);
 	ch = db.services[ch.chid];
-	entries.services[ch.chid] = entry_service(ch);
+	entries.services[ch.chid] = entryService(ch);
 	return ch.chid;
 }
 
-string e2db::edit_service(string chid, service& ch)
+string e2db::editService(string chid, service& ch)
 {
-	debug("edit_service()", "chid", chid);
+	debug("editService()", "chid", chid);
 
 	this->::e2se_e2db::e2db::edit_service(chid, ch);
 	ch = db.services[ch.chid];
-	entries.services[ch.chid] = entry_service(ch);
+	entries.services[ch.chid] = entryService(ch);
 	return ch.chid;
 }
 
-void e2db::remove_service(string chid)
+void e2db::removeService(string chid)
 {
-	debug("remove_service()", "chid", chid);
+	debug("removeService()", "chid", chid);
 
 	this->::e2se_e2db::e2db::remove_service(chid);
 	entries.services.erase(chid);
 }
 
+//TODO rename
 void e2db::initialize()
 {
 	debug("initialize()");
@@ -134,11 +135,11 @@ bool e2db::prepare(string localdir)
 
 	for (auto & txdata : db.transponders)
 	{
-		entries.transponders[txdata.first] = entry_transponder(txdata.second);
+		entries.transponders[txdata.first] = entryTransponder(txdata.second);
 	}
 	for (auto & chdata : db.services)
 	{
-		entries.services[chdata.first] = entry_service(chdata.second);
+		entries.services[chdata.first] = entryService(chdata.second);
 	}
 	return true;
 }
@@ -153,6 +154,35 @@ bool e2db::write(string localdir, bool overwrite)
 		return false;
 
 	return true;
+}
+
+void e2db::merge(unordered_map<string, e2se_e2db::e2db_file> files)
+{
+	debug("merge()");
+
+	bool merge = this->get_input().size() != 0 ? true : false;
+	e2db* nwdbih = new e2db;
+	nwdbih->parse_e2db(files);
+	this->::e2se_e2db::e2db::merge(nwdbih);
+	// this->debugger();
+	delete nwdbih;
+
+	//if (merge)
+	//{
+		entries.transponders.clear();
+		entries.services.clear();
+	//}
+
+	this->gindex = this->index;
+
+	for (auto & txdata : db.transponders)
+	{
+		entries.transponders[txdata.first] = entryTransponder(txdata.second);
+	}
+	for (auto & chdata : db.services)
+	{
+		entries.services[chdata.first] = entryService(chdata.second);
+	}
 }
 
 void e2db::updateUserbouquetIndexes()
@@ -179,7 +209,7 @@ void e2db::updateUserbouquetIndexes(string chid, string nw_chid)
 	}
 }
 
-QStringList e2db::entry_transponder(transponder tx)
+QStringList e2db::entryTransponder(transponder tx)
 {
 	QString freq = QString::fromStdString(to_string(tx.freq));
 	QString pol = QString::fromStdString(tx.pol != -1 ? e2db::SAT_POL[tx.pol] : "");
@@ -212,7 +242,7 @@ QStringList e2db::entry_transponder(transponder tx)
 	return QStringList ({freq, pol, sr, fec, pos, sys});
 }
 
-QStringList e2db::entry_service(service ch)
+QStringList e2db::entryService(service ch)
 {
 	// macos: unwanted chars [qt.qpa.fonts] Menlo notice
 	QString chname;
@@ -231,7 +261,7 @@ QStringList e2db::entry_service(service ch)
 }
 
 //TODO marker QWidget ?
-QStringList e2db::entry_marker(channel_reference chref)
+QStringList e2db::entryMarker(channel_reference chref)
 {
 	QString chid = QString::fromStdString(chref.chid);
 	QString value = QString::fromStdString(chref.value);

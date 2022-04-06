@@ -408,9 +408,9 @@ void editService::store()
 	}
 
 	if (this->state.edit)
-		this->chid = dbih->edit_service(chid, ch);
+		this->chid = dbih->editService(chid, ch);
 	else
-		this->chid = dbih->add_service(ch);
+		this->chid = dbih->addService(ch);
 }
 
 //TODO PIDs

@@ -111,7 +111,7 @@ bool ftpcom::connect()
 	{
 		return false;
 	}
-	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, dataDiscard_func);
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, data_discard_func);
 	CURLcode res = perform();
 	return (res == CURLE_OK) ? true : false;
 }
@@ -127,15 +127,15 @@ bool ftpcom::disconnect()
 	return true;
 }
 
-vector<string> ftpcom::listDir(string base)
+vector<string> ftpcom::list_dir(string base)
 {
-	debug("listDir()");
+	debug("list_dir()");
 
 	vector<string> list;
 
 	if (! handle())
 	{
-		error("listDir()", trs("ftpcom error."));
+		error("list_dir()", trs("ftpcom error."));
 		return list;
 	}
 
@@ -144,13 +144,13 @@ vector<string> ftpcom::listDir(string base)
 
 	curl_url_set(urlp, CURLUPART_PATH, remotedir.c_str(), 0);
 	curl_easy_setopt(curl, CURLOPT_FTPLISTONLY, true);
-	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, dataRead_func);
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, data_read_func);
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &data);
 	CURLcode res = perform();
 
 	if (res != CURLE_OK)
 	{
-		error("listDir()", trs(curl_easy_strerror(res))); // var error string
+		error("list_dir()", trs(curl_easy_strerror(res))); // var error string
 		return list;
 	}
 
@@ -169,45 +169,45 @@ vector<string> ftpcom::listDir(string base)
 }
 
 //TODO resuming
-string ftpcom::downloadData(string base, string filename)
+string ftpcom::download_data(string base, string filename)
 {
-	debug("downloadData()");
-
-	stringstream data;
+	debug("download_data()");
 
 	if (! handle())
 	{
-		error("downloadData()", trs("ftpcom error."));
-		return data.str();
+		error("download_data()", trs("ftpcom error."));
+		return "";
 	}
 
+	sio data;
+	data.sizel = 0;
 	CURLcode res = CURLE_GOT_NOTHING;
 	string remotefile = base + '/' + filename;
 
-	debug("downloadData() file: " + remotefile);
+	debug("download_data() file: " + remotefile);
 
 	curl_url_set(urlp, CURLUPART_PATH, remotefile.c_str(), 0);
-	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, dataDownload_func);
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, data_download_func);
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &data);
 	res = perform();
 
 	if (res != CURLE_OK)
 	{
-		error("downloadData()", trs(curl_easy_strerror(res))); // var error string
-		return data.str();
+		error("download_data()", trs(curl_easy_strerror(res))); // var error string
+		return "";
 	}
 
 	cleanup();
 
-	return data.str();
+	return data.data;
 }
 
-void ftpcom::uploadData(string base, string filename, string os)
+void ftpcom::upload_data(string base, string filename, string os)
 {
-	debug("uploadData()");
+	debug("upload_data()");
 
 	if (! handle())
-		return error("uploadData()", trs("ftpcom error."));
+		return error("upload_data()", trs("ftpcom error."));
 
 	soi data;
 	data.data = os.data();
@@ -216,19 +216,19 @@ void ftpcom::uploadData(string base, string filename, string os)
 	CURLcode res = CURLE_GOT_NOTHING;
 	string remotefile = base + '/' + filename;
 	
-	debug("uploadData() file: " + remotefile);
+	debug("upload_data() file: " + remotefile);
 
 	curl_url_set(urlp, CURLUPART_PATH, remotefile.c_str(), 0);
 	curl_easy_setopt(curl, CURLOPT_UPLOAD, true);
 	curl_easy_setopt(curl, CURLOPT_FTP_CREATE_MISSING_DIRS, false);
-	curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, getContentLength_func);
+	curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, get_content_length_func);
 	curl_easy_setopt(curl, CURLOPT_HEADERDATA, &uplen);
-	curl_easy_setopt(curl, CURLOPT_READFUNCTION, dataUpload_func);
+	curl_easy_setopt(curl, CURLOPT_READFUNCTION, data_upload_func);
 	curl_easy_setopt(curl, CURLOPT_READDATA, &data);
-	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, dataDiscard_func);
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, data_discard_func);
 
 	for (int a = 0; (res != CURLE_OK) && (a < MAX_RESUME_ATTEMPTS); a++) {
-		debug("uploadData() attempt: " + to_string(a + 1));
+		debug("upload_data() attempt: " + to_string(a + 1));
 		if (a)
 		{
 			curl_easy_setopt(curl, CURLOPT_NOBODY, true);
@@ -250,67 +250,72 @@ void ftpcom::uploadData(string base, string filename, string os)
 	}
 
 	if (res != CURLE_OK)
-		return error("uploadData()", trs(curl_easy_strerror(res))); // var error string
+		return error("upload_data()", trs(curl_easy_strerror(res))); // var error string
 
 	cleanup();
 }
 
-void ftpcom::fetchPaths()
+void ftpcom::fetch_paths()
 {
-	debug("fetchPaths()");
+	debug("fetch_paths()");
 
 	unordered_set<string> base = {baset, baseb, bases};
 	vector<string> list;
 
 	for (auto & w : base)
 	{
-		list = listDir(w);
+		list = list_dir(w);
 		ftdb.insert(ftdb.end(), list.begin(), list.end());
 	}
 }
 
-//TODO resuming
-size_t ftpcom::dataDownload_func(void* csi, size_t size, size_t nmemb, void* pso)
+size_t ftpcom::data_download_func(void* csi, size_t size, size_t nmemb, void* pso)
 {
 	size_t relsize = size * nmemb;
-	string data ((const char*) csi, relsize);
-	*((stringstream*) pso) << data << endl;
+	sio* os = reinterpret_cast<sio*>(pso);
+
+	if (1 > relsize)
+		return 0;
+
+	os->data.append((const char*) csi, relsize);
+	os->sizel += relsize;
+
 	return relsize;
 }
 
-size_t ftpcom::dataUpload_func(char* cso, size_t size, size_t nmemb, void* psi)
+size_t ftpcom::data_upload_func(char* cso, size_t size, size_t nmemb, void* psi)
 {
 	size_t relsize = size * nmemb;
-	soi* data = reinterpret_cast<soi*>(psi);
+	soi* is = reinterpret_cast<soi*>(psi);
 
-	if (1 > relsize || 0 >= data->sizel)
-	  return 0;
+	if (1 > relsize || 0 >= is->sizel)
+		return 0;
 
-	size_t nsize = min(relsize, data->sizel);
-	std::memcpy(cso, data->data, nsize);
+	size_t nsize = min(relsize, is->sizel);
+	std::memcpy(cso, is->data, nsize);
 
-	data->data += nsize;
-	data->sizel = (data->sizel > nsize ? (data->sizel - nsize) : 0);
+	is->data += nsize;
+	is->sizel = (is->sizel > nsize ? (is->sizel - nsize) : 0);
 
 	return nsize;
 }
 
-size_t ftpcom::dataRead_func(void* csi, size_t size, size_t nmemb, void* pso)
+size_t ftpcom::data_read_func(void* csi, size_t size, size_t nmemb, void* pso)
 {
 	size_t relsize = size * nmemb;
 	string data ((const char*) csi, relsize);
-	*((stringstream*) pso) << data << endl;
+	*((stringstream*) pso) << data;
 	return relsize;
 }
 
-size_t ftpcom::dataDiscard_func(void* csi, size_t size, size_t nmemb, void* pso)
+size_t ftpcom::data_discard_func(void* csi, size_t size, size_t nmemb, void* pso)
 {
 	(void) csi;
 	(void) pso;
 	return size * nmemb;
 }
 
-size_t ftpcom::getContentLength_func(void* csi, size_t size, size_t nmemb, void* pso)
+size_t ftpcom::get_content_length_func(void* csi, size_t size, size_t nmemb, void* pso)
 {
 	size_t relsize = size * nmemb;
 	string data ((const char*) csi, relsize);
@@ -344,12 +349,11 @@ string ftpcom::trw(string str, string param)
 	return string (tstr);
 }
 
-//TODO FIX EOL EOF
-unordered_map<string, ftpcom_file> ftpcom::getFiles()
+unordered_map<string, ftpcom_file> ftpcom::get_files()
 {
-	debug("getFiles()");
+	debug("get_files()");
 
-	fetchPaths();
+	fetch_paths();
 
 	unordered_map<string, ftpcom_file> files;
 
@@ -358,24 +362,24 @@ unordered_map<string, ftpcom_file> ftpcom::getFiles()
 		std::filesystem::path path = std::filesystem::path(w); //C++17
 		string base = path.parent_path().u8string(); //C++17
 		string filename = path.filename().u8string(); //C++17
-		files[w] = downloadData(base, filename);
+		files[w] = download_data(base, filename);
 	}
 
 	return files;
 }
 
-void ftpcom::putFiles(unordered_map<string, ftpcom_file> files)
+void ftpcom::put_files(unordered_map<string, ftpcom_file> files)
 {
-	debug("putFiles()");
+	debug("put_files()");
 
-	fetchPaths();
+	fetch_paths();
 
 	for (auto & x : files)
 	{
 		std::filesystem::path path = std::filesystem::path(x.first); //C++17
 		string base = path.parent_path().u8string(); //C++17
 		string filename = path.filename().u8string(); //C++17
-		uploadData(base, x.first, x.second);
+		upload_data(base, x.first, x.second);
 	}
 }
 

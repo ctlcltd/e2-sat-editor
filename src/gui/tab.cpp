@@ -304,6 +304,12 @@ void tab::newFile()
 	debug("newFile()");
 
 	initialize();
+
+	if (this->dbih != nullptr)
+		delete this->dbih;
+
+	this->dbih = new e2db;
+
 	load();
 }
 
@@ -439,6 +445,11 @@ bool tab::readFile(string filename)
 		return false;
 
 	initialize();
+
+	if (this->dbih != nullptr)
+		delete this->dbih;
+
+	this->dbih = new e2db;
 
 	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	bool rr = dbih->prepare(filename);
@@ -584,7 +595,7 @@ void tab::populate(QTreeWidget* side_tree)
 				if (chref.marker)
 				{
 					marker = true;
-					entry = dbih->entry_marker(chref);
+					entry = dbih->entryMarker(chref);
 					idx = entry[1];
 					entry.prepend(x);
 				}
@@ -986,7 +997,7 @@ void tab::putChannels(vector<QString> channels)
 			{
 				e2db::channel_reference chref = dbih->userbouquets[chlist].channels[chid];
 				marker = true;
-				entry = dbih->entry_marker(chref);
+				entry = dbih->entryMarker(chref);
 				idx = entry[1];
 				entry.prepend(x);
 			}
@@ -1098,10 +1109,6 @@ void tab::initialize()
 {
 	debug("initialize()");
 
-	if (this->dbih != nullptr)
-	  	delete this->dbih;
-
-	this->dbih = new e2db;
 	this->state.nwwr = true;
 	this->state.ovwr = false;
 	this->state.changed = false;
@@ -1181,7 +1188,7 @@ void tab::ftpUpload()
 		for (auto & x : files)
 			debug("ftpUpload()", "file", x.first + " | " + to_string(x.second.size()));
 
-		ftph->putFiles(files);
+		ftph->put_files(files);
 	}
 }
 
@@ -1192,25 +1199,13 @@ void tab::ftpDownload()
 
 	if (ftpHandle())
 	{
-		if (dbih->get_input().size() != 0)
-			return;
-
-		unordered_map<string, e2se_ftpcom::ftpcom_file> files = ftph->getFiles();
+		unordered_map<string, e2se_ftpcom::ftpcom_file> files = ftph->get_files();
 
 		for (auto & x : files)
 			debug("ftpDownload()", "file", x.first + " | " + to_string(x.second.size()));
 
-		dbih->parse_e2db(files);
-		// dbih->debugger();
-		dbih->gindex = dbih->index;
-		for (auto & txdata : dbih->db.transponders)
-		{
-			dbih->entries.transponders[txdata.first] = dbih->entry_transponder(txdata.second);
-		}
-		for (auto & chdata : dbih->db.services)
-		{
-			dbih->entries.services[chdata.first] = dbih->entry_service(chdata.second);
-		}
+		dbih->merge(files);
+		initialize();
 		load();
 	}
 }

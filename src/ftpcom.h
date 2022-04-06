@@ -52,23 +52,27 @@ class ftpcom
 		void cleanup();
 		bool connect();
 		bool disconnect();
-		vector<string> listDir(string base);
-		string downloadData(string base, string filename);
-		void uploadData(string base, string filename, ftpcom_file os);
-		void fetchPaths();
-		unordered_map<string, ftpcom_file> getFiles();
-		void putFiles(unordered_map<string, ftpcom_file> files);
+		vector<string> list_dir(string base);
+		string download_data(string base, string filename);
+		void upload_data(string base, string filename, ftpcom_file os);
+		void fetch_paths();
+		unordered_map<string, ftpcom_file> get_files();
+		void put_files(unordered_map<string, ftpcom_file> files);
 	protected:
+		struct sio {
+			string data;
+			size_t sizel;
+		};
 		struct soi {
 			const char* data;
 			size_t sizel;
 		};
 		vector<string> ftdb;
-		static size_t dataDownload_func(void* csi, size_t size, size_t nmemb, void* pso);
-		static size_t dataUpload_func(char* cso, size_t size, size_t nmemb, void* psi);
-		static size_t dataRead_func(void* csi, size_t size, size_t nmemb, void* pso);
-		static size_t dataDiscard_func(void* csi, size_t size, size_t nmemb, void* pso);
-		static size_t getContentLength_func(void* csi, size_t size, size_t nmemb, void* pso);
+		static size_t data_download_func(void* csi, size_t size, size_t nmemb, void* pso);
+		static size_t data_upload_func(char* cso, size_t size, size_t nmemb, void* psi);
+		static size_t data_read_func(void* csi, size_t size, size_t nmemb, void* pso);
+		static size_t data_discard_func(void* csi, size_t size, size_t nmemb, void* pso);
+		static size_t get_content_length_func(void* csi, size_t size, size_t nmemb, void* pso);
 		virtual string trs(string str);
 		virtual string trw(string str, string param);
 		virtual void debug(string cmsg);
