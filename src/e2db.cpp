@@ -1359,87 +1359,117 @@ void e2db::merge(e2db* dbih)
 	tuners.merge(dbih->tuners); //C++17
 	bouquets.merge(dbih->bouquets); //C++17
 
+	unordered_map<string, vector<pair<int, string>>> index;
+	unordered_map<string, vector<pair<int, string>>> cp_index_0 = this->index;
+	unordered_map<string, vector<pair<int, string>>> cp_index_1 = dbih->index;
+	unordered_map<string, userbouquet> cp_ubs_0;
+	unordered_map<string, userbouquet> cp_ubs_1;
+
+	cp_index_0.erase("ubs");
+	cp_index_0.erase("mks");
+	cp_index_1.erase("ubs");
+	cp_index_1.erase("mks");
+
 	//TODO refresh cached data
 	/*for (auto & chdata : db.services)
 	{
 	}*/
 
-	unordered_map<string, vector<pair<int, string>>> index;
-
-	//TODO userbouquets (file)(b)name.index collision
-	for (auto & i : this->index)
+	for (auto & ubdata : userbouquets)
 	{
-		std::set_difference(dbih->index[i.first].begin(), dbih->index[i.first].end(), i.second.begin(), i.second.end(), std::inserter(index[i.first], index[i.first].begin()));
-	}
-
-	this->index = index;
-	this->index["bss"] = dbih->index["bss"];
-
-	int idx;
-
-	idx = 0;
-	for (auto & i : this->index["txs"])
-	{
-		idx += 1;
-		i.first = idx;
-		db.transponders[i.second].index = i.first;
-	}
-	idx = 0;
-	for (auto & i : this->index["chs"])
-	{
-		idx += 1;
-		i.first = idx;
-		db.services[i.second].index = i.first;
-	}
-
-	idx = (userbouquets.size() - 1);
-	unordered_map<string, userbouquet> cp_ubs; // no alter dbih
-	unordered_map<string, pair<string, string>> df_ubs; // diff by name
-
-	for (auto & ubdata : dbih->userbouquets)
-	{
-		stringstream key;
+		string key;
 
 		if (ubdata.first.find(".tv") != string::npos)
-			key << "userbouquet.dbe" << setfill('0') << setw(2) << idx++ << ".tv";
+			key = "tv:";
 		else if (ubdata.first.find(".radio") != string::npos)
-			key << "userbouquet.dbe" << setfill('0') << setw(2) << idx++ << ".radio";
+			key = "radio:";
 
-		df_ubs[ubdata.second.pname + ':' + ubdata.second.name] = pair (ubdata.first, key.str()); //C++17
-		cp_ubs[key.str()] = ubdata.second;
+		key += ubdata.second.name;
+		auto i = cp_index_0[ubdata.first];
+		cp_index_0[key] = i;
+		cp_index_0.erase(ubdata.first);
+		cp_ubs_0[key] = ubdata.second;
 
-		cout << ubdata.first << endl;
+		cout << "cp_index_0 " << ubdata.first << ' ' << cp_index_0[key].size() << ' ' << key << endl;
 	}
+	for (auto & ubdata : dbih->userbouquets)
+	{
+		string key;
+
+		if (ubdata.first.find(".tv") != string::npos)
+			key = "tv:";
+		else if (ubdata.first.find(".radio") != string::npos)
+			key = "radio:";
+
+		key += ubdata.second.name;
+		auto i = cp_index_1[ubdata.first];
+		cp_index_1[key] = i;
+		cp_index_1.erase(ubdata.first);
+		cp_ubs_1[key] = ubdata.second;
+
+		cout << "cp_index_1 " << ubdata.first << ' ' << cp_index_1[key].size() << ' ' << key << endl;
+	}
+
+	for (auto & i : cp_index_0)
+	{
+		vector<pair<int, string>> i_diff;
+		std::set_difference(cp_index_1[i.first].begin(), cp_index_1[i.first].end(), i.second.begin(), i.second.end(), std::inserter(i_diff, i_diff.begin()));
+		index[i.first] = cp_index_1[i.first];
+		index[i.first].insert(index[i.first].end(), i_diff.begin(), i_diff.end());
+		
+		cout << "i_diff " << i.first << ' ' << i_diff.size() << endl;
+	}
+
+	cp_ubs_0.merge(cp_ubs_1);
+	userbouquets.clear();
 
 	for (auto & bsdata : bouquets)
 	{
 		bsdata.second.userbouquets.clear();
 	}
-	for (auto & ubdata : userbouquets)
+	for (auto & ubdata : cp_ubs_0)
 	{
-		string key = ubdata.second.pname + ':' + ubdata.second.name;
+		int idx = bouquets[ubdata.second.pname].userbouquets.size();
+		string key, ktype;
+		if (ubdata.first.find("tv:") != string::npos)
+			ktype = "tv";
+		else if (ubdata.first.find("radio:") != string::npos)
+			ktype = "radio";
+		key = ktype + ':' + ubdata.second.name;
 
-		//TODO channels diff needs re-index
-		if (df_ubs.count(key))
-		{
-			userbouquets[df_ubs[key].second] = dbih->userbouquets[df_ubs[key].first];
-			cp_ubs.erase(df_ubs[key].second);
-		}
+		stringstream bname;
+		bname << "userbouquet.dbe" << setfill('0') << setw(2) << idx << '.' << ktype;
+
+		ubdata.second.bname = bname.str();
+		ubdata.second.index = idx;
+
+		if (cp_ubs_1.count(ubdata.first))
+			ubdata.second.channels.merge(cp_ubs_1[ubdata.first].channels);
+
+		bouquets[ubdata.second.pname].userbouquets.emplace_back(ubdata.second.bname);
+		userbouquets[ubdata.second.bname] = ubdata.second;
+		index["ubs"].emplace_back(pair (ubdata.second.index, ubdata.second.bname)); //C++17
+
+		cout << "index " << ubdata.second.bname << ' ' << index[key].size() << ' ' << key << endl;
+
+		index[ubdata.second.bname] = index[key];
+		index.erase(key);
 	}
 
-	userbouquets.insert(cp_ubs.begin(), cp_ubs.end());
-	index["ubs"].clear();
-
-	idx = 0;
-	for (auto & ubdata : userbouquets)
+	for (auto & i : index)
 	{
-		bouquets[ubdata.second.pname].userbouquets.emplace_back(ubdata.first);
-		ubdata.second.index = idx++;
-		index["ubs"].emplace_back(pair (ubdata.second.index, ubdata.first)); //C++17
+		cout << i.first << ' ' << i.second.size() << endl;
 	}
 
-	cp_ubs.clear();
-	df_ubs.clear();
+	this->index = index;
+
+	this->index["bss"] = cp_index_1["bss"];
+
+	cp_index_0.clear();
+	cp_index_1.clear();
+	cp_ubs_0.clear();
+	cp_ubs_1.clear();
+	index.clear();
 }
 
 void e2db::add_transponder(transponder& tx)
