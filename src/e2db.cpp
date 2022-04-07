@@ -17,7 +17,7 @@
 
 #include "e2db.h"
 
-using std::string, std::pair, std::vector, std::map, std::unordered_map, std::unordered_set, std::cout, std::endl, std::ifstream, std::ofstream, std::fstream, std::stringstream, std::getline, std::to_string, std::atoi, std::hex, std::dec, std::setfill, std::setw, std::uppercase;
+using std::string, std::pair, std::vector, std::map, std::unordered_map, std::unordered_set, std::set_difference, std::inserter, std::cout, std::endl, std::ifstream, std::ofstream, std::stringstream, std::getline, std::to_string, std::atoi, std::hex, std::dec, std::setfill, std::setw, std::uppercase;
 
 namespace e2se_e2db
 {
@@ -385,7 +385,7 @@ void e2db_parser::parse_lamedb_transponder_params(string data, transponder& tx)
 	int dvbns, tsid, onid;
 	dvbns = 0, tsid = 0, onid = 0;
 
-	sscanf(data.c_str(), "%08x:%04x:%04x", &dvbns, &tsid, &onid);
+	std::sscanf(data.c_str(), "%08x:%04x:%04x", &dvbns, &tsid, &onid);
 
 	tx.dvbns = dvbns;
 	tx.tsid = tsid;
@@ -406,7 +406,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 	switch (ttype)
 	{
 		case 's':
-			sscanf(data.c_str(), "%8d:%8d:%1d:%1d:%4d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil, oflgs);
+			std::sscanf(data.c_str(), "%8d:%8d:%1d:%1d:%4d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil, oflgs);
 
 			tx.freq = int (freq / 1e3);
 			tx.sr = int (sr / 1e3);
@@ -421,8 +421,9 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 			tx.pil = pil;
 			tx.oflgs = string (oflgs);
 		break;
+		//TODO test
 		case 't': // DVB-T
-			sscanf(data.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &band, &hpfec, &lpfec, &termod, &trxmod, &guard, &hier, &inv, oflgs);
+			std::sscanf(data.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &band, &hpfec, &lpfec, &termod, &trxmod, &guard, &hier, &inv, oflgs);
 
 			tx.freq = int (freq / 1e3);
 			tx.band = band;
@@ -435,9 +436,9 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 			tx.inv = inv;
 			tx.oflgs = string (oflgs);
 		break;
-		//TODO
+		//TODO test
 		case 'c': // DVB-C
-			sscanf(data.c_str(), "%8d:%8d:%1d:%1d:%1d%s", &freq, &sr, &inv, &cabmod, &ifec, oflgs);
+			std::sscanf(data.c_str(), "%8d:%8d:%1d:%1d:%1d%s", &freq, &sr, &inv, &cabmod, &ifec, oflgs);
 
 			tx.freq = int (freq / 1e3);
 			tx.sr = int (sr / 1e3);
@@ -446,9 +447,9 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 			tx.ifec = ifec;
 			tx.oflgs = string (oflgs);
 		break;
-		//TODO
+		//TODO test
 		case 'a': // ATSC
-			sscanf(data.c_str(), "%8d:%1d:%1d:%1d:%1d%s", &freq, &inv, &mod, &flgs, &sys, oflgs);
+			std::sscanf(data.c_str(), "%8d:%1d:%1d:%1d:%1d%s", &freq, &inv, &mod, &flgs, &sys, oflgs);
 
 			tx.freq = int (freq / 1e3);
 			tx.inv = inv;
@@ -473,12 +474,12 @@ void e2db_parser::parse_lamedb_service_params(string data, service& ch)
 	if (LAMEDB_VER == 5)
 	{
 		int srcid = -1;
-		sscanf(data.c_str(), "%04x:%08x:%04x:%4s:%3d:%4d:%d", &ssid, &dvbns, &tsid, onid, &stype, &snum, &srcid);
+		std::sscanf(data.c_str(), "%04x:%08x:%04x:%4s:%3d:%4d:%d", &ssid, &dvbns, &tsid, onid, &stype, &snum, &srcid);
 		ch.srcid = srcid;
 	}
 	else
 	{
-		sscanf(data.c_str(), "%04x:%08x:%04x:%4s:%3d:%4d", &ssid, &dvbns, &tsid, onid, &stype, &snum);
+		std::sscanf(data.c_str(), "%04x:%08x:%04x:%4s:%3d:%4d", &ssid, &dvbns, &tsid, onid, &stype, &snum);
 	}
 
 	ch.ssid = ssid;
@@ -496,7 +497,7 @@ void e2db_parser::parse_lamedb_service_data(string data, service& ch)
 	if (data.empty())
 		return;
 
-	//TODO 256
+	//TODO 256 EOL
 	// !p: provider
 	//  c: cache
 	//  C: ciad
@@ -625,7 +626,7 @@ void e2db_parser::parse_userbouquet_reference(string data, userbouquet& ub)
 	char fname[33];
 	char oby[13];
 
-	sscanf(data.c_str(), "%32s BOUQUET %32s ORDER BY %12s", refid, fname, oby);
+	std::sscanf(data.c_str(), "%32s BOUQUET %32s ORDER BY %12s", refid, fname, oby);
 
 	ub.bname = string (fname);
 	ub.bname = ub.bname.substr(1, ub.bname.length() - 2);
@@ -1353,21 +1354,18 @@ void e2db::merge(e2db* dbih)
 {
 	debug("merge()");
 
-	collisions.clear();
 	db.transponders.merge(dbih->db.transponders); //C++17
 	db.services.merge(dbih->db.services); //C++17
 	tuners.merge(dbih->tuners); //C++17
 	bouquets.merge(dbih->bouquets); //C++17
+	collisions.merge(dbih->collisions); //C++17
 
 	unordered_map<string, vector<pair<int, string>>> index;
 	unordered_map<string, vector<pair<int, string>>> cp_index_0 = this->index;
 	unordered_map<string, vector<pair<int, string>>> cp_index_1 = dbih->index;
 	unordered_map<string, userbouquet> cp_ubs_0;
 	unordered_map<string, userbouquet> cp_ubs_1;
-
-	cp_index_0.erase("ubs");
 	cp_index_0.erase("mks");
-	cp_index_1.erase("ubs");
 	cp_index_1.erase("mks");
 
 	//TODO refresh cached data
@@ -1375,49 +1373,38 @@ void e2db::merge(e2db* dbih)
 	{
 	}*/
 
-	for (auto & ubdata : userbouquets)
+	for (auto & i : cp_index_0["ubs"])
 	{
-		string key;
-
-		if (ubdata.first.find(".tv") != string::npos)
-			key = "tv:";
-		else if (ubdata.first.find(".radio") != string::npos)
-			key = "radio:";
-
-		key += ubdata.second.name;
-		auto i = cp_index_0[ubdata.first];
-		cp_index_0[key] = i;
-		cp_index_0.erase(ubdata.first);
-		cp_ubs_0[key] = ubdata.second;
-
-		cout << "cp_index_0 " << ubdata.first << ' ' << cp_index_0[key].size() << ' ' << key << endl;
+		userbouquet& ub = userbouquets[i.second];
+		bouquet& bs = bouquets[ub.pname];
+		string key = "1:7:" + to_string(bs.btype) + ':' + ub.name;
+		auto iub = cp_index_0[i.second];
+		cp_index_0[key] = iub;
+		cp_index_0.erase(i.second);
+		cp_ubs_0[key] = ub;
+		// cout << "cp_index_0 " << i.second << ' ' << cp_index_0[key].size() << ' ' << key << endl;
+		i.second = key;
 	}
-	for (auto & ubdata : dbih->userbouquets)
+	for (auto & i : cp_index_1["ubs"])
 	{
-		string key;
-
-		if (ubdata.first.find(".tv") != string::npos)
-			key = "tv:";
-		else if (ubdata.first.find(".radio") != string::npos)
-			key = "radio:";
-
-		key += ubdata.second.name;
-		auto i = cp_index_1[ubdata.first];
-		cp_index_1[key] = i;
-		cp_index_1.erase(ubdata.first);
-		cp_ubs_1[key] = ubdata.second;
-
-		cout << "cp_index_1 " << ubdata.first << ' ' << cp_index_1[key].size() << ' ' << key << endl;
+		userbouquet& ub = dbih->userbouquets[i.second];
+		bouquet& bs = dbih->bouquets[ub.pname];
+		string key = "1:7:" + to_string(bs.btype) + ':' + ub.name;
+		auto iub = cp_index_1[i.second];
+		cp_index_1[key] = iub;
+		cp_index_1.erase(i.second);
+		cp_ubs_1[key] = ub;
+		// cout << "cp_index_1 " << i.second << ' ' << cp_index_1[key].size() << ' ' << key << endl;
+		i.second = key;
 	}
 
+	index = cp_index_1;
 	for (auto & i : cp_index_0)
 	{
 		vector<pair<int, string>> i_diff;
-		std::set_difference(cp_index_1[i.first].begin(), cp_index_1[i.first].end(), i.second.begin(), i.second.end(), std::inserter(i_diff, i_diff.begin()));
-		index[i.first] = cp_index_1[i.first];
+		set_difference(i.second.begin(), i.second.end(), cp_index_1[i.first].begin(), cp_index_1[i.first].end(), inserter(i_diff, i_diff.begin()));
 		index[i.first].insert(index[i.first].end(), i_diff.begin(), i_diff.end());
-		
-		cout << "i_diff " << i.first << ' ' << i_diff.size() << endl;
+		// cout << "i_diff " << i.first << ' ' << i_diff.size() << endl;
 	}
 
 	cp_ubs_0.merge(cp_ubs_1);
@@ -1427,43 +1414,73 @@ void e2db::merge(e2db* dbih)
 	{
 		bsdata.second.userbouquets.clear();
 	}
-	for (auto & ubdata : cp_ubs_0)
+	for (auto & i : index["ubs"])
 	{
-		int idx = bouquets[ubdata.second.pname].userbouquets.size();
-		string key, ktype;
-		if (ubdata.first.find("tv:") != string::npos)
+		userbouquet& ub = cp_ubs_0[i.second];
+		bouquet& bs = bouquets[ub.pname];
+		int idx = bs.userbouquets.size();
+		string key = "1:7:" + to_string(bs.btype) + ':' + ub.name;
+		string ktype;
+		if (bs.btype == 1)
 			ktype = "tv";
-		else if (ubdata.first.find("radio:") != string::npos)
+		else if (bs.btype == 2)
 			ktype = "radio";
-		key = ktype + ':' + ubdata.second.name;
+		//cout << ktype << ' ' << i.second << endl;
 
 		stringstream bname;
 		bname << "userbouquet.dbe" << setfill('0') << setw(2) << idx << '.' << ktype;
 
-		ubdata.second.bname = bname.str();
-		ubdata.second.index = idx;
+		ub.bname = bname.str();
+		ub.index = idx;
 
-		if (cp_ubs_1.count(ubdata.first))
-			ubdata.second.channels.merge(cp_ubs_1[ubdata.first].channels);
+		if (cp_ubs_1.count(i.second))
+			ub.channels.merge(cp_ubs_1[i.second].channels);
 
-		bouquets[ubdata.second.pname].userbouquets.emplace_back(ubdata.second.bname);
-		userbouquets[ubdata.second.bname] = ubdata.second;
-		index["ubs"].emplace_back(pair (ubdata.second.index, ubdata.second.bname)); //C++17
-
-		cout << "index " << ubdata.second.bname << ' ' << index[key].size() << ' ' << key << endl;
-
-		index[ubdata.second.bname] = index[key];
+		index[ub.bname] = index[key];
 		index.erase(key);
+
+		idx = 0;
+		for (auto & x : index[ub.bname])
+		{
+			channel_reference& chref = ub.channels[x.second];
+
+			if (chref.marker)
+			{
+				char chid[25];
+				std::sprintf(chid, "%d:%x:%d", chref.type, chref.anum, ub.index);
+				chref.chid = chid;
+				index["mks"].emplace_back(pair (ub.index, chid)); //C++17
+			}
+			else
+			{
+				idx += 1;
+				chref.index = idx;
+				x.first = chref.index;
+			}
+		}
+
+		bs.userbouquets.emplace_back(ub.bname);
+		userbouquets[ub.bname] = ub;
+		i.first = ub.index;
+		i.second = ub.bname;
+		// cout << "index " << ub.bname << ' ' << index[key].size() << ' ' << key << endl;
 	}
 
 	for (auto & i : index)
 	{
-		cout << i.first << ' ' << i.second.size() << endl;
+		if (i.first == "txs" || i.first.find("chs") != string::npos || i.first.find("bouquets.") != string::npos)
+		{
+			int idx = 0;
+			for (auto & x : i.second)
+			{
+				idx += 1;
+				x.first = idx;
+			}
+			// cout << i.first << ' ' << i.second.size() << endl;
+		}
 	}
 
 	this->index = index;
-
-	this->index["bss"] = cp_index_1["bss"];
 
 	cp_index_0.clear();
 	cp_index_1.clear();
