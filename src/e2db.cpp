@@ -1466,9 +1466,12 @@ void e2db::merge(e2db* dbih)
 		// cout << "index " << ub.bname << ' ' << index[key].size() << ' ' << key << endl;
 	}
 
+	index.erase("chs:0");
+	index.erase("chs:1");
+	index.erase("chs:2");
 	for (auto & i : index)
 	{
-		if (i.first == "txs" || i.first.find("chs") != string::npos || i.first.find("bouquets.") != string::npos)
+		if (i.first == "txs" || i.first == "chs" || i.first.find("bouquets.") != string::npos)
 		{
 			int idx = 0;
 			for (auto & x : i.second)
@@ -1479,6 +1482,12 @@ void e2db::merge(e2db* dbih)
 			// cout << i.first << ' ' << i.second.size() << endl;
 		}
 	}
+	for (auto & i : index["chs"])
+	{
+		service& ch = db.services[i.second];
+		string iname = "chs:" + (STYPES.count(ch.stype) ? to_string(STYPES.at(ch.stype).first) : "0");
+		index[iname].emplace_back(pair (i.first, ch.chid)); //C++17
+	}
 
 	this->index = index;
 
@@ -1487,6 +1496,16 @@ void e2db::merge(e2db* dbih)
 	cp_ubs_0.clear();
 	cp_ubs_1.clear();
 	index.clear();
+}
+
+void e2db::import_file()
+{
+	debug("import_file()");
+}
+
+void e2db::export_file()
+{
+	debug("export_file()");
 }
 
 void e2db::add_transponder(transponder& tx)

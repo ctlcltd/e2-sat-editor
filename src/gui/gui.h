@@ -10,9 +10,10 @@
  */
 
 #include <string>
+#include <vector>
 #include <unordered_map>
 
-using std::string, std::unordered_map;
+using std::string, std::vector, std::unordered_map;
 
 #ifndef gui_h
 #define gui_h
@@ -58,12 +59,14 @@ class gui : protected e2se::log_factory
 		void tabChanged(int index);
 		void tabClicked(int index);
 		void tabMoved(int from, int to);
-		void open();
 		string openFileDialog();
 		string saveFileDialog(string filename);
+		vector<string> importFileDialog();
+		string exportFileDialog(string filename);
 		void tabChangeName(int ttid, string filename = "");
 		void loaded(int counters[5]);
 		void reset();
+		void open();
 		void save();
 		void tabEditAction(TAB_EDIT_ATS action);
 		void settings();

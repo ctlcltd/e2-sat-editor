@@ -332,27 +332,17 @@ void gui::tabMoved(int from, int to)
 	}
 }
 
-void gui::open()
-{
-	debug("open()");
-
-	string dirname = openFileDialog();
-
-	if (! dirname.empty())
-		newTab(dirname);
-}
-
 string gui::openFileDialog()
 {
 	debug("openFileDialog()");
 	
-	string dirname;
+	string filename;
 
 	//TODO ~ $HOME
-	QString qdirname = QFileDialog::getExistingDirectory(nullptr, "Select enigma2 db folder", "~", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-	dirname = qdirname.toStdString();
+	QString dirname = QFileDialog::getExistingDirectory(nullptr, "Select enigma2 db folder", "~", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+	filename = dirname.toStdString();
 
-	return dirname;
+	return filename;
 }
 
 //TODO native file dialog button "Open"
@@ -362,11 +352,39 @@ string gui::saveFileDialog(string filename)
 
 	string dirname;
 
-	QFileDialog qfdial = QFileDialog(nullptr, "Select where save", QString::fromStdString(filename));
-	qfdial.setFilter(QDir::AllDirs | QDir::NoSymLinks);
-	qfdial.setAcceptMode(QFileDialog::AcceptSave);
-	QString qdirname = qfdial.getExistingDirectory();
-	dirname = qdirname.toStdString();
+	QFileDialog fdial = QFileDialog(nullptr, "Select where to save", QString::fromStdString(filename));
+	fdial.setFilter(QDir::AllDirs | QDir::NoSymLinks);
+	fdial.setAcceptMode(QFileDialog::AcceptSave);
+	QString dir = fdial.getExistingDirectory();
+	dirname = dir.toStdString();
+
+	return dirname;
+}
+
+vector<string> gui::importFileDialog()
+{
+	debug("importFileDialog()");
+	
+	vector<string> filenames;
+
+	//TODO ~ $HOME
+	QStringList files = QFileDialog::getOpenFileNames(nullptr, "Select one or more files to open", "~", "Enigma2 db folder (*);;Lamedb 2.4 (lamedb);;Lamedb 2.5 (lamedb5);;Bouquet (bouquets.*);;Userbouquet (userbouquet.*);;Tuner settings (*.xml);;All Files (*)");
+
+	return filenames;
+}
+
+string gui::exportFileDialog(string filename)
+{
+	debug("exportFileDialog()", "filename", filename);
+
+	string dirname;
+	
+	//TODO ~ $HOME
+	QFileDialog fdial = QFileDialog(nullptr, "Select where to save", QString::fromStdString(filename));
+	fdial.setFilter(QDir::AllDirs | QDir::NoSymLinks);
+	fdial.setAcceptMode(QFileDialog::AcceptSave);
+	QString dir = fdial.getExistingDirectory();
+	dirname = dir.toStdString();
 
 	return dirname;
 }
@@ -422,6 +440,16 @@ void gui::reset()
 
 	sbwidl->setText("");
 	sbwidr->setText("");
+}
+
+void gui::open()
+{
+	debug("open()");
+
+	string dirname = openFileDialog();
+
+	if (! dirname.empty())
+		newTab(dirname);
 }
 
 void gui::save()

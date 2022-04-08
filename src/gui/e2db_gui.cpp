@@ -13,6 +13,8 @@
 #include <clocale>
 #include <cmath>
 
+#include <QMessageBox>
+
 #include "e2db_gui.h"
 
 using std::to_string;
@@ -39,6 +41,14 @@ void e2db::options()
 	e2db::PARSER_TUNERSETS = sets->value("application/parserTunerset", true).toBool();
 	e2db::PARSER_LAMEDB5_PRIOR = sets->value("application/parserLamedb5", false).toBool();
 	e2db::MAKER_LAMEDB5 = sets->value("application/makerLamedb5", true).toBool();
+}
+
+void e2db::error(string cmsg, string optk, string optv)
+{
+	debug("gui.error()");
+
+	this->::e2se_e2db::e2db::error(cmsg, optk, optv);
+	QMessageBox::critical(nullptr, NULL, QString::fromStdString(optv));
 }
 
 string e2db::addTransponder(transponder& tx)
@@ -161,17 +171,16 @@ void e2db::merge(unordered_map<string, e2se_e2db::e2db_file> files)
 	debug("merge()");
 
 	bool merge = this->get_input().size() != 0 ? true : false;
-	e2db* nwdbih = new e2db;
-	nwdbih->parse_e2db(files);
-	this->::e2se_e2db::e2db::merge(nwdbih);
-	// this->debugger();
-	delete nwdbih;
+	e2db* nw_dbih = new e2db;
+	nw_dbih->parse_e2db(files);
+	this->::e2se_e2db::e2db::merge(nw_dbih);
+	delete nw_dbih;
 
-	//if (merge)
-	//{
+	if (merge)
+	{
 		entries.transponders.clear();
 		entries.services.clear();
-	//}
+	}
 
 	this->gindex = this->index;
 

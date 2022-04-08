@@ -9,8 +9,8 @@
  * @license GNU GPLv3 License
  */
 
-#include <QMessageBox>
 #include <QString>
+#include <QMessageBox>
 
 #include "ftpcom_gui.h"
 

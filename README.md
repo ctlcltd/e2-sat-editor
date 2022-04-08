@@ -4,6 +4,12 @@ An enigma2 channel list editor – under development.
 
 ![a screenshot of e2 SAT Editor running on linux, qt6ct fusion dark](res/screenshot.png)
 
+e2 SAT Editor is an Enigma2 channel list editor, fully cross-platform (Win, Mac, Lin) and free to use. Many features are under the hood and many are coming. It has tabbed navigation with global Cut-Copy-Paste support; drag-and-drop support; import and export of lamedb, bouquets and userbouquets; FTP support; tools for sorting and management of channel lists; a native OS look and feel with dark and light themes. It supports Lamedb 4 and Lamedb 5 formats.
+
+![e2 SAT Editor icon](res/e2-sat-editor.png)
+
+Freely inspired by LlamaWare DreamBoxEdit: https://github.com/OpenVision-Archive/dreamboxedit.
+
  
 ## Requirements
 

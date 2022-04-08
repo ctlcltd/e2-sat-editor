@@ -11,9 +11,10 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 #include <unordered_map>
 
-using std::string, std::pair, std::unordered_map;
+using std::string, std::pair, std::vector, std::unordered_map;
 
 #ifndef tab_h
 #define tab_h
@@ -53,6 +54,8 @@ class tab : protected e2se::log_factory
 		void openFile();
 		bool readFile(string filename = "");
 		void saveFile(bool saveas);
+		void importFile();
+		void exportFile();
 		void addChannel();
 		void addService();
 		void editService();

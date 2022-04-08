@@ -31,7 +31,7 @@ using ftpcom_file = std::string;
 class ftpcom
 {
 	public:
-		static const int MAX_RESUME_ATTEMPTS = 3;
+		static const int MAX_RESUME_ATTEMPTS = 5;
 
 		struct ftp_params
 		{
@@ -48,7 +48,8 @@ class ftpcom
 		virtual ~ftpcom() = default;
 		void setup(ftp_params params);
 		bool handle();
-		CURLcode perform(bool cleanup = false);
+		CURLcode perform();
+		void reset();
 		void cleanup();
 		bool connect();
 		bool disconnect();
@@ -76,7 +77,9 @@ class ftpcom
 		virtual string trs(string str);
 		virtual string trw(string str, string param);
 		virtual void debug(string cmsg);
+		virtual void debug(string cmsg, string optk, string optv);
 		virtual void error(string cmsg, string rmsg);
+		virtual void error(string cmsg, string optk, string optv);
 		e2se::logger* log;
 	private:
 		bool actv;

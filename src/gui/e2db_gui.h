@@ -42,6 +42,7 @@ class e2db : public ::e2se_e2db::e2db
 			std::cout << "e2se_gui::~e2db()" << std::endl;
 		}
 		void options();
+		void error(string cmsg, string optk, string optv);
 		string addTransponder(transponder& tx);
 		string editTransponder(string txid, transponder& tx);
 		void removeTransponder(string txid);

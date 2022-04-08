@@ -60,22 +60,23 @@ void ftpcom::setup(ftp_params params)
 	baseb = params.bpath;
 	bases = params.spath;
 
-	std::cout << params.user << ':' << params.pass << '@' << params.host << ':' << params.port << '/' << params.spath << std::endl;
+	// std::cout << params.user << ':' << params.pass << '@' << params.host << ':' << params.port << '/' << params.spath << std::endl;
 }
 
 bool ftpcom::handle()
 {
-	curl_global_init(CURL_GLOBAL_DEFAULT);
-
-	this->curl = curl_easy_init();
-	curl_easy_setopt(curl, CURLOPT_PROTOCOLS, CURLPROTO_FTP);
-
+	if (! curl)
+	{
+		curl_global_init(CURL_GLOBAL_DEFAULT);
+		this->curl = curl_easy_init();
+	}
 	if (! curl)
 		return false;
 
 	this->urlp = curl_url();
 	curl_url_set(urlp, CURLUPART_SCHEME, "ftp", 0);
 	curl_url_set(urlp, CURLUPART_HOST, host.c_str(), 0);
+	curl_easy_setopt(curl, CURLOPT_PROTOCOLS, CURLPROTO_FTP);
 	curl_easy_setopt(curl, CURLOPT_CURLU, urlp);
 	curl_easy_setopt(curl, CURLOPT_USERNAME, user.c_str());
 	curl_easy_setopt(curl, CURLOPT_PASSWORD, pass.c_str());
@@ -83,17 +84,20 @@ bool ftpcom::handle()
 	if (actv)
 		curl_easy_setopt(curl, CURLOPT_FTPPORT, "-");
 	// curl_easy_setopt(curl, CURLOPT_FTP_RESPONSE_TIMEOUT, 0); // 0 = default no timeout
-	// curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+	// curl_easy_setopt(curl, CURLOPT_VERBOSE, true);
 
 	return true;
 }
 
-CURLcode ftpcom::perform(bool cleanup)
+CURLcode ftpcom::perform()
 {
-	CURLcode res = curl_easy_perform(curl);
-	if (cleanup)
-		this->cleanup();
-	return res;
+	return curl_easy_perform(curl);
+}
+
+void ftpcom::reset()
+{
+	curl_url_cleanup(urlp);
+	curl_easy_reset(curl);
 }
 
 void ftpcom::cleanup()
@@ -163,7 +167,8 @@ vector<string> ftpcom::list_dir(string base)
 		list.emplace_back(remotedir + line);
 	}
 
-	cleanup();
+	data.clear();
+	reset();
 
 	return list;
 }
@@ -184,9 +189,10 @@ string ftpcom::download_data(string base, string filename)
 	CURLcode res = CURLE_GOT_NOTHING;
 	string remotefile = base + '/' + filename;
 
-	debug("download_data() file: " + remotefile);
+	debug("download_data()", "file", remotefile);
 
 	curl_url_set(urlp, CURLUPART_PATH, remotefile.c_str(), 0);
+	curl_easy_setopt(curl, CURLOPT_CURLU, urlp);
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, data_download_func);
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &data);
 	res = perform();
@@ -197,15 +203,13 @@ string ftpcom::download_data(string base, string filename)
 		return "";
 	}
 
-	cleanup();
+	reset();
 
 	return data.data;
 }
 
 void ftpcom::upload_data(string base, string filename, string os)
 {
-	debug("upload_data()");
-
 	if (! handle())
 		return error("upload_data()", trs("ftpcom error."));
 
@@ -216,7 +220,7 @@ void ftpcom::upload_data(string base, string filename, string os)
 	CURLcode res = CURLE_GOT_NOTHING;
 	string remotefile = base + '/' + filename;
 	
-	debug("upload_data() file: " + remotefile);
+	debug("upload_data()", "file", remotefile);
 
 	curl_url_set(urlp, CURLUPART_PATH, remotefile.c_str(), 0);
 	curl_easy_setopt(curl, CURLOPT_UPLOAD, true);
@@ -228,7 +232,7 @@ void ftpcom::upload_data(string base, string filename, string os)
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, data_discard_func);
 
 	for (int a = 0; (res != CURLE_OK) && (a < MAX_RESUME_ATTEMPTS); a++) {
-		debug("upload_data() attempt: " + to_string(a + 1));
+		debug("upload_data()", "attempt", to_string(a + 1));
 		if (a)
 		{
 			curl_easy_setopt(curl, CURLOPT_NOBODY, true);
@@ -252,7 +256,7 @@ void ftpcom::upload_data(string base, string filename, string os)
 	if (res != CURLE_OK)
 		return error("upload_data()", trs(curl_easy_strerror(res))); // var error string
 
-	cleanup();
+	reset();
 }
 
 void ftpcom::fetch_paths()
@@ -330,10 +334,21 @@ void ftpcom::debug(string cmsg)
 	this->log->debug(cmsg);
 }
 
+void ftpcom::debug(string cmsg, string optk, string optv)
+{
+	this->log->debug(cmsg, optk, optv);
+}
+
 void ftpcom::error(string cmsg, string rmsg)
 {
 	curl_global_cleanup();
 	this->log->error(cmsg, "Error", rmsg);
+}
+
+void ftpcom::error(string cmsg, string optk, string optv)
+{
+	curl_global_cleanup();
+	this->log->error(cmsg, optk, optv);
 }
 
 string ftpcom::trs(string str)

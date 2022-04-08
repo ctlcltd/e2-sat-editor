@@ -295,6 +295,8 @@ class e2db : public e2db_parser, public e2db_maker
 		e2db();
 		virtual ~e2db() = default;
 		void merge(e2db* dbih);
+		void import_file();
+		void export_file();
 		void add_transponder(transponder& tx);
 		void edit_transponder(string txid, transponder& tx);
 		void remove_transponder(string txid);

@@ -172,8 +172,8 @@ tab::tab(gui* gid, QWidget* wid)
 	top_toolbar->addAction(theme::icon("file-open"), "Open", [=]() { this->openFile(); });
 	top_toolbar->addAction(theme::icon("save"), "Save", [=]() { this->saveFile(false); });
 	top_toolbar->addSeparator();
-	top_toolbar->addAction(theme::icon("import"), "Import", todo);
-	top_toolbar->addAction(theme::icon("export"), "Export", todo);
+	top_toolbar->addAction(theme::icon("import"), "Import", [=]() { this->importFile(); });
+	top_toolbar->addAction(theme::icon("export"), "Export", [=]() { this->exportFile(); });
 	top_toolbar->addSeparator();
 	top_toolbar->addAction(theme::icon("settings"), "Settings", [=]() { gid->settings(); });
 	top_toolbar->addWidget(top_toolbar_spacer);
@@ -328,28 +328,28 @@ void tab::saveFile(bool saveas)
 	debug("saveFile()", "saveas", to_string(saveas));
 
 	QMessageBox dial = QMessageBox();
-	string filename;
+	string dirname;
 	bool overwrite = ! saveas && (! this->state.nwwr || this->state.ovwr);
 
 	if (overwrite)
 	{
 		this->updateListIndex();
-		filename = this->filename;
+		dirname = this->filename;
 		dial.setText("Files will be overwritten.");
 		dial.exec();
 	}
 	else
 	{
-		filename = gid->saveFileDialog(this->filename);
+		dirname = gid->saveFileDialog(this->filename);
 	}
 
-	if (! filename.empty())
+	if (! dirname.empty())
 	{
 		debug("saveFile()", "overwrite", to_string(overwrite));
 		debug("saveFile()", "filename", filename);
 
 		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		bool wr = dbih->write(filename, overwrite);
+		bool wr = dbih->write(dirname, overwrite);
 		QGuiApplication::restoreOverrideCursor();
 		
 		if (wr) {
@@ -361,6 +361,23 @@ void tab::saveFile(bool saveas)
 			QMessageBox::critical(cwid, NULL, "Error writing files.");
 		}
 	}
+}
+
+void tab::importFile()
+{
+	debug("importFile()");
+
+	vector<string> filenames;
+
+	filenames = gid->importFileDialog();
+}
+
+void tab::exportFile()
+{
+	debug("exportFile()");
+
+	string filename;
+	string dirname = gid->exportFileDialog(filename);
 }
 
 void tab::addChannel()
