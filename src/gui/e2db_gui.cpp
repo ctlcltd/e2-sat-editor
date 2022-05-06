@@ -262,7 +262,7 @@ QStringList e2db::entryService(service ch)
 	QString chid = QString::fromStdString(ch.chid);
 	QString txid = QString::fromStdString(ch.txid);
 	QString stype = e2db::STYPES.count(ch.stype) ? QString::fromStdString(e2db::STYPES.at(ch.stype).second) : "Data";
-	QString pname = QString::fromStdString(ch.data.count(e2db::PVDR_DATA.at('p')) ? ch.data[e2db::PVDR_DATA.at('p')][0] : "");
+	QString pname = QString::fromStdString(ch.data.count(e2db::SDATA.at('p')) ? ch.data[e2db::SDATA.at('p')][0] : "");
 
 	QStringList entry = QStringList ({chname, chid, txid, stype, pname});
 	entry.append(entries.transponders[ch.txid]);

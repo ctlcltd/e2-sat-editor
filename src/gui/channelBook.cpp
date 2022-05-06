@@ -20,7 +20,7 @@
 
 #include "channelBook.h"
 
-using std::to_string, std::stoi;
+using std::to_string;
 using namespace e2se;
 
 namespace e2se_gui
@@ -215,10 +215,10 @@ void channelBook::stacker(int vv)
 		//TODO pos value & terrestrial, cable ...
 		if (vv == views::Satellites)
 		{
-			int pos = stoi(q.first);
+			int pos = std::stoi(q.first);
 			if (dbih->tuners.count(pos))
 			{
-				e2db::tuner_sets tn = dbih->tuners.at(stoi(q.first));
+				e2db::tuner_sets tn = dbih->tuners.at(std::stoi(q.first));
 				name = QString::fromStdString(tn.name);
 			}
 			else
@@ -257,7 +257,7 @@ void channelBook::stacker(int vv)
 		//TODO test
 		else if (vv == views::Resolution)
 		{
-			int stype = stoi(q.first);
+			int stype = std::stoi(q.first);
 			name = e2db::STYPES.count(stype) ? QString::fromStdString(e2db::STYPES.at(stype).second) : "Data";
 			name.append(QString::fromStdString("\tid: " + q.first));
 			item = new QTreeWidgetItem({name});
@@ -336,7 +336,7 @@ void channelBook::populate()
 			else
 				chname = QString::fromStdString(ch.chname);
 			QString stype = e2db::STYPES.count(ch.stype) ? QString::fromStdString(e2db::STYPES.at(ch.stype).second) : "Data";
-			QString pname = QString::fromStdString(ch.data.count(e2db::PVDR_DATA.at('p')) ? ch.data[e2db::PVDR_DATA.at('p')][0] : "");
+			QString pname = QString::fromStdString(ch.data.count(e2db::SDATA.at('p')) ? ch.data[e2db::SDATA.at('p')][0] : "");
 
 			string ptxp;
 			if (tx.ttype == 's')

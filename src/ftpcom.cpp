@@ -17,7 +17,7 @@
 
 #include "ftpcom.h"
 
-using std::string, std::stringstream, std::getline, std::min, std::endl, std::to_string, std::stoi;
+using std::string, std::stringstream, std::min, std::endl, std::to_string;
 
 namespace e2se_ftpcom
 {
@@ -160,7 +160,7 @@ vector<string> ftpcom::list_dir(string base)
 
 	string line;
 
-	while (getline(data, line))
+	while (std::getline(data, line))
 	{
 		if (line.empty())
 			continue;
@@ -325,7 +325,7 @@ size_t ftpcom::get_content_length_func(void* csi, size_t size, size_t nmemb, voi
 	string data ((const char*) csi, relsize);
 	size_t pos = 0;
 	if ((pos = data.find("Content-Length:")) != string::npos)
-		*((size_t*) pso) = stoi(data.substr(pos, data.length() - 1));
+		*((size_t*) pso) = std::stoi(data.substr(pos, data.length() - 1));
 	return relsize;
 }
 

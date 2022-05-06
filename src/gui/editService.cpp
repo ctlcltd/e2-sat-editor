@@ -24,7 +24,7 @@
 #include "theme.h"
 #include "editService.h"
 
-using std::to_string, std::stoi;
+using std::to_string;
 using namespace e2se;
 
 namespace e2se_gui
@@ -163,10 +163,10 @@ void editService::transponderLayout()
 	for (auto & q: txdata)
 	{
 		QString name;
-		int pos = stoi(q.first);
+		int pos = std::stoi(q.first);
 		if (dbih->tuners.count(pos))
 		{
-			e2db::tuner_sets tndata = dbih->tuners.at(stoi(q.first));
+			e2db::tuner_sets tndata = dbih->tuners.at(std::stoi(q.first));
 			name = QString::fromStdString(tndata.name);
 		}
 		else
@@ -304,24 +304,29 @@ void editService::paramsLayout()
 	QFormLayout* dtf2f = new QFormLayout;
 
 	QCheckBox* dtf2fk = new QCheckBox;
-	dtf2fk->setProperty("field", "skeep");
+	dtf2fk->setProperty("field", "fkeep");
 	fields.emplace_back(dtf2fk);
 	dtf2f->addRow(tr("Do not update"), dtf2fk);
 
 	QCheckBox* dtf2fh = new QCheckBox;
-	dtf2fh->setProperty("field", "shide");
+	dtf2fh->setProperty("field", "fhide");
 	fields.emplace_back(dtf2fh);
 	dtf2f->addRow(tr("Hide in service list"), dtf2fh);
 
 	QCheckBox* dtf2fp = new QCheckBox;
-	dtf2fp->setProperty("field", "spid");
+	dtf2fp->setProperty("field", "fpid");
 	fields.emplace_back(dtf2fp);
 	dtf2f->addRow(tr("Use edited PIDs instead"), dtf2fp);
 
 	QCheckBox* dtf2fn = new QCheckBox;
-	dtf2fn->setProperty("field", "snew");
+	dtf2fn->setProperty("field", "fname");
 	fields.emplace_back(dtf2fn);
-	dtf2f->addRow(tr("Flag as new service"), dtf2fn);
+	dtf2f->addRow(tr("Hold service name"), dtf2fn);
+
+	QCheckBox* dtf2fw = new QCheckBox;
+	dtf2fw->setProperty("field", "fnew");
+	fields.emplace_back(dtf2fw);
+	dtf2f->addRow(tr("Flag as new service"), dtf2fw);
 
 	dtw23->setLayout(dtf2f);
 	dtt2->addItem(dtw23, "Flags");
@@ -395,9 +400,9 @@ void editService::store()
 		if (key == "chname")
 			ch.chname = val;
 		else if (key == "stype")
-			ch.stype = stoi(val);
+			ch.stype = std::stoi(val);
 		else if (key == "ssid")
-			ch.ssid = stoi(val);
+			ch.ssid = std::stoi(val);
 		else if (key == "txid")
 			ch.txid = val;
 
@@ -414,7 +419,6 @@ void editService::store()
 }
 
 //TODO PIDs
-//TODO flags
 void editService::retrieve()
 {
 	debug("retrieve()");
@@ -437,15 +441,15 @@ void editService::retrieve()
 			val = to_string(tx.pos);
 		else if (key == "txid")
 			val = ch.txid;
-		
-		if (key == "p" && ch.data.count(e2db::PVDR_DATA.at('p')))
+
+		if (key == "p" && ch.data.count(e2db::SDATA.at('p')))
 		{
-			val = ch.data[e2db::PVDR_DATA.at('p')][0];
+			val = ch.data[e2db::SDATA.at('p')][0];
 		}
-		else if (key == "raw_C" && ch.data.count(e2db::PVDR_DATA.at('C')))
+		else if (key == "raw_C" && ch.data.count(e2db::SDATA.at('C')))
 		{
-			auto last_key = (*prev(ch.data.at(e2db::PVDR_DATA.at('C')).cend()));
-			for (auto & w: ch.data.at(e2db::PVDR_DATA.at('C')))
+			auto last_key = (*prev(ch.data.at(e2db::SDATA.at('C')).cend()));
+			for (auto & w: ch.data.at(e2db::SDATA.at('C')))
 			{
 				val += "C:" + w;
 				if (w != last_key)
@@ -453,12 +457,42 @@ void editService::retrieve()
 			}
 			this->state.raw_C = val;
 		}
+		else if (key == "fkeep" && ch.data.count(e2db::SDATA.at('f')))
+		{
+			int flags = std::strtol(ch.data[e2db::SDATA.at('f')][0].data(), NULL, 16);
+			if (flags & e2db::SDATA_FLAGS::fkeep)
+				val = '1';
+		}
+		else if (key == "fhide" && ch.data.count(e2db::SDATA.at('f')))
+		{
+			int flags = std::strtol(ch.data[e2db::SDATA.at('f')][0].data(), NULL, 16);
+			if (flags & e2db::SDATA_FLAGS::fhide)
+				val = '1';
+		}
+		else if (key == "fpid" && ch.data.count(e2db::SDATA.at('f')))
+		{
+			int flags = std::strtol(ch.data[e2db::SDATA.at('f')][0].data(), NULL, 16);
+			if (flags & e2db::SDATA_FLAGS::fpid)
+				val = '1';
+		}
+		else if (key == "fname" && ch.data.count(e2db::SDATA.at('f')))
+		{
+			int flags = std::strtol(ch.data[e2db::SDATA.at('f')][0].data(), NULL, 16);
+			if (flags & e2db::SDATA_FLAGS::fname)
+				val = '1';
+		}
+		else if (key == "fnew" && ch.data.count(e2db::SDATA.at('f')))
+		{
+			int flags = std::strtol(ch.data[e2db::SDATA.at('f')][0].data(), NULL, 16);
+			if (flags & e2db::SDATA_FLAGS::fnew)
+				val = '1';
+		}
 		else if (key == "raw_data")
 		{
 			auto last_key = (*prev(ch.data.cend()));
 			for (auto & q: ch.data)
 			{
-				char d = e2db::PVDR_DATA_DENUM.count(q.first) ? e2db::PVDR_DATA_DENUM.at(q.first) : q.first;
+				char d = e2db::SDATA_r.count(q.first) ? e2db::SDATA_r.at(q.first) : q.first;
 				for (unsigned int i = 0; i < q.second.size(); i++)
 				{
 					val += d;
@@ -479,10 +513,9 @@ void editService::retrieve()
 			if (int index = field->findData(QString::fromStdString(val), Qt::UserRole))
 				field->setCurrentIndex(index);
 		}
-		//TODO
 		else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
 		{
-			continue;
+			field->setChecked(!! std::atoi(val.data()));
 		}
 	}
 }

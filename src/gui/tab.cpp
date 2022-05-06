@@ -628,9 +628,9 @@ void tab::populate(QTreeWidget* side_tree)
 
 			QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 			item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
-			item->setData(0, Qt::UserRole, idx);  // data: Index
+			item->setData(0, Qt::UserRole, idx);    // data: Index
 			item->setData(1, Qt::UserRole, marker); // data: marker flag
-			item->setData(2, Qt::UserRole, chid); // data: chid
+			item->setData(2, Qt::UserRole, chid);   // data: chid
 			cache[curr_chlist].append(item);
 		}
 	}

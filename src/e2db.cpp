@@ -17,7 +17,7 @@
 
 #include "e2db.h"
 
-using std::string, std::pair, std::vector, std::map, std::unordered_map, std::unordered_set, std::set_difference, std::inserter, std::cout, std::endl, std::ifstream, std::ofstream, std::stringstream, std::getline, std::to_string, std::atoi, std::hex, std::dec, std::setfill, std::setw, std::uppercase;
+using std::string, std::pair, std::vector, std::map, std::unordered_map, std::unordered_set, std::set_difference, std::inserter, std::cout, std::endl, std::ifstream, std::ofstream, std::stringstream, std::to_string, std::hex, std::dec, std::setfill, std::setw, std::uppercase;
 
 namespace e2se_e2db
 {
@@ -238,7 +238,7 @@ void e2db_parser::parse_e2db_lamedb(istream& ilamedb)
 	debug("parse_e2db_lamedb()");
 
 	string hlamedb;
-	getline(ilamedb, hlamedb);
+	std::getline(ilamedb, hlamedb);
 	char vlamedb = (hlamedb.substr(hlamedb.length() - 2, hlamedb.length() - 1))[0];
 	int dbver = isdigit(vlamedb) ? int (vlamedb) - 48 : 0;
 
@@ -265,7 +265,7 @@ void e2db_parser::parse_e2db_lamedb4(istream& ilamedb)
 	transponder tx;
 	service ch;
 
-	while (getline(ilamedb, line))
+	while (std::getline(ilamedb, line))
 	{
 		if (! step && line == "transponders")
 		{
@@ -341,7 +341,7 @@ void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 	transponder tx;
 	service ch;
 
-	while (getline(ilamedb, line))
+	while (std::getline(ilamedb, line))
 	{
 		char type = line[0];
 		if (type == 't')
@@ -506,10 +506,10 @@ void e2db_parser::parse_lamedb_service_data(string data, service& ch)
 	string line;
 	map<char, vector<string>> cdata;
 
-	while (getline(ss, line, ','))
+	while (std::getline(ss, line, ','))
 	{
 		char k = line[0];
-		char key = e2db_parser::PVDR_DATA.count(k) ? e2db_parser::PVDR_DATA.at(k) : k;
+		char key = e2db_parser::SDATA.count(k) ? e2db_parser::SDATA.at(k) : k;
 		string val = line.substr(2);
 		cdata[key].push_back(val);
 	}
@@ -530,7 +530,7 @@ void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string bname)
 	bouquet& bs = bouquets[bname];
 	userbouquet ub;
 
-	while (getline(ibouquet, line))
+	while (std::getline(ibouquet, line))
 	{
 		if (line.find("#SERVICE") != string::npos)
 		{
@@ -577,7 +577,7 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string bname)
 	channel_reference chref;
 	service_reference ref;
 
-	while (getline(iuserbouquet, line))
+	while (std::getline(iuserbouquet, line))
 	{
 		if (! step && line.find("#NAME") != string::npos)
 		{
@@ -670,7 +670,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 	debug("parse_tunersets_xml()", "ytype", to_string(ytype));
 
 	string htunxml;
-	getline(ftunxml, htunxml);
+	std::getline(ftunxml, htunxml);
 
 	if (htunxml.find("<?xml") == string::npos)
 	{
@@ -694,7 +694,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 	int step = 0;
 	string line;
 
-	while (getline(ftunxml, line))
+	while (std::getline(ftunxml, line))
 	{
 		/*if (line.find("<!", 0, 2) != string::npos)
 		{
@@ -756,33 +756,33 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 				else if (key == "name")
 					tn.name = val;
 				else if (key == "flags")
-					tn.flgs = atoi(val.data());
+					tn.flgs = std::atoi(val.data());
 				else if (key == "position")
-					tn.pos = atoi(val.data());
+					tn.pos = std::atoi(val.data());
 				else if (key == "frequency")
-					tnref.freq = int (atoi(val.data()) / 1e3);
+					tnref.freq = int (std::atoi(val.data()) / 1e3);
 				else if (key == "symbol_rate")
-					tnref.sr = int (atoi(val.data()) / 1e3);
+					tnref.sr = int (std::atoi(val.data()) / 1e3);
 				else if (key == "polarization")
-					tnref.pol = atoi(val.data());
+					tnref.pol = std::atoi(val.data());
 				else if (key == "fec_inner")
-					tnref.fec = atoi(val.data());
+					tnref.fec = std::atoi(val.data());
 				else if (key == "modulation")
-					tnref.mod = atoi(val.data());
+					tnref.mod = std::atoi(val.data());
 				else if (key == "rolloff")
-					tnref.rol = atoi(val.data());
+					tnref.rol = std::atoi(val.data());
 				else if (key == "pilot")
-					tnref.pil = atoi(val.data());
+					tnref.pil = std::atoi(val.data());
 				else if (key == "inversion")
-					tnref.inv = atoi(val.data());
+					tnref.inv = std::atoi(val.data());
 				else if (key == "system")
-					tnref.sys = atoi(val.data());
+					tnref.sys = std::atoi(val.data());
 				else if (key == "is_id")
-					tnref.isid = atoi(val.data());
+					tnref.isid = std::atoi(val.data());
 				else if (key == "pls_mode")
-					tnref.plsmode = atoi(val.data());
+					tnref.plsmode = std::atoi(val.data());
 				else if (key == "pls_code")
-					tnref.plscode = atoi(val.data());
+					tnref.plscode = std::atoi(val.data());
 
 				// cout << mkey << ':' << key << ':' << val << ' ' << step << endl;
 				token = strtok(NULL, " ");
@@ -1172,7 +1172,7 @@ void e2db_maker::make_lamedb(string filename)
 		auto last_key = (*prev(ch.data.cend()));
 		for (auto & q: ch.data)
 		{
-			char d = PVDR_DATA_DENUM.count(q.first) ? PVDR_DATA_DENUM.at(q.first) : q.first;
+			char d = SDATA_r.count(q.first) ? SDATA_r.at(q.first) : q.first;
 			for (unsigned int i = 0; i < q.second.size(); i++)
 			{
 				ss << d << ':' << q.second[i];
@@ -1751,9 +1751,9 @@ map<string, vector<pair<int, string>>> e2db::get_packages_index()
 	{
 		service ch = db.services[x.second];
 
-		if (ch.data.count(e2db::PVDR_DATA.at('p')))
+		if (ch.data.count(e2db::SDATA.at('p')))
 		{
-			string pvdrn = ch.data[e2db::PVDR_DATA.at('p')][0];
+			string pvdrn = ch.data[e2db::SDATA.at('p')][0];
 
 			if (pvdrn.empty()) _index["(Unknown)"].emplace_back(x);
 			else _index[pvdrn].emplace_back(x);
@@ -1795,9 +1795,9 @@ map<string, vector<pair<int, string>>> e2db::get_encryption_index()
 			{
 				string caidpx = w.substr(0, 2);
 				string cx = caidpx + '|' + to_string(x.first);
-				if (e2db::SCAS.count(caidpx) && ! _unique.count(cx))
+				if (e2db::SDATA_CAS.count(caidpx) && ! _unique.count(cx))
 				{
-					_index[e2db::SCAS.at(caidpx)].emplace_back(x);
+					_index[e2db::SDATA_CAS.at(caidpx)].emplace_back(x);
 					_unique.insert(cx);
 				}
 			}

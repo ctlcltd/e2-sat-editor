@@ -58,19 +58,6 @@ struct e2db_abstract
 		inline static const string CAB_MOD[6] = {"Auto", "QAM16", "QAM32", "QAM64", "QAM128", "QAM256"};
 		inline static const string CAB_IFEC[8] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "8/9"};
 
-		inline static const unordered_map<char, char> PVDR_DATA = {
-			{'p', '0'},
-			{'c', '1'},
-			{'C', '2'},
-			{'f', '3'}
-		};
-		inline static const unordered_map<char, char> PVDR_DATA_DENUM = {
-			{'0', 'p'},
-			{'1', 'c'},
-			{'2', 'C'},
-			{'3', 'f'}
-		};
-
 		inline static const unordered_map<int, pair<int, string>> STYPES = {
 			{0, make_pair(0, "Data")},
 			{1, make_pair(1, "TV")},
@@ -83,7 +70,20 @@ struct e2db_abstract
 			{31, make_pair(1, "H.265")}
 		};
 
-		inline static const unordered_map<string, string> SCAS = {
+		inline static const unordered_map<char, char> SDATA = {
+			{'p', '0'},
+			{'c', '1'},
+			{'C', '2'},
+			{'f', '3'}
+		};
+		inline static const unordered_map<char, char> SDATA_r = {
+			{'0', 'p'},
+			{'1', 'c'},
+			{'2', 'C'},
+			{'3', 'f'}
+		};
+
+		inline static const unordered_map<string, string> SDATA_CAS = {
 			{"01", "Seca"},
 			{"06", "Irdeto"},
 			{"05", "Viaccess"},
@@ -96,6 +96,20 @@ struct e2db_abstract
 			{"43", "Crypton"},
 			{"4a", "DRE"}
 		};
+
+		// flags hex
+		// fkeep f01
+		// fhide f02
+		// fpid  f04
+		// fname f08
+		// fnew  f40
+		enum SDATA_FLAGS {
+		   fkeep = 1, // dxNoSDT
+		   fhide = 2, // dxDontshow
+		   fpid  = 4, // dxNoDVB
+		   fname = 8, // dxHoldName
+		   fnew  = 64 // dxNewFound
+	   };
 
 		struct service
 		{
