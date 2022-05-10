@@ -1259,8 +1259,15 @@ void e2db_maker::make_userbouquet(string bname)
 		}
 		else
 		{
-			ss << "0:0:0:0:0:0:0:0:" << endl;
-			ss << "#DESCRIPTION " << chref.value;
+			if (chref.marker)
+			{
+				ss << "0:0:0:0:0:0:0:0:" << endl;
+				ss << "#DESCRIPTION " << chref.value;
+			}
+			else
+			{
+				error("make_userbouquet()", "Error", "Missing channel_reference \"" + x.second + "\".");
+			}
 		}
 		ss << dec;
 		ss << endl;

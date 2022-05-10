@@ -211,77 +211,114 @@ void editService::paramsLayout()
 	QWidget* dtw21 = new QWidget;
 	QFormLayout* dtf2c = new QFormLayout;
 
-	QHBoxLayout* dtb22 = new QHBoxLayout;
-	dtf2c->addRow(tr("video"), dtb22);
+	QHBoxLayout* dtc20 = new QHBoxLayout;
+	dtf2c->addRow(tr("video"), dtc20);
 	QLineEdit* dtf2vp = new QLineEdit;
 	dtf2vp->setProperty("field", "vpid");
 	fields.emplace_back(dtf2vp);
-	dtf2vp->setMaximumWidth(64);
-	dtb22->addWidget(dtf2vp);
-	dtb22->addWidget(new QLabel("[VPID]"));
+	dtf2vp->setMaximumWidth(48);
+	dtc20->addWidget(dtf2vp);
+	dtc20->addWidget(new QLabel("[VPID]"));
 
-	QHBoxLayout* dtb23 = new QHBoxLayout;
-	dtf2c->addRow(tr("pcr"), dtb23);
-	QLineEdit* dtf2pp = new QLineEdit;
-	dtf2pp->setProperty("field", "pcrpid");
-	fields.emplace_back(dtf2pp);
-	dtf2pp->setMaximumWidth(64);
-	dtb23->addWidget(dtf2pp);
-	dtb23->addWidget(new QLabel("[PCRPID]"));
-
-	QHBoxLayout* dtb24 = new QHBoxLayout;
-	dtf2c->addRow(tr("mpeg-audio"), dtb24);
+	QHBoxLayout* dtc21 = new QHBoxLayout;
+	dtf2c->addRow(tr("mpeg-audio"), dtc21);
 	QLineEdit* dtf2ma = new QLineEdit;
 	dtf2ma->setProperty("field", "mpegapid");
 	fields.emplace_back(dtf2ma);
-	dtf2ma->setMaximumWidth(64);
-	dtb24->addWidget(dtf2ma);
-	dtb24->addWidget(new QLabel("[APID]"));
+	dtf2ma->setMaximumWidth(48);
+	dtc21->addWidget(dtf2ma);
+	dtc21->addWidget(new QLabel("[APID]"));
 
-	QHBoxLayout* dtb25 = new QHBoxLayout;
-	dtf2c->addRow(tr("ac3"), dtb25);
+	QHBoxLayout* dtc22 = new QHBoxLayout;
+	dtf2c->addRow(tr("tp"), dtc22);
+	QLineEdit* dtf2tp = new QLineEdit;
+	dtf2tp->setProperty("field", "tpid");
+	fields.emplace_back(dtf2tp);
+	dtf2tp->setMaximumWidth(48);
+	dtc22->addWidget(dtf2tp);
+	dtc22->addWidget(new QLabel("[TPID]"));
+
+	QHBoxLayout* dtc23 = new QHBoxLayout;
+	dtf2c->addRow(tr("pcr"), dtc23);
+	QLineEdit* dtf2pp = new QLineEdit;
+	dtf2pp->setProperty("field", "pcrpid");
+	fields.emplace_back(dtf2pp);
+	dtf2pp->setMaximumWidth(48);
+	dtc23->addWidget(dtf2pp);
+	dtc23->addWidget(new QLabel("[PCRPID]"));
+
+	QHBoxLayout* dtc24 = new QHBoxLayout;
+	dtf2c->addRow(tr("ac3"), dtc24);
 	QLineEdit* dtf2a3 = new QLineEdit;
 	dtf2a3->setProperty("field", "ac3pid");
 	fields.emplace_back(dtf2a3);
-	dtf2a3->setMaximumWidth(64);
-	dtb25->addWidget(dtf2a3);
-	dtb25->addWidget(new QLabel("[3PID]"));
+	dtf2a3->setMaximumWidth(48);
+	dtc24->addWidget(dtf2a3);
+	dtc24->addWidget(new QLabel("[AC3PID]"));
 
-	QHBoxLayout* dtb26 = new QHBoxLayout;
-	dtf2c->addRow(tr("ac3+"), dtb26);
-	QLineEdit* dtf2ap = new QLineEdit;
-	dtf2ap->setProperty("field", "ac3ppid");
-	fields.emplace_back(dtf2ap);
-	dtf2ap->setMaximumWidth(64);
-	dtb26->addWidget(dtf2ap);
-	dtb26->addWidget(new QLabel("[PPID]"));
+	QHBoxLayout* dtc25 = new QHBoxLayout;
+	dtf2c->addRow(tr("video type"), dtc25);
+	QLineEdit* dtf2vt = new QLineEdit;
+	dtf2vt->setProperty("field", "vtype");
+	fields.emplace_back(dtf2vt);
+	dtf2vt->setMaximumWidth(48);
+	dtc25->addWidget(dtf2vt);
 
-	QHBoxLayout* dtb27 = new QHBoxLayout;
-	dtf2c->addRow(tr("aac"), dtb27);
+	QHBoxLayout* dtc26 = new QHBoxLayout;
+	dtf2c->addRow(tr("audio channel"), dtc26);
 	QLineEdit* dtf2ac = new QLineEdit;
-	dtf2ac->setProperty("field", "aacpid");
+	dtf2ac->setProperty("field", "achannel");
 	fields.emplace_back(dtf2ac);
-	dtf2ac->setMaximumWidth(64);
-	dtb27->addWidget(dtf2ac);
-	dtb27->addWidget(new QLabel);
+	dtf2ac->setMaximumWidth(48);
+	dtc26->addWidget(dtf2ac);
 
-	QHBoxLayout* dtb28 = new QHBoxLayout;
-	dtf2c->addRow(tr("he-aac"), dtb28);
-	QLineEdit* dtf2ha = new QLineEdit;
-	dtf2ha->setProperty("field", "heaacpid");
-	fields.emplace_back(dtf2ha);
-	dtf2ha->setMaximumWidth(64);
-	dtb28->addWidget(dtf2ha);
-	dtb28->addWidget(new QLabel);
+	QHBoxLayout* dtc27 = new QHBoxLayout;
+	dtf2c->addRow(tr("ac3 delay"), dtc27);
+	QLineEdit* dtf2ad = new QLineEdit;
+	dtf2ad->setProperty("field", "ac3delay");
+	fields.emplace_back(dtf2ad);
+	dtf2ad->setMaximumWidth(48);
+	dtc27->addWidget(dtf2ad);
 
-	QHBoxLayout* dtb29 = new QHBoxLayout;
-	dtf2c->addRow(tr("teletext"), dtb29);
+	QHBoxLayout* dtc28 = new QHBoxLayout;
+	dtf2c->addRow(tr("pcm delay"), dtc28);
+	QLineEdit* dtf2pd = new QLineEdit;
+	dtf2pd->setProperty("field", "pcmdelay");
+	fields.emplace_back(dtf2pd);
+	dtf2pd->setMaximumWidth(48);
+	dtc28->addWidget(dtf2pd);
+
+	QHBoxLayout* dtc29 = new QHBoxLayout;
+	dtf2c->addRow(tr("subtitle"), dtc29);
 	QLineEdit* dtf2xt = new QLineEdit;
-	dtf2xt->setProperty("field", "tpid");
+	dtf2xt->setProperty("field", "subtitle");
 	fields.emplace_back(dtf2xt);
-	dtf2xt->setMaximumWidth(64);
-	dtb29->addWidget(dtf2xt);
-	dtb29->addWidget(new QLabel("[TPID]"));
+	dtf2xt->setMaximumWidth(48);
+	dtc29->addWidget(dtf2xt);
+
+	QHBoxLayout* dtc2a = new QHBoxLayout;
+	dtf2c->addRow(tr("audio type"), dtc2a);
+	QLineEdit* dtf2at = new QLineEdit;
+	dtf2at->setProperty("field", "atype");
+	fields.emplace_back(dtf2at);
+	dtf2at->setMaximumWidth(48);
+	dtc2a->addWidget(dtf2at);
+
+	QHBoxLayout* dtc2b = new QHBoxLayout;
+	dtf2c->addRow(tr("apid"), dtc2b);
+	QLineEdit* dtf2ap = new QLineEdit;
+	dtf2ap->setProperty("field", "apid");
+	fields.emplace_back(dtf2ap);
+	dtf2ap->setMaximumWidth(48);
+	dtc2b->addWidget(dtf2ap);
+
+	QHBoxLayout* dtc2c = new QHBoxLayout;
+	dtf2c->addRow(tr("cache max"), dtc2c);
+	QLineEdit* dtf2cx = new QLineEdit;
+	dtf2cx->setProperty("field", "cmax");
+	fields.emplace_back(dtf2cx);
+	dtf2cx->setMaximumWidth(48);
+	dtc2c->addWidget(dtf2cx);
 
 	dtw21->setLayout(dtf2c);
 	dtt2->addItem(dtw21, "PIDs");
@@ -446,6 +483,58 @@ void editService::retrieve()
 		{
 			val = ch.data[e2db::SDATA.at('p')][0];
 		}
+		else if (key == "vpid" && ch.data.count(e2db::SDATA.at('c')))
+		{
+			val = getPID(ch, e2db::SDATA_PIDS::vpid);
+		}
+		else if (key == "mpegapid" && ch.data.count(e2db::SDATA.at('c')))
+		{
+			val = getPID(ch, e2db::SDATA_PIDS::mpegapid);
+		}
+		else if (key == "tpid" && ch.data.count(e2db::SDATA.at('c')))
+		{
+			val = getPID(ch, e2db::SDATA_PIDS::tpid);
+		}
+		else if (key == "pcrpid" && ch.data.count(e2db::SDATA.at('c')))
+		{
+			val = getPID(ch, e2db::SDATA_PIDS::pcrpid);
+		}
+		else if (key == "ac3pid" && ch.data.count(e2db::SDATA.at('c')))
+		{
+			val = getPID(ch, e2db::SDATA_PIDS::ac3pid);
+		}
+		else if (key == "vtype" && ch.data.count(e2db::SDATA.at('c')))
+		{
+			val = getPID(ch, e2db::SDATA_PIDS::vtype);
+		}
+		else if (key == "achannel" && ch.data.count(e2db::SDATA.at('c')))
+		{
+			val = getPID(ch, e2db::SDATA_PIDS::achannel);
+		}
+		else if (key == "ac3delay" && ch.data.count(e2db::SDATA.at('c')))
+		{
+			val = getPID(ch, e2db::SDATA_PIDS::ac3delay);
+		}
+		else if (key == "pcmdelay" && ch.data.count(e2db::SDATA.at('c')))
+		{
+			val = getPID(ch, e2db::SDATA_PIDS::pcmdelay);
+		}
+		else if (key == "subtitle" && ch.data.count(e2db::SDATA.at('c')))
+		{
+			val = getPID(ch, e2db::SDATA_PIDS::subtitle);
+		}
+		else if (key == "atype" && ch.data.count(e2db::SDATA.at('c')))
+		{
+			val = getPID(ch, e2db::SDATA_PIDS::atype);
+		}
+		else if (key == "apid" && ch.data.count(e2db::SDATA.at('c')))
+		{
+			val = getPID(ch, e2db::SDATA_PIDS::apid);
+		}
+		else if (key == "cmax" && ch.data.count(e2db::SDATA.at('c')))
+		{
+			val = getPID(ch, e2db::SDATA_PIDS::cmax);
+		}
 		else if (key == "raw_C" && ch.data.count(e2db::SDATA.at('C')))
 		{
 			auto last_key = (*prev(ch.data.at(e2db::SDATA.at('C')).cend()));
@@ -527,6 +616,18 @@ void editService::save()
 	store();
 
 	dial->close();
+}
+
+string editService::getPID(e2db::service ch, int x)
+{
+	string cpx = (x > 9 ? '\0' : '0') + to_string(x);
+	for (auto & w : ch.data[e2db::SDATA.at('c')])
+	{
+		if (w.substr(0, 2) == cpx)
+			return to_string(std::strtol(w.substr(2).data(), NULL, 16));
+	}
+
+	return "";
 }
 
 void editService::setEditID(string chid)

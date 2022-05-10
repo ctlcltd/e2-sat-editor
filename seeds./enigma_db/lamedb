@@ -5300,9 +5300,6 @@ p:SkyItalia,c:0000ab,c:011fff,c:0300ab,c:050001,C:09cd
 38d0:00820000:2260:fbff:1:3215
 Fox Business
 p:SkyItalia,c:0000a2,c:011fff,c:0300a2,c:050001,C:09cd
-07d1:00820000:22c4:013e:1:3216
-WAS RT HD
-p:EU Censors Band,c:0007db,c:011fff,c:0307db,c:050001
 07d2:00820000:22c4:013e:1:3217
 RT Doc HD
 p:GLOBECAST,c:0007e5,c:011fff,c:0307e5,c:050001
@@ -5348,9 +5345,6 @@ p:GLOBECAST,c:000b9b,c:011fff,c:030b9b,c:050001,C:0500
 0838:00820000:22c4:013e:2:2304
 Radio 2M
 p:GLOBECAST,c:001fff,c:011fff,c:030c20,c:050000
-07d1:00820000:22c4:013e:1:3231
-WAS RT HD
-p:EU Censors Band,c:0007db,c:011fff,c:0307db,c:050001
 07d2:00820000:22c4:013e:1:3232
 RT Doc HD
 p:GLOBECAST,c:0007e5,c:011fff,c:0307e5,c:050001
@@ -6127,4 +6121,4 @@ X Factor
 p:SkyItalia
 end
 editor: e2-sat-editor 0.1 <https://github.com/ctlcltd/e2-sat-editor>
-datetime: 2022-03-14 22:36:05 CET
+datetime: 2022-05-10 19:23:39 +0200

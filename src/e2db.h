@@ -104,12 +104,42 @@ struct e2db_abstract
 		// fname f08
 		// fnew  f40
 		enum SDATA_FLAGS {
-		   fkeep = 1, // dxNoSDT
-		   fhide = 2, // dxDontshow
-		   fpid  = 4, // dxNoDVB
-		   fname = 8, // dxHoldName
-		   fnew  = 64 // dxNewFound
-	   };
+			fkeep = 1, // dxNoSDT
+			fhide = 2, // dxDontshow
+			fpid  = 4, // dxNoDVB
+			fname = 8, // dxHoldName
+			fnew  = 64 // dxNewFound
+		};
+
+		// cache PIDs
+		// 00 video VPID
+		// 01 mpeg audio APID MPEGAPID
+		// 02 tp TPID
+		// 03 pcr PCRPID PPID
+		// 04 ac3 AC3PID 3PID
+		// 05 video type
+		// 06 audio channel
+		// 06 ac3 delay
+		// 07 pcm delay
+		// 08 subtitle teletext
+		// 09 audio type
+		// 10 APID
+		// 11 cache max
+		enum SDATA_PIDS {
+			vpid,
+			mpegapid,
+			tpid,
+			pcrpid,
+			ac3pid,
+			vtype,
+			achannel,
+			ac3delay,
+			pcmdelay,
+			subtitle,
+			atype,
+			apid,
+			cmax
+		};
 
 		struct service
 		{

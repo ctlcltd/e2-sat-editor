@@ -41,6 +41,7 @@ class editService : protected e2se::log_factory
 		void store();
 		void retrieve();
 		void save();
+		string getPID(e2db::service ch, int x);
 		void setEditID(string chid);
 		string getEditID();
 		void destroy();

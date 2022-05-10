@@ -925,6 +925,7 @@ void tab::listItemDelete()
 	list_tree->setDragEnabled(true);
 	list_tree->setAcceptDrops(true);
 	this->state.changed = true;
+	//TODO FIX sorting default
 	updateListIndex();
 	visualReindexList();
 	setCounters();
@@ -1021,7 +1022,9 @@ void tab::putChannels(vector<QString> channels)
 		}
 		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
+		item->setData(0, Qt::UserRole, idx);    // data: Index
 		item->setData(1, Qt::UserRole, marker); // data: marker flag
+		item->setData(2, Qt::UserRole, w);      // data: chid
 		clist.append(item);
 		i++;
 	}
