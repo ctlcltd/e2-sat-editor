@@ -9,6 +9,8 @@
  * @license GNU GPLv3 License
  */
 
+#include <sstream>
+
 #include <QtGlobal>
 #include <QList>
 #include <QHBoxLayout>
@@ -24,7 +26,7 @@
 #include "theme.h"
 #include "editService.h"
 
-using std::to_string;
+using std::stringstream, std::to_string;
 using namespace e2se;
 
 namespace e2se_gui
@@ -413,7 +415,7 @@ void editService::tunerComboChanged(int index)
 	}
 }
 
-//TODO
+//TODO test
 void editService::store()
 {
 	debug("store()");
@@ -444,9 +446,125 @@ void editService::store()
 			ch.txid = val;
 
 		if (key == "raw_data" && this->state.raw_data != val)
-			continue;
-		else if (key == "raw_C" && this->state.raw_C != val)
-			continue;
+		{
+			stringstream ss (val);
+			string line;
+			map<char, vector<string>> cdata;
+
+			while (std::getline(ss, line, ','))
+			{
+				char key = line[0];
+				switch (key)
+				{
+					case 'p': key = e2db::SDATA::p; break;
+					case 'c': key = e2db::SDATA::c; break;
+					case 'C': key = e2db::SDATA::C; break;
+					case 'f': key = e2db::SDATA::f; break;
+				}
+				string val = line.substr(2);
+				cdata[key].push_back(val);
+			}
+			ch.data = cdata;
+		}
+		else
+		{
+			if (key == "p")
+			{
+				ch.data[e2db::SDATA::p][0] = val;
+			}
+			else if (key == "vpid")
+			{
+				ch.data[e2db::SDATA::c] = computePIDs(ch, e2db::SDATA_PIDS::vpid, val);
+			}
+			else if (key == "mpegapid")
+			{
+				ch.data[e2db::SDATA::c] = computePIDs(ch, e2db::SDATA_PIDS::mpegapid, val);
+			}
+			else if (key == "tpid")
+			{
+				ch.data[e2db::SDATA::c] = computePIDs(ch, e2db::SDATA_PIDS::tpid, val);
+			}
+			else if (key == "pcrpid")
+			{
+				ch.data[e2db::SDATA::c] = computePIDs(ch, e2db::SDATA_PIDS::pcrpid, val);
+			}
+			else if (key == "ac3pid")
+			{
+				ch.data[e2db::SDATA::c] = computePIDs(ch, e2db::SDATA_PIDS::ac3pid, val);
+			}
+			else if (key == "vtype")
+			{
+				ch.data[e2db::SDATA::c] = computePIDs(ch, e2db::SDATA_PIDS::vtype, val);
+			}
+			else if (key == "achannel")
+			{
+				ch.data[e2db::SDATA::c] = computePIDs(ch, e2db::SDATA_PIDS::achannel, val);
+			}
+			else if (key == "ac3delay")
+			{
+				ch.data[e2db::SDATA::c] = computePIDs(ch, e2db::SDATA_PIDS::ac3delay, val);
+			}
+			else if (key == "pcmdelay")
+			{
+				ch.data[e2db::SDATA::c] = computePIDs(ch, e2db::SDATA_PIDS::pcmdelay, val);
+			}
+			else if (key == "subtitle")
+			{
+				ch.data[e2db::SDATA::c] = computePIDs(ch, e2db::SDATA_PIDS::subtitle, val);
+			}
+			else if (key == "atype")
+			{
+				ch.data[e2db::SDATA::c] = computePIDs(ch, e2db::SDATA_PIDS::atype, val);
+			}
+			else if (key == "apid")
+			{
+				ch.data[e2db::SDATA::c] = computePIDs(ch, e2db::SDATA_PIDS::apid, val);
+			}
+			else if (key == "cmax")
+			{
+				ch.data[e2db::SDATA::c] = computePIDs(ch, e2db::SDATA_PIDS::cmax, val);
+			}
+			else if (key == "raw_C" && this->state.raw_C != val)
+			{
+				stringstream ss (val);
+				string line;
+				vector<string> cdata;
+
+				while (std::getline(ss, line, ','))
+				{
+					char key = line[0];
+					if (key != 'C')
+						continue;
+					string val = line.substr(2);
+					cdata.push_back(val);
+				}
+				ch.data[e2db::SDATA::C] = cdata;
+			}
+			else if (key == "fkeep")
+			{
+				ch.data[e2db::SDATA::f] = computeFlags(ch, e2db::SDATA_FLAGS::fkeep, val);
+			}
+			else if (key == "fhide")
+			{
+				ch.data[e2db::SDATA::f] = computeFlags(ch, e2db::SDATA_FLAGS::fhide, val);
+			}
+			else if (key == "fpid")
+			{
+				ch.data[e2db::SDATA::f] = computeFlags(ch, e2db::SDATA_FLAGS::fpid, val);
+			}
+			else if (key == "fname")
+			{
+				ch.data[e2db::SDATA::f] = computeFlags(ch, e2db::SDATA_FLAGS::fname, val);
+			}
+			else if (key == "fnew")
+			{
+				ch.data[e2db::SDATA::f] = computeFlags(ch, e2db::SDATA_FLAGS::fnew, val);
+			}
+		}
+	}
+	if (ch.data[e2db::SDATA::f].empty())
+	{
+		ch.data.erase(e2db::SDATA::f);
 	}
 
 	if (this->state.edit)
@@ -455,7 +573,6 @@ void editService::store()
 		this->chid = dbih->addService(ch);
 }
 
-//TODO PIDs
 void editService::retrieve()
 {
 	debug("retrieve()");
@@ -479,66 +596,66 @@ void editService::retrieve()
 		else if (key == "txid")
 			val = ch.txid;
 
-		if (key == "p" && ch.data.count(e2db::SDATA.at('p')))
+		if (key == "p" && ch.data.count(e2db::SDATA::p))
 		{
-			val = ch.data[e2db::SDATA.at('p')][0];
+			val = ch.data[e2db::SDATA::p][0];
 		}
-		else if (key == "vpid" && ch.data.count(e2db::SDATA.at('c')))
+		else if (key == "vpid" && ch.data.count(e2db::SDATA::c))
 		{
-			val = getPID(ch, e2db::SDATA_PIDS::vpid);
+			val = getPIDValue(ch, e2db::SDATA_PIDS::vpid);
 		}
-		else if (key == "mpegapid" && ch.data.count(e2db::SDATA.at('c')))
+		else if (key == "mpegapid" && ch.data.count(e2db::SDATA::c))
 		{
-			val = getPID(ch, e2db::SDATA_PIDS::mpegapid);
+			val = getPIDValue(ch, e2db::SDATA_PIDS::mpegapid);
 		}
-		else if (key == "tpid" && ch.data.count(e2db::SDATA.at('c')))
+		else if (key == "tpid" && ch.data.count(e2db::SDATA::c))
 		{
-			val = getPID(ch, e2db::SDATA_PIDS::tpid);
+			val = getPIDValue(ch, e2db::SDATA_PIDS::tpid);
 		}
-		else if (key == "pcrpid" && ch.data.count(e2db::SDATA.at('c')))
+		else if (key == "pcrpid" && ch.data.count(e2db::SDATA::c))
 		{
-			val = getPID(ch, e2db::SDATA_PIDS::pcrpid);
+			val = getPIDValue(ch, e2db::SDATA_PIDS::pcrpid);
 		}
-		else if (key == "ac3pid" && ch.data.count(e2db::SDATA.at('c')))
+		else if (key == "ac3pid" && ch.data.count(e2db::SDATA::c))
 		{
-			val = getPID(ch, e2db::SDATA_PIDS::ac3pid);
+			val = getPIDValue(ch, e2db::SDATA_PIDS::ac3pid);
 		}
-		else if (key == "vtype" && ch.data.count(e2db::SDATA.at('c')))
+		else if (key == "vtype" && ch.data.count(e2db::SDATA::c))
 		{
-			val = getPID(ch, e2db::SDATA_PIDS::vtype);
+			val = getPIDValue(ch, e2db::SDATA_PIDS::vtype);
 		}
-		else if (key == "achannel" && ch.data.count(e2db::SDATA.at('c')))
+		else if (key == "achannel" && ch.data.count(e2db::SDATA::c))
 		{
-			val = getPID(ch, e2db::SDATA_PIDS::achannel);
+			val = getPIDValue(ch, e2db::SDATA_PIDS::achannel);
 		}
-		else if (key == "ac3delay" && ch.data.count(e2db::SDATA.at('c')))
+		else if (key == "ac3delay" && ch.data.count(e2db::SDATA::c))
 		{
-			val = getPID(ch, e2db::SDATA_PIDS::ac3delay);
+			val = getPIDValue(ch, e2db::SDATA_PIDS::ac3delay);
 		}
-		else if (key == "pcmdelay" && ch.data.count(e2db::SDATA.at('c')))
+		else if (key == "pcmdelay" && ch.data.count(e2db::SDATA::c))
 		{
-			val = getPID(ch, e2db::SDATA_PIDS::pcmdelay);
+			val = getPIDValue(ch, e2db::SDATA_PIDS::pcmdelay);
 		}
-		else if (key == "subtitle" && ch.data.count(e2db::SDATA.at('c')))
+		else if (key == "subtitle" && ch.data.count(e2db::SDATA::c))
 		{
-			val = getPID(ch, e2db::SDATA_PIDS::subtitle);
+			val = getPIDValue(ch, e2db::SDATA_PIDS::subtitle);
 		}
-		else if (key == "atype" && ch.data.count(e2db::SDATA.at('c')))
+		else if (key == "atype" && ch.data.count(e2db::SDATA::c))
 		{
-			val = getPID(ch, e2db::SDATA_PIDS::atype);
+			val = getPIDValue(ch, e2db::SDATA_PIDS::atype);
 		}
-		else if (key == "apid" && ch.data.count(e2db::SDATA.at('c')))
+		else if (key == "apid" && ch.data.count(e2db::SDATA::c))
 		{
-			val = getPID(ch, e2db::SDATA_PIDS::apid);
+			val = getPIDValue(ch, e2db::SDATA_PIDS::apid);
 		}
-		else if (key == "cmax" && ch.data.count(e2db::SDATA.at('c')))
+		else if (key == "cmax" && ch.data.count(e2db::SDATA::c))
 		{
-			val = getPID(ch, e2db::SDATA_PIDS::cmax);
+			val = getPIDValue(ch, e2db::SDATA_PIDS::cmax);
 		}
-		else if (key == "raw_C" && ch.data.count(e2db::SDATA.at('C')))
+		else if (key == "raw_C" && ch.data.count(e2db::SDATA::C))
 		{
-			auto last_key = (*prev(ch.data.at(e2db::SDATA.at('C')).cend()));
-			for (auto & w: ch.data.at(e2db::SDATA.at('C')))
+			auto last_key = (*prev(ch.data.at(e2db::SDATA::C).cend()));
+			for (auto & w: ch.data.at(e2db::SDATA::C))
 			{
 				val += "C:" + w;
 				if (w != last_key)
@@ -546,42 +663,40 @@ void editService::retrieve()
 			}
 			this->state.raw_C = val;
 		}
-		else if (key == "fkeep" && ch.data.count(e2db::SDATA.at('f')))
+		else if (key == "fkeep" && ch.data.count(e2db::SDATA::f))
 		{
-			int flags = std::strtol(ch.data[e2db::SDATA.at('f')][0].data(), NULL, 16);
-			if (flags & e2db::SDATA_FLAGS::fkeep)
-				val = '1';
+			val = getFlagValue(ch, e2db::SDATA_FLAGS::fkeep);
 		}
-		else if (key == "fhide" && ch.data.count(e2db::SDATA.at('f')))
+		else if (key == "fhide" && ch.data.count(e2db::SDATA::f))
 		{
-			int flags = std::strtol(ch.data[e2db::SDATA.at('f')][0].data(), NULL, 16);
-			if (flags & e2db::SDATA_FLAGS::fhide)
-				val = '1';
+			val = getFlagValue(ch, e2db::SDATA_FLAGS::fhide);
 		}
-		else if (key == "fpid" && ch.data.count(e2db::SDATA.at('f')))
+		else if (key == "fpid" && ch.data.count(e2db::SDATA::f))
 		{
-			int flags = std::strtol(ch.data[e2db::SDATA.at('f')][0].data(), NULL, 16);
-			if (flags & e2db::SDATA_FLAGS::fpid)
-				val = '1';
+			val = getFlagValue(ch, e2db::SDATA_FLAGS::fpid);
 		}
-		else if (key == "fname" && ch.data.count(e2db::SDATA.at('f')))
+		else if (key == "fname" && ch.data.count(e2db::SDATA::f))
 		{
-			int flags = std::strtol(ch.data[e2db::SDATA.at('f')][0].data(), NULL, 16);
-			if (flags & e2db::SDATA_FLAGS::fname)
-				val = '1';
+			val = getFlagValue(ch, e2db::SDATA_FLAGS::fname);
 		}
-		else if (key == "fnew" && ch.data.count(e2db::SDATA.at('f')))
+		else if (key == "fnew" && ch.data.count(e2db::SDATA::f))
 		{
-			int flags = std::strtol(ch.data[e2db::SDATA.at('f')][0].data(), NULL, 16);
-			if (flags & e2db::SDATA_FLAGS::fnew)
-				val = '1';
+			val = getFlagValue(ch, e2db::SDATA_FLAGS::fnew);
 		}
 		else if (key == "raw_data")
 		{
 			auto last_key = (*prev(ch.data.cend()));
 			for (auto & q: ch.data)
 			{
-				char d = e2db::SDATA_r.count(q.first) ? e2db::SDATA_r.at(q.first) : q.first;
+				char d;
+				switch (q.first)
+				{
+					case e2db::SDATA::p: d = 'p'; break;
+					case e2db::SDATA::c: d = 'c'; break;
+					case e2db::SDATA::C: d = 'C'; break;
+					case e2db::SDATA::f: d = 'f'; break;
+					default: d = q.first;
+				}
 				for (unsigned int i = 0; i < q.second.size(); i++)
 				{
 					val += d;
@@ -618,16 +733,67 @@ void editService::save()
 	dial->close();
 }
 
-string editService::getPID(e2db::service ch, int x)
+string editService::getPIDValue(e2db::service ch, e2db::SDATA_PIDS x)
 {
-	string cpx = (x > 9 ? '\0' : '0') + to_string(x);
-	for (auto & w : ch.data[e2db::SDATA.at('c')])
+	string cpx = (x > 9 ? "" : "0") + to_string(x);
+	for (auto & w : ch.data[e2db::SDATA::c])
 	{
 		if (w.substr(0, 2) == cpx)
 			return to_string(std::strtol(w.substr(2).data(), NULL, 16));
 	}
-
 	return "";
+}
+
+vector<string> editService::computePIDs(e2db::service ch, e2db::SDATA_PIDS x, string val)
+{
+	bool found = false;
+	char pid[7];
+	int cval;
+	vector<string> data = ch.data[e2db::SDATA::c];
+	string cpx = (x > 9 ? "" : "0") + to_string(x);
+	cval = std::atoi(val.data());
+	std::sprintf(pid, "%2s%04x", cpx.c_str(), cval);
+	for (auto it = data.begin(); it != data.end(); it++)
+	{
+		if ((*it).substr(0, 2) == cpx)
+		{
+			if (cval)
+				*it = pid;
+			else
+				data.erase(it);
+			found = true;
+		}
+	}
+	if (! found && cval)
+	{
+		data.emplace_back(pid);
+	}
+	return data;
+}
+
+string editService::getFlagValue(e2db::service ch, e2db::SDATA_FLAGS x)
+{
+	
+	int flags = std::strtol(ch.data[e2db::SDATA::f][0].data(), NULL, 16);
+	if (flags & x)
+		return "1";
+	return "";
+}
+
+vector<string> editService::computeFlags(e2db::service ch, e2db::SDATA_FLAGS x, string val)
+{
+	vector<string> data = ch.data[e2db::SDATA::f];
+	int flags = data.empty() ? 0 : std::strtol(data[0].data(), NULL, 16);
+	if (flags & x)
+		flags -= x;
+	if (val == "1")
+		flags += x;
+	char cflags[3];
+	std::sprintf(cflags, "%02x", flags);
+	data.clear();
+	if (flags)
+		data.emplace_back(cflags);
+	return data;
 }
 
 void editService::setEditID(string chid)

@@ -11,6 +11,7 @@
 
 #include <algorithm>
 #include <unordered_set>
+#include <sstream>
 #include <filesystem>
 #include <cstdio>
 #include <cstring>
@@ -498,18 +499,20 @@ void e2db_parser::parse_lamedb_service_data(string data, service& ch)
 		return;
 
 	//TODO 256 EOL
-	// !p: provider
-	//  c: cache
-	//  C: ciad
-	//  f: flags
 	stringstream ss (data);
 	string line;
 	map<char, vector<string>> cdata;
 
 	while (std::getline(ss, line, ','))
 	{
-		char k = line[0];
-		char key = e2db_parser::SDATA.count(k) ? e2db_parser::SDATA.at(k) : k;
+		char key = line[0];
+		switch (key)
+		{
+			case 'p': key = e2db_parser::SDATA::p; break;
+			case 'c': key = e2db_parser::SDATA::c; break;
+			case 'C': key = e2db_parser::SDATA::C; break;
+			case 'f': key = e2db_parser::SDATA::f; break;
+		}
 		string val = line.substr(2);
 		cdata[key].push_back(val);
 	}
@@ -1172,7 +1175,15 @@ void e2db_maker::make_lamedb(string filename)
 		auto last_key = (*prev(ch.data.cend()));
 		for (auto & q: ch.data)
 		{
-			char d = SDATA_r.count(q.first) ? SDATA_r.at(q.first) : q.first;
+			char d;
+			switch (q.first)
+			{
+				case e2db::SDATA::p: d = 'p'; break;
+				case e2db::SDATA::c: d = 'c'; break;
+				case e2db::SDATA::C: d = 'C'; break;
+				case e2db::SDATA::f: d = 'f'; break;
+				default: d = q.first;
+			}
 			for (unsigned int i = 0; i < q.second.size(); i++)
 			{
 				ss << d << ':' << q.second[i];
@@ -1758,9 +1769,9 @@ map<string, vector<pair<int, string>>> e2db::get_packages_index()
 	{
 		service ch = db.services[x.second];
 
-		if (ch.data.count(e2db::SDATA.at('p')))
+		if (ch.data.count(e2db::SDATA::p))
 		{
-			string pvdrn = ch.data[e2db::SDATA.at('p')][0];
+			string pvdrn = ch.data[e2db::SDATA::p][0];
 
 			if (pvdrn.empty()) _index["(Unknown)"].emplace_back(x);
 			else _index[pvdrn].emplace_back(x);

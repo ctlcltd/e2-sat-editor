@@ -14,7 +14,6 @@
 #include <map>
 #include <unordered_map>
 #include <fstream>
-#include <sstream>
 #include <iostream>
 #include <ctime>
 
@@ -70,19 +69,20 @@ struct e2db_abstract
 			{31, make_pair(1, "H.265")}
 		};
 
-		inline static const unordered_map<char, char> SDATA = {
-			{'p', '0'},
-			{'c', '1'},
-			{'C', '2'},
-			{'f', '3'}
-		};
-		inline static const unordered_map<char, char> SDATA_r = {
-			{'0', 'p'},
-			{'1', 'c'},
-			{'2', 'C'},
-			{'3', 'f'}
+		// service data
+		// p provider
+		// c cache
+		// C CAS
+		// f flags
+		enum SDATA {
+			p,
+			c,
+			C,
+			f
 		};
 
+		// service data CAS
+		// XXxxx encryption
 		inline static const unordered_map<string, string> SDATA_CAS = {
 			{"01", "Seca"},
 			{"06", "Irdeto"},
@@ -97,12 +97,12 @@ struct e2db_abstract
 			{"4a", "DRE"}
 		};
 
-		// flags hex
-		// fkeep f01
-		// fhide f02
-		// fpid  f04
-		// fname f08
-		// fnew  f40
+		// service data flags
+		// f01 fkeep
+		// f02 fhide
+		// f04 fpid
+		// f08 fname
+		// f40 fnew
 		enum SDATA_FLAGS {
 			fkeep = 1, // dxNoSDT
 			fhide = 2, // dxDontshow
@@ -111,7 +111,7 @@ struct e2db_abstract
 			fnew  = 64 // dxNewFound
 		};
 
-		// cache PIDs
+		// service data cache PIDs
 		// 00 video VPID
 		// 01 mpeg audio APID MPEGAPID
 		// 02 tp TPID
@@ -123,7 +123,7 @@ struct e2db_abstract
 		// 07 pcm delay
 		// 08 subtitle teletext
 		// 09 audio type
-		// 10 APID
+		// 10 audio APID
 		// 11 cache max
 		enum SDATA_PIDS {
 			vpid,

@@ -41,7 +41,10 @@ class editService : protected e2se::log_factory
 		void store();
 		void retrieve();
 		void save();
-		string getPID(e2db::service ch, int x);
+		string getPIDValue(e2db::service ch, e2db::SDATA_PIDS x);
+		vector<string> computePIDs(e2db::service ch, e2db::SDATA_PIDS x, string val);
+		string getFlagValue(e2db::service ch, e2db::SDATA_FLAGS x);
+		vector<string> computeFlags(e2db::service ch, e2db::SDATA_FLAGS x, string val);
 		void setEditID(string chid);
 		string getEditID();
 		void destroy();

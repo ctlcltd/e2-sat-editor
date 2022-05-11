@@ -336,7 +336,7 @@ void channelBook::populate()
 			else
 				chname = QString::fromStdString(ch.chname);
 			QString stype = e2db::STYPES.count(ch.stype) ? QString::fromStdString(e2db::STYPES.at(ch.stype).second) : "Data";
-			QString pname = QString::fromStdString(ch.data.count(e2db::SDATA.at('p')) ? ch.data[e2db::SDATA.at('p')][0] : "");
+			QString pname = QString::fromStdString(ch.data.count(e2db::SDATA::p) ? ch.data[e2db::SDATA::p][0] : "");
 
 			string ptxp;
 			if (tx.ttype == 's')

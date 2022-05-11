@@ -1429,7 +1429,7 @@ MC EU
 p:MB Satellite,c:00019a,c:011fff,c:03019a,c:050001
 1f4b:00820000:319c:013e:1:2273
 MBS - Test 1
-p:MB Satellite,c:000459,c:011fff,c:030459,c:050001
+p:MB Satellite,c:000459,c:011fff,c:030459,c:050001,f:45
 1f59:00820000:319c:013e:1:2274
 Jin TV
 p:MB Satellite,c:0009ce,c:011fff,c:0309ce,c:050001
@@ -1441,19 +1441,19 @@ Iran e Aryaee TV
 p:MB Satellite,c:000c26,c:011fff,c:030c26,c:050000
 1f61:00820000:319c:013e:1:2277
 MBS - Test 2
-p:MB Satellite,c:000459,c:011fff,c:030459,c:050001
+p:MB Satellite,c:000459,c:011fff,c:030459,c:050001,f:45
 1f62:00820000:319c:013e:1:2278
 MBS - Test 3
-p:MB Satellite,c:000459,c:011fff,c:030459,c:050001
+p:MB Satellite,c:000459,c:011fff,c:030459,c:050001,f:46
 1f63:00820000:319c:013e:1:2279
 MBS - Test 4
-p:MB Satellite,c:000459,c:011fff,c:030459,c:050001
+p:MB Satellite,c:000459,c:011fff,c:030459,c:050001,f:08
 1f64:00820000:319c:013e:1:2280
 MBS - Test 5
-p:MB Satellite,c:000459,c:011fff,c:030459,c:050001
+p:MB Satellite,c:000459,c:011fff,c:030459,c:050001,f:01
 1f65:00820000:319c:013e:1:2281
 MBS - Test 6
-p:MB Satellite,c:000459,c:011fff,c:030459,c:050001
+p:MB Satellite,c:000459,c:011fff,c:030459,c:050001,f:07
 0e81:00820000:3200:013e:1:2282
 FOLX MUSIC TELEVISION
 p:MB Satellite,c:00051e,c:011fff,c:03051e,c:050001
