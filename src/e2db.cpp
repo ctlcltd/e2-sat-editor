@@ -1259,7 +1259,7 @@ void e2db_maker::make_userbouquet(string bname)
 		if (db.services.count(x.second))
 		{
 			service ch = db.services[x.second];
-			string onid = ch.onid;
+			string onid = ch.onid.empty() ? "0" : ch.onid;
 			transform(onid.begin(), onid.end(), onid.begin(), [](unsigned char c) { return toupper(c); });
 
 			ss << uppercase << ch.ssid << ':';

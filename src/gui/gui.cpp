@@ -234,8 +234,6 @@ int gui::newTab(string filename = "")
 	ttabbar->setTabText(index, "");
 
 	ttab->setTabId(ttid);
-	if (read)
-		tabChangeName(ttid, filename);
 	twid->setCurrentIndex(index);
 
 	QAction* action = new QAction(ttname);
@@ -246,6 +244,8 @@ int gui::newTab(string filename = "")
 	ttmenu[ttid] = action;
 	ttabs[ttid] = ttab;
 
+	if (read)
+		tabChangeName(ttid, filename);
 	ttmenu[ttid]->setChecked(true);
 
 	debug("newTab()", "ttid", to_string(ttid));

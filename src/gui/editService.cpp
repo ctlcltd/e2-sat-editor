@@ -184,7 +184,6 @@ void editService::transponderLayout()
 	dtform->addWidget(dtl1, 1, 0);
 }
 
-//TODO delay flags
 void editService::paramsLayout()
 {
 	debug("paramsLayout()");
@@ -281,6 +280,7 @@ void editService::paramsLayout()
 	fields.emplace_back(dtf2ad);
 	dtf2ad->setMaximumWidth(48);
 	dtc27->addWidget(dtf2ad);
+	dtc27->addWidget(new QLabel("<small>ms.</small>"));
 
 	QHBoxLayout* dtc28 = new QHBoxLayout;
 	dtf2c->addRow(tr("pcm delay"), dtc28);
@@ -289,6 +289,7 @@ void editService::paramsLayout()
 	fields.emplace_back(dtf2pd);
 	dtf2pd->setMaximumWidth(48);
 	dtc28->addWidget(dtf2pd);
+	dtc28->addWidget(new QLabel("<small>ms.</small>"));
 
 	QHBoxLayout* dtc29 = new QHBoxLayout;
 	dtf2c->addRow(tr("subtitle"), dtc29);

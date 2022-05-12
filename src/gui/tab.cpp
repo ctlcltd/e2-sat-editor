@@ -750,7 +750,7 @@ void tab::visualReindexList()
 	int i = 0, y = 0, idx = 0;
 	int maxs = list_tree->topLevelItemCount();
 
-	do
+	while (i != maxs)
 	{
 		char ci[7];
 		std::sprintf(ci, "%06d", i + 1);
@@ -771,7 +771,6 @@ void tab::visualReindexList()
 			item->setText(1, QString::fromStdString(to_string(idx)));
 		i++;
 	}
-	while (i != maxs);
 }
 
 void tab::trickySortByColumn(int column)
@@ -1050,7 +1049,7 @@ void tab::updateListIndex()
 
 	debug("updateListIndex()", "curr_chlist", curr_chlist);
 
-	do
+	while (i != count)
 	{
 		QTreeWidgetItem* item = list_tree->topLevelItem(i);
 		string chid = item->data(2, Qt::UserRole).toString().toStdString();
@@ -1067,7 +1066,6 @@ void tab::updateListIndex()
 		dbih->gindex[curr_chlist].emplace_back(pair (idx, chid)); //C++17
 		i++;
 	}
-	while (i != count);
 
 	this->state.changed = false;
 }
