@@ -95,7 +95,7 @@ void editService::display(QWidget* cwid)
 
 void editService::serviceLayout()
 {
-	debug("layout()");
+	debug("serviceLayout()");
 
 	QGroupBox* dtl0 = new QGroupBox(tr("Service"));
 	QFormLayout* dtf0 = new QFormLayout;

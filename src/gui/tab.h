@@ -56,12 +56,14 @@ class tab : protected e2se::log_factory
 		void saveFile(bool saveas);
 		void importFile();
 		void exportFile();
+		void addUserbouquet();
+		void editUserbouquet();
 		void addChannel();
 		void addService();
 		void editService();
-		void delService();
 		void load();
 		void populate(QTreeWidget* side_tree);
+		void treeSwitched(QTreeWidget* tree, QTreeWidgetItem* item);
 		void servicesItemChanged(QTreeWidgetItem* current);
 		void bouquetsItemChanged(QTreeWidgetItem* current);
 		void listItemChanged();
@@ -70,6 +72,7 @@ class tab : protected e2se::log_factory
 		void allowDnD();
 		void disallowDnD();
 		void reharmDnD();
+		void bouquetItemDelete();
 		void listItemCut();
 		void listItemCopy(bool cut = false);
 		void listItemPaste();
@@ -78,6 +81,7 @@ class tab : protected e2se::log_factory
 		void listItemAction(int action);
 		void putChannels(vector<QString> channels);
 		void updateListIndex();
+		void showBouquetEditContextMenu(QPoint &pos);
 		void showListEditContextMenu(QPoint &pos);
 		void setCounters(bool channels = false);
 		void setTabId(int ttid);
@@ -106,6 +110,7 @@ class tab : protected e2se::log_factory
 			bool dnd;
 			bool init;
 			bool changed;
+			int tc;
 			int ti;
 			string curr;
 			pair<int, Qt::SortOrder> sort;

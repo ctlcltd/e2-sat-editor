@@ -33,6 +33,7 @@
 #include "theme.h"
 #include "tab.h"
 #include "gui.h"
+#include "editBouquet.h"
 #include "editService.h"
 #include "channelBook.h"
 #include "ftpcom_gui.h"
@@ -138,6 +139,8 @@ tab::tab(gui* gid, QWidget* wid)
 	this->lheaderv = list_tree->header();
 	lheaderv->connect(lheaderv, &QHeaderView::sectionClicked, [=](int column) { this->trickySortByColumn(column); });
 
+	bouquets_tree->setContextMenuPolicy(Qt::CustomContextMenu);
+	bouquets_tree->connect(bouquets_tree, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { this->showBouquetEditContextMenu(pos); });
 	list_tree->setContextMenuPolicy(Qt::CustomContextMenu);
 	list_tree->connect(list_tree, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { this->showListEditContextMenu(pos); });
 
@@ -209,7 +212,7 @@ tab::tab(gui* gid, QWidget* wid)
 	QWidget* list_ats_spacer = new QWidget;
 	list_ats_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	bouquets_ats->addAction(theme::icon("add"), "New Bouquet", todo);
+	bouquets_ats->addAction(theme::icon("add"), "New Bouquet", [=]() { this->addUserbouquet(); });
 	this->action.list_addch = list_ats->addAction(theme::icon("add"), "Add Channel", [=]() { this->addChannel(); });
 	this->action.list_newch = list_ats->addAction(theme::icon("add"), "New Service", [=]() { this->addService(); });
 	list_ats->addWidget(list_ats_spacer);
@@ -220,9 +223,11 @@ tab::tab(gui* gid, QWidget* wid)
 	this->bouquets_evth = new BouquetsEventHandler;
 	this->list_evth = new ListEventHandler;
 	this->list_evto = new ListEventObserver;
+	services_tree->connect(services_tree, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { this->treeSwitched(services_tree, item); });
 	services_tree->connect(services_tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->servicesItemChanged(current); });
 	bouquets_evth->setEventCallback([=]() { list_tree->scrollToBottom(); this->visualReindexList(); });
 	bouquets_tree->viewport()->installEventFilter(bouquets_evth);
+	bouquets_tree->connect(bouquets_tree, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { this->treeSwitched(bouquets_tree, item); });
 	bouquets_tree->connect(bouquets_tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->bouquetsItemChanged(current); });
 	list_tree->installEventFilter(list_evto);
 	list_tree->viewport()->installEventFilter(list_evth);
@@ -380,6 +385,37 @@ void tab::exportFile()
 	string dirname = gid->exportFileDialog(filename);
 }
 
+void tab::addUserbouquet()
+{
+	debug("addUserbouquet()");
+
+	e2se_gui::editBouquet* add = new e2se_gui::editBouquet(dbih, this->state.ti);
+	add->display(cwid);
+	add->destroy();
+}
+
+void tab::editUserbouquet()
+{
+	debug("editUserbouquet()");
+
+	QList<QTreeWidgetItem*> selected = bouquets_tree->selectedItems();
+	
+	if (selected.empty() || selected.count() > 1)
+		return;
+
+	QTreeWidgetItem* item = selected.first();
+	QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
+	QString qbname = tdata["id"].toString();
+	string bname = qbname.toStdString();
+
+	debug("editService()", "bname", bname);
+
+	e2se_gui::editBouquet* edit = new e2se_gui::editBouquet(dbih, this->state.ti);
+	edit->setEditID(bname);
+	edit->display(cwid);
+	edit->destroy();
+}
+
 void tab::addChannel()
 {
 	debug("addChannel()");
@@ -415,6 +451,7 @@ void tab::addService()
 
 	e2se_gui::editService* add = new e2se_gui::editService(dbih);
 	add->display(cwid);
+	add->destroy();
 }
 
 void tab::editService()
@@ -435,11 +472,11 @@ void tab::editService()
 
 	if (! marker && dbih->db.services.count(chid))
 	{
-		e2se_gui::editService* add = new e2se_gui::editService(dbih);
-		add->setEditID(chid);
-		add->display(cwid);
-		nw_chid = add->getEditID(); //TODO returned after dial.exec()
-		add->destroy();
+		e2se_gui::editService* edit = new e2se_gui::editService(dbih);
+		edit->setEditID(chid);
+		edit->display(cwid);
+		nw_chid = edit->getEditID(); //TODO returned after dial.exec()
+		edit->destroy();
 
 		debug("editService()", "nw_chid", nw_chid);
 
@@ -657,9 +694,32 @@ void tab::populate(QTreeWidget* side_tree)
 	setCounters(true);
 }
 
+void tab::treeSwitched(QTreeWidget* tree, QTreeWidgetItem* item)
+{
+	debug("treeSwitched()");
+
+	int tc = -1;
+
+	if (tree == this->services_tree)
+		tc = 0;
+	else if (tree == this->bouquets_tree)
+		tc = 1;
+
+	if (tc != this->state.tc)
+	{
+		switch (tc)
+		{
+			case 0: return this->servicesItemChanged(item);
+			case 1: return this->bouquetsItemChanged(item);
+		}
+	}
+}
+
 void tab::servicesItemChanged(QTreeWidgetItem* current)
 {
 	debug("servicesItemChanged()");
+
+	this->state.tc = 0;
 
 	if (current != NULL)
 	{
@@ -692,6 +752,8 @@ void tab::servicesItemChanged(QTreeWidgetItem* current)
 void tab::bouquetsItemChanged(QTreeWidgetItem* current)
 {
 	debug("bouquetsItemChanged()");
+
+	this->state.tc = 1;
 
 	if (current != NULL)
 	{
@@ -838,6 +900,29 @@ void tab::reharmDnD()
 	list_tree->setAcceptDrops(true);
 	this->state.sort = pair (0, Qt::AscendingOrder); //C++17
 	this->action.list_dnd->setDisabled(true);
+}
+
+void tab::bouquetItemDelete()
+{
+	debug("bouquetItemDelete()");
+
+	QList<QTreeWidgetItem*> selected = bouquets_tree->selectedItems();
+	
+	if (selected.empty())
+		return;
+
+	for (auto & item : selected)
+	{
+		QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
+		QString qbname = tdata["id"].toString();
+		string bname = qbname.toStdString();
+		dbih->removeUserbouquet(bname);
+		int i = bouquets_tree->indexOfTopLevelItem(item);
+		bouquets_tree->takeTopLevelItem(i);
+	}
+
+	this->state.changed = true;
+	setCounters();
 }
 
 void tab::listItemCut()
@@ -1070,6 +1155,22 @@ void tab::updateListIndex()
 	this->state.changed = false;
 }
 
+void tab::showBouquetEditContextMenu(QPoint &pos)
+{
+	debug("showBouquetEditContextMenu()");
+
+	// bouquet: tv | radio
+	if (this->state.ti != -1)
+		return;
+
+	QMenu* bouquet_edit = new QMenu;
+	bouquet_edit->addAction("Edit Userbouquet", [=]() { this->editUserbouquet(); });
+	bouquet_edit->addSeparator();
+	bouquet_edit->addAction("Delete", [=]() { this->bouquetItemDelete(); });
+
+	bouquet_edit->exec(bouquets_tree->mapToGlobal(pos));
+}
+
 void tab::showListEditContextMenu(QPoint &pos)
 {
 	debug("showListEditContextMenu()");
@@ -1210,7 +1311,6 @@ void tab::ftpUpload()
 	}
 }
 
-//TODO temporary instance & merge
 void tab::ftpDownload()
 {
 	debug("ftpDownload()");
