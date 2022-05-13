@@ -35,7 +35,7 @@ editBouquet::editBouquet(e2db* dbih, int ti)
 	debug("editBouquet()");
 
 	// bouquet: tv | radio
-	if (ti == -1)
+	if (ti != -1)
 		error("editBouquet()", "Error", "TODO");
 
 	this->dbih = dbih;

@@ -60,7 +60,7 @@ void ftpcom::setup(ftp_params params)
 	baseb = params.bpath;
 	bases = params.spath;
 
-	// std::cout << params.user << ':' << params.pass << '@' << params.host << ':' << params.port << '/' << params.spath << std::endl;
+	std::cout << params.user << ':' << params.pass << '@' << params.host << ':' << params.port << params.spath << std::endl;
 }
 
 bool ftpcom::handle()
@@ -144,7 +144,7 @@ vector<string> ftpcom::list_dir(string base)
 	}
 
 	stringstream data;
-	string remotedir = base + '/';
+	string remotedir = '/' + base + '/';
 
 	curl_url_set(urlp, CURLUPART_PATH, remotedir.c_str(), 0);
 	curl_easy_setopt(curl, CURLOPT_FTPLISTONLY, true);
@@ -187,12 +187,11 @@ string ftpcom::download_data(string base, string filename)
 	sio data;
 	data.sizel = 0;
 	CURLcode res = CURLE_GOT_NOTHING;
-	string remotefile = base + '/' + filename;
+	string remotefile = '/' + base + '/' + filename;
 
 	debug("download_data()", "file", remotefile);
 
 	curl_url_set(urlp, CURLUPART_PATH, remotefile.c_str(), 0);
-	curl_easy_setopt(curl, CURLOPT_CURLU, urlp);
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, data_download_func);
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &data);
 	res = perform();
@@ -218,7 +217,7 @@ void ftpcom::upload_data(string base, string filename, string os)
 	data.sizel = os.length();
 	size_t uplen = 0;
 	CURLcode res = CURLE_GOT_NOTHING;
-	string remotefile = base + '/' + filename;
+	string remotefile = '/' + base + '/' + filename;
 	
 	debug("upload_data()", "file", remotefile);
 
@@ -372,6 +371,8 @@ unordered_map<string, ftpcom_file> ftpcom::get_files()
 
 	unordered_map<string, ftpcom_file> files;
 
+	if (ftdb.empty())
+		return files;
 	for (auto & w : ftdb)
 	{
 		std::filesystem::path path = std::filesystem::path(w); //C++17
@@ -389,6 +390,8 @@ void ftpcom::put_files(unordered_map<string, ftpcom_file> files)
 
 	fetch_paths();
 
+	if (files.empty())
+		return;
 	for (auto & x : files)
 	{
 		std::filesystem::path path = std::filesystem::path(x.first); //C++17

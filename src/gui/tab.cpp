@@ -1304,6 +1304,8 @@ void tab::ftpUpload()
 	{
 		unordered_map<string, e2se_ftpcom::ftpcom_file> files = dbih->get_output();
 
+		if (files.empty())
+			return;
 		for (auto & x : files)
 			debug("ftpUpload()", "file", x.first + " | " + to_string(x.second.size()));
 
@@ -1319,6 +1321,8 @@ void tab::ftpDownload()
 	{
 		unordered_map<string, e2se_ftpcom::ftpcom_file> files = ftph->get_files();
 
+		if (files.empty())
+			return;
 		for (auto & x : files)
 			debug("ftpDownload()", "file", x.first + " | " + to_string(x.second.size()));
 
