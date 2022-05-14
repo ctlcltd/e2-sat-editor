@@ -389,9 +389,35 @@ void tab::addUserbouquet()
 {
 	debug("addUserbouquet()");
 
+	string bname;
 	e2se_gui::editBouquet* add = new e2se_gui::editBouquet(dbih, this->state.ti);
 	add->display(cwid);
+	bname = add->getEditID();
 	add->destroy();
+
+	if (! bname.empty())
+	{
+		e2db::userbouquet uboq = dbih->userbouquets[bname];
+		e2db::bouquet gboq = dbih->bouquets[uboq.pname];
+		QString bgroup = QString::fromStdString(uboq.pname);
+		QTreeWidgetItem* pgroup = bouquets_tree->topLevelItem(gboq.index);
+		// macos: unwanted chars [qt.qpa.fonts] Menlo notice
+		QString name;
+		if (gid->sets->value("preference/fixUnicodeChars").toBool())
+			name = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{N}\\p{Sm}\\p{M}\\p{P}\\s]+"));
+		else
+			name = QString::fromStdString(uboq.name);
+
+		QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
+		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
+		QMap<QString, QVariant> tdata; //TODO
+		tdata["id"] = bgroup;
+		bitem->setData(0, Qt::UserRole, QVariant (tdata));
+		bitem->setText(0, name);
+		bouquets_tree->addTopLevelItem(bitem);
+
+		dbih->updateUserbouquetIndexes();
+	}
 }
 
 void tab::editUserbouquet()
@@ -414,6 +440,16 @@ void tab::editUserbouquet()
 	edit->setEditID(bname);
 	edit->display(cwid);
 	edit->destroy();
+
+	e2db::userbouquet uboq = dbih->userbouquets[bname];
+	QString name;
+	if (gid->sets->value("preference/fixUnicodeChars").toBool())
+		name = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{N}\\p{Sm}\\p{M}\\p{P}\\s]+"));
+	else
+		name = QString::fromStdString(uboq.name);
+	selected[0]->setText(0, name);
+
+	dbih->updateUserbouquetIndexes();
 }
 
 void tab::addChannel()
@@ -540,14 +576,14 @@ void tab::load()
 		debug("load()", "bouquet", bsi.second);
 		e2db::bouquet gboq = dbih->bouquets[bsi.second];
 		QString bgroup = QString::fromStdString(bsi.second);
-		QString bname = QString::fromStdString(gboq.nname.empty() ? gboq.name : gboq.nname);
+		QString name = QString::fromStdString(gboq.nname.empty() ? gboq.name : gboq.nname);
 
 		QTreeWidgetItem* pgroup = new QTreeWidgetItem();
 		pgroup->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 		QMap<QString, QVariant> tdata; //TODO
 		tdata["id"] = bgroup;
 		pgroup->setData(0, Qt::UserRole, QVariant (tdata));
-		pgroup->setText(0, bname);
+		pgroup->setText(0, name);
 		bouquets_tree->addTopLevelItem(pgroup);
 		bouquets_tree->expandItem(pgroup);
 
@@ -561,18 +597,18 @@ void tab::load()
 		QString bgroup = QString::fromStdString(ubi.second);
 		QTreeWidgetItem* pgroup = bgroups[ubi.second];
 		// macos: unwanted chars [qt.qpa.fonts] Menlo notice
-		QString bname;
+		QString name;
 		if (gid->sets->value("preference/fixUnicodeChars").toBool())
-			bname = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{N}\\p{Sm}\\p{M}\\p{P}\\s]+"));
+			name = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{N}\\p{Sm}\\p{M}\\p{P}\\s]+"));
 		else
-			bname = QString::fromStdString(uboq.name);
+			name = QString::fromStdString(uboq.name);
 
 		QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
 		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
 		QMap<QString, QVariant> tdata; //TODO
 		tdata["id"] = bgroup;
 		bitem->setData(0, Qt::UserRole, QVariant (tdata));
-		bitem->setText(0, bname);
+		bitem->setText(0, name);
 		bouquets_tree->addTopLevelItem(bitem);
 	}
 
@@ -804,7 +840,6 @@ void tab::listItemChanged()
 	this->state.changed = true;
 }
 
-//TODO improve by positions QAbstractItemView::indexAt(x, y) min|max
 void tab::visualReindexList()
 {
 	debug("visualReindexList()");
@@ -917,12 +952,12 @@ void tab::bouquetItemDelete()
 		QString qbname = tdata["id"].toString();
 		string bname = qbname.toStdString();
 		dbih->removeUserbouquet(bname);
-		int i = bouquets_tree->indexOfTopLevelItem(item);
-		bouquets_tree->takeTopLevelItem(i);
+		QTreeWidgetItem* parent = item->parent();
+		parent->removeChild(item);
 	}
 
 	this->state.changed = true;
-	setCounters();
+	dbih->updateUserbouquetIndexes();
 }
 
 void tab::listItemCut()

@@ -52,8 +52,8 @@ class e2db : public ::e2se_e2db::e2db
 		void addBouquet(bouquet& bs);
 		void editBouquet(bouquet& bs);
 		void removeBouquet(string bname);
-		void addUserbouquet(userbouquet& ub);
-		void editUserbouquet(userbouquet& ub);
+		string addUserbouquet(userbouquet& ub);
+		string editUserbouquet(userbouquet& ub);
 		void removeUserbouquet(string bname);
 		void initialize();
 		bool prepare(string localdir);

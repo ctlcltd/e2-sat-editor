@@ -19,7 +19,7 @@
 #include <QToolBar>
 #include <QLabel>
 #include <QLineEdit>
-#include <QCheckBox>
+#include <QComboBox>
 
 #include "theme.h"
 #include "editBouquet.h"
@@ -34,10 +34,7 @@ editBouquet::editBouquet(e2db* dbih, int ti)
 	this->log = new logger("editBouquet");
 	debug("editBouquet()");
 
-	// bouquet: tv | radio
-	if (ti != -1)
-		error("editBouquet()", "Error", "TODO");
-
+	this->state.ti = ti;
 	this->dbih = dbih;
 }
 
@@ -65,6 +62,7 @@ void editBouquet::display(QWidget* cwid)
 	this->widget = new QWidget;
 	this->dtform = new QGridLayout;
 
+	layout();
 	if (this->state.edit)
 		retrieve();
 
@@ -86,9 +84,63 @@ void editBouquet::display(QWidget* cwid)
 	dial->exec();
 }
 
+void editBouquet::layout()
+{
+	debug("layout()");
+
+	QGroupBox* dtl0 = new QGroupBox(tr("Userbouquet"));
+	QFormLayout* dtf0 = new QFormLayout;
+	dtf0->setRowWrapPolicy(QFormLayout::WrapAllRows);
+
+	QLineEdit* dtf0bn = new QLineEdit;
+	dtf0bn->setProperty("field", "name");
+	fields.emplace_back(dtf0bn);
+	dtf0bn->setMinimumWidth(240);
+	dtf0->addRow(tr("Bouquet name"), dtf0bn);
+	dtf0->addItem(new QSpacerItem(0, 0));
+
+	QGroupBox* dtl1 = new QGroupBox(tr("Bouquet"));
+	QFormLayout* dtf1 = new QFormLayout;
+	dtf1->setRowWrapPolicy(QFormLayout::WrapAllRows);
+
+	QComboBox* dtf1bt = new QComboBox;
+	dtf1bt->setProperty("field", "pname");
+	fields.emplace_back(dtf1bt);
+	dtf1bt->setMaximumWidth(100);
+	dtf1->addRow(dtf1bt);
+	dtf1->addItem(new QSpacerItem(0, 0));
+	for (auto & bsi : dbih->gindex["bss"])
+	{
+		e2db::bouquet gboq = dbih->bouquets[bsi.second];
+		QString bgroup = QString::fromStdString(bsi.second);
+		QString name = QString::fromStdString(gboq.nname.empty() ? gboq.name : gboq.nname);
+		dtf1bt->addItem(name, bgroup);
+	}
+
+	// bouquet: tv | radio
+	if (this->state.ti != -1)
+	{
+		dtl1->setVisible(true);
+	}
+	// userbouquet
+	else
+	{
+		dtl1->setHidden(true);
+	}
+
+	dtl0->setLayout(dtf0);
+	dtform->addWidget(dtl0, 0, 0);
+	dtl1->setLayout(dtf1);
+	dtform->addWidget(dtl1, 1, 0);
+}
+
 void editBouquet::store()
 {
 	debug("store()");
+
+	e2db::userbouquet ub;
+	if (this->state.edit)
+		ub = dbih->userbouquets[bname];
 
 	for (auto & item : fields)
 	{
@@ -99,27 +151,34 @@ void editBouquet::store()
 			val = field->text().toStdString();
 		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
 			val = field->currentData().toString().toStdString();
-		else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
-			val = (field->isChecked() ? '1' : '0');
 
+		if (key == "name")
+			ub.name = val;
+		else if (key == "pname")
+			ub.pname = val;
 	}
 
-	e2db::userbouquet ub;
-
 	if (this->state.edit)
-		dbih->editUserbouquet(ub);
+		this->bname = dbih->editUserbouquet(ub);
 	else
-		dbih->addUserbouquet(ub);
+		this->bname = dbih->addUserbouquet(ub);
 }
 
 void editBouquet::retrieve()
 {
 	debug("retrieve()");
+	
+	e2db::userbouquet ub = dbih->userbouquets[bname];
 
 	for (auto & item : fields)
 	{
 		string key = item->property("field").toString().toStdString();
 		string val;
+
+		if (key == "name")
+			val = ub.name;
+		else if (key == "pname")
+			val = ub.pname;
 
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
 		{
@@ -129,10 +188,6 @@ void editBouquet::retrieve()
 		{
 			if (int index = field->findData(QString::fromStdString(val), Qt::UserRole))
 				field->setCurrentIndex(index);
-		}
-		else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
-		{
-			field->setChecked(!! std::atoi(val.data()));
 		}
 	}
 }

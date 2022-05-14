@@ -1436,6 +1436,7 @@ void e2db::merge(e2db* dbih)
 	{
 		userbouquet& ub = cp_ubs_0[i.second];
 		bouquet& bs = bouquets[ub.pname];
+		//TODO "userbouquet.dbe.01234.tv"
 		int idx = bs.userbouquets.size();
 		string key = "1:7:" + to_string(bs.btype) + ':' + ub.name;
 		string ktype;
@@ -1653,6 +1654,34 @@ void e2db::remove_bouquet(string bname)
 void e2db::add_userbouquet(userbouquet& ub)
 {
 	debug("add_userbouquet()");
+
+	if (! ub.index)
+	{
+		int idx = 0;
+
+		for (auto it = index["ubs"].begin(); it != index["ubs"].end(); it++)
+		{
+			unsigned long pos = it->second.find(".dbe");
+			if (pos != string::npos)
+				idx += atoi(it->second.substr(pos, pos + 2).data());
+		}
+
+		idx++;
+		ub.index = idx;
+	}
+	if (ub.bname.empty())
+	{
+		bouquet bs = bouquets[ub.pname];
+		stringstream bname;
+		string ktype;
+		if (bs.btype == 1)
+			ktype = "tv";
+		else if (bs.btype == 2)
+			ktype = "radio";
+
+		bname << "userbouquet.dbe" << setfill('0') << setw(2) << ub.index << '.' << ktype;
+		ub.bname = bname.str();
+	}
 
 	e2db_abstract::add_userbouquet(ub.index, ub);
 }

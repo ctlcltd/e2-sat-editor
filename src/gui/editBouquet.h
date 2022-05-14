@@ -20,7 +20,6 @@ using std::string, std::vector;
 #include <QWidget>
 #include <QDialog>
 #include <QGridLayout>
-#include <QComboBox>
 
 #include "../logger.h"
 #include "e2db_gui.h"
@@ -34,6 +33,7 @@ class editBouquet : protected e2se::log_factory
 	public:
 		editBouquet(e2db* dbih, int ti);
 		void display(QWidget* cwid);
+		void layout();
 		void store();
 		void retrieve();
 		void save();

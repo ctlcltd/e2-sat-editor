@@ -107,18 +107,20 @@ void e2db::removeService(string chid)
 	entries.services.erase(chid);
 }
 
-void e2db::addUserbouquet(userbouquet& ub)
+string e2db::addUserbouquet(userbouquet& ub)
 {
 	debug("addUserbouquet()");
 
 	this->::e2se_e2db::e2db::add_userbouquet(ub);
+	return ub.bname;
 }
 
-void e2db::editUserbouquet(userbouquet& ub)
+string e2db::editUserbouquet(userbouquet& ub)
 {
 	debug("editUserbouquet()");
 
 	this->::e2se_e2db::e2db::edit_userbouquet(ub);
+	return ub.bname;
 }
 
 void e2db::removeUserbouquet(string bname)

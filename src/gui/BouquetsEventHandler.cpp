@@ -79,7 +79,7 @@ void BouquetsEventHandler::dropFromBouquets(QTreeWidgetItem* current, QTreeWidge
 	}
 	int index = parent->indexOfChild(current);
 	for (auto & item : selected)
-		delete item;
+		parent->removeChild(item);
 
 	parent->insertChildren(index, caches);
 	bouquets_tree->setCurrentItem(caches.first());
