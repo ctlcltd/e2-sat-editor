@@ -313,6 +313,7 @@ void gui::tabClicked(int index)
 		QWidget* curr_wid = twid->currentWidget();
 		int ttid = curr_wid->property("ttid").toInt();
 		ttmenu[ttid]->setChecked(true);
+		ttabs[ttid]->tabSwitched();
 	});
 }
 
@@ -418,7 +419,7 @@ void gui::tabChangeName(int ttid, string filename)
 void gui::loaded(int counters[5])
 {
 	QString qstr;
-	if (counters[4])
+	if (counters[4] != -1)
 	{
 		qstr = "Channels: " + QString::fromStdString(to_string(counters[4]));
 		sbwidl->setText(qstr);

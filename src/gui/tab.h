@@ -85,6 +85,7 @@ class tab : protected e2se::log_factory
 		void showListEditContextMenu(QPoint &pos);
 		void setCounters(bool channels = false);
 		void setTabId(int ttid);
+		void tabSwitched();
 		void tabChangeName(string filename = "");
 		void initialize();
 		void destroy();

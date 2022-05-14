@@ -37,7 +37,6 @@
 #include "editService.h"
 #include "channelBook.h"
 #include "ftpcom_gui.h"
-#include "todo.h"
 
 using std::to_string, std::sort;
 using namespace e2se;
@@ -395,29 +394,29 @@ void tab::addUserbouquet()
 	bname = add->getEditID();
 	add->destroy();
 
-	if (! bname.empty())
-	{
-		e2db::userbouquet uboq = dbih->userbouquets[bname];
-		e2db::bouquet gboq = dbih->bouquets[uboq.pname];
-		QString bgroup = QString::fromStdString(uboq.pname);
-		QTreeWidgetItem* pgroup = bouquets_tree->topLevelItem(gboq.index);
-		// macos: unwanted chars [qt.qpa.fonts] Menlo notice
-		QString name;
-		if (gid->sets->value("preference/fixUnicodeChars").toBool())
-			name = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{N}\\p{Sm}\\p{M}\\p{P}\\s]+"));
-		else
-			name = QString::fromStdString(uboq.name);
+	if (bname.empty())
+		return;
 
-		QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
-		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
-		QMap<QString, QVariant> tdata; //TODO
-		tdata["id"] = bgroup;
-		bitem->setData(0, Qt::UserRole, QVariant (tdata));
-		bitem->setText(0, name);
-		bouquets_tree->addTopLevelItem(bitem);
+	e2db::userbouquet uboq = dbih->userbouquets[bname];
+	e2db::bouquet gboq = dbih->bouquets[uboq.pname];
+	int pidx = gboq.btype == 1 ? 0 : 1;
+	QTreeWidgetItem* pgroup = bouquets_tree->topLevelItem(pidx);
+	// macos: unwanted chars [qt.qpa.fonts] Menlo notice
+	QString name;
+	if (gid->sets->value("preference/fixUnicodeChars").toBool())
+		name = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{N}\\p{Sm}\\p{M}\\p{P}\\s]+"));
+	else
+		name = QString::fromStdString(uboq.name);
 
-		dbih->updateUserbouquetIndexes();
-	}
+	QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
+	bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
+	QMap<QString, QVariant> tdata; //TODO
+	tdata["id"] = QString::fromStdString(uboq.bname);
+	bitem->setData(0, Qt::UserRole, QVariant (tdata));
+	bitem->setText(0, name);
+	bouquets_tree->addTopLevelItem(bitem);
+
+	dbih->updateUserbouquetIndexes();
 }
 
 void tab::editUserbouquet()
@@ -575,13 +574,13 @@ void tab::load()
 	{
 		debug("load()", "bouquet", bsi.second);
 		e2db::bouquet gboq = dbih->bouquets[bsi.second];
-		QString bgroup = QString::fromStdString(bsi.second);
+		QString bname = QString::fromStdString(bsi.second);
 		QString name = QString::fromStdString(gboq.nname.empty() ? gboq.name : gboq.nname);
 
 		QTreeWidgetItem* pgroup = new QTreeWidgetItem();
 		pgroup->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 		QMap<QString, QVariant> tdata; //TODO
-		tdata["id"] = bgroup;
+		tdata["id"] = bname;
 		pgroup->setData(0, Qt::UserRole, QVariant (tdata));
 		pgroup->setText(0, name);
 		bouquets_tree->addTopLevelItem(pgroup);
@@ -594,7 +593,7 @@ void tab::load()
 	{
 		debug("load()", "userbouquet", ubi.second);
 		e2db::userbouquet uboq = dbih->userbouquets[ubi.second];
-		QString bgroup = QString::fromStdString(ubi.second);
+		QString bname = QString::fromStdString(ubi.second);
 		QTreeWidgetItem* pgroup = bgroups[ubi.second];
 		// macos: unwanted chars [qt.qpa.fonts] Menlo notice
 		QString name;
@@ -606,7 +605,7 @@ void tab::load()
 		QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
 		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
 		QMap<QString, QVariant> tdata; //TODO
-		tdata["id"] = bgroup;
+		tdata["id"] = bname;
 		bitem->setData(0, Qt::UserRole, QVariant (tdata));
 		bitem->setText(0, name);
 		bouquets_tree->addTopLevelItem(bitem);
@@ -614,6 +613,7 @@ void tab::load()
 
 	bouquets_tree->setDragEnabled(true);
 	bouquets_tree->setAcceptDrops(true);
+	services_tree->setCurrentItem(services_tree->topLevelItem(0));
 	populate(services_tree);
 	setCounters();
 }
@@ -638,7 +638,7 @@ void tab::populate(QTreeWidget* side_tree)
 
 	QTreeWidgetItem* selected = side_tree->currentItem();
 	if (selected == NULL)
-		selected = side_tree->topLevelItem(0);
+		return;
 	if (selected != NULL)
 	{
 		QVariantMap tdata = selected->data(0, Qt::UserRole).toMap();
@@ -1226,7 +1226,7 @@ void tab::setCounters(bool channels)
 {
 	debug("setCounters()");
 
-	int counters[5] = {0, 0, 0, 0, 0};
+	int counters[5] = {-1, -1, -1, -1, -1};
 
 	if (channels)
 	{
@@ -1249,6 +1249,12 @@ void tab::setTabId(int ttid)
 	debug("setTabId()", "ttid", to_string(ttid));
 
 	this->ttid = ttid;
+}
+
+void tab::tabSwitched()
+{
+	setCounters();
+	setCounters(true);
 }
 
 void tab::tabChangeName(string filename)

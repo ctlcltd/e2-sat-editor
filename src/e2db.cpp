@@ -1655,23 +1655,35 @@ void e2db::add_userbouquet(userbouquet& ub)
 {
 	debug("add_userbouquet()");
 
-	if (! ub.index)
+	bouquet bs = bouquets[ub.pname];
+
+	if (ub.index < 0)
 	{
 		int idx = 0;
+		string ktype;
+		if (bs.btype == 1)
+			ktype = "tv";
+		else if (bs.btype == 2)
+			ktype = "radio";
 
 		for (auto it = index["ubs"].begin(); it != index["ubs"].end(); it++)
 		{
-			unsigned long pos = it->second.find(".dbe");
-			if (pos != string::npos)
-				idx += atoi(it->second.substr(pos, pos + 2).data());
+			unsigned long pos0 = it->second.find(".dbe");
+			unsigned long pos1 = it->second.find('.' + ktype);
+			int len = it->second.length();
+			int n = 0;
+			if (pos0 != string::npos && pos1 != string::npos)
+			{
+				n = atoi(it->second.substr(pos0 + 4, len - pos1 - 1).data());
+				idx = n > idx ? n : idx;
+			}
 		}
 
-		idx++;
+		idx = idx ? idx + 1 : 0;
 		ub.index = idx;
 	}
 	if (ub.bname.empty())
 	{
-		bouquet bs = bouquets[ub.pname];
 		stringstream bname;
 		string ktype;
 		if (bs.btype == 1)
