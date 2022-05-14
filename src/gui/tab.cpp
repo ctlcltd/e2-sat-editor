@@ -996,29 +996,22 @@ void tab::listItemPaste()
 {
 	debug("listItemPaste()");
 
-	QTreeWidgetItem* selected = list_tree->currentItem();
+	QClipboard* clipboard = QGuiApplication::clipboard();
+	const QMimeData* mimeData = clipboard->mimeData();
+	vector<QString> items;
+	string curr_chlist = this->state.curr;
 
-	if (selected == NULL)
-		selected = list_tree->topLevelItem(list_tree->topLevelItemCount() - 1);
-	if (selected != NULL)
+	if (mimeData->hasText())
 	{
-		QClipboard* clipboard = QGuiApplication::clipboard();
-		const QMimeData* mimeData = clipboard->mimeData();
-		vector<QString> items;
-		string curr_chlist = this->state.curr;
-
-		if (mimeData->hasText())
+		QStringList list = clipboard->text().split("\n");
+		for (QString & data : list)
 		{
-			QStringList list = clipboard->text().split("\n");
-			for (QString & data : list)
-			{
-				//TODO validate
-				items.emplace_back(data.split(",")[2]);
-			}
+			//TODO validate
+			items.emplace_back(data.split(",")[2]);
 		}
-		if (! items.empty())
-			putChannels(items);
 	}
+	if (! items.empty())
+		putChannels(items);
 }
 
 void tab::listItemDelete()
@@ -1092,13 +1085,18 @@ void tab::putChannels(vector<QString> channels)
 	list_tree->setDragEnabled(false);
 	list_tree->setAcceptDrops(false);
 	QList<QTreeWidgetItem*> clist;
-	int i = list_tree->topLevelItemCount() + 1;
+	int i = 0;
+	int idx;
+	QTreeWidgetItem* current = list_tree->currentItem();
+	QTreeWidgetItem* parent = list_tree->invisibleRootItem();
+	i = current != nullptr ? parent->indexOfChild(current) : list_tree->topLevelItemCount();
+	idx = i + 1;
 
 	for (QString & w : channels)
 	{
 		string chid = w.toStdString();
 		char ci[7];
-		std::sprintf(ci, "%06d", i);
+		std::sprintf(ci, "%06d", i++);
 		QString x = QString::fromStdString(ci);
 		QString idx = QString::fromStdString(to_string(i));
 		QStringList entry;
@@ -1145,14 +1143,18 @@ void tab::putChannels(vector<QString> channels)
 		item->setData(1, Qt::UserRole, marker); // data: marker flag
 		item->setData(2, Qt::UserRole, w);      // data: chid
 		clist.append(item);
-		i++;
 	}
-	list_tree->addTopLevelItems(clist);
+
+	if (current == nullptr)
+		list_tree->addTopLevelItems(clist);
+	else
+		list_tree->insertTopLevelItems(idx, clist);
 
 	lheaderv->setSectionsClickable(true);
 	list_tree->setDragEnabled(true);
 	list_tree->setAcceptDrops(true);
 	this->state.changed = true;
+	//TODO FIX sorting default
 	updateListIndex();
 	visualReindexList();
 	setCounters();
