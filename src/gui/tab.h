@@ -88,7 +88,6 @@ class tab : protected e2se::log_factory
 		void tabSwitched();
 		void tabChangeName(string filename = "");
 		void initialize();
-		void destroy();
 		void profileComboChanged(int index);
 		bool ftpHandle();
 		void ftpConnect();

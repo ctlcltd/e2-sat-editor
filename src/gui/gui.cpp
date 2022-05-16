@@ -50,7 +50,7 @@ gui::gui(int argc, char* argv[])
 {
 	std::setlocale(LC_NUMERIC, "C");
 
-	this->log = new logger("tab");
+	this->log = new logger("gui");
 	debug("gui()");
 
 	this->mroot = new QApplication(argc, argv);
@@ -183,19 +183,17 @@ void gui::tabCtl()
 {
 	debug("tabCtl()");
 
-	ttidx = 0;
-
 	this->twid = new QTabWidget(mwid);
 	twid->setTabsClosable(true);
 	twid->setMovable(true);
 //	twid->setDocumentMode(true);
 //	twid->setUsesScrollButtons(true);
 //	twid->tabBar()->setDrawBase(false);
+	twid->tabBar()->setChangeCurrentOnDrag(false);
 
 	//TODO FIX label text color in dark theme
 	twid->setStyleSheet("QTabWidget::tab-bar { left: 0px } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { height: 32px; padding: 5px; background: palette(mid); border: 1px solid transparent; border-radius: 0 } QTabBar::tab:selected { background: palette(highlight) } QTabWidget::tab QLabel { margin-left: 5px } QTabBar { background: red } QTabBar::close-button { margin: 0.4ex; image: url(" + theme::getIcon("close") + ") }");
 	twid->connect(twid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
-	twid->connect(twid, &QTabWidget::tabBarClicked, [=](int index) { this->tabClicked(index); });
 	twid->connect(twid, &QTabWidget::tabCloseRequested, [=](int index) { this->closeTab(index); });
 	twid->tabBar()->connect(twid->tabBar(), &QTabBar::tabMoved, [=](int from, int to) { this->tabMoved(from, to); });
 
@@ -207,8 +205,7 @@ void gui::tabCtl()
 	ttbnew->connect(ttbnew, &QPushButton::pressed, [=]() { this->newTab(""); });
 	twid->setCornerWidget(ttbnew, Qt::TopLeftCorner);
 
-	ttidx = 0;
-	newTab("");
+	initialize();
 
 	mcnt->addWidget(twid);
 }
@@ -216,25 +213,24 @@ void gui::tabCtl()
 int gui::newTab(string filename = "")
 {
 	tab* ttab = new tab(this, mwid);
-	int ttid = ttidx++;
-	ttab->widget->setProperty("ttid", QVariant (ttid));
+	int ttid = this->state.tt++;
 
 	if (! filename.empty() && ! ttab->readFile(filename))
 		return -1;
 
 	bool read = ! filename.empty();
 	int ttcount = twid->count();
-	QString ttname = QString::fromStdString("Untitled" + (ttcount ? " " + to_string(ttcount++) : ""));
+	QString ttname = QString::fromStdString("Untitled" + (ttcount ? " " + to_string(ttcount) : ""));
+
+	ttab->setTabId(ttid);
 	int index = twid->addTab(ttab->widget, ttname);
+	twid->tabBar()->setTabData(index, ttid);
 
 	QTabBar* ttabbar = twid->tabBar();
 	QLabel* ttlabel = new QLabel;
 	ttlabel->setText(ttname);
 	ttabbar->setTabButton(index, QTabBar::LeftSide, ttlabel);
 	ttabbar->setTabText(index, "");
-
-	ttab->setTabId(ttid);
-	twid->setCurrentIndex(index);
 
 	QAction* action = new QAction(ttname);
 	action->connect(action, &QAction::triggered, [=]() { this->twid->setCurrentWidget(ttab->widget); });
@@ -246,7 +242,7 @@ int gui::newTab(string filename = "")
 
 	if (read)
 		tabChangeName(ttid, filename);
-	ttmenu[ttid]->setChecked(true);
+	twid->setCurrentIndex(index);
 
 	debug("newTab()", "ttid", to_string(ttid));
 
@@ -257,25 +253,20 @@ void gui::closeTab(int index)
 {
 	debug("closeTab()", "index", to_string(index));
 
-	//TODO ?
-	// if (index == -1)
-	//	index = twid->currentIndex();
+	int ttid = getCurrentTabID(index);
 
-	QWidget* curr_wid = twid->currentWidget();
-	int ttid = curr_wid->property("ttid").toInt();
-	//TODO FIX
 	mwind->removeAction(ttmenu[ttid]);
 	mwtabs->removeAction(ttmenu[ttid]);
 	twid->removeTab(index);
+	ttmenu.erase(ttid);
 
-	ttabs[ttid]->destroy();
-	ttabs[ttid] = nullptr;
 	delete ttabs[ttid];
+	ttabs.erase(ttid);
 
-	if (twid->count() == 0) newTab();
+	if (twid->count() == 0)
+		initialize();
 }
 
-//TODO FIX SEGFAULT
 void gui::closeAllTabs()
 {
 	debug("closeAllTabs()");
@@ -289,32 +280,28 @@ void gui::closeAllTabs()
 
 	for (unsigned int i = 0; i < ttabs.size(); i++)
 	{
-		debug("tab.destroy()");
-		ttabs[i]->destroy();
-		ttabs[i] = nullptr;
-		ttabs.erase(i);
-	}
+		debug("closeAllTabs()", "destroy", to_string(i));
 
-	if (twid->count() == 0) newTab();
+		delete ttabs[i];
+		ttabs.erase(i);
+		ttmenu.erase(i);
+	}
+	ttabs.clear();
+	ttmenu.clear();
+
+	initialize();
 }
 
 void gui::tabChanged(int index)
 {
 	debug("tabChanged()", "index", to_string(index));
-}
 
-void gui::tabClicked(int index)
-{
-	debug("tabClicked()", "index", to_string(index));
-
-	//TODO FIX
-	// is prev. currentWidget on tabClicked
-	QTimer::singleShot(200, [=]() {
-		QWidget* curr_wid = twid->currentWidget();
-		int ttid = curr_wid->property("ttid").toInt();
-		ttmenu[ttid]->setChecked(true);
+	int ttid = getCurrentTabID(index);
+	if (ttid != -1)
+	{
 		ttabs[ttid]->tabSwitched();
-	});
+		ttmenu[ttid]->setChecked(true);
+	}
 }
 
 void gui::tabMoved(int from, int to)
@@ -416,7 +403,7 @@ void gui::tabChangeName(int ttid, string filename)
 	ttmenu[ttid]->setText(ttname);
 }
 
-void gui::loaded(int counters[5])
+void gui::setStatus(int counters[5])
 {
 	QString qstr;
 	if (counters[4] != -1)
@@ -435,9 +422,9 @@ void gui::loaded(int counters[5])
 	}
 }
 
-void gui::reset()
+void gui::resetStatus()
 {
-	debug("reset()");
+	debug("resetStatus()");
 
 	sbwidl->setText("");
 	sbwidr->setText("");
@@ -480,11 +467,33 @@ void gui::about()
 	new e2se_gui_dialog::about(mwid);
 }
 
+int gui::getCurrentTabID()
+{
+	int index = twid->tabBar()->currentIndex();
+	return getCurrentTabID(index);
+}
+
+int gui::getCurrentTabID(int index)
+{
+	int ttid = twid->tabBar()->tabData(index).toInt();
+	if (ttabs[ttid] == nullptr)
+		ttid = -1;
+	return ttid;
+}
+
 tab* gui::getCurrentTabHandler()
 {
-	QWidget* curr_wid = twid->currentWidget();
-	int ttid = curr_wid->property("ttid").toInt();
-	return ttabs[ttid];
+	int ttid = getCurrentTabID();
+	return ttid != -1 ? ttabs[ttid] : nullptr;
+}
+
+void gui::initialize()
+{
+	debug("initialize()");
+
+	this->state.tt = 0;
+	newTab();
+	tabChanged(0);
 }
 
 void gui::setDefaultSets()

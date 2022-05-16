@@ -49,6 +49,7 @@ class gui : protected e2se::log_factory
 		};
 
 		gui(int argc, char* argv[]);
+		~gui();
 		void root();
 		void menuCtl();
 		void tabCtl();
@@ -57,25 +58,29 @@ class gui : protected e2se::log_factory
 		void closeTab(int index);
 		void closeAllTabs();
 		void tabChanged(int index);
-		void tabClicked(int index);
 		void tabMoved(int from, int to);
 		string openFileDialog();
 		string saveFileDialog(string filename);
 		vector<string> importFileDialog();
 		string exportFileDialog(string filename);
 		void tabChangeName(int ttid, string filename = "");
-		void loaded(int counters[5]);
-		void reset();
+		void setStatus(int counters[5]);
+		void resetStatus();
 		void open();
 		void save();
 		void tabEditAction(TAB_EDIT_ATS action);
 		void settings();
 		void about();
+		int getCurrentTabID();
+		int getCurrentTabID(int index);
 		tab* getCurrentTabHandler();
+		void initialize();
 		void setDefaultSets();
 		QSettings* sets;
-		QString icopx;
 	private:
+		struct sts {
+			int tt = 0;
+		} state;
 		QApplication* mroot;
 		QWidget* mwid;
 		QGridLayout* mfrm;
@@ -88,7 +93,6 @@ class gui : protected e2se::log_factory
 		QMenuBar* menu;
 		QMenu* mwind;
 		QActionGroup* mwtabs;
-		int ttidx;
 		unordered_map<int, tab*> ttabs;
 		unordered_map<int, QAction*> ttmenu;
 };

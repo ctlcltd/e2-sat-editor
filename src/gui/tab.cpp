@@ -298,9 +298,7 @@ tab::tab(gui* gid, QWidget* wid)
 
 tab::~tab()
 {
-	delete dbih;
-	//TODO FIX deleting widget removes next tab
-	// delete widget;
+	delete this->dbih;
 }
 
 void tab::newFile()
@@ -904,7 +902,7 @@ void tab::trickySortByColumn(int column)
 		else
 			lheaderv->setSortIndicatorShown(true);
 
-		if (! this->state.changed)
+		if (this->state.changed)
 			this->visualReindexList();
 	}
 	this->state.sort = pair (column, order); //C++17
@@ -1051,7 +1049,6 @@ void tab::listItemDelete()
 	setCounters();
 }
 
-//TODO focus in
 void tab::listItemSelectAll()
 {
 	debug("listItemSelectAll()");
@@ -1083,7 +1080,7 @@ void tab::listItemAction(int action)
 	}
 }
 
-//TODO allow duplicates and new
+//TODO duplicates and new
 void tab::putChannels(vector<QString> channels)
 {
 	debug("putChannels()");
@@ -1255,7 +1252,7 @@ void tab::setCounters(bool channels)
 		counters[3] = dbih->gindex["chs"].size();   // all
 	}
 
-	gid->loaded(counters);
+	gid->setStatus(counters);
 }
 
 void tab::setTabId(int ttid)
@@ -1307,12 +1304,7 @@ void tab::initialize()
 	this->action.list_newch->setEnabled(true);
 	this->action.list_dnd->setDisabled(true);
 
-	gid->reset();
-}
-
-void tab::destroy()
-{
-	delete this;
+	gid->resetStatus();
 }
 
 void tab::profileComboChanged(int index)
