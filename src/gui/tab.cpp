@@ -903,6 +903,9 @@ void tab::trickySortByColumn(int column)
 			lheaderv->setSortIndicatorShown(false);
 		else
 			lheaderv->setSortIndicatorShown(true);
+
+		if (! this->state.changed)
+			this->visualReindexList();
 	}
 	this->state.sort = pair (column, order); //C++17
 }
@@ -1037,9 +1040,14 @@ void tab::listItemDelete()
 	list_tree->setDragEnabled(true);
 	list_tree->setAcceptDrops(true);
 	this->state.changed = true;
-	//TODO FIX sorting default
-	updateListIndex();
-	visualReindexList();
+
+	// non-sorting
+	if (this->state.dnd)
+	{
+		updateListIndex();
+		visualReindexList();
+	}
+
 	setCounters();
 }
 
@@ -1075,8 +1083,7 @@ void tab::listItemAction(int action)
 	}
 }
 
-//TODO allow duplicates
-//TODO put in selected place
+//TODO allow duplicates and new
 void tab::putChannels(vector<QString> channels)
 {
 	debug("putChannels()");
@@ -1154,9 +1161,14 @@ void tab::putChannels(vector<QString> channels)
 	list_tree->setDragEnabled(true);
 	list_tree->setAcceptDrops(true);
 	this->state.changed = true;
-	//TODO FIX sorting default
-	updateListIndex();
-	visualReindexList();
+
+	// non-sorting
+	if (this->state.dnd)
+	{
+		updateListIndex();
+		visualReindexList();
+	}
+
 	setCounters();
 }
 
