@@ -20,7 +20,6 @@
 #include <QTabWidget>
 #include <QPushButton>
 #include <QFileDialog>
-#include <QTimer>
 
 #include "theme.h"
 #include "gui.h"

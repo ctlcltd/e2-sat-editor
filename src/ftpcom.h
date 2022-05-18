@@ -36,7 +36,8 @@ class ftpcom
 		struct ftp_params
 		{
 			string host;
-			int port;
+			int ftport;
+			int htport;
 			bool actv;
 			string user;
 			string pass;
@@ -45,12 +46,12 @@ class ftpcom
 			string bpath;
 		};
 		ftpcom();
-		virtual ~ftpcom() = default;
+		virtual ~ftpcom();
 		void setup(ftp_params params);
 		bool handle();
 		CURLcode perform();
-		void reset();
-		void cleanup();
+		static void reset(CURL* ch, CURLU* rh);
+		static void cleanup(CURL* ch, CURLU* rh);
 		bool connect();
 		bool disconnect();
 		vector<string> list_dir(string base);
@@ -59,6 +60,7 @@ class ftpcom
 		void fetch_paths();
 		unordered_map<string, ftpcom_file> get_files();
 		void put_files(unordered_map<string, ftpcom_file> files);
+		bool cmd_reload();
 	protected:
 		struct sio {
 			string data;
@@ -84,14 +86,17 @@ class ftpcom
 	private:
 		bool actv;
 		string host;
-		int port;
+		int ftport;
+		int htport;
 		string user;
 		string pass;
 		string baset;
 		string bases;
 		string baseb;
-		CURL* curl = nullptr;
-		CURLU* urlp = nullptr;
+		CURL* cph = nullptr;
+		CURL* csh = nullptr;
+		CURLU* rph = nullptr;
+		CURLU* rsh = nullptr;
 };
 }
 #endif /* ftpcom_h */

@@ -29,7 +29,8 @@ ftpcom::ftpcom()
 	sets->setArrayIndex(profile_sel);
 	ftpcom::ftp_params params;
 	params.host = sets->value("ipAddress").toString().toStdString();
-	params.port = sets->value("ftpPort").toInt();
+	params.ftport = sets->value("ftpPort").toInt();
+	params.htport = sets->value("httpPort").toInt();
 	params.user = sets->value("username").toString().toStdString();
 	params.pass = sets->value("password").toString().toStdString();
 	params.tpath = sets->value("pathTransponders").toString().toStdString();

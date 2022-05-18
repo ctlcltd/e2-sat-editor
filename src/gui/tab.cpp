@@ -1357,6 +1357,10 @@ void tab::ftpUpload()
 			debug("ftpUpload()", "file", x.first + " | " + to_string(x.second.size()));
 
 		ftph->put_files(files);
+		QMessageBox::information(nullptr, NULL, "Uploaded");
+
+		if (ftph->cmd_reload())
+			QMessageBox::information(nullptr, NULL, "STB reloaded");
 	}
 }
 

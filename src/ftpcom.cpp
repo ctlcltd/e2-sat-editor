@@ -26,6 +26,13 @@ ftpcom::ftpcom()
 {
 	this->log = new e2se::logger("ftpcom");
 	debug("ftpcom()");
+
+	curl_global_init(CURL_GLOBAL_DEFAULT);
+}
+
+ftpcom::~ftpcom()
+{
+	curl_global_cleanup();
 }
 
 void ftpcom::setup(ftp_params params)
@@ -38,13 +45,16 @@ void ftpcom::setup(ftp_params params)
 		error("ftpcom()", trw("Missing \"%s\" parameter.", "password"));
 	if (params.host.empty())
 		error("ftpcom()", trw("Missing \"%s\" parameter.", "IP address"));
-	if (! params.port)
-		error("ftpcom()", trw("Missing \"%s\" parameter.", "port"));
+	if (! params.ftport)
+		error("ftpcom()", trw("Missing \"%s\" parameter.", "FTP port"));
+	if (! params.htport)
+		error("ftpcom()", trw("Missing \"%s\" parameter.", "HTTP port"));
 	if (params.actv)
 		actv = true;
 
 	host = params.host;
-	port = params.port;
+	ftport = params.ftport;
+	htport = params.htport;
 	user = params.user;
 	pass = params.pass;
 
@@ -60,51 +70,47 @@ void ftpcom::setup(ftp_params params)
 	baseb = params.bpath;
 	bases = params.spath;
 
-	std::cout << params.user << ':' << params.pass << '@' << params.host << ':' << params.port << params.spath << std::endl;
+	// std::cout << params.user << ':' << params.pass << '@' << params.host << ':' << params.ftport << params.spath << std::endl;
 }
 
 bool ftpcom::handle()
 {
-	if (! curl)
-	{
-		curl_global_init(CURL_GLOBAL_DEFAULT);
-		this->curl = curl_easy_init();
-	}
-	if (! curl)
+	if (! cph)
+		this->cph = curl_easy_init();
+	if (! cph)
 		return false;
 
-	this->urlp = curl_url();
-	curl_url_set(urlp, CURLUPART_SCHEME, "ftp", 0);
-	curl_url_set(urlp, CURLUPART_HOST, host.c_str(), 0);
-	curl_easy_setopt(curl, CURLOPT_PROTOCOLS, CURLPROTO_FTP);
-	curl_easy_setopt(curl, CURLOPT_CURLU, urlp);
-	curl_easy_setopt(curl, CURLOPT_USERNAME, user.c_str());
-	curl_easy_setopt(curl, CURLOPT_PASSWORD, pass.c_str());
-	curl_easy_setopt(curl, CURLOPT_PORT, port);
+	this->rph = curl_url();
+	curl_url_set(rph, CURLUPART_SCHEME, "ftp", 0);
+	curl_url_set(rph, CURLUPART_HOST, host.c_str(), 0);
+	curl_easy_setopt(cph, CURLOPT_PROTOCOLS, CURLPROTO_FTP);
+	curl_easy_setopt(cph, CURLOPT_CURLU, rph);
+	curl_easy_setopt(cph, CURLOPT_USERNAME, user.c_str());
+	curl_easy_setopt(cph, CURLOPT_PASSWORD, pass.c_str());
+	curl_easy_setopt(cph, CURLOPT_PORT, ftport);
 	if (actv)
-		curl_easy_setopt(curl, CURLOPT_FTPPORT, "-");
-	// curl_easy_setopt(curl, CURLOPT_FTP_RESPONSE_TIMEOUT, 0); // 0 = default no timeout
-	// curl_easy_setopt(curl, CURLOPT_VERBOSE, true);
+		curl_easy_setopt(cph, CURLOPT_FTPPORT, "-");
+	// curl_easy_setopt(cph, CURLOPT_FTP_RESPONSE_TIMEOUT, 0); // 0 = default no timeout
+	// curl_easy_setopt(cph, CURLOPT_VERBOSE, true);
 
 	return true;
 }
 
 CURLcode ftpcom::perform()
 {
-	return curl_easy_perform(curl);
+	return curl_easy_perform(cph);
 }
 
-void ftpcom::reset()
+void ftpcom::reset(CURL* ch, CURLU* rh)
 {
-	curl_url_cleanup(urlp);
-	curl_easy_reset(curl);
+	curl_url_cleanup(rh);
+	curl_easy_reset(ch);
 }
 
-void ftpcom::cleanup()
+void ftpcom::cleanup(CURL* ch, CURLU* rh)
 {
-	curl_url_cleanup(urlp);
-	curl_easy_cleanup(curl);
-	curl_global_cleanup();
+	curl_url_cleanup(rh);
+	curl_easy_cleanup(ch);
 }
 
 bool ftpcom::connect()
@@ -115,7 +121,7 @@ bool ftpcom::connect()
 	{
 		return false;
 	}
-	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, data_discard_func);
+	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_discard_func);
 	CURLcode res = perform();
 	return (res == CURLE_OK) ? true : false;
 }
@@ -124,10 +130,10 @@ bool ftpcom::disconnect()
 {
 	debug("disconnect()");
 
-	if (! curl)
+	if (! cph)
 		return false;
 
-	cleanup();
+	cleanup(cph, rph);
 	return true;
 }
 
@@ -146,10 +152,10 @@ vector<string> ftpcom::list_dir(string base)
 	stringstream data;
 	string remotedir = '/' + base + '/';
 
-	curl_url_set(urlp, CURLUPART_PATH, remotedir.c_str(), 0);
-	curl_easy_setopt(curl, CURLOPT_FTPLISTONLY, true);
-	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, data_read_func);
-	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &data);
+	curl_url_set(rph, CURLUPART_PATH, remotedir.c_str(), 0);
+	curl_easy_setopt(cph, CURLOPT_FTPLISTONLY, true);
+	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_read_func);
+	curl_easy_setopt(cph, CURLOPT_WRITEDATA, &data);
 	CURLcode res = perform();
 
 	if (res != CURLE_OK)
@@ -168,7 +174,7 @@ vector<string> ftpcom::list_dir(string base)
 	}
 
 	data.clear();
-	reset();
+	reset(cph, rph);
 
 	return list;
 }
@@ -191,9 +197,9 @@ string ftpcom::download_data(string base, string filename)
 
 	debug("download_data()", "file", remotefile);
 
-	curl_url_set(urlp, CURLUPART_PATH, remotefile.c_str(), 0);
-	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, data_download_func);
-	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &data);
+	curl_url_set(rph, CURLUPART_PATH, remotefile.c_str(), 0);
+	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_download_func);
+	curl_easy_setopt(cph, CURLOPT_WRITEDATA, &data);
 	res = perform();
 
 	if (res != CURLE_OK)
@@ -202,7 +208,7 @@ string ftpcom::download_data(string base, string filename)
 		return "";
 	}
 
-	reset();
+	reset(cph, rph);
 
 	return data.data;
 }
@@ -221,33 +227,33 @@ void ftpcom::upload_data(string base, string filename, string os)
 	
 	debug("upload_data()", "file", remotefile);
 
-	curl_url_set(urlp, CURLUPART_PATH, remotefile.c_str(), 0);
-	curl_easy_setopt(curl, CURLOPT_UPLOAD, true);
-	curl_easy_setopt(curl, CURLOPT_FTP_CREATE_MISSING_DIRS, false);
-	curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, get_content_length_func);
-	curl_easy_setopt(curl, CURLOPT_HEADERDATA, &uplen);
-	curl_easy_setopt(curl, CURLOPT_READFUNCTION, data_upload_func);
-	curl_easy_setopt(curl, CURLOPT_READDATA, &data);
-	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, data_discard_func);
+	curl_url_set(rph, CURLUPART_PATH, remotefile.c_str(), 0);
+	curl_easy_setopt(cph, CURLOPT_UPLOAD, true);
+	curl_easy_setopt(cph, CURLOPT_FTP_CREATE_MISSING_DIRS, false);
+	curl_easy_setopt(cph, CURLOPT_HEADERFUNCTION, get_content_length_func);
+	curl_easy_setopt(cph, CURLOPT_HEADERDATA, &uplen);
+	curl_easy_setopt(cph, CURLOPT_READFUNCTION, data_upload_func);
+	curl_easy_setopt(cph, CURLOPT_READDATA, &data);
+	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_discard_func);
 
 	for (int a = 0; (res != CURLE_OK) && (a < MAX_RESUME_ATTEMPTS); a++) {
 		debug("upload_data()", "attempt", to_string(a + 1));
 		if (a)
 		{
-			curl_easy_setopt(curl, CURLOPT_NOBODY, true);
-			curl_easy_setopt(curl, CURLOPT_HEADER, true);
+			curl_easy_setopt(cph, CURLOPT_NOBODY, true);
+			curl_easy_setopt(cph, CURLOPT_HEADER, true);
 			res = perform();
 			if (res != CURLE_OK)
 			  continue;
-			curl_easy_setopt(curl, CURLOPT_NOBODY, false);
-			curl_easy_setopt(curl, CURLOPT_HEADER, false);
+			curl_easy_setopt(cph, CURLOPT_NOBODY, false);
+			curl_easy_setopt(cph, CURLOPT_HEADER, false);
 			data.data += uplen;
 			data.sizel -= uplen;
-			curl_easy_setopt(curl, CURLOPT_APPEND, true);
+			curl_easy_setopt(cph, CURLOPT_APPEND, true);
 		}
 		else
 		{
-			curl_easy_setopt(curl, CURLOPT_APPEND, false);
+			curl_easy_setopt(cph, CURLOPT_APPEND, false);
 		}
 		res = perform();
 	}
@@ -255,7 +261,7 @@ void ftpcom::upload_data(string base, string filename, string os)
 	if (res != CURLE_OK)
 		return error("upload_data()", trs(curl_easy_strerror(res))); // var error string
 
-	reset();
+	reset(cph, rph);
 }
 
 void ftpcom::fetch_paths()
@@ -340,13 +346,11 @@ void ftpcom::debug(string cmsg, string optk, string optv)
 
 void ftpcom::error(string cmsg, string rmsg)
 {
-	curl_global_cleanup();
 	this->log->error(cmsg, "Error", rmsg);
 }
 
 void ftpcom::error(string cmsg, string optk, string optv)
 {
-	curl_global_cleanup();
 	this->log->error(cmsg, optk, optv);
 }
 
@@ -399,6 +403,58 @@ void ftpcom::put_files(unordered_map<string, ftpcom_file> files)
 		string filename = path.filename().u8string(); //C++17
 		upload_data(base, x.first, x.second);
 	}
+}
+
+//TODO debug
+bool ftpcom::cmd_reload()
+{
+	debug("cmd_reload()");
+
+	if (! csh)
+		this->csh = curl_easy_init();
+	if (! csh)
+		return false;
+
+	stringstream data;
+
+	this->rsh = curl_url();
+	curl_url_set(rsh, CURLUPART_SCHEME, "http", 0);
+	curl_url_set(rsh, CURLUPART_HOST, host.c_str(), 0);
+	curl_url_set(rsh, CURLUPART_PORT, to_string(htport).c_str(), 0);
+	curl_url_set(rsh, CURLUPART_PATH, "/web/servicelistreload", 0);
+	curl_url_set(rsh, CURLUPART_QUERY, "mode=0", 0);
+
+	char* url;
+	curl_url_get(rsh, CURLUPART_URL, &url, 0);
+	debug("cmd_reload()", "URL", url);
+	url = NULL;
+
+	curl_easy_setopt(csh, CURLOPT_PROTOCOLS, CURLPROTO_HTTP);
+	curl_easy_setopt(csh, CURLOPT_FOLLOWLOCATION, true);
+	curl_easy_setopt(csh, CURLOPT_CURLU, rsh);
+	curl_easy_setopt(csh, CURLOPT_WRITEFUNCTION, data_read_func);
+	curl_easy_setopt(csh, CURLOPT_WRITEDATA, &data);
+	curl_easy_setopt(csh, CURLOPT_TIMEOUT, 60); // 0 = default no timeout
+	curl_easy_setopt(csh, CURLOPT_VERBOSE, true);
+	CURLcode res = perform();
+
+	if (res != CURLE_OK)
+	{
+		error("cmd_reload()", trs(curl_easy_strerror(res))); // var error string
+		return false;
+	}
+
+	bool cmd = false;
+
+	if (data.str().find("OK") != string::npos)
+		cmd = true;
+
+	debug("cmd_reload()", "data", data.str());
+
+	data.clear();
+	reset(csh, rsh);
+
+	return cmd;
 }
 
 }
