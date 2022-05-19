@@ -69,8 +69,8 @@ void ftpcom::setup(ftp_params params)
 	baset = params.tpath;
 	baseb = params.bpath;
 	bases = params.spath;
-
-	// std::cout << params.user << ':' << params.pass << '@' << params.host << ':' << params.ftport << params.spath << std::endl;
+	ifreload = params.ifreload;
+	tnreload = params.tnreload;
 }
 
 bool ftpcom::handle()
@@ -96,9 +96,9 @@ bool ftpcom::handle()
 	return true;
 }
 
-CURLcode ftpcom::perform()
+CURLcode ftpcom::perform(CURL* ch)
 {
-	return curl_easy_perform(cph);
+	return curl_easy_perform(ch);
 }
 
 void ftpcom::reset(CURL* ch, CURLU* rh)
@@ -122,7 +122,7 @@ bool ftpcom::connect()
 		return false;
 	}
 	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_discard_func);
-	CURLcode res = perform();
+	CURLcode res = perform(cph);
 	return (res == CURLE_OK) ? true : false;
 }
 
@@ -156,11 +156,13 @@ vector<string> ftpcom::list_dir(string base)
 	curl_easy_setopt(cph, CURLOPT_FTPLISTONLY, true);
 	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_read_func);
 	curl_easy_setopt(cph, CURLOPT_WRITEDATA, &data);
-	CURLcode res = perform();
+	CURLcode res = perform(cph);
 
 	if (res != CURLE_OK)
 	{
 		error("list_dir()", trs(curl_easy_strerror(res))); // var error string
+		reset(cph, rph);
+		data.clear();
 		return list;
 	}
 
@@ -173,8 +175,8 @@ vector<string> ftpcom::list_dir(string base)
 		list.emplace_back(remotedir + line);
 	}
 
-	data.clear();
 	reset(cph, rph);
+	data.clear();
 
 	return list;
 }
@@ -200,11 +202,12 @@ string ftpcom::download_data(string base, string filename)
 	curl_url_set(rph, CURLUPART_PATH, remotefile.c_str(), 0);
 	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_download_func);
 	curl_easy_setopt(cph, CURLOPT_WRITEDATA, &data);
-	res = perform();
+	res = perform(cph);
 
 	if (res != CURLE_OK)
 	{
 		error("download_data()", trs(curl_easy_strerror(res))); // var error string
+		reset(cph, rph);
 		return "";
 	}
 
@@ -242,7 +245,7 @@ void ftpcom::upload_data(string base, string filename, string os)
 		{
 			curl_easy_setopt(cph, CURLOPT_NOBODY, true);
 			curl_easy_setopt(cph, CURLOPT_HEADER, true);
-			res = perform();
+			res = perform(cph);
 			if (res != CURLE_OK)
 			  continue;
 			curl_easy_setopt(cph, CURLOPT_NOBODY, false);
@@ -255,11 +258,15 @@ void ftpcom::upload_data(string base, string filename, string os)
 		{
 			curl_easy_setopt(cph, CURLOPT_APPEND, false);
 		}
-		res = perform();
+		res = perform(cph);
 	}
 
 	if (res != CURLE_OK)
-		return error("upload_data()", trs(curl_easy_strerror(res))); // var error string
+	{
+		error("upload_data()", trs(curl_easy_strerror(res))); // var error string
+		reset(cph, rph);
+		return;
+	}
 
 	reset(cph, rph);
 }
@@ -405,10 +412,9 @@ void ftpcom::put_files(unordered_map<string, ftpcom_file> files)
 	}
 }
 
-//TODO debug
-bool ftpcom::cmd_reload()
+bool ftpcom::cmd_ifreload()
 {
-	debug("cmd_reload()");
+	debug("cmd_ifreload()");
 
 	if (! csh)
 		this->csh = curl_easy_init();
@@ -416,43 +422,108 @@ bool ftpcom::cmd_reload()
 		return false;
 
 	stringstream data;
-
 	this->rsh = curl_url();
+
 	curl_url_set(rsh, CURLUPART_SCHEME, "http", 0);
 	curl_url_set(rsh, CURLUPART_HOST, host.c_str(), 0);
 	curl_url_set(rsh, CURLUPART_PORT, to_string(htport).c_str(), 0);
-	curl_url_set(rsh, CURLUPART_PATH, "/web/servicelistreload", 0);
-	curl_url_set(rsh, CURLUPART_QUERY, "mode=0", 0);
+	if (ifreload.empty())
+	{
+		curl_url_set(rsh, CURLUPART_PATH, "/web/servicelistreload", 0);
+		curl_url_set(rsh, CURLUPART_QUERY, "mode=0", 0);
+	}
+	else
+	{
+		curl_url_set(rsh, CURLUPART_URL, ifreload.c_str(), 0);
+	}
 
-	char* url;
-	curl_url_get(rsh, CURLUPART_URL, &url, 0);
-	debug("cmd_reload()", "URL", url);
-	url = NULL;
+	// char* url;
+	// curl_url_get(rsh, CURLUPART_URL, &url, 0);
+	// debug("cmd_ifreload()", "URL", url);
+	// url = NULL;
 
 	curl_easy_setopt(csh, CURLOPT_PROTOCOLS, CURLPROTO_HTTP);
+	curl_easy_setopt(csh, CURLOPT_HTTPGET, true);
 	curl_easy_setopt(csh, CURLOPT_FOLLOWLOCATION, true);
 	curl_easy_setopt(csh, CURLOPT_CURLU, rsh);
 	curl_easy_setopt(csh, CURLOPT_WRITEFUNCTION, data_read_func);
 	curl_easy_setopt(csh, CURLOPT_WRITEDATA, &data);
-	curl_easy_setopt(csh, CURLOPT_TIMEOUT, 60); // 0 = default no timeout
-	curl_easy_setopt(csh, CURLOPT_VERBOSE, true);
-	CURLcode res = perform();
+	curl_easy_setopt(csh, CURLOPT_TIMEOUT, HTTP_TIMEOUT); // 0 = default no timeout
+	// curl_easy_setopt(csh, CURLOPT_VERBOSE, true);
+	CURLcode res = perform(csh);
 
 	if (res != CURLE_OK)
 	{
-		error("cmd_reload()", trs(curl_easy_strerror(res))); // var error string
+		error("cmd_ifreload()", trs(curl_easy_strerror(res))); // var error string
+		reset(csh, rsh);
+		data.clear();
 		return false;
 	}
 
 	bool cmd = false;
 
-	if (data.str().find("OK") != string::npos)
+	if (data.str().find("True") != string::npos)
 		cmd = true;
 
-	debug("cmd_reload()", "data", data.str());
+	// debug("cmd_ifreload()", "data", data.str());
 
-	data.clear();
 	reset(csh, rsh);
+	data.clear();
+
+	return cmd;
+}
+
+//TODO
+bool ftpcom::cmd_tnreload()
+{
+	debug("cmd_tnreload()");
+
+	if (! csh)
+		this->csh = curl_easy_init();
+	if (! csh)
+		return false;
+
+	stringstream data;
+	this->rsh = curl_url();
+
+	curl_url_set(rsh, CURLUPART_SCHEME, "telnet", 0);
+	curl_url_set(rsh, CURLUPART_HOST, host.c_str(), 0);
+
+	curl_easy_setopt(csh, CURLOPT_PROTOCOLS, CURLPROTO_TELNET);
+	curl_easy_setopt(csh, CURLOPT_CURLU, rsh);
+	curl_easy_setopt(csh, CURLOPT_PORT, 23);
+	//curl_easy_setopt(csh, CURLOPT_CONNECT_ONLY, true);
+	curl_easy_setopt(csh, CURLOPT_WRITEFUNCTION, data_read_func);
+	curl_easy_setopt(csh, CURLOPT_WRITEDATA, &data);
+	curl_easy_setopt(csh, CURLOPT_FAILONERROR, true);
+	curl_easy_setopt(csh, CURLOPT_VERBOSE, true);
+
+	//TODO FIX blocking stdin
+	CURLcode res = perform(csh);
+
+	if (res != CURLE_OK)
+	{
+		error("cmd_tnreload()", trs(curl_easy_strerror(res))); // var error string
+		reset(csh, rsh);
+		data.clear();
+		return false;
+	}
+	else
+	{
+		/*size_t sent;
+		CURLcode ret;
+		ret = curl_easy_send(csh, "root", 4, &sent);
+		std::cout << to_string(sent) << std::endl;*/
+	}
+	
+	//cmd: init 3
+
+	bool cmd = false;
+
+	debug("cmd_tnreload()", "data", data.str());
+
+	reset(csh, rsh);
+	data.clear();
 
 	return cmd;
 }

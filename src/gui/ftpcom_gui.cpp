@@ -36,6 +36,8 @@ ftpcom::ftpcom()
 	params.tpath = sets->value("pathTransponders").toString().toStdString();
 	params.spath = sets->value("pathServices").toString().toStdString();
 	params.bpath = sets->value("pathBouquets").toString().toStdString();
+	params.ifreload = sets->value("customWebifReloadUrl").toString().toStdString();
+	params.tnreload = sets->value("customTelnetReloadCmd").toString().toStdString();
 	sets->endArray();
 
 	this->setup(params);

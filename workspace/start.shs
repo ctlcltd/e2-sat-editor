@@ -1,4 +1,6 @@
-# Start virtual FTP server
+# To start python venv
 
 source ./.pythonenv/bin/activate
-python3 start.py
+python3 start-ftp.py
+python3 start-webif.py
+python3 start-telnet.py

@@ -32,6 +32,7 @@ class ftpcom
 {
 	public:
 		static const int MAX_RESUME_ATTEMPTS = 5;
+		static const int HTTP_TIMEOUT = 60;
 
 		struct ftp_params
 		{
@@ -44,12 +45,14 @@ class ftpcom
 			string tpath;
 			string spath;
 			string bpath;
+			string ifreload;
+			string tnreload;
 		};
 		ftpcom();
 		virtual ~ftpcom();
 		void setup(ftp_params params);
 		bool handle();
-		CURLcode perform();
+		static CURLcode perform(CURL* ch);
 		static void reset(CURL* ch, CURLU* rh);
 		static void cleanup(CURL* ch, CURLU* rh);
 		bool connect();
@@ -60,7 +63,8 @@ class ftpcom
 		void fetch_paths();
 		unordered_map<string, ftpcom_file> get_files();
 		void put_files(unordered_map<string, ftpcom_file> files);
-		bool cmd_reload();
+		bool cmd_ifreload();
+		bool cmd_tnreload();
 	protected:
 		struct sio {
 			string data;
@@ -93,6 +97,8 @@ class ftpcom
 		string baset;
 		string bases;
 		string baseb;
+		string ifreload;
+		string tnreload;
 		CURL* cph = nullptr;
 		CURL* csh = nullptr;
 		CURLU* rph = nullptr;

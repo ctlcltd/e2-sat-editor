@@ -263,9 +263,9 @@ void settings::connections()
 	dtf3->addRow(tr("Custom webif reload URL address"), dtf3ca);
 
 	QLineEdit* dtf3cc = new QLineEdit;
-	dtf3cc->setProperty("pref", "customFallbackReloadCmd");
+	dtf3cc->setProperty("pref", "customTelnetReloadCmd");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf3cc);
-	dtf3->addRow(tr("Fallback reload command"), dtf3cc);
+	dtf3->addRow(tr("Custom telnet reload command"), dtf3cc);
 
 	dtl0->setLayout(dtf0);
 	dtl1->setLayout(dtf1);

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Install a Python venv for simulation
+# Install pyftpdlib and telnetsrv in Python venv
 
 if [[ -n $(type -t python3) ]]; then
 	PYTHON="python3"
@@ -18,6 +18,8 @@ if [[ ${PYTHON_VER::7} -ge 3 ]]; then
 	exit 1;
 fi
 
-echo "installing python venv ..."
-$PYTHON -m venv .pythonenv
+echo "installing pyftpdlib (pip) ..."
+$PYTHON -m pip install pyftpdlib
+echo "installing telnetlib3 (pip) ..."
+$PYTHON -m pip install telnetlib3
 echo "done."

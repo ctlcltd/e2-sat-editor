@@ -520,7 +520,7 @@ void gui::setDefaultSets()
 	sets->setValue("pathServices", "/enigma_db");
 	sets->setValue("pathBouquets", "/enigma_db");
 	sets->setValue("customWebifReloadUrl", "");
-	sets->setValue("customFallbackReloadCmd", "");
+	sets->setValue("customTelnetReloadCmd", "");
 	sets->endArray();
 	sets->setValue("profile/selected", 1);
 }
