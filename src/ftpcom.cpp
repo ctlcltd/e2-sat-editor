@@ -154,7 +154,7 @@ vector<string> ftpcom::list_dir(string base)
 
 	curl_url_set(rph, CURLUPART_PATH, remotedir.c_str(), 0);
 	curl_easy_setopt(cph, CURLOPT_FTPLISTONLY, true);
-	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_read_func);
+	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_write_func);
 	curl_easy_setopt(cph, CURLOPT_WRITEDATA, &data);
 	CURLcode res = perform(cph);
 
@@ -316,7 +316,7 @@ size_t ftpcom::data_upload_func(char* cso, size_t size, size_t nmemb, void* psi)
 	return nsize;
 }
 
-size_t ftpcom::data_read_func(void* csi, size_t size, size_t nmemb, void* pso)
+size_t ftpcom::data_write_func(void* csi, size_t size, size_t nmemb, void* pso)
 {
 	size_t relsize = size * nmemb;
 	string data ((const char*) csi, relsize);
@@ -329,6 +329,32 @@ size_t ftpcom::data_discard_func(void* csi, size_t size, size_t nmemb, void* pso
 	(void) csi;
 	(void) pso;
 	return size * nmemb;
+}
+
+size_t ftpcom::data_tn_shell_func(char* cso, size_t size, size_t nmemb, void* psi)
+{
+	tnvars* vars = reinterpret_cast<tnvars*>(psi);
+	string os ((const char*) cso, size * nmemb);
+	string data;
+
+	if (os.find("login:") != string::npos)
+		data = vars->user;
+	else if (os.find("Password:") != string::npos)
+		data = vars->pass;
+	else if (os.find("done!") != string::npos)
+		vars->send = true;
+
+	if (vars->send)
+	{
+		data = "init 3";
+		vars->send = false;
+	}
+
+	vars->ps->data = data.length() ? (data + "\n").data() : data.data();
+	vars->ps->sizel = data.length() ? data.length() + 1 : data.length();
+
+	// std::cout << "data_tn_shell_func() data: " << cso << std::endl;
+	return data_upload_func(cso, size, nmemb, vars->ps);
 }
 
 size_t ftpcom::get_content_length_func(void* csi, size_t size, size_t nmemb, void* pso)
@@ -446,7 +472,7 @@ bool ftpcom::cmd_ifreload()
 	curl_easy_setopt(csh, CURLOPT_HTTPGET, true);
 	curl_easy_setopt(csh, CURLOPT_FOLLOWLOCATION, true);
 	curl_easy_setopt(csh, CURLOPT_CURLU, rsh);
-	curl_easy_setopt(csh, CURLOPT_WRITEFUNCTION, data_read_func);
+	curl_easy_setopt(csh, CURLOPT_WRITEFUNCTION, data_write_func);
 	curl_easy_setopt(csh, CURLOPT_WRITEDATA, &data);
 	curl_easy_setopt(csh, CURLOPT_TIMEOUT, HTTP_TIMEOUT); // 0 = default no timeout
 	// curl_easy_setopt(csh, CURLOPT_VERBOSE, true);
@@ -473,7 +499,6 @@ bool ftpcom::cmd_ifreload()
 	return cmd;
 }
 
-//TODO
 bool ftpcom::cmd_tnreload()
 {
 	debug("cmd_tnreload()");
@@ -483,8 +508,13 @@ bool ftpcom::cmd_tnreload()
 	if (! csh)
 		return false;
 
-	stringstream data;
 	this->rsh = curl_url();
+	tnvars data;
+	data.ps = new soi;
+	data.ps->sizel = 0;
+	data.user = user;
+	data.pass = pass;
+	data.send = false;
 
 	curl_url_set(rsh, CURLUPART_SCHEME, "telnet", 0);
 	curl_url_set(rsh, CURLUPART_HOST, host.c_str(), 0);
@@ -492,40 +522,28 @@ bool ftpcom::cmd_tnreload()
 	curl_easy_setopt(csh, CURLOPT_PROTOCOLS, CURLPROTO_TELNET);
 	curl_easy_setopt(csh, CURLOPT_CURLU, rsh);
 	curl_easy_setopt(csh, CURLOPT_PORT, 23);
-	//curl_easy_setopt(csh, CURLOPT_CONNECT_ONLY, true);
-	curl_easy_setopt(csh, CURLOPT_WRITEFUNCTION, data_read_func);
-	curl_easy_setopt(csh, CURLOPT_WRITEDATA, &data);
+	curl_easy_setopt(csh, CURLOPT_READFUNCTION, data_tn_shell_func);
+	curl_easy_setopt(csh, CURLOPT_READDATA, &data);
+	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_discard_func);
 	curl_easy_setopt(csh, CURLOPT_FAILONERROR, true);
-	curl_easy_setopt(csh, CURLOPT_VERBOSE, true);
+	// curl_easy_setopt(csh, CURLOPT_VERBOSE, true);
 
-	//TODO FIX blocking stdin
+	debug("cmd_tnreload()", "stdout", "start");
+
 	CURLcode res = perform(csh);
 
 	if (res != CURLE_OK)
 	{
 		error("cmd_tnreload()", trs(curl_easy_strerror(res))); // var error string
 		reset(csh, rsh);
-		data.clear();
 		return false;
 	}
-	else
-	{
-		/*size_t sent;
-		CURLcode ret;
-		ret = curl_easy_send(csh, "root", 4, &sent);
-		std::cout << to_string(sent) << std::endl;*/
-	}
 	
-	//cmd: init 3
-
-	bool cmd = false;
-
-	debug("cmd_tnreload()", "data", data.str());
+	debug("cmd_tnreload()", "stdout", "end");
 
 	reset(csh, rsh);
-	data.clear();
 
-	return cmd;
+	return true;
 }
 
 }

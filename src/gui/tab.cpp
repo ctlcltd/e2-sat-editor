@@ -1360,9 +1360,9 @@ void tab::ftpUpload()
 		QMessageBox::information(nullptr, NULL, "Uploaded");
 
 		if (ftph->cmd_ifreload())
-			QMessageBox::information(nullptr, NULL, "STB reloaded");
-		/*else if (ftph->cmd_tnreload())
-			 QMessageBox::information(nullptr, NULL, "STB reloaded");*/
+			QMessageBox::information(nullptr, NULL, "STB reloaded");*/
+		else if (ftph->cmd_tnreload())
+			 QMessageBox::information(nullptr, NULL, "STB reloaded");
 	}
 }
 

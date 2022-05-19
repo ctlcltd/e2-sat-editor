@@ -74,11 +74,18 @@ class ftpcom
 			const char* data;
 			size_t sizel;
 		};
+		struct tnvars {
+			soi* ps;
+			string user;
+			string pass;
+			bool send;
+		};
 		vector<string> ftdb;
 		static size_t data_download_func(void* csi, size_t size, size_t nmemb, void* pso);
 		static size_t data_upload_func(char* cso, size_t size, size_t nmemb, void* psi);
-		static size_t data_read_func(void* csi, size_t size, size_t nmemb, void* pso);
+		static size_t data_write_func(void* csi, size_t size, size_t nmemb, void* pso);
 		static size_t data_discard_func(void* csi, size_t size, size_t nmemb, void* pso);
+		static size_t data_tn_shell_func(char* cso, size_t size, size_t nmemb, void* psi);
 		static size_t get_content_length_func(void* csi, size_t size, size_t nmemb, void* pso);
 		virtual string trs(string str);
 		virtual string trw(string str, string param);
