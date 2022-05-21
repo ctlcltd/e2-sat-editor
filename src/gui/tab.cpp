@@ -651,6 +651,9 @@ void tab::populate(QTreeWidget* side_tree)
 
 	debug("populate()", "curr_chlist", curr_chlist);
 
+	if (! dbih->gindex.count(curr_chlist))
+		error("populate()", "curr_chlist", curr_chlist);
+
 	lheaderv->setSortIndicatorShown(true);
 	lheaderv->setSectionsClickable(false);
 	list_tree->clear();
@@ -682,7 +685,9 @@ void tab::populate(QTreeWidget* side_tree)
 			}
 			else
 			{
-				e2db::channel_reference chref = dbih->userbouquets[curr_chlist].channels[ch.second];
+				e2db::channel_reference chref;
+				if (dbih->userbouquets.count(curr_chlist))
+					chref = dbih->userbouquets[curr_chlist].channels[ch.second];
 
 				if (chref.marker)
 				{
@@ -834,7 +839,8 @@ void tab::bouquetsItemChanged(QTreeWidgetItem* current)
 
 void tab::listItemChanged()
 {
-	if (! list_evto->isChanged()) return;
+	if (! list_evto->isChanged())
+		return;
 
 	debug("listItemChanged()");
 
@@ -1138,7 +1144,9 @@ void tab::putChannels(vector<QString> channels)
 			}
 			else
 			{
-				e2db::channel_reference chref = dbih->userbouquets[chlist].channels[chid];
+				e2db::channel_reference chref;
+				if (dbih->userbouquets.count(chlist))
+					chref = dbih->userbouquets[chlist].channels[chid];
 				marker = true;
 				entry = dbih->entryMarker(chref);
 				idx = entry[1];

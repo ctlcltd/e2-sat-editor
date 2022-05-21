@@ -550,7 +550,7 @@ void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string bname)
 				add = false;
 
 			bs.bname = bname;
-			bs.name = line.substr(6); //TODO
+			bs.name = line.substr(6);
 			if (bname.find(".tv") != string::npos)
 			{
 				bs.btype = 1;
@@ -593,6 +593,10 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string bname)
 			if (line.find("#DESCRIPTION") != string::npos)
 				set_channel_reference_marker_value(ub, chref.chid, line.substr(13));
 			step = 1;
+			continue;
+		}
+		else if (step && line.find("#SORT") != string::npos)
+		{
 			continue;
 		}
 		else if (step && line.empty())

@@ -195,7 +195,7 @@ struct e2db_abstract
 		{
 			string chid;
 			int type;
-			bool marker;
+			bool marker = false;
 			string value;
 			int anum;
 			int index;

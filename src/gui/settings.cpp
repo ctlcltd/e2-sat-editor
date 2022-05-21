@@ -441,11 +441,7 @@ void settings::store()
 			if (! sets->contains("profileName"))
 				size++;
 			for (auto & field : tmpps[i])
-			{
 				sets->setValue(field.first, field.second);
-				debug("store()", " ", field.first.toStdString());
-				debug("store()", " ", field.second.toString().toStdString());
-			}
 		}
 		else
 		{
