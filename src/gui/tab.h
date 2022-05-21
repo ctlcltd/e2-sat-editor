@@ -81,6 +81,7 @@ class tab : protected e2se::log_factory
 		void listItemAction(int action);
 		void putChannels(vector<QString> channels);
 		void updateListIndex();
+		void updateBouquetsIndex();
 		void showBouquetEditContextMenu(QPoint &pos);
 		void showListEditContextMenu(QPoint &pos);
 		void setCounters(bool channels = false);

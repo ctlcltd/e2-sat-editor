@@ -24,7 +24,7 @@ namespace e2se_gui
 class BouquetsEventHandler : public QObject
 {
 	public:
-		void setEventCallback(std::function<void()> func)
+		void setEventCallback(std::function<void(QTreeWidget* tree)> func)
 		{
 			this->eventCallback = func;
 		}
@@ -32,12 +32,13 @@ class BouquetsEventHandler : public QObject
 		bool eventFilter(QObject* o, QEvent* e);
 		void dropFromBouquets(QTreeWidgetItem* current, QTreeWidget* tree0);
 		void dropFromList(QTreeWidgetItem* current, QTreeWidget* tree0, QTreeWidget* tree1);
-		void callEventCallback()
+		void callEventCallback(QTreeWidget* tree)
 		{
-			this->eventCallback();
+			if (this->eventCallback != nullptr)
+				this->eventCallback(tree);
 		}
 	private:
-		std::function<void()> eventCallback;
+		std::function<void(QTreeWidget* tree)> eventCallback;
 };
 }
 #endif /* BouquetsEventHandler_h */

@@ -1220,7 +1220,6 @@ void e2db_maker::make_e2db_userbouquets()
 		make_userbouquet(x.first);
 }
 
-//TODO index
 void e2db_maker::make_bouquet(string bname)
 {
 	debug("make_bouquet()", "bname", bname);

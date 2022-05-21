@@ -222,13 +222,11 @@ tab::tab(gui* gid, QWidget* wid)
 	list_ats->addWidget(this->action.list_dnd);
 	this->action.list_addch->setDisabled(true);
 
-	//TODO reindex userbouquets before saving
 	this->bouquets_evth = new BouquetsEventHandler;
 	this->list_evth = new ListEventHandler;
 	this->list_evto = new ListEventObserver;
 	services_tree->connect(services_tree, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { this->treeSwitched(services_tree, item); });
 	services_tree->connect(services_tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->servicesItemChanged(current); });
-	bouquets_evth->setEventCallback([=]() { list_tree->scrollToBottom(); this->visualReindexList(); });
 	bouquets_tree->viewport()->installEventFilter(bouquets_evth);
 	bouquets_tree->connect(bouquets_tree, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { this->treeSwitched(bouquets_tree, item); });
 	bouquets_tree->connect(bouquets_tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->bouquetsItemChanged(current); });
@@ -340,6 +338,7 @@ void tab::saveFile(bool saveas)
 	if (overwrite)
 	{
 		this->updateListIndex();
+		this->updateBouquetsIndex();
 		dirname = this->filename;
 		dial.setText("Files will be overwritten.");
 		dial.exec();
@@ -418,7 +417,7 @@ void tab::addUserbouquet()
 	bitem->setText(0, name);
 	bouquets_tree->addTopLevelItem(bitem);
 
-	dbih->updateUserbouquetIndexes();
+	updateBouquetsIndex();
 }
 
 void tab::editUserbouquet()
@@ -450,7 +449,7 @@ void tab::editUserbouquet()
 		name = QString::fromStdString(uboq.name);
 	selected[0]->setText(0, name);
 
-	dbih->updateUserbouquetIndexes();
+	updateBouquetsIndex();
 }
 
 void tab::addChannel()
@@ -844,10 +843,13 @@ void tab::listItemChanged()
 
 	debug("listItemChanged()");
 
-	QTimer::singleShot(0, [=]() { this->visualReindexList(); });
+	// non-sorting
+	if (this->state.dnd)
+		QTimer::singleShot(0, [=]() { this->visualReindexList(); });
 	this->state.changed = true;
 }
 
+//TODO FIX sorting 0|desc reverse order
 void tab::visualReindexList()
 {
 	debug("visualReindexList()");
@@ -968,7 +970,7 @@ void tab::bouquetItemDelete()
 	}
 
 	this->state.changed = true;
-	dbih->updateUserbouquetIndexes();
+	updateBouquetsIndex();
 }
 
 void tab::listItemCut()
@@ -1047,14 +1049,11 @@ void tab::listItemDelete()
 	lheaderv->setSectionsClickable(true);
 	list_tree->setDragEnabled(true);
 	list_tree->setAcceptDrops(true);
-	this->state.changed = true;
 
 	// non-sorting
 	if (this->state.dnd)
-	{
-		updateListIndex();
 		visualReindexList();
-	}
+	this->state.changed = true;
 
 	setCounters();
 }
@@ -1169,16 +1168,61 @@ void tab::putChannels(vector<QString> channels)
 	lheaderv->setSectionsClickable(true);
 	list_tree->setDragEnabled(true);
 	list_tree->setAcceptDrops(true);
-	this->state.changed = true;
 
 	// non-sorting
 	if (this->state.dnd)
-	{
-		updateListIndex();
 		visualReindexList();
-	}
+	this->state.changed = true;
 
 	setCounters();
+}
+
+void tab::updateBouquetsIndex()
+{
+	debug("updateBouquetsIndex()");
+
+	int i = 0, j;
+	int count = bouquets_tree->topLevelItemCount();
+	vector<pair<int, string>> bss;
+	vector<pair<int, string>> ubs;
+	unordered_map<string, vector<string>> index;
+
+	while (i != count)
+	{
+		QTreeWidgetItem* parent = bouquets_tree->topLevelItem(i);
+		QVariantMap tdata = parent->data(0, Qt::UserRole).toMap();
+		string pname = tdata["id"].toString().toStdString();
+		bss.emplace_back(pair (i, pname)); //C++17
+		j = 0;
+
+		if (parent->childCount())
+		{
+			int childs = parent->childCount();
+			while (j != childs)
+			{
+				QTreeWidgetItem* item = parent->child(j);
+				QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
+				string bname = tdata["id"].toString().toStdString();
+				ubs.emplace_back(pair (i, bname)); //C++17
+				index[pname].emplace_back(bname);
+				j++;
+			}
+		}
+		i++;
+	}
+	if (bss != dbih->gindex["bss"])
+	{
+		dbih->gindex["bss"].swap(bss);
+	}
+	if (ubs != dbih->gindex["ubs"])
+	{
+		dbih->gindex["ubs"].swap(ubs);
+
+		for (auto & x : dbih->bouquets)
+			x.second.userbouquets.swap(index[x.first]);
+	}
+
+	dbih->updateUserbouquetIndexes();
 }
 
 void tab::updateListIndex()
@@ -1390,6 +1434,8 @@ void tab::ftpDownload()
 		for (auto & x : files)
 			debug("ftpDownload()", "file", x.first + " | " + to_string(x.second.size()));
 
+		this->updateListIndex();
+		this->updateBouquetsIndex();
 		dbih->merge(files);
 		initialize();
 		load();

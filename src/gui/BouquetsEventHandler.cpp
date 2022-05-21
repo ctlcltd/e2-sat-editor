@@ -83,6 +83,8 @@ void BouquetsEventHandler::dropFromBouquets(QTreeWidgetItem* current, QTreeWidge
 
 	parent->insertChildren(index, caches);
 	bouquets_tree->setCurrentItem(caches.first());
+
+	callEventCallback(bouquets_tree);
 }
 
 void BouquetsEventHandler::dropFromList(QTreeWidgetItem* current, QTreeWidget* bouquets_tree, QTreeWidget* list_tree)
@@ -99,8 +101,9 @@ void BouquetsEventHandler::dropFromList(QTreeWidgetItem* current, QTreeWidget* b
 
 	bouquets_tree->setCurrentItem(current);
 	list_tree->addTopLevelItems(caches);
+	list_tree->scrollToBottom();
 
-	eventCallback();
+	callEventCallback(list_tree);
 }
 
 }
