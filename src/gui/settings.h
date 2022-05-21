@@ -50,6 +50,7 @@ class settings : protected e2se::log_factory
 		QListWidgetItem* addProfile(int i = -1);
 		void delProfile();
 		void renameProfile(bool enabled = true);
+		void updateProfile(QListWidgetItem* item);
 		void profileNameChanged(QString text);
 		void currentProfileChanged(QListWidgetItem* current, QListWidgetItem* previous);
 		void tabChanged(int index);

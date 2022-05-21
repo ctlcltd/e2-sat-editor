@@ -95,6 +95,10 @@ tab::tab(gui* gid, QWidget* wid)
 	bouquets_tree->setHeaderHidden(true);
 	bouquets_tree->setUniformRowHeights(true);
 	list_tree->setUniformRowHeights(true);
+	
+	services_tree->setRootIsDecorated(false);
+	services_tree->setItemsExpandable(false);
+	services_tree->setExpandsOnDoubleClick(false);
 
 	bouquets_tree->setSelectionBehavior(QAbstractItemView::SelectRows);
 	bouquets_tree->setDropIndicatorShown(true);
@@ -1171,7 +1175,8 @@ void tab::putChannels(vector<QString> channels)
 
 void tab::updateListIndex()
 {
-	if (! this->state.changed) return;
+	if (! this->state.changed)
+		return;
 
 	int i = 0, y = 0, idx = 0;
 	int count = list_tree->topLevelItemCount();
@@ -1359,10 +1364,8 @@ void tab::ftpUpload()
 		ftph->put_files(files);
 		QMessageBox::information(nullptr, NULL, "Uploaded");
 
-		if (ftph->cmd_ifreload())
-			QMessageBox::information(nullptr, NULL, "STB reloaded");*/
-		else if (ftph->cmd_tnreload())
-			 QMessageBox::information(nullptr, NULL, "STB reloaded");
+		if (ftph->cmd_ifreload() || ftph->cmd_tnreload())
+			QMessageBox::information(nullptr, NULL, "STB reloaded");
 	}
 }
 

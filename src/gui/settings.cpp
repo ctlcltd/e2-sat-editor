@@ -83,7 +83,6 @@ settings::settings(QWidget* mwid)
 	dial->exec();
 }
 
-//TODO FIX [macos] connections tab interferes with focus
 void settings::preferences()
 {
 	QWidget* dtpage = new QWidget;
@@ -369,6 +368,21 @@ void settings::renameProfile(bool enabled)
 		rplist->closePersistentEditor(curr);
 }
 
+void settings::updateProfile(QListWidgetItem* item)
+{
+	debug("updateProfile()");
+
+	int i = item->data(Qt::UserRole).toInt();
+	for (auto & item : prefs[PREF_SECTIONS::Connections])
+	{
+		QString pref = item->property("pref").toString();
+		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
+			tmpps[i][pref] = field->text();
+		else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
+			tmpps[i][pref] = field->isChecked();
+	}
+}
+
 void settings::profileNameChanged(QString text)
 {
 	debug("profileNameChanged()");
@@ -383,17 +397,8 @@ void settings::currentProfileChanged(QListWidgetItem* current, QListWidgetItem* 
 	debug("currentProfileChanged()");
 
 	if (previous != nullptr && ! this->state.delt)
-	{
-		int i = previous->data(Qt::UserRole).toInt();
-		for (auto & item : prefs[PREF_SECTIONS::Connections])
-		{
-			QString pref = item->property("pref").toString();
-			if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
-				tmpps[i][pref] = field->text();
-			else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
-				tmpps[i][pref] = field->isChecked();
-		}
-	}
+		updateProfile(previous);
+
 	this->retrieve(current);
 	this->state.delt = false;
 }
@@ -424,6 +429,8 @@ void settings::store()
 {
 	debug("store()");
 
+	updateProfile(rplist->currentItem());
+
 	int size = sets->value("profile/size").toInt();
 	sets->beginWriteArray("profile");
 	for (unsigned int i = 0; i < tmpps.size(); i++)
@@ -434,7 +441,11 @@ void settings::store()
 			if (! sets->contains("profileName"))
 				size++;
 			for (auto & field : tmpps[i])
+			{
 				sets->setValue(field.first, field.second);
+				debug("store()", " ", field.first.toStdString());
+				debug("store()", " ", field.second.toString().toStdString());
+			}
 		}
 		else
 		{
@@ -509,6 +520,7 @@ void settings::retrieve()
 		}
 	}
 	sets->endArray();
+	rplist->setCurrentRow(selected);
 	this->state.retr = false;
 
 	sets->beginGroup("preference");
