@@ -114,7 +114,7 @@ tab::tab(gui* gid, QWidget* wid)
 	list_tree->setDragDropMode(QAbstractItemView::InternalMove);
 	list_tree->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({"", "Index", "Name", "CHID", "TXID", "Type", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"});
+	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({"", "Index", "Name", "CHID", "TXID", "Type", "CAS", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"});
 
 	int col = 0;
 	list_tree->setHeaderItem(lheader_item);
@@ -131,6 +131,7 @@ tab::tab(gui* gid, QWidget* wid)
 		list_tree->setColumnHidden(col++, true);
 	}
 	list_tree->setColumnWidth(col++, 85);		// Type
+	list_tree->setColumnWidth(col++, 45);		// CAS
 	list_tree->setColumnWidth(col++, 150);		// Provider
 	list_tree->setColumnWidth(col++, 95);		// Frequency
 	list_tree->setColumnWidth(col++, 85);		// Polarization
@@ -146,6 +147,14 @@ tab::tab(gui* gid, QWidget* wid)
 	bouquets_tree->connect(bouquets_tree, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { this->showBouquetEditContextMenu(pos); });
 	list_tree->setContextMenuPolicy(Qt::CustomContextMenu);
 	list_tree->connect(list_tree, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { this->showListEditContextMenu(pos); });
+
+	this->bouquets_search = new QWidget;
+	this->list_search = new QWidget;
+	this->list_reference = new QWidget;
+
+	bouquets_search->setHidden(true);
+	list_search->setHidden(true);
+	list_reference->setHidden(true);
 
 	QToolBar* top_toolbar = new QToolBar;
 	top_toolbar->setIconSize(QSize(32, 32));
@@ -212,15 +221,38 @@ tab::tab(gui* gid, QWidget* wid)
 	this->action.list_dnd->setText("Drag&&Drop");
 	this->action.list_dnd->setDisabled(true);
 	this->action.list_dnd->connect(this->action.list_dnd, &QPushButton::pressed, [=]() { this->reharmDnD(); });
+
+	this->action.list_ref = new QPushButton;
+	this->action.list_ref->setText("Reference");
+	this->action.list_ref->connect(this->action.list_ref, &QPushButton::pressed, [=]() { this->listReferenceToggle(); });
+
+	this->action.bouquets_search = new QPushButton;
+	this->action.bouquets_search->setText("Find…");
+	this->action.bouquets_search->setIcon(theme::icon("search"));
+	this->action.bouquets_search->connect(this->action.bouquets_search, &QPushButton::pressed, [=]() { this->bouquetsSearchToggle(); });
+	this->action.bouquets_search->setDisabled(true);
+
+	this->action.list_search = new QPushButton;
+	this->action.list_search->setText("Find…");
+	this->action.list_search->setIcon(theme::icon("search"));
+	this->action.list_search->connect(this->action.list_search, &QPushButton::pressed, [=]() { this->listSearchToggle(); });
+
+	QWidget* bouquets_ats_spacer = new QWidget;
+	bouquets_ats_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	QWidget* list_ats_spacer = new QWidget;
 	list_ats_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 	bouquets_ats->addAction(theme::icon("add"), "New Bouquet", [=]() { this->addUserbouquet(); });
+	bouquets_ats->addWidget(bouquets_ats_spacer);
+	bouquets_ats->addWidget(this->action.bouquets_search);
 	this->action.list_addch = list_ats->addAction(theme::icon("add"), "Add Channel", [=]() { this->addChannel(); });
-	this->action.list_newch = list_ats->addAction(theme::icon("add"), "New Service", [=]() { this->addService(); });
-	list_ats->addWidget(list_ats_spacer);
-	list_ats->addWidget(this->action.list_dnd);
 	this->action.list_addch->setDisabled(true);
+	this->action.list_newch = list_ats->addAction(theme::icon("add"), "New Service", [=]() { this->addService(); });
+	list_ats->addSeparator();
+	list_ats->addWidget(this->action.list_ref);
+	list_ats->addWidget(this->action.list_dnd);
+	list_ats->addWidget(list_ats_spacer);
+	list_ats->addWidget(this->action.list_search);
 
 	this->bouquets_evth = new BouquetsEventHandler;
 	this->list_evth = new ListEventHandler;
@@ -244,6 +276,7 @@ tab::tab(gui* gid, QWidget* wid)
 	services_tree->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 
 	bouquets_box->addWidget(bouquets_tree);
+	bouquets_box->addWidget(bouquets_search);
 	bouquets_box->addWidget(bouquets_ats);
 	bouquets->setLayout(bouquets_box);
 
@@ -257,11 +290,13 @@ tab::tab(gui* gid, QWidget* wid)
 	list_wrap->setLayout(list_layout);
 
 	list_box->addWidget(list_wrap);
+	list_box->addWidget(list_search);
+	list_box->addWidget(list_reference);
 	list_box->addWidget(list_ats);
 	channels->setLayout(list_box);
 
-	side->setMinimumWidth(240);
-	channels->setMinimumWidth(520);
+	side->setMinimumWidth(250);
+	channels->setMinimumWidth(510);
 
 	splitterc->addWidget(side);
 	splitterc->addWidget(channels);
@@ -698,7 +733,7 @@ void tab::populate(QTreeWidget* side_tree)
 				else
 				{
 					//TEST
-					entry = QStringList({x, "", "", chid, "", "ERROR"});
+					entry = QStringList({x, NULL, NULL, chid, NULL, "ERROR", NULL});
 					// idx = 0; //Qt5
 					error("populate()", "chid", ch.second);
 					//TEST
@@ -710,6 +745,8 @@ void tab::populate(QTreeWidget* side_tree)
 			item->setData(0, Qt::UserRole, idx);    // data: Index
 			item->setData(1, Qt::UserRole, marker); // data: marker flag
 			item->setData(2, Qt::UserRole, chid);   // data: chid
+			if (! entry.at(6).isEmpty())
+				item->setIcon(6, theme::icon("round-info"));
 			cache[curr_chlist].append(item);
 		}
 	}
@@ -973,6 +1010,36 @@ void tab::bouquetItemDelete()
 	updateBouquetsIndex();
 }
 
+void tab::bouquetsSearchToggle()
+{
+	debug("bouquetsSearchToggle()");
+
+	if (bouquets_search->isHidden())
+		bouquets_search->show();
+	else
+		bouquets_search->hide();
+}
+
+void tab::listSearchToggle()
+{
+	debug("listSearchToggle()");
+
+	if (list_search->isHidden())
+		list_search->show();
+	else
+		list_search->hide();
+}
+
+void tab::listReferenceToggle()
+{
+	debug("listReferenceToggle()");
+
+	if (list_reference->isHidden())
+		list_reference->show();
+	else
+		list_reference->hide();
+}
+
 void tab::listItemCut()
 {
 	debug("listItemCut()");
@@ -1157,6 +1224,8 @@ void tab::putChannels(vector<QString> channels)
 		item->setData(0, Qt::UserRole, idx);    // data: Index
 		item->setData(1, Qt::UserRole, marker); // data: marker flag
 		item->setData(2, Qt::UserRole, w);      // data: chid
+		if (! entry.at(6).isEmpty())
+			item->setIcon(6, theme::icon("round-info"));
 		clist.append(item);
 	}
 

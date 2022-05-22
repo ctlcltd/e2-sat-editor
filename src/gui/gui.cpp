@@ -130,13 +130,20 @@ void gui::menuCtl()
 		mfile->addAction(tr("&About"), [=]() { this->about(); });
 	mfile->addSeparator();
 	mfile->addAction(tr("&Exit"), [=]() { this->mroot->quit(); })->setShortcut((QSysInfo::productType().contains("windows") ? QKeySequence::Close : QKeySequence::Quit));
-
+	
 	QMenu* medit = menu->addMenu(tr("&Edit"));
 	medit->addAction(tr("Cu&t"), [=]() { this->tabEditAction(TAB_EDIT_ATS::Cut); })->setShortcut(QKeySequence::Cut);
 	medit->addAction(tr("&Copy"), [=]() { this->tabEditAction(TAB_EDIT_ATS::Copy); })->setShortcut(QKeySequence::Copy);
 	medit->addAction(tr("&Paste"), [=]() { this->tabEditAction(TAB_EDIT_ATS::Paste); })->setShortcut(QKeySequence::Paste);
 	medit->addSeparator();
 	medit->addAction(tr("Select &All"), [=]() { this->tabEditAction(TAB_EDIT_ATS::SelectAll); })->setShortcut(QKeySequence::SelectAll);
+
+	QMenu* mfind = menu->addMenu(tr("&Find"));
+	mfind->addAction(tr("Find Channel…"), todo)->setShortcut(QKeySequence::Find);
+	mfind->addAction(tr("Find Bouquet…"), todo)->setShortcut(Qt::CTRL | Qt::ALT | Qt::Key_F);
+	mfind->addSeparator();
+	mfind->addAction(tr("Find Next"), todo);
+	mfind->addAction(tr("Find Previous"), todo);
 
 	QMenu* mtool = menu->addMenu(tr("Tools"));
 	mtool->addAction("Order services A-Z", todo);

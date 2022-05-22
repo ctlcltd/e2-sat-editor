@@ -73,6 +73,9 @@ class tab : protected e2se::log_factory
 		void disallowDnD();
 		void reharmDnD();
 		void bouquetItemDelete();
+		void bouquetsSearchToggle();
+		void listSearchToggle();
+		void listReferenceToggle();
 		void listItemCut();
 		void listItemCopy(bool cut = false);
 		void listItemPaste();
@@ -103,6 +106,9 @@ class tab : protected e2se::log_factory
 			QAction* bouquets_newbs;
 			QAction* list_addch;
 			QAction* list_newch;
+			QPushButton* bouquets_search;
+			QPushButton* list_search;
+			QPushButton* list_ref;
 			QPushButton* list_dnd;
 		} action;
 		struct sts {
@@ -129,6 +135,9 @@ class tab : protected e2se::log_factory
 		QTreeWidget* list_tree;
 		QWidget* list_wrap;
 		QHeaderView* lheaderv;
+		QWidget* bouquets_search;
+		QWidget* list_search;
+		QWidget* list_reference;
 		string filename;
 };
 }

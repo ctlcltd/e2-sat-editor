@@ -12,12 +12,13 @@
 #include <cstdio>
 #include <clocale>
 #include <cmath>
+#include <unordered_set>
 
 #include <QMessageBox>
 
 #include "e2db_gui.h"
 
-using std::to_string;
+using std::to_string, std::unordered_set;
 
 namespace e2se_gui
 {
@@ -287,7 +288,25 @@ QStringList e2db::entryService(service ch)
 	QString stype = e2db::STYPES.count(ch.stype) ? QString::fromStdString(e2db::STYPES.at(ch.stype).second) : "Data";
 	QString pname = QString::fromStdString(ch.data.count(e2db::SDATA::p) ? ch.data[e2db::SDATA::p][0] : "");
 
-	QStringList entry = QStringList ({chname, chid, txid, stype, pname});
+	QString scas;
+	if (ch.data.count(e2db::SDATA::C))
+	{
+		unordered_set<string> _unique;
+		QStringList cas;
+
+		for (string & w : ch.data[e2db::SDATA::C])
+		{
+			string caidpx = w.substr(0, 2);
+			if (e2db::SDATA_CAS.count(caidpx) && ! _unique.count(caidpx))
+			{
+				cas.append(QString::fromStdString(e2db::SDATA_CAS.at(caidpx)));
+				_unique.insert(caidpx);
+			}
+		}
+		scas.append(' ' + cas.join(", "));
+	}
+
+	QStringList entry = QStringList ({chname, chid, txid, stype, scas, pname});
 	entry.append(entries.transponders[ch.txid]);
 	return entry;
 }
@@ -297,7 +316,7 @@ QStringList e2db::entryMarker(channel_reference chref)
 	QString chid = QString::fromStdString(chref.chid);
 	QString value = QString::fromStdString(chref.value);
 
-	return QStringList({"", value, chid, "", "MARKER"});
+	return QStringList({NULL, value, chid, NULL, "MARKER", NULL});
 }
 
 }

@@ -1851,9 +1851,9 @@ map<string, vector<pair<int, string>>> e2db::get_encryption_index()
 	{
 		service ch = db.services[x.second];
 
-		if (ch.data.count('2'))
+		if (ch.data.count(e2db::SDATA::C))
 		{
-			for (string & w : ch.data['2'])
+			for (string & w : ch.data[e2db::SDATA::C])
 			{
 				string caidpx = w.substr(0, 2);
 				string cx = caidpx + '|' + to_string(x.first);
