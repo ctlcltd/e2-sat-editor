@@ -1869,7 +1869,7 @@ map<string, vector<pair<int, string>>> e2db::get_encryption_index()
 			_index["(FTA)"].emplace_back(x);
 		}
 	}
-	_unique.clear();
+	// _unique.clear();
 
 	return _index;
 }

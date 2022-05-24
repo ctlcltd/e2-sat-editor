@@ -14,6 +14,7 @@
 #include <QStyle>
 #include <QStyleFactory>
 #include <QPalette>
+#include <QFont>
 
 #include "theme.h"
 
@@ -45,6 +46,11 @@ QIcon theme::icon(QString icon)
 QString theme::getIcon(QString icon)
 {
 	return QSettings().value("application/icons").toString().append('/' + icon).append(".png");
+}
+
+int theme::getDefaultFontSize()
+{
+	return QFont().pointSize();
 }
 
 

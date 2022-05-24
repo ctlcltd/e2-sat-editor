@@ -30,7 +30,7 @@ about::about(QWidget* mwid)
 
 	QDialog* dial = new QDialog(mwid);
 	dial->setWindowTitle("About e2 SAT Editor");
-	dial->connect(dial, &QDialog::finished, [=]() { debug("closed"); delete dial; delete this; });
+	dial->connect(dial, &QDialog::finished, [=]() { delete dial; delete this; });
 
 	QGridLayout* dfrm = new QGridLayout(dial);
 	QHBoxLayout* dhbox = new QHBoxLayout;

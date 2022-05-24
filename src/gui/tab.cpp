@@ -151,10 +151,47 @@ tab::tab(gui* gid, QWidget* wid)
 	this->bouquets_search = new QWidget;
 	this->list_search = new QWidget;
 	this->list_reference = new QWidget;
-
 	bouquets_search->setHidden(true);
 	list_search->setHidden(true);
 	list_reference->setHidden(true);
+
+	int fsss = (theme::getDefaultFontSize() - 2);
+	QGridLayout* ref_box = new QGridLayout;
+	QLabel* ref0lr = new QLabel("Reference ID");
+	QLabel* ref0tr = new QLabel("0:0:0:0:0:0:0:0:0:0");
+	ref0lr->setFont(QFont(NULL, fsss));
+	ref_box->addWidget(ref0lr, 0, 0, Qt::AlignTop);
+	ref_box->addWidget(ref0tr, 0, 1, Qt::AlignTop);
+	QLabel* ref1ls = new QLabel("Service ID");
+	QLabel* ref1ts = new QLabel("0000");
+	ref1ls->setFont(QFont(NULL, fsss));
+	ref_box->addWidget(ref1ls, 0, 2, Qt::AlignTop);
+	ref_box->addWidget(ref1ts, 0, 3, Qt::AlignTop);
+	QLabel* ref2lt = new QLabel("Transponder");
+	QLabel* ref2tt = new QLabel("00000/H/00000");
+	ref2lt->setFont(QFont(NULL, fsss));
+	ref_box->addWidget(ref2lt, 0, 4, Qt::AlignTop);
+	ref_box->addWidget(ref2tt, 0, 5, Qt::AlignTop);
+	ref_box->addItem(new QSpacerItem(0, 12), 1, 0);
+	QLabel* ref3lu = new QLabel("Userbouquets");
+	QLabel* ref3tu = new QLabel("Swiss\nItaly\nTests\nTests 1\nRadio 13E\nSwiss");
+	ref3lu->setFont(QFont(NULL, fsss));
+	ref_box->addWidget(ref3lu, 2, 0, Qt::AlignTop);
+	ref_box->addWidget(ref3tu, 2, 1, Qt::AlignTop);
+	QLabel* ref4lb = new QLabel("Bouquets");
+	QLabel* ref4tb = new QLabel("TV\nRadio");
+	ref4lb->setFont(QFont(NULL, fsss));
+	ref_box->addWidget(ref4lb, 2, 2, Qt::AlignTop);
+	ref_box->addWidget(ref4tb, 2, 3, Qt::AlignTop);
+	QLabel* ref5ln = new QLabel("Satellite");
+	QLabel* ref5tn = new QLabel("Hot Bird 13.0E");
+	ref5ln->setFont(QFont(NULL, fsss));
+	ref_box->addWidget(ref5ln, 2, 4, Qt::AlignTop);
+	ref_box->addWidget(ref5tn, 2, 5, Qt::AlignTop);
+	ref_box->setColumnStretch(1, 1);
+	ref_box->setColumnStretch(3, 1);
+	ref_box->setColumnStretch(5, 1);
+	list_reference->setLayout(ref_box);
 
 	QToolBar* top_toolbar = new QToolBar;
 	top_toolbar->setIconSize(QSize(32, 32));
@@ -427,7 +464,7 @@ void tab::addUserbouquet()
 	string bname;
 	e2se_gui::editBouquet* add = new e2se_gui::editBouquet(dbih, this->state.ti);
 	add->display(cwid);
-	bname = add->getEditID();
+	bname = add->getEditID(); // returned after dial.exec()
 	add->destroy();
 
 	if (bname.empty())
@@ -496,8 +533,7 @@ void tab::addChannel()
 	QDialog* dial = new QDialog(cwid);
 	dial->setMinimumSize(760, 420);
 	dial->setWindowTitle("Add Channel");
-	//TODO FIX SEGFAULT
-	// dial->connect(dial, &QDialog::finished, [=]() { delete dial; delete cb; });
+	dial->connect(dial, &QDialog::finished, [=]() { delete cb; delete dial; });
 
 	QGridLayout* layout = new QGridLayout;
 	QToolBar* bottom_toolbar = new QToolBar;
@@ -546,7 +582,7 @@ void tab::editService()
 		e2se_gui::editService* edit = new e2se_gui::editService(dbih);
 		edit->setEditID(chid);
 		edit->display(cwid);
-		nw_chid = edit->getEditID(); //TODO returned after dial.exec()
+		nw_chid = edit->getEditID(); // returned after dial.exec()
 		edit->destroy();
 
 		debug("editService()", "nw_chid", nw_chid);
@@ -700,6 +736,8 @@ void tab::populate(QTreeWidget* side_tree)
 
 	if (cache[curr_chlist].isEmpty())
 	{
+		int fss = (theme::getDefaultFontSize() - 1);
+
 		for (auto & ch : dbih->gindex[curr_chlist])
 		{
 			char ci[7];
@@ -745,8 +783,16 @@ void tab::populate(QTreeWidget* side_tree)
 			item->setData(0, Qt::UserRole, idx);    // data: Index
 			item->setData(1, Qt::UserRole, marker); // data: marker flag
 			item->setData(2, Qt::UserRole, chid);   // data: chid
+			if (marker)
+			{
+				item->setFont(2, QFont(NULL, fss));
+				item->setFont(5, QFont(NULL, -1, QFont::Weight::Bold));
+			}
+			item->setFont(6, QFont(NULL, fss));
 			if (! entry.at(6).isEmpty())
+			{
 				item->setIcon(6, theme::icon("round-info"));
+			}
 			cache[curr_chlist].append(item);
 		}
 	}
@@ -1167,6 +1213,7 @@ void tab::putChannels(vector<QString> channels)
 	QList<QTreeWidgetItem*> clist;
 	int i = 0;
 	int idx;
+	int fss = (theme::getDefaultFontSize() - 1);
 	QTreeWidgetItem* current = list_tree->currentItem();
 	QTreeWidgetItem* parent = list_tree->invisibleRootItem();
 	i = current != nullptr ? parent->indexOfChild(current) : list_tree->topLevelItemCount();
@@ -1224,8 +1271,16 @@ void tab::putChannels(vector<QString> channels)
 		item->setData(0, Qt::UserRole, idx);    // data: Index
 		item->setData(1, Qt::UserRole, marker); // data: marker flag
 		item->setData(2, Qt::UserRole, w);      // data: chid
+		if (marker)
+		{
+			item->setFont(2, QFont(NULL, fss));
+			item->setFont(5, QFont(NULL, -1, QFont::Weight::Bold));
+		}
+		item->setFont(6, QFont(NULL, fss));
 		if (! entry.at(6).isEmpty())
+		{
 			item->setIcon(6, theme::icon("round-info"));
+		}
 		clist.append(item);
 	}
 
