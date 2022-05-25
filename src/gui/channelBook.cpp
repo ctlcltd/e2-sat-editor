@@ -371,7 +371,10 @@ void channelBook::populate()
 	list->header()->setSectionsClickable(true);
 	// sorting default column 0|asc
 	if (vx)
-		list->sortByColumn(0, Qt::AscendingOrder);
+	{
+		list->sortItems(0, Qt::AscendingOrder);
+		list->header()->setSortIndicator(1, Qt::AscendingOrder);
+	}
 }
 
 void channelBook::trickySortByColumn(int column)
@@ -390,7 +393,7 @@ void channelBook::trickySortByColumn(int column)
 	// sorting default
 	else
 	{
-		list->sortByColumn(column, order);
+		list->sortItems(column, order);
 		list->header()->setSortIndicator(1, order);
 
 		// default column 0|asc

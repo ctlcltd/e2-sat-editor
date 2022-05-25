@@ -48,6 +48,11 @@ QString theme::getIcon(QString icon)
 	return QSettings().value("application/icons").toString().append('/' + icon).append(".png");
 }
 
+QString theme::getDefaultFontFamily()
+{
+	return QFont().defaultFamily();
+}
+
 int theme::getDefaultFontSize()
 {
 	return QFont().pointSize();

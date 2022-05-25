@@ -156,36 +156,37 @@ tab::tab(gui* gid, QWidget* wid)
 	list_reference->setHidden(true);
 
 	int fsss = (theme::getDefaultFontSize() - 2);
+	QString ff = theme::getDefaultFontFamily();
 	QGridLayout* ref_box = new QGridLayout;
 	QLabel* ref0lr = new QLabel("Reference ID");
 	QLabel* ref0tr = new QLabel("0:0:0:0:0:0:0:0:0:0");
-	ref0lr->setFont(QFont(NULL, fsss));
+	ref0lr->setFont(QFont(ff, fsss));
 	ref_box->addWidget(ref0lr, 0, 0, Qt::AlignTop);
 	ref_box->addWidget(ref0tr, 0, 1, Qt::AlignTop);
 	QLabel* ref1ls = new QLabel("Service ID");
 	QLabel* ref1ts = new QLabel("0000");
-	ref1ls->setFont(QFont(NULL, fsss));
+	ref1ls->setFont(QFont(ff, fsss));
 	ref_box->addWidget(ref1ls, 0, 2, Qt::AlignTop);
 	ref_box->addWidget(ref1ts, 0, 3, Qt::AlignTop);
 	QLabel* ref2lt = new QLabel("Transponder");
 	QLabel* ref2tt = new QLabel("00000/H/00000");
-	ref2lt->setFont(QFont(NULL, fsss));
+	ref2lt->setFont(QFont(ff, fsss));
 	ref_box->addWidget(ref2lt, 0, 4, Qt::AlignTop);
 	ref_box->addWidget(ref2tt, 0, 5, Qt::AlignTop);
 	ref_box->addItem(new QSpacerItem(0, 12), 1, 0);
 	QLabel* ref3lu = new QLabel("Userbouquets");
 	QLabel* ref3tu = new QLabel("Swiss\nItaly\nTests\nTests 1\nRadio 13E\nSwiss");
-	ref3lu->setFont(QFont(NULL, fsss));
+	ref3lu->setFont(QFont(ff, fsss));
 	ref_box->addWidget(ref3lu, 2, 0, Qt::AlignTop);
 	ref_box->addWidget(ref3tu, 2, 1, Qt::AlignTop);
 	QLabel* ref4lb = new QLabel("Bouquets");
 	QLabel* ref4tb = new QLabel("TV\nRadio");
-	ref4lb->setFont(QFont(NULL, fsss));
+	ref4lb->setFont(QFont(ff, fsss));
 	ref_box->addWidget(ref4lb, 2, 2, Qt::AlignTop);
 	ref_box->addWidget(ref4tb, 2, 3, Qt::AlignTop);
 	QLabel* ref5ln = new QLabel("Satellite");
 	QLabel* ref5tn = new QLabel("Hot Bird 13.0E");
-	ref5ln->setFont(QFont(NULL, fsss));
+	ref5ln->setFont(QFont(ff, fsss));
 	ref_box->addWidget(ref5ln, 2, 4, Qt::AlignTop);
 	ref_box->addWidget(ref5tn, 2, 5, Qt::AlignTop);
 	ref_box->setColumnStretch(1, 1);
@@ -737,6 +738,7 @@ void tab::populate(QTreeWidget* side_tree)
 	if (cache[curr_chlist].isEmpty())
 	{
 		int fss = (theme::getDefaultFontSize() - 1);
+		QString ff = theme::getDefaultFontFamily();
 
 		for (auto & ch : dbih->gindex[curr_chlist])
 		{
@@ -785,10 +787,10 @@ void tab::populate(QTreeWidget* side_tree)
 			item->setData(2, Qt::UserRole, chid);   // data: chid
 			if (marker)
 			{
-				item->setFont(2, QFont(NULL, fss));
-				item->setFont(5, QFont(NULL, -1, QFont::Weight::Bold));
+				item->setFont(2, QFont(ff, fss));
+				item->setFont(5, QFont(ff, -1, QFont::Weight::Bold));
 			}
-			item->setFont(6, QFont(NULL, fss));
+			item->setFont(6, QFont(ff, fss));
 			if (! entry.at(6).isEmpty())
 			{
 				item->setIcon(6, theme::icon("round-info"));
@@ -799,16 +801,16 @@ void tab::populate(QTreeWidget* side_tree)
 
 	list_tree->addTopLevelItems(cache[curr_chlist]);
 
-	// sorting
+	// sorting by
 	if (this->state.sort.first != -1)
 	{
-		list_tree->sortByColumn(this->state.sort.first, this->state.sort.second);
+		list_tree->sortItems(this->state.sort.first, this->state.sort.second);
 
 		// sorting column 0|desc
 		if (this->state.sort.first == 0 && this->state.sort.second == Qt::DescendingOrder)
 			lheaderv->setSortIndicator(1, this->state.sort.second);
 	}
-	// non-sorting
+	// sorting default
 	else if (this->state.dnd)
 	{
 		list_tree->setDragEnabled(true);
@@ -926,48 +928,58 @@ void tab::listItemChanged()
 
 	debug("listItemChanged()");
 
-	// non-sorting
+	// sorting default
 	if (this->state.dnd)
 		QTimer::singleShot(0, [=]() { this->visualReindexList(); });
+	else
+		this->state.reindex = true;
 	this->state.changed = true;
 }
 
-//TODO FIX sorting 0|desc reverse order
 void tab::visualReindexList()
 {
 	debug("visualReindexList()");
 
-	int i = 0, y = 0, idx = 0;
-	int maxs = list_tree->topLevelItemCount();
+	// sorting column 0|desc || column 0|asc
+	bool reverse = (this->state.sort.first < 1 && this->state.sort.second == Qt::DescendingOrder) ? true : false;
 
-	while (i != maxs)
+	int i = 0, y = 0, idx = 0;
+	int j = list_tree->topLevelItemCount();
+
+	if (reverse)
 	{
-		char ci[7];
-		std::sprintf(ci, "%06d", i + 1);
-		QString x = QString::fromStdString(ci);
+		while (j--)
+		{
+			QTreeWidgetItem* item = list_tree->topLevelItem(i);
+			bool marker = item->data(1, Qt::UserRole).toBool();
+			if (marker)
+				y++;
+		}
+		j = list_tree->topLevelItemCount();
+	}
+	while (reverse ? j-- : i != j)
+	{
 		QTreeWidgetItem* item = list_tree->topLevelItem(i);
 		bool marker = item->data(1, Qt::UserRole).toBool();
+		idx = reverse ? j : i;
+		char ci[7];
+		std::sprintf(ci, "%06d", idx++);
+		item->setText(0, QString::fromStdString(ci));
 		if (marker)
-		{
-			idx = 0;
-		}
+			y += ! reverse;
 		else
-		{
-			y++;
-			idx = y;
-		}
-		item->setText(0, x);
-		if (! marker)
-			item->setText(1, QString::fromStdString(to_string(idx)));
+			item->setText(1, QString::fromStdString(to_string(idx - y)));
 		i++;
 	}
+
+	this->state.reindex = false;
 }
 
 void tab::trickySortByColumn(int column)
 {
 	debug("trickySortByColumn()", "column", to_string(column));
 
-	Qt::SortOrder order = lheaderv->sortIndicatorOrder();
+	Qt::SortOrder order = this->state.sort.first == -1 ? Qt::DescendingOrder : lheaderv->sortIndicatorOrder();
 	column = column == 1 ? 0 : column;
 
 	// sorting by
@@ -985,7 +997,7 @@ void tab::trickySortByColumn(int column)
 	// sorting default
 	else
 	{
-		list_tree->sortByColumn(column, order);
+		list_tree->sortItems(column, order);
 		lheaderv->setSortIndicator(1, order);
 		allowDnD();
 
@@ -997,7 +1009,7 @@ void tab::trickySortByColumn(int column)
 		else
 			lheaderv->setSortIndicatorShown(true);
 
-		if (this->state.changed)
+		if (this->state.reindex)
 			this->visualReindexList();
 	}
 	this->state.sort = pair (column, order); //C++17
@@ -1026,7 +1038,7 @@ void tab::reharmDnD()
 	debug("reharmDnD()");
 
 	// sorting default 0|asc
-	list_tree->sortByColumn(0, Qt::AscendingOrder);
+	list_tree->sortItems(0, Qt::AscendingOrder);
 	list_tree->setDragEnabled(true);
 	list_tree->setAcceptDrops(true);
 	this->state.sort = pair (0, Qt::AscendingOrder); //C++17
@@ -1163,9 +1175,11 @@ void tab::listItemDelete()
 	list_tree->setDragEnabled(true);
 	list_tree->setAcceptDrops(true);
 
-	// non-sorting
+	// sorting default
 	if (this->state.dnd)
 		visualReindexList();
+	else
+		this->state.reindex = true;
 	this->state.changed = true;
 
 	setCounters();
@@ -1211,9 +1225,9 @@ void tab::putChannels(vector<QString> channels)
 	list_tree->setDragEnabled(false);
 	list_tree->setAcceptDrops(false);
 	QList<QTreeWidgetItem*> clist;
-	int i = 0;
-	int idx;
+	int i = 0, idx;
 	int fss = (theme::getDefaultFontSize() - 1);
+	QString ff = theme::getDefaultFontFamily();
 	QTreeWidgetItem* current = list_tree->currentItem();
 	QTreeWidgetItem* parent = list_tree->invisibleRootItem();
 	i = current != nullptr ? parent->indexOfChild(current) : list_tree->topLevelItemCount();
@@ -1273,10 +1287,10 @@ void tab::putChannels(vector<QString> channels)
 		item->setData(2, Qt::UserRole, w);      // data: chid
 		if (marker)
 		{
-			item->setFont(2, QFont(NULL, fss));
-			item->setFont(5, QFont(NULL, -1, QFont::Weight::Bold));
+			item->setFont(2, QFont(ff, fss));
+			item->setFont(5, QFont(ff, -1, QFont::Weight::Bold));
 		}
-		item->setFont(6, QFont(NULL, fss));
+		item->setFont(6, QFont(ff, fss));
 		if (! entry.at(6).isEmpty())
 		{
 			item->setIcon(6, theme::icon("round-info"));
@@ -1293,9 +1307,11 @@ void tab::putChannels(vector<QString> channels)
 	list_tree->setDragEnabled(true);
 	list_tree->setAcceptDrops(true);
 
-	// non-sorting
+	// sorting default
 	if (this->state.dnd)
 		visualReindexList();
+	else
+		this->state.reindex = true;
 	this->state.changed = true;
 
 	setCounters();
@@ -1305,7 +1321,7 @@ void tab::updateBouquetsIndex()
 {
 	debug("updateBouquetsIndex()");
 
-	int i = 0, j;
+	int i = 0, y;
 	int count = bouquets_tree->topLevelItemCount();
 	vector<pair<int, string>> bss;
 	vector<pair<int, string>> ubs;
@@ -1317,19 +1333,19 @@ void tab::updateBouquetsIndex()
 		QVariantMap tdata = parent->data(0, Qt::UserRole).toMap();
 		string pname = tdata["id"].toString().toStdString();
 		bss.emplace_back(pair (i, pname)); //C++17
-		j = 0;
+		y = 0;
 
 		if (parent->childCount())
 		{
 			int childs = parent->childCount();
-			while (j != childs)
+			while (y != childs)
 			{
-				QTreeWidgetItem* item = parent->child(j);
+				QTreeWidgetItem* item = parent->child(y);
 				QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
 				string bname = tdata["id"].toString().toStdString();
 				ubs.emplace_back(pair (i, bname)); //C++17
 				index[pname].emplace_back(bname);
-				j++;
+				y++;
 			}
 		}
 		i++;
@@ -1354,30 +1370,28 @@ void tab::updateListIndex()
 	if (! this->state.changed)
 		return;
 
-	int i = 0, y = 0, idx = 0;
+	int i = 0, idx = 0;
 	int count = list_tree->topLevelItemCount();
 	string curr_chlist = this->state.curr;
 	dbih->gindex[curr_chlist].clear();
 
 	debug("updateListIndex()", "curr_chlist", curr_chlist);
 
+	int sort_col = list_tree->sortColumn();
+	list_tree->sortItems(0, Qt::AscendingOrder);
+
 	while (i != count)
 	{
-		QTreeWidgetItem* item = list_tree->topLevelItem(i);
+		QTreeWidgetItem* item = list_tree->invisibleRootItem()->child(i);
 		string chid = item->data(2, Qt::UserRole).toString().toStdString();
 		bool marker = item->data(1, Qt::UserRole).toBool();
-		if (marker)
-		{
-			idx = 0;
-		}
-		else
-		{
-			y++;
-			idx = y;
-		}
+		idx = marker ? 0 : i + 1;
 		dbih->gindex[curr_chlist].emplace_back(pair (idx, chid)); //C++17
 		i++;
 	}
+
+	list_tree->sortItems(this->state.sort.first, this->state.sort.second);
+	lheaderv->setSortIndicator(sort_col, this->state.sort.second);
 
 	this->state.changed = false;
 }

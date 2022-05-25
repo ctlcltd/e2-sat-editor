@@ -117,6 +117,7 @@ class tab : protected e2se::log_factory
 			bool dnd;
 			bool init;
 			bool changed;
+			bool reindex;
 			int tc;
 			int ti;
 			string curr;

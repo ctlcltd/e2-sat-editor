@@ -222,7 +222,7 @@ void e2db::updateUserbouquetIndexes()
 {
 	debug("updateUserbouquetIndexes()");
 
-	this->gindex = index;
+	this->index = gindex;
 }
 
 void e2db::updateUserbouquetIndexes(string chid, string nw_chid)

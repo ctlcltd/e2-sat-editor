@@ -1513,6 +1513,7 @@ void e2db::merge(e2db* dbih)
 
 	this->index = index;
 
+	//TODO mem
 	cp_index_0.clear();
 	cp_index_1.clear();
 	cp_ubs_0.clear();
@@ -1869,7 +1870,6 @@ map<string, vector<pair<int, string>>> e2db::get_encryption_index()
 			_index["(FTA)"].emplace_back(x);
 		}
 	}
-	// _unique.clear();
 
 	return _index;
 }
