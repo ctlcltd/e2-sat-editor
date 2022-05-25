@@ -12,8 +12,6 @@ It supports Lamedb 4 and Lamedb 5 formats.
 
 <img src="res/e2-sat-editor.png" width="192" height="192" alt="e2 SAT Editor icon" title="Icon">
 
-Freely inspired by [LlamaWare DreamBoxEdit](https://github.com/OpenVision-Archive/dreamboxedit).
-
  
 ## Requirements
 
@@ -72,10 +70,8 @@ You can open [issues](https://github.com/ctlcltd/e2-sat-editor/issues) to report
 
 ## License
 
-Source code licensed under the terms of the [MIT License](LICENSE). It is also licensed under the terms of the [GNU GPLv3](src/COPYING.1).
+Source code licensed under the terms of the [MIT License](LICENSE). It is also licensed under the terms of the [GNU GPLv3](src/COPYING).
 
 This software will be distribuited under the terms of the GNU GPLv3.
-
-> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 [MIT License](LICENSE).
