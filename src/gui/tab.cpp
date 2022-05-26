@@ -793,7 +793,7 @@ void tab::populate(QTreeWidget* side_tree)
 			item->setFont(6, QFont(ff, fss));
 			if (! entry.at(6).isEmpty())
 			{
-				item->setIcon(6, theme::icon("round-info"));
+				item->setIcon(6, theme::icon("crypted"));
 			}
 			cache[curr_chlist].append(item);
 		}
@@ -954,7 +954,9 @@ void tab::visualReindexList()
 			bool marker = item->data(1, Qt::UserRole).toBool();
 			if (marker)
 				y++;
+			i++;
 		}
+		i = 0;
 		j = list_tree->topLevelItemCount();
 	}
 	while (reverse ? j-- : i != j)
@@ -965,11 +967,10 @@ void tab::visualReindexList()
 		char ci[7];
 		std::sprintf(ci, "%06d", idx++);
 		item->setText(0, QString::fromStdString(ci));
-		if (marker)
-			y += ! reverse;
-		else
+		if (! marker)
 			item->setText(1, QString::fromStdString(to_string(idx - y)));
 		i++;
+		y = marker ? reverse ? y - 1 : y + 1 : y;
 	}
 
 	this->state.reindex = false;
@@ -1293,7 +1294,7 @@ void tab::putChannels(vector<QString> channels)
 		item->setFont(6, QFont(ff, fss));
 		if (! entry.at(6).isEmpty())
 		{
-			item->setIcon(6, theme::icon("round-info"));
+			item->setIcon(6, theme::icon("crypted"));
 		}
 		clist.append(item);
 	}
@@ -1382,7 +1383,7 @@ void tab::updateListIndex()
 
 	while (i != count)
 	{
-		QTreeWidgetItem* item = list_tree->invisibleRootItem()->child(i);
+		QTreeWidgetItem* item = list_tree->topLevelItem(i);
 		string chid = item->data(2, Qt::UserRole).toString().toStdString();
 		bool marker = item->data(1, Qt::UserRole).toBool();
 		idx = marker ? 0 : i + 1;

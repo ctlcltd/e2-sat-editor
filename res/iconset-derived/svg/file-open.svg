@@ -2,11 +2,9 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="100%" height="100%" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
     <g transform="matrix(1,0,0,1,-176,-3648)">
-        <g transform="matrix(1,-0,-0,1,176,3648)">
-            <use xlink:href="#_Image1" x="4" y="22" width="111px" height="84px"/>
+        <rect id="file-open" x="176" y="3648" width="128" height="128" style="fill:none;"/>
+        <g id="file-open1" serif:id="file-open">
+            <path d="M197,3690.97L286.077,3690.97C288.86,3690.97 290.72,3693.23 290.23,3696.01L280.89,3748.96C280.399,3751.74 277.741,3754 274.958,3754L183.84,3754C181.721,3754 180,3752.28 180,3750.16L180,3670L247.2,3670L264,3684L192,3684L192,3716L197,3716L197,3690.97Z"/>
         </g>
     </g>
-    <defs>
-        <image id="_Image1" width="111px" height="84px" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG8AAABUCAYAAACMeGkOAAAACXBIWXMAAA7EAAAOxAGVKw4bAAACa0lEQVR4nO2du04bURRFF4g8CmjyDUSRKPMBdOngD/gD/oc2JVRpkiYKdURty0UCXdJAAamCFGE5hR+6Zsb2eGzPPdveS9qSbdny9Vk648O9SAboOaNcAm8QInfBouUn8G6hijZI7mJFzAPwYZGiNkXuQkXNE3C6QF0bIXeRoucMeFG7uismd3EUEnaQyV0YlYQcZHIXRSnhBpncBVFLqEEmdzFUE2KQyV0E5WQdZLYGizD1uQaOgR9Nv/F202+4hrwFrsg0yOS+9KxLGh9kdmq8ZmvpqzC18GVTGMsTxvKEsTxhLE+YOtPmq6WvwlThHyUbKrn/PnKq5Q/wDTgcivP2mB5d4AS4sDxNfgH7lqfLe0+bury0PF3ufdnU5BHYc+dp0gG6lqdJG7w9pkoLLE8Vd54wlifK3SCWJ0h7eMPy9LA8YVrDG5anx6jzvD2mRQ/YBf6CO0+NGwbiwPLUaKd3LE8LyxOmld6xPC3GOs/Tpg6PwB79/x4D3HlKdEjEgeUp0X7+gOXpYHnCtJ4/YHk6uPNEGR3AplieBoWuA8tTwfKEsTxhCpMmeHtMgbED2BR3XnzGDmBTLC8+pd93YHkKWJ4wlidM6aQJnjajUziATXHnxaZwAJtiebGZ+H0HlhcdyxPG8oSxPFHugNtpT7C8uEztOrC8yFieMJYnzEx53h6LycQD2BR3XkwmHsCmWF5MZl4ywfKiYnnCWJ4wleR52ozH1APYFHdePL5SQRz05T2sdi1mTj5WfeI28H2FCzHzcQ58nucFB/Svs7l/6GjT8wl4PcNVKQfAF+A+wIfYpPym32lHsxUV+Q/JM/yoIt+xAQAAAABJRU5ErkJggg=="/>
-    </defs>
 </svg>

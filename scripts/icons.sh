@@ -14,8 +14,8 @@ iconutil -c icns dist/macos/icons.iconset -o dist/macos/e2-sat-editor.icns
 rm -R dist/macos/icons.iconset
 
 mkdir -p dist/linux/icons/{scalable,128x128,64x64}
-#cp res/e2-sat-editor/icon.svg dist/linux/icons/scalable/org.e2se.e2-sat-editor.png
-cp res/e2-sat-editor/icon-128.png dist/linux/icons/128x128/org.e2se.e2-sat-editor.png
-cp res/e2-sat-editor/icon-64.png dist/linux/icons/64x64/org.e2se.e2-sat-editor.png
+cp res/e2-sat-editor/icon.svg dist/linux/icons/scalable/e2-sat-editor.svg
+cp res/e2-sat-editor/icon-128.png dist/linux/icons/128x128/e2-sat-editor.png
+cp res/e2-sat-editor/icon-64.png dist/linux/icons/64x64/e2-sat-editor.png
 
 convert res/e2-sat-editor/icon-256.png res/e2-sat-editor/icon-128.png res/e2-sat-editor/icon-64.png dist/windows/e2-sat-editor.ico

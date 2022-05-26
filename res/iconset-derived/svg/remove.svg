@@ -2,11 +2,11 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="100%" height="100%" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
     <g transform="matrix(1,0,0,1,-1880,-2768)">
-        <g transform="matrix(1,-0,-0,1,1880,2768)">
-            <use xlink:href="#_Image1" x="9" y="27" width="46px" height="10px"/>
+        <g id="remove" transform="matrix(0.5,0,0,0.5,956,1400)">
+            <rect x="1848" y="2736" width="128" height="128" style="fill:none;"/>
+            <g transform="matrix(1,0,0,1,4.54747e-13,-152)">
+                <rect x="1866.75" y="2943" width="90.51" height="18"/>
+            </g>
         </g>
     </g>
-    <defs>
-        <image id="_Image1" width="46px" height="10px" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAKCAYAAADLhGwXAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQklEQVQ4je3QQQ3AIBBE0UdTP2ipRBzUCgqQAhp66BKSfcncf6bgQXWWDg3zsLXrhzdCZHi0DI+W4dFuvBi7Qz7qCwSXMNswHgOJAAAAAElFTkSuQmCC"/>
-    </defs>
 </svg>

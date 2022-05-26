@@ -1,26 +1,10 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
 <qresource prefix="/icons">
-	<file>light/add.png</file>
-	<file>light/close.png</file>
-	<file>light/delete.png</file>
-	<file>light/edit.png</file>
-	<file>light/export.png</file>
-	<file>light/file-new.png</file>
-	<file>light/file-open.png</file>
-	<file>light/file.png</file>
-	<file>light/import.png</file>
-	<file>light/remove.png</file>
-	<file>light/round-checkmark.png</file>
-	<file>light/round-delete.png</file>
-	<file>light/round-info.png</file>
-	<file>light/round-question.png</file>
-	<file>light/round-warning.png</file>
-	<file>light/save.png</file>
-	<file>light/search.png</file>
-	<file>light/settings.png</file>
+	<file>e2-sat-editor.png</file>
 	<file>dark/add.png</file>
 	<file>dark/close.png</file>
+	<file>dark/crypted.png</file>
 	<file>dark/delete.png</file>
 	<file>dark/edit.png</file>
 	<file>dark/export.png</file>
@@ -37,6 +21,24 @@
 	<file>dark/save.png</file>
 	<file>dark/search.png</file>
 	<file>dark/settings.png</file>
-	<file>e2-sat-editor.png</file>
+	<file>light/add.png</file>
+	<file>light/close.png</file>
+	<file>light/crypted.png</file>
+	<file>light/delete.png</file>
+	<file>light/edit.png</file>
+	<file>light/export.png</file>
+	<file>light/file-new.png</file>
+	<file>light/file-open.png</file>
+	<file>light/file.png</file>
+	<file>light/import.png</file>
+	<file>light/remove.png</file>
+	<file>light/round-checkmark.png</file>
+	<file>light/round-delete.png</file>
+	<file>light/round-info.png</file>
+	<file>light/round-question.png</file>
+	<file>light/round-warning.png</file>
+	<file>light/save.png</file>
+	<file>light/search.png</file>
+	<file>light/settings.png</file>
 </qresource>
 </RCC>

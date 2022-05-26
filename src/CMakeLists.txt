@@ -14,15 +14,18 @@ qt_add_executable(e2-sat-editor WIN32 MACOSX_BUNDLE
 	e2db.cpp
 	ftpcom.cpp
 	gui/about.cpp
+	gui/BouquetEventHandler.cpp
 	gui/channelBook.cpp
-	gui/DropEventHandler.h
 	gui/e2db_gui.cpp
+	gui/editBouquet.cpp
 	gui/editService.cpp
+	gui/ftpcom_gui.cpp
 	gui/gui.cpp
+	gui/ListEventHandler.cpp
+	gui/ListEventObserver.cpp
 	gui/settings.cpp
 	gui/tab.cpp
 	gui/theme.cpp
-	gui/TreeEventObserver.h
 	gui/WidgetWithBackdrop.cpp
 	main.cpp
 )
@@ -41,8 +44,10 @@ target_link_libraries(e2-sat-editor PUBLIC
 
 # Resources:
 set(resources_resource_files
+	"../res/e2-sat-editor.png"
 	"../res/dark/add.png"
 	"../res/dark/close.png"
+	"../res/dark/crypted.png"
 	"../res/dark/delete.png"
 	"../res/dark/edit.png"
 	"../res/dark/export.png"
@@ -59,9 +64,9 @@ set(resources_resource_files
 	"../res/dark/save.png"
 	"../res/dark/search.png"
 	"../res/dark/settings.png"
-	"../res/e2-sat-editor.png"
 	"../res/light/add.png"
 	"../res/light/close.png"
+	"../res/light/crypted.png"
 	"../res/light/delete.png"
 	"../res/light/edit.png"
 	"../res/light/export.png"

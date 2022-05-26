@@ -2,11 +2,11 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="100%" height="100%" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
     <g transform="matrix(1,0,0,1,-664,-2464)">
-        <g transform="matrix(1,-0,-0,1,664,2464)">
-            <use xlink:href="#_Image1" x="10" y="10" width="45px" height="45px"/>
+        <g id="search" transform="matrix(0.5,0,0,0.5,348,1248)">
+            <rect x="632" y="2432" width="128" height="128" style="fill:none;"/>
+            <g transform="matrix(1.20859,0,0,1.20859,-145.285,-704.45)">
+                <path d="M709.364,2669.85C703.611,2674.14 696.574,2676.78 688.833,2676.83C671.613,2676.94 655.28,2663.16 652.748,2645.89C649.883,2626.34 665.291,2605.9 686.043,2604.45C686.972,2604.39 687.902,2604.36 688.833,2604.37C705.381,2604.52 720.903,2617.19 724.142,2633.52C726.055,2643.17 723.418,2653.25 717.738,2661.25L740.607,2684.12L732.121,2692.61L709.364,2669.85ZM688.466,2619.36C678.147,2619.46 668.609,2627.92 667.488,2638.28C666.516,2647.28 671.941,2656.61 680.351,2660.17C691.307,2664.82 705.746,2658.24 709.065,2646.29C712.467,2634.03 702.845,2619.76 689.155,2619.37C688.925,2619.37 688.696,2619.36 688.466,2619.36Z"/>
+            </g>
         </g>
     </g>
-    <defs>
-        <image id="_Image1" width="45px" height="45px" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAtCAYAAAA6GuKaAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAC70lEQVRYhe3ZT4hVZRjH8c/cifGWjeVgMYmEEi0i8s+iIsQZqI1/VrkRF4UErSMIWgdRIGKLXARBBS2MFPyDplZQuVAGZlo5MLOYyAHtP5Lin2GcxsXrhXH0nvd9zzlzVegH7+q55/d8Ofd9znne53QppyexDmuxBivQjd9xHr/iewxjpmSOWvQAtuJHzCauv/EJ+jsN24XXcTYDdv66iHfQ0wngPuyrADt/jWPzQgK/gHM1As9dh9BbN/BaXFgg4NY6jUfrAn4Gfy0wcGsN4+GqwL3yC+4/jOIozmAq8/ovhWIvrT2JiS7jPQy6fW924xUcEJ7RKX5vlAVeL9y1WIJvsDLR83lMJHhewrJc4C6MRIxn8Jr8v3IJvksA/zAX+sUE03dzTeeoFz9H/C/jsRzTzyKG+1UsFqzC9UieN1PNenGlwOi8+l4EX0egD6caDUSMPq4JGF6K5LqCZsykIbSWRTpYCfNWncZQQfxBLI+ZxKAv4GQeV1SfRuLRYmwofuaOYToDKEUTkfjjMYOG8NptpyVZOGn6IxJfHDNo4FpBvLYubI76IvHJmEEDVwviyyRUc6aejsR/iRk0hNNEOy0SzoV1arAgdlV8+4ANip+dP1RjvEV9N8Ha5TqRarQoYjSL1TVBfxDJsyPHbG/EbAyPVAQeUNz6Tsks/HUR6FkcERr8MtqCfyL+e8sYf5sA/pW8Zr0HuxJ8rwldYLaek3a++xPbFbeq3UKPPpTgN4v3c0DnJ34buxOvHRW2zCmhR7l+E/RlYf+m1sA0nhC2Tyk1cEza3alzHVPxJbZY3pDxngL/6X4Eb+KjBQCLjSkqg8Mm/FYD7JRQ5CvE66YW8IfwlnJT1Bl8Lnw9aKnZKfBWsm34QujG2iWcFCZRO/FsgVcp8CqzjAaeEj5N9AtjhnFhCPlvokdTmPltLPjNcbyq+LDScXV0q9Sp/8E7rRj4CJbeNboCtQMfET/J31XNB7/ngVtqgd83wC013WEP3wBKUI1n6aA8TwAAAABJRU5ErkJggg=="/>
-    </defs>
 </svg>

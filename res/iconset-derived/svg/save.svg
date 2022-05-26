@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="100%" height="100%" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:bevel;stroke-miterlimit:1.5;">
+<svg width="100%" height="100%" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
     <g transform="matrix(1,0,0,1,-2760,-2432)">
-        <g transform="matrix(1,-0,-0,1,2760,2432)">
-            <use xlink:href="#_Image1" x="14" y="16" width="100px" height="96px"/>
+        <rect id="save" x="2760" y="2432" width="128" height="128" style="fill:none;"/>
+        <g id="save1" serif:id="save">
+            <path d="M2874,2454L2869,2448L2777.84,2448C2775.72,2448 2774,2449.72 2774,2451.84L2774,2540.16C2774,2542.28 2775.72,2544 2777.84,2544L2870.16,2544C2872.28,2544 2874,2542.28 2874,2540.16L2874,2454ZM2854,2491.01L2854,2451.01L2798,2451.01L2798,2491.01L2854,2491.01ZM2844.5,2458L2844.5,2488L2829.5,2488L2829.5,2458L2844.5,2458Z"/>
+            <path d="M2874,2454L2869,2448L2777.84,2448C2775.72,2448 2774,2449.72 2774,2451.84L2774,2540.16C2774,2542.28 2775.72,2544 2777.84,2544L2870.16,2544C2872.28,2544 2874,2542.28 2874,2540.16L2874,2454ZM2856.99,2451L2857,2451.01L2857,2491.01L2854,2494.01L2798,2494.01L2795,2491.01L2795,2451.01L2795.01,2451L2777.84,2451C2777.38,2451 2777,2451.38 2777,2451.84L2777,2540.16C2777,2540.62 2777.38,2541 2777.84,2541C2777.84,2541 2870.16,2541 2870.16,2541C2870.62,2541 2871,2540.62 2871,2540.16L2871,2455.09L2867.6,2451L2856.99,2451ZM2854,2491.01L2854,2451.01L2798,2451.01L2798,2491.01L2854,2491.01ZM2844.5,2458L2844.5,2488L2829.5,2488L2829.5,2458L2844.5,2458ZM2841.5,2461L2841.5,2485C2841.5,2485 2832.5,2485 2832.5,2485C2832.5,2485 2832.5,2461 2832.5,2461L2841.5,2461Z"/>
         </g>
     </g>
-    <defs>
-        <image id="_Image1" width="100px" height="96px" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABgCAYAAADrc9dCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABmklEQVR4nO3cMUoDQQBA0Z9YCfYWXsDCg4jeQi/nAays0ngDe9uQwjZgkVispkin2STf8B8MhCUMw3xmIMUGBvfAHFgB68bBxhNbzr5jPAMXwGT7C9mrG2AJvP48mDCcjMtjrSisgVvgBYYgK/Z7Ms73OLfBcoQ5PoFr4H3CUGifTv0aHGv/PoCrguxuzP17K8juRt2/6ZiTZXcFkSmIzKkHmfH3X9Gzg6+W0w/y7xREpiAyBZEpiExBZAoiUxCZgsgURKYgMgWRKYhMQWQKIlMQmYLIFESmIDIFkSmITEFkCiJTEJmCyBREpiAyBZEpiExvUO2uN6hOWUFkDnFl5Rc6ITIFkSmITEFkCiJTEJmCyBREpiAyBZEpiExBZAoiUxCZgsgURKYgMgWRKYhMQWQKIlMQmYLIFESmIDIFkSmITEFkCiJTEJmCyBREpiAyBZEpiExBZAoiUxCZgsgURKYgMgWRKYhMQWQKIlMQmYLIFERmSn9gZrKeAotjryIbiynweOxVZOPh58M9MAdWDFdY43Bj9b33dwBfvSnnD/3jMsAAAAAASUVORK5CYII="/>
-    </defs>
 </svg>

@@ -5,4 +5,4 @@ Name=e2 SAT Editor
 Comment=An enigma2 channel list editor
 TryExec=e2-sat-editor
 Exec=e2-sat-editor %F
-Icon=org.e2se.e2-sat-editor
+Icon=e2-sat-editor
