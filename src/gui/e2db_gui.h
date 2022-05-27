@@ -59,11 +59,11 @@ class e2db : public ::e2se_e2db::e2db
 		bool prepare(string localdir);
 		bool write(string localdir, bool overwrite);
 		void merge(unordered_map<string, e2se_e2db::e2db_file> files);
-		void updateUserbouquetIndexes();
-		void updateUserbouquetIndexes(string chid, string nw_chid);
 		QStringList entryTransponder(transponder tx);
 		QStringList entryService(service ch);
 		QStringList entryMarker(channel_reference chref);
+		// reflect source index
+		// gindex <name string, vector<pair<src-idx||count int, chid string>>>
 		unordered_map<string, vector<pair<int, string>>> gindex;
 	protected:
 		QSettings* sets;

@@ -109,7 +109,7 @@ void editBouquet::layout()
 	dtf1bt->setMaximumWidth(100);
 	dtf1->addRow(dtf1bt);
 	dtf1->addItem(new QSpacerItem(0, 0));
-	for (auto & bsi : dbih->gindex["bss"])
+	for (auto & bsi : dbih->index["bss"])
 	{
 		e2db::bouquet gboq = dbih->bouquets[bsi.second];
 		QString bgroup = QString::fromStdString(bsi.second);

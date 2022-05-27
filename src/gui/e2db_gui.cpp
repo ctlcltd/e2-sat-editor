@@ -182,7 +182,7 @@ bool e2db::write(string localdir, bool overwrite)
 {
 	debug("write()");
 
-	this->set_index(gindex);
+	this->gindex = index;
 
 	if (! this->::e2se_e2db::e2db::write(localdir, overwrite))
 		return false;
@@ -206,7 +206,7 @@ void e2db::merge(unordered_map<string, e2se_e2db::e2db_file> files)
 		entries.services.clear();
 	}
 
-	this->gindex = this->index;
+	this->gindex = index;
 
 	for (auto & txdata : db.transponders)
 	{
@@ -215,30 +215,6 @@ void e2db::merge(unordered_map<string, e2se_e2db::e2db_file> files)
 	for (auto & chdata : db.services)
 	{
 		entries.services[chdata.first] = entryService(chdata.second);
-	}
-}
-
-void e2db::updateUserbouquetIndexes()
-{
-	debug("updateUserbouquetIndexes()");
-
-	this->index = gindex;
-}
-
-void e2db::updateUserbouquetIndexes(string chid, string nw_chid)
-{
-	debug("updateUserbouquetIndexes()", "chid|nw_chid", chid + '|' + nw_chid);
-
-	for (auto & g : gindex)
-	{
-		if (g.first.find("chs") != string::npos || g.first == "txs")
-			continue;
-
-		for (auto & s : g.second)
-		{
-			if (s.second == chid)
-				s.second = nw_chid;
-		}
 	}
 }
 

@@ -240,6 +240,7 @@ struct e2db_abstract
 			string name;
 			int flgs;
 			int pos;
+			//TODO rename
 			// references <bname string, tuner_reference struct>
 			unordered_map<string, tuner_reference> references;
 		};

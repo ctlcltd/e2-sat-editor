@@ -594,8 +594,6 @@ void tab::editService()
 		for (int i = 0; i < entry.count(); i++)
 			item->setText(i, entry[i]);
 		item->setData(2, Qt::UserRole, QString::fromStdString(nw_chid)); // data: chid
-
-		dbih->updateUserbouquetIndexes(chid, nw_chid);
 	}
 }
 
@@ -640,10 +638,10 @@ void tab::load()
 {
 	debug("load()");
 
-	sort(dbih->gindex["bss"].begin(), dbih->gindex["bss"].end());
+	sort(dbih->index["bss"].begin(), dbih->index["bss"].end());
 	unordered_map<string, QTreeWidgetItem*> bgroups;
 
-	for (auto & bsi : dbih->gindex["bss"])
+	for (auto & bsi : dbih->index["bss"])
 	{
 		debug("load()", "bouquet", bsi.second);
 		e2db::bouquet gboq = dbih->bouquets[bsi.second];
@@ -662,7 +660,7 @@ void tab::load()
 		for (string & ubname : gboq.userbouquets)
 			bgroups[ubname] = pgroup;
 	}
-	for (auto & ubi : dbih->gindex["ubs"])
+	for (auto & ubi : dbih->index["ubs"])
 	{
 		debug("load()", "userbouquet", ubi.second);
 		e2db::userbouquet uboq = dbih->userbouquets[ubi.second];
@@ -722,7 +720,7 @@ void tab::populate(QTreeWidget* side_tree)
 
 	debug("populate()", "curr_chlist", curr_chlist);
 
-	if (! dbih->gindex.count(curr_chlist))
+	if (! dbih->index.count(curr_chlist))
 		error("populate()", "curr_chlist", curr_chlist);
 
 	lheaderv->setSortIndicatorShown(true);
@@ -740,7 +738,7 @@ void tab::populate(QTreeWidget* side_tree)
 		int fss = (theme::getDefaultFontSize() - 1);
 		QString ff = theme::getDefaultFontFamily();
 
-		for (auto & ch : dbih->gindex[curr_chlist])
+		for (auto & ch : dbih->index[curr_chlist])
 		{
 			char ci[7];
 			std::sprintf(ci, "%06d", i++);
@@ -1166,10 +1164,14 @@ void tab::listItemDelete()
 	list_tree->setDragEnabled(false);
 	list_tree->setAcceptDrops(false);
 
+	string curr_chlist = this->state.curr;
+
 	for (auto & item : selected)
 	{
 		int i = list_tree->indexOfTopLevelItem(item);
+		string chid = item->data(2, Qt::UserRole).toString().toStdString(); // data: chid
 		list_tree->takeTopLevelItem(i);
+		dbih->remove_channel_reference(chid, curr_chlist);
 	}
 
 	lheaderv->setSectionsClickable(true);
@@ -1226,13 +1228,14 @@ void tab::putChannels(vector<QString> channels)
 	list_tree->setDragEnabled(false);
 	list_tree->setAcceptDrops(false);
 	QList<QTreeWidgetItem*> clist;
-	int i = 0, idx;
+	string curr_chlist = this->state.curr;
+	int i = 0, y;
 	int fss = (theme::getDefaultFontSize() - 1);
 	QString ff = theme::getDefaultFontFamily();
 	QTreeWidgetItem* current = list_tree->currentItem();
 	QTreeWidgetItem* parent = list_tree->invisibleRootItem();
 	i = current != nullptr ? parent->indexOfChild(current) : list_tree->topLevelItemCount();
-	idx = i + 1;
+	y = i + 1;
 
 	for (QString & w : channels)
 	{
@@ -1243,21 +1246,29 @@ void tab::putChannels(vector<QString> channels)
 		QString idx = QString::fromStdString(to_string(i));
 		QStringList entry;
 		bool marker = false;
+		e2db::channel_reference chref;
+
 		if (dbih->db.services.count(chid))
 		{
+			e2db::service ch = dbih->db.services[chid];
 			entry = dbih->entries.services[chid];
 			entry.prepend(idx);
 			entry.prepend(x);
+
+			chref.marker = false;
+			chref.chid = chid;
+			chref.type = ch.stype;
+			chref.index = idx.toInt();
 		}
 		else
 		{
 			string chlist;
 
-			for (auto & q : dbih->gindex["mks"])
+			for (auto & q : dbih->index["mks"])
 			{
 				if (q.second == chid)
 				{
-					for (auto & u : dbih->gindex["ubs"])
+					for (auto & u : dbih->index["ubs"])
 					{
 						if (u.first == q.first)
 							chlist = u.second;
@@ -1272,9 +1283,11 @@ void tab::putChannels(vector<QString> channels)
 			}
 			else
 			{
-				e2db::channel_reference chref;
 				if (dbih->userbouquets.count(chlist))
+				{
 					chref = dbih->userbouquets[chlist].channels[chid];
+					chref.index = idx.toInt();
+				}
 				marker = true;
 				entry = dbih->entryMarker(chref);
 				idx = entry[1];
@@ -1297,12 +1310,13 @@ void tab::putChannels(vector<QString> channels)
 			item->setIcon(6, theme::icon("crypted"));
 		}
 		clist.append(item);
+		dbih->add_channel_reference(chref, curr_chlist);
 	}
 
 	if (current == nullptr)
 		list_tree->addTopLevelItems(clist);
 	else
-		list_tree->insertTopLevelItems(idx, clist);
+		list_tree->insertTopLevelItems(y, clist);
 
 	lheaderv->setSectionsClickable(true);
 	list_tree->setDragEnabled(true);
@@ -1351,19 +1365,17 @@ void tab::updateBouquetsIndex()
 		}
 		i++;
 	}
-	if (bss != dbih->gindex["bss"])
+	if (bss != dbih->index["bss"])
 	{
-		dbih->gindex["bss"].swap(bss);
+		dbih->index["bss"].swap(bss);
 	}
-	if (ubs != dbih->gindex["ubs"])
+	if (ubs != dbih->index["ubs"])
 	{
-		dbih->gindex["ubs"].swap(ubs);
+		dbih->index["ubs"].swap(ubs);
 
 		for (auto & x : dbih->bouquets)
 			x.second.userbouquets.swap(index[x.first]);
 	}
-
-	dbih->updateUserbouquetIndexes();
 }
 
 void tab::updateListIndex()
@@ -1374,7 +1386,7 @@ void tab::updateListIndex()
 	int i = 0, idx = 0;
 	int count = list_tree->topLevelItemCount();
 	string curr_chlist = this->state.curr;
-	dbih->gindex[curr_chlist].clear();
+	dbih->index[curr_chlist].clear();
 
 	debug("updateListIndex()", "curr_chlist", curr_chlist);
 
@@ -1387,7 +1399,7 @@ void tab::updateListIndex()
 		string chid = item->data(2, Qt::UserRole).toString().toStdString();
 		bool marker = item->data(1, Qt::UserRole).toBool();
 		idx = marker ? 0 : i + 1;
-		dbih->gindex[curr_chlist].emplace_back(pair (idx, chid)); //C++17
+		dbih->index[curr_chlist].emplace_back(pair (idx, chid)); //C++17
 		i++;
 	}
 
@@ -1438,14 +1450,14 @@ void tab::setCounters(bool channels)
 	if (channels)
 	{
 		string curr_chlist = this->state.curr;
-		counters[4] = dbih->gindex[curr_chlist].size();
+		counters[4] = dbih->index[curr_chlist].size();
 	}
 	else
 	{
-		counters[0] = dbih->gindex["chs:0"].size(); // data
-		counters[1] = dbih->gindex["chs:1"].size(); // tv
-		counters[2] = dbih->gindex["chs:2"].size(); // radio
-		counters[3] = dbih->gindex["chs"].size();   // all
+		counters[0] = dbih->index["chs:0"].size(); // data
+		counters[1] = dbih->index["chs:1"].size(); // tv
+		counters[2] = dbih->index["chs:2"].size(); // radio
+		counters[3] = dbih->index["chs"].size();   // all
 	}
 
 	gid->setStatus(counters);
