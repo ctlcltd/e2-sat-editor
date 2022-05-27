@@ -129,8 +129,9 @@ e2db_parser::e2db_parser()
 
 	debug("e2db_parser()");
 
-	//TODO
+	//TEST
 	dbfilename = PARSER_LAMEDB5_PRIOR ? "lamedb5" : "lamedb";
+	//TEST
 }
 
 void e2db_parser::parse_e2db()
@@ -492,7 +493,7 @@ void e2db_parser::parse_lamedb_service_params(string data, service& ch)
 	ch.snum = snum;
 }
 
-//could cause SEGFAULT with bad data
+//TODO FIX could cause SEGFAULT with empty data
 void e2db_parser::parse_lamedb_service_data(string data, service& ch)
 {
 	if (data.empty())
@@ -639,7 +640,7 @@ void e2db_parser::parse_userbouquet_reference(string data, userbouquet& ub)
 	ub.bname = ub.bname.substr(1, ub.bname.length() - 2);
 }
 
-void e2db_parser::parse_channel_reference(string data, channel_reference& chref, service_reference& ch)
+void e2db_parser::parse_channel_reference(string data, channel_reference& chref, service_reference& ref)
 {
 	int i, type, anum, ssid, tsid, onid, dvbns;
 	i = -1, type = -1, anum = -1, ssid = 0, tsid = 0, onid = -1, dvbns = 0;
@@ -660,9 +661,9 @@ void e2db_parser::parse_channel_reference(string data, channel_reference& chref,
 		break;
 		default:  // service
 			chref.marker = false;
-			ch.ssid = ssid;
-			ch.dvbns = dvbns;
-			ch.tsid = tsid;
+			ref.ssid = ssid;
+			ref.dvbns = dvbns;
+			ref.tsid = tsid;
 	}
 
 	chref.type = type;
@@ -1063,7 +1064,6 @@ void e2db_maker::make_e2db_lamedb5()
 	make_lamedb("lamedb5");
 }
 
-//TODO ATSC
 void e2db_maker::make_lamedb(string filename)
 {
 	debug("make_lamedb()");
@@ -1371,6 +1371,8 @@ e2db::e2db()
 	debug("e2db()");
 }
 
+//TODO bname destructive edit
+//TODO bname non-destructive edit
 void e2db::merge(e2db* dbih)
 {
 	debug("merge()");
@@ -1555,8 +1557,15 @@ void e2db::edit_transponder(string txid, transponder& tx)
 	}
 	else
 	{
-		e2db_abstract::add_transponder(tx.index, tx);
-		remove_transponder(txid);
+		//TODO swap
+		db.transponders.erase(txid);
+		db.transponders.emplace(tx.txid, tx);
+
+		for (auto it = index["txs"].begin(); it != index["txs"].end(); it++)
+		{
+			if (it->second == txid)
+				it->second = tx.txid;
+		}
 	}
 }
 
@@ -1585,6 +1594,9 @@ void e2db::edit_service(string chid, service& ch)
 {
 	debug("edit_service()", "chid", chid);
 
+	if (! db.services.count(chid))
+		return error("edit_service()", "Error", "Service \"" + chid + "\" not exists.");
+
 	char nw_chid[25];
 	char nw_txid[25];
 	std::sprintf(nw_txid, "%x:%x", ch.tsid, ch.dvbns);
@@ -1600,8 +1612,42 @@ void e2db::edit_service(string chid, service& ch)
 	}
 	else
 	{
-		e2db_abstract::add_service(ch.index, ch);
-		remove_service(chid);
+		string kchid = 's' + chid;
+		collisions.erase(kchid);
+
+		if (db.services.count(ch.chid))
+		{
+			int m;
+			string kchid = 's' + ch.chid;
+			if (ch.snum) m = ch.snum;
+			else m = collisions[kchid].size();
+			ch.chid += ':' + to_string(m);
+			collisions[kchid].emplace_back(pair (ch.chid, m)); //C++17
+		}
+
+		//TODO swap
+		db.services.erase(chid);
+		db.services.emplace(ch.chid, ch);
+
+		for (auto & x : index)
+		{
+			for (auto it = x.second.begin(); it != x.second.end(); it++)
+			{
+				if (it->second == chid)
+					it->second = ch.chid;
+			}
+		}
+		for (auto & x : userbouquets)
+		{
+			//TODO swap
+			if (x.second.channels.count(chid))
+			{
+				channel_reference chref = x.second.channels[chid];
+				chref.chid = ch.chid;
+				x.second.channels.erase(chid);
+				x.second.channels.emplace(ch.chid, chref);
+			}
+		}
 	}
 }
 
@@ -1609,20 +1655,25 @@ void e2db::remove_service(string chid)
 {
 	debug("remove_service()", "chid", chid);
 
+	if (! db.services.count(chid))
+		return error("edit_service()", "Error", "Service \"" + chid + "\" not exists.");
+
 	service ch = db.services[chid];
 	string kchid = 's' + chid;
 	string iname = "chs:" + (STYPES.count(ch.stype) ? to_string(STYPES.at(ch.stype).first) : "0");
 	db.services.erase(chid);
 
-	for (auto it = index["chs"].begin(); it != index["chs"].end(); it++)
+	for (auto & x : index)
 	{
-		if (it->second == chid)
-			index["chs"].erase(it);
+		for (auto it = x.second.begin(); it != x.second.end(); it++)
+		{
+			if (it->second == chid)
+				x.second.erase(it);
+		}
 	}
-	for (auto it = index[iname].begin(); it != index[iname].end(); it++)
+	for (auto & x : userbouquets)
 	{
-		if (it->second == chid)
-			index[iname].erase(it);
+		x.second.channels.erase(chid);
 	}
 	collisions.erase(kchid);
 }
@@ -1638,6 +1689,9 @@ void e2db::edit_bouquet(bouquet& bs)
 {
 	debug("edit_bouquet()", "bname", bs.bname);
 
+	if (! bouquets.count(bs.bname))
+		return error("edit_bouquet()", "Error", "Bouquet \"" + bs.bname + "\" not exists.");
+
 	bouquets[bs.bname] = bs;
 }
 
@@ -1645,16 +1699,27 @@ void e2db::remove_bouquet(string bname)
 {
 	debug("remove_bouquet()", "bname", bname);
 
-	bouquets.erase(bname);
+	if (! bouquets.count(bname))
+		return error("remove_bouquet()", "Error", "Bouquet \"" + bname + "\" not exists.");
 
 	for (auto it = index["bss"].begin(); it != index["bss"].end(); it++)
 	{
 		if (it->second == bname)
 			index["bss"].erase(it);
 	}
-	//TODO remove userbouquets from index ubs
+	for (auto it = index["ubs"].begin(); it != index["ubs"].end(); it++)
+	{
+		userbouquet ub = userbouquets[it->second];
+		if (ub.pname == bname)
+		{
+			index["ubs"].erase(it);
+			userbouquets.erase(ub.bname);
+		}
+	}
+	bouquets.erase(bname);
 }
 
+//TODO bname destructive edit
 void e2db::add_userbouquet(userbouquet& ub)
 {
 	debug("add_userbouquet()");
@@ -1706,12 +1771,18 @@ void e2db::edit_userbouquet(userbouquet& ub)
 {
 	debug("edit_userbouquet()", "bname", ub.bname);
 
+	if (! userbouquets.count(ub.bname))
+		return error("edit_userbouquet()", "Error", "Userbouquet \"" + ub.bname + "\" not exists.");
+
 	userbouquets[ub.bname] = ub;
 }
 
 void e2db::remove_userbouquet(string bname)
 {
 	debug("remove_userbouquet()", "bname", bname);
+
+	if (! userbouquets.count(bname))
+		return error("remove_userbouquet()", "Error", "Userbouquet \"" + bname + "\" not exists.");
 
 	userbouquets.erase(bname);
 
@@ -1722,19 +1793,130 @@ void e2db::remove_userbouquet(string bname)
 	}
 }
 
-void e2db::add_channel_reference(channel_reference& chref)
+void e2db::add_channel_reference(channel_reference& chref, string bname)
 {
 	debug("add_channel_reference()", "chid", chref.chid);
+
+	if (! db.services.count(chref.chid))
+		return error("add_channel_reference()", "Error", "Service \"" + chref.chid + "\" not exists.");
+	if (! userbouquets.count(bname))
+		return error("add_channel_reference()", "Error", "Userbouquet \"" + bname + "\" not exists.");
+
+	service ch = db.services[chref.chid];
+	userbouquet ub = userbouquets[bname];
+	service_reference ref;
+
+	if (! chref.marker)
+	{
+		ref.ssid = ch.ssid;
+		ref.dvbns = ch.dvbns;
+		ref.tsid = ch.tsid;
+	}
+
+	e2db_abstract::add_channel_reference(chref.index, ub, chref, ref);
 }
 
-void e2db::edit_channel_reference(string chid, channel_reference& chref)
+void e2db::edit_channel_reference(string chid, channel_reference& chref, string bname)
 {
 	debug("edit_channel_reference()", "chid", chid);
+
+	if (! db.services.count(chid))
+		return error("edit_channel_reference()", "Error", "Service \"" + chid + "\" not exists.");
+	if (! userbouquets.count(bname))
+		return error("edit_channel_reference()", "Error", "Userbouquet \"" + bname + "\" not exists.");
+
+	service ch = db.services[chref.chid];
+	userbouquet ub = userbouquets[bname];
+
+	char nw_chid[25];
+	char nw_txid[25];
+	std::sprintf(nw_txid, "%x:%x", ch.tsid, ch.dvbns);
+	std::sprintf(nw_chid, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
+	ch.txid = nw_txid;
+	ch.chid = nw_chid;
+
+	debug("edit_channel_reference()", "nw_chid", nw_chid);
+
+	if (ch.chid == chid)
+	{
+		userbouquets[bname].channels[ch.chid] = chref;
+	}
+	else
+	{
+		service_reference ref;
+
+		if (! chref.marker)
+		{
+			ref.ssid = ch.ssid;
+			ref.dvbns = ch.dvbns;
+			ref.tsid = ch.tsid;
+		}
+
+		//TODO swap
+		userbouquets[bname].channels.erase(chid);
+		userbouquets[bname].channels.emplace(ch.chid, chref);
+
+		for (auto it = index[bname].begin(); it != index[bname].end(); it++)
+		{
+			if (it->second == chid)
+				it->second = ch.chid;
+		}
+		if (chref.marker)
+		{
+			for (auto it = index["mks"].begin(); it != index["mks"].end(); it++)
+			{
+				if (it->second == chid)
+					it->second = ch.chid;
+			}
+		}
+		else
+		{
+			userbouquet ub = userbouquets[bname];
+			for (auto it = index[ub.pname].begin(); it != index[ub.pname].end(); it++)
+			{
+				if (it->second == chid)
+					it->second = ch.chid;
+			}
+		}
+	}
 }
 
-void e2db::remove_channel_reference(string chid)
+void e2db::remove_channel_reference(string chid, string bname)
 {
 	debug("remove_channel_reference()", "chid", chid);
+
+	if (! db.services.count(chid))
+		return error("edit_channel_reference()", "Error", "Service \"" + chid + "\" not exists.");
+	if (! userbouquets.count(bname))
+		return error("edit_channel_reference()", "Error", "Userbouquet \"" + bname + "\" not exists.");
+	if (! userbouquets[bname].channels.count(chid))
+		return error("edit_channel_reference()", "Error", "Channel reference \"" + chid + "\" not exists.");
+
+	channel_reference chref = userbouquets[bname].channels[chid];
+	userbouquets[bname].channels.erase(chid);
+
+	for (auto it = index[bname].begin(); it != index[bname].end(); it++)
+	{
+		if (it->second == chid)
+			index[bname].erase(it);
+	}
+	if (chref.marker)
+	{
+		for (auto it = index["mks"].begin(); it != index["mks"].end(); it++)
+		{
+			if (it->second == chid)
+				index["mks"].erase(it);
+		}
+	}
+	else
+	{
+		userbouquet ub = userbouquets[bname];
+		for (auto it = index[ub.pname].begin(); it != index[ub.pname].end(); it++)
+		{
+			if (it->second == chid)
+				index[ub.pname].erase(it);
+		}
+	}
 }
 
 //TODO unique (eg. terrestrial MUX)
@@ -1814,9 +1996,9 @@ map<string, vector<pair<int, string>>> e2db::get_packages_index()
 	{
 		service ch = db.services[x.second];
 
-		if (ch.data.count(e2db::SDATA::p))
+		if (ch.data.count(SDATA::p))
 		{
-			string pvdrn = ch.data[e2db::SDATA::p][0];
+			string pvdrn = ch.data[SDATA::p][0];
 
 			if (pvdrn.empty()) _index["(Unknown)"].emplace_back(x);
 			else _index[pvdrn].emplace_back(x);
@@ -1852,15 +2034,15 @@ map<string, vector<pair<int, string>>> e2db::get_encryption_index()
 	{
 		service ch = db.services[x.second];
 
-		if (ch.data.count(e2db::SDATA::C))
+		if (ch.data.count(SDATA::C))
 		{
-			for (string & w : ch.data[e2db::SDATA::C])
+			for (string & w : ch.data[SDATA::C])
 			{
 				string caidpx = w.substr(0, 2);
 				string cx = caidpx + '|' + to_string(x.first);
-				if (e2db::SDATA_CAS.count(caidpx) && ! _unique.count(cx))
+				if (SDATA_CAS.count(caidpx) && ! _unique.count(cx))
 				{
-					_index[e2db::SDATA_CAS.at(caidpx)].emplace_back(x);
+					_index[SDATA_CAS.at(caidpx)].emplace_back(x);
 					_unique.insert(cx);
 				}
 			}

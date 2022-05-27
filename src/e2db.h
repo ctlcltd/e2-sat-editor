@@ -30,7 +30,6 @@ using e2db_file = std::string;
 struct e2db_abstract
 {
 	public:
-		//C++17
 
 		inline static bool PARSER_TUNERSETS = true;
 		inline static bool PARSER_LAMEDB5_PRIOR = false;
@@ -154,6 +153,7 @@ struct e2db_abstract
 			int index;
 			string txid;
 			string chname;
+			// data <field char, vector<value string>>
 			map<char, vector<string>> data;
 		};
 		struct service_reference {
@@ -206,6 +206,7 @@ struct e2db_abstract
 			string name;
 			string nname;
 			int btype;
+			// userbouquets <bname string>
 			vector<string> userbouquets;
 			int index;
 		};
@@ -214,6 +215,7 @@ struct e2db_abstract
 			string bname;
 			string name;
 			string pname;
+			// channels <chid string, channel_reference struct>
 			unordered_map<string, channel_reference> channels;
 			int index;
 		};
@@ -238,17 +240,26 @@ struct e2db_abstract
 			string name;
 			int flgs;
 			int pos;
+			// references <bname string, tuner_reference struct>
 			unordered_map<string, tuner_reference> references;
 		};
 		struct lamedb {
+			// transponders <txid string, transponder struct>
 			unordered_map<string, transponder> transponders;
+			// services <chid string, service struct>
 			unordered_map<string, service> services;
 		};
 		lamedb db;
+		// bouquets <bname string, bouquet struct>
 		unordered_map<string, bouquet> bouquets;
+		// userbouquets <bname string, userbouquet struct>
 		unordered_map<string, userbouquet> userbouquets;
+		// tuners <pos int, tuner_sets struct>
 		unordered_map<int, tuner_sets> tuners;
+		//TODO coherence src-idx||count
+		// index <name string, vector<pair<src-idx||count int, chid string>>>
 		unordered_map<string, vector<pair<int, string>>> index;
+		// collisions <chid string, vector<pair<string chid, increment int>>>
 		unordered_map<string, vector<pair<string, int>>> collisions;
 		void add_transponder(int idx, transponder& tx);
 		void add_service(int idx, service& ch);
@@ -257,6 +268,7 @@ struct e2db_abstract
 		void add_channel_reference(int idx, userbouquet& ub, channel_reference& chref, service_reference& ch);
 		void set_channel_reference_marker_value(userbouquet& ub, string chid, string value);
 	protected:
+		// e2db <filename string, full-path string>
 		unordered_map<string, string> e2db;
 		void options();
 		inline static int LAMEDB_VER = 0;
@@ -273,7 +285,7 @@ class e2db_parser : virtual public e2db_abstract
 		e2db_parser();
 		virtual ~e2db_parser() = default;
 		void parse_e2db();
-		void parse_e2db(unordered_map<string, e2db_file> files); //C++17
+		void parse_e2db(unordered_map<string, e2db_file> files);
 		void parse_e2db_lamedb(istream& ilamedb);
 		void parse_e2db_lamedb4(istream& ilamedb);
 		void parse_e2db_lamedb5(istream& ilamedb);
@@ -294,7 +306,7 @@ class e2db_parser : virtual public e2db_abstract
 		void parse_lamedb_service_data(string data, service& ch);
 		void append_lamedb_service_name(string data, service& ch);
 		void parse_userbouquet_reference(string data, userbouquet& ub);
-		void parse_channel_reference(string data, channel_reference& chref, service_reference& ch);
+		void parse_channel_reference(string data, channel_reference& chref, service_reference& ref);
 		string localdir;
 		string dbfilename;
 };
@@ -329,6 +341,7 @@ class e2db_maker : virtual public e2db_abstract
 		void make_bouquet(string bname);
 		void make_userbouquet(string bname);
 	private:
+		// e2db_out <filename string, e2db_file alias(string)>
 		unordered_map<string, e2db_file> e2db_out;
 		std::tm* _out_tst;
 };
@@ -353,9 +366,9 @@ class e2db : public e2db_parser, public e2db_maker
 		void add_userbouquet(userbouquet& ub);
 		void edit_userbouquet(userbouquet& ub);
 		void remove_userbouquet(string bname);
-		void add_channel_reference(channel_reference& chref);
-		void edit_channel_reference(string chid, channel_reference& chref);
-		void remove_channel_reference(string chid);
+		void add_channel_reference(channel_reference& chref, string bname);
+		void edit_channel_reference(string chid, channel_reference& chref, string bname);
+		void remove_channel_reference(string chid, string bname);
 		map<string, vector<pair<int, string>>> get_channels_index();
 		map<string, vector<pair<int, string>>> get_transponders_index();
 		map<string, vector<pair<int, string>>> get_services_index();
