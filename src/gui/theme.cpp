@@ -31,7 +31,6 @@ theme::theme()
 	else if (style == "dark")
 		style::dark();
 
-	//experimental theme color detect
 	QColor bgcolor = QGuiApplication::palette().color(QPalette::Window).toHsl();
 	QString colors = bgcolor.lightness() > 128 ? "light" : "dark";
 

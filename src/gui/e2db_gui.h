@@ -32,7 +32,8 @@ class e2db : public ::e2se_e2db::e2db
 	Q_DECLARE_TR_FUNCTIONS(e2db)
 
 	public:
-		struct entry {
+		struct entry
+		{
 			unordered_map<string, QStringList> transponders;
 			unordered_map<string, QStringList> services;
 		} entries;
@@ -62,11 +63,11 @@ class e2db : public ::e2se_e2db::e2db
 		QStringList entryTransponder(transponder tx);
 		QStringList entryService(service ch);
 		QStringList entryMarker(channel_reference chref);
+	protected:
+		QSettings* sets;
 		// reflect source index
 		// gindex <name string, vector<pair<src-idx||count int, chid string>>>
 		unordered_map<string, vector<pair<int, string>>> gindex;
-	protected:
-		QSettings* sets;
 };
 }
 #endif /* e2db_gui_h */

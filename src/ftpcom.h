@@ -66,19 +66,23 @@ class ftpcom
 		bool cmd_ifreload();
 		bool cmd_tnreload();
 	protected:
-		struct sio {
+		struct sio
+		{
 			string data;
 			size_t sizel;
 		};
-		struct soi {
+		struct soi
+		{
 			const char* data;
 			size_t sizel;
 		};
-		struct tnvars {
+		struct tnvars
+		{
 			soi* ps;
 			string user;
 			string pass;
 			bool send;
+			string cmd;
 		};
 		vector<string> ftdb;
 		static size_t data_download_func(void* csi, size_t size, size_t nmemb, void* pso);

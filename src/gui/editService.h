@@ -57,7 +57,8 @@ class editService : protected e2se::log_factory
 		map<string, vector<pair<int, string>>> txdata;
 		vector<QWidget*> fields;
 	private:
-		struct sts {
+		struct sts
+		{
 			bool edit = false;
 			string raw_C;
 			string raw_data;

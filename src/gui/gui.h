@@ -48,6 +48,14 @@ class gui : protected e2se::log_factory
 			SelectAll
 		};
 
+		enum COUNTER {
+			data,
+			tv,
+			radio,
+			all,
+			current
+		};
+
 		gui(int argc, char* argv[]);
 		~gui();
 		void root();
@@ -78,7 +86,8 @@ class gui : protected e2se::log_factory
 		void setDefaultSets();
 		QSettings* sets;
 	private:
-		struct sts {
+		struct sts
+		{
 			int tt = 0;
 		} state;
 		QApplication* mroot;

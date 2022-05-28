@@ -12,9 +12,10 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 #include <unordered_map>
 
-using std::string, std::pair, std::vector, std::unordered_map;
+using std::string, std::pair, std::vector, std::map, std::unordered_map;
 
 #ifndef tab_h
 #define tab_h
@@ -48,6 +49,21 @@ class tab : protected e2se::log_factory
 			SelectAll
 		};
 
+		enum LIST_REF {
+			ReferenceID,
+			ServiceID,
+			Transponder,
+			Userbouquets,
+			Bouquets,
+			Tuner
+		};
+
+		enum ITEM_DATA_ROLE {
+			idx,
+			marker,
+			chid
+		};
+
 		tab(gui* gid, QWidget* wid);
 		~tab();
 		void newFile();
@@ -67,6 +83,7 @@ class tab : protected e2se::log_factory
 		void servicesItemChanged(QTreeWidgetItem* current);
 		void bouquetsItemChanged(QTreeWidgetItem* current);
 		void listItemChanged();
+		void listPendingUpdate();
 		void visualReindexList();
 		void trickySortByColumn(int column);
 		void allowDnD();
@@ -87,7 +104,8 @@ class tab : protected e2se::log_factory
 		void updateBouquetsIndex();
 		void showBouquetEditContextMenu(QPoint &pos);
 		void showListEditContextMenu(QPoint &pos);
-		void setCounters(bool channels = false);
+		void setCounters(bool current = false);
+		void updateRefBox();
 		void setTabId(int ttid);
 		void tabSwitched();
 		void tabChangeName(string filename = "");
@@ -100,9 +118,11 @@ class tab : protected e2se::log_factory
 		void loadSeeds();
 		QWidget* widget;
 	protected:
+		map<int, QLabel*> ref_fields;
 		unordered_map<string, QList<QTreeWidgetItem*>> cache;
 	private:
-		struct ats {
+		struct ats
+		{
 			QAction* bouquets_newbs;
 			QAction* list_addch;
 			QAction* list_newch;
@@ -111,13 +131,14 @@ class tab : protected e2se::log_factory
 			QPushButton* list_ref;
 			QPushButton* list_dnd;
 		} action;
-		struct sts {
+		struct sts
+		{
 			bool nwwr;
 			bool ovwr;
 			bool dnd;
-			bool init;
 			bool changed;
 			bool reindex;
+			bool refbox;
 			int tc;
 			int ti;
 			string curr;

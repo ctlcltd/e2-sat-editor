@@ -232,14 +232,21 @@ void channelBook::stacker(int vv)
 				e2db::transponder tx = dbih->db.transponders[x.second];
 				QString subindex = QString::fromStdString(x.second);
 				string ptxp;
-				if (tx.ttype == 's')
-					ptxp = to_string(tx.freq) + '/' + e2db::SAT_POL[tx.pol] + '/' + to_string(tx.sr);
-				else if (tx.ttype == 't')
-					ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.termod] + '/' + e2db::TER_BAND[tx.band];
-				else if (tx.ttype == 'c')
-					ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cabmod] + '/' + to_string(tx.sr);
-				else if (tx.ttype == 'a')
-					ptxp = to_string(tx.freq);
+				switch (tx.ttype)
+				{
+					case 's':
+						ptxp = to_string(tx.freq) + '/' + e2db::SAT_POL[tx.pol] + '/' + to_string(tx.sr);
+					break;
+					case 't':
+						ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.termod] + '/' + e2db::TER_BAND[tx.band];
+					break;
+					case 'c':
+						ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cabmod] + '/' + to_string(tx.sr);
+					break;
+					case 'a':
+						ptxp = to_string(tx.freq);
+					break;
+				}
 				QString txp = QString::fromStdString(ptxp);
 				subitem = new QTreeWidgetItem(item, {txp});
 				subitem->setData(0, Qt::UserRole, subindex);
@@ -339,12 +346,21 @@ void channelBook::populate()
 			QString pname = QString::fromStdString(ch.data.count(e2db::SDATA::p) ? ch.data[e2db::SDATA::p][0] : "");
 
 			string ptxp;
-			if (tx.ttype == 's')
-				ptxp = to_string(tx.freq) + '/' + e2db::SAT_POL[tx.pol] + '/' + to_string(tx.sr);
-			else if (tx.ttype == 't')
-				ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.termod] + '/' + e2db::TER_BAND[tx.band];
-			else if (tx.ttype == 'c')
-				ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cabmod] + '/' + to_string(tx.sr);
+			switch (tx.ttype)
+			{
+				case 's':
+					ptxp = to_string(tx.freq) + '/' + e2db::SAT_POL[tx.pol] + '/' + to_string(tx.sr);
+				break;
+				case 't':
+					ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.termod] + '/' + e2db::TER_BAND[tx.band];
+				break;
+				case 'c':
+					ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cabmod] + '/' + to_string(tx.sr);
+				break;
+				case 'a':
+					ptxp = to_string(tx.freq);
+				break;
+			}
 			QString txp = QString::fromStdString(ptxp);
 			string ppos;
 			if (tx.ttype == 's')

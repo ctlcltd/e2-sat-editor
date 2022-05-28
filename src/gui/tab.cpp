@@ -150,7 +150,7 @@ tab::tab(gui* gid, QWidget* wid)
 
 	this->bouquets_search = new QWidget;
 	this->list_search = new QWidget;
-	this->list_reference = new QWidget;
+	this->list_reference = new QAbstractScrollArea;
 	bouquets_search->setHidden(true);
 	list_search->setHidden(true);
 	list_reference->setHidden(true);
@@ -159,39 +159,46 @@ tab::tab(gui* gid, QWidget* wid)
 	QString ff = theme::getDefaultFontFamily();
 	QGridLayout* ref_box = new QGridLayout;
 	QLabel* ref0lr = new QLabel("Reference ID");
-	QLabel* ref0tr = new QLabel("0:0:0:0:0:0:0:0:0:0");
+	QLabel* ref0tr = new QLabel;
 	ref0lr->setFont(QFont(ff, fsss));
+	ref_fields[LIST_REF::ReferenceID] = ref0tr;
 	ref_box->addWidget(ref0lr, 0, 0, Qt::AlignTop);
 	ref_box->addWidget(ref0tr, 0, 1, Qt::AlignTop);
 	QLabel* ref1ls = new QLabel("Service ID");
-	QLabel* ref1ts = new QLabel("0000");
+	QLabel* ref1ts = new QLabel;
 	ref1ls->setFont(QFont(ff, fsss));
+	ref_fields[LIST_REF::ServiceID] = ref1ts;
 	ref_box->addWidget(ref1ls, 0, 2, Qt::AlignTop);
 	ref_box->addWidget(ref1ts, 0, 3, Qt::AlignTop);
 	QLabel* ref2lt = new QLabel("Transponder");
-	QLabel* ref2tt = new QLabel("00000/H/00000");
+	QLabel* ref2tt = new QLabel;
 	ref2lt->setFont(QFont(ff, fsss));
+	ref_fields[LIST_REF::Transponder] = ref2tt;
 	ref_box->addWidget(ref2lt, 0, 4, Qt::AlignTop);
 	ref_box->addWidget(ref2tt, 0, 5, Qt::AlignTop);
 	ref_box->addItem(new QSpacerItem(0, 12), 1, 0);
 	QLabel* ref3lu = new QLabel("Userbouquets");
-	QLabel* ref3tu = new QLabel("Swiss\nItaly\nTests\nTests 1\nRadio 13E\nSwiss");
+	QLabel* ref3tu = new QLabel;
 	ref3lu->setFont(QFont(ff, fsss));
+	ref_fields[LIST_REF::Userbouquets] = ref3tu;
 	ref_box->addWidget(ref3lu, 2, 0, Qt::AlignTop);
 	ref_box->addWidget(ref3tu, 2, 1, Qt::AlignTop);
 	QLabel* ref4lb = new QLabel("Bouquets");
-	QLabel* ref4tb = new QLabel("TV\nRadio");
+	QLabel* ref4tb = new QLabel;
 	ref4lb->setFont(QFont(ff, fsss));
+	ref_fields[LIST_REF::Bouquets] = ref4tb;
 	ref_box->addWidget(ref4lb, 2, 2, Qt::AlignTop);
 	ref_box->addWidget(ref4tb, 2, 3, Qt::AlignTop);
-	QLabel* ref5ln = new QLabel("Satellite");
-	QLabel* ref5tn = new QLabel("Hot Bird 13.0E");
+	QLabel* ref5ln = new QLabel("Tuner");
+	QLabel* ref5tn = new QLabel;
 	ref5ln->setFont(QFont(ff, fsss));
+	ref_fields[LIST_REF::Tuner] = ref5tn;
 	ref_box->addWidget(ref5ln, 2, 4, Qt::AlignTop);
 	ref_box->addWidget(ref5tn, 2, 5, Qt::AlignTop);
 	ref_box->setColumnStretch(1, 1);
 	ref_box->setColumnStretch(3, 1);
 	ref_box->setColumnStretch(5, 1);
+	list_reference->setFixedHeight(100);
 	list_reference->setLayout(ref_box);
 
 	QToolBar* top_toolbar = new QToolBar;
@@ -593,7 +600,7 @@ void tab::editService()
 		entry.prepend(item->text(0));
 		for (int i = 0; i < entry.count(); i++)
 			item->setText(i, entry[i]);
-		item->setData(2, Qt::UserRole, QString::fromStdString(nw_chid)); // data: chid
+		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
 	}
 }
 
@@ -780,9 +787,9 @@ void tab::populate(QTreeWidget* side_tree)
 
 			QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 			item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
-			item->setData(0, Qt::UserRole, idx);    // data: Index
-			item->setData(1, Qt::UserRole, marker); // data: marker flag
-			item->setData(2, Qt::UserRole, chid);   // data: chid
+			item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
+			item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
+			item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, chid);
 			if (marker)
 			{
 				item->setFont(2, QFont(ff, fss));
@@ -921,10 +928,17 @@ void tab::bouquetsItemChanged(QTreeWidgetItem* current)
 
 void tab::listItemChanged()
 {
-	if (! list_evto->isChanged())
-		return;
+	// debug("listItemChanged()");
 
-	debug("listItemChanged()");
+	if (list_evto->isChanged())
+		listPendingUpdate();
+	if (this->state.refbox)
+		QTimer::singleShot(0, [=]() { this->updateRefBox(); });
+}
+
+void tab::listPendingUpdate()
+{
+	debug("listPendingUpdate()");
 
 	// sorting default
 	if (this->state.dnd)
@@ -1092,9 +1106,15 @@ void tab::listReferenceToggle()
 	debug("listReferenceToggle()");
 
 	if (list_reference->isHidden())
+	{
 		list_reference->show();
+		this->state.refbox = true;
+	}
 	else
+	{
 		list_reference->hide();
+		this->state.refbox = false;
+	}
 }
 
 void tab::listItemCut()
@@ -1136,7 +1156,6 @@ void tab::listItemPaste()
 	QClipboard* clipboard = QGuiApplication::clipboard();
 	const QMimeData* mimeData = clipboard->mimeData();
 	vector<QString> items;
-	string curr_chlist = this->state.curr;
 
 	if (mimeData->hasText())
 	{
@@ -1169,7 +1188,7 @@ void tab::listItemDelete()
 	for (auto & item : selected)
 	{
 		int i = list_tree->indexOfTopLevelItem(item);
-		string chid = item->data(2, Qt::UserRole).toString().toStdString(); // data: chid
+		string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 		list_tree->takeTopLevelItem(i);
 		dbih->remove_channel_reference(chid, curr_chlist);
 	}
@@ -1296,9 +1315,9 @@ void tab::putChannels(vector<QString> channels)
 		}
 		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
-		item->setData(0, Qt::UserRole, idx);    // data: Index
-		item->setData(1, Qt::UserRole, marker); // data: marker flag
-		item->setData(2, Qt::UserRole, w);      // data: chid
+		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
+		item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
+		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, w);
 		if (marker)
 		{
 			item->setFont(2, QFont(ff, fss));
@@ -1441,26 +1460,145 @@ void tab::showListEditContextMenu(QPoint &pos)
 	list_edit->exec(list_tree->mapToGlobal(pos));
 }
 
-void tab::setCounters(bool channels)
+void tab::setCounters(bool current)
 {
 	debug("setCounters()");
 
 	int counters[5] = {-1, -1, -1, -1, -1};
 
-	if (channels)
+	if (current)
 	{
 		string curr_chlist = this->state.curr;
-		counters[4] = dbih->index[curr_chlist].size();
+		counters[gui::COUNTER::current] = dbih->index[curr_chlist].size();
 	}
 	else
 	{
-		counters[0] = dbih->index["chs:0"].size(); // data
-		counters[1] = dbih->index["chs:1"].size(); // tv
-		counters[2] = dbih->index["chs:2"].size(); // radio
-		counters[3] = dbih->index["chs"].size();   // all
+		counters[gui::COUNTER::data] = dbih->index["chs:0"].size();
+		counters[gui::COUNTER::tv] = dbih->index["chs:1"].size();
+		counters[gui::COUNTER::radio] = dbih->index["chs:2"].size();
+		counters[gui::COUNTER::all] = dbih->index["chs"].size();
 	}
 
 	gid->setStatus(counters);
+}
+
+void tab::updateRefBox()
+{
+	debug("updateRefBox()");
+
+	QList<QTreeWidgetItem*> selected = list_tree->selectedItems();
+	
+	if (selected.empty() || selected.count() > 1)
+	{
+		for (auto & field : ref_fields)
+			field.second->setText("< ... >");
+	}
+	else
+	{
+		QTreeWidgetItem* item = selected[0];
+		string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
+		QString ssid, refid, txp, tns, bsls, ubls;
+
+		// debug("updateRefBox()", "chid", chid);
+
+		if (this->state.tc)
+		{
+			string curr_chlist = this->state.curr;
+			e2db::channel_reference chref = dbih->userbouquets[curr_chlist].channels[chid];
+			string crefid = dbih->get_reference_id(chref);
+			refid = QString::fromStdString(crefid);
+
+			unordered_map<string, int> bss;
+			QStringList ubl;
+			for (auto & x : dbih->userbouquets)
+			{
+				if (x.second.channels.count(chid))
+				{
+					ubl.append(QString::fromStdString(x.second.name));
+					bss[x.second.pname] = bss[x.second.pname]++;
+				}
+			}
+			ubls = ubl.join('\n');
+
+			QStringList bsl;
+			for (auto & x : bss)
+			{
+				if (dbih->bouquets.count(x.first))
+					bsl.append(QString::fromStdString(dbih->bouquets[x.first].nname));
+			}
+			bsls = bsl.join('\n');
+		}
+		else
+		{
+			string crefid = dbih->get_reference_id(chid);
+			refid = QString::fromStdString(crefid);
+			bsls = ubls = "< >";
+		}
+		if (dbih->db.services.count(chid))
+		{
+			e2db::service ch = dbih->db.services[chid];
+			e2db::transponder tx = dbih->db.transponders[ch.txid];
+			string ptxp, psys, ppos;
+
+			ssid = QString::fromStdString(to_string(ch.ssid));
+
+			switch (tx.ttype)
+			{
+				case 's':
+					ptxp = to_string(tx.freq) + '/' + e2db::SAT_POL[tx.pol] + '/' + to_string(tx.sr);
+				break;
+				case 't':
+					ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.termod] + '/' + e2db::TER_BAND[tx.band];
+				break;
+				case 'c':
+					ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cabmod] + '/' + to_string(tx.sr);
+				break;
+				case 'a':
+					ptxp = to_string(tx.freq);
+				break;
+			}
+			txp = QString::fromStdString(ptxp);
+
+			switch (tx.ttype) {
+				case 's':
+					psys = tx.sys != -1 ? e2db::SAT_SYS[tx.sys] : "DVB-S";
+				break;
+				case 't':
+					psys = "DVB-T";
+				break;
+				case 'c':
+					psys = "DVB-C";
+				break;
+				case 'a':
+					psys = "ATSC";
+				break;
+			}
+			if (tx.ttype == 's')
+			{
+				if (dbih->tuners.count(tx.pos))
+				{
+					ppos = dbih->tuners.at(tx.pos).name;
+				}
+
+				char cposdeg[5];
+				std::sprintf(cposdeg, "%.1f", float (std::abs (tx.pos)) / 10);
+				ppos += ' ' + (string (cposdeg) + (tx.pos > 0 ? 'E' : 'W'));
+			}
+
+			tns = QString::fromStdString(psys + '\n' + ppos);
+		}
+		else
+		{
+			ssid = txp = tns = "< >";
+		}
+
+		ref_fields[LIST_REF::ReferenceID]->setText(refid);
+		ref_fields[LIST_REF::ServiceID]->setText(ssid);
+		ref_fields[LIST_REF::Transponder]->setText(txp);
+		ref_fields[LIST_REF::Userbouquets]->setText(ubls);
+		ref_fields[LIST_REF::Bouquets]->setText(bsls);
+		ref_fields[LIST_REF::Tuner]->setText(tns);
+	}
 }
 
 void tab::setTabId(int ttid)
@@ -1490,8 +1628,13 @@ void tab::initialize()
 
 	this->state.nwwr = true;
 	this->state.ovwr = false;
-	this->state.changed = false;
 	this->state.dnd = true;
+	this->state.changed = false;
+	this->state.reindex = false;
+	this->state.refbox = false;
+	this->state.tc = 0;
+	this->state.ti = 0;
+	this->state.curr = "";
 	this->state.sort = pair (-1, Qt::AscendingOrder); //C++17
 
 	bouquets_tree->clear();

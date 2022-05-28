@@ -46,7 +46,8 @@ class editBouquet : protected e2se::log_factory
 		QGridLayout* dtform;
 		vector<QWidget*> fields;
 	private:
-		struct sts {
+		struct sts
+		{
 			bool edit = false;
 			int ti;
 		} state;

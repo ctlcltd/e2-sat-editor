@@ -238,14 +238,20 @@ QStringList e2db::entryTransponder(transponder tx)
 	}
 	QString pos = QString::fromStdString(ppos);
 	string psys;
-	if (tx.ttype == 's')
-		psys = tx.sys != -1 ? e2db::SAT_SYS[tx.sys] : "DVB-S";
-	else if (tx.ttype == 't')
-		psys = "DVB-T"; //TODO terrestrial.xml
-	else if (tx.ttype == 'c')
-		psys = "DVB-C";
-	else if (tx.ttype == 'a')
-		psys = "ATSC";
+	switch (tx.ttype) {
+		case 's':
+			psys = tx.sys != -1 ? e2db::SAT_SYS[tx.sys] : "DVB-S";
+		break;
+		case 't':
+			psys = "DVB-T";
+		break;
+		case 'c':
+			psys = "DVB-C";
+		break;
+		case 'a':
+			psys = "ATSC";
+		break;
+	}
 	QString sys = QString::fromStdString(psys);
 
 	return QStringList ({freq, pol, sr, fec, pos, sys});

@@ -412,18 +412,18 @@ void gui::tabChangeName(int ttid, string filename)
 void gui::setStatus(int counters[5])
 {
 	QString qstr;
-	if (counters[4] != -1)
+	if (counters[COUNTER::current] != -1)
 	{
-		qstr = "Channels: " + QString::fromStdString(to_string(counters[4]));
+		qstr = "Channels: " + QString::fromStdString(to_string(counters[COUNTER::current]));
 		sbwidl->setText(qstr);
 	}
 	else
 	{
-		qstr.append("TV: " + QString::fromStdString(to_string(counters[1])) + "   ");
-		qstr.append("Radio: " + QString::fromStdString(to_string(counters[2])) + "   ");
-		qstr.append("Data: " + QString::fromStdString(to_string(counters[0])) + "   ");
+		qstr.append("TV: " + QString::fromStdString(to_string(counters[COUNTER::tv])) + "   ");
+		qstr.append("Radio: " + QString::fromStdString(to_string(counters[COUNTER::radio])) + "   ");
+		qstr.append("Data: " + QString::fromStdString(to_string(counters[COUNTER::data])) + "   ");
 		qstr.append("   ");
-		qstr.append("Total: " + QString::fromStdString(to_string(counters[3])) + "   ");
+		qstr.append("Total: " + QString::fromStdString(to_string(counters[COUNTER::all])) + "   ");
 		sbwidr->setText(qstr);
 	}
 }

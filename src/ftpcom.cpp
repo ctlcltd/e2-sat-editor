@@ -346,7 +346,7 @@ size_t ftpcom::data_tn_shell_func(char* cso, size_t size, size_t nmemb, void* ps
 
 	if (vars->send)
 	{
-		data = "init 3";
+		data = vars->cmd;
 		vars->send = false;
 	}
 
@@ -515,6 +515,7 @@ bool ftpcom::cmd_tnreload()
 	data.user = user;
 	data.pass = pass;
 	data.send = false;
+	data.cmd = "init 3";
 
 	curl_url_set(rsh, CURLUPART_SCHEME, "telnet", 0);
 	curl_url_set(rsh, CURLUPART_HOST, host.c_str(), 0);

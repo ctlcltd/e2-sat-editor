@@ -56,6 +56,7 @@ struct e2db_abstract
 		inline static const string CAB_MOD[6] = {"Auto", "QAM16", "QAM32", "QAM64", "QAM128", "QAM256"};
 		inline static const string CAB_IFEC[8] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "8/9"};
 
+		//TODO
 		inline static const unordered_map<int, pair<int, string>> STYPES = {
 			{0, make_pair(0, "Data")},
 			{1, make_pair(1, "TV")},
@@ -156,7 +157,8 @@ struct e2db_abstract
 			// data <field char, vector<value string>>
 			map<char, vector<string>> data;
 		};
-		struct service_reference {
+		struct service_reference
+		{
 			int ssid;
 			int dvbns;
 			int tsid;
@@ -244,7 +246,8 @@ struct e2db_abstract
 			// references <bname string, tuner_reference struct>
 			unordered_map<string, tuner_reference> references;
 		};
-		struct lamedb {
+		struct lamedb
+		{
 			// transponders <txid string, transponder struct>
 			unordered_map<string, transponder> transponders;
 			// services <chid string, service struct>
@@ -370,6 +373,8 @@ class e2db : public e2db_parser, public e2db_maker
 		void add_channel_reference(channel_reference& chref, string bname);
 		void edit_channel_reference(string chid, channel_reference& chref, string bname);
 		void remove_channel_reference(string chid, string bname);
+		string get_reference_id(string chid);
+		string get_reference_id(channel_reference chref);
 		map<string, vector<pair<int, string>>> get_channels_index();
 		map<string, vector<pair<int, string>>> get_transponders_index();
 		map<string, vector<pair<int, string>>> get_services_index();

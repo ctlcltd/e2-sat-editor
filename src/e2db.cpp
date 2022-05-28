@@ -493,7 +493,7 @@ void e2db_parser::parse_lamedb_service_params(string data, service& ch)
 	ch.snum = snum;
 }
 
-//TODO FIX could cause SEGFAULT with empty data
+//TODO FIX could cause SEGFAULT with empty data (infinite loop)
 void e2db_parser::parse_lamedb_service_data(string data, service& ch)
 {
 	if (data.empty())
@@ -517,7 +517,7 @@ void e2db_parser::parse_lamedb_service_data(string data, service& ch)
 		string val = line.substr(2);
 		cdata[key].push_back(val);
 	}
-	ch.data = cdata; //TODO lassign infinite loop
+	ch.data = cdata;
 }
 
 void e2db_parser::append_lamedb_service_name(string data, service& ch)
@@ -730,7 +730,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 			string mkey;
 			string sline = line;
 			line.erase(0, line.find_first_not_of(' '));
-			char* token = strtok(line.data(), " ");
+			char* token = std::strtok(line.data(), " ");
 			while (token != 0)
 			{
 				string pstr = string (token);
@@ -793,7 +793,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 					tnref.plscode = std::atoi(val.data());
 
 				// cout << mkey << ':' << key << ':' << val << ' ' << step << endl;
-				token = strtok(NULL, " ");
+				token = std::strtok(NULL, " ");
 			}
 		}
 	}
@@ -1549,7 +1549,7 @@ void e2db::edit_transponder(string txid, transponder& tx)
 	std::sprintf(nw_txid, "%x:%x", tx.tsid, tx.dvbns);
 	tx.txid = nw_txid;
 
-	debug("edit_service()", "nw_txid", nw_txid);
+	debug("edit_service()", "nw_txid", tx.txid);
 
 	if (tx.txid == txid)
 	{
@@ -1604,7 +1604,7 @@ void e2db::edit_service(string chid, service& ch)
 	ch.txid = nw_txid;
 	ch.chid = nw_chid;
 
-	debug("edit_service()", "nw_chid", nw_chid);
+	debug("edit_service()", "nw_chid", ch.chid);
 
 	if (ch.chid == chid)
 	{
@@ -1835,7 +1835,7 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 	ch.txid = nw_txid;
 	ch.chid = nw_chid;
 
-	debug("edit_channel_reference()", "nw_chid", nw_chid);
+	debug("edit_channel_reference()", "nw_chid", ch.chid);
 
 	if (ch.chid == chid)
 	{
@@ -1917,6 +1917,50 @@ void e2db::remove_channel_reference(string chid, string bname)
 				index[ub.pname].erase(it);
 		}
 	}
+}
+
+string e2db::get_reference_id(string chid)
+{
+	char refid[33];
+	int stype, snum, ssid, tsid, dvbns;
+	stype = 0, snum = 0, ssid = 0, tsid = 0, dvbns = 0;
+	string onid = "0";
+
+	if (db.services.count(chid))
+	{
+		service ch = db.services[chid];
+		stype = ch.stype;
+		snum = ch.snum;
+		ssid = ch.ssid;
+		tsid = ch.tsid;
+		onid = ch.onid.empty() ? onid : ch.onid;
+		transform(onid.begin(), onid.end(), onid.begin(), [](unsigned char c) { return toupper(c); });
+		dvbns = ch.dvbns;
+	}
+
+	std::sprintf(refid, "%d:%d:%X:%X:%X:%s:%X:0:0:0", 1, stype, snum, ssid, tsid, onid.c_str(), dvbns);
+	return refid;
+}
+
+string e2db::get_reference_id(channel_reference chref)
+{
+	char refid[33];
+	int ssid, tsid, dvbns;
+	ssid = 0, tsid = 0, dvbns = 0;
+	string onid = "0";
+
+	if (! chref.marker && db.services.count(chref.chid))
+	{
+		service ch = db.services[chref.chid];
+		ssid = ch.ssid;
+		tsid = ch.tsid;
+		onid = ch.onid.empty() ? onid : ch.onid;
+		transform(onid.begin(), onid.end(), onid.begin(), [](unsigned char c) { return toupper(c); });
+		dvbns = ch.dvbns;
+	}
+
+	std::sprintf(refid, "%d:%d:%X:%X:%X:%s:%X:0:0:0", 1, chref.type, chref.anum, ssid, tsid, onid.c_str(), dvbns);
+	return refid;
 }
 
 //TODO unique (eg. terrestrial MUX)
