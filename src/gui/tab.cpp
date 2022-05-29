@@ -27,6 +27,7 @@
 #include <QMenu>
 #include <QPushButton>
 #include <QComboBox>
+#include <QScrollArea>
 #include <QClipboard>
 #include <QMimeData>
 
@@ -150,56 +151,66 @@ tab::tab(gui* gid, QWidget* wid)
 
 	this->bouquets_search = new QWidget;
 	this->list_search = new QWidget;
-	this->list_reference = new QAbstractScrollArea;
+	this->list_reference = new QWidget;
 	bouquets_search->setHidden(true);
 	list_search->setHidden(true);
 	list_reference->setHidden(true);
 
 	int fsss = (theme::getDefaultFontSize() - 2);
 	QString ff = theme::getDefaultFontFamily();
+	QScrollArea* ref_frm = new QScrollArea(list_reference);
+	QWidget* ref_wrap = new QWidget;
 	QGridLayout* ref_box = new QGridLayout;
 	QLabel* ref0lr = new QLabel("Reference ID");
-	QLabel* ref0tr = new QLabel;
+	QLabel* ref0tr = new QLabel("< >");
 	ref0lr->setFont(QFont(ff, fsss));
 	ref_fields[LIST_REF::ReferenceID] = ref0tr;
 	ref_box->addWidget(ref0lr, 0, 0, Qt::AlignTop);
 	ref_box->addWidget(ref0tr, 0, 1, Qt::AlignTop);
 	QLabel* ref1ls = new QLabel("Service ID");
-	QLabel* ref1ts = new QLabel;
+	QLabel* ref1ts = new QLabel("< >");
 	ref1ls->setFont(QFont(ff, fsss));
 	ref_fields[LIST_REF::ServiceID] = ref1ts;
 	ref_box->addWidget(ref1ls, 0, 2, Qt::AlignTop);
 	ref_box->addWidget(ref1ts, 0, 3, Qt::AlignTop);
 	QLabel* ref2lt = new QLabel("Transponder");
-	QLabel* ref2tt = new QLabel;
+	QLabel* ref2tt = new QLabel("< >");
 	ref2lt->setFont(QFont(ff, fsss));
 	ref_fields[LIST_REF::Transponder] = ref2tt;
 	ref_box->addWidget(ref2lt, 0, 4, Qt::AlignTop);
 	ref_box->addWidget(ref2tt, 0, 5, Qt::AlignTop);
 	ref_box->addItem(new QSpacerItem(0, 12), 1, 0);
 	QLabel* ref3lu = new QLabel("Userbouquets");
-	QLabel* ref3tu = new QLabel;
+	QLabel* ref3tu = new QLabel("< >");
 	ref3lu->setFont(QFont(ff, fsss));
 	ref_fields[LIST_REF::Userbouquets] = ref3tu;
 	ref_box->addWidget(ref3lu, 2, 0, Qt::AlignTop);
 	ref_box->addWidget(ref3tu, 2, 1, Qt::AlignTop);
 	QLabel* ref4lb = new QLabel("Bouquets");
-	QLabel* ref4tb = new QLabel;
+	QLabel* ref4tb = new QLabel("< >");
 	ref4lb->setFont(QFont(ff, fsss));
 	ref_fields[LIST_REF::Bouquets] = ref4tb;
 	ref_box->addWidget(ref4lb, 2, 2, Qt::AlignTop);
 	ref_box->addWidget(ref4tb, 2, 3, Qt::AlignTop);
 	QLabel* ref5ln = new QLabel("Tuner");
-	QLabel* ref5tn = new QLabel;
+	QLabel* ref5tn = new QLabel("< >");
 	ref5ln->setFont(QFont(ff, fsss));
 	ref_fields[LIST_REF::Tuner] = ref5tn;
 	ref_box->addWidget(ref5ln, 2, 4, Qt::AlignTop);
 	ref_box->addWidget(ref5tn, 2, 5, Qt::AlignTop);
-	ref_box->setColumnStretch(1, 1);
-	ref_box->setColumnStretch(3, 1);
-	ref_box->setColumnStretch(5, 1);
+	ref_box->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Ignored), 0, 6);
+	ref_box->setColumnStretch(6, 1);
+	ref_box->setColumnMinimumWidth(1, 300);
+	ref_box->setColumnMinimumWidth(3, 200);
+	ref_box->setColumnMinimumWidth(5, 200);
+	ref_wrap->setLayout(ref_box);
+	ref_frm->setWidget(ref_wrap);
+	ref_frm->setWidgetResizable(true);
 	list_reference->setFixedHeight(100);
-	list_reference->setLayout(ref_box);
+	//TODO FIX
+	ref_frm->setMinimumWidth(9999);
+	// ref_frm->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
+	// list_reference->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
 	QToolBar* top_toolbar = new QToolBar;
 	top_toolbar->setIconSize(QSize(32, 32));
@@ -1109,6 +1120,7 @@ void tab::listReferenceToggle()
 	{
 		list_reference->show();
 		this->state.refbox = true;
+		updateRefBox();
 	}
 	else
 	{
@@ -1124,6 +1136,8 @@ void tab::listItemCut()
 	listItemCopy(true);
 }
 
+//TODO Reference ID
+//TODO column CAS and CSV
 void tab::listItemCopy(bool cut)
 {
 	debug("listItemCopy()");
@@ -1149,6 +1163,7 @@ void tab::listItemCopy(bool cut)
 		listItemDelete();
 }
 
+//TODO FIX SEGFAULT
 void tab::listItemPaste()
 {
 	debug("listItemPaste()");
@@ -1163,6 +1178,7 @@ void tab::listItemPaste()
 		for (QString & data : list)
 		{
 			//TODO validate
+			//TODO FIX list out of range <> instance
 			items.emplace_back(data.split(",")[2]);
 		}
 	}
@@ -1190,7 +1206,10 @@ void tab::listItemDelete()
 		int i = list_tree->indexOfTopLevelItem(item);
 		string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 		list_tree->takeTopLevelItem(i);
-		dbih->remove_channel_reference(chid, curr_chlist);
+
+		// bouquets tree
+		if (this->state.tc)
+			dbih->remove_channel_reference(chid, curr_chlist);
 	}
 
 	lheaderv->setSectionsClickable(true);
@@ -1329,7 +1348,10 @@ void tab::putChannels(vector<QString> channels)
 			item->setIcon(6, theme::icon("crypted"));
 		}
 		clist.append(item);
-		dbih->add_channel_reference(chref, curr_chlist);
+
+		// bouquets tree
+		if (this->state.tc)
+			dbih->add_channel_reference(chref, curr_chlist);
 	}
 
 	if (current == nullptr)
@@ -1484,14 +1506,14 @@ void tab::setCounters(bool current)
 
 void tab::updateRefBox()
 {
-	debug("updateRefBox()");
+	// debug("updateRefBox()");
 
 	QList<QTreeWidgetItem*> selected = list_tree->selectedItems();
 	
 	if (selected.empty() || selected.count() > 1)
 	{
 		for (auto & field : ref_fields)
-			field.second->setText("< ... >");
+			field.second->setText(selected.empty() ? "< >" : "< ... >");
 	}
 	else
 	{
@@ -1501,6 +1523,7 @@ void tab::updateRefBox()
 
 		// debug("updateRefBox()", "chid", chid);
 
+		// bouquets tree
 		if (this->state.tc)
 		{
 			string curr_chlist = this->state.curr;
@@ -1518,7 +1541,7 @@ void tab::updateRefBox()
 					bss[x.second.pname] = bss[x.second.pname]++;
 				}
 			}
-			ubls = ubl.join('\n');
+			ubls = "<p style=\"line-height: 150%\">" + ubl.join("<br>") + "</p>";
 
 			QStringList bsl;
 			for (auto & x : bss)
@@ -1526,8 +1549,9 @@ void tab::updateRefBox()
 				if (dbih->bouquets.count(x.first))
 					bsl.append(QString::fromStdString(dbih->bouquets[x.first].nname));
 			}
-			bsls = bsl.join('\n');
+			bsls = "<p style=\"line-height: 150%\">" + bsl.join("<br>") + "</p>";
 		}
+		// services tree
 		else
 		{
 			string crefid = dbih->get_reference_id(chid);
@@ -1585,7 +1609,7 @@ void tab::updateRefBox()
 				ppos += ' ' + (string (cposdeg) + (tx.pos > 0 ? 'E' : 'W'));
 			}
 
-			tns = QString::fromStdString(psys + '\n' + ppos);
+			tns = "<p style=\"line-height: 125%\">" + QString::fromStdString(psys + "<br>" + ppos) + "</p>";
 		}
 		else
 		{
@@ -1631,7 +1655,7 @@ void tab::initialize()
 	this->state.dnd = true;
 	this->state.changed = false;
 	this->state.reindex = false;
-	this->state.refbox = false;
+	this->state.refbox = list_reference->isVisible();
 	this->state.tc = 0;
 	this->state.ti = 0;
 	this->state.curr = "";

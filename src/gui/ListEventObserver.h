@@ -21,11 +21,11 @@ class ListEventObserver : public QObject
 	public:
 		bool isChanged()
 		{
-			return changed;
+			return this->changed;
 		}
 		void reset()
 		{
-			changed = false;
+			this->changed = false;
 		}
 	protected:
 		bool eventFilter(QObject* o, QEvent* e);

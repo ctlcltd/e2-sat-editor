@@ -1803,7 +1803,7 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 		return error("add_channel_reference()", "Error", "Userbouquet \"" + bname + "\" not exists.");
 
 	service ch = db.services[chref.chid];
-	userbouquet ub = userbouquets[bname];
+	userbouquet& ub = userbouquets[bname];
 	service_reference ref;
 
 	if (! chref.marker)
@@ -1826,7 +1826,7 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 		return error("edit_channel_reference()", "Error", "Userbouquet \"" + bname + "\" not exists.");
 
 	service ch = db.services[chref.chid];
-	userbouquet ub = userbouquets[bname];
+	userbouquet& ub = userbouquets[bname];
 
 	char nw_chid[25];
 	char nw_txid[25];
@@ -1839,7 +1839,7 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 
 	if (ch.chid == chid)
 	{
-		userbouquets[bname].channels[ch.chid] = chref;
+		ub.channels[ch.chid] = chref;
 	}
 	else
 	{
@@ -1853,8 +1853,8 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 		}
 
 		//TODO swap
-		userbouquets[bname].channels.erase(chid);
-		userbouquets[bname].channels.emplace(ch.chid, chref);
+		ub.channels.erase(chid);
+		ub.channels.emplace(ch.chid, chref);
 
 		for (auto it = index[bname].begin(); it != index[bname].end(); it++)
 		{
@@ -1871,7 +1871,6 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 		}
 		else
 		{
-			userbouquet ub = userbouquets[bname];
 			for (auto it = index[ub.pname].begin(); it != index[ub.pname].end(); it++)
 			{
 				if (it->second == chid)
@@ -1893,9 +1892,11 @@ void e2db::remove_channel_reference(string chid, string bname)
 		return error("edit_channel_reference()", "Error", "Channel reference \"" + chid + "\" not exists.");
 
 	channel_reference chref = userbouquets[bname].channels[chid];
-	userbouquets[bname].channels.erase(chid);
+	userbouquet& ub = userbouquets[bname];
 
-	for (auto it = index[bname].begin(); it != index[bname].end(); it++)
+	ub.channels.erase(chid);
+
+	/*for (auto it = index[bname].begin(); it != index[bname].end(); it++)
 	{
 		if (it->second == chid)
 			index[bname].erase(it);
@@ -1910,17 +1911,18 @@ void e2db::remove_channel_reference(string chid, string bname)
 	}
 	else
 	{
-		userbouquet ub = userbouquets[bname];
 		for (auto it = index[ub.pname].begin(); it != index[ub.pname].end(); it++)
 		{
 			if (it->second == chid)
 				index[ub.pname].erase(it);
 		}
-	}
+	}*/
 }
 
 string e2db::get_reference_id(string chid)
 {
+	// debug("get_reference_id()", "chid", chid);
+
 	char refid[33];
 	int stype, snum, ssid, tsid, dvbns;
 	stype = 0, snum = 0, ssid = 0, tsid = 0, dvbns = 0;
@@ -1944,6 +1946,8 @@ string e2db::get_reference_id(string chid)
 
 string e2db::get_reference_id(channel_reference chref)
 {
+	// debug("get_reference_id()", "chref.chid", chref.chid);
+
 	char refid[33];
 	int ssid, tsid, dvbns;
 	ssid = 0, tsid = 0, dvbns = 0;

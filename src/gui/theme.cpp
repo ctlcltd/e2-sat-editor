@@ -23,7 +23,6 @@ namespace e2se_gui
 
 theme::theme()
 {
-	QString icons = ":/icons/";
 	QString style = QSettings().value("preference/theme").toString();
 
 	if (style == "light")
@@ -32,9 +31,9 @@ theme::theme()
 		style::dark();
 
 	QColor bgcolor = QGuiApplication::palette().color(QPalette::Window).toHsl();
-	QString colors = bgcolor.lightness() > 128 ? "light" : "dark";
+	int colors = bgcolor.lightness() > 128 ? 0 : 1;
 
-	QSettings().setValue("application/icons", icons.append(colors));
+	QSettings().setValue("application/icons", colors);
 }
 
 QIcon theme::icon(QString icon)
@@ -44,7 +43,9 @@ QIcon theme::icon(QString icon)
 
 QString theme::getIcon(QString icon)
 {
-	return QSettings().value("application/icons").toString().append('/' + icon).append(".png");
+	QString prefix = ":/icons/";
+	prefix.append(QSettings().value("application/icons").toInt() ? "dark" : "light");
+	return prefix.append("/").append(icon).append(".png");
 }
 
 QString theme::getDefaultFontFamily()

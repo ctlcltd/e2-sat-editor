@@ -59,8 +59,11 @@ class editService : protected e2se::log_factory
 	private:
 		struct sts
 		{
+			// editable
 			bool edit = false;
+			// service data C (CAS) raw string
 			string raw_C;
+			// service data raw string
 			string raw_data;
 		} state;
 		e2db* dbih;

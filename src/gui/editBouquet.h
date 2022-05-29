@@ -48,7 +48,9 @@ class editBouquet : protected e2se::log_factory
 	private:
 		struct sts
 		{
+			// editable
 			bool edit = false;
+			// bouquets_tree top level index 
 			int ti;
 		} state;
 		e2db* dbih;

@@ -58,6 +58,10 @@ class channelBook : protected e2se::log_factory
 		map<string, vector<pair<int, string>>> data;
 	private:
 		e2db* dbih;
+		// view selector
+		// 0 tabv | list
+		// 1 tree | list
+		// 2 list
 		int vx;
 };
 }

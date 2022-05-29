@@ -17,9 +17,9 @@ namespace e2se_gui
 bool ListEventObserver::eventFilter(QObject* o, QEvent* e)
 {
 	if (e->type() == QEvent::ChildRemoved)
-		changed = changed ? false : true;
+		this->changed = this->changed ? false : true;
 	else if (e->type() == QEvent::ChildAdded)
-		changed = changed ? false : true;
+		this->changed = this->changed ? false : true;
 
 	return false;
 }

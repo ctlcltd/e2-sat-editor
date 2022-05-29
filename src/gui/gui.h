@@ -88,6 +88,7 @@ class gui : protected e2se::log_factory
 	private:
 		struct sts
 		{
+			// tab id increment
 			int tt = 0;
 		} state;
 		QApplication* mroot;

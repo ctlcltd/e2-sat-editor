@@ -133,15 +133,25 @@ class tab : protected e2se::log_factory
 		} action;
 		struct sts
 		{
+			// new file
 			bool nwwr;
+			// overwrite file
 			bool ovwr;
+			// drag-and-drop (default sort 0|asc)
 			bool dnd;
+			// post update index
 			bool changed;
-			bool reindex;
+			// post visual reindex list_tree
+ 			bool reindex;
+			// refbox shown
 			bool refbox;
+			// side tree focused { services_tree = 0, bouquets_tree = 1 } 
 			int tc;
+			// bouquets_tree current top level index
 			int ti;
+			// bouquets_tree current bname
 			string curr;
+			// list_tree sort
 			pair<int, Qt::SortOrder> sort;
 		} state;
 		gui* gid;

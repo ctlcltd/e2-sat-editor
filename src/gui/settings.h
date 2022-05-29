@@ -73,8 +73,12 @@ class settings : protected e2se::log_factory
 	private:
 		struct sts
 		{
+			// previous tab index
 			int prev;
+			// profile retrieving
 			bool retr;
+			//TODO rename
+			// profile deleting
 			bool delt;
 		} state;
 };
