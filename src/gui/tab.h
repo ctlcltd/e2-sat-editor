@@ -83,6 +83,7 @@ class tab : protected e2se::log_factory
 		void servicesItemChanged(QTreeWidgetItem* current);
 		void bouquetsItemChanged(QTreeWidgetItem* current);
 		void listItemChanged();
+		void listItemSelectionChanged();
 		void listPendingUpdate();
 		void visualReindexList();
 		void trickySortByColumn(int column);
@@ -90,6 +91,7 @@ class tab : protected e2se::log_factory
 		void disallowDnD();
 		void reharmDnD();
 		void bouquetItemDelete();
+		void actionCall(int action);
 		void bouquetsSearchToggle();
 		void listSearchToggle();
 		void listReferenceToggle();
@@ -98,14 +100,14 @@ class tab : protected e2se::log_factory
 		void listItemPaste();
 		void listItemDelete();
 		void listItemSelectAll();
-		void listItemAction(int action);
 		void putChannels(vector<QString> channels);
 		void updateListIndex();
 		void updateBouquetsIndex();
+		void updateConnectors();
+		void updateCounters(bool current = false);
+		void updateRefBox();
 		void showBouquetEditContextMenu(QPoint &pos);
 		void showListEditContextMenu(QPoint &pos);
-		void setCounters(bool current = false);
-		void updateRefBox();
 		void setTabId(int ttid);
 		void tabSwitched();
 		void tabChangeName(string filename = "");

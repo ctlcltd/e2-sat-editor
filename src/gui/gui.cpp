@@ -58,6 +58,7 @@ gui::gui(int argc, char* argv[])
 	mroot->setApplicationName("e2-sat-editor");
 	mroot->setApplicationVersion("0.1");
 	mroot->setStyle(new guiProxyStyle);
+	mroot->connect(mroot, &QApplication::focusChanged, [=]() { this->windowFocusChanged(); });
 
 	this->sets = new QSettings;
 	if (! sets->contains("application/version"))
@@ -115,35 +116,35 @@ void gui::menuCtl()
 	}
 
 	QMenu* mfile = menu->addMenu(tr("&File"));
-	mfile->addAction(tr("&New"), [=]() { this->newTab(""); })->setShortcut(QKeySequence::New);
-	mfile->addAction(tr("&Open"), [=]() { this->open(); })->setShortcut(QKeySequence::Open);
-	mfile->addAction(tr("&Save"), [=]() { this->save(); })->setShortcut(QKeySequence::Save);
+	gmenu[GUI_CXE::FileNew] = mfile->addAction(tr("&New"), [=]() { this->newTab(""); }, QKeySequence::New);
+	gmenu[GUI_CXE::FileOpen] = mfile->addAction(tr("&Open"), [=]() { this->open(); }, QKeySequence::Open);
+	gmenu[GUI_CXE::FileSave] = mfile->addAction(tr("&Save"), [=]() { this->save(); }, QKeySequence::Save);
 	mfile->addSeparator();
-	mfile->addAction("Import", todo);
-	mfile->addAction("Export", todo);
+	gmenu[GUI_CXE::FileImport] = mfile->addAction("Import", todo);
+	gmenu[GUI_CXE::FileExport] = mfile->addAction("Export", todo);
 	mfile->addSeparator();
-	mfile->addAction("Close Tab", [=]() { this->closeTab(-1); });
-	mfile->addAction("Close All Tabs", [=]() { this->closeAllTabs(); });
+	gmenu[GUI_CXE::CloseTab] = mfile->addAction("Close Tab", [=]() { this->closeTab(-1); });
+	gmenu[GUI_CXE::CloseAllTabs] = mfile->addAction("Close All Tabs", [=]() { this->closeAllTabs(); });
 	mfile->addSeparator();
-	mfile->addAction("Settings", [=]() { this->settings(); })->setShortcut(QKeySequence::Preferences);
+	mfile->addAction("Settings", [=]() { this->settings(); }, QKeySequence::Preferences);
 	if (QSysInfo::productType().contains(QRegularExpression("macos|osx")))
 		mfile->addAction(tr("&About"), [=]() { this->about(); });
 	mfile->addSeparator();
-	mfile->addAction(tr("&Exit"), [=]() { this->mroot->quit(); })->setShortcut((QSysInfo::productType().contains("windows") ? QKeySequence::Close : QKeySequence::Quit));
+	mfile->addAction(tr("&Exit"), [=]() { this->mroot->quit(); }, (QSysInfo::productType().contains("windows") ? QKeySequence::Close : QKeySequence::Quit));
 	
 	QMenu* medit = menu->addMenu(tr("&Edit"));
-	medit->addAction(tr("Cu&t"), [=]() { this->tabEditAction(TAB_EDIT_ATS::Cut); })->setShortcut(QKeySequence::Cut);
-	medit->addAction(tr("&Copy"), [=]() { this->tabEditAction(TAB_EDIT_ATS::Copy); })->setShortcut(QKeySequence::Copy);
-	medit->addAction(tr("&Paste"), [=]() { this->tabEditAction(TAB_EDIT_ATS::Paste); })->setShortcut(QKeySequence::Paste);
+	gmenu[GUI_CXE::TabListCut] = medit->addAction(tr("Cu&t"), [=]() { this->tabAction(TAB_ATS::ListCut); }, QKeySequence::Cut);
+	gmenu[GUI_CXE::TabListCopy] = medit->addAction(tr("&Copy"), [=]() { this->tabAction(TAB_ATS::ListCopy); },  QKeySequence::Copy);
+	gmenu[GUI_CXE::TabListPaste] = medit->addAction(tr("&Paste"), [=]() { this->tabAction(TAB_ATS::ListPaste); }, QKeySequence::Paste);
 	medit->addSeparator();
-	medit->addAction(tr("Select &All"), [=]() { this->tabEditAction(TAB_EDIT_ATS::SelectAll); })->setShortcut(QKeySequence::SelectAll);
+	gmenu[GUI_CXE::TabListSelectAll] = medit->addAction(tr("Select &All"), [=]() { this->tabAction(TAB_ATS::ListSelectAll); }, QKeySequence::SelectAll);
 
 	QMenu* mfind = menu->addMenu(tr("&Find"));
-	mfind->addAction(tr("Find Channel…"), todo)->setShortcut(QKeySequence::Find);
-	mfind->addAction(tr("Find Bouquet…"), todo)->setShortcut(Qt::CTRL | Qt::ALT | Qt::Key_F);
+	gmenu[GUI_CXE::TabListFind] = mfind->addAction(tr("Find Channel…"), [=]() { this->tabAction(TAB_ATS::ListFind); }, QKeySequence::Find);
+	gmenu[GUI_CXE::TabBouquetsFind] = mfind->addAction(tr("Find Bouquet…"), [=]() { this->tabAction(TAB_ATS::BouquetsFind); }, Qt::CTRL | Qt::ALT | Qt::Key_F);
 	mfind->addSeparator();
-	mfind->addAction(tr("Find Next"), todo);
-	mfind->addAction(tr("Find Previous"), todo);
+	gmenu[GUI_CXE::FindNext] = mfind->addAction(tr("Find Next"), todo, QKeySequence::FindNext);
+	gmenu[GUI_CXE::FindPrevious] = mfind->addAction(tr("Find Previous"), todo, QKeySequence::FindPrevious);
 
 	QMenu* mtool = menu->addMenu(tr("Tools"));
 	mtool->addAction("Order services A-Z", todo);
@@ -152,37 +153,21 @@ void gui::menuCtl()
 	mtool->addAction("Delete all bouquets", todo);
 
 	QMenu* mwind = menu->addMenu(tr("&Window"));
-	mwind->addAction("&Minimize", [=]() { this->mwid->showMinimized(); })->setShortcut(Qt::CTRL | Qt::Key_M);
+	gmenu[GUI_CXE::WindowMinimize] = mwind->addAction("&Minimize", [=]() { this->windowMinimize(); }, Qt::CTRL | Qt::Key_M);
+	mwind->addSeparator();
+	gmenu[GUI_CXE::NewTab] = mwind->addAction("&New Tab", [=]() { this->newTab(); }, Qt::CTRL | Qt::Key_T);
 	mwind->addSeparator();
 	QActionGroup* mwtabs = new QActionGroup(mwind);
 	mwtabs->setExclusive(true);
 
 	QMenu* mhelp = menu->addMenu(tr("&Help"));
-	mhelp->addAction("TODO", todo); //TODO FIX macos QAction::NoRole ignored
+	//TODO FIX macos QAction::NoRole ignored
+	mhelp->addAction("TODO", todo);
 	mhelp->addAction(tr("&About"), [=]() { this->about(); })->setMenuRole(QAction::NoRole);
 
 	this->menu = menu;
 	this->mwind = mwind;
 	this->mwtabs = mwtabs;
-}
-
-//TODO FIX dir:rtl
-void gui::statusCtl()
-{
-	debug("statusCtl()");
-
-	this->sbwid = new QStatusBar(mwid);
-	this->sbwidl = new QLabel;
-	this->sbwidr = new QLabel;
-
-	sbwid->setStyleSheet("QStatusBar QLabel { padding: 0 2ex }");
-	sbwidl->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-	sbwidr->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-
-	sbwid->addWidget(sbwidl, 1);
-	sbwid->addWidget(sbwidr, 1);
-
-	mstatusb->addWidget(sbwid);
 }
 
 void gui::tabCtl()
@@ -216,7 +201,46 @@ void gui::tabCtl()
 	mcnt->addWidget(twid);
 }
 
-int gui::newTab(string filename = "")
+//TODO FIX dir:rtl
+void gui::statusCtl()
+{
+	debug("statusCtl()");
+
+	this->sbwid = new QStatusBar(mwid);
+	this->sbwidl = new QLabel;
+	this->sbwidr = new QLabel;
+
+	sbwid->setStyleSheet("QStatusBar QLabel { padding: 0 2ex }");
+	sbwidl->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+	sbwidr->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+
+	sbwid->addWidget(sbwidl, 1);
+	sbwid->addWidget(sbwidr, 1);
+
+	mstatusb->addWidget(sbwid);
+}
+
+void gui::windowFocusChanged()
+{
+	// debug("windowFocusChanged()");
+
+	// main window focus in
+	if (mroot->activeWindow())
+	{
+		debug("windowFocusChanged()", "mwind", "focus in");
+		this->xe = this->state.ex;
+	}
+	// main window focus out
+	else
+	{
+		debug("windowFocusChanged()", "mwind", "focus out");
+		this->state.ex = this->xe;
+		this->xe = GUI_CXE::deactivated;
+	}
+	update();
+}
+
+int gui::newTab(string filename)
 {
 	tab* ttab = new tab(this, mwid);
 	int ttid = this->state.tt++;
@@ -455,12 +479,20 @@ void gui::save()
 }
 
 //TODO tab actions ctl
-void gui::tabEditAction(TAB_EDIT_ATS action)
+void gui::tabAction(TAB_ATS action)
 {
-	debug("tabEditAction()", "action", to_string(action));
+	debug("tabAction()", "action", to_string(action));
 
 	tab* ttab = getCurrentTabHandler();
-	ttab->listItemAction(action);
+	ttab->actionCall(action);
+}
+
+void gui::windowMinimize()
+{
+	debug("windowMinimize()");
+
+	if (! this->mwid->isMinimized())
+		this->mwid->showMinimized();
 }
 
 void gui::settings()
@@ -471,6 +503,16 @@ void gui::settings()
 void gui::about()
 {
 	new e2se_gui_dialog::about(mwid);
+}
+
+int gui::getActionFlags()
+{
+	return this->xe;
+}
+
+void gui::setActionFlags(int action, bool flag)
+{
+	update(action, flag);
 }
 
 int gui::getCurrentTabID()
@@ -498,8 +540,44 @@ void gui::initialize()
 	debug("initialize()");
 
 	this->state.tt = 0;
+	this->state.ex = this->xe = GUI_CXE::init;
 	newTab();
 	tabChanged(0);
+}
+
+void gui::update()
+{
+	// debug("update()");
+
+	for (auto & x : gmenu)
+	{
+		if (this->xe & x.first)
+			x.second->setEnabled(true);
+		else
+			x.second->setDisabled(true);
+	}
+}
+
+void gui::update(int connector, bool flag)
+{
+	// debug("update()", "connector", to_string(connector));
+
+	QAction* action = gmenu.count(connector) ? gmenu[connector] : nullptr;
+
+	if (flag)
+	{
+		if (action)
+			action->setEnabled(true);
+		if (! (this->xe & connector))
+			this->xe += connector;
+	}
+	else
+	{
+		if (action)
+			action->setDisabled(true);
+		if (this->xe & connector)
+			this->xe -= connector;
+	}
 }
 
 void gui::setDefaultSets()

@@ -17,6 +17,7 @@
 #include <QTimer>
 #include <QList>
 #include <QStyle>
+#include <QScrollBar>
 #include <QMessageBox>
 #include <QGridLayout>
 #include <QHBoxLayout>
@@ -321,6 +322,7 @@ tab::tab(gui* gid, QWidget* wid)
 	list_tree->installEventFilter(list_evto);
 	list_tree->viewport()->installEventFilter(list_evth);
 	list_tree->connect(list_tree, &QTreeWidget::currentItemChanged, [=]() { this->listItemChanged(); });
+	list_tree->connect(list_tree, &QTreeWidget::itemSelectionChanged, [=]() { this->listItemSelectionChanged(); });
 	list_tree->connect(list_tree, &QTreeWidget::itemDoubleClicked, [=]() { this->editService(); });
 
 	top->addWidget(top_toolbar);
@@ -525,7 +527,7 @@ void tab::editUserbouquet()
 	QString qbname = tdata["id"].toString();
 	string bname = qbname.toStdString();
 
-	debug("editService()", "bname", bname);
+	debug("editUserbouquet()", "bname", bname);
 
 	e2se_gui::editBouquet* edit = new e2se_gui::editBouquet(dbih, this->state.ti);
 	edit->setEditID(bname);
@@ -603,6 +605,8 @@ void tab::editService()
 		edit->display(cwid);
 		nw_chid = edit->getEditID(); // returned after dial.exec()
 		edit->destroy();
+
+		cache.clear();
 
 		debug("editService()", "nw_chid", nw_chid);
 
@@ -704,7 +708,7 @@ void tab::load()
 	bouquets_tree->setAcceptDrops(true);
 	services_tree->setCurrentItem(services_tree->topLevelItem(0));
 	populate(services_tree);
-	setCounters();
+	updateCounters();
 }
 
 void tab::populate(QTreeWidget* side_tree)
@@ -833,8 +837,6 @@ void tab::populate(QTreeWidget* side_tree)
 		list_tree->setAcceptDrops(true);
 	}
 	lheaderv->setSectionsClickable(true);
-
-	setCounters(true);
 }
 
 void tab::treeSwitched(QTreeWidget* tree, QTreeWidgetItem* item)
@@ -884,12 +886,17 @@ void tab::servicesItemChanged(QTreeWidgetItem* current)
 				allowDnD();
 		}
 
+		gid->update(gui::TabListDelete, true);
+		gid->update(gui::TabListPaste, true);
+
 		list_tree->clearSelection();
 		list_tree->scrollToTop();
 	}
 
 	updateListIndex();
 	populate(services_tree);
+	updateConnectors();
+	updateCounters(true);
 }
 
 void tab::bouquetsItemChanged(QTreeWidgetItem* current)
@@ -914,6 +921,9 @@ void tab::bouquetsItemChanged(QTreeWidgetItem* current)
 			// sorting by
 			if (this->state.sort.first > 0)
 				this->action.list_dnd->setDisabled(true);
+
+			gid->update(gui::TabListDelete, false);
+			gid->update(gui::TabListPaste, false);
 		}
 		// userbouquet
 		else
@@ -927,6 +937,9 @@ void tab::bouquetsItemChanged(QTreeWidgetItem* current)
 			// sorting default
 			else
 				allowDnD();
+
+			gid->update(gui::TabListDelete, true);
+			gid->update(gui::TabListPaste, true);
 		}
 
 		list_tree->clearSelection();
@@ -935,6 +948,8 @@ void tab::bouquetsItemChanged(QTreeWidgetItem* current)
 
 	updateListIndex();
 	populate(bouquets_tree);
+	updateConnectors();
+	updateCounters(true);
 }
 
 void tab::listItemChanged()
@@ -943,8 +958,45 @@ void tab::listItemChanged()
 
 	if (list_evto->isChanged())
 		listPendingUpdate();
+}
+
+void tab::listItemSelectionChanged()
+{
+	// debug("listItemSelectionChanged()");
+	
+	QList<QTreeWidgetItem*> selected = list_tree->selectedItems();
+
+	if (selected.empty())
+	{
+		gid->update(gui::TabListCut, false);
+		gid->update(gui::TabListCopy, false);
+
+		// userbouquet
+		if (this->state.ti == -1)
+			gid->update(gui::TabListDelete, false);
+	}
+	else
+	{
+		gid->update(gui::TabListCut, true);
+		gid->update(gui::TabListCopy, true);
+
+		// userbouquet
+		if (this->state.ti == -1)
+			gid->update(gui::TabListDelete, true);
+	}
+	if (selected.count() > 1)
+	{
+		gid->update(gui::TabListEditService, false);
+		gid->update(gui::TabListEditMarker, false);
+	}
+	else
+	{
+		gid->update(gui::TabListEditService, true);
+		gid->update(gui::TabListEditMarker, true);
+	}
+
 	if (this->state.refbox)
-		QTimer::singleShot(0, [=]() { this->updateRefBox(); });
+		updateRefBox();
 }
 
 void tab::listPendingUpdate()
@@ -1083,13 +1135,51 @@ void tab::bouquetItemDelete()
 		QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
 		QString qbname = tdata["id"].toString();
 		string bname = qbname.toStdString();
+		e2db::userbouquet uboq = dbih->userbouquets[bname];
+		string pname = uboq.pname;
 		dbih->removeUserbouquet(bname);
+
+		cache[bname].clear();
+		cache[pname].clear();
+		cache.erase(bname);
+
 		QTreeWidgetItem* parent = item->parent();
 		parent->removeChild(item);
 	}
 
 	this->state.changed = true;
 	updateBouquetsIndex();
+}
+
+void tab::actionCall(int action)
+{
+	debug("actionCall()", "action", to_string(action));
+
+	switch (action)
+	{
+		case LIST_EDIT_ATS::Cut:
+			listItemCut();
+		break;
+		case LIST_EDIT_ATS::Copy:
+			listItemCopy();
+		break;
+		case LIST_EDIT_ATS::Paste:
+			listItemPaste();
+		break;
+		case LIST_EDIT_ATS::Delete:
+			listItemDelete();
+		break;
+		case LIST_EDIT_ATS::SelectAll:
+			listItemSelectAll();
+		break;
+
+		case gui::TAB_ATS::BouquetsFind:
+			bouquets_search->show();
+		break;
+		case gui::TAB_ATS::ListFind:
+			list_search->show();
+		break;
+	}
 }
 
 void tab::bouquetsSearchToggle()
@@ -1163,9 +1253,13 @@ void tab::listItemCopy(bool cut)
 		listItemDelete();
 }
 
-//TODO FIX SEGFAULT
+//TODO validate
 void tab::listItemPaste()
 {
+	// bouquet: tv | radio
+	if (this->state.ti != -1)
+		return;
+
 	debug("listItemPaste()");
 
 	QClipboard* clipboard = QGuiApplication::clipboard();
@@ -1174,20 +1268,46 @@ void tab::listItemPaste()
 
 	if (mimeData->hasText())
 	{
-		QStringList list = clipboard->text().split("\n");
+		QStringList list = clipboard->text().split('\n');
+
 		for (QString & data : list)
 		{
-			//TODO validate
-			//TODO FIX list out of range <> instance
-			items.emplace_back(data.split(",")[2]);
+			if (data.contains(','))
+				items.emplace_back(data.split(',')[2]);
 		}
 	}
 	if (! items.empty())
+	{
 		putChannels(items);
+
+		if (list_tree->currentItem() == nullptr)
+			list_tree->scrollToBottom();
+
+		// bouquets tree
+		if (this->state.tc)
+		{
+			string curr_chlist = this->state.curr;
+			e2db::userbouquet uboq = dbih->userbouquets[curr_chlist];
+			string pname = uboq.pname;
+			cache[pname].clear();
+		}
+		// services tree
+		else
+		{
+			cache["chs"].clear();
+			cache["chs:0"].clear();
+			cache["chs:1"].clear();
+			cache["chs:2"].clear();
+		}
+	}
 }
 
 void tab::listItemDelete()
 {
+	// bouquet: tv | radio
+	if (this->state.ti != -1)
+		return;
+
 	debug("listItemDelete()");
 
 	QList<QTreeWidgetItem*> selected = list_tree->selectedItems();
@@ -1200,7 +1320,14 @@ void tab::listItemDelete()
 	list_tree->setAcceptDrops(false);
 
 	string curr_chlist = this->state.curr;
+	string pname;
 
+	// bouquets tree
+	if (this->state.tc)
+	{
+		e2db::userbouquet uboq = dbih->userbouquets[curr_chlist];
+		pname = uboq.pname;
+	}
 	for (auto & item : selected)
 	{
 		int i = list_tree->indexOfTopLevelItem(item);
@@ -1209,7 +1336,19 @@ void tab::listItemDelete()
 
 		// bouquets tree
 		if (this->state.tc)
+		{
 			dbih->remove_channel_reference(chid, curr_chlist);
+			cache[pname].clear();
+		}
+		// services tree
+		else
+		{
+			dbih->removeService(chid);
+			cache["chs"].clear();
+			cache["chs:0"].clear();
+			cache["chs:1"].clear();
+			cache["chs:2"].clear();
+		}
 	}
 
 	lheaderv->setSectionsClickable(true);
@@ -1223,7 +1362,8 @@ void tab::listItemDelete()
 		this->state.reindex = true;
 	this->state.changed = true;
 
-	setCounters();
+	updateConnectors();
+	updateCounters();
 }
 
 void tab::listItemSelectAll()
@@ -1231,30 +1371,6 @@ void tab::listItemSelectAll()
 	debug("listItemSelectAll()");
 
 	list_tree->selectAll();
-}
-
-void tab::listItemAction(int action)
-{
-	debug("listItemAction()", "action", to_string(action));
-
-	switch (action)
-	{
-		case LIST_EDIT_ATS::Cut:
-			listItemCut();
-		break;
-		case LIST_EDIT_ATS::Copy:
-			listItemCopy();
-		break;
-		case LIST_EDIT_ATS::Paste:
-			listItemPaste();
-		break;
-		case LIST_EDIT_ATS::Delete:
-			listItemDelete();
-		break;
-		case LIST_EDIT_ATS::SelectAll:
-			listItemSelectAll();
-		break;
-	}
 }
 
 //TODO duplicates and new
@@ -1285,10 +1401,11 @@ void tab::putChannels(vector<QString> channels)
 		QStringList entry;
 		bool marker = false;
 		e2db::channel_reference chref;
+		e2db::service ch;
 
 		if (dbih->db.services.count(chid))
 		{
-			e2db::service ch = dbih->db.services[chid];
+			ch = dbih->db.services[chid];
 			entry = dbih->entries.services[chid];
 			entry.prepend(idx);
 			entry.prepend(x);
@@ -1352,6 +1469,9 @@ void tab::putChannels(vector<QString> channels)
 		// bouquets tree
 		if (this->state.tc)
 			dbih->add_channel_reference(chref, curr_chlist);
+		// services tree
+		else
+			dbih->addService(ch);
 	}
 
 	if (current == nullptr)
@@ -1370,7 +1490,8 @@ void tab::putChannels(vector<QString> channels)
 		this->state.reindex = true;
 	this->state.changed = true;
 
-	setCounters();
+	updateConnectors();
+	updateCounters();
 }
 
 void tab::updateBouquetsIndex()
@@ -1450,41 +1571,47 @@ void tab::updateListIndex()
 	this->state.changed = false;
 }
 
-void tab::showBouquetEditContextMenu(QPoint &pos)
+void tab::updateConnectors()
 {
-	debug("showBouquetEditContextMenu()");
+	debug("updateConnectors()");
 
-	// bouquet: tv | radio
-	if (this->state.ti != -1)
-		return;
+	if (bouquets_tree->topLevelItemCount())
+	{
+		//TODO connect to QScrollArea Event
+		if (bouquets_tree->verticalScrollBar()->isVisible())
+		{
+			gid->update(gui::TabBouquetsFind, true);
+			this->action.bouquets_search->setEnabled(true);
+		}
+		else
+		{
+			gid->update(gui::TabBouquetsFind, false);
+			this->action.bouquets_search->setEnabled(false);
+		}
+	}
+	else
+	{
+		gid->update(gui::TabBouquetsFind, false);
+		this->action.bouquets_search->setDisabled(true);
+	}
 
-	QMenu* bouquet_edit = new QMenu;
-	bouquet_edit->addAction("Edit Userbouquet", [=]() { this->editUserbouquet(); });
-	bouquet_edit->addSeparator();
-	bouquet_edit->addAction("Delete", [=]() { this->bouquetItemDelete(); });
-
-	bouquet_edit->exec(bouquets_tree->mapToGlobal(pos));
+	if (list_tree->topLevelItemCount())
+	{
+		gid->update(gui::TabListSelectAll, true);
+		gid->update(gui::TabListFind, true);
+		this->action.list_search->setEnabled(true);
+	}
+	else
+	{
+		gid->update(gui::TabListSelectAll, false);
+		gid->update(gui::TabListFind, false);
+		this->action.list_search->setDisabled(true);
+	}
 }
 
-void tab::showListEditContextMenu(QPoint &pos)
+void tab::updateCounters(bool current)
 {
-	debug("showListEditContextMenu()");
-
-	QMenu* list_edit = new QMenu;
-	list_edit->addAction("Edit Service", [=]() { this->editService(); });
-	list_edit->addSeparator();
-	list_edit->addAction("Cut", [=]() { this->listItemCut(); });
-	list_edit->addAction("Copy", [=]() { this->listItemCopy(); });
-	list_edit->addAction("Paste", [=]() { this->listItemPaste(); });
-	list_edit->addSeparator();
-	list_edit->addAction("Delete", [=]() { this->listItemDelete(); });
-
-	list_edit->exec(list_tree->mapToGlobal(pos));
-}
-
-void tab::setCounters(bool current)
-{
-	debug("setCounters()");
+	debug("updateCounters()");
 
 	int counters[5] = {-1, -1, -1, -1, -1};
 
@@ -1506,7 +1633,7 @@ void tab::setCounters(bool current)
 
 void tab::updateRefBox()
 {
-	// debug("updateRefBox()");
+	debug("updateRefBox()");
 
 	QList<QTreeWidgetItem*> selected = list_tree->selectedItems();
 	
@@ -1625,6 +1752,41 @@ void tab::updateRefBox()
 	}
 }
 
+void tab::showBouquetEditContextMenu(QPoint &pos)
+{
+	debug("showBouquetEditContextMenu()");
+
+	// bouquet: tv | radio
+	if (this->state.ti != -1)
+		return;
+
+	QMenu* bouquet_edit = new QMenu;
+	bouquet_edit->addAction("Edit Userbouquet", [=]() { this->editUserbouquet(); });
+	bouquet_edit->addSeparator();
+	bouquet_edit->addAction("Delete", [=]() { this->bouquetItemDelete(); });
+
+	bouquet_edit->exec(bouquets_tree->mapToGlobal(pos));
+}
+
+void tab::showListEditContextMenu(QPoint &pos)
+{
+	debug("showListEditContextMenu()");
+
+	int gflags = gid->getActionFlags();
+
+	QMenu* list_edit = new QMenu;
+	list_edit->addAction("Edit Service", [=]() { this->editService(); })->setDisabled(gflags & gui::TabListEditService ? false : true);
+	list_edit->addSeparator();
+	list_edit->addAction("Cut", [=]() { this->listItemCut(); })->setDisabled(gflags & gui::TabListCut ? false : true);
+	list_edit->addAction("Copy", [=]() { this->listItemCopy(); })->setDisabled(gflags & gui::TabListCopy ? false : true);
+	list_edit->addAction("Paste", [=]() { this->listItemPaste(); })->setDisabled(gflags & gui::TabListPaste ? false : true);
+	list_edit->addSeparator();
+	list_edit->addAction("Delete", [=]() { this->listItemDelete(); })->setDisabled(gflags & gui::TabListDelete ? false : true);
+
+	list_edit->exec(list_tree->mapToGlobal(pos));
+}
+
+
 void tab::setTabId(int ttid)
 {
 	debug("setTabId()", "ttid", to_string(ttid));
@@ -1634,8 +1796,8 @@ void tab::setTabId(int ttid)
 
 void tab::tabSwitched()
 {
-	setCounters();
-	setCounters(true);
+	updateCounters();
+	updateCounters(true);
 }
 
 void tab::tabChangeName(string filename)
@@ -1680,6 +1842,10 @@ void tab::initialize()
 	this->action.list_dnd->setDisabled(true);
 
 	gid->resetStatus();
+
+	//TODO
+	gid->update(gui::TabListPaste, true);
+	gid->update(gui::TabListSelectAll, true);
 }
 
 void tab::profileComboChanged(int index)

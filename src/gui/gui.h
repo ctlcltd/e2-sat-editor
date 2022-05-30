@@ -40,12 +40,41 @@ class gui : protected e2se::log_factory
 	Q_DECLARE_TR_FUNCTIONS(gui)
 
 	public:
-		enum TAB_EDIT_ATS {
-			Cut,
-			Copy,
-			Paste,
-			Delete,
-			SelectAll
+		enum GUI_CXE {
+			FileNew = 0x00000001,
+			FileOpen = 0x00000002,
+			FileSave = 0x00000004,
+			FileImport = 0x00000008,
+			FileExport = 0x00000010,
+			WindowMinimize = 0x10000000,
+			NewTab = 0x00000020,
+			CloseTab = 0x00000040,
+			CloseAllTabs = 0x0000080,
+			TabListEditService = 0x00000100,
+			TabListEditMarker = 0x00000200,
+			TabListSelectAll = 0x00000800,
+			TabListDelete = 0x00001000,
+			TabListCut = 0x00002000,
+			TabListCopy = 0x00004000,
+			TabListPaste = 0x00008000,
+			TabBouquetsEdit = 0x00010000,
+			TabBouquetsDelete = 0x00020000,
+			TabBouquetsFind = 0x00100000,
+			TabListFind = 0x00200000,
+			FindNext = 0x00300000,
+			FindPrevious = 0x00400000,
+			init = GUI_CXE::FileNew | GUI_CXE::FileOpen | GUI_CXE::FileSave | GUI_CXE::FileImport | GUI_CXE::FileExport |  GUI_CXE::WindowMinimize | GUI_CXE::NewTab | GUI_CXE::CloseTab | GUI_CXE::CloseAllTabs,
+			deactivated = GUI_CXE::FileNew | GUI_CXE::FileOpen
+		};
+
+		enum TAB_ATS {
+			ListCut,
+			ListCopy,
+			ListPaste,
+			ListDelete,
+			ListSelectAll,
+			BouquetsFind,
+			ListFind
 		};
 
 		enum COUNTER {
@@ -62,7 +91,8 @@ class gui : protected e2se::log_factory
 		void menuCtl();
 		void tabCtl();
 		void statusCtl();
-		int newTab(string filename);
+		void windowFocusChanged();
+		int newTab(string filename = "");
 		void closeTab(int index);
 		void closeAllTabs();
 		void tabChanged(int index);
@@ -76,12 +106,17 @@ class gui : protected e2se::log_factory
 		void resetStatus();
 		void open();
 		void save();
-		void tabEditAction(TAB_EDIT_ATS action);
+		void tabAction(TAB_ATS action);
+		void windowMinimize();
 		void settings();
 		void about();
+		int getActionFlags();
+		void setActionFlags(int connector, bool flag);
 		int getCurrentTabID();
 		int getCurrentTabID(int index);
 		tab* getCurrentTabHandler();
+		void update();
+		void update(int connector, bool flag);
 		void initialize();
 		void setDefaultSets();
 		QSettings* sets;
@@ -90,7 +125,11 @@ class gui : protected e2se::log_factory
 		{
 			// tab id increment
 			int tt = 0;
+			// gui previous connector flags
+			int ex;
 		} state;
+		// gui connector flags
+		int xe;
 		QApplication* mroot;
 		QWidget* mwid;
 		QGridLayout* mfrm;
@@ -103,8 +142,9 @@ class gui : protected e2se::log_factory
 		QMenuBar* menu;
 		QMenu* mwind;
 		QActionGroup* mwtabs;
-		unordered_map<int, tab*> ttabs;
+		unordered_map<int, QAction*> gmenu;
 		unordered_map<int, QAction*> ttmenu;
+		unordered_map<int, tab*> ttabs;
 };
 }
 #endif /* gui_h */

@@ -1660,7 +1660,6 @@ void e2db::remove_service(string chid)
 
 	service ch = db.services[chid];
 	string kchid = 's' + chid;
-	string iname = "chs:" + (STYPES.count(ch.stype) ? to_string(STYPES.at(ch.stype).first) : "0");
 	db.services.erase(chid);
 
 	for (auto & x : index)
@@ -1713,9 +1712,11 @@ void e2db::remove_bouquet(string bname)
 		if (ub.pname == bname)
 		{
 			index["ubs"].erase(it);
+			index.erase(ub.bname);
 			userbouquets.erase(ub.bname);
 		}
 	}
+	index.erase(bname);
 	bouquets.erase(bname);
 }
 
@@ -1784,13 +1785,40 @@ void e2db::remove_userbouquet(string bname)
 	if (! userbouquets.count(bname))
 		return error("remove_userbouquet()", "Error", "Userbouquet \"" + bname + "\" not exists.");
 
-	userbouquets.erase(bname);
+	userbouquet ub = userbouquets[bname];
+	bouquet& bs = bouquets[ub.pname];
 
 	for (auto it = index["ubs"].begin(); it != index["ubs"].end(); it++)
 	{
 		if (it->second == bname)
 			index["ubs"].erase(it);
 	}
+
+	index.erase(ub.pname);
+
+	vector<string>::iterator pos;
+	for (auto it = bs.userbouquets.begin(); it != bs.userbouquets.end(); it++)
+	{
+		if (*it == bname)
+		{
+			pos = it;
+			break;
+		}
+	}
+	if (pos != bs.userbouquets.end())
+	{
+		bs.userbouquets.erase(pos);
+	}
+	for (auto & w : bs.userbouquets)
+	{
+		for (auto & x : userbouquets[w].channels)
+		{
+			if (! x.second.marker)
+				index[ub.pname].emplace_back(pair ((index[ub.pname].size() + 1), x.first)); //C++17
+		}
+	}
+	index.erase(bname);
+	userbouquets.erase(bname);
 }
 
 void e2db::add_channel_reference(channel_reference& chref, string bname)
@@ -1894,8 +1922,6 @@ void e2db::remove_channel_reference(string chid, string bname)
 	channel_reference chref = userbouquets[bname].channels[chid];
 	userbouquet& ub = userbouquets[bname];
 
-	ub.channels.erase(chid);
-
 	/*for (auto it = index[bname].begin(); it != index[bname].end(); it++)
 	{
 		if (it->second == chid)
@@ -1917,6 +1943,7 @@ void e2db::remove_channel_reference(string chid, string bname)
 				index[ub.pname].erase(it);
 		}
 	}*/
+	ub.channels.erase(chid);
 }
 
 string e2db::get_reference_id(string chid)
