@@ -21,6 +21,7 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map;
 #define tab_h
 #include <Qt>
 #include <QWidget>
+#include <QGridLayout>
 #include <QHeaderView>
 #include <QTreeWidget>
 #include <QList>
@@ -30,6 +31,7 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map;
 #include "../logger.h"
 #include "e2db_gui.h"
 #include "ftpcom_gui.h"
+#include "tools.h"
 #include "BouquetsEventHandler.h"
 #include "ListEventHandler.h"
 #include "ListEventObserver.h"
@@ -100,6 +102,8 @@ class tab : protected e2se::log_factory
 		void listItemPaste();
 		void listItemDelete();
 		void listItemSelectAll();
+		void editTunersets(int ytype);
+		void closeTunersets();
 		void putChannels(vector<QString> channels);
 		void updateListIndex();
 		void updateBouquetsIndex();
@@ -118,10 +122,12 @@ class tab : protected e2se::log_factory
 		void ftpUpload();
 		void ftpDownload();
 		void loadSeeds();
+		QGridLayout* root;
 		QWidget* widget;
 	protected:
 		map<int, QLabel*> ref_fields;
 		unordered_map<string, QList<QTreeWidgetItem*>> cache;
+		e2se_gui_tools::tools* tools;
 	private:
 		struct ats
 		{

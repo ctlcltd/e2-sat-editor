@@ -243,7 +243,7 @@ struct e2db_abstract
 			int flgs;
 			int pos;
 			//TODO rename
-			// references <bname string, tuner_reference struct>
+			// references <trid string, tuner_reference struct>
 			unordered_map<string, tuner_reference> references;
 		};
 		struct lamedb

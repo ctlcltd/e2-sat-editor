@@ -21,6 +21,7 @@ using std::string, std::pair, std::vector, std::map;
 #include <QString>
 #include <QHBoxLayout>
 #include <QListWidget>
+#include <QTreeWidget>
 
 #include "../logger.h"
 #include "e2db_gui.h"

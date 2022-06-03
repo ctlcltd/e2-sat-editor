@@ -19,7 +19,6 @@
 #include <QStyle>
 #include <QScrollBar>
 #include <QMessageBox>
-#include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QSplitter>
@@ -255,15 +254,16 @@ tab::tab(gui* gid, QWidget* wid)
 	top_toolbar->addAction("Upload", [=]() { this->ftpUpload(); });
 	top_toolbar->addAction("Download", [=]() { this->ftpDownload(); });
 
+	QWidget* bottom_spacer = new QWidget;
+	bottom_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+	bottom_toolbar->addAction("§ Close satellites.xml", [=]() { this->closeTunersets(); });
 	if (gid->sets->value("application/debug", true).toBool())
 	{
-		QWidget* bottom_spacer = new QWidget;
-		bottom_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
 		bottom_toolbar->addAction("§ Load seeds", [=]() { this->loadSeeds(); });
 		bottom_toolbar->addAction("§ Reset", [=]() { this->newFile(); tabChangeName(); });
-		bottom_toolbar->addWidget(bottom_spacer);
 	}
+	bottom_toolbar->addWidget(bottom_spacer);
 
 	QToolBar* bouquets_ats = new QToolBar;
 	bouquets_ats->setIconSize(QSize(12, 12));
@@ -369,6 +369,9 @@ tab::tab(gui* gid, QWidget* wid)
 	frm->addLayout(container, 1, 0);
 	frm->addLayout(bottom, 2, 0);
 
+	this->root = container;
+	this->tools = new e2se_gui_tools::tools(root);
+
 	vector<pair<QString, QString>> tree = {
 		{"chs", "All services"},
 		{"chs:1", "TV"},
@@ -404,6 +407,8 @@ void tab::newFile()
 
 	if (this->dbih != nullptr)
 		delete this->dbih;
+	if (this->tools != nullptr)
+		this->tools->destroy();
 
 	this->dbih = new e2db;
 
@@ -1179,6 +1184,10 @@ void tab::actionCall(int action)
 		case gui::TAB_ATS::ListFind:
 			list_search->show();
 		break;
+
+		case gui::TAB_ATS::EditTunerSat:
+			editTunersets(0);
+		break;
 	}
 }
 
@@ -1371,6 +1380,24 @@ void tab::listItemSelectAll()
 	debug("listItemSelectAll()");
 
 	list_tree->selectAll();
+}
+
+void tab::editTunersets(int ytype)
+{
+	debug("editTunersets()", "ytype", to_string(ytype));
+
+	root->itemAt(0)->widget()->hide();
+	tools->editTunersets(dbih, ytype);
+}
+
+void tab::closeTunersets()
+{
+	debug("closeTunersets()");
+
+	/*if (! root->itemAt(1)->isEmpty())
+		root->itemAt(1)->widget()->hide();*/
+	tools->closeTunersets();
+	root->itemAt(0)->widget()->show();
 }
 
 //TODO duplicates and new
@@ -1846,6 +1873,7 @@ void tab::initialize()
 	//TODO
 	gid->update(gui::TabListPaste, true);
 	gid->update(gui::TabListSelectAll, true);
+	gid->update(gui::ToolsTunersetsSat, true);
 }
 
 void tab::profileComboChanged(int index)

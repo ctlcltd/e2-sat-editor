@@ -19,6 +19,7 @@ qt_add_executable(e2-sat-editor WIN32 MACOSX_BUNDLE
 	gui/e2db_gui.cpp
 	gui/editBouquet.cpp
 	gui/editService.cpp
+	gui/editTunersets.cpp
 	gui/ftpcom_gui.cpp
 	gui/gui.cpp
 	gui/ListEventHandler.cpp
@@ -26,6 +27,7 @@ qt_add_executable(e2-sat-editor WIN32 MACOSX_BUNDLE
 	gui/settings.cpp
 	gui/tab.cpp
 	gui/theme.cpp
+	gui/tools.cpp
 	gui/WidgetWithBackdrop.cpp
 	main.cpp
 )

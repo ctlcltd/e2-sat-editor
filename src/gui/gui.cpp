@@ -147,6 +147,10 @@ void gui::menuCtl()
 	gmenu[GUI_CXE::FindPrevious] = mfind->addAction(tr("Find Previous"), todo, QKeySequence::FindPrevious);
 
 	QMenu* mtool = menu->addMenu(tr("Tools"));
+	gmenu[GUI_CXE::ToolsTunersetsSat] = mtool->addAction("Edit satellites.xml", [=]() { this->tabAction(TAB_ATS::EditTunerSat); });
+	mtool->addAction("Edit terrestrial.xml", todo)->setDisabled(true);
+	mtool->addAction("Edit cable.xml", todo)->setDisabled(true);
+	mtool->addSeparator();
 	mtool->addAction("Order services A-Z", todo);
 	mtool->addAction("Order userbouquets A-Z", todo);
 	mtool->addAction("Remove cached data from services", todo);

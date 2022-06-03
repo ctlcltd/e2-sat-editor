@@ -61,8 +61,9 @@ class gui : protected e2se::log_factory
 			TabBouquetsDelete = 0x00020000,
 			TabBouquetsFind = 0x00100000,
 			TabListFind = 0x00200000,
-			FindNext = 0x00300000,
-			FindPrevious = 0x00400000,
+			FindNext = 0x00400000,
+			FindPrevious = 0x00800000,
+			ToolsTunersetsSat = 0x01000000,
 			init = GUI_CXE::FileNew | GUI_CXE::FileOpen | GUI_CXE::FileSave | GUI_CXE::FileImport | GUI_CXE::FileExport |  GUI_CXE::WindowMinimize | GUI_CXE::NewTab | GUI_CXE::CloseTab | GUI_CXE::CloseAllTabs,
 			deactivated = GUI_CXE::FileNew | GUI_CXE::FileOpen
 		};
@@ -74,7 +75,8 @@ class gui : protected e2se::log_factory
 			ListDelete,
 			ListSelectAll,
 			BouquetsFind,
-			ListFind
+			ListFind,
+			EditTunerSat
 		};
 
 		enum COUNTER {

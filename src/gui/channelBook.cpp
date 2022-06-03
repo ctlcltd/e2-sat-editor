@@ -14,7 +14,6 @@
 
 #include <QGridLayout>
 #include <QSplitter>
-#include <QTreeWidget>
 #include <QHeaderView>
 #include <QLabel>
 

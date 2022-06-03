@@ -712,12 +712,9 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 		if (step && line.find("</") != string::npos)
 		{
 			step--;
-			char trid[17];
-			std::sprintf(trid, "%d:%d:%d", tnref.freq, tnref.pol, tnref.sr);
-			tn.references.emplace(trid, tnref);
-			tuners.emplace(tn.pos, tn);
+			if (tn.pos)
+				tuners.emplace(tn.pos, tn);
 			tn = tuner_sets ();
-			tnref = tuner_reference ();
 			continue;
 		}
 		else if (! step && line.find("<") != string::npos)
@@ -727,6 +724,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 
 		if (step)
 		{
+			tnref = tuner_reference ();
 			string mkey;
 			string sline = line;
 			line.erase(0, line.find_first_not_of(' '));
@@ -758,10 +756,15 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 				{
 					mkey = pstr.substr(1, pstr.rfind('>') - 1);
 				}
+				token = std::strtok(NULL, " ");
 
 				if (step != 2 && mkey == "sat")
+				{
 					step++;
-				else if (key == "name")
+					continue;
+				}
+
+				if (key == "name")
 					tn.name = val;
 				else if (key == "flags")
 					tn.flgs = std::atoi(val.data());
@@ -793,7 +796,13 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 					tnref.plscode = std::atoi(val.data());
 
 				// cout << mkey << ':' << key << ':' << val << ' ' << step << endl;
-				token = std::strtok(NULL, " ");
+			}
+
+			if (tnref.freq)
+			{
+				char trid[17];
+				std::sprintf(trid, "%d:%d:%d", tnref.freq, tnref.pol, tnref.sr);
+				tn.references.emplace(trid, tnref);
 			}
 		}
 	}
