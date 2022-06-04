@@ -170,19 +170,19 @@ void editTunersets::populate()
 
 	int i = 0;
 
-	for (auto & tx : tn.references)
+	for (auto & txp : tn.transponders)
 	{
 		char ci[7];
 		std::sprintf(ci, "%06d", i++);
 		QString x = QString::fromStdString(ci);
 
-		QString trid = QString::fromStdString(tx.first);
-		QString freq = QString::fromStdString(to_string(tx.second.freq));
-		QString sr = QString::fromStdString(to_string(tx.second.sr));
-		QString pol = QString::fromStdString(e2db::SAT_POL[tx.second.pol]);
-		QString fec = QString::fromStdString(to_string(tx.second.fec));
-		QString sys = QString::fromStdString(e2db::SAT_SYS[tx.second.sys]);
-		QString mod = QString::fromStdString(to_string(tx.second.mod));
+		QString trid = QString::fromStdString(txp.first);
+		QString freq = QString::fromStdString(to_string(txp.second.freq));
+		QString sr = QString::fromStdString(to_string(txp.second.sr));
+		QString pol = QString::fromStdString(e2db::SAT_POL[txp.second.pol]);
+		QString fec = QString::fromStdString(to_string(txp.second.fec));
+		QString sys = QString::fromStdString(e2db::SAT_SYS[txp.second.sys]);
+		QString mod = QString::fromStdString(to_string(txp.second.mod));
 
 		QTreeWidgetItem* item = new QTreeWidgetItem({x, trid, freq, sr, pol, fec, sys, mod});
 		list->addTopLevelItem(item);

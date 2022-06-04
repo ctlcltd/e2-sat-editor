@@ -56,6 +56,14 @@ struct e2db_abstract
 		inline static const string CAB_MOD[6] = {"Auto", "QAM16", "QAM32", "QAM64", "QAM128", "QAM256"};
 		inline static const string CAB_IFEC[8] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "8/9"};
 
+		// tuner settings type
+		enum YTYPE {
+			sat,
+			terrestrial,
+			cable,
+			atsc
+		};
+
 		//TODO
 		inline static const unordered_map<int, pair<int, string>> STYPES = {
 			{0, make_pair(0, "Data")},
@@ -221,7 +229,7 @@ struct e2db_abstract
 			unordered_map<string, channel_reference> channels;
 			int index;
 		};
-		struct tuner_reference
+		struct tuner_transponder
 		{
 			int freq;
 			int sr;
@@ -242,9 +250,8 @@ struct e2db_abstract
 			string name;
 			int flgs;
 			int pos;
-			//TODO rename
-			// references <trid string, tuner_reference struct>
-			unordered_map<string, tuner_reference> references;
+			// transponders <trid string, tuner_transponder struct>
+			unordered_map<string, tuner_transponder> transponders;
 		};
 		struct lamedb
 		{

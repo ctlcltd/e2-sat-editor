@@ -10,6 +10,7 @@
  */
 
 #include <algorithm>
+#include <regex>
 #include <unordered_set>
 #include <sstream>
 #include <filesystem>
@@ -146,7 +147,7 @@ void e2db_parser::parse_e2db()
 	if (PARSER_TUNERSETS && e2db.count("satellites.xml"))
 	{
 		ifstream itunxml (e2db["satellites.xml"]);
-		parse_tunersets_xml(0, itunxml);
+		parse_tunersets_xml(YTYPE::sat, itunxml);
 		itunxml.close();
 	}
 
@@ -172,16 +173,8 @@ void e2db_parser::parse_e2db()
 	std::clock_t end = std::clock();
 
 	// seeds./enigma_db
-	// commit: 05db5bb	elapsed time: 86547
-	// commit: 6615a23	elapsed time: 83523
-	// commit: 67b6442	elapsed time: 65520
-	// commit: HEAD		elapsed time: 65313
-
-	// workflow/Vhannibal Motor 08 mar 2022
-	// commit: 05db5bb	elapsed time: 756600
-	// commit: 6615a23	elapsed time: 601638
-	// commit: 67b6442	elapsed time: 421056
-	// commit: HEAD		elapsed time: 423214
+	// PARSER_TUNERSETS 0	elapsed time: 52943
+	// PARSER_TUNERSETS	1	elapsed time: 498870
 
 	debug("parse_e2db()", "elapsed time", to_string(end - start));
 }
@@ -206,7 +199,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 	{
 		stringstream itunxml;
 		itunxml.write(&files[e2db["satellites.xml"]][0], files[e2db["satellites.xml"]].size());
-		parse_tunersets_xml(0, itunxml);
+		parse_tunersets_xml(YTYPE::sat, itunxml);
 	}
 
 	for (auto & x: e2db)
@@ -670,9 +663,8 @@ void e2db_parser::parse_channel_reference(string data, channel_reference& chref,
 	chref.anum = anum;
 }
 
-//TODO FIX <!-- key="val" -->
-//TODO terrestrial.xml, cable.xml, ...
 //TODO needs index
+//TODO terrestrial.xml, cables.xml, atsc.xml
 void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 {
 	debug("parse_tunersets_xml()", "ytype", to_string(ytype));
@@ -681,130 +673,153 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 	std::getline(ftunxml, htunxml);
 
 	if (htunxml.find("<?xml") == string::npos)
-	{
-		error("parse_tunersets_xml()", "Error", "Unknown file format.");
-		return;
-	}
+		return error("parse_tunersets_xml()", "Error", "Unknown file format.");
 
 	tuner_sets tn;
-	tuner_reference tnref;
+	tuner_transponder tntxp;
 
 	switch (ytype)
 	{
-		case 0:
-			tn.ytype = 0;
+		case YTYPE::sat:
+		// case YTYPE::terrestrial:
+		// case YTYPE::cable:
+		// case YTYPE::atsc:
+			tn.ytype = ytype;
 		break;
 		default:
-			error("parse_tunersets_xml()", "Error", "Not supported yet.");
-			return;
+			return error("parse_tunersets_xml()", "Error", "These settings are not supported.");
 	}
 
-	int step = 0;
+	stringstream xml;
 	string line;
-
 	while (std::getline(ftunxml, line))
 	{
-		/*if (line.find("<!", 0, 2) != string::npos)
-		{
-			step = 0;
+		xml << line;
+	}
+
+	// <[^<>!]+>
+	// <!--[\\s\\S]+-->|\\t+|
+	// ([^<>\?/= ]+)(?:\s+=\s+\"([^\"]+)\")?
+	stringstream ss;
+	std::regex rerp ("<!--[\\s\\S]+-->|\\t+|  ");
+	std::regex resc ("([^<>\?/= ]+)(?:=\"([^\"]+)\")?");
+	ss << std::regex_replace(xml.str(), rerp, "");
+	xml.clear();
+	line.clear();
+
+	int step = 0;
+	unordered_map<string, int> depth;
+
+	switch (ytype)
+	{
+		case YTYPE::sat:
+			depth["satellites"] = 0;
+			depth["sat"] = 1;
+		break;
+		case YTYPE::terrestrial:
+			depth["locations"] = 0;
+			depth["terrestrial"] = 1;
+		break;
+		case YTYPE::cable:
+			depth["cables"] = 0;
+			depth["cable"] = 1;
+		break;
+		case YTYPE::atsc:
+			depth["locations"] = 0;
+			depth["atsc"] = 1;
+		break;
+	}
+	depth["transponder"] = 2;
+
+	while (std::getline(ss, line, '>'))
+	{
+		if (line.empty())
 			continue;
-		}*/
-		if (step && line.find("</") != string::npos)
+
+		std::smatch match;
+		string mkey;
+		bool endf;
+
+		while (std::regex_search(line, match, resc))
 		{
-			step--;
+			string key, val;
+
+			if (match.str(2).size())
+			{
+				key = match.str(1);
+				val = match.str(2);
+
+				switch (ytype)
+				{
+					case YTYPE::sat:
+						if (key == "name")
+							tn.name = val;
+						else if (key == "flags")
+							tn.flgs = std::atoi(val.data());
+						else if (key == "position")
+							tn.pos = std::atoi(val.data());
+						else if (key == "frequency")
+							tntxp.freq = int (std::atoi(val.data()) / 1e3);
+						else if (key == "symbol_rate")
+							tntxp.sr = int (std::atoi(val.data()) / 1e3);
+						else if (key == "polarization")
+							tntxp.pol = std::atoi(val.data());
+						else if (key == "fec_inner")
+							tntxp.fec = std::atoi(val.data());
+						else if (key == "modulation")
+							tntxp.mod = std::atoi(val.data());
+						else if (key == "rolloff")
+							tntxp.rol = std::atoi(val.data());
+						else if (key == "pilot")
+							tntxp.pil = std::atoi(val.data());
+						else if (key == "inversion")
+							tntxp.inv = std::atoi(val.data());
+						else if (key == "system")
+							tntxp.sys = std::atoi(val.data());
+						else if (key == "is_id")
+							tntxp.isid = std::atoi(val.data());
+						else if (key == "pls_mode")
+							tntxp.plsmode = std::atoi(val.data());
+						else if (key == "pls_code")
+							tntxp.plscode = std::atoi(val.data());
+					break;
+				}
+			}
+			else
+			{
+				mkey = match.str(1);
+			}
+			endf = (line.length() >= 1 && line[1] == '/');
+			line = match.suffix().str();
+
+			// cout << mkey << ':' << key << ':' << val << endl;
+		}
+
+		if (! mkey.empty() && depth.count(mkey))
+			step = depth[mkey];
+		else
+			return error("parse_tunersets_xml()", "Error", "Unknown or malformed XML file.");
+
+		if (step == 1 && endf)
+		{
 			if (tn.pos)
+			{
 				tuners.emplace(tn.pos, tn);
+			}
 			tn = tuner_sets ();
-			continue;
 		}
-		else if (! step && line.find("<") != string::npos)
+		else if (step == 2)
 		{
-			step++;
+			if (tntxp.freq)
+			{
+				char trid[10];
+				std::sprintf(trid, "%04x:%04x", tntxp.freq, tntxp.sr);
+				tn.transponders.emplace(trid, tntxp);
+			}
+			tntxp = tuner_transponder ();
 		}
 
-		if (step)
-		{
-			tnref = tuner_reference ();
-			string mkey;
-			string sline = line;
-			line.erase(0, line.find_first_not_of(' '));
-			char* token = std::strtok(line.data(), " ");
-			while (token != 0)
-			{
-				string pstr = string (token);
-				string key, val;
-				unsigned long pos = pstr.find('=');
-
-				if (pos != string::npos)
-				{
-					key = pstr.substr(0, pos);
-					val = pstr.substr(pos + 1);
-					pos = val.rfind('"');
-
-					if (pos)
-					{
-						val = val.substr(val.find('"') + 1, pos - 1);
-					}
-					else
-					{
-						val = sline.substr(sline.find(key));
-						val = val.substr(val.find('"') + 1);
-						val = val.substr(0, val.find('"'));
-					}
-				}
-				else if (pstr[0] == '<')
-				{
-					mkey = pstr.substr(1, pstr.rfind('>') - 1);
-				}
-				token = std::strtok(NULL, " ");
-
-				if (step != 2 && mkey == "sat")
-				{
-					step++;
-					continue;
-				}
-
-				if (key == "name")
-					tn.name = val;
-				else if (key == "flags")
-					tn.flgs = std::atoi(val.data());
-				else if (key == "position")
-					tn.pos = std::atoi(val.data());
-				else if (key == "frequency")
-					tnref.freq = int (std::atoi(val.data()) / 1e3);
-				else if (key == "symbol_rate")
-					tnref.sr = int (std::atoi(val.data()) / 1e3);
-				else if (key == "polarization")
-					tnref.pol = std::atoi(val.data());
-				else if (key == "fec_inner")
-					tnref.fec = std::atoi(val.data());
-				else if (key == "modulation")
-					tnref.mod = std::atoi(val.data());
-				else if (key == "rolloff")
-					tnref.rol = std::atoi(val.data());
-				else if (key == "pilot")
-					tnref.pil = std::atoi(val.data());
-				else if (key == "inversion")
-					tnref.inv = std::atoi(val.data());
-				else if (key == "system")
-					tnref.sys = std::atoi(val.data());
-				else if (key == "is_id")
-					tnref.isid = std::atoi(val.data());
-				else if (key == "pls_mode")
-					tnref.plsmode = std::atoi(val.data());
-				else if (key == "pls_code")
-					tnref.plscode = std::atoi(val.data());
-
-				// cout << mkey << ':' << key << ':' << val << ' ' << step << endl;
-			}
-
-			if (tnref.freq)
-			{
-				char trid[17];
-				std::sprintf(trid, "%d:%d:%d", tnref.freq, tnref.pol, tnref.sr);
-				tn.references.emplace(trid, tnref);
-			}
-		}
+		// cout << mkey << ' ' << step << endl;
 	}
 }
 
@@ -868,7 +883,7 @@ void e2db_parser::debugger()
 		cout << "srcid: " << x.second.srcid << endl;
 		cout << "chname: " << x.second.chname << endl;
 		cout << "data: [" << endl << endl;
- 		for (auto & q: x.second.data)
+		for (auto & q: x.second.data)
 		{
 			cout << q.first << ": [" << endl;
 			for (string & w: q.second)
@@ -915,8 +930,8 @@ void e2db_parser::debugger()
 		cout << "name: " << x.second.name << endl;
 		cout << "flags: " << x.second.flgs << endl;
 		cout << "pos: " << x.second.pos << endl;
-		cout << "references: [" << endl << endl;
-		for (auto & q: x.second.references)
+		cout << "transponders: [" << endl << endl;
+		for (auto & q: x.second.transponders)
 		{
 			cout << "trid: " << q.first << endl;
 			cout << "freq: " << q.second.freq << endl;
