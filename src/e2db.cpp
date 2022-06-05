@@ -10,7 +10,6 @@
  */
 
 #include <algorithm>
-#include <regex>
 #include <unordered_set>
 #include <sstream>
 #include <filesystem>
@@ -173,8 +172,9 @@ void e2db_parser::parse_e2db()
 	std::clock_t end = std::clock();
 
 	// seeds./enigma_db
-	// PARSER_TUNERSETS 0	elapsed time: 52943
-	// PARSER_TUNERSETS	1	elapsed time: 498870
+	// commit: 67b6442	elapsed time: 65520
+	// commit: d47fec7	elapsed time: 498870
+	// commit: HEAD		elapsed time: 56112
 
 	debug("parse_e2db()", "elapsed time", to_string(end - start));
 }
@@ -690,24 +690,6 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 			return error("parse_tunersets_xml()", "Error", "These settings are not supported.");
 	}
 
-	stringstream xml;
-	string line;
-	while (std::getline(ftunxml, line))
-	{
-		xml << line;
-	}
-
-	// <[^<>!]+>
-	// <!--[\\s\\S]+-->|\\t+|
-	// ([^<>\?/= ]+)(?:\s+=\s+\"([^\"]+)\")?
-	stringstream ss;
-	std::regex rerp ("<!--[\\s\\S]+-->|\\t+|  ");
-	std::regex resc ("([^<>\?/= ]+)(?:=\"([^\"]+)\")?");
-	ss << std::regex_replace(xml.str(), rerp, "");
-	xml.clear();
-	line.clear();
-
-	int step = 0;
 	unordered_map<string, int> depth;
 
 	switch (ytype)
@@ -731,23 +713,69 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 	}
 	depth["transponder"] = 2;
 
-	while (std::getline(ss, line, '>'))
+	int step = 0;
+	string line;
+
+	while (std::getline(ftunxml, line, '>'))
 	{
-		if (line.empty())
-			continue;
-
-		std::smatch match;
-		string mkey;
-		bool endf;
-
-		while (std::regex_search(line, match, resc))
+		if (line.find("<!") != string::npos)
 		{
-			string key, val;
+			continue;
+		}
+		if (step && line.find("</") != string::npos)
+		{
+			step--;
+			if (tn.pos)
+				tuners.emplace(tn.pos, tn);
+			tn = tuner_sets ();
+			continue;
+		}
+		else if (! step && line.find("<") != string::npos)
+		{
+			step++;
+		}
 
-			if (match.str(2).size())
+		if (step)
+		{
+			tntxp = tuner_transponder ();
+			string mkey;
+			string sline = line;
+			line.erase(0, line.find_first_not_of(' '));
+			char* token = std::strtok(line.data(), " ");
+			while (token != 0)
 			{
-				key = match.str(1);
-				val = match.str(2);
+				string pstr = string (token);
+				string key, val;
+				unsigned long pos = pstr.find('=');
+
+				if (pos != string::npos)
+				{
+					key = pstr.substr(0, pos);
+					val = pstr.substr(pos + 1);
+					pos = val.rfind('"');
+
+					if (pos)
+					{
+						val = val.substr(val.find('"') + 1, pos - 1);
+					}
+					else
+					{
+						val = sline.substr(sline.find(key));
+						val = val.substr(val.find('"') + 1);
+						val = val.substr(0, val.find('"'));
+					}
+				}
+				else if (pstr[0] == '<')
+				{
+					mkey = pstr.substr(1, pstr.rfind('>') - 1);
+				}
+				token = std::strtok(NULL, " ");
+
+				if (step != 2 && depth[mkey] == 1)
+				{
+					step++;
+					continue;
+				}
 
 				switch (ytype)
 				{
@@ -784,42 +812,17 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 							tntxp.plscode = std::atoi(val.data());
 					break;
 				}
-			}
-			else
-			{
-				mkey = match.str(1);
-			}
-			endf = (line.length() >= 1 && line[1] == '/');
-			line = match.suffix().str();
 
-			// cout << mkey << ':' << key << ':' << val << endl;
-		}
-
-		if (! mkey.empty() && depth.count(mkey))
-			step = depth[mkey];
-		else
-			return error("parse_tunersets_xml()", "Error", "Unknown or malformed XML file.");
-
-		if (step == 1 && endf)
-		{
-			if (tn.pos)
-			{
-				tuners.emplace(tn.pos, tn);
+				// cout << mkey << ':' << key << ':' << val << ' ' << step << endl;
 			}
-			tn = tuner_sets ();
-		}
-		else if (step == 2)
-		{
+
 			if (tntxp.freq)
 			{
 				char trid[10];
 				std::sprintf(trid, "%04x:%04x", tntxp.freq, tntxp.sr);
 				tn.transponders.emplace(trid, tntxp);
 			}
-			tntxp = tuner_transponder ();
 		}
-
-		// cout << mkey << ' ' << step << endl;
 	}
 }
 
