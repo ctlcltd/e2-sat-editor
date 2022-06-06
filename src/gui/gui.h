@@ -64,6 +64,9 @@ class gui : protected e2se::log_factory
 			FindNext = 0x00400000,
 			FindPrevious = 0x00800000,
 			ToolsTunersetsSat = 0x01000000,
+			ToolsTunersetsTerrestrial = 0x02000000,
+			ToolsTunersetsCable = 0x04000000,
+			ToolsTunersetsAtsc = 0x08000000,
 			init = GUI_CXE::FileNew | GUI_CXE::FileOpen | GUI_CXE::FileSave | GUI_CXE::FileImport | GUI_CXE::FileExport |  GUI_CXE::WindowMinimize | GUI_CXE::NewTab | GUI_CXE::CloseTab | GUI_CXE::CloseAllTabs,
 			deactivated = GUI_CXE::FileNew | GUI_CXE::FileOpen
 		};
@@ -76,7 +79,10 @@ class gui : protected e2se::log_factory
 			ListSelectAll,
 			BouquetsFind,
 			ListFind,
-			EditTunerSat
+			EditTunerSat,
+			EditTunerTerrestrial,
+			EditTunerCable,
+			EditTunerAtsc
 		};
 
 		enum COUNTER {

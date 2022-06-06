@@ -44,13 +44,18 @@ editTunersets::editTunersets(e2db* dbih, int ytype)
 
 	switch (yx)
 	{
-		case 0: // SAT
+		case e2db::YTYPE::sat:
 			tfrm->setTitle("Satellites");
-			lfrm->setTitle("Transponders");
+		break;
+		case e2db::YTYPE::terrestrial:
+		case e2db::YTYPE::cable:
+		case e2db::YTYPE::atsc:
+			tfrm->setTitle("Package");
 		break;
 		default:
 			error("editTunersets()", "Error", "Not supported yet.");
 	}
+	lfrm->setTitle("Transponders");
 
 	layout();
 	load();
@@ -71,7 +76,6 @@ editTunersets::editTunersets(e2db* dbih, int ytype)
 	afrm->setContentsMargins(0, 0, 0, 0);
 
 	this->widget = new QWidget;
-	// widget->setStyleSheet("background: green");
 	widget->setLayout(afrm);
 }
 
@@ -79,11 +83,32 @@ void editTunersets::layout()
 {
 	debug("layout()");
 
+	QStringList ths, lhs;
+	switch (yx)
+	{
+		case e2db::YTYPE::sat:
+			ths = {"", "Name", "Position"};
+			lhs = {"", "TRID", "Frequency", "Polarization", "Symbol Rate", "FEC", "System", "Modulation"};
+		break;
+		case e2db::YTYPE::terrestrial:
+			ths = {"", "Name", "Country"};
+			lhs = {"", "TRID", "Frequency", "Modulation", "Bandwidth"};
+		break;
+		case e2db::YTYPE::cable:
+			ths = {"", "Name", "Country"};
+			lhs = {"", "TRID", "Frequency", "Modulation", "Symbol Rate", "FEC"};
+		break;
+		case e2db::YTYPE::atsc:
+			ths = {"", "Name"};
+			lhs = {"", "TRID", "Frequency", "Modulation"};
+		break;
+	}
+
 	this->tree = new QTreeWidget;
 	tree->setUniformRowHeights(true);
 	tree->setMinimumWidth(240);
 
-	QTreeWidgetItem* tree_thead = new QTreeWidgetItem({"", "Name", "Position"});
+	QTreeWidgetItem* tree_thead = new QTreeWidgetItem(ths);
 	tree->setHeaderItem(tree_thead);
 	tree->setColumnHidden(0, true);
 	tree->setColumnWidth(1, 200);
@@ -99,7 +124,7 @@ void editTunersets::layout()
 	list->setExpandsOnDoubleClick(false);
 	list->setStyleSheet("::item { padding: 6px auto }");
 
-	QTreeWidgetItem* list_thead = new QTreeWidgetItem({"", "TRID", "Frequency", "Symbol Rate", "Polarization", "FEC Inner", "System", "Modulation"});
+	QTreeWidgetItem* list_thead = new QTreeWidgetItem(lhs);
 	list->setHeaderItem(list_thead);
 	list->setColumnHidden(0, true);
 	list->setColumnWidth(1, 150);
@@ -128,24 +153,54 @@ void editTunersets::load()
 {
 	debug("load()");
 
-	for (auto & x : dbih->tuners)
+	string iname = "tns:";
+	switch (yx)
 	{
-		char cposdeg[5];
-		std::sprintf(cposdeg, "%.1f", float (std::abs (x.first)) / 10);
-		string ppos = (string (cposdeg) + (x.first > 0 ? 'E' : 'W'));
+		case e2db::YTYPE::sat: iname += 's'; break;
+		case e2db::YTYPE::terrestrial: iname += 't'; break;
+		case e2db::YTYPE::cable: iname += 'c'; break;
+		case e2db::YTYPE::atsc: iname += 'a'; break;
+	}
 
+	for (auto & x : dbih->index[iname])
+	{
+		e2db::tuner_sets tns = dbih->tunersets[x.second];
+		QTreeWidgetItem* item;
 		QString idx = QString::fromStdString(to_string(x.first));
-		QString pos = QString::fromStdString(ppos);
-		QString name = QString::fromStdString(x.second.name);
-		QTreeWidgetItem* item = new QTreeWidgetItem({idx, name, pos});
-		item->setData(0, Qt::UserRole, idx);
+		QString tnid = QString::fromStdString(x.second);
+		QString name = QString::fromStdString(tns.name);
+
+		if (yx == e2db::YTYPE::sat)
+		{
+			char cposdeg[5];
+			std::sprintf(cposdeg, "%.1f", float (std::abs (tns.pos)) / 10);
+			string ppos = (string (cposdeg) + (tns.pos > 0 ? 'E' : 'W'));
+
+			QString pos = QString::fromStdString(ppos);
+			item = new QTreeWidgetItem({idx, name, pos});
+		}
+		else if (yx == e2db::YTYPE::terrestrial || yx == e2db::YTYPE::cable)
+		{
+			QString country = QString::fromStdString(tns.country);
+			item = new QTreeWidgetItem({idx, name, country});
+		}
+		else if (yx == e2db::YTYPE::atsc)
+		{
+			item = new QTreeWidgetItem({idx, name});
+		}
+		else
+		{
+			continue;
+		}
+
+		item->setData(0, Qt::UserRole, tnid);
 		tree->addTopLevelItem(item);
 	}
 }
 
 void editTunersets::populate()
 {
-	int curr = -1;
+	string curr;
 	QTreeWidgetItem* selected;
 	selected = tree->currentItem();
 
@@ -154,15 +209,24 @@ void editTunersets::populate()
 	if (selected != NULL)
 	{
 		selected->setExpanded(true);
-		curr = selected->data(0, Qt::UserRole).toInt();
+		curr = selected->data(0, Qt::UserRole).toString().toStdString();
 	}
 
-	debug("populate()", "curr", to_string(curr));
+	debug("populate()", "curr", curr);
 
-	if (! dbih->tuners.count(curr))
-		error("populate()", "curr", to_string(curr));
+	if (! dbih->index.count(curr))
+		error("populate()", "curr", curr);
 
-	e2db::tuner_sets tn = dbih->tuners[curr];
+	string iname = "tns:";
+	switch (yx)
+	{
+		case e2db::YTYPE::sat: iname += 's'; break;
+		case e2db::YTYPE::terrestrial: iname += 't'; break;
+		case e2db::YTYPE::cable: iname += 'c'; break;
+		case e2db::YTYPE::atsc: iname += 'a'; break;
+	}
+
+	e2db::tuner_sets tn = dbih->tunersets[iname];
 
 	list->header()->setSortIndicatorShown(false);
 	list->header()->setSectionsClickable(false);
@@ -170,21 +234,49 @@ void editTunersets::populate()
 
 	int i = 0;
 
-	for (auto & txp : tn.transponders)
+	for (auto & tp : dbih->index[curr])
 	{
+		e2db::tuner_transponder txp = tn.transponders[tp.second];
 		char ci[7];
 		std::sprintf(ci, "%06d", i++);
 		QString x = QString::fromStdString(ci);
 
-		QString trid = QString::fromStdString(txp.first);
-		QString freq = QString::fromStdString(to_string(txp.second.freq));
-		QString sr = QString::fromStdString(to_string(txp.second.sr));
-		QString pol = QString::fromStdString(e2db::SAT_POL[txp.second.pol]);
-		QString fec = QString::fromStdString(to_string(txp.second.fec));
-		QString sys = QString::fromStdString(e2db::SAT_SYS[txp.second.sys]);
-		QString mod = QString::fromStdString(to_string(txp.second.mod));
+		QTreeWidgetItem* item;
+		QString trid = QString::fromStdString(tp.second);
+		QString freq = QString::fromStdString(to_string(txp.freq));
 
-		QTreeWidgetItem* item = new QTreeWidgetItem({x, trid, freq, sr, pol, fec, sys, mod});
+		if (yx == e2db::YTYPE::sat)
+		{
+			QString sr = QString::fromStdString(to_string(txp.sr));
+			QString pol = QString::fromStdString(e2db::SAT_POL[txp.pol]);
+			QString fec = QString::fromStdString(to_string(txp.fec));
+			QString sys = QString::fromStdString(e2db::SAT_SYS[txp.sys]);
+			QString mod = QString::fromStdString(to_string(txp.mod));
+			item = new QTreeWidgetItem({x, trid, freq, sr, pol, fec, sys, mod});
+		}
+		else if (yx == e2db::YTYPE::terrestrial)
+		{
+			QString tmod = QString::fromStdString(to_string(txp.tmod));
+			QString band = QString::fromStdString(to_string(txp.band));
+			item = new QTreeWidgetItem({x, trid, freq, tmod, band});
+		}
+		else if (yx == e2db::YTYPE::cable)
+		{
+			QString cmod = QString::fromStdString(to_string(txp.cmod));
+			QString sr = QString::fromStdString(to_string(txp.sr));
+			QString cfec = QString::fromStdString(to_string(txp.cfec));
+			item = new QTreeWidgetItem({x, trid, freq, cmod, sr, cfec});
+		}
+		else if (e2db::YTYPE::atsc)
+		{
+			QString amod = QString::fromStdString(to_string(txp.amod));
+			item = new QTreeWidgetItem({x, trid, freq, amod});
+		}
+		else
+		{
+			continue;
+		}
+
 		list->addTopLevelItem(item);
 	}
 

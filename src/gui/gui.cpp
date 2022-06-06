@@ -148,8 +148,9 @@ void gui::menuCtl()
 
 	QMenu* mtool = menu->addMenu(tr("Tools"));
 	gmenu[GUI_CXE::ToolsTunersetsSat] = mtool->addAction("Edit satellites.xml", [=]() { this->tabAction(TAB_ATS::EditTunerSat); });
-	mtool->addAction("Edit terrestrial.xml", todo)->setDisabled(true);
-	mtool->addAction("Edit cable.xml", todo)->setDisabled(true);
+	gmenu[GUI_CXE::ToolsTunersetsTerrestrial] = mtool->addAction("Edit terrestrial.xml", [=]() { this->tabAction(TAB_ATS::EditTunerTerrestrial); });
+	gmenu[GUI_CXE::ToolsTunersetsCable] = mtool->addAction("Edit cables.xml", [=]() { this->tabAction(TAB_ATS::EditTunerCable); });
+	gmenu[GUI_CXE::ToolsTunersetsAtsc] = mtool->addAction("Edit atsc.xml", [=]() { this->tabAction(TAB_ATS::EditTunerAtsc); });
 	mtool->addSeparator();
 	mtool->addAction("Order services A-Z", todo);
 	mtool->addAction("Order userbouquets A-Z", todo);

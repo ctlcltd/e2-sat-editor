@@ -1186,7 +1186,16 @@ void tab::actionCall(int action)
 		break;
 
 		case gui::TAB_ATS::EditTunerSat:
-			editTunersets(0);
+			editTunersets(e2db::YTYPE::sat);
+		break;
+		case gui::TAB_ATS::EditTunerTerrestrial:
+			editTunersets(e2db::YTYPE::terrestrial);
+		break;
+		case gui::TAB_ATS::EditTunerCable:
+			editTunersets(e2db::YTYPE::cable);
+		break;
+		case gui::TAB_ATS::EditTunerAtsc:
+			editTunersets(e2db::YTYPE::atsc);
 		break;
 	}
 }
@@ -1726,10 +1735,10 @@ void tab::updateRefBox()
 					ptxp = to_string(tx.freq) + '/' + e2db::SAT_POL[tx.pol] + '/' + to_string(tx.sr);
 				break;
 				case 't':
-					ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.termod] + '/' + e2db::TER_BAND[tx.band];
+					ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.tmod] + '/' + e2db::TER_BAND[tx.band];
 				break;
 				case 'c':
-					ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cabmod] + '/' + to_string(tx.sr);
+					ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cmod] + '/' + to_string(tx.sr);
 				break;
 				case 'a':
 					ptxp = to_string(tx.freq);
@@ -1753,9 +1762,11 @@ void tab::updateRefBox()
 			}
 			if (tx.ttype == 's')
 			{
-				if (dbih->tuners.count(tx.pos))
+				if (dbih->tunersets_pos.count(tx.pos))
 				{
-					ppos = dbih->tuners.at(tx.pos).name;
+					string tnid = dbih->tunersets_pos.at(tx.pos);
+					e2db::tuner_sets tn = dbih->tunersets[tnid];
+					ppos = tn.name;
 				}
 
 				char cposdeg[5];
@@ -1874,6 +1885,9 @@ void tab::initialize()
 	gid->update(gui::TabListPaste, true);
 	gid->update(gui::TabListSelectAll, true);
 	gid->update(gui::ToolsTunersetsSat, true);
+	gid->update(gui::ToolsTunersetsTerrestrial, true);
+	gid->update(gui::ToolsTunersetsCable, true);
+	gid->update(gui::ToolsTunersetsAtsc, true);
 }
 
 void tab::profileComboChanged(int index)

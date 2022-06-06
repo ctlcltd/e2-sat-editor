@@ -179,23 +179,24 @@ struct e2db_abstract
 			int onid;
 			char ttype;
 			int freq;
-			int sr; // DVB-S
+			int sr;
 			int pol; // DVB-S
 			int fec; // DVB-S
 			int hpfec; // DVB-T
 			int lpfec; // DVB-T
-			int ifec; // DVB-C
+			int cfec; // DVB-C
 			int pos; // DVB-S
 			int inv;
 			int flgs; // DVB-S
 			int sys; // ? DVB-S
 			int mod; // ? DVB-S
-			int termod; // DVB-T
-			int cabmod; // DVB-C
+			int tmod; // DVB-T
+			int cmod; // DVB-C
+			int amod; // ATSC
 			int rol; // DVB-S2
 			int pil; // DVB-S2
 			int band; // DVB-T
-			int trxmod; // DVB-T
+			int tmx; // DVB-T
 			int guard; // DVB-T
 			int hier; // DVB-T
 			string oflgs; // ?
@@ -231,27 +232,43 @@ struct e2db_abstract
 		};
 		struct tuner_transponder
 		{
+			string trid;
 			int freq;
 			int sr;
-			int pol;
-			int fec;
-			int mod;
-			int rol;
-			int pil;
+			int pol; // DVB-S
+			int fec; // DVB-S
+			int hpfec; // DVB-T
+			int lpfec; // DVB-T
+			int cfec; // DVB-C
 			int inv;
 			int sys;
-			int isid;
-			int plsmode;
-			int plscode;
+			int mod; // DVB-S
+			int tmod; // DVB-T
+			int cmod; // DVB-C
+			int amod; // ATSC
+			int rol; // DVB-S2
+			int pil; // DVB-S2
+			int band; // DVB-T
+			int tmx; // DVB-T
+			int guard; // DVB-T
+			int hier; // DVB-T
+			int isid; // DVB-S
+			int plsmode; // DVB-S
+			int plscode; // DVB-S
+			int index;
 		};
 		struct tuner_sets
 		{
+			string tnid;
 			int ytype;
 			string name;
 			int flgs;
-			int pos;
+			int pos; // DVB-S
+			string country;
+			bool feed;
 			// transponders <trid string, tuner_transponder struct>
 			unordered_map<string, tuner_transponder> transponders;
+			int index;
 		};
 		struct lamedb
 		{
@@ -265,8 +282,10 @@ struct e2db_abstract
 		unordered_map<string, bouquet> bouquets;
 		// userbouquets <bname string, userbouquet struct>
 		unordered_map<string, userbouquet> userbouquets;
-		// tuners <pos int, tuner_sets struct>
-		unordered_map<int, tuner_sets> tuners;
+		// tunersets <tnid string, tuner_sets struct>
+		unordered_map<string, tuner_sets> tunersets;
+		// tunersets_pos <pos int, tnid string>
+		map<int, string> tunersets_pos;
 		//TODO coherence src-idx||count
 		// index <name string, vector<pair<src-idx||count int, chid string>>>
 		unordered_map<string, vector<pair<int, string>>> index;
@@ -278,6 +297,8 @@ struct e2db_abstract
 		void add_userbouquet(int idx, userbouquet& ub);
 		void add_channel_reference(int idx, userbouquet& ub, channel_reference& chref, service_reference& ch);
 		void set_channel_reference_marker_value(userbouquet& ub, string chid, string value);
+		void add_tunerset(int idx, tuner_sets& tn);
+		void add_tunerset_transponder(int idx, tuner_sets& tn, tuner_transponder& tntxp);
 	protected:
 		// e2db <filename string, full-path string>
 		unordered_map<string, string> e2db;

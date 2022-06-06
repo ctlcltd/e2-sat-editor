@@ -215,9 +215,10 @@ void channelBook::stacker(int vv)
 		if (vv == views::Satellites)
 		{
 			int pos = std::stoi(q.first);
-			if (dbih->tuners.count(pos))
+			if (dbih->tunersets_pos.count(pos))
 			{
-				e2db::tuner_sets tn = dbih->tuners.at(std::stoi(q.first));
+				string tnid = dbih->tunersets_pos.at(pos);
+				e2db::tuner_sets tn = dbih->tunersets[tnid];
 				name = QString::fromStdString(tn.name);
 			}
 			else
@@ -237,10 +238,10 @@ void channelBook::stacker(int vv)
 						ptxp = to_string(tx.freq) + '/' + e2db::SAT_POL[tx.pol] + '/' + to_string(tx.sr);
 					break;
 					case 't':
-						ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.termod] + '/' + e2db::TER_BAND[tx.band];
+						ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.tmod] + '/' + e2db::TER_BAND[tx.band];
 					break;
 					case 'c':
-						ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cabmod] + '/' + to_string(tx.sr);
+						ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cmod] + '/' + to_string(tx.sr);
 					break;
 					case 'a':
 						ptxp = to_string(tx.freq);
@@ -351,10 +352,10 @@ void channelBook::populate()
 					ptxp = to_string(tx.freq) + '/' + e2db::SAT_POL[tx.pol] + '/' + to_string(tx.sr);
 				break;
 				case 't':
-					ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.termod] + '/' + e2db::TER_BAND[tx.band];
+					ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.tmod] + '/' + e2db::TER_BAND[tx.band];
 				break;
 				case 'c':
-					ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cabmod] + '/' + to_string(tx.sr);
+					ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cmod] + '/' + to_string(tx.sr);
 				break;
 				case 'a':
 					ptxp = to_string(tx.freq);
@@ -364,9 +365,11 @@ void channelBook::populate()
 			string ppos;
 			if (tx.ttype == 's')
 			{
-				if (dbih->tuners.count(tx.pos))
+				if (dbih->tunersets_pos.count(tx.pos))
 				{
-					ppos = dbih->tuners.at(tx.pos).name;
+					string tnid = dbih->tunersets_pos.at(tx.pos);
+					e2db::tuner_sets tn = dbih->tunersets[tnid];
+					ppos = tn.name;
 				}
 				else
 				{

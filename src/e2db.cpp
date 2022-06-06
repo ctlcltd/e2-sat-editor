@@ -121,6 +121,49 @@ void e2db_abstract::set_channel_reference_marker_value(userbouquet& ub, string c
 	ub.channels[chid].value = value;
 }
 
+void e2db_abstract::add_tunerset(int idx, tuner_sets& tn)
+{
+	string iname = "tns:";
+	char type;
+	switch (tn.ytype)
+	{
+		case YTYPE::sat: type = 's'; break;
+		case YTYPE::terrestrial: type = 't'; break;
+		case YTYPE::cable: type = 'c'; break;
+		case YTYPE::atsc: type = 'a'; break;
+		default: return; //TODO
+	}
+	iname += type;
+	char tnid[12];
+	std::sprintf(tnid, "%c:%04x", type, idx);
+	tn.tnid = tnid;
+	tn.index = idx;
+	tunersets.emplace(tn.tnid, tn);
+	index[iname].emplace_back(pair (idx, tn.tnid)); //C++17
+	if (tn.ytype == YTYPE::sat)
+		tunersets_pos.emplace(tn.pos, tn.tnid);
+	debug("add_tunerset()", "tnid", tn.tnid);
+}
+
+void e2db_abstract::add_tunerset_transponder(int idx, tuner_sets& tn, tuner_transponder& tntxp)
+{
+	char type;
+	switch (tn.ytype)
+	{
+		case YTYPE::sat: type = 's'; break;
+		case YTYPE::terrestrial: type = 't'; break;
+		case YTYPE::cable: type = 'c'; break;
+		case YTYPE::atsc: type = 'a'; break;
+		default: return; //TODO
+	}
+	char trid[12];
+	std::sprintf(trid, "%c:%04x", type, tntxp.freq);
+	tntxp.trid = trid;
+	tn.transponders.emplace(tntxp.trid, tntxp);
+	index[tn.tnid].emplace_back(pair (idx, tntxp.trid)); //C++17
+	debug("add_tunerset_transponder()", "tnid", tn.tnid);
+}
+
 
 
 e2db_parser::e2db_parser()
@@ -143,11 +186,32 @@ void e2db_parser::parse_e2db()
 	parse_e2db_lamedb(ilamedb);
 	ilamedb.close();
 
-	if (PARSER_TUNERSETS && e2db.count("satellites.xml"))
+	if (PARSER_TUNERSETS)
 	{
-		ifstream itunxml (e2db["satellites.xml"]);
-		parse_tunersets_xml(YTYPE::sat, itunxml);
-		itunxml.close();
+		if (e2db.count("satellites.xml"))
+		{
+			ifstream itunxml (e2db["satellites.xml"]);
+			parse_tunersets_xml(YTYPE::sat, itunxml);
+			itunxml.close();
+		}
+		if (e2db.count("terrestrial.xml"))
+		{
+			ifstream itunxml (e2db["terrestrial.xml"]);
+			parse_tunersets_xml(YTYPE::terrestrial, itunxml);
+			itunxml.close();
+		}
+		if (e2db.count("cables.xml"))
+		{
+			ifstream itunxml (e2db["cables.xml"]);
+			parse_tunersets_xml(YTYPE::cable, itunxml);
+			itunxml.close();
+		}
+		if (e2db.count("atsc.xml"))
+		{
+			ifstream itunxml (e2db["atsc.xml"]);
+			parse_tunersets_xml(YTYPE::atsc, itunxml);
+			itunxml.close();
+		}
 	}
 
 	for (auto & x: e2db)
@@ -195,11 +259,32 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 	ilamedb.write(&files[e2db[dbfilename]][0], files[e2db[dbfilename]].size());
 	parse_e2db_lamedb(ilamedb);
 
-	if (PARSER_TUNERSETS && e2db.count("satellites.xml"))
+	if (PARSER_TUNERSETS)
 	{
-		stringstream itunxml;
-		itunxml.write(&files[e2db["satellites.xml"]][0], files[e2db["satellites.xml"]].size());
-		parse_tunersets_xml(YTYPE::sat, itunxml);
+		if (e2db.count("satellites.xml"))
+		{
+			stringstream itunxml;
+			itunxml.write(&files[e2db["satellites.xml"]][0], files[e2db["satellites.xml"]].size());
+			parse_tunersets_xml(YTYPE::sat, itunxml);
+		}
+		if (e2db.count("terrestrial.xml"))
+		{
+			stringstream itunxml;
+			itunxml.write(&files[e2db["terrestrial.xml"]][0], files[e2db["terrestrial.xml"]].size());
+			parse_tunersets_xml(YTYPE::terrestrial, itunxml);
+		}
+		if (e2db.count("cables.xml"))
+		{
+			stringstream itunxml;
+			itunxml.write(&files[e2db["cables.xml"]][0], files[e2db["cables.xml"]].size());
+			parse_tunersets_xml(YTYPE::cable, itunxml);
+		}
+		if (e2db.count("atsc.xml"))
+		{
+			stringstream itunxml;
+			itunxml.write(&files[e2db["atsc.xml"]][0], files[e2db["atsc.xml"]].size());
+			parse_tunersets_xml(YTYPE::atsc, itunxml);
+		}
 	}
 
 	for (auto & x: e2db)
@@ -390,13 +475,15 @@ void e2db_parser::parse_lamedb_transponder_params(string data, transponder& tx)
 void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, transponder& tx)
 {
 	int freq, sr, pol, fec, pos, inv, flgs, sys, mod, rol, pil;
-	int band, hpfec, lpfec, termod, trxmod, guard, hier;
-	int cabmod, ifec;
+	int band, hpfec, lpfec, tmod, tmx, guard, hier;
+	int cmod, cfec;
+	int amod;
 	char oflgs[33];
 	sys = -1, mod = -1, rol = -1, pil = -1;
 	tx.pol = -1, tx.fec = -1, tx.inv = -1, tx.sys = -1, tx.mod = -1, tx.rol = -1, tx.pil = -1;
-	tx.band = -1, tx.hpfec = -1, tx.lpfec = -1, tx.termod = -1, tx.trxmod = -1, tx.guard = -1, tx.hier = -1;
-	tx.cabmod = -1, tx.ifec = -1;
+	tx.band = -1, tx.hpfec = -1, tx.lpfec = -1, tx.tmod = -1, tx.tmx = -1, tx.guard = -1, tx.hier = -1;
+	tx.cmod = -1, tx.cfec = -1;
+	tx.amod = -1;
 
 	switch (ttype)
 	{
@@ -418,14 +505,14 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 		break;
 		//TODO test
 		case 't': // DVB-T
-			std::sscanf(data.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &band, &hpfec, &lpfec, &termod, &trxmod, &guard, &hier, &inv, oflgs);
+			std::sscanf(data.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &band, &hpfec, &lpfec, &tmod, &tmx, &guard, &hier, &inv, oflgs);
 
 			tx.freq = int (freq / 1e3);
 			tx.band = band;
 			tx.hpfec = hpfec;
 			tx.lpfec = lpfec;
-			tx.termod = termod;
-			tx.trxmod = trxmod;
+			tx.tmod = tmod;
+			tx.tmx = tmx;
 			tx.guard = guard;
 			tx.hier = hier;
 			tx.inv = inv;
@@ -433,22 +520,22 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 		break;
 		//TODO test
 		case 'c': // DVB-C
-			std::sscanf(data.c_str(), "%8d:%8d:%1d:%1d:%1d%s", &freq, &sr, &inv, &cabmod, &ifec, oflgs);
+			std::sscanf(data.c_str(), "%8d:%8d:%1d:%1d:%1d%s", &freq, &sr, &inv, &cmod, &cfec, oflgs);
 
 			tx.freq = int (freq / 1e3);
 			tx.sr = int (sr / 1e3);
 			tx.inv = inv;
-			tx.cabmod = cabmod;
-			tx.ifec = ifec;
+			tx.cmod = cmod;
+			tx.cfec = cfec;
 			tx.oflgs = string (oflgs);
 		break;
 		//TODO test
 		case 'a': // ATSC
-			std::sscanf(data.c_str(), "%8d:%1d:%1d:%1d:%1d%s", &freq, &inv, &mod, &flgs, &sys, oflgs);
+			std::sscanf(data.c_str(), "%8d:%1d:%1d:%1d:%1d%s", &freq, &inv, &amod, &flgs, &sys, oflgs);
 
 			tx.freq = int (freq / 1e3);
 			tx.inv = inv;
-			tx.mod = mod;
+			tx.amod = amod;
 			tx.flgs = flgs;
 			tx.sys = sys;
 			tx.oflgs = string (oflgs);
@@ -663,14 +750,14 @@ void e2db_parser::parse_channel_reference(string data, channel_reference& chref,
 	chref.anum = anum;
 }
 
-//TODO needs index
-//TODO terrestrial.xml, cables.xml, atsc.xml
+//TODO charset value
+//TODO comments non-destructive edit
 void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 {
 	debug("parse_tunersets_xml()", "ytype", to_string(ytype));
 
 	string htunxml;
-	std::getline(ftunxml, htunxml);
+	std::getline(ftunxml, htunxml, '>');
 
 	if (htunxml.find("<?xml") == string::npos)
 		return error("parse_tunersets_xml()", "Error", "Unknown file format.");
@@ -681,32 +768,35 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 	switch (ytype)
 	{
 		case YTYPE::sat:
-		// case YTYPE::terrestrial:
-		// case YTYPE::cable:
-		// case YTYPE::atsc:
-			tn.ytype = ytype;
+		case YTYPE::terrestrial:
+		case YTYPE::cable:
+		case YTYPE::atsc:
 		break;
 		default:
 			return error("parse_tunersets_xml()", "Error", "These settings are not supported.");
 	}
 
+	char type;
 	unordered_map<string, int> depth;
-
 	switch (ytype)
 	{
 		case YTYPE::sat:
+			type = 's';
 			depth["satellites"] = 0;
 			depth["sat"] = 1;
 		break;
 		case YTYPE::terrestrial:
+			type = 't';
 			depth["locations"] = 0;
 			depth["terrestrial"] = 1;
 		break;
 		case YTYPE::cable:
+			type = 'c';
 			depth["cables"] = 0;
 			depth["cable"] = 1;
 		break;
 		case YTYPE::atsc:
+			type = 'a';
 			depth["locations"] = 0;
 			depth["atsc"] = 1;
 		break;
@@ -714,6 +804,8 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 	depth["transponder"] = 2;
 
 	int step = 0;
+	int bidx = 0;
+	int cidx = 0;
 	string line;
 
 	while (std::getline(ftunxml, line, '>'))
@@ -722,106 +814,189 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 		{
 			continue;
 		}
-		if (step && line.find("</") != string::npos)
+		else if (line.find("</") != string::npos)
 		{
 			step--;
-			if (tn.pos)
-				tuners.emplace(tn.pos, tn);
-			tn = tuner_sets ();
 			continue;
 		}
-		else if (! step && line.find("<") != string::npos)
+
+		string mkey;
+
+		unsigned long pos = line.find('<');
+		if (pos != string::npos)
 		{
-			step++;
+			mkey = line.substr(pos + 1);
+			pos = mkey.find(' ');
+			mkey = mkey.substr(mkey[0] == '/', pos != string::npos ? pos : string::npos);
+		}
+		// cout << pos << ' ' << mkey << endl;
+		if (depth.count(mkey))
+		{
+			if (depth[mkey] == 0)
+			{
+				step++;
+			}
+			else if (depth[mkey] == 1)
+			{
+				tn = tuner_sets ();
+				tn.ytype = ytype;
+				tn.flgs = -1, tn.pos = -1, tn.feed = 0;
+				bidx++;
+				step++;
+			}
+			else if (depth[mkey] == 2)
+			{
+				tntxp = tuner_transponder ();
+				tntxp.freq = -1, tntxp.sr = -1, tntxp.pol = -1, tntxp.fec = -1, tntxp.mod = -1, tntxp.inv = -1, tntxp.sys = -1, tntxp.rol = -1, tntxp.pil = -1, tntxp.isid = -1, tntxp.plsmode = -1, tntxp.plscode = -1;
+				tntxp.band = -1, tntxp.hpfec = -1, tntxp.lpfec = -1, tntxp.tmod = -1, tntxp.tmx = -1, tntxp.guard = -1, tntxp.hier = -1;
+				tntxp.cfec = -1, tntxp.cmod = -1;
+				tntxp.amod = -1;
+				step = 3;
+			}
+		}
+		/*else
+		{
+			return error("parse_tunersets_xml()", "Error", "Malformed or unknown XML error.");
+		}*/
+
+		char* token = std::strtok(line.data(), " ");
+		while (token != 0)
+		{
+			string pstr = string (token);
+			string key, val;
+			unsigned long pos = pstr.find('=');
+
+			if (pos != string::npos)
+			{
+				key = pstr.substr(0, pos);
+				transform(key.begin(), key.end(), key.begin(), [](unsigned char c) { return (c == '\t' || c == '\n') ? '\0' : c; });
+				key.erase(0, key.find_first_not_of('\0'));
+				val = pstr.substr(pos + 1);
+				pos = val.rfind('"');
+
+				if (pos)
+				{
+					val = val.substr(val.find('"') + 1, pos - 1);
+				}
+				else
+				{
+					val = line.substr(line.find(key) + key.length() + 2);
+					val = val.substr(0, val.find('"'));
+					transform(val.begin(), val.end(), val.begin(), [](unsigned char c) { return c ? c : ' '; });
+				}
+			}
+			token = std::strtok(NULL, " ");
+
+			switch (ytype)
+			{
+				case YTYPE::sat:
+					if (key == "name")
+						tn.name = val;
+					else if (key == "flags")
+						tn.flgs = std::atoi(val.data());
+					else if (key == "position")
+						tn.pos = std::atoi(val.data());
+					else if (key == "frequency")
+						tntxp.freq = int (std::atoi(val.data()) / 1e3);
+					else if (key == "symbol_rate")
+						tntxp.sr = int (std::atoi(val.data()) / 1e3);
+					else if (key == "polarization")
+						tntxp.pol = std::atoi(val.data());
+					else if (key == "fec_inner")
+						tntxp.fec = std::atoi(val.data());
+					else if (key == "inversion")
+						tntxp.inv = std::atoi(val.data());
+					else if (key == "system")
+						tntxp.sys = std::atoi(val.data());
+					else if (key == "modulation")
+						tntxp.mod = std::atoi(val.data());
+					else if (key == "rolloff")
+						tntxp.rol = std::atoi(val.data());
+					else if (key == "pilot")
+						tntxp.pil = std::atoi(val.data());
+					else if (key == "is_id")
+						tntxp.isid = std::atoi(val.data());
+					else if (key == "pls_mode")
+						tntxp.plsmode = std::atoi(val.data());
+					else if (key == "pls_code")
+						tntxp.plscode = std::atoi(val.data());
+				break;
+				case YTYPE::terrestrial:
+					if (key == "name")
+						tn.name = val;
+					else if (key == "flags")
+						tn.flgs = std::atoi(val.data());
+					else if (key == "countrycode")
+						tn.country = val;
+					else if (key == "centre_frequency")
+						tntxp.freq = int (std::atoi(val.data()) / 1e3);
+					else if (key == "bandwidth")
+						tntxp.band = std::atoi(val.data());
+					else if (key == "code_rate_hp")
+						tntxp.hpfec = std::atoi(val.data());
+					else if (key == "code_rate_lp")
+						tntxp.lpfec = std::atoi(val.data());
+					else if (key == "inversion")
+						tntxp.inv = std::atoi(val.data());
+					else if (key == "system")
+						tntxp.sys = std::atoi(val.data());
+					else if (key == "constellation")
+						tntxp.tmod = std::atoi(val.data());
+					else if (key == "transmission_mode")
+						tntxp.tmx = std::atoi(val.data());
+					else if (key == "guard")
+						tntxp.guard = std::atoi(val.data());
+					else if (key == "hier")
+						tntxp.hier = std::atoi(val.data());
+				break;
+				case YTYPE::cable:
+					if (key == "name")
+						tn.name = val;
+					else if (key == "flags")
+						tn.flgs = std::atoi(val.data());
+					else if (key == "countrycode")
+						tn.country = val;
+					else if (key == "satfeed")
+						tn.feed = (val == "true" ? true : false);
+					else if (key == "frequency")
+						tntxp.freq = int (std::atoi(val.data()) / 1e3);
+					else if (key == "symbol_rate")
+						tntxp.sr = int (std::atoi(val.data()) / 1e3);
+					else if (key == "inversion")
+						tntxp.inv = std::atoi(val.data());
+					else if (key == "modulation")
+						tntxp.cmod = std::atoi(val.data());
+					else if (key == "fec_inner")
+						tntxp.cfec = std::atoi(val.data());
+				break;
+				case YTYPE::atsc:
+					if (key == "name")
+						tn.name = val;
+					else if (key == "flags")
+						tn.flgs = std::atoi(val.data());
+					else if (key == "frequency")
+						tntxp.freq = int (std::atoi(val.data()) / 1e3);
+					else if (key == "inversion")
+						tntxp.inv = std::atoi(val.data());
+					else if (key == "modulation")
+						tntxp.amod = std::atoi(val.data());
+				break;
+			}
+
+			cout << step - 1 << ' ' << mkey << ':' << key << ':' << val << ' ' << endl;
 		}
 
-		if (step)
+		if (step == 2)
 		{
-			tntxp = tuner_transponder ();
-			string mkey;
-			string sline = line;
-			line.erase(0, line.find_first_not_of(' '));
-			char* token = std::strtok(line.data(), " ");
-			while (token != 0)
-			{
-				string pstr = string (token);
-				string key, val;
-				unsigned long pos = pstr.find('=');
-
-				if (pos != string::npos)
-				{
-					key = pstr.substr(0, pos);
-					val = pstr.substr(pos + 1);
-					pos = val.rfind('"');
-
-					if (pos)
-					{
-						val = val.substr(val.find('"') + 1, pos - 1);
-					}
-					else
-					{
-						val = sline.substr(sline.find(key));
-						val = val.substr(val.find('"') + 1);
-						val = val.substr(0, val.find('"'));
-					}
-				}
-				else if (pstr[0] == '<')
-				{
-					mkey = pstr.substr(1, pstr.rfind('>') - 1);
-				}
-				token = std::strtok(NULL, " ");
-
-				if (step != 2 && depth[mkey] == 1)
-				{
-					step++;
-					continue;
-				}
-
-				switch (ytype)
-				{
-					case YTYPE::sat:
-						if (key == "name")
-							tn.name = val;
-						else if (key == "flags")
-							tn.flgs = std::atoi(val.data());
-						else if (key == "position")
-							tn.pos = std::atoi(val.data());
-						else if (key == "frequency")
-							tntxp.freq = int (std::atoi(val.data()) / 1e3);
-						else if (key == "symbol_rate")
-							tntxp.sr = int (std::atoi(val.data()) / 1e3);
-						else if (key == "polarization")
-							tntxp.pol = std::atoi(val.data());
-						else if (key == "fec_inner")
-							tntxp.fec = std::atoi(val.data());
-						else if (key == "modulation")
-							tntxp.mod = std::atoi(val.data());
-						else if (key == "rolloff")
-							tntxp.rol = std::atoi(val.data());
-						else if (key == "pilot")
-							tntxp.pil = std::atoi(val.data());
-						else if (key == "inversion")
-							tntxp.inv = std::atoi(val.data());
-						else if (key == "system")
-							tntxp.sys = std::atoi(val.data());
-						else if (key == "is_id")
-							tntxp.isid = std::atoi(val.data());
-						else if (key == "pls_mode")
-							tntxp.plsmode = std::atoi(val.data());
-						else if (key == "pls_code")
-							tntxp.plscode = std::atoi(val.data());
-					break;
-				}
-
-				// cout << mkey << ':' << key << ':' << val << ' ' << step << endl;
-			}
-
-			if (tntxp.freq)
-			{
-				char trid[10];
-				std::sprintf(trid, "%04x:%04x", tntxp.freq, tntxp.sr);
-				tn.transponders.emplace(trid, tntxp);
-			}
+			add_tunerset(bidx, tn);
+		}
+		else if (step == 3)
+		{
+			char tnid[12];
+			std::sprintf(tnid, "%c:%04x", type, bidx);
+			tuner_sets& tn = tunersets[tnid];
+			cidx++;
+			add_tunerset_transponder(cidx, tn, tntxp);
 		}
 	}
 }
@@ -852,18 +1027,19 @@ void e2db_parser::debugger()
 		cout << "fec: " << x.second.fec << endl;
 		cout << "hpfec: " << x.second.hpfec << endl;
 		cout << "lpfec: " << x.second.lpfec << endl;
-		cout << "ifec: " << x.second.ifec << endl;
+		cout << "cfec: " << x.second.cfec << endl;
 		cout << "pos: " << x.second.pos << endl;
 		cout << "inv: " << x.second.inv << endl;
 		cout << "flgs: " << x.second.flgs << endl;
 		cout << "sys: " << x.second.sys << endl;
 		cout << "mod: " << x.second.mod << endl;
-		cout << "termod: " << x.second.termod << endl;
-		cout << "cabmod: " << x.second.cabmod << endl;
+		cout << "tmod: " << x.second.tmod << endl;
+		cout << "cmod: " << x.second.cmod << endl;
+		cout << "amod: " << x.second.amod << endl;
 		cout << "rol: " << x.second.rol << endl;
 		cout << "pil: " << x.second.pil << endl;
 		cout << "band: " << x.second.band << endl;
-		cout << "trxmod: " << x.second.trxmod << endl;
+		cout << "tmx: " << x.second.tmx << endl;
 		cout << "guard: " << x.second.guard << endl;
 		cout << "hier: " << x.second.hier << endl;
 		cout << "oflgs: " << x.second.oflgs << endl;
@@ -926,13 +1102,15 @@ void e2db_parser::debugger()
 	}
 	cout << endl;
 	cout << "tunersets" << endl << endl;
-	for (auto & x: tuners)
+	for (auto & x: tunersets)
 	{
-		cout << "tnid: " << x.first << endl;
+		cout << "pos: " << x.first << endl;
+		cout << "tnid: " << x.second.tnid << endl;
 		cout << "ytype: " << x.second.ytype << endl;
 		cout << "name: " << x.second.name << endl;
 		cout << "flags: " << x.second.flgs << endl;
 		cout << "pos: " << x.second.pos << endl;
+		cout << "index: " << x.second.index << endl;
 		cout << "transponders: [" << endl << endl;
 		for (auto & q: x.second.transponders)
 		{
@@ -941,14 +1119,25 @@ void e2db_parser::debugger()
 			cout << "sr: " << q.second.sr << endl;
 			cout << "pol: " << q.second.pol << endl;
 			cout << "fec: " << q.second.fec << endl;
-			cout << "mod: " << q.second.mod << endl;
-			cout << "rol: " << q.second.rol << endl;
-			cout << "pil: " << q.second.pil << endl;
+			cout << "hpfec: " << q.second.hpfec << endl;
+			cout << "lpfec: " << q.second.lpfec << endl;
+			cout << "cfec: " << q.second.cfec << endl;
 			cout << "inv: " << q.second.inv << endl;
 			cout << "sys: " << q.second.sys << endl;
+			cout << "mod: " << q.second.mod << endl;
+			cout << "tmod: " << q.second.tmod << endl;
+			cout << "cmod: " << q.second.cmod << endl;
+			cout << "amod: " << q.second.amod << endl;
+			cout << "band: " << q.second.band << endl;
+			cout << "tmx: " << q.second.tmx << endl;
+			cout << "guard: " << q.second.guard << endl;
+			cout << "hier: " << q.second.hier << endl;
+			cout << "rol: " << q.second.rol << endl;
+			cout << "pil: " << q.second.pil << endl;
 			cout << "isid: " << q.second.isid << endl;
 			cout << "plsmode: " << q.second.plsmode << endl;
 			cout << "plscode: " << q.second.plscode << endl;
+			cout << "index: " << q.second.index << endl;
 			cout << endl;
 		}
 		cout << "]" << endl << endl;
@@ -1151,8 +1340,8 @@ void e2db_maker::make_lamedb(string filename)
 				ss << ':' << tx.band;
 				ss << ':' << tx.hpfec;
 				ss << ':' << tx.lpfec;
-				ss << ':' << tx.termod;
-				ss << ':' << tx.trxmod;
+				ss << ':' << tx.tmod;
+				ss << ':' << tx.tmx;
 				ss << ':' << tx.guard;
 				ss << ':' << tx.hier;
 				ss << ':' << tx.inv;
@@ -1164,8 +1353,8 @@ void e2db_maker::make_lamedb(string filename)
 				ss << int (tx.freq * 1e3);
 				ss << ':' << int (tx.sr * 1e3);
 				ss << ':' << tx.inv;
-				ss << ':' << tx.cabmod;
-				ss << ':' << tx.ifec;
+				ss << ':' << tx.cmod;
+				ss << ':' << tx.cfec;
 				if (! tx.oflgs.empty())
 					ss << tx.oflgs;
 			break;
@@ -1173,7 +1362,7 @@ void e2db_maker::make_lamedb(string filename)
 			case 'a': // ATSC
 				ss << int (tx.freq * 1e3);
 				ss << ':' << tx.inv;
-				ss << ':' << tx.mod;
+				ss << ':' << tx.amod;
 				ss << ':' << tx.flgs;
 				ss << ':' << tx.sys;
 				if (! tx.oflgs.empty())
@@ -1406,7 +1595,7 @@ void e2db::merge(e2db* dbih)
 
 	db.transponders.merge(dbih->db.transponders); //C++17
 	db.services.merge(dbih->db.services); //C++17
-	tuners.merge(dbih->tuners); //C++17
+	tunersets.merge(dbih->tunersets); //C++17
 	bouquets.merge(dbih->bouquets); //C++17
 	collisions.merge(dbih->collisions); //C++17
 

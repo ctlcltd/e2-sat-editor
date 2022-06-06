@@ -166,9 +166,10 @@ void editService::transponderLayout()
 	{
 		QString name;
 		int pos = std::stoi(q.first);
-		if (dbih->tuners.count(pos))
+		if (dbih->tunersets_pos.count(pos))
 		{
-			e2db::tuner_sets tndata = dbih->tuners.at(std::stoi(q.first));
+			string tnid = dbih->tunersets_pos.at(pos);
+			e2db::tuner_sets tndata = dbih->tunersets[tnid];
 			name = QString::fromStdString(tndata.name);
 		}
 		else
@@ -408,9 +409,11 @@ void editService::tunerComboChanged(int index)
 		if (tx.ttype == 's')
 			ptxp = to_string(tx.freq) + '/' + e2db::SAT_POL[tx.pol] + '/' + to_string(tx.sr);
 		else if (tx.ttype == 't')
-			ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.termod] + '/' + e2db::TER_BAND[tx.band];
+			ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.tmod] + '/' + e2db::TER_BAND[tx.band];
 		else if (tx.ttype == 'c')
-			ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cabmod] + '/' + to_string(tx.sr);
+			ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cmod] + '/' + to_string(tx.sr);
+		else if (tx.ttype == 'a')
+			ptxp = to_string(tx.freq);
 		QString txp = QString::fromStdString(ptxp);
 		dtf1tx->addItem(txp, txid);
 	}
