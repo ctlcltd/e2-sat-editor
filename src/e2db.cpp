@@ -478,7 +478,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 	int band, hpfec, lpfec, tmod, tmx, guard, hier;
 	int cmod, cfec;
 	int amod;
-	char oflgs[33];
+	char oflgs[33] = "";
 	sys = -1, mod = -1, rol = -1, pil = -1;
 	tx.pol = -1, tx.fec = -1, tx.inv = -1, tx.sys = -1, tx.mod = -1, tx.rol = -1, tx.pil = -1;
 	tx.band = -1, tx.hpfec = -1, tx.lpfec = -1, tx.tmod = -1, tx.tmx = -1, tx.guard = -1, tx.hier = -1;

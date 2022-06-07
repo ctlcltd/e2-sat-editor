@@ -38,7 +38,6 @@ void e2db::options()
 {
 	debug("options()");
 
-	// e2db::DEBUG = sets->value("debug", true).toBool();
 	e2db::PARSER_TUNERSETS = sets->value("application/parserTunerset", true).toBool();
 	e2db::PARSER_LAMEDB5_PRIOR = sets->value("application/parserLamedb5", false).toBool();
 	e2db::MAKER_LAMEDB5 = sets->value("application/makerLamedb5", true).toBool();

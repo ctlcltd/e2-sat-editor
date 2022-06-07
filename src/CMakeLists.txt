@@ -47,6 +47,10 @@ target_link_libraries(e2-sat-editor PUBLIC
 # Resources:
 set(resources_resource_files
 	"../res/e2-sat-editor.png"
+	"../res/2x1.png"
+	"../res/3x1.png"
+	"../res/4x1.png"
+	"../res/5x1.png"
 	"../res/dark/add.png"
 	"../res/dark/close.png"
 	"../res/dark/crypted.png"

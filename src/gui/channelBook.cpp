@@ -18,6 +18,7 @@
 #include <QLabel>
 
 #include "channelBook.h"
+#include "theme.h"
 
 using std::to_string;
 using namespace e2se;
@@ -40,7 +41,7 @@ channelBook::channelBook(e2db* dbih)
 
 	afrm->addWidget(lwid, 0, 0);
 	afrm->addLayout(awid, 0, 1);
-	afrm->setColumnMinimumWidth(0, 120);
+	afrm->setColumnMinimumWidth(0, 140);
 	afrm->setColumnStretch(0, 1);
 	afrm->setColumnStretch(1, 5);
 	afrm->setSpacing(0);
@@ -50,24 +51,29 @@ channelBook::channelBook(e2db* dbih)
 	widget->setLayout(afrm);
 }
 
-//TODO draggable application state
 void channelBook::side()
 {
 	debug("side()");
 
 	this->lwid = new QListWidget;
-	lwid->setDragEnabled(true);
-	//TODO FIX rlpadding
-	lwid->setStyleSheet("QListWidget { background: transparent; font: 15px } QListView::item { height: 36px }");
+	lwid->setStyleSheet("QListWidget { background: transparent; font: 15px } QListView::item { padding: 10px auto }");
 	lwid->setMaximumWidth(160);
 
-	lwid->addItem(" Services ");
-	lwid->addItem(" Bouquets ");
-	lwid->addItem(" Satellites ");
-	lwid->addItem(" Providers ");
-	lwid->addItem(" Resolution ");
-	lwid->addItem(" Encryption ");
-	lwid->addItem(" A-Z ");
+	lwid->addItem("Services");
+	lwid->addItem("Bouquets");
+	lwid->addItem("Satellites");
+	lwid->addItem("Providers");
+	lwid->addItem("Resolution");
+	lwid->addItem("Encryption");
+	lwid->addItem("A-Z");
+
+	lwid->item(0)->setIcon(theme::spacer(2));
+	lwid->item(1)->setIcon(theme::spacer(2));
+	lwid->item(2)->setIcon(theme::spacer(2));
+	lwid->item(3)->setIcon(theme::spacer(2));
+	lwid->item(4)->setIcon(theme::spacer(2));
+	lwid->item(5)->setIcon(theme::spacer(2));
+	lwid->item(6)->setIcon(theme::spacer(2));
 
 	lwid->connect(lwid, &QListWidget::currentRowChanged, [=](int index) { this->sideRowChanged(index); });
 }
@@ -114,11 +120,12 @@ void channelBook::layout()
 	list->setSelectionMode(QAbstractItemView::ExtendedSelection);
 	list->setItemsExpandable(false);
 	list->setExpandsOnDoubleClick(false);
+	list->setStyleSheet("::item { padding: 2px auto }");
 
-	QTreeWidgetItem* thead = new QTreeWidgetItem({"", "Index", "Name", "Type", "Provider", "Transponder", "SAT"});
+	QTreeWidgetItem* thead = new QTreeWidgetItem({NULL, "Index", "Name", "Type", "Provider", "Transponder", "SAT"});
 	list->setHeaderItem(thead);
 	list->setColumnHidden(0, true);
-	list->setColumnWidth(1, 65);	// Index
+	list->setColumnWidth(1, 60);	// Index
 	list->setColumnWidth(2, 175);	// Name
 	list->setColumnWidth(3, 70);	// Type
 	list->setColumnWidth(4, 125);	// Provider
@@ -382,6 +389,7 @@ void channelBook::populate()
 
 			QTreeWidgetItem* item = new QTreeWidgetItem({x, idx, chname, stype, pname, txp, pos});
 			item->setData(0, Qt::UserRole, chid);
+			item->setIcon(1, theme::spacer(3));
 			list->addTopLevelItem(item);
 		}
 	}

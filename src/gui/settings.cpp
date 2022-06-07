@@ -25,8 +25,8 @@
 #include <QValidator>
 #include <QHeaderView>
 
-#include "theme.h"
 #include "settings.h"
+#include "theme.h"
 
 using std::to_string;
 using e2se_gui::theme;

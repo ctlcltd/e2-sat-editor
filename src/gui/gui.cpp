@@ -13,7 +13,6 @@
 #include <filesystem>
 
 #include <Qt>
-#include <QProxyStyle>
 #include <QScreen>
 #include <QSplitter>
 #include <QGroupBox>
@@ -21,8 +20,9 @@
 #include <QPushButton>
 #include <QFileDialog>
 
-#include "theme.h"
 #include "gui.h"
+#include "theme.h"
+#include "TabBarProxyStyle.h"
 #include "tab.h"
 #include "settings.h"
 #include "about.h"
@@ -33,17 +33,6 @@ using namespace e2se;
 
 namespace e2se_gui
 {
-
-class guiProxyStyle : public QProxyStyle
-{
-	public:
-		int styleHint(StyleHint hint, const QStyleOption* option = 0, const QWidget* widget = 0, QStyleHintReturn* returnData = 0) const override
-		{
-			if (hint == QStyle::SH_TabBar_CloseButtonPosition)
-				return QTabBar::RightSide;
-			return QProxyStyle::styleHint(hint, option, widget, returnData);
-		}
-};
 
 gui::gui(int argc, char* argv[])
 {
@@ -57,7 +46,7 @@ gui::gui(int argc, char* argv[])
 	mroot->setOrganizationDomain("e2se.org");
 	mroot->setApplicationName("e2-sat-editor");
 	mroot->setApplicationVersion("0.1");
-	mroot->setStyle(new guiProxyStyle);
+	mroot->setStyle(new TabBarProxyStyle);
 	mroot->connect(mroot, &QApplication::focusChanged, [=]() { this->windowFocusChanged(); });
 
 	this->sets = new QSettings;

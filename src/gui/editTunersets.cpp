@@ -87,20 +87,20 @@ void editTunersets::layout()
 	switch (yx)
 	{
 		case e2db::YTYPE::sat:
-			ths = {"", "Name", "Position"};
-			lhs = {"", "TRID", "Frequency", "Polarization", "Symbol Rate", "FEC", "System", "Modulation"};
+			ths = {NULL, "Name", "Position"};
+			lhs = {NULL, "TRID", "Frequency", "Polarization", "Symbol Rate", "FEC", "System", "Modulation"};
 		break;
 		case e2db::YTYPE::terrestrial:
-			ths = {"", "Name", "Country"};
-			lhs = {"", "TRID", "Frequency", "Modulation", "Bandwidth"};
+			ths = {NULL, "Name", "Country"};
+			lhs = {NULL, "TRID", "Frequency", "Modulation", "Bandwidth"};
 		break;
 		case e2db::YTYPE::cable:
-			ths = {"", "Name", "Country"};
-			lhs = {"", "TRID", "Frequency", "Modulation", "Symbol Rate", "FEC"};
+			ths = {NULL, "Name", "Country"};
+			lhs = {NULL, "TRID", "Frequency", "Modulation", "Symbol Rate", "FEC"};
 		break;
 		case e2db::YTYPE::atsc:
-			ths = {"", "Name"};
-			lhs = {"", "TRID", "Frequency", "Modulation"};
+			ths = {NULL, "Name"};
+			lhs = {NULL, "TRID", "Frequency", "Modulation"};
 		break;
 	}
 

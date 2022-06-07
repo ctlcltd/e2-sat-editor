@@ -48,6 +48,11 @@ QString theme::getIcon(QString icon)
 	return prefix.append("/").append(icon).append(".png");
 }
 
+QIcon theme::spacer(int width)
+{
+	return QIcon(":/icons/" + QString().setNum(width) + "x1.png");
+}
+
 QString theme::getDefaultFontFamily()
 {
 	return QFont().defaultFamily();

@@ -23,8 +23,8 @@
 #include <QLineEdit>
 #include <QCheckBox>
 
-#include "theme.h"
 #include "editService.h"
+#include "theme.h"
 
 using std::stringstream, std::to_string;
 using namespace e2se;

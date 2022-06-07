@@ -24,6 +24,7 @@ class theme
 		theme();
 		static QIcon icon(QString icon);
 		static QString getIcon(QString icon);
+		static QIcon spacer(int width);
 		static QString getDefaultFontFamily();
 		static int getDefaultFontSize();
 };

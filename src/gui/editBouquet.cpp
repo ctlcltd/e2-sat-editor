@@ -21,8 +21,8 @@
 #include <QLineEdit>
 #include <QComboBox>
 
-#include "theme.h"
 #include "editBouquet.h"
+#include "theme.h"
 
 using namespace e2se;
 

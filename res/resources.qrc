@@ -2,6 +2,10 @@
 <RCC version="1.0">
 <qresource prefix="/icons">
 	<file>e2-sat-editor.png</file>
+	<file>2x1.png</file>
+	<file>3x1.png</file>
+	<file>4x1.png</file>
+	<file>5x1.png</file>
 	<file>dark/add.png</file>
 	<file>dark/close.png</file>
 	<file>dark/crypted.png</file>

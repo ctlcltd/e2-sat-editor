@@ -31,8 +31,9 @@
 #include <QClipboard>
 #include <QMimeData>
 
-#include "theme.h"
 #include "tab.h"
+#include "theme.h"
+#include "TreeStyledItemDelegate.h"
 #include "gui.h"
 #include "editBouquet.h"
 #include "editService.h"
@@ -87,8 +88,8 @@ tab::tab(gui* gid, QWidget* wid)
 	this->services_tree = new QTreeWidget;
 	this->bouquets_tree = new QTreeWidget;
 	this->list_tree = new QTreeWidget;
-	services_tree->setStyleSheet("QTreeWidget { background: transparent } ::item { padding: 6px auto }");
-	bouquets_tree->setStyleSheet("QTreeWidget { background: transparent } ::item { padding: 6px auto }");
+	services_tree->setStyleSheet("QTreeWidget { background: transparent } ::item { padding: 9px auto }");
+	bouquets_tree->setStyleSheet("QTreeWidget { background: transparent } ::item { margin: 1px 0 0; padding: 8px auto }");
 	list_tree->setStyleSheet("::item { padding: 6px auto }");
 
 	services_tree->setHeaderHidden(true);
@@ -114,13 +115,17 @@ tab::tab(gui* gid, QWidget* wid)
 	list_tree->setDropIndicatorShown(true);
 	list_tree->setDragDropMode(QAbstractItemView::InternalMove);
 	list_tree->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	
+	TreeStyledItemDelegate* bouquets_delegate = new TreeStyledItemDelegate(bouquets_tree);
+	bouquets_delegate->setIndentation(bouquets_tree->indentation());
+	bouquets_tree->setItemDelegateForColumn(0, bouquets_delegate);
 
-	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({"", "Index", "Name", "CHID", "TXID", "Type", "CAS", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"});
+	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({NULL, "Index", "Name", "CHID", "TXID", "Type", "CAS", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"});
 
 	int col = 0;
 	list_tree->setHeaderItem(lheader_item);
 	list_tree->setColumnHidden(col++, true);
-	list_tree->setColumnWidth(col++, 75);		// Index
+	list_tree->setColumnWidth(col++, 65);		// Index
 	list_tree->setColumnWidth(col++, 200);		// Name
 	if (gid->sets->value("application/debug", true).toBool()) {
 		list_tree->setColumnWidth(col++, 175);	// CHID
@@ -257,7 +262,7 @@ tab::tab(gui* gid, QWidget* wid)
 	QWidget* bottom_spacer = new QWidget;
 	bottom_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	bottom_toolbar->addAction("§ Close satellites.xml", [=]() { this->closeTunersets(); });
+	bottom_toolbar->addAction("§ Close edit xml", [=]() { this->closeTunersets(); });
 	if (gid->sets->value("application/debug", true).toBool())
 	{
 		bottom_toolbar->addAction("§ Load seeds", [=]() { this->loadSeeds(); });
@@ -387,7 +392,7 @@ tab::tab(gui* gid, QWidget* wid)
 		tdata["id"] = item.first;
 		titem->setData(0, Qt::UserRole, QVariant (tdata));
 		titem->setText(0, item.second);
-
+		titem->setIcon(0, theme::spacer(2));
 		services_tree->addTopLevelItem(titem);
 	}
 
@@ -675,17 +680,17 @@ void tab::load()
 		QString bname = QString::fromStdString(bsi.second);
 		QString name = QString::fromStdString(gboq.nname.empty() ? gboq.name : gboq.nname);
 
-		QTreeWidgetItem* pgroup = new QTreeWidgetItem();
-		pgroup->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+		QTreeWidgetItem* bitem = new QTreeWidgetItem();
+		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 		QMap<QString, QVariant> tdata; //TODO
 		tdata["id"] = bname;
-		pgroup->setData(0, Qt::UserRole, QVariant (tdata));
-		pgroup->setText(0, name);
-		bouquets_tree->addTopLevelItem(pgroup);
-		bouquets_tree->expandItem(pgroup);
-
+		bitem->setData(0, Qt::UserRole, QVariant (tdata));
+		bitem->setText(0, name);
+		bouquets_tree->addTopLevelItem(bitem);
+		bouquets_tree->expandItem(bitem);
+	
 		for (string & ubname : gboq.userbouquets)
-			bgroups[ubname] = pgroup;
+			bgroups[ubname] = bitem;
 	}
 	for (auto & ubi : dbih->index["ubs"])
 	{
@@ -778,7 +783,7 @@ void tab::populate(QTreeWidget* side_tree)
 			if (dbih->db.services.count(ch.second))
 			{
 				entry = dbih->entries.services[ch.second];
-				idx = QString::fromStdString(to_string(ch.first));
+				idx = QString::fromStdString(/*"  " + */to_string(ch.first));
 				entry.prepend(idx);
 				entry.prepend(x);
 			}
@@ -810,6 +815,7 @@ void tab::populate(QTreeWidget* side_tree)
 			item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
 			item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
 			item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, chid);
+			item->setIcon(1, theme::spacer(4));
 			if (marker)
 			{
 				item->setFont(2, QFont(ff, fss));
@@ -1490,6 +1496,7 @@ void tab::putChannels(vector<QString> channels)
 		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
 		item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
 		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, w);
+		item->setIcon(1, theme::spacer(4));
 		if (marker)
 		{
 			item->setFont(2, QFont(ff, fss));
@@ -1594,8 +1601,8 @@ void tab::updateListIndex()
 	while (i != count)
 	{
 		QTreeWidgetItem* item = list_tree->topLevelItem(i);
-		string chid = item->data(2, Qt::UserRole).toString().toStdString();
-		bool marker = item->data(1, Qt::UserRole).toBool();
+		string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
+		bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
 		idx = marker ? 0 : i + 1;
 		dbih->index[curr_chlist].emplace_back(pair (idx, chid)); //C++17
 		i++;
