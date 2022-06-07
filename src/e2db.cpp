@@ -107,7 +107,7 @@ void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_refe
 	chref.chid = chid;
 	chref.index = idx;
 
-	ub.channels[chref.chid] = chref;
+	ub.channels.emplace(chref.chid, chref);
 	index[ub.bname].emplace_back(pair (idx, chref.chid)); //C++17
 
 	if (chref.marker)
@@ -142,7 +142,6 @@ void e2db_abstract::add_tunerset(int idx, tuner_sets& tn)
 	index[iname].emplace_back(pair (idx, tn.tnid)); //C++17
 	if (tn.ytype == YTYPE::sat)
 		tunersets_pos.emplace(tn.pos, tn.tnid);
-	debug("add_tunerset()", "tnid", tn.tnid);
 }
 
 void e2db_abstract::add_tunerset_transponder(int idx, tuner_sets& tn, tuner_transponder& tntxp)
@@ -159,9 +158,9 @@ void e2db_abstract::add_tunerset_transponder(int idx, tuner_sets& tn, tuner_tran
 	char trid[12];
 	std::sprintf(trid, "%c:%04x", type, tntxp.freq);
 	tntxp.trid = trid;
+	tntxp.index = idx;
 	tn.transponders.emplace(tntxp.trid, tntxp);
 	index[tn.tnid].emplace_back(pair (idx, tntxp.trid)); //C++17
-	debug("add_tunerset_transponder()", "tnid", tn.tnid);
 }
 
 
@@ -238,7 +237,8 @@ void e2db_parser::parse_e2db()
 	// seeds./enigma_db
 	// commit: 67b6442	elapsed time: 65520
 	// commit: d47fec7	elapsed time: 498870
-	// commit: HEAD		elapsed time: 56112
+	// commit: d1f53fe	elapsed time: 56112
+	// commit: HEAD		elapsed time: 67343
 
 	debug("parse_e2db()", "elapsed time", to_string(end - start));
 }
@@ -750,17 +750,27 @@ void e2db_parser::parse_channel_reference(string data, channel_reference& chref,
 	chref.anum = anum;
 }
 
-//TODO charset value
-//TODO comments non-destructive edit
+//TODO value xml entities
 void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 {
 	debug("parse_tunersets_xml()", "ytype", to_string(ytype));
 
 	string htunxml;
+	string charset = "UTF-8";
 	std::getline(ftunxml, htunxml, '>');
 
 	if (htunxml.find("<?xml") == string::npos)
 		return error("parse_tunersets_xml()", "Error", "Unknown file format.");
+
+	unsigned long pos = htunxml.find("encoding=");
+	if (pos != string::npos)
+	{
+		charset = htunxml.substr(pos + 10);
+		charset = charset.substr(0, charset.rfind('"'));
+		transform(charset.begin(), charset.end(), charset.begin(), [](unsigned char c) { return toupper(c); });
+	}
+
+	debug("parse_tunersets_xml()", "charset", charset);
 
 	tuner_sets tn;
 	tuner_transponder tntxp;
@@ -810,54 +820,48 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 
 	while (std::getline(ftunxml, line, '>'))
 	{
+		//TODO comments non-destructive edit
 		if (line.find("<!") != string::npos)
-		{
 			continue;
-		}
-		else if (line.find("</") != string::npos)
-		{
-			step--;
-			continue;
-		}
 
-		string mkey;
-
+		string tag;
+		bool add = false;
 		unsigned long pos = line.find('<');
 		if (pos != string::npos)
 		{
-			mkey = line.substr(pos + 1);
-			pos = mkey.find(' ');
-			mkey = mkey.substr(mkey[0] == '/', pos != string::npos ? pos : string::npos);
+			tag = line.substr(pos + 1);
+			pos = tag.find(' ');
+			//TODO line.size() - 1
+			add = tag[0] == '/' || line[line.size() - 1] == '/';
+			tag = tag.substr(tag[0] == '/', pos != string::npos ? pos : string::npos);
 		}
-		// cout << pos << ' ' << mkey << endl;
-		if (depth.count(mkey))
+		if (depth.count(tag))
 		{
-			if (depth[mkey] == 0)
-			{
-				step++;
-			}
-			else if (depth[mkey] == 1)
+			step = depth[tag];
+
+			if (step == 1)
 			{
 				tn = tuner_sets ();
 				tn.ytype = ytype;
 				tn.flgs = -1, tn.pos = -1, tn.feed = 0;
-				bidx++;
-				step++;
 			}
-			else if (depth[mkey] == 2)
+			else if (step == 2)
 			{
 				tntxp = tuner_transponder ();
 				tntxp.freq = -1, tntxp.sr = -1, tntxp.pol = -1, tntxp.fec = -1, tntxp.mod = -1, tntxp.inv = -1, tntxp.sys = -1, tntxp.rol = -1, tntxp.pil = -1, tntxp.isid = -1, tntxp.plsmode = -1, tntxp.plscode = -1;
 				tntxp.band = -1, tntxp.hpfec = -1, tntxp.lpfec = -1, tntxp.tmod = -1, tntxp.tmx = -1, tntxp.guard = -1, tntxp.hier = -1;
 				tntxp.cfec = -1, tntxp.cmod = -1;
 				tntxp.amod = -1;
-				step = 3;
 			}
 		}
-		/*else
+		else if (tag.empty())
+		{
+			continue;
+		}
+		else
 		{
 			return error("parse_tunersets_xml()", "Error", "Malformed or unknown XML error.");
-		}*/
+		}
 
 		char* token = std::strtok(line.data(), " ");
 		while (token != 0)
@@ -871,6 +875,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 				key = pstr.substr(0, pos);
 				transform(key.begin(), key.end(), key.begin(), [](unsigned char c) { return (c == '\t' || c == '\n') ? '\0' : c; });
 				key.erase(0, key.find_first_not_of('\0'));
+				//TODO rtrim
 				val = pstr.substr(pos + 1);
 				pos = val.rfind('"');
 
@@ -982,15 +987,14 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 						tntxp.amod = std::atoi(val.data());
 				break;
 			}
-
-			cout << step - 1 << ' ' << mkey << ':' << key << ':' << val << ' ' << endl;
 		}
 
-		if (step == 2)
+		if (! add && step == 1)
 		{
+			bidx++;
 			add_tunerset(bidx, tn);
 		}
-		else if (step == 3)
+		else if (add && step == 2)
 		{
 			char tnid[12];
 			std::sprintf(tnid, "%c:%04x", type, bidx);

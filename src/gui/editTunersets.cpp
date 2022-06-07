@@ -214,19 +214,10 @@ void editTunersets::populate()
 
 	debug("populate()", "curr", curr);
 
-	if (! dbih->index.count(curr))
+	if (! dbih->tunersets.count(curr))
 		error("populate()", "curr", curr);
 
-	string iname = "tns:";
-	switch (yx)
-	{
-		case e2db::YTYPE::sat: iname += 's'; break;
-		case e2db::YTYPE::terrestrial: iname += 't'; break;
-		case e2db::YTYPE::cable: iname += 'c'; break;
-		case e2db::YTYPE::atsc: iname += 'a'; break;
-	}
-
-	e2db::tuner_sets tn = dbih->tunersets[iname];
+	e2db::tuner_sets tn = dbih->tunersets[curr];
 
 	list->header()->setSortIndicatorShown(false);
 	list->header()->setSectionsClickable(false);
