@@ -82,7 +82,8 @@ Data license: GPLv2
 		<transponder centre_frequency="578000000" bandwidth="0" constellation="3" />
 		<transponder 
 			centre_frequency="586000000" 
-			bandwidth="0" 
+			  bandwidth  
+			    =  '0'  
 			constellation="3" /><!-- inline comment -->
 		<transponder centre_frequency="594000000" bandwidth="0" constellation="3" />
 		<transponder centre_frequency="178000000" bandwidth="0" constellation="3" /><!-- inline comment -->

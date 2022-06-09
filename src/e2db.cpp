@@ -763,11 +763,15 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 		return error("parse_tunersets_xml()", "Error", "Unknown file format.");
 
 	unsigned long pos = htunxml.find("encoding=");
+	unsigned long len;
 	if (pos != string::npos)
 	{
 		charset = htunxml.substr(pos + 10);
-		charset = charset.substr(0, charset.rfind('"'));
-		transform(charset.begin(), charset.end(), charset.begin(), [](unsigned char c) { return toupper(c); });
+		len = charset.rfind('"');
+		if (len == string::npos)
+			len = charset.rfind('\'');
+		charset = charset.substr(0, len);
+		std::transform(charset.begin(), charset.end(), charset.begin(), [](unsigned char c) { return toupper(c); });
 	}
 
 	debug("parse_tunersets_xml()", "charset", charset);
@@ -827,13 +831,16 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 		string tag;
 		bool add = false;
 		unsigned long pos = line.find('<');
+		unsigned long len;
 		if (pos != string::npos)
 		{
 			tag = line.substr(pos + 1);
-			pos = tag.find(' ');
-			//TODO line.size() - 1
-			add = tag[0] == '/' || line[line.size() - 1] == '/';
-			tag = tag.substr(tag[0] == '/', pos != string::npos ? pos : string::npos);
+			pos = tag[0] == '/';
+			len = tag.find(' ');
+			add = pos || tag[tag.length() - 1] == '/';
+			if (! pos && len == string::npos)
+				len = tag.find('/');
+			tag = tag.substr(pos, len);
 		}
 		if (depth.count(tag))
 		{
@@ -863,32 +870,91 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 			return error("parse_tunersets_xml()", "Error", "Malformed or unknown XML error.");
 		}
 
+		string yey;
 		char* token = std::strtok(line.data(), " ");
 		while (token != 0)
 		{
-			string pstr = string (token);
+			string str = string (token);
 			string key, val;
-			unsigned long pos = pstr.find('=');
+			unsigned long pos;
+			unsigned long len = str.find('=');
 
-			if (pos != string::npos)
+			if (len != string::npos)
 			{
-				key = pstr.substr(0, pos);
-				transform(key.begin(), key.end(), key.begin(), [](unsigned char c) { return (c == '\t' || c == '\n') ? '\0' : c; });
+				key = str.substr(0, len);
+				std::transform(key.begin(), key.end(), key.begin(), [](unsigned char c) { return std::isspace(c) ? '\0' : c; });
 				key.erase(0, key.find_first_not_of('\0'));
-				//TODO rtrim
-				val = pstr.substr(pos + 1);
-				pos = val.rfind('"');
-
-				if (pos)
+				pos = key.find_first_of('\0');
+				if (pos != string::npos)
+					key.erase(pos, key.size());
+				val = str.substr(len + 1);
+				pos = val.find('"');
+				if (pos != string::npos)
 				{
-					val = val.substr(val.find('"') + 1, pos - 1);
+					len = val.rfind('"');
+				}
+				else
+				{
+					pos = val.find('\'');
+					if (pos != string::npos)
+						len = val.rfind('\'');
+				}
+
+				if (len)
+				{
+					val = val.substr(pos + 1, len - 1);
 				}
 				else
 				{
 					val = line.substr(line.find(key) + key.length() + 2);
-					val = val.substr(0, val.find('"'));
-					transform(val.begin(), val.end(), val.begin(), [](unsigned char c) { return c ? c : ' '; });
+					len = val.find('"');
+					if (len == string::npos)
+						len = val.find('\'');
+					val = val.substr(0, len);
+					std::transform(val.begin(), val.end(), val.begin(), [](unsigned char c) { return c ? c : ' '; });
 				}
+			}
+			else if (! yey.empty() && ((str[0] == '"' && str.find('"') != string::npos) || (str[0] == '\'' && str.find('\'') != string::npos)))
+			{
+				key = yey;
+				val = str;
+				yey = "";
+				pos = val.find('"');
+				if (pos != string::npos)
+				{
+					len = val.rfind('"');
+				}
+				else
+				{
+					pos = val.find('\'');
+					if (pos != string::npos)
+						len = val.rfind('\'');
+				}
+
+				if (len)
+				{
+					val = val.substr(pos + 1, len - 1);
+				}
+				else
+				{
+					val = line.substr(line.find(key) + key.length() + 2);
+					len = val.find('"');
+					if (len == string::npos)
+						len = val.find('\'');
+					val = val.substr(0, len);
+					std::transform(val.begin(), val.end(), val.begin(), [](unsigned char c) { return c ? c : ' '; });
+				}
+			}
+			else if (str.find('/') == string::npos && str.find('<') == string::npos)
+			{
+				key = str;
+				std::transform(key.begin(), key.end(), key.begin(), [](unsigned char c) { return std::isspace(c) ? '\0' : c; });
+				key.erase(0, key.find_first_not_of('\0'));
+				pos = key.find_first_of('\0');
+				if (pos != string::npos)
+					key.erase(pos, key.size());
+				if (! key.empty())
+					yey = str;
 			}
 			token = std::strtok(NULL, " ");
 
@@ -921,10 +987,14 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 						tntxp.pil = std::atoi(val.data());
 					else if (key == "is_id")
 						tntxp.isid = std::atoi(val.data());
+					else if (key == "mts")
+						tntxp.mts = std::atoi(val.data());
 					else if (key == "pls_mode")
 						tntxp.plsmode = std::atoi(val.data());
 					else if (key == "pls_code")
 						tntxp.plscode = std::atoi(val.data());
+					else if (key == "plsn")
+						tntxp.plsn = std::atoi(val.data());
 				break;
 				case YTYPE::terrestrial:
 					if (key == "name")
@@ -1108,7 +1178,6 @@ void e2db_parser::debugger()
 	cout << "tunersets" << endl << endl;
 	for (auto & x: tunersets)
 	{
-		cout << "pos: " << x.first << endl;
 		cout << "tnid: " << x.second.tnid << endl;
 		cout << "ytype: " << x.second.ytype << endl;
 		cout << "name: " << x.second.name << endl;
@@ -1483,7 +1552,7 @@ void e2db_maker::make_userbouquet(string bname)
 		{
 			service ch = db.services[x.second];
 			string onid = ch.onid.empty() ? "0" : ch.onid;
-			transform(onid.begin(), onid.end(), onid.begin(), [](unsigned char c) { return toupper(c); });
+			std::transform(onid.begin(), onid.end(), onid.begin(), [](unsigned char c) { return toupper(c); });
 
 			ss << uppercase << ch.ssid << ':';
 			ss << uppercase << ch.tsid << ':';
@@ -2183,7 +2252,7 @@ string e2db::get_reference_id(string chid)
 		ssid = ch.ssid;
 		tsid = ch.tsid;
 		onid = ch.onid.empty() ? onid : ch.onid;
-		transform(onid.begin(), onid.end(), onid.begin(), [](unsigned char c) { return toupper(c); });
+		std::transform(onid.begin(), onid.end(), onid.begin(), [](unsigned char c) { return toupper(c); });
 		dvbns = ch.dvbns;
 	}
 
@@ -2206,7 +2275,7 @@ string e2db::get_reference_id(channel_reference chref)
 		ssid = ch.ssid;
 		tsid = ch.tsid;
 		onid = ch.onid.empty() ? onid : ch.onid;
-		transform(onid.begin(), onid.end(), onid.begin(), [](unsigned char c) { return toupper(c); });
+		std::transform(onid.begin(), onid.end(), onid.begin(), [](unsigned char c) { return toupper(c); });
 		dvbns = ch.dvbns;
 	}
 

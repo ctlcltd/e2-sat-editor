@@ -26,6 +26,7 @@
 #include <QToolBar>
 #include <QMenu>
 #include <QPushButton>
+#include <QLineEdit>
 #include <QComboBox>
 #include <QScrollArea>
 #include <QClipboard>
@@ -216,6 +217,28 @@ tab::tab(gui* gid, QWidget* wid)
 	ref_frm->setMinimumWidth(9999);
 	// ref_frm->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
 	// list_reference->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+
+	QGridLayout* search_box = new QGridLayout(list_search);
+	search_box->setContentsMargins(0, 0, 0, 0);
+	QComboBox* search_filter = new QComboBox;
+	search_filter->addItem("Name", 2);
+	search_filter->addItem("Type", 5);
+	search_filter->addItem("CAS", 6);
+	search_filter->addItem("Provider", 7);
+	search_filter->addItem("SAT", 12);
+	QLineEdit* search_input = new QLineEdit;
+	// search_input->connect(search_input, &QLineEdit::textChanged, [=](QString text) { this->list_tree->keyboardSearch(text); });
+	QPushButton* search_submit = new QPushButton("Find");
+	search_submit->connect(search_submit, &QPushButton::pressed, [=]() { if (search_input->text().isEmpty()) return; for (auto & item : this->list_tree->findItems(search_input->text(), Qt::MatchFlag::MatchContains, search_filter->currentData().toInt())) item->setSelected(true); });
+	QPushButton* search_close = new QPushButton;
+	search_close->setIcon(theme::icon("close"));
+	search_close->setFlat(true);
+	search_close->connect(search_close, &QPushButton::pressed, [=]() { this->listSearchHide(); });
+	search_box->addWidget(search_filter, 0, 0);
+	search_box->addWidget(search_input, 0, 1);
+	search_box->addWidget(search_submit, 0, 2);
+	search_box->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Ignored), 0, 3);
+	search_box->addWidget(search_close, 0, 4);
 
 	QToolBar* top_toolbar = new QToolBar;
 	top_toolbar->setIconSize(QSize(32, 32));
@@ -783,7 +806,7 @@ void tab::populate(QTreeWidget* side_tree)
 			if (dbih->db.services.count(ch.second))
 			{
 				entry = dbih->entries.services[ch.second];
-				idx = QString::fromStdString(/*"  " + */to_string(ch.first));
+				idx = QString::fromStdString(to_string(ch.first));
 				entry.prepend(idx);
 				entry.prepend(x);
 			}
@@ -1188,7 +1211,7 @@ void tab::actionCall(int action)
 			bouquets_search->show();
 		break;
 		case gui::TAB_ATS::ListFind:
-			list_search->show();
+			listSearchShow();
 		break;
 
 		case gui::TAB_ATS::EditTunerSat:
@@ -1216,14 +1239,28 @@ void tab::bouquetsSearchToggle()
 		bouquets_search->hide();
 }
 
+void tab::listSearchShow()
+{
+	debug("listSearchShow()");
+
+	list_search->show();
+}
+
+void tab::listSearchHide()
+{
+	debug("listSearchHide()");
+
+	list_search->hide();
+}
+
 void tab::listSearchToggle()
 {
 	debug("listSearchToggle()");
 
 	if (list_search->isHidden())
-		list_search->show();
+		listSearchShow();
 	else
-		list_search->hide();
+		listSearchHide();
 }
 
 void tab::listReferenceToggle()
@@ -1776,7 +1813,7 @@ void tab::updateRefBox()
 					ppos = tn.name;
 				}
 
-				char cposdeg[5];
+				char cposdeg[6];
 				std::sprintf(cposdeg, "%.1f", float (std::abs (tx.pos)) / 10);
 				ppos += ' ' + (string (cposdeg) + (tx.pos > 0 ? 'E' : 'W'));
 			}

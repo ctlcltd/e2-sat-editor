@@ -380,7 +380,7 @@ void channelBook::populate()
 				}
 				else
 				{
-					char cposdeg[5];
+					char cposdeg[6];
 					std::sprintf(cposdeg, "%.1f", float (std::abs (tx.pos)) / 10);
 					ppos = (string (cposdeg) + (tx.pos > 0 ? 'E' : 'W'));
 				}

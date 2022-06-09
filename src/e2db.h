@@ -253,8 +253,10 @@ struct e2db_abstract
 			int guard; // DVB-T
 			int hier; // DVB-T
 			int isid; // DVB-S
+			int mts; // ? DVB-S
 			int plsmode; // DVB-S
 			int plscode; // DVB-S
+			int plsn; // ? DVB-S
 			int index;
 		};
 		struct tuner_sets

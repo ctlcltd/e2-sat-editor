@@ -172,7 +172,7 @@ void editTunersets::load()
 
 		if (yx == e2db::YTYPE::sat)
 		{
-			char cposdeg[5];
+			char cposdeg[6];
 			std::sprintf(cposdeg, "%.1f", float (std::abs (tns.pos)) / 10);
 			string ppos = (string (cposdeg) + (tns.pos > 0 ? 'E' : 'W'));
 

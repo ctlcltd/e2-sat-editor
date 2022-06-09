@@ -95,6 +95,8 @@ class tab : protected e2se::log_factory
 		void bouquetItemDelete();
 		void actionCall(int action);
 		void bouquetsSearchToggle();
+		void listSearchShow();
+		void listSearchHide();
 		void listSearchToggle();
 		void listReferenceToggle();
 		void listItemCut();
