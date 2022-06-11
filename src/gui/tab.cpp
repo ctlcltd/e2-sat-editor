@@ -25,9 +25,6 @@
 #include <QGroupBox>
 #include <QToolBar>
 #include <QMenu>
-#include <QPushButton>
-#include <QLineEdit>
-#include <QComboBox>
 #include <QScrollArea>
 #include <QClipboard>
 #include <QMimeData>
@@ -77,6 +74,10 @@ tab::tab(gui* gid, QWidget* wid)
 	QGroupBox* bouquets = new QGroupBox("Bouquets");
 	QGroupBox* channels = new QGroupBox("Channels");
 
+	side_box->setSpacing(0);
+	list_box->setSpacing(0);
+	services_box->setSpacing(0);
+	bouquets_box->setSpacing(0);
 	services->setFlat(true);
 	bouquets->setFlat(true);
 	channels->setFlat(true);
@@ -161,6 +162,9 @@ tab::tab(gui* gid, QWidget* wid)
 	bouquets_search->setHidden(true);
 	list_search->setHidden(true);
 	list_reference->setHidden(true);
+	bouquets_search->setStyleSheet("background: palette(mid)");
+	list_search->setStyleSheet("background: palette(mid)");
+	list_reference->setStyleSheet("background: palette(mid)");
 
 	int fsss = (theme::getDefaultFontSize() - 2);
 	QString ff = theme::getDefaultFontFamily();
@@ -218,27 +222,71 @@ tab::tab(gui* gid, QWidget* wid)
 	// ref_frm->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
 	// list_reference->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
-	QGridLayout* search_box = new QGridLayout(list_search);
-	search_box->setContentsMargins(0, 0, 0, 0);
-	QComboBox* search_filter = new QComboBox;
-	search_filter->addItem("Name", 2);
-	search_filter->addItem("Type", 5);
-	search_filter->addItem("CAS", 6);
-	search_filter->addItem("Provider", 7);
-	search_filter->addItem("SAT", 12);
-	QLineEdit* search_input = new QLineEdit;
-	// search_input->connect(search_input, &QLineEdit::textChanged, [=](QString text) { this->list_tree->keyboardSearch(text); });
-	QPushButton* search_submit = new QPushButton("Find");
-	search_submit->connect(search_submit, &QPushButton::pressed, [=]() { if (search_input->text().isEmpty()) return; for (auto & item : this->list_tree->findItems(search_input->text(), Qt::MatchFlag::MatchContains, search_filter->currentData().toInt())) item->setSelected(true); });
-	QPushButton* search_close = new QPushButton;
-	search_close->setIcon(theme::icon("close"));
-	search_close->setFlat(true);
-	search_close->connect(search_close, &QPushButton::pressed, [=]() { this->listSearchHide(); });
-	search_box->addWidget(search_filter, 0, 0);
-	search_box->addWidget(search_input, 0, 1);
-	search_box->addWidget(search_submit, 0, 2);
-	search_box->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Ignored), 0, 3);
-	search_box->addWidget(search_close, 0, 4);
+	QGridLayout* bsr_box = new QGridLayout(bouquets_search);
+	bsr_box->setContentsMargins(0, 0, 0, 0);
+	bsr_box->setSpacing(0);
+	this->bsr_search.input = new QLineEdit;
+	this->bsr_search.input->connect(this->bsr_search.input, &QLineEdit::textChanged, [=](const QString& text) { this->bouquetsFindPerform(text); });
+	this->bsr_search.next = new QPushButton("Find");
+	this->bsr_search.next->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
+	this->bsr_search.next->connect(this->bsr_search.next, &QPushButton::pressed, [=]() { this->bouquetsFindPerform(); });
+	this->bsr_search.close = new QPushButton;
+	this->bsr_search.close->setIconSize(QSize(10, 10));
+	this->bsr_search.close->setIcon(theme::icon("close"));
+	this->bsr_search.close->setFlat(true);
+	this->bsr_search.close->setMaximumWidth(22);
+	this->bsr_search.close->connect(this->bsr_search.close, &QPushButton::pressed, [=]() { this->bouquetsSearchHide(); });
+	bsr_box->addItem(new QSpacerItem(5, 0), 0, 0);
+	bsr_box->addWidget(this->bsr_search.input, 0, 1);
+	bsr_box->addItem(new QSpacerItem(2, 0), 0, 2);
+	bsr_box->addWidget(this->bsr_search.next, 0, 3);
+	bsr_box->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Ignored), 0, 4);
+	bsr_box->addWidget(this->bsr_search.close, 0, 5);
+
+	QGridLayout* lsr_box = new QGridLayout(list_search);
+	lsr_box->setContentsMargins(0, 0, 0, 0);
+	lsr_box->setSpacing(0);
+	this->lsr_search.filter = new QComboBox;
+	this->lsr_search.filter->addItem("Name", 2);
+	this->lsr_search.filter->addItem("Type", 5);
+	this->lsr_search.filter->addItem("CAS", 6);
+	this->lsr_search.filter->addItem("Provider", 7);
+	this->lsr_search.filter->addItem("SAT", 12);
+	this->lsr_search.filter->connect(this->lsr_search.filter, &QComboBox::currentIndexChanged, [=]() { this->listFindReset(); });
+	this->lsr_search.input = new QLineEdit;
+	this->lsr_search.input->setStyleSheet("padding: 2px 0");
+	this->lsr_search.input->connect(this->lsr_search.input, &QLineEdit::textChanged, [=](const QString& text) { this->listFindPerform(text, LIST_FIND::fast); });
+	this->lsr_search.highlight = new QPushButton;
+	this->lsr_search.highlight->setText("Highlight");
+	this->lsr_search.highlight->setCheckable(true);
+	this->lsr_search.highlight->setChecked(true);
+	this->lsr_search.highlight->setStyleSheet("QPushButton, QPushButton:checked { margin: 0 2px; padding: 2px 2ex; border: 1px solid palette(button); border-radius: 2px; background: palette(mid) } QPushButton:checked { background: palette(link) }");
+	this->lsr_search.highlight->connect(this->lsr_search.highlight, &QPushButton::pressed, [=]() { this->listFindHighlightToggle(); });
+	this->lsr_search.next = new QPushButton("Find");
+	this->lsr_search.next->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
+	this->lsr_search.next->connect(this->lsr_search.next, &QPushButton::pressed, [=]() { this->listFindPerform(LIST_FIND::next); });
+	this->lsr_search.prev = new QPushButton("Find Previous");
+	this->lsr_search.prev->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
+	this->lsr_search.prev->connect(this->lsr_search.prev, &QPushButton::pressed, [=]() { this->listFindPerform(LIST_FIND::prev); });
+	this->lsr_search.all = new QPushButton("Find All");
+	this->lsr_search.all->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
+	this->lsr_search.all->connect(this->lsr_search.all, &QPushButton::pressed, [=]() { this->listFindPerform(LIST_FIND::all); });
+	this->lsr_search.close = new QPushButton;
+	this->lsr_search.close->setIconSize(QSize(10, 10));
+	this->lsr_search.close->setIcon(theme::icon("close"));
+	this->lsr_search.close->setFlat(true);
+	this->lsr_search.close->setMaximumWidth(28);
+	this->lsr_search.close->connect(this->lsr_search.close, &QPushButton::pressed, [=]() { this->listSearchHide(); });
+	lsr_box->addWidget(this->lsr_search.filter, 0, 0);
+	lsr_box->addWidget(this->lsr_search.input, 0, 1);
+	lsr_box->addItem(new QSpacerItem(2, 0), 0, 2);
+	lsr_box->addWidget(this->lsr_search.next, 0, 3);
+	lsr_box->addWidget(this->lsr_search.prev, 0, 4);
+	lsr_box->addWidget(this->lsr_search.all, 0, 5);
+	lsr_box->addItem(new QSpacerItem(16, 0), 0, 6);
+	lsr_box->addWidget(this->lsr_search.highlight, 0, 7);
+	lsr_box->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Ignored), 0, 8);
+	lsr_box->addWidget(this->lsr_search.close, 0, 9);
 
 	QToolBar* top_toolbar = new QToolBar;
 	top_toolbar->setIconSize(QSize(32, 32));
@@ -304,11 +352,13 @@ tab::tab(gui* gid, QWidget* wid)
 
 	this->action.list_dnd = new QPushButton;
 	this->action.list_dnd->setText("Drag&&Drop");
+	this->action.list_dnd->setCheckable(true);
 	this->action.list_dnd->setDisabled(true);
 	this->action.list_dnd->connect(this->action.list_dnd, &QPushButton::pressed, [=]() { this->reharmDnD(); });
 
 	this->action.list_ref = new QPushButton;
 	this->action.list_ref->setText("Reference");
+	this->action.list_ref->setCheckable(true);
 	this->action.list_ref->connect(this->action.list_ref, &QPushButton::pressed, [=]() { this->listReferenceToggle(); });
 
 	this->action.bouquets_search = new QPushButton;
@@ -372,7 +422,8 @@ tab::tab(gui* gid, QWidget* wid)
 	side->setLayout(side_box);
 
 	list_layout->addWidget(list_tree);
-	list_layout->setContentsMargins(3, 3, 3, 3);
+	list_layout->setContentsMargins(0, 0, 0, 0);
+	// list_layout->setContentsMargins(3, 3, 3, 3); // #channels_wrap
 	list_wrap->setLayout(list_layout);
 
 	list_box->addWidget(list_wrap);
@@ -741,6 +792,7 @@ void tab::load()
 	bouquets_tree->setAcceptDrops(true);
 	services_tree->setCurrentItem(services_tree->topLevelItem(0));
 	populate(services_tree);
+	updateConnectors();
 	updateCounters();
 }
 
@@ -1208,10 +1260,22 @@ void tab::actionCall(int action)
 		break;
 
 		case gui::TAB_ATS::BouquetsFind:
-			bouquets_search->show();
+			bouquetsSearchShow();
+		break;
+		case gui::TAB_ATS::BouquetsFindNext:
+			bouquetsFindPerform();
 		break;
 		case gui::TAB_ATS::ListFind:
 			listSearchShow();
+		break;
+		case gui::TAB_ATS::ListFindNext:
+			listFindPerform(LIST_FIND::next);
+		break;
+		case gui::TAB_ATS::ListFindPrev:
+			listFindPerform(LIST_FIND::prev);
+		break;
+		case gui::TAB_ATS::ListFindAll:
+			listFindPerform(LIST_FIND::all);
 		break;
 
 		case gui::TAB_ATS::EditTunerSat:
@@ -1229,14 +1293,28 @@ void tab::actionCall(int action)
 	}
 }
 
+void tab::bouquetsSearchShow()
+{
+	debug("bouquetsSearchShow()");
+
+	bouquets_search->show();
+}
+
+void tab::bouquetsSearchHide()
+{
+	debug("bouquetsSearchHide()");
+
+	bouquets_search->hide();
+}
+
 void tab::bouquetsSearchToggle()
 {
-	debug("bouquetsSearchToggle()");
+	// debug("bouquetsSearchToggle()");
 
 	if (bouquets_search->isHidden())
-		bouquets_search->show();
+		bouquetsSearchShow();
 	else
-		bouquets_search->hide();
+		bouquetsSearchHide();
 }
 
 void tab::listSearchShow()
@@ -1244,6 +1322,7 @@ void tab::listSearchShow()
 	debug("listSearchShow()");
 
 	list_search->show();
+	this->lsr_find.timer.start();
 }
 
 void tab::listSearchHide()
@@ -1251,11 +1330,13 @@ void tab::listSearchHide()
 	debug("listSearchHide()");
 
 	list_search->hide();
+	if (! this->lsr_find.highlight)
+		listFindClear();
 }
 
 void tab::listSearchToggle()
 {
-	debug("listSearchToggle()");
+	// debug("listSearchToggle()");
 
 	if (list_search->isHidden())
 		listSearchShow();
@@ -1278,6 +1359,200 @@ void tab::listReferenceToggle()
 		list_reference->hide();
 		this->state.refbox = false;
 	}
+}
+
+void tab::bouquetsFindPerform()
+{
+	if (this->bsr_search.input->text().isEmpty())
+		return;
+
+	bouquetsFindPerform(this->bsr_search.input->text());
+}
+
+void tab::bouquetsFindPerform(const QString& value)
+{
+	bouquets_tree->keyboardSearch(value);
+
+	if (bouquets_tree->currentIndex().isValid())
+		gid->update(gui::TabBouquetsFindNext, true);
+	else
+		gid->update(gui::TabBouquetsFindNext, false);
+	gid->update(gui::TabBouquetsFind, true); //TODO FIX
+}
+
+void tab::listFindPerform(LIST_FIND flag)
+{
+	if (this->lsr_search.input->text().isEmpty())
+		return;
+
+	listFindPerform(this->lsr_search.input->text(), flag);
+}
+
+//TODO FIX
+// multiple selection with shortcut FindNext when search_box is closed
+void tab::listFindPerform(const QString& value, LIST_FIND flag)
+{
+	// QTreeWidgetItem* item list_tree->currentItem() || list_tree->topLevelItem(0)
+	// int column || QTreeWidget::currentColumn()
+	// void QTreeWidget::setCurrentItem(QTreeWidgetItem* item, int column)
+	// void QTreeView::keyboardSearch(const QString& search)
+
+	int column = this->lsr_search.filter->currentData().toInt();
+	int delay = flag == LIST_FIND::fast ? QApplication::keyboardInputInterval() : 0;
+	QString text;
+
+	if (flag == LIST_FIND::fast)
+	{
+		bool keyboardTimeWasValid = this->lsr_find.timer.isValid();
+		qint64 elapsed;
+		if (keyboardTimeWasValid)
+			elapsed = this->lsr_find.timer.restart();
+		else
+			this->lsr_find.timer.start();
+		if (value.isEmpty() || ! keyboardTimeWasValid || elapsed > delay)
+		{
+			text = value;
+
+			listFindClear();
+		}
+		else
+		{
+			text += value;
+		}
+	}
+	else
+	{
+		if (value.isEmpty())
+			return;
+		else
+			text = value;
+	}
+
+	QModelIndexList match;
+
+	if (this->lsr_find.filter != column || this->lsr_find.input != text)
+	{
+		// fast 0 --> start
+		// fast i match(..., ..., ..., 1, ...)
+		//
+		// QModelIndex start;
+		// if (list_tree->currentIndex().isValid())
+		//	start = list_tree->currentIndex();
+		// else
+		// 	start = list_tree->model()->index(0, 0);
+		//
+		QModelIndex start = list_tree->model()->index(0, column);
+		int limit = -1;
+		match = list_tree->model()->match(start, Qt::DisplayRole, text, limit, Qt::MatchFlag::MatchContains);
+
+		if (this->lsr_find.flag == LIST_FIND::all)
+			listFindClear();
+
+		this->lsr_find.curr = -1;
+	}
+	else
+	{
+		match = this->lsr_find.match;
+
+		//TODO
+		/*if (flag == LIST_FIND::fast && this->lsr_find.flag == LIST_FIND::all)
+		{
+			if (list_tree->currentIndex().isValid())
+				return;
+			else
+				this->lsr_find.curr = -1;
+		}*/
+	}
+
+	if (match.count())
+	{
+		LIST_FIND type = flag == LIST_FIND::fast ? LIST_FIND::next : flag;
+		int i = 0;
+		int j = match.size();
+
+		if (type == LIST_FIND::next)
+		{
+			i = int (this->lsr_find.curr);
+			i = i == j - 1 ? 0 : i + 1;
+			list_tree->setCurrentIndex(match.at(i));
+		}
+		else if (type == LIST_FIND::prev)
+		{
+			i = int (this->lsr_find.curr);
+			i = i <= 0 ? j - 1 : i - 1;
+			list_tree->setCurrentIndex(match.at(i));
+		}
+		else if (type == LIST_FIND::all)
+		{
+
+			listFindClear(false);
+			while (i != j)
+			{
+				QTreeWidgetItem* item = list_tree->itemFromIndex(match.at(i));
+				if (this->lsr_find.highlight)
+					item->setSelected(true);
+				else
+					item->setHidden(false);
+				i++;
+			}
+			if (this->lsr_find.highlight)
+				list_tree->scrollTo(match.at(0));
+			i = -1;
+		}
+		// int i = list_tree->indexOfTopLevelItem(QTreeWidgetItem* item);
+		this->lsr_find.curr = i;
+
+		gid->update(gui::TabListFindNext, true);
+		gid->update(gui::TabListFindPrev, true);
+		gid->update(gui::TabListFindAll, true);
+	}
+	else
+	{
+		gid->update(gui::TabListFindNext, false);
+		gid->update(gui::TabListFindPrev, false);
+		gid->update(gui::TabListFindAll, false);
+	}
+	//TODO FIX
+	gid->update(gui::TabListFind, true);
+
+	this->lsr_find.flag = flag;
+	this->lsr_find.filter = column;
+	this->lsr_find.input = text;
+	this->lsr_find.match = match;
+}
+
+void tab::listFindHighlightToggle()
+{
+	listFindReset();
+	this->lsr_find.highlight = ! this->lsr_find.highlight;
+}
+
+void tab::listFindClear(bool hidden)
+{
+	list_tree->clearSelection();
+
+	if (! this->lsr_find.highlight)
+	{
+		int j = list_tree->topLevelItemCount();
+		while (j--)
+		{
+			QTreeWidgetItem* item = list_tree->topLevelItem(j);
+			item->setHidden(! hidden);
+		}
+	}
+}
+
+void tab::listFindReset()
+{
+	listFindClear();
+
+	this->lsr_find.flag = LIST_FIND::fast;
+	this->lsr_find.filter = 0;
+	this->lsr_find.highlight = true;
+	this->lsr_find.curr = -1;
+	this->lsr_find.input = NULL;
+	this->lsr_find.match.clear();
+	this->lsr_find.timer.invalidate();
 }
 
 void tab::listItemCut()
@@ -1658,16 +1933,16 @@ void tab::updateConnectors()
 	if (bouquets_tree->topLevelItemCount())
 	{
 		//TODO connect to QScrollArea Event
-		if (bouquets_tree->verticalScrollBar()->isVisible())
-		{
+		/*if (bouquets_tree->verticalScrollBar()->isVisible())
+		{*/
 			gid->update(gui::TabBouquetsFind, true);
 			this->action.bouquets_search->setEnabled(true);
-		}
+		/*}
 		else
 		{
 			gid->update(gui::TabBouquetsFind, false);
 			this->action.bouquets_search->setEnabled(false);
-		}
+		}*/
 	}
 	else
 	{
@@ -1687,6 +1962,11 @@ void tab::updateConnectors()
 		gid->update(gui::TabListFind, false);
 		this->action.list_search->setDisabled(true);
 	}
+
+	gid->update(gui::TabBouquetsFindNext, false);
+	gid->update(gui::TabListFindNext, false);
+	gid->update(gui::TabListFindPrev, false);
+	gid->update(gui::TabListFindAll, false);
 }
 
 void tab::updateCounters(bool current)

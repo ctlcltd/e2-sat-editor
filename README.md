@@ -54,7 +54,7 @@ You can open [issues](https://github.com/ctlcltd/e2-sat-editor/issues) to report
 ### TODO
 
 - [ ] stable build
-- [ ] search filters
+- [x] search filters
 - [ ] satellites.xml editing
 - [ ] multi-windowed gui
 - [ ] minisite and promotion

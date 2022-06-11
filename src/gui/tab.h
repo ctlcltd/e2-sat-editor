@@ -27,6 +27,10 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map;
 #include <QList>
 #include <QAction>
 #include <QLabel>
+#include <QPushButton>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QElapsedTimer>
 
 #include "../logger.h"
 #include "e2db_gui.h"
@@ -58,6 +62,13 @@ class tab : protected e2se::log_factory
 			Userbouquets,
 			Bouquets,
 			Tuner
+		};
+
+		enum LIST_FIND {
+			fast,
+			next,
+			prev,
+			all
 		};
 
 		enum ITEM_DATA_ROLE {
@@ -94,11 +105,20 @@ class tab : protected e2se::log_factory
 		void reharmDnD();
 		void bouquetItemDelete();
 		void actionCall(int action);
+		void bouquetsSearchHide();
+		void bouquetsSearchShow();
 		void bouquetsSearchToggle();
 		void listSearchShow();
 		void listSearchHide();
 		void listSearchToggle();
 		void listReferenceToggle();
+		void bouquetsFindPerform();
+		void bouquetsFindPerform(const QString& value);
+		void listFindPerform(LIST_FIND flag);
+		void listFindPerform(const QString& value, LIST_FIND flag);
+		void listFindHighlightToggle();
+		void listFindClear(bool hidden = true);
+		void listFindReset();
 		void listItemCut();
 		void listItemCopy(bool cut = false);
 		void listItemPaste();
@@ -164,6 +184,26 @@ class tab : protected e2se::log_factory
 			// list_tree sort
 			pair<int, Qt::SortOrder> sort;
 		} state;
+		struct search
+		{
+			QComboBox* filter;
+			QLineEdit* input;
+			QPushButton* next;
+			QPushButton* prev;
+			QPushButton* all;
+			QPushButton* highlight;
+			QPushButton* close;
+		};
+		struct find
+		{
+			LIST_FIND flag;
+			int filter;
+			bool highlight = true;
+			int curr = -1;
+			QString input;
+			QModelIndexList match;
+			QElapsedTimer timer;
+		};
 		gui* gid;
 		QWidget* cwid;
 		int ttid = -1;
@@ -180,6 +220,9 @@ class tab : protected e2se::log_factory
 		QWidget* bouquets_search;
 		QWidget* list_search;
 		QWidget* list_reference;
+		search lsr_search;
+		search bsr_search;
+		find lsr_find;
 		string filename;
 };
 }

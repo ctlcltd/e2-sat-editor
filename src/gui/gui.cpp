@@ -130,10 +130,16 @@ void gui::menuCtl()
 
 	QMenu* mfind = menu->addMenu(tr("&Find"));
 	gmenu[GUI_CXE::TabListFind] = mfind->addAction(tr("Find Channel…"), [=]() { this->tabAction(TAB_ATS::ListFind); }, QKeySequence::Find);
-	gmenu[GUI_CXE::TabBouquetsFind] = mfind->addAction(tr("Find Bouquet…"), [=]() { this->tabAction(TAB_ATS::BouquetsFind); }, Qt::CTRL | Qt::ALT | Qt::Key_F);
+	gmenu[GUI_CXE::TabListFindNext] = mfind->addAction(tr("Find Next"), [=]() { this->tabAction(TAB_ATS::ListFindNext); }, QKeySequence::FindNext);
+	gmenu[GUI_CXE::TabListFindPrev] = mfind->addAction(tr("Find Previous"), [=]() { this->tabAction(TAB_ATS::ListFindPrev); }, QKeySequence::FindPrevious);
+	gmenu[GUI_CXE::TabListFindAll] = mfind->addAction(tr("Find All"), [=]() { this->tabAction(TAB_ATS::ListFindAll); });
 	mfind->addSeparator();
-	gmenu[GUI_CXE::FindNext] = mfind->addAction(tr("Find Next"), todo, QKeySequence::FindNext);
-	gmenu[GUI_CXE::FindPrevious] = mfind->addAction(tr("Find Previous"), todo, QKeySequence::FindPrevious);
+	gmenu[GUI_CXE::TabBouquetsFind] = mfind->addAction(tr("Find Bouquet…"), [=]() { this->tabAction(TAB_ATS::BouquetsFind); }, Qt::CTRL | Qt::ALT | Qt::Key_F);
+	gmenu[GUI_CXE::TabBouquetsFindNext] = mfind->addAction(tr("Find Next"), [=]() { this->tabAction(TAB_ATS::BouquetsFindNext); });
+	if (QSysInfo::productType().contains(QRegularExpression("macos|osx")))
+		gmenu[GUI_CXE::TabBouquetsFindNext]->setShortcut(Qt::CTRL | Qt::ALT | Qt::Key_G);
+	else
+		gmenu[GUI_CXE::TabBouquetsFindNext]->setShortcut(Qt::CTRL | Qt::ALT | Qt::Key_F3);
 
 	QMenu* mtool = menu->addMenu(tr("Tools"));
 	gmenu[GUI_CXE::ToolsTunersetsSat] = mtool->addAction("Edit satellites.xml", [=]() { this->tabAction(TAB_ATS::EditTunerSat); });
@@ -174,10 +180,11 @@ void gui::tabCtl()
 //	twid->setDocumentMode(true);
 //	twid->setUsesScrollButtons(true);
 //	twid->tabBar()->setDrawBase(false);
+//	twid->tabBar()->setAutoFillBackground(true);
 	twid->tabBar()->setChangeCurrentOnDrag(false);
 
 	//TODO FIX label text color in dark theme
-	twid->setStyleSheet("QTabWidget::tab-bar { left: 0px } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { height: 32px; padding: 5px; background: palette(mid); border: 1px solid transparent; border-radius: 0 } QTabBar::tab:selected { background: palette(highlight) } QTabWidget::tab QLabel { margin-left: 5px } QTabBar { background: red } QTabBar::close-button { margin: 0.4ex; image: url(" + theme::getIcon("close") + ") }");
+	twid->setStyleSheet("QTabWidget::tab-bar { left: 0px } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { height: 32px; padding: 5px; background: palette(mid); border: 1px solid transparent; border-radius: 0 } QTabBar::tab:selected { background: palette(highlight) } QTabWidget::tab QLabel { margin-left: 5px } QTabBar::close-button { margin: 0.4ex; image: url(" + theme::getIcon("close") + ") }");
 	twid->connect(twid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
 	twid->connect(twid, &QTabWidget::tabCloseRequested, [=](int index) { this->closeTab(index); });
 	twid->tabBar()->connect(twid->tabBar(), &QTabBar::tabMoved, [=](int from, int to) { this->tabMoved(from, to); });
@@ -552,6 +559,7 @@ void gui::update()
 	}
 }
 
+//TODO FIX
 void gui::update(int connector, bool flag)
 {
 	// debug("update()", "connector", to_string(connector));
