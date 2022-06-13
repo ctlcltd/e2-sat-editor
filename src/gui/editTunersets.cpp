@@ -262,7 +262,7 @@ void editTunersets::populate()
 			QString cfec = QString::fromStdString(to_string(txp.cfec));
 			item = new QTreeWidgetItem({x, trid, freq, cmod, sr, cfec});
 		}
-		else if (e2db::YTYPE::atsc)
+		else if (yx == e2db::YTYPE::atsc)
 		{
 			QString amod = QString::fromStdString(to_string(txp.amod));
 			item = new QTreeWidgetItem({x, trid, freq, amod});

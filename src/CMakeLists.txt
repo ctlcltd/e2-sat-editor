@@ -11,14 +11,17 @@ find_package(CURL)
 
 qt_add_executable(e2-sat-editor WIN32 MACOSX_BUNDLE
 	logger/logger.cpp
+	e2db/e2db_abstract.cpp
+	e2db/e2db_parser.cpp
+	e2db/e2db_maker.cpp
 	e2db/e2db.cpp
 	ftpcom/ftpcom.cpp
-	gui/toolkit/BouquetEventHandler.cpp
+	gui/toolkit/BouquetsEventHandler.cpp
 	gui/toolkit/ListEventHandler.cpp
 	gui/toolkit/ListEventObserver.cpp
-	gui/toolkit/WidgetWithBackdrop.cpp
 	gui/toolkit/TabBarProxyStyle.h
-	gui/toolkit/WidgetWithBackdrop.h
+	gui/toolkit/TreeStyledItemDelegate.h
+	gui/toolkit/WidgetWithBackdrop.cpp
 	gui/about.cpp
 	gui/channelBook.cpp
 	gui/e2db_gui.cpp

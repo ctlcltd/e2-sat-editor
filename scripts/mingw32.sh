@@ -13,6 +13,12 @@ cleanup () {
 	rm Makefile
 	rm .qmake.stash
 	rm qrc_resources.cpp
+	rm -R build/.rcc
+	rm -R build/CMakeFiles
+	rm -R build/e2-sat-editor_autogen
+	rm build/CMakeCache.txt
+	rm build/cmake_install.cmake
+	rm build/Makefile
 }
 
 if [[ -z $(type -t cmake) ]]; then
