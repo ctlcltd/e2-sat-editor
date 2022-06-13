@@ -12,7 +12,7 @@
 #include <vector>
 #include <map>
 
-#include "../logger.h"
+#include "../logger/logger.h"
 
 using std::vector, std::map;
 
@@ -26,7 +26,7 @@ using std::vector, std::map;
 #include <QListWidget>
 #include <QTableWidget>
 
-#include "WidgetWithBackdrop.h"
+#include "toolkit/WidgetWithBackdrop.h"
 
 using e2se_gui::WidgetWithBackdrop;
 

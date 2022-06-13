@@ -21,7 +21,7 @@ using std::string, std::vector;
 #include <QDialog>
 #include <QGridLayout>
 
-#include "../logger.h"
+#include "../logger/logger.h"
 #include "e2db_gui.h"
 
 namespace e2se_gui

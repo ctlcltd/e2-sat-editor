@@ -10,11 +10,16 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui Widgets)
 find_package(CURL)
 
 qt_add_executable(e2-sat-editor WIN32 MACOSX_BUNDLE
-	logger.cpp
-	e2db.cpp
-	ftpcom.cpp
+	logger/logger.cpp
+	e2db/e2db.cpp
+	ftpcom/ftpcom.cpp
+	gui/toolkit/BouquetEventHandler.cpp
+	gui/toolkit/ListEventHandler.cpp
+	gui/toolkit/ListEventObserver.cpp
+	gui/toolkit/WidgetWithBackdrop.cpp
+	gui/toolkit/TabBarProxyStyle.h
+	gui/toolkit/WidgetWithBackdrop.h
 	gui/about.cpp
-	gui/BouquetEventHandler.cpp
 	gui/channelBook.cpp
 	gui/e2db_gui.cpp
 	gui/editBouquet.cpp
@@ -22,13 +27,10 @@ qt_add_executable(e2-sat-editor WIN32 MACOSX_BUNDLE
 	gui/editTunersets.cpp
 	gui/ftpcom_gui.cpp
 	gui/gui.cpp
-	gui/ListEventHandler.cpp
-	gui/ListEventObserver.cpp
 	gui/settings.cpp
 	gui/tab.cpp
 	gui/theme.cpp
 	gui/tools.cpp
-	gui/WidgetWithBackdrop.cpp
 	main.cpp
 )
 

@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/ftpcom.h
+ * e2-sat-editor/src/ftpcom/ftpcom.h
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -18,7 +18,7 @@
 
 #include <curl/curl.h>
 
-#include "logger.h"
+#include "../logger/logger.h"
 
 using std::string, std::vector, std::unordered_set, std::unordered_map, std::istream;
 

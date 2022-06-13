@@ -16,7 +16,7 @@
 #include <QApplication>
 #include <QSettings>
 
-#include "../ftpcom.h"
+#include "../ftpcom/ftpcom.h"
 
 namespace e2se_gui
 {

@@ -13,7 +13,7 @@
 #define tools_h
 #include <QGridLayout>
 
-#include "../logger.h"
+#include "../logger/logger.h"
 #include "e2db_gui.h"
 #include "editTunersets.h"
 

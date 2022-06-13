@@ -29,9 +29,9 @@
 #include <QClipboard>
 #include <QMimeData>
 
+#include "toolkit/TreeStyledItemDelegate.h"
 #include "tab.h"
 #include "theme.h"
-#include "TreeStyledItemDelegate.h"
 #include "gui.h"
 #include "editBouquet.h"
 #include "editService.h"
@@ -897,8 +897,8 @@ void tab::populate(QTreeWidget* side_tree)
 			item->setIcon(1, theme::spacer(4));
 			if (marker)
 			{
-				item->setFont(2, QFont(ff, fss));
-				item->setFont(5, QFont(ff, -1, QFont::Weight::Bold));
+				item->setFont(2, QFont(ff, fss, QFont::Weight::Bold));
+				item->setFont(5, QFont(ff, fss, QFont::Weight::Bold));
 			}
 			item->setFont(6, QFont(ff, fss));
 			if (! entry.at(6).isEmpty())
@@ -1823,8 +1823,8 @@ void tab::putChannels(vector<QString> channels)
 		item->setIcon(1, theme::spacer(4));
 		if (marker)
 		{
-			item->setFont(2, QFont(ff, fss));
-			item->setFont(5, QFont(ff, -1, QFont::Weight::Bold));
+			item->setFont(2, QFont(ff, fss, QFont::Weight::Bold));
+			item->setFont(5, QFont(ff, fss, QFont::Weight::Bold));
 		}
 		item->setFont(6, QFont(ff, fss));
 		if (! entry.at(6).isEmpty())
@@ -2098,10 +2098,10 @@ void tab::updateRefBox()
 			}
 			if (tx.ttype == 's')
 			{
-				if (dbih->tunersets_pos.count(tx.pos))
+				if (dbih->tuners_pos.count(tx.pos))
 				{
-					string tnid = dbih->tunersets_pos.at(tx.pos);
-					e2db::tuner_sets tn = dbih->tunersets[tnid];
+					string tnid = dbih->tuners_pos.at(tx.pos);
+					e2db::tunersets_table tn = dbih->tuners[0].tables[tnid];
 					ppos = tn.name;
 				}
 

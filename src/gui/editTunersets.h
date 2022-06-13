@@ -14,7 +14,7 @@
 #include <QWidget>
 #include <QTreeWidget>
 
-#include "../logger.h"
+#include "../logger/logger.h"
 #include "e2db_gui.h"
 
 namespace e2se_gui

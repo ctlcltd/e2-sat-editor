@@ -22,7 +22,7 @@ using std::string, std::pair, std::vector;
 #include <QGridLayout>
 #include <QComboBox>
 
-#include "../logger.h"
+#include "../logger/logger.h"
 #include "e2db_gui.h"
 
 namespace e2se_gui

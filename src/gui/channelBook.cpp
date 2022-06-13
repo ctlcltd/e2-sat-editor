@@ -222,10 +222,10 @@ void channelBook::stacker(int vv)
 		if (vv == views::Satellites)
 		{
 			int pos = std::stoi(q.first);
-			if (dbih->tunersets_pos.count(pos))
+			if (dbih->tuners_pos.count(pos))
 			{
-				string tnid = dbih->tunersets_pos.at(pos);
-				e2db::tuner_sets tn = dbih->tunersets[tnid];
+				string tnid = dbih->tuners_pos.at(pos);
+				e2db::tunersets_table tn = dbih->tuners[0].tables[tnid];
 				name = QString::fromStdString(tn.name);
 			}
 			else
@@ -372,11 +372,11 @@ void channelBook::populate()
 			string ppos;
 			if (tx.ttype == 's')
 			{
-				if (dbih->tunersets_pos.count(tx.pos))
+				if (dbih->tuners_pos.count(tx.pos))
 				{
-					string tnid = dbih->tunersets_pos.at(tx.pos);
-					e2db::tuner_sets tn = dbih->tunersets[tnid];
-					ppos = tn.name;
+					string tnid = dbih->tuners_pos.at(tx.pos);
+					e2db::tunersets_table tns = dbih->tuners[0].tables[tnid];
+					ppos = tns.name;
 				}
 				else
 				{

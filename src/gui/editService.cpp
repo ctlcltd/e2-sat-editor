@@ -166,11 +166,11 @@ void editService::transponderLayout()
 	{
 		QString name;
 		int pos = std::stoi(q.first);
-		if (dbih->tunersets_pos.count(pos))
+		if (dbih->tuners_pos.count(pos))
 		{
-			string tnid = dbih->tunersets_pos.at(pos);
-			e2db::tuner_sets tndata = dbih->tunersets[tnid];
-			name = QString::fromStdString(tndata.name);
+			string tnid = dbih->tuners_pos.at(pos);
+			e2db::tunersets_table tns = dbih->tuners[0].tables[tnid];
+			name = QString::fromStdString(tns.name);
 		}
 		else
 		{

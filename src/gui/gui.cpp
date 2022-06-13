@@ -20,9 +20,9 @@
 #include <QPushButton>
 #include <QFileDialog>
 
+#include "toolkit/TabBarProxyStyle.h"
 #include "gui.h"
 #include "theme.h"
-#include "TabBarProxyStyle.h"
 #include "tab.h"
 #include "settings.h"
 #include "about.h"

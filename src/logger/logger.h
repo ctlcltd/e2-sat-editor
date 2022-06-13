@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/logger.h
+ * e2-sat-editor/src/logger/logger.h
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team

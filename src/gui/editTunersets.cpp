@@ -162,9 +162,11 @@ void editTunersets::load()
 		case e2db::YTYPE::atsc: iname += 'a'; break;
 	}
 
+	e2db::tunersets tvs = dbih->tuners[yx];
+
 	for (auto & x : dbih->index[iname])
 	{
-		e2db::tuner_sets tns = dbih->tunersets[x.second];
+		e2db::tunersets_table tns = tvs.tables[x.second];
 		QTreeWidgetItem* item;
 		QString idx = QString::fromStdString(to_string(x.first));
 		QString tnid = QString::fromStdString(x.second);
@@ -214,10 +216,12 @@ void editTunersets::populate()
 
 	debug("populate()", "curr", curr);
 
-	if (! dbih->tunersets.count(curr))
+	e2db::tunersets tvs = dbih->tuners[yx];
+
+	if (! tvs.tables.count(curr))
 		error("populate()", "curr", curr);
 
-	e2db::tuner_sets tn = dbih->tunersets[curr];
+	e2db::tunersets_table tns = tvs.tables[curr];
 
 	list->header()->setSortIndicatorShown(false);
 	list->header()->setSectionsClickable(false);
@@ -227,7 +231,7 @@ void editTunersets::populate()
 
 	for (auto & tp : dbih->index[curr])
 	{
-		e2db::tuner_transponder txp = tn.transponders[tp.second];
+		e2db::tunersets_transponder txp = tns.transponders[tp.second];
 		char ci[7];
 		std::sprintf(ci, "%06d", i++);
 		QString x = QString::fromStdString(ci);

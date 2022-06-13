@@ -32,13 +32,13 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map;
 #include <QComboBox>
 #include <QElapsedTimer>
 
-#include "../logger.h"
+#include "toolkit/BouquetsEventHandler.h"
+#include "toolkit/ListEventHandler.h"
+#include "toolkit/ListEventObserver.h"
+#include "../logger/logger.h"
 #include "e2db_gui.h"
 #include "ftpcom_gui.h"
 #include "tools.h"
-#include "BouquetsEventHandler.h"
-#include "ListEventHandler.h"
-#include "ListEventObserver.h"
 
 namespace e2se_gui
 {

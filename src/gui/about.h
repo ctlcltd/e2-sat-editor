@@ -13,7 +13,7 @@
 #define about_h
 #include <QWidget>
 
-#include "../logger.h"
+#include "../logger/logger.h"
 
 namespace e2se_gui_dialog
 {

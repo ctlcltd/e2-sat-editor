@@ -226,11 +226,11 @@ QStringList e2db::entryTransponder(transponder tx)
 	string ppos;
 	if (tx.ttype == 's')
 	{
-		if (tunersets_pos.count(tx.pos))
+		if (tuners_pos.count(tx.pos))
 		{
-			string tnid = tunersets_pos.at(tx.pos);
-			e2db::tuner_sets tn = tunersets[tnid];
-			ppos = tn.name;
+			string tnid = tuners_pos.at(tx.pos);
+			e2db::tunersets_table tns = tuners[0].tables[tnid];
+			ppos = tns.name;
 		} else {
 			char cposdeg[6];
 			std::sprintf(cposdeg, "%.1f", float (std::abs (tx.pos)) / 10);

@@ -29,7 +29,7 @@ using std::string, std::vector, std::unordered_map;
 #include <QActionGroup>
 #include <QLabel>
 
-#include "../logger.h"
+#include "../logger/logger.h"
 
 namespace e2se_gui
 {

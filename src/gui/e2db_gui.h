@@ -23,7 +23,7 @@ using std::string, std::pair, std::vector, std::unordered_map;
 #include <QRegularExpression>
 #include <QSettings>
 
-#include "../e2db.h"
+#include "../e2db/e2db.h"
 
 namespace e2se_gui
 {
