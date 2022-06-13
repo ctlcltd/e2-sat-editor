@@ -9,8 +9,11 @@
  * @license GNU GPLv3 License
  */
 
+#include <algorithm>
 #include <sstream>
 #include <fstream>
+#include <iostream>
+#include <iomanip>
 #include <filesystem>
 
 #include "e2db_maker.h"

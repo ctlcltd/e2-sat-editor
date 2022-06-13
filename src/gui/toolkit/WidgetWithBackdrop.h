@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/gui/WidgetWithBackdrop.h
+ * e2-sat-editor/src/gui/toolkit/WidgetWithBackdrop.h
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team

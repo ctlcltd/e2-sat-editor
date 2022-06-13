@@ -9,8 +9,11 @@
  * @license GNU GPLv3 License
  */
 
+#include <algorithm>
 #include <unordered_set>
 #include <sstream>
+#include <iostream>
+#include <iomanip>
 
 #include "e2db.h"
 

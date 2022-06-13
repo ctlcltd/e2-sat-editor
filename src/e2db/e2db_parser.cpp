@@ -9,10 +9,13 @@
  * @license GNU GPLv3 License
  */
 
+#include <algorithm>
 #include <sstream>
 #include <fstream>
+#include <iostream>
 #include <filesystem>
 #include <cstdlib>
+#include <cstring>
 
 #include "e2db_parser.h"
 

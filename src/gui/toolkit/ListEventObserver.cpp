@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/gui/ListEventObserver.cpp
+ * e2-sat-editor/src/gui/toolkit/ListEventObserver.cpp
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
