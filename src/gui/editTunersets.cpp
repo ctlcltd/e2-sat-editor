@@ -87,20 +87,20 @@ void editTunersets::layout()
 	switch (yx)
 	{
 		case e2db::YTYPE::sat:
-			ths = {NULL, "Name", "Position"};
-			lhs = {NULL, "TRID", "Frequency", "Polarization", "Symbol Rate", "FEC", "System", "Modulation"};
+			ths = QStringList ({NULL, "Name", "Position"});
+			lhs = QStringList ({NULL, "TRID", "Frequency", "Polarization", "Symbol Rate", "FEC", "System", "Modulation"});
 		break;
 		case e2db::YTYPE::terrestrial:
-			ths = {NULL, "Name", "Country"};
-			lhs = {NULL, "TRID", "Frequency", "Modulation", "Bandwidth"};
+			ths = QStringList ({NULL, "Name", "Country"});
+			lhs = QStringList ({NULL, "TRID", "Frequency", "Modulation", "Bandwidth"});
 		break;
 		case e2db::YTYPE::cable:
-			ths = {NULL, "Name", "Country"};
-			lhs = {NULL, "TRID", "Frequency", "Modulation", "Symbol Rate", "FEC"};
+			ths = QStringList ({NULL, "Name", "Country"});
+			lhs = QStringList ({NULL, "TRID", "Frequency", "Modulation", "Symbol Rate", "FEC"});
 		break;
 		case e2db::YTYPE::atsc:
-			ths = {NULL, "Name"};
-			lhs = {NULL, "TRID", "Frequency", "Modulation"};
+			ths = QStringList ({NULL, "Name"});
+			lhs = QStringList ({NULL, "TRID", "Frequency", "Modulation"});
 		break;
 	}
 

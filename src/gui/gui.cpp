@@ -95,14 +95,9 @@ void gui::menuCtl()
 {
 	debug("menuCtl()");
 
-	QMenuBar* menu = new QMenuBar(nullptr);
+	QMenuBar* menu = new QMenuBar;
 	menu->setNativeMenuBar(true);
-
-	if (! menu->isNativeMenuBar())
-	{
-		menu->setParent(mwid);
-		mfrm->addWidget(menu);
-	}
+	mfrm->setMenuBar(menu);
 
 	QMenu* mfile = menu->addMenu(tr("&File"));
 	gmenu[GUI_CXE::FileNew] = mfile->addAction(tr("&New"), [=]() { this->newTab(""); }, QKeySequence::New);

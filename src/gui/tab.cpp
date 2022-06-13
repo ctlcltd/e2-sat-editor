@@ -252,7 +252,11 @@ tab::tab(gui* gid, QWidget* wid)
 	this->lsr_search.filter->addItem("CAS", 6);
 	this->lsr_search.filter->addItem("Provider", 7);
 	this->lsr_search.filter->addItem("SAT", 12);
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
 	this->lsr_search.filter->connect(this->lsr_search.filter, &QComboBox::currentIndexChanged, [=]() { this->listFindReset(); });
+#else
+	this->lsr_search.filter->connect(this->lsr_search.filter, QOverload<int>::of(&QComboBox::currentIndexChanged), [=]() { this->listFindReset(); });
+#endif
 	this->lsr_search.input = new QLineEdit;
 	this->lsr_search.input->setStyleSheet("padding: 2px 0");
 	this->lsr_search.input->connect(this->lsr_search.input, &QLineEdit::textChanged, [=](const QString& text) { this->listFindPerform(text, LIST_FIND::fast); });
@@ -1488,7 +1492,15 @@ void tab::listFindPerform(const QString& value, LIST_FIND flag)
 			listFindClear(false);
 			while (i != j)
 			{
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
 				QTreeWidgetItem* item = list_tree->itemFromIndex(match.at(i));
+#else
+				QTreeWidgetItem* item;
+				QModelIndex index = match.at(i);
+				if (index.isValid())
+					item = static_cast<QTreeWidgetItem*>(index.internalPointer());
+#endif
+
 				if (this->lsr_find.highlight)
 					item->setSelected(true);
 				else
@@ -1550,7 +1562,7 @@ void tab::listFindReset()
 	this->lsr_find.filter = 0;
 	this->lsr_find.highlight = true;
 	this->lsr_find.curr = -1;
-	this->lsr_find.input = NULL;
+	this->lsr_find.input = "";
 	this->lsr_find.match.clear();
 	this->lsr_find.timer.invalidate();
 }
