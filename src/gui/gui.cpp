@@ -63,6 +63,7 @@ gui::gui(int argc, char* argv[])
 
 	// mroot->setLayoutDirection(Qt::RightToLeft);
 	theme();
+	
 
 	root();
 
@@ -178,8 +179,12 @@ void gui::tabCtl()
 //	twid->tabBar()->setAutoFillBackground(true);
 	twid->tabBar()->setChangeCurrentOnDrag(false);
 
-	//TODO FIX label text color in dark theme
-	twid->setStyleSheet("QTabWidget::tab-bar { left: 0px } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { height: 32px; padding: 5px; background: palette(mid); border: 1px solid transparent; border-radius: 0 } QTabBar::tab:selected { background: palette(highlight) } QTabWidget::tab QLabel { margin-left: 5px } QTabBar::close-button { margin: 0.4ex; image: url(" + theme::getIcon("close") + ") }");
+	QString ttclose_icon = ":/icons/" + QString (theme::absLuma() ? "dark" : "light") + "/close.png";
+	QString ttclose_icon__selected = ":/icons/" + QString (theme::absLuma() ? "dark" : "dark") + "/close.png";
+	if (QSysInfo::productType().contains(QRegularExpression("macos|osx")) && sets->value("preference/theme").toString().isEmpty())
+		ttclose_icon__selected = ":/icons/" + QString (theme::absLuma() ? "dark" : "light") + "/close.png";
+
+	twid->setStyleSheet("QTabWidget::tab-bar { left: 0px } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { height: 32px; padding: 5px; background: palette(mid); border: 1px solid transparent; border-radius: 0 } QTabBar::tab:selected { background: palette(highlight) } QTabBar::tab QLabel { margin-left: 5px } QTabBar::close-button { margin: 0.4ex; image: url(" + ttclose_icon + ") } QTabBar::close-button:selected { image: url(" + ttclose_icon__selected + ") }");
 	twid->connect(twid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
 	twid->connect(twid, &QTabWidget::tabCloseRequested, [=](int index) { this->closeTab(index); });
 	twid->tabBar()->connect(twid->tabBar(), &QTabBar::tabMoved, [=](int from, int to) { this->tabMoved(from, to); });
@@ -254,6 +259,7 @@ int gui::newTab(string filename)
 
 	QTabBar* ttabbar = twid->tabBar();
 	QLabel* ttlabel = new QLabel;
+	ttlabel->setForegroundRole(QPalette::HighlightedText);
 	ttlabel->setText(ttname);
 	ttabbar->setTabButton(index, QTabBar::LeftSide, ttlabel);
 	ttabbar->setTabText(index, "");
@@ -327,6 +333,27 @@ void gui::tabChanged(int index)
 	{
 		ttabs[ttid]->tabSwitched();
 		ttmenu[ttid]->setChecked(true);
+
+		QTabBar* ttabbar = twid->tabBar();
+		for (unsigned int i = 0; i < ttabs.size(); i++)
+		{
+			tab* ttab = ttabs[i];
+			if (ttab != nullptr)
+			{
+				int index = twid->indexOf(ttab->widget);
+				QWidget* ttabbls = ttabbar->tabButton(index, QTabBar::LeftSide);
+				if (QLabel* ttlabel = qobject_cast<QLabel*>(ttabbls))
+					ttlabel->setForegroundRole(QPalette::ButtonText);
+			}
+		}
+		tab* ttab = ttabs[ttid];
+		if (ttab != nullptr)
+		{
+			int index = twid->indexOf(ttab->widget);
+			QWidget* ttabbls = ttabbar->tabButton(index, QTabBar::LeftSide);
+			if (QLabel* ttlabel = qobject_cast<QLabel*>(ttabbls))
+				ttlabel->setForegroundRole(QPalette::HighlightedText);
+		}
 	}
 }
 

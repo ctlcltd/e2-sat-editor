@@ -166,45 +166,43 @@ tab::tab(gui* gid, QWidget* wid)
 	list_search->setStyleSheet("background: palette(mid)");
 	list_reference->setStyleSheet("background: palette(mid)");
 
-	int fsss = (theme::getDefaultFontSize() - 2);
-	QString ff = theme::getDefaultFontFamily();
 	QScrollArea* ref_frm = new QScrollArea(list_reference);
 	QWidget* ref_wrap = new QWidget;
 	QGridLayout* ref_box = new QGridLayout;
 	QLabel* ref0lr = new QLabel("Reference ID");
 	QLabel* ref0tr = new QLabel("< >");
-	ref0lr->setFont(QFont(ff, fsss));
+	ref0lr->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref_fields[LIST_REF::ReferenceID] = ref0tr;
 	ref_box->addWidget(ref0lr, 0, 0, Qt::AlignTop);
 	ref_box->addWidget(ref0tr, 0, 1, Qt::AlignTop);
 	QLabel* ref1ls = new QLabel("Service ID");
 	QLabel* ref1ts = new QLabel("< >");
-	ref1ls->setFont(QFont(ff, fsss));
+	ref1ls->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref_fields[LIST_REF::ServiceID] = ref1ts;
 	ref_box->addWidget(ref1ls, 0, 2, Qt::AlignTop);
 	ref_box->addWidget(ref1ts, 0, 3, Qt::AlignTop);
 	QLabel* ref2lt = new QLabel("Transponder");
 	QLabel* ref2tt = new QLabel("< >");
-	ref2lt->setFont(QFont(ff, fsss));
+	ref2lt->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref_fields[LIST_REF::Transponder] = ref2tt;
 	ref_box->addWidget(ref2lt, 0, 4, Qt::AlignTop);
 	ref_box->addWidget(ref2tt, 0, 5, Qt::AlignTop);
 	ref_box->addItem(new QSpacerItem(0, 12), 1, 0);
 	QLabel* ref3lu = new QLabel("Userbouquets");
 	QLabel* ref3tu = new QLabel("< >");
-	ref3lu->setFont(QFont(ff, fsss));
+	ref3lu->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref_fields[LIST_REF::Userbouquets] = ref3tu;
 	ref_box->addWidget(ref3lu, 2, 0, Qt::AlignTop);
 	ref_box->addWidget(ref3tu, 2, 1, Qt::AlignTop);
 	QLabel* ref4lb = new QLabel("Bouquets");
 	QLabel* ref4tb = new QLabel("< >");
-	ref4lb->setFont(QFont(ff, fsss));
+	ref4lb->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref_fields[LIST_REF::Bouquets] = ref4tb;
 	ref_box->addWidget(ref4lb, 2, 2, Qt::AlignTop);
 	ref_box->addWidget(ref4tb, 2, 3, Qt::AlignTop);
 	QLabel* ref5ln = new QLabel("Tuner");
 	QLabel* ref5tn = new QLabel("< >");
-	ref5ln->setFont(QFont(ff, fsss));
+	ref5ln->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref_fields[LIST_REF::Tuner] = ref5tn;
 	ref_box->addWidget(ref5ln, 2, 4, Qt::AlignTop);
 	ref_box->addWidget(ref5tn, 2, 5, Qt::AlignTop);
@@ -846,9 +844,6 @@ void tab::populate(QTreeWidget* side_tree)
 
 	if (cache[curr_chlist].isEmpty())
 	{
-		int fss = (theme::getDefaultFontSize() - 1);
-		QString ff = theme::getDefaultFontFamily();
-
 		for (auto & ch : dbih->index[curr_chlist])
 		{
 			char ci[7];
@@ -897,10 +892,10 @@ void tab::populate(QTreeWidget* side_tree)
 			item->setIcon(1, theme::spacer(4));
 			if (marker)
 			{
-				item->setFont(2, QFont(ff, fss, QFont::Weight::Bold));
-				item->setFont(5, QFont(ff, fss, QFont::Weight::Bold));
+				item->setFont(2, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
+				item->setFont(5, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
 			}
-			item->setFont(6, QFont(ff, fss));
+			item->setFont(6, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 			if (! entry.at(6).isEmpty())
 			{
 				item->setIcon(6, theme::icon("crypted"));
@@ -1750,8 +1745,6 @@ void tab::putChannels(vector<QString> channels)
 	QList<QTreeWidgetItem*> clist;
 	string curr_chlist = this->state.curr;
 	int i = 0, y;
-	int fss = (theme::getDefaultFontSize() - 1);
-	QString ff = theme::getDefaultFontFamily();
 	QTreeWidgetItem* current = list_tree->currentItem();
 	QTreeWidgetItem* parent = list_tree->invisibleRootItem();
 	i = current != nullptr ? parent->indexOfChild(current) : list_tree->topLevelItemCount();
@@ -1823,10 +1816,10 @@ void tab::putChannels(vector<QString> channels)
 		item->setIcon(1, theme::spacer(4));
 		if (marker)
 		{
-			item->setFont(2, QFont(ff, fss, QFont::Weight::Bold));
-			item->setFont(5, QFont(ff, fss, QFont::Weight::Bold));
+			item->setFont(2, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
+			item->setFont(5, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
 		}
-		item->setFont(6, QFont(ff, fss));
+		item->setFont(6, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 		if (! entry.at(6).isEmpty())
 		{
 			item->setIcon(6, theme::icon("crypted"));

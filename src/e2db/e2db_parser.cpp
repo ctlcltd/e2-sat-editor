@@ -740,7 +740,6 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 
 		string yey;
 		char* token = std::strtok(line.data(), " ");
-		std::cout << line << std::endl;
 		while (token != 0)
 		{
 			string str = string (token);

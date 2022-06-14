@@ -11,22 +11,21 @@
 
 #ifndef theme_h
 #define theme_h
-#include <QSettings>
 #include <QString>
 #include <QIcon>
 
 namespace e2se_gui
 {
-//TODO on change QEvent::PaletteChange()
 class theme
 {
 	public:
 		theme();
+		static bool absLuma();
 		static QIcon icon(QString icon);
-		static QString getIcon(QString icon);
 		static QIcon spacer(int width);
-		static QString getDefaultFontFamily();
-		static int getDefaultFontSize();
+		static QString fontFamily();
+		static int fontSize();
+		static int calcFontSize(int size);
 };
 
 class style
