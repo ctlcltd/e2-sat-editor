@@ -155,7 +155,7 @@ void e2db_abstract::add_tunersets_transponder(int idx, tunersets_table& tn, tune
 		case YTYPE::terrestrial: type = 't'; break;
 		case YTYPE::cable: type = 'c'; break;
 		case YTYPE::atsc: type = 'a'; break;
-		default: return error("add_tunersets_table()", "Error", "Unknown tuner settings type.");
+		default: return error("add_tunersets_transponder()", "Error", "Unknown tuner settings type.");
 	}
 	char trid[12];
 	std::sprintf(trid, "%c:%04x", type, tntxp.freq);

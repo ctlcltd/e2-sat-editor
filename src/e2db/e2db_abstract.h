@@ -298,7 +298,7 @@ struct e2db_abstract
 		//TODO coherence src-idx||count
 		// index <name string, vector<pair<src-idx||count int, chid string>>>
 		unordered_map<string, vector<pair<int, string>>> index;
-		// collisions <chid string, vector<pair<string chid, increment int>>>
+		// collisions <chid string, vector<pair<chid string, increment int>>>
 		unordered_map<string, vector<pair<string, int>>> collisions;
 	protected:
 		// e2db <filename string, full-path string>

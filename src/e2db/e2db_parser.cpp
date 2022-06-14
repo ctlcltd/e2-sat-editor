@@ -609,6 +609,7 @@ void e2db_parser::parse_channel_reference(string data, channel_reference& chref,
 	chref.anum = anum;
 }
 
+//TODO FIX pos = key.find_first_of('\0'); string::npos != 4294967295
 //TODO value xml entities
 void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 {
@@ -724,7 +725,11 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 				tntxp.amod = -1;
 			}
 		}
+#ifndef __MINGW32__
 		else if (tag.empty())
+#else
+		else if (tag.size() < 2)
+#endif
 		{
 			continue;
 		}
@@ -735,6 +740,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 
 		string yey;
 		char* token = std::strtok(line.data(), " ");
+		std::cout << line << std::endl;
 		while (token != 0)
 		{
 			string str = string (token);
@@ -747,9 +753,11 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 				key = str.substr(0, len);
 				std::transform(key.begin(), key.end(), key.begin(), [](unsigned char c) { return std::isspace(c) ? '\0' : c; });
 				key.erase(0, key.find_first_not_of('\0'));
+#ifndef __MINGW32__
 				pos = key.find_first_of('\0');
 				if (pos != string::npos)
 					key.erase(pos, key.size());
+#endif
 				val = str.substr(len + 1);
 				pos = val.find('"');
 				if (pos != string::npos)
@@ -813,9 +821,11 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 				key = str;
 				std::transform(key.begin(), key.end(), key.begin(), [](unsigned char c) { return std::isspace(c) ? '\0' : c; });
 				key.erase(0, key.find_first_not_of('\0'));
+#ifndef __MINGW32__
 				pos = key.find_first_of('\0');
 				if (pos != string::npos)
 					key.erase(pos, key.size());
+#endif
 				if (! key.empty())
 					yey = str;
 			}
