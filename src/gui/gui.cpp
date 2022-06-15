@@ -63,7 +63,6 @@ gui::gui(int argc, char* argv[])
 
 	// mroot->setLayoutDirection(Qt::RightToLeft);
 	theme();
-	
 
 	root();
 
