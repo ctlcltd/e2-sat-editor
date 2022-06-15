@@ -938,7 +938,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 		}
 		else if (add && step == 2)
 		{
-			char tnid[12];
+			char tnid[7];
 			std::sprintf(tnid, "%c:%04x", type, bidx);
 			tunersets_table& tn = tv.tables[tnid];
 			cidx++;

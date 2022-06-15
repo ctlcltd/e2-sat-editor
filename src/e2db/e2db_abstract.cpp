@@ -43,6 +43,7 @@ void e2db_abstract::error(string cmsg, string optk, string optv)
 void e2db_abstract::add_transponder(int idx, transponder& tx)
 {
 	char txid[25];
+	// %4x:%8x
 	std::sprintf(txid, "%x:%x", tx.tsid, tx.dvbns);
 	tx.txid = txid;
 
@@ -55,7 +56,9 @@ void e2db_abstract::add_service(int idx, service& ch)
 {
 	char chid[25];
 	char txid[25];
+	// %4x:%8x
 	std::sprintf(txid, "%x:%x", ch.tsid, ch.dvbns);
+	// %4x:%4x:%8x
 	std::sprintf(chid, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
 	ch.txid = txid;
 	ch.chid = chid;
@@ -97,8 +100,10 @@ void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_refe
 	char chid[25];
 
 	if (chref.marker)
+		// %4d:%2x:%d
 		std::sprintf(chid, "%d:%x:%d", chref.type, chref.anum, ub.index);
 	else
+		// %4x:%4x:%8x
 		std::sprintf(chid, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
 
 	chref.chid = chid;
@@ -136,7 +141,7 @@ void e2db_abstract::add_tunersets_table(int idx, tunersets& tv, tunersets_table&
 		default: return error("add_tunersets_table()", "Error", "Unknown tuner settings type.");
 	}
 	iname += type;
-	char tnid[12];
+	char tnid[7];
 	std::sprintf(tnid, "%c:%04x", type, idx);
 	tn.tnid = tnid;
 	tn.index = idx;
@@ -157,7 +162,7 @@ void e2db_abstract::add_tunersets_transponder(int idx, tunersets_table& tn, tune
 		case YTYPE::atsc: type = 'a'; break;
 		default: return error("add_tunersets_transponder()", "Error", "Unknown tuner settings type.");
 	}
-	char trid[12];
+	char trid[7];
 	std::sprintf(trid, "%c:%04x", type, tntxp.freq);
 	tntxp.trid = trid;
 	tntxp.index = idx;

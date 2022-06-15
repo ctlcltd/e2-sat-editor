@@ -129,6 +129,7 @@ void e2db::merge(e2db* dbih)
 			if (chref.marker)
 			{
 				char chid[25];
+				// %4d:%2x:%d
 				std::sprintf(chid, "%d:%x:%d", chref.type, chref.anum, ub.index);
 				chref.chid = chid;
 				index["mks"].emplace_back(pair (ub.index, chid)); //C++17
@@ -204,6 +205,7 @@ void e2db::edit_transponder(string txid, transponder& tx)
 	debug("edit_transponder()", "txid", txid);
 
 	char nw_txid[25];
+	// %4x:8x
 	std::sprintf(nw_txid, "%x:%x", tx.tsid, tx.dvbns);
 	tx.txid = nw_txid;
 
@@ -256,7 +258,9 @@ void e2db::edit_service(string chid, service& ch)
 
 	char nw_chid[25];
 	char nw_txid[25];
+	// %4x:%8x
 	std::sprintf(nw_txid, "%x:%x", ch.tsid, ch.dvbns);
+	// %4x:%4x:%8x
 	std::sprintf(nw_chid, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
 	ch.txid = nw_txid;
 	ch.chid = nw_chid;
@@ -712,7 +716,7 @@ string e2db::get_reference_id(string chid)
 {
 	// debug("get_reference_id()", "chid", chid);
 
-	char refid[33];
+	char refid[44];
 	int stype, snum, ssid, tsid, dvbns;
 	stype = 0, snum = 0, ssid = 0, tsid = 0, dvbns = 0;
 	string onid = "0";
@@ -729,6 +733,7 @@ string e2db::get_reference_id(string chid)
 		dvbns = ch.dvbns;
 	}
 
+	// %1d:%4d:%4X:%4X:%4X:%4s:%8X:0:0:0:
 	std::sprintf(refid, "%d:%d:%X:%X:%X:%s:%X:0:0:0", 1, stype, snum, ssid, tsid, onid.c_str(), dvbns);
 	return refid;
 }
@@ -737,7 +742,7 @@ string e2db::get_reference_id(channel_reference chref)
 {
 	// debug("get_reference_id()", "chref.chid", chref.chid);
 
-	char refid[33];
+	char refid[44];
 	int ssid, tsid, dvbns;
 	ssid = 0, tsid = 0, dvbns = 0;
 	string onid = "0";
@@ -752,6 +757,7 @@ string e2db::get_reference_id(channel_reference chref)
 		dvbns = ch.dvbns;
 	}
 
+	// %1d:%4d:%4X:%4X:%4X:%4s:%8X:0:0:0:
 	std::sprintf(refid, "%d:%d:%X:%X:%X:%s:%X:0:0:0", 1, chref.type, chref.anum, ssid, tsid, onid.c_str(), dvbns);
 	return refid;
 }

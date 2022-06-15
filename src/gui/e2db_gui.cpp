@@ -233,6 +233,7 @@ QStringList e2db::entryTransponder(transponder tx)
 			ppos = tns.name;
 		} else {
 			char cposdeg[6];
+			// %3d.%1d%C
 			std::sprintf(cposdeg, "%.1f", float (std::abs (tx.pos)) / 10);
 			ppos = (string (cposdeg) + (tx.pos > 0 ? 'E' : 'W'));
 		}
