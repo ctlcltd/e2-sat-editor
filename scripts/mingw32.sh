@@ -26,6 +26,8 @@ if [[ -z $(type -t cmake) ]]; then
 	exit 1;
 fi
 
+[[ "$1" == "cleanup" ]] && cleanup
+
 echo "preparing cmake ..."
 x86_64-w64-mingw32-cmake -B build
 echo "compiling ..."

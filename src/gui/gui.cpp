@@ -12,7 +12,6 @@
 #include <clocale>
 #include <filesystem>
 
-#include <Qt>
 #include <QScreen>
 #include <QSplitter>
 #include <QGroupBox>
@@ -61,8 +60,13 @@ gui::gui(int argc, char* argv[])
 	mwid->setMinimumSize(760, 550);
 	mwid->resize(wsize);
 
-	// mroot->setLayoutDirection(Qt::RightToLeft);
 	theme();
+
+	// mroot->setLayoutDirection(Qt::RightToLeft);
+	if (! theme::isDefault() || ! QSysInfo::productType().contains(QRegularExpression("macos|osx")))
+	{
+		mwid->setStyleSheet("QToolBar { background: palette(mid) }");
+	}
 
 	root();
 
@@ -87,8 +91,8 @@ void gui::root()
 	mfrm->setContentsMargins(0, 0, 0, 0);
 	mfrm->setSpacing(0);
 
-	mfrm->addLayout(mcnt, 1, 0);
-	mfrm->addLayout(mstatusb, 2, 0);
+	mfrm->addLayout(mcnt, 0, 0);
+	mfrm->addLayout(mstatusb, 1, 0);
 }
 
 void gui::menuCtl()
@@ -111,10 +115,16 @@ void gui::menuCtl()
 	gmenu[GUI_CXE::CloseAllTabs] = mfile->addAction("Close All Tabs", [=]() { this->closeAllTabs(); });
 	mfile->addSeparator();
 	mfile->addAction("Settings", [=]() { this->settings(); }, QKeySequence::Preferences);
-	if (QSysInfo::productType().contains(QRegularExpression("macos|osx")))
+#ifdef Q_OS_MAC
 		mfile->addAction(tr("&About"), [=]() { this->about(); });
+#endif
 	mfile->addSeparator();
-	mfile->addAction(tr("&Exit"), [=]() { this->mroot->quit(); }, (QSysInfo::productType().contains("windows") ? QKeySequence::Close : QKeySequence::Quit));
+	QAction* mfile_exit = mfile->addAction(tr("&Exit"), [=]() { this->mroot->quit(); });
+#ifndef Q_OS_WIN
+	mfile_exit->setShortcut(QKeySequence::Quit);
+#else
+	mfile_exit->setShortcut(QKeySequence::Close);
+#endif
 	
 	QMenu* medit = menu->addMenu(tr("&Edit"));
 	gmenu[GUI_CXE::TabListCut] = medit->addAction(tr("Cu&t"), [=]() { this->tabAction(TAB_ATS::ListCut); }, QKeySequence::Cut);
@@ -130,11 +140,7 @@ void gui::menuCtl()
 	gmenu[GUI_CXE::TabListFindAll] = mfind->addAction(tr("Find All"), [=]() { this->tabAction(TAB_ATS::ListFindAll); });
 	mfind->addSeparator();
 	gmenu[GUI_CXE::TabBouquetsFind] = mfind->addAction(tr("Find Bouquet…"), [=]() { this->tabAction(TAB_ATS::BouquetsFind); }, Qt::CTRL | Qt::ALT | Qt::Key_F);
-	gmenu[GUI_CXE::TabBouquetsFindNext] = mfind->addAction(tr("Find Next"), [=]() { this->tabAction(TAB_ATS::BouquetsFindNext); });
-	if (QSysInfo::productType().contains(QRegularExpression("macos|osx")))
-		gmenu[GUI_CXE::TabBouquetsFindNext]->setShortcut(Qt::CTRL | Qt::ALT | Qt::Key_G);
-	else
-		gmenu[GUI_CXE::TabBouquetsFindNext]->setShortcut(Qt::CTRL | Qt::ALT | Qt::Key_F3);
+	gmenu[GUI_CXE::TabBouquetsFindNext] = mfind->addAction(tr("Find Next"), [=]() { this->tabAction(TAB_ATS::BouquetsFindNext); }, Qt::CTRL | Qt::ALT | Qt::Key_G);
 
 	QMenu* mtool = menu->addMenu(tr("Tools"));
 	gmenu[GUI_CXE::ToolsTunersetsSat] = mtool->addAction("Edit satellites.xml", [=]() { this->tabAction(TAB_ATS::EditTunerSat); });
@@ -180,8 +186,10 @@ void gui::tabCtl()
 
 	QString ttclose_icon = ":/icons/" + QString (theme::absLuma() ? "dark" : "light") + "/close.png";
 	QString ttclose_icon__selected = ":/icons/" + QString (theme::absLuma() ? "dark" : "dark") + "/close.png";
-	if (QSysInfo::productType().contains(QRegularExpression("macos|osx")) && sets->value("preference/theme").toString().isEmpty())
+#ifdef Q_OS_MAC
+	if (theme::isDefault())
 		ttclose_icon__selected = ":/icons/" + QString (theme::absLuma() ? "dark" : "light") + "/close.png";
+#endif
 
 	twid->setStyleSheet("QTabWidget::tab-bar { left: 0px } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { height: 32px; padding: 5px; background: palette(mid); border: 1px solid transparent; border-radius: 0 } QTabBar::tab:selected { background: palette(highlight) } QTabBar::tab QLabel { margin-left: 5px } QTabBar::close-button { margin: 0.4ex; image: url(" + ttclose_icon + ") } QTabBar::close-button:selected { image: url(" + ttclose_icon__selected + ") }");
 	twid->connect(twid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
@@ -189,11 +197,12 @@ void gui::tabCtl()
 	twid->tabBar()->connect(twid->tabBar(), &QTabBar::tabMoved, [=](int from, int to) { this->tabMoved(from, to); });
 
 	QPushButton* ttbnew = new QPushButton(theme::icon("add"), tr("New &Tab"));
+	ttbnew->setMinimumHeight(32);
 	ttbnew->setIconSize(QSize(12, 12));
 	ttbnew->setShortcut(QKeySequence::AddTab);
-	ttbnew->setMinimumHeight(32);
-	ttbnew->setStyleSheet("width: 8ex; height: 32px; font: bold 12px"); //TODO FIX height & ::left-corner padding
-	ttbnew->connect(ttbnew, &QPushButton::pressed, [=]() { this->newTab(""); });
+	//TODO FIX height & ::left-corner padding
+	ttbnew->setStyleSheet("width: 8ex; height: 32px; font: bold 12px");
+	ttbnew->connect(ttbnew, &QPushButton::pressed, [=]() { this->newTab(); });
 	twid->setCornerWidget(ttbnew, Qt::TopLeftCorner);
 
 	initialize();
@@ -612,7 +621,11 @@ void gui::setDefaultSets()
 	sets->beginGroup("preference");
 	sets->setValue("askConfirmation", true);
 	sets->setValue("nonDestructiveEdit", true);
-	sets->setValue("fixUnicodeChars", QSysInfo::productType() == "macos" ? true : false);
+#ifndef Q_OS_MAC
+	sets->setValue("fixUnicodeChars", false);
+#else
+	sets->setValue("fixUnicodeChars", true);
+#endif
 	sets->endGroup();
 	
 	sets->beginWriteArray("profile");

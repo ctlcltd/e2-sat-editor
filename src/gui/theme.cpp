@@ -24,20 +24,32 @@ namespace e2se_gui
 
 theme::theme()
 {
-	QString style = QSettings().value("preference/theme").toString();
+	QString style = theme::preference();
 
 	if (style == "light")
 		style::light();
 	else if (style == "dark")
 		style::dark();
+	else
+		style::system();
 
 	QSettings().setValue("application/icons", theme::absLuma());
+}
+
+QString theme::preference()
+{
+	return QSettings().value("preference/theme").toString();
 }
 
 bool theme::absLuma()
 {
 	QColor bgcolor = QGuiApplication::palette().color(QPalette::Window).toHsl();
 	return bgcolor.lightness() > 128 ? false : true;
+}
+
+bool theme::isDefault()
+{
+	return theme::preference().isEmpty();
 }
 
 QIcon theme::icon(QString icon)
@@ -57,7 +69,7 @@ QString theme::fontFamily()
 
 int theme::fontSize()
 {
-	return QFont().pointSize();
+	return QFont("").pointSize();
 }
 
 int theme::calcFontSize(int size)
@@ -66,6 +78,24 @@ int theme::calcFontSize(int size)
 }
 
 
+void style::system()
+{
+#ifndef Q_OS_MAC
+	QPalette palette = QApplication::palette();
+
+	// light
+	if (theme::absLuma())
+	{
+		palette.setColor(QPalette::Mid, QPalette::HighlightedText);
+	}
+	// dark
+	else
+	{
+		palette.setColor(QPalette::Mid, QPalette::Dark);
+	}
+	QApplication::setPalette(palette);
+#endif
+}
 
 void style::light()
 {

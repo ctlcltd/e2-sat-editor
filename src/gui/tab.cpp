@@ -60,7 +60,7 @@ tab::tab(gui* gid, QWidget* wid)
 	QGridLayout* container = new QGridLayout;
 	QHBoxLayout* bottom = new QHBoxLayout;
 
-	//TODO bouquets_box and scrollbar in GTK+
+	//TODO bouquets_box and vertical scrollbar hSize in GTK+
 	QSplitter* splitterc = new QSplitter;
 
 	QVBoxLayout* side_box = new QVBoxLayout;
@@ -74,7 +74,9 @@ tab::tab(gui* gid, QWidget* wid)
 	QGroupBox* bouquets = new QGroupBox("Bouquets");
 	QGroupBox* channels = new QGroupBox("Channels");
 
-	side_box->setSpacing(0);
+	services_box->setContentsMargins(12, 12, 12, 0);
+	bouquets_box->setContentsMargins(12, 12, 12, 12);
+	side_box->setSpacing(4);
 	list_box->setSpacing(0);
 	services_box->setSpacing(0);
 	bouquets_box->setSpacing(0);
@@ -162,11 +164,15 @@ tab::tab(gui* gid, QWidget* wid)
 	bouquets_search->setHidden(true);
 	list_search->setHidden(true);
 	list_reference->setHidden(true);
-	bouquets_search->setStyleSheet("background: palette(mid)");
-	list_search->setStyleSheet("background: palette(mid)");
-	list_reference->setStyleSheet("background: palette(mid)");
+	bouquets_search->setBackgroundRole(QPalette::Mid);
+	list_search->setBackgroundRole(QPalette::Mid);
+	list_reference->setBackgroundRole(QPalette::Mid);
+	bouquets_search->setAutoFillBackground(true);
+	list_search->setAutoFillBackground(true);
+	list_reference->setAutoFillBackground(true);
 
-	QScrollArea* ref_frm = new QScrollArea(list_reference);
+	QGridLayout* ref_frm = new QGridLayout(list_reference);
+	QScrollArea* ref_area = new QScrollArea;
 	QWidget* ref_wrap = new QWidget;
 	QGridLayout* ref_box = new QGridLayout;
 	QLabel* ref0lr = new QLabel("Reference ID");
@@ -206,22 +212,20 @@ tab::tab(gui* gid, QWidget* wid)
 	ref_fields[LIST_REF::Tuner] = ref5tn;
 	ref_box->addWidget(ref5ln, 2, 4, Qt::AlignTop);
 	ref_box->addWidget(ref5tn, 2, 5, Qt::AlignTop);
-	ref_box->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Ignored), 0, 6);
-	ref_box->setColumnStretch(6, 1);
+	ref_box->setRowStretch(2, 1);
+	ref_box->setColumnStretch(5, 1);
 	ref_box->setColumnMinimumWidth(1, 300);
 	ref_box->setColumnMinimumWidth(3, 200);
 	ref_box->setColumnMinimumWidth(5, 200);
+	ref_area->setWidget(ref_wrap);
+	ref_area->setWidgetResizable(true);
 	ref_wrap->setLayout(ref_box);
-	ref_frm->setWidget(ref_wrap);
-	ref_frm->setWidgetResizable(true);
+	ref_frm->addWidget(ref_area);
+	ref_frm->setContentsMargins(0, 0, 0, 0);
 	list_reference->setFixedHeight(100);
-	//TODO FIX
-	ref_frm->setMinimumWidth(9999);
-	// ref_frm->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
-	// list_reference->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
 	QGridLayout* bsr_box = new QGridLayout(bouquets_search);
-	bsr_box->setContentsMargins(0, 0, 0, 0);
+	bsr_box->setContentsMargins(4, 3, 3, 6);
 	bsr_box->setSpacing(0);
 	this->bsr_search.input = new QLineEdit;
 	this->bsr_search.input->connect(this->bsr_search.input, &QLineEdit::textChanged, [=](const QString& text) { this->bouquetsFindPerform(text); });
@@ -233,16 +237,16 @@ tab::tab(gui* gid, QWidget* wid)
 	this->bsr_search.close->setIcon(theme::icon("close"));
 	this->bsr_search.close->setFlat(true);
 	this->bsr_search.close->setMaximumWidth(22);
-	this->bsr_search.close->connect(this->bsr_search.close, &QPushButton::pressed, [=]() { this->bouquetsSearchHide(); });
+	this->bsr_search.close->connect(this->bsr_search.close, &QPushButton::pressed, [=]() { this->bouquetsSearchClose(); });
 	bsr_box->addItem(new QSpacerItem(5, 0), 0, 0);
 	bsr_box->addWidget(this->bsr_search.input, 0, 1);
 	bsr_box->addItem(new QSpacerItem(2, 0), 0, 2);
 	bsr_box->addWidget(this->bsr_search.next, 0, 3);
-	bsr_box->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Ignored), 0, 4);
+	bsr_box->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Preferred), 0, 4);
 	bsr_box->addWidget(this->bsr_search.close, 0, 5);
 
 	QGridLayout* lsr_box = new QGridLayout(list_search);
-	lsr_box->setContentsMargins(0, 0, 0, 0);
+	lsr_box->setContentsMargins(4, 3, 3, 6);
 	lsr_box->setSpacing(0);
 	this->lsr_search.filter = new QComboBox;
 	this->lsr_search.filter->addItem("Name", 2);
@@ -262,7 +266,7 @@ tab::tab(gui* gid, QWidget* wid)
 	this->lsr_search.highlight->setText("Highlight");
 	this->lsr_search.highlight->setCheckable(true);
 	this->lsr_search.highlight->setChecked(true);
-	this->lsr_search.highlight->setStyleSheet("QPushButton, QPushButton:checked { margin: 0 2px; padding: 2px 2ex; border: 1px solid palette(button); border-radius: 2px; background: palette(mid) } QPushButton:checked { background: palette(link) }");
+	this->lsr_search.highlight->setStyleSheet("QPushButton, QPushButton:checked { margin: 0 2px; padding: 2px 2ex; border: 1px solid palette(button); border-radius: 2px; background: palette(mid) } QPushButton:checked { background: rgb(9, 134, 211) }");
 	this->lsr_search.highlight->connect(this->lsr_search.highlight, &QPushButton::pressed, [=]() { this->listFindHighlightToggle(); });
 	this->lsr_search.next = new QPushButton("Find");
 	this->lsr_search.next->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
@@ -278,7 +282,7 @@ tab::tab(gui* gid, QWidget* wid)
 	this->lsr_search.close->setIcon(theme::icon("close"));
 	this->lsr_search.close->setFlat(true);
 	this->lsr_search.close->setMaximumWidth(28);
-	this->lsr_search.close->connect(this->lsr_search.close, &QPushButton::pressed, [=]() { this->listSearchHide(); });
+	this->lsr_search.close->connect(this->lsr_search.close, &QPushButton::pressed, [=]() { this->listSearchClose(); });
 	lsr_box->addWidget(this->lsr_search.filter, 0, 0);
 	lsr_box->addWidget(this->lsr_search.input, 0, 1);
 	lsr_box->addItem(new QSpacerItem(2, 0), 0, 2);
@@ -287,7 +291,7 @@ tab::tab(gui* gid, QWidget* wid)
 	lsr_box->addWidget(this->lsr_search.all, 0, 5);
 	lsr_box->addItem(new QSpacerItem(16, 0), 0, 6);
 	lsr_box->addWidget(this->lsr_search.highlight, 0, 7);
-	lsr_box->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Ignored), 0, 8);
+	lsr_box->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Preferred), 0, 8);
 	lsr_box->addWidget(this->lsr_search.close, 0, 9);
 
 	QToolBar* top_toolbar = new QToolBar;
@@ -335,9 +339,19 @@ tab::tab(gui* gid, QWidget* wid)
 	QWidget* bottom_spacer = new QWidget;
 	bottom_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	bottom_toolbar->addAction("§ Close edit xml", [=]() { this->closeTunersets(); });
+	QPushButton* tools_close_edit = new QPushButton;
+	tools_close_edit->setIconSize(QSize(16, 16));
+	tools_close_edit->setText("Close Editor");
+	tools_close_edit->setIcon(theme::icon("close"));
+	tools_close_edit->setStyleSheet("QPushButton, QPushButton:pressed { padding: 5px 2ex; border: 1px solid transparent; border-radius: 3px; font: bold 14px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
+	tools_close_edit->connect(tools_close_edit, &QPushButton::pressed, [=]() { this->closeTunersets(); });
+
+	this->action.tools_close_edit = bottom_toolbar->addWidget(tools_close_edit);
+	this->action.tools_close_edit->setDisabled(true);
+	this->action.tools_close_edit->setVisible(false);
 	if (gid->sets->value("application/debug", true).toBool())
 	{
+		bottom_toolbar->addSeparator();
 		bottom_toolbar->addAction("§ Load seeds", [=]() { this->loadSeeds(); });
 		bottom_toolbar->addAction("§ Reset", [=]() { this->newFile(); tabChangeName(); });
 	}
@@ -410,8 +424,6 @@ tab::tab(gui* gid, QWidget* wid)
 
 	services_box->addWidget(services_tree);
 	services->setLayout(services_box);
-	//TODO FIX
-	services_tree->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 
 	bouquets_box->addWidget(bouquets_tree);
 	bouquets_box->addWidget(bouquets_search);
@@ -419,7 +431,8 @@ tab::tab(gui* gid, QWidget* wid)
 	bouquets->setLayout(bouquets_box);
 
 	side_box->addWidget(services);
-	side_box->addWidget(bouquets);
+	side_box->addItem(new QSpacerItem(0, 8, QSizePolicy::Preferred, QSizePolicy::Fixed));
+	side_box->addWidget(bouquets, 1);
 	side_box->setContentsMargins(0, 0, 0, 0);
 	side->setLayout(side_box);
 
@@ -484,6 +497,7 @@ void tab::newFile()
 {
 	debug("newFile()");
 
+	closeTunersets();
 	initialize();
 
 	if (this->dbih != nullptr)
@@ -712,6 +726,7 @@ bool tab::readFile(string filename)
 	if (filename.empty())
 		return false;
 
+	closeTunersets();
 	initialize();
 
 	if (this->dbih != nullptr)
@@ -1090,9 +1105,15 @@ void tab::listPendingUpdate()
 
 	// sorting default
 	if (this->state.dnd)
-		QTimer::singleShot(0, [=]() { this->visualReindexList(); });
+	{
+		QTimer::singleShot(0, [=]() {
+			this->visualReindexList();
+		});
+	}
 	else
+	{
 		this->state.reindex = true;
+	}
 	this->state.changed = true;
 }
 
@@ -1311,9 +1332,22 @@ void tab::bouquetsSearchToggle()
 	// debug("bouquetsSearchToggle()");
 
 	if (bouquets_search->isHidden())
+	{
 		bouquetsSearchShow();
+	}
 	else
+	{
 		bouquetsSearchHide();
+	}
+}
+
+void tab::bouquetsSearchClose()
+{
+	// debug("bouquetsSearchClose()");
+
+	QTimer::singleShot(100, [=]() {
+		bouquetsSearchHide();
+	});
 }
 
 void tab::listSearchShow()
@@ -1341,6 +1375,15 @@ void tab::listSearchToggle()
 		listSearchShow();
 	else
 		listSearchHide();
+}
+
+void tab::listSearchClose()
+{
+	// debug("listSearchClose()");
+
+	QTimer::singleShot(100, [=]() {
+		listSearchHide();
+	});
 }
 
 void tab::listReferenceToggle()
@@ -1570,7 +1613,6 @@ void tab::listItemCut()
 }
 
 //TODO Reference ID
-//TODO column CAS and CSV
 void tab::listItemCopy(bool cut)
 {
 	debug("listItemCopy()");
@@ -1587,7 +1629,14 @@ void tab::listItemCopy(bool cut)
 		QStringList data;
 		// skip column 0 = x index
 		for (int i = 1; i < list_tree->columnCount(); i++)
-			data.append(item->data(i, Qt::DisplayRole).toString());
+		{
+			QString qstr = item->data(i, Qt::DisplayRole).toString();
+			// CAS
+			if (i == 6 && ! qstr.isEmpty())
+				qstr.replace(", ", "|").replace(" ", "");
+
+			data.append(qstr);
+		}
 		text.append(data.join(",")); // CSV
 	}
 	clipboard->setText(text.join("\n")); // CSV
@@ -1720,18 +1769,34 @@ void tab::editTunersets(int ytype)
 {
 	debug("editTunersets()", "ytype", to_string(ytype));
 
-	root->itemAt(0)->widget()->hide();
-	tools->editTunersets(dbih, ytype);
+	if (! this->state.tunersets)
+	{
+		root->itemAt(0)->widget()->hide();
+		tools->editTunersets(dbih, ytype);
+		this->state.tunersets = true;
+
+		QTimer::singleShot(100, [=]() {
+			this->action.tools_close_edit->setDisabled(false);
+			this->action.tools_close_edit->setVisible(true);
+		});
+	}
 }
 
 void tab::closeTunersets()
 {
 	debug("closeTunersets()");
 
-	/*if (! root->itemAt(1)->isEmpty())
-		root->itemAt(1)->widget()->hide();*/
-	tools->closeTunersets();
-	root->itemAt(0)->widget()->show();
+	if (this->state.tunersets)
+	{
+		tools->closeTunersets();
+		root->itemAt(0)->widget()->show();
+		this->state.tunersets = false;
+
+		QTimer::singleShot(300, [=]() {
+			this->action.tools_close_edit->setVisible(false);
+			this->action.tools_close_edit->setDisabled(true);
+		});
+	}
 }
 
 //TODO duplicates and new
@@ -2029,7 +2094,8 @@ void tab::updateRefBox()
 			{
 				if (x.second.channels.count(chid))
 				{
-					ubl.append(QString::fromStdString(x.second.name));
+					if (! x.second.name.empty())
+						ubl.append(QString::fromStdString(x.second.name));
 					bss[x.second.pname] = bss[x.second.pname]++;
 				}
 			}
@@ -2186,6 +2252,7 @@ void tab::initialize()
 	this->state.changed = false;
 	this->state.reindex = false;
 	this->state.refbox = list_reference->isVisible();
+	this->state.tunersets = false;
 	this->state.tc = 0;
 	this->state.ti = 0;
 	this->state.curr = "";

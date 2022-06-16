@@ -108,9 +108,11 @@ class tab : protected e2se::log_factory
 		void bouquetsSearchHide();
 		void bouquetsSearchShow();
 		void bouquetsSearchToggle();
+		void bouquetsSearchClose();
 		void listSearchShow();
 		void listSearchHide();
 		void listSearchToggle();
+		void listSearchClose();
 		void listReferenceToggle();
 		void bouquetsFindPerform();
 		void bouquetsFindPerform(const QString& value);
@@ -156,6 +158,7 @@ class tab : protected e2se::log_factory
 			QAction* bouquets_newbs;
 			QAction* list_addch;
 			QAction* list_newch;
+			QAction* tools_close_edit;
 			QPushButton* bouquets_search;
 			QPushButton* list_search;
 			QPushButton* list_ref;
@@ -175,6 +178,8 @@ class tab : protected e2se::log_factory
  			bool reindex;
 			// refbox shown
 			bool refbox;
+			// tools tunerset shown
+			bool tunersets;
 			// side tree focused { services_tree = 0, bouquets_tree = 1 } 
 			int tc;
 			// bouquets_tree current top level index
