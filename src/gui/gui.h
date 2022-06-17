@@ -44,51 +44,51 @@ class gui : protected e2se::log_factory
 			FileNew = 0x00000001,
 			FileOpen = 0x00000002,
 			FileSave = 0x00000004,
-			FileImport = 0x00000008,
-			FileExport = 0x00000010,
-			WindowMinimize = 0x10000000,
-			NewTab = 0x00000020,
-			CloseTab = 0x00000040,
-			CloseAllTabs = 0x0000080,
-			TabListEditService = 0x00000100,
-			TabListEditMarker = 0x00000200,
-			TabListSelectAll = 0x00000800,
-			TabListDelete = 0x00001000,
-			TabListCut = 0x00002000,
-			TabListCopy = 0x00004000,
-			TabListPaste = 0x00008000,
-			TabBouquetsEdit = 0x00010000,
-			TabBouquetsDelete = 0x00020000,
-			TabBouquetsFind = 0x00100000,
-			TabBouquetsFindNext = 0x00200000,
-			TabListFind = 0x01000000,
-			TabListFindNext = 0x02000000,
-			TabListFindPrev = 0x04000000,
-			TabListFindAll = 0x08000000,
-			ToolsTunersetsSat = 0x10000000,
-			ToolsTunersetsTerrestrial = 0x20000000,
-			ToolsTunersetsCable = 0x40000000,
-			ToolsTunersetsAtsc = 0x80000000,
-			init = GUI_CXE::FileNew | GUI_CXE::FileOpen | GUI_CXE::FileSave | GUI_CXE::FileImport | GUI_CXE::FileExport |  GUI_CXE::WindowMinimize | GUI_CXE::NewTab | GUI_CXE::CloseTab | GUI_CXE::CloseAllTabs,
+			FileImport = 0x00000010,
+			FileExport = 0x00000020,
+			TabBouquetsEdit = 0x00000100,
+			TabBouquetsDelete = 0x00000200,
+			TabBouquetsFind = 0x00000400,
+			TabBouquetsFindNext = 0x00000800,
+			TabListEditService = 0x00001000,
+			TabListEditMarker = 0x00002000,
+			TabListDelete = 0x00004000,
+			TabListSelectAll = 0x00008000,
+			TabListCut = 0x00010000,
+			TabListCopy = 0x00020000,
+			TabListPaste = 0x00040000,
+			TabListFind = 0x00100000,
+			TabListFindNext = 0x00200000,
+			TabListFindPrev = 0x00400000,
+			TabListFindAll = 0x00800000,
+			ToolsTunersetsSat = 0x01000000,
+			ToolsTunersetsTerrestrial = 0x02000000,
+			ToolsTunersetsCable = 0x04000000,
+			ToolsTunersetsAtsc = 0x08000000,
+			NewTab = 0x10000000,
+			CloseTab = 0x20000000,
+			CloseAllTabs = 0x40000000,
+			WindowMinimize = 0x80000000,
+			init = GUI_CXE::FileNew | GUI_CXE::FileOpen | GUI_CXE::FileSave | GUI_CXE::FileImport | GUI_CXE::FileExport | GUI_CXE::NewTab | GUI_CXE::CloseTab | GUI_CXE::CloseAllTabs | GUI_CXE::WindowMinimize,
 			deactivated = GUI_CXE::FileNew | GUI_CXE::FileOpen
 		};
 
 		enum TAB_ATS {
-			ListCut,
-			ListCopy,
-			ListPaste,
-			ListDelete,
-			ListSelectAll,
-			BouquetsFind,
-			BouquetsFindNext,
-			ListFind,
-			ListFindNext,
-			ListFindPrev,
-			ListFindAll,
-			EditTunerSat,
-			EditTunerTerrestrial,
-			EditTunerCable,
-			EditTunerAtsc
+			BouquetsFind = GUI_CXE::TabBouquetsFind,
+			BouquetsFindNext = GUI_CXE::TabBouquetsFindNext,
+			ListCut = GUI_CXE::TabListCut,
+			ListCopy = GUI_CXE::TabListCopy,
+			ListPaste = GUI_CXE::TabListPaste,
+			ListDelete = GUI_CXE::TabListSelectAll,
+			ListSelectAll = GUI_CXE::TabListSelectAll,
+			ListFind = GUI_CXE::TabListFind,
+			ListFindNext = GUI_CXE::TabListFindNext,
+			ListFindPrev = GUI_CXE::TabListFindPrev,
+			ListFindAll = GUI_CXE::TabListFindAll,
+			EditTunerSat = GUI_CXE::ToolsTunersetsSat,
+			EditTunerTerrestrial = GUI_CXE::ToolsTunersetsTerrestrial,
+			EditTunerCable = GUI_CXE::ToolsTunersetsCable,
+			EditTunerAtsc = GUI_CXE::ToolsTunersetsAtsc
 		};
 
 		enum COUNTER {
@@ -124,13 +124,18 @@ class gui : protected e2se::log_factory
 		void windowMinimize();
 		void settings();
 		void about();
+		int getActionFlag(GUI_CXE connector);
+		void setActionFlag(GUI_CXE connector, bool flag);
 		int getActionFlags();
-		void setActionFlags(int connector, bool flag);
+		void setActionFlags(int connectors);
+		void setActionFlags(int connectors, bool flag);
 		int getCurrentTabID();
 		int getCurrentTabID(int index);
 		tab* getCurrentTabHandler();
 		void update();
-		void update(int connector, bool flag);
+		void update(GUI_CXE connector, bool flag);
+		void update(int connectors, bool flag);
+		void update(int connectors);
 		void initialize();
 		void setDefaultSets();
 		QSettings* sets;
@@ -139,11 +144,11 @@ class gui : protected e2se::log_factory
 		{
 			// tab id increment
 			int tt = 0;
+			// gui connector flags
+			int xe;
 			// gui previous connector flags
 			int ex;
 		} state;
-		// gui connector flags
-		int xe;
 		QApplication* mroot;
 		QWidget* mwid;
 		QGridLayout* mfrm;

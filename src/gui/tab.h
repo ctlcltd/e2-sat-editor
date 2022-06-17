@@ -48,11 +48,11 @@ class tab : protected e2se::log_factory
 {
 	public:
 		enum LIST_EDIT_ATS {
-			Cut,
-			Copy,
-			Paste,
-			Delete,
-			SelectAll
+			Cut = 0x00010000,
+			Copy = 0x00020000,
+			Paste = 0x00040000,
+			Delete = 0x00004000,
+			SelectAll = 0x00008000
 		};
 
 		enum LIST_REF {
@@ -188,6 +188,8 @@ class tab : protected e2se::log_factory
 			string curr;
 			// list_tree sort
 			pair<int, Qt::SortOrder> sort;
+			// stored gui connector flags
+			int gxe;
 		} state;
 		struct search
 		{

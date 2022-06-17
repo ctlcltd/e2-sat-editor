@@ -17,7 +17,6 @@
 #include <QTimer>
 #include <QList>
 #include <QStyle>
-#include <QScrollBar>
 #include <QMessageBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -498,6 +497,7 @@ void tab::newFile()
 	debug("newFile()");
 
 	closeTunersets();
+	gid->update(gui::init);
 	initialize();
 
 	if (this->dbih != nullptr)
@@ -1415,11 +1415,11 @@ void tab::bouquetsFindPerform(const QString& value)
 {
 	bouquets_tree->keyboardSearch(value);
 
+	gid->update(gui::TabBouquetsFind, true);
 	if (bouquets_tree->currentIndex().isValid())
 		gid->update(gui::TabBouquetsFindNext, true);
 	else
 		gid->update(gui::TabBouquetsFindNext, false);
-	gid->update(gui::TabBouquetsFind, true); //TODO FIX
 }
 
 void tab::listFindPerform(LIST_FIND flag)
@@ -1562,8 +1562,6 @@ void tab::listFindPerform(const QString& value, LIST_FIND flag)
 		gid->update(gui::TabListFindPrev, false);
 		gid->update(gui::TabListFindAll, false);
 	}
-	//TODO FIX
-	gid->update(gui::TabListFind, true);
 
 	this->lsr_find.flag = flag;
 	this->lsr_find.filter = column;
@@ -2033,10 +2031,21 @@ void tab::updateConnectors()
 		this->action.list_search->setDisabled(true);
 	}
 
-	gid->update(gui::TabBouquetsFindNext, false);
+	gid->update(gui::TabBouquetsFindNext, false);	
 	gid->update(gui::TabListFindNext, false);
 	gid->update(gui::TabListFindPrev, false);
 	gid->update(gui::TabListFindAll, false);
+
+	if (dbih->tuners.count(e2db::YTYPE::sat))
+		gid->update(gui::ToolsTunersetsSat, true);
+	if (dbih->tuners.count(e2db::YTYPE::terrestrial))
+		gid->update(gui::ToolsTunersetsTerrestrial, true);
+	if (dbih->tuners.count(e2db::YTYPE::cable))
+		gid->update(gui::ToolsTunersetsCable, true);
+	if (dbih->tuners.count(e2db::YTYPE::atsc))
+		gid->update(gui::ToolsTunersetsAtsc, true);
+
+	this->state.gxe = gid->getActionFlags();
 }
 
 void tab::updateCounters(bool current)
@@ -2230,6 +2239,7 @@ void tab::setTabId(int ttid)
 
 void tab::tabSwitched()
 {
+	gid->setActionFlags(this->state.gxe);
 	updateCounters();
 	updateCounters(true);
 }
@@ -2277,14 +2287,6 @@ void tab::initialize()
 	this->action.list_dnd->setDisabled(true);
 
 	gid->resetStatus();
-
-	//TODO
-	gid->update(gui::TabListPaste, true);
-	gid->update(gui::TabListSelectAll, true);
-	gid->update(gui::ToolsTunersetsSat, true);
-	gid->update(gui::ToolsTunersetsTerrestrial, true);
-	gid->update(gui::ToolsTunersetsCable, true);
-	gid->update(gui::ToolsTunersetsAtsc, true);
 }
 
 void tab::profileComboChanged(int index)

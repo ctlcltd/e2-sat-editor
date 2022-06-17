@@ -237,14 +237,14 @@ void gui::windowFocusChanged()
 	if (mroot->activeWindow())
 	{
 		debug("windowFocusChanged()", "mwind", "focus in");
-		this->xe = this->state.ex;
+		this->state.xe = this->state.ex;
 	}
 	// main window focus out
 	else
 	{
 		debug("windowFocusChanged()", "mwind", "focus out");
-		this->state.ex = this->xe;
-		this->xe = GUI_CXE::deactivated;
+		this->state.ex = this->state.xe;
+		this->state.xe = GUI_CXE::deactivated;
 	}
 	update();
 }
@@ -536,14 +536,29 @@ void gui::about()
 	new e2se_gui_dialog::about(mwid);
 }
 
-int gui::getActionFlags()
+int gui::getActionFlag(GUI_CXE connector)
 {
-	return this->xe;
+	return (this->state.xe & connector);
 }
 
-void gui::setActionFlags(int action, bool flag)
+void gui::setActionFlag(GUI_CXE connector, bool flag)
 {
-	update(action, flag);
+	update(connector, flag);
+}
+
+int gui::getActionFlags()
+{
+	return this->state.xe;
+}
+
+void gui::setActionFlags(int connectors)
+{
+	update(connectors);
+}
+
+void gui::setActionFlags(int connectors, bool flag)
+{
+	update(connectors, flag);
 }
 
 int gui::getCurrentTabID()
@@ -571,7 +586,7 @@ void gui::initialize()
 	debug("initialize()");
 
 	this->state.tt = 0;
-	this->state.ex = this->xe = GUI_CXE::init;
+	this->state.ex = this->state.xe = GUI_CXE::init;
 	newTab();
 	tabChanged(0);
 }
@@ -582,15 +597,14 @@ void gui::update()
 
 	for (auto & x : gmenu)
 	{
-		if (this->xe & x.first)
+		if (this->state.xe & x.first)
 			x.second->setEnabled(true);
 		else
 			x.second->setDisabled(true);
 	}
 }
 
-//TODO FIX
-void gui::update(int connector, bool flag)
+void gui::update(GUI_CXE connector, bool flag)
 {
 	// debug("update()", "connector", to_string(connector));
 
@@ -598,18 +612,41 @@ void gui::update(int connector, bool flag)
 
 	if (flag)
 	{
-		if (action)
+		if (action != nullptr)
 			action->setEnabled(true);
-		if (! (this->xe & connector))
-			this->xe += connector;
+		if (! (this->state.xe & connector))
+			this->state.xe |= connector;
 	}
 	else
 	{
-		if (action)
+		if (action != nullptr)
 			action->setDisabled(true);
-		if (this->xe & connector)
-			this->xe -= connector;
+		if (this->state.xe & connector)
+			this->state.xe &= ~connector;
 	}
+
+	this->state.ex = this->state.xe;
+}
+
+void gui::update(int connectors, bool flag)
+{
+	// debug("update()", "connectors", to_string(connector));
+
+	if (flag)
+		this->state.xe |= connectors;
+	else
+		this->state.xe &= ~connectors;
+
+	this->state.ex = this->state.xe;
+	update();
+}
+
+void gui::update(int connectors)
+{
+	// debug("update()", "connectors", to_string(connector));
+
+	this->state.ex = this->state.xe = connectors;
+	update();
 }
 
 void gui::setDefaultSets()
