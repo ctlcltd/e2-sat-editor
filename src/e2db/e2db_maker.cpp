@@ -38,6 +38,8 @@ void e2db_maker::make_e2db()
 	make_e2db_lamedb();
 	make_e2db_bouquets();
 	make_e2db_userbouquets();
+	if (MAKER_TUNERSETS)
+		make_db_tunersets();
 	end_transaction();
 }
 
@@ -253,6 +255,14 @@ void e2db_maker::make_e2db_userbouquets()
 		make_userbouquet(x.first);
 }
 
+void e2db_maker::make_db_tunersets()
+{
+	debug("make_db_tunersets()");
+
+	for (auto & x: tuners)
+		make_tunersets_xml(x.first);
+}
+
 void e2db_maker::make_bouquet(string bname)
 {
 	debug("make_bouquet()", "bname", bname);
@@ -321,6 +331,195 @@ void e2db_maker::make_userbouquet(string bname)
 	}
 	// ss << endl;
 	e2db_out[bname] = ss.str();
+}
+
+//TODO comments non-destructive edit
+//TODO value xml entities
+void e2db_maker::make_tunersets_xml(int ytype)
+{
+	debug("make_tunersets_xml()", "ytype", to_string(ytype));
+
+	switch (ytype)
+	{
+		case YTYPE::sat:
+		case YTYPE::terrestrial:
+		case YTYPE::cable:
+		case YTYPE::atsc:
+		break;
+		default:
+			return error("make_tunersets_xml()", "Error", "These settings are not supported.");
+	}
+
+	tunersets tv = tuners[ytype];
+	stringstream ss;
+
+	string iname = "tns:";
+	string filename;
+	unordered_map<int, string> tags;
+	switch (ytype)
+	{
+		case YTYPE::sat:
+			iname += 's';
+			filename = "satellites.out.xml";
+			tags[0] = "satellites";
+			tags[1] = "sat";
+		break;
+		case YTYPE::terrestrial:
+			iname += 't';
+			filename = "terrestrial.out.xml";
+			tags[0] = "locations";
+			tags[1] = "terrestrial";
+		break;
+		case YTYPE::cable:
+			iname += 'c';
+			filename = "cables.out.xml";
+			tags[0] = "cables";
+			tags[1] = "cable";
+		break;
+		case YTYPE::atsc:
+			iname += 'a';
+			filename = "atsc.out.xml";
+			tags[0] = "locations";
+			tags[1] = "atsc";
+		break;
+	}
+	tags[2] = "transponder";
+
+	ss << "<?xml version=\"1.0\" encoding=\"" << tv.charset << "\"?>" << endl;
+	ss << '<' << tags[0] << '>' << endl;
+	for (auto & x: index[iname])
+	{
+		tunersets_table tn = tv.tables[x.second];
+
+		ss << "\t" << '<' << tags[1];
+		if (! tn.name.empty())
+			ss << ' ' << "name=\"" << tn.name << "\"";
+		if (tn.feed != -1)
+			ss << ' ' << "satfeed=\"" << (tn.feed ? "true" : "false") << "\"";
+		if (tn.flgs != -1)
+			ss << ' ' << "flags=\"" << tn.flgs << "\"";
+		if (tn.pos != -1)
+			ss << ' ' << "position=\"" << tn.pos << "\"";
+		if (! tn.country.empty())
+			ss << ' ' << "countrycode=\"" << tn.country << "\"";
+		ss << '>' << endl;
+
+		for (auto & x: index[tn.tnid])
+		{
+			tunersets_transponder tntxp = tn.transponders[x.second];
+
+			ss << "\t\t" << '<' << tags[2];
+			switch (tn.ytype)
+			{
+				case YTYPE::sat:
+					if (tntxp.freq != -1)
+						ss << ' ' << "frequency=\"" << int (tntxp.freq * 1e3) << "\"";
+					if (tntxp.sr != -1)
+						ss << ' ' << "symbol_rate=\"" << int (tntxp.sr * 1e3) << "\"";
+					if (tntxp.pol != -1)
+						ss << ' ' << "polarization=\"" << tntxp.pol << "\"";
+					if (tntxp.fec != -1)
+						ss << ' ' << "fec_inner=\"" << tntxp.fec << "\"";
+					if (tntxp.inv != -1)
+						ss << ' ' << "inversion=\"" << tntxp.inv << "\"";
+					if (tntxp.sys != -1)
+						ss << ' ' << "system=\"" << tntxp.sys << "\"";
+					if (tntxp.mod != -1)
+						ss << ' ' << "modulation=\"" << tntxp.mod << "\"";
+					if (tntxp.rol != -1)
+						ss << ' ' << "rolloff=\"" << tntxp.rol << "\"";
+					if (tntxp.pil != -1)
+						ss << ' ' << "pilot=\"" << tntxp.pil << "\"";
+					if (tntxp.isid != -1)
+						ss << ' ' << "is_id=\"" << tntxp.isid << "\"";
+					if (tntxp.mts != -1)
+						ss << ' ' << "mts=\"" << tntxp.mts << "\"";
+					if (tntxp.plsmode != -1)
+						ss << ' ' << "pls_mode=\"" << tntxp.plsmode << "\"";
+					if (tntxp.plscode != -1)
+						ss << ' ' << "pls_code=\"" << tntxp.plscode << "\"";
+					if (tntxp.plsn != -1)
+						ss << ' ' << "plsn=\"" << tntxp.plsn << "\"";
+				break;
+				case YTYPE::terrestrial:
+					if (tntxp.freq != -1)
+						ss << ' ' << "centre_frequency=\"" << int (tntxp.freq * 1e3) << "\"";
+					if (tntxp.band != -1)
+						ss << ' ' << "bandwidth=\"" << tntxp.band << "\"";
+					if (tntxp.hpfec != -1)
+						ss << ' ' << "code_rate_hp=\"" << tntxp.hpfec << "\"";
+					if (tntxp.lpfec != -1)
+						ss << ' ' << "code_rate_lp=\"" << tntxp.lpfec << "\"";
+					if (tntxp.inv != -1)
+						ss << ' ' << "inversion=\"" << tntxp.inv << "\"";
+					if (tntxp.sys != -1)
+						ss << ' ' << "system=\"" << tntxp.sys << "\"";
+					if (tntxp.tmod != -1)
+						ss << ' ' << "constellation=\"" << tntxp.tmod << "\"";
+					if (tntxp.tmx != -1)
+						ss << ' ' << "transmission_mode=\"" << tntxp.tmx << "\"";
+					if (tntxp.guard != -1)
+						ss << ' ' << "guard_interval=\"" << tntxp.guard << "\"";
+					if (tntxp.hier != -1)
+						ss << ' ' << "hierarchy_information=\"" << tntxp.hier << "\"";
+				break;
+				case YTYPE::cable:
+					if (tntxp.freq != -1)
+						ss << ' ' << "frequency=\"" << int (tntxp.freq * 1e3) << "\"";
+					if (tntxp.sr != -1)
+						ss << ' ' << "symbol_rate=\"" << int (tntxp.sr * 1e3) << "\"";
+					if (tntxp.cfec != -1)
+						ss << ' ' << "fec_inner=\"" << tntxp.cfec << "\"";
+					if (tntxp.inv != -1)
+						ss << ' ' << "inversion=\"" << tntxp.inv << "\"";
+					if (tntxp.cmod != -1)
+						ss << ' ' << "modulation=\"" << tntxp.cmod << "\"";
+				break;
+				case YTYPE::atsc:
+					if (tntxp.freq != -1)
+						ss << ' ' << "frequency=\"" << int (tntxp.freq * 1e3) << "\"";
+					if (tntxp.inv != -1)
+						ss << ' ' << "inversion=\"" << tntxp.inv << "\"";
+					if (tntxp.amod != -1)
+						ss << ' ' << "modulation=\"" << tntxp.amod << "\"";
+				break;
+			}
+			ss << ' ' << '/' << '>' << endl;
+		}
+
+		ss << "\t" << '<' << '/' << tags[1] << '>' << endl;
+	}
+	ss << '<' << '/' << tags[0] << '>' << endl;
+
+	string str = ss.str();
+	if (comments.count(iname))
+	{
+		int i = 0;
+		unsigned long pos = 0;
+		for (auto & s : comments[iname])
+		{
+			if (i > 1)
+				break;
+			int n = i == 0 && s.ln == 1 ? s.ln : s.ln + 1;
+			string line;
+			// debug("make_tunersets_xml()", "ln", to_string(s.ln));
+			while (n != i++)
+			{
+				std::getline(ss, line, '>');
+				pos += line.size() + 1;
+			}
+			// debug("make_tunersets_xml()", "line", line);
+			line = "<!--" + s.text + "-->";
+			if (s.type) // multiline
+				line = '\n' + line;
+			str = str.substr(0, pos) + line + str.substr(pos);
+			pos += line.size();
+			// debug("make_tunersets_xml()", "pos", to_string(pos));
+		}
+	}
+	/*ss.seekg(0);
+	e2db_out[filename] = ss.str();*/
+	e2db_out[filename] = str;
 }
 
 bool e2db_maker::write_to_localdir(string localdir, bool overwrite)

@@ -655,6 +655,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 	tv.charset = charset;
 
 	char type;
+	string iname = "tns:";
 	unordered_map<string, int> depth;
 	switch (ytype)
 	{
@@ -680,8 +681,10 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 		break;
 	}
 	depth["transponder"] = 2;
+	iname += type;
 
 	int step = 0;
+	int ln = 1;
 	int bidx = 0;
 	int cidx = 0;
 	string line;
@@ -690,7 +693,15 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 	{
 		//TODO comments non-destructive edit
 		if (line.find("<!") != string::npos)
+		{
+			comment s;
+			s.type = line.find('\n') != string::npos;
+			s.ln = ln;
+			s.text = line.substr(line.find("<!--") + 4);
+			s.text = s.text.substr(0, s.text.length() - 2);
+			comments[iname].emplace_back(s);
 			continue;
+		}
 
 		string tag;
 		bool add = false;
@@ -708,18 +719,19 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 		}
 		if (depth.count(tag))
 		{
+			ln++;
 			step = depth[tag];
 
 			if (step == 1)
 			{
 				tn = tunersets_table ();
 				tn.ytype = ytype;
-				tn.flgs = -1, tn.pos = -1, tn.feed = 0;
+				tn.flgs = -1, tn.pos = -1, tn.feed = -1;
 			}
 			else if (step == 2)
 			{
 				tntxp = tunersets_transponder ();
-				tntxp.freq = -1, tntxp.sr = -1, tntxp.pol = -1, tntxp.fec = -1, tntxp.mod = -1, tntxp.inv = -1, tntxp.sys = -1, tntxp.rol = -1, tntxp.pil = -1, tntxp.isid = -1, tntxp.plsmode = -1, tntxp.plscode = -1;
+				tntxp.freq = -1, tntxp.sr = -1, tntxp.pol = -1, tntxp.fec = -1, tntxp.mod = -1, tntxp.inv = -1, tntxp.sys = -1, tntxp.rol = -1, tntxp.pil = -1, tntxp.isid = -1, tntxp.mts = -1, tntxp.plsmode = -1, tntxp.plscode = -1, tntxp.plsn = -1;
 				tntxp.band = -1, tntxp.hpfec = -1, tntxp.lpfec = -1, tntxp.tmod = -1, tntxp.tmx = -1, tntxp.guard = -1, tntxp.hier = -1;
 				tntxp.cfec = -1, tntxp.cmod = -1;
 				tntxp.amod = -1;
@@ -891,9 +903,9 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 						tntxp.tmod = std::atoi(val.data());
 					else if (key == "transmission_mode")
 						tntxp.tmx = std::atoi(val.data());
-					else if (key == "guard")
+					else if (key == "guard_interval")
 						tntxp.guard = std::atoi(val.data());
-					else if (key == "hier")
+					else if (key == "hierarchy_information")
 						tntxp.hier = std::atoi(val.data());
 				break;
 				case YTYPE::cable:
@@ -904,7 +916,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 					else if (key == "countrycode")
 						tn.country = val;
 					else if (key == "satfeed")
-						tn.feed = (val == "true" ? true : false);
+						tn.feed = (val == "true" ? 1 : 0);
 					else if (key == "frequency")
 						tntxp.freq = int (std::atoi(val.data()) / 1e3);
 					else if (key == "symbol_rate")

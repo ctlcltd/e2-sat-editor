@@ -36,6 +36,7 @@ class e2db_maker : virtual public e2db_abstract
 		void make_e2db_lamedb5();
 		void make_e2db_bouquets();
 		void make_e2db_userbouquets();
+		void make_db_tunersets();
 		void set_index(unordered_map<string, vector<pair<int, string>>> index);
 		void set_transponders(unordered_map<string, transponder> transponders);
 		void set_channels(unordered_map<string, service> services);
@@ -47,6 +48,7 @@ class e2db_maker : virtual public e2db_abstract
 		void make_lamedb(string filename);
 		void make_bouquet(string bname);
 		void make_userbouquet(string bname);
+		void make_tunersets_xml(int ytype);
 	private:
 		// e2db_out <filename string, e2db_file alias(string)>
 		unordered_map<string, e2db_file> e2db_out;

@@ -162,29 +162,29 @@ void editTunersets::load()
 		case e2db::YTYPE::atsc: iname += 'a'; break;
 	}
 
-	e2db::tunersets tvs = dbih->tuners[yx];
+	e2db::tunersets tv = dbih->tuners[yx];
 
 	for (auto & x : dbih->index[iname])
 	{
-		e2db::tunersets_table tns = tvs.tables[x.second];
+		e2db::tunersets_table tn = tv.tables[x.second];
 		QTreeWidgetItem* item;
 		QString idx = QString::fromStdString(to_string(x.first));
 		QString tnid = QString::fromStdString(x.second);
-		QString name = QString::fromStdString(tns.name);
+		QString name = QString::fromStdString(tn.name);
 
 		if (yx == e2db::YTYPE::sat)
 		{
 			char cposdeg[6];
 			// %3d.%1d%C
-			std::sprintf(cposdeg, "%.1f", float (std::abs (tns.pos)) / 10);
-			string ppos = (string (cposdeg) + (tns.pos > 0 ? 'E' : 'W'));
+			std::sprintf(cposdeg, "%.1f", float (std::abs (tn.pos)) / 10);
+			string ppos = (string (cposdeg) + (tn.pos > 0 ? 'E' : 'W'));
 
 			QString pos = QString::fromStdString(ppos);
 			item = new QTreeWidgetItem({idx, name, pos});
 		}
 		else if (yx == e2db::YTYPE::terrestrial || yx == e2db::YTYPE::cable)
 		{
-			QString country = QString::fromStdString(tns.country);
+			QString country = QString::fromStdString(tn.country);
 			item = new QTreeWidgetItem({idx, name, country});
 		}
 		else if (yx == e2db::YTYPE::atsc)
