@@ -41,7 +41,7 @@ void e2db::options()
 	e2db::PARSER_LAMEDB5_PRIOR = sets->value("application/parserLamedb5", false).toBool();
 	e2db::MAKER_LAMEDB5 = sets->value("application/makerLamedb5", true).toBool();
 	e2db::PARSER_TUNERSETS = sets->value("application/parserTunerset", true).toBool();
-	e2db::MAKER_TUNERSETS = sets->value("application/makerTunerset", false).toBool();
+	e2db::MAKER_TUNERSETS = sets->value("application/makerTunerset", true).toBool();
 }
 
 void e2db::error(string cmsg, string optk, string optv)

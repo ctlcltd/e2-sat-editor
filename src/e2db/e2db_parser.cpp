@@ -631,7 +631,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 		if (len == string::npos)
 			len = charset.rfind('\'');
 		charset = charset.substr(0, len);
-		std::transform(charset.begin(), charset.end(), charset.begin(), [](unsigned char c) { return toupper(c); });
+		// std::transform(charset.begin(), charset.end(), charset.begin(), [](unsigned char c) { return toupper(c); });
 	}
 
 	debug("parse_tunersets_xml()", "charset", charset);
@@ -691,7 +691,6 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 
 	while (std::getline(ftunxml, line, '>'))
 	{
-		//TODO comments non-destructive edit
 		if (line.find("<!") != string::npos)
 		{
 			comment s;

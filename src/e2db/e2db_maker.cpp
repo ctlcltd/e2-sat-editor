@@ -333,7 +333,6 @@ void e2db_maker::make_userbouquet(string bname)
 	e2db_out[bname] = ss.str();
 }
 
-//TODO comments non-destructive edit
 //TODO value xml entities
 void e2db_maker::make_tunersets_xml(int ytype)
 {
@@ -484,7 +483,7 @@ void e2db_maker::make_tunersets_xml(int ytype)
 						ss << ' ' << "modulation=\"" << tntxp.amod << "\"";
 				break;
 			}
-			ss << ' ' << '/' << '>' << endl;
+			ss << '/' << '>' << endl;
 		}
 
 		ss << "\t" << '<' << '/' << tags[1] << '>' << endl;
@@ -498,27 +497,20 @@ void e2db_maker::make_tunersets_xml(int ytype)
 		unsigned long pos = 0;
 		for (auto & s : comments[iname])
 		{
-			if (i > 1)
-				break;
-			int n = i == 0 && s.ln == 1 ? s.ln : s.ln + 1;
 			string line;
-			// debug("make_tunersets_xml()", "ln", to_string(s.ln));
-			while (n != i++)
+			while (s.ln != i)
 			{
 				std::getline(ss, line, '>');
 				pos += line.size() + 1;
+				i++;
 			}
-			// debug("make_tunersets_xml()", "line", line);
 			line = "<!--" + s.text + "-->";
 			if (s.type) // multiline
 				line = '\n' + line;
 			str = str.substr(0, pos) + line + str.substr(pos);
 			pos += line.size();
-			// debug("make_tunersets_xml()", "pos", to_string(pos));
 		}
 	}
-	/*ss.seekg(0);
-	e2db_out[filename] = ss.str();*/
 	e2db_out[filename] = str;
 }
 
