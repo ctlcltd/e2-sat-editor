@@ -717,15 +717,16 @@ string e2db::get_reference_id(string chid)
 	// debug("get_reference_id()", "chid", chid);
 
 	char refid[44];
-	int stype, snum, ssid, tsid, dvbns;
-	stype = 0, snum = 0, ssid = 0, tsid = 0, dvbns = 0;
+	int ssid, tsid, dvbns, stype, snum;
+	ssid = 0, tsid = 0, dvbns = 0;
+	stype = 0, snum = 0;
 	string onid = "0";
 
 	if (db.services.count(chid))
 	{
 		service ch = db.services[chid];
-		stype = ch.stype;
-		snum = ch.snum;
+		stype = ch.stype != -1 ? ch.stype : 0;
+		snum = ch.snum != -1 ? ch.snum : 0;
 		ssid = ch.ssid;
 		tsid = ch.tsid;
 		onid = ch.onid.empty() ? onid : ch.onid;
@@ -744,7 +745,9 @@ string e2db::get_reference_id(channel_reference chref)
 
 	char refid[44];
 	int ssid, tsid, dvbns;
+	int type, anum;
 	ssid = 0, tsid = 0, dvbns = 0;
+	type = 0, anum = 0;
 	string onid = "0";
 
 	if (! chref.marker && db.services.count(chref.chid))
@@ -756,9 +759,11 @@ string e2db::get_reference_id(channel_reference chref)
 		std::transform(onid.begin(), onid.end(), onid.begin(), [](unsigned char c) { return toupper(c); });
 		dvbns = ch.dvbns;
 	}
+	type = chref.type != -1 ? chref.type : 0;
+	anum = chref.anum != -1 ? chref.anum : 0;
 
 	// %1d:%4d:%4X:%4X:%4X:%4s:%8X:0:0:0:
-	std::sprintf(refid, "%d:%d:%X:%X:%X:%s:%X:0:0:0", 1, chref.type, chref.anum, ssid, tsid, onid.c_str(), dvbns);
+	std::sprintf(refid, "%d:%d:%X:%X:%X:%s:%X:0:0:0", 1, type, anum, ssid, tsid, onid.c_str(), dvbns);
 	return refid;
 }
 
