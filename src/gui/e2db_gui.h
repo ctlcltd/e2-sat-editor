@@ -60,6 +60,8 @@ class e2db : public ::e2se_e2db::e2db
 		bool prepare(string localdir);
 		bool write(string localdir, bool overwrite);
 		void merge(unordered_map<string, e2se_e2db::e2db_file> files);
+		void importFile(vector<string> filenames);
+		void exportFile(vector<string> filenames);
 		QStringList entryTransponder(transponder tx);
 		QStringList entryService(service ch);
 		QStringList entryMarker(channel_reference chref);

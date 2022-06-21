@@ -218,6 +218,38 @@ void e2db::merge(unordered_map<string, e2se_e2db::e2db_file> files)
 	}
 }
 
+void e2db::importFile(vector<string> filenames)
+{
+	debug("importFile()");
+
+	bool merge = this->get_input().size() != 0 ? true : false;
+	import_file(filenames);
+
+	if (merge)
+	{
+		entries.transponders.clear();
+		entries.services.clear();
+	}
+
+	this->gindex = index;
+
+	for (auto & txdata : db.transponders)
+	{
+		entries.transponders[txdata.first] = entryTransponder(txdata.second);
+	}
+	for (auto & chdata : db.services)
+	{
+		entries.services[chdata.first] = entryService(chdata.second);
+	}
+}
+
+void e2db::exportFile(vector<string> filenames)
+{
+	debug("exportFile()");
+
+	export_file(filenames);
+}
+
 QStringList e2db::entryTransponder(transponder tx)
 {
 	QString freq = QString::fromStdString(to_string(tx.freq));

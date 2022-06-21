@@ -21,6 +21,10 @@ namespace e2se_e2db
 class e2db_maker : virtual public e2db_abstract
 {
 	public:
+
+		inline static bool MAKER_LAMEDB5 = false;
+		inline static bool MAKER_TUNERSETS = true;
+
 		inline static const string LAMEDB4_FORMATS[13] = {"", "transponders\n", "services\n", "end\n", "", "", "\n\t", " ", "\n/\n", "", "\n", "", "\n"};
 		inline static const string LAMEDB5_FORMATS[13] = {"# ", "", "", "", ":", "t", ",", ":", "\n", "s", ",", "\"", "\n"};
 

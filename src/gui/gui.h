@@ -118,8 +118,10 @@ class gui : protected e2se::log_factory
 		void tabChangeName(int ttid, string filename = "");
 		void setStatus(int counters[5]);
 		void resetStatus();
-		void open();
-		void save();
+		void fileOpen();
+		void fileSave();
+		void fileImport();
+		void fileExport();
 		void tabAction(TAB_ATS action);
 		void windowMinimize();
 		void settings();

@@ -85,6 +85,7 @@ class tab : protected e2se::log_factory
 		void saveFile(bool saveas);
 		void importFile();
 		void exportFile();
+		void exportFile(QTreeWidgetItem* item);
 		void addUserbouquet();
 		void editUserbouquet();
 		void addChannel();
@@ -178,8 +179,6 @@ class tab : protected e2se::log_factory
  			bool reindex;
 			// refbox shown
 			bool refbox;
-			// tools tunerset shown
-			bool tunersets;
 			// side tree focused { services_tree = 0, bouquets_tree = 1 } 
 			int tc;
 			// bouquets_tree current top level index
@@ -190,6 +189,10 @@ class tab : protected e2se::log_factory
 			pair<int, Qt::SortOrder> sort;
 			// stored gui connector flags
 			int gxe;
+			// tools tunerset shown
+			bool tunersets;
+			// tools tunersets current type
+			int ty;
 		} state;
 		struct search
 		{

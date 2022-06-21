@@ -31,11 +31,6 @@ struct e2db_abstract
 {
 	public:
 
-		inline static bool PARSER_LAMEDB5_PRIOR = false;
-		inline static bool MAKER_LAMEDB5 = false;
-		inline static bool PARSER_TUNERSETS = true;
-		inline static bool MAKER_TUNERSETS = true;
-
 		inline static const string SAT_POL[4] = {"H", "V", "L", "R"};
 		inline static const string SAT_FEC[11] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "3/5", "4/5", "8/9", "9/10"};
 		inline static const string SAT_INV[3] = {"Auto", "On", "Off"};

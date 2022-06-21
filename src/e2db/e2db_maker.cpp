@@ -555,8 +555,6 @@ bool e2db_maker::write(string localdir, bool overwrite)
 
 unordered_map<string, e2db_file> e2db_maker::get_output() {
 	debug("get_output()");
-	
-	make_e2db();
 
 	return e2db_out;
 }

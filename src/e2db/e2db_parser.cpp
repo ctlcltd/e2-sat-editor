@@ -185,9 +185,13 @@ void e2db_parser::parse_e2db_lamedb(istream& ilamedb)
 
 	switch (dbver)
 	{
+		case 2:
+		case 3:
+			error("parse_e2db_lamedb()", "Error", "Unsupported services file format.");
+		break;
 		case 4: parse_e2db_lamedb4(ilamedb); break;
 		case 5: parse_e2db_lamedb5(ilamedb); break;
-		default: error("parse_e2db_lamedb()", "Error", "Unknown database format.");
+		default: error("parse_e2db_lamedb()", "Error", "Unknown services file format.");
 	}
 }
 

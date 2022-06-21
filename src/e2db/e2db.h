@@ -20,11 +20,30 @@ namespace e2se_e2db
 class e2db : public e2db_parser, public e2db_maker
 {
 	public:
+		enum FPORTS {
+			allServices = 0x1000,
+			allServices2_2 = 0x1222,
+			allServices2_3 = 0x1223,
+			allServices2_4 = 0x1224,
+			allServices2_5 = 0x1225,
+			allBouquets = 0x2000,
+			allUserbouquets = 0x4000,
+			allTunersets = 0x8000,
+			singleBouquet = 0x0002,
+			singleBouquetAll = 0x0400,
+			singleUserbouquet = 0x0004,
+			singleTunersets = 0x0008,
+			_default = 0x0000
+		};
+
 		e2db();
 		virtual ~e2db() = default;
 		void merge(e2db* dbih);
-		void import_file();
-		void export_file();
+		void import_file(vector<string> filenames);
+		void import_file(FPORTS fpi, e2db* dbih, e2db_file file, string path);
+		void export_file(vector<string> filenames);
+		void export_file(FPORTS fpo, string path);
+		FPORTS filetype_detect(string path);
 		void add_transponder(transponder& tx);
 		void edit_transponder(string txid, transponder& tx);
 		void remove_transponder(string txid);

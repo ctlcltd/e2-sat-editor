@@ -568,6 +568,12 @@ void tab::importFile()
 	vector<string> filenames;
 
 	filenames = gid->importFileDialog();
+	if (! filenames.empty())
+	{
+		dbih->importFile(filenames);
+		initialize();
+		load();
+	}
 }
 
 void tab::exportFile()
@@ -576,6 +582,92 @@ void tab::exportFile()
 
 	string filename;
 	string dirname = gid->exportFileDialog(filename);
+
+	vector<string> filenames;
+
+	// tools: tunersets
+	if (this->state.tunersets)
+	{
+		string filename;
+
+		switch (this->state.ty)
+		{
+			case e2db::YTYPE::sat:
+				filename = "satellites.xml";
+			break;
+			case e2db::YTYPE::terrestrial:
+				filename = "terrestrial.xml";
+			break;
+			case e2db::YTYPE::cable:
+				filename = "cables.xml";
+			break;
+			case e2db::YTYPE::atsc:
+				filename = "atsc.xml";
+			break;
+		}
+
+		if (! filename.empty())
+			filenames.push_back(dirname + '/' + filename);
+	}
+	// services
+	else if (this->state.tc == 0)
+	{
+		filenames.push_back(dirname + '/' + "lamedb");
+	}
+	// bouquets
+	else if (this->state.tc == 1)
+	{
+		QList<QTreeWidgetItem*> selected = bouquets_tree->selectedItems();
+		
+		if (selected.empty())
+		{
+			return;
+		}
+		for (auto & item : selected)
+		{
+			QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
+			QString qchlist = tdata["id"].toString();
+			string chlist = qchlist.toStdString();
+
+			filenames.push_back(dirname + '/' + chlist);
+		}
+	}
+
+	if (! filenames.empty())
+		dbih->exportFile(filenames);
+}
+
+void tab::exportFile(QTreeWidgetItem* item)
+{
+	string chlist;
+	if (item == nullptr)
+	{
+		return;
+	}
+	// services
+	else if (this->state.tc == 0)
+	{
+		chlist = "lamedb";
+	}
+	// bouquets
+	else if (this->state.tc == 1)
+	{
+		QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
+		QString qchlist = tdata["id"].toString();
+		chlist = qchlist.toStdString();
+	}
+
+	debug("exportFile()", "item", chlist);
+
+	string filename;
+	string dirname = gid->exportFileDialog(filename);
+
+	vector<string> filenames;
+
+	if (! empty(chlist))
+		filenames.push_back(dirname + '/' + chlist);
+	if (! filenames.empty())
+		dbih->exportFile(filenames);
 }
 
 void tab::addUserbouquet()
@@ -833,7 +925,9 @@ void tab::populate(QTreeWidget* side_tree)
 
 	QTreeWidgetItem* selected = side_tree->currentItem();
 	if (selected == NULL)
+	{
 		return;
+	}
 	if (selected != NULL)
 	{
 		QVariantMap tdata = selected->data(0, Qt::UserRole).toMap();
@@ -911,10 +1005,10 @@ void tab::populate(QTreeWidget* side_tree)
 				item->setFont(5, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
 			}
 			item->setFont(6, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
-			if (! entry.at(6).isEmpty())
+			/*if (! entry.at(6).isEmpty())
 			{
 				item->setIcon(6, theme::icon("crypted"));
-			}
+			}*/
 			cache[curr_chlist].append(item);
 		}
 	}
@@ -1234,8 +1328,9 @@ void tab::bouquetItemDelete()
 	QList<QTreeWidgetItem*> selected = bouquets_tree->selectedItems();
 	
 	if (selected.empty())
+	{
 		return;
-
+	}
 	for (auto & item : selected)
 	{
 		QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
@@ -1772,6 +1867,7 @@ void tab::editTunersets(int ytype)
 		root->itemAt(0)->widget()->hide();
 		tools->editTunersets(dbih, ytype);
 		this->state.tunersets = true;
+		this->state.ty = ytype;
 
 		QTimer::singleShot(100, [=]() {
 			this->action.tools_close_edit->setDisabled(false);
@@ -1789,6 +1885,7 @@ void tab::closeTunersets()
 		tools->closeTunersets();
 		root->itemAt(0)->widget()->show();
 		this->state.tunersets = false;
+		this->state.ty = -1;
 
 		QTimer::singleShot(300, [=]() {
 			this->action.tools_close_edit->setVisible(false);
@@ -2199,14 +2296,23 @@ void tab::showBouquetEditContextMenu(QPoint &pos)
 {
 	debug("showBouquetEditContextMenu()");
 
+	QMenu* bouquet_edit = new QMenu;
+	QAction* bouquet_export = new QAction("Export");
 	// bouquet: tv | radio
 	if (this->state.ti != -1)
-		return;
-
-	QMenu* bouquet_edit = new QMenu;
-	bouquet_edit->addAction("Edit Userbouquet", [=]() { this->editUserbouquet(); });
+	{
+		bouquet_export->connect(bouquet_export, &QAction::triggered, [=]() { this->exportFile(); });
+	}
+	// userbouquet
+	else
+	{
+		bouquet_edit->addAction("Edit Userbouquet", [=]() { this->editUserbouquet(); });
+		bouquet_edit->addSeparator();
+		bouquet_edit->addAction("Delete", [=]() { this->bouquetItemDelete(); });
+		bouquet_export->connect(bouquet_export, &QAction::triggered, [=]() { this->exportFile(); });
+	}
 	bouquet_edit->addSeparator();
-	bouquet_edit->addAction("Delete", [=]() { this->bouquetItemDelete(); });
+	bouquet_edit->addAction(bouquet_export);
 
 	bouquet_edit->exec(bouquets_tree->mapToGlobal(pos));
 }
@@ -2262,11 +2368,12 @@ void tab::initialize()
 	this->state.changed = false;
 	this->state.reindex = false;
 	this->state.refbox = list_reference->isVisible();
-	this->state.tunersets = false;
 	this->state.tc = 0;
 	this->state.ti = 0;
 	this->state.curr = "";
 	this->state.sort = pair (-1, Qt::AscendingOrder); //C++17
+	this->state.tunersets = false;
+	this->state.ty = -1;
 
 	bouquets_tree->clear();
 	bouquets_tree->setDragEnabled(false);
@@ -2331,6 +2438,7 @@ void tab::ftpUpload()
 	
 	if (ftpHandle())
 	{
+		dbih->make_e2db();
 		unordered_map<string, e2se_ftpcom::ftpcom_file> files = dbih->get_output();
 
 		if (files.empty())

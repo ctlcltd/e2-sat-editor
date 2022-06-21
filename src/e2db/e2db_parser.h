@@ -23,6 +23,10 @@ namespace e2se_e2db
 class e2db_parser : virtual public e2db_abstract
 {
 	public:
+
+		inline static bool PARSER_LAMEDB5_PRIOR = false;
+		inline static bool PARSER_TUNERSETS = true;
+
 		e2db_parser();
 		virtual ~e2db_parser() = default;
 		void parse_e2db();

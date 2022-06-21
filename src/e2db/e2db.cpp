@@ -12,12 +12,13 @@
 #include <algorithm>
 #include <unordered_set>
 #include <sstream>
+#include <fstream>
 #include <iostream>
 #include <iomanip>
 
 #include "e2db.h"
 
-using std::unordered_set, std::set_difference, std::inserter, std::stringstream, std::to_string, std::setfill, std::setw;
+using std::unordered_set, std::set_difference, std::inserter, std::stringstream, std::ifstream, std::ofstream, std::streamsize, std::numeric_limits, std::to_string, std::setfill, std::setw;
 
 namespace e2se_e2db
 {
@@ -182,14 +183,179 @@ void e2db::merge(e2db* dbih)
 	index.clear();
 }
 
-void e2db::import_file()
+void e2db::import_file(vector<string> filenames)
 {
-	debug("import_file()");
+	debug("import_file()", "",  "0");
+
+	bool merge = this->get_input().size() != 0 ? true : false;
+	e2db* dbih = merge ? new e2db : this;
+
+	for (auto & w : filenames)
+	{
+		FPORTS fpi = filetype_detect(w);
+		ifstream ifile (w);
+
+		e2db_file file;
+		string line;
+		while (std::getline(ifile, line))
+			file.append(line + '\n');
+		import_file(fpi, dbih, file, w);
+	}
+	if (merge)
+	{
+		this->merge(dbih);
+		delete dbih;
+	}
 }
 
-void e2db::export_file()
+void e2db::import_file(FPORTS fpi, e2db* dbih, e2db_file file, string path)
 {
-	debug("export_file()");
+	debug("import_file()", "", "1");
+
+	string filename = std::filesystem::path(path).filename().u8string();
+	stringstream ifile;
+	ifile.write(&file[0], file.size());
+
+	switch (fpi)
+	{
+		case FPORTS::allServices:
+			dbih->parse_e2db_lamedb(ifile);
+		break;
+		case FPORTS::allServices2_2:
+		case FPORTS::allServices2_3:
+			return error("import_file()", "Error", "Unsupported services file format.");
+		break;
+		case FPORTS::allServices2_4:
+			dbih->parse_e2db_lamedb4(ifile);
+		break;
+		case FPORTS::allServices2_5:
+			dbih->parse_e2db_lamedb5(ifile);
+		break;
+		case FPORTS::singleTunersets:
+		case FPORTS::allTunersets:
+			if (filename == "satellites.xml")
+				dbih->parse_tunersets_xml(YTYPE::sat, ifile);
+			else if (filename == "terrestrial.xml")
+				dbih->parse_tunersets_xml(YTYPE::terrestrial, ifile);
+			else if (filename == "cables.xml")
+				dbih->parse_tunersets_xml(YTYPE::cable, ifile);
+			else if (filename == "atsc.xml")
+				dbih->parse_tunersets_xml(YTYPE::atsc, ifile);
+		break;
+		case FPORTS::singleBouquet:
+		case FPORTS::allBouquets:
+			dbih->parse_e2db_bouquet(ifile, filename);
+		break;
+		case FPORTS::singleUserbouquet:
+		case FPORTS::allUserbouquets:
+			dbih->parse_e2db_userbouquet(ifile, filename);
+		break;
+		case FPORTS::singleBouquetAll:
+			dbih->parse_e2db_bouquet(ifile, filename);
+
+			// TODO ifile
+			// for (auto & w : dbih->bouquets[filename].userbouquets)
+			// 	dbih->parse_e2db_bouquet(ifile, w);
+		break;
+		case FPORTS::_default:
+			dbih->read(filename);
+		break;
+	}
+}
+
+void e2db::export_file(vector<string> filenames)
+{
+	debug("export_file()", "", "0");
+
+	for (auto & w : filenames)
+	{
+		FPORTS fpo = filetype_detect(w);
+		export_file(fpo, w);
+
+		if (this->get_output().count(w))
+		{
+			ofstream out (w);
+			out << this->get_output()[w];
+			out.close();
+		}
+	}
+}
+
+void e2db::export_file(FPORTS fpo, string path)
+{
+	debug("export_file()", "", "1");
+
+	string filename = std::filesystem::path(path).filename().u8string();
+
+	switch (fpo)
+	{
+		case FPORTS::allServices:
+			make_e2db_lamedb();
+		break;
+		case FPORTS::allServices2_2:
+		case FPORTS::allServices2_3:
+			return error("export_file()", "Error", "Unsupported services file format.");
+		break;
+		case FPORTS::allServices2_4:
+			make_e2db_lamedb4();
+		break;
+		case FPORTS::allServices2_5:
+			make_e2db_lamedb5();
+		break;
+		case FPORTS::singleTunersets:
+		case FPORTS::allTunersets:
+			if (filename == "satellites.xml")
+				make_tunersets_xml(YTYPE::sat);
+			else if (filename == "terrestrial.xml")
+				make_tunersets_xml(YTYPE::terrestrial);
+			else if (filename == "cables.xml")
+				make_tunersets_xml(YTYPE::cable);
+			else if (filename == "atsc.xml")
+				make_tunersets_xml(YTYPE::atsc);
+		break;
+		case FPORTS::singleBouquet:
+		case FPORTS::allBouquets:
+			make_bouquet(filename);
+		break;
+		case FPORTS::singleUserbouquet:
+		case FPORTS::allUserbouquets:
+			make_userbouquet(filename);
+		break;
+		case FPORTS::singleBouquetAll:
+			make_bouquet(filename);
+
+			for (auto & w: bouquets[filename].userbouquets)
+				make_userbouquet(w);
+		break;
+		case FPORTS::_default:
+			write(filename, false);
+		break;
+	}
+}
+
+e2db::FPORTS e2db::filetype_detect(string path)
+{
+	string filename = std::filesystem::path(path).filename().u8string();
+
+	if (filename == "lamedb")
+		return FPORTS::allServices; // autodetect
+	else if (filename == "lamedb5")
+		return FPORTS::allServices2_5;
+	else if (filename == "services")
+		return FPORTS::allServices; // autodetect
+	else if (filename == "satellites.xml")
+		return FPORTS::singleTunersets;
+	else if (filename == "terrestrial.xml")
+		return FPORTS::singleTunersets;
+	else if (filename == "cables.xml")
+		return FPORTS::singleTunersets;
+	else if (filename == "atsc.xml")
+		return FPORTS::singleTunersets;
+	else if (filename.find("bouquets.") != string::npos)
+		return FPORTS::singleBouquet;
+	else if (filename.find("userbouquet.") != string::npos)
+		return FPORTS::singleUserbouquet;
+	return FPORTS::_default;
 }
 
 void e2db::add_transponder(transponder& tx)

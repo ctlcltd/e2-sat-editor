@@ -105,11 +105,11 @@ void gui::menuCtl()
 
 	QMenu* mfile = menu->addMenu(tr("&File"));
 	gmenu[GUI_CXE::FileNew] = mfile->addAction(tr("&New"), [=]() { this->newTab(""); }, QKeySequence::New);
-	gmenu[GUI_CXE::FileOpen] = mfile->addAction(tr("&Open"), [=]() { this->open(); }, QKeySequence::Open);
-	gmenu[GUI_CXE::FileSave] = mfile->addAction(tr("&Save"), [=]() { this->save(); }, QKeySequence::Save);
+	gmenu[GUI_CXE::FileOpen] = mfile->addAction(tr("&Open"), [=]() { this->fileOpen(); }, QKeySequence::Open);
+	gmenu[GUI_CXE::FileSave] = mfile->addAction(tr("&Save"), [=]() { this->fileSave(); }, QKeySequence::Save);
 	mfile->addSeparator();
-	gmenu[GUI_CXE::FileImport] = mfile->addAction("Import", todo);
-	gmenu[GUI_CXE::FileExport] = mfile->addAction("Export", todo);
+	gmenu[GUI_CXE::FileImport] = mfile->addAction("Import", [=]() { this->fileImport(); });
+	gmenu[GUI_CXE::FileExport] = mfile->addAction("Export", [=]() { this->fileExport(); });
 	mfile->addSeparator();
 	gmenu[GUI_CXE::CloseTab] = mfile->addAction("Close Tab", [=]() { this->closeTab(-1); });
 	gmenu[GUI_CXE::CloseAllTabs] = mfile->addAction("Close All Tabs", [=]() { this->closeAllTabs(); });
@@ -417,11 +417,14 @@ vector<string> gui::importFileDialog()
 	vector<string> filenames;
 
 	//TODO ~ $HOME
-	QStringList files = QFileDialog::getOpenFileNames(nullptr, "Select one or more files to open", "~", "Enigma2 db folder (*);;Lamedb 2.4 (lamedb);;Lamedb 2.5 (lamedb5);;Bouquet (bouquets.*);;Userbouquet (userbouquet.*);;Tuner settings (*.xml);;All Files (*)");
+	QStringList files = QFileDialog::getOpenFileNames(nullptr, "Select one or more files to open", "~", "Enigma2 db folder (*);;Lamedb 2.4 (lamedb);;Lamedb 2.5 (lamedb5);;Lamedb 2.2/2.3 (services);;Bouquet (bouquets.*);;Userbouquet (userbouquet.*);;Tuner settings (*.xml);;All Files (*)");
+	for (auto & filename : files.toVector())
+		filenames.push_back(filename.toStdString());
 
 	return filenames;
 }
 
+//TODO FIX
 string gui::exportFileDialog(string filename)
 {
 	debug("exportFileDialog()", "filename", filename);
@@ -491,9 +494,9 @@ void gui::resetStatus()
 	sbwidr->setText("");
 }
 
-void gui::open()
+void gui::fileOpen()
 {
-	debug("open()");
+	debug("fileOpen()");
 
 	string dirname = openFileDialog();
 
@@ -501,12 +504,32 @@ void gui::open()
 		newTab(dirname);
 }
 
-void gui::save()
+//TODO temporarly set to save as
+void gui::fileSave()
 {
-	debug("save()");
+	debug("fileSave()");
 
 	tab* ttab = getCurrentTabHandler();
-	ttab->saveFile(true); //TODO temporarly set to save as
+	if (ttab != nullptr)
+		ttab->saveFile(true);
+}
+
+void gui::fileImport()
+{
+	debug("fileImport()");
+
+	tab* ttab = getCurrentTabHandler();
+	if (ttab != nullptr)
+		ttab->importFile();
+}
+
+void gui::fileExport()
+{
+	debug("fileExport()");
+
+	tab* ttab = getCurrentTabHandler();
+	if (ttab != nullptr)
+		ttab->exportFile();
 }
 
 //TODO tab actions ctl
