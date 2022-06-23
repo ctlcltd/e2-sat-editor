@@ -91,6 +91,14 @@ class gui : protected e2se::log_factory
 			EditTunerAtsc = GUI_CXE::ToolsTunersetsAtsc
 		};
 
+		enum GUI_DPORTS {
+			_default = 0x0,
+			Services = 0x1,
+			Bouquets = 0x2,
+			Userbouquets = 0x4,
+			Tunersets = 0x8
+		};
+
 		enum COUNTER {
 			data,
 			tv,
@@ -114,7 +122,7 @@ class gui : protected e2se::log_factory
 		string openFileDialog();
 		string saveFileDialog(string filename);
 		vector<string> importFileDialog();
-		string exportFileDialog(string filename);
+		string exportFileDialog(GUI_DPORTS gde, string filename, int& flags);
 		void tabChangeName(int ttid, string filename = "");
 		void setStatus(int counters[5]);
 		void resetStatus();

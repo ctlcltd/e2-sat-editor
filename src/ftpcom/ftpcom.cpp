@@ -278,9 +278,9 @@ void ftpcom::fetch_paths()
 	unordered_set<string> base = {baset, baseb, bases};
 	vector<string> list;
 
-	for (auto & w : base)
+	for (auto & q : base)
 	{
-		list = list_dir(w);
+		list = list_dir(q);
 		ftdb.insert(ftdb.end(), list.begin(), list.end());
 	}
 }
@@ -410,7 +410,7 @@ unordered_map<string, ftpcom_file> ftpcom::get_files()
 
 	if (ftdb.empty())
 		return files;
-	for (auto & w : ftdb)
+	for (string & w : ftdb)
 	{
 		std::filesystem::path path = std::filesystem::path(w); //C++17
 		string base = path.parent_path().u8string(); //C++17

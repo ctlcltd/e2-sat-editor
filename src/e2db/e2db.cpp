@@ -49,6 +49,7 @@ void e2db::merge(e2db* dbih)
 	unordered_map<string, userbouquet> cp_ubs_1;
 	cp_index_0.erase("mks");
 	cp_index_1.erase("mks");
+	tuners_pos.clear();
 
 	//TODO refresh cached data
 	/*for (auto & chdata : db.services)
@@ -173,6 +174,12 @@ void e2db::merge(e2db* dbih)
 		index[iname].emplace_back(pair (i.first, ch.chid)); //C++17
 	}
 
+	if (tuners.count(YTYPE::sat))
+	{
+		for (auto & x : tuners[YTYPE::sat].tables)
+			tuners_pos.emplace(x.second.pos, x.second.tnid);
+	}
+
 	this->index = index;
 
 	//TODO mem
@@ -183,14 +190,14 @@ void e2db::merge(e2db* dbih)
 	index.clear();
 }
 
-void e2db::import_file(vector<string> filenames)
+void e2db::import_file(vector<string> paths)
 {
 	debug("import_file()", "",  "0");
 
 	bool merge = this->get_input().size() != 0 ? true : false;
 	e2db* dbih = merge ? new e2db : this;
 
-	for (auto & w : filenames)
+	for (string & w : paths)
 	{
 		FPORTS fpi = filetype_detect(w);
 		ifstream ifile (w);
@@ -212,7 +219,7 @@ void e2db::import_file(FPORTS fpi, e2db* dbih, e2db_file file, string path)
 {
 	debug("import_file()", "", "1");
 
-	string filename = std::filesystem::path(path).filename().u8string();
+	string filename = std::filesystem::path(path).filename().u8string(); //C++17
 	stringstream ifile;
 	ifile.write(&file[0], file.size());
 
@@ -251,86 +258,98 @@ void e2db::import_file(FPORTS fpi, e2db* dbih, e2db_file file, string path)
 			dbih->parse_e2db_userbouquet(ifile, filename);
 		break;
 		case FPORTS::singleBouquetAll:
-			dbih->parse_e2db_bouquet(ifile, filename);
-
-			// TODO ifile
-			// for (auto & w : dbih->bouquets[filename].userbouquets)
-			// 	dbih->parse_e2db_bouquet(ifile, w);
+			if (filetype_detect(filename) == FPORTS::singleBouquet)
+				dbih->parse_e2db_bouquet(ifile, filename);
+			else
+				dbih->parse_e2db_userbouquet(ifile, filename);
 		break;
 		case FPORTS::_default:
-			dbih->read(filename);
+			dbih->read(path);
+			return;
 		break;
 	}
 }
 
-void e2db::export_file(vector<string> filenames)
+void e2db::export_file(vector<string> paths)
 {
 	debug("export_file()", "", "0");
 
-	for (auto & w : filenames)
+	for (string & w : paths)
 	{
 		FPORTS fpo = filetype_detect(w);
 		export_file(fpo, w);
+	}
+}
 
-		if (this->get_output().count(w))
-		{
-			ofstream out (w);
-			out << this->get_output()[w];
-			out.close();
-		}
+void e2db::export_file(FPORTS fpo, vector<string> paths)
+{
+	debug("export_file()", "", "1");
+
+	for (string & w : paths)
+	{
+		export_file(fpo, w);
 	}
 }
 
 void e2db::export_file(FPORTS fpo, string path)
 {
-	debug("export_file()", "", "1");
+	debug("export_file()", "", "2");
 
-	string filename = std::filesystem::path(path).filename().u8string();
+	e2db_file file;
+	string filename = std::filesystem::path(path).filename().u8string(); //C++17
 
 	switch (fpo)
 	{
 		case FPORTS::allServices:
-			make_e2db_lamedb();
+			if (LAMEDB_VER == 4)
+				file = make_lamedb4("lamedb");
+			else if (LAMEDB_VER == 5)
+				file = make_lamedb5("lamedb5");
 		break;
 		case FPORTS::allServices2_2:
 		case FPORTS::allServices2_3:
 			return error("export_file()", "Error", "Unsupported services file format.");
 		break;
 		case FPORTS::allServices2_4:
-			make_e2db_lamedb4();
+			file = make_lamedb4("lamedb");
 		break;
 		case FPORTS::allServices2_5:
-			make_e2db_lamedb5();
+			file = make_lamedb5("lamedb5");
 		break;
 		case FPORTS::singleTunersets:
 		case FPORTS::allTunersets:
 			if (filename == "satellites.xml")
-				make_tunersets_xml(YTYPE::sat);
+				file = make_tunersets_xml(filename, YTYPE::sat);
 			else if (filename == "terrestrial.xml")
-				make_tunersets_xml(YTYPE::terrestrial);
+				file = make_tunersets_xml(filename, YTYPE::terrestrial);
 			else if (filename == "cables.xml")
-				make_tunersets_xml(YTYPE::cable);
+				file = make_tunersets_xml(filename, YTYPE::cable);
 			else if (filename == "atsc.xml")
-				make_tunersets_xml(YTYPE::atsc);
+				file = make_tunersets_xml(filename, YTYPE::atsc);
 		break;
 		case FPORTS::singleBouquet:
 		case FPORTS::allBouquets:
-			make_bouquet(filename);
+			file = make_bouquet(filename);
 		break;
 		case FPORTS::singleUserbouquet:
 		case FPORTS::allUserbouquets:
-			make_userbouquet(filename);
+			file = make_userbouquet(filename);
 		break;
 		case FPORTS::singleBouquetAll:
-			make_bouquet(filename);
-
-			for (auto & w: bouquets[filename].userbouquets)
-				make_userbouquet(w);
+			if (filetype_detect(filename) == FPORTS::singleBouquet)
+				file = make_bouquet(filename);
+			else
+				file = make_userbouquet(filename);
 		break;
 		case FPORTS::_default:
-			write(filename, false);
+			write(path, false);
+			return;
 		break;
 	}
+
+	ofstream out (path);
+	out << file;
+	out.close();
 }
 
 e2db::FPORTS e2db::filetype_detect(string path)
@@ -634,7 +653,7 @@ void e2db::remove_userbouquet(string bname)
 	{
 		bs.userbouquets.erase(pos);
 	}
-	for (auto & w : bs.userbouquets)
+	for (string & w : bs.userbouquets)
 	{
 		for (auto & x : userbouquets[w].channels)
 		{

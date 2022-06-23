@@ -9,8 +9,6 @@
  * @license GNU GPLv3 License
  */
 
-#include <ctime>
-
 #include "../logger/logger.h"
 #include "e2db_abstract.h"
 
@@ -31,8 +29,6 @@ class e2db_maker : virtual public e2db_abstract
 		e2db_maker();
 		virtual ~e2db_maker() = default;
 		void make_e2db();
-		void begin_transaction();
-		void end_transaction();
 		string get_timestamp();
 		string get_editor_string();
 		void make_e2db_lamedb();
@@ -49,14 +45,15 @@ class e2db_maker : virtual public e2db_abstract
 		bool write(string localdir, bool overwrite);
 		unordered_map<string, e2db_file> get_output();
 	protected:
-		void make_lamedb(string filename);
-		void make_bouquet(string bname);
-		void make_userbouquet(string bname);
-		void make_tunersets_xml(int ytype);
+		e2db_file make_lamedb(string filename);
+		e2db_file make_lamedb4(string filename);
+		e2db_file make_lamedb5(string filename);
+		e2db_file make_bouquet(string bname);
+		e2db_file make_userbouquet(string bname);
+		e2db_file make_tunersets_xml(string filename, int ytype);
 	private:
-		// e2db_out <filename string, e2db_file alias(string)>
+		// e2db_out <filename string, e2db_file>
 		unordered_map<string, e2db_file> e2db_out;
-		std::tm* _out_tst;
 };
 }
 #endif /* e2db_maker_h */

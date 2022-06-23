@@ -83,7 +83,7 @@ void e2db_parser::parse_e2db()
 	}
 	for (auto & x: bouquets)
 	{
-		for (auto & w: x.second.userbouquets)
+		for (string & w: x.second.userbouquets)
 		{
 			ifstream iuserbouquet (e2db[w]);
 			parse_e2db_userbouquet(iuserbouquet, w);
@@ -158,7 +158,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 	}
 	for (auto & x: bouquets)
 	{
-		for (auto & w: x.second.userbouquets)
+		for (string & w: x.second.userbouquets)
 		{
 			stringstream iuserbouquet;
 			iuserbouquet.write(&files[e2db[w]][0], files[e2db[w]].size());
@@ -1045,7 +1045,7 @@ void e2db_parser::debugger()
 		cout << "nname: " << x.second.nname << endl;
 		cout << "btype: " << x.second.btype << endl;
 		cout << "userbouquets: [" << endl << endl;
-		for (auto & w: x.second.userbouquets)
+		for (string & w: x.second.userbouquets)
 			cout << w << endl;
 		cout << "]" << endl << endl;
 	}
@@ -1146,7 +1146,9 @@ bool e2db_parser::list_localdir(string localdir)
 
 	for (const auto & entry : dirlist)
 	{
-		//TODO is file & permissions check ...
+		if (! std::filesystem::is_regular_file(entry)) //C++17
+			continue;
+
 		string path = entry.path().u8string(); //C++17
 		string filename = std::filesystem::path(path).filename().u8string(); //C++17
 		e2db[filename] = path;

@@ -15,6 +15,7 @@
 #include <iostream>
 #include <iomanip>
 #include <filesystem>
+#include <ctime>
 
 #include "e2db_maker.h"
 
@@ -34,37 +35,21 @@ void e2db_maker::make_e2db()
 {
 	debug("make_e2db()");
 
-	begin_transaction();
 	make_e2db_lamedb();
 	make_e2db_bouquets();
 	make_e2db_userbouquets();
 	if (MAKER_TUNERSETS)
 		make_db_tunersets();
-	end_transaction();
-}
-
-void e2db_maker::begin_transaction()
-{
-	debug("begin_transaction()");
-
-	std::time_t curr_tst = std::time(0);
-	std::tm* _out_tst = std::localtime(&curr_tst);
-	this->_out_tst = _out_tst;
-}
-
-void e2db_maker::end_transaction()
-{
-	debug("end_transaction()");
 }
 
 //TODO FIX mingw32 wrong %z %Z
 string e2db_maker::get_timestamp()
 {
-	debug("get_timestamp()");
-
+	std::time_t curr_tst = std::time(0);
+	std::tm* out_tst = std::localtime(&curr_tst);
 	char datetime[80];
 	// @link https://sourceforge.net/p/mingw-w64/bugs/793/
-	std::strftime(datetime, 80, "%Y-%m-%d %H:%M:%S %z", _out_tst);
+	std::strftime(datetime, 80, "%Y-%m-%d %H:%M:%S %z", out_tst);
 	return string (datetime);
 }
 
@@ -77,7 +62,11 @@ void e2db_maker::make_e2db_lamedb()
 {
 	debug("make_e2db_lamedb()");
 
-	make_e2db_lamedb4();
+	switch (LAMEDB_VER)
+	{
+		case 4: make_e2db_lamedb4(); break;
+		case 5: make_e2db_lamedb5(); break;
+	}
 
 	//TEST
 	if (MAKER_LAMEDB5)
@@ -88,18 +77,36 @@ void e2db_maker::make_e2db_lamedb()
 void e2db_maker::make_e2db_lamedb4()
 {
 	debug("make_e2db_lamedb4()");
-	LAMEDB_VER = 4;
-	make_lamedb("lamedb");
+	e2db_out["lamedb"] = make_lamedb4("lamedb");
 }
 
 void e2db_maker::make_e2db_lamedb5()
 {
 	debug("make_e2db_lamedb5()");
-	LAMEDB_VER = 5;
-	make_lamedb("lamedb5");
+	e2db_out["lamedb5"] = make_lamedb5("lamedb5");
 }
 
-void e2db_maker::make_lamedb(string filename)
+e2db_file e2db_maker::make_lamedb4(string filename)
+{
+	debug("make_lamedb4()");
+	int ver = LAMEDB_VER;
+	LAMEDB_VER = 4;
+	e2db_file file = make_lamedb(filename);
+	LAMEDB_VER = ver;
+	return file;
+}
+
+e2db_file e2db_maker::make_lamedb5(string filename)
+{
+	debug("make_lamedb5()");
+	int ver = LAMEDB_VER;
+	LAMEDB_VER = 5;
+	e2db_file file = make_lamedb(filename);
+	LAMEDB_VER = ver;
+	return file;
+}
+
+e2db_file e2db_maker::make_lamedb(string filename)
 {
 	debug("make_lamedb()");
 
@@ -236,7 +243,7 @@ void e2db_maker::make_lamedb(string filename)
 
 	ss << formats[0] << "editor: " << get_editor_string() << endl;
 	ss << formats[0] << "datetime: " << get_timestamp() << endl;
-	e2db_out[filename] = ss.str();
+	return ss.str();
 }
 
 void e2db_maker::make_e2db_bouquets()
@@ -244,7 +251,7 @@ void e2db_maker::make_e2db_bouquets()
 	debug("make_e2db_bouquets()");
 
 	for (auto & x: bouquets)
-		make_bouquet(x.first);
+		e2db_out[x.first] = make_bouquet(x.first);
 }
 
 void e2db_maker::make_e2db_userbouquets()
@@ -252,7 +259,7 @@ void e2db_maker::make_e2db_userbouquets()
 	debug("make_e2db_userbouquets()");
 
 	for (auto & x: userbouquets)
-		make_userbouquet(x.first);
+		e2db_out[x.first] = make_userbouquet(x.first);
 }
 
 void e2db_maker::make_db_tunersets()
@@ -260,10 +267,28 @@ void e2db_maker::make_db_tunersets()
 	debug("make_db_tunersets()");
 
 	for (auto & x: tuners)
-		make_tunersets_xml(x.first);
+	{
+		string filename;
+		switch (x.first)
+		{
+			case YTYPE::sat:
+				filename = "satellites.xml";
+			break;
+			case YTYPE::terrestrial:
+				filename = "terrestrial.xml";
+			break;
+			case YTYPE::cable:
+				filename = "cables.xml";
+			break;
+			case YTYPE::atsc:
+				filename = "atsc.xml";
+			break;
+		}
+		e2db_out[filename] = make_tunersets_xml(filename, x.first);
+	}
 }
 
-void e2db_maker::make_bouquet(string bname)
+e2db_file e2db_maker::make_bouquet(string bname)
 {
 	debug("make_bouquet()", "bname", bname);
 
@@ -271,7 +296,7 @@ void e2db_maker::make_bouquet(string bname)
 	stringstream ss;
 
 	ss << "#NAME " << bs.name << endl;
-	for (auto & w: bs.userbouquets)
+	for (string & w: bs.userbouquets)
 	{
 		ss << "#SERVICE ";
 		ss << "1:7:" << bs.btype << ":0:0:0:0:0:0:0:";
@@ -281,11 +306,11 @@ void e2db_maker::make_bouquet(string bname)
 		ss << endl;
 	}
 	// ss << endl;
-	e2db_out[bname] = ss.str();
+	return ss.str();
 }
 
 //TODO upCase or loCase
-void e2db_maker::make_userbouquet(string bname)
+e2db_file e2db_maker::make_userbouquet(string bname)
 {
 	debug("make_userbouquet()", "bname", bname);
 
@@ -330,11 +355,11 @@ void e2db_maker::make_userbouquet(string bname)
 		ss << endl;
 	}
 	// ss << endl;
-	e2db_out[bname] = ss.str();
+	return ss.str();
 }
 
 //TODO value xml entities
-void e2db_maker::make_tunersets_xml(int ytype)
+e2db_file e2db_maker::make_tunersets_xml(string filename, int ytype)
 {
 	debug("make_tunersets_xml()", "ytype", to_string(ytype));
 
@@ -346,38 +371,34 @@ void e2db_maker::make_tunersets_xml(int ytype)
 		case YTYPE::atsc:
 		break;
 		default:
-			return error("make_tunersets_xml()", "Error", "These settings are not supported.");
+			error("make_tunersets_xml()", "Error", "These settings are not supported.");
+			return NULL;
 	}
 
 	tunersets tv = tuners[ytype];
 	stringstream ss;
 
 	string iname = "tns:";
-	string filename;
 	unordered_map<int, string> tags;
 	switch (ytype)
 	{
 		case YTYPE::sat:
 			iname += 's';
-			filename = "satellites.out.xml";
 			tags[0] = "satellites";
 			tags[1] = "sat";
 		break;
 		case YTYPE::terrestrial:
 			iname += 't';
-			filename = "terrestrial.out.xml";
 			tags[0] = "locations";
 			tags[1] = "terrestrial";
 		break;
 		case YTYPE::cable:
 			iname += 'c';
-			filename = "cables.out.xml";
 			tags[0] = "cables";
 			tags[1] = "cable";
 		break;
 		case YTYPE::atsc:
 			iname += 'a';
-			filename = "atsc.out.xml";
 			tags[0] = "locations";
 			tags[1] = "atsc";
 		break;
@@ -511,7 +532,7 @@ void e2db_maker::make_tunersets_xml(int ytype)
 			pos += line.size();
 		}
 	}
-	e2db_out[filename] = str;
+	return str;
 }
 
 bool e2db_maker::write_to_localdir(string localdir, bool overwrite)
@@ -528,7 +549,6 @@ bool e2db_maker::write_to_localdir(string localdir, bool overwrite)
 	{
 		std::filesystem::create_directory(localdir); //C++17
 	}
-	//TODO permission check ...
 	for (auto & o: e2db_out)
 	{
 		string localfile = localdir + '/' + o.first;
@@ -555,6 +575,8 @@ bool e2db_maker::write(string localdir, bool overwrite)
 
 unordered_map<string, e2db_file> e2db_maker::get_output() {
 	debug("get_output()");
+
+	make_e2db();
 
 	return e2db_out;
 }

@@ -218,12 +218,12 @@ void e2db::merge(unordered_map<string, e2se_e2db::e2db_file> files)
 	}
 }
 
-void e2db::importFile(vector<string> filenames)
+void e2db::importFile(vector<string> paths)
 {
 	debug("importFile()");
 
 	bool merge = this->get_input().size() != 0 ? true : false;
-	import_file(filenames);
+	import_file(paths);
 
 	if (merge)
 	{
@@ -243,11 +243,14 @@ void e2db::importFile(vector<string> filenames)
 	}
 }
 
-void e2db::exportFile(vector<string> filenames)
+void e2db::exportFile(int flags, vector<string> paths)
 {
 	debug("exportFile()");
 
-	export_file(filenames);
+	if (flags != -1)
+		export_file(FPORTS (flags), paths);
+	else
+		export_file(paths);
 }
 
 QStringList e2db::entryTransponder(transponder tx)

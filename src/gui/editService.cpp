@@ -659,7 +659,7 @@ void editService::retrieve()
 		else if (key == "raw_C" && ch.data.count(e2db::SDATA::C))
 		{
 			auto last_key = (*prev(ch.data.at(e2db::SDATA::C).cend()));
-			for (auto & w: ch.data.at(e2db::SDATA::C))
+			for (string & w: ch.data.at(e2db::SDATA::C))
 			{
 				val += "C:" + w;
 				if (w != last_key)
@@ -740,7 +740,7 @@ void editService::save()
 string editService::getPIDValue(e2db::service ch, e2db::SDATA_PIDS x)
 {
 	string cpx = (x > 9 ? "" : "0") + to_string(x);
-	for (auto & w : ch.data[e2db::SDATA::c])
+	for (string & w : ch.data[e2db::SDATA::c])
 	{
 		if (w.substr(0, 2) == cpx)
 			return to_string(std::strtol(w.substr(2).data(), NULL, 16));

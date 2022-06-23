@@ -384,61 +384,134 @@ void gui::tabMoved(int from, int to)
 string gui::openFileDialog()
 {
 	debug("openFileDialog()");
-	
-	string filename;
 
-	//TODO ~ $HOME
-	QString dirname = QFileDialog::getExistingDirectory(nullptr, "Select enigma2 db folder", "~", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-	filename = dirname.toStdString();
+	QString caption = "Select enigma2 folder";
 
-	return filename;
+	string path;
+	QFileDialog fdial = QFileDialog(mwid, caption);
+	fdial.setAcceptMode(QFileDialog::AcceptOpen);
+	fdial.setFileMode(QFileDialog::Directory);
+	fdial.setOptions(QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+	if (fdial.exec() == QDialog::Accepted)
+	{
+		QUrl url = fdial.selectedUrls().value(0);
+		if (url.isLocalFile() || url.isEmpty())
+			url = url.toLocalFile();
+		path = url.toString().toStdString();
+	}
+	return path;
 }
 
-//TODO native file dialog button "Open"
 string gui::saveFileDialog(string filename)
 {
 	debug("saveFileDialog()", "filename", filename);
 
-	string dirname;
+	QString caption = "Select where to save";
 
-	QFileDialog fdial = QFileDialog(nullptr, "Select where to save", QString::fromStdString(filename));
-	fdial.setFilter(QDir::AllDirs | QDir::NoSymLinks);
+	string path;
+	QFileDialog fdial = QFileDialog(mwid, caption, QString::fromStdString(filename));
 	fdial.setAcceptMode(QFileDialog::AcceptSave);
-	QString dir = fdial.getExistingDirectory();
-	dirname = dir.toStdString();
-
-	return dirname;
+	// fdial.setSupportedSchemes(QStringList(QStringLiteral("file")));
+	fdial.setFilter(QDir::AllDirs | QDir::NoSymLinks);
+	if (fdial.exec() == QDialog::Accepted)
+	{
+		QUrl url = fdial.selectedUrls().value(0);
+		if (url.isLocalFile() || url.isEmpty())
+			url = url.toLocalFile();
+		path = url.toString().toStdString();
+	}
+	return path;
 }
 
 vector<string> gui::importFileDialog()
 {
 	debug("importFileDialog()");
-	
-	vector<string> filenames;
 
-	//TODO ~ $HOME
-	QStringList files = QFileDialog::getOpenFileNames(nullptr, "Select one or more files to open", "~", "Enigma2 db folder (*);;Lamedb 2.4 (lamedb);;Lamedb 2.5 (lamedb5);;Lamedb 2.2/2.3 (services);;Bouquet (bouquets.*);;Userbouquet (userbouquet.*);;Tuner settings (*.xml);;All Files (*)");
-	for (auto & filename : files.toVector())
-		filenames.push_back(filename.toStdString());
+	QString caption = "Select one or more files to open";
+	QStringList opts ({
+		"Enigma2 folder (*)",
+		"Lamedb 2.4 (lamedb)",
+		"Lamedb 2.5 (lamedb5)",
+		"Lamedb 2.2/2.3 (services)",
+		"Bouquet (bouquets.*)",
+		"Userbouquet (userbouquet.*)",
+		"Tuner settings (*.xml)",
+		"All Files (*)"
+	});
 
-	return filenames;
+	vector<string> paths;
+	QFileDialog fdial = QFileDialog(mwid, caption);
+	fdial.setAcceptMode(QFileDialog::AcceptOpen);
+	fdial.setFileMode(QFileDialog::ExistingFiles);
+	fdial.setNameFilters(opts);
+	if (fdial.exec() == QDialog::Accepted)
+	{
+		for (QUrl & url : fdial.selectedUrls())
+		{
+			if (url.isLocalFile() || url.isEmpty())
+				url = url.toLocalFile();
+			paths.push_back(url.toString().toStdString());
+		}
+	}
+	return paths;
 }
 
-//TODO FIX
-string gui::exportFileDialog(string filename)
+string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& flags)
 {
 	debug("exportFileDialog()", "filename", filename);
 
-	string dirname;
-	
-	//TODO ~ $HOME
-	QFileDialog fdial = QFileDialog(nullptr, "Select where to save", QString::fromStdString(filename));
-	fdial.setFilter(QDir::AllDirs | QDir::NoSymLinks);
-	fdial.setAcceptMode(QFileDialog::AcceptSave);
-	QString dir = fdial.getExistingDirectory();
-	dirname = dir.toStdString();
+	QString caption = "Select where to save";
+	QStringList opts;
+	switch (gde)
+	{
+		case GUI_DPORTS::Services:
+			opts.append("Lamedb as opened (*)");
+			opts.append("Lamedb 2.4 (lamedb)");
+			opts.append("Lamedb 2.5 (lamedb5)");
+			opts.append("Lamedb 2.3 (services)");
+			opts.append("Lamedb 2.2 (services)");
+		break;
+		case GUI_DPORTS::Bouquets:
+			opts.append("Bouquet (bouquets.*)");
+		break;
+		case GUI_DPORTS::Userbouquets:
+			opts.append("Userbouquet (userbouquet.*)");
+		break;
+		case GUI_DPORTS::Tunersets:
+			opts.append("Tuner settings (*.xml)");
+		break;
+		default:
+		break;
+	}
 
-	return dirname;
+	string path;
+	QString selected;
+	QFileDialog fdial = QFileDialog(mwid, caption, QString::fromStdString(filename));
+	fdial.setAcceptMode(QFileDialog::AcceptSave);
+	fdial.setFilter(QDir::AllDirs | QDir::NoSymLinks);
+	fdial.setNameFilters(opts);
+	if (fdial.exec() == QDialog::Accepted)
+	{
+		selected = fdial.selectedNameFilter();
+
+		// straight copy of e2db::FPORTS
+		if (selected == "Lamedb 2.4 (lamedb)")
+			flags = 0x1224;
+		else if (selected == "Lamedb 2.5 (lamedb5)")
+			flags = 0x1225;
+		else if (selected == "Lamedb 2.3 (services)")
+			flags = 0x1223;
+		else if (selected == "Lamedb 2.2 (services)")
+			flags = 0x1222;
+
+		debug("exportFileDialog()", "flags", to_string(flags));
+
+		QUrl url = fdial.selectedUrls().value(0);
+		if (url.isLocalFile() || url.isEmpty())
+			url = url.toLocalFile();
+		path = url.toString().toStdString();
+	}
+	return path;
 }
 
 void gui::tabChangeName(int ttid, string filename)
@@ -498,10 +571,10 @@ void gui::fileOpen()
 {
 	debug("fileOpen()");
 
-	string dirname = openFileDialog();
+	string path = openFileDialog();
 
-	if (! dirname.empty())
-		newTab(dirname);
+	if (! path.empty())
+		newTab(path);
 }
 
 //TODO temporarly set to save as

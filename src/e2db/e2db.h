@@ -39,9 +39,10 @@ class e2db : public e2db_parser, public e2db_maker
 		e2db();
 		virtual ~e2db() = default;
 		void merge(e2db* dbih);
-		void import_file(vector<string> filenames);
+		void import_file(vector<string> paths);
 		void import_file(FPORTS fpi, e2db* dbih, e2db_file file, string path);
-		void export_file(vector<string> filenames);
+		void export_file(vector<string> paths);
+		void export_file(FPORTS fpo, vector<string> paths);
 		void export_file(FPORTS fpo, string path);
 		FPORTS filetype_detect(string path);
 		void add_transponder(transponder& tx);

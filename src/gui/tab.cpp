@@ -10,6 +10,7 @@
  */
 
 #include <algorithm>
+#include <filesystem>
 #include <cstdio>
 
 #include <QtGlobal>
@@ -514,10 +515,10 @@ void tab::openFile()
 {
 	debug("openFile()");
 
-	string dirname = gid->openFileDialog();
+	string path = gid->openFileDialog();
 
-	if (! dirname.empty())
-		readFile(dirname);
+	if (! path.empty())
+		readFile(path);
 }
 
 void tab::saveFile(bool saveas)
@@ -525,29 +526,29 @@ void tab::saveFile(bool saveas)
 	debug("saveFile()", "saveas", to_string(saveas));
 
 	QMessageBox dial = QMessageBox();
-	string dirname;
+	string path;
 	bool overwrite = ! saveas && (! this->state.nwwr || this->state.ovwr);
 
 	if (overwrite)
 	{
 		this->updateListIndex();
 		this->updateBouquetsIndex();
-		dirname = this->filename;
+		path = this->filename;
 		dial.setText("Files will be overwritten.");
 		dial.exec();
 	}
 	else
 	{
-		dirname = gid->saveFileDialog(this->filename);
+		path = gid->saveFileDialog(this->filename);
 	}
 
-	if (! dirname.empty())
+	if (! path.empty())
 	{
 		debug("saveFile()", "overwrite", to_string(overwrite));
 		debug("saveFile()", "filename", filename);
 
 		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		bool wr = dbih->write(dirname, overwrite);
+		bool wr = dbih->write(path, overwrite);
 		QGuiApplication::restoreOverrideCursor();
 		
 		if (wr) {
@@ -561,16 +562,19 @@ void tab::saveFile(bool saveas)
 	}
 }
 
+//TODO tools: tunersets
 void tab::importFile()
 {
 	debug("importFile()");
 
-	vector<string> filenames;
+	vector<string> paths;
 
-	filenames = gid->importFileDialog();
-	if (! filenames.empty())
+	paths = gid->importFileDialog();
+	if (! paths.empty())
 	{
-		dbih->importFile(filenames);
+		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+		dbih->importFile(paths);
+		QGuiApplication::restoreOverrideCursor();
 		initialize();
 		load();
 	}
@@ -580,16 +584,16 @@ void tab::exportFile()
 {
 	debug("exportFile()");
 
+	gui::GUI_DPORTS gde = gui::GUI_DPORTS::_default;
+	vector<string> paths;
 	string filename;
-	string dirname = gid->exportFileDialog(filename);
-
-	vector<string> filenames;
+	int flags = -1;
 
 	// tools: tunersets
 	if (this->state.tunersets)
 	{
-		string filename;
-
+		gde = gui::GUI_DPORTS::Tunersets;
+		flags = e2db::FPORTS::singleTunersets;
 		switch (this->state.ty)
 		{
 			case e2db::YTYPE::sat:
@@ -605,41 +609,99 @@ void tab::exportFile()
 				filename = "atsc.xml";
 			break;
 		}
-
-		if (! filename.empty())
-			filenames.push_back(dirname + '/' + filename);
+		paths.push_back(filename);
 	}
 	// services
 	else if (this->state.tc == 0)
 	{
-		filenames.push_back(dirname + '/' + "lamedb");
+		gde = gui::GUI_DPORTS::Services;
+		flags = e2db::FPORTS::allServices;
+		filename = "lamedb";
+		paths.push_back(filename);
 	}
 	// bouquets
 	else if (this->state.tc == 1)
 	{
+		int ti = -1;
 		QList<QTreeWidgetItem*> selected = bouquets_tree->selectedItems();
-		
+
 		if (selected.empty())
 		{
 			return;
 		}
 		for (auto & item : selected)
 		{
+			ti = bouquets_tree->indexOfTopLevelItem(item);
 			QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
 			QString qchlist = tdata["id"].toString();
-			string chlist = qchlist.toStdString();
+			string filename = qchlist.toStdString();
 
-			filenames.push_back(dirname + '/' + chlist);
+			paths.push_back(filename);
+		}
+		if (paths.size() == 1)
+		{
+			filename = paths[0];
+		}
+		// bouquet | userbouquets
+		if (ti != -1)
+		{
+			gde = gui::GUI_DPORTS::Bouquets;
+			flags = e2db::FPORTS::singleBouquetAll;
+
+			if (dbih->bouquets.count(filename))
+			{
+				for (string & w : dbih->bouquets[filename].userbouquets)
+					paths.push_back(w);
+			}
+		}
+		// userbouquet
+		else
+		{
+			gde = gui::GUI_DPORTS::Userbouquets;
+			flags = e2db::FPORTS::singleUserbouquet;
 		}
 	}
+	if (paths.empty())
+	{
+		return;
+	}
 
-	if (! filenames.empty())
-		dbih->exportFile(filenames);
+	string path = gid->exportFileDialog(gde, filename, flags);
+
+	if (! path.empty())
+	{
+		debug("exportFile()", "flags", to_string(flags));
+
+		if (gde == gui::GUI_DPORTS::Services || gde == gui::GUI_DPORTS::Tunersets)
+		{
+			paths[0] = path;
+		}
+		else
+		{
+			string basedir = std::filesystem::path(path).remove_filename(); //C++17
+			//TODO rend trailing
+			for (string & w : paths)
+				w = basedir + w;
+		}
+
+		QMessageBox dial = QMessageBox();
+		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+		dbih->exportFile(flags, paths);
+		QGuiApplication::restoreOverrideCursor();
+		dial.setText("Saved!");
+		dial.exec();
+	}
 }
 
 void tab::exportFile(QTreeWidgetItem* item)
 {
-	string chlist;
+	debug("exportFile()");
+
+	gui::GUI_DPORTS gde = gui::GUI_DPORTS::_default;
+	vector<string> paths;
+	string filename;
+	int flags = -1;
+
 	if (item == nullptr)
 	{
 		return;
@@ -647,27 +709,56 @@ void tab::exportFile(QTreeWidgetItem* item)
 	// services
 	else if (this->state.tc == 0)
 	{
-		chlist = "lamedb";
+		gde = gui::GUI_DPORTS::Services;
+		filename = "lamedb";
+		paths.push_back(filename);
 	}
 	// bouquets
 	else if (this->state.tc == 1)
 	{
+		int ti = bouquets_tree->indexOfTopLevelItem(item);
 		QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
 		QString qchlist = tdata["id"].toString();
-		chlist = qchlist.toStdString();
+		filename = qchlist.toStdString();
+		paths.push_back(filename);
+
+		// bouquet | userbouquets
+		if (ti != -1)
+		{
+			gde = gui::GUI_DPORTS::Bouquets;
+			flags = e2db::FPORTS::singleBouquetAll;
+
+			if (dbih->bouquets.count(filename))
+			{
+				for (string & w : dbih->bouquets[filename].userbouquets)
+					paths.push_back(w);
+			}
+		}
+		// userbouquet
+		else
+		{
+			gde = gui::GUI_DPORTS::Userbouquets;
+			flags = e2db::FPORTS::singleUserbouquet;
+		}
+	}
+	if (paths.empty())
+	{
+		return;
 	}
 
-	debug("exportFile()", "item", chlist);
+	string path = gid->exportFileDialog(gde, filename, flags);
 
-	string filename;
-	string dirname = gid->exportFileDialog(filename);
+	if (! path.empty())
+	{
+		debug("exportFile()", "filename", filename);
 
-	vector<string> filenames;
-
-	if (! empty(chlist))
-		filenames.push_back(dirname + '/' + chlist);
-	if (! filenames.empty())
-		dbih->exportFile(filenames);
+		QMessageBox dial = QMessageBox();
+		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+		dbih->exportFile(flags, paths);
+		QGuiApplication::restoreOverrideCursor();
+		dial.setText("Saved!");
+		dial.exec();
+	}
 }
 
 void tab::addUserbouquet()
@@ -1910,9 +2001,9 @@ void tab::putChannels(vector<QString> channels)
 	i = current != nullptr ? parent->indexOfChild(current) : list_tree->topLevelItemCount();
 	y = i + 1;
 
-	for (QString & w : channels)
+	for (QString & q : channels)
 	{
-		string chid = w.toStdString();
+		string chid = q.toStdString();
 		char ci[7];
 		std::sprintf(ci, "%06d", i++);
 		QString x = QString::fromStdString(ci);
@@ -1972,7 +2063,7 @@ void tab::putChannels(vector<QString> channels)
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
 		item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
-		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, w);
+		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, q);
 		item->setIcon(1, theme::spacer(4));
 		if (marker)
 		{
@@ -2438,7 +2529,6 @@ void tab::ftpUpload()
 	
 	if (ftpHandle())
 	{
-		dbih->make_e2db();
 		unordered_map<string, e2se_ftpcom::ftpcom_file> files = dbih->get_output();
 
 		if (files.empty())
