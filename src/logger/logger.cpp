@@ -71,7 +71,7 @@ void logger::error(string msg)
 	out << '[' << ns << ']';
 	out << ' ' << msg;
 	out << std::endl;
-	// std::clog << out.rdbuf();
+	std::clog << out.rdbuf();
 	this->log->text.append(buf->str());
 	buf->str("");
 }
@@ -84,7 +84,7 @@ void logger::error(string msg, string optk, string optv)
 	out << ' ' << optk << ':';
 	out << ' ' << optv;
 	out << std::endl;
-	// std::clog << out.rdbuf();
+	std::clog << out.rdbuf();
 	this->log->text.append(buf->str());
 	buf->str("");
 }
