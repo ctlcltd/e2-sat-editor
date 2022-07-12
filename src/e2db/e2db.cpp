@@ -23,12 +23,13 @@ using std::unordered_set, std::set_difference, std::inserter, std::stringstream,
 namespace e2se_e2db
 {
 
-e2db::e2db()
+/*e2db::e2db(e2se::logger::session log)
 {
-	this->log = new e2se::logger("e2db");
+	this->log = new e2se::logger(log, "e2db");
 
 	debug("e2db()");
-}
+}*/
+
 
 //TODO bname destructive edit
 //TODO bname non-destructive edit

@@ -43,7 +43,7 @@ class settings : protected e2se::log_factory
 			Advanced
 		};
 
-		settings(QWidget* mwid);
+		settings(QWidget* mwid, e2se::logger::session* log);
 		void preferences();
 		void connections();
 		void advanced();

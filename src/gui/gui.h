@@ -88,7 +88,8 @@ class gui : protected e2se::log_factory
 			EditTunerSat = GUI_CXE::ToolsTunersetsSat,
 			EditTunerTerrestrial = GUI_CXE::ToolsTunersetsTerrestrial,
 			EditTunerCable = GUI_CXE::ToolsTunersetsCable,
-			EditTunerAtsc = GUI_CXE::ToolsTunersetsAtsc
+			EditTunerAtsc = GUI_CXE::ToolsTunersetsAtsc,
+			Inspector = 0x0
 		};
 
 		enum GUI_DPORTS {
@@ -107,7 +108,7 @@ class gui : protected e2se::log_factory
 			current
 		};
 
-		gui(int argc, char* argv[]);
+		gui(int argc, char* argv[], e2se::logger::session* log);
 		~gui();
 		void root();
 		void menuCtl();

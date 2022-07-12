@@ -13,52 +13,85 @@
 
 #include "logger.h"
 
-using std::cout, std::endl;
-
 namespace e2se
 {
 
 logger::logger(string ns)
 {
+	this->buf = new std::stringbuf;
 	this->ns = "e2se." + ns;
 }
 
-void logger::debug()
+logger::logger(session* log, string ns)
 {
-	cout << '[' << ns << ']';
-	cout << endl;
+	this->log = log;
+	this->buf = new std::stringbuf;
+	this->ns = "e2se." + ns;
 }
 
-void logger::debug(string cmsg)
+void logger::debug(string msg)
 {
-	cout << '[' << ns << ']';
-	cout << ' ' << cmsg;
-	cout << endl;
+	std::ostream out (buf);
+	out << '[' << ns << ']';
+	out << ' ' << msg;
+	out << std::endl;
+	if (this->log->debug)
+		std::cout << out.rdbuf();
+	this->log->text.append(buf->str());
+	buf->str("");
 }
 
-void logger::debug(string cmsg, string optk, string optv)
+void logger::debug(string msg, string optk, string optv)
 {
-	cout << '[' << ns << ']';
-	cout << ' ' << cmsg;
-	cout << ' ' << optk << ':';
-	cout << ' ' << optv;
-	cout << endl;
+	std::ostream out (buf);
+	out << '[' << ns << ']';
+	out <<  ' ' << msg;
+	out << ' ' << optk << ':';
+	out << ' ' << optv;
+	out << std::endl;
+	if (this->log->debug)
+		std::cout << out.rdbuf();
+	this->log->text.append(buf->str());
+	buf->str("");
 }
 
-void logger::error(string cmsg)
+void logger::debug(string msg, string optk, int optv)
 {
-	cout << '[' << ns << ']';
-	cout << ' ' << cmsg;
-	cout << endl;
+	this->logger::debug(msg, optk, std::to_string(optv));
 }
 
-void logger::error(string cmsg, string optk, string optv)
+void logger::debug(string msg, string optk, bool optv)
 {
-	cout << '[' << ns << ']';
-	cout << ' ' << cmsg;
-	cout << ' ' << optk << ':';
-	cout << ' ' << optv;
-	cout << endl;
+	this->logger::debug(msg, optk, string (optv ? "true" : "false"));
+}
+
+void logger::error(string msg)
+{
+	std::ostream out (buf);
+	out << '[' << ns << ']';
+	out << ' ' << msg;
+	out << std::endl;
+	// std::clog << out.rdbuf();
+	this->log->text.append(buf->str());
+	buf->str("");
+}
+
+void logger::error(string msg, string optk, string optv)
+{
+	std::ostream out (buf);
+	out << '[' << ns << ']';
+	out << ' ' << msg;
+	out << ' ' << optk << ':';
+	out << ' ' << optv;
+	out << std::endl;
+	// std::clog << out.rdbuf();
+	this->log->text.append(buf->str());
+	buf->str("");
+}
+
+string logger::str()
+{
+	return this->log->text;
 }
 
 }

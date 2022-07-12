@@ -77,7 +77,7 @@ class tab : protected e2se::log_factory
 			chid
 		};
 
-		tab(gui* gid, QWidget* wid);
+		tab(gui* gid, QWidget* wid, e2se::logger::session* log);
 		~tab();
 		void newFile();
 		void openFile();

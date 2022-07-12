@@ -24,12 +24,19 @@ using std::ifstream, std::stringstream, std::hex, std::dec, std::to_string, std:
 namespace e2se_e2db
 {
 
-e2db_parser::e2db_parser()
+/*e2db_parser::e2db_parser(e2se::logger::session log)
 {
-	this->log = new e2se::logger("e2db");
+	this->log = new e2se::logger(log, "e2db");
 
 	debug("e2db_parser()");
 
+	//TEST
+	dbfilename = PARSER_LAMEDB5_PRIOR ? "lamedb5" : "lamedb";
+	//TEST
+}*/
+
+e2db_parser::e2db_parser()
+{
 	//TEST
 	dbfilename = PARSER_LAMEDB5_PRIOR ? "lamedb5" : "lamedb";
 	//TEST
@@ -99,7 +106,7 @@ void e2db_parser::parse_e2db()
 	// commit: d1f53fe	elapsed time: 56112
 	// commit: HEAD		elapsed time: 67343
 
-	debug("parse_e2db()", "elapsed time", to_string(end - start));
+	debug("parse_e2db()", "elapsed time", int (end - start));
 }
 
 
@@ -169,7 +176,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 
 	std::clock_t end = std::clock();
 
-	debug("parse_e2db()", "elapsed time", to_string(end - start));
+	debug("parse_e2db()", "elapsed time", int (end - start));
 }
 
 void e2db_parser::parse_e2db_lamedb(istream& ilamedb)
@@ -179,11 +186,11 @@ void e2db_parser::parse_e2db_lamedb(istream& ilamedb)
 	string hlamedb;
 	std::getline(ilamedb, hlamedb);
 	char vlamedb = (hlamedb.substr(hlamedb.length() - 2, hlamedb.length() - 1))[0];
-	int dbver = isdigit(vlamedb) ? int (vlamedb) - 48 : 0;
+	int ver = isdigit(vlamedb) ? int (vlamedb) - 48 : 0;
 
-	debug("parse_e2db_lamedb()", "File header", hlamedb);
+	debug("parse_e2db_lamedb()", "version", ver);
 
-	switch (dbver)
+	switch (ver)
 	{
 		case 2:
 		case 3:
@@ -617,7 +624,7 @@ void e2db_parser::parse_channel_reference(string data, channel_reference& chref,
 //TODO value xml entities
 void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 {
-	debug("parse_tunersets_xml()", "ytype", to_string(ytype));
+	debug("parse_tunersets_xml()", "ytype", ytype);
 
 	string htunxml;
 	string charset = "UTF-8";

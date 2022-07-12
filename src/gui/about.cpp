@@ -23,9 +23,9 @@ using namespace e2se;
 namespace e2se_gui_dialog
 {
 
-about::about(QWidget* mwid)
+about::about(QWidget* mwid, e2se::logger::session* log)
 {
-	this->log = new logger("about");
+	this->log = new logger(log, "about");
 	debug("about()");
 
 	QDialog* dial = new QDialog(mwid);

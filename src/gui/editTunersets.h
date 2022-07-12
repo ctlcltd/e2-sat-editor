@@ -22,7 +22,7 @@ namespace e2se_gui
 class editTunersets : protected e2se::log_factory
 {
 	public:
-		editTunersets(e2db* dbih, int ytype);
+		editTunersets(e2db* dbih, int ytype, e2se::logger::session* log);
 		void layout();
 		void treeItemChanged();
 		void load();

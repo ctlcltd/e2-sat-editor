@@ -26,7 +26,8 @@ class e2db_maker : virtual public e2db_abstract
 		inline static const string LAMEDB4_FORMATS[13] = {"", "transponders\n", "services\n", "end\n", "", "", "\n\t", " ", "\n/\n", "", "\n", "", "\n"};
 		inline static const string LAMEDB5_FORMATS[13] = {"# ", "", "", "", ":", "t", ",", ":", "\n", "s", ",", "\"", "\n"};
 
-		e2db_maker();
+		// e2db_maker(e2se::logger::session log);
+		// e2db_maker();
 		virtual ~e2db_maker() = default;
 		void make_e2db();
 		string get_timestamp();

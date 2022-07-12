@@ -48,6 +48,7 @@ class ftpcom
 			string ifreload;
 			string tnreload;
 		};
+		// ftpcom(e2se::logger::session log);
 		ftpcom();
 		virtual ~ftpcom();
 		void setup(ftp_params params);
@@ -93,10 +94,12 @@ class ftpcom
 		static size_t get_content_length_func(void* csi, size_t size, size_t nmemb, void* pso);
 		virtual string trs(string str);
 		virtual string trw(string str, string param);
-		virtual void debug(string cmsg);
-		virtual void debug(string cmsg, string optk, string optv);
-		virtual void error(string cmsg, string rmsg);
-		virtual void error(string cmsg, string optk, string optv);
+		virtual void debug(string msg);
+		virtual void debug(string msg, string optk, string optv);
+		virtual void debug(string msg, string optk, int optv);
+		virtual void debug(string msg, string optk, bool optv);
+		virtual void error(string tmsg, string rmsg);
+		virtual void error(string msg, string optk, string optv);
 		e2se::logger* log;
 	private:
 		bool actv;

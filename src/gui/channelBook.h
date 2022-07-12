@@ -31,7 +31,7 @@ namespace e2se_gui
 class channelBook : protected e2se::log_factory
 {
 	public:
-		channelBook(e2db* dbih);
+		channelBook(e2db* dbih, e2se::logger::session* log);
 		void side();
 		void layout();
 		void sideRowChanged(int index);

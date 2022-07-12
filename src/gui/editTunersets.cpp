@@ -23,9 +23,9 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-editTunersets::editTunersets(e2db* dbih, int ytype)
+editTunersets::editTunersets(e2db* dbih, int ytype, e2se::logger::session* log)
 {
-	this->log = new logger("editTunersets");
+	this->log = new logger(log, "editTunersets");
 	debug("editTunersets()");
 
 	this->dbih = dbih;
@@ -285,7 +285,7 @@ void editTunersets::populate()
 
 void editTunersets::trickySortByColumn(int column)
 {
-	debug("trickySortByColumn()", "column", to_string(column));
+	debug("trickySortByColumn()", "column", column);
 
 	Qt::SortOrder order = list->header()->sortIndicatorOrder();
 	column = column == 1 ? 0 : column;

@@ -25,16 +25,16 @@ class ftpcom : public ::e2se_ftpcom::ftpcom
 	Q_DECLARE_TR_FUNCTIONS(ftpcom)
 
 	public:
-		ftpcom();
+		ftpcom(e2se::logger::session* log);
 		~ftpcom()
 		{
-			std::cout << "e2se_gui::~ftpcom()" << std::endl;
+			// std::cout << "e2se_gui::~ftpcom()" << std::endl;
 		}
 		void options();
 	protected:
 		string trs(string str) override;
 		string trw(string str, string param) override;
-		void error(string cmsg, string rmsg) override;
+		void error(string tmsg, string rmsg) override;
 		QSettings* sets;
 };
 }

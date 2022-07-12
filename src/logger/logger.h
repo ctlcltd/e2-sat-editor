@@ -10,6 +10,8 @@
  */
 
 #include <string>
+#include <iostream>
+#include <sstream>
 
 using std::string;
 
@@ -20,33 +22,50 @@ namespace e2se
 class logger
 {
 	public:
+		struct session {
+			string text;
+			bool debug;
+		};
 		logger(string ns);
-		void debug();
-		void debug(string cmsg);
-		void debug(string cmsg, string optk, string optv);
-		void error(string cmsg);
-		void error(string cmsg, string optk, string optv);
+		logger(session* log, string ns);
+		void debug(string msg);
+		void debug(string msg, string optk, string optv);
+		void debug(string msg, string optk, int optv);
+		void debug(string msg, string optk, bool optv);
+		void error(string msg);
+		void error(string msg, string optk, string optv);
+		string str();
+		std::stringbuf* buf;
 		string ns;
+		session* log;
 };
 
 struct log_factory
 {
 	protected:
-		void debug(string cmsg)
+		void debug(string msg)
 		{
-			this->log->debug(cmsg);
+			this->log->debug(msg);
 		}
-		void debug(string cmsg, string optk, string optv)
+		void debug(string msg, string optk, string optv)
 		{
-			this->log->debug(cmsg, optk, optv);
+			this->log->debug(msg, optk, optv);
 		}
-		void error(string cmsg)
+		void debug(string msg, string optk, int optv)
 		{
-			this->log->error(cmsg);
+			this->log->debug(msg, optk, optv);
 		}
-		void error(string cmsg, string optk, string optv)
+		void debug(string msg, string optk, bool optv)
 		{
-			this->log->error(cmsg, optk, optv);
+			this->log->debug(msg, optk, optv);
+		}
+		void error(string msg)
+		{
+			this->log->error(msg);
+		}
+		void error(string msg, string optk, string optv)
+		{
+			this->log->error(msg, optk, optv);
 		}
 		logger* log;
 };

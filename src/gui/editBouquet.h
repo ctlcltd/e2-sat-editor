@@ -31,7 +31,7 @@ class editBouquet : protected e2se::log_factory
 	Q_DECLARE_TR_FUNCTIONS(editBouquet)
 
 	public:
-		editBouquet(e2db* dbih, int ti);
+		editBouquet(e2db* dbih, int ti, e2se::logger::session* log);
 		void display(QWidget* cwid);
 		void layout();
 		void store();

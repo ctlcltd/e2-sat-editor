@@ -32,7 +32,7 @@ class editService : protected e2se::log_factory
 	Q_DECLARE_TR_FUNCTIONS(editService)
 
 	public:
-		editService(e2db* dbih);
+		editService(e2db* dbih, e2se::logger::session* log);
 		void display(QWidget* cwid);
 		void serviceLayout();
 		void transponderLayout();

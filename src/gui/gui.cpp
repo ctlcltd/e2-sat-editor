@@ -33,11 +33,11 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-gui::gui(int argc, char* argv[])
+gui::gui(int argc, char* argv[], e2se::logger::session* log)
 {
 	std::setlocale(LC_NUMERIC, "C");
 
-	this->log = new logger("gui");
+	this->log = new logger(log, "gui");
 	debug("gui()");
 
 	this->mroot = new QApplication(argc, argv);
@@ -152,6 +152,8 @@ void gui::menuCtl()
 	mtool->addAction("Order userbouquets A-Z", todo);
 	mtool->addAction("Remove cached data from services", todo);
 	mtool->addAction("Delete all bouquets", todo);
+	mtool->addSeparator();
+	mtool->addAction(tr("Inspector Log"), [=]() { this->tabAction(TAB_ATS::Inspector); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
 
 	QMenu* mwind = menu->addMenu(tr("&Window"));
 	gmenu[GUI_CXE::WindowMinimize] = mwind->addAction("&Minimize", [=]() { this->windowMinimize(); }, Qt::CTRL | Qt::Key_M);
@@ -251,7 +253,7 @@ void gui::windowFocusChanged()
 
 int gui::newTab(string filename)
 {
-	tab* ttab = new tab(this, mwid);
+	tab* ttab = new tab(this, mwid, this->log->log);
 	int ttid = this->state.tt++;
 
 	if (! filename.empty() && ! ttab->readFile(filename))
@@ -284,14 +286,14 @@ int gui::newTab(string filename)
 		tabChangeName(ttid, filename);
 	twid->setCurrentIndex(index);
 
-	debug("newTab()", "ttid", to_string(ttid));
+	debug("newTab()", "ttid", ttid);
 
 	return index;
 }
 
 void gui::closeTab(int index)
 {
-	debug("closeTab()", "index", to_string(index));
+	debug("closeTab()", "index", index);
 
 	int ttid = getCurrentTabID(index);
 
@@ -320,7 +322,7 @@ void gui::closeAllTabs()
 
 	for (unsigned int i = 0; i < ttabs.size(); i++)
 	{
-		debug("closeAllTabs()", "destroy", to_string(i));
+		debug("closeAllTabs()", "destroy", int (i));
 
 		delete ttabs[i];
 		ttabs.erase(i);
@@ -334,7 +336,7 @@ void gui::closeAllTabs()
 
 void gui::tabChanged(int index)
 {
-	debug("tabChanged()", "index", to_string(index));
+	debug("tabChanged()", "index", index);
 
 	int ttid = getCurrentTabID(index);
 	if (ttid != -1)
@@ -432,7 +434,8 @@ vector<string> gui::importFileDialog()
 		"Enigma2 folder (*)",
 		"Lamedb 2.4 (lamedb)",
 		"Lamedb 2.5 (lamedb5)",
-		"Lamedb 2.2/2.3 (services)",
+		"Lamedb 2.3 (services)",
+		"Lamedb 2.2 (services)",
 		"Bouquet (bouquets.*)",
 		"Userbouquet (userbouquet.*)",
 		"Tuner settings (*.xml)",
@@ -504,7 +507,7 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& flags)
 		else if (selected == "Lamedb 2.2 (services)")
 			flags = 0x1222;
 
-		debug("exportFileDialog()", "flags", to_string(flags));
+		debug("exportFileDialog()", "flags", flags);
 
 		QUrl url = fdial.selectedUrls().value(0);
 		if (url.isLocalFile() || url.isEmpty())
@@ -516,7 +519,7 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& flags)
 
 void gui::tabChangeName(int ttid, string filename)
 {
-	debug("tabChangeName()", "ttid", to_string(ttid));
+	debug("tabChangeName()", "ttid", ttid);
 
 	tab* ttab = ttabs[ttid];
 	int index = twid->indexOf(ttab->widget);
@@ -608,7 +611,7 @@ void gui::fileExport()
 //TODO tab actions ctl
 void gui::tabAction(TAB_ATS action)
 {
-	debug("tabAction()", "action", to_string(action));
+	debug("tabAction()", "action", action);
 
 	tab* ttab = getCurrentTabHandler();
 	ttab->actionCall(action);
@@ -624,12 +627,12 @@ void gui::windowMinimize()
 
 void gui::settings()
 {
-	new e2se_gui_dialog::settings(mwid);
+	new e2se_gui_dialog::settings(mwid, this->log->log);
 }
 
 void gui::about()
 {
-	new e2se_gui_dialog::about(mwid);
+	new e2se_gui_dialog::about(mwid, this->log->log);
 }
 
 int gui::getActionFlag(GUI_CXE connector)
@@ -702,7 +705,7 @@ void gui::update()
 
 void gui::update(GUI_CXE connector, bool flag)
 {
-	// debug("update()", "connector", to_string(connector));
+	// debug("update()", "connector", connector);
 
 	QAction* action = gmenu.count(connector) ? gmenu[connector] : nullptr;
 
@@ -726,7 +729,7 @@ void gui::update(GUI_CXE connector, bool flag)
 
 void gui::update(int connectors, bool flag)
 {
-	// debug("update()", "connectors", to_string(connector));
+	// debug("update()", "connectors", connector);
 
 	if (flag)
 		this->state.xe |= connectors;
@@ -739,7 +742,7 @@ void gui::update(int connectors, bool flag)
 
 void gui::update(int connectors)
 {
-	// debug("update()", "connectors", to_string(connector));
+	// debug("update()", "connectors", connector);
 
 	this->state.ex = this->state.xe = connectors;
 	update();

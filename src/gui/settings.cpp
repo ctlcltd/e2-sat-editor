@@ -35,9 +35,9 @@ using namespace e2se;
 namespace e2se_gui_dialog
 {
 
-settings::settings(QWidget* mwid)
+settings::settings(QWidget* mwid, e2se::logger::session* log)
 {
-	this->log = new logger("settings");
+	this->log = new logger(log, "settings");
 	debug("settings()");
 
 	this->dial = new QDialog(mwid);
@@ -327,7 +327,7 @@ QListWidgetItem* settings::addProfile(int i)
 		// i++;
 		tmpps[i]["profileName"] = tr("Profile");
 	}
-	debug("addProfile()", "i", to_string(i));
+	debug("addProfile()", "index", i);
 
 	QListWidgetItem* item = new QListWidgetItem(tr("Profile"), rplist);
 	item->setText(item->text() + ' ' + QString::fromStdString(to_string(i)));
@@ -405,7 +405,7 @@ void settings::currentProfileChanged(QListWidgetItem* current, QListWidgetItem* 
 
 void settings::tabChanged(int index)
 {
-	debug("tabChanged()", "index", to_string(index));
+	debug("tabChanged()", "index", index);
 
 	if (this->state.prev == -1)
 	{

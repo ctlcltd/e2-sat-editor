@@ -27,6 +27,7 @@ class e2db_parser : virtual public e2db_abstract
 		inline static bool PARSER_LAMEDB5_PRIOR = false;
 		inline static bool PARSER_TUNERSETS = true;
 
+		// e2db_parser(e2se::logger::session log);
 		e2db_parser();
 		virtual ~e2db_parser() = default;
 		void parse_e2db();

@@ -9,11 +9,35 @@
  * @license GNU GPLv3 License
  */
 
+#include "logger/logger.h"
 #include "gui/gui.h"
 
-int main(int argc, char* argv[])
+int main(int argc, char* argv[], char* envp[])
 {
-	new e2se_gui::gui(argc, argv);
+	bool DEBUG = false;
+
+	for (int i = 0; envp[i] != NULL; i++)
+	{
+		if (string (envp[i]).substr(0, 6) == "DEBUG=")
+		{
+			DEBUG = true;
+			break;
+		}
+	}
+	
+	for (int i = 0; i < argc; i++)
+	{
+		if (string (argv[i]) == "debug")
+		{
+			DEBUG = true;
+			break;
+		}
+	}
+
+	e2se::logger::session* log = new e2se::logger::session;
+	log->debug = DEBUG;
+
+	new e2se_gui::gui(argc, argv, log);
 
 	return 0;
 }

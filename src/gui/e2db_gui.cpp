@@ -23,10 +23,11 @@ using std::to_string, std::unordered_set;
 namespace e2se_gui
 {
 
-e2db::e2db()
+e2db::e2db(e2se::logger::session* log)
 {
 	std::setlocale(LC_NUMERIC, "C");
 
+	this->log = new e2se::logger(log, "e2db");
 	debug("gui.e2db()");
 
 	this->sets = new QSettings;
@@ -44,11 +45,11 @@ void e2db::options()
 	e2db::MAKER_TUNERSETS = sets->value("application/makerTunerset", true).toBool();
 }
 
-void e2db::error(string cmsg, string optk, string optv)
+void e2db::error(string msg, string optk, string optv)
 {
 	debug("gui.error()");
 
-	this->::e2se_e2db::e2db::error(cmsg, optk, optv);
+	this->::e2se_e2db::e2db::error(msg, optk, optv);
 	QMessageBox::critical(nullptr, NULL, QString::fromStdString(optv));
 }
 
@@ -195,7 +196,7 @@ void e2db::merge(unordered_map<string, e2se_e2db::e2db_file> files)
 	debug("merge()");
 
 	bool merge = this->get_input().size() != 0 ? true : false;
-	e2db* nw_dbih = new e2db;
+	e2db* nw_dbih = new e2db(this->log->log);
 	nw_dbih->parse_e2db(files);
 	this->::e2se_e2db::e2db::merge(nw_dbih);
 	delete nw_dbih;

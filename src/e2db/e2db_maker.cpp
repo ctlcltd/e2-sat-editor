@@ -24,12 +24,12 @@ using std::ofstream, std::stringstream, std::hex, std::dec, std::setfill, std::s
 namespace e2se_e2db
 {
 
-e2db_maker::e2db_maker()
+/*e2db_maker::e2db_maker(e2se::logger::session log)
 {
-	this->log = new e2se::logger("e2db");
+	this->log = new e2se::logger(log, "e2db");
 
 	debug("e2db_maker()");
-}
+}*/
 
 void e2db_maker::make_e2db()
 {
@@ -361,7 +361,7 @@ e2db_file e2db_maker::make_userbouquet(string bname)
 //TODO value xml entities
 e2db_file e2db_maker::make_tunersets_xml(string filename, int ytype)
 {
-	debug("make_tunersets_xml()", "ytype", to_string(ytype));
+	debug("make_tunersets_xml()", "ytype", ytype);
 
 	switch (ytype)
 	{

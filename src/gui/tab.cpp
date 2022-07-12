@@ -44,9 +44,9 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-tab::tab(gui* gid, QWidget* wid)
+tab::tab(gui* gid, QWidget* wid, e2se::logger::session* log)
 {
-	this->log = new logger("tab");
+	this->log = new logger(log, "tab");
 	debug("tab()");
 
 	this->gid = gid;
@@ -464,7 +464,7 @@ tab::tab(gui* gid, QWidget* wid)
 	frm->addLayout(bottom, 2, 0);
 
 	this->root = container;
-	this->tools = new e2se_gui_tools::tools(root);
+	this->tools = new e2se_gui_tools::tools(root, this->log->log);
 
 	vector<pair<QString, QString>> tree = {
 		{"chs", "All services"},
@@ -506,7 +506,7 @@ void tab::newFile()
 	if (this->tools != nullptr)
 		this->tools->destroy();
 
-	this->dbih = new e2db;
+	this->dbih = new e2db(this->log->log);
 
 	load();
 }
@@ -523,7 +523,7 @@ void tab::openFile()
 
 void tab::saveFile(bool saveas)
 {
-	debug("saveFile()", "saveas", to_string(saveas));
+	debug("saveFile()", "saveas", saveas);
 
 	QMessageBox dial = QMessageBox();
 	string path;
@@ -544,7 +544,7 @@ void tab::saveFile(bool saveas)
 
 	if (! path.empty())
 	{
-		debug("saveFile()", "overwrite", to_string(overwrite));
+		debug("saveFile()", "overwrite", overwrite);
 		debug("saveFile()", "filename", filename);
 
 		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -670,7 +670,7 @@ void tab::exportFile()
 
 	if (! path.empty())
 	{
-		debug("exportFile()", "flags", to_string(flags));
+		debug("exportFile()", "flags", flags);
 
 		if (gde == gui::GUI_DPORTS::Services || gde == gui::GUI_DPORTS::Tunersets)
 		{
@@ -766,7 +766,7 @@ void tab::addUserbouquet()
 	debug("addUserbouquet()");
 
 	string bname;
-	e2se_gui::editBouquet* add = new e2se_gui::editBouquet(dbih, this->state.ti);
+	e2se_gui::editBouquet* add = new e2se_gui::editBouquet(dbih, this->state.ti, this->log->log);
 	add->display(cwid);
 	bname = add->getEditID(); // returned after dial.exec()
 	add->destroy();
@@ -812,7 +812,7 @@ void tab::editUserbouquet()
 
 	debug("editUserbouquet()", "bname", bname);
 
-	e2se_gui::editBouquet* edit = new e2se_gui::editBouquet(dbih, this->state.ti);
+	e2se_gui::editBouquet* edit = new e2se_gui::editBouquet(dbih, this->state.ti, this->log->log);
 	edit->setEditID(bname);
 	edit->display(cwid);
 	edit->destroy();
@@ -832,7 +832,7 @@ void tab::addChannel()
 {
 	debug("addChannel()");
 
-	e2se_gui::channelBook* cb = new e2se_gui::channelBook(dbih);
+	e2se_gui::channelBook* cb = new e2se_gui::channelBook(dbih, this->log->log);
 	string curr_chlist = this->state.curr;
 	QDialog* dial = new QDialog(cwid);
 	dial->setMinimumSize(760, 420);
@@ -860,7 +860,7 @@ void tab::addService()
 {
 	debug("addService()");
 
-	e2se_gui::editService* add = new e2se_gui::editService(dbih);
+	e2se_gui::editService* add = new e2se_gui::editService(dbih, this->log->log);
 	add->display(cwid);
 	add->destroy();
 }
@@ -883,7 +883,7 @@ void tab::editService()
 
 	if (! marker && dbih->db.services.count(chid))
 	{
-		e2se_gui::editService* edit = new e2se_gui::editService(dbih);
+		e2se_gui::editService* edit = new e2se_gui::editService(dbih, this->log->log);
 		edit->setEditID(chid);
 		edit->display(cwid);
 		nw_chid = edit->getEditID(); // returned after dial.exec()
@@ -915,7 +915,7 @@ bool tab::readFile(string filename)
 	if (this->dbih != nullptr)
 		delete this->dbih;
 
-	this->dbih = new e2db;
+	this->dbih = new e2db(this->log->log);
 
 	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	bool rr = dbih->prepare(filename);
@@ -1344,7 +1344,7 @@ void tab::visualReindexList()
 
 void tab::trickySortByColumn(int column)
 {
-	debug("trickySortByColumn()", "column", to_string(column));
+	debug("trickySortByColumn()", "column", column);
 
 	Qt::SortOrder order = this->state.sort.first == -1 ? Qt::DescendingOrder : lheaderv->sortIndicatorOrder();
 	column = column == 1 ? 0 : column;
@@ -1445,7 +1445,7 @@ void tab::bouquetItemDelete()
 
 void tab::actionCall(int action)
 {
-	debug("actionCall()", "action", to_string(action));
+	debug("actionCall()", "action", action);
 
 	switch (action)
 	{
@@ -1495,6 +1495,9 @@ void tab::actionCall(int action)
 		break;
 		case gui::TAB_ATS::EditTunerAtsc:
 			editTunersets(e2db::YTYPE::atsc);
+		break;
+		case gui::TAB_ATS::Inspector:
+			tools->inspector();
 		break;
 	}
 }
@@ -1951,7 +1954,7 @@ void tab::listItemSelectAll()
 
 void tab::editTunersets(int ytype)
 {
-	debug("editTunersets()", "ytype", to_string(ytype));
+	debug("editTunersets()", "ytype", ytype);
 
 	if (! this->state.tunersets)
 	{
@@ -2429,7 +2432,7 @@ void tab::showListEditContextMenu(QPoint &pos)
 
 void tab::setTabId(int ttid)
 {
-	debug("setTabId()", "ttid", to_string(ttid));
+	debug("setTabId()", "ttid", ttid);
 
 	this->ttid = ttid;
 }
@@ -2489,7 +2492,7 @@ void tab::initialize()
 
 void tab::profileComboChanged(int index)
 {
-	debug("profileComboChanged()", "index", to_string(index));
+	debug("profileComboChanged()", "index", index);
 
 	gid->sets->setValue("profile/selected", index);
 }
@@ -2499,7 +2502,7 @@ bool tab::ftpHandle()
 	debug("ftpHandle()");
 
 	if (ftph == nullptr)
-		ftph = new ftpcom;
+		ftph = new ftpcom(this->log->log);
 
 	if (ftph->connect())
 		return true;

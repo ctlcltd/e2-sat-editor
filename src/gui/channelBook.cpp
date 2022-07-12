@@ -26,9 +26,9 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-channelBook::channelBook(e2db* dbih)
+channelBook::channelBook(e2db* dbih, e2se::logger::session* log)
 {
-	this->log = new logger("channelBook");
+	this->log = new logger(log, "channelBook");
 	debug("channelBook()");
 
 	this->dbih = dbih;
@@ -148,7 +148,7 @@ void channelBook::layout()
 
 void channelBook::sideRowChanged(int index)
 {
-	debug("sideRowChanged()", "index", to_string(index));
+	debug("sideRowChanged()", "index", index);
 
 	tree->clearSelection();
 	tree->scrollToTop();
@@ -184,7 +184,7 @@ void channelBook::sideRowChanged(int index)
 //TODO FIX *index() load
 void channelBook::stacker(int vv)
 {
-	debug("stacker()", "index", to_string(vv));
+	debug("stacker()", "index", vv);
 
 	switch (vv)
 	{
@@ -406,7 +406,7 @@ void channelBook::populate()
 
 void channelBook::trickySortByColumn(int column)
 {
-	debug("trickySortByColumn()", "column", to_string(column));
+	debug("trickySortByColumn()", "column", column);
 
 	Qt::SortOrder order = list->header()->sortIndicatorOrder();
 	column = column == 1 ? 0 : column;

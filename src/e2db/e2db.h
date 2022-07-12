@@ -36,7 +36,8 @@ class e2db : public e2db_parser, public e2db_maker
 			_default = 0x0000
 		};
 
-		e2db();
+		// e2db(e2se::logger::session log);
+		// e2db();
 		virtual ~e2db() = default;
 		void merge(e2db* dbih);
 		void import_file(vector<string> paths);

@@ -22,11 +22,16 @@ using std::string, std::stringstream, std::min, std::endl, std::to_string;
 namespace e2se_ftpcom
 {
 
-ftpcom::ftpcom()
+/*ftpcom::ftpcom(e2se::logger::session log)
 {
-	this->log = new e2se::logger("ftpcom");
+	this->log = new e2se::logger(log, "ftpcom");
 	debug("ftpcom()");
 
+	curl_global_init(CURL_GLOBAL_DEFAULT);
+}*/
+
+ftpcom::ftpcom()
+{
 	curl_global_init(CURL_GLOBAL_DEFAULT);
 }
 
@@ -240,7 +245,7 @@ void ftpcom::upload_data(string base, string filename, string os)
 	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_discard_func);
 
 	for (int a = 0; (res != CURLE_OK) && (a < MAX_RESUME_ATTEMPTS); a++) {
-		debug("upload_data()", "attempt", to_string(a + 1));
+		debug("upload_data()", "attempt", (a + 1));
 		if (a)
 		{
 			curl_easy_setopt(cph, CURLOPT_NOBODY, true);
@@ -367,24 +372,34 @@ size_t ftpcom::get_content_length_func(void* csi, size_t size, size_t nmemb, voi
 	return relsize;
 }
 
-void ftpcom::debug(string cmsg)
+void ftpcom::debug(string msg)
 {
-	this->log->debug(cmsg);
+	this->log->debug(msg);
 }
 
-void ftpcom::debug(string cmsg, string optk, string optv)
+void ftpcom::debug(string msg, string optk, string optv)
 {
-	this->log->debug(cmsg, optk, optv);
+	this->log->debug(msg, optk, optv);
 }
 
-void ftpcom::error(string cmsg, string rmsg)
+void ftpcom::debug(string msg, string optk, int optv)
 {
-	this->log->error(cmsg, "Error", rmsg);
+	this->log->debug(msg, optk, std::to_string(optv));
 }
 
-void ftpcom::error(string cmsg, string optk, string optv)
+void ftpcom::debug(string msg, string optk, bool optv)
 {
-	this->log->error(cmsg, optk, optv);
+	this->log->debug(msg, optk, string (optv ? "true" : "false"));
+}
+
+void ftpcom::error(string tmsg, string rmsg)
+{
+	this->log->error(tmsg, "Error", rmsg);
+}
+
+void ftpcom::error(string msg, string optk, string optv)
+{
+	this->log->error(msg, optk, optv);
 }
 
 string ftpcom::trs(string str)

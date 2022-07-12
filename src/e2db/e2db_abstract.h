@@ -309,10 +309,12 @@ struct e2db_abstract
 		unordered_map<string, string> e2db;
 		inline static int LAMEDB_VER = 0;
 		void options();
-		virtual void debug(string cmsg);
-		virtual void debug(string cmsg, string optk, string optv);
-		virtual void error(string cmsg);
-		virtual void error(string cmsg, string optk, string optv);
+		virtual void debug(string msg);
+		virtual void debug(string msg, string optk, string optv);
+		virtual void debug(string msg, string optk, int optv);
+		virtual void debug(string msg, string optk, bool optv);
+		virtual void error(string msg);
+		virtual void error(string msg, string optk, string optv);
 		void add_transponder(int idx, transponder& tx);
 		void add_service(int idx, service& ch);
 		void add_bouquet(int idx, bouquet& bs);

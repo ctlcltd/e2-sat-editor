@@ -32,9 +32,9 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-editService::editService(e2db* dbih)
+editService::editService(e2db* dbih, e2se::logger::session* log)
 {
-	this->log = new logger("editService");
+	this->log = new logger(log, "editService");
 	debug("editService()");
 	
 	this->dbih = dbih;
@@ -393,7 +393,7 @@ void editService::paramsLayout()
 
 void editService::tunerComboChanged(int index)
 {
-	debug("tunerComboChanged()", "index", to_string(index));
+	debug("tunerComboChanged()", "index", index);
 
 	QString qpos = dtf1tn->currentData().toString();
 	string pos = qpos.toStdString();

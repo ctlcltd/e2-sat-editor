@@ -29,9 +29,9 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-editBouquet::editBouquet(e2db* dbih, int ti)
+editBouquet::editBouquet(e2db* dbih, int ti, e2se::logger::session* log)
 {
-	this->log = new logger("editBouquet");
+	this->log = new logger(log, "editBouquet");
 	debug("editBouquet()");
 
 	this->state.ti = ti;

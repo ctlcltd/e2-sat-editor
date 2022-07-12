@@ -22,11 +22,13 @@ namespace e2se_gui_tools
 class tools : protected e2se::log_factory
 {
 	public:
-		tools(QGridLayout* root);
-		QGridLayout* root;
+		tools(QGridLayout* root, e2se::logger::session* log);
+		void inspector();
         void editTunersets(e2se_gui::e2db* dbih, int ytype);
 		void closeTunersets();
 		void destroy();
+	protected:
+		QGridLayout* root;
 	private:
 		e2se_gui::editTunersets* tns = nullptr;
 };
