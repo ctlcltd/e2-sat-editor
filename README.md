@@ -2,7 +2,7 @@
 
 An enigma2 📡 channel list editor – under development.
 
-[![A screenshot of e2 SAT Editor](res/screenshot.jpg "e2 SAT Editor (screenshot)")](res/screenshot.png?raw=true)
+[![A screenshot of e2 SAT Editor](res/screenshot.png "e2 SAT Editor (screenshot)")](res/screenshot.png?raw=true)
 
 **e2 SAT Editor** is an Enigma 2 channel list editor, fully cross-platform (Windows, macOS, Linux) and free to use.
 
@@ -55,7 +55,7 @@ It supports Lamedb 4 and Lamedb 5 formats.
 - [ ] minisite and promotion
 - [ ] basic translations
 - [ ] automated build
-- [ ] terrestrial.xml and cable.xml support
+- [x] terrestrial.xml and cable.xml support
 - [ ] smart edit userbouquets
 - [ ] picons support
 - [ ] plug-in system

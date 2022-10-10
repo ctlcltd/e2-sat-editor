@@ -126,29 +126,28 @@ tab::tab(gui* gid, QWidget* wid, e2se::logger::session* log)
 
 	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({NULL, "Index", "Name", "CHID", "TXID", "Type", "CAS", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"});
 
-	int col = 0;
 	list_tree->setHeaderItem(lheader_item);
-	list_tree->setColumnHidden(col++, true);
-	list_tree->setColumnWidth(col++, 65);		// Index
-	list_tree->setColumnWidth(col++, 200);		// Name
+	list_tree->setColumnHidden(0, true);
+	list_tree->setColumnWidth(1, 65);		// Index
+	list_tree->setColumnWidth(2, 200);		// Name
 	if (gid->sets->value("application/debug", true).toBool()) {
-		list_tree->setColumnWidth(col++, 175);	// CHID
-		list_tree->setColumnWidth(col++, 150);	// TXID
+		list_tree->setColumnWidth(3, 175);	// CHID
+		list_tree->setColumnWidth(4, 150);	// TXID
 	}
 	else
 	{
-		list_tree->setColumnHidden(col++, true);
-		list_tree->setColumnHidden(col++, true);
+		list_tree->setColumnHidden(3, true);
+		list_tree->setColumnHidden(4, true);
 	}
-	list_tree->setColumnWidth(col++, 85);		// Type
-	list_tree->setColumnWidth(col++, 45);		// CAS
-	list_tree->setColumnWidth(col++, 150);		// Provider
-	list_tree->setColumnWidth(col++, 95);		// Frequency
-	list_tree->setColumnWidth(col++, 85);		// Polarization
-	list_tree->setColumnWidth(col++, 95);		// Symbol Rate
-	list_tree->setColumnWidth(col++, 50);		// FEC
-	list_tree->setColumnWidth(col++, 125);		// SAT
-	list_tree->setColumnWidth(col++, 75);		// System
+	list_tree->setColumnWidth(5, 85);		// Type
+	list_tree->setColumnWidth(6, 45);		// CAS
+	list_tree->setColumnWidth(7, 150);		// Provider
+	list_tree->setColumnWidth(8, 95);		// Frequency
+	list_tree->setColumnWidth(9, 85);		// Polarization
+	list_tree->setColumnWidth(10, 95);		// Symbol Rate
+	list_tree->setColumnWidth(11, 50);		// FEC
+	list_tree->setColumnWidth(12, 125);		// SAT
+	list_tree->setColumnWidth(13, 75);		// System
 
 	this->lheaderv = list_tree->header();
 	lheaderv->connect(lheaderv, &QHeaderView::sectionClicked, [=](int column) { this->trickySortByColumn(column); });
@@ -1096,10 +1095,10 @@ void tab::populate(QTreeWidget* side_tree)
 				item->setFont(5, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
 			}
 			item->setFont(6, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
-			/*if (! entry.at(6).isEmpty())
+			if (! item->text(6).isEmpty())
 			{
 				item->setIcon(6, theme::icon("crypted"));
-			}*/
+			}
 			cache[curr_chlist].append(item);
 		}
 	}
@@ -2074,7 +2073,7 @@ void tab::putChannels(vector<QString> channels)
 			item->setFont(5, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
 		}
 		item->setFont(6, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
-		if (! entry.at(6).isEmpty())
+		if (! item->text(6).isEmpty())
 		{
 			item->setIcon(6, theme::icon("crypted"));
 		}
@@ -2287,35 +2286,43 @@ void tab::updateRefBox()
 			e2db::channel_reference chref = dbih->userbouquets[curr_chlist].channels[chid];
 			string crefid = dbih->get_reference_id(chref);
 			refid = QString::fromStdString(crefid);
-
-			unordered_map<string, int> bss;
-			QStringList ubl;
-			for (auto & x : dbih->userbouquets)
-			{
-				if (x.second.channels.count(chid))
-				{
-					if (! x.second.name.empty())
-						ubl.append(QString::fromStdString(x.second.name));
-					bss[x.second.pname] = bss[x.second.pname]++;
-				}
-			}
-			ubls = "<p style=\"line-height: 150%\">" + ubl.join("<br>") + "</p>";
-
-			QStringList bsl;
-			for (auto & x : bss)
-			{
-				if (dbih->bouquets.count(x.first))
-					bsl.append(QString::fromStdString(dbih->bouquets[x.first].nname));
-			}
-			bsls = "<p style=\"line-height: 150%\">" + bsl.join("<br>") + "</p>";
 		}
 		// services tree
 		else
 		{
 			string crefid = dbih->get_reference_id(chid);
 			refid = QString::fromStdString(crefid);
-			bsls = ubls = "< >";
 		}
+
+		bsls = ubls = "< >";
+
+		unordered_map<string, int> bss;
+		QStringList ubl;
+		for (auto & x : dbih->userbouquets)
+		{
+			if (x.second.channels.count(chid))
+			{
+				if (! x.second.name.empty())
+					ubl.append(QString::fromStdString(x.second.name));
+				bss[x.second.pname] = bss[x.second.pname]++;
+			}
+		}
+		if (! ubl.empty())
+		{
+			ubls = "<p style=\"line-height: 150%\">" + ubl.join("<br>") + "</p>";
+		}
+
+		QStringList bsl;
+		for (auto & x : bss)
+		{
+			if (dbih->bouquets.count(x.first))
+				bsl.append(QString::fromStdString(dbih->bouquets[x.first].nname));
+		}
+		if (! bsl.empty())
+		{
+			bsls = "<p style=\"line-height: 150%\">" + bsl.join("<br>") + "</p>";
+		}
+
 		if (dbih->db.services.count(chid))
 		{
 			e2db::service ch = dbih->db.services[chid];

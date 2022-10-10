@@ -127,7 +127,13 @@ void editTunersets::layout()
 	QTreeWidgetItem* list_thead = new QTreeWidgetItem(lhs);
 	list->setHeaderItem(list_thead);
 	list->setColumnHidden(0, true);
-	list->setColumnWidth(1, 150);
+	if (this->sets->value("application/debug", true).toBool()) {
+		list->setColumnWidth(1, 150);
+	}
+	else
+	{
+		list->setColumnHidden(1, true);
+	}
 	tree->setColumnWidth(2, 75);
 	tree->setColumnWidth(3, 75);
 	tree->setColumnWidth(4, 65);
@@ -238,6 +244,7 @@ void editTunersets::populate()
 		QString x = QString::fromStdString(ci);
 
 		QTreeWidgetItem* item;
+		QString idx = QString::fromStdString(to_string(tp.first));
 		QString trid = QString::fromStdString(tp.second);
 		QString freq = QString::fromStdString(to_string(txp.freq));
 
@@ -272,6 +279,8 @@ void editTunersets::populate()
 		{
 			continue;
 		}
+		item->setData(0, Qt::UserRole, idx);
+		item->setData(1, Qt::UserRole, trid);
 
 		list->addTopLevelItem(item);
 	}

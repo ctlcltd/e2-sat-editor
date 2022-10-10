@@ -52,7 +52,8 @@ void editService::display(QWidget* cwid)
 	QString wtitle = this->state.edit ? "Edit Service" : "Add Service";
 	this->dial = new QDialog(cwid);
 	dial->setWindowTitle(wtitle);
-	dial->connect(dial, &QDialog::finished, [=]() { delete dial; });
+	//TODO FIX SEGFAULT
+	// dial->connect(dial, &QDialog::finished, [=]() { delete dial; });
 
 	QGridLayout* dfrm = new QGridLayout(dial);
 	QVBoxLayout* dvbox = new QVBoxLayout;
@@ -817,6 +818,7 @@ string editService::getEditID()
 
 void editService::destroy()
 {
+	delete this->dial;
 	delete this;
 }
 
