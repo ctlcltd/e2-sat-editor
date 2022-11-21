@@ -404,6 +404,7 @@ string gui::openFileDialog()
 	return path;
 }
 
+//TODO FIX file chooser and folder selection
 string gui::saveFileDialog(string filename)
 {
 	debug("saveFileDialog()", "filename", filename);

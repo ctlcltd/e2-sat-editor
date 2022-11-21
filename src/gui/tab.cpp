@@ -1089,12 +1089,14 @@ void tab::populate(QTreeWidget* side_tree)
 			item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
 			item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, chid);
 			item->setIcon(1, theme::spacer(4));
+			//TODO FIX crash on drop event
 			if (marker)
 			{
-				item->setFont(2, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
-				item->setFont(5, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
+				// item->setFont(2, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
+				// item->setFont(5, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
 			}
-			item->setFont(6, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
+			//TODO FIX crash on drop event
+			// item->setFont(6, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 			if (! item->text(6).isEmpty())
 			{
 				item->setIcon(6, theme::icon("crypted"));
@@ -1704,6 +1706,7 @@ void tab::listFindPerform(const QString& value, LIST_FIND flag)
 		{
 			i = int (this->lsr_find.curr);
 			i = i == j - 1 ? 0 : i + 1;
+			//TODO FIX EXC_BAD_ACCESS
 			list_tree->setCurrentIndex(match.at(i));
 		}
 		else if (type == LIST_FIND::prev)
@@ -1987,6 +1990,7 @@ void tab::closeTunersets()
 	}
 }
 
+//TODO FIX bad entry 1:?:?:...
 //TODO duplicates and new
 void tab::putChannels(vector<QString> channels)
 {
@@ -2067,12 +2071,14 @@ void tab::putChannels(vector<QString> channels)
 		item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
 		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, q);
 		item->setIcon(1, theme::spacer(4));
+		//TODO FIX crash on drop event
 		if (marker)
 		{
-			item->setFont(2, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
-			item->setFont(5, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
+			// item->setFont(2, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
+			// item->setFont(5, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
 		}
-		item->setFont(6, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
+		//TODO FIX crash on drop event
+		// item->setFont(6, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 		if (! item->text(6).isEmpty())
 		{
 			item->setIcon(6, theme::icon("crypted"));
@@ -2543,10 +2549,37 @@ void tab::ftpUpload()
 
 		if (files.empty())
 			return;
-		for (auto & x : files)
-			debug("ftpUpload()", "file", x.first + " | " + to_string(x.second.size()));
 
-		ftph->put_files(files);
+		unordered_map<string, e2se_ftpcom::ftpcom_file> tfiles;
+
+		int profile_sel = gid->sets->value("profile/selected").toInt();
+		gid->sets->beginReadArray("profile");
+		gid->sets->setArrayIndex(profile_sel);
+		for (auto & x : files)
+		{
+			string base;
+
+			if (x.first.find(".tv") != string::npos || x.first.find(".radio") != string::npos)
+			{
+				base = gid->sets->value("pathBouquets").toString().toStdString();
+			}
+			else if (x.first == "satellites.xml" || x.first == "terrestrial.xml" || x.first == "cables.xml" || x.first == "atsc.xml")
+			{
+				base = gid->sets->value("pathTransponders").toString().toStdString();
+			}
+			//TODO services, ...
+			else
+			{
+				base = gid->sets->value("pathServices").toString().toStdString();
+			}
+			tfiles.emplace(base + '/' + x.first, x.second);
+
+			debug("ftpUpload()", "file", base + '/' + x.first + " | " + to_string(x.second.size()));
+		}
+		gid->sets->endArray();
+		files.clear();
+
+		ftph->put_files(tfiles);
 		QMessageBox::information(nullptr, NULL, "Uploaded");
 
 		if (ftph->cmd_ifreload() || ftph->cmd_tnreload())

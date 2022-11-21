@@ -118,6 +118,7 @@ void ftpcom::cleanup(CURL* ch, CURLU* rh)
 	curl_easy_cleanup(ch);
 }
 
+//TODO FIX freeze
 bool ftpcom::connect()
 {
 	debug("connect()");
@@ -131,6 +132,7 @@ bool ftpcom::connect()
 	return (res == CURLE_OK) ? true : false;
 }
 
+//TODO FIX freeze
 bool ftpcom::disconnect()
 {
 	debug("disconnect()");
@@ -449,7 +451,7 @@ void ftpcom::put_files(unordered_map<string, ftpcom_file> files)
 		std::filesystem::path path = std::filesystem::path(x.first); //C++17
 		string base = path.parent_path().u8string(); //C++17
 		string filename = path.filename().u8string(); //C++17
-		upload_data(base, x.first, x.second);
+		upload_data(base, filename, x.second);
 	}
 }
 

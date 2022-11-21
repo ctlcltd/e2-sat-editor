@@ -29,6 +29,7 @@ logger::logger(session* log, string ns)
 	this->ns = "e2se." + ns;
 }
 
+//TODO FIX crash isnull
 void logger::debug(string msg)
 {
 	std::ostream out (buf);
@@ -41,6 +42,7 @@ void logger::debug(string msg)
 	buf->str("");
 }
 
+//TODO FIX crash isnull
 void logger::debug(string msg, string optk, string optv)
 {
 	std::ostream out (buf);

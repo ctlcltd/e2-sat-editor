@@ -421,6 +421,7 @@ void editService::tunerComboChanged(int index)
 }
 
 //TODO test
+//TODO FIX chname encoding
 void editService::store()
 {
 	debug("store()");

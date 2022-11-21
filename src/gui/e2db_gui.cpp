@@ -191,6 +191,7 @@ bool e2db::write(string localdir, bool overwrite)
 	return true;
 }
 
+//TODO FIX duplicate bouquets.tv | bouquets.radio
 void e2db::merge(unordered_map<string, e2se_e2db::e2db_file> files)
 {
 	debug("merge()");

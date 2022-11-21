@@ -33,6 +33,7 @@ namespace e2se_e2db
 
 //TODO bname destructive edit
 //TODO bname non-destructive edit
+//TODO FIX mixing cache data
 void e2db::merge(e2db* dbih)
 {
 	debug("merge()");
@@ -52,7 +53,7 @@ void e2db::merge(e2db* dbih)
 	cp_index_1.erase("mks");
 	tuners_pos.clear();
 
-	//TODO refresh cached data
+	//TODO refresh cache data
 	/*for (auto & chdata : db.services)
 	{
 	}*/

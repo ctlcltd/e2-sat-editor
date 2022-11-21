@@ -37,6 +37,7 @@ class e2db : public ::e2se_e2db::e2db
 			unordered_map<string, QStringList> transponders;
 			unordered_map<string, QStringList> services;
 		} entries;
+		//TODO FIX e2se_gui | e2se_e2db logger conflict
 		e2db(e2se::logger::session* log);
 		~e2db()
 		{
