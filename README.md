@@ -24,7 +24,7 @@ It supports Lamedb 4 and Lamedb 5 formats.
 
 * libstdc++ >= 3
 * libcurl
-* qt6-base | qt5-base
+* qt6-base \| qt5-base
 
 
 ## Development
@@ -44,6 +44,20 @@ It supports Lamedb 4 and Lamedb 5 formats.
 - In macos w/ xcode use scripts/darwin.sh to build
 
 - With mingw32 use scripts/mingw32.sh to build
+
+
+## Contents
+
+|Folder|Description|
+|-|-|
+|**dist**|Specific target files, required during build.|
+|**res**|Graphic resources, used in this software.|
+|**scripts**|Utility bash scripts, used to build.|
+|**[seeds.](https://ctlcltd.github.io/e2-sat-editor/seeds./)**|Source seeds, Enigma2 settings format.|
+|**src**|The main source of this software.|
+|**vendor**|It contains symbolic links to external libraries.|
+|**workspace**|Utility python scripts, used for emulation: ftp, telnet, webif.|
+
 
 &nbsp;
 ### TODO
@@ -73,5 +87,3 @@ You can open [issues](https://github.com/ctlcltd/e2-sat-editor/issues) to report
 Source code licensed under the terms of the [MIT License](LICENSE). It is also licensed under the terms of the [GNU GPLv3](src/COPYING).
 
 This software will be distribuited under the terms of the GNU GPLv3.
-
-[MIT License](LICENSE).
