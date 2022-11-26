@@ -64,12 +64,13 @@ QIcon theme::spacer(int width)
 
 QString theme::fontFamily()
 {
-	return "";
+	return QFont().defaultFamily();
 }
 
+//TODO FIX env
 int theme::fontSize()
 {
-	return QFont("").pointSize();
+	return QFont().pointSize();
 }
 
 int theme::calcFontSize(int size)
@@ -78,6 +79,7 @@ int theme::calcFontSize(int size)
 }
 
 
+//TODO FIX env Qt5
 void style::system()
 {
 #ifndef Q_OS_MAC

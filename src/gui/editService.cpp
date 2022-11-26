@@ -420,8 +420,7 @@ void editService::tunerComboChanged(int index)
 	}
 }
 
-//TODO test
-//TODO FIX chname encoding
+//TODO TEST
 void editService::store()
 {
 	debug("store()");
@@ -763,10 +762,10 @@ vector<string> editService::computePIDs(e2db::service ch, e2db::SDATA_PIDS x, st
 	{
 		if ((*it).substr(0, 2) == cpx)
 		{
-			if (cval)
-				*it = pid;
+			if (val.empty())
+				*it = "";
 			else
-				data.erase(it);
+				*it = pid;
 			found = true;
 		}
 	}

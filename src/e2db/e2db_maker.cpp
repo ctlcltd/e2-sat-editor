@@ -9,13 +9,13 @@
  * @license GNU GPLv3 License
  */
 
+#include <ctime>
 #include <algorithm>
 #include <sstream>
 #include <fstream>
 #include <iostream>
 #include <iomanip>
 #include <filesystem>
-#include <ctime>
 
 #include "e2db_maker.h"
 
@@ -42,20 +42,24 @@ void e2db_maker::make_e2db()
 		make_db_tunersets();
 }
 
-//TODO FIX mingw32 wrong %z %Z
 string e2db_maker::get_timestamp()
 {
-	std::time_t curr_tst = std::time(0);
-	std::tm* out_tst = std::localtime(&curr_tst);
-	char datetime[80];
-	// @link https://sourceforge.net/p/mingw-w64/bugs/793/
-	std::strftime(datetime, 80, "%Y-%m-%d %H:%M:%S %z", out_tst);
-	return string (datetime);
+	std::time_t ct = std::time(0);
+	int zh = 0;
+	std::tm* lct = std::localtime(&ct);
+	zh = lct->tm_hour + lct->tm_isdst;
+	char dt[80];
+	std::strftime(dt, 80, "%Y-%m-%d %H:%M:%S", lct);
+	std::tm* gmt = std::gmtime(&ct);
+	zh = (zh - gmt->tm_hour) * 100;
+	char tz[7];
+	std::sprintf(tz, "%+05d", zh);
+	return string (dt) + string (tz);
 }
 
 string e2db_maker::get_editor_string()
 {
-	return "e2-sat-editor 0.1 <https://github.com/ctlcltd/e2-sat-editor>";
+	return "e2 SAT Editor 0.1 <https://github.com/ctlcltd/e2-sat-editor>";
 }
 
 void e2db_maker::make_e2db_lamedb()

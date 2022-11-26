@@ -9,12 +9,14 @@
  * @license GNU GPLv3 License
  */
 
+#include <clocale>
 #include <algorithm>
 #include <unordered_set>
 #include <sstream>
 #include <fstream>
 #include <iostream>
 #include <iomanip>
+#include <filesystem>
 
 #include "e2db.h"
 
@@ -25,6 +27,8 @@ namespace e2se_e2db
 
 /*e2db::e2db(e2se::logger::session log)
 {
+	std::setlocale(LC_NUMERIC, "C");
+
 	this->log = new e2se::logger(log, "e2db");
 
 	debug("e2db()");

@@ -9,9 +9,9 @@
  * @license GNU GPLv3 License
  */
 
-#include <algorithm>
 #include <cstdio>
 #include <cstring>
+#include <algorithm>
 
 #include "e2db_abstract.h"
 

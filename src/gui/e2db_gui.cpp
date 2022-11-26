@@ -10,6 +10,7 @@
  */
 
 #include <cstdio>
+#include <ctime>
 #include <clocale>
 #include <cmath>
 #include <unordered_set>
@@ -300,6 +301,7 @@ QStringList e2db::entryTransponder(transponder tx)
 QStringList e2db::entryService(service ch)
 {
 	// macos: unwanted chars [qt.qpa.fonts] Menlo notice
+	//TODO FIX missing backtick and other chars
 	QString chname;
 	if (sets->value("preference/fixUnicodeChars").toBool())
 		chname = QString::fromStdString(ch.chname).remove(QRegularExpression("[^\\p{L}\\p{N}\\p{Sm}\\p{M}\\p{P}\\s]+"));

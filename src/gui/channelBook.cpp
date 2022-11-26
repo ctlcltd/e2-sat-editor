@@ -268,7 +268,7 @@ void channelBook::stacker(int vv)
 			name.prepend(QString::fromStdString("[" + bs.nname + "]\t"));
 			item = new QTreeWidgetItem({name});
 		}
-		//TODO test
+		//TODO TEST
 		else if (vv == views::Resolution)
 		{
 			int stype = std::stoi(q.first);
@@ -435,13 +435,17 @@ vector<QString> channelBook::getSelected()
 {
 	debug("getSelected()");
 
-	vector<QString> channels;
+	vector<QString> items;
 
 	for (auto & item : list->selectedItems())
 	{
-		channels.emplace_back(item->data(0, Qt::UserRole).toString());
+		QString qchid = item->data(0, Qt::UserRole).toString();
+		string chid = qchid.toStdString();
+		string crefid = dbih->get_reference_id(chid);
+		QString refid = QString::fromStdString(crefid);
+		items.emplace_back(refid);
 	}
-	return channels;
+	return items;
 }
 
 }

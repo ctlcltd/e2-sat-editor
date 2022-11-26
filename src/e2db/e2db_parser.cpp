@@ -9,13 +9,13 @@
  * @license GNU GPLv3 License
  */
 
+#include <cstdlib>
+#include <cstring>
 #include <algorithm>
 #include <sstream>
 #include <fstream>
 #include <iostream>
 #include <filesystem>
-#include <cstdlib>
-#include <cstring>
 
 #include "e2db_parser.h"
 
@@ -373,7 +373,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 			tx.pil = pil;
 			tx.oflgs = string (oflgs);
 		break;
-		//TODO test
+		//TODO TEST
 		case 't': // DVB-T
 			std::sscanf(data.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &band, &hpfec, &lpfec, &tmod, &tmx, &guard, &hier, &inv, oflgs);
 
@@ -388,7 +388,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 			tx.inv = inv;
 			tx.oflgs = string (oflgs);
 		break;
-		//TODO test
+		//TODO TEST
 		case 'c': // DVB-C
 			std::sscanf(data.c_str(), "%8d:%8d:%1d:%1d:%1d%s", &freq, &sr, &inv, &cmod, &cfec, oflgs);
 
@@ -399,7 +399,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 			tx.cfec = cfec;
 			tx.oflgs = string (oflgs);
 		break;
-		//TODO test
+		//TODO TEST
 		case 'a': // ATSC
 			std::sscanf(data.c_str(), "%8d:%1d:%1d:%1d:%1d%s", &freq, &inv, &amod, &flgs, &sys, oflgs);
 

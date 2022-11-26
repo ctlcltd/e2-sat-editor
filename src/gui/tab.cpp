@@ -9,9 +9,9 @@
  * @license GNU GPLv3 License
  */
 
+#include <cstdio>
 #include <algorithm>
 #include <filesystem>
-#include <cstdio>
 
 #include <QtGlobal>
 #include <QGuiApplication>
@@ -972,6 +972,7 @@ void tab::load()
 		QString bname = QString::fromStdString(ubi.second);
 		QTreeWidgetItem* pgroup = bgroups[ubi.second];
 		// macos: unwanted chars [qt.qpa.fonts] Menlo notice
+		//TODO FIX missing backtick and other chars
 		QString name;
 		if (gid->sets->value("preference/fixUnicodeChars").toBool())
 			name = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{N}\\p{Sm}\\p{M}\\p{P}\\s]+"));
@@ -1089,14 +1090,12 @@ void tab::populate(QTreeWidget* side_tree)
 			item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
 			item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, chid);
 			item->setIcon(1, theme::spacer(4));
-			//TODO FIX crash on drop event
 			if (marker)
 			{
-				// item->setFont(2, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
-				// item->setFont(5, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
+				item->setFont(2, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
+				item->setFont(5, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
 			}
-			//TODO FIX crash on drop event
-			// item->setFont(6, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
+			item->setFont(6, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 			if (! item->text(6).isEmpty())
 			{
 				item->setIcon(6, theme::icon("crypted"));
@@ -1801,7 +1800,6 @@ void tab::listItemCut()
 	listItemCopy(true);
 }
 
-//TODO Reference ID
 void tab::listItemCopy(bool cut)
 {
 	debug("listItemCopy()");
@@ -1820,16 +1818,55 @@ void tab::listItemCopy(bool cut)
 		for (int i = 1; i < list_tree->columnCount(); i++)
 		{
 			QString qstr = item->data(i, Qt::DisplayRole).toString();
+			// Name
+			if (i == 2)
+				qstr.prepend("\"").append("\"");
 			// CAS
-			if (i == 6 && ! qstr.isEmpty())
-				qstr.replace(", ", "|").replace(" ", "");
-
+			else if (i == 6)
+				qstr.prepend(qstr.isEmpty() ? "" : "$").prepend("\"").append("\"");
+			// Provider
+			else if (i == 7)
+				qstr.prepend("\"").append("\"");
+			// SAT
+			else if (i == 12)
+				qstr.prepend("\"").append("\"");
 			data.append(qstr);
 		}
+
+		// Reference ID
+		QString qchid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString();
+		bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+		string chid = qchid.toStdString();
+		QString refid;
+
+		// bouquets tree
+		if (this->state.tc)
+		{
+			string curr_chlist = this->state.curr;
+			e2db::channel_reference chref;
+			if (dbih->userbouquets.count(curr_chlist))
+				chref = dbih->userbouquets[curr_chlist].channels[chid];
+			string crefid = dbih->get_reference_id(chref);
+			refid = QString::fromStdString(crefid);
+		}
+		// services tree
+		else
+		{
+			string crefid = dbih->get_reference_id(chid);
+			refid = QString::fromStdString(crefid);
+		}
+		//TODO marker index compatibility
+		if (marker)
+		{
+			refid = "1:" + qchid.toUpper() + ":0:0:0:0:0:0";
+		}
+		data.replace(2, refid);
+		data.removeAt(3);
 		text.append(data.join(",")); // CSV
 	}
 	clipboard->setText(text.join("\n")); // CSV
 
+	//TODO global marker index count
 	if (cut)
 		listItemDelete();
 }
@@ -1854,7 +1891,14 @@ void tab::listItemPaste()
 		for (QString & data : list)
 		{
 			if (data.contains(','))
-				items.emplace_back(data.split(',')[2]);
+			{
+				auto line = data.split(',');
+				items.emplace_back(line[2] + ',' + line[1]);
+			}
+			else
+			{
+				items.emplace_back(data);
+			}
 		}
 	}
 	if (! items.empty())
@@ -1990,8 +2034,7 @@ void tab::closeTunersets()
 	}
 }
 
-//TODO FIX bad entry 1:?:?:...
-//TODO duplicates and new
+//TODO duplicates
 void tab::putChannels(vector<QString> channels)
 {
 	debug("putChannels()");
@@ -2000,24 +2043,59 @@ void tab::putChannels(vector<QString> channels)
 	list_tree->setDragEnabled(false);
 	list_tree->setAcceptDrops(false);
 	QList<QTreeWidgetItem*> clist;
-	string curr_chlist = this->state.curr;
 	int i = 0, y;
 	QTreeWidgetItem* current = list_tree->currentItem();
 	QTreeWidgetItem* parent = list_tree->invisibleRootItem();
 	i = current != nullptr ? parent->indexOfChild(current) : list_tree->topLevelItemCount();
 	y = i + 1;
 
+	string curr_chlist = this->state.curr;
+	e2db::userbouquet uboq = dbih->userbouquets[curr_chlist];
+	int ub_idx = uboq.index;
+	int anum_count = dbih->index["mks"].size();
+
 	for (QString & q : channels)
 	{
-		string chid = q.toStdString();
 		char ci[7];
 		std::sprintf(ci, "%06d", i++);
 		QString x = QString::fromStdString(ci);
 		QString idx = QString::fromStdString(to_string(i));
+
+		string refid;
+		string value;
+		if (q.contains(','))
+		{
+			auto data = q.split(',');
+			refid = data[0].toStdString();
+			value = data[1].replace("\"", "").toStdString();
+		}
+		else
+		{
+			refid = q.toStdString();
+		}
+
 		QStringList entry;
 		bool marker = false;
 		e2db::channel_reference chref;
+		e2db::service_reference ref;
 		e2db::service ch;
+
+		dbih->parse_channel_reference(refid, chref, ref);
+
+		char chid[25];
+
+		if (chref.marker)
+		{
+			anum_count++;
+
+			// %4d:%2x:%d
+			std::sprintf(chid, "%d:%x:%d", chref.type, anum_count, ub_idx);
+		}
+		else
+		{
+			// %4x:%4x:%8x
+			std::sprintf(chid, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
+		}
 
 		if (dbih->db.services.count(chid))
 		{
@@ -2028,57 +2106,43 @@ void tab::putChannels(vector<QString> channels)
 
 			chref.marker = false;
 			chref.chid = chid;
-			chref.type = ch.stype;
+			chref.type = 0;
+			chref.anum = 0;
 			chref.index = idx.toInt();
 		}
 		else
 		{
-			string chlist;
-
-			for (auto & q : dbih->index["mks"])
+			if (chref.marker)
 			{
-				if (q.second == chid)
-				{
-					for (auto & u : dbih->index["ubs"])
-					{
-						if (u.first == q.first)
-							chlist = u.second;
-					}
-				}
-			}
+				chref.chid = chid;
+				chref.anum = anum_count;
+				chref.value = value;
+				chref.index = -1;
+				idx = "";
 
-			if (chlist.empty())
-			{
-				error("putChannels()", "chid", chid);
-				continue;
+				marker = true;
+				entry = dbih->entryMarker(chref);
+				entry.prepend(x);
+			//TODO add new service/transponder
 			}
 			else
 			{
-				if (dbih->userbouquets.count(chlist))
-				{
-					chref = dbih->userbouquets[chlist].channels[chid];
-					chref.index = idx.toInt();
-				}
-				marker = true;
-				entry = dbih->entryMarker(chref);
-				idx = entry[1];
-				entry.prepend(x);
+				error("putChannels()", "refid", refid);
+				continue;
 			}
 		}
 		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
 		item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
-		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, q);
+		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
 		item->setIcon(1, theme::spacer(4));
-		//TODO FIX crash on drop event
 		if (marker)
 		{
-			// item->setFont(2, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
-			// item->setFont(5, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
+			item->setFont(2, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
+			item->setFont(5, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
 		}
-		//TODO FIX crash on drop event
-		// item->setFont(6, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
+		item->setFont(6, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 		if (! item->text(6).isEmpty())
 		{
 			item->setIcon(6, theme::icon("crypted"));
