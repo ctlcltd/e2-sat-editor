@@ -62,11 +62,6 @@ void logger::debug(string msg, string optk, int optv)
 	this->logger::debug(msg, optk, std::to_string(optv));
 }
 
-void logger::debug(string msg, string optk, bool optv)
-{
-	this->logger::debug(msg, optk, string (optv ? "true" : "false"));
-}
-
 void logger::error(string msg)
 {
 	std::ostream out (buf);
@@ -89,6 +84,11 @@ void logger::error(string msg, string optk, string optv)
 	std::clog << out.rdbuf();
 	this->log->text.append(buf->str());
 	buf->str("");
+}
+
+void logger::error(string msg, string optk, int optv)
+{
+	this->logger::error(msg, optk, std::to_string(optv));
 }
 
 string logger::str()

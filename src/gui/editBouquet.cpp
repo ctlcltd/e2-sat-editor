@@ -142,6 +142,8 @@ void editBouquet::store()
 	e2db::userbouquet ub;
 	if (this->state.edit)
 		ub = dbih->userbouquets[bname];
+	else
+		ub.index = -1;
 
 	for (auto & item : fields)
 	{

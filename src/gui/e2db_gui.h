@@ -37,7 +37,7 @@ class e2db : public ::e2se_e2db::e2db
 			unordered_map<string, QStringList> transponders;
 			unordered_map<string, QStringList> services;
 		} entries;
-		//TODO FIX e2se_gui | e2se_e2db logger conflict
+		//TODO FIX e2se_gui and e2se_e2db logger conflict
 		e2db(e2se::logger::session* log);
 		~e2db()
 		{
@@ -57,7 +57,7 @@ class e2db : public ::e2se_e2db::e2db
 		string addUserbouquet(userbouquet& ub);
 		string editUserbouquet(userbouquet& ub);
 		void removeUserbouquet(string bname);
-		void initialize();
+		void plain();
 		bool prepare(string localdir);
 		bool write(string localdir, bool overwrite);
 		void merge(unordered_map<string, e2se_e2db::e2db_file> files);

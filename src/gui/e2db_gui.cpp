@@ -33,7 +33,7 @@ e2db::e2db(e2se::logger::session* log)
 
 	this->sets = new QSettings;
 	options();
-	initialize();
+	plain();
 }
 
 void e2db::options()
@@ -133,10 +133,9 @@ void e2db::removeUserbouquet(string bname)
 	this->::e2se_e2db::e2db::remove_userbouquet(bname);
 }
 
-//TODO rename
-void e2db::initialize()
+void e2db::plain()
 {
-	debug("initialize()");
+	debug("plain()");
 
 	e2db::bouquet bs;
 
@@ -192,7 +191,7 @@ bool e2db::write(string localdir, bool overwrite)
 	return true;
 }
 
-//TODO FIX duplicate bouquets.tv | bouquets.radio
+//TODO FIX duplicate bouquets
 void e2db::merge(unordered_map<string, e2se_e2db::e2db_file> files)
 {
 	debug("merge()");

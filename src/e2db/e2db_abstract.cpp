@@ -35,11 +35,6 @@ void e2db_abstract::debug(string msg, string optk, int optv)
 	this->log->debug(msg, optk, std::to_string(optv));
 }
 
-void e2db_abstract::debug(string msg, string optk, bool optv)
-{
-	this->log->debug(msg, optk, string (optv ? "true" : "false"));
-}
-
 void e2db_abstract::error(string msg)
 {
 	this->log->error(msg);
@@ -48,6 +43,11 @@ void e2db_abstract::error(string msg)
 void e2db_abstract::error(string msg, string optk, string optv)
 {
 	this->log->error(msg, optk, optv);
+}
+
+void e2db_abstract::error(string msg, string optk, int optv)
+{
+	this->log->error(msg, optk, std::to_string(optv));
 }
 
 void e2db_abstract::add_transponder(int idx, transponder& tx)

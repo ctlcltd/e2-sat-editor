@@ -311,7 +311,8 @@ tab::tab(gui* gid, QWidget* wid, e2se::logger::session* log)
 		gid->sets->setArrayIndex(i);
 		if (! gid->sets->contains("profileName"))
 			continue;
-		profile_combo->addItem(gid->sets->value("profileName").toString(), i + 1); //TODO
+		//TODO profile/selected and array index differs trouble
+		profile_combo->addItem(gid->sets->value("profileName").toString(), i + 1);
 	}
 	gid->sets->endArray();
 	profile_combo->setCurrentIndex(profile_sel);
@@ -476,7 +477,7 @@ tab::tab(gui* gid, QWidget* wid, e2se::logger::session* log)
 	{
 		QTreeWidgetItem* titem = new QTreeWidgetItem();
 		titem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-		QVariantMap tdata; //TODO
+		QVariantMap tdata; //TODO singular data
 		tdata["id"] = item.first;
 		titem->setData(0, Qt::UserRole, QVariant (tdata));
 		titem->setText(0, item.second);
@@ -498,7 +499,7 @@ void tab::newFile()
 
 	closeTunersets();
 	gid->update(gui::init);
-	initialize();
+	preset();
 
 	if (this->dbih != nullptr)
 		delete this->dbih;
@@ -574,7 +575,7 @@ void tab::importFile()
 		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 		dbih->importFile(paths);
 		QGuiApplication::restoreOverrideCursor();
-		initialize();
+		preset();
 		load();
 	}
 }
@@ -678,7 +679,7 @@ void tab::exportFile()
 		else
 		{
 			string basedir = std::filesystem::path(path).remove_filename(); //C++17
-			//TODO rend trailing
+			//TODO right-end trailing
 			for (string & w : paths)
 				w = basedir + w;
 		}
@@ -786,7 +787,7 @@ void tab::addUserbouquet()
 
 	QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
 	bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
-	QMap<QString, QVariant> tdata; //TODO
+	QMap<QString, QVariant> tdata; //TODO singular data
 	tdata["id"] = QString::fromStdString(uboq.bname);
 	bitem->setData(0, Qt::UserRole, QVariant (tdata));
 	bitem->setText(0, name);
@@ -909,7 +910,7 @@ bool tab::readFile(string filename)
 		return false;
 
 	closeTunersets();
-	initialize();
+	preset();
 
 	if (this->dbih != nullptr)
 		delete this->dbih;
@@ -955,7 +956,7 @@ void tab::load()
 
 		QTreeWidgetItem* bitem = new QTreeWidgetItem();
 		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-		QMap<QString, QVariant> tdata; //TODO
+		QMap<QString, QVariant> tdata; //TODO singular data
 		tdata["id"] = bname;
 		bitem->setData(0, Qt::UserRole, QVariant (tdata));
 		bitem->setText(0, name);
@@ -981,7 +982,7 @@ void tab::load()
 
 		QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
 		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
-		QMap<QString, QVariant> tdata; //TODO
+		QMap<QString, QVariant> tdata; //TODO singular data
 		tdata["id"] = bname;
 		bitem->setData(0, Qt::UserRole, QVariant (tdata));
 		bitem->setText(0, name);
@@ -1619,8 +1620,7 @@ void tab::listFindPerform(LIST_FIND flag)
 	listFindPerform(this->lsr_search.input->text(), flag);
 }
 
-//TODO FIX
-// multiple selection with shortcut FindNext when search_box is closed
+//TODO FIX multiple selection with shortcut FindNext when search_box is closed
 void tab::listFindPerform(const QString& value, LIST_FIND flag)
 {
 	// QTreeWidgetItem* item list_tree->currentItem() || list_tree->topLevelItem(0)
@@ -1685,7 +1685,7 @@ void tab::listFindPerform(const QString& value, LIST_FIND flag)
 	{
 		match = this->lsr_find.match;
 
-		//TODO
+		//TODO improve
 		/*if (flag == LIST_FIND::fast && this->lsr_find.flag == LIST_FIND::all)
 		{
 			if (list_tree->currentIndex().isValid())
@@ -1855,7 +1855,7 @@ void tab::listItemCopy(bool cut)
 			string crefid = dbih->get_reference_id(chid);
 			refid = QString::fromStdString(crefid);
 		}
-		//TODO marker index compatibility
+		//TODO marker index and compatibility
 		if (marker)
 		{
 			refid = "1:" + qchid.toUpper() + ":0:0:0:0:0:0";
@@ -1866,7 +1866,7 @@ void tab::listItemCopy(bool cut)
 	}
 	clipboard->setText(text.join("\n")); // CSV
 
-	//TODO global marker index count
+	//TODO global marker index
 	if (cut)
 		listItemDelete();
 }
@@ -2529,9 +2529,9 @@ void tab::tabChangeName(string filename)
 		gid->tabChangeName(ttid, filename);
 }
 
-void tab::initialize()
+void tab::preset()
 {
-	debug("initialize()");
+	debug("preset()");
 
 	this->state.nwwr = true;
 	this->state.ovwr = false;
@@ -2631,7 +2631,7 @@ void tab::ftpUpload()
 			{
 				base = gid->sets->value("pathTransponders").toString().toStdString();
 			}
-			//TODO services, ...
+			//TODO upload services, other data ... (eg. picons)
 			else
 			{
 				base = gid->sets->value("pathServices").toString().toStdString();
@@ -2667,7 +2667,7 @@ void tab::ftpDownload()
 		this->updateListIndex();
 		this->updateBouquetsIndex();
 		dbih->merge(files);
-		initialize();
+		preset();
 		load();
 	}
 }

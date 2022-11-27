@@ -35,8 +35,8 @@ namespace e2se_e2db
 }*/
 
 
-//TODO bname destructive edit
-//TODO bname non-destructive edit
+//TODO bname in destructive edit
+//TODO bname in non-destructive edit
 //TODO FIX mixing cache data
 void e2db::merge(e2db* dbih)
 {
@@ -107,7 +107,7 @@ void e2db::merge(e2db* dbih)
 	{
 		userbouquet& ub = cp_ubs_0[i.second];
 		bouquet& bs = bouquets[ub.pname];
-		//TODO "userbouquet.dbe.01234.tv"
+		//TODO improve "userbouquet.dbe.01234.tv"
 		int idx = bs.userbouquets.size();
 		string key = "1:7:" + to_string(bs.btype) + ':' + ub.name;
 		string ktype;
@@ -188,7 +188,7 @@ void e2db::merge(e2db* dbih)
 
 	this->index = index;
 
-	//TODO mem
+	//TODO TEST memory
 	cp_index_0.clear();
 	cp_index_1.clear();
 	cp_ubs_0.clear();
@@ -570,7 +570,7 @@ void e2db::remove_bouquet(string bname)
 	bouquets.erase(bname);
 }
 
-//TODO bname destructive edit
+//TODO bname in destructive edit
 void e2db::add_userbouquet(userbouquet& ub)
 {
 	debug("add_userbouquet()");
@@ -599,7 +599,7 @@ void e2db::add_userbouquet(userbouquet& ub)
 			}
 		}
 
-		idx = idx ? idx + 1 : 0;
+		idx = idx ? idx + 1 : -1;
 		ub.index = idx;
 	}
 	if (ub.bname.empty())
@@ -944,21 +944,26 @@ string e2db::get_reference_id(channel_reference chref)
 	if (! chref.marker && db.services.count(chref.chid))
 	{
 		service ch = db.services[chref.chid];
+		type = ch.stype != -1 ? ch.stype : 0;
+		anum = ch.snum != -1 ? ch.snum : 0;
 		ssid = ch.ssid;
 		tsid = ch.tsid;
 		onid = ch.onid.empty() ? onid : ch.onid;
 		std::transform(onid.begin(), onid.end(), onid.begin(), [](unsigned char c) { return toupper(c); });
 		dvbns = ch.dvbns;
 	}
-	type = chref.type != -1 ? chref.type : 0;
-	anum = chref.anum != -1 ? chref.anum : 0;
+	else
+	{
+		type = chref.type != -1 ? chref.type : 0;
+		anum = chref.anum != -1 ? chref.anum : 0;
+	}
 
 	// %1d:%4d:%4X:%4X:%4X:%4s:%8X:0:0:0:
 	std::sprintf(refid, "%d:%d:%X:%X:%X:%s:%X:0:0:0", 1, type, anum, ssid, tsid, onid.c_str(), dvbns);
 	return refid;
 }
 
-//TODO unique (eg. terrestrial MUX)
+//TODO make unique (eg. terrestrial MUX)
 map<string, vector<pair<int, string>>> e2db::get_channels_index()
 {
 	debug("get_channels_index()");

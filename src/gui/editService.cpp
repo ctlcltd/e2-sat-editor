@@ -45,7 +45,7 @@ void editService::display(QWidget* cwid)
 {
 	debug("display()");
 
-	//TODO emit err
+	//TODO throw exception
 	if (this->state.edit && ! dbih->db.services.count(chid))
 		return;
 

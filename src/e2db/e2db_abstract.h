@@ -60,7 +60,7 @@ struct e2db_abstract
 			atsc
 		};
 
-		//TODO
+		//TODO refact
 		inline static const unordered_map<int, pair<int, string>> STYPES = {
 			{0, make_pair(0, "Data")},
 			{1, make_pair(1, "TV")},
@@ -151,7 +151,7 @@ struct e2db_abstract
 			int ssid;
 			int dvbns;
 			int tsid;
-			string onid; //TODO to int
+			string onid; //TODO to int ?
 			int stype;
 			int snum;
 			int srcid;
@@ -299,7 +299,7 @@ struct e2db_abstract
 		map<int, string> tuners_pos;
 		// comments <iname string, vector<comment struct>>
 		unordered_map<string, vector<comment>> comments;
-		//TODO coherence src-idx||count
+		//TODO data coherence src-idx||count
 		// index <iname string, vector<pair<src-idx||count int, chid string>>>
 		unordered_map<string, vector<pair<int, string>>> index;
 		// collisions <chid string, vector<pair<chid string, increment int>>>
@@ -312,9 +312,9 @@ struct e2db_abstract
 		virtual void debug(string msg);
 		virtual void debug(string msg, string optk, string optv);
 		virtual void debug(string msg, string optk, int optv);
-		virtual void debug(string msg, string optk, bool optv);
 		virtual void error(string msg);
 		virtual void error(string msg, string optk, string optv);
+		virtual void error(string msg, string optk, int optv);
 		void add_transponder(int idx, transponder& tx);
 		void add_service(int idx, service& ch);
 		void add_bouquet(int idx, bouquet& bs);

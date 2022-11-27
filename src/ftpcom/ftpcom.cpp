@@ -389,11 +389,6 @@ void ftpcom::debug(string msg, string optk, int optv)
 	this->log->debug(msg, optk, std::to_string(optv));
 }
 
-void ftpcom::debug(string msg, string optk, bool optv)
-{
-	this->log->debug(msg, optk, string (optv ? "true" : "false"));
-}
-
 void ftpcom::error(string tmsg, string rmsg)
 {
 	this->log->error(tmsg, "Error", rmsg);
@@ -402,6 +397,11 @@ void ftpcom::error(string tmsg, string rmsg)
 void ftpcom::error(string msg, string optk, string optv)
 {
 	this->log->error(msg, optk, optv);
+}
+
+void ftpcom::error(string msg, string optk, int optv)
+{
+	this->log->error(msg, optk, std::to_string(optv));
 }
 
 string ftpcom::trs(string str)

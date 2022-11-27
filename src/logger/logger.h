@@ -31,9 +31,9 @@ class logger
 		void debug(string msg);
 		void debug(string msg, string optk, string optv);
 		void debug(string msg, string optk, int optv);
-		void debug(string msg, string optk, bool optv);
 		void error(string msg);
 		void error(string msg, string optk, string optv);
+		void error(string msg, string optk, int optv);
 		string str();
 		std::stringbuf* buf;
 		string ns;
@@ -55,15 +55,15 @@ struct log_factory
 		{
 			this->log->debug(msg, optk, optv);
 		}
-		void debug(string msg, string optk, bool optv)
-		{
-			this->log->debug(msg, optk, optv);
-		}
 		void error(string msg)
 		{
 			this->log->error(msg);
 		}
 		void error(string msg, string optk, string optv)
+		{
+			this->log->error(msg, optk, optv);
+		}
+		void error(string msg, string optk, int optv)
 		{
 			this->log->error(msg, optk, optv);
 		}

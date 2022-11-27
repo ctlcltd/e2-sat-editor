@@ -97,9 +97,9 @@ class ftpcom
 		virtual void debug(string msg);
 		virtual void debug(string msg, string optk, string optv);
 		virtual void debug(string msg, string optk, int optv);
-		virtual void debug(string msg, string optk, bool optv);
 		virtual void error(string tmsg, string rmsg);
 		virtual void error(string msg, string optk, string optv);
+		virtual void error(string msg, string optk, int optv);
 		e2se::logger* log;
 	private:
 		bool actv;

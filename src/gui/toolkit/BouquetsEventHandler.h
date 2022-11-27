@@ -19,7 +19,7 @@
 
 namespace e2se_gui
 {
-//TODO optional switch to current (drop) bouquets tree item in settings
+//TODO optional switch to current "drop" bouquets tree item in settings
 //TODO FIX persistent glitches with event reject, force a repaint on bouquets tree or his viewport
 class BouquetsEventHandler : public QObject
 {

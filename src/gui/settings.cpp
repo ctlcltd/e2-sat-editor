@@ -352,7 +352,7 @@ void settings::delProfile()
 	QListWidgetItem* curr = rplist->currentItem();
 	int i = curr->data(Qt::UserRole).toInt();
 	tmpps[i].clear();
-	this->state.delt = true;
+	this->state.dele = true;
 
 	renameProfile(false);
 	if (rplist->count() != 1)
@@ -396,11 +396,11 @@ void settings::currentProfileChanged(QListWidgetItem* current, QListWidgetItem* 
 {
 	debug("currentProfileChanged()");
 
-	if (previous != nullptr && ! this->state.delt)
+	if (previous != nullptr && ! this->state.dele)
 		updateProfile(previous);
 
 	this->retrieve(current);
-	this->state.delt = false;
+	this->state.dele = false;
 }
 
 void settings::tabChanged(int index)

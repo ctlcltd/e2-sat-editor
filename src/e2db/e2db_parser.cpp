@@ -420,7 +420,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 void e2db_parser::parse_lamedb_service_params(string data, service& ch)
 {
 	int ssid, dvbns, tsid, stype, snum;
-	char onid[5]; //TODO to int
+	char onid[5]; //TODO to int ?
 	ssid = 0, dvbns = 0, tsid = 0, stype = -1, snum = -1;
 
 	if (LAMEDB_VER == 5)
@@ -443,13 +443,13 @@ void e2db_parser::parse_lamedb_service_params(string data, service& ch)
 	ch.snum = snum;
 }
 
-//TODO FIX could cause SEGFAULT with empty data (infinite loop)
+//TODO FIX could cause SEGFAULT with empty data
 void e2db_parser::parse_lamedb_service_data(string data, service& ch)
 {
 	if (data.empty())
 		return;
 
-	//TODO 256 EOL
+	//TODO max length 256 EOL
 	stringstream ss (data);
 	string line;
 	map<char, vector<string>> cdata;
@@ -596,7 +596,7 @@ void e2db_parser::parse_channel_reference(string data, channel_reference& chref,
 	i = -1, type = -1, anum = -1, ssid = 0, tsid = 0, onid = -1, dvbns = 0;
 
 	std::sscanf(data.c_str(), "%d:%d:%4X:%4X:%4X:%4X:%8X", &i, &type, &anum, &ssid, &tsid, &onid, &dvbns);
-	//TODO other flags ?
+	//TODO other flags ? "...:%d:%d:%d:"
 
 	switch (type)
 	{
@@ -620,7 +620,7 @@ void e2db_parser::parse_channel_reference(string data, channel_reference& chref,
 	chref.anum = anum;
 }
 
-//TODO FIX pos = key.find_first_of('\0'); string::npos != 4294967295
+//TODO FIX string::npos != 4294967295 in mingw // pos = key.find_first_of('\0');
 //TODO value xml entities
 void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 {

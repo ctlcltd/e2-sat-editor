@@ -67,7 +67,7 @@ QString theme::fontFamily()
 	return QFont().defaultFamily();
 }
 
-//TODO FIX env
+//TODO FIX behaviour Qt5 [linux]
 int theme::fontSize()
 {
 	return QFont().pointSize();
@@ -79,7 +79,7 @@ int theme::calcFontSize(int size)
 }
 
 
-//TODO FIX env Qt5
+//TODO FIX behaviour Qt5 [linux]
 void style::system()
 {
 #ifndef Q_OS_MAC

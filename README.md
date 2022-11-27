@@ -17,7 +17,7 @@ It supports Lamedb 4 and Lamedb 5 formats.
 
 * build tools (gcc, g++, make, cmake, qmake)
 * C++ 17
-* Qt 6 / Qt 5
+* Qt 6 \| Qt 5
 
 
 ## Dependencies
@@ -62,19 +62,21 @@ It supports Lamedb 4 and Lamedb 5 formats.
 &nbsp;
 ### TODO
 
-- [ ] stable build
 - [x] search filters
-- [ ] satellites.xml editing
-- [ ] multi-windowed gui
-- [ ] minisite and promotion
-- [ ] basic translations
-- [ ] automated build
 - [x] terrestrial.xml and cable.xml support
+- [ ] satellites.xml editing
+- [ ] print and import/export CSV
+- [ ] stable build
 - [ ] smart edit userbouquets
-- [ ] picons support
-- [ ] plug-in system
+- [ ] minisite and promotion
 - [ ] cli
 - [ ] optimizations
+- [ ] basic translations
+- [ ] multi-windowed gui
+- [ ] plug-in system
+- [ ] picons support
+- [ ] automated build
+
 
 &nbsp;
 ## Get involved

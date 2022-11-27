@@ -46,7 +46,7 @@ gui::gui(int argc, char* argv[], e2se::logger::session* log)
 	mroot->setApplicationName("e2-sat-editor");
 	mroot->setApplicationVersion("0.1");
 	mroot->setStyle(new TabBarProxyStyle);
-	mroot->connect(mroot, &QApplication::focusChanged, [=]() { this->windowFocusChanged(); });
+	mroot->connect(mroot, &QApplication::focusChanged, [=]() { this->windowChanged(); });
 
 	this->sets = new QSettings;
 	if (! sets->contains("application/version"))
@@ -68,16 +68,16 @@ gui::gui(int argc, char* argv[], e2se::logger::session* log)
 		mwid->setStyleSheet("QToolBar { background: palette(mid) }");
 	}
 
-	root();
+	layout();
 
 	mwid->show();
 
 	mroot->exec();
 }
 
-void gui::root()
+void gui::layout()
 {
-	debug("root()");
+	debug("layout()");
 
 	this->mfrm = new QGridLayout(mwid);
 
@@ -130,6 +130,7 @@ void gui::menuCtl()
 	gmenu[GUI_CXE::TabListCut] = medit->addAction(tr("Cu&t"), [=]() { this->tabAction(TAB_ATS::ListCut); }, QKeySequence::Cut);
 	gmenu[GUI_CXE::TabListCopy] = medit->addAction(tr("&Copy"), [=]() { this->tabAction(TAB_ATS::ListCopy); },  QKeySequence::Copy);
 	gmenu[GUI_CXE::TabListPaste] = medit->addAction(tr("&Paste"), [=]() { this->tabAction(TAB_ATS::ListPaste); }, QKeySequence::Paste);
+	gmenu[GUI_CXE::TabListDelete] = medit->addAction(tr("&Delete"), [=]() { this->tabAction(TAB_ATS::ListDelete); }, QKeySequence::Delete);
 	medit->addSeparator();
 	gmenu[GUI_CXE::TabListSelectAll] = medit->addAction(tr("Select &All"), [=]() { this->tabAction(TAB_ATS::ListSelectAll); }, QKeySequence::SelectAll);
 
@@ -164,7 +165,7 @@ void gui::menuCtl()
 	mwtabs->setExclusive(true);
 
 	QMenu* mhelp = menu->addMenu(tr("&Help"));
-	//TODO FIX macos QAction::NoRole ignored
+	//TODO FIX QAction::NoRole ignored [macos]
 	mhelp->addAction("TODO", todo);
 	mhelp->addAction(tr("&About"), [=]() { this->about(); })->setMenuRole(QAction::NoRole);
 
@@ -202,17 +203,17 @@ void gui::tabCtl()
 	ttbnew->setMinimumHeight(32);
 	ttbnew->setIconSize(QSize(12, 12));
 	ttbnew->setShortcut(QKeySequence::AddTab);
-	//TODO FIX height & ::left-corner padding
+	//TODO FIX fixed height, ::left-corner needs padding
 	ttbnew->setStyleSheet("width: 8ex; height: 32px; font: bold 12px");
 	ttbnew->connect(ttbnew, &QPushButton::pressed, [=]() { this->newTab(); });
 	twid->setCornerWidget(ttbnew, Qt::TopLeftCorner);
 
-	initialize();
+	launcher();
 
 	mcnt->addWidget(twid);
 }
 
-//TODO FIX dir:rtl
+//TODO FIX intl. rtl
 void gui::statusCtl()
 {
 	debug("statusCtl()");
@@ -231,22 +232,22 @@ void gui::statusCtl()
 	mstatusb->addWidget(sbwid);
 }
 
-void gui::windowFocusChanged()
+void gui::windowChanged()
 {
-	// debug("windowFocusChanged()");
+	// debug("windowChanged()");
 
-	// main window focus in
+	// main window busy
 	if (mroot->activeWindow())
 	{
-		debug("windowFocusChanged()", "mwind", "focus in");
+		debug("windowChanged()", "mwind", "busy");
 		this->state.xe = this->state.ex;
 	}
-	// main window focus out
+	// main window idle
 	else
 	{
-		debug("windowFocusChanged()", "mwind", "focus out");
+		debug("windowChanged()", "mwind", "idle");
 		this->state.ex = this->state.xe;
-		this->state.xe = GUI_CXE::deactivated;
+		this->state.xe = GUI_CXE::idle;
 	}
 	update();
 }
@@ -306,7 +307,7 @@ void gui::closeTab(int index)
 	ttabs.erase(ttid);
 
 	if (twid->count() == 0)
-		initialize();
+		launcher();
 }
 
 void gui::closeAllTabs()
@@ -331,7 +332,7 @@ void gui::closeAllTabs()
 	ttabs.clear();
 	ttmenu.clear();
 
-	initialize();
+	launcher();
 }
 
 void gui::tabChanged(int index)
@@ -681,9 +682,9 @@ tab* gui::getCurrentTabHandler()
 	return ttid != -1 ? ttabs[ttid] : nullptr;
 }
 
-void gui::initialize()
+void gui::launcher()
 {
-	debug("initialize()");
+	debug("launcher()");
 
 	this->state.tt = 0;
 	this->state.ex = this->state.xe = GUI_CXE::init;

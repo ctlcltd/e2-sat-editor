@@ -70,7 +70,7 @@ class gui : protected e2se::log_factory
 			CloseAllTabs = 0x40000000,
 			WindowMinimize = 0x80000000,
 			init = GUI_CXE::FileNew | GUI_CXE::FileOpen | GUI_CXE::FileSave | GUI_CXE::FileImport | GUI_CXE::FileExport | GUI_CXE::NewTab | GUI_CXE::CloseTab | GUI_CXE::CloseAllTabs | GUI_CXE::WindowMinimize,
-			deactivated = GUI_CXE::FileNew | GUI_CXE::FileOpen
+			idle = GUI_CXE::FileNew | GUI_CXE::FileOpen
 		};
 
 		enum TAB_ATS {
@@ -110,11 +110,11 @@ class gui : protected e2se::log_factory
 
 		gui(int argc, char* argv[], e2se::logger::session* log);
 		~gui();
-		void root();
+		void layout();
 		void menuCtl();
 		void tabCtl();
 		void statusCtl();
-		void windowFocusChanged();
+		void windowChanged();
 		int newTab(string filename = "");
 		void closeTab(int index);
 		void closeAllTabs();
@@ -147,7 +147,7 @@ class gui : protected e2se::log_factory
 		void update(GUI_CXE connector, bool flag);
 		void update(int connectors, bool flag);
 		void update(int connectors);
-		void initialize();
+		void launcher();
 		void setDefaultSets();
 		QSettings* sets;
 	private:

@@ -178,7 +178,7 @@ e2db_file e2db_maker::make_lamedb(string filename)
 				if (! tx.oflgs.empty())
 					ss << tx.oflgs;
 			break;
-			//TODO
+			//TODO test params and freq round
 			case 'c': // DVB-C
 				ss << int (tx.freq * 1e3);
 				ss << ':' << int (tx.sr * 1e3);
@@ -188,7 +188,7 @@ e2db_file e2db_maker::make_lamedb(string filename)
 				if (! tx.oflgs.empty())
 					ss << tx.oflgs;
 			break;
-			//TODO
+			//TODO test params and freq round
 			case 'a': // ATSC
 				ss << int (tx.freq * 1e3);
 				ss << ':' << tx.inv;
@@ -221,7 +221,7 @@ e2db_file e2db_maker::make_lamedb(string filename)
 		ss << formats[10];
 		ss << formats[11] << ch.chname << formats[11];
 		ss << formats[10];
-		//TODO 256
+		//TODO max length 256 EOL
 		auto last_key = (*prev(ch.data.cend()));
 		for (auto & q: ch.data)
 		{
@@ -313,7 +313,6 @@ e2db_file e2db_maker::make_bouquet(string bname)
 	return ss.str();
 }
 
-//TODO upCase or loCase
 e2db_file e2db_maker::make_userbouquet(string bname)
 {
 	debug("make_userbouquet()", "bname", bname);
@@ -329,7 +328,7 @@ e2db_file e2db_maker::make_userbouquet(string bname)
 		ss << "1:";
 		ss << chref.type << ':';
 		ss << hex;
-		ss << uppercase << chref.anum << ':'; //TODO ("global markers index)
+		ss << uppercase << chref.anum << ':'; //TODO global markers index
 		
 		if (db.services.count(x.second))
 		{
@@ -548,7 +547,7 @@ bool e2db_maker::write_to_localdir(string localdir, bool overwrite)
 		error("write_to_localdir()", "Error", "Directory \"" + localdir + "\" not exists.");
 		return false;
 	}
-	//TODO file exists and (force) overwrite
+	//TODO check file exists and "force" overwrite
 	else if (! overwrite)
 	{
 		std::filesystem::create_directory(localdir); //C++17

@@ -1885,4 +1885,4 @@ s:0082:00820000:3264:013e:25:3306:0,"Kabelio Super RTL CH",p:KABELIO.CH,c:000515
 s:0084:00820000:3264:013e:25:3307:0,"Kabelio Das Erste",p:KABELIO.CH,c:000529,c:011fff,c:030529,c:050001,C:4afc
 s:0085:00820000:3264:013e:25:3308:0,"Kabelio ZDF",p:KABELIO.CH,c:000533,c:011fff,c:030533,c:050001,C:4afc
 # editor: e2 SAT Editor 0.1 <https://github.com/ctlcltd/e2-sat-editor>
-# datetime: 2022-11-26 23:24:10+0100
+# datetime: 2022-11-27 23:18:02+0100

@@ -39,7 +39,7 @@ class e2db : public e2db_parser, public e2db_maker
 		// e2db(e2se::logger::session log);
 		// e2db();
 
-		//TODO FIX e2se_gui | e2se_e2db logger conflict
+		//TODO FIX e2se_gui and e2se_e2db logger conflict
 		virtual ~e2db() = default;
 		void merge(e2db* dbih);
 		void import_file(vector<string> paths);

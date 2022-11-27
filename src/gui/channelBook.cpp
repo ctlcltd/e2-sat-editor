@@ -181,7 +181,7 @@ void channelBook::sideRowChanged(int index)
 	stacker(index);
 }
 
-//TODO FIX *index() load
+//TODO index() load
 void channelBook::stacker(int vv)
 {
 	debug("stacker()", "index", vv);
@@ -218,7 +218,7 @@ void channelBook::stacker(int vv)
 
 	for (auto & q: data)
 	{
-		//TODO pos value & terrestrial, cable ...
+		//TODO pos value with terrestrial, cable, atsc
 		if (vv == views::Satellites)
 		{
 			int pos = std::stoi(q.first);

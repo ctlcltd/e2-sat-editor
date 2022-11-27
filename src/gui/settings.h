@@ -77,9 +77,8 @@ class settings : protected e2se::log_factory
 			int prev;
 			// profile retrieving
 			bool retr;
-			//TODO rename
 			// profile deleting
-			bool delt;
+			bool dele;
 		} state;
 };
 }
