@@ -34,6 +34,7 @@ class logger
 		void error(string msg);
 		void error(string msg, string optk, string optv);
 		void error(string msg, string optk, int optv);
+		string timestamp();
 		string str();
 		std::stringbuf* buf;
 		string ns;

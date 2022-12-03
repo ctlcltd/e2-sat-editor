@@ -9,6 +9,7 @@
  * @license GNU GPLv3 License
  */
 
+#include <cstdio>
 #include <ctime>
 #include <algorithm>
 #include <sstream>
@@ -135,7 +136,7 @@ e2db_file e2db_maker::make_lamedb(string filename)
 	ss << "eDVB services /" << LAMEDB_VER << "/" << endl;
 
 	ss << formats[1];
-	for (auto & x: index["txs"])
+	for (auto & x : index["txs"])
 	{
 		transponder tx = db.transponders[x.second];
 		ss << formats[5] << formats[4];
@@ -204,7 +205,7 @@ e2db_file e2db_maker::make_lamedb(string filename)
 	ss << formats[3];
 
 	ss << formats[2];
-	for (auto & x: index["chs"])
+	for (auto & x : index["chs"])
 	{
 		service ch = db.services[x.second];
 		ss << formats[9] << formats[4];
@@ -223,7 +224,7 @@ e2db_file e2db_maker::make_lamedb(string filename)
 		ss << formats[10];
 		//TODO max length 256 EOL
 		auto last_key = (*prev(ch.data.cend()));
-		for (auto & q: ch.data)
+		for (auto & q : ch.data)
 		{
 			char d;
 			switch (q.first)
@@ -254,7 +255,7 @@ void e2db_maker::make_e2db_bouquets()
 {
 	debug("make_e2db_bouquets()");
 
-	for (auto & x: bouquets)
+	for (auto & x : bouquets)
 		e2db_out[x.first] = make_bouquet(x.first);
 }
 
@@ -262,7 +263,7 @@ void e2db_maker::make_e2db_userbouquets()
 {
 	debug("make_e2db_userbouquets()");
 
-	for (auto & x: userbouquets)
+	for (auto & x : userbouquets)
 		e2db_out[x.first] = make_userbouquet(x.first);
 }
 
@@ -270,7 +271,7 @@ void e2db_maker::make_db_tunersets()
 {
 	debug("make_db_tunersets()");
 
-	for (auto & x: tuners)
+	for (auto & x : tuners)
 	{
 		string filename;
 		switch (x.first)
@@ -300,7 +301,7 @@ e2db_file e2db_maker::make_bouquet(string bname)
 	stringstream ss;
 
 	ss << "#NAME " << bs.name << endl;
-	for (string & w: bs.userbouquets)
+	for (string & w : bs.userbouquets)
 	{
 		ss << "#SERVICE ";
 		ss << "1:7:" << bs.btype << ":0:0:0:0:0:0:0:";
@@ -321,7 +322,7 @@ e2db_file e2db_maker::make_userbouquet(string bname)
 	stringstream ss;
 
 	ss << "#NAME " << ub.name << endl;
-	for (auto & x: index[bname])
+	for (auto & x : index[bname])
 	{
 		channel_reference chref = userbouquets[bname].channels[x.second];
 		ss << "#SERVICE ";
@@ -410,7 +411,7 @@ e2db_file e2db_maker::make_tunersets_xml(string filename, int ytype)
 
 	ss << "<?xml version=\"1.0\" encoding=\"" << tv.charset << "\"?>" << endl;
 	ss << '<' << tags[0] << '>' << endl;
-	for (auto & x: index[iname])
+	for (auto & x : index[iname])
 	{
 		tunersets_table tn = tv.tables[x.second];
 
@@ -427,7 +428,7 @@ e2db_file e2db_maker::make_tunersets_xml(string filename, int ytype)
 			ss << ' ' << "countrycode=\"" << tn.country << "\"";
 		ss << '>' << endl;
 
-		for (auto & x: index[tn.tnid])
+		for (auto & x : index[tn.tnid])
 		{
 			tunersets_transponder tntxp = tn.transponders[x.second];
 

@@ -9,6 +9,7 @@
  * @license GNU GPLv3 License
  */
 
+#include <cstdio>
 #include <sstream>
 
 #include <QtGlobal>
@@ -163,7 +164,7 @@ void editService::transponderLayout()
 	dtf1tx->setMinimumWidth(180);
 	dtf1tx->setEditable(true);
 
-	for (auto & q: txdata)
+	for (auto & q : txdata)
 	{
 		QString name;
 		int pos = std::stoi(q.first);
@@ -402,7 +403,7 @@ void editService::tunerComboChanged(int index)
 	if (! txdata.count(pos))
 		return;
 
-	for (auto & x: txdata[pos])
+	for (auto & x : txdata[pos])
 	{
 		e2db::transponder tx = dbih->db.transponders[x.second];
 		QString txid = QString::fromStdString(x.second);
@@ -660,7 +661,7 @@ void editService::retrieve()
 		else if (key == "raw_C" && ch.data.count(e2db::SDATA::C))
 		{
 			auto last_key = (*prev(ch.data.at(e2db::SDATA::C).cend()));
-			for (string & w: ch.data.at(e2db::SDATA::C))
+			for (string & w : ch.data.at(e2db::SDATA::C))
 			{
 				val += "C:" + w;
 				if (w != last_key)
@@ -691,7 +692,7 @@ void editService::retrieve()
 		else if (key == "raw_data")
 		{
 			auto last_key = (*prev(ch.data.cend()));
-			for (auto & q: ch.data)
+			for (auto & q : ch.data)
 			{
 				char d;
 				switch (q.first)

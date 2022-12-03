@@ -14,7 +14,6 @@
 
 #include "tools.h"
 
-using std::to_string;
 using namespace e2se;
 
 namespace e2se_gui_tools
@@ -38,7 +37,7 @@ void tools::inspector()
 	QGridLayout* dfrm = new QGridLayout(dial);
 	QTextEdit* dcnt = new QTextEdit;
 	dcnt->setReadOnly(true);
-	dcnt->setPlainText(QString::fromStdString(this->log->str()));
+	dcnt->setHtml("<pre style=\"font-size: 11px\">" + QString::fromStdString(this->log->str()).toHtmlEscaped() + "</pre>");
 
 	dfrm->setContentsMargins(0, 0, 0, 0);
 	dfrm->addWidget(dcnt);

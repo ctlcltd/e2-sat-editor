@@ -9,6 +9,8 @@
  * @license GNU GPLv3 License
  */
 
+#include <cstdio>
+
 #include <QString>
 #include <QMessageBox>
 

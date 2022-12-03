@@ -9,6 +9,7 @@
  * @license GNU GPLv3 License
  */
 
+#include <cstdio>
 #include <clocale>
 #include <algorithm>
 #include <unordered_set>
@@ -963,14 +964,13 @@ string e2db::get_reference_id(channel_reference chref)
 	return refid;
 }
 
-//TODO make unique (eg. terrestrial MUX)
 map<string, vector<pair<int, string>>> e2db::get_channels_index()
 {
 	debug("get_channels_index()");
 
 	map<string, vector<pair<int, string>>> _index;
 
-	for (auto & x: index["chs"])
+	for (auto & x : index["chs"])
 	{
 		service ch = db.services[x.second];
 		transponder tx = db.transponders[ch.txid];
@@ -986,11 +986,17 @@ map<string, vector<pair<int, string>>> e2db::get_transponders_index()
 	debug("get_transponders_index()");
 
 	map<string, vector<pair<int, string>>> _index;
+	unordered_set<string> _unique;
 
-	for (auto & x: index["txs"])
+	for (auto & x : index["txs"])
 	{
 		transponder tx = db.transponders[x.second];
-		_index[to_string(tx.pos)].emplace_back(x);
+
+		if (! _unique.count(x.second))
+		{
+			_index[to_string(tx.pos)].emplace_back(x);
+			_unique.insert(x.second);
+		}
 	}
 
 	return _index;
@@ -1012,8 +1018,8 @@ map<string, vector<pair<int, string>>> e2db::get_bouquets_index()
 
 	map<string, vector<pair<int, string>>> _index;
 
-	for (auto & x: bouquets)
-		_index[x.first] = index[x.first];
+	for (auto & x : index["bss"])
+		_index[x.second] = index[x.second];
 
 	return _index;
 }
@@ -1024,8 +1030,8 @@ map<string, vector<pair<int, string>>> e2db::get_userbouquets_index()
 
 	map<string, vector<pair<int, string>>> _index;
 
-	for (auto & x: userbouquets)
-		_index[x.first] = index[x.first];
+	for (auto & x : index["ubs"])
+		_index[x.second] = index[x.second];
 
 	return _index;
 }
@@ -1036,7 +1042,7 @@ map<string, vector<pair<int, string>>> e2db::get_packages_index()
 
 	map<string, vector<pair<int, string>>> _index;
 
-	for (auto & x: index["chs"])
+	for (auto & x : index["chs"])
 	{
 		service ch = db.services[x.second];
 
@@ -1058,7 +1064,7 @@ map<string, vector<pair<int, string>>> e2db::get_resolution_index()
 
 	map<string, vector<pair<int, string>>> _index;
 
-	for (auto & x: index["chs"])
+	for (auto & x : index["chs"])
 	{
 		service ch = db.services[x.second];
 		_index[to_string(ch.stype)].emplace_back(x);
@@ -1074,7 +1080,7 @@ map<string, vector<pair<int, string>>> e2db::get_encryption_index()
 	map<string, vector<pair<int, string>>> _index;
 	unordered_set<string> _unique;
 
-	for (auto & x: index["chs"])
+	for (auto & x : index["chs"])
 	{
 		service ch = db.services[x.second];
 
@@ -1106,7 +1112,7 @@ map<string, vector<pair<int, string>>> e2db::get_az_index()
 
 	map<string, vector<pair<int, string>>> _index;
 
-	for (auto & x: index["chs"])
+	for (auto & x : index["chs"])
 	{
 		service ch = db.services[x.second];
 		string lt = ch.chname.substr(0, 1);

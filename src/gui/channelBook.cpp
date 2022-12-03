@@ -10,6 +10,7 @@
  */
 
 #include <cstdio>
+#include <cstdlib>
 #include <cmath>
 
 #include <QGridLayout>
@@ -181,7 +182,6 @@ void channelBook::sideRowChanged(int index)
 	stacker(index);
 }
 
-//TODO index() load
 void channelBook::stacker(int vv)
 {
 	debug("stacker()", "index", vv);
@@ -195,7 +195,7 @@ void channelBook::stacker(int vv)
 			this->data = dbih->get_az_index();
 		break;
 		case views::Bouquets:
-			this->data = dbih->get_userbouquets_index();
+			this->data = dbih->get_bouquets_index();
 		break;
 		case views::Satellites:
 			this->data = dbih->get_transponders_index();
@@ -216,9 +216,9 @@ void channelBook::stacker(int vv)
 	QTreeWidgetItem* item;
 	QTreeWidgetItem* subitem;
 
-	for (auto & q: data)
+	for (auto & q : data)
 	{
-		//TODO pos value with terrestrial, cable, atsc
+		//TODO pos value 0 with terrestrial, cable, atsc
 		if (vv == views::Satellites)
 		{
 			int pos = std::stoi(q.first);
@@ -234,7 +234,7 @@ void channelBook::stacker(int vv)
 			}
 			item = new QTreeWidgetItem({name});
 
-			for (auto & x: q.second)
+			for (auto & x : q.second)
 			{
 				e2db::transponder tx = dbih->db.transponders[x.second];
 				QString subindex = QString::fromStdString(x.second);
@@ -260,15 +260,23 @@ void channelBook::stacker(int vv)
 				tree->addTopLevelItem(subitem);
 			}
 		}
+		//TODO sort order: TV, Radio
 		else if (vv == views::Bouquets)
 		{
-			e2db::userbouquet ub = dbih->userbouquets[q.first];
-			e2db::bouquet bs = dbih->bouquets[ub.pname];
-			name = QString::fromStdString(ub.name);
-			name.prepend(QString::fromStdString("[" + bs.nname + "]\t"));
+			e2db::bouquet bs = dbih->bouquets[q.first];
+			name = QString::fromStdString(bs.nname.empty() ? bs.name : bs.nname);
 			item = new QTreeWidgetItem({name});
+
+			for (string & ubname : bs.userbouquets)
+			{
+				e2db::userbouquet ub = dbih->userbouquets[ubname];
+				QString subindex = QString::fromStdString(ubname);
+				QString name = QString::fromStdString(ub.name);
+				subitem = new QTreeWidgetItem(item, {name});
+				subitem->setData(0, Qt::UserRole, subindex);
+				tree->addTopLevelItem(subitem);
+			}
 		}
-		//TODO TEST
 		else if (vv == views::Resolution)
 		{
 			int stype = std::stoi(q.first);
@@ -289,6 +297,11 @@ void channelBook::stacker(int vv)
 	if (vv == views::Satellites)
 	{
 		this->data = dbih->get_channels_index();
+	}
+	else if (vv == views::Bouquets)
+	{
+		this->data.merge(dbih->get_userbouquets_index());
+		tree->expandAll();
 	}
 
 	populate();
@@ -344,9 +357,10 @@ void channelBook::populate()
 
 			QString idx = QString::fromStdString(to_string(chdata.first));
 			QString chid = QString::fromStdString(chdata.second);
+			// macos: unwanted chars [qt.qpa.fonts] Menlo notice
 			QString chname;
 			if (sets->value("preference/fixUnicodeChars").toBool())
-				chname = QString::fromStdString(ch.chname).remove(QRegularExpression("[^\\p{L}\\p{N}\\p{Sm}\\p{M}\\p{P}\\s]+"));
+				chname = QString::fromStdString(ch.chname).remove(QRegularExpression("[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{S}\\s]+"));
 			else
 				chname = QString::fromStdString(ch.chname);
 			QString stype = e2db::STYPES.count(ch.stype) ? QString::fromStdString(e2db::STYPES.at(ch.stype).second) : "Data";

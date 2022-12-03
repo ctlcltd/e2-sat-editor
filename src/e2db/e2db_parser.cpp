@@ -9,6 +9,7 @@
  * @license GNU GPLv3 License
  */
 
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <algorithm>
@@ -79,7 +80,7 @@ void e2db_parser::parse_e2db()
 		}
 	}
 
-	for (auto & x: e2db)
+	for (auto & x : e2db)
 	{
 		if (x.first.find("bouquets.") != string::npos)
 		{
@@ -88,9 +89,9 @@ void e2db_parser::parse_e2db()
 			ibouquet.close();
 		}
 	}
-	for (auto & x: bouquets)
+	for (auto & x : bouquets)
 	{
-		for (string & w: x.second.userbouquets)
+		for (string & w : x.second.userbouquets)
 		{
 			ifstream iuserbouquet (e2db[w]);
 			parse_e2db_userbouquet(iuserbouquet, w);
@@ -115,7 +116,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 	debug("parse_e2db()");
 	std::clock_t start = std::clock();
 
-	for (auto & x: files)
+	for (auto & x : files)
 	{
 		string filename = std::filesystem::path(x.first).filename().u8string(); //C++17
 		e2db[filename] = x.first;
@@ -153,7 +154,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 		}
 	}
 
-	for (auto & x: e2db)
+	for (auto & x : e2db)
 	{
 		if (x.first.find("bouquets.") != string::npos)
 		{
@@ -163,9 +164,9 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 			parse_e2db_bouquet(ibouquet, filename);
 		}
 	}
-	for (auto & x: bouquets)
+	for (auto & x : bouquets)
 	{
-		for (string & w: x.second.userbouquets)
+		for (string & w : x.second.userbouquets)
 		{
 			stringstream iuserbouquet;
 			iuserbouquet.write(&files[e2db[w]][0], files[e2db[w]].size());
@@ -443,7 +444,6 @@ void e2db_parser::parse_lamedb_service_params(string data, service& ch)
 	ch.snum = snum;
 }
 
-//TODO FIX could cause SEGFAULT with empty data
 void e2db_parser::parse_lamedb_service_data(string data, service& ch)
 {
 	if (data.empty())
@@ -982,7 +982,7 @@ void e2db_parser::debugger()
 	debug("debugger()");
 
 	cout << "transponders" << endl << endl;
-	for (auto & x: db.transponders)
+	for (auto & x : db.transponders)
 	{
 		cout << "txid: " << x.first << endl;
 		cout << hex;
@@ -1017,7 +1017,7 @@ void e2db_parser::debugger()
 	}
 	cout << endl;
 	cout << "services" << endl << endl;
-	for (auto & x: db.services)
+	for (auto & x : db.services)
 	{
 		cout << "chid: " << x.first << endl;
 		cout << "txid: " << x.second.txid << endl;
@@ -1032,10 +1032,10 @@ void e2db_parser::debugger()
 		cout << "srcid: " << x.second.srcid << endl;
 		cout << "chname: " << x.second.chname << endl;
 		cout << "data: [" << endl << endl;
-		for (auto & q: x.second.data)
+		for (auto & q : x.second.data)
 		{
 			cout << q.first << ": [" << endl;
-			for (string & w: q.second)
+			for (string & w : q.second)
 				cout << w << ", ";
 			cout << endl << "]";
 		}
@@ -1045,25 +1045,25 @@ void e2db_parser::debugger()
 	}
 	cout << endl;
 	cout << "bouquets" << endl << endl;
-	for (auto & x: bouquets)
+	for (auto & x : bouquets)
 	{
 		cout << "filename: " << x.first << endl;
 		cout << "name: " << x.second.name << endl;
 		cout << "nname: " << x.second.nname << endl;
 		cout << "btype: " << x.second.btype << endl;
 		cout << "userbouquets: [" << endl << endl;
-		for (string & w: x.second.userbouquets)
+		for (string & w : x.second.userbouquets)
 			cout << w << endl;
 		cout << "]" << endl << endl;
 	}
 	cout << endl;
 	cout << "userbouquets" << endl << endl;
-	for (auto & x: userbouquets)
+	for (auto & x : userbouquets)
 	{
 		cout << "filename: " << x.first << endl;
 		cout << "name: " << x.second.name << endl;
 		cout << "channels: [" << endl << endl;
-		for (auto & q: x.second.channels)
+		for (auto & q : x.second.channels)
 		{
 			cout << "chid: " << q.first << endl;
 			cout << "index: " << q.second.index << endl;
@@ -1072,7 +1072,7 @@ void e2db_parser::debugger()
 	}
 	cout << endl;
 	cout << "tuners" << endl << endl;
-	for (auto & x: tuners)
+	for (auto & x : tuners)
 	{
 		cout << "ytype: " << x.first << endl;
 		cout << "charset: " << x.first << endl;
@@ -1086,7 +1086,7 @@ void e2db_parser::debugger()
 			cout << "pos: " << q.second.pos << endl;
 			cout << "index: " << q.second.index << endl;
 			cout << "transponders: [" << endl << endl;
-			for (auto & x: q.second.transponders)
+			for (auto & x : q.second.transponders)
 			{
 				cout << "trid: " << x.first << endl;
 				cout << "freq: " << x.second.freq << endl;

@@ -44,6 +44,7 @@ class gui : protected e2se::log_factory
 			FileNew = 0x00000001,
 			FileOpen = 0x00000002,
 			FileSave = 0x00000004,
+			FileSaveAs = 0x00000008,
 			FileImport = 0x00000010,
 			FileExport = 0x00000020,
 			TabBouquetsEdit = 0x00000100,
@@ -69,7 +70,7 @@ class gui : protected e2se::log_factory
 			CloseTab = 0x20000000,
 			CloseAllTabs = 0x40000000,
 			WindowMinimize = 0x80000000,
-			init = GUI_CXE::FileNew | GUI_CXE::FileOpen | GUI_CXE::FileSave | GUI_CXE::FileImport | GUI_CXE::FileExport | GUI_CXE::NewTab | GUI_CXE::CloseTab | GUI_CXE::CloseAllTabs | GUI_CXE::WindowMinimize,
+			init = GUI_CXE::FileNew | GUI_CXE::FileOpen | GUI_CXE::FileSave | GUI_CXE::FileSaveAs | GUI_CXE::FileImport | GUI_CXE::FileExport | GUI_CXE::NewTab | GUI_CXE::CloseTab | GUI_CXE::CloseAllTabs | GUI_CXE::WindowMinimize,
 			idle = GUI_CXE::FileNew | GUI_CXE::FileOpen
 		};
 
@@ -79,7 +80,7 @@ class gui : protected e2se::log_factory
 			ListCut = GUI_CXE::TabListCut,
 			ListCopy = GUI_CXE::TabListCopy,
 			ListPaste = GUI_CXE::TabListPaste,
-			ListDelete = GUI_CXE::TabListSelectAll,
+			ListDelete = GUI_CXE::TabListDelete,
 			ListSelectAll = GUI_CXE::TabListSelectAll,
 			ListFind = GUI_CXE::TabListFind,
 			ListFindNext = GUI_CXE::TabListFindNext,
@@ -129,6 +130,7 @@ class gui : protected e2se::log_factory
 		void resetStatus();
 		void fileOpen();
 		void fileSave();
+		void fileSaveAs();
 		void fileImport();
 		void fileExport();
 		void tabAction(TAB_ATS action);

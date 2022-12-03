@@ -9,6 +9,8 @@
  * @license GNU GPLv3 License
  */
 
+#include <cstdio>
+#include <ctime>
 #include <iostream>
 
 #include "logger.h"
@@ -33,7 +35,9 @@ logger::logger(session* log, string ns)
 void logger::debug(string msg)
 {
 	std::ostream out (buf);
-	out << '[' << ns << ']';
+	out << timestamp();
+	out << ' ' << "<Debug>";
+	out << ' ' << '[' << ns << ']';
 	out << ' ' << msg;
 	out << std::endl;
 	if (this->log->debug)
@@ -46,8 +50,10 @@ void logger::debug(string msg)
 void logger::debug(string msg, string optk, string optv)
 {
 	std::ostream out (buf);
-	out << '[' << ns << ']';
-	out <<  ' ' << msg;
+	out << timestamp();
+	out << ' ' << "<Debug>";
+	out << ' ' << '[' << ns << ']';
+	out << ' ' << msg;
 	out << ' ' << optk << ':';
 	out << ' ' << optv;
 	out << std::endl;
@@ -65,7 +71,9 @@ void logger::debug(string msg, string optk, int optv)
 void logger::error(string msg)
 {
 	std::ostream out (buf);
-	out << '[' << ns << ']';
+	out << timestamp();
+	out << ' ' << "<Error>";
+	out << ' ' << '[' << ns << ']';
 	out << ' ' << msg;
 	out << std::endl;
 	std::clog << out.rdbuf();
@@ -76,7 +84,9 @@ void logger::error(string msg)
 void logger::error(string msg, string optk, string optv)
 {
 	std::ostream out (buf);
-	out << '[' << ns << ']';
+	out << timestamp();
+	out << ' ' << "<Error>";
+	out << ' ' << '[' << ns << ']';
 	out << ' ' << msg;
 	out << ' ' << optk << ':';
 	out << ' ' << optv;
@@ -89,6 +99,18 @@ void logger::error(string msg, string optk, string optv)
 void logger::error(string msg, string optk, int optv)
 {
 	this->logger::error(msg, optk, std::to_string(optv));
+}
+
+string logger::timestamp()
+{
+	std::timespec ct; //C++17
+	std::timespec_get(&ct, TIME_UTC); //C++17
+	std::tm* lct = std::localtime(&ct.tv_sec);
+	char t[80];
+	std::strftime(t, 80, "%Y-%m-%d %H:%M:%S", lct);
+	char c[5];
+	std::sprintf(c, ".%03d", int (float (ct.tv_nsec) / 1e9 * 1e3));
+	return string (t) + string (c);
 }
 
 string logger::str()

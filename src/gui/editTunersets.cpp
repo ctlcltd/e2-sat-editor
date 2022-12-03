@@ -9,6 +9,9 @@
  * @license GNU GPLv3 License
  */
 
+#include <cstdio>
+#include <cmath>
+
 #include <QGridLayout>
 #include <QVBoxLayout>
 #include <QSplitter>

@@ -10,6 +10,7 @@
  */
 
 #include <cstdio>
+#include <cmath>
 #include <algorithm>
 #include <filesystem>
 
@@ -944,7 +945,6 @@ void tab::load()
 {
 	debug("load()");
 
-	sort(dbih->index["bss"].begin(), dbih->index["bss"].end());
 	unordered_map<string, QTreeWidgetItem*> bgroups;
 
 	for (auto & bsi : dbih->index["bss"])
@@ -973,10 +973,9 @@ void tab::load()
 		QString bname = QString::fromStdString(ubi.second);
 		QTreeWidgetItem* pgroup = bgroups[ubi.second];
 		// macos: unwanted chars [qt.qpa.fonts] Menlo notice
-		//TODO FIX missing backtick and other chars
 		QString name;
 		if (gid->sets->value("preference/fixUnicodeChars").toBool())
-			name = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{N}\\p{Sm}\\p{M}\\p{P}\\s]+"));
+			name = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{S}\\s]+"));
 		else
 			name = QString::fromStdString(uboq.name);
 
@@ -1661,7 +1660,7 @@ void tab::listFindPerform(const QString& value, LIST_FIND flag)
 
 	QModelIndexList match;
 
-	if (this->lsr_find.filter != column || this->lsr_find.input != text)
+	if (this->lsr_find.match.isEmpty() || this->lsr_find.filter != column || this->lsr_find.input != text)
 	{
 		// fast 0 --> start
 		// fast i match(..., ..., ..., 1, ...)
@@ -1705,7 +1704,6 @@ void tab::listFindPerform(const QString& value, LIST_FIND flag)
 		{
 			i = int (this->lsr_find.curr);
 			i = i == j - 1 ? 0 : i + 1;
-			//TODO FIX EXC_BAD_ACCESS
 			list_tree->setCurrentIndex(match.at(i));
 		}
 		else if (type == LIST_FIND::prev)
@@ -2559,6 +2557,9 @@ void tab::preset()
 	lheaderv->setSectionsClickable(false);
 	lheaderv->setSortIndicator(0, Qt::AscendingOrder);
 	cache.clear();
+
+	this->lsr_find.curr = -1;
+	this->lsr_find.match.clear();
 
 	this->action.list_addch->setDisabled(true);
 	this->action.list_newch->setEnabled(true);

@@ -106,25 +106,22 @@ void gui::menuCtl()
 	QMenu* mfile = menu->addMenu(tr("&File"));
 	gmenu[GUI_CXE::FileNew] = mfile->addAction(tr("&New"), [=]() { this->newTab(""); }, QKeySequence::New);
 	gmenu[GUI_CXE::FileOpen] = mfile->addAction(tr("&Open"), [=]() { this->fileOpen(); }, QKeySequence::Open);
+	mfile->addSeparator();
 	gmenu[GUI_CXE::FileSave] = mfile->addAction(tr("&Save"), [=]() { this->fileSave(); }, QKeySequence::Save);
+	gmenu[GUI_CXE::FileSaveAs] = mfile->addAction(tr("Save &As..."), [=]() { this->fileSaveAs(); }, QKeySequence::SaveAs);
 	mfile->addSeparator();
 	gmenu[GUI_CXE::FileImport] = mfile->addAction("Import", [=]() { this->fileImport(); });
 	gmenu[GUI_CXE::FileExport] = mfile->addAction("Export", [=]() { this->fileExport(); });
 	mfile->addSeparator();
-	gmenu[GUI_CXE::CloseTab] = mfile->addAction("Close Tab", [=]() { this->closeTab(-1); });
-	gmenu[GUI_CXE::CloseAllTabs] = mfile->addAction("Close All Tabs", [=]() { this->closeAllTabs(); });
+	gmenu[GUI_CXE::CloseTab] = mfile->addAction("Close Tab", [=]() { this->closeTab(-1); }, QKeySequence::Close);
+	gmenu[GUI_CXE::CloseAllTabs] = mfile->addAction("Close All Tabs", [=]() { this->closeAllTabs(); }, Qt::CTRL | Qt::ALT | Qt::Key_W);
 	mfile->addSeparator();
 	mfile->addAction("Settings", [=]() { this->settings(); }, QKeySequence::Preferences);
 #ifdef Q_OS_MAC
 		mfile->addAction(tr("&About"), [=]() { this->about(); });
 #endif
 	mfile->addSeparator();
-	QAction* mfile_exit = mfile->addAction(tr("&Exit"), [=]() { this->mroot->quit(); });
-#ifndef Q_OS_WIN
-	mfile_exit->setShortcut(QKeySequence::Quit);
-#else
-	mfile_exit->setShortcut(QKeySequence::Close);
-#endif
+	mfile->addAction(tr("E&xit"), [=]() { this->mroot->quit(); }, QKeySequence::Quit);
 	
 	QMenu* medit = menu->addMenu(tr("&Edit"));
 	gmenu[GUI_CXE::TabListCut] = medit->addAction(tr("Cu&t"), [=]() { this->tabAction(TAB_ATS::ListCut); }, QKeySequence::Cut);
@@ -582,10 +579,18 @@ void gui::fileOpen()
 		newTab(path);
 }
 
-//TODO temporarly set to save as
 void gui::fileSave()
 {
 	debug("fileSave()");
+
+	tab* ttab = getCurrentTabHandler();
+	if (ttab != nullptr)
+		ttab->saveFile(false);
+}
+
+void gui::fileSaveAs()
+{
+	debug("fileSaveAs()");
 
 	tab* ttab = getCurrentTabHandler();
 	if (ttab != nullptr)
