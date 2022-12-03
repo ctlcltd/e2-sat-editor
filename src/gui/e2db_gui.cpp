@@ -137,6 +137,10 @@ void e2db::plain()
 {
 	debug("plain()");
 
+	// empty services list - touch index["chs"]
+	if (! index.count("chs"))
+		index["chs"];
+
 	e2db::bouquet bs;
 
 	bs = e2db::bouquet();

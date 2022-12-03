@@ -300,7 +300,7 @@ void channelBook::stacker(int vv)
 	}
 	else if (vv == views::Bouquets)
 	{
-		this->data.merge(dbih->get_userbouquets_index());
+		this->data.merge(dbih->get_userbouquets_index()); //C++17
 		tree->expandAll();
 	}
 

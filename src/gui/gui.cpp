@@ -127,20 +127,25 @@ void gui::menuCtl()
 	gmenu[GUI_CXE::TabListCut] = medit->addAction(tr("Cu&t"), [=]() { this->tabAction(TAB_ATS::ListCut); }, QKeySequence::Cut);
 	gmenu[GUI_CXE::TabListCopy] = medit->addAction(tr("&Copy"), [=]() { this->tabAction(TAB_ATS::ListCopy); },  QKeySequence::Copy);
 	gmenu[GUI_CXE::TabListPaste] = medit->addAction(tr("&Paste"), [=]() { this->tabAction(TAB_ATS::ListPaste); }, QKeySequence::Paste);
-	gmenu[GUI_CXE::TabListDelete] = medit->addAction(tr("&Delete"), [=]() { this->tabAction(TAB_ATS::ListDelete); }, QKeySequence::Delete);
+	QAction* medit_delete = gmenu[GUI_CXE::TabListDelete] = medit->addAction(tr("&Delete"), [=]() { this->tabAction(TAB_ATS::ListDelete); });
+#ifdef Q_OS_MAC
+	medit_delete->setShortcut(Qt::Key_Backspace);
+#else
+	medit_delete->setShortcut(QKeySequence::Delete);
+#endif
 	medit->addSeparator();
 	gmenu[GUI_CXE::TabListSelectAll] = medit->addAction(tr("Select &All"), [=]() { this->tabAction(TAB_ATS::ListSelectAll); }, QKeySequence::SelectAll);
 
 	QMenu* mfind = menu->addMenu(tr("&Find"));
-	gmenu[GUI_CXE::TabListFind] = mfind->addAction(tr("Find Channel…"), [=]() { this->tabAction(TAB_ATS::ListFind); }, QKeySequence::Find);
-	gmenu[GUI_CXE::TabListFindNext] = mfind->addAction(tr("Find Next"), [=]() { this->tabAction(TAB_ATS::ListFindNext); }, QKeySequence::FindNext);
-	gmenu[GUI_CXE::TabListFindPrev] = mfind->addAction(tr("Find Previous"), [=]() { this->tabAction(TAB_ATS::ListFindPrev); }, QKeySequence::FindPrevious);
-	gmenu[GUI_CXE::TabListFindAll] = mfind->addAction(tr("Find All"), [=]() { this->tabAction(TAB_ATS::ListFindAll); });
+	gmenu[GUI_CXE::TabListFind] = mfind->addAction(tr("&Find Channel…"), [=]() { this->tabAction(TAB_ATS::ListFind); }, QKeySequence::Find);
+	gmenu[GUI_CXE::TabListFindNext] = mfind->addAction(tr("Find &Next"), [=]() { this->tabAction(TAB_ATS::ListFindNext); }, QKeySequence::FindNext);
+	gmenu[GUI_CXE::TabListFindPrev] = mfind->addAction(tr("Find &Previous"), [=]() { this->tabAction(TAB_ATS::ListFindPrev); }, QKeySequence::FindPrevious);
+	gmenu[GUI_CXE::TabListFindAll] = mfind->addAction(tr("Find &All"), [=]() { this->tabAction(TAB_ATS::ListFindAll); });
 	mfind->addSeparator();
-	gmenu[GUI_CXE::TabBouquetsFind] = mfind->addAction(tr("Find Bouquet…"), [=]() { this->tabAction(TAB_ATS::BouquetsFind); }, Qt::CTRL | Qt::ALT | Qt::Key_F);
-	gmenu[GUI_CXE::TabBouquetsFindNext] = mfind->addAction(tr("Find Next"), [=]() { this->tabAction(TAB_ATS::BouquetsFindNext); }, Qt::CTRL | Qt::ALT | Qt::Key_G);
+	gmenu[GUI_CXE::TabBouquetsFind] = mfind->addAction(tr("Find &Bouquet…"), [=]() { this->tabAction(TAB_ATS::BouquetsFind); }, Qt::CTRL | Qt::ALT | Qt::Key_F);
+	gmenu[GUI_CXE::TabBouquetsFindNext] = mfind->addAction(tr("Find N&ext Bouquet"), [=]() { this->tabAction(TAB_ATS::BouquetsFindNext); }, Qt::CTRL | Qt::ALT | Qt::Key_E);
 
-	QMenu* mtool = menu->addMenu(tr("Tools"));
+	QMenu* mtool = menu->addMenu(tr("&Tools"));
 	gmenu[GUI_CXE::ToolsTunersetsSat] = mtool->addAction("Edit satellites.xml", [=]() { this->tabAction(TAB_ATS::EditTunerSat); });
 	gmenu[GUI_CXE::ToolsTunersetsTerrestrial] = mtool->addAction("Edit terrestrial.xml", [=]() { this->tabAction(TAB_ATS::EditTunerTerrestrial); });
 	gmenu[GUI_CXE::ToolsTunersetsCable] = mtool->addAction("Edit cables.xml", [=]() { this->tabAction(TAB_ATS::EditTunerCable); });
@@ -156,7 +161,7 @@ void gui::menuCtl()
 	QMenu* mwind = menu->addMenu(tr("&Window"));
 	gmenu[GUI_CXE::WindowMinimize] = mwind->addAction("&Minimize", [=]() { this->windowMinimize(); }, Qt::CTRL | Qt::Key_M);
 	mwind->addSeparator();
-	gmenu[GUI_CXE::NewTab] = mwind->addAction("&New Tab", [=]() { this->newTab(); }, Qt::CTRL | Qt::Key_T);
+	gmenu[GUI_CXE::NewTab] = mwind->addAction("New &Tab", [=]() { this->newTab(); }, Qt::CTRL | Qt::Key_T);
 	mwind->addSeparator();
 	QActionGroup* mwtabs = new QActionGroup(mwind);
 	mwtabs->setExclusive(true);
@@ -402,7 +407,6 @@ string gui::openFileDialog()
 	return path;
 }
 
-//TODO FIX file chooser and folder selection
 string gui::saveFileDialog(string filename)
 {
 	debug("saveFileDialog()", "filename", filename);
@@ -411,8 +415,7 @@ string gui::saveFileDialog(string filename)
 
 	string path;
 	QFileDialog fdial = QFileDialog(mwid, caption, QString::fromStdString(filename));
-	fdial.setAcceptMode(QFileDialog::AcceptSave);
-	// fdial.setSupportedSchemes(QStringList(QStringLiteral("file")));
+	fdial.setAcceptMode(QFileDialog::AcceptOpen);
 	fdial.setFilter(QDir::AllDirs | QDir::NoSymLinks);
 	if (fdial.exec() == QDialog::Accepted)
 	{
@@ -467,7 +470,7 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& flags)
 	switch (gde)
 	{
 		case GUI_DPORTS::Services:
-			opts.append("Lamedb as opened (*)");
+			opts.append("Lamedb default (*)");
 			opts.append("Lamedb 2.4 (lamedb)");
 			opts.append("Lamedb 2.5 (lamedb5)");
 			opts.append("Lamedb 2.3 (services)");
@@ -615,7 +618,6 @@ void gui::fileExport()
 		ttab->exportFile();
 }
 
-//TODO tab actions ctl
 void gui::tabAction(TAB_ATS action)
 {
 	debug("tabAction()", "action", action);

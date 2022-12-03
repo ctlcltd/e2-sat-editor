@@ -323,8 +323,8 @@ tab::tab(gui* gid, QWidget* wid, e2se::logger::session* log)
 	profile_combo->connect(profile_combo, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) { this->profileComboChanged(index); });
 #endif
 
-	top_toolbar->addAction(theme::icon("file-open"), "Open", [=]() { this->openFile(); });
-	top_toolbar->addAction(theme::icon("save"), "Save", [=]() { this->saveFile(false); });
+	top_toolbar->addAction(theme::icon("file-open"), "&Open", QKeySequence::Open, [=]() { this->openFile(); });
+	top_toolbar->addAction(theme::icon("save"), "&Save", QKeySequence::Save, [=]() { this->saveFile(false); });
 	top_toolbar->addSeparator();
 	top_toolbar->addAction(theme::icon("import"), "Import", [=]() { this->importFile(); });
 	top_toolbar->addAction(theme::icon("export"), "Export", [=]() { this->exportFile(); });
@@ -385,7 +385,7 @@ tab::tab(gui* gid, QWidget* wid, e2se::logger::session* log)
 	this->action.bouquets_search->setDisabled(true);
 
 	this->action.list_search = new QPushButton;
-	this->action.list_search->setText("Find…");
+	this->action.list_search->setText("&Find…");
 	this->action.list_search->setIcon(theme::icon("search"));
 	this->action.list_search->connect(this->action.list_search, &QPushButton::pressed, [=]() { this->listSearchToggle(); });
 
@@ -478,7 +478,7 @@ tab::tab(gui* gid, QWidget* wid, e2se::logger::session* log)
 	{
 		QTreeWidgetItem* titem = new QTreeWidgetItem();
 		titem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-		QVariantMap tdata; //TODO singular data
+		QVariantMap tdata; // singular data
 		tdata["id"] = item.first;
 		titem->setData(0, Qt::UserRole, QVariant (tdata));
 		titem->setText(0, item.second);
@@ -782,13 +782,13 @@ void tab::addUserbouquet()
 	// macos: unwanted chars [qt.qpa.fonts] Menlo notice
 	QString name;
 	if (gid->sets->value("preference/fixUnicodeChars").toBool())
-		name = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{N}\\p{Sm}\\p{M}\\p{P}\\s]+"));
+		name = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{S}\\s]+"));
 	else
 		name = QString::fromStdString(uboq.name);
 
 	QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
 	bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
-	QMap<QString, QVariant> tdata; //TODO singular data
+	QMap<QString, QVariant> tdata; // singular data
 	tdata["id"] = QString::fromStdString(uboq.bname);
 	bitem->setData(0, Qt::UserRole, QVariant (tdata));
 	bitem->setText(0, name);
@@ -819,9 +819,10 @@ void tab::editUserbouquet()
 	edit->destroy();
 
 	e2db::userbouquet uboq = dbih->userbouquets[bname];
+	// macos: unwanted chars [qt.qpa.fonts] Menlo notice
 	QString name;
 	if (gid->sets->value("preference/fixUnicodeChars").toBool())
-		name = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{N}\\p{Sm}\\p{M}\\p{P}\\s]+"));
+		name = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{S}\\s]+"));
 	else
 		name = QString::fromStdString(uboq.name);
 	selected[0]->setText(0, name);
@@ -956,7 +957,7 @@ void tab::load()
 
 		QTreeWidgetItem* bitem = new QTreeWidgetItem();
 		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-		QMap<QString, QVariant> tdata; //TODO singular data
+		QMap<QString, QVariant> tdata; // singular data
 		tdata["id"] = bname;
 		bitem->setData(0, Qt::UserRole, QVariant (tdata));
 		bitem->setText(0, name);
@@ -981,7 +982,7 @@ void tab::load()
 
 		QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
 		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
-		QMap<QString, QVariant> tdata; //TODO singular data
+		QMap<QString, QVariant> tdata; // singular data
 		tdata["id"] = bname;
 		bitem->setData(0, Qt::UserRole, QVariant (tdata));
 		bitem->setText(0, name);
@@ -1027,9 +1028,9 @@ void tab::populate(QTreeWidget* side_tree)
 		this->state.curr = curr_chlist;
 	}
 
-	debug("populate()", "curr_chlist", curr_chlist);
-
-	if (! dbih->index.count(curr_chlist))
+	if (dbih->index.count(curr_chlist))
+		debug("populate()", "curr_chlist", curr_chlist);
+	else
 		error("populate()", "curr_chlist", curr_chlist);
 
 	lheaderv->setSortIndicatorShown(true);
@@ -1872,11 +1873,11 @@ void tab::listItemCopy(bool cut)
 //TODO validate
 void tab::listItemPaste()
 {
-	// bouquet: tv | radio
-	if (this->state.ti != -1)
-		return;
+	debug("listItemPaste()", "entered", ! (this->state.tc && this->state.ti != -1));
 
-	debug("listItemPaste()");
+	// services_tree && bouquet: tv | radio
+	if (this->state.tc && this->state.ti != -1)
+		return;
 
 	QClipboard* clipboard = QGuiApplication::clipboard();
 	const QMimeData* mimeData = clipboard->mimeData();
@@ -1927,11 +1928,11 @@ void tab::listItemPaste()
 
 void tab::listItemDelete()
 {
-	// bouquet: tv | radio
-	if (this->state.ti != -1)
-		return;
+	debug("listItemDelete()", "entered", ! (this->state.tc && this->state.ti != -1));
 
-	debug("listItemDelete()");
+	// services_tree && bouquet: tv | radio
+	if (this->state.tc && this->state.ti != -1)
+		return;
 
 	QList<QTreeWidgetItem*> selected = list_tree->selectedItems();
 	
@@ -2495,11 +2496,11 @@ void tab::showListEditContextMenu(QPoint &pos)
 	QMenu* list_edit = new QMenu;
 	list_edit->addAction("Edit Service", [=]() { this->editService(); })->setDisabled(gflags & gui::TabListEditService ? false : true);
 	list_edit->addSeparator();
-	list_edit->addAction("Cut", [=]() { this->listItemCut(); })->setDisabled(gflags & gui::TabListCut ? false : true);
-	list_edit->addAction("Copy", [=]() { this->listItemCopy(); })->setDisabled(gflags & gui::TabListCopy ? false : true);
-	list_edit->addAction("Paste", [=]() { this->listItemPaste(); })->setDisabled(gflags & gui::TabListPaste ? false : true);
+	list_edit->addAction("Cu&t", [=]() { this->listItemCut(); }, QKeySequence::Cut)->setDisabled(gflags & gui::TabListCut ? false : true);
+	list_edit->addAction("&Copy", [=]() { this->listItemCopy(); }, QKeySequence::Copy)->setDisabled(gflags & gui::TabListCopy ? false : true);
+	list_edit->addAction("&Paste", [=]() { this->listItemPaste(); }, QKeySequence::Paste)->setDisabled(gflags & gui::TabListPaste ? false : true);
 	list_edit->addSeparator();
-	list_edit->addAction("Delete", [=]() { this->listItemDelete(); })->setDisabled(gflags & gui::TabListDelete ? false : true);
+	list_edit->addAction("&Delete", [=]() { this->listItemDelete(); }, QKeySequence::Delete)->setDisabled(gflags & gui::TabListDelete ? false : true);
 
 	list_edit->exec(list_tree->mapToGlobal(pos));
 }
