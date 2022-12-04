@@ -32,14 +32,14 @@ namespace e2se_e2db
 	debug("e2db_parser()");
 
 	//TEST
-	dbfilename = PARSER_LAMEDB5_PRIOR ? "lamedb5" : "lamedb";
+	this->filename = PARSER_LAMEDB5_PRIOR ? "lamedb5" : "lamedb";
 	//TEST
 }*/
 
 e2db_parser::e2db_parser()
 {
 	//TEST
-	dbfilename = PARSER_LAMEDB5_PRIOR ? "lamedb5" : "lamedb";
+	this->filename = PARSER_LAMEDB5_PRIOR ? "lamedb5" : "lamedb";
 	//TEST
 }
 
@@ -48,7 +48,7 @@ void e2db_parser::parse_e2db()
 	debug("parse_e2db()");
 	std::clock_t start = std::clock();
 
-	ifstream ilamedb (e2db[dbfilename]);
+	ifstream ilamedb (e2db[this->filename]);
 	parse_e2db_lamedb(ilamedb);
 	ilamedb.close();
 
@@ -123,7 +123,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 	}
 	
 	stringstream ilamedb;
-	ilamedb.write(&files[e2db[dbfilename]][0], files[e2db[dbfilename]].size());
+	ilamedb.write(&files[e2db[this->filename]][0], files[e2db[this->filename]].size());
 	parse_e2db_lamedb(ilamedb);
 
 	if (PARSER_TUNERSETS)
@@ -1160,7 +1160,7 @@ bool e2db_parser::list_localdir(string localdir)
 		string filename = std::filesystem::path(path).filename().u8string(); //C++17
 		e2db[filename] = path;
 	}
-	if (e2db.count(dbfilename) < 1)
+	if (e2db.count(this->filename) < 1)
 	{
 		error("list_localdir()", "Error", "lamedb not found.");
 		return false;

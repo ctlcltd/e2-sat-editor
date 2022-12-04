@@ -24,7 +24,7 @@ tools::tools(QGridLayout* root, e2se::logger::session* log)
 	this->log = new logger(log, "tools");
 	debug("tools()");
 
-    this->root = root;
+	this->root = root;
 }
 
 void tools::inspector()
@@ -47,7 +47,7 @@ void tools::inspector()
 
 void tools::editTunersets(e2se_gui::e2db* dbih, int ytype)
 {
-    debug("editTunersets()", "ytype", ytype);
+	debug("editTunersets()", "ytype", ytype);
 
 	this->tns = new e2se_gui::editTunersets(dbih, ytype, this->log->log);
 	root->addWidget(tns->widget, 1, 0);

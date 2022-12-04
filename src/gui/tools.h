@@ -24,7 +24,7 @@ class tools : protected e2se::log_factory
 	public:
 		tools(QGridLayout* root, e2se::logger::session* log);
 		void inspector();
-        void editTunersets(e2se_gui::e2db* dbih, int ytype);
+		void editTunersets(e2se_gui::e2db* dbih, int ytype);
 		void closeTunersets();
 		void destroy();
 	protected:

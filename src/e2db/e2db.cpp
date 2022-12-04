@@ -365,7 +365,7 @@ void e2db::export_file(FPORTS fpo, string path)
 
 e2db::FPORTS e2db::filetype_detect(string path)
 {
-	string filename = std::filesystem::path(path).filename().u8string();
+	string filename = std::filesystem::path(path).filename().u8string(); //C++17
 
 	if (filename == "lamedb")
 		return FPORTS::allServices; // autodetect
@@ -1126,6 +1126,20 @@ map<string, vector<pair<int, string>>> e2db::get_az_index()
 	}
 
 	return _index;
+}
+
+string e2db::get_localdir()
+{
+	debug("get_localdir()");
+
+	return this->localdir;
+}
+
+string e2db::get_filename()
+{
+	debug("get_filename()");
+
+	return this->filename;
 }
 
 }

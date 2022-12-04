@@ -33,7 +33,7 @@ class e2db : public e2db_parser, public e2db_maker
 			singleBouquetAll = 0x0400,
 			singleUserbouquet = 0x0004,
 			singleTunersets = 0x0008,
-			_default = 0x0000
+			_default = 0x0000 //TODO rename
 		};
 
 		// e2db(e2se::logger::session log);
@@ -75,6 +75,8 @@ class e2db : public e2db_parser, public e2db_maker
 		map<string, vector<pair<int, string>>> get_resolution_index();
 		map<string, vector<pair<int, string>>> get_encryption_index();
 		map<string, vector<pair<int, string>>> get_az_index();
+		string get_localdir();
+		string get_filename();
 };
 }
 #endif /* e2db_h */

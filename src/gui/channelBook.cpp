@@ -344,7 +344,7 @@ void channelBook::populate()
 
 	int i = 0;
 
-	for (auto & chdata: data[curr])
+	for (auto & chdata : data[curr])
 	{
 		char ci[7];
 		std::sprintf(ci, "%06d", i++);

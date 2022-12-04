@@ -47,6 +47,8 @@ class gui : protected e2se::log_factory
 			FileSaveAs = 0x00000008,
 			FileImport = 0x00000010,
 			FileExport = 0x00000020,
+			FilePrint = 0x00000040,
+			FilePrintAll = 0x00000080,
 			TabBouquetsEdit = 0x00000100,
 			TabBouquetsDelete = 0x00000200,
 			TabBouquetsFind = 0x00000400,
@@ -70,7 +72,7 @@ class gui : protected e2se::log_factory
 			CloseTab = 0x20000000,
 			CloseAllTabs = 0x40000000,
 			WindowMinimize = 0x80000000,
-			init = GUI_CXE::FileNew | GUI_CXE::FileOpen | GUI_CXE::FileSave | GUI_CXE::FileSaveAs | GUI_CXE::FileImport | GUI_CXE::FileExport | GUI_CXE::NewTab | GUI_CXE::CloseTab | GUI_CXE::CloseAllTabs | GUI_CXE::WindowMinimize,
+			init = GUI_CXE::FileNew | GUI_CXE::FileOpen | GUI_CXE::FileSave | GUI_CXE::FileSaveAs | GUI_CXE::FileImport | GUI_CXE::FileExport | GUI_CXE::FilePrint | GUI_CXE::FilePrintAll | GUI_CXE::NewTab | GUI_CXE::CloseTab | GUI_CXE::CloseAllTabs | GUI_CXE::WindowMinimize,
 			idle = GUI_CXE::FileNew | GUI_CXE::FileOpen
 		};
 
@@ -90,11 +92,13 @@ class gui : protected e2se::log_factory
 			EditTunerTerrestrial = GUI_CXE::ToolsTunersetsTerrestrial,
 			EditTunerCable = GUI_CXE::ToolsTunersetsCable,
 			EditTunerAtsc = GUI_CXE::ToolsTunersetsAtsc,
+			Print = GUI_CXE::FilePrint,
+			PrintAll = GUI_CXE::FilePrintAll,
 			Inspector = 0x0
 		};
 
 		enum GUI_DPORTS {
-			_default = 0x0,
+			_default = 0x0, //TODO rename
 			Services = 0x1,
 			Bouquets = 0x2,
 			Userbouquets = 0x4,
@@ -133,6 +137,8 @@ class gui : protected e2se::log_factory
 		void fileSaveAs();
 		void fileImport();
 		void fileExport();
+		void filePrint();
+		void filePrintAll();
 		void tabAction(TAB_ATS action);
 		void windowMinimize();
 		void settings();

@@ -38,6 +38,7 @@
 #include "editService.h"
 #include "channelBook.h"
 #include "ftpcom_gui.h"
+#include "printable.h"
 
 using std::to_string, std::sort;
 using namespace e2se;
@@ -760,6 +761,62 @@ void tab::exportFile(QTreeWidgetItem* item)
 		dial.setText("Saved!");
 		dial.exec();
 	}
+}
+
+void tab::printFile(bool all)
+{
+	debug("printFile()");
+
+	printable* printer = new printable(dbih, this->log->log);
+
+	// print all
+	if (all)
+	{
+		printer->document_all();
+	}
+	// tools: tunersets
+	else if (this->state.tunersets)
+	{
+		printer->document_tunersets(this->state.ty);
+	}
+	// services
+	else if (this->state.tc == 0)
+	{
+		printer->document_lamedb();
+	}
+	// bouquets
+	else if (this->state.tc == 1)
+	{
+		int ti = -1;
+		QList<QTreeWidgetItem*> selected = bouquets_tree->selectedItems();
+
+		if (selected.empty())
+		{
+			printer->destroy();
+			return;
+		}
+		for (auto & item : selected)
+		{
+			ti = bouquets_tree->indexOfTopLevelItem(item);
+			QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
+			QString qchlist = tdata["id"].toString();
+			string filename = qchlist.toStdString();
+
+			// bouquet | userbouquets
+			if (ti != -1)
+			{
+				printer->document_bouquet(filename);
+			}
+			// userbouquet
+			else
+			{
+				printer->document_userbouquet(filename);
+			}
+		}
+	}
+
+	printer->print();
+	printer->destroy();
 }
 
 void tab::addUserbouquet()

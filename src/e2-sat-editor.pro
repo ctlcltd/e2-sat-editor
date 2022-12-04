@@ -1,5 +1,6 @@
 CONFIG += qt debug
 QT += widgets
+QT += printsupport
 SOURCES += main.cpp
 SOURCES += logger/*.cpp
 SOURCES += ftpcom/*.cpp

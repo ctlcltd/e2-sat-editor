@@ -11,8 +11,9 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
-using std::string, std::pair, std::vector;
+using std::string, std::pair, std::vector, std::map;
 
 #ifndef editService_h
 #define editService_h

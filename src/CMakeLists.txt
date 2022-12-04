@@ -6,7 +6,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
 find_package(QT NAMES Qt5 Qt6 REQUIRED COMPONENTS Core)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui Widgets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui Widgets PrintSupport)
 find_package(CURL)
 
 qt_add_executable(e2-sat-editor WIN32 MACOSX_BUNDLE
@@ -30,6 +30,7 @@ qt_add_executable(e2-sat-editor WIN32 MACOSX_BUNDLE
 	gui/editTunersets.cpp
 	gui/ftpcom_gui.cpp
 	gui/gui.cpp
+	gui/printable.cpp
 	gui/settings.cpp
 	gui/tab.cpp
 	gui/theme.cpp
@@ -41,6 +42,7 @@ target_link_libraries(e2-sat-editor PUBLIC
 	Qt::Core
 	Qt::Gui
 	Qt::Widgets
+	Qt::PrintSupport
 	CURL::libcurl
 )
 

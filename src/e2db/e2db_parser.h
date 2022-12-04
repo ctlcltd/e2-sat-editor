@@ -54,7 +54,7 @@ class e2db_parser : virtual public e2db_abstract
 		void parse_lamedb_service_data(string data, service& ch);
 		void append_lamedb_service_name(string data, service& ch);
 		string localdir;
-		string dbfilename;
+		string filename;
 };
 }
 #endif /* e2db_parser_h */

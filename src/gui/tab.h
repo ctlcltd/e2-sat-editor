@@ -86,6 +86,7 @@ class tab : protected e2se::log_factory
 		void importFile();
 		void exportFile();
 		void exportFile(QTreeWidgetItem* item);
+		void printFile(bool all);
 		void addUserbouquet();
 		void editUserbouquet();
 		void addChannel();

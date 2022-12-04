@@ -116,6 +116,9 @@ void gui::menuCtl()
 	gmenu[GUI_CXE::CloseTab] = mfile->addAction("Close Tab", [=]() { this->closeTab(-1); }, QKeySequence::Close);
 	gmenu[GUI_CXE::CloseAllTabs] = mfile->addAction("Close All Tabs", [=]() { this->closeAllTabs(); }, Qt::CTRL | Qt::ALT | Qt::Key_W);
 	mfile->addSeparator();
+	gmenu[GUI_CXE::FilePrint] = mfile->addAction("&Print", [=]() { this->filePrint(); }, QKeySequence::Print);
+	gmenu[GUI_CXE::FilePrintAll] = mfile->addAction("Print &All", [=]() { this->filePrintAll(); }, Qt::CTRL | Qt::SHIFT | Qt::Key_P);
+	mfile->addSeparator();
 	mfile->addAction("Settings", [=]() { this->settings(); }, QKeySequence::Preferences);
 #ifdef Q_OS_MAC
 		mfile->addAction(tr("&About"), [=]() { this->about(); });
@@ -167,9 +170,9 @@ void gui::menuCtl()
 	mwtabs->setExclusive(true);
 
 	QMenu* mhelp = menu->addMenu(tr("&Help"));
-	//TODO FIX QAction::NoRole ignored [macos]
-	mhelp->addAction("TODO", todo);
-	mhelp->addAction(tr("&About"), [=]() { this->about(); })->setMenuRole(QAction::NoRole);
+	mhelp->addAction(tr("About &Qt"), [=]() { mroot->aboutQt(); })->setMenuRole(QAction::NoRole);
+	mhelp->addSeparator();
+	mhelp->addAction(tr("&About e2 SAT Editor"), [=]() { this->about(); })->setMenuRole(QAction::NoRole);
 
 	this->menu = menu;
 	this->mwind = mwind;
@@ -616,6 +619,24 @@ void gui::fileExport()
 	tab* ttab = getCurrentTabHandler();
 	if (ttab != nullptr)
 		ttab->exportFile();
+}
+
+void gui::filePrint()
+{
+	debug("filePrint()");
+
+	tab* ttab = getCurrentTabHandler();
+	if (ttab != nullptr)
+		ttab->printFile(false);
+}
+
+void gui::filePrintAll()
+{
+	debug("filePrintAll()");
+
+	tab* ttab = getCurrentTabHandler();
+	if (ttab != nullptr)
+		ttab->printFile(true);
 }
 
 void gui::tabAction(TAB_ATS action)
