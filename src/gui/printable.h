@@ -46,6 +46,7 @@ class printable : protected e2se::log_factory
 		void document_all();
 		void document_index();
 		void document_lamedb();
+		void document_lamedb(int stype);
 		void document_bouquet(string bname);
 		void document_userbouquet(string bname);
 		void document_tunersets(int ytype);

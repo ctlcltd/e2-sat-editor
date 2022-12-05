@@ -782,7 +782,28 @@ void tab::printFile(bool all)
 	// services
 	else if (this->state.tc == 0)
 	{
-		printer->document_lamedb();
+		int ti = services_tree->indexOfTopLevelItem(services_tree->currentItem());
+		int stype;
+		switch (ti)
+		{
+			// TV
+			case 1:
+				stype = 1;
+			break;
+			// Radio
+			case 2:
+				stype = 2;
+			break;
+			// Data
+			case 3:
+				stype = 0;
+			break;
+			// All Services
+			default:
+				stype = -1;
+			break;
+		}
+		printer->document_lamedb(stype);
 	}
 	// bouquets
 	else if (this->state.tc == 1)

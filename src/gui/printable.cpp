@@ -61,7 +61,11 @@ void printable::document_index()
 {
 	debug("document_index()");
 
-	string filename = dbih->get_localdir();
+	string filename = std::filesystem::path(dbih->get_localdir()).filename().u8string(); //C++17
+	if (filename.empty())
+	{
+		filename = "Untitled";
+	}
 
 	page p;
 	page_header(p, filename, view::index);
@@ -79,15 +83,50 @@ void printable::document_index()
 
 void printable::document_lamedb()
 {
+	document_lamedb(-1);
+}
+
+void printable::document_lamedb(int stype)
+{
 	debug("document_lamedb()");
 	
-	string filename = dbih->get_filename();
+	string filename = std::filesystem::path(dbih->get_filename()).filename().u8string(); //C++17
+	string iname;
+	string xname;
+	string headname = filename;
+	string footname = filename;
+	switch (stype)
+	{
+		// Data
+		case 0:
+			iname = "chs:0";
+			xname = "Data";
+		break;
+		// TV
+		case 1:
+			iname = "chs:1";
+			xname = "TV";
+		break;
+		// Radio
+		case 2:
+			iname = "chs:2";
+			xname = "Radio";
+		break;
+		// All Services
+		default:
+			iname = "chs";
+	}
+	if (! xname.empty())
+	{
+		headname += " <i>" + xname + "</i>";
+		footname += " (extract)";
+	}
 
 	page p;
-	page_header(p, "lamedb", view::services);
-	page_footer(p, "lamedb", view::services);
+	page_header(p, headname, view::services);
+	page_footer(p, footname, view::services);
 
-	page_body_channel_list(p, "chs", view::services);
+	page_body_channel_list(p, iname, view::services);
 
 	pages.emplace_back(p);
 }
@@ -190,7 +229,7 @@ void printable::page_footer(page& p, string filename, view v)
 {
 	p.footer += "<div class=\"footer\">";
 	p.footer += "File: <b>" + QString::fromStdString(filename) + "</b><br>";
-	p.footer += "Editor: <b>" + QString::fromStdString(dbih->get_editor_string()) + "</b> &lt;https://github.com/ctlcltd/e2-sat-editor&gt;<br>";
+	p.footer += "Editor: <b>" + QString::fromStdString(dbih->get_editor_string()).toHtmlEscaped() + "</b><br>";
 	p.footer += "Datetime: <b>" + QString::fromStdString(dbih->get_timestamp()) + "</b>";
 	p.footer += "</div>";
 }
@@ -200,7 +239,7 @@ void printable::page_body_index_list(page& p, vector<string> paths)
 	debug("page_body_index_list()");
 
 	p.body += "<div class=\"toc\">";
-	p.body += "<h4>Table of content</h4>";
+	p.body += "<h4>Table of Contents</h4>";
 	p.body += "<table>";
 	p.body += "<thead>";
 	p.body += "<tr>";
