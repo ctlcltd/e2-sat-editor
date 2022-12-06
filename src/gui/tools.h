@@ -15,7 +15,7 @@
 
 #include "../logger/logger.h"
 #include "e2db_gui.h"
-#include "editTunersets.h"
+#include "tunersets.h"
 
 namespace e2se_gui_tools
 {
@@ -24,13 +24,13 @@ class tools : protected e2se::log_factory
 	public:
 		tools(QGridLayout* root, e2se::logger::session* log);
 		void inspector();
-		void editTunersets(e2se_gui::e2db* dbih, int ytype);
+		void openTunersets(e2se_gui::e2db* dbih, int ytype);
 		void closeTunersets();
 		void destroy();
 	protected:
 		QGridLayout* root;
 	private:
-		e2se_gui::editTunersets* tns = nullptr;
+		e2se_gui::tunersets* tns = nullptr;
 };
 }
 #endif /* tools_h */

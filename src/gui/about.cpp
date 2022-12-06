@@ -23,12 +23,12 @@ using namespace e2se;
 namespace e2se_gui_dialog
 {
 
-about::about(QWidget* mwid, e2se::logger::session* log)
+about::about(e2se::logger::session* log)
 {
 	this->log = new logger(log, "about");
 	debug("about()");
 
-	QDialog* dial = new QDialog(mwid);
+	QDialog* dial = new QDialog;
 	dial->setWindowTitle("About e2 SAT Editor");
 	dial->connect(dial, &QDialog::finished, [=]() { delete dial; delete this; });
 
@@ -84,7 +84,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.");
 	dfrm->addLayout(dhbox, 0, 0);
 	dfrm->setSizeConstraint(QGridLayout::SetFixedSize);
 	dial->setLayout(dfrm);
-	dial->exec();
+	dial->open();
 }
 
 }

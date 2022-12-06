@@ -298,15 +298,17 @@ void printable::page_body_channel_list(page& p, string bname, view v)
 	p.body += "<th>Index</th>";
 	p.body += "<th>Name</th>";
 	// p.body += "<th>Reference ID</th>";
+	p.body += "<th>SSID</th>";
+	p.body += "<th>TSID</th>";
 	p.body += "<th>Type</th>";
 	p.body += "<th>CAS</th>";
 	p.body += "<th>Provider</th>";
-	p.body += "<th>Frequency</th>";
-	p.body += "<th>Polarization</th>";
-	p.body += "<th>Symbol Rate</th>";
+	p.body += "<th>Freq</th>";
+	p.body += "<th>Pol</th>";
+	p.body += "<th>SR</th>";
 	p.body += "<th>FEC</th>";
-	p.body += "<th>SAT</th>";
-	p.body += "<th>System</th>";
+	p.body += "<th>Pos</th>";
+	p.body += "<th>Sys</th>";
 	p.body += "</tr>";
 	p.body += "</thead>";
 
@@ -338,6 +340,8 @@ void printable::page_body_channel_list(page& p, string bname, view v)
 				string crefid = dbih->get_reference_id(chid);
 				refid = QString::fromStdString(crefid);
 			}
+			QString ssid = QString::fromStdString(to_string(ch.ssid));
+			QString tsid = QString::fromStdString(to_string(ch.tsid));
 			QString stype = e2db::STYPES.count(ch.stype) ? QString::fromStdString(e2db::STYPES.at(ch.stype).second) : "Data";
 			QString scas;
 			if (ch.data.count(e2db::SDATA::C))
@@ -404,6 +408,8 @@ void printable::page_body_channel_list(page& p, string bname, view v)
 			p.body += "<td class=\"trid\">" + idx + "</td>";
 			p.body += "<td class=\"chname\">" + chname + "</td>";
 			// p.body += "<td class=\"refid\"><span >" + refid + "</span></td>";
+			p.body += "<td>" + ssid + "</td>";
+			p.body += "<td>" + tsid + "</td>";
 			p.body += "<td>" + stype + "</td>";
 			p.body += "<td class=\"scas\">" + scas + "</span></td>";
 			p.body += "<td class=\"pname\">" + pname + "</td>";
@@ -434,6 +440,8 @@ void printable::page_body_channel_list(page& p, string bname, view v)
 			p.body += "<td class=\"trid\"></td>";
 			p.body += "<td class=\"name\">" + value + "</td>";
 			// p.body += "<td class=\"refid\">" + refid + "</td>";
+			p.body += "<td></td>";
+			p.body += "<td></td>";
 			p.body += "<td class=\"atype\">" + atype + "</td>";
 			p.body += "<td></td>";
 			p.body += "<td></td>";
@@ -544,32 +552,43 @@ void printable::page_body_tunersets_list(page& p, int ytype)
 		p.body += "<th>Index</th>";
 		if (ytype == e2db::YTYPE::sat)
 		{
-			p.body += "<th>Frequency</th>";
-			p.body += "<th>Polarization</th>";
-			p.body += "<th>Symbol Rate</th>";
+			p.body += "<th>Freq</th>";
+			p.body += "<th>Pol</th>";
+			p.body += "<th>SR</th>";
 			p.body += "<th>FEC</th>";
-			p.body += "<th>System</th>";
+			p.body += "<th>Sys</th>";
+			p.body += "<th>Mod</th>";
+			p.body += "<th>Inv</th>";
+			p.body += "<th>Pilot</th>";
+			p.body += "<th>Rollof</th>";
 		}
 		else if (ytype == e2db::YTYPE::terrestrial)
 		{
-			p.body += "<th>Frequency</th>";
-			p.body += "<th>Constellation</th>";
-			p.body += "<th>Bandwidth</th>";
-			p.body += "<th>System</th>";
+			p.body += "<th>Freq</th>";
+			p.body += "<th>Const</th>";
+			p.body += "<th>Band</th>";
+			p.body += "<th>Sys</th>";
+			p.body += "<th>Tx Mode</th>";
+			p.body += "<th>HP FEC</th>";
+			p.body += "<th>LP FEC</th>";
+			p.body += "<th>Inv</th>";
+			p.body += "<th>Guard</th>";
+			p.body += "<th>Hier</th>";
 		}
 		else if (ytype == e2db::YTYPE::cable)
 		{
-			p.body += "<th>Frequency</th>";
-			p.body += "<th>Modulation</th>";
-			p.body += "<th>Symbol Rate</th>";
+			p.body += "<th>Freq</th>";
+			p.body += "<th>Mod</th>";
+			p.body += "<th>SR</th>";
 			p.body += "<th>FEC</th>";
-			p.body += "<th>System</th>";
+			p.body += "<th>Inv</th>";
+			p.body += "<th>Sys</th>";
 		}
 		else if (ytype == e2db::YTYPE::atsc)
 		{
-			p.body += "<th>Frequency</th>";
-			p.body += "<th>Modulation</th>";
-			p.body += "<th>System</th>";
+			p.body += "<th>Freq</th>";
+			p.body += "<th>Mod</th>";
+			p.body += "<th>Sys</th>";
 		}
 		p.body += "</tr>";
 
@@ -578,54 +597,76 @@ void printable::page_body_tunersets_list(page& p, int ytype)
 		for (auto & x : dbih->index[tns.tnid])
 		{
 			string trid = x.second;
-			e2db::tunersets_transponder tntxp = tns.transponders[trid];
+			e2db::tunersets_transponder txp = tns.transponders[trid];
 
 			p.body += "<tr>";
 			p.body += "<td class=\"trid\">" + QString::fromStdString(to_string(i++)) + "</td>";
 			if (ytype == e2db::YTYPE::sat)
 			{
-				QString freq = QString::fromStdString(tntxp.freq != -1 ? to_string(tntxp.freq) : "");
-				QString pol = QString::fromStdString(tntxp.pol != -1 ? e2db::SAT_POL[tntxp.pol] : "");
-				QString sr = QString::fromStdString(tntxp.freq != -1 ? to_string(tntxp.sr) : "");
-				QString fec = QString::fromStdString(tntxp.fec != -1 ? e2db::SAT_FEC[tntxp.fec] : "");
-				QString sys = QString::fromStdString(tntxp.sys != -1 ? e2db::SAT_SYS[tntxp.sys] : "DVB-S");
+				QString freq = QString::fromStdString(to_string(txp.freq));
+				QString pol = QString::fromStdString(e2db::SAT_POL[txp.pol]);
+				QString sr = QString::fromStdString(to_string(txp.sr));
+				QString fec = QString::fromStdString(e2db::SAT_FEC[txp.fec]);
+				QString sys = QString::fromStdString(e2db::SAT_SYS[txp.sys]);
+				QString mod = QString::fromStdString(e2db::SAT_MOD[txp.mod]);
+				QString inv = QString::fromStdString(e2db::SAT_INV[txp.inv]);
+				QString pil = QString::fromStdString(e2db::SAT_PIL[txp.pil]);
+				QString rol = QString::fromStdString(e2db::SAT_ROL[txp.rol]);
 
 				p.body += "<td>" + freq + "</td>";
 				p.body += "<td>" + pol + "</td>";
 				p.body += "<td>" + sr + "</td>";
 				p.body += "<td>" + fec + "</td>";
 				p.body += "<td>" + sys + "</td>";
+				p.body += "<td>" + mod + "</td>";
+				p.body += "<td>" + inv + "</td>";
+				p.body += "<td>" + pil + "</td>";
+				p.body += "<td>" + rol + "</td>";
 			}
 			else if (ytype == e2db::YTYPE::terrestrial)
 			{
-				QString freq = QString::fromStdString(tntxp.freq != -1 ? to_string(tntxp.freq) : "");
-				QString tmod = QString::fromStdString(tntxp.tmod != -1 ? e2db::TER_MOD[tntxp.tmod] : "");
-				QString band = QString::fromStdString(tntxp.band != -1 ? e2db::TER_BAND[tntxp.band] : "");
+				QString freq = QString::fromStdString(to_string(txp.freq));
+				QString tmod = QString::fromStdString(e2db::TER_MOD[txp.tmod]);
+				QString band = QString::fromStdString(e2db::TER_BAND[txp.band]);
 				QString sys = "DVB-T";
+				QString tmx = QString::fromStdString(e2db::TER_TRXMODE[txp.tmx]);
+				QString hpfec = QString::fromStdString(e2db::TER_HPFEC[txp.hpfec]);
+				QString lpfec = QString::fromStdString(e2db::TER_LPFEC[txp.lpfec]);
+				QString inv = QString::fromStdString(e2db::TER_INV[txp.inv]);
+				QString guard = QString::fromStdString(e2db::TER_GUARD[txp.hier]);
+				QString hier = QString::fromStdString(e2db::TER_HIER[txp.guard]);
 
 				p.body += "<td>" + freq + "</td>";
 				p.body += "<td>" + tmod + "</td>";
 				p.body += "<td>" + band + "</td>";
 				p.body += "<td>" + sys + "</td>";
+				p.body += "<td>" + tmx + "</td>";
+				p.body += "<td>" + hpfec + "</td>";
+				p.body += "<td>" + lpfec + "</td>";
+				p.body += "<td>" + inv + "</td>";
+				p.body += "<td>" + guard + "</td>";
+				p.body += "<td>" + hier + "</td>";
 			}
 			else if (ytype == e2db::YTYPE::cable)
 			{
-				QString freq = QString::fromStdString(tntxp.freq != -1 ? to_string(tntxp.freq) : "");
-				QString cmod = QString::fromStdString(tntxp.cmod != -1 ? e2db::CAB_MOD[tntxp.cmod] : "");
-				QString sr = QString::fromStdString(tntxp.freq != -1 ? to_string(tntxp.sr) : "");
-				QString cfec = QString::fromStdString(tntxp.cfec != -1 ? e2db::CAB_IFEC[tntxp.cfec] : "");
+				QString freq = QString::fromStdString(to_string(txp.freq));
+				QString cmod = QString::fromStdString(e2db::CAB_MOD[txp.cmod]);
+				QString sr = QString::fromStdString(to_string(txp.sr));
+				QString cfec = QString::fromStdString(e2db::CAB_IFEC[txp.cfec]);
+				QString inv = QString::fromStdString(e2db::CAB_INV[txp.inv]);
 				QString sys = "DVB-C";
 
 				p.body += "<td>" + freq + "</td>";
 				p.body += "<td>" + cmod + "</td>";
 				p.body += "<td>" + sr + "</td>";
 				p.body += "<td>" + cfec + "</td>";
+				p.body += "<td>" + inv + "</td>";
 				p.body += "<td>" + sys + "</td>";
 			}
 			else if (ytype == e2db::YTYPE::atsc)
 			{
-				QString freq = QString::fromStdString(tntxp.freq != -1 ? to_string(tntxp.freq * 1e3) : "");
-				QString amod = QString::fromStdString(tntxp.tmod != -1 ? to_string(tntxp.amod) : "");
+				QString freq = QString::fromStdString(to_string(txp.freq));
+				QString amod = QString::fromStdString(to_string(txp.amod));
 				QString sys = "ATSC";
 
 				p.body += "<td>" + freq + "</td>";

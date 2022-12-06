@@ -31,7 +31,6 @@ logger::logger(session* log, string ns)
 	this->ns = "e2se." + ns;
 }
 
-//TODO FIX crash isnull
 void logger::debug(string msg)
 {
 	std::ostream out (buf);
@@ -46,7 +45,6 @@ void logger::debug(string msg)
 	buf->str("");
 }
 
-//TODO FIX crash isnull
 void logger::debug(string msg, string optk, string optv)
 {
 	std::ostream out (buf);
@@ -68,30 +66,65 @@ void logger::debug(string msg, string optk, int optv)
 	this->logger::debug(msg, optk, std::to_string(optv));
 }
 
-void logger::error(string msg)
+void logger::info(string msg)
 {
 	std::ostream out (buf);
 	out << timestamp();
-	out << ' ' << "<Error>";
+	out << ' ' << "<Info>";
 	out << ' ' << '[' << ns << ']';
 	out << ' ' << msg;
 	out << std::endl;
-	std::clog << out.rdbuf();
+	if (this->log->debug)
+		std::cout << out.rdbuf();
+	this->log->text.append(buf->str());
+	buf->str("");
+}
+
+void logger::info(string msg, string optk, string optv)
+{
+	std::ostream out (buf);
+	out << timestamp();
+	out << ' ' << "<Info>";
+	out << ' ' << '[' << ns << ']';
+	out << ' ' << msg;
+	out << ' ' << optk << ':';
+	out << ' ' << optv;
+	out << std::endl;
+	if (this->log->debug)
+		std::cout << out.rdbuf();
+	this->log->text.append(buf->str());
+	buf->str("");
+}
+
+void logger::info(string msg, string optk, int optv)
+{
+	this->logger::info(msg, optk, std::to_string(optv));
+}
+
+void logger::error(string msg)
+{
+	std::ostream err (buf);
+	err << timestamp();
+	err << ' ' << "<Error>";
+	err << ' ' << '[' << ns << ']';
+	err << ' ' << msg;
+	err << std::endl;
+	std::cerr << err.rdbuf();
 	this->log->text.append(buf->str());
 	buf->str("");
 }
 
 void logger::error(string msg, string optk, string optv)
 {
-	std::ostream out (buf);
-	out << timestamp();
-	out << ' ' << "<Error>";
-	out << ' ' << '[' << ns << ']';
-	out << ' ' << msg;
-	out << ' ' << optk << ':';
-	out << ' ' << optv;
-	out << std::endl;
-	std::clog << out.rdbuf();
+	std::ostream err (buf);
+	err << timestamp();
+	err << ' ' << "<Error>";
+	err << ' ' << '[' << ns << ']';
+	err << ' ' << msg;
+	err << ' ' << optk << ':';
+	err << ' ' << optv;
+	err << std::endl;
+	std::cerr << err.rdbuf();
 	this->log->text.append(buf->str());
 	buf->str("");
 }
@@ -115,7 +148,25 @@ string logger::timestamp()
 
 string logger::str()
 {
+	this->log->sizel = this->log->text.size();
 	return this->log->text;
+}
+
+string logger::str_lend()
+{
+	int pos = this->log->sizel;
+	this->log->sizel = this->log->text.size();
+	return this->log->text.substr(pos);
+}
+
+size_t logger::pos()
+{
+	return this->log->text.size();
+}
+
+size_t logger::last_pos()
+{
+	return this->log->sizel;
 }
 
 }

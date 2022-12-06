@@ -311,6 +311,8 @@ QStringList e2db::entryService(service ch)
 		chname = QString::fromStdString(ch.chname);
 	QString chid = QString::fromStdString(ch.chid);
 	QString txid = QString::fromStdString(ch.txid);
+	QString ssid = QString::fromStdString(to_string(ch.ssid));
+	QString tsid = QString::fromStdString(to_string(ch.tsid));
 	QString stype = e2db::STYPES.count(ch.stype) ? QString::fromStdString(e2db::STYPES.at(ch.stype).second) : "Data";
 	QString pname = QString::fromStdString(ch.data.count(e2db::SDATA::p) ? ch.data[e2db::SDATA::p][0] : "");
 
@@ -332,7 +334,7 @@ QStringList e2db::entryService(service ch)
 		scas.append(' ' + cas.join(", "));
 	}
 
-	QStringList entry = QStringList ({chname, chid, txid, stype, scas, pname});
+	QStringList entry = QStringList ({chname, chid, txid, ssid, tsid, stype, scas, pname});
 	entry.append(entries.transponders[ch.txid]);
 	return entry;
 }
@@ -342,7 +344,7 @@ QStringList e2db::entryMarker(channel_reference chref)
 	QString chid = QString::fromStdString(chref.chid);
 	QString value = QString::fromStdString(chref.value);
 
-	return QStringList({NULL, value, chid, NULL, "MARKER", NULL});
+	return QStringList({NULL, value, chid, NULL, NULL, NULL, "MARKER", NULL});
 }
 
 }

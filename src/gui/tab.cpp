@@ -36,6 +36,7 @@
 #include "gui.h"
 #include "editBouquet.h"
 #include "editService.h"
+#include "editMarker.h"
 #include "channelBook.h"
 #include "ftpcom_gui.h"
 #include "printable.h"
@@ -126,30 +127,32 @@ tab::tab(gui* gid, QWidget* wid, e2se::logger::session* log)
 	bouquets_delegate->setIndentation(bouquets_tree->indentation());
 	bouquets_tree->setItemDelegateForColumn(0, bouquets_delegate);
 
-	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({NULL, "Index", "Name", "CHID", "TXID", "Type", "CAS", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "SAT", "System"});
+	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({NULL, "Index", "Name", "CHID", "TXID", "Service ID", "Transport ID", "Type", "CAS", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "Position", "System"});
 
 	list_tree->setHeaderItem(lheader_item);
-	list_tree->setColumnHidden(0, true);
-	list_tree->setColumnWidth(1, 65);		// Index
-	list_tree->setColumnWidth(2, 200);		// Name
+	list_tree->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
+	list_tree->setColumnWidth(ITEM_ROW_ROLE::chnum, 65);	// (Channel Number) Index
+	list_tree->setColumnWidth(ITEM_ROW_ROLE::chname, 200);	// (Channel) Name
 	if (gid->sets->value("application/debug", true).toBool()) {
-		list_tree->setColumnWidth(3, 175);	// CHID
-		list_tree->setColumnWidth(4, 150);	// TXID
+		list_tree->setColumnWidth(ITEM_ROW_ROLE::debug_chid, 175);
+		list_tree->setColumnWidth(ITEM_ROW_ROLE::debug_txid, 150);
 	}
 	else
 	{
-		list_tree->setColumnHidden(3, true);
-		list_tree->setColumnHidden(4, true);
+		list_tree->setColumnHidden(ITEM_ROW_ROLE::debug_chid, true);
+		list_tree->setColumnHidden(ITEM_ROW_ROLE::debug_txid, true);
 	}
-	list_tree->setColumnWidth(5, 85);		// Type
-	list_tree->setColumnWidth(6, 45);		// CAS
-	list_tree->setColumnWidth(7, 150);		// Provider
-	list_tree->setColumnWidth(8, 95);		// Frequency
-	list_tree->setColumnWidth(9, 85);		// Polarization
-	list_tree->setColumnWidth(10, 95);		// Symbol Rate
-	list_tree->setColumnWidth(11, 50);		// FEC
-	list_tree->setColumnWidth(12, 125);		// SAT
-	list_tree->setColumnWidth(13, 75);		// System
+	list_tree->setColumnWidth(ITEM_ROW_ROLE::chssid, 80);	// Service ID
+	list_tree->setColumnWidth(ITEM_ROW_ROLE::chtsid, 80);	// Transport ID
+	list_tree->setColumnWidth(ITEM_ROW_ROLE::chtype, 85);	// (Channel) Type
+	list_tree->setColumnWidth(ITEM_ROW_ROLE::chcas, 45);	// CAS
+	list_tree->setColumnWidth(ITEM_ROW_ROLE::chpname, 150);	// Provider
+	list_tree->setColumnWidth(ITEM_ROW_ROLE::chfreq, 95);	// Frequency
+	list_tree->setColumnWidth(ITEM_ROW_ROLE::chpol, 85);	// Polarization
+	list_tree->setColumnWidth(ITEM_ROW_ROLE::chsr, 95);		// Symbol Rate
+	list_tree->setColumnWidth(ITEM_ROW_ROLE::chfec, 50);	// FEC
+	list_tree->setColumnWidth(ITEM_ROW_ROLE::chpos, 125);	// Position
+	list_tree->setColumnWidth(ITEM_ROW_ROLE::chsys, 75);	// System
 
 	this->lheaderv = list_tree->header();
 	lheaderv->connect(lheaderv, &QHeaderView::sectionClicked, [=](int column) { this->trickySortByColumn(column); });
@@ -346,7 +349,7 @@ tab::tab(gui* gid, QWidget* wid, e2se::logger::session* log)
 	tools_close_edit->setText("Close Editor");
 	tools_close_edit->setIcon(theme::icon("close"));
 	tools_close_edit->setStyleSheet("QPushButton, QPushButton:pressed { padding: 5px 2ex; border: 1px solid transparent; border-radius: 3px; font: bold 14px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
-	tools_close_edit->connect(tools_close_edit, &QPushButton::pressed, [=]() { this->closeTunersets(); });
+	tools_close_edit->connect(tools_close_edit, &QPushButton::pressed, [=]() { this->closeTunersetsView(); });
 
 	this->action.tools_close_edit = bottom_toolbar->addWidget(tools_close_edit);
 	this->action.tools_close_edit->setDisabled(true);
@@ -400,6 +403,8 @@ tab::tab(gui* gid, QWidget* wid, e2se::logger::session* log)
 	bouquets_ats->addWidget(this->action.bouquets_search);
 	this->action.list_addch = list_ats->addAction(theme::icon("add"), "Add Channel", [=]() { this->addChannel(); });
 	this->action.list_addch->setDisabled(true);
+	this->action.list_addmk = list_ats->addAction(theme::icon("add"), "Add Marker", [=]() { this->addMarker(); });
+	this->action.list_addmk->setDisabled(true);
 	this->action.list_newch = list_ats->addAction(theme::icon("add"), "New Service", [=]() { this->addService(); });
 	list_ats->addSeparator();
 	list_ats->addWidget(this->action.list_ref);
@@ -419,6 +424,7 @@ tab::tab(gui* gid, QWidget* wid, e2se::logger::session* log)
 	list_tree->viewport()->installEventFilter(list_evth);
 	list_tree->connect(list_tree, &QTreeWidget::currentItemChanged, [=]() { this->listItemChanged(); });
 	list_tree->connect(list_tree, &QTreeWidget::itemSelectionChanged, [=]() { this->listItemSelectionChanged(); });
+	//TODO service or maker
 	list_tree->connect(list_tree, &QTreeWidget::itemDoubleClicked, [=]() { this->editService(); });
 
 	top->addWidget(top_toolbar);
@@ -499,7 +505,7 @@ void tab::newFile()
 {
 	debug("newFile()");
 
-	closeTunersets();
+	closeTunersetsView();
 	gid->update(gui::init);
 	preset();
 
@@ -564,7 +570,6 @@ void tab::saveFile(bool saveas)
 	}
 }
 
-//TODO tools: tunersets
 void tab::importFile()
 {
 	debug("importFile()");
@@ -825,14 +830,10 @@ void tab::printFile(bool all)
 
 			// bouquet | userbouquets
 			if (ti != -1)
-			{
 				printer->document_bouquet(filename);
-			}
 			// userbouquet
 			else
-			{
 				printer->document_userbouquet(filename);
-			}
 		}
 	}
 
@@ -955,9 +956,9 @@ void tab::editService()
 		return;
 
 	QTreeWidgetItem* item = selected.first();
-	string chid = item->data(2, Qt::UserRole).toString().toStdString();
+	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 	string nw_chid;
-	bool marker = item->data(1, Qt::UserRole).toBool();
+	bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
 
 	debug("editService()", "chid", chid);
 
@@ -974,11 +975,56 @@ void tab::editService()
 		debug("editService()", "nw_chid", nw_chid);
 
 		QStringList entry = dbih->entries.services[nw_chid];
-		entry.prepend(item->text(1));
-		entry.prepend(item->text(0));
+		entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
+		entry.prepend(item->text(ITEM_ROW_ROLE::x));
 		for (int i = 0; i < entry.count(); i++)
 			item->setText(i, entry[i]);
 		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
+	}
+}
+
+void tab::addMarker()
+{
+	debug("addMarker()");
+
+	string chid;
+	e2se_gui::editMarker* add = new e2se_gui::editMarker(dbih, this->log->log);
+	add->display(cwid);
+	chid = add->getEditID(); // returned after dial.exec()
+	add->destroy();
+
+	//TODO add
+}
+
+void tab::editMarker()
+{
+	debug("editMarker()");
+
+	QList<QTreeWidgetItem*> selected = list_tree->selectedItems();
+	
+	if (selected.empty() || selected.count() > 1)
+		return;
+
+	QTreeWidgetItem* item = selected.first();
+	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
+	string nw_chid;
+	bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+
+	debug("editMarker()", "chid", chid);
+
+	if (marker)
+	{
+		e2se_gui::editMarker* edit = new e2se_gui::editMarker(dbih, this->log->log);
+		edit->setEditID(chid);
+		edit->display(cwid);
+		nw_chid = edit->getEditID(); // returned after dial.exec()
+		edit->destroy();
+
+		cache.clear();
+
+		debug("editMarker()", "nw_chid", nw_chid);
+
+		//TODO edit
 	}
 }
 
@@ -989,7 +1035,7 @@ bool tab::readFile(string filename)
 	if (filename.empty())
 		return false;
 
-	closeTunersets();
+	closeTunersetsView();
 	preset();
 
 	if (this->dbih != nullptr)
@@ -1168,16 +1214,16 @@ void tab::populate(QTreeWidget* side_tree)
 			item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
 			item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
 			item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, chid);
-			item->setIcon(1, theme::spacer(4));
+			item->setIcon(ITEM_ROW_ROLE::chnum, theme::spacer(4));
 			if (marker)
 			{
-				item->setFont(2, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
-				item->setFont(5, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
+				item->setFont(ITEM_ROW_ROLE::chname, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
+				item->setFont(ITEM_ROW_ROLE::chtype, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
 			}
-			item->setFont(6, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
-			if (! item->text(6).isEmpty())
+			item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
+			if (! item->text(ITEM_ROW_ROLE::chcas).isEmpty())
 			{
-				item->setIcon(6, theme::icon("crypted"));
+				item->setIcon(ITEM_ROW_ROLE::chcas, theme::icon("crypted"));
 			}
 			cache[curr_chlist].append(item);
 		}
@@ -1235,6 +1281,7 @@ void tab::servicesItemChanged(QTreeWidgetItem* current)
 		int ti = services_tree->indexOfTopLevelItem(current);
 
 		this->action.list_addch->setDisabled(true);
+		this->action.list_addmk->setDisabled(true);
 		this->action.list_newch->setEnabled(true);
 
 		// tv | radio | data
@@ -1278,6 +1325,7 @@ void tab::bouquetsItemChanged(QTreeWidgetItem* current)
 		if (ti != -1)
 		{
 			this->action.list_addch->setDisabled(true);
+			this->action.list_addmk->setDisabled(true);
 			this->action.list_newch->setEnabled(true);
 
 			disallowDnD();
@@ -1293,6 +1341,7 @@ void tab::bouquetsItemChanged(QTreeWidgetItem* current)
 		else
 		{
 			this->action.list_addch->setEnabled(true);
+			this->action.list_addmk->setEnabled(true);
 			this->action.list_newch->setDisabled(true);
 
 			// sorting by
@@ -1348,15 +1397,27 @@ void tab::listItemSelectionChanged()
 		if (this->state.ti == -1)
 			gid->update(gui::TabListDelete, true);
 	}
-	if (selected.count() > 1)
+	if (selected.count() == 1)
+	{
+		QTreeWidgetItem* item = selected.first();
+		bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+
+		if (marker)
+		{
+			gid->update(gui::TabListEditService, false);
+			gid->update(gui::TabListEditMarker, true);
+		}
+		else
+		{
+			gid->update(gui::TabListEditService, true);
+			gid->update(gui::TabListEditMarker, false);
+		}
+	}
+	else if (selected.count() > 1)
 	{
 		gid->update(gui::TabListEditService, false);
 		gid->update(gui::TabListEditMarker, false);
-	}
-	else
-	{
-		gid->update(gui::TabListEditService, true);
-		gid->update(gui::TabListEditMarker, true);
+
 	}
 
 	if (this->state.refbox)
@@ -1396,7 +1457,7 @@ void tab::visualReindexList()
 		while (j--)
 		{
 			QTreeWidgetItem* item = list_tree->topLevelItem(i);
-			bool marker = item->data(1, Qt::UserRole).toBool();
+			bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
 			if (marker)
 				y++;
 			i++;
@@ -1407,13 +1468,13 @@ void tab::visualReindexList()
 	while (reverse ? j-- : i != j)
 	{
 		QTreeWidgetItem* item = list_tree->topLevelItem(i);
-		bool marker = item->data(1, Qt::UserRole).toBool();
+		bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
 		idx = reverse ? j : i;
 		char ci[7];
 		std::sprintf(ci, "%06d", idx++);
-		item->setText(0, QString::fromStdString(ci));
+		item->setText(ITEM_ROW_ROLE::x, QString::fromStdString(ci));
 		if (! marker)
-			item->setText(1, QString::fromStdString(to_string(idx - y)));
+			item->setText(ITEM_ROW_ROLE::chnum, QString::fromStdString(to_string(idx - y)));
 		i++;
 		y = marker ? reverse ? y - 1 : y + 1 : y;
 	}
@@ -1564,16 +1625,16 @@ void tab::actionCall(int action)
 		break;
 
 		case gui::TAB_ATS::EditTunerSat:
-			editTunersets(e2db::YTYPE::sat);
+			openTunersetsView(e2db::YTYPE::sat);
 		break;
 		case gui::TAB_ATS::EditTunerTerrestrial:
-			editTunersets(e2db::YTYPE::terrestrial);
+			openTunersetsView(e2db::YTYPE::terrestrial);
 		break;
 		case gui::TAB_ATS::EditTunerCable:
-			editTunersets(e2db::YTYPE::cable);
+			openTunersetsView(e2db::YTYPE::cable);
 		break;
 		case gui::TAB_ATS::EditTunerAtsc:
-			editTunersets(e2db::YTYPE::atsc);
+			openTunersetsView(e2db::YTYPE::atsc);
 		break;
 		case gui::TAB_ATS::Inspector:
 			tools->inspector();
@@ -1890,32 +1951,38 @@ void tab::listItemCopy(bool cut)
 	QStringList text;
 	for (auto & item : selected)
 	{
+		QString qchid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString();
+		bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+		string chid = qchid.toStdString();
+
 		QStringList data;
-		// skip column 0 = x index
-		for (int i = 1; i < list_tree->columnCount(); i++)
+		// start from chnum column [1]
+		for (int i = ITEM_ROW_ROLE::chnum; i < list_tree->columnCount(); i++)
 		{
 			QString qstr = item->data(i, Qt::DisplayRole).toString();
-			// Name
-			if (i == 2)
+			// chname
+			if (i == ITEM_ROW_ROLE::chname)
 				qstr.prepend("\"").append("\"");
-			// CAS
-			else if (i == 6)
+			// debug_chid
+			else if (i == ITEM_ROW_ROLE::debug_chid)
+				continue;
+			// debug_txid
+			else if (i == ITEM_ROW_ROLE::debug_txid)
+				continue;
+			// chcas
+			else if (i == ITEM_ROW_ROLE::chcas && ! marker)
 				qstr.prepend(qstr.isEmpty() ? "" : "$").prepend("\"").append("\"");
-			// Provider
-			else if (i == 7)
+			// chpname
+			else if (i == ITEM_ROW_ROLE::chpname && ! marker)
 				qstr.prepend("\"").append("\"");
-			// SAT
-			else if (i == 12)
+			// chpos
+			else if (i == ITEM_ROW_ROLE::chpos && ! marker)
 				qstr.prepend("\"").append("\"");
 			data.append(qstr);
 		}
 
 		// Reference ID
-		QString qchid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString();
-		bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
-		string chid = qchid.toStdString();
 		QString refid;
-
 		// bouquets tree
 		if (this->state.tc)
 		{
@@ -1937,8 +2004,7 @@ void tab::listItemCopy(bool cut)
 		{
 			refid = "1:" + qchid.toUpper() + ":0:0:0:0:0:0";
 		}
-		data.replace(2, refid);
-		data.removeAt(3);
+		data.insert(2, refid); // insert refid column [2]
 		text.append(data.join(",")); // CSV
 	}
 	clipboard->setText(text.join("\n")); // CSV
@@ -1970,6 +2036,7 @@ void tab::listItemPaste()
 			if (data.contains(','))
 			{
 				auto line = data.split(',');
+				// refid column [2] | chname column [1]
 				items.emplace_back(line[2] + ',' + line[1]);
 			}
 			else
@@ -2075,14 +2142,14 @@ void tab::listItemSelectAll()
 	list_tree->selectAll();
 }
 
-void tab::editTunersets(int ytype)
+void tab::openTunersetsView(int ytype)
 {
-	debug("editTunersets()", "ytype", ytype);
+	debug("openTunersetsView()", "ytype", ytype);
 
 	if (! this->state.tunersets)
 	{
 		root->itemAt(0)->widget()->hide();
-		tools->editTunersets(dbih, ytype);
+		tools->openTunersets(dbih, ytype);
 		this->state.tunersets = true;
 		this->state.ty = ytype;
 
@@ -2093,9 +2160,9 @@ void tab::editTunersets(int ytype)
 	}
 }
 
-void tab::closeTunersets()
+void tab::closeTunersetsView()
 {
-	debug("closeTunersets()");
+	debug("closeTunersetsView()");
 
 	if (this->state.tunersets)
 	{
@@ -2142,6 +2209,7 @@ void tab::putChannels(vector<QString> channels)
 		string value;
 		if (q.contains(','))
 		{
+			// refid column [0] | chname column [1]
 			auto data = q.split(',');
 			refid = data[0].toStdString();
 			value = data[1].replace("\"", "").toStdString();
@@ -2200,8 +2268,8 @@ void tab::putChannels(vector<QString> channels)
 				marker = true;
 				entry = dbih->entryMarker(chref);
 				entry.prepend(x);
-			//TODO add new service/transponder
 			}
+			//TODO add new service/transponder
 			else
 			{
 				error("putChannels()", "refid", refid);
@@ -2213,16 +2281,16 @@ void tab::putChannels(vector<QString> channels)
 		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
 		item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
 		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
-		item->setIcon(1, theme::spacer(4));
+		item->setIcon(ITEM_ROW_ROLE::chnum, theme::spacer(4));
 		if (marker)
 		{
-			item->setFont(2, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
-			item->setFont(5, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
+			item->setFont(ITEM_ROW_ROLE::chname, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
+			item->setFont(ITEM_ROW_ROLE::chtype, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
 		}
-		item->setFont(6, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
-		if (! item->text(6).isEmpty())
+		item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
+		if (! item->text(ITEM_ROW_ROLE::chcas).isEmpty())
 		{
-			item->setIcon(6, theme::icon("crypted"));
+			item->setIcon(ITEM_ROW_ROLE::chcas, theme::icon("crypted"));
 		}
 		clist.append(item);
 
@@ -2373,14 +2441,10 @@ void tab::updateConnectors()
 	gid->update(gui::TabListFindPrev, false);
 	gid->update(gui::TabListFindAll, false);
 
-	if (dbih->tuners.count(e2db::YTYPE::sat))
-		gid->update(gui::ToolsTunersetsSat, true);
-	if (dbih->tuners.count(e2db::YTYPE::terrestrial))
-		gid->update(gui::ToolsTunersetsTerrestrial, true);
-	if (dbih->tuners.count(e2db::YTYPE::cable))
-		gid->update(gui::ToolsTunersetsCable, true);
-	if (dbih->tuners.count(e2db::YTYPE::atsc))
-		gid->update(gui::ToolsTunersetsAtsc, true);
+	gid->update(gui::ToolsTunersetsSat, true);
+	gid->update(gui::ToolsTunersetsTerrestrial, true);
+	gid->update(gui::ToolsTunersetsCable, true);
+	gid->update(gui::ToolsTunersetsAtsc, true);
 
 	this->state.gxe = gid->getActionFlags();
 }
@@ -2573,6 +2637,7 @@ void tab::showListEditContextMenu(QPoint &pos)
 
 	QMenu* list_edit = new QMenu;
 	list_edit->addAction("Edit Service", [=]() { this->editService(); })->setDisabled(gflags & gui::TabListEditService ? false : true);
+	list_edit->addAction("Edit Marker", [=]() { this->editMarker(); })->setDisabled(gflags & gui::TabListEditMarker ? false : true);
 	list_edit->addSeparator();
 	list_edit->addAction("Cu&t", [=]() { this->listItemCut(); }, QKeySequence::Cut)->setDisabled(gflags & gui::TabListCut ? false : true);
 	list_edit->addAction("&Copy", [=]() { this->listItemCopy(); }, QKeySequence::Copy)->setDisabled(gflags & gui::TabListCopy ? false : true);
@@ -2641,6 +2706,7 @@ void tab::preset()
 	this->lsr_find.match.clear();
 
 	this->action.list_addch->setDisabled(true);
+	this->action.list_addmk->setDisabled(true);
 	this->action.list_newch->setEnabled(true);
 	this->action.list_dnd->setDisabled(true);
 
@@ -2761,7 +2827,7 @@ void tab::loadSeeds()
 	else
 	{
 		gid->sets->setValue("application/seeds", "");
-		QMessageBox::information(cwid, NULL, "For debugging purpose, set application.seeds absolute path under Settings > Advanced tab, then restart software.");
+		QMessageBox::information(cwid, NULL, "For debugging purpose, set application.seeds absolute path under Settings > Advanced tab, then restart the software.");
 	}
 }
 

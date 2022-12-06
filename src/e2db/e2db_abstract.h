@@ -43,7 +43,7 @@ struct e2db_abstract
 		inline static const string TER_HPFEC[6] = {"Auto", "1/2", "2/3", "3/4", "5/6", "7/8"};
 		inline static const string TER_LPFEC[6] = {"Auto", "1/2", "2/3", "3/4", "5/6", "7/8"};
 		inline static const string TER_MOD[4] = {"Auto", "QPSK", "QAM16", "QAM64"};
-		inline static const string TER_TRXMODE[5] = {"Auto", "2k", "8k"};
+		inline static const string TER_TRXMODE[3] = {"Auto", "2k", "8k"};
 		inline static const string TER_GUARD[5] = {"Auto", "1/32", "1/16", "1/8", "1/4"};
 		inline static const string TER_HIER[5] = {"Auto", "", "1", "2", "4"};
 		inline static const string TER_INV[3] = {"Auto", "On", "Off"};
@@ -312,6 +312,9 @@ struct e2db_abstract
 		virtual void debug(string msg);
 		virtual void debug(string msg, string optk, string optv);
 		virtual void debug(string msg, string optk, int optv);
+		virtual void info(string msg);
+		virtual void info(string msg, string optk, string optv);
+		virtual void info(string msg, string optk, int optv);
 		virtual void error(string msg);
 		virtual void error(string msg, string optk, string optv);
 		virtual void error(string msg, string optk, int optv);

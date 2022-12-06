@@ -123,15 +123,16 @@ void channelBook::layout()
 	list->setExpandsOnDoubleClick(false);
 	list->setStyleSheet("::item { padding: 2px auto }");
 
-	QTreeWidgetItem* thead = new QTreeWidgetItem({NULL, "Index", "Name", "Type", "Provider", "Transponder", "SAT"});
+	QTreeWidgetItem* thead = new QTreeWidgetItem({NULL, "Index", "Name", "Type", "Provider", "Transponder", "Position", "System"});
 	list->setHeaderItem(thead);
-	list->setColumnHidden(0, true);
-	list->setColumnWidth(1, 60);	// Index
-	list->setColumnWidth(2, 175);	// Name
-	list->setColumnWidth(3, 70);	// Type
-	list->setColumnWidth(4, 125);	// Provider
-	list->setColumnWidth(5, 110);	// Transponder
-	list->setColumnWidth(6, 120);	// SAT
+	list->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
+	list->setColumnWidth(ITEM_ROW_ROLE::chnum, 60);		// (Channel Number) Index
+	list->setColumnWidth(ITEM_ROW_ROLE::chname, 175);	// Name
+	list->setColumnWidth(ITEM_ROW_ROLE::chtype, 70);	// Type
+	list->setColumnWidth(ITEM_ROW_ROLE::chpname, 125);	// Provider
+	list->setColumnWidth(ITEM_ROW_ROLE::chtxp, 110);	// Transponder
+	list->setColumnWidth(ITEM_ROW_ROLE::chpos, 120);	// Position
+	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 65);		// System
 
 	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->trickySortByColumn(column); });
 	tree->connect(tree, &QTreeWidget::currentItemChanged, [=]() { this->populate(); });
@@ -401,8 +402,24 @@ void channelBook::populate()
 				}
 			}
 			QString pos = QString::fromStdString(ppos);
+			string psys;
+			switch (tx.ttype) {
+				case 's':
+					psys = tx.sys != -1 ? e2db::SAT_SYS[tx.sys] : "DVB-S";
+				break;
+				case 't':
+					psys = "DVB-T";
+				break;
+				case 'c':
+					psys = "DVB-C";
+				break;
+				case 'a':
+					psys = "ATSC";
+				break;
+			}
+			QString sys = QString::fromStdString(psys);
 
-			QTreeWidgetItem* item = new QTreeWidgetItem({x, idx, chname, stype, pname, txp, pos});
+			QTreeWidgetItem* item = new QTreeWidgetItem({x, idx, chname, stype, pname, txp, pos, sys});
 			item->setData(0, Qt::UserRole, chid);
 			item->setIcon(1, theme::spacer(3));
 			list->addTopLevelItem(item);

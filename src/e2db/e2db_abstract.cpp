@@ -35,6 +35,21 @@ void e2db_abstract::debug(string msg, string optk, int optv)
 	this->log->debug(msg, optk, std::to_string(optv));
 }
 
+void e2db_abstract::info(string msg)
+{
+	this->log->info(msg);
+}
+
+void e2db_abstract::info(string msg, string optk, string optv)
+{
+	this->log->info(msg, optk, optv);
+}
+
+void e2db_abstract::info(string msg, string optk, int optv)
+{
+	this->log->info(msg, optk, std::to_string(optv));
+}
+
 void e2db_abstract::error(string msg)
 {
 	this->log->error(msg);

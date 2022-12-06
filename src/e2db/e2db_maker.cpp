@@ -35,12 +35,17 @@ namespace e2se_e2db
 void e2db_maker::make_e2db()
 {
 	debug("make_e2db()");
+	std::clock_t start = std::clock();
 
 	make_e2db_lamedb();
 	make_e2db_bouquets();
 	make_e2db_userbouquets();
 	if (MAKER_TUNERSETS)
 		make_db_tunersets();
+
+	std::clock_t end = std::clock();
+
+	info("make_e2db()", "elapsed time", to_string(int (end - start)) + " ms.");
 }
 
 string e2db_maker::get_timestamp()

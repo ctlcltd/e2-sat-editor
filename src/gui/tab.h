@@ -47,12 +47,13 @@ class gui;
 class tab : protected e2se::log_factory
 {
 	public:
+		// relation with gui::GUI_CXE
 		enum LIST_EDIT_ATS {
-			Cut = 0x00010000,
-			Copy = 0x00020000,
-			Paste = 0x00040000,
-			Delete = 0x00004000,
-			SelectAll = 0x00008000
+			Cut = 0x00010000, // GUI_CXE::TabListCut
+			Copy = 0x00020000, // GUI_CXE::TabListCopy
+			Paste = 0x00040000, // GUI_CXE::TabListPaste
+			Delete = 0x00004000, // GUI_CXE::TabListDelete
+			SelectAll = 0x00008000 // GUI_CXE::TabListSelectAll
 		};
 
 		enum LIST_REF {
@@ -77,6 +78,25 @@ class tab : protected e2se::log_factory
 			chid
 		};
 
+		enum ITEM_ROW_ROLE {
+			x,
+			chnum,
+			chname,
+			debug_chid,
+			debug_txid,
+			chssid,
+			chtsid,
+			chtype,
+			chcas,
+			chpname,
+			chfreq,
+			chpol,
+			chsr,
+			chfec,
+			chpos,
+			chsys
+		};
+
 		tab(gui* gid, QWidget* wid, e2se::logger::session* log);
 		~tab();
 		void newFile();
@@ -92,6 +112,8 @@ class tab : protected e2se::log_factory
 		void addChannel();
 		void addService();
 		void editService();
+		void addMarker();
+		void editMarker();
 		void load();
 		void populate(QTreeWidget* side_tree);
 		void treeSwitched(QTreeWidget* tree, QTreeWidgetItem* item);
@@ -128,8 +150,8 @@ class tab : protected e2se::log_factory
 		void listItemPaste();
 		void listItemDelete();
 		void listItemSelectAll();
-		void editTunersets(int ytype);
-		void closeTunersets();
+		void openTunersetsView(int ytype);
+		void closeTunersetsView();
 		void putChannels(vector<QString> channels);
 		void updateListIndex();
 		void updateBouquetsIndex();
@@ -159,6 +181,7 @@ class tab : protected e2se::log_factory
 		{
 			QAction* bouquets_newbs;
 			QAction* list_addch;
+			QAction* list_addmk;
 			QAction* list_newch;
 			QAction* tools_close_edit;
 			QPushButton* bouquets_search;

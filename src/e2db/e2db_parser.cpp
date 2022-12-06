@@ -107,7 +107,7 @@ void e2db_parser::parse_e2db()
 	// commit: d1f53fe	elapsed time: 56112
 	// commit: HEAD		elapsed time: 67343
 
-	debug("parse_e2db()", "elapsed time", int (end - start));
+	info("parse_e2db()", "elapsed time", to_string(int (end - start)) + " ms.");
 }
 
 
@@ -177,7 +177,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 
 	std::clock_t end = std::clock();
 
-	debug("parse_e2db()", "elapsed time", int (end - start));
+	info("parse_e2db()", "elapsed time", to_string(int (end - start)) + " ms.");
 }
 
 void e2db_parser::parse_e2db_lamedb(istream& ilamedb)

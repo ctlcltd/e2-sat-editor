@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/gui/editTunersets.cpp
+ * e2-sat-editor/src/gui/editMarker.cpp
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -21,7 +21,7 @@
 #include <QLineEdit>
 #include <QComboBox>
 
-#include "editTunersets.h"
+#include "editMarker.h"
 #include "theme.h"
 
 using namespace e2se;
@@ -29,20 +29,19 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-editTunersets::editTunersets(e2db* dbih, int ty, e2se::logger::session* log)
+editMarker::editMarker(e2db* dbih, e2se::logger::session* log)
 {
-	this->log = new logger(log, "editTunersets");
-	debug("editTunersets()");
+	this->log = new logger(log, "editMarker");
+	debug("editMarker()");
 
-	this->state.ty = ty;
 	this->dbih = dbih;
 }
 
-void editTunersets::display(QWidget* cwid)
+void editMarker::display(QWidget* cwid)
 {
 	debug("display()");
 
-	QString wtitle = "Edit ";
+	QString wtitle = this->state.edit ? "Edit Marker" : "Add Marker";
 	this->dial = new QDialog(cwid);
 	dial->setWindowTitle(wtitle);
 	//TODO FIX SEGFAULT
@@ -64,7 +63,8 @@ void editTunersets::display(QWidget* cwid)
 	this->dtform = new QGridLayout;
 
 	layout();
-	retrieve();
+	if (this->state.edit)
+		retrieve();
 
 	dtform->setVerticalSpacing(32);
 	widget->setContentsMargins(12, 12, 12, 12);
@@ -84,22 +84,36 @@ void editTunersets::display(QWidget* cwid)
 	dial->exec();
 }
 
-void editTunersets::layout()
+void editMarker::layout()
 {
 	debug("layout()");
+
+	QGroupBox* dtl0 = new QGroupBox(tr("Marker"));
+	QFormLayout* dtf0 = new QFormLayout;
+	dtf0->setRowWrapPolicy(QFormLayout::WrapAllRows);
+
+	QLineEdit* dtf0bn = new QLineEdit;
+	dtf0bn->setProperty("field", "name");
+	fields.emplace_back(dtf0bn);
+	dtf0bn->setMinimumWidth(240);
+	dtf0->addRow(tr("Marker Text"), dtf0bn);
+	dtf0->addItem(new QSpacerItem(0, 0));
+
+	dtl0->setLayout(dtf0);
+	dtform->addWidget(dtl0, 0, 0);
 }
 
-void editTunersets::store()
+void editMarker::store()
 {
 	debug("store()");
 }
 
-void editTunersets::retrieve()
+void editMarker::retrieve()
 {
 	debug("retrieve()");
 }
 
-void editTunersets::save()
+void editMarker::save()
 {
 	debug("save()");
 
@@ -108,21 +122,22 @@ void editTunersets::save()
 	dial->close();
 }
 
-void editTunersets::setEditID(string todo)
+void editMarker::setEditID(string chid)
 {
 	debug("setEditID()");
 
+	this->chid = chid;
 	this->state.edit = true;
 }
 
-string editTunersets::getEditID()
+string editMarker::getEditID()
 {
 	debug("getEditID()");
 
-	return "";
+	return this->chid;
 }
 
-void editTunersets::destroy()
+void editMarker::destroy()
 {
 	delete this->dial;
 	delete this;

@@ -127,7 +127,7 @@ void settings::preferences()
 	dtf1st->addItem(tr("Dark"), "dark");
 	dtf1st->addItem(tr("Light"), "light");
 	dtf1->addRow(dtf1st);
-	dtf1->addRow(new QLabel(tr("<small>The program needs to be restarted after switching theme.</small>")));
+	dtf1->addRow(new QLabel(tr("<small>The software needs to be restarted after switching theme.</small>")));
 
 	dtl0->setLayout(dtf0);
 	dtl1->setLayout(dtf1);

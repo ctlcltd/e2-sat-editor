@@ -170,7 +170,7 @@ void editBouquet::store()
 void editBouquet::retrieve()
 {
 	debug("retrieve()");
-	
+
 	e2db::userbouquet ub = dbih->userbouquets[bname];
 
 	for (auto & item : fields)

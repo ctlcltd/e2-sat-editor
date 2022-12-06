@@ -255,7 +255,7 @@ void ftpcom::upload_data(string base, string filename, string os)
 			curl_easy_setopt(cph, CURLOPT_HEADER, true);
 			res = perform(cph);
 			if (res != CURLE_OK)
-			  continue;
+				continue;
 			curl_easy_setopt(cph, CURLOPT_NOBODY, false);
 			curl_easy_setopt(cph, CURLOPT_HEADER, false);
 			data.data += uplen;
@@ -388,6 +388,21 @@ void ftpcom::debug(string msg, string optk, string optv)
 void ftpcom::debug(string msg, string optk, int optv)
 {
 	this->log->debug(msg, optk, std::to_string(optv));
+}
+
+void ftpcom::info(string msg)
+{
+	this->log->info(msg);
+}
+
+void ftpcom::info(string msg, string optk, string optv)
+{
+	this->log->info(msg, optk, optv);
+}
+
+void ftpcom::info(string msg, string optk, int optv)
+{
+	this->log->info(msg, optk, std::to_string(optv));
 }
 
 void ftpcom::error(string tmsg, string rmsg)

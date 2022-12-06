@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/gui/editTunersets.h
+ * e2-sat-editor/src/gui/editTunersetsTransponder.h
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -14,8 +14,8 @@
 
 using std::string, std::vector;
 
-#ifndef editTunersets_h
-#define editTunersets_h
+#ifndef editTunersetsTransponder_h
+#define editTunersetsTransponder_h
 #include <QApplication>
 #include <QWidget>
 #include <QDialog>
@@ -26,12 +26,12 @@ using std::string, std::vector;
 
 namespace e2se_gui
 {
-class editTunersets : protected e2se::log_factory
+class editTunersetsTransponder : protected e2se::log_factory
 {
-	Q_DECLARE_TR_FUNCTIONS(editTunersets)
+	Q_DECLARE_TR_FUNCTIONS(editTunersetsTransponder)
 
 	public:
-		editTunersets(e2db* dbih, int ty, e2se::logger::session* log);
+		editTunersetsTransponder(e2db* dbih, e2se::logger::session* log);
 		void display(QWidget* cwid);
 		void layout();
 		void store();
@@ -50,10 +50,8 @@ class editTunersets : protected e2se::log_factory
 		{
 			// editable
 			bool edit = false;
-			// tools tunersets current type
-			int ty;
 		} state;
 		e2db* dbih;
 };
 }
-#endif /* editTunersets_h */
+#endif /* editTunersetsTransponder_h */

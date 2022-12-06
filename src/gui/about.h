@@ -20,7 +20,7 @@ namespace e2se_gui_dialog
 class about : protected e2se::log_factory
 {
 	public:
-		about(QWidget* mwid, e2se::logger::session* log);
+		about(e2se::logger::session* log);
 };
 }
 #endif /* about_h */

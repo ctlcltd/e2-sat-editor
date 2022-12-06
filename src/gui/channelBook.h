@@ -31,6 +31,17 @@ namespace e2se_gui
 class channelBook : protected e2se::log_factory
 {
 	public:
+		enum ITEM_ROW_ROLE {
+			x,
+			chnum,
+			chname,
+			chtype,
+			chpname,
+			chtxp,
+			chpos,
+			chsys
+		};
+
 		channelBook(e2db* dbih, e2se::logger::session* log);
 		void side();
 		void layout();

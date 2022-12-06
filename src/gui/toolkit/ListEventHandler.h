@@ -18,15 +18,15 @@ namespace e2se_gui
 {
 class ListEventHandler : public QObject
 {
-    public:
-        void disallowInternalMove()
-        {
-            this->dnd = false;
-        }
-        void allowInternalMove()
-        {
-            this->dnd = true;
-        }
+	public:
+		void disallowInternalMove()
+		{
+			this->dnd = false;
+		}
+		void allowInternalMove()
+		{
+			this->dnd = true;
+		}
 	protected:
 		bool eventFilter(QObject* o, QEvent* e);
 	private:

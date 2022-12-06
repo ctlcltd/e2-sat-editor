@@ -97,6 +97,9 @@ class ftpcom
 		virtual void debug(string msg);
 		virtual void debug(string msg, string optk, string optv);
 		virtual void debug(string msg, string optk, int optv);
+		virtual void info(string msg);
+		virtual void info(string msg, string optk, string optv);
+		virtual void info(string msg, string optk, int optv);
 		virtual void error(string tmsg, string rmsg);
 		virtual void error(string msg, string optk, string optv);
 		virtual void error(string msg, string optk, int optv);

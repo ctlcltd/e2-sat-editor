@@ -128,7 +128,7 @@ void gui::menuCtl()
 	
 	QMenu* medit = menu->addMenu(tr("&Edit"));
 	gmenu[GUI_CXE::TabListCut] = medit->addAction(tr("Cu&t"), [=]() { this->tabAction(TAB_ATS::ListCut); }, QKeySequence::Cut);
-	gmenu[GUI_CXE::TabListCopy] = medit->addAction(tr("&Copy"), [=]() { this->tabAction(TAB_ATS::ListCopy); },  QKeySequence::Copy);
+	gmenu[GUI_CXE::TabListCopy] = medit->addAction(tr("&Copy"), [=]() { this->tabAction(TAB_ATS::ListCopy); }, QKeySequence::Copy);
 	gmenu[GUI_CXE::TabListPaste] = medit->addAction(tr("&Paste"), [=]() { this->tabAction(TAB_ATS::ListPaste); }, QKeySequence::Paste);
 	QAction* medit_delete = gmenu[GUI_CXE::TabListDelete] = medit->addAction(tr("&Delete"), [=]() { this->tabAction(TAB_ATS::ListDelete); });
 #ifdef Q_OS_MAC
@@ -662,7 +662,7 @@ void gui::settings()
 
 void gui::about()
 {
-	new e2se_gui_dialog::about(mwid, this->log->log);
+	new e2se_gui_dialog::about(this->log->log);
 }
 
 int gui::getActionFlag(GUI_CXE connector)

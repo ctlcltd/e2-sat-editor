@@ -19,11 +19,13 @@ using std::string;
 #define logger_h
 namespace e2se
 {
+//TODO FIX crash buf isnull
 class logger
 {
 	public:
 		struct session {
 			string text;
+			size_t sizel;
 			bool debug;
 		};
 		logger(string ns);
@@ -31,11 +33,17 @@ class logger
 		void debug(string msg);
 		void debug(string msg, string optk, string optv);
 		void debug(string msg, string optk, int optv);
+		void info(string msg);
+		void info(string msg, string optk, string optv);
+		void info(string msg, string optk, int optv);
 		void error(string msg);
 		void error(string msg, string optk, string optv);
 		void error(string msg, string optk, int optv);
 		string timestamp();
 		string str();
+		string str_lend();
+		size_t pos();
+		size_t last_pos();
 		std::stringbuf* buf;
 		string ns;
 		session* log;
@@ -55,6 +63,18 @@ struct log_factory
 		void debug(string msg, string optk, int optv)
 		{
 			this->log->debug(msg, optk, optv);
+		}
+		void info(string msg)
+		{
+			this->log->info(msg);
+		}
+		void info(string msg, string optk, string optv)
+		{
+			this->log->info(msg, optk, optv);
+		}
+		void info(string msg, string optk, int optv)
+		{
+			this->log->info(msg, optk, optv);
 		}
 		void error(string msg)
 		{
