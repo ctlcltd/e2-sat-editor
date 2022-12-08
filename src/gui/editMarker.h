@@ -37,6 +37,7 @@ class editMarker : protected e2se::log_factory
 		void store();
 		void retrieve();
 		void save();
+		void setEditUserbouquet(string bname);
 		void setEditID(string chid);
 		string getEditID();
 		void destroy();
@@ -52,6 +53,7 @@ class editMarker : protected e2se::log_factory
 			bool edit = false;
 		} state;
 		e2db* dbih;
+		string bname;
 		string chid;
 };
 }

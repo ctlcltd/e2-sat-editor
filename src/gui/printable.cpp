@@ -342,7 +342,7 @@ void printable::page_body_channel_list(page& p, string bname, view v)
 			}
 			QString ssid = QString::fromStdString(to_string(ch.ssid));
 			QString tsid = QString::fromStdString(to_string(ch.tsid));
-			QString stype = e2db::STYPES.count(ch.stype) ? QString::fromStdString(e2db::STYPES.at(ch.stype).second) : "Data";
+			QString stype = QString::fromStdString(e2db::STYPE_EXT_LABEL.count(ch.stype) ? e2db::STYPE_EXT_LABEL.at(ch.stype) : e2db::STYPE_EXT_LABEL.at(e2db::STYPE::data));
 			QString scas;
 			if (ch.data.count(e2db::SDATA::C))
 			{

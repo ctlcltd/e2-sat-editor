@@ -133,6 +133,36 @@ void e2db::removeUserbouquet(string bname)
 	this->::e2se_e2db::e2db::remove_userbouquet(bname);
 }
 
+string e2db::addChannelReference(channel_reference& chref, string bname)
+{
+	debug("addChannelReference()", "chid", chref.chid);
+
+	this->::e2se_e2db::e2db::add_channel_reference(chref, bname);
+	return chref.chid;
+}
+
+string e2db::editChannelReference(string chid, channel_reference& chref, string bname)
+{
+	debug("editChannelReference()", "chid", chid);
+
+	this->::e2se_e2db::e2db::edit_channel_reference(chid, chref, bname);
+	return chref.chid;
+}
+
+void e2db::removeChannelReference(channel_reference chref, string bname)
+{
+	debug("removeChannelReference()", "chid", chref.chid);
+
+	this->::e2se_e2db::e2db::remove_channel_reference(chref, bname);
+}
+
+void e2db::removeChannelReference(string chid, string bname)
+{
+	debug("removeChannelReference()", "chid", chid);
+
+	this->::e2se_e2db::e2db::remove_channel_reference(chid, bname);
+}
+
 void e2db::plain()
 {
 	debug("plain()");
@@ -146,14 +176,14 @@ void e2db::plain()
 	bs = e2db::bouquet();
 	bs.bname = "bouquets.tv";
 	bs.name = "User - bouquet (TV)";
-	bs.btype = bs.index = 1;
+	bs.btype = bs.index = e2db::STYPE::tv;
 	bs.nname = "TV";
 	this->::e2se_e2db::e2db::add_bouquet(bs);
 
 	bs = e2db::bouquet();
 	bs.bname = "bouquets.radio";
 	bs.name = "User - bouquet (Radio)";
-	bs.btype = bs.index = 2;
+	bs.btype = bs.index = e2db::STYPE::radio;
 	bs.nname = "Radio";
 	this->::e2se_e2db::e2db::add_bouquet(bs);
 
@@ -313,7 +343,7 @@ QStringList e2db::entryService(service ch)
 	QString txid = QString::fromStdString(ch.txid);
 	QString ssid = QString::fromStdString(to_string(ch.ssid));
 	QString tsid = QString::fromStdString(to_string(ch.tsid));
-	QString stype = e2db::STYPES.count(ch.stype) ? QString::fromStdString(e2db::STYPES.at(ch.stype).second) : "Data";
+	QString stype = QString::fromStdString(e2db::STYPE_EXT_LABEL.count(ch.stype) ? e2db::STYPE_EXT_LABEL.at(ch.stype) : e2db::STYPE_EXT_LABEL.at(e2db::STYPE::data));
 	QString pname = QString::fromStdString(ch.data.count(e2db::SDATA::p) ? ch.data[e2db::SDATA::p][0] : "");
 
 	QString scas;

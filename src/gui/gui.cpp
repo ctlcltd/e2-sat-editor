@@ -488,8 +488,6 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& flags)
 		case GUI_DPORTS::Tunersets:
 			opts.append("Tuner settings (*.xml)");
 		break;
-		default:
-		break;
 	}
 
 	string path;

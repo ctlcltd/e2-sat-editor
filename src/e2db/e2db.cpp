@@ -111,9 +111,9 @@ void e2db::merge(e2db* dbih)
 		int idx = bs.userbouquets.size();
 		string key = "1:7:" + to_string(bs.btype) + ':' + ub.name;
 		string ktype;
-		if (bs.btype == 1)
+		if (bs.btype == STYPE::tv)
 			ktype = "tv";
-		else if (bs.btype == 2)
+		else if (bs.btype == STYPE::radio)
 			ktype = "radio";
 		//cout << ktype << ' ' << i.second << endl;
 
@@ -176,7 +176,7 @@ void e2db::merge(e2db* dbih)
 	for (auto & i : index["chs"])
 	{
 		service& ch = db.services[i.second];
-		string iname = "chs:" + (STYPES.count(ch.stype) ? to_string(STYPES.at(ch.stype).first) : "0");
+		string iname = "chs:" + (STYPE_EXT_TYPE.count(ch.stype) ? to_string(STYPE_EXT_TYPE.at(ch.stype)) : "0");
 		index[iname].emplace_back(pair (i.first, ch.chid)); //C++17
 	}
 
@@ -271,10 +271,9 @@ void e2db::import_file(FPORTS fpi, e2db* dbih, e2db_file file, string path)
 			else
 				dbih->parse_e2db_userbouquet(ifile, filename);
 		break;
-		case FPORTS::_default:
+		default:
 			dbih->read(path);
 			return;
-		break;
 	}
 }
 
@@ -352,10 +351,9 @@ void e2db::export_file(FPORTS fpo, string path)
 			else
 				file = make_userbouquet(filename);
 		break;
-		case FPORTS::_default:
+		default:
 			write(path, false);
 			return;
-		break;
 	}
 
 	ofstream out (path);
@@ -385,7 +383,7 @@ e2db::FPORTS e2db::filetype_detect(string path)
 		return FPORTS::singleBouquet;
 	else if (filename.find("userbouquet.") != string::npos)
 		return FPORTS::singleUserbouquet;
-	return FPORTS::_default;
+	return FPORTS::empty;
 }
 
 void e2db::add_transponder(transponder& tx)
@@ -586,9 +584,9 @@ void e2db::add_userbouquet(userbouquet& ub)
 	{
 		int idx = 0;
 		string ktype;
-		if (bs.btype == 1)
+		if (bs.btype == STYPE::tv)
 			ktype = "tv";
-		else if (bs.btype == 2)
+		else if (bs.btype == STYPE::radio)
 			ktype = "radio";
 
 		for (auto it = index["ubs"].begin(); it != index["ubs"].end(); it++)
@@ -611,9 +609,9 @@ void e2db::add_userbouquet(userbouquet& ub)
 	{
 		stringstream bname;
 		string ktype;
-		if (bs.btype == 1)
+		if (bs.btype == STYPE::tv)
 			ktype = "tv";
-		else if (bs.btype == 2)
+		else if (bs.btype == STYPE::radio)
 			ktype = "radio";
 
 		bname << "userbouquet.dbe" << setfill('0') << setw(2) << ub.index << '.' << ktype;
@@ -686,7 +684,25 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 	userbouquet& ub = userbouquets[bname];
 	service_reference ref;
 
-	if (! chref.marker)
+	if (chref.marker)
+	{
+		if (! chref.type)
+		{
+			chref.type = STYPE::marker;
+		}
+		if (! chref.anum)
+		{
+			int anum_count = index["mks"].size();
+			anum_count++;
+			chref.anum = anum_count;
+		}
+		if (! chref.index)
+		{
+			int ub_idx = ub.index;
+			chref.index = ub_idx;
+		}
+	}
+	else
 	{
 		if (! db.services.count(chref.chid))
 			return error("add_channel_reference()", "Error", "Service \"" + chref.chid + "\" not exists.");

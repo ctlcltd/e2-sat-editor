@@ -53,7 +53,7 @@ tunersets::tunersets(e2db* dbih, int ytype, e2se::logger::session* log)
 		case e2db::YTYPE::terrestrial:
 		case e2db::YTYPE::cable:
 		case e2db::YTYPE::atsc:
-			tfrm->setTitle("Package"); //TODO rename
+			tfrm->setTitle("Positions");
 		break;
 		default:
 			error("tunersets()", "Error", "Not supported yet.");

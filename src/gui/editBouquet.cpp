@@ -141,9 +141,16 @@ void editBouquet::store()
 
 	e2db::userbouquet ub;
 	if (this->state.edit)
+	{
+		if (! dbih->userbouquets.count(bname))
+			return error("store()", "bname", bname);
+
 		ub = dbih->userbouquets[bname];
+	}
 	else
+	{
 		ub.index = -1;
+	}
 
 	for (auto & item : fields)
 	{
@@ -170,6 +177,9 @@ void editBouquet::store()
 void editBouquet::retrieve()
 {
 	debug("retrieve()");
+
+	if (! dbih->userbouquets.count(bname))
+		return error("retrieve()", "bname", bname);
 
 	e2db::userbouquet ub = dbih->userbouquets[bname];
 

@@ -21,6 +21,7 @@ class e2db : public e2db_parser, public e2db_maker
 {
 	public:
 		enum FPORTS {
+			empty = 0x0000,
 			allServices = 0x1000,
 			allServices2_2 = 0x1222,
 			allServices2_3 = 0x1223,
@@ -32,8 +33,7 @@ class e2db : public e2db_parser, public e2db_maker
 			singleBouquet = 0x0002,
 			singleBouquetAll = 0x0400,
 			singleUserbouquet = 0x0004,
-			singleTunersets = 0x0008,
-			_default = 0x0000 //TODO rename
+			singleTunersets = 0x0008
 		};
 
 		// e2db(e2se::logger::session log);

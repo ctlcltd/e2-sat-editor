@@ -121,6 +121,7 @@ class tab : protected e2se::log_factory
 		void bouquetsItemChanged(QTreeWidgetItem* current);
 		void listItemChanged();
 		void listItemSelectionChanged();
+		void listItemDoubleClicked();
 		void listPendingUpdate();
 		void visualReindexList();
 		void trickySortByColumn(int column);

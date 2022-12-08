@@ -281,7 +281,7 @@ void channelBook::stacker(int vv)
 		else if (vv == views::Resolution)
 		{
 			int stype = std::stoi(q.first);
-			name = e2db::STYPES.count(stype) ? QString::fromStdString(e2db::STYPES.at(stype).second) : "Data";
+			name = QString::fromStdString(e2db::STYPE_EXT_LABEL.count(stype) ? e2db::STYPE_EXT_LABEL.at(stype) : e2db::STYPE_EXT_LABEL.at(e2db::STYPE::data));
 			name.append(QString::fromStdString("\tid: " + q.first));
 			item = new QTreeWidgetItem({name});
 		}
@@ -364,7 +364,7 @@ void channelBook::populate()
 				chname = QString::fromStdString(ch.chname).remove(QRegularExpression("[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{S}\\s]+"));
 			else
 				chname = QString::fromStdString(ch.chname);
-			QString stype = e2db::STYPES.count(ch.stype) ? QString::fromStdString(e2db::STYPES.at(ch.stype).second) : "Data";
+			QString stype = QString::fromStdString(e2db::STYPE_EXT_LABEL.count(ch.stype) ? e2db::STYPE_EXT_LABEL.at(ch.stype) : e2db::STYPE_EXT_LABEL.at(e2db::STYPE::data));
 			QString pname = QString::fromStdString(ch.data.count(e2db::SDATA::p) ? ch.data[e2db::SDATA::p][0] : "");
 
 			string ptxp;

@@ -98,7 +98,7 @@ void e2db_abstract::add_service(int idx, service& ch)
 		collisions[kchid].emplace_back(pair (ch.chid, m)); //C++17
 	}
 
-	string iname = "chs:" + (STYPES.count(ch.stype) ? to_string(STYPES.at(ch.stype).first) : "0");
+	string iname = "chs:" + (STYPE_EXT_TYPE.count(ch.stype) ? to_string(STYPE_EXT_TYPE.at(ch.stype)) : "0");
 	ch.index = idx;
 	db.services.emplace(ch.chid, ch);
 	index["chs"].emplace_back(pair (idx, ch.chid)); //C++17

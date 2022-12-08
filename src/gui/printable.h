@@ -28,11 +28,11 @@ class printable : protected e2se::log_factory
 	public:
 		// relation with tab state tc (side tree focused)
 		enum view {
-			index=-1,
-			services=0,
-			bouquets=1,
-			userbouquets=2,
-			tunersets=3
+			index = -1,
+			services = 0,
+			bouquets = 1,
+			userbouquets = 2,
+			tunersets = 3
 		};
 
 		struct page

@@ -118,9 +118,10 @@ void editService::serviceLayout()
 	dtf0st->setEditable(true);
 	dtf0->addRow(tr("Service type"), dtf0st);
 	dtf0->addItem(new QSpacerItem(0, 0));
-	for (auto & stype : e2db::STYPES)
+	//TODO sort order
+	for (auto & x : e2db::STYPE_EXT_TYPE)
 	{
-		dtf0st->addItem(QString::fromStdString(to_string(stype.first) + ' ' + stype.second.second), stype.first);
+		dtf0st->addItem(QString::fromStdString(to_string(x.first) + ' ' + e2db::STYPE_EXT_LABEL.at(x.first)), x.first);
 	}
 
 	QHBoxLayout* dtb11 = new QHBoxLayout;
@@ -145,7 +146,7 @@ void editService::transponderLayout()
 	QFormLayout* dtf1 = new QFormLayout;
 	dtf1->setSpacing(12);
 
-	//TODO validator
+	//TODO validator and transform
 	this->dtf1tn = new QComboBox;
 	dtf1tn->setProperty("field", "pos");
 	fields.emplace_back(dtf1tn);
@@ -157,7 +158,7 @@ void editService::transponderLayout()
 	dtf1tn->connect(dtf1tn, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) { this->tunerComboChanged(index); });
 #endif
 
-	//TODO validator
+	//TODO validator and transform
 	this->dtf1tx = new QComboBox;
 	dtf1tx->setProperty("field", "txid");
 	fields.emplace_back(dtf1tx);
@@ -428,7 +429,12 @@ void editService::store()
 
 	e2db::service ch;
 	if (this->state.edit)
+	{
+		if (! dbih->db.services.count(chid))
+			return error("store()", "chid", chid);
+
 		ch = dbih->db.services[chid];
+	}
 
 	for (auto & item : fields)
 	{
@@ -582,6 +588,9 @@ void editService::store()
 void editService::retrieve()
 {
 	debug("retrieve()");
+
+	if (! dbih->db.services.count(chid))
+		return error("retrieve()", "chid", chid);
 
 	e2db::service ch = dbih->db.services[chid];
 	e2db::transponder tx = dbih->db.transponders[ch.txid];

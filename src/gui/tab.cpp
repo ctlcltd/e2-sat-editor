@@ -424,8 +424,7 @@ tab::tab(gui* gid, QWidget* wid, e2se::logger::session* log)
 	list_tree->viewport()->installEventFilter(list_evth);
 	list_tree->connect(list_tree, &QTreeWidget::currentItemChanged, [=]() { this->listItemChanged(); });
 	list_tree->connect(list_tree, &QTreeWidget::itemSelectionChanged, [=]() { this->listItemSelectionChanged(); });
-	//TODO service or maker
-	list_tree->connect(list_tree, &QTreeWidget::itemDoubleClicked, [=]() { this->editService(); });
+	list_tree->connect(list_tree, &QTreeWidget::itemDoubleClicked, [=]() { this->listItemDoubleClicked(); });
 
 	top->addWidget(top_toolbar);
 	bottom->addWidget(bottom_toolbar);
@@ -591,7 +590,7 @@ void tab::exportFile()
 {
 	debug("exportFile()");
 
-	gui::GUI_DPORTS gde = gui::GUI_DPORTS::_default;
+	gui::GUI_DPORTS gde;
 	vector<string> paths;
 	string filename;
 	int flags = -1;
@@ -704,7 +703,7 @@ void tab::exportFile(QTreeWidgetItem* item)
 {
 	debug("exportFile()");
 
-	gui::GUI_DPORTS gde = gui::GUI_DPORTS::_default;
+	gui::GUI_DPORTS gde;
 	vector<string> paths;
 	string filename;
 	int flags = -1;
@@ -793,20 +792,19 @@ void tab::printFile(bool all)
 		{
 			// TV
 			case 1:
-				stype = 1;
+				stype = e2db::STYPE::tv;
 			break;
 			// Radio
 			case 2:
-				stype = 2;
+				stype = e2db::STYPE::radio;
 			break;
 			// Data
 			case 3:
-				stype = 0;
+				stype = e2db::STYPE::data;
 			break;
 			// All Services
 			default:
 				stype = -1;
-			break;
 		}
 		printer->document_lamedb(stype);
 	}
@@ -851,8 +849,10 @@ void tab::addUserbouquet()
 	bname = add->getEditID(); // returned after dial.exec()
 	add->destroy();
 
-	if (bname.empty())
-		return;
+	if (dbih->userbouquets.count(bname))
+		debug("addUserbouquet()", "bname", bname);
+	else
+		return error("addUserbouquet()", "bname", bname);
 
 	e2db::userbouquet uboq = dbih->userbouquets[bname];
 	e2db::bouquet gboq = dbih->bouquets[uboq.pname];
@@ -890,12 +890,15 @@ void tab::editUserbouquet()
 	QString qbname = tdata["id"].toString();
 	string bname = qbname.toStdString();
 
-	debug("editUserbouquet()", "bname", bname);
-
 	e2se_gui::editBouquet* edit = new e2se_gui::editBouquet(dbih, this->state.ti, this->log->log);
 	edit->setEditID(bname);
 	edit->display(cwid);
 	edit->destroy();
+
+	if (dbih->userbouquets.count(bname))
+		debug("editUserbouquet()", "bname", bname);
+	else
+		return error("editUserbouquet()", "bname", bname);
 
 	e2db::userbouquet uboq = dbih->userbouquets[bname];
 	// macos: unwanted chars [qt.qpa.fonts] Menlo notice
@@ -941,9 +944,73 @@ void tab::addService()
 {
 	debug("addService()");
 
+	string chid;
+	string curr_chlist = this->state.curr;
 	e2se_gui::editService* add = new e2se_gui::editService(dbih, this->log->log);
 	add->display(cwid);
+	chid = add->getEditID(); // returned after dial.exec()
 	add->destroy();
+
+	if (dbih->db.services.count(chid))
+		debug("addService()", "chid", chid);
+	else
+		return error("addService()", "chid", chid);
+
+	cache.clear();
+	lheaderv->setSectionsClickable(false);
+	list_tree->setDragEnabled(false);
+	list_tree->setAcceptDrops(false);
+
+	int i = 0, y;
+	QTreeWidgetItem* current = list_tree->currentItem();
+	QTreeWidgetItem* parent = list_tree->invisibleRootItem();
+	i = current != nullptr ? parent->indexOfChild(current) : list_tree->topLevelItemCount();
+	y = i + 1;
+
+	bool marker = false;
+	char ci[7];
+	std::sprintf(ci, "%06d", i++);
+	QString x = QString::fromStdString(ci);
+	QString idx = QString::fromStdString(to_string(i));
+	QStringList entry = dbih->entries.services[chid];
+	entry.prepend(idx);
+	entry.prepend(x);
+
+	QTreeWidgetItem* item = new QTreeWidgetItem(entry);
+	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
+	item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
+	item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
+	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
+	item->setIcon(ITEM_ROW_ROLE::chnum, theme::spacer(4));
+	if (marker)
+	{
+		item->setFont(ITEM_ROW_ROLE::chname, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
+		item->setFont(ITEM_ROW_ROLE::chtype, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
+	}
+	item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
+	if (! item->text(ITEM_ROW_ROLE::chcas).isEmpty())
+	{
+		item->setIcon(ITEM_ROW_ROLE::chcas, theme::icon("crypted"));
+	}
+
+	if (current == nullptr)
+		list_tree->addTopLevelItem(item);
+	else
+		list_tree->insertTopLevelItem(y, item);
+
+	lheaderv->setSectionsClickable(true);
+	list_tree->setDragEnabled(true);
+	list_tree->setAcceptDrops(true);
+
+	// sorting default
+	if (this->state.dnd)
+		visualReindexList();
+	else
+		this->state.reindex = true;
+	this->state.changed = true;
+
+	updateConnectors();
+	updateCounters();
 }
 
 void tab::editService()
@@ -963,24 +1030,29 @@ void tab::editService()
 	debug("editService()", "chid", chid);
 
 	if (! marker && dbih->db.services.count(chid))
-	{
-		e2se_gui::editService* edit = new e2se_gui::editService(dbih, this->log->log);
-		edit->setEditID(chid);
-		edit->display(cwid);
-		nw_chid = edit->getEditID(); // returned after dial.exec()
-		edit->destroy();
+		debug("editService()", "chid", chid);
+	else
+		return error("editService()", "chid", chid);
 
-		cache.clear();
+	e2se_gui::editService* edit = new e2se_gui::editService(dbih, this->log->log);
+	edit->setEditID(chid);
+	edit->display(cwid);
+	nw_chid = edit->getEditID(); // returned after dial.exec()
+	edit->destroy();
 
-		debug("editService()", "nw_chid", nw_chid);
+	cache.clear();
 
-		QStringList entry = dbih->entries.services[nw_chid];
-		entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
-		entry.prepend(item->text(ITEM_ROW_ROLE::x));
-		for (int i = 0; i < entry.count(); i++)
-			item->setText(i, entry[i]);
-		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
-	}
+	if (dbih->db.services.count(nw_chid))
+		debug("editService()", "new chid", nw_chid);
+	else
+		return error("editService()", "new chid", nw_chid);
+
+	QStringList entry = dbih->entries.services[nw_chid];
+	entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
+	entry.prepend(item->text(ITEM_ROW_ROLE::x));
+	for (int i = 0; i < entry.count(); i++)
+		item->setText(i, entry[i]);
+	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
 }
 
 void tab::addMarker()
@@ -988,12 +1060,76 @@ void tab::addMarker()
 	debug("addMarker()");
 
 	string chid;
+	string curr_chlist = this->state.curr;
 	e2se_gui::editMarker* add = new e2se_gui::editMarker(dbih, this->log->log);
+	add->setEditUserbouquet(curr_chlist);
 	add->display(cwid);
 	chid = add->getEditID(); // returned after dial.exec()
 	add->destroy();
 
-	//TODO add
+	e2db::channel_reference chref;
+	if (dbih->userbouquets.count(curr_chlist))
+		chref = dbih->userbouquets[curr_chlist].channels[chid];
+
+	if (chref.marker)
+		debug("addMarker()", "chid", chid);
+	else
+		return error("addMarker()", "chid", chid);
+
+	cache.clear();
+	lheaderv->setSectionsClickable(false);
+	list_tree->setDragEnabled(false);
+	list_tree->setAcceptDrops(false);
+
+	int i = 0, y;
+	QTreeWidgetItem* current = list_tree->currentItem();
+	QTreeWidgetItem* parent = list_tree->invisibleRootItem();
+	i = current != nullptr ? parent->indexOfChild(current) : list_tree->topLevelItemCount();
+	y = i + 1;
+
+	bool marker = true;
+	char ci[7];
+	std::sprintf(ci, "%06d", i++);
+	QString x = QString::fromStdString(ci);
+	QString idx = "";
+	QStringList entry = dbih->entryMarker(chref);
+	entry.prepend(x);
+
+	QTreeWidgetItem* item = new QTreeWidgetItem(entry);
+	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
+	item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
+	item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
+	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
+	item->setIcon(ITEM_ROW_ROLE::chnum, theme::spacer(4));
+	if (marker)
+	{
+		item->setFont(ITEM_ROW_ROLE::chname, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
+		item->setFont(ITEM_ROW_ROLE::chtype, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
+	}
+	item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
+	if (! item->text(ITEM_ROW_ROLE::chcas).isEmpty())
+	{
+		item->setIcon(ITEM_ROW_ROLE::chcas, theme::icon("crypted"));
+	}
+	
+	if (current == nullptr)
+		list_tree->addTopLevelItem(item);
+	else
+		list_tree->insertTopLevelItem(y, item);
+
+	lheaderv->setSectionsClickable(true);
+	list_tree->setDragEnabled(true);
+	list_tree->setAcceptDrops(true);
+
+	// sorting default
+	if (this->state.dnd)
+		visualReindexList();
+	else
+		this->state.reindex = true;
+	this->state.changed = true;
+
+	updateConnectors();
+	updateCounters();
 }
 
 void tab::editMarker()
@@ -1008,24 +1144,37 @@ void tab::editMarker()
 	QTreeWidgetItem* item = selected.first();
 	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 	string nw_chid;
+	string curr_chlist = this->state.curr;
 	bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
 
-	debug("editMarker()", "chid", chid);
-
 	if (marker)
-	{
-		e2se_gui::editMarker* edit = new e2se_gui::editMarker(dbih, this->log->log);
-		edit->setEditID(chid);
-		edit->display(cwid);
-		nw_chid = edit->getEditID(); // returned after dial.exec()
-		edit->destroy();
+		debug("editMarker()", "chid", chid);
+	else
+		return error("editMarker()", "chid", chid);
 
-		cache.clear();
+	e2se_gui::editMarker* edit = new e2se_gui::editMarker(dbih, this->log->log);
+	edit->setEditUserbouquet(curr_chlist);
+	edit->setEditID(chid);
+	edit->display(cwid);
+	nw_chid = edit->getEditID(); // returned after dial.exec()
+	edit->destroy();
 
-		debug("editMarker()", "nw_chid", nw_chid);
+	e2db::channel_reference chref;
+	if (dbih->userbouquets.count(curr_chlist))
+		chref = dbih->userbouquets[curr_chlist].channels[chid];
 
-		//TODO edit
-	}
+	if (chref.marker)
+		debug("editMarker()", "new chid", nw_chid);
+	else
+		return error("editMarker()", "new chid", nw_chid);
+
+	cache.clear();
+
+	QStringList entry = dbih->entryMarker(chref);
+	entry.prepend(item->text(ITEM_ROW_ROLE::x));
+	for (int i = 0; i < entry.count(); i++)
+		item->setText(i, entry[i]);
+	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
 }
 
 bool tab::readFile(string filename)
@@ -1422,6 +1571,24 @@ void tab::listItemSelectionChanged()
 
 	if (this->state.refbox)
 		updateRefBox();
+}
+
+void tab::listItemDoubleClicked()
+{
+	debug("listItemDoubleClicked()");
+
+	QList<QTreeWidgetItem*> selected = list_tree->selectedItems();
+	
+	if (selected.empty() || selected.count() > 1)
+		return;
+
+	QTreeWidgetItem* item = selected.first();
+	bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+
+	if (marker)
+		editMarker();
+	else
+		editService();
 }
 
 void tab::listPendingUpdate()

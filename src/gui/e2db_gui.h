@@ -57,6 +57,10 @@ class e2db : public ::e2se_e2db::e2db
 		string addUserbouquet(userbouquet& ub);
 		string editUserbouquet(userbouquet& ub);
 		void removeUserbouquet(string bname);
+		string addChannelReference(channel_reference& chref, string bname);
+		string editChannelReference(string chid, channel_reference& chref, string bname);
+		void removeChannelReference(channel_reference chref, string bname);
+		void removeChannelReference(string chid, string bname);
 		void plain();
 		bool prepare(string localdir);
 		bool write(string localdir, bool overwrite);

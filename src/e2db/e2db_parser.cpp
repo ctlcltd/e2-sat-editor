@@ -600,16 +600,20 @@ void e2db_parser::parse_channel_reference(string data, channel_reference& chref,
 
 	switch (type)
 	{
-		case 64:  // regular marker
-		case 320: // numbered marker
-		case 512: // hidden marker
-		case 832: // hidden marker
+		// marker
+		case STYPE::regular_marker:
+		case STYPE::numbered_marker:
+		case STYPE::hidden_marker_1:
+		case STYPE::hidden_marker_2:
 			chref.marker = true;
 		break;
-		case 128: // group //TODO
+		//TODO group
+		// group
+		case STYPE::group:
 			error("parse_channel_reference()", "Error", "Not supported yet.");
 		break;
-		default:  // service
+		// service
+		default:
 			chref.marker = false;
 			ref.ssid = ssid;
 			ref.dvbns = dvbns;

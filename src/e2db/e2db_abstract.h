@@ -19,7 +19,7 @@
 
 #include "../logger/logger.h"
 
-using std::string, std::pair, std::make_pair, std::vector, std::map, std::unordered_map;
+using std::string, std::pair, std::vector, std::map, std::unordered_map;
 
 #ifndef e2db_abstract_h
 #define e2db_abstract_h
@@ -60,17 +60,44 @@ struct e2db_abstract
 			atsc
 		};
 
-		//TODO refact
-		inline static const unordered_map<int, pair<int, string>> STYPES = {
-			{0, make_pair(0, "Data")},
-			{1, make_pair(1, "TV")},
-			{2, make_pair(2, "Radio")},
-			{10, make_pair(2, "Radio")},
-			{12, make_pair(1, "TV")},
-			{17, make_pair(1, "UHD")},
-			{22, make_pair(1, "H.264")},
-			{25, make_pair(1, "HD")},
-			{31, make_pair(1, "H.265")}
+		// service type
+		enum STYPE {
+			data = 0,
+			tv = 1,
+			radio = 2,
+			marker = 64,
+			group = 128,
+			hidden_marker_1 = 512,
+			hidden_marker_2 = 832,
+			numbered_marker = 320,
+			hidden_marker = STYPE::hidden_marker_1,
+			regular_marker = STYPE::marker
+		};
+
+		// service type extended - type
+		inline static const unordered_map<int, int> STYPE_EXT_TYPE = {
+			{STYPE::data, STYPE::data},
+			{STYPE::tv, STYPE::tv},
+			{STYPE::radio, STYPE::radio},
+			{10, STYPE::tv},
+			{12, STYPE::tv},
+			{17, STYPE::tv},
+			{22, STYPE::tv},
+			{25, STYPE::tv},
+			{31, STYPE::tv}
+		};
+
+		// service type extended - label
+		inline static const unordered_map<int, string> STYPE_EXT_LABEL = {
+			{STYPE::data, "Data"},
+			{STYPE::tv, "TV"},
+			{STYPE::radio, "Radio"},
+			{10, "Radio"},
+			{12, "TV"},
+			{17, "UHD"},
+			{22, "H.264"},
+			{25, "HD"},
+			{31, "H.265"}
 		};
 
 		// service data
@@ -110,9 +137,9 @@ struct e2db_abstract
 		enum SDATA_FLAGS {
 			fkeep = 1, // dxNoSDT
 			fhide = 2, // dxDontshow
-			fpid  = 4, // dxNoDVB
+			fpid = 4,  // dxNoDVB
 			fname = 8, // dxHoldName
-			fnew  = 64 // dxNewFound
+			fnew = 64  // dxNewFound
 		};
 
 		// service data cache PIDs

@@ -98,7 +98,6 @@ class gui : protected e2se::log_factory
 		};
 
 		enum GUI_DPORTS {
-			_default = 0x0, //TODO rename
 			Services = 0x1,
 			Bouquets = 0x2,
 			Userbouquets = 0x4,
