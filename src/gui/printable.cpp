@@ -265,7 +265,6 @@ void printable::page_body_index_list(page& p, vector<string> paths)
 			case e2db::FPORTS::singleUserbouquet:
 				ftype = "userbouquet";
 			break;
-			break;
 			default:
 				ftype = "services";
 		}

@@ -8,23 +8,30 @@ An enigma2 📡 channel list editor – under development.
 
 Many features are under the hood and many are coming. It has tabbed navigation with global Cut-Copy-Paste support; Drag and Drop support; import and export of Lamedb, bouquets and userbouquets; FTP support; tools for sorting and management of channel lists; a native OS look and feel with dark and light themes.
 
-It supports Lamedb 4 and Lamedb 5 formats.
+It supports both Lamedb 4 and Lamedb 5 formats (2.4 and 2.5).
 
 <img src="res/e2-sat-editor.svg" width="192" height="192" alt="e2 SAT Editor (icon)" title="Icon">
 
 
-## Requirements
+### Requirements
 
 * build tools (gcc, g++, make, cmake, qmake)
 * C++ 17
 * Qt 6 \| Qt 5
 
 
-## Dependencies
+### Dependencies
 
 * libstdc++ >= 3
 * libcurl
 * qt6-base \| qt5-base
+
+
+## Get involved
+
+Your contribution to this project are amazing. You can open [issues](https://github.com/ctlcltd/e2-sat-editor/issues) to report bug, request features and send [Pull Request](https://github.com/ctlcltd/e2-sat-editor/pulls).
+
+There are a few important things you should know to better contribute to this project. Please read the [contribution guidelines](CONTRIBUTING.md).
 
 
 ## Development
@@ -77,11 +84,6 @@ It supports Lamedb 4 and Lamedb 5 formats.
 - [ ] picons support
 - [ ] automated build
 
-
-&nbsp;
-## Get involved
-
-You can open [issues](https://github.com/ctlcltd/e2-sat-editor/issues) to report bug, request features or send a [Pull Request](https://github.com/ctlcltd/e2-sat-editor/pulls).
 
 &nbsp;
 ## License
