@@ -130,7 +130,7 @@ void channelBook::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::chname, 175);	// Name
 	list->setColumnWidth(ITEM_ROW_ROLE::chtype, 70);	// Type
 	list->setColumnWidth(ITEM_ROW_ROLE::chpname, 125);	// Provider
-	list->setColumnWidth(ITEM_ROW_ROLE::chtxp, 110);	// Transponder
+	list->setColumnWidth(ITEM_ROW_ROLE::chtxp, 175);	// Transponder
 	list->setColumnWidth(ITEM_ROW_ROLE::chpos, 120);	// Position
 	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 65);		// System
 

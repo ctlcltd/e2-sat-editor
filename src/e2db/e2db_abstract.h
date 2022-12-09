@@ -31,6 +31,8 @@ struct e2db_abstract
 {
 	public:
 
+		//TODO FIX defined const
+
 		inline static const string SAT_POL[4] = {"H", "V", "L", "R"};
 		inline static const string SAT_FEC[11] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "3/5", "4/5", "8/9", "9/10"};
 		inline static const string SAT_INV[3] = {"Auto", "On", "Off"};
@@ -40,8 +42,8 @@ struct e2db_abstract
 		inline static const string SAT_PIL[3] = {"Auto", "Off", "On"};
 
 		inline static const string TER_BAND[4] = {"Auto", "8Mhz", "7Mhz", "6Mhz"};
-		inline static const string TER_HPFEC[6] = {"Auto", "1/2", "2/3", "3/4", "5/6", "7/8"};
-		inline static const string TER_LPFEC[6] = {"Auto", "1/2", "2/3", "3/4", "5/6", "7/8"};
+		inline static const string TER_HPFEC[7] = {"Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "?"};
+		inline static const string TER_LPFEC[7] = {"Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "?"};
 		inline static const string TER_MOD[4] = {"Auto", "QPSK", "QAM16", "QAM64"};
 		inline static const string TER_TRXMODE[3] = {"Auto", "2k", "8k"};
 		inline static const string TER_GUARD[5] = {"Auto", "1/32", "1/16", "1/8", "1/4"};
@@ -50,7 +52,7 @@ struct e2db_abstract
 
 		inline static const string CAB_INV[3] = {"Auto", "On", "Off"};
 		inline static const string CAB_MOD[6] = {"Auto", "QAM16", "QAM32", "QAM64", "QAM128", "QAM256"};
-		inline static const string CAB_IFEC[8] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "8/9"};
+		inline static const string CAB_IFEC[10] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "8/9", "?", "?"};
 
 		// tuner settings type
 		enum YTYPE {

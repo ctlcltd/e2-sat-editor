@@ -96,7 +96,9 @@ bool ftpcom::handle()
 	curl_easy_setopt(cph, CURLOPT_PORT, ftport);
 	if (actv)
 		curl_easy_setopt(cph, CURLOPT_FTPPORT, "-");
-	// curl_easy_setopt(cph, CURLOPT_FTP_RESPONSE_TIMEOUT, 0); // 0 = default no timeout
+	//TODO FIX hangs the main thread
+	curl_easy_setopt(cph, CURLOPT_CONNECTTIMEOUT, 10);
+	// curl_easy_setopt(cph, CURLOPT_FTP_RESPONSE_TIMEOUT, 10); // 0 = default no timeout
 	// curl_easy_setopt(cph, CURLOPT_VERBOSE, true);
 
 	return true;
@@ -113,13 +115,13 @@ void ftpcom::reset(CURL* ch, CURLU* rh)
 	curl_easy_reset(ch);
 }
 
+//TODO FIX SIGABRT
 void ftpcom::cleanup(CURL* ch, CURLU* rh)
 {
-	curl_url_cleanup(rh);
+	// curl_url_cleanup(rh);
 	curl_easy_cleanup(ch);
 }
 
-//TODO FIX freeze
 bool ftpcom::connect()
 {
 	debug("connect()");
@@ -133,7 +135,6 @@ bool ftpcom::connect()
 	return (res == CURLE_OK) ? true : false;
 }
 
-//TODO FIX freeze
 bool ftpcom::disconnect()
 {
 	debug("disconnect()");
@@ -361,7 +362,6 @@ size_t ftpcom::data_tn_shell_func(char* cso, size_t size, size_t nmemb, void* ps
 	vars->ps->data = data.length() ? (data + "\n").data() : data.data();
 	vars->ps->sizel = data.length() ? data.length() + 1 : data.length();
 
-	// std::cout << "data_tn_shell_func() data: " << cso << std::endl;
 	return data_upload_func(cso, size, nmemb, vars->ps);
 }
 

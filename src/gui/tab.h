@@ -255,8 +255,8 @@ class tab : protected e2se::log_factory
 		QWidget* bouquets_search;
 		QWidget* list_search;
 		QWidget* list_reference;
-		search lsr_search;
 		search bsr_search;
+		search lsr_search;
 		find lsr_find;
 		string filename;
 };

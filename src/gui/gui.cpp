@@ -108,7 +108,7 @@ void gui::menuCtl()
 	gmenu[GUI_CXE::FileOpen] = mfile->addAction(tr("&Open"), [=]() { this->fileOpen(); }, QKeySequence::Open);
 	mfile->addSeparator();
 	gmenu[GUI_CXE::FileSave] = mfile->addAction(tr("&Save"), [=]() { this->fileSave(); }, QKeySequence::Save);
-	gmenu[GUI_CXE::FileSaveAs] = mfile->addAction(tr("Save &As..."), [=]() { this->fileSaveAs(); }, QKeySequence::SaveAs);
+	gmenu[GUI_CXE::FileSaveAs] = mfile->addAction(tr("Save &As…"), [=]() { this->fileSaveAs(); }, QKeySequence::SaveAs);
 	mfile->addSeparator();
 	gmenu[GUI_CXE::FileImport] = mfile->addAction("Import", [=]() { this->fileImport(); });
 	gmenu[GUI_CXE::FileExport] = mfile->addAction("Export", [=]() { this->fileExport(); });

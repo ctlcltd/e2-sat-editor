@@ -253,11 +253,11 @@ tab::tab(gui* gid, QWidget* wid, e2se::logger::session* log)
 	lsr_box->setContentsMargins(4, 3, 3, 6);
 	lsr_box->setSpacing(0);
 	this->lsr_search.filter = new QComboBox;
-	this->lsr_search.filter->addItem("Name", 2);
-	this->lsr_search.filter->addItem("Type", 5);
-	this->lsr_search.filter->addItem("CAS", 6);
-	this->lsr_search.filter->addItem("Provider", 7);
-	this->lsr_search.filter->addItem("SAT", 12);
+	this->lsr_search.filter->addItem("Name", ITEM_ROW_ROLE::chname);
+	this->lsr_search.filter->addItem("Type", ITEM_ROW_ROLE::chtype);
+	this->lsr_search.filter->addItem("CAS", ITEM_ROW_ROLE::chcas);
+	this->lsr_search.filter->addItem("Provider", ITEM_ROW_ROLE::chpname);
+	this->lsr_search.filter->addItem("Position", ITEM_ROW_ROLE::chpos);
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
 	this->lsr_search.filter->connect(this->lsr_search.filter, &QComboBox::currentIndexChanged, [=]() { this->listFindReset(); });
 #else
@@ -1750,6 +1750,7 @@ void tab::bouquetItemDelete()
 	updateBouquetsIndex();
 }
 
+//TODO FIX openTunersetsView() when is already opened
 void tab::actionCall(int action)
 {
 	debug("actionCall()", "action", action);
