@@ -2,7 +2,7 @@
 
 An enigma2 📡 channel list editor – under development.
 
-[![A screenshot of e2 SAT Editor](res/screenshot.png "e2 SAT Editor (screenshot)")](res/screenshot.png?raw=true)
+[![A screenshot of e2 SAT Editor](https://github.com/ctlcltd/e2-sat-editor/blob/main/res/screenshot.png "e2 SAT Editor (screenshot)")](https://github.com/ctlcltd/e2-sat-editor/blob/main/res/screenshot.png?raw=true)
 
 **e2 SAT Editor** is an Enigma 2 channel list editor, fully cross-platform (Windows, macOS, Linux) and free to use.
 
@@ -36,7 +36,7 @@ You can open [issues](https://github.com/ctlcltd/e2-sat-editor/issues) to report
 
 There are a few important things you should know to better contribute to this project.
 
-Please read the [contribution guidelines](CONTRIBUTING.md).
+Please read the [contribution guidelines](https://github.com/ctlcltd/e2-sat-editor/blob/main/CONTRIBUTING.md).
 
 
 ## Development
@@ -93,6 +93,6 @@ Please read the [contribution guidelines](CONTRIBUTING.md).
 &nbsp;
 ## License
 
-Source code licensed under the terms of the [MIT License](LICENSE). It is also licensed under the terms of the [GNU GPLv3](src/COPYING).
+Source code licensed under the terms of the [MIT License](https://github.com/ctlcltd/e2-sat-editor/blob/main/LICENSE). It is also licensed under the terms of the [GNU GPLv3](https://github.com/ctlcltd/e2-sat-editor/blob/main/COPYING).
 
 This software will be distribuited under the terms of the GNU GPLv3.

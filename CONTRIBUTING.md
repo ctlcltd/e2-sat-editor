@@ -2,7 +2,7 @@
 
 Your contribution is very useful for this project, but some rules are needed to keep it well.
 
-Info on how to do Pull Request are available on the page [Creating a pull request](https://docs.github.com/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) from the GitHub help.
+Info on how to do Pull Request are available on the page: [Creating a pull request](https://docs.github.com/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) from the GitHub help.
 
 When the code you submit via Pull Request does not follow these contribution guidelines, your PR will be rejected and you will be required to follow these guidelines, or your PR will be accepted and then the submitted code will be modified to follow these.
 
@@ -12,7 +12,7 @@ When the code you submit via Pull Request does not follow these contribution gui
 
 There are a few things you need to know in order to contribute in the right way.
 
-This project is free software. Each contribution must comply with the licensing conditions. All information on where to find the license terms in the [README.md](README.md).
+This project is free software. Each contribution must comply with the licensing conditions. All informations on where to find the license terms in the [README.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/README.md).
 
 - Any improvements to the already written code are appreciated. Things to do and improve are marked in the code with **//TODO**, **//TODO FIX**, **//TODO improve**.
 
@@ -47,7 +47,7 @@ Your contributions to this project will be signed, your GitHub username will be 
 
 ### Roadmap
 
-This project has not reached the stable stage. For a roadmap refer to the TODO list in the [README.md](README.md). Things like: cli, translations, plug-in system, etc., are not defined yet. If you want to collaborate on these not yet defined things, we can discuss them in [Discussions](https://github.com/ctlcltd/e2-sat-editor/discussions).
+This project has not reached the stable stage. For a roadmap refer to the TODO list in the [README.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/README.md). Things like: cli, translations, plug-in system, etc., are not defined yet. If you want to collaborate on these not yet defined things, we can discuss them in [Discussions](https://github.com/ctlcltd/e2-sat-editor/discussions).
 
 
 ### Code of Conduct
