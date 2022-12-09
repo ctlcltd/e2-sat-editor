@@ -27,11 +27,16 @@ It supports both Lamedb 4 and Lamedb 5 formats (2.4 and 2.5).
 * qt6-base \| qt5-base
 
 
+&nbsp;
 ## Get involved
 
-Your contribution to this project are amazing. You can open [issues](https://github.com/ctlcltd/e2-sat-editor/issues) to report bug, request features and send [Pull Request](https://github.com/ctlcltd/e2-sat-editor/pulls).
+Your contribution to this project are amazing.
 
-There are a few important things you should know to better contribute to this project. Please read the [contribution guidelines](CONTRIBUTING.md).
+You can open [issues](https://github.com/ctlcltd/e2-sat-editor/issues) to report bug, request features and send [Pull Request](https://github.com/ctlcltd/e2-sat-editor/pulls).
+
+There are a few important things you should know to better contribute to this project.
+
+Please read the [contribution guidelines](CONTRIBUTING.md).
 
 
 ## Development

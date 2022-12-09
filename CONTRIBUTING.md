@@ -2,11 +2,12 @@
 
 Your contribution is very useful for this project, but some rules are needed to keep it well.
 
-Info on how to do Pull Request are available on the page [Creating a pull request](https://docs.github.com/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work -with-pull-requests/creating-a-pull-request) from the GitHub help.
+Info on how to do Pull Request are available on the page [Creating a pull request](https://docs.github.com/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) from the GitHub help.
 
 When the code you submit via Pull Request does not follow these contribution guidelines, your PR will be rejected and you will be required to follow these guidelines, or your PR will be accepted and then the submitted code will be modified to follow these.
 
 
+&nbsp;
 ## Before contributing
 
 There are a few things you need to know in order to contribute in the right way.
