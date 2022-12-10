@@ -51,8 +51,6 @@ class ftpcom
 		// ftpcom(e2se::logger::session log);
 		ftpcom();
 		virtual ~ftpcom();
-		void init();
-		void destroy();
 		void setup(ftp_params params);
 		bool handle();
 		static CURLcode perform(CURL* ch);

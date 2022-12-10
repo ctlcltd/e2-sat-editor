@@ -22,22 +22,14 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map;
 #include <Qt>
 #include <QWidget>
 #include <QGridLayout>
-#include <QHeaderView>
-#include <QTreeWidget>
 #include <QList>
-#include <QAction>
-#include <QLabel>
-#include <QPushButton>
-#include <QLineEdit>
-#include <QComboBox>
-#include <QElapsedTimer>
 
-#include "toolkit/BouquetsEventHandler.h"
-#include "toolkit/ListEventHandler.h"
-#include "toolkit/ListEventObserver.h"
 #include "../logger/logger.h"
 #include "e2db_gui.h"
 #include "ftpcom_gui.h"
+#include "mainView.h"
+#include "tunersetsView.h"
+#include "viewAbstract.h"
 #include "tools.h"
 
 namespace e2se_gui
@@ -56,49 +48,20 @@ class tab : protected e2se::log_factory
 			SelectAll = 0x00008000 // GUI_CXE::TabListSelectAll
 		};
 
-		enum LIST_REF {
-			ReferenceID,
-			ServiceID,
-			Transponder,
-			Userbouquets,
-			Bouquets,
-			Tuner
-		};
-
-		enum LIST_FIND {
-			fast,
-			next,
-			prev,
-			all
-		};
-
-		enum ITEM_DATA_ROLE {
-			idx,
-			marker,
-			chid
-		};
-
-		enum ITEM_ROW_ROLE {
-			x,
-			chnum,
-			chname,
-			debug_chid,
-			debug_txid,
-			chssid,
-			chtsid,
-			chtype,
-			chcas,
-			chpname,
-			chfreq,
-			chpol,
-			chsr,
-			chfec,
-			chpos,
-			chsys
-		};
-
 		tab(gui* gid, QWidget* wid, e2se::logger::session* log);
 		~tab();
+		bool isChild();
+		bool hasChildren();
+		vector<tab*> children();
+		void setTabId(int ttid);
+		int getTabId();
+		string getFilename();
+		void tabSwitched();
+		void tabChangeName(string filename = "");
+		void viewMain();
+		void viewTunersets(tab* parent, int ytype);
+		void load();
+		void layout();
 		void newFile();
 		void openFile();
 		bool readFile(string filename = "");
@@ -107,64 +70,9 @@ class tab : protected e2se::log_factory
 		void exportFile();
 		void exportFile(QTreeWidgetItem* item);
 		void printFile(bool all);
-		void addUserbouquet();
-		void editUserbouquet();
-		void addChannel();
-		void addService();
-		void editService();
-		void addMarker();
-		void editMarker();
-		void load();
-		void populate(QTreeWidget* side_tree);
-		void treeSwitched(QTreeWidget* tree, QTreeWidgetItem* item);
-		void servicesItemChanged(QTreeWidgetItem* current);
-		void bouquetsItemChanged(QTreeWidgetItem* current);
-		void listItemChanged();
-		void listItemSelectionChanged();
-		void listItemDoubleClicked();
-		void listPendingUpdate();
-		void visualReindexList();
-		void trickySortByColumn(int column);
-		void allowDnD();
-		void disallowDnD();
-		void reharmDnD();
-		void bouquetItemDelete();
 		void actionCall(int action);
-		void bouquetsSearchHide();
-		void bouquetsSearchShow();
-		void bouquetsSearchToggle();
-		void bouquetsSearchClose();
-		void listSearchShow();
-		void listSearchHide();
-		void listSearchToggle();
-		void listSearchClose();
-		void listReferenceToggle();
-		void bouquetsFindPerform();
-		void bouquetsFindPerform(const QString& value);
-		void listFindPerform(LIST_FIND flag);
-		void listFindPerform(const QString& value, LIST_FIND flag);
-		void listFindHighlightToggle();
-		void listFindClear(bool hidden = true);
-		void listFindReset();
-		void listItemCut();
-		void listItemCopy(bool cut = false);
-		void listItemPaste();
-		void listItemDelete();
-		void listItemSelectAll();
-		void openTunersetsView(int ytype);
-		void closeTunersetsView();
-		void putChannels(vector<QString> channels);
-		void updateListIndex();
 		void updateBouquetsIndex();
-		void updateConnectors();
-		void updateCounters(bool current = false);
-		void updateRefBox();
-		void showBouquetEditContextMenu(QPoint &pos);
-		void showListEditContextMenu(QPoint &pos);
-		void setTabId(int ttid);
-		void tabSwitched();
-		void tabChangeName(string filename = "");
-		void preset();
+		void updateChannelsIndex();
 		void profileComboChanged(int index);
 		bool ftpHandle();
 		void ftpConnect();
@@ -173,45 +81,17 @@ class tab : protected e2se::log_factory
 		void loadSeeds();
 		QGridLayout* root;
 		QWidget* widget;
-	protected:
-		map<int, QLabel*> ref_fields;
-		unordered_map<string, QList<QTreeWidgetItem*>> cache;
 		e2se_gui_tools::tools* tools;
-	private:
-		struct ats
-		{
-			QAction* bouquets_newbs;
-			QAction* list_addch;
-			QAction* list_addmk;
-			QAction* list_newch;
-			QAction* tools_close_edit;
-			QPushButton* bouquets_search;
-			QPushButton* list_search;
-			QPushButton* list_ref;
-			QPushButton* list_dnd;
-		} action;
+		mainView* main;
+		viewAbstract* view;
+		e2db* dbih = nullptr;
+
 		struct sts
 		{
 			// new file
 			bool nwwr;
 			// overwrite file
 			bool ovwr;
-			// drag-and-drop (default sort 0|asc)
-			bool dnd;
-			// post update index
-			bool changed;
-			// post visual reindex list_tree
- 			bool reindex;
-			// refbox shown
-			bool refbox;
-			// side tree focused { services_tree = 0, bouquets_tree = 1 } 
-			int tc;
-			// bouquets_tree current top level index
-			int ti;
-			// bouquets_tree current bname
-			string curr;
-			// list_tree sort
-			pair<int, Qt::SortOrder> sort;
 			// stored gui connector flags
 			int gxe;
 			// tools tunerset shown
@@ -219,46 +99,17 @@ class tab : protected e2se::log_factory
 			// tools tunersets current type
 			int ty;
 		} state;
-		struct search
-		{
-			QComboBox* filter;
-			QLineEdit* input;
-			QPushButton* next;
-			QPushButton* prev;
-			QPushButton* all;
-			QPushButton* highlight;
-			QPushButton* close;
-		};
-		struct find
-		{
-			LIST_FIND flag;
-			int filter;
-			bool highlight = true;
-			int curr = -1;
-			QString input;
-			QModelIndexList match;
-			QElapsedTimer timer;
-		};
+	protected:
+		bool child = false;
+		vector<tab*> childs;
+	private:
 		gui* gid;
 		QWidget* cwid;
 		int ttid = -1;
-		e2db* dbih = nullptr;
 		ftpcom* ftph = nullptr;
-		BouquetsEventHandler* bouquets_evth;
-		ListEventHandler* list_evth;
-		ListEventObserver* list_evto;
-		QTreeWidget* services_tree;
-		QTreeWidget* bouquets_tree;
-		QTreeWidget* list_tree;
-		QWidget* list_wrap;
-		QHeaderView* lheaderv;
-		QWidget* bouquets_search;
-		QWidget* list_search;
-		QWidget* list_reference;
-		search bsr_search;
-		search lsr_search;
-		find lsr_find;
 		string filename;
+		// tab view
+		int ttv; // relation with gui::TAB_VIEW
 };
 }
 #endif /* tab_h */

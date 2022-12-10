@@ -77,38 +77,9 @@ void tools::inspector()
 	timer->start(1000);
 }
 
-void tools::openTunersets(e2se_gui::e2db* dbih, int ytype)
-{
-	debug("openTunersets()", "ytype", ytype);
-
-	this->tns = new e2se_gui::tunersets(dbih, ytype, this->log->log);
-	root->addWidget(tns->widget, 1, 0);
-}
-
-void tools::closeTunersets()
-{
-	debug("closeTunersets()");
-
-	if (this->tns)
-	{
-		tns->widget->hide();
-		root->removeWidget(tns->widget);
-		delete this->tns;
-		this->tns = nullptr;
-	}
-}
-
 void tools::destroy()
 {
 	debug("destroy()");
-
-	if (this->tns)
-	{
-		if (this->tns->widget && this->tns->widget->isVisible())
-			closeTunersets();
-		else
-			delete this->tns;
-	}
 }
 
 }

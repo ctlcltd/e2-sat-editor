@@ -145,8 +145,8 @@ void gui::menuCtl()
 	gmenu[GUI_CXE::TabListFindPrev] = mfind->addAction(tr("Find &Previous"), [=]() { this->tabAction(TAB_ATS::ListFindPrev); }, QKeySequence::FindPrevious);
 	gmenu[GUI_CXE::TabListFindAll] = mfind->addAction(tr("Find &All"), [=]() { this->tabAction(TAB_ATS::ListFindAll); });
 	mfind->addSeparator();
-	gmenu[GUI_CXE::TabBouquetsFind] = mfind->addAction(tr("Find &Bouquet…"), [=]() { this->tabAction(TAB_ATS::BouquetsFind); }, Qt::CTRL | Qt::ALT | Qt::Key_F);
-	gmenu[GUI_CXE::TabBouquetsFindNext] = mfind->addAction(tr("Find N&ext Bouquet"), [=]() { this->tabAction(TAB_ATS::BouquetsFindNext); }, Qt::CTRL | Qt::ALT | Qt::Key_E);
+	gmenu[GUI_CXE::TabTreeFind] = mfind->addAction(tr("Find &Bouquet…"), [=]() { this->tabAction(TAB_ATS::TreeFind); }, Qt::CTRL | Qt::ALT | Qt::Key_F);
+	gmenu[GUI_CXE::TabTreeFindNext] = mfind->addAction(tr("Find N&ext Bouquet"), [=]() { this->tabAction(TAB_ATS::TreeFindNext); }, Qt::CTRL | Qt::ALT | Qt::Key_E);
 
 	QMenu* mtool = menu->addMenu(tr("&Tools"));
 	gmenu[GUI_CXE::ToolsTunersetsSat] = mtool->addAction("Edit satellites.xml", [=]() { this->tabAction(TAB_ATS::EditTunerSat); });
@@ -266,10 +266,12 @@ int gui::newTab(string filename)
 		return -1;
 
 	bool read = ! filename.empty();
+	ttab->setTabId(ttid);
+	ttab->viewMain();
+
 	int ttcount = twid->count();
 	QString ttname = QString::fromStdString("Untitled" + (ttcount ? " " + to_string(ttcount) : ""));
 
-	ttab->setTabId(ttid);
 	int index = twid->addTab(ttab->widget, ttname);
 	twid->tabBar()->setTabData(index, ttid);
 
@@ -297,6 +299,66 @@ int gui::newTab(string filename)
 	return index;
 }
 
+int gui::openTab(TAB_VIEW view)
+{
+	return openTab(view, NULL);
+}
+
+int gui::openTab(TAB_VIEW view, int arg)
+{
+	tab* parent = getCurrentTabHandler();
+	string filename = parent->getFilename();
+
+	tab* ttab = new tab(this, mwid, this->log->log);
+	int ttid = this->state.tt++;
+	ttab->setTabId(ttid);
+
+	int ttcount = twid->count();
+	QString ttname = QString::fromStdString("Untitled" + (ttcount ? " " + to_string(ttcount) : ""));
+
+	//TODO improve
+	switch (view)
+	{
+		case TAB_VIEW::main:
+			ttab->viewMain();
+		break;
+
+		case TAB_VIEW::tunersets:
+			ttab->viewTunersets(parent, arg);
+
+			ttname.append(" - ");
+			ttname.append("Tunersets");
+		break;
+
+		default:
+			return -1;
+	}
+
+	int index = twid->addTab(ttab->widget, ttname);
+	twid->tabBar()->setTabData(index, ttid);
+
+	QTabBar* ttabbar = twid->tabBar();
+	QLabel* ttlabel = new QLabel;
+	ttlabel->setForegroundRole(QPalette::HighlightedText);
+	ttlabel->setText(ttname);
+	ttabbar->setTabButton(index, QTabBar::LeftSide, ttlabel);
+	ttabbar->setTabText(index, "");
+
+	QAction* action = new QAction(ttname);
+	action->connect(action, &QAction::triggered, [=]() { this->twid->setCurrentWidget(ttab->widget); });
+	action->setCheckable(true);
+	action->setActionGroup(mwtabs);
+	mwind->addAction(action);
+	ttmenu[ttid] = action;
+	ttabs[ttid] = ttab;
+
+	twid->setCurrentIndex(index);
+
+	debug("openTab()", "ttid", ttid);
+
+	return index;
+}
+
 void gui::closeTab(int index)
 {
 	debug("closeTab()", "index", index);
@@ -308,6 +370,16 @@ void gui::closeTab(int index)
 	twid->removeTab(index);
 	ttmenu.erase(ttid);
 
+	tab* ttab = ttabs[ttid];
+	if (ttab->hasChildren())
+	{
+		for (auto & child : ttab->children())
+		{
+			int ttid = child->getTabId();
+			delete child;
+			ttabs.erase(ttid);
+		}
+	}
 	delete ttabs[ttid];
 	ttabs.erase(ttid);
 

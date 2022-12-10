@@ -26,15 +26,21 @@ qt_add_executable(e2-sat-editor WIN32 MACOSX_BUNDLE
 	gui/channelBook.cpp
 	gui/e2db_gui.cpp
 	gui/editBouquet.cpp
+	gui/editMarker.cpp
 	gui/editService.cpp
 	gui/editTunersets.cpp
+	gui/editTunersetsTable.cpp
+	gui/editTunersetsTransponder.cpp
 	gui/ftpcom_gui.cpp
 	gui/gui.cpp
+	gui/mainView.cpp
 	gui/printable.cpp
 	gui/settings.cpp
 	gui/tab.cpp
 	gui/theme.cpp
 	gui/tools.cpp
+	gui/tunersetsView.cpp
+	gui/viewAbstract.cpp
 	main.cpp
 )
 

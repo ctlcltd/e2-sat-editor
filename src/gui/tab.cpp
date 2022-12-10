@@ -55,6 +55,103 @@ tab::tab(gui* gid, QWidget* wid, e2se::logger::session* log)
 	this->gid = gid;
 	this->cwid = wid;
 	this->widget = new QWidget;
+}
+
+tab::~tab()
+{
+	// delete this->dbih;
+}
+
+bool tab::isChild()
+{
+	return this->child;
+}
+
+bool tab::hasChildren()
+{
+	return ! this->childs.empty();
+}
+
+vector<tab*> tab::children()
+{
+	return this->childs;
+}
+
+void tab::setTabId(int ttid)
+{
+	debug("setTabId()", "ttid", ttid);
+
+	this->ttid = ttid;
+}
+
+int tab::getTabId()
+{
+	debug("getTabId()");
+
+	return this->ttid;
+}
+
+string tab::getFilename()
+{
+	return this->filename;
+}
+
+void tab::tabSwitched()
+{
+	gid->setActionFlags(this->state.gxe);
+	view->updateCounters();
+	view->updateCounters(true);
+}
+
+void tab::tabChangeName(string filename)
+{
+	debug("tabChangeName()");
+
+	if (ttid != -1)
+		gid->tabChangeName(ttid, filename);
+}
+
+void tab::viewMain()
+{
+	debug("viewMain()");
+
+	this->tools = new e2se_gui_tools::tools(root, this->log->log);
+	this->main = new mainView(gid, this, cwid, this->log->log);
+	this->view = this->main;
+	
+	this->ttv = gui::TAB_VIEW::main;
+
+	layout();
+	
+	this->root->addWidget(main->widget, 0, 0, 1, 1);
+
+	newFile();
+}
+
+void tab::viewTunersets(tab* parent, int ytype)
+{
+	debug("viewTunersets()");
+
+	this->dbih = parent->dbih;
+	this->tools = parent->tools;
+	this->main = parent->main;
+	this->view = new tunersetsView(gid, this, cwid, ytype, this->log->log);
+
+	this->ttv = gui::TAB_VIEW::tunersets;
+	this->state.ty = ytype;
+
+	layout();
+	
+	this->root->addWidget(view->widget, 0, 0, 1, 1);
+
+	view->setDataSource(this->dbih);
+	view->load();
+}
+
+void tab::layout()
+{
+	debug("layout()");
+
 	widget->setStyleSheet("QGroupBox { spacing: 0; padding: 20px 0 0 0; border: 0 } QGroupBox::title { margin: 0 12px }");
 
 	QGridLayout* frm = new QGridLayout(widget);
@@ -62,241 +159,6 @@ tab::tab(gui* gid, QWidget* wid, e2se::logger::session* log)
 	QHBoxLayout* top = new QHBoxLayout;
 	QGridLayout* container = new QGridLayout;
 	QHBoxLayout* bottom = new QHBoxLayout;
-
-	//TODO bouquets_box and vertical scrollbar hSize in GTK+
-	QSplitter* splitterc = new QSplitter;
-
-	QVBoxLayout* side_box = new QVBoxLayout;
-	QVBoxLayout* list_box = new QVBoxLayout;
-
-	QWidget* side = new QWidget;
-	QVBoxLayout* services_box = new QVBoxLayout;
-	QVBoxLayout* bouquets_box = new QVBoxLayout;
-
-	QGroupBox* services = new QGroupBox("Services");
-	QGroupBox* bouquets = new QGroupBox("Bouquets");
-	QGroupBox* channels = new QGroupBox("Channels");
-
-	services_box->setContentsMargins(12, 12, 12, 0);
-	bouquets_box->setContentsMargins(12, 12, 12, 12);
-	side_box->setSpacing(4);
-	list_box->setSpacing(0);
-	services_box->setSpacing(0);
-	bouquets_box->setSpacing(0);
-	services->setFlat(true);
-	bouquets->setFlat(true);
-	channels->setFlat(true);
-
-	QGridLayout* list_layout = new QGridLayout;
-	this->list_wrap = new QWidget;
-	list_wrap->setObjectName("channels_wrap");
-	list_wrap->setStyleSheet("#channels_wrap { background: transparent }");
-
-	this->services_tree = new QTreeWidget;
-	this->bouquets_tree = new QTreeWidget;
-	this->list_tree = new QTreeWidget;
-	services_tree->setStyleSheet("QTreeWidget { background: transparent } ::item { padding: 9px auto }");
-	bouquets_tree->setStyleSheet("QTreeWidget { background: transparent } ::item { margin: 1px 0 0; padding: 8px auto }");
-	list_tree->setStyleSheet("::item { padding: 6px auto }");
-
-	services_tree->setHeaderHidden(true);
-	services_tree->setUniformRowHeights(true);
-	bouquets_tree->setHeaderHidden(true);
-	bouquets_tree->setUniformRowHeights(true);
-	list_tree->setUniformRowHeights(true);
-	
-	services_tree->setRootIsDecorated(false);
-	services_tree->setItemsExpandable(false);
-	services_tree->setExpandsOnDoubleClick(false);
-
-	bouquets_tree->setSelectionBehavior(QAbstractItemView::SelectRows);
-	bouquets_tree->setDropIndicatorShown(true);
-	bouquets_tree->setDragDropMode(QAbstractItemView::DragDrop);
-	bouquets_tree->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-	list_tree->setRootIsDecorated(false);
-	list_tree->setSelectionBehavior(QAbstractItemView::SelectRows);
-	list_tree->setSelectionMode(QAbstractItemView::ExtendedSelection);
-	list_tree->setItemsExpandable(false);
-	list_tree->setExpandsOnDoubleClick(false);
-	list_tree->setDropIndicatorShown(true);
-	list_tree->setDragDropMode(QAbstractItemView::InternalMove);
-	list_tree->setEditTriggers(QAbstractItemView::NoEditTriggers);
-	
-	TreeStyledItemDelegate* bouquets_delegate = new TreeStyledItemDelegate(bouquets_tree);
-	bouquets_delegate->setIndentation(bouquets_tree->indentation());
-	bouquets_tree->setItemDelegateForColumn(0, bouquets_delegate);
-
-	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({NULL, "Index", "Name", "CHID", "TXID", "Service ID", "Transport ID", "Type", "CAS", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "Position", "System"});
-
-	list_tree->setHeaderItem(lheader_item);
-	list_tree->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
-	list_tree->setColumnWidth(ITEM_ROW_ROLE::chnum, 65);	// (Channel Number) Index
-	list_tree->setColumnWidth(ITEM_ROW_ROLE::chname, 200);	// (Channel) Name
-	if (gid->sets->value("application/debug", true).toBool()) {
-		list_tree->setColumnWidth(ITEM_ROW_ROLE::debug_chid, 175);
-		list_tree->setColumnWidth(ITEM_ROW_ROLE::debug_txid, 150);
-	}
-	else
-	{
-		list_tree->setColumnHidden(ITEM_ROW_ROLE::debug_chid, true);
-		list_tree->setColumnHidden(ITEM_ROW_ROLE::debug_txid, true);
-	}
-	list_tree->setColumnWidth(ITEM_ROW_ROLE::chssid, 80);	// Service ID
-	list_tree->setColumnWidth(ITEM_ROW_ROLE::chtsid, 80);	// Transport ID
-	list_tree->setColumnWidth(ITEM_ROW_ROLE::chtype, 85);	// (Channel) Type
-	list_tree->setColumnWidth(ITEM_ROW_ROLE::chcas, 45);	// CAS
-	list_tree->setColumnWidth(ITEM_ROW_ROLE::chpname, 150);	// Provider
-	list_tree->setColumnWidth(ITEM_ROW_ROLE::chfreq, 95);	// Frequency
-	list_tree->setColumnWidth(ITEM_ROW_ROLE::chpol, 85);	// Polarization
-	list_tree->setColumnWidth(ITEM_ROW_ROLE::chsr, 95);		// Symbol Rate
-	list_tree->setColumnWidth(ITEM_ROW_ROLE::chfec, 50);	// FEC
-	list_tree->setColumnWidth(ITEM_ROW_ROLE::chpos, 125);	// Position
-	list_tree->setColumnWidth(ITEM_ROW_ROLE::chsys, 75);	// System
-
-	this->lheaderv = list_tree->header();
-	lheaderv->connect(lheaderv, &QHeaderView::sectionClicked, [=](int column) { this->trickySortByColumn(column); });
-
-	bouquets_tree->setContextMenuPolicy(Qt::CustomContextMenu);
-	bouquets_tree->connect(bouquets_tree, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { this->showBouquetEditContextMenu(pos); });
-	list_tree->setContextMenuPolicy(Qt::CustomContextMenu);
-	list_tree->connect(list_tree, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { this->showListEditContextMenu(pos); });
-
-	this->bouquets_search = new QWidget;
-	this->list_search = new QWidget;
-	this->list_reference = new QWidget;
-	bouquets_search->setHidden(true);
-	list_search->setHidden(true);
-	list_reference->setHidden(true);
-	bouquets_search->setBackgroundRole(QPalette::Mid);
-	list_search->setBackgroundRole(QPalette::Mid);
-	list_reference->setBackgroundRole(QPalette::Mid);
-	bouquets_search->setAutoFillBackground(true);
-	list_search->setAutoFillBackground(true);
-	list_reference->setAutoFillBackground(true);
-
-	QGridLayout* ref_frm = new QGridLayout(list_reference);
-	QScrollArea* ref_area = new QScrollArea;
-	QWidget* ref_wrap = new QWidget;
-	QGridLayout* ref_box = new QGridLayout;
-	QLabel* ref0lr = new QLabel("Reference ID");
-	QLabel* ref0tr = new QLabel("< >");
-	ref0lr->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
-	ref_fields[LIST_REF::ReferenceID] = ref0tr;
-	ref_box->addWidget(ref0lr, 0, 0, Qt::AlignTop);
-	ref_box->addWidget(ref0tr, 0, 1, Qt::AlignTop);
-	QLabel* ref1ls = new QLabel("Service ID");
-	QLabel* ref1ts = new QLabel("< >");
-	ref1ls->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
-	ref_fields[LIST_REF::ServiceID] = ref1ts;
-	ref_box->addWidget(ref1ls, 0, 2, Qt::AlignTop);
-	ref_box->addWidget(ref1ts, 0, 3, Qt::AlignTop);
-	QLabel* ref2lt = new QLabel("Transponder");
-	QLabel* ref2tt = new QLabel("< >");
-	ref2lt->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
-	ref_fields[LIST_REF::Transponder] = ref2tt;
-	ref_box->addWidget(ref2lt, 0, 4, Qt::AlignTop);
-	ref_box->addWidget(ref2tt, 0, 5, Qt::AlignTop);
-	ref_box->addItem(new QSpacerItem(0, 12), 1, 0);
-	QLabel* ref3lu = new QLabel("Userbouquets");
-	QLabel* ref3tu = new QLabel("< >");
-	ref3lu->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
-	ref_fields[LIST_REF::Userbouquets] = ref3tu;
-	ref_box->addWidget(ref3lu, 2, 0, Qt::AlignTop);
-	ref_box->addWidget(ref3tu, 2, 1, Qt::AlignTop);
-	QLabel* ref4lb = new QLabel("Bouquets");
-	QLabel* ref4tb = new QLabel("< >");
-	ref4lb->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
-	ref_fields[LIST_REF::Bouquets] = ref4tb;
-	ref_box->addWidget(ref4lb, 2, 2, Qt::AlignTop);
-	ref_box->addWidget(ref4tb, 2, 3, Qt::AlignTop);
-	QLabel* ref5ln = new QLabel("Tuner");
-	QLabel* ref5tn = new QLabel("< >");
-	ref5ln->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
-	ref_fields[LIST_REF::Tuner] = ref5tn;
-	ref_box->addWidget(ref5ln, 2, 4, Qt::AlignTop);
-	ref_box->addWidget(ref5tn, 2, 5, Qt::AlignTop);
-	ref_box->setRowStretch(2, 1);
-	ref_box->setColumnStretch(5, 1);
-	ref_box->setColumnMinimumWidth(1, 300);
-	ref_box->setColumnMinimumWidth(3, 200);
-	ref_box->setColumnMinimumWidth(5, 200);
-	ref_area->setWidget(ref_wrap);
-	ref_area->setWidgetResizable(true);
-	ref_wrap->setLayout(ref_box);
-	ref_frm->addWidget(ref_area);
-	ref_frm->setContentsMargins(0, 0, 0, 0);
-	list_reference->setFixedHeight(100);
-
-	QGridLayout* bsr_box = new QGridLayout(bouquets_search);
-	bsr_box->setContentsMargins(4, 3, 3, 6);
-	bsr_box->setSpacing(0);
-	this->bsr_search.input = new QLineEdit;
-	this->bsr_search.input->connect(this->bsr_search.input, &QLineEdit::textChanged, [=](const QString& text) { this->bouquetsFindPerform(text); });
-	this->bsr_search.next = new QPushButton("Find");
-	this->bsr_search.next->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
-	this->bsr_search.next->connect(this->bsr_search.next, &QPushButton::pressed, [=]() { this->bouquetsFindPerform(); });
-	this->bsr_search.close = new QPushButton;
-	this->bsr_search.close->setIconSize(QSize(10, 10));
-	this->bsr_search.close->setIcon(theme::icon("close"));
-	this->bsr_search.close->setFlat(true);
-	this->bsr_search.close->setMaximumWidth(22);
-	this->bsr_search.close->connect(this->bsr_search.close, &QPushButton::pressed, [=]() { this->bouquetsSearchClose(); });
-	bsr_box->addItem(new QSpacerItem(5, 0), 0, 0);
-	bsr_box->addWidget(this->bsr_search.input, 0, 1);
-	bsr_box->addItem(new QSpacerItem(2, 0), 0, 2);
-	bsr_box->addWidget(this->bsr_search.next, 0, 3);
-	bsr_box->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Preferred), 0, 4);
-	bsr_box->addWidget(this->bsr_search.close, 0, 5);
-
-	QGridLayout* lsr_box = new QGridLayout(list_search);
-	lsr_box->setContentsMargins(4, 3, 3, 6);
-	lsr_box->setSpacing(0);
-	this->lsr_search.filter = new QComboBox;
-	this->lsr_search.filter->addItem("Name", ITEM_ROW_ROLE::chname);
-	this->lsr_search.filter->addItem("Type", ITEM_ROW_ROLE::chtype);
-	this->lsr_search.filter->addItem("CAS", ITEM_ROW_ROLE::chcas);
-	this->lsr_search.filter->addItem("Provider", ITEM_ROW_ROLE::chpname);
-	this->lsr_search.filter->addItem("Position", ITEM_ROW_ROLE::chpos);
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-	this->lsr_search.filter->connect(this->lsr_search.filter, &QComboBox::currentIndexChanged, [=]() { this->listFindReset(); });
-#else
-	this->lsr_search.filter->connect(this->lsr_search.filter, QOverload<int>::of(&QComboBox::currentIndexChanged), [=]() { this->listFindReset(); });
-#endif
-	this->lsr_search.input = new QLineEdit;
-	this->lsr_search.input->setStyleSheet("padding: 2px 0");
-	this->lsr_search.input->connect(this->lsr_search.input, &QLineEdit::textChanged, [=](const QString& text) { this->listFindPerform(text, LIST_FIND::fast); });
-	this->lsr_search.highlight = new QPushButton;
-	this->lsr_search.highlight->setText("Highlight");
-	this->lsr_search.highlight->setCheckable(true);
-	this->lsr_search.highlight->setChecked(true);
-	this->lsr_search.highlight->setStyleSheet("QPushButton, QPushButton:checked { margin: 0 2px; padding: 2px 2ex; border: 1px solid palette(button); border-radius: 2px; background: palette(mid) } QPushButton:checked { background: rgb(9, 134, 211) }");
-	this->lsr_search.highlight->connect(this->lsr_search.highlight, &QPushButton::pressed, [=]() { this->listFindHighlightToggle(); });
-	this->lsr_search.next = new QPushButton("Find");
-	this->lsr_search.next->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
-	this->lsr_search.next->connect(this->lsr_search.next, &QPushButton::pressed, [=]() { this->listFindPerform(LIST_FIND::next); });
-	this->lsr_search.prev = new QPushButton("Find Previous");
-	this->lsr_search.prev->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
-	this->lsr_search.prev->connect(this->lsr_search.prev, &QPushButton::pressed, [=]() { this->listFindPerform(LIST_FIND::prev); });
-	this->lsr_search.all = new QPushButton("Find All");
-	this->lsr_search.all->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
-	this->lsr_search.all->connect(this->lsr_search.all, &QPushButton::pressed, [=]() { this->listFindPerform(LIST_FIND::all); });
-	this->lsr_search.close = new QPushButton;
-	this->lsr_search.close->setIconSize(QSize(10, 10));
-	this->lsr_search.close->setIcon(theme::icon("close"));
-	this->lsr_search.close->setFlat(true);
-	this->lsr_search.close->setMaximumWidth(28);
-	this->lsr_search.close->connect(this->lsr_search.close, &QPushButton::pressed, [=]() { this->listSearchClose(); });
-	lsr_box->addWidget(this->lsr_search.filter, 0, 0);
-	lsr_box->addWidget(this->lsr_search.input, 0, 1);
-	lsr_box->addItem(new QSpacerItem(2, 0), 0, 2);
-	lsr_box->addWidget(this->lsr_search.next, 0, 3);
-	lsr_box->addWidget(this->lsr_search.prev, 0, 4);
-	lsr_box->addWidget(this->lsr_search.all, 0, 5);
-	lsr_box->addItem(new QSpacerItem(16, 0), 0, 6);
-	lsr_box->addWidget(this->lsr_search.highlight, 0, 7);
-	lsr_box->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Preferred), 0, 8);
-	lsr_box->addWidget(this->lsr_search.close, 0, 9);
 
 	QToolBar* top_toolbar = new QToolBar;
 	top_toolbar->setIconSize(QSize(32, 32));
@@ -344,16 +206,6 @@ tab::tab(gui* gid, QWidget* wid, e2se::logger::session* log)
 	QWidget* bottom_spacer = new QWidget;
 	bottom_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	QPushButton* tools_close_edit = new QPushButton;
-	tools_close_edit->setIconSize(QSize(16, 16));
-	tools_close_edit->setText("Close Editor");
-	tools_close_edit->setIcon(theme::icon("close"));
-	tools_close_edit->setStyleSheet("QPushButton, QPushButton:pressed { padding: 5px 2ex; border: 1px solid transparent; border-radius: 3px; font: bold 14px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
-	tools_close_edit->connect(tools_close_edit, &QPushButton::pressed, [=]() { this->closeTunersetsView(); });
-
-	this->action.tools_close_edit = bottom_toolbar->addWidget(tools_close_edit);
-	this->action.tools_close_edit->setDisabled(true);
-	this->action.tools_close_edit->setVisible(false);
 	if (gid->sets->value("application/debug", true).toBool())
 	{
 		bottom_toolbar->addSeparator();
@@ -362,107 +214,8 @@ tab::tab(gui* gid, QWidget* wid, e2se::logger::session* log)
 	}
 	bottom_toolbar->addWidget(bottom_spacer);
 
-	QToolBar* bouquets_ats = new QToolBar;
-	bouquets_ats->setIconSize(QSize(12, 12));
-	bouquets_ats->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	bouquets_ats->setStyleSheet("QToolButton { font: bold 14px }");
-	QToolBar* list_ats = new QToolBar;
-	list_ats->setIconSize(QSize(12, 12));
-	list_ats->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	list_ats->setStyleSheet("QToolButton { font: bold 14px }");
-
-	this->action.list_dnd = new QPushButton;
-	this->action.list_dnd->setText("Drag&&Drop");
-	this->action.list_dnd->setCheckable(true);
-	this->action.list_dnd->setDisabled(true);
-	this->action.list_dnd->connect(this->action.list_dnd, &QPushButton::pressed, [=]() { this->reharmDnD(); });
-
-	this->action.list_ref = new QPushButton;
-	this->action.list_ref->setText("Reference");
-	this->action.list_ref->setCheckable(true);
-	this->action.list_ref->connect(this->action.list_ref, &QPushButton::pressed, [=]() { this->listReferenceToggle(); });
-
-	this->action.bouquets_search = new QPushButton;
-	this->action.bouquets_search->setText("Find…");
-	this->action.bouquets_search->setIcon(theme::icon("search"));
-	this->action.bouquets_search->connect(this->action.bouquets_search, &QPushButton::pressed, [=]() { this->bouquetsSearchToggle(); });
-	this->action.bouquets_search->setDisabled(true);
-
-	this->action.list_search = new QPushButton;
-	this->action.list_search->setText("&Find…");
-	this->action.list_search->setIcon(theme::icon("search"));
-	this->action.list_search->connect(this->action.list_search, &QPushButton::pressed, [=]() { this->listSearchToggle(); });
-
-	QWidget* bouquets_ats_spacer = new QWidget;
-	bouquets_ats_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	QWidget* list_ats_spacer = new QWidget;
-	list_ats_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-	bouquets_ats->addAction(theme::icon("add"), "New Bouquet", [=]() { this->addUserbouquet(); });
-	bouquets_ats->addWidget(bouquets_ats_spacer);
-	bouquets_ats->addWidget(this->action.bouquets_search);
-	this->action.list_addch = list_ats->addAction(theme::icon("add"), "Add Channel", [=]() { this->addChannel(); });
-	this->action.list_addch->setDisabled(true);
-	this->action.list_addmk = list_ats->addAction(theme::icon("add"), "Add Marker", [=]() { this->addMarker(); });
-	this->action.list_addmk->setDisabled(true);
-	this->action.list_newch = list_ats->addAction(theme::icon("add"), "New Service", [=]() { this->addService(); });
-	list_ats->addSeparator();
-	list_ats->addWidget(this->action.list_ref);
-	list_ats->addWidget(this->action.list_dnd);
-	list_ats->addWidget(list_ats_spacer);
-	list_ats->addWidget(this->action.list_search);
-
-	this->bouquets_evth = new BouquetsEventHandler;
-	this->list_evth = new ListEventHandler;
-	this->list_evto = new ListEventObserver;
-	services_tree->connect(services_tree, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { this->treeSwitched(services_tree, item); });
-	services_tree->connect(services_tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->servicesItemChanged(current); });
-	bouquets_tree->viewport()->installEventFilter(bouquets_evth);
-	bouquets_tree->connect(bouquets_tree, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { this->treeSwitched(bouquets_tree, item); });
-	bouquets_tree->connect(bouquets_tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->bouquetsItemChanged(current); });
-	list_tree->installEventFilter(list_evto);
-	list_tree->viewport()->installEventFilter(list_evth);
-	list_tree->connect(list_tree, &QTreeWidget::currentItemChanged, [=]() { this->listItemChanged(); });
-	list_tree->connect(list_tree, &QTreeWidget::itemSelectionChanged, [=]() { this->listItemSelectionChanged(); });
-	list_tree->connect(list_tree, &QTreeWidget::itemDoubleClicked, [=]() { this->listItemDoubleClicked(); });
-
 	top->addWidget(top_toolbar);
 	bottom->addWidget(bottom_toolbar);
-
-	services_box->addWidget(services_tree);
-	services->setLayout(services_box);
-
-	bouquets_box->addWidget(bouquets_tree);
-	bouquets_box->addWidget(bouquets_search);
-	bouquets_box->addWidget(bouquets_ats);
-	bouquets->setLayout(bouquets_box);
-
-	side_box->addWidget(services);
-	side_box->addItem(new QSpacerItem(0, 8, QSizePolicy::Preferred, QSizePolicy::Fixed));
-	side_box->addWidget(bouquets, 1);
-	side_box->setContentsMargins(0, 0, 0, 0);
-	side->setLayout(side_box);
-
-	list_layout->addWidget(list_tree);
-	list_layout->setContentsMargins(0, 0, 0, 0);
-	// list_layout->setContentsMargins(3, 3, 3, 3); // #channels_wrap
-	list_wrap->setLayout(list_layout);
-
-	list_box->addWidget(list_wrap);
-	list_box->addWidget(list_search);
-	list_box->addWidget(list_reference);
-	list_box->addWidget(list_ats);
-	channels->setLayout(list_box);
-
-	side->setMinimumWidth(250);
-	channels->setMinimumWidth(510);
-
-	splitterc->addWidget(side);
-	splitterc->addWidget(channels);
-	splitterc->setStretchFactor(0, 1);
-	splitterc->setStretchFactor(1, 4);
-
-	container->addWidget(splitterc, 0, 0, 1, 1);
 	container->setContentsMargins(8, 8, 8, 8);
 
 	frm->setContentsMargins(0, 0, 0, 0);
@@ -471,42 +224,17 @@ tab::tab(gui* gid, QWidget* wid, e2se::logger::session* log)
 	frm->addLayout(bottom, 2, 0);
 
 	this->root = container;
-	this->tools = new e2se_gui_tools::tools(root, this->log->log);
 
-	vector<pair<QString, QString>> tree = {
-		{"chs", "All services"},
-		{"chs:1", "TV"},
-		{"chs:2", "Radio"},
-		{"chs:0", "Data"}
-	};
-
-	for (auto & item : tree)
-	{
-		QTreeWidgetItem* titem = new QTreeWidgetItem();
-		titem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-		QVariantMap tdata; // singular data
-		tdata["id"] = item.first;
-		titem->setData(0, Qt::UserRole, QVariant (tdata));
-		titem->setText(0, item.second);
-		titem->setIcon(0, theme::spacer(2));
-		services_tree->addTopLevelItem(titem);
-	}
-
-	newFile();
-}
-
-tab::~tab()
-{
-	delete this->dbih;
+	widget->setLayout(frm);
 }
 
 void tab::newFile()
 {
 	debug("newFile()");
 
-	closeTunersetsView();
+	//TODO reimplement tunersets close
 	gid->update(gui::init);
-	preset();
+	main->preset();
 
 	if (this->dbih != nullptr)
 		delete this->dbih;
@@ -515,7 +243,8 @@ void tab::newFile()
 
 	this->dbih = new e2db(this->log->log);
 
-	load();
+	main->setDataSource(this->dbih);
+	main->load();
 }
 
 void tab::openFile()
@@ -528,6 +257,45 @@ void tab::openFile()
 		readFile(path);
 }
 
+bool tab::readFile(string filename)
+{
+	debug("readFile()", "filename", filename);
+
+	if (filename.empty())
+		return false;
+
+	main->preset();
+
+	if (this->dbih != nullptr)
+		delete this->dbih;
+
+	this->dbih = new e2db(this->log->log);
+	view->setDataSource(this->dbih);
+
+	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	bool rr = dbih->prepare(filename);
+	QGuiApplication::restoreOverrideCursor();
+
+	if (rr)
+	{
+		tabChangeName(filename);
+	}
+	else
+	{
+		tabChangeName();
+		QMessageBox::critical(cwid, NULL, "Error opening files.");
+		return false;
+	}
+
+	this->state.nwwr = false;
+	this->filename = filename;
+
+	main->setDataSource(this->dbih);
+	main->load();
+
+	return true;
+}
+
 void tab::saveFile(bool saveas)
 {
 	debug("saveFile()", "saveas", saveas);
@@ -538,7 +306,7 @@ void tab::saveFile(bool saveas)
 
 	if (overwrite)
 	{
-		this->updateListIndex();
+		this->updateChannelsIndex();
 		this->updateBouquetsIndex();
 		path = this->filename;
 		dial.setText("Files will be overwritten.");
@@ -581,8 +349,8 @@ void tab::importFile()
 		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 		dbih->importFile(paths);
 		QGuiApplication::restoreOverrideCursor();
-		preset();
-		load();
+		main->preset();
+		main->load();
 	}
 }
 
@@ -595,8 +363,8 @@ void tab::exportFile()
 	string filename;
 	int flags = -1;
 
-	// tools: tunersets
-	if (this->state.tunersets)
+	// tunersets
+	if (this->ttv == gui::TAB_VIEW::tunersets)
 	{
 		gde = gui::GUI_DPORTS::Tunersets;
 		flags = e2db::FPORTS::singleTunersets;
@@ -618,7 +386,7 @@ void tab::exportFile()
 		paths.push_back(filename);
 	}
 	// services
-	else if (this->state.tc == 0)
+	else if (main->state.tc == 0)
 	{
 		gde = gui::GUI_DPORTS::Services;
 		flags = e2db::FPORTS::allServices;
@@ -626,10 +394,10 @@ void tab::exportFile()
 		paths.push_back(filename);
 	}
 	// bouquets
-	else if (this->state.tc == 1)
+	else if (main->state.tc == 1)
 	{
 		int ti = -1;
-		QList<QTreeWidgetItem*> selected = bouquets_tree->selectedItems();
+		QList<QTreeWidgetItem*> selected = main->tree->selectedItems();
 
 		if (selected.empty())
 		{
@@ -637,7 +405,7 @@ void tab::exportFile()
 		}
 		for (auto & item : selected)
 		{
-			ti = bouquets_tree->indexOfTopLevelItem(item);
+			ti = main->tree->indexOfTopLevelItem(item);
 			QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
 			QString qchlist = tdata["id"].toString();
 			string filename = qchlist.toStdString();
@@ -670,6 +438,14 @@ void tab::exportFile()
 	if (paths.empty())
 	{
 		return;
+	}
+
+	bool overwrite = ! this->state.nwwr || this->state.ovwr;
+
+	if (overwrite)
+	{
+		this->updateChannelsIndex();
+		this->updateBouquetsIndex();
 	}
 
 	string path = gid->exportFileDialog(gde, filename, flags);
@@ -713,16 +489,16 @@ void tab::exportFile(QTreeWidgetItem* item)
 		return;
 	}
 	// services
-	else if (this->state.tc == 0)
+	else if (main->state.tc == 0)
 	{
 		gde = gui::GUI_DPORTS::Services;
 		filename = "lamedb";
 		paths.push_back(filename);
 	}
 	// bouquets
-	else if (this->state.tc == 1)
+	else if (main->state.tc == 1)
 	{
-		int ti = bouquets_tree->indexOfTopLevelItem(item);
+		int ti = main->tree->indexOfTopLevelItem(item);
 		QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
 		QString qchlist = tdata["id"].toString();
 		filename = qchlist.toStdString();
@@ -752,6 +528,14 @@ void tab::exportFile(QTreeWidgetItem* item)
 		return;
 	}
 
+	bool overwrite = ! this->state.nwwr || this->state.ovwr;
+
+	if (overwrite)
+	{
+		this->updateChannelsIndex();
+		this->updateBouquetsIndex();
+	}
+
 	string path = gid->exportFileDialog(gde, filename, flags);
 
 	if (! path.empty())
@@ -778,15 +562,15 @@ void tab::printFile(bool all)
 	{
 		printer->document_all();
 	}
-	// tools: tunersets
-	else if (this->state.tunersets)
+	// tunersets
+	else if (this->ttv == gui::TAB_VIEW::tunersets)
 	{
 		printer->document_tunersets(this->state.ty);
 	}
 	// services
-	else if (this->state.tc == 0)
+	else if (main->state.tc == 0)
 	{
-		int ti = services_tree->indexOfTopLevelItem(services_tree->currentItem());
+		int ti = main->services_tree->indexOfTopLevelItem(main->services_tree->currentItem());
 		int stype;
 		switch (ti)
 		{
@@ -809,10 +593,10 @@ void tab::printFile(bool all)
 		printer->document_lamedb(stype);
 	}
 	// bouquets
-	else if (this->state.tc == 1)
+	else if (main->state.tc == 1)
 	{
 		int ti = -1;
-		QList<QTreeWidgetItem*> selected = bouquets_tree->selectedItems();
+		QList<QTreeWidgetItem*> selected = main->tree->selectedItems();
 
 		if (selected.empty())
 		{
@@ -821,7 +605,7 @@ void tab::printFile(bool all)
 		}
 		for (auto & item : selected)
 		{
-			ti = bouquets_tree->indexOfTopLevelItem(item);
+			ti = main->tree->indexOfTopLevelItem(item);
 			QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
 			QString qchlist = tdata["id"].toString();
 			string filename = qchlist.toStdString();
@@ -839,918 +623,6 @@ void tab::printFile(bool all)
 	printer->destroy();
 }
 
-void tab::addUserbouquet()
-{
-	debug("addUserbouquet()");
-
-	string bname;
-	e2se_gui::editBouquet* add = new e2se_gui::editBouquet(dbih, this->state.ti, this->log->log);
-	add->display(cwid);
-	bname = add->getEditID(); // returned after dial.exec()
-	add->destroy();
-
-	if (dbih->userbouquets.count(bname))
-		debug("addUserbouquet()", "bname", bname);
-	else
-		return error("addUserbouquet()", "bname", bname);
-
-	e2db::userbouquet uboq = dbih->userbouquets[bname];
-	e2db::bouquet gboq = dbih->bouquets[uboq.pname];
-	int pidx = gboq.btype == 1 ? 0 : 1;
-	QTreeWidgetItem* pgroup = bouquets_tree->topLevelItem(pidx);
-	// macos: unwanted chars [qt.qpa.fonts] Menlo notice
-	QString name;
-	if (gid->sets->value("preference/fixUnicodeChars").toBool())
-		name = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{S}\\s]+"));
-	else
-		name = QString::fromStdString(uboq.name);
-
-	QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
-	bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
-	QMap<QString, QVariant> tdata; // singular data
-	tdata["id"] = QString::fromStdString(uboq.bname);
-	bitem->setData(0, Qt::UserRole, QVariant (tdata));
-	bitem->setText(0, name);
-	bouquets_tree->addTopLevelItem(bitem);
-
-	updateBouquetsIndex();
-}
-
-void tab::editUserbouquet()
-{
-	debug("editUserbouquet()");
-
-	QList<QTreeWidgetItem*> selected = bouquets_tree->selectedItems();
-	
-	if (selected.empty() || selected.count() > 1)
-		return;
-
-	QTreeWidgetItem* item = selected.first();
-	QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
-	QString qbname = tdata["id"].toString();
-	string bname = qbname.toStdString();
-
-	e2se_gui::editBouquet* edit = new e2se_gui::editBouquet(dbih, this->state.ti, this->log->log);
-	edit->setEditID(bname);
-	edit->display(cwid);
-	edit->destroy();
-
-	if (dbih->userbouquets.count(bname))
-		debug("editUserbouquet()", "bname", bname);
-	else
-		return error("editUserbouquet()", "bname", bname);
-
-	e2db::userbouquet uboq = dbih->userbouquets[bname];
-	// macos: unwanted chars [qt.qpa.fonts] Menlo notice
-	QString name;
-	if (gid->sets->value("preference/fixUnicodeChars").toBool())
-		name = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{S}\\s]+"));
-	else
-		name = QString::fromStdString(uboq.name);
-	selected[0]->setText(0, name);
-
-	updateBouquetsIndex();
-}
-
-void tab::addChannel()
-{
-	debug("addChannel()");
-
-	e2se_gui::channelBook* cb = new e2se_gui::channelBook(dbih, this->log->log);
-	string curr_chlist = this->state.curr;
-	QDialog* dial = new QDialog(cwid);
-	dial->setMinimumSize(760, 420);
-	dial->setWindowTitle("Add Channel");
-	dial->connect(dial, &QDialog::finished, [=]() { delete cb; delete dial; });
-
-	QGridLayout* layout = new QGridLayout;
-	QToolBar* bottom_toolbar = new QToolBar;
-	bottom_toolbar->setIconSize(QSize(16, 16));
-	bottom_toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	bottom_toolbar->setStyleSheet("QToolBar { padding: 0 8px } QToolButton { font: 16px }");
-	QWidget* bottom_spacer = new QWidget;
-	bottom_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	bottom_toolbar->addWidget(bottom_spacer);
-	bottom_toolbar->addAction(theme::icon("add"), "Add", [=]() { auto selected = cb->getSelected(); this->putChannels(selected); });
-
-	layout->addWidget(cb->widget);
-	layout->addWidget(bottom_toolbar);
-	layout->setContentsMargins(0, 0, 0, 0);
-	dial->setLayout(layout);
-	dial->exec();
-}
-
-void tab::addService()
-{
-	debug("addService()");
-
-	string chid;
-	string curr_chlist = this->state.curr;
-	e2se_gui::editService* add = new e2se_gui::editService(dbih, this->log->log);
-	add->display(cwid);
-	chid = add->getEditID(); // returned after dial.exec()
-	add->destroy();
-
-	if (dbih->db.services.count(chid))
-		debug("addService()", "chid", chid);
-	else
-		return error("addService()", "chid", chid);
-
-	cache.clear();
-	lheaderv->setSectionsClickable(false);
-	list_tree->setDragEnabled(false);
-	list_tree->setAcceptDrops(false);
-
-	int i = 0, y;
-	QTreeWidgetItem* current = list_tree->currentItem();
-	QTreeWidgetItem* parent = list_tree->invisibleRootItem();
-	i = current != nullptr ? parent->indexOfChild(current) : list_tree->topLevelItemCount();
-	y = i + 1;
-
-	bool marker = false;
-	char ci[7];
-	std::sprintf(ci, "%06d", i++);
-	QString x = QString::fromStdString(ci);
-	QString idx = QString::fromStdString(to_string(i));
-	QStringList entry = dbih->entries.services[chid];
-	entry.prepend(idx);
-	entry.prepend(x);
-
-	QTreeWidgetItem* item = new QTreeWidgetItem(entry);
-	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
-	item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
-	item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
-	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
-	item->setIcon(ITEM_ROW_ROLE::chnum, theme::spacer(4));
-	if (marker)
-	{
-		item->setFont(ITEM_ROW_ROLE::chname, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
-		item->setFont(ITEM_ROW_ROLE::chtype, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
-	}
-	item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
-	if (! item->text(ITEM_ROW_ROLE::chcas).isEmpty())
-	{
-		item->setIcon(ITEM_ROW_ROLE::chcas, theme::icon("crypted"));
-	}
-
-	if (current == nullptr)
-		list_tree->addTopLevelItem(item);
-	else
-		list_tree->insertTopLevelItem(y, item);
-
-	lheaderv->setSectionsClickable(true);
-	list_tree->setDragEnabled(true);
-	list_tree->setAcceptDrops(true);
-
-	// sorting default
-	if (this->state.dnd)
-		visualReindexList();
-	else
-		this->state.reindex = true;
-	this->state.changed = true;
-
-	updateConnectors();
-	updateCounters();
-}
-
-void tab::editService()
-{
-	debug("editService()");
-
-	QList<QTreeWidgetItem*> selected = list_tree->selectedItems();
-	
-	if (selected.empty() || selected.count() > 1)
-		return;
-
-	QTreeWidgetItem* item = selected.first();
-	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
-	string nw_chid;
-	bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
-
-	debug("editService()", "chid", chid);
-
-	if (! marker && dbih->db.services.count(chid))
-		debug("editService()", "chid", chid);
-	else
-		return error("editService()", "chid", chid);
-
-	e2se_gui::editService* edit = new e2se_gui::editService(dbih, this->log->log);
-	edit->setEditID(chid);
-	edit->display(cwid);
-	nw_chid = edit->getEditID(); // returned after dial.exec()
-	edit->destroy();
-
-	cache.clear();
-
-	if (dbih->db.services.count(nw_chid))
-		debug("editService()", "new chid", nw_chid);
-	else
-		return error("editService()", "new chid", nw_chid);
-
-	QStringList entry = dbih->entries.services[nw_chid];
-	entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
-	entry.prepend(item->text(ITEM_ROW_ROLE::x));
-	for (int i = 0; i < entry.count(); i++)
-		item->setText(i, entry[i]);
-	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
-}
-
-void tab::addMarker()
-{
-	debug("addMarker()");
-
-	string chid;
-	string curr_chlist = this->state.curr;
-	e2se_gui::editMarker* add = new e2se_gui::editMarker(dbih, this->log->log);
-	add->setEditUserbouquet(curr_chlist);
-	add->display(cwid);
-	chid = add->getEditID(); // returned after dial.exec()
-	add->destroy();
-
-	e2db::channel_reference chref;
-	if (dbih->userbouquets.count(curr_chlist))
-		chref = dbih->userbouquets[curr_chlist].channels[chid];
-
-	if (chref.marker)
-		debug("addMarker()", "chid", chid);
-	else
-		return error("addMarker()", "chid", chid);
-
-	cache.clear();
-	lheaderv->setSectionsClickable(false);
-	list_tree->setDragEnabled(false);
-	list_tree->setAcceptDrops(false);
-
-	int i = 0, y;
-	QTreeWidgetItem* current = list_tree->currentItem();
-	QTreeWidgetItem* parent = list_tree->invisibleRootItem();
-	i = current != nullptr ? parent->indexOfChild(current) : list_tree->topLevelItemCount();
-	y = i + 1;
-
-	bool marker = true;
-	char ci[7];
-	std::sprintf(ci, "%06d", i++);
-	QString x = QString::fromStdString(ci);
-	QString idx = "";
-	QStringList entry = dbih->entryMarker(chref);
-	entry.prepend(x);
-
-	QTreeWidgetItem* item = new QTreeWidgetItem(entry);
-	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
-	item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
-	item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
-	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
-	item->setIcon(ITEM_ROW_ROLE::chnum, theme::spacer(4));
-	if (marker)
-	{
-		item->setFont(ITEM_ROW_ROLE::chname, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
-		item->setFont(ITEM_ROW_ROLE::chtype, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
-	}
-	item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
-	if (! item->text(ITEM_ROW_ROLE::chcas).isEmpty())
-	{
-		item->setIcon(ITEM_ROW_ROLE::chcas, theme::icon("crypted"));
-	}
-	
-	if (current == nullptr)
-		list_tree->addTopLevelItem(item);
-	else
-		list_tree->insertTopLevelItem(y, item);
-
-	lheaderv->setSectionsClickable(true);
-	list_tree->setDragEnabled(true);
-	list_tree->setAcceptDrops(true);
-
-	// sorting default
-	if (this->state.dnd)
-		visualReindexList();
-	else
-		this->state.reindex = true;
-	this->state.changed = true;
-
-	updateConnectors();
-	updateCounters();
-}
-
-void tab::editMarker()
-{
-	debug("editMarker()");
-
-	QList<QTreeWidgetItem*> selected = list_tree->selectedItems();
-	
-	if (selected.empty() || selected.count() > 1)
-		return;
-
-	QTreeWidgetItem* item = selected.first();
-	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
-	string nw_chid;
-	string curr_chlist = this->state.curr;
-	bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
-
-	if (marker)
-		debug("editMarker()", "chid", chid);
-	else
-		return error("editMarker()", "chid", chid);
-
-	e2se_gui::editMarker* edit = new e2se_gui::editMarker(dbih, this->log->log);
-	edit->setEditUserbouquet(curr_chlist);
-	edit->setEditID(chid);
-	edit->display(cwid);
-	nw_chid = edit->getEditID(); // returned after dial.exec()
-	edit->destroy();
-
-	e2db::channel_reference chref;
-	if (dbih->userbouquets.count(curr_chlist))
-		chref = dbih->userbouquets[curr_chlist].channels[chid];
-
-	if (chref.marker)
-		debug("editMarker()", "new chid", nw_chid);
-	else
-		return error("editMarker()", "new chid", nw_chid);
-
-	cache.clear();
-
-	QStringList entry = dbih->entryMarker(chref);
-	entry.prepend(item->text(ITEM_ROW_ROLE::x));
-	for (int i = 0; i < entry.count(); i++)
-		item->setText(i, entry[i]);
-	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
-}
-
-bool tab::readFile(string filename)
-{
-	debug("readFile()", "filename", filename);
-
-	if (filename.empty())
-		return false;
-
-	closeTunersetsView();
-	preset();
-
-	if (this->dbih != nullptr)
-		delete this->dbih;
-
-	this->dbih = new e2db(this->log->log);
-
-	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	bool rr = dbih->prepare(filename);
-	QGuiApplication::restoreOverrideCursor();
-
-	if (rr)
-	{
-		tabChangeName(filename);
-	}
-	else
-	{
-		tabChangeName();
-		QMessageBox::critical(cwid, NULL, "Error opening files.");
-		return false;
-	}
-
-	this->state.nwwr = false;
-	this->filename = filename;
-
-	load();
-
-	return true;
-}
-
-void tab::load()
-{
-	debug("load()");
-
-	unordered_map<string, QTreeWidgetItem*> bgroups;
-
-	for (auto & bsi : dbih->index["bss"])
-	{
-		debug("load()", "bouquet", bsi.second);
-		e2db::bouquet gboq = dbih->bouquets[bsi.second];
-		QString bname = QString::fromStdString(bsi.second);
-		QString name = QString::fromStdString(gboq.nname.empty() ? gboq.name : gboq.nname);
-
-		QTreeWidgetItem* bitem = new QTreeWidgetItem();
-		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-		QMap<QString, QVariant> tdata; // singular data
-		tdata["id"] = bname;
-		bitem->setData(0, Qt::UserRole, QVariant (tdata));
-		bitem->setText(0, name);
-		bouquets_tree->addTopLevelItem(bitem);
-		bouquets_tree->expandItem(bitem);
-	
-		for (string & ubname : gboq.userbouquets)
-			bgroups[ubname] = bitem;
-	}
-	for (auto & ubi : dbih->index["ubs"])
-	{
-		debug("load()", "userbouquet", ubi.second);
-		e2db::userbouquet uboq = dbih->userbouquets[ubi.second];
-		QString bname = QString::fromStdString(ubi.second);
-		QTreeWidgetItem* pgroup = bgroups[ubi.second];
-		// macos: unwanted chars [qt.qpa.fonts] Menlo notice
-		QString name;
-		if (gid->sets->value("preference/fixUnicodeChars").toBool())
-			name = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{S}\\s]+"));
-		else
-			name = QString::fromStdString(uboq.name);
-
-		QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
-		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
-		QMap<QString, QVariant> tdata; // singular data
-		tdata["id"] = bname;
-		bitem->setData(0, Qt::UserRole, QVariant (tdata));
-		bitem->setText(0, name);
-		bouquets_tree->addTopLevelItem(bitem);
-	}
-
-	bouquets_tree->setDragEnabled(true);
-	bouquets_tree->setAcceptDrops(true);
-	services_tree->setCurrentItem(services_tree->topLevelItem(0));
-	populate(services_tree);
-	updateConnectors();
-	updateCounters();
-}
-
-void tab::populate(QTreeWidget* side_tree)
-{
-	string curr_chlist;
-	string prev_chlist;
-	bool precached = false;
-	QList<QTreeWidgetItem*> cachep;
-	
-	if (! cache.empty())
-	{
-		for (int i = 0; i < list_tree->topLevelItemCount(); i++)
-		{
-			QTreeWidgetItem* item = list_tree->topLevelItem(i);
-			cachep.append(item->clone());
-		}
-		precached = true;
-		prev_chlist = string (this->state.curr);
-	}
-
-	QTreeWidgetItem* selected = side_tree->currentItem();
-	if (selected == NULL)
-	{
-		return;
-	}
-	if (selected != NULL)
-	{
-		QVariantMap tdata = selected->data(0, Qt::UserRole).toMap();
-		QString qcurr_bouquet = tdata["id"].toString();
-		curr_chlist = qcurr_bouquet.toStdString();
-		this->state.curr = curr_chlist;
-	}
-
-	if (dbih->index.count(curr_chlist))
-		debug("populate()", "curr_chlist", curr_chlist);
-	else
-		error("populate()", "curr_chlist", curr_chlist);
-
-	lheaderv->setSortIndicatorShown(true);
-	lheaderv->setSectionsClickable(false);
-	list_tree->clear();
-	if (precached)
-	{
-		cache[prev_chlist].swap(cachep);
-	}
-
-	int i = 0;
-
-	if (cache[curr_chlist].isEmpty())
-	{
-		for (auto & ch : dbih->index[curr_chlist])
-		{
-			char ci[7];
-			std::sprintf(ci, "%06d", i++);
-			bool marker = false;
-			QString chid = QString::fromStdString(ch.second);
-			QString x = QString::fromStdString(ci);
-			QString idx;
-			QStringList entry;
-
-			if (dbih->db.services.count(ch.second))
-			{
-				entry = dbih->entries.services[ch.second];
-				idx = QString::fromStdString(to_string(ch.first));
-				entry.prepend(idx);
-				entry.prepend(x);
-			}
-			else
-			{
-				e2db::channel_reference chref;
-				if (dbih->userbouquets.count(curr_chlist))
-					chref = dbih->userbouquets[curr_chlist].channels[ch.second];
-
-				if (chref.marker)
-				{
-					marker = true;
-					entry = dbih->entryMarker(chref);
-					idx = entry[1];
-					entry.prepend(x);
-				}
-				else
-				{
-					//TEST
-					entry = QStringList({x, NULL, NULL, chid, NULL, "ERROR", NULL});
-					// idx = 0; //Qt5
-					error("populate()", "chid", ch.second);
-					//TEST
-				}
-			}
-
-			QTreeWidgetItem* item = new QTreeWidgetItem(entry);
-			item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
-			item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
-			item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
-			item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, chid);
-			item->setIcon(ITEM_ROW_ROLE::chnum, theme::spacer(4));
-			if (marker)
-			{
-				item->setFont(ITEM_ROW_ROLE::chname, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
-				item->setFont(ITEM_ROW_ROLE::chtype, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
-			}
-			item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
-			if (! item->text(ITEM_ROW_ROLE::chcas).isEmpty())
-			{
-				item->setIcon(ITEM_ROW_ROLE::chcas, theme::icon("crypted"));
-			}
-			cache[curr_chlist].append(item);
-		}
-	}
-
-	list_tree->addTopLevelItems(cache[curr_chlist]);
-
-	// sorting by
-	if (this->state.sort.first != -1)
-	{
-		list_tree->sortItems(this->state.sort.first, this->state.sort.second);
-
-		// sorting column 0|desc
-		if (this->state.sort.first == 0 && this->state.sort.second == Qt::DescendingOrder)
-			lheaderv->setSortIndicator(1, this->state.sort.second);
-	}
-	// sorting default
-	else if (this->state.dnd)
-	{
-		list_tree->setDragEnabled(true);
-		list_tree->setAcceptDrops(true);
-	}
-	lheaderv->setSectionsClickable(true);
-}
-
-void tab::treeSwitched(QTreeWidget* tree, QTreeWidgetItem* item)
-{
-	debug("treeSwitched()");
-
-	int tc = -1;
-
-	if (tree == this->services_tree)
-		tc = 0;
-	else if (tree == this->bouquets_tree)
-		tc = 1;
-
-	if (tc != this->state.tc)
-	{
-		switch (tc)
-		{
-			case 0: return this->servicesItemChanged(item);
-			case 1: return this->bouquetsItemChanged(item);
-		}
-	}
-}
-
-void tab::servicesItemChanged(QTreeWidgetItem* current)
-{
-	debug("servicesItemChanged()");
-
-	this->state.tc = 0;
-
-	if (current != NULL)
-	{
-		int ti = services_tree->indexOfTopLevelItem(current);
-
-		this->action.list_addch->setDisabled(true);
-		this->action.list_addmk->setDisabled(true);
-		this->action.list_newch->setEnabled(true);
-
-		// tv | radio | data
-		if (ti)
-		{
-			disallowDnD();
-		}
-		// all
-		else
-		{
-			// sorting default
-			if (this->state.sort.first == 0)
-				allowDnD();
-		}
-
-		gid->update(gui::TabListDelete, true);
-		gid->update(gui::TabListPaste, true);
-
-		list_tree->clearSelection();
-		list_tree->scrollToTop();
-	}
-
-	updateListIndex();
-	populate(services_tree);
-	updateConnectors();
-	updateCounters(true);
-}
-
-void tab::bouquetsItemChanged(QTreeWidgetItem* current)
-{
-	debug("bouquetsItemChanged()");
-
-	this->state.tc = 1;
-
-	if (current != NULL)
-	{
-		int ti = bouquets_tree->indexOfTopLevelItem(current);
-		this->state.ti = ti;
-
-		// bouquet: tv | radio
-		if (ti != -1)
-		{
-			this->action.list_addch->setDisabled(true);
-			this->action.list_addmk->setDisabled(true);
-			this->action.list_newch->setEnabled(true);
-
-			disallowDnD();
-
-			// sorting by
-			if (this->state.sort.first > 0)
-				this->action.list_dnd->setDisabled(true);
-
-			gid->update(gui::TabListDelete, false);
-			gid->update(gui::TabListPaste, false);
-		}
-		// userbouquet
-		else
-		{
-			this->action.list_addch->setEnabled(true);
-			this->action.list_addmk->setEnabled(true);
-			this->action.list_newch->setDisabled(true);
-
-			// sorting by
-			if (this->state.sort.first > 0)
-				this->action.list_dnd->setEnabled(true);
-			// sorting default
-			else
-				allowDnD();
-
-			gid->update(gui::TabListDelete, true);
-			gid->update(gui::TabListPaste, true);
-		}
-
-		list_tree->clearSelection();
-		list_tree->scrollToTop();
-	}
-
-	updateListIndex();
-	populate(bouquets_tree);
-	updateConnectors();
-	updateCounters(true);
-}
-
-void tab::listItemChanged()
-{
-	// debug("listItemChanged()");
-
-	if (list_evto->isChanged())
-		listPendingUpdate();
-}
-
-void tab::listItemSelectionChanged()
-{
-	// debug("listItemSelectionChanged()");
-	
-	QList<QTreeWidgetItem*> selected = list_tree->selectedItems();
-
-	if (selected.empty())
-	{
-		gid->update(gui::TabListCut, false);
-		gid->update(gui::TabListCopy, false);
-
-		// userbouquet
-		if (this->state.ti == -1)
-			gid->update(gui::TabListDelete, false);
-	}
-	else
-	{
-		gid->update(gui::TabListCut, true);
-		gid->update(gui::TabListCopy, true);
-
-		// userbouquet
-		if (this->state.ti == -1)
-			gid->update(gui::TabListDelete, true);
-	}
-	if (selected.count() == 1)
-	{
-		QTreeWidgetItem* item = selected.first();
-		bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
-
-		if (marker)
-		{
-			gid->update(gui::TabListEditService, false);
-			gid->update(gui::TabListEditMarker, true);
-		}
-		else
-		{
-			gid->update(gui::TabListEditService, true);
-			gid->update(gui::TabListEditMarker, false);
-		}
-	}
-	else if (selected.count() > 1)
-	{
-		gid->update(gui::TabListEditService, false);
-		gid->update(gui::TabListEditMarker, false);
-
-	}
-
-	if (this->state.refbox)
-		updateRefBox();
-}
-
-void tab::listItemDoubleClicked()
-{
-	debug("listItemDoubleClicked()");
-
-	QList<QTreeWidgetItem*> selected = list_tree->selectedItems();
-	
-	if (selected.empty() || selected.count() > 1)
-		return;
-
-	QTreeWidgetItem* item = selected.first();
-	bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
-
-	if (marker)
-		editMarker();
-	else
-		editService();
-}
-
-void tab::listPendingUpdate()
-{
-	debug("listPendingUpdate()");
-
-	// sorting default
-	if (this->state.dnd)
-	{
-		QTimer::singleShot(0, [=]() {
-			this->visualReindexList();
-		});
-	}
-	else
-	{
-		this->state.reindex = true;
-	}
-	this->state.changed = true;
-}
-
-void tab::visualReindexList()
-{
-	debug("visualReindexList()");
-
-	// sorting column 0|desc || column 0|asc
-	bool reverse = (this->state.sort.first < 1 && this->state.sort.second == Qt::DescendingOrder) ? true : false;
-
-	int i = 0, y = 0, idx = 0;
-	int j = list_tree->topLevelItemCount();
-
-	if (reverse)
-	{
-		while (j--)
-		{
-			QTreeWidgetItem* item = list_tree->topLevelItem(i);
-			bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
-			if (marker)
-				y++;
-			i++;
-		}
-		i = 0;
-		j = list_tree->topLevelItemCount();
-	}
-	while (reverse ? j-- : i != j)
-	{
-		QTreeWidgetItem* item = list_tree->topLevelItem(i);
-		bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
-		idx = reverse ? j : i;
-		char ci[7];
-		std::sprintf(ci, "%06d", idx++);
-		item->setText(ITEM_ROW_ROLE::x, QString::fromStdString(ci));
-		if (! marker)
-			item->setText(ITEM_ROW_ROLE::chnum, QString::fromStdString(to_string(idx - y)));
-		i++;
-		y = marker ? reverse ? y - 1 : y + 1 : y;
-	}
-
-	this->state.reindex = false;
-}
-
-void tab::trickySortByColumn(int column)
-{
-	debug("trickySortByColumn()", "column", column);
-
-	Qt::SortOrder order = this->state.sort.first == -1 ? Qt::DescendingOrder : lheaderv->sortIndicatorOrder();
-	column = column == 1 ? 0 : column;
-
-	// sorting by
-	if (column)
-	{
-		list_tree->sortItems(column, order);
-		disallowDnD();
-
-		// userbouquet
-		if (this->state.ti == -1)
-			this->action.list_dnd->setEnabled(true);
-
-		lheaderv->setSortIndicatorShown(true);
-	}
-	// sorting default
-	else
-	{
-		list_tree->sortItems(column, order);
-		lheaderv->setSortIndicator(1, order);
-		allowDnD();
-
-		this->action.list_dnd->setDisabled(true);
-
-		// default column 0|asc
-		if (order == Qt::AscendingOrder)
-			lheaderv->setSortIndicatorShown(false);
-		else
-			lheaderv->setSortIndicatorShown(true);
-
-		if (this->state.reindex)
-			this->visualReindexList();
-	}
-	this->state.sort = pair (column, order); //C++17
-}
-
-void tab::allowDnD()
-{
-	debug("allowDnd()");
-
-	this->list_evth->allowInternalMove();
-	this->state.dnd = true;
-	// list_wrap->setStyleSheet("#channels_wrap { background: transparent }");
-}
-
-void tab::disallowDnD()
-{
-	debug("disallowDnD()");
-
-	this->list_evth->disallowInternalMove();
-	this->state.dnd = false;
-	// list_wrap->setStyleSheet("#channels_wrap { background: rgba(255, 192, 0, 20%) }");
-}
-
-void tab::reharmDnD()
-{
-	debug("reharmDnD()");
-
-	// sorting default 0|asc
-	list_tree->sortItems(0, Qt::AscendingOrder);
-	list_tree->setDragEnabled(true);
-	list_tree->setAcceptDrops(true);
-	this->state.sort = pair (0, Qt::AscendingOrder); //C++17
-	this->action.list_dnd->setDisabled(true);
-}
-
-void tab::bouquetItemDelete()
-{
-	debug("bouquetItemDelete()");
-
-	QList<QTreeWidgetItem*> selected = bouquets_tree->selectedItems();
-	
-	if (selected.empty())
-	{
-		return;
-	}
-	for (auto & item : selected)
-	{
-		QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
-		QString qbname = tdata["id"].toString();
-		string bname = qbname.toStdString();
-		e2db::userbouquet uboq = dbih->userbouquets[bname];
-		string pname = uboq.pname;
-		dbih->removeUserbouquet(bname);
-
-		cache[bname].clear();
-		cache[pname].clear();
-		cache.erase(bname);
-
-		QTreeWidgetItem* parent = item->parent();
-		parent->removeChild(item);
-	}
-
-	this->state.changed = true;
-	updateBouquetsIndex();
-}
-
-//TODO FIX openTunersetsView() when is already opened
 void tab::actionCall(int action)
 {
 	debug("actionCall()", "action", action);
@@ -1758,1127 +630,56 @@ void tab::actionCall(int action)
 	switch (action)
 	{
 		case LIST_EDIT_ATS::Cut:
-			listItemCut();
+			view->listItemCut();
 		break;
 		case LIST_EDIT_ATS::Copy:
-			listItemCopy();
+			view->listItemCopy();
 		break;
 		case LIST_EDIT_ATS::Paste:
-			listItemPaste();
+			view->listItemPaste();
 		break;
 		case LIST_EDIT_ATS::Delete:
-			listItemDelete();
+			view->listItemDelete();
 		break;
 		case LIST_EDIT_ATS::SelectAll:
-			listItemSelectAll();
+			view->listItemSelectAll();
 		break;
 
-		case gui::TAB_ATS::BouquetsFind:
-			bouquetsSearchShow();
+		case gui::TAB_ATS::TreeFind:
+			view->treeSearchShow();
 		break;
-		case gui::TAB_ATS::BouquetsFindNext:
-			bouquetsFindPerform();
+		case gui::TAB_ATS::TreeFindNext:
+			view->treeFindPerform();
 		break;
 		case gui::TAB_ATS::ListFind:
-			listSearchShow();
+			view->listSearchShow();
 		break;
 		case gui::TAB_ATS::ListFindNext:
-			listFindPerform(LIST_FIND::next);
+			view->listFindPerform(viewAbstract::LIST_FIND::next);
 		break;
 		case gui::TAB_ATS::ListFindPrev:
-			listFindPerform(LIST_FIND::prev);
+			view->listFindPerform(viewAbstract::LIST_FIND::prev);
 		break;
 		case gui::TAB_ATS::ListFindAll:
-			listFindPerform(LIST_FIND::all);
+			view->listFindPerform(viewAbstract::LIST_FIND::all);
 		break;
 
 		case gui::TAB_ATS::EditTunerSat:
-			openTunersetsView(e2db::YTYPE::sat);
+			gid->openTab(gui::TAB_VIEW::tunersets, e2db::YTYPE::sat);
 		break;
 		case gui::TAB_ATS::EditTunerTerrestrial:
-			openTunersetsView(e2db::YTYPE::terrestrial);
+			gid->openTab(gui::TAB_VIEW::tunersets, e2db::YTYPE::terrestrial);
 		break;
 		case gui::TAB_ATS::EditTunerCable:
-			openTunersetsView(e2db::YTYPE::cable);
+			gid->openTab(gui::TAB_VIEW::tunersets, e2db::YTYPE::cable);
 		break;
 		case gui::TAB_ATS::EditTunerAtsc:
-			openTunersetsView(e2db::YTYPE::atsc);
+			gid->openTab(gui::TAB_VIEW::tunersets, e2db::YTYPE::atsc);
 		break;
 		case gui::TAB_ATS::Inspector:
 			tools->inspector();
 		break;
 	}
-}
-
-void tab::bouquetsSearchShow()
-{
-	debug("bouquetsSearchShow()");
-
-	bouquets_search->show();
-}
-
-void tab::bouquetsSearchHide()
-{
-	debug("bouquetsSearchHide()");
-
-	bouquets_search->hide();
-}
-
-void tab::bouquetsSearchToggle()
-{
-	// debug("bouquetsSearchToggle()");
-
-	if (bouquets_search->isHidden())
-	{
-		bouquetsSearchShow();
-	}
-	else
-	{
-		bouquetsSearchHide();
-	}
-}
-
-void tab::bouquetsSearchClose()
-{
-	// debug("bouquetsSearchClose()");
-
-	QTimer::singleShot(100, [=]() {
-		bouquetsSearchHide();
-	});
-}
-
-void tab::listSearchShow()
-{
-	debug("listSearchShow()");
-
-	list_search->show();
-	this->lsr_find.timer.start();
-}
-
-void tab::listSearchHide()
-{
-	debug("listSearchHide()");
-
-	list_search->hide();
-	if (! this->lsr_find.highlight)
-		listFindClear();
-}
-
-void tab::listSearchToggle()
-{
-	// debug("listSearchToggle()");
-
-	if (list_search->isHidden())
-		listSearchShow();
-	else
-		listSearchHide();
-}
-
-void tab::listSearchClose()
-{
-	// debug("listSearchClose()");
-
-	QTimer::singleShot(100, [=]() {
-		listSearchHide();
-	});
-}
-
-void tab::listReferenceToggle()
-{
-	debug("listReferenceToggle()");
-
-	if (list_reference->isHidden())
-	{
-		list_reference->show();
-		this->state.refbox = true;
-		updateRefBox();
-	}
-	else
-	{
-		list_reference->hide();
-		this->state.refbox = false;
-	}
-}
-
-void tab::bouquetsFindPerform()
-{
-	if (this->bsr_search.input->text().isEmpty())
-		return;
-
-	bouquetsFindPerform(this->bsr_search.input->text());
-}
-
-void tab::bouquetsFindPerform(const QString& value)
-{
-	bouquets_tree->keyboardSearch(value);
-
-	gid->update(gui::TabBouquetsFind, true);
-	if (bouquets_tree->currentIndex().isValid())
-		gid->update(gui::TabBouquetsFindNext, true);
-	else
-		gid->update(gui::TabBouquetsFindNext, false);
-}
-
-void tab::listFindPerform(LIST_FIND flag)
-{
-	if (this->lsr_search.input->text().isEmpty())
-		return;
-
-	listFindPerform(this->lsr_search.input->text(), flag);
-}
-
-//TODO FIX multiple selection with shortcut FindNext when search_box is closed
-void tab::listFindPerform(const QString& value, LIST_FIND flag)
-{
-	// QTreeWidgetItem* item list_tree->currentItem() || list_tree->topLevelItem(0)
-	// int column || QTreeWidget::currentColumn()
-	// void QTreeWidget::setCurrentItem(QTreeWidgetItem* item, int column)
-	// void QTreeView::keyboardSearch(const QString& search)
-
-	int column = this->lsr_search.filter->currentData().toInt();
-	int delay = flag == LIST_FIND::fast ? QApplication::keyboardInputInterval() : 0;
-	QString text;
-
-	if (flag == LIST_FIND::fast)
-	{
-		bool keyboardTimeWasValid = this->lsr_find.timer.isValid();
-		qint64 elapsed;
-		if (keyboardTimeWasValid)
-			elapsed = this->lsr_find.timer.restart();
-		else
-			this->lsr_find.timer.start();
-		if (value.isEmpty() || ! keyboardTimeWasValid || elapsed > delay)
-		{
-			text = value;
-
-			listFindClear();
-		}
-		else
-		{
-			text += value;
-		}
-	}
-	else
-	{
-		if (value.isEmpty())
-			return;
-		else
-			text = value;
-	}
-
-	QModelIndexList match;
-
-	if (this->lsr_find.match.isEmpty() || this->lsr_find.filter != column || this->lsr_find.input != text)
-	{
-		// fast 0 --> start
-		// fast i match(..., ..., ..., 1, ...)
-		//
-		// QModelIndex start;
-		// if (list_tree->currentIndex().isValid())
-		//	start = list_tree->currentIndex();
-		// else
-		// 	start = list_tree->model()->index(0, 0);
-		//
-		QModelIndex start = list_tree->model()->index(0, column);
-		int limit = -1;
-		match = list_tree->model()->match(start, Qt::DisplayRole, text, limit, Qt::MatchFlag::MatchContains);
-
-		if (this->lsr_find.flag == LIST_FIND::all)
-			listFindClear();
-
-		this->lsr_find.curr = -1;
-	}
-	else
-	{
-		match = this->lsr_find.match;
-
-		//TODO improve
-		/*if (flag == LIST_FIND::fast && this->lsr_find.flag == LIST_FIND::all)
-		{
-			if (list_tree->currentIndex().isValid())
-				return;
-			else
-				this->lsr_find.curr = -1;
-		}*/
-	}
-
-	if (match.count())
-	{
-		LIST_FIND type = flag == LIST_FIND::fast ? LIST_FIND::next : flag;
-		int i = 0;
-		int j = match.size();
-
-		if (type == LIST_FIND::next)
-		{
-			i = int (this->lsr_find.curr);
-			i = i == j - 1 ? 0 : i + 1;
-			list_tree->setCurrentIndex(match.at(i));
-		}
-		else if (type == LIST_FIND::prev)
-		{
-			i = int (this->lsr_find.curr);
-			i = i <= 0 ? j - 1 : i - 1;
-			list_tree->setCurrentIndex(match.at(i));
-		}
-		else if (type == LIST_FIND::all)
-		{
-
-			listFindClear(false);
-			while (i != j)
-			{
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-				QTreeWidgetItem* item = list_tree->itemFromIndex(match.at(i));
-#else
-				QTreeWidgetItem* item;
-				QModelIndex index = match.at(i);
-				if (index.isValid())
-					item = static_cast<QTreeWidgetItem*>(index.internalPointer());
-#endif
-
-				if (this->lsr_find.highlight)
-					item->setSelected(true);
-				else
-					item->setHidden(false);
-				i++;
-			}
-			if (this->lsr_find.highlight)
-				list_tree->scrollTo(match.at(0));
-			i = -1;
-		}
-		// int i = list_tree->indexOfTopLevelItem(QTreeWidgetItem* item);
-		this->lsr_find.curr = i;
-
-		gid->update(gui::TabListFindNext, true);
-		gid->update(gui::TabListFindPrev, true);
-		gid->update(gui::TabListFindAll, true);
-	}
-	else
-	{
-		gid->update(gui::TabListFindNext, false);
-		gid->update(gui::TabListFindPrev, false);
-		gid->update(gui::TabListFindAll, false);
-	}
-
-	this->lsr_find.flag = flag;
-	this->lsr_find.filter = column;
-	this->lsr_find.input = text;
-	this->lsr_find.match = match;
-}
-
-void tab::listFindHighlightToggle()
-{
-	listFindReset();
-	this->lsr_find.highlight = ! this->lsr_find.highlight;
-}
-
-void tab::listFindClear(bool hidden)
-{
-	list_tree->clearSelection();
-
-	if (! this->lsr_find.highlight)
-	{
-		int j = list_tree->topLevelItemCount();
-		while (j--)
-		{
-			QTreeWidgetItem* item = list_tree->topLevelItem(j);
-			item->setHidden(! hidden);
-		}
-	}
-}
-
-void tab::listFindReset()
-{
-	listFindClear();
-
-	this->lsr_find.flag = LIST_FIND::fast;
-	this->lsr_find.filter = 0;
-	this->lsr_find.highlight = true;
-	this->lsr_find.curr = -1;
-	this->lsr_find.input = "";
-	this->lsr_find.match.clear();
-	this->lsr_find.timer.invalidate();
-}
-
-void tab::listItemCut()
-{
-	debug("listItemCut()");
-
-	listItemCopy(true);
-}
-
-void tab::listItemCopy(bool cut)
-{
-	debug("listItemCopy()");
-
-	QList<QTreeWidgetItem*> selected = list_tree->selectedItems();
-	
-	if (selected.empty())
-		return;
-
-	QClipboard* clipboard = QGuiApplication::clipboard();
-	QStringList text;
-	for (auto & item : selected)
-	{
-		QString qchid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString();
-		bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
-		string chid = qchid.toStdString();
-
-		QStringList data;
-		// start from chnum column [1]
-		for (int i = ITEM_ROW_ROLE::chnum; i < list_tree->columnCount(); i++)
-		{
-			QString qstr = item->data(i, Qt::DisplayRole).toString();
-			// chname
-			if (i == ITEM_ROW_ROLE::chname)
-				qstr.prepend("\"").append("\"");
-			// debug_chid
-			else if (i == ITEM_ROW_ROLE::debug_chid)
-				continue;
-			// debug_txid
-			else if (i == ITEM_ROW_ROLE::debug_txid)
-				continue;
-			// chcas
-			else if (i == ITEM_ROW_ROLE::chcas && ! marker)
-				qstr.prepend(qstr.isEmpty() ? "" : "$").prepend("\"").append("\"");
-			// chpname
-			else if (i == ITEM_ROW_ROLE::chpname && ! marker)
-				qstr.prepend("\"").append("\"");
-			// chpos
-			else if (i == ITEM_ROW_ROLE::chpos && ! marker)
-				qstr.prepend("\"").append("\"");
-			data.append(qstr);
-		}
-
-		// Reference ID
-		QString refid;
-		// bouquets tree
-		if (this->state.tc)
-		{
-			string curr_chlist = this->state.curr;
-			e2db::channel_reference chref;
-			if (dbih->userbouquets.count(curr_chlist))
-				chref = dbih->userbouquets[curr_chlist].channels[chid];
-			string crefid = dbih->get_reference_id(chref);
-			refid = QString::fromStdString(crefid);
-		}
-		// services tree
-		else
-		{
-			string crefid = dbih->get_reference_id(chid);
-			refid = QString::fromStdString(crefid);
-		}
-		//TODO marker index and compatibility
-		if (marker)
-		{
-			refid = "1:" + qchid.toUpper() + ":0:0:0:0:0:0";
-		}
-		data.insert(2, refid); // insert refid column [2]
-		text.append(data.join(",")); // CSV
-	}
-	clipboard->setText(text.join("\n")); // CSV
-
-	//TODO global marker index
-	if (cut)
-		listItemDelete();
-}
-
-//TODO validate
-void tab::listItemPaste()
-{
-	debug("listItemPaste()", "entered", ! (this->state.tc && this->state.ti != -1));
-
-	// services_tree && bouquet: tv | radio
-	if (this->state.tc && this->state.ti != -1)
-		return;
-
-	QClipboard* clipboard = QGuiApplication::clipboard();
-	const QMimeData* mimeData = clipboard->mimeData();
-	vector<QString> items;
-
-	if (mimeData->hasText())
-	{
-		QStringList list = clipboard->text().split('\n');
-
-		for (QString & data : list)
-		{
-			if (data.contains(','))
-			{
-				auto line = data.split(',');
-				// refid column [2] | chname column [1]
-				items.emplace_back(line[2] + ',' + line[1]);
-			}
-			else
-			{
-				items.emplace_back(data);
-			}
-		}
-	}
-	if (! items.empty())
-	{
-		putChannels(items);
-
-		if (list_tree->currentItem() == nullptr)
-			list_tree->scrollToBottom();
-
-		// bouquets tree
-		if (this->state.tc)
-		{
-			string curr_chlist = this->state.curr;
-			e2db::userbouquet uboq = dbih->userbouquets[curr_chlist];
-			string pname = uboq.pname;
-			cache[pname].clear();
-		}
-		// services tree
-		else
-		{
-			cache["chs"].clear();
-			cache["chs:0"].clear();
-			cache["chs:1"].clear();
-			cache["chs:2"].clear();
-		}
-	}
-}
-
-void tab::listItemDelete()
-{
-	debug("listItemDelete()", "entered", ! (this->state.tc && this->state.ti != -1));
-
-	// services_tree && bouquet: tv | radio
-	if (this->state.tc && this->state.ti != -1)
-		return;
-
-	QList<QTreeWidgetItem*> selected = list_tree->selectedItems();
-	
-	if (selected.empty())
-		return;
-
-	lheaderv->setSectionsClickable(false);
-	list_tree->setDragEnabled(false);
-	list_tree->setAcceptDrops(false);
-
-	string curr_chlist = this->state.curr;
-	string pname;
-
-	// bouquets tree
-	if (this->state.tc)
-	{
-		e2db::userbouquet uboq = dbih->userbouquets[curr_chlist];
-		pname = uboq.pname;
-	}
-	for (auto & item : selected)
-	{
-		int i = list_tree->indexOfTopLevelItem(item);
-		string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
-		list_tree->takeTopLevelItem(i);
-
-		// bouquets tree
-		if (this->state.tc)
-		{
-			dbih->remove_channel_reference(chid, curr_chlist);
-			cache[pname].clear();
-		}
-		// services tree
-		else
-		{
-			dbih->removeService(chid);
-			cache["chs"].clear();
-			cache["chs:0"].clear();
-			cache["chs:1"].clear();
-			cache["chs:2"].clear();
-		}
-	}
-
-	lheaderv->setSectionsClickable(true);
-	list_tree->setDragEnabled(true);
-	list_tree->setAcceptDrops(true);
-
-	// sorting default
-	if (this->state.dnd)
-		visualReindexList();
-	else
-		this->state.reindex = true;
-	this->state.changed = true;
-
-	updateConnectors();
-	updateCounters();
-}
-
-void tab::listItemSelectAll()
-{
-	debug("listItemSelectAll()");
-
-	list_tree->selectAll();
-}
-
-void tab::openTunersetsView(int ytype)
-{
-	debug("openTunersetsView()", "ytype", ytype);
-
-	if (! this->state.tunersets)
-	{
-		root->itemAt(0)->widget()->hide();
-		tools->openTunersets(dbih, ytype);
-		this->state.tunersets = true;
-		this->state.ty = ytype;
-
-		QTimer::singleShot(100, [=]() {
-			this->action.tools_close_edit->setDisabled(false);
-			this->action.tools_close_edit->setVisible(true);
-		});
-	}
-}
-
-void tab::closeTunersetsView()
-{
-	debug("closeTunersetsView()");
-
-	if (this->state.tunersets)
-	{
-		tools->closeTunersets();
-		root->itemAt(0)->widget()->show();
-		this->state.tunersets = false;
-		this->state.ty = -1;
-
-		QTimer::singleShot(300, [=]() {
-			this->action.tools_close_edit->setVisible(false);
-			this->action.tools_close_edit->setDisabled(true);
-		});
-	}
-}
-
-//TODO duplicates
-void tab::putChannels(vector<QString> channels)
-{
-	debug("putChannels()");
-
-	lheaderv->setSectionsClickable(false);
-	list_tree->setDragEnabled(false);
-	list_tree->setAcceptDrops(false);
-	QList<QTreeWidgetItem*> clist;
-	int i = 0, y;
-	QTreeWidgetItem* current = list_tree->currentItem();
-	QTreeWidgetItem* parent = list_tree->invisibleRootItem();
-	i = current != nullptr ? parent->indexOfChild(current) : list_tree->topLevelItemCount();
-	y = i + 1;
-
-	string curr_chlist = this->state.curr;
-	e2db::userbouquet uboq = dbih->userbouquets[curr_chlist];
-	int ub_idx = uboq.index;
-	int anum_count = dbih->index["mks"].size();
-
-	for (QString & q : channels)
-	{
-		char ci[7];
-		std::sprintf(ci, "%06d", i++);
-		QString x = QString::fromStdString(ci);
-		QString idx = QString::fromStdString(to_string(i));
-
-		string refid;
-		string value;
-		if (q.contains(','))
-		{
-			// refid column [0] | chname column [1]
-			auto data = q.split(',');
-			refid = data[0].toStdString();
-			value = data[1].replace("\"", "").toStdString();
-		}
-		else
-		{
-			refid = q.toStdString();
-		}
-
-		QStringList entry;
-		bool marker = false;
-		e2db::channel_reference chref;
-		e2db::service_reference ref;
-		e2db::service ch;
-
-		dbih->parse_channel_reference(refid, chref, ref);
-
-		char chid[25];
-
-		if (chref.marker)
-		{
-			anum_count++;
-
-			// %4d:%2x:%d
-			std::sprintf(chid, "%d:%x:%d", chref.type, anum_count, ub_idx);
-		}
-		else
-		{
-			// %4x:%4x:%8x
-			std::sprintf(chid, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
-		}
-
-		if (dbih->db.services.count(chid))
-		{
-			ch = dbih->db.services[chid];
-			entry = dbih->entries.services[chid];
-			entry.prepend(idx);
-			entry.prepend(x);
-
-			chref.marker = false;
-			chref.chid = chid;
-			chref.type = 0;
-			chref.anum = 0;
-			chref.index = idx.toInt();
-		}
-		else
-		{
-			if (chref.marker)
-			{
-				chref.chid = chid;
-				chref.anum = anum_count;
-				chref.value = value;
-				chref.index = -1;
-				idx = "";
-
-				marker = true;
-				entry = dbih->entryMarker(chref);
-				entry.prepend(x);
-			}
-			//TODO add new service/transponder
-			else
-			{
-				error("putChannels()", "refid", refid);
-				continue;
-			}
-		}
-		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
-		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
-		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
-		item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
-		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
-		item->setIcon(ITEM_ROW_ROLE::chnum, theme::spacer(4));
-		if (marker)
-		{
-			item->setFont(ITEM_ROW_ROLE::chname, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
-			item->setFont(ITEM_ROW_ROLE::chtype, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
-		}
-		item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
-		if (! item->text(ITEM_ROW_ROLE::chcas).isEmpty())
-		{
-			item->setIcon(ITEM_ROW_ROLE::chcas, theme::icon("crypted"));
-		}
-		clist.append(item);
-
-		// bouquets tree
-		if (this->state.tc)
-			dbih->add_channel_reference(chref, curr_chlist);
-		// services tree
-		else
-			dbih->addService(ch);
-	}
-
-	if (current == nullptr)
-		list_tree->addTopLevelItems(clist);
-	else
-		list_tree->insertTopLevelItems(y, clist);
-
-	lheaderv->setSectionsClickable(true);
-	list_tree->setDragEnabled(true);
-	list_tree->setAcceptDrops(true);
-
-	// sorting default
-	if (this->state.dnd)
-		visualReindexList();
-	else
-		this->state.reindex = true;
-	this->state.changed = true;
-
-	updateConnectors();
-	updateCounters();
-}
-
-void tab::updateBouquetsIndex()
-{
-	debug("updateBouquetsIndex()");
-
-	int i = 0, y;
-	int count = bouquets_tree->topLevelItemCount();
-	vector<pair<int, string>> bss;
-	vector<pair<int, string>> ubs;
-	unordered_map<string, vector<string>> index;
-
-	while (i != count)
-	{
-		QTreeWidgetItem* parent = bouquets_tree->topLevelItem(i);
-		QVariantMap tdata = parent->data(0, Qt::UserRole).toMap();
-		string pname = tdata["id"].toString().toStdString();
-		bss.emplace_back(pair (i, pname)); //C++17
-		y = 0;
-
-		if (parent->childCount())
-		{
-			int childs = parent->childCount();
-			while (y != childs)
-			{
-				QTreeWidgetItem* item = parent->child(y);
-				QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
-				string bname = tdata["id"].toString().toStdString();
-				ubs.emplace_back(pair (i, bname)); //C++17
-				index[pname].emplace_back(bname);
-				y++;
-			}
-		}
-		i++;
-	}
-	if (bss != dbih->index["bss"])
-	{
-		dbih->index["bss"].swap(bss);
-	}
-	if (ubs != dbih->index["ubs"])
-	{
-		dbih->index["ubs"].swap(ubs);
-
-		for (auto & x : dbih->bouquets)
-			x.second.userbouquets.swap(index[x.first]);
-	}
-}
-
-void tab::updateListIndex()
-{
-	if (! this->state.changed)
-		return;
-
-	int i = 0, idx = 0;
-	int count = list_tree->topLevelItemCount();
-	string curr_chlist = this->state.curr;
-	dbih->index[curr_chlist].clear();
-
-	debug("updateListIndex()", "curr_chlist", curr_chlist);
-
-	int sort_col = list_tree->sortColumn();
-	list_tree->sortItems(0, Qt::AscendingOrder);
-
-	while (i != count)
-	{
-		QTreeWidgetItem* item = list_tree->topLevelItem(i);
-		string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
-		bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
-		idx = marker ? 0 : i + 1;
-		dbih->index[curr_chlist].emplace_back(pair (idx, chid)); //C++17
-		i++;
-	}
-
-	list_tree->sortItems(this->state.sort.first, this->state.sort.second);
-	lheaderv->setSortIndicator(sort_col, this->state.sort.second);
-
-	this->state.changed = false;
-}
-
-void tab::updateConnectors()
-{
-	debug("updateConnectors()");
-
-	if (bouquets_tree->topLevelItemCount())
-	{
-		//TODO connect to QScrollArea Event
-		/*if (bouquets_tree->verticalScrollBar()->isVisible())
-		{*/
-			gid->update(gui::TabBouquetsFind, true);
-			this->action.bouquets_search->setEnabled(true);
-		/*}
-		else
-		{
-			gid->update(gui::TabBouquetsFind, false);
-			this->action.bouquets_search->setEnabled(false);
-		}*/
-	}
-	else
-	{
-		gid->update(gui::TabBouquetsFind, false);
-		this->action.bouquets_search->setDisabled(true);
-	}
-
-	if (list_tree->topLevelItemCount())
-	{
-		gid->update(gui::TabListSelectAll, true);
-		gid->update(gui::TabListFind, true);
-		this->action.list_search->setEnabled(true);
-	}
-	else
-	{
-		gid->update(gui::TabListSelectAll, false);
-		gid->update(gui::TabListFind, false);
-		this->action.list_search->setDisabled(true);
-	}
-
-	gid->update(gui::TabBouquetsFindNext, false);	
-	gid->update(gui::TabListFindNext, false);
-	gid->update(gui::TabListFindPrev, false);
-	gid->update(gui::TabListFindAll, false);
-
-	gid->update(gui::ToolsTunersetsSat, true);
-	gid->update(gui::ToolsTunersetsTerrestrial, true);
-	gid->update(gui::ToolsTunersetsCable, true);
-	gid->update(gui::ToolsTunersetsAtsc, true);
-
-	this->state.gxe = gid->getActionFlags();
-}
-
-void tab::updateCounters(bool current)
-{
-	debug("updateCounters()");
-
-	int counters[5] = {-1, -1, -1, -1, -1};
-
-	if (current)
-	{
-		string curr_chlist = this->state.curr;
-		counters[gui::COUNTER::current] = dbih->index[curr_chlist].size();
-	}
-	else
-	{
-		counters[gui::COUNTER::data] = dbih->index["chs:0"].size();
-		counters[gui::COUNTER::tv] = dbih->index["chs:1"].size();
-		counters[gui::COUNTER::radio] = dbih->index["chs:2"].size();
-		counters[gui::COUNTER::all] = dbih->index["chs"].size();
-	}
-
-	gid->setStatus(counters);
-}
-
-void tab::updateRefBox()
-{
-	debug("updateRefBox()");
-
-	QList<QTreeWidgetItem*> selected = list_tree->selectedItems();
-	
-	if (selected.empty() || selected.count() > 1)
-	{
-		for (auto & field : ref_fields)
-			field.second->setText(selected.empty() ? "< >" : "< ... >");
-	}
-	else
-	{
-		QTreeWidgetItem* item = selected[0];
-		string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
-		QString ssid, refid, txp, tns, bsls, ubls;
-
-		// debug("updateRefBox()", "chid", chid);
-
-		// bouquets tree
-		if (this->state.tc)
-		{
-			string curr_chlist = this->state.curr;
-			e2db::channel_reference chref = dbih->userbouquets[curr_chlist].channels[chid];
-			string crefid = dbih->get_reference_id(chref);
-			refid = QString::fromStdString(crefid);
-		}
-		// services tree
-		else
-		{
-			string crefid = dbih->get_reference_id(chid);
-			refid = QString::fromStdString(crefid);
-		}
-
-		bsls = ubls = "< >";
-
-		unordered_map<string, int> bss;
-		QStringList ubl;
-		for (auto & x : dbih->userbouquets)
-		{
-			if (x.second.channels.count(chid))
-			{
-				if (! x.second.name.empty())
-					ubl.append(QString::fromStdString(x.second.name));
-				bss[x.second.pname] = bss[x.second.pname]++;
-			}
-		}
-		if (! ubl.empty())
-		{
-			ubls = "<p style=\"line-height: 150%\">" + ubl.join("<br>") + "</p>";
-		}
-
-		QStringList bsl;
-		for (auto & x : bss)
-		{
-			if (dbih->bouquets.count(x.first))
-				bsl.append(QString::fromStdString(dbih->bouquets[x.first].nname));
-		}
-		if (! bsl.empty())
-		{
-			bsls = "<p style=\"line-height: 150%\">" + bsl.join("<br>") + "</p>";
-		}
-
-		if (dbih->db.services.count(chid))
-		{
-			e2db::service ch = dbih->db.services[chid];
-			e2db::transponder tx = dbih->db.transponders[ch.txid];
-			string ptxp, psys, ppos;
-
-			ssid = QString::fromStdString(to_string(ch.ssid));
-
-			switch (tx.ttype)
-			{
-				case 's':
-					ptxp = to_string(tx.freq) + '/' + e2db::SAT_POL[tx.pol] + '/' + to_string(tx.sr);
-				break;
-				case 't':
-					ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.tmod] + '/' + e2db::TER_BAND[tx.band];
-				break;
-				case 'c':
-					ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cmod] + '/' + to_string(tx.sr);
-				break;
-				case 'a':
-					ptxp = to_string(tx.freq);
-				break;
-			}
-			txp = QString::fromStdString(ptxp);
-
-			switch (tx.ttype) {
-				case 's':
-					psys = tx.sys != -1 ? e2db::SAT_SYS[tx.sys] : "DVB-S";
-				break;
-				case 't':
-					psys = "DVB-T";
-				break;
-				case 'c':
-					psys = "DVB-C";
-				break;
-				case 'a':
-					psys = "ATSC";
-				break;
-			}
-			if (tx.ttype == 's')
-			{
-				if (dbih->tuners_pos.count(tx.pos))
-				{
-					string tnid = dbih->tuners_pos.at(tx.pos);
-					e2db::tunersets_table tn = dbih->tuners[0].tables[tnid];
-					ppos = tn.name;
-				}
-
-				char cposdeg[6];
-				// %3d.%1d%C
-				std::sprintf(cposdeg, "%.1f", float (std::abs (tx.pos)) / 10);
-				ppos += ' ' + (string (cposdeg) + (tx.pos > 0 ? 'E' : 'W'));
-			}
-
-			tns = "<p style=\"line-height: 125%\">" + QString::fromStdString(psys + "<br>" + ppos) + "</p>";
-		}
-		else
-		{
-			ssid = txp = tns = "< >";
-		}
-
-		ref_fields[LIST_REF::ReferenceID]->setText(refid);
-		ref_fields[LIST_REF::ServiceID]->setText(ssid);
-		ref_fields[LIST_REF::Transponder]->setText(txp);
-		ref_fields[LIST_REF::Userbouquets]->setText(ubls);
-		ref_fields[LIST_REF::Bouquets]->setText(bsls);
-		ref_fields[LIST_REF::Tuner]->setText(tns);
-	}
-}
-
-void tab::showBouquetEditContextMenu(QPoint &pos)
-{
-	debug("showBouquetEditContextMenu()");
-
-	QMenu* bouquet_edit = new QMenu;
-	QAction* bouquet_export = new QAction("Export");
-	// bouquet: tv | radio
-	if (this->state.ti != -1)
-	{
-		bouquet_export->connect(bouquet_export, &QAction::triggered, [=]() { this->exportFile(); });
-	}
-	// userbouquet
-	else
-	{
-		bouquet_edit->addAction("Edit Userbouquet", [=]() { this->editUserbouquet(); });
-		bouquet_edit->addSeparator();
-		bouquet_edit->addAction("Delete", [=]() { this->bouquetItemDelete(); });
-		bouquet_export->connect(bouquet_export, &QAction::triggered, [=]() { this->exportFile(); });
-	}
-	bouquet_edit->addSeparator();
-	bouquet_edit->addAction(bouquet_export);
-
-	bouquet_edit->exec(bouquets_tree->mapToGlobal(pos));
-}
-
-void tab::showListEditContextMenu(QPoint &pos)
-{
-	debug("showListEditContextMenu()");
-
-	int gflags = gid->getActionFlags();
-
-	QMenu* list_edit = new QMenu;
-	list_edit->addAction("Edit Service", [=]() { this->editService(); })->setDisabled(gflags & gui::TabListEditService ? false : true);
-	list_edit->addAction("Edit Marker", [=]() { this->editMarker(); })->setDisabled(gflags & gui::TabListEditMarker ? false : true);
-	list_edit->addSeparator();
-	list_edit->addAction("Cu&t", [=]() { this->listItemCut(); }, QKeySequence::Cut)->setDisabled(gflags & gui::TabListCut ? false : true);
-	list_edit->addAction("&Copy", [=]() { this->listItemCopy(); }, QKeySequence::Copy)->setDisabled(gflags & gui::TabListCopy ? false : true);
-	list_edit->addAction("&Paste", [=]() { this->listItemPaste(); }, QKeySequence::Paste)->setDisabled(gflags & gui::TabListPaste ? false : true);
-	list_edit->addSeparator();
-	list_edit->addAction("&Delete", [=]() { this->listItemDelete(); }, QKeySequence::Delete)->setDisabled(gflags & gui::TabListDelete ? false : true);
-
-	list_edit->exec(list_tree->mapToGlobal(pos));
-}
-
-
-void tab::setTabId(int ttid)
-{
-	debug("setTabId()", "ttid", ttid);
-
-	this->ttid = ttid;
-}
-
-void tab::tabSwitched()
-{
-	gid->setActionFlags(this->state.gxe);
-	updateCounters();
-	updateCounters(true);
-}
-
-void tab::tabChangeName(string filename)
-{
-	debug("tabChangeName()");
-
-	if (ttid != -1)
-		gid->tabChangeName(ttid, filename);
-}
-
-void tab::preset()
-{
-	debug("preset()");
-
-	this->state.nwwr = true;
-	this->state.ovwr = false;
-	this->state.dnd = true;
-	this->state.changed = false;
-	this->state.reindex = false;
-	this->state.refbox = list_reference->isVisible();
-	this->state.tc = 0;
-	this->state.ti = 0;
-	this->state.curr = "";
-	this->state.sort = pair (-1, Qt::AscendingOrder); //C++17
-	this->state.tunersets = false;
-	this->state.ty = -1;
-
-	bouquets_tree->clear();
-	bouquets_tree->setDragEnabled(false);
-	bouquets_tree->setAcceptDrops(false);
-	bouquets_tree->reset();
-
-	list_tree->clear();
-	list_tree->setDragEnabled(false);
-	list_tree->setAcceptDrops(false);
-	list_tree->reset();
-	lheaderv->setSortIndicatorShown(false);
-	lheaderv->setSectionsClickable(false);
-	lheaderv->setSortIndicator(0, Qt::AscendingOrder);
-	cache.clear();
-
-	this->lsr_find.curr = -1;
-	this->lsr_find.match.clear();
-
-	this->action.list_addch->setDisabled(true);
-	this->action.list_addmk->setDisabled(true);
-	this->action.list_newch->setEnabled(true);
-	this->action.list_dnd->setDisabled(true);
-
-	gid->resetStatus();
 }
 
 void tab::profileComboChanged(int index)
@@ -2978,12 +779,89 @@ void tab::ftpDownload()
 		for (auto & x : files)
 			debug("ftpDownload()", "file", x.first + " | " + to_string(x.second.size()));
 
-		this->updateListIndex();
+		this->updateChannelsIndex();
 		this->updateBouquetsIndex();
 		dbih->merge(files);
-		preset();
-		load();
+		main->preset();
+		main->load();
 	}
+}
+
+void tab::updateBouquetsIndex()
+{
+	debug("updateBouquetsIndex()");
+
+	int i = 0, y;
+	int count = main->tree->topLevelItemCount();
+	vector<pair<int, string>> bss;
+	vector<pair<int, string>> ubs;
+	unordered_map<string, vector<string>> index;
+
+	while (i != count)
+	{
+		QTreeWidgetItem* parent = main->tree->topLevelItem(i);
+		QVariantMap tdata = parent->data(0, Qt::UserRole).toMap();
+		string pname = tdata["id"].toString().toStdString();
+		bss.emplace_back(pair (i, pname)); //C++17
+		y = 0;
+
+		if (parent->childCount())
+		{
+			int childs = parent->childCount();
+			while (y != childs)
+			{
+				QTreeWidgetItem* item = parent->child(y);
+				QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
+				string bname = tdata["id"].toString().toStdString();
+				ubs.emplace_back(pair (i, bname)); //C++17
+				index[pname].emplace_back(bname);
+				y++;
+			}
+		}
+		i++;
+	}
+	if (bss != dbih->index["bss"])
+	{
+		dbih->index["bss"].swap(bss);
+	}
+	if (ubs != dbih->index["ubs"])
+	{
+		dbih->index["ubs"].swap(ubs);
+
+		for (auto & x : dbih->bouquets)
+			x.second.userbouquets.swap(index[x.first]);
+	}
+}
+
+void tab::updateChannelsIndex()
+{
+	if (! main->state.changed)
+		return;
+
+	int i = 0, idx = 0;
+	int count = main->list->topLevelItemCount();
+	string curr_chlist = main->state.curr;
+	dbih->index[curr_chlist].clear();
+
+	debug("updateChannelsIndex()", "curr_chlist", curr_chlist);
+
+	int sort_col = main->list->sortColumn();
+	main->list->sortItems(0, Qt::AscendingOrder);
+
+	while (i != count)
+	{
+		QTreeWidgetItem* item = main->list->topLevelItem(i);
+		string chid = item->data(mainView::ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
+		bool marker = item->data(mainView::ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+		idx = marker ? 0 : i + 1;
+		dbih->index[curr_chlist].emplace_back(pair (idx, chid)); //C++17
+		i++;
+	}
+
+	main->list->sortItems(main->state.sort.first, main->state.sort.second);
+	main->list->header()->setSortIndicator(sort_col, main->state.sort.second);
+
+	main->state.changed = false;
 }
 
 void tab::loadSeeds()

@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/gui/tunersets.h
+ * e2-sat-editor/src/gui/viewAbstract.h
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -9,8 +9,15 @@
  * @license GNU GPLv3 License
  */
 
-#ifndef tunersets_h
-#define tunersets_h
+#include <iostream>
+#include <string>
+#include <vector>
+
+using std::string, std::pair, std::vector;
+
+#ifndef viewAbstract_h
+#define viewAbstract_h
+#include <QSettings>
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QTreeWidget>
@@ -26,7 +33,10 @@
 
 namespace e2se_gui
 {
-class tunersets : protected e2se::log_factory
+class gui;
+class tab;
+
+class viewAbstract : protected e2se::log_factory
 {
 	public:
 		enum LIST_FIND {
@@ -36,70 +46,13 @@ class tunersets : protected e2se::log_factory
 			all
 		};
 
-		enum TREE_ROW_ROLE {
-			tnid,
-			trow1,
-			trow2,
-			name = TREE_ROW_ROLE::trow1,
-			pos = TREE_ROW_ROLE::trow2,
-			country = TREE_ROW_ROLE::trow2
-		};
-
-		enum ITEM_DATA_ROLE {
-			idx,
-			trid,
-		};
-
-		enum ITEM_ROW_ROLE {
-			x,
-			debug_trid,
-			combo,
-			row3,
-			row4,
-			row5,
-			row6,
-			row7,
-			row8,
-			row9,
-			rowA,
-			rowB,
-			rowC,
-			s_freq = ITEM_ROW_ROLE::row3,
-			s_pol = ITEM_ROW_ROLE::row4,
-			s_sr = ITEM_ROW_ROLE::row5,
-			s_fec = ITEM_ROW_ROLE::row6,
-			s_sys = ITEM_ROW_ROLE::row7,
-			s_mod = ITEM_ROW_ROLE::row8,
-			s_inv = ITEM_ROW_ROLE::row9,
-			s_pil = ITEM_ROW_ROLE::rowA,
-			s_rol = ITEM_ROW_ROLE::rowB,
-			t_freq = ITEM_ROW_ROLE::row3,
-			t_tmod = ITEM_ROW_ROLE::row4,
-			t_band = ITEM_ROW_ROLE::row5,
-			t_sys = ITEM_ROW_ROLE::row6,
-			t_tmx = ITEM_ROW_ROLE::row7,
-			t_hpfec = ITEM_ROW_ROLE::row8,
-			t_lpfec = ITEM_ROW_ROLE::row9,
-			t_inv = ITEM_ROW_ROLE::rowA,
-			t_guard = ITEM_ROW_ROLE::rowB,
-			t_hier = ITEM_ROW_ROLE::rowC,
-			c_freq = ITEM_ROW_ROLE::row3,
-			c_cmod = ITEM_ROW_ROLE::row4,
-			c_sr = ITEM_ROW_ROLE::row5,
-			c_cfec = ITEM_ROW_ROLE::row6,
-			c_inv = ITEM_ROW_ROLE::row7,
-			c_sys = ITEM_ROW_ROLE::row8,
-			a_freq = ITEM_ROW_ROLE::row3,
-			a_amod = ITEM_ROW_ROLE::row4,
-			a_sys = ITEM_ROW_ROLE::row5
-		};
-
-		tunersets(e2db* dbih, int ytype, e2se::logger::session* log);
-		void layout();
+		void setDataSource(e2db* dbih);
+		virtual void layout() {};
+		void searchLayout();
+		virtual void load() {};
+		virtual void preset() {};
 		void treeItemChanged();
-		void load();
-		void populate();
-		void trickySortByColumn(int column);
+		void sortByColumn(int column);
 		void treeSearchHide();
 		void treeSearchShow();
 		void treeSearchToggle();
@@ -115,20 +68,32 @@ class tunersets : protected e2se::log_factory
 		void listFindHighlightToggle();
 		void listFindClear(bool hidden = true);
 		void listFindReset();
+		virtual void listItemCut() {};
+		virtual void listItemCopy(bool cut = false) {};
+		virtual void listItemPaste() {};
+		virtual void listItemDelete() {};
+		virtual void listItemSelectAll() {};
+		virtual void putListItems(vector<QString> items) {};
+		virtual void showTreeEditContextMenu(QPoint &pos) {};
+		virtual void showListEditContextMenu(QPoint &pos) {};
+		virtual void updateConnectors() {};
+		virtual void updateCounters(bool current = false) {};
+
 		QWidget* widget;
 		QSettings* sets;
-	protected:
-		QVBoxLayout* tbox;
-		QVBoxLayout* lbox;
 		QTreeWidget* list;
 		QTreeWidget* tree;
-	private:
+
 		struct ats
 		{
 			QAction* list_newtr;
 			QPushButton* tree_search;
 			QPushButton* list_search;
 		} action;
+
+		// stored gui connector flags
+		int gxe;
+	protected:
 		struct search
 		{
 			QComboBox* filter;
@@ -139,6 +104,7 @@ class tunersets : protected e2se::log_factory
 			QPushButton* highlight;
 			QPushButton* close;
 		};
+
 		struct find
 		{
 			LIST_FIND flag;
@@ -149,14 +115,18 @@ class tunersets : protected e2se::log_factory
 			QModelIndexList match;
 			QElapsedTimer timer;
 		};
-		e2db* dbih;
-		// tunersets type
-		int yx;
+
+		QVBoxLayout* tbox;
+		QVBoxLayout* lbox;
 		QWidget* tree_search;
 		QWidget* list_search;
 		search tsr_search;
 		search lsr_search;
 		find lsr_find;
+		e2db* dbih = nullptr;
+	private:
+		gui* gid;
+		tab* twid;
 };
 }
-#endif /* tunersets_h */
+#endif /* viewAbstract_h */

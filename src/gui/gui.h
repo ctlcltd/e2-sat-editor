@@ -49,10 +49,10 @@ class gui : protected e2se::log_factory
 			FileExport = 0x00000020,
 			FilePrint = 0x00000040,
 			FilePrintAll = 0x00000080,
-			TabBouquetsEdit = 0x00000100,
-			TabBouquetsDelete = 0x00000200,
-			TabBouquetsFind = 0x00000400,
-			TabBouquetsFindNext = 0x00000800,
+			TabTreeEdit = 0x00000100,
+			TabTreeDelete = 0x00000200,
+			TabTreeFind = 0x00000400,
+			TabTreeFindNext = 0x00000800,
 			TabListEditService = 0x00001000,
 			TabListEditMarker = 0x00002000,
 			TabListDelete = 0x00004000,
@@ -77,8 +77,8 @@ class gui : protected e2se::log_factory
 		};
 
 		enum TAB_ATS {
-			BouquetsFind = GUI_CXE::TabBouquetsFind,
-			BouquetsFindNext = GUI_CXE::TabBouquetsFindNext,
+			TreeFind = GUI_CXE::TabTreeFind,
+			TreeFindNext = GUI_CXE::TabTreeFindNext,
 			ListCut = GUI_CXE::TabListCut,
 			ListCopy = GUI_CXE::TabListCopy,
 			ListPaste = GUI_CXE::TabListPaste,
@@ -95,6 +95,12 @@ class gui : protected e2se::log_factory
 			Print = GUI_CXE::FilePrint,
 			PrintAll = GUI_CXE::FilePrintAll,
 			Inspector = 0x0
+		};
+
+		enum TAB_VIEW {
+			main,
+			tunersets,
+			channelBook
 		};
 
 		enum GUI_DPORTS {
@@ -120,6 +126,8 @@ class gui : protected e2se::log_factory
 		void statusCtl();
 		void windowChanged();
 		int newTab(string filename = "");
+		int openTab(TAB_VIEW view);
+		int openTab(TAB_VIEW view, int arg);
 		void closeTab(int index);
 		void closeAllTabs();
 		void tabChanged(int index);
