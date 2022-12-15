@@ -29,7 +29,6 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map, std::bi
 #include "e2db_gui.h"
 #include "ftpcom_gui.h"
 #include "mainView.h"
-#include "tunersetsView.h"
 #include "viewAbstract.h"
 #include "tools.h"
 
@@ -47,11 +46,13 @@ class tab : protected e2se::log_factory
 		vector<tab*> children();
 		void setTabId(int ttid);
 		int getTabId();
+		int getTabView();
 		string getFilename();
 		void tabSwitched();
 		void tabChangeName(string filename = "");
 		void viewMain();
 		void viewTunersets(tab* parent, int ytype);
+		void viewChannelBook(tab* parent);
 		void load();
 		void layout();
 		void newFile();
@@ -86,8 +87,6 @@ class tab : protected e2se::log_factory
 			bool ovwr;
 			// stored gui connector flags
 			bitset<256> gxe;
-			// tools tunerset shown
-			bool tunersets;
 			// tools tunersets current type
 			int ty;
 		} state;

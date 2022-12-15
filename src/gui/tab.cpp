@@ -34,10 +34,11 @@
 #include "tab.h"
 #include "theme.h"
 #include "gui.h"
+#include "tunersetsView.h"
+#include "channelBookView.h"
 #include "editBouquet.h"
 #include "editService.h"
 #include "editMarker.h"
-#include "channelBook.h"
 #include "ftpcom_gui.h"
 #include "printable.h"
 
@@ -91,6 +92,13 @@ int tab::getTabId()
 	return this->ttid;
 }
 
+int tab::getTabView()
+{
+	debug("getTabView()");
+
+	return this->ttv;
+}
+
 string tab::getFilename()
 {
 	return this->filename;
@@ -139,6 +147,25 @@ void tab::viewTunersets(tab* parent, int ytype)
 
 	this->ttv = gui::TAB_VIEW::tunersets;
 	this->state.ty = ytype;
+
+	layout();
+	
+	this->root->addWidget(view->widget, 0, 0, 1, 1);
+
+	view->setDataSource(this->dbih);
+	view->load();
+}
+
+void tab::viewChannelBook(tab* parent)
+{
+	debug("viewChannelBook()");
+
+	this->dbih = parent->dbih;
+	this->tools = parent->tools;
+	this->main = parent->main;
+	this->view = new channelBookView(gid, this, cwid, this->log->log);
+
+	this->ttv = gui::TAB_VIEW::channelBook;
 
 	layout();
 	
@@ -664,6 +691,9 @@ void tab::actionCall(int action)
 			view->listFindPerform(viewAbstract::LIST_FIND::all);
 		break;
 
+		case gui::TAB_ATS::ShowChannelBook:
+			gid->openTab(gui::TAB_VIEW::channelBook);
+		break;
 		case gui::TAB_ATS::EditTunersetsSat:
 			gid->openTab(gui::TAB_VIEW::tunersets, e2db::YTYPE::sat);
 		break;

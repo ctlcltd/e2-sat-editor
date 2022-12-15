@@ -84,9 +84,9 @@ void gui::layout()
 	this->mcnt = new QHBoxLayout;
 	this->mstatusb = new QHBoxLayout;
 
-	menuCtl();
-	statusCtl();
-	tabCtl();
+	menuLayout();
+	statusLayout();
+	tabLayout();
 
 	mfrm->setContentsMargins(0, 0, 0, 0);
 	mfrm->setSpacing(0);
@@ -95,9 +95,9 @@ void gui::layout()
 	mfrm->addLayout(mstatusb, 1, 0);
 }
 
-void gui::menuCtl()
+void gui::menuLayout()
 {
-	debug("menuCtl()");
+	debug("menuLayout()");
 
 	QMenuBar* menu = new QMenuBar;
 	menu->setNativeMenuBar(true);
@@ -154,6 +154,8 @@ void gui::menuCtl()
 	gmenu[GUI_CXE::TunersetsCable] = mtool->addAction("Edit cables.xml", [=]() { this->tabAction(TAB_ATS::EditTunersetsCable); });
 	gmenu[GUI_CXE::TunersetsAtsc] = mtool->addAction("Edit atsc.xml", [=]() { this->tabAction(TAB_ATS::EditTunersetsAtsc); });
 	mtool->addSeparator();
+	gmenu[GUI_CXE::OpenChannelBook] = mtool->addAction("Show channel book", [=]() { this->tabAction(TAB_ATS::ShowChannelBook); });
+	mtool->addSeparator();
 	gmenu[GUI_CXE::ToolsServicesOrder] = mtool->addAction("Order services A-Z", todo);
 	gmenu[GUI_CXE::ToolsBouquetsOrder] = mtool->addAction("Order userbouquets A-Z", todo);
 	gmenu[GUI_CXE::ToolsServicesCache] = mtool->addAction("Remove cached data from services", todo);
@@ -179,9 +181,9 @@ void gui::menuCtl()
 	this->mwtabs = mwtabs;
 }
 
-void gui::tabCtl()
+void gui::tabLayout()
 {
-	debug("tabCtl()");
+	debug("tabLayout()");
 
 	this->twid = new QTabWidget(mwid);
 	twid->setTabsClosable(true);
@@ -219,9 +221,9 @@ void gui::tabCtl()
 }
 
 //TODO FIX intl. rtl
-void gui::statusCtl()
+void gui::statusLayout()
 {
-	debug("statusCtl()");
+	debug("statusLayout()");
 
 	this->sbwid = new QStatusBar(mwid);
 	this->sbwidl = new QLabel;
@@ -237,23 +239,32 @@ void gui::statusCtl()
 	mstatusb->addWidget(sbwid);
 }
 
-void gui::windowChanged()
+void gui::tabViewSwitch(int v)
 {
-	// debug("windowChanged()");
+	tabViewSwitch(v, NULL);
+}
 
-	// main window busy
-	if (mroot->activeWindow())
+void gui::tabViewSwitch(int v, int arg)
+{
+	debug("tabViewSwitch()", "v", v);
+
+	switch (v)
 	{
-		debug("windowChanged()", "mwind", "busy");
-		this->state.xe = this->state.ex;
-		update();
-	}
-	// main window idle
-	else
-	{
-		debug("windowChanged()", "mwind", "idle");
-		this->state.ex = this->state.xe;
-		update(GUI_CXE::idle);
+		case TAB_VIEW::main:
+			gmenu[GUI_CXE::TabListFind]->setText("&Find Channel");
+			gmenu[GUI_CXE::TabTreeFind]->setText("Find &Bouquet");
+			gmenu[GUI_CXE::TabTreeFindNext]->setText("Find N&ext Bouquet");
+		break;
+		case TAB_VIEW::tunersets:
+			gmenu[GUI_CXE::TabListFind]->setText("&Find Transponder");
+			gmenu[GUI_CXE::TabTreeFind]->setText("Find &Position");
+			gmenu[GUI_CXE::TabTreeFindNext]->setText("Find N&ext Position");
+		break;
+		case TAB_VIEW::channelBook:
+			gmenu[GUI_CXE::TabListFind]->setText("&Find Channel");
+			gmenu[GUI_CXE::TabTreeFind]->setText("Find &Bouquet");
+			gmenu[GUI_CXE::TabTreeFindNext]->setText("Find N&ext Bouquet");
+		break;
 	}
 }
 
@@ -322,14 +333,18 @@ int gui::openTab(TAB_VIEW view, int arg)
 		case TAB_VIEW::main:
 			ttab->viewMain();
 		break;
-
 		case TAB_VIEW::tunersets:
 			ttab->viewTunersets(parent, arg);
 
 			ttname.append(" - ");
-			ttname.append("Tunersets");
+			ttname.append("Edit settings");
 		break;
+		case TAB_VIEW::channelBook:
+			ttab->viewChannelBook(parent);
 
+			ttname.append(" - ");
+			ttname.append("Channel book");
+		break;
 		default:
 			return -1;
 	}
@@ -412,6 +427,26 @@ void gui::closeAllTabs()
 	launcher();
 }
 
+void gui::windowChanged()
+{
+	// debug("windowChanged()");
+
+	// main window busy
+	if (mroot->activeWindow())
+	{
+		debug("windowChanged()", "mwind", "busy");
+		this->state.xe = this->state.ex;
+		update();
+	}
+	// main window idle
+	else
+	{
+		debug("windowChanged()", "mwind", "idle");
+		this->state.ex = this->state.xe;
+		update(GUI_CXE::idle);
+	}
+}
+
 void gui::tabChanged(int index)
 {
 	debug("tabChanged()", "index", index);
@@ -421,6 +456,14 @@ void gui::tabChanged(int index)
 	{
 		ttabs[ttid]->tabSwitched();
 		ttmenu[ttid]->setChecked(true);
+
+		tab* ttab = ttabs[ttid];
+
+		if (ttab != nullptr)
+		{
+			int ttv = ttab->getTabView();
+			tabViewSwitch(ttv);
+		}
 
 		QTabBar* ttabbar = twid->tabBar();
 		for (unsigned int i = 0; i < ttabs.size(); i++)
@@ -434,7 +477,7 @@ void gui::tabChanged(int index)
 					ttlabel->setForegroundRole(QPalette::ButtonText);
 			}
 		}
-		tab* ttab = ttabs[ttid];
+
 		if (ttab != nullptr)
 		{
 			int index = twid->indexOf(ttab->widget);

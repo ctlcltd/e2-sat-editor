@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/gui/channelBook.cpp
+ * e2-sat-editor/src/gui/channelBookView.cpp
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -18,7 +18,7 @@
 #include <QHeaderView>
 #include <QLabel>
 
-#include "channelBook.h"
+#include "channelBookView.h"
 #include "theme.h"
 
 using std::to_string;
@@ -27,32 +27,35 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-channelBook::channelBook(e2db* dbih, e2se::logger::session* log)
+channelBookView::channelBookView(e2db* dbih, e2se::logger::session* log)
 {
-	this->log = new logger(log, "channelBook");
-	debug("channelBook()");
+	this->log = new logger(log, "channelBookView");
+	debug("channelBookView()");
 
 	this->dbih = dbih;
 	this->sets = new QSettings;
-
-	QGridLayout* afrm = new QGridLayout();
+	this->widget = new QWidget;
 
 	side();
 	layout();
-
-	afrm->addWidget(lwid, 0, 0);
-	afrm->addLayout(awid, 0, 1);
-	afrm->setColumnMinimumWidth(0, 140);
-	afrm->setColumnStretch(0, 1);
-	afrm->setColumnStretch(1, 5);
-	afrm->setSpacing(0);
-	afrm->setContentsMargins(0, 0, 0, 0);
-
-	this->widget = new QWidget;
-	widget->setLayout(afrm);
 }
 
-void channelBook::side()
+channelBookView::channelBookView(gui* gid, tab* twid, QWidget* wid, e2se::logger::session* log)
+{
+	this->log = new logger(log, "channelBookView");
+	debug("channelBookView()");
+
+	this->gid = gid;
+	this->twid = twid;
+	this->cwid = wid;
+	this->sets = new QSettings;
+	this->widget = new QWidget;
+
+	side();
+	layout();
+}
+
+void channelBookView::side()
 {
 	debug("side()");
 
@@ -79,9 +82,12 @@ void channelBook::side()
 	lwid->connect(lwid, &QListWidget::currentRowChanged, [=](int index) { this->sideRowChanged(index); });
 }
 
-void channelBook::layout()
+//TODO FIX tabv broken when tooling
+void channelBookView::layout()
 {
 	debug("layout()");
+
+	QGridLayout* frm = new QGridLayout(widget);
 
 	this->awid = new QHBoxLayout;
 	awid->setContentsMargins(0, 0, 0, 0);
@@ -134,7 +140,7 @@ void channelBook::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::chpos, 120);	// Position
 	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 65);		// System
 
-	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->trickySortByColumn(column); });
+	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->sortByColumn(column); });
 	tree->connect(tree, &QTreeWidget::currentItemChanged, [=]() { this->populate(); });
 	tabv->connect(tabv, &QTabBar::currentChanged, [=]() { this->populate(); });
 
@@ -146,169 +152,24 @@ void channelBook::layout()
 
 	awid->addWidget(tabv);
 	awid->addWidget(swid);
+
+	frm->addWidget(lwid, 0, 0);
+	frm->addLayout(awid, 0, 1);
+	frm->setColumnMinimumWidth(0, 140);
+	frm->setColumnStretch(0, 1);
+	frm->setColumnStretch(1, 5);
+	frm->setSpacing(0);
+	frm->setContentsMargins(0, 0, 0, 0);
 }
 
-void channelBook::sideRowChanged(int index)
+void channelBookView::load()
 {
-	debug("sideRowChanged()", "index", index);
+	debug("load()");
 
-	tree->clearSelection();
-	tree->scrollToTop();
-	tree->clear();
-	list->clearSelection();
-	list->scrollToTop();
-	list->clear();
-
-	switch (index)
-	{
-		case views::Services:
-			tabv->setHidden(true);
-			tree->setHidden(true);
-			list->setVisible(true);
-			vx = 2;
-		break;
-		case views::A_Z:
-			tabv->setVisible(true);
-			tree->setHidden(true);
-			list->setVisible(true);
-			vx = 0;
-		break;
-		default:
-			tabv->setHidden(true);
-			tree->setVisible(true);
-			list->setVisible(true);
-			vx = 1;
-	}
-
-	stacker(index);
+	sideRowChanged(0);
 }
 
-void channelBook::stacker(int vv)
-{
-	debug("stacker()", "index", vv);
-
-	switch (vv)
-	{
-		case views::Services:
-			this->data = dbih->get_services_index();
-		break;
-		case views::A_Z:
-			this->data = dbih->get_az_index();
-		break;
-		case views::Bouquets:
-			this->data = dbih->get_bouquets_index();
-		break;
-		case views::Satellites:
-			this->data = dbih->get_transponders_index();
-		break;
-		case views::Providers:
-			this->data = dbih->get_packages_index();
-		break;
-		case views::Resolution:
-			this->data = dbih->get_resolution_index();
-		break;
-		case views::Encryption:
-			this->data = dbih->get_encryption_index();
-		break;
-	}
-
-	QString index;
-	QString name;
-	QTreeWidgetItem* item;
-	QTreeWidgetItem* subitem;
-
-	for (auto & q : data)
-	{
-		//TODO pos value 0 with terrestrial, cable, atsc
-		if (vv == views::Satellites)
-		{
-			int pos = std::stoi(q.first);
-			if (dbih->tuners_pos.count(pos))
-			{
-				string tnid = dbih->tuners_pos.at(pos);
-				e2db::tunersets_table tn = dbih->tuners[0].tables[tnid];
-				name = QString::fromStdString(tn.name);
-			}
-			else
-			{
-				name = QString::fromStdString(q.first);
-			}
-			item = new QTreeWidgetItem({name});
-
-			for (auto & x : q.second)
-			{
-				e2db::transponder tx = dbih->db.transponders[x.second];
-				QString subindex = QString::fromStdString(x.second);
-				string ptxp;
-				switch (tx.ttype)
-				{
-					case 's':
-						ptxp = to_string(tx.freq) + '/' + e2db::SAT_POL[tx.pol] + '/' + to_string(tx.sr);
-					break;
-					case 't':
-						ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.tmod] + '/' + e2db::TER_BAND[tx.band];
-					break;
-					case 'c':
-						ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cmod] + '/' + to_string(tx.sr);
-					break;
-					case 'a':
-						ptxp = to_string(tx.freq);
-					break;
-				}
-				QString txp = QString::fromStdString(ptxp);
-				subitem = new QTreeWidgetItem(item, {txp});
-				subitem->setData(0, Qt::UserRole, subindex);
-				tree->addTopLevelItem(subitem);
-			}
-		}
-		//TODO sort order: TV, Radio
-		else if (vv == views::Bouquets)
-		{
-			e2db::bouquet bs = dbih->bouquets[q.first];
-			name = QString::fromStdString(bs.nname.empty() ? bs.name : bs.nname);
-			item = new QTreeWidgetItem({name});
-
-			for (string & ubname : bs.userbouquets)
-			{
-				e2db::userbouquet ub = dbih->userbouquets[ubname];
-				QString subindex = QString::fromStdString(ubname);
-				QString name = QString::fromStdString(ub.name);
-				subitem = new QTreeWidgetItem(item, {name});
-				subitem->setData(0, Qt::UserRole, subindex);
-				tree->addTopLevelItem(subitem);
-			}
-		}
-		else if (vv == views::Resolution)
-		{
-			int stype = std::stoi(q.first);
-			name = QString::fromStdString(e2db::STYPE_EXT_LABEL.count(stype) ? e2db::STYPE_EXT_LABEL.at(stype) : e2db::STYPE_EXT_LABEL.at(e2db::STYPE::data));
-			name.append(QString::fromStdString("\tid: " + q.first));
-			item = new QTreeWidgetItem({name});
-		}
-		else
-		{
-			name = QString::fromStdString(q.first);
-			item = new QTreeWidgetItem({name});
-		}
-
-		index = QString::fromStdString(q.first);
-		item->setData(0, Qt::UserRole, index);
-		tree->addTopLevelItem(item);
-	}
-	if (vv == views::Satellites)
-	{
-		this->data = dbih->get_channels_index();
-	}
-	else if (vv == views::Bouquets)
-	{
-		this->data.merge(dbih->get_userbouquets_index()); //C++17
-		tree->expandAll();
-	}
-
-	populate();
-}
-
-void channelBook::populate()
+void channelBookView::populate()
 {
 	string curr = "";
 
@@ -435,34 +296,167 @@ void channelBook::populate()
 	}
 }
 
-void channelBook::trickySortByColumn(int column)
+void channelBookView::sideRowChanged(int index)
 {
-	debug("trickySortByColumn()", "column", column);
+	debug("sideRowChanged()", "index", index);
 
-	Qt::SortOrder order = list->header()->sortIndicatorOrder();
-	column = column == 1 ? 0 : column;
+	tree->clearSelection();
+	tree->scrollToTop();
+	tree->clear();
+	list->clearSelection();
+	list->scrollToTop();
+	list->clear();
 
-	// sorting by
-	if (column)
+	switch (index)
 	{
-		list->sortItems(column, order);
-		list->header()->setSortIndicatorShown(true);
+		case views::Services:
+			tabv->setHidden(true);
+			tree->setHidden(true);
+			list->setVisible(true);
+			vx = 2;
+		break;
+		case views::A_Z:
+			tabv->setVisible(true);
+			tree->setHidden(true);
+			list->setVisible(true);
+			vx = 0;
+		break;
+		default:
+			tabv->setHidden(true);
+			tree->setVisible(true);
+			list->setVisible(true);
+			vx = 1;
 	}
-	// sorting default
-	else
-	{
-		list->sortItems(column, order);
-		list->header()->setSortIndicator(1, order);
 
-		// default column 0|asc
-		if (order == Qt::AscendingOrder)
-			list->header()->setSortIndicatorShown(false);
-		else
-			list->header()->setSortIndicatorShown(true);
-	}
+	stacker(index);
 }
 
-vector<QString> channelBook::getSelected()
+void channelBookView::stacker(int vv)
+{
+	debug("stacker()", "index", vv);
+
+	switch (vv)
+	{
+		case views::Services:
+			this->data = dbih->get_services_index();
+		break;
+		case views::A_Z:
+			this->data = dbih->get_az_index();
+		break;
+		case views::Bouquets:
+			this->data = dbih->get_bouquets_index();
+		break;
+		case views::Satellites:
+			this->data = dbih->get_transponders_index();
+		break;
+		case views::Providers:
+			this->data = dbih->get_packages_index();
+		break;
+		case views::Resolution:
+			this->data = dbih->get_resolution_index();
+		break;
+		case views::Encryption:
+			this->data = dbih->get_encryption_index();
+		break;
+	}
+
+	QString index;
+	QString name;
+	QTreeWidgetItem* item;
+	QTreeWidgetItem* subitem;
+
+	for (auto & q : data)
+	{
+		//TODO pos value 0 with terrestrial, cable, atsc
+		if (vv == views::Satellites)
+		{
+			int pos = std::stoi(q.first);
+			if (dbih->tuners_pos.count(pos))
+			{
+				string tnid = dbih->tuners_pos.at(pos);
+				e2db::tunersets_table tn = dbih->tuners[0].tables[tnid];
+				name = QString::fromStdString(tn.name);
+			}
+			else
+			{
+				name = QString::fromStdString(q.first);
+			}
+			item = new QTreeWidgetItem({name});
+
+			for (auto & x : q.second)
+			{
+				e2db::transponder tx = dbih->db.transponders[x.second];
+				QString subindex = QString::fromStdString(x.second);
+				string ptxp;
+				switch (tx.ttype)
+				{
+					case 's':
+						ptxp = to_string(tx.freq) + '/' + e2db::SAT_POL[tx.pol] + '/' + to_string(tx.sr);
+					break;
+					case 't':
+						ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.tmod] + '/' + e2db::TER_BAND[tx.band];
+					break;
+					case 'c':
+						ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cmod] + '/' + to_string(tx.sr);
+					break;
+					case 'a':
+						ptxp = to_string(tx.freq);
+					break;
+				}
+				QString txp = QString::fromStdString(ptxp);
+				subitem = new QTreeWidgetItem(item, {txp});
+				subitem->setData(0, Qt::UserRole, subindex);
+				tree->addTopLevelItem(subitem);
+			}
+		}
+		//TODO sort order: TV, Radio
+		else if (vv == views::Bouquets)
+		{
+			e2db::bouquet bs = dbih->bouquets[q.first];
+			name = QString::fromStdString(bs.nname.empty() ? bs.name : bs.nname);
+			item = new QTreeWidgetItem({name});
+
+			for (string & ubname : bs.userbouquets)
+			{
+				e2db::userbouquet ub = dbih->userbouquets[ubname];
+				QString subindex = QString::fromStdString(ubname);
+				QString name = QString::fromStdString(ub.name);
+				subitem = new QTreeWidgetItem(item, {name});
+				subitem->setData(0, Qt::UserRole, subindex);
+				tree->addTopLevelItem(subitem);
+			}
+		}
+		else if (vv == views::Resolution)
+		{
+			int stype = std::stoi(q.first);
+			name = QString::fromStdString(e2db::STYPE_EXT_LABEL.count(stype) ? e2db::STYPE_EXT_LABEL.at(stype) : e2db::STYPE_EXT_LABEL.at(e2db::STYPE::data));
+			name.append(QString::fromStdString("\tid: " + q.first));
+			item = new QTreeWidgetItem({name});
+		}
+		else
+		{
+			name = QString::fromStdString(q.first);
+			item = new QTreeWidgetItem({name});
+		}
+
+		index = QString::fromStdString(q.first);
+		item->setData(0, Qt::UserRole, index);
+		tree->addTopLevelItem(item);
+	}
+	if (vv == views::Satellites)
+	{
+		this->data = dbih->get_channels_index();
+	}
+	else if (vv == views::Bouquets)
+	{
+		this->data.merge(dbih->get_userbouquets_index()); //C++17
+		tree->expandAll();
+	}
+
+	populate();
+}
+
+vector<QString> channelBookView::getSelected()
 {
 	debug("getSelected()");
 

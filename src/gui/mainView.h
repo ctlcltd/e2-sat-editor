@@ -129,10 +129,6 @@ class mainView : public viewAbstract
 
 		struct sts
 		{
-			// new file
-			bool nwwr;
-			// overwrite file
-			bool ovwr;
 			// drag-and-drop (default sort 0|asc)
 			bool dnd;
 			// post update index

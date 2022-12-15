@@ -420,6 +420,8 @@ void tunersetsView::populate()
 void tunersetsView::preset()
 {
 	debug("preset()");
+
+	
 }
 
 void tunersetsView::treeItemChanged()

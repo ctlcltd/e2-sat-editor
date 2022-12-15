@@ -73,6 +73,7 @@ class gui : protected e2se::log_factory
 			TunersetsTerrestrial = 52,
 			TunersetsCable = 53,
 			TunersetsAtsc = 54,
+			OpenChannelBook = 70,
 			ToolsServicesOrder = 88,
 			ToolsServicesCache = 83,
 			ToolsBouquetsOrder = 98,
@@ -104,6 +105,9 @@ class gui : protected e2se::log_factory
 		};
 
 		enum TAB_ATS {
+			Print = GUI_CXE::FilePrint,
+			PrintAll = GUI_CXE::FilePrintAll,
+			Inspector = GUI_CXE::ToolsInspector,
 			TreeFind = GUI_CXE::TabTreeFind,
 			TreeFindNext = GUI_CXE::TabTreeFindNext,
 			ListCut = GUI_CXE::TabListCut,
@@ -119,9 +123,7 @@ class gui : protected e2se::log_factory
 			EditTunersetsTerrestrial = GUI_CXE::TunersetsTerrestrial,
 			EditTunersetsCable = GUI_CXE::TunersetsCable,
 			EditTunersetsAtsc = GUI_CXE::TunersetsAtsc,
-			Print = GUI_CXE::FilePrint,
-			PrintAll = GUI_CXE::FilePrintAll,
-			Inspector = GUI_CXE::ToolsInspector
+			ShowChannelBook = GUI_CXE::OpenChannelBook
 		};
 
 		enum TAB_VIEW {
@@ -148,15 +150,17 @@ class gui : protected e2se::log_factory
 		gui(int argc, char* argv[], e2se::logger::session* log);
 		~gui();
 		void layout();
-		void menuCtl();
-		void tabCtl();
-		void statusCtl();
-		void windowChanged();
+		void menuLayout();
+		void tabLayout();
+		void statusLayout();
+		void tabViewSwitch(int v);
+		void tabViewSwitch(int v, int arg);
 		int newTab(string filename = "");
 		int openTab(TAB_VIEW view);
 		int openTab(TAB_VIEW view, int arg);
 		void closeTab(int index);
 		void closeAllTabs();
+		void windowChanged();
 		void tabChanged(int index);
 		void tabMoved(int from, int to);
 		string openFileDialog();

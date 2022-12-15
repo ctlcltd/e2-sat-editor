@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/gui/channelBook.h
+ * e2-sat-editor/src/gui/channelBookView.h
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -15,20 +15,22 @@
 
 using std::string, std::pair, std::vector, std::map;
 
-#ifndef channelBook_h
-#define channelBook_h
+#ifndef channelBookView_h
+#define channelBookView_h
 #include <QWidget>
 #include <QString>
 #include <QHBoxLayout>
 #include <QListWidget>
 #include <QTreeWidget>
 
-#include "../logger/logger.h"
-#include "e2db_gui.h"
+#include "viewAbstract.h"
 
 namespace e2se_gui
 {
-class channelBook : protected e2se::log_factory
+class gui;
+class tab;
+
+class channelBookView : public viewAbstract
 {
 	public:
 		enum ITEM_ROW_ROLE {
@@ -42,22 +44,17 @@ class channelBook : protected e2se::log_factory
 			chsys
 		};
 
-		channelBook(e2db* dbih, e2se::logger::session* log);
+		channelBookView(e2db* dbih, e2se::logger::session* log);
+		channelBookView(gui* gid, tab* twid, QWidget* wid, e2se::logger::session* log);
 		void side();
 		void layout();
+		void load();
+		void populate();
 		void sideRowChanged(int index);
 		void stacker(int vv);
-		void populate();
-		void trickySortByColumn(int column);
 		vector<QString> getSelected();
-		QWidget* widget;
 		QSettings* sets;
 	protected:
-		QListWidget* lwid;
-		QHBoxLayout* awid;
-		QTreeWidget* list;
-		QTreeWidget* tree;
-		QTabBar* tabv;
 		enum views {
 			Services,
 			Bouquets,
@@ -67,9 +64,15 @@ class channelBook : protected e2se::log_factory
 			Encryption,
 			A_Z
 		};
+
+		QListWidget* lwid;
+		QHBoxLayout* awid;
+		QTabBar* tabv;
 		map<string, vector<pair<int, string>>> data;
 	private:
-		e2db* dbih;
+		gui* gid;
+		tab* twid;
+		QWidget* cwid;
 		// view selector
 		// 0 tabv | list
 		// 1 tree | list
@@ -77,4 +80,4 @@ class channelBook : protected e2se::log_factory
 		int vx;
 };
 }
-#endif /* channelBook_h */
+#endif /* channelBookView_h */

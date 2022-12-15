@@ -42,7 +42,7 @@
 #include "editBouquet.h"
 #include "editService.h"
 #include "editMarker.h"
-#include "channelBook.h"
+#include "channelBookView.h"
 
 using std::to_string, std::sort;
 using namespace e2se;
@@ -552,8 +552,6 @@ void mainView::preset()
 {
 	debug("preset()");
 
-	this->state.nwwr = true;
-	this->state.ovwr = false;
 	this->state.dnd = true;
 	this->state.changed = false;
 	this->state.reindex = false;
@@ -988,12 +986,12 @@ void mainView::addChannel()
 {
 	debug("addChannel()");
 
-	e2se_gui::channelBook* cb = new e2se_gui::channelBook(dbih, this->log->log);
+	e2se_gui::channelBookView* cbv = new e2se_gui::channelBookView(dbih, this->log->log);
 	string curr_chlist = this->state.curr;
 	QDialog* dial = new QDialog(cwid);
 	dial->setMinimumSize(760, 420);
 	dial->setWindowTitle("Add Channel");
-	dial->connect(dial, &QDialog::finished, [=]() { delete cb; delete dial; });
+	dial->connect(dial, &QDialog::finished, [=]() { delete cbv; delete dial; });
 
 	QGridLayout* layout = new QGridLayout;
 	QToolBar* bottom_toolbar = new QToolBar;
@@ -1003,9 +1001,9 @@ void mainView::addChannel()
 	QWidget* bottom_spacer = new QWidget;
 	bottom_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	bottom_toolbar->addWidget(bottom_spacer);
-	bottom_toolbar->addAction(theme::icon("add"), "Add", [=]() { auto selected = cb->getSelected(); this->putListItems(selected); });
+	bottom_toolbar->addAction(theme::icon("add"), "Add", [=]() { auto selected = cbv->getSelected(); this->putListItems(selected); });
 
-	layout->addWidget(cb->widget);
+	layout->addWidget(cbv->widget);
 	layout->addWidget(bottom_toolbar);
 	layout->setContentsMargins(0, 0, 0, 0);
 	dial->setLayout(layout);
@@ -1762,7 +1760,8 @@ void mainView::updateRefBox()
 			}
 			txp = QString::fromStdString(ptxp);
 
-			switch (tx.ttype) {
+			switch (tx.ttype)
+			{
 				case 's':
 					psys = tx.sys != -1 ? e2db::SAT_SYS[tx.sys] : "DVB-S";
 				break;
@@ -1876,12 +1875,14 @@ void mainView::updateConnectors()
 
 	if (list->topLevelItemCount())
 	{
+		gid->update(gui::OpenChannelBook, true);
 		gid->update(gui::TabListSelectAll, true);
 		gid->update(gui::TabListFind, true);
 		this->action.list_search->setEnabled(true);
 	}
 	else
 	{
+		gid->update(gui::OpenChannelBook, false);
 		gid->update(gui::TabListSelectAll, false);
 		gid->update(gui::TabListFind, false);
 		this->action.list_search->setDisabled(true);
