@@ -14,8 +14,9 @@
 #include <vector>
 #include <map>
 #include <unordered_map>
+#include <bitset>
 
-using std::string, std::pair, std::vector, std::map, std::unordered_map;
+using std::string, std::pair, std::vector, std::map, std::unordered_map, std::bitset;
 
 #ifndef tab_h
 #define tab_h
@@ -39,15 +40,6 @@ class gui;
 class tab : protected e2se::log_factory
 {
 	public:
-		// relation with gui::GUI_CXE
-		enum LIST_EDIT_ATS {
-			Cut = 0x00010000, // GUI_CXE::TabListCut
-			Copy = 0x00020000, // GUI_CXE::TabListCopy
-			Paste = 0x00040000, // GUI_CXE::TabListPaste
-			Delete = 0x00004000, // GUI_CXE::TabListDelete
-			SelectAll = 0x00008000 // GUI_CXE::TabListSelectAll
-		};
-
 		tab(gui* gid, QWidget* wid, e2se::logger::session* log);
 		~tab();
 		bool isChild();
@@ -93,7 +85,7 @@ class tab : protected e2se::log_factory
 			// overwrite file
 			bool ovwr;
 			// stored gui connector flags
-			int gxe;
+			bitset<256> gxe;
 			// tools tunerset shown
 			bool tunersets;
 			// tools tunersets current type

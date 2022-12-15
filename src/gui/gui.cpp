@@ -149,17 +149,17 @@ void gui::menuCtl()
 	gmenu[GUI_CXE::TabTreeFindNext] = mfind->addAction(tr("Find N&ext Bouquet"), [=]() { this->tabAction(TAB_ATS::TreeFindNext); }, Qt::CTRL | Qt::ALT | Qt::Key_E);
 
 	QMenu* mtool = menu->addMenu(tr("&Tools"));
-	gmenu[GUI_CXE::ToolsTunersetsSat] = mtool->addAction("Edit satellites.xml", [=]() { this->tabAction(TAB_ATS::EditTunerSat); });
-	gmenu[GUI_CXE::ToolsTunersetsTerrestrial] = mtool->addAction("Edit terrestrial.xml", [=]() { this->tabAction(TAB_ATS::EditTunerTerrestrial); });
-	gmenu[GUI_CXE::ToolsTunersetsCable] = mtool->addAction("Edit cables.xml", [=]() { this->tabAction(TAB_ATS::EditTunerCable); });
-	gmenu[GUI_CXE::ToolsTunersetsAtsc] = mtool->addAction("Edit atsc.xml", [=]() { this->tabAction(TAB_ATS::EditTunerAtsc); });
+	gmenu[GUI_CXE::TunersetsSat] = mtool->addAction("Edit satellites.xml", [=]() { this->tabAction(TAB_ATS::EditTunersetsSat); });
+	gmenu[GUI_CXE::TunersetsTerrestrial] = mtool->addAction("Edit terrestrial.xml", [=]() { this->tabAction(TAB_ATS::EditTunersetsTerrestrial); });
+	gmenu[GUI_CXE::TunersetsCable] = mtool->addAction("Edit cables.xml", [=]() { this->tabAction(TAB_ATS::EditTunersetsCable); });
+	gmenu[GUI_CXE::TunersetsAtsc] = mtool->addAction("Edit atsc.xml", [=]() { this->tabAction(TAB_ATS::EditTunersetsAtsc); });
 	mtool->addSeparator();
-	mtool->addAction("Order services A-Z", todo);
-	mtool->addAction("Order userbouquets A-Z", todo);
-	mtool->addAction("Remove cached data from services", todo);
-	mtool->addAction("Delete all bouquets", todo);
+	gmenu[GUI_CXE::ToolsServicesOrder] = mtool->addAction("Order services A-Z", todo);
+	gmenu[GUI_CXE::ToolsBouquetsOrder] = mtool->addAction("Order userbouquets A-Z", todo);
+	gmenu[GUI_CXE::ToolsServicesCache] = mtool->addAction("Remove cached data from services", todo);
+	gmenu[GUI_CXE::ToolsBouquetsDelete] = mtool->addAction("Delete all bouquets", todo);
 	mtool->addSeparator();
-	mtool->addAction(tr("Inspector Log"), [=]() { this->tabAction(TAB_ATS::Inspector); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
+	gmenu[GUI_CXE::ToolsInspector] = mtool->addAction(tr("Inspector Log"), [=]() { this->tabAction(TAB_ATS::Inspector); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
 
 	QMenu* mwind = menu->addMenu(tr("&Window"));
 	gmenu[GUI_CXE::WindowMinimize] = mwind->addAction("&Minimize", [=]() { this->windowMinimize(); }, Qt::CTRL | Qt::Key_M);
@@ -246,15 +246,15 @@ void gui::windowChanged()
 	{
 		debug("windowChanged()", "mwind", "busy");
 		this->state.xe = this->state.ex;
+		update();
 	}
 	// main window idle
 	else
 	{
 		debug("windowChanged()", "mwind", "idle");
 		this->state.ex = this->state.xe;
-		this->state.xe = GUI_CXE::idle;
+		update(GUI_CXE::idle);
 	}
-	update();
 }
 
 int gui::newTab(string filename)
@@ -735,9 +735,9 @@ void gui::about()
 	new e2se_gui_dialog::about(this->log->log);
 }
 
-int gui::getActionFlag(GUI_CXE connector)
+bool gui::getActionFlag(GUI_CXE connector)
 {
-	return (this->state.xe & connector);
+	return this->state.xe[connector];
 }
 
 void gui::setActionFlag(GUI_CXE connector, bool flag)
@@ -745,17 +745,18 @@ void gui::setActionFlag(GUI_CXE connector, bool flag)
 	update(connector, flag);
 }
 
-int gui::getActionFlags()
+bitset<256> gui::getActionFlags()
 {
 	return this->state.xe;
 }
 
-void gui::setActionFlags(int connectors)
+void gui::setActionFlags(bitset<256> connectors)
 {
-	update(connectors);
+	this->state.xe = connectors;
+	update();
 }
 
-void gui::setActionFlags(int connectors, bool flag)
+void gui::setActionFlags(vector<int> connectors, bool flag)
 {
 	update(connectors, flag);
 }
@@ -785,67 +786,77 @@ void gui::launcher()
 	debug("launcher()");
 
 	this->state.tt = 0;
-	this->state.ex = this->state.xe = GUI_CXE::init;
+	update(GUI_CXE::init);
 	newTab();
 	tabChanged(0);
 }
 
 void gui::update()
 {
-	// debug("update()");
+	debug("update()");
 
 	for (auto & x : gmenu)
 	{
-		if (this->state.xe & x.first)
+		if (this->state.xe[x.first])
 			x.second->setEnabled(true);
 		else
 			x.second->setDisabled(true);
 	}
+
+	// debug("update()", "flags", getActionFlags().to_ullong());
 }
 
-void gui::update(GUI_CXE connector, bool flag)
+void gui::update(int connector, bool flag)
 {
-	// debug("update()", "connector", connector);
+	 // debug("update()", "connector 1", connector);
 
+	typedef size_t position_t;
 	QAction* action = gmenu.count(connector) ? gmenu[connector] : nullptr;
 
-	if (flag)
-	{
-		if (action != nullptr)
-			action->setEnabled(true);
-		if (! (this->state.xe & connector))
-			this->state.xe |= connector;
-	}
-	else
-	{
-		if (action != nullptr)
-			action->setDisabled(true);
-		if (this->state.xe & connector)
-			this->state.xe &= ~connector;
-	}
+	if (action != nullptr)
+		action->setEnabled(flag);
+
+	this->state.xe.set(position_t (connector), flag);
 
 	this->state.ex = this->state.xe;
 }
 
-void gui::update(int connectors, bool flag)
+void gui::update(vector<int> connectors, bool flag)
 {
-	// debug("update()", "connectors", connector);
+	// debug("update()", "connectors", 1);
+	
+	typedef size_t position_t;
 
-	if (flag)
-		this->state.xe |= connectors;
-	else
-		this->state.xe &= ~connectors;
+	for (int & connector : connectors)
+		this->state.xe.set(position_t(connector), flag);
 
-	this->state.ex = this->state.xe;
 	update();
 }
 
-void gui::update(int connectors)
+void gui::update(vector<int> connectors)
 {
-	// debug("update()", "connectors", connector);
+	// debug("update()", "connectors", 0);
+	
+	typedef size_t position_t;
 
-	this->state.ex = this->state.xe = connectors;
+	for (int & connector : connectors)
+		this->state.xe.set(position_t(connector), true);
+
 	update();
+}
+
+void gui::update(int connector)
+{
+	// debug("update()", "connector", 0);
+
+	this->state.xe.reset();
+
+	if (connector == 0)
+		update(GUI_CXE__init);
+	else if (connector == -1)
+		update(GUI_CXE__idle);
+
+	// debug("update()", "flags", getActionFlags().to_ullong());
 }
 
 void gui::setDefaultSets()

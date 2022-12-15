@@ -25,6 +25,7 @@
 
 #include "tunersetsView.h"
 #include "theme.h"
+#include "tab.h"
 #include "gui.h"
 #include "todo.h"
 
@@ -571,12 +572,12 @@ void tunersetsView::updateConnectors()
 	gid->update(gui::TabListFindPrev, false);
 	gid->update(gui::TabListFindAll, false);
 
-	gid->update(gui::ToolsTunersetsSat, true);
-	gid->update(gui::ToolsTunersetsTerrestrial, true);
-	gid->update(gui::ToolsTunersetsCable, true);
-	gid->update(gui::ToolsTunersetsAtsc, true);
+	gid->update(gui::TunersetsSat, true);
+	gid->update(gui::TunersetsTerrestrial, true);
+	gid->update(gui::TunersetsCable, true);
+	gid->update(gui::TunersetsAtsc, true);
 
-	// this->gxe = gid->getActionFlags();
+	twid->state.gxe = gid->getActionFlags();
 }
 
 }

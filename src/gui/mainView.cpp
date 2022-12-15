@@ -35,9 +35,9 @@
 #include <QMimeData>
 
 #include "toolkit/TreeStyledItemDelegate.h"
-#include "tab.h"
 #include "mainView.h"
 #include "theme.h"
+#include "tab.h"
 #include "gui.h"
 #include "editBouquet.h"
 #include "editService.h"
@@ -1836,17 +1836,15 @@ void mainView::showListEditContextMenu(QPoint &pos)
 {
 	debug("showListEditContextMenu()");
 
-	int gflags = gid->getActionFlags();
-
 	QMenu* list_edit = new QMenu;
-	list_edit->addAction("Edit Service", [=]() { this->editService(); })->setDisabled(gflags & gui::TabListEditService ? false : true);
-	list_edit->addAction("Edit Marker", [=]() { this->editMarker(); })->setDisabled(gflags & gui::TabListEditMarker ? false : true);
+	list_edit->addAction("Edit Service", [=]() { this->editService(); })->setEnabled(gid->getActionFlag(gui::TabListEditService));
+	list_edit->addAction("Edit Marker", [=]() { this->editMarker(); })->setEnabled(gid->getActionFlag(gui::TabListEditMarker));
 	list_edit->addSeparator();
-	list_edit->addAction("Cu&t", [=]() { this->listItemCut(); }, QKeySequence::Cut)->setDisabled(gflags & gui::TabListCut ? false : true);
-	list_edit->addAction("&Copy", [=]() { this->listItemCopy(); }, QKeySequence::Copy)->setDisabled(gflags & gui::TabListCopy ? false : true);
-	list_edit->addAction("&Paste", [=]() { this->listItemPaste(); }, QKeySequence::Paste)->setDisabled(gflags & gui::TabListPaste ? false : true);
+	list_edit->addAction("Cu&t", [=]() { this->listItemCut(); }, QKeySequence::Cut)->setEnabled(gid->getActionFlag(gui::TabListCut));
+	list_edit->addAction("&Copy", [=]() { this->listItemCopy(); }, QKeySequence::Copy)->setEnabled(gid->getActionFlag(gui::TabListCopy));
+	list_edit->addAction("&Paste", [=]() { this->listItemPaste(); }, QKeySequence::Paste)->setEnabled(gid->getActionFlag(gui::TabListPaste));
 	list_edit->addSeparator();
-	list_edit->addAction("&Delete", [=]() { this->listItemDelete(); }, QKeySequence::Delete)->setDisabled(gflags & gui::TabListDelete ? false : true);
+	list_edit->addAction("&Delete", [=]() { this->listItemDelete(); }, QKeySequence::Delete)->setEnabled(gid->getActionFlag(gui::TabListDelete));
 
 	list_edit->exec(list->mapToGlobal(pos));
 }
@@ -1894,12 +1892,12 @@ void mainView::updateConnectors()
 	gid->update(gui::TabListFindPrev, false);
 	gid->update(gui::TabListFindAll, false);
 
-	gid->update(gui::ToolsTunersetsSat, true);
-	gid->update(gui::ToolsTunersetsTerrestrial, true);
-	gid->update(gui::ToolsTunersetsCable, true);
-	gid->update(gui::ToolsTunersetsAtsc, true);
+	gid->update(gui::TunersetsSat, true);
+	gid->update(gui::TunersetsTerrestrial, true);
+	gid->update(gui::TunersetsCable, true);
+	gid->update(gui::TunersetsAtsc, true);
 
-	// this->gxe = gid->getActionFlags();
+	twid->state.gxe = gid->getActionFlags();
 }
 
 }

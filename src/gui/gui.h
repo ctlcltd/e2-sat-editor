@@ -12,8 +12,9 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <bitset>
 
-using std::string, std::vector, std::unordered_map;
+using std::string, std::vector, std::unordered_map, std::bitset;
 
 #ifndef gui_h
 #define gui_h
@@ -41,39 +42,65 @@ class gui : protected e2se::log_factory
 
 	public:
 		enum GUI_CXE {
-			FileNew = 0x00000001,
-			FileOpen = 0x00000002,
-			FileSave = 0x00000004,
-			FileSaveAs = 0x00000008,
-			FileImport = 0x00000010,
-			FileExport = 0x00000020,
-			FilePrint = 0x00000040,
-			FilePrintAll = 0x00000080,
-			TabTreeEdit = 0x00000100,
-			TabTreeDelete = 0x00000200,
-			TabTreeFind = 0x00000400,
-			TabTreeFindNext = 0x00000800,
-			TabListEditService = 0x00001000,
-			TabListEditMarker = 0x00002000,
-			TabListDelete = 0x00004000,
-			TabListSelectAll = 0x00008000,
-			TabListCut = 0x00010000,
-			TabListCopy = 0x00020000,
-			TabListPaste = 0x00040000,
-			TabListFind = 0x00100000,
-			TabListFindNext = 0x00200000,
-			TabListFindPrev = 0x00400000,
-			TabListFindAll = 0x00800000,
-			ToolsTunersetsSat = 0x01000000,
-			ToolsTunersetsTerrestrial = 0x02000000,
-			ToolsTunersetsCable = 0x04000000,
-			ToolsTunersetsAtsc = 0x08000000,
-			NewTab = 0x10000000,
-			CloseTab = 0x20000000,
-			CloseAllTabs = 0x40000000,
-			WindowMinimize = 0x80000000,
-			init = GUI_CXE::FileNew | GUI_CXE::FileOpen | GUI_CXE::FileSave | GUI_CXE::FileSaveAs | GUI_CXE::FileImport | GUI_CXE::FileExport | GUI_CXE::FilePrint | GUI_CXE::FilePrintAll | GUI_CXE::NewTab | GUI_CXE::CloseTab | GUI_CXE::CloseAllTabs | GUI_CXE::WindowMinimize,
-			idle = GUI_CXE::FileNew | GUI_CXE::FileOpen
+			NewTab = 1,
+			CloseTab = 4,
+			CloseAllTabs = 8,
+			WindowMinimize = 2,
+			FileNew = 11,
+			FileOpen = 10,
+			FileSave = 15,
+			FileSaveAs = 16,
+			FileImport = 18,
+			FileExport = 19,
+			FilePrint = 12,
+			FilePrintAll = 13,
+			TabTreeEdit = 20,
+			TabTreeDelete = 22,
+			TabTreeFind = 29,
+			TabTreeFindNext = 27,
+			TabListEditService = 32,
+			TabListEditMarker = 33,
+			TabListDelete = 34,
+			TabListSelectAll = 35,
+			TabListCut = 44,
+			TabListCopy = 42,
+			TabListPaste = 43,
+			TabListFind = 49,
+			TabListFindNext = 47,
+			TabListFindPrev = 45,
+			TabListFindAll = 48,
+			TunersetsSat = 51,
+			TunersetsTerrestrial = 52,
+			TunersetsCable = 53,
+			TunersetsAtsc = 54,
+			ToolsServicesOrder = 88,
+			ToolsServicesCache = 83,
+			ToolsBouquetsOrder = 98,
+			ToolsBouquetsDelete = 92,
+			ToolsInspector = 0xfe,
+			init = 0,
+			idle = -1
+		};
+
+		inline static const vector<int> GUI_CXE__init = {
+			GUI_CXE::NewTab,
+			GUI_CXE::CloseTab,
+			GUI_CXE::CloseAllTabs,
+			GUI_CXE::WindowMinimize,
+			GUI_CXE::FileNew,
+			GUI_CXE::FileOpen,
+			GUI_CXE::FileSave,
+			GUI_CXE::FileSaveAs,
+			GUI_CXE::FileImport,
+			GUI_CXE::FileExport,
+			GUI_CXE::FilePrint,
+			GUI_CXE::FilePrintAll,
+			GUI_CXE::ToolsInspector
+		};
+
+		inline static const vector<int> GUI_CXE__idle = {
+			GUI_CXE::FileNew,
+			GUI_CXE::FileOpen
 		};
 
 		enum TAB_ATS {
@@ -88,13 +115,13 @@ class gui : protected e2se::log_factory
 			ListFindNext = GUI_CXE::TabListFindNext,
 			ListFindPrev = GUI_CXE::TabListFindPrev,
 			ListFindAll = GUI_CXE::TabListFindAll,
-			EditTunerSat = GUI_CXE::ToolsTunersetsSat,
-			EditTunerTerrestrial = GUI_CXE::ToolsTunersetsTerrestrial,
-			EditTunerCable = GUI_CXE::ToolsTunersetsCable,
-			EditTunerAtsc = GUI_CXE::ToolsTunersetsAtsc,
+			EditTunersetsSat = GUI_CXE::TunersetsSat,
+			EditTunersetsTerrestrial = GUI_CXE::TunersetsTerrestrial,
+			EditTunersetsCable = GUI_CXE::TunersetsCable,
+			EditTunersetsAtsc = GUI_CXE::TunersetsAtsc,
 			Print = GUI_CXE::FilePrint,
 			PrintAll = GUI_CXE::FilePrintAll,
-			Inspector = 0x0
+			Inspector = GUI_CXE::ToolsInspector
 		};
 
 		enum TAB_VIEW {
@@ -150,31 +177,34 @@ class gui : protected e2se::log_factory
 		void windowMinimize();
 		void settings();
 		void about();
-		int getActionFlag(GUI_CXE connector);
+		bool getActionFlag(GUI_CXE connector);
 		void setActionFlag(GUI_CXE connector, bool flag);
-		int getActionFlags();
-		void setActionFlags(int connectors);
-		void setActionFlags(int connectors, bool flag);
+		bitset<256> getActionFlags();
+		void setActionFlags(bitset<256> connectors);
+		//TODO bits sequence bitwise or
+		void setActionFlags(vector<int> connectors, bool flag);
 		int getCurrentTabID();
 		int getCurrentTabID(int index);
 		tab* getCurrentTabHandler();
 		void update();
-		void update(GUI_CXE connector, bool flag);
-		void update(int connectors, bool flag);
-		void update(int connectors);
+		void update(int connector, bool flag);
+		void update(vector<int> connectors, bool flag);
+		void update(vector<int> connectors);
+		void update(int connector);
 		void launcher();
 		void setDefaultSets();
 		QSettings* sets;
-	private:
+	protected:
 		struct sts
 		{
 			// tab id increment
 			int tt = 0;
 			// gui connector flags
-			int xe;
+			bitset<256> xe;
 			// gui previous connector flags
-			int ex;
+			bitset<256> ex;
 		} state;
+	private:
 		QApplication* mroot;
 		QWidget* mwid;
 		QGridLayout* mfrm;

@@ -629,19 +629,19 @@ void tab::actionCall(int action)
 
 	switch (action)
 	{
-		case LIST_EDIT_ATS::Cut:
+		case gui::TAB_ATS::ListCut:
 			view->listItemCut();
 		break;
-		case LIST_EDIT_ATS::Copy:
+		case gui::TAB_ATS::ListCopy:
 			view->listItemCopy();
 		break;
-		case LIST_EDIT_ATS::Paste:
+		case gui::TAB_ATS::ListPaste:
 			view->listItemPaste();
 		break;
-		case LIST_EDIT_ATS::Delete:
+		case gui::TAB_ATS::ListDelete:
 			view->listItemDelete();
 		break;
-		case LIST_EDIT_ATS::SelectAll:
+		case gui::TAB_ATS::ListSelectAll:
 			view->listItemSelectAll();
 		break;
 
@@ -664,16 +664,16 @@ void tab::actionCall(int action)
 			view->listFindPerform(viewAbstract::LIST_FIND::all);
 		break;
 
-		case gui::TAB_ATS::EditTunerSat:
+		case gui::TAB_ATS::EditTunersetsSat:
 			gid->openTab(gui::TAB_VIEW::tunersets, e2db::YTYPE::sat);
 		break;
-		case gui::TAB_ATS::EditTunerTerrestrial:
+		case gui::TAB_ATS::EditTunersetsTerrestrial:
 			gid->openTab(gui::TAB_VIEW::tunersets, e2db::YTYPE::terrestrial);
 		break;
-		case gui::TAB_ATS::EditTunerCable:
+		case gui::TAB_ATS::EditTunersetsCable:
 			gid->openTab(gui::TAB_VIEW::tunersets, e2db::YTYPE::cable);
 		break;
-		case gui::TAB_ATS::EditTunerAtsc:
+		case gui::TAB_ATS::EditTunersetsAtsc:
 			gid->openTab(gui::TAB_VIEW::tunersets, e2db::YTYPE::atsc);
 		break;
 		case gui::TAB_ATS::Inspector:
