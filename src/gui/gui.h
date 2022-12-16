@@ -163,11 +163,11 @@ class gui : protected e2se::log_factory
 		void windowChanged();
 		void tabChanged(int index);
 		void tabMoved(int from, int to);
+		void tabChangeName(int ttid, string filename = "");
 		string openFileDialog();
 		string saveFileDialog(string filename);
 		vector<string> importFileDialog();
 		string exportFileDialog(GUI_DPORTS gde, string filename, int& flags);
-		void tabChangeName(int ttid, string filename = "");
 		void setStatus(int counters[5]);
 		void resetStatus();
 		void fileOpen();
@@ -187,8 +187,8 @@ class gui : protected e2se::log_factory
 		void setActionFlags(bitset<256> connectors);
 		//TODO bits sequence bitwise or
 		void setActionFlags(vector<int> connectors, bool flag);
-		int getCurrentTabID();
-		int getCurrentTabID(int index);
+		int getTabId(int index);
+		int getCurrentTabId();
 		tab* getCurrentTabHandler();
 		void update();
 		void update(int connector, bool flag);

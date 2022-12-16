@@ -78,34 +78,61 @@ vector<tab*> tab::children()
 	return this->childs;
 }
 
-void tab::setTabId(int ttid)
+void tab::addChild(tab* child)
 {
-	debug("setTabId()", "ttid", ttid);
+	debug("addChild()");
 
-	this->ttid = ttid;
+	this->childs.emplace_back(child);
+}
+
+void tab::removeChild(tab* child)
+{
+	debug("removeChild()");
+
+	vector<tab*>::iterator pos;
+	for (auto it = childs.begin(); it != childs.end(); it++)
+	{
+		if (*it == child)
+		{
+			pos = it;
+			break;
+		}
+	}
+	if (pos != childs.end())
+	{
+		childs.erase(pos);
+	}
 }
 
 int tab::getTabId()
 {
-	debug("getTabId()");
-
 	return this->ttid;
+}
+
+void tab::setTabId(int ttid)
+{
+	this->ttid = ttid;
+}
+
+string tab::getTabName()
+{
+	return this->ttname;
+}
+
+void tab::setTabName(string ttname)
+{
+	this->ttname = ttname;
 }
 
 int tab::getTabView()
 {
-	debug("getTabView()");
-
 	return this->ttv;
-}
-
-string tab::getFilename()
-{
-	return this->filename;
 }
 
 void tab::tabSwitched()
 {
+	debug("tabSwitched()");
+
 	gid->setActionFlags(this->state.gxe);
 	view->updateCounters();
 	view->updateCounters(true);
@@ -115,8 +142,16 @@ void tab::tabChangeName(string filename)
 {
 	debug("tabChangeName()");
 
-	if (ttid != -1)
+	if (! filename.empty())
+		filename = std::filesystem::path(filename).filename().u8string(); //C++17
+
+	gid->tabChangeName(ttid, filename);
+
+	for (auto & child : childs)
+	{
+		int ttid = child->getTabId();
 		gid->tabChangeName(ttid, filename);
+	}
 }
 
 void tab::viewMain()
@@ -126,7 +161,7 @@ void tab::viewMain()
 	this->tools = new e2se_gui_tools::tools(root, this->log->log);
 	this->main = new mainView(gid, this, cwid, this->log->log);
 	this->view = this->main;
-	
+
 	this->ttv = gui::TAB_VIEW::main;
 
 	layout();
@@ -140,6 +175,13 @@ void tab::viewTunersets(tab* parent, int ytype)
 {
 	debug("viewTunersets()");
 
+	parent->addChild(this);
+
+	this->parent = parent;
+	this->child = true;
+	this->state.nwwr = parent->state.nwwr;
+	this->state.ovwr = parent->state.ovwr;
+
 	this->dbih = parent->dbih;
 	this->tools = parent->tools;
 	this->main = parent->main;
@@ -152,13 +194,19 @@ void tab::viewTunersets(tab* parent, int ytype)
 	
 	this->root->addWidget(view->widget, 0, 0, 1, 1);
 
-	view->setDataSource(this->dbih);
-	view->load();
+	load();
 }
 
 void tab::viewChannelBook(tab* parent)
 {
 	debug("viewChannelBook()");
+
+	parent->addChild(this);
+
+	this->parent = parent;
+	this->child = true;
+	this->state.nwwr = parent->state.nwwr;
+	this->state.ovwr = parent->state.ovwr;
 
 	this->dbih = parent->dbih;
 	this->tools = parent->tools;
@@ -171,8 +219,90 @@ void tab::viewChannelBook(tab* parent)
 	
 	this->root->addWidget(view->widget, 0, 0, 1, 1);
 
-	view->setDataSource(this->dbih);
-	view->load();
+	load();
+}
+
+void tab::load()
+{
+	debug("load()");
+
+	if (this->child)
+	{
+		if (this->state.nwwr)
+			parent->load();
+
+		view->setDataSource(this->dbih);
+		view->load();
+	}
+	else
+	{
+		main->setDataSource(this->dbih);
+		main->load();
+
+		for (auto & child : childs)
+		{
+			child->view->setDataSource(this->dbih);
+			child->view->load();
+		}
+	}
+}
+
+void tab::reset()
+{
+	debug("reset()");
+
+	if (this->child)
+	{
+		parent->reset();
+	}
+	else
+	{
+		this->state.nwwr = true;
+		this->state.ovwr = false;
+
+		if (this->dbih != nullptr)
+			delete this->dbih;
+		// if (this->tools != nullptr)
+		// 	this->tools->destroy();
+
+		this->dbih = new e2db(this->log->log);
+
+		main->setDataSource(this->dbih);
+		main->reset();
+
+		for (auto & child : childs)
+		{
+			child->reset(this->dbih);
+			child->view->setDataSource(this->dbih);
+			child->view->reset();
+		}
+	}
+}
+
+void tab::reset(e2db* dbih)
+{
+	debug("reset()");
+
+	this->state.nwwr = true;
+	this->state.ovwr = false;
+	this->dbih = dbih;
+
+	if (this->child)
+	{
+		view->setDataSource(this->dbih);
+		view->reset();
+	}
+	else
+	{
+		main->setDataSource(this->dbih);
+		main->reset();
+
+		for (auto & child : childs)
+		{
+			child->view->setDataSource(this->dbih);
+			child->view->reset();
+		}
+	}
 }
 
 void tab::layout()
@@ -238,6 +368,13 @@ void tab::layout()
 		bottom_toolbar->addSeparator();
 		bottom_toolbar->addAction("§ Load seeds", [=]() { this->loadSeeds(); });
 		bottom_toolbar->addAction("§ Reset", [=]() { this->newFile(); tabChangeName(); });
+
+		//TODO
+		if (this->child)
+		{
+			for (auto & action : bottom_toolbar->actions())
+				action->setDisabled(true);
+		}
 	}
 	bottom_toolbar->addWidget(bottom_spacer);
 
@@ -259,19 +396,9 @@ void tab::newFile()
 {
 	debug("newFile()");
 
-	//TODO reimplement tunersets close
 	gid->update(gui::init);
-	main->preset();
-
-	if (this->dbih != nullptr)
-		delete this->dbih;
-	if (this->tools != nullptr)
-		this->tools->destroy();
-
-	this->dbih = new e2db(this->log->log);
-
-	main->setDataSource(this->dbih);
-	main->load();
+	reset();
+	load();
 }
 
 void tab::openFile()
@@ -291,13 +418,7 @@ bool tab::readFile(string filename)
 	if (filename.empty())
 		return false;
 
-	main->preset();
-
-	if (this->dbih != nullptr)
-		delete this->dbih;
-
-	this->dbih = new e2db(this->log->log);
-	view->setDataSource(this->dbih);
+	reset();
 
 	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	bool rr = dbih->prepare(filename);
@@ -314,11 +435,15 @@ bool tab::readFile(string filename)
 		return false;
 	}
 
+	if (this->child)
+	{
+		parent->state.nwwr = false;
+		parent->state.filename = filename;
+	}
 	this->state.nwwr = false;
-	this->filename = filename;
+	this->state.filename = filename;
 
-	main->setDataSource(this->dbih);
-	main->load();
+	load();
 
 	return true;
 }
@@ -335,19 +460,19 @@ void tab::saveFile(bool saveas)
 	{
 		this->updateChannelsIndex();
 		this->updateBouquetsIndex();
-		path = this->filename;
+		path = this->state.filename;
 		dial.setText("Files will be overwritten.");
 		dial.exec();
 	}
 	else
 	{
-		path = gid->saveFileDialog(this->filename);
+		path = gid->saveFileDialog(this->state.filename);
 	}
 
 	if (! path.empty())
 	{
 		debug("saveFile()", "overwrite", overwrite);
-		debug("saveFile()", "filename", filename);
+		debug("saveFile()", "filename", this->state.filename);
 
 		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 		bool wr = dbih->write(path, overwrite);
@@ -376,8 +501,8 @@ void tab::importFile()
 		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 		dbih->importFile(paths);
 		QGuiApplication::restoreOverrideCursor();
-		main->preset();
-		main->load();
+		view->reset();
+		view->load();
 	}
 }
 
@@ -812,8 +937,8 @@ void tab::ftpDownload()
 		this->updateChannelsIndex();
 		this->updateBouquetsIndex();
 		dbih->merge(files);
-		main->preset();
-		main->load();
+		view->reset();
+		view->load();
 	}
 }
 

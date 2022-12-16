@@ -49,6 +49,7 @@ class channelBookView : public viewAbstract
 		void side();
 		void layout();
 		void load();
+		void reset();
 		void populate();
 		void sideRowChanged(int index);
 		void stacker(int vv);

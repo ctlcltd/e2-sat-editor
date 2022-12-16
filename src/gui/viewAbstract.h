@@ -50,7 +50,7 @@ class viewAbstract : protected e2se::log_factory
 		virtual void layout() {};
 		void searchLayout();
 		virtual void load() {};
-		virtual void preset() {};
+		virtual void reset() {};
 		void treeItemChanged();
 		void sortByColumn(int column);
 		void treeSearchHide();
@@ -90,9 +90,6 @@ class viewAbstract : protected e2se::log_factory
 			QPushButton* tree_search;
 			QPushButton* list_search;
 		} action;
-
-		// stored gui connector flags
-		int gxe;
 	protected:
 		struct search
 		{

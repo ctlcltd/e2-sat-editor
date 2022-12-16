@@ -20,6 +20,8 @@
 
 #include "channelBookView.h"
 #include "theme.h"
+#include "tab.h"
+#include "gui.h"
 
 using std::to_string;
 using namespace e2se;
@@ -167,6 +169,25 @@ void channelBookView::load()
 	debug("load()");
 
 	sideRowChanged(0);
+}
+
+void channelBookView::reset()
+{
+	debug("reset()");
+
+	tree->clear();
+	tree->reset();
+
+	list->clear();
+	list->reset();
+	list->header()->setSortIndicatorShown(false);
+	list->header()->setSectionsClickable(false);
+	list->header()->setSortIndicator(0, Qt::AscendingOrder);
+
+	this->lsr_find.curr = -1;
+	this->lsr_find.match.clear();
+
+	gid->resetStatus();
 }
 
 void channelBookView::populate()

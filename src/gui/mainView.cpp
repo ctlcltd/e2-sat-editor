@@ -420,6 +420,44 @@ void mainView::load()
 	updateCounters();
 }
 
+void mainView::reset()
+{
+	debug("reset()");
+
+	this->state.dnd = true;
+	this->state.changed = false;
+	this->state.reindex = false;
+	this->state.refbox = list_reference->isVisible();
+	this->state.tc = 0;
+	this->state.ti = 0;
+	this->state.curr = "";
+	this->state.sort = pair (-1, Qt::AscendingOrder); //C++17
+
+	tree->clear();
+	tree->setDragEnabled(false);
+	tree->setAcceptDrops(false);
+	tree->reset();
+
+	list->clear();
+	list->setDragEnabled(false);
+	list->setAcceptDrops(false);
+	list->reset();
+	list->header()->setSortIndicatorShown(false);
+	list->header()->setSectionsClickable(false);
+	list->header()->setSortIndicator(0, Qt::AscendingOrder);
+	cache.clear();
+
+	this->lsr_find.curr = -1;
+	this->lsr_find.match.clear();
+
+	this->action.list_addch->setDisabled(true);
+	this->action.list_addmk->setDisabled(true);
+	this->action.list_newch->setEnabled(true);
+	this->action.list_dnd->setDisabled(true);
+
+	gid->resetStatus();
+}
+
 void mainView::populate(QTreeWidget* side_tree)
 {
 	string curr_chlist;
@@ -546,46 +584,6 @@ void mainView::populate(QTreeWidget* side_tree)
 		list->setAcceptDrops(true);
 	}
 	list->header()->setSectionsClickable(true);
-}
-
-void mainView::preset()
-{
-	debug("preset()");
-
-	this->state.dnd = true;
-	this->state.changed = false;
-	this->state.reindex = false;
-	this->state.refbox = list_reference->isVisible();
-	this->state.tc = 0;
-	this->state.ti = 0;
-	this->state.curr = "";
-	this->state.sort = pair (-1, Qt::AscendingOrder); //C++17
-	this->state.tunersets = false;
-	this->state.ty = -1;
-
-	tree->clear();
-	tree->setDragEnabled(false);
-	tree->setAcceptDrops(false);
-	tree->reset();
-
-	list->clear();
-	list->setDragEnabled(false);
-	list->setAcceptDrops(false);
-	list->reset();
-	list->header()->setSortIndicatorShown(false);
-	list->header()->setSectionsClickable(false);
-	list->header()->setSortIndicator(0, Qt::AscendingOrder);
-	cache.clear();
-
-	this->lsr_find.curr = -1;
-	this->lsr_find.match.clear();
-
-	this->action.list_addch->setDisabled(true);
-	this->action.list_addmk->setDisabled(true);
-	this->action.list_newch->setEnabled(true);
-	this->action.list_dnd->setDisabled(true);
-
-	gid->resetStatus();
 }
 
 void mainView::treeSwitched(QTreeWidget* tree, QTreeWidgetItem* item)

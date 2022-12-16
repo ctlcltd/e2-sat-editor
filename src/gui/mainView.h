@@ -76,8 +76,8 @@ class mainView : public viewAbstract
 		void searchLayout();
 		void refboxLayout();
 		void load();
+		void reset();
 		void populate(QTreeWidget* side_tree);
-		void preset();
 		void treeSwitched(QTreeWidget* tree, QTreeWidgetItem* item);
 		void servicesItemChanged(QTreeWidgetItem* current);
 		void bouquetsItemChanged(QTreeWidgetItem* current);
@@ -114,6 +114,26 @@ class mainView : public viewAbstract
 		void showListEditContextMenu(QPoint &pos);
 		QTreeWidget* services_tree;
 
+		struct sts
+		{
+		   // drag-and-drop (default sort 0|asc)
+		   bool dnd;
+		   // post update index
+		   bool changed;
+		   // post visual reindex list_tree
+		   bool reindex;
+		   // refbox shown
+		   bool refbox;
+		   // side tree focused { services_tree = 0, bouquets_tree = 1 }
+		   int tc;
+		   // tree current top level index
+		   int ti;
+		   // tree current bname
+		   string curr;
+		   // list_tree sort
+		   pair<int, Qt::SortOrder> sort;
+		} state;
+
 		struct ats
 		{
 			QAction* bouquets_newbs;
@@ -126,30 +146,6 @@ class mainView : public viewAbstract
 			QPushButton* list_ref;
 			QPushButton* list_dnd;
 		} action;
-
-		struct sts
-		{
-			// drag-and-drop (default sort 0|asc)
-			bool dnd;
-			// post update index
-			bool changed;
-			// post visual reindex list_tree
-			bool reindex;
-			// refbox shown
-			bool refbox;
-			// side tree focused { services_tree = 0, bouquets_tree = 1 }
-			int tc;
-			// bouquets_tree current top level index
-			int ti;
-			// bouquets_tree current bname
-			string curr;
-			// list_tree sort
-			pair<int, Qt::SortOrder> sort;
-			// tools tunerset shown
-			bool tunersets;
-			// tools tunersets current type
-			int ty;
-		} state;
 	protected:
 		map<int, QLabel*> ref_fields;
 		unordered_map<string, QList<QTreeWidgetItem*>> cache;

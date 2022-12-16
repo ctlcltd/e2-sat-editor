@@ -312,6 +312,37 @@ void tunersetsView::load()
 	list->setAcceptDrops(true);
 }
 
+void tunersetsView::reset()
+{
+	debug("reset()");
+
+	this->state.changed = false;
+	this->state.ti = 0;
+	this->state.curr = "";
+	this->state.sort = pair (-1, Qt::AscendingOrder); //C++17
+	this->state.ty = -1;
+
+	tree->clear();
+	tree->setDragEnabled(false);
+	tree->setAcceptDrops(false);
+	tree->reset();
+
+	list->clear();
+	list->setDragEnabled(false);
+	list->setAcceptDrops(false);
+	list->reset();
+	list->header()->setSortIndicatorShown(false);
+	list->header()->setSectionsClickable(false);
+	list->header()->setSortIndicator(0, Qt::AscendingOrder);
+
+	this->lsr_find.curr = -1;
+	this->lsr_find.match.clear();
+
+	this->action.list_newtr->setEnabled(true);
+
+	gid->resetStatus();
+}
+
 void tunersetsView::populate()
 {
 	string curr;
@@ -415,13 +446,6 @@ void tunersetsView::populate()
 	// sorting default column 0|asc
 	list->sortItems(0, Qt::AscendingOrder);
 	list->header()->setSortIndicator(1, Qt::AscendingOrder);
-}
-
-void tunersetsView::preset()
-{
-	debug("preset()");
-
-	
 }
 
 void tunersetsView::treeItemChanged()

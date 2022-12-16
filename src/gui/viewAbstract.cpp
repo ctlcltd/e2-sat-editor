@@ -33,6 +33,7 @@
 
 #include "viewAbstract.h"
 #include "theme.h"
+#include "tab.h"
 #include "gui.h"
 #include "todo.h"
 

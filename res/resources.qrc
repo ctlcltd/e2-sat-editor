@@ -7,6 +7,7 @@
 	<file>4x1.png</file>
 	<file>5x1.png</file>
 	<file>dark/add.png</file>
+	<file>dark/channelbook-view.png</file>
 	<file>dark/close.png</file>
 	<file>dark/crypted.png</file>
 	<file>dark/delete.png</file>
@@ -25,7 +26,9 @@
 	<file>dark/save.png</file>
 	<file>dark/search.png</file>
 	<file>dark/settings.png</file>
+	<file>dark/tunersets-view.png</file>
 	<file>light/add.png</file>
+	<file>light/channelbook-view.png</file>
 	<file>light/close.png</file>
 	<file>light/crypted.png</file>
 	<file>light/delete.png</file>
@@ -44,5 +47,6 @@
 	<file>light/save.png</file>
 	<file>light/search.png</file>
 	<file>light/settings.png</file>
+	<file>light/tunersets-view.png</file>
 </qresource>
 </RCC>

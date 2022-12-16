@@ -44,8 +44,12 @@ class tab : protected e2se::log_factory
 		bool isChild();
 		bool hasChildren();
 		vector<tab*> children();
+		void addChild(tab* child);
+		void removeChild(tab* child);
 		void setTabId(int ttid);
 		int getTabId();
+		void setTabName(string ttname);
+		string getTabName();
 		int getTabView();
 		string getFilename();
 		void tabSwitched();
@@ -54,6 +58,8 @@ class tab : protected e2se::log_factory
 		void viewTunersets(tab* parent, int ytype);
 		void viewChannelBook(tab* parent);
 		void load();
+		void reset();
+		void reset(e2db* dbih);
 		void layout();
 		void newFile();
 		void openFile();
@@ -74,10 +80,10 @@ class tab : protected e2se::log_factory
 		void loadSeeds();
 		QGridLayout* root;
 		QWidget* widget;
-		e2se_gui_tools::tools* tools;
 		mainView* main;
 		viewAbstract* view;
 		e2db* dbih = nullptr;
+		e2se_gui_tools::tools* tools = nullptr;
 
 		struct sts
 		{
@@ -85,6 +91,8 @@ class tab : protected e2se::log_factory
 			bool nwwr;
 			// overwrite file
 			bool ovwr;
+			// file name
+			string filename;
 			// stored gui connector flags
 			bitset<256> gxe;
 			// tools tunersets current type
@@ -96,9 +104,10 @@ class tab : protected e2se::log_factory
 	private:
 		gui* gid;
 		QWidget* cwid;
+		tab* parent = nullptr;
 		int ttid = -1;
+		string ttname;
 		ftpcom* ftph = nullptr;
-		string filename;
 		// tab view
 		int ttv; // relation with gui::TAB_VIEW
 };

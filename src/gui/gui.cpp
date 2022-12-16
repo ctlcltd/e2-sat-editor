@@ -201,7 +201,7 @@ void gui::tabLayout()
 		ttclose_icon__selected = ":/icons/" + QString (theme::absLuma() ? "dark" : "light") + "/close.png";
 #endif
 
-	twid->setStyleSheet("QTabWidget::tab-bar { left: 0px } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { height: 32px; padding: 5px; background: palette(mid); border: 1px solid transparent; border-radius: 0 } QTabBar::tab:selected { background: palette(highlight) } QTabBar::tab QLabel { margin-left: 5px } QTabBar::close-button { margin: 0.4ex; image: url(" + ttclose_icon + ") } QTabBar::close-button:selected { image: url(" + ttclose_icon__selected + ") }");
+	twid->setStyleSheet("QTabWidget::tab-bar { left: 0px } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { height: 32px; padding: 0.8ex 1ex; background: palette(mid); border: 1px solid transparent; border-radius: 0 } QTabBar::tab:selected { background: palette(highlight) } QTabBar::tab { padding-left: 1.2ex } QTabBar::close-button { margin: 0.5ex; image: url(" + ttclose_icon + ") } QTabBar::close-button:selected { image: url(" + ttclose_icon__selected + ") }");
 	twid->connect(twid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
 	twid->connect(twid, &QTabWidget::tabCloseRequested, [=](int index) { this->closeTab(index); });
 	twid->tabBar()->connect(twid->tabBar(), &QTabBar::tabMoved, [=](int from, int to) { this->tabMoved(from, to); });
@@ -270,28 +270,39 @@ void gui::tabViewSwitch(int v, int arg)
 
 int gui::newTab(string filename)
 {
+	this->state.tt++;
+	int ttid = this->state.tt;
+	
+	debug("newTab()", "ttid", ttid);
+
 	tab* ttab = new tab(this, mwid, this->log->log);
-	int ttid = this->state.tt++;
 
 	if (! filename.empty() && ! ttab->readFile(filename))
+	{
+		error("newTab()", "ttid", ttid);
 		return -1;
+	}
 
 	bool read = ! filename.empty();
 	ttab->setTabId(ttid);
 	ttab->viewMain();
 
-	int ttcount = twid->count();
-	QString ttname = QString::fromStdString("Untitled" + (ttcount ? " " + to_string(ttcount) : ""));
+	QString ttname = "Untitled";
 
 	int index = twid->addTab(ttab->widget, ttname);
+	int count = index;
 	twid->tabBar()->setTabData(index, ttid);
 
-	QTabBar* ttabbar = twid->tabBar();
-	QLabel* ttlabel = new QLabel;
-	ttlabel->setForegroundRole(QPalette::HighlightedText);
-	ttlabel->setText(ttname);
-	ttabbar->setTabButton(index, QTabBar::LeftSide, ttlabel);
-	ttabbar->setTabText(index, "");
+	if (read)
+	{
+		filename = std::filesystem::path(filename).filename().u8string(); //C++17
+		ttname = QString::fromStdString(filename);
+	}
+	else
+	{
+		ttname.append(QString::fromStdString(count ? " " + to_string(count) : ""));
+	}
+	twid->setTabText(index, ttname);
 
 	QAction* action = new QAction(ttname);
 	action->connect(action, &QAction::triggered, [=]() { this->twid->setCurrentWidget(ttab->widget); });
@@ -301,11 +312,8 @@ int gui::newTab(string filename)
 	ttmenu[ttid] = action;
 	ttabs[ttid] = ttab;
 
-	if (read)
-		tabChangeName(ttid, filename);
+	ttab->setTabName(ttname.toStdString());
 	twid->setCurrentIndex(index);
-
-	debug("newTab()", "ttid", ttid);
 
 	return index;
 }
@@ -317,47 +325,44 @@ int gui::openTab(TAB_VIEW view)
 
 int gui::openTab(TAB_VIEW view, int arg)
 {
+	this->state.tt++;
+	int ttid = this->state.tt;
+	
+	debug("openTab()", "ttid", ttid);
+
 	tab* parent = getCurrentTabHandler();
-	string filename = parent->getFilename();
+	int current = twid->tabBar()->currentIndex();
+	string parent_ttname = parent->getTabName();
 
 	tab* ttab = new tab(this, mwid, this->log->log);
-	int ttid = this->state.tt++;
 	ttab->setTabId(ttid);
 
-	int ttcount = twid->count();
-	QString ttname = QString::fromStdString("Untitled" + (ttcount ? " " + to_string(ttcount) : ""));
+	QIcon tticon;
+	QString ttname = QString::fromStdString(parent_ttname);
 
-	//TODO improve
 	switch (view)
 	{
 		case TAB_VIEW::main:
-			ttab->viewMain();
+			error("openTab()", "ttid", ttid);
+			return -1;
 		break;
 		case TAB_VIEW::tunersets:
 			ttab->viewTunersets(parent, arg);
-
+			tticon = QIcon(theme::icon("tunersets-view"));
 			ttname.append(" - ");
 			ttname.append("Edit settings");
 		break;
 		case TAB_VIEW::channelBook:
 			ttab->viewChannelBook(parent);
-
+			tticon = QIcon(theme::icon("channelbook-view"));
 			ttname.append(" - ");
 			ttname.append("Channel book");
 		break;
-		default:
-			return -1;
 	}
 
-	int index = twid->addTab(ttab->widget, ttname);
+	current++;
+	int index = twid->insertTab(current, ttab->widget, tticon, ttname);
 	twid->tabBar()->setTabData(index, ttid);
-
-	QTabBar* ttabbar = twid->tabBar();
-	QLabel* ttlabel = new QLabel;
-	ttlabel->setForegroundRole(QPalette::HighlightedText);
-	ttlabel->setText(ttname);
-	ttabbar->setTabButton(index, QTabBar::LeftSide, ttlabel);
-	ttabbar->setTabText(index, "");
 
 	QAction* action = new QAction(ttname);
 	action->connect(action, &QAction::triggered, [=]() { this->twid->setCurrentWidget(ttab->widget); });
@@ -368,17 +373,18 @@ int gui::openTab(TAB_VIEW view, int arg)
 	ttabs[ttid] = ttab;
 
 	twid->setCurrentIndex(index);
-
-	debug("openTab()", "ttid", ttid);
+	ttab->setTabName(ttname.toStdString());
 
 	return index;
 }
 
 void gui::closeTab(int index)
 {
-	debug("closeTab()", "index", index);
+	// debug("closeTab()", "index", index);
 
-	int ttid = getCurrentTabID(index);
+	int ttid = getTabId(index);
+	
+	debug("closeTab()", "ttid", index);
 
 	mwind->removeAction(ttmenu[ttid]);
 	mwtabs->removeAction(ttmenu[ttid]);
@@ -386,13 +392,15 @@ void gui::closeTab(int index)
 	ttmenu.erase(ttid);
 
 	tab* ttab = ttabs[ttid];
-	if (ttab->hasChildren())
+	if (ttab != nullptr && ttab->hasChildren())
 	{
 		for (auto & child : ttab->children())
 		{
-			int ttid = child->getTabId();
-			delete child;
-			ttabs.erase(ttid);
+			int index = twid->indexOf(child->widget);
+			if (index == -1)
+				continue;
+			ttab->removeChild(child);
+			closeTab(index);
 		}
 	}
 	delete ttabs[ttid];
@@ -449,42 +457,19 @@ void gui::windowChanged()
 
 void gui::tabChanged(int index)
 {
-	debug("tabChanged()", "index", index);
+	// debug("tabChanged()", "index", index);
 
-	int ttid = getCurrentTabID(index);
+	int ttid = getTabId(index);
+
+	debug("tabChanged()", "ttid", ttid);
+
 	if (ttid != -1)
 	{
-		ttabs[ttid]->tabSwitched();
-		ttmenu[ttid]->setChecked(true);
-
 		tab* ttab = ttabs[ttid];
-
-		if (ttab != nullptr)
-		{
-			int ttv = ttab->getTabView();
-			tabViewSwitch(ttv);
-		}
-
-		QTabBar* ttabbar = twid->tabBar();
-		for (unsigned int i = 0; i < ttabs.size(); i++)
-		{
-			tab* ttab = ttabs[i];
-			if (ttab != nullptr)
-			{
-				int index = twid->indexOf(ttab->widget);
-				QWidget* ttabbls = ttabbar->tabButton(index, QTabBar::LeftSide);
-				if (QLabel* ttlabel = qobject_cast<QLabel*>(ttabbls))
-					ttlabel->setForegroundRole(QPalette::ButtonText);
-			}
-		}
-
-		if (ttab != nullptr)
-		{
-			int index = twid->indexOf(ttab->widget);
-			QWidget* ttabbls = ttabbar->tabButton(index, QTabBar::LeftSide);
-			if (QLabel* ttlabel = qobject_cast<QLabel*>(ttabbls))
-				ttlabel->setForegroundRole(QPalette::HighlightedText);
-		}
+		ttmenu[ttid]->setChecked(true);
+		ttab->tabSwitched();
+		int ttv = ttab->getTabView();
+		tabViewSwitch(ttv);
 	}
 }
 
@@ -502,6 +487,64 @@ void gui::tabMoved(int from, int to)
 		mwind->addAction(action);
 		mwtabs->addAction(action);
 	}
+}
+
+void gui::tabChangeName(int ttid, string filename)
+{
+	debug("tabChangeName()", "ttid", ttid);
+
+	tab* ttab = ttabs[ttid];
+	int index = twid->indexOf(ttab->widget);
+	int count = index;
+	int v = ttab->getTabView();
+
+	QString ttname = "Untitled";
+
+	if (ttab->isChild())
+	{
+		for (auto & tab : ttabs)
+		{
+			if (tab.second != nullptr && tab.second->hasChildren())
+			{
+				for (auto & child : tab.second->children())
+				{
+					if (child == ttab)
+					{
+						int ttid = tab.second->getTabId();
+						count = twid->indexOf(tab.second->widget);
+						tabChangeName(ttid, filename);
+						break;
+					}
+				}
+			}
+		}
+	}
+	if (filename.empty())
+	{
+		ttname.append(QString::fromStdString(count ? " " + to_string(count) : ""));
+	}
+	else
+	{
+		ttname = QString::fromStdString(filename);
+	}
+	
+	debug("tabChangeName()", "index", index);
+
+	switch (v)
+	{
+		case TAB_VIEW::tunersets:
+			ttname.append(" - ");
+			ttname.append("Edit settings");
+		break;
+		case TAB_VIEW::channelBook:
+			ttname.append(" - ");
+			ttname.append("Channel book");
+		break;
+	}
+
+	twid->setTabText(index, ttname);
+	ttmenu[ttid]->setText(ttname);
+	ttab->setTabName(ttname.toStdString());
 }
 
 string gui::openFileDialog()
@@ -635,32 +678,6 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& flags)
 	return path;
 }
 
-void gui::tabChangeName(int ttid, string filename)
-{
-	debug("tabChangeName()", "ttid", ttid);
-
-	tab* ttab = ttabs[ttid];
-	int index = twid->indexOf(ttab->widget);
-	string tname;
-
-	if (filename.empty())
-		tname = "Untitled" + (index ? " " + to_string(index) : "");
-	else
-		tname = std::filesystem::path(filename).filename().u8string();
-
-	QString ttname = QString::fromStdString(tname);
-	QTabBar* ttabbar = twid->tabBar();
-	QWidget* ttabbls = ttabbar->tabButton(index, QTabBar::LeftSide);
-	if (QLabel* ttlabel = qobject_cast<QLabel*>(ttabbls))
-	{
-		ttlabel->setText(ttname);
-		ttlabel->adjustSize();
-	}
-	ttabbar->setTabText(index, "");
-
-	ttmenu[ttid]->setText(ttname);
-}
-
 void gui::setStatus(int counters[5])
 {
 	QString qstr;
@@ -757,7 +774,8 @@ void gui::tabAction(TAB_ATS action)
 	debug("tabAction()", "action", action);
 
 	tab* ttab = getCurrentTabHandler();
-	ttab->actionCall(action);
+	if (ttab != nullptr)
+		ttab->actionCall(action);
 }
 
 void gui::windowMinimize()
@@ -804,13 +822,7 @@ void gui::setActionFlags(vector<int> connectors, bool flag)
 	update(connectors, flag);
 }
 
-int gui::getCurrentTabID()
-{
-	int index = twid->tabBar()->currentIndex();
-	return getCurrentTabID(index);
-}
-
-int gui::getCurrentTabID(int index)
+int gui::getTabId(int index)
 {
 	int ttid = twid->tabBar()->tabData(index).toInt();
 	if (ttabs[ttid] == nullptr)
@@ -818,9 +830,15 @@ int gui::getCurrentTabID(int index)
 	return ttid;
 }
 
+int gui::getCurrentTabId()
+{
+	int index = twid->tabBar()->currentIndex();
+	return getTabId(index);
+}
+
 tab* gui::getCurrentTabHandler()
 {
-	int ttid = getCurrentTabID();
+	int ttid = getCurrentTabId();
 	return ttid != -1 ? ttabs[ttid] : nullptr;
 }
 
@@ -846,6 +864,7 @@ void gui::update()
 			x.second->setDisabled(true);
 	}
 
+	// note: is out of range
 	// debug("update()", "flags", getActionFlags().to_ullong());
 }
 
@@ -899,6 +918,7 @@ void gui::update(int connector)
 	else if (connector == -1)
 		update(GUI_CXE__idle);
 
+	// note: is out of range
 	// debug("update()", "flags", getActionFlags().to_ullong());
 }
 

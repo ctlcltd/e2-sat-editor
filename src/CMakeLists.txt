@@ -65,6 +65,7 @@ set(resources_resource_files
 	"../res/4x1.png"
 	"../res/5x1.png"
 	"../res/dark/add.png"
+	"../res/dark/channelbook-view.png"
 	"../res/dark/close.png"
 	"../res/dark/crypted.png"
 	"../res/dark/delete.png"
@@ -83,7 +84,9 @@ set(resources_resource_files
 	"../res/dark/save.png"
 	"../res/dark/search.png"
 	"../res/dark/settings.png"
+	"../res/dark/tunersets-view.png"
 	"../res/light/add.png"
+	"../res/light/channelbook-view.png"
 	"../res/light/close.png"
 	"../res/light/crypted.png"
 	"../res/light/delete.png"
@@ -102,6 +105,7 @@ set(resources_resource_files
 	"../res/light/save.png"
 	"../res/light/search.png"
 	"../res/light/settings.png"
+	"../res/light/tunersets-view.png"
 )
 
 qt6_add_resources(e2-sat-editor "resources"

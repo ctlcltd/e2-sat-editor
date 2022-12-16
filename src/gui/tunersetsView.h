@@ -94,8 +94,8 @@ class tunersetsView : public viewAbstract
 		void layout();
 		void searchLayout();
 		void load();
+		void reset();
 		void populate();
-		void preset();
 		void treeItemChanged();
 		void listItemCut();
 		void listItemCopy(bool cut = false);
@@ -108,6 +108,20 @@ class tunersetsView : public viewAbstract
 		void updateConnectors();
 		void updateCounters(bool current = false);
 		QSettings* sets;
+
+		struct sts
+		{
+			// post update index
+			bool changed;
+			// tree current top level index
+			int ti;
+			// tree current bname
+			string curr;
+			// list_tree sort
+			pair<int, Qt::SortOrder> sort;
+			// tools tunersets current type
+			int ty;
+		} state;
 
 		struct ats
 		{
