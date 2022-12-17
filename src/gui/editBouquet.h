@@ -10,23 +10,18 @@
  */
 
 #include <string>
-#include <vector>
 
-using std::string, std::vector;
+using std::string;
 
 #ifndef editBouquet_h
 #define editBouquet_h
-#include <QApplication>
 #include <QWidget>
-#include <QDialog>
-#include <QGridLayout>
 
-#include "../logger/logger.h"
-#include "e2db_gui.h"
+#include "dialAbstract.h"
 
 namespace e2se_gui
 {
-class editBouquet : protected e2se::log_factory
+class editBouquet : public dialAbstract
 {
 	Q_DECLARE_TR_FUNCTIONS(editBouquet)
 
@@ -39,21 +34,15 @@ class editBouquet : protected e2se::log_factory
 		void save();
 		void setEditID(string bname);
 		string getEditID();
-		void destroy();
-		QWidget* widget;
-	protected:
-		QDialog* dial;
-		QGridLayout* dtform;
-		vector<QWidget*> fields;
-	private:
+
 		struct sts
 		{
 			// editable
 			bool edit = false;
-			// bouquets_tree top level index 
+			// bouquets_tree top level index
 			int ti;
 		} state;
-		e2db* dbih;
+	private:
 		string bname;
 };
 }

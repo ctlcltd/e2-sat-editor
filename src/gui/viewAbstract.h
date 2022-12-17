@@ -46,6 +46,7 @@ class viewAbstract : protected e2se::log_factory
 			all
 		};
 
+		virtual ~viewAbstract() = default;
 		void setDataSource(e2db* dbih);
 		virtual void layout() {};
 		void searchLayout();

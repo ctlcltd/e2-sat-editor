@@ -13,19 +13,16 @@
 #include <sstream>
 
 #include <QtGlobal>
-#include <QList>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QFormLayout>
 #include <QGroupBox>
 #include <QToolBox>
-#include <QToolBar>
 #include <QLabel>
 #include <QLineEdit>
 #include <QCheckBox>
 
 #include "editService.h"
-#include "theme.h"
 
 using std::stringstream, std::to_string;
 using namespace e2se;
@@ -39,60 +36,30 @@ editService::editService(e2db* dbih, e2se::logger::session* log)
 	debug("editService()");
 	
 	this->dbih = dbih;
-	this->txdata = dbih->get_transponders_index();
 }
 
 void editService::display(QWidget* cwid)
 {
-	debug("display()");
+	layout();
 
-	//TODO throw exception
-	if (this->state.edit && ! dbih->db.services.count(chid))
-		return;
+	if (this->state.edit)
+		retrieve();
 
-	QString wtitle = this->state.edit ? "Edit Service" : "Add Service";
-	this->dial = new QDialog(cwid);
-	dial->setWindowTitle(wtitle);
-	//TODO FIX SEGFAULT
-	// dial->connect(dial, &QDialog::finished, [=]() { delete dial; });
+	this->dialAbstract::display(cwid);
+}
 
-	QGridLayout* dfrm = new QGridLayout(dial);
-	QVBoxLayout* dvbox = new QVBoxLayout;
+void editService::layout()
+{
+	this->dialAbstract::layout();
 
-	QToolBar* dttbar = new QToolBar;
-	dttbar->setIconSize(QSize(16, 16));
-	dttbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	dttbar->setStyleSheet("QToolBar { padding: 0 8px } QToolButton { font: 16px }");
-	QWidget* dtspacer = new QWidget;
-	dtspacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	dttbar->addWidget(dtspacer);
-	dttbar->addAction(theme::icon("edit"), tr("Save"), [=]() { this->save(); });
+	QString dtitle = this->state.edit ? "Edit Service" : "Add Service";
+	dial->setWindowTitle(dtitle);
 
-	this->widget = new QWidget;
-	this->dtform = new QGridLayout;
+	this->txdata = dbih->get_transponders_index();
 
 	serviceLayout();
 	transponderLayout();
 	paramsLayout();
-	if (this->state.edit)
-		retrieve();
-
-	dtform->setVerticalSpacing(32);
-	widget->setContentsMargins(12, 12, 12, 12);
-	widget->setLayout(dtform);
-
-	dfrm->setColumnStretch(0, 1);
-	dfrm->setRowStretch(0, 1);
-	dfrm->setContentsMargins(0, 0, 0, 0);
-
-	dvbox->addWidget(widget);
-	dvbox->addWidget(dttbar);
-
-	dfrm->addLayout(dvbox, 0, 0);
-
-	dfrm->setSizeConstraint(QGridLayout::SetFixedSize);
-	dial->setLayout(dfrm);
-	dial->exec();
 }
 
 void editService::serviceLayout()
@@ -739,15 +706,6 @@ void editService::retrieve()
 	}
 }
 
-void editService::save()
-{
-	debug("save()");
-
-	store();
-
-	dial->close();
-}
-
 string editService::getPIDValue(e2db::service ch, e2db::SDATA_PIDS x)
 {
 	string cpx = (x > 9 ? "" : "0") + to_string(x);
@@ -824,12 +782,6 @@ string editService::getEditID()
 	debug("getEditID()");
 
 	return this->chid;
-}
-
-void editService::destroy()
-{
-	delete this->dial;
-	delete this;
 }
 
 }

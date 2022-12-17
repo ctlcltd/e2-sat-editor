@@ -22,7 +22,6 @@
 #include <QComboBox>
 
 #include "editBouquet.h"
-#include "theme.h"
 
 using namespace e2se;
 
@@ -40,54 +39,20 @@ editBouquet::editBouquet(e2db* dbih, int ti, e2se::logger::session* log)
 
 void editBouquet::display(QWidget* cwid)
 {
-	debug("display()");
-
-	QString wtitle = this->state.edit ? "Edit Bouquet" : "Add Bouquet";
-	this->dial = new QDialog(cwid);
-	dial->setWindowTitle(wtitle);
-	//TODO FIX SEGFAULT
-	// dial->connect(dial, &QDialog::finished, [=]() { delete dial; });
-
-	QGridLayout* dfrm = new QGridLayout(dial);
-	QVBoxLayout* dvbox = new QVBoxLayout;
-
-	QToolBar* dttbar = new QToolBar;
-	dttbar->setIconSize(QSize(16, 16));
-	dttbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	dttbar->setStyleSheet("QToolBar { padding: 0 8px } QToolButton { font: 16px }");
-	QWidget* dtspacer = new QWidget;
-	dtspacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	dttbar->addWidget(dtspacer);
-	dttbar->addAction(theme::icon("edit"), tr("Save"), [=]() { this->save(); });
-
-	this->widget = new QWidget;
-	this->dtform = new QGridLayout;
-
 	layout();
+
 	if (this->state.edit)
 		retrieve();
 
-	dtform->setVerticalSpacing(32);
-	widget->setContentsMargins(12, 12, 12, 12);
-	widget->setLayout(dtform);
-
-	dfrm->setColumnStretch(0, 1);
-	dfrm->setRowStretch(0, 1);
-	dfrm->setContentsMargins(0, 0, 0, 0);
-
-	dvbox->addWidget(widget);
-	dvbox->addWidget(dttbar);
-
-	dfrm->addLayout(dvbox, 0, 0);
-
-	dfrm->setSizeConstraint(QGridLayout::SetFixedSize);
-	dial->setLayout(dfrm);
-	dial->exec();
+	this->dialAbstract::display(cwid);
 }
 
 void editBouquet::layout()
 {
-	debug("layout()");
+	this->dialAbstract::layout();
+
+	QString dtitle = this->state.edit ? "Edit Bouquet" : "Add Bouquet";
+	dial->setWindowTitle(dtitle);
 
 	QGroupBox* dtl0 = new QGroupBox(tr("Userbouquet"));
 	QFormLayout* dtf0 = new QFormLayout;
@@ -205,21 +170,12 @@ void editBouquet::retrieve()
 	}
 }
 
-void editBouquet::save()
-{
-	debug("save()");
-
-	store();
-
-	dial->close();
-}
-
 void editBouquet::setEditID(string bname)
 {
 	debug("setEditID()");
 
-	this->bname = bname;
 	this->state.edit = true;
+	this->bname = bname;
 }
 
 string editBouquet::getEditID()
@@ -227,12 +183,6 @@ string editBouquet::getEditID()
 	debug("getEditID()");
 
 	return this->bname;
-}
-
-void editBouquet::destroy()
-{
-	delete this->dial;
-	delete this;
 }
 
 }

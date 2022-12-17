@@ -25,6 +25,8 @@ qt_add_executable(e2-sat-editor WIN32 MACOSX_BUNDLE
 	gui/about.cpp
 	gui/channelBook.cpp
 	gui/e2db_gui.cpp
+	gui/dialAbstract.cpp
+	gui/dialChannelBook.cpp
 	gui/editBouquet.cpp
 	gui/editMarker.cpp
 	gui/editService.cpp

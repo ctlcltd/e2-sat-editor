@@ -42,7 +42,8 @@
 #include "editBouquet.h"
 #include "editService.h"
 #include "editMarker.h"
-#include "channelBookView.h"
+#include "dialChannelBook.h"
+// #include "channelBookView.h"
 
 using std::to_string, std::sort;
 using namespace e2se;
@@ -984,28 +985,9 @@ void mainView::addChannel()
 {
 	debug("addChannel()");
 
-	e2se_gui::channelBookView* cbv = new e2se_gui::channelBookView(dbih, this->log->log);
-	string curr_chlist = this->state.curr;
-	QDialog* dial = new QDialog(cwid);
-	dial->setMinimumSize(760, 420);
-	dial->setWindowTitle("Add Channel");
-	dial->connect(dial, &QDialog::finished, [=]() { delete cbv; delete dial; });
-
-	QGridLayout* layout = new QGridLayout;
-	QToolBar* bottom_toolbar = new QToolBar;
-	bottom_toolbar->setIconSize(QSize(16, 16));
-	bottom_toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	bottom_toolbar->setStyleSheet("QToolBar { padding: 0 8px } QToolButton { font: 16px }");
-	QWidget* bottom_spacer = new QWidget;
-	bottom_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	bottom_toolbar->addWidget(bottom_spacer);
-	bottom_toolbar->addAction(theme::icon("add"), "Add", [=]() { auto selected = cbv->getSelected(); this->putListItems(selected); });
-
-	layout->addWidget(cbv->widget);
-	layout->addWidget(bottom_toolbar);
-	layout->setContentsMargins(0, 0, 0, 0);
-	dial->setLayout(layout);
-	dial->exec();
+	e2se_gui::dialChannelBook* book = new e2se_gui::dialChannelBook(dbih, this->log->log);
+	book->setEventCallback([=](vector<QString> items) { this->putListItems(items); });
+	book->display(cwid);
 }
 
 void mainView::addService()

@@ -10,23 +10,18 @@
  */
 
 #include <string>
-#include <vector>
 
-using std::string, std::vector;
+using std::string;
 
 #ifndef editTunersets_h
 #define editTunersets_h
-#include <QApplication>
 #include <QWidget>
-#include <QDialog>
-#include <QGridLayout>
 
-#include "../logger/logger.h"
-#include "e2db_gui.h"
+#include "dialAbstract.h"
 
 namespace e2se_gui
 {
-class editTunersets : protected e2se::log_factory
+class editTunersets : public dialAbstract
 {
 	Q_DECLARE_TR_FUNCTIONS(editTunersets)
 
@@ -36,16 +31,9 @@ class editTunersets : protected e2se::log_factory
 		void layout();
 		void store();
 		void retrieve();
-		void save();
 		void setEditID(string todo);
 		string getEditID();
-		void destroy();
-		QWidget* widget;
-	protected:
-		QDialog* dial;
-		QGridLayout* dtform;
-		vector<QWidget*> fields;
-	private:
+
 		struct sts
 		{
 			// editable
@@ -53,7 +41,6 @@ class editTunersets : protected e2se::log_factory
 			// tools tunersets current type
 			int ty;
 		} state;
-		e2db* dbih;
 };
 }
 #endif /* editTunersets_h */
