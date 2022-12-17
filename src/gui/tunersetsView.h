@@ -97,6 +97,12 @@ class tunersetsView : public viewAbstract
 		void reset();
 		void populate();
 		void treeItemChanged();
+		void listItemDoubleClicked();
+		void editSettings();
+		void addPosition();
+		void editPosition();
+		void addTransponder();
+		void editTransponder();
 		void listItemCut();
 		void listItemCopy(bool cut = false);
 		void listItemPaste();

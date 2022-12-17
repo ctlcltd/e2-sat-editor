@@ -31,8 +31,8 @@ class editTunersets : public dialAbstract
 		void layout();
 		void store();
 		void retrieve();
-		void setEditID(string todo);
-		string getEditID();
+		void setEditID(int tvid);
+		int getEditID();
 
 		struct sts
 		{
@@ -41,6 +41,9 @@ class editTunersets : public dialAbstract
 			// tools tunersets current type
 			int ty;
 		} state;
+	private:
+		int tvid;
+		string iname;
 };
 }
 #endif /* editTunersets_h */

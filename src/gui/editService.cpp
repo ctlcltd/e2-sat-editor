@@ -390,6 +390,7 @@ void editService::tunerComboChanged(int index)
 }
 
 //TODO TEST
+//TODO e2db::service default value
 void editService::store()
 {
 	debug("store()");

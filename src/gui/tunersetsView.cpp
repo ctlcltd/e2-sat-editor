@@ -27,6 +27,9 @@
 #include "theme.h"
 #include "tab.h"
 #include "gui.h"
+#include "editTunersets.h"
+#include "editTunersetsTable.h"
+#include "editTunersetsTransponder.h"
 #include "todo.h"
 
 using std::to_string;
@@ -163,6 +166,11 @@ void tunersetsView::layout()
 	tree->connect(tree, &QTreeWidget::currentItemChanged, [=]() { this->treeItemChanged(); });
 	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->sortByColumn(column); });
 
+	tree->setContextMenuPolicy(Qt::CustomContextMenu);
+	tree->connect(tree, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { this->showTreeEditContextMenu(pos); });
+	list->setContextMenuPolicy(Qt::CustomContextMenu);
+	list->connect(list, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { this->showListEditContextMenu(pos); });
+
 	searchLayout();
 
 	QToolBar* tree_ats = new QToolBar;
@@ -189,12 +197,14 @@ void tunersetsView::layout()
 	QWidget* list_ats_spacer = new QWidget;
 	list_ats_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	tree_ats->addAction(theme::icon("add"), "New Position", todo);
+	tree_ats->addAction(theme::icon("add"), "New Position", [=]() { this->addPosition(); });
 	tree_ats->addWidget(tree_ats_spacer);
 	tree_ats->addWidget(this->action.tree_search);
-	this->action.list_newtr = list_ats->addAction(theme::icon("add"), "New Transponder", todo);
+	this->action.list_newtr = list_ats->addAction(theme::icon("add"), "New Transponder", [=]() { this->addTransponder(); });
 	list_ats->addWidget(list_ats_spacer);
 	list_ats->addWidget(this->action.list_search);
+
+	list->connect(list, &QTreeWidget::itemDoubleClicked, [=]() { this->listItemDoubleClicked(); });
 
 	tbox->addWidget(tree);
 	tbox->addWidget(tree_search);
@@ -355,6 +365,7 @@ void tunersetsView::populate()
 	{
 		selected->setExpanded(true);
 		curr = selected->data(0, Qt::UserRole).toString().toStdString();
+		this->state.curr = curr;
 	}
 
 	debug("populate()", "curr", curr);
@@ -461,6 +472,157 @@ void tunersetsView::treeItemChanged()
 	populate();
 }
 
+void tunersetsView::listItemDoubleClicked()
+{
+	debug("listItemDoubleClicked()");
+
+	QList<QTreeWidgetItem*> selected = list->selectedItems();
+	
+	if (selected.empty() || selected.count() > 1)
+		return;
+
+	editTransponder();
+}
+
+void tunersetsView::editSettings()
+{
+	debug("editSettings()");
+
+	int tvid = this->yx;
+
+	if (dbih->tuners.count(tvid))
+		debug("editSettings()", "tvid", tvid);
+	else
+		return error("editSettings()", "tvid", tvid);
+
+	e2se_gui::editTunersets* edit = new e2se_gui::editTunersets(dbih, yx, this->log->log);
+	edit->setEditID(tvid);
+	edit->display(cwid);
+	edit->getEditID(); // returned after dial.exec()
+	edit->destroy();
+
+	todo();
+}
+
+void tunersetsView::addPosition()
+{
+	debug("addPosition()");
+
+	e2db::tunersets tvs = dbih->tuners[yx];
+	string tnid;
+	e2se_gui::editTunersetsTable* add = new e2se_gui::editTunersetsTable(dbih, yx, this->log->log);
+	add->display(cwid);
+	tnid = add->getEditID(); // returned after dial.exec()
+	add->destroy();
+		
+	if (tvs.tables.count(tnid))
+		debug("addPosition()", "tnid", tnid);
+	else
+		return error("addPosition()", "tnid", tnid);
+
+	todo();
+}
+
+void tunersetsView::editPosition()
+{
+	debug("editPosition()");
+
+	QList<QTreeWidgetItem*> selected = tree->selectedItems();
+	
+	if (selected.empty() || selected.count() > 1)
+		return;
+
+	QTreeWidgetItem* item = selected.first();
+	string tnid = item->data(0, Qt::UserRole).toString().toStdString();
+	string nw_tnid;
+	e2db::tunersets tvs = dbih->tuners[yx];
+
+	debug("editPosition()", "tnid", tnid);
+		
+	if (! tvs.tables.count(tnid))
+		return error("editPosition()", "tnid", tnid);
+
+	e2se_gui::editTunersetsTable* edit = new e2se_gui::editTunersetsTable(dbih, yx, this->log->log);
+	edit->setEditID(tnid);
+	edit->display(cwid);
+	nw_tnid = edit->getEditID(); // returned after dial.exec()
+	edit->destroy();
+
+	if (tvs.tables.count(nw_tnid))
+		debug("editPosition()", "new tnid", nw_tnid);
+	else
+		return error("editPosition()", "new tnid", nw_tnid);
+
+	todo();
+}
+
+void tunersetsView::addTransponder()
+{
+	debug("addTransponder()");
+
+	string tnid = this->state.curr;
+	e2db::tunersets tvs = dbih->tuners[yx];
+	e2db::tunersets_table tns;
+
+	if (tvs.tables.count(tnid))
+		tns = tvs.tables[tnid];
+	else
+		return error("editTransponder()", "tnid", tnid);
+
+	string trid;
+	e2se_gui::editTunersetsTransponder* add = new e2se_gui::editTunersetsTransponder(dbih, yx, this->log->log);
+	add->display(cwid);
+	trid = add->getEditID(); // returned after dial.exec()
+	add->destroy();
+		
+	if (tns.transponders.count(trid))
+		debug("addTransponder()", "trid", trid);
+	else
+		return error("addTransponder()", "trid", trid);
+
+	todo();
+}
+
+void tunersetsView::editTransponder()
+{
+	debug("editTransponder()");
+
+	QList<QTreeWidgetItem*> selected = list->selectedItems();
+	
+	if (selected.empty() || selected.count() > 1)
+		return;
+
+	QTreeWidgetItem* item = selected.first();
+	string trid = item->data(ITEM_DATA_ROLE::trid, Qt::UserRole).toString().toStdString();
+	string nw_trid;
+	string tnid = this->state.curr;
+	e2db::tunersets tvs = dbih->tuners[yx];
+	e2db::tunersets_table tns;
+
+	debug("editTransponder()", "trid", trid);
+
+	if (tvs.tables.count(tnid))
+		tns = tvs.tables[tnid];
+	else
+		return error("editTransponder()", "tnid", tnid);
+		
+	if (! tns.transponders.count(trid))
+		return error("editTransponder()", "trid", trid);
+
+	e2se_gui::editTunersetsTransponder* edit = new e2se_gui::editTunersetsTransponder(dbih, yx, this->log->log);
+	edit->setEditID(tnid, trid);
+	edit->display(cwid);
+	nw_trid = edit->getEditID(); // returned after dial.exec()
+	edit->destroy();
+
+	if (tns.transponders.count(nw_trid))
+		debug("editTransponder()", "new trid", nw_trid);
+	else
+		return error("editTransponder()", "new trid", nw_trid);
+
+	todo();
+}
+
 void tunersetsView::listItemCut()
 {
 	debug("listItemCut()");
@@ -548,11 +710,24 @@ void tunersetsView::updateCounters(bool current)
 void tunersetsView::showTreeEditContextMenu(QPoint &pos)
 {
 	debug("showTreeEditContextMenu()");
+
+	QMenu* tree_edit = new QMenu;
+	tree_edit->addAction("Edit Position", [=]() { this->editPosition(); });
+
+	tree_edit->addSeparator();
+	tree_edit->addAction("$ Edit Settings", [=]() { this->editSettings(); });
+
+	tree_edit->exec(tree->mapToGlobal(pos));
 }
 
 void tunersetsView::showListEditContextMenu(QPoint &pos)
 {
 	debug("showListEditContextMenu()");
+
+	QMenu* list_edit = new QMenu;
+	list_edit->addAction("Edit Transponder", [=]() { this->editTransponder(); });
+
+	list_edit->exec(list->mapToGlobal(pos));
 }
 
 //TODO FIX EXC_BAD_ACCESS

@@ -26,19 +26,33 @@ class editTunersetsTransponder : public dialAbstract
 	Q_DECLARE_TR_FUNCTIONS(editTunersetsTransponder)
 
 	public:
-		editTunersetsTransponder(e2db* dbih, e2se::logger::session* log);
+		editTunersetsTransponder(e2db* dbih, int ty, e2se::logger::session* log);
 		void display(QWidget* cwid);
 		void layout();
+		void leadSatLayout();
+		void leadTerrestrialLayout();
+		void leadCableLayout();
+		void leadAtscLayout();
+		void sideSatLayout();
+		void sideTerrestrialLayout();
+		void sideCableLayout();
+		void sideAtscLayout();
 		void store();
 		void retrieve();
-		void setEditID(string todo);
+		void setEditID(string tnid, string trid);
 		string getEditID();
 
 		struct sts
 		{
 			// editable
 			bool edit = false;
+			// tools tunersets current type
+			int ty;
 		} state;
+	private:
+		int tvid;
+		string tnid;
+		string trid;
 };
 }
 #endif /* editTunersetsTransponder_h */

@@ -9,15 +9,8 @@
  * @license GNU GPLv3 License
  */
 
-#include <QtGlobal>
-#include <QList>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
 #include <QFormLayout>
 #include <QGroupBox>
-#include <QToolBox>
-#include <QToolBar>
-#include <QLabel>
 #include <QLineEdit>
 #include <QComboBox>
 

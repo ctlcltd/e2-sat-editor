@@ -1790,7 +1790,7 @@ void mainView::showTreeEditContextMenu(QPoint &pos)
 {
 	debug("showTreeEditContextMenu()");
 
-	QMenu* bouquet_edit = new QMenu;
+	QMenu* tree_edit = new QMenu;
 	QAction* bouquet_export = new QAction("Export");
 	// bouquet: tv | radio
 	if (this->state.ti != -1)
@@ -1800,15 +1800,15 @@ void mainView::showTreeEditContextMenu(QPoint &pos)
 	// userbouquet
 	else
 	{
-		bouquet_edit->addAction("Edit Userbouquet", [=]() { this->editUserbouquet(); });
-		bouquet_edit->addSeparator();
-		bouquet_edit->addAction("Delete", [=]() { this->bouquetItemDelete(); });
+		tree_edit->addAction("Edit Userbouquet", [=]() { this->editUserbouquet(); });
+		tree_edit->addSeparator();
+		tree_edit->addAction("Delete", [=]() { this->bouquetItemDelete(); });
 		bouquet_export->connect(bouquet_export, &QAction::triggered, [=]() { twid->exportFile(); });
 	}
-	bouquet_edit->addSeparator();
-	bouquet_edit->addAction(bouquet_export);
+	tree_edit->addSeparator();
+	tree_edit->addAction(bouquet_export);
 
-	bouquet_edit->exec(tree->mapToGlobal(pos));
+	tree_edit->exec(tree->mapToGlobal(pos));
 }
 
 void mainView::showListEditContextMenu(QPoint &pos)
