@@ -44,7 +44,7 @@ void editBouquet::layout()
 {
 	this->dialAbstract::layout();
 
-	QString dtitle = this->state.edit ? "Edit Bouquet" : "Add Bouquet";
+	QString dtitle = this->state.edit ? tr("Edit Bouquet") : tr("Add Bouquet");
 	dial->setWindowTitle(dtitle);
 
 	QGroupBox* dtl0 = new QGroupBox(tr("Userbouquet"));

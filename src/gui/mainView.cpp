@@ -923,6 +923,15 @@ void mainView::addUserbouquet()
 	else
 		return error("addUserbouquet()", "bname", bname);
 
+	tree->setDragEnabled(false);
+	tree->setAcceptDrops(false);
+
+	int i = 0, y;
+	QTreeWidgetItem* current = tree->currentItem();
+	QTreeWidgetItem* parent = tree->invisibleRootItem();
+	i = current != nullptr ? parent->indexOfChild(current) : tree->topLevelItemCount();
+	y = i + 1;
+
 	e2db::userbouquet uboq = dbih->userbouquets[bname];
 	e2db::bouquet gboq = dbih->bouquets[uboq.pname];
 	int pidx = gboq.btype == 1 ? 0 : 1;
@@ -934,13 +943,20 @@ void mainView::addUserbouquet()
 	else
 		name = QString::fromStdString(uboq.name);
 
-	QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
-	bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
+	QTreeWidgetItem* item = new QTreeWidgetItem(pgroup);
+	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
 	QMap<QString, QVariant> tdata; // singular data
 	tdata["id"] = QString::fromStdString(uboq.bname);
-	bitem->setData(0, Qt::UserRole, QVariant (tdata));
-	bitem->setText(0, name);
-	tree->addTopLevelItem(bitem);
+	item->setData(0, Qt::UserRole, QVariant (tdata));
+	item->setText(0, name);
+
+	if (current == nullptr)
+		tree->addTopLevelItem(item);
+	else
+		tree->insertTopLevelItem(y, item);
+
+	tree->setDragEnabled(true);
+	tree->setAcceptDrops(true);
 
 	twid->updateBouquetsIndex();
 }
@@ -976,7 +992,7 @@ void mainView::editUserbouquet()
 		name = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{S}\\s]+"));
 	else
 		name = QString::fromStdString(uboq.name);
-	selected[0]->setText(0, name);
+	item->setText(0, name);
 
 	twid->updateBouquetsIndex();
 }
@@ -1255,7 +1271,9 @@ void mainView::bouquetItemDelete()
 	}
 
 	this->state.changed = true;
+
 	twid->updateBouquetsIndex();
+	updateCounters();
 }
 
 void mainView::listReferenceToggle()
@@ -1450,7 +1468,7 @@ void mainView::listItemDelete()
 		// bouquets tree
 		if (this->state.tc)
 		{
-			dbih->remove_channel_reference(chid, curr_chlist);
+			dbih->removeChannelReference(chid, curr_chlist);
 			cache[pname].clear();
 		}
 		// services tree
@@ -1719,56 +1737,14 @@ void mainView::updateRefBox()
 		{
 			e2db::service ch = dbih->db.services[chid];
 			e2db::transponder tx = dbih->db.transponders[ch.txid];
-			string ptxp, psys, ppos;
 
 			ssid = QString::fromStdString(to_string(ch.ssid));
 
-			switch (tx.ttype)
-			{
-				case 's':
-					ptxp = to_string(tx.freq) + '/' + e2db::SAT_POL[tx.pol] + '/' + to_string(tx.sr);
-				break;
-				case 't':
-					ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.tmod] + '/' + e2db::TER_BAND[tx.band];
-				break;
-				case 'c':
-					ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cmod] + '/' + to_string(tx.sr);
-				break;
-				case 'a':
-					ptxp = to_string(tx.freq);
-				break;
-			}
+			string ptxp = dbih->get_transponder_combo_value(tx);
 			txp = QString::fromStdString(ptxp);
 
-			switch (tx.ttype)
-			{
-				case 's':
-					psys = tx.sys != -1 ? e2db::SAT_SYS[tx.sys] : "DVB-S";
-				break;
-				case 't':
-					psys = "DVB-T";
-				break;
-				case 'c':
-					psys = "DVB-C";
-				break;
-				case 'a':
-					psys = "ATSC";
-				break;
-			}
-			if (tx.ttype == 's')
-			{
-				if (dbih->tuners_pos.count(tx.pos))
-				{
-					string tnid = dbih->tuners_pos.at(tx.pos);
-					e2db::tunersets_table tn = dbih->tuners[0].tables[tnid];
-					ppos = tn.name;
-				}
-
-				char cposdeg[6];
-				// %3d.%1d%C
-				std::sprintf(cposdeg, "%.1f", float (std::abs (tx.pos)) / 10);
-				ppos += ' ' + (string (cposdeg) + (tx.pos > 0 ? 'E' : 'W'));
-			}
+			string psys = dbih->get_transponder_system_text(tx);
+			string ppos = dbih->get_transponder_position_text(tx);
 
 			tns = "<p style=\"line-height: 125%\">" + QString::fromStdString(psys + "<br>" + ppos) + "</p>";
 		}

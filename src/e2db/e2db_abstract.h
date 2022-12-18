@@ -47,7 +47,7 @@ struct e2db_abstract
 		inline static const string TER_MOD[4] = {"Auto", "QPSK", "QAM16", "QAM64"};
 		inline static const string TER_TRXMODE[3] = {"Auto", "2k", "8k"};
 		inline static const string TER_GUARD[5] = {"Auto", "1/32", "1/16", "1/8", "1/4"};
-		inline static const string TER_HIER[5] = {"Auto", "", "1", "2", "4"};
+		inline static const string TER_HIER[5] = {"Auto", "0", "1", "2", "4"};
 		inline static const string TER_INV[3] = {"Auto", "On", "Off"};
 
 		inline static const string CAB_INV[3] = {"Auto", "On", "Off"};
@@ -354,8 +354,8 @@ struct e2db_abstract
 		void add_channel_reference(int idx, userbouquet& ub, channel_reference& chref, service_reference& ref);
 		void set_channel_reference_marker_value(userbouquet& ub, string chid, string value);
 		void add_tunersets(tunersets& tv);
-		void add_tunersets_table(int idx, tunersets& tv, tunersets_table& tn);
-		void add_tunersets_transponder(int idx, tunersets_table& tn, tunersets_transponder& tntxp);
+		void add_tunersets_table(int idx, tunersets_table& tn, tunersets& tv);
+		void add_tunersets_transponder(int idx, tunersets_transponder& tntxp, tunersets_table& tn);
 		e2se::logger* log;
 };
 }

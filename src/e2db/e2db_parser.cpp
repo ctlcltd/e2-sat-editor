@@ -960,7 +960,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 		if (! add && step == 1)
 		{
 			bidx++;
-			add_tunersets_table(bidx, tv, tn);
+			add_tunersets_table(bidx, tn, tv);
 		}
 		else if (add && step == 2)
 		{
@@ -968,7 +968,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 			std::sprintf(tnid, "%c:%04x", type, bidx);
 			tunersets_table& tn = tv.tables[tnid];
 			cidx++;
-			add_tunersets_transponder(cidx, tn, tntxp);
+			add_tunersets_transponder(cidx, tntxp, tn);
 		}
 	}
 

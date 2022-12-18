@@ -16,7 +16,6 @@
 #include <QCheckBox>
 
 #include "editTunersetsTable.h"
-#include "todo.h"
 
 using std::to_string;
 using namespace e2se;
@@ -47,7 +46,7 @@ void editTunersetsTable::layout()
 {
 	this->dialAbstract::layout();
 
-	QString dtitle = this->state.edit ? "Edit Position" : "Add Position";
+	QString dtitle = this->state.edit ? tr("Edit Position") : tr("Add Position");
 	dial->setWindowTitle(dtitle);
 
 	switch (this->state.ty)
@@ -86,7 +85,8 @@ void editTunersetsTable::tableSatLayout()
 	dtf0sp->setProperty("field", "pos");
 	fields.emplace_back(dtf0sp);
 	dtf0sp->setMinimumWidth(100);
-	dtf0sp->setValidator(new QIntValidator);
+	dtf0sp->setInputMask("000.0>A");
+	dtf0sp->setValidator(new QRegularExpressionValidator(QRegularExpression("[\\d]{,3}.\\d\\w")));
 	dtf0->addRow(tr("Position"), dtf0sp);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -123,7 +123,6 @@ void editTunersetsTable::tableTerrestrialLayout()
 	dtf0tc->setProperty("field", "country");
 	fields.emplace_back(dtf0tc);
 	dtf0tc->setMinimumWidth(60);
-	dtf0tc->setValidator(new QIntValidator);
 	dtf0->addRow(tr("Country"), dtf0tc);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -160,7 +159,6 @@ void editTunersetsTable::tableCableLayout()
 	dtf0cc->setProperty("field", "country");
 	fields.emplace_back(dtf0cc);
 	dtf0cc->setMinimumWidth(60);
-	dtf0cc->setValidator(new QIntValidator);
 	dtf0->addRow(tr("Country"), dtf0cc);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -212,7 +210,6 @@ void editTunersetsTable::tableAtscLayout()
 }
 
 //TODO TEST
-//TODO e2db::tunersets_table value
 void editTunersetsTable::store()
 {
 	debug("store()");
@@ -251,17 +248,17 @@ void editTunersetsTable::store()
 			if (key == "name")
 				tns.name = val;
 			else if (key == "flgs")
-				tns.flgs = std::stoi(val);
+				tns.flgs = val.empty() ? -1 : std::stoi(val);
 			//TODO transform
 			else if (key == "pos")
-				tns.pos = std::stoi(val);
+				tns.pos = val.empty() ? -1 : std::stoi(val);
 		}
 		else if (this->state.ty == e2db::YTYPE::terrestrial)
 		{
 			if (key == "name")
 				tns.name = val;
 			else if (key == "flgs")
-				tns.flgs = std::stoi(val);
+				tns.flgs = val.empty() ? -1 : std::stoi(val);
 			else if (key == "country")
 				tns.country = val;
 		}
@@ -270,28 +267,25 @@ void editTunersetsTable::store()
 			if (key == "name")
 				tns.name = val;
 			else if (key == "flgs")
-				tns.flgs = std::stoi(val);
+				tns.flgs = val.empty() ? -1 : std::stoi(val);
 			else if (key == "country")
 				tns.country = val;
 			else if (key == "feed")
-				tns.feed = std::stoi(val);
+				tns.feed = val.empty() ? -1 : std::stoi(val);
 		}
 		else if (this->state.ty == e2db::YTYPE::atsc)
 		{
 			if (key == "name")
 				tns.name = val;
 			else if (key == "flgs")
-				tns.flgs = std::stoi(val);
+				tns.flgs = val.empty() ? -1 : std::stoi(val);
 		}
 	}
 
-	//TODO
-	todo();
-
-	/*if (this->state.edit)
-		this->tnid = dbih->add_tunersets_table(-1, tvs, tns);
+	if (this->state.edit)
+		this->tnid = dbih->editTunersetsTable(tnid, tns, tvs);
 	else
-		this->tnid = dbih->add_tunersets_table(-1, tvs, tns);*/
+		this->tnid = dbih->addTunersetsTable(tns, tvs);
 }
 
 void editTunersetsTable::retrieve()
@@ -320,17 +314,16 @@ void editTunersetsTable::retrieve()
 			if (key == "name")
 				val = tns.name;
 			else if (key == "flgs")
-				val = to_string(tns.flgs);
-			//TODO transform
+				val = tns.flgs != -1 ? to_string(tns.flgs) : "";
 			else if (key == "pos")
-				val = to_string(tns.pos);
+				val = dbih->get_transponder_position_text(tns.pos);
 		}
 		else if (this->state.ty == e2db::YTYPE::terrestrial)
 		{
 			if (key == "name")
 				val = tns.name;
 			else if (key == "flgs")
-				val = to_string(tns.flgs);
+				val = tns.flgs != -1 ? to_string(tns.flgs) : "";
 			else if (key == "country")
 				val = tns.country;
 		}
@@ -343,14 +336,14 @@ void editTunersetsTable::retrieve()
 			else if (key == "country")
 				val = tns.country;
 			else if (key == "feed")
-				val = to_string(tns.feed);
+				val = tns.feed != -1 ? to_string(tns.feed) : "";
 		}
 		else if (this->state.ty == e2db::YTYPE::atsc)
 		{
 			if (key == "name")
 				val = tns.name;
 			else if (key == "flgs")
-				val = to_string(tns.flgs);
+				val = tns.flgs != -1 ? to_string(tns.flgs) : "";
 		}
 
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))

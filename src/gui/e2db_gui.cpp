@@ -59,7 +59,6 @@ string e2db::addTransponder(transponder& tx)
 	debug("addTransponder()", "txid", tx.txid);
 
 	this->::e2se_e2db::e2db::add_transponder(tx);
-	tx = db.transponders[tx.txid];
 	entries.transponders[tx.txid] = entryTransponder(tx);
 	return tx.txid;
 }
@@ -69,7 +68,6 @@ string e2db::editTransponder(string txid, transponder& tx)
 	debug("editTransponder()", "txid", txid);
 
 	this->::e2se_e2db::e2db::edit_transponder(txid, tx);
-	tx = db.transponders[tx.txid];
 	entries.transponders[tx.txid] = entryTransponder(tx);
 	return tx.txid;
 }
@@ -87,7 +85,6 @@ string e2db::addService(service& ch)
 	debug("addService()", "chid", ch.chid);
 
 	this->::e2se_e2db::e2db::add_service(ch);
-	ch = db.services[ch.chid];
 	entries.services[ch.chid] = entryService(ch);
 	return ch.chid;
 }
@@ -97,7 +94,6 @@ string e2db::editService(string chid, service& ch)
 	debug("editService()", "chid", chid);
 
 	this->::e2se_e2db::e2db::edit_service(chid, ch);
-	ch = db.services[ch.chid];
 	entries.services[ch.chid] = entryService(ch);
 	return ch.chid;
 }
@@ -161,6 +157,73 @@ void e2db::removeChannelReference(string chid, string bname)
 	debug("removeChannelReference()", "chid", chid);
 
 	this->::e2se_e2db::e2db::remove_channel_reference(chid, bname);
+}
+
+int e2db::addTunersets(tunersets& tv)
+{
+	debug("addTunersets()");
+
+	this->::e2se_e2db::e2db::add_tunersets(tv);
+	return tv.ytype;
+}
+
+int e2db::editTunersets(int tvid, tunersets& tv)
+{
+	debug("editTunersets()", "tvid", tvid);
+
+	this->::e2se_e2db::e2db::edit_tunersets(tvid, tv);
+	return tv.ytype;
+}
+
+void e2db::removeTunersets(int tvid)
+{
+	debug("removeTunersets()", "tvid", tvid);
+
+	this->::e2se_e2db::e2db::remove_tunersets(tvid);
+}
+
+string e2db::addTunersetsTable(tunersets_table& tn, tunersets tv)
+{
+	debug("addTunersetsTable()");
+
+	this->::e2se_e2db::e2db::add_tunersets_table(tn, tv);
+	return tn.tnid;
+}
+
+string e2db::editTunersetsTable(string tnid, tunersets_table& tn, tunersets tv)
+{
+	this->::e2se_e2db::e2db::edit_tunersets_table(tnid, tn, tv);
+	return tn.tnid;
+}
+
+void e2db::removeTunersetsTable(string tnid, tunersets tv)
+{
+	debug("removeTunersetsTable()", "tnid", tnid);
+
+	this->::e2se_e2db::e2db::remove_tunersets_table(tnid, tv);
+}
+
+string e2db::addTunersetsTransponder(tunersets_transponder& tntxp, tunersets_table tn)
+{
+	debug("addTunersetsTransponder()");
+
+	this->::e2se_e2db::e2db::add_tunersets_transponder(tntxp, tn);
+	return tntxp.trid;
+}
+
+string e2db::editTunersetsTransponder(string trid, tunersets_transponder& tntxp, tunersets_table tn)
+{
+	debug("editTunersetsTransponder()", "trid", trid);
+
+	this->::e2se_e2db::e2db::edit_tunersets_transponder(trid, tntxp, tn);
+	return tntxp.trid;
+}
+
+void e2db::removeTunersetsTransponder(string trid, tunersets_table tn)
+{
+	debug("removeTunersetsTransponder()", "trid", trid);
+
+	this->::e2se_e2db::e2db::remove_tunersets_transponder(trid, tn);
 }
 
 void e2db::plain()
@@ -295,37 +358,9 @@ QStringList e2db::entryTransponder(transponder tx)
 	QString pol = QString::fromStdString(tx.pol != -1 ? e2db::SAT_POL[tx.pol] : "");
 	QString sr = QString::fromStdString(to_string(tx.sr));
 	QString fec = QString::fromStdString(e2db::SAT_FEC[tx.fec]);
-	string ppos;
-	if (tx.ttype == 's')
-	{
-		if (tuners_pos.count(tx.pos))
-		{
-			string tnid = tuners_pos.at(tx.pos);
-			e2db::tunersets_table tns = tuners[0].tables[tnid];
-			ppos = tns.name;
-		} else {
-			char cposdeg[6];
-			// %3d.%1d%C
-			std::sprintf(cposdeg, "%.1f", float (std::abs (tx.pos)) / 10);
-			ppos = (string (cposdeg) + (tx.pos > 0 ? 'E' : 'W'));
-		}
-	}
+	string ppos = get_transponder_position_text(tx);
 	QString pos = QString::fromStdString(ppos);
-	string psys;
-	switch (tx.ttype) {
-		case 's':
-			psys = tx.sys != -1 ? e2db::SAT_SYS[tx.sys] : "DVB-S";
-		break;
-		case 't':
-			psys = "DVB-T";
-		break;
-		case 'c':
-			psys = "DVB-C";
-		break;
-		case 'a':
-			psys = "ATSC";
-		break;
-	}
+	string psys = get_transponder_system_text(tx);
 	QString sys = QString::fromStdString(psys);
 
 	return QStringList ({freq, pol, sr, fec, pos, sys});
@@ -374,7 +409,85 @@ QStringList e2db::entryMarker(channel_reference chref)
 	QString chid = QString::fromStdString(chref.chid);
 	QString value = QString::fromStdString(chref.value);
 
-	return QStringList({NULL, value, chid, NULL, NULL, NULL, "MARKER", NULL});
+	return QStringList ({NULL, value, chid, NULL, NULL, NULL, "MARKER", NULL});
+}
+
+QStringList e2db::entryTunersetsTable(tunersets_table tn)
+{
+	QStringList entry;
+	QString tnid = QString::fromStdString(tn.tnid);
+	QString name = QString::fromStdString(tn.name);
+
+	if (tn.ytype == e2db::YTYPE::sat)
+	{
+		string ppos = get_transponder_position_text(tn);
+		QString pos = QString::fromStdString(ppos);
+		entry = QStringList ({tnid, name, pos});
+	}
+	else if (tn.ytype == e2db::YTYPE::terrestrial || tn.ytype == e2db::YTYPE::cable)
+	{
+		QString country = QString::fromStdString(tn.country);
+		entry = QStringList ({tnid, name, country});
+	}
+	else if (tn.ytype == e2db::YTYPE::atsc)
+	{
+		entry = QStringList ({tnid, name});
+	}
+
+	return entry;
+}
+
+QStringList e2db::entryTunersetsTransponder(tunersets_transponder tntxp, tunersets_table tn)
+{
+	QStringList entry;
+	QString trid = QString::fromStdString(tntxp.trid);
+	QString freq = QString::fromStdString(to_string(tntxp.freq));
+	string ptxp = get_transponder_combo_value(tn, tntxp);
+	QString combo = QString::fromStdString(ptxp);
+
+	if (tn.ytype == YTYPE::sat)
+	{
+		QString pol = QString::fromStdString(e2db::SAT_POL[tntxp.pol]);
+		QString sr = QString::fromStdString(to_string(tntxp.sr));
+		QString fec = QString::fromStdString(e2db::SAT_FEC[tntxp.fec]);
+		QString sys = QString::fromStdString(e2db::SAT_SYS[tntxp.sys]);
+		QString mod = QString::fromStdString(e2db::SAT_MOD[tntxp.mod]);
+		QString inv = QString::fromStdString(e2db::SAT_INV[tntxp.inv]);
+		QString pil = QString::fromStdString(e2db::SAT_PIL[tntxp.pil]);
+		QString rol = QString::fromStdString(e2db::SAT_ROL[tntxp.rol]);
+		entry = QStringList ({trid, combo, freq, pol, sr, fec, sys, mod, inv, pil, rol});
+	}
+	else if (tn.ytype == YTYPE::terrestrial)
+	{
+		QString tmod = QString::fromStdString(e2db::TER_MOD[tntxp.tmod]);
+		QString band = QString::fromStdString(e2db::TER_BAND[tntxp.band]);
+		QString sys = "DVB-T";
+		QString tmx = QString::fromStdString(e2db::TER_TRXMODE[tntxp.tmx]);
+		QString hpfec = QString::fromStdString(e2db::TER_HPFEC[tntxp.hpfec]);
+		QString lpfec = QString::fromStdString(e2db::TER_LPFEC[tntxp.lpfec]);
+		QString inv = QString::fromStdString(e2db::TER_INV[tntxp.inv]);
+		QString guard = QString::fromStdString(e2db::TER_GUARD[tntxp.hier]);
+		QString hier = QString::fromStdString(e2db::TER_HIER[tntxp.guard]);
+		entry = QStringList ({trid, combo, freq, tmod, band, sys, tmx, hpfec, lpfec, inv, guard, hier});
+	}
+	else if (tn.ytype == YTYPE::cable)
+	{
+		QString cmod = QString::fromStdString(e2db::CAB_MOD[tntxp.cmod]);
+		QString sr = QString::fromStdString(to_string(tntxp.sr));
+		QString cfec = QString::fromStdString(e2db::CAB_IFEC[tntxp.cfec]);
+		QString inv = QString::fromStdString(e2db::CAB_INV[tntxp.inv]);
+		QString sys = "DVB-C";
+		entry = QStringList ({trid, combo, freq, cmod, sr, cfec, inv, sys});
+	}
+	else if (tn.ytype == YTYPE::atsc)
+	{
+		combo = NULL;
+		QString amod = QString::fromStdString(to_string(tntxp.amod));
+		QString sys = "ATSC";
+		entry = QStringList ({trid, combo, freq, amod, sys});
+	}
+
+	return entry;
 }
 
 }

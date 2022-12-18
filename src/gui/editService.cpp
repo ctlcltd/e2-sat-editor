@@ -52,7 +52,7 @@ void editService::layout()
 {
 	this->dialAbstract::layout();
 
-	QString dtitle = this->state.edit ? "Edit Service" : "Add Service";
+	QString dtitle = this->state.edit ? tr("Edit Service") : tr("Add Service");
 	dial->setWindowTitle(dtitle);
 
 	this->txdata = dbih->get_transponders_index();
@@ -132,6 +132,7 @@ void editService::transponderLayout()
 	dtf1tx->setMinimumWidth(180);
 	dtf1tx->setEditable(true);
 
+	//TODO FIX
 	for (auto & q : txdata)
 	{
 		QString name;
@@ -375,15 +376,7 @@ void editService::tunerComboChanged(int index)
 	{
 		e2db::transponder tx = dbih->db.transponders[x.second];
 		QString txid = QString::fromStdString(x.second);
-		string ptxp;
-		if (tx.ttype == 's')
-			ptxp = to_string(tx.freq) + '/' + e2db::SAT_POL[tx.pol] + '/' + to_string(tx.sr);
-		else if (tx.ttype == 't')
-			ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.tmod] + '/' + e2db::TER_BAND[tx.band];
-		else if (tx.ttype == 'c')
-			ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cmod] + '/' + to_string(tx.sr);
-		else if (tx.ttype == 'a')
-			ptxp = to_string(tx.freq);
+		string ptxp = dbih->get_transponder_combo_value(tx);
 		QString txp = QString::fromStdString(ptxp);
 		dtf1tx->addItem(txp, txid);
 	}
@@ -774,8 +767,8 @@ void editService::setEditID(string chid)
 {
 	debug("setEditID()");
 
-	this->chid = chid;
 	this->state.edit = true;
+	this->chid = chid;
 }
 
 string editService::getEditID()

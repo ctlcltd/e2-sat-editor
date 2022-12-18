@@ -9,10 +9,6 @@
  * @license GNU GPLv3 License
  */
 
-#include <cstdio>
-#include <cstdlib>
-#include <cmath>
-
 #include <QGridLayout>
 #include <QSplitter>
 #include <QHeaderView>
@@ -108,7 +104,7 @@ void channelBookView::layout()
 
 	string chars[27] = {"0-9","A","B","C","D","E","F","G","H","I","J","L","K","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
-	for (unsigned int i=0; i < 27; i++)
+	for (unsigned int i = 0; i < 27; i++)
 	{
 		tabv->addTab("");
 		tabv->setTabButton(i, QTabBar::LeftSide, new QLabel(QString::fromStdString(chars[i])));
@@ -249,56 +245,11 @@ void channelBookView::populate()
 			QString stype = QString::fromStdString(e2db::STYPE_EXT_LABEL.count(ch.stype) ? e2db::STYPE_EXT_LABEL.at(ch.stype) : e2db::STYPE_EXT_LABEL.at(e2db::STYPE::data));
 			QString pname = QString::fromStdString(ch.data.count(e2db::SDATA::p) ? ch.data[e2db::SDATA::p][0] : "");
 
-			string ptxp;
-			switch (tx.ttype)
-			{
-				case 's':
-					ptxp = to_string(tx.freq) + '/' + e2db::SAT_POL[tx.pol] + '/' + to_string(tx.sr);
-				break;
-				case 't':
-					ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.tmod] + '/' + e2db::TER_BAND[tx.band];
-				break;
-				case 'c':
-					ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cmod] + '/' + to_string(tx.sr);
-				break;
-				case 'a':
-					ptxp = to_string(tx.freq);
-				break;
-			}
+			string ptxp = dbih->get_transponder_combo_value(tx);
 			QString txp = QString::fromStdString(ptxp);
-			string ppos;
-			if (tx.ttype == 's')
-			{
-				if (dbih->tuners_pos.count(tx.pos))
-				{
-					string tnid = dbih->tuners_pos.at(tx.pos);
-					e2db::tunersets_table tns = dbih->tuners[0].tables[tnid];
-					ppos = tns.name;
-				}
-				else
-				{
-					char cposdeg[6];
-					// %3d.%1d%C
-					std::sprintf(cposdeg, "%.1f", float (std::abs (tx.pos)) / 10);
-					ppos = (string (cposdeg) + (tx.pos > 0 ? 'E' : 'W'));
-				}
-			}
+			string ppos = dbih->get_transponder_name_value(tx);
 			QString pos = QString::fromStdString(ppos);
-			string psys;
-			switch (tx.ttype) {
-				case 's':
-					psys = tx.sys != -1 ? e2db::SAT_SYS[tx.sys] : "DVB-S";
-				break;
-				case 't':
-					psys = "DVB-T";
-				break;
-				case 'c':
-					psys = "DVB-C";
-				break;
-				case 'a':
-					psys = "ATSC";
-				break;
-			}
+			string psys = dbih->get_transponder_system_text(tx);
 			QString sys = QString::fromStdString(psys);
 
 			QTreeWidgetItem* item = new QTreeWidgetItem({x, idx, chname, stype, pname, txp, pos, sys});
@@ -408,22 +359,7 @@ void channelBookView::stacker(int vv)
 			{
 				e2db::transponder tx = dbih->db.transponders[x.second];
 				QString subindex = QString::fromStdString(x.second);
-				string ptxp;
-				switch (tx.ttype)
-				{
-					case 's':
-						ptxp = to_string(tx.freq) + '/' + e2db::SAT_POL[tx.pol] + '/' + to_string(tx.sr);
-					break;
-					case 't':
-						ptxp = to_string(tx.freq) + '/' + e2db::TER_MOD[tx.tmod] + '/' + e2db::TER_BAND[tx.band];
-					break;
-					case 'c':
-						ptxp = to_string(tx.freq) + '/' + e2db::CAB_MOD[tx.cmod] + '/' + to_string(tx.sr);
-					break;
-					case 'a':
-						ptxp = to_string(tx.freq);
-					break;
-				}
+				string ptxp = dbih->get_transponder_combo_value(tx);
 				QString txp = QString::fromStdString(ptxp);
 				subitem = new QTreeWidgetItem(item, {txp});
 				subitem->setData(0, Qt::UserRole, subindex);

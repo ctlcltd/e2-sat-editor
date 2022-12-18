@@ -15,7 +15,6 @@
 #include <QComboBox>
 
 #include "editTunersetsTransponder.h"
-#include "todo.h"
 
 using std::to_string;
 using namespace e2se;
@@ -46,7 +45,7 @@ void editTunersetsTransponder::layout()
 {
 	this->dialAbstract::layout();
 
-	QString dtitle = this->state.edit ? "Edit Transponder" : "Add Transponder";
+	QString dtitle = this->state.edit ? tr("Edit Transponder") : tr("Add Transponder");
 	dial->setWindowTitle(dtitle);
 
 	switch (this->state.ty)
@@ -54,6 +53,7 @@ void editTunersetsTransponder::layout()
 		case e2db::YTYPE::sat:
 			leadSatLayout();
 			sideSatLayout();
+			thirdSatLayout();
 		break;
 		case e2db::YTYPE::terrestrial:
 			leadTerrestrialLayout();
@@ -61,11 +61,10 @@ void editTunersetsTransponder::layout()
 		break;
 		case e2db::YTYPE::cable:
 			leadCableLayout();
-			sideTerrestrialLayout();
+			sideCableLayout();
 		break;
 		case e2db::YTYPE::atsc:
 			leadAtscLayout();
-			sideAtscLayout();
 		break;
 	}
 }
@@ -93,6 +92,7 @@ void editTunersetsTransponder::leadSatLayout()
 	dtf0sp->setValidator(new QIntValidator);
 	dtf0->addRow(tr("Polarization"), dtf0sp);
 	dtf0->addItem(new QSpacerItem(0, 0));
+	dtf0sp->addItem(tr("empty"), -1);
 	for (int i = 0; i < 4; i++)
 	{
 		string w = e2db::SAT_POL[i];
@@ -114,9 +114,10 @@ void editTunersetsTransponder::leadSatLayout()
 	dtf0sc->setValidator(new QIntValidator);
 	dtf0->addRow(tr("FEC"), dtf0sc);
 	dtf0->addItem(new QSpacerItem(0, 0));
+	dtf0sc->addItem(tr("empty"), -1);
 	for (int i = 0; i < 11; i++)
 	{
-		string w = e2db::SAT_FEC[i];
+		string w = i != 0 ? e2db::SAT_FEC[i] : "Default";
 		dtf0sc->addItem(QString::fromStdString(w), i);
 	}
 
@@ -127,6 +128,7 @@ void editTunersetsTransponder::leadSatLayout()
 	dtf0sy->setValidator(new QIntValidator);
 	dtf0->addRow(tr("System"), dtf0sy);
 	dtf0->addItem(new QSpacerItem(0, 0));
+	dtf0sy->addItem(tr("empty"), -1);
 	for (int i = 0; i < 2; i++)
 	{
 		string w = e2db::SAT_SYS[i];
@@ -160,6 +162,7 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 	dtf0tm->setValidator(new QIntValidator);
 	dtf0->addRow(tr("Constellation"), dtf0tm);
 	dtf0->addItem(new QSpacerItem(0, 0));
+	dtf0tm->addItem(tr("empty"), -1);
 	for (int i = 0; i < 4; i++)
 	{
 		string w = e2db::TER_MOD[i];
@@ -173,6 +176,7 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 	dtf0tb->setValidator(new QIntValidator);
 	dtf0->addRow(tr("Bandwidth"), dtf0tb);
 	dtf0->addItem(new QSpacerItem(0, 0));
+	dtf0tb->addItem(tr("empty"), -1);
 	for (int i = 0; i < 4; i++)
 	{
 		string w = e2db::TER_BAND[i];
@@ -186,6 +190,7 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 	dtf0th->setValidator(new QIntValidator);
 	dtf0->addRow(tr("HP FEC"), dtf0th);
 	dtf0->addItem(new QSpacerItem(0, 0));
+	dtf0th->addItem(tr("empty"), -1);
 	for (int i = 0; i < 7; i++)
 	{
 		string w = e2db::TER_HPFEC[i];
@@ -199,6 +204,7 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 	dtf0tl->setValidator(new QIntValidator);
 	dtf0->addRow(tr("LP FEC"), dtf0tl);
 	dtf0->addItem(new QSpacerItem(0, 0));
+	dtf0tl->addItem(tr("empty"), -1);
 	for (int i = 0; i < 7; i++)
 	{
 		string w = e2db::TER_LPFEC[i];
@@ -232,6 +238,7 @@ void editTunersetsTransponder::leadCableLayout()
 	dtf0cm->setValidator(new QIntValidator);
 	dtf0->addRow(tr("Modulation"), dtf0cm);
 	dtf0->addItem(new QSpacerItem(0, 0));
+	dtf0cm->addItem(tr("empty"), -1);
 	for (int i = 0; i < 6; i++)
 	{
 		string w = e2db::CAB_MOD[i];
@@ -247,15 +254,16 @@ void editTunersetsTransponder::leadCableLayout()
 	dtf0->addItem(new QSpacerItem(0, 0));
 	
 	QComboBox* dtf0ci = new QComboBox;
-	dtf0ci->setProperty("field", "s_cfec");
+	dtf0ci->setProperty("field", "c_cfec");
 	fields.emplace_back(dtf0ci);
 	dtf0ci->setMaximumWidth(100);
 	dtf0ci->setValidator(new QIntValidator);
 	dtf0->addRow(tr("Inner FEC"), dtf0ci);
 	dtf0->addItem(new QSpacerItem(0, 0));
+	dtf0ci->addItem(tr("empty"), -1);
 	for (int i = 0; i < 10; i++)
 	{
-		string w = e2db::CAB_IFEC[i];
+		string w = i != 0 ? e2db::CAB_IFEC[i] : "Default";
 		dtf0ci->addItem(QString::fromStdString(w), i);
 	}
 
@@ -306,6 +314,7 @@ void editTunersetsTransponder::sideSatLayout()
 	dtf1sm->setValidator(new QIntValidator);
 	dtf1->addRow(tr("Modulation"), dtf1sm);
 	dtf1->addItem(new QSpacerItem(0, 0));
+	dtf1sm->addItem(tr("empty"), -1);
 	for (int i = 0; i < 4; i++)
 	{
 		string w = e2db::SAT_POL[i];
@@ -319,6 +328,7 @@ void editTunersetsTransponder::sideSatLayout()
 	dtf1si->setValidator(new QIntValidator);
 	dtf1->addRow(tr("Inversion"), dtf1si);
 	dtf1->addItem(new QSpacerItem(0, 0));
+	dtf1si->addItem(tr("empty"), -1);
 	for (int i = 0; i < 3; i++)
 	{
 		string w = e2db::SAT_INV[i];
@@ -332,6 +342,7 @@ void editTunersetsTransponder::sideSatLayout()
 	dtf1sr->setValidator(new QIntValidator);
 	dtf1->addRow(tr("Roll Offset"), dtf1sr);
 	dtf1->addItem(new QSpacerItem(0, 0));
+	dtf1sr->addItem(tr("empty"), -1);
 	for (int i = 0; i < 4; i++)
 	{
 		string w = e2db::SAT_ROL[i];
@@ -345,53 +356,12 @@ void editTunersetsTransponder::sideSatLayout()
 	dtf1sp->setValidator(new QIntValidator);
 	dtf1->addRow(tr("Pilot"), dtf1sp);
 	dtf1->addItem(new QSpacerItem(0, 0));
+	dtf1sp->addItem(tr("empty"), -1);
 	for (int i = 0; i < 3; i++)
 	{
 		string w = e2db::SAT_PIL[i];
 		dtf1sp->addItem(QString::fromStdString(w), i);
 	}
-
-	dtf1->addItem(new QSpacerItem(0, 0));
-
-	QLineEdit* dtf1ss = new QLineEdit;
-	dtf1ss->setProperty("field", "s_isid");
-	fields.emplace_back(dtf1ss);
-	dtf1ss->setMinimumWidth(100);
-	dtf1ss->setValidator(new QIntValidator);
-	dtf1->addRow(tr("isid"), dtf1ss);
-	dtf1->addItem(new QSpacerItem(0, 0));
-
-	QLineEdit* dtf1st = new QLineEdit;
-	dtf1st->setProperty("field", "s_mts");
-	fields.emplace_back(dtf1st);
-	dtf1st->setMinimumWidth(100);
-	dtf1st->setValidator(new QIntValidator);
-	dtf1->addRow(tr("mts"), dtf1st);
-	dtf1->addItem(new QSpacerItem(0, 0));
-
-	QLineEdit* dtf1sd = new QLineEdit;
-	dtf1sd->setProperty("field", "s_plsmode");
-	fields.emplace_back(dtf1sd);
-	dtf1sd->setMinimumWidth(100);
-	dtf1sd->setValidator(new QIntValidator);
-	dtf1->addRow(tr("plsmode"), dtf1sd);
-	dtf1->addItem(new QSpacerItem(0, 0));
-	
-	QLineEdit* dtf1sc = new QLineEdit;
-	dtf1sc->setProperty("field", "s_plscode");
-	fields.emplace_back(dtf1sc);
-	dtf1sc->setMinimumWidth(100);
-	dtf1sc->setValidator(new QIntValidator);
-	dtf1->addRow(tr("plscode"), dtf1sc);
-	dtf1->addItem(new QSpacerItem(0, 0));
-
-	QLineEdit* dtf1sn = new QLineEdit;
-	dtf1sn->setProperty("field", "s_plsn");
-	fields.emplace_back(dtf1sn);
-	dtf1sn->setMinimumWidth(100);
-	dtf1sn->setValidator(new QIntValidator);
-	dtf1->addRow(tr("plsn"), dtf1sn);
-	dtf1->addItem(new QSpacerItem(0, 0));
 
 	dtl1->setLayout(dtf1);
 	dtform->addWidget(dtl1, 0, 1);
@@ -405,6 +375,20 @@ void editTunersetsTransponder::sideTerrestrialLayout()
 	QFormLayout* dtf1 = new QFormLayout;
 	dtf1->setRowWrapPolicy(QFormLayout::WrapAllRows);
 
+	QComboBox* dtf1tx = new QComboBox;
+	dtf1tx->setProperty("field", "t_tmx");
+	fields.emplace_back(dtf1tx);
+	dtf1tx->setMaximumWidth(100);
+	dtf1tx->setValidator(new QIntValidator);
+	dtf1->addRow(tr("Transmission Mode"), dtf1tx);
+	dtf1->addItem(new QSpacerItem(0, 0));
+	dtf1tx->addItem(tr("empty"), -1);
+	for (int i = 0; i < 3; i++)
+	{
+		string w = e2db::TER_TRXMODE[i];
+		dtf1tx->addItem(QString::fromStdString(w), i);
+	}
+
 	QComboBox* dtf1ti = new QComboBox;
 	dtf1ti->setProperty("field", "t_inv");
 	fields.emplace_back(dtf1ti);
@@ -412,6 +396,7 @@ void editTunersetsTransponder::sideTerrestrialLayout()
 	dtf1ti->setValidator(new QIntValidator);
 	dtf1->addRow(tr("Inversion"), dtf1ti);
 	dtf1->addItem(new QSpacerItem(0, 0));
+	dtf1ti->addItem(tr("empty"), -1);
 	for (int i = 0; i < 3; i++)
 	{
 		string w = e2db::TER_INV[i];
@@ -425,6 +410,7 @@ void editTunersetsTransponder::sideTerrestrialLayout()
 	dtf1tg->setValidator(new QIntValidator);
 	dtf1->addRow(tr("Guard Interval"), dtf1tg);
 	dtf1->addItem(new QSpacerItem(0, 0));
+	dtf1tg->addItem(tr("empty"), -1);
 	for (int i = 0; i < 5; i++)
 	{
 		string w = e2db::TER_GUARD[i];
@@ -438,6 +424,7 @@ void editTunersetsTransponder::sideTerrestrialLayout()
 	dtf1th->setValidator(new QIntValidator);
 	dtf1->addRow(tr("Hierarchy"), dtf1th);
 	dtf1->addItem(new QSpacerItem(0, 0));
+	dtf1th->addItem(tr("empty"), -1);
 	for (int i = 0; i < 5; i++)
 	{
 		string w = e2db::TER_HIER[i];
@@ -457,12 +444,13 @@ void editTunersetsTransponder::sideCableLayout()
 	dtf1->setRowWrapPolicy(QFormLayout::WrapAllRows);
 
 	QComboBox* dtf1ci = new QComboBox;
-	dtf1ci->setProperty("field", "c_cmod");
+	dtf1ci->setProperty("field", "c_inv");
 	fields.emplace_back(dtf1ci);
 	dtf1ci->setMaximumWidth(100);
 	dtf1ci->setValidator(new QIntValidator);
 	dtf1->addRow(tr("Inversion"), dtf1ci);
 	dtf1->addItem(new QSpacerItem(0, 0));
+	dtf1ci->addItem(tr("empty"), -1);
 	for (int i = 0; i < 3; i++)
 	{
 		string w = e2db::CAB_INV[i];
@@ -473,13 +461,59 @@ void editTunersetsTransponder::sideCableLayout()
 	dtform->addWidget(dtl1, 0, 1);
 }
 
-void editTunersetsTransponder::sideAtscLayout()
+void editTunersetsTransponder::thirdSatLayout()
 {
-	debug("sideAtscLayout()");
+	debug("thirdCableLayout()");
+
+	QGroupBox* dtl2 = new QGroupBox;
+	QFormLayout* dtf2 = new QFormLayout;
+	dtf2->setRowWrapPolicy(QFormLayout::WrapAllRows);
+
+	QLineEdit* dtf2ss = new QLineEdit;
+	dtf2ss->setProperty("field", "s_isid");
+	fields.emplace_back(dtf2ss);
+	dtf2ss->setMaximumWidth(50);
+	dtf2ss->setValidator(new QIntValidator);
+	dtf2->addRow(tr("isid"), dtf2ss);
+	dtf2->addItem(new QSpacerItem(0, 0));
+
+	QLineEdit* dtf2st = new QLineEdit;
+	dtf2st->setProperty("field", "s_mts");
+	fields.emplace_back(dtf2st);
+	dtf2st->setMaximumWidth(50);
+	dtf2st->setValidator(new QIntValidator);
+	dtf2->addRow(tr("mts"), dtf2st);
+	dtf2->addItem(new QSpacerItem(0, 0));
+
+	QLineEdit* dtf2sd = new QLineEdit;
+	dtf2sd->setProperty("field", "s_plsmode");
+	fields.emplace_back(dtf2sd);
+	dtf2sd->setMaximumWidth(50);
+	dtf2sd->setValidator(new QIntValidator);
+	dtf2->addRow(tr("plsmode"), dtf2sd);
+	dtf2->addItem(new QSpacerItem(0, 0));
+	
+	QLineEdit* dtf2sc = new QLineEdit;
+	dtf2sc->setProperty("field", "s_plscode");
+	fields.emplace_back(dtf2sc);
+	dtf2sc->setMaximumWidth(50);
+	dtf2sc->setValidator(new QIntValidator);
+	dtf2->addRow(tr("plscode"), dtf2sc);
+	dtf2->addItem(new QSpacerItem(0, 0));
+
+	QLineEdit* dtf2sn = new QLineEdit;
+	dtf2sn->setProperty("field", "s_plsn");
+	fields.emplace_back(dtf2sn);
+	dtf2sn->setMaximumWidth(50);
+	dtf2sn->setValidator(new QIntValidator);
+	dtf2->addRow(tr("plsn"), dtf2sn);
+	dtf2->addItem(new QSpacerItem(0, 0));
+
+	dtl2->setLayout(dtf2);
+	dtform->addWidget(dtl2, 0, 2);
 }
 
 //TODO TEST
-//TODO e2db::tunersets_transponder value
 void editTunersetsTransponder::store()
 {
 	debug("store()");
@@ -513,7 +547,7 @@ void editTunersetsTransponder::store()
 		int val;
 
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
-			val = field->text().toInt();
+			val = field->text().isEmpty() ? -1 : field->text().toInt();
 		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
 			val = field->currentData().toInt();
 
@@ -558,6 +592,8 @@ void editTunersetsTransponder::store()
 				txp.band = val;
 			else if (key == "t_sys")
 				txp.sys = val;
+			else if (key == "t_tmod")
+				txp.tmod = val;
 			else if (key == "t_tmx")
 				txp.tmx = val;
 			else if (key == "t_hpfec")
@@ -597,13 +633,10 @@ void editTunersetsTransponder::store()
 		}
 	}
 
-	//TODO
-	todo();
-
-	/*if (this->state.edit)
-		this->trid = dbih->add_tunersets_transponder(-1, tns, txp);
+	if (this->state.edit)
+		this->trid = dbih->editTunersetsTransponder(trid, txp, tns);
 	else
-		this->trid = dbih->add_tunersets_transponder(-1, tns, txp);*/
+		this->trid = dbih->addTunersetsTransponder(txp, tns);
 }
 
 void editTunersetsTransponder::retrieve()
@@ -674,6 +707,8 @@ void editTunersetsTransponder::retrieve()
 				val = txp.band;
 			else if (key == "t_sys")
 				val = txp.sys;
+			else if (key == "t_tmod")
+				val = txp.tmod;
 			else if (key == "t_tmx")
 				val = txp.tmx;
 			else if (key == "t_hpfec")
@@ -714,7 +749,7 @@ void editTunersetsTransponder::retrieve()
 
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
 		{
-			field->setText(QString().setNum(val));
+			field->setText(val != -1 ? QString().setNum(val) : "");
 		}
 		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
 		{
@@ -724,7 +759,7 @@ void editTunersetsTransponder::retrieve()
 	}
 }
 
-void editTunersetsTransponder::setEditID(string tnid, string trid)
+void editTunersetsTransponder::setEditID(string trid, string tnid)
 {
 	debug("setEditID()");
 

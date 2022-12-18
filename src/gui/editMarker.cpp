@@ -41,7 +41,7 @@ void editMarker::layout()
 {
 	this->dialAbstract::layout();
 
-	QString dtitle = this->state.edit ? "Edit Marker" : "Add Marker";
+	QString dtitle = this->state.edit ? tr("Edit Marker") : tr("Add Marker");
 	dial->setWindowTitle(dtitle);
 
 	QFormLayout* dtf0 = new QFormLayout;

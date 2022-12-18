@@ -30,7 +30,6 @@
 #include "editTunersets.h"
 #include "editTunersetsTable.h"
 #include "editTunersetsTransponder.h"
-#include "todo.h"
 
 using std::to_string;
 using namespace e2se;
@@ -276,42 +275,17 @@ void tunersetsView::load()
 		case e2db::YTYPE::atsc: iname += 'a'; break;
 	}
 
-	e2db::tunersets tv = dbih->tuners[yx];
+	e2db::tunersets tvs = dbih->tuners[yx];
 
 	for (auto & x : dbih->index[iname])
 	{
-		e2db::tunersets_table tn = tv.tables[x.second];
-		QTreeWidgetItem* item;
-		QString idx = QString::fromStdString(to_string(x.first));
-		QString tnid = QString::fromStdString(x.second);
-		QString name = QString::fromStdString(tn.name);
+		e2db::tunersets_table tns = tvs.tables[x.second];
+		QString idx = QString::fromStdString(tns.tnid);
+		QStringList entry = dbih->entryTunersetsTable(tns);
 
-		if (yx == e2db::YTYPE::sat)
-		{
-			char cposdeg[6];
-			// %3d.%1d%C
-			std::sprintf(cposdeg, "%.1f", float (std::abs (tn.pos)) / 10);
-			string ppos = (string (cposdeg) + (tn.pos > 0 ? 'E' : 'W'));
-
-			QString pos = QString::fromStdString(ppos);
-			item = new QTreeWidgetItem({idx, name, pos});
-		}
-		else if (yx == e2db::YTYPE::terrestrial || yx == e2db::YTYPE::cable)
-		{
-			QString country = QString::fromStdString(tn.country);
-			item = new QTreeWidgetItem({idx, name, country});
-		}
-		else if (yx == e2db::YTYPE::atsc)
-		{
-			item = new QTreeWidgetItem({idx, name});
-		}
-		else
-		{
-			continue;
-		}
-
+		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
-		item->setData(0, Qt::UserRole, tnid);
+		item->setData(0, Qt::UserRole, idx);
 		tree->addTopLevelItem(item);
 	}
 
@@ -390,59 +364,12 @@ void tunersetsView::populate()
 		std::sprintf(ci, "%06d", i++);
 		QString x = QString::fromStdString(ci);
 
-		QTreeWidgetItem* item;
 		QString idx = QString::fromStdString(to_string(tp.first));
-		QString trid = QString::fromStdString(tp.second);
-		QString freq = QString::fromStdString(to_string(txp.freq));
-
-		if (yx == e2db::YTYPE::sat)
-		{
-			QString combo = QString::fromStdString(to_string(txp.freq) + '/' + e2db::SAT_POL[txp.pol] + '/' + to_string(txp.sr));
-			QString pol = QString::fromStdString(e2db::SAT_POL[txp.pol]);
-			QString sr = QString::fromStdString(to_string(txp.sr));
-			QString fec = QString::fromStdString(e2db::SAT_FEC[txp.fec]);
-			QString sys = QString::fromStdString(e2db::SAT_SYS[txp.sys]);
-			QString mod = QString::fromStdString(e2db::SAT_MOD[txp.mod]);
-			QString inv = QString::fromStdString(e2db::SAT_INV[txp.inv]);
-			QString pil = QString::fromStdString(e2db::SAT_PIL[txp.pil]);
-			QString rol = QString::fromStdString(e2db::SAT_ROL[txp.rol]);
-			item = new QTreeWidgetItem({x, trid, combo, freq, pol, sr, fec, sys, mod, inv, pil, rol});
-		}
-		else if (yx == e2db::YTYPE::terrestrial)
-		{
-			QString combo = QString::fromStdString(to_string(txp.freq) + '/' + e2db::TER_MOD[txp.tmod] + '/' + e2db::TER_BAND[txp.band]);
-			QString tmod = QString::fromStdString(e2db::TER_MOD[txp.tmod]);
-			QString band = QString::fromStdString(e2db::TER_BAND[txp.band]);
-			QString sys = "DVB-T";
-			QString tmx = QString::fromStdString(e2db::TER_TRXMODE[txp.tmx]);
-			QString hpfec = QString::fromStdString(e2db::TER_HPFEC[txp.hpfec]);
-			QString lpfec = QString::fromStdString(e2db::TER_LPFEC[txp.lpfec]);
-			QString inv = QString::fromStdString(e2db::TER_INV[txp.inv]);
-			QString guard = QString::fromStdString(e2db::TER_GUARD[txp.hier]);
-			QString hier = QString::fromStdString(e2db::TER_HIER[txp.guard]);
-			item = new QTreeWidgetItem({x, trid, combo, freq, tmod, band, sys, tmx, hpfec, lpfec, inv, guard, hier});
-		}
-		else if (yx == e2db::YTYPE::cable)
-		{
-			QString combo = QString::fromStdString(to_string(txp.freq) + '/' + e2db::CAB_MOD[txp.cmod] + '/' + to_string(txp.sr));
-			QString cmod = QString::fromStdString(e2db::CAB_MOD[txp.cmod]);
-			QString sr = QString::fromStdString(to_string(txp.sr));
-			QString cfec = QString::fromStdString(e2db::CAB_IFEC[txp.cfec]);
-			QString inv = QString::fromStdString(e2db::CAB_INV[txp.inv]);
-			QString sys = "DVB-C";
-			item = new QTreeWidgetItem({x, trid, combo, freq, cmod, sr, cfec, inv, sys});
-		}
-		else if (yx == e2db::YTYPE::atsc)
-		{
-			QString combo = NULL;
-			QString amod = QString::fromStdString(to_string(txp.amod));
-			QString sys = "ATSC";
-			item = new QTreeWidgetItem({x, trid, combo, freq, amod, sys});
-		}
-		else
-		{
-			continue;
-		}
+		QString trid = QString::fromStdString(txp.trid);
+		QStringList entry = dbih->entryTunersetsTransponder(txp, tns);
+		entry.prepend(x);
+		
+		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
 		item->setData(ITEM_DATA_ROLE::trid, Qt::UserRole, trid);
@@ -501,26 +428,55 @@ void tunersetsView::editSettings()
 	edit->getEditID(); // returned after dial.exec()
 	edit->destroy();
 
-	todo();
+	this->state.changed = true;
 }
 
 void tunersetsView::addPosition()
 {
 	debug("addPosition()");
 
-	e2db::tunersets tvs = dbih->tuners[yx];
 	string tnid;
 	e2se_gui::editTunersetsTable* add = new e2se_gui::editTunersetsTable(dbih, yx, this->log->log);
 	add->display(cwid);
 	tnid = add->getEditID(); // returned after dial.exec()
 	add->destroy();
 		
-	if (tvs.tables.count(tnid))
+	if (dbih->tuners[yx].tables.count(tnid))
 		debug("addPosition()", "tnid", tnid);
 	else
 		return error("addPosition()", "tnid", tnid);
 
-	todo();
+	tree->header()->setSectionsClickable(false);
+	tree->setDragEnabled(false);
+	tree->setAcceptDrops(false);
+
+	int i = 0, y;
+	QTreeWidgetItem* current = tree->currentItem();
+	QTreeWidgetItem* parent = tree->invisibleRootItem();
+	i = current != nullptr ? parent->indexOfChild(current) : tree->topLevelItemCount();
+	y = i + 1;
+
+	e2db::tunersets_table tns = dbih->tuners[yx].tables[tnid];
+
+	QString idx = QString::fromStdString(tns.tnid);
+	QStringList entry = dbih->entryTunersetsTable(tns);
+
+	QTreeWidgetItem* item = new QTreeWidgetItem(entry);
+	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
+	item->setData(0, Qt::UserRole, idx);
+
+	if (current == nullptr)
+		tree->addTopLevelItem(item);
+	else
+		tree->insertTopLevelItem(y, item);
+
+	tree->header()->setSectionsClickable(true);
+	tree->setDragEnabled(true);
+	tree->setAcceptDrops(true);
+
+	this->state.changed = true;
+
+	updateCounters();
 }
 
 void tunersetsView::editPosition()
@@ -535,11 +491,10 @@ void tunersetsView::editPosition()
 	QTreeWidgetItem* item = selected.first();
 	string tnid = item->data(0, Qt::UserRole).toString().toStdString();
 	string nw_tnid;
-	e2db::tunersets tvs = dbih->tuners[yx];
 
-	debug("editPosition()", "tnid", tnid);
-		
-	if (! tvs.tables.count(tnid))
+	if (dbih->tuners[yx].tables.count(tnid))
+		debug("editPosition()", "tnid", tnid);
+	else
 		return error("editPosition()", "tnid", tnid);
 
 	e2se_gui::editTunersetsTable* edit = new e2se_gui::editTunersetsTable(dbih, yx, this->log->log);
@@ -548,12 +503,20 @@ void tunersetsView::editPosition()
 	nw_tnid = edit->getEditID(); // returned after dial.exec()
 	edit->destroy();
 
-	if (tvs.tables.count(nw_tnid))
+	if (dbih->tuners[yx].tables.count(nw_tnid))
 		debug("editPosition()", "new tnid", nw_tnid);
 	else
 		return error("editPosition()", "new tnid", nw_tnid);
 
-	todo();
+	e2db::tunersets_table tns = dbih->tuners[yx].tables[nw_tnid];
+
+	QString idx = QString::fromStdString(tns.tnid);
+	QStringList entry = dbih->entryTunersetsTable(tns);
+	for (int i = 0; i < entry.count(); i++)
+		item->setText(i, entry[i]);
+	item->setData(0, Qt::UserRole, idx);
+
+	this->state.changed = true;
 }
 
 void tunersetsView::addTransponder()
@@ -561,26 +524,58 @@ void tunersetsView::addTransponder()
 	debug("addTransponder()");
 
 	string tnid = this->state.curr;
-	e2db::tunersets tvs = dbih->tuners[yx];
-	e2db::tunersets_table tns;
 
-	if (tvs.tables.count(tnid))
-		tns = tvs.tables[tnid];
-	else
-		return error("editTransponder()", "tnid", tnid);
+	if (! dbih->tuners[yx].tables.count(tnid))
+		return error("addTransponder()", "tnid", tnid);
 
 	string trid;
 	e2se_gui::editTunersetsTransponder* add = new e2se_gui::editTunersetsTransponder(dbih, yx, this->log->log);
 	add->display(cwid);
 	trid = add->getEditID(); // returned after dial.exec()
 	add->destroy();
-		
-	if (tns.transponders.count(trid))
+
+	if (dbih->tuners[yx].tables[tnid].transponders.count(trid))
 		debug("addTransponder()", "trid", trid);
 	else
 		return error("addTransponder()", "trid", trid);
 
-	todo();
+	list->header()->setSectionsClickable(false);
+	list->setDragEnabled(false);
+	list->setAcceptDrops(false);
+
+	int i = 0, y;
+	QTreeWidgetItem* current = list->currentItem();
+	QTreeWidgetItem* parent = list->invisibleRootItem();
+	i = current != nullptr ? parent->indexOfChild(current) : list->topLevelItemCount();
+	y = i + 1;
+
+	e2db::tunersets_table tns = dbih->tuners[yx].tables[tnid];
+	e2db::tunersets_transponder txp = tns.transponders[trid];
+
+	char ci[7];
+	std::sprintf(ci, "%06d", i++);
+	QString x = QString::fromStdString(ci);
+	QString idx = "";
+	QStringList entry = dbih->entryTunersetsTransponder(txp, tns);
+	entry.prepend(x);
+
+	QTreeWidgetItem* item = new QTreeWidgetItem(entry);
+	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
+	item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
+	item->setData(ITEM_DATA_ROLE::trid, Qt::UserRole, QString::fromStdString(trid));
+
+	if (current == nullptr)
+		list->addTopLevelItem(item);
+	else
+		list->insertTopLevelItem(y, item);
+
+	list->header()->setSectionsClickable(true);
+	list->setDragEnabled(true);
+	list->setAcceptDrops(true);
+
+	this->state.changed = true;
+
+	updateCounters();
 }
 
 void tunersetsView::editTransponder()
@@ -596,31 +591,63 @@ void tunersetsView::editTransponder()
 	string trid = item->data(ITEM_DATA_ROLE::trid, Qt::UserRole).toString().toStdString();
 	string nw_trid;
 	string tnid = this->state.curr;
-	e2db::tunersets tvs = dbih->tuners[yx];
-	e2db::tunersets_table tns;
 
-	debug("editTransponder()", "trid", trid);
-
-	if (tvs.tables.count(tnid))
-		tns = tvs.tables[tnid];
-	else
+	if (! dbih->tuners[yx].tables.count(tnid))
 		return error("editTransponder()", "tnid", tnid);
-		
-	if (! tns.transponders.count(trid))
+
+	if (dbih->tuners[yx].tables[tnid].transponders.count(trid))
+		debug("editTransponder()", "trid", trid);
+	else
 		return error("editTransponder()", "trid", trid);
 
 	e2se_gui::editTunersetsTransponder* edit = new e2se_gui::editTunersetsTransponder(dbih, yx, this->log->log);
-	edit->setEditID(tnid, trid);
+	edit->setEditID(trid, tnid);
 	edit->display(cwid);
 	nw_trid = edit->getEditID(); // returned after dial.exec()
 	edit->destroy();
 
-	if (tns.transponders.count(nw_trid))
+	if (dbih->tuners[yx].tables[tnid].transponders.count(nw_trid))
 		debug("editTransponder()", "new trid", nw_trid);
 	else
 		return error("editTransponder()", "new trid", nw_trid);
 
-	todo();
+	e2db::tunersets_table tns = dbih->tuners[yx].tables[tnid];
+	e2db::tunersets_transponder txp = tns.transponders[nw_trid];
+
+	QStringList entry = dbih->entryTunersetsTransponder(txp, tns);
+	entry.prepend(item->text(ITEM_ROW_ROLE::x));
+	for (int i = 0; i < entry.count(); i++)
+		item->setText(i, entry[i]);
+	item->setData(ITEM_DATA_ROLE::trid, Qt::UserRole, QString::fromStdString(nw_trid));
+
+	this->state.changed = true;
+}
+
+void tunersetsView::treeItemDelete()
+{
+	debug("treeItemDelete()");
+
+	QList<QTreeWidgetItem*> selected = tree->selectedItems();
+	
+	if (selected.empty())
+	{
+		return;
+	}
+
+	e2db::tunersets tvs = dbih->tuners[yx];
+	
+	for (auto & item : selected)
+	{
+		int i = tree->indexOfTopLevelItem(item);
+		string tnid = item->data(0, Qt::UserRole).toString().toStdString();
+		tree->takeTopLevelItem(i);
+
+		dbih->removeTunersetsTable(tnid, tvs);
+	}
+
+	this->state.changed = true;
+
+	updateCounters();
 }
 
 void tunersetsView::listItemCut()
@@ -665,12 +692,23 @@ void tunersetsView::listItemDelete()
 	list->setDragEnabled(false);
 	list->setAcceptDrops(false);
 
+	string tnid = this->state.curr;
+	e2db::tunersets_table tns = dbih->tuners[yx].tables[tnid];
+
+	for (auto & item : selected)
+	{
+		int i = list->indexOfTopLevelItem(item);
+		string trid = item->data(ITEM_DATA_ROLE::trid, Qt::UserRole).toString().toStdString();
+		list->takeTopLevelItem(i);
+
+		dbih->removeTunersetsTransponder(trid, tns);
+	}
+
 	list->header()->setSectionsClickable(true);
 	list->setDragEnabled(true);
 	list->setAcceptDrops(true);
 
-	updateConnectors();
-	updateCounters();
+	this->state.changed = true;
 }
 
 void tunersetsView::listItemSelectAll()
@@ -687,6 +725,7 @@ void tunersetsView::putListItems(vector<QString> items)
 	list->header()->setSectionsClickable(false);
 	list->setDragEnabled(false);
 	list->setAcceptDrops(false);
+
 	QList<QTreeWidgetItem*> clist;
 	int i = 0, y;
 	QTreeWidgetItem* current = list->currentItem();
@@ -712,10 +751,12 @@ void tunersetsView::showTreeEditContextMenu(QPoint &pos)
 	debug("showTreeEditContextMenu()");
 
 	QMenu* tree_edit = new QMenu;
-	tree_edit->addAction("Edit Position", [=]() { this->editPosition(); });
 
+	tree_edit->addAction("Edit Settings", [=]() { this->editSettings(); });
 	tree_edit->addSeparator();
-	tree_edit->addAction("$ Edit Settings", [=]() { this->editSettings(); });
+	tree_edit->addAction("Edit Position", [=]() { this->editPosition(); });
+	tree_edit->addSeparator();
+	tree_edit->addAction("Delete", [=]() { this->treeItemDelete(); });
 
 	tree_edit->exec(tree->mapToGlobal(pos));
 }
@@ -726,6 +767,8 @@ void tunersetsView::showListEditContextMenu(QPoint &pos)
 
 	QMenu* list_edit = new QMenu;
 	list_edit->addAction("Edit Transponder", [=]() { this->editTransponder(); });
+	list_edit->addSeparator();
+	list_edit->addAction("Delete", [=]() { this->listItemDelete(); });
 
 	list_edit->exec(list->mapToGlobal(pos));
 }

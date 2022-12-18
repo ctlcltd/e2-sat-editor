@@ -153,7 +153,7 @@ void e2db_abstract::add_tunersets(tunersets& tv)
 	tuners.emplace(tv.ytype, tv);
 }
 
-void e2db_abstract::add_tunersets_table(int idx, tunersets& tv, tunersets_table& tn)
+void e2db_abstract::add_tunersets_table(int idx, tunersets_table& tn, tunersets& tv)
 {
 	string iname = "tns:";
 	char type;
@@ -176,7 +176,7 @@ void e2db_abstract::add_tunersets_table(int idx, tunersets& tv, tunersets_table&
 		tuners_pos.emplace(tn.pos, tn.tnid);
 }
 
-void e2db_abstract::add_tunersets_transponder(int idx, tunersets_table& tn, tunersets_transponder& tntxp)
+void e2db_abstract::add_tunersets_transponder(int idx, tunersets_transponder& tntxp, tunersets_table& tn)
 {
 	char type;
 	switch (tn.ytype)

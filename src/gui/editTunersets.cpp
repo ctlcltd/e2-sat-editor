@@ -15,7 +15,6 @@
 #include <QTextEdit>
 
 #include "editTunersets.h"
-#include "todo.h"
 
 using std::to_string;
 using namespace e2se;
@@ -46,7 +45,7 @@ void editTunersets::layout()
 {
 	this->dialAbstract::layout();
 
-	QString dtitle = "Edit Position";
+	QString dtitle = tr("Edit Settings");
 	dial->setWindowTitle(dtitle);
 
 	QGroupBox* dtl0 = new QGroupBox;
@@ -58,7 +57,7 @@ void editTunersets::layout()
 	dtf0ch->setAcceptRichText(false);
 	fields.emplace_back(dtf0ch);
 	dtf0ch->setMinimumWidth(240);
-	dtf0ch->setMinimumHeight(100);
+	dtf0ch->setMaximumHeight(100);
 	dtf0->addRow(tr("Comment"), dtf0ch);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -89,6 +88,7 @@ void editTunersets::store()
 		tvs = dbih->tuners[tvid];
 	}
 
+	//TODO
 	string commhead;
 
 	for (auto & item : fields)
@@ -107,13 +107,10 @@ void editTunersets::store()
 			commhead = val;
 	}
 
-	//TODO
-	todo();
-
-	/*if (this->state.edit)
-		this->tvid = dbih->add_tunersets(tvs);
+	if (this->state.edit)
+		this->tvid = dbih->editTunersets(tvid, tvs);
 	else
-		this->tvid = dbih->add_tunersets(tvs);*/
+		this->tvid = dbih->addTunersets(tvs);
 }
 
 void editTunersets::retrieve()

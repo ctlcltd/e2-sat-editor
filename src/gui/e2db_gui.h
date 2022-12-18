@@ -61,6 +61,15 @@ class e2db : public ::e2se_e2db::e2db
 		string editChannelReference(string chid, channel_reference& chref, string bname);
 		void removeChannelReference(channel_reference chref, string bname);
 		void removeChannelReference(string chid, string bname);
+		int addTunersets(tunersets& tv);
+		int editTunersets(int tvid, tunersets& tv);
+		void removeTunersets(int tvid);
+		string addTunersetsTable(tunersets_table& tn, tunersets tv);
+		string editTunersetsTable(string tnid, tunersets_table& tn, tunersets tv);
+		void removeTunersetsTable(string tnid, tunersets tv);
+		string addTunersetsTransponder(tunersets_transponder& tntxp, tunersets_table tn);
+		string editTunersetsTransponder(string trid, tunersets_transponder& tntxp, tunersets_table tn);
+		void removeTunersetsTransponder(string trid, tunersets_table tn);
 		void plain();
 		bool prepare(string localdir);
 		bool write(string localdir, bool overwrite);
@@ -70,6 +79,8 @@ class e2db : public ::e2se_e2db::e2db
 		QStringList entryTransponder(transponder tx);
 		QStringList entryService(service ch);
 		QStringList entryMarker(channel_reference chref);
+		QStringList entryTunersetsTable(tunersets_table tn);
+		QStringList entryTunersetsTransponder(tunersets_transponder tntxp, tunersets_table tn);
 	protected:
 		QSettings* sets;
 		// reflect source index

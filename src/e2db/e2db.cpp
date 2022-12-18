@@ -10,6 +10,8 @@
  */
 
 #include <cstdio>
+#include <cstdlib>
+#include <cmath>
 #include <clocale>
 #include <algorithm>
 #include <unordered_set>
@@ -403,7 +405,7 @@ void e2db::edit_transponder(string txid, transponder& tx)
 	std::sprintf(nw_txid, "%x:%x", tx.tsid, tx.dvbns);
 	tx.txid = nw_txid;
 
-	debug("edit_service()", "nw_txid", tx.txid);
+	debug("edit_transponder()", "new txid", tx.txid);
 
 	if (tx.txid == txid)
 	{
@@ -422,6 +424,7 @@ void e2db::edit_transponder(string txid, transponder& tx)
 	}
 }
 
+//TODO TEST
 void e2db::remove_transponder(string txid)
 {
 	debug("remove_transponder()", "txid", txid);
@@ -459,7 +462,7 @@ void e2db::edit_service(string chid, service& ch)
 	ch.txid = nw_txid;
 	ch.chid = nw_chid;
 
-	debug("edit_service()", "nw_chid", ch.chid);
+	debug("edit_service()", "new chid", ch.chid);
 
 	if (ch.chid == chid)
 	{
@@ -509,7 +512,7 @@ void e2db::remove_service(string chid)
 	debug("remove_service()", "chid", chid);
 
 	if (! db.services.count(chid))
-		return error("edit_service()", "Error", "Service \"" + chid + "\" not exists.");
+		return error("remove_service()", "Error", "Service \"" + chid + "\" not exists.");
 
 	service ch = db.services[chid];
 	string kchid = 's' + chid;
@@ -726,7 +729,7 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 
 	userbouquet& ub = userbouquets[bname];
 
-	debug("edit_channel_reference()", "nw_chid", chref.chid);
+	debug("edit_channel_reference()", "new chid", chref.chid);
 
 	if (chref.chid == chid)
 	{
@@ -924,6 +927,187 @@ void e2db::remove_channel_reference(string chid, string bname)
 	ub.channels.erase(chid);
 }
 
+void e2db::add_tunersets(tunersets& tv)
+{
+	debug("add_tunersets()", "tvid", tv.ytype);
+
+	e2db_abstract::add_tunersets(tv);
+}
+
+void e2db::edit_tunersets(int tvid, tunersets& tv)
+{
+	debug("edit_tunersets()", "tvid", tvid);
+
+	tuners[tvid] = tv;
+}
+
+void e2db::remove_tunersets(int tvid)
+{
+	debug("remove_tunersets()", "tvid", tvid);
+
+	tuners.erase(tvid);
+}
+
+void e2db::add_tunersets_table(tunersets_table& tn, tunersets tv)
+{
+	debug("add_tunersets_table()", "tnid", tn.tnid);
+
+	string iname = "tns:";
+	char type;
+	switch (tn.ytype)
+	{
+		case YTYPE::sat: type = 's'; break;
+		case YTYPE::terrestrial: type = 't'; break;
+		case YTYPE::cable: type = 'c'; break;
+		case YTYPE::atsc: type = 'a'; break;
+		default: return error("add_tunersets_table()", "Error", "Unknown tuner settings type.");
+	}
+	iname += type;
+
+	tn.index = index.count(iname);
+	e2db_abstract::add_tunersets_table(tn.index, tn, tv);
+}
+
+void e2db::edit_tunersets_table(string tnid, tunersets_table& tn, tunersets tv)
+{
+	debug("edit_tunersets_table()", "tnid", tnid);
+
+	string iname = "tns:";
+	char type;
+	switch (tn.ytype)
+	{
+		case YTYPE::sat: type = 's'; break;
+		case YTYPE::terrestrial: type = 't'; break;
+		case YTYPE::cable: type = 'c'; break;
+		case YTYPE::atsc: type = 'a'; break;
+		default: return error("edit_tunersets_table()", "Error", "Unknown tuner settings type.");
+	}
+	iname += type;
+
+	char nw_tnid[25];
+	std::sprintf(nw_tnid, "%c:%04x", type, tn.index);
+	tn.tnid = nw_tnid;
+
+	debug("edit_tunersets_table()", "new tnid", tn.tnid);
+
+	if (tn.tnid == tnid)
+	{
+		tuners[tv.ytype].tables[tn.tnid] = tn;
+	}
+	else
+	{
+		tuners[tv.ytype].tables.erase(tnid);
+		tuners[tv.ytype].tables.emplace(tn.tnid, tn);
+
+		for (auto it = index[iname].begin(); it != index[iname].end(); it++)
+		{
+			if (it->second == tnid)
+				it->second = tn.tnid;
+		}
+		if (tn.ytype == YTYPE::sat)
+		{
+			tuners_pos.erase(tn.pos);
+			tuners_pos.emplace(tn.pos, tn.tnid);
+		}
+	}
+
+	debug("editTunersetsTable()", "tname 2", tn.name);
+}
+
+//TODO TEST
+void e2db::remove_tunersets_table(string tnid, tunersets tv)
+{
+	debug("remove_tunersets_table()", "tnid", tnid);
+
+	if (! tv.tables.count(tnid))
+		return error("remove_tunersets_table()", "Error", "Tunersets table \"" + tnid + "\" not exists.");
+
+	tunersets_table tn = tv.tables[tnid];
+
+	string iname = "tns:";
+	char type;
+	switch (tn.ytype)
+	{
+		case YTYPE::sat: type = 's'; break;
+		case YTYPE::terrestrial: type = 't'; break;
+		case YTYPE::cable: type = 'c'; break;
+		case YTYPE::atsc: type = 'a'; break;
+		default: return error("remove_tunersets_table()", "Error", "Unknown tuner settings type.");
+	}
+	iname += type;
+
+	for (auto it = index[iname].begin(); it != index[iname].end(); it++)
+	{
+		if (it->second == tnid)
+			index[iname].erase(it);
+	}
+	if (tn.ytype == YTYPE::sat)
+	{
+		tuners_pos.erase(tn.pos);
+	}
+	tuners[tv.ytype].tables.erase(tnid);
+}
+
+void e2db::add_tunersets_transponder(tunersets_transponder& tntxp, tunersets_table tn)
+{
+	debug("add_tunersets_transponder()", "trid", tntxp.trid);
+
+	tntxp.index = index.count(tn.tnid);
+	e2db_abstract::add_tunersets_transponder(tntxp.index, tntxp, tn);
+	tuners[tn.ytype].tables[tn.tnid].transponders[tntxp.trid] = tntxp;
+}
+
+void e2db::edit_tunersets_transponder(string trid, tunersets_transponder& tntxp, tunersets_table tn)
+{
+	debug("edit_tunersets_transponder()", "trid", trid);
+
+	char type;
+	switch (tn.ytype)
+	{
+		case YTYPE::sat: type = 's'; break;
+		case YTYPE::terrestrial: type = 't'; break;
+		case YTYPE::cable: type = 'c'; break;
+		case YTYPE::atsc: type = 'a'; break;
+		default: return error("edit_tunersets_transponder()", "Error", "Unknown tuner settings type.");
+	}
+
+	char nw_trid[25];
+	std::sprintf(nw_trid, "%c:%04x:%04x", type, tntxp.freq, tntxp.sr);
+	tntxp.trid = nw_trid;
+
+	debug("edit_tunersets_transponder()", "new trid", tntxp.trid);
+
+	if (tntxp.trid == trid)
+	{
+		tuners[tn.ytype].tables[tn.tnid].transponders[tntxp.trid] = tntxp;
+	}
+	else
+	{
+		tuners[tn.ytype].tables[tn.tnid].transponders.erase(trid);
+		tuners[tn.ytype].tables[tn.tnid].transponders.emplace(tntxp.trid, tntxp);
+
+		for (auto it = index[tn.tnid].begin(); it != index[tn.tnid].end(); it++)
+		{
+			if (it->second == trid)
+				it->second = tntxp.trid;
+		}
+	}
+}
+
+//TODO TEST
+void e2db::remove_tunersets_transponder(string trid, tunersets_table tn)
+{
+	debug("remove_tunersets_transponder()", "trid", trid);
+
+	tuners[tn.ytype].tables[tn.tnid].transponders.erase(trid);
+
+	for (auto it = index[tn.tnid].begin(); it != index[tn.tnid].end(); it++)
+	{
+		if (it->second == trid)
+			index[tn.tnid].erase(it);
+	}
+}
+
 string e2db::get_reference_id(string chid)
 {
 	// debug("get_reference_id()", "chid", chid);
@@ -982,6 +1166,105 @@ string e2db::get_reference_id(channel_reference chref)
 	// %1d:%4d:%4X:%4X:%4X:%4s:%8X:0:0:0:
 	std::sprintf(refid, "%d:%d:%X:%X:%X:%s:%X:0:0:0", 1, type, anum, ssid, tsid, onid.c_str(), dvbns);
 	return refid;
+}
+
+string e2db::get_transponder_combo_value(transponder tx)
+{
+	string ptxp;
+	switch (tx.ttype)
+	{
+		case 's':
+			ptxp = to_string(tx.freq) + '/' + SAT_POL[tx.pol] + '/' + to_string(tx.sr);
+		break;
+		case 't':
+			ptxp = to_string(tx.freq) + '/' + TER_MOD[tx.tmod] + '/' + TER_BAND[tx.band];
+		break;
+		case 'c':
+			ptxp = to_string(tx.freq) + '/' + CAB_MOD[tx.cmod] + '/' + to_string(tx.sr);
+		break;
+		case 'a':
+			ptxp = to_string(tx.freq);
+		break;
+	}
+	return ptxp;
+}
+
+string e2db::get_transponder_combo_value(tunersets_table tn, tunersets_transponder tntxp)
+{
+	string ptxp;
+	switch (tn.ytype)
+	{
+		case 's':
+			ptxp = to_string(tntxp.freq) + '/' + SAT_POL[tntxp.pol] + '/' + to_string(tntxp.sr);
+		break;
+		case 't':
+			ptxp = to_string(tntxp.freq) + '/' + TER_MOD[tntxp.tmod] + '/' + TER_BAND[tntxp.band];
+		break;
+		case 'c':
+			ptxp = to_string(tntxp.freq) + '/' + CAB_MOD[tntxp.cmod] + '/' + to_string(tntxp.sr);
+		break;
+		case 'a':
+			ptxp = to_string(tntxp.freq);
+		break;
+	}
+	return ptxp;
+}
+
+string e2db::get_transponder_name_value(transponder tx)
+{
+	string ppos;
+	if (tx.ttype == 's')
+	{
+		if (tuners_pos.count(tx.pos))
+		{
+			string tnid = tuners_pos.at(tx.pos);
+			tunersets_table tns = tuners[0].tables[tnid];
+			ppos = tns.name;
+		}
+		else
+		{
+			ppos = get_transponder_position_text(tx);
+		}
+	}
+	return ppos;
+}
+
+string e2db::get_transponder_position_text(transponder tx)
+{
+	return get_transponder_position_text(tx.pos);
+}
+
+string e2db::get_transponder_position_text(tunersets_table tn)
+{
+	return get_transponder_position_text(tn.pos);
+}
+
+string e2db::get_transponder_position_text(int pos)
+{
+	char cposdeg[6];
+	// %3d.%1d%C
+	std::sprintf(cposdeg, "%.1f", float (std::abs (pos)) / 10);
+	return (string (cposdeg) + (pos > 0 ? 'E' : 'W'));
+}
+
+string e2db::get_transponder_system_text(transponder tx)
+{
+	string psys;
+	switch (tx.ttype) {
+		case 's':
+			psys = tx.sys != -1 ? SAT_SYS[tx.sys] : "DVB-S";
+		break;
+		case 't':
+			psys = "DVB-T";
+		break;
+		case 'c':
+			psys = "DVB-C";
+		break;
+		case 'a':
+			psys = "ATSC";
+		break;
+	}
+	return psys;
 }
 
 map<string, vector<pair<int, string>>> e2db::get_channels_index()

@@ -368,39 +368,9 @@ void printable::page_body_channel_list(page& p, string bname, view v)
 			QString pol = QString::fromStdString(tx.pol != -1 ? e2db::SAT_POL[tx.pol] : "");
 			QString sr = QString::fromStdString(to_string(tx.sr));
 			QString fec = QString::fromStdString(e2db::SAT_FEC[tx.fec]);
-			string ppos;
-			if (tx.ttype == 's')
-			{
-				if (dbih->tuners_pos.count(tx.pos))
-				{
-					string tnid = dbih->tuners_pos.at(tx.pos);
-					e2db::tunersets_table tns = dbih->tuners[0].tables[tnid];
-					ppos = tns.name;
-				}
-				else
-				{
-					char cposdeg[6];
-					// %3d.%1d%C
-					std::sprintf(cposdeg, "%.1f", float (std::abs (tx.pos)) / 10);
-					ppos = (string (cposdeg) + (tx.pos > 0 ? 'E' : 'W'));
-				}
-			}
+			string ppos = dbih->get_transponder_position_text(tx);
 			QString pos = QString::fromStdString(ppos);
-			string psys;
-			switch (tx.ttype) {
-				case 's':
-					psys = tx.sys != -1 ? e2db::SAT_SYS[tx.sys] : "DVB-S";
-				break;
-				case 't':
-					psys = "DVB-T";
-				break;
-				case 'c':
-					psys = "DVB-C";
-				break;
-				case 'a':
-					psys = "ATSC";
-				break;
-			}
+			string psys = dbih->get_transponder_system_text(tx);
 			QString sys = QString::fromStdString(psys);
 
 			p.body += "<tr>";
@@ -534,17 +504,15 @@ void printable::page_body_tunersets_list(page& p, int ytype)
 		string ppos;
 		if (ytype == e2db::YTYPE::sat)
 		{
-			char cposdeg[6];
-			// %3d.%1d%C
-			std::sprintf(cposdeg, "%.1f", float (std::abs (tns.pos)) / 10);
-			ppos = (string (cposdeg) + (tns.pos > 0 ? 'E' : 'W'));
+			ppos = dbih->get_transponder_position_text(tns);
 		}
 		QString pos = QString::fromStdString(ppos);
 
 		p.body += "<div class=\"transponder\">";
 		p.body += "<h4>Transponders</h4>";
 		p.body += "<h2>" + tnname + "</h2>";
-		p.body += "<p>Position: <b>" + pos + "</b></p>";
+		if (ytype == e2db::YTYPE::sat)
+			p.body += "<p>Position: <b>" + pos + "</b></p>";
 		p.body += "<table>";
 		p.body += "<thead>";
 		p.body += "<tr>";
