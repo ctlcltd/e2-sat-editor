@@ -42,8 +42,9 @@ class editService : public dialAbstract
 		vector<string> computePIDs(e2db::service ch, e2db::SDATA_PIDS x, string val);
 		string getFlagValue(e2db::service ch, e2db::SDATA_FLAGS x);
 		vector<string> computeFlags(e2db::service ch, e2db::SDATA_FLAGS x, string val);
-		void setEditID(string chid);
-		string getEditID();
+		void setEditId(string chid);
+		string getEditId();
+		string getAddId();
 
 		struct sts
 		{

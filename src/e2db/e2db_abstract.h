@@ -183,7 +183,7 @@ struct e2db_abstract
 			string onid; //TODO to int ?
 			int stype;
 			int snum;
-			int srcid;
+			int srcid = -1;
 			int index;
 			string txid;
 			string chname;
@@ -204,26 +204,26 @@ struct e2db_abstract
 			int onid;
 			char ttype;
 			int freq;
-			int sr;
-			int pol; // DVB-S
-			int fec; // DVB-S
-			int hpfec; // DVB-T
-			int lpfec; // DVB-T
-			int cfec; // DVB-C
-			int pos; // DVB-S
-			int inv;
-			int flgs; // DVB-S
-			int sys; // ? DVB-S
-			int mod; // ? DVB-S
-			int tmod; // DVB-T
-			int cmod; // DVB-C
-			int amod; // ATSC
-			int rol; // DVB-S2
-			int pil; // DVB-S2
-			int band; // DVB-T
-			int tmx; // DVB-T
-			int guard; // DVB-T
-			int hier; // DVB-T
+			int sr = -1;
+			int pol = -1; // DVB-S
+			int fec = -1; // DVB-S
+			int hpfec = -1; // DVB-T
+			int lpfec = -1; // DVB-T
+			int cfec = -1; // DVB-C
+			int pos = -1; // DVB-S
+			int inv = -1;
+			int flgs = -1; // DVB-S
+			int sys = -1; // ? DVB-S
+			int mod = -1; // ? DVB-S
+			int tmod = -1; // DVB-T
+			int cmod = -1; // DVB-C
+			int amod = -1; // ATSC
+			int rol = -1; // DVB-S2
+			int pil = -1; // DVB-S2
+			int band = -1; // DVB-T
+			int tmx = -1; // DVB-T
+			int guard = -1; // DVB-T
+			int hier = -1; // DVB-T
 			string oflgs; // ?
 			int index;
 		};
@@ -259,29 +259,29 @@ struct e2db_abstract
 		{
 			string trid;
 			int freq;
-			int sr;
-			int pol; // DVB-S
-			int fec; // DVB-S
-			int hpfec; // DVB-T
-			int lpfec; // DVB-T
-			int cfec; // DVB-C
-			int inv;
-			int sys;
-			int mod; // DVB-S
-			int tmod; // DVB-T
-			int cmod; // DVB-C
-			int amod; // ATSC
-			int rol; // DVB-S2
-			int pil; // DVB-S2
-			int band; // DVB-T
-			int tmx; // DVB-T
-			int guard; // DVB-T
-			int hier; // DVB-T
-			int isid; // DVB-S
-			int mts; // ? DVB-S
-			int plsmode; // DVB-S
-			int plscode; // DVB-S
-			int plsn; // ? DVB-S
+			int sr = -1;
+			int pol = -1; // DVB-S
+			int fec = -1; // DVB-S
+			int hpfec = -1; // DVB-T
+			int lpfec = -1; // DVB-T
+			int cfec = -1; // DVB-C
+			int inv = -1;
+			int sys = -1;
+			int mod = -1; // DVB-S
+			int tmod = -1; // DVB-T
+			int cmod = -1; // DVB-C
+			int amod = -1; // ATSC
+			int rol = -1; // DVB-S2
+			int pil = -1; // DVB-S2
+			int band = -1; // DVB-T
+			int tmx = -1; // DVB-T
+			int guard = -1; // DVB-T
+			int hier = -1; // DVB-T
+			int isid = -1; // DVB-S
+			int mts = -1; // ? DVB-S
+			int plsmode = -1; // DVB-S
+			int plscode = -1; // DVB-S
+			int plsn = -1; // ? DVB-S
 			int index;
 		};
 		struct tunersets_table
@@ -289,10 +289,10 @@ struct e2db_abstract
 			string tnid;
 			int ytype;
 			string name;
-			int flgs;
-			int pos; // DVB-S
+			int flgs = -1;
+			int pos = -1; // DVB-S
 			string country;
-			int feed;
+			int feed = -1;
 			// transponders <trid string, tunersets_transponder struct>
 			unordered_map<string, tunersets_transponder> transponders;
 			int index;

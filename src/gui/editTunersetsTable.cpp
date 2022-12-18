@@ -230,6 +230,10 @@ void editTunersetsTable::store()
 
 		tns = tvs.tables[tnid];
 	}
+	else
+	{
+		tns.ytype = this->state.ty;
+	}
 
 	for (auto & item : fields)
 	{
@@ -249,9 +253,8 @@ void editTunersetsTable::store()
 				tns.name = val;
 			else if (key == "flgs")
 				tns.flgs = val.empty() ? -1 : std::stoi(val);
-			//TODO transform
 			else if (key == "pos")
-				tns.pos = val.empty() ? -1 : std::stoi(val);
+				tns.pos = val.empty() ? -1 : dbih->get_transponder_position_number(val);
 		}
 		else if (this->state.ty == e2db::YTYPE::terrestrial)
 		{
@@ -362,18 +365,32 @@ void editTunersetsTable::retrieve()
 	}
 }
 
-void editTunersetsTable::setEditID(string tnid)
+void editTunersetsTable::setEditId(string tnid, int tvid)
 {
-	debug("setEditID()");
+	debug("setEditId()");
 
 	this->state.edit = true;
-	this->tvid = this->state.ty;
 	this->tnid = tnid;
+	this->tvid = tvid;
 }
 
-string editTunersetsTable::getEditID()
+string editTunersetsTable::getEditId()
 {
-	debug("getEditID()");
+	debug("getEditId()");
+
+	return this->tnid;
+}
+
+void editTunersetsTable::setAddId(int tvid)
+{
+	debug("setAddId()");
+
+	this->tvid = tvid;
+}
+
+string editTunersetsTable::getAddId()
+{
+	debug("getAddId()");
 
 	return this->tnid;
 }

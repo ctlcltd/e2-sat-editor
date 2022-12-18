@@ -109,7 +109,7 @@ void editTunersetsTransponder::leadSatLayout()
 	
 	QComboBox* dtf0sc = new QComboBox;
 	dtf0sc->setProperty("field", "s_fec");
-	fields.emplace_back(dtf0sp);
+	fields.emplace_back(dtf0sc);
 	dtf0sc->setMaximumWidth(100);
 	dtf0sc->setValidator(new QIntValidator);
 	dtf0->addRow(tr("FEC"), dtf0sc);
@@ -123,7 +123,7 @@ void editTunersetsTransponder::leadSatLayout()
 
 	QComboBox* dtf0sy = new QComboBox;
 	dtf0sy->setProperty("field", "s_sys");
-	fields.emplace_back(dtf0sp);
+	fields.emplace_back(dtf0sy);
 	dtf0sy->setMaximumWidth(100);
 	dtf0sy->setValidator(new QIntValidator);
 	dtf0->addRow(tr("System"), dtf0sy);
@@ -317,7 +317,7 @@ void editTunersetsTransponder::sideSatLayout()
 	dtf1sm->addItem(tr("empty"), -1);
 	for (int i = 0; i < 4; i++)
 	{
-		string w = e2db::SAT_POL[i];
+		string w = e2db::SAT_MOD[i];
 		dtf1sm->addItem(QString::fromStdString(w), i);
 	}
 	
@@ -759,19 +759,34 @@ void editTunersetsTransponder::retrieve()
 	}
 }
 
-void editTunersetsTransponder::setEditID(string trid, string tnid)
+void editTunersetsTransponder::setEditId(string trid, string tnid, int tvid)
 {
-	debug("setEditID()");
+	debug("setEditId()");
 
 	this->state.edit = true;
-	this->tvid = this->state.ty;
+	this->tvid = tvid;
 	this->tnid = tnid;
 	this->trid = trid;
 }
 
-string editTunersetsTransponder::getEditID()
+string editTunersetsTransponder::getEditId()
 {
-	debug("getEditID()");
+	debug("getEditId()");
+
+	return this->trid;
+}
+
+void editTunersetsTransponder::setAddId(string tnid, int tvid)
+{
+	debug("setAddId()");
+
+	this->tvid = tvid;
+	this->tnid = tnid;
+}
+
+string editTunersetsTransponder::getAddId()
+{
+	debug("getAddId()");
 
 	return this->trid;
 }

@@ -163,17 +163,24 @@ void editBouquet::retrieve()
 	}
 }
 
-void editBouquet::setEditID(string bname)
+void editBouquet::setEditId(string bname)
 {
-	debug("setEditID()");
+	debug("setEditId()");
 
 	this->state.edit = true;
 	this->bname = bname;
 }
 
-string editBouquet::getEditID()
+string editBouquet::getEditId()
 {
-	debug("getEditID()");
+	debug("getEditId()");
+
+	return this->bname;
+}
+
+string editBouquet::getAddId()
+{
+	debug("getAddId()");
 
 	return this->bname;
 }

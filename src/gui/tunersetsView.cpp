@@ -275,11 +275,9 @@ void tunersetsView::load()
 		case e2db::YTYPE::atsc: iname += 'a'; break;
 	}
 
-	e2db::tunersets tvs = dbih->tuners[yx];
-
 	for (auto & x : dbih->index[iname])
 	{
-		e2db::tunersets_table tns = tvs.tables[x.second];
+		e2db::tunersets_table tns = dbih->tuners[yx].tables[x.second];
 		QString idx = QString::fromStdString(tns.tnid);
 		QStringList entry = dbih->entryTunersetsTable(tns);
 
@@ -411,11 +409,21 @@ void tunersetsView::listItemDoubleClicked()
 	editTransponder();
 }
 
+void tunersetsView::addSettings()
+{
+	debug("addSettings()");
+
+	int tvid = yx;
+	e2db::tunersets tvs;
+	tvs.ytype = tvid;
+	dbih->addTunersets(tvs);
+}
+
 void tunersetsView::editSettings()
 {
 	debug("editSettings()");
 
-	int tvid = this->yx;
+	int tvid = yx;
 
 	if (dbih->tuners.count(tvid))
 		debug("editSettings()", "tvid", tvid);
@@ -423,9 +431,9 @@ void tunersetsView::editSettings()
 		return error("editSettings()", "tvid", tvid);
 
 	e2se_gui::editTunersets* edit = new e2se_gui::editTunersets(dbih, yx, this->log->log);
-	edit->setEditID(tvid);
+	edit->setEditId(tvid);
 	edit->display(cwid);
-	edit->getEditID(); // returned after dial.exec()
+	edit->getEditId(); // returned after dial.exec()
 	edit->destroy();
 
 	this->state.changed = true;
@@ -435,12 +443,18 @@ void tunersetsView::addPosition()
 {
 	debug("addPosition()");
 
+	int tvid = yx;
 	string tnid;
+
+	if (! dbih->tuners.count(tvid))
+		addSettings();
+
 	e2se_gui::editTunersetsTable* add = new e2se_gui::editTunersetsTable(dbih, yx, this->log->log);
+	add->setAddId(tvid);
 	add->display(cwid);
-	tnid = add->getEditID(); // returned after dial.exec()
+	tnid = add->getAddId(); // returned after dial.exec()
 	add->destroy();
-		
+
 	if (dbih->tuners[yx].tables.count(tnid))
 		debug("addPosition()", "tnid", tnid);
 	else
@@ -489,18 +503,21 @@ void tunersetsView::editPosition()
 		return;
 
 	QTreeWidgetItem* item = selected.first();
+	int tvid = this->yx;
 	string tnid = item->data(0, Qt::UserRole).toString().toStdString();
 	string nw_tnid;
 
+	if (! dbih->tuners.count(tvid))
+		return error("addTransponder()", "tvid", tvid);
 	if (dbih->tuners[yx].tables.count(tnid))
 		debug("editPosition()", "tnid", tnid);
 	else
 		return error("editPosition()", "tnid", tnid);
 
 	e2se_gui::editTunersetsTable* edit = new e2se_gui::editTunersetsTable(dbih, yx, this->log->log);
-	edit->setEditID(tnid);
+	edit->setEditId(tnid, tvid);
 	edit->display(cwid);
-	nw_tnid = edit->getEditID(); // returned after dial.exec()
+	nw_tnid = edit->getEditId(); // returned after dial.exec()
 	edit->destroy();
 
 	if (dbih->tuners[yx].tables.count(nw_tnid))
@@ -523,15 +540,20 @@ void tunersetsView::addTransponder()
 {
 	debug("addTransponder()");
 
+	int tvid = this->yx;
 	string tnid = this->state.curr;
 
+	//TODO set disabled
+	if (! dbih->tuners.count(tvid))
+		return error("addTransponder()", "tvid", tvid);
 	if (! dbih->tuners[yx].tables.count(tnid))
 		return error("addTransponder()", "tnid", tnid);
 
 	string trid;
 	e2se_gui::editTunersetsTransponder* add = new e2se_gui::editTunersetsTransponder(dbih, yx, this->log->log);
+	add->setAddId(tnid, tvid);
 	add->display(cwid);
-	trid = add->getEditID(); // returned after dial.exec()
+	trid = add->getAddId(); // returned after dial.exec()
 	add->destroy();
 
 	if (dbih->tuners[yx].tables[tnid].transponders.count(trid))
@@ -588,10 +610,13 @@ void tunersetsView::editTransponder()
 		return;
 
 	QTreeWidgetItem* item = selected.first();
+	int tvid = this->yx;
 	string trid = item->data(ITEM_DATA_ROLE::trid, Qt::UserRole).toString().toStdString();
 	string nw_trid;
 	string tnid = this->state.curr;
 
+	if (! dbih->tuners.count(tvid))
+		return error("editTransponder()", "tvid", tvid);
 	if (! dbih->tuners[yx].tables.count(tnid))
 		return error("editTransponder()", "tnid", tnid);
 
@@ -601,9 +626,9 @@ void tunersetsView::editTransponder()
 		return error("editTransponder()", "trid", trid);
 
 	e2se_gui::editTunersetsTransponder* edit = new e2se_gui::editTunersetsTransponder(dbih, yx, this->log->log);
-	edit->setEditID(trid, tnid);
+	edit->setEditId(trid, tnid, tvid);
 	edit->display(cwid);
-	nw_trid = edit->getEditID(); // returned after dial.exec()
+	nw_trid = edit->getEditId(); // returned after dial.exec()
 	edit->destroy();
 
 	if (dbih->tuners[yx].tables[tnid].transponders.count(nw_trid))

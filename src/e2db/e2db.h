@@ -76,8 +76,9 @@ class e2db : public e2db_parser, public e2db_maker
 		string get_reference_id(string chid);
 		string get_reference_id(channel_reference chref);
 		string get_transponder_combo_value(transponder tx);
-		string get_transponder_combo_value(tunersets_table tn, tunersets_transponder tntxp);
+		string get_transponder_combo_value(tunersets_transponder tntxp, tunersets_table tn);
 		string get_transponder_name_value(transponder tx);
+		int get_transponder_position_number(string ppos);
 		string get_transponder_position_text(int pos);
 		string get_transponder_position_text(transponder tx);
 		string get_transponder_position_text(tunersets_table tn);

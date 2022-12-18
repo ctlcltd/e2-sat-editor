@@ -80,7 +80,7 @@ void channelBookView::side()
 	lwid->connect(lwid, &QListWidget::currentRowChanged, [=](int index) { this->sideRowChanged(index); });
 }
 
-//TODO FIX tabv broken when tooling
+//TODO tabv broken when tooling
 void channelBookView::layout()
 {
 	debug("layout()");

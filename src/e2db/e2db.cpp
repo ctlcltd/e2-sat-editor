@@ -931,12 +931,18 @@ void e2db::add_tunersets(tunersets& tv)
 {
 	debug("add_tunersets()", "tvid", tv.ytype);
 
+	if (tv.charset.empty())
+		tv.charset = "utf-8";
+
 	e2db_abstract::add_tunersets(tv);
 }
 
 void e2db::edit_tunersets(int tvid, tunersets& tv)
 {
 	debug("edit_tunersets()", "tvid", tvid);
+
+	if (tv.charset.empty())
+		tv.charset = "utf-8";
 
 	tuners[tvid] = tv;
 }
@@ -966,6 +972,7 @@ void e2db::add_tunersets_table(tunersets_table& tn, tunersets tv)
 
 	tn.index = index.count(iname);
 	e2db_abstract::add_tunersets_table(tn.index, tn, tv);
+	tuners[tv.ytype].tables[tn.tnid] = tn;
 }
 
 void e2db::edit_tunersets_table(string tnid, tunersets_table& tn, tunersets tv)
@@ -1010,8 +1017,6 @@ void e2db::edit_tunersets_table(string tnid, tunersets_table& tn, tunersets tv)
 			tuners_pos.emplace(tn.pos, tn.tnid);
 		}
 	}
-
-	debug("editTunersetsTable()", "tname 2", tn.name);
 }
 
 //TODO TEST
@@ -1189,21 +1194,21 @@ string e2db::get_transponder_combo_value(transponder tx)
 	return ptxp;
 }
 
-string e2db::get_transponder_combo_value(tunersets_table tn, tunersets_transponder tntxp)
+string e2db::get_transponder_combo_value(tunersets_transponder tntxp, tunersets_table tn)
 {
 	string ptxp;
 	switch (tn.ytype)
 	{
-		case 's':
+		case YTYPE::sat:
 			ptxp = to_string(tntxp.freq) + '/' + SAT_POL[tntxp.pol] + '/' + to_string(tntxp.sr);
 		break;
-		case 't':
+		case YTYPE::terrestrial:
 			ptxp = to_string(tntxp.freq) + '/' + TER_MOD[tntxp.tmod] + '/' + TER_BAND[tntxp.band];
 		break;
-		case 'c':
+		case YTYPE::cable:
 			ptxp = to_string(tntxp.freq) + '/' + CAB_MOD[tntxp.cmod] + '/' + to_string(tntxp.sr);
 		break;
-		case 'a':
+		case YTYPE::atsc:
 			ptxp = to_string(tntxp.freq);
 		break;
 	}
@@ -1239,11 +1244,19 @@ string e2db::get_transponder_position_text(tunersets_table tn)
 	return get_transponder_position_text(tn.pos);
 }
 
+int e2db::get_transponder_position_number(string ppos)
+{
+	std::string::size_type pos;
+	float posdeg = std::stof(ppos, &pos);
+	char pospoint = ppos.substr(pos)[0];
+	return (int ((pospoint == 'E' ? posdeg : -posdeg) * 10));
+}
+
 string e2db::get_transponder_position_text(int pos)
 {
 	char cposdeg[6];
 	// %3d.%1d%C
-	std::sprintf(cposdeg, "%.1f", float (std::abs (pos)) / 10);
+	std::sprintf(cposdeg, "%.1f", float (std::abs(pos)) / 10);
 	return (string (cposdeg) + (pos > 0 ? 'E' : 'W'));
 }
 

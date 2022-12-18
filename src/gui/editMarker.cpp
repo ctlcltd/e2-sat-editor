@@ -135,24 +135,32 @@ void editMarker::retrieve()
 	}
 }
 
-void editMarker::setEditUserbouquet(string bname)
+void editMarker::setEditId(string chid, string bname)
 {
-	debug("setEditUserbouquet()");
+	debug("setEditId()");
+
+	this->state.edit = true;
+	this->chid = chid;
+	this->bname = bname;
+}
+
+string editMarker::getEditId()
+{
+	debug("getEditId()");
+
+	return this->chid;
+}
+
+void editMarker::setAddId(string bname)
+{
+	debug("setAddId()");
 
 	this->bname = bname;
 }
 
-void editMarker::setEditID(string chid)
+string editMarker::getAddId()
 {
-	debug("setEditID()");
-
-	this->state.edit = true;
-	this->chid = chid;
-}
-
-string editMarker::getEditID()
-{
-	debug("getEditID()");
+	debug("getAddId()");
 
 	return this->chid;
 }

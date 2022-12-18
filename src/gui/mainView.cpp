@@ -915,7 +915,7 @@ void mainView::addUserbouquet()
 	string bname;
 	e2se_gui::editBouquet* add = new e2se_gui::editBouquet(dbih, this->state.ti, this->log->log);
 	add->display(cwid);
-	bname = add->getEditID(); // returned after dial.exec()
+	bname = add->getAddId(); // returned after dial.exec()
 	add->destroy();
 
 	if (dbih->userbouquets.count(bname))
@@ -976,7 +976,7 @@ void mainView::editUserbouquet()
 	string bname = qbname.toStdString();
 
 	e2se_gui::editBouquet* edit = new e2se_gui::editBouquet(dbih, this->state.ti, this->log->log);
-	edit->setEditID(bname);
+	edit->setEditId(bname);
 	edit->display(cwid);
 	edit->destroy();
 
@@ -1014,7 +1014,7 @@ void mainView::addService()
 	string curr_chlist = this->state.curr;
 	e2se_gui::editService* add = new e2se_gui::editService(dbih, this->log->log);
 	add->display(cwid);
-	chid = add->getEditID(); // returned after dial.exec()
+	chid = add->getAddId(); // returned after dial.exec()
 	add->destroy();
 
 	if (dbih->db.services.count(chid))
@@ -1101,9 +1101,9 @@ void mainView::editService()
 		return error("editService()", "chid", chid);
 
 	e2se_gui::editService* edit = new e2se_gui::editService(dbih, this->log->log);
-	edit->setEditID(chid);
+	edit->setEditId(chid);
 	edit->display(cwid);
-	nw_chid = edit->getEditID(); // returned after dial.exec()
+	nw_chid = edit->getEditId(); // returned after dial.exec()
 	edit->destroy();
 
 	cache.clear();
@@ -1128,9 +1128,9 @@ void mainView::addMarker()
 	string chid;
 	string curr_chlist = this->state.curr;
 	e2se_gui::editMarker* add = new e2se_gui::editMarker(dbih, this->log->log);
-	add->setEditUserbouquet(curr_chlist);
+	add->setAddId(curr_chlist);
 	add->display(cwid);
-	chid = add->getEditID(); // returned after dial.exec()
+	chid = add->getAddId(); // returned after dial.exec()
 	add->destroy();
 
 	e2db::channel_reference chref;
@@ -1219,10 +1219,9 @@ void mainView::editMarker()
 		return error("editMarker()", "chid", chid);
 
 	e2se_gui::editMarker* edit = new e2se_gui::editMarker(dbih, this->log->log);
-	edit->setEditUserbouquet(curr_chlist);
-	edit->setEditID(chid);
+	edit->setEditId(chid, curr_chlist);
 	edit->display(cwid);
-	nw_chid = edit->getEditID(); // returned after dial.exec()
+	nw_chid = edit->getEditId(); // returned after dial.exec()
 	edit->destroy();
 
 	e2db::channel_reference chref;

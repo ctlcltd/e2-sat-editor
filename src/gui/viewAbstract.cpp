@@ -251,11 +251,12 @@ void viewAbstract::treeFindPerform(const QString& value)
 {
 	tree->keyboardSearch(value);
 
-	gid->update(gui::TabTreeFind, true);
+	//TODO FIX EXC_BAD_ACCESS
+	/*gid->update(gui::TabTreeFind, true);
 	if (tree->currentIndex().isValid())
 		gid->update(gui::TabTreeFindNext, true);
 	else
-		gid->update(gui::TabTreeFindNext, false);
+		gid->update(gui::TabTreeFindNext, false);*/
 }
 
 void viewAbstract::listFindPerform(LIST_FIND flag)
@@ -387,15 +388,17 @@ void viewAbstract::listFindPerform(const QString& value, LIST_FIND flag)
 		// int i = list_tree->indexOfTopLevelItem(QTreeWidgetItem* item);
 		this->lsr_find.curr = i;
 
-		gid->update(gui::TabListFindNext, true);
+		//TODO FIX EXC_BAD_ACCESS
+		/*gid->update(gui::TabListFindNext, true);
 		gid->update(gui::TabListFindPrev, true);
-		gid->update(gui::TabListFindAll, true);
+		gid->update(gui::TabListFindAll, true);*/
 	}
 	else
 	{
-		gid->update(gui::TabListFindNext, false);
+		//TODO FIX EXC_BAD_ACCESS
+		/*gid->update(gui::TabListFindNext, false);
 		gid->update(gui::TabListFindPrev, false);
-		gid->update(gui::TabListFindAll, false);
+		gid->update(gui::TabListFindAll, false);*/
 	}
 
 	this->lsr_find.flag = flag;

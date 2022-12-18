@@ -39,8 +39,10 @@ class editTunersetsTransponder : public dialAbstract
 		void thirdSatLayout();
 		void store();
 		void retrieve();
-		void setEditID(string trid, string tnid);
-		string getEditID();
+		void setEditId(string trid, string tnid, int tvid);
+		string getEditId();
+		void setAddId(string tnid, int tvid);
+		string getAddId();
 
 		struct sts
 		{

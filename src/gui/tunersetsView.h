@@ -98,6 +98,7 @@ class tunersetsView : public viewAbstract
 		void populate();
 		void treeItemChanged();
 		void listItemDoubleClicked();
+		void addSettings();
 		void editSettings();
 		void addPosition();
 		void editPosition();

@@ -351,10 +351,10 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 	int amod;
 	char oflgs[33] = "";
 	sys = -1, mod = -1, rol = -1, pil = -1;
-	tx.pol = -1, tx.fec = -1, tx.inv = -1, tx.sys = -1, tx.mod = -1, tx.rol = -1, tx.pil = -1;
-	tx.band = -1, tx.hpfec = -1, tx.lpfec = -1, tx.tmod = -1, tx.tmx = -1, tx.guard = -1, tx.hier = -1;
-	tx.cmod = -1, tx.cfec = -1;
-	tx.amod = -1;
+	// tx.pol = -1, tx.fec = -1, tx.inv = -1, tx.sys = -1, tx.mod = -1, tx.rol = -1, tx.pil = -1;
+	// tx.band = -1, tx.hpfec = -1, tx.lpfec = -1, tx.tmod = -1, tx.tmx = -1, tx.guard = -1, tx.hier = -1;
+	// tx.cmod = -1, tx.cfec = -1;
+	// tx.amod = -1;
 
 	switch (ttype)
 	{
@@ -593,7 +593,7 @@ void e2db_parser::parse_userbouquet_reference(string data, userbouquet& ub)
 void e2db_parser::parse_channel_reference(string data, channel_reference& chref, service_reference& ref)
 {
 	int i, type, anum, ssid, tsid, onid, dvbns;
-	i = -1, type = -1, anum = -1, ssid = 0, tsid = 0, onid = -1, dvbns = 0;
+	i = 0, type = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0;
 
 	std::sscanf(data.c_str(), "%d:%d:%4X:%4X:%4X:%4X:%8X", &i, &type, &anum, &ssid, &tsid, &onid, &dvbns);
 	//TODO other flags ? "...:%d:%d:%d:"
@@ -740,15 +740,16 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 			{
 				tn = tunersets_table ();
 				tn.ytype = ytype;
-				tn.flgs = -1, tn.pos = -1, tn.feed = -1;
+				// tn.flgs = -1, tn.pos = -1, tn.feed = -1;
 			}
 			else if (step == 2)
 			{
 				tntxp = tunersets_transponder ();
-				tntxp.freq = -1, tntxp.sr = -1, tntxp.pol = -1, tntxp.fec = -1, tntxp.mod = -1, tntxp.inv = -1, tntxp.sys = -1, tntxp.rol = -1, tntxp.pil = -1, tntxp.isid = -1, tntxp.mts = -1, tntxp.plsmode = -1, tntxp.plscode = -1, tntxp.plsn = -1;
-				tntxp.band = -1, tntxp.hpfec = -1, tntxp.lpfec = -1, tntxp.tmod = -1, tntxp.tmx = -1, tntxp.guard = -1, tntxp.hier = -1;
-				tntxp.cfec = -1, tntxp.cmod = -1;
-				tntxp.amod = -1;
+				tntxp.freq = -1;
+				// tntxp.freq = -1, tntxp.sr = -1, tntxp.pol = -1, tntxp.fec = -1, tntxp.mod = -1, tntxp.inv = -1, tntxp.sys = -1, tntxp.rol = -1, tntxp.pil = -1, tntxp.isid = -1, tntxp.mts = -1, tntxp.plsmode = -1, tntxp.plscode = -1, tntxp.plsn = -1;
+				// tntxp.band = -1, tntxp.hpfec = -1, tntxp.lpfec = -1, tntxp.tmod = -1, tntxp.tmx = -1, tntxp.guard = -1, tntxp.hier = -1;
+				// tntxp.cfec = -1, tntxp.cmod = -1;
+				// tntxp.amod = -1;
 			}
 		}
 #ifndef __MINGW32__

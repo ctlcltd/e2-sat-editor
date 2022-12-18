@@ -35,8 +35,10 @@ class editTunersetsTable : public dialAbstract
 		void tableAtscLayout();
 		void store();
 		void retrieve();
-		void setEditID(string tnid);
-		string getEditID();
+		void setEditId(string tnid, int tvid);
+		string getEditId();
+		void setAddId(int tvid);
+		string getAddId();
 
 		struct sts
 		{

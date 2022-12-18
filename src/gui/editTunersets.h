@@ -31,8 +31,9 @@ class editTunersets : public dialAbstract
 		void layout();
 		void store();
 		void retrieve();
-		void setEditID(int tvid);
-		int getEditID();
+		void setEditId(int tvid);
+		int getEditId();
+		int getAddId();
 
 		struct sts
 		{

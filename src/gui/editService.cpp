@@ -763,17 +763,24 @@ vector<string> editService::computeFlags(e2db::service ch, e2db::SDATA_FLAGS x, 
 	return data;
 }
 
-void editService::setEditID(string chid)
+void editService::setEditId(string chid)
 {
-	debug("setEditID()");
+	debug("setEditId()");
 
 	this->state.edit = true;
 	this->chid = chid;
 }
 
-string editService::getEditID()
+string editService::getEditId()
 {
-	debug("getEditID()");
+	debug("getEditId()");
+
+	return this->chid;
+}
+
+string editService::getAddId()
+{
+	debug("getAddId()");
 
 	return this->chid;
 }

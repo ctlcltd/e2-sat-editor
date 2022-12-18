@@ -32,9 +32,10 @@ class editMarker : public dialAbstract
 		void layout();
 		void store();
 		void retrieve();
-		void setEditUserbouquet(string bname);
-		void setEditID(string chid);
-		string getEditID();
+		void setEditId(string chid, string bname);
+		string getEditId();
+		void setAddId(string bname);
+		string getAddId();
 
 		struct sts
 		{

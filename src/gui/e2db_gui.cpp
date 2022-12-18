@@ -442,7 +442,7 @@ QStringList e2db::entryTunersetsTransponder(tunersets_transponder tntxp, tunerse
 	QStringList entry;
 	QString trid = QString::fromStdString(tntxp.trid);
 	QString freq = QString::fromStdString(to_string(tntxp.freq));
-	string ptxp = get_transponder_combo_value(tn, tntxp);
+	string ptxp = get_transponder_combo_value(tntxp, tn);
 	QString combo = QString::fromStdString(ptxp);
 
 	if (tn.ytype == YTYPE::sat)
@@ -466,8 +466,8 @@ QStringList e2db::entryTunersetsTransponder(tunersets_transponder tntxp, tunerse
 		QString hpfec = QString::fromStdString(e2db::TER_HPFEC[tntxp.hpfec]);
 		QString lpfec = QString::fromStdString(e2db::TER_LPFEC[tntxp.lpfec]);
 		QString inv = QString::fromStdString(e2db::TER_INV[tntxp.inv]);
-		QString guard = QString::fromStdString(e2db::TER_GUARD[tntxp.hier]);
-		QString hier = QString::fromStdString(e2db::TER_HIER[tntxp.guard]);
+		QString guard = QString::fromStdString(e2db::TER_GUARD[tntxp.guard]);
+		QString hier = QString::fromStdString(e2db::TER_HIER[tntxp.hier]);
 		entry = QStringList ({trid, combo, freq, tmod, band, sys, tmx, hpfec, lpfec, inv, guard, hier});
 	}
 	else if (tn.ytype == YTYPE::cable)

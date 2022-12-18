@@ -32,8 +32,9 @@ class editBouquet : public dialAbstract
 		void store();
 		void retrieve();
 		void save();
-		void setEditID(string bname);
-		string getEditID();
+		void setEditId(string bname);
+		string getEditId();
+		string getAddId();
 
 		struct sts
 		{

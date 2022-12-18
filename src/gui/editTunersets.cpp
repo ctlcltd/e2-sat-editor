@@ -87,6 +87,10 @@ void editTunersets::store()
 
 		tvs = dbih->tuners[tvid];
 	}
+	else
+	{
+		tvs.ytype = this->state.ty;
+	}
 
 	//TODO
 	string commhead;
@@ -179,17 +183,24 @@ void editTunersets::retrieve()
 	}
 }
 
-void editTunersets::setEditID(int tvid)
+void editTunersets::setEditId(int tvid)
 {
-	debug("setEditID()");
+	debug("setEditId()");
 
 	this->state.edit = true;
 	this->tvid = tvid;
 }
 
-int editTunersets::getEditID()
+int editTunersets::getEditId()
 {
-	debug("getEditID()");
+	debug("getEditId()");
+
+	return this->tvid;
+}
+
+int editTunersets::getAddId()
+{
+	debug("getAddId()");
 
 	return this->tvid;
 }

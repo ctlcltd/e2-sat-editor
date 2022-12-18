@@ -600,8 +600,8 @@ void printable::page_body_tunersets_list(page& p, int ytype)
 				QString hpfec = QString::fromStdString(e2db::TER_HPFEC[txp.hpfec]);
 				QString lpfec = QString::fromStdString(e2db::TER_LPFEC[txp.lpfec]);
 				QString inv = QString::fromStdString(e2db::TER_INV[txp.inv]);
-				QString guard = QString::fromStdString(e2db::TER_GUARD[txp.hier]);
-				QString hier = QString::fromStdString(e2db::TER_HIER[txp.guard]);
+				QString guard = QString::fromStdString(e2db::TER_GUARD[txp.guard]);
+				QString hier = QString::fromStdString(e2db::TER_HIER[txp.hier]);
 
 				p.body += "<td>" + freq + "</td>";
 				p.body += "<td>" + tmod + "</td>";
