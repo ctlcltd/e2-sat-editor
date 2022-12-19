@@ -38,12 +38,11 @@ channelBookView::channelBookView(e2db* dbih, e2se::logger::session* log)
 	layout();
 }
 
-channelBookView::channelBookView(gui* gid, tab* twid, QWidget* wid, e2se::logger::session* log)
+channelBookView::channelBookView(tab* twid, QWidget* wid, e2se::logger::session* log)
 {
 	this->log = new logger(log, "channelBookView");
 	debug("channelBookView()");
 
-	this->gid = gid;
 	this->twid = twid;
 	this->cwid = wid;
 	this->sets = new QSettings;
@@ -164,6 +163,8 @@ void channelBookView::load()
 {
 	debug("load()");
 
+	tabUpdateFlags(gui::init);
+
 	sideRowChanged(0);
 }
 
@@ -183,7 +184,7 @@ void channelBookView::reset()
 	this->lsr_find.curr = -1;
 	this->lsr_find.match.clear();
 
-	gid->resetStatus();
+	tabResetStatus();
 }
 
 void channelBookView::populate()

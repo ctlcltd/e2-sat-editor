@@ -133,9 +133,9 @@ void tab::tabSwitched()
 {
 	debug("tabSwitched()");
 
-	gid->setActionFlags(this->state.gxe);
-	view->updateCounters();
-	view->updateCounters(true);
+	retrieveFlags();
+	view->updateStatus();
+	view->updateStatus(true);
 }
 
 void tab::tabChangeName(string filename)
@@ -154,12 +154,48 @@ void tab::tabChangeName(string filename)
 	}
 }
 
+void tab::setFlag(gui::GUI_CXE bit, bool flag)
+{
+	gid->update(bit, flag);
+}
+
+void tab::setFlag(gui::GUI_CXE bit)
+{
+	gid->update(bit);
+}
+
+bool tab::getFlag(gui::GUI_CXE bit)
+{
+	return gid->getFlag(bit);
+}
+
+void tab::storeFlags()
+{
+	this->state.gxe = gid->getFlags();
+}
+
+void tab::retrieveFlags()
+{
+	gid->setFlags(this->state.gxe);
+}
+
+void tab::setStatus(gui::STATUS status)
+{
+	status.view = this->ttv;
+	gid->setStatus(status);
+}
+
+void tab::resetStatus()
+{
+	gid->resetStatus();
+}
+
 void tab::viewMain()
 {
 	debug("viewMain()");
 
 	this->tools = new e2se_gui_tools::tools(root, this->log->log);
-	this->main = new mainView(gid, this, cwid, this->log->log);
+	this->main = new mainView(this, cwid, this->log->log);
 	this->view = this->main;
 
 	this->ttv = gui::TAB_VIEW::main;
@@ -185,7 +221,7 @@ void tab::viewTunersets(tab* parent, int ytype)
 	this->dbih = parent->dbih;
 	this->tools = parent->tools;
 	this->main = parent->main;
-	this->view = new tunersetsView(gid, this, cwid, ytype, this->log->log);
+	this->view = new tunersetsView(this, cwid, ytype, this->log->log);
 
 	this->ttv = gui::TAB_VIEW::tunersets;
 	this->state.ty = ytype;
@@ -211,7 +247,7 @@ void tab::viewChannelBook(tab* parent)
 	this->dbih = parent->dbih;
 	this->tools = parent->tools;
 	this->main = parent->main;
-	this->view = new channelBookView(gid, this, cwid, this->log->log);
+	this->view = new channelBookView(this, cwid, this->log->log);
 
 	this->ttv = gui::TAB_VIEW::channelBook;
 
@@ -396,7 +432,6 @@ void tab::newFile()
 {
 	debug("newFile()");
 
-	gid->update(gui::init);
 	reset();
 	load();
 }

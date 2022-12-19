@@ -33,6 +33,16 @@ class tab;
 class channelBookView : public viewAbstract
 {
 	public:
+		enum views {
+			Services,
+			Bouquets,
+			Satellites,
+			Providers,
+			Resolution,
+			Encryption,
+			A_Z
+		};
+
 		enum ITEM_ROW_ROLE {
 			x,
 			chnum,
@@ -45,34 +55,22 @@ class channelBookView : public viewAbstract
 		};
 
 		channelBookView(e2db* dbih, e2se::logger::session* log);
-		channelBookView(gui* gid, tab* twid, QWidget* wid, e2se::logger::session* log);
-		void side();
-		void layout();
+		channelBookView(tab* twid, QWidget* wid, e2se::logger::session* log);
 		void load();
 		void reset();
+		vector<QString> getSelected();
+	protected:
+		void side();
+		void layout();
 		void populate();
 		void sideRowChanged(int index);
 		void stacker(int vv);
-		vector<QString> getSelected();
-		QSettings* sets;
-	protected:
-		enum views {
-			Services,
-			Bouquets,
-			Satellites,
-			Providers,
-			Resolution,
-			Encryption,
-			A_Z
-		};
 
 		QListWidget* lwid;
 		QHBoxLayout* awid;
 		QTabBar* tabv;
 		map<string, vector<pair<int, string>>> data;
 	private:
-		gui* gid;
-		tab* twid;
 		QWidget* cwid;
 		// view selector
 		// 0 tabv | list

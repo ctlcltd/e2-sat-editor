@@ -37,12 +37,11 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-tunersetsView::tunersetsView(gui* gid, tab* twid, QWidget* wid, int ytype, e2se::logger::session* log)
+tunersetsView::tunersetsView(tab* twid, QWidget* wid, int ytype, e2se::logger::session* log)
 {
 	this->log = new logger(log, "tunersetsView");
 	debug("tunersetsView()");
 
-	this->gid = gid;
 	this->twid = twid;
 	this->cwid = wid;
 	this->yx = ytype;
@@ -142,7 +141,7 @@ void tunersetsView::layout()
 	QTreeWidgetItem* list_thead = new QTreeWidgetItem(lhs);
 	list->setHeaderItem(list_thead);
 	list->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
-	if (this->sets->value("application/debug", true).toBool()) {
+	if (sets->value("application/debug", true).toBool()) {
 		list->setColumnWidth(ITEM_ROW_ROLE::debug_trid, 175);
 	}
 	else
@@ -266,6 +265,8 @@ void tunersetsView::load()
 {
 	debug("load()");
 
+	tabUpdateFlags(gui::init);
+
 	string iname = "tns:";
 	switch (yx)
 	{
@@ -292,6 +293,8 @@ void tunersetsView::load()
 
 	list->setDragEnabled(true);
 	list->setAcceptDrops(true);
+
+	updateStatus();
 }
 
 void tunersetsView::reset()
@@ -322,7 +325,7 @@ void tunersetsView::reset()
 
 	this->action.list_newtr->setEnabled(true);
 
-	gid->resetStatus();
+	tabResetStatus();
 }
 
 void tunersetsView::populate()
@@ -395,6 +398,7 @@ void tunersetsView::treeItemChanged()
 	list->setAcceptDrops(false);
 
 	populate();
+	updateStatus(true);
 }
 
 void tunersetsView::listItemDoubleClicked()
@@ -490,7 +494,7 @@ void tunersetsView::addPosition()
 
 	this->state.changed = true;
 
-	updateCounters();
+	updateStatus();
 }
 
 void tunersetsView::editPosition()
@@ -597,7 +601,7 @@ void tunersetsView::addTransponder()
 
 	this->state.changed = true;
 
-	updateCounters();
+	updateStatus();
 }
 
 void tunersetsView::editTransponder()
@@ -672,7 +676,7 @@ void tunersetsView::treeItemDelete()
 
 	this->state.changed = true;
 
-	updateCounters();
+	updateStatus();
 }
 
 void tunersetsView::listItemCut()
@@ -762,13 +766,44 @@ void tunersetsView::putListItems(vector<QString> items)
 	list->setDragEnabled(true);
 	list->setAcceptDrops(true);
 
-	updateConnectors();
-	updateCounters();
+	updateFlags();
+	updateStatus();
 }
 
-void tunersetsView::updateCounters(bool current)
+void tunersetsView::updateStatus(bool current)
 {
-	debug("updateCounters()");
+	debug("updateStatus()");
+
+	gui::STATUS status;
+	status.current = current;
+
+	if (current && ! this->state.curr.empty())
+	{
+		string curr = this->state.curr;
+		if (yx == e2db::YTYPE::sat)
+		{
+			e2db::tunersets_table tns = dbih->tuners[yx].tables[curr];
+			status.position = dbih->get_transponder_position_text(tns);
+		}
+		status.counters[gui::COUNTER::position] = dbih->index[curr].size();
+	}
+	else
+	{
+		string iname = "tns:";
+		switch (yx)
+		{
+			case e2db::YTYPE::sat: iname += 's'; break;
+			case e2db::YTYPE::terrestrial: iname += 't'; break;
+			case e2db::YTYPE::cable: iname += 'c'; break;
+			case e2db::YTYPE::atsc: iname += 'a'; break;
+		}
+		for (auto & x : dbih->index[iname])
+		{
+			status.counters[gui::COUNTER::transponders] += dbih->index[x.second].size();
+		}
+	}
+
+	tabSetStatus(status);
 }
 
 void tunersetsView::showTreeEditContextMenu(QPoint &pos)
@@ -798,55 +833,54 @@ void tunersetsView::showListEditContextMenu(QPoint &pos)
 	list_edit->exec(list->mapToGlobal(pos));
 }
 
-//TODO FIX EXC_BAD_ACCESS
-void tunersetsView::updateConnectors()
+void tunersetsView::updateFlags()
 {
-	debug("updateConnectors()");
+	debug("updateFlags()");
 
 	if (tree->topLevelItemCount())
 	{
 		//TODO connect to QScrollArea Event
 		/*if (tree->verticalScrollBar()->isVisible())
 		{*/
-			gid->update(gui::TabTreeFind, true);
+			tabSetFlag(gui::TabTreeFind, true);
 			this->action.tree_search->setEnabled(true);
 		/*}
 		else
 		{
-			gid->update(gui::TabTreeFind, false);
+			tabSetFlag(gui::TabTreeFind, false);
 			this->action.bouquets_search->setEnabled(false);
 		}*/
 	}
 	else
 	{
-		gid->update(gui::TabTreeFind, false);
+		tabSetFlag(gui::TabTreeFind, false);
 		this->action.tree_search->setDisabled(true);
 	}
 
 	if (list->topLevelItemCount())
 	{
-		gid->update(gui::TabListSelectAll, true);
-		gid->update(gui::TabListFind, true);
+		tabSetFlag(gui::TabListSelectAll, true);
+		tabSetFlag(gui::TabListFind, true);
 		this->action.list_search->setEnabled(true);
 	}
 	else
 	{
-		gid->update(gui::TabListSelectAll, false);
-		gid->update(gui::TabListFind, false);
+		tabSetFlag(gui::TabListSelectAll, false);
+		tabSetFlag(gui::TabListFind, false);
 		this->action.list_search->setDisabled(true);
 	}
 
-	gid->update(gui::TabTreeFindNext, false);
-	gid->update(gui::TabListFindNext, false);
-	gid->update(gui::TabListFindPrev, false);
-	gid->update(gui::TabListFindAll, false);
+	tabSetFlag(gui::TabTreeFindNext, false);
+	tabSetFlag(gui::TabListFindNext, false);
+	tabSetFlag(gui::TabListFindPrev, false);
+	tabSetFlag(gui::TabListFindAll, false);
 
-	gid->update(gui::TunersetsSat, true);
-	gid->update(gui::TunersetsTerrestrial, true);
-	gid->update(gui::TunersetsCable, true);
-	gid->update(gui::TunersetsAtsc, true);
+	tabSetFlag(gui::TunersetsSat, true);
+	tabSetFlag(gui::TunersetsTerrestrial, true);
+	tabSetFlag(gui::TunersetsCable, true);
+	tabSetFlag(gui::TunersetsAtsc, true);
 
-	twid->state.gxe = gid->getActionFlags();
+	tabUpdateFlags();
 }
 
 }

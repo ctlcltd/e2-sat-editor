@@ -143,8 +143,19 @@ class gui : protected e2se::log_factory
 			data,
 			tv,
 			radio,
-			all,
-			current
+			services,
+			bouquet,
+			position,
+			transponders
+		};
+
+		struct STATUS
+		{
+			TAB_VIEW view;
+			string bname;
+			string position;
+			int counters[7];
+			bool current;
 		};
 
 		gui(int argc, char* argv[], e2se::logger::session* log);
@@ -168,7 +179,7 @@ class gui : protected e2se::log_factory
 		string saveFileDialog(string filename);
 		vector<string> importFileDialog();
 		string exportFileDialog(GUI_DPORTS gde, string filename, int& flags);
-		void setStatus(int counters[5]);
+		void setStatus(STATUS status);
 		void resetStatus();
 		void fileOpen();
 		void fileSave();
@@ -181,20 +192,21 @@ class gui : protected e2se::log_factory
 		void windowMinimize();
 		void settings();
 		void about();
-		bool getActionFlag(GUI_CXE connector);
-		void setActionFlag(GUI_CXE connector, bool flag);
-		bitset<256> getActionFlags();
-		void setActionFlags(bitset<256> connectors);
+		bool getFlag(GUI_CXE bit);
+		bool getFlag(int bit);
+		void setFlag(GUI_CXE bit, bool flag);
+		bitset<256> getFlags();
+		void setFlags(bitset<256> bits);
 		//TODO bits sequence bitwise or
-		void setActionFlags(vector<int> connectors, bool flag);
+		void setFlags(vector<int> bits, bool flag);
 		int getTabId(int index);
 		int getCurrentTabId();
 		tab* getCurrentTabHandler();
 		void update();
-		void update(int connector, bool flag);
-		void update(vector<int> connectors, bool flag);
-		void update(vector<int> connectors);
-		void update(int connector);
+		void update(int bit, bool flag);
+		void update(vector<int> bits, bool flag);
+		void update(vector<int> bits);
+		void update(int bit);
 		void launcher();
 		void setDefaultSets();
 		QSettings* sets;

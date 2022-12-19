@@ -190,12 +190,14 @@ struct e2db_abstract
 			// data <field char, vector<value string>>
 			map<char, vector<string>> data;
 		};
+
 		struct service_reference
 		{
 			int ssid;
 			int dvbns;
 			int tsid;
 		};
+
 		struct transponder
 		{
 			string txid;
@@ -227,6 +229,7 @@ struct e2db_abstract
 			string oflgs; // ?
 			int index;
 		};
+
 		struct channel_reference
 		{
 			string chid;
@@ -236,6 +239,7 @@ struct e2db_abstract
 			int anum;
 			int index;
 		};
+
 		struct bouquet
 		{
 			string bname;
@@ -246,6 +250,7 @@ struct e2db_abstract
 			vector<string> userbouquets;
 			int index;
 		};
+
 		struct userbouquet
 		{
 			string bname;
@@ -255,6 +260,7 @@ struct e2db_abstract
 			unordered_map<string, channel_reference> channels;
 			int index;
 		};
+
 		struct tunersets_transponder
 		{
 			string trid;
@@ -284,6 +290,7 @@ struct e2db_abstract
 			int plsn = -1; // ? DVB-S
 			int index;
 		};
+
 		struct tunersets_table
 		{
 			string tnid;
@@ -297,6 +304,7 @@ struct e2db_abstract
 			unordered_map<string, tunersets_transponder> transponders;
 			int index;
 		};
+
 		struct tunersets
 		{
 			int ytype;
@@ -304,6 +312,7 @@ struct e2db_abstract
 			// tables <tnid string, tunersets_table struct>
 			unordered_map<string, tunersets_table> tables;
 		};
+
 		struct lamedb
 		{
 			// transponders <txid string, transponder struct>
@@ -311,12 +320,14 @@ struct e2db_abstract
 			// services <chid string, service struct>
 			unordered_map<string, service> services;
 		};
+
 		struct comment
 		{
 			int type; // 0: inline, 1: multiline
 			int ln; // line
 			string text;
 		};
+
 		lamedb db;
 		// bouquets <bname string, bouquet struct>
 		unordered_map<string, bouquet> bouquets;
@@ -334,9 +345,10 @@ struct e2db_abstract
 		// collisions <chid string, vector<pair<chid string, increment int>>>
 		unordered_map<string, vector<pair<string, int>>> collisions;
 	protected:
+		inline static int LAMEDB_VER = 0;
+
 		// e2db <filename string, full-path string>
 		unordered_map<string, string> e2db;
-		inline static int LAMEDB_VER = 0;
 		void options();
 		virtual void debug(string msg);
 		virtual void debug(string msg, string optk, string optv);

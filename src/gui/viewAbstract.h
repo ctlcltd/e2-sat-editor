@@ -29,11 +29,11 @@ using std::string, std::pair, std::vector;
 #include <QElapsedTimer>
 
 #include "../logger/logger.h"
+#include "gui.h"
 #include "e2db_gui.h"
 
 namespace e2se_gui
 {
-class gui;
 class tab;
 
 class viewAbstract : protected e2se::log_factory
@@ -46,14 +46,17 @@ class viewAbstract : protected e2se::log_factory
 			all
 		};
 
+		struct ats
+		{
+			QAction* list_newtr;
+			QPushButton* tree_search;
+			QPushButton* list_search;
+		} action;
+
 		virtual ~viewAbstract() = default;
 		void setDataSource(e2db* dbih);
-		virtual void layout() {};
-		void searchLayout();
 		virtual void load() {};
 		virtual void reset() {};
-		void treeItemChanged();
-		void sortByColumn(int column);
 		void treeSearchHide();
 		void treeSearchShow();
 		void treeSearchToggle();
@@ -62,6 +65,11 @@ class viewAbstract : protected e2se::log_factory
 		void listSearchHide();
 		void listSearchToggle();
 		void listSearchClose();
+		virtual void listItemCut() {};
+		virtual void listItemCopy(bool cut = false) {};
+		virtual void listItemPaste() {};
+		virtual void listItemDelete() {};
+		virtual void listItemSelectAll() {};
 		void treeFindPerform();
 		void treeFindPerform(const QString& value);
 		void listFindPerform(LIST_FIND flag);
@@ -69,28 +77,18 @@ class viewAbstract : protected e2se::log_factory
 		void listFindHighlightToggle();
 		void listFindClear(bool hidden = true);
 		void listFindReset();
-		virtual void listItemCut() {};
-		virtual void listItemCopy(bool cut = false) {};
-		virtual void listItemPaste() {};
-		virtual void listItemDelete() {};
-		virtual void listItemSelectAll() {};
-		virtual void putListItems(vector<QString> items) {};
-		virtual void showTreeEditContextMenu(QPoint &pos) {};
-		virtual void showListEditContextMenu(QPoint &pos) {};
-		virtual void updateConnectors() {};
-		virtual void updateCounters(bool current = false) {};
+		virtual void updateFlags()
+		{
+			tabUpdateFlags();
+		};
+		virtual void updateStatus(bool current = false)
+		{
+			tabResetStatus();
+		};
 
 		QWidget* widget;
-		QSettings* sets;
 		QTreeWidget* list;
 		QTreeWidget* tree;
-
-		struct ats
-		{
-			QAction* list_newtr;
-			QPushButton* tree_search;
-			QPushButton* list_search;
-		} action;
 	protected:
 		struct search
 		{
@@ -114,6 +112,24 @@ class viewAbstract : protected e2se::log_factory
 			QElapsedTimer timer;
 		};
 
+		virtual void layout() {};
+		void searchLayout();
+		void treeItemChanged();
+		void sortByColumn(int column);
+		virtual void putListItems(vector<QString> items) {};
+		virtual void showTreeEditContextMenu(QPoint &pos) {};
+		virtual void showListEditContextMenu(QPoint &pos) {};
+		void tabSetFlag(gui::GUI_CXE bit, bool flag);
+		void tabSetFlag(gui::GUI_CXE bit);
+		bool tabGetFlag(gui::GUI_CXE bit);
+		void tabUpdateFlags();
+		void tabUpdateFlags(gui::GUI_CXE bit);
+		virtual void tabSetStatus(gui::STATUS status);
+		virtual void tabResetStatus();
+
+		QSettings* sets;
+		tab* twid;
+		e2db* dbih = nullptr;
 		QVBoxLayout* tbox;
 		QVBoxLayout* lbox;
 		QWidget* tree_search;
@@ -121,10 +137,6 @@ class viewAbstract : protected e2se::log_factory
 		search tsr_search;
 		search lsr_search;
 		find lsr_find;
-		e2db* dbih = nullptr;
-	private:
-		gui* gid;
-		tab* twid;
 };
 }
 #endif /* viewAbstract_h */

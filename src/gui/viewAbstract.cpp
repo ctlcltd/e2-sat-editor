@@ -126,6 +126,7 @@ void viewAbstract::searchLayout()
 	lsr_box->addWidget(this->lsr_search.close, 0, 9);
 }
 
+//TODO check
 void viewAbstract::treeItemChanged()
 {
 	debug("treeItemChanged()");
@@ -251,12 +252,11 @@ void viewAbstract::treeFindPerform(const QString& value)
 {
 	tree->keyboardSearch(value);
 
-	//TODO FIX EXC_BAD_ACCESS
-	/*gid->update(gui::TabTreeFind, true);
+	tabSetFlag(gui::TabTreeFind, true);
 	if (tree->currentIndex().isValid())
-		gid->update(gui::TabTreeFindNext, true);
+		tabSetFlag(gui::TabTreeFindNext, true);
 	else
-		gid->update(gui::TabTreeFindNext, false);*/
+		tabSetFlag(gui::TabTreeFindNext, false);
 }
 
 void viewAbstract::listFindPerform(LIST_FIND flag)
@@ -388,17 +388,15 @@ void viewAbstract::listFindPerform(const QString& value, LIST_FIND flag)
 		// int i = list_tree->indexOfTopLevelItem(QTreeWidgetItem* item);
 		this->lsr_find.curr = i;
 
-		//TODO FIX EXC_BAD_ACCESS
-		/*gid->update(gui::TabListFindNext, true);
-		gid->update(gui::TabListFindPrev, true);
-		gid->update(gui::TabListFindAll, true);*/
+		tabSetFlag(gui::TabListFindNext, true);
+		tabSetFlag(gui::TabListFindPrev, true);
+		tabSetFlag(gui::TabListFindAll, true);
 	}
 	else
 	{
-		//TODO FIX EXC_BAD_ACCESS
-		/*gid->update(gui::TabListFindNext, false);
-		gid->update(gui::TabListFindPrev, false);
-		gid->update(gui::TabListFindAll, false);*/
+		tabSetFlag(gui::TabListFindNext, false);
+		tabSetFlag(gui::TabListFindPrev, false);
+		tabSetFlag(gui::TabListFindAll, false);
 	}
 
 	this->lsr_find.flag = flag;
@@ -439,6 +437,50 @@ void viewAbstract::listFindReset()
 	this->lsr_find.input = "";
 	this->lsr_find.match.clear();
 	this->lsr_find.timer.invalidate();
+}
+
+void viewAbstract::tabSetFlag(gui::GUI_CXE bit, bool flag)
+{
+	if (twid != nullptr)
+		twid->setFlag(bit, flag);
+}
+
+void viewAbstract::tabSetFlag(gui::GUI_CXE bit)
+{
+	if (twid != nullptr)
+		twid->setFlag(bit);
+}
+
+bool viewAbstract::tabGetFlag(gui::GUI_CXE bit)
+{
+	if (twid != nullptr)
+		return twid->getFlag(bit);
+	else
+		return true;
+}
+
+void viewAbstract::tabUpdateFlags()
+{
+	if (twid != nullptr)
+		twid->storeFlags();
+}
+
+void viewAbstract::tabUpdateFlags(gui::GUI_CXE bit)
+{
+	tabSetFlag(bit);
+	tabUpdateFlags();
+}
+
+void viewAbstract::tabSetStatus(gui::STATUS status)
+{
+	if (twid != nullptr)
+		twid->setStatus(status);
+}
+
+void viewAbstract::tabResetStatus()
+{
+	if (twid != nullptr)
+		twid->resetStatus();
 }
 
 }

@@ -678,22 +678,58 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& flags)
 	return path;
 }
 
-void gui::setStatus(int counters[5])
+void gui::setStatus(STATUS status)
 {
-	QString qstr;
-	if (counters[COUNTER::current] != -1)
+	QString separator = "   ";
+	QString text;
+
+	if (status.view == TAB_VIEW::main)
 	{
-		qstr = "Channels: " + QString::fromStdString(to_string(counters[COUNTER::current]));
-		sbwidl->setText(qstr);
+		if (status.current)
+		{
+			if (status.counters[COUNTER::bouquet])
+			{
+				text.append("Channels: " + QString::fromStdString(to_string(status.counters[COUNTER::bouquet])));
+			}
+			if (! status.bname.empty())
+			{
+				text.append(separator);
+				text.append("Bouquet: " + QString::fromStdString(status.bname));
+			}
+			sbwidl->setText(text);
+		}
+		else
+		{
+			text.append("TV: " + QString::fromStdString(to_string(status.counters[COUNTER::tv])));
+			text.append(separator);
+			text.append("Radio: " + QString::fromStdString(to_string(status.counters[COUNTER::radio])));
+			text.append(separator);
+			text.append("Data: " + QString::fromStdString(to_string(status.counters[COUNTER::data])));
+			text.append(separator);
+			text.append("Total: " + QString::fromStdString(to_string(status.counters[COUNTER::services])));
+			sbwidr->setText(text);
+		}
 	}
-	else
+	else if (status.view == TAB_VIEW::tunersets)
 	{
-		qstr.append("TV: " + QString::fromStdString(to_string(counters[COUNTER::tv])) + "   ");
-		qstr.append("Radio: " + QString::fromStdString(to_string(counters[COUNTER::radio])) + "   ");
-		qstr.append("Data: " + QString::fromStdString(to_string(counters[COUNTER::data])) + "   ");
-		qstr.append("   ");
-		qstr.append("Total: " + QString::fromStdString(to_string(counters[COUNTER::all])) + "   ");
-		sbwidr->setText(qstr);
+		if (status.current)
+		{
+			if (status.counters[COUNTER::position])
+			{
+				text.append("Transponders: " + QString::fromStdString(to_string(status.counters[COUNTER::position])));
+			}
+			if (! status.position.empty())
+			{
+				text.append(separator);
+				text.append("Position: " + QString::fromStdString(status.position));
+			}
+			sbwidl->setText(text);
+		}
+		else
+		{
+			text.append("Total: " + QString::fromStdString(to_string(status.counters[COUNTER::transponders])));
+			sbwidr->setText(text);
+		}
 	}
 }
 
@@ -796,30 +832,35 @@ void gui::about()
 	new e2se_gui_dialog::about(this->log->log);
 }
 
-bool gui::getActionFlag(GUI_CXE connector)
+bool gui::getFlag(GUI_CXE bit)
 {
-	return this->state.xe[connector];
+	return this->state.xe[bit];
 }
 
-void gui::setActionFlag(GUI_CXE connector, bool flag)
+bool gui::getFlag(int bit)
 {
-	update(connector, flag);
+	return this->state.xe[bit];
 }
 
-bitset<256> gui::getActionFlags()
+void gui::setFlag(GUI_CXE bit, bool flag)
+{
+	update(bit, flag);
+}
+
+bitset<256> gui::getFlags()
 {
 	return this->state.xe;
 }
 
-void gui::setActionFlags(bitset<256> connectors)
+void gui::setFlags(bitset<256> bits)
 {
-	this->state.xe = connectors;
+	this->state.xe = bits;
 	update();
 }
 
-void gui::setActionFlags(vector<int> connectors, bool flag)
+void gui::setFlags(vector<int> bits, bool flag)
 {
-	update(connectors, flag);
+	update(bits, flag);
 }
 
 int gui::getTabId(int index)
@@ -868,58 +909,58 @@ void gui::update()
 	// debug("update()", "flags", getActionFlags().to_ullong());
 }
 
-void gui::update(int connector, bool flag)
+void gui::update(int bit, bool flag)
 {
-	 // debug("update()", "connector 1", connector);
+	 // debug("update()", "overload", bit);
 
 	typedef size_t position_t;
-	QAction* action = gmenu.count(connector) ? gmenu[connector] : nullptr;
+	QAction* action = gmenu.count(bit) ? gmenu[bit] : nullptr;
 
 	if (action != nullptr)
 		action->setEnabled(flag);
 
-	this->state.xe.set(position_t (connector), flag);
+	this->state.xe.set(position_t (bit), flag);
 
 	this->state.ex = this->state.xe;
 }
 
-void gui::update(vector<int> connectors, bool flag)
+void gui::update(vector<int> bits, bool flag)
 {
-	// debug("update()", "connectors", 1);
+	// debug("update()", "overload", 1);
 	
 	typedef size_t position_t;
 
-	for (int & connector : connectors)
-		this->state.xe.set(position_t(connector), flag);
+	for (int & bit : bits)
+		this->state.xe.set(position_t (bit), flag);
 
 	update();
 }
 
-void gui::update(vector<int> connectors)
+void gui::update(vector<int> bits)
 {
-	// debug("update()", "connectors", 0);
+	// debug("update()", "overload", 0);
 	
 	typedef size_t position_t;
 
-	for (int & connector : connectors)
-		this->state.xe.set(position_t(connector), true);
+	for (int & bit : bits)
+		this->state.xe.set(position_t (bit), true);
 
 	update();
 }
 
-void gui::update(int connector)
+void gui::update(int bit)
 {
-	// debug("update()", "connector", 0);
+	// debug("update()", "overload", 0);
 
 	this->state.xe.reset();
 
-	if (connector == 0)
+	if (bit == 0)
 		update(GUI_CXE__init);
-	else if (connector == -1)
+	else if (bit == -1)
 		update(GUI_CXE__idle);
 
 	// note: is out of range
-	// debug("update()", "flags", getActionFlags().to_ullong());
+	// debug("update()", "flags", getFlags().to_ullong());
 }
 
 void gui::setDefaultSets()

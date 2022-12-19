@@ -70,13 +70,55 @@ class mainView : public viewAbstract
 			chsys
 		};
 
-		mainView(gui* gid, tab* twid, QWidget* wid, e2se::logger::session* log);
-		~mainView() {};
+		struct sts
+		{
+			// drag-and-drop (default sort 0|asc)
+			bool dnd;
+			// post update index
+			bool changed;
+			// post visual reindex list_tree
+			bool reindex;
+			// refbox shown
+			bool refbox;
+			// side tree focused { services_tree = 0, bouquets_tree = 1 }
+			int tc;
+			// tree current top level index
+			int ti;
+			// tree current bname
+			string curr;
+			// list_tree sort
+			pair<int, Qt::SortOrder> sort;
+		} state;
+
+		struct ats
+		{
+			QAction* bouquets_newbs;
+			QAction* list_addch;
+			QAction* list_addmk;
+			QAction* list_newch;
+			QAction* tools_close_edit;
+			QPushButton* tree_search;
+			QPushButton* list_search;
+			QPushButton* list_ref;
+			QPushButton* list_dnd;
+		} action;
+
+		mainView(tab* twid, QWidget* wid, e2se::logger::session* log);
+		void load();
+		void reset();
+		void bouquetItemDelete();
+		void listReferenceToggle();
+		void listItemCut();
+		void listItemCopy(bool cut = false);
+		void listItemPaste();
+		void listItemDelete();
+		void listItemSelectAll();
+
+		QTreeWidget* services_tree;
+	protected:
 		void layout();
 		void searchLayout();
 		void refboxLayout();
-		void load();
-		void reset();
 		void populate(QTreeWidget* side_tree);
 		void treeSwitched(QTreeWidget* tree, QTreeWidgetItem* item);
 		void servicesItemChanged(QTreeWidgetItem* current);
@@ -97,56 +139,13 @@ class mainView : public viewAbstract
 		void editService();
 		void addMarker();
 		void editMarker();
-		void bouquetItemDelete();
-		void listReferenceToggle();
-		void listItemCut();
-		void listItemCopy(bool cut = false);
-		void listItemPaste();
-		void listItemDelete();
-		void listItemSelectAll();
 		void putListItems(vector<QString> items);
-		void updateListIndex();
-		void updateTreeIndex();
-		void updateConnectors();
-		void updateCounters(bool current = false);
+		void updateFlags();
+		void updateStatus(bool current = false);
 		void updateRefBox();
 		void showTreeEditContextMenu(QPoint &pos);
 		void showListEditContextMenu(QPoint &pos);
-		QTreeWidget* services_tree;
 
-		struct sts
-		{
-		   // drag-and-drop (default sort 0|asc)
-		   bool dnd;
-		   // post update index
-		   bool changed;
-		   // post visual reindex list_tree
-		   bool reindex;
-		   // refbox shown
-		   bool refbox;
-		   // side tree focused { services_tree = 0, bouquets_tree = 1 }
-		   int tc;
-		   // tree current top level index
-		   int ti;
-		   // tree current bname
-		   string curr;
-		   // list_tree sort
-		   pair<int, Qt::SortOrder> sort;
-		} state;
-
-		struct ats
-		{
-			QAction* bouquets_newbs;
-			QAction* list_addch;
-			QAction* list_addmk;
-			QAction* list_newch;
-			QAction* tools_close_edit;
-			QPushButton* tree_search;
-			QPushButton* list_search;
-			QPushButton* list_ref;
-			QPushButton* list_dnd;
-		} action;
-	protected:
 		map<int, QLabel*> ref_fields;
 		unordered_map<string, QList<QTreeWidgetItem*>> cache;
 		e2se_gui_tools::tools* tools;
@@ -157,11 +156,9 @@ class mainView : public viewAbstract
 		QVBoxLayout* tbox;
 		QVBoxLayout* lbox;
 		QWidget* list_reference;
-	private:
-		gui* gid;
-		tab* twid;
-		QWidget* cwid;
 		string filename;
+	private:
+		QWidget* cwid;
 };
 }
 #endif /* mainView_h */

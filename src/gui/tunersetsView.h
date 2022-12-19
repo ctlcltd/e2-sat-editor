@@ -89,34 +89,6 @@ class tunersetsView : public viewAbstract
 			a_sys = ITEM_ROW_ROLE::row5
 		};
 
-		tunersetsView(gui* gid, tab* twid, QWidget* wid, int ytype, e2se::logger::session* log);
-		~tunersetsView() {};
-		void layout();
-		void searchLayout();
-		void load();
-		void reset();
-		void populate();
-		void treeItemChanged();
-		void listItemDoubleClicked();
-		void addSettings();
-		void editSettings();
-		void addPosition();
-		void editPosition();
-		void addTransponder();
-		void editTransponder();
-		void treeItemDelete();
-		void listItemCut();
-		void listItemCopy(bool cut = false);
-		void listItemPaste();
-		void listItemDelete();
-		void listItemSelectAll();
-		void putListItems(vector<QString> items);
-		void showTreeEditContextMenu(QPoint &pos);
-		void showListEditContextMenu(QPoint &pos);
-		void updateConnectors();
-		void updateCounters(bool current = false);
-		QSettings* sets;
-
 		struct sts
 		{
 			// post update index
@@ -137,12 +109,37 @@ class tunersetsView : public viewAbstract
 			QPushButton* tree_search;
 			QPushButton* list_search;
 		} action;
+
+		tunersetsView(tab* twid, QWidget* wid, int ytype, e2se::logger::session* log);
+		void load();
+		void reset();
+		void treeItemDelete();
+		void listItemCut();
+		void listItemCopy(bool cut = false);
+		void listItemPaste();
+		void listItemDelete();
+		void listItemSelectAll();
 	protected:
+		void layout();
+		void searchLayout();
+		void populate();
+		void treeItemChanged();
+		void listItemDoubleClicked();
+		void addSettings();
+		void editSettings();
+		void addPosition();
+		void editPosition();
+		void addTransponder();
+		void editTransponder();
+		void putListItems(vector<QString> items);
+		void showTreeEditContextMenu(QPoint &pos);
+		void showListEditContextMenu(QPoint &pos);
+		void updateFlags();
+		void updateStatus(bool current = false);
+
 		QVBoxLayout* tbox;
 		QVBoxLayout* lbox;
 	private:
-		gui* gid;
-		tab* twid;
 		QWidget* cwid;
 		// tunersets type
 		int yx;

@@ -26,6 +26,7 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map, std::bi
 #include <QList>
 
 #include "../logger/logger.h"
+#include "gui.h"
 #include "e2db_gui.h"
 #include "ftpcom_gui.h"
 #include "mainView.h"
@@ -34,8 +35,6 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map, std::bi
 
 namespace e2se_gui
 {
-class gui;
-
 class tab : protected e2se::log_factory
 {
 	public:
@@ -54,6 +53,13 @@ class tab : protected e2se::log_factory
 		string getFilename();
 		void tabSwitched();
 		void tabChangeName(string filename = "");
+		void setFlag(gui::GUI_CXE bit, bool flag);
+		void setFlag(gui::GUI_CXE bit);
+		bool getFlag(gui::GUI_CXE bit);
+		void storeFlags();
+		void retrieveFlags();
+		void setStatus(gui::STATUS status);
+		void resetStatus();
 		void viewMain();
 		void viewTunersets(tab* parent, int ytype);
 		void viewChannelBook(tab* parent);
@@ -109,7 +115,7 @@ class tab : protected e2se::log_factory
 		string ttname;
 		ftpcom* ftph = nullptr;
 		// tab view
-		int ttv; // relation with gui::TAB_VIEW
+		gui::TAB_VIEW ttv;
 };
 }
 #endif /* tab_h */
