@@ -22,7 +22,7 @@ using std::vector;
 #include <QToolBar>
 
 #include "../logger/logger.h"
-#include "e2db_gui.h"
+#include "dataHandler.h"
 
 namespace e2se_gui
 {
@@ -53,6 +53,7 @@ class dialAbstract : protected e2se::log_factory
 		QMargins frameMargins = QMargins (12, 12, 12, 12);
 		bool frameFixed = true;
 		vector<QWidget*> fields;
+		dataHandler* data = nullptr;
 		e2db* dbih = nullptr;
 };
 }

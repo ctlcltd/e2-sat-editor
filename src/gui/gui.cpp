@@ -270,8 +270,8 @@ void gui::tabViewSwitch(int v, int arg)
 
 int gui::newTab(string filename)
 {
-	this->state.tt++;
-	int ttid = this->state.tt;
+	this->tt++;
+	int ttid = this->tt;
 	
 	debug("newTab()", "ttid", ttid);
 
@@ -325,8 +325,8 @@ int gui::openTab(TAB_VIEW view)
 
 int gui::openTab(TAB_VIEW view, int arg)
 {
-	this->state.tt++;
-	int ttid = this->state.tt;
+	this->tt++;
+	int ttid = this->tt;
 	
 	debug("openTab()", "ttid", ttid);
 
@@ -443,14 +443,14 @@ void gui::windowChanged()
 	if (mroot->activeWindow())
 	{
 		debug("windowChanged()", "mwind", "busy");
-		this->state.xe = this->state.ex;
+		this->gxe = this->gex;
 		update();
 	}
 	// main window idle
 	else
 	{
 		debug("windowChanged()", "mwind", "idle");
-		this->state.ex = this->state.xe;
+		this->gex = this->gxe;
 		update(GUI_CXE::idle);
 	}
 }
@@ -834,12 +834,12 @@ void gui::about()
 
 bool gui::getFlag(GUI_CXE bit)
 {
-	return this->state.xe[bit];
+	return this->gxe[bit];
 }
 
 bool gui::getFlag(int bit)
 {
-	return this->state.xe[bit];
+	return this->gxe[bit];
 }
 
 void gui::setFlag(GUI_CXE bit, bool flag)
@@ -849,12 +849,12 @@ void gui::setFlag(GUI_CXE bit, bool flag)
 
 bitset<256> gui::getFlags()
 {
-	return this->state.xe;
+	return this->gxe;
 }
 
 void gui::setFlags(bitset<256> bits)
 {
-	this->state.xe = bits;
+	this->gxe = bits;
 	update();
 }
 
@@ -887,7 +887,7 @@ void gui::launcher()
 {
 	debug("launcher()");
 
-	this->state.tt = 0;
+	this->tt = 0;
 	update(GUI_CXE::init);
 	newTab();
 	tabChanged(0);
@@ -899,7 +899,7 @@ void gui::update()
 
 	for (auto & x : gmenu)
 	{
-		if (this->state.xe[x.first])
+		if (this->gxe[x.first])
 			x.second->setEnabled(true);
 		else
 			x.second->setDisabled(true);
@@ -919,9 +919,9 @@ void gui::update(int bit, bool flag)
 	if (action != nullptr)
 		action->setEnabled(flag);
 
-	this->state.xe.set(position_t (bit), flag);
+	this->gxe.set(position_t (bit), flag);
 
-	this->state.ex = this->state.xe;
+	this->gex = this->gxe;
 }
 
 void gui::update(vector<int> bits, bool flag)
@@ -931,7 +931,7 @@ void gui::update(vector<int> bits, bool flag)
 	typedef size_t position_t;
 
 	for (int & bit : bits)
-		this->state.xe.set(position_t (bit), flag);
+		this->gxe.set(position_t (bit), flag);
 
 	update();
 }
@@ -943,7 +943,7 @@ void gui::update(vector<int> bits)
 	typedef size_t position_t;
 
 	for (int & bit : bits)
-		this->state.xe.set(position_t (bit), true);
+		this->gxe.set(position_t (bit), true);
 
 	update();
 }
@@ -952,7 +952,7 @@ void gui::update(int bit)
 {
 	// debug("update()", "overload", 0);
 
-	this->state.xe.reset();
+	this->gxe.reset();
 
 	if (bit == 0)
 		update(GUI_CXE__init);

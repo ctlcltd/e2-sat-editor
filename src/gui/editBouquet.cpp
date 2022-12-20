@@ -21,17 +21,19 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-editBouquet::editBouquet(e2db* dbih, int ti, e2se::logger::session* log)
+editBouquet::editBouquet(dataHandler* data, int ti, e2se::logger::session* log)
 {
 	this->log = new logger(log, "editBouquet");
 	debug("editBouquet()");
 
+	this->data = data;
 	this->state.ti = ti;
-	this->dbih = dbih;
 }
 
 void editBouquet::display(QWidget* cwid)
 {
+	this->dbih = this->data->dbih;
+
 	layout();
 
 	if (this->state.edit)

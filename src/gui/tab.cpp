@@ -34,12 +34,13 @@
 #include "tab.h"
 #include "theme.h"
 #include "gui.h"
+#include "dataHandler.h"
+#include "ftpcom_gui.h"
 #include "tunersetsView.h"
 #include "channelBookView.h"
 #include "editBouquet.h"
 #include "editService.h"
 #include "editMarker.h"
-#include "ftpcom_gui.h"
 #include "printable.h"
 
 using std::to_string, std::sort;
@@ -60,7 +61,10 @@ tab::tab(gui* gid, QWidget* wid, e2se::logger::session* log)
 
 tab::~tab()
 {
-	// delete this->dbih;
+	if (! this->child)
+	{
+		delete this->data;
+	}
 }
 
 bool tab::isChild()
@@ -171,12 +175,12 @@ bool tab::getFlag(gui::GUI_CXE bit)
 
 void tab::storeFlags()
 {
-	this->state.gxe = gid->getFlags();
+	this->gxe = gid->getFlags();
 }
 
 void tab::retrieveFlags()
 {
-	gid->setFlags(this->state.gxe);
+	gid->setFlags(this->gxe);
 }
 
 void tab::setStatus(gui::STATUS status)
@@ -194,8 +198,9 @@ void tab::viewMain()
 {
 	debug("viewMain()");
 
+	this->data = new dataHandler(this->log->log);
 	this->tools = new e2se_gui_tools::tools(root, this->log->log);
-	this->main = new mainView(this, cwid, this->log->log);
+	this->main = new mainView(this, cwid, data, this->log->log);
 	this->view = this->main;
 
 	this->ttv = gui::TAB_VIEW::main;
@@ -215,16 +220,14 @@ void tab::viewTunersets(tab* parent, int ytype)
 
 	this->parent = parent;
 	this->child = true;
-	this->state.nwwr = parent->state.nwwr;
-	this->state.ovwr = parent->state.ovwr;
 
-	this->dbih = parent->dbih;
+	this->data = parent->data;
 	this->tools = parent->tools;
 	this->main = parent->main;
-	this->view = new tunersetsView(this, cwid, ytype, this->log->log);
+	this->view = new tunersetsView(this, cwid, data, ytype, this->log->log);
 
 	this->ttv = gui::TAB_VIEW::tunersets;
-	this->state.ty = ytype;
+	this->ty = ytype;
 
 	layout();
 	
@@ -241,13 +244,11 @@ void tab::viewChannelBook(tab* parent)
 
 	this->parent = parent;
 	this->child = true;
-	this->state.nwwr = parent->state.nwwr;
-	this->state.ovwr = parent->state.ovwr;
 
-	this->dbih = parent->dbih;
+	this->data = parent->data;
 	this->tools = parent->tools;
 	this->main = parent->main;
-	this->view = new channelBookView(this, cwid, this->log->log);
+	this->view = new channelBookView(this, cwid, data, this->log->log);
 
 	this->ttv = gui::TAB_VIEW::channelBook;
 
@@ -262,83 +263,22 @@ void tab::load()
 {
 	debug("load()");
 
-	if (this->child)
-	{
-		if (this->state.nwwr)
-			parent->load();
+	view->load();
 
-		view->setDataSource(this->dbih);
-		view->load();
-	}
-	else
-	{
-		main->setDataSource(this->dbih);
-		main->load();
-
-		for (auto & child : childs)
-		{
-			child->view->setDataSource(this->dbih);
-			child->view->load();
-		}
-	}
+	//TODO FIX tab::removeChild
+	for (auto & child : childs)
+		child->view->load();
 }
 
 void tab::reset()
 {
 	debug("reset()");
 
-	if (this->child)
-	{
-		parent->reset();
-	}
-	else
-	{
-		this->state.nwwr = true;
-		this->state.ovwr = false;
+	view->reset();
 
-		if (this->dbih != nullptr)
-			delete this->dbih;
-		// if (this->tools != nullptr)
-		// 	this->tools->destroy();
-
-		this->dbih = new e2db(this->log->log);
-
-		main->setDataSource(this->dbih);
-		main->reset();
-
-		for (auto & child : childs)
-		{
-			child->reset(this->dbih);
-			child->view->setDataSource(this->dbih);
-			child->view->reset();
-		}
-	}
-}
-
-void tab::reset(e2db* dbih)
-{
-	debug("reset()");
-
-	this->state.nwwr = true;
-	this->state.ovwr = false;
-	this->dbih = dbih;
-
-	if (this->child)
-	{
-		view->setDataSource(this->dbih);
-		view->reset();
-	}
-	else
-	{
-		main->setDataSource(this->dbih);
-		main->reset();
-
-		for (auto & child : childs)
-		{
-			child->view->setDataSource(this->dbih);
-			child->view->reset();
-		}
-	}
+	//TODO FIX tab::removeChild
+	for (auto & child : childs)
+		child->view->reset();
 }
 
 void tab::layout()
@@ -406,11 +346,11 @@ void tab::layout()
 		bottom_toolbar->addAction("§ Reset", [=]() { this->newFile(); tabChangeName(); });
 
 		//TODO
-		if (this->child)
+		/*if (this->child)
 		{
 			for (auto & action : bottom_toolbar->actions())
 				action->setDisabled(true);
-		}
+		}*/
 	}
 	bottom_toolbar->addWidget(bottom_spacer);
 
@@ -433,7 +373,19 @@ void tab::newFile()
 	debug("newFile()");
 
 	reset();
+
+	this->data->newFile();
+
+	for (auto & child : childs)
+		child->reset();
+
 	load();
+
+	if (this->child)
+	{
+		parent->reset();
+		parent->load();
+	}
 }
 
 void tab::openFile()
@@ -456,7 +408,7 @@ bool tab::readFile(string filename)
 	reset();
 
 	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	bool rr = dbih->prepare(filename);
+	bool rr = this->data->readFile(filename);
 	QGuiApplication::restoreOverrideCursor();
 
 	if (rr)
@@ -470,15 +422,13 @@ bool tab::readFile(string filename)
 		return false;
 	}
 
+	load();
+
 	if (this->child)
 	{
-		parent->state.nwwr = false;
-		parent->state.filename = filename;
+		parent->reset();
+		parent->load();
 	}
-	this->state.nwwr = false;
-	this->state.filename = filename;
-
-	load();
 
 	return true;
 }
@@ -489,28 +439,28 @@ void tab::saveFile(bool saveas)
 
 	QMessageBox dial = QMessageBox();
 	string path;
-	bool overwrite = ! saveas && (! this->state.nwwr || this->state.ovwr);
+	bool overwrite = ! saveas && (! this->data->newfile || this->data->overwrite);
 
 	if (overwrite)
 	{
 		this->updateChannelsIndex();
 		this->updateBouquetsIndex();
-		path = this->state.filename;
+		path = this->data->filename;
 		dial.setText("Files will be overwritten.");
 		dial.exec();
 	}
 	else
 	{
-		path = gid->saveFileDialog(this->state.filename);
+		path = gid->saveFileDialog(this->data->filename);
 	}
 
 	if (! path.empty())
 	{
 		debug("saveFile()", "overwrite", overwrite);
-		debug("saveFile()", "filename", this->state.filename);
+		debug("saveFile()", "filename", this->data->filename);
 
 		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		bool wr = dbih->write(path, overwrite);
+		bool wr = this->data->writeFile(path, overwrite);
 		QGuiApplication::restoreOverrideCursor();
 		
 		if (wr) {
@@ -555,7 +505,7 @@ void tab::exportFile()
 	{
 		gde = gui::GUI_DPORTS::Tunersets;
 		flags = e2db::FPORTS::singleTunersets;
-		switch (this->state.ty)
+		switch (this->ty)
 		{
 			case e2db::YTYPE::sat:
 				filename = "satellites.xml";
@@ -627,7 +577,7 @@ void tab::exportFile()
 		return;
 	}
 
-	bool overwrite = ! this->state.nwwr || this->state.ovwr;
+	bool overwrite = ! this->data->newfile || this->data->overwrite;
 
 	if (overwrite)
 	{
@@ -715,7 +665,7 @@ void tab::exportFile(QTreeWidgetItem* item)
 		return;
 	}
 
-	bool overwrite = ! this->state.nwwr || this->state.ovwr;
+	bool overwrite = ! this->data->newfile || this->data->overwrite;
 
 	if (overwrite)
 	{
@@ -752,7 +702,7 @@ void tab::printFile(bool all)
 	// tunersets
 	else if (this->ttv == gui::TAB_VIEW::tunersets)
 	{
-		printer->document_tunersets(this->state.ty);
+		printer->document_tunersets(this->ty);
 	}
 	// services
 	else if (main->state.tc == 0)

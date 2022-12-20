@@ -40,13 +40,6 @@
 namespace e2se_gui
 {
 
-void viewAbstract::setDataSource(e2db* dbih)
-{
-	debug("setDataSource()");
-
-	this->dbih = dbih;
-}
-
 void viewAbstract::searchLayout()
 {
 	debug("searchLayout()");

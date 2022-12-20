@@ -27,7 +27,7 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map, std::bi
 
 #include "../logger/logger.h"
 #include "gui.h"
-#include "e2db_gui.h"
+#include "dataHandler.h"
 #include "ftpcom_gui.h"
 #include "mainView.h"
 #include "viewAbstract.h"
@@ -65,7 +65,6 @@ class tab : protected e2se::log_factory
 		void viewChannelBook(tab* parent);
 		void load();
 		void reset();
-		void reset(e2db* dbih);
 		void layout();
 		void newFile();
 		void openFile();
@@ -84,38 +83,29 @@ class tab : protected e2se::log_factory
 		void ftpUpload();
 		void ftpDownload();
 		void loadSeeds();
-		QGridLayout* root;
 		QWidget* widget;
+		dataHandler* data = nullptr;
+		e2se_gui_tools::tools* tools = nullptr;
+	protected:
+		QGridLayout* root;
+		// tab view
+		gui::TAB_VIEW ttv;
+		// stored gui bit flags
+		bitset<256> gxe;
+		// tools tunersets current type
+		int ty;
 		mainView* main;
 		viewAbstract* view;
-		e2db* dbih = nullptr;
-		e2se_gui_tools::tools* tools = nullptr;
-
-		struct sts
-		{
-			// new file
-			bool nwwr;
-			// overwrite file
-			bool ovwr;
-			// file name
-			string filename;
-			// stored gui connector flags
-			bitset<256> gxe;
-			// tools tunersets current type
-			int ty;
-		} state;
-	protected:
-		bool child = false;
-		vector<tab*> childs;
 	private:
 		gui* gid;
 		QWidget* cwid;
 		tab* parent = nullptr;
+		bool child = false;
+		vector<tab*> childs;
 		int ttid = -1;
 		string ttname;
+		e2db* dbih = nullptr;
 		ftpcom* ftph = nullptr;
-		// tab view
-		gui::TAB_VIEW ttv;
 };
 }
 #endif /* tab_h */

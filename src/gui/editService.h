@@ -29,7 +29,7 @@ class editService : public dialAbstract
 	Q_DECLARE_TR_FUNCTIONS(editService)
 
 	public:
-		editService(e2db* dbih, e2se::logger::session* log);
+		editService(dataHandler* data, e2se::logger::session* log);
 		void display(QWidget* cwid);
 		void layout();
 		void serviceLayout();

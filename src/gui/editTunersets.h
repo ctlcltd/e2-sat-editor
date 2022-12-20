@@ -26,7 +26,7 @@ class editTunersets : public dialAbstract
 	Q_DECLARE_TR_FUNCTIONS(editTunersets)
 
 	public:
-		editTunersets(e2db* dbih, int ty, e2se::logger::session* log);
+		editTunersets(dataHandler* data, int ty, e2se::logger::session* log);
 		void display(QWidget* cwid);
 		void layout();
 		void store();

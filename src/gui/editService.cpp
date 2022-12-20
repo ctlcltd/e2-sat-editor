@@ -30,16 +30,18 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-editService::editService(e2db* dbih, e2se::logger::session* log)
+editService::editService(dataHandler* data, e2se::logger::session* log)
 {
 	this->log = new logger(log, "editService");
 	debug("editService()");
-	
-	this->dbih = dbih;
+
+	this->data = data;
 }
 
 void editService::display(QWidget* cwid)
 {
+	this->dbih = this->data->dbih;
+
 	layout();
 
 	if (this->state.edit)

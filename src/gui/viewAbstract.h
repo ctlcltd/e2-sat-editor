@@ -30,7 +30,8 @@ using std::string, std::pair, std::vector;
 
 #include "../logger/logger.h"
 #include "gui.h"
-#include "e2db_gui.h"
+#include "dataHandler.h"
+#include "tools.h"
 
 namespace e2se_gui
 {
@@ -54,7 +55,6 @@ class viewAbstract : protected e2se::log_factory
 		} action;
 
 		virtual ~viewAbstract() = default;
-		void setDataSource(e2db* dbih);
 		virtual void load() {};
 		virtual void reset() {};
 		void treeSearchHide();
@@ -129,6 +129,7 @@ class viewAbstract : protected e2se::log_factory
 
 		QSettings* sets;
 		tab* twid;
+		dataHandler* data = nullptr;
 		e2db* dbih = nullptr;
 		QVBoxLayout* tbox;
 		QVBoxLayout* lbox;

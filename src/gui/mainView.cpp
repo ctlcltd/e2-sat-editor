@@ -51,13 +51,14 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-mainView::mainView(tab* twid, QWidget* wid, e2se::logger::session* log)
+mainView::mainView(tab* twid, QWidget* wid, dataHandler* data, e2se::logger::session* log)
 {
 	this->log = new logger(log, "mainView");
 	debug("mainView()");
 
 	this->twid = twid;
 	this->cwid = wid;
+	this->data = data;
 	this->sets = new QSettings;
 	this->widget = new QWidget;
 
@@ -372,6 +373,8 @@ void mainView::load()
 
 	tabUpdateFlags(gui::init);
 
+	this->dbih = this->data->dbih;
+
 	unordered_map<string, QTreeWidgetItem*> bgroups;
 
 	for (auto & bsi : dbih->index["bss"])
@@ -459,6 +462,8 @@ void mainView::reset()
 	this->action.list_dnd->setDisabled(true);
 
 	tabResetStatus();
+
+	this->dbih = nullptr;
 }
 
 void mainView::populate(QTreeWidget* side_tree)
@@ -915,7 +920,7 @@ void mainView::addUserbouquet()
 	debug("addUserbouquet()");
 
 	string bname;
-	e2se_gui::editBouquet* add = new e2se_gui::editBouquet(dbih, this->state.ti, this->log->log);
+	e2se_gui::editBouquet* add = new e2se_gui::editBouquet(this->data, this->state.ti, this->log->log);
 	add->display(cwid);
 	bname = add->getAddId(); // returned after dial.exec()
 	add->destroy();
@@ -977,7 +982,7 @@ void mainView::editUserbouquet()
 	QString qbname = tdata["id"].toString();
 	string bname = qbname.toStdString();
 
-	e2se_gui::editBouquet* edit = new e2se_gui::editBouquet(dbih, this->state.ti, this->log->log);
+	e2se_gui::editBouquet* edit = new e2se_gui::editBouquet(this->data, this->state.ti, this->log->log);
 	edit->setEditId(bname);
 	edit->display(cwid);
 	edit->destroy();
@@ -1003,7 +1008,7 @@ void mainView::addChannel()
 {
 	debug("addChannel()");
 
-	e2se_gui::dialChannelBook* book = new e2se_gui::dialChannelBook(dbih, this->log->log);
+	e2se_gui::dialChannelBook* book = new e2se_gui::dialChannelBook(this->data, this->log->log);
 	book->setEventCallback([=](vector<QString> items) { this->putListItems(items); });
 	book->display(cwid);
 }
@@ -1014,7 +1019,7 @@ void mainView::addService()
 
 	string chid;
 	string curr = this->state.curr;
-	e2se_gui::editService* add = new e2se_gui::editService(dbih, this->log->log);
+	e2se_gui::editService* add = new e2se_gui::editService(this->data, this->log->log);
 	add->display(cwid);
 	chid = add->getAddId(); // returned after dial.exec()
 	add->destroy();
@@ -1102,7 +1107,7 @@ void mainView::editService()
 	else
 		return error("editService()", "chid", chid);
 
-	e2se_gui::editService* edit = new e2se_gui::editService(dbih, this->log->log);
+	e2se_gui::editService* edit = new e2se_gui::editService(this->data, this->log->log);
 	edit->setEditId(chid);
 	edit->display(cwid);
 	nw_chid = edit->getEditId(); // returned after dial.exec()
@@ -1129,7 +1134,7 @@ void mainView::addMarker()
 
 	string chid;
 	string curr = this->state.curr;
-	e2se_gui::editMarker* add = new e2se_gui::editMarker(dbih, this->log->log);
+	e2se_gui::editMarker* add = new e2se_gui::editMarker(this->data, this->log->log);
 	add->setAddId(curr);
 	add->display(cwid);
 	chid = add->getAddId(); // returned after dial.exec()
@@ -1220,7 +1225,7 @@ void mainView::editMarker()
 	else
 		return error("editMarker()", "chid", chid);
 
-	e2se_gui::editMarker* edit = new e2se_gui::editMarker(dbih, this->log->log);
+	e2se_gui::editMarker* edit = new e2se_gui::editMarker(this->data, this->log->log);
 	edit->setEditId(chid, curr);
 	edit->display(cwid);
 	nw_chid = edit->getEditId(); // returned after dial.exec()

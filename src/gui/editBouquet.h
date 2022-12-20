@@ -26,7 +26,7 @@ class editBouquet : public dialAbstract
 	Q_DECLARE_TR_FUNCTIONS(editBouquet)
 
 	public:
-		editBouquet(e2db* dbih, int ti, e2se::logger::session* log);
+		editBouquet(dataHandler* data, int ti, e2se::logger::session* log);
 		void display(QWidget* cwid);
 		void layout();
 		void store();

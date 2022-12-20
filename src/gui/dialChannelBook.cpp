@@ -19,12 +19,12 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-dialChannelBook::dialChannelBook(e2db* dbih, e2se::logger::session* log)
+dialChannelBook::dialChannelBook(dataHandler* data, e2se::logger::session* log)
 {
 	this->log = new logger(log, "dialChannelBook");
 	debug("dialChannelBook()");
 
-	this->dbih = dbih;
+	this->data = data;
 
 	this->frameMargins = QMargins (0, 0, 0, 0);
 	this->frameFixed = false;
@@ -33,6 +33,8 @@ dialChannelBook::dialChannelBook(e2db* dbih, e2se::logger::session* log)
 void dialChannelBook::display(QWidget* cwid)
 {
 	debug("display()");
+
+	this->dbih = this->data->dbih;
 
 	layout();
 
@@ -49,10 +51,12 @@ void dialChannelBook::layout()
 	dial->connect(dial, &QDialog::finished, [=]() { delete cbv; delete dial; });
 
 	//TODO filter for stype (disabled entries)
-	this->cbv = new e2se_gui::channelBookView(this->dbih, this->log->log);
+	this->cbv = new e2se_gui::channelBookView(this->data, this->log->log);
 
 	dtform->setContentsMargins(0, 0, 0, 0);
 	dtform->addWidget(cbv->widget, 1, 0);
+
+	this->cbv->load();
 }
 
 void dialChannelBook::toolbar()

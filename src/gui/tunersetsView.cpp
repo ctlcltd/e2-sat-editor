@@ -37,13 +37,14 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-tunersetsView::tunersetsView(tab* twid, QWidget* wid, int ytype, e2se::logger::session* log)
+tunersetsView::tunersetsView(tab* twid, QWidget* wid, dataHandler* data, int ytype, e2se::logger::session* log)
 {
 	this->log = new logger(log, "tunersetsView");
 	debug("tunersetsView()");
 
 	this->twid = twid;
 	this->cwid = wid;
+	this->data = data;
 	this->yx = ytype;
 	this->sets = new QSettings;
 	this->widget = new QWidget;
@@ -267,6 +268,8 @@ void tunersetsView::load()
 
 	tabUpdateFlags(gui::init);
 
+	this->dbih = this->data->dbih;
+
 	string iname = "tns:";
 	switch (yx)
 	{
@@ -326,6 +329,8 @@ void tunersetsView::reset()
 	this->action.list_newtr->setEnabled(true);
 
 	tabResetStatus();
+
+	this->dbih = nullptr;
 }
 
 void tunersetsView::populate()
@@ -434,7 +439,7 @@ void tunersetsView::editSettings()
 	else
 		return error("editSettings()", "tvid", tvid);
 
-	e2se_gui::editTunersets* edit = new e2se_gui::editTunersets(dbih, yx, this->log->log);
+	e2se_gui::editTunersets* edit = new e2se_gui::editTunersets(this->data, this->yx, this->log->log);
 	edit->setEditId(tvid);
 	edit->display(cwid);
 	edit->getEditId(); // returned after dial.exec()
@@ -453,7 +458,7 @@ void tunersetsView::addPosition()
 	if (! dbih->tuners.count(tvid))
 		addSettings();
 
-	e2se_gui::editTunersetsTable* add = new e2se_gui::editTunersetsTable(dbih, yx, this->log->log);
+	e2se_gui::editTunersetsTable* add = new e2se_gui::editTunersetsTable(this->data, this->yx, this->log->log);
 	add->setAddId(tvid);
 	add->display(cwid);
 	tnid = add->getAddId(); // returned after dial.exec()
@@ -518,7 +523,7 @@ void tunersetsView::editPosition()
 	else
 		return error("editPosition()", "tnid", tnid);
 
-	e2se_gui::editTunersetsTable* edit = new e2se_gui::editTunersetsTable(dbih, yx, this->log->log);
+	e2se_gui::editTunersetsTable* edit = new e2se_gui::editTunersetsTable(this->data, this->yx, this->log->log);
 	edit->setEditId(tnid, tvid);
 	edit->display(cwid);
 	nw_tnid = edit->getEditId(); // returned after dial.exec()
@@ -554,7 +559,7 @@ void tunersetsView::addTransponder()
 		return error("addTransponder()", "tnid", tnid);
 
 	string trid;
-	e2se_gui::editTunersetsTransponder* add = new e2se_gui::editTunersetsTransponder(dbih, yx, this->log->log);
+	e2se_gui::editTunersetsTransponder* add = new e2se_gui::editTunersetsTransponder(this->data, this->yx, this->log->log);
 	add->setAddId(tnid, tvid);
 	add->display(cwid);
 	trid = add->getAddId(); // returned after dial.exec()
@@ -629,7 +634,7 @@ void tunersetsView::editTransponder()
 	else
 		return error("editTransponder()", "trid", trid);
 
-	e2se_gui::editTunersetsTransponder* edit = new e2se_gui::editTunersetsTransponder(dbih, yx, this->log->log);
+	e2se_gui::editTunersetsTransponder* edit = new e2se_gui::editTunersetsTransponder(this->data, this->yx, this->log->log);
 	edit->setEditId(trid, tnid, tvid);
 	edit->display(cwid);
 	nw_trid = edit->getEditId(); // returned after dial.exec()

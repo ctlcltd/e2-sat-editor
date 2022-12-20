@@ -26,7 +26,6 @@ using std::map, std::unordered_map;
 #include "toolkit/ListEventHandler.h"
 #include "toolkit/ListEventObserver.h"
 #include "viewAbstract.h"
-#include "tools.h"
 
 namespace e2se_gui
 {
@@ -103,7 +102,7 @@ class mainView : public viewAbstract
 			QPushButton* list_dnd;
 		} action;
 
-		mainView(tab* twid, QWidget* wid, e2se::logger::session* log);
+		mainView(tab* twid, QWidget* wid, dataHandler* data, e2se::logger::session* log);
 		void load();
 		void reset();
 		void bouquetItemDelete();

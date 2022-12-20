@@ -211,15 +211,12 @@ class gui : protected e2se::log_factory
 		void setDefaultSets();
 		QSettings* sets;
 	protected:
-		struct sts
-		{
-			// tab id increment
-			int tt = 0;
-			// gui connector flags
-			bitset<256> xe;
-			// gui previous connector flags
-			bitset<256> ex;
-		} state;
+		// tab id increment
+		int tt = 0;
+		// gui current bit flags
+		bitset<256> gxe;
+		// gui previous bit flags
+		bitset<256> gex;
 	private:
 		QApplication* mroot;
 		QWidget* mwid;

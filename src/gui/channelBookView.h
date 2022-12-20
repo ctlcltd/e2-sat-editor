@@ -54,8 +54,8 @@ class channelBookView : public viewAbstract
 			chsys
 		};
 
-		channelBookView(e2db* dbih, e2se::logger::session* log);
-		channelBookView(tab* twid, QWidget* wid, e2se::logger::session* log);
+		channelBookView(dataHandler* data, e2se::logger::session* log);
+		channelBookView(tab* twid, QWidget* wid, dataHandler* data, e2se::logger::session* log);
 		void load();
 		void reset();
 		vector<QString> getSelected();
@@ -69,7 +69,7 @@ class channelBookView : public viewAbstract
 		QListWidget* lwid;
 		QHBoxLayout* awid;
 		QTabBar* tabv;
-		map<string, vector<pair<int, string>>> data;
+		map<string, vector<pair<int, string>>> index;
 	private:
 		QWidget* cwid;
 		// view selector

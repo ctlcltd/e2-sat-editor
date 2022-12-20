@@ -19,16 +19,18 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-editMarker::editMarker(e2db* dbih, e2se::logger::session* log)
+editMarker::editMarker(dataHandler* data, e2se::logger::session* log)
 {
 	this->log = new logger(log, "editMarker");
 	debug("editMarker()");
 
-	this->dbih = dbih;
+	this->data = data;
 }
 
 void editMarker::display(QWidget* cwid)
 {
+	this->dbih = this->data->dbih;
+
 	layout();
 
 	if (this->state.edit)

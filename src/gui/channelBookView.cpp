@@ -25,12 +25,12 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-channelBookView::channelBookView(e2db* dbih, e2se::logger::session* log)
+channelBookView::channelBookView(dataHandler* data, e2se::logger::session* log)
 {
 	this->log = new logger(log, "channelBookView");
 	debug("channelBookView()");
 
-	this->dbih = dbih;
+	this->data = data;
 	this->sets = new QSettings;
 	this->widget = new QWidget;
 
@@ -38,13 +38,14 @@ channelBookView::channelBookView(e2db* dbih, e2se::logger::session* log)
 	layout();
 }
 
-channelBookView::channelBookView(tab* twid, QWidget* wid, e2se::logger::session* log)
+channelBookView::channelBookView(tab* twid, QWidget* wid, dataHandler* data, e2se::logger::session* log)
 {
 	this->log = new logger(log, "channelBookView");
 	debug("channelBookView()");
 
 	this->twid = twid;
 	this->cwid = wid;
+	this->data = data;
 	this->sets = new QSettings;
 	this->widget = new QWidget;
 
@@ -164,6 +165,7 @@ void channelBookView::load()
 	debug("load()");
 
 	tabUpdateFlags(gui::init);
+	this->dbih = this->data->dbih;
 
 	sideRowChanged(0);
 }
@@ -185,6 +187,8 @@ void channelBookView::reset()
 	this->lsr_find.match.clear();
 
 	tabResetStatus();
+
+	this->dbih = nullptr;
 }
 
 void channelBookView::populate()
@@ -224,7 +228,7 @@ void channelBookView::populate()
 
 	int i = 0;
 
-	for (auto & chdata : data[curr])
+	for (auto & chdata : this->index[curr])
 	{
 		char ci[7];
 		std::sprintf(ci, "%06d", i++);
@@ -311,25 +315,25 @@ void channelBookView::stacker(int vv)
 	switch (vv)
 	{
 		case views::Services:
-			this->data = dbih->get_services_index();
+			this->index = dbih->get_services_index();
 		break;
 		case views::A_Z:
-			this->data = dbih->get_az_index();
+			this->index = dbih->get_az_index();
 		break;
 		case views::Bouquets:
-			this->data = dbih->get_bouquets_index();
+			this->index = dbih->get_bouquets_index();
 		break;
 		case views::Satellites:
-			this->data = dbih->get_transponders_index();
+			this->index = dbih->get_transponders_index();
 		break;
 		case views::Providers:
-			this->data = dbih->get_packages_index();
+			this->index = dbih->get_packages_index();
 		break;
 		case views::Resolution:
-			this->data = dbih->get_resolution_index();
+			this->index = dbih->get_resolution_index();
 		break;
 		case views::Encryption:
-			this->data = dbih->get_encryption_index();
+			this->index = dbih->get_encryption_index();
 		break;
 	}
 
@@ -338,7 +342,7 @@ void channelBookView::stacker(int vv)
 	QTreeWidgetItem* item;
 	QTreeWidgetItem* subitem;
 
-	for (auto & q : data)
+	for (auto & q : this->index)
 	{
 		//TODO pos value 0 with terrestrial, cable, atsc
 		if (vv == views::Satellites)
@@ -403,11 +407,11 @@ void channelBookView::stacker(int vv)
 	}
 	if (vv == views::Satellites)
 	{
-		this->data = dbih->get_channels_index();
+		this->index = dbih->get_channels_index();
 	}
 	else if (vv == views::Bouquets)
 	{
-		this->data.merge(dbih->get_userbouquets_index()); //C++17
+		this->index.merge(dbih->get_userbouquets_index()); //C++17
 		tree->expandAll();
 	}
 

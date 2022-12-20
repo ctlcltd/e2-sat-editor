@@ -22,17 +22,19 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-editTunersetsTransponder::editTunersetsTransponder(e2db* dbih, int ty, e2se::logger::session* log)
+editTunersetsTransponder::editTunersetsTransponder(dataHandler* data, int ty, e2se::logger::session* log)
 {
 	this->log = new logger(log, "editTunersetsTransponder");
 	debug("editTunersetsTransponder()");
 
+	this->data = data;
 	this->state.ty = ty;
-	this->dbih = dbih;
 }
 
 void editTunersetsTransponder::display(QWidget* cwid)
 {
+	this->dbih = this->data->dbih;
+
 	layout();
 
 	if (this->state.edit)

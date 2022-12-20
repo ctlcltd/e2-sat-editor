@@ -28,7 +28,7 @@ class dialChannelBook : public dialAbstract
 	Q_DECLARE_TR_FUNCTIONS(dialChannelBook)
 
 	public:
-		dialChannelBook(e2db* dbih, e2se::logger::session* log);
+		dialChannelBook(dataHandler* data, e2se::logger::session* log);
 		void display(QWidget* cwid);
 		void layout();
 		void toolbar();

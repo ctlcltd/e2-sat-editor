@@ -26,7 +26,7 @@ class editTunersetsTransponder : public dialAbstract
 	Q_DECLARE_TR_FUNCTIONS(editTunersetsTransponder)
 
 	public:
-		editTunersetsTransponder(e2db* dbih, int ty, e2se::logger::session* log);
+		editTunersetsTransponder(dataHandler* data, int ty, e2se::logger::session* log);
 		void display(QWidget* cwid);
 		void layout();
 		void leadSatLayout();

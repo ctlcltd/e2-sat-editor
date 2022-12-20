@@ -27,7 +27,7 @@ class editMarker : public dialAbstract
 	Q_DECLARE_TR_FUNCTIONS(editMarker)
 
 	public:
-		editMarker(e2db* dbih, e2se::logger::session* log);
+		editMarker(dataHandler* data, e2se::logger::session* log);
 		void display(QWidget* cwid);
 		void layout();
 		void store();
