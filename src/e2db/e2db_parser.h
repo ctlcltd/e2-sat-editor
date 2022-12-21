@@ -46,7 +46,6 @@ class e2db_parser : virtual public e2db_abstract
 		bool list_localdir(string localdir);
 		bool read(string localdir);
 		unordered_map<string, string> get_input();
-		void debugger();
 	protected:
 		void parse_lamedb_transponder_params(string data, transponder& tx);
 		void parse_lamedb_transponder_feparms(string data, char ttype, transponder& tx);

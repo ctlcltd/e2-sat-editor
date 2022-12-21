@@ -25,9 +25,6 @@
 
 namespace e2se_gui
 {
-class gui;
-class tab;
-
 class tunersetsView : public viewAbstract
 {
 	public:
@@ -110,7 +107,7 @@ class tunersetsView : public viewAbstract
 			QPushButton* list_search;
 		} action;
 
-		tunersetsView(tab* twid, QWidget* wid, dataHandler* data, int ytype, e2se::logger::session* log);
+		tunersetsView(tab* twid, QWidget* cwid, dataHandler* data, int ytype, e2se::logger::session* log);
 		void load();
 		void reset();
 		void treeItemDelete();

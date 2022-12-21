@@ -261,7 +261,7 @@ bool e2db::prepare(string localdir)
 		return false;
 
 	if (sets->value("application/parserDebugger", false).toBool())
-		this->debugger();
+	// 	this->debugger();
 
 	this->gindex = index;
 
@@ -342,12 +342,12 @@ void e2db::importFile(vector<string> paths)
 	}
 }
 
-void e2db::exportFile(int flags, vector<string> paths)
+void e2db::exportFile(int bit, vector<string> paths)
 {
 	debug("exportFile()");
 
-	if (flags != -1)
-		export_file(FPORTS (flags), paths);
+	if (bit != -1)
+		export_file(FPORTS (bit), paths);
 	else
 		export_file(paths);
 }

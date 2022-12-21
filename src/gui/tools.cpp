@@ -11,24 +11,30 @@
 
 #include <QDialog>
 #include <QTimer>
+#include <QGridLayout>
 #include <QTextEdit>
 #include <QLineEdit>
 #include <QComboBox>
 
 #include "tools.h"
+#include "tab.h"
+#include "gui.h"
 #include "todo.h"
 
 using namespace e2se;
 
-namespace e2se_gui_tools
+namespace e2se_gui
 {
 
-tools::tools(QGridLayout* root, e2se::logger::session* log)
+tools::tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data, e2se::logger::session* log)
 {
 	this->log = new logger(log, "tools");
 	debug("tools()");
 
-	this->root = root;
+	this->gid = gid;
+	this->tid = tid;
+	this->cwid = cwid;
+	this->data = data;
 }
 
 //TODO improve
@@ -77,9 +83,64 @@ void tools::inspector()
 	timer->start(1000);
 }
 
+void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
+{
+	debug("importFileCSV()");
+
+	vector<string> paths;
+
+	paths = gid->importFileDialog(gui::GUI_DPORTS::CSV);
+	if (! paths.empty())
+	{
+		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+		this->data->dbih->import_csv_file(fci, opts, paths);
+		QGuiApplication::restoreOverrideCursor();
+		tid->reset();
+		tid->load();
+	}
+}
+
+void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
+{
+	debug("exportFileCSV()");
+
+	string path = gid->exportFileDialog(gui::GUI_DPORTS::CSV, opts.filename);
+
+	if (! path.empty())
+	{
+		opts.filename = path;
+		QMessageBox dial = QMessageBox();
+		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+		this->data->dbih->export_csv_file(fco, opts, path);
+		QGuiApplication::restoreOverrideCursor();
+		dial.setText("Saved!");
+		dial.exec();
+	}
+}
+
+void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
+{
+	debug("exportFileHTML()");
+
+	string path = gid->exportFileDialog(gui::GUI_DPORTS::HTML, opts.filename);
+
+	if (! path.empty())
+	{
+		opts.filename = path;
+		QMessageBox dial = QMessageBox();
+		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+		this->data->dbih->export_html_file(fco, opts, path);
+		QGuiApplication::restoreOverrideCursor();
+		dial.setText("Saved!");
+		dial.exec();
+	}
+}
+
 void tools::destroy()
 {
 	debug("destroy()");
+
+	delete this;
 }
 
 }

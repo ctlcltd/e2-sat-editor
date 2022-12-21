@@ -154,12 +154,37 @@ void gui::menuLayout()
 	gmenu[GUI_CXE::TunersetsCable] = mtool->addAction("Edit cables.xml", [=]() { this->tabAction(TAB_ATS::EditTunersetsCable); });
 	gmenu[GUI_CXE::TunersetsAtsc] = mtool->addAction("Edit atsc.xml", [=]() { this->tabAction(TAB_ATS::EditTunersetsAtsc); });
 	mtool->addSeparator();
-	gmenu[GUI_CXE::OpenChannelBook] = mtool->addAction("Show channel book", [=]() { this->tabAction(TAB_ATS::ShowChannelBook); });
+	gmenu[GUI_CXE::OpenChannelBook] = mtool->addAction("Show Channel book", [=]() { this->tabAction(TAB_ATS::ShowChannelBook); });
 	mtool->addSeparator();
-	gmenu[GUI_CXE::ToolsServicesOrder] = mtool->addAction("Order services A-Z", todo);
-	gmenu[GUI_CXE::ToolsBouquetsOrder] = mtool->addAction("Order userbouquets A-Z", todo);
-	gmenu[GUI_CXE::ToolsServicesCache] = mtool->addAction("Remove cached data from services", todo);
-	gmenu[GUI_CXE::ToolsBouquetsDelete] = mtool->addAction("Delete all bouquets", todo);
+	
+	QMenu* mimportcsv = new QMenu(tr("Import from CSV"));
+	gmenu[GUI_CXE::ToolsImportCSV_services] = mimportcsv->addAction("Import Services", [=]() { this->tabAction(TAB_ATS::ImportCSV_services); });
+	gmenu[GUI_CXE::ToolsImportCSV_bouquet] = mimportcsv->addAction("Import Bouquet", [=]() { this->tabAction(TAB_ATS::ImportCSV_bouquet); });
+	gmenu[GUI_CXE::ToolsImportCSV_userbouquet] = mimportcsv->addAction("Import Userbouquet", [=]() { this->tabAction(TAB_ATS::ImportCSV_userbouquet); });
+	gmenu[GUI_CXE::ToolsImportCSV_tunersets] = mimportcsv->addAction("Import Tuner settings", [=]() { this->tabAction(TAB_ATS::ImportCSV_tunersets); });
+	QMenu* mexportcsv = new QMenu(tr("Export to CSV"));
+	gmenu[GUI_CXE::ToolsExportCSV_current] = mexportcsv->addAction("Export current", [=]() { this->tabAction(TAB_ATS::ExportCSV_current); });
+	gmenu[GUI_CXE::ToolsExportCSV_all] = mexportcsv->addAction("Export All", [=]() { this->tabAction(TAB_ATS::ExportCSV_all); });
+	gmenu[GUI_CXE::ToolsExportCSV_services] = mexportcsv->addAction("Export Services", [=]() { this->tabAction(TAB_ATS::ExportCSV_services); });
+	gmenu[GUI_CXE::ToolsExportCSV_bouquets] = mexportcsv->addAction("Export Bouquets", [=]() { this->tabAction(TAB_ATS::ExportCSV_bouquets); });
+	gmenu[GUI_CXE::ToolsExportCSV_userbouquets] = mexportcsv->addAction("Export Userbouquets", [=]() { this->tabAction(TAB_ATS::ExportCSV_userbouquets); });
+	gmenu[GUI_CXE::ToolsExportCSV_tunersets] = mexportcsv->addAction("Export Tuner settings", [=]() { this->tabAction(TAB_ATS::ExportCSV_tunersets); });
+	QMenu* mexporthtml = new QMenu(tr("Export to HTML"));
+	gmenu[GUI_CXE::ToolsExportHTML_current] = mexporthtml->addAction("Export current", [=]() { this->tabAction(TAB_ATS::ExportHTML_current); });
+	gmenu[GUI_CXE::ToolsExportHTML_all] = mexporthtml->addAction("Export All", [=]() { this->tabAction(TAB_ATS::ExportHTML_all); });
+	gmenu[GUI_CXE::ToolsExportHTML_index] = mexporthtml->addAction("Export Index", [=]() { this->tabAction(TAB_ATS::ExportHTML_index); });
+	gmenu[GUI_CXE::ToolsExportHTML_services] = mexporthtml->addAction("Export Services", [=]() { this->tabAction(TAB_ATS::ExportHTML_services); });
+	gmenu[GUI_CXE::ToolsExportHTML_bouquets] = mexporthtml->addAction("Export Bouquets", [=]() { this->tabAction(TAB_ATS::ExportHTML_bouquets); });
+	gmenu[GUI_CXE::ToolsExportHTML_userbouquets] = mexporthtml->addAction("Export Userbouquets", [=]() { this->tabAction(TAB_ATS::ExportHTML_userbouquets); });
+	gmenu[GUI_CXE::ToolsExportHTML_tunersets] = mexporthtml->addAction("Export Tuner settings", [=]() { this->tabAction(TAB_ATS::ExportHTML_tunersets); });
+	mtool->addMenu(mimportcsv);
+	mtool->addMenu(mexportcsv);
+	mtool->addMenu(mexporthtml);
+	mtool->addSeparator();
+	gmenu[GUI_CXE::ToolsServicesOrder] = mtool->addAction("Order Services A-Z", todo);
+	gmenu[GUI_CXE::ToolsBouquetsOrder] = mtool->addAction("Order Userbouquets A-Z", todo);
+	gmenu[GUI_CXE::ToolsServicesCache] = mtool->addAction("Remove cached data from Services", todo);
+	gmenu[GUI_CXE::ToolsBouquetsDelete] = mtool->addAction("Delete all Bouquets", todo);
 	mtool->addSeparator();
 	gmenu[GUI_CXE::ToolsInspector] = mtool->addAction(tr("Inspector Log"), [=]() { this->tabAction(TAB_ATS::Inspector); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
 
@@ -239,16 +264,16 @@ void gui::statusLayout()
 	mstatusb->addWidget(sbwid);
 }
 
-void gui::tabViewSwitch(int v)
+void gui::tabViewSwitch(TAB_VIEW ttv)
 {
-	tabViewSwitch(v, NULL);
+	tabViewSwitch(ttv, 0);
 }
 
-void gui::tabViewSwitch(int v, int arg)
+void gui::tabViewSwitch(TAB_VIEW ttv, int arg)
 {
-	debug("tabViewSwitch()", "v", v);
+	debug("tabViewSwitch()", "ttv", ttv);
 
-	switch (v)
+	switch (ttv)
 	{
 		case TAB_VIEW::main:
 			gmenu[GUI_CXE::TabListFind]->setText("&Find Channel");
@@ -468,7 +493,7 @@ void gui::tabChanged(int index)
 		tab* ttab = ttabs[ttid];
 		ttmenu[ttid]->setChecked(true);
 		ttab->tabSwitched();
-		int ttv = ttab->getTabView();
+		TAB_VIEW ttv = ttab->getTabView();
 		tabViewSwitch(ttv);
 	}
 }
@@ -588,22 +613,49 @@ string gui::saveFileDialog(string filename)
 	return path;
 }
 
-vector<string> gui::importFileDialog()
+vector<string> gui::importFileDialog(GUI_DPORTS gde)
 {
 	debug("importFileDialog()");
 
 	QString caption = "Select one or more files to open";
-	QStringList opts ({
-		"Enigma2 folder (*)",
-		"Lamedb 2.4 (lamedb)",
-		"Lamedb 2.5 (lamedb5)",
-		"Lamedb 2.3 (services)",
-		"Lamedb 2.2 (services)",
-		"Bouquet (bouquets.*)",
-		"Userbouquet (userbouquet.*)",
-		"Tuner settings (*.xml)",
-		"All Files (*)"
-	});
+	QStringList opts;
+	switch (gde)
+	{
+		case GUI_DPORTS::Services:
+			opts.append("Lamedb default (*)");
+			opts.append("Lamedb 2.4 (lamedb)");
+			opts.append("Lamedb 2.5 (lamedb5)");
+			opts.append("Lamedb 2.3 (services)");
+			opts.append("Lamedb 2.2 (services)");
+		break;
+		case GUI_DPORTS::Bouquets:
+			opts.append("Bouquet (bouquets.*)");
+		break;
+		case GUI_DPORTS::Userbouquets:
+			opts.append("Userbouquet (userbouquet.*)");
+		break;
+		case GUI_DPORTS::Tunersets:
+			opts.append("Tuner settings (*.xml)");
+		break;
+		case GUI_DPORTS::CSV:
+			opts.append("CSV File (*.csv,txt)");
+			opts.append("All Files (*)");
+		break;
+		case GUI_DPORTS::HTML:
+			opts.append("HTML File (*.html,htm)");
+			opts.append("All Files (*)");
+		break;
+		default:
+			opts.append("Enigma2 folder (*)");
+			opts.append("Lamedb 2.4 (lamedb)");
+			opts.append("Lamedb 2.5 (lamedb5)");
+			opts.append("Lamedb 2.3 (services)");
+			opts.append("Lamedb 2.2 (services)");
+			opts.append("Bouquet (bouquets.*)");
+			opts.append("Userbouquet (userbouquet.*)");
+			opts.append("Tuner settings (*.xml)");
+			opts.append("All Files (*)");
+	}
 
 	vector<string> paths;
 	QFileDialog fdial = QFileDialog(mwid, caption);
@@ -622,7 +674,7 @@ vector<string> gui::importFileDialog()
 	return paths;
 }
 
-string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& flags)
+string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& bit)
 {
 	debug("exportFileDialog()", "filename", filename);
 
@@ -646,6 +698,16 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& flags)
 		case GUI_DPORTS::Tunersets:
 			opts.append("Tuner settings (*.xml)");
 		break;
+		case GUI_DPORTS::CSV:
+			opts.append("CSV File (*.csv)");
+			opts.append("All Files (*)");
+		break;
+		case GUI_DPORTS::HTML:
+			opts.append("HTML File (*.html)");
+			opts.append("All Files (*)");
+		break;
+		default:
+			opts.append("All Files (*)");
 	}
 
 	string path;
@@ -660,15 +722,15 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& flags)
 
 		// straight copy of e2db::FPORTS
 		if (selected == "Lamedb 2.4 (lamedb)")
-			flags = 0x1224;
+			bit = 0x1224;
 		else if (selected == "Lamedb 2.5 (lamedb5)")
-			flags = 0x1225;
+			bit = 0x1225;
 		else if (selected == "Lamedb 2.3 (services)")
-			flags = 0x1223;
+			bit = 0x1223;
 		else if (selected == "Lamedb 2.2 (services)")
-			flags = 0x1222;
+			bit = 0x1222;
 
-		debug("exportFileDialog()", "flags", flags);
+		debug("exportFileDialog()", "bit", bit);
 
 		QUrl url = fdial.selectedUrls().value(0);
 		if (url.isLocalFile() || url.isEmpty())
@@ -676,6 +738,12 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& flags)
 		path = url.toString().toStdString();
 	}
 	return path;
+}
+
+string gui::exportFileDialog(GUI_DPORTS gde, string filename)
+{
+	int bit;
+	return exportFileDialog(gde, filename, bit);
 }
 
 void gui::setStatus(STATUS status)

@@ -9,39 +9,119 @@
  * @license GNU GPLv3 License
  */
 
+#include <fstream>
+
 #include "../logger/logger.h"
 #include "e2db_abstract.h"
+
+using std::istream, std::string;
 
 #ifndef e2db_converter_h
 #define e2db_converter_h
 namespace e2se_e2db
 {
+class e2db;
+
 class e2db_converter : virtual public e2db_abstract
 {
-	public
+	public:
+		enum FCONVS {
+			convert_current = 0x0,
+			convert_all = 0x2,
+			convert_index = 0x1,
+			convert_services = 0x10,
+			convert_bouquets = 0x20,
+			convert_userbouquets = 0x40,
+			convert_tunersets = 0x80 //TODO current
+		};
+
+		enum DOC_VIEW {
+			view_index = -1,
+			view_services = 0,
+			view_bouquets = 1,
+			view_userbouquets = 2,
+			view_tunersets = 3
+		};
+
+		inline static const bool CSV_HEADER = true;
+		inline static const char CSV_ENDLINE = '\n'; //TODO win32
+		inline static const char CSV_SEPARATOR = ',';
+		inline static const char CSV_ESCAPE = '"';
+
+		struct fcopts
+		{
+			FCONVS fc;
+			string filename;
+			string bname;
+			int stype;
+			int ytype;
+		};
+
+		struct html_page
+		{
+			string title;
+			string header;
+			string body;
+			string footer;
+		};
+
 		// e2db_converter(e2se::logger::session log);
 		// e2db_converter();
 		virtual ~e2db_converter() = default;
-		void from_file(vector<string> paths);
-		// void from_file(FPORTS fpi, e2db* dbih, e2db_file file, string path);
-		void to_file(vector<string> paths);
-		// void to_file(FPORTS fpo, vector<string> paths);
-		// void to_file(FPORTS fpo, string path);
-		void from_csv_lamedb(istream& ifile);
-		void from_csv_bouquet(istream& ifile, string bname);
-		void from_csv_userbouquet(istream& ifile, string bname);
-		void from_csv_tunersets(int ytype, istream& ifile);
-		e2db_file to_csv_lamedb(string filename);
-		e2db_file to_csv_bouquet(string bname);
-		e2db_file to_csv_userbouquet(string bname);
-		e2db_file to_csv_tunersets(string filename, int ytype);
-		e2db_file to_html_lamedb(string filename);
-		e2db_file to_html_bouquet(string bname);
-		e2db_file to_html_userbouquet(string bname);
-		e2db_file to_html_tunersets(string filename, int ytype);
-		// bool read(string localdir);
-		// bool write_to_localdir(string localdir, bool overwrite);
-		// bool write(string localdir, bool overwrite);
+		void import_csv_file(FCONVS fci, fcopts opts, vector<string> paths);
+		void import_csv_file(FCONVS fci, fcopts opts, string path);
+		void export_csv_file(FCONVS fco, fcopts opts, string path);
+		void export_html_file(FCONVS fco, fcopts opts, string path);
+		void pull_csv_lamedb(istream& ifile);
+		void pull_csv_bouquet(istream& ifile, string bname);
+		void pull_csv_userbouquet(istream& ifile, string bname);
+		void pull_csv_tunersets(istream& ifile, int ytype);
+		void push_csv_all(vector<e2db_file>& files);
+		void push_csv_services(vector<e2db_file>& files);
+		void push_csv_services(vector<e2db_file>& files, int stype);
+		void push_csv_bouquets(vector<e2db_file>& files);
+		void push_csv_bouquets(vector<e2db_file>& files, string bname);
+		void push_csv_userbouquets(vector<e2db_file>& files);
+		void push_csv_userbouquets(vector<e2db_file>& files, string bname);
+		void push_csv_tunersets(vector<e2db_file>& files);
+		void push_csv_tunersets(vector<e2db_file>& files, int ytype);
+		void push_html_all(vector<e2db_file>& files);
+		void push_html_index(vector<e2db_file>& files);
+		void push_html_services(vector<e2db_file>& files);
+		void push_html_services(vector<e2db_file>& files, int stype);
+		void push_html_bouquets(vector<e2db_file>& files);
+		void push_html_bouquets(vector<e2db_file>& files, string bname);
+		void push_html_userbouquets(vector<e2db_file>& files);
+		void push_html_userbouquets(vector<e2db_file>& files, string bname);
+		void push_html_tunersets(vector<e2db_file>& files);
+		void push_html_tunersets(vector<e2db_file>& files, int ytype);
+		virtual FPORTS filetype_detect(string path) { return FPORTS::fports_empty; };
+		virtual string get_reference_id(string chid) { return ""; };
+		virtual string get_reference_id(channel_reference chref) { return ""; };
+		virtual string get_transponder_combo_value(transponder tx) { return ""; };
+		virtual string get_transponder_combo_value(tunersets_transponder tntxp, tunersets_table tn) { return ""; };
+		virtual string get_transponder_name_value(transponder tx) { return ""; };
+		virtual int get_transponder_position_number(string ppos) { return 0; };
+		virtual string get_transponder_position_text(int pos) { return ""; };
+		virtual string get_transponder_position_text(transponder tx) { return ""; };
+		virtual string get_transponder_position_text(tunersets_table tn) { return ""; };
+		virtual string get_transponder_system_text(transponder tx) { return ""; };
+		virtual string get_localdir() { return ""; };
+		virtual string get_filename() { return ""; };
+	protected:
+		void csv_channel_list(string& csv, string bname, DOC_VIEW view);
+		void csv_bouquet_list(string& csv, string bname);
+		void csv_tunersets_list(string& csv, int ytype);
+		void page_header(html_page& page, string filename, DOC_VIEW view);
+		void page_footer(html_page& page, string filename, DOC_VIEW view);
+		void page_body_index_list(html_page& page, vector<string> paths);
+		void page_body_channel_list(html_page& page, string bname, DOC_VIEW view);
+		void page_body_bouquet_list(html_page& page, string bname);
+		void page_body_tunersets_list(html_page& page, int ytype);
+		void html_document(e2db_file& file, html_page page);
+		void csv_document(e2db_file& file, string csv);
+		string doc_html_head(html_page page);
+		string doc_html_foot(html_page page);
 };
 }
 #endif /* e2db_converter_h */

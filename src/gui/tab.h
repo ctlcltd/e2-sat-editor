@@ -29,16 +29,21 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map, std::bi
 #include "gui.h"
 #include "dataHandler.h"
 #include "ftpcom_gui.h"
+#include "tools.h"
 #include "mainView.h"
 #include "viewAbstract.h"
-#include "tools.h"
 
 namespace e2se_gui
 {
 class tab : protected e2se::log_factory
 {
 	public:
-		tab(gui* gid, QWidget* wid, e2se::logger::session* log);
+		enum TOOLS_FILE {
+			tools_csv,
+			tools_html
+		};
+
+		tab(gui* gid, QWidget* cwid, e2se::logger::session* log);
 		~tab();
 		bool isChild();
 		bool hasChildren();
@@ -49,7 +54,7 @@ class tab : protected e2se::log_factory
 		int getTabId();
 		void setTabName(string ttname);
 		string getTabName();
-		int getTabView();
+		gui::TAB_VIEW getTabView();
 		string getFilename();
 		void tabSwitched();
 		void tabChangeName(string filename = "");
@@ -74,6 +79,9 @@ class tab : protected e2se::log_factory
 		void exportFile();
 		void exportFile(QTreeWidgetItem* item);
 		void printFile(bool all);
+		void toolsInspector();
+		void toolsImportFromFile(TOOLS_FILE ftype, e2db::FCONVS fci);
+		void toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco);
 		void actionCall(int action);
 		void updateBouquetsIndex();
 		void updateChannelsIndex();
@@ -85,7 +93,7 @@ class tab : protected e2se::log_factory
 		void loadSeeds();
 		QWidget* widget;
 		dataHandler* data = nullptr;
-		e2se_gui_tools::tools* tools = nullptr;
+		tools* tools = nullptr;
 	protected:
 		QGridLayout* root;
 		// tab view

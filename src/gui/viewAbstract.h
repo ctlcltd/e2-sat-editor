@@ -128,8 +128,9 @@ class viewAbstract : protected e2se::log_factory
 		virtual void tabResetStatus();
 
 		QSettings* sets;
-		tab* twid;
+		tab* tid;
 		dataHandler* data = nullptr;
+		tools* tools;
 		e2db* dbih = nullptr;
 		QVBoxLayout* tbox;
 		QVBoxLayout* lbox;

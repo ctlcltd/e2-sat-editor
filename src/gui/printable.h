@@ -27,15 +27,15 @@ class printable : protected e2se::log_factory
 {
 	public:
 		// relation with tab state tc (side tree focused)
-		enum view {
-			index = -1,
-			services = 0,
-			bouquets = 1,
-			userbouquets = 2,
-			tunersets = 3
+		enum DOC_VIEW {
+			view_index = -1,
+			view_services = 0,
+			view_bouquets = 1,
+			view_userbouquets = 2,
+			view_tunersets = 3
 		};
 
-		struct page
+		struct html_page
 		{
 			QString header;
 			QString body;
@@ -45,8 +45,8 @@ class printable : protected e2se::log_factory
 		printable(e2db* dbih, e2se::logger::session* log);
 		void document_all();
 		void document_index();
-		void document_lamedb();
-		void document_lamedb(int stype);
+		void document_services();
+		void document_services(int stype);
 		void document_bouquet(string bname);
 		void document_userbouquet(string bname);
 		void document_tunersets(int ytype);
@@ -54,17 +54,17 @@ class printable : protected e2se::log_factory
 		void destroy() {};
 		QSettings* sets;
 	protected:
-		void page_header(page& p, string filename, view v);
-		void page_footer(page& p, string filename, view v);
-		void page_body_index_list(page& p, vector<string> paths);
-		void page_body_channel_list(page& p, string bname, view v);
-		void page_body_bouquet_list(page& p, string bname);
-		void page_body_tunersets_list(page& p, int ytype);
-		QString doc_head();
-		QString doc_foot();
+		void page_header(html_page& page, string filename, DOC_VIEW view);
+		void page_footer(html_page& page, string filename, DOC_VIEW view);
+		void page_body_index_list(html_page& page, vector<string> paths);
+		void page_body_channel_list(html_page& page, string bname, DOC_VIEW view);
+		void page_body_bouquet_list(html_page& page, string bname);
+		void page_body_tunersets_list(html_page& page, int ytype);
+		QString doc_html_head();
+		QString doc_html_foot();
 	private:
 		e2db* dbih;
-		vector<page> pages;
+		vector<html_page> pages;
 };
 }
 #endif /* printable_h */

@@ -49,13 +49,13 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-tab::tab(gui* gid, QWidget* wid, e2se::logger::session* log)
+tab::tab(gui* gid, QWidget* cwid, e2se::logger::session* log)
 {
 	this->log = new logger(log, "tab");
 	debug("tab()");
 
 	this->gid = gid;
-	this->cwid = wid;
+	this->cwid = cwid;
 	this->widget = new QWidget;
 }
 
@@ -128,7 +128,7 @@ void tab::setTabName(string ttname)
 	this->ttname = ttname;
 }
 
-int tab::getTabView()
+gui::TAB_VIEW tab::getTabView()
 {
 	return this->ttv;
 }
@@ -199,8 +199,8 @@ void tab::viewMain()
 	debug("viewMain()");
 
 	this->data = new dataHandler(this->log->log);
-	this->tools = new e2se_gui_tools::tools(root, this->log->log);
-	this->main = new mainView(this, cwid, data, this->log->log);
+	this->tools = new e2se_gui::tools(this, this->gid, this->cwid, this->data, this->log->log);
+	this->main = new mainView(this, this->cwid, this->data, this->log->log);
 	this->view = this->main;
 
 	this->ttv = gui::TAB_VIEW::main;
@@ -224,7 +224,7 @@ void tab::viewTunersets(tab* parent, int ytype)
 	this->data = parent->data;
 	this->tools = parent->tools;
 	this->main = parent->main;
-	this->view = new tunersetsView(this, cwid, data, ytype, this->log->log);
+	this->view = new tunersetsView(this, this->cwid, this->data, ytype, this->log->log);
 
 	this->ttv = gui::TAB_VIEW::tunersets;
 	this->ty = ytype;
@@ -248,7 +248,7 @@ void tab::viewChannelBook(tab* parent)
 	this->data = parent->data;
 	this->tools = parent->tools;
 	this->main = parent->main;
-	this->view = new channelBookView(this, cwid, data, this->log->log);
+	this->view = new channelBookView(this, this->cwid, this->data, this->log->log);
 
 	this->ttv = gui::TAB_VIEW::channelBook;
 
@@ -478,9 +478,10 @@ void tab::importFile()
 {
 	debug("importFile()");
 
+	gui::GUI_DPORTS gde;
 	vector<string> paths;
 
-	paths = gid->importFileDialog();
+	paths = gid->importFileDialog(gde);
 	if (! paths.empty())
 	{
 		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -504,7 +505,7 @@ void tab::exportFile()
 	if (this->ttv == gui::TAB_VIEW::tunersets)
 	{
 		gde = gui::GUI_DPORTS::Tunersets;
-		flags = e2db::FPORTS::singleTunersets;
+		flags = e2db::FPORTS::single_tunersets;
 		switch (this->ty)
 		{
 			case e2db::YTYPE::sat:
@@ -526,7 +527,7 @@ void tab::exportFile()
 	else if (main->state.tc == 0)
 	{
 		gde = gui::GUI_DPORTS::Services;
-		flags = e2db::FPORTS::allServices;
+		flags = e2db::FPORTS::all_services;
 		filename = "lamedb";
 		paths.push_back(filename);
 	}
@@ -557,7 +558,7 @@ void tab::exportFile()
 		if (ti != -1)
 		{
 			gde = gui::GUI_DPORTS::Bouquets;
-			flags = e2db::FPORTS::singleBouquetAll;
+			flags = e2db::FPORTS::single_bouquet_all;
 
 			if (dbih->bouquets.count(filename))
 			{
@@ -569,7 +570,7 @@ void tab::exportFile()
 		else
 		{
 			gde = gui::GUI_DPORTS::Userbouquets;
-			flags = e2db::FPORTS::singleUserbouquet;
+			flags = e2db::FPORTS::single_userbouquet;
 		}
 	}
 	if (paths.empty())
@@ -619,7 +620,7 @@ void tab::exportFile(QTreeWidgetItem* item)
 	gui::GUI_DPORTS gde;
 	vector<string> paths;
 	string filename;
-	int flags = -1;
+	int bit = -1;
 
 	if (item == nullptr)
 	{
@@ -645,7 +646,7 @@ void tab::exportFile(QTreeWidgetItem* item)
 		if (ti != -1)
 		{
 			gde = gui::GUI_DPORTS::Bouquets;
-			flags = e2db::FPORTS::singleBouquetAll;
+			bit = e2db::FPORTS::single_bouquet_all;
 
 			if (dbih->bouquets.count(filename))
 			{
@@ -657,7 +658,7 @@ void tab::exportFile(QTreeWidgetItem* item)
 		else
 		{
 			gde = gui::GUI_DPORTS::Userbouquets;
-			flags = e2db::FPORTS::singleUserbouquet;
+			bit = e2db::FPORTS::single_userbouquet;
 		}
 	}
 	if (paths.empty())
@@ -673,15 +674,13 @@ void tab::exportFile(QTreeWidgetItem* item)
 		this->updateBouquetsIndex();
 	}
 
-	string path = gid->exportFileDialog(gde, filename, flags);
+	string path = gid->exportFileDialog(gde, filename, bit);
 
 	if (! path.empty())
 	{
-		debug("exportFile()", "filename", filename);
-
 		QMessageBox dial = QMessageBox();
 		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		dbih->exportFile(flags, paths);
+		dbih->exportFile(bit, paths);
 		QGuiApplication::restoreOverrideCursor();
 		dial.setText("Saved!");
 		dial.exec();
@@ -727,7 +726,7 @@ void tab::printFile(bool all)
 			default:
 				stype = -1;
 		}
-		printer->document_lamedb(stype);
+		printer->document_services(stype);
 	}
 	// bouquets
 	else if (main->state.tc == 1)
@@ -745,19 +744,148 @@ void tab::printFile(bool all)
 			ti = main->tree->indexOfTopLevelItem(item);
 			QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
 			QString qchlist = tdata["id"].toString();
-			string filename = qchlist.toStdString();
+			string bname = qchlist.toStdString();
 
 			// bouquet | userbouquets
 			if (ti != -1)
-				printer->document_bouquet(filename);
+				printer->document_bouquet(bname);
 			// userbouquet
 			else
-				printer->document_userbouquet(filename);
+				printer->document_userbouquet(bname);
 		}
 	}
 
 	printer->print();
 	printer->destroy();
+}
+
+void tab::toolsInspector()
+{
+	tools->inspector();
+}
+
+void tab::toolsImportFromFile(TOOLS_FILE ftype, e2db::FCONVS fci)
+{
+	e2db::fcopts opts;
+	opts.fc = fci;
+
+	switch (ftype)
+	{
+		case TOOLS_FILE::tools_csv:
+			this->tools->importFileCSV(fci, opts);
+		break;
+		case TOOLS_FILE::tools_html:
+			return;
+	}
+}
+
+void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
+{
+	e2db::fcopts opts;
+	opts.fc = fco;
+
+	if (fco == e2db::FCONVS::convert_current)
+	{
+		string filename;
+
+		// tunersets
+		if (this->ttv == gui::TAB_VIEW::tunersets)
+		{
+			switch (this->ty)
+			{
+				case e2db::YTYPE::sat:
+					filename = "satellites";
+				break;
+				case e2db::YTYPE::terrestrial:
+					filename = "terrestrial";
+				break;
+				case e2db::YTYPE::cable:
+					filename = "cables";
+				break;
+				case e2db::YTYPE::atsc:
+					filename = "atsc";
+				break;
+			}
+			opts.ytype = this->ty;
+			fco = e2db::FCONVS::convert_tunersets;
+		}
+		// services
+		else if (main->state.tc == 0)
+		{
+			int ti = main->services_tree->indexOfTopLevelItem(main->services_tree->currentItem());
+			int stype;
+			switch (ti)
+			{
+				// TV
+				case 1:
+					stype = e2db::STYPE::tv;
+					filename = "services-tv";
+				break;
+				// Radio
+				case 2:
+					stype = e2db::STYPE::radio;
+					filename = "services-radio";
+				break;
+				// Data
+				case 3:
+					stype = e2db::STYPE::data;
+					filename = "services-data";
+				break;
+				// All Services
+				default:
+					stype = -1;
+					filename = "services";
+			}
+			opts.stype = stype;
+			fco = e2db::FCONVS::convert_services;
+		}
+		// bouquets
+		else if (main->state.tc == 1)
+		{
+			int ti = -1;
+			QList<QTreeWidgetItem*> selected = main->tree->selectedItems();
+
+			if (selected.empty())
+			{
+				return;
+			}
+			for (auto & item : selected)
+			{
+				ti = main->tree->indexOfTopLevelItem(item);
+				QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
+				QString qchlist = tdata["id"].toString();
+				string bname = qchlist.toStdString();
+
+				// bouquet | userbouquets
+				if (ti != -1)
+				{
+					opts.bname = bname;
+					fco = e2db::FCONVS::convert_bouquets;
+				}
+				// userbouquet
+				else
+				{
+					opts.bname = bname;
+					fco = e2db::FCONVS::convert_userbouquets;
+				}
+
+				filename = bname;
+			}
+		}
+		opts.filename = filename;
+	}
+
+	switch (ftype)
+	{
+		case TOOLS_FILE::tools_csv:
+			opts.filename += ".csv";
+			this->tools->exportFileCSV(fco, opts);
+		break;
+		case TOOLS_FILE::tools_html:
+			opts.filename += ".html";
+			this->tools->exportFileHTML(fco, opts);
+		break;
+	}
 }
 
 void tab::actionCall(int action)
@@ -816,6 +944,59 @@ void tab::actionCall(int action)
 		case gui::TAB_ATS::EditTunersetsAtsc:
 			gid->openTab(gui::TAB_VIEW::tunersets, e2db::YTYPE::atsc);
 		break;
+
+		case gui::TAB_ATS::ImportCSV_services:
+			toolsImportFromFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_services);
+		break;
+		case gui::TAB_ATS::ImportCSV_bouquet:
+			toolsImportFromFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_bouquets);
+		break;
+		case gui::TAB_ATS::ImportCSV_userbouquet:
+			toolsImportFromFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_userbouquets);
+		break;
+		case gui::TAB_ATS::ImportCSV_tunersets:
+			toolsImportFromFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_tunersets);
+		break;
+		case gui::TAB_ATS::ExportCSV_current:
+			toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_current);
+		break;
+		case gui::TAB_ATS::ExportCSV_all:
+			toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_all);
+		break;
+		case gui::TAB_ATS::ExportCSV_services:
+			toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_services);
+		break;
+		case gui::TAB_ATS::ExportCSV_bouquets:
+			toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_bouquets);
+		break;
+		case gui::TAB_ATS::ExportCSV_userbouquets:
+			toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_userbouquets);
+		break;
+		case gui::TAB_ATS::ExportCSV_tunersets:
+			toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_tunersets);
+		break;
+		case gui::TAB_ATS::ExportHTML_current:
+			toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_current);
+		break;
+		case gui::TAB_ATS::ExportHTML_index:
+			toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_index);
+		break;
+		case gui::TAB_ATS::ExportHTML_all:
+			toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_all);
+		break;
+		case gui::TAB_ATS::ExportHTML_services:
+			toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_services);
+		break;
+		case gui::TAB_ATS::ExportHTML_bouquets:
+			toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_bouquets);
+		break;
+		case gui::TAB_ATS::ExportHTML_userbouquets:
+			toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_tunersets);
+		break;
+		case gui::TAB_ATS::ExportHTML_tunersets:
+			toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_tunersets);
+		break;
+
 		case gui::TAB_ATS::Inspector:
 			tools->inspector();
 		break;

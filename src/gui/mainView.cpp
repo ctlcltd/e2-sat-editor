@@ -43,7 +43,6 @@
 #include "editService.h"
 #include "editMarker.h"
 #include "dialChannelBook.h"
-// #include "channelBookView.h"
 
 using std::to_string, std::sort;
 using namespace e2se;
@@ -51,13 +50,13 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-mainView::mainView(tab* twid, QWidget* wid, dataHandler* data, e2se::logger::session* log)
+mainView::mainView(tab* tid, QWidget* cwid, dataHandler* data, e2se::logger::session* log)
 {
 	this->log = new logger(log, "mainView");
 	debug("mainView()");
 
-	this->twid = twid;
-	this->cwid = wid;
+	this->tid = tid;
+	this->cwid = cwid;
 	this->data = data;
 	this->sets = new QSettings;
 	this->widget = new QWidget;
@@ -649,7 +648,7 @@ void mainView::servicesItemChanged(QTreeWidgetItem* current)
 		list->scrollToTop();
 	}
 
-	twid->updateChannelsIndex();
+	tid->updateChannelsIndex();
 	populate(services_tree);
 	updateFlags();
 	updateStatus(true);
@@ -704,7 +703,7 @@ void mainView::bouquetsItemChanged(QTreeWidgetItem* current)
 		list->scrollToTop();
 	}
 
-	twid->updateChannelsIndex();
+	tid->updateChannelsIndex();
 	populate(tree);
 	updateFlags();
 	updateStatus(true);
@@ -965,7 +964,7 @@ void mainView::addUserbouquet()
 	tree->setDragEnabled(true);
 	tree->setAcceptDrops(true);
 
-	twid->updateBouquetsIndex();
+	tid->updateBouquetsIndex();
 }
 
 void mainView::editUserbouquet()
@@ -1001,7 +1000,7 @@ void mainView::editUserbouquet()
 		name = QString::fromStdString(uboq.name);
 	item->setText(0, name);
 
-	twid->updateBouquetsIndex();
+	tid->updateBouquetsIndex();
 }
 
 void mainView::addChannel()
@@ -1278,7 +1277,7 @@ void mainView::bouquetItemDelete()
 
 	this->state.changed = true;
 
-	twid->updateBouquetsIndex();
+	tid->updateBouquetsIndex();
 	updateStatus();
 }
 
@@ -1782,7 +1781,7 @@ void mainView::showTreeEditContextMenu(QPoint &pos)
 	// bouquet: tv | radio
 	if (this->state.ti != -1)
 	{
-		bouquet_export->connect(bouquet_export, &QAction::triggered, [=]() { twid->exportFile(); });
+		bouquet_export->connect(bouquet_export, &QAction::triggered, [=]() { tid->exportFile(); });
 	}
 	// userbouquet
 	else
@@ -1790,7 +1789,7 @@ void mainView::showTreeEditContextMenu(QPoint &pos)
 		tree_edit->addAction("Edit Userbouquet", [=]() { this->editUserbouquet(); });
 		tree_edit->addSeparator();
 		tree_edit->addAction("Delete", [=]() { this->bouquetItemDelete(); });
-		bouquet_export->connect(bouquet_export, &QAction::triggered, [=]() { twid->exportFile(); });
+		bouquet_export->connect(bouquet_export, &QAction::triggered, [=]() { tid->exportFile(); });
 	}
 	tree_edit->addSeparator();
 	tree_edit->addAction(bouquet_export);

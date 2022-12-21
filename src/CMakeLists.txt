@@ -14,6 +14,7 @@ qt_add_executable(e2-sat-editor WIN32 MACOSX_BUNDLE
 	e2db/e2db_abstract.cpp
 	e2db/e2db_parser.cpp
 	e2db/e2db_maker.cpp
+	e2db/e2db_converter.cpp
 	e2db/e2db.cpp
 	ftpcom/ftpcom.cpp
 	gui/toolkit/BouquetsEventHandler.cpp

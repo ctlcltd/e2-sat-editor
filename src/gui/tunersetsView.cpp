@@ -37,13 +37,13 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-tunersetsView::tunersetsView(tab* twid, QWidget* wid, dataHandler* data, int ytype, e2se::logger::session* log)
+tunersetsView::tunersetsView(tab* tid, QWidget* cwid, dataHandler* data, int ytype, e2se::logger::session* log)
 {
 	this->log = new logger(log, "tunersetsView");
 	debug("tunersetsView()");
 
-	this->twid = twid;
-	this->cwid = wid;
+	this->tid = tid;
+	this->cwid = cwid;
 	this->data = data;
 	this->yx = ytype;
 	this->sets = new QSettings;

@@ -48,26 +48,6 @@ void e2db_maker::make_e2db()
 	info("make_e2db()", "elapsed time", to_string(int (end - start)) + " ms.");
 }
 
-string e2db_maker::get_timestamp()
-{
-	std::time_t ct = std::time(0);
-	int zh = 0;
-	std::tm* lct = std::localtime(&ct);
-	zh = lct->tm_hour + lct->tm_isdst;
-	char dt[80];
-	std::strftime(dt, 80, "%Y-%m-%d %H:%M:%S", lct);
-	std::tm* gmt = std::gmtime(&ct);
-	zh = (zh - gmt->tm_hour) * 100;
-	char tz[7];
-	std::sprintf(tz, "%+05d", zh);
-	return string (dt) + string (tz);
-}
-
-string e2db_maker::get_editor_string()
-{
-	return "e2 SAT Editor 0.1 <https://github.com/ctlcltd/e2-sat-editor>";
-}
-
 void e2db_maker::make_e2db_lamedb()
 {
 	debug("make_e2db_lamedb()");
@@ -120,38 +100,23 @@ e2db_file e2db_maker::make_lamedb(string filename)
 {
 	debug("make_lamedb()");
 
-	// formatting
-	//
-	// [0]  comment
-	// [1]  transponders start
-	// [2]  services start
-	// [3]  section end
-	// [4]  delimiter
-	// [5]  transponder flag
-	// [6]  transponder params separator
-	// [7]  transponder space delimiter
-	// [8]  transponder endline
-	// [9]  service flag
-	// [10] service params separator
-	// [11] service param escape
-	// [12] service endline
 	const string (&formats)[13] = LAMEDB_VER < 5 ? LAMEDB4_FORMATS : LAMEDB5_FORMATS;
 
 	stringstream ss;
 	ss << "eDVB services /" << LAMEDB_VER << "/" << endl;
 
-	ss << formats[1];
+	ss << formats[MAKER_FORMAT::transponders_start];
 	for (auto & x : index["txs"])
 	{
 		transponder tx = db.transponders[x.second];
-		ss << formats[5] << formats[4];
+		ss << formats[MAKER_FORMAT::transponder_flag] << formats[MAKER_FORMAT::delimiter];
 		ss << hex;
 		ss << setfill('0') << setw(8) << tx.dvbns;
 		ss << ':' << setfill('0') << setw(4) << tx.tsid;
 		ss << ':' << setfill('0') << setw(4) << tx.onid;
 		ss << dec;
-		ss << formats[6];
-		ss << tx.ttype << formats[7];
+		ss << formats[MAKER_FORMAT::transponder_params_separator];
+		ss << tx.ttype << formats[MAKER_FORMAT::transponder_space_delimiter];
 		switch (tx.ttype)
 		{
 			case 's': // DVB-S
@@ -205,15 +170,15 @@ e2db_file e2db_maker::make_lamedb(string filename)
 					ss << tx.oflgs;
 			break;
 		}
-		ss << formats[8];
+		ss << formats[MAKER_FORMAT::transponder_endline];
 	}
-	ss << formats[3];
+	ss << formats[MAKER_FORMAT::section_end];
 
-	ss << formats[2];
+	ss << formats[MAKER_FORMAT::services_start];
 	for (auto & x : index["chs"])
 	{
 		service ch = db.services[x.second];
-		ss << formats[9] << formats[4];
+		ss << formats[MAKER_FORMAT::service_flag] << formats[MAKER_FORMAT::delimiter];
 		ss << hex;
 		ss << setfill('0') << setw(4) << ch.ssid;
 		ss << ':' << setfill('0') << setw(8) << ch.dvbns;
@@ -224,9 +189,9 @@ e2db_file e2db_maker::make_lamedb(string filename)
 		ss << ':' << ch.snum;
 		if (LAMEDB_VER == 5)
 			ss << ':' << ch.srcid;
-		ss << formats[10];
-		ss << formats[11] << ch.chname << formats[11];
-		ss << formats[10];
+		ss << formats[MAKER_FORMAT::service_params_separator];
+		ss << formats[MAKER_FORMAT::service_param_escape] << ch.chname << formats[MAKER_FORMAT::service_param_escape];
+		ss << formats[MAKER_FORMAT::service_params_separator];
 		//TODO max length 256 EOL
 		auto last_key = (*prev(ch.data.cend()));
 		for (auto & q : ch.data)
@@ -247,12 +212,12 @@ e2db_file e2db_maker::make_lamedb(string filename)
 					ss << ',';
 			}
 		}
-		ss << formats[12];
+		ss << formats[MAKER_FORMAT::service_endline];
 	}
-	ss << formats[3];
+	ss << formats[MAKER_FORMAT::section_end];
 
-	ss << formats[0] << "editor: " << get_editor_string() << endl;
-	ss << formats[0] << "datetime: " << get_timestamp() << endl;
+	ss << formats[MAKER_FORMAT::comment] << "editor: " << get_editor_string() << endl;
+	ss << formats[MAKER_FORMAT::comment] << "datetime: " << get_timestamp() << endl;
 	return ss.str();
 }
 

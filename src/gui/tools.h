@@ -11,21 +11,30 @@
 
 #ifndef tools_h
 #define tools_h
-#include <QGridLayout>
+#include <QWidget>
 
 #include "../logger/logger.h"
-#include "e2db_gui.h"
+#include "dataHandler.h"
 
-namespace e2se_gui_tools
+namespace e2se_gui
 {
+class gui;
+class tab;
+
 class tools : protected e2se::log_factory
 {
 	public:
-		tools(QGridLayout* root, e2se::logger::session* log);
+		tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data, e2se::logger::session* log);
 		void inspector();
+		void importFileCSV(e2db::FCONVS fci, e2db::fcopts opts);
+		void exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts);
+		void exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts);
 		void destroy();
-	protected:
-		QGridLayout* root;
+	private:
+		gui* gid;
+		tab* tid;
+		QWidget* cwid;
+		dataHandler* data = nullptr;
 };
 }
 #endif /* tools_h */

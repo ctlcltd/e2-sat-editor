@@ -27,9 +27,6 @@ using std::string, std::pair, std::vector, std::map;
 
 namespace e2se_gui
 {
-class gui;
-class tab;
-
 class channelBookView : public viewAbstract
 {
 	public:
@@ -55,7 +52,7 @@ class channelBookView : public viewAbstract
 		};
 
 		channelBookView(dataHandler* data, e2se::logger::session* log);
-		channelBookView(tab* twid, QWidget* wid, dataHandler* data, e2se::logger::session* log);
+		channelBookView(tab* tid, QWidget* cwid, dataHandler* data, e2se::logger::session* log);
 		void load();
 		void reset();
 		vector<QString> getSelected();

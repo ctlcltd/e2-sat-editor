@@ -78,6 +78,23 @@ class gui : protected e2se::log_factory
 			ToolsServicesCache = 83,
 			ToolsBouquetsOrder = 98,
 			ToolsBouquetsDelete = 92,
+			ToolsImportCSV_services = 101,
+			ToolsImportCSV_bouquet = 102,
+			ToolsImportCSV_userbouquet = 103,
+			ToolsImportCSV_tunersets = 104,
+			ToolsExportCSV_current = 106,
+			ToolsExportCSV_all = 107,
+			ToolsExportCSV_services = 109,
+			ToolsExportCSV_bouquets = 110,
+			ToolsExportCSV_userbouquets = 111,
+			ToolsExportCSV_tunersets = 112,
+			ToolsExportHTML_current = 116,
+			ToolsExportHTML_all = 117,
+			ToolsExportHTML_index = 118,
+			ToolsExportHTML_services = 119,
+			ToolsExportHTML_bouquets = 120,
+			ToolsExportHTML_userbouquets = 121,
+			ToolsExportHTML_tunersets = 122,
 			ToolsInspector = 0xfe,
 			init = 0,
 			idle = -1
@@ -96,6 +113,27 @@ class gui : protected e2se::log_factory
 			GUI_CXE::FileExport,
 			GUI_CXE::FilePrint,
 			GUI_CXE::FilePrintAll,
+			GUI_CXE::TunersetsSat,
+			GUI_CXE::TunersetsTerrestrial,
+			GUI_CXE::TunersetsCable,
+			GUI_CXE::TunersetsAtsc,
+			GUI_CXE::ToolsImportCSV_services,
+			GUI_CXE::ToolsImportCSV_bouquet,
+			GUI_CXE::ToolsImportCSV_userbouquet,
+			GUI_CXE::ToolsImportCSV_tunersets,
+			GUI_CXE::ToolsExportCSV_current,
+			GUI_CXE::ToolsExportCSV_all,
+			GUI_CXE::ToolsExportCSV_services,
+			GUI_CXE::ToolsExportCSV_bouquets,
+			GUI_CXE::ToolsExportCSV_userbouquets,
+			GUI_CXE::ToolsExportCSV_tunersets,
+			GUI_CXE::ToolsExportHTML_current,
+			GUI_CXE::ToolsExportHTML_all,
+			GUI_CXE::ToolsExportHTML_index,
+			GUI_CXE::ToolsExportHTML_services,
+			GUI_CXE::ToolsExportHTML_bouquets,
+			GUI_CXE::ToolsExportHTML_userbouquets,
+			GUI_CXE::ToolsExportHTML_tunersets,
 			GUI_CXE::ToolsInspector
 		};
 
@@ -107,7 +145,6 @@ class gui : protected e2se::log_factory
 		enum TAB_ATS {
 			Print = GUI_CXE::FilePrint,
 			PrintAll = GUI_CXE::FilePrintAll,
-			Inspector = GUI_CXE::ToolsInspector,
 			TreeFind = GUI_CXE::TabTreeFind,
 			TreeFindNext = GUI_CXE::TabTreeFindNext,
 			ListCut = GUI_CXE::TabListCut,
@@ -123,7 +160,25 @@ class gui : protected e2se::log_factory
 			EditTunersetsTerrestrial = GUI_CXE::TunersetsTerrestrial,
 			EditTunersetsCable = GUI_CXE::TunersetsCable,
 			EditTunersetsAtsc = GUI_CXE::TunersetsAtsc,
-			ShowChannelBook = GUI_CXE::OpenChannelBook
+			ShowChannelBook = GUI_CXE::OpenChannelBook,
+			ImportCSV_services = GUI_CXE::ToolsImportCSV_services,
+			ImportCSV_bouquet = GUI_CXE::ToolsImportCSV_bouquet,
+			ImportCSV_userbouquet = GUI_CXE::ToolsImportCSV_userbouquet,
+			ImportCSV_tunersets = GUI_CXE::ToolsImportCSV_tunersets,
+			ExportCSV_current = GUI_CXE::ToolsExportCSV_current,
+			ExportCSV_all = GUI_CXE::ToolsExportCSV_all,
+			ExportCSV_services = GUI_CXE::ToolsExportCSV_services,
+			ExportCSV_bouquets = GUI_CXE::ToolsExportCSV_bouquets,
+			ExportCSV_userbouquets = GUI_CXE::ToolsExportCSV_userbouquets,
+			ExportCSV_tunersets = GUI_CXE::ToolsExportCSV_tunersets,
+			ExportHTML_current = GUI_CXE::ToolsExportHTML_current,
+			ExportHTML_all = GUI_CXE::ToolsExportHTML_all,
+			ExportHTML_index = GUI_CXE::ToolsExportHTML_index,
+			ExportHTML_services = GUI_CXE::ToolsExportHTML_services,
+			ExportHTML_bouquets = GUI_CXE::ToolsExportHTML_bouquets,
+			ExportHTML_userbouquets = GUI_CXE::ToolsExportHTML_userbouquets,
+			ExportHTML_tunersets = GUI_CXE::ToolsExportHTML_tunersets,
+			Inspector = GUI_CXE::ToolsInspector
 		};
 
 		enum TAB_VIEW {
@@ -133,10 +188,13 @@ class gui : protected e2se::log_factory
 		};
 
 		enum GUI_DPORTS {
+			AllFiles = 0x0,
 			Services = 0x1,
 			Bouquets = 0x2,
 			Userbouquets = 0x4,
-			Tunersets = 0x8
+			Tunersets = 0x8,
+			CSV = 0x10,
+			HTML = 0x20
 		};
 
 		enum COUNTER {
@@ -164,8 +222,8 @@ class gui : protected e2se::log_factory
 		void menuLayout();
 		void tabLayout();
 		void statusLayout();
-		void tabViewSwitch(int v);
-		void tabViewSwitch(int v, int arg);
+		void tabViewSwitch(TAB_VIEW ttv);
+		void tabViewSwitch(TAB_VIEW ttv, int arg);
 		int newTab(string filename = "");
 		int openTab(TAB_VIEW view);
 		int openTab(TAB_VIEW view, int arg);
@@ -177,8 +235,9 @@ class gui : protected e2se::log_factory
 		void tabChangeName(int ttid, string filename = "");
 		string openFileDialog();
 		string saveFileDialog(string filename);
-		vector<string> importFileDialog();
-		string exportFileDialog(GUI_DPORTS gde, string filename, int& flags);
+		vector<string> importFileDialog(gui::GUI_DPORTS gde);
+		string exportFileDialog(GUI_DPORTS gde, string filename, int& bit);
+		string exportFileDialog(GUI_DPORTS gde, string filename);
 		void setStatus(STATUS status);
 		void resetStatus();
 		void fileOpen();

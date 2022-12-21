@@ -15,10 +15,30 @@
 
 #include "e2db_abstract.h"
 
-using std::string, std::pair, std::to_string, std::cout, std::endl;
+using std::string, std::pair, std::hex, std::dec, std::to_string, std::cout, std::endl;
 
 namespace e2se_e2db
 {
+
+string e2db_abstract::get_timestamp()
+{
+	std::time_t ct = std::time(0);
+	int zh = 0;
+	std::tm* lct = std::localtime(&ct);
+	zh = lct->tm_hour + lct->tm_isdst;
+	char dt[80];
+	std::strftime(dt, 80, "%Y-%m-%d %H:%M:%S", lct);
+	std::tm* gmt = std::gmtime(&ct);
+	zh = (zh - gmt->tm_hour) * 100;
+	char tz[7];
+	std::sprintf(tz, "%+05d", zh);
+	return string (dt) + string (tz);
+}
+
+string e2db_abstract::get_editor_string()
+{
+	return "e2 SAT Editor 0.1 <https://github.com/ctlcltd/e2-sat-editor>";
+}
 
 void e2db_abstract::debug(string msg)
 {
@@ -194,5 +214,150 @@ void e2db_abstract::add_tunersets_transponder(int idx, tunersets_transponder& tn
 	tn.transponders.emplace(tntxp.trid, tntxp);
 	index[tn.tnid].emplace_back(pair (idx, tntxp.trid)); //C++17
 }
+
+void e2db_abstract::debugger()
+{
+	debug("debugger()");
+
+	cout << "transponders" << endl << endl;
+	for (auto & x : db.transponders)
+	{
+		cout << "txid: " << x.first << endl;
+		cout << hex;
+		cout << "dvbns: " << x.second.dvbns << endl;
+		cout << "tsid: " << x.second.tsid << endl;
+		cout << "onid: " << x.second.onid << endl;
+		cout << dec;
+		cout << "ttype: " << x.second.ttype << endl;
+		cout << "freq: " << x.second.freq << endl;
+		cout << "sr: " << x.second.sr << endl;
+		cout << "pol: " << x.second.pol << endl;
+		cout << "fec: " << x.second.fec << endl;
+		cout << "hpfec: " << x.second.hpfec << endl;
+		cout << "lpfec: " << x.second.lpfec << endl;
+		cout << "cfec: " << x.second.cfec << endl;
+		cout << "pos: " << x.second.pos << endl;
+		cout << "inv: " << x.second.inv << endl;
+		cout << "flgs: " << x.second.flgs << endl;
+		cout << "sys: " << x.second.sys << endl;
+		cout << "mod: " << x.second.mod << endl;
+		cout << "tmod: " << x.second.tmod << endl;
+		cout << "cmod: " << x.second.cmod << endl;
+		cout << "amod: " << x.second.amod << endl;
+		cout << "rol: " << x.second.rol << endl;
+		cout << "pil: " << x.second.pil << endl;
+		cout << "band: " << x.second.band << endl;
+		cout << "tmx: " << x.second.tmx << endl;
+		cout << "guard: " << x.second.guard << endl;
+		cout << "hier: " << x.second.hier << endl;
+		cout << "oflgs: " << x.second.oflgs << endl;
+		cout << endl;
+	}
+	cout << endl;
+	cout << "services" << endl << endl;
+	for (auto & x : db.services)
+	{
+		cout << "chid: " << x.first << endl;
+		cout << "txid: " << x.second.txid << endl;
+		cout << hex;
+		cout << "ssid: " << x.second.ssid << endl;
+		cout << "dvbns: " << x.second.dvbns << endl;
+		cout << "tsid: " << x.second.tsid << endl;
+		cout << dec;
+		cout << "onid: " << x.second.onid << endl;
+		cout << "stype: " << x.second.stype << endl;
+		cout << "snum: " << x.second.snum << endl;
+		cout << "srcid: " << x.second.srcid << endl;
+		cout << "chname: " << x.second.chname << endl;
+		cout << "data: [" << endl << endl;
+		for (auto & q : x.second.data)
+		{
+			cout << q.first << ": [" << endl;
+			for (string & w : q.second)
+				cout << w << ", ";
+			cout << endl << "]";
+		}
+		cout << "]" << endl << endl;
+		cout << "index: " << x.second.index << endl;
+		cout << endl;
+	}
+	cout << endl;
+	cout << "bouquets" << endl << endl;
+	for (auto & x : bouquets)
+	{
+		cout << "filename: " << x.first << endl;
+		cout << "name: " << x.second.name << endl;
+		cout << "nname: " << x.second.nname << endl;
+		cout << "btype: " << x.second.btype << endl;
+		cout << "userbouquets: [" << endl << endl;
+		for (string & w : x.second.userbouquets)
+			cout << w << endl;
+		cout << "]" << endl << endl;
+	}
+	cout << endl;
+	cout << "userbouquets" << endl << endl;
+	for (auto & x : userbouquets)
+	{
+		cout << "filename: " << x.first << endl;
+		cout << "name: " << x.second.name << endl;
+		cout << "channels: [" << endl << endl;
+		for (auto & q : x.second.channels)
+		{
+			cout << "chid: " << q.first << endl;
+			cout << "index: " << q.second.index << endl;
+		}
+		cout << "]" << endl << endl;
+	}
+	cout << endl;
+	cout << "tuners" << endl << endl;
+	for (auto & x : tuners)
+	{
+		cout << "ytype: " << x.first << endl;
+		cout << "charset: " << x.first << endl;
+		cout << "tables: [" << endl << endl;
+		for (auto & q : x.second.tables)
+		{
+			cout << "tnid: " << q.second.tnid << endl;
+			cout << "ytype: " << q.second.ytype << endl;
+			cout << "name: " << q.second.name << endl;
+			cout << "flags: " << q.second.flgs << endl;
+			cout << "pos: " << q.second.pos << endl;
+			cout << "index: " << q.second.index << endl;
+			cout << "transponders: [" << endl << endl;
+			for (auto & x : q.second.transponders)
+			{
+				cout << "trid: " << x.first << endl;
+				cout << "freq: " << x.second.freq << endl;
+				cout << "sr: " << x.second.sr << endl;
+				cout << "pol: " << x.second.pol << endl;
+				cout << "fec: " << x.second.fec << endl;
+				cout << "hpfec: " << x.second.hpfec << endl;
+				cout << "lpfec: " << x.second.lpfec << endl;
+				cout << "cfec: " << x.second.cfec << endl;
+				cout << "inv: " << x.second.inv << endl;
+				cout << "sys: " << x.second.sys << endl;
+				cout << "mod: " << x.second.mod << endl;
+				cout << "tmod: " << x.second.tmod << endl;
+				cout << "cmod: " << x.second.cmod << endl;
+				cout << "amod: " << x.second.amod << endl;
+				cout << "band: " << x.second.band << endl;
+				cout << "tmx: " << x.second.tmx << endl;
+				cout << "guard: " << x.second.guard << endl;
+				cout << "hier: " << x.second.hier << endl;
+				cout << "rol: " << x.second.rol << endl;
+				cout << "pil: " << x.second.pil << endl;
+				cout << "isid: " << x.second.isid << endl;
+				cout << "plsmode: " << x.second.plsmode << endl;
+				cout << "plscode: " << x.second.plscode << endl;
+				cout << "index: " << x.second.index << endl;
+				cout << endl;
+			}
+			cout << "]" << endl << endl;
+		}
+		cout << "]" << endl << endl;
+	}
+	cout << endl;
+}
+
 
 }

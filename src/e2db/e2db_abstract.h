@@ -33,6 +33,22 @@ struct e2db_abstract
 
 		//TODO FIX defined const
 
+		enum FPORTS {
+			fports_empty = 0x0000,
+			all_services = 0x1000,
+			all_services__2_2 = 0x1222,
+			all_services__2_3 = 0x1223,
+			all_services__2_4 = 0x1224,
+			all_services__2_5 = 0x1225,
+			all_bouquets = 0x2000,
+			all_userbouquets = 0x4000,
+			all_tunersets = 0x8000,
+			single_bouquet = 0x0002,
+			single_bouquet_all = 0x0400,
+			single_userbouquet = 0x0004,
+			single_tunersets = 0x0008
+		};
+
 		inline static const string SAT_POL[4] = {"H", "V", "L", "R"};
 		inline static const string SAT_FEC[11] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "3/5", "4/5", "8/9", "9/10"};
 		inline static const string SAT_INV[3] = {"Auto", "On", "Off"};
@@ -344,12 +360,19 @@ struct e2db_abstract
 		unordered_map<string, vector<pair<int, string>>> index;
 		// collisions <chid string, vector<pair<chid string, increment int>>>
 		unordered_map<string, vector<pair<string, int>>> collisions;
+
+		string get_timestamp();
+		string get_editor_string();
+		virtual unordered_map<string, string> get_input() {};
+		virtual unordered_map<string, e2db_file> get_output() {};
+		virtual void debugger();
+		virtual void* newptr() {};
 	protected:
 		inline static int LAMEDB_VER = 0;
 
 		// e2db <filename string, full-path string>
 		unordered_map<string, string> e2db;
-		void options();
+		virtual void options() {};
 		virtual void debug(string msg);
 		virtual void debug(string msg, string optk, string optv);
 		virtual void debug(string msg, string optk, int optv);

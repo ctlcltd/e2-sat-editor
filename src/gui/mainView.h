@@ -29,21 +29,9 @@ using std::map, std::unordered_map;
 
 namespace e2se_gui
 {
-class gui;
-class tab;
-
 class mainView : public viewAbstract
 {
 	public:
-		enum LIST_REF {
-			ReferenceID,
-			ServiceID,
-			Transponder,
-			Userbouquets,
-			Bouquets,
-			Tuner
-		};
-
 		enum ITEM_DATA_ROLE {
 			idx,
 			marker,
@@ -67,6 +55,15 @@ class mainView : public viewAbstract
 			chfec,
 			chpos,
 			chsys
+		};
+
+		enum LIST_REF {
+			ReferenceID,
+			ServiceID,
+			Transponder,
+			Userbouquets,
+			Bouquets,
+			Tuner
 		};
 
 		struct sts
@@ -102,7 +99,7 @@ class mainView : public viewAbstract
 			QPushButton* list_dnd;
 		} action;
 
-		mainView(tab* twid, QWidget* wid, dataHandler* data, e2se::logger::session* log);
+		mainView(tab* tid, QWidget* cwid, dataHandler* data, e2se::logger::session* log);
 		void load();
 		void reset();
 		void bouquetItemDelete();
@@ -147,7 +144,6 @@ class mainView : public viewAbstract
 
 		map<int, QLabel*> ref_fields;
 		unordered_map<string, QList<QTreeWidgetItem*>> cache;
-		e2se_gui_tools::tools* tools;
 		QWidget* list_wrap;
 		BouquetsEventHandler* bouquets_evth;
 		ListEventHandler* list_evth;

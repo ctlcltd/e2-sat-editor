@@ -235,21 +235,21 @@ void e2db::import_file(FPORTS fpi, e2db* dbih, e2db_file file, string path)
 
 	switch (fpi)
 	{
-		case FPORTS::allServices:
+		case FPORTS::all_services:
 			dbih->parse_e2db_lamedb(ifile);
 		break;
-		case FPORTS::allServices2_2:
-		case FPORTS::allServices2_3:
+		case FPORTS::all_services__2_2:
+		case FPORTS::all_services__2_3:
 			return error("import_file()", "Error", "Unsupported services file format.");
 		break;
-		case FPORTS::allServices2_4:
+		case FPORTS::all_services__2_4:
 			dbih->parse_e2db_lamedb4(ifile);
 		break;
-		case FPORTS::allServices2_5:
+		case FPORTS::all_services__2_5:
 			dbih->parse_e2db_lamedb5(ifile);
 		break;
-		case FPORTS::singleTunersets:
-		case FPORTS::allTunersets:
+		case FPORTS::single_tunersets:
+		case FPORTS::all_tunersets:
 			if (filename == "satellites.xml")
 				dbih->parse_tunersets_xml(YTYPE::sat, ifile);
 			else if (filename == "terrestrial.xml")
@@ -259,16 +259,16 @@ void e2db::import_file(FPORTS fpi, e2db* dbih, e2db_file file, string path)
 			else if (filename == "atsc.xml")
 				dbih->parse_tunersets_xml(YTYPE::atsc, ifile);
 		break;
-		case FPORTS::singleBouquet:
-		case FPORTS::allBouquets:
+		case FPORTS::single_bouquet:
+		case FPORTS::all_bouquets:
 			dbih->parse_e2db_bouquet(ifile, filename);
 		break;
-		case FPORTS::singleUserbouquet:
-		case FPORTS::allUserbouquets:
+		case FPORTS::single_userbouquet:
+		case FPORTS::all_userbouquets:
 			dbih->parse_e2db_userbouquet(ifile, filename);
 		break;
-		case FPORTS::singleBouquetAll:
-			if (filetype_detect(filename) == FPORTS::singleBouquet)
+		case FPORTS::single_bouquet_all:
+			if (filetype_detect(filename) == FPORTS::single_bouquet)
 				dbih->parse_e2db_bouquet(ifile, filename);
 			else
 				dbih->parse_e2db_userbouquet(ifile, filename);
@@ -312,24 +312,24 @@ void e2db::export_file(FPORTS fpo, string path)
 
 	switch (fpo)
 	{
-		case FPORTS::allServices:
+		case FPORTS::all_services:
 			if (LAMEDB_VER == 4)
 				file = make_lamedb4("lamedb");
 			else if (LAMEDB_VER == 5)
 				file = make_lamedb5("lamedb5");
 		break;
-		case FPORTS::allServices2_2:
-		case FPORTS::allServices2_3:
+		case FPORTS::all_services__2_2:
+		case FPORTS::all_services__2_3:
 			return error("export_file()", "Error", "Unsupported services file format.");
 		break;
-		case FPORTS::allServices2_4:
+		case FPORTS::all_services__2_4:
 			file = make_lamedb4("lamedb");
 		break;
-		case FPORTS::allServices2_5:
+		case FPORTS::all_services__2_5:
 			file = make_lamedb5("lamedb5");
 		break;
-		case FPORTS::singleTunersets:
-		case FPORTS::allTunersets:
+		case FPORTS::single_tunersets:
+		case FPORTS::all_tunersets:
 			if (filename == "satellites.xml")
 				file = make_tunersets_xml(filename, YTYPE::sat);
 			else if (filename == "terrestrial.xml")
@@ -339,16 +339,16 @@ void e2db::export_file(FPORTS fpo, string path)
 			else if (filename == "atsc.xml")
 				file = make_tunersets_xml(filename, YTYPE::atsc);
 		break;
-		case FPORTS::singleBouquet:
-		case FPORTS::allBouquets:
+		case FPORTS::single_bouquet:
+		case FPORTS::all_bouquets:
 			file = make_bouquet(filename);
 		break;
-		case FPORTS::singleUserbouquet:
-		case FPORTS::allUserbouquets:
+		case FPORTS::single_userbouquet:
+		case FPORTS::all_userbouquets:
 			file = make_userbouquet(filename);
 		break;
-		case FPORTS::singleBouquetAll:
-			if (filetype_detect(filename) == FPORTS::singleBouquet)
+		case FPORTS::single_bouquet_all:
+			if (filetype_detect(filename) == FPORTS::single_bouquet)
 				file = make_bouquet(filename);
 			else
 				file = make_userbouquet(filename);
@@ -368,24 +368,24 @@ e2db::FPORTS e2db::filetype_detect(string path)
 	string filename = std::filesystem::path(path).filename().u8string(); //C++17
 
 	if (filename == "lamedb")
-		return FPORTS::allServices; // autodetect
+		return FPORTS::all_services; // autodetect
 	else if (filename == "lamedb5")
-		return FPORTS::allServices2_5;
+		return FPORTS::all_services__2_5;
 	else if (filename == "services")
-		return FPORTS::allServices; // autodetect
+		return FPORTS::all_services; // autodetect
 	else if (filename == "satellites.xml")
-		return FPORTS::singleTunersets;
+		return FPORTS::single_tunersets;
 	else if (filename == "terrestrial.xml")
-		return FPORTS::singleTunersets;
+		return FPORTS::single_tunersets;
 	else if (filename == "cables.xml")
-		return FPORTS::singleTunersets;
+		return FPORTS::single_tunersets;
 	else if (filename == "atsc.xml")
-		return FPORTS::singleTunersets;
+		return FPORTS::single_tunersets;
 	else if (filename.find("bouquets.") != string::npos)
-		return FPORTS::singleBouquet;
+		return FPORTS::single_bouquet;
 	else if (filename.find("userbouquet.") != string::npos)
-		return FPORTS::singleUserbouquet;
-	return FPORTS::empty;
+		return FPORTS::single_userbouquet;
+	return FPORTS::fports_empty;
 }
 
 void e2db::add_transponder(transponder& tx)

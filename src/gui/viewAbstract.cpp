@@ -434,28 +434,28 @@ void viewAbstract::listFindReset()
 
 void viewAbstract::tabSetFlag(gui::GUI_CXE bit, bool flag)
 {
-	if (twid != nullptr)
-		twid->setFlag(bit, flag);
+	if (tid != nullptr)
+		tid->setFlag(bit, flag);
 }
 
 void viewAbstract::tabSetFlag(gui::GUI_CXE bit)
 {
-	if (twid != nullptr)
-		twid->setFlag(bit);
+	if (tid != nullptr)
+		tid->setFlag(bit);
 }
 
 bool viewAbstract::tabGetFlag(gui::GUI_CXE bit)
 {
-	if (twid != nullptr)
-		return twid->getFlag(bit);
+	if (tid != nullptr)
+		return tid->getFlag(bit);
 	else
 		return true;
 }
 
 void viewAbstract::tabUpdateFlags()
 {
-	if (twid != nullptr)
-		twid->storeFlags();
+	if (tid != nullptr)
+		tid->storeFlags();
 }
 
 void viewAbstract::tabUpdateFlags(gui::GUI_CXE bit)
@@ -466,14 +466,14 @@ void viewAbstract::tabUpdateFlags(gui::GUI_CXE bit)
 
 void viewAbstract::tabSetStatus(gui::STATUS status)
 {
-	if (twid != nullptr)
-		twid->setStatus(status);
+	if (tid != nullptr)
+		tid->setStatus(status);
 }
 
 void viewAbstract::tabResetStatus()
 {
-	if (twid != nullptr)
-		twid->resetStatus();
+	if (tid != nullptr)
+		tid->resetStatus();
 }
 
 }

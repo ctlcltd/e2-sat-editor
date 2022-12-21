@@ -38,13 +38,13 @@ channelBookView::channelBookView(dataHandler* data, e2se::logger::session* log)
 	layout();
 }
 
-channelBookView::channelBookView(tab* twid, QWidget* wid, dataHandler* data, e2se::logger::session* log)
+channelBookView::channelBookView(tab* tid, QWidget* cwid, dataHandler* data, e2se::logger::session* log)
 {
 	this->log = new logger(log, "channelBookView");
 	debug("channelBookView()");
 
-	this->twid = twid;
-	this->cwid = wid;
+	this->tid = tid;
+	this->cwid = cwid;
 	this->data = data;
 	this->sets = new QSettings;
 	this->widget = new QWidget;
