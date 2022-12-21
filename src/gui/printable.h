@@ -19,7 +19,7 @@ using std::string, std::pair, std::vector, std::map;
 #define printable_h
 
 #include "../logger/logger.h"
-#include "e2db_gui.h"
+#include "dataHandler.h"
 
 namespace e2se_gui
 {
@@ -42,7 +42,7 @@ class printable : protected e2se::log_factory
 			QString footer;
 		};
 
-		printable(e2db* dbih, e2se::logger::session* log);
+		printable(dataHandler* data, e2se::logger::session* log);
 		void document_all();
 		void document_index();
 		void document_services();
@@ -62,8 +62,10 @@ class printable : protected e2se::log_factory
 		void page_body_tunersets_list(html_page& page, int ytype);
 		QString doc_html_head();
 		QString doc_html_foot();
+
+		dataHandler* data = nullptr;
+		e2db* dbih = nullptr;
 	private:
-		e2db* dbih;
 		vector<html_page> pages;
 };
 }

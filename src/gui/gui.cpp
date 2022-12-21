@@ -345,7 +345,7 @@ int gui::newTab(string filename)
 
 int gui::openTab(TAB_VIEW view)
 {
-	return openTab(view, NULL);
+	return openTab(view, 0);
 }
 
 int gui::openTab(TAB_VIEW view, int arg)
@@ -638,11 +638,11 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 			opts.append("Tuner settings (*.xml)");
 		break;
 		case GUI_DPORTS::CSV:
-			opts.append("CSV File (*.csv,txt)");
+			opts.append("CSV File (*.csv *.txt)");
 			opts.append("All Files (*)");
 		break;
 		case GUI_DPORTS::HTML:
-			opts.append("HTML File (*.html,htm)");
+			opts.append("HTML File (*.html *.htm)");
 			opts.append("All Files (*)");
 		break;
 		default:

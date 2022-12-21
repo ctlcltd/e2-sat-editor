@@ -12,12 +12,15 @@
 #include <cstdio>
 #include <cmath>
 #include <unordered_set>
+#include <filesystem>
 
+#include <QtGlobal>
 #include <QPrinter>
 #include <QTextDocument>
 #include <QPrintDialog>
 
 #include "printable.h"
+#include "dataHandler.h"
 
 using std::to_string, std::unordered_set;
 using namespace e2se;
@@ -25,13 +28,14 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-printable::printable(e2db* dbih, e2se::logger::session* log)
+printable::printable(dataHandler* data, e2se::logger::session* log)
 {
 	this->log = new logger(log, "printable");
 	debug("printable()");
 
-	this->dbih = dbih;
+	this->data = data;
 	this->sets = new QSettings;
+	this->dbih = this->data->dbih;
 }
 
 void printable::document_all()
@@ -662,7 +666,11 @@ void printable::print()
 	QPrinter* printer = new QPrinter;
 	QTextDocument* doc = new QTextDocument;
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 30, 0)
 	printer->setPageSize(QPageSize::A4);
+#else
+	printer->setPageSize(QPagedPaintDevice::PageSize::A4);
+#endif
 	printer->setPageOrientation(QPageLayout::Landscape);
 
 	QStringList html;
@@ -688,6 +696,7 @@ void printable::print()
 	}
 }
 
+//TODO FIX Qt5 borderSize
 QString printable::doc_html_head()
 {
 	return "<html lang=\"en\">\

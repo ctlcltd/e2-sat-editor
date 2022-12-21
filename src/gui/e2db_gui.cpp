@@ -481,7 +481,8 @@ QStringList e2db::entryTunersetsTransponder(tunersets_transponder tntxp, tunerse
 	}
 	else if (tn.ytype == YTYPE::atsc)
 	{
-		combo = NULL;
+		// combo = NULL;
+		combo = ""; //Qt5
 		QString amod = QString::fromStdString(to_string(tntxp.amod));
 		QString sys = "ATSC";
 		entry = QStringList ({trid, combo, freq, amod, sys});

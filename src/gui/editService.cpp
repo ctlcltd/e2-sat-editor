@@ -121,7 +121,7 @@ void editService::transponderLayout()
 	fields.emplace_back(dtf1tn);
 	dtf1tn->setMinimumWidth(180);
 	dtf1tn->setEditable(true);
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 	dtf1tn->connect(dtf1tn, &QComboBox::currentIndexChanged, [=](int index) { this->tunerComboChanged(index); });
 #else
 	dtf1tn->connect(dtf1tn, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) { this->tunerComboChanged(index); });

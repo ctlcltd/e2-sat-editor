@@ -93,7 +93,7 @@ class tab : protected e2se::log_factory
 		void loadSeeds();
 		QWidget* widget;
 		dataHandler* data = nullptr;
-		tools* tools = nullptr;
+		e2se_gui::tools* tools = nullptr;
 	protected:
 		QGridLayout* root;
 		// tab view

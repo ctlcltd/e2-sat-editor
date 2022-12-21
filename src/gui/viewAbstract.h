@@ -130,7 +130,7 @@ class viewAbstract : protected e2se::log_factory
 		QSettings* sets;
 		tab* tid;
 		dataHandler* data = nullptr;
-		tools* tools;
+		e2se_gui::tools* tools;
 		e2db* dbih = nullptr;
 		QVBoxLayout* tbox;
 		QVBoxLayout* lbox;

@@ -316,14 +316,14 @@ void tab::layout()
 	}
 	gid->sets->endArray();
 	profile_combo->setCurrentIndex(profile_sel);
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 	profile_combo->connect(profile_combo, &QComboBox::currentIndexChanged, [=](int index) { this->profileComboChanged(index); });
 #else
 	profile_combo->connect(profile_combo, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) { this->profileComboChanged(index); });
 #endif
 
-	top_toolbar->addAction(theme::icon("file-open"), "&Open", QKeySequence::Open, [=]() { this->openFile(); });
-	top_toolbar->addAction(theme::icon("save"), "&Save", QKeySequence::Save, [=]() { this->saveFile(false); });
+	top_toolbar->addAction(theme::icon("file-open"), "&Open", [=]() { this->openFile(); })->setShortcut(QKeySequence::Open); //Qt5
+	top_toolbar->addAction(theme::icon("save"), "&Save", [=]() { this->saveFile(false); })->setShortcut(QKeySequence::Save); //Qt5
 	top_toolbar->addSeparator();
 	top_toolbar->addAction(theme::icon("import"), "Import", [=]() { this->importFile(); });
 	top_toolbar->addAction(theme::icon("export"), "Export", [=]() { this->exportFile(); });
@@ -478,7 +478,9 @@ void tab::importFile()
 {
 	debug("importFile()");
 
-	gui::GUI_DPORTS gde;
+	e2db* dbih = this->data->dbih;
+
+	gui::GUI_DPORTS gde = gui::GUI_DPORTS::AllFiles;
 	vector<string> paths;
 
 	paths = gid->importFileDialog(gde);
@@ -496,7 +498,9 @@ void tab::exportFile()
 {
 	debug("exportFile()");
 
-	gui::GUI_DPORTS gde;
+	e2db* dbih = this->data->dbih;
+
+	gui::GUI_DPORTS gde = gui::GUI_DPORTS::AllFiles;
 	vector<string> paths;
 	string filename;
 	int flags = -1;
@@ -617,6 +621,8 @@ void tab::exportFile(QTreeWidgetItem* item)
 {
 	debug("exportFile()");
 
+	e2db* dbih = this->data->dbih;
+
 	gui::GUI_DPORTS gde;
 	vector<string> paths;
 	string filename;
@@ -691,7 +697,7 @@ void tab::printFile(bool all)
 {
 	debug("printFile()");
 
-	printable* printer = new printable(dbih, this->log->log);
+	printable* printer = new printable(this->data, this->log->log);
 
 	// print all
 	if (all)
@@ -1042,7 +1048,9 @@ void tab::ftpConnect()
 void tab::ftpUpload()
 {
 	debug("ftpUpload()");
-	
+
+	e2db* dbih = this->data->dbih;
+
 	if (ftpHandle())
 	{
 		unordered_map<string, e2se_ftpcom::ftpcom_file> files = dbih->get_output();
@@ -1091,6 +1099,8 @@ void tab::ftpDownload()
 {
 	debug("ftpDownload()");
 
+	e2db* dbih = this->data->dbih;
+
 	if (ftpHandle())
 	{
 		unordered_map<string, e2se_ftpcom::ftpcom_file> files = ftph->get_files();
@@ -1111,6 +1121,8 @@ void tab::ftpDownload()
 void tab::updateBouquetsIndex()
 {
 	debug("updateBouquetsIndex()");
+
+	e2db* dbih = this->data->dbih;
 
 	int i = 0, y;
 	int count = main->tree->topLevelItemCount();
@@ -1158,6 +1170,8 @@ void tab::updateChannelsIndex()
 {
 	if (! main->state.changed)
 		return;
+
+	e2db* dbih = this->data->dbih;
 
 	int i = 0, idx = 0;
 	int count = main->list->topLevelItemCount();

@@ -24,7 +24,7 @@ qt_add_executable(e2-sat-editor WIN32 MACOSX_BUNDLE
 	gui/toolkit/TreeStyledItemDelegate.h
 	gui/toolkit/WidgetWithBackdrop.cpp
 	gui/about.cpp
-	gui/channelBook.cpp
+	gui/channelBookView.cpp
 	gui/e2db_gui.cpp
 	gui/dataHandler.cpp
 	gui/dialAbstract.cpp

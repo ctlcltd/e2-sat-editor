@@ -9,6 +9,7 @@
  * @license GNU GPLv3 License
  */
 
+#include <QtGlobal>
 #include <QDialog>
 #include <QTimer>
 #include <QGridLayout>
@@ -53,12 +54,14 @@ void tools::inspector()
 
 	// QTextEdit* dtdg = new QTextEdit;
 	QComboBox* dtft = new QComboBox;
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 	dtft->setPlaceholderText("<Filter>");
+#endif
 	dtft->addItem("All Log");
 	dtft->addItem("Debug");
 	dtft->addItem("Info");
 	dtft->addItem("Error");
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 	dtft->connect(dtft, &QComboBox::currentIndexChanged, e2se_gui::todo);
 #else
 	dtft->connect(dtft, QOverload<int>::of(&QComboBox::currentIndexChanged), e2se_gui::todo);

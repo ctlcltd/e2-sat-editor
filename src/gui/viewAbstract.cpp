@@ -12,6 +12,7 @@
 #include <cstdio>
 #include <cmath>
 
+#include <QtGlobal>
 #include <QApplication>
 #include <QTimer>
 #include <QGridLayout>
@@ -78,7 +79,7 @@ void viewAbstract::searchLayout()
 	lsr_box->setContentsMargins(4, 3, 3, 6);
 	lsr_box->setSpacing(0);
 	this->lsr_search.filter = new QComboBox;
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 	this->lsr_search.filter->connect(this->lsr_search.filter, &QComboBox::currentIndexChanged, [=]() { this->listFindReset(); });
 #else
 	this->lsr_search.filter->connect(this->lsr_search.filter, QOverload<int>::of(&QComboBox::currentIndexChanged), [=]() { this->listFindReset(); });
@@ -359,7 +360,7 @@ void viewAbstract::listFindPerform(const QString& value, LIST_FIND flag)
 			listFindClear(false);
 			while (i != j)
 			{
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 				QTreeWidgetItem* item = list->itemFromIndex(match.at(i));
 #else
 				QTreeWidgetItem* item;

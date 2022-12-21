@@ -10,6 +10,7 @@
  */
 
 #include <Qt>
+#include <QtGlobal>
 #include <QDropEvent>
 #include <QList>
 
@@ -25,7 +26,7 @@ bool BouquetsEventHandler::eventFilter(QObject* o, QEvent* e)
 		QDropEvent* evt = static_cast<QDropEvent*>(e);
 		QTreeWidget* bouquets_tree = qobject_cast<QTreeWidget*>(o->parent());
 		QTreeWidget* list_tree = qobject_cast<QTreeWidget*>(evt->source());
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 		QPoint pos = evt->position().toPoint();
 #else
 		QPoint pos = evt->pos();

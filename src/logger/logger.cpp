@@ -134,11 +134,17 @@ void logger::error(string msg, string optk, int optv)
 	this->logger::error(msg, optk, std::to_string(optv));
 }
 
+//TODO TEST
 string logger::timestamp()
 {
+#ifndef __MINGW32__
 	std::timespec ct; //C++17
 	std::timespec_get(&ct, TIME_UTC); //C++17
 	std::tm* lct = std::localtime(&ct.tv_sec);
+#else
+	std::time_t ct = std::time(0);
+	std::tm* lct = std::localtime(&ct);
+#endif
 	char t[80];
 	std::strftime(t, 80, "%Y-%m-%d %H:%M:%S", lct);
 	char c[5];
