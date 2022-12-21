@@ -12,6 +12,7 @@
 #include "logger/logger.h"
 #include "gui/gui.h"
 
+#ifndef __MINGW32__
 int main(int argc, char* argv[], char* envp[])
 {
 	bool DEBUG = true;
@@ -41,3 +42,16 @@ int main(int argc, char* argv[], char* envp[])
 
 	return 0;
 }
+#else
+int main(int argc, char* argv[])
+{
+	bool DEBUG = true;
+
+	e2se::logger::session* log = new e2se::logger::session;
+	log->debug = DEBUG;
+
+	new e2se_gui::gui(argc, argv, log);
+
+	return 0;
+}
+#endif

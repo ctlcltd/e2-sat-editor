@@ -141,15 +141,18 @@ string logger::timestamp()
 	std::timespec ct; //C++17
 	std::timespec_get(&ct, TIME_UTC); //C++17
 	std::tm* lct = std::localtime(&ct.tv_sec);
-#else
-	std::time_t ct = std::time(0);
-	std::tm* lct = std::localtime(&ct);
-#endif
 	char t[80];
 	std::strftime(t, 80, "%Y-%m-%d %H:%M:%S", lct);
 	char c[5];
 	std::sprintf(c, ".%03d", int (float (ct.tv_nsec) / 1e9 * 1e3));
 	return string (t) + string (c);
+#else
+	std::time_t ct = std::time(0);
+	std::tm* lct = std::localtime(&ct);
+	char t[80];
+	std::strftime(t, 80, "%Y-%m-%d %H:%M:%S", lct);
+	return t;
+#endif
 }
 
 string logger::str()

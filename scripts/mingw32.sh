@@ -42,6 +42,7 @@ cp /usr/x86_64-w64-mingw32/bin/libwinpthread-1.dll build/
 cp /usr/x86_64-w64-mingw32/lib/qt6/bin/Qt6Core.dll build/
 cp /usr/x86_64-w64-mingw32/lib/qt6/bin/Qt6Gui.dll build/
 cp /usr/x86_64-w64-mingw32/lib/qt6/bin/Qt6Widgets.dll build/
+cp /usr/x86_64-w64-mingw32/lib/qt6/bin/Qt6PrintSupport.dll build/
 
 echo "done."
 

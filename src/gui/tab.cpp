@@ -602,7 +602,7 @@ void tab::exportFile()
 		}
 		else
 		{
-			string basedir = std::filesystem::path(path).remove_filename(); //C++17
+			string basedir = std::filesystem::path(path).remove_filename().u8string(); //C++17
 			//TODO right-end trailing
 			for (string & w : paths)
 				w = basedir + w;
