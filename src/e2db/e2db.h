@@ -26,9 +26,9 @@ class e2db : public e2db_parser, public e2db_maker, public e2db_converter
 
 		//TODO FIX e2se_gui and e2se_e2db logger conflict
 		virtual ~e2db() = default;
-		void merge(e2db* dbih);
+		void merge(e2db_abstract* dst);
 		void import_file(vector<string> paths);
-		void import_file(FPORTS fpi, e2db* dbih, e2db_file file, string path);
+		void import_file(FPORTS fpi, e2db* dst, e2db_file file, string path);
 		void export_file(vector<string> paths);
 		void export_file(FPORTS fpo, vector<string> paths);
 		void export_file(FPORTS fpo, string path);

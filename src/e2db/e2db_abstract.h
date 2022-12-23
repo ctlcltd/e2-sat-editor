@@ -365,6 +365,7 @@ struct e2db_abstract
 		// collisions <chid string, vector<pair<chid string, increment int>>>
 		unordered_map<string, vector<pair<string, int>>> collisions;
 
+		virtual ~e2db_abstract() = default;
 		static string editor_string(bool html = false);
 		static string editor_timestamp();
 		static FPORTS filetype_detect(string path);

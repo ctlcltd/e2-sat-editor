@@ -40,75 +40,76 @@ namespace e2se_e2db
 
 //TODO bname in non-destructive edit
 //TODO FIX mixing cache data
-void e2db::merge(e2db* dbih)
+void e2db::merge(e2db_abstract* dst)
 {
 	debug("merge()");
 
-	db.transponders.merge(dbih->db.transponders); //C++17
-	db.services.merge(dbih->db.services); //C++17
-	tuners.merge(dbih->tuners); //C++17
-	bouquets.merge(dbih->bouquets); //C++17
-	collisions.merge(dbih->collisions); //C++17
+	this->db.transponders.merge(dst->db.transponders); //C++17
+	this->db.services.merge(dst->db.services); //C++17
+	this->tuners.merge(dst->tuners); //C++17
+	this->bouquets.merge(dst->bouquets); //C++17
+	this->collisions.merge(dst->collisions); //C++17
 
 	unordered_map<string, vector<pair<int, string>>> index;
-	unordered_map<string, vector<pair<int, string>>> cp_index_0 = this->index;
-	unordered_map<string, vector<pair<int, string>>> cp_index_1 = dbih->index;
-	unordered_map<string, userbouquet> cp_ubs_0;
-	unordered_map<string, userbouquet> cp_ubs_1;
-	cp_index_0.erase("mks");
-	cp_index_1.erase("mks");
-	tuners_pos.clear();
+	unordered_map<string, vector<pair<int, string>>> cp_index_sts = this->index;
+	unordered_map<string, vector<pair<int, string>>> cp_index_dst = dst->index;
+	unordered_map<string, userbouquet> cp_ubs_sts;
+	unordered_map<string, userbouquet> cp_ubs_dst;
+	cp_index_sts.erase("mks");
+	cp_index_dst.erase("mks");
+
+	this->tuners_pos.clear();
 
 	//TODO refresh cache data
 	/*for (auto & chdata : db.services)
 	{
 	}*/
 
-	for (auto & i : cp_index_0["ubs"])
+	for (auto & i : cp_index_sts["ubs"])
 	{
-		userbouquet& ub = userbouquets[i.second];
-		bouquet& bs = bouquets[ub.pname];
+		userbouquet& ub = this->userbouquets[i.second];
+		bouquet& bs = this->bouquets[ub.pname];
 		string key = "1:7:" + to_string(bs.btype) + ':' + ub.name;
-		auto iub = cp_index_0[i.second];
-		cp_index_0[key] = iub;
-		cp_index_0.erase(i.second);
-		cp_ubs_0[key] = ub;
-		// cout << "cp_index_0 " << i.second << ' ' << cp_index_0[key].size() << ' ' << key << endl;
+		auto iub = cp_index_sts[i.second];
+		cp_index_sts[key] = iub;
+		cp_index_sts.erase(i.second);
+		cp_ubs_sts[key] = ub;
+		// cout << "cp_index_sts " << i.second << ' ' << cp_index_sts[key].size() << ' ' << key << endl;
 		i.second = key;
 	}
-	for (auto & i : cp_index_1["ubs"])
+	for (auto & i : cp_index_dst["ubs"])
 	{
-		userbouquet& ub = dbih->userbouquets[i.second];
-		bouquet& bs = dbih->bouquets[ub.pname];
+		userbouquet& ub = dst->userbouquets[i.second];
+		bouquet& bs = dst->bouquets[ub.pname];
 		string key = "1:7:" + to_string(bs.btype) + ':' + ub.name;
-		auto iub = cp_index_1[i.second];
-		cp_index_1[key] = iub;
-		cp_index_1.erase(i.second);
-		cp_ubs_1[key] = ub;
-		// cout << "cp_index_1 " << i.second << ' ' << cp_index_1[key].size() << ' ' << key << endl;
+		auto iub = cp_index_dst[i.second];
+		cp_index_dst[key] = iub;
+		cp_index_dst.erase(i.second);
+		cp_ubs_dst[key] = ub;
+		// cout << "cp_index_dst " << i.second << ' ' << cp_index_dst[key].size() << ' ' << key << endl;
 		i.second = key;
 	}
 
-	index = cp_index_1;
-	for (auto & i : cp_index_0)
+	index = cp_index_dst;
+	for (auto & i : cp_index_sts)
 	{
 		vector<pair<int, string>> i_diff;
-		set_difference(i.second.begin(), i.second.end(), cp_index_1[i.first].begin(), cp_index_1[i.first].end(), inserter(i_diff, i_diff.begin()));
+		set_difference(i.second.begin(), i.second.end(), cp_index_dst[i.first].begin(), cp_index_dst[i.first].end(), inserter(i_diff, i_diff.begin()));
 		index[i.first].insert(index[i.first].end(), i_diff.begin(), i_diff.end());
 		// cout << "i_diff " << i.first << ' ' << i_diff.size() << endl;
 	}
 
-	cp_ubs_0.merge(cp_ubs_1);
-	userbouquets.clear();
+	cp_ubs_sts.merge(cp_ubs_dst);
+	this->userbouquets.clear();
 
-	for (auto & bsdata : bouquets)
+	for (auto & bsdata : this->bouquets)
 	{
 		bsdata.second.userbouquets.clear();
 	}
 	for (auto & i : index["ubs"])
 	{
-		userbouquet& ub = cp_ubs_0[i.second];
-		bouquet& bs = bouquets[ub.pname];
+		userbouquet& ub = cp_ubs_sts[i.second];
+		bouquet& bs = this->bouquets[ub.pname];
 		//TODO improve "userbouquet.dbe.01234.tv"
 		int idx = bs.userbouquets.size();
 		string key = "1:7:" + to_string(bs.btype) + ':' + ub.name;
@@ -125,8 +126,8 @@ void e2db::merge(e2db* dbih)
 		ub.bname = bname.str();
 		ub.index = idx;
 
-		if (cp_ubs_1.count(i.second))
-			ub.channels.merge(cp_ubs_1[i.second].channels);
+		if (cp_ubs_dst.count(i.second))
+			ub.channels.merge(cp_ubs_dst[i.second].channels);
 
 		index[ub.bname] = index[key];
 		index.erase(key);
@@ -153,7 +154,7 @@ void e2db::merge(e2db* dbih)
 		}
 
 		bs.userbouquets.emplace_back(ub.bname);
-		userbouquets[ub.bname] = ub;
+		this->userbouquets[ub.bname] = ub;
 		i.first = ub.index;
 		i.second = ub.bname;
 		// cout << "index " << ub.bname << ' ' << index[key].size() << ' ' << key << endl;
@@ -177,24 +178,24 @@ void e2db::merge(e2db* dbih)
 	}
 	for (auto & i : index["chs"])
 	{
-		service& ch = db.services[i.second];
+		service& ch = this->db.services[i.second];
 		string iname = "chs:" + (STYPE_EXT_TYPE.count(ch.stype) ? to_string(STYPE_EXT_TYPE.at(ch.stype)) : "0");
 		index[iname].emplace_back(pair (i.first, ch.chid)); //C++17
 	}
 
-	if (tuners.count(YTYPE::sat))
+	if (this->tuners.count(YTYPE::sat))
 	{
 		for (auto & x : tuners[YTYPE::sat].tables)
-			tuners_pos.emplace(x.second.pos, x.second.tnid);
+			this->tuners_pos.emplace(x.second.pos, x.second.tnid);
 	}
 
 	this->index = index;
 
 	//TODO TEST memory
-	cp_index_0.clear();
-	cp_index_1.clear();
-	cp_ubs_0.clear();
-	cp_ubs_1.clear();
+	cp_index_sts.clear();
+	cp_index_dst.clear();
+	cp_ubs_sts.clear();
+	cp_ubs_dst.clear();
 	index.clear();
 }
 
@@ -204,7 +205,7 @@ void e2db::import_file(vector<string> paths)
 	debug("import_file()", "file input", "auto");
 
 	bool merge = this->get_input().size() != 0 ? true : false;
-	e2db* dbih = merge ? new e2db : this;
+	auto* dst = merge ? new e2db : this;
 
 	for (string & w : paths)
 	{
@@ -215,16 +216,16 @@ void e2db::import_file(vector<string> paths)
 		string line;
 		while (std::getline(ifile, line))
 			file.append(line + '\n');
-		import_file(fpi, dbih, file, w);
+		import_file(fpi, dst, file, w);
 	}
 	if (merge)
 	{
-		this->merge(dbih);
-		delete dbih;
+		this->merge(dst);
+		delete dst;
 	}
 }
 
-void e2db::import_file(FPORTS fpi, e2db* dbih, e2db_file file, string path)
+void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 {
 	debug("import_file()", "file path", "multiple");
 	debug("import_file()", "file input", fpi);
@@ -236,45 +237,45 @@ void e2db::import_file(FPORTS fpi, e2db* dbih, e2db_file file, string path)
 	switch (fpi)
 	{
 		case FPORTS::all_services:
-			dbih->parse_e2db_lamedb(ifile);
+			dst->parse_e2db_lamedb(ifile);
 		break;
 		case FPORTS::all_services__2_2:
 		case FPORTS::all_services__2_3:
 			return error("import_file()", "Error", "Unsupported services file format.");
 		break;
 		case FPORTS::all_services__2_4:
-			dbih->parse_e2db_lamedb4(ifile);
+			dst->parse_e2db_lamedb4(ifile);
 		break;
 		case FPORTS::all_services__2_5:
-			dbih->parse_e2db_lamedb5(ifile);
+			dst->parse_e2db_lamedb5(ifile);
 		break;
 		case FPORTS::single_tunersets:
 		case FPORTS::all_tunersets:
 			if (filename == "satellites.xml")
-				dbih->parse_tunersets_xml(YTYPE::sat, ifile);
+				dst->parse_tunersets_xml(YTYPE::sat, ifile);
 			else if (filename == "terrestrial.xml")
-				dbih->parse_tunersets_xml(YTYPE::terrestrial, ifile);
+				dst->parse_tunersets_xml(YTYPE::terrestrial, ifile);
 			else if (filename == "cables.xml")
-				dbih->parse_tunersets_xml(YTYPE::cable, ifile);
+				dst->parse_tunersets_xml(YTYPE::cable, ifile);
 			else if (filename == "atsc.xml")
-				dbih->parse_tunersets_xml(YTYPE::atsc, ifile);
+				dst->parse_tunersets_xml(YTYPE::atsc, ifile);
 		break;
 		case FPORTS::single_bouquet:
 		case FPORTS::all_bouquets:
-			dbih->parse_e2db_bouquet(ifile, filename);
+			dst->parse_e2db_bouquet(ifile, filename);
 		break;
 		case FPORTS::single_userbouquet:
 		case FPORTS::all_userbouquets:
-			dbih->parse_e2db_userbouquet(ifile, filename);
+			dst->parse_e2db_userbouquet(ifile, filename);
 		break;
 		case FPORTS::single_bouquet_all:
 			if (filetype_detect(filename) == FPORTS::single_bouquet)
-				dbih->parse_e2db_bouquet(ifile, filename);
+				dst->parse_e2db_bouquet(ifile, filename);
 			else
-				dbih->parse_e2db_userbouquet(ifile, filename);
+				dst->parse_e2db_userbouquet(ifile, filename);
 		break;
 		default:
-			dbih->read(path);
+			dst->read(path);
 			return;
 	}
 }

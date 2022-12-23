@@ -102,17 +102,17 @@ void printable::document_services(int stype)
 	switch (stype)
 	{
 		// Data
-		case 0:
+		case e2db::STYPE::data:
 			iname = "chs:0";
 			xname = "Data";
 		break;
 		// TV
-		case 1:
+		case e2db::STYPE::tv:
 			iname = "chs:1";
 			xname = "TV";
 		break;
 		// Radio
-		case 2:
+		case e2db::STYPE::radio:
 			iname = "chs:2";
 			xname = "Radio";
 		break;
@@ -445,12 +445,18 @@ void printable::page_body_bouquet_list(html_page& page, string bname)
 		error("page_body_bouquet_list()", "bname", bname);
 
 	e2db::bouquet gboq = dbih->bouquets[bname];
+	QString btype;
+	if (gboq.btype == e2db::STYPE::tv)
+		btype = "TV";
+	else if (gboq.btype == e2db::STYPE::radio)
+		btype = "Radio";
 
 	page.body += "<div class=\"bouquet\">";
 	page.body += "<table>";
 	page.body += "<thead>";
 	page.body += "<tr>";
 	page.body += "<th>Index</th>";
+	page.body += "<th>Bouquet</th>";
 	page.body += "<th>Userbouquet</th>";
 	page.body += "<th>Name</th>";
 	page.body += "<th>Type</th>";
@@ -461,13 +467,9 @@ void printable::page_body_bouquet_list(html_page& page, string bname)
 	for (auto & bname : gboq.userbouquets)
 	{
 		e2db::userbouquet uboq = dbih->userbouquets[bname];
-		QString btype;
-		if (gboq.btype == 1)
-			btype = "TV";
-		else if (gboq.btype == 2)
-			btype = "Radio";
 		page.body += "<tr>";
 		page.body += "<td class=\"trid\">" + QString::fromStdString(to_string(i++)) + "</td>";
+		page.body += "<td>" + QString::fromStdString(gboq.name) + "</td>";
 		page.body += "<td>" + QString::fromStdString(bname) + "</td>";
 		page.body += "<td>" + QString::fromStdString(uboq.name) + "</td>";
 		page.body += "<td>" + btype + "</td>";

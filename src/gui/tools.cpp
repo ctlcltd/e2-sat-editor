@@ -36,6 +36,7 @@ tools::tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data, e2se::logger:
 	this->tid = tid;
 	this->cwid = cwid;
 	this->data = data;
+	this->sets = new QSettings;
 }
 
 //TODO improve
@@ -93,14 +94,35 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 	vector<string> paths;
 
 	paths = gid->importFileDialog(gui::GUI_DPORTS::CSV);
-	if (! paths.empty())
+	if (paths.empty())
+		return;
+
+	auto* dbih = this->data->dbih;
+	bool merge = dbih->get_input().size() != 0 ? true : false;
+
+	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	dbih->import_csv_file(fci, opts, paths);
+	QGuiApplication::restoreOverrideCursor();
+	tid->reset();
+	tid->load();
+
+	if (merge)
 	{
-		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		this->data->dbih->import_csv_file(fci, opts, paths);
-		QGuiApplication::restoreOverrideCursor();
-		tid->reset();
-		tid->load();
+		dbih->entries.transponders.clear();
+		dbih->entries.services.clear();
 	}
+
+	for (auto & txdata : dbih->db.transponders)
+	{
+		dbih->entries.transponders[txdata.first] = dbih->entryTransponder(txdata.second);
+	}
+	for (auto & chdata : dbih->db.services)
+	{
+		dbih->entries.services[chdata.first] = dbih->entryService(chdata.second);
+	}
+
+	if (sets->value("application/parserDebugger", false).toBool())
+		dbih->debugger();
 }
 
 void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
@@ -110,15 +132,17 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 	string path = gid->exportFileDialog(gui::GUI_DPORTS::CSV, opts.filename);
 
 	if (! path.empty())
-	{
-		opts.filename = path;
-		QMessageBox dial = QMessageBox();
-		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		this->data->dbih->export_csv_file(fco, opts, path);
-		QGuiApplication::restoreOverrideCursor();
-		dial.setText("Saved!");
-		dial.exec();
-	}
+		return;
+
+	auto* dbih = this->data->dbih;
+
+	//TODO improve ui remove QMessageBox
+	QMessageBox msg = QMessageBox();
+	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	dbih->export_csv_file(fco, opts, path);
+	QGuiApplication::restoreOverrideCursor();
+	msg.setText("Saved!");
+	msg.exec();
 }
 
 void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
@@ -128,15 +152,17 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 	string path = gid->exportFileDialog(gui::GUI_DPORTS::HTML, opts.filename);
 
 	if (! path.empty())
-	{
-		opts.filename = path;
-		QMessageBox dial = QMessageBox();
-		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		this->data->dbih->export_html_file(fco, opts, path);
-		QGuiApplication::restoreOverrideCursor();
-		dial.setText("Saved!");
-		dial.exec();
-	}
+		return;
+
+	auto* dbih = this->data->dbih;
+
+	//TODO improve ui remove QMessageBox
+	QMessageBox msg = QMessageBox();
+	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	dbih->export_html_file(fco, opts, path);
+	QGuiApplication::restoreOverrideCursor();
+	msg.setText("Saved!");
+	msg.exec();
 }
 
 void tools::destroy()

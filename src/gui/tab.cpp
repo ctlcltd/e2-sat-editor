@@ -344,13 +344,6 @@ void tab::layout()
 		bottom_toolbar->addSeparator();
 		bottom_toolbar->addAction("§ Load seeds", [=]() { this->loadSeeds(); });
 		bottom_toolbar->addAction("§ Reset", [=]() { this->newFile(); tabChangeName(); });
-
-		//TODO
-		/*if (this->child)
-		{
-			for (auto & action : bottom_toolbar->actions())
-				action->setDisabled(true);
-		}*/
 	}
 	bottom_toolbar->addWidget(bottom_spacer);
 
@@ -437,7 +430,8 @@ void tab::saveFile(bool saveas)
 {
 	debug("saveFile()", "saveas", saveas);
 
-	QMessageBox dial = QMessageBox();
+	//TODO improve ui remove QMessageBox
+	QMessageBox msg = QMessageBox();
 	string path;
 	bool overwrite = ! saveas && (! this->data->newfile || this->data->overwrite);
 
@@ -446,8 +440,8 @@ void tab::saveFile(bool saveas)
 		this->updateChannelsIndex();
 		this->updateBouquetsIndex();
 		path = this->data->filename;
-		dial.setText("Files will be overwritten.");
-		dial.exec();
+		msg.setText("Files will be overwritten.");
+		msg.exec();
 	}
 	else
 	{
@@ -462,10 +456,10 @@ void tab::saveFile(bool saveas)
 		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 		bool wr = this->data->writeFile(path, overwrite);
 		QGuiApplication::restoreOverrideCursor();
-		
+
 		if (wr) {
-			dial.setText("Saved!");
-			dial.exec();
+			msg.setText("Saved!");
+			msg.exec();
 		}
 		else
 		{
@@ -478,27 +472,27 @@ void tab::importFile()
 {
 	debug("importFile()");
 
-	e2db* dbih = this->data->dbih;
+	auto* dbih = this->data->dbih;
 
 	gui::GUI_DPORTS gde = gui::GUI_DPORTS::AllFiles;
 	vector<string> paths;
 
 	paths = gid->importFileDialog(gde);
-	if (! paths.empty())
-	{
-		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		dbih->importFile(paths);
-		QGuiApplication::restoreOverrideCursor();
-		view->reset();
-		view->load();
-	}
+	if (paths.empty())
+		return;
+
+	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	dbih->importFile(paths);
+	QGuiApplication::restoreOverrideCursor();
+	view->reset();
+	view->load();
 }
 
 void tab::exportFile()
 {
 	debug("exportFile()");
 
-	e2db* dbih = this->data->dbih;
+	auto* dbih = this->data->dbih;
 
 	gui::GUI_DPORTS gde = gui::GUI_DPORTS::AllFiles;
 	vector<string> paths;
@@ -592,36 +586,37 @@ void tab::exportFile()
 
 	string path = gid->exportFileDialog(gde, filename, flags);
 
-	if (! path.empty())
+	if (path.empty())
+		return;
+
+	debug("exportFile()", "flags", flags);
+
+	if (gde == gui::GUI_DPORTS::Services || gde == gui::GUI_DPORTS::Tunersets)
 	{
-		debug("exportFile()", "flags", flags);
-
-		if (gde == gui::GUI_DPORTS::Services || gde == gui::GUI_DPORTS::Tunersets)
-		{
-			paths[0] = path;
-		}
-		else
-		{
-			string basedir = std::filesystem::path(path).remove_filename().u8string(); //C++17
-			//TODO right-end trailing
-			for (string & w : paths)
-				w = basedir + w;
-		}
-
-		QMessageBox dial = QMessageBox();
-		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		dbih->exportFile(flags, paths);
-		QGuiApplication::restoreOverrideCursor();
-		dial.setText("Saved!");
-		dial.exec();
+		paths[0] = path;
 	}
+	else
+	{
+		string basedir = std::filesystem::path(path).remove_filename().u8string(); //C++17
+		//TODO right-end trailing
+		for (string & w : paths)
+			w = basedir + w;
+	}
+
+	//TODO improve ui remove QMessageBox
+	QMessageBox msg = QMessageBox();
+	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	dbih->exportFile(flags, paths);
+	QGuiApplication::restoreOverrideCursor();
+	msg.setText("Saved!");
+	msg.exec();
 }
 
 void tab::exportFile(QTreeWidgetItem* item)
 {
 	debug("exportFile()");
 
-	e2db* dbih = this->data->dbih;
+	auto* dbih = this->data->dbih;
 
 	gui::GUI_DPORTS gde;
 	vector<string> paths;
@@ -682,15 +677,16 @@ void tab::exportFile(QTreeWidgetItem* item)
 
 	string path = gid->exportFileDialog(gde, filename, bit);
 
-	if (! path.empty())
-	{
-		QMessageBox dial = QMessageBox();
-		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		dbih->exportFile(bit, paths);
-		QGuiApplication::restoreOverrideCursor();
-		dial.setText("Saved!");
-		dial.exec();
-	}
+	if (path.empty())
+		return;
+
+	//TODO improve ui remove QMessageBox
+	QMessageBox msg = QMessageBox();
+	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	dbih->exportFile(bit, paths);
+	QGuiApplication::restoreOverrideCursor();
+	msg.setText("Saved!");
+	msg.exec();
 }
 
 void tab::printFile(bool all)
@@ -1049,7 +1045,7 @@ void tab::ftpUpload()
 {
 	debug("ftpUpload()");
 
-	e2db* dbih = this->data->dbih;
+	auto* dbih = this->data->dbih;
 
 	if (ftpHandle())
 	{
@@ -1099,7 +1095,7 @@ void tab::ftpDownload()
 {
 	debug("ftpDownload()");
 
-	e2db* dbih = this->data->dbih;
+	auto* dbih = this->data->dbih;
 
 	if (ftpHandle())
 	{
@@ -1122,7 +1118,7 @@ void tab::updateBouquetsIndex()
 {
 	debug("updateBouquetsIndex()");
 
-	e2db* dbih = this->data->dbih;
+	auto* dbih = this->data->dbih;
 
 	int i = 0, y;
 	int count = main->tree->topLevelItemCount();
@@ -1171,7 +1167,7 @@ void tab::updateChannelsIndex()
 	if (! main->state.changed)
 		return;
 
-	e2db* dbih = this->data->dbih;
+	auto* dbih = this->data->dbih;
 
 	int i = 0, idx = 0;
 	int count = main->list->topLevelItemCount();

@@ -38,6 +38,17 @@ namespace e2se_e2db
 {
 }*/
 
+void e2db_converter::merge(e2db_abstract* dst)
+{
+	debug("merge()");
+
+	this->db.transponders.merge(dst->db.transponders); //C++17
+	this->db.services.merge(dst->db.services); //C++17
+	this->tuners.merge(dst->tuners); //C++17
+	this->bouquets.merge(dst->bouquets); //C++17
+	this->index.merge(dst->index); //C++17
+}
+
 void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, vector<string> paths)
 {
 	debug("import_csv_file()", "file path", "multiple");
@@ -46,11 +57,8 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, vector<string> pat
 	bool merge = this->get_input().size() != 0 ? true : false;
 	auto* dst = merge ? new e2db_abstract : this;
 
-	// string filename = std::filesystem::path(path).filename().u8string(); //C++17
-	// ifstream ifile (path);
-
 	for (string & path : paths)
-		import_csv_file(fci, opts, path);
+		import_csv_file(fci, opts, dst, path);
 }
 
 void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, string path)
@@ -61,7 +69,27 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, string path)
 	bool merge = this->get_input().size() != 0 ? true : false;
 	auto* dst = merge ? new e2db_abstract : this;
 
-	string filename = std::filesystem::path(path).filename().u8string(); //C++17
+	import_csv_file(fci, opts, dst, path);
+
+	if (merge)
+	{
+		this->merge(dst);
+		delete dst;
+	}
+}
+
+void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst, string path)
+{
+	debug("import_csv_file()", "file path", "singular");
+	debug("import_csv_file()", "file input", fci);
+
+	std::clock_t start = std::clock();
+
+	opts.filename = path;
+
+	if (opts.bname.empty())
+		opts.bname = std::filesystem::path(path).filename().replace_extension("").u8string(); //C++17
+
 	ifstream ifile (path);
 
 	switch (fci)
@@ -73,24 +101,30 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, string path)
 			pull_csv_bouquets(ifile, dst);
 		break;
 		case FCONVS::convert_userbouquets:
-			pull_csv_userbouquets(ifile, dst);
+			pull_csv_userbouquets(ifile, dst, opts.bname, opts.btype);
 		break;
 		case FCONVS::convert_tunersets:
-			pull_csv_tunersets(ifile, dst);
+			pull_csv_tunersets(ifile, dst, opts.ytype);
 		break;
 		default:
 			return;
 	}
+
+	std::clock_t end = std::clock();
+
+	info("import_csv_file()", "elapsed time", to_string(int (end - start)) + " ms.");
 }
 
 void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 {
 	debug("export_csv_file()", "file path", "singular");
 	debug("export_csv_file()", "file output", fco);
+	
+	std::clock_t start = std::clock();
+
+	opts.filename = filename;
 
 	vector<e2db_file> files;
-	string filename = std::filesystem::path(path).filename().u8string(); //C++17
-	opts.filename = filename;
 
 	switch (fco)
 	{
@@ -131,6 +165,10 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 		out << file;
 		out.close();
 	}
+
+	std::clock_t end = std::clock();
+
+	info("export_csv_file()", "elapsed time", to_string(int (end - start)) + " ms.");
 }
 
 void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
@@ -138,9 +176,12 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 	debug("export_html_file()", "file path", "singular");
 	debug("export_html_file()", "file output", fco);
 
-	vector<e2db_file> files;
-	string filename = std::filesystem::path(path).filename().u8string(); //C++17
+	std::clock_t start = std::clock();
+
 	opts.filename = filename;
+	string filename = std::filesystem::path(path).filename().u8string(); //C++17
+
+	vector<e2db_file> files;
 
 	switch (fco)
 	{
@@ -184,6 +225,10 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 		out << file;
 		out.close();
 	}
+
+	std::clock_t end = std::clock();
+
+	info("export_html_file()", "elapsed time", to_string(int (end - start)) + " ms.");
 }
 
 void e2db_converter::pull_csv_services(istream& ifile, e2db_abstract* dst)
@@ -206,7 +251,7 @@ void e2db_converter::pull_csv_services(istream& ifile, e2db_abstract* dst)
 
 		for (unsigned int i = 0; i < sxv[x].size(); i++)
 		{
-			debug("pull_csv_services()", to_string(x), sxv[x][i]);
+			// debug("pull_csv_services()", to_string(x), sxv[x][i]);
 
 			string& val = sxv[x][i];
 
@@ -216,7 +261,7 @@ void e2db_converter::pull_csv_services(istream& ifile, e2db_abstract* dst)
 			// name
 			else if (i == 1)
 				ch.chname = val;
-			// refid - parse text
+			// refid
 			else if (i == 2)
 				value_channel_reference(val, chref, ref);
 			// ssid
@@ -269,7 +314,8 @@ void e2db_converter::pull_csv_services(istream& ifile, e2db_abstract* dst)
 		if (! ch.stype)
 			ch.stype = chref.type;
 		ch.dvbns = tx.dvbns = ref.dvbns;
-		ch.onid = tx.onid = ref.onid;
+		ch.onid = to_string(ref.onid); //TODO
+		tx.onid = ref.onid; //TODO
 
 		char txid[25];
 		// %4x:%8x
@@ -283,9 +329,17 @@ void e2db_converter::pull_csv_services(istream& ifile, e2db_abstract* dst)
 		ch.txid = txid;
 
 		if (! dst->db.transponders.count(tx.txid))
+		{
 			dst->db.transponders.emplace(tx.txid, tx);
+			dst->index["txs"].emplace_back(pair (tx.index, tx.txid)); //C++17
+		}
 		if (! dst->db.services.count(ch.chid))
+		{
 			dst->db.services.emplace(ch.chid, ch);
+			string iname = "chs:" + (STYPE_EXT_TYPE.count(ch.stype) ? to_string(STYPE_EXT_TYPE.at(ch.stype)) : "0");
+			dst->index["chs"].emplace_back(pair (ch.index, ch.chid)); //C++17
+			dst->index[iname].emplace_back(pair (ch.index, ch.chid)); //C++17
+		}
 	}
 }
 
@@ -293,18 +347,401 @@ void e2db_converter::pull_csv_bouquets(istream& ifile, e2db_abstract* dst)
 {
 	debug("pull_csv_bouquets()");
 
+	vector<vector<string>> sxv;
+	convert_csv(ifile, sxv);
+
+	bouquet bs;
+	vector<userbouquet> ubs;
+
+	for (unsigned int x = 0; x < sxv.size(); x++)
+	{
+		// csv header
+		if (x == 0 && sxv[0][0] == "Index")
+			continue;
+
+		userbouquet ub;
+
+		for (unsigned int i = 0; i < sxv[x].size(); i++)
+		{
+			debug("pull_csv_bouquets()", to_string(x), sxv[x][i]);
+
+			string& val = sxv[x][i];
+
+			// userbouquet idx
+			if (i == 0)
+				ub.index = std::atoi(val.data());
+			// bouquet name
+			else if (i == 1)
+				bs.name = ub.pname = val;
+			// userbouquet bname
+			else if (i == 2)
+				ub.bname = val;
+			// userbouquet name
+			else if (i == 3)
+				ub.name = val;
+			// btype - parse text
+			else if (i == 4)
+				bs.btype = std::atoi(val.data());
+		}
+
+		// x order has priority over ub.index
+		if (ub.index != int (x))
+			ub.index = x;
+		
+		bs.userbouquets.emplace_back(ub.bname);
+	}
+
+	if (bs.btype == STYPE::tv)
+	{
+		bs.bname = "bouquets.tv";
+		bs.nname = STYPE_EXT_LABEL.at(STYPE::tv);
+	}
+	else if (bs.btype == 2)
+	{
+		bs.bname = "bouquets.radio";
+		bs.nname = STYPE_EXT_LABEL.at(STYPE::radio);
+	}
+
+	if (! dst->bouquets.count(bs.bname))
+	{
+		// bouquet idx
+		bs.index = dst->index["bss"].size();
+
+		dst->bouquets.emplace(bs.bname, bs);
+		dst->index["bss"].emplace_back(pair (bs.index, bs.bname)); //C++17
+	}
+	for (userbouquet & ub : ubs)
+	{
+		if (! dst->userbouquets.count(ub.bname))
+		{
+			dst->userbouquets.emplace(ub.bname, ub);
+			dst->index["ubs"].emplace_back(pair (ub.index, ub.bname)); //C++17
+		}
+	}
 }
 
-void e2db_converter::pull_csv_userbouquets(istream& ifile, e2db_abstract* dst)
+void e2db_converter::pull_csv_userbouquets(istream& ifile, e2db_abstract* dst, string bname, int btype)
 {
 	debug("pull_csv_userbouquets()");
 
+	vector<vector<string>> sxv;
+	convert_csv(ifile, sxv);
+
+	userbouquet ub;
+	ub.bname = bname;
+
+	for (unsigned int x = 0; x < sxv.size(); x++)
+	{
+		// csv header
+		if (x == 0 && sxv[0][0] == "Index")
+			continue;
+
+		service ch;
+		transponder tx;
+		channel_reference chref;
+		service_reference ref;
+
+		for (unsigned int i = 0; i < sxv[x].size(); i++)
+		{
+			debug("pull_csv_userbouquets()", to_string(x), sxv[x][i]);
+
+			string& val = sxv[x][i];
+
+			// idx
+			if (i == 0)
+				ch.index = tx.index = std::atoi(val.data());
+			// name
+			else if (i == 1)
+				ch.chname = val;
+			// refid
+			else if (i == 2)
+				value_channel_reference(val, chref, ref);
+			// ssid
+			else if (i == 3)
+				ch.ssid = std::atoi(val.data());
+			// tsid
+			else if (i == 4)
+				ch.tsid = tx.tsid = std::atoi(val.data());
+			// stype
+			else if (i == 5)
+				ch.stype = std::atoi(val.data());
+			// scas
+			else if (i == 6)
+				ch.data[SDATA::C] = value_channel_cas(val);
+			// provider
+			else if (i == 7)
+				ch.data[SDATA::p] = {val};
+			// freq
+			else if (i == 8)
+				tx.freq = std::atoi(val.data());
+			// pol
+			else if (i == 9)
+				tx.pol = value_transponder_polarization(val);
+			// sr
+			else if (i == 10)
+				tx.sr = std::atoi(val.data());
+			// fec
+			else if (i == 11)
+				tx.fec = std::atoi(val.data());
+			// pos
+			else if (i == 12)
+				tx.pos = value_transponder_position(val);
+			// sys
+			else if (i == 13)
+				tx.sys = value_transponder_system(val);
+		}
+
+		if (chref.marker)
+		{
+			// value
+			chref.value = ch.chname;
+		}
+		else
+		{
+			// x order has priority over ch.index
+			if (ch.index != int (x))
+				ch.index = tx.index = x;
+			// ch.stype has priority over chref.type
+			if (! ch.stype)
+				ch.stype = chref.type;
+			// ch.ssid has priority over ref.ssid
+			if (! ch.ssid)
+				ch.ssid = ref.ssid;
+			// ch.tsid has priority over ref.tsid
+			if (! ch.tsid)
+				ch.tsid = tx.tsid = ref.tsid;
+
+			ch.dvbns = tx.dvbns = ref.dvbns;
+			ch.onid = to_string(ref.onid); //TODO
+			tx.onid = ref.onid; //TODO
+
+			char txid[25];
+			// %4x:%8x
+			std::sprintf(txid, "%x:%x", tx.tsid, tx.dvbns);
+			tx.txid = txid;
+
+			char chid[25];
+			// %4x:%4x:%8x
+			std::sprintf(chid, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
+			ch.chid = chid;
+			ch.txid = txid;
+
+			if (! dst->db.transponders.count(tx.txid))
+			{
+				dst->db.transponders.emplace(tx.txid, tx);
+				dst->index["txs"].emplace_back(pair (tx.index, tx.txid)); //C++17
+			}
+			if (! dst->db.services.count(ch.chid))
+			{
+				dst->db.services.emplace(ch.chid, ch);
+				string iname = "chs:" + (STYPE_EXT_TYPE.count(ch.stype) ? to_string(STYPE_EXT_TYPE.at(ch.stype)) : "0");
+				dst->index["chs"].emplace_back(pair (ch.index, ch.chid)); //C++17
+				dst->index[iname].emplace_back(pair (ch.index, ch.chid)); //C++17
+			}
+		}
+
+		if (! ub.channels.count(chref.chid))
+		{
+			ub.channels.emplace(chref.chid, chref);
+			dst->index[ub.bname].emplace_back(pair (chref.index, chref.chid)); //C++17
+
+			if (chref.marker)
+				dst->index["mks"].emplace_back(pair (ub.index, chref.chid)); //C++17
+			else
+				dst->index[ub.pname].emplace_back(pair ((dst->index[ub.pname].size() + 1), chref.chid)); //C++17
+		}
+	}
+
+	if (! dst->userbouquets.count(ub.bname))
+	{
+		dst->userbouquets.emplace(ub.bname, ub);
+		dst->index["ubs"].emplace_back(pair (ub.index, ub.bname)); //C++17
+	}
+	if (dst->index.count("bss"))
+	{
+		bouquet bs;
+
+		for (auto & x : dst->bouquets)
+		{
+			if (x.second.btype == btype)
+			{
+				bs = x.second;
+				break;
+			}
+		}
+		bs.userbouquets.emplace_back(bname);
+		dst->bouquets[bs.bname] = bs;
+	}
+	else
+	{
+		bouquet bs;
+		if (bs.btype == STYPE::tv)
+		{
+			bs.bname = "bouquets.tv";
+			bs.name = "User - bouquet (TV)";
+			bs.nname = STYPE_EXT_LABEL.at(STYPE::tv);
+		}
+		else if (bs.btype == 2)
+		{
+			bs.bname = "bouquets.radio";
+			bs.name = "User - bouquet (Radio)";
+			bs.nname = STYPE_EXT_LABEL.at(STYPE::radio);
+		}
+		bs.index = dst->index["bss"].size();
+		dst->bouquets.emplace(bs.bname, bs);
+	}
 }
 
-void e2db_converter::pull_csv_tunersets(istream& ifile, e2db_abstract* dst)
+//TODO
+void e2db_converter::pull_csv_tunersets(istream& ifile, e2db_abstract* dst, int ytype)
 {
 	debug("pull_csv_tunersets()");
 
+	vector<vector<string>> sxv;
+	convert_csv(ifile, sxv);
+
+	tunersets tv;
+
+	tv.charset = "utf-8";
+	tv.ytype = ytype;
+
+	for (unsigned int x = 0; x < sxv.size(); x++)
+	{
+		// ytype autodetect
+		if (x == 0)
+		{
+			switch (sxv[x].size())
+			{
+				case 12: ytype = YTYPE::sat; break;
+				case 13: ytype = YTYPE::terrestrial; break;
+				case 9: ytype = YTYPE::cable; break;
+				case 6: ytype = YTYPE::atsc; break;
+			}
+		}
+		// csv header
+		if (x == 0 && sxv[0][0] == "Name")
+		{
+			continue;
+		}
+
+		tunersets_table tn;
+		// TODO
+		tunersets_transponder tntxp;
+
+		for (unsigned int i = 0; i < sxv[x].size(); i++)
+		{
+			debug("pull_csv_tunersets()", to_string(x), sxv[x][i]);
+
+			string& val = sxv[x][i];
+
+			// name
+			if (i == 0)
+				tn.name = val;
+			// pos
+			else if (i == 1)
+				tn.pos = ytype == YTYPE::sat ? std::atoi(val.data()) : -1;
+			// idx
+			else if (i == 2)
+				tntxp.index = std::atoi(val.data());
+
+			if (ytype == YTYPE::sat)
+			{
+				// freq
+				if (i == 3)
+					tntxp.freq = std::atoi(val.data());
+				// pol
+				else if (i == 4)
+					tntxp.pol = value_transponder_polarization(val);
+				// sr
+				else if (i == 5)
+					tntxp.sr = std::atoi(val.data());
+				// fec
+				else if (i == 6)
+					tntxp.fec = -1; //TODO
+				// sys
+				else if (i == 7)
+					tntxp.sys = value_transponder_system(val);
+				// mod
+				else if (i == 8)
+					tntxp.mod = -1; //TODO
+				// inv
+				else if (i == 9)
+					tntxp.inv = -1; //TODO
+				// pil
+				else if (i == 10)
+					tntxp.pil = -1; //TODO
+				// rol
+				else if (i == 11)
+					tntxp.rol = -1; //TODO
+			}
+			else if (ytype == YTYPE::terrestrial)
+			{
+				// freq
+				if (i == 3)
+					tntxp.freq = std::atoi(val.data());
+				// tmod
+				else if (i == 4)
+					tntxp.tmod = -1; //TODO
+				// band
+				else if (i == 5)
+					tntxp.band = std::atoi(val.data());
+				// sys
+				else if (i == 6)
+					tntxp.sys = 0;
+				// tmx
+				else if (i == 7)
+					tntxp.tmx = -1; //TODO
+				// hpfec
+				else if (i == 8)
+					tntxp.hpfec = -1; //TODO
+				// lpfe
+				else if (i == 9)
+					tntxp.lpfec = -1; //TODO
+				// inv
+				else if (i == 10)
+					tntxp.inv = -1; //TODO
+				// guard
+				else if (i == 11)
+					tntxp.guard = -1; //TODO
+				// hier
+				else if (i == 11)
+					tntxp.hier = -1; //TODO
+			}
+			else if (ytype == YTYPE::cable)
+			{
+				// freq
+				if (i == 3)
+					tntxp.freq = std::atoi(val.data());
+				// mod
+				else if (i == 4)
+					tntxp.mod = -1; //TODO
+				// sr
+				else if (i == 5)
+					tntxp.sr = std::atoi(val.data());
+				// fec
+				else if (i == 6)
+					tntxp.fec = -1; //TODO
+				// inv
+				else if (i == 7)
+					tntxp.inv = -1; //TODO 
+				// sys
+				else if (i == 8)
+					tntxp.sys = -1;
+			}
+			else if (ytype == YTYPE::atsc)
+			{
+				// freq
+				if (i == 3)
+					tntxp.freq = std::atoi(val.data());
+				// mod
+				else if (i == 4)
+					tntxp.mod = -1; //TODO
+				// sys
+				else if (i == 5)
+					tntxp.sys = -1;
+			}
+		}
+	}
 }
 
 void e2db_converter::push_csv_all(vector<e2db_file>& files)
@@ -331,15 +768,15 @@ void e2db_converter::push_csv_services(vector<e2db_file>& files, int stype)
 	switch (stype)
 	{
 		// Data
-		case 0:
+		case STYPE::data:
 			iname = "chs:0";
 		break;
 		// TV
-		case 1:
+		case STYPE::tv:
 			iname = "chs:1";
 		break;
 		// Radio
-		case 2:
+		case STYPE::radio:
 			iname = "chs:2";
 		break;
 		// All Services
@@ -415,7 +852,7 @@ void e2db_converter::push_csv_tunersets(vector<e2db_file>& files)
 
 void e2db_converter::push_csv_tunersets(vector<e2db_file>& files, int ytype)
 {
-	debug("push_csv_bouquet()", "ytype", ytype);
+	debug("push_csv_tunersets()", "ytype", ytype);
 
 	string csv;
 	csv_tunersets_list(csv, ytype);
@@ -479,19 +916,19 @@ void e2db_converter::push_html_services(vector<e2db_file>& files, int stype)
 	switch (stype)
 	{
 		// Data
-		case 0:
+		case STYPE::data:
 			iname = "chs:0";
-			xname = "Data";
+			xname = STYPE_EXT_LABEL.at(STYPE::data);
 		break;
 		// TV
-		case 1:
+		case STYPE::tv:
 			iname = "chs:1";
-			xname = "TV";
+			xname = STYPE_EXT_LABEL.at(STYPE::tv);
 		break;
 		// Radio
-		case 2:
+		case STYPE::radio:
 			iname = "chs:2";
-			xname = "Radio";
+			xname = STYPE_EXT_LABEL.at(STYPE::radio);
 		break;
 		// All Services
 		default:
@@ -580,7 +1017,7 @@ void e2db_converter::push_html_tunersets(vector<e2db_file>& files)
 
 void e2db_converter::push_html_tunersets(vector<e2db_file>& files, int ytype)
 {
-	debug("push_html_bouquet()", "ytype", ytype);
+	debug("push_html_tunersets()", "ytype", ytype);
 
 	string filename;
 	switch (ytype)
@@ -701,7 +1138,7 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 		ss << CSV_ESCAPE << "SR" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "FEC" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Pos" << CSV_ESCAPE << CSV_SEPARATOR;
-		ss << CSV_ESCAPE << "Sys" << CSV_ESCAPE << CSV_SEPARATOR;
+		ss << CSV_ESCAPE << "Sys" << CSV_ESCAPE;
 		ss << CSV_ENDLINE;
 	}
 
@@ -783,7 +1220,7 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			ss << sr << CSV_SEPARATOR;
 			ss << fec << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << pos << CSV_ESCAPE << CSV_SEPARATOR;
-			ss << sys << CSV_SEPARATOR;
+			ss << sys;
 			ss << CSV_ENDLINE;
 		}
 		else
@@ -815,7 +1252,7 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
-			ss << CSV_SEPARATOR;
+			ss << "";
 			ss << CSV_ENDLINE;
 		}
 	}
@@ -831,15 +1268,21 @@ void e2db_converter::csv_bouquet_list(string& csv, string bname)
 		error("csv_bouquet_list()", "bname", bname);
 
 	bouquet bs = bouquets[bname];
+	string btype;
+	if (bs.btype == STYPE::tv)
+		btype = "TV";
+	else if (bs.btype == STYPE::radio)
+		btype = "Radio";
 
 	stringstream ss;
 
 	if (CSV_HEADER)
 	{
 		ss << CSV_ESCAPE << "Index" << CSV_ESCAPE << CSV_SEPARATOR;
+		ss << CSV_ESCAPE << "Bouquet" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Userbouquet" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Name" << CSV_ESCAPE << CSV_SEPARATOR;
-		ss << CSV_ESCAPE << "Type" << CSV_ESCAPE << CSV_SEPARATOR;
+		ss << CSV_ESCAPE << "Type" << CSV_ESCAPE;
 		ss << CSV_ENDLINE;
 	}
 
@@ -847,15 +1290,11 @@ void e2db_converter::csv_bouquet_list(string& csv, string bname)
 	for (auto & bname : bs.userbouquets)
 	{
 		userbouquet ub = userbouquets[bname];
-		string btype;
-		if (bs.btype == 1)
-			btype = "TV";
-		else if (bs.btype == 2)
-			btype = "Radio";
-		ss << CSV_ESCAPE << i++ << CSV_SEPARATOR;
+		ss << i++ << CSV_SEPARATOR;
+		ss << CSV_ESCAPE << bs.name << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << bname << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << ub.name << CSV_ESCAPE << CSV_SEPARATOR;
-		ss << btype << CSV_SEPARATOR;
+		ss << btype;
 		ss << CSV_ENDLINE;
 	}
 
@@ -914,7 +1353,7 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 				ss << CSV_ESCAPE << "Mod" << CSV_ESCAPE << CSV_SEPARATOR;
 				ss << CSV_ESCAPE << "Inv" << CSV_ESCAPE << CSV_SEPARATOR;
 				ss << CSV_ESCAPE << "Pilot" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "Rollof" << CSV_ESCAPE << CSV_SEPARATOR;
+				ss << CSV_ESCAPE << "Rollof" << CSV_ESCAPE;
 			}
 			else if (ytype == YTYPE::terrestrial)
 			{
@@ -927,7 +1366,7 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 				ss << CSV_ESCAPE << "LP FEC" << CSV_ESCAPE << CSV_SEPARATOR;
 				ss << CSV_ESCAPE << "Inv" << CSV_ESCAPE << CSV_SEPARATOR;
 				ss << CSV_ESCAPE << "Guard" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "Hier" << CSV_ESCAPE << CSV_SEPARATOR;
+				ss << CSV_ESCAPE << "Hier" << CSV_ESCAPE;
 			}
 			else if (ytype == YTYPE::cable)
 			{
@@ -936,13 +1375,13 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 				ss << CSV_ESCAPE << "SR" << CSV_ESCAPE << CSV_SEPARATOR;
 				ss << CSV_ESCAPE << "FEC" << CSV_ESCAPE << CSV_SEPARATOR;
 				ss << CSV_ESCAPE << "Inv" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "Sys" << CSV_ESCAPE << CSV_SEPARATOR;
+				ss << CSV_ESCAPE << "Sys" << CSV_ESCAPE;
 			}
 			else if (ytype == YTYPE::atsc)
 			{
 				ss << CSV_ESCAPE << "Freq" << CSV_ESCAPE << CSV_SEPARATOR;
 				ss << CSV_ESCAPE << "Mod" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "Sys" << CSV_ESCAPE << CSV_SEPARATOR;
+				ss << CSV_ESCAPE << "Sys" << CSV_ESCAPE;
 			}
 			ss << CSV_ENDLINE;
 		}
@@ -976,7 +1415,7 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 				ss << mod << CSV_SEPARATOR;
 				ss << inv << CSV_SEPARATOR;
 				ss << pil << CSV_SEPARATOR;
-				ss << rol << CSV_SEPARATOR;
+				ss << rol;
 			}
 			else if (ytype == YTYPE::terrestrial)
 			{
@@ -1000,7 +1439,7 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 				ss << lpfec << CSV_SEPARATOR;
 				ss << inv << CSV_SEPARATOR;
 				ss << guard << CSV_SEPARATOR;
-				ss << hier << CSV_SEPARATOR;
+				ss << hier;
 			}
 			else if (ytype == YTYPE::cable)
 			{
@@ -1016,7 +1455,7 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 				ss << sr << CSV_SEPARATOR;
 				ss << cfec << CSV_SEPARATOR;
 				ss << inv << CSV_SEPARATOR;
-				ss << sys << CSV_SEPARATOR;
+				ss << sys;
 			}
 			else if (ytype == YTYPE::atsc)
 			{
@@ -1026,11 +1465,10 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 
 				ss << freq << CSV_SEPARATOR;
 				ss << amod << CSV_SEPARATOR;
-				ss << sys << CSV_SEPARATOR;
+				ss << sys;
 			}
 			ss << CSV_ENDLINE;
 		}
-		ss << "\n";
 	}
 
 	csv = ss.str();
@@ -1297,12 +1735,19 @@ void e2db_converter::page_body_bouquet_list(html_page& page, string bname)
 		error("page_body_bouquet_list()", "bname", bname);
 
 	bouquet bs = bouquets[bname];
+	string btype;
+	if (bs.btype == STYPE::tv)
+		btype = "TV";
+	else if (bs.btype == STYPE::radio)
+		btype = "Radio";
+	page.body += "<tr>";
 
 	page.body += "<div class=\"bouquet\">\n";
 	page.body += "<table>\n";
 	page.body += "<thead>\n";
 	page.body += "<tr>\n";
 	page.body += "<th>Index</th>\n";
+	page.body += "<th>Bouquet</th>\n";
 	page.body += "<th>Userbouquet</th>\n";
 	page.body += "<th>Name</th>\n";
 	page.body += "<th>Type</th>\n";
@@ -1313,13 +1758,8 @@ void e2db_converter::page_body_bouquet_list(html_page& page, string bname)
 	for (auto & bname : bs.userbouquets)
 	{
 		userbouquet ub = userbouquets[bname];
-		string btype;
-		if (bs.btype == 1)
-			btype = "TV";
-		else if (bs.btype == 2)
-			btype = "Radio";
-		page.body += "<tr>";
 		page.body += "<td class=\"trid\">" + to_string(i++) + "</td>";
+		page.body += "<td>" + bs.name + "</td>";
 		page.body += "<td>" + bname + "</td>";
 		page.body += "<td>" + ub.name + "</td>";
 		page.body += "<td>" + btype + "</td>";

@@ -232,8 +232,8 @@ void e2db::plain()
 	debug("plain()");
 
 	// empty services list - touch index["chs"]
-	if (! index.count("chs"))
-		index["chs"];
+	/*if (! index.count("chs"))
+		index["chs"];*/
 
 	e2db::bouquet bs;
 
@@ -250,8 +250,6 @@ void e2db::plain()
 	bs.btype = bs.index = e2db::STYPE::radio;
 	bs.nname = "Radio";
 	this->::e2se_e2db::e2db::add_bouquet(bs);
-
-	this->gindex = index;
 }
 
 bool e2db::prepare(string localdir)
@@ -262,9 +260,7 @@ bool e2db::prepare(string localdir)
 		return false;
 
 	if (sets->value("application/parserDebugger", false).toBool())
-	// 	this->debugger();
-
-	this->gindex = index;
+		this->debugger();
 
 	for (auto & txdata : db.transponders)
 	{
@@ -280,8 +276,6 @@ bool e2db::prepare(string localdir)
 bool e2db::write(string localdir, bool overwrite)
 {
 	debug("write()");
-
-	this->gindex = index;
 
 	if (! this->::e2se_e2db::e2db::write(localdir, overwrite))
 		return false;
@@ -306,8 +300,6 @@ void e2db::merge(unordered_map<string, e2se_e2db::e2db_file> files)
 		entries.services.clear();
 	}
 
-	this->gindex = index;
-
 	for (auto & txdata : db.transponders)
 	{
 		entries.transponders[txdata.first] = entryTransponder(txdata.second);
@@ -330,8 +322,6 @@ void e2db::importFile(vector<string> paths)
 		entries.transponders.clear();
 		entries.services.clear();
 	}
-
-	this->gindex = index;
 
 	for (auto & txdata : db.transponders)
 	{

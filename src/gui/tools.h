@@ -30,6 +30,8 @@ class tools : protected e2se::log_factory
 		void exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts);
 		void exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts);
 		void destroy();
+	protected:
+		QSettings* sets;
 	private:
 		gui* gid;
 		tab* tid;

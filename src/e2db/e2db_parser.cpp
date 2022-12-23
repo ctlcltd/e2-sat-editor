@@ -597,7 +597,7 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 	int i, type, anum, ssid, tsid, onid, dvbns;
 	i = 0, type = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0;
 
-	std::sscanf(str.c_str(), "%d:%d:%4X:%4X:%4X:%4X:%8X", &i, &type, &anum, &ssid, &tsid, &onid, &dvbns);
+	std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X", &i, &type, &anum, &ssid, &tsid, &onid, &dvbns);
 	//TODO other flags ? "...:%d:%d:%d:"
 
 	switch (type)

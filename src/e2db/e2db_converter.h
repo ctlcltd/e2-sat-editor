@@ -54,6 +54,7 @@ class e2db_converter : virtual public e2db_abstract
 			string filename;
 			string bname;
 			int stype;
+			int btype;
 			int ytype;
 		};
 
@@ -68,14 +69,16 @@ class e2db_converter : virtual public e2db_abstract
 		// e2db_converter(e2se::logger::session log);
 		// e2db_converter();
 		virtual ~e2db_converter() = default;
+		void merge(e2db_abstract* dst);
 		void import_csv_file(FCONVS fci, fcopts opts, vector<string> paths);
 		void import_csv_file(FCONVS fci, fcopts opts, string path);
+		void import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst, string path);
 		void export_csv_file(FCONVS fco, fcopts opts, string path);
 		void export_html_file(FCONVS fco, fcopts opts, string path);
 		void pull_csv_services(istream& ifile, e2db_abstract* dst);
 		void pull_csv_bouquets(istream& ifile, e2db_abstract* dst);
-		void pull_csv_userbouquets(istream& ifile, e2db_abstract* dst);
-		void pull_csv_tunersets(istream& ifile, e2db_abstract* dst);
+		void pull_csv_userbouquets(istream& ifile, e2db_abstract* dst, string bname, int btype);
+		void pull_csv_tunersets(istream& ifile, e2db_abstract* dst, int ytype);
 		void push_csv_all(vector<e2db_file>& files);
 		void push_csv_services(vector<e2db_file>& files);
 		void push_csv_services(vector<e2db_file>& files, int stype);

@@ -117,8 +117,9 @@ void e2db_abstract::value_channel_reference(string str, channel_reference& chref
 {
 	int i, type, anum, ssid, tsid, onid, dvbns;
 	i = 0, type = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0;
+	//TODO onid
 
-	std::sscanf(str.c_str(), "%d:%d:%4X:%4X:%4X:%4X:%8X", &i, &type, &anum, &ssid, &tsid, &onid, &dvbns);
+	std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X", &i, &type, &anum, &ssid, &tsid, &onid, &dvbns);
 	//TODO other flags ? "...:%d:%d:%d:"
 
 	switch (type)
@@ -133,8 +134,7 @@ void e2db_abstract::value_channel_reference(string str, channel_reference& chref
 		//TODO group
 		// group
 		case STYPE::group:
-			// error("value_channel_reference()", "Error", "Not supported yet.");
-		break;
+		return;
 		// service
 		default:
 			chref.marker = false;
@@ -161,7 +161,7 @@ string e2db_abstract::value_reference_id(service ch)
 
 	char refid[44];
 	// %1d:%4d:%4X:%4X:%4X:%4s:%8X:0:0:0:
-	std::sprintf(refid, "%d:%d:%X:%X:%X:%s:%X:0:0:0", 1, stype, snum, ssid, tsid, onid.c_str(), dvbns);
+	std::sprintf(refid, "%d:%d:%X:%4X:%4X:%s:%8X", 1, stype, snum, ssid, tsid, onid.c_str(), dvbns);
 	return refid;
 }
 
@@ -271,8 +271,8 @@ vector<string> e2db_abstract::value_channel_cas(string str)
 		else if (val == "DRE")
 			pid = "4ae0";
 
-		cas.emplace_back("C:" + pid);
 		token = std::strtok(NULL, ",");
+		cas.emplace_back("C:" + pid);
 	}
 	return cas;
 }
@@ -471,16 +471,16 @@ void e2db_abstract::add_service(int idx, service& ch)
 void e2db_abstract::add_bouquet(int idx, bouquet& bs)
 {
 	bs.index = idx;
-	index["bss"].emplace_back(pair (idx, bs.bname)); //C++17
 	bouquets.emplace(bs.bname, bs);
+	index["bss"].emplace_back(pair (idx, bs.bname)); //C++17
 }
 
 void e2db_abstract::add_userbouquet(int idx, userbouquet& ub)
 {
 	ub.index = idx;
-	index["ubs"].emplace_back(pair (idx, ub.bname)); //C++17
-	bouquets[ub.pname].userbouquets.emplace_back(ub.bname);
 	userbouquets.emplace(ub.bname, ub);
+	bouquets[ub.pname].userbouquets.emplace_back(ub.bname);
+	index["ubs"].emplace_back(pair (idx, ub.bname)); //C++17
 }
 
 void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_reference& chref, service_reference& ref)
@@ -719,6 +719,5 @@ void e2db_abstract::debugger()
 	}
 	cout << endl;
 }
-
 
 }

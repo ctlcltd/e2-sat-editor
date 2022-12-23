@@ -632,6 +632,7 @@ void editService::retrieve()
 		}
 		else if (key == "raw_C" && ch.data.count(e2db::SDATA::C))
 		{
+			//TODO FIX SEGFAULT with empty
 			auto last_key = (*prev(ch.data.at(e2db::SDATA::C).cend()));
 			for (string & w : ch.data.at(e2db::SDATA::C))
 			{

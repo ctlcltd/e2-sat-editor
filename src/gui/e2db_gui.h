@@ -37,6 +37,7 @@ class e2db : public ::e2se_e2db::e2db
 			unordered_map<string, QStringList> transponders;
 			unordered_map<string, QStringList> services;
 		} entries;
+
 		//TODO FIX e2se_gui and e2se_e2db logger conflict
 		e2db(e2se::logger::session* log);
 		~e2db()
@@ -73,6 +74,7 @@ class e2db : public ::e2se_e2db::e2db
 		void plain();
 		bool prepare(string localdir);
 		bool write(string localdir, bool overwrite);
+		// e2db_gui::e2db::merge overload e2db::merge
 		void merge(unordered_map<string, e2se_e2db::e2db_file> files);
 		void importFile(vector<string> paths);
 		void exportFile(int flags, vector<string> paths);
@@ -83,9 +85,6 @@ class e2db : public ::e2se_e2db::e2db
 		QStringList entryTunersetsTransponder(tunersets_transponder tntxp, tunersets_table tn);
 	protected:
 		QSettings* sets;
-		// reflect source index
-		// gindex <name string, vector<pair<src-idx||count int, chid string>>>
-		unordered_map<string, vector<pair<int, string>>> gindex;
 };
 }
 #endif /* e2db_gui_h */
