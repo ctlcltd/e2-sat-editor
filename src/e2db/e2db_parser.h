@@ -37,23 +37,18 @@ class e2db_parser : virtual public e2db_abstract
 		void parse_e2db_lamedb5(istream& ilamedb);
 		void parse_e2db_bouquet(istream& ibouquet, string bname);
 		void parse_e2db_userbouquet(istream& iuserbouquet, string bname);
-		void parse_userbouquet_reference(string data, userbouquet& ub);
-		void parse_channel_reference(string data, channel_reference& chref, service_reference& ref);
+		void parse_userbouquet_reference(string str, userbouquet& ub);
+		void parse_channel_reference(string str, channel_reference& chref, service_reference& ref);
 		void parse_tunersets_xml(int ytype, istream& itunxml);
-		unordered_map<string, transponder> get_transponders();
-		unordered_map<string, service> get_services();
-		pair<unordered_map<string, bouquet>, unordered_map<string, userbouquet>> get_bouquets();
 		bool list_localdir(string localdir);
 		bool read(string localdir);
 		unordered_map<string, string> get_input();
 	protected:
-		void parse_lamedb_transponder_params(string data, transponder& tx);
-		void parse_lamedb_transponder_feparms(string data, char ttype, transponder& tx);
-		void parse_lamedb_service_params(string data, service& ch);
-		void parse_lamedb_service_data(string data, service& ch);
-		void append_lamedb_service_name(string data, service& ch);
-		string localdir;
-		string filename;
+		void parse_lamedb_transponder_params(string str, transponder& tx);
+		void parse_lamedb_transponder_feparms(string str, char ttype, transponder& tx);
+		void parse_lamedb_service_params(string str, service& ch);
+		void parse_lamedb_service_data(string str, service& ch);
+		void append_lamedb_service_name(string str, service& ch);
 };
 }
 #endif /* e2db_parser_h */

@@ -378,7 +378,7 @@ void editService::tunerComboChanged(int index)
 	{
 		e2db::transponder tx = dbih->db.transponders[x.second];
 		QString txid = QString::fromStdString(x.second);
-		string ptxp = dbih->get_transponder_combo_value(tx);
+		string ptxp = dbih->value_transponder_combo(tx);
 		QString txp = QString::fromStdString(ptxp);
 		dtf1tx->addItem(txp, txid);
 	}

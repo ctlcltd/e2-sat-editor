@@ -36,6 +36,7 @@ e2db::e2db(e2se::logger::session* log)
 	plain();
 }
 
+//TODO options are constants
 void e2db::options()
 {
 	debug("options()");
@@ -294,10 +295,10 @@ void e2db::merge(unordered_map<string, e2se_e2db::e2db_file> files)
 	debug("merge()");
 
 	bool merge = this->get_input().size() != 0 ? true : false;
-	e2db* nw_dbih = new e2db(this->log->log);
-	nw_dbih->parse_e2db(files);
-	this->::e2se_e2db::e2db::merge(nw_dbih);
-	delete nw_dbih;
+	auto* dst = new e2db(this->log->log);
+	dst->parse_e2db(files);
+	this->::e2se_e2db::e2db::merge(dst);
+	delete dst;
 
 	if (merge)
 	{
@@ -358,9 +359,9 @@ QStringList e2db::entryTransponder(transponder tx)
 	QString pol = QString::fromStdString(tx.pol != -1 ? e2db::SAT_POL[tx.pol] : "");
 	QString sr = QString::fromStdString(to_string(tx.sr));
 	QString fec = QString::fromStdString(e2db::SAT_FEC[tx.fec]);
-	string ppos = get_transponder_position_text(tx);
+	string ppos = value_transponder_position(tx);
 	QString pos = QString::fromStdString(ppos);
-	string psys = get_transponder_system_text(tx);
+	string psys = value_transponder_system(tx);
 	QString sys = QString::fromStdString(psys);
 
 	return QStringList ({freq, pol, sr, fec, pos, sys});
@@ -420,7 +421,7 @@ QStringList e2db::entryTunersetsTable(tunersets_table tn)
 
 	if (tn.ytype == e2db::YTYPE::sat)
 	{
-		string ppos = get_transponder_position_text(tn);
+		string ppos = value_transponder_position(tn);
 		QString pos = QString::fromStdString(ppos);
 		entry = QStringList ({tnid, name, pos});
 	}
@@ -442,7 +443,7 @@ QStringList e2db::entryTunersetsTransponder(tunersets_transponder tntxp, tunerse
 	QStringList entry;
 	QString trid = QString::fromStdString(tntxp.trid);
 	QString freq = QString::fromStdString(to_string(tntxp.freq));
-	string ptxp = get_transponder_combo_value(tntxp, tn);
+	string ptxp = value_transponder_combo(tntxp, tn);
 	QString combo = QString::fromStdString(ptxp);
 
 	if (tn.ytype == YTYPE::sat)

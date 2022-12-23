@@ -72,10 +72,10 @@ class e2db_converter : virtual public e2db_abstract
 		void import_csv_file(FCONVS fci, fcopts opts, string path);
 		void export_csv_file(FCONVS fco, fcopts opts, string path);
 		void export_html_file(FCONVS fco, fcopts opts, string path);
-		void pull_csv_lamedb(istream& ifile);
-		void pull_csv_bouquet(istream& ifile, string bname);
-		void pull_csv_userbouquet(istream& ifile, string bname);
-		void pull_csv_tunersets(istream& ifile, int ytype);
+		void pull_csv_services(istream& ifile, e2db_abstract* dst);
+		void pull_csv_bouquets(istream& ifile, e2db_abstract* dst);
+		void pull_csv_userbouquets(istream& ifile, e2db_abstract* dst);
+		void pull_csv_tunersets(istream& ifile, e2db_abstract* dst);
 		void push_csv_all(vector<e2db_file>& files);
 		void push_csv_services(vector<e2db_file>& files);
 		void push_csv_services(vector<e2db_file>& files, int stype);
@@ -95,20 +95,8 @@ class e2db_converter : virtual public e2db_abstract
 		void push_html_userbouquets(vector<e2db_file>& files, string bname);
 		void push_html_tunersets(vector<e2db_file>& files);
 		void push_html_tunersets(vector<e2db_file>& files, int ytype);
-		virtual FPORTS filetype_detect(string path) { return FPORTS::fports_empty; };
-		virtual string get_reference_id(string chid) { return ""; };
-		virtual string get_reference_id(channel_reference chref) { return ""; };
-		virtual string get_transponder_combo_value(transponder tx) { return ""; };
-		virtual string get_transponder_combo_value(tunersets_transponder tntxp, tunersets_table tn) { return ""; };
-		virtual string get_transponder_name_value(transponder tx) { return ""; };
-		virtual int get_transponder_position_number(string ppos) { return 0; };
-		virtual string get_transponder_position_text(int pos) { return ""; };
-		virtual string get_transponder_position_text(transponder tx) { return ""; };
-		virtual string get_transponder_position_text(tunersets_table tn) { return ""; };
-		virtual string get_transponder_system_text(transponder tx) { return ""; };
-		virtual string get_localdir() { return ""; };
-		virtual string get_filename() { return ""; };
 	protected:
+		void convert_csv(istream& ifile, vector<vector<string>>& sxv);
 		void csv_channel_list(string& csv, string bname, DOC_VIEW view);
 		void csv_bouquet_list(string& csv, string bname);
 		void csv_tunersets_list(string& csv, int ytype);

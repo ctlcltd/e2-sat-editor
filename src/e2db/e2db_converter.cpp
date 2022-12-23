@@ -44,10 +44,13 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, vector<string> pat
 	debug("import_csv_file()", "file input", fci);
 
 	bool merge = this->get_input().size() != 0 ? true : false;
-	auto* dbih = merge ? newptr() : this;
+	auto* dst = merge ? new e2db_abstract : this;
 
 	// string filename = std::filesystem::path(path).filename().u8string(); //C++17
 	// ifstream ifile (path);
+
+	for (string & path : paths)
+		import_csv_file(fci, opts, path);
 }
 
 void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, string path)
@@ -55,11 +58,29 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, string path)
 	debug("import_csv_file()", "file path", "singular");
 	debug("import_csv_file()", "file input", fci);
 
-	// bool merge = this->get_input().size() != 0 ? true : false;
-	// e2db* dbih = merge ? new e2db : this;
+	bool merge = this->get_input().size() != 0 ? true : false;
+	auto* dst = merge ? new e2db_abstract : this;
 
 	string filename = std::filesystem::path(path).filename().u8string(); //C++17
 	ifstream ifile (path);
+
+	switch (fci)
+	{
+		case FCONVS::convert_services:
+			pull_csv_services(ifile, dst);
+		break;
+		case FCONVS::convert_bouquets:
+			pull_csv_bouquets(ifile, dst);
+		break;
+		case FCONVS::convert_userbouquets:
+			pull_csv_userbouquets(ifile, dst);
+		break;
+		case FCONVS::convert_tunersets:
+			pull_csv_tunersets(ifile, dst);
+		break;
+		default:
+			return;
+	}
 }
 
 void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
@@ -163,6 +184,127 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 		out << file;
 		out.close();
 	}
+}
+
+void e2db_converter::pull_csv_services(istream& ifile, e2db_abstract* dst)
+{
+	debug("pull_csv_services()");
+	
+	vector<vector<string>> sxv;
+	convert_csv(ifile, sxv);
+
+	for (unsigned int x = 0; x < sxv.size(); x++)
+	{
+		// csv header
+		if (x == 0 && sxv[0][0] == "Index")
+			continue;
+
+		service ch;
+		transponder tx;
+		channel_reference chref;
+		service_reference ref;
+
+		for (unsigned int i = 0; i < sxv[x].size(); i++)
+		{
+			debug("pull_csv_services()", to_string(x), sxv[x][i]);
+
+			string& val = sxv[x][i];
+
+			// idx
+			if (i == 0)
+				ch.index = tx.index = std::atoi(val.data());
+			// name
+			else if (i == 1)
+				ch.chname = val;
+			// refid - parse text
+			else if (i == 2)
+				value_channel_reference(val, chref, ref);
+			// ssid
+			else if (i == 3)
+				ch.ssid = std::atoi(val.data());
+			// tsid
+			else if (i == 4)
+				ch.tsid = tx.tsid = std::atoi(val.data());
+			// stype
+			else if (i == 5)
+				ch.stype = std::atoi(val.data());
+			// scas
+			else if (i == 6)
+				ch.data[SDATA::C] = value_channel_cas(val);
+			// provider
+			else if (i == 7)
+				ch.data[SDATA::p] = {val};
+			// freq
+			else if (i == 8)
+				tx.freq = std::atoi(val.data());
+			// pol
+			else if (i == 9)
+				tx.pol = value_transponder_polarization(val);
+			// sr
+			else if (i == 10)
+				tx.sr = std::atoi(val.data());
+			// fec
+			else if (i == 11)
+				tx.fec = std::atoi(val.data());
+			// pos
+			else if (i == 12)
+				tx.pos = value_transponder_position(val);
+			// sys
+			else if (i == 13)
+				tx.sys = value_transponder_system(val);
+		}
+
+		if (chref.marker)
+			continue;
+		// x order has priority over ch.index
+		if (ch.index != int (x))
+			ch.index = tx.index = x;
+		// ch.ssid has priority over ref.ssid
+		if (! ch.ssid)
+			ch.ssid = ref.ssid;
+		// ch.tsid has priority over ref.tsid
+		if (! ch.tsid)
+			ch.tsid = tx.tsid = ref.tsid;
+		// ch.stype has priority over chref.type
+		if (! ch.stype)
+			ch.stype = chref.type;
+		ch.dvbns = tx.dvbns = ref.dvbns;
+		ch.onid = tx.onid = ref.onid;
+
+		char txid[25];
+		// %4x:%8x
+		std::sprintf(txid, "%x:%x", tx.tsid, tx.dvbns);
+		tx.txid = txid;
+
+		char chid[25];
+		// %4x:%4x:%8x
+		std::sprintf(chid, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
+		ch.chid = chid;
+		ch.txid = txid;
+
+		if (! dst->db.transponders.count(tx.txid))
+			dst->db.transponders.emplace(tx.txid, tx);
+		if (! dst->db.services.count(ch.chid))
+			dst->db.services.emplace(ch.chid, ch);
+	}
+}
+
+void e2db_converter::pull_csv_bouquets(istream& ifile, e2db_abstract* dst)
+{
+	debug("pull_csv_bouquets()");
+
+}
+
+void e2db_converter::pull_csv_userbouquets(istream& ifile, e2db_abstract* dst)
+{
+	debug("pull_csv_userbouquets()");
+
+}
+
+void e2db_converter::pull_csv_tunersets(istream& ifile, e2db_abstract* dst)
+{
+	debug("pull_csv_tunersets()");
+
 }
 
 void e2db_converter::push_csv_all(vector<e2db_file>& files)
@@ -282,7 +424,6 @@ void e2db_converter::push_csv_tunersets(vector<e2db_file>& files, int ytype)
 	csv_document(file, csv);
 	files.emplace_back(file);
 }
-
 
 void e2db_converter::push_html_all(vector<e2db_file>& files)
 {
@@ -469,6 +610,72 @@ void e2db_converter::push_html_tunersets(vector<e2db_file>& files, int ytype)
 	files.emplace_back(file);
 }
 
+void e2db_converter::convert_csv(istream& ifile, vector<vector<string>>& sxv)
+{
+	debug("convert_csv()");
+
+	const char dlm = CSV_ENDLINE;
+	const char sep = CSV_SEPARATOR;
+	const char esp = CSV_ESCAPE;
+
+	string line;
+
+	while (std::getline(ifile, line, dlm))
+	{
+		vector<string> values;
+		stringstream ss (line);
+		string str;
+		bool yey = false;
+
+		while (std::getline(ss, str, sep))
+		{
+			string val;
+			size_t pos = str.find(esp);
+			size_t len;
+
+			if (pos != string::npos)
+			{
+				pos += 1;
+				val = str.substr(pos);
+				len = val.rfind(esp);
+
+				if (len != string::npos)
+				{
+					val = val.substr(0, len);
+				}
+				else if (yey)
+				{
+					yey = false;
+					continue;
+				}
+				else
+				{
+					pos = line.find(val);
+					val = line.substr(pos);
+					len = val.find(esp);
+
+					if (len != string::npos)
+					{
+						yey = true;
+						val = val.substr(0, len);
+					}
+				}
+			}
+			else if (! yey)
+			{
+				val = str;
+			}
+			else
+			{
+				continue;
+			}
+			values.emplace_back(val);
+		}
+		sxv.emplace_back(values);
+	}
+}
+
+
 void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 {
 	if (index.count(bname))
@@ -558,9 +765,9 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			string pol = tx.pol != -1 ? SAT_POL[tx.pol] : "";
 			string sr = to_string(tx.sr);
 			string fec = SAT_FEC[tx.fec];
-			string ppos = get_transponder_position_text(tx);
+			string ppos = value_transponder_position(tx);
 			string pos = ppos;
-			string psys = get_transponder_system_text(tx);
+			string psys = value_transponder_system(tx);
 			string sys = psys;
 
 			ss << idx << CSV_SEPARATOR;
@@ -575,7 +782,7 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			ss << pol << CSV_SEPARATOR;
 			ss << sr << CSV_SEPARATOR;
 			ss << fec << CSV_SEPARATOR;
-			ss << CSV_ESCAPE << pos << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << pos << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << sys << CSV_SEPARATOR;
 			ss << CSV_ENDLINE;
 		}
@@ -688,7 +895,7 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 		string ppos;
 		if (ytype == YTYPE::sat)
 		{
-			ppos = get_transponder_position_text(tn);
+			ppos = value_transponder_position(tn);
 		}
 		string pos = ppos;
 
@@ -870,9 +1077,8 @@ void e2db_converter::page_header(html_page& page, string filename, DOC_VIEW view
 
 void e2db_converter::page_footer(html_page& page, string filename, DOC_VIEW view)
 {
-	//TODO escape html
-	string editor = get_editor_string();
-	string timestamp = get_timestamp();
+	string editor = editor_string(true);
+	string timestamp = editor_timestamp();
 
 	page.footer += "<div class=\"footer\">\n";
 	page.footer += "File: <b>" + filename + "</b><br>\n";
@@ -1021,9 +1227,9 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 			string pol = tx.pol != -1 ? SAT_POL[tx.pol] : "";
 			string sr = to_string(tx.sr);
 			string fec = SAT_FEC[tx.fec];
-			string ppos = get_transponder_position_text(tx);
+			string ppos = value_transponder_position(tx);
 			string pos = ppos;
-			string psys = get_transponder_system_text(tx);
+			string psys = value_transponder_system(tx);
 			string sys = psys;
 
 			page.body += "<tr>";
@@ -1158,7 +1364,7 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 		string ppos;
 		if (ytype == YTYPE::sat)
 		{
-			ppos = get_transponder_position_text(tn);
+			ppos = value_transponder_position(tn);
 		}
 		string pos = ppos;
 

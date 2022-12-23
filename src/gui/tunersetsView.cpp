@@ -782,13 +782,23 @@ void tunersetsView::updateStatus(bool current)
 	gui::STATUS status;
 	status.current = current;
 
+	//TODO FIX
+	//
+	// clang mach size = 133295584
+	//  g++ linux size = 32674
+	//  g++ mingw size = ?
+	// 
+	// clang mach size = 411
+	//  g++ linux size = 411
+	//  g++ mingw size = 4509
+
 	if (current && ! this->state.curr.empty())
 	{
 		string curr = this->state.curr;
 		if (yx == e2db::YTYPE::sat)
 		{
 			e2db::tunersets_table tns = dbih->tuners[yx].tables[curr];
-			status.position = dbih->get_transponder_position_text(tns);
+			status.position = dbih->value_transponder_position(tns);
 		}
 		status.counters[gui::COUNTER::position] = dbih->index[curr].size();
 	}

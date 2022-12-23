@@ -363,31 +363,6 @@ void e2db::export_file(FPORTS fpo, string path)
 	out.close();
 }
 
-e2db::FPORTS e2db::filetype_detect(string path)
-{
-	string filename = std::filesystem::path(path).filename().u8string(); //C++17
-
-	if (filename == "lamedb")
-		return FPORTS::all_services; // autodetect
-	else if (filename == "lamedb5")
-		return FPORTS::all_services__2_5;
-	else if (filename == "services")
-		return FPORTS::all_services; // autodetect
-	else if (filename == "satellites.xml")
-		return FPORTS::single_tunersets;
-	else if (filename == "terrestrial.xml")
-		return FPORTS::single_tunersets;
-	else if (filename == "cables.xml")
-		return FPORTS::single_tunersets;
-	else if (filename == "atsc.xml")
-		return FPORTS::single_tunersets;
-	else if (filename.find("bouquets.") != string::npos)
-		return FPORTS::single_bouquet;
-	else if (filename.find("userbouquet.") != string::npos)
-		return FPORTS::single_userbouquet;
-	return FPORTS::fports_empty;
-}
-
 void e2db::add_transponder(transponder& tx)
 {
 	debug("add_transponder()", "txid", tx.txid);
@@ -1099,6 +1074,21 @@ void e2db::edit_tunersets_transponder(string trid, tunersets_transponder& tntxp,
 	}
 }
 
+string e2db::get_localdir()
+{
+	debug("get_localdir()");
+
+	return this->localdir;
+}
+
+string e2db::get_filename()
+{
+	debug("get_filename()");
+
+	return this->filename;
+}
+
+
 //TODO TEST
 void e2db::remove_tunersets_transponder(string trid, tunersets_table tn)
 {
@@ -1111,173 +1101,6 @@ void e2db::remove_tunersets_transponder(string trid, tunersets_table tn)
 		if (it->second == trid)
 			index[tn.tnid].erase(it);
 	}
-}
-
-string e2db::get_reference_id(string chid)
-{
-	// debug("get_reference_id()", "chid", chid);
-
-	char refid[44];
-	int ssid, tsid, dvbns, stype, snum;
-	ssid = 0, tsid = 0, dvbns = 0;
-	stype = 0, snum = 0;
-	string onid = "0";
-
-	if (db.services.count(chid))
-	{
-		service ch = db.services[chid];
-		stype = ch.stype != -1 ? ch.stype : 0;
-		snum = ch.snum != -1 ? ch.snum : 0;
-		ssid = ch.ssid;
-		tsid = ch.tsid;
-		onid = ch.onid.empty() ? onid : ch.onid;
-		std::transform(onid.begin(), onid.end(), onid.begin(), [](unsigned char c) { return toupper(c); });
-		dvbns = ch.dvbns;
-	}
-
-	// %1d:%4d:%4X:%4X:%4X:%4s:%8X:0:0:0:
-	std::sprintf(refid, "%d:%d:%X:%X:%X:%s:%X:0:0:0", 1, stype, snum, ssid, tsid, onid.c_str(), dvbns);
-	return refid;
-}
-
-string e2db::get_reference_id(channel_reference chref)
-{
-	// debug("get_reference_id()", "chref.chid", chref.chid);
-
-	char refid[44];
-	int ssid, tsid, dvbns;
-	int type, anum;
-	ssid = 0, tsid = 0, dvbns = 0;
-	type = 0, anum = 0;
-	string onid = "0";
-
-	if (! chref.marker && db.services.count(chref.chid))
-	{
-		service ch = db.services[chref.chid];
-		type = ch.stype != -1 ? ch.stype : 0;
-		anum = ch.snum != -1 ? ch.snum : 0;
-		ssid = ch.ssid;
-		tsid = ch.tsid;
-		onid = ch.onid.empty() ? onid : ch.onid;
-		std::transform(onid.begin(), onid.end(), onid.begin(), [](unsigned char c) { return toupper(c); });
-		dvbns = ch.dvbns;
-	}
-	else
-	{
-		type = chref.type != -1 ? chref.type : 0;
-		anum = chref.anum != -1 ? chref.anum : 0;
-	}
-
-	// %1d:%4d:%4X:%4X:%4X:%4s:%8X:0:0:0:
-	std::sprintf(refid, "%d:%d:%X:%X:%X:%s:%X:0:0:0", 1, type, anum, ssid, tsid, onid.c_str(), dvbns);
-	return refid;
-}
-
-string e2db::get_transponder_combo_value(transponder tx)
-{
-	string ptxp;
-	switch (tx.ttype)
-	{
-		case 's':
-			ptxp = to_string(tx.freq) + '/' + SAT_POL[tx.pol] + '/' + to_string(tx.sr);
-		break;
-		case 't':
-			ptxp = to_string(tx.freq) + '/' + TER_MOD[tx.tmod] + '/' + TER_BAND[tx.band];
-		break;
-		case 'c':
-			ptxp = to_string(tx.freq) + '/' + CAB_MOD[tx.cmod] + '/' + to_string(tx.sr);
-		break;
-		case 'a':
-			ptxp = to_string(tx.freq);
-		break;
-	}
-	return ptxp;
-}
-
-string e2db::get_transponder_combo_value(tunersets_transponder tntxp, tunersets_table tn)
-{
-	string ptxp;
-	switch (tn.ytype)
-	{
-		case YTYPE::sat:
-			ptxp = to_string(tntxp.freq) + '/' + SAT_POL[tntxp.pol] + '/' + to_string(tntxp.sr);
-		break;
-		case YTYPE::terrestrial:
-			ptxp = to_string(tntxp.freq) + '/' + TER_MOD[tntxp.tmod] + '/' + TER_BAND[tntxp.band];
-		break;
-		case YTYPE::cable:
-			ptxp = to_string(tntxp.freq) + '/' + CAB_MOD[tntxp.cmod] + '/' + to_string(tntxp.sr);
-		break;
-		case YTYPE::atsc:
-			ptxp = to_string(tntxp.freq);
-		break;
-	}
-	return ptxp;
-}
-
-string e2db::get_transponder_name_value(transponder tx)
-{
-	string ppos;
-	if (tx.ttype == 's')
-	{
-		if (tuners_pos.count(tx.pos))
-		{
-			string tnid = tuners_pos.at(tx.pos);
-			tunersets_table tns = tuners[0].tables[tnid];
-			ppos = tns.name;
-		}
-		else
-		{
-			ppos = get_transponder_position_text(tx);
-		}
-	}
-	return ppos;
-}
-
-string e2db::get_transponder_position_text(transponder tx)
-{
-	return get_transponder_position_text(tx.pos);
-}
-
-string e2db::get_transponder_position_text(tunersets_table tn)
-{
-	return get_transponder_position_text(tn.pos);
-}
-
-int e2db::get_transponder_position_number(string ppos)
-{
-	std::string::size_type pos;
-	float posdeg = std::stof(ppos, &pos);
-	char pospoint = ppos.substr(pos)[0];
-	return (int ((pospoint == 'E' ? posdeg : -posdeg) * 10));
-}
-
-string e2db::get_transponder_position_text(int pos)
-{
-	char cposdeg[6];
-	// %3d.%1d%C
-	std::sprintf(cposdeg, "%.1f", float (std::abs(pos)) / 10);
-	return (string (cposdeg) + (pos > 0 ? 'E' : 'W'));
-}
-
-string e2db::get_transponder_system_text(transponder tx)
-{
-	string psys;
-	switch (tx.ttype) {
-		case 's':
-			psys = tx.sys != -1 ? SAT_SYS[tx.sys] : "DVB-S";
-		break;
-		case 't':
-			psys = "DVB-T";
-		break;
-		case 'c':
-			psys = "DVB-C";
-		break;
-		case 'a':
-			psys = "ATSC";
-		break;
-	}
-	return psys;
 }
 
 map<string, vector<pair<int, string>>> e2db::get_channels_index()
@@ -1438,20 +1261,6 @@ map<string, vector<pair<int, string>>> e2db::get_az_index()
 	}
 
 	return _index;
-}
-
-string e2db::get_localdir()
-{
-	debug("get_localdir()");
-
-	return this->localdir;
-}
-
-string e2db::get_filename()
-{
-	debug("get_filename()");
-
-	return this->filename;
 }
 
 }

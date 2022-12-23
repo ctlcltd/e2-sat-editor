@@ -216,8 +216,8 @@ e2db_file e2db_maker::make_lamedb(string filename)
 	}
 	ss << formats[MAKER_FORMAT::section_end];
 
-	ss << formats[MAKER_FORMAT::comment] << "editor: " << get_editor_string() << endl;
-	ss << formats[MAKER_FORMAT::comment] << "datetime: " << get_timestamp() << endl;
+	ss << formats[MAKER_FORMAT::comment] << "editor: " << editor_string() << endl;
+	ss << formats[MAKER_FORMAT::comment] << "datetime: " << editor_timestamp() << endl;
 	return ss.str();
 }
 

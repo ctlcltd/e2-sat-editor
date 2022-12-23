@@ -231,8 +231,8 @@ void printable::page_header(html_page& page, string filename, DOC_VIEW view)
 
 void printable::page_footer(html_page& page, string filename, DOC_VIEW view)
 {
-	QString editor = QString::fromStdString(dbih->get_editor_string()).toHtmlEscaped();
-	QString timestamp = QString::fromStdString(dbih->get_timestamp());
+	QString editor = QString::fromStdString(dbih->editor_string(true));
+	QString timestamp = QString::fromStdString(dbih->editor_timestamp());
 
 	page.footer += "<div class=\"footer\">";
 	page.footer += "File: <b>" + QString::fromStdString(filename) + "</b><br>";
@@ -376,9 +376,9 @@ void printable::page_body_channel_list(html_page& page, string bname, DOC_VIEW v
 			QString pol = QString::fromStdString(tx.pol != -1 ? e2db::SAT_POL[tx.pol] : "");
 			QString sr = QString::fromStdString(to_string(tx.sr));
 			QString fec = QString::fromStdString(e2db::SAT_FEC[tx.fec]);
-			string ppos = dbih->get_transponder_position_text(tx);
+			string ppos = dbih->value_transponder_position(tx);
 			QString pos = QString::fromStdString(ppos);
-			string psys = dbih->get_transponder_system_text(tx);
+			string psys = dbih->value_transponder_system(tx);
 			QString sys = QString::fromStdString(psys);
 
 			page.body += "<tr>";
@@ -512,7 +512,7 @@ void printable::page_body_tunersets_list(html_page& page, int ytype)
 		string ppos;
 		if (ytype == e2db::YTYPE::sat)
 		{
-			ppos = dbih->get_transponder_position_text(tns);
+			ppos = dbih->value_transponder_position(tns);
 		}
 		QString pos = QString::fromStdString(ppos);
 

@@ -1750,11 +1750,11 @@ void mainView::updateRefBox()
 
 			ssid = QString::fromStdString(to_string(ch.ssid));
 
-			string ptxp = dbih->get_transponder_combo_value(tx);
+			string ptxp = dbih->value_transponder_combo(tx);
 			txp = QString::fromStdString(ptxp);
 
-			string psys = dbih->get_transponder_system_text(tx);
-			string ppos = dbih->get_transponder_position_text(tx);
+			string psys = dbih->value_transponder_system(tx);
+			string ppos = dbih->value_transponder_position(tx);
 
 			tns = "<p style=\"line-height: 125%\">" + QString::fromStdString(psys + "<br>" + ppos) + "</p>";
 		}

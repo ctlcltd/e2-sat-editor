@@ -20,26 +20,6 @@ using std::string, std::pair, std::hex, std::dec, std::to_string, std::cout, std
 namespace e2se_e2db
 {
 
-string e2db_abstract::get_timestamp()
-{
-	std::time_t ct = std::time(0);
-	int zh = 0;
-	std::tm* lct = std::localtime(&ct);
-	zh = lct->tm_hour + lct->tm_isdst;
-	char dt[80];
-	std::strftime(dt, 80, "%Y-%m-%d %H:%M:%S", lct);
-	std::tm* gmt = std::gmtime(&ct);
-	zh = (zh - gmt->tm_hour) * 100;
-	char tz[7];
-	std::sprintf(tz, "%+05d", zh);
-	return string (dt) + string (tz);
-}
-
-string e2db_abstract::get_editor_string()
-{
-	return "e2 SAT Editor 0.1 <https://github.com/ctlcltd/e2-sat-editor>";
-}
-
 void e2db_abstract::debug(string msg)
 {
 	this->log->debug(msg);
@@ -83,6 +63,369 @@ void e2db_abstract::error(string msg, string optk, string optv)
 void e2db_abstract::error(string msg, string optk, int optv)
 {
 	this->log->error(msg, optk, std::to_string(optv));
+}
+
+string e2db_abstract::editor_string(bool html)
+{
+	if (html)
+		return "e2 SAT Editor " + to_string(EDITOR_RELEASE) + " <a href=\"https://github.com/ctlcltd/e2-sat-editor\">https://github.com/ctlcltd/e2-sat-editor</a>";
+	else
+		return "e2 SAT Editor " + to_string(EDITOR_RELEASE) + " <https://github.com/ctlcltd/e2-sat-editor>";
+}
+
+string e2db_abstract::editor_timestamp()
+{
+	std::time_t ct = std::time(0);
+	int zh = 0;
+	std::tm* lct = std::localtime(&ct);
+	zh = lct->tm_hour + lct->tm_isdst;
+	char dt[80];
+	std::strftime(dt, 80, "%Y-%m-%d %H:%M:%S", lct);
+	std::tm* gmt = std::gmtime(&ct);
+	zh = (zh - gmt->tm_hour) * 100;
+	char tz[7];
+	std::sprintf(tz, "%+05d", zh);
+	return string (dt) + string (tz);
+}
+
+e2db_abstract::FPORTS e2db_abstract::filetype_detect(string path)
+{
+	string filename = std::filesystem::path(path).filename().u8string(); //C++17
+
+	if (filename == "lamedb")
+		return FPORTS::all_services; // autodetect
+	else if (filename == "lamedb5")
+		return FPORTS::all_services__2_5;
+	else if (filename == "services")
+		return FPORTS::all_services; // autodetect
+	else if (filename == "satellites.xml")
+		return FPORTS::single_tunersets;
+	else if (filename == "terrestrial.xml")
+		return FPORTS::single_tunersets;
+	else if (filename == "cables.xml")
+		return FPORTS::single_tunersets;
+	else if (filename == "atsc.xml")
+		return FPORTS::single_tunersets;
+	else if (filename.find("bouquets.") != string::npos)
+		return FPORTS::single_bouquet;
+	else if (filename.find("userbouquet.") != string::npos)
+		return FPORTS::single_userbouquet;
+	return FPORTS::fports_empty;
+}
+
+void e2db_abstract::value_channel_reference(string str, channel_reference& chref, service_reference& ref)
+{
+	int i, type, anum, ssid, tsid, onid, dvbns;
+	i = 0, type = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0;
+
+	std::sscanf(str.c_str(), "%d:%d:%4X:%4X:%4X:%4X:%8X", &i, &type, &anum, &ssid, &tsid, &onid, &dvbns);
+	//TODO other flags ? "...:%d:%d:%d:"
+
+	switch (type)
+	{
+		// marker
+		case STYPE::regular_marker:
+		case STYPE::numbered_marker:
+		case STYPE::hidden_marker_1:
+		case STYPE::hidden_marker_2:
+			chref.marker = true;
+		break;
+		//TODO group
+		// group
+		case STYPE::group:
+			// error("value_channel_reference()", "Error", "Not supported yet.");
+		break;
+		// service
+		default:
+			chref.marker = false;
+			ref.ssid = ssid;
+			ref.dvbns = dvbns;
+			ref.tsid = tsid;
+			ref.onid = onid;
+	}
+
+	chref.type = type;
+	chref.anum = anum;
+}
+
+
+string e2db_abstract::value_reference_id(service ch)
+{
+	int stype = ch.stype != -1 ? ch.stype : 0;
+	int snum = ch.snum != -1 ? ch.snum : 0;
+	int ssid = ch.ssid;
+	int tsid = ch.tsid;
+	string onid = ch.onid.empty() ? "0" : ch.onid;
+	std::transform(onid.begin(), onid.end(), onid.begin(), [](unsigned char c) { return toupper(c); });
+	int dvbns = ch.dvbns;
+
+	char refid[44];
+	// %1d:%4d:%4X:%4X:%4X:%4s:%8X:0:0:0:
+	std::sprintf(refid, "%d:%d:%X:%X:%X:%s:%X:0:0:0", 1, stype, snum, ssid, tsid, onid.c_str(), dvbns);
+	return refid;
+}
+
+string e2db_abstract::value_reference_id(channel_reference chref)
+{
+	int type = chref.type != -1 ? chref.type : 0;
+	int anum = chref.anum != -1 ? chref.anum : 0;
+	int ssid = 0;
+	int tsid = 0;
+	string onid = "0";
+	int dvbns = 0;
+
+	char refid[44];
+	// %1d:%4d:%4X:%4X:%4X:%4s:%8X:0:0:0:
+	std::sprintf(refid, "%d:%d:%X:%X:%X:%s:%X:0:0:0", 1, type, anum, ssid, tsid, onid.c_str(), dvbns);
+	return refid;
+}
+
+string e2db_abstract::value_reference_id(channel_reference chref, service ch)
+{
+	int type, anum;
+	int ssid = 0;
+	int tsid = 0;
+	string onid = "0";
+	int dvbns = 0;
+
+	if (! chref.marker)
+	{
+		type = ch.stype != -1 ? ch.stype : 0;
+		anum = ch.snum != -1 ? ch.snum : 0;
+		ssid = ch.ssid;
+		tsid = ch.tsid;
+		onid = ch.onid.empty() ? onid : ch.onid;
+		std::transform(onid.begin(), onid.end(), onid.begin(), [](unsigned char c) { return toupper(c); });
+		dvbns = ch.dvbns;
+	}
+	else
+	{
+		type = chref.type != -1 ? chref.type : 0;
+		anum = chref.anum != -1 ? chref.anum : 0;
+	}
+
+	char refid[44];
+	// %1d:%4d:%4X:%4X:%4X:%4s:%8X:0:0:0:
+	std::sprintf(refid, "%d:%d:%X:%X:%X:%s:%X:0:0:0", 1, type, anum, ssid, tsid, onid.c_str(), dvbns);
+	return refid;
+}
+
+
+int e2db_abstract::value_service_type(string str)
+{
+	if (str == "Data")
+		return STYPE::data;
+	else if (str == "TV")
+		return STYPE::tv;
+	else if (str == "Radio")
+		return STYPE::radio;
+	else if (str == "MARKER")
+		return STYPE::marker;
+	else if (str == "HD")
+		return 25;
+	else if (str == "H.264")
+		return 22;
+	else if (str == "H.265")
+		return 31;
+	else if (str == "UHD")
+		return 17;
+	else
+		return STYPE::data;
+}
+
+//TODO improve
+vector<string> e2db_abstract::value_channel_cas(string str)
+{
+	if (str.find("$") != string::npos)
+		str = str.substr(2);
+
+	vector<string> cas;
+
+	char* token = std::strtok(str.data(), ",");
+	while (token != 0)
+	{
+		string val = string (token);
+		val.erase(0, val.find_first_not_of(' '));
+		string pid;
+
+		if (val == "Seca")
+			pid = "0100";
+		else if (val == "Irdeto")
+			pid = "06ed";
+		else if (val == "Viaccess")
+			pid = "0500";
+		else if (val == "NDS")
+			pid = "091f";
+		else if (val == "Conax")
+			pid = "0b00";
+		else if (val == "Cryptoworks")
+			pid = "0d00";
+		else if (val == "PVU")
+			pid = "0e00";
+		else if (val == "Nagra")
+			pid = "1800";
+		else if (val == "BISS")
+			pid = "2600";
+		else if (val == "Crypton")
+			pid = "4347";
+		else if (val == "DRE")
+			pid = "4ae0";
+
+		cas.emplace_back("C:" + pid);
+		token = std::strtok(NULL, ",");
+	}
+	return cas;
+}
+
+string e2db_abstract::value_transponder_combo(transponder tx)
+{
+	string ptxp;
+	switch (tx.ttype)
+	{
+		case 's':
+			ptxp = to_string(tx.freq) + '/' + SAT_POL[tx.pol] + '/' + to_string(tx.sr);
+		break;
+		case 't':
+			ptxp = to_string(tx.freq) + '/' + TER_MOD[tx.tmod] + '/' + TER_BAND[tx.band];
+		break;
+		case 'c':
+			ptxp = to_string(tx.freq) + '/' + CAB_MOD[tx.cmod] + '/' + to_string(tx.sr);
+		break;
+		case 'a':
+			ptxp = to_string(tx.freq);
+		break;
+	}
+	return ptxp;
+}
+
+string e2db_abstract::value_transponder_combo(tunersets_transponder tntxp, tunersets_table tn)
+{
+	string ptxp;
+	switch (tn.ytype)
+	{
+		case YTYPE::sat:
+			ptxp = to_string(tntxp.freq) + '/' + SAT_POL[tntxp.pol] + '/' + to_string(tntxp.sr);
+		break;
+		case YTYPE::terrestrial:
+			ptxp = to_string(tntxp.freq) + '/' + TER_MOD[tntxp.tmod] + '/' + TER_BAND[tntxp.band];
+		break;
+		case YTYPE::cable:
+			ptxp = to_string(tntxp.freq) + '/' + CAB_MOD[tntxp.cmod] + '/' + to_string(tntxp.sr);
+		break;
+		case YTYPE::atsc:
+			ptxp = to_string(tntxp.freq);
+		break;
+	}
+	return ptxp;
+}
+
+int e2db_abstract::value_transponder_polarization(string str)
+{
+	switch (str[0])
+	{
+		case 'H': return 0;
+		case 'V': return 1;
+		case 'L': return 2;
+		case 'R': return 3;
+		default: return -1;
+	}
+}
+
+string e2db_abstract::value_transponder_position(transponder tx)
+{
+	return value_transponder_position(tx.pos);
+}
+
+string e2db_abstract::value_transponder_position(tunersets_table tn)
+{
+	return value_transponder_position(tn.pos);
+}
+
+int e2db_abstract::value_transponder_position(string str)
+{
+	std::string::size_type pos;
+	float posdeg = std::stof(str, &pos);
+	char pospoint = str.substr(pos)[0];
+	return (int ((pospoint == 'E' ? posdeg : -posdeg) * 10));
+}
+
+string e2db_abstract::value_transponder_position(int num)
+{
+	char cposdeg[6];
+	// %3d.%1d%C
+	std::sprintf(cposdeg, "%.1f", float (std::abs(num)) / 10);
+	return (string (cposdeg) + (num > 0 ? 'E' : 'W'));
+}
+
+int e2db_abstract::value_transponder_system(string str)
+{
+	if (str == "DVB-S")
+		return 0;
+	else if (str == "DVB-S2")
+		return 1;
+	else
+		return -1;
+}
+
+string e2db_abstract::value_transponder_system(transponder tx)
+{
+	string psys;
+	switch (tx.ttype) {
+		case 's':
+			psys = tx.sys != -1 ? SAT_SYS[tx.sys] : "DVB-S";
+		break;
+		case 't':
+			psys = "DVB-T";
+		break;
+		case 'c':
+			psys = "DVB-C";
+		break;
+		case 'a':
+			psys = "ATSC";
+		break;
+	}
+	return psys;
+}
+
+string e2db_abstract::get_reference_id(string chid)
+{
+	// debug("get_reference_id()", "chid", chid);
+
+	if (db.services.count(chid))
+		return value_reference_id(db.services[chid]);
+	else
+		return "0:0:0:0:0:0:0:0:0:0";
+}
+
+string e2db_abstract::get_reference_id(channel_reference chref)
+{
+	// debug("get_reference_id()", "chref.chid", chref.chid);
+
+	if (! chref.marker && db.services.count(chref.chid))
+		return value_reference_id(chref, db.services[chref.chid]);
+	else
+		return value_reference_id(chref);
+}
+
+string e2db_abstract::get_transponder_name_value(transponder tx)
+{
+	// debug("get_transponder_name_value()", "txid", tx.txid);
+
+	string ppos;
+	if (tx.ttype == 's')
+	{
+		if (tuners_pos.count(tx.pos))
+		{
+			string tnid = tuners_pos.at(tx.pos);
+			tunersets_table tns = tuners[0].tables[tnid];
+			ppos = tns.name;
+		}
+		else
+		{
+			ppos = value_transponder_position(tx);
+		}
+	}
+	return ppos;
 }
 
 void e2db_abstract::add_transponder(int idx, transponder& tx)
@@ -213,6 +556,24 @@ void e2db_abstract::add_tunersets_transponder(int idx, tunersets_transponder& tn
 	tntxp.index = idx;
 	tn.transponders.emplace(tntxp.trid, tntxp);
 	index[tn.tnid].emplace_back(pair (idx, tntxp.trid)); //C++17
+}
+
+unordered_map<string, e2db_abstract::transponder> e2db_abstract::get_transponders()
+{
+	debug("get_transponders()");
+	return db.transponders;
+}
+
+unordered_map<string, e2db_abstract::service> e2db_abstract::get_services()
+{
+	debug("get_services()");
+	return db.services;
+}
+
+pair<unordered_map<string, e2db_abstract::bouquet>, unordered_map<string, e2db_abstract::userbouquet>> e2db_abstract::get_bouquets()
+{
+	debug("get_bouquets()");
+	return pair (bouquets, userbouquets); //C++17
 }
 
 void e2db_abstract::debugger()

@@ -81,6 +81,9 @@ void editMarker::store()
 	else
 	{
 		chref.marker = true;
+		chref.type = 0;
+		chref.anum = 0;
+		chref.index = 0;
 	}
 
 	for (auto & item : fields)

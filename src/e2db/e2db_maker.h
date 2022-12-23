@@ -65,9 +65,6 @@ class e2db_maker : virtual public e2db_abstract
 		e2db_file make_bouquet(string bname);
 		e2db_file make_userbouquet(string bname);
 		e2db_file make_tunersets_xml(string filename, int ytype);
-	private:
-		// e2db_out <filename string, e2db_file>
-		unordered_map<string, e2db_file> e2db_out;
 };
 }
 #endif /* e2db_maker_h */

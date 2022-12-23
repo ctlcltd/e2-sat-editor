@@ -33,6 +33,8 @@ struct e2db_abstract
 
 		//TODO FIX defined const
 
+		inline static const float EDITOR_RELEASE = 0.1; 
+
 		enum FPORTS {
 			fports_empty = 0x0000,
 			all_services = 0x1000,
@@ -130,6 +132,7 @@ struct e2db_abstract
 			f
 		};
 
+		//TODO improve
 		// service data CAS
 		// XXxxx encryption
 		inline static const unordered_map<string, string> SDATA_CAS = {
@@ -212,6 +215,7 @@ struct e2db_abstract
 			int ssid;
 			int dvbns;
 			int tsid;
+			int onid;
 		};
 
 		struct transponder
@@ -249,10 +253,10 @@ struct e2db_abstract
 		struct channel_reference
 		{
 			string chid;
-			int type;
 			bool marker = false;
-			string value;
+			int type;
 			int anum;
+			string value;
 			int index;
 		};
 
@@ -329,7 +333,7 @@ struct e2db_abstract
 			unordered_map<string, tunersets_table> tables;
 		};
 
-		struct lamedb
+		struct datadb
 		{
 			// transponders <txid string, transponder struct>
 			unordered_map<string, transponder> transponders;
@@ -344,7 +348,7 @@ struct e2db_abstract
 			string text;
 		};
 
-		lamedb db;
+		datadb db;
 		// bouquets <bname string, bouquet struct>
 		unordered_map<string, bouquet> bouquets;
 		// userbouquets <bname string, userbouquet struct>
@@ -361,17 +365,45 @@ struct e2db_abstract
 		// collisions <chid string, vector<pair<chid string, increment int>>>
 		unordered_map<string, vector<pair<string, int>>> collisions;
 
-		string get_timestamp();
-		string get_editor_string();
-		virtual unordered_map<string, string> get_input() {};
-		virtual unordered_map<string, e2db_file> get_output() {};
+		static string editor_string(bool html = false);
+		static string editor_timestamp();
+		static FPORTS filetype_detect(string path);
+		static void value_channel_reference(string str, channel_reference& chref, service_reference& ref);
+		static string value_reference_id(service ch);
+		static string value_reference_id(channel_reference chref);
+		static string value_reference_id(channel_reference chref, service ch);
+		static int value_service_type(string str);
+		static vector<string> value_channel_cas(string str);
+		static string value_transponder_combo(transponder tx);
+		static string value_transponder_combo(tunersets_transponder tntxp, tunersets_table tn);
+		static int value_transponder_polarization(string str);
+		static int value_transponder_position(string str);
+		static string value_transponder_position(int num);
+		static string value_transponder_position(transponder tx);
+		static string value_transponder_position(tunersets_table tn);
+		static int value_transponder_system(string str);
+		static string value_transponder_system(transponder tx);
+		string get_reference_id(string chid);
+		string get_reference_id(channel_reference chref);
+		string get_transponder_name_value(transponder tx);
+		virtual string get_filename() { return this->filename; };
+		virtual string get_localdir() { return this->localdir; };
+		unordered_map<string, transponder> get_transponders();
+		unordered_map<string, service> get_services();
+		pair<unordered_map<string, bouquet>, unordered_map<string, userbouquet>> get_bouquets();
+		virtual unordered_map<string, string> get_input() { return e2db; };
+		virtual unordered_map<string, e2db_file> get_output() { return e2db_out; };
 		virtual void debugger();
-		virtual void* newptr() {};
 	protected:
 		inline static int LAMEDB_VER = 0;
 
 		// e2db <filename string, full-path string>
 		unordered_map<string, string> e2db;
+		// e2db_out <filename string, e2db_file>
+		unordered_map<string, e2db_file> e2db_out;
+		string localdir;
+		string filename;
+
 		virtual void options() {};
 		virtual void debug(string msg);
 		virtual void debug(string msg, string optk, string optv);

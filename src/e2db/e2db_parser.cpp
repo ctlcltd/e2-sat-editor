@@ -11,6 +11,7 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <ctime>
 #include <cstring>
 #include <algorithm>
 #include <sstream>
@@ -303,7 +304,7 @@ void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 			continue;
 
 		size_t delimit = line.find(',');
-		string data = line.substr(2, delimit - 2);
+		string str = line.substr(2, delimit - 2);
 		string params = line.substr(delimit + 1);
 
 		// transponder
@@ -311,7 +312,7 @@ void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 		{
 			tx = transponder ();
 			tidx += 1;
-			parse_lamedb_transponder_params(data, tx);
+			parse_lamedb_transponder_params(str, tx);
 			parse_lamedb_transponder_feparms(params.substr(2), params[0], tx);
 			add_transponder(tidx, tx);
 		}
@@ -323,7 +324,7 @@ void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 			size_t delimit = params.rfind('"');
 			string chname = params.substr(1, delimit - 1);
 			string chdata = params.rfind(',') != string::npos ? params.substr(delimit + 2) : "";
-			parse_lamedb_service_params(data, ch);
+			parse_lamedb_service_params(str, ch);
 			append_lamedb_service_name(chname, ch);
 			parse_lamedb_service_data(chdata, ch);
 			add_service(sidx, ch);
@@ -331,19 +332,19 @@ void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 	}
 }
 
-void e2db_parser::parse_lamedb_transponder_params(string data, transponder& tx)
+void e2db_parser::parse_lamedb_transponder_params(string str, transponder& tx)
 {
 	int dvbns, tsid, onid;
 	dvbns = 0, tsid = 0, onid = 0;
 
-	std::sscanf(data.c_str(), "%08x:%04x:%04x", &dvbns, &tsid, &onid);
+	std::sscanf(str.c_str(), "%08x:%04x:%04x", &dvbns, &tsid, &onid);
 
 	tx.dvbns = dvbns;
 	tx.tsid = tsid;
 	tx.onid = onid;
 }
 
-void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, transponder& tx)
+void e2db_parser::parse_lamedb_transponder_feparms(string str, char ttype, transponder& tx)
 {
 	int freq, sr, pol, fec, pos, inv, flgs, sys, mod, rol, pil;
 	int band, hpfec, lpfec, tmod, tmx, guard, hier;
@@ -359,7 +360,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 	switch (ttype)
 	{
 		case 's':
-			std::sscanf(data.c_str(), "%8d:%8d:%1d:%1d:%4d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil, oflgs);
+			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%4d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil, oflgs);
 
 			tx.freq = int (freq / 1e3);
 			tx.sr = int (sr / 1e3);
@@ -376,7 +377,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 		break;
 		//TODO TEST
 		case 't': // DVB-T
-			std::sscanf(data.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &band, &hpfec, &lpfec, &tmod, &tmx, &guard, &hier, &inv, oflgs);
+			std::sscanf(str.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &band, &hpfec, &lpfec, &tmod, &tmx, &guard, &hier, &inv, oflgs);
 
 			tx.freq = int (freq / 1e3);
 			tx.band = band;
@@ -391,7 +392,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 		break;
 		//TODO TEST
 		case 'c': // DVB-C
-			std::sscanf(data.c_str(), "%8d:%8d:%1d:%1d:%1d%s", &freq, &sr, &inv, &cmod, &cfec, oflgs);
+			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%1d%s", &freq, &sr, &inv, &cmod, &cfec, oflgs);
 
 			tx.freq = int (freq / 1e3);
 			tx.sr = int (sr / 1e3);
@@ -402,7 +403,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 		break;
 		//TODO TEST
 		case 'a': // ATSC
-			std::sscanf(data.c_str(), "%8d:%1d:%1d:%1d:%1d%s", &freq, &inv, &amod, &flgs, &sys, oflgs);
+			std::sscanf(str.c_str(), "%8d:%1d:%1d:%1d:%1d%s", &freq, &inv, &amod, &flgs, &sys, oflgs);
 
 			tx.freq = int (freq / 1e3);
 			tx.inv = inv;
@@ -418,7 +419,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string data, char ttype, tran
 	tx.ttype = ttype;
 }
 
-void e2db_parser::parse_lamedb_service_params(string data, service& ch)
+void e2db_parser::parse_lamedb_service_params(string str, service& ch)
 {
 	int ssid, dvbns, tsid, stype, snum;
 	char onid[5]; //TODO to int ?
@@ -427,12 +428,12 @@ void e2db_parser::parse_lamedb_service_params(string data, service& ch)
 	if (LAMEDB_VER == 5)
 	{
 		int srcid = -1;
-		std::sscanf(data.c_str(), "%04x:%08x:%04x:%4s:%3d:%4d:%d", &ssid, &dvbns, &tsid, onid, &stype, &snum, &srcid);
+		std::sscanf(str.c_str(), "%04x:%08x:%04x:%4s:%3d:%4d:%d", &ssid, &dvbns, &tsid, onid, &stype, &snum, &srcid);
 		ch.srcid = srcid;
 	}
 	else
 	{
-		std::sscanf(data.c_str(), "%04x:%08x:%04x:%4s:%3d:%4d", &ssid, &dvbns, &tsid, onid, &stype, &snum);
+		std::sscanf(str.c_str(), "%04x:%08x:%04x:%4s:%3d:%4d", &ssid, &dvbns, &tsid, onid, &stype, &snum);
 	}
 
 	ch.ssid = ssid;
@@ -444,15 +445,16 @@ void e2db_parser::parse_lamedb_service_params(string data, service& ch)
 	ch.snum = snum;
 }
 
-void e2db_parser::parse_lamedb_service_data(string data, service& ch)
+//TODO improve std::strtok
+void e2db_parser::parse_lamedb_service_data(string str, service& ch)
 {
-	if (data.empty())
+	if (str.empty())
 		return;
 
 	//TODO max length 256 EOL
-	stringstream ss (data);
+	stringstream ss (str);
 	string line;
-	map<char, vector<string>> cdata;
+	map<char, vector<string>> cstr;
 
 	while (std::getline(ss, line, ','))
 	{
@@ -465,14 +467,14 @@ void e2db_parser::parse_lamedb_service_data(string data, service& ch)
 			case 'f': key = e2db_parser::SDATA::f; break;
 		}
 		string val = line.substr(2);
-		cdata[key].push_back(val);
+		cstr[key].push_back(val);
 	}
-	ch.data = cdata;
+	ch.data = cstr;
 }
 
-void e2db_parser::append_lamedb_service_name(string data, service& ch)
+void e2db_parser::append_lamedb_service_name(string str, service& ch)
 {
-	ch.chname = data;
+	ch.chname = str;
 }
 
 void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string bname)
@@ -578,24 +580,24 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string bname)
 	}
 }
 
-void e2db_parser::parse_userbouquet_reference(string data, userbouquet& ub)
+void e2db_parser::parse_userbouquet_reference(string str, userbouquet& ub)
 {
 	char refid[33];
 	char fname[33];
 	char oby[13];
 
-	std::sscanf(data.c_str(), "%32s BOUQUET %32s ORDER BY %12s", refid, fname, oby);
+	std::sscanf(str.c_str(), "%32s BOUQUET %32s ORDER BY %12s", refid, fname, oby);
 
 	ub.bname = string (fname);
 	ub.bname = ub.bname.substr(1, ub.bname.length() - 2);
 }
 
-void e2db_parser::parse_channel_reference(string data, channel_reference& chref, service_reference& ref)
+void e2db_parser::parse_channel_reference(string str, channel_reference& chref, service_reference& ref)
 {
 	int i, type, anum, ssid, tsid, onid, dvbns;
 	i = 0, type = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0;
 
-	std::sscanf(data.c_str(), "%d:%d:%4X:%4X:%4X:%4X:%8X", &i, &type, &anum, &ssid, &tsid, &onid, &dvbns);
+	std::sscanf(str.c_str(), "%d:%d:%4X:%4X:%4X:%4X:%8X", &i, &type, &anum, &ssid, &tsid, &onid, &dvbns);
 	//TODO other flags ? "...:%d:%d:%d:"
 
 	switch (type)
@@ -771,8 +773,8 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 		{
 			string str = string (token);
 			string key, val;
-			unsigned long pos;
-			unsigned long len = str.find('=');
+			size_t pos;
+			size_t len = str.find('=');
 
 			if (len != string::npos)
 			{
@@ -980,24 +982,6 @@ unordered_map<string, string> e2db_parser::get_input() {
 	debug("get_input()");
 
 	return e2db;
-}
-
-unordered_map<string, e2db_parser::transponder> e2db_parser::get_transponders()
-{
-	debug("get_transponders()");
-	return db.transponders;
-}
-
-unordered_map<string, e2db_parser::service> e2db_parser::get_services()
-{
-	debug("get_services()");
-	return db.services;
-}
-
-pair<unordered_map<string, e2db_parser::bouquet>, unordered_map<string, e2db_parser::userbouquet>> e2db_parser::get_bouquets()
-{
-	debug("get_bouquets()");
-	return pair (bouquets, userbouquets); //C++17
 }
 
 bool e2db_parser::list_localdir(string localdir)

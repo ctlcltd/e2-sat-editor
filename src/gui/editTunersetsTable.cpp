@@ -256,7 +256,7 @@ void editTunersetsTable::store()
 			else if (key == "flgs")
 				tns.flgs = val.empty() ? -1 : std::stoi(val);
 			else if (key == "pos")
-				tns.pos = val.empty() ? -1 : dbih->get_transponder_position_number(val);
+				tns.pos = val.empty() ? -1 : dbih->value_transponder_position(val);
 		}
 		else if (this->state.ty == e2db::YTYPE::terrestrial)
 		{
@@ -321,7 +321,7 @@ void editTunersetsTable::retrieve()
 			else if (key == "flgs")
 				val = tns.flgs != -1 ? to_string(tns.flgs) : "";
 			else if (key == "pos")
-				val = dbih->get_transponder_position_text(tns.pos);
+				val = dbih->value_transponder_position(tns.pos);
 		}
 		else if (this->state.ty == e2db::YTYPE::terrestrial)
 		{

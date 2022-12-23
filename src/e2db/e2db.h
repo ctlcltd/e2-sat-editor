@@ -32,7 +32,6 @@ class e2db : public e2db_parser, public e2db_maker, public e2db_converter
 		void export_file(vector<string> paths);
 		void export_file(FPORTS fpo, vector<string> paths);
 		void export_file(FPORTS fpo, string path);
-		FPORTS filetype_detect(string path);
 		void add_transponder(transponder& tx);
 		void edit_transponder(string txid, transponder& tx);
 		void remove_transponder(string txid);
@@ -58,16 +57,8 @@ class e2db : public e2db_parser, public e2db_maker, public e2db_converter
 		void add_tunersets_transponder(tunersets_transponder& tntxp, tunersets_table tn);
 		void edit_tunersets_transponder(string trid, tunersets_transponder& tntxp, tunersets_table tn);
 		void remove_tunersets_transponder(string trid, tunersets_table tn);
-		string get_reference_id(string chid);
-		string get_reference_id(channel_reference chref);
-		string get_transponder_combo_value(transponder tx);
-		string get_transponder_combo_value(tunersets_transponder tntxp, tunersets_table tn);
-		string get_transponder_name_value(transponder tx);
-		int get_transponder_position_number(string ppos);
-		string get_transponder_position_text(int pos);
-		string get_transponder_position_text(transponder tx);
-		string get_transponder_position_text(tunersets_table tn);
-		string get_transponder_system_text(transponder tx);
+		string get_filename();
+		string get_localdir();
 		map<string, vector<pair<int, string>>> get_channels_index();
 		map<string, vector<pair<int, string>>> get_transponders_index();
 		map<string, vector<pair<int, string>>> get_services_index();
@@ -77,10 +68,6 @@ class e2db : public e2db_parser, public e2db_maker, public e2db_converter
 		map<string, vector<pair<int, string>>> get_resolution_index();
 		map<string, vector<pair<int, string>>> get_encryption_index();
 		map<string, vector<pair<int, string>>> get_az_index();
-		string get_localdir();
-		string get_filename();
-
-		void* newptr() { return new e2db; };
 };
 }
 #endif /* e2db_h */

@@ -250,11 +250,11 @@ void channelBookView::populate()
 			QString stype = QString::fromStdString(e2db::STYPE_EXT_LABEL.count(ch.stype) ? e2db::STYPE_EXT_LABEL.at(ch.stype) : e2db::STYPE_EXT_LABEL.at(e2db::STYPE::data));
 			QString pname = QString::fromStdString(ch.data.count(e2db::SDATA::p) ? ch.data[e2db::SDATA::p][0] : "");
 
-			string ptxp = dbih->get_transponder_combo_value(tx);
+			string ptxp = dbih->value_transponder_combo(tx);
 			QString txp = QString::fromStdString(ptxp);
 			string ppos = dbih->get_transponder_name_value(tx);
 			QString pos = QString::fromStdString(ppos);
-			string psys = dbih->get_transponder_system_text(tx);
+			string psys = dbih->value_transponder_system(tx);
 			QString sys = QString::fromStdString(psys);
 
 			QTreeWidgetItem* item = new QTreeWidgetItem({x, idx, chname, stype, pname, txp, pos, sys});
@@ -364,7 +364,7 @@ void channelBookView::stacker(int vv)
 			{
 				e2db::transponder tx = dbih->db.transponders[x.second];
 				QString subindex = QString::fromStdString(x.second);
-				string ptxp = dbih->get_transponder_combo_value(tx);
+				string ptxp = dbih->value_transponder_combo(tx);
 				QString txp = QString::fromStdString(ptxp);
 				subitem = new QTreeWidgetItem(item, {txp});
 				subitem->setData(0, Qt::UserRole, subindex);
