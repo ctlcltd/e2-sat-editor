@@ -171,7 +171,7 @@ void mainView::layout()
 	list->connect(list, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { this->showListEditContextMenu(pos); });
 
 	searchLayout();
-	refboxLayout();
+	referenceBoxLayout();
 
 	QToolBar* tree_ats = new QToolBar;
 	tree_ats->setIconSize(QSize(12, 12));
@@ -230,7 +230,7 @@ void mainView::layout()
 	services_tree->connect(services_tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->servicesItemChanged(current); });
 	tree->viewport()->installEventFilter(bouquets_evth);
 	tree->connect(tree, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { this->treeSwitched(tree, item); });
-	tree->connect(tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->bouquetsItemChanged(current); });
+	tree->connect(tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->treeItemChanged(current); });
 	list->installEventFilter(list_evto);
 	list->viewport()->installEventFilter(list_evth);
 	list->connect(list, &QTreeWidget::currentItemChanged, [=]() { this->listItemChanged(); });
@@ -304,9 +304,8 @@ void mainView::searchLayout()
 	this->lsr_search.filter->addItem("Position", ITEM_ROW_ROLE::chpos);
 }
 
-void mainView::refboxLayout()
+void mainView::referenceBoxLayout()
 {
-
 	this->list_reference = new QWidget;
 	list_reference->setHidden(true);
 	list_reference->setBackgroundRole(QPalette::Mid);
@@ -609,7 +608,7 @@ void mainView::treeSwitched(QTreeWidget* tree, QTreeWidgetItem* item)
 		switch (tc)
 		{
 			case 0: return this->servicesItemChanged(item);
-			case 1: return this->bouquetsItemChanged(item);
+			case 1: return this->treeItemChanged(item);
 		}
 	}
 }
@@ -654,9 +653,9 @@ void mainView::servicesItemChanged(QTreeWidgetItem* current)
 	updateStatus(true);
 }
 
-void mainView::bouquetsItemChanged(QTreeWidgetItem* current)
+void mainView::treeItemChanged(QTreeWidgetItem* current)
 {
-	debug("bouquetsItemChanged()");
+	debug("treeItemChanged()");
 
 	this->state.tc = 1;
 
@@ -765,7 +764,7 @@ void mainView::listItemSelectionChanged()
 	}
 
 	if (this->state.refbox)
-		updateRefBox();
+		updateReferenceBox();
 }
 
 void mainView::listItemDoubleClicked()
@@ -1248,9 +1247,9 @@ void mainView::editMarker()
 	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
 }
 
-void mainView::bouquetItemDelete()
+void mainView::treeItemDelete()
 {
-	debug("bouquetItemDelete()");
+	debug("treeItemDelete()");
 
 	QList<QTreeWidgetItem*> selected = tree->selectedItems();
 	
@@ -1289,20 +1288,13 @@ void mainView::listReferenceToggle()
 	{
 		list_reference->show();
 		this->state.refbox = true;
-		updateRefBox();
+		updateReferenceBox();
 	}
 	else
 	{
 		list_reference->hide();
 		this->state.refbox = false;
 	}
-}
-
-void mainView::listItemCut()
-{
-	debug("listItemCut()");
-
-	listItemCopy(true);
 }
 
 void mainView::listItemCopy(bool cut)
@@ -1502,13 +1494,6 @@ void mainView::listItemDelete()
 	updateStatus();
 }
 
-void mainView::listItemSelectAll()
-{
-	debug("listItemSelectAll()");
-
-	list->selectAll();
-}
-
 //TODO duplicates
 void mainView::putListItems(vector<QString> items)
 {
@@ -1565,7 +1550,7 @@ void mainView::putListItems(vector<QString> items)
 			anum_count++;
 
 			// %4d:%2x:%d
-			std::sprintf(chid, "%d:%x:%d", chref.type, anum_count, ub_idx);
+			std::sprintf(chid, "%d:%x:%d", chref.atype, anum_count, ub_idx);
 		}
 		else
 		{
@@ -1582,7 +1567,7 @@ void mainView::putListItems(vector<QString> items)
 
 			chref.marker = false;
 			chref.chid = chid;
-			chref.type = 0;
+			chref.atype = 0;
 			chref.anum = 0;
 			chref.index = idx.toInt();
 		}
@@ -1653,6 +1638,48 @@ void mainView::putListItems(vector<QString> items)
 	updateStatus();
 }
 
+void mainView::showTreeEditContextMenu(QPoint &pos)
+{
+	debug("showTreeEditContextMenu()");
+
+	QMenu* tree_edit = new QMenu;
+	QAction* bouquet_export = new QAction("Export");
+	// bouquet: tv | radio
+	if (this->state.ti != -1)
+	{
+		bouquet_export->connect(bouquet_export, &QAction::triggered, [=]() { tid->exportFile(); });
+	}
+	// userbouquet
+	else
+	{
+		tree_edit->addAction("Edit Userbouquet", [=]() { this->editUserbouquet(); });
+		tree_edit->addSeparator();
+		tree_edit->addAction("Delete", [=]() { this->treeItemDelete(); });
+		bouquet_export->connect(bouquet_export, &QAction::triggered, [=]() { tid->exportFile(); });
+	}
+	tree_edit->addSeparator();
+	tree_edit->addAction(bouquet_export);
+
+	tree_edit->exec(tree->mapToGlobal(pos));
+}
+
+void mainView::showListEditContextMenu(QPoint &pos)
+{
+	debug("showListEditContextMenu()");
+
+	QMenu* list_edit = new QMenu;
+	list_edit->addAction("Edit Service", [=]() { this->editService(); })->setEnabled(tabGetFlag(gui::TabListEditService));
+	list_edit->addAction("Edit Marker", [=]() { this->editMarker(); })->setEnabled(tabGetFlag(gui::TabListEditMarker));
+	list_edit->addSeparator();
+	list_edit->addAction("Cu&t", [=]() { this->listItemCut(); }, QKeySequence::Cut)->setEnabled(tabGetFlag(gui::TabListCut));
+	list_edit->addAction("&Copy", [=]() { this->listItemCopy(); }, QKeySequence::Copy)->setEnabled(tabGetFlag(gui::TabListCopy));
+	list_edit->addAction("&Paste", [=]() { this->listItemPaste(); }, QKeySequence::Paste)->setEnabled(tabGetFlag(gui::TabListPaste));
+	list_edit->addSeparator();
+	list_edit->addAction("&Delete", [=]() { this->listItemDelete(); }, QKeySequence::Delete)->setEnabled(tabGetFlag(gui::TabListDelete));
+
+	list_edit->exec(list->mapToGlobal(pos));
+}
+
 void mainView::updateStatus(bool current)
 {
 	debug("updateStatus()");
@@ -1680,9 +1707,9 @@ void mainView::updateStatus(bool current)
 	tabSetStatus(status);
 }
 
-void mainView::updateRefBox()
+void mainView::updateReferenceBox()
 {
-	debug("updateRefBox()");
+	debug("updateReferenceBox()");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 	
@@ -1697,7 +1724,7 @@ void mainView::updateRefBox()
 		string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 		QString ssid, refid, txp, tns, bsls, ubls;
 
-		// debug("updateRefBox()", "chid", chid);
+		// debug("updateReferenceBox()", "chid", chid);
 
 		// bouquets tree
 		if (this->state.tc)
@@ -1770,48 +1797,6 @@ void mainView::updateRefBox()
 		ref_fields[LIST_REF::Bouquets]->setText(bsls);
 		ref_fields[LIST_REF::Tuner]->setText(tns);
 	}
-}
-
-void mainView::showTreeEditContextMenu(QPoint &pos)
-{
-	debug("showTreeEditContextMenu()");
-
-	QMenu* tree_edit = new QMenu;
-	QAction* bouquet_export = new QAction("Export");
-	// bouquet: tv | radio
-	if (this->state.ti != -1)
-	{
-		bouquet_export->connect(bouquet_export, &QAction::triggered, [=]() { tid->exportFile(); });
-	}
-	// userbouquet
-	else
-	{
-		tree_edit->addAction("Edit Userbouquet", [=]() { this->editUserbouquet(); });
-		tree_edit->addSeparator();
-		tree_edit->addAction("Delete", [=]() { this->bouquetItemDelete(); });
-		bouquet_export->connect(bouquet_export, &QAction::triggered, [=]() { tid->exportFile(); });
-	}
-	tree_edit->addSeparator();
-	tree_edit->addAction(bouquet_export);
-
-	tree_edit->exec(tree->mapToGlobal(pos));
-}
-
-void mainView::showListEditContextMenu(QPoint &pos)
-{
-	debug("showListEditContextMenu()");
-
-	QMenu* list_edit = new QMenu;
-	list_edit->addAction("Edit Service", [=]() { this->editService(); })->setEnabled(tabGetFlag(gui::TabListEditService));
-	list_edit->addAction("Edit Marker", [=]() { this->editMarker(); })->setEnabled(tabGetFlag(gui::TabListEditMarker));
-	list_edit->addSeparator();
-	list_edit->addAction("Cu&t", [=]() { this->listItemCut(); }, QKeySequence::Cut)->setEnabled(tabGetFlag(gui::TabListCut));
-	list_edit->addAction("&Copy", [=]() { this->listItemCopy(); }, QKeySequence::Copy)->setEnabled(tabGetFlag(gui::TabListCopy));
-	list_edit->addAction("&Paste", [=]() { this->listItemPaste(); }, QKeySequence::Paste)->setEnabled(tabGetFlag(gui::TabListPaste));
-	list_edit->addSeparator();
-	list_edit->addAction("&Delete", [=]() { this->listItemDelete(); }, QKeySequence::Delete)->setEnabled(tabGetFlag(gui::TabListDelete));
-
-	list_edit->exec(list->mapToGlobal(pos));
 }
 
 void mainView::updateFlags()

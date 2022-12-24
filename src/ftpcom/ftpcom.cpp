@@ -116,9 +116,13 @@ void ftpcom::reset(CURL* ch, CURLU* rh)
 }
 
 //TODO FIX SIGABRT
-void ftpcom::cleanup(CURL* ch, CURLU* rh)
+/*void ftpcom::cleanup(CURL* ch, CURLU* rh)
 {
 	// curl_url_cleanup(rh);
+	curl_easy_cleanup(ch);
+}*/
+void ftpcom::cleanup(CURL* ch)
+{
 	curl_easy_cleanup(ch);
 }
 
@@ -142,7 +146,8 @@ bool ftpcom::disconnect()
 	if (! cph)
 		return false;
 
-	cleanup(cph, rph);
+	// cleanup(cph, rph);
+	cleanup(cph);
 	return true;
 }
 

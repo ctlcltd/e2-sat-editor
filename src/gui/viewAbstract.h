@@ -55,8 +55,14 @@ class viewAbstract : protected e2se::log_factory
 		} action;
 
 		virtual ~viewAbstract() = default;
-		virtual void load() {};
-		virtual void reset() {};
+		virtual void load() = 0;
+		virtual void reset() = 0;
+		virtual void treeItemDelete();
+		virtual void listItemCut();
+		virtual void listItemCopy(bool cut = false) = 0;
+		virtual void listItemPaste() = 0;
+		virtual void listItemDelete() = 0;
+		virtual void listItemSelectAll();
 		void treeSearchHide();
 		void treeSearchShow();
 		void treeSearchToggle();
@@ -65,11 +71,6 @@ class viewAbstract : protected e2se::log_factory
 		void listSearchHide();
 		void listSearchToggle();
 		void listSearchClose();
-		virtual void listItemCut() {};
-		virtual void listItemCopy(bool cut = false) {};
-		virtual void listItemPaste() {};
-		virtual void listItemDelete() {};
-		virtual void listItemSelectAll() {};
 		void treeFindPerform();
 		void treeFindPerform(const QString& value);
 		void listFindPerform(LIST_FIND flag);
@@ -81,9 +82,12 @@ class viewAbstract : protected e2se::log_factory
 		{
 			tabUpdateFlags();
 		};
+		//TODO refact
 		virtual void updateStatus(bool current = false)
 		{
 			tabResetStatus();
+			// suppress lot of annoying warning
+			if (current) return;
 		};
 
 		QWidget* widget;
@@ -116,9 +120,6 @@ class viewAbstract : protected e2se::log_factory
 		void searchLayout();
 		void treeItemChanged();
 		void sortByColumn(int column);
-		virtual void putListItems(vector<QString> items) {};
-		virtual void showTreeEditContextMenu(QPoint &pos) {};
-		virtual void showListEditContextMenu(QPoint &pos) {};
 		void tabSetFlag(gui::GUI_CXE bit, bool flag);
 		void tabSetFlag(gui::GUI_CXE bit);
 		bool tabGetFlag(gui::GUI_CXE bit);

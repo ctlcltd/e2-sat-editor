@@ -698,12 +698,12 @@ void tab::printFile(bool all)
 	// print all
 	if (all)
 	{
-		printer->document_all();
+		printer->documentAll();
 	}
 	// tunersets
 	else if (this->ttv == gui::TAB_VIEW::tunersets)
 	{
-		printer->document_tunersets(this->ty);
+		printer->documentTunersets(this->ty);
 	}
 	// services
 	else if (main->state.tc == 0)
@@ -728,7 +728,7 @@ void tab::printFile(bool all)
 			default:
 				stype = -1;
 		}
-		printer->document_services(stype);
+		printer->documentServices(stype);
 	}
 	// bouquets
 	else if (main->state.tc == 1)
@@ -750,10 +750,10 @@ void tab::printFile(bool all)
 
 			// bouquet | userbouquets
 			if (ti != -1)
-				printer->document_bouquet(bname);
+				printer->documentBouquet(bname);
 			// userbouquet
 			else
-				printer->document_userbouquet(bname);
+				printer->documentUserbouquet(bname);
 		}
 	}
 

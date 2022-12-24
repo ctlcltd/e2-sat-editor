@@ -290,7 +290,7 @@ void e2db_converter::pull_csv_services(istream& ifile, e2db_abstract* dst)
 				tx.sr = std::atoi(val.data());
 			// fec
 			else if (i == 11)
-				tx.fec = std::atoi(val.data());
+				tx.fec = value_transponder_fec(val, YTYPE::sat);
 			// pos
 			else if (i == 12)
 				tx.pos = value_transponder_position(val);
@@ -303,19 +303,21 @@ void e2db_converter::pull_csv_services(istream& ifile, e2db_abstract* dst)
 			continue;
 		// x order has priority over ch.index
 		if (ch.index != int (x))
-			ch.index = tx.index = x;
+			ch.index = tx.index = (x + 1);
 		// ch.ssid has priority over ref.ssid
 		if (! ch.ssid)
 			ch.ssid = ref.ssid;
 		// ch.tsid has priority over ref.tsid
 		if (! ch.tsid)
 			ch.tsid = tx.tsid = ref.tsid;
-		// ch.stype has priority over chref.type
+		// ch.stype has priority over chref.atype
 		if (! ch.stype)
-			ch.stype = chref.type;
+			ch.stype = chref.atype;
+		ch.snum = chref.anum;
 		ch.dvbns = tx.dvbns = ref.dvbns;
-		ch.onid = to_string(ref.onid); //TODO
-		tx.onid = ref.onid; //TODO
+		ch.onid = tx.onid = ref.onid;
+		if (ch.data[SDATA::C].empty())
+			ch.data.erase(SDATA::C);
 
 		char txid[25];
 		// %4x:%8x
@@ -386,7 +388,7 @@ void e2db_converter::pull_csv_bouquets(istream& ifile, e2db_abstract* dst)
 
 		// x order has priority over ub.index
 		if (ub.index != int (x))
-			ub.index = x;
+			ub.index = (x + 1);
 		
 		bs.userbouquets.emplace_back(ub.bname);
 	}
@@ -482,7 +484,7 @@ void e2db_converter::pull_csv_userbouquets(istream& ifile, e2db_abstract* dst, s
 				tx.sr = std::atoi(val.data());
 			// fec
 			else if (i == 11)
-				tx.fec = std::atoi(val.data());
+				tx.fec = value_transponder_fec(val, YTYPE::sat);
 			// pos
 			else if (i == 12)
 				tx.pos = value_transponder_position(val);
@@ -500,20 +502,21 @@ void e2db_converter::pull_csv_userbouquets(istream& ifile, e2db_abstract* dst, s
 		{
 			// x order has priority over ch.index
 			if (ch.index != int (x))
-				ch.index = tx.index = x;
-			// ch.stype has priority over chref.type
-			if (! ch.stype)
-				ch.stype = chref.type;
+				ch.index = tx.index = (x + 1);
 			// ch.ssid has priority over ref.ssid
 			if (! ch.ssid)
 				ch.ssid = ref.ssid;
 			// ch.tsid has priority over ref.tsid
 			if (! ch.tsid)
 				ch.tsid = tx.tsid = ref.tsid;
-
+			// ch.stype has priority over chref.atype
+			if (! ch.stype)
+				ch.stype = chref.atype;
+			ch.snum = chref.anum;
 			ch.dvbns = tx.dvbns = ref.dvbns;
-			ch.onid = to_string(ref.onid); //TODO
-			tx.onid = ref.onid; //TODO
+			ch.onid = tx.onid = ref.onid;
+			if (ch.data[SDATA::C].empty())
+				ch.data.erase(SDATA::C);
 
 			char txid[25];
 			// %4x:%8x

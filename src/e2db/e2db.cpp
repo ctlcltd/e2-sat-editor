@@ -141,7 +141,7 @@ void e2db::merge(e2db_abstract* dst)
 			{
 				char chid[25];
 				// %4d:%2x:%d
-				std::sprintf(chid, "%d:%x:%d", chref.type, chref.anum, ub.index);
+				std::sprintf(chid, "%d:%x:%d", chref.atype, chref.anum, ub.index);
 				chref.chid = chid;
 				index["mks"].emplace_back(pair (ub.index, chid)); //C++17
 			}
@@ -665,9 +665,9 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 
 	if (chref.marker)
 	{
-		if (! chref.type)
+		if (! chref.atype)
 		{
-			chref.type = STYPE::marker;
+			chref.atype = STYPE::marker;
 		}
 		if (! chref.anum)
 		{

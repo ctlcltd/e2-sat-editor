@@ -38,10 +38,6 @@ class editService : public dialAbstract
 		void tunerComboChanged(int index);
 		void store();
 		void retrieve();
-		string getPIDValue(e2db::service ch, e2db::SDATA_PIDS x);
-		vector<string> computePIDs(e2db::service ch, e2db::SDATA_PIDS x, string val);
-		string getFlagValue(e2db::service ch, e2db::SDATA_FLAGS x);
-		vector<string> computeFlags(e2db::service ch, e2db::SDATA_FLAGS x, string val);
 		void setEditId(string chid);
 		string getEditId();
 		string getAddId();
@@ -56,6 +52,11 @@ class editService : public dialAbstract
 			string raw_data;
 		} state;
 	protected:
+		string getPIDValue(e2db::service ch, e2db::SDATA_PIDS x);
+		vector<string> computePIDs(e2db::service ch, e2db::SDATA_PIDS x, string val);
+		string getFlagValue(e2db::service ch, e2db::SDATA_FLAGS x);
+		vector<string> computeFlags(e2db::service ch, e2db::SDATA_FLAGS x, string val);
+
 		QComboBox* dtf1tn;
 		QComboBox* dtf1tx;
 		map<string, vector<pair<int, string>>> txdata;

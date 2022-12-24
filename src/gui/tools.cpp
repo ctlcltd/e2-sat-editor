@@ -103,8 +103,8 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	dbih->import_csv_file(fci, opts, paths);
 	QGuiApplication::restoreOverrideCursor();
+	
 	tid->reset();
-	tid->load();
 
 	if (merge)
 	{
@@ -120,6 +120,8 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 	{
 		dbih->entries.services[chdata.first] = dbih->entryService(chdata.second);
 	}
+
+	tid->load();
 
 	if (sets->value("application/parserDebugger", false).toBool())
 		dbih->debugger();

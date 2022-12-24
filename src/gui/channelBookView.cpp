@@ -34,7 +34,6 @@ channelBookView::channelBookView(dataHandler* data, e2se::logger::session* log)
 	this->sets = new QSettings;
 	this->widget = new QWidget;
 
-	side();
 	layout();
 }
 
@@ -49,35 +48,7 @@ channelBookView::channelBookView(tab* tid, QWidget* cwid, dataHandler* data, e2s
 	this->sets = new QSettings;
 	this->widget = new QWidget;
 
-	side();
 	layout();
-}
-
-void channelBookView::side()
-{
-	debug("side()");
-
-	this->lwid = new QListWidget;
-	lwid->setStyleSheet("QListWidget { background: transparent; font: 15px } QListView::item { padding: 10px auto }");
-	lwid->setMaximumWidth(160);
-
-	lwid->addItem("Services");
-	lwid->addItem("Bouquets");
-	lwid->addItem("Satellites");
-	lwid->addItem("Providers");
-	lwid->addItem("Resolution");
-	lwid->addItem("Encryption");
-	lwid->addItem("A-Z");
-
-	lwid->item(0)->setIcon(theme::spacer(2));
-	lwid->item(1)->setIcon(theme::spacer(2));
-	lwid->item(2)->setIcon(theme::spacer(2));
-	lwid->item(3)->setIcon(theme::spacer(2));
-	lwid->item(4)->setIcon(theme::spacer(2));
-	lwid->item(5)->setIcon(theme::spacer(2));
-	lwid->item(6)->setIcon(theme::spacer(2));
-
-	lwid->connect(lwid, &QListWidget::currentRowChanged, [=](int index) { this->sideRowChanged(index); });
 }
 
 //TODO tabv broken when tooling
@@ -86,6 +57,8 @@ void channelBookView::layout()
 	debug("layout()");
 
 	QGridLayout* frm = new QGridLayout(widget);
+
+	sideLayout();
 
 	this->awid = new QHBoxLayout;
 	awid->setContentsMargins(0, 0, 0, 0);
@@ -158,6 +131,31 @@ void channelBookView::layout()
 	frm->setColumnStretch(1, 5);
 	frm->setSpacing(0);
 	frm->setContentsMargins(0, 0, 0, 0);
+}
+
+void channelBookView::sideLayout()
+{
+	this->lwid = new QListWidget;
+	lwid->setStyleSheet("QListWidget { background: transparent; font: 15px } QListView::item { padding: 10px auto }");
+	lwid->setMaximumWidth(160);
+
+	lwid->addItem("Services");
+	lwid->addItem("Bouquets");
+	lwid->addItem("Satellites");
+	lwid->addItem("Providers");
+	lwid->addItem("Resolution");
+	lwid->addItem("Encryption");
+	lwid->addItem("A-Z");
+
+	lwid->item(0)->setIcon(theme::spacer(2));
+	lwid->item(1)->setIcon(theme::spacer(2));
+	lwid->item(2)->setIcon(theme::spacer(2));
+	lwid->item(3)->setIcon(theme::spacer(2));
+	lwid->item(4)->setIcon(theme::spacer(2));
+	lwid->item(5)->setIcon(theme::spacer(2));
+	lwid->item(6)->setIcon(theme::spacer(2));
+
+	lwid->connect(lwid, &QListWidget::currentRowChanged, [=](int index) { this->sideRowChanged(index); });
 }
 
 void channelBookView::load()
@@ -416,6 +414,20 @@ void channelBookView::stacker(int vv)
 	}
 
 	populate();
+}
+
+//TODO
+void channelBookView::listItemCopy(bool cut)
+{
+	debug("listItemCopy()");
+
+	QList<QTreeWidgetItem*> selected = list->selectedItems();
+	
+	if (selected.empty())
+		return;
+
+	if (cut)
+		listItemDelete();
 }
 
 vector<QString> channelBookView::getSelected()

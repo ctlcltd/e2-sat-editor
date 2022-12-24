@@ -55,10 +55,14 @@ class channelBookView : public viewAbstract
 		channelBookView(tab* tid, QWidget* cwid, dataHandler* data, e2se::logger::session* log);
 		void load();
 		void reset();
+		void listItemCut() {};
+		void listItemCopy(bool cut = false);
+		void listItemPaste() {};
+		void listItemDelete() {};
 		vector<QString> getSelected();
 	protected:
-		void side();
 		void layout();
+		void sideLayout();
 		void populate();
 		void sideRowChanged(int index);
 		void stacker(int vv);

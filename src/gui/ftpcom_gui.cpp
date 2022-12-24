@@ -53,7 +53,7 @@ void ftpcom::options()
 
 void ftpcom::error(string tmsg, string rmsg)
 {
-	debug("gui.error()");
+	debug("error()");
 
 	this->::e2se_ftpcom::ftpcom::error(tmsg, rmsg);
 	QMessageBox::critical(nullptr, NULL, QString::fromStdString(rmsg));

@@ -421,31 +421,30 @@ void e2db_parser::parse_lamedb_transponder_feparms(string str, char ttype, trans
 
 void e2db_parser::parse_lamedb_service_params(string str, service& ch)
 {
-	int ssid, dvbns, tsid, stype, snum;
-	char onid[5]; //TODO to int ?
-	ssid = 0, dvbns = 0, tsid = 0, stype = -1, snum = -1;
+	int ssid, dvbns, tsid, onid, stype, snum;
+	ssid = 0, dvbns = 0, tsid = 0, onid = 0;
+	stype = -1, snum = -1;
 
 	if (LAMEDB_VER == 5)
 	{
-		int srcid = -1;
-		std::sscanf(str.c_str(), "%04x:%08x:%04x:%4s:%3d:%4d:%d", &ssid, &dvbns, &tsid, onid, &stype, &snum, &srcid);
+		int srcid = 0;
+		std::sscanf(str.c_str(), "%04x:%08x:%04x:%04x:%3d:%4d:%d", &ssid, &dvbns, &tsid, &onid, &stype, &snum, &srcid);
 		ch.srcid = srcid;
 	}
 	else
 	{
-		std::sscanf(str.c_str(), "%04x:%08x:%04x:%4s:%3d:%4d", &ssid, &dvbns, &tsid, onid, &stype, &snum);
+		std::sscanf(str.c_str(), "%04x:%08x:%04x:%04x:%3d:%4d", &ssid, &dvbns, &tsid, &onid, &stype, &snum);
 	}
 
 	ch.ssid = ssid;
 	ch.dvbns = dvbns;
 	ch.tsid = tsid;
 	ch.onid = onid;
-	ch.onid.erase(0, ch.onid.find_first_not_of('0'));
 	ch.stype = stype;
 	ch.snum = snum;
 }
 
-//TODO improve std::strtok
+//TODO improve std::strtok ?
 void e2db_parser::parse_lamedb_service_data(string str, service& ch)
 {
 	if (str.empty())
@@ -594,13 +593,13 @@ void e2db_parser::parse_userbouquet_reference(string str, userbouquet& ub)
 
 void e2db_parser::parse_channel_reference(string str, channel_reference& chref, service_reference& ref)
 {
-	int i, type, anum, ssid, tsid, onid, dvbns;
-	i = 0, type = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0;
+	int i, atype, anum, ssid, tsid, onid, dvbns;
+	i = 0, atype = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0;
 
-	std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X", &i, &type, &anum, &ssid, &tsid, &onid, &dvbns);
+	std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X", &i, &atype, &anum, &ssid, &tsid, &onid, &dvbns);
 	//TODO other flags ? "...:%d:%d:%d:"
 
-	switch (type)
+	switch (atype)
 	{
 		// marker
 		case STYPE::regular_marker:
@@ -622,7 +621,7 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 			ref.tsid = tsid;
 	}
 
-	chref.type = type;
+	chref.atype = atype;
 	chref.anum = anum;
 }
 

@@ -684,13 +684,6 @@ void tunersetsView::treeItemDelete()
 	updateStatus();
 }
 
-void tunersetsView::listItemCut()
-{
-	debug("listItemCut()");
-
-	listItemCopy(true);
-}
-
 void tunersetsView::listItemCopy(bool cut)
 {
 	debug("listItemCopy()");
@@ -708,9 +701,9 @@ void tunersetsView::listItemPaste()
 {
 	debug("listItemPaste()");
 
-	QClipboard* clipboard = QGuiApplication::clipboard();
+	/*QClipboard* clipboard = QGuiApplication::clipboard();
 	const QMimeData* mimeData = clipboard->mimeData();
-	vector<QString> items;
+	vector<QString> items;*/
 }
 
 void tunersetsView::listItemDelete()
@@ -745,18 +738,11 @@ void tunersetsView::listItemDelete()
 	this->state.changed = true;
 }
 
-void tunersetsView::listItemSelectAll()
-{
-	debug("listItemSelectAll()");
-
-	list->selectAll();
-}
-
 void tunersetsView::putListItems(vector<QString> items)
 {
 	debug("putListItems()");
 
-	list->header()->setSectionsClickable(false);
+	/*list->header()->setSectionsClickable(false);
 	list->setDragEnabled(false);
 	list->setAcceptDrops(false);
 
@@ -769,7 +755,7 @@ void tunersetsView::putListItems(vector<QString> items)
 
 	list->header()->setSectionsClickable(true);
 	list->setDragEnabled(true);
-	list->setAcceptDrops(true);
+	list->setAcceptDrops(true);*/
 
 	updateFlags();
 	updateStatus();
@@ -781,16 +767,6 @@ void tunersetsView::updateStatus(bool current)
 
 	gui::STATUS status;
 	status.current = current;
-
-	//TODO FIX
-	//
-	// clang mach size = 133295584
-	//  g++ linux size = 32674
-	//  g++ mingw size = ?
-	// 
-	// clang mach size = 411
-	//  g++ linux size = 411
-	//  g++ mingw size = 4509
 
 	if (current && ! this->state.curr.empty())
 	{

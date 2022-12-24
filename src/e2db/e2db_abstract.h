@@ -199,10 +199,10 @@ struct e2db_abstract
 			int ssid;
 			int dvbns;
 			int tsid;
-			string onid; //TODO to int ?
+			int onid;
 			int stype;
 			int snum;
-			int srcid = -1;
+			int srcid;
 			int index;
 			string txid;
 			string chname;
@@ -254,7 +254,7 @@ struct e2db_abstract
 		{
 			string chid;
 			bool marker = false;
-			int type;
+			int atype;
 			int anum;
 			string value;
 			int index;
@@ -382,6 +382,7 @@ struct e2db_abstract
 		static string value_transponder_position(int num);
 		static string value_transponder_position(transponder tx);
 		static string value_transponder_position(tunersets_table tn);
+		static int value_transponder_fec(string str, YTYPE ytype);
 		static int value_transponder_system(string str);
 		static string value_transponder_system(transponder tx);
 		string get_reference_id(string chid);

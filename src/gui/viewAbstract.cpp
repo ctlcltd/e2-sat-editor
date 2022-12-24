@@ -36,15 +36,12 @@
 #include "theme.h"
 #include "tab.h"
 #include "gui.h"
-#include "todo.h"
 
 namespace e2se_gui
 {
 
 void viewAbstract::searchLayout()
 {
-	debug("searchLayout()");
-
 	this->tree_search = new QWidget;
 	this->list_search = new QWidget;
 	tree_search->setHidden(true);
@@ -159,6 +156,37 @@ void viewAbstract::sortByColumn(int column)
 		else
 			list->header()->setSortIndicatorShown(true);
 	}
+}
+
+void viewAbstract::treeItemDelete()
+{
+	debug("treeItemDelete()");
+
+	QList<QTreeWidgetItem*> selected = tree->selectedItems();
+	
+	if (selected.empty())
+	{
+		return;
+	}
+	for (auto & item : selected)
+	{
+		QTreeWidgetItem* parent = item->parent();
+		parent->removeChild(item);
+	}
+}
+
+void viewAbstract::listItemCut()
+{
+	debug("listItemCut()");
+
+	listItemCopy(true);
+}
+
+void viewAbstract::listItemSelectAll()
+{
+	debug("listItemSelectAll()");
+
+	list->selectAll();
 }
 
 void viewAbstract::treeSearchShow()

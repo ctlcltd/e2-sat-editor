@@ -35,8 +35,8 @@ class dialAbstract : protected e2se::log_factory
 		void display(QWidget* cwid);
 		void layout();
 		virtual void toolbar();
-		virtual void store() {};
-		virtual void retrieve() {};
+		virtual void store() = 0;
+		virtual void retrieve() = 0;
 		void save();
 		void destroy();
 		QWidget* widget;

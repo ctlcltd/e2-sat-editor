@@ -102,23 +102,21 @@ class mainView : public viewAbstract
 		mainView(tab* tid, QWidget* cwid, dataHandler* data, e2se::logger::session* log);
 		void load();
 		void reset();
-		void bouquetItemDelete();
+		void treeItemDelete();
 		void listReferenceToggle();
-		void listItemCut();
 		void listItemCopy(bool cut = false);
 		void listItemPaste();
 		void listItemDelete();
-		void listItemSelectAll();
 
 		QTreeWidget* services_tree;
 	protected:
 		void layout();
 		void searchLayout();
-		void refboxLayout();
+		void referenceBoxLayout();
 		void populate(QTreeWidget* side_tree);
 		void treeSwitched(QTreeWidget* tree, QTreeWidgetItem* item);
 		void servicesItemChanged(QTreeWidgetItem* current);
-		void bouquetsItemChanged(QTreeWidgetItem* current);
+		void treeItemChanged(QTreeWidgetItem* current);
 		void listItemChanged();
 		void listItemSelectionChanged();
 		void listItemDoubleClicked();
@@ -136,11 +134,11 @@ class mainView : public viewAbstract
 		void addMarker();
 		void editMarker();
 		void putListItems(vector<QString> items);
-		void updateFlags();
-		void updateStatus(bool current = false);
-		void updateRefBox();
 		void showTreeEditContextMenu(QPoint &pos);
 		void showListEditContextMenu(QPoint &pos);
+		void updateFlags();
+		void updateStatus(bool current = false);
+		void updateReferenceBox();
 
 		map<int, QLabel*> ref_fields;
 		unordered_map<string, QList<QTreeWidgetItem*>> cache;

@@ -111,11 +111,9 @@ class tunersetsView : public viewAbstract
 		void load();
 		void reset();
 		void treeItemDelete();
-		void listItemCut();
 		void listItemCopy(bool cut = false);
 		void listItemPaste();
 		void listItemDelete();
-		void listItemSelectAll();
 	protected:
 		void layout();
 		void searchLayout();

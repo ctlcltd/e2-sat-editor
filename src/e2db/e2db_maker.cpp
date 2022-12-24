@@ -297,19 +297,17 @@ e2db_file e2db_maker::make_userbouquet(string bname)
 		channel_reference chref = userbouquets[bname].channels[x.second];
 		ss << "#SERVICE ";
 		ss << "1:";
-		ss << chref.type << ':';
+		ss << chref.atype << ':';
 		ss << hex;
 		ss << uppercase << chref.anum << ':'; //TODO global markers index
 		
 		if (db.services.count(x.second))
 		{
 			service ch = db.services[x.second];
-			string onid = ch.onid.empty() ? "0" : ch.onid;
-			std::transform(onid.begin(), onid.end(), onid.begin(), [](unsigned char c) { return toupper(c); });
 
 			ss << uppercase << ch.ssid << ':';
 			ss << uppercase << ch.tsid << ':';
-			ss << onid << ':';
+			ss << uppercase << ch.onid << ':';
 			ss << uppercase << ch.dvbns << ':';
 			ss << "0:0:0:";
 		}

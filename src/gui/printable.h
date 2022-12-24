@@ -43,25 +43,25 @@ class printable : protected e2se::log_factory
 		};
 
 		printable(dataHandler* data, e2se::logger::session* log);
-		void document_all();
-		void document_index();
-		void document_services();
-		void document_services(int stype);
-		void document_bouquet(string bname);
-		void document_userbouquet(string bname);
-		void document_tunersets(int ytype);
+		void documentAll();
+		void documentIndex();
+		void documentServices();
+		void documentServices(int stype);
+		void documentBouquet(string bname);
+		void documentUserbouquet(string bname);
+		void documentTunersets(int ytype);
 		void print();
 		void destroy() {};
 		QSettings* sets;
 	protected:
-		void page_header(html_page& page, string filename, DOC_VIEW view);
-		void page_footer(html_page& page, string filename, DOC_VIEW view);
-		void page_body_index_list(html_page& page, vector<string> paths);
-		void page_body_channel_list(html_page& page, string bname, DOC_VIEW view);
-		void page_body_bouquet_list(html_page& page, string bname);
-		void page_body_tunersets_list(html_page& page, int ytype);
-		QString doc_html_head();
-		QString doc_html_foot();
+		void pageHeader(html_page& page, string filename, DOC_VIEW view);
+		void pageFooter(html_page& page, string filename, DOC_VIEW view);
+		void pageBodyIndexList(html_page& page, vector<string> paths);
+		void pageBodyChannelList(html_page& page, string bname, DOC_VIEW view);
+		void pageBodyBouquetList(html_page& page, string bname);
+		void pageBodyTunersetsList(html_page& page, int ytype);
+		QString docHtmlHead();
+		QString docHtmlFoot();
 
 		dataHandler* data = nullptr;
 		e2db* dbih = nullptr;

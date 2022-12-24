@@ -212,7 +212,7 @@ class gui : protected e2se::log_factory
 			TAB_VIEW view;
 			string bname;
 			string position;
-			int counters[7];
+			int counters[7] = {0, 0, 0, 0, 0, 0, 0};
 			bool current;
 		};
 

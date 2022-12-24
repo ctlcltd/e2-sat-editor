@@ -32,6 +32,8 @@ class dialChannelBook : public dialAbstract
 		void display(QWidget* cwid);
 		void layout();
 		void toolbar();
+		void store() {};
+		void retrieve() {};
 		void sender();
 		void setEventCallback(std::function<void(vector<QString> items)> func)
 		{

@@ -38,32 +38,32 @@ printable::printable(dataHandler* data, e2se::logger::session* log)
 	this->dbih = this->data->dbih;
 }
 
-void printable::document_all()
+void printable::documentAll()
 {
-	debug("document_all()");
+	debug("documentAll()");
 
-	document_index();
-	document_services();
+	documentIndex();
+	documentServices();
 	for (auto & x : dbih->index["bss"])
 	{
 		string bname = x.second;
 		e2db::bouquet gboq = dbih->bouquets[bname];
-		document_bouquet(bname);
+		documentBouquet(bname);
 
 		for (string & bname : gboq.userbouquets)
 		{
-			document_userbouquet(bname);
+			documentUserbouquet(bname);
 		}
 	}
 	for (auto & x : dbih->tuners)
 	{
-		document_tunersets(x.first);
+		documentTunersets(x.first);
 	}
 }
 
-void printable::document_index()
+void printable::documentIndex()
 {
-	debug("document_index()");
+	debug("documentIndex()");
 
 	string filename = std::filesystem::path(dbih->get_localdir()).filename().u8string(); //C++17
 	if (filename.empty())
@@ -72,27 +72,27 @@ void printable::document_index()
 	}
 
 	html_page page;
-	page_header(page, filename, DOC_VIEW::view_index);
-	page_footer(page, filename, DOC_VIEW::view_index);
+	pageHeader(page, filename, DOC_VIEW::view_index);
+	pageFooter(page, filename, DOC_VIEW::view_index);
 	
 	vector<string> paths;
 	for (auto & x : dbih->get_input())
 	{
 		paths.emplace_back(x.first);
 	}
-	page_body_index_list(page, paths);
+	pageBodyIndexList(page, paths);
 
 	pages.emplace_back(page);
 }
 
-void printable::document_services()
+void printable::documentServices()
 {
-	document_services(-1);
+	documentServices(-1);
 }
 
-void printable::document_services(int stype)
+void printable::documentServices(int stype)
 {
-	debug("document_services()");
+	debug("documentServices()");
 	
 	string filename = std::filesystem::path(dbih->get_filename()).filename().u8string(); //C++17
 	string iname;
@@ -127,43 +127,43 @@ void printable::document_services(int stype)
 	}
 
 	html_page page;
-	page_header(page, headname, DOC_VIEW::view_services);
-	page_footer(page, footname, DOC_VIEW::view_services);
+	pageHeader(page, headname, DOC_VIEW::view_services);
+	pageFooter(page, footname, DOC_VIEW::view_services);
 
-	page_body_channel_list(page, iname, DOC_VIEW::view_services);
+	pageBodyChannelList(page, iname, DOC_VIEW::view_services);
 
 	pages.emplace_back(page);
 }
 
-void printable::document_bouquet(string bname)
+void printable::documentBouquet(string bname)
 {
-	debug("document_bouquet()", "bname", bname);
+	debug("documentBouquet()", "bname", bname);
 
 	html_page page;
-	page_header(page, bname, DOC_VIEW::view_bouquets);
-	page_footer(page, bname, DOC_VIEW::view_bouquets);
+	pageHeader(page, bname, DOC_VIEW::view_bouquets);
+	pageFooter(page, bname, DOC_VIEW::view_bouquets);
 
-	page_body_bouquet_list(page, bname);
+	pageBodyBouquetList(page, bname);
 
 	pages.emplace_back(page);
 }
 
-void printable::document_userbouquet(string bname)
+void printable::documentUserbouquet(string bname)
 {
-	debug("document_userbouquet()", "bname", bname);
+	debug("documentUserbouquet()", "bname", bname);
 
 	html_page page;
-	page_header(page, bname, DOC_VIEW::view_userbouquets);
-	page_footer(page, bname, DOC_VIEW::view_userbouquets);
+	pageHeader(page, bname, DOC_VIEW::view_userbouquets);
+	pageFooter(page, bname, DOC_VIEW::view_userbouquets);
 
-	page_body_channel_list(page, bname, DOC_VIEW::view_userbouquets);
+	pageBodyChannelList(page, bname, DOC_VIEW::view_userbouquets);
 
 	pages.emplace_back(page);
 }
 
-void printable::document_tunersets(int ytype)
+void printable::documentTunersets(int ytype)
 {
-	debug("document_bouquet()", "ytype", ytype);
+	debug("documentTunersets()", "ytype", ytype);
 
 	string filename;
 	switch (ytype)
@@ -183,15 +183,15 @@ void printable::document_tunersets(int ytype)
 	}
 
 	html_page page;
-	page_header(page, filename, DOC_VIEW::view_tunersets);
-	page_footer(page, filename, DOC_VIEW::view_tunersets);
+	pageHeader(page, filename, DOC_VIEW::view_tunersets);
+	pageFooter(page, filename, DOC_VIEW::view_tunersets);
 
-	page_body_tunersets_list(page, ytype);
+	pageBodyTunersetsList(page, ytype);
 
 	pages.emplace_back(page);
 }
 
-void printable::page_header(html_page& page, string filename, DOC_VIEW view)
+void printable::pageHeader(html_page& page, string filename, DOC_VIEW view)
 {
 	QString name;
 
@@ -229,7 +229,7 @@ void printable::page_header(html_page& page, string filename, DOC_VIEW view)
 	page.header += "</div>";
 }
 
-void printable::page_footer(html_page& page, string filename, DOC_VIEW view)
+void printable::pageFooter(html_page& page, string filename, DOC_VIEW view)
 {
 	QString editor = QString::fromStdString(dbih->editor_string(true));
 	QString timestamp = QString::fromStdString(dbih->editor_timestamp());
@@ -241,9 +241,9 @@ void printable::page_footer(html_page& page, string filename, DOC_VIEW view)
 	page.footer += "</div>";
 }
 
-void printable::page_body_index_list(html_page& page, vector<string> paths)
+void printable::pageBodyIndexList(html_page& page, vector<string> paths)
 {
-	debug("page_body_index_list()");
+	debug("pageBodyIndexList()");
 
 	page.body += "<div class=\"toc\">";
 	page.body += "<h4>Table of Contents</h4>";
@@ -287,13 +287,13 @@ void printable::page_body_index_list(html_page& page, vector<string> paths)
 	page.body += "</div>";
 }
 
-void printable::page_body_channel_list(html_page& page, string bname, DOC_VIEW view)
+void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view)
 {
 	if (dbih->index.count(bname))
-		debug("page_body_channel_list()", "bname", bname);
+		debug("pageBodyChannelList()", "bname", bname);
 	else
-		error("page_body_channel_list()", "bname", bname);
-	debug("page_body_channel_list()", "view", view);
+		error("pageBodyChannelList()", "bname", bname);
+	debug("pageBodyChannelList()", "view", view);
 	
 	QString cssname = view == DOC_VIEW::view_bouquets ? "userbouquet" : "services";
 	
@@ -437,12 +437,12 @@ void printable::page_body_channel_list(html_page& page, string bname, DOC_VIEW v
 	page.body += "</div>";
 }
 
-void printable::page_body_bouquet_list(html_page& page, string bname)
+void printable::pageBodyBouquetList(html_page& page, string bname)
 {
 	if (dbih->bouquets.count(bname))
-		debug("page_body_bouquet_list()", "bname", bname);
+		debug("pageBodyBouquetList()", "bname", bname);
 	else
-		error("page_body_bouquet_list()", "bname", bname);
+		error("pageBodyBouquetList()", "bname", bname);
 
 	e2db::bouquet gboq = dbih->bouquets[bname];
 	QString btype;
@@ -482,9 +482,9 @@ void printable::page_body_bouquet_list(html_page& page, string bname)
 }
 
 //TODO improve list
-void printable::page_body_tunersets_list(html_page& page, int ytype)
+void printable::pageBodyTunersetsList(html_page& page, int ytype)
 {
-	debug("page_body_tunersets_list()", "ytype", ytype);
+	debug("pageBodyTunersetsList()", "ytype", ytype);
 
 	page.body += "<div class=\"tunersets\">";
 
@@ -676,7 +676,7 @@ void printable::print()
 	printer->setPageOrientation(QPageLayout::Landscape);
 
 	QStringList html;
-	html.append(doc_html_head());
+	html.append(docHtmlHead());
 	html.append("<body>");
 
 	for (auto & page : pages)
@@ -687,7 +687,7 @@ void printable::print()
 	}
 
 	html.append("</body>");
-	html.append(doc_html_foot());
+	html.append(docHtmlFoot());
 
 	doc->setHtml(html.join(""));
 
@@ -699,7 +699,7 @@ void printable::print()
 }
 
 //TODO FIX Qt5 borderSize
-QString printable::doc_html_head()
+QString printable::docHtmlHead()
 {
 	return "<html lang=\"en\">\
 <head>\
@@ -725,7 +725,7 @@ span.cas { margin: 0 .3em 0 0 } \
 </head>";
 }
 
-QString printable::doc_html_foot()
+QString printable::docHtmlFoot()
 {
 	return "</html>";
 }

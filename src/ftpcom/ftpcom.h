@@ -55,7 +55,8 @@ class ftpcom
 		bool handle();
 		static CURLcode perform(CURL* ch);
 		static void reset(CURL* ch, CURLU* rh);
-		static void cleanup(CURL* ch, CURLU* rh);
+		// static void cleanup(CURL* ch, CURLU* rh);
+		static void cleanup(CURL* ch);
 		bool connect();
 		bool disconnect();
 		vector<string> list_dir(string base);
