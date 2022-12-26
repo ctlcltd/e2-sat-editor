@@ -134,7 +134,6 @@ void editService::transponderLayout()
 	dtf1tx->setMinimumWidth(180);
 	dtf1tx->setEditable(true);
 
-	//TODO FIX
 	for (auto & q : txdata)
 	{
 		QString name;
@@ -378,9 +377,8 @@ void editService::tunerComboChanged(int index)
 	{
 		e2db::transponder tx = dbih->db.transponders[x.second];
 		QString txid = QString::fromStdString(x.second);
-		string ptxp = dbih->value_transponder_combo(tx);
-		QString txp = QString::fromStdString(ptxp);
-		dtf1tx->addItem(txp, txid);
+		QString combo = QString::fromStdString(dbih->value_transponder_combo(tx));
+		dtf1tx->addItem(combo, txid);
 	}
 }
 
@@ -541,6 +539,14 @@ void editService::store()
 	{
 		ch.data.erase(e2db::SDATA::f);
 	}
+	if (ch.txid != this->txid)
+	{
+		e2db::transponder tx = dbih->db.transponders[ch.txid];
+		ch.tsid = tx.tsid;
+		ch.dvbns = tx.dvbns;
+		ch.onid = tx.onid;
+		this->txid = ch.txid;
+	}
 
 	if (this->state.edit)
 		this->chid = dbih->editService(chid, ch);
@@ -557,6 +563,7 @@ void editService::retrieve()
 
 	e2db::service ch = dbih->db.services[chid];
 	e2db::transponder tx = dbih->db.transponders[ch.txid];
+	this->txid = ch.txid;
 
 	for (auto & item : fields)
 	{

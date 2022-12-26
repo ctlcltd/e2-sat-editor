@@ -157,14 +157,14 @@ string logger::timestamp()
 
 string logger::str()
 {
-	this->log->sizel = this->log->text.size();
+	this->log->size = this->log->text.size();
 	return this->log->text;
 }
 
 string logger::str_lend()
 {
-	int pos = this->log->sizel;
-	this->log->sizel = this->log->text.size();
+	int pos = this->log->size;
+	this->log->size = this->log->text.size();
 	return this->log->text.substr(pos);
 }
 
@@ -175,7 +175,7 @@ size_t logger::pos()
 
 size_t logger::last_pos()
 {
-	return this->log->sizel;
+	return this->log->size;
 }
 
 }

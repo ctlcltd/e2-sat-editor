@@ -25,7 +25,7 @@ class logger
 	public:
 		struct session {
 			string text;
-			size_t sizel;
+			size_t size;
 			bool debug;
 		};
 		logger(string ns);

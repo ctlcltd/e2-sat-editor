@@ -62,6 +62,7 @@ class editService : public dialAbstract
 		map<string, vector<pair<int, string>>> txdata;
 	private:
 		string chid;
+		string txid;
 };
 }
 #endif /* editService_h */

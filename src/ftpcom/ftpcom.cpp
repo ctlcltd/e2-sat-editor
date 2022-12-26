@@ -196,18 +196,15 @@ vector<string> ftpcom::list_dir(string base)
 }
 
 //TODO resuming
-string ftpcom::download_data(string base, string filename)
+void ftpcom::download_data(string base, string filename, ftpcom_file& file)
 {
 	debug("download_data()");
 
 	if (! handle())
-	{
-		error("download_data()", trs("ftpcom error."));
-		return "";
-	}
+		return error("download_data()", trs("ftpcom error."));
 
 	sio data;
-	data.sizel = 0;
+	data.size = 0;
 	CURLcode res = CURLE_GOT_NOTHING;
 	string remotefile = '/' + base + '/' + filename;
 
@@ -222,22 +219,25 @@ string ftpcom::download_data(string base, string filename)
 	{
 		error("download_data()", trs(curl_easy_strerror(res))); // var error string
 		reset(cph, rph);
-		return "";
+		return;
 	}
 
 	reset(cph, rph);
 
-	return data.data;
+	file.filename = filename;
+	file.data = data.data;
+	file.mime = "application/octet-stream"; //TODO
+	file.size = data.size;
 }
 
-void ftpcom::upload_data(string base, string filename, string os)
+void ftpcom::upload_data(string base, string filename, ftpcom_file file)
 {
 	if (! handle())
 		return error("upload_data()", trs("ftpcom error."));
 
 	soi data;
-	data.data = os.data();
-	data.sizel = os.length();
+	data.data = file.data.data();
+	data.size = file.size;
 	size_t uplen = 0;
 	CURLcode res = CURLE_GOT_NOTHING;
 	string remotefile = '/' + base + '/' + filename;
@@ -265,7 +265,7 @@ void ftpcom::upload_data(string base, string filename, string os)
 			curl_easy_setopt(cph, CURLOPT_NOBODY, false);
 			curl_easy_setopt(cph, CURLOPT_HEADER, false);
 			data.data += uplen;
-			data.sizel -= uplen;
+			data.size -= uplen;
 			curl_easy_setopt(cph, CURLOPT_APPEND, true);
 		}
 		else
@@ -308,7 +308,7 @@ size_t ftpcom::data_download_func(void* csi, size_t size, size_t nmemb, void* ps
 		return 0;
 
 	os->data.append((const char*) csi, relsize);
-	os->sizel += relsize;
+	os->size += relsize;
 
 	return relsize;
 }
@@ -318,14 +318,14 @@ size_t ftpcom::data_upload_func(char* cso, size_t size, size_t nmemb, void* psi)
 	size_t relsize = size * nmemb;
 	soi* is = reinterpret_cast<soi*>(psi);
 
-	if (1 > relsize || 0 >= is->sizel)
+	if (1 > relsize || 0 >= is->size)
 		return 0;
 
-	size_t nsize = min(relsize, is->sizel);
+	size_t nsize = min(relsize, is->size);
 	std::memcpy(cso, is->data, nsize);
 
 	is->data += nsize;
-	is->sizel = (is->sizel > nsize ? (is->sizel - nsize) : 0);
+	is->size = (is->size > nsize ? (is->size - nsize) : 0);
 
 	return nsize;
 }
@@ -365,7 +365,7 @@ size_t ftpcom::data_tn_shell_func(char* cso, size_t size, size_t nmemb, void* ps
 	}
 
 	vars->ps->data = data.length() ? (data + "\n").data() : data.data();
-	vars->ps->sizel = data.length() ? data.length() + 1 : data.length();
+	vars->ps->size = data.length() ? data.length() + 1 : data.length();
 
 	return data_upload_func(cso, size, nmemb, vars->ps);
 }
@@ -438,7 +438,7 @@ string ftpcom::trw(string str, string param)
 	return string (tstr);
 }
 
-unordered_map<string, ftpcom_file> ftpcom::get_files()
+unordered_map<string, ftpcom::ftpcom_file> ftpcom::get_files()
 {
 	debug("get_files()");
 
@@ -450,10 +450,14 @@ unordered_map<string, ftpcom_file> ftpcom::get_files()
 		return files;
 	for (string & w : ftdb)
 	{
-		std::filesystem::path path = std::filesystem::path(w); //C++17
-		string base = path.parent_path().u8string(); //C++17
-		string filename = path.filename().u8string(); //C++17
-		files[w] = download_data(base, filename);
+		std::filesystem::path fpath = std::filesystem::path(w); //C++17
+		string base = fpath.parent_path().u8string(); //C++17
+		string filename = fpath.filename().u8string(); //C++17
+
+		ftpcom_file file;
+		download_data(base, filename, file);
+
+		files[filename] = file;
 	}
 
 	return files;
@@ -469,9 +473,10 @@ void ftpcom::put_files(unordered_map<string, ftpcom_file> files)
 		return;
 	for (auto & x : files)
 	{
-		std::filesystem::path path = std::filesystem::path(x.first); //C++17
-		string base = path.parent_path().u8string(); //C++17
-		string filename = path.filename().u8string(); //C++17
+		std::filesystem::path fpath = std::filesystem::path(x.first); //C++17
+		string base = fpath.parent_path().u8string(); //C++17
+		string filename = fpath.filename().u8string(); //C++17
+
 		upload_data(base, filename, x.second);
 	}
 }
@@ -549,7 +554,7 @@ bool ftpcom::cmd_tnreload()
 	this->rsh = curl_url();
 	tnvars data;
 	data.ps = new soi;
-	data.ps->sizel = 0;
+	data.ps->size = 0;
 	data.user = user;
 	data.pass = pass;
 	data.send = false;

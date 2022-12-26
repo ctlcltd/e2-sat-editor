@@ -124,7 +124,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 	}
 	
 	stringstream ilamedb;
-	ilamedb.write(&files[e2db[this->filename]][0], files[e2db[this->filename]].size());
+	ilamedb.write(&files[e2db[this->filename]].data[0], files[e2db[this->filename]].size);
 	parse_e2db_lamedb(ilamedb);
 
 	if (PARSER_TUNERSETS)
@@ -132,25 +132,25 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 		if (e2db.count("satellites.xml"))
 		{
 			stringstream itunxml;
-			itunxml.write(&files[e2db["satellites.xml"]][0], files[e2db["satellites.xml"]].size());
+			itunxml.write(&files[e2db["satellites.xml"]].data[0], files[e2db["satellites.xml"]].size);
 			parse_tunersets_xml(YTYPE::sat, itunxml);
 		}
 		if (e2db.count("terrestrial.xml"))
 		{
 			stringstream itunxml;
-			itunxml.write(&files[e2db["terrestrial.xml"]][0], files[e2db["terrestrial.xml"]].size());
+			itunxml.write(&files[e2db["terrestrial.xml"]].data[0], files[e2db["terrestrial.xml"]].size);
 			parse_tunersets_xml(YTYPE::terrestrial, itunxml);
 		}
 		if (e2db.count("cables.xml"))
 		{
 			stringstream itunxml;
-			itunxml.write(&files[e2db["cables.xml"]][0], files[e2db["cables.xml"]].size());
+			itunxml.write(&files[e2db["cables.xml"]].data[0], files[e2db["cables.xml"]].size);
 			parse_tunersets_xml(YTYPE::cable, itunxml);
 		}
 		if (e2db.count("atsc.xml"))
 		{
 			stringstream itunxml;
-			itunxml.write(&files[e2db["atsc.xml"]][0], files[e2db["atsc.xml"]].size());
+			itunxml.write(&files[e2db["atsc.xml"]].data[0], files[e2db["atsc.xml"]].size);
 			parse_tunersets_xml(YTYPE::atsc, itunxml);
 		}
 	}
@@ -160,7 +160,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 		if (x.first.find("bouquets.") != string::npos)
 		{
 			stringstream ibouquet;
-			ibouquet.write(&files[x.second][0], files[x.second].size());
+			ibouquet.write(&files[x.second].data[0], files[x.second].size);
 			string filename = std::filesystem::path(x.first).filename().u8string();
 			parse_e2db_bouquet(ibouquet, filename);
 		}
@@ -170,7 +170,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 		for (string & w : x.second.userbouquets)
 		{
 			stringstream iuserbouquet;
-			iuserbouquet.write(&files[e2db[w]][0], files[e2db[w]].size());
+			iuserbouquet.write(&files[e2db[w]].data[0], files[e2db[w]].size);
 			string filename = std::filesystem::path(w).filename().u8string();
 			parse_e2db_userbouquet(iuserbouquet, filename);
 		}
@@ -344,7 +344,7 @@ void e2db_parser::parse_lamedb_transponder_params(string str, transponder& tx)
 	tx.onid = onid;
 }
 
-void e2db_parser::parse_lamedb_transponder_feparms(string str, char ttype, transponder& tx)
+void e2db_parser::parse_lamedb_transponder_feparms(string str, char ty, transponder& tx)
 {
 	int freq, sr, pol, fec, pos, inv, flgs, sys, mod, rol, pil;
 	int band, hpfec, lpfec, tmod, tmx, guard, hier;
@@ -357,11 +357,12 @@ void e2db_parser::parse_lamedb_transponder_feparms(string str, char ttype, trans
 	// tx.cmod = -1, tx.cfec = -1;
 	// tx.amod = -1;
 
-	switch (ttype)
+	switch (ty)
 	{
 		case 's':
 			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%4d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil, oflgs);
 
+			tx.ytype = YTYPE::sat;
 			tx.freq = int (freq / 1e3);
 			tx.sr = int (sr / 1e3);
 			tx.pol = pol;
@@ -379,6 +380,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string str, char ttype, trans
 		case 't': // DVB-T
 			std::sscanf(str.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &band, &hpfec, &lpfec, &tmod, &tmx, &guard, &hier, &inv, oflgs);
 
+			tx.ytype = YTYPE::terrestrial;
 			tx.freq = int (freq / 1e3);
 			tx.band = band;
 			tx.hpfec = hpfec;
@@ -394,6 +396,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string str, char ttype, trans
 		case 'c': // DVB-C
 			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%1d%s", &freq, &sr, &inv, &cmod, &cfec, oflgs);
 
+			tx.ytype = YTYPE::cable;
 			tx.freq = int (freq / 1e3);
 			tx.sr = int (sr / 1e3);
 			tx.inv = inv;
@@ -405,6 +408,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string str, char ttype, trans
 		case 'a': // ATSC
 			std::sscanf(str.c_str(), "%8d:%1d:%1d:%1d:%1d%s", &freq, &inv, &amod, &flgs, &sys, oflgs);
 
+			tx.ytype = YTYPE::atsc;
 			tx.freq = int (freq / 1e3);
 			tx.inv = inv;
 			tx.amod = amod;
@@ -416,7 +420,6 @@ void e2db_parser::parse_lamedb_transponder_feparms(string str, char ttype, trans
 			error("lamedb", "Error", "Unknown transponder type.");
 			return;
 	}
-	tx.ttype = ttype;
 }
 
 void e2db_parser::parse_lamedb_service_params(string str, service& ch)
@@ -671,7 +674,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 	tv.charset = charset;
 
 	char type;
-	string iname = "tns:";
+	string yname = "tns:";
 	unordered_map<string, int> depth;
 	switch (ytype)
 	{
@@ -697,7 +700,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 		break;
 	}
 	depth["transponder"] = 2;
-	iname += type;
+	yname += type;
 
 	int step = 0;
 	int ln = 1;
@@ -714,7 +717,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 			s.ln = ln;
 			s.text = line.substr(line.find("<!--") + 4);
 			s.text = s.text.substr(0, s.text.length() - 2);
-			comments[iname].emplace_back(s);
+			comments[yname].emplace_back(s);
 			continue;
 		}
 

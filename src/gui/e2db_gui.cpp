@@ -13,13 +13,14 @@
 #include <ctime>
 #include <clocale>
 #include <cmath>
+#include <string>
 #include <unordered_set>
 
 #include <QMessageBox>
 
 #include "e2db_gui.h"
 
-using std::to_string, std::unordered_set;
+using std::string, std::unordered_set, std::to_string;
 
 namespace e2se_gui
 {
@@ -33,10 +34,11 @@ e2db::e2db(e2se::logger::session* log)
 
 	this->sets = new QSettings;
 	options();
+
 	plain();
 }
 
-//TODO options are constants
+//TODO options are inline static
 void e2db::options()
 {
 	debug("options()");
@@ -45,6 +47,14 @@ void e2db::options()
 	e2db::MAKER_LAMEDB5 = sets->value("application/makerLamedb5", true).toBool();
 	e2db::PARSER_TUNERSETS = sets->value("application/parserTunerset", true).toBool();
 	e2db::MAKER_TUNERSETS = sets->value("application/makerTunerset", true).toBool();
+	e2db::EXTENDED_FIELDS = sets->value("application/extendedFields", false).toBool();
+	e2db::CSV_HEADER = sets->value("application/csvHeader", true).toBool();
+	string csv_dlm = sets->value("application/csvDelimiter", "\n").toString().toStdString();
+	string csv_sep = sets->value("application/csvSeparator", ",").toString().toStdString();
+	string csv_esp = sets->value("application/csvEscape", "\"").toString().toStdString();
+	e2db::CSV_DELIMITER = csv_dlm.find("\n") != string::npos ? '\n' : '\n'; //TODO win32 transform
+	e2db::CSV_SEPARATOR = csv_sep[0];
+	e2db::CSV_ESCAPE = csv_esp[0];
 }
 
 void e2db::error(string msg, string optk, string optv)
@@ -284,7 +294,7 @@ bool e2db::write(string localdir, bool overwrite)
 }
 
 //TODO FIX duplicate bouquets
-void e2db::merge(unordered_map<string, e2se_e2db::e2db_file> files)
+void e2db::merge(unordered_map<string, e2db_file> files)
 {
 	debug("merge()");
 
@@ -345,16 +355,14 @@ void e2db::exportFile(int bit, vector<string> paths)
 
 QStringList e2db::entryTransponder(transponder tx)
 {
+	QString sys = QString::fromStdString(value_transponder_system(tx));
+	QString pos = QString::fromStdString(value_transponder_position(tx));
 	QString freq = QString::fromStdString(to_string(tx.freq));
-	QString pol = QString::fromStdString(tx.pol != -1 ? e2db::SAT_POL[tx.pol] : "");
+	QString pol = QString::fromStdString(value_transponder_polarization(tx.pol));
 	QString sr = QString::fromStdString(to_string(tx.sr));
-	QString fec = QString::fromStdString(e2db::SAT_FEC[tx.fec]);
-	string ppos = value_transponder_position(tx);
-	QString pos = QString::fromStdString(ppos);
-	string psys = value_transponder_system(tx);
-	QString sys = QString::fromStdString(psys);
+	QString fec = QString::fromStdString(value_transponder_fec(tx.fec, tx.ytype));
 
-	return QStringList ({freq, pol, sr, fec, pos, sys});
+	return QStringList ({sys, pos, freq, pol, sr, fec});
 }
 
 QStringList e2db::entryService(service ch)
@@ -369,9 +377,7 @@ QStringList e2db::entryService(service ch)
 	QString txid = QString::fromStdString(ch.txid);
 	QString ssid = QString::fromStdString(to_string(ch.ssid));
 	QString tsid = QString::fromStdString(to_string(ch.tsid));
-	QString stype = QString::fromStdString(e2db::STYPE_EXT_LABEL.count(ch.stype) ? e2db::STYPE_EXT_LABEL.at(ch.stype) : e2db::STYPE_EXT_LABEL.at(e2db::STYPE::data));
-	QString pname = QString::fromStdString(ch.data.count(e2db::SDATA::p) ? ch.data[e2db::SDATA::p][0] : "");
-
+	QString stype = QString::fromStdString(value_service_type(ch.stype));
 	QString scas;
 	if (ch.data.count(e2db::SDATA::C))
 	{
@@ -389,6 +395,8 @@ QStringList e2db::entryService(service ch)
 		}
 		scas.append(' ' + cas.join(", "));
 	}
+	//TODO value
+	QString pname = QString::fromStdString(ch.data.count(e2db::SDATA::p) ? ch.data[e2db::SDATA::p][0] : "");
 
 	QStringList entry = QStringList ({chname, chid, txid, ssid, tsid, stype, scas, pname});
 	entry.append(entries.transponders[ch.txid]);
@@ -411,8 +419,7 @@ QStringList e2db::entryTunersetsTable(tunersets_table tn)
 
 	if (tn.ytype == e2db::YTYPE::sat)
 	{
-		string ppos = value_transponder_position(tn);
-		QString pos = QString::fromStdString(ppos);
+		QString pos = QString::fromStdString(value_transponder_position(tn));
 		entry = QStringList ({tnid, name, pos});
 	}
 	else if (tn.ytype == e2db::YTYPE::terrestrial || tn.ytype == e2db::YTYPE::cable)
@@ -433,41 +440,40 @@ QStringList e2db::entryTunersetsTransponder(tunersets_transponder tntxp, tunerse
 	QStringList entry;
 	QString trid = QString::fromStdString(tntxp.trid);
 	QString freq = QString::fromStdString(to_string(tntxp.freq));
-	string ptxp = value_transponder_combo(tntxp, tn);
-	QString combo = QString::fromStdString(ptxp);
+	QString combo = QString::fromStdString(value_transponder_combo(tntxp, tn));
 
 	if (tn.ytype == YTYPE::sat)
 	{
-		QString pol = QString::fromStdString(e2db::SAT_POL[tntxp.pol]);
+		QString pol = QString::fromStdString(value_transponder_polarization(tntxp.pol));
 		QString sr = QString::fromStdString(to_string(tntxp.sr));
-		QString fec = QString::fromStdString(e2db::SAT_FEC[tntxp.fec]);
-		QString sys = QString::fromStdString(e2db::SAT_SYS[tntxp.sys]);
-		QString mod = QString::fromStdString(e2db::SAT_MOD[tntxp.mod]);
-		QString inv = QString::fromStdString(e2db::SAT_INV[tntxp.inv]);
-		QString pil = QString::fromStdString(e2db::SAT_PIL[tntxp.pil]);
-		QString rol = QString::fromStdString(e2db::SAT_ROL[tntxp.rol]);
+		QString fec = QString::fromStdString(value_transponder_fec(tntxp.fec, YTYPE::sat));
+		QString sys = QString::fromStdString(value_transponder_system(tntxp.sys, YTYPE::sat));
+		QString mod = QString::fromStdString(value_transponder_modulation(tntxp.mod, YTYPE::sat));
+		QString inv = QString::fromStdString(value_transponder_inversion(tntxp.inv, YTYPE::sat));
+		QString pil = QString::fromStdString(value_transponder_pilot(tntxp.pil));
+		QString rol = QString::fromStdString(value_transponder_rollof(tntxp.rol));
 		entry = QStringList ({trid, combo, freq, pol, sr, fec, sys, mod, inv, pil, rol});
 	}
 	else if (tn.ytype == YTYPE::terrestrial)
 	{
-		QString tmod = QString::fromStdString(e2db::TER_MOD[tntxp.tmod]);
-		QString band = QString::fromStdString(e2db::TER_BAND[tntxp.band]);
-		QString sys = "DVB-T";
-		QString tmx = QString::fromStdString(e2db::TER_TRXMODE[tntxp.tmx]);
-		QString hpfec = QString::fromStdString(e2db::TER_HPFEC[tntxp.hpfec]);
-		QString lpfec = QString::fromStdString(e2db::TER_LPFEC[tntxp.lpfec]);
-		QString inv = QString::fromStdString(e2db::TER_INV[tntxp.inv]);
-		QString guard = QString::fromStdString(e2db::TER_GUARD[tntxp.guard]);
-		QString hier = QString::fromStdString(e2db::TER_HIER[tntxp.hier]);
+		QString tmod = QString::fromStdString(value_transponder_modulation(tntxp.tmod, YTYPE::terrestrial));
+		QString band = QString::fromStdString(value_transponder_bandwidth(tntxp.band));
+		QString sys = QString::fromStdString(value_transponder_system(tntxp.sys, YTYPE::terrestrial));
+		QString tmx = QString::fromStdString(value_transponder_tmx_mode(tntxp.tmx));
+		QString hpfec = QString::fromStdString(value_transponder_fec(tntxp.hpfec, YTYPE::terrestrial));
+		QString lpfec = QString::fromStdString(value_transponder_fec(tntxp.lpfec, YTYPE::terrestrial));
+		QString inv = QString::fromStdString(value_transponder_inversion(tntxp.inv, YTYPE::terrestrial));
+		QString guard = QString::fromStdString(value_transponder_guard(tntxp.guard));
+		QString hier = QString::fromStdString(value_transponder_hier(tntxp.hier));
 		entry = QStringList ({trid, combo, freq, tmod, band, sys, tmx, hpfec, lpfec, inv, guard, hier});
 	}
 	else if (tn.ytype == YTYPE::cable)
 	{
-		QString cmod = QString::fromStdString(e2db::CAB_MOD[tntxp.cmod]);
+		QString cmod = QString::fromStdString(value_transponder_modulation(tntxp.cmod, YTYPE::terrestrial));
 		QString sr = QString::fromStdString(to_string(tntxp.sr));
-		QString cfec = QString::fromStdString(e2db::CAB_IFEC[tntxp.cfec]);
-		QString inv = QString::fromStdString(e2db::CAB_INV[tntxp.inv]);
-		QString sys = "DVB-C";
+		QString cfec = QString::fromStdString(value_transponder_fec(tntxp.cfec, YTYPE::terrestrial));
+		QString inv = QString::fromStdString(value_transponder_inversion(tntxp.inv, YTYPE::terrestrial));
+		QString sys = QString::fromStdString(value_transponder_system(tntxp.sys, YTYPE::cable));
 		entry = QStringList ({trid, combo, freq, cmod, sr, cfec, inv, sys});
 	}
 	else if (tn.ytype == YTYPE::atsc)
@@ -475,7 +481,7 @@ QStringList e2db::entryTunersetsTransponder(tunersets_transponder tntxp, tunerse
 		// combo = NULL;
 		combo = ""; //Qt5
 		QString amod = QString::fromStdString(to_string(tntxp.amod));
-		QString sys = "ATSC";
+		QString sys = QString::fromStdString(value_transponder_system(tntxp.sys, YTYPE::atsc));
 		entry = QStringList ({trid, combo, freq, amod, sys});
 	}
 

@@ -49,12 +49,12 @@ class mainView : public viewAbstract
 			chtype,
 			chcas,
 			chpname,
+			chsys,
+			chpos,
 			chfreq,
 			chpol,
 			chsr,
-			chfec,
-			chpos,
-			chsys
+			chfec
 		};
 
 		enum LIST_REF {

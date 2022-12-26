@@ -136,7 +136,7 @@ void mainView::layout()
 	bouquets_delegate->setIndentation(tree->indentation());
 	tree->setItemDelegateForColumn(0, bouquets_delegate);
 
-	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({NULL, "Index", "Name", "CHID", "TXID", "Service ID", "Transport ID", "Type", "CAS", "Provider", "Frequency", "Polarization", "Symbol Rate", "FEC", "Position", "System"});
+	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({NULL, "Index", "Name", "CHID", "TXID", "Service ID", "Transport ID", "Type", "CAS", "Provider", "System", "Position", "Frequency", "Polarization", "Symbol Rate", "FEC"});
 
 	list->setHeaderItem(lheader_item);
 	list->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
@@ -154,14 +154,14 @@ void mainView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::chssid, 80);	// Service ID
 	list->setColumnWidth(ITEM_ROW_ROLE::chtsid, 80);	// Transport ID
 	list->setColumnWidth(ITEM_ROW_ROLE::chtype, 85);	// (Channel) Type
-	list->setColumnWidth(ITEM_ROW_ROLE::chcas, 45);	// CAS
+	list->setColumnWidth(ITEM_ROW_ROLE::chcas, 45);		// CAS
 	list->setColumnWidth(ITEM_ROW_ROLE::chpname, 150);	// Provider
-	list->setColumnWidth(ITEM_ROW_ROLE::chfreq, 95);	// Frequency
-	list->setColumnWidth(ITEM_ROW_ROLE::chpol, 85);	// Polarization
-	list->setColumnWidth(ITEM_ROW_ROLE::chsr, 95);		// Symbol Rate
-	list->setColumnWidth(ITEM_ROW_ROLE::chfec, 50);	// FEC
+	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 75);		// System
 	list->setColumnWidth(ITEM_ROW_ROLE::chpos, 125);	// Position
-	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 75);	// System
+	list->setColumnWidth(ITEM_ROW_ROLE::chfreq, 95);	// Frequency
+	list->setColumnWidth(ITEM_ROW_ROLE::chpol, 85);		// Polarization
+	list->setColumnWidth(ITEM_ROW_ROLE::chsr, 95);		// Symbol Rate
+	list->setColumnWidth(ITEM_ROW_ROLE::chfec, 50);		// FEC
 
 	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->sortByColumn(column); });
 
@@ -1297,6 +1297,7 @@ void mainView::listReferenceToggle()
 	}
 }
 
+//TODO CSV Tools compatibility
 void mainView::listItemCopy(bool cut)
 {
 	debug("listItemCopy()");

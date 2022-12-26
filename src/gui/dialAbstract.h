@@ -52,9 +52,9 @@ class dialAbstract : protected e2se::log_factory
 		QGridLayout* dtform;
 		QMargins frameMargins = QMargins (12, 12, 12, 12);
 		bool frameFixed = true;
-		vector<QWidget*> fields;
 		dataHandler* data = nullptr;
 		e2db* dbih = nullptr;
+		vector<QWidget*> fields;
 };
 }
 #endif /* dialAbstract_h */

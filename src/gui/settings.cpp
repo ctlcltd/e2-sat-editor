@@ -20,6 +20,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QLineEdit>
+#include <QButtonGroup>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QValidator>
@@ -35,24 +36,43 @@ using namespace e2se;
 namespace e2se_gui_dialog
 {
 
-settings::settings(QWidget* mwid, e2se::logger::session* log)
+settings::settings(QWidget* cwid, e2se::logger::session* log)
 {
 	this->log = new logger(log, "settings");
 	debug("settings()");
 
-	this->dial = new QDialog(mwid);
+	this->sets = new QSettings;
+
+	this->state.prev = -1;
+
+	display(cwid);
+}
+
+void settings::display(QWidget* cwid)
+{
+	debug("display()");
+
+	layout(cwid);
+
+	retrieve();
+
+	dial->exec();
+}
+
+void settings::layout(QWidget* cwid)
+{
+	debug("layout()");
+
+	this->dial = new QDialog(cwid);
 	dial->setWindowTitle(tr("Settings"));
 	dial->setStyleSheet("QGroupBox { spacing: 0; padding: 20px 0 0 0; border: 0 } QGroupBox::title { margin: 0 10px; font: bold }");
 	dial->connect(dial, &QDialog::finished, [=]() { delete dial; delete this; });
-
-	this->sets = new QSettings;
 
 	QGridLayout* dfrm = new QGridLayout(dial);
 	QHBoxLayout* dhbox = new QHBoxLayout;
 	QVBoxLayout* dvbox = new QVBoxLayout;
 	this->dtwid = new QTabWidget;
 	dtwid->connect(dtwid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
-	this->state.prev = -1;
 
 	QPushButton* dtsave = new QPushButton;
 	dtsave->setDefault(true);
@@ -63,10 +83,9 @@ settings::settings(QWidget* mwid, e2se::logger::session* log)
 	dtcancel->setText(tr("Cancel"));
 	dtcancel->connect(dtcancel, &QPushButton::pressed, [=]() { dial->close(); });
 
-	connections();
-	preferences();
-	advanced();
-	retrieve();
+	connectionsLayout();
+	preferencesLayout();
+	advancedLayout();
 
 	dfrm->setColumnStretch(0, 1);
 	dfrm->setRowStretch(0, 1);
@@ -80,10 +99,9 @@ settings::settings(QWidget* mwid, e2se::logger::session* log)
 	dfrm->addLayout(dvbox, 0, 0);
 	dfrm->setSizeConstraint(QGridLayout::SetFixedSize);
 	dial->setLayout(dfrm);
-	dial->exec();
 }
 
-void settings::preferences()
+void settings::preferencesLayout()
 {
 	QWidget* dtpage = new QWidget;
 	QHBoxLayout* dtcnt = new QHBoxLayout(dtpage);
@@ -99,20 +117,20 @@ void settings::preferences()
 	dtf0->setFormAlignment(Qt::AlignLeft);
 	dtf0->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
-	QCheckBox* dtfg0 = new QCheckBox(tr("Suppress ask for confirmation messages (shown before deleting)"));
-	dtfg0->setProperty("pref", "askConfirmation");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtfg0);
-	dtf0->addRow(dtfg0);
+	QCheckBox* dtf0g0 = new QCheckBox(tr("Suppress ask for confirmation messages (shown before deleting)"));
+	dtf0g0->setProperty("pref", "askConfirmation");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf0g0);
+	dtf0->addRow(dtf0g0);
 
-	QCheckBox* dtfg1 = new QCheckBox(tr("Non-destructive edit (try to preserve origin channel lists)"));
-	dtfg1->setProperty("pref", "nonDestructiveEdit");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtfg1);
-	dtf0->addRow(dtfg1);
+	QCheckBox* dtf0g1 = new QCheckBox(tr("Non-destructive edit (try to preserve origin channel lists)"));
+	dtf0g1->setProperty("pref", "nonDestructiveEdit");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf0g1);
+	dtf0->addRow(dtf0g1);
 
-	QCheckBox* dtfg2 = new QCheckBox(tr("Visually fix for unwanted unicode characters (less performant)"));
-	dtfg2->setProperty("pref", "fixUnicodeChars");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtfg2);
-	dtf0->addRow(dtfg2);
+	QCheckBox* dtf0g2 = new QCheckBox(tr("Visually fix for unwanted unicode characters (less performant)"));
+	dtf0g2->setProperty("pref", "fixUnicodeChars");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf0g2);
+	dtf0->addRow(dtf0g2);
 
 	QGroupBox* dtl1 = new QGroupBox(tr("Theme"));
 	QFormLayout* dtf1 = new QFormLayout;
@@ -120,21 +138,77 @@ void settings::preferences()
 	dtf1->setFormAlignment(Qt::AlignLeft);
 	dtf1->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
-	QComboBox* dtf1st = new QComboBox;
-	dtf1st->setProperty("pref", "theme");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf1st);
-	dtf1st->addItem(tr("Default (system theme)"), "");
-	dtf1st->addItem(tr("Dark"), "dark");
-	dtf1st->addItem(tr("Light"), "light");
-	dtf1->addRow(dtf1st);
+	//TODO FIX SEGFAULT previous settings
+	QComboBox* dtf1g3 = new QComboBox;
+	dtf1g3->setProperty("pref", "theme");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf1g3);
+	dtf1g3->addItem(tr("Default (system theme)"), "");
+	dtf1g3->addItem(tr("Dark"), "dark");
+	dtf1g3->addItem(tr("Light"), "light");
+	dtf1->addRow(dtf1g3);
 	dtf1->addRow(new QLabel(tr("<small>The software needs to be restarted after switching theme.</small>")));
+
+	QGroupBox* dtl2 = new QGroupBox(tr("Tools"));
+	QFormLayout* dtf2 = new QFormLayout;
+	dtf2->setSpacing(20);
+	dtf2->setFormAlignment(Qt::AlignLeft);
+	dtf2->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+
+	//label: CSV Import/Export
+
+	QCheckBox* dtf2g4 = new QCheckBox(tr("Allow header columns in CSV"));
+	dtf2g4->setProperty("pref", "fields_default"); //
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2g4);
+	dtf2->addRow(dtf2g4);
+
+	//TODO win32 convert \n to \r\n ?
+	QLineEdit* dtf2g5 = new QLineEdit("\\n");
+	dtf2g5->setProperty("pref", "toolsCsvDelimiter");
+	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2g5);
+	dtf2g5->setMaxLength(2);
+	dtf2g5->setMaximumWidth(50);
+	dtf2->addRow(tr("CSV delimiter character"), dtf2g5);
+
+	QLineEdit* dtf2g6 = new QLineEdit(",");
+	dtf2g6->setProperty("pref", "toolsCsvSeparator");
+	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2g6);
+	dtf2g6->setMaxLength(1);
+	dtf2g6->setMaximumWidth(50);
+	dtf2->addRow(tr("CSV separator character"), dtf2g6);
+
+	QLineEdit* dtf2g7 = new QLineEdit(",");
+	dtf2g7->setProperty("pref", "toolsCsvEscape");
+	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2g7);
+	dtf2g7->setMaxLength(1);
+	dtf2g7->setMaximumWidth(50);
+	dtf2->addRow(tr("CSV escape character"), dtf2g7);
+
+	//label: Fields Import/Export
+
+	QButtonGroup* dtg2 = new QButtonGroup;
+	dtg2->setExclusive(true);
+
+	QCheckBox* dtf2g8 = new QCheckBox(tr("Default (same fields as visual)"));
+	dtf2g8->setProperty("pref", "fields_default"); //
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2g8);
+	dtg2->addButton(dtf2g8);
+	dtf2->addRow(dtf2g8);
+
+	QCheckBox* dtf2g9 = new QCheckBox(tr("Extendend (all fields)"));
+	dtf2g9->setProperty("pref", "fields_extended"); //
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2g9);
+	dtg2->addButton(dtf2g9);
+	dtf2->addRow(dtf2g9);
 
 	dtl0->setLayout(dtf0);
 	dtl1->setLayout(dtf1);
+	dtl2->setLayout(dtf2);
 	dtform->addItem(new QSpacerItem(0, 0));
 	dtform->addWidget(dtl0);
 	dtform->addItem(new QSpacerItem(0, 5));
 	dtform->addWidget(dtl1);
+	dtform->addItem(new QSpacerItem(0, 0));
+	dtform->addWidget(dtl2);
 	dtform->addItem(new QSpacerItem(0, 0));
 
 	dtcnt->setAlignment(Qt::AlignLeft | Qt::AlignTop);
@@ -144,7 +218,7 @@ void settings::preferences()
 	dtwid->addTab(dtpage, tr("Preferences"));
 }
 
-void settings::connections()
+void settings::connectionsLayout()
 {
 	this->rppage = new WidgetWithBackdrop;
 	QHBoxLayout* dtcnt = new QHBoxLayout(rppage);
@@ -162,7 +236,7 @@ void settings::connections()
 	dttbar->setIconSize(QSize(12, 12));
 	dttbar->setToolButtonStyle(Qt::ToolButtonIconOnly);
 	dttbar->addAction(theme::icon("add"), tr("Add"), [=]() { this->addProfile(); });
-	dttbar->addAction(theme::icon("remove"), tr("Remove"), [=]() { this->delProfile(); });
+	dttbar->addAction(theme::icon("remove"), tr("Remove"), [=]() { this->deleteProfile(); });
 
 	dtvbox->setSpacing(0);
 	dtvbox->addWidget(rplist);
@@ -282,7 +356,8 @@ void settings::connections()
 	dtwid->addTab(rppage, tr("Connections"));
 }
 
-void settings::advanced()
+//TODO implement contextual and delete row
+void settings::advancedLayout()
 {
 	QWidget* dtpage = new QWidget;
 	QVBoxLayout* dtcnt = new QVBoxLayout(dtpage);
@@ -345,9 +420,9 @@ QListWidgetItem* settings::addProfile(int i)
 	return item;
 }
 
-void settings::delProfile()
+void settings::deleteProfile()
 {
-	debug("delProfile()");
+	debug("deleteProfile()");
 
 	QListWidgetItem* curr = rplist->currentItem();
 	int i = curr->data(Qt::UserRole).toInt();

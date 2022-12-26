@@ -43,10 +43,11 @@ class e2db_converter : virtual public e2db_abstract
 			view_tunersets = 3
 		};
 
-		inline static const bool CSV_HEADER = true;
-		inline static const char CSV_ENDLINE = '\n'; //TODO win32
-		inline static const char CSV_SEPARATOR = ',';
-		inline static const char CSV_ESCAPE = '"';
+		inline static bool EXTENDED_FIELDS = false;
+		inline static bool CSV_HEADER = true;
+		inline static char CSV_DELIMITER = '\n';
+		inline static char CSV_SEPARATOR = ',';
+		inline static char CSV_ESCAPE = '"';
 
 		struct fcopts
 		{
@@ -77,8 +78,8 @@ class e2db_converter : virtual public e2db_abstract
 		void export_html_file(FCONVS fco, fcopts opts, string path);
 		void pull_csv_services(istream& ifile, e2db_abstract* dst);
 		void pull_csv_bouquets(istream& ifile, e2db_abstract* dst);
-		void pull_csv_userbouquets(istream& ifile, e2db_abstract* dst, string bname, int btype);
-		void pull_csv_tunersets(istream& ifile, e2db_abstract* dst, int ytype);
+		void pull_csv_userbouquets(istream& ifile, e2db_abstract* dst);
+		void pull_csv_tunersets(istream& ifile, e2db_abstract* dst);
 		void push_csv_all(vector<e2db_file>& files);
 		void push_csv_services(vector<e2db_file>& files);
 		void push_csv_services(vector<e2db_file>& files, int stype);
@@ -99,8 +100,13 @@ class e2db_converter : virtual public e2db_abstract
 		void push_html_tunersets(vector<e2db_file>& files);
 		void push_html_tunersets(vector<e2db_file>& files, int ytype);
 	protected:
-		void convert_csv(istream& ifile, vector<vector<string>>& sxv);
+		void parse_csv(istream& ifile, vector<vector<string>>& sxv);
+		void convert_csv_channel_list(vector<vector<string>> sxv, e2db_abstract* dst, DOC_VIEW view);
+		void convert_csv_channel_list_extended(vector<vector<string>> sxv, e2db_abstract* dst, DOC_VIEW view);
+		void convert_csv_bouquet_list(vector<vector<string>> sxv, e2db_abstract* dst);
+		void convert_csv_tunersets_list(vector<vector<string>> sxv, e2db_abstract* dst);
 		void csv_channel_list(string& csv, string bname, DOC_VIEW view);
+		void csv_channel_list_extended(string& csv, string bname, DOC_VIEW view);
 		void csv_bouquet_list(string& csv, string bname);
 		void csv_tunersets_list(string& csv, int ytype);
 		void page_header(html_page& page, string filename, DOC_VIEW view);

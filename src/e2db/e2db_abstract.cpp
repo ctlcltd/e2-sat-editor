@@ -65,6 +65,7 @@ void e2db_abstract::error(string msg, string optk, int optv)
 	this->log->error(msg, optk, std::to_string(optv));
 }
 
+//TODO round
 string e2db_abstract::editor_string(bool html)
 {
 	if (html)
@@ -207,7 +208,6 @@ string e2db_abstract::value_reference_id(channel_reference chref, service ch)
 	return refid;
 }
 
-
 int e2db_abstract::value_service_type(string str)
 {
 	if (str == "Data")
@@ -228,6 +228,13 @@ int e2db_abstract::value_service_type(string str)
 		return 17;
 	else
 		return STYPE::data;
+}
+
+string e2db_abstract::value_service_type(int stype)
+{
+	if (STYPE_EXT_LABEL.count(stype))
+		return STYPE_EXT_LABEL.at(stype);
+	return STYPE_EXT_LABEL.at(STYPE::data);
 }
 
 //TODO improve
@@ -276,21 +283,55 @@ vector<string> e2db_abstract::value_channel_cas(string str)
 	return cas;
 }
 
+int e2db_abstract::value_transponder_type(char ty)
+{
+	switch (ty) {
+		case 's': return YTYPE::sat;
+		case 't': return YTYPE::terrestrial;
+		case 'c': return YTYPE::cable;
+		case 'a': return YTYPE::atsc;
+		default: return -1;
+	}
+}
+
+int e2db_abstract::value_transponder_type(string str)
+{
+	return value_transponder_type(str[0]);
+}
+
+char e2db_abstract::value_transponder_type(int yx)
+{
+	YTYPE ytype = static_cast<YTYPE>(yx);
+	return value_transponder_type(ytype);
+}
+
+char e2db_abstract::value_transponder_type(YTYPE ytype)
+{
+	switch (ytype) {
+		case YTYPE::sat: return 's';
+		case YTYPE::terrestrial: return 't';
+		case YTYPE::cable: return 'c';
+		case YTYPE::atsc: return 'a';
+		//TODO replace
+		default: return '?';
+	}
+}
+
 string e2db_abstract::value_transponder_combo(transponder tx)
 {
 	string ptxp;
-	switch (tx.ttype)
+	switch (tx.ytype)
 	{
-		case 's':
+		case YTYPE::sat:
 			ptxp = to_string(tx.freq) + '/' + SAT_POL[tx.pol] + '/' + to_string(tx.sr);
 		break;
-		case 't':
+		case YTYPE::terrestrial:
 			ptxp = to_string(tx.freq) + '/' + TER_MOD[tx.tmod] + '/' + TER_BAND[tx.band];
 		break;
-		case 'c':
+		case YTYPE::cable:
 			ptxp = to_string(tx.freq) + '/' + CAB_MOD[tx.cmod] + '/' + to_string(tx.sr);
 		break;
-		case 'a':
+		case YTYPE::atsc:
 			ptxp = to_string(tx.freq);
 		break;
 	}
@@ -330,6 +371,13 @@ int e2db_abstract::value_transponder_polarization(string str)
 	}
 }
 
+string e2db_abstract::value_transponder_polarization(int pol)
+{
+	if (pol != -1 && pol < 4)
+		return SAT_POL[pol];
+	return "";
+}
+
 string e2db_abstract::value_transponder_position(transponder tx)
 {
 	return value_transponder_position(tx.pos);
@@ -340,14 +388,6 @@ string e2db_abstract::value_transponder_position(tunersets_table tn)
 	return value_transponder_position(tn.pos);
 }
 
-int e2db_abstract::value_transponder_position(string str)
-{
-	std::string::size_type pos;
-	float posdeg = std::stof(str, &pos);
-	char pospoint = str.substr(pos)[0];
-	return (int ((pospoint == 'E' ? posdeg : -posdeg) * 10));
-}
-
 string e2db_abstract::value_transponder_position(int num)
 {
 	char cposdeg[6];
@@ -356,12 +396,107 @@ string e2db_abstract::value_transponder_position(int num)
 	return (string (cposdeg) + (num > 0 ? 'E' : 'W'));
 }
 
-//TODO
+int e2db_abstract::value_transponder_position(string str)
+{
+	std::string::size_type pos;
+	float posdeg = std::stof(str, &pos);
+	char pospoint = str.substr(pos)[0];
+	return (int ((pospoint == 'E' ? posdeg : -posdeg) * 10));
+}
+
+int e2db_abstract::value_transponder_system(string str, int yx)
+{
+	YTYPE ytype = static_cast<YTYPE>(yx);
+	return value_transponder_system(str, ytype);
+}
+
+int e2db_abstract::value_transponder_system(string str, YTYPE ytype)
+{
+	if (ytype == YTYPE::sat)
+	{
+		if (str == "DVB-S")
+			return 0;
+		else if (str == "DVB-S2")
+			return 1;
+	}
+	else if (ytype == YTYPE::terrestrial)
+	{
+		if (str == "DVB-T")
+			return 0;
+		else if (str == "DVB-T2")
+			return 1;
+	}
+	return -1;
+}
+
+string e2db_abstract::value_transponder_system(transponder tx)
+{
+	return value_transponder_system(tx.sys, tx.ytype);
+}
+
+string e2db_abstract::value_transponder_system(int sys, int yx)
+{
+	YTYPE ytype = static_cast<YTYPE>(yx);
+	return value_transponder_system(sys, ytype);
+}
+
+string e2db_abstract::value_transponder_system(int sys, YTYPE ytype)
+{
+	string psys;
+	switch (ytype) {
+		case YTYPE::sat:
+			psys = sys != -1 ? SAT_SYS[sys] : "DVB-S";
+		break;
+		case YTYPE::terrestrial:
+			psys = sys != -1 ? TER_SYS[sys] : "DVB-T";
+		break;
+		case YTYPE::cable:
+			psys = "DVB-C";
+		break;
+		case YTYPE::atsc:
+			psys = "ATSC";
+		break;
+	}
+	return psys;
+}
+
+void e2db_abstract::value_transponder_fec(string str, int yx, vector<int>& fec)
+{
+	if (yx == YTYPE::terrestrial)
+	{
+		fec[YFEC::inner_fec] = value_transponder_fec(str, YTYPE::terrestrial);
+	}
+	else if (yx == YTYPE::terrestrial)
+	{
+		size_t pos = str.find("|");
+		if (pos != string::npos)
+		{
+			string hp_fec, lp_fec;
+			hp_fec = str.substr(0, pos);
+			lp_fec = str.substr(pos);
+			hp_fec.erase(0, hp_fec.find_first_not_of(' '));
+			lp_fec.erase(0, lp_fec.find_first_not_of(' '));
+			fec[YFEC::hp_fec] = value_transponder_fec(hp_fec, YTYPE::terrestrial);
+			fec[YFEC::lp_fec] = value_transponder_fec(lp_fec, YTYPE::terrestrial);
+		}
+	}
+	else if (yx == YTYPE::cable)
+	{
+		fec[YFEC::inner_fec] = value_transponder_fec(str, YTYPE::cable);
+	}
+}
+
+int e2db_abstract::value_transponder_fec(string str, int yx)
+{
+	YTYPE ytype = static_cast<YTYPE>(yx);
+	return value_transponder_fec(str, ytype);
+}
+
 int e2db_abstract::value_transponder_fec(string str, YTYPE ytype)
 {
 	if (ytype == YTYPE::sat)
 	{
-		if (str == "")
+		if (str.empty())
 			return 0;
 		else if (str == "Auto")
 			return 1;
@@ -383,29 +518,31 @@ int e2db_abstract::value_transponder_fec(string str, YTYPE ytype)
 			return 9;
 		else if (str == "9/10")
 			return 10;
+		return -1;
 	}
 	else if (ytype == YTYPE::terrestrial)
 	{
-		if (str == "")
+		if (str.empty())
 			return 0;
 		else if (str == "Auto")
-			return 1;
+			return 0;
 		else if (str == "1/2")
-			return 2;
+			return 1;
 		else if (str == "2/3")
-			return 3;
+			return 2;
 		else if (str == "3/4")
-			return 4;
+			return 3;
 		else if (str == "5/6")
-			return 5;
+			return 4;
 		else if (str == "7/8")
+			return 5;
+		else if (str == "8/9")
 			return 6;
-		else if (str == "?")
-			return 7;
+		return -1;
 	}
 	else if (ytype == YTYPE::cable)
 	{
-		if (str == "")
+		if (str.empty())
 			return 0;
 		else if (str == "Auto")
 			return 1;
@@ -421,40 +558,278 @@ int e2db_abstract::value_transponder_fec(string str, YTYPE ytype)
 			return 6;
 		else if (str == "8/9")
 			return 7;
-		else if (str == "?")
+		else if (str == "9/10")
 			return 8;
-	}
-	return 0;
-}
-
-int e2db_abstract::value_transponder_system(string str)
-{
-	if (str == "DVB-S")
-		return 0;
-	else if (str == "DVB-S2")
-		return 1;
-	else
 		return -1;
+	}
+	return -1;
 }
 
-string e2db_abstract::value_transponder_system(transponder tx)
+string e2db_abstract::value_transponder_fec(int fec, int yx)
 {
-	string psys;
-	switch (tx.ttype) {
-		case 's':
-			psys = tx.sys != -1 ? SAT_SYS[tx.sys] : "DVB-S";
-		break;
-		case 't':
-			psys = "DVB-T";
-		break;
-		case 'c':
-			psys = "DVB-C";
-		break;
-		case 'a':
-			psys = "ATSC";
-		break;
+	YTYPE ytype = static_cast<YTYPE>(yx);
+	return value_transponder_fec(fec, ytype);
+}
+
+string e2db_abstract::value_transponder_fec(int fec, YTYPE ytype)
+{
+	if (fec == -1)
+		return "";
+	if (ytype == YTYPE::sat && fec < 11)
+		return SAT_FEC[fec];
+	else if (ytype == YTYPE::terrestrial && fec < 8)
+		return TER_FEC[fec];
+	else if (ytype == YTYPE::cable && fec < 9)
+		return CAB_FEC[fec];
+	return "";
+}
+
+int e2db_abstract::value_transponder_modulation(string str, int yx)
+{
+	YTYPE ytype = static_cast<YTYPE>(yx);
+	return value_transponder_modulation(str, ytype);
+}
+
+int e2db_abstract::value_transponder_modulation(string str, YTYPE ytype)
+{
+	if (ytype == YTYPE::sat)
+	{
+		if (str.empty())
+			return -1;
+		else if (str == "Auto")
+			return 0;
+		else if (str == "QPSK")
+			return 1;
+		else if (str == "QAM16")
+			return 2;
+		else if (str == "8PSK")
+			return 3;
+		return -1;
 	}
-	return psys;
+	else if (ytype == YTYPE::terrestrial)
+	{
+		if (str.empty())
+			return -1;
+		else if (str == "Auto")
+			return 0;
+		else if (str == "QPSK")
+			return 1;
+		else if (str == "QAM16")
+			return 2;
+		else if (str == "QAM64")
+			return 3;
+		return -1;
+	}
+	else if (ytype == YTYPE::cable)
+	{
+		if (str.empty())
+			return -1;
+		else if (str == "Auto")
+			return 0;
+		else if (str == "QAM16")
+			return 1;
+		else if (str == "QAM32")
+			return 2;
+		else if (str == "QAM64")
+			return 3;
+		else if (str == "QAM128")
+			return 4;
+		else if (str == "QAM256")
+			return 5;
+		return -1;
+	}
+	return -1;
+}
+
+string e2db_abstract::value_transponder_modulation(int mod, int yx)
+{
+	YTYPE ytype = static_cast<YTYPE>(yx);
+	return value_transponder_modulation(mod, ytype);
+}
+
+string e2db_abstract::value_transponder_modulation(int mod, YTYPE ytype)
+{
+	if (mod == -1)
+		return "";
+	else if (ytype == YTYPE::sat && mod < 4)
+		return SAT_MOD[mod];
+	else if (ytype == YTYPE::terrestrial && mod < 4)
+		return TER_MOD[mod];
+	else if (ytype == YTYPE::cable && mod < 6)
+		return CAB_MOD[mod];
+	return "";
+}
+
+int e2db_abstract::value_transponder_inversion(string str, int yx)
+{
+	YTYPE ytype = static_cast<YTYPE>(yx);
+	return value_transponder_inversion(str, ytype);
+}
+
+int e2db_abstract::value_transponder_inversion(string str, YTYPE ytype)
+{
+	if (ytype != YTYPE::atsc)
+	{
+		if (str.empty())
+			return -1;
+		else if (str == "Auto")
+			return 0;
+		else if (str == "On")
+			return 1;
+		else if (str == "Off")
+			return 2;
+		return -1;
+	}
+	return -1;
+}
+
+string e2db_abstract::value_transponder_inversion(int inv, int yx)
+{
+	YTYPE ytype = static_cast<YTYPE>(yx);
+	return value_transponder_inversion(inv, ytype);
+}
+
+string e2db_abstract::value_transponder_inversion(int inv, YTYPE ytype)
+{
+	if (ytype == YTYPE::sat && inv < 3)
+		return SAT_INV[inv];
+	else if (ytype == YTYPE::terrestrial && inv < 3)
+		return TER_INV[inv];
+	else if (ytype == YTYPE::cable && inv < 3)
+		return CAB_INV[inv];
+	return "";
+}
+
+int e2db_abstract::value_transponder_rollof(string str)
+{
+	if (str.empty())
+		return -1;
+	else if (str == "Auto")
+		return 0;
+	else if (str == "QPSK")
+		return 1;
+	else if (str == "QAM16")
+		return 2;
+	else if (str == "8PSK")
+		return 3;
+	return -1;
+}
+
+string e2db_abstract::value_transponder_rollof(int rol)
+{
+	if (rol != -1 && rol < 4)
+		return SAT_ROL[rol];
+	return "";
+}
+
+int e2db_abstract::value_transponder_pilot(string str)
+{
+	if (str.empty())
+		return -1;
+	else if (str == "Auto")
+		return 0;
+	else if (str == "On")
+		return 1;
+	else if (str == "Off")
+		return 2;
+	return -1;
+}
+
+string e2db_abstract::value_transponder_pilot(int pil)
+{
+	if (pil != -1 && pil < 3)
+		return SAT_PIL[pil];
+	return "";
+}
+
+int e2db_abstract::value_transponder_bandwidth(string str)
+{
+	if (str.empty())
+		return -1;
+	else if (str == "Auto")
+		return 0;
+	else if (str == "8Mhz")
+		return 1;
+	else if (str == "7Mhz")
+		return 2;
+	else if (str == "6Mhz")
+		return 3;
+	return -1;
+}
+
+string e2db_abstract::value_transponder_bandwidth(int band)
+{
+	if (band != -1 && band < 4)
+		return TER_BAND[band];
+	return "";
+}
+
+int e2db_abstract::value_transponder_guard(string str)
+{
+	if (str.empty())
+		return -1;
+	else if (str == "Auto")
+		return 0;
+	else if (str == "1/32")
+		return 1;
+	else if (str == "1/16")
+		return 2;
+	else if (str == "1/8")
+		return 3;
+	else if (str == "1/4")
+		return 4;
+	return -1;
+}
+
+string e2db_abstract::value_transponder_guard(int guard)
+{
+	if (guard != -1 && guard < 5)
+		return TER_GUARD[guard];
+	return "";
+}
+
+int e2db_abstract::value_transponder_hier(string str)
+{
+	if (str.empty())
+		return -1;
+	else if (str == "Auto")
+		return 0;
+	else if (str == "0")
+		return 1;
+	else if (str == "1")
+		return 2;
+	else if (str == "2")
+		return 3;
+	else if (str == "4")
+		return 4;
+	return -1;
+}
+
+string e2db_abstract::value_transponder_hier(int hier)
+{
+	if (hier != -1 && hier < 5)
+		return TER_HIER[hier];
+	return "";
+}
+
+int e2db_abstract::value_transponder_tmx_mode(string str)
+{
+	if (str.empty())
+		return -1;
+	else if (str == "Auto")
+		return 0;
+	else if (str == "2k")
+		return 1;
+	else if (str == "8k")
+		return 2;
+	return -1;
+}
+
+string e2db_abstract::value_transponder_tmx_mode(int tmx)
+{
+	if (tmx != -1 && tmx < 3)
+		return TER_TRXMODE[tmx];
+	return "";
 }
 
 string e2db_abstract::get_reference_id(string chid)
@@ -482,7 +857,7 @@ string e2db_abstract::get_transponder_name_value(transponder tx)
 	// debug("get_transponder_name_value()", "txid", tx.txid);
 
 	string ppos;
-	if (tx.ttype == 's')
+	if (tx.ytype == 's')
 	{
 		if (tuners_pos.count(tx.pos))
 		{
@@ -589,18 +964,10 @@ void e2db_abstract::add_tunersets(tunersets& tv)
 void e2db_abstract::add_tunersets_table(int idx, tunersets_table& tn, tunersets& tv)
 {
 	string iname = "tns:";
-	char type;
-	switch (tn.ytype)
-	{
-		case YTYPE::sat: type = 's'; break;
-		case YTYPE::terrestrial: type = 't'; break;
-		case YTYPE::cable: type = 'c'; break;
-		case YTYPE::atsc: type = 'a'; break;
-		default: return error("add_tunersets_table()", "Error", "Unknown tuner settings type.");
-	}
-	iname += type;
+	char yname = value_transponder_type(tn.ytype);
+	iname += yname;
 	char tnid[25];
-	std::sprintf(tnid, "%c:%04x", type, idx);
+	std::sprintf(tnid, "%c:%04x", yname, idx);
 	tn.tnid = tnid;
 	tn.index = idx;
 	tv.tables.emplace(tn.tnid, tn);
@@ -611,17 +978,9 @@ void e2db_abstract::add_tunersets_table(int idx, tunersets_table& tn, tunersets&
 
 void e2db_abstract::add_tunersets_transponder(int idx, tunersets_transponder& tntxp, tunersets_table& tn)
 {
-	char type;
-	switch (tn.ytype)
-	{
-		case YTYPE::sat: type = 's'; break;
-		case YTYPE::terrestrial: type = 't'; break;
-		case YTYPE::cable: type = 'c'; break;
-		case YTYPE::atsc: type = 'a'; break;
-		default: return error("add_tunersets_transponder()", "Error", "Unknown tuner settings type.");
-	}
+	char yname = value_transponder_type(tn.ytype);
 	char trid[25];
-	std::sprintf(trid, "%c:%04x:%04x", type, tntxp.freq, tntxp.sr);
+	std::sprintf(trid, "%c:%04x:%04x", yname, tntxp.freq, tntxp.sr);
 	tntxp.trid = trid;
 	tntxp.index = idx;
 	tn.transponders.emplace(tntxp.trid, tntxp);
@@ -659,7 +1018,7 @@ void e2db_abstract::debugger()
 		cout << "tsid: " << x.second.tsid << endl;
 		cout << "onid: " << x.second.onid << endl;
 		cout << dec;
-		cout << "ttype: " << x.second.ttype << endl;
+		cout << "ytype: " << x.second.ytype << endl;
 		cout << "freq: " << x.second.freq << endl;
 		cout << "sr: " << x.second.sr << endl;
 		cout << "pol: " << x.second.pol << endl;

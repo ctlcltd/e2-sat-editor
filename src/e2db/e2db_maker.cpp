@@ -67,36 +67,40 @@ void e2db_maker::make_e2db_lamedb()
 void e2db_maker::make_e2db_lamedb4()
 {
 	debug("make_e2db_lamedb4()");
-	e2db_out["lamedb"] = make_lamedb4("lamedb");
+	e2db_file file;
+	make_lamedb4("lamedb", file);
+	e2db_out["lamedb"] = file;
 }
 
 void e2db_maker::make_e2db_lamedb5()
 {
 	debug("make_e2db_lamedb5()");
-	e2db_out["lamedb5"] = make_lamedb5("lamedb5");
+	e2db_file file;
+	make_lamedb5("lamedb5", file);
+	e2db_out["lamedb5"] = file;
 }
 
-e2db_file e2db_maker::make_lamedb4(string filename)
+void e2db_maker::make_lamedb4(string filename, e2db_file& file)
 {
 	debug("make_lamedb4()");
 	int ver = LAMEDB_VER;
 	LAMEDB_VER = 4;
-	e2db_file file = make_lamedb(filename);
+	make_lamedb(filename, file);
+	e2db_out[filename] = file;
 	LAMEDB_VER = ver;
-	return file;
 }
 
-e2db_file e2db_maker::make_lamedb5(string filename)
+void e2db_maker::make_lamedb5(string filename, e2db_file& file)
 {
 	debug("make_lamedb5()");
 	int ver = LAMEDB_VER;
 	LAMEDB_VER = 5;
-	e2db_file file = make_lamedb(filename);
+	make_lamedb(filename, file);
+	e2db_out[filename] = file;
 	LAMEDB_VER = ver;
-	return file;
 }
 
-e2db_file e2db_maker::make_lamedb(string filename)
+void e2db_maker::make_lamedb(string filename, e2db_file& file)
 {
 	debug("make_lamedb()");
 
@@ -116,10 +120,10 @@ e2db_file e2db_maker::make_lamedb(string filename)
 		ss << ':' << setfill('0') << setw(4) << tx.onid;
 		ss << dec;
 		ss << formats[MAKER_FORMAT::transponder_params_separator];
-		ss << tx.ttype << formats[MAKER_FORMAT::transponder_space_delimiter];
-		switch (tx.ttype)
+		ss << value_transponder_type(tx.ytype) << formats[MAKER_FORMAT::transponder_space_delimiter];
+		switch (tx.ytype)
 		{
-			case 's': // DVB-S
+			case YTYPE::sat: // DVB-S
 				ss << int (tx.freq * 1e3);
 				ss << ':' << int (tx.sr * 1e3);
 				ss << ':' << tx.pol;
@@ -136,7 +140,7 @@ e2db_file e2db_maker::make_lamedb(string filename)
 				if (tx.pil != -1)
 					ss << ':' << tx.pil;
 			break;
-			case 't': // DVB-T
+			case YTYPE::terrestrial: // DVB-T
 				ss << int (tx.freq * 1e3);
 				ss << ':' << tx.band;
 				ss << ':' << tx.hpfec;
@@ -150,7 +154,7 @@ e2db_file e2db_maker::make_lamedb(string filename)
 					ss << tx.oflgs;
 			break;
 			//TODO test params and freq round
-			case 'c': // DVB-C
+			case YTYPE::cable: // DVB-C
 				ss << int (tx.freq * 1e3);
 				ss << ':' << int (tx.sr * 1e3);
 				ss << ':' << tx.inv;
@@ -160,7 +164,7 @@ e2db_file e2db_maker::make_lamedb(string filename)
 					ss << tx.oflgs;
 			break;
 			//TODO test params and freq round
-			case 'a': // ATSC
+			case YTYPE::atsc: // ATSC
 				ss << int (tx.freq * 1e3);
 				ss << ':' << tx.inv;
 				ss << ':' << tx.amod;
@@ -218,7 +222,11 @@ e2db_file e2db_maker::make_lamedb(string filename)
 
 	ss << formats[MAKER_FORMAT::comment] << "editor: " << editor_string() << endl;
 	ss << formats[MAKER_FORMAT::comment] << "datetime: " << editor_timestamp() << endl;
-	return ss.str();
+
+	file.filename = filename;
+	file.data = ss.str();
+	file.mime = "text/plain";
+	file.size = file.data.size();
 }
 
 void e2db_maker::make_e2db_bouquets()
@@ -226,7 +234,11 @@ void e2db_maker::make_e2db_bouquets()
 	debug("make_e2db_bouquets()");
 
 	for (auto & x : bouquets)
-		e2db_out[x.first] = make_bouquet(x.first);
+	{
+		e2db_file file;
+		make_bouquet(x.first, file);
+		e2db_out[x.first] = file;
+	}
 }
 
 void e2db_maker::make_e2db_userbouquets()
@@ -234,7 +246,11 @@ void e2db_maker::make_e2db_userbouquets()
 	debug("make_e2db_userbouquets()");
 
 	for (auto & x : userbouquets)
-		e2db_out[x.first] = make_userbouquet(x.first);
+	{
+		e2db_file file;
+		make_userbouquet(x.first, file);
+		e2db_out[x.first] = file;
+	}
 }
 
 void e2db_maker::make_db_tunersets()
@@ -259,11 +275,13 @@ void e2db_maker::make_db_tunersets()
 				filename = "atsc.xml";
 			break;
 		}
-		e2db_out[filename] = make_tunersets_xml(filename, x.first);
+		e2db_file file;
+		make_tunersets_xml(filename, x.first, file);
+		e2db_out[filename] = file;
 	}
 }
 
-e2db_file e2db_maker::make_bouquet(string bname)
+void e2db_maker::make_bouquet(string bname, e2db_file& file)
 {
 	debug("make_bouquet()", "bname", bname);
 
@@ -281,10 +299,14 @@ e2db_file e2db_maker::make_bouquet(string bname)
 		ss << endl;
 	}
 	// ss << endl;
-	return ss.str();
+
+	file.filename = bname;
+	file.data = ss.str();
+	file.mime = "text/plain";
+	file.size = file.data.size();
 }
 
-e2db_file e2db_maker::make_userbouquet(string bname)
+void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 {
 	debug("make_userbouquet()", "bname", bname);
 
@@ -327,11 +349,15 @@ e2db_file e2db_maker::make_userbouquet(string bname)
 		ss << endl;
 	}
 	// ss << endl;
-	return ss.str();
+
+	file.filename = bname;
+	file.data = ss.str();
+	file.mime = "text/plain";
+	file.size = file.data.size();
 }
 
 //TODO value xml entities
-e2db_file e2db_maker::make_tunersets_xml(string filename, int ytype)
+void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 {
 	debug("make_tunersets_xml()", "ytype", ytype);
 
@@ -343,34 +369,33 @@ e2db_file e2db_maker::make_tunersets_xml(string filename, int ytype)
 		case YTYPE::atsc:
 		break;
 		default:
-			error("make_tunersets_xml()", "Error", "These settings are not supported.");
-			return NULL;
+			return error("make_tunersets_xml()", "Error", "These settings are not supported.");
 	}
 
 	tunersets tv = tuners[ytype];
 	stringstream ss;
 
-	string iname = "tns:";
+	string yname = "tns:";
 	unordered_map<int, string> tags;
 	switch (ytype)
 	{
 		case YTYPE::sat:
-			iname += 's';
+			yname += 's';
 			tags[0] = "satellites";
 			tags[1] = "sat";
 		break;
 		case YTYPE::terrestrial:
-			iname += 't';
+			yname += 't';
 			tags[0] = "locations";
 			tags[1] = "terrestrial";
 		break;
 		case YTYPE::cable:
-			iname += 'c';
+			yname += 'c';
 			tags[0] = "cables";
 			tags[1] = "cable";
 		break;
 		case YTYPE::atsc:
-			iname += 'a';
+			yname += 'a';
 			tags[0] = "locations";
 			tags[1] = "atsc";
 		break;
@@ -379,7 +404,7 @@ e2db_file e2db_maker::make_tunersets_xml(string filename, int ytype)
 
 	ss << "<?xml version=\"1.0\" encoding=\"" << tv.charset << "\"?>" << endl;
 	ss << '<' << tags[0] << '>' << endl;
-	for (auto & x : index[iname])
+	for (auto & x : index[yname])
 	{
 		tunersets_table tn = tv.tables[x.second];
 
@@ -484,11 +509,11 @@ e2db_file e2db_maker::make_tunersets_xml(string filename, int ytype)
 	ss << '<' << '/' << tags[0] << '>' << endl;
 
 	string str = ss.str();
-	if (comments.count(iname))
+	if (comments.count(yname))
 	{
 		int i = 0;
 		unsigned long pos = 0;
-		for (auto & s : comments[iname])
+		for (auto & s : comments[yname])
 		{
 			string line;
 			while (s.ln != i)
@@ -504,7 +529,11 @@ e2db_file e2db_maker::make_tunersets_xml(string filename, int ytype)
 			pos += line.size();
 		}
 	}
-	return str;
+
+	file.filename = filename;
+	file.data = ss.str();
+	file.mime = "text/xml";
+	file.size = file.data.size();
 }
 
 bool e2db_maker::write_to_localdir(string localdir, bool overwrite)
@@ -526,7 +555,7 @@ bool e2db_maker::write_to_localdir(string localdir, bool overwrite)
 		string localfile = localdir + '/' + o.first;
 
 		ofstream out (localfile);
-		out << o.second;
+		out << o.second.data;
 		out.close();
 	}
 
@@ -545,7 +574,7 @@ bool e2db_maker::write(string localdir, bool overwrite)
 		return false;
 }
 
-unordered_map<string, e2db_file> e2db_maker::get_output() {
+unordered_map<string, e2db_abstract::e2db_file> e2db_maker::get_output() {
 	debug("get_output()");
 
 	make_e2db();

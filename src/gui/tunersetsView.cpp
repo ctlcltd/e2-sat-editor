@@ -95,7 +95,7 @@ void tunersetsView::layout()
 		break;
 		case e2db::YTYPE::terrestrial:
 			ths = QStringList ({NULL, "Name", "Country"});
-			lhs = QStringList ({NULL, "TRID", "Freq/Const/Band", "Frequency", "Constellation", "Bandwidth", "System", "Tx Mode", "HP FEC", "LP FEC", "Inversion", "Guard", "Hierarchy"});
+			lhs = QStringList ({NULL, "TRID", "Freq/Const/Band", "Frequency", "Constellation", "Bandwidth", "System", "Tmx Mode", "HP FEC", "LP FEC", "Inversion", "Guard", "Hierarchy"});
 		break;
 		case e2db::YTYPE::cable:
 			ths = QStringList ({NULL, "Name", "Country"});
@@ -271,13 +271,8 @@ void tunersetsView::load()
 	this->dbih = this->data->dbih;
 
 	string iname = "tns:";
-	switch (yx)
-	{
-		case e2db::YTYPE::sat: iname += 's'; break;
-		case e2db::YTYPE::terrestrial: iname += 't'; break;
-		case e2db::YTYPE::cable: iname += 'c'; break;
-		case e2db::YTYPE::atsc: iname += 'a'; break;
-	}
+	char yname = dbih->value_transponder_type(yx);
+	iname += yname;
 
 	for (auto & x : dbih->index[iname])
 	{
@@ -781,13 +776,8 @@ void tunersetsView::updateStatus(bool current)
 	else
 	{
 		string iname = "tns:";
-		switch (yx)
-		{
-			case e2db::YTYPE::sat: iname += 's'; break;
-			case e2db::YTYPE::terrestrial: iname += 't'; break;
-			case e2db::YTYPE::cable: iname += 'c'; break;
-			case e2db::YTYPE::atsc: iname += 'a'; break;
-		}
+		char yname = dbih->value_transponder_type(yx);
+		iname += yname;
 		for (auto & x : dbih->index[iname])
 		{
 			status.counters[gui::COUNTER::transponders] += dbih->index[x.second].size();

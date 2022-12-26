@@ -133,7 +133,7 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 
 	string path = gid->exportFileDialog(gui::GUI_DPORTS::CSV, opts.filename);
 
-	if (! path.empty())
+	if (path.empty())
 		return;
 
 	auto* dbih = this->data->dbih;
@@ -153,7 +153,7 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 
 	string path = gid->exportFileDialog(gui::GUI_DPORTS::HTML, opts.filename);
 
-	if (! path.empty())
+	if (path.empty())
 		return;
 
 	auto* dbih = this->data->dbih;

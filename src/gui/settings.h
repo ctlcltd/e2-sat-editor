@@ -43,12 +43,14 @@ class settings : protected e2se::log_factory
 			Advanced
 		};
 
-		settings(QWidget* mwid, e2se::logger::session* log);
-		void preferences();
-		void connections();
-		void advanced();
+		settings(QWidget* cwid, e2se::logger::session* log);
+		void display(QWidget* cwid);
+		void layout(QWidget* cwid);
+		void preferencesLayout();
+		void connectionsLayout();
+		void advancedLayout();
 		QListWidgetItem* addProfile(int i = -1);
-		void delProfile();
+		void deleteProfile();
 		void renameProfile(bool enabled = true);
 		void updateProfile(QListWidgetItem* item);
 		void profileNameChanged(QString text);
@@ -61,16 +63,7 @@ class settings : protected e2se::log_factory
 		void retrieve(QTableWidget* adtbl);
 		void save();
 		QSettings* sets;
-	protected:
-		QTabWidget* dtwid;
-		QDialog* dial;
-		WidgetWithBackdrop* rppage;
-		QListWidget* rplist;
-		QWidget* adntc;
-		QTableWidget* adtbl;
-		map<int, map<QString, QVariant>> tmpps; //Qt5
-		map<int, vector<QWidget*>> prefs;
-	private:
+
 		struct sts
 		{
 			// previous tab index
@@ -80,6 +73,15 @@ class settings : protected e2se::log_factory
 			// profile deleting
 			bool dele;
 		} state;
+	protected:
+		QTabWidget* dtwid;
+		QDialog* dial;
+		WidgetWithBackdrop* rppage;
+		QListWidget* rplist;
+		QWidget* adntc;
+		QTableWidget* adtbl;
+		map<int, map<QString, QVariant>> tmpps; //Qt5
+		map<int, vector<QWidget*>> prefs;
 };
 }
 #endif /* settings_h */

@@ -1256,15 +1256,6 @@ p:NoName,c:001fff,c:011fff,c:031fff,c:050000
 0112:00820000:3070:013e:0:0
 
 p:NoName,c:001fff,c:011fff,c:031fff,c:050000
-213f:00820000:3070:013e:1:2211
-Rai 1
-p:RAI,c:000200,c:011fff,c:030200,c:050000,C:1856,C:183d,C:183e
-2140:00820000:3070:013e:1:2212
-Rai 2
-p:RAI,c:000201,c:011fff,c:030201,c:050000,C:1856,C:183d,C:183e
-2141:00820000:3070:013e:1:2213
-Rai 3
-p:RAI,c:000202,c:011fff,c:030202,c:050000
 2145:00820000:3070:013e:1:0
 tivùlink
 p:tivù,c:001fff,c:011fff,c:031fff,c:050000
@@ -1289,7 +1280,7 @@ p:Rai,c:000712,c:011fff,c:030712,c:050001
 4530:00820000:30d4:013e:25:2220
 Rai Gulp HD
 p:Rai,c:00071c,c:011fff,c:03071c,c:050001
-4531:00820000:30d4:013e:25:2221
+4531:00820000:3070:013e:25:2221
 Rai YoYo HD
 p:Rai,c:000726,c:011fff,c:030726,c:050001,C:1856,C:183d,C:183e
 4532:00820000:30d4:013e:25:2222
@@ -2040,10 +2031,10 @@ p:NoName,c:001fff,c:011fff,c:031f35,c:050000
 Cine34 HD
 p:Mediaset,c:0003ec,c:011fff,c:0303ec,c:050001,C:183d,C:183e,C:1856,C:09cd
 0076:00820000:04b0:0110:22:2441
-VIRGIN RADIO
+Virgin Radio TV
 p:Mediaset,c:000406,c:011fff,c:030406,c:050001,C:183d,C:183e,C:1856,C:09cd
 0077:00820000:04b0:0110:22:2442
-RADIO MONTE CARLO
+Radio Monte Carlo TV
 p:Mediaset,c:000402,c:011fff,c:030402,c:050001,C:183d,C:183e,C:1856,C:09cd
 0078:00820000:04b0:0110:25:2443
 20Mediaset HD
@@ -2873,9 +2864,6 @@ p:Rai,c:001fff,c:011fff,c:030288,c:050000
 0d79:00820000:1450:013e:2:2162
 Rai Radio Kids
 p:Rai,c:001fff,c:011fff,c:030289,c:050000
-0d7a:00820000:1450:013e:2:2163
-Rai Radio Indie
-p:Rai,c:001fff,c:011fff,c:03028a,c:050000
 0d7b:00820000:1450:013e:2:2164
 Rai Radio Tutta Italiana
 p:Rai,c:001fff,c:011fff,c:03028b,c:050000
@@ -5658,5 +5646,5 @@ p:KABELIO.CH,c:000529,c:011fff,c:030529,c:050001,C:4afc
 Kabelio ZDF
 p:KABELIO.CH,c:000533,c:011fff,c:030533,c:050001,C:4afc
 end
-editor: e2 SAT Editor 0.1 <https://github.com/ctlcltd/e2-sat-editor>
-datetime: 2022-11-27 23:18:02+0100
+editor: e2 SAT Editor 0.100000 <https://github.com/ctlcltd/e2-sat-editor>
+datetime: 2022-12-26 23:23:28+0100

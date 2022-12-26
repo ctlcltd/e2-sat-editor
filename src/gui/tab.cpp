@@ -777,7 +777,7 @@ void tab::toolsImportFromFile(TOOLS_FILE ftype, e2db::FCONVS fci)
 			this->tools->importFileCSV(fci, opts);
 		break;
 		case TOOLS_FILE::tools_html:
-			return;
+		return;
 	}
 }
 
@@ -785,11 +785,10 @@ void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 {
 	e2db::fcopts opts;
 	opts.fc = fco;
+	string filename;
 
 	if (fco == e2db::FCONVS::convert_current)
 	{
-		string filename;
-
 		// tunersets
 		if (this->ttv == gui::TAB_VIEW::tunersets)
 		{
@@ -873,6 +872,33 @@ void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 
 				filename = bname;
 			}
+		}
+		opts.filename = filename;
+	}
+	else
+	{
+		switch (fco)
+		{
+			case e2db::FCONVS::convert_all:
+				filename = "all";
+			break;
+			case e2db::FCONVS::convert_index:
+				filename = "index";
+			break;
+			case e2db::FCONVS::convert_services:
+				filename = "services";
+			break;
+			case e2db::FCONVS::convert_bouquets:
+				filename = "bouquets";
+			break;
+			case e2db::FCONVS::convert_userbouquets:
+				filename = "userbouquets";
+			break;
+			case e2db::FCONVS::convert_tunersets:
+				filename = "tunersets";
+			break;
+			default:
+			return;
 		}
 		opts.filename = filename;
 	}
@@ -1049,25 +1075,27 @@ void tab::ftpUpload()
 
 	if (ftpHandle())
 	{
-		unordered_map<string, e2se_ftpcom::ftpcom_file> files = dbih->get_output();
+		unordered_map<string, e2db::e2db_file> files = dbih->get_output();
 
 		if (files.empty())
 			return;
 
-		unordered_map<string, e2se_ftpcom::ftpcom_file> tfiles;
+		unordered_map<string, e2se_ftpcom::ftpcom::ftpcom_file> ftp_files;
 
 		int profile_sel = gid->sets->value("profile/selected").toInt();
 		gid->sets->beginReadArray("profile");
 		gid->sets->setArrayIndex(profile_sel);
 		for (auto & x : files)
 		{
+			string filename = x.first;
 			string base;
+			string path;
 
-			if (x.first.find(".tv") != string::npos || x.first.find(".radio") != string::npos)
+			if (filename.find(".tv") != string::npos || filename.find(".radio") != string::npos)
 			{
 				base = gid->sets->value("pathBouquets").toString().toStdString();
 			}
-			else if (x.first == "satellites.xml" || x.first == "terrestrial.xml" || x.first == "cables.xml" || x.first == "atsc.xml")
+			else if (filename == "satellites.xml" || filename == "terrestrial.xml" || filename == "cables.xml" || filename == "atsc.xml")
 			{
 				base = gid->sets->value("pathTransponders").toString().toStdString();
 			}
@@ -1076,14 +1104,21 @@ void tab::ftpUpload()
 			{
 				base = gid->sets->value("pathServices").toString().toStdString();
 			}
-			tfiles.emplace(base + '/' + x.first, x.second);
+			path = base + '/' + filename;
+			
+			e2se_ftpcom::ftpcom::ftpcom_file file;
+			file.filename = x.second.filename;
+			file.data = x.second.data;
+			file.mime = x.second.mime;
+			file.size = x.second.size;
+			ftp_files.emplace(path, file);
 
-			debug("ftpUpload()", "file", base + '/' + x.first + " | " + to_string(x.second.size()));
+			debug("ftpUpload()", "file", base + '/' + file.filename + " | " + to_string(file.size));
 		}
 		gid->sets->endArray();
 		files.clear();
 
-		ftph->put_files(tfiles);
+		ftph->put_files(ftp_files);
 		QMessageBox::information(nullptr, NULL, "Uploaded");
 
 		if (ftph->cmd_ifreload() || ftph->cmd_tnreload())
@@ -1099,12 +1134,23 @@ void tab::ftpDownload()
 
 	if (ftpHandle())
 	{
-		unordered_map<string, e2se_ftpcom::ftpcom_file> files = ftph->get_files();
+		unordered_map<string, e2se_ftpcom::ftpcom::ftpcom_file> ftp_files = ftph->get_files();
 
-		if (files.empty())
+		if (ftp_files.empty())
 			return;
-		for (auto & x : files)
-			debug("ftpDownload()", "file", x.first + " | " + to_string(x.second.size()));
+
+		unordered_map<string, e2db::e2db_file> files;
+
+		for (auto & x : ftp_files)
+		{
+			e2db::e2db_file file;
+			file.filename = x.second.filename;
+			file.data = x.second.data;
+			file.mime = x.second.mime;
+			file.size = x.second.size;
+
+			debug("ftpDownload()", "file", x.first + " | " + to_string(x.second.size));
+		}
 
 		this->updateChannelsIndex();
 		this->updateBouquetsIndex();
@@ -1162,6 +1208,7 @@ void tab::updateBouquetsIndex()
 	}
 }
 
+//TODO FIX wrong visual index after update
 void tab::updateChannelsIndex()
 {
 	if (! main->state.changed)

@@ -306,6 +306,7 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 	// page.body += "<th>Reference ID</th>";
 	page.body += "<th>SSID</th>";
 	page.body += "<th>TSID</th>";
+	page.body += "<th>ONID</th>";
 	page.body += "<th>Type</th>";
 	page.body += "<th>CAS</th>";
 	page.body += "<th>Provider</th>";
@@ -349,7 +350,8 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 			}
 			QString ssid = QString::fromStdString(to_string(ch.ssid));
 			QString tsid = QString::fromStdString(to_string(ch.tsid));
-			QString stype = QString::fromStdString(e2db::STYPE_EXT_LABEL.count(ch.stype) ? e2db::STYPE_EXT_LABEL.at(ch.stype) : e2db::STYPE_EXT_LABEL.at(e2db::STYPE::data));
+			QString onid = QString::fromStdString(to_string(ch.onid));
+			QString stype = QString::fromStdString(dbih->value_service_type(ch.stype));
 			QString scas;
 			if (ch.data.count(e2db::SDATA::C))
 			{
@@ -371,15 +373,14 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 				scas.append(cas.join(", "));
 				scas.append("</span>");
 			}
+			//TODO value
 			QString pname = QString::fromStdString(ch.data.count(e2db::SDATA::p) ? ch.data[e2db::SDATA::p][0] : "");
 			QString freq = QString::fromStdString(to_string(tx.freq));
-			QString pol = QString::fromStdString(tx.pol != -1 ? e2db::SAT_POL[tx.pol] : "");
+			QString pol = QString::fromStdString(dbih->value_transponder_polarization(tx.pol));
 			QString sr = QString::fromStdString(to_string(tx.sr));
-			QString fec = QString::fromStdString(e2db::SAT_FEC[tx.fec]);
-			string ppos = dbih->value_transponder_position(tx);
-			QString pos = QString::fromStdString(ppos);
-			string psys = dbih->value_transponder_system(tx);
-			QString sys = QString::fromStdString(psys);
+			QString fec = QString::fromStdString(dbih->value_transponder_fec(tx.fec, tx.ytype));
+			QString pos = QString::fromStdString(dbih->value_transponder_position(tx));
+			QString sys = QString::fromStdString(dbih->value_transponder_system(tx));
 
 			page.body += "<tr>";
 			page.body += "<td class=\"trid\">" + idx + "</td>";
@@ -387,6 +388,7 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 			// page.body += "<td class=\"refid\"><span >" + refid + "</span></td>";
 			page.body += "<td>" + ssid + "</td>";
 			page.body += "<td>" + tsid + "</td>";
+			page.body += "<td>" + onid + "</td>";
 			page.body += "<td>" + stype + "</td>";
 			page.body += "<td class=\"scas\">" + scas + "</span></td>";
 			page.body += "<td class=\"pname\">" + pname + "</td>";
@@ -545,7 +547,7 @@ void printable::pageBodyTunersetsList(html_page& page, int ytype)
 			page.body += "<th>Const</th>";
 			page.body += "<th>Band</th>";
 			page.body += "<th>Sys</th>";
-			page.body += "<th>Tx Mode</th>";
+			page.body += "<th>Tmx Mode</th>";
 			page.body += "<th>HP FEC</th>";
 			page.body += "<th>LP FEC</th>";
 			page.body += "<th>Inv</th>";
@@ -607,8 +609,8 @@ void printable::pageBodyTunersetsList(html_page& page, int ytype)
 				QString band = QString::fromStdString(e2db::TER_BAND[tntxp.band]);
 				QString sys = "DVB-T";
 				QString tmx = QString::fromStdString(e2db::TER_TRXMODE[tntxp.tmx]);
-				QString hpfec = QString::fromStdString(e2db::TER_HPFEC[tntxp.hpfec]);
-				QString lpfec = QString::fromStdString(e2db::TER_LPFEC[tntxp.lpfec]);
+				QString hpfec = QString::fromStdString(e2db::TER_FEC[tntxp.hpfec]);
+				QString lpfec = QString::fromStdString(e2db::TER_FEC[tntxp.lpfec]);
 				QString inv = QString::fromStdString(e2db::TER_INV[tntxp.inv]);
 				QString guard = QString::fromStdString(e2db::TER_GUARD[tntxp.guard]);
 				QString hier = QString::fromStdString(e2db::TER_HIER[tntxp.hier]);
@@ -629,7 +631,7 @@ void printable::pageBodyTunersetsList(html_page& page, int ytype)
 				QString freq = QString::fromStdString(to_string(tntxp.freq));
 				QString cmod = QString::fromStdString(e2db::CAB_MOD[tntxp.cmod]);
 				QString sr = QString::fromStdString(to_string(tntxp.sr));
-				QString cfec = QString::fromStdString(e2db::CAB_IFEC[tntxp.cfec]);
+				QString cfec = QString::fromStdString(e2db::CAB_FEC[tntxp.cfec]);
 				QString inv = QString::fromStdString(e2db::CAB_INV[tntxp.inv]);
 				QString sys = "DVB-C";
 

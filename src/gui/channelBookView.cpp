@@ -107,9 +107,9 @@ void channelBookView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::chname, 175);	// Name
 	list->setColumnWidth(ITEM_ROW_ROLE::chtype, 70);	// Type
 	list->setColumnWidth(ITEM_ROW_ROLE::chpname, 125);	// Provider
+	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 65);		// System
 	list->setColumnWidth(ITEM_ROW_ROLE::chtxp, 175);	// Transponder
 	list->setColumnWidth(ITEM_ROW_ROLE::chpos, 120);	// Position
-	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 65);		// System
 
 	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->sortByColumn(column); });
 	tree->connect(tree, &QTreeWidget::currentItemChanged, [=]() { this->populate(); });
@@ -245,17 +245,14 @@ void channelBookView::populate()
 				chname = QString::fromStdString(ch.chname).remove(QRegularExpression("[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{S}\\s]+"));
 			else
 				chname = QString::fromStdString(ch.chname);
-			QString stype = QString::fromStdString(e2db::STYPE_EXT_LABEL.count(ch.stype) ? e2db::STYPE_EXT_LABEL.at(ch.stype) : e2db::STYPE_EXT_LABEL.at(e2db::STYPE::data));
+			QString stype = QString::fromStdString(dbih->value_service_type(ch.stype));
+			//TODO value
 			QString pname = QString::fromStdString(ch.data.count(e2db::SDATA::p) ? ch.data[e2db::SDATA::p][0] : "");
+			QString sys = QString::fromStdString(dbih->value_transponder_system(tx));
+			QString txp = QString::fromStdString(dbih->value_transponder_combo(tx));
+			QString pos = QString::fromStdString(dbih->get_transponder_name_value(tx));
 
-			string ptxp = dbih->value_transponder_combo(tx);
-			QString txp = QString::fromStdString(ptxp);
-			string ppos = dbih->get_transponder_name_value(tx);
-			QString pos = QString::fromStdString(ppos);
-			string psys = dbih->value_transponder_system(tx);
-			QString sys = QString::fromStdString(psys);
-
-			QTreeWidgetItem* item = new QTreeWidgetItem({x, idx, chname, stype, pname, txp, pos, sys});
+			QTreeWidgetItem* item = new QTreeWidgetItem({x, idx, chname, stype, pname, sys, txp, pos});
 			item->setData(0, Qt::UserRole, chid);
 			item->setIcon(1, theme::spacer(3));
 			list->addTopLevelItem(item);
@@ -389,7 +386,7 @@ void channelBookView::stacker(int vv)
 		else if (vv == views::Resolution)
 		{
 			int stype = std::stoi(q.first);
-			name = QString::fromStdString(e2db::STYPE_EXT_LABEL.count(stype) ? e2db::STYPE_EXT_LABEL.at(stype) : e2db::STYPE_EXT_LABEL.at(e2db::STYPE::data));
+			name = QString::fromStdString(dbih->value_service_type(stype));
 			name.append(QString::fromStdString("\tid: " + q.first));
 			item = new QTreeWidgetItem({name});
 		}

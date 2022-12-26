@@ -193,9 +193,9 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 	dtf0->addRow(tr("HP FEC"), dtf0th);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	dtf0th->addItem(tr("empty"), -1);
-	for (int i = 0; i < 7; i++)
+	for (int i = 0; i < 8; i++)
 	{
-		string w = e2db::TER_HPFEC[i];
+		string w = e2db::TER_FEC[i];
 		dtf0th->addItem(QString::fromStdString(w), i);
 	}
 
@@ -207,9 +207,9 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 	dtf0->addRow(tr("LP FEC"), dtf0tl);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	dtf0tl->addItem(tr("empty"), -1);
-	for (int i = 0; i < 7; i++)
+	for (int i = 0; i < 8; i++)
 	{
-		string w = e2db::TER_LPFEC[i];
+		string w = e2db::TER_FEC[i];
 		dtf0tl->addItem(QString::fromStdString(w), i);
 	}
 
@@ -263,9 +263,9 @@ void editTunersetsTransponder::leadCableLayout()
 	dtf0->addRow(tr("Inner FEC"), dtf0ci);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	dtf0ci->addItem(tr("empty"), -1);
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 9; i++)
 	{
-		string w = i != 0 ? e2db::CAB_IFEC[i] : "Default";
+		string w = i != 0 ? e2db::CAB_FEC[i] : "Default";
 		dtf0ci->addItem(QString::fromStdString(w), i);
 	}
 

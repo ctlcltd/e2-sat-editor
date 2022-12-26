@@ -45,7 +45,7 @@ class e2db_parser : virtual public e2db_abstract
 		unordered_map<string, string> get_input();
 	protected:
 		void parse_lamedb_transponder_params(string str, transponder& tx);
-		void parse_lamedb_transponder_feparms(string str, char ttype, transponder& tx);
+		void parse_lamedb_transponder_feparms(string str, char ty, transponder& tx);
 		void parse_lamedb_service_params(string str, service& ch);
 		void parse_lamedb_service_data(string str, service& ch);
 		void append_lamedb_service_name(string str, service& ch);

@@ -59,12 +59,12 @@ class e2db_maker : virtual public e2db_abstract
 		bool write(string localdir, bool overwrite);
 		unordered_map<string, e2db_file> get_output();
 	protected:
-		e2db_file make_lamedb(string filename);
-		e2db_file make_lamedb4(string filename);
-		e2db_file make_lamedb5(string filename);
-		e2db_file make_bouquet(string bname);
-		e2db_file make_userbouquet(string bname);
-		e2db_file make_tunersets_xml(string filename, int ytype);
+		void make_lamedb(string filename, e2db_file& file);
+		void make_lamedb4(string filename, e2db_file& file);
+		void make_lamedb5(string filename, e2db_file& file);
+		void make_bouquet(string bname, e2db_file& file);
+		void make_userbouquet(string bname, e2db_file& file);
+		void make_tunersets_xml(string filename, int ytype, e2db_file& file);
 };
 }
 #endif /* e2db_maker_h */

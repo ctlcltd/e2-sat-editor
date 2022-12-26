@@ -26,8 +26,6 @@ using std::string, std::vector, std::unordered_set, std::unordered_map, std::ist
 #define ftpcom_h
 namespace e2se_ftpcom
 {
-using ftpcom_file = std::string;
-
 class ftpcom
 {
 	public:
@@ -48,6 +46,15 @@ class ftpcom
 			string ifreload;
 			string tnreload;
 		};
+
+		struct ftpcom_file
+		{
+			string filename;
+			string data;
+			string mime;
+			size_t size;
+		};
+
 		// ftpcom(e2se::logger::session log);
 		ftpcom();
 		virtual ~ftpcom();
@@ -60,8 +67,8 @@ class ftpcom
 		bool connect();
 		bool disconnect();
 		vector<string> list_dir(string base);
-		string download_data(string base, string filename);
-		void upload_data(string base, string filename, ftpcom_file os);
+		void download_data(string base, string filename, ftpcom_file& file);
+		void upload_data(string base, string filename, ftpcom_file file);
 		void fetch_paths();
 		unordered_map<string, ftpcom_file> get_files();
 		void put_files(unordered_map<string, ftpcom_file> files);
@@ -71,12 +78,12 @@ class ftpcom
 		struct sio
 		{
 			string data;
-			size_t sizel;
+			size_t size;
 		};
 		struct soi
 		{
 			const char* data;
-			size_t sizel;
+			size_t size;
 		};
 		struct tnvars
 		{

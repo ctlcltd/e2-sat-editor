@@ -215,7 +215,7 @@ void e2db::import_file(vector<string> paths)
 		e2db_file file;
 		string line;
 		while (std::getline(ifile, line))
-			file.append(line + '\n');
+			file.data.append(line + '\n');
 		import_file(fpi, dst, file, w);
 	}
 	if (merge)
@@ -232,7 +232,7 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 
 	string filename = std::filesystem::path(path).filename().u8string(); //C++17
 	stringstream ifile;
-	ifile.write(&file[0], file.size());
+	ifile.write(&file.data[0], file.size);
 
 	switch (fpi)
 	{
@@ -315,44 +315,44 @@ void e2db::export_file(FPORTS fpo, string path)
 	{
 		case FPORTS::all_services:
 			if (LAMEDB_VER == 4)
-				file = make_lamedb4("lamedb");
+				make_lamedb4("lamedb", file);
 			else if (LAMEDB_VER == 5)
-				file = make_lamedb5("lamedb5");
+				make_lamedb5("lamedb5", file);
 		break;
 		case FPORTS::all_services__2_2:
 		case FPORTS::all_services__2_3:
 			return error("export_file()", "Error", "Unsupported services file format.");
 		break;
 		case FPORTS::all_services__2_4:
-			file = make_lamedb4("lamedb");
+			make_lamedb4("lamedb", file);
 		break;
 		case FPORTS::all_services__2_5:
-			file = make_lamedb5("lamedb5");
+			make_lamedb5("lamedb5", file);
 		break;
 		case FPORTS::single_tunersets:
 		case FPORTS::all_tunersets:
 			if (filename == "satellites.xml")
-				file = make_tunersets_xml(filename, YTYPE::sat);
+				make_tunersets_xml(filename, YTYPE::sat, file);
 			else if (filename == "terrestrial.xml")
-				file = make_tunersets_xml(filename, YTYPE::terrestrial);
+				make_tunersets_xml(filename, YTYPE::terrestrial, file);
 			else if (filename == "cables.xml")
-				file = make_tunersets_xml(filename, YTYPE::cable);
+				make_tunersets_xml(filename, YTYPE::cable, file);
 			else if (filename == "atsc.xml")
-				file = make_tunersets_xml(filename, YTYPE::atsc);
+				make_tunersets_xml(filename, YTYPE::atsc, file);
 		break;
 		case FPORTS::single_bouquet:
 		case FPORTS::all_bouquets:
-			file = make_bouquet(filename);
+			make_bouquet(filename, file);
 		break;
 		case FPORTS::single_userbouquet:
 		case FPORTS::all_userbouquets:
-			file = make_userbouquet(filename);
+			make_userbouquet(filename, file);
 		break;
 		case FPORTS::single_bouquet_all:
 			if (filetype_detect(filename) == FPORTS::single_bouquet)
-				file = make_bouquet(filename);
+				make_bouquet(filename, file);
 			else
-				file = make_userbouquet(filename);
+				make_userbouquet(filename, file);
 		break;
 		default:
 			write(path, false);
@@ -360,7 +360,7 @@ void e2db::export_file(FPORTS fpo, string path)
 	}
 
 	ofstream out (path);
-	out << file;
+	out << file.data;
 	out.close();
 }
 
@@ -935,16 +935,8 @@ void e2db::add_tunersets_table(tunersets_table& tn, tunersets tv)
 	debug("add_tunersets_table()", "tnid", tn.tnid);
 
 	string iname = "tns:";
-	char type;
-	switch (tn.ytype)
-	{
-		case YTYPE::sat: type = 's'; break;
-		case YTYPE::terrestrial: type = 't'; break;
-		case YTYPE::cable: type = 'c'; break;
-		case YTYPE::atsc: type = 'a'; break;
-		default: return error("add_tunersets_table()", "Error", "Unknown tuner settings type.");
-	}
-	iname += type;
+	char yname = value_transponder_type(tn.ytype);
+	iname += yname;
 
 	tn.index = index.count(iname);
 	e2db_abstract::add_tunersets_table(tn.index, tn, tv);
@@ -956,19 +948,11 @@ void e2db::edit_tunersets_table(string tnid, tunersets_table& tn, tunersets tv)
 	debug("edit_tunersets_table()", "tnid", tnid);
 
 	string iname = "tns:";
-	char type;
-	switch (tn.ytype)
-	{
-		case YTYPE::sat: type = 's'; break;
-		case YTYPE::terrestrial: type = 't'; break;
-		case YTYPE::cable: type = 'c'; break;
-		case YTYPE::atsc: type = 'a'; break;
-		default: return error("edit_tunersets_table()", "Error", "Unknown tuner settings type.");
-	}
-	iname += type;
+	char yname = value_transponder_type(tn.ytype);
+	iname += yname;
 
 	char nw_tnid[25];
-	std::sprintf(nw_tnid, "%c:%04x", type, tn.index);
+	std::sprintf(nw_tnid, "%c:%04x", yname, tn.index);
 	tn.tnid = nw_tnid;
 
 	debug("edit_tunersets_table()", "new tnid", tn.tnid);
@@ -1006,16 +990,8 @@ void e2db::remove_tunersets_table(string tnid, tunersets tv)
 	tunersets_table tn = tv.tables[tnid];
 
 	string iname = "tns:";
-	char type;
-	switch (tn.ytype)
-	{
-		case YTYPE::sat: type = 's'; break;
-		case YTYPE::terrestrial: type = 't'; break;
-		case YTYPE::cable: type = 'c'; break;
-		case YTYPE::atsc: type = 'a'; break;
-		default: return error("remove_tunersets_table()", "Error", "Unknown tuner settings type.");
-	}
-	iname += type;
+	char yname = value_transponder_type(tn.ytype);
+	iname += yname;
 
 	for (auto it = index[iname].begin(); it != index[iname].end(); it++)
 	{
@@ -1042,18 +1018,10 @@ void e2db::edit_tunersets_transponder(string trid, tunersets_transponder& tntxp,
 {
 	debug("edit_tunersets_transponder()", "trid", trid);
 
-	char type;
-	switch (tn.ytype)
-	{
-		case YTYPE::sat: type = 's'; break;
-		case YTYPE::terrestrial: type = 't'; break;
-		case YTYPE::cable: type = 'c'; break;
-		case YTYPE::atsc: type = 'a'; break;
-		default: return error("edit_tunersets_transponder()", "Error", "Unknown tuner settings type.");
-	}
+	char yname = value_transponder_type(tn.ytype);
 
 	char nw_trid[25];
-	std::sprintf(nw_trid, "%c:%04x:%04x", type, tntxp.freq, tntxp.sr);
+	std::sprintf(nw_trid, "%c:%04x:%04x", yname, tntxp.freq, tntxp.sr);
 	tntxp.trid = nw_trid;
 
 	debug("edit_tunersets_transponder()", "new trid", tntxp.trid);
@@ -1088,7 +1056,6 @@ string e2db::get_filename()
 
 	return this->filename;
 }
-
 
 //TODO TEST
 void e2db::remove_tunersets_transponder(string trid, tunersets_table tn)

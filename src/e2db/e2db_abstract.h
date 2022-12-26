@@ -25,8 +25,6 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map;
 #define e2db_abstract_h
 namespace e2se_e2db
 {
-using e2db_file = std::string;
-
 struct e2db_abstract
 {
 	public:
@@ -35,6 +33,29 @@ struct e2db_abstract
 
 		inline static const float EDITOR_RELEASE = 0.1; 
 
+
+		inline static const string SAT_POL[4] = {"H", "V", "L", "R"};
+		inline static const string SAT_MOD[4] = {"Auto", "QPSK", "QAM16", "8PSK"};
+		inline static const string SAT_INV[3] = {"Auto", "On", "Off"};
+		inline static const string SAT_FEC[11] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "3/5", "4/5", "8/9", "9/10"};
+		inline static const string SAT_ROL[4] = {"Auto", "QPSK", "QAM16", "8PSK"};
+		inline static const string SAT_PIL[3] = {"Auto", "Off", "On"};
+		inline static const string SAT_SYS[2] = {"DVB-S", "DVB-S2"};
+
+		inline static const string TER_BAND[4] = {"Auto", "8Mhz", "7Mhz", "6Mhz"};
+		inline static const string TER_MOD[4] = {"Auto", "QPSK", "QAM16", "QAM64"};
+		inline static const string TER_FEC[8] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8"};
+		inline static const string TER_INV[3] = {"Auto", "On", "Off"};
+		inline static const string TER_GUARD[5] = {"Auto", "1/32", "1/16", "1/8", "1/4"};
+		inline static const string TER_HIER[5] = {"Auto", "0", "1", "2", "4"};
+		inline static const string TER_TRXMODE[3] = {"Auto", "2k", "8k"};
+		inline static const string TER_SYS[2] = {"DVB-T", "DVB-T2"};
+
+		inline static const string CAB_MOD[6] = {"Auto", "QAM16", "QAM32", "QAM64", "QAM128", "QAM256"};
+		inline static const string CAB_INV[3] = {"Auto", "On", "Off"};
+		inline static const string CAB_FEC[9] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "8/9", "9/10"};
+
+		// import / export enum
 		enum FPORTS {
 			fports_empty = 0x0000,
 			all_services = 0x1000,
@@ -51,33 +72,19 @@ struct e2db_abstract
 			single_tunersets = 0x0008
 		};
 
-		inline static const string SAT_POL[4] = {"H", "V", "L", "R"};
-		inline static const string SAT_FEC[11] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "3/5", "4/5", "8/9", "9/10"};
-		inline static const string SAT_INV[3] = {"Auto", "On", "Off"};
-		inline static const string SAT_SYS[2] = {"DVB-S", "DVB-S2"};
-		inline static const string SAT_MOD[4] = {"Auto", "QPSK", "QAM16", "8PSK"};
-		inline static const string SAT_ROL[4] = {"Auto", "QPSK", "QAM16", "8PSK"};
-		inline static const string SAT_PIL[3] = {"Auto", "Off", "On"};
-
-		inline static const string TER_BAND[4] = {"Auto", "8Mhz", "7Mhz", "6Mhz"};
-		inline static const string TER_HPFEC[7] = {"Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "?"};
-		inline static const string TER_LPFEC[7] = {"Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "?"};
-		inline static const string TER_MOD[4] = {"Auto", "QPSK", "QAM16", "QAM64"};
-		inline static const string TER_TRXMODE[3] = {"Auto", "2k", "8k"};
-		inline static const string TER_GUARD[5] = {"Auto", "1/32", "1/16", "1/8", "1/4"};
-		inline static const string TER_HIER[5] = {"Auto", "0", "1", "2", "4"};
-		inline static const string TER_INV[3] = {"Auto", "On", "Off"};
-
-		inline static const string CAB_INV[3] = {"Auto", "On", "Off"};
-		inline static const string CAB_MOD[6] = {"Auto", "QAM16", "QAM32", "QAM64", "QAM128", "QAM256"};
-		inline static const string CAB_IFEC[10] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "8/9", "?", "?"};
-
 		// tuner settings type
 		enum YTYPE {
 			sat,
 			terrestrial,
 			cable,
 			atsc
+		};
+
+		// tuner settings fec
+		enum YFEC {
+			inner_fec,
+			hp_fec,
+			lp_fec
 		};
 
 		// service type
@@ -193,6 +200,14 @@ struct e2db_abstract
 			cmax
 		};
 
+		struct e2db_file
+		{
+			string data;
+			string mime;
+			string filename;
+			size_t size;
+		};
+
 		struct service
 		{
 			string chid;
@@ -224,7 +239,7 @@ struct e2db_abstract
 			int dvbns;
 			int tsid;
 			int onid;
-			char ttype;
+			int ytype;
 			int freq;
 			int sr = -1;
 			int pol = -1; // DVB-S
@@ -374,17 +389,50 @@ struct e2db_abstract
 		static string value_reference_id(channel_reference chref);
 		static string value_reference_id(channel_reference chref, service ch);
 		static int value_service_type(string str);
+		static string value_service_type(int stype);
 		static vector<string> value_channel_cas(string str);
+		static int value_transponder_type(char ty);
+		static int value_transponder_type(string str);
+		static char value_transponder_type(int yx);
+		static char value_transponder_type(YTYPE ttype);
 		static string value_transponder_combo(transponder tx);
 		static string value_transponder_combo(tunersets_transponder tntxp, tunersets_table tn);
 		static int value_transponder_polarization(string str);
+		static string value_transponder_polarization(int pol);
 		static int value_transponder_position(string str);
-		static string value_transponder_position(int num);
 		static string value_transponder_position(transponder tx);
 		static string value_transponder_position(tunersets_table tn);
-		static int value_transponder_fec(string str, YTYPE ytype);
-		static int value_transponder_system(string str);
+		static string value_transponder_position(int num);
+		static int value_transponder_system(string str, int yx);
+		static int value_transponder_system(string str, YTYPE ytype);
 		static string value_transponder_system(transponder tx);
+		static string value_transponder_system(int sys, int yx);
+		static string value_transponder_system(int sys, YTYPE ytype);
+		static void value_transponder_fec(string str, int yx, vector<int>& fec);
+		static int value_transponder_fec(string str, int yx);
+		static int value_transponder_fec(string str, YTYPE ytype);
+		static string value_transponder_fec(int fec, int yx);
+		static string value_transponder_fec(int fec, YTYPE ytype);
+		static int value_transponder_modulation(string str, int yx);
+		static int value_transponder_modulation(string str, YTYPE ytype);
+		static string value_transponder_modulation(int mod, int yx);
+		static string value_transponder_modulation(int mod, YTYPE ytype);
+		static int value_transponder_inversion(string str, int yx);
+		static int value_transponder_inversion(string str, YTYPE ytype);
+		static string value_transponder_inversion(int inv, int yx);
+		static string value_transponder_inversion(int inv, YTYPE ytype);
+		static int value_transponder_rollof(string str);
+		static string value_transponder_rollof(int rol);
+		static int value_transponder_pilot(string str);
+		static string value_transponder_pilot(int pil);
+		static int value_transponder_bandwidth(string str);
+		static string value_transponder_bandwidth(int band);
+		static int value_transponder_guard(string str);
+		static string value_transponder_guard(int guard);
+		static int value_transponder_hier(string str);
+		static string value_transponder_hier(int hier);
+		static int value_transponder_tmx_mode(string str);
+		static string value_transponder_tmx_mode(int tmx);
 		string get_reference_id(string chid);
 		string get_reference_id(channel_reference chref);
 		string get_transponder_name_value(transponder tx);
