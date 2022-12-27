@@ -23,13 +23,13 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-editTunersetsTable::editTunersetsTable(dataHandler* data, int ty, e2se::logger::session* log)
+editTunersetsTable::editTunersetsTable(dataHandler* data, int yx, e2se::logger::session* log)
 {
 	this->log = new logger(log, "editTunersetsTable");
 	debug("editTunersetsTable()");
 
 	this->data = data;
-	this->state.ty = ty;
+	this->state.yx = yx;
 }
 
 void editTunersetsTable::display(QWidget* cwid)
@@ -51,9 +51,9 @@ void editTunersetsTable::layout()
 	QString dtitle = this->state.edit ? tr("Edit Position") : tr("Add Position");
 	dial->setWindowTitle(dtitle);
 
-	switch (this->state.ty)
+	switch (this->state.yx)
 	{
-		case e2db::YTYPE::sat:
+		case e2db::YTYPE::satellite:
 			tableSatLayout();
 		break;
 		case e2db::YTYPE::terrestrial:
@@ -234,7 +234,7 @@ void editTunersetsTable::store()
 	}
 	else
 	{
-		tns.ytype = this->state.ty;
+		tns.ytype = this->state.yx;
 	}
 
 	for (auto & item : fields)
@@ -249,7 +249,7 @@ void editTunersetsTable::store()
 		else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
 			val = (field->isChecked() ? '1' : '0');
 
-		if (this->state.ty == e2db::YTYPE::sat)
+		if (this->state.yx == e2db::YTYPE::satellite)
 		{
 			if (key == "name")
 				tns.name = val;
@@ -258,7 +258,7 @@ void editTunersetsTable::store()
 			else if (key == "pos")
 				tns.pos = val.empty() ? -1 : dbih->value_transponder_position(val);
 		}
-		else if (this->state.ty == e2db::YTYPE::terrestrial)
+		else if (this->state.yx == e2db::YTYPE::terrestrial)
 		{
 			if (key == "name")
 				tns.name = val;
@@ -267,7 +267,7 @@ void editTunersetsTable::store()
 			else if (key == "country")
 				tns.country = val;
 		}
-		else if (this->state.ty == e2db::YTYPE::cable)
+		else if (this->state.yx == e2db::YTYPE::cable)
 		{
 			if (key == "name")
 				tns.name = val;
@@ -278,7 +278,7 @@ void editTunersetsTable::store()
 			else if (key == "feed")
 				tns.feed = val.empty() ? -1 : std::stoi(val);
 		}
-		else if (this->state.ty == e2db::YTYPE::atsc)
+		else if (this->state.yx == e2db::YTYPE::atsc)
 		{
 			if (key == "name")
 				tns.name = val;
@@ -314,7 +314,7 @@ void editTunersetsTable::retrieve()
 		string key = item->property("field").toString().toStdString();
 		string val;
 
-		if (this->state.ty == e2db::YTYPE::sat)
+		if (this->state.yx == e2db::YTYPE::satellite)
 		{
 			if (key == "name")
 				val = tns.name;
@@ -323,7 +323,7 @@ void editTunersetsTable::retrieve()
 			else if (key == "pos")
 				val = dbih->value_transponder_position(tns.pos);
 		}
-		else if (this->state.ty == e2db::YTYPE::terrestrial)
+		else if (this->state.yx == e2db::YTYPE::terrestrial)
 		{
 			if (key == "name")
 				val = tns.name;
@@ -332,7 +332,7 @@ void editTunersetsTable::retrieve()
 			else if (key == "country")
 				val = tns.country;
 		}
-		else if (this->state.ty == e2db::YTYPE::cable)
+		else if (this->state.yx == e2db::YTYPE::cable)
 		{
 			if (key == "name")
 				val = tns.name;
@@ -343,7 +343,7 @@ void editTunersetsTable::retrieve()
 			else if (key == "feed")
 				val = tns.feed != -1 ? to_string(tns.feed) : "";
 		}
-		else if (this->state.ty == e2db::YTYPE::atsc)
+		else if (this->state.yx == e2db::YTYPE::atsc)
 		{
 			if (key == "name")
 				val = tns.name;

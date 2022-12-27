@@ -22,13 +22,13 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-editTunersets::editTunersets(dataHandler* data, int ty, e2se::logger::session* log)
+editTunersets::editTunersets(dataHandler* data, int yx, e2se::logger::session* log)
 {
 	this->log = new logger(log, "editTunersets");
 	debug("editTunersets()");
 
 	this->data = data;
-	this->state.ty = ty;
+	this->state.yx = yx;
 }
 
 void editTunersets::display(QWidget* cwid)
@@ -91,7 +91,7 @@ void editTunersets::store()
 	}
 	else
 	{
-		tvs.ytype = this->state.ty;
+		tvs.ytype = this->state.yx;
 	}
 
 	//TODO
@@ -131,7 +131,7 @@ void editTunersets::retrieve()
 	string iname = "tns:";
 	switch (tvs.ytype)
 	{
-		case e2db::YTYPE::sat:
+		case e2db::YTYPE::satellite:
 			iname += 's';
 		break;
 		case e2db::YTYPE::terrestrial:

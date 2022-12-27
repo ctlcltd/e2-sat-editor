@@ -23,8 +23,15 @@ bool ListEventHandler::eventFilter(QObject* o, QEvent* e)
 	{
 		QDropEvent* evt = static_cast<QDropEvent*>(e);
 
-		if (! this->dnd)
+		if (this->dnd)
+		{
+			QTreeWidget* list = qobject_cast<QTreeWidget*>(o->parent());
+			callEventCallback(list);
+		}
+		else
+		{
 			evt->setDropAction(Qt::DropAction::IgnoreAction);
+		}
 
 		return QObject::eventFilter(o, evt);
 	}

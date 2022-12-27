@@ -21,8 +21,12 @@ class ftpHandler : protected e2se::log_factory
 {
 	public:
 		ftpHandler(e2se::logger::session* log);
+		~ftpHandler();
+		void openConnection();
+		void closeConnection();
+		bool handleConnection();
 
-		ftpcom* ftph = nullptr;
+		ftpcom* ftih = nullptr;
 };
 }
 #endif /* ftpHandler_h */

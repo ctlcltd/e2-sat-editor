@@ -58,7 +58,7 @@ void e2db_parser::parse_e2db()
 		if (e2db.count("satellites.xml"))
 		{
 			ifstream itunxml (e2db["satellites.xml"]);
-			parse_tunersets_xml(YTYPE::sat, itunxml);
+			parse_tunersets_xml(YTYPE::satellite, itunxml);
 			itunxml.close();
 		}
 		if (e2db.count("terrestrial.xml"))
@@ -133,7 +133,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 		{
 			stringstream itunxml;
 			itunxml.write(&files[e2db["satellites.xml"]].data[0], files[e2db["satellites.xml"]].size);
-			parse_tunersets_xml(YTYPE::sat, itunxml);
+			parse_tunersets_xml(YTYPE::satellite, itunxml);
 		}
 		if (e2db.count("terrestrial.xml"))
 		{
@@ -362,7 +362,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string str, char ty, transpon
 		case 's':
 			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%4d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil, oflgs);
 
-			tx.ytype = YTYPE::sat;
+			tx.ytype = YTYPE::satellite;
 			tx.freq = int (freq / 1e3);
 			tx.sr = int (sr / 1e3);
 			tx.pol = pol;
@@ -657,7 +657,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 
 	switch (ytype)
 	{
-		case YTYPE::sat:
+		case YTYPE::satellite:
 		case YTYPE::terrestrial:
 		case YTYPE::cable:
 		case YTYPE::atsc:
@@ -678,7 +678,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 	unordered_map<string, int> depth;
 	switch (ytype)
 	{
-		case YTYPE::sat:
+		case YTYPE::satellite:
 			type = 's';
 			depth["satellites"] = 0;
 			depth["sat"] = 1;
@@ -863,7 +863,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 
 			switch (ytype)
 			{
-				case YTYPE::sat:
+				case YTYPE::satellite:
 					if (key == "name")
 						tn.name = val;
 					else if (key == "flags")

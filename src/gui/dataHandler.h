@@ -29,11 +29,17 @@ class dataHandler : protected e2se::log_factory
 		void newFile();
 		bool readFile(string filename);
 		bool writeFile(string path, bool overwrite);
+		void setChanged(bool changed);
+		bool hasChanged();
+		void setNewfile(bool newfile);
+		bool isNewfile();
+		string getFilename();
 
 		e2db* dbih = nullptr;
+	protected:
 		string filename;
 		bool newfile = false;
-		bool overwrite = false;
+		bool changed = false;
 };
 }
 #endif /* dataHandler_h */

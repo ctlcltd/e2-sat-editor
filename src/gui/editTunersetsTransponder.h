@@ -26,7 +26,7 @@ class editTunersetsTransponder : public dialAbstract
 	Q_DECLARE_TR_FUNCTIONS(editTunersetsTransponder)
 
 	public:
-		editTunersetsTransponder(dataHandler* data, int ty, e2se::logger::session* log);
+		editTunersetsTransponder(dataHandler* data, int yx, e2se::logger::session* log);
 		void display(QWidget* cwid);
 		void layout();
 		void leadSatLayout();
@@ -44,12 +44,12 @@ class editTunersetsTransponder : public dialAbstract
 		void setAddId(string tnid, int tvid);
 		string getAddId();
 
-		struct sts
+		struct __state
 		{
-			// editable
+			// edit { edit: true, add: false }
 			bool edit = false;
-			// tools tunersets current type
-			int ty;
+			// tunersets tvid type
+			int yx;
 		} state;
 	private:
 		int tvid;

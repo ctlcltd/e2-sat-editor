@@ -40,7 +40,7 @@ class dialChannelBook : public dialAbstract
 			this->eventCallback = func;
 		}
 
-		struct ats
+		struct __action
 		{
 			QAction* add;
 		} action;

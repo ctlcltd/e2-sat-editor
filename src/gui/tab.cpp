@@ -199,6 +199,7 @@ void tab::viewMain()
 	debug("viewMain()");
 
 	this->data = new dataHandler(this->log->log);
+	this->ftph = new ftpHandler(this->log->log);
 	this->tools = new e2se_gui::tools(this, this->gid, this->cwid, this->data, this->log->log);
 	this->main = new mainView(this, this->cwid, this->data, this->log->log);
 	this->view = this->main;
@@ -222,6 +223,7 @@ void tab::viewTunersets(tab* parent, int ytype)
 	this->child = true;
 
 	this->data = parent->data;
+	this->ftph = parent->ftph;
 	this->tools = parent->tools;
 	this->main = parent->main;
 	this->view = new tunersetsView(this, this->cwid, this->data, ytype, this->log->log);
@@ -246,6 +248,7 @@ void tab::viewChannelBook(tab* parent)
 	this->child = true;
 
 	this->data = parent->data;
+	this->ftph = parent->ftph;
 	this->tools = parent->tools;
 	this->main = parent->main;
 	this->view = new channelBookView(this, this->cwid, this->data, this->log->log);
@@ -265,9 +268,12 @@ void tab::load()
 
 	view->load();
 
-	//TODO FIX tab::removeChild
+	//TODO FIX EXC_BAD_ACCESS
 	for (auto & child : childs)
-		child->view->load();
+	{
+		if (child != nullptr)
+			child->view->load();
+	}
 }
 
 void tab::reset()
@@ -276,9 +282,12 @@ void tab::reset()
 
 	view->reset();
 
-	//TODO FIX tab::removeChild
+	//TODO FIX EXC_BAD_ACCESS
 	for (auto & child : childs)
-		child->view->reset();
+	{
+		if (child != nullptr)
+			child->view->reset();
+	}
 }
 
 void tab::layout()
@@ -401,17 +410,17 @@ bool tab::readFile(string filename)
 	reset();
 
 	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	bool rr = this->data->readFile(filename);
+	bool readen = this->data->readFile(filename);
 	QGuiApplication::restoreOverrideCursor();
 
-	if (rr)
+	if (readen)
 	{
 		tabChangeName(filename);
 	}
 	else
 	{
 		tabChangeName();
-		QMessageBox::critical(cwid, NULL, "Error opening files.");
+		QMessageBox::critical(cwid, "File Error", "Error opening files.");
 		return false;
 	}
 
@@ -426,45 +435,54 @@ bool tab::readFile(string filename)
 	return true;
 }
 
+//TODO TEST
 void tab::saveFile(bool saveas)
 {
 	debug("saveFile()", "saveas", saveas);
 
-	//TODO improve ui remove QMessageBox
-	QMessageBox msg = QMessageBox();
 	string path;
-	bool overwrite = ! saveas && (! this->data->newfile || this->data->overwrite);
+	bool changed = this->data->hasChanged();
+	bool newfile = ! saveas && (! this->data->isNewfile() || this->data->hasChanged());
+	string filename = path = this->data->getFilename();
 
-	if (overwrite)
+	if (changed)
 	{
 		this->updateChannelsIndex();
 		this->updateBouquetsIndex();
-		path = this->data->filename;
-		msg.setText("Files will be overwritten.");
+	}
+	if (! saveas && changed)
+	{
+		QMessageBox msg = QMessageBox(cwid);
+		msg.setText("The file has been modified.");
+		msg.setInformativeText("Do you want to save your changes?\n");
+		msg.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
+		msg.setDefaultButton(QMessageBox::Save);
+		if (msg.exec() != QMessageBox::Save)
+			return;
+	}
+	if (newfile)
+	{
+		path = gid->saveFileDialog(filename);
+	}
+
+	if (path.empty())
+		return;
+
+	debug("saveFile()", "filename", path);
+
+	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	bool written = this->data->writeFile(path, changed);
+	QGuiApplication::restoreOverrideCursor();
+
+	if (written) {
+		//TODO improve ui remove QMessageBox
+		QMessageBox msg = QMessageBox(cwid);
+		msg.setText("Saved!");
 		msg.exec();
 	}
 	else
 	{
-		path = gid->saveFileDialog(this->data->filename);
-	}
-
-	if (! path.empty())
-	{
-		debug("saveFile()", "overwrite", overwrite);
-		debug("saveFile()", "filename", this->data->filename);
-
-		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		bool wr = this->data->writeFile(path, overwrite);
-		QGuiApplication::restoreOverrideCursor();
-
-		if (wr) {
-			msg.setText("Saved!");
-			msg.exec();
-		}
-		else
-		{
-			QMessageBox::critical(cwid, NULL, "Error writing files.");
-		}
+		QMessageBox::critical(cwid, "File Error", "Error writing files.");
 	}
 }
 
@@ -478,6 +496,7 @@ void tab::importFile()
 	vector<string> paths;
 
 	paths = gid->importFileDialog(gde);
+
 	if (paths.empty())
 		return;
 
@@ -506,7 +525,7 @@ void tab::exportFile()
 		flags = e2db::FPORTS::single_tunersets;
 		switch (this->ty)
 		{
-			case e2db::YTYPE::sat:
+			case e2db::YTYPE::satellite:
 				filename = "satellites.xml";
 			break;
 			case e2db::YTYPE::terrestrial:
@@ -571,12 +590,11 @@ void tab::exportFile()
 			flags = e2db::FPORTS::single_userbouquet;
 		}
 	}
-	if (paths.empty())
-	{
-		return;
-	}
 
-	bool overwrite = ! this->data->newfile || this->data->overwrite;
+	if (paths.empty())
+		return;
+
+	bool overwrite = ! this->data->isNewfile() || this->data->hasChanged();
 
 	if (overwrite)
 	{
@@ -603,11 +621,12 @@ void tab::exportFile()
 			w = basedir + w;
 	}
 
-	//TODO improve ui remove QMessageBox
-	QMessageBox msg = QMessageBox();
 	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	dbih->exportFile(flags, paths);
 	QGuiApplication::restoreOverrideCursor();
+
+	//TODO improve ui remove QMessageBox
+	QMessageBox msg = QMessageBox(cwid);
 	msg.setText("Saved!");
 	msg.exec();
 }
@@ -662,12 +681,11 @@ void tab::exportFile(QTreeWidgetItem* item)
 			bit = e2db::FPORTS::single_userbouquet;
 		}
 	}
-	if (paths.empty())
-	{
-		return;
-	}
 
-	bool overwrite = ! this->data->newfile || this->data->overwrite;
+	if (paths.empty())
+		return;
+
+	bool overwrite = ! this->data->isNewfile() || this->data->hasChanged();
 
 	if (overwrite)
 	{
@@ -680,11 +698,12 @@ void tab::exportFile(QTreeWidgetItem* item)
 	if (path.empty())
 		return;
 
-	//TODO improve ui remove QMessageBox
-	QMessageBox msg = QMessageBox();
 	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	dbih->exportFile(bit, paths);
 	QGuiApplication::restoreOverrideCursor();
+
+	//TODO improve ui remove QMessageBox
+	QMessageBox msg = QMessageBox(cwid);
 	msg.setText("Saved!");
 	msg.exec();
 }
@@ -708,7 +727,7 @@ void tab::printFile(bool all)
 	// services
 	else if (main->state.tc == 0)
 	{
-		int ti = main->services_tree->indexOfTopLevelItem(main->services_tree->currentItem());
+		int ti = main->side->indexOfTopLevelItem(main->side->currentItem());
 		int stype;
 		switch (ti)
 		{
@@ -794,7 +813,7 @@ void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 		{
 			switch (this->ty)
 			{
-				case e2db::YTYPE::sat:
+				case e2db::YTYPE::satellite:
 					filename = "satellites";
 				break;
 				case e2db::YTYPE::terrestrial:
@@ -813,7 +832,7 @@ void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 		// services
 		else if (main->state.tc == 0)
 		{
-			int ti = main->services_tree->indexOfTopLevelItem(main->services_tree->currentItem());
+			int ti = main->side->indexOfTopLevelItem(main->side->currentItem());
 			int stype;
 			switch (ti)
 			{
@@ -961,7 +980,7 @@ void tab::actionCall(int action)
 			gid->openTab(gui::TAB_VIEW::channelBook);
 		break;
 		case gui::TAB_ATS::EditTunersetsSat:
-			gid->openTab(gui::TAB_VIEW::tunersets, e2db::YTYPE::sat);
+			gid->openTab(gui::TAB_VIEW::tunersets, e2db::YTYPE::satellite);
 		break;
 		case gui::TAB_ATS::EditTunersetsTerrestrial:
 			gid->openTab(gui::TAB_VIEW::tunersets, e2db::YTYPE::terrestrial);
@@ -1038,126 +1057,112 @@ void tab::profileComboChanged(int index)
 	gid->sets->setValue("profile/selected", index);
 }
 
-bool tab::ftpHandle()
-{
-	debug("ftpHandle()");
-
-	if (ftph == nullptr)
-		ftph = new ftpcom(this->log->log);
-
-	if (ftph->connect())
-		return true;
-	else
-		QMessageBox::critical(nullptr, NULL, "Cannot connect to FTP Server!");
-
-	return false;
-}
-
 void tab::ftpConnect()
 {
 	debug("ftpConnect()");
 
-	if (ftph != nullptr)
-	{
-		ftph->disconnect();
-		delete ftph;
-		ftph = nullptr;
-	}
-	if (ftpHandle())
-		QMessageBox::information(nullptr, NULL, "Successfully connected!");
+	//TODO improve ui remove QMessageBox
+	if (this->ftph->handleConnection())
+		QMessageBox::information(cwid, "FTP Connected", "Successfully connected!");
+	else
+		QMessageBox::critical(cwid, "FTP Error", "Cannot connect to FTP Server!");
 }
 
 void tab::ftpUpload()
 {
 	debug("ftpUpload()");
 
+	if (! this->ftph->handleConnection())
+		QMessageBox::critical(cwid, "FTP Error", "Cannot connect to FTP Server!");
+
+	auto* ftih = this->ftph->ftih;
 	auto* dbih = this->data->dbih;
 
-	if (ftpHandle())
+	unordered_map<string, e2db::e2db_file> files = dbih->get_output();
+
+	if (files.empty())
+		return;
+
+	unordered_map<string, e2se_ftpcom::ftpcom::ftpcom_file> ftp_files;
+
+	int profile_sel = gid->sets->value("profile/selected").toInt();
+	gid->sets->beginReadArray("profile");
+	gid->sets->setArrayIndex(profile_sel);
+	for (auto & x : files)
 	{
-		unordered_map<string, e2db::e2db_file> files = dbih->get_output();
+		string filename = x.first;
+		string base;
+		string path;
 
-		if (files.empty())
-			return;
-
-		unordered_map<string, e2se_ftpcom::ftpcom::ftpcom_file> ftp_files;
-
-		int profile_sel = gid->sets->value("profile/selected").toInt();
-		gid->sets->beginReadArray("profile");
-		gid->sets->setArrayIndex(profile_sel);
-		for (auto & x : files)
+		if (filename.find(".tv") != string::npos || filename.find(".radio") != string::npos)
 		{
-			string filename = x.first;
-			string base;
-			string path;
-
-			if (filename.find(".tv") != string::npos || filename.find(".radio") != string::npos)
-			{
-				base = gid->sets->value("pathBouquets").toString().toStdString();
-			}
-			else if (filename == "satellites.xml" || filename == "terrestrial.xml" || filename == "cables.xml" || filename == "atsc.xml")
-			{
-				base = gid->sets->value("pathTransponders").toString().toStdString();
-			}
-			//TODO upload services, other data ... (eg. picons)
-			else
-			{
-				base = gid->sets->value("pathServices").toString().toStdString();
-			}
-			path = base + '/' + filename;
-			
-			e2se_ftpcom::ftpcom::ftpcom_file file;
-			file.filename = x.second.filename;
-			file.data = x.second.data;
-			file.mime = x.second.mime;
-			file.size = x.second.size;
-			ftp_files.emplace(path, file);
-
-			debug("ftpUpload()", "file", base + '/' + file.filename + " | " + to_string(file.size));
+			base = gid->sets->value("pathBouquets").toString().toStdString();
 		}
-		gid->sets->endArray();
-		files.clear();
+		else if (filename == "satellites.xml" || filename == "terrestrial.xml" || filename == "cables.xml" || filename == "atsc.xml")
+		{
+			base = gid->sets->value("pathTransponders").toString().toStdString();
+		}
+		//TODO upload services, other data ... (eg. picons)
+		else
+		{
+			base = gid->sets->value("pathServices").toString().toStdString();
+		}
+		path = base + '/' + filename;
+		
+		e2se_ftpcom::ftpcom::ftpcom_file file;
+		file.filename = x.second.filename;
+		file.data = x.second.data;
+		file.mime = x.second.mime;
+		file.size = x.second.size;
+		ftp_files.emplace(path, file);
 
-		ftph->put_files(ftp_files);
-		QMessageBox::information(nullptr, NULL, "Uploaded");
-
-		if (ftph->cmd_ifreload() || ftph->cmd_tnreload())
-			QMessageBox::information(nullptr, NULL, "STB reloaded");
+		debug("ftpUpload()", "file", base + '/' + file.filename + " | " + to_string(file.size));
 	}
+	gid->sets->endArray();
+	files.clear();
+
+	ftih->put_files(ftp_files);
+	//TODO improve ui remove QMessageBox
+	QMessageBox::information(nullptr, NULL, "Uploaded");
+
+	//TODO improve ui remove QMessageBox
+	if (ftih->cmd_ifreload() || ftih->cmd_tnreload())
+		QMessageBox::information(nullptr, NULL, "STB reloaded");
 }
 
 void tab::ftpDownload()
 {
 	debug("ftpDownload()");
 
+	if (! this->ftph->handleConnection())
+		QMessageBox::critical(cwid, "FTP Error", "Cannot connect to FTP Server!");
+
+	auto* ftih = this->ftph->ftih;
 	auto* dbih = this->data->dbih;
 
-	if (ftpHandle())
+	unordered_map<string, e2se_ftpcom::ftpcom::ftpcom_file> ftp_files = ftih->get_files();
+
+	if (ftp_files.empty())
+		return;
+
+	unordered_map<string, e2db::e2db_file> files;
+
+	for (auto & x : ftp_files)
 	{
-		unordered_map<string, e2se_ftpcom::ftpcom::ftpcom_file> ftp_files = ftph->get_files();
+		e2db::e2db_file file;
+		file.filename = x.second.filename;
+		file.data = x.second.data;
+		file.mime = x.second.mime;
+		file.size = x.second.size;
 
-		if (ftp_files.empty())
-			return;
-
-		unordered_map<string, e2db::e2db_file> files;
-
-		for (auto & x : ftp_files)
-		{
-			e2db::e2db_file file;
-			file.filename = x.second.filename;
-			file.data = x.second.data;
-			file.mime = x.second.mime;
-			file.size = x.second.size;
-
-			debug("ftpDownload()", "file", x.first + " | " + to_string(x.second.size));
-		}
-
-		this->updateChannelsIndex();
-		this->updateBouquetsIndex();
-		dbih->merge(files);
-		view->reset();
-		view->load();
+		debug("ftpDownload()", "file", x.first + " | " + to_string(x.second.size));
 	}
+
+	this->updateChannelsIndex();
+	this->updateBouquetsIndex();
+	dbih->merge(files);
+	view->reset();
+	view->load();
 }
 
 void tab::updateBouquetsIndex()
@@ -1208,20 +1213,19 @@ void tab::updateBouquetsIndex()
 	}
 }
 
-//TODO FIX wrong visual index after update
 void tab::updateChannelsIndex()
 {
-	if (! main->state.changed)
+	if (! this->chx_pending)
 		return;
 
 	auto* dbih = this->data->dbih;
 
 	int i = 0, idx = 0;
 	int count = main->list->topLevelItemCount();
-	string curr_chlist = main->state.curr;
-	dbih->index[curr_chlist].clear();
+	string bname = main->state.curr;
+	dbih->index[bname].clear();
 
-	debug("updateChannelsIndex()", "curr_chlist", curr_chlist);
+	debug("updateChannelsIndex()", "current", bname);
 
 	int sort_col = main->list->sortColumn();
 	main->list->sortItems(0, Qt::AscendingOrder);
@@ -1232,14 +1236,28 @@ void tab::updateChannelsIndex()
 		string chid = item->data(mainView::ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 		bool marker = item->data(mainView::ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
 		idx = marker ? 0 : i + 1;
-		dbih->index[curr_chlist].emplace_back(pair (idx, chid)); //C++17
+		dbih->index[bname].emplace_back(pair (idx, chid)); //C++17
 		i++;
 	}
 
 	main->list->sortItems(main->state.sort.first, main->state.sort.second);
 	main->list->header()->setSortIndicator(sort_col, main->state.sort.second);
 
-	main->state.changed = false;
+	this->chx_pending = false;
+}
+
+void tab::setPendingUpdateChannelsIndex()
+{
+	debug("setPendingUpdateChannelsIndex()");
+
+	this->chx_pending = true;
+}
+
+void tab::unsetPendingUpdateChannelsIndex()
+{
+	debug("unsetPendingUpdateChannelsIndex()");
+
+	this->chx_pending = false;
 }
 
 void tab::loadSeeds()

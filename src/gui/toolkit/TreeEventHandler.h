@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/gui/toolkit/BouquetsEventHandler.h
+ * e2-sat-editor/src/gui/toolkit/TreeEventHandler.h
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -11,8 +11,8 @@
 
 #include <functional>
 
-#ifndef BouquetsEventHandler_h
-#define BouquetsEventHandler_h
+#ifndef TreeEventHandler_h
+#define TreeEventHandler_h
 #include <QObject>
 #include <QEvent>
 #include <QTreeWidget>
@@ -21,24 +21,24 @@ namespace e2se_gui
 {
 //TODO optional switch to current "drop" bouquets tree item in settings
 //TODO FIX persistent glitches with event reject, force a repaint on bouquets tree or his viewport
-class BouquetsEventHandler : public QObject
+class TreeEventHandler : public QObject
 {
 	public:
-		void setEventCallback(std::function<void(QTreeWidget* tree)> func)
+		void setEventCallback(std::function<void(QTreeWidget* tw)> func)
 		{
 			this->eventCallback = func;
 		}
 	protected:
 		bool eventFilter(QObject* o, QEvent* e);
-		void dropFromBouquets(QTreeWidgetItem* current, QTreeWidget* tree0);
-		void dropFromList(QTreeWidgetItem* current, QTreeWidget* tree0, QTreeWidget* tree1);
-		void callEventCallback(QTreeWidget* tree)
+		void dropFromTree(QTreeWidgetItem* current, QTreeWidget* tree);
+		void dropFromList(QTreeWidgetItem* current, QTreeWidget* tree, QTreeWidget* list);
+		void callEventCallback(QTreeWidget* tw)
 		{
 			if (this->eventCallback != nullptr)
-				this->eventCallback(tree);
+				this->eventCallback(tw);
 		}
 	private:
-		std::function<void(QTreeWidget* tree)> eventCallback;
+		std::function<void(QTreeWidget* tw)> eventCallback;
 };
 }
-#endif /* BouquetsEventHandler_h */
+#endif /* TreeEventHandler_h */

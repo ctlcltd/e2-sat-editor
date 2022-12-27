@@ -42,11 +42,11 @@ class editService : public dialAbstract
 		string getEditId();
 		string getAddId();
 
-		struct sts
+		struct __state
 		{
-			// editable
+			// edit { edit: true, add: false }
 			bool edit = false;
-			// service data C (CAS) raw string
+			// service data C (CAID) raw string
 			string raw_C;
 			// service data raw string
 			string raw_data;

@@ -207,6 +207,7 @@ class gui : protected e2se::log_factory
 			transponders
 		};
 
+		//TODO rename
 		struct STATUS
 		{
 			TAB_VIEW view;

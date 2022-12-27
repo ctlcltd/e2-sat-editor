@@ -86,21 +86,19 @@ class tunersetsView : public viewAbstract
 			a_sys = ITEM_ROW_ROLE::row5
 		};
 
-		struct sts
+		struct __state
 		{
-			// post update index
-			bool changed;
-			// tree current top level index
-			int ti;
-			// tree current bname
+			// toggle tree events
+			bool evt;
+			// tunersets tvid type
+			int yx;
+			// current tnid
 			string curr;
-			// list_tree sort
+			// list sort (default sort 0|asc)
 			pair<int, Qt::SortOrder> sort;
-			// tools tunersets current type
-			int ty;
 		} state;
 
-		struct ats
+		struct __action
 		{
 			QAction* list_newtr;
 			QPushButton* tree_search;
@@ -131,13 +129,8 @@ class tunersetsView : public viewAbstract
 		void showListEditContextMenu(QPoint &pos);
 		void updateFlags();
 		void updateStatus(bool current = false);
-
-		QVBoxLayout* tbox;
-		QVBoxLayout* lbox;
 	private:
 		QWidget* cwid;
-		// tunersets type
-		int yx;
 };
 }
 #endif /* tunersetsView_h */

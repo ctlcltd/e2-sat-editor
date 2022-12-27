@@ -138,11 +138,12 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 
 	auto* dbih = this->data->dbih;
 
-	//TODO improve ui remove QMessageBox
-	QMessageBox msg = QMessageBox();
 	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	dbih->export_csv_file(fco, opts, path);
 	QGuiApplication::restoreOverrideCursor();
+
+	//TODO improve ui remove QMessageBox
+	QMessageBox msg = QMessageBox(cwid);
 	msg.setText("Saved!");
 	msg.exec();
 }
@@ -158,11 +159,12 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 
 	auto* dbih = this->data->dbih;
 
-	//TODO improve ui remove QMessageBox
-	QMessageBox msg = QMessageBox();
 	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	dbih->export_html_file(fco, opts, path);
 	QGuiApplication::restoreOverrideCursor();
+
+	//TODO improve ui remove QMessageBox
+	QMessageBox msg = QMessageBox(cwid);
 	msg.setText("Saved!");
 	msg.exec();
 }

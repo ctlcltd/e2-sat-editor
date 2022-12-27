@@ -36,11 +36,11 @@ class editBouquet : public dialAbstract
 		string getEditId();
 		string getAddId();
 
-		struct sts
+		struct __state
 		{
-			// editable
+			// edit { edit: true, add: false }
 			bool edit = false;
-			// bouquets_tree top level index
+			// tree top level index
 			int ti;
 		} state;
 	private:

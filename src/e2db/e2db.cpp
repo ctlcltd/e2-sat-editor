@@ -183,9 +183,9 @@ void e2db::merge(e2db_abstract* dst)
 		index[iname].emplace_back(pair (i.first, ch.chid)); //C++17
 	}
 
-	if (this->tuners.count(YTYPE::sat))
+	if (this->tuners.count(YTYPE::satellite))
 	{
-		for (auto & x : tuners[YTYPE::sat].tables)
+		for (auto & x : tuners[YTYPE::satellite].tables)
 			this->tuners_pos.emplace(x.second.pos, x.second.tnid);
 	}
 
@@ -252,7 +252,7 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 		case FPORTS::single_tunersets:
 		case FPORTS::all_tunersets:
 			if (filename == "satellites.xml")
-				dst->parse_tunersets_xml(YTYPE::sat, ifile);
+				dst->parse_tunersets_xml(YTYPE::satellite, ifile);
 			else if (filename == "terrestrial.xml")
 				dst->parse_tunersets_xml(YTYPE::terrestrial, ifile);
 			else if (filename == "cables.xml")
@@ -332,7 +332,7 @@ void e2db::export_file(FPORTS fpo, string path)
 		case FPORTS::single_tunersets:
 		case FPORTS::all_tunersets:
 			if (filename == "satellites.xml")
-				make_tunersets_xml(filename, YTYPE::sat, file);
+				make_tunersets_xml(filename, YTYPE::satellite, file);
 			else if (filename == "terrestrial.xml")
 				make_tunersets_xml(filename, YTYPE::terrestrial, file);
 			else if (filename == "cables.xml")
@@ -971,7 +971,7 @@ void e2db::edit_tunersets_table(string tnid, tunersets_table& tn, tunersets tv)
 			if (it->second == tnid)
 				it->second = tn.tnid;
 		}
-		if (tn.ytype == YTYPE::sat)
+		if (tn.ytype == YTYPE::satellite)
 		{
 			tuners_pos.erase(tn.pos);
 			tuners_pos.emplace(tn.pos, tn.tnid);
@@ -998,7 +998,7 @@ void e2db::remove_tunersets_table(string tnid, tunersets tv)
 		if (it->second == tnid)
 			index[iname].erase(it);
 	}
-	if (tn.ytype == YTYPE::sat)
+	if (tn.ytype == YTYPE::satellite)
 	{
 		tuners_pos.erase(tn.pos);
 	}

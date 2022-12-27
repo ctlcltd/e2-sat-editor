@@ -9,16 +9,23 @@
  * @license GNU GPLv3 License
  */
 
+#include <functional>
+
 #ifndef ListEventHandler_h
 #define ListEventHandler_h
 #include <QObject>
 #include <QEvent>
+#include <functional>
 
 namespace e2se_gui
 {
 class ListEventHandler : public QObject
 {
 	public:
+		void setEventCallback(std::function<void(QTreeWidget* tw)> func)
+		{
+			this->eventCallback = func;
+		}
 		void disallowInternalMove()
 		{
 			this->dnd = false;
@@ -29,7 +36,13 @@ class ListEventHandler : public QObject
 		}
 	protected:
 		bool eventFilter(QObject* o, QEvent* e);
+		void callEventCallback(QTreeWidget* tw)
+		{
+			if (this->eventCallback != nullptr)
+				this->eventCallback(tw);
+		}
 	private:
+		std::function<void(QTreeWidget* tw)> eventCallback;
 		bool dnd = true;
 };
 }

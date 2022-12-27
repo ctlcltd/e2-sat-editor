@@ -41,9 +41,8 @@ class dialAbstract : protected e2se::log_factory
 		void destroy();
 		QWidget* widget;
 
-		struct ats
+		struct __action
 		{
-			// QAction* add;
 			QAction* save;
 		} action;
 	protected:

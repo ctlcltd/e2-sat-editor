@@ -31,6 +31,7 @@ using std::string, std::pair, std::vector;
 #include "../logger/logger.h"
 #include "gui.h"
 #include "dataHandler.h"
+#include "ftpHandler.h"
 #include "tools.h"
 
 namespace e2se_gui
@@ -47,7 +48,7 @@ class viewAbstract : protected e2se::log_factory
 			all
 		};
 
-		struct ats
+		struct __action
 		{
 			QAction* list_newtr;
 			QPushButton* tree_search;
@@ -127,14 +128,20 @@ class viewAbstract : protected e2se::log_factory
 		void tabUpdateFlags(gui::GUI_CXE bit);
 		virtual void tabSetStatus(gui::STATUS status);
 		virtual void tabResetStatus();
+		void tabNewFile();
+		void tabOpenFile();
+		bool tabReadFile(string filename = "");
+		void tabSaveFile(bool saveas);
+		void tabImportFile();
+		void tabExportFile();
+		void tabPrintFile(bool all);
 
 		QSettings* sets;
 		tab* tid;
 		dataHandler* data = nullptr;
+		ftpHandler* ftph = nullptr;
 		e2se_gui::tools* tools;
 		e2db* dbih = nullptr;
-		QVBoxLayout* tbox;
-		QVBoxLayout* lbox;
 		QWidget* tree_search;
 		QWidget* list_search;
 		search tsr_search;

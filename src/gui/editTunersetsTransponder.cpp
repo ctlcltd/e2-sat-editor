@@ -22,13 +22,13 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-editTunersetsTransponder::editTunersetsTransponder(dataHandler* data, int ty, e2se::logger::session* log)
+editTunersetsTransponder::editTunersetsTransponder(dataHandler* data, int yx, e2se::logger::session* log)
 {
 	this->log = new logger(log, "editTunersetsTransponder");
 	debug("editTunersetsTransponder()");
 
 	this->data = data;
-	this->state.ty = ty;
+	this->state.yx = yx;
 }
 
 void editTunersetsTransponder::display(QWidget* cwid)
@@ -50,9 +50,9 @@ void editTunersetsTransponder::layout()
 	QString dtitle = this->state.edit ? tr("Edit Transponder") : tr("Add Transponder");
 	dial->setWindowTitle(dtitle);
 
-	switch (this->state.ty)
+	switch (this->state.yx)
 	{
-		case e2db::YTYPE::sat:
+		case e2db::YTYPE::satellite:
 			leadSatLayout();
 			sideSatLayout();
 			thirdSatLayout();
@@ -553,7 +553,7 @@ void editTunersetsTransponder::store()
 		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
 			val = field->currentData().toInt();
 
-		if (this->state.ty == e2db::YTYPE::sat)
+		if (this->state.yx == e2db::YTYPE::satellite)
 		{
 			if (key == "s_freq")
 				txp.freq = val;
@@ -584,7 +584,7 @@ void editTunersetsTransponder::store()
 			else if (key == "s_plsn")
 				txp.plsn = val;
 		}
-		else if (this->state.ty == e2db::YTYPE::terrestrial)
+		else if (this->state.yx == e2db::YTYPE::terrestrial)
 		{
 			if (key == "t_freq")
 				txp.freq = val;
@@ -609,7 +609,7 @@ void editTunersetsTransponder::store()
 			else if (key == "t_hier")
 				txp.hier = val;
 		}
-		else if (this->state.ty == e2db::YTYPE::cable)
+		else if (this->state.yx == e2db::YTYPE::cable)
 		{
 			if (key == "c_freq")
 				txp.freq = val;
@@ -624,7 +624,7 @@ void editTunersetsTransponder::store()
 			else if (key == "c_cmod")
 				txp.cmod = val;
 		}
-		else if (this->state.ty == e2db::YTYPE::atsc)
+		else if (this->state.yx == e2db::YTYPE::atsc)
 		{
 			if (key == "a_freq")
 				txp.freq = val;
@@ -668,7 +668,7 @@ void editTunersetsTransponder::retrieve()
 		string key = item->property("field").toString().toStdString();
 		int val;
 
-		if (this->state.ty == e2db::YTYPE::sat)
+		if (this->state.yx == e2db::YTYPE::satellite)
 		{
 			if (key == "s_freq")
 				val = txp.freq;
@@ -699,7 +699,7 @@ void editTunersetsTransponder::retrieve()
 			else if (key == "s_plsn")
 				val = txp.plsn;
 		}
-		else if (this->state.ty == e2db::YTYPE::terrestrial)
+		else if (this->state.yx == e2db::YTYPE::terrestrial)
 		{
 			if (key == "t_freq")
 				val = txp.freq;
@@ -724,7 +724,7 @@ void editTunersetsTransponder::retrieve()
 			else if (key == "t_hier")
 				val = txp.hier;
 		}
-		else if (this->state.ty == e2db::YTYPE::cable)
+		else if (this->state.yx == e2db::YTYPE::cable)
 		{
 			if (key == "c_freq")
 				val = txp.freq;
@@ -739,7 +739,7 @@ void editTunersetsTransponder::retrieve()
 			else if (key == "c_cmod")
 				val = txp.cmod;
 		}
-		else if (this->state.ty == e2db::YTYPE::atsc)
+		else if (this->state.yx == e2db::YTYPE::atsc)
 		{
 			if (key == "a_freq")
 				val = txp.freq;

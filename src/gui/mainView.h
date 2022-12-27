@@ -22,7 +22,7 @@ using std::map, std::unordered_map;
 #include <QHeaderView>
 #include <QList>
 
-#include "toolkit/BouquetsEventHandler.h"
+#include "toolkit/TreeEventHandler.h"
 #include "toolkit/ListEventHandler.h"
 #include "toolkit/ListEventObserver.h"
 #include "viewAbstract.h"
@@ -66,27 +66,27 @@ class mainView : public viewAbstract
 			Tuner
 		};
 
-		struct sts
+		struct __state
 		{
-			// drag-and-drop (default sort 0|asc)
+			// tree events toggle
+			bool evt;
+			// list drag-and-drop toggle
 			bool dnd;
-			// post update index
-			bool changed;
-			// post visual reindex list_tree
-			bool reindex;
-			// refbox shown
+			// list visual refresh pending
+			bool vlx_pending;
+			// reference box shown
 			bool refbox;
-			// side tree focused { services_tree = 0, bouquets_tree = 1 }
+			// current tree { side = 0, tree = 1 }
 			int tc;
 			// tree current top level index
 			int ti;
-			// tree current bname
+			// current bname
 			string curr;
-			// list_tree sort
+			// list sort (default sort 0|asc)
 			pair<int, Qt::SortOrder> sort;
 		} state;
 
-		struct ats
+		struct __action
 		{
 			QAction* bouquets_newbs;
 			QAction* list_addch;
@@ -108,7 +108,7 @@ class mainView : public viewAbstract
 		void listItemPaste();
 		void listItemDelete();
 
-		QTreeWidget* services_tree;
+		QTreeWidget* side;
 	protected:
 		void layout();
 		void searchLayout();
@@ -139,15 +139,17 @@ class mainView : public viewAbstract
 		void updateFlags();
 		void updateStatus(bool current = false);
 		void updateReferenceBox();
+		void tabUpdateBouquetsIndex();
+		void tabUpdateChannelsIndex();
+		void tabSetPendingUpdateChannelsIndex();
+		void tabUnsetPendingUpdateChannelsIndex();
 
 		map<int, QLabel*> ref_fields;
 		unordered_map<string, QList<QTreeWidgetItem*>> cache;
 		QWidget* list_wrap;
-		BouquetsEventHandler* bouquets_evth;
+		TreeEventHandler* tree_evth;
 		ListEventHandler* list_evth;
 		ListEventObserver* list_evto;
-		QVBoxLayout* tbox;
-		QVBoxLayout* lbox;
 		QWidget* list_reference;
 		string filename;
 	private:

@@ -26,7 +26,7 @@ class editTunersetsTable : public dialAbstract
 	Q_DECLARE_TR_FUNCTIONS(editTunersetsTable)
 
 	public:
-		editTunersetsTable(dataHandler* data, int ty, e2se::logger::session* log);
+		editTunersetsTable(dataHandler* data, int yx, e2se::logger::session* log);
 		void display(QWidget* cwid);
 		void layout();
 		void tableSatLayout();
@@ -40,12 +40,12 @@ class editTunersetsTable : public dialAbstract
 		void setAddId(int tvid);
 		string getAddId();
 
-		struct sts
+		struct __state
 		{
-			// editable
+			// edit { edit: true, add: false }
 			bool edit = false;
-			// tools tunersets current type
-			int ty;
+			// tunersets tvid type
+			int yx;
 		} state;
 	private:
 		int tvid;

@@ -29,11 +29,6 @@ struct e2db_abstract
 {
 	public:
 
-		//TODO FIX defined const
-
-		inline static const float EDITOR_RELEASE = 0.1; 
-
-
 		inline static const string SAT_POL[4] = {"H", "V", "L", "R"};
 		inline static const string SAT_MOD[4] = {"Auto", "QPSK", "QAM16", "8PSK"};
 		inline static const string SAT_INV[3] = {"Auto", "On", "Off"};
@@ -74,7 +69,7 @@ struct e2db_abstract
 
 		// tuner settings type
 		enum YTYPE {
-			sat,
+			satellite,
 			terrestrial,
 			cable,
 			atsc
@@ -381,7 +376,7 @@ struct e2db_abstract
 		unordered_map<string, vector<pair<string, int>>> collisions;
 
 		virtual ~e2db_abstract() = default;
-		static string editor_string(bool html = false);
+		static string editor_string(int html = 0);
 		static string editor_timestamp();
 		static FPORTS filetype_detect(string path);
 		static void value_channel_reference(string str, channel_reference& chref, service_reference& ref);

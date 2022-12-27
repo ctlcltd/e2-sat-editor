@@ -222,11 +222,10 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 				push_html_userbouquets(files);
 		break;
 		case FCONVS::convert_tunersets:
-			return;
-			/*if (opts.fc == FCONVS::convert_current)
+			if (opts.fc == FCONVS::convert_current)
 				push_html_tunersets(files, opts.ytype);
 			else
-				push_html_tunersets(files);*/
+				push_html_tunersets(files);
 		break;
 		default:
 			return;
@@ -264,6 +263,7 @@ void e2db_converter::pull_csv_services(istream& ifile, e2db_abstract* dst)
 		convert_csv_channel_list(sxv, dst, DOC_VIEW::view_services);
 }
 
+//TODO FIX
 void e2db_converter::pull_csv_bouquets(istream& ifile, e2db_abstract* dst)
 {
 	debug("pull_csv_bouquets()");
@@ -274,6 +274,7 @@ void e2db_converter::pull_csv_bouquets(istream& ifile, e2db_abstract* dst)
 	convert_csv_bouquet_list(sxv, dst);
 }
 
+//TODO FIX
 void e2db_converter::pull_csv_userbouquets(istream& ifile, e2db_abstract* dst)
 {
 	debug("pull_csv_userbouquets()");
@@ -287,6 +288,7 @@ void e2db_converter::pull_csv_userbouquets(istream& ifile, e2db_abstract* dst)
 		convert_csv_channel_list(sxv, dst, DOC_VIEW::view_userbouquets);
 }
 
+//TODO FIX
 void e2db_converter::pull_csv_tunersets(istream& ifile, e2db_abstract* dst)
 {
 	debug("pull_csv_tunersets()");
@@ -427,7 +429,7 @@ void e2db_converter::push_csv_tunersets(vector<e2db_file>& files, int ytype)
 	string filename;
 	switch (ytype)
 	{
-		case YTYPE::sat:
+		case YTYPE::satellite:
 			filename = "satellites";
 		break;
 		case YTYPE::terrestrial:
@@ -459,7 +461,7 @@ void e2db_converter::push_html_all(vector<e2db_file>& files)
 	push_html_services(files);
 	push_html_bouquets(files);
 	push_html_userbouquets(files);
-	/*push_html_tunersets(files);*/
+	push_html_tunersets(files);
 }
 
 void e2db_converter::push_html_index(vector<e2db_file>& files)
@@ -626,11 +628,11 @@ void e2db_converter::push_html_tunersets(vector<e2db_file>& files, int ytype)
 	string fname;
 	switch (ytype)
 	{
-		case YTYPE::sat:
+		case YTYPE::satellite:
 			fname = "satellites";
 		break;
 		case YTYPE::terrestrial:
-			fname = "";
+			fname = "terrestrial";
 		break;
 		case YTYPE::cable:
 			fname = "cables";
@@ -777,6 +779,7 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 			// provider
 			else if (i == 10)
 				ch.data[SDATA::p] = {val};
+			//TODO FIX
 			// sys
 			else if (i == 11)
 				tx.sys = value_transponder_system(val, tx.ytype);
@@ -836,7 +839,7 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 				ch.data.erase(SDATA::C);
 
 			// fec condensed
-			if (tx.ytype == YTYPE::sat)
+			if (tx.ytype == YTYPE::satellite)
 			{
 				tx.fec = fec[YFEC::inner_fec];
 			}
@@ -1015,6 +1018,7 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 			// srcid
 			else if (i == 11)
 				ch.srcid = std::atoi(val.data());
+			//TODO FIX
 			// sys
 			else if (i == 12)
 				tx.sys = value_transponder_system(val, tx.ytype);
@@ -1292,7 +1296,6 @@ void e2db_converter::convert_csv_bouquet_list(vector<vector<string>> sxv, e2db_a
 	}
 }
 
-//TODO
 void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db_abstract* dst)
 {
 	debug("convert_csv_tunersets_list()");
@@ -1309,7 +1312,7 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 		{
 			switch (sxv[x].size())
 			{
-				case 12: ytype = YTYPE::sat; break;
+				case 12: ytype = YTYPE::satellite; break;
 				case 13: ytype = YTYPE::terrestrial; break;
 				case 9: ytype = YTYPE::cable; break;
 				case 6: ytype = YTYPE::atsc; break;
@@ -1317,7 +1320,7 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 			tv.ytype = ytype;
 		}
 		// csv header
-		if (x == 0 && sxv[0][0] == "Name")
+		if (x == 0 && sxv[0][0] == "Index")
 		{
 			continue;
 		}
@@ -1325,23 +1328,26 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 		tunersets_table tn;
 		tunersets_transponder tntxp;
 
+		// tn index
+		tn.index = x;
+
 		for (unsigned int i = 0; i < sxv[x].size(); i++)
 		{
 			// debug("convert_csv_tunersets_list()", to_string(x), sxv[x][i]);
 
 			string& val = sxv[x][i];
 
-			// name
+			// tntxp index
 			if (i == 0)
-				tn.name = val;
-			// pos
-			else if (i == 1)
-				tn.pos = ytype == YTYPE::sat ? std::atoi(val.data()) : -1;
-			// idx
-			else if (i == 2)
 				tntxp.index = std::atoi(val.data());
+			// tn name
+			else if (i == 1)
+				tn.name = val;
+			// tn pos
+			else if (i == 2)
+				tn.pos = ytype == YTYPE::satellite ? std::atoi(val.data()) : -1;
 
-			if (ytype == YTYPE::sat)
+			if (ytype == YTYPE::satellite)
 			{
 				// freq
 				if (i == 3)
@@ -1354,22 +1360,22 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 					tntxp.sr = std::atoi(val.data());
 				// fec
 				else if (i == 6)
-					tntxp.fec = -1; //TODO
+					tntxp.fec = value_transponder_fec(val, YTYPE::satellite);
 				// sys
 				else if (i == 7)
-					tntxp.sys = value_transponder_system(val, ytype);
+					tntxp.sys = value_transponder_system(val, YTYPE::satellite);
 				// mod
 				else if (i == 8)
-					tntxp.mod = -1; //TODO
+					tntxp.mod = value_transponder_modulation(val, YTYPE::satellite);
 				// inv
 				else if (i == 9)
-					tntxp.inv = -1; //TODO
-				// pil
-				else if (i == 10)
-					tntxp.pil = -1; //TODO
+					tntxp.inv = value_transponder_inversion(val, YTYPE::satellite);
 				// rol
+				else if (i == 10)
+					tntxp.rol = value_transponder_rollof(val);
+				// pil
 				else if (i == 11)
-					tntxp.rol = -1; //TODO
+					tntxp.pil = value_transponder_pilot(val);
 			}
 			else if (ytype == YTYPE::terrestrial)
 			{
@@ -1378,31 +1384,31 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 					tntxp.freq = std::atoi(val.data());
 				// tmod
 				else if (i == 4)
-					tntxp.tmod = -1; //TODO
+					tntxp.tmod = value_transponder_modulation(val, YTYPE::terrestrial);
 				// band
 				else if (i == 5)
 					tntxp.band = std::atoi(val.data());
 				// sys
 				else if (i == 6)
-					tntxp.sys = 0;
+					tntxp.sys = value_transponder_system(val, YTYPE::terrestrial);
 				// tmx
 				else if (i == 7)
-					tntxp.tmx = -1; //TODO
+					tntxp.tmx = value_transponder_tmx_mode(val);
 				// hpfec
 				else if (i == 8)
-					tntxp.hpfec = -1; //TODO
+					tntxp.hpfec = value_transponder_fec(val, YTYPE::terrestrial);
 				// lpfe
 				else if (i == 9)
-					tntxp.lpfec = -1; //TODO
+					tntxp.lpfec = value_transponder_fec(val, YTYPE::terrestrial);
 				// inv
 				else if (i == 10)
-					tntxp.inv = -1; //TODO
+					tntxp.inv = value_transponder_inversion(val, YTYPE::terrestrial);
 				// guard
 				else if (i == 11)
-					tntxp.guard = -1; //TODO
+					tntxp.guard = value_transponder_guard(val);
 				// hier
 				else if (i == 11)
-					tntxp.hier = -1; //TODO
+					tntxp.hier = value_transponder_hier(val);
 			}
 			else if (ytype == YTYPE::cable)
 			{
@@ -1411,19 +1417,19 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 					tntxp.freq = std::atoi(val.data());
 				// mod
 				else if (i == 4)
-					tntxp.mod = -1; //TODO
+					tntxp.cmod = value_transponder_modulation(val, YTYPE::cable);
 				// sr
 				else if (i == 5)
 					tntxp.sr = std::atoi(val.data());
 				// fec
 				else if (i == 6)
-					tntxp.fec = -1; //TODO
+					tntxp.cfec = value_transponder_fec(val, YTYPE::cable);
 				// inv
 				else if (i == 7)
-					tntxp.inv = -1; //TODO
+					tntxp.inv = value_transponder_inversion(val, YTYPE::cable);
 				// sys
 				else if (i == 8)
-					tntxp.sys = -1;
+					tntxp.sys = value_transponder_system(val, YTYPE::cable);
 			}
 			else if (ytype == YTYPE::atsc)
 			{
@@ -1432,13 +1438,51 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 					tntxp.freq = std::atoi(val.data());
 				// mod
 				else if (i == 4)
-					tntxp.mod = -1; //TODO
+					tntxp.amod = value_transponder_modulation(val, YTYPE::atsc);
 				// sys
 				else if (i == 5)
-					tntxp.sys = -1;
+					tntxp.sys = value_transponder_system(val, YTYPE::atsc);
 			}
 		}
+
+		string iname = "tns:";
+		char yname = value_transponder_type(tn.ytype);
+		iname += yname;
+
+		char tnid[25];
+		std::sprintf(tnid, "%c:%04x", yname, tn.index);
+		tn.tnid = tnid;
+
+		char trid[25];
+		std::sprintf(trid, "%c:%04x:%04x", yname, tntxp.freq, tntxp.sr);
+		tntxp.trid = trid;
+
+		if (dst->tuners.count(tv.ytype))
+		{
+			tv = dst->tuners[tv.ytype];
+		}
+		else
+		{
+			dst->tuners.emplace(tv.ytype, tv);
+		}
+		if (tv.tables.count(tn.tnid))
+		{
+			tn = tv.tables[tn.tnid];
+		}
+		else
+		{
+			tv.tables.emplace(tn.tnid, tn);
+			if (tn.ytype == YTYPE::satellite)
+				tuners_pos.emplace(tn.pos, tn.tnid);
+			dst->index[iname].emplace_back(pair (tn.index, tn.tnid)); //C++17
+		}
+		if (! tn.transponders.count(tntxp.trid))
+		{
+			tn.transponders.emplace(tntxp.trid, tntxp);
+			dst->index[tn.tnid].emplace_back(pair (tntxp.index, tntxp.trid)); //C++17
+		}
 	}
+	dst->tuners[tv.ytype] = tv;
 }
 
 void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
@@ -1448,6 +1492,13 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 	else
 		error("csv_channel_list()", "bname", bname);
 	debug("csv_channel_list()", "view", view);
+
+	string ub_name;
+	if (userbouquets.count(bname))
+	{
+		userbouquet ub = userbouquets[bname];
+		ub_name = ub.name;
+	}
 
 	stringstream ss;
 
@@ -1461,15 +1512,21 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 		ss << CSV_ESCAPE << "Network ID" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "DVB Namespace" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Service Type" << CSV_ESCAPE << CSV_SEPARATOR;
-		ss << CSV_ESCAPE << "Ch Number" << CSV_ESCAPE << CSV_SEPARATOR;
-		ss << CSV_ESCAPE << "Ch CAS" << CSV_ESCAPE << CSV_SEPARATOR; // Extended
+		ss << CSV_ESCAPE << "Service Number" << CSV_ESCAPE << CSV_SEPARATOR;
+		ss << CSV_ESCAPE << "Service CAS" << CSV_ESCAPE << CSV_SEPARATOR; //TODO Extended
 		ss << CSV_ESCAPE << "Provider" << CSV_ESCAPE << CSV_SEPARATOR;
-		ss << CSV_ESCAPE << "System" << CSV_ESCAPE;
+		ss << CSV_ESCAPE << "System" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Position" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Frequency" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Polarization" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Symbol Rate" << CSV_ESCAPE << CSV_SEPARATOR;
-		ss << CSV_ESCAPE << "FEC" << CSV_ESCAPE << CSV_SEPARATOR;
+		ss << CSV_ESCAPE << "FEC" << CSV_ESCAPE;
+		if (view == DOC_VIEW::view_userbouquets)
+		{
+			ss << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Userbouquet" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Userbouquet Name" << CSV_ESCAPE;
+		}
 		ss << CSV_DELIMITER;
 	}
 
@@ -1531,6 +1588,7 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 						scas.append(", ");
 				}
 			}
+			//TODO value
 			string pname = ch.data.count(SDATA::p) ? ch.data[SDATA::p][0] : "";
 			string sys = value_transponder_system(tx);
 			string pos = value_transponder_position(tx);
@@ -1540,7 +1598,7 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			string fec;
 			switch (tx.ytype)
 			{
-				case YTYPE::sat:
+				case YTYPE::satellite:
 					fec = SAT_FEC[tx.fec];
 				break;
 				case YTYPE::terrestrial:
@@ -1571,6 +1629,12 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			ss << pol << CSV_SEPARATOR;
 			ss << sr << CSV_SEPARATOR;
 			ss << fec;
+			if (view == DOC_VIEW::view_userbouquets)
+			{
+				ss << CSV_SEPARATOR;
+				ss << CSV_ESCAPE << bname << CSV_ESCAPE << CSV_SEPARATOR;
+				ss << CSV_ESCAPE << ub_name << CSV_ESCAPE;
+			}
 			ss << CSV_DELIMITER;
 		}
 		else
@@ -1604,6 +1668,12 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << "";
+			if (view == DOC_VIEW::view_userbouquets)
+			{
+				ss << CSV_SEPARATOR;
+				ss << CSV_SEPARATOR;
+				ss << "";
+			}
 			ss << CSV_DELIMITER;
 		}
 	}
@@ -1619,6 +1689,13 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 		error("csv_channel_list_extended()", "bname", bname);
 	debug("csv_channel_list_extended()", "view", view);
 
+	string ub_name;
+	if (userbouquets.count(bname))
+	{
+		userbouquet ub = userbouquets[bname];
+		ub_name = ub.name;
+	}
+
 	stringstream ss;
 
 	if (CSV_HEADER)
@@ -1631,11 +1708,11 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 		ss << CSV_ESCAPE << "Network ID" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "DVB Namespace" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Service Type" << CSV_ESCAPE << CSV_SEPARATOR;
-		ss << CSV_ESCAPE << "Ch Number" << CSV_ESCAPE << CSV_SEPARATOR;
-		ss << CSV_ESCAPE << "Ch CAS" << CSV_ESCAPE << CSV_SEPARATOR; // Extended
+		ss << CSV_ESCAPE << "Service Number" << CSV_ESCAPE << CSV_SEPARATOR;
+		ss << CSV_ESCAPE << "Service CAS" << CSV_ESCAPE << CSV_SEPARATOR; //TODO Extended
 		ss << CSV_ESCAPE << "Provider" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Src ID" << CSV_ESCAPE << CSV_SEPARATOR;
-		ss << CSV_ESCAPE << "System" << CSV_ESCAPE;
+		ss << CSV_ESCAPE << "System" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Txp Type" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Position" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Frequency" << CSV_ESCAPE << CSV_SEPARATOR;
@@ -1655,7 +1732,13 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 		ss << CSV_ESCAPE << "SAT Flags" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Txp Index" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Txp Flags" << CSV_ESCAPE << CSV_SEPARATOR;
-		ss << CSV_ESCAPE << "Service Cached" << CSV_ESCAPE << CSV_SEPARATOR;
+		ss << CSV_ESCAPE << "Service Cached" << CSV_ESCAPE;
+		if (view == DOC_VIEW::view_userbouquets)
+		{
+			ss << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Userbouquet" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Userbouquet Name" << CSV_ESCAPE;
+		}
 		ss << CSV_DELIMITER;
 	}
 
@@ -1717,6 +1800,7 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 						scas.append(", ");
 				}
 			}
+			//TODO value
 			string pname = ch.data.count(SDATA::p) ? ch.data[SDATA::p][0] : "";
 			int srcid = ch.srcid;
 			string sys = value_transponder_system(tx);
@@ -1727,7 +1811,7 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			string pol, ifec, mod, rol, pil, hpfec, lpfec, band, txm, guard, hier, inv;
 			switch (tx.ytype)
 			{
-				case YTYPE::sat:
+				case YTYPE::satellite:
 					pol = SAT_POL[tx.pol];
 					ifec = SAT_FEC[tx.fec];
 					mod = SAT_MOD[tx.mod];
@@ -1758,7 +1842,16 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			int flgs = tx.flgs;
 			int txid = tx.index;
 			string txflgs = tx.oflgs;
-			string cached = "";
+			string cached;
+			if (ch.data.count(SDATA::c))
+			{
+				for (unsigned int i = 0; i < ch.data[SDATA::c].size(); i++)
+				{
+					cached.append(ch.data[SDATA::c][i]);
+					if (i != ch.data[SDATA::c].size() - 1)
+						cached.append(",");
+				}
+			}
 
 			ss << idx << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << chname << CSV_ESCAPE << CSV_SEPARATOR;
@@ -1793,6 +1886,12 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			ss << txid << CSV_SEPARATOR;
 			ss << txflgs << CSV_SEPARATOR;
 			ss << cached;
+			if (view == DOC_VIEW::view_userbouquets)
+			{
+				ss << CSV_SEPARATOR;
+				ss << CSV_ESCAPE << bname << CSV_ESCAPE << CSV_SEPARATOR;
+				ss << CSV_ESCAPE << ub_name << CSV_ESCAPE;
+			}
 			ss << CSV_DELIMITER;
 		}
 		else
@@ -1843,6 +1942,12 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << "";
+			if (view == DOC_VIEW::view_userbouquets)
+			{
+				ss << CSV_SEPARATOR;
+				ss << CSV_SEPARATOR;
+				ss << "";
+			}
 			ss << CSV_DELIMITER;
 		}
 	}
@@ -1895,72 +2000,71 @@ void e2db_converter::csv_bouquet_list(string& csv, string bname)
 void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 {
 	debug("csv_tunersets_list()", "ytype", ytype);
-	
-	stringstream ss;
 
 	tunersets tv = tuners[ytype];
 	string iname = "tns:";
 	char yname = value_transponder_type(ytype);
 	iname += yname;
-	
+
+	stringstream ss;
+
+	if (CSV_HEADER)
+	{
+		ss << CSV_ESCAPE << "Index" << CSV_ESCAPE << CSV_SEPARATOR;
+		ss << CSV_ESCAPE << "Name" << CSV_ESCAPE << CSV_SEPARATOR;
+		ss << CSV_ESCAPE << "Position" << CSV_ESCAPE << CSV_SEPARATOR;
+		if (ytype == YTYPE::satellite)
+		{
+			ss << CSV_ESCAPE << "Frequency" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Polarization" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Symbol Rate" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "FEC" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "System" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Modulation" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Inversion" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Pilot" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Roll Offset" << CSV_ESCAPE;
+		}
+		else if (ytype == YTYPE::terrestrial)
+		{
+			ss << CSV_ESCAPE << "Frequency" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Constellation" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Bandwidth" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "System" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Tmx Mode" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "HP FEC" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "LP FEC" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Inversion" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Guard Interval" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Hierarchy" << CSV_ESCAPE;
+		}
+		else if (ytype == YTYPE::cable)
+		{
+			ss << CSV_ESCAPE << "Frequency" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Modulation" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Symbol Rate" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "FEC" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Inversion" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "System" << CSV_ESCAPE;
+		}
+		else if (ytype == YTYPE::atsc)
+		{
+			ss << CSV_ESCAPE << "Frequency" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Modulation" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "System" << CSV_ESCAPE;
+		}
+		ss << CSV_DELIMITER;
+	}
+
 	for (auto & x : index[iname])
 	{
 		string tnid = x.second;
 		tunersets_table tn = tv.tables[tnid];
 		string tnname = tn.name;
-		string ppos;
-		if (ytype == YTYPE::sat)
+		string pos;
+		if (ytype == YTYPE::satellite)
 		{
-			ppos = value_transponder_position(tn);
-		}
-		string pos = ppos;
-
-		if (CSV_HEADER)
-		{
-			ss << CSV_ESCAPE << "Name" << CSV_ESCAPE << CSV_SEPARATOR;
-			ss << CSV_ESCAPE << "Position" << CSV_ESCAPE << CSV_SEPARATOR;
-			ss << CSV_ESCAPE << "Index" << CSV_ESCAPE << CSV_SEPARATOR;
-			if (ytype == YTYPE::sat)
-			{
-				ss << CSV_ESCAPE << "Frequency" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "Polarization" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "Symbol Rate" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "FEC" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "System" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "Modulation" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "Inversion" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "Pilot" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "Roll Offset" << CSV_ESCAPE;
-			}
-			else if (ytype == YTYPE::terrestrial)
-			{
-				ss << CSV_ESCAPE << "Frequency" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "Constellation" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "Bandwidth" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "System" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "Tmx Mode" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "HP FEC" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "LP FEC" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "Inversion" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "Guard Interval" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "Hierarcht" << CSV_ESCAPE;
-			}
-			else if (ytype == YTYPE::cable)
-			{
-				ss << CSV_ESCAPE << "Frequency" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "Modulation" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "Symbol Rate" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "FEC" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "Inversion" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "System" << CSV_ESCAPE;
-			}
-			else if (ytype == YTYPE::atsc)
-			{
-				ss << CSV_ESCAPE << "Frequency" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "Modulation" << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << "System" << CSV_ESCAPE;
-			}
-			ss << CSV_DELIMITER;
+			pos = value_transponder_position(tn);
 		}
 
 		int i = 1;
@@ -1972,15 +2076,15 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 			ss << i++ << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << tnname << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << pos << CSV_SEPARATOR;
-			if (ytype == YTYPE::sat)
+			if (ytype == YTYPE::satellite)
 			{
 				int freq = tntxp.freq;
 				string pol = value_transponder_polarization(tntxp.pol);
 				int sr = tntxp.sr;
-				string fec = value_transponder_fec(tntxp.fec, YTYPE::sat);
-				string sys = value_transponder_system(tntxp.sys, YTYPE::sat);
-				string mod = value_transponder_modulation(tntxp.tmod, YTYPE::sat);
-				string inv = value_transponder_inversion(tntxp.inv, YTYPE::sat);
+				string fec = value_transponder_fec(tntxp.fec, YTYPE::satellite);
+				string sys = value_transponder_system(tntxp.sys, YTYPE::satellite);
+				string mod = value_transponder_modulation(tntxp.tmod, YTYPE::satellite);
+				string inv = value_transponder_inversion(tntxp.inv, YTYPE::satellite);
 				string rol = value_transponder_rollof(tntxp.rol);
 				string pil = value_transponder_pilot(tntxp.pil);
 
@@ -1999,7 +2103,7 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 				int freq = tntxp.freq;
 				string tmod = value_transponder_modulation(tntxp.tmod, YTYPE::terrestrial);
 				string band = value_transponder_bandwidth(tntxp.band);
-				string sys = "DVB-T";
+				string sys = value_transponder_system(tntxp.sys, YTYPE::terrestrial);
 				string tmx = value_transponder_tmx_mode(tntxp.tmx);
 				string hpfec = value_transponder_fec(tntxp.hpfec, YTYPE::terrestrial);
 				string lpfec = value_transponder_fec(tntxp.lpfec, YTYPE::terrestrial);
@@ -2025,7 +2129,7 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 				int sr = tntxp.sr;
 				string cfec = value_transponder_fec(tntxp.cfec, YTYPE::cable);
 				string inv = value_transponder_inversion(tntxp.inv, YTYPE::cable);
-				string sys = "DVB-C";
+				string sys = value_transponder_system(tntxp.sys, YTYPE::cable);
 
 				ss << freq << CSV_SEPARATOR;
 				ss << cmod << CSV_SEPARATOR;
@@ -2038,7 +2142,7 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 			{
 				int freq = tntxp.freq;
 				int amod = tntxp.amod;
-				string sys = "ATSC";
+				string sys = value_transponder_system(tntxp.sys, YTYPE::atsc);
 
 				ss << freq << CSV_SEPARATOR;
 				ss << amod << CSV_SEPARATOR;
@@ -2348,7 +2452,6 @@ void e2db_converter::page_body_bouquet_list(html_page& page, string bname)
 	page.body += "</div>\n";
 }
 
-//TODO FIX BAD_ALLOC
 //TODO improve list
 void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 {
@@ -2366,23 +2469,22 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 		string tnid = x.second;
 		tunersets_table tn = tv.tables[tnid];
 		string tnname = tn.name;
-		string ppos;
-		if (ytype == YTYPE::sat)
+		string pos;
+		if (ytype == YTYPE::satellite)
 		{
-			ppos = value_transponder_position(tn);
+			pos = value_transponder_position(tn);
 		}
-		string pos = ppos;
 
 		page.body += "<div class=\"transponder\">\n";
 		page.body += "<h4>Transponders</h4>\n";
 		page.body += "<h2>" + tnname + "</h2>\n";
-		if (ytype == YTYPE::sat)
+		if (ytype == YTYPE::satellite)
 			page.body += "<p>Position: <b>" + pos + "</b></p>\n";
 		page.body += "<table>\n";
 		page.body += "<thead>\n";
 		page.body += "<tr>\n";
 		page.body += "<th>Index</th>\n";
-		if (ytype == YTYPE::sat)
+		if (ytype == YTYPE::satellite)
 		{
 			page.body += "<th>Freq</th>\n";
 			page.body += "<th>Pol</th>\n";
@@ -2433,17 +2535,17 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 
 			page.body += "<tr>";
 			page.body += "<td class=\"trid\">" + to_string(i++) + "</td>";
-			if (ytype == YTYPE::sat)
+			if (ytype == YTYPE::satellite)
 			{
 				string freq = to_string(tntxp.freq);
-				string pol = SAT_POL[tntxp.pol];
+				string pol = value_transponder_polarization(tntxp.pol);
 				string sr = to_string(tntxp.sr);
-				string fec = SAT_FEC[tntxp.fec];
-				string sys = SAT_SYS[tntxp.sys];
-				string mod = SAT_MOD[tntxp.mod];
-				string inv = SAT_INV[tntxp.inv];
-				string rol = SAT_ROL[tntxp.rol];
-				string pil = SAT_PIL[tntxp.pil];
+				string fec = value_transponder_fec(tntxp.fec, YTYPE::satellite);
+				string sys = value_transponder_system(tntxp.sys, YTYPE::satellite);
+				string mod = value_transponder_modulation(tntxp.mod, YTYPE::satellite);
+				string inv = value_transponder_inversion(tntxp.inv, YTYPE::satellite);
+				string rol = value_transponder_rollof(tntxp.rol);
+				string pil = value_transponder_pilot(tntxp.pil);
 
 				page.body += "<td>" + freq + "</td>";
 				page.body += "<td>" + pol + "</td>";
@@ -2458,15 +2560,15 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 			else if (ytype == YTYPE::terrestrial)
 			{
 				string freq = to_string(tntxp.freq);
-				string tmod = TER_MOD[tntxp.tmod];
-				string band = TER_BAND[tntxp.band];
-				string sys = "DVB-T";
-				string tmx = TER_TRXMODE[tntxp.tmx];
-				string hpfec = TER_FEC[tntxp.hpfec];
-				string lpfec = TER_FEC[tntxp.lpfec];
-				string inv = TER_INV[tntxp.inv];
-				string guard = TER_GUARD[tntxp.guard];
-				string hier = TER_HIER[tntxp.hier];
+				string tmod = value_transponder_modulation(tntxp.tmod, YTYPE::terrestrial);
+				string band = value_transponder_bandwidth(tntxp.band);
+				string sys = value_transponder_system(tntxp.sys, YTYPE::terrestrial);
+				string tmx = value_transponder_tmx_mode(tntxp.tmx);
+				string hpfec = value_transponder_fec(tntxp.hpfec, YTYPE::terrestrial);
+				string lpfec = value_transponder_fec(tntxp.lpfec, YTYPE::terrestrial);
+				string inv = value_transponder_inversion(tntxp.inv, YTYPE::terrestrial);
+				string guard = value_transponder_guard(tntxp.guard);
+				string hier = value_transponder_hier(tntxp.hier);
 
 				page.body += "<td>" + freq + "</td>";
 				page.body += "<td>" + tmod + "</td>";
@@ -2482,11 +2584,11 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 			else if (ytype == YTYPE::cable)
 			{
 				string freq = to_string(tntxp.freq);
-				string cmod = CAB_MOD[tntxp.cmod];
+				string cmod = value_transponder_modulation(tntxp.cmod, YTYPE::cable);
 				string sr = to_string(tntxp.sr);
-				string cfec = CAB_FEC[tntxp.cfec];
-				string inv = CAB_INV[tntxp.inv];
-				string sys = "DVB-C";
+				string cfec = value_transponder_fec(tntxp.cfec, YTYPE::cable);
+				string inv = value_transponder_inversion(tntxp.inv, YTYPE::cable);
+				string sys = value_transponder_system(tntxp.sys, YTYPE::cable);
 
 				page.body += "<td>" + freq + "</td>";
 				page.body += "<td>" + cmod + "</td>";
@@ -2499,7 +2601,7 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 			{
 				string freq = to_string(tntxp.freq);
 				string amod = to_string(tntxp.amod);
-				string sys = "ATSC";
+				string sys = value_transponder_system(tntxp.sys, YTYPE::atsc);
 
 				page.body += "<td>" + freq + "</td>";
 				page.body += "<td>" + amod + "</td>";
@@ -2518,11 +2620,14 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 
 string e2db_converter::doc_html_head(html_page page)
 {
+	string editor = editor_string(2);
+
 	return "<!DOCTYPE html>\n\
 <html lang=\"en\">\n\
 <head>\n\
 <meta charset=\"utf-8\">\n\
 <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n\
+<meta name=\"generator\" content=\"" + editor + "\">\n\
 <title>" + page.title + "</title>\n\
 <style>\n\
 body { margin: .5rem 1rem; font: normal 14px/1.5 sans-serif }\n\

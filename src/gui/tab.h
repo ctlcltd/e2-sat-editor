@@ -28,7 +28,7 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map, std::bi
 #include "../logger/logger.h"
 #include "gui.h"
 #include "dataHandler.h"
-#include "ftpcom_gui.h"
+#include "ftpHandler.h"
 #include "tools.h"
 #include "mainView.h"
 #include "viewAbstract.h"
@@ -85,6 +85,8 @@ class tab : protected e2se::log_factory
 		void actionCall(int action);
 		void updateBouquetsIndex();
 		void updateChannelsIndex();
+		void setPendingUpdateChannelsIndex();
+		void unsetPendingUpdateChannelsIndex();
 		void profileComboChanged(int index);
 		bool ftpHandle();
 		void ftpConnect();
@@ -93,6 +95,7 @@ class tab : protected e2se::log_factory
 		void loadSeeds();
 		QWidget* widget;
 		dataHandler* data = nullptr;
+		ftpHandler* ftph = nullptr;
 		e2se_gui::tools* tools = nullptr;
 	protected:
 		QGridLayout* root;
@@ -100,8 +103,10 @@ class tab : protected e2se::log_factory
 		gui::TAB_VIEW ttv;
 		// stored gui bit flags
 		bitset<256> gxe;
-		// tools tunersets current type
+		// tunersets current type
 		int ty;
+		// pending update channels index
+		bool chx_pending;
 		mainView* main;
 		viewAbstract* view;
 	private:
@@ -113,7 +118,7 @@ class tab : protected e2se::log_factory
 		int ttid = -1;
 		string ttname;
 		e2db* dbih = nullptr;
-		ftpcom* ftph = nullptr;
+		ftpcom* ftcom = nullptr;
 };
 }
 #endif /* tab_h */

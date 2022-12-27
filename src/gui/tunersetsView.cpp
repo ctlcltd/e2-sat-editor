@@ -45,9 +45,10 @@ tunersetsView::tunersetsView(tab* tid, QWidget* cwid, dataHandler* data, int yty
 	this->tid = tid;
 	this->cwid = cwid;
 	this->data = data;
-	this->yx = ytype;
 	this->sets = new QSettings;
 	this->widget = new QWidget;
+
+	this->state.yx = ytype;
 
 	layout();
 }
@@ -61,16 +62,16 @@ void tunersetsView::layout()
 	QSplitter* swid = new QSplitter;
 	QGroupBox* tfrm = new QGroupBox;
 	QGroupBox* lfrm = new QGroupBox;
-	this->tbox = new QVBoxLayout;
-	this->lbox = new QVBoxLayout;
+	QVBoxLayout* tbox = new QVBoxLayout;
+	QVBoxLayout* lbox = new QVBoxLayout;
 	tbox->setSpacing(0);
 	lbox->setSpacing(0);
 	tfrm->setFlat(true);
 	lfrm->setFlat(true);
 
-	switch (yx)
+	switch (this->state.yx)
 	{
-		case e2db::YTYPE::sat:
+		case e2db::YTYPE::satellite:
 			tfrm->setTitle("Satellites");
 		break;
 		case e2db::YTYPE::terrestrial:
@@ -87,9 +88,9 @@ void tunersetsView::layout()
 	lfrm->setLayout(lbox);
 
 	QStringList ths, lhs;
-	switch (yx)
+	switch (this->state.yx)
 	{
-		case e2db::YTYPE::sat:
+		case e2db::YTYPE::satellite:
 			ths = QStringList ({NULL, "Name", "Position"});
 			lhs = QStringList ({NULL, "TRID", "Freq/Pol/SR", "Frequency", "Polarization", "Symbol Rate", "FEC", "System", "Modulation", "Inversion", "Pilot", "Roll offset"});
 		break;
@@ -162,13 +163,13 @@ void tunersetsView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::rowB, 70);		// Roll offset | Guard
 	list->setColumnWidth(ITEM_ROW_ROLE::rowC, 70);		// Hierarchy
 
-	tree->connect(tree, &QTreeWidget::currentItemChanged, [=]() { this->treeItemChanged(); });
-	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->sortByColumn(column); });
+	tree->connect(tree, &QTreeWidget::currentItemChanged, [=]() { if (this->state.evt) this->treeItemChanged(); });
+	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { if (this->state.evt) this->sortByColumn(column); });
 
 	tree->setContextMenuPolicy(Qt::CustomContextMenu);
-	tree->connect(tree, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { this->showTreeEditContextMenu(pos); });
+	tree->connect(tree, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { if (this->state.evt) this->showTreeEditContextMenu(pos); });
 	list->setContextMenuPolicy(Qt::CustomContextMenu);
-	list->connect(list, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { this->showListEditContextMenu(pos); });
+	list->connect(list, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { if (this->state.evt) this->showListEditContextMenu(pos); });
 
 	searchLayout();
 
@@ -203,8 +204,6 @@ void tunersetsView::layout()
 	list_ats->addWidget(list_ats_spacer);
 	list_ats->addWidget(this->action.list_search);
 
-	list->connect(list, &QTreeWidget::itemDoubleClicked, [=]() { this->listItemDoubleClicked(); });
-
 	tbox->addWidget(tree);
 	tbox->addWidget(tree_search);
 	tbox->addWidget(tree_ats);
@@ -227,9 +226,9 @@ void tunersetsView::searchLayout()
 {
 	this->viewAbstract::searchLayout();
 
-	switch (yx)
+	switch (this->state.yx)
 	{
-		case e2db::YTYPE::sat:
+		case e2db::YTYPE::satellite:
 			this->lsr_search.filter->addItem("Freq/Pol/SR", ITEM_ROW_ROLE::combo);
 			this->lsr_search.filter->addItem("Frequency", ITEM_ROW_ROLE::s_freq);
 			this->lsr_search.filter->addItem("Polarization", ITEM_ROW_ROLE::s_pol);
@@ -265,18 +264,22 @@ void tunersetsView::searchLayout()
 void tunersetsView::load()
 {
 	debug("load()");
+	
+	this->state.evt = true;
 
 	tabUpdateFlags(gui::init);
 
 	this->dbih = this->data->dbih;
 
+	int tvid = this->state.yx;
+
 	string iname = "tns:";
-	char yname = dbih->value_transponder_type(yx);
+	char yname = dbih->value_transponder_type(tvid);
 	iname += yname;
 
 	for (auto & x : dbih->index[iname])
 	{
-		e2db::tunersets_table tns = dbih->tuners[yx].tables[x.second];
+		e2db::tunersets_table tns = dbih->tuners[tvid].tables[x.second];
 		QString idx = QString::fromStdString(tns.tnid);
 		QStringList entry = dbih->entryTunersetsTable(tns);
 
@@ -299,11 +302,10 @@ void tunersetsView::reset()
 {
 	debug("reset()");
 
-	this->state.changed = false;
-	this->state.ti = 0;
+	this->state.evt = false;
+
 	this->state.curr = "";
 	this->state.sort = pair (-1, Qt::AscendingOrder); //C++17
-	this->state.ty = -1;
 
 	tree->clear();
 	tree->setDragEnabled(false);
@@ -326,6 +328,8 @@ void tunersetsView::reset()
 	tabResetStatus();
 
 	this->dbih = nullptr;
+
+	this->state.evt = true;
 }
 
 void tunersetsView::populate()
@@ -342,15 +346,18 @@ void tunersetsView::populate()
 		curr = selected->data(0, Qt::UserRole).toString().toStdString();
 		this->state.curr = curr;
 	}
+	
+	int tvid = this->state.yx;
+	string tnid = this->state.curr;
 
-	debug("populate()", "curr", curr);
+	e2db::tunersets tvs = dbih->tuners[tvid];
 
-	e2db::tunersets tvs = dbih->tuners[yx];
+	if (tvs.tables.count(tnid))
+		debug("populate()", "current", tnid);
+	else
+		error("populate()", "current", tnid);
 
-	if (! tvs.tables.count(curr))
-		error("populate()", "curr", curr);
-
-	e2db::tunersets_table tns = tvs.tables[curr];
+	e2db::tunersets_table tns = tvs.tables[tnid];
 
 	list->header()->setSortIndicatorShown(false);
 	list->header()->setSectionsClickable(false);
@@ -358,7 +365,7 @@ void tunersetsView::populate()
 
 	int i = 0;
 
-	for (auto & tp : dbih->index[curr])
+	for (auto & tp : dbih->index[tnid])
 	{
 		e2db::tunersets_transponder txp = tns.transponders[tp.second];
 		char ci[7];
@@ -417,49 +424,55 @@ void tunersetsView::addSettings()
 {
 	debug("addSettings()");
 
-	int tvid = yx;
+	int tvid = this->state.yx;
 	e2db::tunersets tvs;
 	tvs.ytype = tvid;
 	dbih->addTunersets(tvs);
+
+	//TODO changed
+
+	this->data->setChanged(true);
 }
 
 void tunersetsView::editSettings()
 {
 	debug("editSettings()");
 
-	int tvid = yx;
+	int tvid = this->state.yx;
 
 	if (dbih->tuners.count(tvid))
 		debug("editSettings()", "tvid", tvid);
 	else
 		return error("editSettings()", "tvid", tvid);
 
-	e2se_gui::editTunersets* edit = new e2se_gui::editTunersets(this->data, this->yx, this->log->log);
+	e2se_gui::editTunersets* edit = new e2se_gui::editTunersets(this->data, tvid, this->log->log);
 	edit->setEditId(tvid);
 	edit->display(cwid);
 	edit->getEditId(); // returned after dial.exec()
 	edit->destroy();
 
-	this->state.changed = true;
+	//TODO changed
+
+	this->data->setChanged(true);
 }
 
 void tunersetsView::addPosition()
 {
 	debug("addPosition()");
 
-	int tvid = yx;
+	int tvid = this->state.yx;
 	string tnid;
 
 	if (! dbih->tuners.count(tvid))
 		addSettings();
 
-	e2se_gui::editTunersetsTable* add = new e2se_gui::editTunersetsTable(this->data, this->yx, this->log->log);
+	e2se_gui::editTunersetsTable* add = new e2se_gui::editTunersetsTable(this->data, tvid, this->log->log);
 	add->setAddId(tvid);
 	add->display(cwid);
 	tnid = add->getAddId(); // returned after dial.exec()
 	add->destroy();
 
-	if (dbih->tuners[yx].tables.count(tnid))
+	if (dbih->tuners[tvid].tables.count(tnid))
 		debug("addPosition()", "tnid", tnid);
 	else
 		return error("addPosition()", "tnid", tnid);
@@ -474,7 +487,7 @@ void tunersetsView::addPosition()
 	i = current != nullptr ? parent->indexOfChild(current) : tree->topLevelItemCount();
 	y = i + 1;
 
-	e2db::tunersets_table tns = dbih->tuners[yx].tables[tnid];
+	e2db::tunersets_table tns = dbih->tuners[tvid].tables[tnid];
 
 	QString idx = QString::fromStdString(tns.tnid);
 	QStringList entry = dbih->entryTunersetsTable(tns);
@@ -492,9 +505,11 @@ void tunersetsView::addPosition()
 	tree->setDragEnabled(true);
 	tree->setAcceptDrops(true);
 
-	this->state.changed = true;
+	//TODO changed
 
 	updateStatus();
+
+	this->data->setChanged(true);
 }
 
 void tunersetsView::editPosition()
@@ -507,29 +522,29 @@ void tunersetsView::editPosition()
 		return;
 
 	QTreeWidgetItem* item = selected.first();
-	int tvid = this->yx;
+	int tvid = this->state.yx;
 	string tnid = item->data(0, Qt::UserRole).toString().toStdString();
 	string nw_tnid;
 
 	if (! dbih->tuners.count(tvid))
 		return error("addTransponder()", "tvid", tvid);
-	if (dbih->tuners[yx].tables.count(tnid))
+	if (dbih->tuners[tvid].tables.count(tnid))
 		debug("editPosition()", "tnid", tnid);
 	else
 		return error("editPosition()", "tnid", tnid);
 
-	e2se_gui::editTunersetsTable* edit = new e2se_gui::editTunersetsTable(this->data, this->yx, this->log->log);
+	e2se_gui::editTunersetsTable* edit = new e2se_gui::editTunersetsTable(this->data, tvid, this->log->log);
 	edit->setEditId(tnid, tvid);
 	edit->display(cwid);
 	nw_tnid = edit->getEditId(); // returned after dial.exec()
 	edit->destroy();
 
-	if (dbih->tuners[yx].tables.count(nw_tnid))
+	if (dbih->tuners[tvid].tables.count(nw_tnid))
 		debug("editPosition()", "new tnid", nw_tnid);
 	else
 		return error("editPosition()", "new tnid", nw_tnid);
 
-	e2db::tunersets_table tns = dbih->tuners[yx].tables[nw_tnid];
+	e2db::tunersets_table tns = dbih->tuners[tvid].tables[nw_tnid];
 
 	QString idx = QString::fromStdString(tns.tnid);
 	QStringList entry = dbih->entryTunersetsTable(tns);
@@ -537,30 +552,32 @@ void tunersetsView::editPosition()
 		item->setText(i, entry[i]);
 	item->setData(0, Qt::UserRole, idx);
 
-	this->state.changed = true;
+	//TODO changed
+
+	this->data->setChanged(true);
 }
 
 void tunersetsView::addTransponder()
 {
 	debug("addTransponder()");
 
-	int tvid = this->yx;
+	int tvid = this->state.yx;
 	string tnid = this->state.curr;
 
 	//TODO set disabled
 	if (! dbih->tuners.count(tvid))
 		return error("addTransponder()", "tvid", tvid);
-	if (! dbih->tuners[yx].tables.count(tnid))
+	if (! dbih->tuners[tvid].tables.count(tnid))
 		return error("addTransponder()", "tnid", tnid);
 
 	string trid;
-	e2se_gui::editTunersetsTransponder* add = new e2se_gui::editTunersetsTransponder(this->data, this->yx, this->log->log);
+	e2se_gui::editTunersetsTransponder* add = new e2se_gui::editTunersetsTransponder(this->data, tvid, this->log->log);
 	add->setAddId(tnid, tvid);
 	add->display(cwid);
 	trid = add->getAddId(); // returned after dial.exec()
 	add->destroy();
 
-	if (dbih->tuners[yx].tables[tnid].transponders.count(trid))
+	if (dbih->tuners[tvid].tables[tnid].transponders.count(trid))
 		debug("addTransponder()", "trid", trid);
 	else
 		return error("addTransponder()", "trid", trid);
@@ -575,7 +592,7 @@ void tunersetsView::addTransponder()
 	i = current != nullptr ? parent->indexOfChild(current) : list->topLevelItemCount();
 	y = i + 1;
 
-	e2db::tunersets_table tns = dbih->tuners[yx].tables[tnid];
+	e2db::tunersets_table tns = dbih->tuners[tvid].tables[tnid];
 	e2db::tunersets_transponder txp = tns.transponders[trid];
 
 	char ci[7];
@@ -599,9 +616,11 @@ void tunersetsView::addTransponder()
 	list->setDragEnabled(true);
 	list->setAcceptDrops(true);
 
-	this->state.changed = true;
+	//TODO changed
 
 	updateStatus();
+
+	this->data->setChanged(true);
 }
 
 void tunersetsView::editTransponder()
@@ -614,33 +633,33 @@ void tunersetsView::editTransponder()
 		return;
 
 	QTreeWidgetItem* item = selected.first();
-	int tvid = this->yx;
+	int tvid = this->state.yx;
 	string trid = item->data(ITEM_DATA_ROLE::trid, Qt::UserRole).toString().toStdString();
 	string nw_trid;
 	string tnid = this->state.curr;
 
 	if (! dbih->tuners.count(tvid))
 		return error("editTransponder()", "tvid", tvid);
-	if (! dbih->tuners[yx].tables.count(tnid))
+	if (! dbih->tuners[tvid].tables.count(tnid))
 		return error("editTransponder()", "tnid", tnid);
 
-	if (dbih->tuners[yx].tables[tnid].transponders.count(trid))
+	if (dbih->tuners[tvid].tables[tnid].transponders.count(trid))
 		debug("editTransponder()", "trid", trid);
 	else
 		return error("editTransponder()", "trid", trid);
 
-	e2se_gui::editTunersetsTransponder* edit = new e2se_gui::editTunersetsTransponder(this->data, this->yx, this->log->log);
+	e2se_gui::editTunersetsTransponder* edit = new e2se_gui::editTunersetsTransponder(this->data, tvid, this->log->log);
 	edit->setEditId(trid, tnid, tvid);
 	edit->display(cwid);
 	nw_trid = edit->getEditId(); // returned after dial.exec()
 	edit->destroy();
 
-	if (dbih->tuners[yx].tables[tnid].transponders.count(nw_trid))
+	if (dbih->tuners[tvid].tables[tnid].transponders.count(nw_trid))
 		debug("editTransponder()", "new trid", nw_trid);
 	else
 		return error("editTransponder()", "new trid", nw_trid);
 
-	e2db::tunersets_table tns = dbih->tuners[yx].tables[tnid];
+	e2db::tunersets_table tns = dbih->tuners[tvid].tables[tnid];
 	e2db::tunersets_transponder txp = tns.transponders[nw_trid];
 
 	QStringList entry = dbih->entryTunersetsTransponder(txp, tns);
@@ -649,7 +668,9 @@ void tunersetsView::editTransponder()
 		item->setText(i, entry[i]);
 	item->setData(ITEM_DATA_ROLE::trid, Qt::UserRole, QString::fromStdString(nw_trid));
 
-	this->state.changed = true;
+	//TODO changed
+
+	this->data->setChanged(true);
 }
 
 void tunersetsView::treeItemDelete()
@@ -663,7 +684,8 @@ void tunersetsView::treeItemDelete()
 		return;
 	}
 
-	e2db::tunersets tvs = dbih->tuners[yx];
+	int tvid = this->state.yx;
+	e2db::tunersets tvs = dbih->tuners[tvid];
 	
 	for (auto & item : selected)
 	{
@@ -674,9 +696,11 @@ void tunersetsView::treeItemDelete()
 		dbih->removeTunersetsTable(tnid, tvs);
 	}
 
-	this->state.changed = true;
+	//TODO changed
 
 	updateStatus();
+
+	this->data->setChanged(true);
 }
 
 void tunersetsView::listItemCopy(bool cut)
@@ -690,6 +714,8 @@ void tunersetsView::listItemCopy(bool cut)
 
 	if (cut)
 		listItemDelete();
+
+	this->data->setChanged(true);
 }
 
 void tunersetsView::listItemPaste()
@@ -699,6 +725,8 @@ void tunersetsView::listItemPaste()
 	/*QClipboard* clipboard = QGuiApplication::clipboard();
 	const QMimeData* mimeData = clipboard->mimeData();
 	vector<QString> items;*/
+
+	this->data->setChanged(true);
 }
 
 void tunersetsView::listItemDelete()
@@ -714,8 +742,9 @@ void tunersetsView::listItemDelete()
 	list->setDragEnabled(false);
 	list->setAcceptDrops(false);
 
+	int tvid = this->state.yx;
 	string tnid = this->state.curr;
-	e2db::tunersets_table tns = dbih->tuners[yx].tables[tnid];
+	e2db::tunersets_table tns = dbih->tuners[tvid].tables[tnid];
 
 	for (auto & item : selected)
 	{
@@ -730,7 +759,9 @@ void tunersetsView::listItemDelete()
 	list->setDragEnabled(true);
 	list->setAcceptDrops(true);
 
-	this->state.changed = true;
+	//TODO changed
+
+	this->data->setChanged(true);
 }
 
 void tunersetsView::putListItems(vector<QString> items)
@@ -759,24 +790,26 @@ void tunersetsView::putListItems(vector<QString> items)
 void tunersetsView::updateStatus(bool current)
 {
 	debug("updateStatus()");
+	
+	int tvid = this->state.yx;
 
 	gui::STATUS status;
 	status.current = current;
 
 	if (current && ! this->state.curr.empty())
 	{
-		string curr = this->state.curr;
-		if (yx == e2db::YTYPE::sat)
+		string tnid = this->state.curr;
+		if (tvid == e2db::YTYPE::satellite)
 		{
-			e2db::tunersets_table tns = dbih->tuners[yx].tables[curr];
+			e2db::tunersets_table tns = dbih->tuners[tvid].tables[tnid];
 			status.position = dbih->value_transponder_position(tns);
 		}
-		status.counters[gui::COUNTER::position] = dbih->index[curr].size();
+		status.counters[gui::COUNTER::position] = dbih->index[tnid].size();
 	}
 	else
 	{
 		string iname = "tns:";
-		char yname = dbih->value_transponder_type(yx);
+		char yname = dbih->value_transponder_type(tvid);
 		iname += yname;
 		for (auto & x : dbih->index[iname])
 		{

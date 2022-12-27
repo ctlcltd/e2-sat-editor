@@ -37,9 +37,9 @@ class editMarker : public dialAbstract
 		void setAddId(string bname);
 		string getAddId();
 
-		struct sts
+		struct __state
 		{
-			// editable
+			// edit { edit: true, add: false }
 			bool edit = false;
 		} state;
 	private:

@@ -123,7 +123,7 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file)
 		ss << value_transponder_type(tx.ytype) << formats[MAKER_FORMAT::transponder_space_delimiter];
 		switch (tx.ytype)
 		{
-			case YTYPE::sat: // DVB-S
+			case YTYPE::satellite: // DVB-S
 				ss << int (tx.freq * 1e3);
 				ss << ':' << int (tx.sr * 1e3);
 				ss << ':' << tx.pol;
@@ -262,7 +262,7 @@ void e2db_maker::make_db_tunersets()
 		string filename;
 		switch (x.first)
 		{
-			case YTYPE::sat:
+			case YTYPE::satellite:
 				filename = "satellites.xml";
 			break;
 			case YTYPE::terrestrial:
@@ -363,7 +363,7 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 
 	switch (ytype)
 	{
-		case YTYPE::sat:
+		case YTYPE::satellite:
 		case YTYPE::terrestrial:
 		case YTYPE::cable:
 		case YTYPE::atsc:
@@ -379,7 +379,7 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 	unordered_map<int, string> tags;
 	switch (ytype)
 	{
-		case YTYPE::sat:
+		case YTYPE::satellite:
 			yname += 's';
 			tags[0] = "satellites";
 			tags[1] = "sat";
@@ -428,7 +428,7 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 			ss << "\t\t" << '<' << tags[2];
 			switch (tn.ytype)
 			{
-				case YTYPE::sat:
+				case YTYPE::satellite:
 					if (tntxp.freq != -1)
 						ss << ' ' << "frequency=\"" << int (tntxp.freq * 1e3) << "\"";
 					if (tntxp.sr != -1)

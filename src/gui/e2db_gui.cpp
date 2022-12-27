@@ -417,7 +417,7 @@ QStringList e2db::entryTunersetsTable(tunersets_table tn)
 	QString tnid = QString::fromStdString(tn.tnid);
 	QString name = QString::fromStdString(tn.name);
 
-	if (tn.ytype == e2db::YTYPE::sat)
+	if (tn.ytype == e2db::YTYPE::satellite)
 	{
 		QString pos = QString::fromStdString(value_transponder_position(tn));
 		entry = QStringList ({tnid, name, pos});
@@ -442,14 +442,14 @@ QStringList e2db::entryTunersetsTransponder(tunersets_transponder tntxp, tunerse
 	QString freq = QString::fromStdString(to_string(tntxp.freq));
 	QString combo = QString::fromStdString(value_transponder_combo(tntxp, tn));
 
-	if (tn.ytype == YTYPE::sat)
+	if (tn.ytype == YTYPE::satellite)
 	{
 		QString pol = QString::fromStdString(value_transponder_polarization(tntxp.pol));
 		QString sr = QString::fromStdString(to_string(tntxp.sr));
-		QString fec = QString::fromStdString(value_transponder_fec(tntxp.fec, YTYPE::sat));
-		QString sys = QString::fromStdString(value_transponder_system(tntxp.sys, YTYPE::sat));
-		QString mod = QString::fromStdString(value_transponder_modulation(tntxp.mod, YTYPE::sat));
-		QString inv = QString::fromStdString(value_transponder_inversion(tntxp.inv, YTYPE::sat));
+		QString fec = QString::fromStdString(value_transponder_fec(tntxp.fec, YTYPE::satellite));
+		QString sys = QString::fromStdString(value_transponder_system(tntxp.sys, YTYPE::satellite));
+		QString mod = QString::fromStdString(value_transponder_modulation(tntxp.mod, YTYPE::satellite));
+		QString inv = QString::fromStdString(value_transponder_inversion(tntxp.inv, YTYPE::satellite));
 		QString pil = QString::fromStdString(value_transponder_pilot(tntxp.pil));
 		QString rol = QString::fromStdString(value_transponder_rollof(tntxp.rol));
 		entry = QStringList ({trid, combo, freq, pol, sr, fec, sys, mod, inv, pil, rol});

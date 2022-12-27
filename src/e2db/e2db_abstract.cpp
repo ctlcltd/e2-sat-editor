@@ -65,13 +65,14 @@ void e2db_abstract::error(string msg, string optk, int optv)
 	this->log->error(msg, optk, std::to_string(optv));
 }
 
-//TODO round
-string e2db_abstract::editor_string(bool html)
+string e2db_abstract::editor_string(int html)
 {
-	if (html)
-		return "e2 SAT Editor " + to_string(EDITOR_RELEASE) + " <a href=\"https://github.com/ctlcltd/e2-sat-editor\">https://github.com/ctlcltd/e2-sat-editor</a>";
+	if (html == 2)
+		return "e2 SAT Editor 0.1";
+	else if (html == 1)
+		return "e2 SAT Editor 0.1 <a href=\"https://github.com/ctlcltd/e2-sat-editor\">https://github.com/ctlcltd/e2-sat-editor</a>";
 	else
-		return "e2 SAT Editor " + to_string(EDITOR_RELEASE) + " <https://github.com/ctlcltd/e2-sat-editor>";
+		return "e2 SAT Editor 0.1 <https://github.com/ctlcltd/e2-sat-editor>";
 }
 
 string e2db_abstract::editor_timestamp()
@@ -286,7 +287,7 @@ vector<string> e2db_abstract::value_channel_cas(string str)
 int e2db_abstract::value_transponder_type(char ty)
 {
 	switch (ty) {
-		case 's': return YTYPE::sat;
+		case 's': return YTYPE::satellite;
 		case 't': return YTYPE::terrestrial;
 		case 'c': return YTYPE::cable;
 		case 'a': return YTYPE::atsc;
@@ -308,7 +309,7 @@ char e2db_abstract::value_transponder_type(int yx)
 char e2db_abstract::value_transponder_type(YTYPE ytype)
 {
 	switch (ytype) {
-		case YTYPE::sat: return 's';
+		case YTYPE::satellite: return 's';
 		case YTYPE::terrestrial: return 't';
 		case YTYPE::cable: return 'c';
 		case YTYPE::atsc: return 'a';
@@ -322,7 +323,7 @@ string e2db_abstract::value_transponder_combo(transponder tx)
 	string ptxp;
 	switch (tx.ytype)
 	{
-		case YTYPE::sat:
+		case YTYPE::satellite:
 			ptxp = to_string(tx.freq) + '/' + SAT_POL[tx.pol] + '/' + to_string(tx.sr);
 		break;
 		case YTYPE::terrestrial:
@@ -343,7 +344,7 @@ string e2db_abstract::value_transponder_combo(tunersets_transponder tntxp, tuner
 	string ptxp;
 	switch (tn.ytype)
 	{
-		case YTYPE::sat:
+		case YTYPE::satellite:
 			ptxp = to_string(tntxp.freq) + '/' + SAT_POL[tntxp.pol] + '/' + to_string(tntxp.sr);
 		break;
 		case YTYPE::terrestrial:
@@ -412,7 +413,7 @@ int e2db_abstract::value_transponder_system(string str, int yx)
 
 int e2db_abstract::value_transponder_system(string str, YTYPE ytype)
 {
-	if (ytype == YTYPE::sat)
+	if (ytype == YTYPE::satellite)
 	{
 		if (str == "DVB-S")
 			return 0;
@@ -444,7 +445,7 @@ string e2db_abstract::value_transponder_system(int sys, YTYPE ytype)
 {
 	string psys;
 	switch (ytype) {
-		case YTYPE::sat:
+		case YTYPE::satellite:
 			psys = sys != -1 ? SAT_SYS[sys] : "DVB-S";
 		break;
 		case YTYPE::terrestrial:
@@ -494,7 +495,7 @@ int e2db_abstract::value_transponder_fec(string str, int yx)
 
 int e2db_abstract::value_transponder_fec(string str, YTYPE ytype)
 {
-	if (ytype == YTYPE::sat)
+	if (ytype == YTYPE::satellite)
 	{
 		if (str.empty())
 			return 0;
@@ -575,7 +576,7 @@ string e2db_abstract::value_transponder_fec(int fec, YTYPE ytype)
 {
 	if (fec == -1)
 		return "";
-	if (ytype == YTYPE::sat && fec < 11)
+	if (ytype == YTYPE::satellite && fec < 11)
 		return SAT_FEC[fec];
 	else if (ytype == YTYPE::terrestrial && fec < 8)
 		return TER_FEC[fec];
@@ -592,7 +593,7 @@ int e2db_abstract::value_transponder_modulation(string str, int yx)
 
 int e2db_abstract::value_transponder_modulation(string str, YTYPE ytype)
 {
-	if (ytype == YTYPE::sat)
+	if (ytype == YTYPE::satellite)
 	{
 		if (str.empty())
 			return -1;
@@ -651,7 +652,7 @@ string e2db_abstract::value_transponder_modulation(int mod, YTYPE ytype)
 {
 	if (mod == -1)
 		return "";
-	else if (ytype == YTYPE::sat && mod < 4)
+	else if (ytype == YTYPE::satellite && mod < 4)
 		return SAT_MOD[mod];
 	else if (ytype == YTYPE::terrestrial && mod < 4)
 		return TER_MOD[mod];
@@ -691,7 +692,7 @@ string e2db_abstract::value_transponder_inversion(int inv, int yx)
 
 string e2db_abstract::value_transponder_inversion(int inv, YTYPE ytype)
 {
-	if (ytype == YTYPE::sat && inv < 3)
+	if (ytype == YTYPE::satellite && inv < 3)
 		return SAT_INV[inv];
 	else if (ytype == YTYPE::terrestrial && inv < 3)
 		return TER_INV[inv];
@@ -972,7 +973,7 @@ void e2db_abstract::add_tunersets_table(int idx, tunersets_table& tn, tunersets&
 	tn.index = idx;
 	tv.tables.emplace(tn.tnid, tn);
 	index[iname].emplace_back(pair (idx, tn.tnid)); //C++17
-	if (tn.ytype == YTYPE::sat)
+	if (tn.ytype == YTYPE::satellite)
 		tuners_pos.emplace(tn.pos, tn.tnid);
 }
 

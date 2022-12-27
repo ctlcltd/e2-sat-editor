@@ -111,9 +111,9 @@ void channelBookView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::chtxp, 175);	// Transponder
 	list->setColumnWidth(ITEM_ROW_ROLE::chpos, 120);	// Position
 
-	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->sortByColumn(column); });
-	tree->connect(tree, &QTreeWidget::currentItemChanged, [=]() { this->populate(); });
-	tabv->connect(tabv, &QTabBar::currentChanged, [=]() { this->populate(); });
+	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { if (this->state.evt) this->sortByColumn(column); });
+	tree->connect(tree, &QTreeWidget::currentItemChanged, [=]() { if (this->state.evt) this->populate(); });
+	tabv->connect(tabv, &QTabBar::currentChanged, [=]() { if (this->state.evt) this->populate(); });
 
 	swid->addWidget(tree);
 	swid->addWidget(list);
@@ -162,6 +162,8 @@ void channelBookView::load()
 {
 	debug("load()");
 
+	this->state.evt = true;
+
 	tabUpdateFlags(gui::init);
 	this->dbih = this->data->dbih;
 
@@ -171,6 +173,8 @@ void channelBookView::load()
 void channelBookView::reset()
 {
 	debug("reset()");
+
+	this->state.evt = false;
 
 	tree->clear();
 	tree->reset();
@@ -187,17 +191,19 @@ void channelBookView::reset()
 	tabResetStatus();
 
 	this->dbih = nullptr;
+
+	this->state.evt = true;
 }
 
 void channelBookView::populate()
 {
 	string curr = "";
 
-	if (vx == 2)
+	if (this->state.vx == 2)
 	{
 		curr = "chs";
 	}
-	else if (vx == 1)
+	else if (this->state.vx == 1)
 	{
 		QTreeWidgetItem* selected;
 		selected = tree->currentItem();
@@ -218,7 +224,9 @@ void channelBookView::populate()
 		curr = index.toStdString();
 	}
 
-	debug("populate()", "curr", curr);
+	this->state.curr = curr;
+
+	debug("populate()", "current", curr);
 
 	list->header()->setSortIndicatorShown(false);
 	list->header()->setSectionsClickable(false);
@@ -261,7 +269,7 @@ void channelBookView::populate()
 
 	list->header()->setSectionsClickable(true);
 	// sorting default column 0|asc
-	if (vx)
+	if (this->state.vx)
 	{
 		list->sortItems(0, Qt::AscendingOrder);
 		list->header()->setSortIndicator(1, Qt::AscendingOrder);
@@ -270,7 +278,7 @@ void channelBookView::populate()
 
 void channelBookView::sideRowChanged(int index)
 {
-	debug("sideRowChanged()", "index", index);
+	debug("sideRowChanged()", "view", index);
 
 	tree->clearSelection();
 	tree->scrollToTop();
@@ -285,19 +293,19 @@ void channelBookView::sideRowChanged(int index)
 			tabv->setHidden(true);
 			tree->setHidden(true);
 			list->setVisible(true);
-			vx = 2;
+			this->state.vx = 2;
 		break;
 		case views::A_Z:
 			tabv->setVisible(true);
 			tree->setHidden(true);
 			list->setVisible(true);
-			vx = 0;
+			this->state.vx = 0;
 		break;
 		default:
 			tabv->setHidden(true);
 			tree->setVisible(true);
 			list->setVisible(true);
-			vx = 1;
+			this->state.vx = 1;
 	}
 
 	stacker(index);
@@ -305,7 +313,7 @@ void channelBookView::sideRowChanged(int index)
 
 void channelBookView::stacker(int vv)
 {
-	debug("stacker()", "index", vv);
+	debug("stacker()", "view", vv);
 
 	switch (vv)
 	{

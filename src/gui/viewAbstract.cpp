@@ -477,8 +477,7 @@ bool viewAbstract::tabGetFlag(gui::GUI_CXE bit)
 {
 	if (tid != nullptr)
 		return tid->getFlag(bit);
-	else
-		return true;
+	return true;
 }
 
 void viewAbstract::tabUpdateFlags()
@@ -503,6 +502,49 @@ void viewAbstract::tabResetStatus()
 {
 	if (tid != nullptr)
 		tid->resetStatus();
+}
+
+void viewAbstract::tabNewFile()
+{
+	if (tid != nullptr)
+		tid->newFile();
+}
+
+void viewAbstract::tabOpenFile()
+{
+	if (tid != nullptr)
+		tid->openFile();
+}
+
+bool viewAbstract::tabReadFile(string filename)
+{
+	if (tid != nullptr)
+		return tid->readFile(filename);
+	return false;
+}
+
+void viewAbstract::tabSaveFile(bool saveas)
+{
+	if (tid != nullptr)
+		tid->saveFile(saveas);
+}
+
+void viewAbstract::tabImportFile()
+{
+	if (tid != nullptr)
+		tid->importFile();
+}
+
+void viewAbstract::tabExportFile()
+{
+	if (tid != nullptr)
+		tid->exportFile();
+}
+
+void viewAbstract::tabPrintFile(bool all)
+{
+	if (tid != nullptr)
+		tid->printFile(all);
 }
 
 }

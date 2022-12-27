@@ -72,51 +72,51 @@ void mainView::layout()
 
 	QGridLayout* frm = new QGridLayout(widget);
 
-	//TODO bouquets_box and vertical scrollbar hSize in GTK+
-	QSplitter* splitterc = new QSplitter;
+	//TODO twrap and vertical scrollbar hSize in GTK+
+	QSplitter* swid = new QSplitter;
 
-	QVBoxLayout* side_box = new QVBoxLayout;
-	QVBoxLayout* list_box = new QVBoxLayout;
+	QVBoxLayout* tbox = new QVBoxLayout;
+	QVBoxLayout* lbox = new QVBoxLayout;
 
-	QWidget* side = new QWidget;
-	QVBoxLayout* services_box = new QVBoxLayout;
-	QVBoxLayout* bouquets_box = new QVBoxLayout;
+	QWidget* afrm = new QWidget;
+	QVBoxLayout* swrap = new QVBoxLayout;
+	QVBoxLayout* twrap = new QVBoxLayout;
 
-	QGroupBox* services = new QGroupBox("Services");
-	QGroupBox* bouquets = new QGroupBox("Bouquets");
-	QGroupBox* channels = new QGroupBox("Channels");
+	QGroupBox* sfrm = new QGroupBox("Services");
+	QGroupBox* tfrm = new QGroupBox("Bouquets");
+	QGroupBox* lfrm = new QGroupBox("Channels");
 
-	services_box->setContentsMargins(12, 12, 12, 0);
-	bouquets_box->setContentsMargins(12, 12, 12, 12);
-	side_box->setSpacing(4);
-	list_box->setSpacing(0);
-	services_box->setSpacing(0);
-	bouquets_box->setSpacing(0);
-	services->setFlat(true);
-	bouquets->setFlat(true);
-	channels->setFlat(true);
+	swrap->setContentsMargins(12, 12, 12, 0);
+	twrap->setContentsMargins(12, 12, 12, 12);
+	tbox->setSpacing(4);
+	lbox->setSpacing(0);
+	swrap->setSpacing(0);
+	twrap->setSpacing(0);
+	sfrm->setFlat(true);
+	tfrm->setFlat(true);
+	lfrm->setFlat(true);
 
-	QGridLayout* list_layout = new QGridLayout;
+	QGridLayout* lwrap = new QGridLayout;
 	this->list_wrap = new QWidget;
-	list_wrap->setObjectName("channels_wrap");
-	list_wrap->setStyleSheet("#channels_wrap { background: transparent }");
+	list_wrap->setObjectName("list_wrap");
+	list_wrap->setStyleSheet("#list_wrap { background: transparent }");
 
-	this->services_tree = new QTreeWidget;
+	this->side = new QTreeWidget;
 	this->tree = new QTreeWidget;
 	this->list = new QTreeWidget;
-	services_tree->setStyleSheet("QTreeWidget { background: transparent } ::item { padding: 9px auto }");
+	side->setStyleSheet("QTreeWidget { background: transparent } ::item { padding: 9px auto }");
 	tree->setStyleSheet("QTreeWidget { background: transparent } ::item { margin: 1px 0 0; padding: 8px auto }");
 	list->setStyleSheet("::item { padding: 6px auto }");
 
-	services_tree->setHeaderHidden(true);
-	services_tree->setUniformRowHeights(true);
+	side->setHeaderHidden(true);
+	side->setUniformRowHeights(true);
 	tree->setHeaderHidden(true);
 	tree->setUniformRowHeights(true);
 	list->setUniformRowHeights(true);
-	
-	services_tree->setRootIsDecorated(false);
-	services_tree->setItemsExpandable(false);
-	services_tree->setExpandsOnDoubleClick(false);
+
+	side->setRootIsDecorated(false);
+	side->setItemsExpandable(false);
+	side->setExpandsOnDoubleClick(false);
 
 	tree->setSelectionBehavior(QAbstractItemView::SelectRows);
 	tree->setDropIndicatorShown(true);
@@ -163,12 +163,12 @@ void mainView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::chsr, 95);		// Symbol Rate
 	list->setColumnWidth(ITEM_ROW_ROLE::chfec, 50);		// FEC
 
-	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->sortByColumn(column); });
+	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { if (this->state.evt) this->sortByColumn(column); });
 
 	tree->setContextMenuPolicy(Qt::CustomContextMenu);
-	tree->connect(tree, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { this->showTreeEditContextMenu(pos); });
+	tree->connect(tree, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { if (this->state.evt) this->showTreeEditContextMenu(pos); });
 	list->setContextMenuPolicy(Qt::CustomContextMenu);
-	list->connect(list, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { this->showListEditContextMenu(pos); });
+	list->connect(list, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { if (this->state.evt) this->showListEditContextMenu(pos); });
 
 	searchLayout();
 	referenceBoxLayout();
@@ -223,54 +223,56 @@ void mainView::layout()
 	list_ats->addWidget(list_ats_spacer);
 	list_ats->addWidget(this->action.list_search);
 
-	this->bouquets_evth = new BouquetsEventHandler;
+	this->tree_evth = new TreeEventHandler;
 	this->list_evth = new ListEventHandler;
 	this->list_evto = new ListEventObserver;
-	services_tree->connect(services_tree, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { this->treeSwitched(services_tree, item); });
-	services_tree->connect(services_tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->servicesItemChanged(current); });
-	tree->viewport()->installEventFilter(bouquets_evth);
-	tree->connect(tree, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { this->treeSwitched(tree, item); });
-	tree->connect(tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->treeItemChanged(current); });
+	tree_evth->setEventCallback([=](QTreeWidget* tw) { if (this->state.evt) this->data->setChanged(true); });
+	list_evth->setEventCallback([=](QTreeWidget* tw) { if (this->state.evt) this->data->setChanged(true); });
+	side->connect(side, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { if (this->state.evt) this->treeSwitched(side, item); });
+	side->connect(side, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { if (this->state.evt) this->servicesItemChanged(current); });
+	tree->viewport()->installEventFilter(tree_evth);
+	tree->connect(tree, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { if (this->state.evt) this->treeSwitched(tree, item); });
+	tree->connect(tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { if (this->state.evt) this->treeItemChanged(current); });
 	list->installEventFilter(list_evto);
 	list->viewport()->installEventFilter(list_evth);
-	list->connect(list, &QTreeWidget::currentItemChanged, [=]() { this->listItemChanged(); });
-	list->connect(list, &QTreeWidget::itemSelectionChanged, [=]() { this->listItemSelectionChanged(); });
-	list->connect(list, &QTreeWidget::itemDoubleClicked, [=]() { this->listItemDoubleClicked(); });
+	list->connect(list, &QTreeWidget::currentItemChanged, [=]() { if (this->state.evt) this->listItemChanged(); });
+	list->connect(list, &QTreeWidget::itemSelectionChanged, [=]() { if (this->state.evt) this->listItemSelectionChanged(); });
+	list->connect(list, &QTreeWidget::itemDoubleClicked, [=]() { if (this->state.evt) this->listItemDoubleClicked(); });
 
-	services_box->addWidget(services_tree);
-	services->setLayout(services_box);
+	swrap->addWidget(side);
+	sfrm->setLayout(swrap);
 
-	bouquets_box->addWidget(tree);
-	bouquets_box->addWidget(tree_search);
-	bouquets_box->addWidget(tree_ats);
-	bouquets->setLayout(bouquets_box);
+	twrap->addWidget(tree);
+	twrap->addWidget(tree_search);
+	twrap->addWidget(tree_ats);
+	tfrm->setLayout(twrap);
 
-	side_box->addWidget(services);
-	side_box->addItem(new QSpacerItem(0, 8, QSizePolicy::Preferred, QSizePolicy::Fixed));
-	side_box->addWidget(bouquets, 1);
-	side_box->setContentsMargins(0, 0, 0, 0);
-	side->setLayout(side_box);
+	tbox->addWidget(sfrm);
+	tbox->addItem(new QSpacerItem(0, 8, QSizePolicy::Preferred, QSizePolicy::Fixed));
+	tbox->addWidget(tfrm, 1);
+	tbox->setContentsMargins(0, 0, 0, 0);
+	afrm->setLayout(tbox);
 
-	list_layout->addWidget(list);
-	list_layout->setContentsMargins(0, 0, 0, 0);
-	// list_layout->setContentsMargins(3, 3, 3, 3); // #channels_wrap
-	list_wrap->setLayout(list_layout);
+	lwrap->addWidget(list);
+	lwrap->setContentsMargins(0, 0, 0, 0);
+	// lwrap->setContentsMargins(3, 3, 3, 3); // #list_wrap
+	list_wrap->setLayout(lwrap);
 
-	list_box->addWidget(list_wrap);
-	list_box->addWidget(list_search);
-	list_box->addWidget(list_reference);
-	list_box->addWidget(list_ats);
-	channels->setLayout(list_box);
+	lbox->addWidget(list_wrap);
+	lbox->addWidget(list_search);
+	lbox->addWidget(list_reference);
+	lbox->addWidget(list_ats);
+	lfrm->setLayout(lbox);
 
-	side->setMinimumWidth(250);
-	channels->setMinimumWidth(510);
+	afrm->setMinimumWidth(250);
+	lfrm->setMinimumWidth(510);
 
-	splitterc->addWidget(side);
-	splitterc->addWidget(channels);
-	splitterc->setStretchFactor(0, 1);
-	splitterc->setStretchFactor(1, 4);
+	swid->addWidget(afrm);
+	swid->addWidget(lfrm);
+	swid->setStretchFactor(0, 1);
+	swid->setStretchFactor(1, 4);
 
-	frm->addWidget(splitterc);
+	frm->addWidget(swid);
 	frm->setContentsMargins(0, 0, 0, 0);
 
 	vector<pair<QString, QString>> tree = {
@@ -289,7 +291,7 @@ void mainView::layout()
 		titem->setData(0, Qt::UserRole, QVariant (tdata));
 		titem->setText(0, item.second);
 		titem->setIcon(0, theme::spacer(2));
-		services_tree->addTopLevelItem(titem);
+		side->addTopLevelItem(titem);
 	}
 }
 
@@ -369,6 +371,8 @@ void mainView::load()
 {
 	debug("load()");
 
+	this->state.evt = true;
+
 	tabUpdateFlags(gui::init);
 
 	this->dbih = this->data->dbih;
@@ -418,8 +422,8 @@ void mainView::load()
 
 	tree->setDragEnabled(true);
 	tree->setAcceptDrops(true);
-	services_tree->setCurrentItem(services_tree->topLevelItem(0));
-	populate(services_tree);
+	side->setCurrentItem(side->topLevelItem(0));
+	populate(side);
 	updateFlags();
 	updateStatus();
 }
@@ -428,9 +432,12 @@ void mainView::reset()
 {
 	debug("reset()");
 
+	this->state.evt = false;
+
+	tabUnsetPendingUpdateChannelsIndex();
+
 	this->state.dnd = true;
-	this->state.changed = false;
-	this->state.reindex = false;
+	this->state.vlx_pending = false;
 	this->state.refbox = list_reference->isVisible();
 	this->state.tc = 0;
 	this->state.ti = 0;
@@ -449,6 +456,7 @@ void mainView::reset()
 	list->header()->setSortIndicatorShown(false);
 	list->header()->setSectionsClickable(false);
 	list->header()->setSortIndicator(0, Qt::AscendingOrder);
+
 	cache.clear();
 
 	this->lsr_find.curr = -1;
@@ -462,21 +470,24 @@ void mainView::reset()
 	tabResetStatus();
 
 	this->dbih = nullptr;
+
+	this->state.evt = true;
 }
 
 void mainView::populate(QTreeWidget* side_tree)
 {
 	string curr;
 	string prev;
+
 	bool precached = false;
-	QList<QTreeWidgetItem*> cachep;
+	QList<QTreeWidgetItem*> items_prev;
 	
 	if (! cache.empty())
 	{
 		for (int i = 0; i < list->topLevelItemCount(); i++)
 		{
 			QTreeWidgetItem* item = list->topLevelItem(i);
-			cachep.append(item->clone());
+			items_prev.append(item->clone());
 		}
 		precached = true;
 		prev = string (this->state.curr);
@@ -495,24 +506,27 @@ void mainView::populate(QTreeWidget* side_tree)
 		this->state.curr = curr;
 	}
 
-	if (dbih->index.count(curr))
-		debug("populate()", "curr", curr);
+	string bname = this->state.curr;
+
+	if (dbih->index.count(bname))
+		debug("populate()", "current", bname);
 	else
-		error("populate()", "curr", curr);
+		error("populate()", "current", bname);
 
 	list->header()->setSortIndicatorShown(true);
 	list->header()->setSectionsClickable(false);
 	list->clear();
+
 	if (precached)
 	{
-		cache[prev].swap(cachep);
+		cache[prev].swap(items_prev);
 	}
 
 	int i = 0;
 
-	if (cache[curr].isEmpty())
+	if (cache[bname].isEmpty())
 	{
-		for (auto & ch : dbih->index[curr])
+		for (auto & ch : dbih->index[bname])
 		{
 			char ci[7];
 			std::sprintf(ci, "%06d", i++);
@@ -525,6 +539,7 @@ void mainView::populate(QTreeWidget* side_tree)
 			if (dbih->db.services.count(ch.second))
 			{
 				entry = dbih->entries.services[ch.second];
+				//TODO TEST idx changed after edit
 				idx = QString::fromStdString(to_string(ch.first));
 				entry.prepend(idx);
 				entry.prepend(x);
@@ -532,8 +547,8 @@ void mainView::populate(QTreeWidget* side_tree)
 			else
 			{
 				e2db::channel_reference chref;
-				if (dbih->userbouquets.count(curr))
-					chref = dbih->userbouquets[curr].channels[ch.second];
+				if (dbih->userbouquets.count(bname))
+					chref = dbih->userbouquets[bname].channels[ch.second];
 
 				if (chref.marker)
 				{
@@ -568,7 +583,9 @@ void mainView::populate(QTreeWidget* side_tree)
 			{
 				item->setIcon(ITEM_ROW_ROLE::chcas, theme::icon("crypted"));
 			}
+
 			cache[curr].append(item);
+
 		}
 	}
 
@@ -598,7 +615,7 @@ void mainView::treeSwitched(QTreeWidget* tree, QTreeWidgetItem* item)
 
 	int tc = -1;
 
-	if (tree == this->services_tree)
+	if (tree == this->side)
 		tc = 0;
 	else if (tree == this->tree)
 		tc = 1;
@@ -621,7 +638,7 @@ void mainView::servicesItemChanged(QTreeWidgetItem* current)
 
 	if (current != NULL)
 	{
-		int ti = services_tree->indexOfTopLevelItem(current);
+		int ti = side->indexOfTopLevelItem(current);
 
 		this->action.list_addch->setDisabled(true);
 		this->action.list_addmk->setDisabled(true);
@@ -647,8 +664,10 @@ void mainView::servicesItemChanged(QTreeWidgetItem* current)
 		list->scrollToTop();
 	}
 
-	tid->updateChannelsIndex();
-	populate(services_tree);
+	tabUpdateChannelsIndex();
+
+	populate(side);
+
 	updateFlags();
 	updateStatus(true);
 }
@@ -702,8 +721,10 @@ void mainView::treeItemChanged(QTreeWidgetItem* current)
 		list->scrollToTop();
 	}
 
-	tid->updateChannelsIndex();
+	tabUpdateChannelsIndex();
+
 	populate(tree);
+
 	updateFlags();
 	updateStatus(true);
 }
@@ -798,9 +819,12 @@ void mainView::listPendingUpdate()
 	}
 	else
 	{
-		this->state.reindex = true;
+		this->state.vlx_pending = true;
 	}
-	this->state.changed = true;
+
+	tabSetPendingUpdateChannelsIndex();
+
+	this->data->setChanged(true);
 }
 
 void mainView::visualReindexList()
@@ -840,7 +864,7 @@ void mainView::visualReindexList()
 		y = marker ? reverse ? y - 1 : y + 1 : y;
 	}
 
-	this->state.reindex = false;
+	this->state.vlx_pending = false;
 }
 
 void mainView::sortByColumn(int column)
@@ -877,7 +901,7 @@ void mainView::sortByColumn(int column)
 		else
 			list->header()->setSortIndicatorShown(true);
 
-		if (this->state.reindex)
+		if (this->state.vlx_pending)
 			this->visualReindexList();
 	}
 	this->state.sort = pair (column, order); //C++17
@@ -963,7 +987,9 @@ void mainView::addUserbouquet()
 	tree->setDragEnabled(true);
 	tree->setAcceptDrops(true);
 
-	tid->updateBouquetsIndex();
+	tabUpdateBouquetsIndex();
+
+	this->data->setChanged(true);
 }
 
 void mainView::editUserbouquet()
@@ -999,7 +1025,9 @@ void mainView::editUserbouquet()
 		name = QString::fromStdString(uboq.name);
 	item->setText(0, name);
 
-	tid->updateBouquetsIndex();
+	tabUpdateBouquetsIndex();
+
+	this->data->setChanged(true);
 }
 
 void mainView::addChannel()
@@ -1009,6 +1037,8 @@ void mainView::addChannel()
 	e2se_gui::dialChannelBook* book = new e2se_gui::dialChannelBook(this->data, this->log->log);
 	book->setEventCallback([=](vector<QString> items) { this->putListItems(items); });
 	book->display(cwid);
+
+	this->data->setChanged(true);
 }
 
 void mainView::addService()
@@ -1016,7 +1046,6 @@ void mainView::addService()
 	debug("addService()");
 
 	string chid;
-	string curr = this->state.curr;
 	e2se_gui::editService* add = new e2se_gui::editService(this->data, this->log->log);
 	add->display(cwid);
 	chid = add->getAddId(); // returned after dial.exec()
@@ -1028,6 +1057,7 @@ void mainView::addService()
 		return error("addService()", "chid", chid);
 
 	cache.clear();
+
 	list->header()->setSectionsClickable(false);
 	list->setDragEnabled(false);
 	list->setAcceptDrops(false);
@@ -1077,11 +1107,14 @@ void mainView::addService()
 	if (this->state.dnd)
 		visualReindexList();
 	else
-		this->state.reindex = true;
-	this->state.changed = true;
+		this->state.vlx_pending = true;
+
+	tabSetPendingUpdateChannelsIndex();
 
 	updateFlags();
 	updateStatus();
+
+	this->data->setChanged(true);
 }
 
 void mainView::editService()
@@ -1124,6 +1157,8 @@ void mainView::editService()
 	for (int i = 0; i < entry.count(); i++)
 		item->setText(i, entry[i]);
 	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
+
+	this->data->setChanged(true);
 }
 
 void mainView::addMarker()
@@ -1131,23 +1166,24 @@ void mainView::addMarker()
 	debug("addMarker()");
 
 	string chid;
-	string curr = this->state.curr;
+	string bname = this->state.curr;
 	e2se_gui::editMarker* add = new e2se_gui::editMarker(this->data, this->log->log);
-	add->setAddId(curr);
+	add->setAddId(bname);
 	add->display(cwid);
 	chid = add->getAddId(); // returned after dial.exec()
 	add->destroy();
 
 	e2db::channel_reference chref;
-	if (dbih->userbouquets.count(curr))
-		chref = dbih->userbouquets[curr].channels[chid];
+	if (dbih->userbouquets.count(bname))
+		chref = dbih->userbouquets[bname].channels[chid];
 
 	if (chref.marker)
 		debug("addMarker()", "chid", chid);
 	else
 		return error("addMarker()", "chid", chid);
 
-	cache.clear();
+	cache[bname].clear();
+
 	list->header()->setSectionsClickable(false);
 	list->setDragEnabled(false);
 	list->setAcceptDrops(false);
@@ -1196,11 +1232,14 @@ void mainView::addMarker()
 	if (this->state.dnd)
 		visualReindexList();
 	else
-		this->state.reindex = true;
-	this->state.changed = true;
+		this->state.vlx_pending = true;
+
+	tabSetPendingUpdateChannelsIndex();
 
 	updateFlags();
 	updateStatus();
+
+	this->data->setChanged(true);
 }
 
 void mainView::editMarker()
@@ -1215,7 +1254,7 @@ void mainView::editMarker()
 	QTreeWidgetItem* item = selected.first();
 	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 	string nw_chid;
-	string curr = this->state.curr;
+	string bname = this->state.curr;
 	bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
 
 	if (marker)
@@ -1224,27 +1263,29 @@ void mainView::editMarker()
 		return error("editMarker()", "chid", chid);
 
 	e2se_gui::editMarker* edit = new e2se_gui::editMarker(this->data, this->log->log);
-	edit->setEditId(chid, curr);
+	edit->setEditId(chid, bname);
 	edit->display(cwid);
 	nw_chid = edit->getEditId(); // returned after dial.exec()
 	edit->destroy();
 
 	e2db::channel_reference chref;
-	if (dbih->userbouquets.count(curr))
-		chref = dbih->userbouquets[curr].channels[chid];
+	if (dbih->userbouquets.count(bname))
+		chref = dbih->userbouquets[bname].channels[chid];
 
 	if (chref.marker)
 		debug("editMarker()", "new chid", nw_chid);
 	else
 		return error("editMarker()", "new chid", nw_chid);
 
-	cache.clear();
+	cache[bname].clear();
 
 	QStringList entry = dbih->entryMarker(chref);
 	entry.prepend(item->text(ITEM_ROW_ROLE::x));
 	for (int i = 0; i < entry.count(); i++)
 		item->setText(i, entry[i]);
 	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
+
+	this->data->setChanged(true);
 }
 
 void mainView::treeItemDelete()
@@ -1274,10 +1315,12 @@ void mainView::treeItemDelete()
 		parent->removeChild(item);
 	}
 
-	this->state.changed = true;
+	tabSetPendingUpdateChannelsIndex();
+	tabUpdateBouquetsIndex();
 
-	tid->updateBouquetsIndex();
 	updateStatus();
+
+	this->data->setChanged(true);
 }
 
 void mainView::listReferenceToggle()
@@ -1346,10 +1389,10 @@ void mainView::listItemCopy(bool cut)
 		// bouquets tree
 		if (this->state.tc)
 		{
-			string curr = this->state.curr;
+			string bname = this->state.curr;
 			e2db::channel_reference chref;
-			if (dbih->userbouquets.count(curr))
-				chref = dbih->userbouquets[curr].channels[chid];
+			if (dbih->userbouquets.count(bname))
+				chref = dbih->userbouquets[bname].channels[chid];
 			string crefid = dbih->get_reference_id(chref);
 			refid = QString::fromStdString(crefid);
 		}
@@ -1379,7 +1422,7 @@ void mainView::listItemPaste()
 {
 	debug("listItemPaste()", "entered", ! (this->state.tc && this->state.ti != -1));
 
-	// services_tree && bouquet: tv | radio
+	// side && bouquet: tv | radio
 	if (this->state.tc && this->state.ti != -1)
 		return;
 
@@ -1415,9 +1458,10 @@ void mainView::listItemPaste()
 		// bouquets tree
 		if (this->state.tc)
 		{
-			string curr = this->state.curr;
-			e2db::userbouquet uboq = dbih->userbouquets[curr];
+			string bname = this->state.curr;
+			e2db::userbouquet uboq = dbih->userbouquets[bname];
 			string pname = uboq.pname;
+
 			cache[pname].clear();
 		}
 		// services tree
@@ -1429,13 +1473,15 @@ void mainView::listItemPaste()
 			cache["chs:2"].clear();
 		}
 	}
+
+	this->data->setChanged(true);
 }
 
 void mainView::listItemDelete()
 {
 	debug("listItemDelete()", "entered", ! (this->state.tc && this->state.ti != -1));
 
-	// services_tree && bouquet: tv | radio
+	// side && bouquet: tv | radio
 	if (this->state.tc && this->state.ti != -1)
 		return;
 
@@ -1448,13 +1494,13 @@ void mainView::listItemDelete()
 	list->setDragEnabled(false);
 	list->setAcceptDrops(false);
 
-	string curr = this->state.curr;
 	string pname;
+	string bname = this->state.curr;
 
 	// bouquets tree
 	if (this->state.tc)
 	{
-		e2db::userbouquet uboq = dbih->userbouquets[curr];
+		e2db::userbouquet uboq = dbih->userbouquets[bname];
 		pname = uboq.pname;
 	}
 	for (auto & item : selected)
@@ -1466,13 +1512,15 @@ void mainView::listItemDelete()
 		// bouquets tree
 		if (this->state.tc)
 		{
-			dbih->removeChannelReference(chid, curr);
+			dbih->removeChannelReference(chid, bname);
+
 			cache[pname].clear();
 		}
 		// services tree
 		else
 		{
 			dbih->removeService(chid);
+
 			cache["chs"].clear();
 			cache["chs:0"].clear();
 			cache["chs:1"].clear();
@@ -1488,11 +1536,14 @@ void mainView::listItemDelete()
 	if (this->state.dnd)
 		visualReindexList();
 	else
-		this->state.reindex = true;
-	this->state.changed = true;
+		this->state.vlx_pending = true;
+
+	tabSetPendingUpdateChannelsIndex();
 
 	updateFlags();
 	updateStatus();
+
+	this->data->setChanged(true);
 }
 
 //TODO duplicates
@@ -1510,8 +1561,8 @@ void mainView::putListItems(vector<QString> items)
 	i = current != nullptr ? parent->indexOfChild(current) : list->topLevelItemCount();
 	y = i + 1;
 
-	string curr = this->state.curr;
-	e2db::userbouquet uboq = dbih->userbouquets[curr];
+	string bname = this->state.curr;
+	e2db::userbouquet uboq = dbih->userbouquets[bname];
 	int ub_idx = uboq.index;
 	int anum_count = dbih->index["mks"].size();
 
@@ -1613,7 +1664,7 @@ void mainView::putListItems(vector<QString> items)
 
 		// bouquets tree
 		if (this->state.tc)
-			dbih->add_channel_reference(chref, curr);
+			dbih->add_channel_reference(chref, bname);
 		// services tree
 		else
 			dbih->addService(ch);
@@ -1632,8 +1683,9 @@ void mainView::putListItems(vector<QString> items)
 	if (this->state.dnd)
 		visualReindexList();
 	else
-		this->state.reindex = true;
-	this->state.changed = true;
+		this->state.vlx_pending = true;
+
+	tabSetPendingUpdateChannelsIndex();
 
 	updateFlags();
 	updateStatus();
@@ -1648,7 +1700,7 @@ void mainView::showTreeEditContextMenu(QPoint &pos)
 	// bouquet: tv | radio
 	if (this->state.ti != -1)
 	{
-		bouquet_export->connect(bouquet_export, &QAction::triggered, [=]() { tid->exportFile(); });
+		bouquet_export->connect(bouquet_export, &QAction::triggered, [=]() { tabExportFile(); });
 	}
 	// userbouquet
 	else
@@ -1656,7 +1708,7 @@ void mainView::showTreeEditContextMenu(QPoint &pos)
 		tree_edit->addAction("Edit Userbouquet", [=]() { this->editUserbouquet(); });
 		tree_edit->addSeparator();
 		tree_edit->addAction("Delete", [=]() { this->treeItemDelete(); });
-		bouquet_export->connect(bouquet_export, &QAction::triggered, [=]() { tid->exportFile(); });
+		bouquet_export->connect(bouquet_export, &QAction::triggered, [=]() { tabExportFile(); });
 	}
 	tree_edit->addSeparator();
 	tree_edit->addAction(bouquet_export);
@@ -1690,12 +1742,12 @@ void mainView::updateStatus(bool current)
 
 	if (current && ! this->state.curr.empty())
 	{
-		string curr = this->state.curr;
-		status.counters[gui::COUNTER::bouquet] = dbih->index[curr].size();
+		string bname = this->state.curr;
+		status.counters[gui::COUNTER::bouquet] = dbih->index[bname].size();
 
 		// bouquets tree
 		if (this->state.tc)
-			status.bname = curr;
+			status.bname = bname;
 	}
 	else
 	{
@@ -1730,8 +1782,8 @@ void mainView::updateReferenceBox()
 		// bouquets tree
 		if (this->state.tc)
 		{
-			string curr = this->state.curr;
-			e2db::channel_reference chref = dbih->userbouquets[curr].channels[chid];
+			string bname = this->state.curr;
+			e2db::channel_reference chref = dbih->userbouquets[bname].channels[chid];
 			string crefid = dbih->get_reference_id(chref);
 			refid = QString::fromStdString(crefid);
 		}
@@ -1850,6 +1902,28 @@ void mainView::updateFlags()
 	tabSetFlag(gui::TunersetsAtsc, true);
 
 	tabUpdateFlags();
+}
+
+void mainView::tabUpdateBouquetsIndex()
+{
+	tid->updateBouquetsIndex();
+}
+
+//TODO
+void mainView::tabUpdateChannelsIndex()
+{
+	tid->setPendingUpdateChannelsIndex();
+	tid->updateChannelsIndex();
+}
+
+void mainView::tabSetPendingUpdateChannelsIndex()
+{
+	tid->setPendingUpdateChannelsIndex();
+}
+
+void mainView::tabUnsetPendingUpdateChannelsIndex()
+{
+	tid->unsetPendingUpdateChannelsIndex();
 }
 
 }

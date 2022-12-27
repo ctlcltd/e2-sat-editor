@@ -22,4 +22,35 @@ ftpHandler::ftpHandler(e2se::logger::session* log)
 	debug("ftpHandler()");
 }
 
+ftpHandler::~ftpHandler()
+{
+	if (this->ftih != nullptr)
+		this->ftih->disconnect();
+	delete this->ftih;
+}
+
+void ftpHandler::openConnection()
+{
+	if (this->ftih == nullptr)
+		this->ftih = new ftpcom(this->log->log);
+	this->ftih->connect();
+}
+
+void ftpHandler::closeConnection()
+{
+	if (this->ftih != nullptr)
+		this->ftih->disconnect();
+	delete this->ftih;
+	this->ftih = nullptr;
+}
+
+bool ftpHandler::handleConnection()
+{
+	if (this->ftih == nullptr)
+		this->ftih = new ftpcom(this->log->log);
+	if (this->ftih->connect())
+		return true;
+	return false;
+}
+
 }

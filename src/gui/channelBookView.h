@@ -60,6 +60,21 @@ class channelBookView : public viewAbstract
 		void listItemPaste() {};
 		void listItemDelete() {};
 		vector<QString> getSelected();
+
+		struct __state
+		{
+			// toggle tree events
+			bool evt;
+			// tree current
+			string curr;
+			// view selector
+			// 0 tabv | list
+			// 1 tree | list
+			// 2 list
+			int vx;
+			// list_tree sort
+			pair<int, Qt::SortOrder> sort;
+		} state;
 	protected:
 		void layout();
 		void sideLayout();
@@ -73,11 +88,7 @@ class channelBookView : public viewAbstract
 		map<string, vector<pair<int, string>>> index;
 	private:
 		QWidget* cwid;
-		// view selector
-		// 0 tabv | list
-		// 1 tree | list
-		// 2 list
-		int vx;
+
 };
 }
 #endif /* channelBookView_h */

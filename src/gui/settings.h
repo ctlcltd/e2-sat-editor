@@ -64,7 +64,7 @@ class settings : protected e2se::log_factory
 		void save();
 		QSettings* sets;
 
-		struct sts
+		struct __state
 		{
 			// previous tab index
 			int prev;

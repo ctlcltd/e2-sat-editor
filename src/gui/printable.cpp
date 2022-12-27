@@ -168,7 +168,7 @@ void printable::documentTunersets(int ytype)
 	string filename;
 	switch (ytype)
 	{
-		case e2db::YTYPE::sat:
+		case e2db::YTYPE::satellite:
 			filename = "satellites.xml";
 		break;
 		case e2db::YTYPE::terrestrial:
@@ -492,21 +492,8 @@ void printable::pageBodyTunersetsList(html_page& page, int ytype)
 
 	e2db::tunersets tvoq = dbih->tuners[ytype];
 	string iname = "tns:";
-	switch (ytype)
-	{
-		case e2db::YTYPE::sat:
-			iname += 's';
-		break;
-		case e2db::YTYPE::terrestrial:
-			iname += 't';
-		break;
-		case e2db::YTYPE::cable:
-			iname += 'c';
-		break;
-		case e2db::YTYPE::atsc:
-			iname += 'a';
-		break;
-	}
+	char yname = dbih->value_transponder_type(ytype);
+	iname += yname;
 	
 	for (auto & x : dbih->index[iname])
 	{
@@ -514,7 +501,7 @@ void printable::pageBodyTunersetsList(html_page& page, int ytype)
 		e2db::tunersets_table tns = tvoq.tables[tnid];
 		QString tnname = QString::fromStdString(tns.name);
 		string ppos;
-		if (ytype == e2db::YTYPE::sat)
+		if (ytype == e2db::YTYPE::satellite)
 		{
 			ppos = dbih->value_transponder_position(tns);
 		}
@@ -523,13 +510,13 @@ void printable::pageBodyTunersetsList(html_page& page, int ytype)
 		page.body += "<div class=\"transponder\">";
 		page.body += "<h4>Transponders</h4>";
 		page.body += "<h2>" + tnname + "</h2>";
-		if (ytype == e2db::YTYPE::sat)
+		if (ytype == e2db::YTYPE::satellite)
 			page.body += "<p>Position: <b>" + pos + "</b></p>";
 		page.body += "<table>";
 		page.body += "<thead>";
 		page.body += "<tr>";
 		page.body += "<th>Index</th>";
-		if (ytype == e2db::YTYPE::sat)
+		if (ytype == e2db::YTYPE::satellite)
 		{
 			page.body += "<th>Freq</th>";
 			page.body += "<th>Pol</th>";
@@ -580,17 +567,17 @@ void printable::pageBodyTunersetsList(html_page& page, int ytype)
 
 			page.body += "<tr>";
 			page.body += "<td class=\"trid\">" + QString::fromStdString(to_string(i++)) + "</td>";
-			if (ytype == e2db::YTYPE::sat)
+			if (ytype == e2db::YTYPE::satellite)
 			{
 				QString freq = QString::fromStdString(to_string(tntxp.freq));
-				QString pol = QString::fromStdString(e2db::SAT_POL[tntxp.pol]);
+				QString pol = QString::fromStdString(dbih->value_transponder_polarization(tntxp.pol));
 				QString sr = QString::fromStdString(to_string(tntxp.sr));
-				QString fec = QString::fromStdString(e2db::SAT_FEC[tntxp.fec]);
-				QString sys = QString::fromStdString(e2db::SAT_SYS[tntxp.sys]);
-				QString mod = QString::fromStdString(e2db::SAT_MOD[tntxp.mod]);
-				QString inv = QString::fromStdString(e2db::SAT_INV[tntxp.inv]);
-				QString pil = QString::fromStdString(e2db::SAT_PIL[tntxp.pil]);
-				QString rol = QString::fromStdString(e2db::SAT_ROL[tntxp.rol]);
+				QString fec = QString::fromStdString(dbih->value_transponder_fec(tntxp.fec, e2db::YTYPE::satellite));
+				QString sys = QString::fromStdString(dbih->value_transponder_system(tntxp.sys, e2db::YTYPE::satellite));
+				QString mod = QString::fromStdString(dbih->value_transponder_modulation(tntxp.mod, e2db::YTYPE::satellite));
+				QString inv = QString::fromStdString(dbih->value_transponder_inversion(tntxp.inv, e2db::YTYPE::satellite));
+				QString pil = QString::fromStdString(dbih->value_transponder_pilot(tntxp.pil));
+				QString rol = QString::fromStdString(dbih->value_transponder_rollof(tntxp.rol));
 
 				page.body += "<td>" + freq + "</td>";
 				page.body += "<td>" + pol + "</td>";
@@ -605,15 +592,15 @@ void printable::pageBodyTunersetsList(html_page& page, int ytype)
 			else if (ytype == e2db::YTYPE::terrestrial)
 			{
 				QString freq = QString::fromStdString(to_string(tntxp.freq));
-				QString tmod = QString::fromStdString(e2db::TER_MOD[tntxp.tmod]);
-				QString band = QString::fromStdString(e2db::TER_BAND[tntxp.band]);
-				QString sys = "DVB-T";
-				QString tmx = QString::fromStdString(e2db::TER_TRXMODE[tntxp.tmx]);
-				QString hpfec = QString::fromStdString(e2db::TER_FEC[tntxp.hpfec]);
-				QString lpfec = QString::fromStdString(e2db::TER_FEC[tntxp.lpfec]);
-				QString inv = QString::fromStdString(e2db::TER_INV[tntxp.inv]);
-				QString guard = QString::fromStdString(e2db::TER_GUARD[tntxp.guard]);
-				QString hier = QString::fromStdString(e2db::TER_HIER[tntxp.hier]);
+				QString tmod = QString::fromStdString(dbih->value_transponder_modulation(tntxp.tmod, e2db::YTYPE::terrestrial));
+				QString band = QString::fromStdString(dbih->value_transponder_bandwidth(tntxp.band));
+				QString sys = QString::fromStdString(dbih->value_transponder_system(tntxp.sys, e2db::YTYPE::terrestrial));
+				QString tmx = QString::fromStdString(dbih->value_transponder_tmx_mode(tntxp.tmx));
+				QString hpfec = QString::fromStdString(dbih->value_transponder_fec(tntxp.hpfec, e2db::YTYPE::terrestrial));
+				QString lpfec = QString::fromStdString(dbih->value_transponder_fec(tntxp.lpfec, e2db::YTYPE::terrestrial));
+				QString inv = QString::fromStdString(dbih->value_transponder_inversion(tntxp.inv, e2db::YTYPE::terrestrial));
+				QString guard = QString::fromStdString(dbih->value_transponder_guard(tntxp.guard));
+				QString hier = QString::fromStdString(dbih->value_transponder_hier(tntxp.hier));
 
 				page.body += "<td>" + freq + "</td>";
 				page.body += "<td>" + tmod + "</td>";
@@ -629,11 +616,11 @@ void printable::pageBodyTunersetsList(html_page& page, int ytype)
 			else if (ytype == e2db::YTYPE::cable)
 			{
 				QString freq = QString::fromStdString(to_string(tntxp.freq));
-				QString cmod = QString::fromStdString(e2db::CAB_MOD[tntxp.cmod]);
+				QString cmod = QString::fromStdString(dbih->value_transponder_modulation(tntxp.cmod, e2db::YTYPE::cable));
 				QString sr = QString::fromStdString(to_string(tntxp.sr));
-				QString cfec = QString::fromStdString(e2db::CAB_FEC[tntxp.cfec]);
-				QString inv = QString::fromStdString(e2db::CAB_INV[tntxp.inv]);
-				QString sys = "DVB-C";
+				QString cfec = QString::fromStdString(dbih->value_transponder_fec(tntxp.cfec, e2db::YTYPE::cable));
+				QString inv = QString::fromStdString(dbih->value_transponder_inversion(tntxp.inv, e2db::YTYPE::cable));
+				QString sys = QString::fromStdString(dbih->value_transponder_system(tntxp.sys, e2db::YTYPE::cable));
 
 				page.body += "<td>" + freq + "</td>";
 				page.body += "<td>" + cmod + "</td>";
@@ -646,7 +633,7 @@ void printable::pageBodyTunersetsList(html_page& page, int ytype)
 			{
 				QString freq = QString::fromStdString(to_string(tntxp.freq));
 				QString amod = QString::fromStdString(to_string(tntxp.amod));
-				QString sys = "ATSC";
+				QString sys = QString::fromStdString(dbih->value_transponder_system(tntxp.sys, e2db::YTYPE::atsc));
 
 				page.body += "<td>" + freq + "</td>";
 				page.body += "<td>" + amod + "</td>";
