@@ -50,7 +50,6 @@ class tab : protected e2se::log_factory
 		vector<tab*> children();
 		void addChild(tab* child);
 		void removeChild(tab* child);
-		void setTabId(int ttid);
 		int getTabId();
 		void setTabName(string ttname);
 		string getTabName();
@@ -118,7 +117,6 @@ class tab : protected e2se::log_factory
 		int ttid = -1;
 		string ttname;
 		e2db* dbih = nullptr;
-		ftpcom* ftcom = nullptr;
 };
 }
 #endif /* tab_h */

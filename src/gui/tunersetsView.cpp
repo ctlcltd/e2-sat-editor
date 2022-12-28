@@ -163,13 +163,13 @@ void tunersetsView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::rowB, 70);		// Roll offset | Guard
 	list->setColumnWidth(ITEM_ROW_ROLE::rowC, 70);		// Hierarchy
 
-	tree->connect(tree, &QTreeWidget::currentItemChanged, [=]() { if (this->state.evt) this->treeItemChanged(); });
-	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { if (this->state.evt) this->sortByColumn(column); });
+	tree->connect(tree, &QTreeWidget::currentItemChanged, [=]() { this->treeItemChanged(); });
+	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->sortByColumn(column); });
 
 	tree->setContextMenuPolicy(Qt::CustomContextMenu);
-	tree->connect(tree, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { if (this->state.evt) this->showTreeEditContextMenu(pos); });
+	tree->connect(tree, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { this->showTreeEditContextMenu(pos); });
 	list->setContextMenuPolicy(Qt::CustomContextMenu);
-	list->connect(list, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { if (this->state.evt) this->showListEditContextMenu(pos); });
+	list->connect(list, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { this->showListEditContextMenu(pos); });
 
 	searchLayout();
 
@@ -264,8 +264,6 @@ void tunersetsView::searchLayout()
 void tunersetsView::load()
 {
 	debug("load()");
-	
-	this->state.evt = true;
 
 	tabUpdateFlags(gui::init);
 
@@ -302,20 +300,18 @@ void tunersetsView::reset()
 {
 	debug("reset()");
 
-	this->state.evt = false;
-
 	this->state.curr = "";
 	this->state.sort = pair (-1, Qt::AscendingOrder); //C++17
 
-	tree->clear();
+	tree->reset();
 	tree->setDragEnabled(false);
 	tree->setAcceptDrops(false);
-	tree->reset();
+	tree->clear();
 
-	list->clear();
+	list->reset();
 	list->setDragEnabled(false);
 	list->setAcceptDrops(false);
-	list->reset();
+	list->clear();
 	list->header()->setSortIndicatorShown(false);
 	list->header()->setSectionsClickable(false);
 	list->header()->setSortIndicator(0, Qt::AscendingOrder);
@@ -328,8 +324,6 @@ void tunersetsView::reset()
 	tabResetStatus();
 
 	this->dbih = nullptr;
-
-	this->state.evt = true;
 }
 
 void tunersetsView::populate()

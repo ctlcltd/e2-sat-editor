@@ -111,9 +111,9 @@ void channelBookView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::chtxp, 175);	// Transponder
 	list->setColumnWidth(ITEM_ROW_ROLE::chpos, 120);	// Position
 
-	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { if (this->state.evt) this->sortByColumn(column); });
-	tree->connect(tree, &QTreeWidget::currentItemChanged, [=]() { if (this->state.evt) this->populate(); });
-	tabv->connect(tabv, &QTabBar::currentChanged, [=]() { if (this->state.evt) this->populate(); });
+	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->sortByColumn(column); });
+	tree->connect(tree, &QTreeWidget::currentItemChanged, [=]() { this->populate(); });
+	tabv->connect(tabv, &QTabBar::currentChanged, [=]() { this->populate(); });
 
 	swid->addWidget(tree);
 	swid->addWidget(list);
@@ -162,8 +162,6 @@ void channelBookView::load()
 {
 	debug("load()");
 
-	this->state.evt = true;
-
 	tabUpdateFlags(gui::init);
 	this->dbih = this->data->dbih;
 
@@ -174,13 +172,11 @@ void channelBookView::reset()
 {
 	debug("reset()");
 
-	this->state.evt = false;
-
-	tree->clear();
 	tree->reset();
+	tree->clear();
 
-	list->clear();
 	list->reset();
+	list->clear();
 	list->header()->setSortIndicatorShown(false);
 	list->header()->setSectionsClickable(false);
 	list->header()->setSortIndicator(0, Qt::AscendingOrder);
@@ -191,8 +187,6 @@ void channelBookView::reset()
 	tabResetStatus();
 
 	this->dbih = nullptr;
-
-	this->state.evt = true;
 }
 
 void channelBookView::populate()

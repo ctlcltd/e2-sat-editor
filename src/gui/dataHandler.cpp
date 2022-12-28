@@ -52,11 +52,11 @@ bool dataHandler::readFile(string filename)
 	return false;
 }
 
-bool dataHandler::writeFile(string path, bool Changed)
+bool dataHandler::writeFile(string path, bool overwrite)
 {
 	debug("writeFile()");
 
-	if (this->dbih->write(path, Changed))
+	if (this->dbih->write(path, overwrite))
 	{
 		this->filename = path;
 		return true;

@@ -15,7 +15,6 @@
 #define ListEventHandler_h
 #include <QObject>
 #include <QEvent>
-#include <functional>
 
 namespace e2se_gui
 {

@@ -10,6 +10,7 @@
  */
 
 #include <cstdio>
+#include <cstdlib>
 #include <cmath>
 #include <algorithm>
 #include <filesystem>
@@ -53,6 +54,11 @@ tab::tab(gui* gid, QWidget* cwid, e2se::logger::session* log)
 {
 	this->log = new logger(log, "tab");
 	debug("tab()");
+
+	int uniqtt = reinterpret_cast<std::uintptr_t>(this);
+	std::srand(uniqtt);
+	uniqtt &= std::rand();
+	this->ttid = uniqtt;
 
 	this->gid = gid;
 	this->cwid = cwid;
@@ -111,11 +117,6 @@ void tab::removeChild(tab* child)
 int tab::getTabId()
 {
 	return this->ttid;
-}
-
-void tab::setTabId(int ttid)
-{
-	this->ttid = ttid;
 }
 
 string tab::getTabName()
@@ -268,12 +269,8 @@ void tab::load()
 
 	view->load();
 
-	//TODO FIX EXC_BAD_ACCESS
 	for (auto & child : childs)
-	{
-		if (child != nullptr)
-			child->view->load();
-	}
+		child->view->load();
 }
 
 void tab::reset()
@@ -282,12 +279,8 @@ void tab::reset()
 
 	view->reset();
 
-	//TODO FIX EXC_BAD_ACCESS
 	for (auto & child : childs)
-	{
-		if (child != nullptr)
-			child->view->reset();
-	}
+		child->view->reset();
 }
 
 void tab::layout()

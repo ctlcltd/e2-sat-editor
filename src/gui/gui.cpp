@@ -295,12 +295,10 @@ void gui::tabViewSwitch(TAB_VIEW ttv, int arg)
 
 int gui::newTab(string filename)
 {
-	this->tt++;
-	int ttid = this->tt;
-	
-	debug("newTab()", "ttid", ttid);
-
 	tab* ttab = new tab(this, mwid, this->log->log);
+	int ttid = ttab->getTabId();
+
+	debug("newTab()", "ttid", ttid);
 
 	if (! filename.empty() && ! ttab->readFile(filename))
 	{
@@ -309,7 +307,6 @@ int gui::newTab(string filename)
 	}
 
 	bool read = ! filename.empty();
-	ttab->setTabId(ttid);
 	ttab->viewMain();
 
 	QString ttname = "Untitled";
@@ -350,17 +347,20 @@ int gui::openTab(TAB_VIEW view)
 
 int gui::openTab(TAB_VIEW view, int arg)
 {
-	this->tt++;
-	int ttid = this->tt;
-	
-	debug("openTab()", "ttid", ttid);
-
 	tab* parent = getCurrentTabHandler();
-	int current = twid->tabBar()->currentIndex();
-	string parent_ttname = parent->getTabName();
+	if (parent == nullptr)
+	{
+		error("openTab()", "parent", false);
+		return -1;
+	}
 
 	tab* ttab = new tab(this, mwid, this->log->log);
-	ttab->setTabId(ttid);
+	int ttid = ttab->getTabId();
+
+	debug("openTab()", "ttid", ttid);
+
+	int current = twid->tabBar()->currentIndex();
+	string parent_ttname = parent->getTabName();
 
 	QIcon tticon;
 	QString ttname = QString::fromStdString(parent_ttname);
@@ -417,15 +417,35 @@ void gui::closeTab(int index)
 	ttmenu.erase(ttid);
 
 	tab* ttab = ttabs[ttid];
-	if (ttab != nullptr && ttab->hasChildren())
+	if (ttab != nullptr)
 	{
-		for (auto & child : ttab->children())
+		if (ttab->isChild())
 		{
-			int index = twid->indexOf(child->widget);
-			if (index == -1)
-				continue;
-			ttab->removeChild(child);
-			closeTab(index);
+			for (auto & tab : ttabs)
+			{
+				if (tab.second != nullptr && tab.second->hasChildren())
+				{
+					for (auto & child : tab.second->children())
+					{
+						if (child == ttab)
+						{
+							tab.second->removeChild(ttab);
+							break;
+						}
+					}
+				}
+			}
+		}
+		if (ttab->hasChildren())
+		{
+			for (auto & child : ttab->children())
+			{
+				int index = twid->indexOf(child->widget);
+				/*if (index == -1)
+					continue;*/
+				ttab->removeChild(child);
+				closeTab(index);
+			}
 		}
 	}
 	delete ttabs[ttid];
@@ -955,7 +975,6 @@ void gui::launcher()
 {
 	debug("launcher()");
 
-	this->tt = 0;
 	update(GUI_CXE::init);
 	newTab();
 	tabChanged(0);

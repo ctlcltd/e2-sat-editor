@@ -163,12 +163,12 @@ void mainView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::chsr, 95);		// Symbol Rate
 	list->setColumnWidth(ITEM_ROW_ROLE::chfec, 50);		// FEC
 
-	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { if (this->state.evt) this->sortByColumn(column); });
+	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->sortByColumn(column); });
 
 	tree->setContextMenuPolicy(Qt::CustomContextMenu);
-	tree->connect(tree, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { if (this->state.evt) this->showTreeEditContextMenu(pos); });
+	tree->connect(tree, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { this->showTreeEditContextMenu(pos); });
 	list->setContextMenuPolicy(Qt::CustomContextMenu);
-	list->connect(list, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { if (this->state.evt) this->showListEditContextMenu(pos); });
+	list->connect(list, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { this->showListEditContextMenu(pos); });
 
 	searchLayout();
 	referenceBoxLayout();
@@ -226,18 +226,18 @@ void mainView::layout()
 	this->tree_evth = new TreeEventHandler;
 	this->list_evth = new ListEventHandler;
 	this->list_evto = new ListEventObserver;
-	tree_evth->setEventCallback([=](QTreeWidget* tw) { if (this->state.evt) this->data->setChanged(true); });
-	list_evth->setEventCallback([=](QTreeWidget* tw) { if (this->state.evt) this->data->setChanged(true); });
-	side->connect(side, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { if (this->state.evt) this->treeSwitched(side, item); });
-	side->connect(side, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { if (this->state.evt) this->servicesItemChanged(current); });
+	tree_evth->setEventCallback([=](QTreeWidget* tw) { this->data->setChanged(true); });
+	list_evth->setEventCallback([=](QTreeWidget* tw) { this->data->setChanged(true); });
+	side->connect(side, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { this->treeSwitched(side, item); });
+	side->connect(side, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->servicesItemChanged(current); });
 	tree->viewport()->installEventFilter(tree_evth);
-	tree->connect(tree, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { if (this->state.evt) this->treeSwitched(tree, item); });
-	tree->connect(tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { if (this->state.evt) this->treeItemChanged(current); });
+	tree->connect(tree, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { this->treeSwitched(tree, item); });
+	tree->connect(tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->treeItemChanged(current); });
 	list->installEventFilter(list_evto);
 	list->viewport()->installEventFilter(list_evth);
-	list->connect(list, &QTreeWidget::currentItemChanged, [=]() { if (this->state.evt) this->listItemChanged(); });
-	list->connect(list, &QTreeWidget::itemSelectionChanged, [=]() { if (this->state.evt) this->listItemSelectionChanged(); });
-	list->connect(list, &QTreeWidget::itemDoubleClicked, [=]() { if (this->state.evt) this->listItemDoubleClicked(); });
+	list->connect(list, &QTreeWidget::currentItemChanged, [=]() { this->listItemChanged(); });
+	list->connect(list, &QTreeWidget::itemSelectionChanged, [=]() { this->listItemSelectionChanged(); });
+	list->connect(list, &QTreeWidget::itemDoubleClicked, [=]() { this->listItemDoubleClicked(); });
 
 	swrap->addWidget(side);
 	sfrm->setLayout(swrap);
@@ -371,8 +371,6 @@ void mainView::load()
 {
 	debug("load()");
 
-	this->state.evt = true;
-
 	tabUpdateFlags(gui::init);
 
 	this->dbih = this->data->dbih;
@@ -432,8 +430,6 @@ void mainView::reset()
 {
 	debug("reset()");
 
-	this->state.evt = false;
-
 	tabUnsetPendingUpdateChannelsIndex();
 
 	this->state.dnd = true;
@@ -444,15 +440,15 @@ void mainView::reset()
 	this->state.curr = "";
 	this->state.sort = pair (-1, Qt::AscendingOrder); //C++17
 
-	tree->clear();
+	tree->reset();
 	tree->setDragEnabled(false);
 	tree->setAcceptDrops(false);
-	tree->reset();
+	tree->clear();
 
-	list->clear();
+	list->reset();
 	list->setDragEnabled(false);
 	list->setAcceptDrops(false);
-	list->reset();
+	list->clear();
 	list->header()->setSortIndicatorShown(false);
 	list->header()->setSectionsClickable(false);
 	list->header()->setSortIndicator(0, Qt::AscendingOrder);
@@ -470,8 +466,6 @@ void mainView::reset()
 	tabResetStatus();
 
 	this->dbih = nullptr;
-
-	this->state.evt = true;
 }
 
 void mainView::populate(QTreeWidget* side_tree)

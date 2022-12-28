@@ -68,8 +68,6 @@ class mainView : public viewAbstract
 
 		struct __state
 		{
-			// tree events toggle
-			bool evt;
 			// list drag-and-drop toggle
 			bool dnd;
 			// list visual refresh pending

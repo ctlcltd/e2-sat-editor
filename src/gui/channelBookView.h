@@ -63,8 +63,6 @@ class channelBookView : public viewAbstract
 
 		struct __state
 		{
-			// toggle tree events
-			bool evt;
 			// tree current
 			string curr;
 			// view selector

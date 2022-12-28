@@ -271,8 +271,6 @@ class gui : protected e2se::log_factory
 		void setDefaultSets();
 		QSettings* sets;
 	protected:
-		// tab id increment
-		int tt = 0;
 		// gui current bit flags
 		bitset<256> gxe;
 		// gui previous bit flags

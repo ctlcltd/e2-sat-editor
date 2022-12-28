@@ -88,8 +88,6 @@ class tunersetsView : public viewAbstract
 
 		struct __state
 		{
-			// toggle tree events
-			bool evt;
 			// tunersets tvid type
 			int yx;
 			// current tnid
