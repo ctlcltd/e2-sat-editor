@@ -21,6 +21,7 @@ class about : protected e2se::log_factory
 {
 	public:
 		about(e2se::logger::session* log);
+        ~about() {};
 };
 }
 #endif /* about_h */

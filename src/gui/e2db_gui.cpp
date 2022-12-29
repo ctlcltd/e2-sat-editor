@@ -30,7 +30,7 @@ e2db::e2db(e2se::logger::session* log)
 	std::setlocale(LC_NUMERIC, "C");
 
 	this->log = new e2se::logger(log, "e2db");
-	debug("gui.e2db()");
+	debug("e2db()");
 
 	this->sets = new QSettings;
 	options();

@@ -43,6 +43,7 @@ class printable : protected e2se::log_factory
 		};
 
 		printable(dataHandler* data, e2se::logger::session* log);
+		~printable() {};
 		void documentAll();
 		void documentIndex();
 		void documentServices();

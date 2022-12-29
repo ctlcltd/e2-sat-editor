@@ -13,6 +13,7 @@
 #include <cstdlib>
 #include <cmath>
 #include <cstring>
+#include <clocale>
 #include <unordered_set>
 #include <algorithm>
 #include <sstream>
@@ -27,16 +28,18 @@ using std::ifstream, std::ofstream, std::stringstream, std::hex, std::dec, std::
 namespace e2se_e2db
 {
 
-/*e2db_converter::e2db_converter(e2se::logger::session log)
+e2db_converter::e2db_converter()
 {
+	std::setlocale(LC_NUMERIC, "C");
+}
+
+e2db_converter::e2db_converter(e2se::logger::session* log)
+{
+	std::setlocale(LC_NUMERIC, "C");
+
 	this->log = new e2se::logger(log, "e2db");
-
 	debug("e2db_converter()");
-}*/
-
-/*e2db_converter::e2db_converter()
-{
-}*/
+}
 
 void e2db_converter::merge(e2db_abstract* dst)
 {
@@ -72,7 +75,7 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, string path)
 	debug("import_csv_file()", "file input", fci);
 
 	bool merge = this->get_input().size() != 0 ? true : false;
-	auto* dst = merge ? new e2db_abstract : this;
+	auto* dst = merge ? new e2db_converter(this->log->log) : this;
 
 	import_csv_file(fci, opts, dst, path);
 
@@ -107,8 +110,10 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 			pull_csv_tunersets(ifile, dst);
 		break;
 		default:
-			return;
+		break;
 	}
+
+	ifile.close();
 
 	std::clock_t end = std::clock();
 
@@ -2186,7 +2191,7 @@ void e2db_converter::page_header(html_page& page, string filename, DOC_VIEW view
 	}
 	else
 	{
-		name = "Service List";
+		name = "Services List";
 	}
 	page.header += "<h1>" + name + "</h1>\n";
 	page.header += "<h3>" + filename + "</h3>\n";
@@ -2457,7 +2462,7 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 {
 	debug("page_body_tunersets_list()", "ytype", ytype);
 
-	page.body += "<div class=\"tunersets\">";
+	page.body += "<div class=\"tunersets\">\n";
 
 	tunersets tv = tuners[ytype];
 	string iname = "tns:";
@@ -2649,7 +2654,7 @@ span.cas { margin-inline-start: .3em }\n\
 
 string e2db_converter::doc_html_foot(html_page page)
 {
-	return "\n</html>";
+	return "</html>";
 }
 
 void e2db_converter::csv_document(e2db_file& file, string csv)

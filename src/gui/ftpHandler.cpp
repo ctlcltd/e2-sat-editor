@@ -44,6 +44,7 @@ void ftpHandler::closeConnection()
 	this->ftih = nullptr;
 }
 
+//TODO FIX settings changed
 bool ftpHandler::handleConnection()
 {
 	if (this->ftih == nullptr)

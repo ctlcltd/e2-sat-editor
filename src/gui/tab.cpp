@@ -498,6 +498,8 @@ void tab::importFile()
 	QGuiApplication::restoreOverrideCursor();
 	view->reset();
 	view->load();
+
+	this->data->setChanged(true);
 }
 
 void tab::exportFile()
@@ -791,6 +793,8 @@ void tab::toolsImportFromFile(TOOLS_FILE ftype, e2db::FCONVS fci)
 		case TOOLS_FILE::tools_html:
 		return;
 	}
+
+	this->data->setChanged(true);
 }
 
 void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
@@ -1149,6 +1153,8 @@ void tab::ftpDownload()
 		file.size = x.second.size;
 
 		debug("ftpDownload()", "file", x.first + " | " + to_string(x.second.size));
+
+		files.emplace(file.filename, file);
 	}
 
 	this->updateChannelsIndex();
@@ -1156,6 +1162,8 @@ void tab::ftpDownload()
 	dbih->merge(files);
 	view->reset();
 	view->load();
+
+	this->data->setChanged(true);
 }
 
 void tab::updateBouquetsIndex()

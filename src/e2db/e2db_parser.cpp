@@ -13,6 +13,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <cstring>
+#include <clocale>
 #include <algorithm>
 #include <sstream>
 #include <fstream>
@@ -26,19 +27,22 @@ using std::ifstream, std::stringstream, std::hex, std::dec, std::to_string, std:
 namespace e2se_e2db
 {
 
-/*e2db_parser::e2db_parser(e2se::logger::session log)
+e2db_parser::e2db_parser()
 {
-	this->log = new e2se::logger(log, "e2db");
-
-	debug("e2db_parser()");
+	std::setlocale(LC_NUMERIC, "C");
 
 	//TEST
 	this->filename = PARSER_LAMEDB5_PRIOR ? "lamedb5" : "lamedb";
 	//TEST
-}*/
+}
 
-e2db_parser::e2db_parser()
+e2db_parser::e2db_parser(e2se::logger::session* log)
 {
+	std::setlocale(LC_NUMERIC, "C");
+
+	this->log = new e2se::logger(log, "e2db");
+	debug("e2db_parser()");
+
 	//TEST
 	this->filename = PARSER_LAMEDB5_PRIOR ? "lamedb5" : "lamedb";
 	//TEST
@@ -48,6 +52,9 @@ void e2db_parser::parse_e2db()
 {
 	debug("parse_e2db()");
 	std::clock_t start = std::clock();
+
+	if (! (e2db.count("lamedb") || e2db.count("lamedb5")))
+		return error("parse_e2db()", "Error", "Services file \"lamedb\" not found.");
 
 	ifstream ilamedb (e2db[this->filename]);
 	parse_e2db_lamedb(ilamedb);
@@ -122,7 +129,9 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 		string filename = std::filesystem::path(x.first).filename().u8string(); //C++17
 		e2db[filename] = x.first;
 	}
-	
+	if (! (e2db.count("lamedb") || e2db.count("lamedb5")))
+		return error("parse_e2db()", "Error", "Services file \"lamedb\" not found.");
+
 	stringstream ilamedb;
 	ilamedb.write(&files[e2db[this->filename]].data[0], files[e2db[this->filename]].size);
 	parse_e2db_lamedb(ilamedb);
@@ -1007,9 +1016,9 @@ bool e2db_parser::list_localdir(string localdir)
 		string filename = std::filesystem::path(path).filename().u8string(); //C++17
 		e2db[filename] = path;
 	}
-	if (e2db.count(this->filename) < 1)
+	if (! (e2db.count("lamedb") || e2db.count("lamedb5")))
 	{
-		error("list_localdir()", "Error", "lamedb not found.");
+		error("list_localdir()", "Error", "Services file \"lamedb\" not found.");
 		return false;
 	}
 	this->localdir = localdir;

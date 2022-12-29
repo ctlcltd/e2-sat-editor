@@ -67,8 +67,8 @@ class e2db_converter : virtual public e2db_abstract
 			string footer;
 		};
 
-		// e2db_converter(e2se::logger::session log);
-		// e2db_converter();
+		explicit e2db_converter();
+		e2db_converter(e2se::logger::session* log);
 		virtual ~e2db_converter() = default;
 		void merge(e2db_abstract* dst);
 		void import_csv_file(FCONVS fci, fcopts opts, vector<string> paths);

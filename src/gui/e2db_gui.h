@@ -38,12 +38,8 @@ class e2db : public ::e2se_e2db::e2db
 			unordered_map<string, QStringList> services;
 		} entries;
 
-		//TODO FIX e2se_gui and e2se_e2db logger conflict
 		e2db(e2se::logger::session* log);
-		~e2db()
-		{
-			// std::cout << "e2se_gui::~e2db()" << std::endl;
-		}
+		~e2db() {};
 		void options();
 		void error(string msg, string optk, string optv);
 		string addTransponder(transponder& tx);

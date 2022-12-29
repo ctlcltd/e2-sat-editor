@@ -23,16 +23,16 @@ using std::string, std::stringstream, std::min, std::endl, std::to_string;
 namespace e2se_ftpcom
 {
 
-/*ftpcom::ftpcom(e2se::logger::session log)
+ftpcom::ftpcom()
+{
+	curl_global_init(CURL_GLOBAL_DEFAULT);
+}
+
+ftpcom::ftpcom(e2se::logger::session* log)
 {
 	this->log = new e2se::logger(log, "ftpcom");
 	debug("ftpcom()");
 
-	curl_global_init(CURL_GLOBAL_DEFAULT);
-}*/
-
-ftpcom::ftpcom()
-{
 	curl_global_init(CURL_GLOBAL_DEFAULT);
 }
 
@@ -99,7 +99,7 @@ bool ftpcom::handle()
 	//TODO FIX hangs the main thread
 	curl_easy_setopt(cph, CURLOPT_CONNECTTIMEOUT, 10);
 	// curl_easy_setopt(cph, CURLOPT_FTP_RESPONSE_TIMEOUT, 10); // 0 = default no timeout
-	// curl_easy_setopt(cph, CURLOPT_VERBOSE, true);
+	curl_easy_setopt(cph, CURLOPT_VERBOSE, true);
 
 	return true;
 }

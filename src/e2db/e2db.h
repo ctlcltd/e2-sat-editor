@@ -21,10 +21,8 @@ namespace e2se_e2db
 class e2db : public e2db_parser, public e2db_maker, public e2db_converter
 {
 	public:
-		// e2db(e2se::logger::session log);
-		// e2db();
-
-		//TODO FIX e2se_gui and e2se_e2db logger conflict
+		explicit e2db();
+		e2db(e2se::logger::session* log);
 		virtual ~e2db() = default;
 		void merge(e2db_abstract* dst);
 		void import_file(vector<string> paths);

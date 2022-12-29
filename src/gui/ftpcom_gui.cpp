@@ -22,7 +22,7 @@ namespace e2se_gui
 ftpcom::ftpcom(e2se::logger::session* log)
 {
 	this->log = new e2se::logger(log, "ftpcom");
-	debug("gui.ftpcom()");
+	debug("ftpcom()");
 
 	this->sets = new QSettings;
 	options();

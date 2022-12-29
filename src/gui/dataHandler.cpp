@@ -34,6 +34,7 @@ void dataHandler::newFile()
 	delete this->dbih;
 	this->dbih = new e2db(this->log->log);
 	this->newfile = true;
+	this->changed = false;
 }
 
 bool dataHandler::readFile(string filename)
@@ -43,6 +44,7 @@ bool dataHandler::readFile(string filename)
 	delete this->dbih;
 	this->dbih = new e2db(this->log->log);
 	this->newfile = true;
+	this->changed = false;
 	
 	if (this->dbih->prepare(filename))
 	{

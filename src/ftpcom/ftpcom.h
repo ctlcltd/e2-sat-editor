@@ -55,8 +55,8 @@ class ftpcom
 			size_t size;
 		};
 
-		// ftpcom(e2se::logger::session log);
-		ftpcom();
+		explicit ftpcom();
+		ftpcom(e2se::logger::session* log);
 		virtual ~ftpcom();
 		void setup(ftp_params params);
 		bool handle();

@@ -300,23 +300,37 @@ int gui::newTab(string filename)
 
 	debug("newTab()", "ttid", ttid);
 
-	if (! filename.empty() && ! ttab->readFile(filename))
-	{
-		error("newTab()", "ttid", ttid);
-		return -1;
-	}
-
-	bool read = ! filename.empty();
 	ttab->viewMain();
 
+	bool read = ! filename.empty();
 	QString ttname = "Untitled";
-
 	int index = twid->addTab(ttab->widget, ttname);
 	int count = index;
+
+	QAction* action = new QAction(ttname);
+	action->connect(action, &QAction::triggered, [=]() { this->twid->setCurrentWidget(ttab->widget); });
+	action->setCheckable(true);
+	action->setActionGroup(mwtabs);
+
+	ttabs[ttid] = ttab;
+	ttmenu[ttid] = action;
 	twid->tabBar()->setTabData(index, ttid);
 
 	if (read)
 	{
+		if (! ttab->readFile(filename))
+		{
+			error("newTab()", "ttid", ttid);
+
+			twid->removeTab(index);
+			delete ttmenu[ttid];
+			delete ttabs[ttid];
+			ttmenu.erase(ttid);
+			ttabs.erase(ttid);
+
+			return -1;
+		}
+
 		filename = std::filesystem::path(filename).filename().u8string(); //C++17
 		ttname = QString::fromStdString(filename);
 	}
@@ -325,17 +339,11 @@ int gui::newTab(string filename)
 		ttname.append(QString::fromStdString(count ? " " + to_string(count) : ""));
 	}
 	twid->setTabText(index, ttname);
-
-	QAction* action = new QAction(ttname);
-	action->connect(action, &QAction::triggered, [=]() { this->twid->setCurrentWidget(ttab->widget); });
-	action->setCheckable(true);
-	action->setActionGroup(mwtabs);
-	mwind->addAction(action);
-	ttmenu[ttid] = action;
-	ttabs[ttid] = ttab;
-
+	action->setText(ttname);
 	ttab->setTabName(ttname.toStdString());
+
 	twid->setCurrentIndex(index);
+	mwind->addAction(action);
 
 	return index;
 }
@@ -369,6 +377,7 @@ int gui::openTab(TAB_VIEW view, int arg)
 	{
 		case TAB_VIEW::main:
 			error("openTab()", "ttid", ttid);
+			delete ttab;
 			return -1;
 		break;
 		case TAB_VIEW::tunersets:
@@ -639,6 +648,7 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 
 	QString caption = "Select one or more files to open";
 	QStringList opts;
+	QFileDialog::FileMode fmode = QFileDialog::ExistingFiles;
 	switch (gde)
 	{
 		case GUI_DPORTS::Services:
@@ -666,6 +676,7 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 			opts.append("All Files (*)");
 		break;
 		default:
+			fmode = QFileDialog::AnyFile;
 			opts.append("Enigma2 folder (*)");
 			opts.append("Lamedb 2.4 (lamedb)");
 			opts.append("Lamedb 2.5 (lamedb5)");
@@ -680,7 +691,7 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 	vector<string> paths;
 	QFileDialog fdial = QFileDialog(mwid, caption);
 	fdial.setAcceptMode(QFileDialog::AcceptOpen);
-	fdial.setFileMode(QFileDialog::ExistingFiles);
+	fdial.setFileMode(fmode);
 	fdial.setNameFilters(opts);
 	if (fdial.exec() == QDialog::Accepted)
 	{

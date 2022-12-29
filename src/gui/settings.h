@@ -44,6 +44,7 @@ class settings : protected e2se::log_factory
 		};
 
 		settings(QWidget* cwid, e2se::logger::session* log);
+		~settings() {};
 		void display(QWidget* cwid);
 		void layout(QWidget* cwid);
 		void preferencesLayout();

@@ -52,7 +52,8 @@ struct e2db_abstract
 
 		// import / export enum
 		enum FPORTS {
-			fports_empty = 0x0000,
+			unsupported = 0x0000,
+			directory = 0x0001,
 			all_services = 0x1000,
 			all_services__2_2 = 0x1222,
 			all_services__2_3 = 0x1223,

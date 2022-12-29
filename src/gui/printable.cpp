@@ -222,7 +222,7 @@ void printable::pageHeader(html_page& page, string filename, DOC_VIEW view)
 	}
 	else
 	{
-		name = "Service List";
+		name = "Services List";
 	}
 	page.header += "<h1>" + name + "</h1>";
 	page.header += "<h3>" + QString::fromStdString(filename) + "</h3>";

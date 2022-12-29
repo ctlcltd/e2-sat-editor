@@ -28,15 +28,18 @@ using std::unordered_set, std::set_difference, std::inserter, std::stringstream,
 namespace e2se_e2db
 {
 
-/*e2db::e2db(e2se::logger::session log)
+e2db::e2db()
+{
+	std::setlocale(LC_NUMERIC, "C");
+}
+
+e2db::e2db(e2se::logger::session* log)
 {
 	std::setlocale(LC_NUMERIC, "C");
 
 	this->log = new e2se::logger(log, "e2db");
-
 	debug("e2db()");
-}*/
-
+}
 
 //TODO bname in non-destructive edit
 //TODO FIX mixing cache data
@@ -201,21 +204,36 @@ void e2db::merge(e2db_abstract* dst)
 
 void e2db::import_file(vector<string> paths)
 {
-	debug("import_file()", "file path", "singular");
+	debug("import_file()", "file path", "multiple");
 	debug("import_file()", "file input", "auto");
 
 	bool merge = this->get_input().size() != 0 ? true : false;
-	auto* dst = merge ? new e2db : this;
+	auto* dst = merge ? new e2db(this->log->log) : this;
 
 	for (string & w : paths)
 	{
+		if (! std::filesystem::exists(w)) //C++17
+			return error("import_file()", "Error", "File \"" + w + "\" not exists.");
+
 		FPORTS fpi = filetype_detect(w);
-		ifstream ifile (w);
 
 		e2db_file file;
-		string line;
-		while (std::getline(ifile, line))
-			file.data.append(line + '\n');
+		file.filename = w;
+		if (fpi == FPORTS::directory) //C++17
+		{
+			file.mime = "application/octet-stream";
+		}
+		else
+		{
+			file.mime = "application/octet-stream";
+			ifstream ifile (w);
+			string line;
+			while (std::getline(ifile, line))
+				file.data.append(line + '\n');
+			ifile.close();
+		}
+		file.size = file.data.size();
+
 		import_file(fpi, dst, file, w);
 	}
 	if (merge)
@@ -227,7 +245,7 @@ void e2db::import_file(vector<string> paths)
 
 void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 {
-	debug("import_file()", "file path", "multiple");
+	debug("import_file()", "file path", "singular");
 	debug("import_file()", "file input", fpi);
 
 	string filename = std::filesystem::path(path).filename().u8string(); //C++17
@@ -236,6 +254,9 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 
 	switch (fpi)
 	{
+		case FPORTS::directory:
+			dst->read(path);
+		break;
 		case FPORTS::all_services:
 			dst->parse_e2db_lamedb(ifile);
 		break;
@@ -275,14 +296,13 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 				dst->parse_e2db_userbouquet(ifile, filename);
 		break;
 		default:
-			dst->read(path);
-			return;
+		return;
 	}
 }
 
 void e2db::export_file(vector<string> paths)
 {
-	debug("export_file()", "file path", "singular");
+	debug("export_file()", "file path", "multiple");
 	debug("export_file()", "file output", "auto");
 
 	for (string & w : paths)

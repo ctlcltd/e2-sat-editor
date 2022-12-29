@@ -11,6 +11,7 @@
 
 #include <cstdio>
 #include <ctime>
+#include <clocale>
 #include <algorithm>
 #include <sstream>
 #include <fstream>
@@ -25,12 +26,18 @@ using std::ofstream, std::stringstream, std::hex, std::dec, std::setfill, std::s
 namespace e2se_e2db
 {
 
-/*e2db_maker::e2db_maker(e2se::logger::session log)
+e2db_maker::e2db_maker()
 {
-	this->log = new e2se::logger(log, "e2db");
+	std::setlocale(LC_NUMERIC, "C");
+}
 
+e2db_maker::e2db_maker(e2se::logger::session* log)
+{
+	std::setlocale(LC_NUMERIC, "C");
+
+	this->log = new e2se::logger(log, "e2db");
 	debug("e2db_maker()");
-}*/
+}
 
 void e2db_maker::make_e2db()
 {

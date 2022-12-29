@@ -20,6 +20,7 @@ class theme
 {
 	public:
 		theme();
+		~theme() {};
 		// preference/theme setting { empty, "light", "dark" }
 		static QString preference();
 		// absolute lightness { false: light, true: dark }

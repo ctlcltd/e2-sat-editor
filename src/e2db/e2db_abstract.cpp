@@ -94,7 +94,9 @@ e2db_abstract::FPORTS e2db_abstract::filetype_detect(string path)
 {
 	string filename = std::filesystem::path(path).filename().u8string(); //C++17
 
-	if (filename == "lamedb")
+	if (std::filesystem::is_directory(path)) //C++17
+		return FPORTS::directory;
+	else if (filename == "lamedb")
 		return FPORTS::all_services; // autodetect
 	else if (filename == "lamedb5")
 		return FPORTS::all_services__2_5;
@@ -112,7 +114,7 @@ e2db_abstract::FPORTS e2db_abstract::filetype_detect(string path)
 		return FPORTS::single_bouquet;
 	else if (filename.find("userbouquet.") != string::npos)
 		return FPORTS::single_userbouquet;
-	return FPORTS::fports_empty;
+	return FPORTS::unsupported;
 }
 
 void e2db_abstract::value_channel_reference(string str, channel_reference& chref, service_reference& ref)
