@@ -3,560 +3,564 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tuner Settings (satellites.xml) - type: sat | e2-sat-editor</title>
-<meta name="description" content="type: sat, source file: satellites.xml">
+<meta name="generator" content="e2 SAT Editor 0.1">
+<title>satellites.xml - Tuner Settings | e2-sat-editor</title>
+<meta name="description" content="Tuner settings, Tuner type: Satellite, Source file: satellites.xml">
 <link rel="contents" href="enigma_db.html">
 <style>
 body { margin: .5rem 1rem; font: normal 14px/1.5 sans-serif }
+h4 { text-transform: uppercase }
 div { margin: 3em 0 5em }
-body > div:last-child { margin: 3em 1em }
-nav { margin: 2em 0; padding: 1em 0; border-top: 1px solid }
-table { margin: 2em 0; border-collapse: collapse; white-space: nowrap }
+div.footer { margin: 3em 1em }
+nav { margin: 2em 0; padding: 1em 0; border-top: 1px solid; border-color: ButtonBorder }
+table { margin: 2em 0; border-collapse: collapse }
 td, th { padding: .4em .5em }
 table, td, th { border: 1px solid; border-color: ButtonBorder }
-h4 { text-transform: uppercase }
-a, body > div > table td:nth-child(3) { font-weight: bold }
-body > div > table td:nth-child(3), .marker b, .cas { font-size: small }
-td:nth-child(1) { padding-inline-start: .8em; padding-inline-end: 1.4em }
-.cas { margin-inline-start: .3em }
+th, td.chname, td.name, td.pname, td.refid { white-space: nowrap }
+tr.marker td, td.refid { font-weight: bold }
+tr.marker td, span.cas { font-size: small }
+td.trid { padding-inline-start: .8em; padding-inline-end: 1.4em }
+td.refid { font-size: smaller }
+span.cas { margin-inline-start: .3em }
 @media (prefers-color-scheme: light) { html { color-scheme: light } }
 @media (prefers-color-scheme: dark) { html { color-scheme: dark } }
 </style>
 </head>
 <body>
+<div class="header">
 <h1>Tuner Settings</h1>
 <h3>satellites.xml</h3>
 <nav>
 <a href="enigma_db.html">&crarr; Parent Document</a>
 </nav>
-
+</div>
 <div class="tunersets">
-<div class="transponders">
+<div class="transponder">
 <h4>Transponders</h4>
 <h2>Hispasat 30W-4-5</h2>
 <p>Position: <b>30.0W</b></p>
-
 <table>
 <thead>
 <tr>
 <th>Index</th>
-<th>Frequency</th>
-<th>Polarization</th>
-<th>Symbol Rate</th>
+<th>Freq</th>
+<th>Pol</th>
+<th>SR</th>
 <th>FEC</th>
-<th>System</th>
-<th>Modulation</th>
+<th>Sys</th>
+<th>Mod</th>
+<th>Inv</th>
+<th>Rollof</th>
+<th>Pilot</th>
 </tr>
-</thead>
 <tbody>
-<tr><td>1</td><td>10730</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>2</td><td>10770</td><td>H</td><td>30000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>3</td><td>10890</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>4</td><td>10917</td><td>V</td><td>7500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>5</td><td>11262</td><td>H</td><td>30000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>6</td><td>11302</td><td>H</td><td>30000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>7</td><td>11382</td><td>H</td><td>30000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>8</td><td>11422</td><td>V</td><td>5000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>9</td><td>11472</td><td>H</td><td>5632</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>10</td><td>11491</td><td>V</td><td>7522</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>11</td><td>11503</td><td>H</td><td>1667</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>12</td><td>11510</td><td>H</td><td>4444</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>13</td><td>11510</td><td>V</td><td>10000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>14</td><td>11519</td><td>V</td><td>4700</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>15</td><td>11522</td><td>H</td><td>4400</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>16</td><td>11528</td><td>H</td><td>4400</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>17</td><td>11536</td><td>V</td><td>2400</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>18</td><td>11537</td><td>H</td><td>4500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>19</td><td>11542</td><td>V</td><td>2400</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>20</td><td>11549</td><td>H</td><td>9230</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>21</td><td>11550</td><td>V</td><td>5000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>22</td><td>11562</td><td>V</td><td>5000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>23</td><td>11564</td><td>H</td><td>4444</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>24</td><td>11568</td><td>V</td><td>5000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>25</td><td>11573</td><td>V</td><td>7200</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>26</td><td>11574</td><td>H</td><td>4800</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>27</td><td>11579</td><td>V</td><td>2300</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>28</td><td>11582</td><td>H</td><td>4875</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>29</td><td>11588</td><td>V</td><td>3400</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>30</td><td>11590</td><td>H</td><td>6666</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>31</td><td>11592</td><td>V</td><td>4800</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>32</td><td>11602</td><td>H</td><td>6650</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>33</td><td>11603</td><td>V</td><td>6111</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>34</td><td>11612</td><td>H</td><td>4500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>35</td><td>11613</td><td>V</td><td>4800</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>36</td><td>11619</td><td>V</td><td>4800</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>37</td><td>11628</td><td>V</td><td>3400</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>38</td><td>11632</td><td>V</td><td>3400</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>39</td><td>11654</td><td>V</td><td>5632</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>40</td><td>11661</td><td>V</td><td>4500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>41</td><td>11667</td><td>V</td><td>4500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>42</td><td>11672</td><td>V</td><td>2300</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>43</td><td>11678</td><td>V</td><td>2000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>44</td><td>11683</td><td>V</td><td>3400</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>45</td><td>11721</td><td>V</td><td>30000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>46</td><td>11731</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>47</td><td>11771</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>48</td><td>11811</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>49</td><td>11851</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>50</td><td>11884</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>51</td><td>11891</td><td>V</td><td>30000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>52</td><td>11911</td><td>V</td><td>12000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>53</td><td>11931</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>54</td><td>11958</td><td>V</td><td>2500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>55</td><td>11960</td><td>H</td><td>6666</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>56</td><td>11961</td><td>V</td><td>1420</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>57</td><td>11969</td><td>H</td><td>7200</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>58</td><td>11974</td><td>V</td><td>3030</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>59</td><td>11977</td><td>V</td><td>3255</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>60</td><td>11983</td><td>H</td><td>13333</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>61</td><td>11985</td><td>V</td><td>2222</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>62</td><td>12052</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>63</td><td>12052</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>64</td><td>12076</td><td>V</td><td>4000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>65</td><td>12092</td><td>H</td><td>30000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>66</td><td>12092</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>67</td><td>12108</td><td>V</td><td>4190</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>68</td><td>12130</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>69</td><td>12132</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>70</td><td>12169</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>71</td><td>12207</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>72</td><td>12226</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>73</td><td>12246</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>74</td><td>12284</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>75</td><td>12303</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>76</td><td>12322</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>77</td><td>12360</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>78</td><td>12380</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>79</td><td>12399</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>80</td><td>12425</td><td>V</td><td>4440</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>81</td><td>12437</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>82</td><td>12456</td><td>V</td><td>30000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>83</td><td>12476</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>84</td><td>12522</td><td>V</td><td>4500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>85</td><td>12528</td><td>H</td><td>4444</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>86</td><td>12550</td><td>H</td><td>3400</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>87</td><td>12563</td><td>H</td><td>2160</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>88</td><td>12564</td><td>V</td><td>4500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>89</td><td>12575</td><td>H</td><td>3400</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>90</td><td>12580</td><td>H</td><td>3400</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>91</td><td>12585</td><td>H</td><td>3400</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>92</td><td>12589</td><td>H</td><td>3400</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>93</td><td>12593</td><td>H</td><td>3600</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>94</td><td>12597</td><td>H</td><td>3440</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>95</td><td>12603</td><td>H</td><td>3400</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>96</td><td>12608</td><td>H</td><td>3200</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>97</td><td>12618</td><td>H</td><td>6120</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>98</td><td>12629</td><td>H</td><td>4444</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>99</td><td>12634</td><td>H</td><td>4500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>100</td><td>12640</td><td>H</td><td>4500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>101</td><td>12645</td><td>H</td><td>4500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>102</td><td>12657</td><td>H</td><td>7200</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>103</td><td>12663</td><td>H</td><td>5000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>104</td><td>12669</td><td>H</td><td>3600</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>105</td><td>12673</td><td>H</td><td>3400</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>106</td><td>12680</td><td>H</td><td>4500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>107</td><td>12686</td><td>H</td><td>4500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>108</td><td>12701</td><td>V</td><td>9230</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>109</td><td>12706</td><td>H</td><td>20000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>110</td><td>12706</td><td>V</td><td>7500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>111</td><td>12712</td><td>V</td><td>2300</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>112</td><td>12718</td><td>V</td><td>7500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>113</td><td>12727</td><td>V</td><td>7500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>114</td><td>12734</td><td>H</td><td>4800</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>115</td><td>12734</td><td>V</td><td>4440</td><td>0</td><td>DVB-S</td><td>0</td></tr>
+<tr><td class="trid">1</td><td>10730</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">2</td><td>10770</td><td>H</td><td>30000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">3</td><td>10890</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">4</td><td>10917</td><td>V</td><td>7500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">5</td><td>11262</td><td>H</td><td>30000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">6</td><td>11302</td><td>H</td><td>30000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">7</td><td>11382</td><td>H</td><td>30000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">8</td><td>11422</td><td>V</td><td>5000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">9</td><td>11472</td><td>H</td><td>5632</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">10</td><td>11491</td><td>V</td><td>7522</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">11</td><td>11503</td><td>H</td><td>1667</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">12</td><td>11510</td><td>H</td><td>4444</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">13</td><td>11510</td><td>V</td><td>10000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">14</td><td>11519</td><td>V</td><td>4700</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">15</td><td>11522</td><td>H</td><td>4400</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">16</td><td>11528</td><td>H</td><td>4400</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">17</td><td>11536</td><td>V</td><td>2400</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">18</td><td>11537</td><td>H</td><td>4500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">19</td><td>11542</td><td>V</td><td>2400</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">20</td><td>11549</td><td>H</td><td>9230</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">21</td><td>11550</td><td>V</td><td>5000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">22</td><td>11562</td><td>V</td><td>5000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">23</td><td>11564</td><td>H</td><td>4444</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">24</td><td>11568</td><td>V</td><td>5000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">25</td><td>11573</td><td>V</td><td>7200</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">26</td><td>11574</td><td>H</td><td>4800</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">27</td><td>11579</td><td>V</td><td>2300</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">28</td><td>11582</td><td>H</td><td>4875</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">29</td><td>11588</td><td>V</td><td>3400</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">30</td><td>11590</td><td>H</td><td>6666</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">31</td><td>11592</td><td>V</td><td>4800</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">32</td><td>11602</td><td>H</td><td>6650</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">33</td><td>11603</td><td>V</td><td>6111</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">34</td><td>11612</td><td>H</td><td>4500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">35</td><td>11613</td><td>V</td><td>4800</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">36</td><td>11619</td><td>V</td><td>4800</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">37</td><td>11628</td><td>V</td><td>3400</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">38</td><td>11632</td><td>V</td><td>3400</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">39</td><td>11654</td><td>V</td><td>5632</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">40</td><td>11661</td><td>V</td><td>4500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">41</td><td>11667</td><td>V</td><td>4500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">42</td><td>11672</td><td>V</td><td>2300</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">43</td><td>11678</td><td>V</td><td>2000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">44</td><td>11683</td><td>V</td><td>3400</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">45</td><td>11721</td><td>V</td><td>30000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">46</td><td>11731</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">47</td><td>11771</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">48</td><td>11811</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">49</td><td>11851</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">50</td><td>11884</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">51</td><td>11891</td><td>V</td><td>30000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">52</td><td>11911</td><td>V</td><td>12000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">53</td><td>11931</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">54</td><td>11958</td><td>V</td><td>2500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">55</td><td>11960</td><td>H</td><td>6666</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">56</td><td>11961</td><td>V</td><td>1420</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">57</td><td>11969</td><td>H</td><td>7200</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">58</td><td>11974</td><td>V</td><td>3030</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">59</td><td>11977</td><td>V</td><td>3255</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">60</td><td>11983</td><td>H</td><td>13333</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">61</td><td>11985</td><td>V</td><td>2222</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">62</td><td>12052</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">63</td><td>12052</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">64</td><td>12076</td><td>V</td><td>4000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">65</td><td>12092</td><td>H</td><td>30000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">66</td><td>12092</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">67</td><td>12108</td><td>V</td><td>4190</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">68</td><td>12130</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">69</td><td>12132</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">70</td><td>12169</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">71</td><td>12207</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">72</td><td>12226</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">73</td><td>12246</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">74</td><td>12284</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">75</td><td>12303</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">76</td><td>12322</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">77</td><td>12360</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">78</td><td>12380</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">79</td><td>12399</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">80</td><td>12425</td><td>V</td><td>4440</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">81</td><td>12437</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">82</td><td>12456</td><td>V</td><td>30000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">83</td><td>12476</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">84</td><td>12522</td><td>V</td><td>4500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">85</td><td>12528</td><td>H</td><td>4444</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">86</td><td>12550</td><td>H</td><td>3400</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">87</td><td>12563</td><td>H</td><td>2160</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">88</td><td>12564</td><td>V</td><td>4500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">89</td><td>12575</td><td>H</td><td>3400</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">90</td><td>12580</td><td>H</td><td>3400</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">91</td><td>12585</td><td>H</td><td>3400</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">92</td><td>12589</td><td>H</td><td>3400</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">93</td><td>12593</td><td>H</td><td>3600</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">94</td><td>12597</td><td>H</td><td>3440</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">95</td><td>12603</td><td>H</td><td>3400</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">96</td><td>12608</td><td>H</td><td>3200</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">97</td><td>12618</td><td>H</td><td>6120</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">98</td><td>12629</td><td>H</td><td>4444</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">99</td><td>12634</td><td>H</td><td>4500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">100</td><td>12640</td><td>H</td><td>4500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">101</td><td>12645</td><td>H</td><td>4500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">102</td><td>12657</td><td>H</td><td>7200</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">103</td><td>12663</td><td>H</td><td>5000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">104</td><td>12669</td><td>H</td><td>3600</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">105</td><td>12673</td><td>H</td><td>3400</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">106</td><td>12680</td><td>H</td><td>4500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">107</td><td>12686</td><td>H</td><td>4500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">108</td><td>12701</td><td>V</td><td>9230</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">109</td><td>12706</td><td>H</td><td>20000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">110</td><td>12706</td><td>V</td><td>7500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">111</td><td>12712</td><td>V</td><td>2300</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">112</td><td>12718</td><td>V</td><td>7500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">113</td><td>12727</td><td>V</td><td>7500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">114</td><td>12734</td><td>H</td><td>4800</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">115</td><td>12734</td><td>V</td><td>4440</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
 </tbody>
 </table>
 </div>
-
-<div class="transponders">
+<div class="transponder">
 <h4>Transponders</h4>
 <h2>Eutelsat /Nilesat</h2>
 <p>Position: <b>7.0W</b></p>
-
 <table>
 <thead>
 <tr>
 <th>Index</th>
-<th>Frequency</th>
-<th>Polarization</th>
-<th>Symbol Rate</th>
+<th>Freq</th>
+<th>Pol</th>
+<th>SR</th>
 <th>FEC</th>
-<th>System</th>
-<th>Modulation</th>
+<th>Sys</th>
+<th>Mod</th>
+<th>Inv</th>
+<th>Rollof</th>
+<th>Pilot</th>
 </tr>
-</thead>
 <tbody>
-<tr><td>1</td><td>10719</td><td>V</td><td>22000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>2</td><td>10727</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>3</td><td>10758</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>4</td><td>10777</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>5</td><td>10796</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>6</td><td>10815</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>7</td><td>10834</td><td>V</td><td>30000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>8</td><td>10853</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>9</td><td>10873</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>10</td><td>10892</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>11</td><td>10922</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>12</td><td>10930</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>13</td><td>10992</td><td>V</td><td>5000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>14</td><td>11034</td><td>V</td><td>5000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>15</td><td>11170</td><td>V</td><td>5000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>16</td><td>11219</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>17</td><td>11227</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>18</td><td>11258</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>19</td><td>11277</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>20</td><td>11296</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>21</td><td>11315</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>22</td><td>11334</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>23</td><td>11354</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>24</td><td>11373</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>25</td><td>11392</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>26</td><td>11411</td><td>H</td><td>30000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>27</td><td>11430</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>28</td><td>11449</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>29</td><td>11475</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>30</td><td>11488</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>31</td><td>11514</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>32</td><td>11526</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>33</td><td>11559</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>34</td><td>11603</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>35</td><td>11626</td><td>V</td><td>2142</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>36</td><td>11641</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>37</td><td>11658</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>38</td><td>11680</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>39</td><td>11682</td><td>V</td><td>4814</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>40</td><td>11727</td><td>H</td><td>30000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>41</td><td>11747</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>42</td><td>11766</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>43</td><td>11785</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>44</td><td>11804</td><td>H</td><td>30000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>45</td><td>11823</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>46</td><td>11843</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>47</td><td>11862</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>48</td><td>11881</td><td>H</td><td>30000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>49</td><td>11900</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>50</td><td>11919</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>51</td><td>11938</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>52</td><td>11958</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>53</td><td>11977</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>54</td><td>11996</td><td>H</td><td>30000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>55</td><td>12015</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>56</td><td>12034</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>57</td><td>12054</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>58</td><td>12073</td><td>H</td><td>30000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>59</td><td>12092</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>60</td><td>12111</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>61</td><td>12130</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>62</td><td>12149</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>63</td><td>12169</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>64</td><td>12188</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>65</td><td>12207</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>66</td><td>12226</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>67</td><td>12245</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>68</td><td>12265</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>69</td><td>12284</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>70</td><td>12303</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>71</td><td>12322</td><td>V</td><td>30000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>72</td><td>12341</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>73</td><td>12360</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>74</td><td>12380</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>75</td><td>12399</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>76</td><td>12418</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>77</td><td>12437</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>78</td><td>12467</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>79</td><td>12476</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
+<tr><td class="trid">1</td><td>10719</td><td>V</td><td>22000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">2</td><td>10727</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">3</td><td>10758</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">4</td><td>10777</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">5</td><td>10796</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">6</td><td>10815</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">7</td><td>10834</td><td>V</td><td>30000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">8</td><td>10853</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">9</td><td>10873</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">10</td><td>10892</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">11</td><td>10922</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">12</td><td>10930</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">13</td><td>10992</td><td>V</td><td>5000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">14</td><td>11034</td><td>V</td><td>5000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">15</td><td>11170</td><td>V</td><td>5000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">16</td><td>11219</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">17</td><td>11227</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">18</td><td>11258</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">19</td><td>11277</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">20</td><td>11296</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">21</td><td>11315</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">22</td><td>11334</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">23</td><td>11354</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">24</td><td>11373</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">25</td><td>11392</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">26</td><td>11411</td><td>H</td><td>30000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">27</td><td>11430</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">28</td><td>11449</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">29</td><td>11475</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">30</td><td>11488</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">31</td><td>11514</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">32</td><td>11526</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">33</td><td>11559</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">34</td><td>11603</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">35</td><td>11626</td><td>V</td><td>2142</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">36</td><td>11641</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">37</td><td>11658</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">38</td><td>11680</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">39</td><td>11682</td><td>V</td><td>4814</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">40</td><td>11727</td><td>H</td><td>30000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">41</td><td>11747</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">42</td><td>11766</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">43</td><td>11785</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">44</td><td>11804</td><td>H</td><td>30000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">45</td><td>11823</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">46</td><td>11843</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">47</td><td>11862</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">48</td><td>11881</td><td>H</td><td>30000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">49</td><td>11900</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">50</td><td>11919</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">51</td><td>11938</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">52</td><td>11958</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">53</td><td>11977</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">54</td><td>11996</td><td>H</td><td>30000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">55</td><td>12015</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">56</td><td>12034</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">57</td><td>12054</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">58</td><td>12073</td><td>H</td><td>30000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">59</td><td>12092</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">60</td><td>12111</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">61</td><td>12130</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">62</td><td>12149</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">63</td><td>12169</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">64</td><td>12188</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">65</td><td>12207</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">66</td><td>12226</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">67</td><td>12245</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">68</td><td>12265</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">69</td><td>12284</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">70</td><td>12303</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">71</td><td>12322</td><td>V</td><td>30000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">72</td><td>12341</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">73</td><td>12360</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">74</td><td>12380</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">75</td><td>12399</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">76</td><td>12418</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">77</td><td>12437</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">78</td><td>12467</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">79</td><td>12476</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
 </tbody>
 </table>
 </div>
-
-<div class="transponders">
+<div class="transponder">
 <h4>Transponders</h4>
 <h2>Hot Bird</h2>
 <p>Position: <b>13.0E</b></p>
-
 <table>
 <thead>
 <tr>
 <th>Index</th>
-<th>Frequency</th>
-<th>Polarization</th>
-<th>Symbol Rate</th>
+<th>Freq</th>
+<th>Pol</th>
+<th>SR</th>
 <th>FEC</th>
-<th>System</th>
-<th>Modulation</th>
+<th>Sys</th>
+<th>Mod</th>
+<th>Inv</th>
+<th>Rollof</th>
+<th>Pilot</th>
 </tr>
-</thead>
 <tbody>
-<tr><td>1</td><td>10719</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>2</td><td>10728</td><td>H</td><td>30000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>3</td><td>10758</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>4</td><td>10775</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>5</td><td>10775</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>6</td><td>10796</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>7</td><td>10815</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>8</td><td>10834</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>9</td><td>10853</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>10</td><td>10872</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>11</td><td>10873</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>12</td><td>10892</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>13</td><td>10911</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>14</td><td>10930</td><td>H</td><td>30000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>15</td><td>10949</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>16</td><td>10971</td><td>H</td><td>29700</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>17</td><td>10992</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>18</td><td>11013</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>19</td><td>11034</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>20</td><td>11054</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>21</td><td>11075</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>22</td><td>11075</td><td>V</td><td>30000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>23</td><td>11117</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>24</td><td>11137</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>25</td><td>11158</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>26</td><td>11179</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>27</td><td>11200</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>28</td><td>11219</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>29</td><td>11240</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>30</td><td>11258</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>31</td><td>11278</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>32</td><td>11296</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>33</td><td>11316</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>34</td><td>11317</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>35</td><td>11334</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>36</td><td>11355</td><td>V</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>37</td><td>11373</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>38</td><td>11393</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>39</td><td>11411</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>40</td><td>11431</td><td>V</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>41</td><td>11449</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>42</td><td>11471</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>43</td><td>11488</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>44</td><td>11508</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>45</td><td>11526</td><td>H</td><td>29700</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>46</td><td>11541</td><td>V</td><td>22000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>47</td><td>11566</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>48</td><td>11585</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>49</td><td>11604</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>50</td><td>11623</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>51</td><td>11642</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>52</td><td>11662</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>53</td><td>11681</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>54</td><td>11727</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>55</td><td>11727</td><td>V</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>56</td><td>11747</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>57</td><td>11766</td><td>V</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>58</td><td>11785</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>59</td><td>11804</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>60</td><td>11823</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>61</td><td>11842</td><td>V</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>62</td><td>11843</td><td>V</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>63</td><td>11861</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>64</td><td>11862</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>65</td><td>11880</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>66</td><td>11881</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>67</td><td>11900</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>68</td><td>11919</td><td>V</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>69</td><td>11938</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>70</td><td>11958</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>71</td><td>11976</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>72</td><td>11977</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>73</td><td>11996</td><td>V</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>74</td><td>12015</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>75</td><td>12034</td><td>V</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>76</td><td>12054</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>77</td><td>12072</td><td>V</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>78</td><td>12073</td><td>V</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>79</td><td>12091</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>80</td><td>12092</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>81</td><td>12111</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>82</td><td>12130</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>83</td><td>12149</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>84</td><td>12169</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>85</td><td>12188</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>86</td><td>12206</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>87</td><td>12207</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>88</td><td>12226</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>89</td><td>12245</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>90</td><td>12264</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>91</td><td>12265</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>92</td><td>12284</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>93</td><td>12303</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>94</td><td>12322</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>95</td><td>12341</td><td>V</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>96</td><td>12360</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>97</td><td>12379</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>98</td><td>12380</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>99</td><td>12399</td><td>H</td><td>29700</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>100</td><td>12418</td><td>V</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>101</td><td>12437</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>102</td><td>12437</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>103</td><td>12465</td><td>V</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>104</td><td>12466</td><td>V</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>105</td><td>12475</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>106</td><td>12476</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>107</td><td>12520</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>108</td><td>12539</td><td>H</td><td>30000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>109</td><td>12558</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>110</td><td>12576</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>111</td><td>12596</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>112</td><td>12597</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>113</td><td>12616</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>114</td><td>12635</td><td>V</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>115</td><td>12654</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>116</td><td>12673</td><td>V</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>117</td><td>12692</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>118</td><td>12713</td><td>V</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>119</td><td>12731</td><td>H</td><td>29900</td><td>0</td><td>DVB-S</td><td>0</td></tr>
+<tr><td class="trid">1</td><td>10719</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">2</td><td>10728</td><td>H</td><td>30000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">3</td><td>10758</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">4</td><td>10775</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">5</td><td>10775</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">6</td><td>10796</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">7</td><td>10815</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">8</td><td>10834</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">9</td><td>10853</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">10</td><td>10872</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">11</td><td>10873</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">12</td><td>10892</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">13</td><td>10911</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">14</td><td>10930</td><td>H</td><td>30000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">15</td><td>10949</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">16</td><td>10971</td><td>H</td><td>29700</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">17</td><td>10992</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">18</td><td>11013</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">19</td><td>11034</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">20</td><td>11054</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">21</td><td>11075</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">22</td><td>11075</td><td>V</td><td>30000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">23</td><td>11117</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">24</td><td>11137</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">25</td><td>11158</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">26</td><td>11179</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">27</td><td>11200</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">28</td><td>11219</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">29</td><td>11240</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">30</td><td>11258</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">31</td><td>11278</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">32</td><td>11296</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">33</td><td>11316</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">34</td><td>11317</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">35</td><td>11334</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">36</td><td>11355</td><td>V</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">37</td><td>11373</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">38</td><td>11393</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">39</td><td>11411</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">40</td><td>11431</td><td>V</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">41</td><td>11449</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">42</td><td>11471</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">43</td><td>11488</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">44</td><td>11508</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">45</td><td>11526</td><td>H</td><td>29700</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">46</td><td>11541</td><td>V</td><td>22000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">47</td><td>11566</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">48</td><td>11585</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">49</td><td>11604</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">50</td><td>11623</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">51</td><td>11642</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">52</td><td>11662</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">53</td><td>11681</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">54</td><td>11727</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">55</td><td>11727</td><td>V</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">56</td><td>11747</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">57</td><td>11766</td><td>V</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">58</td><td>11785</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">59</td><td>11804</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">60</td><td>11823</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">61</td><td>11842</td><td>V</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">62</td><td>11843</td><td>V</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">63</td><td>11861</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">64</td><td>11862</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">65</td><td>11880</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">66</td><td>11881</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">67</td><td>11900</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">68</td><td>11919</td><td>V</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">69</td><td>11938</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">70</td><td>11958</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">71</td><td>11976</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">72</td><td>11977</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">73</td><td>11996</td><td>V</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">74</td><td>12015</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">75</td><td>12034</td><td>V</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">76</td><td>12054</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">77</td><td>12072</td><td>V</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">78</td><td>12073</td><td>V</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">79</td><td>12091</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">80</td><td>12092</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">81</td><td>12111</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">82</td><td>12130</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">83</td><td>12149</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">84</td><td>12169</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">85</td><td>12188</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">86</td><td>12206</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">87</td><td>12207</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">88</td><td>12226</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">89</td><td>12245</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">90</td><td>12264</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">91</td><td>12265</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">92</td><td>12284</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">93</td><td>12303</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">94</td><td>12322</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">95</td><td>12341</td><td>V</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">96</td><td>12360</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">97</td><td>12379</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">98</td><td>12380</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">99</td><td>12399</td><td>H</td><td>29700</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">100</td><td>12418</td><td>V</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">101</td><td>12437</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">102</td><td>12437</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">103</td><td>12465</td><td>V</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">104</td><td>12466</td><td>V</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">105</td><td>12475</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">106</td><td>12476</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">107</td><td>12520</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">108</td><td>12539</td><td>H</td><td>30000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">109</td><td>12558</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">110</td><td>12576</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">111</td><td>12596</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">112</td><td>12597</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">113</td><td>12616</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">114</td><td>12635</td><td>V</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">115</td><td>12654</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">116</td><td>12673</td><td>V</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">117</td><td>12692</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">118</td><td>12713</td><td>V</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">119</td><td>12731</td><td>H</td><td>29900</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
 </tbody>
 </table>
 </div>
-
-<div class="transponders">
+<div class="transponder">
 <h4>Transponders</h4>
 <h2>Badr 7</h2>
 <p>Position: <b>24.0E</b></p>
-
 <table>
 <thead>
 <tr>
 <th>Index</th>
-<th>Frequency</th>
-<th>Polarization</th>
-<th>Symbol Rate</th>
+<th>Freq</th>
+<th>Pol</th>
+<th>SR</th>
 <th>FEC</th>
-<th>System</th>
-<th>Modulation</th>
+<th>Sys</th>
+<th>Mod</th>
+<th>Inv</th>
+<th>Rollof</th>
+<th>Pilot</th>
 </tr>
-</thead>
 <tbody>
-<tr><td>1</td><td>10956</td><td>H</td><td>3300</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>2</td><td>10970</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>3</td><td>11270</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
+<tr><td class="trid">1</td><td>10956</td><td>H</td><td>3300</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">2</td><td>10970</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">3</td><td>11270</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
 </tbody>
 </table>
 </div>
-
-<div class="transponders">
+<div class="transponder">
 <h4>Transponders</h4>
 <h2>Badr 4/5/6/7</h2>
 <p>Position: <b>26.0E</b></p>
-
 <table>
 <thead>
 <tr>
 <th>Index</th>
-<th>Frequency</th>
-<th>Polarization</th>
-<th>Symbol Rate</th>
+<th>Freq</th>
+<th>Pol</th>
+<th>SR</th>
 <th>FEC</th>
-<th>System</th>
-<th>Modulation</th>
+<th>Sys</th>
+<th>Mod</th>
+<th>Inv</th>
+<th>Rollof</th>
+<th>Pilot</th>
 </tr>
-</thead>
 <tbody>
-<tr><td>1</td><td>10730</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>2</td><td>10730</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>3</td><td>10770</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>4</td><td>10770</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>5</td><td>10810</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>6</td><td>10850</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>7</td><td>10890</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>8</td><td>10890</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>9</td><td>10930</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>10</td><td>10930</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>11</td><td>10956</td><td>H</td><td>3300</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>12</td><td>10970</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>13</td><td>11270</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>14</td><td>11557</td><td>H</td><td>2960</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>15</td><td>11563</td><td>H</td><td>1500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>16</td><td>11727</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>17</td><td>11747</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>18</td><td>11766</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>19</td><td>11785</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>20</td><td>11804</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>21</td><td>11823</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>22</td><td>11843</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>23</td><td>11862</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>24</td><td>11881</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>25</td><td>11900</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>26</td><td>11938</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>27</td><td>11958</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>28</td><td>11977</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>29</td><td>11996</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>30</td><td>12015</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>31</td><td>12054</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>32</td><td>12073</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>33</td><td>12092</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>34</td><td>12111</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>35</td><td>12130</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>36</td><td>12149</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>37</td><td>12169</td><td>V</td><td>22000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>38</td><td>12182</td><td>H</td><td>16200</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>39</td><td>12226</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>40</td><td>12245</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>41</td><td>12265</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>42</td><td>12284</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>43</td><td>12303</td><td>H</td><td>32000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>44</td><td>12322</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>45</td><td>12341</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>46</td><td>12360</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>47</td><td>12380</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>48</td><td>12399</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>49</td><td>12418</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>50</td><td>12437</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>51</td><td>12456</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>52</td><td>12476</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>53</td><td>12523</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>54</td><td>12523</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>55</td><td>12547</td><td>H</td><td>2000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>56</td><td>12550</td><td>H</td><td>2950</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>57</td><td>12560</td><td>H</td><td>2220</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>58</td><td>12562</td><td>H</td><td>2220</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>59</td><td>12563</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>60</td><td>12566</td><td>H</td><td>2220</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>61</td><td>12568</td><td>H</td><td>1850</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>62</td><td>12572</td><td>H</td><td>4444</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>63</td><td>12580</td><td>H</td><td>2963</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>64</td><td>12586</td><td>V</td><td>2220</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>65</td><td>12587</td><td>H</td><td>2000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>66</td><td>12591</td><td>H</td><td>2200</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>67</td><td>12591</td><td>H</td><td>2200</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>68</td><td>12594</td><td>H</td><td>2200</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>69</td><td>12597</td><td>H</td><td>2200</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>70</td><td>12600</td><td>V</td><td>7000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>71</td><td>12602</td><td>H</td><td>2960</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>72</td><td>12605</td><td>V</td><td>2220</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>73</td><td>12606</td><td>H</td><td>2962</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>74</td><td>12608</td><td>V</td><td>1820</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>75</td><td>12611</td><td>V</td><td>2220</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>76</td><td>12618</td><td>H</td><td>2220</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>77</td><td>12620</td><td>V</td><td>2200</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>78</td><td>12632</td><td>V</td><td>2200</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>79</td><td>12635</td><td>V</td><td>2220</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>80</td><td>12643</td><td>H</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>81</td><td>12644</td><td>V</td><td>1850</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>82</td><td>12669</td><td>H</td><td>2220</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>83</td><td>12672</td><td>H</td><td>2220</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>84</td><td>12676</td><td>H</td><td>2100</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>85</td><td>12679</td><td>H</td><td>2220</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>86</td><td>12683</td><td>V</td><td>27500</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>87</td><td>12699</td><td>H</td><td>3200</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>88</td><td>12708</td><td>H</td><td>2220</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>89</td><td>12711</td><td>V</td><td>5632</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>90</td><td>12717</td><td>V</td><td>2143</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>91</td><td>12718</td><td>H</td><td>3000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>92</td><td>12722</td><td>H</td><td>3000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>93</td><td>12729</td><td>H</td><td>2200</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>94</td><td>12734</td><td>H</td><td>3000</td><td>0</td><td>DVB-S</td><td>0</td></tr>
-<tr><td>95</td><td>12736</td><td>V</td><td>5632</td><td>0</td><td>DVB-S</td><td>0</td></tr>
+<tr><td class="trid">1</td><td>10730</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">2</td><td>10730</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">3</td><td>10770</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">4</td><td>10770</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">5</td><td>10810</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">6</td><td>10850</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">7</td><td>10890</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">8</td><td>10890</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">9</td><td>10930</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">10</td><td>10930</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">11</td><td>10956</td><td>H</td><td>3300</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">12</td><td>10970</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">13</td><td>11270</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">14</td><td>11557</td><td>H</td><td>2960</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">15</td><td>11563</td><td>H</td><td>1500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">16</td><td>11727</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">17</td><td>11747</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">18</td><td>11766</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">19</td><td>11785</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">20</td><td>11804</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">21</td><td>11823</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">22</td><td>11843</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">23</td><td>11862</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">24</td><td>11881</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">25</td><td>11900</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">26</td><td>11938</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">27</td><td>11958</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">28</td><td>11977</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">29</td><td>11996</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">30</td><td>12015</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">31</td><td>12054</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">32</td><td>12073</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">33</td><td>12092</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">34</td><td>12111</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">35</td><td>12130</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">36</td><td>12149</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">37</td><td>12169</td><td>V</td><td>22000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">38</td><td>12182</td><td>H</td><td>16200</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">39</td><td>12226</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">40</td><td>12245</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">41</td><td>12265</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">42</td><td>12284</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">43</td><td>12303</td><td>H</td><td>32000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">44</td><td>12322</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">45</td><td>12341</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">46</td><td>12360</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">47</td><td>12380</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">48</td><td>12399</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">49</td><td>12418</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">50</td><td>12437</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">51</td><td>12456</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">52</td><td>12476</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">53</td><td>12523</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">54</td><td>12523</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">55</td><td>12547</td><td>H</td><td>2000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">56</td><td>12550</td><td>H</td><td>2950</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">57</td><td>12560</td><td>H</td><td>2220</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">58</td><td>12562</td><td>H</td><td>2220</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">59</td><td>12563</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">60</td><td>12566</td><td>H</td><td>2220</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">61</td><td>12568</td><td>H</td><td>1850</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">62</td><td>12572</td><td>H</td><td>4444</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">63</td><td>12580</td><td>H</td><td>2963</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">64</td><td>12586</td><td>V</td><td>2220</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">65</td><td>12587</td><td>H</td><td>2000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">66</td><td>12591</td><td>H</td><td>2200</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">67</td><td>12591</td><td>H</td><td>2200</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">68</td><td>12594</td><td>H</td><td>2200</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">69</td><td>12597</td><td>H</td><td>2200</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">70</td><td>12600</td><td>V</td><td>7000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">71</td><td>12602</td><td>H</td><td>2960</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">72</td><td>12605</td><td>V</td><td>2220</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">73</td><td>12606</td><td>H</td><td>2962</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">74</td><td>12608</td><td>V</td><td>1820</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">75</td><td>12611</td><td>V</td><td>2220</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">76</td><td>12618</td><td>H</td><td>2220</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">77</td><td>12620</td><td>V</td><td>2200</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">78</td><td>12632</td><td>V</td><td>2200</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">79</td><td>12635</td><td>V</td><td>2220</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">80</td><td>12643</td><td>H</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">81</td><td>12644</td><td>V</td><td>1850</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">82</td><td>12669</td><td>H</td><td>2220</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">83</td><td>12672</td><td>H</td><td>2220</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">84</td><td>12676</td><td>H</td><td>2100</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">85</td><td>12679</td><td>H</td><td>2220</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">86</td><td>12683</td><td>V</td><td>27500</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">87</td><td>12699</td><td>H</td><td>3200</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">88</td><td>12708</td><td>H</td><td>2220</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">89</td><td>12711</td><td>V</td><td>5632</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">90</td><td>12717</td><td>V</td><td>2143</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">91</td><td>12718</td><td>H</td><td>3000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">92</td><td>12722</td><td>H</td><td>3000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">93</td><td>12729</td><td>H</td><td>2200</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">94</td><td>12734</td><td>H</td><td>3000</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
+<tr><td class="trid">95</td><td>12736</td><td>V</td><td>5632</td><td></td><td>DVB-S</td><td>Auto</td><td></td><td></td><td></td></tr>
 </tbody>
 </table>
 </div>
 </div>
-
-<div>
+<div class="footer">
 Source File: <a href="https://github.com/ctlcltd/e2-sat-editor/tree/main/seeds./enigma_db/satellites.xml">satellites.xml</a><br>
-Editor: <a href="https://github.com/ctlcltd/e2-sat-editor">e2 SAT Editor 0.1</a><br>
-Datetime: <b>2022-11-27 23:18:02+0100</b><br>
+Editor: <b>e2 SAT Editor 0.1 <a href="https://github.com/ctlcltd/e2-sat-editor">https://github.com/ctlcltd/e2-sat-editor</a></b><br>
+Datetime: <b>2022-12-29 19:08:52+0100</b><br>
 Content Type: <b>seeds (source file)</b><br>
 License: <a href="https://github.com/ctlcltd/e2-sat-editor/blob/main/LICENSE">MIT License</a><br>
 License: <a href="https://github.com/ctlcltd/e2-sat-editor/blob/main/src/COPYING">GNU GPLv3 License</a><br>

@@ -76,8 +76,8 @@ Please read the [contribution guidelines](https://github.com/ctlcltd/e2-sat-edit
 
 - [x] search filters
 - [x] terrestrial.xml and cable.xml support
-- [ ] satellites.xml editing
-- [ ] print and import/export CSV
+- [x] satellites.xml editing
+- [x] print and import/export CSV
 - [ ] stable build
 - [ ] smart edit userbouquets
 - [ ] minisite and promotion
