@@ -395,8 +395,7 @@ QStringList e2db::entryService(service ch)
 		}
 		scas.append(' ' + cas.join(", "));
 	}
-	//TODO value
-	QString pname = QString::fromStdString(ch.data.count(e2db::SDATA::p) ? ch.data[e2db::SDATA::p][0] : "");
+	QString pname = QString::fromStdString(value_channel_provider(ch));
 
 	QStringList entry = QStringList ({chname, chid, txid, ssid, tsid, stype, scas, pname});
 	entry.append(entries.transponders[ch.txid]);
@@ -450,9 +449,9 @@ QStringList e2db::entryTunersetsTransponder(tunersets_transponder tntxp, tunerse
 		QString sys = QString::fromStdString(value_transponder_system(tntxp.sys, YTYPE::satellite));
 		QString mod = QString::fromStdString(value_transponder_modulation(tntxp.mod, YTYPE::satellite));
 		QString inv = QString::fromStdString(value_transponder_inversion(tntxp.inv, YTYPE::satellite));
-		QString pil = QString::fromStdString(value_transponder_pilot(tntxp.pil));
 		QString rol = QString::fromStdString(value_transponder_rollof(tntxp.rol));
-		entry = QStringList ({trid, combo, freq, pol, sr, fec, sys, mod, inv, pil, rol});
+		QString pil = QString::fromStdString(value_transponder_pilot(tntxp.pil));
+		entry = QStringList ({trid, combo, freq, pol, sr, fec, sys, mod, inv, rol, pil});
 	}
 	else if (tn.ytype == YTYPE::terrestrial)
 	{
@@ -469,10 +468,10 @@ QStringList e2db::entryTunersetsTransponder(tunersets_transponder tntxp, tunerse
 	}
 	else if (tn.ytype == YTYPE::cable)
 	{
-		QString cmod = QString::fromStdString(value_transponder_modulation(tntxp.cmod, YTYPE::terrestrial));
+		QString cmod = QString::fromStdString(value_transponder_modulation(tntxp.cmod, YTYPE::cable));
 		QString sr = QString::fromStdString(to_string(tntxp.sr));
-		QString cfec = QString::fromStdString(value_transponder_fec(tntxp.cfec, YTYPE::terrestrial));
-		QString inv = QString::fromStdString(value_transponder_inversion(tntxp.inv, YTYPE::terrestrial));
+		QString cfec = QString::fromStdString(value_transponder_fec(tntxp.cfec, YTYPE::cable));
+		QString inv = QString::fromStdString(value_transponder_inversion(tntxp.inv, YTYPE::cable));
 		QString sys = QString::fromStdString(value_transponder_system(tntxp.sys, YTYPE::cable));
 		entry = QStringList ({trid, combo, freq, cmod, sr, cfec, inv, sys});
 	}

@@ -41,31 +41,23 @@ e2db_converter::e2db_converter(e2se::logger::session* log)
 	debug("e2db_converter()");
 }
 
-void e2db_converter::merge(e2db_abstract* dst)
-{
-	debug("merge()");
-
-	this->db.transponders.merge(dst->db.transponders); //C++17
-	this->db.services.merge(dst->db.services); //C++17
-	this->tuners.merge(dst->tuners); //C++17
-	this->bouquets.merge(dst->bouquets); //C++17
-
-	this->collisions = dst->collisions;
-	this->tuners_pos = dst->tuners_pos;
-	this->index = dst->index;
-}
-
 void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, vector<string> paths)
 {
 	debug("import_csv_file()", "file path", "multiple");
 	debug("import_csv_file()", "file input", fci);
 
 	bool merge = this->get_input().size() != 0 ? true : false;
-	auto* dst = merge ? new e2db_abstract : this;
+	auto* dst = merge ? new e2db_converter(this->log->log) : this;
 
 	for (string & path : paths)
 	{
 		import_csv_file(fci, opts, dst, path);
+	}
+	dst->debugger();
+	if (merge)
+	{
+		this->merge(dst);
+		delete dst;
 	}
 }
 
@@ -732,7 +724,7 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 
 	unordered_map<string, userbouquet> userbouquets;
 
-	for (unsigned int x = 0; x < sxv.size(); x++)
+	for (size_t x = 0; x < sxv.size(); x++)
 	{
 		// csv header
 		if (x == 0 && sxv[0][0] == "Index")
@@ -743,17 +735,17 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 		transponder tx;
 		channel_reference chref;
 		service_reference ref;
-		vector<int> fec;
+		fec fec;
 
-		for (unsigned int i = 0; i < sxv[x].size(); i++)
+		for (size_t i = 0; i < sxv[x].size(); i++)
 		{
 			// debug("convert_csv_channel_list()", to_string(x), sxv[x][i]);
 
 			string& val = sxv[x][i];
 
-			// index
+			// idx
 			if (i == 0)
-				ch.index = tx.index = std::atoi(val.data());
+				ch.index = std::atoi(val.data());
 			// chname
 			else if (i == 1)
 				ch.chname = val;
@@ -778,49 +770,63 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 			// snum
 			else if (i == 8)
 				ch.snum = std::atoi(val.data());
-			// scas
+			// cas
 			else if (i == 9)
-				ch.data[SDATA::C] = value_channel_cas(val);
-			// provider
+			{
+				if (! val.empty())
+					ch.data[SDATA::C];
+			}
+			// caid
 			else if (i == 10)
-				ch.data[SDATA::p] = {val};
-			//TODO FIX
-			// sys
+				ch.data[SDATA::C] = value_channel_caid(val);
+			// provider
 			else if (i == 11)
-				tx.sys = value_transponder_system(val, tx.ytype);
-			// pos
+				ch.data[SDATA::p] = value_channel_provider(val);
+			// ytype
+			// sys
 			else if (i == 12)
+			{
+				tx.ytype = value_transponder_type(val);
+				tx.sys = value_transponder_system(val);
+			}
+			// pos
+			else if (i == 13)
 				tx.pos = value_transponder_position(val);
 			// freq
-			else if (i == 13)
+			else if (i == 14)
 				tx.freq = std::atoi(val.data());
 			// pol
-			else if (i == 14)
+			else if (i == 15)
 				tx.pol = value_transponder_polarization(val);
 			// sr
-			else if (i == 15)
+			else if (i == 16)
 				tx.sr = std::atoi(val.data());
 			// fec condensed
-			else if (i == 16)
+			else if (i == 17)
 				value_transponder_fec(val, tx.ytype, fec);
 			// userbouquet bname
-			else if (i == 17)
+			else if (i == 18)
 				ub.bname = val;
 			// userbouquet name
-			else if (i == 18)
+			else if (i == 19)
 				ub.name = val;
 		}
 
 		if (chref.marker)
 		{
-			// value
+			// chref.value
 			chref.value = ch.chname;
+
+			char chid[25];
+			// %4d:%2x:%d
+			std::sprintf(chid, "%d:%x:%d", chref.atype, chref.anum, 0);
+			chref.chid = chid;
 		}
 		else
 		{
 			// x order has priority over ch.index
 			if (ch.index != int (x))
-				ch.index = tx.index = (x + 1);
+				ch.index = (x + 1);
 			// ssid has priority over ref.ssid
 			if (! ch.ssid)
 				ch.ssid = ref.ssid;
@@ -846,17 +852,22 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 			// fec condensed
 			if (tx.ytype == YTYPE::satellite)
 			{
-				tx.fec = fec[YFEC::inner_fec];
+				tx.fec = fec.inner_fec;
 			}
 			else if (tx.ytype == YTYPE::terrestrial)
 			{
-				tx.hpfec = fec[YFEC::hp_fec];
-				tx.lpfec = fec[YFEC::lp_fec];
+				tx.hpfec = fec.hp_fec;
+				tx.lpfec = fec.lp_fec;
 			}
 			else if (tx.ytype == YTYPE::cable)
 			{
-				tx.fec = fec[YFEC::inner_fec];
+				tx.fec = fec.inner_fec;
 			}
+
+			if (ch.data[SDATA::C].empty())
+				ch.data.erase(SDATA::f);
+			if (ch.data[SDATA::c].empty())
+				ch.data.erase(SDATA::c);
 
 			char txid[25];
 			// %4x:%8x
@@ -866,11 +877,14 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 			char chid[25];
 			// %4x:%4x:%8x
 			std::sprintf(chid, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
-			ch.chid = chid;
+			ch.chid = chref.chid = chid;
 			ch.txid = txid;
 
 			if (! dst->db.transponders.count(tx.txid))
 			{
+				// tx idx
+				tx.index = (dst->index["txs"].size() + 1);
+
 				dst->db.transponders.emplace(tx.txid, tx);
 				dst->index["txs"].emplace_back(pair (tx.index, tx.txid)); //C++17
 			}
@@ -885,13 +899,21 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 
 		if (view == DOC_VIEW::view_userbouquets)
 		{
-			if (userbouquets.count(ub.bname))
-				ub = userbouquets[ub.bname];
-			else
+			if (! userbouquets.count(ub.bname))
+			{
 				userbouquets.emplace(ub.bname, ub);
+			}
+			if (! userbouquets[ub.bname].channels.count(chref.chid))
+			{
+				// chref idx
+				chref.index = (userbouquets[ub.bname].channels.size() + 1);
 
-			if (! ub.channels.count(chref.chid))
-				ub.channels.emplace(chref.chid, chref);
+				userbouquets[ub.bname].channels.emplace(chref.chid, chref);
+
+				dst->index[ub.bname].emplace_back(pair (chref.index, chref.chid)); //C++17
+				if (chref.marker)
+					dst->index["mks"].emplace_back(pair (ub.index, chref.chid)); //C++17
+			}
 		}
 	}
 
@@ -899,7 +921,7 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 	{
 		// btype autodetect
 		int btype;
-		if (dst->index.count("chs:1") > dst->index.count("chs:2"))
+		if (dst->index["chs:1"].size() > dst->index["chs:2"].size())
 			btype = STYPE::tv;
 		else
 			btype = STYPE::radio;
@@ -908,54 +930,55 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 		{
 			userbouquet& ub = x.second;
 
+			if (dst->index.count("bss"))
+			{
+				bouquet bs;
+				for (auto & x : dst->bouquets)
+				{
+					if (x.second.btype == btype)
+					{
+						bs = x.second;
+						break;
+					}
+				}
+				// userbouquet pname
+				ub.pname = bs.bname;
+			}
+			else
+			{
+				bouquet bs;
+				if (btype == STYPE::tv)
+				{
+					bs.bname = "bouquets.tv";
+					bs.name = "User - bouquet (TV)";
+					bs.nname = STYPE_EXT_LABEL.at(STYPE::tv);
+				}
+				else if (btype == STYPE::radio)
+				{
+					bs.bname = "bouquets.radio";
+					bs.name = "User - bouquet (Radio)";
+					bs.nname = STYPE_EXT_LABEL.at(STYPE::radio);
+				}
+				// bouquet idx
+				bs.index = dst->index["bss"].size();
+				// userbouquet pname
+				ub.pname = bs.bname;
+
+				dst->bouquets.emplace(bs.bname, bs);
+				dst->index["bss"].emplace_back(pair (bs.index, bs.bname)); //C++17
+			}
 			if (! dst->userbouquets.count(ub.bname))
 			{
 				dst->userbouquets.emplace(ub.bname, ub);
 				dst->index["ubs"].emplace_back(pair (ub.index, ub.bname)); //C++17
+				dst->bouquets[ub.pname].userbouquets.emplace_back(ub.bname);
 
-				for (auto & x : ub.channels)
+				for (auto & x : dst->index[ub.bname])
 				{
-					channel_reference& chref = x.second;
+					channel_reference& chref = ub.channels[x.second];
 
-					dst->index[ub.bname].emplace_back(pair (chref.index, chref.chid)); //C++17
-
-					if (x.second.marker)
-						dst->index["mks"].emplace_back(pair (ub.index, chref.chid)); //C++17
-					else
+					if (! chref.marker)
 						dst->index[ub.pname].emplace_back(pair ((dst->index[ub.pname].size() + 1), chref.chid)); //C++17
-				}
-				if (dst->index.count("bss"))
-				{
-					bouquet bs;
-
-					for (auto & x : dst->bouquets)
-					{
-						if (x.second.btype == btype)
-						{
-							bs = x.second;
-							break;
-						}
-					}
-					bs.userbouquets.emplace_back(ub.bname);
-					dst->bouquets[bs.bname] = bs;
-				}
-				else
-				{
-					bouquet bs;
-					if (bs.btype == STYPE::tv)
-					{
-						bs.bname = "bouquets.tv";
-						bs.name = "User - bouquet (TV)";
-						bs.nname = STYPE_EXT_LABEL.at(STYPE::tv);
-					}
-					else if (bs.btype == 2)
-					{
-						bs.bname = "bouquets.radio";
-						bs.name = "User - bouquet (Radio)";
-						bs.nname = STYPE_EXT_LABEL.at(STYPE::radio);
-					}
-					bs.index = dst->index["bss"].size();
-					dst->bouquets.emplace(bs.bname, bs);
 				}
 			}
 		}
@@ -969,7 +992,7 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 
 	unordered_map<string, userbouquet> userbouquets;
 
-	for (unsigned int x = 0; x < sxv.size(); x++)
+	for (size_t x = 0; x < sxv.size(); x++)
 	{
 		// csv header
 		if (x == 0 && sxv[0][0] == "Index")
@@ -981,15 +1004,15 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 		channel_reference chref;
 		service_reference ref;
 
-		for (unsigned int i = 0; i < sxv[x].size(); i++)
+		for (size_t i = 0; i < sxv[x].size(); i++)
 		{
 			// debug("convert_csv_channel_list_extended()", to_string(x), sxv[x][i]);
 
 			string& val = sxv[x][i];
 
-			// index
+			// idx
 			if (i == 0)
-				ch.index = tx.index = std::atoi(val.data());
+				ch.index = std::atoi(val.data());
 			// chname
 			else if (i == 1)
 				ch.chname = val;
@@ -1014,22 +1037,30 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 			// snum
 			else if (i == 8)
 				ch.snum = std::atoi(val.data());
-			// scas
+			// cas
 			else if (i == 9)
-				ch.data[SDATA::C] = value_channel_cas(val);
-			// provider
+			{
+				if (! val.empty())
+					ch.data[SDATA::C];
+			}
+			// caid
 			else if (i == 10)
-				ch.data[SDATA::p] = {val};
-			// srcid
+			{
+				ch.data[SDATA::C] = value_channel_caid(val);
+			}
+			// provider
 			else if (i == 11)
-				ch.srcid = std::atoi(val.data());
-			//TODO FIX
-			// sys
+				ch.data[SDATA::p] = value_channel_provider(val);
+			// srcid
 			else if (i == 12)
-				tx.sys = value_transponder_system(val, tx.ytype);
+				ch.srcid = std::atoi(val.data());
 			// ytype
+			// sys
 			else if (i == 13)
+			{
 				tx.ytype = value_transponder_type(val);
+				tx.sys = value_transponder_system(val);
+			}
 			// pos
 			else if (i == 14)
 				tx.pos = value_transponder_position(val);
@@ -1084,21 +1115,32 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 			// txp flgs
 			else if (i == 31)
 				tx.oflgs = val;
-			// txp cached
-			// else if (i == 32)
-			//	tx.oflgs = val;
+			// cached
+			else if (i == 32)
+				ch.data[SDATA::c] = value_channel_cached(val);
+			// userbouquet bname
+			else if (i == 33)
+				ub.bname = val;
+			// userbouquet name
+			else if (i == 34)
+				ub.name = val;
 		}
 
 		if (chref.marker)
 		{
-			// value
+			// chref.value
 			chref.value = ch.chname;
+
+			char chid[25];
+			// %4d:%2x:%d
+			std::sprintf(chid, "%d:%x:%d", chref.atype, chref.anum, 0);
+			chref.chid = chid;
 		}
 		else
 		{
 			// x order has priority over ch.index
 			if (ch.index != int (x))
-				ch.index = tx.index = (x + 1);
+				ch.index = (x + 1);
 			// ssid has priority over ref.ssid
 			if (! ch.ssid)
 				ch.ssid = ref.ssid;
@@ -1118,8 +1160,11 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 			//TODO is snum = ssid in chref ?
 			if (! ch.snum)
 				ch.snum = chref.anum;
+
 			if (ch.data[SDATA::C].empty())
-				ch.data.erase(SDATA::C);
+				ch.data.erase(SDATA::f);
+			if (ch.data[SDATA::c].empty())
+				ch.data.erase(SDATA::c);
 
 			char txid[25];
 			// %4x:%8x
@@ -1129,11 +1174,14 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 			char chid[25];
 			// %4x:%4x:%8x
 			std::sprintf(chid, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
-			ch.chid = chid;
+			ch.chid = chref.chid = chid;
 			ch.txid = txid;
 
 			if (! dst->db.transponders.count(tx.txid))
 			{
+				// tx idx
+				tx.index = (dst->index["txs"].size() + 1);
+
 				dst->db.transponders.emplace(tx.txid, tx);
 				dst->index["txs"].emplace_back(pair (tx.index, tx.txid)); //C++17
 			}
@@ -1148,22 +1196,28 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 	
 		if (view == DOC_VIEW::view_userbouquets)
 		{
-			if (userbouquets.count(ub.bname))
-				ub = userbouquets[ub.bname];
-			else
+			if (! userbouquets.count(ub.bname))
+			{
 				userbouquets.emplace(ub.bname, ub);
+			}
+			if (! userbouquets[ub.bname].channels.count(chref.chid))
+			{
+				// chref idx
+				chref.index = (userbouquets[ub.bname].channels.size() + 1);
 
-			if (! ub.channels.count(chref.chid))
-				ub.channels.emplace(chref.chid, chref);
+				userbouquets[ub.bname].channels.emplace(chref.chid, chref);
+				dst->index[ub.bname].emplace_back(pair (chref.index, chref.chid)); //C++17
+				if (chref.marker)
+					dst->index["mks"].emplace_back(pair (ub.index, chref.chid)); //C++17
+			}
 		}
 	}
-
 
 	if (view == DOC_VIEW::view_userbouquets)
 	{
 		// btype autodetect
 		int btype;
-		if (dst->index.count("chs:1") > dst->index.count("chs:2"))
+		if (dst->index["chs:1"].size() > dst->index["chs:2"].size())
 			btype = STYPE::tv;
 		else
 			btype = STYPE::radio;
@@ -1172,54 +1226,55 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 		{
 			userbouquet& ub = x.second;
 
+			if (! dst->index.count("bss"))
+			{
+				bouquet bs;
+				for (auto & x : dst->bouquets)
+				{
+					if (x.second.btype == btype)
+					{
+						bs = x.second;
+						break;
+					}
+				}
+				// userbouquet pname
+				ub.pname = bs.bname;
+			}
+			else
+			{
+				bouquet bs;
+				if (btype == STYPE::tv)
+				{
+					bs.bname = "bouquets.tv";
+					bs.name = "User - bouquet (TV)";
+					bs.nname = STYPE_EXT_LABEL.at(STYPE::tv);
+				}
+				else if (btype == STYPE::radio)
+				{
+					bs.bname = "bouquets.radio";
+					bs.name = "User - bouquet (Radio)";
+					bs.nname = STYPE_EXT_LABEL.at(STYPE::radio);
+				}
+				// bouquet idx
+				bs.index = dst->index["bss"].size();
+				// userbouquet pname
+				ub.pname = bs.bname;
+
+				dst->bouquets.emplace(bs.bname, bs);
+				dst->index["bss"].emplace_back(pair (bs.index, bs.bname)); //C++17
+			}
 			if (! dst->userbouquets.count(ub.bname))
 			{
 				dst->userbouquets.emplace(ub.bname, ub);
 				dst->index["ubs"].emplace_back(pair (ub.index, ub.bname)); //C++17
+				dst->bouquets[ub.pname].userbouquets.emplace_back(ub.bname);
 
-				for (auto & x : ub.channels)
+				for (auto & x : dst->index[ub.bname])
 				{
-					channel_reference& chref = x.second;
+					channel_reference& chref = ub.channels[x.second];
 
-					dst->index[ub.bname].emplace_back(pair (chref.index, chref.chid)); //C++17
-
-					if (x.second.marker)
-						dst->index["mks"].emplace_back(pair (ub.index, chref.chid)); //C++17
-					else
+					if (! chref.marker)
 						dst->index[ub.pname].emplace_back(pair ((dst->index[ub.pname].size() + 1), chref.chid)); //C++17
-				}
-				if (dst->index.count("bss"))
-				{
-					bouquet bs;
-
-					for (auto & x : dst->bouquets)
-					{
-						if (x.second.btype == btype)
-						{
-							bs = x.second;
-							break;
-						}
-					}
-					bs.userbouquets.emplace_back(ub.bname);
-					dst->bouquets[bs.bname] = bs;
-				}
-				else
-				{
-					bouquet bs;
-					if (bs.btype == STYPE::tv)
-					{
-						bs.bname = "bouquets.tv";
-						bs.name = "User - bouquet (TV)";
-						bs.nname = STYPE_EXT_LABEL.at(STYPE::tv);
-					}
-					else if (bs.btype == 2)
-					{
-						bs.bname = "bouquets.radio";
-						bs.name = "User - bouquet (Radio)";
-						bs.nname = STYPE_EXT_LABEL.at(STYPE::radio);
-					}
-					bs.index = dst->index["bss"].size();
-					dst->bouquets.emplace(bs.bname, bs);
 				}
 			}
 		}
@@ -1232,9 +1287,9 @@ void e2db_converter::convert_csv_bouquet_list(vector<vector<string>> sxv, e2db_a
 	debug("convert_csv_bouquet_list()");
 
 	bouquet bs;
-	vector<userbouquet> ubs;
+	vector<userbouquet> userbouquets;
 
-	for (unsigned int x = 0; x < sxv.size(); x++)
+	for (size_t x = 0; x < sxv.size(); x++)
 	{
 		// csv header
 		if (x == 0 && sxv[0][0] == "Index")
@@ -1242,7 +1297,7 @@ void e2db_converter::convert_csv_bouquet_list(vector<vector<string>> sxv, e2db_a
 
 		userbouquet ub;
 
-		for (unsigned int i = 0; i < sxv[x].size(); i++)
+		for (size_t i = 0; i < sxv[x].size(); i++)
 		{
 			// debug("convert_csv_bouquet_list()", to_string(x), sxv[x][i]);
 
@@ -1253,34 +1308,36 @@ void e2db_converter::convert_csv_bouquet_list(vector<vector<string>> sxv, e2db_a
 				ub.index = std::atoi(val.data());
 			// bouquet name
 			else if (i == 1)
-				bs.name = ub.pname = val;
+				bs.name = val;
 			// userbouquet bname
 			else if (i == 2)
 				ub.bname = val;
 			// userbouquet name
 			else if (i == 3)
 				ub.name = val;
-			// btype - parse text
+			// btype
 			else if (i == 4)
-				bs.btype = std::atoi(val.data());
+				bs.btype = value_bouquet_type(val);
 		}
 
 		// x order has priority over ub.index
 		if (ub.index != int (x))
 			ub.index = (x + 1);
-		
-		bs.userbouquets.emplace_back(ub.bname);
-	}
+		// bouquet bname
+		// userbouquet pname
+		// bouquet nname
+		if (bs.btype == STYPE::tv)
+		{
+			bs.bname = ub.pname = "bouquets.tv";
+			bs.nname = STYPE_EXT_LABEL.at(STYPE::tv);
+		}
+		else if (bs.btype == 2)
+		{
+			bs.bname = ub.pname = "bouquets.radio";
+			bs.nname = STYPE_EXT_LABEL.at(STYPE::radio);
+		}
 
-	if (bs.btype == STYPE::tv)
-	{
-		bs.bname = "bouquets.tv";
-		bs.nname = STYPE_EXT_LABEL.at(STYPE::tv);
-	}
-	else if (bs.btype == 2)
-	{
-		bs.bname = "bouquets.radio";
-		bs.nname = STYPE_EXT_LABEL.at(STYPE::radio);
+		userbouquets.emplace_back(ub);
 	}
 
 	if (! dst->bouquets.count(bs.bname))
@@ -1291,12 +1348,13 @@ void e2db_converter::convert_csv_bouquet_list(vector<vector<string>> sxv, e2db_a
 		dst->bouquets.emplace(bs.bname, bs);
 		dst->index["bss"].emplace_back(pair (bs.index, bs.bname)); //C++17
 	}
-	for (userbouquet & ub : ubs)
+	for (userbouquet & ub : userbouquets)
 	{
 		if (! dst->userbouquets.count(ub.bname))
 		{
 			dst->userbouquets.emplace(ub.bname, ub);
 			dst->index["ubs"].emplace_back(pair (ub.index, ub.bname)); //C++17
+			dst->bouquets[ub.pname].userbouquets.emplace_back(ub.bname);
 		}
 	}
 }
@@ -1310,7 +1368,7 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 	tunersets tv;
 	tv.charset = "utf-8";
 
-	for (unsigned int x = 0; x < sxv.size(); x++)
+	for (size_t x = 0; x < sxv.size(); x++)
 	{
 		// ytype autodetect
 		if (x == 0)
@@ -1333,24 +1391,21 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 		tunersets_table tn;
 		tunersets_transponder tntxp;
 
-		// tn index
-		tn.index = x;
-
-		for (unsigned int i = 0; i < sxv[x].size(); i++)
+		for (size_t i = 0; i < sxv[x].size(); i++)
 		{
 			// debug("convert_csv_tunersets_list()", to_string(x), sxv[x][i]);
 
 			string& val = sxv[x][i];
 
-			// tntxp index
+			// transponder idx
 			if (i == 0)
 				tntxp.index = std::atoi(val.data());
-			// tn name
+			// table name
 			else if (i == 1)
 				tn.name = val;
-			// tn pos
+			// table pos
 			else if (i == 2)
-				tn.pos = ytype == YTYPE::satellite ? std::atoi(val.data()) : -1;
+				tn.pos = value_transponder_position(val);
 
 			if (ytype == YTYPE::satellite)
 			{
@@ -1368,7 +1423,7 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 					tntxp.fec = value_transponder_fec(val, YTYPE::satellite);
 				// sys
 				else if (i == 7)
-					tntxp.sys = value_transponder_system(val, YTYPE::satellite);
+					tntxp.sys = value_transponder_system(val);
 				// mod
 				else if (i == 8)
 					tntxp.mod = value_transponder_modulation(val, YTYPE::satellite);
@@ -1395,7 +1450,7 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 					tntxp.band = std::atoi(val.data());
 				// sys
 				else if (i == 6)
-					tntxp.sys = value_transponder_system(val, YTYPE::terrestrial);
+					tntxp.sys = value_transponder_system(val);
 				// tmx
 				else if (i == 7)
 					tntxp.tmx = value_transponder_tmx_mode(val);
@@ -1434,7 +1489,7 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 					tntxp.inv = value_transponder_inversion(val, YTYPE::cable);
 				// sys
 				else if (i == 8)
-					tntxp.sys = value_transponder_system(val, YTYPE::cable);
+					tntxp.sys = value_transponder_system(val);
 			}
 			else if (ytype == YTYPE::atsc)
 			{
@@ -1446,13 +1501,33 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 					tntxp.amod = value_transponder_modulation(val, YTYPE::atsc);
 				// sys
 				else if (i == 5)
-					tntxp.sys = value_transponder_system(val, YTYPE::atsc);
+					tntxp.sys = value_transponder_system(val);
 			}
 		}
 
 		string iname = "tns:";
-		char yname = value_transponder_type(tn.ytype);
+		char yname = value_transponder_type(ytype);
 		iname += yname;
+
+		if (! dst->tuners.count(tv.ytype))
+		{
+			dst->tuners.emplace(tv.ytype, tv);
+		}
+
+		int idx = index.count(iname) ? index[iname].size() : 0;
+		for (auto & x : dst->tuners[tv.ytype].tables)
+		{
+			if (x.second.name == tn.name)
+			{
+				idx = tn.index;
+				break;
+			}
+		}
+
+		// table idx
+		tn.index = idx;
+		// table ytype
+		tn.ytype = ytype;
 
 		char tnid[25];
 		std::sprintf(tnid, "%c:%04x", yname, tn.index);
@@ -1462,32 +1537,19 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 		std::sprintf(trid, "%c:%04x:%04x", yname, tntxp.freq, tntxp.sr);
 		tntxp.trid = trid;
 
-		if (dst->tuners.count(tv.ytype))
+		if (! dst->tuners[tv.ytype].tables.count(tn.tnid))
 		{
-			tv = dst->tuners[tv.ytype];
-		}
-		else
-		{
-			dst->tuners.emplace(tv.ytype, tv);
-		}
-		if (tv.tables.count(tn.tnid))
-		{
-			tn = tv.tables[tn.tnid];
-		}
-		else
-		{
-			tv.tables.emplace(tn.tnid, tn);
+			dst->tuners[tv.ytype].tables.emplace(tn.tnid, tn);
 			if (tn.ytype == YTYPE::satellite)
-				tuners_pos.emplace(tn.pos, tn.tnid);
+				dst->tuners_pos.emplace(tn.pos, tn.tnid);
 			dst->index[iname].emplace_back(pair (tn.index, tn.tnid)); //C++17
 		}
-		if (! tn.transponders.count(tntxp.trid))
+		if (! dst->tuners[tv.ytype].tables[tn.tnid].transponders.count(tntxp.trid))
 		{
-			tn.transponders.emplace(tntxp.trid, tntxp);
+			dst->tuners[tv.ytype].tables[tn.tnid].transponders.emplace(tntxp.trid, tntxp);
 			dst->index[tn.tnid].emplace_back(pair (tntxp.index, tntxp.trid)); //C++17
 		}
 	}
-	dst->tuners[tv.ytype] = tv;
 }
 
 void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
@@ -1518,7 +1580,8 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 		ss << CSV_ESCAPE << "DVB Namespace" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Service Type" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Service Number" << CSV_ESCAPE << CSV_SEPARATOR;
-		ss << CSV_ESCAPE << "Service CAS" << CSV_ESCAPE << CSV_SEPARATOR; //TODO Extended
+		ss << CSV_ESCAPE << "CAS" << CSV_ESCAPE << CSV_SEPARATOR;
+		ss << CSV_ESCAPE << "CAID" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Provider" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "System" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Position" << CSV_ESCAPE << CSV_SEPARATOR;
@@ -1570,31 +1633,27 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			string stype = value_service_type(ch.stype);
 			int snum = ch.snum;
 			string scas;
+			string scaid;
 			if (ch.data.count(SDATA::C))
 			{
-				unordered_set<string> _unique;
+				scas = "$";
 				vector<string> cas;
-
 				for (string & w : ch.data[SDATA::C])
 				{
 					string caidpx = w.substr(0, 2);
-					if (SDATA_CAS.count(caidpx) && ! _unique.count(caidpx))
-					{
-						cas.emplace_back(SDATA_CAS.at(caidpx));
-						_unique.insert(caidpx);
-					}
+					if (SDATA_CAS.count(caidpx))
+						cas.emplace_back(SDATA_CAS.at(caidpx) + ':' + w);
+					else
+						cas.emplace_back(w);
 				}
-				scas.append("$");
-				scas.append(" ");
-				for (unsigned int i = 0; i < cas.size(); i++)
+				for (size_t i = 0; i < cas.size(); i++)
 				{
-					scas.append(cas[i]);
+					scaid.append(cas[i]);
 					if (i != cas.size() - 1)
-						scas.append(", ");
+						scaid.append("|");
 				}
 			}
-			//TODO value
-			string pname = ch.data.count(SDATA::p) ? ch.data[SDATA::p][0] : "";
+			string pname = value_channel_provider(ch);
 			string sys = value_transponder_system(tx);
 			string pos = value_transponder_position(tx);
 			int freq = tx.freq;
@@ -1607,7 +1666,7 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 					fec = SAT_FEC[tx.fec];
 				break;
 				case YTYPE::terrestrial:
-					fec = TER_FEC[tx.hpfec] + " | " + TER_FEC[tx.lpfec];
+					fec = TER_FEC[tx.hpfec] + '|' + TER_FEC[tx.lpfec];
 				break;
 				case YTYPE::cable:
 					fec = CAB_FEC[tx.cfec];
@@ -1626,21 +1685,15 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			ss << dvbns << CSV_SEPARATOR;
 			ss << stype << CSV_SEPARATOR;
 			ss << snum << CSV_SEPARATOR;
-			ss << CSV_ESCAPE << scas << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << scas << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << scaid << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << pname << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << sys << CSV_SEPARATOR;
-			ss << CSV_ESCAPE << pos << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << pos << CSV_SEPARATOR;
 			ss << freq << CSV_SEPARATOR;
 			ss << pol << CSV_SEPARATOR;
 			ss << sr << CSV_SEPARATOR;
 			ss << fec;
-			if (view == DOC_VIEW::view_userbouquets)
-			{
-				ss << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << bname << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << ub_name << CSV_ESCAPE;
-			}
-			ss << CSV_DELIMITER;
 		}
 		else
 		{
@@ -1664,23 +1717,26 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
+			ss << CSV_SEPARATOR;
 			ss << atype << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << "";
-			if (view == DOC_VIEW::view_userbouquets)
-			{
-				ss << CSV_SEPARATOR;
-				ss << CSV_SEPARATOR;
-				ss << "";
-			}
-			ss << CSV_DELIMITER;
 		}
+		if (view == DOC_VIEW::view_userbouquets)
+		{
+			ss << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << bname << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << ub_name << CSV_ESCAPE;
+		}
+		ss << CSV_DELIMITER;
 	}
 
 	csv = ss.str();
@@ -1714,11 +1770,11 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 		ss << CSV_ESCAPE << "DVB Namespace" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Service Type" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Service Number" << CSV_ESCAPE << CSV_SEPARATOR;
-		ss << CSV_ESCAPE << "Service CAS" << CSV_ESCAPE << CSV_SEPARATOR; //TODO Extended
+		ss << CSV_ESCAPE << "CAS" << CSV_ESCAPE << CSV_SEPARATOR; //TODO Extended
 		ss << CSV_ESCAPE << "Provider" << CSV_ESCAPE << CSV_SEPARATOR;
+		ss << CSV_ESCAPE << "CAID" << CSV_ESCAPE << CSV_SEPARATOR; //TODO Extended
 		ss << CSV_ESCAPE << "Src ID" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "System" << CSV_ESCAPE << CSV_SEPARATOR;
-		ss << CSV_ESCAPE << "Txp Type" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Position" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Frequency" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Polarization" << CSV_ESCAPE << CSV_SEPARATOR;
@@ -1782,34 +1838,30 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			string stype = value_service_type(ch.stype);
 			int snum = ch.snum;
 			string scas;
+			string scaid;
 			if (ch.data.count(SDATA::C))
 			{
-				unordered_set<string> _unique;
+				scas = "$";
 				vector<string> cas;
 
 				for (string & w : ch.data[SDATA::C])
 				{
 					string caidpx = w.substr(0, 2);
-					if (SDATA_CAS.count(caidpx) && ! _unique.count(caidpx))
-					{
-						cas.emplace_back(SDATA_CAS.at(caidpx));
-						_unique.insert(caidpx);
-					}
+					if (SDATA_CAS.count(caidpx))
+						cas.emplace_back(SDATA_CAS.at(caidpx) + ':' + w);
+					else
+						cas.emplace_back(w);
 				}
-				scas.append("$");
-				scas.append(" ");
-				for (unsigned int i = 0; i < cas.size(); i++)
+				for (size_t i = 0; i < cas.size(); i++)
 				{
-					scas.append(cas[i]);
+					scaid.append(cas[i]);
 					if (i != cas.size() - 1)
-						scas.append(", ");
+						scaid.append("|");
 				}
 			}
-			//TODO value
-			string pname = ch.data.count(SDATA::p) ? ch.data[SDATA::p][0] : "";
+			string pname = value_channel_provider(ch);
 			int srcid = ch.srcid;
 			string sys = value_transponder_system(tx);
-			int ytype = tx.ytype;
 			string pos = value_transponder_position(tx);
 			int freq = tx.freq;
 			int sr = tx.sr;
@@ -1850,11 +1902,11 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			string cached;
 			if (ch.data.count(SDATA::c))
 			{
-				for (unsigned int i = 0; i < ch.data[SDATA::c].size(); i++)
+				for (size_t i = 0; i < ch.data[SDATA::c].size(); i++)
 				{
 					cached.append(ch.data[SDATA::c][i]);
 					if (i != ch.data[SDATA::c].size() - 1)
-						cached.append(",");
+						cached.append("|");
 				}
 			}
 
@@ -1867,12 +1919,12 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			ss << dvbns << CSV_SEPARATOR;
 			ss << stype << CSV_SEPARATOR;
 			ss << snum << CSV_SEPARATOR;
-			ss << CSV_ESCAPE << scas << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << scas <<CSV_SEPARATOR;
+			ss << CSV_ESCAPE << scaid << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << pname << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << srcid << CSV_SEPARATOR;
 			ss << sys << CSV_SEPARATOR;
-			ss << ytype << CSV_SEPARATOR;
-			ss << CSV_ESCAPE << pos << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << pos << CSV_SEPARATOR;
 			ss << freq << CSV_SEPARATOR;
 			ss << pol << CSV_SEPARATOR;
 			ss << sr << CSV_SEPARATOR;
@@ -1890,14 +1942,7 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			ss << flgs << CSV_SEPARATOR;
 			ss << txid << CSV_SEPARATOR;
 			ss << txflgs << CSV_SEPARATOR;
-			ss << cached;
-			if (view == DOC_VIEW::view_userbouquets)
-			{
-				ss << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << bname << CSV_ESCAPE << CSV_SEPARATOR;
-				ss << CSV_ESCAPE << ub_name << CSV_ESCAPE;
-			}
-			ss << CSV_DELIMITER;
+			ss << CSV_ESCAPE << cached << CSV_ESCAPE;
 		}
 		else
 		{
@@ -1921,9 +1966,12 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
+			ss << CSV_SEPARATOR;
 			ss << atype << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
@@ -1944,17 +1992,15 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
-			ss << CSV_SEPARATOR;
-			ss << CSV_SEPARATOR;
-			ss << "";
-			if (view == DOC_VIEW::view_userbouquets)
-			{
-				ss << CSV_SEPARATOR;
-				ss << CSV_SEPARATOR;
-				ss << "";
-			}
-			ss << CSV_DELIMITER;
+			ss << CSV_ESCAPE << CSV_ESCAPE;
 		}
+		if (view == DOC_VIEW::view_userbouquets)
+		{
+			ss << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << bname << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << ub_name << CSV_ESCAPE;
+		}
+		ss << CSV_DELIMITER;
 	}
 
 	csv = ss.str();
@@ -2088,7 +2134,7 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 				int sr = tntxp.sr;
 				string fec = value_transponder_fec(tntxp.fec, YTYPE::satellite);
 				string sys = value_transponder_system(tntxp.sys, YTYPE::satellite);
-				string mod = value_transponder_modulation(tntxp.tmod, YTYPE::satellite);
+				string mod = value_transponder_modulation(tntxp.mod, YTYPE::satellite);
 				string inv = value_transponder_inversion(tntxp.inv, YTYPE::satellite);
 				string rol = value_transponder_rollof(tntxp.rol);
 				string pil = value_transponder_pilot(tntxp.pil);
@@ -2338,7 +2384,7 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 				scas.append("<b>$</b>");
 				scas.append(" ");
 				scas.append("<span class=\"cas\">");
-				for (unsigned int i = 0; i < cas.size(); i++)
+				for (size_t i = 0; i < cas.size(); i++)
 				{
 					scas.append(cas[i]);
 					if (i != cas.size() - 1)

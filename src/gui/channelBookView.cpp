@@ -77,7 +77,7 @@ void channelBookView::layout()
 
 	string chars[27] = {"0-9","A","B","C","D","E","F","G","H","I","J","L","K","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
-	for (unsigned int i = 0; i < 27; i++)
+	for (int i = 0; i < 27; i++)
 	{
 		tabv->addTab("");
 		tabv->setTabButton(i, QTabBar::LeftSide, new QLabel(QString::fromStdString(chars[i])));

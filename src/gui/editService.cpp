@@ -683,7 +683,7 @@ void editService::retrieve()
 					case e2db::SDATA::f: d = 'f'; break;
 					default: d = q.first;
 				}
-				for (unsigned int i = 0; i < q.second.size(); i++)
+				for (size_t i = 0; i < q.second.size(); i++)
 				{
 					val += d;
 					val += ':' + q.second[i];

@@ -508,7 +508,7 @@ void settings::store()
 
 	int size = sets->value("profile/size").toInt();
 	sets->beginWriteArray("profile");
-	for (unsigned int i = 0; i < tmpps.size(); i++)
+	for (size_t i = 0; i < tmpps.size(); i++)
 	{
 		sets->setArrayIndex(i);
 		if (tmpps[i].size())

@@ -554,7 +554,7 @@ void mainView::populate(QTreeWidget* side_tree)
 				else
 				{
 					//TEST
-					entry = QStringList({x, NULL, NULL, chid, NULL, "ERROR", NULL});
+					entry = QStringList({x, NULL, NULL, chid, NULL, NULL, NULL, "ERROR", NULL});
 					// idx = 0; //Qt5
 					error("populate()", "chid", ch.second);
 					//TEST

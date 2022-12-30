@@ -122,9 +122,6 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 	}
 
 	tid->load();
-
-	if (sets->value("application/parserDebugger", false).toBool())
-		dbih->debugger();
 }
 
 void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)

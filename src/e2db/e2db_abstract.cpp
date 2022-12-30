@@ -240,50 +240,66 @@ string e2db_abstract::value_service_type(int stype)
 	return STYPE_EXT_LABEL.at(STYPE::data);
 }
 
-//TODO improve
-vector<string> e2db_abstract::value_channel_cas(string str)
+vector<string> e2db_abstract::value_channel_provider(string str)
 {
-	if (str.find("$") != string::npos)
-		str = str.substr(2);
+	return {str};
+}
 
-	vector<string> cas;
+string e2db_abstract::value_channel_provider(service ch)
+{
+	if (ch.data.count(SDATA::p))
+		return ch.data[SDATA::p][0];
+	return "";
+}
 
-	char* token = std::strtok(str.data(), ",");
+vector<string> e2db_abstract::value_channel_caid(string str)
+{
+	vector<string> caid;
+	char* token = std::strtok(str.data(), "|");
 	while (token != 0)
 	{
 		string val = string (token);
-		val.erase(0, val.find_first_not_of(' '));
-		string pid;
 
-		if (val == "Seca")
-			pid = "0100";
-		else if (val == "Irdeto")
-			pid = "06ed";
-		else if (val == "Viaccess")
-			pid = "0500";
-		else if (val == "NDS")
-			pid = "091f";
-		else if (val == "Conax")
-			pid = "0b00";
-		else if (val == "Cryptoworks")
-			pid = "0d00";
-		else if (val == "PVU")
-			pid = "0e00";
-		else if (val == "Nagra")
-			pid = "1800";
-		else if (val == "BISS")
-			pid = "2600";
-		else if (val == "Crypton")
-			pid = "4347";
-		else if (val == "DRE")
-			pid = "4ae0";
+		if (val.find("Seca") != string::npos)
+			caid.emplace_back(val.substr(5));
+		else if (val.find("Irdeto") != string::npos)
+			caid.emplace_back(val.substr(5));
+		else if (val.find("Viaccess") != string::npos)
+			caid.emplace_back(val.substr(9));
+		else if (val.find("NDS") != string::npos)
+			caid.emplace_back(val.substr(4));
+		else if (val.find("Conax") != string::npos)
+			caid.emplace_back(val.substr(6));
+		else if (val.find("Cryptoworks") != string::npos)
+			caid.emplace_back(val.substr(12));
+		else if (val.find("PVU") != string::npos)
+			caid.emplace_back(val.substr(4));
+		else if (val.find("Nagra") != string::npos)
+			caid.emplace_back(val.substr(6));
+		else if (val.find("BISS") != string::npos)
+			caid.emplace_back(val.substr(5));
+		else if (val.find("Crypton") != string::npos)
+			caid.emplace_back(val.substr(8));
+		else if (val.find("DRE") != string::npos)
+			caid.emplace_back(val.substr(4));
+		else
+			caid.emplace_back(val.substr(1));
 
-		token = std::strtok(NULL, ",");
-		
-		if (! pid.empty())
-			cas.emplace_back(pid);
+		token = std::strtok(NULL, "|");
 	}
-	return cas;
+	return caid;
+}
+
+vector<string> e2db_abstract::value_channel_cached(string str)
+{
+	vector<string> cached;
+	char* token = std::strtok(str.data(), "|");
+	while (token != 0)
+	{
+		cached.emplace_back(token);
+		token = std::strtok(NULL, "|");
+	}
+	return cached;
 }
 
 int e2db_abstract::value_transponder_type(char ty)
@@ -299,7 +315,17 @@ int e2db_abstract::value_transponder_type(char ty)
 
 int e2db_abstract::value_transponder_type(string str)
 {
-	return value_transponder_type(str[0]);
+	if (str.empty())
+		return -1;
+	if (str == "DVB-S" || str == "DVB-S2")
+		return YTYPE::satellite;
+	else if (str == "DVB-T" || str == "DVB-T2")
+		return YTYPE::terrestrial;
+	else if (str == "DVB-C")
+		return YTYPE::cable;
+	else if (str == "ATSC")
+		return YTYPE::atsc;
+	return -1;
 }
 
 char e2db_abstract::value_transponder_type(int yx)
@@ -315,8 +341,7 @@ char e2db_abstract::value_transponder_type(YTYPE ytype)
 		case YTYPE::terrestrial: return 't';
 		case YTYPE::cable: return 'c';
 		case YTYPE::atsc: return 'a';
-		//TODO replace
-		default: return '?';
+		default: return '\0';
 	}
 }
 
@@ -401,34 +426,22 @@ string e2db_abstract::value_transponder_position(int num)
 
 int e2db_abstract::value_transponder_position(string str)
 {
-	std::string::size_type pos;
-	float posdeg = std::stof(str, &pos);
-	char pospoint = str.substr(pos)[0];
-	return (int ((pospoint == 'E' ? posdeg : -posdeg) * 10));
+	if (! str.empty())
+	{
+		size_t pos;
+		float posdeg = std::stof(str, &pos); //TODO TEST invalid_argument
+		char pospoint = str.substr(pos)[0];
+		return (int ((pospoint == 'E' ? posdeg : -posdeg) * 10));
+	}
+	return -1;
 }
 
-int e2db_abstract::value_transponder_system(string str, int yx)
+int e2db_abstract::value_transponder_system(string str)
 {
-	YTYPE ytype = static_cast<YTYPE>(yx);
-	return value_transponder_system(str, ytype);
-}
-
-int e2db_abstract::value_transponder_system(string str, YTYPE ytype)
-{
-	if (ytype == YTYPE::satellite)
-	{
-		if (str == "DVB-S")
-			return 0;
-		else if (str == "DVB-S2")
-			return 1;
-	}
-	else if (ytype == YTYPE::terrestrial)
-	{
-		if (str == "DVB-T")
-			return 0;
-		else if (str == "DVB-T2")
-			return 1;
-	}
+	if (str == "DVB-S" || str == "DVB-T" || str == "DVB-C" || str == "ATSC")
+		return 0;
+	else if (str == "DVB-S2" || str == "DVB-T2")
+		return 1;
 	return -1;
 }
 
@@ -463,11 +476,11 @@ string e2db_abstract::value_transponder_system(int sys, YTYPE ytype)
 	return psys;
 }
 
-void e2db_abstract::value_transponder_fec(string str, int yx, vector<int>& fec)
+void e2db_abstract::value_transponder_fec(string str, int yx, fec& fec)
 {
-	if (yx == YTYPE::terrestrial)
+	if (yx == YTYPE::satellite)
 	{
-		fec[YFEC::inner_fec] = value_transponder_fec(str, YTYPE::terrestrial);
+		fec.inner_fec = value_transponder_fec(str, YTYPE::satellite);
 	}
 	else if (yx == YTYPE::terrestrial)
 	{
@@ -477,15 +490,13 @@ void e2db_abstract::value_transponder_fec(string str, int yx, vector<int>& fec)
 			string hp_fec, lp_fec;
 			hp_fec = str.substr(0, pos);
 			lp_fec = str.substr(pos);
-			hp_fec.erase(0, hp_fec.find_first_not_of(' '));
-			lp_fec.erase(0, lp_fec.find_first_not_of(' '));
-			fec[YFEC::hp_fec] = value_transponder_fec(hp_fec, YTYPE::terrestrial);
-			fec[YFEC::lp_fec] = value_transponder_fec(lp_fec, YTYPE::terrestrial);
+			fec.hp_fec = value_transponder_fec(hp_fec, YTYPE::terrestrial);
+			fec.lp_fec = value_transponder_fec(lp_fec, YTYPE::terrestrial);
 		}
 	}
 	else if (yx == YTYPE::cable)
 	{
-		fec[YFEC::inner_fec] = value_transponder_fec(str, YTYPE::cable);
+		fec.inner_fec = value_transponder_fec(str, YTYPE::cable);
 	}
 }
 
@@ -576,7 +587,7 @@ string e2db_abstract::value_transponder_fec(int fec, int yx)
 
 string e2db_abstract::value_transponder_fec(int fec, YTYPE ytype)
 {
-	if (fec == -1)
+	if (fec == -1) //TODO TEST fec < 0 &&
 		return "";
 	if (ytype == YTYPE::satellite && fec < 11)
 		return SAT_FEC[fec];
@@ -652,7 +663,7 @@ string e2db_abstract::value_transponder_modulation(int mod, int yx)
 
 string e2db_abstract::value_transponder_modulation(int mod, YTYPE ytype)
 {
-	if (mod == -1)
+	if (mod == -1) //TODO TEST mod < 0 &&
 		return "";
 	else if (ytype == YTYPE::satellite && mod < 4)
 		return SAT_MOD[mod];
@@ -694,6 +705,8 @@ string e2db_abstract::value_transponder_inversion(int inv, int yx)
 
 string e2db_abstract::value_transponder_inversion(int inv, YTYPE ytype)
 {
+	if (inv == -1) //TODO TEST inv < 0 &&
+		return "";
 	if (ytype == YTYPE::satellite && inv < 3)
 		return SAT_INV[inv];
 	else if (ytype == YTYPE::terrestrial && inv < 3)
@@ -720,7 +733,7 @@ int e2db_abstract::value_transponder_rollof(string str)
 
 string e2db_abstract::value_transponder_rollof(int rol)
 {
-	if (rol != -1 && rol < 4)
+	if (rol != -1 && rol < 4) //TODO TEST rol > 0 &&
 		return SAT_ROL[rol];
 	return "";
 }
@@ -740,7 +753,7 @@ int e2db_abstract::value_transponder_pilot(string str)
 
 string e2db_abstract::value_transponder_pilot(int pil)
 {
-	if (pil != -1 && pil < 3)
+	if (pil != -1 && pil < 3) //TODO TEST pil > 0 &&
 		return SAT_PIL[pil];
 	return "";
 }
@@ -762,7 +775,7 @@ int e2db_abstract::value_transponder_bandwidth(string str)
 
 string e2db_abstract::value_transponder_bandwidth(int band)
 {
-	if (band != -1 && band < 4)
+	if (band != -1 && band < 4) //TODO TEST band > 0 &&
 		return TER_BAND[band];
 	return "";
 }
@@ -786,7 +799,7 @@ int e2db_abstract::value_transponder_guard(string str)
 
 string e2db_abstract::value_transponder_guard(int guard)
 {
-	if (guard != -1 && guard < 5)
+	if (guard != -1 && guard < 5) //TODO TEST guard > 0 &&
 		return TER_GUARD[guard];
 	return "";
 }
@@ -810,7 +823,7 @@ int e2db_abstract::value_transponder_hier(string str)
 
 string e2db_abstract::value_transponder_hier(int hier)
 {
-	if (hier != -1 && hier < 5)
+	if (hier != -1 && hier < 5) //TODO TEST hier > 0 &&
 		return TER_HIER[hier];
 	return "";
 }
@@ -830,9 +843,30 @@ int e2db_abstract::value_transponder_tmx_mode(string str)
 
 string e2db_abstract::value_transponder_tmx_mode(int tmx)
 {
-	if (tmx != -1 && tmx < 3)
+	if (tmx != -1 && tmx < 3) //TODO TEST tmx > 0 &&
 		return TER_TRXMODE[tmx];
 	return "";
+}
+
+int e2db_abstract::value_bouquet_type(string str)
+{
+	if (str.empty())
+		return -1;
+	else if (str == "TV")
+		return STYPE::tv;
+	else if (str == "Radio")
+		return STYPE::radio;
+	return -1;
+}
+
+string e2db_abstract::value_bouquet_type(int btype)
+{
+	switch (btype)
+	{
+		case STYPE::tv: return "TV";
+		case STYPE::radio: return "Radio";
+		default: return "";
+	}
 }
 
 string e2db_abstract::get_reference_id(string chid)
@@ -1006,6 +1040,20 @@ pair<unordered_map<string, e2db_abstract::bouquet>, unordered_map<string, e2db_a
 {
 	debug("get_bouquets()");
 	return pair (bouquets, userbouquets); //C++17
+}
+
+void e2db_abstract::merge(e2db_abstract* dst)
+{
+	debug("merge()");
+
+	this->db.transponders.merge(dst->db.transponders); //C++17
+	this->db.services.merge(dst->db.services); //C++17
+	this->tuners.merge(dst->tuners); //C++17
+	this->bouquets.merge(dst->bouquets); //C++17
+
+	this->collisions = dst->collisions;
+	this->tuners_pos = dst->tuners_pos;
+	this->index = dst->index;
 }
 
 void e2db_abstract::debugger()

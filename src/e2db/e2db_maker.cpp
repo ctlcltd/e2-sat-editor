@@ -216,7 +216,7 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file)
 				case SDATA::f: d = 'f'; break;
 				default: d = q.first;
 			}
-			for (unsigned int i = 0; i < q.second.size(); i++)
+			for (size_t i = 0; i < q.second.size(); i++)
 			{
 				ss << d << ':' << q.second[i];
 				if (! q.second[i].empty() && (i != q.second.size() - 1 || q.first != last_key.first))

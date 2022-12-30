@@ -76,13 +76,6 @@ struct e2db_abstract
 			atsc
 		};
 
-		// tuner settings fec
-		enum YFEC {
-			inner_fec,
-			hp_fec,
-			lp_fec
-		};
-
 		// service type
 		enum STYPE {
 			data = 0,
@@ -102,7 +95,7 @@ struct e2db_abstract
 			{STYPE::data, STYPE::data},
 			{STYPE::tv, STYPE::tv},
 			{STYPE::radio, STYPE::radio},
-			{10, STYPE::tv},
+			{10, STYPE::radio},
 			{12, STYPE::tv},
 			{17, STYPE::tv},
 			{22, STYPE::tv},
@@ -261,6 +254,13 @@ struct e2db_abstract
 			int index;
 		};
 
+		struct fec
+		{
+			int inner_fec = -1;
+			int hp_fec = -1;
+			int lp_fec = -1;
+		};
+
 		struct channel_reference
 		{
 			string chid;
@@ -386,7 +386,10 @@ struct e2db_abstract
 		static string value_reference_id(channel_reference chref, service ch);
 		static int value_service_type(string str);
 		static string value_service_type(int stype);
-		static vector<string> value_channel_cas(string str);
+		static vector<string> value_channel_provider(string str);
+		static string value_channel_provider(service ch);
+		static vector<string> value_channel_caid(string str);
+		static vector<string> value_channel_cached(string str);
 		static int value_transponder_type(char ty);
 		static int value_transponder_type(string str);
 		static char value_transponder_type(int yx);
@@ -399,12 +402,11 @@ struct e2db_abstract
 		static string value_transponder_position(transponder tx);
 		static string value_transponder_position(tunersets_table tn);
 		static string value_transponder_position(int num);
-		static int value_transponder_system(string str, int yx);
-		static int value_transponder_system(string str, YTYPE ytype);
+		static int value_transponder_system(string str);
 		static string value_transponder_system(transponder tx);
 		static string value_transponder_system(int sys, int yx);
 		static string value_transponder_system(int sys, YTYPE ytype);
-		static void value_transponder_fec(string str, int yx, vector<int>& fec);
+		static void value_transponder_fec(string str, int yx, fec& fec);
 		static int value_transponder_fec(string str, int yx);
 		static int value_transponder_fec(string str, YTYPE ytype);
 		static string value_transponder_fec(int fec, int yx);
@@ -429,6 +431,8 @@ struct e2db_abstract
 		static string value_transponder_hier(int hier);
 		static int value_transponder_tmx_mode(string str);
 		static string value_transponder_tmx_mode(int tmx);
+		static int value_bouquet_type(string str);
+		static string value_bouquet_type(int btype);
 		string get_reference_id(string chid);
 		string get_reference_id(channel_reference chref);
 		string get_transponder_name_value(transponder tx);
@@ -439,6 +443,7 @@ struct e2db_abstract
 		pair<unordered_map<string, bouquet>, unordered_map<string, userbouquet>> get_bouquets();
 		virtual unordered_map<string, string> get_input() { return e2db; };
 		virtual unordered_map<string, e2db_file> get_output() { return e2db_out; };
+		void merge(e2db_abstract* dst);
 		virtual void debugger();
 	protected:
 		inline static int LAMEDB_VER = 0;

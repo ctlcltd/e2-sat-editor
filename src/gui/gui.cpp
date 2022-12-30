@@ -475,7 +475,7 @@ void gui::closeAllTabs()
 	}
 	twid->clear();
 
-	for (unsigned int i = 0; i < ttabs.size(); i++)
+	for (size_t i = 0; i < ttabs.size(); i++)
 	{
 		debug("closeAllTabs()", "destroy", int (i));
 
