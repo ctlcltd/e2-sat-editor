@@ -53,7 +53,6 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, vector<string> pat
 	{
 		import_csv_file(fci, opts, dst, path);
 	}
-	dst->debugger();
 	if (merge)
 	{
 		this->merge(dst);
@@ -84,6 +83,11 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 	debug("import_csv_file()", "file input", fci);
 
 	std::clock_t start = std::clock();
+
+	if (! std::filesystem::exists(path)) //C++17
+	{
+		return error("import_csv_file()", "Error", "File \"" + path + "\" not exists.");
+	}
 
 	ifstream ifile (path);
 
@@ -168,6 +172,11 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 		else
 			path = base + '/' + opts.filename;
 
+		if (! OVERWRITE_FILE && std::filesystem::exists(path)) //C++17
+		{
+			return error("export_csv_file()", "Error", "File \"" + path + "\" already exists.");
+		}
+
 		ofstream out (path);
 		out << file.data;
 		out.close();
@@ -237,6 +246,11 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 		else
 			path = base + '/' + opts.filename;
 
+		if (! OVERWRITE_FILE && std::filesystem::exists(path)) //C++17
+		{
+			return error("export_html_file()", "Error", "File \"" + path + "\" already exists.");
+		}
+
 		ofstream out (path);
 		out << file.data;
 		out.close();
@@ -254,13 +268,12 @@ void e2db_converter::pull_csv_services(istream& ifile, e2db_abstract* dst)
 	vector<vector<string>> sxv;
 	parse_csv(ifile, sxv);
 
-	if (EXTENDED_FIELDS)
+	if (CONVERTER_EXTENDED_FIELDS)
 		convert_csv_channel_list_extended(sxv, dst, DOC_VIEW::view_services);
 	else
 		convert_csv_channel_list(sxv, dst, DOC_VIEW::view_services);
 }
 
-//TODO FIX
 void e2db_converter::pull_csv_bouquets(istream& ifile, e2db_abstract* dst)
 {
 	debug("pull_csv_bouquets()");
@@ -271,7 +284,6 @@ void e2db_converter::pull_csv_bouquets(istream& ifile, e2db_abstract* dst)
 	convert_csv_bouquet_list(sxv, dst);
 }
 
-//TODO FIX
 void e2db_converter::pull_csv_userbouquets(istream& ifile, e2db_abstract* dst)
 {
 	debug("pull_csv_userbouquets()");
@@ -279,13 +291,12 @@ void e2db_converter::pull_csv_userbouquets(istream& ifile, e2db_abstract* dst)
 	vector<vector<string>> sxv;
 	parse_csv(ifile, sxv);
 
-	if (EXTENDED_FIELDS)
+	if (CONVERTER_EXTENDED_FIELDS)
 		convert_csv_channel_list_extended(sxv, dst, DOC_VIEW::view_userbouquets);
 	else
 		convert_csv_channel_list(sxv, dst, DOC_VIEW::view_userbouquets);
 }
 
-//TODO FIX
 void e2db_converter::pull_csv_tunersets(istream& ifile, e2db_abstract* dst)
 {
 	debug("pull_csv_tunersets()");
@@ -341,7 +352,7 @@ void e2db_converter::push_csv_services(vector<e2db_file>& files, int stype)
 	filename += ".csv";
 
 	string csv;
-	if (EXTENDED_FIELDS)
+	if (CONVERTER_EXTENDED_FIELDS)
 		csv_channel_list_extended(csv, iname, DOC_VIEW::view_services);
 	else
 		csv_channel_list(csv, iname, DOC_VIEW::view_services);
@@ -398,7 +409,7 @@ void e2db_converter::push_csv_userbouquets(vector<e2db_file>& files, string bnam
 	string filename = bname + ".csv";
 
 	string csv;
-	if (EXTENDED_FIELDS)
+	if (CONVERTER_EXTENDED_FIELDS)
 		csv_channel_list_extended(csv, bname, DOC_VIEW::view_userbouquets);
 	else
 		csv_channel_list(csv, bname, DOC_VIEW::view_userbouquets);
@@ -466,7 +477,7 @@ void e2db_converter::push_html_index(vector<e2db_file>& files)
 	debug("push_html_index()");
 
 	string filename = "index";
-	string fname = std::filesystem::path(get_localdir()).filename().u8string(); //C++17
+	string fname = std::filesystem::path(get_filepath()).filename().u8string(); //C++17
 	if (filename.empty())
 	{
 		fname = "Untitled";
@@ -500,7 +511,7 @@ void e2db_converter::push_html_services(vector<e2db_file>& files, int stype)
 	debug("push_html_services()");
 
 	string filename = "services";
-	string fname = std::filesystem::path(get_filename()).filename().u8string(); //C++17
+	string fname = std::filesystem::path(get_services_filename()).filename().u8string(); //C++17
 	string iname;
 	string xname;
 	string headname = fname;
@@ -638,7 +649,7 @@ void e2db_converter::push_html_tunersets(vector<e2db_file>& files, int ytype)
 			fname = "atsc";
 		break;
 	}
-	filename = fname + ".html";
+	string filename = fname + ".html";
 	fname += ".xml";
 
 	html_page page;
@@ -1770,9 +1781,9 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 		ss << CSV_ESCAPE << "DVB Namespace" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Service Type" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Service Number" << CSV_ESCAPE << CSV_SEPARATOR;
-		ss << CSV_ESCAPE << "CAS" << CSV_ESCAPE << CSV_SEPARATOR; //TODO Extended
+		ss << CSV_ESCAPE << "CAS" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Provider" << CSV_ESCAPE << CSV_SEPARATOR;
-		ss << CSV_ESCAPE << "CAID" << CSV_ESCAPE << CSV_SEPARATOR; //TODO Extended
+		ss << CSV_ESCAPE << "CAID" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Src ID" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "System" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Position" << CSV_ESCAPE << CSV_SEPARATOR;

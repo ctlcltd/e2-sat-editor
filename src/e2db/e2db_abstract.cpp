@@ -1024,22 +1024,61 @@ void e2db_abstract::add_tunersets_transponder(int idx, tunersets_transponder& tn
 	index[tn.tnid].emplace_back(pair (idx, tntxp.trid)); //C++17
 }
 
+void e2db_abstract::set_index(unordered_map<string, vector<pair<int, string>>> index)
+{
+	debug("set_index()");
+
+	this->index = index;
+}
+
+unordered_map<string, vector<pair<int, string>>> e2db_abstract::get_index()
+{
+	debug("get_index()");
+
+	return this->index;
+}
+
+void e2db_abstract::set_transponders(unordered_map<string, e2db_abstract::transponder> transponders)
+{
+	debug("set_transponders()");
+
+	this->db.transponders = transponders;
+}
+
 unordered_map<string, e2db_abstract::transponder> e2db_abstract::get_transponders()
 {
 	debug("get_transponders()");
-	return db.transponders;
+
+	return this->db.transponders;
+}
+
+void e2db_abstract::set_services(unordered_map<string, e2db_abstract::service> services)
+{
+	debug("set_services()");
+
+	this->db.services = services;
 }
 
 unordered_map<string, e2db_abstract::service> e2db_abstract::get_services()
 {
 	debug("get_services()");
-	return db.services;
+
+	return this->db.services;
+}
+
+void e2db_abstract::set_bouquets(pair<unordered_map<string, e2db_abstract::bouquet>, unordered_map<string, e2db_abstract::userbouquet>> bouquets)
+{
+	debug("set_bouquets()");
+
+	this->bouquets = bouquets.first;
+	this->userbouquets = bouquets.second;
 }
 
 pair<unordered_map<string, e2db_abstract::bouquet>, unordered_map<string, e2db_abstract::userbouquet>> e2db_abstract::get_bouquets()
 {
 	debug("get_bouquets()");
-	return pair (bouquets, userbouquets); //C++17
+
+	return pair (this->bouquets, this->userbouquets); //C++17
 }
 
 void e2db_abstract::merge(e2db_abstract* dst)

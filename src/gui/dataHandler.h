@@ -28,7 +28,7 @@ class dataHandler : protected e2se::log_factory
 		~dataHandler();
 		void newFile();
 		bool readFile(string filename);
-		bool writeFile(string path, bool overwrite);
+		bool writeFile(string path);
 		void setChanged(bool changed);
 		bool hasChanged();
 		void setNewfile(bool newfile);

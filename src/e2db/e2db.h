@@ -54,8 +54,8 @@ class e2db : public e2db_parser, public e2db_maker, public e2db_converter
 		void add_tunersets_transponder(tunersets_transponder& tntxp, tunersets_table tn);
 		void edit_tunersets_transponder(string trid, tunersets_transponder& tntxp, tunersets_table tn);
 		void remove_tunersets_transponder(string trid, tunersets_table tn);
-		string get_filename();
-		string get_localdir();
+		string get_filepath();
+		string get_services_filename();
 		map<string, vector<pair<int, string>>> get_channels_index();
 		map<string, vector<pair<int, string>>> get_transponders_index();
 		map<string, vector<pair<int, string>>> get_services_index();

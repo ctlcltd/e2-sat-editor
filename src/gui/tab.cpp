@@ -428,14 +428,13 @@ bool tab::readFile(string filename)
 	return true;
 }
 
-//TODO TEST
 void tab::saveFile(bool saveas)
 {
 	debug("saveFile()", "saveas", saveas);
 
 	string path;
 	bool changed = this->data->hasChanged();
-	bool newfile = ! saveas && (! this->data->isNewfile() || this->data->hasChanged());
+	bool newfile = this->data->isNewfile();
 	string filename = path = this->data->getFilename();
 
 	if (changed)
@@ -443,7 +442,11 @@ void tab::saveFile(bool saveas)
 		this->updateChannelsIndex();
 		this->updateBouquetsIndex();
 	}
-	if (! saveas && changed)
+	if (saveas || newfile)
+	{
+		path = gid->saveFileDialog(filename);
+	}
+	else if (changed)
 	{
 		QMessageBox msg = QMessageBox(cwid);
 		msg.setText("The file has been modified.");
@@ -453,9 +456,15 @@ void tab::saveFile(bool saveas)
 		if (msg.exec() != QMessageBox::Save)
 			return;
 	}
-	if (newfile)
+	else
 	{
-		path = gid->saveFileDialog(filename);
+		QMessageBox msg = QMessageBox(cwid);
+		msg.setText("The file will be overwritten.");
+		msg.setInformativeText("Do you want to overwrite it?\n");
+		msg.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
+		msg.setDefaultButton(QMessageBox::Save);
+		if (msg.exec() != QMessageBox::Save)
+			return;
 	}
 
 	if (path.empty())
@@ -464,7 +473,7 @@ void tab::saveFile(bool saveas)
 	debug("saveFile()", "filename", path);
 
 	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	bool written = this->data->writeFile(path, changed);
+	bool written = this->data->writeFile(path);
 	QGuiApplication::restoreOverrideCursor();
 
 	if (written) {
@@ -502,6 +511,7 @@ void tab::importFile()
 	this->data->setChanged(true);
 }
 
+//TODO overwrite
 void tab::exportFile()
 {
 	debug("exportFile()");
@@ -533,6 +543,7 @@ void tab::exportFile()
 				filename = "atsc.xml";
 			break;
 		}
+
 		paths.push_back(filename);
 	}
 	// services
@@ -541,6 +552,7 @@ void tab::exportFile()
 		gde = gui::GUI_DPORTS::Services;
 		flags = e2db::FPORTS::all_services;
 		filename = "lamedb";
+
 		paths.push_back(filename);
 	}
 	// bouquets
@@ -574,8 +586,8 @@ void tab::exportFile()
 
 			if (dbih->bouquets.count(filename))
 			{
-				for (string & w : dbih->bouquets[filename].userbouquets)
-					paths.push_back(w);
+				for (string & fname : dbih->bouquets[filename].userbouquets)
+					paths.push_back(fname);
 			}
 		}
 		// userbouquet
@@ -611,9 +623,10 @@ void tab::exportFile()
 	else
 	{
 		string basedir = std::filesystem::path(path).remove_filename().u8string(); //C++17
+
 		//TODO right-end trailing
-		for (string & w : paths)
-			w = basedir + w;
+		for (string & fname : paths)
+			fname = basedir + fname;
 	}
 
 	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -626,6 +639,7 @@ void tab::exportFile()
 	msg.exec();
 }
 
+//TODO overwrite
 void tab::exportFile(QTreeWidgetItem* item)
 {
 	debug("exportFile()");
@@ -646,6 +660,7 @@ void tab::exportFile(QTreeWidgetItem* item)
 	{
 		gde = gui::GUI_DPORTS::Services;
 		filename = "lamedb";
+
 		paths.push_back(filename);
 	}
 	// bouquets
@@ -655,6 +670,7 @@ void tab::exportFile(QTreeWidgetItem* item)
 		QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
 		QString qchlist = tdata["id"].toString();
 		filename = qchlist.toStdString();
+
 		paths.push_back(filename);
 
 		// bouquet | userbouquets
@@ -665,8 +681,8 @@ void tab::exportFile(QTreeWidgetItem* item)
 
 			if (dbih->bouquets.count(filename))
 			{
-				for (string & w : dbih->bouquets[filename].userbouquets)
-					paths.push_back(w);
+				for (string & fname : dbih->bouquets[filename].userbouquets)
+					paths.push_back(fname);
 			}
 		}
 		// userbouquet

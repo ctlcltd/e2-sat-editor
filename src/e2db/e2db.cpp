@@ -49,15 +49,17 @@ void e2db::import_file(vector<string> paths)
 	bool merge = this->get_input().size() != 0 ? true : false;
 	auto* dst = merge ? new e2db(this->log->log) : this;
 
-	for (string & w : paths)
+	for (string & path : paths)
 	{
-		if (! std::filesystem::exists(w)) //C++17
-			return error("import_file()", "Error", "File \"" + w + "\" not exists.");
+		if (! std::filesystem::exists(path)) //C++17
+		{
+			return error("import_file()", "Error", "File \"" + path + "\" not exists.");
+		}
 
-		FPORTS fpi = filetype_detect(w);
+		FPORTS fpi = filetype_detect(path);
 
 		e2db_file file;
-		file.filename = w;
+		file.filename = path;
 		if (fpi == FPORTS::directory) //C++17
 		{
 			file.mime = "application/octet-stream";
@@ -65,7 +67,7 @@ void e2db::import_file(vector<string> paths)
 		else
 		{
 			file.mime = "application/octet-stream";
-			ifstream ifile (w);
+			ifstream ifile (path);
 			string line;
 			while (std::getline(ifile, line))
 				file.data.append(line + '\n');
@@ -73,7 +75,7 @@ void e2db::import_file(vector<string> paths)
 		}
 		file.size = file.data.size();
 
-		import_file(fpi, dst, file, w);
+		import_file(fpi, dst, file, path);
 	}
 	if (merge)
 	{
@@ -162,6 +164,7 @@ void e2db::export_file(FPORTS fpo, vector<string> paths)
 	}
 }
 
+//TODO overwrite
 void e2db::export_file(FPORTS fpo, string path)
 {
 	debug("export_file()", "file path", "singular");
@@ -214,8 +217,13 @@ void e2db::export_file(FPORTS fpo, string path)
 				make_userbouquet(filename, file);
 		break;
 		default:
-			write(path, false);
-			return;
+			write(path);
+		return;
+	}
+
+	if (! OVERWRITE_FILE && std::filesystem::exists(path)) //C++17
+	{
+		return error("export_file()", "Error", "File \"" + path + "\" already exists.");
 	}
 
 	ofstream out (path);
@@ -902,18 +910,18 @@ void e2db::edit_tunersets_transponder(string trid, tunersets_transponder& tntxp,
 	}
 }
 
-string e2db::get_localdir()
+string e2db::get_filepath()
 {
-	debug("get_localdir()");
+	debug("get_filepath()");
 
-	return this->localdir;
+	return this->filepath;
 }
 
-string e2db::get_filename()
+string e2db::get_services_filename()
 {
-	debug("get_filename()");
+	debug("get_services_filename()");
 
-	return this->filename;
+	return this->services_filename;
 }
 
 //TODO TEST

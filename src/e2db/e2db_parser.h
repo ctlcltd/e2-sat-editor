@@ -40,8 +40,9 @@ class e2db_parser : virtual public e2db_abstract
 		void parse_userbouquet_reference(string str, userbouquet& ub);
 		void parse_channel_reference(string str, channel_reference& chref, service_reference& ref);
 		void parse_tunersets_xml(int ytype, istream& itunxml);
-		bool list_localdir(string localdir);
-		bool read(string localdir);
+		bool find_services_file();
+		bool list_file(string path);
+		bool read(string path);
 		unordered_map<string, string> get_input();
 	protected:
 		void parse_lamedb_transponder_params(string str, transponder& tx);

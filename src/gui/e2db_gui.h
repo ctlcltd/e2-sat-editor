@@ -40,7 +40,6 @@ class e2db : public ::e2se_e2db::e2db
 
 		e2db(e2se::logger::session* log);
 		~e2db() {};
-		void options();
 		void error(string msg, string optk, string optv);
 		string addTransponder(transponder& tx);
 		string editTransponder(string txid, transponder& tx);
@@ -67,10 +66,8 @@ class e2db : public ::e2se_e2db::e2db
 		string addTunersetsTransponder(tunersets_transponder& tntxp, tunersets_table tn);
 		string editTunersetsTransponder(string trid, tunersets_transponder& tntxp, tunersets_table tn);
 		void removeTunersetsTransponder(string trid, tunersets_table tn);
-		void plain();
-		bool prepare(string localdir);
-		bool write(string localdir, bool overwrite);
-		// e2db_gui::e2db::merge overload e2db::merge
+		bool prepare(string path);
+		bool write(string path);
 		void merge(unordered_map<string, e2db_file> files);
 		void importFile(vector<string> paths);
 		void exportFile(int flags, vector<string> paths);

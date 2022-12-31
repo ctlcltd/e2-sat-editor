@@ -76,7 +76,7 @@ void e2db_maker::make_e2db_lamedb4()
 	debug("make_e2db_lamedb4()");
 	e2db_file file;
 	make_lamedb4("lamedb", file);
-	e2db_out["lamedb"] = file;
+	this->e2db_out["lamedb"] = file;
 }
 
 void e2db_maker::make_e2db_lamedb5()
@@ -84,7 +84,7 @@ void e2db_maker::make_e2db_lamedb5()
 	debug("make_e2db_lamedb5()");
 	e2db_file file;
 	make_lamedb5("lamedb5", file);
-	e2db_out["lamedb5"] = file;
+	this->e2db_out["lamedb5"] = file;
 }
 
 void e2db_maker::make_lamedb4(string filename, e2db_file& file)
@@ -93,7 +93,7 @@ void e2db_maker::make_lamedb4(string filename, e2db_file& file)
 	int ver = LAMEDB_VER;
 	LAMEDB_VER = 4;
 	make_lamedb(filename, file);
-	e2db_out[filename] = file;
+	this->e2db_out[filename] = file;
 	LAMEDB_VER = ver;
 }
 
@@ -103,7 +103,7 @@ void e2db_maker::make_lamedb5(string filename, e2db_file& file)
 	int ver = LAMEDB_VER;
 	LAMEDB_VER = 5;
 	make_lamedb(filename, file);
-	e2db_out[filename] = file;
+	this->e2db_out[filename] = file;
 	LAMEDB_VER = ver;
 }
 
@@ -244,7 +244,7 @@ void e2db_maker::make_e2db_bouquets()
 	{
 		e2db_file file;
 		make_bouquet(x.first, file);
-		e2db_out[x.first] = file;
+		this->e2db_out[x.first] = file;
 	}
 }
 
@@ -256,7 +256,7 @@ void e2db_maker::make_e2db_userbouquets()
 	{
 		e2db_file file;
 		make_userbouquet(x.first, file);
-		e2db_out[x.first] = file;
+		this->e2db_out[x.first] = file;
 	}
 }
 
@@ -284,7 +284,7 @@ void e2db_maker::make_db_tunersets()
 		}
 		e2db_file file;
 		make_tunersets_xml(filename, x.first, file);
-		e2db_out[filename] = file;
+		this->e2db_out[filename] = file;
 	}
 }
 
@@ -543,25 +543,33 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 	file.size = file.data.size();
 }
 
-bool e2db_maker::write_to_localdir(string localdir, bool overwrite)
+bool e2db_maker::push_file(string path)
 {
-	debug("write_to_localdir()", "localdir", localdir);
+	debug("push_file()", "path", path);
 
-	if (! std::filesystem::is_directory(localdir)) //C++17
+	if (std::filesystem::is_directory(path)) //C++17
 	{
-		error("write_to_localdir()", "Error", "Directory \"" + localdir + "\" not exists.");
-		return false;
+		if (! OVERWRITE_FILE)
+		{
+			error("push_file()", "Error", "File \"" + path + "\" already exists.");
+			return false;
+		}
 	}
-	//TODO check file exists and "force" overwrite
-	else if (! overwrite)
+	else
 	{
-		std::filesystem::create_directory(localdir); //C++17
+		std::filesystem::create_directory(path); //C++17
 	}
-	for (auto & o: e2db_out)
+	for (auto & o: this->e2db_out)
 	{
-		string localfile = localdir + '/' + o.first;
+		string fpath = path + '/' + o.first;
 
-		ofstream out (localfile);
+		if (! OVERWRITE_FILE && std::filesystem::exists(fpath)) //C++17
+		{
+			error("push_file()", "Error", "File \"" + fpath + "\" already exists.");
+			return false;
+		}
+
+		ofstream out (fpath);
 		out << o.second.data;
 		out.close();
 	}
@@ -569,13 +577,13 @@ bool e2db_maker::write_to_localdir(string localdir, bool overwrite)
 	return true;
 }
 
-bool e2db_maker::write(string localdir, bool overwrite)
+bool e2db_maker::write(string path)
 {
-	debug("write()", "localdir", localdir);
+	debug("write()", "filename", path);
 
 	make_e2db();
 
-	if (write_to_localdir(localdir, overwrite))
+	if (push_file(path))
 		return true;
 	else
 		return false;
@@ -586,32 +594,7 @@ unordered_map<string, e2db_abstract::e2db_file> e2db_maker::get_output() {
 
 	make_e2db();
 
-	return e2db_out;
-}
-
-void e2db_maker::set_index(unordered_map<string, vector<pair<int, string>>> index)
-{
-	debug("set_index()");
-	this->index = index;
-}
-
-void e2db_maker::set_transponders(unordered_map<string, e2db_maker::transponder> transponders)
-{
-	debug("set_transponders()");
-	db.transponders = transponders;
-}
-
-void e2db_maker::set_channels(unordered_map<string, e2db_maker::service> services)
-{
-	debug("set_channels()");
-	db.services = services;
-}
-
-void e2db_maker::set_bouquets(pair<unordered_map<string, e2db_maker::bouquet>, unordered_map<string, e2db_maker::userbouquet>> bouquets)
-{
-	debug("set_bouquets()");
-	this->bouquets = bouquets.first;
-	this->userbouquets = bouquets.second;
+	return this->e2db_out;
 }
 
 }

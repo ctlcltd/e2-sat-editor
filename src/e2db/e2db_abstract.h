@@ -29,6 +29,8 @@ struct e2db_abstract
 {
 	public:
 
+		inline static bool OVERWRITE_FILE = false;
+
 		inline static const string SAT_POL[4] = {"H", "V", "L", "R"};
 		inline static const string SAT_MOD[4] = {"Auto", "QPSK", "QAM16", "8PSK"};
 		inline static const string SAT_INV[3] = {"Auto", "On", "Off"};
@@ -436,13 +438,18 @@ struct e2db_abstract
 		string get_reference_id(string chid);
 		string get_reference_id(channel_reference chref);
 		string get_transponder_name_value(transponder tx);
-		virtual string get_filename() { return this->filename; };
-		virtual string get_localdir() { return this->localdir; };
+		virtual string get_filepath() { return this->filepath; };
+		virtual string get_services_filename() { return this->services_filename; };
+		void set_index(unordered_map<string, vector<pair<int, string>>> index);
+		unordered_map<string, vector<pair<int, string>>> get_index();
+		void set_transponders(unordered_map<string, transponder> transponders);
 		unordered_map<string, transponder> get_transponders();
 		unordered_map<string, service> get_services();
+		void set_services(unordered_map<string, service> services);
+		void set_bouquets(pair<unordered_map<string, bouquet>, unordered_map<string, userbouquet>> bouquets);
 		pair<unordered_map<string, bouquet>, unordered_map<string, userbouquet>> get_bouquets();
-		virtual unordered_map<string, string> get_input() { return e2db; };
-		virtual unordered_map<string, e2db_file> get_output() { return e2db_out; };
+		virtual unordered_map<string, string> get_input() { return this->e2db; };
+		virtual unordered_map<string, e2db_file> get_output() { return this->e2db_out; };
 		void merge(e2db_abstract* dst);
 		virtual void debugger();
 	protected:
@@ -452,8 +459,8 @@ struct e2db_abstract
 		unordered_map<string, string> e2db;
 		// e2db_out <filename string, e2db_file>
 		unordered_map<string, e2db_file> e2db_out;
-		string localdir;
-		string filename;
+		string filepath;
+		string services_filename;
 
 		virtual void options() {};
 		virtual void debug(string msg);

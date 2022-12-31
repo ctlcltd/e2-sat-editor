@@ -65,7 +65,7 @@ void printable::documentIndex()
 {
 	debug("documentIndex()");
 
-	string filename = std::filesystem::path(dbih->get_localdir()).filename().u8string(); //C++17
+	string filename = std::filesystem::path(dbih->get_filepath()).filename().u8string(); //C++17
 	if (filename.empty())
 	{
 		filename = "Untitled";
@@ -94,7 +94,7 @@ void printable::documentServices(int stype)
 {
 	debug("documentServices()");
 	
-	string filename = std::filesystem::path(dbih->get_filename()).filename().u8string(); //C++17
+	string filename = std::filesystem::path(dbih->get_services_filename()).filename().u8string(); //C++17
 	string iname;
 	string xname;
 	string headname = filename;

@@ -51,12 +51,8 @@ class e2db_maker : virtual public e2db_abstract
 		void make_e2db_bouquets();
 		void make_e2db_userbouquets();
 		void make_db_tunersets();
-		void set_index(unordered_map<string, vector<pair<int, string>>> index);
-		void set_transponders(unordered_map<string, transponder> transponders);
-		void set_channels(unordered_map<string, service> services);
-		void set_bouquets(pair<unordered_map<string, bouquet>, unordered_map<string, userbouquet>> bouquets);
-		bool write_to_localdir(string localdir, bool overwrite);
-		bool write(string localdir, bool overwrite);
+		bool push_file(string path);
+		bool write(string path);
 		unordered_map<string, e2db_file> get_output();
 	protected:
 		void make_lamedb(string filename, e2db_file& file);

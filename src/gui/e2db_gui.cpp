@@ -33,21 +33,14 @@ e2db::e2db(e2se::logger::session* log)
 	debug("e2db()");
 
 	this->sets = new QSettings;
-	options();
 
-	plain();
-}
-
-//TODO options are inline static
-void e2db::options()
-{
-	debug("options()");
-
+	//TODO inline static
+	e2db::OVERWRITE_FILE = true;
 	e2db::PARSER_LAMEDB5_PRIOR = sets->value("application/parserLamedb5", false).toBool();
 	e2db::MAKER_LAMEDB5 = sets->value("application/makerLamedb5", true).toBool();
 	e2db::PARSER_TUNERSETS = sets->value("application/parserTunerset", true).toBool();
 	e2db::MAKER_TUNERSETS = sets->value("application/makerTunerset", true).toBool();
-	e2db::EXTENDED_FIELDS = sets->value("application/extendedFields", false).toBool();
+	e2db::CONVERTER_EXTENDED_FIELDS = sets->value("application/converterExtendedFields", false).toBool();
 	e2db::CSV_HEADER = sets->value("application/csvHeader", true).toBool();
 	string csv_dlm = sets->value("application/csvDelimiter", "\n").toString().toStdString();
 	string csv_sep = sets->value("application/csvSeparator", ",").toString().toStdString();
@@ -55,6 +48,26 @@ void e2db::options()
 	e2db::CSV_DELIMITER = csv_dlm.find("\n") != string::npos ? '\n' : '\n'; //TODO win32 transform
 	e2db::CSV_SEPARATOR = csv_sep[0];
 	e2db::CSV_ESCAPE = csv_esp[0];
+
+	// empty services list - touch index["chs"]
+	if (! index.count("chs"))
+		index["chs"];
+
+	e2db::bouquet bs;
+
+	bs = e2db::bouquet();
+	bs.bname = "bouquets.tv";
+	bs.name = "User - bouquet (TV)";
+	bs.btype = bs.index = e2db::STYPE::tv;
+	bs.nname = "TV";
+	this->::e2se_e2db::e2db::add_bouquet(bs);
+
+	bs = e2db::bouquet();
+	bs.bname = "bouquets.radio";
+	bs.name = "User - bouquet (Radio)";
+	bs.btype = bs.index = e2db::STYPE::radio;
+	bs.nname = "Radio";
+	this->::e2se_e2db::e2db::add_bouquet(bs);
 }
 
 void e2db::error(string msg, string optk, string optv)
@@ -237,36 +250,11 @@ void e2db::removeTunersetsTransponder(string trid, tunersets_table tn)
 	this->::e2se_e2db::e2db::remove_tunersets_transponder(trid, tn);
 }
 
-void e2db::plain()
-{
-	debug("plain()");
-
-	// empty services list - touch index["chs"]
-	if (! index.count("chs"))
-		index["chs"];
-
-	e2db::bouquet bs;
-
-	bs = e2db::bouquet();
-	bs.bname = "bouquets.tv";
-	bs.name = "User - bouquet (TV)";
-	bs.btype = bs.index = e2db::STYPE::tv;
-	bs.nname = "TV";
-	this->::e2se_e2db::e2db::add_bouquet(bs);
-
-	bs = e2db::bouquet();
-	bs.bname = "bouquets.radio";
-	bs.name = "User - bouquet (Radio)";
-	bs.btype = bs.index = e2db::STYPE::radio;
-	bs.nname = "Radio";
-	this->::e2se_e2db::e2db::add_bouquet(bs);
-}
-
-bool e2db::prepare(string localdir)
+bool e2db::prepare(string filename)
 {
 	debug("prepare()");
 
-	if (! this->read(localdir))
+	if (! this->read(filename))
 		return false;
 
 	if (sets->value("application/parserDebugger", false).toBool())
@@ -283,11 +271,11 @@ bool e2db::prepare(string localdir)
 	return true;
 }
 
-bool e2db::write(string localdir, bool overwrite)
+bool e2db::write(string path)
 {
 	debug("write()");
 
-	if (! this->::e2se_e2db::e2db::write(localdir, overwrite))
+	if (! this->::e2se_e2db::e2db::write(path))
 		return false;
 
 	return true;

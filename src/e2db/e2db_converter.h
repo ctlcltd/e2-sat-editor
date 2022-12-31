@@ -43,7 +43,7 @@ class e2db_converter : virtual public e2db_abstract
 			view_tunersets = 3
 		};
 
-		inline static bool EXTENDED_FIELDS = false;
+		inline static bool CONVERTER_EXTENDED_FIELDS = false;
 		inline static bool CSV_HEADER = true;
 		inline static char CSV_DELIMITER = '\n';
 		inline static char CSV_SEPARATOR = ',';

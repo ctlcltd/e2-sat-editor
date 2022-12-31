@@ -43,22 +43,23 @@ bool dataHandler::readFile(string filename)
 
 	delete this->dbih;
 	this->dbih = new e2db(this->log->log);
-	this->newfile = true;
+	this->newfile = false;
 	this->changed = false;
 	
 	if (this->dbih->prepare(filename))
 	{
 		this->filename = filename;
+		this->newfile = false;
 		return true;
 	}
 	return false;
 }
 
-bool dataHandler::writeFile(string path, bool overwrite)
+bool dataHandler::writeFile(string path)
 {
 	debug("writeFile()");
 
-	if (this->dbih->write(path, overwrite))
+	if (this->dbih->write(path))
 	{
 		this->filename = path;
 		return true;
