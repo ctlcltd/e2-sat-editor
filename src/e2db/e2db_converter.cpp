@@ -86,7 +86,15 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 
 	if (! std::filesystem::exists(path)) //C++17
 	{
-		return error("import_csv_file()", "Error", "File \"" + path + "\" not exists.");
+		return error("import_csv_file()", "File Error", "File \"" + path + "\" not exists.");
+	}
+	if (! std::filesystem::is_regular_file(path)) //C++17
+	{
+		return error("import_csv_file()", "File Error", "File \"" + path + "\" is not a valid file.");
+	}
+	if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_read)  == std::filesystem::perms::none) //C++17
+	{
+		return error("import_csv_file()", "File Error", "File \"" + path + "\" is not readable.");
 	}
 
 	ifstream ifile (path);
@@ -106,7 +114,8 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 			pull_csv_tunersets(ifile, dst);
 		break;
 		default:
-		break;
+			ifile.close();
+		return error("import_csv_file()", "Error", "Unknown import option.");
 	}
 
 	ifile.close();
@@ -160,24 +169,28 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 				push_csv_tunersets(files);
 		break;
 		default:
-			return;
+		return error("export_csv_file()", "Error", "Unknown export option.");
 	}
 
 	bool once = !! files.size();
 	for (auto & file : files)
 	{
-		string path;
+		string fpath;
 		if (once)
-			path = base + '/' + file.filename;
+			fpath = base + '/' + file.filename;
 		else
-			path = base + '/' + opts.filename;
+			fpath = base + '/' + opts.filename;
 
-		if (! OVERWRITE_FILE && std::filesystem::exists(path)) //C++17
+		if (! OVERWRITE_FILE && std::filesystem::exists(fpath)) //C++17
 		{
-			return error("export_csv_file()", "Error", "File \"" + path + "\" already exists.");
+			return error("export_csv_file()", "File Error", "File \"" + fpath + "\" already exists.");
+		}
+		if ((std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write)  == std::filesystem::perms::none) //C++17
+		{
+			return error("export_csv_file()", "File Error", "File \"" + fpath + "\" is not writable.");
 		}
 
-		ofstream out (path);
+		ofstream out (fpath);
 		out << file.data;
 		out.close();
 	}
@@ -234,24 +247,28 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 				push_html_tunersets(files);
 		break;
 		default:
-			return;
+		return error("export_html_file()", "Error", "Unknown export option.");
 	}
 
 	bool once = !! files.size();
 	for (e2db_file & file : files)
 	{
-		string path;
+		string fpath;
 		if (once)
-			path = base + '/' + file.filename;
+			fpath = base + '/' + file.filename;
 		else
-			path = base + '/' + opts.filename;
+			fpath = base + '/' + opts.filename;
 
-		if (! OVERWRITE_FILE && std::filesystem::exists(path)) //C++17
+		if (! OVERWRITE_FILE && std::filesystem::exists(fpath)) //C++17
 		{
-			return error("export_html_file()", "Error", "File \"" + path + "\" already exists.");
+			return error("export_html_file()", "File Error", "File \"" + fpath + "\" already exists.");
+		}
+		if ((std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write)  == std::filesystem::perms::none) //C++17
+		{
+			return error("export_html_file()", "File Error", "File \"" + fpath + "\" is not writable.");
 		}
 
-		ofstream out (path);
+		ofstream out (fpath);
 		out << file.data;
 		out.close();
 	}

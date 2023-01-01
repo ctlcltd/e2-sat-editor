@@ -131,7 +131,34 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 	string path = gid->exportFileDialog(gui::GUI_DPORTS::CSV, opts.filename);
 
 	if (path.empty())
+	{
 		return;
+	}
+	if (opts.fc != e2db::FCONVS::convert_current)
+	{
+		int dirsize = 0;
+		string base;
+		if (std::filesystem::is_directory(path)) //C++17
+			base = path;
+		else
+			base = std::filesystem::path(path).parent_path().u8string(); //C++17
+		std::filesystem::directory_iterator dirlist (base); //C++17
+		for (const auto & entry : dirlist)
+		{
+			if (std::filesystem::is_regular_file(entry)) //C++17
+				dirsize++;
+		}
+		if (dirsize != 0)
+		{
+			QMessageBox msg = QMessageBox(cwid);
+			msg.setText("The destination contains files that will be overwritten.");
+			msg.setInformativeText("Do you want to overwrite them?\n");
+			msg.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
+			msg.setDefaultButton(QMessageBox::Save);
+			if (msg.exec() != QMessageBox::Save)
+				return;
+		}
+	}
 
 	auto* dbih = this->data->dbih;
 
@@ -152,7 +179,34 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 	string path = gid->exportFileDialog(gui::GUI_DPORTS::HTML, opts.filename);
 
 	if (path.empty())
+	{
 		return;
+	}
+	if (opts.fc != e2db::FCONVS::convert_current)
+	{
+		int dirsize = 0;
+		string base;
+		if (std::filesystem::is_directory(path)) //C++17
+			base = path;
+		else
+			base = std::filesystem::path(path).parent_path().u8string(); //C++17
+		std::filesystem::directory_iterator dirlist (base); //C++17
+		for (const auto & entry : dirlist)
+		{
+			if (std::filesystem::is_regular_file(entry)) //C++17
+				dirsize++;
+		}
+		if (dirsize != 0)
+		{
+			QMessageBox msg = QMessageBox(cwid);
+			msg.setText("The destination contains files that will be overwritten.");
+			msg.setInformativeText("Do you want to overwrite them?\n");
+			msg.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
+			msg.setDefaultButton(QMessageBox::Save);
+			if (msg.exec() != QMessageBox::Save)
+				return;
+		}
+	}
 
 	auto* dbih = this->data->dbih;
 

@@ -43,6 +43,7 @@ e2db_parser::e2db_parser(e2se::logger::session* log)
 void e2db_parser::parse_e2db()
 {
 	debug("parse_e2db()");
+
 	std::clock_t start = std::clock();
 
 	if (! find_services_file())
@@ -114,6 +115,7 @@ void e2db_parser::parse_e2db()
 void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 {
 	debug("parse_e2db()");
+
 	std::clock_t start = std::clock();
 
 	for (auto & x : files)
@@ -195,11 +197,15 @@ void e2db_parser::parse_e2db_lamedb(istream& ilamedb)
 	{
 		case 2:
 		case 3:
-			error("parse_e2db_lamedb()", "Error", "Unsupported services file format.");
+		return error("parse_e2db_lamedb()", "Parser Error", "Unsupported services file format.");
+		case 4:
+			parse_e2db_lamedb4(ilamedb);
 		break;
-		case 4: parse_e2db_lamedb4(ilamedb); break;
-		case 5: parse_e2db_lamedb5(ilamedb); break;
-		default: error("parse_e2db_lamedb()", "Error", "Unknown services file format.");
+		case 5:
+			parse_e2db_lamedb5(ilamedb);
+		break;
+		default:
+		return error("parse_e2db_lamedb()", "Parser Error", "Unknown services file format.");
 	}
 }
 
@@ -416,8 +422,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string str, char ty, transpon
 			tx.oflgs = string (oflgs);
 		break;
 		default:
-			error("lamedb", "Error", "Unknown transponder type.");
-			return;
+		return error("parse_lamedb_transponder_feparms()", "Parser Error", "Unknown transponder type.");
 	}
 }
 
@@ -613,7 +618,7 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 		//TODO group
 		// group
 		case STYPE::group:
-			error("parse_channel_reference()", "Error", "Not supported yet.");
+			error("parse_channel_reference()", "Parser Error", "Not supported yet.");
 		break;
 		// service
 		default:
@@ -638,7 +643,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 	std::getline(ftunxml, htunxml, '>');
 
 	if (htunxml.find("<?xml") == string::npos)
-		return error("parse_tunersets_xml()", "Error", "Unknown file format.");
+		return error("parse_tunersets_xml()", "Parser Error", "Unknown file format.");
 
 	unsigned long pos = htunxml.find("encoding=");
 	unsigned long len;
@@ -662,7 +667,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 		case YTYPE::atsc:
 		break;
 		default:
-			return error("parse_tunersets_xml()", "Error", "These settings are not supported.");
+		return error("parse_tunersets_xml()", "Parser Error", "These settings are not supported.");
 	}
 
 	tunersets tv;
@@ -765,7 +770,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 		}
 		else
 		{
-			return error("parse_tunersets_xml()", "Error", "Malformed or unknown XML error.");
+			return error("parse_tunersets_xml()", "Parser Error", "Malformed or unknown XML error.");
 		}
 
 		string yey;
@@ -983,11 +988,11 @@ bool e2db_parser::find_services_file()
 {
 	debug("find_services_file()");
 
-	if (PARSER_LAMEDB5_PRIOR && e2db.count("lamedb5"))
+	if (PARSER_LAMEDB5_PRIOR && this->e2db.count("lamedb5"))
 		this->services_filename = "lamedb5";
-	else if (e2db.count("lamedb5"))
+	else if (this->e2db.count("lamedb5"))
 		this->services_filename = "lamedb5";
-	else if (e2db.count("lamedb"))
+	else if (this->e2db.count("lamedb"))
 		this->services_filename = "lamedb";
 
 	return ! this->services_filename.empty();
@@ -999,7 +1004,12 @@ bool e2db_parser::list_file(string path)
 
 	if (! std::filesystem::exists(path)) //C++17
 	{
-		error("list_file()", "Error", "File \"" + path + "\" not exists.");
+		error("list_file()", "File Error", "File \"" + path + "\" not exists.");
+		return false;
+	}
+	if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_read)  == std::filesystem::perms::none) //C++17
+	{
+		error("list_file()", "File Error", "File \"" + path + "\" is not readable.");
 		return false;
 	}
 
@@ -1008,7 +1018,14 @@ bool e2db_parser::list_file(string path)
 	for (const auto & entry : filelist)
 	{
 		if (! std::filesystem::is_regular_file(entry)) //C++17
+		{
 			continue;
+		}
+		if ((std::filesystem::status(entry).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none) //C++17
+		{
+			error("list_file()", "File Error", "File \"" + path + "\" is not readable.");
+			return false;
+		}
 
 		string fpath = entry.path().u8string(); //C++17
 		string filename = std::filesystem::path(fpath).filename().u8string(); //C++17
@@ -1016,7 +1033,7 @@ bool e2db_parser::list_file(string path)
 	}
 	if (! find_services_file())
 	{
-		error("list_file()", "Error", "Services file \"lamedb\" not found.");
+		error("list_file()", "File Error", "Services file \"lamedb\" not found.");
 		return false;
 	}
 	this->filepath = path;

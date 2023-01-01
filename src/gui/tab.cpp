@@ -389,8 +389,12 @@ void tab::openFile()
 
 	string path = gid->openFileDialog();
 
-	if (! path.empty())
-		readFile(path);
+	if (path.empty())
+	{
+		return;
+	}
+	
+	readFile(path);
 }
 
 bool tab::readFile(string filename)
@@ -433,20 +437,18 @@ void tab::saveFile(bool saveas)
 	debug("saveFile()", "saveas", saveas);
 
 	string path;
-	bool changed = this->data->hasChanged();
-	bool newfile = this->data->isNewfile();
 	string filename = path = this->data->getFilename();
 
-	if (changed)
+	if (this->data->hasChanged())
 	{
 		this->updateChannelsIndex();
 		this->updateBouquetsIndex();
 	}
-	if (saveas || newfile)
+	if (saveas || this->data->isNewfile())
 	{
 		path = gid->saveFileDialog(filename);
 	}
-	else if (changed)
+	else if (this->data->hasChanged())
 	{
 		QMessageBox msg = QMessageBox(cwid);
 		msg.setText("The file has been modified.");
@@ -468,7 +470,9 @@ void tab::saveFile(bool saveas)
 	}
 
 	if (path.empty())
+	{
 		return;
+	}
 
 	debug("saveFile()", "filename", path);
 
@@ -511,7 +515,6 @@ void tab::importFile()
 	this->data->setChanged(true);
 }
 
-//TODO overwrite
 void tab::exportFile()
 {
 	debug("exportFile()");
@@ -599,11 +602,11 @@ void tab::exportFile()
 	}
 
 	if (paths.empty())
+	{
 		return;
+	}
 
-	bool overwrite = ! this->data->isNewfile() || this->data->hasChanged();
-
-	if (overwrite)
+	if (this->data->hasChanged())
 	{
 		this->updateChannelsIndex();
 		this->updateBouquetsIndex();
@@ -612,7 +615,34 @@ void tab::exportFile()
 	string path = gid->exportFileDialog(gde, filename, flags);
 
 	if (path.empty())
+	{
 		return;
+	}
+	if (paths.size() > 0)
+	{
+		int dirsize = 0;
+		string base;
+		if (std::filesystem::is_directory(path)) //C++17
+			base = path;
+		else
+			base = std::filesystem::path(path).parent_path().u8string(); //C++17
+		std::filesystem::directory_iterator dirlist (base); //C++17
+		for (const auto & entry : dirlist)
+		{
+			if (std::filesystem::is_regular_file(entry)) //C++17
+				dirsize++;
+		}
+		if (dirsize != 0)
+		{
+			QMessageBox msg = QMessageBox(cwid);
+			msg.setText("The destination contains files that will be overwritten.");
+			msg.setInformativeText("Do you want to overwrite them?\n");
+			msg.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
+			msg.setDefaultButton(QMessageBox::Save);
+			if (msg.exec() != QMessageBox::Save)
+				return;
+		}
+	}
 
 	debug("exportFile()", "flags", flags);
 
@@ -639,7 +669,6 @@ void tab::exportFile()
 	msg.exec();
 }
 
-//TODO overwrite
 void tab::exportFile(QTreeWidgetItem* item)
 {
 	debug("exportFile()");
@@ -694,11 +723,11 @@ void tab::exportFile(QTreeWidgetItem* item)
 	}
 
 	if (paths.empty())
+	{
 		return;
+	}
 
-	bool overwrite = ! this->data->isNewfile() || this->data->hasChanged();
-
-	if (overwrite)
+	if (this->data->hasChanged())
 	{
 		this->updateChannelsIndex();
 		this->updateBouquetsIndex();
@@ -707,7 +736,34 @@ void tab::exportFile(QTreeWidgetItem* item)
 	string path = gid->exportFileDialog(gde, filename, bit);
 
 	if (path.empty())
+	{
 		return;
+	}
+	if (paths.size() > 0)
+	{
+		int dirsize = 0;
+		string base;
+		if (std::filesystem::is_directory(path)) //C++17
+			base = path;
+		else
+			base = std::filesystem::path(path).parent_path().u8string(); //C++17
+		std::filesystem::directory_iterator dirlist (base); //C++17
+		for (const auto & entry : dirlist)
+		{
+			if (std::filesystem::is_regular_file(entry)) //C++17
+				dirsize++;
+		}
+		if (dirsize != 0)
+		{
+			QMessageBox msg = QMessageBox(cwid);
+			msg.setText("The destination contains files that will be overwritten.");
+			msg.setInformativeText("Do you want to overwrite them?\n");
+			msg.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
+			msg.setDefaultButton(QMessageBox::Save);
+			if (msg.exec() != QMessageBox::Save)
+				return;
+		}
+	}
 
 	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	dbih->exportFile(bit, paths);

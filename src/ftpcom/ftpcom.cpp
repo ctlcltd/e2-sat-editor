@@ -224,9 +224,10 @@ void ftpcom::download_data(string base, string filename, ftpcom_file& file)
 
 	reset(cph, rph);
 
+	//TODO improve
 	file.filename = filename;
 	file.data = data.data;
-	file.mime = "application/octet-stream"; //TODO
+	file.mime = "application/octet-stream";
 	file.size = data.size;
 }
 

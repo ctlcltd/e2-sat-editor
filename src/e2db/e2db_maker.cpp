@@ -42,6 +42,7 @@ e2db_maker::e2db_maker(e2se::logger::session* log)
 void e2db_maker::make_e2db()
 {
 	debug("make_e2db()");
+
 	std::clock_t start = std::clock();
 
 	make_e2db_lamedb();
@@ -61,8 +62,14 @@ void e2db_maker::make_e2db_lamedb()
 
 	switch (LAMEDB_VER)
 	{
-		case 4: make_e2db_lamedb4(); break;
-		case 5: make_e2db_lamedb5(); break;
+		case 4:
+			make_e2db_lamedb4();
+		break;
+		case 5:
+			make_e2db_lamedb5();
+		break;
+		default:
+		return error("make_e2db_lamedb()", "Maker Error", "Unknown services file format.");
 	}
 
 	//TEST
@@ -180,6 +187,8 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file)
 				if (! tx.oflgs.empty())
 					ss << tx.oflgs;
 			break;
+			default:
+			return error("make_lamedb()", "Maker Error", "Unknown transponder type.");
 		}
 		ss << formats[MAKER_FORMAT::transponder_endline];
 	}
@@ -281,6 +290,8 @@ void e2db_maker::make_db_tunersets()
 			case YTYPE::atsc:
 				filename = "atsc.xml";
 			break;
+			default:
+			return error("make_db_tunersets()", "Maker Error", "These settings are not supported.");
 		}
 		e2db_file file;
 		make_tunersets_xml(filename, x.first, file);
@@ -349,7 +360,7 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 			}
 			else
 			{
-				error("make_userbouquet()", "Error", "Missing channel_reference \"" + x.second + "\".");
+				error("make_userbouquet()", "Maker Error", "Missing channel_reference \"" + x.second + "\".");
 			}
 		}
 		ss << dec;
@@ -376,7 +387,7 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 		case YTYPE::atsc:
 		break;
 		default:
-			return error("make_tunersets_xml()", "Error", "These settings are not supported.");
+		return error("make_tunersets_xml()", "Maker Error", "These settings are not supported.");
 	}
 
 	tunersets tv = tuners[ytype];
@@ -551,7 +562,7 @@ bool e2db_maker::push_file(string path)
 	{
 		if (! OVERWRITE_FILE)
 		{
-			error("push_file()", "Error", "File \"" + path + "\" already exists.");
+			error("push_file()", "File Error", "File \"" + path + "\" already exists.");
 			return false;
 		}
 	}
@@ -559,13 +570,23 @@ bool e2db_maker::push_file(string path)
 	{
 		std::filesystem::create_directory(path); //C++17
 	}
+	if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_write)  == std::filesystem::perms::none) //C++17
+	{
+		error("push_file()", "File Error", "File \"" + path + "\" is not writable.");
+		return false;
+	}
 	for (auto & o: this->e2db_out)
 	{
 		string fpath = path + '/' + o.first;
 
 		if (! OVERWRITE_FILE && std::filesystem::exists(fpath)) //C++17
 		{
-			error("push_file()", "Error", "File \"" + fpath + "\" already exists.");
+			error("push_file()", "File Error", "File \"" + fpath + "\" already exists.");
+			return false;
+		}
+		if ((std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write)  == std::filesystem::perms::none) //C++17
+		{
+			error("push_file()", "File Error", "File \"" + fpath + "\" is not writable.");
 			return false;
 		}
 

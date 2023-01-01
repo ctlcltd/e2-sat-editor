@@ -53,14 +53,23 @@ void e2db::import_file(vector<string> paths)
 	{
 		if (! std::filesystem::exists(path)) //C++17
 		{
-			return error("import_file()", "Error", "File \"" + path + "\" not exists.");
+			return error("import_file()", "File Error", "File \"" + path + "\" not exists.");
+		}
+		if (! std::filesystem::is_regular_file(path)) //C++17
+		{
+			return error("import_file()", "File Error", "File \"" + path + "\" is not a valid file.");
+		}
+		if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_read)  == std::filesystem::perms::none) //C++17
+		{
+			return error("import_file()", "File Error", "File \"" + path + "\" is not readable.");
 		}
 
 		FPORTS fpi = filetype_detect(path);
 
+		//TODO improve
 		e2db_file file;
 		file.filename = path;
-		if (fpi == FPORTS::directory) //C++17
+		if (fpi == FPORTS::directory)
 		{
 			file.mime = "application/octet-stream";
 		}
@@ -137,7 +146,7 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 				dst->parse_e2db_userbouquet(ifile, filename);
 		break;
 		default:
-		return;
+		return error("import_file()", "Error", "Unknown import option.");
 	}
 }
 
@@ -164,7 +173,6 @@ void e2db::export_file(FPORTS fpo, vector<string> paths)
 	}
 }
 
-//TODO overwrite
 void e2db::export_file(FPORTS fpo, string path)
 {
 	debug("export_file()", "file path", "singular");
@@ -175,6 +183,9 @@ void e2db::export_file(FPORTS fpo, string path)
 
 	switch (fpo)
 	{
+		case FPORTS::directory:
+			write(path);
+		return;
 		case FPORTS::all_services:
 			if (LAMEDB_VER == 4)
 				make_lamedb4("lamedb", file);
@@ -217,13 +228,16 @@ void e2db::export_file(FPORTS fpo, string path)
 				make_userbouquet(filename, file);
 		break;
 		default:
-			write(path);
-		return;
+		return error("export_file()", "Error", "Unknown export option.");
 	}
 
 	if (! OVERWRITE_FILE && std::filesystem::exists(path)) //C++17
 	{
-		return error("export_file()", "Error", "File \"" + path + "\" already exists.");
+		return error("export_file()", "File Error", "File \"" + path + "\" already exists.");
+	}
+	if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_write)  == std::filesystem::perms::none) //C++17
+	{
+		return error("export _file()", "File Error", "File \"" + path + "\" is not writable.");
 	}
 
 	ofstream out (path);
