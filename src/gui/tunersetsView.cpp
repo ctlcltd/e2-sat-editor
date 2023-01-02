@@ -92,7 +92,7 @@ void tunersetsView::layout()
 	{
 		case e2db::YTYPE::satellite:
 			ths = QStringList ({NULL, "Name", "Position"});
-			lhs = QStringList ({NULL, "TRID", "Freq/Pol/SR", "Frequency", "Polarization", "Symbol Rate", "FEC", "System", "Modulation", "Inversion", "Pilot", "Roll offset"});
+			lhs = QStringList ({NULL, "TRID", "Freq/Pol/SR", "Frequency", "Polarization", "Symbol Rate", "FEC", "System", "Modulation", "Inversion",  "Roll offset", "Pilot"});
 		break;
 		case e2db::YTYPE::terrestrial:
 			ths = QStringList ({NULL, "Name", "Country"});
@@ -560,6 +560,7 @@ void tunersetsView::addPosition()
 
 	updateTreeIndex();
 
+	updateFlags();
 	updateStatus();
 
 	this->data->setChanged(true);
@@ -649,7 +650,7 @@ void tunersetsView::addTransponder()
 	char ci[7];
 	std::sprintf(ci, "%06d", i++);
 	QString x = QString::fromStdString(ci);
-	QString idx = "";
+	QString idx = QString::fromStdString(to_string(txp.index));
 	QStringList entry = dbih->entryTunersetsTransponder(txp, tns);
 	entry.prepend(x);
 
@@ -669,6 +670,7 @@ void tunersetsView::addTransponder()
 
 	setPendingUpdateListIndex();
 
+	updateFlags();
 	updateStatus();
 
 	this->data->setChanged(true);
@@ -764,19 +766,53 @@ void tunersetsView::listItemCopy(bool cut)
 	if (selected.empty())
 		return;
 
+	QClipboard* clipboard = QGuiApplication::clipboard();
+	QStringList text;
+	for (auto & item : selected)
+	{
+		QString trid = item->data(ITEM_DATA_ROLE::trid, Qt::UserRole).toString();
+
+		QStringList data;
+		// start from freq column [3]
+		for (int i = ITEM_ROW_ROLE::row3; i < list->columnCount(); i++)
+		{
+			QString qstr = item->data(i, Qt::DisplayRole).toString();
+			data.append(qstr);
+		}
+
+		data.prepend(trid); // insert trid column [0]
+		text.append(data.join(",")); // CSV
+	}
+	clipboard->setText(text.join("\n")); // CSV
+
 	if (cut)
 		listItemDelete();
-
-	this->data->setChanged(true);
 }
 
 void tunersetsView::listItemPaste()
 {
 	debug("listItemPaste()");
 
-	/*QClipboard* clipboard = QGuiApplication::clipboard();
+	QClipboard* clipboard = QGuiApplication::clipboard();
 	const QMimeData* mimeData = clipboard->mimeData();
-	vector<QString> items;*/
+	vector<QString> items;
+
+	if (mimeData->hasText())
+	{
+		QStringList list = clipboard->text().split("\n");
+
+		for (QString & data : list)
+		{
+			items.emplace_back(data);
+		}
+	}
+	if (! items.empty())
+	{
+		putListItems(items);
+
+		if (list->currentItem() == nullptr)
+			list->scrollToBottom();
+	}
 
 	this->data->setChanged(true);
 }
@@ -811,14 +847,21 @@ void tunersetsView::listItemDelete()
 	list->setDragEnabled(true);
 	list->setAcceptDrops(true);
 
+	setPendingUpdateListIndex();
+
+	updateFlags();
+	updateStatus();
+
 	this->data->setChanged(true);
 }
 
+//TODO improve
+//TODO duplicates
 void tunersetsView::putListItems(vector<QString> items)
 {
 	debug("putListItems()");
 
-	/*list->header()->setSectionsClickable(false);
+	list->header()->setSectionsClickable(false);
 	list->setDragEnabled(false);
 	list->setAcceptDrops(false);
 
@@ -829,9 +872,97 @@ void tunersetsView::putListItems(vector<QString> items)
 	i = current != nullptr ? parent->indexOfChild(current) : list->topLevelItemCount();
 	y = i + 1;
 
+	int tvid = this->state.yx;
+	string tnid = this->state.curr;
+
+	e2db::tunersets tvs = dbih->tuners[tvid];
+	e2db::tunersets_table tns = tvs.tables[tnid];
+
+	for (QString & q : items)
+	{
+		char ci[7];
+		std::sprintf(ci, "%06d", i++);
+		QString x = QString::fromStdString(ci);
+		QString idx = QString::fromStdString(to_string(i));
+
+		string trid;
+		e2db::tunersets_transponder txp;
+
+		if (q.contains(','))
+		{
+			auto data = q.split(',');
+			trid = txp.trid = data[0].toStdString();
+			txp.freq = data[1].toInt();
+
+			switch (this->state.yx)
+			{
+				case e2db::YTYPE::satellite:
+					txp.pol = dbih->value_transponder_polarization(data[2].toStdString());
+					txp.sr = data[3].toInt();
+					txp.fec = dbih->value_transponder_fec(data[4].toStdString(), e2db::YTYPE::satellite);
+					txp.sys = dbih->value_transponder_system(data[5].toStdString());
+					txp.mod = dbih->value_transponder_modulation(data[6].toStdString(), e2db::YTYPE::satellite);
+					txp.inv = dbih->value_transponder_inversion(data[7].toStdString(), e2db::YTYPE::satellite);
+					txp.rol = dbih->value_transponder_rollof(data[8].toStdString());
+					txp.pil = dbih->value_transponder_pilot(data[9].toStdString());
+				break;
+				case e2db::YTYPE::terrestrial:
+					txp.tmod = dbih->value_transponder_modulation(data[2].toStdString(), e2db::YTYPE::terrestrial);
+					txp.band = dbih->value_transponder_bandwidth(data[3].toStdString());
+					txp.sys = dbih->value_transponder_system(data[4].toStdString());
+					txp.tmx = dbih->value_transponder_tmx_mode(data[5].toStdString());
+					txp.hpfec = dbih->value_transponder_fec(data[6].toStdString(), e2db::YTYPE::terrestrial);
+					txp.lpfec = dbih->value_transponder_fec(data[7].toStdString(), e2db::YTYPE::terrestrial);
+					txp.inv = dbih->value_transponder_inversion(data[8].toStdString(), e2db::YTYPE::terrestrial);
+					txp.guard = dbih->value_transponder_guard(data[9].toStdString());
+					txp.hier = dbih->value_transponder_hier(data[10].toStdString());
+				break;
+				case e2db::YTYPE::cable:
+					txp.cmod = dbih->value_transponder_modulation(data[2].toStdString(), e2db::YTYPE::cable);
+					txp.sr = data[3].toInt();
+					txp.cfec = dbih->value_transponder_fec(data[4].toStdString(), e2db::YTYPE::cable);
+					txp.inv = dbih->value_transponder_inversion(data[5].toStdString(), e2db::YTYPE::cable);
+					txp.sys = dbih->value_transponder_system(data[6].toStdString());
+				break;
+				case e2db::YTYPE::atsc:
+					txp.amod = dbih->value_transponder_modulation(data[2].toStdString(), e2db::YTYPE::atsc);
+					txp.sys = dbih->value_transponder_system(data[3].toStdString());
+				break;
+			}
+		}
+		else
+		{
+			trid = q.toStdString();
+		}
+
+		QStringList entry;
+
+		if (tns.transponders.count(trid))
+		{
+			txp = tns.transponders[trid];
+		}
+		entry = dbih->entryTunersetsTransponder(txp, tns);
+		entry.prepend(x);
+
+		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
+		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
+		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
+		item->setData(ITEM_DATA_ROLE::trid, Qt::UserRole, QString::fromStdString(trid));
+		clist.append(item);
+
+		dbih->addTunersetsTransponder(txp, tns);
+	}
+
+	if (current == nullptr)
+		list->addTopLevelItems(clist);
+	else
+		list->insertTopLevelItems(y, clist);
+
 	list->header()->setSectionsClickable(true);
 	list->setDragEnabled(true);
-	list->setAcceptDrops(true);*/
+	list->setAcceptDrops(true);
+
+	setPendingUpdateListIndex();
 
 	updateFlags();
 	updateStatus();
@@ -892,7 +1023,11 @@ void tunersetsView::showListEditContextMenu(QPoint &pos)
 	QMenu* list_edit = new QMenu;
 	list_edit->addAction("Edit Transponder", [=]() { this->editTransponder(); });
 	list_edit->addSeparator();
-	list_edit->addAction("Delete", [=]() { this->listItemDelete(); });
+	list_edit->addAction("Cu&t", [=]() { this->listItemCut(); }, QKeySequence::Cut)->setEnabled(tabGetFlag(gui::TabListCut));
+	list_edit->addAction("&Copy", [=]() { this->listItemCopy(); }, QKeySequence::Copy)->setEnabled(tabGetFlag(gui::TabListCopy));
+	list_edit->addAction("&Paste", [=]() { this->listItemPaste(); }, QKeySequence::Paste)->setEnabled(tabGetFlag(gui::TabListPaste));
+	list_edit->addSeparator();
+	list_edit->addAction("&Delete", [=]() { this->listItemDelete(); }, QKeySequence::Delete)->setEnabled(tabGetFlag(gui::TabListDelete));
 
 	list_edit->exec(list->mapToGlobal(pos));
 }

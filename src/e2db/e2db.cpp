@@ -860,7 +860,6 @@ void e2db::edit_tunersets_table(string tnid, tunersets_table& tn, tunersets tv)
 	}
 }
 
-//TODO TEST
 void e2db::remove_tunersets_table(string tnid, tunersets tv)
 {
 	debug("remove_tunersets_table()", "tnid", tnid);
@@ -874,10 +873,18 @@ void e2db::remove_tunersets_table(string tnid, tunersets tv)
 	char yname = value_transponder_type(tn.ytype);
 	iname += yname;
 
+	vector<pair<int, string>>::iterator pos;
 	for (auto it = index[iname].begin(); it != index[iname].end(); it++)
 	{
 		if (it->second == tnid)
-			index[iname].erase(it);
+		{
+			pos = it;
+			break;
+		}
+	}
+	if (pos != index[iname].end())
+	{
+		index[iname].erase(pos);
 	}
 	if (tn.ytype == YTYPE::satellite)
 	{
@@ -938,17 +945,24 @@ string e2db::get_services_filename()
 	return this->services_filename;
 }
 
-//TODO TEST
 void e2db::remove_tunersets_transponder(string trid, tunersets_table tn)
 {
 	debug("remove_tunersets_transponder()", "trid", trid);
 
 	tuners[tn.ytype].tables[tn.tnid].transponders.erase(trid);
 
+	vector<pair<int, string>>::iterator pos;
 	for (auto it = index[tn.tnid].begin(); it != index[tn.tnid].end(); it++)
 	{
 		if (it->second == trid)
-			index[tn.tnid].erase(it);
+		{
+			pos = it;
+			break;
+		}
+	}
+	if (pos != index[tn.tnid].end())
+	{
+		index[tn.tnid].erase(pos);
 	}
 }
 

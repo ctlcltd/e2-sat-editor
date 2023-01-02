@@ -1416,7 +1416,7 @@ void mainView::listItemPaste()
 {
 	debug("listItemPaste()", "entered", ! (this->state.tc && this->state.ti != -1));
 
-	// side && bouquet: tv | radio
+	// services tree && bouquet: tv | radio
 	if (this->state.tc && this->state.ti != -1)
 		return;
 
@@ -1426,20 +1426,11 @@ void mainView::listItemPaste()
 
 	if (mimeData->hasText())
 	{
-		QStringList list = clipboard->text().split('\n');
+		QStringList list = clipboard->text().split("\n");
 
 		for (QString & data : list)
 		{
-			if (data.contains(','))
-			{
-				auto line = data.split(',');
-				// refid column [2] | chname column [1]
-				items.emplace_back(line[2] + ',' + line[1]);
-			}
-			else
-			{
-				items.emplace_back(data);
-			}
+			items.emplace_back(data);
 		}
 	}
 	if (! items.empty())
@@ -1475,7 +1466,7 @@ void mainView::listItemDelete()
 {
 	debug("listItemDelete()", "entered", ! (this->state.tc && this->state.ti != -1));
 
-	// side && bouquet: tv | radio
+	// services tree && bouquet: tv | radio
 	if (this->state.tc && this->state.ti != -1)
 		return;
 
@@ -1569,11 +1560,11 @@ void mainView::putListItems(vector<QString> items)
 
 		string refid;
 		string value;
+
 		if (q.contains(','))
 		{
-			// refid column [0] | chname column [1]
 			auto data = q.split(',');
-			refid = data[0].toStdString();
+			refid = data[2].toStdString();
 			value = data[1].replace("\"", "").toStdString();
 		}
 		else
