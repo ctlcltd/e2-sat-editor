@@ -27,21 +27,25 @@ class editMarker : public dialAbstract
 	Q_DECLARE_TR_FUNCTIONS(editMarker)
 
 	public:
-		editMarker(dataHandler* data, e2se::logger::session* log);
-		void display(QWidget* cwid);
-		void layout();
-		void store();
-		void retrieve();
-		void setEditId(string chid, string bname);
-		string getEditId();
-		void setAddId(string bname);
-		string getAddId();
-
 		struct __state
 		{
 			// edit { edit: true, add: false }
 			bool edit = false;
-		} state;
+		};
+
+		editMarker(dataHandler* data, e2se::logger::session* log);
+		void display(QWidget* cwid);
+		void setEditId(string chid, string bname);
+		string getEditId();
+		void setAddId(string bname);
+		string getAddId();
+	protected:
+		void layout();
+		void store();
+		void retrieve();
+
+		__state state;
+		__action action;
 	private:
 		string bname;
 		string chid;

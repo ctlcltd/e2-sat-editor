@@ -31,21 +31,27 @@ class dialAbstract : protected e2se::log_factory
 	Q_DECLARE_TR_FUNCTIONS(dialAbstract)
 
 	public:
+		struct __state
+		{
+		};
+
+		struct __action
+		{
+			QAction* save;
+		};
+
 		virtual ~dialAbstract() = default;
 		void display(QWidget* cwid);
+		void destroy();
+
+		QWidget* widget;
+	protected:
 		void layout();
 		virtual void toolbar();
 		virtual void store() = 0;
 		virtual void retrieve() = 0;
 		void save();
-		void destroy();
-		QWidget* widget;
 
-		struct __action
-		{
-			QAction* save;
-		} action;
-	protected:
 		QDialog* dial;
 		QToolBar* dtbar;
 		QGridLayout* dtform;
@@ -54,6 +60,9 @@ class dialAbstract : protected e2se::log_factory
 		dataHandler* data = nullptr;
 		e2db* dbih = nullptr;
 		vector<QWidget*> fields;
+
+		__state state;
+		__action action;
 };
 }
 #endif /* dialAbstract_h */

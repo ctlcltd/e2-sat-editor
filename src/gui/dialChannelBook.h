@@ -28,28 +28,31 @@ class dialChannelBook : public dialAbstract
 	Q_DECLARE_TR_FUNCTIONS(dialChannelBook)
 
 	public:
+		struct __action
+		{
+			QAction* add;
+		};
+
 		dialChannelBook(dataHandler* data, e2se::logger::session* log);
 		void display(QWidget* cwid);
+		void setEventCallback(std::function<void(vector<QString> items)> func)
+		{
+			this->eventCallback = func;
+		}
+	protected:
 		void layout();
 		void toolbar();
 		void store() {};
 		void retrieve() {};
 		void sender();
-		void setEventCallback(std::function<void(vector<QString> items)> func)
-		{
-			this->eventCallback = func;
-		}
-
-		struct __action
-		{
-			QAction* add;
-		} action;
-	protected:
 		void callEventCallback(vector<QString> items)
 		{
 			if (this->eventCallback != nullptr)
 				this->eventCallback(items);
 		}
+
+		__state state;
+		__action action;
 	private:
 		channelBookView* cbv = nullptr;
 		std::function<void(vector<QString> items)> eventCallback;

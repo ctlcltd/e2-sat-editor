@@ -69,7 +69,7 @@ class tab : protected e2se::log_factory
 		void viewChannelBook(tab* parent);
 		void load();
 		void reset();
-		void layout();
+		void actionCall(int action);
 		void newFile();
 		void openFile();
 		bool readFile(string filename = "");
@@ -78,36 +78,30 @@ class tab : protected e2se::log_factory
 		void exportFile();
 		void exportFile(QTreeWidgetItem* item);
 		void printFile(bool all);
+		void updateIndex();
+
+		QWidget* widget;
+		dataHandler* data = nullptr;
+		ftpHandler* ftph = nullptr;
+		e2se_gui::tools* tools = nullptr;
+	protected:
+		void layout();
 		void toolsInspector();
 		void toolsImportFromFile(TOOLS_FILE ftype, e2db::FCONVS fci);
 		void toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco);
-		void actionCall(int action);
-		void updateBouquetsIndex();
-		void updateChannelsIndex();
-		void setPendingUpdateChannelsIndex();
-		void unsetPendingUpdateChannelsIndex();
 		void profileComboChanged(int index);
 		bool ftpHandle();
 		void ftpConnect();
 		void ftpUpload();
 		void ftpDownload();
 		void loadSeeds();
-		QWidget* widget;
-		dataHandler* data = nullptr;
-		ftpHandler* ftph = nullptr;
-		e2se_gui::tools* tools = nullptr;
-	protected:
+
 		QGridLayout* root;
 		// tab view
 		gui::TAB_VIEW ttv;
+		viewAbstract* view;
 		// stored gui bit flags
 		bitset<256> gxe;
-		// tunersets current type
-		int ty;
-		// pending update channels index
-		bool chx_pending;
-		mainView* main;
-		viewAbstract* view;
 	private:
 		gui* gid;
 		QWidget* cwid;

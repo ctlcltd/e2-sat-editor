@@ -25,7 +25,6 @@ ftpcom::ftpcom(e2se::logger::session* log)
 	debug("ftpcom()");
 
 	this->sets = new QSettings;
-	options();
 
 	int profile_sel = sets->value("profile/selected").toInt();
 	sets->beginReadArray("profile");
@@ -44,11 +43,6 @@ ftpcom::ftpcom(e2se::logger::session* log)
 	sets->endArray();
 
 	this->setup(params);
-}
-
-void ftpcom::options()
-{
-	debug("options()");
 }
 
 void ftpcom::error(string tmsg, string rmsg)

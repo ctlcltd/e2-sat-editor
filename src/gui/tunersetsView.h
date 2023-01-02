@@ -12,15 +12,11 @@
 #ifndef tunersetsView_h
 #define tunersetsView_h
 #include <QWidget>
-#include <QVBoxLayout>
 #include <QTreeWidget>
 #include <QAction>
-#include <QLabel>
 #include <QPushButton>
-#include <QLineEdit>
-#include <QComboBox>
-#include <QElapsedTimer>
 
+#include "toolkit/ListEventObserver.h"
 #include "viewAbstract.h"
 
 namespace e2se_gui
@@ -28,6 +24,25 @@ namespace e2se_gui
 class tunersetsView : public viewAbstract
 {
 	public:
+		struct __state
+		{
+			// tunersets tvid type
+			int yx;
+			// current tnid
+			string curr;
+			// list sort (default sort 0|asc)
+			pair<int, Qt::SortOrder> sort;
+			// pending update list index
+			bool tvx_pending;
+		};
+
+		struct __action
+		{
+			QAction* list_newtr;
+			QPushButton* tree_search;
+			QPushButton* list_search;
+		};
+
 		enum TREE_ROW_ROLE {
 			tnid,
 			trow1,
@@ -86,23 +101,6 @@ class tunersetsView : public viewAbstract
 			a_sys = ITEM_ROW_ROLE::row5
 		};
 
-		struct __state
-		{
-			// tunersets tvid type
-			int yx;
-			// current tnid
-			string curr;
-			// list sort (default sort 0|asc)
-			pair<int, Qt::SortOrder> sort;
-		} state;
-
-		struct __action
-		{
-			QAction* list_newtr;
-			QPushButton* tree_search;
-			QPushButton* list_search;
-		} action;
-
 		tunersetsView(tab* twid, QWidget* cwid, dataHandler* data, int ytype, e2se::logger::session* log);
 		void load();
 		void reset();
@@ -110,12 +108,18 @@ class tunersetsView : public viewAbstract
 		void listItemCopy(bool cut = false);
 		void listItemPaste();
 		void listItemDelete();
+		void updateIndex();
+
+		__state currentState() { return this->state; };
 	protected:
 		void layout();
 		void searchLayout();
 		void populate();
-		void treeItemChanged();
+		void treeItemChanged(QTreeWidgetItem* current);
+		void listItemChanged();
+		void listItemSelectionChanged();
 		void listItemDoubleClicked();
+		void listPendingUpdate();
 		void addSettings();
 		void editSettings();
 		void addPosition();
@@ -127,6 +131,16 @@ class tunersetsView : public viewAbstract
 		void showListEditContextMenu(QPoint &pos);
 		void updateFlags();
 		void updateStatus(bool current = false);
+		void updateTreeIndex();
+		void updateListIndex();
+		void setPendingUpdateListIndex();
+		void unsetPendingUpdateListIndex();
+
+		ListEventObserver* tree_evto;
+		ListEventObserver* list_evto;
+
+		__state state;
+		__action action;
 	private:
 		QWidget* cwid;
 };

@@ -202,14 +202,13 @@ void tab::viewMain()
 	this->data = new dataHandler(this->log->log);
 	this->ftph = new ftpHandler(this->log->log);
 	this->tools = new e2se_gui::tools(this, this->gid, this->cwid, this->data, this->log->log);
-	this->main = new mainView(this, this->cwid, this->data, this->log->log);
-	this->view = this->main;
+	this->view = new mainView(this, this->cwid, this->data, this->log->log);
 
 	this->ttv = gui::TAB_VIEW::main;
 
 	layout();
 	
-	this->root->addWidget(main->widget, 0, 0, 1, 1);
+	this->root->addWidget(view->widget, 0, 0, 1, 1);
 
 	newFile();
 }
@@ -226,11 +225,9 @@ void tab::viewTunersets(tab* parent, int ytype)
 	this->data = parent->data;
 	this->ftph = parent->ftph;
 	this->tools = parent->tools;
-	this->main = parent->main;
 	this->view = new tunersetsView(this, this->cwid, this->data, ytype, this->log->log);
 
 	this->ttv = gui::TAB_VIEW::tunersets;
-	this->ty = ytype;
 
 	layout();
 	
@@ -251,7 +248,6 @@ void tab::viewChannelBook(tab* parent)
 	this->data = parent->data;
 	this->ftph = parent->ftph;
 	this->tools = parent->tools;
-	this->main = parent->main;
 	this->view = new channelBookView(this, this->cwid, this->data, this->log->log);
 
 	this->ttv = gui::TAB_VIEW::channelBook;
@@ -441,8 +437,7 @@ void tab::saveFile(bool saveas)
 
 	if (this->data->hasChanged())
 	{
-		this->updateChannelsIndex();
-		this->updateBouquetsIndex();
+		updateIndex();
 	}
 	if (saveas || this->data->isNewfile())
 	{
@@ -509,6 +504,7 @@ void tab::importFile()
 	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	dbih->importFile(paths);
 	QGuiApplication::restoreOverrideCursor();
+
 	view->reset();
 	view->load();
 
@@ -521,17 +517,21 @@ void tab::exportFile()
 
 	auto* dbih = this->data->dbih;
 
+	gui::TAB_VIEW current = getTabView();
 	gui::GUI_DPORTS gde = gui::GUI_DPORTS::AllFiles;
 	vector<string> paths;
 	string filename;
 	int flags = -1;
 
-	// tunersets
-	if (this->ttv == gui::TAB_VIEW::tunersets)
+	// tunersets view
+	if (current == gui::TAB_VIEW::tunersets)
 	{
+		tunersetsView* view = reinterpret_cast<tunersetsView*>(this->view);
+		auto state = view->currentState();
+
 		gde = gui::GUI_DPORTS::Tunersets;
 		flags = e2db::FPORTS::single_tunersets;
-		switch (this->ty)
+		switch (state.yx)
 		{
 			case e2db::YTYPE::satellite:
 				filename = "satellites.xml";
@@ -549,55 +549,62 @@ void tab::exportFile()
 
 		paths.push_back(filename);
 	}
-	// services
-	else if (main->state.tc == 0)
+	// main view
+	else if (current == gui::TAB_VIEW::main)
 	{
-		gde = gui::GUI_DPORTS::Services;
-		flags = e2db::FPORTS::all_services;
-		filename = "lamedb";
+		mainView* view = reinterpret_cast<mainView*>(this->view);
+		auto state = view->currentState();
 
-		paths.push_back(filename);
-	}
-	// bouquets
-	else if (main->state.tc == 1)
-	{
-		int ti = -1;
-		QList<QTreeWidgetItem*> selected = main->tree->selectedItems();
-
-		if (selected.empty())
+		// services
+		if (state.tc == 0)
 		{
-			return;
-		}
-		for (auto & item : selected)
-		{
-			ti = main->tree->indexOfTopLevelItem(item);
-			QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
-			QString qchlist = tdata["id"].toString();
-			string filename = qchlist.toStdString();
+			gde = gui::GUI_DPORTS::Services;
+			flags = e2db::FPORTS::all_services;
+			filename = "lamedb";
 
 			paths.push_back(filename);
 		}
-		if (paths.size() == 1)
+		// bouquets
+		else if (state.tc == 1)
 		{
-			filename = paths[0];
-		}
-		// bouquet | userbouquets
-		if (ti != -1)
-		{
-			gde = gui::GUI_DPORTS::Bouquets;
-			flags = e2db::FPORTS::single_bouquet_all;
+			int ti = -1;
+			QList<QTreeWidgetItem*> selected = view->tree->selectedItems();
 
-			if (dbih->bouquets.count(filename))
+			if (selected.empty())
 			{
-				for (string & fname : dbih->bouquets[filename].userbouquets)
-					paths.push_back(fname);
+				return;
 			}
-		}
-		// userbouquet
-		else
-		{
-			gde = gui::GUI_DPORTS::Userbouquets;
-			flags = e2db::FPORTS::single_userbouquet;
+			for (auto & item : selected)
+			{
+				ti = view->tree->indexOfTopLevelItem(item);
+				QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
+				QString qchlist = tdata["id"].toString();
+				string filename = qchlist.toStdString();
+
+				paths.push_back(filename);
+			}
+			if (paths.size() == 1)
+			{
+				filename = paths[0];
+			}
+			// bouquet | userbouquets
+			if (ti != -1)
+			{
+				gde = gui::GUI_DPORTS::Bouquets;
+				flags = e2db::FPORTS::single_bouquet_all;
+
+				if (dbih->bouquets.count(filename))
+				{
+					for (string & fname : dbih->bouquets[filename].userbouquets)
+						paths.push_back(fname);
+				}
+			}
+			// userbouquet
+			else
+			{
+				gde = gui::GUI_DPORTS::Userbouquets;
+				flags = e2db::FPORTS::single_userbouquet;
+			}
 		}
 	}
 
@@ -608,8 +615,7 @@ void tab::exportFile()
 
 	if (this->data->hasChanged())
 	{
-		this->updateChannelsIndex();
-		this->updateBouquetsIndex();
+		updateIndex();
 	}
 
 	string path = gid->exportFileDialog(gde, filename, flags);
@@ -675,50 +681,58 @@ void tab::exportFile(QTreeWidgetItem* item)
 
 	auto* dbih = this->data->dbih;
 
+	gui::TAB_VIEW current = getTabView();
 	gui::GUI_DPORTS gde;
 	vector<string> paths;
 	string filename;
 	int bit = -1;
 
-	if (item == nullptr)
+	if (item == NULL)
 	{
 		return;
 	}
-	// services
-	else if (main->state.tc == 0)
+	// main view
+	if (current == gui::TAB_VIEW::main)
 	{
-		gde = gui::GUI_DPORTS::Services;
-		filename = "lamedb";
+		mainView* view = reinterpret_cast<mainView*>(this->view);
+		auto state = view->currentState();
 
-		paths.push_back(filename);
-	}
-	// bouquets
-	else if (main->state.tc == 1)
-	{
-		int ti = main->tree->indexOfTopLevelItem(item);
-		QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
-		QString qchlist = tdata["id"].toString();
-		filename = qchlist.toStdString();
-
-		paths.push_back(filename);
-
-		// bouquet | userbouquets
-		if (ti != -1)
+		// services
+		if (state.tc == 0)
 		{
-			gde = gui::GUI_DPORTS::Bouquets;
-			bit = e2db::FPORTS::single_bouquet_all;
+			gde = gui::GUI_DPORTS::Services;
+			filename = "lamedb";
 
-			if (dbih->bouquets.count(filename))
-			{
-				for (string & fname : dbih->bouquets[filename].userbouquets)
-					paths.push_back(fname);
-			}
+			paths.push_back(filename);
 		}
-		// userbouquet
-		else
+		// bouquets
+		else if (state.tc == 1)
 		{
-			gde = gui::GUI_DPORTS::Userbouquets;
-			bit = e2db::FPORTS::single_userbouquet;
+			int ti = view->tree->indexOfTopLevelItem(item);
+			QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
+			QString qchlist = tdata["id"].toString();
+			filename = qchlist.toStdString();
+
+			paths.push_back(filename);
+
+			// bouquet | userbouquets
+			if (ti != -1)
+			{
+				gde = gui::GUI_DPORTS::Bouquets;
+				bit = e2db::FPORTS::single_bouquet_all;
+
+				if (dbih->bouquets.count(filename))
+				{
+					for (string & fname : dbih->bouquets[filename].userbouquets)
+						paths.push_back(fname);
+				}
+			}
+			// userbouquet
+			else
+			{
+				gde = gui::GUI_DPORTS::Userbouquets;
+				bit = e2db::FPORTS::single_userbouquet;
+			}
 		}
 	}
 
@@ -729,8 +743,7 @@ void tab::exportFile(QTreeWidgetItem* item)
 
 	if (this->data->hasChanged())
 	{
-		this->updateChannelsIndex();
-		this->updateBouquetsIndex();
+		updateIndex();
 	}
 
 	string path = gid->exportFileDialog(gde, filename, bit);
@@ -779,6 +792,7 @@ void tab::printFile(bool all)
 {
 	debug("printFile()");
 
+	gui::TAB_VIEW current = getTabView();
 	printable* printer = new printable(this->data, this->log->log);
 
 	// print all
@@ -786,60 +800,70 @@ void tab::printFile(bool all)
 	{
 		printer->documentAll();
 	}
-	// tunersets
-	else if (this->ttv == gui::TAB_VIEW::tunersets)
+	// tunersets view
+	else if (current == gui::TAB_VIEW::tunersets)
 	{
-		printer->documentTunersets(this->ty);
-	}
-	// services
-	else if (main->state.tc == 0)
-	{
-		int ti = main->side->indexOfTopLevelItem(main->side->currentItem());
-		int stype;
-		switch (ti)
-		{
-			// TV
-			case 1:
-				stype = e2db::STYPE::tv;
-			break;
-			// Radio
-			case 2:
-				stype = e2db::STYPE::radio;
-			break;
-			// Data
-			case 3:
-				stype = e2db::STYPE::data;
-			break;
-			// All Services
-			default:
-				stype = -1;
-		}
-		printer->documentServices(stype);
-	}
-	// bouquets
-	else if (main->state.tc == 1)
-	{
-		int ti = -1;
-		QList<QTreeWidgetItem*> selected = main->tree->selectedItems();
+		tunersetsView* view = reinterpret_cast<tunersetsView*>(this->view);
+		auto state = view->currentState();
 
-		if (selected.empty())
-		{
-			printer->destroy();
-			return;
-		}
-		for (auto & item : selected)
-		{
-			ti = main->tree->indexOfTopLevelItem(item);
-			QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
-			QString qchlist = tdata["id"].toString();
-			string bname = qchlist.toStdString();
+		printer->documentTunersets(state.yx);
+	}
+	// main view
+	else if (current == gui::TAB_VIEW::main)
+	{
+		mainView* view = reinterpret_cast<mainView*>(this->view);
+		auto state = view->currentState();
 
-			// bouquet | userbouquets
-			if (ti != -1)
-				printer->documentBouquet(bname);
-			// userbouquet
-			else
-				printer->documentUserbouquet(bname);
+		// services
+		if (state.tc == 0)
+		{
+			int ti = view->side->indexOfTopLevelItem(view->side->currentItem());
+			int stype;
+			switch (ti)
+			{
+				// TV
+				case 1:
+					stype = e2db::STYPE::tv;
+				break;
+				// Radio
+				case 2:
+					stype = e2db::STYPE::radio;
+				break;
+				// Data
+				case 3:
+					stype = e2db::STYPE::data;
+				break;
+				// All Services
+				default:
+					stype = -1;
+			}
+			printer->documentServices(stype);
+		}
+		// bouquets
+		else if (state.tc == 1)
+		{
+			int ti = -1;
+			QList<QTreeWidgetItem*> selected = view->tree->selectedItems();
+
+			if (selected.empty())
+			{
+				printer->destroy();
+				return;
+			}
+			for (auto & item : selected)
+			{
+				ti = view->tree->indexOfTopLevelItem(item);
+				QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
+				QString qchlist = tdata["id"].toString();
+				string bname = qchlist.toStdString();
+
+				// bouquet | userbouquets
+				if (ti != -1)
+					printer->documentBouquet(bname);
+				// userbouquet
+				else
+					printer->documentUserbouquet(bname);
+			}
 		}
 	}
 
@@ -871,16 +895,20 @@ void tab::toolsImportFromFile(TOOLS_FILE ftype, e2db::FCONVS fci)
 
 void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 {
+	gui::TAB_VIEW current = getTabView();
 	e2db::fcopts opts;
 	opts.fc = fco;
 	string filename;
 
 	if (fco == e2db::FCONVS::convert_current)
 	{
-		// tunersets
-		if (this->ttv == gui::TAB_VIEW::tunersets)
+		// tunersets view
+		if (current == gui::TAB_VIEW::tunersets)
 		{
-			switch (this->ty)
+			tunersetsView* view = reinterpret_cast<tunersetsView*>(this->view);
+			auto state = view->currentState();
+
+			switch (state.yx)
 			{
 				case e2db::YTYPE::satellite:
 					filename = "satellites";
@@ -895,70 +923,77 @@ void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 					filename = "atsc";
 				break;
 			}
-			opts.ytype = this->ty;
+			opts.ytype = state.yx;
 			fco = e2db::FCONVS::convert_tunersets;
 		}
-		// services
-		else if (main->state.tc == 0)
+		// main view
+		else if (current == gui::TAB_VIEW::main)
 		{
-			int ti = main->side->indexOfTopLevelItem(main->side->currentItem());
-			int stype;
-			switch (ti)
-			{
-				// TV
-				case 1:
-					stype = e2db::STYPE::tv;
-					filename = "services-tv";
-				break;
-				// Radio
-				case 2:
-					stype = e2db::STYPE::radio;
-					filename = "services-radio";
-				break;
-				// Data
-				case 3:
-					stype = e2db::STYPE::data;
-					filename = "services-data";
-				break;
-				// All Services
-				default:
-					stype = -1;
-					filename = "services";
-			}
-			opts.stype = stype;
-			fco = e2db::FCONVS::convert_services;
-		}
-		// bouquets
-		else if (main->state.tc == 1)
-		{
-			int ti = -1;
-			QList<QTreeWidgetItem*> selected = main->tree->selectedItems();
+			mainView* view = reinterpret_cast<mainView*>(this->view);
+			auto state = view->currentState();
 
-			if (selected.empty())
+			// services
+			if (state.tc == 0)
 			{
-				return;
-			}
-			for (auto & item : selected)
-			{
-				ti = main->tree->indexOfTopLevelItem(item);
-				QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
-				QString qchlist = tdata["id"].toString();
-				string bname = qchlist.toStdString();
-
-				// bouquet | userbouquets
-				if (ti != -1)
+				int ti = view->side->indexOfTopLevelItem(view->side->currentItem());
+				int stype;
+				switch (ti)
 				{
-					opts.bname = bname;
-					fco = e2db::FCONVS::convert_bouquets;
+					// TV
+					case 1:
+						stype = e2db::STYPE::tv;
+						filename = "services-tv";
+					break;
+					// Radio
+					case 2:
+						stype = e2db::STYPE::radio;
+						filename = "services-radio";
+					break;
+					// Data
+					case 3:
+						stype = e2db::STYPE::data;
+						filename = "services-data";
+					break;
+					// All Services
+					default:
+						stype = -1;
+						filename = "services";
 				}
-				// userbouquet
-				else
-				{
-					opts.bname = bname;
-					fco = e2db::FCONVS::convert_userbouquets;
-				}
+				opts.stype = stype;
+				fco = e2db::FCONVS::convert_services;
+			}
+			// bouquets
+			else if (state.tc == 1)
+			{
+				int ti = -1;
+				QList<QTreeWidgetItem*> selected = view->tree->selectedItems();
 
-				filename = bname;
+				if (selected.empty())
+				{
+					return;
+				}
+				for (auto & item : selected)
+				{
+					ti = view->tree->indexOfTopLevelItem(item);
+					QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
+					QString qchlist = tdata["id"].toString();
+					string bname = qchlist.toStdString();
+
+					// bouquet | userbouquets
+					if (ti != -1)
+					{
+						opts.bname = bname;
+						fco = e2db::FCONVS::convert_bouquets;
+					}
+					// userbouquet
+					else
+					{
+						opts.bname = bname;
+						fco = e2db::FCONVS::convert_userbouquets;
+					}
+
+					filename = bname;
+				}
 			}
 		}
 		opts.filename = filename;
@@ -1229,108 +1264,25 @@ void tab::ftpDownload()
 		files.emplace(file.filename, file);
 	}
 
-	this->updateChannelsIndex();
-	this->updateBouquetsIndex();
+	updateIndex();
+
 	dbih->merge(files);
+
 	view->reset();
 	view->load();
 
 	this->data->setChanged(true);
 }
 
-void tab::updateBouquetsIndex()
+void tab::updateIndex()
 {
-	debug("updateBouquetsIndex()");
+	debug("updateIndex()");
 
-	auto* dbih = this->data->dbih;
-
-	int i = 0, y;
-	int count = main->tree->topLevelItemCount();
-	vector<pair<int, string>> bss;
-	vector<pair<int, string>> ubs;
-	unordered_map<string, vector<string>> index;
-
-	while (i != count)
+	if (this->child)
 	{
-		QTreeWidgetItem* parent = main->tree->topLevelItem(i);
-		QVariantMap tdata = parent->data(0, Qt::UserRole).toMap();
-		string pname = tdata["id"].toString().toStdString();
-		bss.emplace_back(pair (i, pname)); //C++17
-		y = 0;
-
-		if (parent->childCount())
-		{
-			int childs = parent->childCount();
-			while (y != childs)
-			{
-				QTreeWidgetItem* item = parent->child(y);
-				QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
-				string bname = tdata["id"].toString().toStdString();
-				ubs.emplace_back(pair (i, bname)); //C++17
-				index[pname].emplace_back(bname);
-				y++;
-			}
-		}
-		i++;
+		parent->updateIndex();
 	}
-	if (bss != dbih->index["bss"])
-	{
-		dbih->index["bss"].swap(bss);
-	}
-	if (ubs != dbih->index["ubs"])
-	{
-		dbih->index["ubs"].swap(ubs);
-
-		for (auto & x : dbih->bouquets)
-			x.second.userbouquets.swap(index[x.first]);
-	}
-}
-
-void tab::updateChannelsIndex()
-{
-	if (! this->chx_pending)
-		return;
-
-	auto* dbih = this->data->dbih;
-
-	int i = 0, idx = 0;
-	int count = main->list->topLevelItemCount();
-	string bname = main->state.curr;
-	dbih->index[bname].clear();
-
-	debug("updateChannelsIndex()", "current", bname);
-
-	int sort_col = main->list->sortColumn();
-	main->list->sortItems(0, Qt::AscendingOrder);
-
-	while (i != count)
-	{
-		QTreeWidgetItem* item = main->list->topLevelItem(i);
-		string chid = item->data(mainView::ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
-		bool marker = item->data(mainView::ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
-		idx = marker ? 0 : i + 1;
-		dbih->index[bname].emplace_back(pair (idx, chid)); //C++17
-		i++;
-	}
-
-	main->list->sortItems(main->state.sort.first, main->state.sort.second);
-	main->list->header()->setSortIndicator(sort_col, main->state.sort.second);
-
-	this->chx_pending = false;
-}
-
-void tab::setPendingUpdateChannelsIndex()
-{
-	debug("setPendingUpdateChannelsIndex()");
-
-	this->chx_pending = true;
-}
-
-void tab::unsetPendingUpdateChannelsIndex()
-{
-	debug("unsetPendingUpdateChannelsIndex()");
-
-	this->chx_pending = false;
+	view->updateIndex();
 }
 
 void tab::loadSeeds()

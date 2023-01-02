@@ -25,6 +25,7 @@ using std::vector, std::map;
 #include <QTabWidget>
 #include <QListWidget>
 #include <QTableWidget>
+#include <QPushButton>
 
 #include "toolkit/WidgetWithBackdrop.h"
 
@@ -37,6 +38,22 @@ class settings : protected e2se::log_factory
 	Q_DECLARE_TR_FUNCTIONS(settings)
 
 	public:
+		struct __state
+		{
+			// previous tab index
+			int prev;
+			// profile retrieving
+			bool retr;
+			// profile deleting
+			bool dele;
+		};
+
+		struct __action
+		{
+			QPushButton* dtsave;
+			QPushButton* dtcancel;
+		};
+
 		enum PREF_SECTIONS {
 			Connections,
 			Preferences,
@@ -46,6 +63,9 @@ class settings : protected e2se::log_factory
 		settings(QWidget* cwid, e2se::logger::session* log);
 		~settings() {};
 		void display(QWidget* cwid);
+
+		QSettings* sets;
+	protected:
 		void layout(QWidget* cwid);
 		void preferencesLayout();
 		void connectionsLayout();
@@ -63,18 +83,7 @@ class settings : protected e2se::log_factory
 		void retrieve(QListWidgetItem* item);
 		void retrieve(QTableWidget* adtbl);
 		void save();
-		QSettings* sets;
 
-		struct __state
-		{
-			// previous tab index
-			int prev;
-			// profile retrieving
-			bool retr;
-			// profile deleting
-			bool dele;
-		} state;
-	protected:
 		QTabWidget* dtwid;
 		QDialog* dial;
 		WidgetWithBackdrop* rppage;
@@ -83,6 +92,9 @@ class settings : protected e2se::log_factory
 		QTableWidget* adtbl;
 		map<int, map<QString, QVariant>> tmpps; //Qt5
 		map<int, vector<QWidget*>> prefs;
+
+		__state state;
+		__action action;
 };
 }
 #endif /* settings_h */

@@ -17,7 +17,6 @@
 #include <QGroupBox>
 #include <QFormLayout>
 #include <QToolBar>
-#include <QPushButton>
 #include <QLabel>
 #include <QLineEdit>
 #include <QButtonGroup>
@@ -74,14 +73,14 @@ void settings::layout(QWidget* cwid)
 	this->dtwid = new QTabWidget;
 	dtwid->connect(dtwid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
 
-	QPushButton* dtsave = new QPushButton;
-	dtsave->setDefault(true);
-	dtsave->setText(tr("Save Settings"));
-	dtsave->connect(dtsave, &QPushButton::pressed, [=]() { this->save(); });
-	QPushButton* dtcancel = new QPushButton;
-	dtcancel->setDefault(false);
-	dtcancel->setText(tr("Cancel"));
-	dtcancel->connect(dtcancel, &QPushButton::pressed, [=]() { dial->close(); });
+	this->action.dtsave = new QPushButton;
+	this->action.dtsave->setDefault(true);
+	this->action.dtsave->setText(tr("Save Settings"));
+	this->action.dtsave->connect(this->action.dtsave, &QPushButton::pressed, [=]() { this->save(); });
+	this->action.dtcancel = new QPushButton;
+	this->action.dtcancel->setDefault(false);
+	this->action.dtcancel->setText(tr("Cancel"));
+	this->action.dtcancel->connect(this->action.dtcancel, &QPushButton::pressed, [=]() { dial->close(); });
 
 	connectionsLayout();
 	preferencesLayout();
@@ -92,8 +91,8 @@ void settings::layout(QWidget* cwid)
 	dhbox->setAlignment(Qt::AlignRight);
 
 	dvbox->addWidget(dtwid);
-	dhbox->addWidget(dtcancel);
-	dhbox->addWidget(dtsave);
+	dhbox->addWidget(this->action.dtcancel);
+	dhbox->addWidget(this->action.dtsave);
 	dvbox->addLayout(dhbox);
 
 	dfrm->addLayout(dvbox, 0, 0);

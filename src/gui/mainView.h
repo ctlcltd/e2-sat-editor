@@ -17,9 +17,11 @@ using std::map, std::unordered_map;
 
 #ifndef mainView_h
 #define mainView_h
-#include <Qt>
-#include <QGridLayout>
-#include <QHeaderView>
+#include <QWidget>
+#include <QTreeWidget>
+#include <QAction>
+#include <QLabel>
+#include <QPushButton>
 #include <QList>
 
 #include "toolkit/TreeEventHandler.h"
@@ -32,6 +34,39 @@ namespace e2se_gui
 class mainView : public viewAbstract
 {
 	public:
+		struct __state
+		{
+			// list drag-and-drop toggle
+			bool dnd;
+			// list visual refresh pending
+			bool vlx_pending;
+			// reference box shown
+			bool refbox;
+			// current tree { side = 0, tree = 1 }
+			int tc;
+			// tree current top level index
+			int ti;
+			// current bname
+			string curr;
+			// list sort (default sort 0|asc)
+			pair<int, Qt::SortOrder> sort;
+			// pending update list index
+			bool chx_pending;
+		};
+
+		struct __action
+		{
+			QAction* bouquets_newbs;
+			QAction* list_addch;
+			QAction* list_addmk;
+			QAction* list_newch;
+			QAction* tools_close_edit;
+			QPushButton* tree_search;
+			QPushButton* list_search;
+			QPushButton* list_ref;
+			QPushButton* list_dnd;
+		};
+
 		enum ITEM_DATA_ROLE {
 			idx,
 			marker,
@@ -66,37 +101,6 @@ class mainView : public viewAbstract
 			Tuner
 		};
 
-		struct __state
-		{
-			// list drag-and-drop toggle
-			bool dnd;
-			// list visual refresh pending
-			bool vlx_pending;
-			// reference box shown
-			bool refbox;
-			// current tree { side = 0, tree = 1 }
-			int tc;
-			// tree current top level index
-			int ti;
-			// current bname
-			string curr;
-			// list sort (default sort 0|asc)
-			pair<int, Qt::SortOrder> sort;
-		} state;
-
-		struct __action
-		{
-			QAction* bouquets_newbs;
-			QAction* list_addch;
-			QAction* list_addmk;
-			QAction* list_newch;
-			QAction* tools_close_edit;
-			QPushButton* tree_search;
-			QPushButton* list_search;
-			QPushButton* list_ref;
-			QPushButton* list_dnd;
-		} action;
-
 		mainView(tab* tid, QWidget* cwid, dataHandler* data, e2se::logger::session* log);
 		void load();
 		void reset();
@@ -105,8 +109,11 @@ class mainView : public viewAbstract
 		void listItemCopy(bool cut = false);
 		void listItemPaste();
 		void listItemDelete();
+		void updateIndex();
 
 		QTreeWidget* side;
+
+		__state currentState() { return this->state; };
 	protected:
 		void layout();
 		void searchLayout();
@@ -137,10 +144,10 @@ class mainView : public viewAbstract
 		void updateFlags();
 		void updateStatus(bool current = false);
 		void updateReferenceBox();
-		void tabUpdateBouquetsIndex();
-		void tabUpdateChannelsIndex();
-		void tabSetPendingUpdateChannelsIndex();
-		void tabUnsetPendingUpdateChannelsIndex();
+		void updateTreeIndex();
+		void updateListIndex();
+		void setPendingUpdateListIndex();
+		void unsetPendingUpdateListIndex();
 
 		map<int, QLabel*> ref_fields;
 		unordered_map<string, QList<QTreeWidgetItem*>> cache;
@@ -150,6 +157,9 @@ class mainView : public viewAbstract
 		ListEventObserver* list_evto;
 		QWidget* list_reference;
 		string filename;
+
+		__state state;
+		__action action;
 	private:
 		QWidget* cwid;
 };

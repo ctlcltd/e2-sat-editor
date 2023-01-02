@@ -19,7 +19,6 @@ using std::string, std::pair, std::vector;
 #define viewAbstract_h
 #include <QSettings>
 #include <QWidget>
-#include <QVBoxLayout>
 #include <QTreeWidget>
 #include <QAction>
 #include <QLabel>
@@ -48,12 +47,15 @@ class viewAbstract : protected e2se::log_factory
 			all
 		};
 
+		struct __state {
+		};
+
 		struct __action
 		{
 			QAction* list_newtr;
 			QPushButton* tree_search;
 			QPushButton* list_search;
-		} action;
+		};
 
 		virtual ~viewAbstract() = default;
 		virtual void load() = 0;
@@ -90,6 +92,7 @@ class viewAbstract : protected e2se::log_factory
 			// suppress lot of annoying warning
 			if (current) return;
 		};
+		virtual void updateIndex() {};
 
 		QWidget* widget;
 		QTreeWidget* list;
@@ -147,6 +150,9 @@ class viewAbstract : protected e2se::log_factory
 		search tsr_search;
 		search lsr_search;
 		find lsr_find;
+
+		__state state;
+		__action action;
 };
 }
 #endif /* viewAbstract_h */

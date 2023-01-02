@@ -430,7 +430,7 @@ void mainView::reset()
 {
 	debug("reset()");
 
-	tabUnsetPendingUpdateChannelsIndex();
+	unsetPendingUpdateListIndex();
 
 	this->state.dnd = true;
 	this->state.vlx_pending = false;
@@ -658,7 +658,7 @@ void mainView::servicesItemChanged(QTreeWidgetItem* current)
 		list->scrollToTop();
 	}
 
-	tabUpdateChannelsIndex();
+	updateListIndex();
 
 	populate(side);
 
@@ -715,7 +715,7 @@ void mainView::treeItemChanged(QTreeWidgetItem* current)
 		list->scrollToTop();
 	}
 
-	tabUpdateChannelsIndex();
+	updateListIndex();
 
 	populate(tree);
 
@@ -816,7 +816,7 @@ void mainView::listPendingUpdate()
 		this->state.vlx_pending = true;
 	}
 
-	tabSetPendingUpdateChannelsIndex();
+	setPendingUpdateListIndex();
 
 	this->data->setChanged(true);
 }
@@ -981,7 +981,7 @@ void mainView::addUserbouquet()
 	tree->setDragEnabled(true);
 	tree->setAcceptDrops(true);
 
-	tabUpdateBouquetsIndex();
+	updateTreeIndex();
 
 	this->data->setChanged(true);
 }
@@ -1019,7 +1019,7 @@ void mainView::editUserbouquet()
 		name = QString::fromStdString(uboq.name);
 	item->setText(0, name);
 
-	tabUpdateBouquetsIndex();
+	updateTreeIndex();
 
 	this->data->setChanged(true);
 }
@@ -1103,7 +1103,7 @@ void mainView::addService()
 	else
 		this->state.vlx_pending = true;
 
-	tabSetPendingUpdateChannelsIndex();
+	setPendingUpdateListIndex();
 
 	updateFlags();
 	updateStatus();
@@ -1228,7 +1228,7 @@ void mainView::addMarker()
 	else
 		this->state.vlx_pending = true;
 
-	tabSetPendingUpdateChannelsIndex();
+	setPendingUpdateListIndex();
 
 	updateFlags();
 	updateStatus();
@@ -1309,8 +1309,8 @@ void mainView::treeItemDelete()
 		parent->removeChild(item);
 	}
 
-	tabSetPendingUpdateChannelsIndex();
-	tabUpdateBouquetsIndex();
+	setPendingUpdateListIndex();
+	updateTreeIndex();
 
 	updateStatus();
 
@@ -1532,7 +1532,7 @@ void mainView::listItemDelete()
 	else
 		this->state.vlx_pending = true;
 
-	tabSetPendingUpdateChannelsIndex();
+	setPendingUpdateListIndex();
 
 	updateFlags();
 	updateStatus();
@@ -1679,7 +1679,7 @@ void mainView::putListItems(vector<QString> items)
 	else
 		this->state.vlx_pending = true;
 
-	tabSetPendingUpdateChannelsIndex();
+	setPendingUpdateListIndex();
 
 	updateFlags();
 	updateStatus();
@@ -1898,26 +1898,103 @@ void mainView::updateFlags()
 	tabUpdateFlags();
 }
 
-void mainView::tabUpdateBouquetsIndex()
+void mainView::updateTreeIndex()
 {
-	tid->updateBouquetsIndex();
+	debug("updateTreeIndex()");
+
+	auto* dbih = this->data->dbih;
+
+	int i = 0, y;
+	int count = tree->topLevelItemCount();
+	vector<pair<int, string>> bss;
+	vector<pair<int, string>> ubs;
+	unordered_map<string, vector<string>> index;
+
+	while (i != count)
+	{
+		QTreeWidgetItem* parent = tree->topLevelItem(i);
+		QVariantMap tdata = parent->data(0, Qt::UserRole).toMap();
+		string pname = tdata["id"].toString().toStdString();
+		bss.emplace_back(pair (i, pname)); //C++17
+		y = 0;
+
+		if (parent->childCount())
+		{
+			int childs = parent->childCount();
+			while (y != childs)
+			{
+				QTreeWidgetItem* item = parent->child(y);
+				QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
+				string bname = tdata["id"].toString().toStdString();
+				ubs.emplace_back(pair (i, bname)); //C++17
+				index[pname].emplace_back(bname);
+				y++;
+			}
+		}
+		i++;
+	}
+	if (bss != dbih->index["bss"])
+	{
+		dbih->index["bss"].swap(bss);
+	}
+	if (ubs != dbih->index["ubs"])
+	{
+		dbih->index["ubs"].swap(ubs);
+
+		for (auto & x : dbih->bouquets)
+			x.second.userbouquets.swap(index[x.first]);
+	}
 }
 
-//TODO
-void mainView::tabUpdateChannelsIndex()
+void mainView::updateListIndex()
 {
-	tid->setPendingUpdateChannelsIndex();
-	tid->updateChannelsIndex();
+	if (! this->state.chx_pending)
+		return;
+
+	auto* dbih = this->data->dbih;
+
+	int i = 0, idx = 0;
+	int count = list->topLevelItemCount();
+	string bname = this->state.curr;
+	dbih->index[bname].clear();
+
+	debug("updateListIndex()", "current", bname);
+
+	int sort_col = list->sortColumn();
+	list->sortItems(0, Qt::AscendingOrder);
+
+	while (i != count)
+	{
+		QTreeWidgetItem* item = list->topLevelItem(i);
+		string chid = item->data(mainView::ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
+		bool marker = item->data(mainView::ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+		idx = marker ? 0 : i + 1;
+		dbih->index[bname].emplace_back(pair (idx, chid)); //C++17
+		i++;
+	}
+
+	list->sortItems(this->state.sort.first, this->state.sort.second);
+	list->header()->setSortIndicator(sort_col, this->state.sort.second);
+
+	this->state.chx_pending = false;
 }
 
-void mainView::tabSetPendingUpdateChannelsIndex()
+void mainView::setPendingUpdateListIndex()
 {
-	tid->setPendingUpdateChannelsIndex();
+	this->state.chx_pending = true;
 }
 
-void mainView::tabUnsetPendingUpdateChannelsIndex()
+void mainView::unsetPendingUpdateListIndex()
 {
-	tid->unsetPendingUpdateChannelsIndex();
+	this->state.chx_pending = false;
+}
+
+void mainView::updateIndex()
+{
+	updateTreeIndex();
+	this->state.chx_pending = true;
+	updateListIndex();
+	this->state.chx_pending = false;
 }
 
 }

@@ -18,7 +18,6 @@ using std::string, std::pair, std::vector, std::map;
 #ifndef channelBookView_h
 #define channelBookView_h
 #include <QWidget>
-#include <QString>
 #include <QHBoxLayout>
 #include <QListWidget>
 #include <QTreeWidget>
@@ -30,6 +29,19 @@ namespace e2se_gui
 class channelBookView : public viewAbstract
 {
 	public:
+		struct __state
+		{
+			// tree current
+			string curr;
+			// view selector
+			// 0 tabv | list
+			// 1 tree | list
+			// 2 list
+			int vx;
+			// list_tree sort
+			pair<int, Qt::SortOrder> sort;
+		};
+
 		enum views {
 			Services,
 			Bouquets,
@@ -61,18 +73,7 @@ class channelBookView : public viewAbstract
 		void listItemDelete() {};
 		vector<QString> getSelected();
 
-		struct __state
-		{
-			// tree current
-			string curr;
-			// view selector
-			// 0 tabv | list
-			// 1 tree | list
-			// 2 list
-			int vx;
-			// list_tree sort
-			pair<int, Qt::SortOrder> sort;
-		} state;
+		__state currentState() { return this->state; };
 	protected:
 		void layout();
 		void sideLayout();
@@ -84,6 +85,9 @@ class channelBookView : public viewAbstract
 		QHBoxLayout* awid;
 		QTabBar* tabv;
 		map<string, vector<pair<int, string>>> index;
+
+		__state state;
+		__action action;
 	private:
 		QWidget* cwid;
 

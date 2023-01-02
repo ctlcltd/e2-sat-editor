@@ -26,23 +26,27 @@ class editBouquet : public dialAbstract
 	Q_DECLARE_TR_FUNCTIONS(editBouquet)
 
 	public:
-		editBouquet(dataHandler* data, int ti, e2se::logger::session* log);
-		void display(QWidget* cwid);
-		void layout();
-		void store();
-		void retrieve();
-		void save();
-		void setEditId(string bname);
-		string getEditId();
-		string getAddId();
-
 		struct __state
 		{
 			// edit { edit: true, add: false }
 			bool edit = false;
 			// tree top level index
 			int ti;
-		} state;
+		};
+
+		editBouquet(dataHandler* data, int ti, e2se::logger::session* log);
+		void display(QWidget* cwid);
+		void setEditId(string bname);
+		string getEditId();
+		string getAddId();
+	protected:
+		void layout();
+		void store();
+		void retrieve();
+		void save();
+
+		__state state;
+		__action action;
 	private:
 		string bname;
 };

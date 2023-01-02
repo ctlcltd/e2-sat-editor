@@ -117,7 +117,6 @@ void tunersetsView::layout()
 	tree->setItemsExpandable(false);
 	tree->setExpandsOnDoubleClick(false);
 	tree->setDropIndicatorShown(true);
-	// tree->setDragDropMode(QAbstractItemView::DragDrop);
 	tree->setDragDropMode(QAbstractItemView::InternalMove);
 	tree->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	tree->setStyleSheet("::item { padding: 6px auto }");
@@ -163,7 +162,6 @@ void tunersetsView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::rowB, 70);		// Roll offset | Guard
 	list->setColumnWidth(ITEM_ROW_ROLE::rowC, 70);		// Hierarchy
 
-	tree->connect(tree, &QTreeWidget::currentItemChanged, [=]() { this->treeItemChanged(); });
 	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->sortByColumn(column); });
 
 	tree->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -203,6 +201,15 @@ void tunersetsView::layout()
 	this->action.list_newtr = list_ats->addAction(theme::icon("add"), "New Transponder", [=]() { this->addTransponder(); });
 	list_ats->addWidget(list_ats_spacer);
 	list_ats->addWidget(this->action.list_search);
+
+	this->tree_evto = new ListEventObserver;
+	this->list_evto = new ListEventObserver;
+	tree->installEventFilter(tree_evto);
+	tree->connect(tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->treeItemChanged(current); });
+	list->installEventFilter(list_evto);
+	list->connect(list, &QTreeWidget::currentItemChanged, [=]() { this->listItemChanged(); });
+	list->connect(list, &QTreeWidget::itemSelectionChanged, [=]() { this->listItemSelectionChanged(); });
+	list->connect(list, &QTreeWidget::itemDoubleClicked, [=]() { this->listItemDoubleClicked(); });
 
 	tbox->addWidget(tree);
 	tbox->addWidget(tree_search);
@@ -300,6 +307,8 @@ void tunersetsView::reset()
 {
 	debug("reset()");
 
+	unsetPendingUpdateListIndex();
+
 	this->state.curr = "";
 	this->state.sort = pair (-1, Qt::AscendingOrder); //C++17
 
@@ -388,18 +397,63 @@ void tunersetsView::populate()
 	list->header()->setSortIndicator(1, Qt::AscendingOrder);
 }
 
-void tunersetsView::treeItemChanged()
+void tunersetsView::treeItemChanged(QTreeWidgetItem* current)
 {
 	debug("treeItemChanged()");
 
-	list->clearSelection();
-	list->scrollToTop();
-	list->clear();
-	list->setDragEnabled(false);
-	list->setAcceptDrops(false);
+	if (current != NULL)
+	{
+		tabSetFlag(gui::TabListDelete, true);
+		tabSetFlag(gui::TabListPaste, true);
+
+		list->clearSelection();
+		list->scrollToTop();
+		// list->clear();
+		// list->setDragEnabled(false);
+		// list->setAcceptDrops(false);
+	}
+
+	updateListIndex();
 
 	populate();
+
 	updateStatus(true);
+}
+
+void tunersetsView::listItemChanged()
+{
+	// debug("listItemChanged()");
+
+	if (list_evto->isChanged())
+		listPendingUpdate();
+}
+
+void tunersetsView::listItemSelectionChanged()
+{
+	// debug("listItemSelectionChanged()");
+	
+	QList<QTreeWidgetItem*> selected = list->selectedItems();
+
+	if (selected.empty())
+	{
+		tabSetFlag(gui::TabListCut, false);
+		tabSetFlag(gui::TabListCopy, false);
+		tabSetFlag(gui::TabListDelete, false);
+	}
+	else
+	{
+		tabSetFlag(gui::TabListCut, true);
+		tabSetFlag(gui::TabListCopy, true);
+		tabSetFlag(gui::TabListDelete, true);
+	}
+	if (selected.count() == 1)
+	{
+		tabSetFlag(gui::TabListEditService, true);
+	}
+	else if (selected.count() > 1)
+	{
+		tabSetFlag(gui::TabListEditService, false);
+	}
 }
 
 void tunersetsView::listItemDoubleClicked()
@@ -414,6 +468,15 @@ void tunersetsView::listItemDoubleClicked()
 	editTransponder();
 }
 
+void tunersetsView::listPendingUpdate()
+{
+	debug("listPendingUpdate()");
+
+	setPendingUpdateListIndex();
+
+	this->data->setChanged(true);
+}
+
 void tunersetsView::addSettings()
 {
 	debug("addSettings()");
@@ -422,8 +485,6 @@ void tunersetsView::addSettings()
 	e2db::tunersets tvs;
 	tvs.ytype = tvid;
 	dbih->addTunersets(tvs);
-
-	//TODO changed
 
 	this->data->setChanged(true);
 }
@@ -444,8 +505,6 @@ void tunersetsView::editSettings()
 	edit->display(cwid);
 	edit->getEditId(); // returned after dial.exec()
 	edit->destroy();
-
-	//TODO changed
 
 	this->data->setChanged(true);
 }
@@ -499,7 +558,7 @@ void tunersetsView::addPosition()
 	tree->setDragEnabled(true);
 	tree->setAcceptDrops(true);
 
-	//TODO changed
+	updateTreeIndex();
 
 	updateStatus();
 
@@ -545,8 +604,6 @@ void tunersetsView::editPosition()
 	for (int i = 0; i < entry.count(); i++)
 		item->setText(i, entry[i]);
 	item->setData(0, Qt::UserRole, idx);
-
-	//TODO changed
 
 	this->data->setChanged(true);
 }
@@ -610,7 +667,7 @@ void tunersetsView::addTransponder()
 	list->setDragEnabled(true);
 	list->setAcceptDrops(true);
 
-	//TODO changed
+	setPendingUpdateListIndex();
 
 	updateStatus();
 
@@ -662,7 +719,7 @@ void tunersetsView::editTransponder()
 		item->setText(i, entry[i]);
 	item->setData(ITEM_DATA_ROLE::trid, Qt::UserRole, QString::fromStdString(nw_trid));
 
-	//TODO changed
+	setPendingUpdateListIndex();
 
 	this->data->setChanged(true);
 }
@@ -690,7 +747,8 @@ void tunersetsView::treeItemDelete()
 		dbih->removeTunersetsTable(tnid, tvs);
 	}
 
-	//TODO changed
+	setPendingUpdateListIndex();
+	updateTreeIndex();
 
 	updateStatus();
 
@@ -752,8 +810,6 @@ void tunersetsView::listItemDelete()
 	list->header()->setSectionsClickable(true);
 	list->setDragEnabled(true);
 	list->setAcceptDrops(true);
-
-	//TODO changed
 
 	this->data->setChanged(true);
 }
@@ -889,6 +945,82 @@ void tunersetsView::updateFlags()
 	tabSetFlag(gui::TunersetsAtsc, true);
 
 	tabUpdateFlags();
+}
+
+void tunersetsView::updateTreeIndex()
+{
+	debug("updateTreeIndex()");
+	
+	int tvid = this->state.yx;
+
+	string iname = "tns:";
+	char yname = dbih->value_transponder_type(tvid);
+	iname += yname;
+
+	int i = 0;
+	int count = tree->topLevelItemCount();
+	vector<pair<int, string>> tns;
+	unordered_map<string, vector<string>> index;
+
+	while (i != count)
+	{
+		QTreeWidgetItem* item = tree->topLevelItem(i);
+		string tnid = item->data(0, Qt::UserRole).toString().toStdString();
+		tns.emplace_back(pair (i, tnid)); //C++17
+		i++;
+	}
+	if (tns != dbih->index[iname])
+	{
+		dbih->index[iname].swap(tns);
+	}
+}
+
+void tunersetsView::updateListIndex()
+{
+	if (! this->state.tvx_pending)
+		return;
+
+	int i = 0, idx = 0;
+	int count = list->topLevelItemCount();
+	string tnid = this->state.curr;
+	dbih->index[tnid].clear();
+
+	debug("updateListIndex()", "current", tnid);
+
+	int sort_col = list->sortColumn();
+	list->sortItems(0, Qt::AscendingOrder);
+
+	while (i != count)
+	{
+		QTreeWidgetItem* item = list->topLevelItem(i);
+		string trid = item->data(ITEM_DATA_ROLE::trid, Qt::UserRole).toString().toStdString();
+		idx = i + 1;
+		dbih->index[tnid].emplace_back(pair (idx, trid)); //C++17
+		i++;
+	}
+
+	list->sortItems(this->state.sort.first, this->state.sort.second);
+	list->header()->setSortIndicator(sort_col, this->state.sort.second);
+
+	this->state.tvx_pending = false;
+}
+
+void tunersetsView::setPendingUpdateListIndex()
+{
+	this->state.tvx_pending = true;
+}
+
+void tunersetsView::unsetPendingUpdateListIndex()
+{
+	this->state.tvx_pending = false;
+}
+
+void tunersetsView::updateIndex()
+{
+	updateTreeIndex();
+	this->state.tvx_pending = true;
+	updateListIndex();
+	this->state.tvx_pending = false;
 }
 
 }
