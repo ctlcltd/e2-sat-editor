@@ -387,9 +387,13 @@ struct e2db_abstract
 		static string value_reference_id(channel_reference chref);
 		static string value_reference_id(channel_reference chref, service ch);
 		static int value_service_type(string str);
+		static string value_service_type(service ch);
 		static string value_service_type(int stype);
+		static int value_service_super_type(service ch);
+		static int value_service_super_type(int stype);
 		static vector<string> value_channel_provider(string str);
 		static string value_channel_provider(service ch);
+		static string value_channel_provider(map<char, vector<string>> data);
 		static vector<string> value_channel_caid(string str);
 		static vector<string> value_channel_cached(string str);
 		static int value_transponder_type(char ty);

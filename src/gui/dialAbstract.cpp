@@ -19,19 +19,11 @@
 namespace e2se_gui
 {
 
-void dialAbstract::display(QWidget* cwid)
-{
-	debug("display()");
-
-	// dial->setParent(cwid);
-	dial->exec();
-}
-
-void dialAbstract::layout()
+void dialAbstract::layout(QWidget* cwid)
 {
 	debug("layout()");
 
-	this->dial = new QDialog;
+	this->dial = new QDialog(cwid);
 	dial->setWindowTitle("Edit");
 	//TODO FIX SEGFAULT
 	// dial->connect(dial, &QDialog::finished, [=]() { delete dial; });

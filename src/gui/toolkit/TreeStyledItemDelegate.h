@@ -24,7 +24,13 @@ class TreeStyledItemDelegate : public QStyledItemDelegate
 		{
 			QStyleOptionViewItem opt (option);
 			if (index.parent().isValid() && (! index.model() || ! index.model()->index(0, 0, index).isValid()))
-				opt.rect.adjust(-this->indent, 0, 0, 0);
+			{
+				if (opt.direction == Qt::LeftToRight)
+					opt.rect.adjust(-this->indent, 0, 0, 0);
+				//TODO FIX glitch
+				else if (opt.direction == Qt::RightToLeft)
+					opt.rect.adjust(0, 0, this->indent, 0);
+			}
 
 			QStyledItemDelegate::QStyledItemDelegate::paint(painter, opt, index);
 		}

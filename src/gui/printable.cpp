@@ -28,11 +28,12 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-printable::printable(dataHandler* data, e2se::logger::session* log)
+printable::printable(QWidget* cwid, dataHandler* data, e2se::logger::session* log)
 {
 	this->log = new logger(log, "printable");
 	debug("printable()");
 
+	this->cwid = cwid;
 	this->data = data;
 	this->sets = new QSettings;
 	this->dbih = this->data->dbih;
@@ -373,8 +374,7 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 				scas.append(cas.join(", "));
 				scas.append("</span>");
 			}
-			//TODO value
-			QString pname = QString::fromStdString(ch.data.count(e2db::SDATA::p) ? ch.data[e2db::SDATA::p][0] : "");
+			QString pname = QString::fromStdString(dbih->value_channel_provider(ch));
 			QString freq = QString::fromStdString(to_string(tx.freq));
 			QString pol = QString::fromStdString(dbih->value_transponder_polarization(tx.pol));
 			QString sr = QString::fromStdString(to_string(tx.sr));
@@ -680,8 +680,7 @@ void printable::print()
 
 	doc->setHtml(html.join(""));
 
-	//TODO move to gui | tab
-	QPrintDialog pdial = QPrintDialog(printer, nullptr);
+	QPrintDialog pdial = QPrintDialog(printer, cwid);
 	if (pdial.exec() == QDialog::Accepted) {
 		doc->print(printer);
 	}

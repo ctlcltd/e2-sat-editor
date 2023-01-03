@@ -41,7 +41,7 @@ class editTunersetsTable : public dialAbstract
 		void setAddId(int tvid);
 		string getAddId();
 	protected:
-		void layout();
+		void layout(QWidget* cwid);
 		void tableSatLayout();
 		void tableTerrestrialLayout();
 		void tableCableLayout();

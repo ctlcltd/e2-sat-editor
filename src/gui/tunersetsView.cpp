@@ -195,10 +195,11 @@ void tunersetsView::layout()
 	QWidget* list_ats_spacer = new QWidget;
 	list_ats_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	tree_ats->addAction(theme::icon("add"), "New Position", [=]() { this->addPosition(); });
+	this->action.tree_newtn = tree_ats->addAction(theme::icon("add"), "New Position", [=]() { this->addPosition(); });
 	tree_ats->addWidget(tree_ats_spacer);
 	tree_ats->addWidget(this->action.tree_search);
 	this->action.list_newtr = list_ats->addAction(theme::icon("add"), "New Transponder", [=]() { this->addTransponder(); });
+	this->action.list_newtr->setDisabled(true);
 	list_ats->addWidget(list_ats_spacer);
 	list_ats->addWidget(this->action.list_search);
 
@@ -300,7 +301,8 @@ void tunersetsView::load()
 	list->setDragEnabled(true);
 	list->setAcceptDrops(true);
 
-	updateStatus();
+	updateFlags();
+	updateStatusBar();
 }
 
 void tunersetsView::reset()
@@ -328,9 +330,9 @@ void tunersetsView::reset()
 	this->lsr_find.curr = -1;
 	this->lsr_find.match.clear();
 
-	this->action.list_newtr->setEnabled(true);
+	this->action.list_newtr->setDisabled(true);
 
-	tabResetStatus();
+	resetStatusBar();
 
 	this->dbih = nullptr;
 }
@@ -403,21 +405,20 @@ void tunersetsView::treeItemChanged(QTreeWidgetItem* current)
 
 	if (current != NULL)
 	{
-		tabSetFlag(gui::TabListDelete, true);
 		tabSetFlag(gui::TabListPaste, true);
 
 		list->clearSelection();
 		list->scrollToTop();
-		// list->clear();
-		// list->setDragEnabled(false);
-		// list->setAcceptDrops(false);
+
+		this->action.list_newtr->setEnabled(true);
 	}
 
 	updateListIndex();
 
 	populate();
 
-	updateStatus(true);
+	updateFlags();
+	updateStatusBar(true);
 }
 
 void tunersetsView::listItemChanged()
@@ -450,7 +451,7 @@ void tunersetsView::listItemSelectionChanged()
 	{
 		tabSetFlag(gui::TabListEditService, true);
 	}
-	else if (selected.count() > 1)
+	else
 	{
 		tabSetFlag(gui::TabListEditService, false);
 	}
@@ -498,7 +499,7 @@ void tunersetsView::editSettings()
 	if (dbih->tuners.count(tvid))
 		debug("editSettings()", "tvid", tvid);
 	else
-		return error("editSettings()", "tvid", tvid);
+		addSettings();
 
 	e2se_gui::editTunersets* edit = new e2se_gui::editTunersets(this->data, tvid, this->log->log);
 	edit->setEditId(tvid);
@@ -561,7 +562,7 @@ void tunersetsView::addPosition()
 	updateTreeIndex();
 
 	updateFlags();
-	updateStatus();
+	updateStatusBar();
 
 	this->data->setChanged(true);
 }
@@ -616,7 +617,6 @@ void tunersetsView::addTransponder()
 	int tvid = this->state.yx;
 	string tnid = this->state.curr;
 
-	//TODO set disabled
 	if (! dbih->tuners.count(tvid))
 		return error("addTransponder()", "tvid", tvid);
 	if (! dbih->tuners[tvid].tables.count(tnid))
@@ -671,7 +671,7 @@ void tunersetsView::addTransponder()
 	setPendingUpdateListIndex();
 
 	updateFlags();
-	updateStatus();
+	updateStatusBar();
 
 	this->data->setChanged(true);
 }
@@ -752,7 +752,7 @@ void tunersetsView::treeItemDelete()
 	setPendingUpdateListIndex();
 	updateTreeIndex();
 
-	updateStatus();
+	updateStatusBar();
 
 	this->data->setChanged(true);
 }
@@ -850,7 +850,7 @@ void tunersetsView::listItemDelete()
 	setPendingUpdateListIndex();
 
 	updateFlags();
-	updateStatus();
+	updateStatusBar();
 
 	this->data->setChanged(true);
 }
@@ -965,17 +965,17 @@ void tunersetsView::putListItems(vector<QString> items)
 	setPendingUpdateListIndex();
 
 	updateFlags();
-	updateStatus();
+	updateStatusBar();
 }
 
-void tunersetsView::updateStatus(bool current)
+void tunersetsView::updateStatusBar(bool current)
 {
-	debug("updateStatus()");
+	debug("updateStatusBar()");
 	
 	int tvid = this->state.yx;
 
-	gui::STATUS status;
-	status.current = current;
+	gui::status msg;
+	msg.update = current;
 
 	if (current && ! this->state.curr.empty())
 	{
@@ -983,9 +983,9 @@ void tunersetsView::updateStatus(bool current)
 		if (tvid == e2db::YTYPE::satellite)
 		{
 			e2db::tunersets_table tns = dbih->tuners[tvid].tables[tnid];
-			status.position = dbih->value_transponder_position(tns);
+			msg.curr = dbih->value_transponder_position(tns);
 		}
-		status.counters[gui::COUNTER::position] = dbih->index[tnid].size();
+		msg.counters[gui::COUNTER::position] = dbih->index[tnid].size();
 	}
 	else
 	{
@@ -994,11 +994,11 @@ void tunersetsView::updateStatus(bool current)
 		iname += yname;
 		for (auto & x : dbih->index[iname])
 		{
-			status.counters[gui::COUNTER::transponders] += dbih->index[x.second].size();
+			msg.counters[gui::COUNTER::transponders] += dbih->index[x.second].size();
 		}
 	}
 
-	tabSetStatus(status);
+	tabSetStatusBar(msg);
 }
 
 void tunersetsView::showTreeEditContextMenu(QPoint &pos)
@@ -1007,11 +1007,11 @@ void tunersetsView::showTreeEditContextMenu(QPoint &pos)
 
 	QMenu* tree_edit = new QMenu;
 
+	tree_edit->addAction("Edit Position", [=]() { this->editPosition(); })->setEnabled(tabGetFlag(gui::TabTreeEdit));
+	tree_edit->addSeparator();
+	tree_edit->addAction("Delete", [=]() { this->treeItemDelete(); })->setEnabled(tabGetFlag(gui::TabTreeDelete));
+	tree_edit->addSeparator();
 	tree_edit->addAction("Edit Settings", [=]() { this->editSettings(); });
-	tree_edit->addSeparator();
-	tree_edit->addAction("Edit Position", [=]() { this->editPosition(); });
-	tree_edit->addSeparator();
-	tree_edit->addAction("Delete", [=]() { this->treeItemDelete(); });
 
 	tree_edit->exec(tree->mapToGlobal(pos));
 }
@@ -1021,7 +1021,7 @@ void tunersetsView::showListEditContextMenu(QPoint &pos)
 	debug("showListEditContextMenu()");
 
 	QMenu* list_edit = new QMenu;
-	list_edit->addAction("Edit Transponder", [=]() { this->editTransponder(); });
+	list_edit->addAction("Edit Transponder", [=]() { this->editTransponder(); })->setEnabled(tabGetFlag(gui::TabListEditTransponder));
 	list_edit->addSeparator();
 	list_edit->addAction("Cu&t", [=]() { this->listItemCut(); }, QKeySequence::Cut)->setEnabled(tabGetFlag(gui::TabListCut));
 	list_edit->addAction("&Copy", [=]() { this->listItemCopy(); }, QKeySequence::Copy)->setEnabled(tabGetFlag(gui::TabListCopy));
@@ -1038,6 +1038,8 @@ void tunersetsView::updateFlags()
 
 	if (tree->topLevelItemCount())
 	{
+		tabSetFlag(gui::TabTreeEdit, true);
+		tabSetFlag(gui::TabTreeDelete, true);
 		//TODO connect to QScrollArea Event
 		/*if (tree->verticalScrollBar()->isVisible())
 		{*/
@@ -1052,21 +1054,34 @@ void tunersetsView::updateFlags()
 	}
 	else
 	{
+		tabSetFlag(gui::TabTreeEdit, false);
+		tabSetFlag(gui::TabTreeDelete, false);
 		tabSetFlag(gui::TabTreeFind, false);
 		this->action.tree_search->setDisabled(true);
 	}
 
 	if (list->topLevelItemCount())
 	{
+		tabSetFlag(gui::TabListEditTransponder, true);
 		tabSetFlag(gui::TabListSelectAll, true);
 		tabSetFlag(gui::TabListFind, true);
 		this->action.list_search->setEnabled(true);
 	}
 	else
 	{
+		tabSetFlag(gui::TabListEditTransponder, false);
 		tabSetFlag(gui::TabListSelectAll, false);
 		tabSetFlag(gui::TabListFind, false);
 		this->action.list_search->setDisabled(true);
+	}
+
+	if (dbih->index.count("chs"))
+	{
+		tabSetFlag(gui::OpenChannelBook, true);
+	}
+	else
+	{
+		tabSetFlag(gui::OpenChannelBook, false);
 	}
 
 	tabSetFlag(gui::TabTreeFindNext, false);

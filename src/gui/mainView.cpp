@@ -209,7 +209,7 @@ void mainView::layout()
 	QWidget* list_ats_spacer = new QWidget;
 	list_ats_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	tree_ats->addAction(theme::icon("add"), "New Bouquet", [=]() { this->addUserbouquet(); });
+	this->action.tree_newbq = tree_ats->addAction(theme::icon("add"), "New Bouquet", [=]() { this->addUserbouquet(); });
 	tree_ats->addWidget(tree_ats_spacer);
 	tree_ats->addWidget(this->action.tree_search);
 	this->action.list_addch = list_ats->addAction(theme::icon("add"), "Add Channel", [=]() { this->addChannel(); });
@@ -282,16 +282,14 @@ void mainView::layout()
 		{"chs:0", "Data"}
 	};
 
-	for (auto & item : tree)
+	for (auto & q : tree)
 	{
-		QTreeWidgetItem* titem = new QTreeWidgetItem();
-		titem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-		QVariantMap tdata; // singular data
-		tdata["id"] = item.first;
-		titem->setData(0, Qt::UserRole, QVariant (tdata));
-		titem->setText(0, item.second);
-		titem->setIcon(0, theme::spacer(2));
-		side->addTopLevelItem(titem);
+		QTreeWidgetItem* item = new QTreeWidgetItem();
+		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+		item->setData(0, Qt::UserRole, q.first);
+		item->setText(0, q.second);
+		item->setIcon(0, theme::spacer(2));
+		side->addTopLevelItem(item);
 	}
 }
 
@@ -381,14 +379,12 @@ void mainView::load()
 	{
 		debug("load()", "bouquet", bsi.second);
 		e2db::bouquet gboq = dbih->bouquets[bsi.second];
-		QString bname = QString::fromStdString(bsi.second);
+		QString qbs = QString::fromStdString(bsi.second);
 		QString name = QString::fromStdString(gboq.nname.empty() ? gboq.name : gboq.nname);
 
 		QTreeWidgetItem* bitem = new QTreeWidgetItem();
 		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-		QMap<QString, QVariant> tdata; // singular data
-		tdata["id"] = bname;
-		bitem->setData(0, Qt::UserRole, QVariant (tdata));
+		bitem->setData(0, Qt::UserRole, qbs);
 		bitem->setText(0, name);
 		tree->addTopLevelItem(bitem);
 		tree->expandItem(bitem);
@@ -400,7 +396,7 @@ void mainView::load()
 	{
 		debug("load()", "userbouquet", ubi.second);
 		e2db::userbouquet uboq = dbih->userbouquets[ubi.second];
-		QString bname = QString::fromStdString(ubi.second);
+		QString qub = QString::fromStdString(ubi.second);
 		QTreeWidgetItem* pgroup = bgroups[ubi.second];
 		// macos: unwanted chars [qt.qpa.fonts] Menlo notice
 		QString name;
@@ -411,19 +407,20 @@ void mainView::load()
 
 		QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
 		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
-		QMap<QString, QVariant> tdata; // singular data
-		tdata["id"] = bname;
-		bitem->setData(0, Qt::UserRole, QVariant (tdata));
+		bitem->setData(0, Qt::UserRole, qub);
 		bitem->setText(0, name);
 		tree->addTopLevelItem(bitem);
 	}
 
 	tree->setDragEnabled(true);
 	tree->setAcceptDrops(true);
+
 	side->setCurrentItem(side->topLevelItem(0));
+
 	populate(side);
+
 	updateFlags();
-	updateStatus();
+	updateStatusBar();
 }
 
 void mainView::reset()
@@ -463,12 +460,12 @@ void mainView::reset()
 	this->action.list_newch->setEnabled(true);
 	this->action.list_dnd->setDisabled(true);
 
-	tabResetStatus();
+	resetStatusBar();
 
 	this->dbih = nullptr;
 }
 
-void mainView::populate(QTreeWidget* side_tree)
+void mainView::populate(QTreeWidget* tree)
 {
 	string curr;
 	string prev;
@@ -487,16 +484,15 @@ void mainView::populate(QTreeWidget* side_tree)
 		prev = string (this->state.curr);
 	}
 
-	QTreeWidgetItem* selected = side_tree->currentItem();
+	QTreeWidgetItem* selected = tree->currentItem();
 	if (selected == NULL)
 	{
 		return;
 	}
 	if (selected != NULL)
 	{
-		QVariantMap tdata = selected->data(0, Qt::UserRole).toMap();
-		QString curr_bouquet = tdata["id"].toString();
-		curr = curr_bouquet.toStdString();
+		QString qub = selected->data(0, Qt::UserRole).toString();
+		curr = qub.toStdString();
 		this->state.curr = curr;
 	}
 
@@ -663,7 +659,7 @@ void mainView::servicesItemChanged(QTreeWidgetItem* current)
 	populate(side);
 
 	updateFlags();
-	updateStatus(true);
+	updateStatusBar(true);
 }
 
 void mainView::treeItemChanged(QTreeWidgetItem* current)
@@ -720,7 +716,7 @@ void mainView::treeItemChanged(QTreeWidgetItem* current)
 	populate(tree);
 
 	updateFlags();
-	updateStatus(true);
+	updateStatusBar(true);
 }
 
 void mainView::listItemChanged()
@@ -771,7 +767,7 @@ void mainView::listItemSelectionChanged()
 			tabSetFlag(gui::TabListEditMarker, false);
 		}
 	}
-	else if (selected.count() > 1)
+	else
 	{
 		tabSetFlag(gui::TabListEditService, false);
 		tabSetFlag(gui::TabListEditMarker, false);
@@ -968,9 +964,7 @@ void mainView::addUserbouquet()
 
 	QTreeWidgetItem* item = new QTreeWidgetItem(pgroup);
 	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
-	QMap<QString, QVariant> tdata; // singular data
-	tdata["id"] = QString::fromStdString(uboq.bname);
-	item->setData(0, Qt::UserRole, QVariant (tdata));
+	item->setData(0, Qt::UserRole, QString::fromStdString(uboq.bname));
 	item->setText(0, name);
 
 	if (current == nullptr)
@@ -996,9 +990,8 @@ void mainView::editUserbouquet()
 		return;
 
 	QTreeWidgetItem* item = selected.first();
-	QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
-	QString qbname = tdata["id"].toString();
-	string bname = qbname.toStdString();
+	QString qub = item->data(0, Qt::UserRole).toString();
+	string bname = qub.toStdString();
 
 	e2se_gui::editBouquet* edit = new e2se_gui::editBouquet(this->data, this->state.ti, this->log->log);
 	edit->setEditId(bname);
@@ -1028,7 +1021,30 @@ void mainView::addChannel()
 {
 	debug("addChannel()");
 
-	e2se_gui::dialChannelBook* book = new e2se_gui::dialChannelBook(this->data, this->log->log);
+	int stype = -1;
+	QTreeWidgetItem* selected = tree->currentItem();
+
+	if (selected == NULL)
+	{
+		return;
+	}
+	if (selected != NULL)
+	{
+		QTreeWidgetItem* parent = selected->parent();
+		if (parent == NULL)
+		{
+			return;
+		}
+		else
+		{
+			QString qub = parent->data(0, Qt::UserRole).toString();
+			string bname = qub.toStdString();
+			e2db::bouquet bsoq = dbih->bouquets[bname];
+			stype = bsoq.btype;
+		}
+	}
+
+	e2se_gui::dialChannelBook* book = new e2se_gui::dialChannelBook(this->data, stype, this->log->log);
 	book->setEventCallback([=](vector<QString> items) { this->putListItems(items); });
 	book->display(cwid);
 
@@ -1106,7 +1122,7 @@ void mainView::addService()
 	setPendingUpdateListIndex();
 
 	updateFlags();
-	updateStatus();
+	updateStatusBar();
 
 	this->data->setChanged(true);
 }
@@ -1231,7 +1247,7 @@ void mainView::addMarker()
 	setPendingUpdateListIndex();
 
 	updateFlags();
-	updateStatus();
+	updateStatusBar();
 
 	this->data->setChanged(true);
 }
@@ -1294,9 +1310,8 @@ void mainView::treeItemDelete()
 	}
 	for (auto & item : selected)
 	{
-		QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
-		QString qbname = tdata["id"].toString();
-		string bname = qbname.toStdString();
+		QString qub = item->data(0, Qt::UserRole).toString();
+		string bname = qub.toStdString();
 		e2db::userbouquet uboq = dbih->userbouquets[bname];
 		string pname = uboq.pname;
 		dbih->removeUserbouquet(bname);
@@ -1312,7 +1327,7 @@ void mainView::treeItemDelete()
 	setPendingUpdateListIndex();
 	updateTreeIndex();
 
-	updateStatus();
+	updateStatusBar();
 
 	this->data->setChanged(true);
 }
@@ -1526,7 +1541,7 @@ void mainView::listItemDelete()
 	setPendingUpdateListIndex();
 
 	updateFlags();
-	updateStatus();
+	updateStatusBar();
 
 	this->data->setChanged(true);
 }
@@ -1622,7 +1637,7 @@ void mainView::putListItems(vector<QString> items)
 				entry = dbih->entryMarker(chref);
 				entry.prepend(x);
 			}
-			//TODO add new service/transponder
+			//TODO add new service, transponder, marker
 			else
 			{
 				error("putListItems()", "refid", refid);
@@ -1673,7 +1688,7 @@ void mainView::putListItems(vector<QString> items)
 	setPendingUpdateListIndex();
 
 	updateFlags();
-	updateStatus();
+	updateStatusBar();
 }
 
 void mainView::showTreeEditContextMenu(QPoint &pos)
@@ -1690,9 +1705,9 @@ void mainView::showTreeEditContextMenu(QPoint &pos)
 	// userbouquet
 	else
 	{
-		tree_edit->addAction("Edit Userbouquet", [=]() { this->editUserbouquet(); });
+		tree_edit->addAction("Edit Userbouquet", [=]() { this->editUserbouquet(); })->setEnabled(tabGetFlag(gui::TabTreeEdit));
 		tree_edit->addSeparator();
-		tree_edit->addAction("Delete", [=]() { this->treeItemDelete(); });
+		tree_edit->addAction("Delete", [=]() { this->treeItemDelete(); })->setEnabled(tabGetFlag(gui::TabTreeDelete));
 		bouquet_export->connect(bouquet_export, &QAction::triggered, [=]() { tabExportFile(); });
 	}
 	tree_edit->addSeparator();
@@ -1718,31 +1733,31 @@ void mainView::showListEditContextMenu(QPoint &pos)
 	list_edit->exec(list->mapToGlobal(pos));
 }
 
-void mainView::updateStatus(bool current)
+void mainView::updateStatusBar(bool current)
 {
-	debug("updateStatus()");
+	debug("updateStatusBar()");
 
-	gui::STATUS status;
-	status.current = current;
+	gui::status msg;
+	msg.update = current;
 
 	if (current && ! this->state.curr.empty())
 	{
 		string bname = this->state.curr;
-		status.counters[gui::COUNTER::bouquet] = dbih->index[bname].size();
+		msg.counters[gui::COUNTER::bouquet] = dbih->index[bname].size();
 
 		// bouquets tree
 		if (this->state.tc)
-			status.bname = bname;
+			msg.curr = bname;
 	}
 	else
 	{
-		status.counters[gui::COUNTER::data] = dbih->index["chs:0"].size();
-		status.counters[gui::COUNTER::tv] = dbih->index["chs:1"].size();
-		status.counters[gui::COUNTER::radio] = dbih->index["chs:2"].size();
-		status.counters[gui::COUNTER::services] = dbih->index["chs"].size();
+		msg.counters[gui::COUNTER::data] = dbih->index["chs:0"].size();
+		msg.counters[gui::COUNTER::tv] = dbih->index["chs:1"].size();
+		msg.counters[gui::COUNTER::radio] = dbih->index["chs:2"].size();
+		msg.counters[gui::COUNTER::services] = dbih->index["chs"].size();
 	}
 
-	tabSetStatus(status);
+	tabSetStatusBar(msg);
 }
 
 void mainView::updateReferenceBox()
@@ -1754,7 +1769,7 @@ void mainView::updateReferenceBox()
 	if (selected.empty() || selected.count() > 1)
 	{
 		for (auto & field : ref_fields)
-			field.second->setText(selected.empty() ? "< >" : "< ... >");
+			field.second->setText(selected.empty() ? "< >" : "< … >");
 	}
 	else
 	{
@@ -1843,6 +1858,8 @@ void mainView::updateFlags()
 
 	if (tree->topLevelItemCount())
 	{
+		tabSetFlag(gui::TabTreeEdit, true);
+		tabSetFlag(gui::TabTreeDelete, true);
 		//TODO connect to QScrollArea Event
 		/*if (tree->verticalScrollBar()->isVisible())
 		{*/
@@ -1857,23 +1874,32 @@ void mainView::updateFlags()
 	}
 	else
 	{
+		tabSetFlag(gui::TabTreeEdit, false);
+		tabSetFlag(gui::TabTreeDelete, false);
 		tabSetFlag(gui::TabTreeFind, false);
 		this->action.tree_search->setDisabled(true);
 	}
 
 	if (list->topLevelItemCount())
 	{
-		tabSetFlag(gui::OpenChannelBook, true);
 		tabSetFlag(gui::TabListSelectAll, true);
 		tabSetFlag(gui::TabListFind, true);
 		this->action.list_search->setEnabled(true);
 	}
 	else
 	{
-		tabSetFlag(gui::OpenChannelBook, false);
 		tabSetFlag(gui::TabListSelectAll, false);
 		tabSetFlag(gui::TabListFind, false);
 		this->action.list_search->setDisabled(true);
+	}
+
+	if (dbih->index.count("chs"))
+	{
+		tabSetFlag(gui::OpenChannelBook, true);
+	}
+	else
+	{
+		tabSetFlag(gui::OpenChannelBook, false);
 	}
 
 	tabSetFlag(gui::TabTreeFindNext, false);
@@ -1904,8 +1930,8 @@ void mainView::updateTreeIndex()
 	while (i != count)
 	{
 		QTreeWidgetItem* parent = tree->topLevelItem(i);
-		QVariantMap tdata = parent->data(0, Qt::UserRole).toMap();
-		string pname = tdata["id"].toString().toStdString();
+		QString qbs = parent->data(0, Qt::UserRole).toString();
+		string pname = qbs.toStdString();
 		bss.emplace_back(pair (i, pname)); //C++17
 		y = 0;
 
@@ -1915,8 +1941,8 @@ void mainView::updateTreeIndex()
 			while (y != childs)
 			{
 				QTreeWidgetItem* item = parent->child(y);
-				QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
-				string bname = tdata["id"].toString().toStdString();
+				QString qub = item->data(0, Qt::UserRole).toString();
+				string bname = qub.toStdString();
 				ubs.emplace_back(pair (i, bname)); //C++17
 				index[pname].emplace_back(bname);
 				y++;

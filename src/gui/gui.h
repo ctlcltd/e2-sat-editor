@@ -44,8 +44,9 @@ class gui : protected e2se::log_factory
 		enum GUI_CXE {
 			NewTab = 1,
 			CloseTab = 4,
-			CloseAllTabs = 8,
-			WindowMinimize = 2,
+			CloseAllTabs = 5,
+			WindowMinimize = 6,
+			StatusBar = 8,
 			FileNew = 11,
 			FileOpen = 10,
 			FileSave = 15,
@@ -60,6 +61,7 @@ class gui : protected e2se::log_factory
 			TabTreeFindNext = 27,
 			TabListEditService = 32,
 			TabListEditMarker = 33,
+			TabListEditTransponder = 31,
 			TabListDelete = 34,
 			TabListSelectAll = 35,
 			TabListCut = 44,
@@ -105,6 +107,7 @@ class gui : protected e2se::log_factory
 			GUI_CXE::CloseTab,
 			GUI_CXE::CloseAllTabs,
 			GUI_CXE::WindowMinimize,
+			GUI_CXE::StatusBar,
 			GUI_CXE::FileNew,
 			GUI_CXE::FileOpen,
 			GUI_CXE::FileSave,
@@ -198,49 +201,45 @@ class gui : protected e2se::log_factory
 		};
 
 		enum COUNTER {
-			data,
-			tv,
-			radio,
-			services,
-			bouquet,
-			position,
-			transponders
+			data = 0,
+			tv = 1,
+			radio = 2,
+			services = 3,
+			bouquet = 4,
+			position = 0,
+			transponders = 1
 		};
 
-		//TODO rename
-		struct STATUS
+		struct status
 		{
 			TAB_VIEW view;
-			string bname;
-			string position;
-			int counters[7] = {0, 0, 0, 0, 0, 0, 0};
-			bool current;
+			string curr;
+			string message;
+			int counters[5] = {0, 0, 0, 0, 0};
+			bool info;
+			bool update;
 		};
 
 		gui(int argc, char* argv[], e2se::logger::session* log);
 		~gui();
-		void layout();
-		void menuLayout();
-		void tabLayout();
-		void statusLayout();
-		void tabViewSwitch(TAB_VIEW ttv);
-		void tabViewSwitch(TAB_VIEW ttv, int arg);
 		int newTab(string filename = "");
 		int openTab(TAB_VIEW view);
 		int openTab(TAB_VIEW view, int arg);
 		void closeTab(int index);
 		void closeAllTabs();
-		void windowChanged();
-		void tabChanged(int index);
-		void tabMoved(int from, int to);
-		void tabChangeName(int ttid, string filename = "");
 		string openFileDialog();
 		string saveFileDialog(string filename);
 		vector<string> importFileDialog(gui::GUI_DPORTS gde);
 		string exportFileDialog(GUI_DPORTS gde, string filename, int& bit);
 		string exportFileDialog(GUI_DPORTS gde, string filename);
-		void setStatus(STATUS status);
-		void resetStatus();
+		void tabChangeName(int ttid, string filename = "");
+		bool statusBarIsVisible();
+		bool statusBarIsHidden();
+		void statusBarShow();
+		void statusBarHide();
+		void statusBarToggle();
+		void setStatusBar(status msg);
+		void resetStatusBar();
 		void fileOpen();
 		void fileSave();
 		void fileSaveAs();
@@ -248,7 +247,6 @@ class gui : protected e2se::log_factory
 		void fileExport();
 		void filePrint();
 		void filePrintAll();
-		void tabAction(TAB_ATS action);
 		void windowMinimize();
 		void settings();
 		void about();
@@ -259,18 +257,30 @@ class gui : protected e2se::log_factory
 		void setFlags(bitset<256> bits);
 		//TODO bits sequence bitwise or
 		void setFlags(vector<int> bits, bool flag);
-		int getTabId(int index);
-		int getCurrentTabId();
-		tab* getCurrentTabHandler();
 		void update();
 		void update(int bit, bool flag);
 		void update(vector<int> bits, bool flag);
 		void update(vector<int> bits);
 		void update(int bit);
-		void launcher();
-		void setDefaultSets();
+
 		QSettings* sets;
 	protected:
+		void layout();
+		void menuBarLayout();
+		void tabStackerLayout();
+		void statusBarLayout();
+		void windowChanged();
+		void tabViewSwitch(TAB_VIEW ttv);
+		void tabViewSwitch(TAB_VIEW ttv, int arg);
+		void tabChanged(int index);
+		void tabMoved(int from, int to);
+		void tabAction(TAB_ATS action);
+		int getTabId(int index);
+		int getCurrentTabId();
+		tab* getCurrentTabHandler();
+		void launcher();
+		void setDefaultSets();
+
 		// gui current bit flags
 		bitset<256> gxe;
 		// gui previous bit flags
@@ -283,6 +293,7 @@ class gui : protected e2se::log_factory
 		QHBoxLayout* mstatusb;
 		QStatusBar* sbwid;
 		QLabel* sbwidl;
+		QWidget* sbwidc;
 		QLabel* sbwidr;
 		QTabWidget* twid;
 		QMenuBar* menu;

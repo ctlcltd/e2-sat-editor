@@ -233,11 +233,30 @@ int e2db_abstract::value_service_type(string str)
 		return STYPE::data;
 }
 
+string e2db_abstract::value_service_type(service ch)
+{
+	return value_service_type(ch.stype);
+}
+
 string e2db_abstract::value_service_type(int stype)
 {
 	if (STYPE_EXT_LABEL.count(stype))
 		return STYPE_EXT_LABEL.at(stype);
 	return STYPE_EXT_LABEL.at(STYPE::data);
+}
+
+int e2db_abstract::value_service_super_type(service ch)
+{
+	if (STYPE_EXT_TYPE.count(ch.stype))
+		return STYPE_EXT_TYPE.at(ch.stype);
+	return 0;
+}
+
+int e2db_abstract::value_service_super_type(int stype)
+{
+	if (STYPE_EXT_TYPE.count(stype))
+		return STYPE_EXT_TYPE.at(stype);
+	return 0;
 }
 
 vector<string> e2db_abstract::value_channel_provider(string str)
@@ -249,6 +268,13 @@ string e2db_abstract::value_channel_provider(service ch)
 {
 	if (ch.data.count(SDATA::p))
 		return ch.data[SDATA::p][0];
+	return "";
+}
+
+string e2db_abstract::value_channel_provider(map<char, vector<string>> data)
+{
+	if (data.count(SDATA::p))
+		return data[SDATA::p][0];
 	return "";
 }
 
@@ -894,7 +920,7 @@ string e2db_abstract::get_transponder_name_value(transponder tx)
 	// debug("get_transponder_name_value()", "txid", tx.txid);
 
 	string ppos;
-	if (tx.ytype == 's')
+	if (tx.ytype == YTYPE::satellite)
 	{
 		if (tuners_pos.count(tx.pos))
 		{

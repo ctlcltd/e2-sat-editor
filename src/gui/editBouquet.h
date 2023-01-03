@@ -40,7 +40,7 @@ class editBouquet : public dialAbstract
 		string getEditId();
 		string getAddId();
 	protected:
-		void layout();
+		void layout(QWidget* cwid);
 		void store();
 		void retrieve();
 		void save();

@@ -40,7 +40,7 @@ class editMarker : public dialAbstract
 		void setAddId(string bname);
 		string getAddId();
 	protected:
-		void layout();
+		void layout(QWidget* cwid);
 		void store();
 		void retrieve();
 

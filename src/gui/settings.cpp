@@ -137,7 +137,6 @@ void settings::preferencesLayout()
 	dtf1->setFormAlignment(Qt::AlignLeft);
 	dtf1->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
-	//TODO FIX SEGFAULT previous settings
 	QComboBox* dtf1g3 = new QComboBox;
 	dtf1g3->setProperty("pref", "theme");
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf1g3);
@@ -160,7 +159,7 @@ void settings::preferencesLayout()
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2g4);
 	dtf2->addRow(dtf2g4);
 
-	//TODO win32 convert \n to \r\n ?
+	//TODO win32 convert \n to \r\n
 	QLineEdit* dtf2g5 = new QLineEdit("\\n");
 	dtf2g5->setProperty("pref", "toolsCsvDelimiter");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2g5);
@@ -355,7 +354,6 @@ void settings::connectionsLayout()
 	dtwid->addTab(rppage, tr("Connections"));
 }
 
-//TODO implement contextual and delete row
 void settings::advancedLayout()
 {
 	QWidget* dtpage = new QWidget;

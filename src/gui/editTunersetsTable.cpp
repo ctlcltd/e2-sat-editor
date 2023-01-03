@@ -36,17 +36,17 @@ void editTunersetsTable::display(QWidget* cwid)
 {
 	this->dbih = this->data->dbih;
 
-	layout();
+	layout(cwid);
 
 	if (this->state.edit)
 		retrieve();
 
-	this->dialAbstract::display(cwid);
+	dial->exec();
 }
 
-void editTunersetsTable::layout()
+void editTunersetsTable::layout(QWidget* cwid)
 {
-	this->dialAbstract::layout();
+	this->dialAbstract::layout(cwid);
 
 	QString dtitle = this->state.edit ? tr("Edit Position") : tr("Add Position");
 	dial->setWindowTitle(dtitle);
@@ -89,6 +89,7 @@ void editTunersetsTable::tableSatLayout()
 	dtf0sp->setMinimumWidth(100);
 	dtf0sp->setInputMask("000.0>A");
 	dtf0sp->setValidator(new QRegularExpressionValidator(QRegularExpression("[\\d]{,3}.\\d\\w")));
+	dtf0sp->setText("0.00W");
 	dtf0->addRow(tr("Position"), dtf0sp);
 	dtf0->addItem(new QSpacerItem(0, 0));
 

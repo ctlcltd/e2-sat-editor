@@ -41,12 +41,12 @@ class dialAbstract : protected e2se::log_factory
 		};
 
 		virtual ~dialAbstract() = default;
-		void display(QWidget* cwid);
+		virtual void display(QWidget* cwid) = 0;
 		void destroy();
 
 		QWidget* widget;
 	protected:
-		void layout();
+		void layout(QWidget* cwid);
 		virtual void toolbar();
 		virtual void store() = 0;
 		virtual void retrieve() = 0;

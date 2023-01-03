@@ -677,34 +677,34 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 	tv.ytype = ytype;
 	tv.charset = charset;
 
-	char type;
-	string yname = "tns:";
+	string iname = "tns:";
+	char yname;
 	unordered_map<string, int> depth;
 	switch (ytype)
 	{
 		case YTYPE::satellite:
-			type = 's';
+			yname = 's';
 			depth["satellites"] = 0;
 			depth["sat"] = 1;
 		break;
 		case YTYPE::terrestrial:
-			type = 't';
+			yname = 't';
 			depth["locations"] = 0;
 			depth["terrestrial"] = 1;
 		break;
 		case YTYPE::cable:
-			type = 'c';
+			yname = 'c';
 			depth["cables"] = 0;
 			depth["cable"] = 1;
 		break;
 		case YTYPE::atsc:
-			type = 'a';
+			yname = 'a';
 			depth["locations"] = 0;
 			depth["atsc"] = 1;
 		break;
 	}
 	depth["transponder"] = 2;
-	yname += type;
+	iname += yname;
 
 	int step = 0;
 	int ln = 1;
@@ -721,7 +721,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 			s.ln = ln;
 			s.text = line.substr(line.find("<!--") + 4);
 			s.text = s.text.substr(0, s.text.length() - 2);
-			comments[yname].emplace_back(s);
+			comments[iname].emplace_back(s);
 			continue;
 		}
 
@@ -974,7 +974,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 		else if (add && step == 2)
 		{
 			char tnid[7];
-			std::sprintf(tnid, "%c:%04x", type, bidx);
+			std::sprintf(tnid, "%c:%04x", yname, bidx);
 			tunersets_table& tn = tv.tables[tnid];
 			cidx++;
 			add_tunersets_transponder(cidx, tntxp, tn);

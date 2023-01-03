@@ -19,7 +19,6 @@ using std::string;
 #define logger_h
 namespace e2se
 {
-//TODO FIX crash buf isnull
 class logger
 {
 	public:

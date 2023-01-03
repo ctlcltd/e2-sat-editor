@@ -117,20 +117,6 @@ void viewAbstract::searchLayout()
 	lsr_box->addWidget(this->lsr_search.close, 0, 9);
 }
 
-//TODO check
-void viewAbstract::treeItemChanged()
-{
-	debug("treeItemChanged()");
-
-	list->clearSelection();
-	list->scrollToTop();
-	list->clear();
-	list->setDragEnabled(false);
-	list->setAcceptDrops(false);
-
-	// populate();
-}
-
 void viewAbstract::sortByColumn(int column)
 {
 	debug("sortByColumn()", "column", column);
@@ -289,6 +275,7 @@ void viewAbstract::listFindPerform(LIST_FIND flag)
 	listFindPerform(this->lsr_search.input->text(), flag);
 }
 
+//TODO FIX wrong column index when initialized
 //TODO FIX multiple selection with shortcut FindNext when search_box is closed
 void viewAbstract::listFindPerform(const QString& value, LIST_FIND flag)
 {
@@ -492,16 +479,30 @@ void viewAbstract::tabUpdateFlags(gui::GUI_CXE bit)
 	tabUpdateFlags();
 }
 
-void viewAbstract::tabSetStatus(gui::STATUS status)
+bool viewAbstract::tabStatusBarIsVisible()
 {
 	if (tid != nullptr)
-		tid->setStatus(status);
+		return tid->statusBarIsVisible();
+	return false;
 }
 
-void viewAbstract::tabResetStatus()
+bool viewAbstract::tabStatusBarIsHidden()
 {
 	if (tid != nullptr)
-		tid->resetStatus();
+		return tid->statusBarIsHidden();
+	return true;
+}
+
+void viewAbstract::tabSetStatusBar(gui::status msg)
+{
+	if (tid != nullptr)
+		tid->setStatusBar(msg);
+}
+
+void viewAbstract::tabResetStatusBar()
+{
+	if (tid != nullptr)
+		tid->resetStatusBar();
 }
 
 void viewAbstract::tabNewFile()

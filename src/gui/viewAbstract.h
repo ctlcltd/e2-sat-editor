@@ -85,13 +85,24 @@ class viewAbstract : protected e2se::log_factory
 		{
 			tabUpdateFlags();
 		};
-		//TODO refact
-		virtual void updateStatus(bool current = false)
+		virtual bool statusBarIsVisible()
 		{
-			tabResetStatus();
+			return tabStatusBarIsVisible();
+		}
+		virtual bool statusBarIsHidden()
+		{
+			return tabStatusBarIsHidden();
+		}
+		virtual void updateStatusBar(bool current = false)
+		{
+			tabResetStatusBar();
 			// suppress lot of annoying warning
 			if (current) return;
 		};
+		virtual void resetStatusBar()
+		{
+			tabResetStatusBar();
+		}
 		virtual void updateIndex() {};
 
 		QWidget* widget;
@@ -122,15 +133,16 @@ class viewAbstract : protected e2se::log_factory
 
 		virtual void layout() {};
 		void searchLayout();
-		void treeItemChanged();
 		void sortByColumn(int column);
 		void tabSetFlag(gui::GUI_CXE bit, bool flag);
 		void tabSetFlag(gui::GUI_CXE bit);
 		bool tabGetFlag(gui::GUI_CXE bit);
 		void tabUpdateFlags();
 		void tabUpdateFlags(gui::GUI_CXE bit);
-		virtual void tabSetStatus(gui::STATUS status);
-		virtual void tabResetStatus();
+		virtual bool tabStatusBarIsVisible();
+		virtual bool tabStatusBarIsHidden();
+		virtual void tabSetStatusBar(gui::status msg);
+		virtual void tabResetStatusBar();
 		void tabNewFile();
 		void tabOpenFile();
 		bool tabReadFile(string filename = "");
@@ -140,7 +152,7 @@ class viewAbstract : protected e2se::log_factory
 		void tabPrintFile(bool all);
 
 		QSettings* sets;
-		tab* tid;
+		tab* tid = nullptr;
 		dataHandler* data = nullptr;
 		ftpHandler* ftph = nullptr;
 		e2se_gui::tools* tools;

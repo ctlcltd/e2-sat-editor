@@ -21,6 +21,7 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map, std::bi
 #ifndef tab_h
 #define tab_h
 #include <Qt>
+#include <QTimer>
 #include <QWidget>
 #include <QGridLayout>
 #include <QList>
@@ -38,6 +39,10 @@ namespace e2se_gui
 class tab : protected e2se::log_factory
 {
 	public:
+
+		const int STATUSBAR_MESSAGE_DELAY = 1500;
+		const int STATUSBAR_MESSAGE_TIMEOUT = 5000;
+
 		enum TOOLS_FILE {
 			tools_csv,
 			tools_html
@@ -62,8 +67,10 @@ class tab : protected e2se::log_factory
 		bool getFlag(gui::GUI_CXE bit);
 		void storeFlags();
 		void retrieveFlags();
-		void setStatus(gui::STATUS status);
-		void resetStatus();
+		bool statusBarIsVisible();
+		bool statusBarIsHidden();
+		void setStatusBar(gui::status msg);
+		void resetStatusBar();
 		void viewMain();
 		void viewTunersets(tab* parent, int ytype);
 		void viewChannelBook(tab* parent);
@@ -79,6 +86,12 @@ class tab : protected e2se::log_factory
 		void exportFile(QTreeWidgetItem* item);
 		void printFile(bool all);
 		void updateIndex();
+		QTimer* statusBarMessage(string title);
+		void statusBarMessage(QTimer* timer);
+		bool saveQuestion(QString title, QString text);
+		void infoMessage(QString title);
+		void infoMessage(QString title, QString text);
+		void errorMessage(QString title, QString text);
 
 		QWidget* widget;
 		dataHandler* data = nullptr;

@@ -794,7 +794,7 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 				ch.dvbns = std::atoi(val.data());
 			// stype
 			else if (i == 7)
-				ch.stype = std::atoi(val.data()); //TODO
+				ch.stype = value_service_type(val);
 			// snum
 			else if (i == 8)
 				ch.snum = std::atoi(val.data());
@@ -871,7 +871,6 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 			if (! ch.stype)
 				ch.stype = chref.atype;
 			// snum has priority over chref.anum
-			//TODO is snum = ssid in chref ?
 			if (! ch.snum)
 				ch.snum = chref.anum;
 			if (ch.data[SDATA::C].empty())
@@ -1185,7 +1184,6 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 			if (! ch.stype)
 				ch.stype = chref.atype;
 			// snum has priority over chref.anum
-			//TODO is snum = ssid in chref ?
 			if (! ch.snum)
 				ch.snum = chref.anum;
 
@@ -1658,7 +1656,7 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			int tsid = ch.tsid;
 			int onid = ch.onid;
 			int dvbns = ch.dvbns;
-			string stype = value_service_type(ch.stype);
+			string stype = value_service_type(ch);
 			int snum = ch.snum;
 			string scas;
 			string scaid;
@@ -1863,7 +1861,7 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			int tsid = ch.tsid;
 			int dvbns = ch.dvbns;
 			int onid = ch.onid;
-			string stype = value_service_type(ch.stype);
+			string stype = value_service_type(ch);
 			int snum = ch.snum;
 			string scas;
 			string scaid;

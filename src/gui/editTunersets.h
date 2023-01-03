@@ -40,7 +40,7 @@ class editTunersets : public dialAbstract
 		int getEditId();
 		int getAddId();
 	protected:
-		void layout();
+		void layout(QWidget* cwid);
 		void store();
 		void retrieve();
 

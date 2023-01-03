@@ -33,14 +33,14 @@ class dialChannelBook : public dialAbstract
 			QAction* add;
 		};
 
-		dialChannelBook(dataHandler* data, e2se::logger::session* log);
+		dialChannelBook(dataHandler* data, int stype, e2se::logger::session* log);
 		void display(QWidget* cwid);
 		void setEventCallback(std::function<void(vector<QString> items)> func)
 		{
 			this->eventCallback = func;
 		}
 	protected:
-		void layout();
+		void layout(QWidget* cwid);
 		void toolbar();
 		void store() {};
 		void retrieve() {};
@@ -50,6 +50,8 @@ class dialChannelBook : public dialAbstract
 			if (this->eventCallback != nullptr)
 				this->eventCallback(items);
 		}
+
+		int stype;
 
 		__state state;
 		__action action;

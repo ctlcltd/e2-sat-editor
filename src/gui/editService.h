@@ -45,7 +45,7 @@ class editService : public dialAbstract
 		string getEditId();
 		string getAddId();
 	protected:
-		void layout();
+		void layout(QWidget* cwid);
 		void serviceLayout();
 		void transponderLayout();
 		void paramsLayout();

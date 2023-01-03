@@ -38,6 +38,7 @@ class tunersetsView : public viewAbstract
 
 		struct __action
 		{
+			QAction* tree_newtn;
 			QAction* list_newtr;
 			QPushButton* tree_search;
 			QPushButton* list_search;
@@ -130,7 +131,7 @@ class tunersetsView : public viewAbstract
 		void showTreeEditContextMenu(QPoint &pos);
 		void showListEditContextMenu(QPoint &pos);
 		void updateFlags();
-		void updateStatus(bool current = false);
+		void updateStatusBar(bool current = false);
 		void updateTreeIndex();
 		void updateListIndex();
 		void setPendingUpdateListIndex();

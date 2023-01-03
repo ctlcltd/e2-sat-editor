@@ -19,12 +19,13 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-dialChannelBook::dialChannelBook(dataHandler* data, e2se::logger::session* log)
+dialChannelBook::dialChannelBook(dataHandler* data, int stype, e2se::logger::session* log)
 {
 	this->log = new logger(log, "dialChannelBook");
 	debug("dialChannelBook()");
 
 	this->data = data;
+	this->stype = stype;
 
 	this->frameMargins = QMargins (0, 0, 0, 0);
 	this->frameFixed = false;
@@ -36,22 +37,22 @@ void dialChannelBook::display(QWidget* cwid)
 
 	this->dbih = this->data->dbih;
 
-	layout();
+	layout(cwid);
 
-	// dial->setParent(cwid);
 	dial->open();
 }
 
-void dialChannelBook::layout()
+void dialChannelBook::layout(QWidget* cwid)
 {
-	this->dialAbstract::layout();
+	this->dialAbstract::layout(cwid);
 
+	dial->setParent(nullptr);
+	dial->setWindowFlags(Qt::Dialog);
 	dial->setMinimumSize(760, 420);
 	dial->setWindowTitle("Add Channel");
 	dial->connect(dial, &QDialog::finished, [=]() { delete cbv; delete dial; });
 
-	//TODO filter for stype (disabled entries)
-	this->cbv = new e2se_gui::channelBookView(this->data, this->log->log);
+	this->cbv = new e2se_gui::channelBookView(this->data, this->stype, this->log->log);
 
 	dtform->setContentsMargins(0, 0, 0, 0);
 	dtform->addWidget(cbv->widget, 1, 0);

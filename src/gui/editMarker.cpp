@@ -31,17 +31,17 @@ void editMarker::display(QWidget* cwid)
 {
 	this->dbih = this->data->dbih;
 
-	layout();
+	layout(cwid);
 
 	if (this->state.edit)
 		retrieve();
 
-	this->dialAbstract::display(cwid);
+	dial->exec();
 }
 
-void editMarker::layout()
+void editMarker::layout(QWidget* cwid)
 {
-	this->dialAbstract::layout();
+	this->dialAbstract::layout(cwid);
 
 	QString dtitle = this->state.edit ? tr("Edit Marker") : tr("Add Marker");
 	dial->setWindowTitle(dtitle);

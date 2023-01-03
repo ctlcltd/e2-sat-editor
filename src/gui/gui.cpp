@@ -12,6 +12,7 @@
 #include <clocale>
 #include <filesystem>
 
+#include <QtGlobal>
 #include <QScreen>
 #include <QSplitter>
 #include <QGroupBox>
@@ -62,7 +63,9 @@ gui::gui(int argc, char* argv[], e2se::logger::session* log)
 
 	theme();
 
+	//TODO intl. rtl
 	// mroot->setLayoutDirection(Qt::RightToLeft);
+
 	if (! theme::isDefault() || ! QSysInfo::productType().contains(QRegularExpression("macos|osx")))
 	{
 		mwid->setStyleSheet("QToolBar { background: palette(mid) }");
@@ -84,9 +87,9 @@ void gui::layout()
 	this->mcnt = new QHBoxLayout;
 	this->mstatusb = new QHBoxLayout;
 
-	menuLayout();
-	statusLayout();
-	tabLayout();
+	menuBarLayout();
+	statusBarLayout();
+	tabStackerLayout();
 
 	mfrm->setContentsMargins(0, 0, 0, 0);
 	mfrm->setSpacing(0);
@@ -95,9 +98,9 @@ void gui::layout()
 	mfrm->addLayout(mstatusb, 1, 0);
 }
 
-void gui::menuLayout()
+void gui::menuBarLayout()
 {
-	debug("menuLayout()");
+	debug("menuBarLayout()");
 
 	QMenuBar* menu = new QMenuBar;
 	menu->setNativeMenuBar(true);
@@ -191,6 +194,8 @@ void gui::menuLayout()
 	QMenu* mwind = menu->addMenu(tr("&Window"));
 	gmenu[GUI_CXE::WindowMinimize] = mwind->addAction("&Minimize", [=]() { this->windowMinimize(); }, Qt::CTRL | Qt::Key_M);
 	mwind->addSeparator();
+	gmenu[GUI_CXE::StatusBar] = mwind->addAction("Hide &Status Bar", [=]() { this->statusBarToggle(); }, Qt::CTRL | Qt::ALT | Qt::Key_B);
+	mwind->addSeparator();
 	gmenu[GUI_CXE::NewTab] = mwind->addAction("New &Tab", [=]() { this->newTab(); }, Qt::CTRL | Qt::Key_T);
 	mwind->addSeparator();
 	QActionGroup* mwtabs = new QActionGroup(mwind);
@@ -206,9 +211,9 @@ void gui::menuLayout()
 	this->mwtabs = mwtabs;
 }
 
-void gui::tabLayout()
+void gui::tabStackerLayout()
 {
-	debug("tabLayout()");
+	debug("tabStackerLayout()");
 
 	this->twid = new QTabWidget(mwid);
 	twid->setTabsClosable(true);
@@ -245,21 +250,24 @@ void gui::tabLayout()
 	mcnt->addWidget(twid);
 }
 
-//TODO FIX intl. rtl
-void gui::statusLayout()
+void gui::statusBarLayout()
 {
-	debug("statusLayout()");
+	debug("statusBarLayout()");
 
 	this->sbwid = new QStatusBar(mwid);
 	this->sbwidl = new QLabel;
+	this->sbwidc = new QWidget;
 	this->sbwidr = new QLabel;
 
 	sbwid->setStyleSheet("QStatusBar QLabel { padding: 0 2ex }");
-	sbwidl->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-	sbwidr->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+	sbwidl->setAlignment(Qt::AlignVCenter);
+	sbwidr->setAlignment(Qt::AlignVCenter);
+	sbwidl->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
+	sbwidr->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
 
-	sbwid->addWidget(sbwidl, 1);
-	sbwid->addWidget(sbwidr, 1);
+	sbwid->addWidget(sbwidl, 0);
+	sbwid->addWidget(sbwidc, 1);
+	sbwid->addWidget(sbwidr, 0);
 
 	mstatusb->addWidget(sbwid);
 }
@@ -276,19 +284,19 @@ void gui::tabViewSwitch(TAB_VIEW ttv, int arg)
 	switch (ttv)
 	{
 		case TAB_VIEW::main:
-			gmenu[GUI_CXE::TabListFind]->setText("&Find Channel");
-			gmenu[GUI_CXE::TabTreeFind]->setText("Find &Bouquet");
-			gmenu[GUI_CXE::TabTreeFindNext]->setText("Find N&ext Bouquet");
+			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Channel"));
+			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Bouquet"));
+			gmenu[GUI_CXE::TabTreeFindNext]->setText(tr("Find N&ext Bouquet"));
 		break;
 		case TAB_VIEW::tunersets:
-			gmenu[GUI_CXE::TabListFind]->setText("&Find Transponder");
-			gmenu[GUI_CXE::TabTreeFind]->setText("Find &Position");
-			gmenu[GUI_CXE::TabTreeFindNext]->setText("Find N&ext Position");
+			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Transponder"));
+			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Position"));
+			gmenu[GUI_CXE::TabTreeFindNext]->setText(tr("Find N&ext Position"));
 		break;
 		case TAB_VIEW::channelBook:
-			gmenu[GUI_CXE::TabListFind]->setText("&Find Channel");
-			gmenu[GUI_CXE::TabTreeFind]->setText("Find &Bouquet");
-			gmenu[GUI_CXE::TabTreeFindNext]->setText("Find N&ext Bouquet");
+			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Channel"));
+			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Bouquet"));
+			gmenu[GUI_CXE::TabTreeFindNext]->setText(tr("Find N&ext Bouquet"));
 		break;
 	}
 }
@@ -777,67 +785,124 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename)
 	return exportFileDialog(gde, filename, bit);
 }
 
-void gui::setStatus(STATUS status)
+bool gui::statusBarIsVisible()
 {
+	return sbwid->isVisible();
+}
+
+bool gui::statusBarIsHidden()
+{
+	return sbwid->isHidden();
+}
+
+void gui::statusBarShow()
+{
+	debug("statusBarShow()");
+
+	sbwid->show();
+	gmenu[GUI_CXE::StatusBar]->setText(tr("Hide &Status Bar"));
+}
+
+void gui::statusBarHide()
+{
+	debug("statusBarHide()");
+
+	sbwid->hide();
+	gmenu[GUI_CXE::StatusBar]->setText(tr("Show &Status Bar"));
+}
+
+void gui::statusBarToggle()
+{
+	// debug("statusBarToggle()");
+
+	if (sbwid->isHidden())
+	{
+		statusBarShow();
+	}
+	else
+	{
+		statusBarHide();
+	}
+}
+
+void gui::setStatusBar(status msg)
+{
+	debug("setStatusBar()");
+
 	QString separator = "   ";
 	QString text;
 
-	if (status.view == TAB_VIEW::main)
+	if (msg.info && ! msg.message.empty())
 	{
-		if (status.current)
+		text = QString::fromStdString(msg.message);
+		sbwid->showMessage(text);
+	}
+	else if (msg.view == TAB_VIEW::main)
+	{
+		if (msg.update)
 		{
-			if (status.counters[COUNTER::bouquet])
+			if (msg.counters[COUNTER::bouquet])
 			{
-				text.append("Channels: " + QString::fromStdString(to_string(status.counters[COUNTER::bouquet])));
+				text.append("Channels: " + QString::fromStdString(to_string(msg.counters[COUNTER::bouquet])));
 			}
-			if (! status.bname.empty())
+			if (! msg.curr.empty())
 			{
 				text.append(separator);
-				text.append("Bouquet: " + QString::fromStdString(status.bname));
+				text.append("Bouquet: " + QString::fromStdString(msg.curr));
 			}
 			sbwidl->setText(text);
 		}
 		else
 		{
-			text.append("TV: " + QString::fromStdString(to_string(status.counters[COUNTER::tv])));
+			text.append("TV: " + QString::fromStdString(to_string(msg.counters[COUNTER::tv])));
 			text.append(separator);
-			text.append("Radio: " + QString::fromStdString(to_string(status.counters[COUNTER::radio])));
+			text.append("Radio: " + QString::fromStdString(to_string(msg.counters[COUNTER::radio])));
 			text.append(separator);
-			text.append("Data: " + QString::fromStdString(to_string(status.counters[COUNTER::data])));
+			text.append("Data: " + QString::fromStdString(to_string(msg.counters[COUNTER::data])));
 			text.append(separator);
-			text.append("Total: " + QString::fromStdString(to_string(status.counters[COUNTER::services])));
+			text.append("Total: " + QString::fromStdString(to_string(msg.counters[COUNTER::services])));
 			sbwidr->setText(text);
 		}
 	}
-	else if (status.view == TAB_VIEW::tunersets)
+	else if (msg.view == TAB_VIEW::tunersets)
 	{
-		if (status.current)
+		if (msg.update)
 		{
-			if (status.counters[COUNTER::position])
+			if (msg.counters[COUNTER::position])
 			{
-				text.append("Transponders: " + QString::fromStdString(to_string(status.counters[COUNTER::position])));
+				text.append("Transponders: " + QString::fromStdString(to_string(msg.counters[COUNTER::position])));
 			}
-			if (! status.position.empty())
+			if (! msg.curr.empty())
 			{
 				text.append(separator);
-				text.append("Position: " + QString::fromStdString(status.position));
+				text.append("Position: " + QString::fromStdString(msg.curr));
 			}
 			sbwidl->setText(text);
 		}
 		else
 		{
-			text.append("Total: " + QString::fromStdString(to_string(status.counters[COUNTER::transponders])));
+			text.append("Total: " + QString::fromStdString(to_string(msg.counters[COUNTER::transponders])));
 			sbwidr->setText(text);
 		}
 	}
 }
 
-void gui::resetStatus()
+void gui::resetStatusBar()
 {
-	debug("resetStatus()");
+	debug("resetStatusBar()");
 
-	sbwidl->setText("");
-	sbwidr->setText("");
+	if (sbwid->currentMessage().isEmpty())
+	{
+		sbwidl->setText("");
+		sbwidr->setText("");
+	}
+	else
+	{
+		sbwid->clearMessage();
+		sbwid->addWidget(sbwidl, 0);
+		sbwid->addWidget(sbwidc, 1);
+		sbwid->addWidget(sbwidr, 0);
+	}
 }
 
 void gui::fileOpen()

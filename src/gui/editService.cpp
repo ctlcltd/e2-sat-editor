@@ -42,17 +42,17 @@ void editService::display(QWidget* cwid)
 {
 	this->dbih = this->data->dbih;
 
-	layout();
+	layout(cwid);
 
 	if (this->state.edit)
 		retrieve();
 
-	this->dialAbstract::display(cwid);
+	dial->exec();
 }
 
-void editService::layout()
+void editService::layout(QWidget* cwid)
 {
-	this->dialAbstract::layout();
+	this->dialAbstract::layout(cwid);
 
 	QString dtitle = this->state.edit ? tr("Edit Service") : tr("Add Service");
 	dial->setWindowTitle(dtitle);
@@ -308,7 +308,7 @@ void editService::paramsLayout()
 	fields.emplace_back(dtf2cd);
 	dtf2cd->setMinimumWidth(200);
 	dtf2C->addRow(tr("Card ID flags"), dtf2cd);
-	dtf2C->addRow(new QLabel(tr("<small>Enter them in comma separated values.<br>(eg. C:0100,C:0200,...)</small>")));
+	dtf2C->addRow(new QLabel(tr("<small>Enter them in comma separated values.<br>(eg. C:0100,C:0200,…)</small>")));
 
 	dtw22->setLayout(dtf2C);
 	dtt2->addItem(dtw22, "CAIDs");
@@ -353,7 +353,7 @@ void editService::paramsLayout()
 	fields.emplace_back(dtf2oc);
 	dtf2oc->setMinimumWidth(200);
 	dtf2o->addRow(tr("Custom edit flags"), dtf2oc);
-	dtf2o->addRow(new QLabel(tr("<small><b>It will overwrite any previously typed!</b><br>Enter them in comma separated values.<br>(eg. p:ProviderName,c:0100,C:0200,...)</small>")));
+	dtf2o->addRow(new QLabel(tr("<small><b>It will overwrite any previously typed!</b><br>Enter them in comma separated values.<br>(eg. p:ProviderName,c:0100,C:0200,…)</small>")));
 
 	dtw24->setLayout(dtf2o);
 	dtt2->addItem(dtw24, "Extras");

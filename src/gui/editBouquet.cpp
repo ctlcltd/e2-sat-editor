@@ -34,17 +34,17 @@ void editBouquet::display(QWidget* cwid)
 {
 	this->dbih = this->data->dbih;
 
-	layout();
+	layout(cwid);
 
 	if (this->state.edit)
 		retrieve();
 
-	this->dialAbstract::display(cwid);
+	dial->exec();
 }
 
-void editBouquet::layout()
+void editBouquet::layout(QWidget* cwid)
 {
-	this->dialAbstract::layout();
+	this->dialAbstract::layout(cwid);
 
 	QString dtitle = this->state.edit ? tr("Edit Bouquet") : tr("Add Bouquet");
 	dial->setWindowTitle(dtitle);

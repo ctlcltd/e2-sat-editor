@@ -35,17 +35,17 @@ void editTunersetsTransponder::display(QWidget* cwid)
 {
 	this->dbih = this->data->dbih;
 
-	layout();
+	layout(cwid);
 
 	if (this->state.edit)
 		retrieve();
 
-	this->dialAbstract::display(cwid);
+	dial->exec();
 }
 
-void editTunersetsTransponder::layout()
+void editTunersetsTransponder::layout(QWidget* cwid)
 {
-	this->dialAbstract::layout();
+	this->dialAbstract::layout(cwid);
 
 	QString dtitle = this->state.edit ? tr("Edit Transponder") : tr("Add Transponder");
 	dial->setWindowTitle(dtitle);

@@ -56,7 +56,7 @@ class mainView : public viewAbstract
 
 		struct __action
 		{
-			QAction* bouquets_newbs;
+			QAction* tree_newbq;
 			QAction* list_addch;
 			QAction* list_addmk;
 			QAction* list_newch;
@@ -118,7 +118,7 @@ class mainView : public viewAbstract
 		void layout();
 		void searchLayout();
 		void referenceBoxLayout();
-		void populate(QTreeWidget* side_tree);
+		void populate(QTreeWidget* tree);
 		void treeSwitched(QTreeWidget* tree, QTreeWidgetItem* item);
 		void servicesItemChanged(QTreeWidgetItem* current);
 		void treeItemChanged(QTreeWidgetItem* current);
@@ -142,7 +142,7 @@ class mainView : public viewAbstract
 		void showTreeEditContextMenu(QPoint &pos);
 		void showListEditContextMenu(QPoint &pos);
 		void updateFlags();
-		void updateStatus(bool current = false);
+		void updateStatusBar(bool current = false);
 		void updateReferenceBox();
 		void updateTreeIndex();
 		void updateListIndex();

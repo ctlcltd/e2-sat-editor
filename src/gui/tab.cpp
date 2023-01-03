@@ -17,7 +17,6 @@
 
 #include <QtGlobal>
 #include <QGuiApplication>
-#include <QTimer>
 #include <QList>
 #include <QStyle>
 #include <QMessageBox>
@@ -139,8 +138,8 @@ void tab::tabSwitched()
 	debug("tabSwitched()");
 
 	retrieveFlags();
-	view->updateStatus();
-	view->updateStatus(true);
+	view->updateStatusBar();
+	view->updateStatusBar(true);
 }
 
 void tab::tabChangeName(string filename)
@@ -184,15 +183,25 @@ void tab::retrieveFlags()
 	gid->setFlags(this->gxe);
 }
 
-void tab::setStatus(gui::STATUS status)
+bool tab::statusBarIsVisible()
 {
-	status.view = this->ttv;
-	gid->setStatus(status);
+	return gid->statusBarIsVisible();
 }
 
-void tab::resetStatus()
+bool tab::statusBarIsHidden()
 {
-	gid->resetStatus();
+	return gid->statusBarIsHidden();
+}
+
+void tab::setStatusBar(gui::status msg)
+{
+	msg.view = this->ttv;
+	gid->setStatusBar(msg);
+}
+
+void tab::resetStatusBar()
+{
+	gid->resetStatusBar();
 }
 
 void tab::viewMain()
@@ -402,6 +411,11 @@ bool tab::readFile(string filename)
 
 	reset();
 
+	QTimer* timer;
+
+	if (statusBarIsVisible())
+		timer = statusBarMessage("Reading from " + filename + " …");
+
 	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	bool readen = this->data->readFile(filename);
 	QGuiApplication::restoreOverrideCursor();
@@ -413,7 +427,7 @@ bool tab::readFile(string filename)
 	else
 	{
 		tabChangeName();
-		QMessageBox::critical(cwid, "File Error", "Error opening files.");
+		errorMessage("File Error", "Error opening files.");
 		return false;
 	}
 
@@ -424,6 +438,9 @@ bool tab::readFile(string filename)
 		parent->reset();
 		parent->load();
 	}
+
+	if (statusBarIsVisible())
+		statusBarMessage(timer);
 
 	return true;
 }
@@ -445,22 +462,14 @@ void tab::saveFile(bool saveas)
 	}
 	else if (this->data->hasChanged())
 	{
-		QMessageBox msg = QMessageBox(cwid);
-		msg.setText("The file has been modified.");
-		msg.setInformativeText("Do you want to save your changes?\n");
-		msg.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
-		msg.setDefaultButton(QMessageBox::Save);
-		if (msg.exec() != QMessageBox::Save)
+		bool overwrite = saveQuestion("The file has been modified", "Do you want to save your changes?");
+		if (! overwrite)
 			return;
 	}
 	else
 	{
-		QMessageBox msg = QMessageBox(cwid);
-		msg.setText("The file will be overwritten.");
-		msg.setInformativeText("Do you want to overwrite it?\n");
-		msg.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
-		msg.setDefaultButton(QMessageBox::Save);
-		if (msg.exec() != QMessageBox::Save)
+		bool overwrite = saveQuestion("The file will be overwritten", "Do you want to overwrite it?");
+		if (! overwrite)
 			return;
 	}
 
@@ -469,21 +478,21 @@ void tab::saveFile(bool saveas)
 		return;
 	}
 
-	debug("saveFile()", "filename", path);
+	debug("saveFile()", "path", path);
 
 	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	bool written = this->data->writeFile(path);
 	QGuiApplication::restoreOverrideCursor();
 
 	if (written) {
-		//TODO improve ui remove QMessageBox
-		QMessageBox msg = QMessageBox(cwid);
-		msg.setText("Saved!");
-		msg.exec();
+		if (statusBarIsVisible())
+			statusBarMessage("Saved to " + path);
+		else
+			infoMessage("Saved!");
 	}
 	else
 	{
-		QMessageBox::critical(cwid, "File Error", "Error writing files.");
+		errorMessage("File Error", "Error writing files.");
 	}
 }
 
@@ -493,13 +502,31 @@ void tab::importFile()
 
 	auto* dbih = this->data->dbih;
 
+	gui::TAB_VIEW current = getTabView();
 	gui::GUI_DPORTS gde = gui::GUI_DPORTS::AllFiles;
 	vector<string> paths;
+
+	// channelBook view
+	if (current == gui::TAB_VIEW::channelBook)
+	{
+		return infoMessage("Nothing to import", "You are in channel book.");
+	}
 
 	paths = gid->importFileDialog(gde);
 
 	if (paths.empty())
 		return;
+
+	if (statusBarIsVisible())
+	{
+		string path;
+		if (paths.size() > 0)
+			path = std::filesystem::path(path).remove_filename().u8string(); //C++17
+		else
+			path = paths[0];
+
+		statusBarMessage("Importing from " + path + " …");
+	}
 
 	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	dbih->importFile(paths);
@@ -607,6 +634,11 @@ void tab::exportFile()
 			}
 		}
 	}
+	// channelBook view
+	else if (current == gui::TAB_VIEW::channelBook)
+	{
+		return infoMessage("Nothing to export", "You are in channel book.");
+	}
 
 	if (paths.empty())
 	{
@@ -640,12 +672,8 @@ void tab::exportFile()
 		}
 		if (dirsize != 0)
 		{
-			QMessageBox msg = QMessageBox(cwid);
-			msg.setText("The destination contains files that will be overwritten.");
-			msg.setInformativeText("Do you want to overwrite them?\n");
-			msg.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
-			msg.setDefaultButton(QMessageBox::Save);
-			if (msg.exec() != QMessageBox::Save)
+			bool overwrite = saveQuestion("The destination contains files that will be overwritten.", "Do you want to overwrite them?");
+			if (! overwrite)
 				return;
 		}
 	}
@@ -669,10 +697,20 @@ void tab::exportFile()
 	dbih->exportFile(flags, paths);
 	QGuiApplication::restoreOverrideCursor();
 
-	//TODO improve ui remove QMessageBox
-	QMessageBox msg = QMessageBox(cwid);
-	msg.setText("Saved!");
-	msg.exec();
+	if (statusBarIsVisible())
+	{
+		string path;
+		if (paths.size() > 0)
+			path = std::filesystem::path(path).remove_filename().u8string(); //C++17
+		else
+			path = paths[0];
+
+		statusBarMessage("Exported to " + path);
+	}
+	else
+	{
+		infoMessage("Saved!");
+	}
 }
 
 void tab::exportFile(QTreeWidgetItem* item)
@@ -735,6 +773,11 @@ void tab::exportFile(QTreeWidgetItem* item)
 			}
 		}
 	}
+	// channelBook view
+	else if (current == gui::TAB_VIEW::channelBook)
+	{
+		return infoMessage("Nothing to export", "You are in channel book.");
+	}
 
 	if (paths.empty())
 	{
@@ -768,12 +811,8 @@ void tab::exportFile(QTreeWidgetItem* item)
 		}
 		if (dirsize != 0)
 		{
-			QMessageBox msg = QMessageBox(cwid);
-			msg.setText("The destination contains files that will be overwritten.");
-			msg.setInformativeText("Do you want to overwrite them?\n");
-			msg.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
-			msg.setDefaultButton(QMessageBox::Save);
-			if (msg.exec() != QMessageBox::Save)
+			bool overwrite = saveQuestion("The destination contains files that will be overwritten.", "Do you want to overwrite them?");
+			if (! overwrite)
 				return;
 		}
 	}
@@ -782,10 +821,20 @@ void tab::exportFile(QTreeWidgetItem* item)
 	dbih->exportFile(bit, paths);
 	QGuiApplication::restoreOverrideCursor();
 
-	//TODO improve ui remove QMessageBox
-	QMessageBox msg = QMessageBox(cwid);
-	msg.setText("Saved!");
-	msg.exec();
+	if (statusBarIsVisible())
+	{
+		string path;
+		if (paths.size() > 0)
+			path = std::filesystem::path(path).remove_filename().u8string(); //C++17
+		else
+			path = paths[0];
+
+		statusBarMessage("Exported to " + path);
+	}
+	else
+	{
+		infoMessage("Saved!");
+	}
 }
 
 void tab::printFile(bool all)
@@ -793,7 +842,7 @@ void tab::printFile(bool all)
 	debug("printFile()");
 
 	gui::TAB_VIEW current = getTabView();
-	printable* printer = new printable(this->data, this->log->log);
+	printable* printer = new printable(this->cwid, this->data, this->log->log);
 
 	// print all
 	if (all)
@@ -866,9 +915,17 @@ void tab::printFile(bool all)
 			}
 		}
 	}
+	// channelBook view
+	else if (current == gui::TAB_VIEW::channelBook)
+	{
+		printer->documentAll();
+	}
 
 	printer->print();
 	printer->destroy();
+
+	if (statusBarIsVisible())
+		statusBarMessage("Printing …");
 }
 
 void tab::toolsInspector()
@@ -1165,19 +1222,26 @@ void tab::ftpConnect()
 {
 	debug("ftpConnect()");
 
-	//TODO improve ui remove QMessageBox
 	if (this->ftph->handleConnection())
-		QMessageBox::information(cwid, "FTP Connected", "Successfully connected!");
+	{
+		if (statusBarIsVisible())
+			statusBarMessage("FTP connected successfully.");
+		else
+			infoMessage("Successfully connected!");
+	}
 	else
-		QMessageBox::critical(cwid, "FTP Error", "Cannot connect to FTP Server!");
+	{
+		errorMessage("FTP Error", "Cannot connect to FTP Server!");
+	}
 }
 
+//TODO improve for status bar
 void tab::ftpUpload()
 {
 	debug("ftpUpload()");
 
 	if (! this->ftph->handleConnection())
-		QMessageBox::critical(cwid, "FTP Error", "Cannot connect to FTP Server!");
+		return errorMessage("FTP Error", "Cannot connect to FTP Server!");
 
 	auto* ftih = this->ftph->ftih;
 	auto* dbih = this->data->dbih;
@@ -1226,20 +1290,28 @@ void tab::ftpUpload()
 	files.clear();
 
 	ftih->put_files(ftp_files);
-	//TODO improve ui remove QMessageBox
-	QMessageBox::information(nullptr, NULL, "Uploaded");
 
-	//TODO improve ui remove QMessageBox
+	if (statusBarIsVisible())
+		statusBarMessage("Uploaded " + to_string(files.size()) + " files");
+	else
+		infoMessage("Uploaded!");
+
 	if (ftih->cmd_ifreload() || ftih->cmd_tnreload())
-		QMessageBox::information(nullptr, NULL, "STB reloaded");
+	{
+		if (statusBarIsVisible())
+			statusBarMessage("STB reload done.");
+		else
+			infoMessage("STB reloaded!");
+	}
 }
 
+//TODO improve for status bar
 void tab::ftpDownload()
 {
 	debug("ftpDownload()");
 
 	if (! this->ftph->handleConnection())
-		QMessageBox::critical(cwid, "FTP Error", "Cannot connect to FTP Server!");
+		return errorMessage("FTP Error", "Cannot connect to FTP Server!");
 
 	auto* ftih = this->ftph->ftih;
 	auto* dbih = this->data->dbih;
@@ -1285,6 +1357,79 @@ void tab::updateIndex()
 	view->updateIndex();
 }
 
+QTimer* tab::statusBarMessage(string text)
+{
+	gui::status msg;
+	msg.info = true;
+	msg.message = text;
+	setStatusBar(msg);
+
+	QTimer* timer = new QTimer(this->cwid);
+	timer->setSingleShot(true);
+	timer->setInterval(STATUSBAR_MESSAGE_TIMEOUT);
+	timer->callOnTimeout([=]() { resetStatusBar(); delete timer; });
+	timer->start();
+	return timer;
+}
+
+void tab::statusBarMessage(QTimer* timer)
+{
+	if (timer == nullptr)
+	{
+		QTimer* timer = new QTimer(this->cwid);
+		timer->setSingleShot(true);
+		timer->setInterval(STATUSBAR_MESSAGE_DELAY);
+		timer->callOnTimeout([=]() { resetStatusBar(); delete timer; });
+	}
+	else
+	{
+		timer->stop();
+		timer->setInterval(STATUSBAR_MESSAGE_DELAY);
+		timer->start();
+	}
+}
+
+bool tab::saveQuestion(QString title, QString text)
+{
+	text.append("\n");
+	QMessageBox msg = QMessageBox(this->cwid);
+	msg.setText(title);
+	msg.setInformativeText(text);
+	msg.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
+	msg.setDefaultButton(QMessageBox::Save);
+	return (msg.exec() == QMessageBox::Save);
+}
+
+void tab::infoMessage(QString title)
+{
+	QMessageBox msg = QMessageBox(this->cwid);
+	msg.setWindowFlags(Qt::Popup);
+	msg.setText(title);
+	QRect pos = msg.geometry();
+	pos.moveCenter(QPoint(this->cwid->width() / 2, this->cwid->height() / 2));
+	msg.setGeometry(pos);
+	msg.exec();
+}
+
+void tab::infoMessage(QString title, QString text)
+{
+	text.prepend("<span style=\"white-space: nowrap\">");
+	text.append("</span><br>");
+	QMessageBox msg = QMessageBox(this->cwid);
+	msg.setWindowFlags(Qt::Popup);
+	msg.setText(title);
+	msg.setInformativeText(text);
+	QRect pos = msg.geometry();
+	pos.moveCenter(QPoint(this->cwid->width() / 2, this->cwid->height() / 2));
+	msg.setGeometry(pos);
+	msg.exec();
+}
+
+void tab::errorMessage(QString title, QString text)
+{
+	QMessageBox::critical(this->cwid, title, text);
+}
+
 void tab::loadSeeds()
 {
 	if (gid->sets->contains("application/seeds"))
@@ -1294,7 +1439,8 @@ void tab::loadSeeds()
 	else
 	{
 		gid->sets->setValue("application/seeds", "");
-		QMessageBox::information(cwid, NULL, "For debugging purpose, set application.seeds absolute path under Settings > Advanced tab, then restart the software.");
+
+		QMessageBox::information(this->cwid, NULL, "For debugging purpose, set application.seeds absolute path under Settings > Advanced tab, then restart the software.");
 	}
 }
 

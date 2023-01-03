@@ -17,6 +17,7 @@ using std::string, std::pair, std::vector, std::map;
 
 #ifndef printable_h
 #define printable_h
+#include <QWidget>
 
 #include "../logger/logger.h"
 #include "dataHandler.h"
@@ -42,7 +43,7 @@ class printable : protected e2se::log_factory
 			QString footer;
 		};
 
-		printable(dataHandler* data, e2se::logger::session* log);
+		printable(QWidget* cwid, dataHandler* data, e2se::logger::session* log);
 		~printable() {};
 		void documentAll();
 		void documentIndex();
@@ -67,6 +68,7 @@ class printable : protected e2se::log_factory
 		dataHandler* data = nullptr;
 		e2db* dbih = nullptr;
 	private:
+		QWidget* cwid;
 		vector<html_page> pages;
 };
 }

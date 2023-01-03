@@ -100,6 +100,17 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 	auto* dbih = this->data->dbih;
 	bool merge = dbih->get_input().size() != 0 ? true : false;
 
+	if (tid->statusBarIsVisible())
+	{
+		string path;
+		if (paths.size() > 0)
+			path = std::filesystem::path(path).remove_filename().u8string(); //C++17
+		else
+			path = paths[0];
+
+		tid->statusBarMessage("Importing from " + path + " …");
+	}
+
 	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	dbih->import_csv_file(fci, opts, paths);
 	QGuiApplication::restoreOverrideCursor();
@@ -166,10 +177,10 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 	dbih->export_csv_file(fco, opts, path);
 	QGuiApplication::restoreOverrideCursor();
 
-	//TODO improve ui remove QMessageBox
-	QMessageBox msg = QMessageBox(cwid);
-	msg.setText("Saved!");
-	msg.exec();
+	if (tid->statusBarIsVisible())
+		tid->statusBarMessage("Exported to " + path);
+	else
+		tid->infoMessage("Saved!");
 }
 
 void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
@@ -214,10 +225,10 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 	dbih->export_html_file(fco, opts, path);
 	QGuiApplication::restoreOverrideCursor();
 
-	//TODO improve ui remove QMessageBox
-	QMessageBox msg = QMessageBox(cwid);
-	msg.setText("Saved!");
-	msg.exec();
+	if (tid->statusBarIsVisible())
+		tid->statusBarMessage("Exported to " + path);
+	else
+		tid->infoMessage("Saved!");
 }
 
 void tools::destroy()

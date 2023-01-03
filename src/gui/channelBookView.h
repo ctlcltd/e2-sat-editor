@@ -38,6 +38,8 @@ class channelBookView : public viewAbstract
 			// 1 tree | list
 			// 2 list
 			int vx;
+			// filter for stype
+			int sy = -1;
 			// list_tree sort
 			pair<int, Qt::SortOrder> sort;
 		};
@@ -63,7 +65,7 @@ class channelBookView : public viewAbstract
 			chpos
 		};
 
-		channelBookView(dataHandler* data, e2se::logger::session* log);
+		channelBookView(dataHandler* data, int stype, e2se::logger::session* log);
 		channelBookView(tab* tid, QWidget* cwid, dataHandler* data, e2se::logger::session* log);
 		void load();
 		void reset();
@@ -78,8 +80,11 @@ class channelBookView : public viewAbstract
 		void layout();
 		void sideLayout();
 		void populate();
-		void sideRowChanged(int index);
 		void stacker(int vv);
+		void sideRowChanged(int index);
+		void listItemSelectionChanged();
+		void showListEditContextMenu(QPoint &pos);
+		void updateFlags();
 
 		QListWidget* lwid;
 		QHBoxLayout* awid;

@@ -13,6 +13,8 @@
 #include <QSplitter>
 #include <QHeaderView>
 #include <QLabel>
+#include <QClipboard>
+#include <QMimeData>
 
 #include "channelBookView.h"
 #include "theme.h"
@@ -25,7 +27,7 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-channelBookView::channelBookView(dataHandler* data, e2se::logger::session* log)
+channelBookView::channelBookView(dataHandler* data, int stype, e2se::logger::session* log)
 {
 	this->log = new logger(log, "channelBookView");
 	debug("channelBookView()");
@@ -33,6 +35,8 @@ channelBookView::channelBookView(dataHandler* data, e2se::logger::session* log)
 	this->data = data;
 	this->sets = new QSettings;
 	this->widget = new QWidget;
+
+	this->state.sy = stype;
 
 	layout();
 }
@@ -51,7 +55,6 @@ channelBookView::channelBookView(tab* tid, QWidget* cwid, dataHandler* data, e2s
 	layout();
 }
 
-//TODO tabv broken when tooling
 void channelBookView::layout()
 {
 	debug("layout()");
@@ -114,6 +117,14 @@ void channelBookView::layout()
 	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->sortByColumn(column); });
 	tree->connect(tree, &QTreeWidget::currentItemChanged, [=]() { this->populate(); });
 	tabv->connect(tabv, &QTabBar::currentChanged, [=]() { this->populate(); });
+
+	if (tid != nullptr)
+	{
+		list->setContextMenuPolicy(Qt::CustomContextMenu);
+		list->connect(list, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { this->showListEditContextMenu(pos); });
+
+		list->connect(list, &QTreeWidget::itemSelectionChanged, [=]() { this->listItemSelectionChanged(); });
+	}
 
 	swid->addWidget(tree);
 	swid->addWidget(list);
@@ -184,7 +195,7 @@ void channelBookView::reset()
 	this->lsr_find.curr = -1;
 	this->lsr_find.match.clear();
 
-	tabResetStatus();
+	resetStatusBar();
 
 	this->dbih = nullptr;
 }
@@ -239,6 +250,8 @@ void channelBookView::populate()
 			e2db::service ch = dbih->db.services[chdata.second];
 			e2db::transponder tx = dbih->db.transponders[ch.txid];
 
+			int atype = dbih->value_service_super_type(ch);
+			bool hidden = this->state.sy != -1 && this->state.sy != atype;
 			QString idx = QString::fromStdString(to_string(chdata.first));
 			QString chid = QString::fromStdString(chdata.second);
 			// macos: unwanted chars [qt.qpa.fonts] Menlo notice
@@ -247,9 +260,8 @@ void channelBookView::populate()
 				chname = QString::fromStdString(ch.chname).remove(QRegularExpression("[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{S}\\s]+"));
 			else
 				chname = QString::fromStdString(ch.chname);
-			QString stype = QString::fromStdString(dbih->value_service_type(ch.stype));
-			//TODO value
-			QString pname = QString::fromStdString(ch.data.count(e2db::SDATA::p) ? ch.data[e2db::SDATA::p][0] : "");
+			QString stype = QString::fromStdString(dbih->value_service_type(ch));
+			QString pname = QString::fromStdString(dbih->value_channel_provider(ch));
 			QString sys = QString::fromStdString(dbih->value_transponder_system(tx));
 			QString txp = QString::fromStdString(dbih->value_transponder_combo(tx));
 			QString pos = QString::fromStdString(dbih->get_transponder_name_value(tx));
@@ -257,7 +269,11 @@ void channelBookView::populate()
 			QTreeWidgetItem* item = new QTreeWidgetItem({x, idx, chname, stype, pname, sys, txp, pos});
 			item->setData(0, Qt::UserRole, chid);
 			item->setIcon(1, theme::spacer(3));
+
 			list->addTopLevelItem(item);
+
+			if (hidden)
+				item->setHidden(true);
 		}
 	}
 
@@ -268,6 +284,123 @@ void channelBookView::populate()
 		list->sortItems(0, Qt::AscendingOrder);
 		list->header()->setSortIndicator(1, Qt::AscendingOrder);
 	}
+}
+
+void channelBookView::stacker(int vv)
+{
+	debug("stacker()", "view", vv);
+
+	switch (vv)
+	{
+		case views::Services:
+			this->index = dbih->get_services_index();
+		break;
+		case views::A_Z:
+			this->index = dbih->get_az_index();
+		break;
+		case views::Bouquets:
+			this->index = dbih->get_bouquets_index();
+		break;
+		case views::Satellites:
+			this->index = dbih->get_transponders_index();
+		break;
+		case views::Providers:
+			this->index = dbih->get_packages_index();
+		break;
+		case views::Resolution:
+			this->index = dbih->get_resolution_index();
+		break;
+		case views::Encryption:
+			this->index = dbih->get_encryption_index();
+		break;
+	}
+
+	for (auto & q : this->index)
+	{
+		QString index;
+		QString name;
+		QTreeWidgetItem* item;
+		QTreeWidgetItem* subitem;
+		bool hidden = false;
+
+		//TODO pos value 0 with terrestrial, cable, atsc
+		if (vv == views::Satellites)
+		{
+			int pos = std::stoi(q.first);
+			if (dbih->tuners_pos.count(pos))
+			{
+				string tnid = dbih->tuners_pos.at(pos);
+				e2db::tunersets_table tn = dbih->tuners[0].tables[tnid];
+				name = QString::fromStdString(tn.name);
+			}
+			else
+			{
+				name = QString::fromStdString(q.first);
+			}
+			item = new QTreeWidgetItem({name});
+
+			for (auto & x : q.second)
+			{
+				e2db::transponder tx = dbih->db.transponders[x.second];
+				QString subindex = QString::fromStdString(x.second);
+				string ptxp = dbih->value_transponder_combo(tx);
+				QString txp = QString::fromStdString(ptxp);
+				subitem = new QTreeWidgetItem(item, {txp});
+				subitem->setData(0, Qt::UserRole, subindex);
+				tree->addTopLevelItem(subitem);
+			}
+		}
+		//TODO sort order: TV, Radio
+		else if (vv == views::Bouquets)
+		{
+			e2db::bouquet bs = dbih->bouquets[q.first];
+			name = QString::fromStdString(bs.nname.empty() ? bs.name : bs.nname);
+			hidden = this->state.sy != -1 && this->state.sy != bs.btype;
+			item = new QTreeWidgetItem({name});
+
+			for (string & ubname : bs.userbouquets)
+			{
+				e2db::userbouquet ub = dbih->userbouquets[ubname];
+				QString subindex = QString::fromStdString(ubname);
+				QString name = QString::fromStdString(ub.name);
+				subitem = new QTreeWidgetItem(item, {name});
+				subitem->setData(0, Qt::UserRole, subindex);
+				tree->addTopLevelItem(subitem);
+			}
+		}
+		else if (vv == views::Resolution)
+		{
+			int stype = std::stoi(q.first);
+			int atype = dbih->value_service_super_type(stype);
+			hidden = this->state.sy != -1 && this->state.sy != atype;
+			name = QString::fromStdString(dbih->value_service_type(stype));
+			name.append(QString::fromStdString("\tid: " + q.first));
+			item = new QTreeWidgetItem({name});
+		}
+		else
+		{
+			name = QString::fromStdString(q.first);
+			item = new QTreeWidgetItem({name});
+		}
+
+		index = QString::fromStdString(q.first);
+		item->setData(0, Qt::UserRole, index);
+		tree->addTopLevelItem(item);
+
+		if (hidden)
+			item->setHidden(true);
+	}
+	if (vv == views::Satellites)
+	{
+		this->index = dbih->get_channels_index();
+	}
+	else if (vv == views::Bouquets)
+	{
+		this->index.merge(dbih->get_userbouquets_index()); //C++17
+		tree->expandAll();
+	}
+
+	populate();
 }
 
 void channelBookView::sideRowChanged(int index)
@@ -303,119 +436,26 @@ void channelBookView::sideRowChanged(int index)
 	}
 
 	stacker(index);
+
+	updateFlags();
 }
 
-void channelBookView::stacker(int vv)
+void channelBookView::listItemSelectionChanged()
 {
-	debug("stacker()", "view", vv);
+	// debug("listItemSelectionChanged()");
+	
+	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
-	switch (vv)
+	if (selected.empty())
 	{
-		case views::Services:
-			this->index = dbih->get_services_index();
-		break;
-		case views::A_Z:
-			this->index = dbih->get_az_index();
-		break;
-		case views::Bouquets:
-			this->index = dbih->get_bouquets_index();
-		break;
-		case views::Satellites:
-			this->index = dbih->get_transponders_index();
-		break;
-		case views::Providers:
-			this->index = dbih->get_packages_index();
-		break;
-		case views::Resolution:
-			this->index = dbih->get_resolution_index();
-		break;
-		case views::Encryption:
-			this->index = dbih->get_encryption_index();
-		break;
+		tabSetFlag(gui::TabListCopy, false);
 	}
-
-	QString index;
-	QString name;
-	QTreeWidgetItem* item;
-	QTreeWidgetItem* subitem;
-
-	for (auto & q : this->index)
+	else
 	{
-		//TODO pos value 0 with terrestrial, cable, atsc
-		if (vv == views::Satellites)
-		{
-			int pos = std::stoi(q.first);
-			if (dbih->tuners_pos.count(pos))
-			{
-				string tnid = dbih->tuners_pos.at(pos);
-				e2db::tunersets_table tn = dbih->tuners[0].tables[tnid];
-				name = QString::fromStdString(tn.name);
-			}
-			else
-			{
-				name = QString::fromStdString(q.first);
-			}
-			item = new QTreeWidgetItem({name});
-
-			for (auto & x : q.second)
-			{
-				e2db::transponder tx = dbih->db.transponders[x.second];
-				QString subindex = QString::fromStdString(x.second);
-				string ptxp = dbih->value_transponder_combo(tx);
-				QString txp = QString::fromStdString(ptxp);
-				subitem = new QTreeWidgetItem(item, {txp});
-				subitem->setData(0, Qt::UserRole, subindex);
-				tree->addTopLevelItem(subitem);
-			}
-		}
-		//TODO sort order: TV, Radio
-		else if (vv == views::Bouquets)
-		{
-			e2db::bouquet bs = dbih->bouquets[q.first];
-			name = QString::fromStdString(bs.nname.empty() ? bs.name : bs.nname);
-			item = new QTreeWidgetItem({name});
-
-			for (string & ubname : bs.userbouquets)
-			{
-				e2db::userbouquet ub = dbih->userbouquets[ubname];
-				QString subindex = QString::fromStdString(ubname);
-				QString name = QString::fromStdString(ub.name);
-				subitem = new QTreeWidgetItem(item, {name});
-				subitem->setData(0, Qt::UserRole, subindex);
-				tree->addTopLevelItem(subitem);
-			}
-		}
-		else if (vv == views::Resolution)
-		{
-			int stype = std::stoi(q.first);
-			name = QString::fromStdString(dbih->value_service_type(stype));
-			name.append(QString::fromStdString("\tid: " + q.first));
-			item = new QTreeWidgetItem({name});
-		}
-		else
-		{
-			name = QString::fromStdString(q.first);
-			item = new QTreeWidgetItem({name});
-		}
-
-		index = QString::fromStdString(q.first);
-		item->setData(0, Qt::UserRole, index);
-		tree->addTopLevelItem(item);
+		tabSetFlag(gui::TabListCopy, true);
 	}
-	if (vv == views::Satellites)
-	{
-		this->index = dbih->get_channels_index();
-	}
-	else if (vv == views::Bouquets)
-	{
-		this->index.merge(dbih->get_userbouquets_index()); //C++17
-		tree->expandAll();
-	}
-
-	populate();
 }
 
-//TODO
 void channelBookView::listItemCopy(bool cut)
 {
 	debug("listItemCopy()");
@@ -424,6 +464,42 @@ void channelBookView::listItemCopy(bool cut)
 	
 	if (selected.empty())
 		return;
+
+	QClipboard* clipboard = QGuiApplication::clipboard();
+	QStringList text;
+	for (auto & item : selected)
+	{
+		QString qchid = item->data(0, Qt::UserRole).toString();
+		string chid = qchid.toStdString();
+
+		QStringList data;
+		// start from chnum column [1]
+		for (int i = ITEM_ROW_ROLE::chnum; i < list->columnCount(); i++)
+		{
+			QString qstr = item->data(i, Qt::DisplayRole).toString();
+			// chname
+			if (i == ITEM_ROW_ROLE::chname)
+				qstr.prepend("\"").append("\"");
+			// chpname
+			else if (i == ITEM_ROW_ROLE::chpname)
+				qstr.prepend("\"").append("\"");
+			// chtxp
+			else if (i == ITEM_ROW_ROLE::chtxp)
+				qstr.prepend("\"").append("\"");
+			// chpos
+			else if (i == ITEM_ROW_ROLE::chpos)
+				qstr.prepend("\"").append("\"");
+			data.append(qstr);
+		}
+
+		// Reference ID
+		QString refid;
+		string crefid = dbih->get_reference_id(chid);
+		refid = QString::fromStdString(crefid);
+		data.insert(2, refid); // insert refid column [2]
+		text.append(data.join(",")); // CSV
+	}
+	clipboard->setText(text.join("\n")); // CSV
 
 	if (cut)
 		listItemDelete();
@@ -444,6 +520,56 @@ vector<QString> channelBookView::getSelected()
 		items.emplace_back(refid);
 	}
 	return items;
+}
+
+void channelBookView::showListEditContextMenu(QPoint &pos)
+{
+	debug("showListEditContextMenu()");
+
+	QMenu* list_edit = new QMenu;
+	list_edit->addAction("&Copy", [=]() { this->listItemCopy(); }, QKeySequence::Copy)->setEnabled(tabGetFlag(gui::TabListCopy));
+
+	list_edit->exec(list->mapToGlobal(pos));
+}
+
+void channelBookView::updateFlags()
+{
+	if (tid == nullptr)
+		return;
+
+	debug("updateFlags()");
+
+	if (list->topLevelItemCount())
+	{
+		tabSetFlag(gui::TabListSelectAll, true);
+		// tabSetFlag(gui::TabListFind, true);
+	}
+	else
+	{
+		tabSetFlag(gui::TabListSelectAll, false);
+		// tabSetFlag(gui::TabListFind, false);
+	}
+
+	if (dbih->index.count("chs"))
+	{
+		tabSetFlag(gui::OpenChannelBook, true);
+	}
+	else
+	{
+		tabSetFlag(gui::OpenChannelBook, false);
+	}
+
+	tabSetFlag(gui::TabListFind, false);
+	tabSetFlag(gui::TabListFindNext, false);
+	tabSetFlag(gui::TabListFindPrev, false);
+	tabSetFlag(gui::TabListFindAll, false);
+
+	tabSetFlag(gui::TunersetsSat, true);
+	tabSetFlag(gui::TunersetsTerrestrial, true);
+	tabSetFlag(gui::TunersetsCable, true);
+	tabSetFlag(gui::TunersetsAtsc, true);
+
+	tabUpdateFlags();
 }
 
 }

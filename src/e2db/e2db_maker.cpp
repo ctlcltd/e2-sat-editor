@@ -123,18 +123,18 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file)
 	stringstream ss;
 	ss << "eDVB services /" << LAMEDB_VER << "/" << endl;
 
-	ss << formats[MAKER_FORMAT::transponders_start];
+	ss << formats[MAKER_FORMAT::b_transponders_start];
 	for (auto & x : index["txs"])
 	{
 		transponder tx = db.transponders[x.second];
-		ss << formats[MAKER_FORMAT::transponder_flag] << formats[MAKER_FORMAT::delimiter];
+		ss << formats[MAKER_FORMAT::b_transponder_flag] << formats[MAKER_FORMAT::b_delimiter];
 		ss << hex;
 		ss << setfill('0') << setw(8) << tx.dvbns;
 		ss << ':' << setfill('0') << setw(4) << tx.tsid;
 		ss << ':' << setfill('0') << setw(4) << tx.onid;
 		ss << dec;
-		ss << formats[MAKER_FORMAT::transponder_params_separator];
-		ss << value_transponder_type(tx.ytype) << formats[MAKER_FORMAT::transponder_space_delimiter];
+		ss << formats[MAKER_FORMAT::b_transponder_params_separator];
+		ss << value_transponder_type(tx.ytype) << formats[MAKER_FORMAT::b_transponder_space_delimiter];
 		switch (tx.ytype)
 		{
 			case YTYPE::satellite: // DVB-S
@@ -190,15 +190,15 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file)
 			default:
 			return error("make_lamedb()", "Maker Error", "Unknown transponder type.");
 		}
-		ss << formats[MAKER_FORMAT::transponder_endline];
+		ss << formats[MAKER_FORMAT::b_transponder_endline];
 	}
-	ss << formats[MAKER_FORMAT::section_end];
+	ss << formats[MAKER_FORMAT::b_section_end];
 
-	ss << formats[MAKER_FORMAT::services_start];
+	ss << formats[MAKER_FORMAT::b_services_start];
 	for (auto & x : index["chs"])
 	{
 		service ch = db.services[x.second];
-		ss << formats[MAKER_FORMAT::service_flag] << formats[MAKER_FORMAT::delimiter];
+		ss << formats[MAKER_FORMAT::b_service_flag] << formats[MAKER_FORMAT::b_delimiter];
 		ss << hex;
 		ss << setfill('0') << setw(4) << ch.ssid;
 		ss << ':' << setfill('0') << setw(8) << ch.dvbns;
@@ -209,9 +209,9 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file)
 		ss << ':' << ch.snum;
 		if (LAMEDB_VER == 5)
 			ss << ':' << ch.srcid;
-		ss << formats[MAKER_FORMAT::service_params_separator];
-		ss << formats[MAKER_FORMAT::service_param_escape] << ch.chname << formats[MAKER_FORMAT::service_param_escape];
-		ss << formats[MAKER_FORMAT::service_params_separator];
+		ss << formats[MAKER_FORMAT::b_service_params_separator];
+		ss << formats[MAKER_FORMAT::b_service_param_escape] << ch.chname << formats[MAKER_FORMAT::b_service_param_escape];
+		ss << formats[MAKER_FORMAT::b_service_params_separator];
 		//TODO max length 256 EOL
 		auto last_key = (*prev(ch.data.cend()));
 		for (auto & q : ch.data)
@@ -232,12 +232,12 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file)
 					ss << ',';
 			}
 		}
-		ss << formats[MAKER_FORMAT::service_endline];
+		ss << formats[MAKER_FORMAT::b_service_endline];
 	}
-	ss << formats[MAKER_FORMAT::section_end];
+	ss << formats[MAKER_FORMAT::b_section_end];
 
-	ss << formats[MAKER_FORMAT::comment] << "editor: " << editor_string() << endl;
-	ss << formats[MAKER_FORMAT::comment] << "datetime: " << editor_timestamp() << endl;
+	ss << formats[MAKER_FORMAT::b_comment] << "editor: " << editor_string() << endl;
+	ss << formats[MAKER_FORMAT::b_comment] << "datetime: " << editor_timestamp() << endl;
 
 	file.filename = filename;
 	file.data = ss.str();
@@ -549,7 +549,7 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 	}
 
 	file.filename = filename;
-	file.data = ss.str();
+	file.data = str;
 	file.mime = "text/xml";
 	file.size = file.data.size();
 }

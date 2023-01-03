@@ -24,20 +24,21 @@ class e2db_maker : virtual public e2db_abstract
 		inline static bool MAKER_TUNERSETS = true;
 
 		enum MAKER_FORMAT {
-			comment = 0,
-			transponders_start = 1,
-			services_start = 2,
-			section_end = 3,
-			delimiter = 4,
-			transponder_flag = 5,
-			transponder_params_separator = 6,
-			transponder_space_delimiter = 7,
-			transponder_endline = 8,
-			service_flag = 9,
-			service_params_separator = 10,
-			service_param_escape = 11,
-			service_endline = 12
+			b_comment = 0,
+			b_transponders_start = 1,
+			b_services_start = 2,
+			b_section_end = 3,
+			b_delimiter = 4,
+			b_transponder_flag = 5,
+			b_transponder_params_separator = 6,
+			b_transponder_space_delimiter = 7,
+			b_transponder_endline = 8,
+			b_service_flag = 9,
+			b_service_params_separator = 10,
+			b_service_param_escape = 11,
+			b_service_endline = 12
 		};
+
 		inline static const string LAMEDB4_FORMATS[13] = {"", "transponders\n", "services\n", "end\n", "", "", "\n\t", " ", "\n/\n", "", "\n", "", "\n"};
 		inline static const string LAMEDB5_FORMATS[13] = {"# ", "", "", "", ":", "t", ",", ":", "\n", "s", ",", "\"", "\n"};
 
