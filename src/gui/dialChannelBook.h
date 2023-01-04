@@ -17,6 +17,7 @@ using std::vector;
 #ifndef dialChannelBook_h
 #define dialChannelBook_h
 #include <QWidget>
+#include <QCheckBox>
 
 #include "dialAbstract.h"
 #include "channelBookView.h"
@@ -31,6 +32,7 @@ class dialChannelBook : public dialAbstract
 		struct __action
 		{
 			QAction* add;
+			QCheckBox* filter;
 		};
 
 		dialChannelBook(dataHandler* data, int stype, e2se::logger::session* log);

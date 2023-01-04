@@ -69,6 +69,7 @@ class channelBookView : public viewAbstract
 		channelBookView(tab* tid, QWidget* cwid, dataHandler* data, e2se::logger::session* log);
 		void load();
 		void reset();
+		void filterChanged(bool enabled);
 		void listItemCut() {};
 		void listItemCopy(bool cut = false);
 		void listItemPaste() {};

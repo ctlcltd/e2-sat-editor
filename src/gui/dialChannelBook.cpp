@@ -66,7 +66,14 @@ void dialChannelBook::toolbar()
 
 	QWidget* dtspacer = new QWidget;
 	dtspacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+	this->action.filter = new QCheckBox(tr("Filters for service type"));
+	this->action.filter->setChecked(true);
+	this->action.filter->connect(this->action.filter, &QCheckBox::stateChanged, [=](int checked) { this->cbv->filterChanged(checked); });
+	dtbar->addWidget(this->action.filter);
+
 	dtbar->addWidget(dtspacer);
+	
 	//TODO default focused
 	this->action.add = dtbar->addAction(theme::icon("add"), tr("Add"), [=]() { this->sender(); });
 }

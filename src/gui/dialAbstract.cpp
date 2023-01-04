@@ -64,7 +64,9 @@ void dialAbstract::toolbar()
 
 	QWidget* dtspacer = new QWidget;
 	dtspacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
 	dtbar->addWidget(dtspacer);
+
 	//TODO default focused
 	this->action.save = dtbar->addAction(theme::icon("edit"), tr("Save"), [=]() { this->save(); });
 }

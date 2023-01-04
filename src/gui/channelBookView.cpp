@@ -204,6 +204,8 @@ void channelBookView::populate()
 {
 	string curr = "";
 
+	QList<QTreeWidgetItem*> items;
+
 	if (this->state.vx == 2)
 	{
 		curr = "chs";
@@ -251,31 +253,28 @@ void channelBookView::populate()
 			e2db::transponder tx = dbih->db.transponders[ch.txid];
 
 			int atype = dbih->value_service_super_type(ch);
-			bool hidden = this->state.sy != -1 && this->state.sy != atype;
+			bool disabled = this->state.sy != -1 && this->state.sy != atype;
 			QString idx = QString::fromStdString(to_string(chdata.first));
 			QString chid = QString::fromStdString(chdata.second);
-			// macos: unwanted chars [qt.qpa.fonts] Menlo notice
-			QString chname;
-			if (sets->value("preference/fixUnicodeChars").toBool())
-				chname = QString::fromStdString(ch.chname).remove(QRegularExpression("[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{S}\\s]+"));
-			else
-				chname = QString::fromStdString(ch.chname);
-			QString stype = QString::fromStdString(dbih->value_service_type(ch));
-			QString pname = QString::fromStdString(dbih->value_channel_provider(ch));
-			QString sys = QString::fromStdString(dbih->value_transponder_system(tx));
 			QString txp = QString::fromStdString(dbih->value_transponder_combo(tx));
-			QString pos = QString::fromStdString(dbih->get_transponder_name_value(tx));
+			QStringList entry = dbih->entries.services[chdata.second];
+			entry.insert(9, txp);
+			entry.remove(6);
+			entry.remove(1, 4);
+			entry.prepend(idx);
+			entry.prepend(x);
 
-			QTreeWidgetItem* item = new QTreeWidgetItem({x, idx, chname, stype, pname, sys, txp, pos});
+			QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 			item->setData(0, Qt::UserRole, chid);
+			item->setData(1, Qt::UserRole, disabled);
 			item->setIcon(1, theme::spacer(3));
+			item->setDisabled(disabled);
 
-			list->addTopLevelItem(item);
-
-			if (hidden)
-				item->setHidden(true);
+			items.append(item);
 		}
 	}
+
+	list->addTopLevelItems(items);
 
 	list->header()->setSectionsClickable(true);
 	// sorting default column 0|asc
@@ -289,6 +288,8 @@ void channelBookView::populate()
 void channelBookView::stacker(int vv)
 {
 	debug("stacker()", "view", vv);
+
+	QList<QTreeWidgetItem*> items;
 
 	switch (vv)
 	{
@@ -321,7 +322,7 @@ void channelBookView::stacker(int vv)
 		QString name;
 		QTreeWidgetItem* item;
 		QTreeWidgetItem* subitem;
-		bool hidden = false;
+		bool disabled = false;
 
 		//TODO pos value 0 with terrestrial, cable, atsc
 		if (vv == views::Satellites)
@@ -347,7 +348,7 @@ void channelBookView::stacker(int vv)
 				QString txp = QString::fromStdString(ptxp);
 				subitem = new QTreeWidgetItem(item, {txp});
 				subitem->setData(0, Qt::UserRole, subindex);
-				tree->addTopLevelItem(subitem);
+				items.append(subitem);
 			}
 		}
 		//TODO sort order: TV, Radio
@@ -355,7 +356,7 @@ void channelBookView::stacker(int vv)
 		{
 			e2db::bouquet bs = dbih->bouquets[q.first];
 			name = QString::fromStdString(bs.nname.empty() ? bs.name : bs.nname);
-			hidden = this->state.sy != -1 && this->state.sy != bs.btype;
+			disabled = this->state.sy != -1 && this->state.sy != bs.btype;
 			item = new QTreeWidgetItem({name});
 
 			for (string & ubname : bs.userbouquets)
@@ -365,14 +366,14 @@ void channelBookView::stacker(int vv)
 				QString name = QString::fromStdString(ub.name);
 				subitem = new QTreeWidgetItem(item, {name});
 				subitem->setData(0, Qt::UserRole, subindex);
-				tree->addTopLevelItem(subitem);
+				items.append(subitem);
 			}
 		}
 		else if (vv == views::Resolution)
 		{
 			int stype = std::stoi(q.first);
 			int atype = dbih->value_service_super_type(stype);
-			hidden = this->state.sy != -1 && this->state.sy != atype;
+			disabled = this->state.sy != -1 && this->state.sy != atype;
 			name = QString::fromStdString(dbih->value_service_type(stype));
 			name.append(QString::fromStdString("\tid: " + q.first));
 			item = new QTreeWidgetItem({name});
@@ -385,11 +386,14 @@ void channelBookView::stacker(int vv)
 
 		index = QString::fromStdString(q.first);
 		item->setData(0, Qt::UserRole, index);
-		tree->addTopLevelItem(item);
-
-		if (hidden)
-			item->setHidden(true);
+		item->setData(1, Qt::UserRole, disabled);
+		item->setDisabled(disabled);
+		
+		items.append(item);
 	}
+
+	tree->addTopLevelItems(items);
+
 	if (vv == views::Satellites)
 	{
 		this->index = dbih->get_channels_index();
@@ -438,6 +442,32 @@ void channelBookView::sideRowChanged(int index)
 	stacker(index);
 
 	updateFlags();
+}
+
+void channelBookView::filterChanged(bool enabled)
+{
+	debug("filterChanged()", "enabled", enabled);
+
+	int i, count;
+
+	i = 0;
+	count = tree->topLevelItemCount();
+	while (i != count)
+	{
+		QTreeWidgetItem* item = tree->topLevelItem(i);
+		bool disabled = item->data(1, Qt::UserRole).toBool();
+		item->setDisabled(enabled && disabled);
+		i++;
+	}
+	i = 0;
+	count = list->topLevelItemCount();
+	while (i != count)
+	{
+		QTreeWidgetItem* item = list->topLevelItem(i);
+		bool disabled = item->data(1, Qt::UserRole).toBool();
+		item->setDisabled(enabled && disabled);
+		i++;
+	}
 }
 
 void channelBookView::listItemSelectionChanged()
