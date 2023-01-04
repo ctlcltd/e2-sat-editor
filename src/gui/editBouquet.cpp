@@ -57,6 +57,7 @@ void editBouquet::layout(QWidget* cwid)
 	dtf0bn->setProperty("field", "name");
 	fields.emplace_back(dtf0bn);
 	dtf0bn->setMinimumWidth(240);
+	dtf0bn->setMaxLength(255);
 	dtf0->addRow(tr("Bouquet name"), dtf0bn);
 	dtf0->addItem(new QSpacerItem(0, 0));
 

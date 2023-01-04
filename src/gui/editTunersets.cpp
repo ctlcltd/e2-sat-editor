@@ -69,6 +69,7 @@ void editTunersets::layout(QWidget* cwid)
 	dtf0cs->setProperty("field", "charset");
 	fields.emplace_back(dtf0cs);
 	dtf0cs->setMinimumWidth(100);
+	dtf0cs->setMaxLength(32);
 	dtf0->addRow(tr("Charset"), dtf0cs);
 	dtf0->addItem(new QSpacerItem(0, 0));
 

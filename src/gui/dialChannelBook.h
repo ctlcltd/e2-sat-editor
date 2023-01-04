@@ -31,12 +31,14 @@ class dialChannelBook : public dialAbstract
 	public:
 		struct __action
 		{
+			QAction* cancel;
 			QAction* add;
 			QCheckBox* filter;
 		};
 
 		dialChannelBook(dataHandler* data, int stype, e2se::logger::session* log);
 		void display(QWidget* cwid);
+		void destroy();
 		void setEventCallback(std::function<void(vector<QString> items)> func)
 		{
 			this->eventCallback = func;

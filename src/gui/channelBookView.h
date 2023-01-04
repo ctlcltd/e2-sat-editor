@@ -60,9 +60,9 @@ class channelBookView : public viewAbstract
 			chname,
 			chtype,
 			chpname,
-			chsys,
 			chtxp,
-			chpos
+			chpos,
+			chsys
 		};
 
 		channelBookView(dataHandler* data, int stype, e2se::logger::session* log);

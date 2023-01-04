@@ -84,6 +84,7 @@ void editTunersetsTransponder::leadSatLayout()
 	fields.emplace_back(dtf0sf);
 	dtf0sf->setMinimumWidth(100);
 	dtf0sf->setValidator(new QIntValidator);
+	dtf0sf->setMaxLength(6);
 	dtf0->addRow(tr("Frequency"), dtf0sf);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -106,6 +107,7 @@ void editTunersetsTransponder::leadSatLayout()
 	fields.emplace_back(dtf0ss);
 	dtf0ss->setMinimumWidth(100);
 	dtf0ss->setValidator(new QIntValidator);
+	dtf0ss->setMaxLength(6);
 	dtf0->addRow(tr("Symbol Rate"), dtf0ss);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	
@@ -154,6 +156,7 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 	fields.emplace_back(dtf0tf);
 	dtf0tf->setMinimumWidth(100);
 	dtf0tf->setValidator(new QIntValidator);
+	dtf0tf->setMaxLength(6);
 	dtf0->addRow(tr("Frequency"), dtf0tf);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -230,6 +233,7 @@ void editTunersetsTransponder::leadCableLayout()
 	fields.emplace_back(dtf0cf);
 	dtf0cf->setMinimumWidth(100);
 	dtf0cf->setValidator(new QIntValidator);
+	dtf0cf->setMaxLength(6);
 	dtf0->addRow(tr("Frequency"), dtf0cf);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -252,6 +256,7 @@ void editTunersetsTransponder::leadCableLayout()
 	fields.emplace_back(dtf0cs);
 	dtf0cs->setMinimumWidth(100);
 	dtf0cs->setValidator(new QIntValidator);
+	dtf0cs->setMaxLength(6);
 	dtf0->addRow(tr("Symbol Rate"), dtf0cs);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	
@@ -286,6 +291,7 @@ void editTunersetsTransponder::leadAtscLayout()
 	fields.emplace_back(dtf0cf);
 	dtf0cf->setMinimumWidth(100);
 	dtf0cf->setValidator(new QIntValidator);
+	dtf0cf->setMaxLength(6);
 	dtf0->addRow(tr("Frequency"), dtf0cf);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -294,6 +300,7 @@ void editTunersetsTransponder::leadAtscLayout()
 	fields.emplace_back(dtf0am);
 	dtf0am->setMaximumWidth(100);
 	dtf0am->setValidator(new QIntValidator);
+	dtf0am->setMaxLength(1);
 	dtf0->addRow(tr("Modulation"), dtf0am);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -476,6 +483,7 @@ void editTunersetsTransponder::thirdSatLayout()
 	fields.emplace_back(dtf2ss);
 	dtf2ss->setMaximumWidth(50);
 	dtf2ss->setValidator(new QIntValidator);
+	dtf2ss->setMaxLength(8);
 	dtf2->addRow(tr("isid"), dtf2ss);
 	dtf2->addItem(new QSpacerItem(0, 0));
 
@@ -484,6 +492,7 @@ void editTunersetsTransponder::thirdSatLayout()
 	fields.emplace_back(dtf2st);
 	dtf2st->setMaximumWidth(50);
 	dtf2st->setValidator(new QIntValidator);
+	dtf2st->setMaxLength(4);
 	dtf2->addRow(tr("mts"), dtf2st);
 	dtf2->addItem(new QSpacerItem(0, 0));
 
@@ -492,6 +501,7 @@ void editTunersetsTransponder::thirdSatLayout()
 	fields.emplace_back(dtf2sd);
 	dtf2sd->setMaximumWidth(50);
 	dtf2sd->setValidator(new QIntValidator);
+	dtf2sd->setMaxLength(4);
 	dtf2->addRow(tr("plsmode"), dtf2sd);
 	dtf2->addItem(new QSpacerItem(0, 0));
 	
@@ -500,6 +510,7 @@ void editTunersetsTransponder::thirdSatLayout()
 	fields.emplace_back(dtf2sc);
 	dtf2sc->setMaximumWidth(50);
 	dtf2sc->setValidator(new QIntValidator);
+	dtf2sc->setMaxLength(4);
 	dtf2->addRow(tr("plscode"), dtf2sc);
 	dtf2->addItem(new QSpacerItem(0, 0));
 
@@ -508,6 +519,7 @@ void editTunersetsTransponder::thirdSatLayout()
 	fields.emplace_back(dtf2sn);
 	dtf2sn->setMaximumWidth(50);
 	dtf2sn->setValidator(new QIntValidator);
+	dtf2sn->setMaxLength(4);
 	dtf2->addRow(tr("plsn"), dtf2sn);
 	dtf2->addItem(new QSpacerItem(0, 0));
 

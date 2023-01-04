@@ -76,6 +76,7 @@ void editService::serviceLayout()
 	dtf0sn->setProperty("field", "chname");
 	fields.emplace_back(dtf0sn);
 	dtf0sn->setMinimumWidth(240);
+	dtf0sn->setMaxLength(255);
 	dtf0->addRow(tr("Service name"), dtf0sn);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -115,11 +116,11 @@ void editService::transponderLayout()
 	QFormLayout* dtf1 = new QFormLayout;
 	dtf1->setSpacing(12);
 
-	//TODO validator and transform
 	this->dtf1tn = new QComboBox;
 	dtf1tn->setProperty("field", "pos");
 	fields.emplace_back(dtf1tn);
 	dtf1tn->setMinimumWidth(180);
+	dtf1tn->setValidator(new QIntValidator);
 	dtf1tn->setEditable(true);
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 	dtf1tn->connect(dtf1tn, &QComboBox::currentIndexChanged, [=](int index) { this->tunerComboChanged(index); });
@@ -127,13 +128,11 @@ void editService::transponderLayout()
 	dtf1tn->connect(dtf1tn, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) { this->tunerComboChanged(index); });
 #endif
 
-	//TODO validator and transform
 	this->dtf1tx = new QComboBox;
 	dtf1tx->setProperty("field", "txid");
 	fields.emplace_back(dtf1tx);
 	dtf1tx->setMinimumWidth(180);
 	dtf1tx->setEditable(true);
-
 	for (auto & q : txdata)
 	{
 		QString name;
@@ -177,6 +176,7 @@ void editService::paramsLayout()
 	dtf2pn->setProperty("field", "p");
 	fields.emplace_back(dtf2pn);
 	dtf2pn->setMinimumWidth(200);
+	dtf2pn->setMaxLength(255);
 	dtf2p->addRow(tr("Provider name"), dtf2pn);
 
 	dtw20->setLayout(dtf2p);
@@ -191,6 +191,7 @@ void editService::paramsLayout()
 	dtf2vp->setProperty("field", "vpid");
 	fields.emplace_back(dtf2vp);
 	dtf2vp->setMaximumWidth(48);
+	dtf2vp->setValidator(new QIntValidator);
 	dtc20->addWidget(dtf2vp);
 	dtc20->addWidget(new QLabel("[VPID]"));
 
@@ -200,6 +201,7 @@ void editService::paramsLayout()
 	dtf2ma->setProperty("field", "mpegapid");
 	fields.emplace_back(dtf2ma);
 	dtf2ma->setMaximumWidth(48);
+	dtf2ma->setValidator(new QIntValidator);
 	dtc21->addWidget(dtf2ma);
 	dtc21->addWidget(new QLabel("[APID]"));
 
@@ -209,6 +211,7 @@ void editService::paramsLayout()
 	dtf2tp->setProperty("field", "tpid");
 	fields.emplace_back(dtf2tp);
 	dtf2tp->setMaximumWidth(48);
+	dtf2tp->setValidator(new QIntValidator);
 	dtc22->addWidget(dtf2tp);
 	dtc22->addWidget(new QLabel("[TPID]"));
 
@@ -218,6 +221,7 @@ void editService::paramsLayout()
 	dtf2pp->setProperty("field", "pcrpid");
 	fields.emplace_back(dtf2pp);
 	dtf2pp->setMaximumWidth(48);
+	dtf2pp->setValidator(new QIntValidator);
 	dtc23->addWidget(dtf2pp);
 	dtc23->addWidget(new QLabel("[PCRPID]"));
 
@@ -227,6 +231,7 @@ void editService::paramsLayout()
 	dtf2a3->setProperty("field", "ac3pid");
 	fields.emplace_back(dtf2a3);
 	dtf2a3->setMaximumWidth(48);
+	dtf2a3->setValidator(new QIntValidator);
 	dtc24->addWidget(dtf2a3);
 	dtc24->addWidget(new QLabel("[AC3PID]"));
 
@@ -236,6 +241,7 @@ void editService::paramsLayout()
 	dtf2vt->setProperty("field", "vtype");
 	fields.emplace_back(dtf2vt);
 	dtf2vt->setMaximumWidth(48);
+	dtf2vt->setValidator(new QIntValidator);
 	dtc25->addWidget(dtf2vt);
 
 	QHBoxLayout* dtc26 = new QHBoxLayout;
@@ -244,6 +250,7 @@ void editService::paramsLayout()
 	dtf2ac->setProperty("field", "achannel");
 	fields.emplace_back(dtf2ac);
 	dtf2ac->setMaximumWidth(48);
+	dtf2ac->setValidator(new QIntValidator);
 	dtc26->addWidget(dtf2ac);
 
 	QHBoxLayout* dtc27 = new QHBoxLayout;
@@ -252,6 +259,7 @@ void editService::paramsLayout()
 	dtf2ad->setProperty("field", "ac3delay");
 	fields.emplace_back(dtf2ad);
 	dtf2ad->setMaximumWidth(48);
+	dtf2ad->setValidator(new QIntValidator);
 	dtc27->addWidget(dtf2ad);
 	dtc27->addWidget(new QLabel("<small>ms.</small>"));
 
@@ -261,6 +269,7 @@ void editService::paramsLayout()
 	dtf2pd->setProperty("field", "pcmdelay");
 	fields.emplace_back(dtf2pd);
 	dtf2pd->setMaximumWidth(48);
+	dtf2pd->setValidator(new QIntValidator);
 	dtc28->addWidget(dtf2pd);
 	dtc28->addWidget(new QLabel("<small>ms.</small>"));
 
@@ -270,6 +279,7 @@ void editService::paramsLayout()
 	dtf2xt->setProperty("field", "subtitle");
 	fields.emplace_back(dtf2xt);
 	dtf2xt->setMaximumWidth(48);
+	dtf2xt->setValidator(new QIntValidator);
 	dtc29->addWidget(dtf2xt);
 
 	QHBoxLayout* dtc2a = new QHBoxLayout;
@@ -278,6 +288,7 @@ void editService::paramsLayout()
 	dtf2at->setProperty("field", "atype");
 	fields.emplace_back(dtf2at);
 	dtf2at->setMaximumWidth(48);
+	dtf2at->setValidator(new QIntValidator);
 	dtc2a->addWidget(dtf2at);
 
 	QHBoxLayout* dtc2b = new QHBoxLayout;
@@ -286,6 +297,7 @@ void editService::paramsLayout()
 	dtf2ap->setProperty("field", "apid");
 	fields.emplace_back(dtf2ap);
 	dtf2ap->setMaximumWidth(48);
+	dtf2ap->setValidator(new QIntValidator);
 	dtc2b->addWidget(dtf2ap);
 
 	QHBoxLayout* dtc2c = new QHBoxLayout;
@@ -294,6 +306,7 @@ void editService::paramsLayout()
 	dtf2cx->setProperty("field", "cmax");
 	fields.emplace_back(dtf2cx);
 	dtf2cx->setMaximumWidth(48);
+	dtf2cx->setValidator(new QIntValidator);
 	dtc2c->addWidget(dtf2cx);
 
 	dtw21->setLayout(dtf2c);
@@ -307,6 +320,7 @@ void editService::paramsLayout()
 	dtf2cd->setProperty("field", "raw_C");
 	fields.emplace_back(dtf2cd);
 	dtf2cd->setMinimumWidth(200);
+	dtf2cd->setMaxLength(255);
 	dtf2C->addRow(tr("Card ID flags"), dtf2cd);
 	dtf2C->addRow(new QLabel(tr("<small>Enter them in comma separated values.<br>(eg. C:0100,C:0200,…)</small>")));
 
@@ -352,6 +366,7 @@ void editService::paramsLayout()
 	dtf2oc->setProperty("field", "raw_data");
 	fields.emplace_back(dtf2oc);
 	dtf2oc->setMinimumWidth(200);
+	dtf2oc->setMaxLength(255);
 	dtf2o->addRow(tr("Custom edit flags"), dtf2oc);
 	dtf2o->addRow(new QLabel(tr("<small><b>It will overwrite any previously typed!</b><br>Enter them in comma separated values.<br>(eg. p:ProviderName,c:0100,C:0200,…)</small>")));
 

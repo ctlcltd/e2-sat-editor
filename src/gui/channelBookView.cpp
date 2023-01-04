@@ -110,9 +110,9 @@ void channelBookView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::chname, 175);	// Name
 	list->setColumnWidth(ITEM_ROW_ROLE::chtype, 70);	// Type
 	list->setColumnWidth(ITEM_ROW_ROLE::chpname, 125);	// Provider
-	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 65);		// System
-	list->setColumnWidth(ITEM_ROW_ROLE::chtxp, 175);	// Transponder
+	list->setColumnWidth(ITEM_ROW_ROLE::chtxp, 165);	// Transponder
 	list->setColumnWidth(ITEM_ROW_ROLE::chpos, 120);	// Position
+	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 65);		// System
 
 	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->sortByColumn(column); });
 	tree->connect(tree, &QTreeWidget::currentItemChanged, [=]() { this->populate(); });
@@ -258,7 +258,8 @@ void channelBookView::populate()
 			QString chid = QString::fromStdString(chdata.second);
 			QString txp = QString::fromStdString(dbih->value_transponder_combo(tx));
 			QStringList entry = dbih->entries.services[chdata.second];
-			entry.insert(9, txp);
+			entry.move(8, 9);
+			entry.insert(8, txp);
 			entry.remove(6);
 			entry.remove(1, 4);
 			entry.prepend(idx);

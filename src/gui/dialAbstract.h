@@ -37,12 +37,13 @@ class dialAbstract : protected e2se::log_factory
 
 		struct __action
 		{
+			QAction* cancel;
 			QAction* save;
 		};
 
 		virtual ~dialAbstract() = default;
 		virtual void display(QWidget* cwid) = 0;
-		void destroy();
+		virtual void destroy();
 
 		QWidget* widget;
 	protected:
@@ -50,12 +51,17 @@ class dialAbstract : protected e2se::log_factory
 		virtual void toolbar();
 		virtual void store() = 0;
 		virtual void retrieve() = 0;
+		void cancel();
 		void save();
+		void expand();
+		void collapse();
+		void toggle();
 
 		QDialog* dial;
 		QToolBar* dtbar;
 		QGridLayout* dtform;
-		QMargins frameMargins = QMargins (12, 12, 12, 12);
+		bool collapsible = false;
+		QMargins frameMargins = QMargins (12, 16, 12, 16);
 		bool frameFixed = true;
 		dataHandler* data = nullptr;
 		e2db* dbih = nullptr;

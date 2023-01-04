@@ -27,6 +27,8 @@ dialChannelBook::dialChannelBook(dataHandler* data, int stype, e2se::logger::ses
 	this->data = data;
 	this->stype = stype;
 
+	this->collapsible = true;
+
 	this->frameMargins = QMargins (0, 0, 0, 0);
 	this->frameFixed = false;
 }
@@ -39,18 +41,18 @@ void dialChannelBook::display(QWidget* cwid)
 
 	layout(cwid);
 
-	dial->open();
+	dial->show();
 }
 
 void dialChannelBook::layout(QWidget* cwid)
 {
 	this->dialAbstract::layout(cwid);
 
-	dial->setParent(nullptr);
-	dial->setWindowFlags(Qt::Dialog);
+	dial->setWindowFlag(Qt::WindowStaysOnTopHint);
+	dial->setAttribute(Qt::WA_MacAlwaysShowToolWindow);
 	dial->setMinimumSize(760, 420);
-	dial->setWindowTitle("Add Channel");
-	dial->connect(dial, &QDialog::finished, [=]() { delete cbv; delete dial; });
+	dial->setWindowTitle(tr("Add Channel"));
+	dial->connect(dial, &QDialog::finished, [=]() { this->destroy(); });
 
 	this->cbv = new e2se_gui::channelBookView(this->data, this->stype, this->log->log);
 
@@ -65,7 +67,9 @@ void dialChannelBook::toolbar()
 	debug("toolbar()");
 
 	QWidget* dtspacer = new QWidget;
-	dtspacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	dtspacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
+	QWidget* dtseparator = new QWidget;
+	dtseparator->setMaximumWidth(5);
 
 	this->action.filter = new QCheckBox(tr("Filters for service type"));
 	this->action.filter->setChecked(true);
@@ -73,9 +77,12 @@ void dialChannelBook::toolbar()
 	dtbar->addWidget(this->action.filter);
 
 	dtbar->addWidget(dtspacer);
-	
-	//TODO default focused
+
+	this->action.cancel = dtbar->addAction(tr("Cancel"), [=]() { this->cancel(); });
+	dtbar->addWidget(dtseparator);
 	this->action.add = dtbar->addAction(theme::icon("add"), tr("Add"), [=]() { this->sender(); });
+
+	dtbar->widgetForAction(this->action.add)->setFocus();
 }
 
 void dialChannelBook::sender()
@@ -83,6 +90,15 @@ void dialChannelBook::sender()
 	debug("sender()");
 
 	callEventCallback(cbv->getSelected());
+}
+
+void dialChannelBook::destroy()
+{
+	debug("destroy()");
+
+	delete this->cbv;
+	delete this->dial;
+	delete this;
 }
 
 }
