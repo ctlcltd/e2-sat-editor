@@ -454,7 +454,7 @@ struct e2db_abstract
 		pair<unordered_map<string, bouquet>, unordered_map<string, userbouquet>> get_bouquets();
 		virtual unordered_map<string, string> get_input() { return this->e2db; };
 		virtual unordered_map<string, e2db_file> get_output() { return this->e2db_out; };
-		void merge(e2db_abstract* dst);
+		virtual void merge(e2db_abstract* dst);
 		virtual void debugger();
 	protected:
 		inline static int LAMEDB_VER = 0;

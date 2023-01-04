@@ -1338,7 +1338,7 @@ void tab::ftpDownload()
 
 	updateIndex();
 
-	dbih->merge(files);
+	dbih->importBlob(files);
 
 	view->reset();
 	view->load();

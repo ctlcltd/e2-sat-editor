@@ -47,7 +47,7 @@ void e2db::import_file(vector<string> paths)
 	debug("import_file()", "file input", "auto");
 
 	bool merge = this->get_input().size() != 0 ? true : false;
-	auto* dst = merge ? new e2db(this->log->log) : this;
+	auto* dst = merge ? newptr() : this;
 
 	for (string & path : paths)
 	{

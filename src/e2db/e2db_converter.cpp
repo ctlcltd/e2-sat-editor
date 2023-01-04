@@ -47,7 +47,7 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, vector<string> pat
 	debug("import_csv_file()", "file input", fci);
 
 	bool merge = this->get_input().size() != 0 ? true : false;
-	auto* dst = merge ? new e2db_converter(this->log->log) : this;
+	auto* dst = merge ? newptr() : this;
 
 	for (string & path : paths)
 	{
@@ -66,7 +66,7 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, string path)
 	debug("import_csv_file()", "file input", fci);
 
 	bool merge = this->get_input().size() != 0 ? true : false;
-	auto* dst = merge ? new e2db_converter(this->log->log) : this;
+	auto* dst = merge ? newptr() : this;
 
 	import_csv_file(fci, opts, dst, path);
 

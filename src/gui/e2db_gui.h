@@ -40,6 +40,7 @@ class e2db : public ::e2se_e2db::e2db
 
 		e2db(e2se::logger::session* log);
 		~e2db() {};
+		e2db* newptr() { return new e2se_gui::e2db(this->log->log); }
 		void error(string msg, string optk, string optv);
 		string addTransponder(transponder& tx);
 		string editTransponder(string txid, transponder& tx);
@@ -68,9 +69,9 @@ class e2db : public ::e2se_e2db::e2db
 		void removeTunersetsTransponder(string trid, tunersets_table tn);
 		bool prepare(string path);
 		bool write(string path);
-		void merge(unordered_map<string, e2db_file> files);
 		void importFile(vector<string> paths);
 		void exportFile(int flags, vector<string> paths);
+		void importBlob(unordered_map<string, e2db_file> files);
 		QStringList entryTransponder(transponder tx);
 		QStringList entryService(service ch);
 		QStringList entryMarker(channel_reference chref);

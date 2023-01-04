@@ -29,7 +29,7 @@ e2db::e2db(e2se::logger::session* log)
 {
 	std::setlocale(LC_NUMERIC, "C");
 
-	this->log = new e2se::logger(log, "e2db");
+	this->log = new e2se::logger(log, "gui.e2db");
 	debug("e2db()");
 
 	this->sets = new QSettings;
@@ -75,7 +75,6 @@ void e2db::error(string msg, string optk, string optv)
 	debug("error()");
 
 	this->::e2se_e2db::e2db::error(msg, optk, optv);
-	//TODO FIX
 	QMessageBox::critical(nullptr, QString::fromStdString(optk), QString::fromStdString(optv));
 }
 
@@ -282,33 +281,6 @@ bool e2db::write(string path)
 	return true;
 }
 
-//TODO FIX duplicate bouquets
-void e2db::merge(unordered_map<string, e2db_file> files)
-{
-	debug("merge()");
-
-	bool merge = this->get_input().size() != 0 ? true : false;
-	auto* dst = new e2db(this->log->log);
-	dst->parse_e2db(files);
-	this->::e2se_e2db::e2db::merge(dst);
-	delete dst;
-
-	if (merge)
-	{
-		entries.transponders.clear();
-		entries.services.clear();
-	}
-
-	for (auto & txdata : db.transponders)
-	{
-		entries.transponders[txdata.first] = entryTransponder(txdata.second);
-	}
-	for (auto & chdata : db.services)
-	{
-		entries.services[chdata.first] = entryService(chdata.second);
-	}
-}
-
 void e2db::importFile(vector<string> paths)
 {
 	debug("importFile()");
@@ -340,6 +312,38 @@ void e2db::exportFile(int bit, vector<string> paths)
 		export_file(FPORTS (bit), paths);
 	else
 		export_file(paths);
+}
+
+//TODO FIX duplicate bouquets
+void e2db::importBlob(unordered_map<string, e2db_file> files)
+{
+	debug("importBlob()");
+
+	bool merge = this->get_input().size() != 0 ? true : false;
+
+	if (merge)
+	{
+		auto* dst = newptr();
+		dst->parse_e2db(files);
+		this->::e2se_e2db::e2db::merge(dst);
+		delete dst;
+
+		entries.transponders.clear();
+		entries.services.clear();
+	}
+	else
+	{
+		this->parse_e2db(files);
+	}
+
+	for (auto & txdata : db.transponders)
+	{
+		entries.transponders[txdata.first] = entryTransponder(txdata.second);
+	}
+	for (auto & chdata : db.services)
+	{
+		entries.services[chdata.first] = entryService(chdata.second);
+	}
 }
 
 QStringList e2db::entryTransponder(transponder tx)

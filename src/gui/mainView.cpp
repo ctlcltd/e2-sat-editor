@@ -1697,7 +1697,7 @@ void mainView::putListItems(vector<QString> items)
 			}
 			else
 			{
-				error("putListItem()", "refid", refid);
+				error("putListItems()", "refid", refid);
 				continue;
 			}
 		}
