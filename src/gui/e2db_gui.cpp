@@ -72,10 +72,11 @@ e2db::e2db(e2se::logger::session* log)
 
 void e2db::error(string msg, string optk, string optv)
 {
-	debug("gui.error()");
+	debug("error()");
 
 	this->::e2se_e2db::e2db::error(msg, optk, optv);
-	QMessageBox::critical(nullptr, NULL, QString::fromStdString(optv));
+	//TODO FIX
+	QMessageBox::critical(nullptr, QString::fromStdString(optk), QString::fromStdString(optv));
 }
 
 string e2db::addTransponder(transponder& tx)
@@ -345,12 +346,25 @@ QStringList e2db::entryTransponder(transponder tx)
 {
 	QString sys = QString::fromStdString(value_transponder_system(tx));
 	QString pos = QString::fromStdString(value_transponder_position(tx));
+	QString tname = QString::fromStdString(get_tuner_name(tx));
 	QString freq = QString::fromStdString(to_string(tx.freq));
 	QString pol = QString::fromStdString(value_transponder_polarization(tx.pol));
 	QString sr = QString::fromStdString(to_string(tx.sr));
-	QString fec = QString::fromStdString(value_transponder_fec(tx.fec, tx.ytype));
+	QString fec;
+	switch (tx.ytype)
+	{
+		case e2db::YTYPE::satellite:
+		case e2db::YTYPE::cable:
+			fec = QString::fromStdString(value_transponder_fec(tx.fec, tx.ytype));
+		break;
+		case e2db::YTYPE::terrestrial:
+			fec.append(QString::fromStdString(value_transponder_fec(tx.hpfec, tx.ytype)));
+			fec.append(" | ");
+			fec.append(QString::fromStdString(value_transponder_fec(tx.lpfec, tx.ytype)));
+		break;
+	}
 
-	return QStringList ({sys, pos, freq, pol, sr, fec});
+	return QStringList ({sys, pos, tname, freq, pol, sr, fec});
 }
 
 QStringList e2db::entryService(service ch)

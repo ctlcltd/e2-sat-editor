@@ -55,7 +55,7 @@ void e2db::import_file(vector<string> paths)
 		{
 			return error("import_file()", "File Error", "File \"" + path + "\" not exists.");
 		}
-		if (! std::filesystem::is_regular_file(path)) //C++17
+		if (! std::filesystem::is_regular_file(path) && ! std::filesystem::is_directory(path)) //C++17
 		{
 			return error("import_file()", "File Error", "File \"" + path + "\" is not a valid file.");
 		}
@@ -249,7 +249,8 @@ void e2db::add_transponder(transponder& tx)
 {
 	debug("add_transponder()", "txid", tx.txid);
 
-	tx.index = index.count("txs");
+	if (tx.index == -1)
+		tx.index = index["txs"].size() + 1;
 	e2db_abstract::add_transponder(tx.index, tx);
 }
 
@@ -299,7 +300,8 @@ void e2db::add_service(service& ch)
 {
 	debug("add_service()", "chid", ch.chid);
 
-	ch.index = index.count("chs");
+	if (ch.index == -1)
+		ch.index = index["chs"].size() + 1;
 	e2db_abstract::add_service(ch.index, ch);
 }
 
@@ -394,6 +396,8 @@ void e2db::add_bouquet(bouquet& bs)
 {
 	debug("add_bouquet()", "bname", bs.bname);
 
+	if (bs.index == -1)
+		bs.index = index["bss"].size() + 1;
 	e2db_abstract::add_bouquet(bs.index, bs);
 }
 
@@ -433,14 +437,13 @@ void e2db::remove_bouquet(string bname)
 	bouquets.erase(bname);
 }
 
-//TODO bname in destructive edit
 void e2db::add_userbouquet(userbouquet& ub)
 {
 	debug("add_userbouquet()");
 
 	bouquet bs = bouquets[ub.pname];
 
-	if (ub.index < 0)
+	if (ub.index == -1)
 	{
 		int idx = 0;
 		string ktype;
@@ -449,20 +452,23 @@ void e2db::add_userbouquet(userbouquet& ub)
 		else if (bs.btype == STYPE::radio)
 			ktype = "radio";
 
-		for (auto it = index["ubs"].begin(); it != index["ubs"].end(); it++)
+		if (index.count("ubs"))
 		{
-			unsigned long pos0 = it->second.find(".dbe");
-			unsigned long pos1 = it->second.find('.' + ktype);
-			int len = it->second.length();
-			int n = 0;
-			if (pos0 != string::npos && pos1 != string::npos)
+			for (auto it = index["ubs"].begin(); it != index["ubs"].end(); it++)
 			{
-				n = atoi(it->second.substr(pos0 + 4, len - pos1 - 1).data());
-				idx = n > idx ? n : idx;
+				unsigned long pos0 = it->second.find(".dbe");
+				unsigned long pos1 = it->second.find('.' + ktype);
+				int len = it->second.length();
+				int n = 0;
+				if (pos0 != string::npos && pos1 != string::npos)
+				{
+					n = std::atoi(it->second.substr(pos0 + 4, len - pos1 - 1).data());
+					idx = n > idx ? n : idx;
+				}
 			}
+			idx = idx + 1;
 		}
-
-		idx = idx ? idx + 1 : -1;
+		
 		ub.index = idx;
 	}
 	if (ub.bname.empty())
@@ -574,6 +580,8 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 		ref.tsid = ch.tsid;
 	}
 
+	if (chref.index == -1 && ! chref.marker)
+		chref.index = index[bname].size() + 1;
 	e2db_abstract::add_channel_reference(chref.index, ub, chref, ref);
 }
 
@@ -819,7 +827,8 @@ void e2db::add_tunersets_table(tunersets_table& tn, tunersets tv)
 	char yname = value_transponder_type(tn.ytype);
 	iname += yname;
 
-	tn.index = index.count(iname);
+	if (tn.index == -1)
+		tn.index = index.count(iname) ? index[iname].size() : 0;
 	e2db_abstract::add_tunersets_table(tn.index, tn, tv);
 	tuners[tv.ytype].tables[tn.tnid] = tn;
 }
@@ -897,7 +906,8 @@ void e2db::add_tunersets_transponder(tunersets_transponder& tntxp, tunersets_tab
 {
 	debug("add_tunersets_transponder()", "trid", tntxp.trid);
 
-	tntxp.index = index.count(tn.tnid);
+	if (tntxp.index == -1)
+		tntxp.index = index[tn.tnid].size() + 1;
 	e2db_abstract::add_tunersets_transponder(tntxp.index, tntxp, tn);
 	tuners[tn.ytype].tables[tn.tnid].transponders[tntxp.trid] = tntxp;
 }

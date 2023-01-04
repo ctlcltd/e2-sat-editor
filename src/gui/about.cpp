@@ -30,7 +30,7 @@ about::about(e2se::logger::session* log)
 
 	QDialog* dial = new QDialog;
 	dial->setWindowTitle("About e2 SAT Editor");
-	dial->connect(dial, &QDialog::finished, [=]() { if (dial != nullptr) delete dial; delete this; });
+	dial->connect(dial, &QDialog::finished, [=]() { delete dial; delete this; });
 
 	QGridLayout* dfrm = new QGridLayout(dial);
 	QHBoxLayout* dhbox = new QHBoxLayout;

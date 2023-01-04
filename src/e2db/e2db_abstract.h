@@ -209,7 +209,7 @@ struct e2db_abstract
 			int stype;
 			int snum;
 			int srcid;
-			int index;
+			int index = -1;
 			string txid;
 			string chname;
 			// data <field char, vector<value string>>
@@ -241,8 +241,8 @@ struct e2db_abstract
 			int pos = -1; // DVB-S
 			int inv = -1;
 			int flgs = -1; // DVB-S
-			int sys = -1; // ? DVB-S
-			int mod = -1; // ? DVB-S
+			int sys = -1;
+			int mod = -1; // DVB-S
 			int tmod = -1; // DVB-T
 			int cmod = -1; // DVB-C
 			int amod = -1; // ATSC
@@ -253,7 +253,7 @@ struct e2db_abstract
 			int guard = -1; // DVB-T
 			int hier = -1; // DVB-T
 			string oflgs; // ?
-			int index;
+			int index = -1;
 		};
 
 		struct fec
@@ -270,7 +270,7 @@ struct e2db_abstract
 			int atype;
 			int anum;
 			string value;
-			int index;
+			int index = -1;
 		};
 
 		struct bouquet
@@ -281,7 +281,7 @@ struct e2db_abstract
 			int btype;
 			// userbouquets <bname string>
 			vector<string> userbouquets;
-			int index;
+			int index = -1;
 		};
 
 		struct userbouquet
@@ -291,7 +291,7 @@ struct e2db_abstract
 			string pname;
 			// channels <chid string, channel_reference struct>
 			unordered_map<string, channel_reference> channels;
-			int index;
+			int index = -1;
 		};
 
 		struct tunersets_transponder
@@ -321,7 +321,7 @@ struct e2db_abstract
 			int plsmode = -1; // DVB-S
 			int plscode = -1; // DVB-S
 			int plsn = -1; // ? DVB-S
-			int index;
+			int index = -1;
 		};
 
 		struct tunersets_table
@@ -335,7 +335,7 @@ struct e2db_abstract
 			int feed = -1;
 			// transponders <trid string, tunersets_transponder struct>
 			unordered_map<string, tunersets_transponder> transponders;
-			int index;
+			int index = -1;
 		};
 
 		struct tunersets
@@ -441,7 +441,7 @@ struct e2db_abstract
 		static string value_bouquet_type(int btype);
 		string get_reference_id(string chid);
 		string get_reference_id(channel_reference chref);
-		string get_transponder_name_value(transponder tx);
+		string get_tuner_name(transponder tx);
 		virtual string get_filepath() { return this->filepath; };
 		virtual string get_services_filename() { return this->services_filename; };
 		void set_index(unordered_map<string, vector<pair<int, string>>> index);

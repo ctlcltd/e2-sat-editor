@@ -67,7 +67,7 @@ void dialAbstract::layout(QWidget* cwid)
 				toggler->setText(" " + tr("collapse") + " ");
 			}
 		});
-		dvbox->addWidget(toggler, 0, Qt::AlignRight | Qt::AlignTop);
+		dvbox->addWidget(toggler, 0, Qt::AlignTrailing | Qt::AlignTop);
 		dial->setProperty("collapsible_togglerHeight", toggler->height());
 	}
 	dvbox->addWidget(widget);

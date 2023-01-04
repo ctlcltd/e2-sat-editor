@@ -890,43 +890,43 @@ void tunersetsView::putListItems(vector<QString> items)
 
 		if (q.contains(','))
 		{
-			auto data = q.split(',');
-			trid = txp.trid = data[0].toStdString();
-			txp.freq = data[1].toInt();
+			auto qs = q.split(',');
+			trid = txp.trid = qs[0].toStdString();
+			txp.freq = qs[1].toInt();
 
 			switch (this->state.yx)
 			{
 				case e2db::YTYPE::satellite:
-					txp.pol = dbih->value_transponder_polarization(data[2].toStdString());
-					txp.sr = data[3].toInt();
-					txp.fec = dbih->value_transponder_fec(data[4].toStdString(), e2db::YTYPE::satellite);
-					txp.sys = dbih->value_transponder_system(data[5].toStdString());
-					txp.mod = dbih->value_transponder_modulation(data[6].toStdString(), e2db::YTYPE::satellite);
-					txp.inv = dbih->value_transponder_inversion(data[7].toStdString(), e2db::YTYPE::satellite);
-					txp.rol = dbih->value_transponder_rollof(data[8].toStdString());
-					txp.pil = dbih->value_transponder_pilot(data[9].toStdString());
+					txp.pol = dbih->value_transponder_polarization(qs[2].toStdString());
+					txp.sr = qs[3].toInt();
+					txp.fec = dbih->value_transponder_fec(qs[4].toStdString(), e2db::YTYPE::satellite);
+					txp.sys = dbih->value_transponder_system(qs[5].toStdString());
+					txp.mod = dbih->value_transponder_modulation(qs[6].toStdString(), e2db::YTYPE::satellite);
+					txp.inv = dbih->value_transponder_inversion(qs[7].toStdString(), e2db::YTYPE::satellite);
+					txp.rol = dbih->value_transponder_rollof(qs[8].toStdString());
+					txp.pil = dbih->value_transponder_pilot(qs[9].toStdString());
 				break;
 				case e2db::YTYPE::terrestrial:
-					txp.tmod = dbih->value_transponder_modulation(data[2].toStdString(), e2db::YTYPE::terrestrial);
-					txp.band = dbih->value_transponder_bandwidth(data[3].toStdString());
-					txp.sys = dbih->value_transponder_system(data[4].toStdString());
-					txp.tmx = dbih->value_transponder_tmx_mode(data[5].toStdString());
-					txp.hpfec = dbih->value_transponder_fec(data[6].toStdString(), e2db::YTYPE::terrestrial);
-					txp.lpfec = dbih->value_transponder_fec(data[7].toStdString(), e2db::YTYPE::terrestrial);
-					txp.inv = dbih->value_transponder_inversion(data[8].toStdString(), e2db::YTYPE::terrestrial);
-					txp.guard = dbih->value_transponder_guard(data[9].toStdString());
-					txp.hier = dbih->value_transponder_hier(data[10].toStdString());
+					txp.tmod = dbih->value_transponder_modulation(qs[2].toStdString(), e2db::YTYPE::terrestrial);
+					txp.band = dbih->value_transponder_bandwidth(qs[3].toStdString());
+					txp.sys = dbih->value_transponder_system(qs[4].toStdString());
+					txp.tmx = dbih->value_transponder_tmx_mode(qs[5].toStdString());
+					txp.hpfec = dbih->value_transponder_fec(qs[6].toStdString(), e2db::YTYPE::terrestrial);
+					txp.lpfec = dbih->value_transponder_fec(qs[7].toStdString(), e2db::YTYPE::terrestrial);
+					txp.inv = dbih->value_transponder_inversion(qs[8].toStdString(), e2db::YTYPE::terrestrial);
+					txp.guard = dbih->value_transponder_guard(qs[9].toStdString());
+					txp.hier = dbih->value_transponder_hier(qs[10].toStdString());
 				break;
 				case e2db::YTYPE::cable:
-					txp.cmod = dbih->value_transponder_modulation(data[2].toStdString(), e2db::YTYPE::cable);
-					txp.sr = data[3].toInt();
-					txp.cfec = dbih->value_transponder_fec(data[4].toStdString(), e2db::YTYPE::cable);
-					txp.inv = dbih->value_transponder_inversion(data[5].toStdString(), e2db::YTYPE::cable);
-					txp.sys = dbih->value_transponder_system(data[6].toStdString());
+					txp.cmod = dbih->value_transponder_modulation(qs[2].toStdString(), e2db::YTYPE::cable);
+					txp.sr = qs[3].toInt();
+					txp.cfec = dbih->value_transponder_fec(qs[4].toStdString(), e2db::YTYPE::cable);
+					txp.inv = dbih->value_transponder_inversion(qs[5].toStdString(), e2db::YTYPE::cable);
+					txp.sys = dbih->value_transponder_system(qs[6].toStdString());
 				break;
 				case e2db::YTYPE::atsc:
-					txp.amod = dbih->value_transponder_modulation(data[2].toStdString(), e2db::YTYPE::atsc);
-					txp.sys = dbih->value_transponder_system(data[3].toStdString());
+					txp.amod = dbih->value_transponder_modulation(qs[2].toStdString(), e2db::YTYPE::atsc);
+					txp.sys = dbih->value_transponder_system(qs[3].toStdString());
 				break;
 			}
 		}

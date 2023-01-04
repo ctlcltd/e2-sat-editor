@@ -315,8 +315,9 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 	page.body += "<th>Pol</th>";
 	page.body += "<th>SR</th>";
 	page.body += "<th>FEC</th>";
-	page.body += "<th>Pos</th>";
 	page.body += "<th>Sys</th>";
+	page.body += "<th>Pos</th>";
+	page.body += "<th>Tuner</th>";
 	page.body += "</tr>";
 	page.body += "</thead>";
 
@@ -381,6 +382,7 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 			QString fec = QString::fromStdString(dbih->value_transponder_fec(tx.fec, tx.ytype));
 			QString pos = QString::fromStdString(dbih->value_transponder_position(tx));
 			QString sys = QString::fromStdString(dbih->value_transponder_system(tx));
+			QString tname = QString::fromStdString(dbih->get_tuner_name(tx));
 
 			page.body += "<tr>";
 			page.body += "<td class=\"trid\">" + idx + "</td>";
@@ -396,8 +398,9 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 			page.body += "<td>" + pol + "</td>";
 			page.body += "<td>" + sr + "</td>";
 			page.body += "<td>" + fec + "</td>";
-			page.body += "<td>" + pos + "</td>";
 			page.body += "<td>" + sys + "</td>";
+			page.body += "<td>" + pos + "</td>";
+			page.body += "<td>" + tname + "</td>";
 			page.body += "</tr>";
 		}
 		else
@@ -422,6 +425,7 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 			page.body += "<td></td>";
 			page.body += "<td></td>";
 			page.body += "<td class=\"atype\">" + atype + "</td>";
+			page.body += "<td></td>";
 			page.body += "<td></td>";
 			page.body += "<td></td>";
 			page.body += "<td></td>";

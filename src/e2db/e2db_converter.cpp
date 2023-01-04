@@ -820,23 +820,26 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 			// pos
 			else if (i == 13)
 				tx.pos = value_transponder_position(val);
-			// freq
+			// tuner name
 			else if (i == 14)
+				continue;
+			// freq
+			else if (i == 15)
 				tx.freq = std::atoi(val.data());
 			// pol
-			else if (i == 15)
+			else if (i == 16)
 				tx.pol = value_transponder_polarization(val);
 			// sr
-			else if (i == 16)
+			else if (i == 17)
 				tx.sr = std::atoi(val.data());
 			// fec condensed
-			else if (i == 17)
+			else if (i == 18)
 				value_transponder_fec(val, tx.ytype, fec);
 			// userbouquet bname
-			else if (i == 18)
+			else if (i == 19)
 				ub.bname = val;
 			// userbouquet name
-			else if (i == 19)
+			else if (i == 20)
 				ub.name = val;
 		}
 
@@ -1091,65 +1094,68 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 			// pos
 			else if (i == 14)
 				tx.pos = value_transponder_position(val);
-			// freq
+			// tuner name
 			else if (i == 15)
+				continue;
+			// freq
+			else if (i == 16)
 				tx.freq = std::atoi(val.data());
 			// pol
-			else if (i == 16)
+			else if (i == 17)
 				tx.pol = value_transponder_polarization(val);
 			// sr
-			else if (i == 17)
+			else if (i == 18)
 				tx.sr = std::atoi(val.data());
 			// ifec
-			else if (i == 18)
+			else if (i == 19)
 				tx.fec = value_transponder_fec(val, tx.ytype);
 			// hpfec
-			else if (i == 19)
+			else if (i == 20)
 				tx.hpfec = value_transponder_fec(val, tx.ytype);
 			// lpfec
-			else if (i == 20)
+			else if (i == 21)
 				tx.lpfec = value_transponder_fec(val, tx.ytype);
 			// mod
-			else if (i == 21)
+			else if (i == 22)
 				tx.mod = value_transponder_modulation(val, tx.ytype);
 			// band
-			else if (i == 22)
+			else if (i == 23)
 				tx.band = value_transponder_bandwidth(val);
 			// tmx
-			else if (i == 23)
+			else if (i == 24)
 				tx.tmx = value_transponder_tmx_mode(val);
 			// inv
-			else if (i == 24)
+			else if (i == 25)
 				tx.inv = value_transponder_inversion(val, tx.ytype);
 			// rol
-			else if (i == 25)
+			else if (i == 26)
 				tx.rol = value_transponder_rollof(val);
 			// pil
-			else if (i == 26)
+			else if (i == 27)
 				tx.pil = value_transponder_pilot(val);
 			// guard
-			else if (i == 27)
+			else if (i == 28)
 				tx.guard = value_transponder_guard(val);
 			// hier
-			else if (i == 28)
+			else if (i == 29)
 				tx.hier = value_transponder_hier(val);
 			// flgs
-			else if (i == 29)
+			else if (i == 30)
 				tx.flgs = std::atoi(val.data());
 			// txp index
-			else if (i == 30)
+			else if (i == 31)
 				tx.index = std::atoi(val.data());
 			// txp flgs
-			else if (i == 31)
+			else if (i == 32)
 				tx.oflgs = val;
 			// cached
-			else if (i == 32)
+			else if (i == 33)
 				ch.data[SDATA::c] = value_channel_cached(val);
 			// userbouquet bname
-			else if (i == 33)
+			else if (i == 34)
 				ub.bname = val;
 			// userbouquet name
-			else if (i == 34)
+			else if (i == 35)
 				ub.name = val;
 		}
 
@@ -1611,6 +1617,7 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 		ss << CSV_ESCAPE << "Provider" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "System" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Position" << CSV_ESCAPE << CSV_SEPARATOR;
+		ss << CSV_ESCAPE << "Tuner" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Frequency" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Polarization" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Symbol Rate" << CSV_ESCAPE << CSV_SEPARATOR;
@@ -1682,6 +1689,7 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			string pname = value_channel_provider(ch);
 			string sys = value_transponder_system(tx);
 			string pos = value_transponder_position(tx);
+			string tname = get_tuner_name(tx);
 			int freq = tx.freq;
 			string pol = tx.pol != -1 ? SAT_POL[tx.pol] : "";
 			int sr = tx.sr;
@@ -1716,6 +1724,7 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			ss << CSV_ESCAPE << pname << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << sys << CSV_SEPARATOR;
 			ss << pos << CSV_SEPARATOR;
+			ss << tname << CSV_SEPARATOR;
 			ss << freq << CSV_SEPARATOR;
 			ss << pol << CSV_SEPARATOR;
 			ss << sr << CSV_SEPARATOR;
@@ -1802,6 +1811,7 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 		ss << CSV_ESCAPE << "Src ID" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "System" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Position" << CSV_ESCAPE << CSV_SEPARATOR;
+		ss << CSV_ESCAPE << "Tuner" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Frequency" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Polarization" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Symbol Rate" << CSV_ESCAPE << CSV_SEPARATOR;
@@ -1889,6 +1899,7 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			int srcid = ch.srcid;
 			string sys = value_transponder_system(tx);
 			string pos = value_transponder_position(tx);
+			string tname = get_tuner_name(tx);
 			int freq = tx.freq;
 			int sr = tx.sr;
 			string pol, ifec, mod, rol, pil, hpfec, lpfec, band, txm, guard, hier, inv;
@@ -1951,6 +1962,7 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			ss << srcid << CSV_SEPARATOR;
 			ss << sys << CSV_SEPARATOR;
 			ss << pos << CSV_SEPARATOR;
+			ss << tname << CSV_SEPARATOR;
 			ss << freq << CSV_SEPARATOR;
 			ss << pol << CSV_SEPARATOR;
 			ss << sr << CSV_SEPARATOR;
@@ -1998,6 +2010,7 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			ss << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
@@ -2355,8 +2368,9 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 	page.body += "<th>Pol</th>\n";
 	page.body += "<th>SR</th>\n";
 	page.body += "<th>FEC</th>\n";
-	page.body += "<th>Pos</th>\n";
 	page.body += "<th>Sys</th>\n";
+	page.body += "<th>Pos</th>\n";
+	page.body += "<th>Tuner</th>\n";
 	page.body += "</tr>\n";
 	page.body += "</thead>\n";
 
@@ -2423,10 +2437,9 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 			string pol = tx.pol != -1 ? SAT_POL[tx.pol] : "";
 			string sr = to_string(tx.sr);
 			string fec = SAT_FEC[tx.fec];
-			string ppos = value_transponder_position(tx);
-			string pos = ppos;
-			string psys = value_transponder_system(tx);
-			string sys = psys;
+			string pos = value_transponder_position(tx);
+			string sys = value_transponder_system(tx);
+			string tname = get_tuner_name(tx);
 
 			page.body += "<tr>";
 			page.body += "<td class=\"trid\">" + idx + "</td>";
@@ -2441,8 +2454,9 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 			page.body += "<td>" + pol + "</td>";
 			page.body += "<td>" + sr + "</td>";
 			page.body += "<td>" + fec + "</td>";
-			page.body += "<td>" + pos + "</td>";
 			page.body += "<td>" + sys + "</td>";
+			page.body += "<td>" + pos + "</td>";
+			page.body += "<td>" + tname + "</td>";
 			page.body += "</tr>\n";
 		}
 		else
@@ -2468,6 +2482,7 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 			page.body += "<td></td>";
 			page.body += "<td></td>";
 			page.body += "<td class=\"atype\">" + atype + "</td>";
+			page.body += "<td></td>";
 			page.body += "<td></td>";
 			page.body += "<td></td>";
 			page.body += "<td></td>";

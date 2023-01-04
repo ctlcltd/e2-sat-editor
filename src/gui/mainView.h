@@ -86,6 +86,7 @@ class mainView : public viewAbstract
 			chpname,
 			chsys,
 			chpos,
+			chtname,
 			chfreq,
 			chpol,
 			chsr,

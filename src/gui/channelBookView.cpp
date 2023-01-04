@@ -111,7 +111,7 @@ void channelBookView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::chtype, 70);	// Type
 	list->setColumnWidth(ITEM_ROW_ROLE::chpname, 125);	// Provider
 	list->setColumnWidth(ITEM_ROW_ROLE::chtxp, 165);	// Transponder
-	list->setColumnWidth(ITEM_ROW_ROLE::chpos, 120);	// Position
+	list->setColumnWidth(ITEM_ROW_ROLE::chpos, 70);		// Position
 	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 65);		// System
 
 	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->sortByColumn(column); });
@@ -152,7 +152,7 @@ void channelBookView::sideLayout()
 
 	lwid->addItem("Services");
 	lwid->addItem("Bouquets");
-	lwid->addItem("Satellites");
+	lwid->addItem("Positions");
 	lwid->addItem("Providers");
 	lwid->addItem("Resolution");
 	lwid->addItem("Encryption");
@@ -303,7 +303,7 @@ void channelBookView::stacker(int vv)
 		case views::Bouquets:
 			this->index = dbih->get_bouquets_index();
 		break;
-		case views::Satellites:
+		case views::Positions:
 			this->index = dbih->get_transponders_index();
 		break;
 		case views::Providers:
@@ -325,8 +325,7 @@ void channelBookView::stacker(int vv)
 		QTreeWidgetItem* subitem;
 		bool disabled = false;
 
-		//TODO pos value 0 with terrestrial, cable, atsc
-		if (vv == views::Satellites)
+		if (vv == views::Positions)
 		{
 			int pos = std::stoi(q.first);
 			if (dbih->tuners_pos.count(pos))
@@ -337,7 +336,8 @@ void channelBookView::stacker(int vv)
 			}
 			else
 			{
-				name = QString::fromStdString(q.first);
+				string ppos = pos == -1 ? "NaN" : q.first;
+				name = QString::fromStdString(ppos);
 			}
 			item = new QTreeWidgetItem({name});
 
@@ -395,7 +395,7 @@ void channelBookView::stacker(int vv)
 
 	tree->addTopLevelItems(items);
 
-	if (vv == views::Satellites)
+	if (vv == views::Positions)
 	{
 		this->index = dbih->get_channels_index();
 	}

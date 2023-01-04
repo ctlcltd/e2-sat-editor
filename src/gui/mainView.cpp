@@ -136,11 +136,11 @@ void mainView::layout()
 	bouquets_delegate->setIndentation(tree->indentation());
 	tree->setItemDelegateForColumn(0, bouquets_delegate);
 
-	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({NULL, "Index", "Name", "CHID", "TXID", "Service ID", "Transport ID", "Type", "CAS", "Provider", "System", "Position", "Frequency", "Polarization", "Symbol Rate", "FEC"});
+	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({NULL, "Index", "Name", "CHID", "TXID", "Service ID", "Transport ID", "Type", "CAS", "Provider", "System", "Position", "Tuner", "Frequency", "Polarization", "Symbol Rate", "FEC"});
 
 	list->setHeaderItem(lheader_item);
 	list->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
-	list->setColumnWidth(ITEM_ROW_ROLE::chnum, 65);	// (Channel Number) Index
+	list->setColumnWidth(ITEM_ROW_ROLE::chnum, 65);		// (Channel Number) Index
 	list->setColumnWidth(ITEM_ROW_ROLE::chname, 200);	// (Channel) Name
 	if (sets->value("application/debug", true).toBool()) {
 		list->setColumnWidth(ITEM_ROW_ROLE::debug_chid, 175);
@@ -157,7 +157,8 @@ void mainView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::chcas, 45);		// CAS
 	list->setColumnWidth(ITEM_ROW_ROLE::chpname, 150);	// Provider
 	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 75);		// System
-	list->setColumnWidth(ITEM_ROW_ROLE::chpos, 125);	// Position
+	list->setColumnWidth(ITEM_ROW_ROLE::chpos, 65);		// Position
+	list->setColumnWidth(ITEM_ROW_ROLE::chtname, 125);	// Tuner Name
 	list->setColumnWidth(ITEM_ROW_ROLE::chfreq, 95);	// Frequency
 	list->setColumnWidth(ITEM_ROW_ROLE::chpol, 85);		// Polarization
 	list->setColumnWidth(ITEM_ROW_ROLE::chsr, 95);		// Symbol Rate
@@ -945,16 +946,16 @@ void mainView::addUserbouquet()
 	tree->setDragEnabled(false);
 	tree->setAcceptDrops(false);
 
-	int i = 0, y;
-	QTreeWidgetItem* current = tree->currentItem();
-	QTreeWidgetItem* parent = tree->invisibleRootItem();
-	i = current != nullptr ? parent->indexOfChild(current) : tree->topLevelItemCount();
-	y = i + 1;
-
 	e2db::userbouquet uboq = dbih->userbouquets[bname];
 	e2db::bouquet gboq = dbih->bouquets[uboq.pname];
-	int pidx = gboq.btype == 1 ? 0 : 1;
-	QTreeWidgetItem* pgroup = tree->topLevelItem(pidx);
+	int idx = gboq.btype == 1 ? 0 : 1;
+	int i = 0, y;
+	QTreeWidgetItem* current = tree->currentItem();
+	bool isTopLevel = current != nullptr && tree->indexOfTopLevelItem(current) != -1;
+	QTreeWidgetItem* parent = current != nullptr && ! isTopLevel ? current->parent() : tree->topLevelItem(idx);
+	i = current != nullptr && ! isTopLevel ? parent->indexOfChild(current) : -1;
+	y = i + 1;
+
 	// macos: unwanted chars [qt.qpa.fonts] Menlo notice
 	QString name;
 	if (sets->value("preference/fixUnicodeChars").toBool())
@@ -962,15 +963,12 @@ void mainView::addUserbouquet()
 	else
 		name = QString::fromStdString(uboq.name);
 
-	QTreeWidgetItem* item = new QTreeWidgetItem(pgroup);
+	QTreeWidgetItem* item = new QTreeWidgetItem;
 	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
 	item->setData(0, Qt::UserRole, QString::fromStdString(uboq.bname));
 	item->setText(0, name);
 
-	if (current == nullptr)
-		tree->addTopLevelItem(item);
-	else
-		tree->insertTopLevelItem(y, item);
+	parent->insertChild(y, item);
 
 	tree->setDragEnabled(true);
 	tree->setAcceptDrops(true);
@@ -1387,8 +1385,8 @@ void mainView::listItemCopy(bool cut)
 			// chpname
 			else if (i == ITEM_ROW_ROLE::chpname && ! marker)
 				qstr.prepend("\"").append("\"");
-			// chpos
-			else if (i == ITEM_ROW_ROLE::chpos && ! marker)
+			// chtname
+			else if (i == ITEM_ROW_ROLE::chtname && ! marker)
 				qstr.prepend("\"").append("\"");
 			data.append(qstr);
 		}
@@ -1546,7 +1544,7 @@ void mainView::listItemDelete()
 	this->data->setChanged(true);
 }
 
-//TODO duplicates
+//TODO CSV Tools compatibility
 void mainView::putListItems(vector<QString> items)
 {
 	debug("putListItems()");
@@ -1575,12 +1573,15 @@ void mainView::putListItems(vector<QString> items)
 
 		string refid;
 		string value;
+		e2db::channel_reference chref;
+		e2db::service_reference ref;
 
+		QStringList qs;
 		if (q.contains(','))
 		{
-			auto data = q.split(',');
-			refid = data[2].toStdString();
-			value = data[1].replace("\"", "").toStdString();
+			qs = q.split(',');
+			refid = qs[2].toStdString();
+			value = qs[1].replace("\"", "").toStdString();
 		}
 		else
 		{
@@ -1588,10 +1589,6 @@ void mainView::putListItems(vector<QString> items)
 		}
 
 		QStringList entry;
-		bool marker = false;
-		e2db::channel_reference chref;
-		e2db::service_reference ref;
-		e2db::service ch;
 
 		dbih->parse_channel_reference(refid, chref, ref);
 
@@ -1612,7 +1609,6 @@ void mainView::putListItems(vector<QString> items)
 
 		if (dbih->db.services.count(chid))
 		{
-			ch = dbih->db.services[chid];
 			entry = dbih->entries.services[chid];
 			entry.prepend(idx);
 			entry.prepend(x);
@@ -1633,24 +1629,85 @@ void mainView::putListItems(vector<QString> items)
 				chref.index = -1;
 				idx = "";
 
-				marker = true;
 				entry = dbih->entryMarker(chref);
 				entry.prepend(x);
 			}
-			//TODO add new service, transponder, marker
+			else if (! qs.isEmpty())
+			{
+				e2db::service ch;
+				e2db::transponder tx;
+				e2db::fec fec;
+
+				ch.ssid = ref.ssid;
+				ch.tsid = tx.tsid = ref.tsid;
+				ch.dvbns = tx.dvbns = ref.dvbns;
+				ch.onid = tx.onid = ref.onid;
+				ch.chname = value;
+				if (! qs[3].isEmpty())
+					ch.ssid = ref.ssid = qs[3].toInt();
+				if (! qs[4].isEmpty())
+					ch.tsid = tx.tsid = ref.tsid = qs[4].toInt();
+				ch.stype = dbih->value_service_type(qs[5].toStdString());
+				//TODO
+				// ch.data[e2db::SDATA::C]; qs[6]
+				ch.data[e2db::SDATA::p] = dbih->value_channel_provider(qs[7].replace("\"", "").toStdString());
+				tx.tsid = ch.tsid;
+				tx.dvbns = ch.dvbns;
+				tx.sys = dbih->value_transponder_system(qs[8].toStdString());
+				tx.ytype = dbih->value_transponder_type(qs[8].toStdString());
+				tx.pos = dbih->value_transponder_position(qs[9].toStdString());
+				tx.freq = qs[11].toInt();
+				tx.pol = dbih->value_transponder_polarization(qs[12].toStdString());
+				tx.sr = qs[13].toInt();
+				dbih->value_transponder_fec(qs[14].toStdString(), tx.ytype, fec);
+				if (tx.ytype == e2db::YTYPE::satellite)
+				{
+					tx.fec = fec.inner_fec;
+				}
+				else if (tx.ytype == e2db::YTYPE::terrestrial)
+				{
+					tx.hpfec = fec.hp_fec;
+					tx.lpfec = fec.lp_fec;
+				}
+				else if (tx.ytype == e2db::YTYPE::cable)
+				{
+					tx.fec = fec.inner_fec;
+				}
+				
+				char txid[25];
+				// %4x:%8x
+				std::sprintf(txid, "%x:%x", tx.tsid, tx.dvbns);
+				tx.txid = ch.txid = txid;
+				
+				char chid[25];
+				std::sprintf(chid, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
+				ch.chid = chid;
+
+				chref.chid = ch.chid;
+				chref.index = idx.toInt();
+
+				if (! dbih->db.transponders.count(tx.txid))
+					dbih->addTransponder(tx);
+				if (! dbih->db.services.count(ch.chid))
+					dbih->addService(ch);
+
+				entry = dbih->entries.services[chid];
+				entry.prepend(idx);
+				entry.prepend(x);
+			}
 			else
 			{
-				error("putListItems()", "refid", refid);
+				error("putListItem()", "refid", refid);
 				continue;
 			}
 		}
 		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
-		item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
-		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
+		item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, chref.marker);
+		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chref.chid));
 		item->setIcon(ITEM_ROW_ROLE::chnum, theme::spacer(4));
-		if (marker)
+		if (chref.marker)
 		{
 			item->setFont(ITEM_ROW_ROLE::chname, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
 			item->setFont(ITEM_ROW_ROLE::chtype, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
@@ -1664,10 +1721,7 @@ void mainView::putListItems(vector<QString> items)
 
 		// bouquets tree
 		if (this->state.tc)
-			dbih->add_channel_reference(chref, bname);
-		// services tree
-		else
-			dbih->addService(ch);
+			dbih->addChannelReference(chref, bname);
 	}
 
 	if (current == nullptr)
@@ -1833,10 +1887,17 @@ void mainView::updateReferenceBox()
 			string ptxp = dbih->value_transponder_combo(tx);
 			txp = QString::fromStdString(ptxp);
 
-			string psys = dbih->value_transponder_system(tx);
-			string ppos = dbih->value_transponder_position(tx);
+			string sys = dbih->value_transponder_system(tx);
+			string pos = dbih->value_transponder_position(tx);
+			string tname = dbih->get_tuner_name(tx);
 
-			tns = "<p style=\"line-height: 125%\">" + QString::fromStdString(psys + "<br>" + ppos) + "</p>";
+			string ppos;
+			if (tname.empty())
+				ppos = pos;
+			else
+				ppos = tname + ' ' + '(' + pos + ')';
+
+			tns = "<p style=\"line-height: 125%\">" + QString::fromStdString(sys + "<br>" + ppos) + "</p>";
 		}
 		else
 		{

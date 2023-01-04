@@ -21,6 +21,7 @@ using namespace e2se;
 namespace e2se_gui
 {
 
+//TODO improve custom bname (eg. userbouquet.favourites.tv)
 editBouquet::editBouquet(dataHandler* data, int ti, e2se::logger::session* log)
 {
 	this->log = new logger(log, "editBouquet");
@@ -107,10 +108,6 @@ void editBouquet::store()
 			return error("store()", "bname", bname);
 
 		ub = dbih->userbouquets[bname];
-	}
-	else
-	{
-		ub.index = -1;
 	}
 
 	for (auto & item : fields)

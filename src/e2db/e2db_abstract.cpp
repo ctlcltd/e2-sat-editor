@@ -434,12 +434,16 @@ string e2db_abstract::value_transponder_polarization(int pol)
 
 string e2db_abstract::value_transponder_position(transponder tx)
 {
-	return value_transponder_position(tx.pos);
+	if (tx.ytype == YTYPE::satellite)
+		return value_transponder_position(tx.pos);
+	return "";
 }
 
 string e2db_abstract::value_transponder_position(tunersets_table tn)
 {
-	return value_transponder_position(tn.pos);
+	if (tn.ytype == YTYPE::satellite)
+		return value_transponder_position(tn.pos);
+	return "";
 }
 
 string e2db_abstract::value_transponder_position(int num)
@@ -915,25 +919,21 @@ string e2db_abstract::get_reference_id(channel_reference chref)
 		return value_reference_id(chref);
 }
 
-string e2db_abstract::get_transponder_name_value(transponder tx)
+string e2db_abstract::get_tuner_name(transponder tx)
 {
-	// debug("get_transponder_name_value()", "txid", tx.txid);
+	// debug("get_tuner_name()", "txid", tx.txid);
 
-	string ppos;
+	string txpname;
 	if (tx.ytype == YTYPE::satellite)
 	{
 		if (tuners_pos.count(tx.pos))
 		{
 			string tnid = tuners_pos.at(tx.pos);
 			tunersets_table tns = tuners[0].tables[tnid];
-			ppos = tns.name;
-		}
-		else
-		{
-			ppos = value_transponder_position(tx);
+			txpname = tns.name;
 		}
 	}
-	return ppos;
+	return txpname;
 }
 
 void e2db_abstract::add_transponder(int idx, transponder& tx)

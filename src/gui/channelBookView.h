@@ -47,7 +47,7 @@ class channelBookView : public viewAbstract
 		enum views {
 			Services,
 			Bouquets,
-			Satellites,
+			Positions,
 			Providers,
 			Resolution,
 			Encryption,
