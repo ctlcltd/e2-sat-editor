@@ -557,9 +557,14 @@ void channelBookView::showListEditContextMenu(QPoint &pos)
 {
 	debug("showListEditContextMenu()");
 
-	QMenu* list_edit = contextualMenu(list);
+	QList<QTreeWidgetItem*> selected = list->selectedItems();
+	
+	if (selected.empty())
+		return;
 
-	contextualMenuAction(list_edit, "&Copy", [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
+	QMenu* list_edit = contextMenu();
+
+	contextMenuAction(list_edit, "&Copy", [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
 
 	list_edit->exec(list->mapToGlobal(pos));
 }
@@ -570,6 +575,10 @@ void channelBookView::updateFlags()
 		return;
 
 	debug("updateFlags()");
+
+	tabSetFlag(gui::FileImport, false);
+	tabSetFlag(gui::FileExport, false);
+	tabUpdateToolBars();
 
 	if (list->topLevelItemCount())
 	{

@@ -10,6 +10,7 @@
  */
 
 #include <iostream>
+#include <functional>
 #include <string>
 #include <vector>
 #include <map>
@@ -68,6 +69,7 @@ class tab : protected e2se::log_factory
 		bool getFlag(gui::GUI_CXE bit);
 		void storeFlags();
 		void retrieveFlags();
+		void updateToolBars();
 		bool statusBarIsVisible();
 		bool statusBarIsHidden();
 		void setStatusBar(gui::status msg);
@@ -113,20 +115,19 @@ class tab : protected e2se::log_factory
 		static QToolBar* toolBar(int type);
 		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger);
 		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger);
-		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled);
-		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled);
 		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, QKeySequence shortcut);
 		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, QKeySequence shortcut);
-		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
-		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
 		static QWidget* toolBarWidget(QToolBar* toolbar, QWidget* widget);
 		static QAction* toolBarSeparator(QToolBar* toolbar);
 		static QWidget* toolBarSpacer(QToolBar* toolbar);
 
 		QGridLayout* root;
+		QToolBar* top_toolbar;
+		QToolBar* bottom_toolbar;
 		// tab view
 		gui::TAB_VIEW ttv;
 		viewAbstract* view;
+
 		// stored gui bit flags
 		bitset<256> gxe;
 	private:
@@ -135,6 +136,7 @@ class tab : protected e2se::log_factory
 		tab* parent = nullptr;
 		bool child = false;
 		vector<tab*> childs;
+		unordered_map<int, QAction*> tbars;
 		int ttid = -1;
 		string ttname;
 		e2db* dbih = nullptr;

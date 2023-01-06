@@ -475,6 +475,12 @@ void viewAbstract::tabUpdateFlags(gui::GUI_CXE bit)
 	tabUpdateFlags();
 }
 
+void viewAbstract::tabUpdateToolBars()
+{
+	if (tid != nullptr)
+		tid->updateToolBars();
+}
+
 bool viewAbstract::tabStatusBarIsVisible()
 {
 	if (tid != nullptr)
@@ -659,17 +665,17 @@ QWidget* viewAbstract::toolBarSpacer(QToolBar* toolbar)
 	return spacer;
 }
 
-QMenu* viewAbstract::contextualMenu(QWidget* parent)
+QMenu* viewAbstract::contextMenu()
 {
-	return new QMenu(parent);
+	return new QMenu;
 }
 
-QMenu* viewAbstract::contextualMenu(QMenu* menu)
+QMenu* viewAbstract::contextMenu(QMenu* menu)
 {
 	return new QMenu(menu);
 }
 
-QAction* viewAbstract::contextualMenuAction(QMenu* menu, QString text, std::function<void()> trigger)
+QAction* viewAbstract::contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger)
 {
 	QAction* action = new QAction(menu);
 	action->setText(text);
@@ -678,22 +684,17 @@ QAction* viewAbstract::contextualMenuAction(QMenu* menu, QString text, std::func
 	return action;
 }
 
-QAction* viewAbstract::contextualMenuAction(QMenu* menu, QString text, std::function<void()> trigger, bool enabled)
+QAction* viewAbstract::contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger, bool enabled)
 {
 	QAction* action = new QAction(menu);
 	action->setText(text);
 	action->setEnabled(enabled);
 	action->connect(action, &QAction::triggered, trigger);
-#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
-	if (enabled)
-		menu->addAction(action);
-#else
 	menu->addAction(action);
-#endif
 	return action;
 }
 
-QAction* viewAbstract::contextualMenuAction(QMenu* menu, QString text, std::function<void()> trigger, QKeySequence shortcut)
+QAction* viewAbstract::contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger, QKeySequence shortcut)
 {
 	QAction* action = new QAction(menu);
 	action->setText(text);
@@ -703,23 +704,18 @@ QAction* viewAbstract::contextualMenuAction(QMenu* menu, QString text, std::func
 	return action;
 }
 
-QAction* viewAbstract::contextualMenuAction(QMenu* menu, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut)
+QAction* viewAbstract::contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut)
 {
 	QAction* action = new QAction(menu);
 	action->setText(text);
 	action->setShortcut(shortcut);
 	action->setEnabled(enabled);
 	action->connect(action, &QAction::triggered, trigger);
-#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
-	if (enabled)
-		menu->addAction(action);
-#else
 	menu->addAction(action);
-#endif
 	return action;
 }
 
-QAction* viewAbstract::contextualMenuSeparator(QMenu* menu)
+QAction* viewAbstract::contextMenuSeparator(QMenu* menu)
 {
 	QAction* action = new QAction(menu);
 	action->setSeparator(true);

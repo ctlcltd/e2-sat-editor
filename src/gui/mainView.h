@@ -123,6 +123,7 @@ class mainView : public viewAbstract
 		void treeSwitched(QTreeWidget* tree, QTreeWidgetItem* item);
 		void servicesItemChanged(QTreeWidgetItem* current);
 		void treeItemChanged(QTreeWidgetItem* current);
+		void treeItemDoubleClicked();
 		void listItemChanged();
 		void listItemSelectionChanged();
 		void listItemDoubleClicked();

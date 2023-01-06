@@ -220,6 +220,7 @@ void mainView::layout()
 	tree->viewport()->installEventFilter(tree_evth);
 	tree->connect(tree, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { this->treeSwitched(tree, item); });
 	tree->connect(tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->treeItemChanged(current); });
+	tree->connect(tree, &QTreeWidget::itemDoubleClicked, [=]() { this->treeItemDoubleClicked(); });
 	list->installEventFilter(list_evto);
 	list->viewport()->installEventFilter(list_evth);
 	list->connect(list, &QTreeWidget::currentItemChanged, [=]() { this->listItemChanged(); });
@@ -704,6 +705,20 @@ void mainView::treeItemChanged(QTreeWidgetItem* current)
 
 	updateFlags();
 	updateStatusBar(true);
+}
+
+void mainView::treeItemDoubleClicked()
+{
+	debug("treeItemDoubleClicked()");
+
+	QList<QTreeWidgetItem*> selected = tree->selectedItems();
+	
+	if (selected.empty() || selected.count() > 1)
+		return;
+
+	// userbouquet
+	if (this->state.ti == -1)
+		editUserbouquet();
 }
 
 void mainView::listItemChanged()
@@ -1735,17 +1750,22 @@ void mainView::showTreeEditContextMenu(QPoint &pos)
 {
 	debug("showTreeEditContextMenu()");
 
-	QMenu* tree_edit = contextualMenu(tree);
+	QList<QTreeWidgetItem*> selected = tree->selectedItems();
+	
+	if (selected.empty())
+		return;
+
+	QMenu* tree_edit = contextMenu();
 
 	// userbouquet
 	if (this->state.ti == -1)
 	{
-		contextualMenuAction(tree_edit, "Edit Userbouquet", [=]() { this->editUserbouquet(); }, tabGetFlag(gui::TabTreeEdit));
-		contextualMenuSeparator(tree_edit);
-		contextualMenuAction(tree_edit, "Delete", [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
+		contextMenuAction(tree_edit, "Edit Userbouquet", [=]() { this->editUserbouquet(); }, tabGetFlag(gui::TabTreeEdit));
+		contextMenuSeparator(tree_edit);
+		contextMenuAction(tree_edit, "Delete", [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
+		contextMenuSeparator(tree_edit);
 	}
-	contextualMenuSeparator(tree_edit);
-	contextualMenuAction(tree_edit, "Export", [=]() { tabExportFile(); });
+	contextMenuAction(tree_edit, "Export", [=]() { tabExportFile(); });
 
 	tree_edit->exec(tree->mapToGlobal(pos));
 }
@@ -1754,16 +1774,33 @@ void mainView::showListEditContextMenu(QPoint &pos)
 {
 	debug("showListEditContextMenu()");
 
-	QMenu* list_edit = contextualMenu(list);
+	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
-	contextualMenuAction(list_edit, "Edit Service", [=]() { this->editService(); }, tabGetFlag(gui::TabListEditService));
-	contextualMenuAction(list_edit, "Edit Marker", [=]() { this->editMarker(); }, tabGetFlag(gui::TabListEditMarker));
-	contextualMenuSeparator(list_edit);
-	contextualMenuAction(list_edit, "Cu&t", [=]() { this->listItemCut(); }, tabGetFlag(gui::TabListCut), QKeySequence::Cut);
-	contextualMenuAction(list_edit, "&Copy", [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
-	contextualMenuAction(list_edit, "&Paste", [=]() { this->listItemPaste(); }, tabGetFlag(gui::TabListPaste), QKeySequence::Paste);
-	contextualMenuSeparator(list_edit);
-	contextualMenuAction(list_edit, "&Delete", [=]() { this->listItemDelete(); }, tabGetFlag(gui::TabListDelete), QKeySequence::Delete);
+	if (selected.empty())
+		return;
+
+	bool marker = false;
+	bool editable = false;
+
+	if (selected.count() == 1)
+	{
+		QTreeWidgetItem* item = selected.first();
+		marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+		editable = true;
+	}
+
+	QMenu* list_edit = contextMenu();
+
+	if (marker)
+		contextMenuAction(list_edit, "Edit Marker", [=]() { this->editMarker(); }, editable && tabGetFlag(gui::TabListEditMarker));
+	else
+		contextMenuAction(list_edit, "Edit Service", [=]() { this->editService(); }, editable && tabGetFlag(gui::TabListEditService));
+	contextMenuSeparator(list_edit);
+	contextMenuAction(list_edit, "Cu&t", [=]() { this->listItemCut(); }, tabGetFlag(gui::TabListCut), QKeySequence::Cut);
+	contextMenuAction(list_edit, "&Copy", [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
+	contextMenuAction(list_edit, "&Paste", [=]() { this->listItemPaste(); }, tabGetFlag(gui::TabListPaste), QKeySequence::Paste);
+	contextMenuSeparator(list_edit);
+	contextMenuAction(list_edit, "&Delete", [=]() { this->listItemDelete(); }, tabGetFlag(gui::TabListDelete), QKeySequence::Delete);
 
 	list_edit->exec(list->mapToGlobal(pos));
 }

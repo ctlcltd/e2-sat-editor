@@ -182,6 +182,19 @@ void tab::retrieveFlags()
 	gid->setFlags(this->gxe);
 }
 
+void tab::updateToolBars()
+{
+	auto flags = gid->getFlags();
+
+	for (auto & x : tbars)
+	{
+		if (flags[x.first])
+			x.second->setEnabled(true);
+		else
+			x.second->setDisabled(true);
+	}
+}
+
 bool tab::statusBarIsVisible()
 {
 	return gid->statusBarIsVisible();
@@ -299,8 +312,8 @@ void tab::layout()
 	QGridLayout* container = new QGridLayout;
 	QHBoxLayout* bottom = new QHBoxLayout;
 
-	QToolBar* top_toolbar = toolBar(1);
-	QToolBar* bottom_toolbar = toolBar(0);
+	this->top_toolbar = toolBar(1);
+	this->bottom_toolbar = toolBar(0);
 
 	QComboBox* profile_combo = new QComboBox;
 	int profile_sel = gid->sets->value("profile/selected").toInt();
@@ -321,11 +334,11 @@ void tab::layout()
 	profile_combo->connect(profile_combo, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) { this->profileComboChanged(index); });
 #endif
 
-	toolBarAction(top_toolbar, "&Open", theme::icon("file-open"), [=]() { this->openFile(); }, getFlag(gui::FileOpen), QKeySequence::Open);
-	toolBarAction(top_toolbar, "&Save", theme::icon("save"), [=]() { this->saveFile(false); }, getFlag(gui::FileSave), QKeySequence::Save);
+	tbars[gui::FileOpen] = toolBarAction(top_toolbar, "&Open", theme::icon("file-open"), [=]() { this->openFile(); }, QKeySequence::Open);
+	tbars[gui::FileSave] = toolBarAction(top_toolbar, "&Save", theme::icon("save"), [=]() { this->saveFile(false); }, QKeySequence::Save);
 	toolBarSeparator(top_toolbar);
-	toolBarAction(top_toolbar, "Import", theme::icon("import"), [=]() { this->importFile(); }, getFlag(gui::FileImport));
-	toolBarAction(top_toolbar, "Export", theme::icon("export"), [=]() { this->exportFile(); }, getFlag(gui::FileExport));
+	tbars[gui::FileImport] = toolBarAction(top_toolbar, "Import", theme::icon("import"), [=]() { this->importFile(); });
+	tbars[gui::FileExport] = toolBarAction(top_toolbar, "Export", theme::icon("export"), [=]() { this->exportFile(); });
 	toolBarSeparator(top_toolbar);
 	toolBarAction(top_toolbar, "Settings", theme::icon("settings"), [=]() { gid->settings(); });
 	toolBarSpacer(top_toolbar);
@@ -1470,27 +1483,6 @@ QAction* tab::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::fu
 	return action;
 }
 
-QAction* tab::toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled)
-{
-	QAction* action = new QAction(toolbar);
-	action->setText(text);
-	action->setEnabled(enabled);
-	action->connect(action, &QAction::triggered, trigger);
-	toolbar->addAction(action);
-	return action;
-}
-
-QAction* tab::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled)
-{
-	QAction* action = new QAction(toolbar);
-	action->setText(text);
-	action->setIcon(icon);
-	action->setEnabled(enabled);
-	action->connect(action, &QAction::triggered, trigger);
-	toolbar->addAction(action);
-	return action;
-}
-
 QAction* tab::toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, QKeySequence shortcut)
 {
 	QAction* action = new QAction(toolbar);
@@ -1507,29 +1499,6 @@ QAction* tab::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::fu
 	action->setText(text);
 	action->setIcon(icon);
 	action->setShortcut(shortcut);
-	action->connect(action, &QAction::triggered, trigger);
-	toolbar->addAction(action);
-	return action;
-}
-
-QAction* tab::toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut)
-{
-	QAction* action = new QAction(toolbar);
-	action->setText(text);
-	action->setShortcut(shortcut);
-	action->setEnabled(enabled);
-	action->connect(action, &QAction::triggered, trigger);
-	toolbar->addAction(action);
-	return action;
-}
-
-QAction* tab::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled, QKeySequence shortcut)
-{
-	QAction* action = new QAction(toolbar);
-	action->setText(text);
-	action->setIcon(icon);
-	action->setShortcut(shortcut);
-	action->setEnabled(enabled);
 	action->connect(action, &QAction::triggered, trigger);
 	toolbar->addAction(action);
 	return action;

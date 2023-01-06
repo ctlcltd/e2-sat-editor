@@ -10,6 +10,7 @@
  */
 
 #include <iostream>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -140,6 +141,7 @@ class viewAbstract : protected e2se::log_factory
 		bool tabGetFlag(gui::GUI_CXE bit);
 		void tabUpdateFlags();
 		void tabUpdateFlags(gui::GUI_CXE bit);
+		void tabUpdateToolBars();
 		virtual bool tabStatusBarIsVisible();
 		virtual bool tabStatusBarIsHidden();
 		virtual void tabSetStatusBar(gui::status msg);
@@ -164,13 +166,13 @@ class viewAbstract : protected e2se::log_factory
 		static QWidget* toolBarWidget(QToolBar* toolbar, QWidget* widget);
 		static QAction* toolBarSeparator(QToolBar* toolbar);
 		static QWidget* toolBarSpacer(QToolBar* toolbar);
-		static QMenu* contextualMenu(QWidget* parent);
-		static QMenu* contextualMenu(QMenu* menu);
-		static QAction* contextualMenuAction(QMenu* menu, QString text, std::function<void()> trigger);
-		static QAction* contextualMenuAction(QMenu* menu, QString text, std::function<void()> trigger, bool enabled);
-		static QAction* contextualMenuAction(QMenu* menu, QString text, std::function<void()> trigger, QKeySequence shortcut);
-		static QAction* contextualMenuAction(QMenu* menu, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
-		static QAction* contextualMenuSeparator(QMenu* menu);
+		static QMenu* contextMenu();
+		static QMenu* contextMenu(QMenu* menu);
+		static QAction* contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger);
+		static QAction* contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger, bool enabled);
+		static QAction* contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger, QKeySequence shortcut);
+		static QAction* contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
+		static QAction* contextMenuSeparator(QMenu* menu);
 
 		QSettings* sets;
 		tab* tid = nullptr;
