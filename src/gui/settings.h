@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.1
+ * @version 0.2
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -83,6 +83,19 @@ class settings : protected e2se::log_factory
 		void retrieve(QListWidgetItem* item);
 		void retrieve(QTableWidget* adtbl);
 		void save();
+
+		static QToolBar* toolBar();
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, QKeySequence shortcut);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, QKeySequence shortcut);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
+		static QWidget* toolBarWidget(QToolBar* toolbar, QWidget* widget);
+		static QWidget* toolBarSeparator(QToolBar* toolbar);
+		static QWidget* toolBarSpacer(QToolBar* toolbar);
 
 		QTabWidget* dtwid;
 		QDialog* dial;

@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.1
+ * @version 0.2
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -24,7 +24,6 @@
 #include <QVBoxLayout>
 #include <QSplitter>
 #include <QGroupBox>
-#include <QToolBar>
 #include <QMenu>
 #include <QScrollArea>
 #include <QClipboard>
@@ -300,16 +299,9 @@ void tab::layout()
 	QGridLayout* container = new QGridLayout;
 	QHBoxLayout* bottom = new QHBoxLayout;
 
-	QToolBar* top_toolbar = new QToolBar;
-	top_toolbar->setIconSize(QSize(32, 32));
-	top_toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	top_toolbar->setStyleSheet("QToolBar { padding: 0 12px } QToolButton { font: 18px }");
+	QToolBar* top_toolbar = toolBar(1);
+	QToolBar* bottom_toolbar = toolBar(0);
 
-	QToolBar* bottom_toolbar = new QToolBar;
-	bottom_toolbar->setStyleSheet("QToolBar { padding: 8px 12px } QToolButton { font: bold 16px }");
-
-	QWidget* top_toolbar_spacer = new QWidget;
-	top_toolbar_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	QComboBox* profile_combo = new QComboBox;
 	int profile_sel = gid->sets->value("profile/selected").toInt();
 	int size = gid->sets->beginReadArray("profile");
@@ -329,30 +321,27 @@ void tab::layout()
 	profile_combo->connect(profile_combo, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) { this->profileComboChanged(index); });
 #endif
 
-	top_toolbar->addAction(theme::icon("file-open"), "&Open", [=]() { this->openFile(); })->setShortcut(QKeySequence::Open); //Qt5
-	top_toolbar->addAction(theme::icon("save"), "&Save", [=]() { this->saveFile(false); })->setShortcut(QKeySequence::Save); //Qt5
-	top_toolbar->addSeparator();
-	top_toolbar->addAction(theme::icon("import"), "Import", [=]() { this->importFile(); });
-	top_toolbar->addAction(theme::icon("export"), "Export", [=]() { this->exportFile(); });
-	top_toolbar->addSeparator();
-	top_toolbar->addAction(theme::icon("settings"), "Settings", [=]() { gid->settings(); });
-	top_toolbar->addWidget(top_toolbar_spacer);
-	top_toolbar->addWidget(profile_combo);
-	top_toolbar->addAction("Connect", [=]() { this->ftpConnect(); });
-	top_toolbar->addSeparator();
-	top_toolbar->addAction("Upload", [=]() { this->ftpUpload(); });
-	top_toolbar->addAction("Download", [=]() { this->ftpDownload(); });
-
-	QWidget* bottom_spacer = new QWidget;
-	bottom_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	toolBarAction(top_toolbar, "&Open", theme::icon("file-open"), [=]() { this->openFile(); }, getFlag(gui::FileOpen), QKeySequence::Open);
+	toolBarAction(top_toolbar, "&Save", theme::icon("save"), [=]() { this->saveFile(false); }, getFlag(gui::FileSave), QKeySequence::Save);
+	toolBarSeparator(top_toolbar);
+	toolBarAction(top_toolbar, "Import", theme::icon("import"), [=]() { this->importFile(); }, getFlag(gui::FileImport));
+	toolBarAction(top_toolbar, "Export", theme::icon("export"), [=]() { this->exportFile(); }, getFlag(gui::FileExport));
+	toolBarSeparator(top_toolbar);
+	toolBarAction(top_toolbar, "Settings", theme::icon("settings"), [=]() { gid->settings(); });
+	toolBarSpacer(top_toolbar);
+	toolBarWidget(top_toolbar, profile_combo);
+	toolBarAction(top_toolbar, "Connect", [=]() { this->ftpConnect(); });
+	toolBarSeparator(top_toolbar);
+	toolBarAction(top_toolbar, "Upload", [=]() { this->ftpUpload(); });
+	toolBarAction(top_toolbar, "Download", [=]() { this->ftpDownload(); });
 
 	if (gid->sets->value("application/debug", true).toBool())
 	{
-		bottom_toolbar->addSeparator();
-		bottom_toolbar->addAction("§ Load seeds", [=]() { this->loadSeeds(); });
-		bottom_toolbar->addAction("§ Reset", [=]() { this->newFile(); tabChangeName(); });
+		toolBarSeparator(bottom_toolbar);
+		toolBarAction(bottom_toolbar, "§ Load seeds", [=]() { this->loadSeeds(); });
+		toolBarAction(bottom_toolbar, "§ Reset", [=]() { this->newFile(); tabChangeName(); });
 	}
-	bottom_toolbar->addWidget(bottom_spacer);
+	toolBarSpacer(bottom_toolbar);
 
 	top->addWidget(top_toolbar);
 	bottom->addWidget(bottom_toolbar);
@@ -1442,6 +1431,130 @@ void tab::loadSeeds()
 
 		QMessageBox::information(this->cwid, NULL, "For debugging purpose, set application.seeds absolute path under Settings > Advanced tab, then restart the software.");
 	}
+}
+
+QToolBar* tab::toolBar(int type)
+{
+	QToolBar* toolbar = new QToolBar;
+	// 1: top
+	if (type)
+	{
+		toolbar->setIconSize(QSize(32, 32));
+		toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+		toolbar->setStyleSheet("QToolBar { padding: 0 12px } QToolButton { font: 18px }");
+	}
+	else
+	// 0: bottom
+	{
+		toolbar->setStyleSheet("QToolBar { padding: 8px 12px } QToolButton { font: bold 16px }");
+	}
+	return toolbar;
+}
+
+QAction* tab::toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QAction* tab::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->setIcon(icon);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QAction* tab::toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->setEnabled(enabled);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QAction* tab::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->setIcon(icon);
+	action->setEnabled(enabled);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QAction* tab::toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, QKeySequence shortcut)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->setShortcut(shortcut);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QAction* tab::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, QKeySequence shortcut)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->setIcon(icon);
+	action->setShortcut(shortcut);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QAction* tab::toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->setShortcut(shortcut);
+	action->setEnabled(enabled);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QAction* tab::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled, QKeySequence shortcut)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->setIcon(icon);
+	action->setShortcut(shortcut);
+	action->setEnabled(enabled);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QWidget* tab::toolBarWidget(QToolBar* toolbar, QWidget* widget)
+{
+	toolbar->addWidget(widget);
+	return widget;
+}
+
+QAction* tab::toolBarSeparator(QToolBar* toolbar)
+{
+	QAction* action = new QAction(toolbar);
+	action->setSeparator(true);
+	toolbar->addAction(action);
+	return action;
+}
+
+QWidget* tab::toolBarSpacer(QToolBar* toolbar)
+{
+	QWidget* spacer = new QWidget;
+	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
+	toolbar->addWidget(spacer);
+	return spacer;
 }
 
 }

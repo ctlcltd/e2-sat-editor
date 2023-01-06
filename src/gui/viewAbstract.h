@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.1
+ * @version 0.2
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -20,6 +20,7 @@ using std::string, std::pair, std::vector;
 #include <QSettings>
 #include <QWidget>
 #include <QTreeWidget>
+#include <QToolBar>
 #include <QAction>
 #include <QLabel>
 #include <QPushButton>
@@ -150,6 +151,26 @@ class viewAbstract : protected e2se::log_factory
 		void tabImportFile();
 		void tabExportFile();
 		void tabPrintFile(bool all);
+
+		static QToolBar* toolBar();
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, QKeySequence shortcut);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, QKeySequence shortcut);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
+		static QWidget* toolBarWidget(QToolBar* toolbar, QWidget* widget);
+		static QAction* toolBarSeparator(QToolBar* toolbar);
+		static QWidget* toolBarSpacer(QToolBar* toolbar);
+		static QMenu* contextualMenu(QWidget* parent);
+		static QMenu* contextualMenu(QMenu* menu);
+		static QAction* contextualMenuAction(QMenu* menu, QString text, std::function<void()> trigger);
+		static QAction* contextualMenuAction(QMenu* menu, QString text, std::function<void()> trigger, bool enabled);
+		static QAction* contextualMenuAction(QMenu* menu, QString text, std::function<void()> trigger, QKeySequence shortcut);
+		static QAction* contextualMenuAction(QMenu* menu, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
+		static QAction* contextualMenuSeparator(QMenu* menu);
 
 		QSettings* sets;
 		tab* tid = nullptr;

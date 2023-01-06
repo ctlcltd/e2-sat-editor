@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.1
+ * @version 0.2
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -20,6 +20,7 @@ using std::vector;
 #include <QDialog>
 #include <QGridLayout>
 #include <QToolBar>
+#include <QToolButton>
 
 #include "../logger/logger.h"
 #include "dataHandler.h"
@@ -48,7 +49,8 @@ class dialAbstract : protected e2se::log_factory
 		QWidget* widget;
 	protected:
 		void layout(QWidget* cwid);
-		virtual void toolbar();
+		virtual void toolbarLayout();
+		virtual void collapsibleLayout();
 		virtual void store() = 0;
 		virtual void retrieve() = 0;
 		void cancel();
@@ -57,8 +59,22 @@ class dialAbstract : protected e2se::log_factory
 		void collapse();
 		void toggle();
 
+		static QToolBar* toolBar();
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, QKeySequence shortcut);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, QKeySequence shortcut);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
+		static QWidget* toolBarWidget(QToolBar* toolbar, QWidget* widget);
+		static QWidget* toolBarSeparator(QToolBar* toolbar);
+		static QWidget* toolBarSpacer(QToolBar* toolbar);
+
 		QDialog* dial;
 		QToolBar* dtbar;
+		QToolButton* dttoggler;
 		QGridLayout* dtform;
 		bool collapsible = false;
 		QMargins frameMargins = QMargins (12, 16, 12, 16);

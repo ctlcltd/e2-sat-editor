@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.1
+ * @version 0.2
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -12,7 +12,6 @@
 #include <QVBoxLayout>
 #include <QFormLayout>
 #include <QGroupBox>
-#include <QToolButton>
 
 #include "dialAbstract.h"
 #include "theme.h"
@@ -30,11 +29,6 @@ void dialAbstract::layout(QWidget* cwid)
 	QGridLayout* dfrm = new QGridLayout(dial);
 	QVBoxLayout* dvbox = new QVBoxLayout;
 
-	this->dtbar = new QToolBar;
-	dtbar->setIconSize(QSize(16, 16));
-	dtbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	dtbar->setStyleSheet("QToolBar { padding: 0 8px } QToolButton { font: 16px }");
-
 	this->widget = new QWidget;
 	this->dtform = new QGridLayout;
 
@@ -48,28 +42,11 @@ void dialAbstract::layout(QWidget* cwid)
 
 	if (this->collapsible)
 	{
-		QToolButton* toggler = new QToolButton;
-		toggler->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-		toggler->setArrowType(Qt::UpArrow);
-		toggler->setText(" " + tr("collapse") + " ");
-		toggler->setFixedSize(96, 20);
-		toggler->connect(toggler, &QToolButton::pressed, [=]() {
-			this->toggle();
-
-			if (dial->property("collapsible_collapsed").toBool())
-			{
-				toggler->setArrowType(Qt::DownArrow);
-				toggler->setText(" " + tr("expand") + " ");
-			}
-			else
-			{
-				toggler->setArrowType(Qt::UpArrow);
-				toggler->setText(" " + tr("collapse") + " ");
-			}
-		});
-		dvbox->addWidget(toggler, 0, Qt::AlignTrailing | Qt::AlignTop);
-		dial->setProperty("collapsible_togglerHeight", toggler->height());
+		collapsibleLayout();
+		dvbox->addWidget(dttoggler, 0, Qt::AlignTrailing | Qt::AlignTop);
 	}
+	toolbarLayout();
+
 	dvbox->addWidget(widget);
 	dvbox->addWidget(dtbar);
 
@@ -77,24 +54,45 @@ void dialAbstract::layout(QWidget* cwid)
 
 	if (this->frameFixed)
 		dfrm->setSizeConstraint(QGridLayout::SetFixedSize);
-
-	toolbar();
 }
 
-void dialAbstract::toolbar()
+void dialAbstract::toolbarLayout()
 {
-	debug("toolbar()");
+	debug("toolbarLayout()");
 
-	QWidget* dtspacer = new QWidget;
-	dtspacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
-	QWidget* dtseparator = new QWidget;
-	dtseparator->setMaximumWidth(5);
+	this->dtbar = toolBar();
 
-	dtbar->addWidget(dtspacer);
+	toolBarSpacer(dtbar);
+	this->action.cancel = toolBarAction(dtbar, tr("Cancel"), [=]() { this->cancel(); });
+	toolBarSeparator(dtbar);
+	this->action.save = toolBarAction(dtbar, tr("Save"), theme::icon("edit"), [=]() { this->save(); });
+}
 
-	this->action.cancel = dtbar->addAction(tr("Cancel"), [=]() { this->cancel(); });
-	dtbar->addWidget(dtseparator);
-	this->action.save = dtbar->addAction(theme::icon("edit"), tr("Save"), [=]() { this->save(); });
+void dialAbstract::collapsibleLayout()
+{
+	debug("collapsibleLayout()");
+
+	this->dttoggler = new QToolButton;
+	dttoggler->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+	dttoggler->setArrowType(Qt::UpArrow);
+	dttoggler->setText(" " + tr("collapse") + " ");
+	dttoggler->setFixedSize(96, 20);
+	dttoggler->connect(dttoggler, &QToolButton::pressed, [=]() {
+		this->toggle();
+
+		if (dial->property("collapsible_collapsed").toBool())
+		{
+			dttoggler->setArrowType(Qt::DownArrow);
+			dttoggler->setText(" " + tr("expand") + " ");
+		}
+		else
+		{
+			dttoggler->setArrowType(Qt::UpArrow);
+			dttoggler->setText(" " + tr("collapse") + " ");
+		}
+	});
+
+	dial->setProperty("collapsible_togglerHeight", dttoggler->height());
 }
 
 void dialAbstract::expand()
@@ -150,6 +148,120 @@ void dialAbstract::destroy()
 {
 	delete this->dial;
 	delete this;
+}
+
+QToolBar* dialAbstract::toolBar()
+{
+	QToolBar* toolbar = new QToolBar;
+	toolbar->setIconSize(QSize(16, 16));
+	toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+	toolbar->setStyleSheet("QToolBar { padding: 0 8px } QToolButton { font: 16px }");
+	return toolbar;
+}
+
+QAction* dialAbstract::toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QAction* dialAbstract::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->setIcon(icon);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QAction* dialAbstract::toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->setEnabled(enabled);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QAction* dialAbstract::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->setIcon(icon);
+	action->setEnabled(enabled);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QAction* dialAbstract::toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, QKeySequence shortcut)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->setShortcut(shortcut);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QAction* dialAbstract::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, QKeySequence shortcut)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->setIcon(icon);
+	action->setShortcut(shortcut);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QAction* dialAbstract::toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->setShortcut(shortcut);
+	action->setEnabled(enabled);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QAction* dialAbstract::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled, QKeySequence shortcut)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->setIcon(icon);
+	action->setShortcut(shortcut);
+	action->setEnabled(enabled);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QWidget* dialAbstract::toolBarWidget(QToolBar* toolbar, QWidget* widget)
+{
+	toolbar->addWidget(widget);
+	return widget;
+}
+
+QWidget* dialAbstract::toolBarSeparator(QToolBar* toolbar)
+{
+	QWidget* separator = new QWidget;
+	separator->setMaximumWidth(5);
+	return separator;
+}
+
+QWidget* dialAbstract::toolBarSpacer(QToolBar* toolbar)
+{
+	QWidget* spacer = new QWidget;
+	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
+	toolbar->addWidget(spacer);
+	return spacer;
 }
 
 }

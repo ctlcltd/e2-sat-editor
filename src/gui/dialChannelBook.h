@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.1
+ * @version 0.2
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -45,7 +45,7 @@ class dialChannelBook : public dialAbstract
 		}
 	protected:
 		void layout(QWidget* cwid);
-		void toolbar();
+		void toolbarLayout();
 		void store() {};
 		void retrieve() {};
 		void sender();

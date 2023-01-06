@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.1
+ * @version 0.2
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -24,6 +24,7 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map, std::bi
 #include <QTimer>
 #include <QWidget>
 #include <QGridLayout>
+#include <QToolBar>
 #include <QList>
 
 #include "../logger/logger.h"
@@ -108,6 +109,19 @@ class tab : protected e2se::log_factory
 		void ftpUpload();
 		void ftpDownload();
 		void loadSeeds();
+
+		static QToolBar* toolBar(int type);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, QKeySequence shortcut);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, QKeySequence shortcut);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
+		static QWidget* toolBarWidget(QToolBar* toolbar, QWidget* widget);
+		static QAction* toolBarSeparator(QToolBar* toolbar);
+		static QWidget* toolBarSpacer(QToolBar* toolbar);
 
 		QGridLayout* root;
 		// tab view

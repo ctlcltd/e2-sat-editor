@@ -4,12 +4,13 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.1
+ * @version 0.2
  * @license MIT License
  * @license GNU GPLv3 License
  */
 
 #include <clocale>
+#include <functional>
 #include <filesystem>
 
 #include <QtGlobal>
@@ -45,7 +46,7 @@ gui::gui(int argc, char* argv[], e2se::logger::session* log)
 	mroot->setOrganizationName("e2 SAT Editor Team");
 	mroot->setOrganizationDomain("e2se.org");
 	mroot->setApplicationName("e2-sat-editor");
-	mroot->setApplicationVersion("0.1");
+	mroot->setApplicationVersion("0.2");
 	mroot->setStyle(new TabBarProxyStyle);
 	mroot->connect(mroot, &QApplication::focusChanged, [=]() { this->windowChanged(); });
 
@@ -102,113 +103,164 @@ void gui::menuBarLayout()
 {
 	debug("menuBarLayout()");
 
-	QMenuBar* menu = new QMenuBar;
-	menu->setNativeMenuBar(true);
-	mfrm->setMenuBar(menu);
+	QMenuBar* menu = menuBar(mfrm);
 
-	QMenu* mfile = menu->addMenu(tr("&File"));
-	gmenu[GUI_CXE::FileNew] = mfile->addAction(tr("&New"), [=]() { this->newTab(""); }, QKeySequence::New);
-	gmenu[GUI_CXE::FileOpen] = mfile->addAction(tr("&Open"), [=]() { this->fileOpen(); }, QKeySequence::Open);
-	mfile->addSeparator();
-	gmenu[GUI_CXE::FileSave] = mfile->addAction(tr("&Save"), [=]() { this->fileSave(); }, QKeySequence::Save);
-	gmenu[GUI_CXE::FileSaveAs] = mfile->addAction(tr("Save &As…"), [=]() { this->fileSaveAs(); }, QKeySequence::SaveAs);
-	mfile->addSeparator();
-	gmenu[GUI_CXE::FileImport] = mfile->addAction("Import", [=]() { this->fileImport(); });
-	gmenu[GUI_CXE::FileExport] = mfile->addAction("Export", [=]() { this->fileExport(); });
-	mfile->addSeparator();
-	gmenu[GUI_CXE::CloseTab] = mfile->addAction("Close Tab", [=]() { this->closeTab(-1); }, QKeySequence::Close);
-	gmenu[GUI_CXE::CloseAllTabs] = mfile->addAction("Close All Tabs", [=]() { this->closeAllTabs(); }, Qt::CTRL | Qt::ALT | Qt::Key_W);
-	mfile->addSeparator();
-	gmenu[GUI_CXE::FilePrint] = mfile->addAction("&Print", [=]() { this->filePrint(); }, QKeySequence::Print);
-	gmenu[GUI_CXE::FilePrintAll] = mfile->addAction("Print &All", [=]() { this->filePrintAll(); }, Qt::CTRL | Qt::SHIFT | Qt::Key_P);
-	mfile->addSeparator();
-	mfile->addAction("Settings", [=]() { this->settings(); }, QKeySequence::Preferences);
+	QMenu* mfile = menuBarMenu(menu, tr("&File"));
+	gmenu[GUI_CXE::FileNew] = menuBarAction(mfile, tr("&New"), [=]() { this->newTab(); }, QKeySequence::New);
+	gmenu[GUI_CXE::FileOpen] = menuBarAction(mfile, tr("&Open"), [=]() { this->fileOpen(); }, QKeySequence::Open);
+	menuBarSeparator(mfile);
+	gmenu[GUI_CXE::FileSave] = menuBarAction(mfile, tr("&Save"), [=]() { this->fileSave(); }, QKeySequence::Save);
+	gmenu[GUI_CXE::FileSaveAs] = menuBarAction(mfile, tr("Save &As…"), [=]() { this->fileSaveAs(); }, QKeySequence::SaveAs);
+	menuBarSeparator(mfile);
+	gmenu[GUI_CXE::FileImport] = menuBarAction(mfile, tr("Import"), [=]() { this->fileImport(); });
+	gmenu[GUI_CXE::FileExport] = menuBarAction(mfile, tr("Export"), [=]() { this->fileExport(); });
+	menuBarSeparator(mfile);
+	gmenu[GUI_CXE::CloseTab] = menuBarAction(mfile, tr("Close Tab"), [=]() { this->closeTab(); }, QKeySequence::Close);
+	gmenu[GUI_CXE::CloseAllTabs] = menuBarAction(mfile, tr("Close All Tabs"), [=]() { this->closeAllTabs(); }, Qt::CTRL | Qt::ALT | Qt::Key_W);
+	menuBarSeparator(mfile);
+	gmenu[GUI_CXE::FilePrint] = menuBarAction(mfile, tr("&Print"), [=]() { this->filePrint(); }, QKeySequence::Print);
+	gmenu[GUI_CXE::FilePrintAll] = menuBarAction(mfile, tr("Print &All"), [=]() { this->filePrintAll(); }, Qt::CTRL | Qt::SHIFT | Qt::Key_P);
+	menuBarSeparator(mfile);
+	menuBarAction(mfile, tr("Settings"), [=]() { this->settings(); }, QKeySequence::Preferences);
 #ifdef Q_OS_MAC
-		mfile->addAction(tr("&About"), [=]() { this->about(); });
+	menuBarAction(mfile, tr("&About"), [=]() { this->about(); });
 #endif
-	mfile->addSeparator();
-	mfile->addAction(tr("E&xit"), [=]() { this->mroot->quit(); }, QKeySequence::Quit);
+	menuBarSeparator(mfile);
+	menuBarAction(mfile, tr("E&xit"), [=]() { this->mroot->quit(); }, QKeySequence::Quit);
 	
-	QMenu* medit = menu->addMenu(tr("&Edit"));
-	gmenu[GUI_CXE::TabListCut] = medit->addAction(tr("Cu&t"), [=]() { this->tabAction(TAB_ATS::ListCut); }, QKeySequence::Cut);
-	gmenu[GUI_CXE::TabListCopy] = medit->addAction(tr("&Copy"), [=]() { this->tabAction(TAB_ATS::ListCopy); }, QKeySequence::Copy);
-	gmenu[GUI_CXE::TabListPaste] = medit->addAction(tr("&Paste"), [=]() { this->tabAction(TAB_ATS::ListPaste); }, QKeySequence::Paste);
-	QAction* medit_delete = gmenu[GUI_CXE::TabListDelete] = medit->addAction(tr("&Delete"), [=]() { this->tabAction(TAB_ATS::ListDelete); });
+	QMenu* medit = menuBarMenu(menu, tr("&Edit"));
+	gmenu[GUI_CXE::TabListCut] = menuBarAction(medit, tr("Cu&t"), [=]() { this->tabAction(TAB_ATS::ListCut); }, QKeySequence::Cut);
+	gmenu[GUI_CXE::TabListCopy] = menuBarAction(medit, tr("&Copy"), [=]() { this->tabAction(TAB_ATS::ListCopy); }, QKeySequence::Copy);
+	gmenu[GUI_CXE::TabListPaste] = menuBarAction(medit, tr("&Paste"), [=]() { this->tabAction(TAB_ATS::ListPaste); }, QKeySequence::Paste);
+	gmenu[GUI_CXE::TabListDelete] = menuBarAction(medit, tr("&Delete"), [=]() { this->tabAction(TAB_ATS::ListDelete); });
 #ifdef Q_OS_MAC
-	medit_delete->setShortcut(Qt::Key_Backspace);
+	gmenu[GUI_CXE::TabListDelete]->setShortcut(Qt::Key_Backspace);
 #else
-	medit_delete->setShortcut(QKeySequence::Delete);
+	gmenu[GUI_CXE::TabListDelete]->setShortcut(QKeySequence::Delete);
 #endif
-	medit->addSeparator();
-	gmenu[GUI_CXE::TabListSelectAll] = medit->addAction(tr("Select &All"), [=]() { this->tabAction(TAB_ATS::ListSelectAll); }, QKeySequence::SelectAll);
+	menuBarSeparator(medit);
+	gmenu[GUI_CXE::TabListSelectAll] = menuBarAction(medit, tr("Select &All"), [=]() { this->tabAction(TAB_ATS::ListSelectAll); }, QKeySequence::SelectAll);
 
-	QMenu* mfind = menu->addMenu(tr("&Find"));
-	gmenu[GUI_CXE::TabListFind] = mfind->addAction(tr("&Find Channel…"), [=]() { this->tabAction(TAB_ATS::ListFind); }, QKeySequence::Find);
-	gmenu[GUI_CXE::TabListFindNext] = mfind->addAction(tr("Find &Next"), [=]() { this->tabAction(TAB_ATS::ListFindNext); }, QKeySequence::FindNext);
-	gmenu[GUI_CXE::TabListFindPrev] = mfind->addAction(tr("Find &Previous"), [=]() { this->tabAction(TAB_ATS::ListFindPrev); }, QKeySequence::FindPrevious);
-	gmenu[GUI_CXE::TabListFindAll] = mfind->addAction(tr("Find &All"), [=]() { this->tabAction(TAB_ATS::ListFindAll); });
-	mfind->addSeparator();
-	gmenu[GUI_CXE::TabTreeFind] = mfind->addAction(tr("Find &Bouquet…"), [=]() { this->tabAction(TAB_ATS::TreeFind); }, Qt::CTRL | Qt::ALT | Qt::Key_F);
-	gmenu[GUI_CXE::TabTreeFindNext] = mfind->addAction(tr("Find N&ext Bouquet"), [=]() { this->tabAction(TAB_ATS::TreeFindNext); }, Qt::CTRL | Qt::ALT | Qt::Key_E);
+	QMenu* mfind = menuBarMenu(menu, tr("&Find"));
+	gmenu[GUI_CXE::TabListFind] = menuBarAction(mfind, tr("&Find Channel…"), [=]() { this->tabAction(TAB_ATS::ListFind); }, QKeySequence::Find);
+	gmenu[GUI_CXE::TabListFindNext] = menuBarAction(mfind, tr("Find &Next"), [=]() { this->tabAction(TAB_ATS::ListFindNext); }, QKeySequence::FindNext);
+	gmenu[GUI_CXE::TabListFindPrev] = menuBarAction(mfind, tr("Find &Previous"), [=]() { this->tabAction(TAB_ATS::ListFindPrev); }, QKeySequence::FindPrevious);
+	gmenu[GUI_CXE::TabListFindAll] = menuBarAction(mfind, tr("Find &All"), [=]() { this->tabAction(TAB_ATS::ListFindAll); });
+	menuBarSeparator(mfind);
+	gmenu[GUI_CXE::TabTreeFind] = menuBarAction(mfind, tr("Find &Bouquet…"), [=]() { this->tabAction(TAB_ATS::TreeFind); }, Qt::CTRL | Qt::ALT | Qt::Key_F);
+	gmenu[GUI_CXE::TabTreeFindNext] = menuBarAction(mfind, tr("Find N&ext Bouquet"), [=]() { this->tabAction(TAB_ATS::TreeFindNext); }, Qt::CTRL | Qt::ALT | Qt::Key_E);
 
-	QMenu* mtool = menu->addMenu(tr("&Tools"));
-	gmenu[GUI_CXE::TunersetsSat] = mtool->addAction("Edit satellites.xml", [=]() { this->tabAction(TAB_ATS::EditTunersetsSat); });
-	gmenu[GUI_CXE::TunersetsTerrestrial] = mtool->addAction("Edit terrestrial.xml", [=]() { this->tabAction(TAB_ATS::EditTunersetsTerrestrial); });
-	gmenu[GUI_CXE::TunersetsCable] = mtool->addAction("Edit cables.xml", [=]() { this->tabAction(TAB_ATS::EditTunersetsCable); });
-	gmenu[GUI_CXE::TunersetsAtsc] = mtool->addAction("Edit atsc.xml", [=]() { this->tabAction(TAB_ATS::EditTunersetsAtsc); });
-	mtool->addSeparator();
-	gmenu[GUI_CXE::OpenChannelBook] = mtool->addAction("Show Channel book", [=]() { this->tabAction(TAB_ATS::ShowChannelBook); });
-	mtool->addSeparator();
-	
-	QMenu* mimportcsv = new QMenu(tr("Import from CSV"));
-	gmenu[GUI_CXE::ToolsImportCSV_services] = mimportcsv->addAction("Import Services", [=]() { this->tabAction(TAB_ATS::ImportCSV_services); });
-	gmenu[GUI_CXE::ToolsImportCSV_bouquet] = mimportcsv->addAction("Import Bouquet", [=]() { this->tabAction(TAB_ATS::ImportCSV_bouquet); });
-	gmenu[GUI_CXE::ToolsImportCSV_userbouquet] = mimportcsv->addAction("Import Userbouquet", [=]() { this->tabAction(TAB_ATS::ImportCSV_userbouquet); });
-	gmenu[GUI_CXE::ToolsImportCSV_tunersets] = mimportcsv->addAction("Import Tuner settings", [=]() { this->tabAction(TAB_ATS::ImportCSV_tunersets); });
-	QMenu* mexportcsv = new QMenu(tr("Export to CSV"));
-	gmenu[GUI_CXE::ToolsExportCSV_current] = mexportcsv->addAction("Export current", [=]() { this->tabAction(TAB_ATS::ExportCSV_current); });
-	gmenu[GUI_CXE::ToolsExportCSV_all] = mexportcsv->addAction("Export All", [=]() { this->tabAction(TAB_ATS::ExportCSV_all); });
-	gmenu[GUI_CXE::ToolsExportCSV_services] = mexportcsv->addAction("Export Services", [=]() { this->tabAction(TAB_ATS::ExportCSV_services); });
-	gmenu[GUI_CXE::ToolsExportCSV_bouquets] = mexportcsv->addAction("Export Bouquets", [=]() { this->tabAction(TAB_ATS::ExportCSV_bouquets); });
-	gmenu[GUI_CXE::ToolsExportCSV_userbouquets] = mexportcsv->addAction("Export Userbouquets", [=]() { this->tabAction(TAB_ATS::ExportCSV_userbouquets); });
-	gmenu[GUI_CXE::ToolsExportCSV_tunersets] = mexportcsv->addAction("Export Tuner settings", [=]() { this->tabAction(TAB_ATS::ExportCSV_tunersets); });
-	QMenu* mexporthtml = new QMenu(tr("Export to HTML"));
-	gmenu[GUI_CXE::ToolsExportHTML_current] = mexporthtml->addAction("Export current", [=]() { this->tabAction(TAB_ATS::ExportHTML_current); });
-	gmenu[GUI_CXE::ToolsExportHTML_all] = mexporthtml->addAction("Export All", [=]() { this->tabAction(TAB_ATS::ExportHTML_all); });
-	gmenu[GUI_CXE::ToolsExportHTML_index] = mexporthtml->addAction("Export Index", [=]() { this->tabAction(TAB_ATS::ExportHTML_index); });
-	gmenu[GUI_CXE::ToolsExportHTML_services] = mexporthtml->addAction("Export Services", [=]() { this->tabAction(TAB_ATS::ExportHTML_services); });
-	gmenu[GUI_CXE::ToolsExportHTML_bouquets] = mexporthtml->addAction("Export Bouquets", [=]() { this->tabAction(TAB_ATS::ExportHTML_bouquets); });
-	gmenu[GUI_CXE::ToolsExportHTML_userbouquets] = mexporthtml->addAction("Export Userbouquets", [=]() { this->tabAction(TAB_ATS::ExportHTML_userbouquets); });
-	gmenu[GUI_CXE::ToolsExportHTML_tunersets] = mexporthtml->addAction("Export Tuner settings", [=]() { this->tabAction(TAB_ATS::ExportHTML_tunersets); });
-	mtool->addMenu(mimportcsv);
-	mtool->addMenu(mexportcsv);
-	mtool->addMenu(mexporthtml);
-	mtool->addSeparator();
-	gmenu[GUI_CXE::ToolsServicesOrder] = mtool->addAction("Order Services A-Z", todo);
-	gmenu[GUI_CXE::ToolsBouquetsOrder] = mtool->addAction("Order Userbouquets A-Z", todo);
-	gmenu[GUI_CXE::ToolsServicesCache] = mtool->addAction("Remove cached data from Services", todo);
-	gmenu[GUI_CXE::ToolsBouquetsDelete] = mtool->addAction("Delete all Bouquets", todo);
-	mtool->addSeparator();
-	gmenu[GUI_CXE::ToolsInspector] = mtool->addAction(tr("Inspector Log"), [=]() { this->tabAction(TAB_ATS::Inspector); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
+	QMenu* mtools = menuBarMenu(menu, tr("&Tools"));
+	gmenu[GUI_CXE::TunersetsSat] = menuBarAction(mtools, "Edit satellites.xml", [=]() { this->tabAction(TAB_ATS::EditTunersetsSat); });
+	gmenu[GUI_CXE::TunersetsTerrestrial] = menuBarAction(mtools, "Edit terrestrial.xml", [=]() { this->tabAction(TAB_ATS::EditTunersetsTerrestrial); });
+	gmenu[GUI_CXE::TunersetsCable] = menuBarAction(mtools, "Edit cables.xml", [=]() { this->tabAction(TAB_ATS::EditTunersetsCable); });
+	gmenu[GUI_CXE::TunersetsAtsc] = menuBarAction(mtools, "Edit atsc.xml", [=]() { this->tabAction(TAB_ATS::EditTunersetsAtsc); });
+	menuBarSeparator(mtools);
+	gmenu[GUI_CXE::OpenChannelBook] = menuBarAction(mtools, "Show Channel book", [=]() { this->tabAction(TAB_ATS::ShowChannelBook); });
+	menuBarSeparator(mtools);
+	QMenu* mimportcsv = menuBarMenu(mtools, tr("Import from CSV"));
+	gmenu[GUI_CXE::ToolsImportCSV_services] = menuBarAction(mimportcsv, "Import Services", [=]() { this->tabAction(TAB_ATS::ImportCSV_services); });
+	gmenu[GUI_CXE::ToolsImportCSV_bouquet] = menuBarAction(mimportcsv, "Import Bouquet", [=]() { this->tabAction(TAB_ATS::ImportCSV_bouquet); });
+	gmenu[GUI_CXE::ToolsImportCSV_userbouquet] = menuBarAction(mimportcsv, "Import Userbouquet", [=]() { this->tabAction(TAB_ATS::ImportCSV_userbouquet); });
+	gmenu[GUI_CXE::ToolsImportCSV_tunersets] = menuBarAction(mimportcsv, "Import Tuner settings", [=]() { this->tabAction(TAB_ATS::ImportCSV_tunersets); });
+	QMenu* mexportcsv = menuBarMenu(mtools, tr("Export to CSV"));
+	gmenu[GUI_CXE::ToolsExportCSV_current] = menuBarAction(mexportcsv, "Export current", [=]() { this->tabAction(TAB_ATS::ExportCSV_current); });
+	gmenu[GUI_CXE::ToolsExportCSV_all] = menuBarAction(mexportcsv, "Export All", [=]() { this->tabAction(TAB_ATS::ExportCSV_all); });
+	gmenu[GUI_CXE::ToolsExportCSV_services] = menuBarAction(mexportcsv, "Export Services", [=]() { this->tabAction(TAB_ATS::ExportCSV_services); });
+	gmenu[GUI_CXE::ToolsExportCSV_bouquets] = menuBarAction(mexportcsv, "Export Bouquets", [=]() { this->tabAction(TAB_ATS::ExportCSV_bouquets); });
+	gmenu[GUI_CXE::ToolsExportCSV_userbouquets] = menuBarAction(mexportcsv, "Export Userbouquets", [=]() { this->tabAction(TAB_ATS::ExportCSV_userbouquets); });
+	gmenu[GUI_CXE::ToolsExportCSV_tunersets] = menuBarAction(mexportcsv, "Export Tuner settings", [=]() { this->tabAction(TAB_ATS::ExportCSV_tunersets); });
+	QMenu* mexporthtml = menuBarMenu(mtools, tr("Export to HTML"));
+	gmenu[GUI_CXE::ToolsExportHTML_current] = menuBarAction(mexporthtml, "Export current", [=]() { this->tabAction(TAB_ATS::ExportHTML_current); });
+	gmenu[GUI_CXE::ToolsExportHTML_all] = menuBarAction(mexporthtml, "Export All", [=]() { this->tabAction(TAB_ATS::ExportHTML_all); });
+	gmenu[GUI_CXE::ToolsExportHTML_index] = menuBarAction(mexporthtml, "Export Index", [=]() { this->tabAction(TAB_ATS::ExportHTML_index); });
+	gmenu[GUI_CXE::ToolsExportHTML_services] = menuBarAction(mexporthtml, "Export Services", [=]() { this->tabAction(TAB_ATS::ExportHTML_services); });
+	gmenu[GUI_CXE::ToolsExportHTML_bouquets] = menuBarAction(mexporthtml, "Export Bouquets", [=]() { this->tabAction(TAB_ATS::ExportHTML_bouquets); });
+	gmenu[GUI_CXE::ToolsExportHTML_userbouquets] = menuBarAction(mexporthtml, "Export Userbouquets", [=]() { this->tabAction(TAB_ATS::ExportHTML_userbouquets); });
+	gmenu[GUI_CXE::ToolsExportHTML_tunersets] = menuBarAction(mexporthtml, "Export Tuner settings", [=]() { this->tabAction(TAB_ATS::ExportHTML_tunersets); });
+	menuBarSeparator(mtools);
+	gmenu[GUI_CXE::ToolsServicesOrder] = menuBarAction(mtools, "Order Services A-Z", todo);
+	gmenu[GUI_CXE::ToolsBouquetsOrder] = menuBarAction(mtools, "Order Userbouquets A-Z", todo);
+	gmenu[GUI_CXE::ToolsServicesCache] = menuBarAction(mtools, "Remove cached data from Services", todo);
+	gmenu[GUI_CXE::ToolsBouquetsDelete] = menuBarAction(mtools, "Delete all Bouquets", todo);
+	menuBarSeparator(mtools);
+	gmenu[GUI_CXE::ToolsInspector] = menuBarAction(mtools, tr("Inspector Log"), [=]() { this->tabAction(TAB_ATS::Inspector); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
 
-	QMenu* mwind = menu->addMenu(tr("&Window"));
-	gmenu[GUI_CXE::WindowMinimize] = mwind->addAction("&Minimize", [=]() { this->windowMinimize(); }, Qt::CTRL | Qt::Key_M);
-	mwind->addSeparator();
-	gmenu[GUI_CXE::StatusBar] = mwind->addAction("Hide &Status Bar", [=]() { this->statusBarToggle(); }, Qt::CTRL | Qt::ALT | Qt::Key_B);
-	mwind->addSeparator();
-	gmenu[GUI_CXE::NewTab] = mwind->addAction("New &Tab", [=]() { this->newTab(); }, Qt::CTRL | Qt::Key_T);
-	mwind->addSeparator();
-	QActionGroup* mwtabs = new QActionGroup(mwind);
-	mwtabs->setExclusive(true);
+	QMenu* mwind = menuBarMenu(menu, tr("&Window"));
+	gmenu[GUI_CXE::WindowMinimize] = menuBarAction(mwind, tr("&Minimize"), [=]() { this->windowMinimize(); }, Qt::CTRL | Qt::Key_M);
+	menuBarSeparator(mwind);
+	gmenu[GUI_CXE::StatusBar] = menuBarAction(mwind, tr("Hide &Status Bar"), [=]() { this->statusBarToggle(); }, Qt::CTRL | Qt::ALT | Qt::Key_B);
+	menuBarSeparator(mwind);
+	gmenu[GUI_CXE::NewTab] = menuBarAction(mwind, tr("New &Tab"), [=]() { this->newTab(); }, Qt::CTRL | Qt::Key_T);
+	menuBarSeparator(mwind);
+	QActionGroup* mwtabs = menuBarActionGroup(mwind, true);
 
-	QMenu* mhelp = menu->addMenu(tr("&Help"));
-	mhelp->addAction(tr("About &Qt"), [=]() { mroot->aboutQt(); })->setMenuRole(QAction::NoRole);
-	mhelp->addSeparator();
-	mhelp->addAction(tr("&About e2 SAT Editor"), [=]() { this->about(); })->setMenuRole(QAction::NoRole);
+	QMenu* mhelp = menuBarMenu(menu, tr("&Help"));
+	menuBarAction(mhelp, tr("About &Qt"), [=]() { mroot->aboutQt(); })->setMenuRole(QAction::NoRole);
+	menuBarSeparator(mhelp);
+	menuBarAction(mhelp, tr("&About e2 SAT Editor"), [=]() { this->about(); })->setMenuRole(QAction::NoRole);
 
 	this->menu = menu;
 	this->mwind = mwind;
 	this->mwtabs = mwtabs;
+}
+
+QMenuBar* gui::menuBar(QLayout* layout)
+{
+	QMenuBar* menu = new QMenuBar;
+	menu->setNativeMenuBar(true);
+	layout->setMenuBar(menu);
+	return menu;
+}
+
+QMenu* gui::menuBarMenu(QMenuBar* menubar, QString title)
+{
+	QMenu* menu = new QMenu(menubar);
+	menu->setTitle(title);
+	menubar->addMenu(menu);
+	return menu;
+}
+
+QMenu* gui::menuBarMenu(QMenu* menu, QString title)
+{
+	QMenu* submenu = new QMenu(menu);
+	submenu->setTitle(title);
+	menu->addMenu(submenu);
+	return submenu;
+}
+
+QAction* gui::menuBarAction(QMenu* menu, QString text, std::function<void()> trigger)
+{
+	QAction* action = new QAction(menu);
+	action->setText(text);
+	action->connect(action, &QAction::triggered, trigger);
+	menu->addAction(action);
+	return action;
+}
+
+QAction* gui::menuBarAction(QMenu* menu, QString text, std::function<void()> trigger, QKeySequence shortcut)
+{
+	QAction* action = new QAction(menu);
+	action->setText(text);
+	action->setShortcut(shortcut);
+	action->connect(action, &QAction::triggered, trigger);
+	menu->addAction(action);
+	return action;
+}
+
+QAction* gui::menuBarSeparator(QMenu* menu)
+{
+	QAction* action = new QAction(menu);
+	action->setSeparator(true);
+	menu->addAction(action);
+	return action;
+}
+
+QActionGroup* gui::menuBarActionGroup(QMenu* menu, bool exclusive)
+{
+	QActionGroup* group = new QActionGroup(menu);
+	group->setExclusive(exclusive);
+	return group;
 }
 
 void gui::tabStackerLayout()

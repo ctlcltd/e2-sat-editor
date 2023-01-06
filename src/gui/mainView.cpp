@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.1
+ * @version 0.2
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -21,14 +21,12 @@
 #include <QSplitter>
 #include <QGroupBox>
 #include <QHeaderView>
-#include <QToolBar>
 #include <QStyle>
 #include <QMessageBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QSplitter>
 #include <QGroupBox>
-#include <QToolBar>
 #include <QMenu>
 #include <QScrollArea>
 #include <QClipboard>
@@ -174,14 +172,8 @@ void mainView::layout()
 	searchLayout();
 	referenceBoxLayout();
 
-	QToolBar* tree_ats = new QToolBar;
-	tree_ats->setIconSize(QSize(12, 12));
-	tree_ats->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	tree_ats->setStyleSheet("QToolButton { font: bold 14px }");
-	QToolBar* list_ats = new QToolBar;
-	list_ats->setIconSize(QSize(12, 12));
-	list_ats->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	list_ats->setStyleSheet("QToolButton { font: bold 14px }");
+	QToolBar* tree_ats = toolBar();
+	QToolBar* list_ats = toolBar();
 
 	this->action.list_dnd = new QPushButton;
 	this->action.list_dnd->setText("Drag&&Drop");
@@ -205,24 +197,18 @@ void mainView::layout()
 	this->action.list_search->setIcon(theme::icon("search"));
 	this->action.list_search->connect(this->action.list_search, &QPushButton::pressed, [=]() { this->listSearchToggle(); });
 
-	QWidget* tree_ats_spacer = new QWidget;
-	tree_ats_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	QWidget* list_ats_spacer = new QWidget;
-	list_ats_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	this->action.tree_newbq = toolBarAction(tree_ats, "New Bouquet", theme::icon("add"), [=]() { this->addUserbouquet(); });
+	toolBarSpacer(tree_ats);
+	toolBarWidget(tree_ats, this->action.tree_search);
 
-	this->action.tree_newbq = tree_ats->addAction(theme::icon("add"), "New Bouquet", [=]() { this->addUserbouquet(); });
-	tree_ats->addWidget(tree_ats_spacer);
-	tree_ats->addWidget(this->action.tree_search);
-	this->action.list_addch = list_ats->addAction(theme::icon("add"), "Add Channel", [=]() { this->addChannel(); });
-	this->action.list_addch->setDisabled(true);
-	this->action.list_addmk = list_ats->addAction(theme::icon("add"), "Add Marker", [=]() { this->addMarker(); });
-	this->action.list_addmk->setDisabled(true);
-	this->action.list_newch = list_ats->addAction(theme::icon("add"), "New Service", [=]() { this->addService(); });
-	list_ats->addSeparator();
-	list_ats->addWidget(this->action.list_ref);
-	list_ats->addWidget(this->action.list_dnd);
-	list_ats->addWidget(list_ats_spacer);
-	list_ats->addWidget(this->action.list_search);
+	this->action.list_addch = toolBarAction(list_ats, "Add Channel", theme::icon("add"), [=]() { this->addChannel(); });
+	this->action.list_addmk = toolBarAction(list_ats, "Add Marker", theme::icon("add"), [=]() { this->addMarker(); }, false);
+	this->action.list_newch = toolBarAction(list_ats, "New Service", theme::icon("add"), [=]() { this->addService(); }, false);
+	toolBarSeparator(list_ats);
+	toolBarWidget(list_ats, this->action.list_ref);
+	toolBarWidget(list_ats, this->action.list_dnd);
+	toolBarSpacer(list_ats);
+	toolBarWidget(list_ats, this->action.list_search);
 
 	this->tree_evth = new TreeEventHandler;
 	this->list_evth = new ListEventHandler;
@@ -1749,23 +1735,17 @@ void mainView::showTreeEditContextMenu(QPoint &pos)
 {
 	debug("showTreeEditContextMenu()");
 
-	QMenu* tree_edit = new QMenu;
-	QAction* bouquet_export = new QAction("Export");
-	// bouquet: tv | radio
-	if (this->state.ti != -1)
-	{
-		bouquet_export->connect(bouquet_export, &QAction::triggered, [=]() { tabExportFile(); });
-	}
+	QMenu* tree_edit = contextualMenu(tree);
+
 	// userbouquet
-	else
+	if (this->state.ti == -1)
 	{
-		tree_edit->addAction("Edit Userbouquet", [=]() { this->editUserbouquet(); })->setEnabled(tabGetFlag(gui::TabTreeEdit));
-		tree_edit->addSeparator();
-		tree_edit->addAction("Delete", [=]() { this->treeItemDelete(); })->setEnabled(tabGetFlag(gui::TabTreeDelete));
-		bouquet_export->connect(bouquet_export, &QAction::triggered, [=]() { tabExportFile(); });
+		contextualMenuAction(tree_edit, "Edit Userbouquet", [=]() { this->editUserbouquet(); }, tabGetFlag(gui::TabTreeEdit));
+		contextualMenuSeparator(tree_edit);
+		contextualMenuAction(tree_edit, "Delete", [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
 	}
-	tree_edit->addSeparator();
-	tree_edit->addAction(bouquet_export);
+	contextualMenuSeparator(tree_edit);
+	contextualMenuAction(tree_edit, "Export", [=]() { tabExportFile(); });
 
 	tree_edit->exec(tree->mapToGlobal(pos));
 }
@@ -1774,15 +1754,16 @@ void mainView::showListEditContextMenu(QPoint &pos)
 {
 	debug("showListEditContextMenu()");
 
-	QMenu* list_edit = new QMenu;
-	list_edit->addAction("Edit Service", [=]() { this->editService(); })->setEnabled(tabGetFlag(gui::TabListEditService));
-	list_edit->addAction("Edit Marker", [=]() { this->editMarker(); })->setEnabled(tabGetFlag(gui::TabListEditMarker));
-	list_edit->addSeparator();
-	list_edit->addAction("Cu&t", [=]() { this->listItemCut(); }, QKeySequence::Cut)->setEnabled(tabGetFlag(gui::TabListCut));
-	list_edit->addAction("&Copy", [=]() { this->listItemCopy(); }, QKeySequence::Copy)->setEnabled(tabGetFlag(gui::TabListCopy));
-	list_edit->addAction("&Paste", [=]() { this->listItemPaste(); }, QKeySequence::Paste)->setEnabled(tabGetFlag(gui::TabListPaste));
-	list_edit->addSeparator();
-	list_edit->addAction("&Delete", [=]() { this->listItemDelete(); }, QKeySequence::Delete)->setEnabled(tabGetFlag(gui::TabListDelete));
+	QMenu* list_edit = contextualMenu(list);
+
+	contextualMenuAction(list_edit, "Edit Service", [=]() { this->editService(); }, tabGetFlag(gui::TabListEditService));
+	contextualMenuAction(list_edit, "Edit Marker", [=]() { this->editMarker(); }, tabGetFlag(gui::TabListEditMarker));
+	contextualMenuSeparator(list_edit);
+	contextualMenuAction(list_edit, "Cu&t", [=]() { this->listItemCut(); }, tabGetFlag(gui::TabListCut), QKeySequence::Cut);
+	contextualMenuAction(list_edit, "&Copy", [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
+	contextualMenuAction(list_edit, "&Paste", [=]() { this->listItemPaste(); }, tabGetFlag(gui::TabListPaste), QKeySequence::Paste);
+	contextualMenuSeparator(list_edit);
+	contextualMenuAction(list_edit, "&Delete", [=]() { this->listItemDelete(); }, tabGetFlag(gui::TabListDelete), QKeySequence::Delete);
 
 	list_edit->exec(list->mapToGlobal(pos));
 }

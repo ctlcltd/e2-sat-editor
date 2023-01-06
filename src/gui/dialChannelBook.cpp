@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.1
+ * @version 0.2
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -62,25 +62,21 @@ void dialChannelBook::layout(QWidget* cwid)
 	this->cbv->load();
 }
 
-void dialChannelBook::toolbar()
+void dialChannelBook::toolbarLayout()
 {
-	debug("toolbar()");
+	debug("toolbarLayout()");
 
-	QWidget* dtspacer = new QWidget;
-	dtspacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
-	QWidget* dtseparator = new QWidget;
-	dtseparator->setMaximumWidth(5);
+	this->dtbar = toolBar();
 
 	this->action.filter = new QCheckBox(tr("Filters for service type"));
 	this->action.filter->setChecked(true);
 	this->action.filter->connect(this->action.filter, &QCheckBox::stateChanged, [=](int checked) { this->cbv->filterChanged(checked); });
-	dtbar->addWidget(this->action.filter);
 
-	dtbar->addWidget(dtspacer);
-
-	this->action.cancel = dtbar->addAction(tr("Cancel"), [=]() { this->cancel(); });
-	dtbar->addWidget(dtseparator);
-	this->action.add = dtbar->addAction(theme::icon("add"), tr("Add"), [=]() { this->sender(); });
+	toolBarWidget(dtbar, this->action.filter);
+	toolBarSpacer(dtbar);
+	this->action.cancel = toolBarAction(dtbar, tr("Cancel"), [=]() { this->cancel(); });
+	toolBarSeparator(dtbar);
+	this->action.add = toolBarAction(dtbar, tr("Add"), theme::icon("add"), [=]() { this->sender(); });
 
 	dtbar->widgetForAction(this->action.add)->setFocus();
 }

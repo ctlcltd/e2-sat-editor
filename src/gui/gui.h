@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.1
+ * @version 0.2
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -13,6 +13,7 @@
 #include <vector>
 #include <unordered_map>
 #include <bitset>
+#include <functional>
 
 using std::string, std::vector, std::unordered_map, std::bitset;
 
@@ -225,7 +226,7 @@ class gui : protected e2se::log_factory
 		int newTab(string filename = "");
 		int openTab(TAB_VIEW view);
 		int openTab(TAB_VIEW view, int arg);
-		void closeTab(int index);
+		void closeTab(int index = -1);
 		void closeAllTabs();
 		string openFileDialog();
 		string saveFileDialog(string filename);
@@ -280,6 +281,14 @@ class gui : protected e2se::log_factory
 		tab* getCurrentTabHandler();
 		void launcher();
 		void setDefaultSets();
+	
+		static QMenuBar* menuBar(QLayout* layout);
+		static QMenu* menuBarMenu(QMenuBar* menubar, QString title);
+		static QMenu* menuBarMenu(QMenu* menu, QString title);
+		static QAction* menuBarAction(QMenu* menu, QString text, std::function<void()> trigger);
+		static QAction* menuBarAction(QMenu* menu, QString text, std::function<void()> trigger, QKeySequence shortcut);
+		static QAction* menuBarSeparator(QMenu* menu);
+		static QActionGroup* menuBarActionGroup(QMenu* menu, bool exclusive = true);
 
 		// gui current bit flags
 		bitset<256> gxe;

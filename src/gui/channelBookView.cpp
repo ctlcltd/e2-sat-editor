@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.1
+ * @version 0.2
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -557,8 +557,9 @@ void channelBookView::showListEditContextMenu(QPoint &pos)
 {
 	debug("showListEditContextMenu()");
 
-	QMenu* list_edit = new QMenu;
-	list_edit->addAction("&Copy", [=]() { this->listItemCopy(); }, QKeySequence::Copy)->setEnabled(tabGetFlag(gui::TabListCopy));
+	QMenu* list_edit = contextualMenu(list);
+
+	contextualMenuAction(list_edit, "&Copy", [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
 
 	list_edit->exec(list->mapToGlobal(pos));
 }

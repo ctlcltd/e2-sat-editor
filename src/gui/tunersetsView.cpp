@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.1
+ * @version 0.2
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -171,14 +171,8 @@ void tunersetsView::layout()
 
 	searchLayout();
 
-	QToolBar* tree_ats = new QToolBar;
-	tree_ats->setIconSize(QSize(12, 12));
-	tree_ats->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	tree_ats->setStyleSheet("QToolButton { font: bold 14px }");
-	QToolBar* list_ats = new QToolBar;
-	list_ats->setIconSize(QSize(12, 12));
-	list_ats->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	list_ats->setStyleSheet("QToolButton { font: bold 14px }");
+	QToolBar* tree_ats = toolBar();
+	QToolBar* list_ats = toolBar();
 
 	this->action.tree_search = new QPushButton;
 	this->action.tree_search->setText("Find…");
@@ -190,18 +184,13 @@ void tunersetsView::layout()
 	this->action.list_search->setIcon(theme::icon("search"));
 	this->action.list_search->connect(this->action.list_search, &QPushButton::pressed, [=]() { this->listSearchToggle(); });
 
-	QWidget* tree_ats_spacer = new QWidget;
-	tree_ats_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	QWidget* list_ats_spacer = new QWidget;
-	list_ats_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	this->action.tree_newtn = toolBarAction(tree_ats, "New Position", theme::icon("add"), [=]() { this->addPosition(); });
+	toolBarSpacer(tree_ats);
+	toolBarWidget(tree_ats, this->action.tree_search);
 
-	this->action.tree_newtn = tree_ats->addAction(theme::icon("add"), "New Position", [=]() { this->addPosition(); });
-	tree_ats->addWidget(tree_ats_spacer);
-	tree_ats->addWidget(this->action.tree_search);
-	this->action.list_newtr = list_ats->addAction(theme::icon("add"), "New Transponder", [=]() { this->addTransponder(); });
-	this->action.list_newtr->setDisabled(true);
-	list_ats->addWidget(list_ats_spacer);
-	list_ats->addWidget(this->action.list_search);
+	this->action.list_newtr = toolBarAction(list_ats, "New Transponder", theme::icon("add"), [=]() { this->addTransponder(); }, false);
+	toolBarSpacer(list_ats);
+	toolBarWidget(list_ats, this->action.list_search);
 
 	this->tree_evto = new ListEventObserver;
 	this->list_evto = new ListEventObserver;
@@ -1005,13 +994,13 @@ void tunersetsView::showTreeEditContextMenu(QPoint &pos)
 {
 	debug("showTreeEditContextMenu()");
 
-	QMenu* tree_edit = new QMenu;
+	QMenu* tree_edit = contextualMenu(tree);
 
-	tree_edit->addAction("Edit Position", [=]() { this->editPosition(); })->setEnabled(tabGetFlag(gui::TabTreeEdit));
-	tree_edit->addSeparator();
-	tree_edit->addAction("Delete", [=]() { this->treeItemDelete(); })->setEnabled(tabGetFlag(gui::TabTreeDelete));
-	tree_edit->addSeparator();
-	tree_edit->addAction("Edit Settings", [=]() { this->editSettings(); });
+	contextualMenuAction(tree_edit, "Edit Position", [=]() { this->editPosition(); }, tabGetFlag(gui::TabTreeEdit));
+	contextualMenuSeparator(tree_edit);
+	contextualMenuAction(tree_edit, "Delete", [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
+	contextualMenuSeparator(tree_edit);
+	contextualMenuAction(tree_edit, "Edit Settings", [=]() { this->editSettings(); });
 
 	tree_edit->exec(tree->mapToGlobal(pos));
 }
@@ -1020,14 +1009,15 @@ void tunersetsView::showListEditContextMenu(QPoint &pos)
 {
 	debug("showListEditContextMenu()");
 
-	QMenu* list_edit = new QMenu;
-	list_edit->addAction("Edit Transponder", [=]() { this->editTransponder(); })->setEnabled(tabGetFlag(gui::TabListEditTransponder));
-	list_edit->addSeparator();
-	list_edit->addAction("Cu&t", [=]() { this->listItemCut(); }, QKeySequence::Cut)->setEnabled(tabGetFlag(gui::TabListCut));
-	list_edit->addAction("&Copy", [=]() { this->listItemCopy(); }, QKeySequence::Copy)->setEnabled(tabGetFlag(gui::TabListCopy));
-	list_edit->addAction("&Paste", [=]() { this->listItemPaste(); }, QKeySequence::Paste)->setEnabled(tabGetFlag(gui::TabListPaste));
-	list_edit->addSeparator();
-	list_edit->addAction("&Delete", [=]() { this->listItemDelete(); }, QKeySequence::Delete)->setEnabled(tabGetFlag(gui::TabListDelete));
+	QMenu* list_edit = contextualMenu(list);
+
+	contextualMenuAction(list_edit, "Edit Transponder", [=]() { this->editTransponder(); }, tabGetFlag(gui::TabListEditTransponder));
+	contextualMenuSeparator(list_edit);
+	contextualMenuAction(list_edit, "Cu&t", [=]() { this->listItemCut(); }, tabGetFlag(gui::TabListCut), QKeySequence::Cut);
+	contextualMenuAction(list_edit, "&Copy", [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
+	contextualMenuAction(list_edit, "&Paste", [=]() { this->listItemPaste(); }, tabGetFlag(gui::TabListPaste), QKeySequence::Paste);
+	contextualMenuSeparator(list_edit);
+	contextualMenuAction(list_edit, "&Delete", [=]() { this->listItemDelete(); }, tabGetFlag(gui::TabListDelete), QKeySequence::Delete);
 
 	list_edit->exec(list->mapToGlobal(pos));
 }

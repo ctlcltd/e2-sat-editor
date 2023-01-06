@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.1
+ * @version 0.2
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -19,7 +19,6 @@
 #include <QSplitter>
 #include <QGroupBox>
 #include <QHeaderView>
-#include <QToolBar>
 #include <QStyle>
 #include <QMessageBox>
 #include <QHBoxLayout>
@@ -28,9 +27,6 @@
 #include <QGroupBox>
 #include <QToolBar>
 #include <QMenu>
-#include <QScrollArea>
-#include <QClipboard>
-#include <QMimeData>
 
 #include "viewAbstract.h"
 #include "theme.h"
@@ -546,6 +542,189 @@ void viewAbstract::tabPrintFile(bool all)
 {
 	if (tid != nullptr)
 		tid->printFile(all);
+}
+
+QToolBar* viewAbstract::toolBar()
+{
+	QToolBar* toolbar = new QToolBar;
+	toolbar->setIconSize(QSize(12, 12));
+	toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+	toolbar->setStyleSheet("QToolButton { font: bold 14px }");
+	return toolbar;
+}
+
+QAction* viewAbstract::toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QAction* viewAbstract::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->setIcon(icon);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QAction* viewAbstract::toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->setEnabled(enabled);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QAction* viewAbstract::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->setIcon(icon);
+	action->setEnabled(enabled);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QAction* viewAbstract::toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, QKeySequence shortcut)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->setShortcut(shortcut);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QAction* viewAbstract::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, QKeySequence shortcut)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->setIcon(icon);
+	action->setShortcut(shortcut);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QAction* viewAbstract::toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->setShortcut(shortcut);
+	action->setEnabled(enabled);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QAction* viewAbstract::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled, QKeySequence shortcut)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->setIcon(icon);
+	action->setShortcut(shortcut);
+	action->setEnabled(enabled);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addAction(action);
+	return action;
+}
+
+QWidget* viewAbstract::toolBarWidget(QToolBar* toolbar, QWidget* widget)
+{
+	toolbar->addWidget(widget);
+	return widget;
+}
+
+QAction* viewAbstract::toolBarSeparator(QToolBar* toolbar)
+{
+	QAction* action = new QAction(toolbar);
+	action->setSeparator(true);
+	toolbar->addAction(action);
+	return action;
+}
+
+QWidget* viewAbstract::toolBarSpacer(QToolBar* toolbar)
+{
+	QWidget* spacer = new QWidget;
+	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
+	toolbar->addWidget(spacer);
+	return spacer;
+}
+
+QMenu* viewAbstract::contextualMenu(QWidget* parent)
+{
+	return new QMenu(parent);
+}
+
+QMenu* viewAbstract::contextualMenu(QMenu* menu)
+{
+	return new QMenu(menu);
+}
+
+QAction* viewAbstract::contextualMenuAction(QMenu* menu, QString text, std::function<void()> trigger)
+{
+	QAction* action = new QAction(menu);
+	action->setText(text);
+	action->connect(action, &QAction::triggered, trigger);
+	menu->addAction(action);
+	return action;
+}
+
+QAction* viewAbstract::contextualMenuAction(QMenu* menu, QString text, std::function<void()> trigger, bool enabled)
+{
+	QAction* action = new QAction(menu);
+	action->setText(text);
+	action->setEnabled(enabled);
+	action->connect(action, &QAction::triggered, trigger);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+	if (enabled)
+		menu->addAction(action);
+#else
+	menu->addAction(action);
+#endif
+	return action;
+}
+
+QAction* viewAbstract::contextualMenuAction(QMenu* menu, QString text, std::function<void()> trigger, QKeySequence shortcut)
+{
+	QAction* action = new QAction(menu);
+	action->setText(text);
+	action->setShortcut(shortcut);
+	action->connect(action, &QAction::triggered, trigger);
+	menu->addAction(action);
+	return action;
+}
+
+QAction* viewAbstract::contextualMenuAction(QMenu* menu, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut)
+{
+	QAction* action = new QAction(menu);
+	action->setText(text);
+	action->setShortcut(shortcut);
+	action->setEnabled(enabled);
+	action->connect(action, &QAction::triggered, trigger);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+	if (enabled)
+		menu->addAction(action);
+#else
+	menu->addAction(action);
+#endif
+	return action;
+}
+
+QAction* viewAbstract::contextualMenuSeparator(QMenu* menu)
+{
+	QAction* action = new QAction(menu);
+	action->setSeparator(true);
+	menu->addAction(action);
+	return action;
 }
 
 }
