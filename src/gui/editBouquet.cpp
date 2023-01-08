@@ -14,6 +14,8 @@
 #include <QLineEdit>
 #include <QComboBox>
 
+#include "platforms/platform.h"
+
 #include "editBouquet.h"
 
 using namespace e2se;
@@ -70,6 +72,7 @@ void editBouquet::layout(QWidget* cwid)
 	dtf1bt->setProperty("field", "pname");
 	fields.emplace_back(dtf1bt);
 	dtf1bt->setMaximumWidth(100);
+	platform::osComboBox(dtf1bt);
 	dtf1->addRow(dtf1bt);
 	dtf1->addItem(new QSpacerItem(0, 0));
 	for (auto & bsi : dbih->index["bss"])

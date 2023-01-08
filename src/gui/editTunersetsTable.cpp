@@ -15,6 +15,8 @@
 #include <QComboBox>
 #include <QCheckBox>
 
+#include "platforms/platform.h"
+
 #include "editTunersetsTable.h"
 
 using std::to_string;
@@ -81,6 +83,7 @@ void editTunersetsTable::tableSatLayout()
 	fields.emplace_back(dtf0sn);
 	dtf0sn->setMinimumWidth(240);
 	dtf0sn->setMaxLength(255);
+	platform::osLineEdit(dtf0sn);
 	dtf0->addRow(tr("Name"), dtf0sn);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -91,6 +94,7 @@ void editTunersetsTable::tableSatLayout()
 	dtf0sp->setInputMask("000.0>A");
 	dtf0sp->setValidator(new QRegularExpressionValidator(QRegularExpression("[\\d]{,3}.\\d\\w")));
 	dtf0sp->setText("0.00W");
+	platform::osLineEdit(dtf0sp);
 	dtf0->addRow(tr("Position"), dtf0sp);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -102,6 +106,7 @@ void editTunersetsTable::tableSatLayout()
 	dtf0ss->setMaximumWidth(100);
 	dtf0ss->setValidator(new QIntValidator);
 	dtf0ss->setMaxLength(2);
+	platform::osLineEdit(dtf0ss);
 	dtf0->addRow(tr("Flags"), dtf0ss);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -122,6 +127,7 @@ void editTunersetsTable::tableTerrestrialLayout()
 	fields.emplace_back(dtf0tn);
 	dtf0tn->setMinimumWidth(240);
 	dtf0tn->setMaxLength(255);
+	platform::osLineEdit(dtf0tn);
 	dtf0->addRow(tr("Name"), dtf0tn);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -132,6 +138,7 @@ void editTunersetsTable::tableTerrestrialLayout()
 	dtf0tc->setInputMask(">AAA");
 	dtf0tc->setMaxLength(3);
 	dtf0tc->setText("XYZ");
+	platform::osLineEdit(dtf0tc);
 	dtf0->addRow(tr("Country"), dtf0tc);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -143,6 +150,7 @@ void editTunersetsTable::tableTerrestrialLayout()
 	dtf0ts->setMaximumWidth(100);
 	dtf0ts->setValidator(new QIntValidator);
 	dtf0ts->setMaxLength(2);
+	platform::osLineEdit(dtf0ts);
 	dtf0->addRow(tr("Flags"), dtf0ts);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -163,6 +171,7 @@ void editTunersetsTable::tableCableLayout()
 	fields.emplace_back(dtf0cn);
 	dtf0cn->setMinimumWidth(240);
 	dtf0cn->setMaxLength(255);
+	platform::osLineEdit(dtf0cn);
 	dtf0->addRow(tr("Name"), dtf0cn);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -172,6 +181,7 @@ void editTunersetsTable::tableCableLayout()
 	dtf0cc->setMinimumWidth(60);
 	dtf0cc->setInputMask(">AAA");
 	dtf0cc->setMaxLength(3);
+	platform::osLineEdit(dtf0cc);
 	dtf0->addRow(tr("Country"), dtf0cc);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -183,6 +193,7 @@ void editTunersetsTable::tableCableLayout()
 	dtf0cs->setMaximumWidth(100);
 	dtf0cs->setValidator(new QIntValidator);
 	dtf0cs->setMaxLength(2);
+	platform::osLineEdit(dtf0cs);
 	dtf0->addRow(tr("Flags"), dtf0cs);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -209,6 +220,7 @@ void editTunersetsTable::tableAtscLayout()
 	fields.emplace_back(dtf0an);
 	dtf0an->setMinimumWidth(240);
 	dtf0an->setMaxLength(255);
+	platform::osLineEdit(dtf0an);
 	dtf0->addRow(tr("Name"), dtf0an);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	
@@ -218,6 +230,7 @@ void editTunersetsTable::tableAtscLayout()
 	dtf0as->setMaximumWidth(100);
 	dtf0as->setValidator(new QIntValidator);
 	dtf0as->setMaxLength(2);
+	platform::osLineEdit(dtf0as);
 	dtf0->addRow(tr("Flags"), dtf0as);
 	dtf0->addItem(new QSpacerItem(0, 0));
 

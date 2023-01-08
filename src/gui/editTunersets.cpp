@@ -14,6 +14,8 @@
 #include <QLineEdit>
 #include <QTextEdit>
 
+#include "platforms/platform.h"
+
 #include "editTunersets.h"
 
 using std::to_string;
@@ -70,6 +72,7 @@ void editTunersets::layout(QWidget* cwid)
 	fields.emplace_back(dtf0cs);
 	dtf0cs->setMinimumWidth(100);
 	dtf0cs->setMaxLength(32);
+	platform::osLineEdit(dtf0cs);
 	dtf0->addRow(tr("Charset"), dtf0cs);
 	dtf0->addItem(new QSpacerItem(0, 0));
 

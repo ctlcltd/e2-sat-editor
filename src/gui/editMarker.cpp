@@ -12,6 +12,8 @@
 #include <QFormLayout>
 #include <QLineEdit>
 
+#include "platforms/platform.h"
+
 #include "editMarker.h"
 
 using namespace e2se;
@@ -54,6 +56,7 @@ void editMarker::layout(QWidget* cwid)
 	fields.emplace_back(dtf0mt);
 	dtf0mt->setMinimumWidth(240);
 	dtf0mt->setMaxLength(255);
+	platform::osLineEdit(dtf0mt);
 	dtf0->addRow(tr("Marker Text"), dtf0mt);
 	dtf0->addItem(new QSpacerItem(0, 0));
 

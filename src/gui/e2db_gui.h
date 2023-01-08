@@ -39,7 +39,6 @@ class e2db : public ::e2se_e2db::e2db
 		} entries;
 
 		e2db(e2se::logger::session* log);
-		~e2db() {};
 		e2db* newptr() { return new e2se_gui::e2db(this->log->log); }
 		void error(string msg, string optk, string optv);
 		string addTransponder(transponder& tx);

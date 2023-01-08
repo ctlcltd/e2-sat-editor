@@ -26,7 +26,6 @@ class ftpcom : public ::e2se_ftpcom::ftpcom
 
 	public:
 		ftpcom(e2se::logger::session* log);
-		~ftpcom() {};
 	protected:
 		string trs(string str) override;
 		string trw(string str, string param) override;

@@ -50,6 +50,7 @@ void dialChannelBook::layout(QWidget* cwid)
 
 	dial->setWindowFlag(Qt::WindowStaysOnTopHint);
 	dial->setAttribute(Qt::WA_MacAlwaysShowToolWindow);
+	dial->setAttribute(Qt::WA_TranslucentBackground);
 	dial->setMinimumSize(760, 420);
 	dial->setWindowTitle(tr("Add Channel"));
 	dial->connect(dial, &QDialog::finished, [=]() { this->destroy(); });

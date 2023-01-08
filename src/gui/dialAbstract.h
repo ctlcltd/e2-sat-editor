@@ -77,7 +77,7 @@ class dialAbstract : protected e2se::log_factory
 		QToolButton* dttoggler;
 		QGridLayout* dtform;
 		bool collapsible = false;
-		QMargins frameMargins = QMargins (12, 16, 12, 16);
+		QMargins frameMargins = QMargins (8, 12, 8, 12);
 		bool frameFixed = true;
 		dataHandler* data = nullptr;
 		e2db* dbih = nullptr;

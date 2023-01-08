@@ -38,9 +38,9 @@ int main(int argc, char* argv[], char* envp[])
 	e2se::logger::session* log = new e2se::logger::session;
 	log->debug = DEBUG;
 
-	new e2se_gui::gui(argc, argv, log);
+	e2se_gui::gui* gui = new e2se_gui::gui(argc, argv, log);
 
-	return 0;
+	return gui->exec();
 }
 #else
 int main(int argc, char* argv[])
@@ -50,8 +50,8 @@ int main(int argc, char* argv[])
 	e2se::logger::session* log = new e2se::logger::session;
 	log->debug = DEBUG;
 
-	new e2se_gui::gui(argc, argv, log);
+	e2se_gui::gui* gui = new e2se_gui::gui(argc, argv, log);
 
-	return 0;
+	return gui->exec();
 }
 #endif

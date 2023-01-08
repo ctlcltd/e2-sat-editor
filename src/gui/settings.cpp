@@ -25,6 +25,8 @@
 #include <QValidator>
 #include <QHeaderView>
 
+#include "platforms/platform.h"
+
 #include "settings.h"
 #include "theme.h"
 
@@ -77,8 +79,8 @@ void settings::layout(QWidget* cwid)
 	this->action.dtsave->setDefault(true);
 	this->action.dtsave->setText(tr("Save Settings"));
 	this->action.dtsave->connect(this->action.dtsave, &QPushButton::pressed, [=]() { this->save(); });
+
 	this->action.dtcancel = new QPushButton;
-	this->action.dtcancel->setDefault(false);
 	this->action.dtcancel->setText(tr("Cancel"));
 	this->action.dtcancel->connect(this->action.dtcancel, &QPushButton::pressed, [=]() { dial->close(); });
 
@@ -116,20 +118,20 @@ void settings::preferencesLayout()
 	dtf0->setFormAlignment(Qt::AlignLeft);
 	dtf0->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
-	QCheckBox* dtf0g0 = new QCheckBox(tr("Suppress ask for confirmation messages (shown before deleting)"));
-	dtf0g0->setProperty("pref", "askConfirmation");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf0g0);
-	dtf0->addRow(dtf0g0);
+	QCheckBox* dtf0ac = new QCheckBox(tr("Suppress ask for confirmation messages (shown before deleting)"));
+	dtf0ac->setProperty("pref", "askConfirmation");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf0ac);
+	dtf0->addRow(dtf0ac);
 
-	QCheckBox* dtf0g1 = new QCheckBox(tr("Non-destructive edit (try to preserve origin channel lists)"));
-	dtf0g1->setProperty("pref", "nonDestructiveEdit");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf0g1);
-	dtf0->addRow(dtf0g1);
+	QCheckBox* dtf0nd = new QCheckBox(tr("Non-destructive edit (try to preserve origin channel lists)"));
+	dtf0nd->setProperty("pref", "nonDestructiveEdit");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf0nd);
+	dtf0->addRow(dtf0nd);
 
-	QCheckBox* dtf0g2 = new QCheckBox(tr("Visually fix for unwanted unicode characters (less performant)"));
-	dtf0g2->setProperty("pref", "fixUnicodeChars");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf0g2);
-	dtf0->addRow(dtf0g2);
+	QCheckBox* dtf0fu = new QCheckBox(tr("Visually fix for unwanted unicode characters (less performant)"));
+	dtf0fu->setProperty("pref", "fixUnicodeChars");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf0fu);
+	dtf0->addRow(dtf0fu);
 
 	QGroupBox* dtl1 = new QGroupBox(tr("Theme"));
 	QFormLayout* dtf1 = new QFormLayout;
@@ -137,14 +139,24 @@ void settings::preferencesLayout()
 	dtf1->setFormAlignment(Qt::AlignLeft);
 	dtf1->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
-	QComboBox* dtf1g3 = new QComboBox;
-	dtf1g3->setProperty("pref", "theme");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf1g3);
-	dtf1g3->addItem(tr("Default (system theme)"), "");
-	dtf1g3->addItem(tr("Dark"), "dark");
-	dtf1g3->addItem(tr("Light"), "light");
-	dtf1->addRow(dtf1g3);
-	dtf1->addRow(new QLabel(tr("<small>The software needs to be restarted after switching theme.</small>")));
+	QComboBox* dtf1td = new QComboBox;
+	dtf1td->setProperty("pref", "theme");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf1td);
+	dtf1td->addItem(tr("Default (system theme)"), "");
+	dtf1td->addItem(tr("Dark"), "dark");
+	dtf1td->addItem(tr("Light"), "light");
+	platform::osComboBox(dtf1td);
+	dtf1->addRow(dtf1td);
+
+	QCheckBox* dtf1oe = new QCheckBox(tr("Enable experimental features"));
+	dtf1oe->setProperty("pref", "osExperiment");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf1oe);
+	dtf1oe->setChecked(true);
+	dtf1->addRow(dtf1oe);
+
+	dtf1->addRow(new QLabel(tr("<small>The software needs to be restarted.</small>")));
+
+	//TODO
 
 	QGroupBox* dtl2 = new QGroupBox(tr("Tools"));
 	QFormLayout* dtf2 = new QFormLayout;
@@ -154,49 +166,52 @@ void settings::preferencesLayout()
 
 	//label: CSV Import/Export
 
-	QCheckBox* dtf2g4 = new QCheckBox(tr("Allow header columns in CSV"));
-	dtf2g4->setProperty("pref", "fields_default"); //
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2g4);
-	dtf2->addRow(dtf2g4);
+	QCheckBox* dtf2th = new QCheckBox(tr("Allow header columns in CSV"));
+	dtf2th->setProperty("pref", "fields_default"); //
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2th);
+	dtf2->addRow(dtf2th);
 
 	//TODO win32 convert \n to \r\n
-	QLineEdit* dtf2g5 = new QLineEdit("\\n");
-	dtf2g5->setProperty("pref", "toolsCsvDelimiter");
-	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2g5);
-	dtf2g5->setMaxLength(2);
-	dtf2g5->setMaximumWidth(50);
-	dtf2->addRow(tr("CSV delimiter character"), dtf2g5);
+	QLineEdit* dtf2cd = new QLineEdit("\\n");
+	dtf2cd->setProperty("pref", "toolsCsvDelimiter");
+	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2cd);
+	dtf2cd->setMaxLength(2);
+	dtf2cd->setMaximumWidth(50);
+	platform::osLineEdit(dtf2cd);
+	dtf2->addRow(tr("CSV delimiter character"), dtf2cd);
 
-	QLineEdit* dtf2g6 = new QLineEdit(",");
-	dtf2g6->setProperty("pref", "toolsCsvSeparator");
-	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2g6);
-	dtf2g6->setMaxLength(1);
-	dtf2g6->setMaximumWidth(50);
-	dtf2->addRow(tr("CSV separator character"), dtf2g6);
+	QLineEdit* dtf2cs = new QLineEdit(",");
+	dtf2cs->setProperty("pref", "toolsCsvSeparator");
+	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2cs);
+	dtf2cs->setMaxLength(1);
+	dtf2cs->setMaximumWidth(50);
+	platform::osLineEdit(dtf2cs);
+	dtf2->addRow(tr("CSV separator character"), dtf2cs);
 
-	QLineEdit* dtf2g7 = new QLineEdit(",");
-	dtf2g7->setProperty("pref", "toolsCsvEscape");
-	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2g7);
-	dtf2g7->setMaxLength(1);
-	dtf2g7->setMaximumWidth(50);
-	dtf2->addRow(tr("CSV escape character"), dtf2g7);
+	QLineEdit* dtf2ce = new QLineEdit(",");
+	dtf2ce->setProperty("pref", "toolsCsvEscape");
+	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2ce);
+	dtf2ce->setMaxLength(1);
+	dtf2ce->setMaximumWidth(50);
+	platform::osLineEdit(dtf2ce);
+	dtf2->addRow(tr("CSV escape character"), dtf2ce);
 
 	//label: Fields Import/Export
 
 	QButtonGroup* dtg2 = new QButtonGroup;
 	dtg2->setExclusive(true);
 
-	QCheckBox* dtf2g8 = new QCheckBox(tr("Default (same fields as visual)"));
-	dtf2g8->setProperty("pref", "fields_default"); //
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2g8);
-	dtg2->addButton(dtf2g8);
-	dtf2->addRow(dtf2g8);
+	QCheckBox* dtf2df = new QCheckBox(tr("Default (same fields as visual)"));
+	dtf2df->setProperty("pref", "fields_default"); //
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2df);
+	dtg2->addButton(dtf2df);
+	dtf2->addRow(dtf2df);
 
-	QCheckBox* dtf2g9 = new QCheckBox(tr("Extendend (all fields)"));
-	dtf2g9->setProperty("pref", "fields_extended"); //
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2g9);
-	dtg2->addButton(dtf2g9);
-	dtf2->addRow(dtf2g9);
+	QCheckBox* dtf2ef = new QCheckBox(tr("Extended (all fields)"));
+	dtf2ef->setProperty("pref", "fields_extended"); //
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2ef);
+	dtg2->addButton(dtf2ef);
+	dtf2->addRow(dtf2ef);
 
 	dtl0->setLayout(dtf0);
 	dtl1->setLayout(dtf1);
@@ -251,6 +266,7 @@ void settings::connectionsLayout()
 	dtf0ia->setProperty("pref", "ipAddress");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf0ia);
 	dtf0ia->setMinimumWidth(140);
+	platform::osLineEdit(dtf0ia);
 	dtf0->addRow(tr("IP address"), dtf0ia);
 
 	QHBoxLayout* dtb0 = new QHBoxLayout;
@@ -261,6 +277,7 @@ void settings::connectionsLayout()
 	dtf0fp->setValidator(new QIntValidator(1, 65535));
 	dtf0fp->setMaxLength(5);
 	dtf0fp->setMaximumWidth(50);
+	platform::osLineEdit(dtf0fp);
 
 	QCheckBox* dtf0fa = new QCheckBox(tr("Use active FTP"));
 	dtf0fa->setProperty("pref", "ftpActive");
@@ -275,6 +292,7 @@ void settings::connectionsLayout()
 	dtf0hp->setMaxLength(5);
 	dtf0hp->setMaximumWidth(50);
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf0hp);
+	platform::osLineEdit(dtf0hp);
 	dtf0->addRow(tr("HTTP port"), dtf0hp);
 
 	QGroupBox* dtl1 = new QGroupBox(tr("Login"));
@@ -286,6 +304,7 @@ void settings::connectionsLayout()
 	dtf1lu->setProperty("pref", "username");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf1lu);
 	dtf1lu->setMinimumWidth(120);
+	platform::osLineEdit(dtf1lu);
 	dtf1->addRow(tr("Username"), dtf1lu);
 
 	QLineEdit* dtf1lp = new QLineEdit;
@@ -293,6 +312,7 @@ void settings::connectionsLayout()
 	dtf1lp->setEchoMode(QLineEdit::Password);
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf1lp);
 	dtf1lp->setMinimumWidth(120);
+	platform::osLineEdit(dtf1lp);
 	dtf1->addRow(tr("Password"), dtf1lp); // show/hide
 
 	QGroupBox* dtl2 = new QGroupBox("Configuration");
@@ -304,6 +324,7 @@ void settings::connectionsLayout()
 	QLineEdit* dtf2pt = new QLineEdit("/etc/tuxbox");
 	dtf2pt->setProperty("pref", "pathTransponders");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2pt);
+	platform::osLineEdit(dtf2pt);
 	dtb20->addWidget(dtf2pt);
 	dtb20->addWidget(new QLabel("<small>(satellites.xml)</small>"));
 
@@ -312,6 +333,7 @@ void settings::connectionsLayout()
 	QLineEdit* dtf2ps = new QLineEdit("/etc/enigma2");
 	dtf2ps->setProperty("pref", "pathServices");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2ps);
+	platform::osLineEdit(dtf2ps);
 	dtb21->addWidget(dtf2ps);
 	dtb21->addWidget(new QLabel("<small>(lamedb)</small>"));
 
@@ -320,6 +342,7 @@ void settings::connectionsLayout()
 	QLineEdit* dtf2pb = new QLineEdit("/etc/enigma2");
 	dtf2pb->setProperty("pref", "pathBouquets");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2pb);
+	platform::osLineEdit(dtf2pb);
 	dtb22->addWidget(dtf2pb);
 	dtb22->addWidget(new QLabel("<small>(*.bouquet, *.userbouquet)</small>"));
 
@@ -331,11 +354,13 @@ void settings::connectionsLayout()
 	QLineEdit* dtf3ca = new QLineEdit;
 	dtf3ca->setProperty("pref", "customWebifReloadUrl");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf3ca);
+	platform::osLineEdit(dtf3ca);
 	dtf3->addRow(tr("Custom webif reload URL address"), dtf3ca);
 
 	QLineEdit* dtf3cc = new QLineEdit;
 	dtf3cc->setProperty("pref", "customTelnetReloadCmd");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf3cc);
+	platform::osLineEdit(dtf3cc);
 	dtf3->addRow(tr("Custom telnet reload command"), dtf3cc);
 
 	dtl0->setLayout(dtf0);
@@ -361,7 +386,7 @@ void settings::advancedLayout()
 
 	this->adtbl = new QTableWidget(0, 2);
 	adtbl->setHidden(true);
-	adtbl->setHorizontalHeaderLabels({"ID", "Value"});
+	adtbl->setHorizontalHeaderLabels({"ID", "VALUE"});
 	adtbl->horizontalHeader()->setSectionsClickable(false);
 	adtbl->verticalHeader()->setVisible(false);
 
@@ -544,7 +569,7 @@ void settings::store()
 
 void settings::store(QTableWidget* adtbl)
 {
-	debug("store()", "", "advanced");
+	debug("store()", "overload", "advanced");
 
 	for (int i = 0; i < adtbl->rowCount(); i++)
 	{
@@ -580,6 +605,8 @@ void settings::retrieve()
 			tmpps[i][pref] = sets->value(pref);
 			if (i == selected)
 			{
+				if (sets->value(pref).isNull())
+					continue;
 				if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
 					field->setText(sets->value(pref).toString());
 				else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
@@ -595,6 +622,10 @@ void settings::retrieve()
 	for (auto & item : prefs[PREF_SECTIONS::Preferences])
 	{
 		QString pref = item->property("pref").toString();
+		if (sets->value(pref).isNull())
+		{
+			continue;
+		}
 		if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
 		{
 			field->setChecked(sets->value(pref).toBool());
@@ -614,7 +645,7 @@ void settings::retrieve()
 
 void settings::retrieve(QListWidgetItem* item)
 {
-	debug("retrieve()", "", "item");
+	debug("retrieve()", "overload", "item");
 
 	int i = item->data(Qt::UserRole).toInt();
 	for (auto & item : prefs[PREF_SECTIONS::Connections])
@@ -629,7 +660,7 @@ void settings::retrieve(QListWidgetItem* item)
 
 void settings::retrieve(QTableWidget* adtbl)
 {
-	debug("retrieve()", "", "advanced");
+	debug("retrieve()", "overload", "advanced");
 
 	QStringList keys = sets->allKeys().filter(QRegularExpression("^(application|preference|profile)/"));
 	QStringList::const_iterator iq;

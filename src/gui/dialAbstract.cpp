@@ -73,10 +73,11 @@ void dialAbstract::collapsibleLayout()
 	debug("collapsibleLayout()");
 
 	this->dttoggler = new QToolButton;
+	dttoggler->setFixedHeight(20);
+	dttoggler->setIconSize(QSize(8, 8));
 	dttoggler->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 	dttoggler->setArrowType(Qt::UpArrow);
 	dttoggler->setText(" " + tr("collapse") + " ");
-	dttoggler->setFixedSize(96, 20);
 	dttoggler->connect(dttoggler, &QToolButton::pressed, [=]() {
 		this->toggle();
 
@@ -93,6 +94,12 @@ void dialAbstract::collapsibleLayout()
 	});
 
 	dial->setProperty("collapsible_togglerHeight", dttoggler->height());
+
+#ifdef Q_OS_MAC
+	dttoggler->setStyleSheet("border: 0; background: none; font-weight: bold");
+#else
+	dttoggler->setStyleSheet("width: 96px");
+#endif
 }
 
 void dialAbstract::expand()
@@ -253,6 +260,7 @@ QWidget* dialAbstract::toolBarSeparator(QToolBar* toolbar)
 {
 	QWidget* separator = new QWidget;
 	separator->setMaximumWidth(5);
+	toolbar->addWidget(separator);
 	return separator;
 }
 

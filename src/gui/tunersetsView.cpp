@@ -23,6 +23,8 @@
 #include <QClipboard>
 #include <QMimeData>
 
+#include "platforms/platform.h"
+
 #include "tunersetsView.h"
 #include "theme.h"
 #include "tab.h"
@@ -64,6 +66,9 @@ void tunersetsView::layout()
 	QGroupBox* lfrm = new QGroupBox;
 	QVBoxLayout* tbox = new QVBoxLayout;
 	QVBoxLayout* lbox = new QVBoxLayout;
+
+	tbox->setContentsMargins(0, 0, 0, 0);
+	lbox->setContentsMargins(0, 0, 0, 0);
 	tbox->setSpacing(0);
 	lbox->setSpacing(0);
 	tfrm->setFlat(true);
@@ -1022,7 +1027,8 @@ void tunersetsView::showTreeEditContextMenu(QPoint &pos)
 	contextMenuSeparator(tree_edit);
 	contextMenuAction(tree_edit, "Edit Settings", [=]() { this->editSettings(); });
 
-	tree_edit->exec(tree->mapToGlobal(pos));
+	platform::osContextMenuPopup(tree_edit, tree, pos);
+	// tree_edit->exec(tree->mapToGlobal(pos));
 }
 
 void tunersetsView::showListEditContextMenu(QPoint &pos)
@@ -1051,7 +1057,8 @@ void tunersetsView::showListEditContextMenu(QPoint &pos)
 	contextMenuSeparator(list_edit);
 	contextMenuAction(list_edit, "&Delete", [=]() { this->listItemDelete(); }, tabGetFlag(gui::TabListDelete), QKeySequence::Delete);
 
-	list_edit->exec(list->mapToGlobal(pos));
+	platform::osContextMenuPopup(list_edit, list, pos);
+	// list_edit->exec(list->mapToGlobal(pos));
 }
 
 void tunersetsView::updateFlags()

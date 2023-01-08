@@ -17,6 +17,8 @@
 #include <QLineEdit>
 #include <QComboBox>
 
+#include "platforms/platform.h"
+
 #include "tools.h"
 #include "tab.h"
 #include "gui.h"
@@ -67,6 +69,7 @@ void tools::inspector()
 #else
 	dtft->connect(dtft, QOverload<int>::of(&QComboBox::currentIndexChanged), e2se_gui::todo);
 #endif
+	platform::osComboBox(dtft);
 
 	dfrm->setContentsMargins(0, 0, 0, 0);
 	dfrm->addWidget(dcnt);

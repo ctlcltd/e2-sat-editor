@@ -16,6 +16,8 @@
 #include <QClipboard>
 #include <QMimeData>
 
+#include "platforms/platform.h"
+
 #include "channelBookView.h"
 #include "theme.h"
 #include "tab.h"
@@ -135,20 +137,28 @@ void channelBookView::layout()
 	awid->addWidget(tabv);
 	awid->addWidget(swid);
 
-	frm->addWidget(lwid, 0, 0);
+	QWidget* lwrap = nullptr;
+
+	if (tid == nullptr)
+		lwrap = lwid;
+	else
+		lwrap = platform::osWidgetBlend(lwid);
+
+	frm->addWidget(lwrap, 0, 0);
 	frm->addLayout(awid, 0, 1);
 	frm->setColumnMinimumWidth(0, 140);
 	frm->setColumnStretch(0, 1);
 	frm->setColumnStretch(1, 5);
-	frm->setSpacing(0);
+
 	frm->setContentsMargins(0, 0, 0, 0);
+	frm->setSpacing(0);
 }
 
 void channelBookView::sideLayout()
 {
 	this->lwid = new QListWidget;
 	lwid->setStyleSheet("QListWidget { background: transparent; font: 15px } QListView::item { padding: 10px auto }");
-	lwid->setMaximumWidth(160);
+	// lwid->setMaximumWidth(160);
 
 	lwid->addItem("Services");
 	lwid->addItem("Bouquets");
@@ -566,7 +576,8 @@ void channelBookView::showListEditContextMenu(QPoint &pos)
 
 	contextMenuAction(list_edit, "&Copy", [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
 
-	list_edit->exec(list->mapToGlobal(pos));
+	platform::osContextMenuPopup(list_edit, list, pos);
+	// list_edit->exec(list->mapToGlobal(pos));
 }
 
 void channelBookView::updateFlags()

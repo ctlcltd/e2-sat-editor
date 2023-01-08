@@ -32,6 +32,8 @@
 #include <QClipboard>
 #include <QMimeData>
 
+#include "platforms/platform.h"
+
 #include "toolkit/TreeStyledItemDelegate.h"
 #include "mainView.h"
 #include "theme.h"
@@ -66,12 +68,15 @@ void mainView::layout()
 {
 	debug("layout()");
 
-	widget->setStyleSheet("QGroupBox { spacing: 0; padding: 20px 0 0 0; border: 0 } QGroupBox::title { margin: 0 12px }");
+	widget->setStyleSheet("QGroupBox { spacing: 0; padding: 20px 0 0 0; border: 0 } QGroupBox::title {}");
 
 	QGridLayout* frm = new QGridLayout(widget);
 
 	//TODO twrap and vertical scrollbar hSize in GTK+
 	QSplitter* swid = new QSplitter;
+#ifdef Q_OS_MAC
+	swid->setStyleSheet("QSplitter::handle {}");
+#endif
 
 	QVBoxLayout* tbox = new QVBoxLayout;
 	QVBoxLayout* lbox = new QVBoxLayout;
@@ -84,20 +89,25 @@ void mainView::layout()
 	QGroupBox* tfrm = new QGroupBox("Bouquets");
 	QGroupBox* lfrm = new QGroupBox("Channels");
 
-	swrap->setContentsMargins(12, 12, 12, 0);
-	twrap->setContentsMargins(12, 12, 12, 12);
-	tbox->setSpacing(4);
-	lbox->setSpacing(0);
+	swrap->setContentsMargins(0, 0, 0, 0);
+	twrap->setContentsMargins(0, 0, 0, 0);
+	tbox->setContentsMargins(0, 0, 0, 0);
+	lbox->setContentsMargins(0, 0, 0, 0);
 	swrap->setSpacing(0);
 	twrap->setSpacing(0);
+	tbox->setSpacing(4);
+	lbox->setSpacing(0);
 	sfrm->setFlat(true);
 	tfrm->setFlat(true);
 	lfrm->setFlat(true);
+	lfrm->setStyleSheet("QGroupBox { background: palette() } QGroupBox::title { padding: 0 }");
 
 	QGridLayout* lwrap = new QGridLayout;
 	this->list_wrap = new QWidget;
 	list_wrap->setObjectName("list_wrap");
 	list_wrap->setStyleSheet("#list_wrap { background: transparent }");
+	lwrap->setContentsMargins(0, 0, 0, 0);
+	// lwrap->setContentsMargins(3, 3, 3, 3); // #list_wrap
 
 	this->side = new QTreeWidget;
 	this->tree = new QTreeWidget;
@@ -238,12 +248,9 @@ void mainView::layout()
 	tbox->addWidget(sfrm);
 	tbox->addItem(new QSpacerItem(0, 8, QSizePolicy::Preferred, QSizePolicy::Fixed));
 	tbox->addWidget(tfrm, 1);
-	tbox->setContentsMargins(0, 0, 0, 0);
 	afrm->setLayout(tbox);
 
 	lwrap->addWidget(list);
-	lwrap->setContentsMargins(0, 0, 0, 0);
-	// lwrap->setContentsMargins(3, 3, 3, 3); // #list_wrap
 	list_wrap->setLayout(lwrap);
 
 	lbox->addWidget(list_wrap);
@@ -255,7 +262,9 @@ void mainView::layout()
 	afrm->setMinimumWidth(250);
 	lfrm->setMinimumWidth(510);
 
-	swid->addWidget(afrm);
+	QWidget* awrap = platform::osWidgetBlend(afrm);
+
+	swid->addWidget(awrap);
 	swid->addWidget(lfrm);
 	swid->setStretchFactor(0, 1);
 	swid->setStretchFactor(1, 4);
@@ -1746,7 +1755,7 @@ void mainView::putListItems(vector<QString> items)
 	updateStatusBar();
 }
 
-void mainView::showTreeEditContextMenu(QPoint &pos)
+void mainView::showTreeEditContextMenu(QPoint& pos)
 {
 	debug("showTreeEditContextMenu()");
 
@@ -1767,10 +1776,11 @@ void mainView::showTreeEditContextMenu(QPoint &pos)
 	}
 	contextMenuAction(tree_edit, "Export", [=]() { tabExportFile(); });
 
-	tree_edit->exec(tree->mapToGlobal(pos));
+	platform::osContextMenuPopup(tree_edit, tree, pos);
+	// tree_edit->exec(tree->mapToGlobal(pos));
 }
 
-void mainView::showListEditContextMenu(QPoint &pos)
+void mainView::showListEditContextMenu(QPoint& pos)
 {
 	debug("showListEditContextMenu()");
 
@@ -1802,7 +1812,8 @@ void mainView::showListEditContextMenu(QPoint &pos)
 	contextMenuSeparator(list_edit);
 	contextMenuAction(list_edit, "&Delete", [=]() { this->listItemDelete(); }, tabGetFlag(gui::TabListDelete), QKeySequence::Delete);
 
-	list_edit->exec(list->mapToGlobal(pos));
+	platform::osContextMenuPopup(list_edit, list, pos);
+	// list_edit->exec(list->mapToGlobal(pos));
 }
 
 void mainView::updateStatusBar(bool current)

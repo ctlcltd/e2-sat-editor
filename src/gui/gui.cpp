@@ -47,7 +47,6 @@ gui::gui(int argc, char* argv[], e2se::logger::session* log)
 	mroot->setOrganizationDomain("e2se.org");
 	mroot->setApplicationName("e2-sat-editor");
 	mroot->setApplicationVersion("0.2");
-	mroot->setStyle(new TabBarProxyStyle);
 	mroot->connect(mroot, &QApplication::focusChanged, [=]() { this->windowChanged(); });
 
 	this->sets = new QSettings;
@@ -67,16 +66,21 @@ gui::gui(int argc, char* argv[], e2se::logger::session* log)
 	//TODO intl. rtl
 	// mroot->setLayoutDirection(Qt::RightToLeft);
 
+	bool experiment = sets->value("preference/osExperiment", true).toBool();
+	if (sets->value("preference/osWidgetBlend", experiment).toBool())
+		mwid->setAttribute(Qt::WA_TranslucentBackground);
+
 	if (! theme::isDefault() || ! QSysInfo::productType().contains(QRegularExpression("macos|osx")))
-	{
 		mwid->setStyleSheet("QToolBar { background: palette(mid) }");
-	}
 
 	layout();
 
 	mwid->show();
+}
 
-	mroot->exec();
+int gui::exec()
+{
+	return mroot->exec();
 }
 
 void gui::layout()
@@ -268,6 +272,7 @@ void gui::tabStackerLayout()
 	debug("tabStackerLayout()");
 
 	this->twid = new QTabWidget(mwid);
+	twid->setStyle(new TabBarProxyStyle);
 	twid->setTabsClosable(true);
 	twid->setMovable(true);
 //	twid->setDocumentMode(true);
@@ -833,7 +838,7 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& bit)
 
 string gui::exportFileDialog(GUI_DPORTS gde, string filename)
 {
-	int bit;
+	int bit = 0;
 	return exportFileDialog(gde, filename, bit);
 }
 

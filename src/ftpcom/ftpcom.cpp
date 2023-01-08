@@ -357,9 +357,13 @@ size_t ftpcom::data_tn_shell_func(char* cso, size_t size, size_t nmemb, void* ps
 		data = vars->cmd;
 		vars->send = false;
 	}
+	if (data.size() != 0)
+	{
+		data.append("\n");
+	}
 
-	vars->ps->data = data.length() ? (data + "\n").data() : data.data();
-	vars->ps->size = data.length() ? data.length() + 1 : data.length();
+	vars->ps->data = data.data();
+	vars->ps->size = data.size();
 
 	return data_upload_func(cso, size, nmemb, vars->ps);
 }
@@ -426,7 +430,7 @@ string ftpcom::trs(string str)
 
 string ftpcom::trw(string str, string param)
 {
-	size_t tsize = str.length() + param.length();
+	size_t tsize = str.size() + param.size();
 	char tstr[tsize];
 	std::sprintf(tstr, str.c_str(), param.c_str());
 	return string (tstr);

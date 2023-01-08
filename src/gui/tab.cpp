@@ -358,8 +358,9 @@ void tab::layout()
 
 	top->addWidget(top_toolbar);
 	bottom->addWidget(bottom_toolbar);
-	container->setContentsMargins(8, 8, 8, 8);
+	container->setContentsMargins(0, 0, 0, 0);
 
+	frm->setSpacing(0);
 	frm->setContentsMargins(0, 0, 0, 0);
 	frm->addLayout(top, 0, 0);
 	frm->addLayout(container, 1, 0);
@@ -413,7 +414,7 @@ bool tab::readFile(string filename)
 
 	reset();
 
-	QTimer* timer;
+	QTimer* timer = nullptr;
 
 	if (statusBarIsVisible())
 		timer = statusBarMessage("Reading from " + filename + " …");
@@ -722,7 +723,7 @@ void tab::exportFile(QTreeWidgetItem* item)
 	auto* dbih = this->data->dbih;
 
 	gui::TAB_VIEW current = getTabView();
-	gui::GUI_DPORTS gde;
+	gui::GUI_DPORTS gde = gui::GUI_DPORTS::AllFiles;
 	vector<string> paths;
 	string filename;
 	int bit = -1;
@@ -898,7 +899,7 @@ void tab::printFile(bool all)
 
 			if (selected.empty())
 			{
-				printer->destroy();
+				delete printer;
 				return;
 			}
 			for (auto & item : selected)
@@ -924,7 +925,7 @@ void tab::printFile(bool all)
 	}
 
 	printer->print();
-	printer->destroy();
+	delete printer;
 
 	if (statusBarIsVisible())
 		statusBarMessage("Printing …");
@@ -1395,6 +1396,8 @@ bool tab::saveQuestion(QString title, QString text)
 {
 	text.append("\n");
 	QMessageBox msg = QMessageBox(this->cwid);
+	msg.setWindowFlags(Qt::Sheet | Qt::MSWindowsFixedSizeDialogHint);
+	msg.setAttribute(Qt::WA_TranslucentBackground);
 	msg.setText(title);
 	msg.setInformativeText(text);
 	msg.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);

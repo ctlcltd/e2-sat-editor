@@ -44,7 +44,7 @@ class printable : protected e2se::log_factory
 		};
 
 		printable(QWidget* cwid, dataHandler* data, e2se::logger::session* log);
-		~printable() {};
+		virtual ~printable() = default;
 		void documentAll();
 		void documentIndex();
 		void documentServices();
@@ -53,7 +53,6 @@ class printable : protected e2se::log_factory
 		void documentUserbouquet(string bname);
 		void documentTunersets(int ytype);
 		void print();
-		void destroy() {};
 		QSettings* sets;
 	protected:
 		void pageHeader(html_page& page, string filename, DOC_VIEW view);

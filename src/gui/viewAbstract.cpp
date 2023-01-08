@@ -28,6 +28,8 @@
 #include <QToolBar>
 #include <QMenu>
 
+#include "platforms/platform.h"
+
 #include "viewAbstract.h"
 #include "theme.h"
 #include "tab.h"
@@ -40,6 +42,7 @@ void viewAbstract::searchLayout()
 {
 	this->tree_search = new QWidget;
 	this->list_search = new QWidget;
+
 	tree_search->setHidden(true);
 	list_search->setHidden(true);
 	tree_search->setBackgroundRole(QPalette::Mid);
@@ -52,15 +55,19 @@ void viewAbstract::searchLayout()
 	tsr_box->setSpacing(0);
 	this->tsr_search.input = new QLineEdit;
 	this->tsr_search.input->connect(this->tsr_search.input, &QLineEdit::textChanged, [=](const QString& text) { this->treeFindPerform(text); });
+	platform::osLineEdit(this->tsr_search.input);
+
 	this->tsr_search.next = new QPushButton("Find");
 	this->tsr_search.next->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
 	this->tsr_search.next->connect(this->tsr_search.next, &QPushButton::pressed, [=]() { this->treeFindPerform(); });
+
 	this->tsr_search.close = new QPushButton;
 	this->tsr_search.close->setIconSize(QSize(10, 10));
 	this->tsr_search.close->setIcon(theme::icon("close"));
 	this->tsr_search.close->setFlat(true);
 	this->tsr_search.close->setMaximumWidth(22);
 	this->tsr_search.close->connect(this->tsr_search.close, &QPushButton::pressed, [=]() { this->treeSearchClose(); });
+
 	tsr_box->addItem(new QSpacerItem(5, 0), 0, 0);
 	tsr_box->addWidget(this->tsr_search.input, 0, 1);
 	tsr_box->addItem(new QSpacerItem(2, 0), 0, 2);
@@ -77,30 +84,39 @@ void viewAbstract::searchLayout()
 #else
 	this->lsr_search.filter->connect(this->lsr_search.filter, QOverload<int>::of(&QComboBox::currentIndexChanged), [=]() { this->listFindReset(); });
 #endif
+	platform::osComboBox(this->lsr_search.filter);
+
 	this->lsr_search.input = new QLineEdit;
 	this->lsr_search.input->setStyleSheet("padding: 2px 0");
 	this->lsr_search.input->connect(this->lsr_search.input, &QLineEdit::textChanged, [=](const QString& text) { this->listFindPerform(text, LIST_FIND::fast); });
+	platform::osLineEdit(this->lsr_search.input);
+
 	this->lsr_search.highlight = new QPushButton;
 	this->lsr_search.highlight->setText("Highlight");
 	this->lsr_search.highlight->setCheckable(true);
 	this->lsr_search.highlight->setChecked(true);
 	this->lsr_search.highlight->setStyleSheet("QPushButton, QPushButton:checked { margin: 0 2px; padding: 2px 2ex; border: 1px solid palette(button); border-radius: 2px; background: palette(mid) } QPushButton:checked { background: rgb(9, 134, 211) }");
 	this->lsr_search.highlight->connect(this->lsr_search.highlight, &QPushButton::pressed, [=]() { this->listFindHighlightToggle(); });
+
 	this->lsr_search.next = new QPushButton("Find");
 	this->lsr_search.next->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
 	this->lsr_search.next->connect(this->lsr_search.next, &QPushButton::pressed, [=]() { this->listFindPerform(LIST_FIND::next); });
+
 	this->lsr_search.prev = new QPushButton("Find Previous");
 	this->lsr_search.prev->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
 	this->lsr_search.prev->connect(this->lsr_search.prev, &QPushButton::pressed, [=]() { this->listFindPerform(LIST_FIND::prev); });
+
 	this->lsr_search.all = new QPushButton("Find All");
 	this->lsr_search.all->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
 	this->lsr_search.all->connect(this->lsr_search.all, &QPushButton::pressed, [=]() { this->listFindPerform(LIST_FIND::all); });
+
 	this->lsr_search.close = new QPushButton;
 	this->lsr_search.close->setIconSize(QSize(10, 10));
 	this->lsr_search.close->setIcon(theme::icon("close"));
 	this->lsr_search.close->setFlat(true);
 	this->lsr_search.close->setMaximumWidth(28);
 	this->lsr_search.close->connect(this->lsr_search.close, &QPushButton::pressed, [=]() { this->listSearchClose(); });
+
 	lsr_box->addWidget(this->lsr_search.filter, 0, 0);
 	lsr_box->addWidget(this->lsr_search.input, 0, 1);
 	lsr_box->addItem(new QSpacerItem(2, 0), 0, 2);

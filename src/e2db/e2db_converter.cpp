@@ -1395,7 +1395,7 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 {
 	debug("convert_csv_tunersets_list()");
 
-	YTYPE ytype;
+	YTYPE ytype = YTYPE::satellite;
 
 	tunersets tv;
 	tv.charset = "utf-8";

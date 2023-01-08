@@ -14,6 +14,8 @@
 #include <QLineEdit>
 #include <QComboBox>
 
+#include "platforms/platform.h"
+
 #include "editTunersetsTransponder.h"
 
 using std::to_string;
@@ -85,6 +87,7 @@ void editTunersetsTransponder::leadSatLayout()
 	dtf0sf->setMinimumWidth(100);
 	dtf0sf->setValidator(new QIntValidator);
 	dtf0sf->setMaxLength(6);
+	platform::osLineEdit(dtf0sf);
 	dtf0->addRow(tr("Frequency"), dtf0sf);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -93,6 +96,7 @@ void editTunersetsTransponder::leadSatLayout()
 	fields.emplace_back(dtf0sp);
 	dtf0sp->setMaximumWidth(100);
 	dtf0sp->setValidator(new QIntValidator);
+	platform::osComboBox(dtf0sp);
 	dtf0->addRow(tr("Polarization"), dtf0sp);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	dtf0sp->addItem(tr("empty"), -1);
@@ -108,6 +112,7 @@ void editTunersetsTransponder::leadSatLayout()
 	dtf0ss->setMinimumWidth(100);
 	dtf0ss->setValidator(new QIntValidator);
 	dtf0ss->setMaxLength(6);
+	platform::osLineEdit(dtf0ss);
 	dtf0->addRow(tr("Symbol Rate"), dtf0ss);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	
@@ -116,6 +121,7 @@ void editTunersetsTransponder::leadSatLayout()
 	fields.emplace_back(dtf0sc);
 	dtf0sc->setMaximumWidth(100);
 	dtf0sc->setValidator(new QIntValidator);
+	platform::osComboBox(dtf0sc);
 	dtf0->addRow(tr("FEC"), dtf0sc);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	dtf0sc->addItem(tr("empty"), -1);
@@ -130,6 +136,7 @@ void editTunersetsTransponder::leadSatLayout()
 	fields.emplace_back(dtf0sy);
 	dtf0sy->setMaximumWidth(100);
 	dtf0sy->setValidator(new QIntValidator);
+	platform::osComboBox(dtf0sy);
 	dtf0->addRow(tr("System"), dtf0sy);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	dtf0sy->addItem(tr("empty"), -1);
@@ -157,6 +164,7 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 	dtf0tf->setMinimumWidth(100);
 	dtf0tf->setValidator(new QIntValidator);
 	dtf0tf->setMaxLength(6);
+	platform::osLineEdit(dtf0tf);
 	dtf0->addRow(tr("Frequency"), dtf0tf);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -165,6 +173,7 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 	fields.emplace_back(dtf0tm);
 	dtf0tm->setMaximumWidth(100);
 	dtf0tm->setValidator(new QIntValidator);
+	platform::osComboBox(dtf0tm);
 	dtf0->addRow(tr("Constellation"), dtf0tm);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	dtf0tm->addItem(tr("empty"), -1);
@@ -179,6 +188,7 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 	fields.emplace_back(dtf0tb);
 	dtf0tb->setMaximumWidth(100);
 	dtf0tb->setValidator(new QIntValidator);
+	platform::osComboBox(dtf0tb);
 	dtf0->addRow(tr("Bandwidth"), dtf0tb);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	dtf0tb->addItem(tr("empty"), -1);
@@ -193,6 +203,7 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 	fields.emplace_back(dtf0th);
 	dtf0th->setMaximumWidth(100);
 	dtf0th->setValidator(new QIntValidator);
+	platform::osComboBox(dtf0th);
 	dtf0->addRow(tr("HP FEC"), dtf0th);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	dtf0th->addItem(tr("empty"), -1);
@@ -207,6 +218,7 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 	fields.emplace_back(dtf0tl);
 	dtf0tl->setMaximumWidth(100);
 	dtf0tl->setValidator(new QIntValidator);
+	platform::osComboBox(dtf0tl);
 	dtf0->addRow(tr("LP FEC"), dtf0tl);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	dtf0tl->addItem(tr("empty"), -1);
@@ -234,6 +246,7 @@ void editTunersetsTransponder::leadCableLayout()
 	dtf0cf->setMinimumWidth(100);
 	dtf0cf->setValidator(new QIntValidator);
 	dtf0cf->setMaxLength(6);
+	platform::osLineEdit(dtf0cf);
 	dtf0->addRow(tr("Frequency"), dtf0cf);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -242,6 +255,7 @@ void editTunersetsTransponder::leadCableLayout()
 	fields.emplace_back(dtf0cm);
 	dtf0cm->setMaximumWidth(100);
 	dtf0cm->setValidator(new QIntValidator);
+	platform::osComboBox(dtf0cm);
 	dtf0->addRow(tr("Modulation"), dtf0cm);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	dtf0cm->addItem(tr("empty"), -1);
@@ -257,6 +271,7 @@ void editTunersetsTransponder::leadCableLayout()
 	dtf0cs->setMinimumWidth(100);
 	dtf0cs->setValidator(new QIntValidator);
 	dtf0cs->setMaxLength(6);
+	platform::osLineEdit(dtf0cs);
 	dtf0->addRow(tr("Symbol Rate"), dtf0cs);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	
@@ -265,6 +280,7 @@ void editTunersetsTransponder::leadCableLayout()
 	fields.emplace_back(dtf0ci);
 	dtf0ci->setMaximumWidth(100);
 	dtf0ci->setValidator(new QIntValidator);
+	platform::osComboBox(dtf0ci);
 	dtf0->addRow(tr("Inner FEC"), dtf0ci);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	dtf0ci->addItem(tr("empty"), -1);
@@ -286,13 +302,14 @@ void editTunersetsTransponder::leadAtscLayout()
 	QFormLayout* dtf0 = new QFormLayout;
 	dtf0->setRowWrapPolicy(QFormLayout::WrapAllRows);
 
-	QLineEdit* dtf0cf = new QLineEdit;
-	dtf0cf->setProperty("field", "a_freq");
-	fields.emplace_back(dtf0cf);
-	dtf0cf->setMinimumWidth(100);
-	dtf0cf->setValidator(new QIntValidator);
-	dtf0cf->setMaxLength(6);
-	dtf0->addRow(tr("Frequency"), dtf0cf);
+	QLineEdit* dtf0af = new QLineEdit;
+	dtf0af->setProperty("field", "a_freq");
+	fields.emplace_back(dtf0af);
+	dtf0af->setMinimumWidth(100);
+	dtf0af->setValidator(new QIntValidator);
+	dtf0af->setMaxLength(6);
+	platform::osLineEdit(dtf0af);
+	dtf0->addRow(tr("Frequency"), dtf0af);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
 	QLineEdit* dtf0am = new QLineEdit;
@@ -301,6 +318,7 @@ void editTunersetsTransponder::leadAtscLayout()
 	dtf0am->setMaximumWidth(100);
 	dtf0am->setValidator(new QIntValidator);
 	dtf0am->setMaxLength(1);
+	platform::osLineEdit(dtf0am);
 	dtf0->addRow(tr("Modulation"), dtf0am);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
@@ -321,6 +339,7 @@ void editTunersetsTransponder::sideSatLayout()
 	fields.emplace_back(dtf1sm);
 	dtf1sm->setMaximumWidth(100);
 	dtf1sm->setValidator(new QIntValidator);
+	platform::osComboBox(dtf1sm);
 	dtf1->addRow(tr("Modulation"), dtf1sm);
 	dtf1->addItem(new QSpacerItem(0, 0));
 	dtf1sm->addItem(tr("empty"), -1);
@@ -335,6 +354,7 @@ void editTunersetsTransponder::sideSatLayout()
 	fields.emplace_back(dtf1si);
 	dtf1si->setMaximumWidth(100);
 	dtf1si->setValidator(new QIntValidator);
+	platform::osComboBox(dtf1si);
 	dtf1->addRow(tr("Inversion"), dtf1si);
 	dtf1->addItem(new QSpacerItem(0, 0));
 	dtf1si->addItem(tr("empty"), -1);
@@ -349,6 +369,7 @@ void editTunersetsTransponder::sideSatLayout()
 	fields.emplace_back(dtf1sr);
 	dtf1sr->setMaximumWidth(100);
 	dtf1sr->setValidator(new QIntValidator);
+	platform::osComboBox(dtf1sr);
 	dtf1->addRow(tr("Roll Offset"), dtf1sr);
 	dtf1->addItem(new QSpacerItem(0, 0));
 	dtf1sr->addItem(tr("empty"), -1);
@@ -363,6 +384,7 @@ void editTunersetsTransponder::sideSatLayout()
 	fields.emplace_back(dtf1sp);
 	dtf1sp->setMaximumWidth(100);
 	dtf1sp->setValidator(new QIntValidator);
+	platform::osComboBox(dtf1sp);
 	dtf1->addRow(tr("Pilot"), dtf1sp);
 	dtf1->addItem(new QSpacerItem(0, 0));
 	dtf1sp->addItem(tr("empty"), -1);
@@ -389,6 +411,7 @@ void editTunersetsTransponder::sideTerrestrialLayout()
 	fields.emplace_back(dtf1tx);
 	dtf1tx->setMaximumWidth(100);
 	dtf1tx->setValidator(new QIntValidator);
+	platform::osComboBox(dtf1tx);
 	dtf1->addRow(tr("Transmission Mode"), dtf1tx);
 	dtf1->addItem(new QSpacerItem(0, 0));
 	dtf1tx->addItem(tr("empty"), -1);
@@ -403,6 +426,7 @@ void editTunersetsTransponder::sideTerrestrialLayout()
 	fields.emplace_back(dtf1ti);
 	dtf1ti->setMaximumWidth(100);
 	dtf1ti->setValidator(new QIntValidator);
+	platform::osComboBox(dtf1ti);
 	dtf1->addRow(tr("Inversion"), dtf1ti);
 	dtf1->addItem(new QSpacerItem(0, 0));
 	dtf1ti->addItem(tr("empty"), -1);
@@ -417,6 +441,7 @@ void editTunersetsTransponder::sideTerrestrialLayout()
 	fields.emplace_back(dtf1tg);
 	dtf1tg->setMaximumWidth(100);
 	dtf1tg->setValidator(new QIntValidator);
+	platform::osComboBox(dtf1tg);
 	dtf1->addRow(tr("Guard Interval"), dtf1tg);
 	dtf1->addItem(new QSpacerItem(0, 0));
 	dtf1tg->addItem(tr("empty"), -1);
@@ -431,6 +456,7 @@ void editTunersetsTransponder::sideTerrestrialLayout()
 	fields.emplace_back(dtf1th);
 	dtf1th->setMaximumWidth(100);
 	dtf1th->setValidator(new QIntValidator);
+	platform::osComboBox(dtf1th);
 	dtf1->addRow(tr("Hierarchy"), dtf1th);
 	dtf1->addItem(new QSpacerItem(0, 0));
 	dtf1th->addItem(tr("empty"), -1);
@@ -457,6 +483,7 @@ void editTunersetsTransponder::sideCableLayout()
 	fields.emplace_back(dtf1ci);
 	dtf1ci->setMaximumWidth(100);
 	dtf1ci->setValidator(new QIntValidator);
+	platform::osComboBox(dtf1ci);
 	dtf1->addRow(tr("Inversion"), dtf1ci);
 	dtf1->addItem(new QSpacerItem(0, 0));
 	dtf1ci->addItem(tr("empty"), -1);
@@ -484,6 +511,7 @@ void editTunersetsTransponder::thirdSatLayout()
 	dtf2ss->setMaximumWidth(50);
 	dtf2ss->setValidator(new QIntValidator);
 	dtf2ss->setMaxLength(8);
+	platform::osLineEdit(dtf2ss);
 	dtf2->addRow(tr("isid"), dtf2ss);
 	dtf2->addItem(new QSpacerItem(0, 0));
 
@@ -493,6 +521,7 @@ void editTunersetsTransponder::thirdSatLayout()
 	dtf2st->setMaximumWidth(50);
 	dtf2st->setValidator(new QIntValidator);
 	dtf2st->setMaxLength(4);
+	platform::osLineEdit(dtf2st);
 	dtf2->addRow(tr("mts"), dtf2st);
 	dtf2->addItem(new QSpacerItem(0, 0));
 
@@ -502,6 +531,7 @@ void editTunersetsTransponder::thirdSatLayout()
 	dtf2sd->setMaximumWidth(50);
 	dtf2sd->setValidator(new QIntValidator);
 	dtf2sd->setMaxLength(4);
+	platform::osLineEdit(dtf2sd);
 	dtf2->addRow(tr("plsmode"), dtf2sd);
 	dtf2->addItem(new QSpacerItem(0, 0));
 	
@@ -511,6 +541,7 @@ void editTunersetsTransponder::thirdSatLayout()
 	dtf2sc->setMaximumWidth(50);
 	dtf2sc->setValidator(new QIntValidator);
 	dtf2sc->setMaxLength(4);
+	platform::osLineEdit(dtf2sc);
 	dtf2->addRow(tr("plscode"), dtf2sc);
 	dtf2->addItem(new QSpacerItem(0, 0));
 
@@ -520,6 +551,7 @@ void editTunersetsTransponder::thirdSatLayout()
 	dtf2sn->setMaximumWidth(50);
 	dtf2sn->setValidator(new QIntValidator);
 	dtf2sn->setMaxLength(4);
+	platform::osLineEdit(dtf2sn);
 	dtf2->addRow(tr("plsn"), dtf2sn);
 	dtf2->addItem(new QSpacerItem(0, 0));
 
@@ -678,7 +710,7 @@ void editTunersetsTransponder::retrieve()
 	for (auto & item : fields)
 	{
 		string key = item->property("field").toString().toStdString();
-		int val;
+		int val = -1;
 
 		if (this->state.yx == e2db::YTYPE::satellite)
 		{

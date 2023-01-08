@@ -17,6 +17,7 @@ qt_add_executable(e2-sat-editor WIN32 MACOSX_BUNDLE
 	e2db/e2db_converter.cpp
 	e2db/e2db.cpp
 	ftpcom/ftpcom.cpp
+	gui/platforms/platform.h
 	gui/toolkit/ListEventHandler.cpp
 	gui/toolkit/ListEventObserver.cpp
 	gui/toolkit/TabBarProxyStyle.h
