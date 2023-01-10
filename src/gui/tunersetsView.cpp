@@ -59,6 +59,8 @@ void tunersetsView::layout()
 {
 	debug("layout()");
 
+	widget->setStyleSheet("QGroupBox { spacing: 0; border: 0; padding: 0; padding-top: 32px; font-weight: bold } QGroupBox::title { margin: 8px 4px; padding: 0 1px }");
+
 	QGridLayout* frm = new QGridLayout(widget);
 
 	QSplitter* swid = new QSplitter;
@@ -88,9 +90,6 @@ void tunersetsView::layout()
 			error("tunersets()", "Error", "Not supported yet.");
 	}
 	lfrm->setTitle("Transponders");
-
-	tfrm->setLayout(tbox);
-	lfrm->setLayout(lbox);
 
 	QStringList ths, lhs;
 	switch (this->state.yx)
@@ -124,7 +123,7 @@ void tunersetsView::layout()
 	tree->setDropIndicatorShown(true);
 	tree->setDragDropMode(QAbstractItemView::InternalMove);
 	tree->setEditTriggers(QAbstractItemView::NoEditTriggers);
-	tree->setStyleSheet("::item { padding: 6px auto }");
+	tree->setStyleSheet("QTreeWidget::item { padding: 6px auto }");
 
 	QTreeWidgetItem* tree_thead = new QTreeWidgetItem(ths);
 	tree->setHeaderItem(tree_thead);
@@ -142,7 +141,7 @@ void tunersetsView::layout()
 	list->setDropIndicatorShown(true);
 	list->setDragDropMode(QAbstractItemView::InternalMove);
 	list->setEditTriggers(QAbstractItemView::NoEditTriggers);
-	list->setStyleSheet("::item { padding: 6px auto }");
+	list->setStyleSheet("QTreeWidget::item { padding: 6px auto }");
 
 	QTreeWidgetItem* list_thead = new QTreeWidgetItem(lhs);
 	list->setHeaderItem(list_thead);
@@ -210,12 +209,17 @@ void tunersetsView::layout()
 	tbox->addWidget(tree);
 	tbox->addWidget(tree_search);
 	tbox->addWidget(tree_ats);
+	tfrm->setLayout(tbox);
+
 	lbox->addWidget(list);
 	lbox->addWidget(list_search);
 	lbox->addWidget(list_ats);
+	lfrm->setLayout(lbox);
 
 	swid->addWidget(tfrm);
 	swid->addWidget(lfrm);
+
+ 	platform::osWidgetOpaque(swid);
 
 	swid->setStretchFactor(0, 1);
 	swid->setStretchFactor(1, 5);

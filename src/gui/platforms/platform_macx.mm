@@ -29,51 +29,85 @@ class _ComboBoxProxyStyle : public QProxyStyle
 		}
 };
 
-QWidget* _platform_macx::_osWidgetBlend(QWidget* widget, FX_MATERIAL material)
-{
+
+QWidget* _platform_macx::_osWindowBlend(QWidget* widget, FX_MATERIAL material) {
 	if (! NSClassFromString(@"NSVisualEffectView"))
 		return widget;
 
-	// const NSRect frameRect = {
-	//	{0.0, 0.0},
-	//	{static_cast<double>(widget->width()), static_cast<double>(widget->height())}
-	// };
-	//
-	// NSVisualEffectView* subview = [[[NSVisualEffectView alloc] initWithFrame:frameRect] autorelease];
-	NSVisualEffectView* subview = [[NSVisualEffectView alloc] init];
+	// QWindow* topLevelWindow = QGuiApplication::topLevelWindows().first();
+
+	widget->setAttribute(Qt::WA_TranslucentBackground);
+
+	NSView* view = (NSView*)widget->winId();
+	NSView* superview = view.superview;
+	NSVisualEffectView* subview = (NSVisualEffectView*)superview.subviews.firstObject;
 
 	[subview setMaterial:NSVisualEffectMaterial (material)];
 	[subview setBlendingMode:NSVisualEffectBlendingModeBehindWindow];
-	// [subview setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
-	[subview setWantsLayer:TRUE];
+	[subview setWantsLayer:FALSE];
+	
+	return widget;
+};
+
+//WONTFIX performance issues
+// use _platform_macx::osWindowBlend instead
+//
+// huge impact (~400MB RAM with main window maximized)
+// native widgets and backing store
+// see QWidget documentation for more details
+// section: Native Widgets vs Alien Widgets
+//
+QWidget* _platform_macx::_osWidgetBlend(QWidget* widget, FX_MATERIAL material)
+{
+	// if (! NSClassFromString(@"NSVisualEffectView"))
+	// 	return widget;
+	//
+	// // const NSRect frameRect = {
+	// // 	{0.0, 0.0},
+	// // 	{static_cast<double>(widget->width()), static_cast<double>(widget->height())}
+	// // };
+	// // NSVisualEffectView* subview = [[[NSVisualEffectView alloc] initWithFrame:frameRect] autorelease];
+	//
+	// NSVisualEffectView* subview = [[NSVisualEffectView alloc] init];
+	//
+	// [subview setMaterial:NSVisualEffectMaterial (material)];
+	// [subview setBlendingMode:NSVisualEffectBlendingModeBehindWindow];
+	// // [subview setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
 	// [subview setWantsLayer:FALSE];
-	// [subview setCanDrawSubviewsIntoLayer:FALSE];
-	// [subview setLayerUsesCoreImageFilters:FALSE];
-
-	// QWidget* blended = new QWidget;
-	// NSView* view = (NSView*)blended->winId();
-	// 
-	// [view addSubview:subview];
-
-	QWindow* qSubview = QWindow::fromWinId(reinterpret_cast<WId>(subview));
-	QWidget* blended = QWidget::createWindowContainer(qSubview);
-	blended->winId(); // force stack under
-
-	QGridLayout* layout = new QGridLayout;
-	QWidget* wrapped = new QWidget;
-	layout->addWidget(blended, 0, 0);
-	layout->addWidget(widget, 0, 0);
-	layout->setContentsMargins(0, 0, 0, 0);
-	wrapped->setLayout(layout);
-
-	return wrapped;
+	// // [view setAutoresizesSubviews:YES];
+	//
+	// QWindow* qSubview = QWindow::fromWinId(reinterpret_cast<WId>(subview));
+	// QWidget* blended = QWidget::createWindowContainer(qSubview);
+	// // force stack under
+	// blended->winId(); // transforms the whole stack to native QNSWindow / QNSView
+	// blended->setAttribute(Qt::WA_PaintOnScreen, false);
+	// // blended->setUpdatesEnabled(false);
+	//
+	// QGridLayout* layout = new QGridLayout;
+	// QWidget* wrapped = new QWidget;
+	// layout->addWidget(blended, 0, 0);
+	// layout->addWidget(widget, 0, 0);
+	// layout->setContentsMargins(0, 0, 0, 0);
+	// wrapped->setLayout(layout);
+	//
+	// return wrapped;
+	//
+	return widget;
 }
 
+QWidget* _platform_macx::_osWidgetOpaque(QWidget* widget)
+{
+	widget->setAttribute(Qt::WA_TintedBackground);
+	widget->setAutoFillBackground(true);
+	return widget;
+}
+
+//TODO FIX wrong position and mouse release
 void _platform_macx::_osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 {
-	QWidget* top = widget->window();
+	QWidget* tlw = widget->window();
 
-	NSView* view = (NSView*)top->winId();
+	NSView* view = (NSView*)tlw->winId();
 	NSMenu* nsMenu = menu->toNSMenu();
 
 	QPoint globalPos = widget->mapToGlobal(pos);
@@ -97,12 +131,13 @@ void _platform_macx::_osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint po
 
 	[nsMenu popUpMenuPositioningItem:nil atLocation:nsPos inView:view];
 
-	QMouseEvent mouseReleased(QEvent::MouseButtonRelease, widget->pos(), widget->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
+	QMouseEvent mouseReleased(QEvent::MouseButtonRelease, tlw->pos(), tlw->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
 	QCoreApplication::sendEvent(widget, &mouseReleased);
 
 	menu->aboutToHide();
 }
 
+//TODO FIX dialogs
 QLineEdit* _platform_macx::_osLineEdit(QLineEdit* input)
 {
 	input->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -114,6 +149,7 @@ QLineEdit* _platform_macx::_osLineEdit(QLineEdit* input)
 	return input;
 }
 
+//TODO only for non-editable
 QComboBox* _platform_macx::_osComboBox(QComboBox* select)
 {
 	select->setStyle(new _ComboBoxProxyStyle);

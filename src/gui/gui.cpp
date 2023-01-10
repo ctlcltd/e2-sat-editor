@@ -21,6 +21,8 @@
 #include <QPushButton>
 #include <QFileDialog>
 
+#include "platforms/platform.h"
+
 #include "toolkit/TabBarProxyStyle.h"
 #include "gui.h"
 #include "theme.h"
@@ -63,12 +65,10 @@ gui::gui(int argc, char* argv[], e2se::logger::session* log)
 
 	theme();
 
+	platform::osWindowBlend(mwid);
+
 	//TODO intl. rtl
 	// mroot->setLayoutDirection(Qt::RightToLeft);
-
-	bool experiment = sets->value("preference/osExperiment", true).toBool();
-	if (sets->value("preference/osWidgetBlend", experiment).toBool())
-		mwid->setAttribute(Qt::WA_TranslucentBackground);
 
 	if (! theme::isDefault() || ! QSysInfo::productType().contains(QRegularExpression("macos|osx")))
 		mwid->setStyleSheet("QToolBar { background: palette(mid) }");
@@ -267,44 +267,62 @@ QActionGroup* gui::menuBarActionGroup(QMenu* menu, bool exclusive)
 	return group;
 }
 
+//TODO improve
+//
+//
+// see link: https://github.com/KDE/falkon/blob/master/src/lib/app/proxystyle.cpp
+//
 void gui::tabStackerLayout()
 {
 	debug("tabStackerLayout()");
 
-	this->twid = new QTabWidget(mwid);
-	twid->setStyle(new TabBarProxyStyle);
+	QWidget* twwrap = new QWidget(mwid);
+	QGridLayout* twlayout = new QGridLayout(twwrap);
+
+	this->twid = new QTabWidget;
 	twid->setTabsClosable(true);
 	twid->setMovable(true);
-//	twid->setDocumentMode(true);
-//	twid->setUsesScrollButtons(true);
-//	twid->tabBar()->setDrawBase(false);
-//	twid->tabBar()->setAutoFillBackground(true);
+	twid->setUsesScrollButtons(true);
+	twid->setStyle(new TabBarProxyStyle);
 	twid->tabBar()->setChangeCurrentOnDrag(false);
 
-	QString ttclose_icon = ":/icons/" + QString (theme::absLuma() ? "dark" : "light") + "/close.png";
-	QString ttclose_icon__selected = ":/icons/" + QString (theme::absLuma() ? "dark" : "dark") + "/close.png";
-#ifdef Q_OS_MAC
-	if (theme::isDefault())
-		ttclose_icon__selected = ":/icons/" + QString (theme::absLuma() ? "dark" : "light") + "/close.png";
-#endif
-
-	twid->setStyleSheet("QTabWidget::tab-bar { left: 0px } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { height: 32px; padding: 0.8ex 1ex; background: palette(mid); border: 1px solid transparent; border-radius: 0 } QTabBar::tab:selected { background: palette(highlight) } QTabBar::tab { padding-left: 1.2ex } QTabBar::close-button { margin: 0.5ex; image: url(" + ttclose_icon + ") } QTabBar::close-button:selected { image: url(" + ttclose_icon__selected + ") }");
+	twid->setStyleSheet("QTabWidget::tab-bar { left: 0px } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 12ex; max-width: 20ex; height: 6.3ex; padding-left: 8px; padding-right: 8px; font-size: 13px; border: 0; color:palette(button-text); background: palette(button) } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight) }");
 	twid->connect(twid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
 	twid->connect(twid, &QTabWidget::tabCloseRequested, [=](int index) { this->closeTab(index); });
 	twid->tabBar()->connect(twid->tabBar(), &QTabBar::tabMoved, [=](int from, int to) { this->tabMoved(from, to); });
 
+	QWidget* twtbbase = new QWidget;
+	twtbbase->setStyleSheet("min-height: 7ex");
+	twtbbase->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	//TODO FIX 4px frame
+
+	QWidget* ttcornerwid = new QWidget;
+	QHBoxLayout* ttcornerlayout = new QHBoxLayout(ttcornerwid);
+
 	QPushButton* ttbnew = new QPushButton(theme::icon("add"), tr("New &Tab"));
-	ttbnew->setMinimumHeight(32);
 	ttbnew->setIconSize(QSize(12, 12));
 	ttbnew->setShortcut(QKeySequence::AddTab);
-	//TODO FIX fixed height, ::left-corner needs padding
-	ttbnew->setStyleSheet("width: 8ex; height: 32px; font: bold 12px");
+	ttbnew->setStyleSheet("QPushButton { min-width: 8ex; min-height: 7ex; padding-left: 3px; padding-right: 3px; font-size: 12px; font-weight: bold }");
 	ttbnew->connect(ttbnew, &QPushButton::pressed, [=]() { this->newTab(); });
-	twid->setCornerWidget(ttbnew, Qt::TopLeftCorner);
+
+	ttcornerlayout->addWidget(ttbnew);
+	ttcornerlayout->addItem(new QSpacerItem(4, 0));
+	ttcornerlayout->setContentsMargins(0, 0, 0, 0);
+	ttcornerlayout->setSpacing(0);
+
+	platform::osWidgetOpaque(ttcornerwid);
+
+	twid->setCornerWidget(ttcornerwid, Qt::TopLeftCorner);
 
 	launcher();
 
-	mcnt->addWidget(twid);
+	platform::osWidgetOpaque(twtbbase);
+
+	twlayout->addWidget(twtbbase, 0, 0, Qt::AlignTop);
+	twlayout->addWidget(twid, 0, 0);
+	twlayout->setContentsMargins(0, 0, 0, 0);
+
+	mcnt->addWidget(twwrap);
 }
 
 void gui::statusBarLayout()
@@ -404,6 +422,7 @@ int gui::newTab(string filename)
 		ttname.append(QString::fromStdString(count ? " " + to_string(count) : ""));
 	}
 	twid->setTabText(index, ttname);
+	twid->setTabWhatsThis(index, ttname); //TODO FIX
 	action->setText(ttname);
 	ttab->setTabName(ttname.toStdString());
 
@@ -515,8 +534,7 @@ void gui::closeTab(int index)
 			for (auto & child : ttab->children())
 			{
 				int index = twid->indexOf(child->widget);
-				/*if (index == -1)
-					continue;*/
+
 				ttab->removeChild(child);
 				closeTab(index);
 			}
@@ -662,6 +680,7 @@ void gui::tabChangeName(int ttid, string filename)
 	}
 
 	twid->setTabText(index, ttname);
+	twid->setTabWhatsThis(index, ttname); //TODO FIX
 	ttmenu[ttid]->setText(ttname);
 	ttab->setTabName(ttname.toStdString());
 }

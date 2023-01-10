@@ -68,7 +68,7 @@ void mainView::layout()
 {
 	debug("layout()");
 
-	widget->setStyleSheet("QGroupBox { spacing: 0; padding: 20px 0 0 0; border: 0 } QGroupBox::title {}");
+	widget->setStyleSheet("QGroupBox { spacing: 0; border: 0; padding: 0; padding-top: 32px; font-weight: bold } QGroupBox::title { margin: 8px 4px; padding: 0 1px }");
 
 	QGridLayout* frm = new QGridLayout(widget);
 
@@ -100,7 +100,6 @@ void mainView::layout()
 	sfrm->setFlat(true);
 	tfrm->setFlat(true);
 	lfrm->setFlat(true);
-	lfrm->setStyleSheet("QGroupBox { background: palette() } QGroupBox::title { padding: 0 }");
 
 	QGridLayout* lwrap = new QGridLayout;
 	this->list_wrap = new QWidget;
@@ -112,9 +111,9 @@ void mainView::layout()
 	this->side = new QTreeWidget;
 	this->tree = new QTreeWidget;
 	this->list = new QTreeWidget;
-	side->setStyleSheet("QTreeWidget { background: transparent } ::item { padding: 9px auto }");
-	tree->setStyleSheet("QTreeWidget { background: transparent } ::item { margin: 1px 0 0; padding: 8px auto }");
-	list->setStyleSheet("::item { padding: 6px auto }");
+	side->setStyleSheet("QTreeWidget { background: transparent } QTreeWidget::item { padding: 9px auto }");
+	tree->setStyleSheet("QTreeWidget { background: transparent } QTreeWidget::item { margin: 1px 0 0; padding: 8px auto }");
+	list->setStyleSheet("QTreeWidget::item { padding: 6px auto }");
 
 	side->setHeaderHidden(true);
 	side->setUniformRowHeights(true);
@@ -258,16 +257,28 @@ void mainView::layout()
 	lbox->addWidget(list_reference);
 	lbox->addWidget(list_ats);
 	lfrm->setLayout(lbox);
+	lfrm->setAttribute(Qt::WA_TintedBackground);
 
 	afrm->setMinimumWidth(250);
 	lfrm->setMinimumWidth(510);
 
-	QWidget* awrap = platform::osWidgetBlend(afrm);
+// #ifdef Q_OS_MAC
+// 	QWidget* awrap = platform::osWidgetBlend(afrm);
+// 	swid->addWidget(afrm);
+// #else
+// 	swid->addWidget(afrm);
+// #endif
 
-	swid->addWidget(awrap);
+	swid->addWidget(afrm);
 	swid->addWidget(lfrm);
 	swid->setStretchFactor(0, 1);
 	swid->setStretchFactor(1, 4);
+
+#ifdef Q_OS_MAC
+	platform::osWidgetOpaque(swid->handle(1));
+#else
+	platform::osWidgetOpaque(swid);
+#endif
 
 	frm->addWidget(swid);
 	frm->setContentsMargins(0, 0, 0, 0);

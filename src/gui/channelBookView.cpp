@@ -9,6 +9,7 @@
  * @license GNU GPLv3 License
  */
 
+#include <QtGlobal>
 #include <QGridLayout>
 #include <QSplitter>
 #include <QHeaderView>
@@ -65,6 +66,9 @@ void channelBookView::layout()
 
 	sideLayout();
 
+	QWidget* awrap = new QWidget;
+	QWidget* lwrap = nullptr;
+
 	this->awid = new QHBoxLayout;
 	awid->setContentsMargins(0, 0, 0, 0);
 	awid->setSpacing(0);
@@ -78,6 +82,7 @@ void channelBookView::layout()
 	tabv->setUsesScrollButtons(true);
 	tabv->setExpanding(false);
 	tabv->setDrawBase(true);
+	//TODO FIX
 	tabv->setStyleSheet("QTabBar::tab { margin-top: 0; width: 48px }");
 
 	string chars[27] = {"0-9","A","B","C","D","E","F","G","H","I","J","L","K","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
@@ -103,7 +108,7 @@ void channelBookView::layout()
 	list->setSelectionMode(QAbstractItemView::ExtendedSelection);
 	list->setItemsExpandable(false);
 	list->setExpandsOnDoubleClick(false);
-	list->setStyleSheet("::item { padding: 2px auto }");
+	list->setStyleSheet("QGroupBox::item { padding: 2px auto }");
 
 	QTreeWidgetItem* thead = new QTreeWidgetItem({NULL, "Index", "Name", "Type", "Provider", "Transponder", "Position", "System"});
 	list->setHeaderItem(thead);
@@ -137,15 +142,23 @@ void channelBookView::layout()
 	awid->addWidget(tabv);
 	awid->addWidget(swid);
 
-	QWidget* lwrap = nullptr;
+// #ifdef Q_OS_MAC
+// 	if (tid != nullptr)
+// 		lwrap = lwid;
+// 	else
+// 		lwrap = platform::osWidgetBlend(lwid);
+// #endif
 
-	if (tid == nullptr)
-		lwrap = lwid;
-	else
-		lwrap = platform::osWidgetBlend(lwid);
+	lwrap = lwid;
+	awrap->setLayout(awid);
 
+#ifdef Q_OS_MAC
+	platform::osWidgetOpaque(awrap);
+#else
+	platform::osWidgetOpaque(frm);
+#endif
 	frm->addWidget(lwrap, 0, 0);
-	frm->addLayout(awid, 0, 1);
+	frm->addWidget(awrap, 0, 1);
 	frm->setColumnMinimumWidth(0, 140);
 	frm->setColumnStretch(0, 1);
 	frm->setColumnStretch(1, 5);

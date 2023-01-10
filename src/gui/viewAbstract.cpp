@@ -572,6 +572,9 @@ QToolBar* viewAbstract::toolBar()
 	toolbar->setIconSize(QSize(12, 12));
 	toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 	toolbar->setStyleSheet("QToolButton { font: bold 14px }");
+
+	platform::osWidgetOpaque(toolbar);
+
 	return toolbar;
 }
 

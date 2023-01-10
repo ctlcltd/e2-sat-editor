@@ -12,7 +12,8 @@
 #ifndef TabBarProxyStyle_h
 #define TabBarProxyStyle_h
 #include <QProxyStyle>
-#include <QTabBar>
+#include <QTabWidget>
+#include <iostream>
 
 namespace e2se_gui
 {

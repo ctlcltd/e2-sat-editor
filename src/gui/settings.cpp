@@ -66,7 +66,7 @@ void settings::layout(QWidget* cwid)
 
 	this->dial = new QDialog(cwid);
 	dial->setWindowTitle(tr("Settings"));
-	dial->setStyleSheet("QGroupBox { spacing: 0; padding: 20px 0 0 0; border: 0 } QGroupBox::title { margin: 0 10px; font: bold }");
+	dial->setStyleSheet("QGroupBox { spacing: 0; padding: 20px 0 0 0; border: 0 } QGroupBox::title { margin: 0 10px; font-weight: bold }");
 	dial->connect(dial, &QDialog::finished, [=]() { delete dial; delete this; });
 
 	QGridLayout* dfrm = new QGridLayout(dial);
@@ -106,7 +106,7 @@ void settings::preferencesLayout()
 {
 	QWidget* dtpage = new QWidget;
 	QHBoxLayout* dtcnt = new QHBoxLayout(dtpage);
-	dtpage->setStyleSheet("QGroupBox { font: bold }");
+	dtpage->setStyleSheet("QGroupBox { font-weight: bold }");
 	
 	QFormLayout* dtform = new QFormLayout;
 	dtform->setSpacing(10);

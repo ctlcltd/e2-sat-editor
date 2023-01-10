@@ -22,8 +22,27 @@ class _platform
 {
 	public:
 
+		static QWidget* osWindowBlend(QWidget* widget) {
+			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
+			if (QSettings().value("preference/osTranslucency", experiment).toBool())
+				return _osWindowBlend(widget);
+			else
+				return widget;
+		};
 		static QWidget* osWidgetBlend(QWidget* widget) {
-			return widget;
+			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
+			if (QSettings().value("preference/osTranslucency", experiment).toBool())
+				return _osWidgetBlend(widget);
+			else
+				return widget;
+		};
+		static QWidget* osWidgetOpaque(QWidget* widget)
+		{
+			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
+			if (QSettings().value("preference/osTranslucency", experiment).toBool())
+				return _osWidgetOpaque(widget);
+			else
+				return widget;
 		};
 		static void osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint pos) {
 			menu->popup(widget->mapToGlobal(pos));
@@ -35,14 +54,30 @@ class _platform
 			return select;
 		}
 
+	protected:
+	
+		static QWidget* _osWindowBlend(QWidget* widget) {
+			widget->setAttribute(Qt::WA_TranslucentBackground);
+			return widget;
+		};
+		static QWidget* _osWidgetBlend(QWidget* widget) {
+			widget->setAttribute(Qt::WA_TranslucentBackground);
+			return widget;
+		};
+		static QWidget* _osWidgetOpaque(QWidget* widget)
+		{
+			widget->setAttribute(Qt::WA_TintedBackground);
+			return widget;
+		}
+
 };
 
-#ifdef Q_OS_WIN
+#if defined Q_OS_WIN
 	class platform : public _platform {};
-#elifdef Q_OS_MAC
+#elif defined Q_OS_MAC
 	#include "platform_macx.h"
 	class platform : public _platform_macx {};
-#elifdef Q_OS_LINUX
+#elif defined Q_OS_LINUX
 	class platform : public _platform {};
 #endif
 

@@ -29,6 +29,8 @@
 #include <QClipboard>
 #include <QMimeData>
 
+#include "platforms/platform.h"
+
 #include "toolkit/TreeStyledItemDelegate.h"
 #include "tab.h"
 #include "theme.h"
@@ -1396,8 +1398,10 @@ bool tab::saveQuestion(QString title, QString text)
 {
 	text.append("\n");
 	QMessageBox msg = QMessageBox(this->cwid);
+
 	msg.setWindowFlags(Qt::Sheet | Qt::MSWindowsFixedSizeDialogHint);
 	msg.setAttribute(Qt::WA_TranslucentBackground);
+
 	msg.setText(title);
 	msg.setInformativeText(text);
 	msg.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
@@ -1408,7 +1412,9 @@ bool tab::saveQuestion(QString title, QString text)
 void tab::infoMessage(QString title)
 {
 	QMessageBox msg = QMessageBox(this->cwid);
+
 	msg.setWindowFlags(Qt::Popup);
+
 	msg.setText(title);
 	QRect pos = msg.geometry();
 	pos.moveCenter(QPoint(this->cwid->width() / 2, this->cwid->height() / 2));
@@ -1421,7 +1427,9 @@ void tab::infoMessage(QString title, QString text)
 	text.prepend("<span style=\"white-space: nowrap\">");
 	text.append("</span><br>");
 	QMessageBox msg = QMessageBox(this->cwid);
+
 	msg.setWindowFlags(Qt::Popup);
+
 	msg.setText(title);
 	msg.setInformativeText(text);
 	QRect pos = msg.geometry();
@@ -1460,10 +1468,14 @@ QToolBar* tab::toolBar(int type)
 		toolbar->setStyleSheet("QToolBar { padding: 0 12px } QToolButton { font: 18px }");
 	}
 	else
+	//TODO FIX viewport minimumWith QPushButton are not supported
 	// 0: bottom
 	{
 		toolbar->setStyleSheet("QToolBar { padding: 8px 12px } QToolButton { font: bold 16px }");
 	}
+
+	platform::osWidgetOpaque(toolbar);
+
 	return toolbar;
 }
 

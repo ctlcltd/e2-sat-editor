@@ -47,16 +47,30 @@ class _platform_macx
 			fx_opaque_background = _FX_MATERIAL::macx_fx_ContentBackground
 		};
 
-		//TODO FIX ~400MB RAM
+		static QWidget* osWindowBlend(QWidget* widget, FX_MATERIAL material = fx_translucent_background)
+		{
+			bool experiment = QSettings().value("preference/osExperiment", true).toBool();
+			if (QSettings().value("preference/osTranslucency", experiment).toBool())
+				return _osWindowBlend(widget, material);
+			else
+				return widget;
+		}
 		static QWidget* osWidgetBlend(QWidget* widget, FX_MATERIAL material = fx_translucent_background)
 		{
 			bool experiment = QSettings().value("preference/osExperiment", true).toBool();
-			if (QSettings().value("preference/osWidgetBlend", experiment).toBool())
+			if (QSettings().value("preference/osTranslucency", experiment).toBool())
 				return _osWidgetBlend(widget, material);
 			else
 				return widget;
 		}
-		//TODO FIX wrong position and mouse release
+		static QWidget* osWidgetOpaque(QWidget* widget)
+		{
+			bool experiment = QSettings().value("preference/osExperiment", true).toBool();
+			if (QSettings().value("preference/osTranslucency", experiment).toBool())
+				return _osWidgetOpaque(widget);
+			else
+				return widget;
+		}
 		static void osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 		{
 			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
@@ -65,17 +79,14 @@ class _platform_macx
 			else
 				menu->popup(widget->mapToGlobal(pos));
 		}
-		//TODO FIX dialogs
 		static QLineEdit* osLineEdit(QLineEdit* input)
 		{
-			bool isMainView = ! (input->window()->windowType() & Qt::Dialog);
 			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
-			if (QSettings().value("preference/osContextMenu", experiment).toBool() && isMainView)
+			if (QSettings().value("preference/osContextMenu", experiment).toBool())
 				return _osLineEdit(input);
 			else
 				return input;
 		}
-		//TODO only for non-editable
 		static QComboBox* osComboBox(QComboBox* select)
 		{
 			bool experiment = QSettings().value("preference/osExperiment", true).toBool();
@@ -87,7 +98,9 @@ class _platform_macx
 
 	protected:
 
+		static QWidget* _osWindowBlend(QWidget* widget, FX_MATERIAL material = fx_translucent_background);
 		static QWidget* _osWidgetBlend(QWidget* widget, FX_MATERIAL material = fx_translucent_background);
+		static QWidget* _osWidgetOpaque(QWidget* widget);
 		static void _osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint pos);
 		static QLineEdit* _osLineEdit(QLineEdit* input);
 		static QComboBox* _osComboBox(QComboBox* select);
