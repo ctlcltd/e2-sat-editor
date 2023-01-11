@@ -68,7 +68,7 @@ void mainView::layout()
 {
 	debug("layout()");
 
-	widget->setStyleSheet("QGroupBox { spacing: 0; border: 0; padding: 0; padding-top: 32px; font-weight: bold } QGroupBox::title { margin: 8px 4px; padding: 0 1px }");
+	widget->setStyleSheet("QGroupBox { spacing: 0; border: 0; padding: 0; padding-top: 32px; font-weight: bold } QGroupBox::title { margin: 8px 4px; padding: 0 1px 1px }");
 
 	QGridLayout* frm = new QGridLayout(widget);
 
@@ -78,35 +78,36 @@ void mainView::layout()
 	swid->setStyleSheet("QSplitter::handle {}");
 #endif
 
+	QWidget* afrm = new QWidget;
+	QWidget* bfrm = new QWidget;
+
+	QVBoxLayout* asbox = new QVBoxLayout;
+	QVBoxLayout* atbox = new QVBoxLayout;
+	QGridLayout* bbox = new QGridLayout;
 	QVBoxLayout* tbox = new QVBoxLayout;
 	QVBoxLayout* lbox = new QVBoxLayout;
-
-	QWidget* afrm = new QWidget;
-	QVBoxLayout* swrap = new QVBoxLayout;
-	QVBoxLayout* twrap = new QVBoxLayout;
 
 	QGroupBox* sfrm = new QGroupBox("Services");
 	QGroupBox* tfrm = new QGroupBox("Bouquets");
 	QGroupBox* lfrm = new QGroupBox("Channels");
 
-	swrap->setContentsMargins(0, 0, 0, 0);
-	twrap->setContentsMargins(0, 0, 0, 0);
+	frm->setContentsMargins(0, 0, 0, 0);
+	asbox->setContentsMargins(0, 0, 0, 0);
+	atbox->setContentsMargins(0, 0, 0, 0);
+	bbox->setContentsMargins(0, 0, 0, 0);
 	tbox->setContentsMargins(0, 0, 0, 0);
 	lbox->setContentsMargins(0, 0, 0, 0);
-	swrap->setSpacing(0);
-	twrap->setSpacing(0);
+
+	frm->setSpacing(0);
+	asbox->setSpacing(0);
+	atbox->setSpacing(0);
+	bbox->setSpacing(0);
 	tbox->setSpacing(4);
 	lbox->setSpacing(0);
+
 	sfrm->setFlat(true);
 	tfrm->setFlat(true);
 	lfrm->setFlat(true);
-
-	QGridLayout* lwrap = new QGridLayout;
-	this->list_wrap = new QWidget;
-	list_wrap->setObjectName("list_wrap");
-	list_wrap->setStyleSheet("#list_wrap { background: transparent }");
-	lwrap->setContentsMargins(0, 0, 0, 0);
-	// lwrap->setContentsMargins(3, 3, 3, 3); // #list_wrap
 
 	this->side = new QTreeWidget;
 	this->tree = new QTreeWidget;
@@ -236,41 +237,38 @@ void mainView::layout()
 	list->connect(list, &QTreeWidget::itemSelectionChanged, [=]() { this->listItemSelectionChanged(); });
 	list->connect(list, &QTreeWidget::itemDoubleClicked, [=]() { this->listItemDoubleClicked(); });
 
-	swrap->addWidget(side);
-	sfrm->setLayout(swrap);
+	asbox->addWidget(side);
+	sfrm->setLayout(asbox);
 
-	twrap->addWidget(tree);
-	twrap->addWidget(tree_search);
-	twrap->addWidget(tree_ats);
-	tfrm->setLayout(twrap);
+	atbox->addWidget(tree);
+	atbox->addWidget(tree_search);
+	atbox->addWidget(tree_ats);
+	tfrm->setLayout(atbox);
 
 	tbox->addWidget(sfrm);
 	tbox->addItem(new QSpacerItem(0, 8, QSizePolicy::Preferred, QSizePolicy::Fixed));
 	tbox->addWidget(tfrm, 1);
 	afrm->setLayout(tbox);
 
-	lwrap->addWidget(list);
-	list_wrap->setLayout(lwrap);
-
-	lbox->addWidget(list_wrap);
+	lbox->addWidget(list);
 	lbox->addWidget(list_search);
 	lbox->addWidget(list_reference);
 	lbox->addWidget(list_ats);
 	lfrm->setLayout(lbox);
-	lfrm->setAttribute(Qt::WA_TintedBackground);
 
 	afrm->setMinimumWidth(250);
 	lfrm->setMinimumWidth(510);
 
-// #ifdef Q_OS_MAC
-// 	QWidget* awrap = platform::osWidgetBlend(afrm);
-// 	swid->addWidget(afrm);
-// #else
-// 	swid->addWidget(afrm);
-// #endif
+	bbox->addWidget(lfrm);
+	bfrm->setLayout(bbox);
+
+#ifdef Q_OS_MAC
+	platform::osWidgetOpaque(bfrm);
+#endif
 
 	swid->addWidget(afrm);
-	swid->addWidget(lfrm);
+	swid->addWidget(bfrm);
+
 	swid->setStretchFactor(0, 1);
 	swid->setStretchFactor(1, 4);
 
@@ -281,7 +279,6 @@ void mainView::layout()
 #endif
 
 	frm->addWidget(swid);
-	frm->setContentsMargins(0, 0, 0, 0);
 
 	vector<pair<QString, QString>> tree = {
 		{"chs", "All services"},

@@ -287,7 +287,6 @@ void viewAbstract::listFindPerform(LIST_FIND flag)
 	listFindPerform(this->lsr_search.input->text(), flag);
 }
 
-//TODO FIX wrong column index when initialized
 //TODO FIX multiple selection with shortcut FindNext when search_box is closed
 void viewAbstract::listFindPerform(const QString& value, LIST_FIND flag)
 {
@@ -566,12 +565,18 @@ void viewAbstract::tabPrintFile(bool all)
 		tid->printFile(all);
 }
 
+//TODO FIX viewport minimumWidth QPushButton are not supported
 QToolBar* viewAbstract::toolBar()
 {
 	QToolBar* toolbar = new QToolBar;
 	toolbar->setIconSize(QSize(12, 12));
 	toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	toolbar->setStyleSheet("QToolButton { font: bold 14px }");
+	toolbar->setStyleSheet("QToolBar { padding: 0 8px; } QToolButton { font: bold 14px }");
+
+#ifndef Q_OS_MAC
+	if (! theme::isDefault())
+		toolbar->setStyleSheet("QToolBar { background: palette(mid) }");
+#endif
 
 	platform::osWidgetOpaque(toolbar);
 

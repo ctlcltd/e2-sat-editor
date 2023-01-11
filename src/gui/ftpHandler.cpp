@@ -29,19 +29,21 @@ ftpHandler::~ftpHandler()
 	delete this->ftih;
 }
 
-void ftpHandler::openConnection()
+bool ftpHandler::openConnection()
 {
 	if (this->ftih == nullptr)
 		this->ftih = new ftpcom(this->log->log);
-	this->ftih->connect();
+	return this->ftih->connect();
 }
 
-void ftpHandler::closeConnection()
+bool ftpHandler::closeConnection()
 {
+	bool ret = false;
 	if (this->ftih != nullptr)
-		this->ftih->disconnect();
+		ret = this->ftih->disconnect();
 	delete this->ftih;
 	this->ftih = nullptr;
+	return ret;
 }
 
 //TODO FIX settings changed
@@ -49,9 +51,7 @@ bool ftpHandler::handleConnection()
 {
 	if (this->ftih == nullptr)
 		this->ftih = new ftpcom(this->log->log);
-	if (this->ftih->connect())
-		return true;
-	return false;
+	return this->ftih->connect();
 }
 
 }

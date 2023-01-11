@@ -27,28 +27,32 @@ void dialAbstract::layout(QWidget* cwid)
 	dial->setWindowTitle("Edit");
 
 	QGridLayout* dfrm = new QGridLayout(dial);
-	QVBoxLayout* dvbox = new QVBoxLayout;
 
 	this->widget = new QWidget;
+
+	QVBoxLayout* dvbox = new QVBoxLayout;
 	this->dtform = new QGridLayout;
 
+	dfrm->setContentsMargins(0, 0, 0, 0);
+
 	dvbox->setSpacing(0);
+
 	widget->setContentsMargins(this->frameMargins);
 	widget->setLayout(dtform);
-
-	dfrm->setColumnStretch(0, 1);
-	dfrm->setRowStretch(0, 1);
-	dfrm->setContentsMargins(0, 0, 0, 0);
 
 	if (this->collapsible)
 	{
 		collapsibleLayout();
+
 		dvbox->addWidget(dttoggler, 0, Qt::AlignTrailing | Qt::AlignTop);
 	}
 	toolbarLayout();
 
 	dvbox->addWidget(widget);
 	dvbox->addWidget(dtbar);
+
+	dfrm->setColumnStretch(0, 1);
+	dfrm->setRowStretch(0, 1);
 
 	dfrm->addLayout(dvbox, 0, 0);
 
@@ -162,7 +166,13 @@ QToolBar* dialAbstract::toolBar()
 	QToolBar* toolbar = new QToolBar;
 	toolbar->setIconSize(QSize(16, 16));
 	toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	toolbar->setStyleSheet("QToolBar { padding: 0 8px } QToolButton { font: 16px }");
+	toolbar->setStyleSheet("QToolBar { padding: 0 8px } QToolButton { font-size: 16px }");
+
+#ifndef Q_OS_MAC
+	if (! theme::isDefault())
+		toolbar->setStyleSheet("QToolBar { background: palette(mid) }");
+#endif
+
 	return toolbar;
 }
 

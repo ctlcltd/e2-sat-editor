@@ -18,7 +18,6 @@ using std::string, std::pair, std::vector, std::map;
 #ifndef channelBookView_h
 #define channelBookView_h
 #include <QWidget>
-#include <QHBoxLayout>
 #include <QListWidget>
 #include <QTreeWidget>
 
@@ -88,7 +87,6 @@ class channelBookView : public viewAbstract
 		void updateFlags();
 
 		QListWidget* lwid;
-		QHBoxLayout* awid;
 		QTabBar* tabv;
 		map<string, vector<pair<int, string>>> index;
 

@@ -66,12 +66,14 @@ void settings::layout(QWidget* cwid)
 
 	this->dial = new QDialog(cwid);
 	dial->setWindowTitle(tr("Settings"));
-	dial->setStyleSheet("QGroupBox { spacing: 0; padding: 20px 0 0 0; border: 0 } QGroupBox::title { margin: 0 10px; font-weight: bold }");
+	dial->setStyleSheet("QGroupBox { spacing: 0; padding: 0; padding-top: 20px; border: 0; font-weight: bold } QGroupBox::title { margin: 0 10px }");
 	dial->connect(dial, &QDialog::finished, [=]() { delete dial; delete this; });
 
 	QGridLayout* dfrm = new QGridLayout(dial);
+
 	QHBoxLayout* dhbox = new QHBoxLayout;
 	QVBoxLayout* dvbox = new QVBoxLayout;
+
 	this->dtwid = new QTabWidget;
 	dtwid->connect(dtwid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
 

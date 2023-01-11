@@ -335,6 +335,7 @@ void tab::layout()
 #else
 	profile_combo->connect(profile_combo, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) { this->profileComboChanged(index); });
 #endif
+	platform::osComboBox(profile_combo);
 
 	tbars[gui::FileOpen] = toolBarAction(top_toolbar, "&Open", theme::icon("file-open"), [=]() { this->openFile(); }, QKeySequence::Open);
 	tbars[gui::FileSave] = toolBarAction(top_toolbar, "&Save", theme::icon("save"), [=]() { this->saveFile(false); }, QKeySequence::Save);
@@ -346,6 +347,7 @@ void tab::layout()
 	toolBarSpacer(top_toolbar);
 	toolBarWidget(top_toolbar, profile_combo);
 	toolBarAction(top_toolbar, "Connect", [=]() { this->ftpConnect(); });
+	toolBarAction(top_toolbar, "Disconnect", [=]() { this->ftpDisconnect(); });
 	toolBarSeparator(top_toolbar);
 	toolBarAction(top_toolbar, "Upload", [=]() { this->ftpUpload(); });
 	toolBarAction(top_toolbar, "Download", [=]() { this->ftpDownload(); });
@@ -1240,6 +1242,23 @@ void tab::ftpConnect()
 	}
 }
 
+void tab::ftpDisconnect()
+{
+	debug("ftpDisconnect()");
+
+	if (this->ftph->closeConnection())
+	{
+		if (statusBarIsVisible())
+			statusBarMessage("FTP disconnected successfully.");
+		else
+			infoMessage("Successfully disconnected!");
+	}
+	else
+	{
+		errorMessage("FTP Error", "Cannot disconnect from FTP Server!");
+	}
+}
+
 //TODO improve for status bar
 void tab::ftpUpload()
 {
@@ -1465,14 +1484,18 @@ QToolBar* tab::toolBar(int type)
 	{
 		toolbar->setIconSize(QSize(32, 32));
 		toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-		toolbar->setStyleSheet("QToolBar { padding: 0 12px } QToolButton { font: 18px }");
+		toolbar->setStyleSheet("QToolBar { padding: 0 12px } QToolButton { font-size: 18px }");
 	}
 	else
-	//TODO FIX viewport minimumWith QPushButton are not supported
 	// 0: bottom
 	{
-		toolbar->setStyleSheet("QToolBar { padding: 8px 12px } QToolButton { font: bold 16px }");
+		toolbar->setStyleSheet("QToolBar { padding: 8px 12px } QToolButton { font-size: 16px; font-weight: bold; }");
 	}
+
+#ifndef Q_OS_MAC
+	if (! theme::isDefault())
+		toolbar->setStyleSheet("QToolBar { background: palette(mid) }");
+#endif
 
 	platform::osWidgetOpaque(toolbar);
 

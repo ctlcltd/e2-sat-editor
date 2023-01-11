@@ -10,11 +10,15 @@
  */
 
 #import <AppKit/AppKit.h>
+
 #include <iostream>
+
 #include <QtGui>
 #include <QProxyStyle>
+#include <QStyleOption>
 #include <QTimer>
 #include <QGridLayout>
+
 #include "platform_macx.h"
 
 class _ComboBoxProxyStyle : public QProxyStyle
@@ -29,12 +33,22 @@ class _ComboBoxProxyStyle : public QProxyStyle
 		}
 };
 
+class _eventFilter : public QObject
+{
+	protected:
+		bool eventFilter(QObject* o, QEvent* e)
+		{
+			std::cout << e->type() << std::endl;
+			return QObject::eventFilter(o, e);
+		}
+};
+
 
 QWidget* _platform_macx::_osWindowBlend(QWidget* widget, FX_MATERIAL material) {
 	if (! NSClassFromString(@"NSVisualEffectView"))
 		return widget;
 
-	// QWindow* topLevelWindow = QGuiApplication::topLevelWindows().first();
+	// QWindow* top = QGuiApplication::topLevelWindows().first();
 
 	widget->setAttribute(Qt::WA_TranslucentBackground);
 
@@ -105,9 +119,9 @@ QWidget* _platform_macx::_osWidgetOpaque(QWidget* widget)
 //TODO FIX wrong position and mouse release
 void _platform_macx::_osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 {
-	QWidget* tlw = widget->window();
+	QWidget* top = widget->window();
 
-	NSView* view = (NSView*)tlw->winId();
+	NSView* view = (NSView*)top->winId();
 	NSMenu* nsMenu = menu->toNSMenu();
 
 	QPoint globalPos = widget->mapToGlobal(pos);
@@ -131,7 +145,7 @@ void _platform_macx::_osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint po
 
 	[nsMenu popUpMenuPositioningItem:nil atLocation:nsPos inView:view];
 
-	QMouseEvent mouseReleased(QEvent::MouseButtonRelease, tlw->pos(), tlw->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
+	QMouseEvent mouseReleased(QEvent::MouseButtonRelease, top->pos(), top->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
 	QCoreApplication::sendEvent(widget, &mouseReleased);
 
 	menu->aboutToHide();

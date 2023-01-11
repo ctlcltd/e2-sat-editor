@@ -164,12 +164,8 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 		}
 		if (dirsize != 0)
 		{
-			QMessageBox msg = QMessageBox(cwid);
-			msg.setText("The destination contains files that will be overwritten.");
-			msg.setInformativeText("Do you want to overwrite them?\n");
-			msg.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
-			msg.setDefaultButton(QMessageBox::Save);
-			if (msg.exec() != QMessageBox::Save)
+			bool overwrite = tid->saveQuestion("The destination contains files that will be overwritten.", "Do you want to overwrite them?");
+			if (! overwrite)
 				return;
 		}
 	}
@@ -212,12 +208,8 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 		}
 		if (dirsize != 0)
 		{
-			QMessageBox msg = QMessageBox(cwid);
-			msg.setText("The destination contains files that will be overwritten.");
-			msg.setInformativeText("Do you want to overwrite them?\n");
-			msg.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
-			msg.setDefaultButton(QMessageBox::Save);
-			if (msg.exec() != QMessageBox::Save)
+			bool overwrite = tid->saveQuestion("The destination contains files that will be overwritten.", "Do you want to overwrite them?");
+			if (! overwrite)
 				return;
 		}
 	}

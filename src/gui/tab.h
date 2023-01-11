@@ -108,6 +108,7 @@ class tab : protected e2se::log_factory
 		void profileComboChanged(int index);
 		bool ftpHandle();
 		void ftpConnect();
+		void ftpDisconnect();
 		void ftpUpload();
 		void ftpDownload();
 		void loadSeeds();

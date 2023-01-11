@@ -24,6 +24,7 @@ class TabBarProxyStyle : public QProxyStyle
 		{
 			if (hint == QStyle::SH_TabBar_CloseButtonPosition)
 				return QTabBar::RightSide;
+
 			return QProxyStyle::styleHint(hint, option, widget, returnData);
 		}
 };

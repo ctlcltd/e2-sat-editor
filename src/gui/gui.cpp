@@ -63,6 +63,9 @@ gui::gui(int argc, char* argv[], e2se::logger::session* log)
 	mwid->setMinimumSize(760, 550);
 	mwid->resize(wsize);
 
+	// screenshot
+	// mwid->resize(QSize(1280, 800));
+
 	theme();
 
 	platform::osWindowBlend(mwid);
@@ -70,8 +73,9 @@ gui::gui(int argc, char* argv[], e2se::logger::session* log)
 	//TODO intl. rtl
 	// mroot->setLayoutDirection(Qt::RightToLeft);
 
-	if (! theme::isDefault() || ! QSysInfo::productType().contains(QRegularExpression("macos|osx")))
-		mwid->setStyleSheet("QToolBar { background: palette(mid) }");
+	theme();
+
+	platform::osWindowBlend(mwid);
 
 	layout();
 
@@ -286,7 +290,11 @@ void gui::tabStackerLayout()
 	twid->setStyle(new TabBarProxyStyle);
 	twid->tabBar()->setChangeCurrentOnDrag(false);
 
-	twid->setStyleSheet("QTabWidget::tab-bar { left: 0px } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 12ex; max-width: 20ex; height: 6.3ex; padding-left: 8px; padding-right: 8px; font-size: 13px; border: 0; color:palette(button-text); background: palette(button) } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight) }");
+	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid; border-color: palette(button) } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 12ex; max-width: 25ex; height: 6.3ex; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; color:palette(button-text); background: palette(button); border-color: palette(button) } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight) }");
+	if (twid->layoutDirection() == Qt::LeftToRight)
+		twid->tabBar()->setStyleSheet("QTabBar { border-width: 0 0 0 1px } QTabBar::tab { margin: 0 0 0 1px; border-width: 0 1px 0 0 }");
+	else
+		twid->tabBar()->setStyleSheet("QTabBar { border-width: 0 1px 0 0 } QTabBar::tab { margin: 0 1px 0 0; border-width: 0 0 0 1px }");
 	twid->connect(twid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
 	twid->connect(twid, &QTabWidget::tabCloseRequested, [=](int index) { this->closeTab(index); });
 	twid->tabBar()->connect(twid->tabBar(), &QTabBar::tabMoved, [=](int from, int to) { this->tabMoved(from, to); });
@@ -422,7 +430,7 @@ int gui::newTab(string filename)
 		ttname.append(QString::fromStdString(count ? " " + to_string(count) : ""));
 	}
 	twid->setTabText(index, ttname);
-	twid->setTabWhatsThis(index, ttname); //TODO FIX
+	twid->setTabToolTip(index, ttname);
 	action->setText(ttname);
 	ttab->setTabName(ttname.toStdString());
 
@@ -490,8 +498,9 @@ int gui::openTab(TAB_VIEW view, int arg)
 	ttmenu[ttid] = action;
 	ttabs[ttid] = ttab;
 
-	twid->setCurrentIndex(index);
+	twid->setTabToolTip(index, ttname);
 	ttab->setTabName(ttname.toStdString());
+	twid->setCurrentIndex(index);
 
 	return index;
 }
@@ -680,7 +689,7 @@ void gui::tabChangeName(int ttid, string filename)
 	}
 
 	twid->setTabText(index, ttname);
-	twid->setTabWhatsThis(index, ttname); //TODO FIX
+	twid->setTabToolTip(index, ttname);
 	ttmenu[ttid]->setText(ttname);
 	ttab->setTabName(ttname.toStdString());
 }

@@ -11,6 +11,7 @@
 
 #include <QtGlobal>
 #include <QGridLayout>
+#include <QHBoxLayout>
 #include <QSplitter>
 #include <QHeaderView>
 #include <QLabel>
@@ -64,16 +65,23 @@ void channelBookView::layout()
 
 	QGridLayout* frm = new QGridLayout(widget);
 
+	QWidget* afrm = new QWidget;
+	QWidget* bfrm = new QWidget;
+
+	QVBoxLayout* abox = new QVBoxLayout;
+	QHBoxLayout* bbox = new QHBoxLayout;
+	
+	QSplitter* bswid = new QSplitter;
+
+	frm->setContentsMargins(0, 0, 0, 0);
+	abox->setContentsMargins(0, 0, 0, 0);
+	bbox->setContentsMargins(0, 0, 0, 0);
+
+	frm->setSpacing(0);
+	abox->setSpacing(0);
+	bbox->setSpacing(0);
+
 	sideLayout();
-
-	QWidget* awrap = new QWidget;
-	QWidget* lwrap = nullptr;
-
-	this->awid = new QHBoxLayout;
-	awid->setContentsMargins(0, 0, 0, 0);
-	awid->setSpacing(0);
-
-	QSplitter* swid = new QSplitter;
 
 	this->tabv = new QTabBar;
 	tabv->setHidden(true);
@@ -82,8 +90,7 @@ void channelBookView::layout()
 	tabv->setUsesScrollButtons(true);
 	tabv->setExpanding(false);
 	tabv->setDrawBase(true);
-	//TODO FIX
-	tabv->setStyleSheet("QTabBar::tab { margin-top: 0; width: 48px }");
+	tabv->setStyleSheet("QTabBar::tab { min-width: 48px; margin-top: 0 }");
 
 	string chars[27] = {"0-9","A","B","C","D","E","F","G","H","I","J","L","K","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
@@ -133,45 +140,40 @@ void channelBookView::layout()
 		list->connect(list, &QTreeWidget::itemSelectionChanged, [=]() { this->listItemSelectionChanged(); });
 	}
 
-	swid->addWidget(tree);
-	swid->addWidget(list);
+	bswid->addWidget(tree);
+	bswid->addWidget(list);
 
-	swid->setStretchFactor(0, 1);
-	swid->setStretchFactor(1, 5);
+	bswid->setStretchFactor(0, 1);
+	bswid->setStretchFactor(1, 5);
 
-	awid->addWidget(tabv);
-	awid->addWidget(swid);
+	abox->addWidget(lwid);
+	afrm->setLayout(abox);
 
-// #ifdef Q_OS_MAC
-// 	if (tid != nullptr)
-// 		lwrap = lwid;
-// 	else
-// 		lwrap = platform::osWidgetBlend(lwid);
-// #endif
-
-	lwrap = lwid;
-	awrap->setLayout(awid);
+	bbox->addWidget(tabv);
+	bbox->addWidget(bswid);
+	bfrm->setLayout(bbox);
 
 #ifdef Q_OS_MAC
-	platform::osWidgetOpaque(awrap);
+	platform::osWidgetOpaque(bfrm);
 #else
 	platform::osWidgetOpaque(frm);
 #endif
-	frm->addWidget(lwrap, 0, 0);
-	frm->addWidget(awrap, 0, 1);
-	frm->setColumnMinimumWidth(0, 140);
+
+	//TODO FIX
+	afrm->setMinimumWidth(150);
+	afrm->setMaximumWidth(250);
+
+	frm->addWidget(afrm, 0, 0);
+	frm->addWidget(bfrm, 0, 1);
+
 	frm->setColumnStretch(0, 1);
 	frm->setColumnStretch(1, 5);
-
-	frm->setContentsMargins(0, 0, 0, 0);
-	frm->setSpacing(0);
 }
 
 void channelBookView::sideLayout()
 {
 	this->lwid = new QListWidget;
-	lwid->setStyleSheet("QListWidget { background: transparent; font: 15px } QListView::item { padding: 10px auto }");
-	// lwid->setMaximumWidth(160);
+	lwid->setStyleSheet("QListWidget { background: transparent; font-size: 15px } QListView::item { padding: 10px auto }");
 
 	lwid->addItem("Services");
 	lwid->addItem("Bouquets");

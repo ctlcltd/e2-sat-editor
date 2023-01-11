@@ -59,20 +59,26 @@ void tunersetsView::layout()
 {
 	debug("layout()");
 
-	widget->setStyleSheet("QGroupBox { spacing: 0; border: 0; padding: 0; padding-top: 32px; font-weight: bold } QGroupBox::title { margin: 8px 4px; padding: 0 1px }");
+	widget->setStyleSheet("QGroupBox { spacing: 0; border: 0; padding: 0; padding-top: 32px; font-weight: bold } QGroupBox::title { margin: 8px 4px; padding: 0 1px 1px }");
 
 	QGridLayout* frm = new QGridLayout(widget);
 
 	QSplitter* swid = new QSplitter;
-	QGroupBox* tfrm = new QGroupBox;
-	QGroupBox* lfrm = new QGroupBox;
+
 	QVBoxLayout* tbox = new QVBoxLayout;
 	QVBoxLayout* lbox = new QVBoxLayout;
 
+	QGroupBox* tfrm = new QGroupBox;
+	QGroupBox* lfrm = new QGroupBox;
+
+	frm->setContentsMargins(0, 0, 0, 0);
 	tbox->setContentsMargins(0, 0, 0, 0);
 	lbox->setContentsMargins(0, 0, 0, 0);
+
+	frm->setSpacing(0);
 	tbox->setSpacing(0);
 	lbox->setSpacing(0);
+
 	tfrm->setFlat(true);
 	lfrm->setFlat(true);
 
@@ -124,6 +130,10 @@ void tunersetsView::layout()
 	tree->setDragDropMode(QAbstractItemView::InternalMove);
 	tree->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	tree->setStyleSheet("QTreeWidget::item { padding: 6px auto }");
+	if (widget->layoutDirection() == Qt::LeftToRight)
+		tree->setStyleSheet("QTreeWidget { margin: 0 0 0 10px }");
+	else
+		tree->setStyleSheet("QTreeWidget { margin: 0 10px 0 0 }");
 
 	QTreeWidgetItem* tree_thead = new QTreeWidgetItem(ths);
 	tree->setHeaderItem(tree_thead);
@@ -142,6 +152,10 @@ void tunersetsView::layout()
 	list->setDragDropMode(QAbstractItemView::InternalMove);
 	list->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	list->setStyleSheet("QTreeWidget::item { padding: 6px auto }");
+	if (widget->layoutDirection() == Qt::LeftToRight)
+		list->setStyleSheet("QTreeWidget { margin: 0 10px 0 0 }");
+	else
+		list->setStyleSheet("QTreeWidget { margin: 0 0 0 10px }");
 
 	QTreeWidgetItem* list_thead = new QTreeWidgetItem(lhs);
 	list->setHeaderItem(list_thead);
@@ -216,17 +230,15 @@ void tunersetsView::layout()
 	lbox->addWidget(list_ats);
 	lfrm->setLayout(lbox);
 
+ 	platform::osWidgetOpaque(swid);
+
 	swid->addWidget(tfrm);
 	swid->addWidget(lfrm);
-
- 	platform::osWidgetOpaque(swid);
 
 	swid->setStretchFactor(0, 1);
 	swid->setStretchFactor(1, 5);
 
-	frm->addWidget(swid, 0, 0);
-	frm->setSpacing(0);
-	frm->setContentsMargins(0, 0, 0, 0);
+	frm->addWidget(swid);
 }
 
 void tunersetsView::searchLayout()

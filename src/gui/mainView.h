@@ -153,7 +153,6 @@ class mainView : public viewAbstract
 
 		map<int, QLabel*> ref_fields;
 		unordered_map<string, QList<QTreeWidgetItem*>> cache;
-		QWidget* list_wrap;
 		TreeEventHandler* tree_evth;
 		ListEventHandler* list_evth;
 		ListEventObserver* list_evto;
