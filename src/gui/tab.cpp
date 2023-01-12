@@ -1485,19 +1485,41 @@ QToolBar* tab::toolBar(int type)
 		toolbar->setIconSize(QSize(32, 32));
 		toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 		toolbar->setStyleSheet("QToolBar { padding: 0 12px } QToolButton { font-size: 18px }");
+#ifndef Q_OS_MAC
+if (platform::TESTING)
+{
+		toolbar->setStyleSheet("QToolBar { padding: 0 12px; border: 0 } QToolButton { font-size: 18px }");
+
+		toolbar->setAttribute(Qt::WA_TranslucentBackground);
+		toolbar->setAutoFillBackground(false);
+
+		platform::osWidgetBlend(toolbar, platform::fx_toolbar_testing);
+}
+#endif
 	}
 	else
 	// 0: bottom
 	{
 		toolbar->setStyleSheet("QToolBar { padding: 8px 12px } QToolButton { font-size: 16px; font-weight: bold; }");
+#ifndef Q_OS_MAC
+if (platform::TESTING)
+{
+		toolbar->setStyleSheet("QToolBar { padding: 8px 12px; border: 0 } QToolButton { font-size: 16px; font-weight: bold; }");
+
+		toolbar->setAttribute(Qt::WA_TranslucentBackground);
+		toolbar->setAutoFillBackground(false);
+
+		platform::osWidgetBlend(toolbar, platform::fx_toolbar_testing);
+}
+#endif
 	}
 
 #ifndef Q_OS_MAC
 	if (! theme::isDefault())
 		toolbar->setStyleSheet("QToolBar { background: palette(mid) }");
-#endif
 
 	platform::osWidgetOpaque(toolbar);
+#endif
 
 	return toolbar;
 }

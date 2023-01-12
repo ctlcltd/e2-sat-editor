@@ -66,10 +66,6 @@ gui::gui(int argc, char* argv[], e2se::logger::session* log)
 	// screenshot
 	// mwid->resize(QSize(1280, 800));
 
-	theme();
-
-	platform::osWindowBlend(mwid);
-
 	//TODO intl. rtl
 	// mroot->setLayoutDirection(Qt::RightToLeft);
 
@@ -213,64 +209,6 @@ void gui::menuBarLayout()
 	this->mwtabs = mwtabs;
 }
 
-QMenuBar* gui::menuBar(QLayout* layout)
-{
-	QMenuBar* menu = new QMenuBar;
-	menu->setNativeMenuBar(true);
-	layout->setMenuBar(menu);
-	return menu;
-}
-
-QMenu* gui::menuBarMenu(QMenuBar* menubar, QString title)
-{
-	QMenu* menu = new QMenu(menubar);
-	menu->setTitle(title);
-	menubar->addMenu(menu);
-	return menu;
-}
-
-QMenu* gui::menuBarMenu(QMenu* menu, QString title)
-{
-	QMenu* submenu = new QMenu(menu);
-	submenu->setTitle(title);
-	menu->addMenu(submenu);
-	return submenu;
-}
-
-QAction* gui::menuBarAction(QMenu* menu, QString text, std::function<void()> trigger)
-{
-	QAction* action = new QAction(menu);
-	action->setText(text);
-	action->connect(action, &QAction::triggered, trigger);
-	menu->addAction(action);
-	return action;
-}
-
-QAction* gui::menuBarAction(QMenu* menu, QString text, std::function<void()> trigger, QKeySequence shortcut)
-{
-	QAction* action = new QAction(menu);
-	action->setText(text);
-	action->setShortcut(shortcut);
-	action->connect(action, &QAction::triggered, trigger);
-	menu->addAction(action);
-	return action;
-}
-
-QAction* gui::menuBarSeparator(QMenu* menu)
-{
-	QAction* action = new QAction(menu);
-	action->setSeparator(true);
-	menu->addAction(action);
-	return action;
-}
-
-QActionGroup* gui::menuBarActionGroup(QMenu* menu, bool exclusive)
-{
-	QActionGroup* group = new QActionGroup(menu);
-	group->setExclusive(exclusive);
-	return group;
-}
-
 //TODO improve
 //
 //
@@ -290,11 +228,30 @@ void gui::tabStackerLayout()
 	twid->setStyle(new TabBarProxyStyle);
 	twid->tabBar()->setChangeCurrentOnDrag(false);
 
-	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid; border-color: palette(button) } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 12ex; max-width: 25ex; height: 6.3ex; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; color:palette(button-text); background: palette(button); border-color: palette(button) } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight) }");
-	if (twid->layoutDirection() == Qt::LeftToRight)
-		twid->tabBar()->setStyleSheet("QTabBar { border-width: 0 0 0 1px } QTabBar::tab { margin: 0 0 0 1px; border-width: 0 1px 0 0 }");
+#ifndef Q_OS_MAC
+	QString twtbshade_hexArgb = "#aa000000";
+#else
+	QColor twtbshade;
+	if (theme::isDarkMode())
+	{
+		twtbshade = QPalette().color(QPalette::Dark).darker();
+		twtbshade.setAlphaF(0.50);
+	}
 	else
-		twid->tabBar()->setStyleSheet("QTabBar { border-width: 0 1px 0 0 } QTabBar::tab { margin: 0 1px 0 0; border-width: 0 0 0 1px }");
+	{
+		twtbshade = QColor(0, 0, 0, 119);
+	}
+	// QStringList twtbshade_argb = {QString().setNum(twtbshade.red()), QString().setNum(twtbshade.green()), QString().setNum(twtbshade.blue()), QString().setNum(twtbshade.alphaF())};
+	// QString twtbshade_hexArgb = "rgba(" + twtbshade_argb.join(",") + ")";
+	// debug("twid", "twtbshade_hexArgb", twtbshade_hexArgb.toStdString());
+	QString twtbshade_hexArgb = twtbshade.name(QColor::HexArgb);
+#endif
+
+	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid; border-color: " + twtbshade_hexArgb + " } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 12ex; max-width: 25ex; height: 6.3ex; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button); border-color: " + twtbshade_hexArgb + " } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight); border-color: transparent }");
+	if (twid->layoutDirection() == Qt::LeftToRight)
+		twid->tabBar()->setStyleSheet("QTabBar { border-width: 0 0 0 1px } QTabBar::tab { margin: 0 0 0 -1px }");
+	else
+		twid->tabBar()->setStyleSheet("QTabBar { border-width: 0 1px 0 0 } QTabBar::tab { margin: 0 -1px 0 0 }");
 	twid->connect(twid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
 	twid->connect(twid, &QTabWidget::tabCloseRequested, [=](int index) { this->closeTab(index); });
 	twid->tabBar()->connect(twid->tabBar(), &QTabBar::tabMoved, [=](int from, int to) { this->tabMoved(from, to); });
@@ -411,7 +368,7 @@ int gui::newTab(string filename)
 	{
 		if (! ttab->readFile(filename))
 		{
-			error("newTab()", "ttid", ttid);
+			error("newTab()", "read", false);
 
 			twid->removeTab(index);
 			delete ttmenu[ttid];
@@ -447,11 +404,32 @@ int gui::openTab(TAB_VIEW view)
 
 int gui::openTab(TAB_VIEW view, int arg)
 {
-	tab* parent = getCurrentTabHandler();
-	if (parent == nullptr)
+	tab* current = getCurrentTabHandler();
+	tab* parent = current;
+
+	if (current == nullptr)
 	{
-		error("openTab()", "parent", false);
+		error("openTab()", "current", false);
 		return -1;
+	}
+	else if (current->isChild())
+	{
+		for (auto & x : ttabs)
+		{
+			tab* tab = x.second;
+
+			if (tab != nullptr && tab->hasChildren())
+			{
+				for (auto & child : tab->children())
+				{
+					if (child == current)
+					{
+						parent = tab;
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	tab* ttab = new tab(this, mwid, this->log->log);
@@ -459,7 +437,7 @@ int gui::openTab(TAB_VIEW view, int arg)
 
 	debug("openTab()", "ttid", ttid);
 
-	int current = twid->tabBar()->currentIndex();
+	int curr = twid->tabBar()->currentIndex();
 	string parent_ttname = parent->getTabName();
 
 	QIcon tticon;
@@ -468,7 +446,7 @@ int gui::openTab(TAB_VIEW view, int arg)
 	switch (view)
 	{
 		case TAB_VIEW::main:
-			error("openTab()", "ttid", ttid);
+			error("openTab()", "parent", false);
 			delete ttab;
 			return -1;
 		break;
@@ -486,8 +464,8 @@ int gui::openTab(TAB_VIEW view, int arg)
 		break;
 	}
 
-	current++;
-	int index = twid->insertTab(current, ttab->widget, tticon, ttname);
+	curr++;
+	int index = twid->insertTab(curr, ttab->widget, tticon, ttname);
 	twid->tabBar()->setTabData(index, ttid);
 
 	QAction* action = new QAction(ttname);
@@ -510,41 +488,49 @@ void gui::closeTab(int index)
 	// debug("closeTab()", "index", index);
 
 	int ttid = getTabId(index);
-	
-	debug("closeTab()", "ttid", index);
+	tab* current = ttabs[ttid];
+
+	if (current == nullptr)
+	{
+		return error("closeTab()", "current", false);
+	}
+
+	debug("closeTab()", "ttid", ttid);
 
 	mwind->removeAction(ttmenu[ttid]);
 	mwtabs->removeAction(ttmenu[ttid]);
 	twid->removeTab(index);
 	ttmenu.erase(ttid);
 
-	tab* ttab = ttabs[ttid];
-	if (ttab != nullptr)
+	if (current != nullptr)
 	{
-		if (ttab->isChild())
+		if (current->isChild())
 		{
-			for (auto & tab : ttabs)
+			for (auto & x : ttabs)
 			{
-				if (tab.second != nullptr && tab.second->hasChildren())
+				tab* tab = x.second;
+
+				if (tab != nullptr && tab->hasChildren())
 				{
-					for (auto & child : tab.second->children())
+					for (auto & child : tab->children())
 					{
-						if (child == ttab)
+						if (child == current)
 						{
-							tab.second->removeChild(ttab);
+							tab->removeChild(current);
 							break;
 						}
 					}
 				}
 			}
 		}
-		if (ttab->hasChildren())
+		if (current->hasChildren())
 		{
-			for (auto & child : ttab->children())
+			for (auto & child : current->children())
 			{
 				int index = twid->indexOf(child->widget);
 
-				ttab->removeChild(child);
+				current->removeChild(child);
+
 				closeTab(index);
 			}
 		}
@@ -569,7 +555,7 @@ void gui::closeAllTabs()
 
 	for (size_t i = 0; i < ttabs.size(); i++)
 	{
-		debug("closeAllTabs()", "destroy", int (i));
+		debug("closeAllTabs()", "index", int (i));
 
 		delete ttabs[i];
 		ttabs.erase(i);
@@ -628,10 +614,11 @@ void gui::tabMoved(int from, int to)
 
 	for (auto & action : actions)
 	{
-		mwind->removeAction(action);
 		mwtabs->removeAction(action);
-		mwind->addAction(action);
 		mwtabs->addAction(action);
+
+		mwind->removeAction(action);
+		mwind->addAction(action);
 	}
 }
 
@@ -674,7 +661,7 @@ void gui::tabChangeName(int ttid, string filename)
 		ttname = QString::fromStdString(filename);
 	}
 	
-	debug("tabChangeName()", "index", index);
+	// debug("tabChangeName()", "index", index);
 
 	switch (v)
 	{
@@ -701,6 +688,7 @@ string gui::openFileDialog()
 	QString caption = "Select enigma2 folder";
 
 	string path;
+
 	QFileDialog fdial = QFileDialog(mwid, caption);
 	fdial.setAcceptMode(QFileDialog::AcceptOpen);
 	fdial.setFileMode(QFileDialog::Directory);
@@ -722,6 +710,7 @@ string gui::saveFileDialog(string filename)
 	QString caption = "Select where to save";
 
 	string path;
+
 	QFileDialog fdial = QFileDialog(mwid, caption, QString::fromStdString(filename));
 	fdial.setAcceptMode(QFileDialog::AcceptOpen);
 	fdial.setFilter(QDir::AllDirs | QDir::NoSymLinks);
@@ -782,6 +771,7 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 	}
 
 	vector<string> paths;
+
 	QFileDialog fdial = QFileDialog(mwid, caption);
 	fdial.setAcceptMode(QFileDialog::AcceptOpen);
 	fdial.setFileMode(fmode);
@@ -835,6 +825,7 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& bit)
 	}
 
 	string path;
+
 	QString selected;
 	QFileDialog fdial = QFileDialog(mwid, caption, QString::fromStdString(filename));
 	fdial.setAcceptMode(QFileDialog::AcceptSave);
@@ -1243,6 +1234,64 @@ void gui::setDefaultSets()
 	sets->setValue("customTelnetReloadCmd", "");
 	sets->endArray();
 	sets->setValue("profile/selected", 1);
+}
+
+QMenuBar* gui::menuBar(QLayout* layout)
+{
+	QMenuBar* menu = new QMenuBar;
+	menu->setNativeMenuBar(true);
+	layout->setMenuBar(menu);
+	return menu;
+}
+
+QMenu* gui::menuBarMenu(QMenuBar* menubar, QString title)
+{
+	QMenu* menu = new QMenu(menubar);
+	menu->setTitle(title);
+	menubar->addMenu(menu);
+	return menu;
+}
+
+QMenu* gui::menuBarMenu(QMenu* menu, QString title)
+{
+	QMenu* submenu = new QMenu(menu);
+	submenu->setTitle(title);
+	menu->addMenu(submenu);
+	return submenu;
+}
+
+QAction* gui::menuBarAction(QMenu* menu, QString text, std::function<void()> trigger)
+{
+	QAction* action = new QAction(menu);
+	action->setText(text);
+	action->connect(action, &QAction::triggered, trigger);
+	menu->addAction(action);
+	return action;
+}
+
+QAction* gui::menuBarAction(QMenu* menu, QString text, std::function<void()> trigger, QKeySequence shortcut)
+{
+	QAction* action = new QAction(menu);
+	action->setText(text);
+	action->setShortcut(shortcut);
+	action->connect(action, &QAction::triggered, trigger);
+	menu->addAction(action);
+	return action;
+}
+
+QAction* gui::menuBarSeparator(QMenu* menu)
+{
+	QAction* action = new QAction(menu);
+	action->setSeparator(true);
+	menu->addAction(action);
+	return action;
+}
+
+QActionGroup* gui::menuBarActionGroup(QMenu* menu, bool exclusive)
+{
+	QActionGroup* group = new QActionGroup(menu);
+	group->setExclusive(exclusive);
+	return group;
 }
 
 }

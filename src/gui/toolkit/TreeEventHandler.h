@@ -28,6 +28,7 @@ class TreeEventHandler : public QObject
 		{
 			this->eventCallback = func;
 		}
+
 	protected:
 		bool eventFilter(QObject* o, QEvent* e);
 		void dropFromTree(QTreeWidgetItem* current, QTreeWidget* tree);
@@ -37,6 +38,7 @@ class TreeEventHandler : public QObject
 			if (this->eventCallback != nullptr)
 				this->eventCallback(tw);
 		}
+
 	private:
 		std::function<void(QTreeWidget* tw)> eventCallback;
 };

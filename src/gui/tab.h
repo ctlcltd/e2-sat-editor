@@ -100,6 +100,7 @@ class tab : protected e2se::log_factory
 		dataHandler* data = nullptr;
 		ftpHandler* ftph = nullptr;
 		e2se_gui::tools* tools = nullptr;
+
 	protected:
 		void layout();
 		void toolsInspector();
@@ -131,6 +132,7 @@ class tab : protected e2se::log_factory
 
 		// stored gui bit flags
 		bitset<256> gxe;
+
 	private:
 		gui* gid;
 		QWidget* cwid;

@@ -42,6 +42,7 @@ class TreeStyledItemDelegate : public QStyledItemDelegate
 		{
 			return this->indent;
 		}
+
 	protected:
 		int indent;
 };

@@ -21,8 +21,10 @@ class WidgetWithBackdrop : public QWidget
 
 	public:
 		explicit WidgetWithBackdrop(QWidget* parent = nullptr);
+
 	signals:
 		void backdrop();
+
 	protected:
 		void mousePressEvent(QMouseEvent* e)
 		{

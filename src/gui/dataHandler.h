@@ -36,6 +36,7 @@ class dataHandler : protected e2se::log_factory
 		string getFilename();
 
 		e2db* dbih = nullptr;
+
 	protected:
 		string filename;
 		bool newfile = false;

@@ -43,6 +43,7 @@ class dialChannelBook : public dialAbstract
 		{
 			this->eventCallback = func;
 		}
+
 	protected:
 		void layout(QWidget* cwid);
 		void toolbarLayout();
@@ -59,6 +60,7 @@ class dialChannelBook : public dialAbstract
 
 		__state state;
 		__action action;
+
 	private:
 		channelBookView* cbv = nullptr;
 		std::function<void(vector<QString> items)> eventCallback;

@@ -99,6 +99,7 @@ class e2db_converter : virtual public e2db_abstract
 		void push_html_userbouquets(vector<e2db_file>& files, string bname);
 		void push_html_tunersets(vector<e2db_file>& files);
 		void push_html_tunersets(vector<e2db_file>& files, int ytype);
+
 	protected:
 		void parse_csv(istream& ifile, vector<vector<string>>& sxv);
 		void convert_csv_channel_list(vector<vector<string>> sxv, e2db_abstract* dst, DOC_VIEW view);

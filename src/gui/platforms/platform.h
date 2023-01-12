@@ -22,6 +22,8 @@ class _platform
 {
 	public:
 
+		static const bool TESTING = false;
+
 		static QWidget* osWindowBlend(QWidget* widget) {
 			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
 			if (QSettings().value("preference/osTranslucency", experiment).toBool())
@@ -55,7 +57,6 @@ class _platform
 		}
 
 	protected:
-	
 		static QWidget* _osWindowBlend(QWidget* widget) {
 			widget->setAttribute(Qt::WA_TranslucentBackground);
 			return widget;
@@ -69,7 +70,6 @@ class _platform
 			widget->setAttribute(Qt::WA_TintedBackground);
 			return widget;
 		}
-
 };
 
 #if defined Q_OS_WIN

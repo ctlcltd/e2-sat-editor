@@ -39,6 +39,7 @@ class editBouquet : public dialAbstract
 		void setEditId(string bname);
 		string getEditId();
 		string getAddId();
+
 	protected:
 		void layout(QWidget* cwid);
 		void store();
@@ -47,6 +48,7 @@ class editBouquet : public dialAbstract
 
 		__state state;
 		__action action;
+
 	private:
 		string bname;
 };

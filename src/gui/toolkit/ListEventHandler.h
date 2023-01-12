@@ -33,6 +33,7 @@ class ListEventHandler : public QObject
 		{
 			this->dnd = true;
 		}
+
 	protected:
 		bool eventFilter(QObject* o, QEvent* e);
 		void callEventCallback(QTreeWidget* tw)
@@ -40,6 +41,7 @@ class ListEventHandler : public QObject
 			if (this->eventCallback != nullptr)
 				this->eventCallback(tw);
 		}
+
 	private:
 		std::function<void(QTreeWidget* tw)> eventCallback;
 		bool dnd = true;

@@ -44,6 +44,7 @@ class editService : public dialAbstract
 		void setEditId(string chid);
 		string getEditId();
 		string getAddId();
+
 	protected:
 		void layout(QWidget* cwid);
 		void serviceLayout();
@@ -63,6 +64,7 @@ class editService : public dialAbstract
 
 		__state state;
 		__action action;
+
 	private:
 		string chid;
 		string txid;

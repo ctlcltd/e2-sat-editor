@@ -29,6 +29,7 @@ namespace e2se_ftpcom
 class ftpcom
 {
 	public:
+
 		static const int MAX_RESUME_ATTEMPTS = 5;
 		static const int HTTP_TIMEOUT = 60;
 
@@ -73,6 +74,7 @@ class ftpcom
 		void put_files(unordered_map<string, ftpcom_file> files);
 		bool cmd_ifreload();
 		bool cmd_tnreload();
+
 	protected:
 		struct sio
 		{
@@ -111,6 +113,7 @@ class ftpcom
 		virtual void error(string msg, string optk, string optv);
 		virtual void error(string msg, string optk, int optv);
 		e2se::logger* log;
+
 	private:
 		bool actv;
 		string host;

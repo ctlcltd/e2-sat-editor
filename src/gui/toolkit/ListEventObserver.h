@@ -27,8 +27,10 @@ class ListEventObserver : public QObject
 		{
 			this->changed = false;
 		}
+
 	protected:
 		bool eventFilter(QObject* o, QEvent* e);
+
 	private:
 		bool changed = false;
 };

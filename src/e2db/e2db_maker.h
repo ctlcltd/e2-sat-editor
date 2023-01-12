@@ -55,6 +55,7 @@ class e2db_maker : virtual public e2db_abstract
 		bool push_file(string path);
 		bool write(string path);
 		unordered_map<string, e2db_file> get_output();
+
 	protected:
 		void make_lamedb(string filename, e2db_file& file);
 		void make_lamedb4(string filename, e2db_file& file);

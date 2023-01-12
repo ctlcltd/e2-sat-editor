@@ -76,6 +76,7 @@ class channelBookView : public viewAbstract
 		vector<QString> getSelected();
 
 		__state currentState() { return this->state; };
+
 	protected:
 		void layout();
 		void sideLayout();
@@ -92,6 +93,7 @@ class channelBookView : public viewAbstract
 
 		__state state;
 		__action action;
+
 	private:
 		QWidget* cwid;
 

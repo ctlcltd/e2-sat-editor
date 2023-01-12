@@ -456,6 +456,7 @@ struct e2db_abstract
 		virtual unordered_map<string, e2db_file> get_output() { return this->e2db_out; };
 		virtual void merge(e2db_abstract* dst);
 		virtual void debugger();
+
 	protected:
 		inline static int LAMEDB_VER = 0;
 

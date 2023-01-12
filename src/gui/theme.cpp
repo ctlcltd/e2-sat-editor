@@ -32,8 +32,6 @@ theme::theme()
 		style::dark();
 	else
 		style::system();
-
-	QSettings().setValue("application/icons", theme::absLuma());
 }
 
 QString theme::preference()
@@ -52,9 +50,19 @@ bool theme::isDefault()
 	return theme::preference().isEmpty();
 }
 
+bool theme::isLightMode()
+{
+	return ! theme::absLuma();
+}
+
+bool theme::isDarkMode()
+{
+	return theme::absLuma();
+}
+
 QIcon theme::icon(QString icon)
 {
-	return QIcon(":/icons/" + QString (QSettings().value("application/icons").toBool() ? "dark" : "light") + "/" + icon + ".png");
+	return QIcon(":/icons/" + QString (theme::absLuma() ? "dark" : "light") + "/" + icon + ".png");
 }
 
 QIcon theme::spacer(int width)
@@ -84,13 +92,12 @@ void style::system()
 {
 #ifndef Q_OS_MAC
 	QPalette palette = QApplication::palette();
-
-	// light
+	// dark
 	if (theme::absLuma())
 	{
 		palette.setColor(QPalette::Mid, QPalette::HighlightedText);
 	}
-	// dark
+	// light
 	else
 	{
 		palette.setColor(QPalette::Mid, QPalette::Dark);

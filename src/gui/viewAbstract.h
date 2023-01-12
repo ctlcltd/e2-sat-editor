@@ -110,6 +110,7 @@ class viewAbstract : protected e2se::log_factory
 		QWidget* widget;
 		QTreeWidget* list;
 		QTreeWidget* tree;
+
 	protected:
 		struct search
 		{

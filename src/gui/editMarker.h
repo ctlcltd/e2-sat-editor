@@ -39,6 +39,7 @@ class editMarker : public dialAbstract
 		string getEditId();
 		void setAddId(string bname);
 		string getAddId();
+
 	protected:
 		void layout(QWidget* cwid);
 		void store();
@@ -46,6 +47,7 @@ class editMarker : public dialAbstract
 
 		__state state;
 		__action action;
+
 	private:
 		string bname;
 		string chid;

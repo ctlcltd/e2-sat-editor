@@ -47,6 +47,7 @@ class dialAbstract : protected e2se::log_factory
 		virtual void destroy();
 
 		QWidget* widget;
+
 	protected:
 		void layout(QWidget* cwid);
 		virtual void toolbarLayout();

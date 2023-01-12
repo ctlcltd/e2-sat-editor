@@ -266,6 +266,7 @@ class gui : protected e2se::log_factory
 		void update(int bit);
 
 		QSettings* sets;
+
 	protected:
 		void layout();
 		void menuBarLayout();
@@ -295,6 +296,7 @@ class gui : protected e2se::log_factory
 		bitset<256> gxe;
 		// gui previous bit flags
 		bitset<256> gex;
+
 	private:
 		QApplication* mroot;
 		QWidget* mwid;

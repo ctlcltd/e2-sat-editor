@@ -65,6 +65,7 @@ class settings : protected e2se::log_factory
 		void display(QWidget* cwid);
 
 		QSettings* sets;
+
 	protected:
 		void layout(QWidget* cwid);
 		void preferencesLayout();

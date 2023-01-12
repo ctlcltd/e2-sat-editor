@@ -35,14 +35,30 @@ class _ComboBoxProxyStyle : public QProxyStyle
 
 class _eventFilter : public QObject
 {
+	public:
+		void registerEffectView(NSVisualEffectView* view)
+		{
+			this->m_view = view;
+		}
+
 	protected:
 		bool eventFilter(QObject* o, QEvent* e)
 		{
+			if (e->type() == QEvent::Resize)
+			{
+				QWidget* widget = qobject_cast<QWidget*>(o);
+				const NSRect frameRect = {
+					{static_cast<double>(widget->pos().x()), static_cast<double>(widget->pos().y())},
+					{static_cast<double>(widget->width()), static_cast<double>(widget->height())}
+				  };
+				[this->m_view setFrame:frameRect];
+			}
 			std::cout << e->type() << std::endl;
 			return QObject::eventFilter(o, e);
 		}
-};
 
+		NSVisualEffectView* m_view;
+};
 
 QWidget* _platform_macx::_osWindowBlend(QWidget* widget, FX_MATERIAL material) {
 	if (! NSClassFromString(@"NSVisualEffectView"))
@@ -52,13 +68,16 @@ QWidget* _platform_macx::_osWindowBlend(QWidget* widget, FX_MATERIAL material) {
 
 	widget->setAttribute(Qt::WA_TranslucentBackground);
 
-	NSView* view = (NSView*)widget->winId();
-	NSView* superview = view.superview;
-	NSVisualEffectView* subview = (NSVisualEffectView*)superview.subviews.firstObject;
+	if (! _platform_macx::TESTING)
+	{
+		NSView* view = (NSView*)widget->winId();
+		NSView* superview = view.superview;
+		NSVisualEffectView* subview = (NSVisualEffectView*)superview.subviews.firstObject;
 
-	[subview setMaterial:NSVisualEffectMaterial (material)];
-	[subview setBlendingMode:NSVisualEffectBlendingModeBehindWindow];
-	[subview setWantsLayer:FALSE];
+		[subview setMaterial:NSVisualEffectMaterial (material)];
+		[subview setBlendingMode:NSVisualEffectBlendingModeBehindWindow];
+		[subview setWantsLayer:FALSE];
+	}
 	
 	return widget;
 };
@@ -73,6 +92,40 @@ QWidget* _platform_macx::_osWindowBlend(QWidget* widget, FX_MATERIAL material) {
 //
 QWidget* _platform_macx::_osWidgetBlend(QWidget* widget, FX_MATERIAL material)
 {
+	if (_platform_macx::TESTING)
+	{
+		if (! NSClassFromString(@"NSVisualEffectView"))
+			return widget;
+
+		QWindow* top = QGuiApplication::topLevelWindows().first();
+
+		widget->setAttribute(Qt::WA_TranslucentBackground);
+
+		NSView* view = (NSView*)top->winId();
+		NSView* superview = view.superview;
+		NSVisualEffectView* effect = (NSVisualEffectView*)superview.subviews.firstObject;
+
+		//QPoint globalPos = widget->mapToGlobal(widget->pos());
+
+		const NSRect frameRect = {
+			{static_cast<double>(widget->pos().x()), static_cast<double>(widget->pos().y())},
+			{static_cast<double>(widget->width()), static_cast<double>(widget->height())}
+		};
+
+		NSVisualEffectView* subview = [[NSVisualEffectView alloc] init];
+
+		[subview setMaterial:NSVisualEffectMaterial (material)];
+		[subview setBlendingMode:NSVisualEffectBlendingModeBehindWindow];
+		[subview setWantsLayer:FALSE];
+		[subview drawRect:frameRect];
+		
+		[superview addSubview:subview positioned:NSWindowAbove relativeTo:effect];
+
+		_eventFilter* evt = new _eventFilter;
+		evt->registerEffectView(subview);
+		widget->installEventFilter(evt);
+	}
+
 	// if (! NSClassFromString(@"NSVisualEffectView"))
 	// 	return widget;
 	//
@@ -111,8 +164,12 @@ QWidget* _platform_macx::_osWidgetBlend(QWidget* widget, FX_MATERIAL material)
 
 QWidget* _platform_macx::_osWidgetOpaque(QWidget* widget)
 {
-	widget->setAttribute(Qt::WA_TintedBackground);
-	widget->setAutoFillBackground(true);
+	if (! _platform_macx::TESTING)
+	{
+		widget->setAttribute(Qt::WA_TintedBackground);
+		widget->setBackgroundRole(QPalette::Window);
+		widget->setAutoFillBackground(true);
+	}
 	return widget;
 }
 

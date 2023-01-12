@@ -263,6 +263,7 @@ void mainView::layout()
 	bfrm->setLayout(bbox);
 
 #ifdef Q_OS_MAC
+	platform::osWidgetBlend(afrm);
 	platform::osWidgetOpaque(bfrm);
 #endif
 

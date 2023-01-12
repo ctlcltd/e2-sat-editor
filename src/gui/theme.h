@@ -27,6 +27,10 @@ class theme
 		static bool absLuma();
 		// is default | system native theme
 		static bool isDefault();
+		// absolute lightness shorthand for dark
+		static bool isDarkMode();
+		// absolute lightness shorthand for light
+		static bool isLightMode();
 		// prefixed QIcon { white: dark, black: light }
 		static QIcon icon(QString icon);
 		// spacer QIcon { 2, 3, 4, 5 } px

@@ -112,6 +112,7 @@ class tunersetsView : public viewAbstract
 		void updateIndex();
 
 		__state currentState() { return this->state; };
+
 	protected:
 		void layout();
 		void searchLayout();
@@ -143,6 +144,7 @@ class tunersetsView : public viewAbstract
 
 		__state state;
 		__action action;
+
 	private:
 		QWidget* cwid;
 };

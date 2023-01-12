@@ -39,6 +39,7 @@ class editTunersets : public dialAbstract
 		void setEditId(int tvid);
 		int getEditId();
 		int getAddId();
+
 	protected:
 		void layout(QWidget* cwid);
 		void store();
@@ -46,6 +47,7 @@ class editTunersets : public dialAbstract
 
 		__state state;
 		__action action;
+
 	private:
 		int tvid;
 		string iname;
