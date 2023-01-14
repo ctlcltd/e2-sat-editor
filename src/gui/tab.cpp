@@ -71,6 +71,7 @@ tab::~tab()
 	{
 		delete this->data;
 	}
+	delete this->widget;
 }
 
 bool tab::isChild()
@@ -1479,16 +1480,29 @@ void tab::loadSeeds()
 QToolBar* tab::toolBar(int type)
 {
 	QToolBar* toolbar = new QToolBar;
+#ifdef Q_OS_MAC
+	QColor tbshade;
+	if (theme::isDarkMode())
+	{
+		tbshade = QPalette().color(QPalette::Dark).darker();
+		tbshade.setAlphaF(0.50);
+	}
+	else
+	{
+		tbshade = QColor(0, 0, 0, 119);
+	}
+	QString tbshade_hexArgb = tbshade.name(QColor::HexArgb);
+#endif
 	// 1: top
 	if (type)
 	{
 		toolbar->setIconSize(QSize(32, 32));
 		toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 		toolbar->setStyleSheet("QToolBar { padding: 0 12px } QToolButton { font-size: 18px }");
-#ifndef Q_OS_MAC
+#ifdef Q_OS_MAC
 if (platform::TESTING)
 {
-		toolbar->setStyleSheet("QToolBar { padding: 0 12px; border: 0 } QToolButton { font-size: 18px }");
+		toolbar->setStyleSheet("QToolBar { padding: 0 12px; border-style: solid; border-width: 1px 0; border-color: " + tbshade_hexArgb + " } QToolButton { font-size: 18px }");
 
 		toolbar->setAttribute(Qt::WA_TranslucentBackground);
 		toolbar->setAutoFillBackground(false);
@@ -1501,10 +1515,10 @@ if (platform::TESTING)
 	// 0: bottom
 	{
 		toolbar->setStyleSheet("QToolBar { padding: 8px 12px } QToolButton { font-size: 16px; font-weight: bold; }");
-#ifndef Q_OS_MAC
+#ifdef Q_OS_MAC
 if (platform::TESTING)
 {
-		toolbar->setStyleSheet("QToolBar { padding: 8px 12px; border: 0 } QToolButton { font-size: 16px; font-weight: bold; }");
+		toolbar->setStyleSheet("QToolBar { padding: 8px 12px; border-style: solid; border-width: 1px 0; border-color: " + tbshade_hexArgb + " } QToolButton { font-size: 16px; font-weight: bold; }");
 
 		toolbar->setAttribute(Qt::WA_TranslucentBackground);
 		toolbar->setAutoFillBackground(false);

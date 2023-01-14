@@ -593,10 +593,10 @@ void gui::tabChanged(int index)
 
 	int ttid = getTabId(index);
 
-	debug("tabChanged()", "ttid", ttid);
-
 	if (ttid != -1)
 	{
+		debug("tabChanged()", "current", ttid);
+
 		tab* ttab = ttabs[ttid];
 		ttmenu[ttid]->setChecked(true);
 		ttab->tabSwitched();
