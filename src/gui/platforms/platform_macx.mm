@@ -21,22 +21,11 @@
 
 #include "platform_macx.h"
 
-class _ComboBoxProxyStyle : public QProxyStyle
-{
-	public:
-		int styleHint(StyleHint hint, const QStyleOption* option = 0, const QWidget* widget = 0, QStyleHintReturn* returnData = 0) const override
-		{
-			if (hint == QStyle::SH_ComboBox_UseNativePopup)
-				return 1;
-			
-			return QProxyStyle::styleHint(hint, option, widget, returnData);
-		}
-};
 
-@interface _VEF_Container : NSVisualEffectView
+@interface BackgroundView : NSVisualEffectView
 @end
 
-@implementation _VEF_Container
+@implementation BackgroundView
 
 - (BOOL)isFlipped
 {
@@ -49,7 +38,7 @@ class _ComboBoxProxyStyle : public QProxyStyle
 class _windowEventFilter : public QObject
 {
 	public:
-		void registerEffectView(NSVisualEffectView* view)
+		_windowEventFilter(NSVisualEffectView* view)
 		{
 			this->m_view = view;
 		}
@@ -57,15 +46,14 @@ class _windowEventFilter : public QObject
 	protected:
 		bool eventFilter(QObject* o, QEvent* e)
 		{
-			if (e->type() == QEvent::Resize || e->type() == QEvent::Move)
+			if (e->type() == QEvent::ThemeChange || e->type() == QEvent::ApplicationPaletteChange)
 			{
-				QWidget* widget = qobject_cast<QWidget*>(o);
-				QRect rect = widget->geometry();
-
-				[m_view setFrameSize:[m_view.superview.window.contentView frame].size];
-
-				std::cout << "window resizing" << ' ' << e->type() << ' ' << ' ';
-				std::cout << rect.x() << ',' << rect.y() << ',' << rect.width() << ',' << rect.height() << std::endl;
+				// std::cout << "theme changed" << std::endl;
+			}
+			else if (e->type() == QEvent::Destroy)
+			{
+				[m_view removeFromSuperview];
+				[m_view release];
 			}
 
 			return QObject::eventFilter(o, e);
@@ -78,7 +66,7 @@ class _windowEventFilter : public QObject
 class _widgetEventFilter : public QObject
 {
 	public:
-		void registerEffectView(NSVisualEffectView* view)
+		_widgetEventFilter(NSVisualEffectView* view)
 		{
 			this->m_view = view;
 		}
@@ -88,56 +76,43 @@ class _widgetEventFilter : public QObject
 		{
 			if (e->type() == QEvent::Resize || e->type() == QEvent::Move)
 			{
-				if (! [m_view isHidden])
-				{
-					QWidget* widget = qobject_cast<QWidget*>(o);
-					QPoint absolutePos = widget->pos();
-					if (absolutePos.y() == 0)
-					{
-						absolutePos = widget->mapFromGlobal(widget->pos());
-						absolutePos.setY(-absolutePos.y());
-					}
-					QRect rect;
-					rect.setTopLeft(absolutePos);
-					rect.setSize(widget->size());
+				QWidget* widget = qobject_cast<QWidget*>(o);
+				QPoint framePos = widget->mapTo(widget->window(), QPoint());
+				QRect frameRect;
+				frameRect.setTopLeft(framePos);
+				frameRect.setSize(widget->size());
 
-					/*QWindow* top = QGuiApplication::topLevelWindows().first();
-					NSView* view = (NSView*)top->winId();
-					NSRect rect = [view convertRect:rect.toCGRect() fromView:view];
+				NSRect nsFrame = frameRect.toCGRect();
 
-					[m_view setFrame:rect];*/
+				[m_view setFrame:nsFrame];
 
-					NSRect nsRect = rect.toCGRect();
-
-					[m_view setFrame:nsRect];
-
-					std::cout << "widget resizing" << ' ' << e->type() << ' ' << ' ';
-					std::cout << rect.x() << ',' << rect.y() << ',' << rect.width() << ',' << rect.height() << ' ' << ' ' << widget->window()->height() << std::endl;
-				}
-				else
-				{
-					// std::cout << "widget not resizing" << std::endl;
-				}
+				// std::cout << "widget resizing" << ' ' << e->type() << ' ' << ' ' << frameRect.top() << ',' << frameRect.left() << ',' << frameRect.width() << ',' << frameRect.height() << ' ' << ' ' << widget->window()->width() << ',' << widget->window()->height() << std::endl;
 			}
 			else if (e->type() == QEvent::Show)
 			{
+				QWidget* widget = qobject_cast<QWidget*>(o);
+				QWindow* top = widget->window()->windowHandle();
+
+				if (top != nullptr)
+				{
+					NSView* view = (NSView*)top->winId();
+					NSView* superview = view.superview;
+					NSVisualEffectView* backgroundview = (NSVisualEffectView*)superview.subviews.firstObject.subviews.firstObject;
+
+					[backgroundview addSubview:m_view positioned:NSWindowAbove relativeTo:nil];
+				}
+
 				[m_view setHidden:FALSE];
-				// std::cout << "widget shown" << std::endl;
 			}
 			else if (e->type() == QEvent::Hide)
 			{
 				[m_view setHidden:TRUE];
-				// std::cout << "widget hidden" << std::endl;
 			}
 			else if (e->type() == QEvent::Destroy)
 			{
 				[m_view removeFromSuperview];
 				[m_view release];
-				// std::cout << "widget destroyed" << std::endl;
 			}
-
-			// int iptr = reinterpret_cast<std::uintptr_t>(this);
-			// std::cout << iptr << ' ' << e->type() << std::endl;
 
 			return QObject::eventFilter(o, e);
 		}
@@ -145,77 +120,81 @@ class _widgetEventFilter : public QObject
 		NSVisualEffectView* m_view;
 };
 
-QWidget* _platform_macx::_osWindowBlend(QWidget* widget, FX_MATERIAL material) {
+
+class _ComboBoxProxyStyle : public QProxyStyle
+{
+	public:
+		int styleHint(StyleHint hint, const QStyleOption* option = 0, const QWidget* widget = 0, QStyleHintReturn* returnData = 0) const override
+		{
+			if (hint == QStyle::SH_ComboBox_UseNativePopup)
+				return 1;
+			
+			return QProxyStyle::styleHint(hint, option, widget, returnData);
+		}
+};
+
+
+QWidget* _platform_macx::_osWindowBlend(QWidget* widget) {
+	if (! NSClassFromString(@"NSVisualEffectView"))
+		return widget;
+
+	// Qt::WA_TranslucentBackground should be set before QWidget::winId()
+	// to avoid painting glitch
+	widget->setAttribute(Qt::WA_TranslucentBackground);
+
+	NSView* view;
+
+	if (widget->windowType() == Qt::Window)
+	{
+		view = (NSView*)widget->winId();
+	}
+	//TODO
+	else if (widget->windowType() == Qt::Dialog)
+	{
+		// view = (NSView*)widget;
+		return widget;
+	}
+	else
+	{
+		return widget;
+	}
+
+	NSView* superview = view.superview;
+	NSVisualEffectView* effectview = (NSVisualEffectView*)superview.subviews.firstObject;
+
+	BackgroundView* subview = [[BackgroundView alloc] init];
+
+	[subview setMaterial:effectview.material];
+	[subview setBlendingMode:effectview.blendingMode];
+	[subview setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
+	[subview setFrame:superview.window.contentView.frame];
+	
+	[effectview addSubview:subview positioned:NSWindowAbove relativeTo:nil];
+
+	widget->installEventFilter(new _windowEventFilter(subview));
+
+	return widget;
+};
+
+QWidget* _platform_macx::_osWidgetBlend(QWidget* widget, FX_MATERIAL material, FX_BLENDING blending)
+{
 	if (! NSClassFromString(@"NSVisualEffectView"))
 		return widget;
 
 	widget->setAttribute(Qt::WA_TranslucentBackground);
 
-	if (_platform_macx::TESTING)
-	{
-		NSView* view = (NSView*)widget->winId();
-		NSView* superview = view.superview;
-		NSVisualEffectView* effectview = (NSVisualEffectView*)superview.subviews.firstObject;
+	BackgroundView* subview = [[BackgroundView alloc] init];
 
-		_VEF_Container* subview = [[_VEF_Container alloc] init];
+	[subview setMaterial:NSVisualEffectMaterial (material)];
+	[subview setBlendingMode:NSVisualEffectBlendingMode (blending)];
+	[subview setWantsLayer:FALSE];
+	[subview setHidden:TRUE];
 
-		// [subview setTranslatesAutoresizingMaskIntoConstraints:TRUE];
-		[subview setMaterial:effectview.material];
-		[subview setBlendingMode:effectview.blendingMode];
-		[subview setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
-		[subview setFrameSize:[superview.window.contentView frame].size];
-		
-		[effectview addSubview:subview positioned:NSWindowAbove relativeTo:nil];
-		// [superview replaceSubview:effectview with:subview];
+	widget->installEventFilter(new _widgetEventFilter(subview));
 
-		_windowEventFilter* evt = new _windowEventFilter;
-		evt->registerEffectView(subview);
-		widget->installEventFilter(new _windowEventFilter);
-	}
-	else
-	{
-		NSView* view = (NSView*)widget->winId();
-		NSView* superview = view.superview;
-		NSVisualEffectView* subview = (NSVisualEffectView*)superview.subviews.firstObject;
-
-		[subview setMaterial:NSVisualEffectMaterial (material)];
-		[subview setBlendingMode:NSVisualEffectBlendingModeBehindWindow];
-		[subview setWantsLayer:FALSE];
-	}
-	
 	return widget;
-};
 
-QWidget* _platform_macx::_osWidgetBlend(QWidget* widget, FX_MATERIAL material)
-{
-	if (_platform_macx::TESTING)
-	{
-		if (! NSClassFromString(@"NSVisualEffectView"))
-			return widget;
-
-		QWindow* top = QGuiApplication::topLevelWindows().first();
-
-		widget->setAttribute(Qt::WA_TranslucentBackground);
-
-		NSView* view = (NSView*)top->winId();
-		NSView* superview = view.superview;
-		NSVisualEffectView* effectview = (NSVisualEffectView*)superview.subviews.firstObject.subviews.firstObject;
-
-		_VEF_Container* subview = [[_VEF_Container alloc] init];
-
-		[subview setMaterial:NSVisualEffectMaterial (material)];
-		[subview setBlendingMode:NSVisualEffectBlendingModeBehindWindow];
-		[subview setWantsLayer:FALSE];
-
-		[subview setHidden:TRUE];
-
-		[effectview addSubview:subview positioned:NSWindowAbove relativeTo:nil];
-
-		_widgetEventFilter* evt = new _widgetEventFilter;
-		evt->registerEffectView(subview);
-		widget->installEventFilter(evt);
-	}
-
+	
 	//WONTFIX performance issues
 	// use _platform_macx::osWindowBlend instead
 	//
@@ -257,19 +236,6 @@ QWidget* _platform_macx::_osWidgetBlend(QWidget* widget, FX_MATERIAL material)
 	//
 	// return wrapped;
 	//
-
-	return widget;
-}
-
-QWidget* _platform_macx::_osWidgetOpaque(QWidget* widget)
-{
-	if (! _platform_macx::TESTING)
-	{
-		widget->setAttribute(Qt::WA_TintedBackground);
-		widget->setBackgroundRole(QPalette::Window);
-		widget->setAutoFillBackground(true);
-	}
-	return widget;
 }
 
 //TODO FIX wrong position and mouse release

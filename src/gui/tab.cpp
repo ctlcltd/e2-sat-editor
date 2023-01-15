@@ -1507,7 +1507,7 @@ if (platform::TESTING)
 		toolbar->setAttribute(Qt::WA_TranslucentBackground);
 		toolbar->setAutoFillBackground(false);
 
-		platform::osWidgetBlend(toolbar, platform::fx_toolbar_testing);
+	platform::osWidgetBlend(toolbar, platform::fx_translucent_background, platform::fx_opaque);
 }
 #endif
 	}
@@ -1523,7 +1523,7 @@ if (platform::TESTING)
 		toolbar->setAttribute(Qt::WA_TranslucentBackground);
 		toolbar->setAutoFillBackground(false);
 
-		platform::osWidgetBlend(toolbar, platform::fx_toolbar_testing);
+		platform::osWidgetBlend(toolbar, platform::fx_translucent_background, platform::fx_opaque);
 }
 #endif
 	}

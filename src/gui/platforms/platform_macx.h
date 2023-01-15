@@ -20,6 +20,11 @@
 class _platform_macx
 {
 	private:
+		enum _FX_BLENDING {
+			macx_fx_BehindWindow = 0,
+			macx_fx_WithinWindow = 1
+		};
+
 		enum _FX_MATERIAL {
 			macx_fx_TitleBar = 3,
 			macx_fx_Selection = 4,
@@ -39,39 +44,42 @@ class _platform_macx
 
 	public:
 
-		static const bool TESTING = false;
+		static const bool TESTING = true;
+
+		enum FX_BLENDING {
+			fx_translucent = _FX_BLENDING::macx_fx_BehindWindow,
+			fx_opaque = _FX_BLENDING::macx_fx_WithinWindow
+		};
 
 		enum FX_MATERIAL {
 			fx_translucent_background = _FX_MATERIAL::macx_fx_UnderWindowBackground,
-			fx_area_background = _FX_MATERIAL::macx_fx_UnderWindowBackground,
-			fx_top_background = _FX_MATERIAL::macx_fx_WindowBackground,
-			fx_opaque_background = _FX_MATERIAL::macx_fx_ContentBackground,
-			fx_toolbar_testing = _FX_MATERIAL::macx_fx_TitleBar
+			fx_opaque_background = _FX_MATERIAL::macx_fx_WindowBackground,
+			fx_area_background = _FX_MATERIAL::macx_fx_ContentBackground,
+			fx_page_background = _FX_MATERIAL::macx_fx_UnderPageBackground,
+			fx_header_background = _FX_MATERIAL::macx_fx_HeaderView,
+			fx_side_background = _FX_MATERIAL::macx_fx_Sidebar,
+			fx_titlebar_background = _FX_MATERIAL::macx_fx_TitleBar
 		};
 
-		static QWidget* osWindowBlend(QWidget* widget, FX_MATERIAL material = fx_translucent_background)
+		static QWidget* osWindowBlend(QWidget* widget)
 		{
 			bool experiment = QSettings().value("preference/osExperiment", true).toBool();
 			if (QSettings().value("preference/osTranslucency", experiment).toBool())
-				return _osWindowBlend(widget, material);
+				return _osWindowBlend(widget);
 			else
 				return widget;
 		}
-		static QWidget* osWidgetBlend(QWidget* widget, FX_MATERIAL material = fx_translucent_background)
+		static QWidget* osWidgetBlend(QWidget* widget, FX_MATERIAL material = fx_translucent_background, FX_BLENDING blending = fx_translucent)
 		{
 			bool experiment = QSettings().value("preference/osExperiment", true).toBool();
 			if (QSettings().value("preference/osTranslucency", experiment).toBool())
-				return _osWidgetBlend(widget, material);
+				return _osWidgetBlend(widget, material, blending);
 			else
 				return widget;
 		}
 		static QWidget* osWidgetOpaque(QWidget* widget)
 		{
-			bool experiment = QSettings().value("preference/osExperiment", true).toBool();
-			if (QSettings().value("preference/osTranslucency", experiment).toBool())
-				return _osWidgetOpaque(widget);
-			else
-				return widget;
+			return widget;
 		}
 		static void osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 		{
@@ -99,9 +107,8 @@ class _platform_macx
 		}
 
 	protected:
-		static QWidget* _osWindowBlend(QWidget* widget, FX_MATERIAL material = fx_translucent_background);
-		static QWidget* _osWidgetBlend(QWidget* widget, FX_MATERIAL material = fx_translucent_background);
-		static QWidget* _osWidgetOpaque(QWidget* widget);
+		static QWidget* _osWindowBlend(QWidget* widget);
+		static QWidget* _osWidgetBlend(QWidget* widget, FX_MATERIAL material, FX_BLENDING blending);
 		static void _osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint pos);
 		static QLineEdit* _osLineEdit(QLineEdit* input);
 		static QComboBox* _osComboBox(QComboBox* select);

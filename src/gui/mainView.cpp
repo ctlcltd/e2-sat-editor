@@ -262,10 +262,8 @@ void mainView::layout()
 	bbox->addWidget(lfrm);
 	bfrm->setLayout(bbox);
 
-#ifdef Q_OS_MAC
 	platform::osWidgetBlend(afrm);
 	platform::osWidgetOpaque(bfrm);
-#endif
 
 	swid->addWidget(afrm);
 	swid->addWidget(bfrm);
@@ -273,11 +271,7 @@ void mainView::layout()
 	swid->setStretchFactor(0, 1);
 	swid->setStretchFactor(1, 4);
 
-#ifdef Q_OS_MAC
-	platform::osWidgetOpaque(swid->handle(1));
-#else
-	platform::osWidgetOpaque(swid);
-#endif
+	// platform::osWidgetOpaque(swid->handle(1));
 
 	frm->addWidget(swid);
 

@@ -69,6 +69,8 @@ void settings::layout(QWidget* cwid)
 	dial->setStyleSheet("QGroupBox { spacing: 0; padding: 0; padding-top: 20px; border: 0; font-weight: bold } QGroupBox::title { margin: 0 10px }");
 	dial->connect(dial, &QDialog::finished, [=]() { delete dial; delete this; });
 
+	platform::osWindowBlend(dial);
+
 	QGridLayout* dfrm = new QGridLayout(dial);
 
 	QHBoxLayout* dhbox = new QHBoxLayout;

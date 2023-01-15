@@ -136,11 +136,9 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::TabListCut] = menuBarAction(medit, tr("Cu&t"), [=]() { this->tabAction(TAB_ATS::ListCut); }, QKeySequence::Cut);
 	gmenu[GUI_CXE::TabListCopy] = menuBarAction(medit, tr("&Copy"), [=]() { this->tabAction(TAB_ATS::ListCopy); }, QKeySequence::Copy);
 	gmenu[GUI_CXE::TabListPaste] = menuBarAction(medit, tr("&Paste"), [=]() { this->tabAction(TAB_ATS::ListPaste); }, QKeySequence::Paste);
-	gmenu[GUI_CXE::TabListDelete] = menuBarAction(medit, tr("&Delete"), [=]() { this->tabAction(TAB_ATS::ListDelete); });
+	gmenu[GUI_CXE::TabListDelete] = menuBarAction(medit, tr("&Delete"), [=]() { this->tabAction(TAB_ATS::ListDelete); }, QKeySequence::Delete);
 #ifdef Q_OS_MAC
 	gmenu[GUI_CXE::TabListDelete]->setShortcut(Qt::Key_Backspace);
-#else
-	gmenu[GUI_CXE::TabListDelete]->setShortcut(QKeySequence::Delete);
 #endif
 	menuBarSeparator(medit);
 	gmenu[GUI_CXE::TabListSelectAll] = menuBarAction(medit, tr("Select &All"), [=]() { this->tabAction(TAB_ATS::ListSelectAll); }, QKeySequence::SelectAll);
@@ -275,7 +273,7 @@ void gui::tabStackerLayout()
 	ttcornerlayout->setContentsMargins(0, 0, 0, 0);
 	ttcornerlayout->setSpacing(0);
 
-	platform::osWidgetOpaque(ttcornerwid);
+	platform::osWidgetBlend(ttcornerwid);
 
 	twid->setCornerWidget(ttcornerwid, Qt::TopLeftCorner);
 

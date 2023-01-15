@@ -13,6 +13,8 @@
 #include <QFormLayout>
 #include <QGroupBox>
 
+#include "platforms/platform.h"
+
 #include "dialAbstract.h"
 #include "theme.h"
 
@@ -25,6 +27,8 @@ void dialAbstract::layout(QWidget* cwid)
 
 	this->dial = new QDialog(cwid);
 	dial->setWindowTitle("Edit");
+
+	platform::osWindowBlend(dial);
 
 	QGridLayout* dfrm = new QGridLayout(dial);
 
@@ -171,6 +175,9 @@ QToolBar* dialAbstract::toolBar()
 #ifndef Q_OS_MAC
 	if (! theme::isDefault())
 		toolbar->setStyleSheet("QToolBar { background: palette(mid) }");
+#endif
+#ifdef Q_OS_MAC
+	platform::osWidgetBlend(toolbar, platform::fx_titlebar_background, platform::fx_opaque);
 #endif
 
 	return toolbar;

@@ -153,11 +153,8 @@ void channelBookView::layout()
 	bbox->addWidget(bswid);
 	bfrm->setLayout(bbox);
 
-#ifdef Q_OS_MAC
+	platform::osWidgetBlend(afrm);
 	platform::osWidgetOpaque(bfrm);
-#else
-	platform::osWidgetOpaque(frm);
-#endif
 
 	//TODO FIX
 	afrm->setMinimumWidth(150);
