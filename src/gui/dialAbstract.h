@@ -73,7 +73,7 @@ class dialAbstract : protected e2se::log_factory
 		void toolBarStyleSheet();
 
 		QDialog* dial;
-		theme* theme;
+		e2se_gui::theme* theme;
 		QToolBar* dtbar;
 		QToolButton* dttoggler;
 		QGridLayout* dtform;

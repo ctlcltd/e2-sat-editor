@@ -24,14 +24,16 @@ class _platform
 
 		static const bool TESTING = false;
 
-		static QWidget* osWindowBlend(QWidget* widget) {
+		static QWidget* osWindowBlend(QWidget* widget)
+		{
 			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
 			if (QSettings().value("preference/osTranslucency", experiment).toBool())
 				return _osWindowBlend(widget);
 			else
 				return widget;
 		};
-		static QWidget* osWidgetBlend(QWidget* widget) {
+		static QWidget* osWidgetBlend(QWidget* widget)
+		{
 			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
 			if (QSettings().value("preference/osTranslucency", experiment).toBool())
 				return _osWidgetBlend(widget);
@@ -46,22 +48,26 @@ class _platform
 			else
 				return widget;
 		};
-		static void osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint pos) {
+		static void osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
+		{
 			menu->popup(widget->mapToGlobal(pos));
 		}
-		static QLineEdit* osLineEdit(QLineEdit* input) {
+		static QLineEdit* osLineEdit(QLineEdit* input)
+		{
 			return input;
 		}
-		static QComboBox* osComboBox(QComboBox* select) {
+		static QComboBox* osComboBox(QComboBox* select)
+		{
 			return select;
 		}
 
 	protected:
-		static QWidget* _osWindowBlend(QWidget* widget) {
-			widget->setAttribute(Qt::WA_TranslucentBackground);
+		static QWidget* _osWindowBlend(QWidget* widget)
+		{
 			return widget;
 		};
-		static QWidget* _osWidgetBlend(QWidget* widget) {
+		static QWidget* _osWidgetBlend(QWidget* widget)
+		{
 			widget->setAttribute(Qt::WA_TranslucentBackground);
 			return widget;
 		};

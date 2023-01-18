@@ -81,11 +81,14 @@ gui::gui(int argc, char* argv[], e2se::logger::session* log)
 	layout();
 
 	mwid->show();
+
+	//TODO FIX SEGFAULT
+	mroot->exec();
 }
 
 int gui::exec()
 {
-	return mroot->exec();
+	return 0;
 }
 
 void gui::layout()

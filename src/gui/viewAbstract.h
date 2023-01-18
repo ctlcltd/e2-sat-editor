@@ -179,7 +179,7 @@ class viewAbstract : protected e2se::log_factory
 		static QAction* contextMenuSeparator(QMenu* menu);
 
 		QSettings* sets;
-		theme* theme;
+		e2se_gui::theme* theme;
 		tab* tid = nullptr;
 		dataHandler* data = nullptr;
 		ftpHandler* ftph = nullptr;

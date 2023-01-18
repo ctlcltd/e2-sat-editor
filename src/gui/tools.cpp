@@ -9,6 +9,8 @@
  * @license GNU GPLv3 License
  */
 
+#include <filesystem>
+
 #include <QtGlobal>
 #include <QDialog>
 #include <QTimer>

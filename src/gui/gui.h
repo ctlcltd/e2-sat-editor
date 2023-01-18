@@ -267,7 +267,7 @@ class gui : protected e2se::log_factory
 		void update(int bit);
 
 		QSettings* sets;
-		theme* theme;
+		e2se_gui::theme* theme;
 
 	protected:
 		void layout();

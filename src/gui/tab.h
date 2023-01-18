@@ -129,7 +129,7 @@ class tab : protected e2se::log_factory
 		QGridLayout* root;
 		QToolBar* top_toolbar;
 		QToolBar* bottom_toolbar;
-		theme* theme;
+		e2se_gui::theme* theme;
 		// tab view
 		gui::TAB_VIEW ttv;
 		viewAbstract* view;

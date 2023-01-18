@@ -136,6 +136,7 @@ gui::TAB_VIEW tab::getTabView()
 	return this->ttv;
 }
 
+//TODO FIX EXC_BAD_ACCESS
 void tab::tabSwitched()
 {
 	debug("tabSwitched()");
@@ -235,7 +236,7 @@ void tab::viewMain()
 	
 	this->root->addWidget(view->widget, 0, 0, 1, 1);
 
-	newFile();
+	// newFile();
 }
 
 void tab::viewTunersets(tab* parent, int ytype)

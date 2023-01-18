@@ -65,14 +65,14 @@ void viewAbstract::searchLayout()
 	searchbackground_hexArgb = searchbackground.name(QColor::HexArgb);
 	searchhighlight_hexArgb = searchhighlight.name(QColor::HexArgb);
 
-	theme->registerStyleSheet(widget, "#tree_search, #list_search { background: " + searchbackground_hexArgb + " } #list_search_highlight { background: " + searchbackground_hexArgb + " } #list_search_highlight:checked { background: " + searchhighlight_hexArgb + " }", theme::light);
+	theme->dynamicStyleSheet(widget, "#tree_search, #list_search { background: " + searchbackground_hexArgb + " } #list_search_highlight { background: " + searchbackground_hexArgb + " } #list_search_highlight:checked { background: " + searchhighlight_hexArgb + " }", theme::light);
 
 	searchbackground = QPalette().color(QPalette::Mid).darker();
 	searchhighlight = searchhighlight.darker(200);
 	searchbackground_hexArgb = searchbackground.name(QColor::HexArgb);
 	searchhighlight_hexArgb = searchhighlight.name(QColor::HexArgb);
 
-	theme->registerStyleSheet(widget, "#tree_search, #list_search { background: " + searchbackground_hexArgb + " } #list_search_highlight { background: " + searchbackground_hexArgb + " } #list_search_highlight:checked { background: " + searchhighlight_hexArgb + " }", theme::dark);
+	theme->dynamicStyleSheet(widget, "#tree_search, #list_search { background: " + searchbackground_hexArgb + " } #list_search_highlight { background: " + searchbackground_hexArgb + " } #list_search_highlight:checked { background: " + searchhighlight_hexArgb + " }", theme::dark);
 #else
 	searchbackground = QColor(Qt::white).darker(102);
 	searchhighlight = searchhighlight.lighter(107);

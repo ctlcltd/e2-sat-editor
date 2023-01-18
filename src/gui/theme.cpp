@@ -19,6 +19,7 @@
 #include <QSettings>
 #include <QPalette>
 #include <QFont>
+#include <QAction>
 #include <QPushButton>
 
 #include "theme.h"

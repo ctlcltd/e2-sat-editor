@@ -11,6 +11,7 @@
 
 #include <cstdio>
 #include <cstring>
+#include <filesystem>
 #include <algorithm>
 
 #include "e2db_abstract.h"
