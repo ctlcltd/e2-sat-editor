@@ -333,6 +333,7 @@ void mainView::referenceBoxLayout()
 	referencebackground_hexArgb = referencebackground.name(QColor::HexArgb);
 
 	theme->dynamicStyleSheet(list_reference, "#list_reference { background: " + referencebackground_hexArgb + " }", theme::dark);
+//TODO FIX theme system default
 #else
 	theme->dynamicStyleSheet(list_reference, "#list_reference { border-top: 1px solid }");
 

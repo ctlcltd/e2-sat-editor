@@ -236,7 +236,7 @@ void tab::viewMain()
 	
 	this->root->addWidget(view->widget, 0, 0, 1, 1);
 
-	// newFile();
+	newFile();
 }
 
 void tab::viewTunersets(tab* parent, int ytype)

@@ -302,8 +302,13 @@ void channelBookView::populate()
 			QStringList entry = dbih->entries.services[chdata.second];
 			entry.move(8, 9);
 			entry.insert(8, txp);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 			entry.remove(6);
 			entry.remove(1, 4);
+#else
+			entry.removeAt(6);
+			for (int i = 0; i != 4; ++i) entry.removeAt(1);
+#endif
 			entry.prepend(idx);
 			entry.prepend(x);
 

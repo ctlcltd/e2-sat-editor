@@ -73,6 +73,7 @@ void viewAbstract::searchLayout()
 	searchhighlight_hexArgb = searchhighlight.name(QColor::HexArgb);
 
 	theme->dynamicStyleSheet(widget, "#tree_search, #list_search { background: " + searchbackground_hexArgb + " } #list_search_highlight { background: " + searchbackground_hexArgb + " } #list_search_highlight:checked { background: " + searchhighlight_hexArgb + " }", theme::dark);
+//TODO FIX theme system default
 #else
 	searchbackground = QColor(Qt::white).darker(102);
 	searchhighlight = searchhighlight.lighter(107);
