@@ -23,7 +23,6 @@
 #include "channelBookView.h"
 #include "theme.h"
 #include "tab.h"
-#include "gui.h"
 
 using std::to_string;
 using namespace e2se;
@@ -38,6 +37,7 @@ channelBookView::channelBookView(dataHandler* data, int stype, e2se::logger::ses
 
 	this->data = data;
 	this->sets = new QSettings;
+	this->theme = new e2se_gui::theme;
 	this->widget = new QWidget;
 
 	this->state.sy = stype;
@@ -83,14 +83,60 @@ void channelBookView::layout()
 
 	sideLayout();
 
+	this->tree = new QTreeWidget;
+	this->list = new QTreeWidget;
 	this->tabv = new QTabBar;
+
+	list->setStyleSheet("QTreeWidget::item { padding: 2px 0 }");
+	tabv->setStyleSheet("QTabBar::tab { min-width: 48px; margin-top: 0 }");
+
+#ifdef Q_OS_MAC
+	QColor itembackground;
+	QString itembackground_hexArgb;
+
+	itembackground = QColor(Qt::black);
+	itembackground.setAlphaF(0.08);
+	itembackground_hexArgb = itembackground.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(widget, "QTreeWidget::item:selected:!active { selection-background-color: " + itembackground_hexArgb + " }", theme::light);
+
+	itembackground = QPalette().color(QPalette::Dark);
+	itembackground.setAlphaF(0.15);
+	itembackground_hexArgb = itembackground.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(widget, "QTreeWidget::item:selected:!active { selection-background-color: " + itembackground_hexArgb + " }", theme::dark);
+#endif
+
+	tree->setHidden(true);
+	tree->setHeaderHidden(true);
+	tree->setUniformRowHeights(true);
+	tree->setMinimumWidth(180);
+	
+	list->setHidden(true);
+	list->setUniformRowHeights(true);
+	list->setRootIsDecorated(false);
+	list->setSelectionBehavior(QAbstractItemView::SelectRows);
+	list->setSelectionMode(QAbstractItemView::ExtendedSelection);
+	list->setItemsExpandable(false);
+	list->setExpandsOnDoubleClick(false);
+
+	QTreeWidgetItem* list_thead = new QTreeWidgetItem({NULL, "Index", "Name", "Type", "Provider", "Transponder", "Position", "System"});
+	list->setHeaderItem(list_thead);
+	list->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
+	list->setColumnWidth(ITEM_ROW_ROLE::chnum, 60);		// (Channel Number) Index
+	list->setColumnWidth(ITEM_ROW_ROLE::chname, 175);	// Name
+	list->setColumnWidth(ITEM_ROW_ROLE::chtype, 70);	// Type
+	list->setColumnWidth(ITEM_ROW_ROLE::chpname, 125);	// Provider
+	list->setColumnWidth(ITEM_ROW_ROLE::chtxp, 165);	// Transponder
+	list->setColumnWidth(ITEM_ROW_ROLE::chpos, 70);		// Position
+	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 65);		// System
+
 	tabv->setHidden(true);
 	tabv->setShape(QTabBar::RoundedWest);
 	tabv->setDocumentMode(true);
 	tabv->setUsesScrollButtons(true);
 	tabv->setExpanding(false);
 	tabv->setDrawBase(true);
-	tabv->setStyleSheet("QTabBar::tab { min-width: 48px; margin-top: 0 }");
 
 	string chars[27] = {"0-9","A","B","C","D","E","F","G","H","I","J","L","K","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
@@ -100,33 +146,6 @@ void channelBookView::layout()
 		tabv->setTabButton(i, QTabBar::LeftSide, new QLabel(QString::fromStdString(chars[i])));
 		tabv->setTabData(i, QString::fromStdString(chars[i]));
 	}
-
-	this->tree = new QTreeWidget;
-	tree->setHidden(true);
-	tree->setHeaderHidden(true);
-	tree->setUniformRowHeights(true);
-	tree->setMinimumWidth(180);
-
-	this->list = new QTreeWidget;
-	list->setHidden(true);
-	list->setUniformRowHeights(true);
-	list->setRootIsDecorated(false);
-	list->setSelectionBehavior(QAbstractItemView::SelectRows);
-	list->setSelectionMode(QAbstractItemView::ExtendedSelection);
-	list->setItemsExpandable(false);
-	list->setExpandsOnDoubleClick(false);
-	list->setStyleSheet("QGroupBox::item { padding: 2px auto }");
-
-	QTreeWidgetItem* thead = new QTreeWidgetItem({NULL, "Index", "Name", "Type", "Provider", "Transponder", "Position", "System"});
-	list->setHeaderItem(thead);
-	list->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
-	list->setColumnWidth(ITEM_ROW_ROLE::chnum, 60);		// (Channel Number) Index
-	list->setColumnWidth(ITEM_ROW_ROLE::chname, 175);	// Name
-	list->setColumnWidth(ITEM_ROW_ROLE::chtype, 70);	// Type
-	list->setColumnWidth(ITEM_ROW_ROLE::chpname, 125);	// Provider
-	list->setColumnWidth(ITEM_ROW_ROLE::chtxp, 165);	// Transponder
-	list->setColumnWidth(ITEM_ROW_ROLE::chpos, 70);		// Position
-	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 65);		// System
 
 	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->sortByColumn(column); });
 	tree->connect(tree, &QTreeWidget::currentItemChanged, [=]() { this->populate(); });

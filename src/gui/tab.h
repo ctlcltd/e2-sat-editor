@@ -29,6 +29,7 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map, std::bi
 #include <QList>
 
 #include "../logger/logger.h"
+#include "theme.h"
 #include "gui.h"
 #include "dataHandler.h"
 #include "ftpHandler.h"
@@ -62,6 +63,7 @@ class tab : protected e2se::log_factory
 		string getTabName();
 		gui::TAB_VIEW getTabView();
 		string getFilename();
+		void themeChanged();
 		void tabSwitched();
 		void tabChangeName(string filename = "");
 		void setFlag(gui::GUI_CXE bit, bool flag);
@@ -116,16 +118,18 @@ class tab : protected e2se::log_factory
 
 		static QToolBar* toolBar(int type);
 		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger);
-		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, pair<e2se_gui::theme*, QString> icon, std::function<void()> trigger);
 		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, QKeySequence shortcut);
-		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, QKeySequence shortcut);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, pair<e2se_gui::theme*, QString> icon, std::function<void()> trigger, QKeySequence shortcut);
 		static QWidget* toolBarWidget(QToolBar* toolbar, QWidget* widget);
 		static QAction* toolBarSeparator(QToolBar* toolbar);
 		static QWidget* toolBarSpacer(QToolBar* toolbar);
+		void toolBarStyleSheet();
 
 		QGridLayout* root;
 		QToolBar* top_toolbar;
 		QToolBar* bottom_toolbar;
+		theme* theme;
 		// tab view
 		gui::TAB_VIEW ttv;
 		viewAbstract* view;

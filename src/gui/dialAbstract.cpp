@@ -28,6 +28,12 @@ void dialAbstract::layout(QWidget* cwid)
 	this->dial = new QDialog(cwid);
 	dial->setWindowTitle("Edit");
 
+	this->theme = new e2se_gui::theme;
+
+	themeChangedEventFilter* gce = new themeChangedEventFilter;
+	gce->setEventCallback([=]() { this->themeChanged(); });
+	dial->installEventFilter(gce);
+
 	platform::osWindowBlend(dial);
 
 	QGridLayout* dfrm = new QGridLayout(dial);
@@ -73,7 +79,7 @@ void dialAbstract::toolbarLayout()
 	toolBarSpacer(dtbar);
 	this->action.cancel = toolBarAction(dtbar, tr("Cancel"), [=]() { this->cancel(); });
 	toolBarSeparator(dtbar);
-	this->action.save = toolBarAction(dtbar, tr("Save"), theme::icon("edit"), [=]() { this->save(); });
+	this->action.save = toolBarAction(dtbar, tr("Save"), theme->dynamicIcon("edit"), [=]() { this->save(); });
 }
 
 void dialAbstract::collapsibleLayout()
@@ -108,6 +114,13 @@ void dialAbstract::collapsibleLayout()
 #else
 	dttoggler->setStyleSheet("width: 96px");
 #endif
+}
+
+void dialAbstract::themeChanged()
+{
+	debug("themeChanged()");
+
+	theme->changed();
 }
 
 void dialAbstract::expand()
@@ -168,13 +181,14 @@ void dialAbstract::destroy()
 QToolBar* dialAbstract::toolBar()
 {
 	QToolBar* toolbar = new QToolBar;
+	toolbar->setObjectName("#dial_toolbar");
 	toolbar->setIconSize(QSize(16, 16));
 	toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 	toolbar->setStyleSheet("QToolBar { padding: 0 8px } QToolButton { font-size: 16px }");
 
 #ifndef Q_OS_MAC
 	if (! theme::isDefault())
-		toolbar->setStyleSheet("QToolBar { background: palette(mid) }");
+		theme->dynamicStyleSheet(toolbar, "#dial_toolbar { background: palette(mid) }");
 #endif
 #ifdef Q_OS_MAC
 	platform::osWidgetBlend(toolbar, platform::fx_titlebar_background, platform::fx_opaque);
@@ -192,32 +206,11 @@ QAction* dialAbstract::toolBarAction(QToolBar* toolbar, QString text, std::funct
 	return action;
 }
 
-QAction* dialAbstract::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger)
+QAction* dialAbstract::toolBarAction(QToolBar* toolbar, QString text, pair<e2se_gui::theme*, QString> icon, std::function<void()> trigger)
 {
 	QAction* action = new QAction(toolbar);
 	action->setText(text);
-	action->setIcon(icon);
-	action->connect(action, &QAction::triggered, trigger);
-	toolbar->addAction(action);
-	return action;
-}
-
-QAction* dialAbstract::toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled)
-{
-	QAction* action = new QAction(toolbar);
-	action->setText(text);
-	action->setEnabled(enabled);
-	action->connect(action, &QAction::triggered, trigger);
-	toolbar->addAction(action);
-	return action;
-}
-
-QAction* dialAbstract::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled)
-{
-	QAction* action = new QAction(toolbar);
-	action->setText(text);
-	action->setIcon(icon);
-	action->setEnabled(enabled);
+	action->setIcon(icon.first->dynamicIcon(icon.second, action));
 	action->connect(action, &QAction::triggered, trigger);
 	toolbar->addAction(action);
 	return action;
@@ -233,35 +226,12 @@ QAction* dialAbstract::toolBarAction(QToolBar* toolbar, QString text, std::funct
 	return action;
 }
 
-QAction* dialAbstract::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, QKeySequence shortcut)
+QAction* dialAbstract::toolBarAction(QToolBar* toolbar, QString text, pair<e2se_gui::theme*, QString> icon, std::function<void()> trigger, QKeySequence shortcut)
 {
 	QAction* action = new QAction(toolbar);
 	action->setText(text);
-	action->setIcon(icon);
+	action->setIcon(icon.first->dynamicIcon(icon.second, action));
 	action->setShortcut(shortcut);
-	action->connect(action, &QAction::triggered, trigger);
-	toolbar->addAction(action);
-	return action;
-}
-
-QAction* dialAbstract::toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut)
-{
-	QAction* action = new QAction(toolbar);
-	action->setText(text);
-	action->setShortcut(shortcut);
-	action->setEnabled(enabled);
-	action->connect(action, &QAction::triggered, trigger);
-	toolbar->addAction(action);
-	return action;
-}
-
-QAction* dialAbstract::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled, QKeySequence shortcut)
-{
-	QAction* action = new QAction(toolbar);
-	action->setText(text);
-	action->setIcon(icon);
-	action->setShortcut(shortcut);
-	action->setEnabled(enabled);
 	action->connect(action, &QAction::triggered, trigger);
 	toolbar->addAction(action);
 	return action;

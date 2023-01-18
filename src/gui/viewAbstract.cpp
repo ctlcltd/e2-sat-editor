@@ -31,24 +31,66 @@
 #include "platforms/platform.h"
 
 #include "viewAbstract.h"
-#include "theme.h"
 #include "tab.h"
-#include "gui.h"
 
 namespace e2se_gui
 {
+
+void viewAbstract::themeChanged()
+{
+	debug("themeChanged()");
+
+	theme->changed();
+}
 
 void viewAbstract::searchLayout()
 {
 	this->tree_search = new QWidget;
 	this->list_search = new QWidget;
 
+	tree_search->setObjectName("tree_search");
+	list_search->setObjectName("list_search");
 	tree_search->setHidden(true);
 	list_search->setHidden(true);
-	tree_search->setBackgroundRole(QPalette::Mid);
-	list_search->setBackgroundRole(QPalette::Mid);
 	tree_search->setAutoFillBackground(true);
 	list_search->setAutoFillBackground(true);
+
+	QColor searchbackground;
+	QColor searchhighlight = QPalette().color(QPalette::Highlight);
+	QString searchbackground_hexArgb;
+	QString searchhighlight_hexArgb;
+#ifndef Q_OS_MAC
+	searchbackground = QPalette().color(QPalette::Mid).lighter();
+	searchhighlight = searchhighlight.lighter(150);
+	searchbackground_hexArgb = searchbackground.name(QColor::HexArgb);
+	searchhighlight_hexArgb = searchhighlight.name(QColor::HexArgb);
+
+	theme->registerStyleSheet(widget, "#tree_search, #list_search { background: " + searchbackground_hexArgb + " } #list_search_highlight { background: " + searchbackground_hexArgb + " } #list_search_highlight:checked { background: " + searchhighlight_hexArgb + " }", theme::light);
+
+	searchbackground = QPalette().color(QPalette::Mid).darker();
+	searchhighlight = searchhighlight.darker(200);
+	searchbackground_hexArgb = searchbackground.name(QColor::HexArgb);
+	searchhighlight_hexArgb = searchhighlight.name(QColor::HexArgb);
+
+	theme->registerStyleSheet(widget, "#tree_search, #list_search { background: " + searchbackground_hexArgb + " } #list_search_highlight { background: " + searchbackground_hexArgb + " } #list_search_highlight:checked { background: " + searchhighlight_hexArgb + " }", theme::dark);
+#else
+	searchbackground = QColor(Qt::white).darker(102);
+	searchhighlight = searchhighlight.lighter(107);
+	searchbackground_hexArgb = searchbackground.name(QColor::HexArgb);
+	searchhighlight_hexArgb = searchhighlight.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(widget, "#tree_search, #list_search { background: " + searchbackground_hexArgb + " } #list_search_highlight { background: " + searchbackground_hexArgb + " } #list_search_highlight:checked { background: " + searchhighlight_hexArgb + " }", theme::light);
+
+	searchbackground = QPalette().color(QPalette::Mid).darker(227);
+	searchhighlight = searchhighlight.darker(122);
+	searchbackground_hexArgb = searchbackground.name(QColor::HexArgb);
+	searchhighlight_hexArgb = searchhighlight.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(widget, "#tree_search, #list_search { background: " + searchbackground_hexArgb + " } #list_search_highlight { background: " + searchbackground_hexArgb + " } #list_search_highlight:checked { background: " + searchhighlight_hexArgb + " }", theme::dark);
+#endif
+
+	platform::osWidgetOpaque(tree_search);
+	platform::osWidgetOpaque(list_search);
 
 	QGridLayout* tsr_box = new QGridLayout(tree_search);
 	tsr_box->setContentsMargins(4, 3, 3, 6);
@@ -63,7 +105,7 @@ void viewAbstract::searchLayout()
 
 	this->tsr_search.close = new QPushButton;
 	this->tsr_search.close->setIconSize(QSize(10, 10));
-	this->tsr_search.close->setIcon(theme::icon("close"));
+	this->tsr_search.close->setIcon(theme->dynamicIcon("close", this->tsr_search.close));
 	this->tsr_search.close->setFlat(true);
 	this->tsr_search.close->setMaximumWidth(22);
 	this->tsr_search.close->connect(this->tsr_search.close, &QPushButton::pressed, [=]() { this->treeSearchClose(); });
@@ -92,10 +134,11 @@ void viewAbstract::searchLayout()
 	platform::osLineEdit(this->lsr_search.input);
 
 	this->lsr_search.highlight = new QPushButton;
+	this->lsr_search.highlight->setObjectName("list_search_highlight");
 	this->lsr_search.highlight->setText("Highlight");
 	this->lsr_search.highlight->setCheckable(true);
 	this->lsr_search.highlight->setChecked(true);
-	this->lsr_search.highlight->setStyleSheet("QPushButton, QPushButton:checked { margin: 0 2px; padding: 2px 2ex; border: 1px solid palette(button); border-radius: 2px; background: palette(mid) } QPushButton:checked { background: rgb(9, 134, 211) }");
+	this->lsr_search.highlight->setStyleSheet("QPushButton, QPushButton:checked { margin: 0 2px; padding: 2px 2ex; border: 1px solid palette(button); border-radius: 2px; color: palette(highlight-text) }");
 	this->lsr_search.highlight->connect(this->lsr_search.highlight, &QPushButton::pressed, [=]() { this->listFindHighlightToggle(); });
 
 	this->lsr_search.next = new QPushButton("Find");
@@ -112,7 +155,7 @@ void viewAbstract::searchLayout()
 
 	this->lsr_search.close = new QPushButton;
 	this->lsr_search.close->setIconSize(QSize(10, 10));
-	this->lsr_search.close->setIcon(theme::icon("close"));
+	this->lsr_search.close->setIcon(theme->dynamicIcon("close", this->lsr_search.close));
 	this->lsr_search.close->setFlat(true);
 	this->lsr_search.close->setMaximumWidth(28);
 	this->lsr_search.close->connect(this->lsr_search.close, &QPushButton::pressed, [=]() { this->listSearchClose(); });
@@ -569,14 +612,10 @@ void viewAbstract::tabPrintFile(bool all)
 QToolBar* viewAbstract::toolBar()
 {
 	QToolBar* toolbar = new QToolBar;
+	toolbar->setObjectName("view_toolbar");
 	toolbar->setIconSize(QSize(12, 12));
 	toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	toolbar->setStyleSheet("QToolBar { padding: 0 8px; } QToolButton { font: bold 14px }");
-
-#ifndef Q_OS_MAC
-	if (! theme::isDefault())
-		toolbar->setStyleSheet("QToolBar { background: palette(mid) }");
-#endif
+	toolbar->setStyleSheet("QToolBar { padding: 0 8px } QToolButton { font: bold 14px }");
 
 	platform::osWidgetOpaque(toolbar);
 
@@ -592,32 +631,11 @@ QAction* viewAbstract::toolBarAction(QToolBar* toolbar, QString text, std::funct
 	return action;
 }
 
-QAction* viewAbstract::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger)
+QAction* viewAbstract::toolBarAction(QToolBar* toolbar, QString text, pair<e2se_gui::theme*, QString> icon, std::function<void()> trigger)
 {
 	QAction* action = new QAction(toolbar);
 	action->setText(text);
-	action->setIcon(icon);
-	action->connect(action, &QAction::triggered, trigger);
-	toolbar->addAction(action);
-	return action;
-}
-
-QAction* viewAbstract::toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled)
-{
-	QAction* action = new QAction(toolbar);
-	action->setText(text);
-	action->setEnabled(enabled);
-	action->connect(action, &QAction::triggered, trigger);
-	toolbar->addAction(action);
-	return action;
-}
-
-QAction* viewAbstract::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled)
-{
-	QAction* action = new QAction(toolbar);
-	action->setText(text);
-	action->setIcon(icon);
-	action->setEnabled(enabled);
+	action->setIcon(icon.first->dynamicIcon(icon.second, action));
 	action->connect(action, &QAction::triggered, trigger);
 	toolbar->addAction(action);
 	return action;
@@ -633,38 +651,55 @@ QAction* viewAbstract::toolBarAction(QToolBar* toolbar, QString text, std::funct
 	return action;
 }
 
-QAction* viewAbstract::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, QKeySequence shortcut)
+QAction* viewAbstract::toolBarAction(QToolBar* toolbar, QString text, pair<e2se_gui::theme*, QString> icon, std::function<void()> trigger, QKeySequence shortcut)
 {
 	QAction* action = new QAction(toolbar);
 	action->setText(text);
-	action->setIcon(icon);
+	action->setIcon(icon.first->dynamicIcon(icon.second, action));
 	action->setShortcut(shortcut);
 	action->connect(action, &QAction::triggered, trigger);
 	toolbar->addAction(action);
 	return action;
 }
 
-QAction* viewAbstract::toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut)
+QPushButton* viewAbstract::toolBarButton(QToolBar* toolbar, QString text, std::function<void()> trigger)
 {
-	QAction* action = new QAction(toolbar);
-	action->setText(text);
-	action->setShortcut(shortcut);
-	action->setEnabled(enabled);
-	action->connect(action, &QAction::triggered, trigger);
-	toolbar->addAction(action);
-	return action;
+	QPushButton* button = new QPushButton(toolbar);
+	button->setText(text);
+	button->connect(button, &QPushButton::pressed, trigger);
+	toolbar->addWidget(button);
+	return button;
 }
 
-QAction* viewAbstract::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled, QKeySequence shortcut)
+QPushButton* viewAbstract::toolBarButton(QToolBar* toolbar, QString text, pair<e2se_gui::theme*, QString> icon, std::function<void()> trigger)
 {
-	QAction* action = new QAction(toolbar);
-	action->setText(text);
-	action->setIcon(icon);
-	action->setShortcut(shortcut);
-	action->setEnabled(enabled);
-	action->connect(action, &QAction::triggered, trigger);
-	toolbar->addAction(action);
-	return action;
+	QPushButton* button = new QPushButton(toolbar);
+	button->setText(text);
+	button->setIcon(icon.first->dynamicIcon(icon.second, button));
+	button->connect(button, &QPushButton::pressed, trigger);
+	toolbar->addWidget(button);
+	return button;
+}
+
+QPushButton* viewAbstract::toolBarButton(QToolBar* toolbar, QString text, std::function<void()> trigger, QKeySequence shortcut)
+{
+	QPushButton* button = new QPushButton(toolbar);
+	button->setText(text);
+	button->setShortcut(shortcut);
+	button->connect(button, &QPushButton::pressed, trigger);
+	toolbar->addWidget(button);
+	return button;
+}
+
+QPushButton* viewAbstract::toolBarButton(QToolBar* toolbar, QString text, pair<e2se_gui::theme*, QString> icon, std::function<void()> trigger, QKeySequence shortcut)
+{
+	QPushButton* button = new QPushButton(toolbar);
+	button->setText(text);
+	button->setIcon(icon.first->dynamicIcon(icon.second, button));
+	button->setShortcut(shortcut);
+	button->connect(button, &QPushButton::pressed, trigger);
+	toolbar->addWidget(button);
+	return button;
 }
 
 QWidget* viewAbstract::toolBarWidget(QToolBar* toolbar, QWidget* widget)
@@ -687,6 +722,32 @@ QWidget* viewAbstract::toolBarSpacer(QToolBar* toolbar)
 	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
 	toolbar->addWidget(spacer);
 	return spacer;
+}
+
+void viewAbstract::toolBarStyleSheet()
+{
+#ifndef Q_OS_MAC
+	//TODO FIX
+	if (! theme::isDefault())
+		theme->dynamicStyleSheet(widget, "#view_toolbar { background: palette(mid) }");
+#else
+	theme->dynamicStyleSheet(widget, "QToolBar { border-style: solid; border-width: 1px 0; border-bottom-color: transparent } QToolBar::separator { border: 0 }");
+
+	QColor tbshade;
+	QString tbshade_hexArgb;
+
+	tbshade = QColor(Qt::black);
+	tbshade.setAlphaF(0.06);
+	tbshade_hexArgb = tbshade.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(widget, "#view_toolbar { background: rgba(255, 255, 255, 0.33); border-color: " + tbshade_hexArgb + " }", theme::light);
+
+	tbshade = QPalette().color(QPalette::Dark).darker();
+	tbshade.setAlphaF(0.28);
+	tbshade_hexArgb = tbshade.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(widget, "#view_toolbar { background: rgba(0, 0, 0, 0.33); border-color: " + tbshade_hexArgb + " }", theme::dark);
+#endif
 }
 
 QMenu* viewAbstract::contextMenu()

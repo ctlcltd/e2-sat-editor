@@ -48,6 +48,7 @@ tunersetsView::tunersetsView(tab* tid, QWidget* cwid, dataHandler* data, int yty
 	this->cwid = cwid;
 	this->data = data;
 	this->sets = new QSettings;
+	this->theme = new e2se_gui::theme;
 	this->widget = new QWidget;
 
 	this->state.yx = ytype;
@@ -119,6 +120,39 @@ void tunersetsView::layout()
 	}
 
 	this->tree = new QTreeWidget;
+	this->list = new QTreeWidget;
+
+	if (widget->layoutDirection() == Qt::LeftToRight)
+	{
+		tree->setContentsMargins(0, 0, 10, 0);
+		list->setContentsMargins(10, 0, 0, 0);
+	}
+	else
+	{
+		tree->setContentsMargins(0, 0, 10, 0);
+		list->setContentsMargins(10, 0, 0, 0);
+	}
+
+	tree->setStyleSheet("QTreeWidget::item { padding: 6px 0 }");
+	list->setStyleSheet("QTreeWidget::item { padding: 6px 0 }");
+
+#ifdef Q_OS_MAC
+	QColor itembackground;
+	QString itembackground_hexArgb;
+
+	itembackground = QColor(Qt::black);
+	itembackground.setAlphaF(0.08);
+	itembackground_hexArgb = itembackground.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(widget, "QTreeWidget::item:selected:!active { selection-background-color: " + itembackground_hexArgb + " }", theme::light);
+
+	itembackground = QPalette().color(QPalette::Dark);
+	itembackground.setAlphaF(0.15);
+	itembackground_hexArgb = itembackground.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(widget, "QTreeWidget::item:selected:!active { selection-background-color: " + itembackground_hexArgb + " }", theme::dark);
+#endif
+
 	tree->setMinimumWidth(240);
 	tree->setUniformRowHeights(true);
 	tree->setRootIsDecorated(false);
@@ -129,11 +163,6 @@ void tunersetsView::layout()
 	tree->setDropIndicatorShown(true);
 	tree->setDragDropMode(QAbstractItemView::InternalMove);
 	tree->setEditTriggers(QAbstractItemView::NoEditTriggers);
-	tree->setStyleSheet("QTreeWidget::item { padding: 6px auto }");
-	if (widget->layoutDirection() == Qt::LeftToRight)
-		tree->setStyleSheet("QTreeWidget { margin: 0 0 0 10px }");
-	else
-		tree->setStyleSheet("QTreeWidget { margin: 0 10px 0 0 }");
 
 	QTreeWidgetItem* tree_thead = new QTreeWidgetItem(ths);
 	tree->setHeaderItem(tree_thead);
@@ -141,7 +170,6 @@ void tunersetsView::layout()
 	tree->setColumnWidth(TREE_ROW_ROLE::trow1, 200);  // Name
 	tree->setColumnWidth(TREE_ROW_ROLE::trow2, 75);   // Position | Country
 
-	this->list = new QTreeWidget;
 	list->setUniformRowHeights(true);
 	list->setRootIsDecorated(false);
 	list->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -151,11 +179,6 @@ void tunersetsView::layout()
 	list->setDropIndicatorShown(true);
 	list->setDragDropMode(QAbstractItemView::InternalMove);
 	list->setEditTriggers(QAbstractItemView::NoEditTriggers);
-	list->setStyleSheet("QTreeWidget::item { padding: 6px auto }");
-	if (widget->layoutDirection() == Qt::LeftToRight)
-		list->setStyleSheet("QTreeWidget { margin: 0 10px 0 0 }");
-	else
-		list->setStyleSheet("QTreeWidget { margin: 0 0 0 10px }");
 
 	QTreeWidgetItem* list_thead = new QTreeWidgetItem(lhs);
 	list->setHeaderItem(list_thead);
@@ -192,23 +215,18 @@ void tunersetsView::layout()
 	QToolBar* tree_ats = toolBar();
 	QToolBar* list_ats = toolBar();
 
-	this->action.tree_search = new QPushButton;
-	this->action.tree_search->setText("Find…");
-	this->action.tree_search->setIcon(theme::icon("search"));
-	this->action.tree_search->connect(this->action.tree_search, &QPushButton::pressed, [=]() { this->treeSearchToggle(); });
-
-	this->action.list_search = new QPushButton;
-	this->action.list_search->setText("&Find…");
-	this->action.list_search->setIcon(theme::icon("search"));
-	this->action.list_search->connect(this->action.list_search, &QPushButton::pressed, [=]() { this->listSearchToggle(); });
-
-	this->action.tree_newtn = toolBarAction(tree_ats, "New Position", theme::icon("add"), [=]() { this->addPosition(); });
+	this->action.tree_newtn = toolBarAction(tree_ats, "New Position", theme->dynamicIcon("add"), [=]() { this->addPosition(); });
 	toolBarSpacer(tree_ats);
-	toolBarWidget(tree_ats, this->action.tree_search);
+	this->action.tree_search = toolBarButton(tree_ats, "Find…", theme->dynamicIcon("search"), [=]() { this->treeSearchToggle(); });
 
-	this->action.list_newtr = toolBarAction(list_ats, "New Transponder", theme::icon("add"), [=]() { this->addTransponder(); }, false);
+	this->action.tree_search->setDisabled(true);
+
+	this->action.list_newtr = toolBarAction(list_ats, "New Transponder", theme->dynamicIcon("add"), [=]() { this->addTransponder(); });
 	toolBarSpacer(list_ats);
-	toolBarWidget(list_ats, this->action.list_search);
+	this->action.list_search = toolBarButton(list_ats, "Find…", theme->dynamicIcon("search"), [=]() { this->listSearchToggle(); });
+
+	this->action.list_newtr->setDisabled(true);
+	this->action.list_search->setDisabled(true);
 
 	this->tree_evto = new ListEventObserver;
 	this->list_evto = new ListEventObserver;
@@ -239,6 +257,8 @@ void tunersetsView::layout()
 	swid->setStretchFactor(1, 5);
 
 	frm->addWidget(swid);
+
+	toolBarStyleSheet();
 }
 
 void tunersetsView::searchLayout()
@@ -1085,17 +1105,8 @@ void tunersetsView::updateFlags()
 	{
 		tabSetFlag(gui::TabTreeEdit, true);
 		tabSetFlag(gui::TabTreeDelete, true);
-		//TODO connect to QScrollArea Event
-		/*if (tree->verticalScrollBar()->isVisible())
-		{*/
-			tabSetFlag(gui::TabTreeFind, true);
-			this->action.tree_search->setEnabled(true);
-		/*}
-		else
-		{
-			tabSetFlag(gui::TabTreeFind, false);
-			this->action.bouquets_search->setEnabled(false);
-		}*/
+		tabSetFlag(gui::TabTreeFind, true);
+		this->action.tree_search->setEnabled(true);
 	}
 	else
 	{

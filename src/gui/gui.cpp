@@ -69,7 +69,12 @@ gui::gui(int argc, char* argv[], e2se::logger::session* log)
 	//TODO intl. rtl
 	// mroot->setLayoutDirection(Qt::RightToLeft);
 
-	theme();
+	this->theme = new e2se_gui::theme;
+	theme->initStyle();
+
+	themeChangedEventFilter* gce = new themeChangedEventFilter;
+	gce->setEventCallback([=]() { this->themeChanged(); });
+	mwid->installEventFilter(gce);
 
 	platform::osWindowBlend(mwid);
 
@@ -224,32 +229,44 @@ void gui::tabStackerLayout()
 	twid->setMovable(true);
 	twid->setUsesScrollButtons(true);
 	twid->setStyle(new TabBarProxyStyle);
+	twid->tabBar()->setObjectName("tabwidget_tabbar");
 	twid->tabBar()->setChangeCurrentOnDrag(false);
 
-#ifndef Q_OS_MAC
-	QString twtbshade_hexArgb = "#aa000000";
-#else
+	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 12ex; max-width: 25ex; height: 6.3ex; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button) } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight); border-color: transparent }");
+
 	QColor twtbshade;
-	if (theme::isDarkMode())
-	{
-		twtbshade = QPalette().color(QPalette::Dark).darker();
-		twtbshade.setAlphaF(0.50);
-	}
-	else
-	{
-		twtbshade = QColor(0, 0, 0, 119);
-	}
-	// QStringList twtbshade_argb = {QString().setNum(twtbshade.red()), QString().setNum(twtbshade.green()), QString().setNum(twtbshade.blue()), QString().setNum(twtbshade.alphaF())};
-	// QString twtbshade_hexArgb = "rgba(" + twtbshade_argb.join(",") + ")";
-	// debug("twid", "twtbshade_hexArgb", twtbshade_hexArgb.toStdString());
-	QString twtbshade_hexArgb = twtbshade.name(QColor::HexArgb);
+	QString twtbshade_hexArgb;
+#ifndef Q_OS_MAC
+	twtbshade = QPalette().color(QPalette::Base);
+	twtbshade.setAlphaF(0.25);
+	twtbshade_hexArgb = twtbshade.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(twid, "#tabwidget_tabbar, #tabwidget_tabbar::tab { border-color: " + twtbshade_hexArgb + " }", theme::light);
+
+	twtbshade = QPalette().color(QPalette::Mid);
+	twtbshade.setAlphaF(0.22);
+	twtbshade_hexArgb = twtbshade.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(twid, "#tabwidget_tabbar, #tabwidget_tabbar::tab { border-color: " + twtbshade_hexArgb + " }", theme::dark);
+#else
+	twtbshade = QColor(Qt::black);
+	twtbshade.setAlphaF(0.08);
+	twtbshade_hexArgb = twtbshade.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(twid, "#tabwidget_tabbar, #tabwidget_tabbar::tab { border-color: " + twtbshade_hexArgb + " }", theme::light);
+
+	twtbshade = QPalette().color(QPalette::Dark).darker();
+	twtbshade.setAlphaF(0.28);
+	twtbshade_hexArgb = twtbshade.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(twid, "#tabwidget_tabbar, #tabwidget_tabbar::tab { border-color: " + twtbshade_hexArgb + " }", theme::dark);
 #endif
 
-	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid; border-color: " + twtbshade_hexArgb + " } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 12ex; max-width: 25ex; height: 6.3ex; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button); border-color: " + twtbshade_hexArgb + " } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight); border-color: transparent }");
 	if (twid->layoutDirection() == Qt::LeftToRight)
 		twid->tabBar()->setStyleSheet("QTabBar { border-width: 0 0 0 1px } QTabBar::tab { margin: 0 0 0 -1px }");
 	else
 		twid->tabBar()->setStyleSheet("QTabBar { border-width: 0 1px 0 0 } QTabBar::tab { margin: 0 -1px 0 0 }");
+
 	twid->connect(twid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
 	twid->connect(twid, &QTabWidget::tabCloseRequested, [=](int index) { this->closeTab(index); });
 	twid->tabBar()->connect(twid->tabBar(), &QTabBar::tabMoved, [=](int from, int to) { this->tabMoved(from, to); });
@@ -262,8 +279,10 @@ void gui::tabStackerLayout()
 	QWidget* ttcornerwid = new QWidget;
 	QHBoxLayout* ttcornerlayout = new QHBoxLayout(ttcornerwid);
 
-	QPushButton* ttbnew = new QPushButton(theme::icon("add"), tr("New &Tab"));
+	QPushButton* ttbnew = new QPushButton;
+	ttbnew->setText(tr("New &Tab"));
 	ttbnew->setIconSize(QSize(12, 12));
+	ttbnew->setIcon(theme->dynamicIcon("add", ttbnew));
 	ttbnew->setShortcut(QKeySequence::AddTab);
 	ttbnew->setStyleSheet("QPushButton { min-width: 8ex; min-height: 7ex; padding-left: 3px; padding-right: 3px; font-size: 12px; font-weight: bold }");
 	ttbnew->connect(ttbnew, &QPushButton::pressed, [=]() { this->newTab(); });
@@ -298,6 +317,11 @@ void gui::statusBarLayout()
 	this->sbwidr = new QLabel;
 
 	sbwid->setStyleSheet("QStatusBar QLabel { padding: 0 2ex }");
+
+#ifdef Q_OS_MAC
+	theme->dynamicStyleSheet(sbwid, "QStatusBar { background: transparent }");
+#endif
+
 	sbwidl->setAlignment(Qt::AlignVCenter);
 	sbwidr->setAlignment(Qt::AlignVCenter);
 	sbwidl->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
@@ -308,6 +332,19 @@ void gui::statusBarLayout()
 	sbwid->addWidget(sbwidr, 0);
 
 	mstatusb->addWidget(sbwid);
+}
+
+void gui::themeChanged()
+{
+	debug("themeChanged()");
+
+	theme->changed();
+
+	for (auto & x : ttabs)
+	{
+		tab* tab = x.second;
+		tab->themeChanged();
+	}
 }
 
 void gui::tabViewSwitch(TAB_VIEW ttv)
@@ -358,8 +395,8 @@ int gui::newTab(string filename)
 	action->setCheckable(true);
 	action->setActionGroup(mwtabs);
 
-	ttabs[ttid] = ttab;
-	ttmenu[ttid] = action;
+	ttabs.emplace(ttid, ttab);
+	ttmenu.emplace(ttid, action);
 	twid->tabBar()->setTabData(index, ttid);
 
 	if (read)
@@ -471,8 +508,8 @@ int gui::openTab(TAB_VIEW view, int arg)
 	action->setCheckable(true);
 	action->setActionGroup(mwtabs);
 	mwind->addAction(action);
-	ttmenu[ttid] = action;
-	ttabs[ttid] = ttab;
+	ttmenu.emplace(ttid, action);
+	ttabs.emplace(ttid, ttab);
 
 	twid->setTabToolTip(index, ttname);
 	ttab->setTabName(ttname.toStdString());
@@ -486,12 +523,13 @@ void gui::closeTab(int index)
 	// debug("closeTab()", "index", index);
 
 	int ttid = getTabId(index);
-	tab* current = ttabs[ttid];
 
-	if (current == nullptr)
+	if (! ttabs.count(ttid))
 	{
 		return error("closeTab()", "current", false);
 	}
+	
+	tab* current = ttabs[ttid];
 
 	debug("closeTab()", "ttid", ttid);
 
@@ -623,6 +661,11 @@ void gui::tabMoved(int from, int to)
 void gui::tabChangeName(int ttid, string filename)
 {
 	debug("tabChangeName()", "ttid", ttid);
+
+	if (! ttabs.count(ttid))
+	{
+		return error("tabChangeName()", "ttid", ttid);
+	}
 
 	tab* ttab = ttabs[ttid];
 	int index = twid->indexOf(ttab->widget);
@@ -1104,7 +1147,7 @@ void gui::setFlags(vector<int> bits, bool flag)
 int gui::getTabId(int index)
 {
 	int ttid = twid->tabBar()->tabData(index).toInt();
-	if (ttabs[ttid] == nullptr)
+	if (! ttabs.count(ttid))
 		ttid = -1;
 	return ttid;
 }

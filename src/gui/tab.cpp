@@ -44,7 +44,7 @@
 #include "editMarker.h"
 #include "printable.h"
 
-using std::to_string, std::sort;
+using std::pair, std::to_string, std::sort;
 using namespace e2se;
 
 namespace e2se_gui
@@ -62,6 +62,7 @@ tab::tab(gui* gid, QWidget* cwid, e2se::logger::session* log)
 
 	this->gid = gid;
 	this->cwid = cwid;
+	this->theme = new e2se_gui::theme;
 	this->widget = new QWidget;
 }
 
@@ -338,13 +339,13 @@ void tab::layout()
 #endif
 	platform::osComboBox(profile_combo);
 
-	tbars[gui::FileOpen] = toolBarAction(top_toolbar, "&Open", theme::icon("file-open"), [=]() { this->openFile(); }, QKeySequence::Open);
-	tbars[gui::FileSave] = toolBarAction(top_toolbar, "&Save", theme::icon("save"), [=]() { this->saveFile(false); }, QKeySequence::Save);
+	tbars[gui::FileOpen] = toolBarAction(top_toolbar, "&Open", theme->dynamicIcon("file-open"), [=]() { this->openFile(); }, QKeySequence::Open);
+	tbars[gui::FileSave] = toolBarAction(top_toolbar, "&Save", theme->dynamicIcon("save"), [=]() { this->saveFile(false); }, QKeySequence::Save);
 	toolBarSeparator(top_toolbar);
-	tbars[gui::FileImport] = toolBarAction(top_toolbar, "Import", theme::icon("import"), [=]() { this->importFile(); });
-	tbars[gui::FileExport] = toolBarAction(top_toolbar, "Export", theme::icon("export"), [=]() { this->exportFile(); });
+	tbars[gui::FileImport] = toolBarAction(top_toolbar, "Import", theme->dynamicIcon("import"), [=]() { this->importFile(); });
+	tbars[gui::FileExport] = toolBarAction(top_toolbar, "Export", theme->dynamicIcon("export"), [=]() { this->exportFile(); });
 	toolBarSeparator(top_toolbar);
-	toolBarAction(top_toolbar, "Settings", theme::icon("settings"), [=]() { gid->settings(); });
+	toolBarAction(top_toolbar, "Settings", theme->dynamicIcon("settings"), [=]() { gid->settings(); });
 	toolBarSpacer(top_toolbar);
 	toolBarWidget(top_toolbar, profile_combo);
 	toolBarAction(top_toolbar, "Connect", [=]() { this->ftpConnect(); });
@@ -374,6 +375,20 @@ void tab::layout()
 	this->root = container;
 
 	widget->setLayout(frm);
+
+	toolBarStyleSheet();
+}
+
+void tab::themeChanged()
+{
+	debug("themeChanged()");
+
+	theme->changed();
+
+	view->themeChanged();
+
+	for (auto & child : childs)
+		child->view->themeChanged();
 }
 
 void tab::newFile()
@@ -1480,59 +1495,28 @@ void tab::loadSeeds()
 QToolBar* tab::toolBar(int type)
 {
 	QToolBar* toolbar = new QToolBar;
-#ifdef Q_OS_MAC
-	QColor tbshade;
-	if (theme::isDarkMode())
-	{
-		tbshade = QPalette().color(QPalette::Dark).darker();
-		tbshade.setAlphaF(0.50);
-	}
-	else
-	{
-		tbshade = QColor(0, 0, 0, 119);
-	}
-	QString tbshade_hexArgb = tbshade.name(QColor::HexArgb);
-#endif
 	// 1: top
 	if (type)
 	{
+		toolbar->setObjectName("tab_top_toolbar");
 		toolbar->setIconSize(QSize(32, 32));
 		toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 		toolbar->setStyleSheet("QToolBar { padding: 0 12px } QToolButton { font-size: 18px }");
-#ifdef Q_OS_MAC
-if (platform::TESTING)
-{
-		toolbar->setStyleSheet("QToolBar { padding: 0 12px; border-style: solid; border-width: 1px 0; border-color: " + tbshade_hexArgb + " } QToolButton { font-size: 18px }");
-
-		toolbar->setAttribute(Qt::WA_TranslucentBackground);
-		toolbar->setAutoFillBackground(false);
-
-	platform::osWidgetBlend(toolbar, platform::fx_translucent_background, platform::fx_opaque);
-}
-#endif
 	}
 	else
 	// 0: bottom
 	{
+		toolbar->setObjectName("tab_bottom_toolbar");
 		toolbar->setStyleSheet("QToolBar { padding: 8px 12px } QToolButton { font-size: 16px; font-weight: bold; }");
-#ifdef Q_OS_MAC
-if (platform::TESTING)
-{
-		toolbar->setStyleSheet("QToolBar { padding: 8px 12px; border-style: solid; border-width: 1px 0; border-color: " + tbshade_hexArgb + " } QToolButton { font-size: 16px; font-weight: bold; }");
-
-		toolbar->setAttribute(Qt::WA_TranslucentBackground);
-		toolbar->setAutoFillBackground(false);
-
-		platform::osWidgetBlend(toolbar, platform::fx_translucent_background, platform::fx_opaque);
-}
-#endif
 	}
 
 #ifndef Q_OS_MAC
-	if (! theme::isDefault())
-		toolbar->setStyleSheet("QToolBar { background: palette(mid) }");
-
 	platform::osWidgetOpaque(toolbar);
+#else
+	toolbar->setAttribute(Qt::WA_TranslucentBackground);
+	toolbar->setAutoFillBackground(false);
+
+	platform::osWidgetBlend(toolbar, platform::fx_translucent_background, platform::fx_opaque);
 #endif
 
 	return toolbar;
@@ -1547,11 +1531,11 @@ QAction* tab::toolBarAction(QToolBar* toolbar, QString text, std::function<void(
 	return action;
 }
 
-QAction* tab::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger)
+QAction* tab::toolBarAction(QToolBar* toolbar, QString text, pair<e2se_gui::theme*, QString> icon, std::function<void()> trigger)
 {
 	QAction* action = new QAction(toolbar);
 	action->setText(text);
-	action->setIcon(icon);
+	action->setIcon(icon.first->dynamicIcon(icon.second, action));
 	action->connect(action, &QAction::triggered, trigger);
 	toolbar->addAction(action);
 	return action;
@@ -1567,11 +1551,11 @@ QAction* tab::toolBarAction(QToolBar* toolbar, QString text, std::function<void(
 	return action;
 }
 
-QAction* tab::toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, QKeySequence shortcut)
+QAction* tab::toolBarAction(QToolBar* toolbar, QString text, pair<e2se_gui::theme*, QString> icon, std::function<void()> trigger, QKeySequence shortcut)
 {
 	QAction* action = new QAction(toolbar);
 	action->setText(text);
-	action->setIcon(icon);
+	action->setIcon(icon.first->dynamicIcon(icon.second, action));
 	action->setShortcut(shortcut);
 	action->connect(action, &QAction::triggered, trigger);
 	toolbar->addAction(action);
@@ -1598,6 +1582,32 @@ QWidget* tab::toolBarSpacer(QToolBar* toolbar)
 	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
 	toolbar->addWidget(spacer);
 	return spacer;
+}
+
+void tab::toolBarStyleSheet()
+{
+#ifndef Q_OS_MAC
+	//TODO FIX
+	if (! theme::isDefault())
+		theme->dynamicStyleSheet(widget, "QToolBar { background: palette(mid) }");
+#else
+	theme->dynamicStyleSheet(widget, "QToolBar { border-style: solid; border-width: 1px 0 }");
+
+	QColor tbshade;
+	QString tbshade_hexArgb;
+
+	tbshade = QColor(Qt::black);
+	tbshade.setAlphaF(0.08);
+	tbshade_hexArgb = tbshade.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(widget, "#tab_top_toolbar, #tab_bottom_toolbar { border-color: " + tbshade_hexArgb + " }");
+
+	tbshade = QPalette().color(QPalette::Dark).darker();
+	tbshade.setAlphaF(0.28);
+	tbshade_hexArgb = tbshade.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(widget, "#tab_top_toolbar, #tab_bottom_toolbar { border-color: " + tbshade_hexArgb + " }");
+#endif
 }
 
 }

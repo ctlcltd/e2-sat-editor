@@ -32,6 +32,7 @@ using std::string, std::vector, std::unordered_map, std::bitset;
 #include <QLabel>
 
 #include "../logger/logger.h"
+#include "theme.h"
 
 namespace e2se_gui
 {
@@ -266,12 +267,14 @@ class gui : protected e2se::log_factory
 		void update(int bit);
 
 		QSettings* sets;
+		theme* theme;
 
 	protected:
 		void layout();
 		void menuBarLayout();
 		void tabStackerLayout();
 		void statusBarLayout();
+		void themeChanged();
 		void windowChanged();
 		void tabViewSwitch(TAB_VIEW ttv);
 		void tabViewSwitch(TAB_VIEW ttv, int arg);

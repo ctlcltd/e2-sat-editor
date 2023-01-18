@@ -77,7 +77,7 @@ void dialChannelBook::toolbarLayout()
 	toolBarSpacer(dtbar);
 	this->action.cancel = toolBarAction(dtbar, tr("Cancel"), [=]() { this->cancel(); });
 	toolBarSeparator(dtbar);
-	this->action.add = toolBarAction(dtbar, tr("Add"), theme::icon("add"), [=]() { this->sender(); });
+	this->action.add = toolBarAction(dtbar, tr("Add"), theme->dynamicIcon("add"), [=]() { this->sender(); });
 
 	dtbar->widgetForAction(this->action.add)->setFocus();
 }

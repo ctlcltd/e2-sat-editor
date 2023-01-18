@@ -9,6 +9,9 @@
  * @license GNU GPLv3 License
  */
 
+#include <iostream>
+#include <string>
+
 #include <QApplication>
 #include <QGuiApplication>
 #include <QStyle>
@@ -16,13 +19,20 @@
 #include <QSettings>
 #include <QPalette>
 #include <QFont>
+#include <QPushButton>
 
 #include "theme.h"
+
+using std::string, std::pair, std::to_string;
 
 namespace e2se_gui
 {
 
 theme::theme()
+{
+}
+
+void theme::initStyle()
 {
 	QString style = theme::preference();
 
@@ -84,6 +94,59 @@ int theme::fontSize()
 int theme::calcFontSize(int size)
 {
 	return (theme::fontSize() + size);
+}
+
+void theme::dynamicStyleSheet(QWidget* widget, QString stylesheet)
+{
+	widget->setStyleSheet(widget->styleSheet().append(stylesheet));
+}
+
+void theme::dynamicStyleSheet(QWidget* widget, QString stylesheet, STYLE style)
+{
+	string key = "dynqss_" + to_string(style);
+	if (widget->property(key.data()).isNull())
+		widget->setProperty(key.data(), stylesheet);
+	else
+		widget->setProperty(key.data(), widget->property(key.data()).toString().append(stylesheet));
+
+	if (theme::absLuma() == style)
+		widget->setStyleSheet(widget->styleSheet().append(stylesheet));
+
+	styled.emplace_back(widget);
+}
+
+pair<theme*, QString> theme::dynamicIcon(QString icon)
+{
+	return pair (this, icon); //C++17
+}
+
+QIcon theme::dynamicIcon(QString icon, QObject* object)
+{
+	object->setProperty("dynico", icon);
+	imaged.emplace_back(object);
+
+	return this->icon(icon);
+}
+
+void theme::changed()
+{
+	int style = theme::absLuma();
+
+	for (auto & widget : styled)
+	{
+		QString stylesheet = widget->property(string ("dynqss_" + to_string(style)).data()).toString();
+		//TODO improve
+		widget->setStyleSheet(widget->styleSheet().append(stylesheet));
+	}
+	for (auto & object : imaged)
+	{
+		QString icon = object->property("dynico").toString();
+
+		if (QAction* action = qobject_cast<QAction*>(object))
+			action->setIcon(this->icon(icon));
+		else if (QPushButton* button = qobject_cast<QPushButton*>(object))
+			button->setIcon(this->icon(icon));
+	}
 }
 
 

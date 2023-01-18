@@ -38,7 +38,6 @@
 #include "mainView.h"
 #include "theme.h"
 #include "tab.h"
-#include "gui.h"
 #include "editBouquet.h"
 #include "editService.h"
 #include "editMarker.h"
@@ -59,6 +58,7 @@ mainView::mainView(tab* tid, QWidget* cwid, dataHandler* data, e2se::logger::ses
 	this->cwid = cwid;
 	this->data = data;
 	this->sets = new QSettings;
+	this->theme = new e2se_gui::theme;
 	this->widget = new QWidget;
 
 	layout();
@@ -112,9 +112,27 @@ void mainView::layout()
 	this->side = new QTreeWidget;
 	this->tree = new QTreeWidget;
 	this->list = new QTreeWidget;
-	side->setStyleSheet("QTreeWidget { background: transparent } QTreeWidget::item { padding: 9px auto }");
-	tree->setStyleSheet("QTreeWidget { background: transparent } QTreeWidget::item { margin: 1px 0 0; padding: 8px auto }");
-	list->setStyleSheet("QTreeWidget::item { padding: 6px auto }");
+
+	side->setStyleSheet("QTreeWidget { background: transparent } QTreeWidget::item { padding: 9px 0 }");
+	tree->setStyleSheet("QTreeWidget { background: transparent } QTreeWidget::item { margin: 1px 0 0; padding: 8px 0 }");
+	list->setStyleSheet("QTreeWidget::item { padding: 6px 0 }");
+
+#ifdef Q_OS_MAC
+	QColor itembackground;
+	QString itembackground_hexArgb;
+
+	itembackground = QColor(Qt::black);
+	itembackground.setAlphaF(0.08);
+	itembackground_hexArgb = itembackground.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(widget, "QTreeWidget::item:selected:!active { selection-background-color: " + itembackground_hexArgb + " }", theme::light);
+
+	itembackground = QPalette().color(QPalette::Dark);
+	itembackground.setAlphaF(0.15);
+	itembackground_hexArgb = itembackground.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(widget, "QTreeWidget::item:selected:!active { selection-background-color: " + itembackground_hexArgb + " }", theme::dark);
+#endif
 
 	side->setHeaderHidden(true);
 	side->setUniformRowHeights(true);
@@ -185,40 +203,28 @@ void mainView::layout()
 	QToolBar* tree_ats = toolBar();
 	QToolBar* list_ats = toolBar();
 
-	this->action.list_dnd = new QPushButton;
-	this->action.list_dnd->setText("Drag&&Drop");
-	this->action.list_dnd->setCheckable(true);
-	this->action.list_dnd->setDisabled(true);
-	this->action.list_dnd->connect(this->action.list_dnd, &QPushButton::pressed, [=]() { this->reharmDnD(); });
+	this->action.tree_newbq = toolBarAction(tree_ats, "New Bouquet", theme->dynamicIcon("add"), [=]() { this->addUserbouquet(); });
+	toolBarSpacer(tree_ats);
+	this->action.tree_search = toolBarButton(tree_ats, "Find…", theme->dynamicIcon("search"), [=]() { this->treeSearchToggle(); });
 
-	this->action.list_ref = new QPushButton;
-	this->action.list_ref->setText("Reference");
-	this->action.list_ref->setCheckable(true);
-	this->action.list_ref->connect(this->action.list_ref, &QPushButton::pressed, [=]() { this->listReferenceToggle(); });
-
-	this->action.tree_search = new QPushButton;
-	this->action.tree_search->setText("Find…");
-	this->action.tree_search->setIcon(theme::icon("search"));
-	this->action.tree_search->connect(this->action.tree_search, &QPushButton::pressed, [=]() { this->treeSearchToggle(); });
 	this->action.tree_search->setDisabled(true);
 
-	this->action.list_search = new QPushButton;
-	this->action.list_search->setText("&Find…");
-	this->action.list_search->setIcon(theme::icon("search"));
-	this->action.list_search->connect(this->action.list_search, &QPushButton::pressed, [=]() { this->listSearchToggle(); });
-
-	this->action.tree_newbq = toolBarAction(tree_ats, "New Bouquet", theme::icon("add"), [=]() { this->addUserbouquet(); });
-	toolBarSpacer(tree_ats);
-	toolBarWidget(tree_ats, this->action.tree_search);
-
-	this->action.list_addch = toolBarAction(list_ats, "Add Channel", theme::icon("add"), [=]() { this->addChannel(); });
-	this->action.list_addmk = toolBarAction(list_ats, "Add Marker", theme::icon("add"), [=]() { this->addMarker(); }, false);
-	this->action.list_newch = toolBarAction(list_ats, "New Service", theme::icon("add"), [=]() { this->addService(); }, false);
+	this->action.list_addch = toolBarAction(list_ats, "Add Channel", theme->dynamicIcon("add"), [=]() { this->addChannel(); });
+	this->action.list_addmk = toolBarAction(list_ats, "Add Marker", theme->dynamicIcon("add"), [=]() { this->addMarker(); });
+	this->action.list_newch = toolBarAction(list_ats, "New Service", theme->dynamicIcon("add"), [=]() { this->addService(); });
 	toolBarSeparator(list_ats);
-	toolBarWidget(list_ats, this->action.list_ref);
-	toolBarWidget(list_ats, this->action.list_dnd);
+	this->action.list_dnd = toolBarButton(list_ats, "Drag&&Drop", [=]() { this->reharmDnD(); });
+	this->action.list_ref = toolBarButton(list_ats, "Reference", [=]() { this->listReferenceToggle(); });
 	toolBarSpacer(list_ats);
-	toolBarWidget(list_ats, this->action.list_search);
+	this->action.list_search = toolBarButton(list_ats, "&Find…", theme->dynamicIcon("search"), [=]() { this->listSearchToggle(); });
+
+	this->action.list_dnd->setCheckable(true);
+	this->action.list_ref->setCheckable(true);
+
+	this->action.list_addmk->setDisabled(true);
+	this->action.list_newch->setDisabled(true);
+	this->action.list_dnd->setDisabled(true);
+	this->action.list_search->setDisabled(true);
 
 	this->tree_evth = new TreeEventHandler;
 	this->list_evth = new ListEventHandler;
@@ -275,6 +281,8 @@ void mainView::layout()
 
 	frm->addWidget(swid);
 
+	toolBarStyleSheet();
+
 	vector<pair<QString, QString>> tree = {
 		{"chs", "All services"},
 		{"chs:1", "TV"},
@@ -304,16 +312,59 @@ void mainView::searchLayout()
 	this->lsr_search.filter->addItem("Position", ITEM_ROW_ROLE::chpos);
 }
 
+//TODO improve viewAbstract::themeChange()
 void mainView::referenceBoxLayout()
 {
 	this->list_reference = new QWidget;
+
+	list_reference->setObjectName("list_reference");
 	list_reference->setHidden(true);
-	list_reference->setBackgroundRole(QPalette::Mid);
-	list_reference->setAutoFillBackground(true);
+
+#ifndef Q_OS_MAC
+	QColor referencebackground;
+	QString referencebackground_hexArgb;
+
+	referencebackground = QPalette().color(QPalette::Mid).lighter();
+	referencebackground_hexArgb = referencebackground.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(list_reference, "#list_reference { background: " + referencebackground_hexArgb + " }", theme::light);
+
+	referencebackground = QPalette().color(QPalette::Mid).darker();
+	referencebackground_hexArgb = referencebackground.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(list_reference, "#list_reference { background: " + referencebackground_hexArgb + " }", theme::dark);
+#else
+	theme->dynamicStyleSheet(list_reference, "#list_reference { border-top: 1px solid }");
+
+	QColor referencebackground;
+	QColor referenceshade;
+	QString referencebackground_hexArgb;
+	QString referenceshade_hexArgb;
+
+	referencebackground = QPalette().color(QPalette::Mid).lighter();
+	referencebackground_hexArgb = referencebackground.name(QColor::HexArgb);
+	referenceshade = QColor(Qt::black);
+	referenceshade.setAlphaF(0.06);
+	referenceshade_hexArgb = referenceshade.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(list_reference, "#list_reference { border-top-color: " + referenceshade_hexArgb + "; background: " + referencebackground_hexArgb + " }", theme::light);
+
+	referencebackground = QPalette().color(QPalette::Mid).darker();
+	referencebackground_hexArgb = referencebackground.name(QColor::HexArgb);
+	referenceshade = QPalette().color(QPalette::Dark).darker();
+	referenceshade.setAlphaF(0.15);
+	referenceshade_hexArgb = referenceshade.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(list_reference, "#list_reference { border-top-color: " + referenceshade_hexArgb + "; background: " + referencebackground_hexArgb + " }", theme::dark);
+#endif
+	theme->dynamicStyleSheet(list_reference, "#list_reference_area, #list_reference_wrap { background: transparent }");
 
 	QGridLayout* ref_frm = new QGridLayout(list_reference);
 	QScrollArea* ref_area = new QScrollArea;
+	ref_area->setObjectName("list_reference_area");
 	QWidget* ref_wrap = new QWidget;
+	ref_wrap->setObjectName("list_reference_wrap");
+
 	QGridLayout* ref_box = new QGridLayout;
 	QLabel* ref0lr = new QLabel("Reference ID");
 	QLabel* ref0tr = new QLabel("< >");
@@ -321,12 +372,14 @@ void mainView::referenceBoxLayout()
 	ref_fields[LIST_REF::ReferenceID] = ref0tr;
 	ref_box->addWidget(ref0lr, 0, 0, Qt::AlignTop);
 	ref_box->addWidget(ref0tr, 0, 1, Qt::AlignTop);
+
 	QLabel* ref1ls = new QLabel("Service ID");
 	QLabel* ref1ts = new QLabel("< >");
 	ref1ls->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref_fields[LIST_REF::ServiceID] = ref1ts;
 	ref_box->addWidget(ref1ls, 0, 2, Qt::AlignTop);
 	ref_box->addWidget(ref1ts, 0, 3, Qt::AlignTop);
+
 	QLabel* ref2lt = new QLabel("Transponder");
 	QLabel* ref2tt = new QLabel("< >");
 	ref2lt->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
@@ -334,34 +387,42 @@ void mainView::referenceBoxLayout()
 	ref_box->addWidget(ref2lt, 0, 4, Qt::AlignTop);
 	ref_box->addWidget(ref2tt, 0, 5, Qt::AlignTop);
 	ref_box->addItem(new QSpacerItem(0, 12), 1, 0);
+
 	QLabel* ref3lu = new QLabel("Userbouquets");
 	QLabel* ref3tu = new QLabel("< >");
 	ref3lu->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref_fields[LIST_REF::Userbouquets] = ref3tu;
 	ref_box->addWidget(ref3lu, 2, 0, Qt::AlignTop);
 	ref_box->addWidget(ref3tu, 2, 1, Qt::AlignTop);
+
 	QLabel* ref4lb = new QLabel("Bouquets");
 	QLabel* ref4tb = new QLabel("< >");
 	ref4lb->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref_fields[LIST_REF::Bouquets] = ref4tb;
 	ref_box->addWidget(ref4lb, 2, 2, Qt::AlignTop);
 	ref_box->addWidget(ref4tb, 2, 3, Qt::AlignTop);
+
 	QLabel* ref5ln = new QLabel("Tuner");
 	QLabel* ref5tn = new QLabel("< >");
 	ref5ln->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref_fields[LIST_REF::Tuner] = ref5tn;
 	ref_box->addWidget(ref5ln, 2, 4, Qt::AlignTop);
 	ref_box->addWidget(ref5tn, 2, 5, Qt::AlignTop);
+
 	ref_box->setRowStretch(2, 1);
 	ref_box->setColumnStretch(5, 1);
 	ref_box->setColumnMinimumWidth(1, 300);
 	ref_box->setColumnMinimumWidth(3, 200);
 	ref_box->setColumnMinimumWidth(5, 200);
+
 	ref_area->setWidget(ref_wrap);
 	ref_area->setWidgetResizable(true);
+
 	ref_wrap->setLayout(ref_box);
+
 	ref_frm->addWidget(ref_area);
 	ref_frm->setContentsMargins(0, 0, 0, 0);
+
 	list_reference->setFixedHeight(100);
 }
 
@@ -917,7 +978,6 @@ void mainView::allowDnD()
 
 	this->list_evth->allowInternalMove();
 	this->state.dnd = true;
-	// list_wrap->setStyleSheet("#channels_wrap { background: transparent }");
 }
 
 void mainView::disallowDnD()
@@ -926,7 +986,6 @@ void mainView::disallowDnD()
 
 	this->list_evth->disallowInternalMove();
 	this->state.dnd = false;
-	// list_wrap->setStyleSheet("#channels_wrap { background: rgba(255, 192, 0, 20%) }");
 }
 
 void mainView::reharmDnD()
@@ -1953,17 +2012,8 @@ void mainView::updateFlags()
 	{
 		tabSetFlag(gui::TabTreeEdit, true);
 		tabSetFlag(gui::TabTreeDelete, true);
-		//TODO connect to QScrollArea Event
-		/*if (tree->verticalScrollBar()->isVisible())
-		{*/
-			tabSetFlag(gui::TabTreeFind, true);
-			this->action.tree_search->setEnabled(true);
-		/*}
-		else
-		{
-			tabSetFlag(gui::TabTreeFind, false);
-			this->action.bouquets_search->setEnabled(false);
-		}*/
+		tabSetFlag(gui::TabTreeFind, true);
+		this->action.tree_search->setEnabled(true);
 	}
 	else
 	{

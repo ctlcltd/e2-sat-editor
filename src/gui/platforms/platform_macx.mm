@@ -46,9 +46,11 @@ class _windowEventFilter : public QObject
 	protected:
 		bool eventFilter(QObject* o, QEvent* e)
 		{
-			if (e->type() == QEvent::ThemeChange || e->type() == QEvent::ApplicationPaletteChange)
+			if (e->type() == QEvent::Move)
 			{
-				// std::cout << "theme changed" << std::endl;
+				NSView* superview = m_view.superview;
+
+				[m_view setFrame:superview.window.contentView.frame]; // fullscreen needed
 			}
 			else if (e->type() == QEvent::Destroy)
 			{
@@ -56,6 +58,7 @@ class _windowEventFilter : public QObject
 				[m_view release];
 			}
 
+			// std::cout << "window QEvent" << ' ' << e->type() << std::endl;
 			return QObject::eventFilter(o, e);
 		}
 
@@ -114,6 +117,7 @@ class _widgetEventFilter : public QObject
 				[m_view release];
 			}
 
+			// std::cout << "widget QEvent" << ' ' << e->type() << std::endl;
 			return QObject::eventFilter(o, e);
 		}
 
@@ -167,7 +171,7 @@ QWidget* _platform_macx::_osWindowBlend(QWidget* widget) {
 	[subview setMaterial:effectview.material];
 	[subview setBlendingMode:effectview.blendingMode];
 	[subview setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
-	[subview setFrame:superview.window.contentView.frame];
+	[subview setFrame:superview.window.contentView.frame]; // will autoresize
 	
 	[effectview addSubview:subview positioned:NSWindowAbove relativeTo:nil];
 

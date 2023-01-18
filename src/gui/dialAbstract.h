@@ -11,7 +11,7 @@
 
 #include <vector>
 
-using std::vector;
+using std::pair, std::vector;
 
 #ifndef dialAbstract_h
 #define dialAbstract_h
@@ -23,6 +23,7 @@ using std::vector;
 #include <QToolButton>
 
 #include "../logger/logger.h"
+#include "theme.h"
 #include "dataHandler.h"
 
 namespace e2se_gui
@@ -45,6 +46,7 @@ class dialAbstract : protected e2se::log_factory
 		virtual ~dialAbstract() = default;
 		virtual void display(QWidget* cwid) = 0;
 		virtual void destroy();
+		void themeChanged();
 
 		QWidget* widget;
 
@@ -62,23 +64,20 @@ class dialAbstract : protected e2se::log_factory
 
 		static QToolBar* toolBar();
 		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger);
-		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger);
-		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled);
-		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, pair<e2se_gui::theme*, QString> icon, std::function<void()> trigger);
 		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, QKeySequence shortcut);
-		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, QKeySequence shortcut);
-		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
-		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, pair<e2se_gui::theme*, QString> icon, std::function<void()> trigger, QKeySequence shortcut);
 		static QWidget* toolBarWidget(QToolBar* toolbar, QWidget* widget);
 		static QWidget* toolBarSeparator(QToolBar* toolbar);
 		static QWidget* toolBarSpacer(QToolBar* toolbar);
 
 		QDialog* dial;
+		theme* theme;
 		QToolBar* dtbar;
 		QToolButton* dttoggler;
 		QGridLayout* dtform;
 		bool collapsible = false;
-		QMargins frameMargins = QMargins (8, 12, 8, 12);
+		QMargins frameMargins = QMargins (10, 12, 10, 12);
 		bool frameFixed = true;
 		dataHandler* data = nullptr;
 		e2db* dbih = nullptr;

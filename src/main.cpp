@@ -15,7 +15,7 @@
 #ifndef __MINGW32__
 int main(int argc, char* argv[], char* envp[])
 {
-	bool DEBUG = false;
+	bool DEBUG = true;
 
 	for (int i = 0; envp[i] != NULL; i++)
 	{

@@ -30,6 +30,7 @@ using std::string, std::pair, std::vector;
 #include <QElapsedTimer>
 
 #include "../logger/logger.h"
+#include "theme.h"
 #include "gui.h"
 #include "dataHandler.h"
 #include "ftpHandler.h"
@@ -62,6 +63,7 @@ class viewAbstract : protected e2se::log_factory
 		virtual ~viewAbstract() = default;
 		virtual void load() = 0;
 		virtual void reset() = 0;
+		void themeChanged();
 		virtual void treeItemDelete();
 		virtual void listItemCut();
 		virtual void listItemCopy(bool cut = false) = 0;
@@ -134,7 +136,7 @@ class viewAbstract : protected e2se::log_factory
 			QElapsedTimer timer;
 		};
 
-		virtual void layout() {};
+		virtual void layout() = 0;
 		void searchLayout();
 		void sortByColumn(int column);
 		void tabSetFlag(gui::GUI_CXE bit, bool flag);
@@ -157,16 +159,17 @@ class viewAbstract : protected e2se::log_factory
 
 		static QToolBar* toolBar();
 		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger);
-		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger);
-		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled);
-		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, pair<e2se_gui::theme*, QString> icon, std::function<void()> trigger);
 		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, QKeySequence shortcut);
-		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, QKeySequence shortcut);
-		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
-		static QAction* toolBarAction(QToolBar* toolbar, QString text, QIcon icon, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
+		static QAction* toolBarAction(QToolBar* toolbar, QString text, pair<e2se_gui::theme*, QString> icon, std::function<void()> trigger, QKeySequence shortcut);
+		static QPushButton* toolBarButton(QToolBar* toolbar, QString text, std::function<void()> trigger);
+		static QPushButton* toolBarButton(QToolBar* toolbar, QString text, pair<e2se_gui::theme*, QString> icon, std::function<void()> trigger);
+		static QPushButton* toolBarButton(QToolBar* toolbar, QString text, std::function<void()> trigger, QKeySequence shortcut);
+		static QPushButton* toolBarButton(QToolBar* toolbar, QString text, pair<e2se_gui::theme*, QString> icon, std::function<void()> trigger, QKeySequence shortcut);
 		static QWidget* toolBarWidget(QToolBar* toolbar, QWidget* widget);
 		static QAction* toolBarSeparator(QToolBar* toolbar);
 		static QWidget* toolBarSpacer(QToolBar* toolbar);
+		void toolBarStyleSheet();
 		static QMenu* contextMenu();
 		static QMenu* contextMenu(QMenu* menu);
 		static QAction* contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger);
@@ -176,6 +179,7 @@ class viewAbstract : protected e2se::log_factory
 		static QAction* contextMenuSeparator(QMenu* menu);
 
 		QSettings* sets;
+		theme* theme;
 		tab* tid = nullptr;
 		dataHandler* data = nullptr;
 		ftpHandler* ftph = nullptr;
