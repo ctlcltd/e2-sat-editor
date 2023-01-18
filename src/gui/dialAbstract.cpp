@@ -75,6 +75,7 @@ void dialAbstract::toolbarLayout()
 	debug("toolbarLayout()");
 
 	this->dtbar = toolBar();
+	toolBarStyleSheet();
 
 	toolBarSpacer(dtbar);
 	this->action.cancel = toolBarAction(dtbar, tr("Cancel"), [=]() { this->cancel(); });
@@ -184,14 +185,30 @@ QToolBar* dialAbstract::toolBar()
 	toolbar->setObjectName("#dial_toolbar");
 	toolbar->setIconSize(QSize(16, 16));
 	toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	toolbar->setStyleSheet("QToolBar { padding: 0 8px } QToolButton { font-size: 16px }");
-
+	
+//TODO FIX
 #ifndef Q_OS_MAC
-	if (! theme::isDefault())
-		theme->dynamicStyleSheet(toolbar, "#dial_toolbar { background: palette(mid) }");
-#endif
-#ifdef Q_OS_MAC
-	platform::osWidgetBlend(toolbar, platform::fx_titlebar_background, platform::fx_opaque);
+	toolbar->setStyleSheet("QToolBar { padding: 0 8px } QToolButton { font-size: 16px }");
+#else
+	// platform::osWidgetBlend(toolbar, platform::fx_titlebar_background, platform::fx_opaque);
+
+	QColor tbshade;
+	QString tbshade_hexArgb;
+
+	if (theme::isLightMode())
+	{
+		tbshade = QColor(Qt::black);
+		tbshade.setAlphaF(0.08);
+		tbshade_hexArgb = tbshade.name(QColor::HexArgb);
+	}
+	else
+	{
+		tbshade = QPalette().color(QPalette::Dark).darker();
+		tbshade.setAlphaF(0.28);
+		tbshade_hexArgb = tbshade.name(QColor::HexArgb);
+	}
+
+	toolbar->setStyleSheet("QToolBar { padding: 0 8px; border: 0; border-top: 1px solid; background: transparent; border-color: " + tbshade_hexArgb + " } QToolButton { font-size: 16px }");
 #endif
 
 	return toolbar;
@@ -257,6 +274,35 @@ QWidget* dialAbstract::toolBarSpacer(QToolBar* toolbar)
 	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
 	toolbar->addWidget(spacer);
 	return spacer;
+}
+
+//TODO FIX
+void dialAbstract::toolBarStyleSheet()
+{
+	return;
+
+#ifndef Q_OS_MAC
+	//TODO FIX
+	if (! theme::isDefault())
+		theme->dynamicStyleSheet(widget, "#dial_toolbar { background: palette(mid) }");
+#else
+	// theme->dynamicStyleSheet(widget, "QToolBar { border-top: 1px solid; background: transparent }");
+
+	QColor tbshade;
+	QString tbshade_hexArgb;
+
+	tbshade = QColor(Qt::black);
+	tbshade.setAlphaF(0.08);
+	tbshade_hexArgb = tbshade.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(widget, "#dial_toolbar { border-color: " + tbshade_hexArgb + " }", theme::light);
+
+	tbshade = QPalette().color(QPalette::Dark).darker();
+	tbshade.setAlphaF(0.32);
+	tbshade_hexArgb = tbshade.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(widget, "#dial_toolbar { border-color: " + tbshade_hexArgb + " }", theme::dark);
+#endif
 }
 
 }

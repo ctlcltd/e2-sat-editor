@@ -1600,13 +1600,13 @@ void tab::toolBarStyleSheet()
 	tbshade.setAlphaF(0.08);
 	tbshade_hexArgb = tbshade.name(QColor::HexArgb);
 
-	theme->dynamicStyleSheet(widget, "#tab_top_toolbar, #tab_bottom_toolbar { border-color: " + tbshade_hexArgb + " }");
+	theme->dynamicStyleSheet(widget, "#tab_top_toolbar, #tab_bottom_toolbar { border-color: " + tbshade_hexArgb + " }", theme::light);
 
 	tbshade = QPalette().color(QPalette::Dark).darker();
-	tbshade.setAlphaF(0.28);
+	tbshade.setAlphaF(0.32);
 	tbshade_hexArgb = tbshade.name(QColor::HexArgb);
 
-	theme->dynamicStyleSheet(widget, "#tab_top_toolbar, #tab_bottom_toolbar { border-color: " + tbshade_hexArgb + " }");
+	theme->dynamicStyleSheet(widget, "#tab_top_toolbar, #tab_bottom_toolbar { border-color: " + tbshade_hexArgb + " }", theme::dark);
 #endif
 }
 

@@ -51,7 +51,7 @@ void dialChannelBook::layout(QWidget* cwid)
 	dial->setWindowFlag(Qt::WindowStaysOnTopHint);
 	dial->setAttribute(Qt::WA_MacAlwaysShowToolWindow);
 
-	dial->setMinimumSize(760, 420);
+	dial->setMinimumSize(700, 400);
 	dial->setWindowTitle(tr("Add Channel"));
 	dial->connect(dial, &QDialog::finished, [=]() { this->destroy(); });
 
@@ -68,6 +68,7 @@ void dialChannelBook::toolbarLayout()
 	debug("toolbarLayout()");
 
 	this->dtbar = toolBar();
+	toolBarStyleSheet();
 
 	this->action.filter = new QCheckBox(tr("Filters for service type"));
 	this->action.filter->setChecked(true);

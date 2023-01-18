@@ -54,6 +54,7 @@ channelBookView::channelBookView(tab* tid, QWidget* cwid, dataHandler* data, e2s
 	this->cwid = cwid;
 	this->data = data;
 	this->sets = new QSettings;
+	this->theme = new e2se_gui::theme;
 	this->widget = new QWidget;
 
 	layout();
@@ -98,13 +99,13 @@ void channelBookView::layout()
 	itembackground.setAlphaF(0.08);
 	itembackground_hexArgb = itembackground.name(QColor::HexArgb);
 
-	theme->dynamicStyleSheet(widget, "QTreeWidget::item:selected:!active { selection-background-color: " + itembackground_hexArgb + " }", theme::light);
+	theme->dynamicStyleSheet(widget, "QTreeWidget::item:selected:!active, QListWidget::item:selected:!active { selection-background-color: " + itembackground_hexArgb + " }", theme::light);
 
 	itembackground = QPalette().color(QPalette::Dark);
 	itembackground.setAlphaF(0.15);
 	itembackground_hexArgb = itembackground.name(QColor::HexArgb);
 
-	theme->dynamicStyleSheet(widget, "QTreeWidget::item:selected:!active { selection-background-color: " + itembackground_hexArgb + " }", theme::dark);
+	theme->dynamicStyleSheet(widget, "QTreeWidget::item:selected:!active, QListWidget::item:selected:!active { selection-background-color: " + itembackground_hexArgb + " }", theme::dark);
 #endif
 
 	tree->setHidden(true);

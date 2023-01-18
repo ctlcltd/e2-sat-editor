@@ -347,15 +347,15 @@ void mainView::referenceBoxLayout()
 	referenceshade.setAlphaF(0.06);
 	referenceshade_hexArgb = referenceshade.name(QColor::HexArgb);
 
-	theme->dynamicStyleSheet(list_reference, "#list_reference { border-top-color: " + referenceshade_hexArgb + "; background: " + referencebackground_hexArgb + " }", theme::light);
+	theme->dynamicStyleSheet(list_reference, "#list_reference { border-color: " + referenceshade_hexArgb + "; background: " + referencebackground_hexArgb + " }", theme::light);
 
 	referencebackground = QPalette().color(QPalette::Mid).darker();
 	referencebackground_hexArgb = referencebackground.name(QColor::HexArgb);
 	referenceshade = QPalette().color(QPalette::Dark).darker();
-	referenceshade.setAlphaF(0.15);
+	referenceshade.setAlphaF(0.20);
 	referenceshade_hexArgb = referenceshade.name(QColor::HexArgb);
 
-	theme->dynamicStyleSheet(list_reference, "#list_reference { border-top-color: " + referenceshade_hexArgb + "; background: " + referencebackground_hexArgb + " }", theme::dark);
+	theme->dynamicStyleSheet(list_reference, "#list_reference { border-color: " + referenceshade_hexArgb + "; background: " + referencebackground_hexArgb + " }", theme::dark);
 #endif
 	theme->dynamicStyleSheet(list_reference, "#list_reference_area, #list_reference_wrap { background: transparent }");
 

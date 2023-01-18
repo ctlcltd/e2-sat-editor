@@ -70,6 +70,7 @@ class dialAbstract : protected e2se::log_factory
 		static QWidget* toolBarWidget(QToolBar* toolbar, QWidget* widget);
 		static QWidget* toolBarSeparator(QToolBar* toolbar);
 		static QWidget* toolBarSpacer(QToolBar* toolbar);
+		void toolBarStyleSheet();
 
 		QDialog* dial;
 		theme* theme;

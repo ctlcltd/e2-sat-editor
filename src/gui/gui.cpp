@@ -60,11 +60,11 @@ gui::gui(int argc, char* argv[], e2se::logger::session* log)
 
 	this->mwid = new QWidget;
 	mwid->setWindowTitle("e2 SAT Editor");
-	mwid->setMinimumSize(760, 550);
+	mwid->setMinimumSize(960, 670);
 	mwid->resize(wsize);
 
 	// screenshot
-	// mwid->resize(QSize(1280, 800));
+	// mwid->resize(QSize(1024, 720));
 
 	//TODO intl. rtl
 	// mroot->setLayoutDirection(Qt::RightToLeft);

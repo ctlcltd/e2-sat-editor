@@ -129,7 +129,8 @@ void viewAbstract::searchLayout()
 	platform::osComboBox(this->lsr_search.filter);
 
 	this->lsr_search.input = new QLineEdit;
-	this->lsr_search.input->setStyleSheet("padding: 2px 0");
+	this->lsr_search.input->setMinimumWidth(180);
+	this->lsr_search.input->setStyleSheet("QLineEdit { padding: 2px 0 }");
 	this->lsr_search.input->connect(this->lsr_search.input, &QLineEdit::textChanged, [=](const QString& text) { this->listFindPerform(text, LIST_FIND::fast); });
 	platform::osLineEdit(this->lsr_search.input);
 
@@ -731,7 +732,7 @@ void viewAbstract::toolBarStyleSheet()
 	if (! theme::isDefault())
 		theme->dynamicStyleSheet(widget, "#view_toolbar { background: palette(mid) }");
 #else
-	theme->dynamicStyleSheet(widget, "QToolBar { border-style: solid; border-width: 1px 0; border-bottom-color: transparent } QToolBar::separator { border: 0 }");
+	theme->dynamicStyleSheet(widget, "QToolBar { border: 0; border-top: 1px solid } QToolBar::separator { border: 0 }");
 
 	QColor tbshade;
 	QString tbshade_hexArgb;
@@ -743,7 +744,7 @@ void viewAbstract::toolBarStyleSheet()
 	theme->dynamicStyleSheet(widget, "#view_toolbar { background: rgba(255, 255, 255, 0.33); border-color: " + tbshade_hexArgb + " }", theme::light);
 
 	tbshade = QPalette().color(QPalette::Dark).darker();
-	tbshade.setAlphaF(0.28);
+	tbshade.setAlphaF(0.27);
 	tbshade_hexArgb = tbshade.name(QColor::HexArgb);
 
 	theme->dynamicStyleSheet(widget, "#view_toolbar { background: rgba(0, 0, 0, 0.33); border-color: " + tbshade_hexArgb + " }", theme::dark);
