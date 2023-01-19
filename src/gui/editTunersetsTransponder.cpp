@@ -35,8 +35,6 @@ editTunersetsTransponder::editTunersetsTransponder(dataHandler* data, int yx, e2
 
 void editTunersetsTransponder::display(QWidget* cwid)
 {
-	this->dbih = this->data->dbih;
-
 	layout(cwid);
 
 	if (this->state.edit)
@@ -564,6 +562,8 @@ void editTunersetsTransponder::store()
 {
 	debug("store()");
 
+	auto* dbih = this->data->dbih;
+
 	e2db::tunersets tvs;
 	e2db::tunersets_table tns;
 
@@ -688,6 +688,8 @@ void editTunersetsTransponder::store()
 void editTunersetsTransponder::retrieve()
 {
 	debug("retrieve()");
+
+	auto* dbih = this->data->dbih;
 
 	e2db::tunersets tvs;
 	e2db::tunersets_table tns;

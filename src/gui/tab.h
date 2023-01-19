@@ -146,7 +146,6 @@ class tab : protected e2se::log_factory
 		unordered_map<int, QAction*> tbars;
 		int ttid = -1;
 		string ttname;
-		e2db* dbih = nullptr;
 };
 }
 #endif /* tab_h */

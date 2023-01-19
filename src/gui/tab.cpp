@@ -136,7 +136,6 @@ gui::TAB_VIEW tab::getTabView()
 	return this->ttv;
 }
 
-//TODO FIX EXC_BAD_ACCESS
 void tab::tabSwitched()
 {
 	debug("tabSwitched()");
@@ -1408,7 +1407,7 @@ QTimer* tab::statusBarMessage(string text)
 	QTimer* timer = new QTimer(this->cwid);
 	timer->setSingleShot(true);
 	timer->setInterval(STATUSBAR_MESSAGE_TIMEOUT);
-	timer->callOnTimeout([=]() { resetStatusBar(); delete timer; });
+	timer->callOnTimeout([=]() { this->resetStatusBar(); delete timer; });
 	timer->start();
 	return timer;
 }
@@ -1420,7 +1419,7 @@ void tab::statusBarMessage(QTimer* timer)
 		QTimer* timer = new QTimer(this->cwid);
 		timer->setSingleShot(true);
 		timer->setInterval(STATUSBAR_MESSAGE_DELAY);
-		timer->callOnTimeout([=]() { resetStatusBar(); delete timer; });
+		timer->callOnTimeout([=]() { this->resetStatusBar(); delete timer; });
 	}
 	else
 	{

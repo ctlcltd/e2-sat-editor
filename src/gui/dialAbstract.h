@@ -74,14 +74,13 @@ class dialAbstract : protected e2se::log_factory
 
 		QDialog* dial;
 		e2se_gui::theme* theme;
+		dataHandler* data = nullptr;
 		QToolBar* dtbar;
 		QToolButton* dttoggler;
 		QGridLayout* dtform;
 		bool collapsible = false;
 		QMargins frameMargins = QMargins (10, 12, 10, 12);
 		bool frameFixed = true;
-		dataHandler* data = nullptr;
-		e2db* dbih = nullptr;
 		vector<QWidget*> fields;
 
 		__state state;

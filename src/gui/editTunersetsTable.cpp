@@ -36,8 +36,6 @@ editTunersetsTable::editTunersetsTable(dataHandler* data, int yx, e2se::logger::
 
 void editTunersetsTable::display(QWidget* cwid)
 {
-	this->dbih = this->data->dbih;
-
 	layout(cwid);
 
 	if (this->state.edit)
@@ -243,6 +241,8 @@ void editTunersetsTable::store()
 {
 	debug("store()");
 
+	auto* dbih = this->data->dbih;
+
 	e2db::tunersets tvs;
 
 	if (dbih->tuners.count(tvid))
@@ -323,6 +323,8 @@ void editTunersetsTable::store()
 void editTunersetsTable::retrieve()
 {
 	debug("retrieve()");
+
+	auto* dbih = this->data->dbih;
 
 	e2db::tunersets tvs;
 

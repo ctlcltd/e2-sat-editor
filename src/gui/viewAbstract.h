@@ -184,7 +184,6 @@ class viewAbstract : protected e2se::log_factory
 		dataHandler* data = nullptr;
 		ftpHandler* ftph = nullptr;
 		e2se_gui::tools* tools;
-		e2db* dbih = nullptr;
 		QWidget* tree_search;
 		QWidget* list_search;
 		search tsr_search;

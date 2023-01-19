@@ -31,8 +31,6 @@ editMarker::editMarker(dataHandler* data, e2se::logger::session* log)
 
 void editMarker::display(QWidget* cwid)
 {
-	this->dbih = this->data->dbih;
-
 	layout(cwid);
 
 	if (this->state.edit)
@@ -66,6 +64,8 @@ void editMarker::layout(QWidget* cwid)
 void editMarker::store()
 {
 	debug("store()");
+
+	auto* dbih = this->data->dbih;
 
 	if (! dbih->userbouquets.count(bname))
 		return error("store()", "bname", bname);
@@ -112,6 +112,8 @@ void editMarker::store()
 void editMarker::retrieve()
 {
 	debug("retrieve()");
+
+	auto* dbih = this->data->dbih;
 
 	if (! dbih->userbouquets.count(bname))
 		return error("retrieve()", "bname", bname);

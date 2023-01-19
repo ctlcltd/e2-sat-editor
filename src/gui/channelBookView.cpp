@@ -216,7 +216,6 @@ void channelBookView::load()
 	debug("load()");
 
 	tabUpdateFlags(gui::init);
-	this->dbih = this->data->dbih;
 
 	sideRowChanged(0);
 }
@@ -238,8 +237,6 @@ void channelBookView::reset()
 	this->lsr_find.match.clear();
 
 	resetStatusBar();
-
-	this->dbih = nullptr;
 }
 
 void channelBookView::populate()
@@ -274,6 +271,8 @@ void channelBookView::populate()
 	}
 
 	this->state.curr = curr;
+
+	auto* dbih = this->data->dbih;
 
 	debug("populate()", "current", curr);
 
@@ -336,6 +335,8 @@ void channelBookView::populate()
 void channelBookView::stacker(int vv)
 {
 	debug("stacker()", "view", vv);
+
+	auto* dbih = this->data->dbih;
 
 	QList<QTreeWidgetItem*> items;
 
@@ -543,6 +544,8 @@ void channelBookView::listItemCopy(bool cut)
 	if (selected.empty())
 		return;
 
+	auto* dbih = this->data->dbih;
+
 	QClipboard* clipboard = QGuiApplication::clipboard();
 	QStringList text;
 	for (auto & item : selected)
@@ -586,6 +589,8 @@ void channelBookView::listItemCopy(bool cut)
 vector<QString> channelBookView::getSelected()
 {
 	debug("getSelected()");
+
+	auto* dbih = this->data->dbih;
 
 	vector<QString> items;
 
@@ -638,6 +643,8 @@ void channelBookView::updateFlags()
 		tabSetFlag(gui::TabListSelectAll, false);
 		// tabSetFlag(gui::TabListFind, false);
 	}
+
+	auto* dbih = this->data->dbih;
 
 	if (dbih->index.count("chs"))
 	{

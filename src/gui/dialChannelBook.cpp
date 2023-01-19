@@ -37,8 +37,6 @@ void dialChannelBook::display(QWidget* cwid)
 {
 	debug("display()");
 
-	this->dbih = this->data->dbih;
-
 	layout(cwid);
 
 	dial->show();

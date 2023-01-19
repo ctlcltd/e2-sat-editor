@@ -433,7 +433,7 @@ void mainView::load()
 
 	tabUpdateFlags(gui::init);
 
-	this->dbih = this->data->dbih;
+	auto* dbih = this->data->dbih;
 
 	unordered_map<string, QTreeWidgetItem*> bgroups;
 
@@ -523,8 +523,6 @@ void mainView::reset()
 	this->action.list_dnd->setDisabled(true);
 
 	resetStatusBar();
-
-	this->dbih = nullptr;
 }
 
 void mainView::populate(QTreeWidget* tree)
@@ -559,6 +557,8 @@ void mainView::populate(QTreeWidget* tree)
 	}
 
 	string bname = this->state.curr;
+
+	auto* dbih = this->data->dbih;
 
 	if (dbih->index.count(bname))
 		debug("populate()", "current", bname);
@@ -1011,6 +1011,8 @@ void mainView::addUserbouquet()
 	bname = add->getAddId(); // returned after dial.exec()
 	add->destroy();
 
+	auto* dbih = this->data->dbih;
+
 	if (dbih->userbouquets.count(bname))
 		debug("addUserbouquet()", "bname", bname);
 	else
@@ -1069,6 +1071,8 @@ void mainView::editUserbouquet()
 	edit->display(cwid);
 	edit->destroy();
 
+	auto* dbih = this->data->dbih;
+
 	if (dbih->userbouquets.count(bname))
 		debug("editUserbouquet()", "bname", bname);
 	else
@@ -1094,6 +1098,8 @@ void mainView::addChannel()
 
 	int stype = -1;
 	QTreeWidgetItem* selected = tree->currentItem();
+
+	auto* dbih = this->data->dbih;
 
 	if (selected == NULL)
 	{
@@ -1131,6 +1137,8 @@ void mainView::addService()
 	add->display(cwid);
 	chid = add->getAddId(); // returned after dial.exec()
 	add->destroy();
+
+	auto* dbih = this->data->dbih;
 
 	if (dbih->db.services.count(chid))
 		debug("addService()", "chid", chid);
@@ -1212,6 +1220,8 @@ void mainView::editService()
 	string nw_chid;
 	bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
 
+	auto* dbih = this->data->dbih;
+
 	debug("editService()", "chid", chid);
 
 	if (! marker && dbih->db.services.count(chid))
@@ -1253,6 +1263,8 @@ void mainView::addMarker()
 	add->display(cwid);
 	chid = add->getAddId(); // returned after dial.exec()
 	add->destroy();
+
+	auto* dbih = this->data->dbih;
 
 	e2db::channel_reference chref;
 	if (dbih->userbouquets.count(bname))
@@ -1349,6 +1361,8 @@ void mainView::editMarker()
 	nw_chid = edit->getEditId(); // returned after dial.exec()
 	edit->destroy();
 
+	auto* dbih = this->data->dbih;
+
 	e2db::channel_reference chref;
 	if (dbih->userbouquets.count(bname))
 		chref = dbih->userbouquets[bname].channels[chid];
@@ -1379,6 +1393,9 @@ void mainView::treeItemDelete()
 	{
 		return;
 	}
+
+	auto* dbih = this->data->dbih;
+
 	for (auto & item : selected)
 	{
 		QString qub = item->data(0, Qt::UserRole).toString();
@@ -1429,6 +1446,8 @@ void mainView::listItemCopy(bool cut)
 	
 	if (selected.empty())
 		return;
+
+	auto* dbih = this->data->dbih;
 
 	QClipboard* clipboard = QGuiApplication::clipboard();
 	QStringList text;
@@ -1519,6 +1538,9 @@ void mainView::listItemPaste()
 			items.emplace_back(data);
 		}
 	}
+
+	auto* dbih = this->data->dbih;
+
 	if (! items.empty())
 	{
 		putListItems(items);
@@ -1567,6 +1589,8 @@ void mainView::listItemDelete()
 
 	string pname;
 	string bname = this->state.curr;
+
+	auto* dbih = this->data->dbih;
 
 	// bouquets tree
 	if (this->state.tc)
@@ -1631,6 +1655,8 @@ void mainView::putListItems(vector<QString> items)
 	QTreeWidgetItem* parent = list->invisibleRootItem();
 	i = current != nullptr ? parent->indexOfChild(current) : list->topLevelItemCount();
 	y = i + 1;
+
+	auto* dbih = this->data->dbih;
 
 	string bname = this->state.curr;
 	e2db::userbouquet uboq = dbih->userbouquets[bname];
@@ -1886,6 +1912,8 @@ void mainView::updateStatusBar(bool current)
 	gui::status msg;
 	msg.update = current;
 
+	auto* dbih = this->data->dbih;
+
 	if (current && ! this->state.curr.empty())
 	{
 		string bname = this->state.curr;
@@ -1911,6 +1939,8 @@ void mainView::updateReferenceBox()
 	debug("updateReferenceBox()");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
+
+	auto* dbih = this->data->dbih;
 	
 	if (selected.empty() || selected.count() > 1)
 	{
@@ -2037,6 +2067,8 @@ void mainView::updateFlags()
 		this->action.list_search->setDisabled(true);
 	}
 
+	auto* dbih = this->data->dbih;
+
 	if (dbih->index.count("chs"))
 	{
 		tabSetFlag(gui::OpenChannelBook, true);
@@ -2062,8 +2094,6 @@ void mainView::updateFlags()
 void mainView::updateTreeIndex()
 {
 	debug("updateTreeIndex()");
-
-	auto* dbih = this->data->dbih;
 
 	int i = 0, y;
 	int count = tree->topLevelItemCount();
@@ -2094,6 +2124,9 @@ void mainView::updateTreeIndex()
 		}
 		i++;
 	}
+
+	auto* dbih = this->data->dbih;
+
 	if (bss != dbih->index["bss"])
 	{
 		dbih->index["bss"].swap(bss);
@@ -2112,11 +2145,12 @@ void mainView::updateListIndex()
 	if (! this->state.chx_pending)
 		return;
 
-	auto* dbih = this->data->dbih;
-
 	int i = 0, idx = 0;
 	int count = list->topLevelItemCount();
 	string bname = this->state.curr;
+
+	auto* dbih = this->data->dbih;
+
 	dbih->index[bname].clear();
 
 	debug("updateListIndex()", "current", bname);

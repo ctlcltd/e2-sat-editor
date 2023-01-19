@@ -306,9 +306,9 @@ void tunersetsView::load()
 
 	tabUpdateFlags(gui::init);
 
-	this->dbih = this->data->dbih;
-
 	int tvid = this->state.yx;
+
+	auto* dbih = this->data->dbih;
 
 	string iname = "tns:";
 	char yname = dbih->value_transponder_type(tvid);
@@ -364,8 +364,6 @@ void tunersetsView::reset()
 	this->action.list_newtr->setDisabled(true);
 
 	resetStatusBar();
-
-	this->dbih = nullptr;
 }
 
 void tunersetsView::populate()
@@ -385,6 +383,8 @@ void tunersetsView::populate()
 	
 	int tvid = this->state.yx;
 	string tnid = this->state.curr;
+
+	auto* dbih = this->data->dbih;
 
 	e2db::tunersets tvs = dbih->tuners[tvid];
 
@@ -528,6 +528,9 @@ void tunersetsView::addSettings()
 	int tvid = this->state.yx;
 	e2db::tunersets tvs;
 	tvs.ytype = tvid;
+
+	auto* dbih = this->data->dbih;
+
 	dbih->addTunersets(tvs);
 
 	this->data->setChanged(true);
@@ -538,6 +541,8 @@ void tunersetsView::editSettings()
 	debug("editSettings()");
 
 	int tvid = this->state.yx;
+
+	auto* dbih = this->data->dbih;
 
 	if (dbih->tuners.count(tvid))
 		debug("editSettings()", "tvid", tvid);
@@ -559,6 +564,8 @@ void tunersetsView::addPosition()
 
 	int tvid = this->state.yx;
 	string tnid;
+
+	auto* dbih = this->data->dbih;
 
 	if (! dbih->tuners.count(tvid))
 		addSettings();
@@ -624,6 +631,8 @@ void tunersetsView::editPosition()
 	string tnid = item->data(0, Qt::UserRole).toString().toStdString();
 	string nw_tnid;
 
+	auto* dbih = this->data->dbih;
+
 	if (! dbih->tuners.count(tvid))
 		return error("addTransponder()", "tvid", tvid);
 	if (dbih->tuners[tvid].tables.count(tnid))
@@ -659,6 +668,8 @@ void tunersetsView::addTransponder()
 
 	int tvid = this->state.yx;
 	string tnid = this->state.curr;
+
+	auto* dbih = this->data->dbih;
 
 	if (! dbih->tuners.count(tvid))
 		return error("addTransponder()", "tvid", tvid);
@@ -734,6 +745,8 @@ void tunersetsView::editTransponder()
 	string nw_trid;
 	string tnid = this->state.curr;
 
+	auto* dbih = this->data->dbih;
+
 	if (! dbih->tuners.count(tvid))
 		return error("editTransponder()", "tvid", tvid);
 	if (! dbih->tuners[tvid].tables.count(tnid))
@@ -781,6 +794,9 @@ void tunersetsView::treeItemDelete()
 	}
 
 	int tvid = this->state.yx;
+
+	auto* dbih = this->data->dbih;
+
 	e2db::tunersets tvs = dbih->tuners[tvid];
 	
 	for (auto & item : selected)
@@ -875,6 +891,9 @@ void tunersetsView::listItemDelete()
 
 	int tvid = this->state.yx;
 	string tnid = this->state.curr;
+
+	auto* dbih = this->data->dbih;
+
 	e2db::tunersets_table tns = dbih->tuners[tvid].tables[tnid];
 
 	for (auto & item : selected)
@@ -917,6 +936,8 @@ void tunersetsView::putListItems(vector<QString> items)
 
 	int tvid = this->state.yx;
 	string tnid = this->state.curr;
+
+	auto* dbih = this->data->dbih;
 
 	e2db::tunersets tvs = dbih->tuners[tvid];
 	e2db::tunersets_table tns = tvs.tables[tnid];
@@ -1019,6 +1040,8 @@ void tunersetsView::updateStatusBar(bool current)
 
 	gui::status msg;
 	msg.update = current;
+
+	auto* dbih = this->data->dbih;
 
 	if (current && ! this->state.curr.empty())
 	{
@@ -1131,6 +1154,8 @@ void tunersetsView::updateFlags()
 		this->action.list_search->setDisabled(true);
 	}
 
+	auto* dbih = this->data->dbih;
+
 	if (dbih->index.count("chs"))
 	{
 		tabSetFlag(gui::OpenChannelBook, true);
@@ -1158,6 +1183,8 @@ void tunersetsView::updateTreeIndex()
 	debug("updateTreeIndex()");
 	
 	int tvid = this->state.yx;
+
+	auto* dbih = this->data->dbih;
 
 	string iname = "tns:";
 	char yname = dbih->value_transponder_type(tvid);
@@ -1189,6 +1216,9 @@ void tunersetsView::updateListIndex()
 	int i = 0, idx = 0;
 	int count = list->topLevelItemCount();
 	string tnid = this->state.curr;
+
+	auto* dbih = this->data->dbih;
+
 	dbih->index[tnid].clear();
 
 	debug("updateListIndex()", "current", tnid);

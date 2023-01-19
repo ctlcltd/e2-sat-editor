@@ -42,8 +42,6 @@ editService::editService(dataHandler* data, e2se::logger::session* log)
 
 void editService::display(QWidget* cwid)
 {
-	this->dbih = this->data->dbih;
-
 	layout(cwid);
 
 	if (this->state.edit)
@@ -58,6 +56,8 @@ void editService::layout(QWidget* cwid)
 
 	QString dtitle = this->state.edit ? tr("Edit Service") : tr("Add Service");
 	dial->setWindowTitle(dtitle);
+
+	auto* dbih = this->data->dbih;
 
 	this->txdata = dbih->get_transponders_index();
 
@@ -133,6 +133,8 @@ void editService::transponderLayout()
 	dtf1tn->connect(dtf1tn, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) { this->tunerComboChanged(index); });
 #endif
 	platform::osComboBox(dtf1tn);
+
+	auto* dbih = this->data->dbih;
 
 	this->dtf1tx = new QComboBox;
 	dtf1tx->setProperty("field", "txid");
@@ -411,6 +413,8 @@ void editService::tunerComboChanged(int index)
 	if (! txdata.count(pos))
 		return;
 
+	auto* dbih = this->data->dbih;
+
 	for (auto & x : txdata[pos])
 	{
 		e2db::transponder tx = dbih->db.transponders[x.second];
@@ -425,6 +429,8 @@ void editService::tunerComboChanged(int index)
 void editService::store()
 {
 	debug("store()");
+
+	auto* dbih = this->data->dbih;
 
 	e2db::service ch;
 	if (this->state.edit)
@@ -595,6 +601,8 @@ void editService::store()
 void editService::retrieve()
 {
 	debug("retrieve()");
+
+	auto* dbih = this->data->dbih;
 
 	if (! dbih->db.services.count(chid))
 		return error("retrieve()", "chid", chid);

@@ -35,8 +35,6 @@ editBouquet::editBouquet(dataHandler* data, int ti, e2se::logger::session* log)
 
 void editBouquet::display(QWidget* cwid)
 {
-	this->dbih = this->data->dbih;
-
 	layout(cwid);
 
 	if (this->state.edit)
@@ -67,6 +65,8 @@ void editBouquet::layout(QWidget* cwid)
 	QGroupBox* dtl1 = new QGroupBox(tr("Bouquet"));
 	QFormLayout* dtf1 = new QFormLayout;
 	dtf1->setRowWrapPolicy(QFormLayout::WrapAllRows);
+
+	auto* dbih = this->data->dbih;
 
 	QComboBox* dtf1bt = new QComboBox;
 	dtf1bt->setProperty("field", "pname");
@@ -104,6 +104,8 @@ void editBouquet::store()
 {
 	debug("store()");
 
+	auto* dbih = this->data->dbih;
+
 	e2db::userbouquet ub;
 	if (this->state.edit)
 	{
@@ -138,6 +140,8 @@ void editBouquet::store()
 void editBouquet::retrieve()
 {
 	debug("retrieve()");
+
+	auto* dbih = this->data->dbih;
 
 	if (! dbih->userbouquets.count(bname))
 		return error("retrieve()", "bname", bname);
