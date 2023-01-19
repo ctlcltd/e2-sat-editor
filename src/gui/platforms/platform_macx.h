@@ -11,11 +11,11 @@
 
 #ifndef _platform_macx_h
 #define _platform_macx_h
+#include <QSettings>
 #include <QWidget>
 #include <QMenu>
 #include <QLineEdit>
 #include <QComboBox>
-#include <QSettings>
 
 class _platform_macx
 {

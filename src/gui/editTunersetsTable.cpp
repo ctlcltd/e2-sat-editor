@@ -14,6 +14,7 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QCheckBox>
+#include <QRegularExpression>
 
 #include "platforms/platform.h"
 

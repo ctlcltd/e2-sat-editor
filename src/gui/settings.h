@@ -18,10 +18,9 @@ using std::vector, std::map;
 
 #ifndef settings_h
 #define settings_h
-#include <QCoreApplication>
+#include <QSettings>
 #include <QWidget>
 #include <QDialog>
-#include <QSettings>
 #include <QTabWidget>
 #include <QListWidget>
 #include <QTableWidget>
@@ -98,7 +97,7 @@ class settings : protected e2se::log_factory
 		map<int, vector<QWidget*>> prefs;
 
 		__state state;
-	   __action action;
+		__action action;
 };
 }
 #endif /* settings_h */

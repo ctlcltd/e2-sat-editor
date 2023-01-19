@@ -11,6 +11,7 @@
 
 #include <cstdio>
 
+#include <QSettings>
 #include <QString>
 #include <QMessageBox>
 

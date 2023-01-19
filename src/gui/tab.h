@@ -108,7 +108,8 @@ class tab : protected e2se::log_factory
 		void toolsInspector();
 		void toolsImportFromFile(TOOLS_FILE ftype, e2db::FCONVS fci);
 		void toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco);
-		void profileComboChanged(int index);
+		void ftpComboItems();
+		void ftpComboChanged(int index);
 		bool ftpHandle();
 		void ftpConnect();
 		void ftpDisconnect();
@@ -126,13 +127,14 @@ class tab : protected e2se::log_factory
 		static QWidget* toolBarSpacer(QToolBar* toolbar);
 		void toolBarStyleSheet();
 
-		QGridLayout* root;
-		QToolBar* top_toolbar;
-		QToolBar* bottom_toolbar;
 		e2se_gui::theme* theme;
 		// tab view
 		gui::TAB_VIEW ttv;
 		viewAbstract* view;
+		QGridLayout* root;
+		QToolBar* top_toolbar;
+		QToolBar* bottom_toolbar;
+		QComboBox* ftp_combo;
 
 		// stored gui bit flags
 		bitset<256> gxe;

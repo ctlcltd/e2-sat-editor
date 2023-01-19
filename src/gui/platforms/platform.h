@@ -12,11 +12,11 @@
 #ifndef platform_h
 #define platform_h
 #include <QtGlobal>
+#include <QSettings>
 #include <QWidget>
 #include <QMenu>
 #include <QLineEdit>
 #include <QComboBox>
-#include <QSettings>
 
 class _platform
 {

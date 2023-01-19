@@ -110,6 +110,7 @@ void settings::layout(QWidget* cwid)
 	dial->setLayout(dfrm);
 }
 
+//TODO scrollable area
 void settings::preferencesLayout()
 {
 	QWidget* dtpage = new QWidget;

@@ -21,7 +21,6 @@ using std::string, std::vector, std::unordered_map, std::bitset;
 #define gui_h
 #include <QApplication>
 #include <QWidget>
-#include <QSettings>
 #include <QMenuBar>
 #include <QStatusBar>
 #include <QGridLayout>

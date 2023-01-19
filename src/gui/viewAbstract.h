@@ -17,7 +17,6 @@ using std::string, std::pair, std::vector;
 
 #ifndef viewAbstract_h
 #define viewAbstract_h
-#include <QSettings>
 #include <QWidget>
 #include <QTreeWidget>
 #include <QToolBar>

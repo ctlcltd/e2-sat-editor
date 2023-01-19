@@ -16,6 +16,8 @@
 #include <string>
 #include <unordered_set>
 
+#include <QRegularExpression>
+#include <QSettings>
 #include <QMessageBox>
 
 #include "e2db_gui.h"

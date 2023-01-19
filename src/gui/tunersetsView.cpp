@@ -13,6 +13,7 @@
 #include <cmath>
 
 #include <QTimer>
+#include <QSettings>
 #include <QGridLayout>
 #include <QSplitter>
 #include <QGroupBox>

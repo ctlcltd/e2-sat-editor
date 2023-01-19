@@ -12,7 +12,6 @@
 #ifndef ftpcom_gui_h
 #define ftpcom_gui_h
 #include <QApplication>
-#include <QSettings>
 
 #include "../ftpcom/ftpcom.h"
 

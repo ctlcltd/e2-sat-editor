@@ -14,6 +14,7 @@
 #include <filesystem>
 
 #include <QtGlobal>
+#include <QSettings>
 #include <QScreen>
 #include <QSplitter>
 #include <QGroupBox>

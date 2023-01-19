@@ -14,6 +14,7 @@
 
 #include <QApplication>
 #include <QGuiApplication>
+#include <QSettings>
 #include <QStyle>
 #include <QStyleFactory>
 #include <QSettings>

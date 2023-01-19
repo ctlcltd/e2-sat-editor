@@ -17,6 +17,7 @@
 
 #include <QtGlobal>
 #include <QGuiApplication>
+#include <QSettings>
 #include <QList>
 #include <QStyle>
 #include <QMessageBox>
@@ -309,8 +310,6 @@ void tab::layout()
 {
 	debug("layout()");
 
-	QSettings settings;
-
 	widget->setStyleSheet("QGroupBox { spacing: 0; padding: 20px 0 0 0; border: 0 } QGroupBox::title { margin: 0 12px }");
 
 	QGridLayout* frm = new QGridLayout(widget);
@@ -322,25 +321,14 @@ void tab::layout()
 	this->top_toolbar = toolBar(1);
 	this->bottom_toolbar = toolBar(0);
 
-	QComboBox* profile_combo = new QComboBox;
-	int profile_sel = settings.value("profile/selected").toInt();
-	int size = settings.beginReadArray("profile");
-	for (int i = 0; i < size; i++)
-	{
-		settings.setArrayIndex(i);
-		if (! settings.contains("profileName"))
-			continue;
-		//TODO profile/selected and array index differs trouble
-		profile_combo->addItem(settings.value("profileName").toString(), i + 1);
-	}
-	settings.endArray();
-	profile_combo->setCurrentIndex(profile_sel);
+	this->ftp_combo = new QComboBox;
+	ftpComboItems();
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-	profile_combo->connect(profile_combo, &QComboBox::currentIndexChanged, [=](int index) { this->profileComboChanged(index); });
+	ftp_combo->connect(ftp_combo, &QComboBox::currentIndexChanged, [=](int index) { this->ftpComboChanged(index); });
 #else
-	profile_combo->connect(profile_combo, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) { this->profileComboChanged(index); });
+	ftp_combo->connect(ftp_combo, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) { this->ftpComboChanged(index); });
 #endif
-	platform::osComboBox(profile_combo);
+	platform::osComboBox(ftp_combo);
 
 	tbars[gui::FileOpen] = toolBarAction(top_toolbar, "&Open", theme->dynamicIcon("file-open"), [=]() { this->openFile(); }, QKeySequence::Open);
 	tbars[gui::FileSave] = toolBarAction(top_toolbar, "&Save", theme->dynamicIcon("save"), [=]() { this->saveFile(false); }, QKeySequence::Save);
@@ -350,14 +338,14 @@ void tab::layout()
 	toolBarSeparator(top_toolbar);
 	toolBarAction(top_toolbar, "Settings", theme->dynamicIcon("settings"), [=]() { gid->settingsDialog(); });
 	toolBarSpacer(top_toolbar);
-	toolBarWidget(top_toolbar, profile_combo);
+	toolBarWidget(top_toolbar, ftp_combo);
 	toolBarAction(top_toolbar, "Connect", [=]() { this->ftpConnect(); });
 	toolBarAction(top_toolbar, "Disconnect", [=]() { this->ftpDisconnect(); });
 	toolBarSeparator(top_toolbar);
 	toolBarAction(top_toolbar, "Upload", [=]() { this->ftpUpload(); });
 	toolBarAction(top_toolbar, "Download", [=]() { this->ftpDownload(); });
 
-	if (settings.value("application/debug", true).toBool())
+	if (QSettings().value("application/debug", true).toBool())
 	{
 		toolBarSeparator(bottom_toolbar);
 		toolBarAction(bottom_toolbar, "§ Load seeds", [=]() { this->loadSeeds(); });
@@ -389,7 +377,7 @@ void tab::settingsChanged()
 	this->ftph->settingsChanged();
 	this->data->settingsChanged();
 
-	// ftp combobox
+	ftpComboItems();
 
 	view->didChange();
 
@@ -1252,11 +1240,36 @@ void tab::actionCall(int action)
 	}
 }
 
-void tab::profileComboChanged(int index)
+void tab::ftpComboItems()
 {
-	debug("profileComboChanged()", "index", index);
+	// debug("ftpComboItems()");
+
+	QSettings settings;
+
+	int size = settings.beginReadArray("profile");
+	for (int i = 0; i < size; i++)
+	{
+		settings.setArrayIndex(i);
+
+		if (! settings.contains("profileName"))
+			continue;
+
+		//TODO profile/selected and array index differs trouble
+		ftp_combo->addItem(settings.value("profileName").toString(), i + 1);
+	}
+	settings.endArray();
+
+	int selected = settings.value("profile/selected", 0).toInt();
+	ftp_combo->setCurrentIndex(selected);
+}
+
+void tab::ftpComboChanged(int index)
+{
+	debug("profileComboChanged()", "selected", index);
 
 	QSettings().setValue("profile/selected", index);
+
+	ftp_combo->setCurrentIndex(index);
 }
 
 void tab::ftpConnect()

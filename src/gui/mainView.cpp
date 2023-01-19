@@ -15,6 +15,7 @@
 #include <filesystem>
 
 #include <QtGlobal>
+#include <QSettings>
 #include <QTimer>
 #include <QList>
 #include <QGridLayout>

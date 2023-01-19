@@ -20,8 +20,6 @@ using std::string, std::pair, std::vector, std::unordered_map;
 #include <QApplication>
 #include <QString>
 #include <QList>
-#include <QRegularExpression>
-#include <QSettings>
 
 #include "../e2db/e2db.h"
 
