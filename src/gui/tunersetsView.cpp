@@ -34,6 +34,7 @@
 #include "editTunersetsTransponder.h"
 
 using std::to_string;
+
 using namespace e2se;
 
 namespace e2se_gui
@@ -47,7 +48,6 @@ tunersetsView::tunersetsView(tab* tid, QWidget* cwid, dataHandler* data, int yty
 	this->tid = tid;
 	this->cwid = cwid;
 	this->data = data;
-	this->sets = new QSettings;
 	this->theme = new e2se_gui::theme;
 	this->widget = new QWidget;
 
@@ -183,7 +183,7 @@ void tunersetsView::layout()
 	QTreeWidgetItem* list_thead = new QTreeWidgetItem(lhs);
 	list->setHeaderItem(list_thead);
 	list->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
-	if (sets->value("application/debug", true).toBool()) {
+	if (QSettings().value("application/debug", true).toBool()) {
 		list->setColumnWidth(ITEM_ROW_ROLE::debug_trid, 175);
 	}
 	else

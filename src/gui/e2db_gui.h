@@ -39,8 +39,7 @@ class e2db : public ::e2se_e2db::e2db
 		} entries;
 
 		e2db(e2se::logger::session* log);
-		e2db* newptr() { return new e2se_gui::e2db(this->log->log); }
-		void error(string msg, string optk, string optv);
+		void didChange();
 		string addTransponder(transponder& tx);
 		string editTransponder(string txid, transponder& tx);
 		void removeTransponder(string txid);
@@ -76,9 +75,13 @@ class e2db : public ::e2se_e2db::e2db
 		QStringList entryMarker(channel_reference chref);
 		QStringList entryTunersetsTable(tunersets_table tn);
 		QStringList entryTunersetsTransponder(tunersets_transponder tntxp, tunersets_table tn);
+		static QString fixUnicodeChars(string str);
 
 	protected:
-		QSettings* sets;
+		e2db* newptr() { return new e2se_gui::e2db(this->log->log); }
+		void setup();
+		void error(string msg, string optk, string optv);
+		void createBouquets();
 };
 }
 #endif /* e2db_gui_h */

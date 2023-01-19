@@ -19,6 +19,7 @@
 #include "editTunersets.h"
 
 using std::to_string;
+
 using namespace e2se;
 
 namespace e2se_gui

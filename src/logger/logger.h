@@ -27,6 +27,7 @@ class logger
 			size_t size;
 			bool debug;
 		};
+
 		logger(string ns);
 		logger(session* log, string ns);
 		void debug(string msg);

@@ -34,6 +34,7 @@ class dataHandler : protected e2se::log_factory
 		void setNewfile(bool newfile);
 		bool isNewfile();
 		string getFilename();
+		void settingsChanged();
 
 		e2db* dbih = nullptr;
 

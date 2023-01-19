@@ -59,11 +59,8 @@ class ftpcom
 		explicit ftpcom();
 		ftpcom(e2se::logger::session* log);
 		virtual ~ftpcom();
-		void setup(ftp_params params);
+		void setParameters(ftp_params params);
 		bool handle();
-		static CURLcode perform(CURL* ch);
-		static void reset(CURL* ch, CURLU* rh);
-		static void cleanup(CURL* ch);
 		bool connect();
 		bool disconnect();
 		vector<string> list_dir(string base);
@@ -81,11 +78,13 @@ class ftpcom
 			string data;
 			size_t size;
 		};
+
 		struct soi
 		{
 			const char* data;
 			size_t size;
 		};
+
 		struct tnvars
 		{
 			soi* ps;
@@ -94,7 +93,10 @@ class ftpcom
 			bool send;
 			string cmd;
 		};
-		vector<string> ftdb;
+
+		static CURLcode perform(CURL* ch);
+		static void reset(CURL* ch, CURLU* rh);
+		static void cleanup(CURL* ch);
 		static size_t data_download_func(void* csi, size_t size, size_t nmemb, void* pso);
 		static size_t data_upload_func(char* cso, size_t size, size_t nmemb, void* psi);
 		static size_t data_write_func(void* csi, size_t size, size_t nmemb, void* pso);
@@ -112,7 +114,9 @@ class ftpcom
 		virtual void error(string tmsg, string rmsg);
 		virtual void error(string msg, string optk, string optv);
 		virtual void error(string msg, string optk, int optv);
+
 		e2se::logger* log;
+		vector<string> ftdb;
 
 	private:
 		bool actv;

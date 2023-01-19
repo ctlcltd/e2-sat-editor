@@ -9,8 +9,6 @@
  * @license GNU GPLv3 License
  */
 
-#include <iostream>
-
 #ifndef ftpcom_gui_h
 #define ftpcom_gui_h
 #include <QApplication>
@@ -26,12 +24,13 @@ class ftpcom : public ::e2se_ftpcom::ftpcom
 
 	public:
 		ftpcom(e2se::logger::session* log);
+		void didChange();
 
 	protected:
+		void setup();
 		string trs(string str) override;
 		string trw(string str, string param) override;
 		void error(string tmsg, string rmsg) override;
-		QSettings* sets;
 };
 }
 #endif /* ftpcom_gui_h */

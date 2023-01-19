@@ -9,7 +9,6 @@
  * @license GNU GPLv3 License
  */
 
-#include <iostream>
 #include <functional>
 #include <string>
 #include <vector>
@@ -63,6 +62,7 @@ class tab : protected e2se::log_factory
 		string getTabName();
 		gui::TAB_VIEW getTabView();
 		string getFilename();
+		void settingsChanged();
 		void themeChanged();
 		void tabSwitched();
 		void tabChangeName(string filename = "");

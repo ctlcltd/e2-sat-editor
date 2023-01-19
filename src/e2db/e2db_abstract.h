@@ -458,14 +458,8 @@ struct e2db_abstract
 		virtual void debugger();
 
 	protected:
-		inline static int LAMEDB_VER = 0;
 
-		// e2db <filename string, full-path string>
-		unordered_map<string, string> e2db;
-		// e2db_out <filename string, e2db_file>
-		unordered_map<string, e2db_file> e2db_out;
-		string filepath;
-		string services_filename;
+		inline static int LAMEDB_VER = 0;
 
 		virtual void options() {};
 		virtual void debug(string msg);
@@ -486,6 +480,13 @@ struct e2db_abstract
 		void add_tunersets(tunersets& tv);
 		void add_tunersets_table(int idx, tunersets_table& tn, tunersets& tv);
 		void add_tunersets_transponder(int idx, tunersets_transponder& tntxp, tunersets_table& tn);
+
+		// e2db <filename string, full-path string>
+		unordered_map<string, string> e2db;
+		// e2db_out <filename string, e2db_file>
+		unordered_map<string, e2db_file> e2db_out;
+		string filepath;
+		string services_filename;
 		e2se::logger* log;
 };
 }

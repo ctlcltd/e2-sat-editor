@@ -45,6 +45,7 @@
 #include "printable.h"
 
 using std::pair, std::to_string, std::sort;
+
 using namespace e2se;
 
 namespace e2se_gui
@@ -308,6 +309,8 @@ void tab::layout()
 {
 	debug("layout()");
 
+	QSettings settings;
+
 	widget->setStyleSheet("QGroupBox { spacing: 0; padding: 20px 0 0 0; border: 0 } QGroupBox::title { margin: 0 12px }");
 
 	QGridLayout* frm = new QGridLayout(widget);
@@ -320,17 +323,17 @@ void tab::layout()
 	this->bottom_toolbar = toolBar(0);
 
 	QComboBox* profile_combo = new QComboBox;
-	int profile_sel = gid->sets->value("profile/selected").toInt();
-	int size = gid->sets->beginReadArray("profile");
+	int profile_sel = settings.value("profile/selected").toInt();
+	int size = settings.beginReadArray("profile");
 	for (int i = 0; i < size; i++)
 	{
-		gid->sets->setArrayIndex(i);
-		if (! gid->sets->contains("profileName"))
+		settings.setArrayIndex(i);
+		if (! settings.contains("profileName"))
 			continue;
 		//TODO profile/selected and array index differs trouble
-		profile_combo->addItem(gid->sets->value("profileName").toString(), i + 1);
+		profile_combo->addItem(settings.value("profileName").toString(), i + 1);
 	}
-	gid->sets->endArray();
+	settings.endArray();
 	profile_combo->setCurrentIndex(profile_sel);
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 	profile_combo->connect(profile_combo, &QComboBox::currentIndexChanged, [=](int index) { this->profileComboChanged(index); });
@@ -345,7 +348,7 @@ void tab::layout()
 	tbars[gui::FileImport] = toolBarAction(top_toolbar, "Import", theme->dynamicIcon("import"), [=]() { this->importFile(); });
 	tbars[gui::FileExport] = toolBarAction(top_toolbar, "Export", theme->dynamicIcon("export"), [=]() { this->exportFile(); });
 	toolBarSeparator(top_toolbar);
-	toolBarAction(top_toolbar, "Settings", theme->dynamicIcon("settings"), [=]() { gid->settings(); });
+	toolBarAction(top_toolbar, "Settings", theme->dynamicIcon("settings"), [=]() { gid->settingsDialog(); });
 	toolBarSpacer(top_toolbar);
 	toolBarWidget(top_toolbar, profile_combo);
 	toolBarAction(top_toolbar, "Connect", [=]() { this->ftpConnect(); });
@@ -354,7 +357,7 @@ void tab::layout()
 	toolBarAction(top_toolbar, "Upload", [=]() { this->ftpUpload(); });
 	toolBarAction(top_toolbar, "Download", [=]() { this->ftpDownload(); });
 
-	if (gid->sets->value("application/debug", true).toBool())
+	if (settings.value("application/debug", true).toBool())
 	{
 		toolBarSeparator(bottom_toolbar);
 		toolBarAction(bottom_toolbar, "§ Load seeds", [=]() { this->loadSeeds(); });
@@ -377,6 +380,21 @@ void tab::layout()
 	widget->setLayout(frm);
 
 	toolBarStyleSheet();
+}
+
+void tab::settingsChanged()
+{
+	debug("settingsChanged()");
+
+	this->ftph->settingsChanged();
+	this->data->settingsChanged();
+
+	// ftp combobox
+
+	view->didChange();
+
+	for (auto & child : childs)
+		child->view->didChange();
 }
 
 void tab::themeChanged()
@@ -1238,7 +1256,7 @@ void tab::profileComboChanged(int index)
 {
 	debug("profileComboChanged()", "index", index);
 
-	gid->sets->setValue("profile/selected", index);
+	QSettings().setValue("profile/selected", index);
 }
 
 void tab::ftpConnect()
@@ -1283,6 +1301,8 @@ void tab::ftpUpload()
 	if (! this->ftph->handleConnection())
 		return errorMessage("FTP Error", "Cannot connect to FTP Server!");
 
+	QSettings settings;
+
 	auto* ftih = this->ftph->ftih;
 	auto* dbih = this->data->dbih;
 
@@ -1293,9 +1313,9 @@ void tab::ftpUpload()
 
 	unordered_map<string, e2se_ftpcom::ftpcom::ftpcom_file> ftp_files;
 
-	int profile_sel = gid->sets->value("profile/selected").toInt();
-	gid->sets->beginReadArray("profile");
-	gid->sets->setArrayIndex(profile_sel);
+	int profile_sel = settings.value("profile/selected").toInt();
+	settings.beginReadArray("profile");
+	settings.setArrayIndex(profile_sel);
 	for (auto & x : files)
 	{
 		string filename = x.first;
@@ -1304,16 +1324,16 @@ void tab::ftpUpload()
 
 		if (filename.find(".tv") != string::npos || filename.find(".radio") != string::npos)
 		{
-			base = gid->sets->value("pathBouquets").toString().toStdString();
+			base = settings.value("pathBouquets").toString().toStdString();
 		}
 		else if (filename == "satellites.xml" || filename == "terrestrial.xml" || filename == "cables.xml" || filename == "atsc.xml")
 		{
-			base = gid->sets->value("pathTransponders").toString().toStdString();
+			base = settings.value("pathTransponders").toString().toStdString();
 		}
 		//TODO upload services, other data ... (eg. picons)
 		else
 		{
-			base = gid->sets->value("pathServices").toString().toStdString();
+			base = settings.value("pathServices").toString().toStdString();
 		}
 		path = base + '/' + filename;
 		
@@ -1326,7 +1346,7 @@ void tab::ftpUpload()
 
 		debug("ftpUpload()", "file", base + '/' + file.filename + " | " + to_string(file.size));
 	}
-	gid->sets->endArray();
+	settings.endArray();
 	files.clear();
 
 	ftih->put_files(ftp_files);
@@ -1480,13 +1500,15 @@ void tab::errorMessage(QString title, QString text)
 
 void tab::loadSeeds()
 {
-	if (gid->sets->contains("application/seeds"))
+	QSettings settings;
+
+	if (settings.contains("application/seeds"))
 	{
-		readFile(gid->sets->value("application/seeds").toString().toStdString());
+		readFile(settings.value("application/seeds").toString().toStdString());
 	}
 	else
 	{
-		gid->sets->setValue("application/seeds", "");
+		settings.setValue("application/seeds", "");
 
 		QMessageBox::information(this->cwid, NULL, "For debugging purpose, set application.seeds absolute path under Settings > Advanced tab, then restart the software.");
 	}

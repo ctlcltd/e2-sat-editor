@@ -9,7 +9,6 @@
  * @license GNU GPLv3 License
  */
 
-#include <iostream>
 #include <map>
 #include <unordered_map>
 
@@ -162,6 +161,7 @@ class mainView : public viewAbstract
 
 		__state state;
 		__action action;
+
 	private:
 		QWidget* cwid;
 };

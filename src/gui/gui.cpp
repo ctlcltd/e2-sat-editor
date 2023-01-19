@@ -32,6 +32,7 @@
 #include "todo.h"
 
 using std::to_string;
+
 using namespace e2se;
 
 namespace e2se_gui
@@ -51,9 +52,8 @@ gui::gui(int argc, char* argv[], e2se::logger::session* log)
 	mroot->setApplicationVersion("0.2");
 	mroot->connect(mroot, &QApplication::focusChanged, [=]() { this->windowChanged(); });
 
-	this->sets = new QSettings;
-	if (! sets->contains("application/version"))
-		setDefaultSets();
+	if (! QSettings().contains("application/version"))
+		setDefaultSettings();
 
 	QScreen* screen = mroot->primaryScreen();
 	QSize wsize = screen->availableSize();
@@ -133,9 +133,9 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::FilePrint] = menuBarAction(mfile, tr("&Print"), [=]() { this->filePrint(); }, QKeySequence::Print);
 	gmenu[GUI_CXE::FilePrintAll] = menuBarAction(mfile, tr("Print &All"), [=]() { this->filePrintAll(); }, Qt::CTRL | Qt::SHIFT | Qt::Key_P);
 	menuBarSeparator(mfile);
-	menuBarAction(mfile, tr("Settings"), [=]() { this->settings(); }, QKeySequence::Preferences);
+	menuBarAction(mfile, tr("Settings"), [=]() { this->settingsDialog(); }, QKeySequence::Preferences);
 #ifdef Q_OS_MAC
-	menuBarAction(mfile, tr("&About"), [=]() { this->about(); });
+	menuBarAction(mfile, tr("&About"), [=]() { this->aboutDialog(); });
 #endif
 	menuBarSeparator(mfile);
 	menuBarAction(mfile, tr("E&xit"), [=]() { this->mroot->quit(); }, QKeySequence::Quit);
@@ -208,7 +208,7 @@ void gui::menuBarLayout()
 	QMenu* mhelp = menuBarMenu(menu, tr("&Help"));
 	menuBarAction(mhelp, tr("About &Qt"), [=]() { mroot->aboutQt(); })->setMenuRole(QAction::NoRole);
 	menuBarSeparator(mhelp);
-	menuBarAction(mhelp, tr("&About e2 SAT Editor"), [=]() { this->about(); })->setMenuRole(QAction::NoRole);
+	menuBarAction(mhelp, tr("&About e2 SAT Editor"), [=]() { this->aboutDialog(); })->setMenuRole(QAction::NoRole);
 
 	this->menu = menu;
 	this->mwind = mwind;
@@ -337,6 +337,17 @@ void gui::statusBarLayout()
 	mstatusb->addWidget(sbwid);
 }
 
+void gui::settingsChanged()
+{
+	debug("settingsChanged()");
+
+	for (auto & x : ttabs)
+	{
+		tab* tab = x.second;
+		tab->settingsChanged();
+	}
+}
+
 void gui::themeChanged()
 {
 	debug("themeChanged()");
@@ -348,6 +359,42 @@ void gui::themeChanged()
 		tab* tab = x.second;
 		tab->themeChanged();
 	}
+}
+
+void gui::setDefaultSettings()
+{
+	debug("setDefaultSettings()");
+
+	QSettings settings;
+
+	settings.setValue("application/version", mroot->applicationVersion());
+
+	settings.beginGroup("preference");
+	settings.setValue("askConfirmation", true);
+	settings.setValue("nonDestructiveEdit", true);
+#ifndef Q_OS_MAC
+	settings.setValue("fixUnicodeChars", false);
+#else
+	settings.setValue("fixUnicodeChars", true);
+#endif
+	settings.endGroup();
+	
+	settings.beginWriteArray("profile");
+	settings.setArrayIndex(0);
+	settings.setValue("profileName", "Default");
+	settings.setValue("ipAddress", "127.0.0.1");
+	settings.setValue("ftpPort", 2121);
+	settings.setValue("ftpActive", false);
+	settings.setValue("httpPort", 80);
+	settings.setValue("username", "root");
+	settings.setValue("password", "test");
+	settings.setValue("pathTransponders", "/enigma_db");
+	settings.setValue("pathServices", "/enigma_db");
+	settings.setValue("pathBouquets", "/enigma_db");
+	settings.setValue("customWebifReloadUrl", "");
+	settings.setValue("customTelnetReloadCmd", "");
+	settings.endArray();
+	settings.setValue("profile/selected", 1);
 }
 
 void gui::tabViewSwitch(TAB_VIEW ttv)
@@ -1106,12 +1153,12 @@ void gui::windowMinimize()
 		this->mwid->showMinimized();
 }
 
-void gui::settings()
+void gui::settingsDialog()
 {
-	new e2se_gui_dialog::settings(mwid, this->log->log);
+	new e2se_gui_dialog::settings(this, mwid, this->log->log);
 }
 
-void gui::about()
+void gui::aboutDialog()
 {
 	new e2se_gui_dialog::about(this->log->log);
 }
@@ -1244,40 +1291,6 @@ void gui::update(int bit)
 
 	// note: is out of range
 	// debug("update()", "flags", getFlags().to_ullong());
-}
-
-void gui::setDefaultSets()
-{
-	debug("setDefaultSets()");
-
-	sets->setValue("application/version", mroot->applicationVersion());
-
-	sets->beginGroup("preference");
-	sets->setValue("askConfirmation", true);
-	sets->setValue("nonDestructiveEdit", true);
-#ifndef Q_OS_MAC
-	sets->setValue("fixUnicodeChars", false);
-#else
-	sets->setValue("fixUnicodeChars", true);
-#endif
-	sets->endGroup();
-	
-	sets->beginWriteArray("profile");
-	sets->setArrayIndex(0);
-	sets->setValue("profileName", "Default");
-	sets->setValue("ipAddress", "127.0.0.1");
-	sets->setValue("ftpPort", 2121);
-	sets->setValue("ftpActive", false);
-	sets->setValue("httpPort", 80);
-	sets->setValue("username", "root");
-	sets->setValue("password", "test");
-	sets->setValue("pathTransponders", "/enigma_db");
-	sets->setValue("pathServices", "/enigma_db");
-	sets->setValue("pathBouquets", "/enigma_db");
-	sets->setValue("customWebifReloadUrl", "");
-	sets->setValue("customTelnetReloadCmd", "");
-	sets->endArray();
-	sets->setValue("profile/selected", 1);
 }
 
 QMenuBar* gui::menuBar(QLayout* layout)

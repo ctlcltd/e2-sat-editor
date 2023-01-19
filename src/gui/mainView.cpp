@@ -44,6 +44,7 @@
 #include "dialChannelBook.h"
 
 using std::to_string, std::sort;
+
 using namespace e2se;
 
 namespace e2se_gui
@@ -57,7 +58,6 @@ mainView::mainView(tab* tid, QWidget* cwid, dataHandler* data, e2se::logger::ses
 	this->tid = tid;
 	this->cwid = cwid;
 	this->data = data;
-	this->sets = new QSettings;
 	this->theme = new e2se_gui::theme;
 	this->widget = new QWidget;
 
@@ -168,7 +168,7 @@ void mainView::layout()
 	list->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
 	list->setColumnWidth(ITEM_ROW_ROLE::chnum, 65);		// (Channel Number) Index
 	list->setColumnWidth(ITEM_ROW_ROLE::chname, 200);	// (Channel) Name
-	if (sets->value("application/debug", true).toBool()) {
+	if (QSettings().value("application/debug", true).toBool()) {
 		list->setColumnWidth(ITEM_ROW_ROLE::debug_chid, 175);
 		list->setColumnWidth(ITEM_ROW_ROLE::debug_txid, 150);
 	}
@@ -460,17 +460,10 @@ void mainView::load()
 		e2db::userbouquet uboq = dbih->userbouquets[ubi.second];
 		QString qub = QString::fromStdString(ubi.second);
 		QTreeWidgetItem* pgroup = bgroups[ubi.second];
-		// macos: unwanted chars [qt.qpa.fonts] Menlo notice
-		QString name;
-		if (sets->value("preference/fixUnicodeChars").toBool())
-			name = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{S}\\s]+"));
-		else
-			name = QString::fromStdString(uboq.name);
-
 		QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
 		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
 		bitem->setData(0, Qt::UserRole, qub);
-		bitem->setText(0, name);
+		bitem->setText(0, e2db::fixUnicodeChars(uboq.name));
 		tree->addTopLevelItem(bitem);
 	}
 
@@ -1031,17 +1024,10 @@ void mainView::addUserbouquet()
 	i = current != nullptr && ! isTopLevel ? parent->indexOfChild(current) : -1;
 	y = i + 1;
 
-	// macos: unwanted chars [qt.qpa.fonts] Menlo notice
-	QString name;
-	if (sets->value("preference/fixUnicodeChars").toBool())
-		name = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{S}\\s]+"));
-	else
-		name = QString::fromStdString(uboq.name);
-
 	QTreeWidgetItem* item = new QTreeWidgetItem;
 	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
 	item->setData(0, Qt::UserRole, QString::fromStdString(uboq.bname));
-	item->setText(0, name);
+	item->setText(0, e2db::fixUnicodeChars(uboq.name));
 
 	parent->insertChild(y, item);
 
@@ -1079,13 +1065,7 @@ void mainView::editUserbouquet()
 		return error("editUserbouquet()", "bname", bname);
 
 	e2db::userbouquet uboq = dbih->userbouquets[bname];
-	// macos: unwanted chars [qt.qpa.fonts] Menlo notice
-	QString name;
-	if (sets->value("preference/fixUnicodeChars").toBool())
-		name = QString::fromStdString(uboq.name).remove(QRegularExpression("[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{S}\\s]+"));
-	else
-		name = QString::fromStdString(uboq.name);
-	item->setText(0, name);
+	item->setText(0, e2db::fixUnicodeChars(uboq.name));
 
 	updateTreeIndex();
 

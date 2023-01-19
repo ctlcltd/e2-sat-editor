@@ -9,6 +9,7 @@
  * @license GNU GPLv3 License
  */
 
+#include <QTimer>
 #include <QVBoxLayout>
 #include <QFormLayout>
 #include <QGroupBox>
@@ -161,7 +162,10 @@ void dialAbstract::cancel()
 {
 	debug("cancel()");
 
-	dial->close();
+	// delay too fast
+	QTimer::singleShot(150, [=]() {
+		dial->close();
+	});
 }
 
 void dialAbstract::save()
@@ -170,7 +174,10 @@ void dialAbstract::save()
 
 	store();
 
-	dial->close();
+	// delay too fast
+	QTimer::singleShot(150, [=]() {
+		dial->close();
+	});
 }
 
 void dialAbstract::destroy()

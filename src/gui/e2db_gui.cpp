@@ -32,22 +32,49 @@ e2db::e2db(e2se::logger::session* log)
 	this->log = new e2se::logger(log, "gui.e2db");
 	debug("e2db()");
 
-	this->sets = new QSettings;
+	setup();
+	createBouquets();
+}
 
-	//TODO inline static
+void e2db::setup()
+{
+	debug("setup()");
+
+	QSettings settings;
+
 	e2db::OVERWRITE_FILE = true;
-	e2db::PARSER_LAMEDB5_PRIOR = sets->value("application/parserLamedb5", false).toBool();
-	e2db::MAKER_LAMEDB5 = sets->value("application/makerLamedb5", true).toBool();
-	e2db::PARSER_TUNERSETS = sets->value("application/parserTunerset", true).toBool();
-	e2db::MAKER_TUNERSETS = sets->value("application/makerTunerset", true).toBool();
-	e2db::CONVERTER_EXTENDED_FIELDS = sets->value("application/converterExtendedFields", false).toBool();
-	e2db::CSV_HEADER = sets->value("application/csvHeader", true).toBool();
-	string csv_dlm = sets->value("application/csvDelimiter", "\n").toString().toStdString();
-	string csv_sep = sets->value("application/csvSeparator", ",").toString().toStdString();
-	string csv_esp = sets->value("application/csvEscape", "\"").toString().toStdString();
+	e2db::PARSER_LAMEDB5_PRIOR = settings.value("application/parserLamedb5", false).toBool();
+	e2db::MAKER_LAMEDB5 = settings.value("application/makerLamedb5", true).toBool();
+	e2db::PARSER_TUNERSETS = settings.value("application/parserTunerset", true).toBool();
+	e2db::MAKER_TUNERSETS = settings.value("application/makerTunerset", true).toBool();
+	e2db::CONVERTER_EXTENDED_FIELDS = settings.value("application/converterExtendedFields", false).toBool();
+	e2db::CSV_HEADER = settings.value("application/csvHeader", true).toBool();
+	string csv_dlm = settings.value("application/csvDelimiter", "\n").toString().toStdString();
+	string csv_sep = settings.value("application/csvSeparator", ",").toString().toStdString();
+	string csv_esp = settings.value("application/csvEscape", "\"").toString().toStdString();
 	e2db::CSV_DELIMITER = csv_dlm.find("\n") != string::npos ? '\n' : '\n'; //TODO win32 transform
 	e2db::CSV_SEPARATOR = csv_sep[0];
 	e2db::CSV_ESCAPE = csv_esp[0];
+}
+
+void e2db::error(string msg, string optk, string optv)
+{
+	debug("error()");
+
+	this->::e2se_e2db::e2db::error(msg, optk, optv);
+	QMessageBox::critical(nullptr, QString::fromStdString(optk), QString::fromStdString(optv));
+}
+
+void e2db::didChange()
+{
+	debug("didChange()");
+
+	setup();
+}
+
+void e2db::createBouquets()
+{
+	debug("createBouquets()");
 
 	// empty services list - touch index["chs"]
 	if (! index.count("chs"))
@@ -68,14 +95,6 @@ e2db::e2db(e2se::logger::session* log)
 	bs.btype = bs.index = e2db::STYPE::radio;
 	bs.nname = "Radio";
 	this->::e2se_e2db::e2db::add_bouquet(bs);
-}
-
-void e2db::error(string msg, string optk, string optv)
-{
-	debug("error()");
-
-	this->::e2se_e2db::e2db::error(msg, optk, optv);
-	QMessageBox::critical(nullptr, QString::fromStdString(optk), QString::fromStdString(optv));
 }
 
 string e2db::addTransponder(transponder& tx)
@@ -257,9 +276,6 @@ bool e2db::prepare(string filename)
 	if (! this->read(filename))
 		return false;
 
-	if (sets->value("application/parserDebugger", false).toBool())
-		this->debugger();
-
 	for (auto & txdata : db.transponders)
 	{
 		entries.transponders[txdata.first] = entryTransponder(txdata.second);
@@ -373,12 +389,7 @@ QStringList e2db::entryTransponder(transponder tx)
 
 QStringList e2db::entryService(service ch)
 {
-	// macos: unwanted chars [qt.qpa.fonts] Menlo notice
-	QString chname;
-	if (sets->value("preference/fixUnicodeChars").toBool())
-		chname = QString::fromStdString(ch.chname).remove(QRegularExpression("[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{S}\\s]+"));
-	else
-		chname = QString::fromStdString(ch.chname);
+	QString chname = fixUnicodeChars(ch.chname);
 	QString chid = QString::fromStdString(ch.chid);
 	QString txid = QString::fromStdString(ch.txid);
 	QString ssid = QString::fromStdString(to_string(ch.ssid));
@@ -491,6 +502,15 @@ QStringList e2db::entryTunersetsTransponder(tunersets_transponder tntxp, tunerse
 	}
 
 	return entry;
+}
+
+// macos: unwanted chars [qt.qpa.fonts] Menlo notice
+QString e2db::fixUnicodeChars(string str)
+{
+	if (QSettings().value("preference/fixUnicodeChars").toBool())
+		return QString::fromStdString(str).remove(QRegularExpression("[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{S}\\s]+"));
+	else
+		return QString::fromStdString(str);
 }
 
 }

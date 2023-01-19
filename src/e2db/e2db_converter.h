@@ -25,6 +25,13 @@ class e2db;
 class e2db_converter : virtual public e2db_abstract
 {
 	public:
+
+		inline static bool CONVERTER_EXTENDED_FIELDS = false;
+		inline static bool CSV_HEADER = true;
+		inline static char CSV_DELIMITER = '\n';
+		inline static char CSV_SEPARATOR = ',';
+		inline static char CSV_ESCAPE = '"';
+
 		enum FCONVS {
 			convert_current = 0x0,
 			convert_all = 0x2,
@@ -42,12 +49,6 @@ class e2db_converter : virtual public e2db_abstract
 			view_userbouquets = 2,
 			view_tunersets = 3
 		};
-
-		inline static bool CONVERTER_EXTENDED_FIELDS = false;
-		inline static bool CSV_HEADER = true;
-		inline static char CSV_DELIMITER = '\n';
-		inline static char CSV_SEPARATOR = ',';
-		inline static char CSV_ESCAPE = '"';
 
 		struct fcopts
 		{
@@ -70,7 +71,6 @@ class e2db_converter : virtual public e2db_abstract
 		explicit e2db_converter();
 		e2db_converter(e2se::logger::session* log);
 		virtual ~e2db_converter() = default;
-		virtual e2db_converter* newptr() { return new e2db_converter(this->log->log); }
 		void import_csv_file(FCONVS fci, fcopts opts, vector<string> paths);
 		void import_csv_file(FCONVS fci, fcopts opts, string path);
 		void import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst, string path);
@@ -101,6 +101,7 @@ class e2db_converter : virtual public e2db_abstract
 		void push_html_tunersets(vector<e2db_file>& files, int ytype);
 
 	protected:
+		virtual e2db_converter* newptr() { return new e2db_converter(this->log->log); }
 		void parse_csv(istream& ifile, vector<vector<string>>& sxv);
 		void convert_csv_channel_list(vector<vector<string>> sxv, e2db_abstract* dst, DOC_VIEW view);
 		void convert_csv_channel_list_extended(vector<vector<string>> sxv, e2db_abstract* dst, DOC_VIEW view);

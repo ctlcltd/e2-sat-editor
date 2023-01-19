@@ -32,6 +32,7 @@ void dataHandler::newFile()
 	debug("newFile()");
 
 	delete this->dbih;
+
 	this->dbih = new e2db(this->log->log);
 	this->newfile = true;
 	this->changed = false;
@@ -42,6 +43,7 @@ bool dataHandler::readFile(string filename)
 	debug("readFile()");
 
 	delete this->dbih;
+
 	this->dbih = new e2db(this->log->log);
 	this->newfile = false;
 	this->changed = false;
@@ -52,6 +54,7 @@ bool dataHandler::readFile(string filename)
 		this->newfile = false;
 		return true;
 	}
+
 	return false;
 }
 
@@ -59,11 +62,15 @@ bool dataHandler::writeFile(string path)
 {
 	debug("writeFile()");
 
+	if (this->dbih == nullptr)
+		return false;
+
 	if (this->dbih->write(path))
 	{
 		this->filename = path;
 		return true;
 	}
+
 	return false;
 }
 
@@ -90,6 +97,14 @@ bool dataHandler::isNewfile()
 string dataHandler::getFilename()
 {
 	return this->filename;
+}
+
+void dataHandler::settingsChanged()
+{
+	debug("settingsChanged()");
+
+	if (this->dbih != nullptr)
+		this->dbih->didChange();
 }
 
 }

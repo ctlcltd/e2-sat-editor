@@ -10,6 +10,7 @@
  */
 
 #include <Qt>
+#include <QTimer>
 #include <QRegularExpression>
 #include <QGridLayout>
 #include <QHBoxLayout>
@@ -31,17 +32,20 @@
 #include "theme.h"
 
 using std::to_string;
+
 using e2se_gui::theme;
+
 using namespace e2se;
 
 namespace e2se_gui_dialog
 {
 
-settings::settings(QWidget* cwid, e2se::logger::session* log)
+settings::settings(e2se_gui::gui* gid, QWidget* cwid, e2se::logger::session* log)
 {
 	this->log = new logger(log, "settings");
 	debug("settings()");
 
+	this->gid = gid;
 	this->sets = new QSettings;
 
 	this->state.prev = -1;
@@ -86,7 +90,7 @@ void settings::layout(QWidget* cwid)
 
 	this->action.dtcancel = new QPushButton;
 	this->action.dtcancel->setText(tr("Cancel"));
-	this->action.dtcancel->connect(this->action.dtcancel, &QPushButton::pressed, [=]() { dial->close(); });
+	this->action.dtcancel->connect(this->action.dtcancel, &QPushButton::pressed, [=]() { this->cancel(); });
 
 	connectionsLayout();
 	preferencesLayout();
@@ -691,7 +695,22 @@ void settings::save()
 	else
 		store();
 
-	dial->close();
+	gid->settingsChanged();
+
+	// delay too fast
+	QTimer::singleShot(150, [=]() {
+		dial->close();
+	});
+}
+
+void settings::cancel()
+{
+	debug("cancel()");
+
+	// delay too fast
+	QTimer::singleShot(150, [=]() {
+		dial->close();
+	});
 }
 
 }

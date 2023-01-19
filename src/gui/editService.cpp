@@ -27,6 +27,7 @@
 #include "editService.h"
 
 using std::stringstream, std::to_string;
+
 using namespace e2se;
 
 namespace e2se_gui

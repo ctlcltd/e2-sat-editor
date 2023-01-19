@@ -28,6 +28,7 @@ using std::vector, std::map;
 #include <QPushButton>
 
 #include "toolkit/WidgetWithBackdrop.h"
+#include "gui.h"
 
 using e2se_gui::WidgetWithBackdrop;
 
@@ -60,11 +61,9 @@ class settings : protected e2se::log_factory
 			Advanced
 		};
 
-		settings(QWidget* cwid, e2se::logger::session* log);
+		settings(e2se_gui::gui* gid, QWidget* cwid, e2se::logger::session* log);
 		~settings() {};
 		void display(QWidget* cwid);
-
-		QSettings* sets;
 
 	protected:
 		void layout(QWidget* cwid);
@@ -84,9 +83,13 @@ class settings : protected e2se::log_factory
 		void retrieve(QListWidgetItem* item);
 		void retrieve(QTableWidget* adtbl);
 		void save();
+		void cancel();
 
-		QTabWidget* dtwid;
+	private:
+		e2se_gui::gui* gid;
 		QDialog* dial;
+		QSettings* sets;
+		QTabWidget* dtwid;
 		WidgetWithBackdrop* rppage;
 		QListWidget* rplist;
 		QWidget* adntc;
@@ -95,7 +98,7 @@ class settings : protected e2se::log_factory
 		map<int, vector<QWidget*>> prefs;
 
 		__state state;
-		__action action;
+	   __action action;
 };
 }
 #endif /* settings_h */

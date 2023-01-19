@@ -23,6 +23,7 @@
 #include "dataHandler.h"
 
 using std::to_string, std::unordered_set;
+
 using namespace e2se;
 
 namespace e2se_gui
@@ -35,13 +36,13 @@ printable::printable(QWidget* cwid, dataHandler* data, e2se::logger::session* lo
 
 	this->cwid = cwid;
 	this->data = data;
-	this->sets = new QSettings;
-	this->dbih = this->data->dbih;
 }
 
 void printable::documentAll()
 {
 	debug("documentAll()");
+
+	auto* dbih = this->data->dbih;
 
 	documentIndex();
 	documentServices();
@@ -65,6 +66,8 @@ void printable::documentAll()
 void printable::documentIndex()
 {
 	debug("documentIndex()");
+
+	auto* dbih = this->data->dbih;
 
 	string filename = std::filesystem::path(dbih->get_filepath()).filename().u8string(); //C++17
 	if (filename.empty())
@@ -94,6 +97,8 @@ void printable::documentServices()
 void printable::documentServices(int stype)
 {
 	debug("documentServices()");
+
+	auto* dbih = this->data->dbih;
 	
 	string filename = std::filesystem::path(dbih->get_services_filename()).filename().u8string(); //C++17
 	string iname;
@@ -194,6 +199,8 @@ void printable::documentTunersets(int ytype)
 
 void printable::pageHeader(html_page& page, string filename, DOC_VIEW view)
 {
+	auto* dbih = this->data->dbih;
+
 	QString name;
 
 	page.header += "<div class=\"header\">";
@@ -232,6 +239,8 @@ void printable::pageHeader(html_page& page, string filename, DOC_VIEW view)
 
 void printable::pageFooter(html_page& page, string filename, DOC_VIEW view)
 {
+	auto* dbih = this->data->dbih;
+
 	QString editor = QString::fromStdString(dbih->editor_string(true));
 	QString timestamp = QString::fromStdString(dbih->editor_timestamp());
 
@@ -245,6 +254,8 @@ void printable::pageFooter(html_page& page, string filename, DOC_VIEW view)
 void printable::pageBodyIndexList(html_page& page, vector<string> paths)
 {
 	debug("pageBodyIndexList()");
+
+	auto* dbih = this->data->dbih;
 
 	page.body += "<div class=\"toc\">";
 	page.body += "<h4>Table of Contents</h4>";
@@ -290,6 +301,8 @@ void printable::pageBodyIndexList(html_page& page, vector<string> paths)
 
 void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view)
 {
+	auto* dbih = this->data->dbih;
+
 	if (dbih->index.count(bname))
 		debug("pageBodyChannelList()", "bname", bname);
 	else
@@ -445,6 +458,8 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 
 void printable::pageBodyBouquetList(html_page& page, string bname)
 {
+	auto* dbih = this->data->dbih;
+
 	if (dbih->bouquets.count(bname))
 		debug("pageBodyBouquetList()", "bname", bname);
 	else
@@ -491,6 +506,8 @@ void printable::pageBodyBouquetList(html_page& page, string bname)
 void printable::pageBodyTunersetsList(html_page& page, int ytype)
 {
 	debug("pageBodyTunersetsList()", "ytype", ytype);
+
+	auto* dbih = this->data->dbih;
 
 	page.body += "<div class=\"tunersets\">";
 

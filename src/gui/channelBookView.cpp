@@ -25,6 +25,7 @@
 #include "tab.h"
 
 using std::to_string;
+
 using namespace e2se;
 
 namespace e2se_gui
@@ -36,7 +37,6 @@ channelBookView::channelBookView(dataHandler* data, int stype, e2se::logger::ses
 	debug("channelBookView()");
 
 	this->data = data;
-	this->sets = new QSettings;
 	this->theme = new e2se_gui::theme;
 	this->widget = new QWidget;
 
@@ -53,7 +53,6 @@ channelBookView::channelBookView(tab* tid, QWidget* cwid, dataHandler* data, e2s
 	this->tid = tid;
 	this->cwid = cwid;
 	this->data = data;
-	this->sets = new QSettings;
 	this->theme = new e2se_gui::theme;
 	this->widget = new QWidget;
 
@@ -306,7 +305,7 @@ void channelBookView::populate()
 			entry.remove(1, 4);
 #else
 			entry.removeAt(6);
-			for (int i = 0; i != 4; ++i) entry.removeAt(1);
+			for (int i = 0; i != 4; i++) entry.removeAt(1);
 #endif
 			entry.prepend(idx);
 			entry.prepend(x);

@@ -225,6 +225,7 @@ class gui : protected e2se::log_factory
 		gui(int argc, char* argv[], e2se::logger::session* log);
 		virtual ~gui() = default;
 		int exec();
+		void settingsChanged();
 		int newTab(string filename = "");
 		int openTab(TAB_VIEW view);
 		int openTab(TAB_VIEW view, int arg);
@@ -251,8 +252,8 @@ class gui : protected e2se::log_factory
 		void filePrint();
 		void filePrintAll();
 		void windowMinimize();
-		void settings();
-		void about();
+		void settingsDialog();
+		void aboutDialog();
 		bool getFlag(GUI_CXE bit);
 		bool getFlag(int bit);
 		void setFlag(GUI_CXE bit, bool flag);
@@ -266,7 +267,6 @@ class gui : protected e2se::log_factory
 		void update(vector<int> bits);
 		void update(int bit);
 
-		QSettings* sets;
 		e2se_gui::theme* theme;
 
 	protected:
@@ -275,17 +275,17 @@ class gui : protected e2se::log_factory
 		void tabStackerLayout();
 		void statusBarLayout();
 		void themeChanged();
-		void windowChanged();
+		void setDefaultSettings();
 		void tabViewSwitch(TAB_VIEW ttv);
 		void tabViewSwitch(TAB_VIEW ttv, int arg);
 		void tabChanged(int index);
 		void tabMoved(int from, int to);
 		void tabAction(TAB_ATS action);
+		void windowChanged();
 		int getTabId(int index);
 		int getCurrentTabId();
 		tab* getCurrentTabHandler();
 		void launcher();
-		void setDefaultSets();
 	
 		static QMenuBar* menuBar(QLayout* layout);
 		static QMenu* menuBarMenu(QMenuBar* menubar, QString title);

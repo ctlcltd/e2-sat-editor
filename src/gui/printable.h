@@ -53,7 +53,6 @@ class printable : protected e2se::log_factory
 		void documentUserbouquet(string bname);
 		void documentTunersets(int ytype);
 		void print();
-		QSettings* sets;
 
 	protected:
 		void pageHeader(html_page& page, string filename, DOC_VIEW view);
@@ -66,7 +65,6 @@ class printable : protected e2se::log_factory
 		QString docHtmlFoot();
 
 		dataHandler* data = nullptr;
-		e2db* dbih = nullptr;
 
 	private:
 		QWidget* cwid;

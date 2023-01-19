@@ -272,7 +272,7 @@ void _platform_macx::_osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint po
 	[nsMenu popUpMenuPositioningItem:nil atLocation:nsPos inView:view];
 
 	QMouseEvent mouseReleased(QEvent::MouseButtonRelease, top->pos(), top->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
-	QCoreApplication::sendEvent(widget, &mouseReleased);
+	QGuiApplication::sendEvent(widget, &mouseReleased);
 
 	menu->aboutToHide();
 }

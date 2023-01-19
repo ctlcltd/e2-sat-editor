@@ -41,9 +41,9 @@ ftpcom::~ftpcom()
 	curl_global_cleanup();
 }
 
-void ftpcom::setup(ftp_params params)
+void ftpcom::setParameters(ftp_params params)
 {
-	debug("setup()");
+	debug("setParameters()");
 
 	if (params.user.empty())
 		error("ftpcom()", trw("Missing \"%s\" parameter.", "username"));

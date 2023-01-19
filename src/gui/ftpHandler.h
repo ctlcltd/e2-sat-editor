@@ -25,6 +25,7 @@ class ftpHandler : protected e2se::log_factory
 		bool openConnection();
 		bool closeConnection();
 		bool handleConnection();
+		void settingsChanged();
 
 		ftpcom* ftih = nullptr;
 };

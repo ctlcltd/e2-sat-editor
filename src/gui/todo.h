@@ -12,8 +12,6 @@
 #include <iostream>
 #include <string>
 
-using std::cout, std::endl;
-
 #ifndef todo_h
 #define todo_h
 #include <QMessageBox>
@@ -22,7 +20,7 @@ namespace e2se_gui
 {
 static void todo()
 {
-	cout << "app TODO" << endl;
+	std::cout << "app TODO" << std::endl;
 	QMessageBox dial = QMessageBox();
 	dial.setText("app TODO");
 	dial.exec();

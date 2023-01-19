@@ -40,7 +40,6 @@ tools::tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data, e2se::logger:
 	this->tid = tid;
 	this->cwid = cwid;
 	this->data = data;
-	this->sets = new QSettings;
 }
 
 //TODO improve

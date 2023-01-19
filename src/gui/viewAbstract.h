@@ -9,7 +9,6 @@
  * @license GNU GPLv3 License
  */
 
-#include <iostream>
 #include <functional>
 #include <string>
 #include <vector>
@@ -63,6 +62,7 @@ class viewAbstract : protected e2se::log_factory
 		virtual ~viewAbstract() = default;
 		virtual void load() = 0;
 		virtual void reset() = 0;
+		virtual void didChange() {};
 		void themeChanged();
 		virtual void treeItemDelete();
 		virtual void listItemCut();
@@ -178,7 +178,6 @@ class viewAbstract : protected e2se::log_factory
 		static QAction* contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
 		static QAction* contextMenuSeparator(QMenu* menu);
 
-		QSettings* sets;
 		e2se_gui::theme* theme;
 		tab* tid = nullptr;
 		dataHandler* data = nullptr;

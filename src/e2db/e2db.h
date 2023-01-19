@@ -24,7 +24,6 @@ class e2db : public e2db_parser, public e2db_maker, public e2db_converter
 		explicit e2db();
 		e2db(e2se::logger::session* log);
 		virtual ~e2db() = default;
-		virtual e2db* newptr() { return new e2db(this->log->log); }
 		void import_file(vector<string> paths);
 		void import_file(FPORTS fpi, e2db* dst, e2db_file file, string path);
 		void export_file(vector<string> paths);
@@ -67,6 +66,9 @@ class e2db : public e2db_parser, public e2db_maker, public e2db_converter
 		map<string, vector<pair<int, string>>> get_encryption_index();
 		map<string, vector<pair<int, string>>> get_az_index();
 		void merge(e2db_abstract* dst);
+
+	protected:
+		virtual e2db* newptr() { return new e2db(this->log->log); }
 };
 }
 #endif /* e2db_h */
