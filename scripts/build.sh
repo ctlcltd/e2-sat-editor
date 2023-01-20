@@ -1,5 +1,6 @@
 #!/bin/bash
 # Build in *ux with qmake and Qt 5|6
+# 
 
 cd src
 
@@ -36,3 +37,4 @@ $QMAKE
 echo "compiling ..."
 make && $QMAKE
 echo "done."
+

@@ -3,6 +3,7 @@
 # - iconutil (macos)
 # - straight copy (linux)
 # - IMagick (windows)
+# 
 
 mkdir -p dist/macos/icons.iconset
 cp res/e2-sat-editor/icon-{512,256,128,64}.png dist/macos/icons.iconset
@@ -19,3 +20,4 @@ cp res/e2-sat-editor/icon-128.png dist/linux/icons/128x128/e2-sat-editor.png
 cp res/e2-sat-editor/icon-64.png dist/linux/icons/64x64/e2-sat-editor.png
 
 convert res/e2-sat-editor/icon-256.png res/e2-sat-editor/icon-128.png res/e2-sat-editor/icon-64.png dist/windows/e2-sat-editor.ico
+

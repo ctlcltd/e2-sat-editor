@@ -16,6 +16,7 @@
 #include <iostream>
 #include <cstdio>
 
+// #define CURL_STATICLIB
 #include <curl/curl.h>
 
 #include "../logger/logger.h"

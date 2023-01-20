@@ -89,7 +89,13 @@ bool ftpcom::handle()
 	this->rph = curl_url();
 	curl_url_set(rph, CURLUPART_SCHEME, "ftp", 0);
 	curl_url_set(rph, CURLUPART_HOST, host.c_str(), 0);
-	curl_easy_setopt(cph, CURLOPT_PROTOCOLS, CURLPROTO_FTP);
+
+#ifdef CURLOPT_PROTOCOLS_STR
+	curl_easy_setopt(csh, CURLOPT_PROTOCOLS_STR, "ftp");
+#else
+	curl_easy_setopt(csh, CURLOPT_PROTOCOLS, CURLPROTO_FTP);
+#endif
+
 	curl_easy_setopt(cph, CURLOPT_CURLU, rph);
 	curl_easy_setopt(cph, CURLOPT_USERNAME, user.c_str());
 	curl_easy_setopt(cph, CURLOPT_PASSWORD, pass.c_str());
@@ -509,7 +515,12 @@ bool ftpcom::cmd_ifreload()
 	// debug("cmd_ifreload()", "URL", url);
 	// url = NULL;
 
+#ifdef CURLOPT_PROTOCOLS_STR
+	curl_easy_setopt(csh, CURLOPT_PROTOCOLS_STR, "http");
+#else
 	curl_easy_setopt(csh, CURLOPT_PROTOCOLS, CURLPROTO_HTTP);
+#endif
+
 	curl_easy_setopt(csh, CURLOPT_HTTPGET, true);
 	curl_easy_setopt(csh, CURLOPT_FOLLOWLOCATION, true);
 	curl_easy_setopt(csh, CURLOPT_CURLU, rsh);
@@ -561,7 +572,12 @@ bool ftpcom::cmd_tnreload()
 	curl_url_set(rsh, CURLUPART_SCHEME, "telnet", 0);
 	curl_url_set(rsh, CURLUPART_HOST, host.c_str(), 0);
 
+#ifdef CURLOPT_PROTOCOLS_STR
+	curl_easy_setopt(csh, CURLOPT_PROTOCOLS_STR, "telnet");
+#else
 	curl_easy_setopt(csh, CURLOPT_PROTOCOLS, CURLPROTO_TELNET);
+#endif
+
 	curl_easy_setopt(csh, CURLOPT_CURLU, rsh);
 	curl_easy_setopt(csh, CURLOPT_PORT, 23);
 	curl_easy_setopt(csh, CURLOPT_READFUNCTION, data_tn_shell_func);

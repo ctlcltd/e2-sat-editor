@@ -1,7 +1,13 @@
 #!/bin/bash
 # Build with CMake targeting mingw32-w64 in linux host
-# Tested under Arch Linux with mingw-w64 shared libs
-# In order to compile: mingw-w64-cmake, mingw-w64-qt6, mingw-w64-curl, are required
+# Tested under Arch Linux using mingw-w64 as guest
+# 
+# In order to compile, the following packages are required:
+# base-devel, make, ninja, mingw-w64-cmake-static, mingw-w64-qt6-base-static, mingw-w64-curl
+# 
+# To compile with shared libraries, the following:
+# base-devel, make, ninja, mingw-w64-cmake, mingw-w64-qt6-base, mingw-w64-curl
+# 
 
 cd src
 
@@ -21,6 +27,43 @@ cleanup () {
 	rm build/Makefile
 }
 
+prebuilt_release ()
+{
+	echo "copying pre-built libs ..."
+	cp /usr/x86_64-w64-mingw32/bin/libbrotlicommon.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libbrotlidec.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libbz2-1.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libfreetype-6.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libgcc_s_seh-1.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libglib-2.0-0.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libgraphite2.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libharfbuzz-0.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libiconv-2.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libintl-8.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libjpeg-8.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libpcre2-8-0.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libpcre2-16-0.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libpng16-16.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libssp-0.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libstdc++-6.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libwinpthread-1.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/zlib1.dll build/
+}
+
+prebuilt_mingw32_wine ()
+{
+	echo "copying pre-built libs ..."
+	cp /usr/x86_64-w64-mingw32/bin/libgcc_s_seh-1.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libstdc++-6.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libwinpthread-1.dll build/
+	cp /usr/x86_64-w64-mingw32/lib/qt6/bin/Qt6Core.dll build/
+	cp /usr/x86_64-w64-mingw32/lib/qt6/bin/Qt6Gui.dll build/
+	cp /usr/x86_64-w64-mingw32/lib/qt6/bin/Qt6Widgets.dll build/
+	cp /usr/x86_64-w64-mingw32/lib/qt6/bin/Qt6PrintSupport.dll build/
+	cp -R /usr/x86_64-w64-mingw32/lib/qt6/plugins/platforms build/
+	cp -R /usr/x86_64-w64-mingw32/lib/qt6/plugins/styles build/
+}
+
 if [[ -z $(type -t cmake) ]]; then
 	echo "cmake not found."
 	exit 1;
@@ -29,21 +72,18 @@ fi
 [[ "$1" == "cleanup" ]] && cleanup
 
 echo "preparing cmake ..."
-x86_64-w64-mingw32-cmake -B build
+x86_64-w64-mingw32-cmake-static -G Ninja -B build -DCMAKE_BUILD_TYPE=Release
+# x86_64-w64-mingw32-cmake -G Ninja -B build
+# x86_64-w64-mingw32-cmake -B build
+
 echo "compiling ..."
 cmake --build build
 
-echo "copying pre-built libs ..."
-cp -R /usr/x86_64-w64-mingw32/lib/qt6/plugins/platforms build/
-cp -R /usr/x86_64-w64-mingw32/lib/qt6/plugins/styles build/
-cp /usr/x86_64-w64-mingw32/bin/libgcc_s_seh-1.dll build/
-cp /usr/x86_64-w64-mingw32/bin/libstdc++-6.dll build/
-cp /usr/x86_64-w64-mingw32/bin/libwinpthread-1.dll build/
-cp /usr/x86_64-w64-mingw32/lib/qt6/bin/Qt6Core.dll build/
-cp /usr/x86_64-w64-mingw32/lib/qt6/bin/Qt6Gui.dll build/
-cp /usr/x86_64-w64-mingw32/lib/qt6/bin/Qt6Widgets.dll build/
-cp /usr/x86_64-w64-mingw32/lib/qt6/bin/Qt6PrintSupport.dll build/
+[[ "$1" == "release" ]] && prebuilt_release
+[[ "$1" == "testing" ]] && prebuilt_mingw32_wine
 
 echo "done."
 
+# x86_64-w64-mingw32-strip --strip-unneeded build/e2-sat-editor.exe
 # x86_64-w64-mingw32-wine build/e2-sat-editor.exe
+

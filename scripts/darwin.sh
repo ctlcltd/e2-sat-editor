@@ -1,5 +1,6 @@
 #!/bin/bash
 # Pre-build and initialize an xcodeproj with qmake
+# 
 
 cd src
 
@@ -31,3 +32,4 @@ make && qmake
 echo "preparing xcodeproj ..."
 qmake -spec macx-xcode
 echo "done."
+
