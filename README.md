@@ -1,16 +1,17 @@
 ## e2 SAT Editor
 
-An enigma2 📡 channel list editor – under development.
+e2 SAT Editor is an Enigma 2 channel list editor, cross-platform (Windows, macOS, Linux) and free to use.
 
-[![A screenshot of e2 SAT Editor](https://github.com/ctlcltd/e2-sat-editor/raw/main/res/screenshot.png "e2 SAT Editor (screenshot)")](https://github.com/ctlcltd/e2-sat-editor/blob/main/res/screenshot.png?raw=true)
+<img src="https://github.com/ctlcltd/e2-sat-editor/raw/main/res/e2-sat-editor.svg" width="192" height="192" alt="e2 SAT Editor (icon)" title="Icon">
 
-**e2 SAT Editor** is an Enigma 2 channel list editor, fully cross-platform (Windows, macOS, Linux) and free to use.
-
-Many features are under the hood and many are coming. It has tabbed navigation with global Cut-Copy-Paste support; Drag and Drop support; import and export of Lamedb, bouquets and userbouquets; FTP support; tools for sorting and management of channel lists; a native OS look and feel with dark and light themes.
+It has tabbed navigation with global Cut-Copy-Paste support; Drag and Drop support; import and export of Lamedb, bouquets and userbouquets; FTP support; tools for sorting and management of channel lists; a native OS look and feel with dark and light themes.
 
 It supports both Lamedb 4 and Lamedb 5 formats (2.4 and 2.5).
 
-<img src="https://github.com/ctlcltd/e2-sat-editor/raw/main/res/e2-sat-editor.svg" width="192" height="192" alt="e2 SAT Editor (icon)" title="Icon">
+&nbsp;
+<!-- 🆕 **There are pre-releases available for testing** 📡 -->
+
+[![A screenshot of e2 SAT Editor](https://github.com/ctlcltd/e2-sat-editor/raw/main/res/screenshot.png "e2 SAT Editor (screenshot)")](https://github.com/ctlcltd/e2-sat-editor/blob/main/res/screenshot.png?raw=true)
 
 
 ### Requirements
@@ -22,9 +23,9 @@ It supports both Lamedb 4 and Lamedb 5 formats (2.4 and 2.5).
 
 ### Dependencies
 
+* qt6-base \| qt5-base
 * libstdc++ >= 3
 * libcurl
-* qt6-base \| qt5-base
 
 
 &nbsp;
@@ -51,11 +52,8 @@ Please read the [contribution guidelines](https://github.com/ctlcltd/e2-sat-edit
 
 ```git clone https://github.com/ctlcltd/e2-sat-editor.git```
 
-- In linux and \*bsd use scripts/build.sh to build
-
-- In macos w/ xcode use scripts/darwin.sh to build
-
-- With mingw32 use scripts/mingw32.sh to build
+&nbsp;
+Instructions on how to compile in [INSTALL.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/INSTALL.md) file.
 
 
 ## Contents

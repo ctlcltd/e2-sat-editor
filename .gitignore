@@ -3,6 +3,7 @@
 vendor/curl
 workflow
 workspace/.pythonenv
+src/build
 src/Debug
 src/Release
 Makefile

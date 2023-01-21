@@ -50,6 +50,35 @@ prebuilt_release ()
 	cp /usr/x86_64-w64-mingw32/bin/zlib1.dll build/
 }
 
+prebuilt_release_early ()
+{
+	echo "copying pre-built libs ..."
+	cp /usr/i686-w64-mingw32/bin/libbrotlicommon.dll build/
+	cp /usr/i686_w64-mingw32/bin/libbrotlidec.dll build/
+	cp /usr/i686_w64-mingw32/bin/libbz2-1.dll build/
+	cp /usr/i686-w64-mingw32/bin/libfreetype-6.dll build/
+	cp /usr/i686-w64-mingw32/bin/libgcc_s_dw2-1.dll build/
+	cp /usr/i686-w64-mingw32/bin/libglib-2.0-0.dll build/
+	cp /usr/i686-w64-mingw32/bin/libgraphite2.dll build/
+	cp /usr/i686-w64-mingw32/bin/libharfbuzz-0.dll build/
+	cp /usr/i686-w64-mingw32/bin/libiconv-2.dll build/
+	cp /usr/i686-w64-mingw32/bin/libintl-8.dll build/
+	cp /usr/i686-w64-mingw32/bin/libjpeg-8.dll build/
+	cp /usr/i686-w64-mingw32/bin/libpcre2-8-0.dll build/
+	cp /usr/i686-w64-mingw32/bin/libpcre2-16-0.dll build/
+	cp /usr/i686-w64-mingw32/bin/libpng16-16.dll build/
+	cp /usr/i686-w64-mingw32/bin/libssp-0.dll build/
+	cp /usr/i686-w64-mingw32/bin/libstdc++-6.dll build/
+	cp /usr/i686-w64-mingw32/bin/libwinpthread-1.dll build/
+	cp /usr/i686-w64-mingw32/bin/zlib1.dll build/
+	cp /usr/i686-w64-mingw32/bin/Qt5Core.dll build/
+	cp /usr/i686-w64-mingw32/bin/Qt5Gui.dll build/
+	cp /usr/i686-w64-mingw32/bin/Qt5Widgets.dll build/
+	cp /usr/i686-w64-mingw32/bin/Qt5PrintSupport.dll build/
+	cp -R /usr/i686-w64-mingw32/lib/qt/plugins/platforms/qwindows.dll build/platforms/
+	cp -R /usr/i686-w64-mingw32/lib/qt/plugins/styles/qwindowsvistastyle.dll build/styles/
+}
+
 prebuilt_mingw32_wine ()
 {
 	echo "copying pre-built libs ..."
@@ -60,19 +89,24 @@ prebuilt_mingw32_wine ()
 	cp /usr/x86_64-w64-mingw32/lib/qt6/bin/Qt6Gui.dll build/
 	cp /usr/x86_64-w64-mingw32/lib/qt6/bin/Qt6Widgets.dll build/
 	cp /usr/x86_64-w64-mingw32/lib/qt6/bin/Qt6PrintSupport.dll build/
-	cp -R /usr/x86_64-w64-mingw32/lib/qt6/plugins/platforms build/
-	cp -R /usr/x86_64-w64-mingw32/lib/qt6/plugins/styles build/
+	cp -R /usr/x86_64-w64-mingw32/lib/qt6/plugins/platforms/qwindows.dll build/platforms/
+	cp -R /usr/x86_64-w64-mingw32/lib/qt6/plugins/styles/qwindowsvistastyle.dll build/styles/
 }
+
 
 if [[ -z $(type -t cmake) ]]; then
 	echo "cmake not found."
 	exit 1;
 fi
 
+
 [[ "$1" == "cleanup" ]] && cleanup
 
 echo "preparing cmake ..."
+
 x86_64-w64-mingw32-cmake-static -G Ninja -B build -DCMAKE_BUILD_TYPE=Release
+# i686-w64-mingw32-cmake-static -G Ninja -B build -DCMAKE_BUILD_TYPE=Release
+
 # x86_64-w64-mingw32-cmake -G Ninja -B build
 # x86_64-w64-mingw32-cmake -B build
 
@@ -80,6 +114,7 @@ echo "compiling ..."
 cmake --build build
 
 [[ "$1" == "release" ]] && prebuilt_release
+[[ "$1" == "release-early" ]] && prebuilt_release_early
 [[ "$1" == "testing" ]] && prebuilt_mingw32_wine
 
 echo "done."

@@ -345,7 +345,7 @@ void tab::layout()
 	toolBarAction(top_toolbar, "Upload", [=]() { this->ftpUpload(); });
 	toolBarAction(top_toolbar, "Download", [=]() { this->ftpDownload(); });
 
-	if (QSettings().value("application/debug", true).toBool())
+	if (QSettings().value("application/debug", this->log->log->debug).toBool())
 	{
 		toolBarSeparator(bottom_toolbar);
 		toolBarAction(bottom_toolbar, "§ Load seeds", [=]() { this->loadSeeds(); });

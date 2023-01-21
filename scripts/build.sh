@@ -14,6 +14,7 @@ cleanup () {
 	rm qrc_resources.cpp
 }
 
+
 if [[ -z $QMAKE ]]; then
 	if [[ -n $(type -t qmake6) ]]; then
 		QMAKE="qmake6"
@@ -30,11 +31,14 @@ if [[ -z $(type -t make) ]]; then
 	exit 1;
 fi
 
+
 [[ "$1" == "cleanup" ]] && cleanup
 
 echo "preparing qmake ..."
 $QMAKE
+
 echo "compiling ..."
 make && $QMAKE
+
 echo "done."
 

@@ -395,7 +395,7 @@ void gui::setDefaultSettings()
 	settings.setValue("customWebifReloadUrl", "");
 	settings.setValue("customTelnetReloadCmd", "");
 	settings.endArray();
-	settings.setValue("profile/selected", 1);
+	settings.setValue("profile/selected", 0);
 }
 
 void gui::tabViewSwitch(TAB_VIEW ttv)

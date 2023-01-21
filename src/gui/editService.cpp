@@ -457,9 +457,9 @@ void editService::store()
 		if (key == "chname")
 			ch.chname = val;
 		else if (key == "stype")
-			ch.stype = std::stoi(val);
+			ch.stype = val.empty() ? 0 : std::stoi(val);
 		else if (key == "ssid")
-			ch.ssid = std::stoi(val);
+			ch.ssid = val.empty() ? 0 : std::stoi(val);
 		else if (key == "txid")
 			ch.txid = val;
 
@@ -488,7 +488,7 @@ void editService::store()
 		{
 			if (key == "p")
 			{
-				ch.data[e2db::SDATA::p][0] = val;
+				ch.data[e2db::SDATA::p] = {val};
 			}
 			else if (key == "vpid")
 			{

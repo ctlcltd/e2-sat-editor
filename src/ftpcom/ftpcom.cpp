@@ -16,6 +16,7 @@
 #include <filesystem>
 #include <sstream>
 
+// #define CURL_STATICLIB
 #include "ftpcom.h"
 
 using std::string, std::stringstream, std::min, std::endl, std::to_string;

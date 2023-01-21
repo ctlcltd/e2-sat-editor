@@ -14,6 +14,7 @@ cleanup () {
 	rm qrc_resources.cpp
 }
 
+
 if [[ -z $(type -t qmake) ]]; then
 	echo "qmake not found."
 	exit 1;
@@ -25,11 +26,15 @@ fi
 
 [[ "$1" == "cleanup" ]] && cleanup
 
+
 echo "preparing qmake ..."
 qmake -spec macx-clang e2-sat-editor.pro
+
 echo "compiling ..."
 make && qmake
+
 echo "preparing xcodeproj ..."
 qmake -spec macx-xcode
+
 echo "done."
 
