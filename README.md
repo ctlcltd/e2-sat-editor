@@ -7,8 +7,8 @@ e2 SAT Editor is an Enigma 2 channel list editor, cross-platform (Windows, macOS
 It has tabbed navigation with global Cut-Copy-Paste support; Drag and Drop support; import and export of Lamedb, bouquets and userbouquets; FTP support; tools for sorting and management of channel lists; a native OS look and feel with dark and light themes.
 
 It supports both Lamedb 4 and Lamedb 5 formats (2.4 and 2.5).
-
 &nbsp;
+
 <!-- 🆕 **There are pre-releases available for testing** 📡 -->
 
 [![A screenshot of e2 SAT Editor](https://github.com/ctlcltd/e2-sat-editor/raw/main/res/screenshot.png "e2 SAT Editor (screenshot)")](https://github.com/ctlcltd/e2-sat-editor/blob/main/res/screenshot.png?raw=true)
@@ -27,8 +27,8 @@ It supports both Lamedb 4 and Lamedb 5 formats (2.4 and 2.5).
 * libstdc++ >= 3
 * libcurl
 
-
 &nbsp;
+
 ## Get involved
 
 Your contribution to this project are amazing.
@@ -51,8 +51,8 @@ Please read the [contribution guidelines](https://github.com/ctlcltd/e2-sat-edit
 - Then clone the repository:
 
 ```git clone https://github.com/ctlcltd/e2-sat-editor.git```
-
 &nbsp;
+
 Instructions on how to compile in [INSTALL.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/INSTALL.md) file.
 
 
@@ -68,8 +68,8 @@ Instructions on how to compile in [INSTALL.md](https://github.com/ctlcltd/e2-sat
 |**vendor**|It contains symbolic links to external libraries.|
 |**workspace**|Utility python scripts, used for emulation: ftp, telnet, webif.|
 
-
 &nbsp;
+
 ### TODO
 
 - [x] search filters
@@ -87,8 +87,8 @@ Instructions on how to compile in [INSTALL.md](https://github.com/ctlcltd/e2-sat
 - [ ] picons support
 - [ ] automated build
 
-
 &nbsp;
+
 ## License
 
 Source code licensed under the terms of the [MIT License](https://github.com/ctlcltd/e2-sat-editor/blob/main/LICENSE-MIT). It is also licensed under the terms of the [GNU GPLv3](https://github.com/ctlcltd/e2-sat-editor/blob/main/LICENSE-GPL-3.0-or-later).

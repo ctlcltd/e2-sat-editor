@@ -1,8 +1,8 @@
 ## Installation instructions
 
 Generic instructions to help with compiling e2 SAT Editor on different platforms.
-
 &nbsp;
+
 Utils scripts in **scripts** folder.
 
 - For Linux or BSD or unix use scripts/build.sh
@@ -39,8 +39,8 @@ base-devel, make, mingw-w64-cmake-static, mingw-w64-qt6-base-static, mingw-w64-c
  
 To compile with shared libraries, the following:
 mingw-w64-cmake, mingw-w64-qt6-base
-
 &nbsp;
+
 Clone the repository, then from the source directory, execute commands:
 ```
 cd src
@@ -67,8 +67,8 @@ Xcode, Xcode Command Line Tools, Qt, curl
 
 And at your choice:
 cmake -or- qmake
-
 &nbsp;
+
 Clone the repository, then from the source directory, execute commands:
 ```
 cd src
@@ -99,8 +99,8 @@ build-essentials, qt5, qt5-dev, curl
 
 And at your choice:
 cmake -or- qmake
-
 &nbsp;
+
 Clone the repository, then from the source directory, execute commands:
 ```
 cd src

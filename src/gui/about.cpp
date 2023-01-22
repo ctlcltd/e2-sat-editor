@@ -49,7 +49,7 @@ about::about(e2se::logger::session* log)
 	aname->setStyleSheet("font-size: 24px");
 
 	QLabel* aver = new QLabel;
-	aver->setText("Version 0.2");
+	aver->setText("Version 0.3");
 	aver->setStyleSheet("font-size: 16px");
 
 	QLabel* aauts = new QLabel;

@@ -6,8 +6,8 @@ Info on how to do Pull Request are available on the page: [Creating a pull reque
 
 When the code you submit via Pull Request does not follow these contribution guidelines, your PR will be rejected and you will be required to follow these guidelines, or your PR will be accepted and then the submitted code will be modified to follow these.
 
-
 &nbsp;
+
 ## Before contributing
 
 There are a few things you need to know in order to contribute in the right way.
