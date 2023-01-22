@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(e2-sat-editor VERSION 0.2 LANGUAGES CXX)
+project(e2-sat-editor VERSION 0.3 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

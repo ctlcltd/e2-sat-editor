@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.2
+ * @version 0.3
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -794,6 +794,10 @@ void tunersetsView::treeItemDelete()
 		return;
 	}
 
+	bool remove = tabRemoveQuestion("Confirm deletetion", "Do you want to delete items?");
+	if (! remove)
+		return;
+
 	int tvid = this->state.yx;
 
 	auto* dbih = this->data->dbih;
@@ -884,6 +888,10 @@ void tunersetsView::listItemDelete()
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 	
 	if (selected.empty())
+		return;
+
+	bool remove = tabRemoveQuestion("Confirm deletetion", "Do you want to delete items?");
+	if (! remove)
 		return;
 
 	list->header()->setSectionsClickable(false);

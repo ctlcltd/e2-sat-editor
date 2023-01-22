@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.2
+ * @version 0.3
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -55,26 +55,37 @@ void viewAbstract::searchLayout()
 	tree_search->setAutoFillBackground(true);
 	list_search->setAutoFillBackground(true);
 
+#ifndef Q_OS_MAC
+	QColor searchbackground;
+	QColor searchcolor;
+	QColor searchhighlight = QPalette().color(QPalette::Highlight);
+	QString searchbackground_hexArgb;
+	QString searchcolor_hexArgb;
+	QString searchhighlight_hexArgb;
+
+	searchbackground = QPalette().color(QPalette::Mid).lighter();
+	searchcolor = QColor(Qt::black);
+	searchhighlight = searchhighlight.lighter(150);
+	searchbackground_hexArgb = searchbackground.name(QColor::HexArgb);
+	searchcolor_hexArgb = searchcolor.name(QColor::HexArgb);
+	searchhighlight_hexArgb = searchhighlight.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(widget, "#tree_search, #list_search { color: " + searchcolor_hexArgb + "; background: " + searchbackground_hexArgb + " } #list_search_highlight { background: " + searchbackground_hexArgb + " } #list_search_highlight:checked { background: " + searchhighlight_hexArgb + " }", theme::light);
+
+	searchbackground = QPalette().color(QPalette::Mid).darker();
+	searchcolor = QColor(Qt::white);
+	searchhighlight = searchhighlight.darker(200);
+	searchbackground_hexArgb = searchbackground.name(QColor::HexArgb);
+	searchcolor_hexArgb = searchcolor.name(QColor::HexArgb);
+	searchhighlight_hexArgb = searchhighlight.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(widget, "#tree_search, #list_search { color: " + searchcolor_hexArgb + "; background: " + searchbackground_hexArgb + " } #list_search_highlight { background: " + searchbackground_hexArgb + " } #list_search_highlight:checked { background: " + searchhighlight_hexArgb + " }", theme::dark);
+#else
 	QColor searchbackground;
 	QColor searchhighlight = QPalette().color(QPalette::Highlight);
 	QString searchbackground_hexArgb;
 	QString searchhighlight_hexArgb;
-#ifndef Q_OS_MAC
-	searchbackground = QPalette().color(QPalette::Mid).lighter();
-	searchhighlight = searchhighlight.lighter(150);
-	searchbackground_hexArgb = searchbackground.name(QColor::HexArgb);
-	searchhighlight_hexArgb = searchhighlight.name(QColor::HexArgb);
 
-	theme->dynamicStyleSheet(widget, "#tree_search, #list_search { background: " + searchbackground_hexArgb + " } #list_search_highlight { background: " + searchbackground_hexArgb + " } #list_search_highlight:checked { background: " + searchhighlight_hexArgb + " }", theme::light);
-
-	searchbackground = QPalette().color(QPalette::Mid).darker();
-	searchhighlight = searchhighlight.darker(200);
-	searchbackground_hexArgb = searchbackground.name(QColor::HexArgb);
-	searchhighlight_hexArgb = searchhighlight.name(QColor::HexArgb);
-
-	theme->dynamicStyleSheet(widget, "#tree_search, #list_search { background: " + searchbackground_hexArgb + " } #list_search_highlight { background: " + searchbackground_hexArgb + " } #list_search_highlight:checked { background: " + searchhighlight_hexArgb + " }", theme::dark);
-//TODO FIX theme system default
-#else
 	searchbackground = QColor(Qt::white).darker(102);
 	searchhighlight = searchhighlight.lighter(107);
 	searchbackground_hexArgb = searchbackground.name(QColor::HexArgb);
@@ -539,6 +550,13 @@ void viewAbstract::tabUpdateToolBars()
 {
 	if (tid != nullptr)
 		tid->updateToolBars();
+}
+
+bool viewAbstract::tabRemoveQuestion(QString title, QString text)
+{
+	if (tid != nullptr)
+		return tid->removeQuestion(title, text);
+	return false;
 }
 
 bool viewAbstract::tabStatusBarIsVisible()

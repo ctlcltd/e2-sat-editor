@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.2
+ * @version 0.3
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -49,14 +49,15 @@ void e2db::setup()
 	e2db::MAKER_LAMEDB5 = settings.value("application/makerLamedb5", true).toBool();
 	e2db::PARSER_TUNERSETS = settings.value("application/parserTunerset", true).toBool();
 	e2db::MAKER_TUNERSETS = settings.value("application/makerTunerset", true).toBool();
-	e2db::CONVERTER_EXTENDED_FIELDS = settings.value("application/converterExtendedFields", false).toBool();
-	e2db::CSV_HEADER = settings.value("application/csvHeader", true).toBool();
-	string csv_dlm = settings.value("application/csvDelimiter", "\n").toString().toStdString();
-	string csv_sep = settings.value("application/csvSeparator", ",").toString().toStdString();
-	string csv_esp = settings.value("application/csvEscape", "\"").toString().toStdString();
+
+	e2db::CSV_HEADER = settings.value("preference/toolsCsvHeader", true).toBool();
+	string csv_dlm = settings.value("preference/toolsCsvDelimiter", "\n").toString().toStdString();
+	string csv_sep = settings.value("preference/toolsCsvSeparator", ",").toString().toStdString();
+	string csv_esp = settings.value("preference/toolsCsvEscape", "\"").toString().toStdString();
 	e2db::CSV_DELIMITER = csv_dlm.find("\n") != string::npos ? '\n' : '\n'; //TODO win32 transform
 	e2db::CSV_SEPARATOR = csv_sep[0];
 	e2db::CSV_ESCAPE = csv_esp[0];
+	e2db::CONVERTER_EXTENDED_FIELDS = settings.value("preference/fields_extended", false).toBool();
 }
 
 void e2db::error(string msg, string optk, string optv)

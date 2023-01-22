@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.2
+ * @version 0.3
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -69,11 +69,11 @@ void e2db_abstract::error(string msg, string optk, int optv)
 string e2db_abstract::editor_string(int html)
 {
 	if (html == 2)
-		return "e2 SAT Editor 0.2";
+		return "e2 SAT Editor 0.3";
 	else if (html == 1)
-		return "e2 SAT Editor 0.2 <a href=\"https://github.com/ctlcltd/e2-sat-editor\">https://github.com/ctlcltd/e2-sat-editor</a>";
+		return "e2 SAT Editor 0.3 <a href=\"https://github.com/ctlcltd/e2-sat-editor\">https://github.com/ctlcltd/e2-sat-editor</a>";
 	else
-		return "e2 SAT Editor 0.2 <https://github.com/ctlcltd/e2-sat-editor>";
+		return "e2 SAT Editor 0.3 <https://github.com/ctlcltd/e2-sat-editor>";
 }
 
 string e2db_abstract::editor_timestamp()

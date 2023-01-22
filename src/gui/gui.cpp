@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.2
+ * @version 0.3
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -50,11 +50,15 @@ gui::gui(int argc, char* argv[], e2se::logger::session* log)
 	mroot->setOrganizationName("e2 SAT Editor Team");
 	mroot->setOrganizationDomain("e2se.org");
 	mroot->setApplicationName("e2-sat-editor");
-	mroot->setApplicationVersion("0.2");
+	mroot->setApplicationVersion("0.3");
 	mroot->connect(mroot, &QApplication::focusChanged, [=]() { this->windowChanged(); });
 
-	if (! QSettings().contains("application/version"))
-		setDefaultSettings();
+	if (QSettings().value("settings/reset", false).toBool())
+		resetSettings();
+	else if (QSettings().value("settings/version").isValid())
+		updateSettings();
+	else
+		initSettings();
 
 	QScreen* screen = mroot->primaryScreen();
 	QSize wsize = screen->availableSize();
@@ -238,6 +242,11 @@ void gui::tabStackerLayout()
 
 	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 12ex; max-width: 25ex; height: 6.3ex; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button) } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight); border-color: transparent }");
 
+	//TODO FIX
+#ifdef Q_OS_WIN
+	twid->tabBar()->setFixedHeight(44);
+#endif
+
 	QColor twtbshade;
 	QString twtbshade_hexArgb;
 #ifndef Q_OS_MAC
@@ -362,16 +371,19 @@ void gui::themeChanged()
 	}
 }
 
-void gui::setDefaultSettings()
+void gui::initSettings()
 {
-	debug("setDefaultSettings()");
+	debug("initSettings()");
 
 	QSettings settings;
+
+	settings.setValue("settings/version", 1);
+	settings.setValue("settings/reset", false);
 
 	settings.setValue("application/version", mroot->applicationVersion());
 
 	settings.beginGroup("preference");
-	settings.setValue("askConfirmation", true);
+	settings.setValue("askConfirmation", false);
 	settings.setValue("nonDestructiveEdit", true);
 #ifndef Q_OS_MAC
 	settings.setValue("fixUnicodeChars", false);
@@ -393,9 +405,35 @@ void gui::setDefaultSettings()
 	settings.setValue("pathServices", "/enigma_db");
 	settings.setValue("pathBouquets", "/enigma_db");
 	settings.setValue("customWebifReloadUrl", "");
-	settings.setValue("customTelnetReloadCmd", "");
+	settings.setValue("customTelnetReloadCmd", ""); 
 	settings.endArray();
 	settings.setValue("profile/selected", 0);
+}
+
+void gui::updateSettings()
+{
+	debug("updateSettings()");
+
+	if (! QSettings().contains("settings/version"))
+	{
+		QSettings settings;
+
+		settings.setValue("settings/version", 1);
+		settings.setValue("settings/reset", false);
+
+		settings.setValue("application/version", mroot->applicationVersion());
+	
+		settings.remove("application/icons");
+	}
+}
+
+void gui::resetSettings()
+{
+	debug("resetSettings()");
+
+	QSettings().clear();
+
+	initSettings();
 }
 
 void gui::tabViewSwitch(TAB_VIEW ttv)

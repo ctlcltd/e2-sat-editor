@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.2
+ * @version 0.3
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -107,6 +107,7 @@ void settings::layout(QWidget* cwid)
 
 	dfrm->addLayout(dvbox, 0, 0);
 	dfrm->setSizeConstraint(QGridLayout::SetFixedSize);
+
 	dial->setLayout(dfrm);
 }
 
@@ -127,12 +128,12 @@ void settings::preferencesLayout()
 	dtf0->setFormAlignment(Qt::AlignLeft);
 	dtf0->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
-	QCheckBox* dtf0ac = new QCheckBox(tr("Suppress ask for confirmation messages (shown before deleting)"));
+	QCheckBox* dtf0ac = new QCheckBox(tr("Show confirmation messages when deleting"));
 	dtf0ac->setProperty("pref", "askConfirmation");
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf0ac);
 	dtf0->addRow(dtf0ac);
 
-	QCheckBox* dtf0nd = new QCheckBox(tr("Non-destructive edit (try to preserve origin channel lists)"));
+	QCheckBox* dtf0nd = new QCheckBox(tr("Non-destructive edit (try to preserve origin lists)"));
 	dtf0nd->setProperty("pref", "nonDestructiveEdit");
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf0nd);
 	dtf0->addRow(dtf0nd);
@@ -165,66 +166,77 @@ void settings::preferencesLayout()
 
 	dtf1->addRow(new QLabel(tr("<small>The software needs to be restarted.</small>")));
 
-	//TODO
-
 	QGroupBox* dtl2 = new QGroupBox(tr("Tools"));
-	QFormLayout* dtf2 = new QFormLayout;
-	dtf2->setSpacing(20);
-	dtf2->setFormAlignment(Qt::AlignLeft);
-	dtf2->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+	QHBoxLayout* dtb2 = new QHBoxLayout;
 
-	//label: CSV Import/Export
+	QFormLayout* dtf20 = new QFormLayout;
+	dtf20->setSpacing(20);
+	dtf20->setFormAlignment(Qt::AlignLeft);
+	dtf20->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+	QLabel* dth20 = new QLabel(tr("CSV Import/Export"));
+	dtf20->addRow(dth20);
 
 	QCheckBox* dtf2th = new QCheckBox(tr("Allow header columns in CSV"));
-	dtf2th->setProperty("pref", "fields_default"); //
+	dtf2th->setProperty("pref", "toolsCsvHeader"); //
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2th);
-	dtf2->addRow(dtf2th);
+	dtf20->addRow(dtf2th);
 
 	//TODO win32 convert \n to \r\n
 	QLineEdit* dtf2cd = new QLineEdit("\\n");
 	dtf2cd->setProperty("pref", "toolsCsvDelimiter");
-	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2cd);
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2cd);
 	dtf2cd->setMaxLength(2);
 	dtf2cd->setMaximumWidth(50);
 	platform::osLineEdit(dtf2cd);
-	dtf2->addRow(tr("CSV delimiter character"), dtf2cd);
+	dtf20->addRow(tr("CSV delimiter character"), dtf2cd);
 
 	QLineEdit* dtf2cs = new QLineEdit(",");
 	dtf2cs->setProperty("pref", "toolsCsvSeparator");
-	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2cs);
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2cs);
 	dtf2cs->setMaxLength(1);
 	dtf2cs->setMaximumWidth(50);
 	platform::osLineEdit(dtf2cs);
-	dtf2->addRow(tr("CSV separator character"), dtf2cs);
+	dtf20->addRow(tr("CSV separator character"), dtf2cs);
 
 	QLineEdit* dtf2ce = new QLineEdit(",");
 	dtf2ce->setProperty("pref", "toolsCsvEscape");
-	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2ce);
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2ce);
 	dtf2ce->setMaxLength(1);
 	dtf2ce->setMaximumWidth(50);
 	platform::osLineEdit(dtf2ce);
-	dtf2->addRow(tr("CSV escape character"), dtf2ce);
+	dtf20->addRow(tr("CSV escape character"), dtf2ce);
 
-	//label: Fields Import/Export
+	QFormLayout* dtf21 = new QFormLayout;
+	dtf21->setSpacing(21);
+	dtf21->setFormAlignment(Qt::AlignLeft);
+	dtf21->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+	QLabel* dth21 = new QLabel(tr("Fields Import/Export"));
+	dtf21->addRow(dth21);
 
 	QButtonGroup* dtg2 = new QButtonGroup;
 	dtg2->setExclusive(true);
 
 	QCheckBox* dtf2df = new QCheckBox(tr("Default (same fields as visual)"));
-	dtf2df->setProperty("pref", "fields_default"); //
+	dtf2df->setProperty("pref", "fields_default");
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2df);
+	dtf2df->setChecked(true);
 	dtg2->addButton(dtf2df);
-	dtf2->addRow(dtf2df);
+	dtf21->addRow(dtf2df);
 
 	QCheckBox* dtf2ef = new QCheckBox(tr("Extended (all fields)"));
-	dtf2ef->setProperty("pref", "fields_extended"); //
+	dtf2ef->setProperty("pref", "fields_extended");
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2ef);
 	dtg2->addButton(dtf2ef);
-	dtf2->addRow(dtf2ef);
+	dtf21->addRow(dtf2ef);
+
+	dtb2->addLayout(dtf20);
+	dtb2->addItem(new QSpacerItem(10, 0));
+	dtb2->addLayout(dtf21);
 
 	dtl0->setLayout(dtf0);
 	dtl1->setLayout(dtf1);
-	dtl2->setLayout(dtf2);
+	dtl2->setLayout(dtb2);
+
 	dtform->addItem(new QSpacerItem(0, 0));
 	dtform->addWidget(dtl0);
 	dtform->addItem(new QSpacerItem(0, 5));
@@ -376,6 +388,7 @@ void settings::connectionsLayout()
 	dtl1->setLayout(dtf1);
 	dtl2->setLayout(dtf2);
 	dtl3->setLayout(dtf3);
+
 	dtform->addRow(dtl0);
 	dtform->addRow(dtl1);
 	dtform->addRow(dtl2);
@@ -383,6 +396,7 @@ void settings::connectionsLayout()
 
 	dtcnt->addLayout(dtvbox, 0);
 	dtcnt->addLayout(dtform, 1);
+
 	rppage->setLayout(dtcnt);
 
 	dtwid->addTab(rppage, tr("Connections"));
@@ -404,22 +418,28 @@ void settings::advancedLayout()
 	QHBoxLayout* dtnthb = new QHBoxLayout;
 	QWidget* dtntsp = new QWidget;
 	dtntsp->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
 	QLabel* dtntcl = new QLabel(tr("<h2>Please be carefull!</h2><br><p>Modifing these settings could break the program.</p>"));
 	dtntcl->setAlignment(Qt::AlignCenter);
+
 	QPushButton* dtntcb = new QPushButton;
 	dtntcb->setText(tr("OK, I understood this."));
 	dtntcb->connect(dtntcb, &QPushButton::pressed, [=]() { adntc->setHidden(true); adtbl->setVisible(true); retrieve(adtbl); });
+
 	dtnthb->addWidget(dtntsp);
 	dtnthb->addWidget(dtntcb);
 	dtnthb->addWidget(dtntsp);
+
 	dtntcg->addItem(new QSpacerItem(0, 100), 0, 0);
 	dtntcg->addWidget(dtntcl, 1, 0);
 	dtntcg->addLayout(dtnthb, 2, 0);
 	dtntcg->addItem(new QSpacerItem(0, 100), 3, 0);
+
 	adntc->setLayout(dtntcg);
 
 	dtcnt->addWidget(adntc, 0);
 	dtcnt->addWidget(adtbl, 1);
+
 	dtpage->setLayout(dtcnt);
 
 	dtwid->addTab(dtpage, tr("Advanced"));
@@ -596,7 +616,7 @@ void settings::retrieve()
 	debug("retrieve()");
 
 	this->state.retr = true;
-	int selected = sets->value("profile/selected").toInt();
+	int selected = sets->value("profile/selected", 0).toInt();
 	int size = sets->beginReadArray("profile");
 	for (int i = 0; i < size; i++)
 	{
@@ -671,7 +691,7 @@ void settings::retrieve(QTableWidget* adtbl)
 {
 	debug("retrieve()", "overload", "advanced");
 
-	QStringList keys = sets->allKeys().filter(QRegularExpression("^(application|preference|profile)/"));
+	QStringList keys = sets->allKeys().filter(QRegularExpression("^(application|preference|profile|settings)/"));
 	QStringList::const_iterator iq;
 	adtbl->setRowCount(keys.count());
 	int i = 0;

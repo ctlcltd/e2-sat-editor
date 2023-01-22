@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.2
+ * @version 0.3
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -323,18 +323,23 @@ void mainView::referenceBoxLayout()
 
 #ifndef Q_OS_MAC
 	QColor referencebackground;
+	QColor referencecolor;
 	QString referencebackground_hexArgb;
+	QString referencecolor_hexArgb;
 
 	referencebackground = QPalette().color(QPalette::Mid).lighter();
+	referencecolor = QColor(Qt::black);
 	referencebackground_hexArgb = referencebackground.name(QColor::HexArgb);
+	referencecolor_hexArgb = referencecolor.name(QColor::HexArgb);
 
-	theme->dynamicStyleSheet(list_reference, "#list_reference { background: " + referencebackground_hexArgb + " }", theme::light);
+	theme->dynamicStyleSheet(list_reference, "#list_reference { color: " + referencecolor_hexArgb + "; background: " + referencebackground_hexArgb + " }", theme::light);
 
 	referencebackground = QPalette().color(QPalette::Mid).darker();
+	referencecolor = QColor(Qt::white);
 	referencebackground_hexArgb = referencebackground.name(QColor::HexArgb);
+	referencecolor_hexArgb = referencecolor.name(QColor::HexArgb);
 
-	theme->dynamicStyleSheet(list_reference, "#list_reference { background: " + referencebackground_hexArgb + " }", theme::dark);
-//TODO FIX theme system default
+	theme->dynamicStyleSheet(list_reference, "#list_reference { color: " + referencecolor_hexArgb + "; background: " + referencebackground_hexArgb + " }", theme::dark);
 #else
 	theme->dynamicStyleSheet(list_reference, "#list_reference { border-top: 1px solid }");
 
@@ -1375,6 +1380,10 @@ void mainView::treeItemDelete()
 		return;
 	}
 
+	bool remove = tabRemoveQuestion("Confirm deletetion", "Do you want to delete items?");
+	if (! remove)
+		return;
+
 	auto* dbih = this->data->dbih;
 
 	for (auto & item : selected)
@@ -1562,6 +1571,10 @@ void mainView::listItemDelete()
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 	
 	if (selected.empty())
+		return;
+
+	bool remove = tabRemoveQuestion("Confirm deletetion", "Do you want to delete items?");
+	if (! remove)
 		return;
 
 	list->header()->setSectionsClickable(false);
@@ -1983,24 +1996,28 @@ void mainView::updateReferenceBox()
 		if (dbih->db.services.count(chid))
 		{
 			e2db::service ch = dbih->db.services[chid];
-			e2db::transponder tx = dbih->db.transponders[ch.txid];
 
 			ssid = QString::fromStdString(to_string(ch.ssid));
 
-			string ptxp = dbih->value_transponder_combo(tx);
-			txp = QString::fromStdString(ptxp);
+			if (ch.tsid != 0)
+			{
+				e2db::transponder tx = dbih->db.transponders[ch.txid];
 
-			string sys = dbih->value_transponder_system(tx);
-			string pos = dbih->value_transponder_position(tx);
-			string tname = dbih->get_tuner_name(tx);
+				string ptxp = dbih->value_transponder_combo(tx);
+				string sys = dbih->value_transponder_system(tx);
+				string pos = dbih->value_transponder_position(tx);
+				string tname = dbih->get_tuner_name(tx);
+			
+				txp = QString::fromStdString(ptxp);
 
-			string ppos;
-			if (tname.empty())
-				ppos = pos;
-			else
-				ppos = tname + ' ' + '(' + pos + ')';
+				string ppos;
+				if (tname.empty())
+					ppos = pos;
+				else
+					ppos = tname + ' ' + '(' + pos + ')';
 
-			tns = "<p style=\"line-height: 125%\">" + QString::fromStdString(sys + "<br>" + ppos) + "</p>";
+				tns = "<p style=\"line-height: 125%\">" + QString::fromStdString(sys + "<br>" + ppos) + "</p>";
+			}
 		}
 		else
 		{

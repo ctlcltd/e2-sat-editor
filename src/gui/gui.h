@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.2
+ * @version 0.3
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -274,7 +274,9 @@ class gui : protected e2se::log_factory
 		void tabStackerLayout();
 		void statusBarLayout();
 		void themeChanged();
-		void setDefaultSettings();
+		void initSettings();
+		void updateSettings();
+		void resetSettings();
 		void tabViewSwitch(TAB_VIEW ttv);
 		void tabViewSwitch(TAB_VIEW ttv, int arg);
 		void tabChanged(int index);

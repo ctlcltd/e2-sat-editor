@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.2
+ * @version 0.3
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -202,13 +202,13 @@ struct e2db_abstract
 		struct service
 		{
 			string chid;
-			int ssid;
-			int dvbns;
-			int tsid;
-			int onid;
-			int stype;
-			int snum;
-			int srcid;
+			int ssid = 0;
+			int dvbns = 0;
+			int tsid = 0;
+			int onid = 0;
+			int stype = 0;
+			int snum = 0;
+			int srcid = -1;
 			int index = -1;
 			string txid;
 			string chname;
@@ -218,20 +218,20 @@ struct e2db_abstract
 
 		struct service_reference
 		{
-			int ssid;
-			int dvbns;
-			int tsid;
-			int onid;
+			int ssid = 0;
+			int dvbns = 0;
+			int tsid = 0;
+			int onid = 0;
 		};
 
 		struct transponder
 		{
 			string txid;
-			int dvbns;
-			int tsid;
-			int onid;
-			int ytype;
-			int freq;
+			int dvbns = 0;
+			int tsid = 0;
+			int onid = 0;
+			int ytype = 0;
+			int freq = 0;
 			int sr = -1;
 			int pol = -1; // DVB-S
 			int fec = -1; // DVB-S
@@ -297,7 +297,7 @@ struct e2db_abstract
 		struct tunersets_transponder
 		{
 			string trid;
-			int freq;
+			int freq = 0;
 			int sr = -1;
 			int pol = -1; // DVB-S
 			int fec = -1; // DVB-S
@@ -327,7 +327,7 @@ struct e2db_abstract
 		struct tunersets_table
 		{
 			string tnid;
-			int ytype;
+			int ytype = 0;
 			string name;
 			int flgs = -1;
 			int pos = -1; // DVB-S

@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.2
+ * @version 0.3
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -290,16 +290,22 @@ void channelBookView::populate()
 		if (dbih->db.services.count(chdata.second))
 		{
 			e2db::service ch = dbih->db.services[chdata.second];
-			e2db::transponder tx = dbih->db.transponders[ch.txid];
 
 			int atype = dbih->value_service_super_type(ch);
 			bool disabled = this->state.sy != -1 && this->state.sy != atype;
 			QString idx = QString::fromStdString(to_string(chdata.first));
 			QString chid = QString::fromStdString(chdata.second);
-			QString txp = QString::fromStdString(dbih->value_transponder_combo(tx));
+
 			QStringList entry = dbih->entries.services[chdata.second];
-			entry.move(8, 9);
-			entry.insert(8, txp);
+			QString txp;
+			if (ch.tsid != 0)
+			{
+				e2db::transponder tx = dbih->db.transponders[ch.txid];
+				txp = QString::fromStdString(dbih->value_transponder_combo(tx));
+
+				entry.move(8, 9);
+				entry.insert(8, txp);
+			}
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 			entry.remove(6);
 			entry.remove(1, 4);

@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.2
+ * @version 0.3
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -16,7 +16,7 @@
 #include <iostream>
 #include <cstdio>
 
-// #define CURL_STATICLIB
+#define CURL_STATICLIB
 #include <curl/curl.h>
 
 #include "../logger/logger.h"

@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.2
+ * @version 0.3
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -49,7 +49,7 @@ about::about(e2se::logger::session* log)
 	aname->setStyleSheet("font-size: 24px");
 
 	QLabel* aver = new QLabel;
-	aver->setText("Version 0.1");
+	aver->setText("Version 0.2");
 	aver->setStyleSheet("font-size: 16px");
 
 	QLabel* aauts = new QLabel;
@@ -57,7 +57,7 @@ about::about(e2se::logger::session* log)
 	aauts->setStyleSheet("margin: 2px 0 0 0");
 
 	QLabel* acopy = new QLabel;
-	acopy->setText("Copyright 2022 © e2 SAT Editor Team [Leonardo Laureti].");
+	acopy->setText("Copyright 2023 © e2 SAT Editor Team [Leonardo Laureti].");
 	acopy->setStyleSheet("margin: 10px 0 5px 0");
 
 	QLabel* alise = new QLabel;

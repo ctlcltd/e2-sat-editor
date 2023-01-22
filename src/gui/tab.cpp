@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.2
+ * @version 0.3
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -1326,7 +1326,7 @@ void tab::ftpUpload()
 
 	unordered_map<string, e2se_ftpcom::ftpcom::ftpcom_file> ftp_files;
 
-	int profile_sel = settings.value("profile/selected").toInt();
+	int profile_sel = settings.value("profile/selected", 0).toInt();
 	settings.beginReadArray("profile");
 	settings.setArrayIndex(profile_sel);
 	for (auto & x : files)
@@ -1475,6 +1475,25 @@ bool tab::saveQuestion(QString title, QString text)
 	msg.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
 	msg.setDefaultButton(QMessageBox::Save);
 	return (msg.exec() == QMessageBox::Save);
+}
+
+bool tab::removeQuestion(QString title, QString text)
+{
+	if (! QSettings().value("preference/askConfirmation", false).toBool())
+		return true;
+
+	text.prepend("<span style=\"white-space: nowrap\">");
+	text.append("</span><br>");
+	QMessageBox msg = QMessageBox(this->cwid);
+
+	msg.setWindowFlags(Qt::Sheet | Qt::MSWindowsFixedSizeDialogHint);
+	msg.setAttribute(Qt::WA_TranslucentBackground);
+
+	msg.setText(title);
+	msg.setInformativeText(text);
+	msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Retry);
+	msg.setDefaultButton(QMessageBox::Ok);
+	return (msg.exec() == QMessageBox::Ok);
 }
 
 void tab::infoMessage(QString title)

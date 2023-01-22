@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.2
+ * @version 0.3
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -342,7 +342,9 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 		if (dbih->db.services.count(chdata.second))
 		{
 			e2db::service ch = dbih->db.services[chid];
-			e2db::transponder tx = dbih->db.transponders[ch.txid];
+			e2db::transponder tx;
+			if (ch.tsid != 0)
+				tx = dbih->db.transponders[ch.txid];
 
 			QString idx = QString::fromStdString(to_string(chdata.first));
 			QString chname = QString::fromStdString(ch.chname);

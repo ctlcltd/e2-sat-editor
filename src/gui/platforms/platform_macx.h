@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.2
+ * @version 0.3
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -44,7 +44,7 @@ class _platform_macx
 
 	public:
 
-		static const bool TESTING = true;
+		static const bool TESTING = false;
 
 		enum FX_BLENDING {
 			fx_translucent = _FX_BLENDING::macx_fx_BehindWindow,
@@ -83,6 +83,13 @@ class _platform_macx
 		}
 		static void osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 		{
+			//TODO
+			if (! TESTING)
+			{
+				menu->popup(widget->mapToGlobal(pos));
+				return;
+			}
+
 			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
 			if (QSettings().value("preference/osContextMenu", experiment).toBool())
 				_osContextMenuPopup(menu, widget, pos);
@@ -91,6 +98,12 @@ class _platform_macx
 		}
 		static QLineEdit* osLineEdit(QLineEdit* input)
 		{
+			//TODO
+			if (! TESTING)
+			{
+				return input;
+			}
+
 			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
 			if (QSettings().value("preference/osContextMenu", experiment).toBool())
 				return _osLineEdit(input);

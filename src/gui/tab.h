@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.2
+ * @version 0.3
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -94,6 +94,7 @@ class tab : protected e2se::log_factory
 		QTimer* statusBarMessage(string title);
 		void statusBarMessage(QTimer* timer);
 		bool saveQuestion(QString title, QString text);
+		bool removeQuestion(QString title, QString text);
 		void infoMessage(QString title);
 		void infoMessage(QString title, QString text);
 		void errorMessage(QString title, QString text);

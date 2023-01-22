@@ -30,6 +30,7 @@ cleanup () {
 prebuilt_release ()
 {
 	echo "copying pre-built libs ..."
+	# x86_64 qt6
 	cp /usr/x86_64-w64-mingw32/bin/libbrotlicommon.dll build/
 	cp /usr/x86_64-w64-mingw32/bin/libbrotlidec.dll build/
 	cp /usr/x86_64-w64-mingw32/bin/libbz2-1.dll build/
@@ -48,11 +49,23 @@ prebuilt_release ()
 	cp /usr/x86_64-w64-mingw32/bin/libstdc++-6.dll build/
 	cp /usr/x86_64-w64-mingw32/bin/libwinpthread-1.dll build/
 	cp /usr/x86_64-w64-mingw32/bin/zlib1.dll build/
+	# libcurl
+	cp /usr/x86_64-w64-mingw32/bin/libcrypto-3.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libcurl-4.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libidn2-0.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libnghttp2-14.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libpsl-5.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libssh2.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libssl-3.dll build/
+	cp /usr/x86_64-w64-mingw32/bin/libunistring-5.dll build/
+	# e2se
+	cp {COPYING,LICENSE} build/
 }
 
 prebuilt_release_early ()
 {
 	echo "copying pre-built libs ..."
+	# i686 qt5
 	cp /usr/i686-w64-mingw32/bin/libbrotlicommon.dll build/
 	cp /usr/i686_w64-mingw32/bin/libbrotlidec.dll build/
 	cp /usr/i686_w64-mingw32/bin/libbz2-1.dll build/
@@ -71,26 +84,42 @@ prebuilt_release_early ()
 	cp /usr/i686-w64-mingw32/bin/libstdc++-6.dll build/
 	cp /usr/i686-w64-mingw32/bin/libwinpthread-1.dll build/
 	cp /usr/i686-w64-mingw32/bin/zlib1.dll build/
+	# qt5-base
 	cp /usr/i686-w64-mingw32/bin/Qt5Core.dll build/
 	cp /usr/i686-w64-mingw32/bin/Qt5Gui.dll build/
 	cp /usr/i686-w64-mingw32/bin/Qt5Widgets.dll build/
 	cp /usr/i686-w64-mingw32/bin/Qt5PrintSupport.dll build/
-	cp -R /usr/i686-w64-mingw32/lib/qt/plugins/platforms/qwindows.dll build/platforms/
-	cp -R /usr/i686-w64-mingw32/lib/qt/plugins/styles/qwindowsvistastyle.dll build/styles/
+	cp /usr/i686-w64-mingw32/lib/qt/plugins/platforms/qwindows.dll build/platforms/
+	cp /usr/i686-w64-mingw32/lib/qt/plugins/styles/qwindowsvistastyle.dll build/styles/
+	# libcurl
+	cp /usr/i686-w64-mingw32/bin/libcrypto-3.dll build/
+	cp /usr/i686-w64-mingw32/bin/libcurl-4.dll build/
+	cp /usr/i686-w64-mingw32/bin/libidn2-0.dll build/
+	cp /usr/i686-w64-mingw32/bin/libnghttp2-14.dll build/
+	cp /usr/i686-w64-mingw32/bin/libpsl-5.dll build/
+	cp /usr/i686-w64-mingw32/bin/libssh2.dll build/
+	cp /usr/i686-w64-mingw32/bin/libssl-3.dll build/
+	cp /usr/i686-w64-mingw32/bin/libunistring-5.dll build/
+	# e2se
+	cp {COPYING,LICENSE} build/
 }
 
 prebuilt_mingw32_wine ()
 {
 	echo "copying pre-built libs ..."
+	# x86_64 qt6
 	cp /usr/x86_64-w64-mingw32/bin/libgcc_s_seh-1.dll build/
 	cp /usr/x86_64-w64-mingw32/bin/libstdc++-6.dll build/
 	cp /usr/x86_64-w64-mingw32/bin/libwinpthread-1.dll build/
+	# qt6-base
 	cp /usr/x86_64-w64-mingw32/lib/qt6/bin/Qt6Core.dll build/
 	cp /usr/x86_64-w64-mingw32/lib/qt6/bin/Qt6Gui.dll build/
 	cp /usr/x86_64-w64-mingw32/lib/qt6/bin/Qt6Widgets.dll build/
 	cp /usr/x86_64-w64-mingw32/lib/qt6/bin/Qt6PrintSupport.dll build/
-	cp -R /usr/x86_64-w64-mingw32/lib/qt6/plugins/platforms/qwindows.dll build/platforms/
-	cp -R /usr/x86_64-w64-mingw32/lib/qt6/plugins/styles/qwindowsvistastyle.dll build/styles/
+	cp /usr/x86_64-w64-mingw32/lib/qt6/plugins/platforms/qwindows.dll build/platforms/
+	cp /usr/x86_64-w64-mingw32/lib/qt6/plugins/styles/qwindowsvistastyle.dll build/styles/
+	# e2se
+	cp {COPYING,LICENSE} build/
 }
 
 
@@ -105,7 +134,7 @@ fi
 echo "preparing cmake ..."
 
 x86_64-w64-mingw32-cmake-static -G Ninja -B build -DCMAKE_BUILD_TYPE=Release
-# i686-w64-mingw32-cmake-static -G Ninja -B build -DCMAKE_BUILD_TYPE=Release
+# i686-w64-mingw32-cmake-static -G Ninja -B build -DWITH_QT5=ON -DCMAKE_BUILD_TYPE=Release
 
 # x86_64-w64-mingw32-cmake -G Ninja -B build
 # x86_64-w64-mingw32-cmake -B build

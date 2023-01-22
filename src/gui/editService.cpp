@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.2
+ * @version 0.3
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -609,7 +609,9 @@ void editService::retrieve()
 		return error("retrieve()", "chid", chid);
 
 	e2db::service ch = dbih->db.services[chid];
-	e2db::transponder tx = dbih->db.transponders[ch.txid];
+	e2db::transponder tx;
+	if (ch.tsid != 0)
+		tx = dbih->db.transponders[ch.txid];
 	this->txid = ch.txid;
 
 	for (auto & item : fields)

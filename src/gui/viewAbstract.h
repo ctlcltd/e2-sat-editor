@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.2
+ * @version 0.3
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -143,6 +143,7 @@ class viewAbstract : protected e2se::log_factory
 		bool tabGetFlag(gui::GUI_CXE bit);
 		void tabUpdateFlags();
 		void tabUpdateFlags(gui::GUI_CXE bit);
+		bool tabRemoveQuestion(QString title, QString text);
 		void tabUpdateToolBars();
 		virtual bool tabStatusBarIsVisible();
 		virtual bool tabStatusBarIsHidden();
