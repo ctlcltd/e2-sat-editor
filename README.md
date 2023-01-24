@@ -7,6 +7,7 @@ e2 SAT Editor is an Enigma 2 channel list editor, cross-platform (Windows, macOS
 It has tabbed navigation with global Cut-Copy-Paste support; Drag and Drop support; import and export of Lamedb, bouquets and userbouquets; FTP support; tools for sorting and management of channel lists; a native OS look and feel with dark and light themes.
 
 It supports both Lamedb 4 and Lamedb 5 formats (2.4 and 2.5).
+
 &nbsp;
 
 <!-- 🆕 **There are pre-releases available for testing** 📡 -->
@@ -51,6 +52,7 @@ Please read the [contribution guidelines](https://github.com/ctlcltd/e2-sat-edit
 - Then clone the repository:
 
 ```git clone https://github.com/ctlcltd/e2-sat-editor.git```
+
 &nbsp;
 
 Instructions on how to compile in [INSTALL.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/INSTALL.md) file.

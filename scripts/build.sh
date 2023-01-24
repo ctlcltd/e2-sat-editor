@@ -38,7 +38,8 @@ echo "preparing qmake ..."
 $QMAKE
 
 echo "compiling ..."
-make && $QMAKE
+make release && $QMAKE
+# make && $QMAKE
 
 echo "done."
 

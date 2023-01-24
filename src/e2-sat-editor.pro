@@ -38,3 +38,21 @@ macx {
 
 ICON = ../dist/macos/e2-sat-editor.icns
 RC_ICONS = ../dist/windows/e2-sat-editor.ico
+
+unix:!mac {
+	isEmpty (PREFIX):PREFIX = /usr
+
+	target.path = $$PREFIX/bin
+	target.files += $$TARGET
+	desktop.path = $$PREFIX/share/applications
+	desktop.files += ../dist/linux/e2-sat-editor.desktop
+	icon.path = $$PREFIX/share/icons/hicolor/scalable/apps
+	icon.files += ../dist/linux/icons/scalable/e2-sat-editor.svg
+	icon_128.path = $$PREFIX/share/icons/hicolor/128x128/apps
+	icon_128.files += ../dist/linux/icons/128x128/e2-sat-editor.svg
+	icon_64.path = $$PREFIX/share/icons/hicolor/64x64/apps
+	icon_64.files += ../dist/linux/icons/64x64/e2-sat-editor.svg
+
+	INSTALLS += target desktop icon icon_128 icon_64
+}
+
