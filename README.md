@@ -10,7 +10,7 @@ It supports both Lamedb 4 and Lamedb 5 formats (2.4 and 2.5).
 
 &nbsp;
 
-<!-- 🆕 **There are pre-releases available for testing** 📡 -->
+🆕 **There are pre-releases available for testing** 📡
 
 [![A screenshot of e2 SAT Editor](https://github.com/ctlcltd/e2-sat-editor/raw/main/res/screenshot.png "e2 SAT Editor (screenshot)")](https://github.com/ctlcltd/e2-sat-editor/blob/main/res/screenshot.png?raw=true)
 

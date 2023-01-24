@@ -120,9 +120,9 @@ cmake --build build
 ```
 
 
-<!-- ### Releases
+### Releases
 
 🆕 **There are pre-releases available for testing** 📡
 
-Downloads from the Release page: https://github.com/ctlcltd/e2-sat-editor/releases -->
+Downloads from the Releases page: https://github.com/ctlcltd/e2-sat-editor/releases
 
