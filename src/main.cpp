@@ -15,7 +15,7 @@
 #ifndef __MINGW32__
 int main(int argc, char* argv[], char* envp[])
 {
-	bool DEBUG = true;
+	bool DEBUG = false;
 
 	for (int i = 0; envp[i] != NULL; i++)
 	{
@@ -45,7 +45,7 @@ int main(int argc, char* argv[], char* envp[])
 #else
 int main(int argc, char* argv[])
 {
-	bool DEBUG = true;
+	bool DEBUG = false;
 
 	e2se::logger::session* log = new e2se::logger::session;
 	log->debug = DEBUG;
