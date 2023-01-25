@@ -77,6 +77,7 @@ class tab : protected e2se::log_factory
 		void setStatusBar(gui::status msg);
 		void resetStatusBar();
 		void viewMain();
+		void viewTransponders(tab* parent);
 		void viewTunersets(tab* parent, int ytype);
 		void viewChannelBook(tab* parent);
 		void load();

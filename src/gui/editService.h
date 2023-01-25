@@ -18,12 +18,15 @@ using std::string, std::pair, std::vector, std::map;
 #ifndef editService_h
 #define editService_h
 #include <QWidget>
+#include <QTabWidget>
 #include <QComboBox>
 
 #include "dialAbstract.h"
 
 namespace e2se_gui
 {
+class editTransponder;
+
 class editService : public dialAbstract
 {
 	Q_DECLARE_TR_FUNCTIONS(editService)
@@ -33,6 +36,8 @@ class editService : public dialAbstract
 		{
 			// edit { edit: true, add: false }
 			bool edit = false;
+			// transponder edit
+			bool transponder = false;
 			// service data C (CAID) raw string
 			string raw_C;
 			// service data raw string
@@ -51,6 +56,9 @@ class editService : public dialAbstract
 		void transponderLayout();
 		void paramsLayout();
 		void tunerComboChanged(int index);
+		void transponderComboChanged(int index);
+		void tabChanged(int index);
+		void newTransponder();
 		void store();
 		void retrieve();
 		string getPIDValue(e2db::service ch, e2db::SDATA_PIDS x);
@@ -58,8 +66,11 @@ class editService : public dialAbstract
 		string getFlagValue(e2db::service ch, e2db::SDATA_FLAGS x);
 		vector<string> computeFlags(e2db::service ch, e2db::SDATA_FLAGS x, string val);
 
+		QTabWidget* dtwid;
+		QGridLayout* dtpage;
 		QComboBox* dtf1tn;
 		QComboBox* dtf1tx;
+		editTransponder* edittx;
 		map<string, vector<pair<int, string>>> txdata;
 
 		__state state;

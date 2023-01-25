@@ -58,7 +58,7 @@ void ftpcom::error(string tmsg, string rmsg)
 	debug("error()");
 
 	this->::e2se_ftpcom::ftpcom::error(tmsg, rmsg);
-	QMessageBox::critical(nullptr, QString::fromStdString(tmsg), QString::fromStdString(rmsg));
+	QMessageBox::critical(nullptr, tr("FTP Error"), QString::fromStdString(rmsg));
 }
 
 string ftpcom::trs(string str)

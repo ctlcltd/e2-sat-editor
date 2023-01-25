@@ -166,6 +166,8 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::TabTreeFindNext] = menuBarAction(mfind, tr("Find N&ext Bouquet"), [=]() { this->tabAction(TAB_ATS::TreeFindNext); }, Qt::CTRL | Qt::ALT | Qt::Key_E);
 
 	QMenu* mtools = menuBarMenu(menu, tr("&Tools"));
+	gmenu[GUI_CXE::Transponders] = menuBarAction(mtools, "Edit Transponders", [=]() { this->tabAction(TAB_ATS::EditTransponders); });
+	menuBarSeparator(mtools);
 	gmenu[GUI_CXE::TunersetsSat] = menuBarAction(mtools, "Edit satellites.xml", [=]() { this->tabAction(TAB_ATS::EditTunersetsSat); });
 	gmenu[GUI_CXE::TunersetsTerrestrial] = menuBarAction(mtools, "Edit terrestrial.xml", [=]() { this->tabAction(TAB_ATS::EditTunersetsTerrestrial); });
 	gmenu[GUI_CXE::TunersetsCable] = menuBarAction(mtools, "Edit cables.xml", [=]() { this->tabAction(TAB_ATS::EditTunersetsCable); });
@@ -452,6 +454,11 @@ void gui::tabViewSwitch(TAB_VIEW ttv, int arg)
 			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Bouquet"));
 			gmenu[GUI_CXE::TabTreeFindNext]->setText(tr("Find N&ext Bouquet"));
 		break;
+		case TAB_VIEW::transponders:
+			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Transponder"));
+			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Bouquet"));
+			gmenu[GUI_CXE::TabTreeFindNext]->setText(tr("Find N&ext Bouquet"));
+		break;
 		case TAB_VIEW::tunersets:
 			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Transponder"));
 			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Position"));
@@ -573,6 +580,13 @@ int gui::openTab(TAB_VIEW view, int arg)
 			error("openTab()", "parent", false);
 			delete ttab;
 			return -1;
+		break;
+		case TAB_VIEW::transponders:
+			ttab->viewTransponders(parent);
+			//TODO
+			tticon = QIcon(theme::icon("tunersets-view"));
+			ttname.append(" - ");
+			ttname.append("Edit transponders");
 		break;
 		case TAB_VIEW::tunersets:
 			ttab->viewTunersets(parent, arg);
@@ -795,6 +809,10 @@ void gui::tabChangeName(int ttid, string filename)
 
 	switch (v)
 	{
+		case TAB_VIEW::transponders:
+			ttname.append(" - ");
+			ttname.append("Edit transponders");
+		break;
 		case TAB_VIEW::tunersets:
 			ttname.append(" - ");
 			ttname.append("Edit settings");
@@ -1047,9 +1065,9 @@ void gui::setStatusBar(status msg)
 	{
 		if (msg.update)
 		{
-			if (msg.counters[COUNTER::bouquet])
+			if (msg.counters[COUNTER::n_bouquet])
 			{
-				text.append("Channels: " + QString::fromStdString(to_string(msg.counters[COUNTER::bouquet])));
+				text.append("Channels: " + QString::fromStdString(to_string(msg.counters[COUNTER::n_bouquet])));
 			}
 			if (! msg.curr.empty())
 			{
@@ -1060,23 +1078,29 @@ void gui::setStatusBar(status msg)
 		}
 		else
 		{
-			text.append("TV: " + QString::fromStdString(to_string(msg.counters[COUNTER::tv])));
+			text.append("TV: " + QString::fromStdString(to_string(msg.counters[COUNTER::n_tv])));
 			text.append(separator);
-			text.append("Radio: " + QString::fromStdString(to_string(msg.counters[COUNTER::radio])));
+			text.append("Radio: " + QString::fromStdString(to_string(msg.counters[COUNTER::n_radio])));
 			text.append(separator);
-			text.append("Data: " + QString::fromStdString(to_string(msg.counters[COUNTER::data])));
+			text.append("Data: " + QString::fromStdString(to_string(msg.counters[COUNTER::n_data])));
 			text.append(separator);
-			text.append("Total: " + QString::fromStdString(to_string(msg.counters[COUNTER::services])));
+			text.append("Total: " + QString::fromStdString(to_string(msg.counters[COUNTER::n_services])));
 			sbwidr->setText(text);
 		}
+	}
+	else if (msg.view == TAB_VIEW::transponders)
+	{
+		text.append("Total: " + QString::fromStdString(to_string(msg.counters[COUNTER::n_transponders])));
+		sbwidl->setText("");
+		sbwidr->setText(text);
 	}
 	else if (msg.view == TAB_VIEW::tunersets)
 	{
 		if (msg.update)
 		{
-			if (msg.counters[COUNTER::position])
+			if (msg.counters[COUNTER::n_position])
 			{
-				text.append("Transponders: " + QString::fromStdString(to_string(msg.counters[COUNTER::position])));
+				text.append("Transponders: " + QString::fromStdString(to_string(msg.counters[COUNTER::n_position])));
 			}
 			if (! msg.curr.empty())
 			{
@@ -1087,7 +1111,7 @@ void gui::setStatusBar(status msg)
 		}
 		else
 		{
-			text.append("Total: " + QString::fromStdString(to_string(msg.counters[COUNTER::transponders])));
+			text.append("Total: " + QString::fromStdString(to_string(msg.counters[COUNTER::n_transponders])));
 			sbwidr->setText(text);
 		}
 	}

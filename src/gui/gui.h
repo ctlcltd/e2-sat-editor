@@ -72,6 +72,7 @@ class gui : protected e2se::log_factory
 			TabListFindNext = 47,
 			TabListFindPrev = 45,
 			TabListFindAll = 48,
+			Transponders = 50,
 			TunersetsSat = 51,
 			TunersetsTerrestrial = 52,
 			TunersetsCable = 53,
@@ -117,6 +118,7 @@ class gui : protected e2se::log_factory
 			GUI_CXE::FileExport,
 			GUI_CXE::FilePrint,
 			GUI_CXE::FilePrintAll,
+			GUI_CXE::Transponders,
 			GUI_CXE::TunersetsSat,
 			GUI_CXE::TunersetsTerrestrial,
 			GUI_CXE::TunersetsCable,
@@ -160,6 +162,7 @@ class gui : protected e2se::log_factory
 			ListFindNext = GUI_CXE::TabListFindNext,
 			ListFindPrev = GUI_CXE::TabListFindPrev,
 			ListFindAll = GUI_CXE::TabListFindAll,
+			EditTransponders = GUI_CXE::Transponders,
 			EditTunersetsSat = GUI_CXE::TunersetsSat,
 			EditTunersetsTerrestrial = GUI_CXE::TunersetsTerrestrial,
 			EditTunersetsCable = GUI_CXE::TunersetsCable,
@@ -187,6 +190,7 @@ class gui : protected e2se::log_factory
 
 		enum TAB_VIEW {
 			main,
+			transponders,
 			tunersets,
 			channelBook
 		};
@@ -202,13 +206,13 @@ class gui : protected e2se::log_factory
 		};
 
 		enum COUNTER {
-			data = 0,
-			tv = 1,
-			radio = 2,
-			services = 3,
-			bouquet = 4,
-			position = 0,
-			transponders = 1
+			n_data = 0,
+			n_tv = 1,
+			n_radio = 2,
+			n_services = 3,
+			n_transponders = 3,
+			n_bouquet = 4,
+			n_position = 0
 		};
 
 		struct status

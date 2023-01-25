@@ -1110,8 +1110,6 @@ void mainView::addChannel()
 	e2se_gui::dialChannelBook* book = new e2se_gui::dialChannelBook(this->data, stype, this->log->log);
 	book->setEventCallback([=](vector<QString> items) { this->putListItems(items); });
 	book->display(cwid);
-
-	this->data->setChanged(true);
 }
 
 void mainView::addService()
@@ -1556,8 +1554,6 @@ void mainView::listItemPaste()
 			cache["chs:2"].clear();
 		}
 	}
-
-	this->data->setChanged(true);
 }
 
 void mainView::listItemDelete()
@@ -1836,6 +1832,8 @@ void mainView::putListItems(vector<QString> items)
 
 	updateFlags();
 	updateStatusBar();
+
+	this->data->setChanged(true);
 }
 
 void mainView::showTreeEditContextMenu(QPoint& pos)
@@ -1911,7 +1909,7 @@ void mainView::updateStatusBar(bool current)
 	if (current && ! this->state.curr.empty())
 	{
 		string bname = this->state.curr;
-		msg.counters[gui::COUNTER::bouquet] = dbih->index[bname].size();
+		msg.counters[gui::COUNTER::n_bouquet] = dbih->index[bname].size();
 
 		// bouquets tree
 		if (this->state.tc)
@@ -1919,10 +1917,10 @@ void mainView::updateStatusBar(bool current)
 	}
 	else
 	{
-		msg.counters[gui::COUNTER::data] = dbih->index["chs:0"].size();
-		msg.counters[gui::COUNTER::tv] = dbih->index["chs:1"].size();
-		msg.counters[gui::COUNTER::radio] = dbih->index["chs:2"].size();
-		msg.counters[gui::COUNTER::services] = dbih->index["chs"].size();
+		msg.counters[gui::COUNTER::n_data] = dbih->index["chs:0"].size();
+		msg.counters[gui::COUNTER::n_tv] = dbih->index["chs:1"].size();
+		msg.counters[gui::COUNTER::n_radio] = dbih->index["chs:2"].size();
+		msg.counters[gui::COUNTER::n_services] = dbih->index["chs"].size();
 	}
 
 	tabSetStatusBar(msg);

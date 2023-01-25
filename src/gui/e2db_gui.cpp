@@ -390,6 +390,49 @@ QStringList e2db::entryTransponder(transponder tx)
 	return QStringList ({sys, pos, tname, freq, pol, sr, fec});
 }
 
+QStringList e2db::entryTransponder(transponder tx, bool extended)
+{
+	QStringList entry = entries.transponders[tx.txid];
+
+	QString txid = QString::fromStdString(tx.txid);
+	QString combo = QString::fromStdString(value_transponder_combo(tx));
+	if (tx.ytype == YTYPE::satellite)
+	{
+		QString mod = QString::fromStdString(value_transponder_modulation(tx.mod, YTYPE::satellite));
+		QString inv = QString::fromStdString(value_transponder_inversion(tx.inv, YTYPE::satellite));
+		QString rol = QString::fromStdString(value_transponder_rollof(tx.rol));
+		QString pil = QString::fromStdString(value_transponder_pilot(tx.pil));
+		entry.append({mod, NULL, rol, pil, inv});
+	}
+	else if (tx.ytype == YTYPE::terrestrial)
+	{
+		QString mod = QString::fromStdString(value_transponder_modulation(tx.tmod, YTYPE::terrestrial));
+		QString band = QString::fromStdString(value_transponder_bandwidth(tx.band));
+		QString tmx = QString::fromStdString(value_transponder_tmx_mode(tx.tmx));
+		QString inv = QString::fromStdString(value_transponder_inversion(tx.inv, YTYPE::terrestrial));
+		QString guard = QString::fromStdString(value_transponder_guard(tx.guard));
+		QString hier = QString::fromStdString(value_transponder_hier(tx.hier));
+		entry.append({mod, band, NULL, NULL, inv, guard, hier});
+	}
+	else if (tx.ytype == YTYPE::cable)
+	{
+		QString mod = QString::fromStdString(value_transponder_modulation(tx.cmod, YTYPE::cable));
+		QString inv = QString::fromStdString(value_transponder_inversion(tx.inv, YTYPE::cable));
+		entry.append({mod, NULL, NULL, NULL, inv});
+	}
+	else if (tx.ytype == YTYPE::atsc)
+	{
+		// combo = NULL;
+		combo = ""; //Qt5
+		QString mod = QString::fromStdString(to_string(tx.amod));
+		entry.append({mod});
+	}
+	entry.prepend(combo);
+	entry.prepend(txid);
+
+	return entry;
+}
+
 QStringList e2db::entryService(service ch)
 {
 	QString chname = fixUnicodeChars(ch.chname);

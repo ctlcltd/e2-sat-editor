@@ -44,6 +44,7 @@ set(SOURCES
 	gui/editBouquet.cpp
 	gui/editMarker.cpp
 	gui/editService.cpp
+	gui/editTransponder.cpp
 	gui/editTunersets.cpp
 	gui/editTunersetsTable.cpp
 	gui/editTunersetsTransponder.cpp
@@ -56,6 +57,7 @@ set(SOURCES
 	gui/tab.cpp
 	gui/theme.cpp
 	gui/tools.cpp
+	gui/transpondersView.cpp
 	gui/tunersetsView.cpp
 	gui/viewAbstract.cpp
 	main.cpp

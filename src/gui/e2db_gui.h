@@ -69,6 +69,7 @@ class e2db : public ::e2se_e2db::e2db
 		void exportFile(int flags, vector<string> paths);
 		void importBlob(unordered_map<string, e2db_file> files);
 		QStringList entryTransponder(transponder tx);
+		QStringList entryTransponder(transponder tx, bool extended);
 		QStringList entryService(service ch);
 		QStringList entryMarker(channel_reference chref);
 		QStringList entryTunersetsTable(tunersets_table tn);

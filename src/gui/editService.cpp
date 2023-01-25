@@ -21,10 +21,12 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QCheckBox>
+#include <QPushButton>
 
 #include "platforms/platform.h"
 
 #include "editService.h"
+#include "editTransponder.h"
 
 using std::stringstream, std::to_string;
 
@@ -62,9 +64,25 @@ void editService::layout(QWidget* cwid)
 
 	this->txdata = dbih->get_transponders_index();
 
+	this->dtwid = new QTabWidget;
+	dtwid->connect(dtwid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
+
+	this->edittx = new editTransponder(this->data, this->log->log);
+
+	QWidget* dtch = new QWidget;
+	QWidget* dttx = new QWidget;
+	this->dtpage = new QGridLayout;
+
 	serviceLayout();
 	transponderLayout();
 	paramsLayout();
+
+	dtch->setLayout(dtpage);
+
+	dtwid->addTab(dtch, tr("Service"));
+	dtwid->addTab(dttx, tr("Transponder"));
+
+	dtform->addWidget(dtwid, 0, 0);
 }
 
 void editService::serviceLayout()
@@ -111,7 +129,7 @@ void editService::serviceLayout()
 	dtb11->addWidget(new QLabel("[SID]"));
 
 	dtl0->setLayout(dtf0);
-	dtform->addWidget(dtl0, 0, 0);
+	dtpage->addWidget(dtl0, 0, 0);
 }
 
 void editService::transponderLayout()
@@ -142,6 +160,11 @@ void editService::transponderLayout()
 	fields.emplace_back(dtf1tx);
 	dtf1tx->setMinimumWidth(180);
 	dtf1tx->setEditable(true);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	dtf1tx->connect(dtf1tx, &QComboBox::currentIndexChanged, [=](int index) { this->transponderComboChanged(index); });
+#else
+	dtf1tx->connect(dtf1tx, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) { this->transponderComboChanged(index); });
+#endif
 	for (auto & q : txdata)
 	{
 		QString name;
@@ -162,8 +185,13 @@ void editService::transponderLayout()
 	dtf1->addRow(tr("Satellite"), dtf1tn);
 	dtf1->addRow(tr("Transponder"), dtf1tx);
 
+	QPushButton* dtf1nt = new QPushButton;
+	dtf1nt->setText(tr("New Transponder"));
+	dtf1nt->connect(dtf1nt, &QPushButton::pressed, [=]() { this->newTransponder(); });
+	dtf1->addRow(NULL, dtf1nt);
+
 	dtl1->setLayout(dtf1);
-	dtform->addWidget(dtl1, 1, 0);
+	dtpage->addWidget(dtl1, 1, 0);
 }
 
 void editService::paramsLayout()
@@ -401,7 +429,7 @@ void editService::paramsLayout()
 
 	dtb20->addWidget(dtt2);
 	dtl2->setLayout(dtb20);
-	dtform->addWidget(dtl2, 0, 1, 2, 1);
+	dtpage->addWidget(dtl2, 0, 1, 2, 1);
 }
 
 void editService::tunerComboChanged(int index)
@@ -423,6 +451,49 @@ void editService::tunerComboChanged(int index)
 		QString combo = QString::fromStdString(dbih->value_transponder_combo(tx));
 		dtf1tx->addItem(combo, txid);
 	}
+}
+
+void editService::transponderComboChanged(int index)
+{
+	debug("transponderComboChanged()", "index", index);
+
+	QString qtxid = dtf1tx->currentData().toString();
+	string txid = qtxid.toStdString();
+
+	edittx->setEditId(txid);
+}
+
+void editService::tabChanged(int index)
+{
+	debug("tabChanged()", "index", index);
+
+	if (index != 1)
+		return;
+
+	if (this->state.transponder)
+		return edittx->change();
+
+	edittx->layout(this->dial);
+
+	QGridLayout* layout = new QGridLayout;
+	layout->setContentsMargins(0, 0, 0, 0);
+	layout->addWidget(edittx->widget);
+	dtwid->widget(1)->setLayout(layout);
+
+	if (! this->state.edit)
+		edittx->setAddId();
+	edittx->change();
+
+	this->state.transponder = true;
+}
+
+void editService::newTransponder()
+{
+	debug("newTransponder()");
+
+	edittx->setAddId();
+
+	dtwid->setCurrentIndex(1);
 }
 
 //TODO TEST
@@ -597,6 +668,11 @@ void editService::store()
 		this->chid = dbih->editService(chid, ch);
 	else
 		this->chid = dbih->addService(ch);
+
+	//TODO
+	if (this->state.transponder)
+	{
+	}
 }
 
 void editService::retrieve()
@@ -613,6 +689,8 @@ void editService::retrieve()
 	if (ch.tsid != 0)
 		tx = dbih->db.transponders[ch.txid];
 	this->txid = ch.txid;
+
+	edittx->setEditId(txid);
 
 	for (auto & item : fields)
 	{

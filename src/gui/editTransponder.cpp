@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/gui/editTunersetsTransponder.cpp
+ * e2-sat-editor/src/gui/editTransponder.cpp
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -11,12 +11,13 @@
 
 #include <QFormLayout>
 #include <QGroupBox>
+#include <QLabel>
 #include <QLineEdit>
 #include <QComboBox>
 
 #include "platforms/platform.h"
 
-#include "editTunersetsTransponder.h"
+#include "editTransponder.h"
 
 using std::to_string;
 
@@ -25,16 +26,16 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-editTunersetsTransponder::editTunersetsTransponder(dataHandler* data, int yx, e2se::logger::session* log)
+editTransponder::editTransponder(dataHandler* data, e2se::logger::session* log)
 {
-	this->log = new logger(log, "editTunersetsTransponder");
-	debug("editTunersetsTransponder()");
+	this->log = new logger(log, "editTransponder");
+	debug("editTransponder()");
 
 	this->data = data;
-	this->state.yx = yx;
+	this->state.yx = -1;
 }
 
-void editTunersetsTransponder::display(QWidget* cwid)
+void editTransponder::display(QWidget* cwid)
 {
 	layout(cwid);
 
@@ -44,19 +45,112 @@ void editTunersetsTransponder::display(QWidget* cwid)
 	dial->exec();
 }
 
-void editTunersetsTransponder::layout(QWidget* cwid)
+void editTransponder::layout(QWidget* cwid)
 {
 	this->dialAbstract::layout(cwid);
 
 	QString dtitle = this->state.edit ? tr("Edit Transponder") : tr("Add Transponder");
 	dial->setWindowTitle(dtitle);
+	
+	QStringList types = QStringList ({"Satellite", "Terrestrial", "Cable", "ATSC"});
 
-	switch (this->state.yx)
+	QGroupBox* dtl0 = new QGroupBox(tr("Transponder"));
+	QFormLayout* dtf0 = new QFormLayout;
+	dtf0->setRowWrapPolicy(QFormLayout::WrapAllRows);
+
+	this->dtf0yx = new QComboBox;
+	dtf0yx->setProperty("field", "ytype");
+	fields.emplace_back(dtf0yx);
+	dtf0yx->setMaximumWidth(100);
+	platform::osComboBox(dtf0yx);
+	dtf0->addRow(tr("Type"), dtf0yx);
+	dtf0->addItem(new QSpacerItem(0, 0));
+	for (int i = 0; i < 4; i++)
+	{
+		dtf0yx->addItem(types.at(i), i);
+	}
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	dtf0yx->connect(dtf0yx, &QComboBox::currentIndexChanged, [=](int index) { this->typeComboChanged(index); });
+#else
+	dtf0yx->connect(dtf0yx, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) { this->typeComboChanged(index); });
+#endif
+	if (! this->state.edit)
+	{
+		typeComboChanged(0);
+	}
+
+	QHBoxLayout* dtb01 = new QHBoxLayout;
+	dtf0->addRow(tr("Transport ID"), dtb01);
+	QLineEdit* dtf0ts = new QLineEdit;
+	dtf0ts->setProperty("field", "tsid");
+	fields.emplace_back(dtf0ts);
+	dtf0ts->setMaximumWidth(60);
+	dtf0ts->setValidator(new QIntValidator);
+	platform::osLineEdit(dtf0ts);
+	dtb01->addWidget(dtf0ts);
+	dtb01->addWidget(new QLabel("[TSID]"));
+
+	QLineEdit* dtf0ns = new QLineEdit;
+	dtf0ns->setProperty("field", "dvbns");
+	fields.emplace_back(dtf0ns);
+	dtf0ns->setMaximumWidth(80);
+	dtf0ns->setValidator(new QIntValidator);
+	platform::osLineEdit(dtf0ns);
+	dtf0->addRow(tr("DVBNS"), dtf0ns);
+
+	QLineEdit* dtf0on = new QLineEdit;
+	dtf0on->setProperty("field", "onid");
+	fields.emplace_back(dtf0on);
+	dtf0on->setMaximumWidth(60);
+	dtf0on->setValidator(new QIntValidator);
+	platform::osLineEdit(dtf0on);
+	dtf0->addRow(tr("ONID"), dtf0on);
+
+	afields.insert(afields.begin(), fields.begin(), fields.end());
+
+	dtl0->setLayout(dtf0);
+	dtform->addWidget(dtl0, 0, 0);
+}
+
+void editTransponder::change()
+{
+	debug("change()");
+
+	for (auto & item : fields)
+	{
+		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
+			field->setText(NULL);
+	}
+
+	if (this->state.edit)
+		retrieve();
+	else
+		layoutChange(0);
+}
+
+void editTransponder::layoutChange(int vx)
+{
+	debug("layoutChange()");
+
+	for (int i = 1; i < 3; i++)
+	{
+		QLayoutItem* item;
+		item = dtform->itemAtPosition(0, i);
+		if (item != nullptr)
+		{
+			item->widget()->setVisible(false);
+			delete item->widget();
+			dtform->takeAt(dtform->indexOf(item));
+		}
+	}
+	fields.clear();
+	fields.insert(fields.begin(), afields.begin(), afields.end());
+
+	switch (vx)
 	{
 		case e2db::YTYPE::satellite:
 			leadSatLayout();
 			sideSatLayout();
-			thirdSatLayout();
 		break;
 		case e2db::YTYPE::terrestrial:
 			leadTerrestrialLayout();
@@ -70,9 +164,12 @@ void editTunersetsTransponder::layout(QWidget* cwid)
 			leadAtscLayout();
 		break;
 	}
+
+	if (this->state.edit)
+		retrieve(txid);
 }
 
-void editTunersetsTransponder::leadSatLayout()
+void editTransponder::leadSatLayout()
 {
 	debug("leadSatLayout()");
 
@@ -146,10 +243,10 @@ void editTunersetsTransponder::leadSatLayout()
 	}
 
 	dtl0->setLayout(dtf0);
-	dtform->addWidget(dtl0, 0, 0);
+	dtform->addWidget(dtl0, 0, 1);
 }
 
-void editTunersetsTransponder::leadTerrestrialLayout()
+void editTransponder::leadTerrestrialLayout()
 {
 	debug("leadTerrestrialLayout()");
 
@@ -228,10 +325,10 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 	}
 
 	dtl0->setLayout(dtf0);
-	dtform->addWidget(dtl0, 0, 0);
+	dtform->addWidget(dtl0, 0, 1);
 }
 
-void editTunersetsTransponder::leadCableLayout()
+void editTransponder::leadCableLayout()
 {
 	debug("leadCableLayout()");
 
@@ -290,10 +387,10 @@ void editTunersetsTransponder::leadCableLayout()
 	}
 
 	dtl0->setLayout(dtf0);
-	dtform->addWidget(dtl0, 0, 0);
+	dtform->addWidget(dtl0, 0, 1);
 }
 
-void editTunersetsTransponder::leadAtscLayout()
+void editTransponder::leadAtscLayout()
 {
 	debug("leadAtscLayout()");
 
@@ -322,10 +419,10 @@ void editTunersetsTransponder::leadAtscLayout()
 	dtf0->addItem(new QSpacerItem(0, 0));
 
 	dtl0->setLayout(dtf0);
-	dtform->addWidget(dtl0, 0, 0);
+	dtform->addWidget(dtl0, 0, 1);
 }
 
-void editTunersetsTransponder::sideSatLayout()
+void editTransponder::sideSatLayout()
 {
 	debug("sideSatLayout()");
 
@@ -394,10 +491,10 @@ void editTunersetsTransponder::sideSatLayout()
 	}
 
 	dtl1->setLayout(dtf1);
-	dtform->addWidget(dtl1, 0, 1);
+	dtform->addWidget(dtl1, 0, 2);
 }
 
-void editTunersetsTransponder::sideTerrestrialLayout()
+void editTransponder::sideTerrestrialLayout()
 {
 	debug("sideTerrestrialLayout()");
 
@@ -466,10 +563,10 @@ void editTunersetsTransponder::sideTerrestrialLayout()
 	}
 
 	dtl1->setLayout(dtf1);
-	dtform->addWidget(dtl1, 0, 1);
+	dtform->addWidget(dtl1, 0, 2);
 }
 
-void editTunersetsTransponder::sideCableLayout()
+void editTransponder::sideCableLayout()
 {
 	debug("sideCableLayout()");
 
@@ -493,99 +590,36 @@ void editTunersetsTransponder::sideCableLayout()
 	}
 
 	dtl1->setLayout(dtf1);
-	dtform->addWidget(dtl1, 0, 1);
+	dtform->addWidget(dtl1, 0, 2);
 }
 
-void editTunersetsTransponder::thirdSatLayout()
+void editTransponder::typeComboChanged(int index)
 {
-	debug("thirdCableLayout()");
+	debug("typeComboChanged()", "index", index);
 
-	QGroupBox* dtl2 = new QGroupBox;
-	QFormLayout* dtf2 = new QFormLayout;
-	dtf2->setRowWrapPolicy(QFormLayout::WrapAllRows);
+	if (this->state.yx == index)
+		return;
 
-	QLineEdit* dtf2ss = new QLineEdit;
-	dtf2ss->setProperty("field", "s_isid");
-	fields.emplace_back(dtf2ss);
-	dtf2ss->setMaximumWidth(50);
-	dtf2ss->setValidator(new QIntValidator);
-	dtf2ss->setMaxLength(8);
-	platform::osLineEdit(dtf2ss);
-	dtf2->addRow(tr("isid"), dtf2ss);
-	dtf2->addItem(new QSpacerItem(0, 0));
+	this->state.yx = index;
 
-	QLineEdit* dtf2st = new QLineEdit;
-	dtf2st->setProperty("field", "s_mts");
-	fields.emplace_back(dtf2st);
-	dtf2st->setMaximumWidth(50);
-	dtf2st->setValidator(new QIntValidator);
-	dtf2st->setMaxLength(4);
-	platform::osLineEdit(dtf2st);
-	dtf2->addRow(tr("mts"), dtf2st);
-	dtf2->addItem(new QSpacerItem(0, 0));
-
-	QLineEdit* dtf2sd = new QLineEdit;
-	dtf2sd->setProperty("field", "s_plsmode");
-	fields.emplace_back(dtf2sd);
-	dtf2sd->setMaximumWidth(50);
-	dtf2sd->setValidator(new QIntValidator);
-	dtf2sd->setMaxLength(4);
-	platform::osLineEdit(dtf2sd);
-	dtf2->addRow(tr("plsmode"), dtf2sd);
-	dtf2->addItem(new QSpacerItem(0, 0));
-	
-	QLineEdit* dtf2sc = new QLineEdit;
-	dtf2sc->setProperty("field", "s_plscode");
-	fields.emplace_back(dtf2sc);
-	dtf2sc->setMaximumWidth(50);
-	dtf2sc->setValidator(new QIntValidator);
-	dtf2sc->setMaxLength(4);
-	platform::osLineEdit(dtf2sc);
-	dtf2->addRow(tr("plscode"), dtf2sc);
-	dtf2->addItem(new QSpacerItem(0, 0));
-
-	QLineEdit* dtf2sn = new QLineEdit;
-	dtf2sn->setProperty("field", "s_plsn");
-	fields.emplace_back(dtf2sn);
-	dtf2sn->setMaximumWidth(50);
-	dtf2sn->setValidator(new QIntValidator);
-	dtf2sn->setMaxLength(4);
-	platform::osLineEdit(dtf2sn);
-	dtf2->addRow(tr("plsn"), dtf2sn);
-	dtf2->addItem(new QSpacerItem(0, 0));
-
-	dtl2->setLayout(dtf2);
-	dtform->addWidget(dtl2, 0, 2);
+	layoutChange(this->state.yx);
 }
 
 //TODO TEST
-void editTunersetsTransponder::store()
+void editTransponder::store()
 {
 	debug("store()");
 
 	auto* dbih = this->data->dbih;
 
-	e2db::tunersets tvs;
-	e2db::tunersets_table tns;
-
-	if (dbih->tuners.count(tvid))
-		tvs = dbih->tuners[tvid];
-	else
-		return error("store()", "tvid", tvid);
-
-	if (tvs.tables.count(tnid))
-		tns = tvs.tables[tnid];
-	else
-		return error("store()", "tnid", tnid);
-
-	e2db::tunersets_transponder txp;
+	e2db::transponder txp;
 
 	if (this->state.edit)
 	{
-		if (! tns.transponders.count(trid))
-			return error("store()", "trid", trid);
+		if (! dbih->db.transponders.count(txid))
+			return error("store()", "txid", txid);
 
-		txp = tns.transponders[trid];
+		txp = dbih->db.transponders[txid];
 	}
 
 	for (auto & item : fields)
@@ -597,6 +631,15 @@ void editTunersetsTransponder::store()
 			val = field->text().isEmpty() ? -1 : field->text().toInt();
 		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
 			val = field->currentData().toInt();
+
+		if (key == "ytype")
+			txp.ytype = val;
+		else if (key == "tsid")
+			txp.tsid = val;
+		else if (key == "dvbns")
+			txp.dvbns = val;
+		else if (key == "onid")
+			txp.onid = val;
 
 		if (this->state.yx == e2db::YTYPE::satellite)
 		{
@@ -618,16 +661,8 @@ void editTunersetsTransponder::store()
 				txp.rol = val;
 			else if (key == "s_pil")
 				txp.pil = val;
-			else if (key == "s_isid")
-				txp.isid = val;
-			else if (key == "s_mts")
-				txp.mts = val;
-			else if (key == "s_plsmode")
-				txp.plsmode = val;
-			else if (key == "s_plscode")
-				txp.plscode = val;
-			else if (key == "s_plsn")
-				txp.plsn = val;
+			else if (key == "s_flgs")
+				txp.flgs = val;
 		}
 		else if (this->state.yx == e2db::YTYPE::terrestrial)
 		{
@@ -681,39 +716,54 @@ void editTunersetsTransponder::store()
 	}
 
 	if (this->state.edit)
-		this->trid = dbih->editTunersetsTransponder(trid, txp, tns);
+		this->txid = dbih->editTransponder(txid, txp);
 	else
-		this->trid = dbih->addTunersetsTransponder(txp, tns);
+		this->txid = dbih->addTransponder(txp);
 }
 
-void editTunersetsTransponder::retrieve()
+void editTransponder::retrieve()
 {
 	debug("retrieve()");
 
 	auto* dbih = this->data->dbih;
 
-	e2db::tunersets tvs;
-	e2db::tunersets_table tns;
+	if (! dbih->db.transponders.count(txid))
+		return error("retrieve()", "txid", txid);
 
-	if (dbih->tuners.count(tvid))
-		tvs = dbih->tuners[tvid];
+	e2db::transponder txp = dbih->db.transponders[txid];
+
+	if (txp.ytype != dtf0yx->currentIndex())
+		dtf0yx->setCurrentIndex(txp.ytype);
 	else
-		return error("retrieve()", "tvid", tvid);
+		typeComboChanged(txp.ytype);
 
-	if (tvs.tables.count(tnid))
-		tns = tvs.tables[tnid];
-	else
-		return error("retrieve()", "tnid", tnid);
+	retrieve(txid);
+}
 
-	if (! tns.transponders.count(trid))
-		return error("retrieve()", "trid", trid);
+void editTransponder::retrieve(string txid)
+{
+	debug("retrieve()", "overload", "txid");
 
-	e2db::tunersets_transponder txp = tns.transponders[trid];
+	auto* dbih = this->data->dbih;
+
+	if (! dbih->db.transponders.count(txid))
+		return error("retrieve()", "txid", txid);
+
+	e2db::transponder txp = dbih->db.transponders[txid];
 
 	for (auto & item : fields)
 	{
 		string key = item->property("field").toString().toStdString();
 		int val = -1;
+
+		if (key == "ytype")
+			val = txp.ytype;
+		else if (key == "tsid")
+			val = txp.tsid;
+		else if (key == "dvbns")
+			val = txp.dvbns;
+		else if (key == "onid")
+			val = txp.onid;
 
 		if (this->state.yx == e2db::YTYPE::satellite)
 		{
@@ -735,16 +785,8 @@ void editTunersetsTransponder::retrieve()
 				val = txp.rol;
 			else if (key == "s_pil")
 				val = txp.pil;
-			else if (key == "s_isid")
-				val = txp.isid;
-			else if (key == "s_mts")
-				val = txp.mts;
-			else if (key == "s_plsmode")
-				val = txp.plsmode;
-			else if (key == "s_plscode")
-				val = txp.plscode;
-			else if (key == "s_plsn")
-				val = txp.plsn;
+			else if (key == "s_flgs")
+				val = txp.flgs;
 		}
 		else if (this->state.yx == e2db::YTYPE::terrestrial)
 		{
@@ -808,36 +850,33 @@ void editTunersetsTransponder::retrieve()
 	}
 }
 
-void editTunersetsTransponder::setEditId(string trid, string tnid, int tvid)
+void editTransponder::setEditId(string txid)
 {
 	debug("setEditId()");
 
 	this->state.edit = true;
-	this->tvid = tvid;
-	this->tnid = tnid;
-	this->trid = trid;
+	this->txid = txid;
 }
 
-string editTunersetsTransponder::getEditId()
+string editTransponder::getEditId()
 {
 	debug("getEditId()");
 
-	return this->trid;
+	return this->txid;
 }
 
-void editTunersetsTransponder::setAddId(string tnid, int tvid)
+void editTransponder::setAddId()
 {
 	debug("setAddId()");
 
-	this->tvid = tvid;
-	this->tnid = tnid;
+	this->state.edit = false;
 }
 
-string editTunersetsTransponder::getAddId()
+string editTransponder::getAddId()
 {
 	debug("getAddId()");
 
-	return this->trid;
+	return this->txid;
 }
 
 }

@@ -197,7 +197,7 @@ void tunersetsView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::row4, 85);		// Polarization | Constellation | Modulation
 	list->setColumnWidth(ITEM_ROW_ROLE::row5, 85);		// Symbol Rate | Bandwidth
 	list->setColumnWidth(ITEM_ROW_ROLE::row6, 65);		// FEC | System
-	list->setColumnWidth(ITEM_ROW_ROLE::row7, 65);		// System | Tx Mode
+	list->setColumnWidth(ITEM_ROW_ROLE::row7, 65);		// System | Tmx Mode
 	list->setColumnWidth(ITEM_ROW_ROLE::row8, 75);		// Modulation | HP FEC | System
 	list->setColumnWidth(ITEM_ROW_ROLE::row9, 75);		// Inversion | LP FEC
 	list->setColumnWidth(ITEM_ROW_ROLE::rowA, 75);		// Pilot | Inversion
@@ -400,6 +400,7 @@ void tunersetsView::populate()
 	list->header()->setSectionsClickable(false);
 	list->clear();
 
+	QList<QTreeWidgetItem*> items;
 	int i = 0;
 
 	for (auto & tp : dbih->index[tnid])
@@ -419,8 +420,10 @@ void tunersetsView::populate()
 		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
 		item->setData(ITEM_DATA_ROLE::trid, Qt::UserRole, trid);
 
-		list->addTopLevelItem(item);
+		items.append(item);
 	}
+
+	list->addTopLevelItems(items);
 
 	list->setDragEnabled(true);
 	list->setAcceptDrops(true);
@@ -458,7 +461,7 @@ void tunersetsView::treeItemDoubleClicked()
 	debug("treeItemDoubleClicked()");
 
 	QList<QTreeWidgetItem*> selected = tree->selectedItems();
-	
+
 	if (selected.empty() || selected.count() > 1)
 		return;
 
@@ -476,7 +479,7 @@ void tunersetsView::listItemChanged()
 void tunersetsView::listItemSelectionChanged()
 {
 	// debug("listItemSelectionChanged()");
-	
+
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
 	if (selected.empty())
@@ -506,7 +509,7 @@ void tunersetsView::listItemDoubleClicked()
 	debug("listItemDoubleClicked()");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
-	
+
 	if (selected.empty() || selected.count() > 1)
 		return;
 
@@ -623,7 +626,7 @@ void tunersetsView::editPosition()
 	debug("editPosition()");
 
 	QList<QTreeWidgetItem*> selected = tree->selectedItems();
-	
+
 	if (selected.empty() || selected.count() > 1)
 		return;
 
@@ -736,7 +739,7 @@ void tunersetsView::editTransponder()
 	debug("editTransponder()");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
-	
+
 	if (selected.empty() || selected.count() > 1)
 		return;
 
@@ -788,7 +791,7 @@ void tunersetsView::treeItemDelete()
 	debug("treeItemDelete()");
 
 	QList<QTreeWidgetItem*> selected = tree->selectedItems();
-	
+
 	if (selected.empty())
 	{
 		return;
@@ -803,7 +806,7 @@ void tunersetsView::treeItemDelete()
 	auto* dbih = this->data->dbih;
 
 	e2db::tunersets tvs = dbih->tuners[tvid];
-	
+
 	for (auto & item : selected)
 	{
 		int i = tree->indexOfTopLevelItem(item);
@@ -826,7 +829,7 @@ void tunersetsView::listItemCopy(bool cut)
 	debug("listItemCopy()");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
-	
+
 	if (selected.empty())
 		return;
 
@@ -877,8 +880,6 @@ void tunersetsView::listItemPaste()
 		if (list->currentItem() == nullptr)
 			list->scrollToBottom();
 	}
-
-	this->data->setChanged(true);
 }
 
 void tunersetsView::listItemDelete()
@@ -886,7 +887,7 @@ void tunersetsView::listItemDelete()
 	debug("listItemDelete()");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
-	
+
 	if (selected.empty())
 		return;
 
@@ -1039,12 +1040,14 @@ void tunersetsView::putListItems(vector<QString> items)
 
 	updateFlags();
 	updateStatusBar();
+
+	this->data->setChanged(true);
 }
 
 void tunersetsView::updateStatusBar(bool current)
 {
 	debug("updateStatusBar()");
-	
+
 	int tvid = this->state.yx;
 
 	gui::status msg;
@@ -1060,7 +1063,7 @@ void tunersetsView::updateStatusBar(bool current)
 			e2db::tunersets_table tns = dbih->tuners[tvid].tables[tnid];
 			msg.curr = dbih->value_transponder_position(tns);
 		}
-		msg.counters[gui::COUNTER::position] = dbih->index[tnid].size();
+		msg.counters[gui::COUNTER::n_position] = dbih->index[tnid].size();
 	}
 	else
 	{
@@ -1069,7 +1072,7 @@ void tunersetsView::updateStatusBar(bool current)
 		iname += yname;
 		for (auto & x : dbih->index[iname])
 		{
-			msg.counters[gui::COUNTER::transponders] += dbih->index[x.second].size();
+			msg.counters[gui::COUNTER::n_transponders] += dbih->index[x.second].size();
 		}
 	}
 
@@ -1190,7 +1193,7 @@ void tunersetsView::updateFlags()
 void tunersetsView::updateTreeIndex()
 {
 	debug("updateTreeIndex()");
-	
+
 	int tvid = this->state.yx;
 
 	auto* dbih = this->data->dbih;

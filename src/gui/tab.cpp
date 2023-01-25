@@ -38,6 +38,7 @@
 #include "gui.h"
 #include "dataHandler.h"
 #include "ftpcom_gui.h"
+#include "transpondersView.h"
 #include "tunersetsView.h"
 #include "channelBookView.h"
 #include "editBouquet.h"
@@ -238,6 +239,29 @@ void tab::viewMain()
 	this->root->addWidget(view->widget, 0, 0, 1, 1);
 
 	newFile();
+}
+
+void tab::viewTransponders(tab* parent)
+{
+	debug("viewTransponders()");
+
+	parent->addChild(this);
+
+	this->parent = parent;
+	this->child = true;
+
+	this->data = parent->data;
+	this->ftph = parent->ftph;
+	this->tools = parent->tools;
+	this->view = new transpondersView(this, this->cwid, this->data, this->log->log);
+
+	this->ttv = gui::TAB_VIEW::transponders;
+
+	layout();
+	
+	this->root->addWidget(view->widget, 0, 0, 1, 1);
+
+	load();
 }
 
 void tab::viewTunersets(tab* parent, int ytype)
@@ -1166,8 +1190,8 @@ void tab::actionCall(int action)
 			view->listFindPerform(viewAbstract::LIST_FIND::all);
 		break;
 
-		case gui::TAB_ATS::ShowChannelBook:
-			gid->openTab(gui::TAB_VIEW::channelBook);
+		case gui::TAB_ATS::EditTransponders:
+			gid->openTab(gui::TAB_VIEW::transponders);
 		break;
 		case gui::TAB_ATS::EditTunersetsSat:
 			gid->openTab(gui::TAB_VIEW::tunersets, e2db::YTYPE::satellite);
@@ -1180,6 +1204,9 @@ void tab::actionCall(int action)
 		break;
 		case gui::TAB_ATS::EditTunersetsAtsc:
 			gid->openTab(gui::TAB_VIEW::tunersets, e2db::YTYPE::atsc);
+		break;
+		case gui::TAB_ATS::ShowChannelBook:
+			gid->openTab(gui::TAB_VIEW::channelBook);
 		break;
 
 		case gui::TAB_ATS::ImportCSV_services:
