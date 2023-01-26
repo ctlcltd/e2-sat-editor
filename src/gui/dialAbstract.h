@@ -72,12 +72,12 @@ class dialAbstract : protected e2se::log_factory
 		static QWidget* toolBarSpacer(QToolBar* toolbar);
 		void toolBarStyleSheet();
 
-		QDialog* dial;
+		QDialog* dial = nullptr;
 		e2se_gui::theme* theme;
 		dataHandler* data = nullptr;
 		QToolBar* dtbar;
 		QToolButton* dttoggler;
-		QGridLayout* dtform;
+		QGridLayout* dtform = nullptr;
 		bool collapsible = false;
 		QMargins frameMargins = QMargins (10, 12, 10, 12);
 		bool frameFixed = true;

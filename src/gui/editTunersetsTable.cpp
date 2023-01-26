@@ -238,7 +238,6 @@ void editTunersetsTable::tableAtscLayout()
 	dtform->addWidget(dtl0, 0, 0);
 }
 
-//TODO TEST
 void editTunersetsTable::store()
 {
 	debug("store()");
@@ -388,8 +387,8 @@ void editTunersetsTable::retrieve()
 		}
 		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
 		{
-			if (int index = field->findData(QString::fromStdString(val), Qt::UserRole))
-				field->setCurrentIndex(index);
+			int index = field->findData(QString::fromStdString(val), Qt::UserRole);
+			field->setCurrentIndex(index);
 		}
 		else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
 		{

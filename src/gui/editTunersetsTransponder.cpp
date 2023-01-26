@@ -558,7 +558,6 @@ void editTunersetsTransponder::thirdSatLayout()
 	dtform->addWidget(dtl2, 0, 2);
 }
 
-//TODO TEST
 void editTunersetsTransponder::store()
 {
 	debug("store()");
@@ -781,8 +780,6 @@ void editTunersetsTransponder::retrieve()
 				val = txp.cfec;
 			else if (key == "c_inv")
 				val = txp.inv;
-			else if (key == "c_sys")
-				val = txp.sys;
 			else if (key == "c_cmod")
 				val = txp.cmod;
 		}
@@ -792,18 +789,16 @@ void editTunersetsTransponder::retrieve()
 				val = txp.freq;
 			else if (key == "a_amod")
 				val = txp.amod;
-			else if (key == "a_sys")
-				val = txp.sys;
 		}
 
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
 		{
-			field->setText(val != -1 ? QString().setNum(val) : "");
+			field->setText(val != -1 ? QString::number(val) : "");
 		}
 		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
 		{
-			if (int index = field->findData(val, Qt::UserRole))
-				field->setCurrentIndex(index);
+			int index = field->findData(val, Qt::UserRole);
+			field->setCurrentIndex(index);
 		}
 	}
 }

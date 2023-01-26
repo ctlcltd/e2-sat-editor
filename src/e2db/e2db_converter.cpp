@@ -685,7 +685,7 @@ void e2db_converter::parse_csv(istream& ifile, vector<vector<string>>& sxv)
 {
 	debug("parse_csv()");
 
-	const char dlm = CSV_DELIMITER; //TODO win32 transform
+	const char dlm = CSV_DELIMITER;
 	const char sep = CSV_SEPARATOR;
 	const char esp = CSV_ESCAPE;
 
@@ -2405,7 +2405,7 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 			}
 			string ssid = to_string(ch.ssid);
 			string tsid = to_string(ch.tsid);
-			string stype = STYPE_EXT_LABEL.count(ch.stype) ? STYPE_EXT_LABEL.at(ch.stype) : STYPE_EXT_LABEL.at(STYPE::data);
+			string stype = value_service_type(ch);
 			string scas;
 			if (ch.data.count(SDATA::C))
 			{
@@ -2432,11 +2432,11 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 				}
 				scas.append("</span>");
 			}
-			string pname = ch.data.count(SDATA::p) ? ch.data[SDATA::p][0] : "";
+			string pname = value_channel_provider(ch);
 			string freq = to_string(tx.freq);
-			string pol = tx.pol != -1 ? SAT_POL[tx.pol] : "";
-			string sr = to_string(tx.sr);
-			string fec = SAT_FEC[tx.fec];
+			string pol = value_transponder_polarization(tx.pol);
+			string sr = value_transponder_sr(tx.sr);
+			string fec = value_transponder_fec(tx.fec, tx.ytype);
 			string pos = value_transponder_position(tx);
 			string sys = value_transponder_system(tx);
 			string tname = get_tuner_name(tx);
@@ -2631,7 +2631,7 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 			{
 				string freq = to_string(tntxp.freq);
 				string pol = value_transponder_polarization(tntxp.pol);
-				string sr = to_string(tntxp.sr);
+				string sr = value_transponder_sr(tntxp.sr);
 				string fec = value_transponder_fec(tntxp.fec, YTYPE::satellite);
 				string sys = value_transponder_system(tntxp.sys, YTYPE::satellite);
 				string mod = value_transponder_modulation(tntxp.mod, YTYPE::satellite);
@@ -2677,7 +2677,7 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 			{
 				string freq = to_string(tntxp.freq);
 				string cmod = value_transponder_modulation(tntxp.cmod, YTYPE::cable);
-				string sr = to_string(tntxp.sr);
+				string sr = value_transponder_sr(tntxp.sr);
 				string cfec = value_transponder_fec(tntxp.cfec, YTYPE::cable);
 				string inv = value_transponder_inversion(tntxp.inv, YTYPE::cable);
 				string sys = value_transponder_system(tntxp.sys, YTYPE::cable);

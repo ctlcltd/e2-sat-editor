@@ -100,7 +100,7 @@ class tab : protected e2se::log_factory
 		void infoMessage(QString title, QString text);
 		void errorMessage(QString title, QString text);
 
-		QWidget* widget;
+		QWidget* widget = nullptr;
 		dataHandler* data = nullptr;
 		ftpHandler* ftph = nullptr;
 		e2se_gui::tools* tools = nullptr;

@@ -9,9 +9,6 @@
  * @license GNU GPLv3 License
  */
 
-#include <cstdio>
-#include <cmath>
-
 #include <QTimer>
 #include <QSettings>
 #include <QGridLayout>
@@ -31,8 +28,6 @@
 #include "tab.h"
 #include "gui.h"
 #include "editTransponder.h"
-
-using std::to_string;
 
 using namespace e2se;
 
@@ -104,7 +99,7 @@ void transpondersView::layout()
 	list->setDragDropMode(QAbstractItemView::InternalMove);
 	list->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-	QTreeWidgetItem* list_thead = new QTreeWidgetItem({NULL, "TXID", "Combo", "System", "Position", "Frequency", "Polarization", "Symbol Rate", "FEC", "Modulation", "Bandwidth", "Pilot", "Roll offset", "Inversion", "Tmx Mode", "Guard", "Hierarchy"});
+	QTreeWidgetItem* list_thead = new QTreeWidgetItem({NULL, "TXID", "Combo", "System", "Position", "Transport ID", "DVBNS", "ONID", "Frequency", "Polarization", "Symbol Rate", "FEC", "Modulation", "Bandwidth", "Pilot", "Roll offset", "Inversion", "Tmx Mode", "Guard", "Hierarchy"});
 	list->setHeaderItem(list_thead);
 	list->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
 	if (QSettings().value("application/debug", true).toBool()) {
@@ -115,8 +110,11 @@ void transpondersView::layout()
 		list->setColumnHidden(ITEM_ROW_ROLE::debug_txid, true);
 	}
 	list->setColumnWidth(ITEM_ROW_ROLE::combo, 175);	// combo (s: freq|pol|sr, t: freq|tmod|band, c: freq|cmod|sr)
-	list->setColumnWidth(ITEM_ROW_ROLE::sys, 65);		// System
-	list->setColumnWidth(ITEM_ROW_ROLE::pos, 75);		// Position
+	list->setColumnWidth(ITEM_ROW_ROLE::sys, 75);		// System
+	list->setColumnWidth(ITEM_ROW_ROLE::pos, 80);		// Position
+	list->setColumnWidth(ITEM_ROW_ROLE::tsid, 80);		// Transport ID
+	list->setColumnWidth(ITEM_ROW_ROLE::dvbns, 95);		// DVBNS
+	list->setColumnWidth(ITEM_ROW_ROLE::onid, 85);		// ONID
 	list->setColumnWidth(ITEM_ROW_ROLE::freq, 85);		// Frequency
 	list->setColumnWidth(ITEM_ROW_ROLE::pol, 85);		// Polarization
 	list->setColumnWidth(ITEM_ROW_ROLE::sr, 85);		// Symbol Rate
@@ -225,11 +223,11 @@ void transpondersView::populate()
 		std::sprintf(ci, "%06d", i++);
 		QString x = QString::fromStdString(ci);
 
-		QString idx = QString::fromStdString(to_string(tp.first));
+		QString idx = QString::number(tp.first);
 		QString txid = QString::fromStdString(txp.txid);
 		QStringList entry = dbih->entryTransponder(txp, true);
 		entry.prepend(x);
-		entry.removeAt(5);
+		entry.removeAt(8);
 
 		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
@@ -316,7 +314,7 @@ void transpondersView::addTransponder()
 	string txid;
 	e2se_gui::editTransponder* add = new e2se_gui::editTransponder(this->data, this->log->log);
 	add->display(cwid);
-	txid = add->getAddId(); // returned after dial.exec()
+	txid = add->getAddId();
 	add->destroy();
 
 	if (dbih->db.transponders.count(txid))
@@ -339,10 +337,10 @@ void transpondersView::addTransponder()
 	char ci[7];
 	std::sprintf(ci, "%06d", i++);
 	QString x = QString::fromStdString(ci);
-	QString idx = QString::fromStdString(to_string(txp.index));
+	QString idx = QString::number(txp.index);
 	QStringList entry = dbih->entryTransponder(txp, true);
 	entry.prepend(x);
-	entry.removeAt(5);
+	entry.removeAt(8);
 
 	QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
@@ -389,7 +387,7 @@ void transpondersView::editTransponder()
 	e2se_gui::editTransponder* edit = new e2se_gui::editTransponder(this->data, this->log->log);
 	edit->setEditId(txid);
 	edit->display(cwid);
-	nw_txid = edit->getEditId(); // returned after dial.exec()
+	nw_txid = edit->getEditId();
 	edit->destroy();
 
 	if (dbih->db.transponders.count(nw_txid))
@@ -401,7 +399,7 @@ void transpondersView::editTransponder()
 
 	QStringList entry = dbih->entryTransponder(txp, true);
 	entry.prepend(item->text(ITEM_ROW_ROLE::x));
-	entry.removeAt(5);
+	entry.removeAt(8);
 	for (int i = 0; i < entry.count(); i++)
 		item->setText(i, entry[i]);
 	item->setData(ITEM_DATA_ROLE::txid, Qt::UserRole, QString::fromStdString(nw_txid));
@@ -427,14 +425,13 @@ void transpondersView::listItemCopy(bool cut)
 		QString txid = item->data(ITEM_DATA_ROLE::txid, Qt::UserRole).toString();
 
 		QStringList data;
-		// start from sys column [2]
-		for (int i = ITEM_ROW_ROLE::sys; i < list->columnCount(); i++)
+		// start from combo column [2]
+		for (int i = ITEM_ROW_ROLE::combo; i < list->columnCount(); i++)
 		{
 			QString qstr = item->data(i, Qt::DisplayRole).toString();
 			data.append(qstr);
 		}
 
-		data.prepend(txid); // insert txid column [0]
 		text.append(data.join(",")); // CSV
 	}
 	clipboard->setText(text.join("\n")); // CSV
@@ -535,74 +532,83 @@ void transpondersView::putListItems(vector<QString> items)
 		char ci[7];
 		std::sprintf(ci, "%06d", i++);
 		QString x = QString::fromStdString(ci);
-		QString idx = QString::fromStdString(to_string(i));
+		QString idx = QString::number(i);
 
-		string txid;
-		e2db::transponder txp;
+		e2db::transponder tx;
 
 		if (q.contains(','))
 		{
 			auto qs = q.split(',');
-			txid = txp.txid = qs[0].toStdString();
-			txp.freq = qs[1].toInt();
+			e2db::fec fec;
+			tx.ytype = dbih->value_transponder_type(qs[1].toStdString());
+			tx.pos = dbih->value_transponder_position(qs[2].toStdString());
+			tx.tsid = qs[3].toInt();
+			tx.dvbns = dbih->value_transponder_dvbns(qs[4].toStdString());
+			tx.onid = qs[5].toInt();
+			tx.freq = qs[6].toInt();
+			dbih->value_transponder_fec(qs[9].toStdString(), tx.ytype, fec);
 
-			/*switch (this->state.yx)
+			switch (tx.ytype)
 			{
 				case e2db::YTYPE::satellite:
-					txp.pol = dbih->value_transponder_polarization(qs[2].toStdString());
-					txp.sr = qs[3].toInt();
-					txp.fec = dbih->value_transponder_fec(qs[4].toStdString(), e2db::YTYPE::satellite);
-					txp.sys = dbih->value_transponder_system(qs[5].toStdString());
-					txp.mod = dbih->value_transponder_modulation(qs[6].toStdString(), e2db::YTYPE::satellite);
-					txp.inv = dbih->value_transponder_inversion(qs[7].toStdString(), e2db::YTYPE::satellite);
-					txp.rol = dbih->value_transponder_rollof(qs[8].toStdString());
-					txp.pil = dbih->value_transponder_pilot(qs[9].toStdString());
+					tx.pol = dbih->value_transponder_polarization(qs[7].toStdString());
+					tx.sr = qs[8].toInt();
+					tx.fec = fec.inner_fec;
+					tx.sys = dbih->value_transponder_system(qs[1].toStdString());
+					tx.mod = dbih->value_transponder_modulation(qs[10].toStdString(), e2db::YTYPE::satellite);
+					tx.inv = dbih->value_transponder_inversion(qs[14].toStdString(), e2db::YTYPE::satellite);
+					tx.rol = dbih->value_transponder_rollof(qs[13].toStdString());
+					tx.pil = dbih->value_transponder_pilot(qs[12].toStdString());
 				break;
 				case e2db::YTYPE::terrestrial:
-					txp.tmod = dbih->value_transponder_modulation(qs[2].toStdString(), e2db::YTYPE::terrestrial);
-					txp.band = dbih->value_transponder_bandwidth(qs[3].toStdString());
-					txp.sys = dbih->value_transponder_system(qs[4].toStdString());
-					txp.tmx = dbih->value_transponder_tmx_mode(qs[5].toStdString());
-					txp.hpfec = dbih->value_transponder_fec(qs[6].toStdString(), e2db::YTYPE::terrestrial);
-					txp.lpfec = dbih->value_transponder_fec(qs[7].toStdString(), e2db::YTYPE::terrestrial);
-					txp.inv = dbih->value_transponder_inversion(qs[8].toStdString(), e2db::YTYPE::terrestrial);
-					txp.guard = dbih->value_transponder_guard(qs[9].toStdString());
-					txp.hier = dbih->value_transponder_hier(qs[10].toStdString());
+					tx.tmod = dbih->value_transponder_modulation(qs[10].toStdString(), e2db::YTYPE::terrestrial);
+					tx.band = dbih->value_transponder_bandwidth(qs[11].toStdString());
+					tx.sys = dbih->value_transponder_system(qs[1].toStdString());
+					tx.tmx = dbih->value_transponder_tmx_mode(qs[15].toStdString());
+					tx.hpfec = fec.hp_fec;
+					tx.lpfec = fec.lp_fec;
+					tx.inv = dbih->value_transponder_inversion(qs[14].toStdString(), e2db::YTYPE::terrestrial);
+					tx.guard = dbih->value_transponder_guard(qs[16].toStdString());
+					tx.hier = dbih->value_transponder_hier(qs[17].toStdString());
 				break;
 				case e2db::YTYPE::cable:
-					txp.cmod = dbih->value_transponder_modulation(qs[2].toStdString(), e2db::YTYPE::cable);
-					txp.sr = qs[3].toInt();
-					txp.cfec = dbih->value_transponder_fec(qs[4].toStdString(), e2db::YTYPE::cable);
-					txp.inv = dbih->value_transponder_inversion(qs[5].toStdString(), e2db::YTYPE::cable);
-					txp.sys = dbih->value_transponder_system(qs[6].toStdString());
+					tx.cmod = dbih->value_transponder_modulation(qs[10].toStdString(), e2db::YTYPE::cable);
+					tx.sr = qs[8].toInt();
+					tx.fec = fec.inner_fec;
+					tx.inv = dbih->value_transponder_inversion(qs[14].toStdString(), e2db::YTYPE::cable);
 				break;
 				case e2db::YTYPE::atsc:
-					txp.amod = dbih->value_transponder_modulation(qs[2].toStdString(), e2db::YTYPE::atsc);
-					txp.sys = dbih->value_transponder_system(qs[3].toStdString());
+					tx.amod = dbih->value_transponder_modulation(qs[2].toStdString(), e2db::YTYPE::atsc);
+					tx.sys = dbih->value_transponder_system(qs[1].toStdString());
 				break;
-			}*/
+			}
+
+			char txid[25];
+			// %4x:%8x
+			std::sprintf(txid, "%x:%x", tx.tsid, tx.dvbns);
+			tx.txid = txid;
 		}
 		else
 		{
-			txid = q.toStdString();
+			tx.txid = q.toStdString();
 		}
 
 		QStringList entry;
 
-		if (dbih->db.transponders.count(txid))
+		if (dbih->db.transponders.count(tx.txid))
 		{
-			txp = dbih->db.transponders[txid];
+			tx = dbih->db.transponders[tx.txid];
 		}
-		entry = dbih->entryTransponder(txp);
+		entry = dbih->entryTransponder(tx);
 		entry.prepend(x);
 
 		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
-		item->setData(ITEM_DATA_ROLE::txid, Qt::UserRole, QString::fromStdString(txid));
+		item->setData(ITEM_DATA_ROLE::txid, Qt::UserRole, QString::fromStdString(tx.txid));
 		clist.append(item);
 
-		dbih->addTransponder(txp);
+		dbih->addTransponder(tx);
 	}
 
 	if (current == nullptr)

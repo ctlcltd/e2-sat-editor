@@ -108,9 +108,9 @@ class viewAbstract : protected e2se::log_factory
 		}
 		virtual void updateIndex() {};
 
-		QWidget* widget;
-		QTreeWidget* list;
-		QTreeWidget* tree;
+		QWidget* widget = nullptr;
+		QTreeWidget* list = nullptr;
+		QTreeWidget* tree = nullptr;
 
 	protected:
 		struct search

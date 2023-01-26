@@ -1067,7 +1067,7 @@ void gui::setStatusBar(status msg)
 		{
 			if (msg.counters[COUNTER::n_bouquet])
 			{
-				text.append("Channels: " + QString::fromStdString(to_string(msg.counters[COUNTER::n_bouquet])));
+				text.append("Channels: " + QString::number(msg.counters[COUNTER::n_bouquet]));
 			}
 			if (! msg.curr.empty())
 			{
@@ -1078,19 +1078,19 @@ void gui::setStatusBar(status msg)
 		}
 		else
 		{
-			text.append("TV: " + QString::fromStdString(to_string(msg.counters[COUNTER::n_tv])));
+			text.append("TV: " + QString::number(msg.counters[COUNTER::n_tv]));
 			text.append(separator);
-			text.append("Radio: " + QString::fromStdString(to_string(msg.counters[COUNTER::n_radio])));
+			text.append("Radio: " + QString::number(msg.counters[COUNTER::n_radio]));
 			text.append(separator);
-			text.append("Data: " + QString::fromStdString(to_string(msg.counters[COUNTER::n_data])));
+			text.append("Data: " + QString::number(msg.counters[COUNTER::n_data]));
 			text.append(separator);
-			text.append("Total: " + QString::fromStdString(to_string(msg.counters[COUNTER::n_services])));
+			text.append("Total: " + QString::number(msg.counters[COUNTER::n_services]));
 			sbwidr->setText(text);
 		}
 	}
 	else if (msg.view == TAB_VIEW::transponders)
 	{
-		text.append("Total: " + QString::fromStdString(to_string(msg.counters[COUNTER::n_transponders])));
+		text.append("Total: " + QString::number(msg.counters[COUNTER::n_transponders]));
 		sbwidl->setText("");
 		sbwidr->setText(text);
 	}
@@ -1100,7 +1100,7 @@ void gui::setStatusBar(status msg)
 		{
 			if (msg.counters[COUNTER::n_position])
 			{
-				text.append("Transponders: " + QString::fromStdString(to_string(msg.counters[COUNTER::n_position])));
+				text.append("Transponders: " + QString::number(msg.counters[COUNTER::n_position]));
 			}
 			if (! msg.curr.empty())
 			{
@@ -1111,7 +1111,7 @@ void gui::setStatusBar(status msg)
 		}
 		else
 		{
-			text.append("Total: " + QString::fromStdString(to_string(msg.counters[COUNTER::n_transponders])));
+			text.append("Total: " + QString::number(msg.counters[COUNTER::n_transponders]));
 			sbwidr->setText(text);
 		}
 	}

@@ -39,14 +39,15 @@ class editTransponder : public dialAbstract
 		editTransponder(dataHandler* data, e2se::logger::session* log);
 		void display(QWidget* cwid);
 		void layout(QWidget* cwid);
-		void change();
 		void layoutChange(int vx);
+		void store();
 		void setEditId(string txid);
 		string getEditId();
 		void setAddId();
 		string getAddId();
 
 	protected:
+		void change();
 		void leadSatLayout();
 		void leadTerrestrialLayout();
 		void leadCableLayout();
@@ -54,9 +55,7 @@ class editTransponder : public dialAbstract
 		void sideSatLayout();
 		void sideTerrestrialLayout();
 		void sideCableLayout();
-		void thirdSatLayout();
 		void typeComboChanged(int index);
-		void store();
 		void retrieve();
 		void retrieve(string txid);
 

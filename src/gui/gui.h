@@ -262,7 +262,7 @@ class gui : protected e2se::log_factory
 		void setFlag(GUI_CXE bit, bool flag);
 		bitset<256> getFlags();
 		void setFlags(bitset<256> bits);
-		//TODO bits sequence bitwise or
+		//TODO improve bits sequence bitwise or
 		void setFlags(vector<int> bits, bool flag);
 		void update();
 		void update(int bit, bool flag);
@@ -307,7 +307,7 @@ class gui : protected e2se::log_factory
 
 	private:
 		QApplication* mroot;
-		QWidget* mwid;
+		QWidget* mwid = nullptr;
 		QGridLayout* mfrm;
 		QHBoxLayout* mcnt;
 		QHBoxLayout* mstatusb;

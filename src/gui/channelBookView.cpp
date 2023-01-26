@@ -24,8 +24,6 @@
 #include "theme.h"
 #include "tab.h"
 
-using std::to_string;
-
 using namespace e2se;
 
 namespace e2se_gui
@@ -128,8 +126,8 @@ void channelBookView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::chtype, 70);	// Type
 	list->setColumnWidth(ITEM_ROW_ROLE::chpname, 125);	// Provider
 	list->setColumnWidth(ITEM_ROW_ROLE::chtxp, 165);	// Transponder
-	list->setColumnWidth(ITEM_ROW_ROLE::chpos, 70);		// Position
-	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 65);		// System
+	list->setColumnWidth(ITEM_ROW_ROLE::chpos, 80);		// Position
+	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 75);		// System
 
 	tabv->setHidden(true);
 	tabv->setShape(QTabBar::RoundedWest);
@@ -293,7 +291,7 @@ void channelBookView::populate()
 
 			int atype = dbih->value_service_super_type(ch);
 			bool disabled = this->state.sy != -1 && this->state.sy != atype;
-			QString idx = QString::fromStdString(to_string(chdata.first));
+			QString idx = QString::number(chdata.first);
 			QString chid = QString::fromStdString(chdata.second);
 
 			QStringList entry = dbih->entries.services[chdata.second];

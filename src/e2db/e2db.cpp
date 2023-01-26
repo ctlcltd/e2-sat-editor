@@ -66,7 +66,7 @@ void e2db::import_file(vector<string> paths)
 
 		FPORTS fpi = filetype_detect(path);
 
-		//TODO improve
+		//TODO improve mime type
 		e2db_file file;
 		file.filename = path;
 		if (fpi == FPORTS::directory)
@@ -282,7 +282,6 @@ void e2db::edit_transponder(string txid, transponder& tx)
 	}
 }
 
-//TODO TEST
 void e2db::remove_transponder(string txid)
 {
 	debug("remove_transponder()", "txid", txid);

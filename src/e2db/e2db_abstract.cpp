@@ -414,6 +414,20 @@ string e2db_abstract::value_transponder_combo(tunersets_transponder tntxp, tuner
 	return ptxp;
 }
 
+int e2db_abstract::value_transponder_dvbns(string str)
+{
+	int dvbns = 0;
+	std::sscanf(str.c_str(), "%X", &dvbns);
+	return dvbns;
+}
+
+string e2db_abstract::value_transponder_dvbns(int dvbns)
+{
+	char cdvbns[7];
+	std::sprintf(cdvbns, "%6X", dvbns);
+	return cdvbns;
+}
+
 int e2db_abstract::value_transponder_polarization(string str)
 {
 	switch (str[0])
@@ -430,6 +444,13 @@ string e2db_abstract::value_transponder_polarization(int pol)
 {
 	if (pol != -1 && pol < 4)
 		return SAT_POL[pol];
+	return "";
+}
+
+string e2db_abstract::value_transponder_sr(int sr)
+{
+	if (sr != -1)
+		return to_string(sr);
 	return "";
 }
 

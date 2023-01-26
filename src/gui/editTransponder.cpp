@@ -116,6 +116,9 @@ void editTransponder::change()
 {
 	debug("change()");
 
+	if (dtform == nullptr)
+		return;
+
 	for (auto & item : fields)
 	{
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
@@ -324,6 +327,21 @@ void editTransponder::leadTerrestrialLayout()
 		dtf0tl->addItem(QString::fromStdString(w), i);
 	}
 
+	QComboBox* dtf0ty = new QComboBox;
+	dtf0ty->setProperty("field", "t_sys");
+	fields.emplace_back(dtf0ty);
+	dtf0ty->setMaximumWidth(100);
+	dtf0ty->setValidator(new QIntValidator);
+	platform::osComboBox(dtf0ty);
+	dtf0->addRow(tr("System"), dtf0ty);
+	dtf0->addItem(new QSpacerItem(0, 0));
+	dtf0ty->addItem(tr("empty"), -1);
+	for (int i = 0; i < 2; i++)
+	{
+		string w = e2db::TER_SYS[i];
+		dtf0ty->addItem(QString::fromStdString(w), i);
+	}
+
 	dtl0->setLayout(dtf0);
 	dtform->addWidget(dtl0, 0, 1);
 }
@@ -416,6 +434,16 @@ void editTransponder::leadAtscLayout()
 	dtf0am->setMaxLength(1);
 	platform::osLineEdit(dtf0am);
 	dtf0->addRow(tr("Modulation"), dtf0am);
+	dtf0->addItem(new QSpacerItem(0, 0));
+
+	QLineEdit* dtf0ay = new QLineEdit;
+	dtf0ay->setProperty("field", "a_sys");
+	fields.emplace_back(dtf0ay);
+	dtf0ay->setMaximumWidth(100);
+	dtf0ay->setValidator(new QIntValidator);
+	dtf0ay->setMaxLength(1);
+	platform::osLineEdit(dtf0ay);
+	dtf0->addRow(tr("System"), dtf0ay);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
 	dtl0->setLayout(dtf0);
@@ -605,7 +633,6 @@ void editTransponder::typeComboChanged(int index)
 	layoutChange(this->state.yx);
 }
 
-//TODO TEST
 void editTransponder::store()
 {
 	debug("store()");
@@ -628,9 +655,16 @@ void editTransponder::store()
 		int val = -1;
 
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
-			val = field->text().isEmpty() ? -1 : field->text().toInt();
+		{
+			if (key == "dvbns")
+				val = dbih->value_transponder_dvbns(field->text().toStdString());
+			else
+				val = field->text().isEmpty() ? -1 : field->text().toInt();
+		}
 		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
+		{
 			val = field->currentData().toInt();
+		}
 
 		if (key == "ytype")
 			txp.ytype = val;
@@ -699,8 +733,6 @@ void editTransponder::store()
 				txp.cfec = val;
 			else if (key == "c_inv")
 				txp.inv = val;
-			else if (key == "c_sys")
-				txp.sys = val;
 			else if (key == "c_cmod")
 				txp.cmod = val;
 		}
@@ -823,8 +855,6 @@ void editTransponder::retrieve(string txid)
 				val = txp.cfec;
 			else if (key == "c_inv")
 				val = txp.inv;
-			else if (key == "c_sys")
-				val = txp.sys;
 			else if (key == "c_cmod")
 				val = txp.cmod;
 		}
@@ -840,12 +870,15 @@ void editTransponder::retrieve(string txid)
 
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
 		{
-			field->setText(val != -1 ? QString().setNum(val) : "");
+			if (key == "dvbns")
+				field->setText(QString::fromStdString(dbih->value_transponder_dvbns(val)));
+			else
+				field->setText(val != -1 ? QString::number(val) : "");
 		}
 		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
 		{
-			if (int index = field->findData(val, Qt::UserRole))
-				field->setCurrentIndex(index);
+			int index = field->findData(val, Qt::UserRole);
+			field->setCurrentIndex(index);
 		}
 	}
 }
@@ -854,8 +887,15 @@ void editTransponder::setEditId(string txid)
 {
 	debug("setEditId()");
 
+	bool changed = false;
+	if (! this->state.edit || txid != this->txid)
+		changed = true;
+
 	this->state.edit = true;
 	this->txid = txid;
+
+	if (changed)
+		change();
 }
 
 string editTransponder::getEditId()
@@ -869,7 +909,14 @@ void editTransponder::setAddId()
 {
 	debug("setAddId()");
 
+	bool changed = false;
+	if (this->state.edit)
+		changed = true;
+
 	this->state.edit = false;
+
+	if (changed)
+		change();
 }
 
 string editTransponder::getAddId()

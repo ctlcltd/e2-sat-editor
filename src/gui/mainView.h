@@ -111,7 +111,7 @@ class mainView : public viewAbstract
 		void listItemDelete();
 		void updateIndex();
 
-		QTreeWidget* side;
+		QTreeWidget* side = nullptr;
 
 		__state currentState() { return this->state; };
 
@@ -129,6 +129,7 @@ class mainView : public viewAbstract
 		void listItemDoubleClicked();
 		void listPendingUpdate();
 		void visualReindexList();
+		void visualReloadList();
 		void sortByColumn(int column);
 		void allowDnD();
 		void disallowDnD();

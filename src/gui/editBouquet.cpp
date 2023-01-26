@@ -164,8 +164,8 @@ void editBouquet::retrieve()
 		}
 		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
 		{
-			if (int index = field->findData(QString::fromStdString(val), Qt::UserRole))
-				field->setCurrentIndex(index);
+			int index = field->findData(QString::fromStdString(val), Qt::UserRole);
+			field->setCurrentIndex(index);
 		}
 	}
 }

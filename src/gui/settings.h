@@ -86,7 +86,7 @@ class settings : protected e2se::log_factory
 
 	private:
 		e2se_gui::gui* gid;
-		QDialog* dial;
+		QDialog* dial = nullptr;
 		QSettings* sets;
 		QTabWidget* dtwid;
 		WidgetWithBackdrop* rppage;

@@ -402,8 +402,11 @@ struct e2db_abstract
 		static char value_transponder_type(YTYPE ttype);
 		static string value_transponder_combo(transponder tx);
 		static string value_transponder_combo(tunersets_transponder tntxp, tunersets_table tn);
+		static int value_transponder_dvbns(string str);
+		static string value_transponder_dvbns(int dvbns);
 		static int value_transponder_polarization(string str);
 		static string value_transponder_polarization(int pol);
+		static string value_transponder_sr(int sr);
 		static int value_transponder_position(string str);
 		static string value_transponder_position(transponder tx);
 		static string value_transponder_position(tunersets_table tn);

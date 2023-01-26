@@ -152,7 +152,7 @@ QWidget* _platform_macx::_osWindowBlend(QWidget* widget) {
 	{
 		view = (NSView*)widget->winId();
 	}
-	//TODO
+	//TODO FIX
 	else if (widget->windowType() == Qt::Dialog)
 	{
 		// view = (NSView*)widget;

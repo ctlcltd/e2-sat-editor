@@ -9,11 +9,6 @@
  * @license GNU GPLv3 License
  */
 
-#include <cstdio>
-#include <cmath>
-#include <algorithm>
-#include <filesystem>
-
 #include <QtGlobal>
 #include <QSettings>
 #include <QTimer>
@@ -43,8 +38,6 @@
 #include "editService.h"
 #include "editMarker.h"
 #include "dialChannelBook.h"
-
-using std::to_string, std::sort;
 
 using namespace e2se;
 
@@ -184,7 +177,7 @@ void mainView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::chcas, 45);		// CAS
 	list->setColumnWidth(ITEM_ROW_ROLE::chpname, 150);	// Provider
 	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 75);		// System
-	list->setColumnWidth(ITEM_ROW_ROLE::chpos, 65);		// Position
+	list->setColumnWidth(ITEM_ROW_ROLE::chpos, 80);		// Position
 	list->setColumnWidth(ITEM_ROW_ROLE::chtname, 125);	// Tuner Name
 	list->setColumnWidth(ITEM_ROW_ROLE::chfreq, 95);	// Frequency
 	list->setColumnWidth(ITEM_ROW_ROLE::chpol, 85);		// Polarization
@@ -291,12 +284,12 @@ void mainView::layout()
 		{"chs:0", "Data"}
 	};
 
-	for (auto & q : tree)
+	for (auto & x : tree)
 	{
 		QTreeWidgetItem* item = new QTreeWidgetItem();
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-		item->setData(0, Qt::UserRole, q.first);
-		item->setText(0, q.second);
+		item->setData(0, Qt::UserRole, x.first);
+		item->setText(0, x.second);
 		item->setIcon(0, theme::spacer(2));
 		side->addTopLevelItem(item);
 	}
@@ -591,7 +584,7 @@ void mainView::populate(QTreeWidget* tree)
 			{
 				entry = dbih->entries.services[ch.second];
 				//TODO TEST idx changed after edit
-				idx = QString::fromStdString(to_string(ch.first));
+				idx = QString::number(ch.first);
 				entry.prepend(idx);
 				entry.prepend(x);
 			}
@@ -924,12 +917,35 @@ void mainView::visualReindexList()
 		std::sprintf(ci, "%06d", idx++);
 		item->setText(ITEM_ROW_ROLE::x, QString::fromStdString(ci));
 		if (! marker)
-			item->setText(ITEM_ROW_ROLE::chnum, QString::fromStdString(to_string(idx - y)));
+			item->setText(ITEM_ROW_ROLE::chnum, QString::number(idx - y));
 		i++;
 		y = marker ? reverse ? y - 1 : y + 1 : y;
 	}
 
 	this->state.vlx_pending = false;
+}
+
+void mainView::visualReloadList()
+{
+	debug("visualReloadList()");
+
+	auto* dbih = this->data->dbih;
+
+	int i = 0;
+	int j = list->topLevelItemCount();
+
+	while (i != j)
+	{
+		QTreeWidgetItem* item = list->topLevelItem(i);
+		string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
+
+		QStringList entry = dbih->entries.services[chid];
+		entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
+		entry.prepend(item->text(ITEM_ROW_ROLE::x));
+		for (int i = 0; i < entry.count(); i++)
+			item->setText(i, entry[i]);
+		i++;
+	}
 }
 
 void mainView::sortByColumn(int column)
@@ -1007,7 +1023,7 @@ void mainView::addUserbouquet()
 	string bname;
 	e2se_gui::editBouquet* add = new e2se_gui::editBouquet(this->data, this->state.ti, this->log->log);
 	add->display(cwid);
-	bname = add->getAddId(); // returned after dial.exec()
+	bname = add->getAddId();
 	add->destroy();
 
 	auto* dbih = this->data->dbih;
@@ -1117,9 +1133,11 @@ void mainView::addService()
 	debug("addService()");
 
 	string chid;
+	bool reload = false;
 	e2se_gui::editService* add = new e2se_gui::editService(this->data, this->log->log);
 	add->display(cwid);
-	chid = add->getAddId(); // returned after dial.exec()
+	chid = add->getAddId();
+	reload = ! (add->getTransponderId()).empty();
 	add->destroy();
 
 	auto* dbih = this->data->dbih;
@@ -1130,6 +1148,9 @@ void mainView::addService()
 		return error("addService()", "chid", chid);
 
 	cache.clear();
+
+	if (reload)
+		dbih->cache(true);
 
 	list->header()->setSectionsClickable(false);
 	list->setDragEnabled(false);
@@ -1145,7 +1166,7 @@ void mainView::addService()
 	char ci[7];
 	std::sprintf(ci, "%06d", i++);
 	QString x = QString::fromStdString(ci);
-	QString idx = QString::fromStdString(to_string(i));
+	QString idx = QString::number(i);
 	QStringList entry = dbih->entries.services[chid];
 	entry.prepend(idx);
 	entry.prepend(x);
@@ -1176,6 +1197,8 @@ void mainView::addService()
 	list->setDragEnabled(true);
 	list->setAcceptDrops(true);
 
+	if (reload)
+		visualReloadList();
 	// sorting default
 	if (this->state.dnd)
 		visualReindexList();
@@ -1202,6 +1225,7 @@ void mainView::editService()
 	QTreeWidgetItem* item = selected.first();
 	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 	string nw_chid;
+	bool reload = false;
 	bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
 
 	auto* dbih = this->data->dbih;
@@ -1216,10 +1240,14 @@ void mainView::editService()
 	e2se_gui::editService* edit = new e2se_gui::editService(this->data, this->log->log);
 	edit->setEditId(chid);
 	edit->display(cwid);
-	nw_chid = edit->getEditId(); // returned after dial.exec()
+	nw_chid = edit->getEditId();
+	reload = ! (edit->getTransponderId()).empty();
 	edit->destroy();
 
 	cache.clear();
+
+	if (reload)
+		dbih->cache(true);
 
 	if (dbih->db.services.count(nw_chid))
 		debug("editService()", "new chid", nw_chid);
@@ -1233,6 +1261,9 @@ void mainView::editService()
 		item->setText(i, entry[i]);
 	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
 
+	if (reload)
+		visualReloadList();
+
 	this->data->setChanged(true);
 }
 
@@ -1245,7 +1276,7 @@ void mainView::addMarker()
 	e2se_gui::editMarker* add = new e2se_gui::editMarker(this->data, this->log->log);
 	add->setAddId(bname);
 	add->display(cwid);
-	chid = add->getAddId(); // returned after dial.exec()
+	chid = add->getAddId();
 	add->destroy();
 
 	auto* dbih = this->data->dbih;
@@ -1342,7 +1373,7 @@ void mainView::editMarker()
 	e2se_gui::editMarker* edit = new e2se_gui::editMarker(this->data, this->log->log);
 	edit->setEditId(chid, bname);
 	edit->display(cwid);
-	nw_chid = edit->getEditId(); // returned after dial.exec()
+	nw_chid = edit->getEditId();
 	edit->destroy();
 
 	auto* dbih = this->data->dbih;
@@ -1658,7 +1689,7 @@ void mainView::putListItems(vector<QString> items)
 		char ci[7];
 		std::sprintf(ci, "%06d", i++);
 		QString x = QString::fromStdString(ci);
-		QString idx = QString::fromStdString(to_string(i));
+		QString idx = QString::number(i);
 
 		string refid;
 		string value;
@@ -1995,7 +2026,7 @@ void mainView::updateReferenceBox()
 		{
 			e2db::service ch = dbih->db.services[chid];
 
-			ssid = QString::fromStdString(to_string(ch.ssid));
+			ssid = QString::number(ch.ssid);
 
 			if (ch.tsid != 0)
 			{

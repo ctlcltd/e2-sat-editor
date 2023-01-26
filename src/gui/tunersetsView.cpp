@@ -196,8 +196,8 @@ void tunersetsView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::row3, 85);		// Frequency
 	list->setColumnWidth(ITEM_ROW_ROLE::row4, 85);		// Polarization | Constellation | Modulation
 	list->setColumnWidth(ITEM_ROW_ROLE::row5, 85);		// Symbol Rate | Bandwidth
-	list->setColumnWidth(ITEM_ROW_ROLE::row6, 65);		// FEC | System
-	list->setColumnWidth(ITEM_ROW_ROLE::row7, 65);		// System | Tmx Mode
+	list->setColumnWidth(ITEM_ROW_ROLE::row6, 75);		// FEC | System
+	list->setColumnWidth(ITEM_ROW_ROLE::row7, 75);		// System | Tmx Mode
 	list->setColumnWidth(ITEM_ROW_ROLE::row8, 75);		// Modulation | HP FEC | System
 	list->setColumnWidth(ITEM_ROW_ROLE::row9, 75);		// Inversion | LP FEC
 	list->setColumnWidth(ITEM_ROW_ROLE::rowA, 75);		// Pilot | Inversion
@@ -410,7 +410,7 @@ void tunersetsView::populate()
 		std::sprintf(ci, "%06d", i++);
 		QString x = QString::fromStdString(ci);
 
-		QString idx = QString::fromStdString(to_string(tp.first));
+		QString idx = QString::number(tp.first);
 		QString trid = QString::fromStdString(txp.trid);
 		QStringList entry = dbih->entryTunersetsTransponder(txp, tns);
 		entry.prepend(x);
@@ -556,7 +556,7 @@ void tunersetsView::editSettings()
 	e2se_gui::editTunersets* edit = new e2se_gui::editTunersets(this->data, tvid, this->log->log);
 	edit->setEditId(tvid);
 	edit->display(cwid);
-	edit->getEditId(); // returned after dial.exec()
+	edit->getEditId();
 	edit->destroy();
 
 	this->data->setChanged(true);
@@ -577,7 +577,7 @@ void tunersetsView::addPosition()
 	e2se_gui::editTunersetsTable* add = new e2se_gui::editTunersetsTable(this->data, tvid, this->log->log);
 	add->setAddId(tvid);
 	add->display(cwid);
-	tnid = add->getAddId(); // returned after dial.exec()
+	tnid = add->getAddId();
 	add->destroy();
 
 	if (dbih->tuners[tvid].tables.count(tnid))
@@ -647,7 +647,7 @@ void tunersetsView::editPosition()
 	e2se_gui::editTunersetsTable* edit = new e2se_gui::editTunersetsTable(this->data, tvid, this->log->log);
 	edit->setEditId(tnid, tvid);
 	edit->display(cwid);
-	nw_tnid = edit->getEditId(); // returned after dial.exec()
+	nw_tnid = edit->getEditId();
 	edit->destroy();
 
 	if (dbih->tuners[tvid].tables.count(nw_tnid))
@@ -684,7 +684,7 @@ void tunersetsView::addTransponder()
 	e2se_gui::editTunersetsTransponder* add = new e2se_gui::editTunersetsTransponder(this->data, tvid, this->log->log);
 	add->setAddId(tnid, tvid);
 	add->display(cwid);
-	trid = add->getAddId(); // returned after dial.exec()
+	trid = add->getAddId();
 	add->destroy();
 
 	if (dbih->tuners[tvid].tables[tnid].transponders.count(trid))
@@ -708,7 +708,7 @@ void tunersetsView::addTransponder()
 	char ci[7];
 	std::sprintf(ci, "%06d", i++);
 	QString x = QString::fromStdString(ci);
-	QString idx = QString::fromStdString(to_string(txp.index));
+	QString idx = QString::number(txp.index);
 	QStringList entry = dbih->entryTunersetsTransponder(txp, tns);
 	entry.prepend(x);
 
@@ -764,7 +764,7 @@ void tunersetsView::editTransponder()
 	e2se_gui::editTunersetsTransponder* edit = new e2se_gui::editTunersetsTransponder(this->data, tvid, this->log->log);
 	edit->setEditId(trid, tnid, tvid);
 	edit->display(cwid);
-	nw_trid = edit->getEditId(); // returned after dial.exec()
+	nw_trid = edit->getEditId();
 	edit->destroy();
 
 	if (dbih->tuners[tvid].tables[tnid].transponders.count(nw_trid))
@@ -957,7 +957,7 @@ void tunersetsView::putListItems(vector<QString> items)
 		char ci[7];
 		std::sprintf(ci, "%06d", i++);
 		QString x = QString::fromStdString(ci);
-		QString idx = QString::fromStdString(to_string(i));
+		QString idx = QString::number(i);
 
 		string trid;
 		e2db::tunersets_transponder txp;
@@ -965,6 +965,7 @@ void tunersetsView::putListItems(vector<QString> items)
 		if (q.contains(','))
 		{
 			auto qs = q.split(',');
+			//TODO improve
 			trid = txp.trid = qs[0].toStdString();
 			txp.freq = qs[1].toInt();
 

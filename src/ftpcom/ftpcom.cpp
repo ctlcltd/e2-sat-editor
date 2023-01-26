@@ -103,7 +103,7 @@ bool ftpcom::handle()
 	curl_easy_setopt(cph, CURLOPT_PORT, ftport);
 	if (actv)
 		curl_easy_setopt(cph, CURLOPT_FTPPORT, "-");
-	//TODO FIX hangs the main thread
+	//TODO FIX hangs the main thread ? lookup before connect
 	curl_easy_setopt(cph, CURLOPT_CONNECTTIMEOUT, 10);
 	// curl_easy_setopt(cph, CURLOPT_FTP_RESPONSE_TIMEOUT, 10); // 0 = default no timeout
 	curl_easy_setopt(cph, CURLOPT_VERBOSE, true);
@@ -195,7 +195,7 @@ vector<string> ftpcom::list_dir(string base)
 	return list;
 }
 
-//TODO resuming
+//TODO improve resuming
 void ftpcom::download_data(string base, string filename, ftpcom_file& file)
 {
 	debug("download_data()");
@@ -293,9 +293,9 @@ void ftpcom::fetch_paths()
 	unordered_set<string> base = {baset, baseb, bases};
 	vector<string> list;
 
-	for (auto & q : base)
+	for (auto & w : base)
 	{
-		list = list_dir(q);
+		list = list_dir(w);
 		ftdb.insert(ftdb.end(), list.begin(), list.end());
 	}
 }

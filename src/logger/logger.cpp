@@ -134,7 +134,6 @@ void logger::error(string msg, string optk, int optv)
 	this->logger::error(msg, optk, std::to_string(optv));
 }
 
-//TODO TEST
 string logger::timestamp()
 {
 #ifndef __MINGW32__

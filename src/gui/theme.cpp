@@ -79,15 +79,15 @@ QIcon theme::icon(QString icon)
 
 QIcon theme::spacer(int width)
 {
-	return QIcon(":/icons/" + QString().setNum(width) + "x1.png");
+	return QIcon(":/icons/" + QString::number(width) + "x1.png");
 }
 
+//TODO FIX behaviour Qt5 [linux]
 QString theme::fontFamily()
 {
 	return QFont().defaultFamily();
 }
 
-//TODO FIX behaviour Qt5 [linux]
 int theme::fontSize()
 {
 	return QFont().pointSize();
@@ -152,7 +152,6 @@ void theme::changed()
 }
 
 
-//TODO FIX behaviour Qt5 [linux]
 void style::system()
 {
 #ifndef Q_OS_MAC

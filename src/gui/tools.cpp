@@ -121,20 +121,7 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 	
 	tid->reset();
 
-	if (merge)
-	{
-		dbih->entries.transponders.clear();
-		dbih->entries.services.clear();
-	}
-
-	for (auto & txdata : dbih->db.transponders)
-	{
-		dbih->entries.transponders[txdata.first] = dbih->entryTransponder(txdata.second);
-	}
-	for (auto & chdata : dbih->db.services)
-	{
-		dbih->entries.services[chdata.first] = dbih->entryService(chdata.second);
-	}
+	dbih->cache(merge);
 
 	tid->load();
 }

@@ -38,6 +38,7 @@ class e2db : public ::e2se_e2db::e2db
 
 		e2db(e2se::logger::session* log);
 		void didChange();
+		void cache(bool clear = false);
 		string addTransponder(transponder& tx);
 		string editTransponder(string txid, transponder& tx);
 		void removeTransponder(string txid);

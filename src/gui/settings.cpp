@@ -111,7 +111,7 @@ void settings::layout(QWidget* cwid)
 	dial->setLayout(dfrm);
 }
 
-//TODO scrollable area
+//TODO improve scrollable area
 void settings::preferencesLayout()
 {
 	QWidget* dtpage = new QWidget;
@@ -181,7 +181,6 @@ void settings::preferencesLayout()
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2th);
 	dtf20->addRow(dtf2th);
 
-	//TODO win32 convert \n to \r\n
 	QLineEdit* dtf2cd = new QLineEdit("\\n");
 	dtf2cd->setProperty("pref", "toolsCsvDelimiter");
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2cd);
@@ -456,7 +455,7 @@ QListWidgetItem* settings::addProfile(int i)
 	debug("addProfile()", "index", i);
 
 	QListWidgetItem* item = new QListWidgetItem(tr("Profile"), rplist);
-	item->setText(item->text() + ' ' + QString::fromStdString(to_string(i)));
+	item->setText(item->text() + ' ' + QString::number(i));
 	item->setData(Qt::UserRole, i);
 	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
 	if (! this->state.retr)
@@ -665,8 +664,8 @@ void settings::retrieve()
 		}
 		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
 		{
-			if (int index = field->findData(sets->value(pref).toString(), Qt::UserRole))
-				field->setCurrentIndex(index);
+			int index = field->findData(sets->value(pref).toString(), Qt::UserRole);
+			field->setCurrentIndex(index);
 		}
 	}
 	sets->endGroup();

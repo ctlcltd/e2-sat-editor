@@ -11,6 +11,7 @@
 
 #include <cstdio>
 #include <sstream>
+#include <algorithm>
 
 #include <QtGlobal>
 #include <QHBoxLayout>
@@ -28,7 +29,7 @@
 #include "editService.h"
 #include "editTransponder.h"
 
-using std::stringstream, std::to_string;
+using std::stringstream, std::to_string, std::sort;
 
 using namespace e2se;
 
@@ -102,20 +103,65 @@ void editService::serviceLayout()
 	dtf0->addRow(tr("Service name"), dtf0sn);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
-	QComboBox* dtf0st = new QComboBox;
-	dtf0st->setProperty("field", "stype");
+	QHBoxLayout* dtb10 = new QHBoxLayout;
+	dtf0->addRow(tr("Service type"), dtb10);
+
+	//TODO FIX height
+	QLineEdit* dtf0st = new QLineEdit;
+	dtf0st->setProperty("field", "_stype");
+	dtf0st->setVisible(false);
 	fields.emplace_back(dtf0st);
-	dtf0st->setMaximumWidth(100);
+	dtf0st->setMinimumWidth(50);
 	dtf0st->setValidator(new QIntValidator);
-	dtf0st->setEditable(true);
-	platform::osComboBox(dtf0st);
-	dtf0->addRow(tr("Service type"), dtf0st);
+
+	QComboBox* dtf0sc = new QComboBox;
+	dtf0sc->setProperty("field", "stype");
+	fields.emplace_back(dtf0sc);
+	dtf0sc->setMaximumWidth(100);
+	dtf0sc->setValidator(new QIntValidator);
+	platform::osComboBox(dtf0sc);
 	dtf0->addItem(new QSpacerItem(0, 0));
-	//TODO sort order
+	vector<int> stypes;
 	for (auto & x : e2db::STYPE_EXT_TYPE)
 	{
-		dtf0st->addItem(QString::fromStdString(to_string(x.first) + ' ' + e2db::STYPE_EXT_LABEL.at(x.first)), x.first);
+		stypes.emplace_back(x.first);
 	}
+	sort(stypes.begin(), stypes.end());
+	for (auto & q : stypes)
+	{
+		string pad = q > 9 ? "  " : "  ";
+		dtf0sc->addItem(QString::fromStdString(to_string(q) + pad + e2db::STYPE_EXT_LABEL.at(q)), q);
+	}
+
+	QPushButton* dtf0sb = new QPushButton;
+	dtf0sb->setDefault(false);
+	dtf0sb->setCheckable(true);
+	dtf0sb->setText(tr("custom"));
+	dtf0sb->setChecked(false);
+	dtf0sb->connect(dtf0sb, &QPushButton::pressed, [=]() {
+		if (dtf0sb->isChecked())
+		{
+			dtf0sc->hide();
+			dtf0sc->setProperty("field", "_stype");
+			dtf0st->setProperty("field", "stype");
+			dtf0st->setText(dtf0sc->currentData().toString());
+			dtf0st->show();
+			dtf0st->setFocus();
+		}
+		else
+		{
+			dtf0st->hide();
+			dtf0st->setProperty("field", "_stype");
+			dtf0sc->setProperty("field", "stype");
+			dtf0sc->setCurrentText(dtf0st->text());
+			dtf0sc->show();
+			dtf0sc->setFocus();
+		}
+	});
+
+	dtb10->addWidget(dtf0sc);
+	dtb10->addWidget(dtf0st);
+	dtb10->addWidget(dtf0sb);
 
 	QHBoxLayout* dtb11 = new QHBoxLayout;
 	dtf0->addRow(tr("Service ID"), dtb11);
@@ -186,6 +232,7 @@ void editService::transponderLayout()
 	dtf1->addRow(tr("Transponder"), dtf1tx);
 
 	QPushButton* dtf1nt = new QPushButton;
+	dtf1nt->setDefault(false);
 	dtf1nt->setText(tr("New Transponder"));
 	dtf1nt->connect(dtf1nt, &QPushButton::pressed, [=]() { this->newTransponder(); });
 	dtf1->addRow(NULL, dtf1nt);
@@ -467,22 +514,24 @@ void editService::tabChanged(int index)
 {
 	debug("tabChanged()", "index", index);
 
-	if (index != 1)
+	if (index != 1 || this->state.transponder)
 		return;
 
-	if (this->state.transponder)
-		return edittx->change();
-
+	edittx->setAddId();
 	edittx->layout(this->dial);
+
+	if (! dtf1tx->currentData().isNull())
+	{
+		QString qtxid = dtf1tx->currentData().toString();
+		string txid = qtxid.toStdString();
+
+		edittx->setEditId(txid);
+	}
 
 	QGridLayout* layout = new QGridLayout;
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->addWidget(edittx->widget);
 	dtwid->widget(1)->setLayout(layout);
-
-	if (! this->state.edit)
-		edittx->setAddId();
-	edittx->change();
 
 	this->state.transponder = true;
 }
@@ -491,13 +540,12 @@ void editService::newTransponder()
 {
 	debug("newTransponder()");
 
+	dtf1tx->setCurrentIndex(-1);
 	edittx->setAddId();
 
 	dtwid->setCurrentIndex(1);
 }
 
-//TODO TEST
-//TODO e2db::service default value
 void editService::store()
 {
 	debug("store()");
@@ -511,6 +559,14 @@ void editService::store()
 			return error("store()", "chid", chid);
 
 		ch = dbih->db.services[chid];
+	}
+	if (this->state.transponder)
+	{
+		edittx->store();
+
+		string txid = edittx->getAddId();
+		if (! txid.empty())
+			ch.txid = txid;
 	}
 
 	for (auto & item : fields)
@@ -655,6 +711,7 @@ void editService::store()
 	{
 		ch.data.erase(e2db::SDATA::f);
 	}
+
 	if (ch.txid != this->txid)
 	{
 		e2db::transponder tx = dbih->db.transponders[ch.txid];
@@ -668,11 +725,6 @@ void editService::store()
 		this->chid = dbih->editService(chid, ch);
 	else
 		this->chid = dbih->addService(ch);
-
-	//TODO
-	if (this->state.transponder)
-	{
-	}
 }
 
 void editService::retrieve()
@@ -689,8 +741,6 @@ void editService::retrieve()
 	if (ch.tsid != 0)
 		tx = dbih->db.transponders[ch.txid];
 	this->txid = ch.txid;
-
-	edittx->setEditId(txid);
 
 	for (auto & item : fields)
 	{
@@ -827,8 +877,8 @@ void editService::retrieve()
 		}
 		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
 		{
-			if (int index = field->findData(QString::fromStdString(val), Qt::UserRole))
-				field->setCurrentIndex(index);
+			int index = field->findData(QString::fromStdString(val), Qt::UserRole);
+			field->setCurrentIndex(index);
 		}
 		else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
 		{
@@ -920,6 +970,24 @@ string editService::getAddId()
 	debug("getAddId()");
 
 	return this->chid;
+}
+
+string editService::getTransponderId()
+{
+	debug("getTransponderId()");
+
+	if (this->state.transponder)
+		return this->txid;
+	return "";
+}
+
+void editService::destroy()
+{
+	debug("destroy()");
+
+	delete this->edittx;
+	delete this->dial;
+	delete this;
 }
 
 }

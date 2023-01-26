@@ -381,7 +381,6 @@ void e2db_parser::parse_lamedb_transponder_feparms(string str, char ty, transpon
 			tx.pil = pil;
 			tx.oflgs = string (oflgs);
 		break;
-		//TODO TEST
 		case 't': // DVB-T
 			std::sscanf(str.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &band, &hpfec, &lpfec, &tmod, &tmx, &guard, &hier, &inv, oflgs);
 
@@ -397,7 +396,6 @@ void e2db_parser::parse_lamedb_transponder_feparms(string str, char ty, transpon
 			tx.inv = inv;
 			tx.oflgs = string (oflgs);
 		break;
-		//TODO TEST
 		case 'c': // DVB-C
 			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%1d%s", &freq, &sr, &inv, &cmod, &cfec, oflgs);
 
@@ -409,7 +407,6 @@ void e2db_parser::parse_lamedb_transponder_feparms(string str, char ty, transpon
 			tx.cfec = cfec;
 			tx.oflgs = string (oflgs);
 		break;
-		//TODO TEST
 		case 'a': // ATSC
 			std::sscanf(str.c_str(), "%8d:%1d:%1d:%1d:%1d%s", &freq, &inv, &amod, &flgs, &sys, oflgs);
 
@@ -451,7 +448,7 @@ void e2db_parser::parse_lamedb_service_params(string str, service& ch)
 	ch.snum = snum;
 }
 
-//TODO improve std::strtok ?
+//TODO improve
 void e2db_parser::parse_lamedb_service_data(string str, service& ch)
 {
 	if (str.empty())
