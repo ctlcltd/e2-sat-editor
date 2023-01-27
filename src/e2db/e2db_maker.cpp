@@ -15,12 +15,13 @@
 #include <algorithm>
 #include <sstream>
 #include <fstream>
+#include <iostream>
 #include <iomanip>
 #include <filesystem>
 
 #include "e2db_maker.h"
 
-using std::ofstream, std::stringstream, std::hex, std::dec, std::setfill, std::setw, std::uppercase, std::to_string, std::cout, std::endl;
+using std::ofstream, std::stringstream, std::hex, std::dec, std::setfill, std::setw, std::uppercase, std::to_string, std::endl;
 
 namespace e2se_e2db
 {

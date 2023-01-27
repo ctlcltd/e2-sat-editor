@@ -22,7 +22,7 @@
 
 #include "e2db_converter.h"
 
-using std::ifstream, std::ofstream, std::stringstream, std::hex, std::dec, std::to_string, std::unordered_set, std::cout, std::endl;
+using std::ifstream, std::ofstream, std::stringstream, std::hex, std::dec, std::to_string, std::unordered_set;
 
 namespace e2se_e2db
 {

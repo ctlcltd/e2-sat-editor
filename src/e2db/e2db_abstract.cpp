@@ -13,6 +13,7 @@
 #include <cstring>
 #include <filesystem>
 #include <algorithm>
+#include <iostream>
 
 #include "e2db_abstract.h"
 
