@@ -26,6 +26,7 @@
 	<file>dark/save.png</file>
 	<file>dark/search.png</file>
 	<file>dark/settings.png</file>
+	<file>dark/transponders-view.png</file>
 	<file>dark/tunersets-view.png</file>
 	<file>light/add.png</file>
 	<file>light/channelbook-view.png</file>
@@ -47,6 +48,7 @@
 	<file>light/save.png</file>
 	<file>light/search.png</file>
 	<file>light/settings.png</file>
+	<file>light/transponders-view.png</file>
 	<file>light/tunersets-view.png</file>
 </qresource>
 </RCC>

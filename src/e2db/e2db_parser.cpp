@@ -17,12 +17,11 @@
 #include <algorithm>
 #include <sstream>
 #include <fstream>
-#include <iostream>
 #include <filesystem>
 
 #include "e2db_parser.h"
 
-using std::ifstream, std::stringstream, std::hex, std::dec, std::to_string, std::cout, std::endl;
+using std::ifstream, std::stringstream, std::hex, std::dec, std::to_string;
 
 namespace e2se_e2db
 {

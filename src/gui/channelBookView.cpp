@@ -9,6 +9,8 @@
  * @license GNU GPLv3 License
  */
 
+#include <algorithm>
+
 #include <QtGlobal>
 #include <QGridLayout>
 #include <QHBoxLayout>
@@ -23,6 +25,8 @@
 #include "channelBookView.h"
 #include "theme.h"
 #include "tab.h"
+
+using std::to_string, std::sort;
 
 using namespace e2se;
 
@@ -341,36 +345,62 @@ void channelBookView::stacker(int vv)
 
 	auto* dbih = this->data->dbih;
 
-	QList<QTreeWidgetItem*> items;
+	vector<string> index;
 
-	switch (vv)
+	if (vv == views::Services)
 	{
-		case views::Services:
-			this->index = dbih->get_services_index();
-		break;
-		case views::A_Z:
-			this->index = dbih->get_az_index();
-		break;
-		case views::Bouquets:
-			this->index = dbih->get_bouquets_index();
-		break;
-		case views::Positions:
-			this->index = dbih->get_transponders_index();
-		break;
-		case views::Providers:
-			this->index = dbih->get_packages_index();
-		break;
-		case views::Resolution:
-			this->index = dbih->get_resolution_index();
-		break;
-		case views::Encryption:
-			this->index = dbih->get_encryption_index();
-		break;
+		this->index = dbih->get_services_index();
+		return populate();
+	}
+	else if (vv == views::Bouquets)
+	{
+		this->index = dbih->get_bouquets_index();
+		for (auto & x : dbih->index["bss"])
+			index.emplace_back(x.second);
+	}
+	else if (vv == views::Positions)
+	{
+		this->index = dbih->get_transponders_index();
+		vector<int> tmpx;
+		for (auto & x : this->index)
+			tmpx.emplace_back(std::stoi(x.first));
+		sort(tmpx.begin(), tmpx.end());
+		for (int & q : tmpx)
+			index.emplace_back(to_string(q));
+	}
+	else if (vv == views::Providers)
+	{
+		this->index = dbih->get_packages_index();
+		for (auto & x : this->index)
+			index.emplace_back(x.first);
+	}
+	else if (vv == views::Resolution)
+	{
+		this->index = dbih->get_resolution_index();
+		vector<int> tmpx;
+		for (auto & x : this->index)
+			tmpx.emplace_back(std::stoi(x.first));
+		sort(tmpx.begin(), tmpx.end());
+		for (int & q : tmpx)
+			index.emplace_back(std::to_string(q));
+	}
+	else if (vv == views::Encryption)
+	{
+		this->index = dbih->get_encryption_index();
+		for (auto & x : this->index)
+			index.emplace_back(x.first);
+	}
+	else if (vv == views::A_Z)
+	{
+		this->index = dbih->get_az_index();
+		return populate();
 	}
 
-	for (auto & q : this->index)
+	QList<QTreeWidgetItem*> items;
+
+	for (string & w : index)
 	{
-		QString index;
+		QString idx;
 		QString name;
 		QTreeWidgetItem* item;
 		QTreeWidgetItem* subitem;
@@ -378,7 +408,7 @@ void channelBookView::stacker(int vv)
 
 		if (vv == views::Positions)
 		{
-			int pos = std::stoi(q.first);
+			int pos = std::stoi(w);
 			if (dbih->tuners_pos.count(pos))
 			{
 				string tnid = dbih->tuners_pos.at(pos);
@@ -387,12 +417,12 @@ void channelBookView::stacker(int vv)
 			}
 			else
 			{
-				string ppos = pos == -1 ? "NaN" : q.first;
+				string ppos = pos == -1 ? "NaN" : w;
 				name = QString::fromStdString(ppos);
 			}
 			item = new QTreeWidgetItem({name});
 
-			for (auto & x : q.second)
+			for (auto & x : this->index[w])
 			{
 				e2db::transponder tx = dbih->db.transponders[x.second];
 				QString subindex = QString::fromStdString(x.second);
@@ -403,10 +433,9 @@ void channelBookView::stacker(int vv)
 				items.append(subitem);
 			}
 		}
-		//TODO sort order: TV, Radio
 		else if (vv == views::Bouquets)
 		{
-			e2db::bouquet bs = dbih->bouquets[q.first];
+			e2db::bouquet bs = dbih->bouquets[w];
 			name = QString::fromStdString(bs.nname.empty() ? bs.name : bs.nname);
 			disabled = this->state.sy != -1 && this->state.sy != bs.btype;
 			item = new QTreeWidgetItem({name});
@@ -423,24 +452,26 @@ void channelBookView::stacker(int vv)
 		}
 		else if (vv == views::Resolution)
 		{
-			int stype = std::stoi(q.first);
+			int stype = std::stoi(w);
 			int atype = dbih->value_service_super_type(stype);
+			QString pad = w.length() == 2 ? "  " : "  ";
 			disabled = this->state.sy != -1 && this->state.sy != atype;
-			name = QString::fromStdString(dbih->value_service_type(stype));
-			name.append(QString::fromStdString("\tid: " + q.first));
+			name = QString::number(stype);
+			name.append(pad);
+			name.append(QString::fromStdString(dbih->value_service_type(stype)));
 			item = new QTreeWidgetItem({name});
 		}
 		else
 		{
-			name = QString::fromStdString(q.first);
+			name = QString::fromStdString(w);
 			item = new QTreeWidgetItem({name});
 		}
 
-		index = QString::fromStdString(q.first);
-		item->setData(0, Qt::UserRole, index);
+		idx = QString::fromStdString(w);
+		item->setData(0, Qt::UserRole, idx);
 		item->setData(1, Qt::UserRole, disabled);
 		item->setDisabled(disabled);
-		
+
 		items.append(item);
 	}
 

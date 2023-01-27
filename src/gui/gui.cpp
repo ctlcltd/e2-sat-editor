@@ -241,6 +241,7 @@ void gui::tabStackerLayout()
 	twid->setStyle(new TabBarProxyStyle);
 	twid->tabBar()->setObjectName("tabwidget_tabbar");
 	twid->tabBar()->setChangeCurrentOnDrag(false);
+	twid->tabBar()->setElideMode(Qt::ElideRight);
 
 	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 12ex; max-width: 25ex; height: 6.3ex; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button) } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight); border-color: transparent }");
 
@@ -583,8 +584,7 @@ int gui::openTab(TAB_VIEW view, int arg)
 		break;
 		case TAB_VIEW::transponders:
 			ttab->viewTransponders(parent);
-			//TODO
-			tticon = QIcon(theme::icon("tunersets-view"));
+			tticon = QIcon(theme::icon("transponders-view"));
 			ttname.append(" - ");
 			ttname.append("Edit transponders");
 		break;

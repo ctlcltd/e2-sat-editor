@@ -9,23 +9,20 @@
  * @license GNU GPLv3 License
  */
 
+#include <cstdlib>
+
 #include "logger/logger.h"
 #include "gui/gui.h"
 
-#ifndef __MINGW32__
-int main(int argc, char* argv[], char* envp[])
+int main(int argc, char* argv[])
 {
 	bool DEBUG = true;
 
-	for (int i = 0; envp[i] != NULL; i++)
+	if (const char* envp = std::getenv("DEBUG"))
 	{
-		if (string (envp[i]).substr(0, 6) == "DEBUG=")
-		{
-			DEBUG = true;
-			break;
-		}
+		DEBUG = true;
 	}
-	
+
 	for (int i = 0; i < argc; i++)
 	{
 		if (string (argv[i]) == "debug")
@@ -42,16 +39,3 @@ int main(int argc, char* argv[], char* envp[])
 
 	return gui->exec();
 }
-#else
-int main(int argc, char* argv[])
-{
-	bool DEBUG = true;
-
-	e2se::logger::session* log = new e2se::logger::session;
-	log->debug = DEBUG;
-
-	e2se_gui::gui* gui = new e2se_gui::gui(argc, argv, log);
-
-	return gui->exec();
-}
-#endif

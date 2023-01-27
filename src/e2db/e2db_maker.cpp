@@ -15,7 +15,6 @@
 #include <algorithm>
 #include <sstream>
 #include <fstream>
-#include <iostream>
 #include <iomanip>
 #include <filesystem>
 
@@ -339,7 +338,7 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 		ss << "1:";
 		ss << chref.atype << ':';
 		ss << hex;
-		ss << uppercase << chref.anum << ':'; //TODO global markers index
+		ss << uppercase << chref.anum << ':';
 		
 		if (db.services.count(x.second))
 		{

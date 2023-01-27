@@ -15,7 +15,6 @@
 #include <map>
 #include <unordered_map>
 #include <fstream>
-#include <iostream>
 
 #include "../logger/logger.h"
 
@@ -372,7 +371,6 @@ struct e2db_abstract
 		map<int, string> tuners_pos;
 		// comments <iname string, vector<comment struct>>
 		unordered_map<string, vector<comment>> comments;
-		//TODO data coherence src-idx||count
 		// index <iname string, vector<pair<src-idx||count int, chid string>>>
 		unordered_map<string, vector<pair<int, string>>> index;
 		// collisions <chid string, vector<pair<chid string, increment int>>>

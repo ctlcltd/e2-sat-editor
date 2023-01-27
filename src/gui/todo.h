@@ -9,7 +9,6 @@
  * @license GNU GPLv3 License
  */
 
-#include <iostream>
 #include <string>
 
 #ifndef todo_h
@@ -20,7 +19,6 @@ namespace e2se_gui
 {
 static void todo()
 {
-	std::cout << "app TODO" << std::endl;
 	QMessageBox dial = QMessageBox();
 	dial.setText("app TODO");
 	dial.exec();

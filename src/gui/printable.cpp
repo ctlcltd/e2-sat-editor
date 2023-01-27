@@ -427,10 +427,8 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 			if (! chref.marker)
 				continue;
 
-			QString qchid = QString::fromStdString(chid);
+			QString refid = QString::fromStdString(dbih->get_reference_id(chref));
 			QString value = QString::fromStdString(chref.value);
-			//TODO marker index and compatibility
-			QString refid = "1:" + qchid.toUpper() + ":0:0:0:0:0:0";
 			QString atype = "MARKER";
 
 			page.body += "<tr class=\"marker\">";

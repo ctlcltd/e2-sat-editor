@@ -18,7 +18,6 @@
 #include <algorithm>
 #include <sstream>
 #include <fstream>
-#include <iostream>
 #include <filesystem>
 
 #include "e2db_converter.h"
@@ -1647,8 +1646,7 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			// services
 			if (view == DOC_VIEW::view_services)
 			{
-				string crefid = get_reference_id(chid);
-				refid = crefid;
+				refid = get_reference_id(chid);
 			}
 			// bouquets
 			else
@@ -1656,8 +1654,7 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 				channel_reference chref;
 				if (userbouquets.count(bname))
 					chref = userbouquets[bname].channels[chid];
-				string crefid = get_reference_id(chref);
-				refid = crefid;
+				refid = get_reference_id(chref);
 			}
 			int ssid = ch.ssid;
 			int tsid = ch.tsid;
@@ -1739,11 +1736,8 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			if (! chref.marker)
 				continue;
 
-			string cchid = chid;
+			string refid = get_reference_id(chref);
 			string value = chref.value;
-			//TODO marker index and compatibility
-			std::transform(cchid.begin(), cchid.end(), cchid.begin(), [](unsigned char c) { return toupper(c); });
-			string refid = "1:" + cchid + ":0:0:0:0:0:0";
 			string atype = "MARKER";
 
 			ss << CSV_SEPARATOR;
@@ -1855,8 +1849,7 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			// services
 			if (view == DOC_VIEW::view_services)
 			{
-				string crefid = get_reference_id(chid);
-				refid = crefid;
+				refid = get_reference_id(chid);
 			}
 			// bouquets
 			else
@@ -1864,8 +1857,7 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 				channel_reference chref;
 				if (userbouquets.count(bname))
 					chref = userbouquets[bname].channels[chid];
-				string crefid = get_reference_id(chref);
-				refid = crefid;
+				refid = get_reference_id(chref);
 			}
 			int ssid = ch.ssid;
 			int tsid = ch.tsid;
@@ -1991,11 +1983,8 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			if (! chref.marker)
 				continue;
 
-			string cchid = chid;
+			string refid = get_reference_id(chref);
 			string value = chref.value;
-			//TODO marker index and compatibility
-			std::transform(cchid.begin(), cchid.end(), cchid.begin(), [](unsigned char c) { return toupper(c); });
-			string refid = "1:" + cchid + ":0:0:0:0:0:0";
 			string atype = "MARKER";
 
 			ss << CSV_SEPARATOR;
@@ -2391,8 +2380,7 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 			// services
 			if (view == DOC_VIEW::view_services)
 			{
-				string crefid = get_reference_id(chid);
-				refid = crefid;
+				refid = get_reference_id(chid);
 			}
 			// bouquets
 			else
@@ -2400,8 +2388,7 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 				channel_reference chref;
 				if (userbouquets.count(bname))
 					chref = userbouquets[bname].channels[chid];
-				string crefid = get_reference_id(chref);
-				refid = crefid;
+				refid = get_reference_id(chref);
 			}
 			string ssid = to_string(ch.ssid);
 			string tsid = to_string(ch.tsid);
@@ -2468,11 +2455,8 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 			if (! chref.marker)
 				continue;
 
-			string cchid = chid;
+			string refid = get_reference_id(chref);
 			string value = chref.value;
-			//TODO marker index and compatibility
-			std::transform(cchid.begin(), cchid.end(), cchid.begin(), [](unsigned char c) { return toupper(c); });
-			string refid = "1:" + cchid + ":0:0:0:0:0:0";
 			string atype = "MARKER";
 
 			page.body += "<tr class=\"marker\">";

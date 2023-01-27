@@ -52,7 +52,7 @@ bool TreeEventHandler::eventFilter(QObject* o, QEvent* e)
 		// userbouquets
 		else
 		{
-			dropFromList(current, tree, tree);
+			dropFromList(current, tree, list);
 		}
 
 		return QObject::eventFilter(o, evt);

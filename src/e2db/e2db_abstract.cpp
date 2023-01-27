@@ -173,7 +173,6 @@ string e2db_abstract::value_reference_id(channel_reference chref)
 	int anum = chref.anum != -1 ? chref.anum : 0;
 	int ssid = 0;
 	int tsid = 0;
-	////string onid = "0";
 	int onid = 0;
 	int dvbns = 0;
 

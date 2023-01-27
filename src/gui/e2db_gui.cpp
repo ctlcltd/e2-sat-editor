@@ -88,14 +88,14 @@ void e2db::createBouquets()
 	bs = e2db::bouquet();
 	bs.bname = "bouquets.tv";
 	bs.name = "User - bouquet (TV)";
-	bs.btype = bs.index = e2db::STYPE::tv;
+	bs.btype = e2db::STYPE::tv;
 	bs.nname = "TV";
 	this->::e2se_e2db::e2db::add_bouquet(bs);
 
 	bs = e2db::bouquet();
 	bs.bname = "bouquets.radio";
 	bs.name = "User - bouquet (Radio)";
-	bs.btype = bs.index = e2db::STYPE::radio;
+	bs.btype = e2db::STYPE::radio;
 	bs.nname = "Radio";
 	this->::e2se_e2db::e2db::add_bouquet(bs);
 }
@@ -418,8 +418,6 @@ QStringList e2db::entryTransponder(transponder tx, bool extended)
 	}
 	else if (tx.ytype == YTYPE::atsc)
 	{
-		// combo = NULL;
-		combo = ""; //Qt5
 		QString mod = QString::number(tx.amod);
 		entry.append({mod});
 	}

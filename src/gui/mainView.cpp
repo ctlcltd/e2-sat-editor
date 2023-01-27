@@ -224,11 +224,13 @@ void mainView::layout()
 	this->list_evth = new ListEventHandler;
 	this->list_evto = new ListEventObserver;
 	tree_evth->setEventCallback([=](QTreeWidget* tw) { this->data->setChanged(true); });
+	//TODO FIX missing references
 	list_evth->setEventCallback([=](QTreeWidget* tw) { this->data->setChanged(true); });
 	side->connect(side, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { this->treeSwitched(side, item); });
 	side->connect(side, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->servicesItemChanged(current); });
 	tree->viewport()->installEventFilter(tree_evth);
 	tree->connect(tree, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { this->treeSwitched(tree, item); });
+	//TODO updateTreeIndex()
 	tree->connect(tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->treeItemChanged(current); });
 	tree->connect(tree, &QTreeWidget::itemDoubleClicked, [=]() { this->treeItemDoubleClicked(); });
 	list->installEventFilter(list_evto);
@@ -1511,26 +1513,18 @@ void mainView::listItemCopy(bool cut)
 			e2db::channel_reference chref;
 			if (dbih->userbouquets.count(bname))
 				chref = dbih->userbouquets[bname].channels[chid];
-			string crefid = dbih->get_reference_id(chref);
-			refid = QString::fromStdString(crefid);
+			refid = QString::fromStdString(dbih->get_reference_id(chref));
 		}
 		// services tree
 		else
 		{
-			string crefid = dbih->get_reference_id(chid);
-			refid = QString::fromStdString(crefid);
-		}
-		//TODO marker index and compatibility
-		if (marker)
-		{
-			refid = "1:" + qchid.toUpper() + ":0:0:0:0:0:0";
+			refid = QString::fromStdString(dbih->get_reference_id(chid));
 		}
 		data.insert(2, refid); // insert refid column [2]
 		text.append(data.join(",")); // CSV
 	}
 	clipboard->setText(text.join("\n")); // CSV
 
-	//TODO global marker index
 	if (cut)
 		listItemDelete();
 }
