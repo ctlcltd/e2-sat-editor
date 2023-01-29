@@ -29,9 +29,9 @@ ftpcom::ftpcom()
 	curl_global_init(CURL_GLOBAL_DEFAULT);
 }
 
-ftpcom::ftpcom(e2se::logger::session* log)
+ftpcom::ftpcom(e2se::logger::data* obj)
 {
-	this->log = new e2se::logger(log, "ftpcom");
+	this->log = new e2se::logger(obj, "ftpcom");
 	debug("ftpcom()");
 
 	curl_global_init(CURL_GLOBAL_DEFAULT);
@@ -242,7 +242,7 @@ void ftpcom::upload_data(string base, string filename, ftpcom_file file)
 	size_t uplen = 0;
 	CURLcode res = CURLE_GOT_NOTHING;
 	string remotefile = '/' + base + '/' + filename;
-	
+
 	debug("upload_data()", "file", remotefile);
 
 	curl_url_set(rph, CURLUPART_PATH, remotefile.c_str(), 0);
@@ -597,7 +597,7 @@ bool ftpcom::cmd_tnreload()
 		reset(csh, rsh);
 		return false;
 	}
-	
+
 	debug("cmd_tnreload()", "stdout", "end");
 
 	reset(csh, rsh);

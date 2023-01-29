@@ -31,11 +31,11 @@ e2db_maker::e2db_maker()
 	std::setlocale(LC_NUMERIC, "C");
 }
 
-e2db_maker::e2db_maker(e2se::logger::session* log)
+e2db_maker::e2db_maker(e2se::logger::data* obj)
 {
 	std::setlocale(LC_NUMERIC, "C");
 
-	this->log = new e2se::logger(log, "e2db");
+	this->log = new e2se::logger(obj, "e2db");
 	debug("e2db_maker()");
 }
 
@@ -340,7 +340,7 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 		ss << chref.atype << ':';
 		ss << hex;
 		ss << uppercase << chref.anum << ':';
-		
+
 		if (db.services.count(x.second))
 		{
 			service ch = db.services[x.second];

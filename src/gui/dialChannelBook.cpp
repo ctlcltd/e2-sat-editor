@@ -19,9 +19,9 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-dialChannelBook::dialChannelBook(dataHandler* data, int stype, e2se::logger::session* log)
+dialChannelBook::dialChannelBook(dataHandler* data, int stype)
 {
-	this->log = new logger(log, "dialChannelBook");
+	this->log = new logger(data->log->obj, "dialChannelBook");
 	debug("dialChannelBook()");
 
 	this->data = data;
@@ -53,7 +53,7 @@ void dialChannelBook::layout(QWidget* cwid)
 	dial->setWindowTitle(tr("Add Channel"));
 	dial->connect(dial, &QDialog::finished, [=]() { this->destroy(); });
 
-	this->cbv = new e2se_gui::channelBookView(this->data, this->stype, this->log->log);
+	this->cbv = new e2se_gui::channelBookView(this->data, this->stype);
 
 	dtform->setContentsMargins(0, 0, 0, 0);
 	dtform->addWidget(cbv->widget, 1, 0);

@@ -29,9 +29,9 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-printable::printable(QWidget* cwid, dataHandler* data, e2se::logger::session* log)
+printable::printable(QWidget* cwid, dataHandler* data)
 {
-	this->log = new logger(log, "printable");
+	this->log = new logger(data->log->obj, "printable");
 	debug("printable()");
 
 	this->cwid = cwid;
@@ -78,7 +78,7 @@ void printable::documentIndex()
 	html_page page;
 	pageHeader(page, filename, DOC_VIEW::view_index);
 	pageFooter(page, filename, DOC_VIEW::view_index);
-	
+
 	vector<string> paths;
 	for (auto & x : dbih->get_input())
 	{
@@ -99,7 +99,7 @@ void printable::documentServices(int stype)
 	debug("documentServices()");
 
 	auto* dbih = this->data->dbih;
-	
+
 	string filename = std::filesystem::path(dbih->get_services_filename()).filename().u8string(); //C++17
 	string iname;
 	string xname;
@@ -308,9 +308,9 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 	else
 		error("pageBodyChannelList()", "bname", bname);
 	debug("pageBodyChannelList()", "view", view);
-	
+
 	QString cssname = view == DOC_VIEW::view_bouquets ? "userbouquet" : "services";
-	
+
 	page.body += "<div class=\"" + cssname + "\">";
 	page.body += "<table>";
 	page.body += "<thead>";
@@ -515,7 +515,7 @@ void printable::pageBodyTunersetsList(html_page& page, int ytype)
 	string iname = "tns:";
 	char yname = dbih->value_transponder_type(ytype);
 	iname += yname;
-	
+
 	for (auto & x : dbih->index[iname])
 	{
 		string tnid = x.second;

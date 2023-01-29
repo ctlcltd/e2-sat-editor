@@ -34,9 +34,9 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-transpondersView::transpondersView(tab* tid, QWidget* cwid, dataHandler* data, e2se::logger::session* log)
+transpondersView::transpondersView(tab* tid, QWidget* cwid, dataHandler* data)
 {
-	this->log = new logger(log, "transpondersView");
+	this->log = new logger(tid->log->obj, "transpondersView");
 	debug("transpondersView()");
 
 	this->tid = tid;
@@ -312,7 +312,7 @@ void transpondersView::addTransponder()
 	auto* dbih = this->data->dbih;
 
 	string txid;
-	e2se_gui::editTransponder* add = new e2se_gui::editTransponder(this->data, this->log->log);
+	e2se_gui::editTransponder* add = new e2se_gui::editTransponder(this->data);
 	add->display(cwid);
 	txid = add->getAddId();
 	add->destroy();
@@ -384,7 +384,7 @@ void transpondersView::editTransponder()
 	else
 		return error("editTransponder()", "txid", txid);
 
-	e2se_gui::editTransponder* edit = new e2se_gui::editTransponder(this->data, this->log->log);
+	e2se_gui::editTransponder* edit = new e2se_gui::editTransponder(this->data);
 	edit->setEditId(txid);
 	edit->display(cwid);
 	nw_txid = edit->getEditId();

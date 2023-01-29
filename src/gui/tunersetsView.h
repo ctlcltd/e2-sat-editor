@@ -102,7 +102,7 @@ class tunersetsView : public viewAbstract
 			a_sys = ITEM_ROW_ROLE::row5
 		};
 
-		tunersetsView(tab* twid, QWidget* cwid, dataHandler* data, int ytype, e2se::logger::session* log);
+		tunersetsView(tab* twid, QWidget* cwid, dataHandler* data, int ytype);
 		void load();
 		void reset();
 		void treeItemDelete();

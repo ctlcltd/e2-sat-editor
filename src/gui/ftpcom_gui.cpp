@@ -20,9 +20,9 @@
 namespace e2se_gui
 {
 
-ftpcom::ftpcom(e2se::logger::session* log)
+ftpcom::ftpcom(e2se::logger::data* obj)
 {
-	this->log = new e2se::logger(log, "gui.ftpcom");
+	this->log = new e2se::logger(obj, "gui.ftpcom");
 	debug("ftpcom()");
 
 	setup();

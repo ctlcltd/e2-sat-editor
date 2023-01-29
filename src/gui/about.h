@@ -17,10 +17,10 @@
 
 namespace e2se_gui_dialog
 {
-class about : protected e2se::log_factory
+class about : public e2se::log_factory
 {
 	public:
-		about(e2se::logger::session* log);
+		about(e2se::logger::data* obj);
 		virtual ~about() = default;
 };
 }

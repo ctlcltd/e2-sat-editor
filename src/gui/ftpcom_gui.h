@@ -22,7 +22,7 @@ class ftpcom : public ::e2se_ftpcom::ftpcom
 	Q_DECLARE_TR_FUNCTIONS(ftpcom)
 
 	public:
-		ftpcom(e2se::logger::session* log);
+		ftpcom(e2se::logger::data* obj);
 		void didChange();
 
 	protected:

@@ -40,9 +40,9 @@ using namespace e2se;
 namespace e2se_gui_dialog
 {
 
-settings::settings(e2se_gui::gui* gid, QWidget* cwid, e2se::logger::session* log)
+settings::settings(e2se_gui::gui* gid, QWidget* cwid)
 {
-	this->log = new logger(log, "settings");
+	this->log = new logger(gid->log->obj, "settings");
 	debug("settings()");
 
 	this->gid = gid;
@@ -117,7 +117,7 @@ void settings::preferencesLayout()
 	QWidget* dtpage = new QWidget;
 	QHBoxLayout* dtcnt = new QHBoxLayout(dtpage);
 	dtpage->setStyleSheet("QGroupBox { font-weight: bold }");
-	
+
 	QFormLayout* dtform = new QFormLayout;
 	dtform->setSpacing(10);
 	dtform->setFormAlignment(Qt::AlignLeft | Qt::AlignTop);
@@ -463,7 +463,7 @@ QListWidgetItem* settings::addProfile(int i)
 		renameProfile(false);
 		item->setSelected(true);
 		rplist->setCurrentItem(item);
-	
+
 		if (rplist->count() != 1)
 			renameProfile();
 	}

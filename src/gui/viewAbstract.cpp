@@ -217,7 +217,7 @@ void viewAbstract::treeItemDelete()
 	debug("treeItemDelete()");
 
 	QList<QTreeWidgetItem*> selected = tree->selectedItems();
-	
+
 	if (selected.empty())
 	{
 		return;
@@ -747,9 +747,11 @@ QWidget* viewAbstract::toolBarSpacer(QToolBar* toolbar)
 void viewAbstract::toolBarStyleSheet()
 {
 #ifndef Q_OS_MAC
-	//TODO FIX
 	if (! theme::isDefault())
-		theme->dynamicStyleSheet(widget, "#view_toolbar { background: palette(mid) }");
+	{
+		theme->dynamicStyleSheet(widget, "#view_toolbar { background: palette(highlighted-text) }", theme::light);
+		theme->dynamicStyleSheet(widget, "#view_toolbar { background: palette(dark) }", theme::dark);
+	}
 #else
 	theme->dynamicStyleSheet(widget, "QToolBar { border: 0; border-top: 1px solid } QToolBar::separator { border: 0 }");
 

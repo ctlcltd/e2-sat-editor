@@ -21,10 +21,10 @@ namespace e2se_gui
 class gui;
 class tab;
 
-class tools : protected e2se::log_factory
+class tools : public e2se::log_factory
 {
 	public:
-		tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data, e2se::logger::session* log);
+		tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data);
 		~tools() {};
 		void inspector();
 		void importFileCSV(e2db::FCONVS fci, e2db::fcopts opts);

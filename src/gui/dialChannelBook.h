@@ -36,7 +36,7 @@ class dialChannelBook : public dialAbstract
 			QCheckBox* filter;
 		};
 
-		dialChannelBook(dataHandler* data, int stype, e2se::logger::session* log);
+		dialChannelBook(dataHandler* data, int stype);
 		void display(QWidget* cwid);
 		void destroy();
 		void setEventCallback(std::function<void(vector<QString> items)> func)

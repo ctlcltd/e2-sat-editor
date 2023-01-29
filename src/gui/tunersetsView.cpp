@@ -41,9 +41,9 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-tunersetsView::tunersetsView(tab* tid, QWidget* cwid, dataHandler* data, int ytype, e2se::logger::session* log)
+tunersetsView::tunersetsView(tab* tid, QWidget* cwid, dataHandler* data, int ytype)
 {
-	this->log = new logger(log, "tunersetsView");
+	this->log = new logger(tid->log->obj, "tunersetsView");
 	debug("tunersetsView()");
 
 	this->tid = tid;
@@ -381,7 +381,7 @@ void tunersetsView::populate()
 		curr = selected->data(0, Qt::UserRole).toString().toStdString();
 		this->state.curr = curr;
 	}
-	
+
 	int tvid = this->state.yx;
 	string tnid = this->state.curr;
 
@@ -414,7 +414,7 @@ void tunersetsView::populate()
 		QString trid = QString::fromStdString(txp.trid);
 		QStringList entry = dbih->entryTunersetsTransponder(txp, tns);
 		entry.prepend(x);
-		
+
 		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
@@ -553,7 +553,7 @@ void tunersetsView::editSettings()
 	else
 		addSettings();
 
-	e2se_gui::editTunersets* edit = new e2se_gui::editTunersets(this->data, tvid, this->log->log);
+	e2se_gui::editTunersets* edit = new e2se_gui::editTunersets(this->data, tvid);
 	edit->setEditId(tvid);
 	edit->display(cwid);
 	edit->getEditId();
@@ -574,7 +574,7 @@ void tunersetsView::addPosition()
 	if (! dbih->tuners.count(tvid))
 		addSettings();
 
-	e2se_gui::editTunersetsTable* add = new e2se_gui::editTunersetsTable(this->data, tvid, this->log->log);
+	e2se_gui::editTunersetsTable* add = new e2se_gui::editTunersetsTable(this->data, tvid);
 	add->setAddId(tvid);
 	add->display(cwid);
 	tnid = add->getAddId();
@@ -644,7 +644,7 @@ void tunersetsView::editPosition()
 	else
 		return error("editPosition()", "tnid", tnid);
 
-	e2se_gui::editTunersetsTable* edit = new e2se_gui::editTunersetsTable(this->data, tvid, this->log->log);
+	e2se_gui::editTunersetsTable* edit = new e2se_gui::editTunersetsTable(this->data, tvid);
 	edit->setEditId(tnid, tvid);
 	edit->display(cwid);
 	nw_tnid = edit->getEditId();
@@ -681,7 +681,7 @@ void tunersetsView::addTransponder()
 		return error("addTransponder()", "tnid", tnid);
 
 	string trid;
-	e2se_gui::editTunersetsTransponder* add = new e2se_gui::editTunersetsTransponder(this->data, tvid, this->log->log);
+	e2se_gui::editTunersetsTransponder* add = new e2se_gui::editTunersetsTransponder(this->data, tvid);
 	add->setAddId(tnid, tvid);
 	add->display(cwid);
 	trid = add->getAddId();
@@ -761,7 +761,7 @@ void tunersetsView::editTransponder()
 	else
 		return error("editTransponder()", "trid", trid);
 
-	e2se_gui::editTunersetsTransponder* edit = new e2se_gui::editTunersetsTransponder(this->data, tvid, this->log->log);
+	e2se_gui::editTunersetsTransponder* edit = new e2se_gui::editTunersetsTransponder(this->data, tvid);
 	edit->setEditId(trid, tnid, tvid);
 	edit->display(cwid);
 	nw_trid = edit->getEditId();
@@ -1085,7 +1085,7 @@ void tunersetsView::showTreeEditContextMenu(QPoint &pos)
 	debug("showTreeEditContextMenu()");
 
 	QList<QTreeWidgetItem*> selected = tree->selectedItems();
-	
+
 	if (selected.empty())
 	{
 		return;

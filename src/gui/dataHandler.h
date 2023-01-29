@@ -21,10 +21,10 @@ using std::string;
 
 namespace e2se_gui
 {
-class dataHandler : protected e2se::log_factory
+class dataHandler : public e2se::log_factory
 {
 	public:
-		dataHandler(e2se::logger::session* log);
+		dataHandler(e2se::logger::data* obj);
 		~dataHandler();
 		void newFile();
 		bool readFile(string filename);

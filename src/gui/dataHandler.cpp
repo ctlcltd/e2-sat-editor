@@ -16,9 +16,9 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-dataHandler::dataHandler(e2se::logger::session* log)
+dataHandler::dataHandler(e2se::logger::data* obj)
 {
-	this->log = new logger(log, "dataHandler");
+	this->log = new logger(obj, "dataHandler");
 	debug("dataHandler()");
 }
 
@@ -33,7 +33,7 @@ void dataHandler::newFile()
 
 	delete this->dbih;
 
-	this->dbih = new e2db(this->log->log);
+	this->dbih = new e2db(this->log->obj);
 	this->newfile = true;
 	this->changed = false;
 }
@@ -44,10 +44,10 @@ bool dataHandler::readFile(string filename)
 
 	delete this->dbih;
 
-	this->dbih = new e2db(this->log->log);
+	this->dbih = new e2db(this->log->obj);
 	this->newfile = false;
 	this->changed = false;
-	
+
 	if (this->dbih->prepare(filename))
 	{
 		this->filename = filename;

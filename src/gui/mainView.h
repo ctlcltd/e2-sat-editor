@@ -101,7 +101,7 @@ class mainView : public viewAbstract
 			Tuner
 		};
 
-		mainView(tab* tid, QWidget* cwid, dataHandler* data, e2se::logger::session* log);
+		mainView(tab* tid, QWidget* cwid, dataHandler* data);
 		void load();
 		void reset();
 		void treeItemDelete();

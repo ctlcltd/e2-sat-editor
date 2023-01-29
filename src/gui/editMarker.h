@@ -33,7 +33,7 @@ class editMarker : public dialAbstract
 			bool edit = false;
 		};
 
-		editMarker(dataHandler* data, e2se::logger::session* log);
+		editMarker(dataHandler* data);
 		void display(QWidget* cwid);
 		void setEditId(string chid, string bname);
 		string getEditId();

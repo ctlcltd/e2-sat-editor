@@ -66,7 +66,7 @@ class transpondersView : public viewAbstract
 			hier
 		};
 
-		transpondersView(tab* twid, QWidget* cwid, dataHandler* data, e2se::logger::session* log);
+		transpondersView(tab* twid, QWidget* cwid, dataHandler* data);
 		void load();
 		void reset();
 		void listItemCopy(bool cut = false);

@@ -39,11 +39,11 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-gui::gui(int argc, char* argv[], e2se::logger::session* log)
+gui::gui(int argc, char* argv[], e2se::logger::data* obj)
 {
 	std::setlocale(LC_NUMERIC, "C");
 
-	this->log = new logger(log, "gui");
+	this->log = new logger(obj, "gui");
 	debug("gui()");
 
 	this->mroot = new QApplication(argc, argv);
@@ -144,7 +144,7 @@ void gui::menuBarLayout()
 #endif
 	menuBarSeparator(mfile);
 	menuBarAction(mfile, tr("E&xit"), [=]() { this->mroot->quit(); }, QKeySequence::Quit);
-	
+
 	QMenu* medit = menuBarMenu(menu, tr("&Edit"));
 	gmenu[GUI_CXE::TabListCut] = menuBarAction(medit, tr("Cu&t"), [=]() { this->tabAction(TAB_ATS::ListCut); }, QKeySequence::Cut);
 	gmenu[GUI_CXE::TabListCopy] = menuBarAction(medit, tr("&Copy"), [=]() { this->tabAction(TAB_ATS::ListCopy); }, QKeySequence::Copy);
@@ -394,7 +394,7 @@ void gui::initSettings()
 	settings.setValue("fixUnicodeChars", true);
 #endif
 	settings.endGroup();
-	
+
 	settings.beginWriteArray("profile");
 	settings.setArrayIndex(0);
 	settings.setValue("profileName", "Default");
@@ -425,7 +425,7 @@ void gui::updateSettings()
 		settings.setValue("settings/reset", false);
 
 		settings.setValue("application/version", mroot->applicationVersion());
-	
+
 		settings.remove("application/icons");
 	}
 }
@@ -475,7 +475,7 @@ void gui::tabViewSwitch(TAB_VIEW ttv, int arg)
 
 int gui::newTab(string filename)
 {
-	tab* ttab = new tab(this, mwid, this->log->log);
+	tab* ttab = new tab(this, mwid);
 	int ttid = ttab->getTabId();
 
 	debug("newTab()", "ttid", ttid);
@@ -564,7 +564,7 @@ int gui::openTab(TAB_VIEW view, int arg)
 		}
 	}
 
-	tab* ttab = new tab(this, mwid, this->log->log);
+	tab* ttab = new tab(this, mwid);
 	int ttid = ttab->getTabId();
 
 	debug("openTab()", "ttid", ttid);
@@ -631,7 +631,7 @@ void gui::closeTab(int index)
 	{
 		return error("closeTab()", "current", false);
 	}
-	
+
 	tab* current = ttabs[ttid];
 
 	debug("closeTab()", "ttid", ttid);
@@ -804,7 +804,7 @@ void gui::tabChangeName(int ttid, string filename)
 	{
 		ttname = QString::fromStdString(filename);
 	}
-	
+
 	// debug("tabChangeName()", "index", index);
 
 	switch (v)
@@ -1218,12 +1218,12 @@ void gui::windowMinimize()
 
 void gui::settingsDialog()
 {
-	new e2se_gui_dialog::settings(this, mwid, this->log->log);
+	new e2se_gui_dialog::settings(this, mwid);
 }
 
 void gui::aboutDialog()
 {
-	new e2se_gui_dialog::about(this->log->log);
+	new e2se_gui_dialog::about(this->log->obj);
 }
 
 bool gui::getFlag(GUI_CXE bit)
@@ -1320,7 +1320,7 @@ void gui::update(int bit, bool flag)
 void gui::update(vector<int> bits, bool flag)
 {
 	// debug("update()", "overload", 1);
-	
+
 	typedef size_t position_t;
 
 	for (int & bit : bits)
@@ -1332,7 +1332,7 @@ void gui::update(vector<int> bits, bool flag)
 void gui::update(vector<int> bits)
 {
 	// debug("update()", "overload", 0);
-	
+
 	typedef size_t position_t;
 
 	for (int & bit : bits)

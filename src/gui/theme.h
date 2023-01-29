@@ -87,6 +87,10 @@ class theme
 		static int fontSize();
 		// calculating fontSize increment
 		static int calcFontSize(int size);
+		// set wait cursor
+		static void setWaitCursor();
+		// unset wait cursor
+		static void unsetWaitCursor();
 		// dynamic StyleSheet
 		void dynamicStyleSheet(QWidget* widget, QString stylesheet);
 		void dynamicStyleSheet(QWidget* widget, QString stylesheet, STYLE style);
@@ -95,18 +99,16 @@ class theme
 		QIcon dynamicIcon(QString icon, QObject* object);
 		// theme changed
 		void changed();
+		// style defaulted
+		static void styleDefault();
+		// style Fusion modified variant light
+		static void styleLight();
+		// style Fusion modified variant dark
+		static void styleDark();
 
 	private:
 		vector<QWidget*> styled;
 		vector<QObject*> imaged;
-};
-
-class style
-{
-	public:
-		static void system();
-		static void light();
-		static void dark();
 };
 
 }

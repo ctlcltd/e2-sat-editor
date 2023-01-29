@@ -22,7 +22,7 @@ class e2db : public e2db_parser, public e2db_maker, public e2db_converter
 {
 	public:
 		explicit e2db();
-		e2db(e2se::logger::session* log);
+		e2db(e2se::logger::data* obj);
 		virtual ~e2db() = default;
 		void import_file(vector<string> paths);
 		void import_file(FPORTS fpi, e2db* dst, e2db_file file, string path);
@@ -68,7 +68,7 @@ class e2db : public e2db_parser, public e2db_maker, public e2db_converter
 		void merge(e2db_abstract* dst);
 
 	protected:
-		virtual e2db* newptr() { return new e2db(this->log->log); }
+		virtual e2db* newptr() { return new e2db(this->log->obj); }
 };
 }
 #endif /* e2db_h */

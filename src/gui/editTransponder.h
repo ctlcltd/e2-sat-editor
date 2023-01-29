@@ -36,7 +36,7 @@ class editTransponder : public dialAbstract
 			int yx;
 		};
 
-		editTransponder(dataHandler* data, e2se::logger::session* log);
+		editTransponder(dataHandler* data);
 		void display(QWidget* cwid);
 		void layout(QWidget* cwid);
 		void layoutChange(int vx);

@@ -34,7 +34,7 @@ class editBouquet : public dialAbstract
 			int ti;
 		};
 
-		editBouquet(dataHandler* data, int ti, e2se::logger::session* log);
+		editBouquet(dataHandler* data, int ti);
 		void display(QWidget* cwid);
 		void setEditId(string bname);
 		string getEditId();

@@ -32,11 +32,11 @@ e2db_converter::e2db_converter()
 	std::setlocale(LC_NUMERIC, "C");
 }
 
-e2db_converter::e2db_converter(e2se::logger::session* log)
+e2db_converter::e2db_converter(e2se::logger::data* obj)
 {
 	std::setlocale(LC_NUMERIC, "C");
 
-	this->log = new e2se::logger(log, "e2db");
+	this->log = new e2se::logger(obj, "e2db");
 	debug("e2db_converter()");
 }
 
@@ -128,7 +128,7 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 {
 	debug("export_csv_file()", "file path", "singular");
 	debug("export_csv_file()", "file output", fco);
-	
+
 	std::clock_t start = std::clock();
 
 	std::filesystem::path fpath = std::filesystem::path(path); //C++17
@@ -280,7 +280,7 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 void e2db_converter::pull_csv_services(istream& ifile, e2db_abstract* dst)
 {
 	debug("pull_csv_services()");
-	
+
 	vector<vector<string>> sxv;
 	parse_csv(ifile, sxv);
 
@@ -341,7 +341,7 @@ void e2db_converter::push_csv_services(vector<e2db_file>& files)
 void e2db_converter::push_csv_services(vector<e2db_file>& files, int stype)
 {
 	debug("push_csv_services()");
-	
+
 	string filename = "services";
 	string iname;
 	switch (stype)
@@ -1224,7 +1224,7 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 				dst->index[iname].emplace_back(pair (ch.index, ch.chid)); //C++17
 			}
 		}
-	
+
 		if (view == DOC_VIEW::view_userbouquets)
 		{
 			if (! userbouquets.count(ub.bname))
@@ -2338,9 +2338,9 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 	else
 		error("page_body_channel_list()", "bname", bname);
 	debug("page_body_channel_list()", "view", view);
-	
+
 	string cssname = view == DOC_VIEW::view_bouquets ? "userbouquet" : "services";
-	
+
 	page.body += "<div class=\"" + cssname + "\">\n";
 	page.body += "<table>\n";
 	page.body += "<thead>\n";
@@ -2539,7 +2539,7 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 	string iname = "tns:";
 	char yname = value_transponder_type(ytype);
 	iname += yname;
-	
+
 	for (auto & x : index[iname])
 	{
 		string tnid = x.second;

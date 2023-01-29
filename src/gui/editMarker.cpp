@@ -21,9 +21,9 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-editMarker::editMarker(dataHandler* data, e2se::logger::session* log)
+editMarker::editMarker(dataHandler* data)
 {
-	this->log = new logger(log, "editMarker");
+	this->log = new logger(data->log->obj, "editMarker");
 	debug("editMarker()");
 
 	this->data = data;
@@ -72,7 +72,7 @@ void editMarker::store()
 
 	e2db::userbouquet& ub = dbih->userbouquets[bname];
 	e2db::channel_reference chref;
-	
+
 	if (this->state.edit)
 	{
 		if (! ub.channels.count(chid))

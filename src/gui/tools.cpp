@@ -31,9 +31,9 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-tools::tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data, e2se::logger::session* log)
+tools::tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data)
 {
-	this->log = new logger(log, "tools");
+	this->log = new logger(data->log->obj, "tools");
 	debug("tools()");
 
 	this->gid = gid;
@@ -115,10 +115,10 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 		tid->statusBarMessage("Importing from " + path + " …");
 	}
 
-	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	theme::setWaitCursor();
 	dbih->import_csv_file(fci, opts, paths);
-	QGuiApplication::restoreOverrideCursor();
-	
+	theme::unsetWaitCursor();
+
 	tid->reset();
 
 	dbih->cache(merge);
@@ -160,9 +160,9 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 
 	auto* dbih = this->data->dbih;
 
-	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	theme::setWaitCursor();
 	dbih->export_csv_file(fco, opts, path);
-	QGuiApplication::restoreOverrideCursor();
+	theme::unsetWaitCursor();
 
 	if (tid->statusBarIsVisible())
 		tid->statusBarMessage("Exported to " + path);
@@ -204,9 +204,9 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 
 	auto* dbih = this->data->dbih;
 
-	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	theme::setWaitCursor();
 	dbih->export_html_file(fco, opts, path);
-	QGuiApplication::restoreOverrideCursor();
+	theme::unsetWaitCursor();
 
 	if (tid->statusBarIsVisible())
 		tid->statusBarMessage("Exported to " + path);

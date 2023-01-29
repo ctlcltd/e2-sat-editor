@@ -33,9 +33,9 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-channelBookView::channelBookView(dataHandler* data, int stype, e2se::logger::session* log)
+channelBookView::channelBookView(dataHandler* data, int stype)
 {
-	this->log = new logger(log, "channelBookView");
+	this->log = new logger(data->log->obj, "channelBookView");
 	debug("channelBookView()");
 
 	this->data = data;
@@ -47,9 +47,9 @@ channelBookView::channelBookView(dataHandler* data, int stype, e2se::logger::ses
 	layout();
 }
 
-channelBookView::channelBookView(tab* tid, QWidget* cwid, dataHandler* data, e2se::logger::session* log)
+channelBookView::channelBookView(tab* tid, QWidget* cwid, dataHandler* data)
 {
-	this->log = new logger(log, "channelBookView");
+	this->log = new logger(tid->log->obj, "channelBookView");
 	debug("channelBookView()");
 
 	this->tid = tid;
@@ -72,7 +72,7 @@ void channelBookView::layout()
 
 	QVBoxLayout* abox = new QVBoxLayout;
 	QHBoxLayout* bbox = new QHBoxLayout;
-	
+
 	QSplitter* bswid = new QSplitter;
 
 	frm->setContentsMargins(0, 0, 0, 0);
@@ -113,7 +113,7 @@ void channelBookView::layout()
 	tree->setHeaderHidden(true);
 	tree->setUniformRowHeights(true);
 	tree->setMinimumWidth(180);
-	
+
 	list->setHidden(true);
 	list->setUniformRowHeights(true);
 	list->setRootIsDecorated(false);
@@ -556,7 +556,7 @@ void channelBookView::filterChanged(bool enabled)
 void channelBookView::listItemSelectionChanged()
 {
 	// debug("listItemSelectionChanged()");
-	
+
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
 	if (selected.empty())
@@ -574,7 +574,7 @@ void channelBookView::listItemCopy(bool cut)
 	debug("listItemCopy()");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
-	
+
 	if (selected.empty())
 		return;
 
@@ -644,7 +644,7 @@ void channelBookView::showListEditContextMenu(QPoint &pos)
 	debug("showListEditContextMenu()");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
-	
+
 	if (selected.empty())
 		return;
 

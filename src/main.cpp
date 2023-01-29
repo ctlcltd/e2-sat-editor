@@ -32,10 +32,10 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	e2se::logger::session* log = new e2se::logger::session;
-	log->debug = DEBUG;
+	e2se::logger::data* obj = new e2se::logger::data;
+	obj->debug = DEBUG;
 
-	e2se_gui::gui* gui = new e2se_gui::gui(argc, argv, log);
+	e2se_gui::gui* gui = new e2se_gui::gui(argc, argv, obj);
 
 	return gui->exec();
 }

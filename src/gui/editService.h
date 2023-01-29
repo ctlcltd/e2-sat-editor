@@ -44,7 +44,7 @@ class editService : public dialAbstract
 			string raw_data;
 		};
 
-		editService(dataHandler* data, e2se::logger::session* log);
+		editService(dataHandler* data);
 		void display(QWidget* cwid);
 		void destroy();
 		void setEditId(string chid);

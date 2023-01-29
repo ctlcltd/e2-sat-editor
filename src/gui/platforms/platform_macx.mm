@@ -132,7 +132,7 @@ class _ComboBoxProxyStyle : public QProxyStyle
 		{
 			if (hint == QStyle::SH_ComboBox_UseNativePopup)
 				return 1;
-			
+
 			return QProxyStyle::styleHint(hint, option, widget, returnData);
 		}
 };
@@ -172,7 +172,7 @@ QWidget* _platform_macx::_osWindowBlend(QWidget* widget) {
 	[subview setBlendingMode:effectview.blendingMode];
 	[subview setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
 	[subview setFrame:superview.window.contentView.frame]; // will autoresize
-	
+
 	[effectview addSubview:subview positioned:NSWindowAbove relativeTo:nil];
 
 	widget->installEventFilter(new _windowEventFilter(subview));
@@ -198,7 +198,7 @@ QWidget* _platform_macx::_osWidgetBlend(QWidget* widget, FX_MATERIAL material, F
 
 	return widget;
 
-	
+
 	//WONTFIX performance issues
 	// use _platform_macx::osWindowBlend instead
 	//

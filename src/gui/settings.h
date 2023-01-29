@@ -33,7 +33,7 @@ using e2se_gui::WidgetWithBackdrop;
 
 namespace e2se_gui_dialog
 {
-class settings : protected e2se::log_factory
+class settings : public e2se::log_factory
 {
 	Q_DECLARE_TR_FUNCTIONS(settings)
 
@@ -60,7 +60,7 @@ class settings : protected e2se::log_factory
 			Advanced
 		};
 
-		settings(e2se_gui::gui* gid, QWidget* cwid, e2se::logger::session* log);
+		settings(e2se_gui::gui* gid, QWidget* cwid);
 		~settings() {};
 		void display(QWidget* cwid);
 

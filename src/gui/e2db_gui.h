@@ -36,7 +36,7 @@ class e2db : public ::e2se_e2db::e2db
 			unordered_map<string, QStringList> services;
 		} entries;
 
-		e2db(e2se::logger::session* log);
+		e2db(e2se::logger::data* obj);
 		void didChange();
 		void cache(bool clear = false);
 		string addTransponder(transponder& tx);
@@ -78,7 +78,7 @@ class e2db : public ::e2se_e2db::e2db
 		static QString fixUnicodeChars(string str);
 
 	protected:
-		e2db* newptr() { return new e2se_gui::e2db(this->log->log); }
+		e2db* newptr() { return new e2se_gui::e2db(this->log->obj); }
 		void setup();
 		void error(string msg, string optk, string optv);
 		void createBouquets();

@@ -39,11 +39,9 @@ void theme::initStyle()
 	QString style = theme::preference();
 
 	if (style == "light")
-		style::light();
+		styleLight();
 	else if (style == "dark")
-		style::dark();
-	else
-		style::system();
+		styleDark();
 }
 
 QString theme::preference()
@@ -82,7 +80,7 @@ QIcon theme::spacer(int width)
 	return QIcon(":/icons/" + QString::number(width) + "x1.png");
 }
 
-//TODO FIX behaviour Qt5 [linux]
+//TODO strange behaviour [wine]
 QString theme::fontFamily()
 {
 	return QFont().defaultFamily();
@@ -96,6 +94,20 @@ int theme::fontSize()
 int theme::calcFontSize(int size)
 {
 	return (theme::fontSize() + size);
+}
+
+void theme::setWaitCursor()
+{
+#ifndef Q_OS_MAC
+	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+#endif
+}
+
+void theme::unsetWaitCursor()
+{
+#ifndef Q_OS_MAC
+	QGuiApplication::restoreOverrideCursor();
+#endif
 }
 
 void theme::dynamicStyleSheet(QWidget* widget, QString stylesheet)
@@ -151,26 +163,7 @@ void theme::changed()
 	}
 }
 
-
-void style::system()
-{
-#ifndef Q_OS_MAC
-	QPalette palette = QApplication::palette();
-	// dark
-	if (theme::absLuma())
-	{
-		palette.setColor(QPalette::Mid, QPalette::HighlightedText);
-	}
-	// light
-	else
-	{
-		palette.setColor(QPalette::Mid, QPalette::Dark);
-	}
-	QApplication::setPalette(palette);
-#endif
-}
-
-void style::light()
+void theme::styleLight()
 {
 	QStyle* style = QStyleFactory::create("Fusion");
 	QApplication::setStyle(style);
@@ -181,7 +174,7 @@ void style::light()
 	QApplication::setPalette(palette);
 }
 
-void style::dark()
+void theme::styleDark()
 {
 	QApplication::setStyle("Fusion");
 	QPalette palette;

@@ -57,7 +57,7 @@ class ftpcom
 		};
 
 		explicit ftpcom();
-		ftpcom(e2se::logger::session* log);
+		ftpcom(e2se::logger::data* obj);
 		virtual ~ftpcom();
 		void setParameters(ftp_params params);
 		bool handle();

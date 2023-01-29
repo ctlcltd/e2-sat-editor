@@ -17,10 +17,10 @@
 
 namespace e2se_gui
 {
-class ftpHandler : protected e2se::log_factory
+class ftpHandler : public e2se::log_factory
 {
 	public:
-		ftpHandler(e2se::logger::session* log);
+		ftpHandler(e2se::logger::data* obj);
 		~ftpHandler();
 		bool openConnection();
 		bool closeConnection();

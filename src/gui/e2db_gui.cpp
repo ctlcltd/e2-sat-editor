@@ -27,11 +27,11 @@ using std::string, std::unordered_set, std::to_string;
 namespace e2se_gui
 {
 
-e2db::e2db(e2se::logger::session* log)
+e2db::e2db(e2se::logger::data* obj)
 {
 	std::setlocale(LC_NUMERIC, "C");
 
-	this->log = new e2se::logger(log, "gui.e2db");
+	this->log = new e2se::logger(obj, "gui.e2db");
 	debug("e2db()");
 
 	setup();

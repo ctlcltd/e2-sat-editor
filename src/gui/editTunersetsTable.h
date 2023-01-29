@@ -34,7 +34,7 @@ class editTunersetsTable : public dialAbstract
 			int yx;
 		};
 
-		editTunersetsTable(dataHandler* data, int yx, e2se::logger::session* log);
+		editTunersetsTable(dataHandler* data, int yx);
 		void display(QWidget* cwid);
 		void setEditId(string tnid, int tvid);
 		string getEditId();

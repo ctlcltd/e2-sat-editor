@@ -27,9 +27,9 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-editTunersetsTable::editTunersetsTable(dataHandler* data, int yx, e2se::logger::session* log)
+editTunersetsTable::editTunersetsTable(dataHandler* data, int yx)
 {
-	this->log = new logger(log, "editTunersetsTable");
+	this->log = new logger(data->log->obj, "editTunersetsTable");
 	debug("editTunersetsTable()");
 
 	this->data = data;
@@ -99,7 +99,7 @@ void editTunersetsTable::tableSatLayout()
 	dtf0->addItem(new QSpacerItem(0, 0));
 
 	dtf0->addItem(new QSpacerItem(0, 0));
-	
+
 	QLineEdit* dtf0ss = new QLineEdit;
 	dtf0ss->setProperty("field", "flgs");
 	fields.emplace_back(dtf0ss);
@@ -143,7 +143,7 @@ void editTunersetsTable::tableTerrestrialLayout()
 	dtf0->addItem(new QSpacerItem(0, 0));
 
 	dtf0->addItem(new QSpacerItem(0, 0));
-	
+
 	QLineEdit* dtf0ts = new QLineEdit;
 	dtf0ts->setProperty("field", "flgs");
 	fields.emplace_back(dtf0ts);
@@ -186,7 +186,7 @@ void editTunersetsTable::tableCableLayout()
 	dtf0->addItem(new QSpacerItem(0, 0));
 
 	dtf0->addItem(new QSpacerItem(0, 0));
-	
+
 	QLineEdit* dtf0cs = new QLineEdit;
 	dtf0cs->setProperty("field", "flgs");
 	fields.emplace_back(dtf0cs);
@@ -223,7 +223,7 @@ void editTunersetsTable::tableAtscLayout()
 	platform::osLineEdit(dtf0an);
 	dtf0->addRow(tr("Name"), dtf0an);
 	dtf0->addItem(new QSpacerItem(0, 0));
-	
+
 	QLineEdit* dtf0as = new QLineEdit;
 	dtf0as->setProperty("field", "flgs");
 	fields.emplace_back(dtf0as);

@@ -44,9 +44,9 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-mainView::mainView(tab* tid, QWidget* cwid, dataHandler* data, e2se::logger::session* log)
+mainView::mainView(tab* tid, QWidget* cwid, dataHandler* data)
 {
-	this->log = new logger(log, "mainView");
+	this->log = new logger(tid->log->obj, "mainView");
 	debug("mainView()");
 
 	this->tid = tid;
@@ -151,7 +151,7 @@ void mainView::layout()
 	list->setDropIndicatorShown(true);
 	list->setDragDropMode(QAbstractItemView::InternalMove);
 	list->setEditTriggers(QAbstractItemView::NoEditTriggers);
-	
+
 	TreeStyledItemDelegate* bouquets_delegate = new TreeStyledItemDelegate(tree);
 	bouquets_delegate->setIndentation(tree->indentation());
 	tree->setItemDelegateForColumn(0, bouquets_delegate);
@@ -451,7 +451,7 @@ void mainView::load()
 		bitem->setText(0, name);
 		tree->addTopLevelItem(bitem);
 		tree->expandItem(bitem);
-	
+
 		for (string & ubname : gboq.userbouquets)
 			bgroups[ubname] = bitem;
 	}
@@ -526,7 +526,7 @@ void mainView::populate(QTreeWidget* tree)
 
 	bool precached = false;
 	QList<QTreeWidgetItem*> items_prev;
-	
+
 	if (! cache.empty())
 	{
 		for (int i = 0; i < list->topLevelItemCount(); i++)
@@ -780,7 +780,7 @@ void mainView::treeItemDoubleClicked()
 	debug("treeItemDoubleClicked()");
 
 	QList<QTreeWidgetItem*> selected = tree->selectedItems();
-	
+
 	if (selected.empty() || selected.count() > 1)
 		return;
 
@@ -800,7 +800,7 @@ void mainView::listItemChanged()
 void mainView::listItemSelectionChanged()
 {
 	// debug("listItemSelectionChanged()");
-	
+
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
 	if (selected.empty())
@@ -853,7 +853,7 @@ void mainView::listItemDoubleClicked()
 	debug("listItemDoubleClicked()");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
-	
+
 	if (selected.empty() || selected.count() > 1)
 		return;
 
@@ -1023,7 +1023,7 @@ void mainView::addUserbouquet()
 	debug("addUserbouquet()");
 
 	string bname;
-	e2se_gui::editBouquet* add = new e2se_gui::editBouquet(this->data, this->state.ti, this->log->log);
+	e2se_gui::editBouquet* add = new e2se_gui::editBouquet(this->data, this->state.ti);
 	add->display(cwid);
 	bname = add->getAddId();
 	add->destroy();
@@ -1068,7 +1068,7 @@ void mainView::editUserbouquet()
 	debug("editUserbouquet()");
 
 	QList<QTreeWidgetItem*> selected = tree->selectedItems();
-	
+
 	if (selected.empty() || selected.count() > 1)
 		return;
 
@@ -1076,7 +1076,7 @@ void mainView::editUserbouquet()
 	QString qub = item->data(0, Qt::UserRole).toString();
 	string bname = qub.toStdString();
 
-	e2se_gui::editBouquet* edit = new e2se_gui::editBouquet(this->data, this->state.ti, this->log->log);
+	e2se_gui::editBouquet* edit = new e2se_gui::editBouquet(this->data, this->state.ti);
 	edit->setEditId(bname);
 	edit->display(cwid);
 	edit->destroy();
@@ -1125,7 +1125,7 @@ void mainView::addChannel()
 		}
 	}
 
-	e2se_gui::dialChannelBook* book = new e2se_gui::dialChannelBook(this->data, stype, this->log->log);
+	e2se_gui::dialChannelBook* book = new e2se_gui::dialChannelBook(this->data, stype);
 	book->setEventCallback([=](vector<QString> items) { this->putListItems(items); });
 	book->display(cwid);
 }
@@ -1136,7 +1136,7 @@ void mainView::addService()
 
 	string chid;
 	bool reload = false;
-	e2se_gui::editService* add = new e2se_gui::editService(this->data, this->log->log);
+	e2se_gui::editService* add = new e2se_gui::editService(this->data);
 	add->display(cwid);
 	chid = add->getAddId();
 	reload = ! (add->getTransponderId()).empty();
@@ -1220,7 +1220,7 @@ void mainView::editService()
 	debug("editService()");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
-	
+
 	if (selected.empty() || selected.count() > 1)
 		return;
 
@@ -1239,7 +1239,7 @@ void mainView::editService()
 	else
 		return error("editService()", "chid", chid);
 
-	e2se_gui::editService* edit = new e2se_gui::editService(this->data, this->log->log);
+	e2se_gui::editService* edit = new e2se_gui::editService(this->data);
 	edit->setEditId(chid);
 	edit->display(cwid);
 	nw_chid = edit->getEditId();
@@ -1275,7 +1275,7 @@ void mainView::addMarker()
 
 	string chid;
 	string bname = this->state.curr;
-	e2se_gui::editMarker* add = new e2se_gui::editMarker(this->data, this->log->log);
+	e2se_gui::editMarker* add = new e2se_gui::editMarker(this->data);
 	add->setAddId(bname);
 	add->display(cwid);
 	chid = add->getAddId();
@@ -1328,7 +1328,7 @@ void mainView::addMarker()
 	{
 		item->setIcon(ITEM_ROW_ROLE::chcas, theme::icon("crypted"));
 	}
-	
+
 	if (current == nullptr)
 		list->addTopLevelItem(item);
 	else
@@ -1357,7 +1357,7 @@ void mainView::editMarker()
 	debug("editMarker()");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
-	
+
 	if (selected.empty() || selected.count() > 1)
 		return;
 
@@ -1372,7 +1372,7 @@ void mainView::editMarker()
 	else
 		return error("editMarker()", "chid", chid);
 
-	e2se_gui::editMarker* edit = new e2se_gui::editMarker(this->data, this->log->log);
+	e2se_gui::editMarker* edit = new e2se_gui::editMarker(this->data);
 	edit->setEditId(chid, bname);
 	edit->display(cwid);
 	nw_chid = edit->getEditId();
@@ -1405,7 +1405,7 @@ void mainView::treeItemDelete()
 	debug("treeItemDelete()");
 
 	QList<QTreeWidgetItem*> selected = tree->selectedItems();
-	
+
 	if (selected.empty())
 	{
 		return;
@@ -1464,7 +1464,7 @@ void mainView::listItemCopy(bool cut)
 	debug("listItemCopy()");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
-	
+
 	if (selected.empty())
 		return;
 
@@ -1590,7 +1590,7 @@ void mainView::listItemDelete()
 		return;
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
-	
+
 	if (selected.empty())
 		return;
 
@@ -1787,12 +1787,12 @@ void mainView::putListItems(vector<QString> items)
 				{
 					tx.fec = fec.inner_fec;
 				}
-				
+
 				char txid[25];
 				// %4x:%8x
 				std::sprintf(txid, "%x:%x", tx.tsid, tx.dvbns);
 				tx.txid = ch.txid = txid;
-				
+
 				char chid[25];
 				std::sprintf(chid, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
 				ch.chid = chid;
@@ -1866,7 +1866,7 @@ void mainView::showTreeEditContextMenu(QPoint& pos)
 	debug("showTreeEditContextMenu()");
 
 	QList<QTreeWidgetItem*> selected = tree->selectedItems();
-	
+
 	if (selected.empty())
 		return;
 
@@ -1958,7 +1958,7 @@ void mainView::updateReferenceBox()
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
 	auto* dbih = this->data->dbih;
-	
+
 	if (selected.empty() || selected.count() > 1)
 	{
 		for (auto & field : ref_fields)
@@ -2030,7 +2030,7 @@ void mainView::updateReferenceBox()
 				string sys = dbih->value_transponder_system(tx);
 				string pos = dbih->value_transponder_position(tx);
 				string tname = dbih->get_tuner_name(tx);
-			
+
 				txp = QString::fromStdString(ptxp);
 
 				string ppos;

@@ -32,11 +32,11 @@ e2db::e2db()
 	std::setlocale(LC_NUMERIC, "C");
 }
 
-e2db::e2db(e2se::logger::session* log)
+e2db::e2db(e2se::logger::data* obj)
 {
 	std::setlocale(LC_NUMERIC, "C");
 
-	this->log = new e2se::logger(log, "e2db");
+	this->log = new e2se::logger(obj, "e2db");
 	debug("e2db()");
 }
 
@@ -466,7 +466,7 @@ void e2db::add_userbouquet(userbouquet& ub)
 			}
 			idx = idx + 1;
 		}
-		
+
 		ub.index = idx;
 	}
 	if (ub.bname.empty())

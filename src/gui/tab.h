@@ -38,7 +38,7 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map, std::bi
 
 namespace e2se_gui
 {
-class tab : protected e2se::log_factory
+class tab : public e2se::log_factory
 {
 	public:
 
@@ -50,7 +50,7 @@ class tab : protected e2se::log_factory
 			tools_html
 		};
 
-		tab(gui* gid, QWidget* cwid, e2se::logger::session* log);
+		tab(gui* gid, QWidget* cwid);
 		~tab();
 		bool isChild();
 		bool hasChildren();

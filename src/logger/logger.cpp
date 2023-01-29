@@ -24,9 +24,9 @@ logger::logger(string ns)
 	this->ns = "e2se." + ns;
 }
 
-logger::logger(session* log, string ns)
+logger::logger(data* obj, string ns)
 {
-	this->log = log;
+	this->obj = obj;
 	this->buf = new std::stringbuf;
 	this->ns = "e2se." + ns;
 }
@@ -39,9 +39,9 @@ void logger::debug(string msg)
 	out << ' ' << '[' << ns << ']';
 	out << ' ' << msg;
 	out << std::endl;
-	if (this->log->debug)
+	if (this->obj->debug)
 		std::cout << out.rdbuf();
-	this->log->text.append(buf->str());
+	this->obj->log.append(buf->str());
 	buf->str("");
 }
 
@@ -55,9 +55,9 @@ void logger::debug(string msg, string optk, string optv)
 	out << ' ' << optk << ':';
 	out << ' ' << optv;
 	out << std::endl;
-	if (this->log->debug)
+	if (this->obj->debug)
 		std::cout << out.rdbuf();
-	this->log->text.append(buf->str());
+	this->obj->log.append(buf->str());
 	buf->str("");
 }
 
@@ -74,9 +74,9 @@ void logger::info(string msg)
 	out << ' ' << '[' << ns << ']';
 	out << ' ' << msg;
 	out << std::endl;
-	if (this->log->debug)
+	if (this->obj->debug)
 		std::cout << out.rdbuf();
-	this->log->text.append(buf->str());
+	this->obj->log.append(buf->str());
 	buf->str("");
 }
 
@@ -90,9 +90,9 @@ void logger::info(string msg, string optk, string optv)
 	out << ' ' << optk << ':';
 	out << ' ' << optv;
 	out << std::endl;
-	if (this->log->debug)
+	if (this->obj->debug)
 		std::cout << out.rdbuf();
-	this->log->text.append(buf->str());
+	this->obj->log.append(buf->str());
 	buf->str("");
 }
 
@@ -110,7 +110,7 @@ void logger::error(string msg)
 	err << ' ' << msg;
 	err << std::endl;
 	std::cerr << err.rdbuf();
-	this->log->text.append(buf->str());
+	this->obj->log.append(buf->str());
 	buf->str("");
 }
 
@@ -125,7 +125,7 @@ void logger::error(string msg, string optk, string optv)
 	err << ' ' << optv;
 	err << std::endl;
 	std::cerr << err.rdbuf();
-	this->log->text.append(buf->str());
+	this->obj->log.append(buf->str());
 	buf->str("");
 }
 
@@ -136,45 +136,42 @@ void logger::error(string msg, string optk, int optv)
 
 string logger::timestamp()
 {
-#ifndef __MINGW32__
-	std::timespec ct; //C++17
-	std::timespec_get(&ct, TIME_UTC); //C++17
+#ifdef TIME_UTC
+	std::timespec ct;
+	std::timespec_get(&ct, TIME_UTC);
+#else
+	timespec ct;
+	clock_gettime(CLOCK_REALTIME, &ct);
+#endif
 	std::tm* lct = std::localtime(&ct.tv_sec);
 	char t[80];
 	std::strftime(t, 80, "%Y-%m-%d %H:%M:%S", lct);
 	char c[5];
 	std::sprintf(c, ".%03d", int (float (ct.tv_nsec) / 1e9 * 1e3));
 	return string (t) + string (c);
-#else
-	std::time_t ct = std::time(0);
-	std::tm* lct = std::localtime(&ct);
-	char t[80];
-	std::strftime(t, 80, "%Y-%m-%d %H:%M:%S", lct);
-	return t;
-#endif
 }
 
 string logger::str()
 {
-	this->log->size = this->log->text.size();
-	return this->log->text;
+	this->obj->size = this->obj->log.size();
+	return this->obj->log;
 }
 
 string logger::str_lend()
 {
-	int pos = this->log->size;
-	this->log->size = this->log->text.size();
-	return this->log->text.substr(pos);
+	int pos = this->obj->size;
+	this->obj->size = this->obj->log.size();
+	return this->obj->log.substr(pos);
 }
 
 size_t logger::pos()
 {
-	return this->log->text.size();
+	return this->obj->log.size();
 }
 
 size_t logger::last_pos()
 {
-	return this->log->size;
+	return this->obj->size;
 }
 
 }

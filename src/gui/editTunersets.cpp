@@ -25,9 +25,9 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-editTunersets::editTunersets(dataHandler* data, int yx, e2se::logger::session* log)
+editTunersets::editTunersets(dataHandler* data, int yx)
 {
-	this->log = new logger(log, "editTunersets");
+	this->log = new logger(data->log->obj, "editTunersets");
 	debug("editTunersets()");
 
 	this->data = data;

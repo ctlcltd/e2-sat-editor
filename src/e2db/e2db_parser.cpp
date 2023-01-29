@@ -31,11 +31,11 @@ e2db_parser::e2db_parser()
 	std::setlocale(LC_NUMERIC, "C");
 }
 
-e2db_parser::e2db_parser(e2se::logger::session* log)
+e2db_parser::e2db_parser(e2se::logger::data* obj)
 {
 	std::setlocale(LC_NUMERIC, "C");
 
-	this->log = new e2se::logger(log, "e2db");
+	this->log = new e2se::logger(obj, "e2db");
 	debug("e2db_parser()");
 }
 
@@ -211,7 +211,7 @@ void e2db_parser::parse_e2db_lamedb(istream& ilamedb)
 void e2db_parser::parse_e2db_lamedb4(istream& ilamedb)
 {
 	debug("parse_e2db_lamedb4()");
-	
+
 	LAMEDB_VER = 4;
 	int step = 0;
 	int s = 0;

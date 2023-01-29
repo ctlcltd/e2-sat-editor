@@ -21,14 +21,14 @@ namespace e2se
 class logger
 {
 	public:
-		struct session {
-			string text;
+		struct data {
+			string log;
 			size_t size;
 			bool debug;
 		};
 
 		logger(string ns);
-		logger(session* log, string ns);
+		logger(data* obj, string ns);
 		void debug(string msg);
 		void debug(string msg, string optk, string optv);
 		void debug(string msg, string optk, int optv);
@@ -45,11 +45,14 @@ class logger
 		size_t last_pos();
 		std::stringbuf* buf;
 		string ns;
-		session* log;
+		data* obj;
 };
 
 struct log_factory
 {
+	public:
+		logger* log;
+
 	protected:
 		void debug(string msg)
 		{
@@ -87,7 +90,6 @@ struct log_factory
 		{
 			this->log->error(msg, optk, optv);
 		}
-		logger* log;
 };
 }
 #endif /* logger_h */

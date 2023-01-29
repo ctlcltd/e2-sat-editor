@@ -38,7 +38,7 @@ namespace e2se_gui
 {
 class tab;
 
-class viewAbstract : protected e2se::log_factory
+class viewAbstract : public e2se::log_factory
 {
 	public:
 		enum LIST_FIND {

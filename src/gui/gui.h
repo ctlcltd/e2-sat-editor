@@ -37,7 +37,7 @@ namespace e2se_gui
 {
 class tab;
 
-class gui : protected e2se::log_factory
+class gui : public e2se::log_factory
 {
 	Q_DECLARE_TR_FUNCTIONS(gui)
 
@@ -225,7 +225,7 @@ class gui : protected e2se::log_factory
 			bool update;
 		};
 
-		gui(int argc, char* argv[], e2se::logger::session* log);
+		gui(int argc, char* argv[], e2se::logger::data* obj);
 		virtual ~gui() = default;
 		int exec();
 		void settingsChanged();
@@ -291,7 +291,7 @@ class gui : protected e2se::log_factory
 		int getCurrentTabId();
 		tab* getCurrentTabHandler();
 		void launcher();
-	
+
 		static QMenuBar* menuBar(QLayout* layout);
 		static QMenu* menuBarMenu(QMenuBar* menubar, QString title);
 		static QMenu* menuBarMenu(QMenu* menu, QString title);

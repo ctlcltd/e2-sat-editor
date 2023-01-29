@@ -26,9 +26,9 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-editTransponder::editTransponder(dataHandler* data, e2se::logger::session* log)
+editTransponder::editTransponder(dataHandler* data)
 {
-	this->log = new logger(log, "editTransponder");
+	this->log = new logger(data->log->obj, "editTransponder");
 	debug("editTransponder()");
 
 	this->data = data;
@@ -51,7 +51,7 @@ void editTransponder::layout(QWidget* cwid)
 
 	QString dtitle = this->state.edit ? tr("Edit Transponder") : tr("Add Transponder");
 	dial->setWindowTitle(dtitle);
-	
+
 	QStringList types = QStringList ({"Satellite", "Terrestrial", "Cable", "ATSC"});
 
 	QGroupBox* dtl0 = new QGroupBox(tr("Transponder"));
@@ -214,7 +214,7 @@ void editTransponder::leadSatLayout()
 	platform::osLineEdit(dtf0ss);
 	dtf0->addRow(tr("Symbol Rate"), dtf0ss);
 	dtf0->addItem(new QSpacerItem(0, 0));
-	
+
 	QComboBox* dtf0sc = new QComboBox;
 	dtf0sc->setProperty("field", "s_fec");
 	fields.emplace_back(dtf0sc);
@@ -296,7 +296,7 @@ void editTransponder::leadTerrestrialLayout()
 		string w = e2db::TER_BAND[i];
 		dtf0tb->addItem(QString::fromStdString(w), i);
 	}
-	
+
 	QComboBox* dtf0th = new QComboBox;
 	dtf0th->setProperty("field", "t_hpfec");
 	fields.emplace_back(dtf0th);
@@ -388,7 +388,7 @@ void editTransponder::leadCableLayout()
 	platform::osLineEdit(dtf0cs);
 	dtf0->addRow(tr("Symbol Rate"), dtf0cs);
 	dtf0->addItem(new QSpacerItem(0, 0));
-	
+
 	QComboBox* dtf0ci = new QComboBox;
 	dtf0ci->setProperty("field", "c_cfec");
 	fields.emplace_back(dtf0ci);
@@ -472,7 +472,7 @@ void editTransponder::sideSatLayout()
 		string w = e2db::SAT_MOD[i];
 		dtf1sm->addItem(QString::fromStdString(w), i);
 	}
-	
+
 	QComboBox* dtf1si = new QComboBox;
 	dtf1si->setProperty("field", "s_inv");
 	fields.emplace_back(dtf1si);
@@ -559,7 +559,7 @@ void editTransponder::sideTerrestrialLayout()
 		string w = e2db::TER_INV[i];
 		dtf1ti->addItem(QString::fromStdString(w), i);
 	}
-	
+
 	QComboBox* dtf1tg = new QComboBox;
 	dtf1tg->setProperty("field", "t_guard");
 	fields.emplace_back(dtf1tg);

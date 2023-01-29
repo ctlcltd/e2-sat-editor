@@ -24,9 +24,9 @@ namespace e2se_gui
 {
 
 //TODO improve custom bname (eg. userbouquet.favourites.tv)
-editBouquet::editBouquet(dataHandler* data, int ti, e2se::logger::session* log)
+editBouquet::editBouquet(dataHandler* data, int ti)
 {
-	this->log = new logger(log, "editBouquet");
+	this->log = new logger(data->log->obj, "editBouquet");
 	debug("editBouquet()");
 
 	this->data = data;

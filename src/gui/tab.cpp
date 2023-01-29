@@ -53,9 +53,9 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-tab::tab(gui* gid, QWidget* cwid, e2se::logger::session* log)
+tab::tab(gui* gid, QWidget* cwid)
 {
-	this->log = new logger(log, "tab");
+	this->log = new logger(gid->log->obj, "tab");
 	debug("tab()");
 
 	int uniqtt = reinterpret_cast<std::uintptr_t>(this);
@@ -227,15 +227,15 @@ void tab::viewMain()
 {
 	debug("viewMain()");
 
-	this->data = new dataHandler(this->log->log);
-	this->ftph = new ftpHandler(this->log->log);
-	this->tools = new e2se_gui::tools(this, this->gid, this->cwid, this->data, this->log->log);
-	this->view = new mainView(this, this->cwid, this->data, this->log->log);
+	this->data = new dataHandler(this->log->obj);
+	this->ftph = new ftpHandler(this->log->obj);
+	this->tools = new e2se_gui::tools(this, this->gid, this->cwid, this->data);
+	this->view = new mainView(this, this->cwid, this->data);
 
 	this->ttv = gui::TAB_VIEW::main;
 
 	layout();
-	
+
 	this->root->addWidget(view->widget, 0, 0, 1, 1);
 
 	newFile();
@@ -253,12 +253,12 @@ void tab::viewTransponders(tab* parent)
 	this->data = parent->data;
 	this->ftph = parent->ftph;
 	this->tools = parent->tools;
-	this->view = new transpondersView(this, this->cwid, this->data, this->log->log);
+	this->view = new transpondersView(this, this->cwid, this->data);
 
 	this->ttv = gui::TAB_VIEW::transponders;
 
 	layout();
-	
+
 	this->root->addWidget(view->widget, 0, 0, 1, 1);
 
 	load();
@@ -276,12 +276,12 @@ void tab::viewTunersets(tab* parent, int ytype)
 	this->data = parent->data;
 	this->ftph = parent->ftph;
 	this->tools = parent->tools;
-	this->view = new tunersetsView(this, this->cwid, this->data, ytype, this->log->log);
+	this->view = new tunersetsView(this, this->cwid, this->data, ytype);
 
 	this->ttv = gui::TAB_VIEW::tunersets;
 
 	layout();
-	
+
 	this->root->addWidget(view->widget, 0, 0, 1, 1);
 
 	load();
@@ -299,12 +299,12 @@ void tab::viewChannelBook(tab* parent)
 	this->data = parent->data;
 	this->ftph = parent->ftph;
 	this->tools = parent->tools;
-	this->view = new channelBookView(this, this->cwid, this->data, this->log->log);
+	this->view = new channelBookView(this, this->cwid, this->data);
 
 	this->ttv = gui::TAB_VIEW::channelBook;
 
 	layout();
-	
+
 	this->root->addWidget(view->widget, 0, 0, 1, 1);
 
 	load();
@@ -369,7 +369,7 @@ void tab::layout()
 	toolBarAction(top_toolbar, "Upload", [=]() { this->ftpUpload(); });
 	toolBarAction(top_toolbar, "Download", [=]() { this->ftpDownload(); });
 
-	if (QSettings().value("application/debug", this->log->log->debug).toBool())
+	if (QSettings().value("application/debug", this->log->obj->debug).toBool())
 	{
 		toolBarSeparator(bottom_toolbar);
 		toolBarAction(bottom_toolbar, "§ Load seeds", [=]() { this->loadSeeds(); });
@@ -451,7 +451,7 @@ void tab::openFile()
 	{
 		return;
 	}
-	
+
 	readFile(path);
 }
 
@@ -469,9 +469,9 @@ bool tab::readFile(string filename)
 	if (statusBarIsVisible())
 		timer = statusBarMessage("Reading from " + filename + " …");
 
-	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	theme::setWaitCursor();
 	bool readen = this->data->readFile(filename);
-	QGuiApplication::restoreOverrideCursor();
+	theme::unsetWaitCursor();
 
 	if (readen)
 	{
@@ -533,9 +533,9 @@ void tab::saveFile(bool saveas)
 
 	debug("saveFile()", "path", path);
 
-	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	theme::setWaitCursor();
 	bool written = this->data->writeFile(path);
-	QGuiApplication::restoreOverrideCursor();
+	theme::unsetWaitCursor();
 
 	if (written) {
 		if (statusBarIsVisible())
@@ -581,9 +581,9 @@ void tab::importFile()
 		statusBarMessage("Importing from " + path + " …");
 	}
 
-	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	theme::setWaitCursor();
 	dbih->importFile(paths);
-	QGuiApplication::restoreOverrideCursor();
+	theme::unsetWaitCursor();
 
 	view->reset();
 	view->load();
@@ -746,9 +746,9 @@ void tab::exportFile()
 			fname = basedir + fname;
 	}
 
-	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	theme::setWaitCursor();
 	dbih->exportFile(flags, paths);
-	QGuiApplication::restoreOverrideCursor();
+	theme::unsetWaitCursor();
 
 	if (statusBarIsVisible())
 	{
@@ -870,9 +870,9 @@ void tab::exportFile(QTreeWidgetItem* item)
 		}
 	}
 
-	QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	theme::setWaitCursor();
 	dbih->exportFile(bit, paths);
-	QGuiApplication::restoreOverrideCursor();
+	theme::unsetWaitCursor();
 
 	if (statusBarIsVisible())
 	{
@@ -895,7 +895,7 @@ void tab::printFile(bool all)
 	debug("printFile()");
 
 	gui::TAB_VIEW current = getTabView();
-	printable* printer = new printable(this->cwid, this->data, this->log->log);
+	printable* printer = new printable(this->cwid, this->data);
 
 	// print all
 	if (all)
@@ -1376,7 +1376,7 @@ void tab::ftpUpload()
 			base = settings.value("pathServices").toString().toStdString();
 		}
 		path = base + '/' + filename;
-		
+
 		e2se_ftpcom::ftpcom::ftpcom_file file;
 		file.filename = x.second.filename;
 		file.data = x.second.data;
@@ -1668,9 +1668,10 @@ QWidget* tab::toolBarSpacer(QToolBar* toolbar)
 void tab::toolBarStyleSheet()
 {
 #ifndef Q_OS_MAC
-	//TODO FIX
 	if (! theme::isDefault())
-		theme->dynamicStyleSheet(widget, "QToolBar { background: palette(mid) }");
+	{
+		theme->dynamicStyleSheet(widget, "#tab_top_toolbar, #tab_bottom_toolbar { background: palette(mid) }");
+	}
 #else
 	theme->dynamicStyleSheet(widget, "QToolBar { border-style: solid; border-width: 1px 0 }");
 

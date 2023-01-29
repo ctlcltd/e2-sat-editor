@@ -36,9 +36,9 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-editService::editService(dataHandler* data, e2se::logger::session* log)
+editService::editService(dataHandler* data)
 {
-	this->log = new logger(log, "editService");
+	this->log = new logger(data->log->obj, "editService");
 	debug("editService()");
 
 	this->data = data;
@@ -68,7 +68,7 @@ void editService::layout(QWidget* cwid)
 	this->dtwid = new QTabWidget;
 	dtwid->connect(dtwid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
 
-	this->edittx = new editTransponder(this->data, this->log->log);
+	this->edittx = new editTransponder(this->data);
 
 	QWidget* dtch = new QWidget;
 	QWidget* dttx = new QWidget;
@@ -927,7 +927,6 @@ vector<string> editService::computePIDs(e2db::service ch, e2db::SDATA_PIDS x, st
 
 string editService::getFlagValue(e2db::service ch, e2db::SDATA_FLAGS x)
 {
-	
 	int flags = std::strtol(ch.data[e2db::SDATA::f][0].data(), NULL, 16);
 	if (flags & x)
 		return "1";

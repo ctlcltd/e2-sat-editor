@@ -64,8 +64,8 @@ class channelBookView : public viewAbstract
 			chsys
 		};
 
-		channelBookView(dataHandler* data, int stype, e2se::logger::session* log);
-		channelBookView(tab* tid, QWidget* cwid, dataHandler* data, e2se::logger::session* log);
+		channelBookView(dataHandler* data, int stype);
+		channelBookView(tab* tid, QWidget* cwid, dataHandler* data);
 		void load();
 		void reset();
 		void filterChanged(bool enabled);
