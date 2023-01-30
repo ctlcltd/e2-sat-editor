@@ -18,26 +18,31 @@
 namespace e2se
 {
 
-logger::logger(string ns)
+logger::logger(string ns, string cn)
 {
+	this->obj = OBJECT;
 	this->buf = new std::stringbuf;
-	this->ns = "e2se." + ns;
+	this->ns = PREFIX + '.' + ns;
+	this->cn = cn;
+
+	debug(cn);
 }
 
-logger::logger(data* obj, string ns)
+logger::logger(data* obj, string ns, string cn)
 {
 	this->obj = obj;
 	this->buf = new std::stringbuf;
-	this->ns = "e2se." + ns;
+	this->ns = PREFIX + '.' + ns;
+	this->cn = cn;
 }
 
-void logger::debug(string msg)
+void logger::debug(string fn)
 {
 	std::ostream out (buf);
 	out << timestamp();
 	out << ' ' << "<Debug>";
 	out << ' ' << '[' << ns << ']';
-	out << ' ' << msg;
+	out << ' ' << cn << "::" << fn;
 	out << std::endl;
 	if (this->obj->debug)
 		std::cout << out.rdbuf();
@@ -45,13 +50,14 @@ void logger::debug(string msg)
 	buf->str("");
 }
 
-void logger::debug(string msg, string optk, string optv)
+void logger::debug(string fn, string optk, string optv)
 {
 	std::ostream out (buf);
 	out << timestamp();
 	out << ' ' << "<Debug>";
 	out << ' ' << '[' << ns << ']';
-	out << ' ' << msg;
+	out << ' ' << cn << "::" << fn;
+	out << ' ';
 	out << ' ' << optk << ':';
 	out << ' ' << optv;
 	out << std::endl;
@@ -61,18 +67,18 @@ void logger::debug(string msg, string optk, string optv)
 	buf->str("");
 }
 
-void logger::debug(string msg, string optk, int optv)
+void logger::debug(string fn, string optk, int optv)
 {
-	this->logger::debug(msg, optk, std::to_string(optv));
+	this->logger::debug(fn, optk, std::to_string(optv));
 }
 
-void logger::info(string msg)
+void logger::info(string fn)
 {
 	std::ostream out (buf);
 	out << timestamp();
 	out << ' ' << "<Info>";
 	out << ' ' << '[' << ns << ']';
-	out << ' ' << msg;
+	out << ' ' << cn << "::" << fn;
 	out << std::endl;
 	if (this->obj->debug)
 		std::cout << out.rdbuf();
@@ -80,13 +86,14 @@ void logger::info(string msg)
 	buf->str("");
 }
 
-void logger::info(string msg, string optk, string optv)
+void logger::info(string fn, string optk, string optv)
 {
 	std::ostream out (buf);
 	out << timestamp();
 	out << ' ' << "<Info>";
 	out << ' ' << '[' << ns << ']';
-	out << ' ' << msg;
+	out << ' ' << cn << "::" << fn;
+	out << ' ';
 	out << ' ' << optk << ':';
 	out << ' ' << optv;
 	out << std::endl;
@@ -96,31 +103,32 @@ void logger::info(string msg, string optk, string optv)
 	buf->str("");
 }
 
-void logger::info(string msg, string optk, int optv)
+void logger::info(string fn, string optk, int optv)
 {
-	this->logger::info(msg, optk, std::to_string(optv));
+	this->logger::info(fn, optk, std::to_string(optv));
 }
 
-void logger::error(string msg)
+void logger::error(string fn)
 {
 	std::ostream err (buf);
 	err << timestamp();
 	err << ' ' << "<Error>";
 	err << ' ' << '[' << ns << ']';
-	err << ' ' << msg;
+	err << ' ' << cn << "::" << fn;
 	err << std::endl;
 	std::cerr << err.rdbuf();
 	this->obj->log.append(buf->str());
 	buf->str("");
 }
 
-void logger::error(string msg, string optk, string optv)
+void logger::error(string fn, string optk, string optv)
 {
 	std::ostream err (buf);
 	err << timestamp();
 	err << ' ' << "<Error>";
 	err << ' ' << '[' << ns << ']';
-	err << ' ' << msg;
+	err << ' ' << cn << "::" << fn;
+	err << ' ';
 	err << ' ' << optk << ':';
 	err << ' ' << optv;
 	err << std::endl;
@@ -129,9 +137,9 @@ void logger::error(string msg, string optk, string optv)
 	buf->str("");
 }
 
-void logger::error(string msg, string optk, int optv)
+void logger::error(string fn, string optk, int optv)
 {
-	this->logger::error(msg, optk, std::to_string(optv));
+	this->logger::error(fn, optk, std::to_string(optv));
 }
 
 string logger::timestamp()

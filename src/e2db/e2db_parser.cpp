@@ -29,24 +29,18 @@ namespace e2se_e2db
 e2db_parser::e2db_parser()
 {
 	std::setlocale(LC_NUMERIC, "C");
-}
 
-e2db_parser::e2db_parser(e2se::logger::data* obj)
-{
-	std::setlocale(LC_NUMERIC, "C");
-
-	this->log = new e2se::logger(obj, "e2db");
-	debug("e2db_parser()");
+	this->log = new e2se::logger("e2db", "e2db_parser");
 }
 
 void e2db_parser::parse_e2db()
 {
-	debug("parse_e2db()");
+	debug("parse_e2db");
 
 	std::clock_t start = std::clock();
 
 	if (! find_services_file())
-		return error("parse_e2db()", "Error", "Services file \"lamedb\" not found.");
+		return error("parse_e2db", "Error", "Services file \"lamedb\" not found.");
 
 	ifstream ilamedb (this->e2db[this->services_filename]);
 	parse_e2db_lamedb(ilamedb);
@@ -107,13 +101,13 @@ void e2db_parser::parse_e2db()
 	// commit: d1f53fe	elapsed time: 56112
 	// commit: HEAD		elapsed time: 67343
 
-	info("parse_e2db()", "elapsed time", to_string(int (end - start)) + " ms.");
+	info("parse_e2db", "elapsed time", to_string(int (end - start)) + " ms.");
 }
 
 
 void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 {
-	debug("parse_e2db()");
+	debug("parse_e2db");
 
 	std::clock_t start = std::clock();
 
@@ -123,7 +117,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 		this->e2db[filename] = x.first;
 	}
 	if (! find_services_file())
-		return error("parse_e2db()", "Error", "Services file \"lamedb\" not found.");
+		return error("parse_e2db", "Error", "Services file \"lamedb\" not found.");
 
 	stringstream ilamedb;
 	ilamedb.write(&files[this->e2db[this->services_filename]].data[0], files[this->e2db[this->services_filename]].size);
@@ -178,25 +172,25 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 
 	std::clock_t end = std::clock();
 
-	info("parse_e2db()", "elapsed time", to_string(int (end - start)) + " ms.");
+	info("parse_e2db", "elapsed time", to_string(int (end - start)) + " ms.");
 }
 
 void e2db_parser::parse_e2db_lamedb(istream& ilamedb)
 {
-	debug("parse_e2db_lamedb()");
+	debug("parse_e2db_lamedb");
 
 	string hlamedb;
 	std::getline(ilamedb, hlamedb);
 	char vlamedb = (hlamedb.substr(hlamedb.length() - 2, hlamedb.length() - 1))[0];
 	int ver = isdigit(vlamedb) ? int (vlamedb) - 48 : 0;
 
-	debug("parse_e2db_lamedb()", "version", ver);
+	debug("parse_e2db_lamedb", "version", ver);
 
 	switch (ver)
 	{
 		case 2:
 		case 3:
-		return error("parse_e2db_lamedb()", "Parser Error", "Unsupported services file format.");
+		return error("parse_e2db_lamedb", "Parser Error", "Unsupported services file format.");
 		case 4:
 			parse_e2db_lamedb4(ilamedb);
 		break;
@@ -204,13 +198,13 @@ void e2db_parser::parse_e2db_lamedb(istream& ilamedb)
 			parse_e2db_lamedb5(ilamedb);
 		break;
 		default:
-		return error("parse_e2db_lamedb()", "Parser Error", "Unknown services file format.");
+		return error("parse_e2db_lamedb", "Parser Error", "Unknown services file format.");
 	}
 }
 
 void e2db_parser::parse_e2db_lamedb4(istream& ilamedb)
 {
-	debug("parse_e2db_lamedb4()");
+	debug("parse_e2db_lamedb4");
 
 	LAMEDB_VER = 4;
 	int step = 0;
@@ -287,7 +281,7 @@ void e2db_parser::parse_e2db_lamedb4(istream& ilamedb)
 
 void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 {
-	debug("parse_e2db_lamedb5()");
+	debug("parse_e2db_lamedb5");
 
 	LAMEDB_VER = 5;
 	bool step;
@@ -418,7 +412,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string str, char ty, transpon
 			tx.oflgs = string (oflgs);
 		break;
 		default:
-		return error("parse_lamedb_transponder_feparms()", "Parser Error", "Unknown transponder type.");
+		return error("parse_lamedb_transponder_feparms", "Parser Error", "Unknown transponder type.");
 	}
 }
 
@@ -481,7 +475,7 @@ void e2db_parser::append_lamedb_service_name(string str, service& ch)
 
 void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string bname)
 {
-	debug("parse_e2db_bouquet()", "bname", bname);
+	debug("parse_e2db_bouquet", "bname", bname);
 
 	bool add = true;
 	string line;
@@ -525,7 +519,7 @@ void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string bname)
 
 void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string bname)
 {
-	debug("parse_e2db_userbouquet()", "bname", bname);
+	debug("parse_e2db_userbouquet", "bname", bname);
 
 	int step = 0;
 	int idx = 0;
@@ -614,7 +608,7 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 		//TODO group
 		// group
 		case STYPE::group:
-			error("parse_channel_reference()", "Parser Error", "Not supported yet.");
+			error("parse_channel_reference", "Parser Error", "Not supported yet.");
 		break;
 		// service
 		default:
@@ -632,14 +626,14 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 //TODO value xml entities
 void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 {
-	debug("parse_tunersets_xml()", "ytype", ytype);
+	debug("parse_tunersets_xml", "ytype", ytype);
 
 	string htunxml;
 	string charset = "UTF-8";
 	std::getline(ftunxml, htunxml, '>');
 
 	if (htunxml.find("<?xml") == string::npos)
-		return error("parse_tunersets_xml()", "Parser Error", "Unknown file format.");
+		return error("parse_tunersets_xml", "Parser Error", "Unknown file format.");
 
 	unsigned long pos = htunxml.find("encoding=");
 	unsigned long len;
@@ -653,7 +647,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 		// std::transform(charset.begin(), charset.end(), charset.begin(), [](unsigned char c) { return toupper(c); });
 	}
 
-	debug("parse_tunersets_xml()", "charset", charset);
+	debug("parse_tunersets_xml", "charset", charset);
 
 	switch (ytype)
 	{
@@ -663,7 +657,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 		case YTYPE::atsc:
 		break;
 		default:
-		return error("parse_tunersets_xml()", "Parser Error", "These settings are not supported.");
+		return error("parse_tunersets_xml", "Parser Error", "These settings are not supported.");
 	}
 
 	tunersets tv;
@@ -766,7 +760,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 		}
 		else
 		{
-			return error("parse_tunersets_xml()", "Parser Error", "Malformed or unknown XML error.");
+			return error("parse_tunersets_xml", "Parser Error", "Malformed or unknown XML error.");
 		}
 
 		string yey;
@@ -982,7 +976,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 
 bool e2db_parser::find_services_file()
 {
-	debug("find_services_file()");
+	debug("find_services_file");
 
 	if (PARSER_LAMEDB5_PRIOR && this->e2db.count("lamedb5"))
 		this->services_filename = "lamedb5";
@@ -996,16 +990,16 @@ bool e2db_parser::find_services_file()
 
 bool e2db_parser::list_file(string path)
 {
-	debug("list_file()", "path", path);
+	debug("list_file", "path", path);
 
 	if (! std::filesystem::exists(path)) //C++17
 	{
-		error("list_file()", "File Error", "File \"" + path + "\" not exists.");
+		error("list_file", "File Error", "File \"" + path + "\" not exists.");
 		return false;
 	}
 	if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_read)  == std::filesystem::perms::none) //C++17
 	{
-		error("list_file()", "File Error", "File \"" + path + "\" is not readable.");
+		error("list_file", "File Error", "File \"" + path + "\" is not readable.");
 		return false;
 	}
 
@@ -1019,7 +1013,7 @@ bool e2db_parser::list_file(string path)
 		}
 		if ((std::filesystem::status(entry).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none) //C++17
 		{
-			error("list_file()", "File Error", "File \"" + path + "\" is not readable.");
+			error("list_file", "File Error", "File \"" + path + "\" is not readable.");
 			return false;
 		}
 
@@ -1029,7 +1023,7 @@ bool e2db_parser::list_file(string path)
 	}
 	if (! find_services_file())
 	{
-		error("list_file()", "File Error", "Services file \"lamedb\" not found.");
+		error("list_file", "File Error", "Services file \"lamedb\" not found.");
 		return false;
 	}
 	this->filepath = path;
@@ -1039,7 +1033,7 @@ bool e2db_parser::list_file(string path)
 
 bool e2db_parser::read(string path)
 {
-	debug("read()", "path", path);
+	debug("read", "path", path);
 
 	if (list_file(path))
 		parse_e2db();
@@ -1050,7 +1044,7 @@ bool e2db_parser::read(string path)
 }
 
 unordered_map<string, string> e2db_parser::get_input() {
-	debug("get_input()");
+	debug("get_input");
 
 	return this->e2db;
 }

@@ -33,8 +33,7 @@ namespace e2se_gui
 
 tools::tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data)
 {
-	this->log = new logger(data->log->obj, "tools");
-	debug("tools()");
+	this->log = new logger("gui", "tools");
 
 	this->gid = gid;
 	this->tid = tid;
@@ -93,7 +92,7 @@ void tools::inspector()
 
 void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 {
-	debug("importFileCSV()");
+	debug("importFileCSV");
 
 	vector<string> paths;
 
@@ -128,7 +127,7 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 
 void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 {
-	debug("exportFileCSV()");
+	debug("exportFileCSV");
 
 	string path = gid->exportFileDialog(gui::GUI_DPORTS::CSV, opts.filename);
 
@@ -172,7 +171,7 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 
 void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 {
-	debug("exportFileHTML()");
+	debug("exportFileHTML");
 
 	string path = gid->exportFileDialog(gui::GUI_DPORTS::HTML, opts.filename);
 
@@ -216,7 +215,7 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 
 void tools::destroy()
 {
-	debug("destroy()");
+	debug("destroy");
 
 	delete this;
 }

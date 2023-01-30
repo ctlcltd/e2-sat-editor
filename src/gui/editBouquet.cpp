@@ -26,8 +26,7 @@ namespace e2se_gui
 //TODO improve custom bname (eg. userbouquet.favourites.tv)
 editBouquet::editBouquet(dataHandler* data, int ti)
 {
-	this->log = new logger(data->log->obj, "editBouquet");
-	debug("editBouquet()");
+	this->log = new logger("gui", "editBouquet");
 
 	this->data = data;
 	this->state.ti = ti;
@@ -102,7 +101,7 @@ void editBouquet::layout(QWidget* cwid)
 
 void editBouquet::store()
 {
-	debug("store()");
+	debug("store");
 
 	auto* dbih = this->data->dbih;
 
@@ -110,7 +109,7 @@ void editBouquet::store()
 	if (this->state.edit)
 	{
 		if (! dbih->userbouquets.count(bname))
-			return error("store()", "bname", bname);
+			return error("store", "bname", bname);
 
 		ub = dbih->userbouquets[bname];
 	}
@@ -139,12 +138,12 @@ void editBouquet::store()
 
 void editBouquet::retrieve()
 {
-	debug("retrieve()");
+	debug("retrieve");
 
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->userbouquets.count(bname))
-		return error("retrieve()", "bname", bname);
+		return error("retrieve", "bname", bname);
 
 	e2db::userbouquet ub = dbih->userbouquets[bname];
 
@@ -172,7 +171,7 @@ void editBouquet::retrieve()
 
 void editBouquet::setEditId(string bname)
 {
-	debug("setEditId()");
+	debug("setEditId");
 
 	this->state.edit = true;
 	this->bname = bname;
@@ -180,14 +179,14 @@ void editBouquet::setEditId(string bname)
 
 string editBouquet::getEditId()
 {
-	debug("getEditId()");
+	debug("getEditId");
 
 	return this->bname;
 }
 
 string editBouquet::getAddId()
 {
-	debug("getAddId()");
+	debug("getAddId");
 
 	return this->bname;
 }

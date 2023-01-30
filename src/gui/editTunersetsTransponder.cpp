@@ -27,8 +27,7 @@ namespace e2se_gui
 
 editTunersetsTransponder::editTunersetsTransponder(dataHandler* data, int yx)
 {
-	this->log = new logger(data->log->obj, "editTunersetsTransponder");
-	debug("editTunersetsTransponder()");
+	this->log = new logger("gui", "editTunersetsTransponder");
 
 	this->data = data;
 	this->state.yx = yx;
@@ -74,7 +73,7 @@ void editTunersetsTransponder::layout(QWidget* cwid)
 
 void editTunersetsTransponder::leadSatLayout()
 {
-	debug("leadSatLayout()");
+	debug("leadSatLayout");
 
 	QGroupBox* dtl0 = new QGroupBox;
 	QFormLayout* dtf0 = new QFormLayout;
@@ -151,7 +150,7 @@ void editTunersetsTransponder::leadSatLayout()
 
 void editTunersetsTransponder::leadTerrestrialLayout()
 {
-	debug("leadTerrestrialLayout()");
+	debug("leadTerrestrialLayout");
 
 	QGroupBox* dtl0 = new QGroupBox;
 	QFormLayout* dtf0 = new QFormLayout;
@@ -233,7 +232,7 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 
 void editTunersetsTransponder::leadCableLayout()
 {
-	debug("leadCableLayout()");
+	debug("leadCableLayout");
 
 	QGroupBox* dtl0 = new QGroupBox;
 	QFormLayout* dtf0 = new QFormLayout;
@@ -295,7 +294,7 @@ void editTunersetsTransponder::leadCableLayout()
 
 void editTunersetsTransponder::leadAtscLayout()
 {
-	debug("leadAtscLayout()");
+	debug("leadAtscLayout");
 
 	QGroupBox* dtl0 = new QGroupBox;
 	QFormLayout* dtf0 = new QFormLayout;
@@ -327,7 +326,7 @@ void editTunersetsTransponder::leadAtscLayout()
 
 void editTunersetsTransponder::sideSatLayout()
 {
-	debug("sideSatLayout()");
+	debug("sideSatLayout");
 
 	QGroupBox* dtl1 = new QGroupBox;
 	QFormLayout* dtf1 = new QFormLayout;
@@ -399,7 +398,7 @@ void editTunersetsTransponder::sideSatLayout()
 
 void editTunersetsTransponder::sideTerrestrialLayout()
 {
-	debug("sideTerrestrialLayout()");
+	debug("sideTerrestrialLayout");
 
 	QGroupBox* dtl1 = new QGroupBox;
 	QFormLayout* dtf1 = new QFormLayout;
@@ -471,7 +470,7 @@ void editTunersetsTransponder::sideTerrestrialLayout()
 
 void editTunersetsTransponder::sideCableLayout()
 {
-	debug("sideCableLayout()");
+	debug("sideCableLayout");
 
 	QGroupBox* dtl1 = new QGroupBox;
 	QFormLayout* dtf1 = new QFormLayout;
@@ -498,7 +497,7 @@ void editTunersetsTransponder::sideCableLayout()
 
 void editTunersetsTransponder::thirdSatLayout()
 {
-	debug("thirdCableLayout()");
+	debug("thirdCableLayout");
 
 	QGroupBox* dtl2 = new QGroupBox;
 	QFormLayout* dtf2 = new QFormLayout;
@@ -560,7 +559,7 @@ void editTunersetsTransponder::thirdSatLayout()
 
 void editTunersetsTransponder::store()
 {
-	debug("store()");
+	debug("store");
 
 	auto* dbih = this->data->dbih;
 
@@ -570,19 +569,19 @@ void editTunersetsTransponder::store()
 	if (dbih->tuners.count(tvid))
 		tvs = dbih->tuners[tvid];
 	else
-		return error("store()", "tvid", tvid);
+		return error("store", "tvid", tvid);
 
 	if (tvs.tables.count(tnid))
 		tns = tvs.tables[tnid];
 	else
-		return error("store()", "tnid", tnid);
+		return error("store", "tnid", tnid);
 
 	e2db::tunersets_transponder txp;
 
 	if (this->state.edit)
 	{
 		if (! tns.transponders.count(trid))
-			return error("store()", "trid", trid);
+			return error("store", "trid", trid);
 
 		txp = tns.transponders[trid];
 	}
@@ -687,7 +686,7 @@ void editTunersetsTransponder::store()
 
 void editTunersetsTransponder::retrieve()
 {
-	debug("retrieve()");
+	debug("retrieve");
 
 	auto* dbih = this->data->dbih;
 
@@ -697,15 +696,15 @@ void editTunersetsTransponder::retrieve()
 	if (dbih->tuners.count(tvid))
 		tvs = dbih->tuners[tvid];
 	else
-		return error("retrieve()", "tvid", tvid);
+		return error("retrieve", "tvid", tvid);
 
 	if (tvs.tables.count(tnid))
 		tns = tvs.tables[tnid];
 	else
-		return error("retrieve()", "tnid", tnid);
+		return error("retrieve", "tnid", tnid);
 
 	if (! tns.transponders.count(trid))
-		return error("retrieve()", "trid", trid);
+		return error("retrieve", "trid", trid);
 
 	e2db::tunersets_transponder txp = tns.transponders[trid];
 
@@ -805,7 +804,7 @@ void editTunersetsTransponder::retrieve()
 
 void editTunersetsTransponder::setEditId(string trid, string tnid, int tvid)
 {
-	debug("setEditId()");
+	debug("setEditId");
 
 	this->state.edit = true;
 	this->tvid = tvid;
@@ -815,14 +814,14 @@ void editTunersetsTransponder::setEditId(string trid, string tnid, int tvid)
 
 string editTunersetsTransponder::getEditId()
 {
-	debug("getEditId()");
+	debug("getEditId");
 
 	return this->trid;
 }
 
 void editTunersetsTransponder::setAddId(string tnid, int tvid)
 {
-	debug("setAddId()");
+	debug("setAddId");
 
 	this->tvid = tvid;
 	this->tnid = tnid;
@@ -830,7 +829,7 @@ void editTunersetsTransponder::setAddId(string tnid, int tvid)
 
 string editTunersetsTransponder::getAddId()
 {
-	debug("getAddId()");
+	debug("getAddId");
 
 	return this->trid;
 }

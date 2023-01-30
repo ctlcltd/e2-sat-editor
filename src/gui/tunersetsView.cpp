@@ -43,8 +43,7 @@ namespace e2se_gui
 
 tunersetsView::tunersetsView(tab* tid, QWidget* cwid, dataHandler* data, int ytype)
 {
-	this->log = new logger(tid->log->obj, "tunersetsView");
-	debug("tunersetsView()");
+	this->log = new logger("gui", "tunersetsView");
 
 	this->tid = tid;
 	this->cwid = cwid;
@@ -59,7 +58,7 @@ tunersetsView::tunersetsView(tab* tid, QWidget* cwid, dataHandler* data, int yty
 
 void tunersetsView::layout()
 {
-	debug("layout()");
+	debug("layout");
 
 	widget->setStyleSheet("QGroupBox { spacing: 0; border: 0; padding: 0; padding-top: 32px; font-weight: bold } QGroupBox::title { margin: 8px 4px; padding: 0 1px 1px }");
 
@@ -95,7 +94,7 @@ void tunersetsView::layout()
 			tfrm->setTitle("Positions");
 		break;
 		default:
-			error("tunersets()", "Error", "Not supported yet.");
+			error("tunersets", "Error", "Not supported yet.");
 	}
 	lfrm->setTitle("Transponders");
 
@@ -303,7 +302,7 @@ void tunersetsView::searchLayout()
 
 void tunersetsView::load()
 {
-	debug("load()");
+	debug("load");
 
 	tabUpdateFlags(gui::init);
 
@@ -339,7 +338,7 @@ void tunersetsView::load()
 
 void tunersetsView::reset()
 {
-	debug("reset()");
+	debug("reset");
 
 	unsetPendingUpdateListIndex();
 
@@ -390,9 +389,9 @@ void tunersetsView::populate()
 	e2db::tunersets tvs = dbih->tuners[tvid];
 
 	if (tvs.tables.count(tnid))
-		debug("populate()", "current", tnid);
+		debug("populate", "current", tnid);
 	else
-		error("populate()", "current", tnid);
+		error("populate", "current", tnid);
 
 	e2db::tunersets_table tns = tvs.tables[tnid];
 
@@ -436,7 +435,7 @@ void tunersetsView::populate()
 
 void tunersetsView::treeItemChanged(QTreeWidgetItem* current)
 {
-	debug("treeItemChanged()");
+	debug("treeItemChanged");
 
 	if (current != NULL)
 	{
@@ -458,7 +457,7 @@ void tunersetsView::treeItemChanged(QTreeWidgetItem* current)
 
 void tunersetsView::treeItemDoubleClicked()
 {
-	debug("treeItemDoubleClicked()");
+	debug("treeItemDoubleClicked");
 
 	QList<QTreeWidgetItem*> selected = tree->selectedItems();
 
@@ -470,7 +469,7 @@ void tunersetsView::treeItemDoubleClicked()
 
 void tunersetsView::listItemChanged()
 {
-	// debug("listItemChanged()");
+	// debug("listItemChanged");
 
 	if (list_evto->isChanged())
 		listPendingUpdate();
@@ -478,7 +477,7 @@ void tunersetsView::listItemChanged()
 
 void tunersetsView::listItemSelectionChanged()
 {
-	// debug("listItemSelectionChanged()");
+	// debug("listItemSelectionChanged");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
@@ -506,7 +505,7 @@ void tunersetsView::listItemSelectionChanged()
 
 void tunersetsView::listItemDoubleClicked()
 {
-	debug("listItemDoubleClicked()");
+	debug("listItemDoubleClicked");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
@@ -518,7 +517,7 @@ void tunersetsView::listItemDoubleClicked()
 
 void tunersetsView::listPendingUpdate()
 {
-	debug("listPendingUpdate()");
+	debug("listPendingUpdate");
 
 	setPendingUpdateListIndex();
 
@@ -527,7 +526,7 @@ void tunersetsView::listPendingUpdate()
 
 void tunersetsView::addSettings()
 {
-	debug("addSettings()");
+	debug("addSettings");
 
 	int tvid = this->state.yx;
 	e2db::tunersets tvs;
@@ -542,14 +541,14 @@ void tunersetsView::addSettings()
 
 void tunersetsView::editSettings()
 {
-	debug("editSettings()");
+	debug("editSettings");
 
 	int tvid = this->state.yx;
 
 	auto* dbih = this->data->dbih;
 
 	if (dbih->tuners.count(tvid))
-		debug("editSettings()", "tvid", tvid);
+		debug("editSettings", "tvid", tvid);
 	else
 		addSettings();
 
@@ -564,7 +563,7 @@ void tunersetsView::editSettings()
 
 void tunersetsView::addPosition()
 {
-	debug("addPosition()");
+	debug("addPosition");
 
 	int tvid = this->state.yx;
 	string tnid;
@@ -581,9 +580,9 @@ void tunersetsView::addPosition()
 	add->destroy();
 
 	if (dbih->tuners[tvid].tables.count(tnid))
-		debug("addPosition()", "tnid", tnid);
+		debug("addPosition", "tnid", tnid);
 	else
-		return error("addPosition()", "tnid", tnid);
+		return error("addPosition", "tnid", tnid);
 
 	tree->header()->setSectionsClickable(false);
 	tree->setDragEnabled(false);
@@ -623,7 +622,7 @@ void tunersetsView::addPosition()
 
 void tunersetsView::editPosition()
 {
-	debug("editPosition()");
+	debug("editPosition");
 
 	QList<QTreeWidgetItem*> selected = tree->selectedItems();
 
@@ -638,11 +637,11 @@ void tunersetsView::editPosition()
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->tuners.count(tvid))
-		return error("addTransponder()", "tvid", tvid);
+		return error("addTransponder", "tvid", tvid);
 	if (dbih->tuners[tvid].tables.count(tnid))
-		debug("editPosition()", "tnid", tnid);
+		debug("editPosition", "tnid", tnid);
 	else
-		return error("editPosition()", "tnid", tnid);
+		return error("editPosition", "tnid", tnid);
 
 	e2se_gui::editTunersetsTable* edit = new e2se_gui::editTunersetsTable(this->data, tvid);
 	edit->setEditId(tnid, tvid);
@@ -651,9 +650,9 @@ void tunersetsView::editPosition()
 	edit->destroy();
 
 	if (dbih->tuners[tvid].tables.count(nw_tnid))
-		debug("editPosition()", "new tnid", nw_tnid);
+		debug("editPosition", "new tnid", nw_tnid);
 	else
-		return error("editPosition()", "new tnid", nw_tnid);
+		return error("editPosition", "new tnid", nw_tnid);
 
 	e2db::tunersets_table tns = dbih->tuners[tvid].tables[nw_tnid];
 
@@ -668,7 +667,7 @@ void tunersetsView::editPosition()
 
 void tunersetsView::addTransponder()
 {
-	debug("addTransponder()");
+	debug("addTransponder");
 
 	int tvid = this->state.yx;
 	string tnid = this->state.curr;
@@ -676,9 +675,9 @@ void tunersetsView::addTransponder()
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->tuners.count(tvid))
-		return error("addTransponder()", "tvid", tvid);
+		return error("addTransponder", "tvid", tvid);
 	if (! dbih->tuners[tvid].tables.count(tnid))
-		return error("addTransponder()", "tnid", tnid);
+		return error("addTransponder", "tnid", tnid);
 
 	string trid;
 	e2se_gui::editTunersetsTransponder* add = new e2se_gui::editTunersetsTransponder(this->data, tvid);
@@ -688,9 +687,9 @@ void tunersetsView::addTransponder()
 	add->destroy();
 
 	if (dbih->tuners[tvid].tables[tnid].transponders.count(trid))
-		debug("addTransponder()", "trid", trid);
+		debug("addTransponder", "trid", trid);
 	else
-		return error("addTransponder()", "trid", trid);
+		return error("addTransponder", "trid", trid);
 
 	list->header()->setSectionsClickable(false);
 	list->setDragEnabled(false);
@@ -736,7 +735,7 @@ void tunersetsView::addTransponder()
 
 void tunersetsView::editTransponder()
 {
-	debug("editTransponder()");
+	debug("editTransponder");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
@@ -752,14 +751,14 @@ void tunersetsView::editTransponder()
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->tuners.count(tvid))
-		return error("editTransponder()", "tvid", tvid);
+		return error("editTransponder", "tvid", tvid);
 	if (! dbih->tuners[tvid].tables.count(tnid))
-		return error("editTransponder()", "tnid", tnid);
+		return error("editTransponder", "tnid", tnid);
 
 	if (dbih->tuners[tvid].tables[tnid].transponders.count(trid))
-		debug("editTransponder()", "trid", trid);
+		debug("editTransponder", "trid", trid);
 	else
-		return error("editTransponder()", "trid", trid);
+		return error("editTransponder", "trid", trid);
 
 	e2se_gui::editTunersetsTransponder* edit = new e2se_gui::editTunersetsTransponder(this->data, tvid);
 	edit->setEditId(trid, tnid, tvid);
@@ -768,9 +767,9 @@ void tunersetsView::editTransponder()
 	edit->destroy();
 
 	if (dbih->tuners[tvid].tables[tnid].transponders.count(nw_trid))
-		debug("editTransponder()", "new trid", nw_trid);
+		debug("editTransponder", "new trid", nw_trid);
 	else
-		return error("editTransponder()", "new trid", nw_trid);
+		return error("editTransponder", "new trid", nw_trid);
 
 	e2db::tunersets_table tns = dbih->tuners[tvid].tables[tnid];
 	e2db::tunersets_transponder txp = tns.transponders[nw_trid];
@@ -788,7 +787,7 @@ void tunersetsView::editTransponder()
 
 void tunersetsView::treeItemDelete()
 {
-	debug("treeItemDelete()");
+	debug("treeItemDelete");
 
 	QList<QTreeWidgetItem*> selected = tree->selectedItems();
 
@@ -826,7 +825,7 @@ void tunersetsView::treeItemDelete()
 
 void tunersetsView::listItemCopy(bool cut)
 {
-	debug("listItemCopy()");
+	debug("listItemCopy");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
@@ -858,7 +857,7 @@ void tunersetsView::listItemCopy(bool cut)
 
 void tunersetsView::listItemPaste()
 {
-	debug("listItemPaste()");
+	debug("listItemPaste");
 
 	QClipboard* clipboard = QGuiApplication::clipboard();
 	const QMimeData* mimeData = clipboard->mimeData();
@@ -884,7 +883,7 @@ void tunersetsView::listItemPaste()
 
 void tunersetsView::listItemDelete()
 {
-	debug("listItemDelete()");
+	debug("listItemDelete");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
@@ -931,7 +930,7 @@ void tunersetsView::listItemDelete()
 //TODO duplicates
 void tunersetsView::putListItems(vector<QString> items)
 {
-	debug("putListItems()");
+	debug("putListItems");
 
 	list->header()->setSectionsClickable(false);
 	list->setDragEnabled(false);
@@ -1047,7 +1046,7 @@ void tunersetsView::putListItems(vector<QString> items)
 
 void tunersetsView::updateStatusBar(bool current)
 {
-	debug("updateStatusBar()");
+	debug("updateStatusBar");
 
 	int tvid = this->state.yx;
 
@@ -1082,7 +1081,7 @@ void tunersetsView::updateStatusBar(bool current)
 
 void tunersetsView::showTreeEditContextMenu(QPoint &pos)
 {
-	debug("showTreeEditContextMenu()");
+	debug("showTreeEditContextMenu");
 
 	QList<QTreeWidgetItem*> selected = tree->selectedItems();
 
@@ -1105,7 +1104,7 @@ void tunersetsView::showTreeEditContextMenu(QPoint &pos)
 
 void tunersetsView::showListEditContextMenu(QPoint &pos)
 {
-	debug("showListEditContextMenu()");
+	debug("showListEditContextMenu");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
@@ -1135,7 +1134,7 @@ void tunersetsView::showListEditContextMenu(QPoint &pos)
 
 void tunersetsView::updateFlags()
 {
-	debug("updateFlags()");
+	debug("updateFlags");
 
 	if (tree->topLevelItemCount())
 	{
@@ -1193,7 +1192,7 @@ void tunersetsView::updateFlags()
 
 void tunersetsView::updateTreeIndex()
 {
-	debug("updateTreeIndex()");
+	debug("updateTreeIndex");
 
 	int tvid = this->state.yx;
 
@@ -1234,7 +1233,7 @@ void tunersetsView::updateListIndex()
 
 	dbih->index[tnid].clear();
 
-	debug("updateListIndex()", "current", tnid);
+	debug("updateListIndex", "current", tnid);
 
 	int sort_col = list->sortColumn();
 	list->sortItems(0, Qt::AscendingOrder);

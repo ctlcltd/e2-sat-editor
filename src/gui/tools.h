@@ -21,7 +21,7 @@ namespace e2se_gui
 class gui;
 class tab;
 
-class tools : public e2se::log_factory
+class tools : protected e2se::log_factory
 {
 	public:
 		tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data);

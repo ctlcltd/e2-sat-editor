@@ -30,20 +30,14 @@ namespace e2se_e2db
 e2db::e2db()
 {
 	std::setlocale(LC_NUMERIC, "C");
-}
 
-e2db::e2db(e2se::logger::data* obj)
-{
-	std::setlocale(LC_NUMERIC, "C");
-
-	this->log = new e2se::logger(obj, "e2db");
-	debug("e2db()");
+	this->log = new e2se::logger("e2db", "e2db");
 }
 
 void e2db::import_file(vector<string> paths)
 {
-	debug("import_file()", "file path", "multiple");
-	debug("import_file()", "file input", "auto");
+	debug("import_file", "file path", "multiple");
+	debug("import_file", "file input", "auto");
 
 	bool merge = this->get_input().size() != 0 ? true : false;
 	auto* dst = merge ? newptr() : this;
@@ -52,15 +46,15 @@ void e2db::import_file(vector<string> paths)
 	{
 		if (! std::filesystem::exists(path)) //C++17
 		{
-			return error("import_file()", "File Error", "File \"" + path + "\" not exists.");
+			return error("import_file", "File Error", "File \"" + path + "\" not exists.");
 		}
 		if (! std::filesystem::is_regular_file(path) && ! std::filesystem::is_directory(path)) //C++17
 		{
-			return error("import_file()", "File Error", "File \"" + path + "\" is not a valid file.");
+			return error("import_file", "File Error", "File \"" + path + "\" is not a valid file.");
 		}
 		if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_read)  == std::filesystem::perms::none) //C++17
 		{
-			return error("import_file()", "File Error", "File \"" + path + "\" is not readable.");
+			return error("import_file", "File Error", "File \"" + path + "\" is not readable.");
 		}
 
 		FPORTS fpi = filetype_detect(path);
@@ -94,8 +88,8 @@ void e2db::import_file(vector<string> paths)
 
 void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 {
-	debug("import_file()", "file path", "singular");
-	debug("import_file()", "file input", fpi);
+	debug("import_file", "file path", "singular");
+	debug("import_file", "file input", fpi);
 
 	string filename = std::filesystem::path(path).filename().u8string(); //C++17
 	stringstream ifile;
@@ -111,7 +105,7 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 		break;
 		case FPORTS::all_services__2_2:
 		case FPORTS::all_services__2_3:
-			return error("import_file()", "Error", "Unsupported services file format.");
+			return error("import_file", "Error", "Unsupported services file format.");
 		break;
 		case FPORTS::all_services__2_4:
 			dst->parse_e2db_lamedb4(ifile);
@@ -145,14 +139,14 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 				dst->parse_e2db_userbouquet(ifile, filename);
 		break;
 		default:
-		return error("import_file()", "Error", "Unknown import option.");
+		return error("import_file", "Error", "Unknown import option.");
 	}
 }
 
 void e2db::export_file(vector<string> paths)
 {
-	debug("export_file()", "file path", "multiple");
-	debug("export_file()", "file output", "auto");
+	debug("export_file", "file path", "multiple");
+	debug("export_file", "file output", "auto");
 
 	for (string & w : paths)
 	{
@@ -163,8 +157,8 @@ void e2db::export_file(vector<string> paths)
 
 void e2db::export_file(FPORTS fpo, vector<string> paths)
 {
-	debug("export_file()", "file path", "multiple");
-	debug("export_file()", "file output", fpo);
+	debug("export_file", "file path", "multiple");
+	debug("export_file", "file output", fpo);
 
 	for (string & w : paths)
 	{
@@ -174,8 +168,8 @@ void e2db::export_file(FPORTS fpo, vector<string> paths)
 
 void e2db::export_file(FPORTS fpo, string path)
 {
-	debug("export_file()", "file path", "singular");
-	debug("export_file()", "file output", fpo);
+	debug("export_file", "file path", "singular");
+	debug("export_file", "file output", fpo);
 
 	e2db_file file;
 	string filename = std::filesystem::path(path).filename().u8string(); //C++17
@@ -193,7 +187,7 @@ void e2db::export_file(FPORTS fpo, string path)
 		break;
 		case FPORTS::all_services__2_2:
 		case FPORTS::all_services__2_3:
-			return error("export_file()", "Error", "Unsupported services file format.");
+			return error("export_file", "Error", "Unsupported services file format.");
 		break;
 		case FPORTS::all_services__2_4:
 			make_lamedb4("lamedb", file);
@@ -227,16 +221,16 @@ void e2db::export_file(FPORTS fpo, string path)
 				make_userbouquet(filename, file);
 		break;
 		default:
-		return error("export_file()", "Error", "Unknown export option.");
+		return error("export_file", "Error", "Unknown export option.");
 	}
 
 	if (! OVERWRITE_FILE && std::filesystem::exists(path)) //C++17
 	{
-		return error("export_file()", "File Error", "File \"" + path + "\" already exists.");
+		return error("export_file", "File Error", "File \"" + path + "\" already exists.");
 	}
 	if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_write)  == std::filesystem::perms::none) //C++17
 	{
-		return error("export _file()", "File Error", "File \"" + path + "\" is not writable.");
+		return error("export _file", "File Error", "File \"" + path + "\" is not writable.");
 	}
 
 	ofstream out (path);
@@ -246,7 +240,7 @@ void e2db::export_file(FPORTS fpo, string path)
 
 void e2db::add_transponder(transponder& tx)
 {
-	debug("add_transponder()", "txid", tx.txid);
+	debug("add_transponder", "txid", tx.txid);
 
 	if (tx.index == -1)
 		tx.index = index["txs"].size() + 1;
@@ -255,14 +249,14 @@ void e2db::add_transponder(transponder& tx)
 
 void e2db::edit_transponder(string txid, transponder& tx)
 {
-	debug("edit_transponder()", "txid", txid);
+	debug("edit_transponder", "txid", txid);
 
 	char nw_txid[25];
 	// %4x:8x
 	std::sprintf(nw_txid, "%x:%x", tx.tsid, tx.dvbns);
 	tx.txid = nw_txid;
 
-	debug("edit_transponder()", "new txid", tx.txid);
+	debug("edit_transponder", "new txid", tx.txid);
 
 	if (tx.txid == txid)
 	{
@@ -283,7 +277,7 @@ void e2db::edit_transponder(string txid, transponder& tx)
 
 void e2db::remove_transponder(string txid)
 {
-	debug("remove_transponder()", "txid", txid);
+	debug("remove_transponder", "txid", txid);
 
 	db.transponders.erase(txid);
 
@@ -296,7 +290,7 @@ void e2db::remove_transponder(string txid)
 
 void e2db::add_service(service& ch)
 {
-	debug("add_service()", "chid", ch.chid);
+	debug("add_service", "chid", ch.chid);
 
 	if (ch.index == -1)
 		ch.index = index["chs"].size() + 1;
@@ -305,10 +299,10 @@ void e2db::add_service(service& ch)
 
 void e2db::edit_service(string chid, service& ch)
 {
-	debug("edit_service()", "chid", chid);
+	debug("edit_service", "chid", chid);
 
 	if (! db.services.count(chid))
-		return error("edit_service()", "Error", "Service \"" + chid + "\" not exists.");
+		return error("edit_service", "Error", "Service \"" + chid + "\" not exists.");
 
 	char nw_chid[25];
 	char nw_txid[25];
@@ -319,7 +313,7 @@ void e2db::edit_service(string chid, service& ch)
 	ch.txid = nw_txid;
 	ch.chid = nw_chid;
 
-	debug("edit_service()", "new chid", ch.chid);
+	debug("edit_service", "new chid", ch.chid);
 
 	if (ch.chid == chid)
 	{
@@ -366,10 +360,10 @@ void e2db::edit_service(string chid, service& ch)
 
 void e2db::remove_service(string chid)
 {
-	debug("remove_service()", "chid", chid);
+	debug("remove_service", "chid", chid);
 
 	if (! db.services.count(chid))
-		return error("remove_service()", "Error", "Service \"" + chid + "\" not exists.");
+		return error("remove_service", "Error", "Service \"" + chid + "\" not exists.");
 
 	service ch = db.services[chid];
 	string kchid = 's' + chid;
@@ -392,7 +386,7 @@ void e2db::remove_service(string chid)
 
 void e2db::add_bouquet(bouquet& bs)
 {
-	debug("add_bouquet()", "bname", bs.bname);
+	debug("add_bouquet", "bname", bs.bname);
 
 	if (bs.index == -1)
 		bs.index = index["bss"].size() + 1;
@@ -401,20 +395,20 @@ void e2db::add_bouquet(bouquet& bs)
 
 void e2db::edit_bouquet(bouquet& bs)
 {
-	debug("edit_bouquet()", "bname", bs.bname);
+	debug("edit_bouquet", "bname", bs.bname);
 
 	if (! bouquets.count(bs.bname))
-		return error("edit_bouquet()", "Error", "Bouquet \"" + bs.bname + "\" not exists.");
+		return error("edit_bouquet", "Error", "Bouquet \"" + bs.bname + "\" not exists.");
 
 	bouquets[bs.bname] = bs;
 }
 
 void e2db::remove_bouquet(string bname)
 {
-	debug("remove_bouquet()", "bname", bname);
+	debug("remove_bouquet", "bname", bname);
 
 	if (! bouquets.count(bname))
-		return error("remove_bouquet()", "Error", "Bouquet \"" + bname + "\" not exists.");
+		return error("remove_bouquet", "Error", "Bouquet \"" + bname + "\" not exists.");
 
 	for (auto it = index["bss"].begin(); it != index["bss"].end(); it++)
 	{
@@ -437,7 +431,7 @@ void e2db::remove_bouquet(string bname)
 
 void e2db::add_userbouquet(userbouquet& ub)
 {
-	debug("add_userbouquet()");
+	debug("add_userbouquet");
 
 	bouquet bs = bouquets[ub.pname];
 
@@ -487,20 +481,20 @@ void e2db::add_userbouquet(userbouquet& ub)
 
 void e2db::edit_userbouquet(userbouquet& ub)
 {
-	debug("edit_userbouquet()", "bname", ub.bname);
+	debug("edit_userbouquet", "bname", ub.bname);
 
 	if (! userbouquets.count(ub.bname))
-		return error("edit_userbouquet()", "Error", "Userbouquet \"" + ub.bname + "\" not exists.");
+		return error("edit_userbouquet", "Error", "Userbouquet \"" + ub.bname + "\" not exists.");
 
 	userbouquets[ub.bname] = ub;
 }
 
 void e2db::remove_userbouquet(string bname)
 {
-	debug("remove_userbouquet()", "bname", bname);
+	debug("remove_userbouquet", "bname", bname);
 
 	if (! userbouquets.count(bname))
-		return error("remove_userbouquet()", "Error", "Userbouquet \"" + bname + "\" not exists.");
+		return error("remove_userbouquet", "Error", "Userbouquet \"" + bname + "\" not exists.");
 
 	userbouquet ub = userbouquets[bname];
 	bouquet& bs = bouquets[ub.pname];
@@ -540,10 +534,10 @@ void e2db::remove_userbouquet(string bname)
 
 void e2db::add_channel_reference(channel_reference& chref, string bname)
 {
-	debug("add_channel_reference()", "chid", chref.chid);
+	debug("add_channel_reference", "chid", chref.chid);
 
 	if (! userbouquets.count(bname))
-		return error("add_channel_reference()", "Error", "Userbouquet \"" + bname + "\" not exists.");
+		return error("add_channel_reference", "Error", "Userbouquet \"" + bname + "\" not exists.");
 
 	userbouquet& ub = userbouquets[bname];
 	service_reference ref;
@@ -569,7 +563,7 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 	else
 	{
 		if (! db.services.count(chref.chid))
-			return error("add_channel_reference()", "Error", "Service \"" + chref.chid + "\" not exists.");
+			return error("add_channel_reference", "Error", "Service \"" + chref.chid + "\" not exists.");
 
 		service ch = db.services[chref.chid];
 
@@ -585,19 +579,19 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 
 void e2db::edit_channel_reference(string chid, channel_reference& chref, string bname)
 {
-	debug("edit_channel_reference()", "chid", chid);
+	debug("edit_channel_reference", "chid", chid);
 
 	if (! userbouquets.count(bname))
-		return error("edit_channel_reference()", "Error", "Userbouquet \"" + bname + "\" not exists.");
+		return error("edit_channel_reference", "Error", "Userbouquet \"" + bname + "\" not exists.");
 
 	userbouquet& ub = userbouquets[bname];
 
-	debug("edit_channel_reference()", "new chid", chref.chid);
+	debug("edit_channel_reference", "new chid", chref.chid);
 
 	if (chref.chid == chid)
 	{
 		if (! chref.marker && ! db.services.count(chref.chid))
-			return error("edit_channel_reference()", "Error", "Service \"" + chref.chid + "\" not exists.");
+			return error("edit_channel_reference", "Error", "Service \"" + chref.chid + "\" not exists.");
 
 		ub.channels[chref.chid] = chref;
 	}
@@ -608,7 +602,7 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 		if (! chref.marker)
 		{
 			if (! db.services.count(chref.chid))
-				return error("edit_channel_reference()", "Error", "Service \"" + chref.chid + "\" not exists.");
+				return error("edit_channel_reference", "Error", "Service \"" + chref.chid + "\" not exists.");
 
 			service ch = db.services[chref.chid];
 
@@ -646,10 +640,10 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 
 void e2db::remove_channel_reference(channel_reference chref, string bname)
 {
-	debug("remove_channel_reference()", "chref.chid", chref.chid);
+	debug("remove_channel_reference", "chref.chid", chref.chid);
 
 	if (! userbouquets.count(bname))
-		return error("remove_channel_reference()", "Error", "Userbouquet \"" + bname + "\" not exists.");
+		return error("remove_channel_reference", "Error", "Userbouquet \"" + bname + "\" not exists.");
 
 	userbouquet& ub = userbouquets[bname];
 	int idx = -1;
@@ -665,7 +659,7 @@ void e2db::remove_channel_reference(channel_reference chref, string bname)
 		}
 	}
 	if (! userbouquets[bname].channels.count(chid))
-		return error("remove_channel_reference()", "Error", "Channel reference \"" + chid + "\" not exists.");
+		return error("remove_channel_reference", "Error", "Channel reference \"" + chid + "\" not exists.");
 
 	vector<pair<int, string>>::iterator pos;
 	for (auto it = index[bname].begin(); it != index[bname].end(); it++)
@@ -732,12 +726,12 @@ void e2db::remove_channel_reference(channel_reference chref, string bname)
 
 void e2db::remove_channel_reference(string chid, string bname)
 {
-	debug("remove_channel_reference()", "chid", chid);
+	debug("remove_channel_reference", "chid", chid);
 
 	if (! userbouquets.count(bname))
-		return error("remove_channel_reference()", "Error", "Userbouquet \"" + bname + "\" not exists.");
+		return error("remove_channel_reference", "Error", "Userbouquet \"" + bname + "\" not exists.");
 	if (! userbouquets[bname].channels.count(chid))
-		return error("remove_channel_reference()", "Error", "Channel reference \"" + chid + "\" not exists.");
+		return error("remove_channel_reference", "Error", "Channel reference \"" + chid + "\" not exists.");
 
 	channel_reference chref = userbouquets[bname].channels[chid];
 	userbouquet& ub = userbouquets[bname];
@@ -792,7 +786,7 @@ void e2db::remove_channel_reference(string chid, string bname)
 
 void e2db::add_tunersets(tunersets& tv)
 {
-	debug("add_tunersets()", "tvid", tv.ytype);
+	debug("add_tunersets", "tvid", tv.ytype);
 
 	if (tv.charset.empty())
 		tv.charset = "utf-8";
@@ -802,7 +796,7 @@ void e2db::add_tunersets(tunersets& tv)
 
 void e2db::edit_tunersets(int tvid, tunersets& tv)
 {
-	debug("edit_tunersets()", "tvid", tvid);
+	debug("edit_tunersets", "tvid", tvid);
 
 	if (tv.charset.empty())
 		tv.charset = "utf-8";
@@ -812,14 +806,14 @@ void e2db::edit_tunersets(int tvid, tunersets& tv)
 
 void e2db::remove_tunersets(int tvid)
 {
-	debug("remove_tunersets()", "tvid", tvid);
+	debug("remove_tunersets", "tvid", tvid);
 
 	tuners.erase(tvid);
 }
 
 void e2db::add_tunersets_table(tunersets_table& tn, tunersets tv)
 {
-	debug("add_tunersets_table()", "tnid", tn.tnid);
+	debug("add_tunersets_table", "tnid", tn.tnid);
 
 	string iname = "tns:";
 	char yname = value_transponder_type(tn.ytype);
@@ -833,7 +827,7 @@ void e2db::add_tunersets_table(tunersets_table& tn, tunersets tv)
 
 void e2db::edit_tunersets_table(string tnid, tunersets_table& tn, tunersets tv)
 {
-	debug("edit_tunersets_table()", "tnid", tnid);
+	debug("edit_tunersets_table", "tnid", tnid);
 
 	string iname = "tns:";
 	char yname = value_transponder_type(tn.ytype);
@@ -843,7 +837,7 @@ void e2db::edit_tunersets_table(string tnid, tunersets_table& tn, tunersets tv)
 	std::sprintf(nw_tnid, "%c:%04x", yname, tn.index);
 	tn.tnid = nw_tnid;
 
-	debug("edit_tunersets_table()", "new tnid", tn.tnid);
+	debug("edit_tunersets_table", "new tnid", tn.tnid);
 
 	if (tn.tnid == tnid)
 	{
@@ -869,10 +863,10 @@ void e2db::edit_tunersets_table(string tnid, tunersets_table& tn, tunersets tv)
 
 void e2db::remove_tunersets_table(string tnid, tunersets tv)
 {
-	debug("remove_tunersets_table()", "tnid", tnid);
+	debug("remove_tunersets_table", "tnid", tnid);
 
 	if (! tv.tables.count(tnid))
-		return error("remove_tunersets_table()", "Error", "Tunersets table \"" + tnid + "\" not exists.");
+		return error("remove_tunersets_table", "Error", "Tunersets table \"" + tnid + "\" not exists.");
 
 	tunersets_table tn = tv.tables[tnid];
 
@@ -902,7 +896,7 @@ void e2db::remove_tunersets_table(string tnid, tunersets tv)
 
 void e2db::add_tunersets_transponder(tunersets_transponder& tntxp, tunersets_table tn)
 {
-	debug("add_tunersets_transponder()", "trid", tntxp.trid);
+	debug("add_tunersets_transponder", "trid", tntxp.trid);
 
 	if (tntxp.index == -1)
 		tntxp.index = index[tn.tnid].size() + 1;
@@ -912,7 +906,7 @@ void e2db::add_tunersets_transponder(tunersets_transponder& tntxp, tunersets_tab
 
 void e2db::edit_tunersets_transponder(string trid, tunersets_transponder& tntxp, tunersets_table tn)
 {
-	debug("edit_tunersets_transponder()", "trid", trid);
+	debug("edit_tunersets_transponder", "trid", trid);
 
 	char yname = value_transponder_type(tn.ytype);
 
@@ -920,7 +914,7 @@ void e2db::edit_tunersets_transponder(string trid, tunersets_transponder& tntxp,
 	std::sprintf(nw_trid, "%c:%04x:%04x", yname, tntxp.freq, tntxp.sr);
 	tntxp.trid = nw_trid;
 
-	debug("edit_tunersets_transponder()", "new trid", tntxp.trid);
+	debug("edit_tunersets_transponder", "new trid", tntxp.trid);
 
 	if (tntxp.trid == trid)
 	{
@@ -941,21 +935,21 @@ void e2db::edit_tunersets_transponder(string trid, tunersets_transponder& tntxp,
 
 string e2db::get_filepath()
 {
-	debug("get_filepath()");
+	debug("get_filepath");
 
 	return this->filepath;
 }
 
 string e2db::get_services_filename()
 {
-	debug("get_services_filename()");
+	debug("get_services_filename");
 
 	return this->services_filename;
 }
 
 void e2db::remove_tunersets_transponder(string trid, tunersets_table tn)
 {
-	debug("remove_tunersets_transponder()", "trid", trid);
+	debug("remove_tunersets_transponder", "trid", trid);
 
 	tuners[tn.ytype].tables[tn.tnid].transponders.erase(trid);
 
@@ -976,7 +970,7 @@ void e2db::remove_tunersets_transponder(string trid, tunersets_table tn)
 
 map<string, vector<pair<int, string>>> e2db::get_channels_index()
 {
-	debug("get_channels_index()");
+	debug("get_channels_index");
 
 	map<string, vector<pair<int, string>>> _index;
 
@@ -993,7 +987,7 @@ map<string, vector<pair<int, string>>> e2db::get_channels_index()
 
 map<string, vector<pair<int, string>>> e2db::get_transponders_index()
 {
-	debug("get_transponders_index()");
+	debug("get_transponders_index");
 
 	map<string, vector<pair<int, string>>> _index;
 	unordered_set<string> _unique;
@@ -1014,7 +1008,7 @@ map<string, vector<pair<int, string>>> e2db::get_transponders_index()
 
 map<string, vector<pair<int, string>>> e2db::get_services_index()
 {
-	debug("get_services_index()");
+	debug("get_services_index");
 
 	map<string, vector<pair<int, string>>> _index;
 	_index["chs"] = index["chs"];
@@ -1024,7 +1018,7 @@ map<string, vector<pair<int, string>>> e2db::get_services_index()
 
 map<string, vector<pair<int, string>>> e2db::get_bouquets_index()
 {
-	debug("get_bouquets_index()");
+	debug("get_bouquets_index");
 
 	map<string, vector<pair<int, string>>> _index;
 
@@ -1036,7 +1030,7 @@ map<string, vector<pair<int, string>>> e2db::get_bouquets_index()
 
 map<string, vector<pair<int, string>>> e2db::get_userbouquets_index()
 {
-	debug("get_userbouquets_index()");
+	debug("get_userbouquets_index");
 
 	map<string, vector<pair<int, string>>> _index;
 
@@ -1048,7 +1042,7 @@ map<string, vector<pair<int, string>>> e2db::get_userbouquets_index()
 
 map<string, vector<pair<int, string>>> e2db::get_packages_index()
 {
-	debug("get_packages_index()");
+	debug("get_packages_index");
 
 	map<string, vector<pair<int, string>>> _index;
 
@@ -1070,7 +1064,7 @@ map<string, vector<pair<int, string>>> e2db::get_packages_index()
 
 map<string, vector<pair<int, string>>> e2db::get_resolution_index()
 {
-	debug("get_resolution_index()");
+	debug("get_resolution_index");
 
 	map<string, vector<pair<int, string>>> _index;
 
@@ -1085,7 +1079,7 @@ map<string, vector<pair<int, string>>> e2db::get_resolution_index()
 
 map<string, vector<pair<int, string>>> e2db::get_encryption_index()
 {
-	debug("get_encryption_index()");
+	debug("get_encryption_index");
 
 	map<string, vector<pair<int, string>>> _index;
 	unordered_set<string> _unique;
@@ -1118,7 +1112,7 @@ map<string, vector<pair<int, string>>> e2db::get_encryption_index()
 
 map<string, vector<pair<int, string>>> e2db::get_az_index()
 {
-	debug("get_az_index()");
+	debug("get_az_index");
 
 	map<string, vector<pair<int, string>>> _index;
 
@@ -1138,7 +1132,7 @@ map<string, vector<pair<int, string>>> e2db::get_az_index()
 //TODO FIX mixing cache data
 void e2db::merge(e2db_abstract* dst)
 {
-	debug("merge()");
+	debug("merge");
 
 	this->db.transponders.merge(dst->db.transponders); //C++17
 	this->db.services.merge(dst->db.services); //C++17

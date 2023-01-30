@@ -23,8 +23,7 @@ namespace e2se_gui
 
 editMarker::editMarker(dataHandler* data)
 {
-	this->log = new logger(data->log->obj, "editMarker");
-	debug("editMarker()");
+	this->log = new logger("gui", "editMarker");
 
 	this->data = data;
 }
@@ -63,12 +62,12 @@ void editMarker::layout(QWidget* cwid)
 
 void editMarker::store()
 {
-	debug("store()");
+	debug("store");
 
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->userbouquets.count(bname))
-		return error("store()", "bname", bname);
+		return error("store", "bname", bname);
 
 	e2db::userbouquet& ub = dbih->userbouquets[bname];
 	e2db::channel_reference chref;
@@ -76,12 +75,12 @@ void editMarker::store()
 	if (this->state.edit)
 	{
 		if (! ub.channels.count(chid))
-			return error("store()", "chid", chid);
+			return error("store", "chid", chid);
 
 		chref = ub.channels[chid];
 
 		if (! chref.marker)
-			return error("store()", "chid", chid);
+			return error("store", "chid", chid);
 	}
 	else
 	{
@@ -111,12 +110,12 @@ void editMarker::store()
 
 void editMarker::retrieve()
 {
-	debug("retrieve()");
+	debug("retrieve");
 
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->userbouquets.count(bname))
-		return error("retrieve()", "bname", bname);
+		return error("retrieve", "bname", bname);
 
 	e2db::userbouquet ub = dbih->userbouquets[bname];
 	e2db::channel_reference chref;
@@ -124,12 +123,12 @@ void editMarker::retrieve()
 	if (this->state.edit)
 	{
 		if (! ub.channels.count(chid))
-			return error("store()", "chid", chid);
+			return error("store", "chid", chid);
 
 		chref = ub.channels[chid];
 
 		if (! chref.marker)
-			return error("store()", "chid", chid);
+			return error("store", "chid", chid);
 	}
 
 	for (auto & item : fields)
@@ -149,7 +148,7 @@ void editMarker::retrieve()
 
 void editMarker::setEditId(string chid, string bname)
 {
-	debug("setEditId()");
+	debug("setEditId");
 
 	this->state.edit = true;
 	this->chid = chid;
@@ -158,21 +157,21 @@ void editMarker::setEditId(string chid, string bname)
 
 string editMarker::getEditId()
 {
-	debug("getEditId()");
+	debug("getEditId");
 
 	return this->chid;
 }
 
 void editMarker::setAddId(string bname)
 {
-	debug("setAddId()");
+	debug("setAddId");
 
 	this->bname = bname;
 }
 
 string editMarker::getAddId()
 {
-	debug("getAddId()");
+	debug("getAddId");
 
 	return this->chid;
 }

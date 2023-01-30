@@ -39,12 +39,11 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-gui::gui(int argc, char* argv[], e2se::logger::data* obj)
+gui::gui(int argc, char* argv[])
 {
 	std::setlocale(LC_NUMERIC, "C");
 
-	this->log = new logger(obj, "gui");
-	debug("gui()");
+	this->log = new logger("gui", "gui");
 
 	this->mroot = new QApplication(argc, argv);
 	mroot->setOrganizationName("e2 SAT Editor Team");
@@ -98,7 +97,7 @@ int gui::exec()
 
 void gui::layout()
 {
-	debug("layout()");
+	debug("layout");
 
 	this->mfrm = new QGridLayout(mwid);
 
@@ -118,7 +117,7 @@ void gui::layout()
 
 void gui::menuBarLayout()
 {
-	debug("menuBarLayout()");
+	debug("menuBarLayout");
 
 	QMenuBar* menu = menuBar(mfrm);
 
@@ -229,7 +228,7 @@ void gui::menuBarLayout()
 //
 void gui::tabStackerLayout()
 {
-	debug("tabStackerLayout()");
+	debug("tabStackerLayout");
 
 	QWidget* twwrap = new QWidget(mwid);
 	QGridLayout* twlayout = new QGridLayout(twwrap);
@@ -325,7 +324,7 @@ void gui::tabStackerLayout()
 
 void gui::statusBarLayout()
 {
-	debug("statusBarLayout()");
+	debug("statusBarLayout");
 
 	this->sbwid = new QStatusBar(mwid);
 	this->sbwidl = new QLabel;
@@ -352,7 +351,7 @@ void gui::statusBarLayout()
 
 void gui::settingsChanged()
 {
-	debug("settingsChanged()");
+	debug("settingsChanged");
 
 	for (auto & x : ttabs)
 	{
@@ -363,7 +362,7 @@ void gui::settingsChanged()
 
 void gui::themeChanged()
 {
-	debug("themeChanged()");
+	debug("themeChanged");
 
 	theme->changed();
 
@@ -376,7 +375,7 @@ void gui::themeChanged()
 
 void gui::initSettings()
 {
-	debug("initSettings()");
+	debug("initSettings");
 
 	QSettings settings;
 
@@ -415,7 +414,7 @@ void gui::initSettings()
 
 void gui::updateSettings()
 {
-	debug("updateSettings()");
+	debug("updateSettings");
 
 	if (! QSettings().contains("settings/version"))
 	{
@@ -432,7 +431,7 @@ void gui::updateSettings()
 
 void gui::resetSettings()
 {
-	debug("resetSettings()");
+	debug("resetSettings");
 
 	QSettings().clear();
 
@@ -446,7 +445,7 @@ void gui::tabViewSwitch(TAB_VIEW ttv)
 
 void gui::tabViewSwitch(TAB_VIEW ttv, int arg)
 {
-	debug("tabViewSwitch()", "ttv", ttv);
+	debug("tabViewSwitch", "ttv", ttv);
 
 	switch (ttv)
 	{
@@ -478,7 +477,7 @@ int gui::newTab(string filename)
 	tab* ttab = new tab(this, mwid);
 	int ttid = ttab->getTabId();
 
-	debug("newTab()", "ttid", ttid);
+	debug("newTab", "ttid", ttid);
 
 	ttab->viewMain();
 
@@ -500,7 +499,7 @@ int gui::newTab(string filename)
 	{
 		if (! ttab->readFile(filename))
 		{
-			error("newTab()", "read", false);
+			error("newTab", "read", false);
 
 			twid->removeTab(index);
 			delete ttmenu[ttid];
@@ -541,7 +540,7 @@ int gui::openTab(TAB_VIEW view, int arg)
 
 	if (current == nullptr)
 	{
-		error("openTab()", "current", false);
+		error("openTab", "current", false);
 		return -1;
 	}
 	else if (current->isChild())
@@ -567,7 +566,7 @@ int gui::openTab(TAB_VIEW view, int arg)
 	tab* ttab = new tab(this, mwid);
 	int ttid = ttab->getTabId();
 
-	debug("openTab()", "ttid", ttid);
+	debug("openTab", "ttid", ttid);
 
 	int curr = twid->tabBar()->currentIndex();
 	string parent_ttname = parent->getTabName();
@@ -578,7 +577,7 @@ int gui::openTab(TAB_VIEW view, int arg)
 	switch (view)
 	{
 		case TAB_VIEW::main:
-			error("openTab()", "parent", false);
+			error("openTab", "parent", false);
 			delete ttab;
 			return -1;
 		break;
@@ -623,18 +622,18 @@ int gui::openTab(TAB_VIEW view, int arg)
 
 void gui::closeTab(int index)
 {
-	// debug("closeTab()", "index", index);
+	// debug("closeTab", "index", index);
 
 	int ttid = getTabId(index);
 
 	if (! ttabs.count(ttid))
 	{
-		return error("closeTab()", "current", false);
+		return error("closeTab", "current", false);
 	}
 
 	tab* current = ttabs[ttid];
 
-	debug("closeTab()", "ttid", ttid);
+	debug("closeTab", "ttid", ttid);
 
 	mwind->removeAction(ttmenu[ttid]);
 	mwtabs->removeAction(ttmenu[ttid]);
@@ -683,7 +682,7 @@ void gui::closeTab(int index)
 
 void gui::closeAllTabs()
 {
-	debug("closeAllTabs()");
+	debug("closeAllTabs");
 
 	for (auto & action : mwtabs->actions())
 	{
@@ -694,7 +693,7 @@ void gui::closeAllTabs()
 
 	for (size_t i = 0; i < ttabs.size(); i++)
 	{
-		debug("closeAllTabs()", "index", int (i));
+		debug("closeAllTabs", "index", int (i));
 
 		delete ttabs[i];
 		ttabs.erase(i);
@@ -708,19 +707,19 @@ void gui::closeAllTabs()
 
 void gui::windowChanged()
 {
-	// debug("windowChanged()");
+	// debug("windowChanged");
 
 	// main window busy
 	if (mroot->activeWindow())
 	{
-		debug("windowChanged()", "mwind", "busy");
+		debug("windowChanged", "mwind", "busy");
 		this->gxe = this->gex;
 		update();
 	}
 	// main window idle
 	else
 	{
-		debug("windowChanged()", "mwind", "idle");
+		debug("windowChanged", "mwind", "idle");
 		this->gex = this->gxe;
 		update(GUI_CXE::idle);
 	}
@@ -728,13 +727,13 @@ void gui::windowChanged()
 
 void gui::tabChanged(int index)
 {
-	// debug("tabChanged()", "index", index);
+	// debug("tabChanged", "index", index);
 
 	int ttid = getTabId(index);
 
 	if (ttid != -1)
 	{
-		debug("tabChanged()", "current", ttid);
+		debug("tabChanged", "current", ttid);
 
 		tab* ttab = ttabs[ttid];
 		ttmenu[ttid]->setChecked(true);
@@ -746,7 +745,7 @@ void gui::tabChanged(int index)
 
 void gui::tabMoved(int from, int to)
 {
-	debug("tabMoved()", "from|to", (to_string(from) + '|' + to_string(to)));
+	debug("tabMoved", "from|to", (to_string(from) + '|' + to_string(to)));
 
 	auto actions = mwtabs->actions();
 	actions.move(from, to);
@@ -763,11 +762,11 @@ void gui::tabMoved(int from, int to)
 
 void gui::tabChangeName(int ttid, string filename)
 {
-	debug("tabChangeName()", "ttid", ttid);
+	debug("tabChangeName", "ttid", ttid);
 
 	if (! ttabs.count(ttid))
 	{
-		return error("tabChangeName()", "ttid", ttid);
+		return error("tabChangeName", "ttid", ttid);
 	}
 
 	tab* ttab = ttabs[ttid];
@@ -805,7 +804,7 @@ void gui::tabChangeName(int ttid, string filename)
 		ttname = QString::fromStdString(filename);
 	}
 
-	// debug("tabChangeName()", "index", index);
+	// debug("tabChangeName", "index", index);
 
 	switch (v)
 	{
@@ -831,7 +830,7 @@ void gui::tabChangeName(int ttid, string filename)
 
 string gui::openFileDialog()
 {
-	debug("openFileDialog()");
+	debug("openFileDialog");
 
 	QString caption = "Select enigma2 folder";
 
@@ -853,7 +852,7 @@ string gui::openFileDialog()
 
 string gui::saveFileDialog(string filename)
 {
-	debug("saveFileDialog()", "filename", filename);
+	debug("saveFileDialog", "filename", filename);
 
 	QString caption = "Select where to save";
 
@@ -874,7 +873,7 @@ string gui::saveFileDialog(string filename)
 
 vector<string> gui::importFileDialog(GUI_DPORTS gde)
 {
-	debug("importFileDialog()");
+	debug("importFileDialog");
 
 	QString caption = "Select one or more files to open";
 	QStringList opts;
@@ -938,7 +937,7 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 
 string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& bit)
 {
-	debug("exportFileDialog()", "filename", filename);
+	debug("exportFileDialog", "filename", filename);
 
 	QString caption = "Select where to save";
 	QStringList opts;
@@ -993,7 +992,7 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& bit)
 		else if (selected == "Lamedb 2.2 (services)")
 			bit = 0x1222;
 
-		debug("exportFileDialog()", "bit", bit);
+		debug("exportFileDialog", "bit", bit);
 
 		QUrl url = fdial.selectedUrls().value(0);
 		if (url.isLocalFile() || url.isEmpty())
@@ -1021,7 +1020,7 @@ bool gui::statusBarIsHidden()
 
 void gui::statusBarShow()
 {
-	debug("statusBarShow()");
+	debug("statusBarShow");
 
 	sbwid->show();
 	gmenu[GUI_CXE::StatusBar]->setText(tr("Hide &Status Bar"));
@@ -1029,7 +1028,7 @@ void gui::statusBarShow()
 
 void gui::statusBarHide()
 {
-	debug("statusBarHide()");
+	debug("statusBarHide");
 
 	sbwid->hide();
 	gmenu[GUI_CXE::StatusBar]->setText(tr("Show &Status Bar"));
@@ -1037,7 +1036,7 @@ void gui::statusBarHide()
 
 void gui::statusBarToggle()
 {
-	// debug("statusBarToggle()");
+	// debug("statusBarToggle");
 
 	if (sbwid->isHidden())
 	{
@@ -1051,7 +1050,7 @@ void gui::statusBarToggle()
 
 void gui::setStatusBar(status msg)
 {
-	debug("setStatusBar()");
+	debug("setStatusBar");
 
 	QString separator = "   ";
 	QString text;
@@ -1119,7 +1118,7 @@ void gui::setStatusBar(status msg)
 
 void gui::resetStatusBar()
 {
-	debug("resetStatusBar()");
+	debug("resetStatusBar");
 
 	if (sbwid->currentMessage().isEmpty())
 	{
@@ -1137,7 +1136,7 @@ void gui::resetStatusBar()
 
 void gui::fileOpen()
 {
-	debug("fileOpen()");
+	debug("fileOpen");
 
 	string path = openFileDialog();
 
@@ -1147,7 +1146,7 @@ void gui::fileOpen()
 
 void gui::fileSave()
 {
-	debug("fileSave()");
+	debug("fileSave");
 
 	tab* ttab = getCurrentTabHandler();
 	if (ttab != nullptr)
@@ -1156,7 +1155,7 @@ void gui::fileSave()
 
 void gui::fileSaveAs()
 {
-	debug("fileSaveAs()");
+	debug("fileSaveAs");
 
 	tab* ttab = getCurrentTabHandler();
 	if (ttab != nullptr)
@@ -1165,7 +1164,7 @@ void gui::fileSaveAs()
 
 void gui::fileImport()
 {
-	debug("fileImport()");
+	debug("fileImport");
 
 	tab* ttab = getCurrentTabHandler();
 	if (ttab != nullptr)
@@ -1174,7 +1173,7 @@ void gui::fileImport()
 
 void gui::fileExport()
 {
-	debug("fileExport()");
+	debug("fileExport");
 
 	tab* ttab = getCurrentTabHandler();
 	if (ttab != nullptr)
@@ -1183,7 +1182,7 @@ void gui::fileExport()
 
 void gui::filePrint()
 {
-	debug("filePrint()");
+	debug("filePrint");
 
 	tab* ttab = getCurrentTabHandler();
 	if (ttab != nullptr)
@@ -1192,7 +1191,7 @@ void gui::filePrint()
 
 void gui::filePrintAll()
 {
-	debug("filePrintAll()");
+	debug("filePrintAll");
 
 	tab* ttab = getCurrentTabHandler();
 	if (ttab != nullptr)
@@ -1201,7 +1200,7 @@ void gui::filePrintAll()
 
 void gui::tabAction(TAB_ATS action)
 {
-	debug("tabAction()", "action", action);
+	debug("tabAction", "action", action);
 
 	tab* ttab = getCurrentTabHandler();
 	if (ttab != nullptr)
@@ -1210,7 +1209,7 @@ void gui::tabAction(TAB_ATS action)
 
 void gui::windowMinimize()
 {
-	debug("windowMinimize()");
+	debug("windowMinimize");
 
 	if (! this->mwid->isMinimized())
 		this->mwid->showMinimized();
@@ -1223,7 +1222,7 @@ void gui::settingsDialog()
 
 void gui::aboutDialog()
 {
-	new e2se_gui_dialog::about(this->log->obj);
+	new e2se_gui_dialog::about;
 }
 
 bool gui::getFlag(GUI_CXE bit)
@@ -1279,7 +1278,7 @@ tab* gui::getCurrentTabHandler()
 
 void gui::launcher()
 {
-	debug("launcher()");
+	debug("launcher");
 
 	update(GUI_CXE::init);
 	newTab();
@@ -1288,7 +1287,7 @@ void gui::launcher()
 
 void gui::update()
 {
-	debug("update()");
+	debug("update");
 
 	for (auto & x : gmenu)
 	{
@@ -1299,12 +1298,12 @@ void gui::update()
 	}
 
 	// note: is out of range
-	// debug("update()", "flags", getActionFlags().to_ullong());
+	// debug("update", "flags", getActionFlags().to_ullong());
 }
 
 void gui::update(int bit, bool flag)
 {
-	 // debug("update()", "overload", bit);
+	 // debug("update", "overload", bit);
 
 	typedef size_t position_t;
 	QAction* action = gmenu.count(bit) ? gmenu[bit] : nullptr;
@@ -1319,7 +1318,7 @@ void gui::update(int bit, bool flag)
 
 void gui::update(vector<int> bits, bool flag)
 {
-	// debug("update()", "overload", 1);
+	// debug("update", "overload", 1);
 
 	typedef size_t position_t;
 
@@ -1331,7 +1330,7 @@ void gui::update(vector<int> bits, bool flag)
 
 void gui::update(vector<int> bits)
 {
-	// debug("update()", "overload", 0);
+	// debug("update", "overload", 0);
 
 	typedef size_t position_t;
 
@@ -1343,7 +1342,7 @@ void gui::update(vector<int> bits)
 
 void gui::update(int bit)
 {
-	// debug("update()", "overload", 0);
+	// debug("update", "overload", 0);
 
 	this->gxe.reset();
 
@@ -1353,7 +1352,7 @@ void gui::update(int bit)
 		update(GUI_CXE__idle);
 
 	// note: is out of range
-	// debug("update()", "flags", getFlags().to_ullong());
+	// debug("update", "flags", getFlags().to_ullong());
 }
 
 QMenuBar* gui::menuBar(QLayout* layout)

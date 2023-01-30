@@ -68,8 +68,7 @@ class e2db_converter : virtual public e2db_abstract
 			string footer;
 		};
 
-		explicit e2db_converter();
-		e2db_converter(e2se::logger::data* obj);
+		e2db_converter();
 		virtual ~e2db_converter() = default;
 		void import_csv_file(FCONVS fci, fcopts opts, vector<string> paths);
 		void import_csv_file(FCONVS fci, fcopts opts, string path);
@@ -101,7 +100,7 @@ class e2db_converter : virtual public e2db_abstract
 		void push_html_tunersets(vector<e2db_file>& files, int ytype);
 
 	protected:
-		virtual e2db_converter* newptr() { return new e2db_converter(this->log->obj); }
+		virtual e2db_converter* newptr() { return new e2db_converter; }
 		void parse_csv(istream& ifile, vector<vector<string>>& sxv);
 		void convert_csv_channel_list(vector<vector<string>> sxv, e2db_abstract* dst, DOC_VIEW view);
 		void convert_csv_channel_list_extended(vector<vector<string>> sxv, e2db_abstract* dst, DOC_VIEW view);

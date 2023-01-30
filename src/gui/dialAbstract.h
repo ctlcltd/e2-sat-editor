@@ -28,7 +28,7 @@ using std::pair, std::vector;
 
 namespace e2se_gui
 {
-class dialAbstract : public e2se::log_factory
+class dialAbstract : protected e2se::log_factory
 {
 	Q_DECLARE_TR_FUNCTIONS(dialAbstract)
 

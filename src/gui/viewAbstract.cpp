@@ -38,7 +38,7 @@ namespace e2se_gui
 
 void viewAbstract::themeChanged()
 {
-	debug("themeChanged()");
+	debug("themeChanged");
 
 	theme->changed();
 }
@@ -187,7 +187,7 @@ void viewAbstract::searchLayout()
 
 void viewAbstract::sortByColumn(int column)
 {
-	debug("sortByColumn()", "column", column);
+	debug("sortByColumn", "column", column);
 
 	Qt::SortOrder order = list->header()->sortIndicatorOrder();
 	column = column == 1 ? 0 : column;
@@ -214,7 +214,7 @@ void viewAbstract::sortByColumn(int column)
 
 void viewAbstract::treeItemDelete()
 {
-	debug("treeItemDelete()");
+	debug("treeItemDelete");
 
 	QList<QTreeWidgetItem*> selected = tree->selectedItems();
 
@@ -231,35 +231,35 @@ void viewAbstract::treeItemDelete()
 
 void viewAbstract::listItemCut()
 {
-	debug("listItemCut()");
+	debug("listItemCut");
 
 	listItemCopy(true);
 }
 
 void viewAbstract::listItemSelectAll()
 {
-	debug("listItemSelectAll()");
+	debug("listItemSelectAll");
 
 	list->selectAll();
 }
 
 void viewAbstract::treeSearchShow()
 {
-	debug("treeSearchShow()");
+	debug("treeSearchShow");
 
 	tree_search->show();
 }
 
 void viewAbstract::treeSearchHide()
 {
-	debug("treeSearchHide()");
+	debug("treeSearchHide");
 
 	tree_search->hide();
 }
 
 void viewAbstract::treeSearchToggle()
 {
-	// debug("treeSearchToggle()");
+	// debug("treeSearchToggle");
 
 	if (tree_search->isHidden())
 	{
@@ -273,7 +273,7 @@ void viewAbstract::treeSearchToggle()
 
 void viewAbstract::treeSearchClose()
 {
-	// debug("treeSearchClose()");
+	// debug("treeSearchClose");
 
 	QTimer::singleShot(100, [=]() {
 		treeSearchHide();
@@ -282,7 +282,7 @@ void viewAbstract::treeSearchClose()
 
 void viewAbstract::listSearchShow()
 {
-	debug("listSearchShow()");
+	debug("listSearchShow");
 
 	list_search->show();
 	this->lsr_find.timer.start();
@@ -290,7 +290,7 @@ void viewAbstract::listSearchShow()
 
 void viewAbstract::listSearchHide()
 {
-	debug("listSearchHide()");
+	debug("listSearchHide");
 
 	list_search->hide();
 	if (! this->lsr_find.highlight)
@@ -299,7 +299,7 @@ void viewAbstract::listSearchHide()
 
 void viewAbstract::listSearchToggle()
 {
-	// debug("listSearchToggle()");
+	// debug("listSearchToggle");
 
 	if (list_search->isHidden())
 		listSearchShow();
@@ -309,7 +309,7 @@ void viewAbstract::listSearchToggle()
 
 void viewAbstract::listSearchClose()
 {
-	// debug("listSearchClose()");
+	// debug("listSearchClose");
 
 	QTimer::singleShot(100, [=]() {
 		listSearchHide();

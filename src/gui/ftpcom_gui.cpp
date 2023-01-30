@@ -20,17 +20,16 @@
 namespace e2se_gui
 {
 
-ftpcom::ftpcom(e2se::logger::data* obj)
+ftpcom::ftpcom()
 {
-	this->log = new e2se::logger(obj, "gui.ftpcom");
-	debug("ftpcom()");
+	this->log = new e2se::logger("gui", "ftpcom");
 
 	setup();
 }
 
 void ftpcom::setup()
 {
-	debug("setup()");
+	debug("setup");
 
 	QSettings settings;
 
@@ -55,8 +54,6 @@ void ftpcom::setup()
 
 void ftpcom::error(string tmsg, string rmsg)
 {
-	debug("error()");
-
 	this->::e2se_ftpcom::ftpcom::error(tmsg, rmsg);
 	QMessageBox::critical(nullptr, tr("FTP Error"), QString::fromStdString(rmsg));
 }
@@ -78,7 +75,7 @@ string ftpcom::trw(string str, string param)
 
 void ftpcom::didChange()
 {
-	debug("didChange()");
+	debug("didChange");
 
 	setup();
 }

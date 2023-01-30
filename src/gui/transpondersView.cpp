@@ -36,8 +36,7 @@ namespace e2se_gui
 
 transpondersView::transpondersView(tab* tid, QWidget* cwid, dataHandler* data)
 {
-	this->log = new logger(tid->log->obj, "transpondersView");
-	debug("transpondersView()");
+	this->log = new logger("gui", "transpondersView");
 
 	this->tid = tid;
 	this->cwid = cwid;
@@ -50,7 +49,7 @@ transpondersView::transpondersView(tab* tid, QWidget* cwid, dataHandler* data)
 
 void transpondersView::layout()
 {
-	debug("layout()");
+	debug("layout");
 
 	widget->setStyleSheet("QGroupBox { spacing: 0; border: 0; padding: 0; padding-top: 32px; font-weight: bold } QGroupBox::title { margin: 8px 4px; padding: 0 1px 1px }");
 
@@ -175,7 +174,7 @@ void transpondersView::searchLayout()
 
 void transpondersView::load()
 {
-	debug("load()");
+	debug("load");
 
 	tabUpdateFlags(gui::init);
 
@@ -187,7 +186,7 @@ void transpondersView::load()
 
 void transpondersView::reset()
 {
-	debug("reset()");
+	debug("reset");
 
 	this->state.sort = pair (-1, Qt::AscendingOrder); //C++17
 
@@ -250,7 +249,7 @@ void transpondersView::populate()
 
 void transpondersView::listItemChanged()
 {
-	// debug("listItemChanged()");
+	// debug("listItemChanged");
 
 	if (list_evto->isChanged())
 		listUpdate();
@@ -258,7 +257,7 @@ void transpondersView::listItemChanged()
 
 void transpondersView::listItemSelectionChanged()
 {
-	// debug("listItemSelectionChanged()");
+	// debug("listItemSelectionChanged");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
@@ -286,7 +285,7 @@ void transpondersView::listItemSelectionChanged()
 
 void transpondersView::listItemDoubleClicked()
 {
-	debug("listItemDoubleClicked()");
+	debug("listItemDoubleClicked");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
@@ -298,7 +297,7 @@ void transpondersView::listItemDoubleClicked()
 
 void transpondersView::listUpdate()
 {
-	debug("listUpdate()");
+	debug("listUpdate");
 
 	updateListIndex();
 
@@ -307,7 +306,7 @@ void transpondersView::listUpdate()
 
 void transpondersView::addTransponder()
 {
-	debug("addTransponder()");
+	debug("addTransponder");
 
 	auto* dbih = this->data->dbih;
 
@@ -318,9 +317,9 @@ void transpondersView::addTransponder()
 	add->destroy();
 
 	if (dbih->db.transponders.count(txid))
-		debug("addTransponder()", "txid", txid);
+		debug("addTransponder", "txid", txid);
 	else
-		return error("addTransponder()", "txid", txid);
+		return error("addTransponder", "txid", txid);
 
 	list->header()->setSectionsClickable(false);
 	list->setDragEnabled(false);
@@ -366,7 +365,7 @@ void transpondersView::addTransponder()
 
 void transpondersView::editTransponder()
 {
-	debug("editTransponder()");
+	debug("editTransponder");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
@@ -380,9 +379,9 @@ void transpondersView::editTransponder()
 	auto* dbih = this->data->dbih;
 
 	if (dbih->db.transponders.count(txid))
-		debug("editTransponder()", "txid", txid);
+		debug("editTransponder", "txid", txid);
 	else
-		return error("editTransponder()", "txid", txid);
+		return error("editTransponder", "txid", txid);
 
 	e2se_gui::editTransponder* edit = new e2se_gui::editTransponder(this->data);
 	edit->setEditId(txid);
@@ -391,9 +390,9 @@ void transpondersView::editTransponder()
 	edit->destroy();
 
 	if (dbih->db.transponders.count(nw_txid))
-		debug("editTransponder()", "new txid", nw_txid);
+		debug("editTransponder", "new txid", nw_txid);
 	else
-		return error("editTransponder()", "new txid", nw_txid);
+		return error("editTransponder", "new txid", nw_txid);
 
 	e2db::transponder txp = dbih->db.transponders[nw_txid];
 
@@ -411,7 +410,7 @@ void transpondersView::editTransponder()
 
 void transpondersView::listItemCopy(bool cut)
 {
-	debug("listItemCopy()");
+	debug("listItemCopy");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
@@ -442,7 +441,7 @@ void transpondersView::listItemCopy(bool cut)
 
 void transpondersView::listItemPaste()
 {
-	debug("listItemPaste()");
+	debug("listItemPaste");
 
 	QClipboard* clipboard = QGuiApplication::clipboard();
 	const QMimeData* mimeData = clipboard->mimeData();
@@ -470,7 +469,7 @@ void transpondersView::listItemPaste()
 
 void transpondersView::listItemDelete()
 {
-	debug("listItemDelete()");
+	debug("listItemDelete");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
@@ -512,7 +511,7 @@ void transpondersView::listItemDelete()
 //TODO duplicates
 void transpondersView::putListItems(vector<QString> items)
 {
-	debug("putListItems()");
+	debug("putListItems");
 
 	list->header()->setSectionsClickable(false);
 	list->setDragEnabled(false);
@@ -630,7 +629,7 @@ void transpondersView::putListItems(vector<QString> items)
 
 void transpondersView::updateStatusBar(bool current)
 {
-	debug("updateStatusBar()");
+	debug("updateStatusBar");
 
 	gui::status msg;
 	msg.update = current;
@@ -644,7 +643,7 @@ void transpondersView::updateStatusBar(bool current)
 
 void transpondersView::showListEditContextMenu(QPoint &pos)
 {
-	debug("showListEditContextMenu()");
+	debug("showListEditContextMenu");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
@@ -674,7 +673,7 @@ void transpondersView::showListEditContextMenu(QPoint &pos)
 
 void transpondersView::updateFlags()
 {
-	debug("updateFlags()");
+	debug("updateFlags");
 
 	tabSetFlag(gui::TabTreeEdit, false);
 	tabSetFlag(gui::TabTreeDelete, false);
@@ -728,7 +727,7 @@ void transpondersView::updateListIndex()
 
 	dbih->index["txs"].clear();
 
-	debug("updateListIndex()");
+	debug("updateListIndex");
 
 	int sort_col = list->sortColumn();
 	list->sortItems(0, Qt::AscendingOrder);

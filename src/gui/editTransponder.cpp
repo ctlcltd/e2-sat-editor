@@ -28,8 +28,7 @@ namespace e2se_gui
 
 editTransponder::editTransponder(dataHandler* data)
 {
-	this->log = new logger(data->log->obj, "editTransponder");
-	debug("editTransponder()");
+	this->log = new logger("gui", "editTransponder");
 
 	this->data = data;
 	this->state.yx = -1;
@@ -114,7 +113,7 @@ void editTransponder::layout(QWidget* cwid)
 
 void editTransponder::change()
 {
-	debug("change()");
+	debug("change");
 
 	if (dtform == nullptr)
 		return;
@@ -133,7 +132,7 @@ void editTransponder::change()
 
 void editTransponder::layoutChange(int vx)
 {
-	debug("layoutChange()");
+	debug("layoutChange");
 
 	for (int i = 1; i < 3; i++)
 	{
@@ -174,7 +173,7 @@ void editTransponder::layoutChange(int vx)
 
 void editTransponder::leadSatLayout()
 {
-	debug("leadSatLayout()");
+	debug("leadSatLayout");
 
 	QGroupBox* dtl0 = new QGroupBox;
 	QFormLayout* dtf0 = new QFormLayout;
@@ -251,7 +250,7 @@ void editTransponder::leadSatLayout()
 
 void editTransponder::leadTerrestrialLayout()
 {
-	debug("leadTerrestrialLayout()");
+	debug("leadTerrestrialLayout");
 
 	QGroupBox* dtl0 = new QGroupBox;
 	QFormLayout* dtf0 = new QFormLayout;
@@ -348,7 +347,7 @@ void editTransponder::leadTerrestrialLayout()
 
 void editTransponder::leadCableLayout()
 {
-	debug("leadCableLayout()");
+	debug("leadCableLayout");
 
 	QGroupBox* dtl0 = new QGroupBox;
 	QFormLayout* dtf0 = new QFormLayout;
@@ -410,7 +409,7 @@ void editTransponder::leadCableLayout()
 
 void editTransponder::leadAtscLayout()
 {
-	debug("leadAtscLayout()");
+	debug("leadAtscLayout");
 
 	QGroupBox* dtl0 = new QGroupBox;
 	QFormLayout* dtf0 = new QFormLayout;
@@ -452,7 +451,7 @@ void editTransponder::leadAtscLayout()
 
 void editTransponder::sideSatLayout()
 {
-	debug("sideSatLayout()");
+	debug("sideSatLayout");
 
 	QGroupBox* dtl1 = new QGroupBox;
 	QFormLayout* dtf1 = new QFormLayout;
@@ -524,7 +523,7 @@ void editTransponder::sideSatLayout()
 
 void editTransponder::sideTerrestrialLayout()
 {
-	debug("sideTerrestrialLayout()");
+	debug("sideTerrestrialLayout");
 
 	QGroupBox* dtl1 = new QGroupBox;
 	QFormLayout* dtf1 = new QFormLayout;
@@ -596,7 +595,7 @@ void editTransponder::sideTerrestrialLayout()
 
 void editTransponder::sideCableLayout()
 {
-	debug("sideCableLayout()");
+	debug("sideCableLayout");
 
 	QGroupBox* dtl1 = new QGroupBox;
 	QFormLayout* dtf1 = new QFormLayout;
@@ -623,7 +622,7 @@ void editTransponder::sideCableLayout()
 
 void editTransponder::typeComboChanged(int index)
 {
-	debug("typeComboChanged()", "index", index);
+	debug("typeComboChanged", "index", index);
 
 	if (this->state.yx == index)
 		return;
@@ -635,7 +634,7 @@ void editTransponder::typeComboChanged(int index)
 
 void editTransponder::store()
 {
-	debug("store()");
+	debug("store");
 
 	auto* dbih = this->data->dbih;
 
@@ -644,7 +643,7 @@ void editTransponder::store()
 	if (this->state.edit)
 	{
 		if (! dbih->db.transponders.count(txid))
-			return error("store()", "txid", txid);
+			return error("store", "txid", txid);
 
 		txp = dbih->db.transponders[txid];
 	}
@@ -755,12 +754,12 @@ void editTransponder::store()
 
 void editTransponder::retrieve()
 {
-	debug("retrieve()");
+	debug("retrieve");
 
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->db.transponders.count(txid))
-		return error("retrieve()", "txid", txid);
+		return error("retrieve", "txid", txid);
 
 	e2db::transponder txp = dbih->db.transponders[txid];
 
@@ -774,12 +773,12 @@ void editTransponder::retrieve()
 
 void editTransponder::retrieve(string txid)
 {
-	debug("retrieve()", "overload", "txid");
+	debug("retrieve", "overload", "txid");
 
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->db.transponders.count(txid))
-		return error("retrieve()", "txid", txid);
+		return error("retrieve", "txid", txid);
 
 	e2db::transponder txp = dbih->db.transponders[txid];
 
@@ -885,7 +884,7 @@ void editTransponder::retrieve(string txid)
 
 void editTransponder::setEditId(string txid)
 {
-	debug("setEditId()");
+	debug("setEditId");
 
 	bool changed = false;
 	if (! this->state.edit || txid != this->txid)
@@ -900,14 +899,14 @@ void editTransponder::setEditId(string txid)
 
 string editTransponder::getEditId()
 {
-	debug("getEditId()");
+	debug("getEditId");
 
 	return this->txid;
 }
 
 void editTransponder::setAddId()
 {
-	debug("setAddId()");
+	debug("setAddId");
 
 	bool changed = false;
 	if (this->state.edit)
@@ -921,7 +920,7 @@ void editTransponder::setAddId()
 
 string editTransponder::getAddId()
 {
-	debug("getAddId()");
+	debug("getAddId");
 
 	return this->txid;
 }

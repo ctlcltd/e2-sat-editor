@@ -30,20 +30,14 @@ namespace e2se_e2db
 e2db_converter::e2db_converter()
 {
 	std::setlocale(LC_NUMERIC, "C");
-}
 
-e2db_converter::e2db_converter(e2se::logger::data* obj)
-{
-	std::setlocale(LC_NUMERIC, "C");
-
-	this->log = new e2se::logger(obj, "e2db");
-	debug("e2db_converter()");
+	this->log = new e2se::logger("e2db", "e2db_converter");
 }
 
 void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, vector<string> paths)
 {
-	debug("import_csv_file()", "file path", "multiple");
-	debug("import_csv_file()", "file input", fci);
+	debug("import_csv_file", "file path", "multiple");
+	debug("import_csv_file", "file input", fci);
 
 	bool merge = this->get_input().size() != 0 ? true : false;
 	auto* dst = merge ? newptr() : this;
@@ -61,8 +55,8 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, vector<string> pat
 
 void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, string path)
 {
-	debug("import_csv_file()", "file path", "singular");
-	debug("import_csv_file()", "file input", fci);
+	debug("import_csv_file", "file path", "singular");
+	debug("import_csv_file", "file input", fci);
 
 	bool merge = this->get_input().size() != 0 ? true : false;
 	auto* dst = merge ? newptr() : this;
@@ -78,22 +72,22 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, string path)
 
 void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst, string path)
 {
-	debug("import_csv_file()", "file path", "singular");
-	debug("import_csv_file()", "file input", fci);
+	debug("import_csv_file", "file path", "singular");
+	debug("import_csv_file", "file input", fci);
 
 	std::clock_t start = std::clock();
 
 	if (! std::filesystem::exists(path)) //C++17
 	{
-		return error("import_csv_file()", "File Error", "File \"" + path + "\" not exists.");
+		return error("import_csv_file", "File Error", "File \"" + path + "\" not exists.");
 	}
 	if (! std::filesystem::is_regular_file(path)) //C++17
 	{
-		return error("import_csv_file()", "File Error", "File \"" + path + "\" is not a valid file.");
+		return error("import_csv_file", "File Error", "File \"" + path + "\" is not a valid file.");
 	}
 	if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_read)  == std::filesystem::perms::none) //C++17
 	{
-		return error("import_csv_file()", "File Error", "File \"" + path + "\" is not readable.");
+		return error("import_csv_file", "File Error", "File \"" + path + "\" is not readable.");
 	}
 
 	ifstream ifile (path);
@@ -114,20 +108,20 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 		break;
 		default:
 			ifile.close();
-		return error("import_csv_file()", "Error", "Unknown import option.");
+		return error("import_csv_file", "Error", "Unknown import option.");
 	}
 
 	ifile.close();
 
 	std::clock_t end = std::clock();
 
-	info("import_csv_file()", "elapsed time", to_string(int (end - start)) + " ms.");
+	info("import_csv_file", "elapsed time", to_string(int (end - start)) + " ms.");
 }
 
 void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 {
-	debug("export_csv_file()", "file path", "singular");
-	debug("export_csv_file()", "file output", fco);
+	debug("export_csv_file", "file path", "singular");
+	debug("export_csv_file", "file output", fco);
 
 	std::clock_t start = std::clock();
 
@@ -168,7 +162,7 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 				push_csv_tunersets(files);
 		break;
 		default:
-		return error("export_csv_file()", "Error", "Unknown export option.");
+		return error("export_csv_file", "Error", "Unknown export option.");
 	}
 
 	bool once = !! files.size();
@@ -182,11 +176,11 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 
 		if (! OVERWRITE_FILE && std::filesystem::exists(fpath)) //C++17
 		{
-			return error("export_csv_file()", "File Error", "File \"" + fpath + "\" already exists.");
+			return error("export_csv_file", "File Error", "File \"" + fpath + "\" already exists.");
 		}
 		if ((std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write)  == std::filesystem::perms::none) //C++17
 		{
-			return error("export_csv_file()", "File Error", "File \"" + fpath + "\" is not writable.");
+			return error("export_csv_file", "File Error", "File \"" + fpath + "\" is not writable.");
 		}
 
 		ofstream out (fpath);
@@ -196,13 +190,13 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 
 	std::clock_t end = std::clock();
 
-	info("export_csv_file()", "elapsed time", to_string(int (end - start)) + " ms.");
+	info("export_csv_file", "elapsed time", to_string(int (end - start)) + " ms.");
 }
 
 void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 {
-	debug("export_html_file()", "file path", "singular");
-	debug("export_html_file()", "file output", fco);
+	debug("export_html_file", "file path", "singular");
+	debug("export_html_file", "file output", fco);
 
 	std::clock_t start = std::clock();
 
@@ -246,7 +240,7 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 				push_html_tunersets(files);
 		break;
 		default:
-		return error("export_html_file()", "Error", "Unknown export option.");
+		return error("export_html_file", "Error", "Unknown export option.");
 	}
 
 	bool once = !! files.size();
@@ -260,11 +254,11 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 
 		if (! OVERWRITE_FILE && std::filesystem::exists(fpath)) //C++17
 		{
-			return error("export_html_file()", "File Error", "File \"" + fpath + "\" already exists.");
+			return error("export_html_file", "File Error", "File \"" + fpath + "\" already exists.");
 		}
 		if ((std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write)  == std::filesystem::perms::none) //C++17
 		{
-			return error("export_html_file()", "File Error", "File \"" + fpath + "\" is not writable.");
+			return error("export_html_file", "File Error", "File \"" + fpath + "\" is not writable.");
 		}
 
 		ofstream out (fpath);
@@ -274,12 +268,12 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 
 	std::clock_t end = std::clock();
 
-	info("export_html_file()", "elapsed time", to_string(int (end - start)) + " ms.");
+	info("export_html_file", "elapsed time", to_string(int (end - start)) + " ms.");
 }
 
 void e2db_converter::pull_csv_services(istream& ifile, e2db_abstract* dst)
 {
-	debug("pull_csv_services()");
+	debug("pull_csv_services");
 
 	vector<vector<string>> sxv;
 	parse_csv(ifile, sxv);
@@ -292,7 +286,7 @@ void e2db_converter::pull_csv_services(istream& ifile, e2db_abstract* dst)
 
 void e2db_converter::pull_csv_bouquets(istream& ifile, e2db_abstract* dst)
 {
-	debug("pull_csv_bouquets()");
+	debug("pull_csv_bouquets");
 
 	vector<vector<string>> sxv;
 	parse_csv(ifile, sxv);
@@ -302,7 +296,7 @@ void e2db_converter::pull_csv_bouquets(istream& ifile, e2db_abstract* dst)
 
 void e2db_converter::pull_csv_userbouquets(istream& ifile, e2db_abstract* dst)
 {
-	debug("pull_csv_userbouquets()");
+	debug("pull_csv_userbouquets");
 
 	vector<vector<string>> sxv;
 	parse_csv(ifile, sxv);
@@ -315,7 +309,7 @@ void e2db_converter::pull_csv_userbouquets(istream& ifile, e2db_abstract* dst)
 
 void e2db_converter::pull_csv_tunersets(istream& ifile, e2db_abstract* dst)
 {
-	debug("pull_csv_tunersets()");
+	debug("pull_csv_tunersets");
 
 	vector<vector<string>> sxv;
 	parse_csv(ifile, sxv);
@@ -325,7 +319,7 @@ void e2db_converter::pull_csv_tunersets(istream& ifile, e2db_abstract* dst)
 
 void e2db_converter::push_csv_all(vector<e2db_file>& files)
 {
-	debug("push_csv_all()");
+	debug("push_csv_all");
 
 	push_csv_services(files);
 	push_csv_bouquets(files);
@@ -340,7 +334,7 @@ void e2db_converter::push_csv_services(vector<e2db_file>& files)
 
 void e2db_converter::push_csv_services(vector<e2db_file>& files, int stype)
 {
-	debug("push_csv_services()");
+	debug("push_csv_services");
 
 	string filename = "services";
 	string iname;
@@ -381,7 +375,7 @@ void e2db_converter::push_csv_services(vector<e2db_file>& files, int stype)
 
 void e2db_converter::push_csv_bouquets(vector<e2db_file>& files)
 {
-	debug("push_csv_bouquet()");
+	debug("push_csv_bouquet");
 
 	for (auto & x : index["bss"])
 	{
@@ -393,7 +387,7 @@ void e2db_converter::push_csv_bouquets(vector<e2db_file>& files)
 
 void e2db_converter::push_csv_bouquets(vector<e2db_file>& files, string bname)
 {
-	debug("push_csv_bouquets()", "bname", bname);
+	debug("push_csv_bouquets", "bname", bname);
 
 	string filename = bname + ".csv";
 
@@ -408,7 +402,7 @@ void e2db_converter::push_csv_bouquets(vector<e2db_file>& files, string bname)
 
 void e2db_converter::push_csv_userbouquets(vector<e2db_file>& files)
 {
-	debug("push_csv_userbouquet()");
+	debug("push_csv_userbouquet");
 
 	for (auto & x : index["ubs"])
 	{
@@ -420,7 +414,7 @@ void e2db_converter::push_csv_userbouquets(vector<e2db_file>& files)
 
 void e2db_converter::push_csv_userbouquets(vector<e2db_file>& files, string bname)
 {
-	debug("push_csv_userbouquet()", "bname", bname);
+	debug("push_csv_userbouquet", "bname", bname);
 
 	string filename = bname + ".csv";
 
@@ -438,7 +432,7 @@ void e2db_converter::push_csv_userbouquets(vector<e2db_file>& files, string bnam
 
 void e2db_converter::push_csv_tunersets(vector<e2db_file>& files)
 {
-	debug("push_csv_tunersets()");
+	debug("push_csv_tunersets");
 
 	for (auto & x : tuners)
 	{
@@ -448,7 +442,7 @@ void e2db_converter::push_csv_tunersets(vector<e2db_file>& files)
 
 void e2db_converter::push_csv_tunersets(vector<e2db_file>& files, int ytype)
 {
-	debug("push_csv_tunersets()", "ytype", ytype);
+	debug("push_csv_tunersets", "ytype", ytype);
 
 	string filename;
 	switch (ytype)
@@ -479,7 +473,7 @@ void e2db_converter::push_csv_tunersets(vector<e2db_file>& files, int ytype)
 
 void e2db_converter::push_html_all(vector<e2db_file>& files)
 {
-	debug("push_html_all()");
+	debug("push_html_all");
 
 	push_html_index(files);
 	push_html_services(files);
@@ -490,7 +484,7 @@ void e2db_converter::push_html_all(vector<e2db_file>& files)
 
 void e2db_converter::push_html_index(vector<e2db_file>& files)
 {
-	debug("push_html_index()");
+	debug("push_html_index");
 
 	string filename = "index";
 	string fname = std::filesystem::path(get_filepath()).filename().u8string(); //C++17
@@ -524,7 +518,7 @@ void e2db_converter::push_html_services(vector<e2db_file>& files)
 
 void e2db_converter::push_html_services(vector<e2db_file>& files, int stype)
 {
-	debug("push_html_services()");
+	debug("push_html_services");
 
 	string filename = "services";
 	string fname = std::filesystem::path(get_services_filename()).filename().u8string(); //C++17
@@ -577,7 +571,7 @@ void e2db_converter::push_html_services(vector<e2db_file>& files, int stype)
 
 void e2db_converter::push_html_bouquets(vector<e2db_file>& files)
 {
-	debug("push_html_bouquet()");
+	debug("push_html_bouquet");
 
 	for (auto & x : index["bss"])
 	{
@@ -589,7 +583,7 @@ void e2db_converter::push_html_bouquets(vector<e2db_file>& files)
 
 void e2db_converter::push_html_bouquets(vector<e2db_file>& files, string bname)
 {
-	debug("push_html_bouquets()", "bname", bname);
+	debug("push_html_bouquets", "bname", bname);
 
 	string filename = bname + ".html";
 
@@ -607,7 +601,7 @@ void e2db_converter::push_html_bouquets(vector<e2db_file>& files, string bname)
 
 void e2db_converter::push_html_userbouquets(vector<e2db_file>& files)
 {
-	debug("push_html_userbouquet()");
+	debug("push_html_userbouquet");
 
 	for (auto & x : index["ubs"])
 	{
@@ -619,7 +613,7 @@ void e2db_converter::push_html_userbouquets(vector<e2db_file>& files)
 
 void e2db_converter::push_html_userbouquets(vector<e2db_file>& files, string bname)
 {
-	debug("push_html_userbouquet()", "bname", bname);
+	debug("push_html_userbouquet", "bname", bname);
 
 	string filename = bname + ".html";
 
@@ -637,7 +631,7 @@ void e2db_converter::push_html_userbouquets(vector<e2db_file>& files, string bna
 
 void e2db_converter::push_html_tunersets(vector<e2db_file>& files)
 {
-	debug("push_html_tunersets()");
+	debug("push_html_tunersets");
 
 	for (auto & x : tuners)
 	{
@@ -647,7 +641,7 @@ void e2db_converter::push_html_tunersets(vector<e2db_file>& files)
 
 void e2db_converter::push_html_tunersets(vector<e2db_file>& files, int ytype)
 {
-	debug("push_html_tunersets()", "ytype", ytype);
+	debug("push_html_tunersets", "ytype", ytype);
 
 	string fname;
 	switch (ytype)
@@ -682,7 +676,7 @@ void e2db_converter::push_html_tunersets(vector<e2db_file>& files, int ytype)
 
 void e2db_converter::parse_csv(istream& ifile, vector<vector<string>>& sxv)
 {
-	debug("parse_csv()");
+	debug("parse_csv");
 
 	const char dlm = CSV_DELIMITER;
 	const char sep = CSV_SEPARATOR;
@@ -747,7 +741,7 @@ void e2db_converter::parse_csv(istream& ifile, vector<vector<string>>& sxv)
 
 void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_abstract* dst, DOC_VIEW view)
 {
-	debug("convert_csv_channel_list()");
+	debug("convert_csv_channel_list");
 
 	unordered_map<string, userbouquet> userbouquets;
 
@@ -766,7 +760,7 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 
 		for (size_t i = 0; i < sxv[x].size(); i++)
 		{
-			// debug("convert_csv_channel_list()", to_string(x), sxv[x][i]);
+			// debug("convert_csv_channel_list", to_string(x), sxv[x][i]);
 
 			string& val = sxv[x][i];
 
@@ -1017,7 +1011,7 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 
 void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sxv, e2db_abstract* dst, DOC_VIEW view)
 {
-	debug("convert_csv_channel_list_extended()");
+	debug("convert_csv_channel_list_extended");
 
 	unordered_map<string, userbouquet> userbouquets;
 
@@ -1035,7 +1029,7 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 
 		for (size_t i = 0; i < sxv[x].size(); i++)
 		{
-			// debug("convert_csv_channel_list_extended()", to_string(x), sxv[x][i]);
+			// debug("convert_csv_channel_list_extended", to_string(x), sxv[x][i]);
 
 			string& val = sxv[x][i];
 
@@ -1315,7 +1309,7 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 
 void e2db_converter::convert_csv_bouquet_list(vector<vector<string>> sxv, e2db_abstract* dst)
 {
-	debug("convert_csv_bouquet_list()");
+	debug("convert_csv_bouquet_list");
 
 	bouquet bs;
 	vector<userbouquet> userbouquets;
@@ -1330,7 +1324,7 @@ void e2db_converter::convert_csv_bouquet_list(vector<vector<string>> sxv, e2db_a
 
 		for (size_t i = 0; i < sxv[x].size(); i++)
 		{
-			// debug("convert_csv_bouquet_list()", to_string(x), sxv[x][i]);
+			// debug("convert_csv_bouquet_list", to_string(x), sxv[x][i]);
 
 			string& val = sxv[x][i];
 
@@ -1392,7 +1386,7 @@ void e2db_converter::convert_csv_bouquet_list(vector<vector<string>> sxv, e2db_a
 
 void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db_abstract* dst)
 {
-	debug("convert_csv_tunersets_list()");
+	debug("convert_csv_tunersets_list");
 
 	YTYPE ytype = YTYPE::satellite;
 
@@ -1424,7 +1418,7 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 
 		for (size_t i = 0; i < sxv[x].size(); i++)
 		{
-			// debug("convert_csv_tunersets_list()", to_string(x), sxv[x][i]);
+			// debug("convert_csv_tunersets_list", to_string(x), sxv[x][i]);
 
 			string& val = sxv[x][i];
 
@@ -1586,10 +1580,10 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 {
 	if (index.count(bname))
-		debug("csv_channel_list()", "bname", bname);
+		debug("csv_channel_list", "bname", bname);
 	else
-		error("csv_channel_list()", "bname", bname);
-	debug("csv_channel_list()", "view", view);
+		error("csv_channel_list", "bname", bname);
+	debug("csv_channel_list", "view", view);
 
 	string ub_name;
 	if (userbouquets.count(bname))
@@ -1774,10 +1768,10 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VIEW view)
 {
 	if (index.count(bname))
-		debug("csv_channel_list_extended()", "bname", bname);
+		debug("csv_channel_list_extended", "bname", bname);
 	else
-		error("csv_channel_list_extended()", "bname", bname);
-	debug("csv_channel_list_extended()", "view", view);
+		error("csv_channel_list_extended", "bname", bname);
+	debug("csv_channel_list_extended", "view", view);
 
 	string ub_name;
 	if (userbouquets.count(bname))
@@ -2037,9 +2031,9 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 void e2db_converter::csv_bouquet_list(string& csv, string bname)
 {
 	if (bouquets.count(bname))
-		debug("csv_bouquet_list()", "bname", bname);
+		debug("csv_bouquet_list", "bname", bname);
 	else
-		error("csv_bouquet_list()", "bname", bname);
+		error("csv_bouquet_list", "bname", bname);
 
 	bouquet bs = bouquets[bname];
 	string btype;
@@ -2078,7 +2072,7 @@ void e2db_converter::csv_bouquet_list(string& csv, string bname)
 //TODO improve list
 void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 {
-	debug("csv_tunersets_list()", "ytype", ytype);
+	debug("csv_tunersets_list", "ytype", ytype);
 
 	tunersets tv = tuners[ytype];
 	string iname = "tns:";
@@ -2287,7 +2281,7 @@ void e2db_converter::page_footer(html_page& page, string filename, DOC_VIEW view
 
 void e2db_converter::page_body_index_list(html_page& page, vector<string> paths)
 {
-	debug("page_body_index_list()");
+	debug("page_body_index_list");
 
 	page.body += "<div class=\"toc\">\n";
 	page.body += "<h4>Table of Contents</h4>\n";
@@ -2334,10 +2328,10 @@ void e2db_converter::page_body_index_list(html_page& page, vector<string> paths)
 void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_VIEW view)
 {
 	if (index.count(bname))
-		debug("page_body_channel_list()", "bname", bname);
+		debug("page_body_channel_list", "bname", bname);
 	else
-		error("page_body_channel_list()", "bname", bname);
-	debug("page_body_channel_list()", "view", view);
+		error("page_body_channel_list", "bname", bname);
+	debug("page_body_channel_list", "view", view);
 
 	string cssname = view == DOC_VIEW::view_bouquets ? "userbouquet" : "services";
 
@@ -2487,9 +2481,9 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 void e2db_converter::page_body_bouquet_list(html_page& page, string bname)
 {
 	if (bouquets.count(bname))
-		debug("page_body_bouquet_list()", "bname", bname);
+		debug("page_body_bouquet_list", "bname", bname);
 	else
-		error("page_body_bouquet_list()", "bname", bname);
+		error("page_body_bouquet_list", "bname", bname);
 
 	bouquet bs = bouquets[bname];
 	string btype;
@@ -2531,7 +2525,7 @@ void e2db_converter::page_body_bouquet_list(html_page& page, string bname)
 //TODO improve list
 void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 {
-	debug("page_body_tunersets_list()", "ytype", ytype);
+	debug("page_body_tunersets_list", "ytype", ytype);
 
 	page.body += "<div class=\"tunersets\">\n";
 
@@ -2730,7 +2724,7 @@ string e2db_converter::doc_html_foot(html_page page)
 
 void e2db_converter::csv_document(e2db_file& file, string csv)
 {
-	debug("csv_document()");
+	debug("csv_document");
 
 	file.data = csv;
 	file.mime = "text/plain";
@@ -2739,7 +2733,7 @@ void e2db_converter::csv_document(e2db_file& file, string csv)
 
 void e2db_converter::html_document(e2db_file& file, html_page page)
 {
-	debug("html_document()");
+	debug("html_document");
 
 	string html;
 	html.append(doc_html_head(page));

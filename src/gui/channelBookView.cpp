@@ -35,8 +35,7 @@ namespace e2se_gui
 
 channelBookView::channelBookView(dataHandler* data, int stype)
 {
-	this->log = new logger(data->log->obj, "channelBookView");
-	debug("channelBookView()");
+	this->log = new logger("gui", "channelBookView");
 
 	this->data = data;
 	this->theme = new e2se_gui::theme;
@@ -49,8 +48,7 @@ channelBookView::channelBookView(dataHandler* data, int stype)
 
 channelBookView::channelBookView(tab* tid, QWidget* cwid, dataHandler* data)
 {
-	this->log = new logger(tid->log->obj, "channelBookView");
-	debug("channelBookView()");
+	this->log = new logger("gui", "channelBookView");
 
 	this->tid = tid;
 	this->cwid = cwid;
@@ -63,7 +61,7 @@ channelBookView::channelBookView(tab* tid, QWidget* cwid, dataHandler* data)
 
 void channelBookView::layout()
 {
-	debug("layout()");
+	debug("layout");
 
 	QGridLayout* frm = new QGridLayout(widget);
 
@@ -214,7 +212,7 @@ void channelBookView::sideLayout()
 
 void channelBookView::load()
 {
-	debug("load()");
+	debug("load");
 
 	tabUpdateFlags(gui::init);
 
@@ -223,7 +221,7 @@ void channelBookView::load()
 
 void channelBookView::reset()
 {
-	debug("reset()");
+	debug("reset");
 
 	tree->reset();
 	tree->clear();
@@ -275,7 +273,7 @@ void channelBookView::populate()
 
 	auto* dbih = this->data->dbih;
 
-	debug("populate()", "current", curr);
+	debug("populate", "current", curr);
 
 	list->header()->setSortIndicatorShown(false);
 	list->header()->setSectionsClickable(false);
@@ -341,7 +339,7 @@ void channelBookView::populate()
 
 void channelBookView::stacker(int vv)
 {
-	debug("stacker()", "view", vv);
+	debug("stacker", "view", vv);
 
 	auto* dbih = this->data->dbih;
 
@@ -492,7 +490,7 @@ void channelBookView::stacker(int vv)
 
 void channelBookView::sideRowChanged(int index)
 {
-	debug("sideRowChanged()", "view", index);
+	debug("sideRowChanged", "view", index);
 
 	tree->clearSelection();
 	tree->scrollToTop();
@@ -529,7 +527,7 @@ void channelBookView::sideRowChanged(int index)
 
 void channelBookView::filterChanged(bool enabled)
 {
-	debug("filterChanged()", "enabled", enabled);
+	debug("filterChanged", "enabled", enabled);
 
 	int i, count;
 
@@ -555,7 +553,7 @@ void channelBookView::filterChanged(bool enabled)
 
 void channelBookView::listItemSelectionChanged()
 {
-	// debug("listItemSelectionChanged()");
+	// debug("listItemSelectionChanged");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
@@ -571,7 +569,7 @@ void channelBookView::listItemSelectionChanged()
 
 void channelBookView::listItemCopy(bool cut)
 {
-	debug("listItemCopy()");
+	debug("listItemCopy");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
@@ -622,7 +620,7 @@ void channelBookView::listItemCopy(bool cut)
 
 vector<QString> channelBookView::getSelected()
 {
-	debug("getSelected()");
+	debug("getSelected");
 
 	auto* dbih = this->data->dbih;
 
@@ -641,7 +639,7 @@ vector<QString> channelBookView::getSelected()
 
 void channelBookView::showListEditContextMenu(QPoint &pos)
 {
-	debug("showListEditContextMenu()");
+	debug("showListEditContextMenu");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
@@ -661,7 +659,7 @@ void channelBookView::updateFlags()
 	if (tid == nullptr)
 		return;
 
-	debug("updateFlags()");
+	debug("updateFlags");
 
 	tabSetFlag(gui::FileImport, false);
 	tabSetFlag(gui::FileExport, false);

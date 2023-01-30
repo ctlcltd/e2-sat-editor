@@ -42,8 +42,7 @@ namespace e2se_gui_dialog
 
 settings::settings(e2se_gui::gui* gid, QWidget* cwid)
 {
-	this->log = new logger(gid->log->obj, "settings");
-	debug("settings()");
+	this->log = new logger("gui.dialog", "settings");
 
 	this->gid = gid;
 	this->sets = new QSettings;
@@ -55,7 +54,7 @@ settings::settings(e2se_gui::gui* gid, QWidget* cwid)
 
 void settings::display(QWidget* cwid)
 {
-	debug("display()");
+	debug("display");
 
 	layout(cwid);
 
@@ -66,7 +65,7 @@ void settings::display(QWidget* cwid)
 
 void settings::layout(QWidget* cwid)
 {
-	debug("layout()");
+	debug("layout");
 
 	this->dial = new QDialog(cwid);
 	dial->setWindowTitle(tr("Settings"));
@@ -452,7 +451,7 @@ QListWidgetItem* settings::addProfile(int i)
 		// i++;
 		tmpps[i]["profileName"] = tr("Profile");
 	}
-	debug("addProfile()", "index", i);
+	debug("addProfile", "index", i);
 
 	QListWidgetItem* item = new QListWidgetItem(tr("Profile"), rplist);
 	item->setText(item->text() + ' ' + QString::number(i));
@@ -472,7 +471,7 @@ QListWidgetItem* settings::addProfile(int i)
 
 void settings::deleteProfile()
 {
-	debug("deleteProfile()");
+	debug("deleteProfile");
 
 	QListWidgetItem* curr = rplist->currentItem();
 	int i = curr->data(Qt::UserRole).toInt();
@@ -495,7 +494,7 @@ void settings::renameProfile(bool enabled)
 
 void settings::updateProfile(QListWidgetItem* item)
 {
-	debug("updateProfile()");
+	debug("updateProfile");
 
 	int i = item->data(Qt::UserRole).toInt();
 	for (auto & item : prefs[PREF_SECTIONS::Connections])
@@ -510,7 +509,7 @@ void settings::updateProfile(QListWidgetItem* item)
 
 void settings::profileNameChanged(QString text)
 {
-	debug("profileNameChanged()");
+	debug("profileNameChanged");
 
 	QListWidgetItem* curr = rplist->currentItem();
 	int i = curr->data(Qt::UserRole).toInt();
@@ -519,7 +518,7 @@ void settings::profileNameChanged(QString text)
 
 void settings::currentProfileChanged(QListWidgetItem* current, QListWidgetItem* previous)
 {
-	debug("currentProfileChanged()");
+	debug("currentProfileChanged");
 
 	if (previous != nullptr && ! this->state.dele)
 		updateProfile(previous);
@@ -530,7 +529,7 @@ void settings::currentProfileChanged(QListWidgetItem* current, QListWidgetItem* 
 
 void settings::tabChanged(int index)
 {
-	debug("tabChanged()", "index", index);
+	debug("tabChanged", "index", index);
 
 	if (this->state.prev == -1)
 	{
@@ -552,7 +551,7 @@ void settings::tabChanged(int index)
 
 void settings::store()
 {
-	debug("store()");
+	debug("store");
 
 	updateProfile(rplist->currentItem());
 
@@ -597,7 +596,7 @@ void settings::store()
 
 void settings::store(QTableWidget* adtbl)
 {
-	debug("store()", "overload", "advanced");
+	debug("store", "overload", "advanced");
 
 	for (int i = 0; i < adtbl->rowCount(); i++)
 	{
@@ -612,7 +611,7 @@ void settings::store(QTableWidget* adtbl)
 
 void settings::retrieve()
 {
-	debug("retrieve()");
+	debug("retrieve");
 
 	this->state.retr = true;
 	int selected = sets->value("profile/selected", 0).toInt();
@@ -673,7 +672,7 @@ void settings::retrieve()
 
 void settings::retrieve(QListWidgetItem* item)
 {
-	debug("retrieve()", "overload", "item");
+	debug("retrieve", "overload", "item");
 
 	int i = item->data(Qt::UserRole).toInt();
 	for (auto & item : prefs[PREF_SECTIONS::Connections])
@@ -688,7 +687,7 @@ void settings::retrieve(QListWidgetItem* item)
 
 void settings::retrieve(QTableWidget* adtbl)
 {
-	debug("retrieve()", "overload", "advanced");
+	debug("retrieve", "overload", "advanced");
 
 	QStringList keys = sets->allKeys().filter(QRegularExpression("^(application|preference|profile|settings)/"));
 	QStringList::const_iterator iq;
@@ -708,7 +707,7 @@ void settings::retrieve(QTableWidget* adtbl)
 
 void settings::save()
 {
-	debug("save()");
+	debug("save");
 
 	if (dtwid->currentIndex() == PREF_SECTIONS::Advanced)
 		store(adtbl);
@@ -725,7 +724,7 @@ void settings::save()
 
 void settings::cancel()
 {
-	debug("cancel()");
+	debug("cancel");
 
 	// delay too fast
 	QTimer::singleShot(150, [=]() {

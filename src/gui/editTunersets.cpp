@@ -27,8 +27,7 @@ namespace e2se_gui
 
 editTunersets::editTunersets(dataHandler* data, int yx)
 {
-	this->log = new logger(data->log->obj, "editTunersets");
-	debug("editTunersets()");
+	this->log = new logger("gui", "editTunersets");
 
 	this->data = data;
 	this->state.yx = yx;
@@ -81,7 +80,7 @@ void editTunersets::layout(QWidget* cwid)
 
 void editTunersets::store()
 {
-	debug("store()");
+	debug("store");
 
 	auto* dbih = this->data->dbih;
 
@@ -90,7 +89,7 @@ void editTunersets::store()
 	if (this->state.edit)
 	{
 		if (! dbih->tuners.count(tvid))
-			return error("store()", "tvid", tvid);
+			return error("store", "tvid", tvid);
 
 		tvs = dbih->tuners[tvid];
 	}
@@ -156,12 +155,12 @@ void editTunersets::store()
 
 void editTunersets::retrieve()
 {
-	debug("retrieve()");
+	debug("retrieve");
 
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->tuners.count(tvid))
-		return error("retrieve()", "tvid", tvid);
+		return error("retrieve", "tvid", tvid);
 
 	e2db::tunersets tvs = dbih->tuners[tvid];
 
@@ -212,7 +211,7 @@ void editTunersets::retrieve()
 
 void editTunersets::setEditId(int tvid)
 {
-	debug("setEditId()");
+	debug("setEditId");
 
 	this->state.edit = true;
 	this->tvid = tvid;
@@ -220,14 +219,14 @@ void editTunersets::setEditId(int tvid)
 
 int editTunersets::getEditId()
 {
-	debug("getEditId()");
+	debug("getEditId");
 
 	return this->tvid;
 }
 
 int editTunersets::getAddId()
 {
-	debug("getAddId()");
+	debug("getAddId");
 
 	return this->tvid;
 }

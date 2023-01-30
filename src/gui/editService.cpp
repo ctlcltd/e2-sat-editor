@@ -38,8 +38,7 @@ namespace e2se_gui
 
 editService::editService(dataHandler* data)
 {
-	this->log = new logger(data->log->obj, "editService");
-	debug("editService()");
+	this->log = new logger("gui", "editService");
 
 	this->data = data;
 }
@@ -88,7 +87,7 @@ void editService::layout(QWidget* cwid)
 
 void editService::serviceLayout()
 {
-	debug("serviceLayout()");
+	debug("serviceLayout");
 
 	QGroupBox* dtl0 = new QGroupBox(tr("Service"));
 	QFormLayout* dtf0 = new QFormLayout;
@@ -180,7 +179,7 @@ void editService::serviceLayout()
 
 void editService::transponderLayout()
 {
-	debug("transponderLayout()");
+	debug("transponderLayout");
 
 	QGroupBox* dtl1 = new QGroupBox(tr("Tuner"));
 	QFormLayout* dtf1 = new QFormLayout;
@@ -243,7 +242,7 @@ void editService::transponderLayout()
 
 void editService::paramsLayout()
 {
-	debug("paramsLayout()");
+	debug("paramsLayout");
 
 	QGroupBox* dtl2 = new QGroupBox(tr("Parameters"));
 	dtl2->setMinimumWidth(250);
@@ -481,7 +480,7 @@ void editService::paramsLayout()
 
 void editService::tunerComboChanged(int index)
 {
-	debug("tunerComboChanged()", "index", index);
+	debug("tunerComboChanged", "index", index);
 
 	QString qpos = dtf1tn->currentData().toString();
 	string pos = qpos.toStdString();
@@ -502,7 +501,7 @@ void editService::tunerComboChanged(int index)
 
 void editService::transponderComboChanged(int index)
 {
-	debug("transponderComboChanged()", "index", index);
+	debug("transponderComboChanged", "index", index);
 
 	QString qtxid = dtf1tx->currentData().toString();
 	string txid = qtxid.toStdString();
@@ -512,7 +511,7 @@ void editService::transponderComboChanged(int index)
 
 void editService::tabChanged(int index)
 {
-	debug("tabChanged()", "index", index);
+	debug("tabChanged", "index", index);
 
 	if (index != 1 || this->state.transponder)
 		return;
@@ -538,7 +537,7 @@ void editService::tabChanged(int index)
 
 void editService::newTransponder()
 {
-	debug("newTransponder()");
+	debug("newTransponder");
 
 	dtf1tx->setCurrentIndex(-1);
 	edittx->setAddId();
@@ -548,7 +547,7 @@ void editService::newTransponder()
 
 void editService::store()
 {
-	debug("store()");
+	debug("store");
 
 	auto* dbih = this->data->dbih;
 
@@ -556,7 +555,7 @@ void editService::store()
 	if (this->state.edit)
 	{
 		if (! dbih->db.services.count(chid))
-			return error("store()", "chid", chid);
+			return error("store", "chid", chid);
 
 		ch = dbih->db.services[chid];
 	}
@@ -729,12 +728,12 @@ void editService::store()
 
 void editService::retrieve()
 {
-	debug("retrieve()");
+	debug("retrieve");
 
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->db.services.count(chid))
-		return error("retrieve()", "chid", chid);
+		return error("retrieve", "chid", chid);
 
 	e2db::service ch = dbih->db.services[chid];
 	e2db::transponder tx;
@@ -951,7 +950,7 @@ vector<string> editService::computeFlags(e2db::service ch, e2db::SDATA_FLAGS x, 
 
 void editService::setEditId(string chid)
 {
-	debug("setEditId()");
+	debug("setEditId");
 
 	this->state.edit = true;
 	this->chid = chid;
@@ -959,21 +958,21 @@ void editService::setEditId(string chid)
 
 string editService::getEditId()
 {
-	debug("getEditId()");
+	debug("getEditId");
 
 	return this->chid;
 }
 
 string editService::getAddId()
 {
-	debug("getAddId()");
+	debug("getAddId");
 
 	return this->chid;
 }
 
 string editService::getTransponderId()
 {
-	debug("getTransponderId()");
+	debug("getTransponderId");
 
 	if (this->state.transponder)
 		return this->txid;
@@ -982,7 +981,7 @@ string editService::getTransponderId()
 
 void editService::destroy()
 {
-	debug("destroy()");
+	debug("destroy");
 
 	delete this->edittx;
 	delete this->dial;

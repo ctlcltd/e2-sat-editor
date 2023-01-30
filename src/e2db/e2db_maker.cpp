@@ -29,19 +29,13 @@ namespace e2se_e2db
 e2db_maker::e2db_maker()
 {
 	std::setlocale(LC_NUMERIC, "C");
-}
 
-e2db_maker::e2db_maker(e2se::logger::data* obj)
-{
-	std::setlocale(LC_NUMERIC, "C");
-
-	this->log = new e2se::logger(obj, "e2db");
-	debug("e2db_maker()");
+	this->log = new e2se::logger("e2db", "e2db_maker");
 }
 
 void e2db_maker::make_e2db()
 {
-	debug("make_e2db()");
+	debug("make_e2db");
 
 	std::clock_t start = std::clock();
 
@@ -53,12 +47,12 @@ void e2db_maker::make_e2db()
 
 	std::clock_t end = std::clock();
 
-	info("make_e2db()", "elapsed time", to_string(int (end - start)) + " ms.");
+	info("make_e2db", "elapsed time", to_string(int (end - start)) + " ms.");
 }
 
 void e2db_maker::make_e2db_lamedb()
 {
-	debug("make_e2db_lamedb()");
+	debug("make_e2db_lamedb");
 
 	switch (LAMEDB_VER)
 	{
@@ -69,7 +63,7 @@ void e2db_maker::make_e2db_lamedb()
 			make_e2db_lamedb5();
 		break;
 		default:
-		return error("make_e2db_lamedb()", "Maker Error", "Unknown services file format.");
+		return error("make_e2db_lamedb", "Maker Error", "Unknown services file format.");
 	}
 
 	//TEST
@@ -80,7 +74,7 @@ void e2db_maker::make_e2db_lamedb()
 
 void e2db_maker::make_e2db_lamedb4()
 {
-	debug("make_e2db_lamedb4()");
+	debug("make_e2db_lamedb4");
 	e2db_file file;
 	make_lamedb4("lamedb", file);
 	this->e2db_out["lamedb"] = file;
@@ -88,7 +82,7 @@ void e2db_maker::make_e2db_lamedb4()
 
 void e2db_maker::make_e2db_lamedb5()
 {
-	debug("make_e2db_lamedb5()");
+	debug("make_e2db_lamedb5");
 	e2db_file file;
 	make_lamedb5("lamedb5", file);
 	this->e2db_out["lamedb5"] = file;
@@ -96,7 +90,7 @@ void e2db_maker::make_e2db_lamedb5()
 
 void e2db_maker::make_lamedb4(string filename, e2db_file& file)
 {
-	debug("make_lamedb4()");
+	debug("make_lamedb4");
 	int ver = LAMEDB_VER;
 	LAMEDB_VER = 4;
 	make_lamedb(filename, file);
@@ -106,7 +100,7 @@ void e2db_maker::make_lamedb4(string filename, e2db_file& file)
 
 void e2db_maker::make_lamedb5(string filename, e2db_file& file)
 {
-	debug("make_lamedb5()");
+	debug("make_lamedb5");
 	int ver = LAMEDB_VER;
 	LAMEDB_VER = 5;
 	make_lamedb(filename, file);
@@ -116,7 +110,7 @@ void e2db_maker::make_lamedb5(string filename, e2db_file& file)
 
 void e2db_maker::make_lamedb(string filename, e2db_file& file)
 {
-	debug("make_lamedb()");
+	debug("make_lamedb");
 
 	const string (&formats)[13] = LAMEDB_VER < 5 ? LAMEDB4_FORMATS : LAMEDB5_FORMATS;
 
@@ -188,7 +182,7 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file)
 					ss << tx.oflgs;
 			break;
 			default:
-			return error("make_lamedb()", "Maker Error", "Unknown transponder type.");
+			return error("make_lamedb", "Maker Error", "Unknown transponder type.");
 		}
 		ss << formats[MAKER_FORMAT::b_transponder_endline];
 	}
@@ -247,7 +241,7 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file)
 
 void e2db_maker::make_e2db_bouquets()
 {
-	debug("make_e2db_bouquets()");
+	debug("make_e2db_bouquets");
 
 	for (auto & x : bouquets)
 	{
@@ -259,7 +253,7 @@ void e2db_maker::make_e2db_bouquets()
 
 void e2db_maker::make_e2db_userbouquets()
 {
-	debug("make_e2db_userbouquets()");
+	debug("make_e2db_userbouquets");
 
 	for (auto & x : userbouquets)
 	{
@@ -271,7 +265,7 @@ void e2db_maker::make_e2db_userbouquets()
 
 void e2db_maker::make_db_tunersets()
 {
-	debug("make_db_tunersets()");
+	debug("make_db_tunersets");
 
 	for (auto & x : tuners)
 	{
@@ -291,7 +285,7 @@ void e2db_maker::make_db_tunersets()
 				filename = "atsc.xml";
 			break;
 			default:
-			return error("make_db_tunersets()", "Maker Error", "These settings are not supported.");
+			return error("make_db_tunersets", "Maker Error", "These settings are not supported.");
 		}
 		e2db_file file;
 		make_tunersets_xml(filename, x.first, file);
@@ -301,7 +295,7 @@ void e2db_maker::make_db_tunersets()
 
 void e2db_maker::make_bouquet(string bname, e2db_file& file)
 {
-	debug("make_bouquet()", "bname", bname);
+	debug("make_bouquet", "bname", bname);
 
 	bouquet bs = bouquets[bname];
 	stringstream ss;
@@ -326,7 +320,7 @@ void e2db_maker::make_bouquet(string bname, e2db_file& file)
 
 void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 {
-	debug("make_userbouquet()", "bname", bname);
+	debug("make_userbouquet", "bname", bname);
 
 	userbouquet ub = userbouquets[bname];
 	stringstream ss;
@@ -360,7 +354,7 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 			}
 			else
 			{
-				error("make_userbouquet()", "Maker Error", "Missing channel_reference \"" + x.second + "\".");
+				error("make_userbouquet", "Maker Error", "Missing channel_reference \"" + x.second + "\".");
 			}
 		}
 		ss << dec;
@@ -377,7 +371,7 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 //TODO value xml entities
 void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 {
-	debug("make_tunersets_xml()", "ytype", ytype);
+	debug("make_tunersets_xml", "ytype", ytype);
 
 	switch (ytype)
 	{
@@ -387,7 +381,7 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 		case YTYPE::atsc:
 		break;
 		default:
-		return error("make_tunersets_xml()", "Maker Error", "These settings are not supported.");
+		return error("make_tunersets_xml", "Maker Error", "These settings are not supported.");
 	}
 
 	tunersets tv = tuners[ytype];
@@ -556,13 +550,13 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 
 bool e2db_maker::push_file(string path)
 {
-	debug("push_file()", "path", path);
+	debug("push_file", "path", path);
 
 	if (std::filesystem::is_directory(path)) //C++17
 	{
 		if (! OVERWRITE_FILE)
 		{
-			error("push_file()", "File Error", "File \"" + path + "\" already exists.");
+			error("push_file", "File Error", "File \"" + path + "\" already exists.");
 			return false;
 		}
 	}
@@ -572,7 +566,7 @@ bool e2db_maker::push_file(string path)
 	}
 	if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_write)  == std::filesystem::perms::none) //C++17
 	{
-		error("push_file()", "File Error", "File \"" + path + "\" is not writable.");
+		error("push_file", "File Error", "File \"" + path + "\" is not writable.");
 		return false;
 	}
 	for (auto & o: this->e2db_out)
@@ -581,12 +575,12 @@ bool e2db_maker::push_file(string path)
 
 		if (! OVERWRITE_FILE && std::filesystem::exists(fpath)) //C++17
 		{
-			error("push_file()", "File Error", "File \"" + fpath + "\" already exists.");
+			error("push_file", "File Error", "File \"" + fpath + "\" already exists.");
 			return false;
 		}
 		if ((std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write)  == std::filesystem::perms::none) //C++17
 		{
-			error("push_file()", "File Error", "File \"" + fpath + "\" is not writable.");
+			error("push_file", "File Error", "File \"" + fpath + "\" is not writable.");
 			return false;
 		}
 
@@ -600,7 +594,7 @@ bool e2db_maker::push_file(string path)
 
 bool e2db_maker::write(string path)
 {
-	debug("write()", "filename", path);
+	debug("write", "filename", path);
 
 	make_e2db();
 
@@ -611,7 +605,7 @@ bool e2db_maker::write(string path)
 }
 
 unordered_map<string, e2db_abstract::e2db_file> e2db_maker::get_output() {
-	debug("get_output()");
+	debug("get_output");
 
 	make_e2db();
 

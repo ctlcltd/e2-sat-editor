@@ -23,10 +23,9 @@ using namespace e2se;
 namespace e2se_gui_dialog
 {
 
-about::about(e2se::logger::data* obj)
+about::about()
 {
-	this->log = new logger(obj, "about");
-	debug("about()");
+	this->log = new logger("gui.dialog", "about");
 
 	QDialog* dial = new QDialog;
 	dial->setWindowTitle("About e2 SAT Editor");

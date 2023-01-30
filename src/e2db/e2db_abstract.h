@@ -24,7 +24,7 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map;
 #define e2db_abstract_h
 namespace e2se_e2db
 {
-struct e2db_abstract
+struct e2db_abstract : protected e2se::log_factory
 {
 	public:
 
@@ -462,16 +462,6 @@ struct e2db_abstract
 
 		inline static int LAMEDB_VER = 0;
 
-		virtual void options() {};
-		virtual void debug(string msg);
-		virtual void debug(string msg, string optk, string optv);
-		virtual void debug(string msg, string optk, int optv);
-		virtual void info(string msg);
-		virtual void info(string msg, string optk, string optv);
-		virtual void info(string msg, string optk, int optv);
-		virtual void error(string msg);
-		virtual void error(string msg, string optk, string optv);
-		virtual void error(string msg, string optk, int optv);
 		void add_transponder(int idx, transponder& tx);
 		void add_service(int idx, service& ch);
 		void add_bouquet(int idx, bouquet& bs);
@@ -488,7 +478,6 @@ struct e2db_abstract
 		unordered_map<string, e2db_file> e2db_out;
 		string filepath;
 		string services_filename;
-		e2se::logger* log;
 };
 }
 #endif /* e2db_abstract_h */

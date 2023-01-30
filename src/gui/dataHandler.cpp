@@ -16,10 +16,9 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-dataHandler::dataHandler(e2se::logger::data* obj)
+dataHandler::dataHandler()
 {
-	this->log = new logger(obj, "dataHandler");
-	debug("dataHandler()");
+	this->log = new logger("gui", "dataHandler");
 }
 
 dataHandler::~dataHandler()
@@ -29,22 +28,22 @@ dataHandler::~dataHandler()
 
 void dataHandler::newFile()
 {
-	debug("newFile()");
+	debug("newFile");
 
 	delete this->dbih;
 
-	this->dbih = new e2db(this->log->obj);
+	this->dbih = new e2db;
 	this->newfile = true;
 	this->changed = false;
 }
 
 bool dataHandler::readFile(string filename)
 {
-	debug("readFile()");
+	debug("readFile");
 
 	delete this->dbih;
 
-	this->dbih = new e2db(this->log->obj);
+	this->dbih = new e2db;
 	this->newfile = false;
 	this->changed = false;
 
@@ -60,7 +59,7 @@ bool dataHandler::readFile(string filename)
 
 bool dataHandler::writeFile(string path)
 {
-	debug("writeFile()");
+	debug("writeFile");
 
 	if (this->dbih == nullptr)
 		return false;
@@ -101,7 +100,7 @@ string dataHandler::getFilename()
 
 void dataHandler::settingsChanged()
 {
-	debug("settingsChanged()");
+	debug("settingsChanged");
 
 	if (this->dbih != nullptr)
 		this->dbih->didChange();

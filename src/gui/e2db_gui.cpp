@@ -27,12 +27,11 @@ using std::string, std::unordered_set, std::to_string;
 namespace e2se_gui
 {
 
-e2db::e2db(e2se::logger::data* obj)
+e2db::e2db()
 {
 	std::setlocale(LC_NUMERIC, "C");
 
-	this->log = new e2se::logger(obj, "gui.e2db");
-	debug("e2db()");
+	this->log = new e2se::logger("gui", "e2db");
 
 	setup();
 	createBouquets();
@@ -40,7 +39,7 @@ e2db::e2db(e2se::logger::data* obj)
 
 void e2db::setup()
 {
-	debug("setup()");
+	// debug("setup");
 
 	QSettings settings;
 
@@ -62,22 +61,20 @@ void e2db::setup()
 
 void e2db::error(string msg, string optk, string optv)
 {
-	debug("error()");
-
 	this->::e2se_e2db::e2db::error(msg, optk, optv);
 	QMessageBox::critical(nullptr, QString::fromStdString(optk), QString::fromStdString(optv));
 }
 
 void e2db::didChange()
 {
-	debug("didChange()");
+	debug("didChange");
 
 	setup();
 }
 
 void e2db::createBouquets()
 {
-	debug("createBouquets()");
+	// debug("createBouquets");
 
 	// empty services list - touch index["chs"]
 	if (! index.count("chs"))
@@ -102,7 +99,7 @@ void e2db::createBouquets()
 
 void e2db::cache(bool clear)
 {
-	debug("cache()");
+	debug("cache");
 
 	if (clear)
 	{
@@ -121,7 +118,7 @@ void e2db::cache(bool clear)
 
 string e2db::addTransponder(transponder& tx)
 {
-	debug("addTransponder()", "txid", tx.txid);
+	debug("addTransponder", "txid", tx.txid);
 
 	this->::e2se_e2db::e2db::add_transponder(tx);
 	entries.transponders[tx.txid] = entryTransponder(tx);
@@ -130,7 +127,7 @@ string e2db::addTransponder(transponder& tx)
 
 string e2db::editTransponder(string txid, transponder& tx)
 {
-	debug("editTransponder()", "txid", txid);
+	debug("editTransponder", "txid", txid);
 
 	this->::e2se_e2db::e2db::edit_transponder(txid, tx);
 	entries.transponders[tx.txid] = entryTransponder(tx);
@@ -139,7 +136,7 @@ string e2db::editTransponder(string txid, transponder& tx)
 
 void e2db::removeTransponder(string txid)
 {
-	debug("removTransponder()", "txid", txid);
+	debug("removTransponder", "txid", txid);
 
 	this->::e2se_e2db::e2db::remove_transponder(txid);
 	entries.transponders.erase(txid);
@@ -147,7 +144,7 @@ void e2db::removeTransponder(string txid)
 
 string e2db::addService(service& ch)
 {
-	debug("addService()", "chid", ch.chid);
+	debug("addService", "chid", ch.chid);
 
 	this->::e2se_e2db::e2db::add_service(ch);
 	entries.services[ch.chid] = entryService(ch);
@@ -156,7 +153,7 @@ string e2db::addService(service& ch)
 
 string e2db::editService(string chid, service& ch)
 {
-	debug("editService()", "chid", chid);
+	debug("editService", "chid", chid);
 
 	this->::e2se_e2db::e2db::edit_service(chid, ch);
 	entries.services[ch.chid] = entryService(ch);
@@ -165,7 +162,7 @@ string e2db::editService(string chid, service& ch)
 
 void e2db::removeService(string chid)
 {
-	debug("removeService()", "chid", chid);
+	debug("removeService", "chid", chid);
 
 	this->::e2se_e2db::e2db::remove_service(chid);
 	entries.services.erase(chid);
@@ -173,7 +170,7 @@ void e2db::removeService(string chid)
 
 string e2db::addUserbouquet(userbouquet& ub)
 {
-	debug("addUserbouquet()");
+	debug("addUserbouquet");
 
 	this->::e2se_e2db::e2db::add_userbouquet(ub);
 	return ub.bname;
@@ -181,7 +178,7 @@ string e2db::addUserbouquet(userbouquet& ub)
 
 string e2db::editUserbouquet(userbouquet& ub)
 {
-	debug("editUserbouquet()");
+	debug("editUserbouquet");
 
 	this->::e2se_e2db::e2db::edit_userbouquet(ub);
 	return ub.bname;
@@ -189,14 +186,14 @@ string e2db::editUserbouquet(userbouquet& ub)
 
 void e2db::removeUserbouquet(string bname)
 {
-	debug("removeUserbouquet()", "bname", bname);
+	debug("removeUserbouquet", "bname", bname);
 
 	this->::e2se_e2db::e2db::remove_userbouquet(bname);
 }
 
 string e2db::addChannelReference(channel_reference& chref, string bname)
 {
-	debug("addChannelReference()", "chid", chref.chid);
+	debug("addChannelReference", "chid", chref.chid);
 
 	this->::e2se_e2db::e2db::add_channel_reference(chref, bname);
 	return chref.chid;
@@ -204,7 +201,7 @@ string e2db::addChannelReference(channel_reference& chref, string bname)
 
 string e2db::editChannelReference(string chid, channel_reference& chref, string bname)
 {
-	debug("editChannelReference()", "chid", chid);
+	debug("editChannelReference", "chid", chid);
 
 	this->::e2se_e2db::e2db::edit_channel_reference(chid, chref, bname);
 	return chref.chid;
@@ -212,21 +209,21 @@ string e2db::editChannelReference(string chid, channel_reference& chref, string 
 
 void e2db::removeChannelReference(channel_reference chref, string bname)
 {
-	debug("removeChannelReference()", "chid", chref.chid);
+	debug("removeChannelReference", "chid", chref.chid);
 
 	this->::e2se_e2db::e2db::remove_channel_reference(chref, bname);
 }
 
 void e2db::removeChannelReference(string chid, string bname)
 {
-	debug("removeChannelReference()", "chid", chid);
+	debug("removeChannelReference", "chid", chid);
 
 	this->::e2se_e2db::e2db::remove_channel_reference(chid, bname);
 }
 
 int e2db::addTunersets(tunersets& tv)
 {
-	debug("addTunersets()");
+	debug("addTunersets");
 
 	this->::e2se_e2db::e2db::add_tunersets(tv);
 	return tv.ytype;
@@ -234,7 +231,7 @@ int e2db::addTunersets(tunersets& tv)
 
 int e2db::editTunersets(int tvid, tunersets& tv)
 {
-	debug("editTunersets()", "tvid", tvid);
+	debug("editTunersets", "tvid", tvid);
 
 	this->::e2se_e2db::e2db::edit_tunersets(tvid, tv);
 	return tv.ytype;
@@ -242,14 +239,14 @@ int e2db::editTunersets(int tvid, tunersets& tv)
 
 void e2db::removeTunersets(int tvid)
 {
-	debug("removeTunersets()", "tvid", tvid);
+	debug("removeTunersets", "tvid", tvid);
 
 	this->::e2se_e2db::e2db::remove_tunersets(tvid);
 }
 
 string e2db::addTunersetsTable(tunersets_table& tn, tunersets tv)
 {
-	debug("addTunersetsTable()");
+	debug("addTunersetsTable");
 
 	this->::e2se_e2db::e2db::add_tunersets_table(tn, tv);
 	return tn.tnid;
@@ -263,14 +260,14 @@ string e2db::editTunersetsTable(string tnid, tunersets_table& tn, tunersets tv)
 
 void e2db::removeTunersetsTable(string tnid, tunersets tv)
 {
-	debug("removeTunersetsTable()", "tnid", tnid);
+	debug("removeTunersetsTable", "tnid", tnid);
 
 	this->::e2se_e2db::e2db::remove_tunersets_table(tnid, tv);
 }
 
 string e2db::addTunersetsTransponder(tunersets_transponder& tntxp, tunersets_table tn)
 {
-	debug("addTunersetsTransponder()");
+	debug("addTunersetsTransponder");
 
 	this->::e2se_e2db::e2db::add_tunersets_transponder(tntxp, tn);
 	return tntxp.trid;
@@ -278,7 +275,7 @@ string e2db::addTunersetsTransponder(tunersets_transponder& tntxp, tunersets_tab
 
 string e2db::editTunersetsTransponder(string trid, tunersets_transponder& tntxp, tunersets_table tn)
 {
-	debug("editTunersetsTransponder()", "trid", trid);
+	debug("editTunersetsTransponder", "trid", trid);
 
 	this->::e2se_e2db::e2db::edit_tunersets_transponder(trid, tntxp, tn);
 	return tntxp.trid;
@@ -286,14 +283,14 @@ string e2db::editTunersetsTransponder(string trid, tunersets_transponder& tntxp,
 
 void e2db::removeTunersetsTransponder(string trid, tunersets_table tn)
 {
-	debug("removeTunersetsTransponder()", "trid", trid);
+	debug("removeTunersetsTransponder", "trid", trid);
 
 	this->::e2se_e2db::e2db::remove_tunersets_transponder(trid, tn);
 }
 
 bool e2db::prepare(string filename)
 {
-	debug("prepare()");
+	debug("prepare");
 
 	if (! this->read(filename))
 		return false;
@@ -305,7 +302,7 @@ bool e2db::prepare(string filename)
 
 bool e2db::write(string path)
 {
-	debug("write()");
+	debug("write");
 
 	if (! this->::e2se_e2db::e2db::write(path))
 		return false;
@@ -315,7 +312,7 @@ bool e2db::write(string path)
 
 void e2db::importFile(vector<string> paths)
 {
-	debug("importFile()");
+	debug("importFile");
 
 	bool merge = this->get_input().size() != 0 ? true : false;
 	import_file(paths);
@@ -325,7 +322,7 @@ void e2db::importFile(vector<string> paths)
 
 void e2db::exportFile(int bit, vector<string> paths)
 {
-	debug("exportFile()");
+	debug("exportFile");
 
 	if (bit != -1)
 		export_file(FPORTS (bit), paths);
@@ -336,7 +333,7 @@ void e2db::exportFile(int bit, vector<string> paths)
 //TODO FIX duplicate bouquets
 void e2db::importBlob(unordered_map<string, e2db_file> files)
 {
-	debug("importBlob()");
+	debug("importBlob");
 
 	bool merge = this->get_input().size() != 0 ? true : false;
 

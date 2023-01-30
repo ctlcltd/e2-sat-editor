@@ -38,7 +38,7 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map, std::bi
 
 namespace e2se_gui
 {
-class tab : public e2se::log_factory
+class tab : protected e2se::log_factory
 {
 	public:
 

@@ -31,8 +31,7 @@ namespace e2se_gui
 
 printable::printable(QWidget* cwid, dataHandler* data)
 {
-	this->log = new logger(data->log->obj, "printable");
-	debug("printable()");
+	this->log = new logger("gui", "printable");
 
 	this->cwid = cwid;
 	this->data = data;
@@ -40,7 +39,7 @@ printable::printable(QWidget* cwid, dataHandler* data)
 
 void printable::documentAll()
 {
-	debug("documentAll()");
+	debug("documentAll");
 
 	auto* dbih = this->data->dbih;
 
@@ -65,7 +64,7 @@ void printable::documentAll()
 
 void printable::documentIndex()
 {
-	debug("documentIndex()");
+	debug("documentIndex");
 
 	auto* dbih = this->data->dbih;
 
@@ -96,7 +95,7 @@ void printable::documentServices()
 
 void printable::documentServices(int stype)
 {
-	debug("documentServices()");
+	debug("documentServices");
 
 	auto* dbih = this->data->dbih;
 
@@ -143,7 +142,7 @@ void printable::documentServices(int stype)
 
 void printable::documentBouquet(string bname)
 {
-	debug("documentBouquet()", "bname", bname);
+	debug("documentBouquet", "bname", bname);
 
 	html_page page;
 	pageHeader(page, bname, DOC_VIEW::view_bouquets);
@@ -156,7 +155,7 @@ void printable::documentBouquet(string bname)
 
 void printable::documentUserbouquet(string bname)
 {
-	debug("documentUserbouquet()", "bname", bname);
+	debug("documentUserbouquet", "bname", bname);
 
 	html_page page;
 	pageHeader(page, bname, DOC_VIEW::view_userbouquets);
@@ -169,7 +168,7 @@ void printable::documentUserbouquet(string bname)
 
 void printable::documentTunersets(int ytype)
 {
-	debug("documentTunersets()", "ytype", ytype);
+	debug("documentTunersets", "ytype", ytype);
 
 	string filename;
 	switch (ytype)
@@ -253,7 +252,7 @@ void printable::pageFooter(html_page& page, string filename, DOC_VIEW view)
 
 void printable::pageBodyIndexList(html_page& page, vector<string> paths)
 {
-	debug("pageBodyIndexList()");
+	debug("pageBodyIndexList");
 
 	auto* dbih = this->data->dbih;
 
@@ -304,10 +303,10 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 	auto* dbih = this->data->dbih;
 
 	if (dbih->index.count(bname))
-		debug("pageBodyChannelList()", "bname", bname);
+		debug("pageBodyChannelList", "bname", bname);
 	else
-		error("pageBodyChannelList()", "bname", bname);
-	debug("pageBodyChannelList()", "view", view);
+		error("pageBodyChannelList", "bname", bname);
+	debug("pageBodyChannelList", "view", view);
 
 	QString cssname = view == DOC_VIEW::view_bouquets ? "userbouquet" : "services";
 
@@ -461,9 +460,9 @@ void printable::pageBodyBouquetList(html_page& page, string bname)
 	auto* dbih = this->data->dbih;
 
 	if (dbih->bouquets.count(bname))
-		debug("pageBodyBouquetList()", "bname", bname);
+		debug("pageBodyBouquetList", "bname", bname);
 	else
-		error("pageBodyBouquetList()", "bname", bname);
+		error("pageBodyBouquetList", "bname", bname);
 
 	e2db::bouquet gboq = dbih->bouquets[bname];
 	QString btype;
@@ -505,7 +504,7 @@ void printable::pageBodyBouquetList(html_page& page, string bname)
 //TODO improve list
 void printable::pageBodyTunersetsList(html_page& page, int ytype)
 {
-	debug("pageBodyTunersetsList()", "ytype", ytype);
+	debug("pageBodyTunersetsList", "ytype", ytype);
 
 	auto* dbih = this->data->dbih;
 
@@ -673,7 +672,7 @@ void printable::pageBodyTunersetsList(html_page& page, int ytype)
 
 void printable::print()
 {
-	debug("print()");
+	debug("print");
 
 	QPrinter* printer = new QPrinter;
 	QTextDocument* doc = new QTextDocument;

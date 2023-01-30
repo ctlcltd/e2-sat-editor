@@ -24,7 +24,7 @@ namespace e2se_gui
 
 void dialAbstract::layout(QWidget* cwid)
 {
-	debug("layout()");
+	debug("layout");
 
 	this->dial = new QDialog(cwid);
 	dial->setWindowTitle("Edit");
@@ -73,7 +73,7 @@ void dialAbstract::layout(QWidget* cwid)
 
 void dialAbstract::toolbarLayout()
 {
-	debug("toolbarLayout()");
+	debug("toolbarLayout");
 
 	this->dtbar = toolBar();
 	toolBarStyleSheet();
@@ -86,7 +86,7 @@ void dialAbstract::toolbarLayout()
 
 void dialAbstract::collapsibleLayout()
 {
-	debug("collapsibleLayout()");
+	debug("collapsibleLayout");
 
 	this->dttoggler = new QToolButton;
 	dttoggler->setFixedHeight(20);
@@ -120,14 +120,14 @@ void dialAbstract::collapsibleLayout()
 
 void dialAbstract::themeChanged()
 {
-	debug("themeChanged()");
+	debug("themeChanged");
 
 	theme->changed();
 }
 
 void dialAbstract::expand()
 {
-	debug("expand()");
+	debug("expand");
 
 	widget->show();
 	dtbar->show();
@@ -138,7 +138,7 @@ void dialAbstract::expand()
 
 void dialAbstract::collapse()
 {
-	debug("collapse()");
+	debug("collapse");
 
 	dial->setProperty("collapsible_minimumHeight", int (dial->minimumHeight()));
 	dtbar->hide();
@@ -150,7 +150,7 @@ void dialAbstract::collapse()
 
 void dialAbstract::toggle()
 {
-	// debug("toggle()");
+	// debug("toggle");
 
 	if (dial->property("collapsible_collapsed").toBool())
 		expand();
@@ -160,7 +160,7 @@ void dialAbstract::toggle()
 
 void dialAbstract::cancel()
 {
-	debug("cancel()");
+	debug("cancel");
 
 	// delay too fast
 	QTimer::singleShot(150, [=]() {
@@ -170,7 +170,7 @@ void dialAbstract::cancel()
 
 void dialAbstract::save()
 {
-	debug("save()");
+	debug("save");
 
 	store();
 

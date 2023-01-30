@@ -22,51 +22,6 @@ using std::string, std::pair, std::hex, std::dec, std::to_string, std::cout, std
 namespace e2se_e2db
 {
 
-void e2db_abstract::debug(string msg)
-{
-	this->log->debug(msg);
-}
-
-void e2db_abstract::debug(string msg, string optk, string optv)
-{
-	this->log->debug(msg, optk, optv);
-}
-
-void e2db_abstract::debug(string msg, string optk, int optv)
-{
-	this->log->debug(msg, optk, std::to_string(optv));
-}
-
-void e2db_abstract::info(string msg)
-{
-	this->log->info(msg);
-}
-
-void e2db_abstract::info(string msg, string optk, string optv)
-{
-	this->log->info(msg, optk, optv);
-}
-
-void e2db_abstract::info(string msg, string optk, int optv)
-{
-	this->log->info(msg, optk, std::to_string(optv));
-}
-
-void e2db_abstract::error(string msg)
-{
-	this->log->error(msg);
-}
-
-void e2db_abstract::error(string msg, string optk, string optv)
-{
-	this->log->error(msg, optk, optv);
-}
-
-void e2db_abstract::error(string msg, string optk, int optv)
-{
-	this->log->error(msg, optk, std::to_string(optv));
-}
-
 string e2db_abstract::editor_string(int html)
 {
 	if (html == 2)
@@ -923,7 +878,7 @@ string e2db_abstract::value_bouquet_type(int btype)
 
 string e2db_abstract::get_reference_id(string chid)
 {
-	// debug("get_reference_id()", "chid", chid);
+	// debug("get_reference_id", "chid", chid);
 
 	if (db.services.count(chid))
 		return value_reference_id(db.services[chid]);
@@ -933,7 +888,7 @@ string e2db_abstract::get_reference_id(string chid)
 
 string e2db_abstract::get_reference_id(channel_reference chref)
 {
-	// debug("get_reference_id()", "chref.chid", chref.chid);
+	// debug("get_reference_id", "chref.chid", chref.chid);
 
 	if (! chref.marker && db.services.count(chref.chid))
 		return value_reference_id(chref, db.services[chref.chid]);
@@ -943,7 +898,7 @@ string e2db_abstract::get_reference_id(channel_reference chref)
 
 string e2db_abstract::get_tuner_name(transponder tx)
 {
-	// debug("get_tuner_name()", "txid", tx.txid);
+	// debug("get_tuner_name", "txid", tx.txid);
 
 	string txpname;
 	if (tx.ytype == YTYPE::satellite)
@@ -1074,49 +1029,49 @@ void e2db_abstract::add_tunersets_transponder(int idx, tunersets_transponder& tn
 
 void e2db_abstract::set_index(unordered_map<string, vector<pair<int, string>>> index)
 {
-	debug("set_index()");
+	debug("set_index");
 
 	this->index = index;
 }
 
 unordered_map<string, vector<pair<int, string>>> e2db_abstract::get_index()
 {
-	debug("get_index()");
+	debug("get_index");
 
 	return this->index;
 }
 
 void e2db_abstract::set_transponders(unordered_map<string, e2db_abstract::transponder> transponders)
 {
-	debug("set_transponders()");
+	debug("set_transponders");
 
 	this->db.transponders = transponders;
 }
 
 unordered_map<string, e2db_abstract::transponder> e2db_abstract::get_transponders()
 {
-	debug("get_transponders()");
+	debug("get_transponders");
 
 	return this->db.transponders;
 }
 
 void e2db_abstract::set_services(unordered_map<string, e2db_abstract::service> services)
 {
-	debug("set_services()");
+	debug("set_services");
 
 	this->db.services = services;
 }
 
 unordered_map<string, e2db_abstract::service> e2db_abstract::get_services()
 {
-	debug("get_services()");
+	debug("get_services");
 
 	return this->db.services;
 }
 
 void e2db_abstract::set_bouquets(pair<unordered_map<string, e2db_abstract::bouquet>, unordered_map<string, e2db_abstract::userbouquet>> bouquets)
 {
-	debug("set_bouquets()");
+	debug("set_bouquets");
 
 	this->bouquets = bouquets.first;
 	this->userbouquets = bouquets.second;
@@ -1124,14 +1079,14 @@ void e2db_abstract::set_bouquets(pair<unordered_map<string, e2db_abstract::bouqu
 
 pair<unordered_map<string, e2db_abstract::bouquet>, unordered_map<string, e2db_abstract::userbouquet>> e2db_abstract::get_bouquets()
 {
-	debug("get_bouquets()");
+	debug("get_bouquets");
 
 	return pair (this->bouquets, this->userbouquets); //C++17
 }
 
 void e2db_abstract::merge(e2db_abstract* dst)
 {
-	debug("merge()");
+	debug("merge");
 
 	this->db.transponders.merge(dst->db.transponders); //C++17
 	this->db.services.merge(dst->db.services); //C++17
@@ -1145,7 +1100,7 @@ void e2db_abstract::merge(e2db_abstract* dst)
 
 void e2db_abstract::debugger()
 {
-	debug("debugger()");
+	debug("debugger");
 
 	cout << "transponders" << endl << endl;
 	for (auto & x : db.transponders)

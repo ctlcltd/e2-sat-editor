@@ -24,7 +24,7 @@ using std::string, std::pair, std::vector, std::map;
 
 namespace e2se_gui
 {
-class printable : public e2se::log_factory
+class printable : protected e2se::log_factory
 {
 	public:
 		// relation with tab state tc (side tree focused)

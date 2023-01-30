@@ -27,17 +27,20 @@ class logger
 			bool debug;
 		};
 
-		logger(string ns);
-		logger(data* obj, string ns);
-		void debug(string msg);
-		void debug(string msg, string optk, string optv);
-		void debug(string msg, string optk, int optv);
-		void info(string msg);
-		void info(string msg, string optk, string optv);
-		void info(string msg, string optk, int optv);
-		void error(string msg);
-		void error(string msg, string optk, string optv);
-		void error(string msg, string optk, int optv);
+		static data* OBJECT;
+		inline static string PREFIX = "e2se";
+
+		logger(string ns, string cn);
+		logger(data* obj, string ns, string cn);
+		void debug(string fn);
+		void debug(string fn, string optk, string optv);
+		void debug(string fn, string optk, int optv);
+		void info(string fn);
+		void info(string fn, string optk, string optv);
+		void info(string fn, string optk, int optv);
+		void error(string fn);
+		void error(string fn, string optk, string optv);
+		void error(string fn, string optk, int optv);
 		string timestamp();
 		string str();
 		string str_lend();
@@ -45,51 +48,51 @@ class logger
 		size_t last_pos();
 		std::stringbuf* buf;
 		string ns;
+		string cn;
 		data* obj;
 };
 
 struct log_factory
 {
-	public:
-		logger* log;
-
 	protected:
-		void debug(string msg)
+		void debug(string fn)
 		{
-			this->log->debug(msg);
+			this->log->debug(fn);
 		}
-		void debug(string msg, string optk, string optv)
+		void debug(string fn, string optk, string optv)
 		{
-			this->log->debug(msg, optk, optv);
+			this->log->debug(fn, optk, optv);
 		}
-		void debug(string msg, string optk, int optv)
+		void debug(string fn, string optk, int optv)
 		{
-			this->log->debug(msg, optk, optv);
+			this->log->debug(fn, optk, optv);
 		}
-		void info(string msg)
+		void info(string fn)
 		{
-			this->log->info(msg);
+			this->log->info(fn);
 		}
-		void info(string msg, string optk, string optv)
+		void info(string fn, string optk, string optv)
 		{
-			this->log->info(msg, optk, optv);
+			this->log->info(fn, optk, optv);
 		}
-		void info(string msg, string optk, int optv)
+		void info(string fn, string optk, int optv)
 		{
-			this->log->info(msg, optk, optv);
+			this->log->info(fn, optk, optv);
 		}
-		void error(string msg)
+		void error(string fn)
 		{
-			this->log->error(msg);
+			this->log->error(fn);
 		}
-		void error(string msg, string optk, string optv)
+		void error(string fn, string optk, string optv)
 		{
-			this->log->error(msg, optk, optv);
+			this->log->error(fn, optk, optv);
 		}
-		void error(string msg, string optk, int optv)
+		void error(string fn, string optk, int optv)
 		{
-			this->log->error(msg, optk, optv);
+			this->log->error(fn, optk, optv);
 		}
+
+		logger* log;
 };
 }
 #endif /* logger_h */

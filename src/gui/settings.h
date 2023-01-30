@@ -33,7 +33,7 @@ using e2se_gui::WidgetWithBackdrop;
 
 namespace e2se_gui_dialog
 {
-class settings : public e2se::log_factory
+class settings : protected e2se::log_factory
 {
 	Q_DECLARE_TR_FUNCTIONS(settings)
 

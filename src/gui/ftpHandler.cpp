@@ -16,10 +16,9 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-ftpHandler::ftpHandler(e2se::logger::data* obj)
+ftpHandler::ftpHandler()
 {
-	this->log = new logger(obj, "ftpHandler");
-	debug("ftpHandler()");
+	this->log = new logger("gui", "ftpHandler");
 }
 
 ftpHandler::~ftpHandler()
@@ -33,7 +32,7 @@ ftpHandler::~ftpHandler()
 bool ftpHandler::openConnection()
 {
 	if (this->ftih == nullptr)
-		this->ftih = new ftpcom(this->log->obj);
+		this->ftih = new ftpcom;
 
 	return this->ftih->connect();
 }
@@ -55,14 +54,14 @@ bool ftpHandler::closeConnection()
 bool ftpHandler::handleConnection()
 {
 	if (this->ftih == nullptr)
-		this->ftih = new ftpcom(this->log->obj);
+		this->ftih = new ftpcom;
 
 	return this->ftih->connect();
 }
 
 void ftpHandler::settingsChanged()
 {
-	debug("settingsChanged()");
+	debug("settingsChanged");
 
 	if (this->ftih != nullptr)
 		this->ftih->didChange();

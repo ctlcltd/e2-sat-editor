@@ -29,8 +29,7 @@ namespace e2se_gui
 
 editTunersetsTable::editTunersetsTable(dataHandler* data, int yx)
 {
-	this->log = new logger(data->log->obj, "editTunersetsTable");
-	debug("editTunersetsTable()");
+	this->log = new logger("gui", "editTunersetsTable");
 
 	this->data = data;
 	this->state.yx = yx;
@@ -72,7 +71,7 @@ void editTunersetsTable::layout(QWidget* cwid)
 
 void editTunersetsTable::tableSatLayout()
 {
-	debug("tableSatLayout()");
+	debug("tableSatLayout");
 
 	QGroupBox* dtl0 = new QGroupBox;
 	QFormLayout* dtf0 = new QFormLayout;
@@ -116,7 +115,7 @@ void editTunersetsTable::tableSatLayout()
 
 void editTunersetsTable::tableTerrestrialLayout()
 {
-	debug("tableTerrestrialLayout()");
+	debug("tableTerrestrialLayout");
 
 	QGroupBox* dtl0 = new QGroupBox;
 	QFormLayout* dtf0 = new QFormLayout;
@@ -160,7 +159,7 @@ void editTunersetsTable::tableTerrestrialLayout()
 
 void editTunersetsTable::tableCableLayout()
 {
-	debug("tableCableLayout()");
+	debug("tableCableLayout");
 
 	QGroupBox* dtl0 = new QGroupBox;
 	QFormLayout* dtf0 = new QFormLayout;
@@ -209,7 +208,7 @@ void editTunersetsTable::tableCableLayout()
 
 void editTunersetsTable::tableAtscLayout()
 {
-	debug("tableAtscLayout()");
+	debug("tableAtscLayout");
 
 	QGroupBox* dtl0 = new QGroupBox;
 	QFormLayout* dtf0 = new QFormLayout;
@@ -240,7 +239,7 @@ void editTunersetsTable::tableAtscLayout()
 
 void editTunersetsTable::store()
 {
-	debug("store()");
+	debug("store");
 
 	auto* dbih = this->data->dbih;
 
@@ -249,14 +248,14 @@ void editTunersetsTable::store()
 	if (dbih->tuners.count(tvid))
 		tvs = dbih->tuners[tvid];
 	else
-		return error("store()", "tvid", tvid);
+		return error("store", "tvid", tvid);
 
 	e2db::tunersets_table tns;
 
 	if (this->state.edit)
 	{
 		if (! tvs.tables.count(tnid))
-			return error("store()", "tnid", tnid);
+			return error("store", "tnid", tnid);
 
 		tns = tvs.tables[tnid];
 	}
@@ -323,7 +322,7 @@ void editTunersetsTable::store()
 
 void editTunersetsTable::retrieve()
 {
-	debug("retrieve()");
+	debug("retrieve");
 
 	auto* dbih = this->data->dbih;
 
@@ -332,10 +331,10 @@ void editTunersetsTable::retrieve()
 	if (dbih->tuners.count(tvid))
 		tvs = dbih->tuners[tvid];
 	else
-		return error("retrieve()", "tvid", tvid);
+		return error("retrieve", "tvid", tvid);
 
 	if (! tvs.tables.count(tnid))
-		return error("retrieve()", "tnid", tnid);
+		return error("retrieve", "tnid", tnid);
 
 	e2db::tunersets_table tns = tvs.tables[tnid];
 
@@ -399,7 +398,7 @@ void editTunersetsTable::retrieve()
 
 void editTunersetsTable::setEditId(string tnid, int tvid)
 {
-	debug("setEditId()");
+	debug("setEditId");
 
 	this->state.edit = true;
 	this->tnid = tnid;
@@ -408,21 +407,21 @@ void editTunersetsTable::setEditId(string tnid, int tvid)
 
 string editTunersetsTable::getEditId()
 {
-	debug("getEditId()");
+	debug("getEditId");
 
 	return this->tnid;
 }
 
 void editTunersetsTable::setAddId(int tvid)
 {
-	debug("setAddId()");
+	debug("setAddId");
 
 	this->tvid = tvid;
 }
 
 string editTunersetsTable::getAddId()
 {
-	debug("getAddId()");
+	debug("getAddId");
 
 	return this->tnid;
 }

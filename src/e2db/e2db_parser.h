@@ -27,8 +27,7 @@ class e2db_parser : virtual public e2db_abstract
 		inline static bool PARSER_LAMEDB5_PRIOR = false;
 		inline static bool PARSER_TUNERSETS = true;
 
-		explicit e2db_parser();
-		e2db_parser(e2se::logger::data* obj);
+		e2db_parser();
 		virtual ~e2db_parser() = default;
 		void parse_e2db();
 		void parse_e2db(unordered_map<string, e2db_file> files);

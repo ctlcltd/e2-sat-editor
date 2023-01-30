@@ -26,7 +26,7 @@ using std::string, std::vector, std::unordered_set, std::unordered_map, std::ist
 #define ftpcom_h
 namespace e2se_ftpcom
 {
-class ftpcom
+class ftpcom : protected e2se::log_factory
 {
 	public:
 
@@ -56,8 +56,7 @@ class ftpcom
 			size_t size;
 		};
 
-		explicit ftpcom();
-		ftpcom(e2se::logger::data* obj);
+		ftpcom();
 		virtual ~ftpcom();
 		void setParameters(ftp_params params);
 		bool handle();
@@ -105,17 +104,8 @@ class ftpcom
 		static size_t get_content_length_func(void* csi, size_t size, size_t nmemb, void* pso);
 		virtual string trs(string str);
 		virtual string trw(string str, string param);
-		virtual void debug(string msg);
-		virtual void debug(string msg, string optk, string optv);
-		virtual void debug(string msg, string optk, int optv);
-		virtual void info(string msg);
-		virtual void info(string msg, string optk, string optv);
-		virtual void info(string msg, string optk, int optv);
 		virtual void error(string tmsg, string rmsg);
-		virtual void error(string msg, string optk, string optv);
-		virtual void error(string msg, string optk, int optv);
 
-		e2se::logger* log;
 		vector<string> ftdb;
 
 	private:

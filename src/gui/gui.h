@@ -37,7 +37,7 @@ namespace e2se_gui
 {
 class tab;
 
-class gui : public e2se::log_factory
+class gui : protected e2se::log_factory
 {
 	Q_DECLARE_TR_FUNCTIONS(gui)
 
@@ -225,7 +225,7 @@ class gui : public e2se::log_factory
 			bool update;
 		};
 
-		gui(int argc, char* argv[], e2se::logger::data* obj);
+		gui(int argc, char* argv[]);
 		virtual ~gui() = default;
 		int exec();
 		void settingsChanged();

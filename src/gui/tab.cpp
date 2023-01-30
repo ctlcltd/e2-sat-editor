@@ -55,8 +55,7 @@ namespace e2se_gui
 
 tab::tab(gui* gid, QWidget* cwid)
 {
-	this->log = new logger(gid->log->obj, "tab");
-	debug("tab()");
+	this->log = new logger("gui", "tab");
 
 	int uniqtt = reinterpret_cast<std::uintptr_t>(this);
 	std::srand(uniqtt);
@@ -95,14 +94,14 @@ vector<tab*> tab::children()
 
 void tab::addChild(tab* child)
 {
-	debug("addChild()");
+	debug("addChild");
 
 	this->childs.emplace_back(child);
 }
 
 void tab::removeChild(tab* child)
 {
-	debug("removeChild()");
+	debug("removeChild");
 
 	vector<tab*>::iterator pos;
 	for (auto it = childs.begin(); it != childs.end(); it++)
@@ -141,7 +140,7 @@ gui::TAB_VIEW tab::getTabView()
 
 void tab::tabSwitched()
 {
-	debug("tabSwitched()");
+	debug("tabSwitched");
 
 	retrieveFlags();
 	view->updateStatusBar();
@@ -150,7 +149,7 @@ void tab::tabSwitched()
 
 void tab::tabChangeName(string filename)
 {
-	debug("tabChangeName()");
+	debug("tabChangeName");
 
 	if (! filename.empty())
 		filename = std::filesystem::path(filename).filename().u8string(); //C++17
@@ -225,10 +224,10 @@ void tab::resetStatusBar()
 
 void tab::viewMain()
 {
-	debug("viewMain()");
+	debug("viewMain");
 
-	this->data = new dataHandler(this->log->obj);
-	this->ftph = new ftpHandler(this->log->obj);
+	this->data = new dataHandler;
+	this->ftph = new ftpHandler;
 	this->tools = new e2se_gui::tools(this, this->gid, this->cwid, this->data);
 	this->view = new mainView(this, this->cwid, this->data);
 
@@ -243,7 +242,7 @@ void tab::viewMain()
 
 void tab::viewTransponders(tab* parent)
 {
-	debug("viewTransponders()");
+	debug("viewTransponders");
 
 	parent->addChild(this);
 
@@ -266,7 +265,7 @@ void tab::viewTransponders(tab* parent)
 
 void tab::viewTunersets(tab* parent, int ytype)
 {
-	debug("viewTunersets()");
+	debug("viewTunersets");
 
 	parent->addChild(this);
 
@@ -289,7 +288,7 @@ void tab::viewTunersets(tab* parent, int ytype)
 
 void tab::viewChannelBook(tab* parent)
 {
-	debug("viewChannelBook()");
+	debug("viewChannelBook");
 
 	parent->addChild(this);
 
@@ -312,7 +311,7 @@ void tab::viewChannelBook(tab* parent)
 
 void tab::load()
 {
-	debug("load()");
+	debug("load");
 
 	view->load();
 
@@ -322,7 +321,7 @@ void tab::load()
 
 void tab::reset()
 {
-	debug("reset()");
+	debug("reset");
 
 	view->reset();
 
@@ -332,7 +331,7 @@ void tab::reset()
 
 void tab::layout()
 {
-	debug("layout()");
+	debug("layout");
 
 	widget->setStyleSheet("QGroupBox { spacing: 0; padding: 20px 0 0 0; border: 0 } QGroupBox::title { margin: 0 12px }");
 
@@ -396,7 +395,7 @@ void tab::layout()
 
 void tab::settingsChanged()
 {
-	debug("settingsChanged()");
+	debug("settingsChanged");
 
 	this->ftph->settingsChanged();
 	this->data->settingsChanged();
@@ -411,7 +410,7 @@ void tab::settingsChanged()
 
 void tab::themeChanged()
 {
-	debug("themeChanged()");
+	debug("themeChanged");
 
 	theme->changed();
 
@@ -423,7 +422,7 @@ void tab::themeChanged()
 
 void tab::newFile()
 {
-	debug("newFile()");
+	debug("newFile");
 
 	reset();
 
@@ -443,7 +442,7 @@ void tab::newFile()
 
 void tab::openFile()
 {
-	debug("openFile()");
+	debug("openFile");
 
 	string path = gid->openFileDialog();
 
@@ -457,7 +456,7 @@ void tab::openFile()
 
 bool tab::readFile(string filename)
 {
-	debug("readFile()", "filename", filename);
+	debug("readFile", "filename", filename);
 
 	if (filename.empty())
 		return false;
@@ -500,7 +499,7 @@ bool tab::readFile(string filename)
 
 void tab::saveFile(bool saveas)
 {
-	debug("saveFile()", "saveas", saveas);
+	debug("saveFile", "saveas", saveas);
 
 	string path;
 	string filename = path = this->data->getFilename();
@@ -531,7 +530,7 @@ void tab::saveFile(bool saveas)
 		return;
 	}
 
-	debug("saveFile()", "path", path);
+	debug("saveFile", "path", path);
 
 	theme::setWaitCursor();
 	bool written = this->data->writeFile(path);
@@ -551,7 +550,7 @@ void tab::saveFile(bool saveas)
 
 void tab::importFile()
 {
-	debug("importFile()");
+	debug("importFile");
 
 	auto* dbih = this->data->dbih;
 
@@ -593,7 +592,7 @@ void tab::importFile()
 
 void tab::exportFile()
 {
-	debug("exportFile()");
+	debug("exportFile");
 
 	auto* dbih = this->data->dbih;
 
@@ -731,7 +730,7 @@ void tab::exportFile()
 		}
 	}
 
-	debug("exportFile()", "flags", flags);
+	debug("exportFile", "flags", flags);
 
 	if (gde == gui::GUI_DPORTS::Services || gde == gui::GUI_DPORTS::Tunersets)
 	{
@@ -768,7 +767,7 @@ void tab::exportFile()
 
 void tab::exportFile(QTreeWidgetItem* item)
 {
-	debug("exportFile()");
+	debug("exportFile");
 
 	auto* dbih = this->data->dbih;
 
@@ -892,7 +891,7 @@ void tab::exportFile(QTreeWidgetItem* item)
 
 void tab::printFile(bool all)
 {
-	debug("printFile()");
+	debug("printFile");
 
 	gui::TAB_VIEW current = getTabView();
 	printable* printer = new printable(this->cwid, this->data);
@@ -1151,7 +1150,7 @@ void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 
 void tab::actionCall(int action)
 {
-	debug("actionCall()", "action", action);
+	debug("actionCall", "action", action);
 
 	switch (action)
 	{
@@ -1269,7 +1268,7 @@ void tab::actionCall(int action)
 
 void tab::ftpComboItems()
 {
-	// debug("ftpComboItems()");
+	// debug("ftpComboItems");
 
 	QSettings settings;
 
@@ -1292,7 +1291,7 @@ void tab::ftpComboItems()
 
 void tab::ftpComboChanged(int index)
 {
-	debug("profileComboChanged()", "selected", index);
+	debug("profileComboChanged", "selected", index);
 
 	QSettings().setValue("profile/selected", index);
 
@@ -1301,7 +1300,7 @@ void tab::ftpComboChanged(int index)
 
 void tab::ftpConnect()
 {
-	debug("ftpConnect()");
+	debug("ftpConnect");
 
 	if (this->ftph->handleConnection())
 	{
@@ -1318,7 +1317,7 @@ void tab::ftpConnect()
 
 void tab::ftpDisconnect()
 {
-	debug("ftpDisconnect()");
+	debug("ftpDisconnect");
 
 	if (this->ftph->closeConnection())
 	{
@@ -1336,7 +1335,7 @@ void tab::ftpDisconnect()
 //TODO improve for status bar
 void tab::ftpUpload()
 {
-	debug("ftpUpload()");
+	debug("ftpUpload");
 
 	if (! this->ftph->handleConnection())
 		return errorMessage("FTP Error", "Cannot connect to FTP Server!");
@@ -1384,7 +1383,7 @@ void tab::ftpUpload()
 		file.size = x.second.size;
 		ftp_files.emplace(path, file);
 
-		debug("ftpUpload()", "file", base + '/' + file.filename + " | " + to_string(file.size));
+		debug("ftpUpload", "file", base + '/' + file.filename + " | " + to_string(file.size));
 	}
 	settings.endArray();
 	files.clear();
@@ -1408,7 +1407,7 @@ void tab::ftpUpload()
 //TODO improve for status bar
 void tab::ftpDownload()
 {
-	debug("ftpDownload()");
+	debug("ftpDownload");
 
 	if (! this->ftph->handleConnection())
 		return errorMessage("FTP Error", "Cannot connect to FTP Server!");
@@ -1431,7 +1430,7 @@ void tab::ftpDownload()
 		file.mime = x.second.mime;
 		file.size = x.second.size;
 
-		debug("ftpDownload()", "file", x.first + " | " + to_string(x.second.size));
+		debug("ftpDownload", "file", x.first + " | " + to_string(x.second.size));
 
 		files.emplace(file.filename, file);
 	}
@@ -1448,7 +1447,7 @@ void tab::ftpDownload()
 
 void tab::updateIndex()
 {
-	debug("updateIndex()");
+	debug("updateIndex");
 
 	if (this->child)
 	{

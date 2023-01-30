@@ -21,8 +21,7 @@ namespace e2se_gui
 
 dialChannelBook::dialChannelBook(dataHandler* data, int stype)
 {
-	this->log = new logger(data->log->obj, "dialChannelBook");
-	debug("dialChannelBook()");
+	this->log = new logger("gui", "dialChannelBook");
 
 	this->data = data;
 	this->stype = stype;
@@ -35,7 +34,7 @@ dialChannelBook::dialChannelBook(dataHandler* data, int stype)
 
 void dialChannelBook::display(QWidget* cwid)
 {
-	debug("display()");
+	debug("display");
 
 	layout(cwid);
 
@@ -63,7 +62,7 @@ void dialChannelBook::layout(QWidget* cwid)
 
 void dialChannelBook::toolbarLayout()
 {
-	debug("toolbarLayout()");
+	debug("toolbarLayout");
 
 	this->dtbar = toolBar();
 	toolBarStyleSheet();
@@ -83,14 +82,14 @@ void dialChannelBook::toolbarLayout()
 
 void dialChannelBook::sender()
 {
-	debug("sender()");
+	debug("sender");
 
 	callEventCallback(cbv->getSelected());
 }
 
 void dialChannelBook::destroy()
 {
-	debug("destroy()");
+	debug("destroy");
 
 	delete this->cbv;
 	delete this->dial;

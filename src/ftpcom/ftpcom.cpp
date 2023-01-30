@@ -26,13 +26,7 @@ namespace e2se_ftpcom
 
 ftpcom::ftpcom()
 {
-	curl_global_init(CURL_GLOBAL_DEFAULT);
-}
-
-ftpcom::ftpcom(e2se::logger::data* obj)
-{
-	this->log = new e2se::logger(obj, "ftpcom");
-	debug("ftpcom()");
+	this->log = new e2se::logger("ftpcom", "ftpcom");
 
 	curl_global_init(CURL_GLOBAL_DEFAULT);
 }
@@ -44,18 +38,18 @@ ftpcom::~ftpcom()
 
 void ftpcom::setParameters(ftp_params params)
 {
-	debug("setParameters()");
+	debug("setParameters");
 
 	if (params.user.empty())
-		error("ftpcom()", trw("Missing \"%s\" parameter.", "username"));
+		error("ftpcom", trw("Missing \"%s\" parameter.", "username"));
 	if (params.pass.empty())
-		error("ftpcom()", trw("Missing \"%s\" parameter.", "password"));
+		error("ftpcom", trw("Missing \"%s\" parameter.", "password"));
 	if (params.host.empty())
-		error("ftpcom()", trw("Missing \"%s\" parameter.", "IP address"));
+		error("ftpcom", trw("Missing \"%s\" parameter.", "IP address"));
 	if (! params.ftport)
-		error("ftpcom()", trw("Missing \"%s\" parameter.", "FTP port"));
+		error("ftpcom", trw("Missing \"%s\" parameter.", "FTP port"));
 	if (! params.htport)
-		error("ftpcom()", trw("Missing \"%s\" parameter.", "HTTP port"));
+		error("ftpcom", trw("Missing \"%s\" parameter.", "HTTP port"));
 	if (params.actv)
 		actv = true;
 
@@ -66,11 +60,11 @@ void ftpcom::setParameters(ftp_params params)
 	pass = params.pass;
 
 	if (params.tpath.empty())
-		error("ftpcom()", trw("Missing \"%s\" path parameter.", "Transponders"));
+		error("ftpcom", trw("Missing \"%s\" path parameter.", "Transponders"));
 	if (params.bpath.empty())
-		error("ftpcom()", trw("Missing \"%s\" path parameter.", "Bouquets"));
+		error("ftpcom", trw("Missing \"%s\" path parameter.", "Bouquets"));
 	if (params.spath.empty())
-		error("ftpcom()", trw("Missing \"%s\" path parameter.", "Services"));
+		error("ftpcom", trw("Missing \"%s\" path parameter.", "Services"));
 
 	//TODO remove trailing slash
 	baset = params.tpath;
@@ -106,7 +100,7 @@ bool ftpcom::handle()
 	//TODO FIX hangs the main thread ? lookup before connect
 	curl_easy_setopt(cph, CURLOPT_CONNECTTIMEOUT, 10);
 	// curl_easy_setopt(cph, CURLOPT_FTP_RESPONSE_TIMEOUT, 10); // 0 = default no timeout
-	curl_easy_setopt(cph, CURLOPT_VERBOSE, true);
+	// curl_easy_setopt(cph, CURLOPT_VERBOSE, true);
 
 	return true;
 }
@@ -129,7 +123,7 @@ void ftpcom::cleanup(CURL* ch)
 
 bool ftpcom::connect()
 {
-	debug("connect()");
+	debug("connect");
 
 	if (! handle())
 	{
@@ -142,7 +136,7 @@ bool ftpcom::connect()
 
 bool ftpcom::disconnect()
 {
-	debug("disconnect()");
+	debug("disconnect");
 
 	if (! cph)
 		return false;
@@ -153,13 +147,13 @@ bool ftpcom::disconnect()
 
 vector<string> ftpcom::list_dir(string base)
 {
-	debug("list_dir()");
+	debug("list_dir");
 
 	vector<string> list;
 
 	if (! handle())
 	{
-		error("list_dir()", trs("ftpcom error."));
+		error("list_dir", trs("ftpcom error."));
 		return list;
 	}
 
@@ -174,7 +168,7 @@ vector<string> ftpcom::list_dir(string base)
 
 	if (res != CURLE_OK)
 	{
-		error("list_dir()", trs(curl_easy_strerror(res))); // var error string
+		error("list_dir", trs(curl_easy_strerror(res))); // var error string
 		reset(cph, rph);
 		data.clear();
 		return list;
@@ -198,17 +192,17 @@ vector<string> ftpcom::list_dir(string base)
 //TODO improve resuming
 void ftpcom::download_data(string base, string filename, ftpcom_file& file)
 {
-	debug("download_data()");
+	debug("download_data");
 
 	if (! handle())
-		return error("download_data()", trs("ftpcom error."));
+		return error("download_data", trs("ftpcom error."));
 
 	sio data;
 	data.size = 0;
 	CURLcode res = CURLE_GOT_NOTHING;
 	string remotefile = '/' + base + '/' + filename;
 
-	debug("download_data()", "file", remotefile);
+	debug("download_data", "file", remotefile);
 
 	curl_url_set(rph, CURLUPART_PATH, remotefile.c_str(), 0);
 	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_download_func);
@@ -217,7 +211,7 @@ void ftpcom::download_data(string base, string filename, ftpcom_file& file)
 
 	if (res != CURLE_OK)
 	{
-		error("download_data()", trs(curl_easy_strerror(res))); // var error string
+		error("download_data", trs(curl_easy_strerror(res))); // var error string
 		reset(cph, rph);
 		return;
 	}
@@ -234,7 +228,7 @@ void ftpcom::download_data(string base, string filename, ftpcom_file& file)
 void ftpcom::upload_data(string base, string filename, ftpcom_file file)
 {
 	if (! handle())
-		return error("upload_data()", trs("ftpcom error."));
+		return error("upload_data", trs("ftpcom error."));
 
 	soi data;
 	data.data = file.data.data();
@@ -243,7 +237,7 @@ void ftpcom::upload_data(string base, string filename, ftpcom_file file)
 	CURLcode res = CURLE_GOT_NOTHING;
 	string remotefile = '/' + base + '/' + filename;
 
-	debug("upload_data()", "file", remotefile);
+	debug("upload_data", "file", remotefile);
 
 	curl_url_set(rph, CURLUPART_PATH, remotefile.c_str(), 0);
 	curl_easy_setopt(cph, CURLOPT_UPLOAD, true);
@@ -255,7 +249,7 @@ void ftpcom::upload_data(string base, string filename, ftpcom_file file)
 	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_discard_func);
 
 	for (int a = 0; (res != CURLE_OK) && (a < MAX_RESUME_ATTEMPTS); a++) {
-		debug("upload_data()", "attempt", (a + 1));
+		debug("upload_data", "attempt", (a + 1));
 		if (a)
 		{
 			curl_easy_setopt(cph, CURLOPT_NOBODY, true);
@@ -278,7 +272,7 @@ void ftpcom::upload_data(string base, string filename, ftpcom_file file)
 
 	if (res != CURLE_OK)
 	{
-		error("upload_data()", trs(curl_easy_strerror(res))); // var error string
+		error("upload_data", trs(curl_easy_strerror(res))); // var error string
 		reset(cph, rph);
 		return;
 	}
@@ -288,7 +282,7 @@ void ftpcom::upload_data(string base, string filename, ftpcom_file file)
 
 void ftpcom::fetch_paths()
 {
-	debug("fetch_paths()");
+	debug("fetch_paths");
 
 	unordered_set<string> base = {baset, baseb, bases};
 	vector<string> list;
@@ -385,51 +379,6 @@ size_t ftpcom::get_content_length_func(void* csi, size_t size, size_t nmemb, voi
 	return relsize;
 }
 
-void ftpcom::debug(string msg)
-{
-	this->log->debug(msg);
-}
-
-void ftpcom::debug(string msg, string optk, string optv)
-{
-	this->log->debug(msg, optk, optv);
-}
-
-void ftpcom::debug(string msg, string optk, int optv)
-{
-	this->log->debug(msg, optk, std::to_string(optv));
-}
-
-void ftpcom::info(string msg)
-{
-	this->log->info(msg);
-}
-
-void ftpcom::info(string msg, string optk, string optv)
-{
-	this->log->info(msg, optk, optv);
-}
-
-void ftpcom::info(string msg, string optk, int optv)
-{
-	this->log->info(msg, optk, std::to_string(optv));
-}
-
-void ftpcom::error(string tmsg, string rmsg)
-{
-	this->log->error(tmsg, "Error", rmsg);
-}
-
-void ftpcom::error(string msg, string optk, string optv)
-{
-	this->log->error(msg, optk, optv);
-}
-
-void ftpcom::error(string msg, string optk, int optv)
-{
-	this->log->error(msg, optk, std::to_string(optv));
-}
-
 string ftpcom::trs(string str)
 {
 	return str;
@@ -443,9 +392,14 @@ string ftpcom::trw(string str, string param)
 	return string (tstr);
 }
 
+void ftpcom::error(string tmsg, string rmsg)
+{
+	this->log->error(tmsg, "Error", rmsg);
+}
+
 unordered_map<string, ftpcom::ftpcom_file> ftpcom::get_files()
 {
-	debug("get_files()");
+	debug("get_files");
 
 	fetch_paths();
 
@@ -470,7 +424,7 @@ unordered_map<string, ftpcom::ftpcom_file> ftpcom::get_files()
 
 void ftpcom::put_files(unordered_map<string, ftpcom_file> files)
 {
-	debug("put_files()");
+	debug("put_files");
 
 	fetch_paths();
 
@@ -488,7 +442,7 @@ void ftpcom::put_files(unordered_map<string, ftpcom_file> files)
 
 bool ftpcom::cmd_ifreload()
 {
-	debug("cmd_ifreload()");
+	debug("cmd_ifreload");
 
 	if (! csh)
 		this->csh = curl_easy_init();
@@ -513,7 +467,7 @@ bool ftpcom::cmd_ifreload()
 
 	// char* url;
 	// curl_url_get(rsh, CURLUPART_URL, &url, 0);
-	// debug("cmd_ifreload()", "URL", url);
+	// debug("cmd_ifreload", "URL", url);
 	// url = NULL;
 
 #ifdef CURLOPT_PROTOCOLS_STR
@@ -533,7 +487,7 @@ bool ftpcom::cmd_ifreload()
 
 	if (res != CURLE_OK)
 	{
-		error("cmd_ifreload()", trs(curl_easy_strerror(res))); // var error string
+		error("cmd_ifreload", trs(curl_easy_strerror(res))); // var error string
 		reset(csh, rsh);
 		data.clear();
 		return false;
@@ -544,7 +498,7 @@ bool ftpcom::cmd_ifreload()
 	if (data.str().find("True") != string::npos)
 		cmd = true;
 
-	// debug("cmd_ifreload()", "data", data.str());
+	// debug("cmd_ifreload", "data", data.str());
 
 	reset(csh, rsh);
 	data.clear();
@@ -554,7 +508,7 @@ bool ftpcom::cmd_ifreload()
 
 bool ftpcom::cmd_tnreload()
 {
-	debug("cmd_tnreload()");
+	debug("cmd_tnreload");
 
 	if (! csh)
 		this->csh = curl_easy_init();
@@ -587,18 +541,18 @@ bool ftpcom::cmd_tnreload()
 	curl_easy_setopt(csh, CURLOPT_FAILONERROR, true);
 	// curl_easy_setopt(csh, CURLOPT_VERBOSE, true);
 
-	debug("cmd_tnreload()", "stdout", "start");
+	debug("cmd_tnreload", "stdout", "start");
 
 	CURLcode res = perform(csh);
 
 	if (res != CURLE_OK)
 	{
-		error("cmd_tnreload()", trs(curl_easy_strerror(res))); // var error string
+		error("cmd_tnreload", trs(curl_easy_strerror(res))); // var error string
 		reset(csh, rsh);
 		return false;
 	}
 
-	debug("cmd_tnreload()", "stdout", "end");
+	debug("cmd_tnreload", "stdout", "end");
 
 	reset(csh, rsh);
 
