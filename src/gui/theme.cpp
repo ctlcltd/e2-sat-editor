@@ -72,7 +72,18 @@ bool theme::isDarkMode()
 
 QIcon theme::icon(QString icon)
 {
-	return QIcon(":/icons/" + QString (theme::absLuma() ? "dark" : "light") + "/" + icon + ".png");
+	QPixmap ico = QPixmap(":/icons/" + QString (theme::absLuma() ? "dark" : "light") + "/" + icon + ".png");
+	QBitmap mask = ico.createMaskFromColor(theme::absLuma() ? Qt::white : Qt::black, Qt::MaskOutColor);
+	QColor color;
+#ifndef Q_OS_MAC
+	color = theme::absLuma() ? QPalette().color(QPalette::Dark) : QPalette().color(QPalette::Mid).darker();
+#else
+	color = theme::absLuma() ? Qt::white : Qt::black;
+	color.setAlphaF(theme::absLuma() ? 0.73 : 0.67);
+#endif
+	ico.fill(color);
+	ico.setMask(mask);
+	return ico;
 }
 
 QIcon theme::spacer(int width)
