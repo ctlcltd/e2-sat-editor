@@ -59,16 +59,8 @@ gui::gui(int argc, char* argv[])
 	else
 		initSettings();
 
-	QScreen* screen = mroot->primaryScreen();
-	QSize wsize = screen->availableSize();
-
 	this->mwid = new QWidget;
 	mwid->setWindowTitle("e2 SAT Editor");
-	mwid->setMinimumSize(960, 670);
-	mwid->resize(wsize);
-
-	// screenshot
-	// mwid->resize(QSize(1024, 720));
 
 	//TODO intl. rtl
 	// mroot->setLayoutDirection(Qt::RightToLeft);
@@ -84,7 +76,19 @@ gui::gui(int argc, char* argv[])
 
 	layout();
 
-	mwid->show();
+	if (QSettings().value("geometry").isNull())
+	{
+		mwid->resize(960, 670);
+		mwid->showMaximized();
+	}
+	else
+	{
+		mwid->restoreGeometry(QSettings().value("geometry").toByteArray());
+		mwid->show();
+	}
+
+	// screenshot
+	// mwid->resize(QSize(1024, 720));
 
 	//TODO FIX SEGFAULT
 	mroot->exec();
@@ -383,15 +387,16 @@ void gui::initSettings()
 	settings.setValue("settings/reset", false);
 
 	settings.setValue("application/version", mroot->applicationVersion());
+	settings.setValue("application/debug", false);
+#ifndef Q_OS_MAC
+	settings.setValue("application/fixUnicodeChars", false);
+#else
+	settings.setValue("application/fixUnicodeChars", true);
+#endif
 
 	settings.beginGroup("preference");
 	settings.setValue("askConfirmation", false);
 	settings.setValue("nonDestructiveEdit", true);
-#ifndef Q_OS_MAC
-	settings.setValue("fixUnicodeChars", false);
-#else
-	settings.setValue("fixUnicodeChars", true);
-#endif
 	settings.endGroup();
 
 	settings.beginWriteArray("profile");
@@ -424,9 +429,14 @@ void gui::updateSettings()
 		settings.setValue("settings/reset", false);
 
 		settings.setValue("application/version", mroot->applicationVersion());
-
-		settings.remove("application/icons");
 	}
+#ifdef Q_OS_MAC
+	else if (QSettings().contains("preference/fixUnicodeChars"))
+	{
+		QSettings().setValue("application/fixUnicodeChars", true);
+		QSettings().remove("preference/fixUnicodeChars");
+	}
+#endif
 }
 
 void gui::resetSettings()
@@ -723,6 +733,8 @@ void gui::windowChanged()
 		this->gex = this->gxe;
 		update(GUI_CXE::idle);
 	}
+
+	QSettings().setValue("geometry", mwid->saveGeometry());
 }
 
 void gui::tabChanged(int index)

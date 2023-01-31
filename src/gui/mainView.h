@@ -119,8 +119,8 @@ class mainView : public viewAbstract
 		void layout();
 		void searchLayout();
 		void referenceBoxLayout();
-		void populate(QTreeWidget* tree);
-		void treeSwitched(QTreeWidget* tree, QTreeWidgetItem* item);
+		void populate(QTreeWidget* tw);
+		void treeSwitched(QTreeWidget* tw, QTreeWidgetItem* item);
 		void servicesItemChanged(QTreeWidgetItem* current);
 		void treeItemChanged(QTreeWidgetItem* current);
 		void treeItemDoubleClicked();
@@ -144,11 +144,16 @@ class mainView : public viewAbstract
 		void putListItems(vector<QString> items);
 		void showTreeEditContextMenu(QPoint &pos);
 		void showListEditContextMenu(QPoint &pos);
+		void treeAfterDrop(QTreeWidget* tw, QTreeWidgetItem* current);
+		void listAfterDrop(QTreeWidget* tw);
+		void treeDropFromTree(QTreeWidgetItem* current);
+		void treeDropFromList(QTreeWidgetItem* current);
 		void updateFlags();
 		void updateStatusBar(bool current = false);
 		void updateReferenceBox();
 		void updateTreeIndex();
 		void updateListIndex();
+		void updateListReferences(QTreeWidgetItem* current, QList<QTreeWidgetItem*> items);
 		void setPendingUpdateListIndex();
 		void unsetPendingUpdateListIndex();
 

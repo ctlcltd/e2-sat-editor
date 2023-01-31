@@ -12,6 +12,7 @@
 #include <Qt>
 #include <QTimer>
 #include <QRegularExpression>
+#include <QScrollArea>
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -110,10 +111,11 @@ void settings::layout(QWidget* cwid)
 	dial->setLayout(dfrm);
 }
 
-//TODO improve scrollable area
 void settings::preferencesLayout()
 {
 	QWidget* dtpage = new QWidget;
+	QScrollArea* dtarea = new QScrollArea;
+
 	QHBoxLayout* dtcnt = new QHBoxLayout(dtpage);
 	dtpage->setStyleSheet("QGroupBox { font-weight: bold }");
 
@@ -134,120 +136,161 @@ void settings::preferencesLayout()
 
 	QCheckBox* dtf0nd = new QCheckBox(tr("Non-destructive edit (try to preserve origin lists)"));
 	dtf0nd->setProperty("pref", "nonDestructiveEdit");
+	dtf0nd->setChecked(true);
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf0nd);
 	dtf0->addRow(dtf0nd);
 
-	QCheckBox* dtf0fu = new QCheckBox(tr("Visually fix for unwanted unicode characters (less performant)"));
-	dtf0fu->setProperty("pref", "fixUnicodeChars");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf0fu);
-	dtf0->addRow(dtf0fu);
-
-	QGroupBox* dtl1 = new QGroupBox(tr("Theme"));
+	QGroupBox* dtl1 = new QGroupBox(tr("Drag and Drop"));
 	QFormLayout* dtf1 = new QFormLayout;
 	dtf1->setSpacing(20);
 	dtf1->setFormAlignment(Qt::AlignLeft);
 	dtf1->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
-	QComboBox* dtf1td = new QComboBox;
-	dtf1td->setProperty("pref", "theme");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf1td);
-	dtf1td->addItem(tr("Default (system theme)"), "");
-	dtf1td->addItem(tr("Dark"), "dark");
-	dtf1td->addItem(tr("Light"), "light");
-	platform::osComboBox(dtf1td);
-	dtf1->addRow(dtf1td);
+	QCheckBox* dtf1sc = new QCheckBox(tr("Switch to current bouquet item after the drop"));
+	dtf1sc->setProperty("pref", "treeCurrentAfterDrop");
+	dtf1sc->setChecked(true);
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf1sc);
+	dtf1->addRow(dtf1sc);
 
-	QCheckBox* dtf1oe = new QCheckBox(tr("Enable experimental features"));
-	dtf1oe->setProperty("pref", "osExperiment");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf1oe);
-	dtf1oe->setChecked(true);
-	dtf1->addRow(dtf1oe);
+	QFormLayout* dtf11 = new QFormLayout;
+	dtf11->setSpacing(20);
+	dtf11->setFormAlignment(Qt::AlignLeft);
+	dtf11->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+	QLabel* dth11 = new QLabel(tr("Channel operations"));
+	dtf11->addRow(dth11);
 
-	dtf1->addRow(new QLabel(tr("<small>The software needs to be restarted.</small>")));
+	QButtonGroup* dtg1 = new QButtonGroup;
+	dtg1->setExclusive(true);
 
-	QGroupBox* dtl2 = new QGroupBox(tr("Tools"));
-	QHBoxLayout* dtb2 = new QHBoxLayout;
+	QCheckBox* dtf1ci = new QCheckBox(tr("Copy channels (preserving)"));
+	dtf1ci->setProperty("pref", "treeDropCopy");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf1ci);
+	dtf1ci->setChecked(true);
+	dtg1->addButton(dtf1ci);
+	dtf11->addRow(dtf1ci);
 
-	QFormLayout* dtf20 = new QFormLayout;
-	dtf20->setSpacing(20);
-	dtf20->setFormAlignment(Qt::AlignLeft);
-	dtf20->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
-	QLabel* dth20 = new QLabel(tr("CSV Import/Export"));
-	dtf20->addRow(dth20);
+	QCheckBox* dtf1mi = new QCheckBox(tr("Move channels (deleting)"));
+	dtf1mi->setProperty("pref", "treeDropMove");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf1mi);
+	dtg1->addButton(dtf1mi);
+	dtf11->addRow(dtf1mi);
 
-	QCheckBox* dtf2th = new QCheckBox(tr("Allow header columns in CSV"));
-	dtf2th->setProperty("pref", "toolsCsvHeader"); //
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2th);
-	dtf20->addRow(dtf2th);
+	dtf1->addRow(dtf11);
 
-	QLineEdit* dtf2cd = new QLineEdit("\\n");
-	dtf2cd->setProperty("pref", "toolsCsvDelimiter");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2cd);
-	dtf2cd->setMaxLength(2);
-	dtf2cd->setMaximumWidth(50);
-	platform::osLineEdit(dtf2cd);
-	dtf20->addRow(tr("CSV delimiter character"), dtf2cd);
+	QGroupBox* dtl2 = new QGroupBox(tr("Theme"));
+	QFormLayout* dtf2 = new QFormLayout;
+	dtf2->setSpacing(20);
+	dtf2->setFormAlignment(Qt::AlignLeft);
+	dtf2->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
-	QLineEdit* dtf2cs = new QLineEdit(",");
-	dtf2cs->setProperty("pref", "toolsCsvSeparator");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2cs);
-	dtf2cs->setMaxLength(1);
-	dtf2cs->setMaximumWidth(50);
-	platform::osLineEdit(dtf2cs);
-	dtf20->addRow(tr("CSV separator character"), dtf2cs);
+	QComboBox* dtf2td = new QComboBox;
+	dtf2td->setProperty("pref", "theme");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2td);
+	dtf2td->addItem(tr("Default (system theme)"), "");
+	dtf2td->addItem(tr("Dark"), "dark");
+	dtf2td->addItem(tr("Light"), "light");
+	platform::osComboBox(dtf2td);
+	dtf2->addRow(dtf2td);
 
-	QLineEdit* dtf2ce = new QLineEdit(",");
-	dtf2ce->setProperty("pref", "toolsCsvEscape");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2ce);
-	dtf2ce->setMaxLength(1);
-	dtf2ce->setMaximumWidth(50);
-	platform::osLineEdit(dtf2ce);
-	dtf20->addRow(tr("CSV escape character"), dtf2ce);
+	QCheckBox* dtf2oe = new QCheckBox(tr("Enable experimental features"));
+	dtf2oe->setProperty("pref", "osExperiment");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2oe);
+	dtf2oe->setChecked(true);
+	dtf2->addRow(dtf2oe);
 
-	QFormLayout* dtf21 = new QFormLayout;
-	dtf21->setSpacing(21);
-	dtf21->setFormAlignment(Qt::AlignLeft);
-	dtf21->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
-	QLabel* dth21 = new QLabel(tr("Fields Import/Export"));
-	dtf21->addRow(dth21);
+	dtf2->addRow(new QLabel(tr("<small>The software might need to be restarted.</small>")));
 
-	QButtonGroup* dtg2 = new QButtonGroup;
-	dtg2->setExclusive(true);
+	QGroupBox* dtl3 = new QGroupBox(tr("Tools"));
+	QHBoxLayout* dtb3 = new QHBoxLayout;
 
-	QCheckBox* dtf2df = new QCheckBox(tr("Default (same fields as visual)"));
-	dtf2df->setProperty("pref", "fields_default");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2df);
-	dtf2df->setChecked(true);
-	dtg2->addButton(dtf2df);
-	dtf21->addRow(dtf2df);
+	QFormLayout* dtf30 = new QFormLayout;
+	dtf30->setSpacing(20);
+	dtf30->setFormAlignment(Qt::AlignLeft);
+	dtf30->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+	QLabel* dth30 = new QLabel(tr("CSV Import/Export"));
+	dtf30->addRow(dth30);
 
-	QCheckBox* dtf2ef = new QCheckBox(tr("Extended (all fields)"));
-	dtf2ef->setProperty("pref", "fields_extended");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2ef);
-	dtg2->addButton(dtf2ef);
-	dtf21->addRow(dtf2ef);
+	QCheckBox* dtf3th = new QCheckBox(tr("Allow header columns in CSV"));
+	dtf3th->setProperty("pref", "toolsCsvHeader"); //
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf3th);
+	dtf30->addRow(dtf3th);
 
-	dtb2->addLayout(dtf20);
-	dtb2->addItem(new QSpacerItem(10, 0));
-	dtb2->addLayout(dtf21);
+	QLineEdit* dtf3cd = new QLineEdit("\\n");
+	dtf3cd->setProperty("pref", "toolsCsvDelimiter");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf3cd);
+	dtf3cd->setMaxLength(2);
+	dtf3cd->setMaximumWidth(50);
+	platform::osLineEdit(dtf3cd);
+	dtf30->addRow(tr("CSV delimiter character"), dtf3cd);
+
+	QLineEdit* dtf3cs = new QLineEdit(",");
+	dtf3cs->setProperty("pref", "toolsCsvSeparator");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf3cs);
+	dtf3cs->setMaxLength(1);
+	dtf3cs->setMaximumWidth(50);
+	platform::osLineEdit(dtf3cs);
+	dtf30->addRow(tr("CSV separator character"), dtf3cs);
+
+	QLineEdit* dtf3ce = new QLineEdit(",");
+	dtf3ce->setProperty("pref", "toolsCsvEscape");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf3ce);
+	dtf3ce->setMaxLength(1);
+	dtf3ce->setMaximumWidth(50);
+	platform::osLineEdit(dtf3ce);
+	dtf30->addRow(tr("CSV escape character"), dtf3ce);
+
+	QFormLayout* dtf31 = new QFormLayout;
+	dtf31->setSpacing(20);
+	dtf31->setFormAlignment(Qt::AlignLeft);
+	dtf31->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+	QLabel* dth31 = new QLabel(tr("Fields Import/Export"));
+	dtf31->addRow(dth31);
+
+	QButtonGroup* dtg3 = new QButtonGroup;
+	dtg3->setExclusive(true);
+
+	QCheckBox* dtf3df = new QCheckBox(tr("Default (same fields as visual)"));
+	dtf3df->setProperty("pref", "toolsFieldsDefault");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf3df);
+	dtf3df->setChecked(true);
+	dtg3->addButton(dtf3df);
+	dtf31->addRow(dtf3df);
+
+	QCheckBox* dtf3ef = new QCheckBox(tr("Extended (all fields)"));
+	dtf3ef->setProperty("pref", "toolsFieldsExtended");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf3ef);
+	dtg3->addButton(dtf3ef);
+	dtf31->addRow(dtf3ef);
+
+	dtb3->addLayout(dtf30);
+	dtb3->addItem(new QSpacerItem(10, 0));
+	dtb3->addLayout(dtf31);
 
 	dtl0->setLayout(dtf0);
 	dtl1->setLayout(dtf1);
-	dtl2->setLayout(dtb2);
+	dtl2->setLayout(dtf2);
+	dtl3->setLayout(dtb3);
 
 	dtform->addItem(new QSpacerItem(0, 0));
 	dtform->addWidget(dtl0);
 	dtform->addItem(new QSpacerItem(0, 5));
 	dtform->addWidget(dtl1);
-	dtform->addItem(new QSpacerItem(0, 0));
+	dtform->addItem(new QSpacerItem(0, 5));
 	dtform->addWidget(dtl2);
+	dtform->addItem(new QSpacerItem(0, 5));
+	dtform->addWidget(dtl3);
 	dtform->addItem(new QSpacerItem(0, 0));
 
 	dtcnt->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 	dtcnt->addLayout(dtform, 0);
 	dtpage->setLayout(dtcnt);
 
-	dtwid->addTab(dtpage, tr("Preferences"));
+	dtarea->setWidget(dtpage);
+	dtarea->setWidgetResizable(true);
+	dtarea->widget()->setStyleSheet("background: transparent");
+	dtarea->setStyleSheet("QScrollArea { background: transparent }");
+
+	dtwid->addTab(dtarea, tr("Preferences"));
 }
 
 void settings::connectionsLayout()

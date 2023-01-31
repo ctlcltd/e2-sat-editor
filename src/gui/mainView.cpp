@@ -222,14 +222,12 @@ void mainView::layout()
 	this->tree_evth = new TreeEventHandler;
 	this->list_evth = new ListEventHandler;
 	this->list_evto = new ListEventObserver;
-	tree_evth->setEventCallback([=](QTreeWidget* tw) { this->data->setChanged(true); });
-	//TODO FIX missing references
-	list_evth->setEventCallback([=](QTreeWidget* tw) { this->data->setChanged(true); });
+	tree_evth->setEventCallback([=](QTreeWidget* tw, QTreeWidgetItem* current) { this->treeAfterDrop(tw, current); });
+	list_evth->setEventCallback([=](QTreeWidget* tw) { this->listAfterDrop(tw); });
 	side->connect(side, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { this->treeSwitched(side, item); });
 	side->connect(side, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->servicesItemChanged(current); });
 	tree->viewport()->installEventFilter(tree_evth);
 	tree->connect(tree, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { this->treeSwitched(tree, item); });
-	//TODO updateTreeIndex()
 	tree->connect(tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->treeItemChanged(current); });
 	tree->connect(tree, &QTreeWidget::itemDoubleClicked, [=]() { this->treeItemDoubleClicked(); });
 	list->installEventFilter(list_evto);
@@ -518,7 +516,7 @@ void mainView::reset()
 	resetStatusBar();
 }
 
-void mainView::populate(QTreeWidget* tree)
+void mainView::populate(QTreeWidget* tw)
 {
 	string curr;
 	string prev;
@@ -537,7 +535,7 @@ void mainView::populate(QTreeWidget* tree)
 		prev = string (this->state.curr);
 	}
 
-	QTreeWidgetItem* selected = tree->currentItem();
+	QTreeWidgetItem* selected = tw->currentItem();
 	if (selected == NULL)
 	{
 		return;
@@ -654,15 +652,15 @@ void mainView::populate(QTreeWidget* tree)
 	list->header()->setSectionsClickable(true);
 }
 
-void mainView::treeSwitched(QTreeWidget* tree, QTreeWidgetItem* item)
+void mainView::treeSwitched(QTreeWidget* tw, QTreeWidgetItem* item)
 {
 	debug("treeSwitched");
 
 	int tc = -1;
 
-	if (tree == this->side)
+	if (tw == side)
 		tc = 0;
-	else if (tree == this->tree)
+	else if (tw == tree)
 		tc = 1;
 
 	if (tc != this->state.tc)
@@ -882,8 +880,6 @@ void mainView::listPendingUpdate()
 	}
 
 	setPendingUpdateListIndex();
-
-	this->data->setChanged(true);
 }
 
 void mainView::visualReindexList()
@@ -1921,6 +1917,89 @@ void mainView::showListEditContextMenu(QPoint& pos)
 	// list_edit->exec(list->mapToGlobal(pos));
 }
 
+void mainView::treeAfterDrop(QTreeWidget* tw, QTreeWidgetItem* current)
+{
+	debug("treeAfterDrop");
+
+	if (tw == list)
+		treeDropFromList(current);
+	else
+		treeDropFromTree(current);
+
+	this->data->setChanged(true);
+}
+
+void mainView::listAfterDrop(QTreeWidget* tw)
+{
+	debug("listAfterDrop");
+
+	this->data->setChanged(true);
+}
+
+void mainView::treeDropFromTree(QTreeWidgetItem* current)
+{
+	debug("treeDropFromTree");
+
+	QTreeWidgetItem* parent = current->parent();
+	QList<QTreeWidgetItem*> selected = tree->selectedItems();
+
+	if (parent == nullptr || selected.empty())
+		return;
+
+	QList<QTreeWidgetItem*> items;
+
+	for (auto & item : selected)
+	{
+		if (item->parent() != parent)
+			return;
+
+		items.append(item->clone());
+	}
+	int index = parent->indexOfChild(current);
+	for (auto & item : selected)
+		parent->removeChild(item);
+
+	parent->insertChildren(index, items);
+
+	updateTreeIndex();
+
+	tree->setCurrentItem(items.first());
+}
+
+void mainView::treeDropFromList(QTreeWidgetItem* current)
+{
+	debug("treeDropFromList");
+
+	if (tree->currentItem() == current)
+		return;
+
+	QList<QTreeWidgetItem*> selected = list->selectedItems();
+
+	if (selected.empty())
+		return;
+
+	QList<QTreeWidgetItem*> items;
+
+	for (auto & item : selected)
+		items.append(item->clone());
+
+	if (QSettings().value("preference/treeDropMove", false).toBool())
+	{
+		for (auto & item : selected)
+			delete item;
+	}
+
+	if (QSettings().value("preference/treeCurrentAfterDrop", true).toBool())
+	{
+		tree->setCurrentItem(current);
+
+		list->addTopLevelItems(items);
+		list->scrollToBottom();
+	}
+
+	updateListReferences(current, items);
+}
+
 void mainView::updateStatusBar(bool current)
 {
 	debug("updateStatusBar");
@@ -2192,6 +2271,49 @@ void mainView::updateListIndex()
 	list->header()->setSortIndicator(sort_col, this->state.sort.second);
 
 	this->state.chx_pending = false;
+}
+
+void mainView::updateListReferences(QTreeWidgetItem* current, QList<QTreeWidgetItem*> items)
+{
+	QString qub = current->data(0, Qt::UserRole).toString();
+	string bname = qub.toStdString();
+
+	auto* dbih = this->data->dbih;
+
+	debug("updateListReferences", "current", bname);
+
+	for (auto & item : items)
+	{
+		string chid = item->data(mainView::ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
+
+		if (! dbih->userbouquets[bname].channels.count(chid))
+		{
+			e2db::channel_reference chref;
+
+			int idx = item->data(mainView::ITEM_DATA_ROLE::idx, Qt::UserRole).toInt();
+			bool marker = item->data(mainView::ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+
+			chref.marker = marker;
+			chref.chid = chid;
+			chref.index = idx;
+
+			if (marker)
+			{
+				string chname = item->text(mainView::ITEM_ROW_ROLE::chname).toStdString();
+				int atype = 0;
+				int anum = 0;
+				int ub_idx = -1;
+
+				std::sscanf(chid.c_str(), "%d:%x:%d", &atype, &anum, &ub_idx);
+
+				chref.atype = atype;
+				chref.anum = anum;
+				chref.value = chname;
+			}
+
+			dbih->addChannelReference(chref, bname);
+		}
+	}
 }
 
 void mainView::setPendingUpdateListIndex()

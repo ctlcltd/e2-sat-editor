@@ -27,7 +27,7 @@ class logger
 			bool debug;
 		};
 
-		static data* OBJECT;
+		inline static data* OBJECT;
 		inline static string PREFIX = "e2se";
 
 		logger(string ns, string cn);

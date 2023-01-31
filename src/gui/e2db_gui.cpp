@@ -56,7 +56,7 @@ void e2db::setup()
 	e2db::CSV_DELIMITER = csv_dlm.find("\n") != string::npos ? '\n' : '\n';
 	e2db::CSV_SEPARATOR = csv_sep[0];
 	e2db::CSV_ESCAPE = csv_esp[0];
-	e2db::CONVERTER_EXTENDED_FIELDS = settings.value("preference/fields_extended", false).toBool();
+	e2db::CONVERTER_EXTENDED_FIELDS = settings.value("preference/toolsFieldsExtended", false).toBool();
 }
 
 void e2db::error(string msg, string optk, string optv)
@@ -544,7 +544,7 @@ QStringList e2db::entryTunersetsTransponder(tunersets_transponder tntxp, tunerse
 // macos: unwanted chars [qt.qpa.fonts] Menlo notice
 QString e2db::fixUnicodeChars(string str)
 {
-	if (QSettings().value("preference/fixUnicodeChars").toBool())
+	if (QSettings().value("application/fixUnicodeChars").toBool())
 		return QString::fromStdString(str).remove(QRegularExpression("[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{S}\\s]+"));
 	else
 		return QString::fromStdString(str);

@@ -15,32 +15,30 @@
 #define TreeEventHandler_h
 #include <QObject>
 #include <QEvent>
+#include <QList>
 #include <QTreeWidget>
 
 namespace e2se_gui
 {
-//TODO optional switch to current "drop" bouquets tree item in settings
 //TODO persistent glitches with event reject, force a repaint on bouquets tree or his viewport
 class TreeEventHandler : public QObject
 {
 	public:
-		void setEventCallback(std::function<void(QTreeWidget* tw)> func)
+		void setEventCallback(std::function<void(QTreeWidget* tw, QTreeWidgetItem* current)> func)
 		{
 			this->eventCallback = func;
 		}
 
 	protected:
 		bool eventFilter(QObject* o, QEvent* e);
-		void dropFromTree(QTreeWidgetItem* current, QTreeWidget* tree);
-		void dropFromList(QTreeWidgetItem* current, QTreeWidget* tree, QTreeWidget* list);
-		void callEventCallback(QTreeWidget* tw)
+		void callEventCallback(QTreeWidget* tw, QTreeWidgetItem* current)
 		{
 			if (this->eventCallback != nullptr)
-				this->eventCallback(tw);
+				this->eventCallback(tw, current);
 		}
 
 	private:
-		std::function<void(QTreeWidget* tw)> eventCallback;
+		std::function<void(QTreeWidget* tw, QTreeWidgetItem* current)> eventCallback;
 };
 }
 #endif /* TreeEventHandler_h */
