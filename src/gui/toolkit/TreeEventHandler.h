@@ -15,7 +15,6 @@
 #define TreeEventHandler_h
 #include <QObject>
 #include <QEvent>
-#include <QList>
 #include <QTreeWidget>
 
 namespace e2se_gui

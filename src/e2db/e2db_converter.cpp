@@ -1904,7 +1904,7 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 					lpfec = TER_FEC[tx.lpfec];
 					mod = TER_MOD[tx.tmod];
 					band = TER_BAND[tx.band];
-					txm = TER_TRXMODE[tx.tmx];
+					txm = TER_TMXMODE[tx.tmx];
 					guard = TER_GUARD[tx.guard];
 					hier = TER_HIER[tx.hier];
 					inv = TER_INV[tx.inv];

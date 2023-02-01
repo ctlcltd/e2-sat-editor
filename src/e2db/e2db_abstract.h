@@ -31,25 +31,29 @@ struct e2db_abstract : protected e2se::log_factory
 		inline static bool OVERWRITE_FILE = false;
 
 		inline static const string SAT_POL[4] = {"H", "V", "L", "R"};
-		inline static const string SAT_MOD[4] = {"Auto", "QPSK", "QAM16", "8PSK"};
-		inline static const string SAT_INV[3] = {"Auto", "On", "Off"};
-		inline static const string SAT_FEC[11] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "3/5", "4/5", "8/9", "9/10"};
-		inline static const string SAT_ROL[4] = {"Auto", "QPSK", "QAM16", "8PSK"};
-		inline static const string SAT_PIL[3] = {"Auto", "Off", "On"};
-		inline static const string SAT_SYS[2] = {"DVB-S", "DVB-S2"};
+		inline static const string SAT_MOD[6] = {"Auto", "QPSK", "8PSK", "QAM16", "16APSK", "32APSK"};
+		inline static const string SAT_INV[3] = {"Off", "On", "Auto"};
+		inline static const string SAT_FEC[11] = {"Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "8/9", "3/5", "4/5", "9/10", "6/7"};
+		inline static const string SAT_ROL[3] = {"0.35", "0.25", "0.20"};
+		inline static const string SAT_PIL[3] = {"Off", "On", "Auto"};
+		inline static const string SAT_SYS[3] = {"DVB-S", "DVB-S2", "DVB-S/S2"};
 
-		inline static const string TER_BAND[4] = {"Auto", "8Mhz", "7Mhz", "6Mhz"};
-		inline static const string TER_MOD[4] = {"Auto", "QPSK", "QAM16", "QAM64"};
-		inline static const string TER_FEC[8] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8"};
-		inline static const string TER_INV[3] = {"Auto", "On", "Off"};
-		inline static const string TER_GUARD[5] = {"Auto", "1/32", "1/16", "1/8", "1/4"};
-		inline static const string TER_HIER[5] = {"Auto", "0", "1", "2", "4"};
-		inline static const string TER_TRXMODE[3] = {"Auto", "2k", "8k"};
-		inline static const string TER_SYS[2] = {"DVB-T", "DVB-T2"};
+		inline static const string TER_BAND[7] = {"8MHz", "7MHz", "6MHz", "Auto", "5MHz", "1.712MHz", "10MHz"};
+		inline static const string TER_MOD[5] = {"QPSK", "QAM16", "QAM64", "Auto", "QAM256"};
+		inline static const string TER_FEC[10] = {"1/2", "2/3", "3/4", "5/6", "7/8", "Auto", "6/7", "8/9", "3/5", "4/5"};
+		inline static const string TER_INV[3] = {"Off", "On", "Auto"};
+		inline static const string TER_GUARD[8] = {"1/32", "1/16", "1/8", "1/4", "Auto", "1/128", "19/128", "19/256"};
+		inline static const string TER_HIER[5] = {"0", "1", "2", "4", "Auto"};
+		inline static const string TER_TMXMODE[7] = {"2k", "8k", "Auto", "4k", "1k", "16k", "32k"};
+		inline static const string TER_SYS[3] = {"DVB-T", "DVB-T2", "DVB-T/T2"};
 
 		inline static const string CAB_MOD[6] = {"Auto", "QAM16", "QAM32", "QAM64", "QAM128", "QAM256"};
-		inline static const string CAB_INV[3] = {"Auto", "On", "Off"};
-		inline static const string CAB_FEC[9] = {"", "Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "8/9", "9/10"};
+		inline static const string CAB_INV[3] = {"Off", "On", "Auto"};
+		inline static const string CAB_FEC[7] = {"Auto", "1/2", "2/3", "3/4", "5/6", "7/8", "8/9"};
+
+		inline static const string ATS_MOD[8] = {"Auto", "QAM16", "QAM32", "QAM64", "QAM128", "QAM256", "8VSB", "16VSB"};
+		inline static const string ATS_INV[3] = {"Off", "On", "Auto"};
+		inline static const string ATS_SYS[2] = {"ATSC", "DVB-C ANNEX B"};
 
 		// import / export enum
 		enum FPORTS {
@@ -316,10 +320,10 @@ struct e2db_abstract : protected e2se::log_factory
 			int guard = -1; // DVB-T
 			int hier = -1; // DVB-T
 			int isid = -1; // DVB-S
-			int mts = -1; // ? DVB-S
+			int mts = -1; // DVB-S
 			int plsmode = -1; // DVB-S
 			int plscode = -1; // DVB-S
-			int plsn = -1; // ? DVB-S
+			int plsn = -1; // DVB-S
 			int index = -1;
 		};
 

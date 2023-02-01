@@ -357,7 +357,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string str, char ty, transpon
 
 	switch (ty)
 	{
-		case 's':
+		case 's': // DVB-S / DVB-S2
 			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%4d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil, oflgs);
 
 			tx.ytype = YTYPE::satellite;
@@ -374,7 +374,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string str, char ty, transpon
 			tx.pil = pil;
 			tx.oflgs = string (oflgs);
 		break;
-		case 't': // DVB-T
+		case 't': // DVB-T / DVB-T2
 			std::sscanf(str.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &band, &hpfec, &lpfec, &tmod, &tmx, &guard, &hier, &inv, oflgs);
 
 			tx.ytype = YTYPE::terrestrial;
@@ -400,7 +400,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string str, char ty, transpon
 			tx.cfec = cfec;
 			tx.oflgs = string (oflgs);
 		break;
-		case 'a': // ATSC
+		case 'a': // ATSC / DVB-C ANNEX B
 			std::sscanf(str.c_str(), "%8d:%1d:%1d:%1d:%1d%s", &freq, &inv, &amod, &flgs, &sys, oflgs);
 
 			tx.ytype = YTYPE::atsc;
@@ -952,6 +952,8 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 						tntxp.inv = std::atoi(val.data());
 					else if (key == "modulation")
 						tntxp.amod = std::atoi(val.data());
+					else if (key == "system")
+						tntxp.sys = std::atoi(val.data());
 				break;
 			}
 		}

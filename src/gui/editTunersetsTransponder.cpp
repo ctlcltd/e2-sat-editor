@@ -98,7 +98,7 @@ void editTunersetsTransponder::leadSatLayout()
 	dtf0->addRow(tr("Polarization"), dtf0sp);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	dtf0sp->addItem(tr("empty"), -1);
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < (int (sizeof(e2db::SAT_POL) / sizeof(e2db::SAT_POL[0]))); i++)
 	{
 		string w = e2db::SAT_POL[i];
 		dtf0sp->addItem(QString::fromStdString(w), i);
@@ -123,9 +123,9 @@ void editTunersetsTransponder::leadSatLayout()
 	dtf0->addRow(tr("FEC"), dtf0sc);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	dtf0sc->addItem(tr("empty"), -1);
-	for (int i = 0; i < 11; i++)
+	for (int i = 0; i < (int (sizeof(e2db::SAT_FEC) / sizeof(e2db::SAT_FEC[0]))); i++)
 	{
-		string w = i != 0 ? e2db::SAT_FEC[i] : "Default";
+		string w = e2db::SAT_FEC[i];
 		dtf0sc->addItem(QString::fromStdString(w), i);
 	}
 
@@ -138,7 +138,7 @@ void editTunersetsTransponder::leadSatLayout()
 	dtf0->addRow(tr("System"), dtf0sy);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	dtf0sy->addItem(tr("empty"), -1);
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < (int (sizeof(e2db::SAT_SYS) / sizeof(e2db::SAT_SYS[0]))); i++)
 	{
 		string w = e2db::SAT_SYS[i];
 		dtf0sy->addItem(QString::fromStdString(w), i);
@@ -175,7 +175,7 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 	dtf0->addRow(tr("Constellation"), dtf0tm);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	dtf0tm->addItem(tr("empty"), -1);
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < (int (sizeof(e2db::TER_MOD) / sizeof(e2db::TER_MOD[0]))); i++)
 	{
 		string w = e2db::TER_MOD[i];
 		dtf0tm->addItem(QString::fromStdString(w), i);
@@ -190,7 +190,7 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 	dtf0->addRow(tr("Bandwidth"), dtf0tb);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	dtf0tb->addItem(tr("empty"), -1);
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < (int (sizeof(e2db::TER_BAND) / sizeof(e2db::TER_BAND[0]))); i++)
 	{
 		string w = e2db::TER_BAND[i];
 		dtf0tb->addItem(QString::fromStdString(w), i);
@@ -205,7 +205,7 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 	dtf0->addRow(tr("HP FEC"), dtf0th);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	dtf0th->addItem(tr("empty"), -1);
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < (int (sizeof(e2db::TER_FEC) / sizeof(e2db::TER_FEC[0]))); i++)
 	{
 		string w = e2db::TER_FEC[i];
 		dtf0th->addItem(QString::fromStdString(w), i);
@@ -220,7 +220,7 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 	dtf0->addRow(tr("LP FEC"), dtf0tl);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	dtf0tl->addItem(tr("empty"), -1);
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < (int (sizeof(e2db::TER_FEC) / sizeof(e2db::TER_FEC[0]))); i++)
 	{
 		string w = e2db::TER_FEC[i];
 		dtf0tl->addItem(QString::fromStdString(w), i);
@@ -257,7 +257,7 @@ void editTunersetsTransponder::leadCableLayout()
 	dtf0->addRow(tr("Modulation"), dtf0cm);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	dtf0cm->addItem(tr("empty"), -1);
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < (int (sizeof(e2db::CAB_MOD) / sizeof(e2db::CAB_MOD[0]))); i++)
 	{
 		string w = e2db::CAB_MOD[i];
 		dtf0cm->addItem(QString::fromStdString(w), i);
@@ -282,9 +282,9 @@ void editTunersetsTransponder::leadCableLayout()
 	dtf0->addRow(tr("Inner FEC"), dtf0ci);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	dtf0ci->addItem(tr("empty"), -1);
-	for (int i = 0; i < 9; i++)
+	for (int i = 0; i < (int (sizeof(e2db::CAB_FEC) / sizeof(e2db::CAB_FEC[0]))); i++)
 	{
-		string w = i != 0 ? e2db::CAB_FEC[i] : "Default";
+		string w = e2db::CAB_FEC[i];
 		dtf0ci->addItem(QString::fromStdString(w), i);
 	}
 
@@ -310,15 +310,35 @@ void editTunersetsTransponder::leadAtscLayout()
 	dtf0->addRow(tr("Frequency"), dtf0af);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
-	QLineEdit* dtf0am = new QLineEdit;
+	QComboBox* dtf0am = new QComboBox;
 	dtf0am->setProperty("field", "a_amod");
 	fields.emplace_back(dtf0am);
 	dtf0am->setMaximumWidth(100);
 	dtf0am->setValidator(new QIntValidator);
-	dtf0am->setMaxLength(1);
-	platform::osLineEdit(dtf0am);
+	platform::osComboBox(dtf0am);
 	dtf0->addRow(tr("Modulation"), dtf0am);
 	dtf0->addItem(new QSpacerItem(0, 0));
+	dtf0am->addItem(tr("empty"), -1);
+	for (int i = 0; i < (int (sizeof(e2db::ATS_MOD) / sizeof(e2db::ATS_MOD[0]))); i++)
+	{
+		string w = e2db::ATS_MOD[i];
+		dtf0am->addItem(QString::fromStdString(w), i);
+	}
+
+	QComboBox* dtf0ay = new QComboBox;
+	dtf0ay->setProperty("field", "a_sys");
+	fields.emplace_back(dtf0ay);
+	dtf0ay->setMaximumWidth(100);
+	dtf0ay->setValidator(new QIntValidator);
+	platform::osComboBox(dtf0ay);
+	dtf0->addRow(tr("System"), dtf0ay);
+	dtf0->addItem(new QSpacerItem(0, 0));
+	dtf0ay->addItem(tr("empty"), -1);
+	for (int i = 0; i < (int (sizeof(e2db::ATS_SYS) / sizeof(e2db::ATS_SYS[0]))); i++)
+	{
+		string w = e2db::ATS_SYS[i];
+		dtf0ay->addItem(QString::fromStdString(w), i);
+	}
 
 	dtl0->setLayout(dtf0);
 	dtform->addWidget(dtl0, 0, 0);
@@ -341,7 +361,7 @@ void editTunersetsTransponder::sideSatLayout()
 	dtf1->addRow(tr("Modulation"), dtf1sm);
 	dtf1->addItem(new QSpacerItem(0, 0));
 	dtf1sm->addItem(tr("empty"), -1);
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < (int (sizeof(e2db::SAT_MOD) / sizeof(e2db::SAT_MOD[0]))); i++)
 	{
 		string w = e2db::SAT_MOD[i];
 		dtf1sm->addItem(QString::fromStdString(w), i);
@@ -356,7 +376,7 @@ void editTunersetsTransponder::sideSatLayout()
 	dtf1->addRow(tr("Inversion"), dtf1si);
 	dtf1->addItem(new QSpacerItem(0, 0));
 	dtf1si->addItem(tr("empty"), -1);
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < (int (sizeof(e2db::SAT_INV) / sizeof(e2db::SAT_INV[0]))); i++)
 	{
 		string w = e2db::SAT_INV[i];
 		dtf1si->addItem(QString::fromStdString(w), i);
@@ -371,7 +391,7 @@ void editTunersetsTransponder::sideSatLayout()
 	dtf1->addRow(tr("Roll Offset"), dtf1sr);
 	dtf1->addItem(new QSpacerItem(0, 0));
 	dtf1sr->addItem(tr("empty"), -1);
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < (int (sizeof(e2db::SAT_ROL) / sizeof(e2db::SAT_ROL[0]))); i++)
 	{
 		string w = e2db::SAT_ROL[i];
 		dtf1sr->addItem(QString::fromStdString(w), i);
@@ -386,7 +406,7 @@ void editTunersetsTransponder::sideSatLayout()
 	dtf1->addRow(tr("Pilot"), dtf1sp);
 	dtf1->addItem(new QSpacerItem(0, 0));
 	dtf1sp->addItem(tr("empty"), -1);
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < (int (sizeof(e2db::SAT_PIL) / sizeof(e2db::SAT_PIL[0]))); i++)
 	{
 		string w = e2db::SAT_PIL[i];
 		dtf1sp->addItem(QString::fromStdString(w), i);
@@ -413,9 +433,9 @@ void editTunersetsTransponder::sideTerrestrialLayout()
 	dtf1->addRow(tr("Transmission Mode"), dtf1tx);
 	dtf1->addItem(new QSpacerItem(0, 0));
 	dtf1tx->addItem(tr("empty"), -1);
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < (int (sizeof(e2db::TER_TMXMODE) / sizeof(e2db::TER_TMXMODE[0]))); i++)
 	{
-		string w = e2db::TER_TRXMODE[i];
+		string w = e2db::TER_TMXMODE[i];
 		dtf1tx->addItem(QString::fromStdString(w), i);
 	}
 
@@ -428,7 +448,7 @@ void editTunersetsTransponder::sideTerrestrialLayout()
 	dtf1->addRow(tr("Inversion"), dtf1ti);
 	dtf1->addItem(new QSpacerItem(0, 0));
 	dtf1ti->addItem(tr("empty"), -1);
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < (int (sizeof(e2db::TER_INV) / sizeof(e2db::TER_INV[0]))); i++)
 	{
 		string w = e2db::TER_INV[i];
 		dtf1ti->addItem(QString::fromStdString(w), i);
@@ -443,7 +463,7 @@ void editTunersetsTransponder::sideTerrestrialLayout()
 	dtf1->addRow(tr("Guard Interval"), dtf1tg);
 	dtf1->addItem(new QSpacerItem(0, 0));
 	dtf1tg->addItem(tr("empty"), -1);
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < (int (sizeof(e2db::TER_GUARD) / sizeof(e2db::TER_GUARD[0]))); i++)
 	{
 		string w = e2db::TER_GUARD[i];
 		dtf1tg->addItem(QString::fromStdString(w), i);
@@ -458,7 +478,7 @@ void editTunersetsTransponder::sideTerrestrialLayout()
 	dtf1->addRow(tr("Hierarchy"), dtf1th);
 	dtf1->addItem(new QSpacerItem(0, 0));
 	dtf1th->addItem(tr("empty"), -1);
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < (int (sizeof(e2db::TER_HIER) / sizeof(e2db::TER_HIER[0]))); i++)
 	{
 		string w = e2db::TER_HIER[i];
 		dtf1th->addItem(QString::fromStdString(w), i);
@@ -485,7 +505,7 @@ void editTunersetsTransponder::sideCableLayout()
 	dtf1->addRow(tr("Inversion"), dtf1ci);
 	dtf1->addItem(new QSpacerItem(0, 0));
 	dtf1ci->addItem(tr("empty"), -1);
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < (int (sizeof(e2db::CAB_INV) / sizeof(e2db::CAB_INV[0]))); i++)
 	{
 		string w = e2db::CAB_INV[i];
 		dtf1ci->addItem(QString::fromStdString(w), i);

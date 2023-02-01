@@ -299,9 +299,9 @@ int e2db_abstract::value_transponder_type(string str)
 {
 	if (str.empty())
 		return -1;
-	if (str == "DVB-S" || str == "DVB-S2")
+	if (str == "DVB-S" || str == "DVB-S2" || str == "DVB-S/S2")
 		return YTYPE::satellite;
-	else if (str == "DVB-T" || str == "DVB-T2")
+	else if (str == "DVB-T" || str == "DVB-T2" || str == "DVB-T/T2")
 		return YTYPE::terrestrial;
 	else if (str == "DVB-C")
 		return YTYPE::cable;
@@ -447,8 +447,10 @@ int e2db_abstract::value_transponder_system(string str)
 {
 	if (str == "DVB-S" || str == "DVB-T" || str == "DVB-C" || str == "ATSC")
 		return 0;
-	else if (str == "DVB-S2" || str == "DVB-T2")
+	else if (str == "DVB-S2" || str == "DVB-T2" || str == "DVB-C ANNEX B")
 		return 1;
+	else if (str == "DVB-S/S2" || str == "DVB-T/T2")
+		return 2;
 	return -1;
 }
 
@@ -477,7 +479,7 @@ string e2db_abstract::value_transponder_system(int sys, YTYPE ytype)
 			psys = "DVB-C";
 		break;
 		case YTYPE::atsc:
-			psys = "ATSC";
+			psys = sys != -1 ? ATS_SYS[sys] : "ATSC";
 		break;
 	}
 	return psys;
@@ -518,47 +520,53 @@ int e2db_abstract::value_transponder_fec(string str, YTYPE ytype)
 	if (ytype == YTYPE::satellite)
 	{
 		if (str.empty())
-			return 0;
+			return -1;
 		else if (str == "Auto")
-			return 1;
+			return 0;
 		else if (str == "1/2")
-			return 2;
+			return 1;
 		else if (str == "2/3")
-			return 3;
+			return 2;
 		else if (str == "3/4")
-			return 4;
+			return 3;
 		else if (str == "5/6")
-			return 5;
+			return 4;
 		else if (str == "7/8")
+			return 5;
+		else if (str == "8/9")
 			return 6;
 		else if (str == "3/5")
 			return 7;
 		else if (str == "4/5")
 			return 8;
-		else if (str == "8/9")
-			return 9;
 		else if (str == "9/10")
+			return 9;
+		else if (str == "6/7")
 			return 10;
+		else if (str == "None")
+			return 15;
 		return -1;
 	}
 	else if (ytype == YTYPE::terrestrial)
 	{
 		if (str.empty())
-			return 0;
+			return -1;
 		else if (str == "Auto")
-			return 0;
-		else if (str == "1/2")
-			return 1;
-		else if (str == "2/3")
-			return 2;
-		else if (str == "3/4")
-			return 3;
-		else if (str == "5/6")
-			return 4;
-		else if (str == "7/8")
 			return 5;
+		else if (str == "1/2")
+			return 0;
+		else if (str == "2/3")
+			return 1;
+		else if (str == "3/4")
+			return 2;
+		else if (str == "5/6")
+			return 3;
+		else if (str == "7/8")
+			return 4;
 		else if (str == "8/9")
 			return 6;
+		else if (str == "None")
+			return 15;
 		return -1;
 	}
 	else if (ytype == YTYPE::cable)
@@ -566,21 +574,21 @@ int e2db_abstract::value_transponder_fec(string str, YTYPE ytype)
 		if (str.empty())
 			return 0;
 		else if (str == "Auto")
-			return 1;
+			return 0;
 		else if (str == "1/2")
-			return 2;
+			return 1;
 		else if (str == "2/3")
-			return 3;
+			return 2;
 		else if (str == "3/4")
-			return 4;
+			return 3;
 		else if (str == "5/6")
-			return 5;
+			return 4;
 		else if (str == "7/8")
-			return 6;
+			return 5;
 		else if (str == "8/9")
-			return 7;
-		else if (str == "9/10")
-			return 8;
+			return 6;
+		else if (str == "None")
+			return 15;
 		return -1;
 	}
 	return -1;
@@ -598,10 +606,12 @@ string e2db_abstract::value_transponder_fec(int fec, YTYPE ytype)
 		return "";
 	if (ytype == YTYPE::satellite && fec < 11)
 		return SAT_FEC[fec];
-	else if (ytype == YTYPE::terrestrial && fec < 8)
+	else if (ytype == YTYPE::terrestrial && fec < 10)
 		return TER_FEC[fec];
-	else if (ytype == YTYPE::cable && fec < 9)
+	else if (ytype == YTYPE::cable && fec < 7)
 		return CAB_FEC[fec];
+	else if (fec == 15)
+		return "None";
 	return "";
 }
 
@@ -621,10 +631,14 @@ int e2db_abstract::value_transponder_modulation(string str, YTYPE ytype)
 			return 0;
 		else if (str == "QPSK")
 			return 1;
-		else if (str == "QAM16")
-			return 2;
 		else if (str == "8PSK")
+			return 2;
+		else if (str == "QAM16")
 			return 3;
+		else if (str == "16APSK")
+			return 4;
+		else if (str == "32APSK")
+			return 5;
 		return -1;
 	}
 	else if (ytype == YTYPE::terrestrial)
@@ -632,13 +646,15 @@ int e2db_abstract::value_transponder_modulation(string str, YTYPE ytype)
 		if (str.empty())
 			return -1;
 		else if (str == "Auto")
-			return 0;
-		else if (str == "QPSK")
-			return 1;
-		else if (str == "QAM16")
-			return 2;
-		else if (str == "QAM64")
 			return 3;
+		else if (str == "QPSK")
+			return 0;
+		else if (str == "QAM16")
+			return 1;
+		else if (str == "QAM64")
+			return 2;
+		else if (str == "QAM256")
+			return 4;
 		return -1;
 	}
 	else if (ytype == YTYPE::cable)
@@ -659,6 +675,28 @@ int e2db_abstract::value_transponder_modulation(string str, YTYPE ytype)
 			return 5;
 		return -1;
 	}
+	else if (ytype == YTYPE::atsc)
+	{
+		if (str.empty())
+			return -1;
+		else if (str == "Auto")
+			return 0;
+		else if (str == "QAM16")
+			return 1;
+		else if (str == "QAM32")
+			return 2;
+		else if (str == "QAM64")
+			return 3;
+		else if (str == "QAM128")
+			return 4;
+		else if (str == "QAM256")
+			return 5;
+		else if (str == "8VSB")
+			return 6;
+		else if (str == "16VSB")
+			return 7;
+		return -1;
+	}
 	return -1;
 }
 
@@ -672,12 +710,14 @@ string e2db_abstract::value_transponder_modulation(int mod, YTYPE ytype)
 {
 	if (mod == -1) //TODO TEST mod < 0 &&
 		return "";
-	else if (ytype == YTYPE::satellite && mod < 4)
+	else if (ytype == YTYPE::satellite && mod < 6)
 		return SAT_MOD[mod];
-	else if (ytype == YTYPE::terrestrial && mod < 4)
+	else if (ytype == YTYPE::terrestrial && mod < 5)
 		return TER_MOD[mod];
 	else if (ytype == YTYPE::cable && mod < 6)
 		return CAB_MOD[mod];
+	else if (ytype == YTYPE::atsc && mod < 8)
+		return ATS_MOD[mod];
 	return "";
 }
 
@@ -689,18 +729,14 @@ int e2db_abstract::value_transponder_inversion(string str, int yx)
 
 int e2db_abstract::value_transponder_inversion(string str, YTYPE ytype)
 {
-	if (ytype != YTYPE::atsc)
-	{
-		if (str.empty())
-			return -1;
-		else if (str == "Auto")
-			return 0;
-		else if (str == "On")
-			return 1;
-		else if (str == "Off")
-			return 2;
+	if (str.empty())
 		return -1;
-	}
+	else if (str == "Off")
+		return 0;
+	else if (str == "On")
+		return 1;
+	else if (str == "Auto")
+		return 2;
 	return -1;
 }
 
@@ -720,6 +756,8 @@ string e2db_abstract::value_transponder_inversion(int inv, YTYPE ytype)
 		return TER_INV[inv];
 	else if (ytype == YTYPE::cable && inv < 3)
 		return CAB_INV[inv];
+	else if (ytype == YTYPE::atsc && inv < 3)
+		return ATS_INV[inv];
 	return "";
 }
 
@@ -727,20 +765,18 @@ int e2db_abstract::value_transponder_rollof(string str)
 {
 	if (str.empty())
 		return -1;
-	else if (str == "Auto")
+	else if (str == "0.35")
 		return 0;
-	else if (str == "QPSK")
+	else if (str == "0.25")
 		return 1;
-	else if (str == "QAM16")
+	else if (str == "0.20")
 		return 2;
-	else if (str == "8PSK")
-		return 3;
 	return -1;
 }
 
 string e2db_abstract::value_transponder_rollof(int rol)
 {
-	if (rol != -1 && rol < 4) //TODO TEST rol > 0 &&
+	if (rol != -1 && rol < 3) //TODO TEST rol > 0 &&
 		return SAT_ROL[rol];
 	return "";
 }
@@ -749,11 +785,11 @@ int e2db_abstract::value_transponder_pilot(string str)
 {
 	if (str.empty())
 		return -1;
-	else if (str == "Auto")
+	else if (str == "Off")
 		return 0;
 	else if (str == "On")
 		return 1;
-	else if (str == "Off")
+	else if (str == "Auto")
 		return 2;
 	return -1;
 }
@@ -770,19 +806,25 @@ int e2db_abstract::value_transponder_bandwidth(string str)
 	if (str.empty())
 		return -1;
 	else if (str == "Auto")
-		return 0;
-	else if (str == "8Mhz")
-		return 1;
-	else if (str == "7Mhz")
-		return 2;
-	else if (str == "6Mhz")
 		return 3;
+	else if (str == "8MHz")
+		return 0;
+	else if (str == "7MHz")
+		return 1;
+	else if (str == "6MHz")
+		return 2;
+	else if (str == "5MHz")
+		return 4;
+	else if (str == "1.712MHz")
+		return 5;
+	else if (str == "10MHz")
+		return 6;
 	return -1;
 }
 
 string e2db_abstract::value_transponder_bandwidth(int band)
 {
-	if (band != -1 && band < 4) //TODO TEST band > 0 &&
+	if (band != -1 && band < 7) //TODO TEST band > 0 &&
 		return TER_BAND[band];
 	return "";
 }
@@ -792,21 +834,27 @@ int e2db_abstract::value_transponder_guard(string str)
 	if (str.empty())
 		return -1;
 	else if (str == "Auto")
-		return 0;
-	else if (str == "1/32")
-		return 1;
-	else if (str == "1/16")
-		return 2;
-	else if (str == "1/8")
-		return 3;
-	else if (str == "1/4")
 		return 4;
+	else if (str == "1/32")
+		return 0;
+	else if (str == "1/16")
+		return 1;
+	else if (str == "1/8")
+		return 2;
+	else if (str == "1/4")
+		return 3;
+	else if (str == "1/128")
+		return 5;
+	else if (str == "19/128")
+		return 6;
+	else if (str == "19/256")
+		return 7;
 	return -1;
 }
 
 string e2db_abstract::value_transponder_guard(int guard)
 {
-	if (guard != -1 && guard < 5) //TODO TEST guard > 0 &&
+	if (guard != -1 && guard < 8) //TODO TEST guard > 0 &&
 		return TER_GUARD[guard];
 	return "";
 }
@@ -816,15 +864,15 @@ int e2db_abstract::value_transponder_hier(string str)
 	if (str.empty())
 		return -1;
 	else if (str == "Auto")
-		return 0;
-	else if (str == "0")
-		return 1;
-	else if (str == "1")
-		return 2;
-	else if (str == "2")
-		return 3;
-	else if (str == "4")
 		return 4;
+	else if (str == "0")
+		return 0;
+	else if (str == "1")
+		return 1;
+	else if (str == "2")
+		return 2;
+	else if (str == "4")
+		return 3;
 	return -1;
 }
 
@@ -840,18 +888,26 @@ int e2db_abstract::value_transponder_tmx_mode(string str)
 	if (str.empty())
 		return -1;
 	else if (str == "Auto")
-		return 0;
-	else if (str == "2k")
-		return 1;
-	else if (str == "8k")
 		return 2;
+	else if (str == "2k")
+		return 0;
+	else if (str == "8k")
+		return 1;
+	else if (str == "4k")
+		return 3;
+	else if (str == "1k")
+		return 4;
+	else if (str == "16k")
+		return 5;
+	else if (str == "32k")
+		return 6;
 	return -1;
 }
 
 string e2db_abstract::value_transponder_tmx_mode(int tmx)
 {
-	if (tmx != -1 && tmx < 3) //TODO TEST tmx > 0 &&
-		return TER_TRXMODE[tmx];
+	if (tmx != -1 && tmx < 7) //TODO TEST tmx > 0 &&
+		return TER_TMXMODE[tmx];
 	return "";
 }
 

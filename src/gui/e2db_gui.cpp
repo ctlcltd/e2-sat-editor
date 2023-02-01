@@ -405,7 +405,7 @@ QStringList e2db::entryTransponder(transponder tx, bool extended)
 		QString inv = QString::fromStdString(value_transponder_inversion(tx.inv, YTYPE::terrestrial));
 		QString guard = QString::fromStdString(value_transponder_guard(tx.guard));
 		QString hier = QString::fromStdString(value_transponder_hier(tx.hier));
-		entry.append({mod, band, NULL, NULL, inv, guard, hier});
+		entry.append({mod, band, NULL, NULL, inv, tmx, guard, hier});
 	}
 	else if (tx.ytype == YTYPE::cable)
 	{
