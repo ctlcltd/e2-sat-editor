@@ -593,19 +593,19 @@ int gui::openTab(TAB_VIEW view, int arg)
 		break;
 		case TAB_VIEW::transponders:
 			ttab->viewTransponders(parent);
-			tticon = QIcon(theme::icon("transponders-view"));
+			tticon = QIcon(theme::icon("transponders-view", theme::icon_highlight));
 			ttname.append(" - ");
 			ttname.append("Edit transponders");
 		break;
 		case TAB_VIEW::tunersets:
 			ttab->viewTunersets(parent, arg);
-			tticon = QIcon(theme::icon("tunersets-view"));
+			tticon = QIcon(theme::icon("tunersets-view", theme::icon_highlight));
 			ttname.append(" - ");
 			ttname.append("Edit settings");
 		break;
 		case TAB_VIEW::channelBook:
 			ttab->viewChannelBook(parent);
-			tticon = QIcon(theme::icon("channelbook-view"));
+			tticon = QIcon(theme::icon("channelbook-view", theme::icon_highlight));
 			ttname.append(" - ");
 			ttname.append("Channel book");
 		break;

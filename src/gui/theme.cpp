@@ -70,9 +70,13 @@ bool theme::isDarkMode()
 	return theme::absLuma();
 }
 
-QIcon theme::icon(QString icon)
+QIcon theme::icon(QString icon, ICON_STYLE style)
 {
 	QPixmap ico = QPixmap(":/icons/" + QString (theme::absLuma() ? "dark" : "light") + "/" + icon + ".png");
+
+	if (style == ICON_STYLE::icon_highlight)
+		return ico;
+
 	QBitmap mask = ico.createMaskFromColor(theme::absLuma() ? Qt::white : Qt::black, Qt::MaskOutColor);
 	QColor color;
 #ifndef Q_OS_MAC
@@ -83,6 +87,7 @@ QIcon theme::icon(QString icon)
 #endif
 	ico.fill(color);
 	ico.setMask(mask);
+
 	return ico;
 }
 
@@ -145,9 +150,10 @@ pair<theme*, QString> theme::dynamicIcon(QString icon)
 	return pair (this, icon); //C++17
 }
 
-QIcon theme::dynamicIcon(QString icon, QObject* object)
+QIcon theme::dynamicIcon(QString icon, QObject* object, ICON_STYLE style)
 {
-	object->setProperty("dynico", icon);
+	object->setProperty("dynico_name", icon);
+	object->setProperty("dynico_style", style);
 	imaged.emplace_back(object);
 
 	return this->icon(icon);
@@ -165,12 +171,13 @@ void theme::changed()
 	}
 	for (auto & object : imaged)
 	{
-		QString icon = object->property("dynico").toString();
+		QString icon = object->property("dynico_name").toString();
+		ICON_STYLE style = static_cast<ICON_STYLE>(object->property("dynico_style").toInt());
 
 		if (QAction* action = qobject_cast<QAction*>(object))
-			action->setIcon(this->icon(icon));
+			action->setIcon(this->icon(icon, style));
 		else if (QPushButton* button = qobject_cast<QPushButton*>(object))
-			button->setIcon(this->icon(icon));
+			button->setIcon(this->icon(icon, style));
 	}
 }
 

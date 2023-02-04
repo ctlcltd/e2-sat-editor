@@ -63,6 +63,11 @@ class theme
 			dark
 		};
 
+		enum ICON_STYLE {
+			icon_default,
+			icon_highlight
+		};
+
 		theme();
 		~theme() = default;
 		// initialize style
@@ -78,7 +83,7 @@ class theme
 		// absolute lightness shorthand for light
 		static bool isLightMode();
 		// prefixed QIcon { white: dark, black: light }
-		static QIcon icon(QString icon);
+		static QIcon icon(QString icon, ICON_STYLE style = icon_default);
 		// spacer QIcon { 2, 3, 4, 5 } px
 		static QIcon spacer(int width);
 		// default fontFamily
@@ -96,7 +101,7 @@ class theme
 		void dynamicStyleSheet(QWidget* widget, QString stylesheet, STYLE style);
 		// dynamic QIcon
 		pair<theme*, QString> dynamicIcon(QString icon);
-		QIcon dynamicIcon(QString icon, QObject* object);
+		QIcon dynamicIcon(QString icon, QObject* object, ICON_STYLE style = icon_default);
 		// theme changed
 		void changed();
 		// style defaulted

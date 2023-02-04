@@ -85,7 +85,7 @@ Instructions on how to compile in [INSTALL.md](https://github.com/ctlcltd/e2-sat
 - [ ] optimizations
 - [ ] basic translations
 - [ ] multi-windowed gui
-- [ ] plug-in system
+- [ ] extensions and/or scripting
 - [ ] picons support
 - [ ] automated build
 
