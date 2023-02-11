@@ -284,7 +284,7 @@ void channelBookView::populate()
 	for (auto & chdata : this->index[curr])
 	{
 		char ci[7];
-		std::sprintf(ci, "%06d", i++);
+		std::snprintf(ci, 7, "%06d", i++);
 		QString x = QString::fromStdString(ci);
 
 		if (dbih->db.services.count(chdata.second))

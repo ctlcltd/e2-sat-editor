@@ -43,7 +43,7 @@ string e2db_abstract::editor_timestamp()
 	std::tm* gmt = std::gmtime(&ct);
 	zh = (zh - gmt->tm_hour) * 100;
 	char tz[7];
-	std::sprintf(tz, "%+05d", zh);
+	std::snprintf(tz, 7, "%+05d", zh);
 	return string (dt) + string (tz);
 }
 
@@ -119,7 +119,7 @@ string e2db_abstract::value_reference_id(service ch)
 
 	char refid[44];
 	// %1d:%4d:%4X:%4X:%4X:%4X:%6X:0:0:0:
-	std::sprintf(refid, "%d:%d:%X:%X:%X:%X:%X:0:0:0", 1, stype, snum, ssid, tsid, onid, dvbns);
+	std::snprintf(refid, 44, "%d:%d:%X:%X:%X:%X:%X:0:0:0", 1, stype, snum, ssid, tsid, onid, dvbns);
 	return refid;
 }
 
@@ -134,7 +134,7 @@ string e2db_abstract::value_reference_id(channel_reference chref)
 
 	char refid[44];
 	// %1d:%4d:%4X:%4X:%4X:%4X:%6X:0:0:0:
-	std::sprintf(refid, "%d:%d:%X:%X:%X:%X:%X:0:0:0", 1, atype, anum, ssid, tsid, onid, dvbns);
+	std::snprintf(refid, 44, "%d:%d:%X:%X:%X:%X:%X:0:0:0", 1, atype, anum, ssid, tsid, onid, dvbns);
 	return refid;
 }
 
@@ -163,7 +163,7 @@ string e2db_abstract::value_reference_id(channel_reference chref, service ch)
 
 	char refid[44];
 	// %1d:%4d:%4X:%4X:%4X:%4X:%6X:0:0:0:
-	std::sprintf(refid, "%d:%d:%X:%X:%X:%X:%X:0:0:0", 1, atype, anum, ssid, tsid, onid, dvbns);
+	std::snprintf(refid, 44, "%d:%d:%X:%X:%X:%X:%X:0:0:0", 1, atype, anum, ssid, tsid, onid, dvbns);
 	return refid;
 }
 
@@ -379,7 +379,7 @@ int e2db_abstract::value_transponder_dvbns(string str)
 string e2db_abstract::value_transponder_dvbns(int dvbns)
 {
 	char cdvbns[7];
-	std::sprintf(cdvbns, "%6X", dvbns);
+	std::snprintf(cdvbns, 7, "%6X", dvbns);
 	return cdvbns;
 }
 
@@ -427,7 +427,7 @@ string e2db_abstract::value_transponder_position(int num)
 {
 	char cposdeg[6];
 	// %3d.%1d%C
-	std::sprintf(cposdeg, "%.1f", float (std::abs(num)) / 10);
+	std::snprintf(cposdeg, 6, "%.1f", float (std::abs(num)) / 10);
 	return (string (cposdeg) + (num > 0 ? 'E' : 'W'));
 }
 
@@ -973,7 +973,7 @@ void e2db_abstract::add_transponder(int idx, transponder& tx)
 {
 	char txid[25];
 	// %4x:%8x
-	std::sprintf(txid, "%x:%x", tx.tsid, tx.dvbns);
+	std::snprintf(txid, 25, "%x:%x", tx.tsid, tx.dvbns);
 	tx.txid = txid;
 
 	tx.index = idx;
@@ -986,9 +986,9 @@ void e2db_abstract::add_service(int idx, service& ch)
 	char chid[25];
 	char txid[25];
 	// %4x:%8x
-	std::sprintf(txid, "%x:%x", ch.tsid, ch.dvbns);
+	std::snprintf(txid, 25, "%x:%x", ch.tsid, ch.dvbns);
 	// %4x:%4x:%8x
-	std::sprintf(chid, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
+	std::snprintf(chid, 25, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
 	ch.txid = txid;
 	ch.chid = chid;
 
@@ -997,7 +997,7 @@ void e2db_abstract::add_service(int idx, service& ch)
 		int m;
 		string kchid = 's' + ch.chid;
 		if (ch.snum) m = ch.snum;
-		else m = collisions[kchid].size();
+		else m = int (collisions[kchid].size());
 		ch.chid += ':' + to_string(m);
 		collisions[kchid].emplace_back(pair (ch.chid, m)); //C++17
 	}
@@ -1030,10 +1030,10 @@ void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_refe
 
 	if (chref.marker)
 		// %4d:%2x:%d
-		std::sprintf(chid, "%d:%x:%d", chref.atype, chref.anum, ub.index);
+		std::snprintf(chid, 25, "%d:%x:%d", chref.atype, chref.anum, ub.index);
 	else
 		// %4x:%4x:%8x
-		std::sprintf(chid, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
+		std::snprintf(chid, 25, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
 
 	chref.chid = chid;
 	chref.index = idx;
@@ -1063,7 +1063,7 @@ void e2db_abstract::add_tunersets_table(int idx, tunersets_table& tn, tunersets&
 	char yname = value_transponder_type(tn.ytype);
 	iname += yname;
 	char tnid[25];
-	std::sprintf(tnid, "%c:%04x", yname, idx);
+	std::snprintf(tnid, 25, "%c:%04x", yname, idx);
 	tn.tnid = tnid;
 	tn.index = idx;
 	tv.tables.emplace(tn.tnid, tn);
@@ -1076,7 +1076,7 @@ void e2db_abstract::add_tunersets_transponder(int idx, tunersets_transponder& tn
 {
 	char yname = value_transponder_type(tn.ytype);
 	char trid[25];
-	std::sprintf(trid, "%c:%04x:%04x", yname, tntxp.freq, tntxp.sr);
+	std::snprintf(trid, 25, "%c:%04x:%04x", yname, tntxp.freq, tntxp.sr);
 	tntxp.trid = trid;
 	tntxp.index = idx;
 	tn.transponders.emplace(tntxp.trid, tntxp);

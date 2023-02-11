@@ -57,10 +57,10 @@ tab::tab(gui* gid, QWidget* cwid)
 {
 	this->log = new logger("gui", "tab");
 
-	int uniqtt = reinterpret_cast<std::uintptr_t>(this);
-	std::srand(uniqtt);
+	unsigned long uniqtt = reinterpret_cast<std::uintptr_t>(this);
+	std::srand(int (uniqtt));
 	uniqtt &= std::rand();
-	this->ttid = uniqtt;
+	this->ttid = int (uniqtt);
 
 	this->gid = gid;
 	this->cwid = cwid;

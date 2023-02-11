@@ -155,7 +155,7 @@ string logger::timestamp()
 	char t[80];
 	std::strftime(t, 80, "%Y-%m-%d %H:%M:%S", lct);
 	char c[5];
-	std::sprintf(c, ".%03d", int (float (ct.tv_nsec) / 1e9 * 1e3));
+	std::snprintf(c, 5, ".%03d", int (float (ct.tv_nsec) / 1e9 * 1e3));
 	return string (t) + string (c);
 }
 
@@ -167,7 +167,7 @@ string logger::str()
 
 string logger::str_lend()
 {
-	int pos = this->obj->size;
+	size_t pos = this->obj->size;
 	this->obj->size = this->obj->log.size();
 	return this->obj->log.substr(pos);
 }

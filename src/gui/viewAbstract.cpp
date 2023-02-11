@@ -422,7 +422,7 @@ void viewAbstract::listFindPerform(const QString& value, LIST_FIND flag)
 	{
 		LIST_FIND type = flag == LIST_FIND::fast ? LIST_FIND::next : flag;
 		int i = 0;
-		int j = match.size();
+		int j = int (match.size());
 
 		if (type == LIST_FIND::next)
 		{

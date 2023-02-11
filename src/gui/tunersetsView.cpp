@@ -406,7 +406,7 @@ void tunersetsView::populate()
 	{
 		e2db::tunersets_transponder txp = tns.transponders[tp.second];
 		char ci[7];
-		std::sprintf(ci, "%06d", i++);
+		std::snprintf(ci, 7, "%06d", i++);
 		QString x = QString::fromStdString(ci);
 
 		QString idx = QString::number(tp.first);
@@ -705,7 +705,7 @@ void tunersetsView::addTransponder()
 	e2db::tunersets_transponder txp = tns.transponders[trid];
 
 	char ci[7];
-	std::sprintf(ci, "%06d", i++);
+	std::snprintf(ci, 7, "%06d", i++);
 	QString x = QString::fromStdString(ci);
 	QString idx = QString::number(txp.index);
 	QStringList entry = dbih->entryTunersetsTransponder(txp, tns);
@@ -954,7 +954,7 @@ void tunersetsView::putListItems(vector<QString> items)
 	for (QString & q : items)
 	{
 		char ci[7];
-		std::sprintf(ci, "%06d", i++);
+		std::snprintf(ci, 7, "%06d", i++);
 		QString x = QString::fromStdString(ci);
 		QString idx = QString::number(i);
 
@@ -1063,7 +1063,7 @@ void tunersetsView::updateStatusBar(bool current)
 			e2db::tunersets_table tns = dbih->tuners[tvid].tables[tnid];
 			msg.curr = dbih->value_transponder_position(tns);
 		}
-		msg.counters[gui::COUNTER::n_position] = dbih->index[tnid].size();
+		msg.counters[gui::COUNTER::n_position] = int (dbih->index[tnid].size());
 	}
 	else
 	{

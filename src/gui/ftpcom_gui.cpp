@@ -69,7 +69,7 @@ string ftpcom::trw(string str, string param)
 	string trparam = tr(param.data(), "ftpcom").toStdString();
 	size_t tsize = trstr.length() + trparam.length();
 	char tstr[tsize];
-	std::sprintf(tstr, trstr.c_str(), trparam.c_str());
+	std::snprintf(tstr, tsize, trstr.c_str(), trparam.c_str());
 	return string (tstr);
 }
 

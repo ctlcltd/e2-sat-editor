@@ -572,7 +572,7 @@ void mainView::populate(QTreeWidget* tw)
 		for (auto & ch : dbih->index[bname])
 		{
 			char ci[7];
-			std::sprintf(ci, "%06d", i++);
+			std::snprintf(ci, 7, "%06d", i++);
 			bool marker = false;
 			QString chid = QString::fromStdString(ch.second);
 			QString x = QString::fromStdString(ci);
@@ -911,7 +911,7 @@ void mainView::visualReindexList()
 		bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
 		idx = reverse ? j : i;
 		char ci[7];
-		std::sprintf(ci, "%06d", idx++);
+		std::snprintf(ci, 7, "%06d", idx++);
 		item->setText(ITEM_ROW_ROLE::x, QString::fromStdString(ci));
 		if (! marker)
 			item->setText(ITEM_ROW_ROLE::chnum, QString::number(idx - y));
@@ -1161,7 +1161,7 @@ void mainView::addService()
 
 	bool marker = false;
 	char ci[7];
-	std::sprintf(ci, "%06d", i++);
+	std::snprintf(ci, 7, "%06d", i++);
 	QString x = QString::fromStdString(ci);
 	QString idx = QString::number(i);
 	QStringList entry = dbih->entries.services[chid];
@@ -1301,7 +1301,7 @@ void mainView::addMarker()
 
 	bool marker = true;
 	char ci[7];
-	std::sprintf(ci, "%06d", i++);
+	std::snprintf(ci, 7, "%06d", i++);
 	QString x = QString::fromStdString(ci);
 	QString idx = "";
 	QStringList entry = dbih->entryMarker(chref);
@@ -1671,12 +1671,12 @@ void mainView::putListItems(vector<QString> items)
 	string bname = this->state.curr;
 	e2db::userbouquet uboq = dbih->userbouquets[bname];
 	int ub_idx = uboq.index;
-	int anum_count = dbih->index["mks"].size();
+	int anum_count = int (dbih->index["mks"].size());
 
 	for (QString & q : items)
 	{
 		char ci[7];
-		std::sprintf(ci, "%06d", i++);
+		std::snprintf(ci, 7, "%06d", i++);
 		QString x = QString::fromStdString(ci);
 		QString idx = QString::number(i);
 
@@ -1708,12 +1708,12 @@ void mainView::putListItems(vector<QString> items)
 			anum_count++;
 
 			// %4d:%2x:%d
-			std::sprintf(chid, "%d:%x:%d", chref.atype, anum_count, ub_idx);
+			std::snprintf(chid, 25, "%d:%x:%d", chref.atype, anum_count, ub_idx);
 		}
 		else
 		{
 			// %4x:%4x:%8x
-			std::sprintf(chid, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
+			std::snprintf(chid, 25, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
 		}
 
 		if (dbih->db.services.count(chid))
@@ -1785,11 +1785,11 @@ void mainView::putListItems(vector<QString> items)
 
 				char txid[25];
 				// %4x:%8x
-				std::sprintf(txid, "%x:%x", tx.tsid, tx.dvbns);
+				std::snprintf(txid, 25, "%x:%x", tx.tsid, tx.dvbns);
 				tx.txid = ch.txid = txid;
 
 				char chid[25];
-				std::sprintf(chid, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
+				std::snprintf(chid, 25, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
 				ch.chid = chid;
 
 				chref.chid = ch.chid;
@@ -2012,7 +2012,7 @@ void mainView::updateStatusBar(bool current)
 	if (current && ! this->state.curr.empty())
 	{
 		string bname = this->state.curr;
-		msg.counters[gui::COUNTER::n_bouquet] = dbih->index[bname].size();
+		msg.counters[gui::COUNTER::n_bouquet] = int (dbih->index[bname].size());
 
 		// bouquets tree
 		if (this->state.tc)
@@ -2020,10 +2020,10 @@ void mainView::updateStatusBar(bool current)
 	}
 	else
 	{
-		msg.counters[gui::COUNTER::n_data] = dbih->index["chs:0"].size();
-		msg.counters[gui::COUNTER::n_tv] = dbih->index["chs:1"].size();
-		msg.counters[gui::COUNTER::n_radio] = dbih->index["chs:2"].size();
-		msg.counters[gui::COUNTER::n_services] = dbih->index["chs"].size();
+		msg.counters[gui::COUNTER::n_data] = int (dbih->index["chs:0"].size());
+		msg.counters[gui::COUNTER::n_tv] = int (dbih->index["chs:1"].size());
+		msg.counters[gui::COUNTER::n_radio] = int (dbih->index["chs:2"].size());
+		msg.counters[gui::COUNTER::n_services] = int (dbih->index["chs"].size());
 	}
 
 	tabSetStatusBar(msg);

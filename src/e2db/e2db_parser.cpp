@@ -489,7 +489,7 @@ void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string bname)
 			ub = userbouquet ();
 			parse_userbouquet_reference(line.substr(9), ub);
 			ub.pname = bname;
-			add_userbouquet(index["ubs"].size(), ub);
+			add_userbouquet(int (index["ubs"].size()), ub);
 		}
 		else if (line.find("#NAME") != string::npos)
 		{
@@ -966,7 +966,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 		else if (add && step == 2)
 		{
 			char tnid[7];
-			std::sprintf(tnid, "%c:%04x", yname, bidx);
+			std::snprintf(tnid, 7, "%c:%04x", yname, bidx);
 			tunersets_table& tn = tv.tables[tnid];
 			cidx++;
 			add_tunersets_transponder(cidx, tntxp, tn);

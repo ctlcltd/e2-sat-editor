@@ -34,6 +34,7 @@ e2db::e2db()
 	this->log = new e2se::logger("e2db", "e2db");
 }
 
+//TODO improve
 void e2db::import_file(vector<string> paths)
 {
 	debug("import_file", "file path", "multiple");
@@ -46,14 +47,17 @@ void e2db::import_file(vector<string> paths)
 	{
 		if (! std::filesystem::exists(path)) //C++17
 		{
+			if (merge) delete dst;
 			return error("import_file", "File Error", "File \"" + path + "\" not exists.");
 		}
 		if (! std::filesystem::is_regular_file(path) && ! std::filesystem::is_directory(path)) //C++17
 		{
+			if (merge) delete dst;
 			return error("import_file", "File Error", "File \"" + path + "\" is not a valid file.");
 		}
 		if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_read)  == std::filesystem::perms::none) //C++17
 		{
+			if (merge) delete dst;
 			return error("import_file", "File Error", "File \"" + path + "\" is not readable.");
 		}
 
@@ -243,7 +247,7 @@ void e2db::add_transponder(transponder& tx)
 	debug("add_transponder", "txid", tx.txid);
 
 	if (tx.index == -1)
-		tx.index = index["txs"].size() + 1;
+		tx.index = int (index["txs"].size()) + 1;
 	e2db_abstract::add_transponder(tx.index, tx);
 }
 
@@ -253,7 +257,7 @@ void e2db::edit_transponder(string txid, transponder& tx)
 
 	char nw_txid[25];
 	// %4x:8x
-	std::sprintf(nw_txid, "%x:%x", tx.tsid, tx.dvbns);
+	std::snprintf(nw_txid, 25, "%x:%x", tx.tsid, tx.dvbns);
 	tx.txid = nw_txid;
 
 	debug("edit_transponder", "new txid", tx.txid);
@@ -293,7 +297,7 @@ void e2db::add_service(service& ch)
 	debug("add_service", "chid", ch.chid);
 
 	if (ch.index == -1)
-		ch.index = index["chs"].size() + 1;
+		ch.index = int (index["chs"].size()) + 1;
 	e2db_abstract::add_service(ch.index, ch);
 }
 
@@ -307,9 +311,9 @@ void e2db::edit_service(string chid, service& ch)
 	char nw_chid[25];
 	char nw_txid[25];
 	// %4x:%8x
-	std::sprintf(nw_txid, "%x:%x", ch.tsid, ch.dvbns);
+	std::snprintf(nw_txid, 25, "%x:%x", ch.tsid, ch.dvbns);
 	// %4x:%4x:%8x
-	std::sprintf(nw_chid, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
+	std::snprintf(nw_chid, 25, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
 	ch.txid = nw_txid;
 	ch.chid = nw_chid;
 
@@ -329,7 +333,7 @@ void e2db::edit_service(string chid, service& ch)
 			int m;
 			string kchid = 's' + ch.chid;
 			if (ch.snum) m = ch.snum;
-			else m = collisions[kchid].size();
+			else m = int (collisions[kchid].size());
 			ch.chid += ':' + to_string(m);
 			collisions[kchid].emplace_back(pair (ch.chid, m)); //C++17
 		}
@@ -389,7 +393,7 @@ void e2db::add_bouquet(bouquet& bs)
 	debug("add_bouquet", "bname", bs.bname);
 
 	if (bs.index == -1)
-		bs.index = index["bss"].size() + 1;
+		bs.index = int (index["bss"].size()) + 1;
 	e2db_abstract::add_bouquet(bs.index, bs);
 }
 
@@ -450,7 +454,7 @@ void e2db::add_userbouquet(userbouquet& ub)
 			{
 				unsigned long pos0 = it->second.find(".dbe");
 				unsigned long pos1 = it->second.find('.' + ktype);
-				int len = it->second.length();
+				int len = int (it->second.length());
 				int n = 0;
 				if (pos0 != string::npos && pos1 != string::npos)
 				{
@@ -550,7 +554,7 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 		}
 		if (! chref.anum)
 		{
-			int anum_count = index["mks"].size();
+			int anum_count = int (index["mks"].size());
 			anum_count++;
 			chref.anum = anum_count;
 		}
@@ -573,7 +577,7 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 	}
 
 	if (chref.index == -1 && ! chref.marker)
-		chref.index = index[bname].size() + 1;
+		chref.index = int (index[bname].size()) + 1;
 	e2db_abstract::add_channel_reference(chref.index, ub, chref, ref);
 }
 
@@ -820,7 +824,7 @@ void e2db::add_tunersets_table(tunersets_table& tn, tunersets tv)
 	iname += yname;
 
 	if (tn.index == -1)
-		tn.index = index.count(iname) ? index[iname].size() : 0;
+		tn.index = index.count(iname) ? int (index[iname].size()) : 0;
 	e2db_abstract::add_tunersets_table(tn.index, tn, tv);
 	tuners[tv.ytype].tables[tn.tnid] = tn;
 }
@@ -834,7 +838,7 @@ void e2db::edit_tunersets_table(string tnid, tunersets_table& tn, tunersets tv)
 	iname += yname;
 
 	char nw_tnid[25];
-	std::sprintf(nw_tnid, "%c:%04x", yname, tn.index);
+	std::snprintf(nw_tnid, 25, "%c:%04x", yname, tn.index);
 	tn.tnid = nw_tnid;
 
 	debug("edit_tunersets_table", "new tnid", tn.tnid);
@@ -899,7 +903,7 @@ void e2db::add_tunersets_transponder(tunersets_transponder& tntxp, tunersets_tab
 	debug("add_tunersets_transponder", "trid", tntxp.trid);
 
 	if (tntxp.index == -1)
-		tntxp.index = index[tn.tnid].size() + 1;
+		tntxp.index = int (index[tn.tnid].size()) + 1;
 	e2db_abstract::add_tunersets_transponder(tntxp.index, tntxp, tn);
 	tuners[tn.ytype].tables[tn.tnid].transponders[tntxp.trid] = tntxp;
 }
@@ -911,7 +915,7 @@ void e2db::edit_tunersets_transponder(string trid, tunersets_transponder& tntxp,
 	char yname = value_transponder_type(tn.ytype);
 
 	char nw_trid[25];
-	std::sprintf(nw_trid, "%c:%04x:%04x", yname, tntxp.freq, tntxp.sr);
+	std::snprintf(nw_trid, 25, "%c:%04x:%04x", yname, tntxp.freq, tntxp.sr);
 	tntxp.trid = nw_trid;
 
 	debug("edit_tunersets_transponder", "new trid", tntxp.trid);
@@ -1201,7 +1205,7 @@ void e2db::merge(e2db_abstract* dst)
 		userbouquet& ub = cp_ubs_sts[i.second];
 		bouquet& bs = this->bouquets[ub.pname];
 		//TODO improve "userbouquet.dbe.01234.tv"
-		int idx = bs.userbouquets.size();
+		int idx = int (bs.userbouquets.size());
 		string key = "1:7:" + to_string(bs.btype) + ':' + ub.name;
 		string ktype;
 		if (bs.btype == STYPE::tv)
@@ -1231,7 +1235,7 @@ void e2db::merge(e2db_abstract* dst)
 			{
 				char chid[25];
 				// %4d:%2x:%d
-				std::sprintf(chid, "%d:%x:%d", chref.atype, chref.anum, ub.index);
+				std::snprintf(chid, 25, "%d:%x:%d", chref.atype, chref.anum, ub.index);
 				chref.chid = chid;
 				index["mks"].emplace_back(pair (ub.index, chid)); //C++17
 			}

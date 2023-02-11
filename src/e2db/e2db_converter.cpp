@@ -843,14 +843,14 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 
 			char chid[25];
 			// %4d:%2x:%d
-			std::sprintf(chid, "%d:%x:%d", chref.atype, chref.anum, 0);
+			std::snprintf(chid, 25, "%d:%x:%d", chref.atype, chref.anum, 0);
 			chref.chid = chid;
 		}
 		else
 		{
 			// x order has priority over ch.index
 			if (ch.index != int (x))
-				ch.index = (x + 1);
+				ch.index = (int (x) + 1);
 			// ssid has priority over ref.ssid
 			if (! ch.ssid)
 				ch.ssid = ref.ssid;
@@ -894,19 +894,19 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 
 			char txid[25];
 			// %4x:%8x
-			std::sprintf(txid, "%x:%x", tx.tsid, tx.dvbns);
+			std::snprintf(txid, 25, "%x:%x", tx.tsid, tx.dvbns);
 			tx.txid = txid;
 
 			char chid[25];
 			// %4x:%4x:%8x
-			std::sprintf(chid, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
+			std::snprintf(chid, 25, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
 			ch.chid = chref.chid = chid;
 			ch.txid = txid;
 
 			if (! dst->db.transponders.count(tx.txid))
 			{
 				// tx idx
-				tx.index = (dst->index["txs"].size() + 1);
+				tx.index = (int (dst->index["txs"].size()) + 1);
 
 				dst->db.transponders.emplace(tx.txid, tx);
 				dst->index["txs"].emplace_back(pair (tx.index, tx.txid)); //C++17
@@ -929,7 +929,7 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 			if (! userbouquets[ub.bname].channels.count(chref.chid))
 			{
 				// chref idx
-				chref.index = (userbouquets[ub.bname].channels.size() + 1);
+				chref.index = (int (userbouquets[ub.bname].channels.size()) + 1);
 
 				userbouquets[ub.bname].channels.emplace(chref.chid, chref);
 
@@ -983,7 +983,7 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 					bs.nname = STYPE_EXT_LABEL.at(STYPE::radio);
 				}
 				// bouquet idx
-				bs.index = dst->index["bss"].size();
+				bs.index = int (dst->index["bss"].size());
 				// userbouquet pname
 				ub.pname = bs.bname;
 
@@ -1159,14 +1159,14 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 
 			char chid[25];
 			// %4d:%2x:%d
-			std::sprintf(chid, "%d:%x:%d", chref.atype, chref.anum, 0);
+			std::snprintf(chid, 25, "%d:%x:%d", chref.atype, chref.anum, 0);
 			chref.chid = chid;
 		}
 		else
 		{
 			// x order has priority over ch.index
 			if (ch.index != int (x))
-				ch.index = (x + 1);
+				ch.index = (int (x) + 1);
 			// ssid has priority over ref.ssid
 			if (! ch.ssid)
 				ch.ssid = ref.ssid;
@@ -1193,19 +1193,19 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 
 			char txid[25];
 			// %4x:%8x
-			std::sprintf(txid, "%x:%x", tx.tsid, tx.dvbns);
+			std::snprintf(txid, 25, "%x:%x", tx.tsid, tx.dvbns);
 			tx.txid = txid;
 
 			char chid[25];
 			// %4x:%4x:%8x
-			std::sprintf(chid, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
+			std::snprintf(chid, 25, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
 			ch.chid = chref.chid = chid;
 			ch.txid = txid;
 
 			if (! dst->db.transponders.count(tx.txid))
 			{
 				// tx idx
-				tx.index = (dst->index["txs"].size() + 1);
+				tx.index = (int (dst->index["txs"].size()) + 1);
 
 				dst->db.transponders.emplace(tx.txid, tx);
 				dst->index["txs"].emplace_back(pair (tx.index, tx.txid)); //C++17
@@ -1228,7 +1228,7 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 			if (! userbouquets[ub.bname].channels.count(chref.chid))
 			{
 				// chref idx
-				chref.index = (userbouquets[ub.bname].channels.size() + 1);
+				chref.index = (int (userbouquets[ub.bname].channels.size()) + 1);
 
 				userbouquets[ub.bname].channels.emplace(chref.chid, chref);
 				dst->index[ub.bname].emplace_back(pair (chref.index, chref.chid)); //C++17
@@ -1281,7 +1281,7 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 					bs.nname = STYPE_EXT_LABEL.at(STYPE::radio);
 				}
 				// bouquet idx
-				bs.index = dst->index["bss"].size();
+				bs.index = int (dst->index["bss"].size());
 				// userbouquet pname
 				ub.pname = bs.bname;
 
@@ -1347,7 +1347,7 @@ void e2db_converter::convert_csv_bouquet_list(vector<vector<string>> sxv, e2db_a
 
 		// x order has priority over ub.index
 		if (ub.index != int (x))
-			ub.index = (x + 1);
+			ub.index = (int (x) + 1);
 		// bouquet bname
 		// userbouquet pname
 		// bouquet nname
@@ -1368,7 +1368,7 @@ void e2db_converter::convert_csv_bouquet_list(vector<vector<string>> sxv, e2db_a
 	if (! dst->bouquets.count(bs.bname))
 	{
 		// bouquet idx
-		bs.index = dst->index["bss"].size();
+		bs.index = int (dst->index["bss"].size());
 
 		dst->bouquets.emplace(bs.bname, bs);
 		dst->index["bss"].emplace_back(pair (bs.index, bs.bname)); //C++17
@@ -1539,7 +1539,7 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 			dst->tuners.emplace(tv.ytype, tv);
 		}
 
-		int idx = index.count(iname) ? index[iname].size() : 0;
+		int idx = index.count(iname) ? int (index[iname].size()) : 0;
 		for (auto & x : dst->tuners[tv.ytype].tables)
 		{
 			if (x.second.name == tn.name)
@@ -1555,11 +1555,11 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 		tn.ytype = ytype;
 
 		char tnid[25];
-		std::sprintf(tnid, "%c:%04x", yname, tn.index);
+		std::snprintf(tnid, 25, "%c:%04x", yname, tn.index);
 		tn.tnid = tnid;
 
 		char trid[25];
-		std::sprintf(trid, "%c:%04x:%04x", yname, tntxp.freq, tntxp.sr);
+		std::snprintf(trid, 25, "%c:%04x:%04x", yname, tntxp.freq, tntxp.sr);
 		tntxp.trid = trid;
 
 		if (! dst->tuners[tv.ytype].tables.count(tn.tnid))

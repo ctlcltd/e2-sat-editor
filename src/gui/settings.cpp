@@ -602,12 +602,13 @@ void settings::store()
 	sets->beginWriteArray("profile");
 	for (size_t i = 0; i < tmpps.size(); i++)
 	{
-		sets->setArrayIndex(i);
-		if (tmpps[i].size())
+		int x = int (i);
+		sets->setArrayIndex(x);
+		if (tmpps[x].size())
 		{
 			if (! sets->contains("profileName"))
 				size++;
-			for (auto & field : tmpps[i])
+			for (auto & field : tmpps[x])
 				sets->setValue(field.first, field.second);
 		}
 		else
@@ -734,7 +735,7 @@ void settings::retrieve(QTableWidget* adtbl)
 
 	QStringList keys = sets->allKeys().filter(QRegularExpression("^(application|preference|profile|settings)/"));
 	QStringList::const_iterator iq;
-	adtbl->setRowCount(keys.count());
+	adtbl->setRowCount(int (keys.count()));
 	int i = 0;
 	for (iq = keys.constBegin(); iq != keys.constEnd(); ++iq)
 	{

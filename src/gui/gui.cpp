@@ -218,7 +218,7 @@ void gui::menuBarLayout()
 	QMenu* mhelp = menuBarMenu(menu, tr("&Help"));
 	menuBarAction(mhelp, tr("About &Qt"), [=]() { mroot->aboutQt(); })->setMenuRole(QAction::NoRole);
 	menuBarSeparator(mhelp);
-	menuBarAction(mhelp, tr("&About e2 SAT Editor"), [=]() { this->aboutDialog(); })->setMenuRole(QAction::NoRole);
+	menuBarAction(mhelp, tr("&About e2 SAT Editor"), [=]() { this->aboutDialog(); });;//->setMenuRole(QAction::NoRole);
 
 	this->menu = menu;
 	this->mwind = mwind;
@@ -703,11 +703,12 @@ void gui::closeAllTabs()
 
 	for (size_t i = 0; i < ttabs.size(); i++)
 	{
-		debug("closeAllTabs", "index", int (i));
+		int x = int (i);
+		debug("closeAllTabs", "index", x);
 
-		delete ttabs[i];
-		ttabs.erase(i);
-		ttmenu.erase(i);
+		delete ttabs[x];
+		ttabs.erase(x);
+		ttmenu.erase(x);
 	}
 	ttabs.clear();
 	ttmenu.clear();
@@ -1234,7 +1235,8 @@ void gui::settingsDialog()
 
 void gui::aboutDialog()
 {
-	new e2se_gui_dialog::about;
+	//TODO potential leak
+	new e2se_gui_dialog::about();
 }
 
 bool gui::getFlag(GUI_CXE bit)

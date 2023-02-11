@@ -900,12 +900,12 @@ string editService::getPIDValue(e2db::service ch, e2db::SDATA_PIDS x)
 vector<string> editService::computePIDs(e2db::service ch, e2db::SDATA_PIDS x, string val)
 {
 	bool found = false;
-	char pid[7];
-	int cval;
 	vector<string> data = ch.data[e2db::SDATA::c];
 	string cpx = (x > 9 ? "" : "0") + to_string(x);
+	int cval;
 	cval = std::atoi(val.data());
-	std::sprintf(pid, "%2s%04x", cpx.c_str(), cval);
+	char pid[7];
+	std::snprintf(pid, 7, "%2s%04x", cpx.c_str(), cval);
 	for (auto it = data.begin(); it != data.end(); it++)
 	{
 		if ((*it).substr(0, 2) == cpx)
@@ -926,7 +926,7 @@ vector<string> editService::computePIDs(e2db::service ch, e2db::SDATA_PIDS x, st
 
 string editService::getFlagValue(e2db::service ch, e2db::SDATA_FLAGS x)
 {
-	int flags = std::strtol(ch.data[e2db::SDATA::f][0].data(), NULL, 16);
+	long flags = std::strtol(ch.data[e2db::SDATA::f][0].data(), NULL, 16);
 	if (flags & x)
 		return "1";
 	return "";
@@ -935,13 +935,13 @@ string editService::getFlagValue(e2db::service ch, e2db::SDATA_FLAGS x)
 vector<string> editService::computeFlags(e2db::service ch, e2db::SDATA_FLAGS x, string val)
 {
 	vector<string> data = ch.data[e2db::SDATA::f];
-	int flags = data.empty() ? 0 : std::strtol(data[0].data(), NULL, 16);
+	long flags = data.empty() ? 0 : std::strtol(data[0].data(), NULL, 16);
 	if (flags & x)
 		flags -= x;
 	if (val == "1")
 		flags += x;
 	char cflags[3];
-	std::sprintf(cflags, "%02x", flags);
+	std::snprintf(cflags, 3, "%02x", int (flags));
 	data.clear();
 	if (flags)
 		data.emplace_back(cflags);

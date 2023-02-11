@@ -219,7 +219,7 @@ void transpondersView::populate()
 	{
 		e2db::transponder txp = dbih->db.transponders[tp.second];
 		char ci[7];
-		std::sprintf(ci, "%06d", i++);
+		std::snprintf(ci, 7, "%06d", i++);
 		QString x = QString::fromStdString(ci);
 
 		QString idx = QString::number(tp.first);
@@ -334,7 +334,7 @@ void transpondersView::addTransponder()
 	e2db::transponder txp = dbih->db.transponders[txid];
 
 	char ci[7];
-	std::sprintf(ci, "%06d", i++);
+	std::snprintf(ci, 7, "%06d", i++);
 	QString x = QString::fromStdString(ci);
 	QString idx = QString::number(txp.index);
 	QStringList entry = dbih->entryTransponder(txp, true);
@@ -529,7 +529,7 @@ void transpondersView::putListItems(vector<QString> items)
 	for (QString & q : items)
 	{
 		char ci[7];
-		std::sprintf(ci, "%06d", i++);
+		std::snprintf(ci, 7, "%06d", i++);
 		QString x = QString::fromStdString(ci);
 		QString idx = QString::number(i);
 
@@ -584,7 +584,7 @@ void transpondersView::putListItems(vector<QString> items)
 
 			char txid[25];
 			// %4x:%8x
-			std::sprintf(txid, "%x:%x", tx.tsid, tx.dvbns);
+			std::snprintf(txid, 25, "%x:%x", tx.tsid, tx.dvbns);
 			tx.txid = txid;
 		}
 		else
