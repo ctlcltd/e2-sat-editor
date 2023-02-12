@@ -105,6 +105,7 @@ void editTransponder::layout(QWidget* cwid)
 
 	QHBoxLayout* dtb01 = new QHBoxLayout;
 	dtf0->addRow(tr("Transport ID"), dtb01);
+	dtf0->addItem(new QSpacerItem(0, 0));
 	QLineEdit* dtf0ts = new QLineEdit;
 	dtf0ts->setProperty("field", "tsid");
 	fields.emplace_back(dtf0ts);
@@ -121,6 +122,7 @@ void editTransponder::layout(QWidget* cwid)
 	dtf0ns->setValidator(new QIntValidator);
 	platform::osLineEdit(dtf0ns);
 	dtf0->addRow(tr("DVBNS"), dtf0ns);
+	dtf0->addItem(new QSpacerItem(0, 0));
 
 	QLineEdit* dtf0on = new QLineEdit;
 	dtf0on->setProperty("field", "onid");
@@ -129,6 +131,7 @@ void editTransponder::layout(QWidget* cwid)
 	dtf0on->setValidator(new QIntValidator);
 	platform::osLineEdit(dtf0on);
 	dtf0->addRow(tr("ONID"), dtf0on);
+	dtf0->addItem(new QSpacerItem(0, 0));
 
 	afields.insert(afields.begin(), fields.begin(), fields.end());
 
@@ -140,6 +143,7 @@ void editTransponder::layoutChange(int vx)
 {
 	debug("layoutChange");
 
+	//TODO improve
 	for (int i = 1; i < 3; i++)
 	{
 		QLayoutItem* item;
@@ -148,7 +152,9 @@ void editTransponder::layoutChange(int vx)
 		{
 			item->widget()->setVisible(false);
 			delete item->widget();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 			dtform->takeAt(dtform->indexOf(item));
+#endif
 		}
 	}
 	fields.clear();

@@ -19,6 +19,7 @@
 #include <QStyleFactory>
 #include <QSettings>
 #include <QPalette>
+#include <QBitmap>
 #include <QFont>
 #include <QAction>
 #include <QPushButton>

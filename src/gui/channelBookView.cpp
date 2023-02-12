@@ -87,6 +87,8 @@ void channelBookView::layout()
 	this->list = new QTreeWidget;
 	this->tabv = new QTabBar;
 
+	tabv->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored);
+
 	list->setStyleSheet("QTreeWidget::item { padding: 2px 0 }");
 	tabv->setStyleSheet("QTabBar::tab { min-width: 48px; margin-top: 0 }");
 

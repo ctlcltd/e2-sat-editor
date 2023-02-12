@@ -114,6 +114,7 @@ void settings::layout(QWidget* cwid)
 void settings::preferencesLayout()
 {
 	QWidget* dtpage = new QWidget;
+	dtpage->setObjectName("preferences_page");
 	QScrollArea* dtarea = new QScrollArea;
 
 	QHBoxLayout* dtcnt = new QHBoxLayout(dtpage);
@@ -287,8 +288,7 @@ void settings::preferencesLayout()
 
 	dtarea->setWidget(dtpage);
 	dtarea->setWidgetResizable(true);
-	dtarea->widget()->setStyleSheet("background: transparent");
-	dtarea->setStyleSheet("QScrollArea { background: transparent }");
+	dtarea->setStyleSheet("QScrollArea, #preferences_page { background: transparent }");
 
 	dtwid->addTab(dtarea, tr("Preferences"));
 }
