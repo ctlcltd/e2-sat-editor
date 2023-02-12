@@ -1227,8 +1227,6 @@ void mainView::editService()
 
 	auto* dbih = this->data->dbih;
 
-	debug("editService", "chid", chid);
-
 	if (! marker && dbih->db.services.count(chid))
 		debug("editService", "chid", chid);
 	else

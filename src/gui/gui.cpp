@@ -218,7 +218,7 @@ void gui::menuBarLayout()
 	QMenu* mhelp = menuBarMenu(menu, tr("&Help"));
 	menuBarAction(mhelp, tr("About &Qt"), [=]() { mroot->aboutQt(); })->setMenuRole(QAction::NoRole);
 	menuBarSeparator(mhelp);
-	menuBarAction(mhelp, tr("&About e2 SAT Editor"), [=]() { this->aboutDialog(); });;//->setMenuRole(QAction::NoRole);
+	menuBarAction(mhelp, tr("&About e2 SAT Editor"), [=]() { this->aboutDialog(); })->setMenuRole(QAction::NoRole);
 
 	this->menu = menu;
 	this->mwind = mwind;

@@ -38,6 +38,8 @@ class editTransponder : public dialAbstract
 
 		editTransponder(dataHandler* data);
 		void display(QWidget* cwid);
+		void show();
+		void change();
 		void layout(QWidget* cwid);
 		void layoutChange(int vx);
 		void store();
@@ -47,7 +49,6 @@ class editTransponder : public dialAbstract
 		string getAddId();
 
 	protected:
-		void change();
 		void leadSatLayout();
 		void leadTerrestrialLayout();
 		void leadCableLayout();

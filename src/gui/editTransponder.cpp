@@ -44,6 +44,31 @@ void editTransponder::display(QWidget* cwid)
 	dial->exec();
 }
 
+void editTransponder::show()
+{
+	debug("show");
+
+	if (dtform == nullptr)
+		return;
+
+	if (this->state.edit)
+		retrieve();
+}
+
+void editTransponder::change()
+{
+	debug("change");
+
+	if (dtform == nullptr)
+		return;
+
+	for (auto & item : fields)
+	{
+		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
+			field->setText(NULL);
+	}
+}
+
 void editTransponder::layout(QWidget* cwid)
 {
 	this->dialAbstract::layout(cwid);
@@ -111,25 +136,6 @@ void editTransponder::layout(QWidget* cwid)
 	dtform->addWidget(dtl0, 0, 0);
 }
 
-void editTransponder::change()
-{
-	debug("change");
-
-	if (dtform == nullptr)
-		return;
-
-	for (auto & item : fields)
-	{
-		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
-			field->setText(NULL);
-	}
-
-	if (this->state.edit)
-		retrieve();
-	else
-		layoutChange(0);
-}
-
 void editTransponder::layoutChange(int vx)
 {
 	debug("layoutChange");
@@ -166,9 +172,6 @@ void editTransponder::layoutChange(int vx)
 			leadAtscLayout();
 		break;
 	}
-
-	if (this->state.edit)
-		retrieve(txid);
 }
 
 void editTransponder::leadSatLayout()
@@ -640,6 +643,9 @@ void editTransponder::typeComboChanged(int index)
 	this->state.yx = index;
 
 	layoutChange(this->state.yx);
+
+	if (this->state.edit)
+		retrieve(txid);
 }
 
 void editTransponder::store()
@@ -798,7 +804,7 @@ void editTransponder::retrieve(string txid)
 		int val = -1;
 
 		if (key == "ytype")
-			val = txp.ytype;
+			continue;
 		else if (key == "tsid")
 			val = txp.tsid;
 		else if (key == "dvbns")
@@ -896,15 +902,8 @@ void editTransponder::setEditId(string txid)
 {
 	debug("setEditId");
 
-	bool changed = false;
-	if (! this->state.edit || txid != this->txid)
-		changed = true;
-
 	this->state.edit = true;
 	this->txid = txid;
-
-	if (changed)
-		change();
 }
 
 string editTransponder::getEditId()
@@ -918,14 +917,7 @@ void editTransponder::setAddId()
 {
 	debug("setAddId");
 
-	bool changed = false;
-	if (this->state.edit)
-		changed = true;
-
 	this->state.edit = false;
-
-	if (changed)
-		change();
 }
 
 string editTransponder::getAddId()

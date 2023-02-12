@@ -105,6 +105,7 @@ void editService::serviceLayout()
 	QHBoxLayout* dtb10 = new QHBoxLayout;
 	dtf0->addRow(tr("Service type"), dtb10);
 
+	//TODO not listed stype (eg. 201)
 	//TODO FIX height
 	QLineEdit* dtf0st = new QLineEdit;
 	dtf0st->setProperty("field", "_stype");
@@ -222,7 +223,8 @@ void editService::transponderLayout()
 		}
 		else
 		{
-			name = QString::fromStdString(q.first);
+			string ppos = pos == -1 ? "NaN" : q.first;
+			name = QString::fromStdString(ppos);
 		}
 		dtf1tn->addItem(name, pos);
 	}
@@ -507,6 +509,7 @@ void editService::transponderComboChanged(int index)
 	string txid = qtxid.toStdString();
 
 	edittx->setEditId(txid);
+	edittx->change();
 }
 
 void editService::tabChanged(int index)
@@ -514,18 +517,25 @@ void editService::tabChanged(int index)
 	debug("tabChanged", "index", index);
 
 	if (index != 1 || this->state.transponder)
+	{
+		edittx->show();
 		return;
+	}
 
-	edittx->setAddId();
-	edittx->layout(this->dial);
-
-	if (! dtf1tx->currentData().isNull())
+	if (dtf1tx->currentData().isNull())
+	{
+		edittx->setAddId();
+	}
+	else
 	{
 		QString qtxid = dtf1tx->currentData().toString();
 		string txid = qtxid.toStdString();
 
 		edittx->setEditId(txid);
 	}
+
+	edittx->layout(this->dial);
+	edittx->show();
 
 	QGridLayout* layout = new QGridLayout;
 	layout->setContentsMargins(0, 0, 0, 0);
@@ -541,6 +551,7 @@ void editService::newTransponder()
 
 	dtf1tx->setCurrentIndex(-1);
 	edittx->setAddId();
+	edittx->change();
 
 	dtwid->setCurrentIndex(1);
 }
