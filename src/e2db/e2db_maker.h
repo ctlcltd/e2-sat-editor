@@ -39,15 +39,14 @@ class e2db_maker : virtual public e2db_abstract
 			b_service_endline = 12
 		};
 
-		inline static const string LAMEDB4_FORMATS[13] = {"", "transponders\n", "services\n", "end\n", "", "", "\n\t", " ", "\n/\n", "", "\n", "", "\n"};
 		inline static const string LAMEDB5_FORMATS[13] = {"# ", "", "", "", ":", "t", ",", ":", "\n", "s", ",", "\"", "\n"};
-
+		inline static const string LAMEDBX_FORMATS[13] = {"", "transponders\n", "services\n", "end\n", "", "", "\n\t", " ", "\n/\n", "", "\n", "", "\n"};
+	
 		e2db_maker();
 		virtual ~e2db_maker() = default;
 		void make_e2db();
 		void make_e2db_lamedb();
-		void make_e2db_lamedb4();
-		void make_e2db_lamedb5();
+		void make_e2db_lamedb(string filename, int ver);
 		void make_e2db_bouquets();
 		void make_e2db_userbouquets();
 		void make_db_tunersets();
@@ -56,9 +55,7 @@ class e2db_maker : virtual public e2db_abstract
 		unordered_map<string, e2db_file> get_output();
 
 	protected:
-		void make_lamedb(string filename, e2db_file& file);
-		void make_lamedb4(string filename, e2db_file& file);
-		void make_lamedb5(string filename, e2db_file& file);
+		void make_lamedb(string filename, e2db_file& file, int ver);
 		void make_bouquet(string bname, e2db_file& file);
 		void make_userbouquet(string bname, e2db_file& file);
 		void make_tunersets_xml(string filename, int ytype, e2db_file& file);

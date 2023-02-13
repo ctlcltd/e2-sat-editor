@@ -40,7 +40,7 @@ void e2db_parser::parse_e2db()
 	std::clock_t start = std::clock();
 
 	if (! find_services_file())
-		return error("parse_e2db", "Error", "Services file \"lamedb\" not found.");
+		return error("parse_e2db", "Error", "Lamedb services file not found.");
 
 	ifstream ilamedb (this->e2db[this->services_filename]);
 	parse_e2db_lamedb(ilamedb);
@@ -79,7 +79,7 @@ void e2db_parser::parse_e2db()
 		if (x.first.find("bouquets.") != string::npos)
 		{
 			ifstream ibouquet (this->e2db[x.first]);
-			parse_e2db_bouquet(ibouquet, x.first);
+			parse_e2db_bouquet(ibouquet, x.first, (x.first.rfind(".epl") != string::npos));
 			ibouquet.close();
 		}
 	}
@@ -91,6 +91,25 @@ void e2db_parser::parse_e2db()
 			parse_e2db_userbouquet(iuserbouquet, fname);
 			iuserbouquet.close();
 		}
+	}
+
+	if (this->e2db.count("blacklist"))
+	{
+		ifstream ilocked (this->e2db["blacklist"]);
+		parse_e2db_parentallock(PARENTALLOCK::blacklist, ilocked);
+		ilocked.close();
+	}
+	else if (this->e2db.count("services.locked"))
+	{
+		ifstream ilocked (this->e2db["services.locked"]);
+		parse_e2db_parentallock(PARENTALLOCK::locked, ilocked);
+		ilocked.close();
+	}
+	if (this->e2db.count("whitelist"))
+	{
+		ifstream ilocked (this->e2db["whitelist"]);
+		parse_e2db_parentallock(PARENTALLOCK::whitelist, ilocked);
+		ilocked.close();
 	}
 
 	std::clock_t end = std::clock();
@@ -117,7 +136,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 		this->e2db[filename] = x.first;
 	}
 	if (! find_services_file())
-		return error("parse_e2db", "Error", "Services file \"lamedb\" not found.");
+		return error("parse_e2db", "Error", "Lamedb services file not found.");
 
 	stringstream ilamedb;
 	ilamedb.write(&files[this->e2db[this->services_filename]].data[0], files[this->e2db[this->services_filename]].size);
@@ -157,7 +176,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 		{
 			stringstream ibouquet;
 			ibouquet.write(&files[x.second].data[0], files[x.second].size);
-			parse_e2db_bouquet(ibouquet, x.second);
+			parse_e2db_bouquet(ibouquet, x.second, (x.first.rfind(".epl") != string::npos));
 		}
 	}
 	for (auto & x : bouquets)
@@ -168,6 +187,25 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 			iuserbouquet.write(&files[this->e2db[filename]].data[0], files[this->e2db[filename]].size);
 			parse_e2db_userbouquet(iuserbouquet, filename);
 		}
+	}
+
+	if (this->e2db.count("blacklist"))
+	{
+		stringstream ilocked;
+		ilocked.write(&files[this->e2db["blacklist"]].data[0], files[this->e2db["blacklist"]].size);
+		parse_e2db_parentallock(PARENTALLOCK::blacklist, ilocked);
+	}
+	else if (this->e2db.count("services.locked"))
+	{
+		stringstream ilocked;
+		ilocked.write(&files[this->e2db["services.locked"]].data[0], files[this->e2db["services.locked"]].size);
+		parse_e2db_parentallock(PARENTALLOCK::locked, ilocked);
+	}
+	if (this->e2db.count("whitelist"))
+	{
+		stringstream ilocked;
+		ilocked.write(&files[this->e2db["whitelist"]].data[0], files[this->e2db["whitelist"]].size);
+		parse_e2db_parentallock(PARENTALLOCK::whitelist, ilocked);
 	}
 
 	std::clock_t end = std::clock();
@@ -190,23 +228,73 @@ void e2db_parser::parse_e2db_lamedb(istream& ilamedb)
 	{
 		case 2:
 		case 3:
-		return error("parse_e2db_lamedb", "Parser Error", "Unsupported services file format.");
 		case 4:
-			parse_e2db_lamedb4(ilamedb);
+			parse_e2db_lamedbx(ilamedb, ver);
 		break;
 		case 5:
 			parse_e2db_lamedb5(ilamedb);
 		break;
 		default:
-		return error("parse_e2db_lamedb", "Parser Error", "Unknown services file format.");
+		return error("parse_e2db_lamedb", "Parser Error", "Unknown Lamedb services file format.");
 	}
 }
 
-void e2db_parser::parse_e2db_lamedb4(istream& ilamedb)
+void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 {
-	debug("parse_e2db_lamedb4");
+	debug("parse_e2db_lamedb5", "version", 5);
 
-	LAMEDB_VER = 4;
+	LAMEDB_VER = 5;
+	bool step;
+	int tidx = 0;
+	int sidx = 0;
+	string line;
+	transponder tx;
+	service ch;
+
+	while (std::getline(ilamedb, line))
+	{
+		char type = line[0];
+		if (type == 't')
+			step = 1;
+		else if (type == 's')
+			step = 0;
+		else
+			continue;
+
+		size_t delimit = line.find(',');
+		string str = line.substr(2, delimit - 2);
+		string params = line.substr(delimit + 1);
+
+		// transponder
+		if (step)
+		{
+			tx = transponder ();
+			tidx += 1;
+			parse_lamedb_transponder_params(str, tx);
+			parse_lamedb_transponder_feparms(params.substr(2), params[0], tx);
+			add_transponder(tidx, tx);
+		}
+		// service
+		else
+		{
+			ch = service ();
+			sidx += 1;
+			size_t delimit = params.rfind('"');
+			string chname = params.substr(1, delimit - 1);
+			string chdata = params.rfind(',') != string::npos ? params.substr(delimit + 2) : "";
+			parse_lamedb_service_params(str, ch);
+			append_lamedb_service_name(chname, ch);
+			parse_lamedb_service_data(chdata, ch);
+			add_service(sidx, ch);
+		}
+	}
+}
+
+void e2db_parser::parse_e2db_lamedbx(istream& ilamedb, int ver)
+{
+	debug("parse_e2db_lamedbx", "version", ver);
+
+	LAMEDB_VER = ver;
 	int step = 0;
 	int s = 0;
 	int tidx = 0;
@@ -275,57 +363,6 @@ void e2db_parser::parse_e2db_lamedb4(istream& ilamedb)
 				add_service(sidx, ch);
 				s = 0;
 			}
-		}
-	}
-}
-
-void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
-{
-	debug("parse_e2db_lamedb5");
-
-	LAMEDB_VER = 5;
-	bool step;
-	int tidx = 0;
-	int sidx = 0;
-	string line;
-	transponder tx;
-	service ch;
-
-	while (std::getline(ilamedb, line))
-	{
-		char type = line[0];
-		if (type == 't')
-			step = 1;
-		else if (type == 's')
-			step = 0;
-		else
-			continue;
-
-		size_t delimit = line.find(',');
-		string str = line.substr(2, delimit - 2);
-		string params = line.substr(delimit + 1);
-
-		// transponder
-		if (step)
-		{
-			tx = transponder ();
-			tidx += 1;
-			parse_lamedb_transponder_params(str, tx);
-			parse_lamedb_transponder_feparms(params.substr(2), params[0], tx);
-			add_transponder(tidx, tx);
-		}
-		// service
-		else
-		{
-			ch = service ();
-			sidx += 1;
-			size_t delimit = params.rfind('"');
-			string chname = params.substr(1, delimit - 1);
-			string chdata = params.rfind(',') != string::npos ? params.substr(delimit + 2) : "";
-			parse_lamedb_service_params(str, ch);
-			append_lamedb_service_name(chname, ch);
-			parse_lamedb_service_data(chdata, ch);
-			add_service(sidx, ch);
 		}
 	}
 }
@@ -473,12 +510,13 @@ void e2db_parser::append_lamedb_service_name(string str, service& ch)
 	ch.chname = str;
 }
 
-void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string bname)
+void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string bname, bool epl)
 {
 	debug("parse_e2db_bouquet", "bname", bname);
 
-	bool add = true;
+	bool add = ! bouquets.count(bname);
 	string line;
+
 	bouquet& bs = bouquets[bname];
 	userbouquet ub;
 
@@ -487,16 +525,17 @@ void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string bname)
 		if (line.find("#SERVICE") != string::npos)
 		{
 			ub = userbouquet ();
-			parse_userbouquet_reference(line.substr(9), ub);
+			if (epl)
+				parse_userbouquet_epl_reference(line.substr(9), ub);
+			else
+				parse_userbouquet_reference(line.substr(9), ub);
 			ub.pname = bname;
 			add_userbouquet(int (index["ubs"].size()), ub);
 		}
 		else if (line.find("#NAME") != string::npos)
 		{
-			if (! bouquets.count(bname))
+			if (add)
 				bs = bouquet ();
-			else
-				add = false;
 
 			bs.bname = bname;
 			bs.name = line.substr(6);
@@ -525,6 +564,7 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string bname)
 	int idx = 0;
 	int y = 0;
 	string line;
+
 	userbouquet& ub = userbouquets[bname];
 	channel_reference chref;
 	service_reference ref;
@@ -576,6 +616,44 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string bname)
 	}
 }
 
+void e2db_parser::parse_e2db_parentallock(PARENTALLOCK ltype, istream& ilocked)
+{
+	debug("parse_e2db_parentallock");
+
+	string line;
+
+	channel_reference chref;
+	service_reference ref;
+
+	if (ltype == PARENTALLOCK::locked)
+		std::getline(ilocked, line);
+
+	while (std::getline(ilocked, line))
+	{
+		ref = service_reference ();
+
+		parse_channel_reference(line, chref, ref);
+
+		char chid[25];
+
+		std::snprintf(chid, 25, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
+
+		if (db.services.count(chid))
+		{
+			set_parentallock(ltype, chid);
+		}
+		else if (ltype == PARENTALLOCK::locked)
+		{
+			userbouquet ub;
+
+			parse_userbouquet_epl_reference(line, ub);
+
+			if (! ub.bname.empty() && index.count(ub.bname))
+				set_parentallock(ltype, "", ub.bname);
+		}
+	}
+}
+
 void e2db_parser::parse_userbouquet_reference(string str, userbouquet& ub)
 {
 	char refid[33];
@@ -586,6 +664,19 @@ void e2db_parser::parse_userbouquet_reference(string str, userbouquet& ub)
 
 	ub.bname = string (fname);
 	ub.bname = ub.bname.substr(1, ub.bname.length() - 2);
+}
+
+void e2db_parser::parse_userbouquet_epl_reference(string str, userbouquet& ub)
+{
+	string path;
+	size_t pos = str.rfind("0:");
+
+	if (pos != string::npos)
+		path = str.substr(pos, str.length());
+
+	string filename = std::filesystem::path(path).filename().u8string(); //C++17
+
+	ub.bname = filename;
 }
 
 void e2db_parser::parse_channel_reference(string str, channel_reference& chref, service_reference& ref)
@@ -986,6 +1077,8 @@ bool e2db_parser::find_services_file()
 		this->services_filename = "lamedb5";
 	else if (this->e2db.count("lamedb"))
 		this->services_filename = "lamedb";
+	else if (this->e2db.count("services"))
+		this->services_filename = "services";
 
 	return ! this->services_filename.empty();
 }
@@ -1025,7 +1118,7 @@ bool e2db_parser::list_file(string path)
 	}
 	if (! find_services_file())
 	{
-		error("list_file", "File Error", "Services file \"lamedb\" not found.");
+		error("list_file", "File Error", "Lamedb services file not found.");
 		return false;
 	}
 	this->filepath = path;

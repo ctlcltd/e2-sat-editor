@@ -108,11 +108,13 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 			dst->parse_e2db_lamedb(ifile);
 		break;
 		case FPORTS::all_services__2_2:
+			dst->parse_e2db_lamedbx(ifile, 2);
+		break;
 		case FPORTS::all_services__2_3:
-			return error("import_file", "Error", "Unsupported services file format.");
+			dst->parse_e2db_lamedbx(ifile, 3);
 		break;
 		case FPORTS::all_services__2_4:
-			dst->parse_e2db_lamedb4(ifile);
+			dst->parse_e2db_lamedbx(ifile, 4);
 		break;
 		case FPORTS::all_services__2_5:
 			dst->parse_e2db_lamedb5(ifile);
@@ -178,26 +180,27 @@ void e2db::export_file(FPORTS fpo, string path)
 	e2db_file file;
 	string filename = std::filesystem::path(path).filename().u8string(); //C++17
 
+	string fname = LAMEDB_VER == 5 ? "lamedb5" : (LAMEDB_VER < 4 ? "services" : "lamedb");
+
 	switch (fpo)
 	{
 		case FPORTS::directory:
 			write(path);
 		return;
 		case FPORTS::all_services:
-			if (LAMEDB_VER == 4)
-				make_lamedb4("lamedb", file);
-			else if (LAMEDB_VER == 5)
-				make_lamedb5("lamedb5", file);
+			make_lamedb(fname, file, LAMEDB_VER);
 		break;
 		case FPORTS::all_services__2_2:
+			make_lamedb("services", file, 2);
+		break;
 		case FPORTS::all_services__2_3:
-			return error("export_file", "Error", "Unsupported services file format.");
+			make_lamedb("services", file, 3);
 		break;
 		case FPORTS::all_services__2_4:
-			make_lamedb4("lamedb", file);
+			make_lamedb("lamedb", file, 4);
 		break;
 		case FPORTS::all_services__2_5:
-			make_lamedb5("lamedb5", file);
+			make_lamedb("lamedb5", file, 5);
 		break;
 		case FPORTS::single_tunersets:
 		case FPORTS::all_tunersets:

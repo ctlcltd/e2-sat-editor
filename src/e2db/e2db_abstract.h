@@ -95,6 +95,13 @@ struct e2db_abstract : protected e2se::log_factory
 			regular_marker = STYPE::marker
 		};
 
+		// parental lock
+		enum PARENTALLOCK {
+			blacklist,
+			whitelist,
+			locked
+		};
+
 		// service type extended - type
 		inline static const unordered_map<int, int> STYPE_EXT_TYPE = {
 			{STYPE::data, STYPE::data},
@@ -213,6 +220,7 @@ struct e2db_abstract : protected e2se::log_factory
 			int snum = 0;
 			int srcid = -1;
 			int index = -1;
+			bool locked = false;
 			string txid;
 			string chname;
 			// data <field char, vector<value string>>
@@ -294,6 +302,7 @@ struct e2db_abstract : protected e2se::log_factory
 			string pname;
 			// channels <chid string, channel_reference struct>
 			unordered_map<string, channel_reference> channels;
+			bool locked = false;
 			int index = -1;
 		};
 
@@ -355,6 +364,8 @@ struct e2db_abstract : protected e2se::log_factory
 			unordered_map<string, transponder> transponders;
 			// services <chid string, service struct>
 			unordered_map<string, service> services;
+			// parental lock type
+			PARENTALLOCK parental;
 		};
 
 		struct comment
@@ -475,6 +486,7 @@ struct e2db_abstract : protected e2se::log_factory
 		void add_tunersets(tunersets& tv);
 		void add_tunersets_table(int idx, tunersets_table& tn, tunersets& tv);
 		void add_tunersets_transponder(int idx, tunersets_transponder& tntxp, tunersets_table& tn);
+		void set_parentallock(PARENTALLOCK ltype, string chid, string bname = "");
 
 		// e2db <filename string, full-path string>
 		unordered_map<string, string> e2db;

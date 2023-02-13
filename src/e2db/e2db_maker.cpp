@@ -56,66 +56,43 @@ void e2db_maker::make_e2db_lamedb()
 
 	switch (LAMEDB_VER)
 	{
+		case 2:
+		case 3:
+			make_e2db_lamedb("services", LAMEDB_VER);
+		break;
 		case 4:
-			make_e2db_lamedb4();
+			make_e2db_lamedb("lamedb", 4);
 		break;
 		case 5:
-			make_e2db_lamedb5();
+			make_e2db_lamedb("lamedb5", 5);
 		break;
 		default:
-		return error("make_e2db_lamedb", "Maker Error", "Unknown services file format.");
+		return error("make_e2db_lamedb", "Maker Error", "Unknown Lamedb services file format.");
 	}
 
 	//TEST
 	if (MAKER_LAMEDB5)
-		make_e2db_lamedb5();
+		make_e2db_lamedb("lamedb5", 5);
 	//TEST
 }
 
-void e2db_maker::make_e2db_lamedb4()
+void e2db_maker::make_e2db_lamedb(string filename, int ver)
 {
-	debug("make_e2db_lamedb4");
+	debug("make_e2db_lamedb", "version", ver);
+
 	e2db_file file;
-	make_lamedb4("lamedb", file);
-	this->e2db_out["lamedb"] = file;
-}
-
-void e2db_maker::make_e2db_lamedb5()
-{
-	debug("make_e2db_lamedb5");
-	e2db_file file;
-	make_lamedb5("lamedb5", file);
-	this->e2db_out["lamedb5"] = file;
-}
-
-void e2db_maker::make_lamedb4(string filename, e2db_file& file)
-{
-	debug("make_lamedb4");
-	int ver = LAMEDB_VER;
-	LAMEDB_VER = 4;
-	make_lamedb(filename, file);
+	make_lamedb(filename, file, ver);
 	this->e2db_out[filename] = file;
-	LAMEDB_VER = ver;
 }
 
-void e2db_maker::make_lamedb5(string filename, e2db_file& file)
+void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 {
-	debug("make_lamedb5");
-	int ver = LAMEDB_VER;
-	LAMEDB_VER = 5;
-	make_lamedb(filename, file);
-	this->e2db_out[filename] = file;
-	LAMEDB_VER = ver;
-}
+	debug("make_lamedb", "version", ver);
 
-void e2db_maker::make_lamedb(string filename, e2db_file& file)
-{
-	debug("make_lamedb");
-
-	const string (&formats)[13] = LAMEDB_VER < 5 ? LAMEDB4_FORMATS : LAMEDB5_FORMATS;
+	const string (&formats)[13] = ver < 5 ? LAMEDBX_FORMATS : LAMEDB5_FORMATS;
 
 	stringstream ss;
-	ss << "eDVB services /" << LAMEDB_VER << "/" << endl;
+	ss << "eDVB services /" << ver << "/" << endl;
 
 	ss << formats[MAKER_FORMAT::b_transponders_start];
 	for (auto & x : index["txs"])

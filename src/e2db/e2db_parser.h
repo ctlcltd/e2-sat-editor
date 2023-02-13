@@ -32,11 +32,13 @@ class e2db_parser : virtual public e2db_abstract
 		void parse_e2db();
 		void parse_e2db(unordered_map<string, e2db_file> files);
 		void parse_e2db_lamedb(istream& ilamedb);
-		void parse_e2db_lamedb4(istream& ilamedb);
 		void parse_e2db_lamedb5(istream& ilamedb);
-		void parse_e2db_bouquet(istream& ibouquet, string bname);
+		void parse_e2db_lamedbx(istream& ilamedb, int ver);
+		void parse_e2db_bouquet(istream& ibouquet, string bname, bool epl = false);
 		void parse_e2db_userbouquet(istream& iuserbouquet, string bname);
+		void parse_e2db_parentallock(PARENTALLOCK ltype, istream& ilocked);
 		void parse_userbouquet_reference(string str, userbouquet& ub);
+		void parse_userbouquet_epl_reference(string str, userbouquet& ub);
 		void parse_channel_reference(string str, channel_reference& chref, service_reference& ref);
 		void parse_tunersets_xml(int ytype, istream& itunxml);
 		bool find_services_file();
