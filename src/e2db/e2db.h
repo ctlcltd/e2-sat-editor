@@ -53,6 +53,10 @@ class e2db : public e2db_parser, public e2db_maker, public e2db_converter
 		void add_tunersets_transponder(tunersets_transponder& tntxp, tunersets_table tn);
 		void edit_tunersets_transponder(string trid, tunersets_transponder& tntxp, tunersets_table tn);
 		void remove_tunersets_transponder(string trid, tunersets_table tn);
+		void set_service_parentallock(string chid);
+		void unset_service_parentallock(string chid);
+		void set_userbouquet_parentallock(string bname);
+		void unset_userbouquet_parentallock(string bname);
 		string get_filepath();
 		string get_services_filename();
 		map<string, vector<pair<int, string>>> get_channels_index();

@@ -125,6 +125,7 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 	tid->reset();
 
 	dbih->cache(merge);
+	dbih->fixBouquets();
 
 	tid->load();
 }

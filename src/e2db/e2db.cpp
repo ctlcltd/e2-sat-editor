@@ -410,6 +410,7 @@ void e2db::edit_bouquet(bouquet& bs)
 	bouquets[bs.bname] = bs;
 }
 
+//TODO FIX multiple erase and iterators
 void e2db::remove_bouquet(string bname)
 {
 	debug("remove_bouquet", "bname", bname);
@@ -938,6 +939,50 @@ void e2db::edit_tunersets_transponder(string trid, tunersets_transponder& tntxp,
 				it->second = tntxp.trid;
 		}
 	}
+}
+
+void e2db::set_service_parentallock(string chid)
+{
+	debug("set_service_parentallock", "chid", chid);
+
+	if (! db.services.count(chid))
+		return error("set_service_parentallock", "Error", "Service \"" + chid + "\" not exists.");
+
+	service& ch = db.services[chid];
+	ch.locked = true;
+}
+
+void e2db::unset_service_parentallock(string chid)
+{
+	debug("unset_service_parentallock", "chid", chid);
+
+	if (! db.services.count(chid))
+		return error("unset_service_parentallock", "Error", "Service \"" + chid + "\" not exists.");
+
+	service& ch = db.services[chid];
+	ch.locked = false;
+}
+
+void e2db::set_userbouquet_parentallock(string bname)
+{
+	debug("set_userbouquet_parentallock", "bname", bname);
+
+	if (! userbouquets.count(bname))
+		return error("set_userbouquet_parentallock", "Error", "Userbouquet \"" + bname + "\" not exists.");
+
+	userbouquet& ub = userbouquets[bname];
+	ub.locked = true;
+}
+
+void e2db::unset_userbouquet_parentallock(string bname)
+{
+	debug("unset_userbouquet_parentallock", "bname", bname);
+
+	if (! userbouquets.count(bname))
+		return error("unset_userbouquet_parentallock", "Error", "Userbouquet \"" + bname + "\" not exists.");
+
+	userbouquet& ub = userbouquets[bname];
+	ub.locked = false;
 }
 
 string e2db::get_filepath()

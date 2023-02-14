@@ -598,7 +598,7 @@ void e2db_maker::make_parentallock_list(string filename, PARENTALLOCK ltype, e2d
 
 		for (auto & x : userbouquets)
 		{
-			userbouquet& ub = x.second;
+			userbouquet ub = x.second;
 
 			if (ub.locked)
 			{
@@ -615,10 +615,42 @@ void e2db_maker::make_parentallock_list(string filename, PARENTALLOCK ltype, e2d
 			}
 		}
 	}
+	else
+	{
+		for (auto & x : userbouquets)
+		{
+			userbouquet ub = x.second;
+
+			if (ub.locked)
+			{
+				string bname = ub.bname;
+
+				for (auto & x : index[bname])
+				{
+					channel_reference chref = ub.channels[x.second];
+					
+					if (db.services.count(x.second))
+					{
+						service ch = db.services[x.second];
+						
+						ss << "1:0:1:";
+						ss << hex;
+						ss << uppercase << ch.ssid << ':';
+						ss << uppercase << ch.tsid << ':';
+						ss << uppercase << ch.onid << ':';
+						ss << uppercase << ch.dvbns << ':';
+						ss << "0:0:0:";
+						ss << dec;
+						ss << endl;
+					}
+				}
+			}
+		}
+	}
 
 	for (auto & x : db.services)
 	{
-		service& ch = x.second;
+		service ch = x.second;
 
 		if (ch.locked)
 		{

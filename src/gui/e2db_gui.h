@@ -39,6 +39,7 @@ class e2db : public ::e2se_e2db::e2db
 		e2db();
 		void didChange();
 		void cache(bool clear = false);
+		void fixBouquets();
 		string addTransponder(transponder& tx);
 		string editTransponder(string txid, transponder& tx);
 		void removeTransponder(string txid);
@@ -64,6 +65,10 @@ class e2db : public ::e2se_e2db::e2db
 		string addTunersetsTransponder(tunersets_transponder& tntxp, tunersets_table tn);
 		string editTunersetsTransponder(string trid, tunersets_transponder& tntxp, tunersets_table tn);
 		void removeTunersetsTransponder(string trid, tunersets_table tn);
+		void setServiceParentalLock(string chid);
+		void unsetServiceParentalLock(string chid);
+		void setUserbouquetParentalLock(string bname);
+		void unsetUserbouquetParentalLock(string bname);
 		bool prepare(string path);
 		bool write(string path);
 		void importFile(vector<string> paths);

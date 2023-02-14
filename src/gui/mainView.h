@@ -69,13 +69,15 @@ class mainView : public viewAbstract
 		enum ITEM_DATA_ROLE {
 			idx,
 			marker,
-			chid
+			chid,
+			locked
 		};
 
 		enum ITEM_ROW_ROLE {
 			x,
 			chnum,
 			chname,
+			chlock,
 			debug_chid,
 			debug_txid,
 			chssid,
@@ -141,6 +143,12 @@ class mainView : public viewAbstract
 		void editService();
 		void addMarker();
 		void editMarker();
+		void setServiceParentalLock();
+		void unsetServiceParentalLock();
+		void toggleServiceParentalLock();
+		void setUserbouquetParentalLock();
+		void unsetUserbouquetParentalLock();
+		void toggleUserbouquetParentalLock();
 		void putListItems(vector<QString> items);
 		void showTreeEditContextMenu(QPoint &pos);
 		void showListEditContextMenu(QPoint &pos);

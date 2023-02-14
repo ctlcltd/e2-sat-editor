@@ -39,7 +39,7 @@ e2db::e2db()
 
 void e2db::setup()
 {
-	// debug("setup");
+	debug("setup");
 
 	QSettings settings;
 
@@ -84,7 +84,7 @@ void e2db::didChange()
 
 void e2db::createBouquets()
 {
-	// debug("createBouquets");
+	debug("createBouquets");
 
 	// empty services list - touch index["chs"]
 	if (! index.count("chs"))
@@ -105,6 +105,37 @@ void e2db::createBouquets()
 	bs.btype = e2db::STYPE::radio;
 	bs.nname = "Radio";
 	this->::e2se_e2db::e2db::add_bouquet(bs);
+}
+
+void e2db::fixBouquets()
+{
+	debug("fixBouquets");
+
+	if (index["bss"].size() > 2)
+	{
+		vector<string> del;
+
+		for (auto & x : bouquets)
+		{
+			bouquet bs = x.second;
+
+			if (bs.userbouquets.size() == 0)
+			{
+				string bname = bs.bname;
+
+				for (auto it = index["bss"].begin(); it != index["bss"].end(); it++)
+				{
+					if (it->second == bname)
+						index["bss"].erase(it);
+				}
+			}
+		}
+		for (string & w : del)
+		{
+			bouquets.erase(w);
+		}
+		del.clear();
+	}
 }
 
 void e2db::cache(bool clear)
@@ -298,6 +329,36 @@ void e2db::removeTunersetsTransponder(string trid, tunersets_table tn)
 	this->::e2se_e2db::e2db::remove_tunersets_transponder(trid, tn);
 }
 
+void e2db::setServiceParentalLock(string chid)
+{
+	debug("setServiceParentalLock", "chid", chid);
+
+	this->::e2se_e2db::e2db::set_service_parentallock(chid);
+	entries.services[chid][1] = "";
+}
+
+void e2db::unsetServiceParentalLock(string chid)
+{
+	debug("unsetServiceParentalLock", "chid", chid);
+
+	this->::e2se_e2db::e2db::unset_service_parentallock(chid);
+	entries.services[chid][1] = "\0";
+}
+
+void e2db::setUserbouquetParentalLock(string bname)
+{
+	debug("setUserbouquetParentalLock", "bname", bname);
+
+	this->::e2se_e2db::e2db::set_userbouquet_parentallock(bname);
+}
+
+void e2db::unsetUserbouquetParentalLock(string bname)
+{
+	debug("unsetUserbouquetParentalLock", "bname", bname);
+
+	this->::e2se_e2db::e2db::unset_userbouquet_parentallock(bname);
+}
+
 bool e2db::prepare(string filename)
 {
 	debug("prepare");
@@ -306,6 +367,7 @@ bool e2db::prepare(string filename)
 		return false;
 
 	cache();
+	fixBouquets();
 
 	return true;
 }
@@ -328,6 +390,7 @@ void e2db::importFile(vector<string> paths)
 	import_file(paths);
 
 	cache(merge);
+	fixBouquets();
 }
 
 void e2db::exportFile(int bit, vector<string> paths)
@@ -360,6 +423,7 @@ void e2db::importBlob(unordered_map<string, e2db_file> files)
 	}
 
 	cache(merge);
+	fixBouquets();
 }
 
 QStringList e2db::entryTransponder(transponder tx)
@@ -438,6 +502,7 @@ QStringList e2db::entryService(service ch)
 {
 	QString chname = fixUnicodeChars(ch.chname);
 	QString chid = QString::fromStdString(ch.chid);
+	QString locked = ch.locked ? "" : "\0";
 	QString txid = QString::fromStdString(ch.txid);
 	QString ssid = QString::number(ch.ssid);
 	QString tsid = QString::number(ch.tsid);
@@ -461,7 +526,7 @@ QStringList e2db::entryService(service ch)
 	}
 	QString pname = QString::fromStdString(value_channel_provider(ch));
 
-	QStringList entry = QStringList ({chname, chid, txid, ssid, tsid, stype, scas, pname});
+	QStringList entry = QStringList ({chname, locked, chid, txid, ssid, tsid, stype, scas, pname});
 	entry.append(entries.transponders[ch.txid]);
 	return entry;
 }
@@ -471,7 +536,7 @@ QStringList e2db::entryMarker(channel_reference chref)
 	QString chid = QString::fromStdString(chref.chid);
 	QString value = QString::fromStdString(chref.value);
 
-	return QStringList ({NULL, value, chid, NULL, NULL, NULL, "MARKER", NULL});
+	return QStringList ({NULL, value, NULL, chid, NULL, NULL, NULL, "MARKER", NULL});
 }
 
 QStringList e2db::entryTunersetsTable(tunersets_table tn)
