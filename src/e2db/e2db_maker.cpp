@@ -44,6 +44,8 @@ void e2db_maker::make_e2db()
 	make_e2db_userbouquets();
 	if (MAKER_TUNERSETS)
 		make_db_tunersets();
+	if (MAKER_PARENTALLOCK_LIST)
+		make_e2db_parentallock_list();
 
 	std::clock_t end = std::clock();
 
@@ -223,7 +225,10 @@ void e2db_maker::make_e2db_bouquets()
 	for (auto & x : bouquets)
 	{
 		e2db_file file;
-		make_bouquet(x.first, file);
+		if (LAMEDB_VER < 4)
+			make_bouquet_epl(x.first, file);
+		else
+			make_bouquet(x.first, file);
 		this->e2db_out[x.first] = file;
 	}
 }
@@ -270,6 +275,33 @@ void e2db_maker::make_db_tunersets()
 	}
 }
 
+void e2db_maker::make_e2db_parentallock_list()
+{
+	debug("make_e2db_parentallock_list");
+
+	if (db.parental == PARENTALLOCK::locked)
+	{
+		e2db_file file;
+		make_parentallock_list("services.locked", PARENTALLOCK::locked, file);
+		this->e2db_out["services.locked"] = file;
+	}
+	else
+	{
+		string filename = db.parental ? "blacklist" : "whitelist";
+
+		e2db_file file;
+		make_parentallock_list(filename, db.parental, file);
+		this->e2db_out[filename] = file;
+
+		filename = db.parental ? "whitelist" : "blacklist";
+		e2db_file empty;
+		empty.filename = filename;
+		empty.mime = "text/plain";
+		empty.size = 0;
+		this->e2db_out[filename] = empty;
+	}
+}
+
 void e2db_maker::make_bouquet(string bname, e2db_file& file)
 {
 	debug("make_bouquet", "bname", bname);
@@ -287,7 +319,37 @@ void e2db_maker::make_bouquet(string bname, e2db_file& file)
 		ss << "ORDER BY bouquet";
 		ss << endl;
 	}
-	// ss << endl;
+
+	file.filename = bname;
+	file.data = ss.str();
+	file.mime = "text/plain";
+	file.size = file.data.size();
+}
+
+void e2db_maker::make_bouquet_epl(string bname, e2db_file& file)
+{
+	debug("make_bouquet_epl", "bname", bname);
+
+	bouquet bs = bouquets[bname];
+	stringstream ss;
+
+	ss << "#NAME " << bs.name << endl;
+	for (string & w : bs.userbouquets)
+	{
+		size_t pos = w.find('.');
+		size_t len = w.rfind('.');
+		string name;
+		string path = MAKER_BPATH + '/' + w;
+
+		if (pos != string::npos && len != string::npos)
+			name = w.substr(pos, len);
+
+		ss << "#SERVICE: ";
+		ss << "4097:7:0:" << name << ":0:0:0:0:0:0:";
+		ss << path << endl;
+		ss << "#TYPE 16385" << endl;
+		ss << path << endl;
+	}
 
 	file.filename = bname;
 	file.data = ss.str();
@@ -337,7 +399,6 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 		ss << dec;
 		ss << endl;
 	}
-	// ss << endl;
 
 	file.filename = bname;
 	file.data = ss.str();
@@ -522,6 +583,60 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 	file.filename = filename;
 	file.data = str;
 	file.mime = "text/xml";
+	file.size = file.data.size();
+}
+
+void e2db_maker::make_parentallock_list(string filename, PARENTALLOCK ltype, e2db_file& file)
+{
+	debug("make_parentallock_list", "ltype", ltype);
+
+	stringstream ss;
+
+	if (ltype == PARENTALLOCK::locked)
+	{
+		ss << "Parentallocked Services" << endl;
+
+		for (auto & x : userbouquets)
+		{
+			userbouquet& ub = x.second;
+
+			if (ub.locked)
+			{
+				size_t pos = ub.bname.find(".");
+				size_t len = ub.bname.rfind(".");
+				string name;
+				string path = MAKER_BPATH + '/' + ub.bname;
+
+				if (pos != string::npos && len != string::npos)
+					name = ub.bname.substr(pos, len);
+
+				ss << "4097:7:0:" << name << ":0:0:0:0:0:0:";
+				ss << path << endl;
+			}
+		}
+	}
+
+	for (auto & x : db.services)
+	{
+		service& ch = x.second;
+
+		if (ch.locked)
+		{
+			ss << "1:0:1:";
+			ss << hex;
+			ss << uppercase << ch.ssid << ':';
+			ss << uppercase << ch.tsid << ':';
+			ss << uppercase << ch.onid << ':';
+			ss << uppercase << ch.dvbns << ':';
+			ss << "0:0:0:";
+			ss << dec;
+			ss << endl;
+		}
+	}
+
+	file.filename = filename;
+	file.data = ss.str();
+	file.mime = "text/plain";
 	file.size = file.data.size();
 }
 

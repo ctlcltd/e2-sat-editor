@@ -22,6 +22,11 @@ class e2db_maker : virtual public e2db_abstract
 
 		inline static bool MAKER_LAMEDB5 = false;
 		inline static bool MAKER_TUNERSETS = true;
+		inline static bool MAKER_PARENTALLOCK_LIST = true;
+
+		inline static string MAKER_SPATH = "/var/tuxbox/config/enigma";
+		inline static string MAKER_TPATH = MAKER_SPATH;
+		inline static string MAKER_BPATH = MAKER_SPATH;
 
 		enum MAKER_FORMAT {
 			b_comment = 0,
@@ -50,6 +55,7 @@ class e2db_maker : virtual public e2db_abstract
 		void make_e2db_bouquets();
 		void make_e2db_userbouquets();
 		void make_db_tunersets();
+		void make_e2db_parentallock_list();
 		bool push_file(string path);
 		bool write(string path);
 		unordered_map<string, e2db_file> get_output();
@@ -57,8 +63,10 @@ class e2db_maker : virtual public e2db_abstract
 	protected:
 		void make_lamedb(string filename, e2db_file& file, int ver);
 		void make_bouquet(string bname, e2db_file& file);
+		void make_bouquet_epl(string bname, e2db_file& file);
 		void make_userbouquet(string bname, e2db_file& file);
 		void make_tunersets_xml(string filename, int ytype, e2db_file& file);
+		void make_parentallock_list(string filename, PARENTALLOCK ltype, e2db_file& file);
 };
 }
 #endif /* e2db_maker_h */

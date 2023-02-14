@@ -48,6 +48,16 @@ void e2db::setup()
 	e2db::MAKER_LAMEDB5 = settings.value("application/makerLamedb5", true).toBool();
 	e2db::PARSER_TUNERSETS = settings.value("application/parserTunerset", true).toBool();
 	e2db::MAKER_TUNERSETS = settings.value("application/makerTunerset", true).toBool();
+	e2db::PARSER_PARENTALLOCK_LIST = settings.value("application/parserParentalLock", true).toBool();
+	e2db::MAKER_PARENTALLOCK_LIST = settings.value("application/makerParentalLock", true).toBool();
+
+	int profile_sel = settings.value("profile/selected").toInt();
+	settings.beginReadArray("profile");
+	settings.setArrayIndex(profile_sel);
+	e2db::MAKER_TPATH = settings.value("pathTransponders").toString().toStdString();
+	e2db::MAKER_SPATH = settings.value("pathServices").toString().toStdString();
+	e2db::MAKER_BPATH = settings.value("pathBouquets").toString().toStdString();
+	settings.endArray();
 
 	e2db::CSV_HEADER = settings.value("preference/toolsCsvHeader", true).toBool();
 	string csv_dlm = settings.value("preference/toolsCsvDelimiter", "\n").toString().toStdString();

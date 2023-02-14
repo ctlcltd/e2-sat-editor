@@ -93,23 +93,32 @@ void e2db_parser::parse_e2db()
 		}
 	}
 
-	if (this->e2db.count("blacklist"))
+	if (PARSER_PARENTALLOCK_LIST)
 	{
-		ifstream ilocked (this->e2db["blacklist"]);
-		parse_e2db_parentallock(PARENTALLOCK::blacklist, ilocked);
-		ilocked.close();
-	}
-	else if (this->e2db.count("services.locked"))
-	{
-		ifstream ilocked (this->e2db["services.locked"]);
-		parse_e2db_parentallock(PARENTALLOCK::locked, ilocked);
-		ilocked.close();
-	}
-	if (this->e2db.count("whitelist"))
-	{
-		ifstream ilocked (this->e2db["whitelist"]);
-		parse_e2db_parentallock(PARENTALLOCK::whitelist, ilocked);
-		ilocked.close();
+		if (LAMEDB_VER < 4)
+		{
+			if (this->e2db.count("services.locked"))
+			{
+				ifstream ilocked (this->e2db["services.locked"]);
+				parse_e2db_parentallock_list(PARENTALLOCK::locked, ilocked);
+				ilocked.close();
+			}
+		}
+		else
+		{
+			if (this->e2db.count("blacklist"))
+			{
+				ifstream ilocked (this->e2db["blacklist"]);
+				parse_e2db_parentallock_list(PARENTALLOCK::blacklist, ilocked);
+				ilocked.close();
+			}
+			if (this->e2db.count("whitelist"))
+			{
+				ifstream ilocked (this->e2db["whitelist"]);
+				parse_e2db_parentallock_list(PARENTALLOCK::whitelist, ilocked);
+				ilocked.close();
+			}
+		}
 	}
 
 	std::clock_t end = std::clock();
@@ -189,23 +198,32 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 		}
 	}
 
-	if (this->e2db.count("blacklist"))
+	if (PARSER_PARENTALLOCK_LIST)
 	{
-		stringstream ilocked;
-		ilocked.write(&files[this->e2db["blacklist"]].data[0], files[this->e2db["blacklist"]].size);
-		parse_e2db_parentallock(PARENTALLOCK::blacklist, ilocked);
-	}
-	else if (this->e2db.count("services.locked"))
-	{
-		stringstream ilocked;
-		ilocked.write(&files[this->e2db["services.locked"]].data[0], files[this->e2db["services.locked"]].size);
-		parse_e2db_parentallock(PARENTALLOCK::locked, ilocked);
-	}
-	if (this->e2db.count("whitelist"))
-	{
-		stringstream ilocked;
-		ilocked.write(&files[this->e2db["whitelist"]].data[0], files[this->e2db["whitelist"]].size);
-		parse_e2db_parentallock(PARENTALLOCK::whitelist, ilocked);
+		if (LAMEDB_VER < 4)
+		{
+			if (this->e2db.count("services.locked"))
+			{
+				stringstream ilocked;
+				ilocked.write(&files[this->e2db["services.locked"]].data[0], files[this->e2db["services.locked"]].size);
+				parse_e2db_parentallock_list(PARENTALLOCK::locked, ilocked);
+			}
+		}
+		else
+		{
+			if (this->e2db.count("blacklist"))
+			{
+				stringstream ilocked;
+				ilocked.write(&files[this->e2db["blacklist"]].data[0], files[this->e2db["blacklist"]].size);
+				parse_e2db_parentallock_list(PARENTALLOCK::blacklist, ilocked);
+			}
+			if (this->e2db.count("whitelist"))
+			{
+				stringstream ilocked;
+				ilocked.write(&files[this->e2db["whitelist"]].data[0], files[this->e2db["whitelist"]].size);
+				parse_e2db_parentallock_list(PARENTALLOCK::whitelist, ilocked);
+			}
+		}
 	}
 
 	std::clock_t end = std::clock();
@@ -616,9 +634,9 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string bname)
 	}
 }
 
-void e2db_parser::parse_e2db_parentallock(PARENTALLOCK ltype, istream& ilocked)
+void e2db_parser::parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& ilocked)
 {
-	debug("parse_e2db_parentallock");
+	debug("parse_e2db_parentallock_list", "ltype", ltype);
 
 	string line;
 
