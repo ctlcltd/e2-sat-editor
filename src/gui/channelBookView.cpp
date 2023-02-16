@@ -305,15 +305,15 @@ void channelBookView::populate()
 				e2db::transponder tx = dbih->db.transponders[ch.txid];
 				txp = QString::fromStdString(dbih->value_transponder_combo(tx));
 
-				entry.move(8, 9);
-				entry.insert(8, txp);
+				entry.move(9, 10);
+				entry.insert(9, txp);
 			}
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-			entry.remove(6);
-			entry.remove(1, 4);
+			entry.remove(7);
+			entry.remove(1, 5);
 #else
-			entry.removeAt(6);
-			for (int i = 0; i != 4; i++) entry.removeAt(1);
+			entry.removeAt(7);
+			for (int i = 0; i != 5; i++) entry.removeAt(1);
 #endif
 			entry.prepend(idx);
 			entry.prepend(x);

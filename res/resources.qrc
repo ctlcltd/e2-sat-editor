@@ -25,6 +25,8 @@
 	<file>dark/round-warning.png</file>
 	<file>dark/save.png</file>
 	<file>dark/search.png</file>
+	<file>dark/service-blacklist.png</file>
+	<file>dark/service-whitelist.png</file>
 	<file>dark/settings.png</file>
 	<file>dark/transponders-view.png</file>
 	<file>dark/tunersets-view.png</file>
@@ -47,6 +49,8 @@
 	<file>light/round-warning.png</file>
 	<file>light/save.png</file>
 	<file>light/search.png</file>
+	<file>light/service-blacklist.png</file>
+	<file>light/service-whitelist.png</file>
 	<file>light/settings.png</file>
 	<file>light/transponders-view.png</file>
 	<file>light/tunersets-view.png</file>

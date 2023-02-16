@@ -504,6 +504,8 @@ void mainView::reset()
 	list->header()->setSectionsClickable(false);
 	list->header()->setSortIndicator(0, Qt::AscendingOrder);
 
+	for (auto & q : cache)
+		q.second.clear();
 	cache.clear();
 
 	this->lsr_find.curr = -1;
@@ -515,6 +517,13 @@ void mainView::reset()
 	this->action.list_dnd->setDisabled(true);
 
 	resetStatusBar();
+}
+
+void mainView::didChange()
+{
+	debug("didChange()");
+
+	visualReloadList();
 }
 
 void mainView::populate(QTreeWidget* tw)
@@ -566,12 +575,14 @@ void mainView::populate(QTreeWidget* tw)
 		cache[prev].swap(items_prev);
 	}
 
-	int i = 0;
-
 	if (cache[bname].isEmpty())
 	{
 		e2db::userbouquet uboq = dbih->userbouquets[bname];
 		bool ub_locked = uboq.locked;
+
+		QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() ? "service-whitelist" : "service-blacklist";
+
+		int i = 0;
 
 		for (auto & ch : dbih->index[bname])
 		{
@@ -589,7 +600,7 @@ void mainView::populate(QTreeWidget* tw)
 				entry = dbih->entries.services[ch.second];
 				//TODO TEST idx changed after edit
 				idx = QString::number(ch.first);
-				locked = entry[1].size() || ! ub_locked ? false : true;
+				locked = entry[1].size() || ub_locked;
 				entry.prepend(idx);
 				entry.prepend(x);
 			}
@@ -625,7 +636,7 @@ void mainView::populate(QTreeWidget* tw)
 			item->setIcon(ITEM_ROW_ROLE::chnum, theme::spacer(4));
 			if (locked)
 			{
-				item->setIcon(ITEM_ROW_ROLE::chlock, theme::icon("round-delete"));
+				item->setIcon(ITEM_ROW_ROLE::chlock, theme::icon(parentalicon));
 			}
 			if (marker)
 			{
@@ -949,6 +960,8 @@ void mainView::visualReloadList()
 		ub_locked = uboq.locked;
 	}
 
+	QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() ? "service-whitelist" : "service-blacklist";
+
 	int i = 0;
 	int j = list->topLevelItemCount();
 
@@ -965,12 +978,12 @@ void mainView::visualReloadList()
 		}
 
 		QStringList entry = dbih->entries.services[chid];
-		bool locked = entry[1].size() || ! ub_locked ? false : true;
+		bool locked = entry[1].size() || ub_locked;
 		entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
 		entry.prepend(item->text(ITEM_ROW_ROLE::x));
 		for (int i = 0; i < entry.count(); i++)
 			item->setText(i, entry[i]);
-		item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon("round-delete") : QIcon());
+		item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
 		item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 		item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
 		i++;
@@ -1176,6 +1189,8 @@ void mainView::addService()
 	else
 		return error("addService", "chid", chid);
 
+	for (auto & q : cache)
+		q.second.clear();
 	cache.clear();
 
 	if (reload)
@@ -1191,12 +1206,24 @@ void mainView::addService()
 	i = current != nullptr ? parent->indexOfChild(current) : list->topLevelItemCount();
 	y = i + 1;
 
+	bool ub_locked = false;
+
+	// userbouquet
+	if (this->state.ti == -1)
+	{
+		string bname = this->state.curr;
+		e2db::userbouquet uboq = dbih->userbouquets[bname];
+		ub_locked = uboq.locked;
+	}
+	
+	QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() ? "service-whitelist" : "service-blacklist";
+
 	char ci[7];
 	std::snprintf(ci, 7, "%06d", i++);
 	QString x = QString::fromStdString(ci);
 	QString idx = QString::number(i);
 	QStringList entry = dbih->entries.services[chid];
-	bool locked = entry[1].size() ? false : true;
+	bool locked = entry[1].size() || ub_locked;
 	entry.prepend(idx);
 	entry.prepend(x);
 
@@ -1207,7 +1234,7 @@ void mainView::addService()
 	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
 	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
 	item->setIcon(ITEM_ROW_ROLE::chnum, theme::spacer(4));
-	item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon("round-delete") : QIcon());
+	item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
 	item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 	item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
 
@@ -1264,7 +1291,9 @@ void mainView::editService()
 	nw_chid = edit->getEditId();
 	reload = ! (edit->getTransponderId()).empty();
 	edit->destroy();
-
+	
+	for (auto & q : cache)
+		q.second.clear();
 	cache.clear();
 
 	if (reload)
@@ -1275,17 +1304,30 @@ void mainView::editService()
 	else
 		return error("editService", "new chid", nw_chid);
 
+	bool ub_locked = false;
+
+	// userbouquet
+	if (this->state.ti == -1)
+	{
+		string bname = this->state.curr;
+		e2db::userbouquet uboq = dbih->userbouquets[bname];
+		ub_locked = uboq.locked;
+	}
+
+	QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() ? "service-whitelist" : "service-blacklist";
+
 	QStringList entry = dbih->entries.services[nw_chid];
-	bool locked = entry[1].size() ? false : true;
+	bool locked = entry[1].size() || ub_locked;
 	entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
 	entry.prepend(item->text(ITEM_ROW_ROLE::x));
 	for (int i = 0; i < entry.count(); i++)
 		item->setText(i, entry[i]);
-	item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon("round-delete") : QIcon());
-	item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
-	item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
 	item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, false);
 	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
+	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
+	item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
+	item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
+	item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
 
 	if (reload)
 		visualReloadList();
@@ -1486,16 +1528,19 @@ void mainView::setServiceParentalLock()
 	else
 		return error("setServiceParentalLock", "chid", chid);
 
-	cache.clear();
+	string bname = this->state.curr;
+	cache[bname].clear();
 
 	dbih->setServiceParentalLock(chid);
+
+	QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() ? "service-whitelist" : "service-blacklist";
 
 	QStringList entry = dbih->entries.services[chid];
 	entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
 	entry.prepend(item->text(ITEM_ROW_ROLE::x));
 	for (int i = 0; i < entry.count(); i++)
 		item->setText(i, entry[i]);
-	item->setIcon(ITEM_ROW_ROLE::chlock, theme::icon("round-delete"));
+	item->setIcon(ITEM_ROW_ROLE::chlock, theme::icon(parentalicon));
 	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, true);
 
 	this->data->setChanged(true);
@@ -1521,7 +1566,8 @@ void mainView::unsetServiceParentalLock()
 	else
 		return error("unsetServiceParentalLock", "chid", chid);
 
-	cache.clear();
+	string bname = this->state.curr;
+	cache[bname].clear();
 
 	dbih->unsetServiceParentalLock(chid);
 
@@ -1531,7 +1577,7 @@ void mainView::unsetServiceParentalLock()
 	for (int i = 0; i < entry.count(); i++)
 		item->setText(i, entry[i]);
 	item->setIcon(ITEM_ROW_ROLE::chlock, QIcon());
-	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, true);
+	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, false);
 
 	this->data->setChanged(true);
 }
@@ -1577,10 +1623,11 @@ void mainView::setUserbouquetParentalLock()
 
 	dbih->setUserbouquetParentalLock(bname);
 
-	cache.clear();
-	dbih->cache(true);
+	cache[bname].clear();
 
 	visualReloadList();
+
+	dbih->cache(true);
 
 	this->data->setChanged(true);
 }
@@ -1607,9 +1654,11 @@ void mainView::unsetUserbouquetParentalLock()
 
 	dbih->unsetUserbouquetParentalLock(bname);
 
-	cache.clear();
+	cache[bname].clear();
 
 	visualReloadList();
+
+	dbih->cache(true);
 
 	this->data->setChanged(true);
 }
@@ -1641,7 +1690,7 @@ void mainView::toggleUserbouquetParentalLock()
 	else
 		dbih->setUserbouquetParentalLock(bname);
 
-	cache.clear();
+	cache[bname].clear();
 
 	visualReloadList();
 
@@ -1890,6 +1939,8 @@ void mainView::putListItems(vector<QString> items)
 	int anum_count = int (dbih->index["mks"].size());
 	bool ub_locked = uboq.locked;
 
+	QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() ? "service-whitelist" : "service-blacklist";
+
 	for (QString & q : items)
 	{
 		char ci[7];
@@ -1979,8 +2030,7 @@ void mainView::putListItems(vector<QString> items)
 				//TODO
 				// ch.data[e2db::SDATA::C]; qs[6]
 				ch.data[e2db::SDATA::p] = dbih->value_channel_provider(qs[8].replace("\"", "").toStdString());
-				if (! ub_locked)
-					ch.locked = locked;
+				ch.locked = locked || ub_locked;
 				tx.tsid = ch.tsid;
 				tx.dvbns = ch.dvbns;
 				tx.sys = dbih->value_transponder_system(qs[9].toStdString());
@@ -2040,7 +2090,7 @@ void mainView::putListItems(vector<QString> items)
 		item->setIcon(ITEM_ROW_ROLE::chnum, theme::spacer(4));
 		if (locked)
 		{
-			item->setIcon(ITEM_ROW_ROLE::chlock, theme::icon("round-delete"));
+			item->setIcon(ITEM_ROW_ROLE::chlock, theme::icon(parentalicon));
 		}
 		if (chref.marker)
 		{
@@ -2159,7 +2209,7 @@ void mainView::showListEditContextMenu(QPoint& pos)
 	else if (selected.count() > 1)
 		contextMenuAction(list_edit, "Parental lock", [=]() {}, false);
 	else
-		contextMenuAction(list_edit, ! locked ? "Set Parental lock" : "Unset Parental lock", [=]() { this->toggleServiceParentalLock(); }, editable);
+		contextMenuAction(list_edit, ! locked ? "Set Parental lock" : "Unset Parental lock", [=]() { this->toggleServiceParentalLock(); }, editable && ! marker);
 	contextMenuSeparator(list_edit);
 	contextMenuAction(list_edit, "Cu&t", [=]() { this->listItemCut(); }, tabGetFlag(gui::TabListCut), QKeySequence::Cut);
 	contextMenuAction(list_edit, "&Copy", [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);

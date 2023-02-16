@@ -141,6 +141,11 @@ void settings::preferencesLayout()
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf0nd);
 	dtf0->addRow(dtf0nd);
 
+	QCheckBox* dtf0li = new QCheckBox(tr("Parental lock whitelist (exclusion instead inclusion list)"));
+	dtf0li->setProperty("pref", "parentalLockInvert");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf0li);
+	dtf0->addRow(dtf0li);
+
 	QGroupBox* dtl1 = new QGroupBox(tr("Drag and Drop"));
 	QFormLayout* dtf1 = new QFormLayout;
 	dtf1->setSpacing(20);

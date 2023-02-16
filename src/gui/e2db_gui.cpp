@@ -334,7 +334,7 @@ void e2db::setServiceParentalLock(string chid)
 	debug("setServiceParentalLock", "chid", chid);
 
 	this->::e2se_e2db::e2db::set_service_parentallock(chid);
-	entries.services[chid][1] = "";
+	entries.services[chid][1] = " ";
 }
 
 void e2db::unsetServiceParentalLock(string chid)
@@ -342,7 +342,7 @@ void e2db::unsetServiceParentalLock(string chid)
 	debug("unsetServiceParentalLock", "chid", chid);
 
 	this->::e2se_e2db::e2db::unset_service_parentallock(chid);
-	entries.services[chid][1] = "\0";
+	entries.services[chid][1] = "";
 }
 
 void e2db::setUserbouquetParentalLock(string bname)
@@ -502,7 +502,7 @@ QStringList e2db::entryService(service ch)
 {
 	QString chname = fixUnicodeChars(ch.chname);
 	QString chid = QString::fromStdString(ch.chid);
-	QString locked = ch.locked ? "" : "\0";
+	QString locked = ch.locked ? " " : "";
 	QString txid = QString::fromStdString(ch.txid);
 	QString ssid = QString::number(ch.ssid);
 	QString tsid = QString::number(ch.tsid);

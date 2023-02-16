@@ -646,6 +646,8 @@ void e2db_parser::parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& iloc
 	if (ltype == PARENTALLOCK::locked)
 		std::getline(ilocked, line);
 
+	int count = 0;
+
 	while (std::getline(ilocked, line))
 	{
 		ref = service_reference ();
@@ -658,7 +660,8 @@ void e2db_parser::parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& iloc
 
 		if (db.services.count(chid))
 		{
-			set_parentallock(ltype, chid);
+			set_parentallock(chid);
+			count++;
 		}
 		else if (ltype == PARENTALLOCK::locked)
 		{
@@ -667,9 +670,12 @@ void e2db_parser::parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& iloc
 			parse_userbouquet_epl_reference(line, ub);
 
 			if (! ub.bname.empty() && index.count(ub.bname))
-				set_parentallock(ltype, "", ub.bname);
+				set_parentallock("", ub.bname);
 		}
 	}
+
+	if (ltype == PARENTALLOCK::whitelist && count)
+		db.parental = PARENTALLOCK::whitelist;
 }
 
 void e2db_parser::parse_userbouquet_reference(string str, userbouquet& ub)

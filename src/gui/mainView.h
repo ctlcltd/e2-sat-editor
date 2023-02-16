@@ -106,6 +106,7 @@ class mainView : public viewAbstract
 		mainView(tab* tid, QWidget* cwid, dataHandler* data);
 		void load();
 		void reset();
+		void didChange();
 		void treeItemDelete();
 		void listReferenceToggle();
 		void listItemCopy(bool cut = false);

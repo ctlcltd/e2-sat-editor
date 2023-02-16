@@ -279,7 +279,7 @@ void e2db_maker::make_e2db_parentallock_list()
 {
 	debug("make_e2db_parentallock_list");
 
-	if (db.parental == PARENTALLOCK::locked)
+	if (LAMEDB_VER < 4)
 	{
 		e2db_file file;
 		make_parentallock_list("services.locked", PARENTALLOCK::locked, file);
@@ -599,8 +599,9 @@ void e2db_maker::make_parentallock_list(string filename, PARENTALLOCK ltype, e2d
 		for (auto & x : userbouquets)
 		{
 			userbouquet ub = x.second;
+			bool locked = db.parental == PARENTALLOCK::whitelist ? ! ub.locked : ub.locked;
 
-			if (ub.locked)
+			if (locked)
 			{
 				size_t pos = ub.bname.find(".");
 				size_t len = ub.bname.rfind(".");
@@ -620,8 +621,9 @@ void e2db_maker::make_parentallock_list(string filename, PARENTALLOCK ltype, e2d
 		for (auto & x : userbouquets)
 		{
 			userbouquet ub = x.second;
+			bool locked = db.parental == PARENTALLOCK::whitelist ? ! ub.locked : ub.locked;
 
-			if (ub.locked)
+			if (locked)
 			{
 				string bname = ub.bname;
 
@@ -651,8 +653,9 @@ void e2db_maker::make_parentallock_list(string filename, PARENTALLOCK ltype, e2d
 	for (auto & x : db.services)
 	{
 		service ch = x.second;
+		bool locked = db.parental == PARENTALLOCK::whitelist ? ! ch.locked : ch.locked;
 
-		if (ch.locked)
+		if (locked)
 		{
 			ss << "1:0:1:";
 			ss << hex;

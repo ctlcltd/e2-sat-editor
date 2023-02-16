@@ -1083,14 +1083,12 @@ void e2db_abstract::add_tunersets_transponder(int idx, tunersets_transponder& tn
 	index[tn.tnid].emplace_back(pair (idx, tntxp.trid)); //C++17
 }
 
-void e2db_abstract::set_parentallock(PARENTALLOCK ltype, string chid, string bname)
+void e2db_abstract::set_parentallock(string chid, string bname)
 {
 	if (! bname.empty() && userbouquets.count(bname))
 		userbouquets[bname].locked = true;
 	else if (! chid.empty() && db.services.count(chid))
 		db.services["chid"].locked = true;
-
-	db.parental = ltype;
 }
 
 void e2db_abstract::set_index(unordered_map<string, vector<pair<int, string>>> index)
