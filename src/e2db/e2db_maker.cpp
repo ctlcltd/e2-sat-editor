@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.3
+ * @version 0.4
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -630,11 +630,11 @@ void e2db_maker::make_parentallock_list(string filename, PARENTALLOCK ltype, e2d
 				for (auto & x : index[bname])
 				{
 					channel_reference chref = ub.channels[x.second];
-					
+
 					if (db.services.count(x.second))
 					{
 						service ch = db.services[x.second];
-						
+
 						ss << "1:0:1:";
 						ss << hex;
 						ss << uppercase << ch.ssid << ':';

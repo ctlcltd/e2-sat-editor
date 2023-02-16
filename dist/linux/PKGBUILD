@@ -1,8 +1,8 @@
-# e2-sat-editor-pre-0.3
+# e2-sat-editor-pre-0.4
 
 pkgname=e2-sat-editor
 pkgdesc="An enigma2 channel list editor"
-pkgver=0.3.0
+pkgver=0.4.0
 pkgrel=1
 arch=('i686' 'x86_64')
 url="https://github.com/ctlcltd/e2-sat-editor"

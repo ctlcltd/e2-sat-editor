@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.3
+ * @version 0.4
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -970,7 +970,7 @@ void mainView::visualReloadList()
 		QTreeWidgetItem* item = list->topLevelItem(i);
 		string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 		bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
-	
+
 		if (marker || ! dbih->entries.services.count(chid))
 		{
 			i++;
@@ -1215,7 +1215,7 @@ void mainView::addService()
 		e2db::userbouquet uboq = dbih->userbouquets[bname];
 		ub_locked = uboq.locked;
 	}
-	
+
 	QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() ? "service-whitelist" : "service-blacklist";
 
 	char ci[7];
@@ -1291,7 +1291,7 @@ void mainView::editService()
 	nw_chid = edit->getEditId();
 	reload = ! (edit->getTransponderId()).empty();
 	edit->destroy();
-	
+
 	for (auto & q : cache)
 		q.second.clear();
 	cache.clear();
@@ -1666,18 +1666,18 @@ void mainView::unsetUserbouquetParentalLock()
 void mainView::toggleUserbouquetParentalLock()
 {
 	debug("toggleUserbouquetParentalLock");
-	
+
 	QList<QTreeWidgetItem*> selected = tree->selectedItems();
-	
+
 	if (selected.empty() || selected.count() > 1)
 		return;
-	
+
 	QTreeWidgetItem* item = selected.first();
 	QString qub = item->data(0, Qt::UserRole).toString();
 	string bname = qub.toStdString();
-	
+
 	auto* dbih = this->data->dbih;
-	
+
 	if (dbih->userbouquets.count(bname))
 		debug("toggleUserbouquetParentalLock", "bname", bname);
 	else
@@ -2028,7 +2028,7 @@ void mainView::putListItems(vector<QString> items)
 					ch.tsid = tx.tsid = ref.tsid = qs[5].toInt();
 				ch.stype = dbih->value_service_type(qs[6].toStdString());
 				//TODO
-				// ch.data[e2db::SDATA::C]; qs[6]
+				// ch.data[e2db::SDATA::C]; qs[7]
 				ch.data[e2db::SDATA::p] = dbih->value_channel_provider(qs[8].replace("\"", "").toStdString());
 				ch.locked = locked || ub_locked;
 				tx.tsid = ch.tsid;
@@ -2183,7 +2183,7 @@ void mainView::showListEditContextMenu(QPoint& pos)
 	if (this->state.ti == -1)
 	{
 		auto* dbih = this->data->dbih;
-		
+
 		string bname = this->state.curr;
 		e2db::userbouquet uboq = dbih->userbouquets[bname];
 		ub_locked = uboq.locked;

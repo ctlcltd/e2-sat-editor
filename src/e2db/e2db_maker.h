@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.3
+ * @version 0.4
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -46,7 +46,7 @@ class e2db_maker : virtual public e2db_abstract
 
 		inline static const string LAMEDB5_FORMATS[13] = {"# ", "", "", "", ":", "t", ",", ":", "\n", "s", ",", "\"", "\n"};
 		inline static const string LAMEDBX_FORMATS[13] = {"", "transponders\n", "services\n", "end\n", "", "", "\n\t", " ", "\n/\n", "", "\n", "", "\n"};
-	
+
 		e2db_maker();
 		virtual ~e2db_maker() = default;
 		void make_e2db();
