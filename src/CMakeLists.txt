@@ -23,9 +23,9 @@ find_package(CURL)
 set(SOURCES
 	logger/logger.cpp
 	e2db/e2db_abstract.cpp
-	e2db/e2db_parser.cpp
-	e2db/e2db_maker.cpp
 	e2db/e2db_converter.cpp
+	e2db/e2db_maker.cpp
+	e2db/e2db_parser.cpp
 	e2db/e2db.cpp
 	ftpcom/ftpcom.cpp
 	gui/platforms/platform.h
@@ -37,10 +37,10 @@ set(SOURCES
 	gui/toolkit/WidgetWithBackdrop.cpp
 	gui/about.cpp
 	gui/channelBookView.cpp
-	gui/e2db_gui.cpp
 	gui/dataHandler.cpp
 	gui/dialAbstract.cpp
 	gui/dialChannelBook.cpp
+	gui/e2db_gui.cpp
 	gui/editBouquet.cpp
 	gui/editMarker.cpp
 	gui/editService.cpp

@@ -10,7 +10,6 @@ license=('GPL3')
 
 depends=('qt6-base' 'curl')
 makedepends=('git')
-optdepends=('cups')
 provides=('e2-sat-editor')
 conflicts=('e2-sat-editor')
 
