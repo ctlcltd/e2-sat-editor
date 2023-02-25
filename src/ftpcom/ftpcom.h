@@ -15,7 +15,7 @@
 #include <unordered_map>
 #include <cstdio>
 
-#define CURL_STATICLIB
+// #define CURL_STATICLIB
 #include <curl/curl.h>
 
 #include "../logger/logger.h"

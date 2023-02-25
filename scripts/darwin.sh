@@ -37,7 +37,7 @@ relinking () {
 	local qtbase="/usr/local/opt/qt/lib"
 
 	if [[ -n "$1" ]]; then
-		local libs=$(xcrun dyldinfo -dylibs "$1" | tail -n +2)
+		local libs=$(dyld_info -dependents "$1" | tail -n +2)
 
 		for lib in $libs; do
 			if [[ "$lib" == "/usr/local/opt"* || "$lib" == "@rpath"* ]]; then

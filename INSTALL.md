@@ -10,7 +10,7 @@ Utils scripts in **scripts** folder.
 
 - For macOS with Xcode use scripts/darwin.sh
 
-- For Windows with MinGW-64 use scripts/mingw32.sh
+- For Windows with MinGW-64 use scripts/mingw.sh
 
 
 ### Required dependencies

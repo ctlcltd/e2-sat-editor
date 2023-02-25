@@ -16,7 +16,6 @@
 #include <filesystem>
 #include <sstream>
 
-// #define CURL_STATICLIB
 #include "ftpcom.h"
 
 using std::string, std::stringstream, std::min, std::endl, std::to_string;
@@ -85,12 +84,7 @@ bool ftpcom::handle()
 	curl_url_set(rph, CURLUPART_SCHEME, "ftp", 0);
 	curl_url_set(rph, CURLUPART_HOST, host.c_str(), 0);
 
-#ifdef CURLOPT_PROTOCOLS_STR
-	curl_easy_setopt(csh, CURLOPT_PROTOCOLS_STR, "ftp");
-#else
-	curl_easy_setopt(csh, CURLOPT_PROTOCOLS, CURLPROTO_FTP);
-#endif
-
+	curl_easy_setopt(cph, CURLOPT_PROTOCOLS_STR, "ftp");
 	curl_easy_setopt(cph, CURLOPT_CURLU, rph);
 	curl_easy_setopt(cph, CURLOPT_USERNAME, user.c_str());
 	curl_easy_setopt(cph, CURLOPT_PASSWORD, pass.c_str());
@@ -470,12 +464,7 @@ bool ftpcom::cmd_ifreload()
 	// debug("cmd_ifreload", "URL", url);
 	// url = NULL;
 
-#ifdef CURLOPT_PROTOCOLS_STR
 	curl_easy_setopt(csh, CURLOPT_PROTOCOLS_STR, "http");
-#else
-	curl_easy_setopt(csh, CURLOPT_PROTOCOLS, CURLPROTO_HTTP);
-#endif
-
 	curl_easy_setopt(csh, CURLOPT_HTTPGET, true);
 	curl_easy_setopt(csh, CURLOPT_FOLLOWLOCATION, true);
 	curl_easy_setopt(csh, CURLOPT_CURLU, rsh);
@@ -527,17 +516,12 @@ bool ftpcom::cmd_tnreload()
 	curl_url_set(rsh, CURLUPART_SCHEME, "telnet", 0);
 	curl_url_set(rsh, CURLUPART_HOST, host.c_str(), 0);
 
-#ifdef CURLOPT_PROTOCOLS_STR
 	curl_easy_setopt(csh, CURLOPT_PROTOCOLS_STR, "telnet");
-#else
-	curl_easy_setopt(csh, CURLOPT_PROTOCOLS, CURLPROTO_TELNET);
-#endif
-
 	curl_easy_setopt(csh, CURLOPT_CURLU, rsh);
 	curl_easy_setopt(csh, CURLOPT_PORT, 23);
 	curl_easy_setopt(csh, CURLOPT_READFUNCTION, data_tn_shell_func);
 	curl_easy_setopt(csh, CURLOPT_READDATA, &data);
-	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_discard_func);
+	curl_easy_setopt(csh, CURLOPT_WRITEFUNCTION, data_discard_func);
 	curl_easy_setopt(csh, CURLOPT_FAILONERROR, true);
 	// curl_easy_setopt(csh, CURLOPT_VERBOSE, true);
 
