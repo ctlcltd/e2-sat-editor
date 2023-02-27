@@ -65,7 +65,6 @@ Instructions on how to compile in [INSTALL.md](https://github.com/ctlcltd/e2-sat
 |**dist**|Specific target files, required during build.|
 |**res**|Graphic resources, used in this software.|
 |**scripts**|Utility bash scripts, used to build.|
-|**[seeds.](https://ctlcltd.github.io/e2-sat-editor/seeds./)**|Source seeds, Enigma2 settings format.|
 |**src**|The main source of this software.|
 |**vendor**|It contains symbolic links to external libraries.|
 |**workspace**|Utility python scripts, used for emulation: ftp, telnet, webif.|
