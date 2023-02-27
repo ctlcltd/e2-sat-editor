@@ -1568,7 +1568,7 @@ void tab::loadSeeds()
 	{
 		settings.setValue("application/seeds", "");
 
-		QMessageBox::information(this->cwid, NULL, "For debugging purpose, set application.seeds absolute path under Settings > Advanced tab, then restart the software.");
+		QMessageBox::information(this->cwid, NULL, "For debugging purpose.<br><br>Set application.seeds absolute path under Settings > Advanced tab, then restart the software.<br><br>Source seeds available at:<br><a href=\"https://github.com/ctlcltd/e2se-seeds\">https://github.com/ctlcltd/e2se-seeds</a>");
 	}
 }
 

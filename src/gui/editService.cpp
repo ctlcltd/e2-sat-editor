@@ -92,7 +92,7 @@ void editService::serviceLayout()
 	QGroupBox* dtl0 = new QGroupBox(tr("Service"));
 	QFormLayout* dtf0 = new QFormLayout;
 	dtf0->setRowWrapPolicy(QFormLayout::WrapAllRows);
-	
+
 	QLineEdit* dtf0sn = new QLineEdit;
 	dtf0sn->setProperty("field", "chname");
 	fields.emplace_back(dtf0sn);
@@ -101,10 +101,10 @@ void editService::serviceLayout()
 	platform::osLineEdit(dtf0sn);
 	dtf0->addRow(tr("Service name"), dtf0sn);
 	dtf0->addItem(new QSpacerItem(0, 0));
-	
+
 	QHBoxLayout* dtb10 = new QHBoxLayout;
 	dtf0->addRow(tr("Service type"), dtb10);
-	
+
 	//TODO FIX height
 	QLineEdit* dtf0st = new QLineEdit;
 	dtf0st->setProperty("field", "stype");
@@ -112,15 +112,13 @@ void editService::serviceLayout()
 	fields.emplace_back(dtf0st);
 	dtf0st->setMinimumWidth(50);
 	dtf0st->setValidator(new QIntValidator);
-	
+
 	QComboBox* dtf0sc = new QComboBox;
-	// dtf0sc->setProperty("field", "stype_select");
-	// fields.emplace_back(dtf0sc);
 	dtf0sc->setMaximumWidth(100);
 	dtf0sc->setValidator(new QIntValidator);
 	platform::osComboBox(dtf0sc);
 	dtf0->addItem(new QSpacerItem(0, 0));
-	
+
 	vector<int> stypes;
 	for (auto & x : e2db::STYPE_EXT_TYPE)
 	{
@@ -132,13 +130,13 @@ void editService::serviceLayout()
 		string pad = q > 9 ? "  " : "  ";
 		dtf0sc->addItem(QString::fromStdString(to_string(q) + pad + e2db::STYPE_EXT_LABEL.at(q)), q);
 	}
-	
+
 	QPushButton* dtf0sb = new QPushButton;
 	dtf0sb->setDefault(false);
 	dtf0sb->setCheckable(true);
 	dtf0sb->setText(tr("custom"));
 	dtf0sb->setChecked(false);
-	
+
 	dtf0sb->connect(dtf0sb, &QPushButton::pressed, [=]() {
 		if (dtf0sb->isChecked())
 		{
@@ -153,7 +151,7 @@ void editService::serviceLayout()
 			dtf0st->setFocus();
 		}
 	});
-	
+
 	dtf0st->connect(dtf0st, &QLineEdit::textChanged, [=](QString text) {
 		int index = dtf0sc->findData(text, Qt::UserRole);
 		dtf0sc->setCurrentIndex(index);

@@ -832,7 +832,7 @@ string e2db_abstract::value_transponder_bandwidth(int band)
 {
 	if (band < 0)
 		return "";
-	else if (band < 7)
+	else if (band < (int (sizeof(TER_BAND) / sizeof(TER_BAND[0]))))
 		return TER_BAND[band];
 	return "";
 }
