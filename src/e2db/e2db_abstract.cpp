@@ -397,7 +397,9 @@ int e2db_abstract::value_transponder_polarization(string str)
 
 string e2db_abstract::value_transponder_polarization(int pol)
 {
-	if (pol != -1 && pol < 4)
+	if (pol < 0)
+		return "";
+	else if (pol < (int (sizeof(SAT_POL) / sizeof(SAT_POL[0]))))
 		return SAT_POL[pol];
 	return "";
 }
@@ -602,15 +604,15 @@ string e2db_abstract::value_transponder_fec(int fec, int yx)
 
 string e2db_abstract::value_transponder_fec(int fec, YTYPE ytype)
 {
-	if (fec == -1) //TODO TEST fec < 0 &&
+	if (fec < 0)
 		return "";
-	if (ytype == YTYPE::satellite && fec < 11)
+	if (ytype == YTYPE::satellite && fec < (int (sizeof(SAT_FEC) / sizeof(SAT_FEC[0]))))
 		return SAT_FEC[fec];
-	else if (ytype == YTYPE::terrestrial && fec < 10)
+	else if (ytype == YTYPE::terrestrial && fec < (int (sizeof(TER_FEC) / sizeof(TER_FEC[0]))))
 		return TER_FEC[fec];
-	else if (ytype == YTYPE::cable && fec < 7)
+	else if (ytype == YTYPE::cable && fec < (int (sizeof(CAB_FEC) / sizeof(CAB_FEC[0]))))
 		return CAB_FEC[fec];
-	else if (fec == 15)
+	else if (fec == 0xf)
 		return "None";
 	return "";
 }
@@ -708,15 +710,15 @@ string e2db_abstract::value_transponder_modulation(int mod, int yx)
 
 string e2db_abstract::value_transponder_modulation(int mod, YTYPE ytype)
 {
-	if (mod == -1) //TODO TEST mod < 0 &&
+	if (mod < 0)
 		return "";
-	else if (ytype == YTYPE::satellite && mod < 6)
+	else if (ytype == YTYPE::satellite && mod < (int (sizeof(SAT_MOD) / sizeof(SAT_MOD[0]))))
 		return SAT_MOD[mod];
-	else if (ytype == YTYPE::terrestrial && mod < 5)
+	else if (ytype == YTYPE::terrestrial && mod < (int (sizeof(TER_MOD) / sizeof(TER_MOD[0]))))
 		return TER_MOD[mod];
-	else if (ytype == YTYPE::cable && mod < 6)
+	else if (ytype == YTYPE::cable && mod < (int (sizeof(CAB_MOD) / sizeof(CAB_MOD[0]))))
 		return CAB_MOD[mod];
-	else if (ytype == YTYPE::atsc && mod < 8)
+	else if (ytype == YTYPE::atsc && mod < (int (sizeof(ATS_MOD) / sizeof(ATS_MOD[0]))))
 		return ATS_MOD[mod];
 	return "";
 }
@@ -748,15 +750,15 @@ string e2db_abstract::value_transponder_inversion(int inv, int yx)
 
 string e2db_abstract::value_transponder_inversion(int inv, YTYPE ytype)
 {
-	if (inv == -1) //TODO TEST inv < 0 &&
+	if (inv < 0)
 		return "";
-	if (ytype == YTYPE::satellite && inv < 3)
+	if (ytype == YTYPE::satellite && inv < (int (sizeof(SAT_INV) / sizeof(SAT_INV[0]))))
 		return SAT_INV[inv];
-	else if (ytype == YTYPE::terrestrial && inv < 3)
+	else if (ytype == YTYPE::terrestrial && inv < (int (sizeof(TER_INV) / sizeof(TER_INV[0]))))
 		return TER_INV[inv];
-	else if (ytype == YTYPE::cable && inv < 3)
+	else if (ytype == YTYPE::cable && inv < (int (sizeof(CAB_INV) / sizeof(CAB_INV[0]))))
 		return CAB_INV[inv];
-	else if (ytype == YTYPE::atsc && inv < 3)
+	else if (ytype == YTYPE::atsc && inv < (int (sizeof(ATS_INV) / sizeof(ATS_INV[0]))))
 		return ATS_INV[inv];
 	return "";
 }
@@ -776,7 +778,9 @@ int e2db_abstract::value_transponder_rollof(string str)
 
 string e2db_abstract::value_transponder_rollof(int rol)
 {
-	if (rol != -1 && rol < 3) //TODO TEST rol > 0 &&
+	if (rol < 0)
+		return "";
+	else if (rol < (int (sizeof(SAT_ROL) / sizeof(SAT_ROL[0]))))
 		return SAT_ROL[rol];
 	return "";
 }
@@ -796,7 +800,9 @@ int e2db_abstract::value_transponder_pilot(string str)
 
 string e2db_abstract::value_transponder_pilot(int pil)
 {
-	if (pil != -1 && pil < 3) //TODO TEST pil > 0 &&
+	if (pil < 0)
+		return "";
+	else if (pil < (int (sizeof(SAT_PIL) / sizeof(SAT_PIL[0]))))
 		return SAT_PIL[pil];
 	return "";
 }
@@ -824,7 +830,9 @@ int e2db_abstract::value_transponder_bandwidth(string str)
 
 string e2db_abstract::value_transponder_bandwidth(int band)
 {
-	if (band != -1 && band < 7) //TODO TEST band > 0 &&
+	if (band < 0)
+		return "";
+	else if (band < 7)
 		return TER_BAND[band];
 	return "";
 }
@@ -854,7 +862,9 @@ int e2db_abstract::value_transponder_guard(string str)
 
 string e2db_abstract::value_transponder_guard(int guard)
 {
-	if (guard != -1 && guard < 8) //TODO TEST guard > 0 &&
+	if (guard < 0)
+		return "";
+	else if (guard < (int (sizeof(TER_GUARD) / sizeof(TER_GUARD[0]))))
 		return TER_GUARD[guard];
 	return "";
 }
@@ -878,7 +888,9 @@ int e2db_abstract::value_transponder_hier(string str)
 
 string e2db_abstract::value_transponder_hier(int hier)
 {
-	if (hier != -1 && hier < 5) //TODO TEST hier > 0 &&
+	if (hier < 0)
+		return "";
+	else if (hier < (int (sizeof(TER_HIER) / sizeof(TER_HIER[0]))))
 		return TER_HIER[hier];
 	return "";
 }
@@ -906,7 +918,9 @@ int e2db_abstract::value_transponder_tmx_mode(string str)
 
 string e2db_abstract::value_transponder_tmx_mode(int tmx)
 {
-	if (tmx != -1 && tmx < 7) //TODO TEST tmx > 0 &&
+	if (tmx < 0)
+		return "";
+	else if (tmx < (int (sizeof(TER_TMXMODE) / sizeof(TER_TMXMODE[0]))))
 		return TER_TMXMODE[tmx];
 	return "";
 }
@@ -1088,7 +1102,7 @@ void e2db_abstract::set_parentallock(string chid, string bname)
 	if (! bname.empty() && userbouquets.count(bname))
 		userbouquets[bname].locked = true;
 	else if (! chid.empty() && db.services.count(chid))
-		db.services["chid"].locked = true;
+		db.services[chid].locked = true;
 }
 
 void e2db_abstract::set_index(unordered_map<string, vector<pair<int, string>>> index)

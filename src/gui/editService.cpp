@@ -92,7 +92,7 @@ void editService::serviceLayout()
 	QGroupBox* dtl0 = new QGroupBox(tr("Service"));
 	QFormLayout* dtf0 = new QFormLayout;
 	dtf0->setRowWrapPolicy(QFormLayout::WrapAllRows);
-
+	
 	QLineEdit* dtf0sn = new QLineEdit;
 	dtf0sn->setProperty("field", "chname");
 	fields.emplace_back(dtf0sn);
@@ -101,26 +101,26 @@ void editService::serviceLayout()
 	platform::osLineEdit(dtf0sn);
 	dtf0->addRow(tr("Service name"), dtf0sn);
 	dtf0->addItem(new QSpacerItem(0, 0));
-
+	
 	QHBoxLayout* dtb10 = new QHBoxLayout;
 	dtf0->addRow(tr("Service type"), dtb10);
-
-	//TODO not listed stype (eg. 201)
+	
 	//TODO FIX height
 	QLineEdit* dtf0st = new QLineEdit;
-	dtf0st->setProperty("field", "_stype");
+	dtf0st->setProperty("field", "stype");
 	dtf0st->setVisible(false);
 	fields.emplace_back(dtf0st);
 	dtf0st->setMinimumWidth(50);
 	dtf0st->setValidator(new QIntValidator);
-
+	
 	QComboBox* dtf0sc = new QComboBox;
-	dtf0sc->setProperty("field", "stype");
-	fields.emplace_back(dtf0sc);
+	// dtf0sc->setProperty("field", "stype_select");
+	// fields.emplace_back(dtf0sc);
 	dtf0sc->setMaximumWidth(100);
 	dtf0sc->setValidator(new QIntValidator);
 	platform::osComboBox(dtf0sc);
 	dtf0->addItem(new QSpacerItem(0, 0));
+	
 	vector<int> stypes;
 	for (auto & x : e2db::STYPE_EXT_TYPE)
 	{
@@ -132,32 +132,62 @@ void editService::serviceLayout()
 		string pad = q > 9 ? "  " : "  ";
 		dtf0sc->addItem(QString::fromStdString(to_string(q) + pad + e2db::STYPE_EXT_LABEL.at(q)), q);
 	}
-
+	
 	QPushButton* dtf0sb = new QPushButton;
 	dtf0sb->setDefault(false);
 	dtf0sb->setCheckable(true);
 	dtf0sb->setText(tr("custom"));
 	dtf0sb->setChecked(false);
+	
 	dtf0sb->connect(dtf0sb, &QPushButton::pressed, [=]() {
 		if (dtf0sb->isChecked())
 		{
-			dtf0sc->hide();
-			dtf0sc->setProperty("field", "_stype");
-			dtf0st->setProperty("field", "stype");
-			dtf0st->setText(dtf0sc->currentData().toString());
-			dtf0st->show();
-			dtf0st->setFocus();
-		}
-		else
-		{
 			dtf0st->hide();
-			dtf0st->setProperty("field", "_stype");
-			dtf0sc->setProperty("field", "stype");
-			dtf0sc->setCurrentText(dtf0st->text());
 			dtf0sc->show();
 			dtf0sc->setFocus();
 		}
+		else
+		{
+			dtf0sc->hide();
+			dtf0st->show();
+			dtf0st->setFocus();
+		}
 	});
+	
+	dtf0st->connect(dtf0st, &QLineEdit::textChanged, [=](QString text) {
+		int index = dtf0sc->findData(text, Qt::UserRole);
+		dtf0sc->setCurrentIndex(index);
+	});
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	dtf0sc->connect(dtf0sc, &QComboBox::currentIndexChanged, [=](int index) {
+		if (index == -1 && ! dtf0sb->isChecked())
+		{
+			dtf0sc->hide();
+			dtf0st->show();
+			dtf0st->setFocus();
+			dtf0sb->setChecked(true);
+		}
+		else
+		{
+			dtf0st->setText(dtf0sc->currentData().toString());
+		}
+	});
+#else
+	dtf0sc->connect(dtf0sc, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) {
+		if (index == -1 && ! dtf0sb->isChecked())
+		{
+			dtf0sc->hide();
+			dtf0st->show();
+			dtf0st->setFocus();
+			dtf0sb->setChecked(true);
+		}
+		else
+		{
+			dtf0st->setText(dtf0sc->currentData().toString());
+		}
+	});
+#endif
 
 	dtb10->addWidget(dtf0sc);
 	dtb10->addWidget(dtf0st);

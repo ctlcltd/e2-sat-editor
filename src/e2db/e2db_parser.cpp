@@ -676,6 +676,8 @@ void e2db_parser::parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& iloc
 
 	if (ltype == PARENTALLOCK::whitelist && count)
 		db.parental = PARENTALLOCK::whitelist;
+	else
+		db.parental = PARENTALLOCK::blacklist;
 }
 
 void e2db_parser::parse_userbouquet_reference(string str, userbouquet& ub)

@@ -90,12 +90,13 @@ gui::gui(int argc, char* argv[])
 	// screenshot
 	// mwid->resize(QSize(1024, 720));
 
-	//TODO FIX SEGFAULT
 	mroot->exec();
 }
 
+//TODO FIX SEGFAULT [MinGW-w64]
 int gui::exec()
 {
+	// return mroot->exec();
 	return 0;
 }
 
@@ -293,7 +294,7 @@ void gui::tabStackerLayout()
 	QWidget* twtbbase = new QWidget;
 	twtbbase->setStyleSheet("min-height: 7ex");
 	twtbbase->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	//TODO FIX 4px frame
+	//TODO FIX 4px ? frame
 
 	QWidget* ttcornerwid = new QWidget;
 	QHBoxLayout* ttcornerlayout = new QHBoxLayout(ttcornerwid);
