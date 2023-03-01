@@ -140,7 +140,6 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 				if (! tx.oflgs.empty())
 					ss << tx.oflgs;
 			break;
-			//TODO test params and freq round
 			case YTYPE::cable: // DVB-C
 				ss << int (tx.freq * 1e3);
 				ss << ':' << int (tx.sr * 1e3);
@@ -150,7 +149,6 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 				if (! tx.oflgs.empty())
 					ss << tx.oflgs;
 			break;
-			//TODO test params and freq round
 			case YTYPE::atsc: // ATSC
 				ss << int (tx.freq * 1e3);
 				ss << ':' << tx.inv;

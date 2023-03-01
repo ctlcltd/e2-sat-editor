@@ -78,8 +78,13 @@ void e2db_parser::parse_e2db()
 	{
 		if (x.first.find("bouquets.") != string::npos)
 		{
+			string fext = x.first.substr(x.first.rfind(".") + 1);
+
+			if (fext != "tv" && fext != "radio" && fext != "epl")
+				continue;
+
 			ifstream ibouquet (this->e2db[x.first]);
-			parse_e2db_bouquet(ibouquet, x.first, (x.first.rfind(".epl") != string::npos));
+			parse_e2db_bouquet(ibouquet, x.first, fext == "epl");
 			ibouquet.close();
 		}
 	}
@@ -183,9 +188,14 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 	{
 		if (x.first.find("bouquets.") != string::npos)
 		{
+			string fext = x.first.substr(x.first.rfind(".") + 1);
+
+			if (fext != "tv" && fext != "radio" && fext != "epl")
+				continue;
+
 			stringstream ibouquet;
 			ibouquet.write(&files[x.second].data[0], files[x.second].size);
-			parse_e2db_bouquet(ibouquet, x.second, (x.first.rfind(".epl") != string::npos));
+			parse_e2db_bouquet(ibouquet, x.second, fext == "epl");
 		}
 	}
 	for (auto & x : bouquets)
@@ -711,7 +721,7 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 	i = 0, atype = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0;
 
 	std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X", &i, &atype, &anum, &ssid, &tsid, &onid, &dvbns);
-	//TODO other flags ? "...:%d:%d:%d:"
+	//TODO other flags "...:%d:%d:%d:"
 
 	switch (atype)
 	{
@@ -722,7 +732,6 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 		case STYPE::hidden_marker_2:
 			chref.marker = true;
 		break;
-		//TODO group
 		// group
 		case STYPE::group:
 			error("parse_channel_reference", "Parser Error", "Not supported yet.");

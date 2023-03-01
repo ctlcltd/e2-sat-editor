@@ -706,7 +706,7 @@ void printable::print()
 	}
 }
 
-//TODO FIX Qt5 borderSize
+//TODO FIX borderSize [Qt5]
 QString printable::docHtmlHead()
 {
 	return "<html lang=\"en\">\

@@ -91,7 +91,7 @@ bool ftpcom::handle()
 	curl_easy_setopt(cph, CURLOPT_PORT, ftport);
 	if (actv)
 		curl_easy_setopt(cph, CURLOPT_FTPPORT, "-");
-	//TODO TEST hangs the main thread ? lookup before connect
+	//TODO TEST
 	curl_easy_setopt(cph, CURLOPT_CONNECTTIMEOUT, 10);
 	// curl_easy_setopt(cph, CURLOPT_FTP_RESPONSE_TIMEOUT, 10); // 0 = default no timeout
 	// curl_easy_setopt(cph, CURLOPT_VERBOSE, true);
