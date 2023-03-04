@@ -83,13 +83,6 @@ class _platform_macx
 		}
 		static void osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 		{
-			//TODO
-			if (! TESTING)
-			{
-				menu->popup(widget->mapToGlobal(pos));
-				return;
-			}
-
 			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
 			if (QSettings().value("preference/osContextMenu", experiment).toBool())
 				_osContextMenuPopup(menu, widget, pos);
@@ -98,12 +91,6 @@ class _platform_macx
 		}
 		static QLineEdit* osLineEdit(QLineEdit* input)
 		{
-			//TODO
-			if (! TESTING)
-			{
-				return input;
-			}
-
 			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
 			if (QSettings().value("preference/osContextMenu", experiment).toBool())
 				return _osLineEdit(input);

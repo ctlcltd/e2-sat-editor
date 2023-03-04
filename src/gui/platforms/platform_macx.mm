@@ -152,11 +152,13 @@ QWidget* _platform_macx::_osWindowBlend(QWidget* widget) {
 	{
 		view = (NSView*)widget->winId();
 	}
-	//TODO FIX
 	else if (widget->windowType() == Qt::Dialog)
 	{
-		// view = (NSView*)widget;
-		return widget;
+		//workaround: QNSPanel should be initialized winId is 0x0
+		widget->show();
+		widget->hide();
+
+		view = (NSView*)widget->winId();
 	}
 	else
 	{
@@ -197,66 +199,25 @@ QWidget* _platform_macx::_osWidgetBlend(QWidget* widget, FX_MATERIAL material, F
 	widget->installEventFilter(new _widgetEventFilter(subview));
 
 	return widget;
-
-
-	//WONTFIX performance issues
-	// use _platform_macx::osWindowBlend instead
-	//
-	// huge impact (~400MB RAM with main window maximized)
-	// native widgets and backing store
-	// see QWidget documentation for more details
-	// section: Native Widgets vs Alien Widgets
-	//
-	// if (! NSClassFromString(@"NSVisualEffectView"))
-	// 	return widget;
-	//
-	// // const NSRect frameRect = {
-	// // 	{0.0, 0.0},
-	// // 	{static_cast<double>(widget->width()), static_cast<double>(widget->height())}
-	// // };
-	// // NSVisualEffectView* subview = [[[NSVisualEffectView alloc] initWithFrame:frameRect] autorelease];
-	//
-	// NSVisualEffectView* subview = [[NSVisualEffectView alloc] init];
-	//
-	// [subview setMaterial:NSVisualEffectMaterial (material)];
-	// [subview setBlendingMode:NSVisualEffectBlendingModeBehindWindow];
-	// // [subview setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
-	// [subview setWantsLayer:FALSE];
-	// // [view setAutoresizesSubviews:YES];
-	//
-	// QWindow* qSubview = QWindow::fromWinId(reinterpret_cast<WId>(subview));
-	// QWidget* blended = QWidget::createWindowContainer(qSubview);
-	// // force stack under
-	// blended->winId(); // transforms the whole stack to native QNSWindow / QNSView
-	// blended->setAttribute(Qt::WA_PaintOnScreen, false);
-	// // blended->setUpdatesEnabled(false);
-	//
-	// QGridLayout* layout = new QGridLayout;
-	// QWidget* wrapped = new QWidget;
-	// layout->addWidget(blended, 0, 0);
-	// layout->addWidget(widget, 0, 0);
-	// layout->setContentsMargins(0, 0, 0, 0);
-	// wrapped->setLayout(layout);
-	//
-	// return wrapped;
-	//
 }
 
-//TODO FIX wrong position and mouse release
 void _platform_macx::_osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 {
 	QWidget* top = widget->window();
+	QWindow* tlw = top->windowHandle();
 
 	NSView* view = (NSView*)top->winId();
 	NSMenu* nsMenu = menu->toNSMenu();
 
-	QPoint globalPos = widget->mapToGlobal(pos);
-	NSPoint nsPos = NSMakePoint(globalPos.x(), globalPos.y());
-	nsPos = [view convertPoint:nsPos toView:view];
+	QPoint globalPos = widget->mapTo(top, pos);
 
+	NSPoint nsPos = NSMakePoint(globalPos.x(), globalPos.y());
+	nsPos = [view convertPoint:nsPos toView:nil];
+
+	// signal emit
 	menu->aboutToShow();
 
-	/*NSEvent* event = [NSEvent
+	NSEvent* nsEventMenuShow = [NSEvent
 		mouseEventWithType:NSEventTypeRightMouseDown
 		location:nsPos
 		modifierFlags:0
@@ -267,24 +228,51 @@ void _platform_macx::_osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint po
 		clickCount:1
 		pressure:1.0
 	];
-	[NSMenu popUpContextMenu:nsMenu withEvent:event forView:view];*/
 
-	[nsMenu popUpMenuPositioningItem:nil atLocation:nsPos inView:view];
+	//workaround: inner items disabled with modals
+	if (tlw != nullptr && tlw->type() != Qt::Window)
+	{
+		[nsMenu setAutoenablesItems:FALSE];
+		
+		int i = 0;
+		for (auto & item : menu->actions())
+		{
+			NSMenuItem* nsMenuItem = [nsMenu itemAtIndex:i++];
+			[nsMenuItem setEnabled:(item->isEnabled())];
+		}
+	}
 
-	QMouseEvent mouseReleased(QEvent::MouseButtonRelease, top->pos(), top->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
-	QGuiApplication::sendEvent(widget, &mouseReleased);
+	[NSMenu popUpContextMenu:nsMenu withEvent:nsEventMenuShow forView:view];
 
+	NSEvent* nsEventMouseRelease = [NSEvent
+		mouseEventWithType:NSEventTypeRightMouseUp
+		location:nsPos
+		modifierFlags:0
+		timestamp:0
+		windowNumber:view ? view.window.windowNumber : 0
+		context:nil
+		eventNumber:0
+		clickCount:1
+		pressure:1.0
+	];
+	[view mouseUp:nsEventMouseRelease];
+
+	// signal emit
 	menu->aboutToHide();
 }
 
-//TODO FIX dialogs
+//TODO improve native macx context menu items
 QLineEdit* _platform_macx::_osLineEdit(QLineEdit* input)
 {
 	input->setContextMenuPolicy(Qt::CustomContextMenu);
 	input->connect(input, &QLineEdit::customContextMenuRequested, [=](QPoint pos) {
 		QMenu* menu = input->createStandardContextMenu();
 		_osContextMenuPopup(menu, input, pos);
-		delete menu;
+
+		// menu delete after QAction signal trigger
+		QTimer::singleShot(300, [=]() {
+			delete menu;
+		});
 	});
 	return input;
 }
