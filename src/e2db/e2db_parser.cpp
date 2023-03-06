@@ -748,7 +748,6 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 	chref.anum = anum;
 }
 
-//TODO FIX string::npos != 4294967295 in mingw // pos = key.find_first_of('\0');
 //TODO value xml entities
 void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 {
@@ -850,12 +849,19 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 			tag = line.substr(pos + 1);
 			pos = tag[0] == '/';
 			len = tag.find(' ');
+
 			add = pos || tag[tag.length() - 1] == '/';
+
 			if (! pos && len == string::npos)
 				len = tag.find('/');
 			tag = tag.substr(pos, len);
 		}
-		if (depth.count(tag))
+
+		if (tag.size() < 2)
+		{
+			continue;
+		}
+		else if (depth.count(tag))
 		{
 			ln++;
 			step = depth[tag];
@@ -876,20 +882,11 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 				// tntxp.amod = -1;
 			}
 		}
-#ifndef __MINGW32__
-		else if (tag.empty())
-#else
-		else if (tag.size() < 2)
-#endif
-		{
-			continue;
-		}
 		else
 		{
 			return error("parse_tunersets_xml", "Parser Error", "Malformed or unknown XML error.");
 		}
 
-		string yey;
 		char* token = std::strtok(line.data(), " ");
 		while (token != 0)
 		{
@@ -901,85 +898,54 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 			if (len != string::npos)
 			{
 				key = str.substr(0, len);
-				std::transform(key.begin(), key.end(), key.begin(), [](unsigned char c) { return std::isspace(c) ? '\0' : c; });
-				key.erase(0, key.find_first_not_of('\0'));
-#ifndef __MINGW32__
-				pos = key.find_first_of('\0');
-				if (pos != string::npos)
-					key.erase(pos, key.size());
-#endif
 				val = str.substr(len + 1);
-				pos = val.find('"');
-				if (pos != string::npos)
-				{
-					len = val.rfind('"');
-				}
-				else
-				{
-					pos = val.find('\'');
-					if (pos != string::npos)
-						len = val.rfind('\'');
-				}
-
-				if (len)
-				{
-					val = val.substr(pos + 1, len - 1);
-				}
-				else
-				{
-					val = line.substr(line.find(key) + key.length() + 2);
-					len = val.find('"');
-					if (len == string::npos)
-						len = val.find('\'');
-					val = val.substr(0, len);
-					std::transform(val.begin(), val.end(), val.begin(), [](unsigned char c) { return c ? c : ' '; });
-				}
 			}
-			else if (! yey.empty() && ((str[0] == '"' && str.find('"') != string::npos) || (str[0] == '\'' && str.find('\'') != string::npos)))
-			{
-				key = yey;
-				val = str;
-				yey = "";
-				pos = val.find('"');
-				if (pos != string::npos)
-				{
-					len = val.rfind('"');
-				}
-				else
-				{
-					pos = val.find('\'');
-					if (pos != string::npos)
-						len = val.rfind('\'');
-				}
-
-				if (len)
-				{
-					val = val.substr(pos + 1, len - 1);
-				}
-				else
-				{
-					val = line.substr(line.find(key) + key.length() + 2);
-					len = val.find('"');
-					if (len == string::npos)
-						len = val.find('\'');
-					val = val.substr(0, len);
-					std::transform(val.begin(), val.end(), val.begin(), [](unsigned char c) { return c ? c : ' '; });
-				}
-			}
-			else if (str.find('/') == string::npos && str.find('<') == string::npos)
+			else
 			{
 				key = str;
-				std::transform(key.begin(), key.end(), key.begin(), [](unsigned char c) { return std::isspace(c) ? '\0' : c; });
-				key.erase(0, key.find_first_not_of('\0'));
-#ifndef __MINGW32__
-				pos = key.find_first_of('\0');
+			}
+
+			pos = val.find('"');
+			len = string::npos;
+
+			if (pos != string::npos)
+			{
+				len = val.rfind('"');
+			}
+			else
+			{
+				pos = val.find('\'');
 				if (pos != string::npos)
-					key.erase(pos, key.size());
-#endif
-				if (! key.empty())
-					yey = str;
+					len = val.rfind('\'');
+			}
+
+			if (len != string::npos && pos != len)
+			{
+				val = val.substr(0, len);
+				if (pos != string::npos)
+					val = val.substr(pos + 1);
+			}
+			else
+			{
+				val = line.substr(line.find(key) + key.length());
+				pos = val.find('"');
+				if (pos == string::npos)
+					pos = val.find('\'');
+				if (pos != string::npos)
+					val = val.substr(pos + 1);
+
+				len = val.find('"');
+				if (len == string::npos)
+					len = val.find('\'');
+				if (len != string::npos)
+					val = val.substr(0, len);
+
+				std::transform(val.begin(), val.end(), val.begin(), [](unsigned char c) { return c ? c : ' '; });
 			}
 			token = std::strtok(NULL, " ");
+
+			if (key.empty() || val.empty())
+				continue;
 
 			switch (ytype)
 			{

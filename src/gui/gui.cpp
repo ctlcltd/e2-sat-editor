@@ -227,10 +227,6 @@ void gui::menuBarLayout()
 }
 
 //TODO improve
-//
-//
-// see link: https://github.com/KDE/falkon/blob/master/src/lib/app/proxystyle.cpp
-//
 void gui::tabStackerLayout()
 {
 	debug("tabStackerLayout");

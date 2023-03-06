@@ -1180,8 +1180,9 @@ map<string, vector<pair<int, string>>> e2db::get_az_index()
 	return _index;
 }
 
+//TODO improve
 //TODO bname in non-destructive edit
-//TODO FIX mixing cache data
+//TODO mixing cache data
 void e2db::merge(e2db_abstract* dst)
 {
 	debug("merge");
