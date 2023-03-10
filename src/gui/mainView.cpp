@@ -1714,7 +1714,6 @@ void mainView::listReferenceToggle()
 	}
 }
 
-//TODO CSV Tools compatibility
 void mainView::listItemCopy(bool cut)
 {
 	debug("listItemCopy");
@@ -1789,7 +1788,6 @@ void mainView::listItemCopy(bool cut)
 		listItemDelete();
 }
 
-//TODO validate
 void mainView::listItemPaste()
 {
 	debug("listItemPaste", "entered", ! (this->state.tc && this->state.ti != -1));
@@ -1916,7 +1914,6 @@ void mainView::listItemDelete()
 	this->data->setChanged(true);
 }
 
-//TODO CSV Tools compatibility
 void mainView::putListItems(vector<QString> items)
 {
 	debug("putListItems");

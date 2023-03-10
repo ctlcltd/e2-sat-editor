@@ -80,7 +80,6 @@ void e2db_abstract::value_channel_reference(string str, channel_reference& chref
 	i = 0, atype = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0;
 
 	std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X", &i, &atype, &anum, &ssid, &tsid, &onid, &dvbns);
-	//TODO other flags ? "...:%d:%d:%d:"
 
 	switch (atype)
 	{
@@ -91,7 +90,6 @@ void e2db_abstract::value_channel_reference(string str, channel_reference& chref
 		case STYPE::hidden_marker_2:
 			chref.marker = true;
 		break;
-		//TODO group
 		// group
 		case STYPE::group:
 		return;
@@ -438,7 +436,8 @@ int e2db_abstract::value_transponder_position(string str)
 	if (! str.empty())
 	{
 		size_t pos;
-		float posdeg = std::stof(str, &pos); //TODO TEST invalid_argument
+		//TODO FIX invalid_argument
+		float posdeg = std::stof(str, &pos);
 		char pospoint = str.substr(pos)[0];
 		return (int ((pospoint == 'E' ? posdeg : -posdeg) * 10));
 	}

@@ -277,7 +277,6 @@ QLineEdit* _platform_macx::_osLineEdit(QLineEdit* input)
 	return input;
 }
 
-//TODO only for non-editable
 QComboBox* _platform_macx::_osComboBox(QComboBox* select)
 {
 	select->setStyle(new _ComboBoxProxyStyle);

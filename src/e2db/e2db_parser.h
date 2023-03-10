@@ -42,6 +42,9 @@ class e2db_parser : virtual public e2db_abstract
 		void parse_userbouquet_epl_reference(string str, userbouquet& ub);
 		void parse_channel_reference(string str, channel_reference& chref, service_reference& ref);
 		void parse_tunersets_xml(int ytype, istream& itunxml);
+		void parse_zapit_services_xml(istream& iservicesxml);
+		void parse_zapit_services_apix_xml(istream& iservicesxml, int ver);
+		void parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, int ver);
 		bool find_services_file();
 		bool list_file(string path);
 		bool read(string path);

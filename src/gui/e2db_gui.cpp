@@ -69,6 +69,7 @@ void e2db::setup()
 	e2db::CONVERTER_EXTENDED_FIELDS = settings.value("preference/toolsFieldsExtended", false).toBool();
 }
 
+//TODO FIX
 void e2db::error(string msg, string optk, string optv)
 {
 	this->::e2se_e2db::e2db::error(msg, optk, optv);
@@ -403,7 +404,6 @@ void e2db::exportFile(int bit, vector<string> paths)
 		export_file(paths);
 }
 
-//TODO FIX duplicate bouquets
 void e2db::importBlob(unordered_map<string, e2db_file> files)
 {
 	debug("importBlob");

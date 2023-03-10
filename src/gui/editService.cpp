@@ -105,7 +105,7 @@ void editService::serviceLayout()
 	QHBoxLayout* dtb10 = new QHBoxLayout;
 	dtf0->addRow(tr("Service type"), dtb10);
 
-	//TODO FIX height
+	//TODO improve height
 	QLineEdit* dtf0st = new QLineEdit;
 	dtf0st->setProperty("field", "stype");
 	dtf0st->setVisible(false);

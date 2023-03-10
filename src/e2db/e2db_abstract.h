@@ -303,6 +303,18 @@ struct e2db_abstract : protected e2se::log_factory
 			// channels <chid string, channel_reference struct>
 			unordered_map<string, channel_reference> channels;
 			bool locked = false;
+			bool hidden = false;
+			int index = -1;
+		};
+
+		struct table
+		{
+			int itype; // 0: services, 1: bouquets
+			string charset;
+			string name;
+			int pos = -1;
+			int diseqc = -1;
+			int uncomtd = -1;
 			int index = -1;
 		};
 
@@ -360,6 +372,7 @@ struct e2db_abstract : protected e2se::log_factory
 
 		struct datadb
 		{
+			int type; // 0: lamedb, 1: zapit
 			// transponders <txid string, transponder struct>
 			unordered_map<string, transponder> transponders;
 			// services <chid string, service struct>
@@ -475,7 +488,8 @@ struct e2db_abstract : protected e2se::log_factory
 
 	protected:
 
-		inline static int LAMEDB_VER = 0;
+		inline static int LAMEDB_VER = -1;
+		inline static int ZAPIT_VER = -1;
 
 		void add_transponder(int idx, transponder& tx);
 		void add_service(int idx, service& ch);

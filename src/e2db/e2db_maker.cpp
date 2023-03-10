@@ -183,7 +183,7 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 		ss << formats[MAKER_FORMAT::b_service_params_separator];
 		ss << formats[MAKER_FORMAT::b_service_param_escape] << ch.chname << formats[MAKER_FORMAT::b_service_param_escape];
 		ss << formats[MAKER_FORMAT::b_service_params_separator];
-		//TODO max length 256 EOL
+
 		auto last_key = (*prev(ch.data.cend()));
 		for (auto & q : ch.data)
 		{

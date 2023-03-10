@@ -40,11 +40,19 @@ void e2db_parser::parse_e2db()
 	std::clock_t start = std::clock();
 
 	if (! find_services_file())
-		return error("parse_e2db", "Error", "Lamedb services file not found.");
+		return error("parse_e2db", "Error", "Services file not found.");
 
-	ifstream ilamedb (this->e2db[this->services_filename]);
-	parse_e2db_lamedb(ilamedb);
-	ilamedb.close();
+	ifstream iservices (this->e2db[this->services_filename]);
+	if (this->e2db.count("services.xml"))
+	{
+		db.type = 1;
+		parse_zapit_services_xml(iservices);
+	}
+	else
+	{
+		parse_e2db_lamedb(iservices);
+	}
+	iservices.close();
 
 	if (PARSER_TUNERSETS)
 	{
@@ -74,54 +82,72 @@ void e2db_parser::parse_e2db()
 		}
 	}
 
-	for (auto & x : this->e2db)
+	if (db.type == 1)
 	{
-		if (x.first.find("bouquets.") != string::npos)
+		if (this->e2db.count("ubouquets.xml"))
 		{
-			string fext = x.first.substr(x.first.rfind(".") + 1);
-
-			if (fext != "tv" && fext != "radio" && fext != "epl")
-				continue;
-
-			ifstream ibouquet (this->e2db[x.first]);
-			parse_e2db_bouquet(ibouquet, x.first, fext == "epl");
-			ibouquet.close();
+			ifstream ibouquetsxml (this->e2db["ubouquets.xml"]);
+			parse_zapit_bouquets_apix_xml(ibouquetsxml, ZAPIT_VER);
+			ibouquetsxml.close();
+		}
+		if (this->e2db.count("bouquets.xml"))
+		{
+			ifstream ibouquetsxml (this->e2db["bouquets.xml"]);
+			parse_zapit_bouquets_apix_xml(ibouquetsxml, ZAPIT_VER);
+			ibouquetsxml.close();
 		}
 	}
-	for (auto & x : bouquets)
+	else
 	{
-		for (string & fname : x.second.userbouquets)
+		for (auto & x : this->e2db)
 		{
-			ifstream iuserbouquet (this->e2db[fname]);
-			parse_e2db_userbouquet(iuserbouquet, fname);
-			iuserbouquet.close();
-		}
-	}
-
-	if (PARSER_PARENTALLOCK_LIST)
-	{
-		if (LAMEDB_VER < 4)
-		{
-			if (this->e2db.count("services.locked"))
+			if (x.first.find("bouquets.") != string::npos)
 			{
-				ifstream ilocked (this->e2db["services.locked"]);
-				parse_e2db_parentallock_list(PARENTALLOCK::locked, ilocked);
-				ilocked.close();
+				string fext = x.first.substr(x.first.rfind(".") + 1);
+				
+				if (fext != "tv" && fext != "radio" && fext != "epl")
+					continue;
+				
+				ifstream ibouquet (this->e2db[x.first]);
+				parse_e2db_bouquet(ibouquet, x.first, fext == "epl");
+				ibouquet.close();
 			}
 		}
-		else
+		for (auto & x : bouquets)
 		{
-			if (this->e2db.count("blacklist"))
+			for (string & fname : x.second.userbouquets)
 			{
-				ifstream ilocked (this->e2db["blacklist"]);
-				parse_e2db_parentallock_list(PARENTALLOCK::blacklist, ilocked);
-				ilocked.close();
+				ifstream iuserbouquet (this->e2db[fname]);
+				parse_e2db_userbouquet(iuserbouquet, fname);
+				iuserbouquet.close();
 			}
-			if (this->e2db.count("whitelist"))
+		}
+		
+		if (PARSER_PARENTALLOCK_LIST)
+		{
+			if (LAMEDB_VER < 4)
 			{
-				ifstream ilocked (this->e2db["whitelist"]);
-				parse_e2db_parentallock_list(PARENTALLOCK::whitelist, ilocked);
-				ilocked.close();
+				if (this->e2db.count("services.locked"))
+				{
+					ifstream ilocked (this->e2db["services.locked"]);
+					parse_e2db_parentallock_list(PARENTALLOCK::locked, ilocked);
+					ilocked.close();
+				}
+			}
+			else
+			{
+				if (this->e2db.count("blacklist"))
+				{
+					ifstream ilocked (this->e2db["blacklist"]);
+					parse_e2db_parentallock_list(PARENTALLOCK::blacklist, ilocked);
+					ilocked.close();
+				}
+				if (this->e2db.count("whitelist"))
+				{
+					ifstream ilocked (this->e2db["whitelist"]);
+					parse_e2db_parentallock_list(PARENTALLOCK::whitelist, ilocked);
+					ilocked.close();
+				}
 			}
 		}
 	}
@@ -150,11 +176,19 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 		this->e2db[filename] = x.first;
 	}
 	if (! find_services_file())
-		return error("parse_e2db", "Error", "Lamedb services file not found.");
+		return error("parse_e2db", "Error", "Services file not found.");
 
-	stringstream ilamedb;
-	ilamedb.write(&files[this->e2db[this->services_filename]].data[0], files[this->e2db[this->services_filename]].size);
-	parse_e2db_lamedb(ilamedb);
+	stringstream iservices;
+	iservices.write(&files[this->e2db[this->services_filename]].data[0], files[this->e2db[this->services_filename]].size);
+	if (this->e2db.count("services.xml"))
+	{
+		db.type = 1;
+		parse_zapit_services_xml(iservices);
+	}
+	else
+	{
+		parse_e2db_lamedb(iservices);
+	}
 
 	if (PARSER_TUNERSETS)
 	{
@@ -184,54 +218,72 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 		}
 	}
 
-	for (auto & x : this->e2db)
+	if (db.type == 1)
 	{
-		if (x.first.find("bouquets.") != string::npos)
+		if (this->e2db.count("ubouquets.xml"))
 		{
-			string fext = x.first.substr(x.first.rfind(".") + 1);
-
-			if (fext != "tv" && fext != "radio" && fext != "epl")
-				continue;
-
-			stringstream ibouquet;
-			ibouquet.write(&files[x.second].data[0], files[x.second].size);
-			parse_e2db_bouquet(ibouquet, x.second, fext == "epl");
+			stringstream ibouquetsxml;
+			ibouquetsxml.write(&files[this->e2db["ubouquets.xml"]].data[0], files[this->e2db["ubouquets.xml"]].size);
+			parse_zapit_bouquets_apix_xml(ibouquetsxml, ZAPIT_VER);
+		}
+		if (this->e2db.count("bouquets.xml"))
+		{
+			stringstream ibouquetsxml;
+			ibouquetsxml.write(&files[this->e2db["bouquets.xml"]].data[0], files[this->e2db["bouquets.xml"]].size);
+			parse_zapit_bouquets_apix_xml(ibouquetsxml, ZAPIT_VER);
 		}
 	}
-	for (auto & x : bouquets)
+	else
 	{
-		for (string & filename : x.second.userbouquets)
+		for (auto & x : this->e2db)
 		{
-			stringstream iuserbouquet;
-			iuserbouquet.write(&files[this->e2db[filename]].data[0], files[this->e2db[filename]].size);
-			parse_e2db_userbouquet(iuserbouquet, filename);
-		}
-	}
-
-	if (PARSER_PARENTALLOCK_LIST)
-	{
-		if (LAMEDB_VER < 4)
-		{
-			if (this->e2db.count("services.locked"))
+			if (x.first.find("bouquets.") != string::npos)
 			{
-				stringstream ilocked;
-				ilocked.write(&files[this->e2db["services.locked"]].data[0], files[this->e2db["services.locked"]].size);
-				parse_e2db_parentallock_list(PARENTALLOCK::locked, ilocked);
+				string fext = x.first.substr(x.first.rfind(".") + 1);
+				
+				if (fext != "tv" && fext != "radio" && fext != "epl")
+					continue;
+				
+				stringstream ibouquet;
+				ibouquet.write(&files[x.second].data[0], files[x.second].size);
+				parse_e2db_bouquet(ibouquet, x.second, fext == "epl");
 			}
 		}
-		else
+		for (auto & x : bouquets)
 		{
-			if (this->e2db.count("blacklist"))
+			for (string & filename : x.second.userbouquets)
 			{
-				stringstream ilocked;
-				ilocked.write(&files[this->e2db["blacklist"]].data[0], files[this->e2db["blacklist"]].size);
-				parse_e2db_parentallock_list(PARENTALLOCK::blacklist, ilocked);
+				stringstream iuserbouquet;
+				iuserbouquet.write(&files[this->e2db[filename]].data[0], files[this->e2db[filename]].size);
+				parse_e2db_userbouquet(iuserbouquet, filename);
 			}
-			if (this->e2db.count("whitelist"))
+		}
+		
+		if (PARSER_PARENTALLOCK_LIST)
+		{
+			if (LAMEDB_VER < 4)
 			{
-				stringstream ilocked;
-				ilocked.write(&files[this->e2db["whitelist"]].data[0], files[this->e2db["whitelist"]].size);
-				parse_e2db_parentallock_list(PARENTALLOCK::whitelist, ilocked);
+				if (this->e2db.count("services.locked"))
+				{
+					stringstream ilocked;
+					ilocked.write(&files[this->e2db["services.locked"]].data[0], files[this->e2db["services.locked"]].size);
+					parse_e2db_parentallock_list(PARENTALLOCK::locked, ilocked);
+				}
+			}
+			else
+			{
+				if (this->e2db.count("blacklist"))
+				{
+					stringstream ilocked;
+					ilocked.write(&files[this->e2db["blacklist"]].data[0], files[this->e2db["blacklist"]].size);
+					parse_e2db_parentallock_list(PARENTALLOCK::blacklist, ilocked);
+				}
+				if (this->e2db.count("whitelist"))
+				{
+					stringstream ilocked;
+					ilocked.write(&files[this->e2db["whitelist"]].data[0], files[this->e2db["whitelist"]].size);
+					parse_e2db_parentallock_list(PARENTALLOCK::whitelist, ilocked);
+				}
 			}
 		}
 	}
@@ -321,6 +373,9 @@ void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 void e2db_parser::parse_e2db_lamedbx(istream& ilamedb, int ver)
 {
 	debug("parse_e2db_lamedbx", "version", ver);
+
+	if (ver > 4)
+		return error("parse_e2db_lamedbx", "Parser Error", "Unknown Lamedb services file format.");
 
 	LAMEDB_VER = ver;
 	int step = 0;
@@ -415,10 +470,6 @@ void e2db_parser::parse_lamedb_transponder_feparms(string str, char ty, transpon
 	int amod;
 	char oflgs[33] = "";
 	sys = -1, mod = -1, rol = -1, pil = -1;
-	// tx.pol = -1, tx.fec = -1, tx.inv = -1, tx.sys = -1, tx.mod = -1, tx.rol = -1, tx.pil = -1;
-	// tx.band = -1, tx.hpfec = -1, tx.lpfec = -1, tx.tmod = -1, tx.tmx = -1, tx.guard = -1, tx.hier = -1;
-	// tx.cmod = -1, tx.cfec = -1;
-	// tx.amod = -1;
 
 	switch (ty)
 	{
@@ -512,7 +563,6 @@ void e2db_parser::parse_lamedb_service_data(string str, service& ch)
 	if (str.empty())
 		return;
 
-	//TODO max length 256 EOL
 	stringstream ss (str);
 	string line;
 	map<char, vector<string>> cstr;
@@ -721,7 +771,6 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 	i = 0, atype = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0;
 
 	std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X", &i, &atype, &anum, &ssid, &tsid, &onid, &dvbns);
-	//TODO other flags "...:%d:%d:%d:"
 
 	switch (atype)
 	{
@@ -749,13 +798,13 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 }
 
 //TODO value xml entities
-void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
+void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)
 {
 	debug("parse_tunersets_xml", "ytype", ytype);
 
 	string htunxml;
 	string charset = "UTF-8";
-	std::getline(ftunxml, htunxml, '>');
+	std::getline(itunxml, htunxml, '>');
 
 	if (htunxml.find("<?xml") == string::npos)
 		return error("parse_tunersets_xml", "Parser Error", "Unknown file format.");
@@ -764,6 +813,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 	unsigned long len;
 	if (pos != string::npos)
 	{
+		//TODO fixed pos
 		charset = htunxml.substr(pos + 10);
 		len = charset.rfind('"');
 		if (len == string::npos)
@@ -827,7 +877,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 	int cidx = 0;
 	string line;
 
-	while (std::getline(ftunxml, line, '>'))
+	while (std::getline(itunxml, line, '>'))
 	{
 		if (line.find("<!") != string::npos)
 		{
@@ -870,21 +920,16 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 			{
 				tn = tunersets_table ();
 				tn.ytype = ytype;
-				// tn.flgs = -1, tn.pos = -1, tn.feed = -1;
 			}
 			else if (step == 2)
 			{
 				tntxp = tunersets_transponder ();
 				tntxp.freq = -1;
-				// tntxp.freq = -1, tntxp.sr = -1, tntxp.pol = -1, tntxp.fec = -1, tntxp.mod = -1, tntxp.inv = -1, tntxp.sys = -1, tntxp.rol = -1, tntxp.pil = -1, tntxp.isid = -1, tntxp.mts = -1, tntxp.plsmode = -1, tntxp.plscode = -1, tntxp.plsn = -1;
-				// tntxp.band = -1, tntxp.hpfec = -1, tntxp.lpfec = -1, tntxp.tmod = -1, tntxp.tmx = -1, tntxp.guard = -1, tntxp.hier = -1;
-				// tntxp.cfec = -1, tntxp.cmod = -1;
-				// tntxp.amod = -1;
 			}
 		}
 		else
 		{
-			return error("parse_tunersets_xml", "Parser Error", "Malformed or unknown XML error.");
+			return error("parse_tunersets_xml", "Parser Error", "Malformed or unknown XML file format.");
 		}
 
 		char* token = std::strtok(line.data(), " ");
@@ -1068,6 +1113,608 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& ftunxml)
 	add_tunersets(tv);
 }
 
+void e2db_parser::parse_zapit_services_xml(istream& iservicesxml)
+{
+	debug("parse_zapit_services_xml");
+
+	string hxml;
+	std::getline(iservicesxml, hxml, '>');
+
+	if (hxml.find("<?xml") == string::npos)
+		return error("parse_zapit_services_xml", "Parser Error", "Unknown file format.");
+
+	bool valid = false;
+	int ver = -1;
+	string line;
+
+	while (std::getline(iservicesxml, line, '>'))
+	{
+		if (line.find("<zapit"))
+		{
+			string pver;
+			unsigned long pos = line.find("api=");
+			unsigned long len;
+			if (pos != string::npos)
+			{
+				pver = line.substr(pos + 5);
+				len = pver.rfind('"');
+				if (len == string::npos)
+					len = pver.rfind('\'');
+				pver = pver.substr(0, len);
+				ver = std::atoi(pver.data());
+			}
+			valid = true;
+
+			break;
+		}
+	}
+
+	iservicesxml.seekg(0);
+
+	if (valid)
+		ver = ver != -1 ? ver : 1;
+	else
+		error("parse_tunersets_xml", "Parser Error", "These settings are not supported.");
+
+	if (ver < 1 || ver > 4)
+		return error("parse_zapit_services_xml", "Parser Error", "Unknown Zapit services file format.");
+
+	parse_zapit_services_apix_xml(iservicesxml, ver);
+}
+
+//TODO
+void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, int ver)
+{
+	debug("parse_zapit_services_apix_xml", "version", ver);
+
+	if (ver < 1 || ver > 4)
+		return error("parse_zapit_services_apix_xml", "Parser Error", "Unknown Zapit services file format.");
+
+	ZAPIT_VER = ver;
+
+	string hxml;
+	string charset = "UTF-8";
+	std::getline(iservicesxml, hxml, '>');
+
+	if (hxml.find("<?xml") == string::npos)
+		return error("parse_zapit_services_apix_xml", "Parser Error", "Unknown file format.");
+
+	unsigned long pos = hxml.find("encoding=");
+	unsigned long len;
+	if (pos != string::npos)
+	{
+		//TODO fixed pos
+		charset = hxml.substr(pos + 10);
+		len = charset.rfind('"');
+		if (len == string::npos)
+			len = charset.rfind('\'');
+		charset = charset.substr(0, len);
+	}
+
+	debug("parse_zapit_services_apix_xml", "charset", charset);
+
+	table tr;
+	transponder tx;
+	service ch;
+
+	string iname = "zap:0";
+	unordered_map<string, int> depth;
+	depth["zapit"] = 0;
+	depth["sat"] = 1;
+	if (ver > 1)
+	{
+		depth["TS"] = 2;
+		depth["S"] = 3;
+	}
+	else
+	{
+		depth["transponder"] = 2;
+		depth["channel"] = 3;
+	}
+
+	int step = 0;
+	int ln = 1;
+	int aidx = 0;
+	int bidx = 0;
+	int cidx = 0;
+	string line;
+
+	while (std::getline(iservicesxml, line, '>'))
+	{
+		if (line.find("<!") != string::npos)
+		{
+			comment s;
+			s.type = line.find('\n') != string::npos;
+			s.ln = ln;
+			s.text = line.substr(line.find("<!--") + 4);
+			s.text = s.text.substr(0, s.text.length() - 2);
+			comments[iname].emplace_back(s);
+			continue;
+		}
+
+		string tag;
+		bool add = false;
+		unsigned long pos = line.find('<');
+		unsigned long len;
+		if (pos != string::npos)
+		{
+			tag = line.substr(pos + 1);
+			pos = tag[0] == '/';
+			len = tag.find(' ');
+
+			add = pos || tag[tag.length() - 1] == '/';
+
+			if (! pos && len == string::npos)
+				len = tag.find('/');
+			tag = tag.substr(pos, len);
+		}
+
+		if (tag.empty())
+		{
+			continue;
+		}
+		else if (depth.count(tag))
+		{
+			ln++;
+			step = depth[tag];
+
+			if (step == 1)
+			{
+				tr = table ();
+				tr.itype = 0;
+				tr.charset = charset;
+			}
+			else if (step == 2)
+			{
+				tx = transponder ();
+			}
+			else if (step == 3)
+			{
+				ch = service ();
+			}
+		}
+		else
+		{
+			return error("parse_zapit_services_apix_xml", "Parser Error", "Malformed or unknown XML file format.");
+		}
+
+		char* token = std::strtok(line.data(), " ");
+		while (token != 0)
+		{
+			string str = string (token);
+			string key, val;
+			size_t pos;
+			size_t len = str.find('=');
+
+			if (len != string::npos)
+			{
+				key = str.substr(0, len);
+				val = str.substr(len + 1);
+			}
+			else
+			{
+				key = str;
+			}
+
+			pos = val.find('"');
+			len = string::npos;
+
+			if (pos != string::npos)
+			{
+				len = val.rfind('"');
+			}
+			else
+			{
+				pos = val.find('\'');
+				if (pos != string::npos)
+					len = val.rfind('\'');
+			}
+
+			if (len != string::npos && pos != len)
+			{
+				val = val.substr(0, len);
+				if (pos != string::npos)
+					val = val.substr(pos + 1);
+			}
+			else
+			{
+				val = line.substr(line.find(key) + key.length());
+				pos = val.find('"');
+				if (pos == string::npos)
+					pos = val.find('\'');
+				if (pos != string::npos)
+					val = val.substr(pos + 1);
+
+				len = val.find('"');
+				if (len == string::npos)
+					len = val.find('\'');
+				if (len != string::npos)
+					val = val.substr(0, len);
+
+				std::transform(val.begin(), val.end(), val.begin(), [](unsigned char c) { return c ? c : ' '; });
+			}
+			token = std::strtok(NULL, " ");
+
+			if (key.empty() || val.empty())
+				continue;
+
+			if (ver > 1)
+			{
+				if (key == "name")
+					tr.name = val;
+				else if (key == "position")
+					tr.pos = std::atoi(val.data());
+				else if (key == "diseqc")
+					tr.diseqc = std::atoi(val.data());
+				else if (key == "uncommitted")
+					tr.uncomtd = std::atoi(val.data());
+				else if (key == "id")
+					tx.tsid = int (std::strtol(val.data(), NULL, 16));
+				else if (key == "on")
+					tx.onid = int (std::strtol(val.data(), NULL, 16));
+				else if (key == "frq")
+					tx.freq = int (std::atoi(val.data()) / 1e3);
+				else if (key == "inv")
+					tx.inv = std::atoi(val.data());
+				else if (key == "sr")
+					tx.sr = int (std::atoi(val.data()) / 1e3);
+				// else if (key == "fec")
+				// 	tx.fec = std::atoi(val.data());
+				else if (key == "pol")
+					tx.pol = std::atoi(val.data());
+				else if (key == "mod")
+					tx.mod = std::atoi(val.data());
+				else if (key == "sys")
+					tx.sys = std::atoi(val.data());
+				else if (key == "i")
+					ch.ssid = int (std::strtol(val.data(), NULL, 16));
+				else if (key == "n")
+					ch.chname = val;
+				// else if (key == "v")
+				// else if (key == "a")
+				// else if (key == "p")
+				// else if (key == "pmt")
+				// else if (key == "tx")
+				else if (key == "t")
+					ch.stype = std::atoi(val.data());
+				// else if (key == "vt")
+				// else if (key == "s")
+				else if (key == "num")
+					ch.snum = std::atoi(val.data());
+				// else if (key == "f")
+			}
+			else
+			{
+				if (step == 0 && key == "name")
+					tr.name = val;
+				else if (key == "diseqc")
+					tr.diseqc = std::atoi(val.data());
+				else if (key == "position")
+					tr.pos = std::atoi(val.data());
+				else if (key == "id")
+					tx.tsid = int (std::strtol(val.data(), NULL, 16));
+				else if (key == "onid")
+					tx.onid = int (std::strtol(val.data(), NULL, 16));
+				else if (key == "frequency")
+					tx.freq = int (std::atoi(val.data()) / 1e3);
+				else if (key == "inversion")
+					tx.inv = std::atoi(val.data());
+				else if (key == "symbol_rate")
+					tx.sr = int (std::atoi(val.data()) / 1e3);
+				// else if (key == "fec_inner")
+				// 	tx.fec = std::atoi(val.data());
+				else if (key == "polarization")
+					tx.pol = std::atoi(val.data());
+				else if (key == "service_id")
+					ch.ssid = int (std::strtol(val.data(), NULL, 16));
+				else if (key == "name")
+					ch.chname = val;
+				else if (key == "service_type")
+					ch.stype = std::atoi(val.data());
+			}
+		}
+
+		if (! add && step == 2)
+		{
+			bidx++;
+			tx.pos = tr.pos;
+			add_transponder(bidx, tx);
+		}
+		else if (add && step == 3)
+		{
+			cidx++;
+			ch.tsid = tx.tsid;
+			ch.onid = tx.onid;
+			add_service(cidx, ch);
+		}
+	}
+}
+
+//TODO
+void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, int ver)
+{
+	debug("parse_zapit_bouquets_apix_xml", "version", ver);
+
+	if (ver < 1 || ver > 4)
+		return error("parse_zapit_bouquets_apix_xml", "Parser Error", "Unknown Zapit bouquets file format.");
+
+	ZAPIT_VER = ver;
+
+	string hxml;
+	string charset = "UTF-8";
+	std::getline(ibouquetsxml, hxml, '>');
+
+	if (hxml.find("<?xml") == string::npos)
+		return error("parse_zapit_bouquets_apix_xml", "Parser Error", "Unknown file format.");
+
+	unsigned long pos = hxml.find("encoding=");
+	unsigned long len;
+	if (pos != string::npos)
+	{
+		//TODO fixed pos
+		charset = hxml.substr(pos + 10);
+		len = charset.rfind('"');
+		if (len == string::npos)
+			len = charset.rfind('\'');
+		charset = charset.substr(0, len);
+	}
+
+	debug("parse_zapit_bouquets_apix_xml", "charset", charset);
+
+	table tr;
+	userbouquet ub;
+	service_reference ref;
+	channel_reference chref;
+
+	vector<userbouquet> ubouquets;
+
+	tr.itype = 1;
+	tr.charset = charset;
+
+	string iname = "zap:1";
+	unordered_map<string, int> depth;
+	depth["zapit"] = 0;
+	depth["Bouquet"] = 1;
+	if (ver > 1)
+	{
+		depth["S"] = 2;
+	}
+	else
+	{
+		depth["channel"] = 2;
+	}
+
+	int step = 0;
+	int ln = 1;
+	int bidx = 0;
+	int cidx = 0;
+	string line;
+
+	while (std::getline(ibouquetsxml, line, '>'))
+	{
+		if (line.find("<!") != string::npos)
+		{
+			comment s;
+			s.type = line.find('\n') != string::npos;
+			s.ln = ln;
+			s.text = line.substr(line.find("<!--") + 4);
+			s.text = s.text.substr(0, s.text.length() - 2);
+			comments[iname].emplace_back(s);
+			continue;
+		}
+
+		string tag;
+		bool add = false;
+		unsigned long pos = line.find('<');
+		unsigned long len;
+		if (pos != string::npos)
+		{
+			tag = line.substr(pos + 1);
+			pos = tag[0] == '/';
+			len = tag.find(' ');
+
+			add = pos || tag[tag.length() - 1] == '/';
+
+			if (! pos && len == string::npos)
+				len = tag.find('/');
+			tag = tag.substr(pos, len);
+		}
+
+		if (tag.empty())
+		{
+			continue;
+		}
+		else if (depth.count(tag))
+		{
+			ln++;
+			step = depth[tag];
+
+			if (! add && step == 1)
+			{
+				ub = userbouquet ();
+			}
+			else if (step == 2)
+			{
+				ref = service_reference ();
+				chref = channel_reference ();
+			}
+		}
+		else
+		{
+			return error("parse_zapit_bouquets_apix_xml", "Parser Error", "Malformed or unknown XML file format.");
+		}
+
+		char* token = std::strtok(line.data(), " ");
+		while (token != 0)
+		{
+			string str = string (token);
+			string key, val;
+			size_t pos;
+			size_t len = str.find('=');
+
+			if (len != string::npos)
+			{
+				key = str.substr(0, len);
+				val = str.substr(len + 1);
+			}
+			else
+			{
+				key = str;
+			}
+
+			pos = val.find('"');
+			len = string::npos;
+
+			if (pos != string::npos)
+			{
+				len = val.rfind('"');
+			}
+			else
+			{
+				pos = val.find('\'');
+				if (pos != string::npos)
+					len = val.rfind('\'');
+			}
+
+			if (len != string::npos && pos != len)
+			{
+				val = val.substr(0, len);
+				if (pos != string::npos)
+					val = val.substr(pos + 1);
+			}
+			else
+			{
+				val = line.substr(line.find(key) + key.length());
+				pos = val.find('"');
+				if (pos == string::npos)
+					pos = val.find('\'');
+				if (pos != string::npos)
+					val = val.substr(pos + 1);
+
+				len = val.find('"');
+				if (len == string::npos)
+					len = val.find('\'');
+				if (len != string::npos)
+					val = val.substr(0, len);
+
+				std::transform(val.begin(), val.end(), val.begin(), [](unsigned char c) { return c ? c : ' '; });
+			}
+			token = std::strtok(NULL, " ");
+
+			if (key.empty() || val.empty())
+				continue;
+
+			if (ver > 1)
+			{
+				if (key == "name")
+					ub.name = val;
+				else if (key == "hidden")
+					ub.hidden = std::atoi(val.data());
+				else if (key == "locked")
+					ub.locked = std::atoi(val.data());
+				else if (key == "i")
+					ref.ssid = int (std::strtol(val.data(), NULL, 16));
+				else if (key == "n")
+					chref.value = val;
+				else if (key == "t")
+					ref.tsid = int (std::strtol(val.data(), NULL, 16));
+				else if (key == "on")
+					ref.onid = int (std::strtol(val.data(), NULL, 16));
+				// else if (key == "s")
+				// else if (key == "frq")
+				// else if (key == "l")
+			}
+			else
+			{
+				if (step == 1 && key == "name")
+					ub.name = val;
+				else if (key == "hidden")
+					ub.hidden = std::atoi(val.data());
+				else if (key == "locked")
+					ub.locked = std::atoi(val.data());
+				else if (key == "serviceID")
+					ref.ssid = int (std::strtol(val.data(), NULL, 16));
+				else if (key == "name")
+					chref.value = val;
+				else if (key == "tsid")
+					ref.tsid = int (std::strtol(val.data(), NULL, 16));
+				else if (key == "onid")
+					ref.onid = int (std::strtol(val.data(), NULL, 16));
+				// else if (key == "sat_position")
+			}
+		}
+
+		if (add && step == 1)
+		{
+			bidx++;
+			ub.index = bidx;
+			ubouquets.emplace_back(ub);
+		}
+		else if (add && step == 2)
+		{
+			cidx++;
+			char chid[25];
+
+			std::snprintf(chid, 25, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
+
+			chref.chid = chid;
+			chref.index = cidx;
+
+			ub.channels.emplace(chref.chid, chref);
+		}
+	}
+
+	unordered_map<int, string> count;
+
+	for (auto & q : ubouquets)
+	{
+		bouquet bs;
+		userbouquet ub = q;
+
+		for (auto & x : ub.channels)
+		{
+			channel_reference chref = x.second;
+
+			if (chref.marker)
+				continue;
+
+			if (db.services.count(chref.chid))
+			{
+				debug("parse_zapit_bouquets_apix_xml", "chid", chref.chid);
+				service ch = db.services[chref.chid];
+				count.emplace(ch.stype, ch.chid);
+			}
+		}
+
+		// btype autodetect
+		if (count[STYPE::radio] > count[STYPE::tv])
+			bs = bouquets["bouquets.radio"];
+		else
+			bs = bouquets["bouquets.tv"];
+
+		ub.bname = "userbouquet." + to_string(ub.index) + "." + (bs.btype == 2 ? "radio" : "tv");
+		ub.pname = bs.bname;
+
+		add_userbouquet(ub.index, ub);
+
+		for (auto & x : ub.channels)
+		{
+			channel_reference chref = x.second;
+
+			if (chref.marker)
+				continue;
+
+			if (db.services.count(chref.chid))
+			{
+				index[ub.bname].emplace_back(pair (cidx, chref.chid)); //C++17
+				index[ub.pname].emplace_back(pair ((index[ub.pname].size() + 1), chref.chid)); //C++17
+			}
+		}
+
+		count.clear();
+	}
+}
+
 bool e2db_parser::find_services_file()
 {
 	debug("find_services_file");
@@ -1080,6 +1727,8 @@ bool e2db_parser::find_services_file()
 		this->services_filename = "lamedb";
 	else if (this->e2db.count("services"))
 		this->services_filename = "services";
+	else if (this->e2db.count("services.xml"))
+		this->services_filename = "services.xml";
 
 	return ! this->services_filename.empty();
 }
@@ -1119,7 +1768,7 @@ bool e2db_parser::list_file(string path)
 	}
 	if (! find_services_file())
 	{
-		error("list_file", "File Error", "Lamedb services file not found.");
+		error("list_file", "File Error", "Services file not found.");
 		return false;
 	}
 	this->filepath = path;
