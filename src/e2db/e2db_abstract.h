@@ -309,12 +309,12 @@ struct e2db_abstract : protected e2se::log_factory
 
 		struct table
 		{
-			int itype; // 0: services, 1: bouquets
-			string charset;
 			string name;
 			int pos = -1;
 			int diseqc = -1;
 			int uncomtd = -1;
+			// transponders <txid string>
+			vector<string> transponders;
 			int index = -1;
 		};
 
@@ -370,9 +370,18 @@ struct e2db_abstract : protected e2se::log_factory
 			unordered_map<string, tunersets_table> tables;
 		};
 
+		struct datasets
+		{
+			string dname;
+			int itype; // 0: services, 1: bouquets
+			string charset;
+		};
+
 		struct datadb
 		{
 			int type; // 0: lamedb, 1: zapit
+			// tables <pos int, table struct>
+			unordered_map<int, table> tables;
 			// transponders <txid string, transponder struct>
 			unordered_map<string, transponder> transponders;
 			// services <chid string, service struct>
@@ -397,6 +406,8 @@ struct e2db_abstract : protected e2se::log_factory
 		unordered_map<int, tunersets> tuners;
 		// tunersets_pos <pos int, tnid string>
 		map<int, string> tuners_pos;
+		// datasets <dname string, datasets struct>
+		unordered_map<string, datasets> datas;
 		// comments <iname string, vector<comment struct>>
 		unordered_map<string, vector<comment>> comments;
 		// index <iname string, vector<pair<src-idx||count int, chid string>>>

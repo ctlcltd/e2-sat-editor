@@ -39,6 +39,9 @@ void e2db_maker::make_e2db()
 
 	std::clock_t start = std::clock();
 
+	if (LAMEDB_VER == -1 && ZAPIT_VER != -1)
+		LAMEDB_VER = 4;
+
 	make_e2db_lamedb();
 	make_e2db_bouquets();
 	make_e2db_userbouquets();
@@ -178,7 +181,7 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 		ss << dec;
 		ss << ':' << ch.stype;
 		ss << ':' << ch.snum;
-		if (LAMEDB_VER == 5)
+		if (ver == 5)
 			ss << ':' << ch.srcid;
 		ss << formats[MAKER_FORMAT::b_service_params_separator];
 		ss << formats[MAKER_FORMAT::b_service_param_escape] << ch.chname << formats[MAKER_FORMAT::b_service_param_escape];
@@ -216,18 +219,44 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 	file.size = file.data.size();
 }
 
+//TODO
 void e2db_maker::make_e2db_bouquets()
 {
 	debug("make_e2db_bouquets");
 
 	for (auto & x : bouquets)
 	{
+		string filename = x.first;
+		string bname = x.first;
+
+		if (LAMEDB_VER < 4 && filename.find(".epl") == string::npos)
+		{
+			bouquet bs = x.second;
+
+			string ktype;
+			if (bs.btype == STYPE::tv)
+				ktype = "tv";
+			else if (bs.btype == STYPE::radio)
+				ktype = "radio";
+			filename = "userbouquets." + ktype + ".epl";
+		}
+
 		e2db_file file;
 		if (LAMEDB_VER < 4)
-			make_bouquet_epl(x.first, file);
+			make_bouquet_epl(filename, bname, file);
 		else
-			make_bouquet(x.first, file);
-		this->e2db_out[x.first] = file;
+			make_bouquet(filename, file);
+		this->e2db_out[filename] = file;
+	}
+
+	if (LAMEDB_VER < 4)
+	{
+		e2db_file empty;
+		empty.data = "eDVB bouquets /2/\nbouquets\nend\n";
+		empty.filename = "bouquets";
+		empty.mime = "text/plain";
+		empty.size = empty.data.size();
+		this->e2db_out[empty.filename] = empty;
 	}
 }
 
@@ -237,9 +266,11 @@ void e2db_maker::make_e2db_userbouquets()
 
 	for (auto & x : userbouquets)
 	{
+		string filename = x.first;
+
 		e2db_file file;
-		make_userbouquet(x.first, file);
-		this->e2db_out[x.first] = file;
+		make_userbouquet(filename, file);
+		this->e2db_out[filename] = file;
 	}
 }
 
@@ -273,6 +304,149 @@ void e2db_maker::make_db_tunersets()
 	}
 }
 
+void e2db_maker::make_zapit()
+{
+	debug("make_zapit");
+
+	std::clock_t start = std::clock();
+
+	if (ZAPIT_VER == -1 && LAMEDB_VER != -1)
+		ZAPIT_VER = 4;
+
+	make_zapit_services();
+	make_zapit_bouquets();
+	if (MAKER_TUNERSETS)
+		make_db_tunersets();
+
+	std::clock_t end = std::clock();
+
+	info("make_zapit", "elapsed time", to_string(int (end - start)) + " ms.");
+}
+
+void e2db_maker::make_zapit_services()
+{
+	debug("make_zapit_services");
+
+	switch (ZAPIT_VER)
+	{
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+			make_zapit_services(ZAPIT_VER);
+		break;
+		default:
+		return error("make_zapit_servies", "Maker Error", "Unknown services file format.");
+	}
+}
+
+void e2db_maker::make_zapit_services(int ver)
+{
+	debug("make_zapit_services", "version", ver);
+
+	if (! datas.count("services.xml"))
+	{
+		datasets dat;
+		dat.dname = "services.xml";
+		dat.itype = 0;
+		dat.charset = "UTF-8";
+
+		datas.emplace(dat.dname, dat);
+	}
+	if (db.tables.size() == 0)
+	{
+		for (auto & x : index["txs"])
+		{
+			transponder tx = db.transponders[x.second];
+			table& tr = db.tables[tx.pos];
+			tr.pos = tx.pos;
+
+			if (tuners_pos.count(tx.pos))
+			{
+				string tnid = tuners_pos.at(tx.pos);
+				tunersets_table tn = tuners[0].tables[tnid];
+				tr.name = tn.name;
+			}
+			else
+			{
+				tr.name = tx.pos == -1 ? "NaN" : value_transponder_position(tx.pos);
+			}
+
+			tr.transponders.emplace_back(tx.txid);
+
+			db.tables[tx.pos] = tr;
+		}
+
+		int idx = 0;
+		for (auto & x : db.tables)
+		{
+			idx++;
+			table& tr = x.second;
+			tr.index = idx;
+
+			db.tables[tr.pos] = tr;
+			index["trs"].emplace_back(pair (tr.index, to_string(tr.pos))); //C++17
+		}
+	}
+
+	e2db_file file;
+	make_services_xml("services.xml", file, ver);
+	this->e2db_out["services.xml"] = file;
+}
+
+void e2db_maker::make_zapit_bouquets()
+{
+	debug("make_zapit_bouquets");
+
+	switch (ZAPIT_VER)
+	{
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+			make_zapit_bouquets(ZAPIT_VER);
+		break;
+		default:
+		return error("make_zapit_bouquets", "Maker Error", "Unknown bouquets file format.");
+	}
+}
+
+void e2db_maker::make_zapit_bouquets(int ver)
+{
+	debug("make_zapit_bouquets", "version", ver);
+
+	string filename;
+
+	if (ver > 1)
+		filename = "ubouquets.xml";
+	else
+		filename = "bouquets.xml";
+
+	if (! datas.count("ubouquets.xml") && ! datas.count("bouquets.xml"))
+	{
+		datasets dat;
+		dat.dname = ver > 1 ? "ubouquets.xml" : "bouquets.xml";
+		dat.itype = 1;
+		dat.charset = "UTF-8";
+
+		datas.emplace(dat.dname, dat);
+	}
+
+	e2db_file file;
+	make_bouquets_xml(filename, file, ver);
+	this->e2db_out[filename] = file;
+
+	if (ver > 1)
+	{
+		e2db_file empty;
+		empty.data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<zapit>\n</zapit>\n";
+		empty.filename = "bouquets.xml";
+		empty.mime = "text/xml";
+		empty.size = empty.data.size();
+		this->e2db_out[empty.filename] = empty;
+	}
+}
+
 void e2db_maker::make_e2db_parentallock_list()
 {
 	debug("make_e2db_parentallock_list");
@@ -296,7 +470,7 @@ void e2db_maker::make_e2db_parentallock_list()
 		empty.filename = filename;
 		empty.mime = "text/plain";
 		empty.size = 0;
-		this->e2db_out[filename] = empty;
+		this->e2db_out[empty.filename] = empty;
 	}
 }
 
@@ -324,7 +498,7 @@ void e2db_maker::make_bouquet(string bname, e2db_file& file)
 	file.size = file.data.size();
 }
 
-void e2db_maker::make_bouquet_epl(string bname, e2db_file& file)
+void e2db_maker::make_bouquet_epl(string filename, string bname, e2db_file& file)
 {
 	debug("make_bouquet_epl", "bname", bname);
 
@@ -340,7 +514,10 @@ void e2db_maker::make_bouquet_epl(string bname, e2db_file& file)
 		string path = MAKER_BPATH + '/' + w;
 
 		if (pos != string::npos && len != string::npos)
-			name = w.substr(pos, len);
+		{
+			name = w.substr(0, len);
+			name = name.substr(pos + 1);
+		}
 
 		ss << "#SERVICE: ";
 		ss << "4097:7:0:" << name << ":0:0:0:0:0:0:";
@@ -349,7 +526,7 @@ void e2db_maker::make_bouquet_epl(string bname, e2db_file& file)
 		ss << path << endl;
 	}
 
-	file.filename = bname;
+	file.filename = filename;
 	file.data = ss.str();
 	file.mime = "text/plain";
 	file.size = file.data.size();
@@ -423,36 +600,39 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 	tunersets tv = tuners[ytype];
 	stringstream ss;
 
-	string yname = "tns:";
+	string iname = "tns:";
+	char yname;
 	unordered_map<int, string> tags;
 	switch (ytype)
 	{
 		case YTYPE::satellite:
-			yname += 's';
+			yname = 's';
 			tags[0] = "satellites";
 			tags[1] = "sat";
 		break;
 		case YTYPE::terrestrial:
-			yname += 't';
+			yname = 't';
 			tags[0] = "locations";
 			tags[1] = "terrestrial";
 		break;
 		case YTYPE::cable:
-			yname += 'c';
+			yname = 'c';
 			tags[0] = "cables";
 			tags[1] = "cable";
 		break;
 		case YTYPE::atsc:
-			yname += 'a';
+			yname = 'a';
 			tags[0] = "locations";
 			tags[1] = "atsc";
 		break;
 	}
 	tags[2] = "transponder";
+	iname += yname;
 
 	ss << "<?xml version=\"1.0\" encoding=\"" << tv.charset << "\"?>" << endl;
 	ss << '<' << tags[0] << '>' << endl;
-	for (auto & x : index[yname])
+
+	for (auto & x : index[iname])
 	{
 		tunersets_table tn = tv.tables[x.second];
 
@@ -557,11 +737,289 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 	ss << '<' << '/' << tags[0] << '>' << endl;
 
 	string str = ss.str();
-	if (comments.count(yname))
+
+	if (comments.count(iname))
 	{
 		int i = 0;
-		unsigned long pos = 0;
-		for (auto & s : comments[yname])
+		size_t pos = 0;
+		for (auto & s : comments[iname])
+		{
+			string line;
+			while (s.ln != i)
+			{
+				std::getline(ss, line, '>');
+				pos += line.size() + 1;
+				i++;
+			}
+			line = "<!--" + s.text + "-->";
+			if (s.type) // multiline
+				line = '\n' + line;
+			str = str.substr(0, pos) + line + str.substr(pos);
+			pos += line.size();
+		}
+	}
+
+	file.filename = filename;
+	file.data = str;
+	file.mime = "text/xml";
+	file.size = file.data.size();
+}
+
+//TODO
+void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
+{
+	debug("make_services_xml", "filename", filename);
+
+	datasets dat = datas[filename];
+	stringstream ss;
+
+	string iname = filename;
+	unordered_map<int, string> tags;
+	tags[0] = "zapit";
+	tags[1] = "sat";
+	if (ver > 1)
+	{
+		tags[2] = "TS";
+		tags[3] = "S";
+	}
+	else
+	{
+		tags[2] = "transponder";
+		tags[3] = "channel";
+	}
+
+	ss << "<?xml version=\"1.0\" encoding=\"" << dat.charset << "\"?>" << endl;
+	ss << '<' << tags[0];
+	if (ver > 1)
+		ss << ' ' << "api=\"" << ver << "\"";
+	ss << '>' << endl;
+
+	for (auto & x : index["trs"])
+	{
+		int pos = std::stoi(x.second);
+		table tr = db.tables[pos];
+
+		ss << "\t" << '<' << tags[1];
+		ss << ' ' << "name=\"" << tr.name << "\"";
+		if (ver > 1)
+		{
+			ss << ' ' << "position=\"" << tr.pos << "\"";
+			ss << ' ' << "diseqc=\"" << tr.diseqc << "\"";
+			ss << ' ' << "uncommited=\"" << tr.uncomtd << "\"";
+		}
+		else
+		{
+			ss << ' ' << "diseqc=\"" << (tr.diseqc != -1 ? tr.diseqc : 0) << "\"";
+			ss << ' ' << "position=\"" << tr.pos << "\"";
+		}
+		ss << '>' << endl;
+
+		for (auto & w : tr.transponders)
+		{
+			transponder tx = db.transponders[w];
+
+			ss << "\t\t" << '<' << tags[2];
+			if (ver > 1)
+			{
+				ss << ' ' << "id=\"" << hex << setfill('0') << setw(4) << tx.tsid << dec << "\"";
+				ss << ' ' << "on=\"" << hex << setfill('0') << setw(4) << tx.onid << dec << "\"";
+				ss << ' ' << "frq=\"" << int (tx.freq * 1e3) << "\"";
+				// ss << ' ' << "inv=\"" << tx.inv << "\"";
+				ss << ' ' << "inv=\"" << (ver > 2 ? 0 : 2) << "\"";
+				ss << ' ' << "sr=\"" << int (tx.sr * 1e3) << "\"";
+				//	ss << ' ' << "fec=\"" << tx.fec << "\"";
+				ss << ' ' << "fec=\"" << (ver > 3 ? 9 : 0) << "\"";
+				ss << ' ' << "pol=\"" << tx.pol << "\"";
+				if (ver > 3)
+				{
+					ss << ' ' << "mod=\"" << (tx.mod != -1 ? tx.mod : 0) << "\"";
+					ss << ' ' << "sys=\"" << (tx.sys != -1 ? tx.sys : 0) << "\"";
+				}
+			}
+			else
+			{
+				ss << ' ' << "id=\"" << hex << setfill('0') << setw(4) << tx.tsid << dec << "\"";
+				ss << ' ' << "onid=\"" << hex << setfill('0') << setw(4) << tx.onid << dec << "\"";
+				ss << ' ' << "frequency=\"" << int (tx.freq * 1e3) << "\"";
+				// ss << ' ' << "inversion=\"" << tx.inv << "\"";
+				ss << ' ' << "inversion=\"" << 2 << "\"";
+				ss << ' ' << "symbol_rate=\"" << int (tx.sr * 1e3) << "\"";
+				//	ss << ' ' << "fec_inner=\"" << tx.fec << "\"";
+				ss << ' ' << "fec_inner=\"" << 9 << "\"";
+				ss << ' ' << "polarization=\"" << tx.pol << "\"";
+			}
+
+			ss << '>' << endl;
+
+			for (auto & x : index["chs"])
+			{
+				service ch = db.services[x.second];
+
+				if (ch.tsid != tx.tsid)
+					continue;
+
+				ss << "\t\t\t" << '<' << tags[3];
+				if (ver > 1)
+				{
+					ss << ' ' << "i=\"" << hex << setfill('0') << setw(4) << ch.ssid << dec << "\"";
+					ss << ' ' << "n=\"" << ch.chname << "\"";
+					ss << " v=\"0\" a=\"0\" p=\"0\" pmt=\"0\" tx=\"0\"";
+					ss << ' ' << "t=\"" << hex << ch.stype << dec << "\"";
+					if (ver > 2)
+					{
+						ss << " vt=\"0\" s=\"0\"";
+						ss << ' ' << "num=\"" << ch.snum << "\"";
+						ss << " f=\"0\"";
+					}
+				}
+				else
+				{
+					ss << ' ' << "service_id=\"" << hex << setfill('0') << setw(4) << ch.ssid << dec << "\"";
+					ss << ' ' << "name=\"" << ch.chname << "\"";
+					ss << ' ' << "service_type=\"" << hex << setfill('0') << setw(4) << ch.stype << dec << "\"";
+				}
+
+				ss << '/' << '>' << endl;
+			}
+
+			ss << "\t\t" << '<' << '/' << tags[2] << '>' << endl;
+		}
+
+		ss << "\t" << '<' << '/' << tags[1] << '>' << endl;
+	}
+	ss << '<' << '/' << tags[0] << '>' << endl;
+
+	string str = ss.str();
+
+	if (comments.count(iname))
+	{
+		int i = 0;
+		size_t pos = 0;
+		for (auto & s : comments[iname])
+		{
+			string line;
+			while (s.ln != i)
+			{
+				std::getline(ss, line, '>');
+				pos += line.size() + 1;
+				i++;
+			}
+			line = "<!--" + s.text + "-->";
+			if (s.type) // multiline
+				line = '\n' + line;
+			str = str.substr(0, pos) + line + str.substr(pos);
+			pos += line.size();
+		}
+	}
+	else
+	{
+		string editor = editor_string();
+		string timestamp = editor_timestamp();
+
+		str += "<!-- Editor: " + editor + " -->\n";
+		str += "<!-- Datetime: " + timestamp + " -->\n";
+	}
+
+	file.filename = filename;
+	file.data = str;
+	file.mime = "text/xml";
+	file.size = file.data.size();
+}
+
+//TODO
+void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
+{
+	debug("make_bouquets_xml", "filename", filename);
+
+	datasets dat = datas[filename];
+	stringstream ss;
+
+	string iname = filename;
+	unordered_map<int, string> tags;
+	tags[0] = "zapit";
+	tags[1] = "Bouquet";
+	if (ver > 1)
+	{
+		tags[2] = "S";
+	}
+	else
+	{
+		tags[2] = "channel";
+	}
+
+	ss << "<?xml version=\"1.0\" encoding=\"" << dat.charset << "\"?>" << endl;
+	ss << '<' << tags[0] << '>' << endl;
+
+	vector<string> ubindex;
+	for (auto & x : index["bss"])
+	{
+		bouquet bs = bouquets[x.second];
+		ubindex.insert(ubindex.end(), bs.userbouquets.begin(), bs.userbouquets.end());
+	}
+
+	for (auto & w : ubindex)
+	{
+		userbouquet ub = userbouquets[w];
+
+		ss << "\t" << '<' << tags[1];
+		ss << ' ' << "name=\"" << ub.name << "\"";
+		ss << ' ' << "hidden=\"" << ub.hidden << "\"";
+		ss << ' ' << "locked=\"" << ub.locked << "\"";
+		ss << '>' << endl;
+
+		for (auto & x : index[ub.bname])
+		{
+			channel_reference chref = userbouquets[ub.bname].channels[x.second];
+
+			if (db.services.count(x.second))
+			{
+				service ch = db.services[x.second];
+				transponder tx = db.transponders[ch.txid];
+
+				ss << "\t\t" << '<' << tags[2];
+				if (ver > 1)
+				{
+					ss << ' ' << "i=\"" << hex << ch.ssid << dec << "\"";
+					ss << ' ' << "n=\"" << ch.chname << "\"";
+					ss << ' ' << "t=\"" << hex << setfill('0') << setw(4) << ch.tsid << dec << "\"";
+					ss << ' ' << "on=\"" << hex << ch.onid << dec << "\"";
+					ss << ' ' << "s=\"" << tx.pos << "\"";
+					ss << ' ' << "frq=\"" << tx.freq << "\"";
+					if (ver > 3)
+					{
+						ss << ' ' << "l=\"" << ch.locked << "\"";
+					}
+				}
+				else
+				{
+					ss << ' ' << "serviceID=\"" << hex << setfill('0') << setw(4) << ch.ssid << dec << "\"";
+					ss << ' ' << "name=\"" << ch.chname << "\"";
+					ss << ' ' << "tsid=\"" << hex << setfill('0') << setw(4) << ch.tsid << dec << "\"";
+					ss << ' ' << "onid=\"" << hex << setfill('0') << setw(4) << ch.onid << dec << "\"";
+					ss << ' ' << "sat_position=\"" << tx.pos << "\"";
+				}
+
+				ss << '/' << '>' << endl;
+			}
+			else
+			{
+				if (! chref.marker)
+				{
+					error("make_bouquets_xml", "Maker Error", "Missing channel_reference \"" + x.second + "\".");
+				}
+			}
+		}
+
+		ss << "\t" << '<' << '/' << tags[1] << '>' << endl;
+	}
+	ss << '<' << '/' << tags[0] << '>' << endl;
+
+	string str = ss.str();
+	if (comments.count(iname))
+	{
+		int i = 0;
+		size_t pos = 0;
+		for (auto & s : comments[iname])
 		{
 			string line;
 			while (s.ln != i)
@@ -673,6 +1131,7 @@ void e2db_maker::make_parentallock_list(string filename, PARENTALLOCK ltype, e2d
 	file.size = file.data.size();
 }
 
+//TODO FIX write permissions
 bool e2db_maker::push_file(string path)
 {
 	debug("push_file", "path", path);
@@ -689,11 +1148,11 @@ bool e2db_maker::push_file(string path)
 	{
 		std::filesystem::create_directory(path); //C++17
 	}
-	if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_write)  == std::filesystem::perms::none) //C++17
+	/*if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none) //C++17
 	{
 		error("push_file", "File Error", "File \"" + path + "\" is not writable.");
 		return false;
-	}
+	}*/
 	for (auto & o: this->e2db_out)
 	{
 		string fpath = path + '/' + o.first;
@@ -703,11 +1162,11 @@ bool e2db_maker::push_file(string path)
 			error("push_file", "File Error", "File \"" + fpath + "\" already exists.");
 			return false;
 		}
-		if ((std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write)  == std::filesystem::perms::none) //C++17
+		/*if ((std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none) //C++17
 		{
 			error("push_file", "File Error", "File \"" + fpath + "\" is not writable.");
 			return false;
-		}
+		}*/
 
 		ofstream out (fpath);
 		out << o.second.data;
