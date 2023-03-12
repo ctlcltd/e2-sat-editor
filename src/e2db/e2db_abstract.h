@@ -174,17 +174,18 @@ struct e2db_abstract : protected e2se::log_factory
 		// service data cache PIDs
 		// 00 video VPID
 		// 01 mpeg audio APID MPEGAPID
-		// 02 tp TPID
-		// 03 pcr PCRPID PPID
-		// 04 ac3 AC3PID 3PID
+		// 02 teletext TPID TXTPID
+		// 03 pcr PPID PCRPID
+		// 04 ac3 3PID AC3PID
 		// 05 video type
 		// 06 audio channel
 		// 06 ac3 delay
 		// 07 pcm delay
-		// 08 subtitle teletext
+		// 08 subtitle
 		// 09 audio type
 		// 10 audio APID
 		// 11 cache max
+		// 16 pmt PMTPID
 		enum SDATA_PIDS {
 			vpid,
 			mpegapid,
@@ -198,7 +199,8 @@ struct e2db_abstract : protected e2se::log_factory
 			subtitle,
 			atype,
 			apid,
-			cmax
+			cmax,
+			pmt = 16
 		};
 
 		struct e2db_file

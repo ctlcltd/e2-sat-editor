@@ -8,6 +8,8 @@ It has tabbed navigation with global Cut-Copy-Paste support; Drag and Drop suppo
 
 It supports both Enigma2, Lamedb 4 and Lamedb 5 formats (2.4 and 2.5) and Enigma1 (2.3 and 2.2).
 
+And it supports also Neutrino xml (api v1, v2, v3, v4).
+
 &nbsp;
 
 🆕 **There are pre-releases available for testing** 📡

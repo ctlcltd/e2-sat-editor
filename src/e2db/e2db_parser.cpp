@@ -104,10 +104,10 @@ void e2db_parser::parse_e2db()
 			if (x.first.find("bouquets.") != string::npos)
 			{
 				string fext = x.first.substr(x.first.rfind(".") + 1);
-				
+
 				if (fext != "tv" && fext != "radio" && fext != "epl")
 					continue;
-				
+
 				ifstream ibouquet (this->e2db[x.first]);
 				parse_e2db_bouquet(ibouquet, x.first, fext == "epl");
 				ibouquet.close();
@@ -122,7 +122,7 @@ void e2db_parser::parse_e2db()
 				iuserbouquet.close();
 			}
 		}
-		
+
 		if (PARSER_PARENTALLOCK_LIST)
 		{
 			if (LAMEDB_VER < 4)
@@ -240,10 +240,10 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 			if (x.first.find("bouquets.") != string::npos)
 			{
 				string fext = x.first.substr(x.first.rfind(".") + 1);
-				
+
 				if (fext != "tv" && fext != "radio" && fext != "epl")
 					continue;
-				
+
 				stringstream ibouquet;
 				ibouquet.write(&files[x.second].data[0], files[x.second].size);
 				parse_e2db_bouquet(ibouquet, x.second, fext == "epl");
@@ -258,7 +258,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 				parse_e2db_userbouquet(iuserbouquet, filename);
 			}
 		}
-		
+
 		if (PARSER_PARENTALLOCK_LIST)
 		{
 			if (LAMEDB_VER < 4)
@@ -1163,7 +1163,6 @@ void e2db_parser::parse_zapit_services_xml(istream& iservicesxml, string filenam
 	parse_zapit_services_apix_xml(iservicesxml, filename, ver);
 }
 
-//TODO
 void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string filename, int ver)
 {
 	debug("parse_zapit_services_apix_xml", "version", ver);
@@ -1255,6 +1254,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 			tag = tag.substr(pos, len);
 		}
 
+		//TODO FIX [MinGW-w64]
 		if (tag.empty())
 		{
 			continue;
@@ -1359,11 +1359,49 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 				else if (key == "frq")
 					tx.freq = int (std::atoi(val.data()) / 1e3);
 				else if (key == "inv")
-					tx.inv = std::atoi(val.data());
+				{
+					int i = std::atoi(val.data());
+					tx.inv = (ver < 3 && i != 2 ? i : 0);
+				}
 				else if (key == "sr")
 					tx.sr = int (std::atoi(val.data()) / 1e3);
-				// else if (key == "fec")
-				// 	tx.fec = std::atoi(val.data());
+				else if (key == "fec")
+				{
+					int i = std::atoi(val.data());
+					if (ver == 4)
+					{
+						if (i != 0 && i < 4)
+							tx.fec = i;
+						else if (i == 4)
+							tx.fec = 8;
+						else if (i == 5)
+							tx.fec = 4;
+						else if (i == 6)
+							tx.fec = 10;
+						else if (i == 7)
+							tx.fec = 5;
+						else if (i == 8)
+							tx.fec = 6;
+						else if (i == 10)
+							tx.fec = 7;
+						else if (i == 11)
+							tx.fec = 9;
+					}
+					else if (ver == 3)
+					{
+						if (i < 4)
+							tx.fec = i;
+						else if (i == 5)
+							tx.fec = 4;
+						else if (i == 7)
+							tx.fec = 5;
+					}
+					else if (ver == 2)
+					{
+						if (i < 6)
+							tx.fec = i;
+					}
+				}
 				else if (key == "pol")
 					tx.pol = std::atoi(val.data());
 				else if (key == "mod")
@@ -1374,17 +1412,79 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 					ch.ssid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "n")
 					ch.chname = val;
-				// else if (key == "v")
-				// else if (key == "a")
-				// else if (key == "p")
-				// else if (key == "pmt")
-				// else if (key == "tx")
+				else if (key == "v")
+				{
+					int cval = int (std::strtol(val.data(), NULL, 16));
+					if (cval != 0)
+					{
+						char pid[7];
+						std::snprintf(pid, 7, "%02d%04x", SDATA_PIDS::vpid, cval);
+						ch.data[SDATA::c].emplace_back(pid);
+					}
+				}
+				else if (key == "a")
+				{
+					int cval = int (std::strtol(val.data(), NULL, 16));
+					if (cval != 0)
+					{
+						char pid[7];
+						std::snprintf(pid, 7, "%02d%04x", SDATA_PIDS::mpegapid, cval);
+						ch.data[SDATA::c].emplace_back(pid);
+					}
+				}
+				else if (key == "p")
+				{
+					int cval = int (std::strtol(val.data(), NULL, 16));
+					if (cval != 0)
+					{
+						char pid[7];
+						std::snprintf(pid, 7, "%02d%04x", SDATA_PIDS::pcrpid, cval);
+						ch.data[SDATA::c].emplace_back(pid);
+					}
+				}
+				else if (key == "pmt")
+				{
+					int cval = int (std::strtol(val.data(), NULL, 16));
+					if (cval != 0)
+					{
+						char pid[7];
+						std::snprintf(pid, 7, "%02d%04x", SDATA_PIDS::pmt, cval);
+						ch.data[SDATA::c].emplace_back(pid);
+					}
+				}
+				else if (key == "tx")
+				{
+					int cval = int (std::strtol(val.data(), NULL, 16));
+					if (cval != 0)
+					{
+						char pid[7];
+						std::snprintf(pid, 7, "%02d%04x", SDATA_PIDS::tpid, cval);
+						ch.data[SDATA::c].emplace_back(pid);
+					}
+				}
 				else if (key == "t")
 					ch.stype = int (std::strtol(val.data(), NULL, 16));
-				// else if (key == "vt")
-				// else if (key == "s")
+				else if (key == "vt")
+				{
+					int cval = int (std::strtol(val.data(), NULL, 16));
+					if (cval != 0)
+					{
+						char pid[7];
+						std::snprintf(pid, 7, "%02d%04x", SDATA_PIDS::vtype, cval);
+						ch.data[SDATA::c].emplace_back(pid);
+					}
+				}
+				else if (key == "s")
+				{
+					int cval = std::atoi(val.data());
+					if (cval != 0)
+					{
+						ch.data[SDATA::C];
+					}
+				}
 				else if (key == "num")
 					ch.snum = std::atoi(val.data());
+				//TODO
 				// else if (key == "f")
 			}
 			else
@@ -1402,11 +1502,28 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 				else if (key == "frequency")
 					tx.freq = int (std::atoi(val.data()) / 1e3);
 				else if (key == "inversion")
-					tx.inv = std::atoi(val.data());
+				{
+					int i = std::atoi(val.data());
+					tx.inv = (i != 2 ? i : 0);
+				}
 				else if (key == "symbol_rate")
 					tx.sr = int (std::atoi(val.data()) / 1e3);
-				// else if (key == "fec_inner")
-				// 	tx.fec = std::atoi(val.data());
+				else if (key == "fec_inner")
+				{
+					int i = std::atoi(val.data());
+					if (i < 4)
+						tx.fec = i;
+					else if (i == 4)
+						tx.fec = 8;
+					else if (i == 5)
+						tx.fec = 4;
+					else if (i == 6)
+						tx.fec = 10;
+					else if (i == 7)
+						tx.fec = 5;
+					else if (i == 8)
+						tx.fec = 6;
+				}
 				else if (key == "polarization")
 					tx.pol = std::atoi(val.data());
 				else if (key == "service_id")
@@ -1445,7 +1562,6 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 	datas.emplace(dat.dname, dat);
 }
 
-//TODO
 void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string filename, int ver)
 {
 	debug("parse_zapit_bouquets_apix_xml", "filename", filename);
@@ -1485,6 +1601,7 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 	userbouquet ub;
 	service_reference ref;
 	channel_reference chref;
+	bool locked;
 
 	vector<pair<userbouquet, vector<string>>> ubouquets;
 	vector<string> chindex;
@@ -1538,6 +1655,7 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 			tag = tag.substr(pos, len);
 		}
 
+		//TODO FIX [MinGW-w64]
 		if (tag.empty())
 		{
 			continue;
@@ -1557,6 +1675,7 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 			{
 				ref = service_reference ();
 				chref = channel_reference ();
+				locked = false;
 			}
 		}
 		else
@@ -1640,9 +1759,10 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 					ref.tsid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "on")
 					ref.onid = int (std::strtol(val.data(), NULL, 16));
-				// else if (key == "s")
-				// else if (key == "frq")
-				// else if (key == "l")
+				// else if (key == "s") // pos
+				// else if (key == "frq") // freq
+				else if (key == "l")
+					locked = std::atoi(val.data());
 			}
 			else
 			{
@@ -1682,6 +1802,13 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 
 			ub.channels.emplace(chref.chid, chref);
 			chindex.emplace_back(chref.chid);
+
+			if (locked && db.services.count(chref.chid))
+			{
+				service& ch = db.services[chref.chid];
+				ch.locked = true;
+				db.services[chref.chid] = ch;
+			}
 		}
 	}
 

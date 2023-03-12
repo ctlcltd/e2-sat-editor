@@ -765,7 +765,6 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 	file.size = file.data.size();
 }
 
-//TODO
 void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 {
 	debug("make_services_xml", "filename", filename);
@@ -801,16 +800,16 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 
 		ss << "\t" << '<' << tags[1];
 		ss << ' ' << "name=\"" << tr.name << "\"";
-		if (ver > 1)
+		if (ver > 2)
 		{
-			ss << ' ' << "position=\"" << tr.pos << "\"";
-			ss << ' ' << "diseqc=\"" << tr.diseqc << "\"";
-			ss << ' ' << "uncommited=\"" << tr.uncomtd << "\"";
+			ss << ' ' << "position=\"" << (tr.pos != -1 ? tr.pos : 0) << "\"";
+			ss << ' ' << "diseqc=\"" << (tr.diseqc != -1 ? tr.diseqc : 0) << "\"";
+			ss << ' ' << "uncommited=\"" << (tr.uncomtd != -1 ? tr.uncomtd : 0) << "\"";
 		}
 		else
 		{
 			ss << ' ' << "diseqc=\"" << (tr.diseqc != -1 ? tr.diseqc : 0) << "\"";
-			ss << ' ' << "position=\"" << tr.pos << "\"";
+			ss << ' ' << "position=\"" << (tr.pos != -1 ? tr.pos : 0) << "\"";
 		}
 		ss << '>' << endl;
 
@@ -824,11 +823,47 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 				ss << ' ' << "id=\"" << hex << setfill('0') << setw(4) << tx.tsid << dec << "\"";
 				ss << ' ' << "on=\"" << hex << setfill('0') << setw(4) << tx.onid << dec << "\"";
 				ss << ' ' << "frq=\"" << int (tx.freq * 1e3) << "\"";
-				// ss << ' ' << "inv=\"" << tx.inv << "\"";
-				ss << ' ' << "inv=\"" << (ver > 2 ? 0 : 2) << "\"";
+				ss << ' ' << "inv=\"" << (ver < 3 && tx.inv != 2 ? tx.inv : 0) << "\"";
 				ss << ' ' << "sr=\"" << int (tx.sr * 1e3) << "\"";
-				//	ss << ' ' << "fec=\"" << tx.fec << "\"";
-				ss << ' ' << "fec=\"" << (ver > 3 ? 9 : 0) << "\"";
+				{
+					int i = 0;
+					if (ver == 4)
+					{
+						if (tx.fec == 0)
+							i = 9;
+						else if (tx.fec < 4)
+							i = tx.fec;
+						else if (tx.fec == 4)
+							i = 5;
+						else if (tx.fec == 5)
+							i = 7;
+						else if (tx.fec == 6)
+							i = 8;
+						else if (tx.fec == 7)
+							i = 10;
+						else if (tx.fec == 8)
+							i = 4;
+						else if (tx.fec == 9)
+							i = 11;
+						else if (tx.fec == 10)
+							i = 6;
+					}
+					else if (ver == 3)
+					{
+						if (tx.fec < 4)
+							i = tx.fec;
+						else if (i == 4)
+							i = 5;
+						else if (i == 5)
+							i = 7;
+					}
+					else if (ver == 2)
+					{
+						if (i < 6)
+							i = tx.fec;
+					}
+					ss << ' ' << "fec=\"" << i << "\"";
+				}
 				ss << ' ' << "pol=\"" << tx.pol << "\"";
 				if (ver > 3)
 				{
@@ -841,11 +876,26 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 				ss << ' ' << "id=\"" << hex << setfill('0') << setw(4) << tx.tsid << dec << "\"";
 				ss << ' ' << "onid=\"" << hex << setfill('0') << setw(4) << tx.onid << dec << "\"";
 				ss << ' ' << "frequency=\"" << int (tx.freq * 1e3) << "\"";
-				// ss << ' ' << "inversion=\"" << tx.inv << "\"";
-				ss << ' ' << "inversion=\"" << 2 << "\"";
+				ss << ' ' << "inversion=\"" << (tx.inv != 2 ? tx.inv : 0) << "\"";
 				ss << ' ' << "symbol_rate=\"" << int (tx.sr * 1e3) << "\"";
-				//	ss << ' ' << "fec_inner=\"" << tx.fec << "\"";
-				ss << ' ' << "fec_inner=\"" << 9 << "\"";
+				{
+					int i = 0;
+					if (tx.fec == 0)
+						i = 9;
+					else if (tx.fec < 4)
+						i = tx.fec;
+					else if (tx.fec == 4)
+						i = 5;
+					else if (tx.fec == 5)
+						i = 7;
+					else if (tx.fec == 6)
+						i = 8;
+					else if (tx.fec == 8)
+						i = 4;
+					else if (tx.fec == 10)
+						i = 6;
+					ss << ' ' << "fec_inner=\"" << i << "\"";
+				}
 				ss << ' ' << "polarization=\"" << tx.pol << "\"";
 			}
 
@@ -863,13 +913,61 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 				{
 					ss << ' ' << "i=\"" << hex << setfill('0') << setw(4) << ch.ssid << dec << "\"";
 					ss << ' ' << "n=\"" << ch.chname << "\"";
-					ss << " v=\"0\" a=\"0\" p=\"0\" pmt=\"0\" tx=\"0\"";
+					{
+						int cval = 0;
+						string cpx = (SDATA_PIDS::vpid > 9 ? "" : "0") + to_string(SDATA_PIDS::vpid);
+						for (string & w : ch.data[SDATA::c])
+							if (w.substr(0, 2) == cpx)
+								cval = int (std::strtol(w.substr(2).data(), NULL, 16));
+						ss << ' ' << "v=\"" << hex << cval << dec << "\"";
+					}
+					{
+						int cval = 0;
+						string cpx = (SDATA_PIDS::mpegapid > 9 ? "" : "0") + to_string(SDATA_PIDS::mpegapid);
+						for (string & w : ch.data[SDATA::c])
+							if (w.substr(0, 2) == cpx)
+								cval = int (std::strtol(w.substr(2).data(), NULL, 16));
+						ss << ' ' << "a=\"" << hex << cval << dec << "\"";
+					}
+					{
+						int cval = 0;
+						string cpx = (SDATA_PIDS::pcrpid > 9 ? "" : "0") + to_string(SDATA_PIDS::pcrpid);
+						for (string & w : ch.data[SDATA::c])
+							if (w.substr(0, 2) == cpx)
+								cval = int (std::strtol(w.substr(2).data(), NULL, 16));
+						ss << ' ' << "p=\"" << hex << cval << dec << "\"";
+					}
+					{
+						int cval = 0;
+						string cpx = (SDATA_PIDS::pmt > 9 ? "" : "0") + to_string(SDATA_PIDS::pmt);
+						for (string & w : ch.data[SDATA::c])
+							if (w.substr(0, 2) == cpx)
+								cval = int (std::strtol(w.substr(2).data(), NULL, 16));
+						ss << ' ' << "pmt=\"" << hex << cval << dec << "\"";
+					}
+					{
+						int cval = 0;
+						string cpx = (SDATA_PIDS::tpid > 9 ? "" : "0") + to_string(SDATA_PIDS::tpid);
+						for (string & w : ch.data[SDATA::c])
+							if (w.substr(0, 2) == cpx)
+								cval = int (std::strtol(w.substr(2).data(), NULL, 16));
+						ss << ' ' << "tx=\"" << hex << cval << dec << "\"";
+					}
 					ss << ' ' << "t=\"" << hex << ch.stype << dec << "\"";
 					if (ver > 2)
 					{
-						ss << " vt=\"0\" s=\"0\"";
+						{
+							int cval = 0;
+							string cpx = (SDATA_PIDS::vtype > 9 ? "" : "0") + to_string(SDATA_PIDS::vtype);
+							for (string & w : ch.data[SDATA::c])
+								if (w.substr(0, 2) == cpx)
+									cval = int (std::strtol(w.substr(2).data(), NULL, 16));
+							ss << ' ' << "vt=\"" << hex << cval << dec << "\"";
+						}
+						ss << ' ' << "s=\"" << (ch.data[SDATA::C].empty() ? 0 : 1) << "\"";
 						ss << ' ' << "num=\"" << ch.snum << "\"";
-						ss << " f=\"0\"";
+						//TODO
+						ss << ' ' << "f=\"" << 0 << "\"";
 					}
 				}
 				else
@@ -926,7 +1024,6 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 	file.size = file.data.size();
 }
 
-//TODO
 void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 {
 	debug("make_bouquets_xml", "filename", filename);

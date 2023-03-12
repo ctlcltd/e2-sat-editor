@@ -233,7 +233,7 @@ void _platform_macx::_osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint po
 	if (tlw != nullptr && tlw->type() != Qt::Window)
 	{
 		[nsMenu setAutoenablesItems:FALSE];
-		
+
 		int i = 0;
 		for (auto & item : menu->actions())
 		{
