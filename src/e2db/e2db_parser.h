@@ -56,6 +56,11 @@ class e2db_parser : virtual public e2db_abstract
 		void parse_lamedb_service_params(string str, service& ch);
 		void parse_lamedb_service_data(string str, service& ch);
 		void append_lamedb_service_name(string str, service& ch);
+		bool parse_xml_head(istream& ixml, string& charset);
+		void parse_xml_comment(string line, comment& s, int ln);
+		void parse_xml_tag(string line, string& tag, bool& closed);
+		void parse_xml_attribute(string line, string token, string& key, string& val);
+		void conv_xml_value(string& val);
 };
 }
 #endif /* e2db_parser_h */

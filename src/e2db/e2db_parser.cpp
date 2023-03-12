@@ -154,11 +154,13 @@ void e2db_parser::parse_e2db()
 
 	std::clock_t end = std::clock();
 
-	// seeds./enigma_db
+	// ctlcltd/e2se-seeds/enigma_db
 	// commit: 67b6442	elapsed time: 65520
 	// commit: d47fec7	elapsed time: 498870
 	// commit: d1f53fe	elapsed time: 56112
-	// commit: HEAD		elapsed time: 67343
+	// commit: d9a9322	elapsed time: 67343
+	// commit: 9364c8f	elapsed time: 19122
+	// commit: HEAD 	elapsed time: 19939
 
 	info("parse_e2db", "elapsed time", to_string(int (end - start)) + " ms.");
 }
@@ -798,30 +800,15 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 	chref.anum = anum;
 }
 
-//TODO value xml entities
 void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)
 {
 	debug("parse_tunersets_xml", "ytype", ytype);
 
-	string htunxml;
 	string charset = "UTF-8";
-	std::getline(itunxml, htunxml, '>');
+	bool valid = parse_xml_head(itunxml, charset);
 
-	if (htunxml.find("<?xml") == string::npos)
+	if (! valid)
 		return error("parse_tunersets_xml", "Parser Error", "Unknown file format.");
-
-	size_t pos = htunxml.find("encoding=");
-	size_t len;
-	if (pos != string::npos)
-	{
-		//TODO fixed pos
-		charset = htunxml.substr(pos + 10);
-		len = charset.rfind('"');
-		if (len == string::npos)
-			len = charset.rfind('\'');
-		charset = charset.substr(0, len);
-		// std::transform(charset.begin(), charset.end(), charset.begin(), [](unsigned char c) { return toupper(c); });
-	}
 
 	debug("parse_tunersets_xml", "charset", charset);
 
@@ -883,32 +870,16 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)
 		if (line.find("<!") != string::npos)
 		{
 			comment s;
-			s.type = line.find('\n') != string::npos;
-			s.ln = ln;
-			s.text = line.substr(line.find("<!--") + 4);
-			s.text = s.text.substr(0, s.text.length() - 2);
+			parse_xml_comment(line, s, ln);
 			comments[iname].emplace_back(s);
 			continue;
 		}
 
 		string tag;
 		bool add = false;
-		size_t pos = line.find('<');
-		size_t len;
-		if (pos != string::npos)
-		{
-			tag = line.substr(pos + 1);
-			pos = tag[0] == '/';
-			len = tag.find(' ');
+		parse_xml_tag(line, tag, add);
 
-			add = pos || tag[tag.length() - 1] == '/';
-
-			if (! pos && len == string::npos)
-				len = tag.find('/');
-			tag = tag.substr(pos, len);
-		}
-
-		if (tag.size() < 2)
+		if (tag.empty())
 		{
 			continue;
 		}
@@ -936,58 +907,8 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)
 		char* token = std::strtok(line.data(), " ");
 		while (token != 0)
 		{
-			string str = string (token);
 			string key, val;
-			size_t pos;
-			size_t len = str.find('=');
-
-			if (len != string::npos)
-			{
-				key = str.substr(0, len);
-				val = str.substr(len + 1);
-			}
-			else
-			{
-				key = str;
-			}
-
-			pos = val.find('"');
-			len = string::npos;
-
-			if (pos != string::npos)
-			{
-				len = val.rfind('"');
-			}
-			else
-			{
-				pos = val.find('\'');
-				if (pos != string::npos)
-					len = val.rfind('\'');
-			}
-
-			if (len != string::npos && pos != len)
-			{
-				val = val.substr(0, len);
-				if (pos != string::npos)
-					val = val.substr(pos + 1);
-			}
-			else
-			{
-				val = line.substr(line.find(key) + key.length());
-				pos = val.find('"');
-				if (pos == string::npos)
-					pos = val.find('\'');
-				if (pos != string::npos)
-					val = val.substr(pos + 1);
-
-				len = val.find('"');
-				if (len == string::npos)
-					len = val.find('\'');
-				if (len != string::npos)
-					val = val.substr(0, len);
-
-				std::transform(val.begin(), val.end(), val.begin(), [](unsigned char c) { return c ? c : ' '; });
-			}
+			parse_xml_attribute(line, token, key, val);
 			token = std::strtok(NULL, " ");
 
 			if (key.empty() || val.empty())
@@ -997,7 +918,10 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)
 			{
 				case YTYPE::satellite:
 					if (key == "name")
+					{
+						conv_xml_value(val);
 						tn.name = val;
+					}
 					else if (key == "flags")
 						tn.flgs = std::atoi(val.data());
 					else if (key == "position")
@@ -1033,7 +957,10 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)
 				break;
 				case YTYPE::terrestrial:
 					if (key == "name")
+					{
+						conv_xml_value(val);
 						tn.name = val;
+					}
 					else if (key == "flags")
 						tn.flgs = std::atoi(val.data());
 					else if (key == "countrycode")
@@ -1061,7 +988,10 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)
 				break;
 				case YTYPE::cable:
 					if (key == "name")
+					{
+						conv_xml_value(val);
 						tn.name = val;
+					}
 					else if (key == "flags")
 						tn.flgs = std::atoi(val.data());
 					else if (key == "countrycode")
@@ -1081,7 +1011,10 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)
 				break;
 				case YTYPE::atsc:
 					if (key == "name")
+					{
+						conv_xml_value(val);
 						tn.name = val;
+					}
 					else if (key == "flags")
 						tn.flgs = std::atoi(val.data());
 					else if (key == "frequency")
@@ -1118,10 +1051,10 @@ void e2db_parser::parse_zapit_services_xml(istream& iservicesxml, string filenam
 {
 	debug("parse_zapit_services_xml", "filename", filename);
 
-	string hxml;
-	std::getline(iservicesxml, hxml, '>');
+	string head;
+	std::getline(iservicesxml, head, '>');
 
-	if (hxml.find("<?xml") == string::npos)
+	if (head.find("<?xml") == string::npos)
 		return error("parse_zapit_services_xml", "Parser Error", "Unknown file format.");
 
 	bool valid = false;
@@ -1172,24 +1105,11 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 
 	ZAPIT_VER = ver;
 
-	string hxml;
 	string charset = "UTF-8";
-	std::getline(iservicesxml, hxml, '>');
+	bool valid = parse_xml_head(iservicesxml, charset);
 
-	if (hxml.find("<?xml") == string::npos)
+	if (! valid)
 		return error("parse_zapit_services_apix_xml", "Parser Error", "Unknown file format.");
-
-	size_t pos = hxml.find("encoding=");
-	size_t len;
-	if (pos != string::npos)
-	{
-		//TODO fixed pos
-		charset = hxml.substr(pos + 10);
-		len = charset.rfind('"');
-		if (len == string::npos)
-			len = charset.rfind('\'');
-		charset = charset.substr(0, len);
-	}
 
 	debug("parse_zapit_services_apix_xml", "charset", charset);
 
@@ -1229,32 +1149,15 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 		if (line.find("<!") != string::npos)
 		{
 			comment s;
-			s.type = line.find('\n') != string::npos;
-			s.ln = ln;
-			s.text = line.substr(line.find("<!--") + 4);
-			s.text = s.text.substr(0, s.text.length() - 2);
+			parse_xml_comment(line, s, ln);
 			comments[iname].emplace_back(s);
 			continue;
 		}
 
 		string tag;
 		bool add = false;
-		size_t pos = line.find('<');
-		size_t len;
-		if (pos != string::npos)
-		{
-			tag = line.substr(pos + 1);
-			pos = tag[0] == '/';
-			len = tag.find(' ');
+		parse_xml_tag(line, tag, add);
 
-			add = pos || tag[tag.length() - 1] == '/';
-
-			if (! pos && len == string::npos)
-				len = tag.find('/');
-			tag = tag.substr(pos, len);
-		}
-
-		//TODO FIX [MinGW-w64]
 		if (tag.empty())
 		{
 			continue;
@@ -1285,58 +1188,8 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 		char* token = std::strtok(line.data(), " ");
 		while (token != 0)
 		{
-			string str = string (token);
 			string key, val;
-			size_t pos;
-			size_t len = str.find('=');
-
-			if (len != string::npos)
-			{
-				key = str.substr(0, len);
-				val = str.substr(len + 1);
-			}
-			else
-			{
-				key = str;
-			}
-
-			pos = val.find('"');
-			len = string::npos;
-
-			if (pos != string::npos)
-			{
-				len = val.rfind('"');
-			}
-			else
-			{
-				pos = val.find('\'');
-				if (pos != string::npos)
-					len = val.rfind('\'');
-			}
-
-			if (len != string::npos && pos != len)
-			{
-				val = val.substr(0, len);
-				if (pos != string::npos)
-					val = val.substr(pos + 1);
-			}
-			else
-			{
-				val = line.substr(line.find(key) + key.length());
-				pos = val.find('"');
-				if (pos == string::npos)
-					pos = val.find('\'');
-				if (pos != string::npos)
-					val = val.substr(pos + 1);
-
-				len = val.find('"');
-				if (len == string::npos)
-					len = val.find('\'');
-				if (len != string::npos)
-					val = val.substr(0, len);
-
-				std::transform(val.begin(), val.end(), val.begin(), [](unsigned char c) { return c ? c : ' '; });
-			}
+			parse_xml_attribute(line, token, key, val);
 			token = std::strtok(NULL, " ");
 
 			if (key.empty() || val.empty())
@@ -1345,7 +1198,10 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 			if (ver > 1)
 			{
 				if (key == "name")
+				{
+					conv_xml_value(val);
 					tr.name = val;
+				}
 				else if (key == "position")
 					tr.pos = std::atoi(val.data());
 				else if (key == "diseqc")
@@ -1490,7 +1346,10 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 			else
 			{
 				if (step == 0 && key == "name")
+				{
+					conv_xml_value(val);
 					tr.name = val;
+				}
 				else if (key == "diseqc")
 					tr.diseqc = std::atoi(val.data());
 				else if (key == "position")
@@ -1571,24 +1430,11 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 
 	ZAPIT_VER = ver;
 
-	string hxml;
 	string charset = "UTF-8";
-	std::getline(ibouquetsxml, hxml, '>');
+	bool valid = parse_xml_head(ibouquetsxml, charset);
 
-	if (hxml.find("<?xml") == string::npos)
+	if (! valid)
 		return error("parse_zapit_bouquets_apix_xml", "Parser Error", "Unknown file format.");
-
-	size_t pos = hxml.find("encoding=");
-	size_t len;
-	if (pos != string::npos)
-	{
-		//TODO fixed pos
-		charset = hxml.substr(pos + 10);
-		len = charset.rfind('"');
-		if (len == string::npos)
-			len = charset.rfind('\'');
-		charset = charset.substr(0, len);
-	}
 
 	debug("parse_zapit_bouquets_apix_xml", "charset", charset);
 
@@ -1630,32 +1476,15 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 		if (line.find("<!") != string::npos)
 		{
 			comment s;
-			s.type = line.find('\n') != string::npos;
-			s.ln = ln;
-			s.text = line.substr(line.find("<!--") + 4);
-			s.text = s.text.substr(0, s.text.length() - 2);
+			parse_xml_comment(line, s, ln);
 			comments[iname].emplace_back(s);
 			continue;
 		}
 
 		string tag;
 		bool add = false;
-		size_t pos = line.find('<');
-		size_t len;
-		if (pos != string::npos)
-		{
-			tag = line.substr(pos + 1);
-			pos = tag[0] == '/';
-			len = tag.find(' ');
+		parse_xml_tag(line, tag, add);
 
-			add = pos || tag[tag.length() - 1] == '/';
-
-			if (! pos && len == string::npos)
-				len = tag.find('/');
-			tag = tag.substr(pos, len);
-		}
-
-		//TODO FIX [MinGW-w64]
 		if (tag.empty())
 		{
 			continue;
@@ -1686,58 +1515,8 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 		char* token = std::strtok(line.data(), " ");
 		while (token != 0)
 		{
-			string str = string (token);
 			string key, val;
-			size_t pos;
-			size_t len = str.find('=');
-
-			if (len != string::npos)
-			{
-				key = str.substr(0, len);
-				val = str.substr(len + 1);
-			}
-			else
-			{
-				key = str;
-			}
-
-			pos = val.find('"');
-			len = string::npos;
-
-			if (pos != string::npos)
-			{
-				len = val.rfind('"');
-			}
-			else
-			{
-				pos = val.find('\'');
-				if (pos != string::npos)
-					len = val.rfind('\'');
-			}
-
-			if (len != string::npos && pos != len)
-			{
-				val = val.substr(0, len);
-				if (pos != string::npos)
-					val = val.substr(pos + 1);
-			}
-			else
-			{
-				val = line.substr(line.find(key) + key.length());
-				pos = val.find('"');
-				if (pos == string::npos)
-					pos = val.find('\'');
-				if (pos != string::npos)
-					val = val.substr(pos + 1);
-
-				len = val.find('"');
-				if (len == string::npos)
-					len = val.find('\'');
-				if (len != string::npos)
-					val = val.substr(0, len);
-
-				std::transform(val.begin(), val.end(), val.begin(), [](unsigned char c) { return c ? c : ' '; });
-			}
+			parse_xml_attribute(line, token, key, val);
 			token = std::strtok(NULL, " ");
 
 			if (key.empty() || val.empty())
@@ -1746,7 +1525,10 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 			if (ver > 1)
 			{
 				if (key == "name")
+				{
+					conv_xml_value(val);
 					ub.name = val;
+				}
 				else if (key == "hidden")
 					ub.hidden = std::atoi(val.data());
 				else if (key == "locked")
@@ -1754,7 +1536,10 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 				else if (key == "i")
 					ref.ssid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "n")
+				{
+					conv_xml_value(val);
 					chref.value = val;
+				}
 				else if (key == "t")
 					ref.tsid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "on")
@@ -1767,7 +1552,10 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 			else
 			{
 				if (step == 1 && key == "name")
+				{
+					conv_xml_value(val);
 					ub.name = val;
+				}
 				else if (key == "hidden")
 					ub.hidden = std::atoi(val.data());
 				else if (key == "locked")
@@ -1775,7 +1563,10 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 				else if (key == "serviceID")
 					ref.ssid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "name")
+				{
+					conv_xml_value(val);
 					chref.value = val;
+				}
 				else if (key == "tsid")
 					ref.tsid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "onid")
@@ -1871,6 +1662,120 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 	}
 
 	datas.emplace(dat.dname, dat);
+}
+
+bool e2db_parser::parse_xml_head(istream& ixml, string& charset)
+{
+	string head;
+	std::getline(ixml, head, '>');
+
+	if (head.find("<?xml") == string::npos)
+		return false;
+
+	//TODO fixed pos encoding?:\s?:\s?:\s=?:\s"*+
+	size_t pos = head.find("encoding=");
+	size_t len;
+	if (pos != string::npos)
+	{
+		//TODO fixed pos
+		charset = head.substr(pos + 10);
+		len = charset.rfind('"');
+		if (len == string::npos)
+			len = charset.rfind('\'');
+		charset = charset.substr(0, len);
+		// std::transform(charset.begin(), charset.end(), charset.begin(), [](unsigned char c) { return toupper(c); });
+	}
+	return true;
+}
+
+void e2db_parser::parse_xml_comment(string line, comment& s, int ln)
+{
+	s.type = line.find('\n') != string::npos;
+	s.ln = ln;
+	s.text = line.substr(line.find("<!--") + 4);
+	s.text = s.text.substr(0, s.text.length() - 2);
+}
+
+//TODO FIX [MinGW-w64] not empty tag
+void e2db_parser::parse_xml_tag(string line, string& tag, bool& closed)
+{
+	size_t pos = line.find('<');
+	size_t len;
+	if (pos != string::npos)
+	{
+		tag = line.substr(pos + 1);
+		pos = tag[0] == '/';
+		len = tag.find(' ');
+
+		closed = pos || tag[tag.length() - 1] == '/';
+
+		if (! pos && len == string::npos)
+			len = tag.find('/');
+		tag = tag.substr(pos, len);
+	}
+}
+
+//TODO value xml entities
+void e2db_parser::parse_xml_attribute(string line, string token, string& key, string& val)
+{
+	size_t pos;
+	size_t len = token.find('=');
+
+	if (len != string::npos)
+	{
+		key = token.substr(0, len);
+		val = token.substr(len + 1);
+	}
+	else
+	{
+		key = token;
+	}
+
+	pos = val.find('"');
+	len = string::npos;
+
+	if (pos != string::npos)
+	{
+		len = val.rfind('"');
+	}
+	else
+	{
+		pos = val.find('\'');
+		if (pos != string::npos)
+			len = val.rfind('\'');
+	}
+
+	if (len != string::npos && pos != len)
+	{
+		val = val.substr(0, len);
+		if (pos != string::npos)
+			val = val.substr(pos + 1);
+	}
+	else
+	{
+		val = line.substr(line.find(key) + key.length());
+		pos = val.find('"');
+		if (pos == string::npos)
+			pos = val.find('\'');
+		if (pos != string::npos)
+			val = val.substr(pos + 1);
+
+		len = val.find('"');
+		if (len == string::npos)
+			len = val.find('\'');
+		if (len != string::npos)
+			val = val.substr(0, len);
+
+		std::transform(val.begin(), val.end(), val.begin(), [](unsigned char c) { return c ? c : ' '; });
+	}
+}
+
+//TODO value xml entities
+void e2db_parser::conv_xml_value(string& val)
+{
+	if (val.find('&') != string::npos)
+	{
+	}
 }
 
 bool e2db_parser::find_services_file()

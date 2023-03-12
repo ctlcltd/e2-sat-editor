@@ -581,7 +581,6 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 	file.size = file.data.size();
 }
 
-//TODO value xml entities
 void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 {
 	debug("make_tunersets_xml", "ytype", ytype);
@@ -638,7 +637,7 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 
 		ss << "\t" << '<' << tags[1];
 		if (! tn.name.empty())
-			ss << ' ' << "name=\"" << tn.name << "\"";
+			ss << ' ' << "name=\"" << conv_xml_value(tn.name) << "\"";
 		if (tn.feed != -1)
 			ss << ' ' << "satfeed=\"" << (tn.feed ? "true" : "false") << "\"";
 		if (tn.flgs != -1)
@@ -799,7 +798,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 		table tr = db.tables[pos];
 
 		ss << "\t" << '<' << tags[1];
-		ss << ' ' << "name=\"" << tr.name << "\"";
+		ss << ' ' << "name=\"" << conv_xml_value(tr.name) << "\"";
 		if (ver > 2)
 		{
 			ss << ' ' << "position=\"" << (tr.pos != -1 ? tr.pos : 0) << "\"";
@@ -912,7 +911,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 				if (ver > 1)
 				{
 					ss << ' ' << "i=\"" << hex << setfill('0') << setw(4) << ch.ssid << dec << "\"";
-					ss << ' ' << "n=\"" << ch.chname << "\"";
+					ss << ' ' << "n=\"" << conv_xml_value(ch.chname) << "\"";
 					{
 						int cval = 0;
 						string cpx = (SDATA_PIDS::vpid > 9 ? "" : "0") + to_string(SDATA_PIDS::vpid);
@@ -973,7 +972,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 				else
 				{
 					ss << ' ' << "service_id=\"" << hex << setfill('0') << setw(4) << ch.ssid << dec << "\"";
-					ss << ' ' << "name=\"" << ch.chname << "\"";
+					ss << ' ' << "name=\"" << conv_xml_value(ch.chname) << "\"";
 					ss << ' ' << "service_type=\"" << hex << setfill('0') << setw(4) << ch.stype << dec << "\"";
 				}
 
@@ -1059,7 +1058,7 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 		userbouquet ub = userbouquets[w];
 
 		ss << "\t" << '<' << tags[1];
-		ss << ' ' << "name=\"" << ub.name << "\"";
+		ss << ' ' << "name=\"" << conv_xml_value(ub.name) << "\"";
 		ss << ' ' << "hidden=\"" << ub.hidden << "\"";
 		ss << ' ' << "locked=\"" << ub.locked << "\"";
 		ss << '>' << endl;
@@ -1077,7 +1076,7 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 				if (ver > 1)
 				{
 					ss << ' ' << "i=\"" << hex << ch.ssid << dec << "\"";
-					ss << ' ' << "n=\"" << ch.chname << "\"";
+					ss << ' ' << "n=\"" << conv_xml_value(ch.chname) << "\"";
 					ss << ' ' << "t=\"" << hex << setfill('0') << setw(4) << ch.tsid << dec << "\"";
 					ss << ' ' << "on=\"" << hex << ch.onid << dec << "\"";
 					ss << ' ' << "s=\"" << tx.pos << "\"";
@@ -1090,7 +1089,7 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 				else
 				{
 					ss << ' ' << "serviceID=\"" << hex << setfill('0') << setw(4) << ch.ssid << dec << "\"";
-					ss << ' ' << "name=\"" << ch.chname << "\"";
+					ss << ' ' << "name=\"" << conv_xml_value(ch.chname) << "\"";
 					ss << ' ' << "tsid=\"" << hex << setfill('0') << setw(4) << ch.tsid << dec << "\"";
 					ss << ' ' << "onid=\"" << hex << setfill('0') << setw(4) << ch.onid << dec << "\"";
 					ss << ' ' << "sat_position=\"" << tx.pos << "\"";
@@ -1137,6 +1136,15 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 	file.data = str;
 	file.mime = "text/xml";
 	file.size = file.data.size();
+}
+
+//TODO value xml entities
+string e2db_maker::conv_xml_value(string str)
+{
+	if (str.find('&') != string::npos)
+	{
+	}
+	return str;
 }
 
 void e2db_maker::make_parentallock_list(string filename, PARENTALLOCK ltype, e2db_file& file)

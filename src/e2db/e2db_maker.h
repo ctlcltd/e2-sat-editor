@@ -74,6 +74,7 @@ class e2db_maker : virtual public e2db_abstract
 		void make_services_xml(string filename, e2db_file& file, int ver);
 		void make_bouquets_xml(string filename, e2db_file& file, int ver);
 		void make_parentallock_list(string filename, PARENTALLOCK ltype, e2db_file& file);
+		string conv_xml_value(string str);
 };
 }
 #endif /* e2db_maker_h */
