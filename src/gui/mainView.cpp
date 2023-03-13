@@ -577,8 +577,13 @@ void mainView::populate(QTreeWidget* tw)
 
 	if (cache[bname].isEmpty())
 	{
-		e2db::userbouquet uboq = dbih->userbouquets[bname];
-		bool ub_locked = uboq.locked;
+		bool ub_locked = false;
+
+		if (dbih->userbouquets.count(bname))
+		{
+			e2db::userbouquet uboq = dbih->userbouquets[bname];
+			ub_locked = uboq.locked;
+		}
 
 		QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() ? "service-whitelist" : "service-blacklist";
 
@@ -956,8 +961,11 @@ void mainView::visualReloadList()
 	if (this->state.ti == -1)
 	{
 		string bname = this->state.curr;
-		e2db::userbouquet uboq = dbih->userbouquets[bname];
-		ub_locked = uboq.locked;
+		if (dbih->userbouquets.count(bname))
+		{
+			e2db::userbouquet uboq = dbih->userbouquets[bname];
+			ub_locked = uboq.locked;
+		}
 	}
 
 	QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() ? "service-whitelist" : "service-blacklist";
@@ -1212,8 +1220,11 @@ void mainView::addService()
 	if (this->state.ti == -1)
 	{
 		string bname = this->state.curr;
-		e2db::userbouquet uboq = dbih->userbouquets[bname];
-		ub_locked = uboq.locked;
+		if (dbih->userbouquets.count(bname))
+		{
+			e2db::userbouquet uboq = dbih->userbouquets[bname];
+			ub_locked = uboq.locked;
+		}
 	}
 
 	QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() ? "service-whitelist" : "service-blacklist";
@@ -1310,8 +1321,11 @@ void mainView::editService()
 	if (this->state.ti == -1)
 	{
 		string bname = this->state.curr;
-		e2db::userbouquet uboq = dbih->userbouquets[bname];
-		ub_locked = uboq.locked;
+		if (dbih->userbouquets.count(bname))
+		{
+			e2db::userbouquet uboq = dbih->userbouquets[bname];
+			ub_locked = uboq.locked;
+		}
 	}
 
 	QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() ? "service-whitelist" : "service-blacklist";
@@ -1823,10 +1837,13 @@ void mainView::listItemPaste()
 		if (this->state.tc)
 		{
 			string bname = this->state.curr;
-			e2db::userbouquet uboq = dbih->userbouquets[bname];
-			string pname = uboq.pname;
+			if (dbih->userbouquets.count(bname))
+			{
+				e2db::userbouquet uboq = dbih->userbouquets[bname];
+				string pname = uboq.pname;
 
-			cache[pname].clear();
+				cache[pname].clear();
+			}
 		}
 		// services tree
 		else
@@ -1868,8 +1885,11 @@ void mainView::listItemDelete()
 	// bouquets tree
 	if (this->state.tc)
 	{
-		e2db::userbouquet uboq = dbih->userbouquets[bname];
-		pname = uboq.pname;
+		if (dbih->userbouquets.count(bname))
+		{
+			e2db::userbouquet uboq = dbih->userbouquets[bname];
+			pname = uboq.pname;
+		}
 	}
 	for (auto & item : selected)
 	{
@@ -1930,11 +1950,17 @@ void mainView::putListItems(vector<QString> items)
 
 	auto* dbih = this->data->dbih;
 
+	int ub_idx = -1;
+	bool ub_locked = false;
+	int anum_count = 0;
 	string bname = this->state.curr;
-	e2db::userbouquet uboq = dbih->userbouquets[bname];
-	int ub_idx = uboq.index;
-	int anum_count = int (dbih->index["mks"].size());
-	bool ub_locked = uboq.locked;
+	if (dbih->userbouquets.count(bname))
+	{
+		e2db::userbouquet uboq = dbih->userbouquets[bname];
+		ub_idx = uboq.index;
+		ub_locked = uboq.locked;
+	}
+	anum_count = int (dbih->index["mks"].size());
 
 	QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() ? "service-whitelist" : "service-blacklist";
 
@@ -2145,13 +2171,17 @@ void mainView::showTreeEditContextMenu(QPoint& pos)
 	{
 		auto* dbih = this->data->dbih;
 
+		bool ub_locked = false;
 		string bname = this->state.curr;
-		e2db::userbouquet uboq = dbih->userbouquets[bname];
-		bool locked = uboq.locked;
+		if (dbih->userbouquets.count(bname))
+		{
+			e2db::userbouquet uboq = dbih->userbouquets[bname];
+			ub_locked = uboq.locked;
+		}
 
 		contextMenuAction(tree_edit, "Edit Userbouquet", [=]() { this->editUserbouquet(); }, tabGetFlag(gui::TabTreeEdit));
 		contextMenuSeparator(tree_edit);
-		contextMenuAction(tree_edit, ! locked ? "Set Parental lock" : "Unset Parental lock", [=]() { this->toggleUserbouquetParentalLock(); });
+		contextMenuAction(tree_edit, ! ub_locked ? "Set Parental lock" : "Unset Parental lock", [=]() { this->toggleUserbouquetParentalLock(); });
 		contextMenuSeparator(tree_edit);
 		contextMenuAction(tree_edit, "Delete", [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
 		contextMenuSeparator(tree_edit);
@@ -2182,8 +2212,11 @@ void mainView::showListEditContextMenu(QPoint& pos)
 		auto* dbih = this->data->dbih;
 
 		string bname = this->state.curr;
-		e2db::userbouquet uboq = dbih->userbouquets[bname];
-		ub_locked = uboq.locked;
+		if (dbih->userbouquets.count(bname))
+		{
+			e2db::userbouquet uboq = dbih->userbouquets[bname];
+			ub_locked = uboq.locked;
+		}
 	}
 
 	if (selected.count() == 1)
@@ -2355,9 +2388,12 @@ void mainView::updateReferenceBox()
 		if (this->state.tc)
 		{
 			string bname = this->state.curr;
-			e2db::channel_reference chref = dbih->userbouquets[bname].channels[chid];
-			string crefid = dbih->get_reference_id(chref);
-			refid = QString::fromStdString(crefid);
+			if (dbih->userbouquets.count(bname))
+			{
+				e2db::channel_reference chref = dbih->userbouquets[bname].channels[chid];
+				string crefid = dbih->get_reference_id(chref);
+				refid = QString::fromStdString(crefid);
+			}
 		}
 		// services tree
 		else
@@ -2576,10 +2612,12 @@ void mainView::updateListIndex()
 
 void mainView::updateListReferences(QTreeWidgetItem* current, QList<QTreeWidgetItem*> items)
 {
+	auto* dbih = this->data->dbih;
+
 	QString qub = current->data(0, Qt::UserRole).toString();
 	string bname = qub.toStdString();
-
-	auto* dbih = this->data->dbih;
+	if (! dbih->userbouquets.count(bname))
+		return;
 
 	debug("updateListReferences", "current", bname);
 

@@ -1594,7 +1594,7 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 				for (auto & x : db.transponders)
 				{
 					transponder tx = x.second;
-					
+
 					if (pos == tx.pos && ref.onid == tx.onid && ref.tsid == tx.tsid)
 					{
 						ref.dvbns = value_transponder_dvbns(tx);

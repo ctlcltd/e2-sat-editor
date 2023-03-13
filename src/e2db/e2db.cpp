@@ -107,17 +107,24 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 		case FPORTS::all_services:
 			dst->parse_e2db_lamedb(ifile);
 		break;
-		case FPORTS::all_services__2_2:
-			dst->parse_e2db_lamedbx(ifile, 2);
-		break;
-		case FPORTS::all_services__2_3:
-			dst->parse_e2db_lamedbx(ifile, 3);
-		break;
 		case FPORTS::all_services__2_4:
 			dst->parse_e2db_lamedbx(ifile, 4);
 		break;
 		case FPORTS::all_services__2_5:
 			dst->parse_e2db_lamedb5(ifile);
+		break;
+		case FPORTS::all_services__2_3:
+			dst->parse_e2db_lamedbx(ifile, 3);
+		break;
+		case FPORTS::all_services__2_2:
+			dst->parse_e2db_lamedbx(ifile, 2);
+		break;
+		case FPORTS::all_services_xml:
+		case FPORTS::all_services_xml__4:
+		case FPORTS::all_services_xml__3:
+		case FPORTS::all_services_xml__2:
+		case FPORTS::all_services_xml__1:
+			dst->parse_zapit_services_xml(ifile, filename);
 		break;
 		case FPORTS::single_tunersets:
 		case FPORTS::all_tunersets:
@@ -143,6 +150,24 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 				dst->parse_e2db_bouquet(ifile, filename);
 			else
 				dst->parse_e2db_userbouquet(ifile, filename);
+		break;
+		case FPORTS::all_bouquets_xml:
+			if (filename == "bouquets.xml")
+				dst->parse_zapit_bouquets_apix_xml(ifile, filename, 1);
+			else
+				dst->parse_zapit_bouquets_apix_xml(ifile, filename, (ZAPIT_VER != -1 ? ZAPIT_VER : 4));
+		break;
+		case FPORTS::all_bouquets_xml__4:
+			dst->parse_zapit_bouquets_apix_xml(ifile, filename, 4);
+		break;
+		case FPORTS::all_bouquets_xml__3:
+			dst->parse_zapit_bouquets_apix_xml(ifile, filename, 3);
+		break;
+		case FPORTS::all_bouquets_xml__2:
+			dst->parse_zapit_bouquets_apix_xml(ifile, filename, 2);
+		break;
+		case FPORTS::all_bouquets_xml__1:
+			dst->parse_zapit_bouquets_apix_xml(ifile, filename, 1);
 		break;
 		default:
 		return error("import_file", "Error", "Unknown import option.");
@@ -190,17 +215,32 @@ void e2db::export_file(FPORTS fpo, string path)
 		case FPORTS::all_services:
 			make_lamedb(fname, file, LAMEDB_VER);
 		break;
-		case FPORTS::all_services__2_2:
-			make_lamedb("services", file, 2);
-		break;
-		case FPORTS::all_services__2_3:
-			make_lamedb("services", file, 3);
-		break;
 		case FPORTS::all_services__2_4:
 			make_lamedb("lamedb", file, 4);
 		break;
 		case FPORTS::all_services__2_5:
 			make_lamedb("lamedb5", file, 5);
+		break;
+		case FPORTS::all_services__2_3:
+			make_lamedb("services", file, 3);
+		break;
+		case FPORTS::all_services__2_2:
+			make_lamedb("services", file, 2);
+		break;
+		case FPORTS::all_services_xml:
+			make_zapit_services();
+		break;
+		case FPORTS::all_services_xml__4:
+			make_zapit_services(4);
+		break;
+		case FPORTS::all_services_xml__3:
+			make_zapit_services(3);
+		break;
+		case FPORTS::all_services_xml__2:
+			make_zapit_services(2);
+		break;
+		case FPORTS::all_services_xml__1:
+			make_zapit_services(1);
 		break;
 		case FPORTS::single_tunersets:
 		case FPORTS::all_tunersets:
@@ -226,6 +266,21 @@ void e2db::export_file(FPORTS fpo, string path)
 				make_bouquet(filename, file);
 			else
 				make_userbouquet(filename, file);
+		break;
+		case FPORTS::all_bouquets_xml:
+			make_zapit_bouquets();
+		break;
+		case FPORTS::all_bouquets_xml__4:
+			make_zapit_bouquets(4);
+		break;
+		case FPORTS::all_bouquets_xml__3:
+			make_zapit_bouquets(3);
+		break;
+		case FPORTS::all_bouquets_xml__2:
+			make_zapit_bouquets(2);
+		break;
+		case FPORTS::all_bouquets_xml__1:
+			make_zapit_bouquets(1);
 		break;
 		default:
 		return error("export_file", "Error", "Unknown export option.");

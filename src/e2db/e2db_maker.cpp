@@ -280,6 +280,9 @@ void e2db_maker::make_db_tunersets()
 
 	for (auto & x : tuners)
 	{
+		if (ZAPIT_VER != -1 && x.first != YTYPE::satellite)
+			continue;
+
 		string filename;
 		switch (x.first)
 		{
@@ -786,6 +789,8 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 		tags[3] = "channel";
 	}
 
+	unordered_map<string, int> txs;
+
 	ss << "<?xml version=\"1.0\" encoding=\"" << dat.charset << "\"?>" << endl;
 	ss << '<' << tags[0];
 	if (ver > 1)
@@ -900,89 +905,96 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 
 			ss << '>' << endl;
 
-			for (auto & x : index["chs"])
+			if (! txs[tx.txid])
 			{
-				service ch = db.services[x.second];
-
-				if (ch.tsid != tx.tsid)
-					continue;
-
-				ss << "\t\t\t" << '<' << tags[3];
-				if (ver > 1)
+				for (auto & x : index["chs"])
 				{
-					ss << ' ' << "i=\"" << hex << setfill('0') << setw(4) << ch.ssid << dec << "\"";
-					ss << ' ' << "n=\"" << conv_xml_value(ch.chname) << "\"";
+					service ch = db.services[x.second];
+
+					if (ch.txid != tx.txid)
+						continue;
+
+					ss << "\t\t\t" << '<' << tags[3];
+					if (ver > 1)
 					{
-						int cval = 0;
-						string cpx = (SDATA_PIDS::vpid > 9 ? "" : "0") + to_string(SDATA_PIDS::vpid);
-						for (string & w : ch.data[SDATA::c])
-							if (w.substr(0, 2) == cpx)
-								cval = int (std::strtol(w.substr(2).data(), NULL, 16));
-						ss << ' ' << "v=\"" << hex << cval << dec << "\"";
-					}
-					{
-						int cval = 0;
-						string cpx = (SDATA_PIDS::mpegapid > 9 ? "" : "0") + to_string(SDATA_PIDS::mpegapid);
-						for (string & w : ch.data[SDATA::c])
-							if (w.substr(0, 2) == cpx)
-								cval = int (std::strtol(w.substr(2).data(), NULL, 16));
-						ss << ' ' << "a=\"" << hex << cval << dec << "\"";
-					}
-					{
-						int cval = 0;
-						string cpx = (SDATA_PIDS::pcrpid > 9 ? "" : "0") + to_string(SDATA_PIDS::pcrpid);
-						for (string & w : ch.data[SDATA::c])
-							if (w.substr(0, 2) == cpx)
-								cval = int (std::strtol(w.substr(2).data(), NULL, 16));
-						ss << ' ' << "p=\"" << hex << cval << dec << "\"";
-					}
-					{
-						int cval = 0;
-						string cpx = (SDATA_PIDS::pmt > 9 ? "" : "0") + to_string(SDATA_PIDS::pmt);
-						for (string & w : ch.data[SDATA::c])
-							if (w.substr(0, 2) == cpx)
-								cval = int (std::strtol(w.substr(2).data(), NULL, 16));
-						ss << ' ' << "pmt=\"" << hex << cval << dec << "\"";
-					}
-					{
-						int cval = 0;
-						string cpx = (SDATA_PIDS::tpid > 9 ? "" : "0") + to_string(SDATA_PIDS::tpid);
-						for (string & w : ch.data[SDATA::c])
-							if (w.substr(0, 2) == cpx)
-								cval = int (std::strtol(w.substr(2).data(), NULL, 16));
-						ss << ' ' << "tx=\"" << hex << cval << dec << "\"";
-					}
-					ss << ' ' << "t=\"" << hex << ch.stype << dec << "\"";
-					if (ver > 2)
-					{
+						ss << ' ' << "i=\"" << hex << setfill('0') << setw(4) << ch.ssid << dec << "\"";
+						ss << ' ' << "n=\"" << conv_xml_value(ch.chname) << "\"";
 						{
 							int cval = 0;
-							string cpx = (SDATA_PIDS::vtype > 9 ? "" : "0") + to_string(SDATA_PIDS::vtype);
+							string cpx = (SDATA_PIDS::vpid > 9 ? "" : "0") + to_string(SDATA_PIDS::vpid);
 							for (string & w : ch.data[SDATA::c])
 								if (w.substr(0, 2) == cpx)
 									cval = int (std::strtol(w.substr(2).data(), NULL, 16));
-							ss << ' ' << "vt=\"" << hex << cval << dec << "\"";
+							ss << ' ' << "v=\"" << hex << cval << dec << "\"";
 						}
-						ss << ' ' << "s=\"" << (ch.data[SDATA::C].empty() ? 0 : 1) << "\"";
-						ss << ' ' << "num=\"" << ch.snum << "\"";
-						//TODO
-						ss << ' ' << "f=\"" << 0 << "\"";
+						{
+							int cval = 0;
+							string cpx = (SDATA_PIDS::mpegapid > 9 ? "" : "0") + to_string(SDATA_PIDS::mpegapid);
+							for (string & w : ch.data[SDATA::c])
+								if (w.substr(0, 2) == cpx)
+									cval = int (std::strtol(w.substr(2).data(), NULL, 16));
+							ss << ' ' << "a=\"" << hex << cval << dec << "\"";
+						}
+						{
+							int cval = 0;
+							string cpx = (SDATA_PIDS::pcrpid > 9 ? "" : "0") + to_string(SDATA_PIDS::pcrpid);
+							for (string & w : ch.data[SDATA::c])
+								if (w.substr(0, 2) == cpx)
+									cval = int (std::strtol(w.substr(2).data(), NULL, 16));
+							ss << ' ' << "p=\"" << hex << cval << dec << "\"";
+						}
+						{
+							int cval = 0;
+							string cpx = (SDATA_PIDS::pmt > 9 ? "" : "0") + to_string(SDATA_PIDS::pmt);
+							for (string & w : ch.data[SDATA::c])
+								if (w.substr(0, 2) == cpx)
+									cval = int (std::strtol(w.substr(2).data(), NULL, 16));
+							ss << ' ' << "pmt=\"" << hex << cval << dec << "\"";
+						}
+						{
+							int cval = 0;
+							string cpx = (SDATA_PIDS::tpid > 9 ? "" : "0") + to_string(SDATA_PIDS::tpid);
+							for (string & w : ch.data[SDATA::c])
+								if (w.substr(0, 2) == cpx)
+									cval = int (std::strtol(w.substr(2).data(), NULL, 16));
+							ss << ' ' << "tx=\"" << hex << cval << dec << "\"";
+						}
+						ss << ' ' << "t=\"" << hex << ch.stype << dec << "\"";
+						if (ver > 2)
+						{
+							{
+								int cval = 0;
+								string cpx = (SDATA_PIDS::vtype > 9 ? "" : "0") + to_string(SDATA_PIDS::vtype);
+								for (string & w : ch.data[SDATA::c])
+									if (w.substr(0, 2) == cpx)
+										cval = int (std::strtol(w.substr(2).data(), NULL, 16));
+								ss << ' ' << "vt=\"" << hex << cval << dec << "\"";
+							}
+							ss << ' ' << "s=\"" << (ch.data[SDATA::C].empty() ? 0 : 1) << "\"";
+							ss << ' ' << "num=\"" << ch.snum << "\"";
+							//TODO
+							ss << ' ' << "f=\"" << 0 << "\"";
+						}
 					}
-				}
-				else
-				{
-					ss << ' ' << "service_id=\"" << hex << setfill('0') << setw(4) << ch.ssid << dec << "\"";
-					ss << ' ' << "name=\"" << conv_xml_value(ch.chname) << "\"";
-					ss << ' ' << "service_type=\"" << hex << setfill('0') << setw(4) << ch.stype << dec << "\"";
-				}
+					else
+					{
+						ss << ' ' << "service_id=\"" << hex << setfill('0') << setw(4) << ch.ssid << dec << "\"";
+						ss << ' ' << "name=\"" << conv_xml_value(ch.chname) << "\"";
+						ss << ' ' << "service_type=\"" << hex << setfill('0') << setw(4) << ch.stype << dec << "\"";
+					}
 
-				ss << '/' << '>' << endl;
+					ss << '/' << '>' << endl;
+				}
 			}
 
 			ss << "\t\t" << '<' << '/' << tags[2] << '>' << endl;
+
+			txs[tx.txid]++;
 		}
 
 		ss << "\t" << '<' << '/' << tags[1] << '>' << endl;
+
+		txs.clear();
 	}
 	ss << '<' << '/' << tags[0] << '>' << endl;
 
@@ -1285,7 +1297,12 @@ bool e2db_maker::write(string path)
 {
 	debug("write", "filename", path);
 
-	make_e2db();
+	if (LAMEDB_VER != -1)
+		make_e2db();
+	else if (ZAPIT_VER != -1)
+		make_zapit();
+	else
+		make_e2db();
 
 	if (push_file(path))
 		return true;

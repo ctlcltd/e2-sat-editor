@@ -548,6 +548,7 @@ void tab::saveFile(bool saveas)
 	}
 }
 
+//TODO
 void tab::importFile()
 {
 	debug("importFile");
@@ -590,6 +591,7 @@ void tab::importFile()
 	this->data->setChanged(true);
 }
 
+//TODO
 void tab::exportFile()
 {
 	debug("exportFile");
@@ -765,6 +767,7 @@ void tab::exportFile()
 	}
 }
 
+//TODO
 void tab::exportFile(QTreeWidgetItem* item)
 {
 	debug("exportFile");

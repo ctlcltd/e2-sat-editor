@@ -842,7 +842,7 @@ string gui::openFileDialog()
 {
 	debug("openFileDialog");
 
-	QString caption = "Select enigma2 folder";
+	QString caption = "Select data folder";
 
 	string path;
 
@@ -896,12 +896,17 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 			opts.append("Lamedb 2.5 (lamedb5)");
 			opts.append("Lamedb 2.3 (services)");
 			opts.append("Lamedb 2.2 (services)");
+			opts.append("Neutrino Services (services.xml)");
 		break;
 		case GUI_DPORTS::Bouquets:
 			opts.append("Bouquet (bouquets.*)");
+			opts.append("Neutrino Bouquets (ubouquets.xml)");
+			opts.append("Neutrino api-1 Bouquets (bouquets.xml)");
 		break;
 		case GUI_DPORTS::Userbouquets:
 			opts.append("Userbouquet (userbouquet.*)");
+			opts.append("Neutrino Bouquets (ubouquets.xml)");
+			opts.append("Neutrino api-1 Bouquets (bouquets.xml)");
 		break;
 		case GUI_DPORTS::Tunersets:
 			opts.append("Tuner settings (*.xml)");
@@ -917,6 +922,7 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 		default:
 			fmode = QFileDialog::AnyFile;
 			opts.append("Enigma2 folder (*)");
+			opts.append("Neutrino folder (*)");
 			opts.append("Lamedb 2.4 (lamedb)");
 			opts.append("Lamedb 2.5 (lamedb5)");
 			opts.append("Lamedb 2.3 (services)");
@@ -924,6 +930,9 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 			opts.append("Bouquet (bouquets.*)");
 			opts.append("Userbouquet (userbouquet.*)");
 			opts.append("Tuner settings (*.xml)");
+			opts.append("Neutrino Services (services.xml)");
+			opts.append("Neutrino Bouquets (ubouquets.xml)");
+			opts.append("Neutrino api-1 Bouquets (bouquets.xml)");
 			opts.append("All Files (*)");
 	}
 
@@ -945,6 +954,7 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 	return paths;
 }
 
+//TODO
 string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& bit)
 {
 	debug("exportFileDialog", "filename", filename);
@@ -959,12 +969,25 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& bit)
 			opts.append("Lamedb 2.5 (lamedb5)");
 			opts.append("Lamedb 2.3 (services)");
 			opts.append("Lamedb 2.2 (services)");
+			opts.append("Neutrino default (services.xml)");
+			opts.append("Neutrino api-4 (services.xml)");
+			opts.append("Neutrino api-3 (services.xml)");
+			opts.append("Neutrino api-2 (services.xml)");
+			opts.append("Neutrino api-1 (services.xml)");
 		break;
 		case GUI_DPORTS::Bouquets:
 			opts.append("Bouquet (bouquets.*)");
+			opts.append("Neutrino api-4 Bouquets (ubouquets.xml)");
+			opts.append("Neutrino api-3 Bouquets (ubouquets.xml)");
+			opts.append("Neutrino api-2 Bouquets (ubouquets.xml)");
+			opts.append("Neutrino api-1 Bouquets (bouquets.xml)");
 		break;
 		case GUI_DPORTS::Userbouquets:
 			opts.append("Userbouquet (userbouquet.*)");
+			opts.append("Neutrino api-4 Bouquets (ubouquets.xml)");
+			opts.append("Neutrino api-3 Bouquets (ubouquets.xml)");
+			opts.append("Neutrino api-2 Bouquets (ubouquets.xml)");
+			opts.append("Neutrino api-1 Bouquets (bouquets.xml)");
 		break;
 		case GUI_DPORTS::Tunersets:
 			opts.append("Tuner settings (*.xml)");
@@ -992,7 +1015,7 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& bit)
 	{
 		selected = fdial.selectedNameFilter();
 
-		// straight copy of e2db::FPORTS
+		// straight copy of e2db_abstract::FPORTS
 		if (selected == "Lamedb 2.4 (lamedb)")
 			bit = 0x1224;
 		else if (selected == "Lamedb 2.5 (lamedb5)")
@@ -1001,6 +1024,24 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& bit)
 			bit = 0x1223;
 		else if (selected == "Lamedb 2.2 (services)")
 			bit = 0x1222;
+		else if (selected == "Neutrino default (services.xml)")
+			bit = 0x1010;
+		else if (selected == "Neutrino api-4 (services.xml)")
+			bit = 0x1014;
+		else if (selected == "Neutrino api-3 (services.xml)")
+			bit = 0x1013;
+		else if (selected == "Neutrino api-2 (services.xml)")
+			bit = 0x1012;
+		else if (selected == "Neutrino api-1 (services.xml)")
+			bit = 0x1011;
+		else if (selected == "Neutrino api-4 Bouquets (ubouquets.xml)")
+			bit = 0x4014;
+		else if (selected == "Neutrino api-3 Bouquets (ubouquets.xml)")
+			bit = 0x4013;
+		else if (selected == "Neutrino api-2 Bouquets (ubouquets.xml)")
+			bit = 0x4012;
+		else if (selected == "Neutrino api-1 Bouquets (bouquets.xml)")
+			bit = 0x4011;
 
 		debug("exportFileDialog", "bit", bit);
 
