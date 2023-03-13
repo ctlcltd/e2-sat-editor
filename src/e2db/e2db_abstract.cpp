@@ -374,6 +374,22 @@ int e2db_abstract::value_transponder_dvbns(string str)
 	return dvbns;
 }
 
+int e2db_abstract::value_transponder_dvbns(transponder tx)
+{
+	return value_transponder_dvbns(tx.pos, tx.onid, tx.freq, tx.pol);
+}
+
+//TODO
+int e2db_abstract::value_transponder_dvbns(int pos, int onid, int freq, int pol)
+{
+	return value_transponder_dvbns(pos, onid);
+}
+
+int e2db_abstract::value_transponder_dvbns(int pos, int onid)
+{
+	return pos << 16;
+}
+
 string e2db_abstract::value_transponder_dvbns(int dvbns)
 {
 	char cdvbns[7];

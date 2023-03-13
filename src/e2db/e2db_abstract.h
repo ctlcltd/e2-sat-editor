@@ -442,6 +442,9 @@ struct e2db_abstract : protected e2se::log_factory
 		static string value_transponder_combo(transponder tx);
 		static string value_transponder_combo(tunersets_transponder tntxp, tunersets_table tn);
 		static int value_transponder_dvbns(string str);
+		static int value_transponder_dvbns(transponder tx);
+		static int value_transponder_dvbns(int pos, int onid, int freq, int pol);
+		static int value_transponder_dvbns(int pos, int onid);
 		static string value_transponder_dvbns(int dvbns);
 		static int value_transponder_polarization(string str);
 		static string value_transponder_polarization(int pol);

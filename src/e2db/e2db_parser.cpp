@@ -160,7 +160,7 @@ void e2db_parser::parse_e2db()
 	// commit: d1f53fe	elapsed time: 56112
 	// commit: d9a9322	elapsed time: 67343
 	// commit: 9364c8f	elapsed time: 19122
-	// commit: HEAD 	elapsed time: 19939
+	// commit: 6559e93	elapsed time: 19939
 
 	info("parse_e2db", "elapsed time", to_string(int (end - start)) + " ms.");
 }
@@ -1405,6 +1405,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 		{
 			bidx++;
 			tx.pos = tr.pos;
+			tx.dvbns = value_transponder_dvbns(tx);
 			add_transponder(bidx, tx);
 
 			tr.transponders.emplace_back(tx.txid);
@@ -1414,6 +1415,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 			cidx++;
 			ch.tsid = tx.tsid;
 			ch.onid = tx.onid;
+			ch.dvbns = tx.dvbns;
 			add_service(cidx, ch);
 		}
 	}
@@ -1447,6 +1449,7 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 	userbouquet ub;
 	service_reference ref;
 	channel_reference chref;
+	int pos = -1;
 	bool locked;
 
 	vector<pair<userbouquet, vector<string>>> ubouquets;
@@ -1504,6 +1507,7 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 			{
 				ref = service_reference ();
 				chref = channel_reference ();
+				pos = -1;
 				locked = false;
 			}
 		}
@@ -1544,8 +1548,9 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 					ref.tsid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "on")
 					ref.onid = int (std::strtol(val.data(), NULL, 16));
-				// else if (key == "s") // pos
-				// else if (key == "frq") // freq
+				else if (key == "s")
+					pos = std::atoi(val.data());
+				// else if (key == "frq")
 				else if (key == "l")
 					locked = std::atoi(val.data());
 			}
@@ -1571,7 +1576,8 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 					ref.tsid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "onid")
 					ref.onid = int (std::strtol(val.data(), NULL, 16));
-				// else if (key == "sat_position")
+				else if (key == "sat_position")
+					pos = std::atoi(val.data());
 			}
 		}
 
@@ -1583,11 +1589,28 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 		}
 		else if (add && step == 2)
 		{
-			cidx++;
-			char chid[25];
+			if (! ref.onid)
+			{
+				for (auto & x : db.transponders)
+				{
+					transponder tx = x.second;
+					
+					if (pos == tx.pos && ref.onid == tx.onid && ref.tsid == tx.tsid)
+					{
+						ref.dvbns = value_transponder_dvbns(tx);
+						break;
+					}
+				}
+			}
+			else
+			{
+				ref.dvbns = value_transponder_dvbns(pos, ref.onid);
+			}
 
+			char chid[25];
 			std::snprintf(chid, 25, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
 
+			cidx++;
 			chref.chid = chid;
 			chref.index = cidx;
 
@@ -1715,7 +1738,6 @@ void e2db_parser::parse_xml_tag(string line, string& tag, bool& closed)
 	}
 }
 
-//TODO value xml entities
 void e2db_parser::parse_xml_attribute(string line, string token, string& key, string& val)
 {
 	size_t pos;
