@@ -70,6 +70,7 @@ struct e2db_abstract : protected e2se::log_factory
 			all_services_xml__2 = 0x1012,
 			all_services_xml__1 = 0x1011,
 			all_bouquets = 0x2000,
+			all_bouquets_epl = 0x2020,
 			all_userbouquets = 0x4000,
 			all_bouquets_xml = 0x4010,
 			all_bouquets_xml__4 = 0x4014,
@@ -78,9 +79,14 @@ struct e2db_abstract : protected e2se::log_factory
 			all_bouquets_xml__1 = 0x4011,
 			all_tunersets = 0x8000,
 			single_bouquet = 0x0002,
-			single_bouquet_all = 0x0400,
+			single_bouquet_epl = 0x0020,
+			single_bouquet_all = 0x0040,
+			single_bouquet_all_epl = 0x0400,
 			single_userbouquet = 0x0004,
-			single_tunersets = 0x0008
+			single_tunersets = 0x0008,
+			single_parentallock_locked = 0xff,
+			single_parentallock_blacklist = 0xfa,
+			single_parentallock_whitelist = 0xfe
 		};
 
 		// tuner settings type
@@ -391,7 +397,7 @@ struct e2db_abstract : protected e2se::log_factory
 
 		struct datadb
 		{
-			int type; // 0: lamedb, 1: zapit
+			int type = 0; // 0: lamedb, 1: zapit
 			// tables <pos int, table struct>
 			unordered_map<int, table> tables;
 			// transponders <txid string, transponder struct>
@@ -497,6 +503,12 @@ struct e2db_abstract : protected e2se::log_factory
 		string get_reference_id(string chid);
 		string get_reference_id(channel_reference chref);
 		string get_tuner_name(transponder tx);
+		int get_e2db_services_type();
+		void set_e2db_services_type(int type);
+		int get_lamedb_version();
+		void set_lamedb_version(int ver);
+		int get_zapit_version();
+		void set_zapit_version(int ver);
 		virtual string get_filepath() { return this->filepath; };
 		virtual string get_services_filename() { return this->services_filename; };
 		void set_index(unordered_map<string, vector<pair<int, string>>> index);

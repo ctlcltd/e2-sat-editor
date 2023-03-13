@@ -59,6 +59,8 @@ e2db_abstract::FPORTS e2db_abstract::filetype_detect(string path)
 		return FPORTS::all_services__2_5;
 	else if (filename == "services")
 		return FPORTS::all_services; // autodetect
+	else if (filename == "services.xml")
+		return FPORTS::all_services_xml; // autodetect
 	else if (filename == "satellites.xml")
 		return FPORTS::single_tunersets;
 	else if (filename == "terrestrial.xml")
@@ -71,6 +73,14 @@ e2db_abstract::FPORTS e2db_abstract::filetype_detect(string path)
 		return FPORTS::single_bouquet;
 	else if (filename.find("userbouquet.") != string::npos)
 		return FPORTS::single_userbouquet;
+	else if (filename.find("userbouquets.") != string::npos)
+		return FPORTS::single_bouquet_epl;
+	else if (filename == "blacklist")
+		return FPORTS::single_parentallock_blacklist;
+	else if (filename == "whitelist")
+		return FPORTS::single_parentallock_whitelist;
+	else if (filename == "services.locked")
+		return FPORTS::single_parentallock_locked;
 	return FPORTS::unsupported;
 }
 
@@ -1118,6 +1128,42 @@ void e2db_abstract::set_parentallock(string chid, string bname)
 		userbouquets[bname].locked = true;
 	else if (! chid.empty() && db.services.count(chid))
 		db.services[chid].locked = true;
+}
+
+int e2db_abstract::get_e2db_services_type() {
+	debug("get_e2db_services_type");
+
+	return db.type;
+}
+
+void e2db_abstract::set_e2db_services_type(int type) {
+	debug("set_e2db_services_type");
+
+	db.type = !! type;
+}
+
+int e2db_abstract::get_lamedb_version() {
+	debug("get_lamedb_version", "version", LAMEDB_VER);
+
+	return LAMEDB_VER;
+}
+
+void e2db_abstract::set_lamedb_version(int ver) {
+	debug("set_lamedb_version", "version", ver);
+
+	LAMEDB_VER = ver;
+}
+
+int e2db_abstract::get_zapit_version() {
+	debug("get_zapit_version", "version", ZAPIT_VER);
+
+	return ZAPIT_VER;
+}
+
+void e2db_abstract::set_zapit_version(int ver) {
+	debug("set_zapit_version", "version", ZAPIT_VER);
+
+	ZAPIT_VER = ver;
 }
 
 void e2db_abstract::set_index(unordered_map<string, vector<pair<int, string>>> index)

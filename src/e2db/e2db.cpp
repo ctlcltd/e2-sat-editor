@@ -139,6 +139,8 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 		break;
 		case FPORTS::single_bouquet:
 		case FPORTS::all_bouquets:
+		case FPORTS::single_bouquet_epl:
+		case FPORTS::all_bouquets_epl:
 			dst->parse_e2db_bouquet(ifile, filename);
 		break;
 		case FPORTS::single_userbouquet:
@@ -146,8 +148,11 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 			dst->parse_e2db_userbouquet(ifile, filename);
 		break;
 		case FPORTS::single_bouquet_all:
+		case FPORTS::single_bouquet_all_epl:
 			if (filetype_detect(filename) == FPORTS::single_bouquet)
 				dst->parse_e2db_bouquet(ifile, filename);
+			else if (filetype_detect(filename) == FPORTS::single_bouquet_epl)
+				dst->parse_e2db_bouquet(ifile, filename, true);
 			else
 				dst->parse_e2db_userbouquet(ifile, filename);
 		break;
@@ -168,6 +173,15 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 		break;
 		case FPORTS::all_bouquets_xml__1:
 			dst->parse_zapit_bouquets_apix_xml(ifile, filename, 1);
+		break;
+		case FPORTS::single_parentallock_blacklist:
+			dst->parse_e2db_parentallock_list(PARENTALLOCK::blacklist, ifile);
+		break;
+		case FPORTS::single_parentallock_whitelist:
+			dst->parse_e2db_parentallock_list(PARENTALLOCK::whitelist, ifile);
+		break;
+		case FPORTS::single_parentallock_locked:
+			dst->parse_e2db_parentallock_list(PARENTALLOCK::locked, ifile);
 		break;
 		default:
 		return error("import_file", "Error", "Unknown import option.");
@@ -197,6 +211,7 @@ void e2db::export_file(FPORTS fpo, vector<string> paths)
 	}
 }
 
+//TODO FIX write permissions
 void e2db::export_file(FPORTS fpo, string path)
 {
 	debug("export_file", "file path", "singular");
@@ -228,19 +243,19 @@ void e2db::export_file(FPORTS fpo, string path)
 			make_lamedb("services", file, 2);
 		break;
 		case FPORTS::all_services_xml:
-			make_zapit_services();
+			make_services_xml(filename, file, (ZAPIT_VER != -1 ? ZAPIT_VER : 4));
 		break;
 		case FPORTS::all_services_xml__4:
-			make_zapit_services(4);
+			make_services_xml(filename, file, 4);
 		break;
 		case FPORTS::all_services_xml__3:
-			make_zapit_services(3);
+			make_services_xml(filename, file, 3);
 		break;
 		case FPORTS::all_services_xml__2:
-			make_zapit_services(2);
+			make_services_xml(filename, file, 2);
 		break;
 		case FPORTS::all_services_xml__1:
-			make_zapit_services(1);
+			make_services_xml(filename, file, 1);
 		break;
 		case FPORTS::single_tunersets:
 		case FPORTS::all_tunersets:
@@ -257,30 +272,46 @@ void e2db::export_file(FPORTS fpo, string path)
 		case FPORTS::all_bouquets:
 			make_bouquet(filename, file);
 		break;
+		case FPORTS::single_bouquet_epl:
+		case FPORTS::all_bouquets_epl:
+			make_bouquet_epl(filename, file);
+		break;
 		case FPORTS::single_userbouquet:
 		case FPORTS::all_userbouquets:
 			make_userbouquet(filename, file);
 		break;
 		case FPORTS::single_bouquet_all:
+		case FPORTS::single_bouquet_all_epl:
 			if (filetype_detect(filename) == FPORTS::single_bouquet)
 				make_bouquet(filename, file);
+			else if (filetype_detect(filename) == FPORTS::single_bouquet_epl)
+				make_bouquet_epl(filename, file);
 			else
 				make_userbouquet(filename, file);
 		break;
 		case FPORTS::all_bouquets_xml:
-			make_zapit_bouquets();
+			make_bouquets_xml(filename, file, (ZAPIT_VER != -1 ? ZAPIT_VER : 4));
 		break;
 		case FPORTS::all_bouquets_xml__4:
-			make_zapit_bouquets(4);
+			make_bouquets_xml(filename, file, 4);
 		break;
 		case FPORTS::all_bouquets_xml__3:
-			make_zapit_bouquets(3);
+			make_bouquets_xml(filename, file, 3);
 		break;
 		case FPORTS::all_bouquets_xml__2:
-			make_zapit_bouquets(2);
+			make_bouquets_xml(filename, file, 2);
 		break;
 		case FPORTS::all_bouquets_xml__1:
-			make_zapit_bouquets(1);
+			make_bouquets_xml(filename, file, 1);
+		break;
+		case FPORTS::single_parentallock_blacklist:
+			make_parentallock_list(filename, PARENTALLOCK::blacklist, file);
+		break;
+		case FPORTS::single_parentallock_whitelist:
+			make_parentallock_list(filename, PARENTALLOCK::whitelist, file);
+		break;
+		case FPORTS::single_parentallock_locked:
+			make_parentallock_list(filename, PARENTALLOCK::locked, file);
 		break;
 		default:
 		return error("export_file", "Error", "Unknown export option.");
@@ -290,9 +321,17 @@ void e2db::export_file(FPORTS fpo, string path)
 	{
 		return error("export_file", "File Error", "File \"" + path + "\" already exists.");
 	}
-	if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_write)  == std::filesystem::perms::none) //C++17
+	/*if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_write)  == std::filesystem::perms::none) //C++17
 	{
 		return error("export _file", "File Error", "File \"" + path + "\" is not writable.");
+	}*/
+
+	if (filename != file.filename)
+	{
+		string basedir = std::filesystem::path(path).remove_filename().u8string(); //C++17
+
+		//TODO right-end trailing
+		path = basedir + file.filename;
 	}
 
 	ofstream out (path);

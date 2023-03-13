@@ -89,7 +89,6 @@ class tab : protected e2se::log_factory
 		void saveFile(bool saveas);
 		void importFile();
 		void exportFile();
-		void exportFile(QTreeWidgetItem* item);
 		void printFile(bool all);
 		void updateIndex();
 		QTimer* statusBarMessage(string title);

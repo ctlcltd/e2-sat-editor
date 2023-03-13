@@ -548,7 +548,6 @@ void tab::saveFile(bool saveas)
 	}
 }
 
-//TODO
 void tab::importFile()
 {
 	debug("importFile");
@@ -591,7 +590,6 @@ void tab::importFile()
 	this->data->setChanged(true);
 }
 
-//TODO
 void tab::exportFile()
 {
 	debug("exportFile");
@@ -602,7 +600,8 @@ void tab::exportFile()
 	gui::GUI_DPORTS gde = gui::GUI_DPORTS::AllFiles;
 	vector<string> paths;
 	string filename;
-	int flags = -1;
+	int bit = -1;
+	int dbtype = dbih->get_e2db_services_type();
 
 	// tunersets view
 	if (current == gui::TAB_VIEW::tunersets)
@@ -611,7 +610,7 @@ void tab::exportFile()
 		auto state = view->currentState();
 
 		gde = gui::GUI_DPORTS::Tunersets;
-		flags = e2db::FPORTS::single_tunersets;
+		bit = e2db::FPORTS::single_tunersets;
 		switch (state.yx)
 		{
 			case e2db::YTYPE::satellite:
@@ -640,8 +639,18 @@ void tab::exportFile()
 		if (state.tc == 0)
 		{
 			gde = gui::GUI_DPORTS::Services;
-			flags = e2db::FPORTS::all_services;
-			filename = "lamedb";
+			if (dbtype == 0)
+			{
+				int ver = dbih->get_zapit_version();
+
+				bit = e2db::FPORTS::all_services;
+				filename = ver > 4 ? "lamedb5" : "lamedb";
+			}
+			else
+			{
+				bit = e2db::FPORTS::all_services_xml;
+				filename = "services.xml";
+			}
 
 			paths.push_back(filename);
 		}
@@ -658,166 +667,41 @@ void tab::exportFile()
 			for (auto & item : selected)
 			{
 				ti = view->tree->indexOfTopLevelItem(item);
-				QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
-				QString qchlist = tdata["id"].toString();
-				string filename = qchlist.toStdString();
+				string bname = item->data(0, Qt::UserRole).toString().toStdString();
 
-				paths.push_back(filename);
+				paths.push_back(bname);
 			}
 			if (paths.size() == 1)
 			{
 				filename = paths[0];
 			}
 			// bouquet | userbouquets
-			if (ti != -1)
+			if (ti != -1 || dbtype == 1)
 			{
 				gde = gui::GUI_DPORTS::Bouquets;
-				flags = e2db::FPORTS::single_bouquet_all;
-
-				if (dbih->bouquets.count(filename))
+				if (dbtype == 0)
 				{
-					for (string & fname : dbih->bouquets[filename].userbouquets)
-						paths.push_back(fname);
+					int ver = dbih->get_zapit_version();
+
+					if (ver > 3)
+						bit = e2db::FPORTS::single_bouquet_all;
+					else
+						bit = e2db::FPORTS::single_bouquet_all_epl;
+
+					if (dbih->bouquets.count(filename))
+					{
+						for (string & fname : dbih->bouquets[filename].userbouquets)
+							paths.push_back(fname);
+					}
 				}
-			}
-			// userbouquet
-			else
-			{
-				gde = gui::GUI_DPORTS::Userbouquets;
-				flags = e2db::FPORTS::single_userbouquet;
-			}
-		}
-	}
-	// channelBook view
-	else if (current == gui::TAB_VIEW::channelBook)
-	{
-		return infoMessage("Nothing to export", "You are in channel book.");
-	}
-
-	if (paths.empty())
-	{
-		return;
-	}
-
-	if (this->data->hasChanged())
-	{
-		updateIndex();
-	}
-
-	string path = gid->exportFileDialog(gde, filename, flags);
-
-	if (path.empty())
-	{
-		return;
-	}
-	if (paths.size() > 0)
-	{
-		int dirsize = 0;
-		string base;
-		if (std::filesystem::is_directory(path)) //C++17
-			base = path;
-		else
-			base = std::filesystem::path(path).parent_path().u8string(); //C++17
-		std::filesystem::directory_iterator dirlist (base); //C++17
-		for (const auto & entry : dirlist)
-		{
-			if (std::filesystem::is_regular_file(entry)) //C++17
-				dirsize++;
-		}
-		if (dirsize != 0)
-		{
-			bool overwrite = saveQuestion("The destination contains files that will be overwritten.", "Do you want to overwrite them?");
-			if (! overwrite)
-				return;
-		}
-	}
-
-	debug("exportFile", "flags", flags);
-
-	if (gde == gui::GUI_DPORTS::Services || gde == gui::GUI_DPORTS::Tunersets)
-	{
-		paths[0] = path;
-	}
-	else
-	{
-		string basedir = std::filesystem::path(path).remove_filename().u8string(); //C++17
-
-		//TODO right-end trailing
-		for (string & fname : paths)
-			fname = basedir + fname;
-	}
-
-	theme::setWaitCursor();
-	dbih->exportFile(flags, paths);
-	theme::unsetWaitCursor();
-
-	if (statusBarIsVisible())
-	{
-		string path;
-		if (paths.size() > 0)
-			path = std::filesystem::path(path).remove_filename().u8string(); //C++17
-		else
-			path = paths[0];
-
-		statusBarMessage("Exported to " + path);
-	}
-	else
-	{
-		infoMessage("Saved!");
-	}
-}
-
-//TODO
-void tab::exportFile(QTreeWidgetItem* item)
-{
-	debug("exportFile");
-
-	auto* dbih = this->data->dbih;
-
-	gui::TAB_VIEW current = getTabView();
-	gui::GUI_DPORTS gde = gui::GUI_DPORTS::AllFiles;
-	vector<string> paths;
-	string filename;
-	int bit = -1;
-
-	if (item == NULL)
-	{
-		return;
-	}
-	// main view
-	if (current == gui::TAB_VIEW::main)
-	{
-		mainView* view = reinterpret_cast<mainView*>(this->view);
-		auto state = view->currentState();
-
-		// services
-		if (state.tc == 0)
-		{
-			gde = gui::GUI_DPORTS::Services;
-			filename = "lamedb";
-
-			paths.push_back(filename);
-		}
-		// bouquets
-		else if (state.tc == 1)
-		{
-			int ti = view->tree->indexOfTopLevelItem(item);
-			QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
-			QString qchlist = tdata["id"].toString();
-			filename = qchlist.toStdString();
-
-			paths.push_back(filename);
-
-			// bouquet | userbouquets
-			if (ti != -1)
-			{
-				gde = gui::GUI_DPORTS::Bouquets;
-				bit = e2db::FPORTS::single_bouquet_all;
-
-				if (dbih->bouquets.count(filename))
+				else
 				{
-					for (string & fname : dbih->bouquets[filename].userbouquets)
-						paths.push_back(fname);
+					int ver = dbih->get_zapit_version();
+
+					bit = e2db::FPORTS::all_bouquets_xml;
+					filename = ver != 1 ? "ubouquets.xml" : "bouquets.xml";
+
+					paths.push_back(filename);
 				}
 			}
 			// userbouquet
@@ -870,6 +754,21 @@ void tab::exportFile(QTreeWidgetItem* item)
 			if (! overwrite)
 				return;
 		}
+	}
+
+	debug("exportFile", "bit", bit);
+
+	if (gde == gui::GUI_DPORTS::Services || gde == gui::GUI_DPORTS::Tunersets)
+	{
+		paths[0] = path;
+	}
+	else
+	{
+		string basedir = std::filesystem::path(path).remove_filename().u8string(); //C++17
+
+		//TODO right-end trailing
+		for (string & fname : paths)
+			fname = basedir + fname;
 	}
 
 	theme::setWaitCursor();
@@ -957,9 +856,7 @@ void tab::printFile(bool all)
 			for (auto & item : selected)
 			{
 				ti = view->tree->indexOfTopLevelItem(item);
-				QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
-				QString qchlist = tdata["id"].toString();
-				string bname = qchlist.toStdString();
+				string bname = item->data(0, Qt::UserRole).toString().toStdString();
 
 				// bouquet | userbouquets
 				if (ti != -1)
@@ -1087,9 +984,7 @@ void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 				for (auto & item : selected)
 				{
 					ti = view->tree->indexOfTopLevelItem(item);
-					QVariantMap tdata = item->data(0, Qt::UserRole).toMap();
-					QString qchlist = tdata["id"].toString();
-					string bname = qchlist.toStdString();
+					string bname = item->data(0, Qt::UserRole).toString().toStdString();
 
 					// bouquet | userbouquets
 					if (ti != -1)

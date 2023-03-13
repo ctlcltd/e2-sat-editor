@@ -68,7 +68,7 @@ class e2db_maker : virtual public e2db_abstract
 	protected:
 		void make_lamedb(string filename, e2db_file& file, int ver);
 		void make_bouquet(string bname, e2db_file& file);
-		void make_bouquet_epl(string filename, string bname, e2db_file& file);
+		void make_bouquet_epl(string bname, e2db_file& file);
 		void make_userbouquet(string bname, e2db_file& file);
 		void make_tunersets_xml(string filename, int ytype, e2db_file& file);
 		void make_services_xml(string filename, e2db_file& file, int ver);

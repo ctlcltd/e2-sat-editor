@@ -243,9 +243,9 @@ void e2db_maker::make_e2db_bouquets()
 
 		e2db_file file;
 		if (LAMEDB_VER < 4)
-			make_bouquet_epl(filename, bname, file);
+			make_bouquet_epl(bname, file);
 		else
-			make_bouquet(filename, file);
+			make_bouquet(bname, file);
 		this->e2db_out[filename] = file;
 	}
 
@@ -347,51 +347,6 @@ void e2db_maker::make_zapit_services(int ver)
 {
 	debug("make_zapit_services", "version", ver);
 
-	if (! datas.count("services.xml"))
-	{
-		datasets dat;
-		dat.dname = "services.xml";
-		dat.itype = 0;
-		dat.charset = "UTF-8";
-
-		datas.emplace(dat.dname, dat);
-	}
-	if (db.tables.size() == 0)
-	{
-		for (auto & x : index["txs"])
-		{
-			transponder tx = db.transponders[x.second];
-			table& tr = db.tables[tx.pos];
-			tr.pos = tx.pos;
-
-			if (tuners_pos.count(tx.pos))
-			{
-				string tnid = tuners_pos.at(tx.pos);
-				tunersets_table tn = tuners[0].tables[tnid];
-				tr.name = tn.name;
-			}
-			else
-			{
-				tr.name = tx.pos == -1 ? "NaN" : value_transponder_position(tx.pos);
-			}
-
-			tr.transponders.emplace_back(tx.txid);
-
-			db.tables[tx.pos] = tr;
-		}
-
-		int idx = 0;
-		for (auto & x : db.tables)
-		{
-			idx++;
-			table& tr = x.second;
-			tr.index = idx;
-
-			db.tables[tr.pos] = tr;
-			index["trs"].emplace_back(pair (tr.index, to_string(tr.pos))); //C++17
-		}
-	}
-
 	e2db_file file;
 	make_services_xml("services.xml", file, ver);
 	this->e2db_out["services.xml"] = file;
@@ -424,16 +379,6 @@ void e2db_maker::make_zapit_bouquets(int ver)
 		filename = "ubouquets.xml";
 	else
 		filename = "bouquets.xml";
-
-	if (! datas.count("ubouquets.xml") && ! datas.count("bouquets.xml"))
-	{
-		datasets dat;
-		dat.dname = ver > 1 ? "ubouquets.xml" : "bouquets.xml";
-		dat.itype = 1;
-		dat.charset = "UTF-8";
-
-		datas.emplace(dat.dname, dat);
-	}
 
 	e2db_file file;
 	make_bouquets_xml(filename, file, ver);
@@ -501,11 +446,23 @@ void e2db_maker::make_bouquet(string bname, e2db_file& file)
 	file.size = file.data.size();
 }
 
-void e2db_maker::make_bouquet_epl(string filename, string bname, e2db_file& file)
+void e2db_maker::make_bouquet_epl(string bname, e2db_file& file)
 {
 	debug("make_bouquet_epl", "bname", bname);
 
+	string filename = bname;
 	bouquet bs = bouquets[bname];
+
+	if (bname.find(".epl") == string::npos)
+	{
+		string ktype;
+		if (bs.btype == STYPE::tv)
+			ktype = "tv";
+		else if (bs.btype == STYPE::radio)
+			ktype = "radio";
+		filename = "userbouquets." + ktype + ".epl";
+	}
+
 	stringstream ss;
 
 	ss << "#NAME " << bs.name << endl;
@@ -771,10 +728,60 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 {
 	debug("make_services_xml", "filename", filename);
 
-	datasets dat = datas[filename];
+	string dname;
+
+	if (datas.count("services.xml"))
+		dname = "services.xml";
+
+	if (dname.empty())
+	{
+		datasets dat;
+		dat.dname = dname = "services.xml";
+		dat.itype = 0;
+		dat.charset = "UTF-8";
+
+		datas.emplace(dat.dname, dat);
+	}
+	if (db.tables.size() == 0)
+	{
+		for (auto & x : index["txs"])
+		{
+			transponder tx = db.transponders[x.second];
+			table& tr = db.tables[tx.pos];
+			tr.pos = tx.pos;
+
+			if (tuners_pos.count(tx.pos))
+			{
+				string tnid = tuners_pos.at(tx.pos);
+				tunersets_table tn = tuners[0].tables[tnid];
+				tr.name = tn.name;
+			}
+			else
+			{
+				tr.name = tx.pos == -1 ? "NaN" : value_transponder_position(tx.pos);
+			}
+
+			tr.transponders.emplace_back(tx.txid);
+
+			db.tables[tx.pos] = tr;
+		}
+
+		int idx = 0;
+		for (auto & x : db.tables)
+		{
+			idx++;
+			table& tr = x.second;
+			tr.index = idx;
+
+			db.tables[tr.pos] = tr;
+			index["trs"].emplace_back(pair (tr.index, to_string(tr.pos))); //C++17
+		}
+	}
+
+	datasets dat = datas[dname];
 	stringstream ss;
 
-	string iname = filename;
+	string iname = dname;
 	unordered_map<int, string> tags;
 	tags[0] = "zapit";
 	tags[1] = "sat";
@@ -1039,10 +1046,27 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 {
 	debug("make_bouquets_xml", "filename", filename);
 
-	datasets dat = datas[filename];
+	string dname;
+
+	if (datas.count("ubouquets.xml"))
+		dname = "ubouquets.xml";
+	else if (datas.count("ubouquets.xml"))
+		dname = "bouquets.xml";
+
+	if (dname.empty())
+	{
+		datasets dat;
+		dat.dname = dname = ver > 1 ? "ubouquets.xml" : "bouquets.xml";
+		dat.itype = 1;
+		dat.charset = "UTF-8";
+
+		datas.emplace(dat.dname, dat);
+	}
+
+	datasets dat = datas[dname];
 	stringstream ss;
 
-	string iname = filename;
+	string iname = dname;
 	unordered_map<int, string> tags;
 	tags[0] = "zapit";
 	tags[1] = "Bouquet";

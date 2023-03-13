@@ -1098,6 +1098,7 @@ void e2db_parser::parse_zapit_services_xml(istream& iservicesxml, string filenam
 
 void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string filename, int ver)
 {
+	debug("parse_zapit_services_apix_xml", "filename", filename);
 	debug("parse_zapit_services_apix_xml", "version", ver);
 
 	if (ver < 1 || ver > 4)
@@ -1113,8 +1114,10 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 
 	debug("parse_zapit_services_apix_xml", "charset", charset);
 
+	string dname = "services.xml";
+
 	datasets dat;
-	dat.dname = filename;
+	dat.dname = dname;
 	dat.itype = 0;
 	dat.charset = charset;
 
@@ -1122,7 +1125,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 	transponder tx;
 	service ch;
 
-	string iname = filename;
+	string iname = dname;
 	unordered_map<string, int> depth;
 	depth["zapit"] = 0;
 	depth["sat"] = 1;
@@ -1426,6 +1429,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string filename, int ver)
 {
 	debug("parse_zapit_bouquets_apix_xml", "filename", filename);
+	debug("parse_zapit_bouquets_apix_xml", "version", ver);
 
 	if (ver < 1 || ver > 4)
 		return error("parse_zapit_bouquets_apix_xml", "Parser Error", "Unknown Zapit bouquets file format.");
@@ -1440,8 +1444,10 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 
 	debug("parse_zapit_bouquets_apix_xml", "charset", charset);
 
+	string dname = ver > 1 ? "ubouquets.xml" : "bouquets.xml";
+
 	datasets dat;
-	dat.dname = filename;
+	dat.dname = dname;
 	dat.itype = 1;
 	dat.charset = charset;
 
@@ -1455,7 +1461,7 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 	vector<pair<userbouquet, vector<string>>> ubouquets;
 	vector<string> chindex;
 
-	string iname = filename;
+	string iname = dname;
 	unordered_map<string, int> depth;
 	depth["zapit"] = 0;
 	depth["Bouquet"] = 1;

@@ -897,9 +897,13 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 			opts.append("Lamedb 2.3 (services)");
 			opts.append("Lamedb 2.2 (services)");
 			opts.append("Neutrino Services (services.xml)");
+			opts.append("Parental lock blacklist (blacklist)");
+			opts.append("Parental lock whitelist (whitelist)");
+			opts.append("Parental lock services (locked)");
 		break;
 		case GUI_DPORTS::Bouquets:
 			opts.append("Bouquet (bouquets.*)");
+			opts.append("Bouquet epl (*.epl)");
 			opts.append("Neutrino Bouquets (ubouquets.xml)");
 			opts.append("Neutrino api-1 Bouquets (bouquets.xml)");
 		break;
@@ -928,11 +932,15 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 			opts.append("Lamedb 2.3 (services)");
 			opts.append("Lamedb 2.2 (services)");
 			opts.append("Bouquet (bouquets.*)");
+			opts.append("Bouquet epl (*.epl)");
 			opts.append("Userbouquet (userbouquet.*)");
 			opts.append("Tuner settings (*.xml)");
 			opts.append("Neutrino Services (services.xml)");
 			opts.append("Neutrino Bouquets (ubouquets.xml)");
 			opts.append("Neutrino api-1 Bouquets (bouquets.xml)");
+			opts.append("Parental lock blacklist (blacklist)");
+			opts.append("Parental lock whitelist (whitelist)");
+			opts.append("Parental lock services (services.locked)");
 			opts.append("All Files (*)");
 	}
 
@@ -954,7 +962,6 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 	return paths;
 }
 
-//TODO
 string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& bit)
 {
 	debug("exportFileDialog", "filename", filename);
@@ -974,9 +981,13 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& bit)
 			opts.append("Neutrino api-3 (services.xml)");
 			opts.append("Neutrino api-2 (services.xml)");
 			opts.append("Neutrino api-1 (services.xml)");
+			opts.append("Parental lock blacklist (blacklist)");
+			opts.append("Parental lock whitelist (whitelist)");
+			opts.append("Parental lock services (services.locked)");
 		break;
 		case GUI_DPORTS::Bouquets:
 			opts.append("Bouquet (bouquets.*)");
+			opts.append("Bouquet epl (*.epl)");
 			opts.append("Neutrino api-4 Bouquets (ubouquets.xml)");
 			opts.append("Neutrino api-3 Bouquets (ubouquets.xml)");
 			opts.append("Neutrino api-2 Bouquets (ubouquets.xml)");
@@ -1034,6 +1045,8 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& bit)
 			bit = 0x1012;
 		else if (selected == "Neutrino api-1 (services.xml)")
 			bit = 0x1011;
+		else if (selected == "Bouquet epl (*.epl)")
+			bit = 0x0020;
 		else if (selected == "Neutrino api-4 Bouquets (ubouquets.xml)")
 			bit = 0x4014;
 		else if (selected == "Neutrino api-3 Bouquets (ubouquets.xml)")
@@ -1042,6 +1055,12 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& bit)
 			bit = 0x4012;
 		else if (selected == "Neutrino api-1 Bouquets (bouquets.xml)")
 			bit = 0x4011;
+		else if (selected == "Parental lock blacklist (blacklist)")
+			bit = 0xfa;
+		else if (selected == "Parental lock whitelist (whitelist)")
+			bit = 0xfe;
+		else if (selected == "Parental lock services (services.locked)")
+			bit = 0xff;
 
 		debug("exportFileDialog", "bit", bit);
 
