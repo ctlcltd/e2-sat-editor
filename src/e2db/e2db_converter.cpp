@@ -184,8 +184,8 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 		}
 		if
 		(
-			(std::filesystem::status(path).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
-			(std::filesystem::status(path).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
+			(std::filesystem::status(fpath).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
+			(std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
 		) //C++17
 		{
 			return error("export_csv_file", "File Error", "File \"" + fpath + "\" is not writable.");
@@ -266,8 +266,8 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 		}
 		if
 		(
-			(std::filesystem::status(path).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
-			(std::filesystem::status(path).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
+			(std::filesystem::status(fpath).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
+			(std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
 		) //C++17
 		{
 			return error("export_html_file", "File Error", "File \"" + fpath + "\" is not writable.");
