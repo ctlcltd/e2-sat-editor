@@ -695,17 +695,17 @@ void e2db_converter::parse_csv(istream& ifile, vector<vector<string>>& sxv)
 		{
 			string val;
 			size_t pos = str.find(esp);
-			size_t len;
+			size_t n;
 
 			if (pos != string::npos)
 			{
 				pos += 1;
 				val = str.substr(pos);
-				len = val.rfind(esp);
+				n = val.rfind(esp);
 
-				if (len != string::npos)
+				if (n != string::npos)
 				{
-					val = val.substr(0, len);
+					val = val.substr(0, n);
 				}
 				else if (yey)
 				{
@@ -716,12 +716,12 @@ void e2db_converter::parse_csv(istream& ifile, vector<vector<string>>& sxv)
 				{
 					pos = line.find(val);
 					val = line.substr(pos);
-					len = val.find(esp);
+					n = val.find(esp);
 
-					if (len != string::npos)
+					if (n != string::npos)
 					{
 						yey = true;
-						val = val.substr(0, len);
+						val = val.substr(0, n);
 					}
 				}
 			}

@@ -55,7 +55,7 @@ void e2db::import_file(vector<string> paths)
 			if (merge) delete dst;
 			return error("import_file", "File Error", "File \"" + path + "\" is not a valid file.");
 		}
-		if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_read)  == std::filesystem::perms::none) //C++17
+		if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none) //C++17
 		{
 			if (merge) delete dst;
 			return error("import_file", "File Error", "File \"" + path + "\" is not readable.");
@@ -139,9 +139,11 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 		break;
 		case FPORTS::single_bouquet:
 		case FPORTS::all_bouquets:
+			dst->parse_e2db_bouquet(ifile, filename);
+		break;
 		case FPORTS::single_bouquet_epl:
 		case FPORTS::all_bouquets_epl:
-			dst->parse_e2db_bouquet(ifile, filename);
+			dst->parse_e2db_bouquet(ifile, filename, true);
 		break;
 		case FPORTS::single_userbouquet:
 		case FPORTS::all_userbouquets:
@@ -321,7 +323,7 @@ void e2db::export_file(FPORTS fpo, string path)
 	{
 		return error("export_file", "File Error", "File \"" + path + "\" already exists.");
 	}
-	/*if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_write)  == std::filesystem::perms::none) //C++17
+	/*if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none) //C++17
 	{
 		return error("export _file", "File Error", "File \"" + path + "\" is not writable.");
 	}*/
@@ -550,9 +552,9 @@ void e2db::add_userbouquet(userbouquet& ub)
 		{
 			for (auto it = index["ubs"].begin(); it != index["ubs"].end(); it++)
 			{
-				unsigned long pos0 = it->second.find(".dbe");
-				unsigned long pos1 = it->second.find('.' + ktype);
-				int len = int (it->second.length());
+				size_t pos0 = it->second.find(".dbe");
+				size_t pos1 = it->second.find('.' + ktype);
+				size_t len = it->second.length();
 				int n = 0;
 				if (pos0 != string::npos && pos1 != string::npos)
 				{

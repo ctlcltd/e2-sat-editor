@@ -227,7 +227,7 @@ void ftpcom::upload_data(string base, string filename, ftpcom_file file)
 	soi data;
 	data.data = file.data.data();
 	data.size = file.size;
-	size_t uplen = 0;
+	size_t len = 0;
 	CURLcode res = CURLE_GOT_NOTHING;
 	string remotefile = '/' + base + '/' + filename;
 
@@ -237,7 +237,7 @@ void ftpcom::upload_data(string base, string filename, ftpcom_file file)
 	curl_easy_setopt(cph, CURLOPT_UPLOAD, true);
 	curl_easy_setopt(cph, CURLOPT_FTP_CREATE_MISSING_DIRS, false);
 	curl_easy_setopt(cph, CURLOPT_HEADERFUNCTION, get_content_length_func);
-	curl_easy_setopt(cph, CURLOPT_HEADERDATA, &uplen);
+	curl_easy_setopt(cph, CURLOPT_HEADERDATA, &len);
 	curl_easy_setopt(cph, CURLOPT_READFUNCTION, data_upload_func);
 	curl_easy_setopt(cph, CURLOPT_READDATA, &data);
 	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_discard_func);
@@ -253,8 +253,8 @@ void ftpcom::upload_data(string base, string filename, ftpcom_file file)
 				continue;
 			curl_easy_setopt(cph, CURLOPT_NOBODY, false);
 			curl_easy_setopt(cph, CURLOPT_HEADER, false);
-			data.data += uplen;
-			data.size -= uplen;
+			data.data += len;
+			data.size -= len;
 			curl_easy_setopt(cph, CURLOPT_APPEND, true);
 		}
 		else

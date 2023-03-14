@@ -1066,15 +1066,19 @@ void e2db_parser::parse_zapit_services_xml(istream& iservicesxml, string filenam
 		if (line.find("<zapit"))
 		{
 			string pver;
-			size_t pos = line.find("api=");
-			size_t len;
+			size_t pos = line.find("api");
+			size_t n;
+
 			if (pos != string::npos)
 			{
-				pver = line.substr(pos + 5);
-				len = pver.rfind('"');
-				if (len == string::npos)
-					len = pver.rfind('\'');
-				pver = pver.substr(0, len);
+				n = line.find('"', pos);
+				if (n == string::npos)
+					n = line.rfind('\'', pos);
+				pver = line.substr(n + 1);
+				n = pver.rfind('"');
+				if (n == string::npos)
+					n = pver.rfind('\'');
+				pver = pver.substr(0, n);
 				ver = std::atoi(pver.data());
 			}
 			valid = true;
@@ -1701,18 +1705,19 @@ bool e2db_parser::parse_xml_head(istream& ixml, string& charset)
 	if (head.find("<?xml") == string::npos)
 		return false;
 
-	//TODO fixed pos encoding?:\s?:\s?:\s=?:\s"*+
-	size_t pos = head.find("encoding=");
-	size_t len;
+	size_t pos = head.find("encoding");
+	size_t n;
+
 	if (pos != string::npos)
 	{
-		//TODO fixed pos
-		charset = head.substr(pos + 10);
-		len = charset.rfind('"');
-		if (len == string::npos)
-			len = charset.rfind('\'');
-		charset = charset.substr(0, len);
-		// std::transform(charset.begin(), charset.end(), charset.begin(), [](unsigned char c) { return toupper(c); });
+		n = head.find('"', pos);
+		if (n == string::npos)
+			n = head.rfind('\'', pos);
+		charset = head.substr(n + 1);
+		n = charset.rfind('"');
+		if (n == string::npos)
+			n = charset.rfind('\'');
+		charset = charset.substr(0, n);
 	}
 	return true;
 }
@@ -1725,34 +1730,41 @@ void e2db_parser::parse_xml_comment(string line, comment& s, int ln)
 	s.text = s.text.substr(0, s.text.length() - 2);
 }
 
-//TODO FIX [MinGW-w64] not empty tag
 void e2db_parser::parse_xml_tag(string line, string& tag, bool& closed)
 {
 	size_t pos = line.find('<');
-	size_t len;
+	size_t n;
+
 	if (pos != string::npos)
 	{
 		tag = line.substr(pos + 1);
+		pos = tag[0] == '\n';
+		if (pos)
+		{
+			tag = "";
+			return;
+		}
 		pos = tag[0] == '/';
-		len = tag.find(' ');
+		n = tag.size() - 1;
 
-		closed = pos || tag[tag.length() - 1] == '/';
+		closed = pos || tag[n] == '/';
 
-		if (! pos && len == string::npos)
-			len = tag.find('/');
-		tag = tag.substr(pos, len);
+		n = tag.find(' ');
+		if (! pos && n == string::npos)
+			n = tag.rfind('/');
+		tag = tag.substr(pos, n);
 	}
 }
 
 void e2db_parser::parse_xml_attribute(string line, string token, string& key, string& val)
 {
 	size_t pos;
-	size_t len = token.find('=');
+	size_t n = token.find('=');
 
-	if (len != string::npos)
+	if (n != string::npos)
 	{
-		key = token.substr(0, len);
-		val = token.substr(len + 1);
+		key = token.substr(0, n);
+		val = token.substr(n + 1);
 	}
 	else
 	{
@@ -1760,22 +1772,22 @@ void e2db_parser::parse_xml_attribute(string line, string token, string& key, st
 	}
 
 	pos = val.find('"');
-	len = string::npos;
+	n = string::npos;
 
 	if (pos != string::npos)
 	{
-		len = val.rfind('"');
+		n = val.rfind('"');
 	}
 	else
 	{
 		pos = val.find('\'');
 		if (pos != string::npos)
-			len = val.rfind('\'');
+			n = val.rfind('\'');
 	}
 
-	if (len != string::npos && pos != len)
+	if (n != string::npos && pos != n)
 	{
-		val = val.substr(0, len);
+		val = val.substr(0, n);
 		if (pos != string::npos)
 			val = val.substr(pos + 1);
 	}
@@ -1788,21 +1800,42 @@ void e2db_parser::parse_xml_attribute(string line, string token, string& key, st
 		if (pos != string::npos)
 			val = val.substr(pos + 1);
 
-		len = val.find('"');
-		if (len == string::npos)
-			len = val.find('\'');
-		if (len != string::npos)
-			val = val.substr(0, len);
+		n = val.find('"');
+		if (n == string::npos)
+			n = val.find('\'');
+		else
+			val = val.substr(0, n);
 
 		std::transform(val.begin(), val.end(), val.begin(), [](unsigned char c) { return c ? c : ' '; });
 	}
 }
 
-//TODO value xml entities
 void e2db_parser::conv_xml_value(string& val)
 {
-	if (val.find('&') != string::npos)
+	unordered_map<string, char> xmlents = {
+		{"&amp;", '&'},
+		{"&quot;", '"'},
+		{"&apos;", '\''},
+		{"&lt;", '<'},
+		{"&gt;", '>'}
+	};
+
+	size_t pos = val.find('&');
+	size_t n;
+
+	while (pos != string::npos)
 	{
+		n = val.find(';', pos);
+		if (n != string::npos)
+		{
+			string w = val.substr(pos, n - pos + 1);
+			if (xmlents.count(w))
+				val = val.substr(0, pos) + xmlents.at(w) + val.substr(n + 1);
+		}
+		if (pos != val.size())
+			pos = val.find('&', pos + 1);
+		else
+			pos = string::npos;
 	}
 }
 

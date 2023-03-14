@@ -469,13 +469,13 @@ void e2db_maker::make_bouquet_epl(string bname, e2db_file& file)
 	for (string & w : bs.userbouquets)
 	{
 		size_t pos = w.find('.');
-		size_t len = w.rfind('.');
+		size_t n = w.rfind('.');
 		string name;
 		string path = MAKER_BPATH + '/' + w;
 
-		if (pos != string::npos && len != string::npos)
+		if (pos != string::npos && n != string::npos)
 		{
-			name = w.substr(0, len);
+			name = w.substr(0, n);
 			name = name.substr(pos + 1);
 		}
 
@@ -925,7 +925,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 					if (ver > 1)
 					{
 						ss << ' ' << "i=\"" << hex << setfill('0') << setw(4) << ch.ssid << dec << "\"";
-						ss << ' ' << "n=\"" << conv_xml_value(ch.chname) << "\"";
+						ss << ' ' << "n=\"" << ch.chname << "\"";
 						{
 							int cval = 0;
 							string cpx = (SDATA_PIDS::vpid > 9 ? "" : "0") + to_string(SDATA_PIDS::vpid);
@@ -986,7 +986,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 					else
 					{
 						ss << ' ' << "service_id=\"" << hex << setfill('0') << setw(4) << ch.ssid << dec << "\"";
-						ss << ' ' << "name=\"" << conv_xml_value(ch.chname) << "\"";
+						ss << ' ' << "name=\"" << ch.chname << "\"";
 						ss << ' ' << "service_type=\"" << hex << setfill('0') << setw(4) << ch.stype << dec << "\"";
 					}
 
@@ -1112,7 +1112,7 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 				if (ver > 1)
 				{
 					ss << ' ' << "i=\"" << hex << ch.ssid << dec << "\"";
-					ss << ' ' << "n=\"" << conv_xml_value(ch.chname) << "\"";
+					ss << ' ' << "n=\"" << ch.chname << "\"";
 					ss << ' ' << "t=\"" << hex << setfill('0') << setw(4) << ch.tsid << dec << "\"";
 					ss << ' ' << "on=\"" << hex << ch.onid << dec << "\"";
 					ss << ' ' << "s=\"" << tx.pos << "\"";
@@ -1125,7 +1125,7 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 				else
 				{
 					ss << ' ' << "serviceID=\"" << hex << setfill('0') << setw(4) << ch.ssid << dec << "\"";
-					ss << ' ' << "name=\"" << conv_xml_value(ch.chname) << "\"";
+					ss << ' ' << "name=\"" << ch.chname << "\"";
 					ss << ' ' << "tsid=\"" << hex << setfill('0') << setw(4) << ch.tsid << dec << "\"";
 					ss << ' ' << "onid=\"" << hex << setfill('0') << setw(4) << ch.onid << dec << "\"";
 					ss << ' ' << "sat_position=\"" << tx.pos << "\"";
@@ -1174,12 +1174,29 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 	file.size = file.data.size();
 }
 
-//TODO value xml entities
 string e2db_maker::conv_xml_value(string str)
 {
-	if (str.find('&') != string::npos)
+	unordered_map<char, string> xmlents = {
+		{'&', "&amp;"},
+		{'"', "&quot;"},
+		{'\'', "&apos;"},
+		{'<', "&lt;"},
+		{'>', "&gt;"}
+	};
+
+	size_t n = 0;
+
+	while (n != str.size())
 	{
+		if (xmlents.count(str[n]))
+		{
+			string w = xmlents.at(str[n]);
+			str = str.substr(0, n) + w + str.substr(n + 1);
+			n += w.size() - 1;
+		}
+		n++;
 	}
+
 	return str;
 }
 
@@ -1201,12 +1218,12 @@ void e2db_maker::make_parentallock_list(string filename, PARENTALLOCK ltype, e2d
 			if (locked)
 			{
 				size_t pos = ub.bname.find(".");
-				size_t len = ub.bname.rfind(".");
+				size_t n = ub.bname.rfind(".");
 				string name;
 				string path = MAKER_BPATH + '/' + ub.bname;
 
-				if (pos != string::npos && len != string::npos)
-					name = ub.bname.substr(pos, len);
+				if (pos != string::npos && n != string::npos)
+					name = ub.bname.substr(pos, n);
 
 				ss << "4097:7:0:" << name << ":0:0:0:0:0:0:";
 				ss << path << endl;
