@@ -925,7 +925,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 					if (ver > 1)
 					{
 						ss << ' ' << "i=\"" << hex << setfill('0') << setw(4) << ch.ssid << dec << "\"";
-						ss << ' ' << "n=\"" << ch.chname << "\"";
+						ss << ' ' << "n=\"" << conv_xml_value(ch.chname) << "\"";
 						{
 							int cval = 0;
 							string cpx = (SDATA_PIDS::vpid > 9 ? "" : "0") + to_string(SDATA_PIDS::vpid);
@@ -986,7 +986,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 					else
 					{
 						ss << ' ' << "service_id=\"" << hex << setfill('0') << setw(4) << ch.ssid << dec << "\"";
-						ss << ' ' << "name=\"" << ch.chname << "\"";
+						ss << ' ' << "name=\"" << conv_xml_value(ch.chname) << "\"";
 						ss << ' ' << "service_type=\"" << hex << setfill('0') << setw(4) << ch.stype << dec << "\"";
 					}
 
@@ -1112,7 +1112,7 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 				if (ver > 1)
 				{
 					ss << ' ' << "i=\"" << hex << ch.ssid << dec << "\"";
-					ss << ' ' << "n=\"" << ch.chname << "\"";
+					ss << ' ' << "n=\"" << conv_xml_value(ch.chname) << "\"";
 					ss << ' ' << "t=\"" << hex << setfill('0') << setw(4) << ch.tsid << dec << "\"";
 					ss << ' ' << "on=\"" << hex << ch.onid << dec << "\"";
 					ss << ' ' << "s=\"" << tx.pos << "\"";
@@ -1125,7 +1125,7 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 				else
 				{
 					ss << ' ' << "serviceID=\"" << hex << setfill('0') << setw(4) << ch.ssid << dec << "\"";
-					ss << ' ' << "name=\"" << ch.chname << "\"";
+					ss << ' ' << "name=\"" << conv_xml_value(ch.chname) << "\"";
 					ss << ' ' << "tsid=\"" << hex << setfill('0') << setw(4) << ch.tsid << dec << "\"";
 					ss << ' ' << "onid=\"" << hex << setfill('0') << setw(4) << ch.onid << dec << "\"";
 					ss << ' ' << "sat_position=\"" << tx.pos << "\"";
@@ -1289,7 +1289,6 @@ void e2db_maker::make_parentallock_list(string filename, PARENTALLOCK ltype, e2d
 	file.size = file.data.size();
 }
 
-//TODO FIX write permissions
 bool e2db_maker::push_file(string path)
 {
 	debug("push_file", "path", path);
@@ -1306,11 +1305,15 @@ bool e2db_maker::push_file(string path)
 	{
 		std::filesystem::create_directory(path); //C++17
 	}
-	/*if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none) //C++17
+	if
+	(
+		(std::filesystem::status(path).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
+		(std::filesystem::status(path).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
+	) //C++17
 	{
 		error("push_file", "File Error", "File \"" + path + "\" is not writable.");
 		return false;
-	}*/
+	}
 	for (auto & o: this->e2db_out)
 	{
 		string fpath = path + '/' + o.first;
@@ -1320,11 +1323,15 @@ bool e2db_maker::push_file(string path)
 			error("push_file", "File Error", "File \"" + fpath + "\" already exists.");
 			return false;
 		}
-		/*if ((std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none) //C++17
+		if
+		(
+			(std::filesystem::status(fpath).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
+			(std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
+		) //C++17
 		{
 			error("push_file", "File Error", "File \"" + fpath + "\" is not writable.");
 			return false;
-		}*/
+		}
 
 		ofstream out (fpath);
 		out << o.second.data;

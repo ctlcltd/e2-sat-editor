@@ -1549,11 +1549,11 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 					ub.locked = std::atoi(val.data());
 				else if (key == "i")
 					ref.ssid = int (std::strtol(val.data(), NULL, 16));
-				else if (key == "n")
-				{
-					conv_xml_value(val);
-					chref.value = val;
-				}
+				// else if (key == "n")
+				// {
+				// 	conv_xml_value(val);
+				// 	chref.value = val;
+				// }
 				else if (key == "t")
 					ref.tsid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "on")
@@ -1577,11 +1577,11 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 					ub.locked = std::atoi(val.data());
 				else if (key == "serviceID")
 					ref.ssid = int (std::strtol(val.data(), NULL, 16));
-				else if (key == "name")
-				{
-					conv_xml_value(val);
-					chref.value = val;
-				}
+				// else if (key == "name")
+				// {
+				// 	conv_xml_value(val);
+				// 	chref.value = val;
+				// }
 				else if (key == "tsid")
 					ref.tsid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "onid")
@@ -1866,7 +1866,11 @@ bool e2db_parser::list_file(string path)
 		error("list_file", "File Error", "File \"" + path + "\" not exists.");
 		return false;
 	}
-	if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_read)  == std::filesystem::perms::none) //C++17
+	if
+	(
+		(std::filesystem::status(path).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none &&
+		(std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
+	) //C++17
 	{
 		error("list_file", "File Error", "File \"" + path + "\" is not readable.");
 		return false;
@@ -1880,7 +1884,11 @@ bool e2db_parser::list_file(string path)
 		{
 			continue;
 		}
-		if ((std::filesystem::status(entry).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none) //C++17
+		if
+		(
+			(std::filesystem::status(entry).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none &&
+			(std::filesystem::status(entry).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
+		) //C++17
 		{
 			error("list_file", "File Error", "File \"" + path + "\" is not readable.");
 			return false;

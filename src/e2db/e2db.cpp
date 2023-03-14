@@ -55,7 +55,11 @@ void e2db::import_file(vector<string> paths)
 			if (merge) delete dst;
 			return error("import_file", "File Error", "File \"" + path + "\" is not a valid file.");
 		}
-		if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none) //C++17
+		if
+		(
+			(std::filesystem::status(path).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none &&
+			(std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
+		) //C++17
 		{
 			if (merge) delete dst;
 			return error("import_file", "File Error", "File \"" + path + "\" is not readable.");
@@ -213,7 +217,6 @@ void e2db::export_file(FPORTS fpo, vector<string> paths)
 	}
 }
 
-//TODO FIX write permissions
 void e2db::export_file(FPORTS fpo, string path)
 {
 	debug("export_file", "file path", "singular");
@@ -323,10 +326,14 @@ void e2db::export_file(FPORTS fpo, string path)
 	{
 		return error("export_file", "File Error", "File \"" + path + "\" already exists.");
 	}
-	/*if ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none) //C++17
+	if
+	(
+		(std::filesystem::status(path).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
+		(std::filesystem::status(path).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
+	) //C++17
 	{
 		return error("export _file", "File Error", "File \"" + path + "\" is not writable.");
-	}*/
+	}
 
 	if (filename != file.filename)
 	{
