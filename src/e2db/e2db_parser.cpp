@@ -1274,7 +1274,10 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 				else if (key == "i")
 					ch.ssid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "n")
+				{
+					conv_xml_value(val);
 					ch.chname = val;
+				}
 				else if (key == "v")
 				{
 					int cval = int (std::strtol(val.data(), NULL, 16));
@@ -1395,7 +1398,10 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 				else if (key == "service_id")
 					ch.ssid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "name")
+				{
+					conv_xml_value(val);
 					ch.chname = val;
+				}
 				else if (key == "service_type")
 					ch.stype = int (std::strtol(val.data(), NULL, 16));
 			}
