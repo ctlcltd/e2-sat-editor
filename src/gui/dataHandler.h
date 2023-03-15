@@ -25,7 +25,7 @@ class dataHandler : protected e2se::log_factory
 {
 	public:
 		dataHandler();
-		~dataHandler();
+		virtual ~dataHandler();
 		void newFile();
 		bool readFile(string filename);
 		bool writeFile(string path);

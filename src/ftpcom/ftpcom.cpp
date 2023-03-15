@@ -40,15 +40,15 @@ void ftpcom::setParameters(ftp_params params)
 	debug("setParameters");
 
 	if (params.user.empty())
-		error("ftpcom", trw("Missing \"%s\" parameter.", "username"));
+		error("ftpcom", "FTP Error", trw("Missing \"%s\" parameter.", "username"));
 	if (params.pass.empty())
-		error("ftpcom", trw("Missing \"%s\" parameter.", "password"));
+		error("ftpcom", "FTP Error", trw("Missing \"%s\" parameter.", "password"));
 	if (params.host.empty())
-		error("ftpcom", trw("Missing \"%s\" parameter.", "IP address"));
+		error("ftpcom", "FTP Error", trw("Missing \"%s\" parameter.", "IP address"));
 	if (! params.ftport)
-		error("ftpcom", trw("Missing \"%s\" parameter.", "FTP port"));
+		error("ftpcom", "FTP Error", trw("Missing \"%s\" parameter.", "FTP port"));
 	if (! params.htport)
-		error("ftpcom", trw("Missing \"%s\" parameter.", "HTTP port"));
+		error("ftpcom", "FTP Error", trw("Missing \"%s\" parameter.", "HTTP port"));
 	if (params.actv)
 		actv = true;
 
@@ -59,11 +59,11 @@ void ftpcom::setParameters(ftp_params params)
 	pass = params.pass;
 
 	if (params.tpath.empty())
-		error("ftpcom", trw("Missing \"%s\" path parameter.", "Transponders"));
+		error("ftpcom", "FTP Error", trw("Missing \"%s\" path parameter.", "Transponders"));
 	if (params.bpath.empty())
-		error("ftpcom", trw("Missing \"%s\" path parameter.", "Bouquets"));
+		error("ftpcom", "FTP Error", trw("Missing \"%s\" path parameter.", "Bouquets"));
 	if (params.spath.empty())
-		error("ftpcom", trw("Missing \"%s\" path parameter.", "Services"));
+		error("ftpcom", "FTP Error", trw("Missing \"%s\" path parameter.", "Services"));
 
 	baset = params.tpath;
 	baseb = params.bpath;
@@ -146,6 +146,13 @@ bool ftpcom::disconnect()
 	return true;
 }
 
+string ftpcom::get_server_hostname()
+{
+	debug("get_server_hostname");
+
+	return host.empty() ? host + ':' + to_string(ftport) : "";
+}
+
 vector<string> ftpcom::list_dir(string basedir)
 {
 	debug("list_dir");
@@ -154,7 +161,8 @@ vector<string> ftpcom::list_dir(string basedir)
 
 	if (! handle())
 	{
-		error("list_dir", "ftpcom error.");
+		error("list_dir", "FTP Error", "Failed to resume FTP connection.");
+
 		return list;
 	}
 
@@ -169,7 +177,8 @@ vector<string> ftpcom::list_dir(string basedir)
 
 	if (res != CURLE_OK)
 	{
-		error("list_dir", trs(curl_easy_strerror(res))); // var error string
+		error("list_dir", "FTP Error", trs(curl_easy_strerror(res))); // var error string
+
 		reset(cph, rph);
 		data.clear();
 		return list;
@@ -227,7 +236,7 @@ void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 	debug("download_data");
 
 	if (! handle())
-		return error("download_data", "ftpcom error.");
+		return error("download_data", "FTP Error", "Failed to resume FTP connection.");
 
 	sio data;
 	data.size = 0;
@@ -243,7 +252,8 @@ void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 
 	if (res != CURLE_OK)
 	{
-		error("download_data", trs(curl_easy_strerror(res))); // var error string
+		error("download_data", "FTP Error", trs(curl_easy_strerror(res))); // var error string
+
 		reset(cph, rph);
 		return;
 	}
@@ -261,7 +271,7 @@ void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 void ftpcom::upload_data(string basedir, string filename, ftpcom_file file)
 {
 	if (! handle())
-		return error("upload_data", "ftpcom error.");
+		return error("upload_data", "FTP Error", "Failed to resume FTP connection.");
 
 	soi data;
 	data.data = file.data.data();
@@ -305,7 +315,8 @@ void ftpcom::upload_data(string basedir, string filename, ftpcom_file file)
 
 	if (res != CURLE_OK)
 	{
-		error("upload_data", trs(curl_easy_strerror(res))); // var error string
+		error("upload_data", "FTP Error", trs(curl_easy_strerror(res))); // var error string
+
 		reset(cph, rph);
 		return;
 	}
@@ -425,11 +436,6 @@ string ftpcom::trw(string str, string param)
 	return string (tstr);
 }
 
-void ftpcom::error(string tmsg, string rmsg)
-{
-	this->log->error(tmsg, "Error", rmsg);
-}
-
 unordered_map<string, ftpcom::ftpcom_file> ftpcom::get_files()
 {
 	debug("get_files");
@@ -440,6 +446,7 @@ unordered_map<string, ftpcom::ftpcom_file> ftpcom::get_files()
 
 	if (ftdb.empty())
 		return files;
+
 	for (string & w : ftdb)
 	{
 		std::filesystem::path fpath = std::filesystem::path(w); //C++17
@@ -463,6 +470,7 @@ void ftpcom::put_files(unordered_map<string, ftpcom_file> files)
 
 	if (files.empty())
 		return;
+
 	for (auto & x : files)
 	{
 		std::filesystem::path fpath = std::filesystem::path(x.first); //C++17
@@ -515,7 +523,8 @@ bool ftpcom::cmd_ifreload()
 
 	if (res != CURLE_OK)
 	{
-		error("cmd_ifreload", trs(curl_easy_strerror(res))); // var error string
+		error("cmd_ifreload", "FTP Error", trs(curl_easy_strerror(res))); // var error string
+
 		reset(csh, rsh);
 		data.clear();
 		return false;
@@ -570,7 +579,8 @@ bool ftpcom::cmd_tnreload()
 
 	if (res != CURLE_OK)
 	{
-		error("cmd_tnreload", trs(curl_easy_strerror(res))); // var error string
+		error("cmd_tnreload", "FTP Error", trs(curl_easy_strerror(res))); // var error string
+
 		reset(csh, rsh);
 		return false;
 	}

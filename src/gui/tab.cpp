@@ -479,7 +479,11 @@ bool tab::readFile(string filename)
 	else
 	{
 		tabChangeName();
+
+		error("readFile", "File Error", "Error reading file \"" + filename + "\".");
+
 		errorMessage("File Error", "Error opening files.");
+
 		return false;
 	}
 
@@ -544,6 +548,8 @@ void tab::saveFile(bool saveas)
 	}
 	else
 	{
+		error("saveFile", "File Error", "Error writing file \"" + path + "\".");
+
 		errorMessage("File Error", "Error writing files.");
 	}
 }
@@ -1211,6 +1217,9 @@ void tab::ftpConnect()
 	}
 	else
 	{
+		string hostname = this->ftph->getServerHostname();
+		error("ftpConnect", "FTP Error", "Cannot connect to FTP \"" + hostname + "\".");
+
 		errorMessage("FTP Error", "Cannot connect to FTP Server!");
 	}
 }
@@ -1228,6 +1237,9 @@ void tab::ftpDisconnect()
 	}
 	else
 	{
+		string hostname = this->ftph->getServerHostname();
+		error("ftpDisconnect", "FTP Error", "Cannot disconnect from FTP \"" + hostname + "\".");
+
 		errorMessage("FTP Error", "Cannot disconnect from FTP Server!");
 	}
 }
@@ -1238,7 +1250,12 @@ void tab::ftpUpload()
 	debug("ftpUpload");
 
 	if (! this->ftph->handleConnection())
+	{
+		string hostname = this->ftph->getServerHostname();
+		error("ftpConnect", "FTP Error", "Cannot connect to FTP \"" + hostname + "\".");
+
 		return errorMessage("FTP Error", "Cannot connect to FTP Server!");
+	}
 
 	QSettings settings;
 
@@ -1315,7 +1332,12 @@ void tab::ftpDownload()
 	debug("ftpDownload");
 
 	if (! this->ftph->handleConnection())
+	{
+		string hostname = this->ftph->getServerHostname();
+		error("ftpConnect", "FTP Error", "Cannot connect to FTP \"" + hostname + "\".");
+
 		return errorMessage("FTP Error", "Cannot connect to FTP Server!");
+	}
 
 	auto* ftih = this->ftph->ftih;
 	auto* dbih = this->data->dbih;

@@ -51,7 +51,7 @@ class tab : protected e2se::log_factory
 		};
 
 		tab(gui* gid, QWidget* cwid);
-		~tab();
+		virtual ~tab();
 		bool isChild();
 		bool hasChildren();
 		vector<tab*> children();

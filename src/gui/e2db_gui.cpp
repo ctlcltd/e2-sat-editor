@@ -63,13 +63,12 @@ void e2db::setup()
 	string csv_dlm = settings.value("preference/toolsCsvDelimiter", "\n").toString().toStdString();
 	string csv_sep = settings.value("preference/toolsCsvSeparator", ",").toString().toStdString();
 	string csv_esp = settings.value("preference/toolsCsvEscape", "\"").toString().toStdString();
-	e2db::CSV_DELIMITER = csv_dlm.find("\n") != string::npos ? '\n' : '\n';
-	e2db::CSV_SEPARATOR = csv_sep[0];
-	e2db::CSV_ESCAPE = csv_esp[0];
+	e2db::CSV_DELIMITER = csv_dlm.find("\n") != string::npos ? '\n' : (csv_dlm.size() == 1 ? csv_dlm[0] : '\n');
+	e2db::CSV_SEPARATOR = csv_sep.size() == 1 ? csv_sep[0] : ',';
+	e2db::CSV_ESCAPE = csv_esp.size() == 1 ? csv_esp[0] : '"';
 	e2db::CONVERTER_EXTENDED_FIELDS = settings.value("preference/toolsFieldsExtended", false).toBool();
 }
 
-//TODO FIX
 void e2db::error(string msg, string optk, string optv)
 {
 	this->::e2se_e2db::e2db::error(msg, optk, optv);

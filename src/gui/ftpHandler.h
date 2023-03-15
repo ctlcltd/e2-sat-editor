@@ -26,6 +26,7 @@ class ftpHandler : protected e2se::log_factory
 		bool closeConnection();
 		bool handleConnection();
 		void settingsChanged();
+		string getServerHostname();
 
 		ftpcom* ftih = nullptr;
 };

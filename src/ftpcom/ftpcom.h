@@ -62,6 +62,7 @@ class ftpcom : protected e2se::log_factory
 		bool handle();
 		bool connect();
 		bool disconnect();
+		string get_server_hostname();
 		vector<string> list_dir(string basedir);
 		string file_mime_detect(string path);
 		void download_data(string basedir, string filename, ftpcom_file& file);
@@ -105,7 +106,6 @@ class ftpcom : protected e2se::log_factory
 		static size_t get_content_length_func(void* csi, size_t size, size_t nmemb, void* pso);
 		virtual string trs(string str);
 		virtual string trw(string str, string param);
-		virtual void error(string tmsg, string rmsg);
 
 		vector<string> ftdb;
 

@@ -67,4 +67,12 @@ void ftpHandler::settingsChanged()
 		this->ftih->didChange();
 }
 
+string ftpHandler::getServerHostname()
+{
+	if (this->ftih != nullptr)
+		return this->ftih->get_server_hostname();
+
+	return "";
+}
+
 }

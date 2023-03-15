@@ -55,39 +55,39 @@ class logger
 struct log_factory
 {
 	protected:
-		void debug(string fn)
+		virtual void debug(string fn)
 		{
 			this->log->debug(fn);
 		}
-		void debug(string fn, string optk, string optv)
+		virtual void debug(string fn, string optk, string optv)
 		{
 			this->log->debug(fn, optk, optv);
 		}
-		void debug(string fn, string optk, int optv)
+		virtual void debug(string fn, string optk, int optv)
 		{
 			this->log->debug(fn, optk, optv);
 		}
-		void info(string fn)
+		virtual void info(string fn)
 		{
 			this->log->info(fn);
 		}
-		void info(string fn, string optk, string optv)
+		virtual void info(string fn, string optk, string optv)
 		{
 			this->log->info(fn, optk, optv);
 		}
-		void info(string fn, string optk, int optv)
+		virtual void info(string fn, string optk, int optv)
 		{
 			this->log->info(fn, optk, optv);
 		}
-		void error(string fn)
+		virtual void error(string fn)
 		{
 			this->log->error(fn);
 		}
-		void error(string fn, string optk, string optv)
+		virtual void error(string fn, string optk, string optv)
 		{
 			this->log->error(fn, optk, optv);
 		}
-		void error(string fn, string optk, int optv)
+		virtual void error(string fn, string optk, int optv)
 		{
 			this->log->error(fn, optk, optv);
 		}
