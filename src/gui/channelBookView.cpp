@@ -282,7 +282,7 @@ void channelBookView::populate()
 	list->clear();
 
 	int i = 0;
-	size_t pad_width = std::to_string(int (dbih->index[curr].size())).size() + 1;
+	size_t pad_width = sizeof (dbih->index[curr].size());
 
 	for (auto & chdata : this->index[curr])
 	{
@@ -323,10 +323,6 @@ void channelBookView::populate()
 			item->setDisabled(disabled);
 
 			items.append(item);
-		}
-		else
-		{
-			i++;
 		}
 	}
 
