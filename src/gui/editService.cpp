@@ -604,7 +604,7 @@ void editService::store()
 	if (this->state.edit)
 	{
 		if (! dbih->db.services.count(chid))
-			return error("store", "chid", chid);
+			return error("store", "Error", "Service \"" + chid + "\" not exists.");
 
 		ch = dbih->db.services[chid];
 	}
@@ -746,7 +746,7 @@ void editService::retrieve()
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->db.services.count(chid))
-		return error("retrieve", "chid", chid);
+		return error("retrieve", "Error", "Service \"" + chid + "\" not exists.");
 
 	e2db::service ch = dbih->db.services[chid];
 	e2db::transponder tx;

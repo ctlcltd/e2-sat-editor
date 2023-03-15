@@ -1600,7 +1600,7 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 	if (index.count(bname))
 		debug("csv_channel_list", "bname", bname);
 	else
-		error("csv_channel_list", "bname", bname);
+		error("csv_channel_list", "Error", "Missing index key \"" + bname + "\".");
 	debug("csv_channel_list", "view", view);
 
 	string ub_name;
@@ -1788,7 +1788,7 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 	if (index.count(bname))
 		debug("csv_channel_list_extended", "bname", bname);
 	else
-		error("csv_channel_list_extended", "bname", bname);
+		error("csv_channel_list_extended", "Error", "Missing index key \"" + bname + "\".");
 	debug("csv_channel_list_extended", "view", view);
 
 	string ub_name;
@@ -2051,7 +2051,7 @@ void e2db_converter::csv_bouquet_list(string& csv, string bname)
 	if (bouquets.count(bname))
 		debug("csv_bouquet_list", "bname", bname);
 	else
-		error("csv_bouquet_list", "bname", bname);
+		error("csv_bouquet_list", "Error", "Bouquet \"" + bname + "\" not exists.");
 
 	bouquet bs = bouquets[bname];
 	string btype;
@@ -2348,7 +2348,7 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 	if (index.count(bname))
 		debug("page_body_channel_list", "bname", bname);
 	else
-		error("page_body_channel_list", "bname", bname);
+		error("page_body_channel_list", "Error", "Missing index key \"" + bname + "\".");
 	debug("page_body_channel_list", "view", view);
 
 	string cssname = view == DOC_VIEW::view_bouquets ? "userbouquet" : "services";
@@ -2501,7 +2501,7 @@ void e2db_converter::page_body_bouquet_list(html_page& page, string bname)
 	if (bouquets.count(bname))
 		debug("page_body_bouquet_list", "bname", bname);
 	else
-		error("page_body_bouquet_list", "bname", bname);
+		error("page_body_bouquet_list", "Error", "Bouquet \"" + bname + "\" not exists.");
 
 	bouquet bs = bouquets[bname];
 	string btype;

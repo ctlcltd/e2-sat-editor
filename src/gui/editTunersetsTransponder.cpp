@@ -589,19 +589,19 @@ void editTunersetsTransponder::store()
 	if (dbih->tuners.count(tvid))
 		tvs = dbih->tuners[tvid];
 	else
-		return error("store", "tvid", tvid);
+		return error("store", "Error", "Tuner settings \"" + to_string(tvid) + "\" not exists.");
 
 	if (tvs.tables.count(tnid))
 		tns = tvs.tables[tnid];
 	else
-		return error("store", "tnid", tnid);
+		return error("store", "Error", "Tuner settings table \"" + tnid + "\" not exists.");
 
 	e2db::tunersets_transponder txp;
 
 	if (this->state.edit)
 	{
 		if (! tns.transponders.count(trid))
-			return error("store", "trid", trid);
+			return error("store", "Error", "Tuner settings transponder \"" + trid + "\" not exists.");
 
 		txp = tns.transponders[trid];
 	}
@@ -716,15 +716,15 @@ void editTunersetsTransponder::retrieve()
 	if (dbih->tuners.count(tvid))
 		tvs = dbih->tuners[tvid];
 	else
-		return error("retrieve", "tvid", tvid);
+		return error("retrieve", "Error", "Tuner settings \"" + to_string(tvid) + "\" not exists.");
 
 	if (tvs.tables.count(tnid))
 		tns = tvs.tables[tnid];
 	else
-		return error("retrieve", "tnid", tnid);
+		return error("retrieve", "Error", "Tuner settings table \"" + tnid + "\" not exists.");
 
 	if (! tns.transponders.count(trid))
-		return error("retrieve", "trid", trid);
+		return error("retrieve", "Error", "Tuner settings transponder \"" + trid + "\" not exists.");
 
 	e2db::tunersets_transponder txp = tns.transponders[trid];
 

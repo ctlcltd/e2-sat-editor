@@ -282,7 +282,7 @@ void channelBookView::populate()
 	list->clear();
 
 	int i = 0;
-	size_t pad_width = sizeof (dbih->index[curr].size());
+	size_t pad_width = std::to_string(int (dbih->index["chs"].size())).size() + 1;
 
 	for (auto & chdata : this->index[curr])
 	{

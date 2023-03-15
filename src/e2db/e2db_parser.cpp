@@ -317,8 +317,7 @@ void e2db_parser::parse_e2db_lamedb(istream& ilamedb)
 			parse_e2db_lamedb5(ilamedb);
 		break;
 		default:
-		return error("parse_e2db_lamedb", "Parser Error",
-			"Unknown Lamedb services file format.");
+		return error("parse_e2db_lamedb", "Parser Error", "Unknown Lamedb services file format.");
 	}
 }
 

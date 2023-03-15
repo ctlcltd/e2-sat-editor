@@ -248,14 +248,14 @@ void editTunersetsTable::store()
 	if (dbih->tuners.count(tvid))
 		tvs = dbih->tuners[tvid];
 	else
-		return error("store", "tvid", tvid);
+		return error("store", "Error", "Tuner settings \"" + to_string(tvid) + "\" not exists.");
 
 	e2db::tunersets_table tns;
 
 	if (this->state.edit)
 	{
 		if (! tvs.tables.count(tnid))
-			return error("store", "tnid", tnid);
+			return error("store", "Error", "Tuner settings table \"" + tnid + "\" not exists.");
 
 		tns = tvs.tables[tnid];
 	}
@@ -331,10 +331,10 @@ void editTunersetsTable::retrieve()
 	if (dbih->tuners.count(tvid))
 		tvs = dbih->tuners[tvid];
 	else
-		return error("retrieve", "tvid", tvid);
+		return error("retrieve", "Error", "Tuner settings \"" + to_string(tvid) + "\" not exists.");
 
 	if (! tvs.tables.count(tnid))
-		return error("retrieve", "tnid", tnid);
+		return error("retrieve", "Error", "Tuner settings table \"" + tnid + "\" not exists.");
 
 	e2db::tunersets_table tns = tvs.tables[tnid];
 

@@ -507,7 +507,7 @@ int gui::newTab(string filename)
 	{
 		if (! ttab->readFile(filename))
 		{
-			error("newTab", "read", false);
+			error("newTab", "Error", "Error reading file \"" + filename + "\".");
 
 			twid->removeTab(index);
 			delete ttmenu[ttid];
@@ -548,7 +548,7 @@ int gui::openTab(TAB_VIEW view, int arg)
 
 	if (current == nullptr)
 	{
-		error("openTab", "current", false);
+		error("openTab", "Error", "Missing current tab reference.");
 		return -1;
 	}
 	else if (current->isChild())
@@ -585,7 +585,7 @@ int gui::openTab(TAB_VIEW view, int arg)
 	switch (view)
 	{
 		case TAB_VIEW::main:
-			error("openTab", "parent", false);
+			error("openTab", "Error", "Missing parent tab for tab reference \"" + to_string(ttid) + "\".");
 			delete ttab;
 			return -1;
 		break;
@@ -636,7 +636,7 @@ void gui::closeTab(int index)
 
 	if (! ttabs.count(ttid))
 	{
-		return error("closeTab", "current", false);
+		return error("closeTab", "Error", "Missing tab reference \"" + to_string(ttid) + "\".");
 	}
 
 	tab* current = ttabs[ttid];
@@ -777,7 +777,7 @@ void gui::tabChangeName(int ttid, string filename)
 
 	if (! ttabs.count(ttid))
 	{
-		return error("tabChangeName", "ttid", ttid);
+		return error("tabChangeName", "Error", "Missing tab reference \"" + to_string(ttid) + "\".");
 	}
 
 	tab* ttab = ttabs[ttid];

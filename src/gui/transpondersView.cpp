@@ -216,6 +216,9 @@ void transpondersView::populate()
 	int i = 0;
 	size_t pad_width = 4;
 
+	if (! dbih->index.count("txs"))
+		error("populate", "current", "Missing index key \"txs\".");
+
 	for (auto & tp : dbih->index["txs"])
 	{
 		e2db::transponder txp = dbih->db.transponders[tp.second];
@@ -318,7 +321,7 @@ void transpondersView::addTransponder()
 	if (dbih->db.transponders.count(txid))
 		debug("addTransponder", "txid", txid);
 	else
-		return error("addTransponder", "txid", txid);
+		return error("addTransponder", "Error", "Missing transponder key \"" + txid + "\".");
 
 	list->header()->setSectionsClickable(false);
 	list->setDragEnabled(false);
@@ -379,7 +382,7 @@ void transpondersView::editTransponder()
 	if (dbih->db.transponders.count(txid))
 		debug("editTransponder", "txid", txid);
 	else
-		return error("editTransponder", "txid", txid);
+		return error("editTransponder", "txid", "Transponder \"" + txid + "\" not exists.");
 
 	e2se_gui::editTransponder* edit = new e2se_gui::editTransponder(this->data);
 	edit->setEditId(txid);
@@ -390,7 +393,7 @@ void transpondersView::editTransponder()
 	if (dbih->db.transponders.count(nw_txid))
 		debug("editTransponder", "new txid", nw_txid);
 	else
-		return error("editTransponder", "new txid", nw_txid);
+		return error("editTransponder", "new txid", "Missing transponder key \"" + nw_txid + "\".");
 
 	e2db::transponder txp = dbih->db.transponders[nw_txid];
 

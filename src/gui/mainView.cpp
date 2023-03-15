@@ -566,7 +566,7 @@ void mainView::populate(QTreeWidget* tw)
 	if (dbih->index.count(bname))
 		debug("populate", "current", bname);
 	else
-		error("populate", "current", bname);
+		error("populate", "Error", "Missing index key \"" + bname + "\".");
 
 	list->header()->setSortIndicatorShown(true);
 	list->header()->setSectionsClickable(false);
@@ -626,7 +626,7 @@ void mainView::populate(QTreeWidget* tw)
 				else
 				{
 					entry = QStringList({x, NULL, NULL, NULL, chid, NULL, NULL, NULL, "ERROR", NULL});
-					error("populate", "Error: Channel reference mismatch", ch.second);
+					error("populate", "Error", "Channel reference mismatch \"" + ch.second + "\".");
 				}
 			}
 
@@ -1078,7 +1078,7 @@ void mainView::addUserbouquet()
 	if (dbih->userbouquets.count(bname))
 		debug("addUserbouquet", "bname", bname);
 	else
-		return error("addUserbouquet", "bname", bname);
+		return error("addUserbouquet", "Error", "Missing userbouquet key \"" + bname + "\".");
 
 	tree->setDragEnabled(false);
 	tree->setAcceptDrops(false);
@@ -1120,20 +1120,27 @@ void mainView::editUserbouquet()
 	QTreeWidgetItem* item = selected.first();
 	QString qub = item->data(0, Qt::UserRole).toString();
 	string bname = qub.toStdString();
-
-	e2se_gui::editBouquet* edit = new e2se_gui::editBouquet(this->data, this->state.ti);
-	edit->setEditId(bname);
-	edit->display(cwid);
-	edit->destroy();
+	string nw_bname;
 
 	auto* dbih = this->data->dbih;
 
 	if (dbih->userbouquets.count(bname))
 		debug("editUserbouquet", "bname", bname);
 	else
-		return error("editUserbouquet", "bname", bname);
+		return error("editUserbouquet", "Error", "Userbouquet \"" + bname + "\" not exists.");
 
-	e2db::userbouquet uboq = dbih->userbouquets[bname];
+	e2se_gui::editBouquet* edit = new e2se_gui::editBouquet(this->data, this->state.ti);
+	edit->setEditId(bname);
+	edit->display(cwid);
+	nw_bname = edit->getEditId();
+	edit->destroy();
+
+	if (dbih->userbouquets.count(nw_bname))
+		debug("editUserbouquet", "new bname", nw_bname);
+	else
+		return error("editUserbouquet", "Error", "Missing userbouquet key \"" + nw_bname + "\".");
+
+	e2db::userbouquet uboq = dbih->userbouquets[nw_bname];
 	item->setText(0, e2db::fixUnicodeChars(uboq.name));
 
 	updateTreeIndex();
@@ -1192,7 +1199,7 @@ void mainView::addService()
 	if (dbih->db.services.count(chid))
 		debug("addService", "chid", chid);
 	else
-		return error("addService", "chid", chid);
+		return error("addService", "Error", "Missing service key \"" + chid + "\".");
 
 	for (auto & q : cache)
 		q.second.clear();
@@ -1290,7 +1297,7 @@ void mainView::editService()
 	if (! marker && dbih->db.services.count(chid))
 		debug("editService", "chid", chid);
 	else
-		return error("editService", "chid", chid);
+		return error("editService", "Error", "Service \"" + chid + "\" not exists or is a channel reference.");
 
 	e2se_gui::editService* edit = new e2se_gui::editService(this->data);
 	edit->setEditId(chid);
@@ -1309,7 +1316,7 @@ void mainView::editService()
 	if (dbih->db.services.count(nw_chid))
 		debug("editService", "new chid", nw_chid);
 	else
-		return error("editService", "new chid", nw_chid);
+		return error("editService", "Error", "Missing service key \"" + nw_chid + "\".");
 
 	bool ub_locked = false;
 
@@ -1359,14 +1366,15 @@ void mainView::addMarker()
 
 	auto* dbih = this->data->dbih;
 
-	e2db::channel_reference chref;
-	if (dbih->userbouquets.count(bname))
-		chref = dbih->userbouquets[bname].channels[chid];
+	if (! (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(chid)))
+		return error("addMarker", "Error", "Missing channel reference key \"" + chid + "\".");
+
+	e2db::channel_reference chref = dbih->userbouquets[bname].channels[chid];
 
 	if (chref.marker)
 		debug("addMarker", "chid", chid);
 	else
-		return error("addMarker", "chid", chid);
+		return error("addMarker", "Error", "Channel reference \"" + chid + "\" is not a valid marker.");
 
 	cache[bname].clear();
 
@@ -1443,10 +1451,17 @@ void mainView::editMarker()
 	string bname = this->state.curr;
 	bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
 
-	if (marker)
+	auto* dbih = this->data->dbih;
+
+	if (! (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(chid)))
+		return error("editMarker", "Error", "Channel reference\"" + chid + "\" not exists.");
+
+	e2db::channel_reference chref = dbih->userbouquets[bname].channels[chid];
+
+	if (marker && chref.marker)
 		debug("editMarker", "chid", chid);
 	else
-		return error("editMarker", "chid", chid);
+		return error("editMarker", "Error", "Channel reference \"" + chid + "\" is not a valid marker.");
 
 	e2se_gui::editMarker* edit = new e2se_gui::editMarker(this->data);
 	edit->setEditId(chid, bname);
@@ -1454,16 +1469,15 @@ void mainView::editMarker()
 	nw_chid = edit->getEditId();
 	edit->destroy();
 
-	auto* dbih = this->data->dbih;
-
-	e2db::channel_reference chref;
-	if (dbih->userbouquets.count(bname))
-		chref = dbih->userbouquets[bname].channels[chid];
+	if (! dbih->userbouquets[bname].channels.count(nw_chid))
+		return error("editMarker", "Error", "Missing channel reference key \"" + nw_chid + "\".");
 
 	if (chref.marker)
 		debug("editMarker", "new chid", nw_chid);
 	else
-		return error("editMarker", "new chid", nw_chid);
+		return error("editMarker", "Error", "Channel reference \"" + nw_chid + "\" is not a valid marker.");
+
+	chref = dbih->userbouquets[bname].channels[nw_chid];
 
 	cache[bname].clear();
 
@@ -1535,7 +1549,7 @@ void mainView::setServiceParentalLock()
 	if (! marker && dbih->db.services.count(chid))
 		debug("setServiceParentalLock", "chid", chid);
 	else
-		return error("setServiceParentalLock", "chid", chid);
+		return error("setServiceParentalLock", "Error", "Service \"" + chid + "\" not exists or is a channel reference.");
 
 	string bname = this->state.curr;
 	cache[bname].clear();
@@ -1573,7 +1587,7 @@ void mainView::unsetServiceParentalLock()
 	if (! marker && dbih->db.services.count(chid))
 		debug("unsetServiceParentalLock", "chid", chid);
 	else
-		return error("unsetServiceParentalLock", "chid", chid);
+		return error("unsetServiceParentalLock", "Error", "Service \"" + chid + "\" not exists or is a channel reference.");
 
 	string bname = this->state.curr;
 	cache[bname].clear();
@@ -1628,7 +1642,7 @@ void mainView::setUserbouquetParentalLock()
 	if (dbih->userbouquets.count(bname))
 		debug("setUserbouquetParentalLock", "bname", bname);
 	else
-		return error("setUserbouquetParentalLock", "bname", bname);
+		return error("setUserbouquetParentalLock", "Error", "Userbouquet \"" + bname + "\" not exists.");
 
 	dbih->setUserbouquetParentalLock(bname);
 
@@ -1659,7 +1673,7 @@ void mainView::unsetUserbouquetParentalLock()
 	if (dbih->userbouquets.count(bname))
 		debug("unsetUserbouquetParentalLock", "bname", bname);
 	else
-		return error("unsetUserbouquetParentalLock", "bname", bname);
+		return error("unsetUserbouquetParentalLock", "Error", "Userbouquet \"" + bname + "\" not exists.");
 
 	dbih->unsetUserbouquetParentalLock(bname);
 
@@ -1690,7 +1704,7 @@ void mainView::toggleUserbouquetParentalLock()
 	if (dbih->userbouquets.count(bname))
 		debug("toggleUserbouquetParentalLock", "bname", bname);
 	else
-		return error("toggleUserbouquetParentalLock", "bname", bname);
+		return error("toggleUserbouquetParentalLock", "Error", "Userbouquet \"" + bname + "\" not exists.");
 
 	e2db::userbouquet uboq = dbih->userbouquets[bname];
 
@@ -2094,7 +2108,7 @@ void mainView::putListItems(vector<QString> items)
 			}
 			else
 			{
-				error("putListItems", "refid", refid);
+				error("putListItems", "Error", "Channel reference mismatch \"" + refid + "\".");
 				continue;
 			}
 		}

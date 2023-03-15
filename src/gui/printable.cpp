@@ -305,7 +305,7 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 	if (dbih->index.count(bname))
 		debug("pageBodyChannelList", "bname", bname);
 	else
-		error("pageBodyChannelList", "bname", bname);
+		error("pageBodyChannelList", "Error", "Missing index key \"" + bname + "\".");
 	debug("pageBodyChannelList", "view", view);
 
 	QString cssname = view == DOC_VIEW::view_bouquets ? "userbouquet" : "services";
@@ -462,7 +462,7 @@ void printable::pageBodyBouquetList(html_page& page, string bname)
 	if (dbih->bouquets.count(bname))
 		debug("pageBodyBouquetList", "bname", bname);
 	else
-		error("pageBodyBouquetList", "bname", bname);
+		error("pageBodyBouquetList", "Error", "Missing index key \"" + bname + "\".");
 
 	e2db::bouquet gboq = dbih->bouquets[bname];
 	QString btype;

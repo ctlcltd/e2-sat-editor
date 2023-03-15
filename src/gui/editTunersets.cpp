@@ -89,7 +89,7 @@ void editTunersets::store()
 	if (this->state.edit)
 	{
 		if (! dbih->tuners.count(tvid))
-			return error("store", "tvid", tvid);
+			return error("store", "Error", "Tuner settings \"" + to_string(tvid) + "\" not exists.");
 
 		tvs = dbih->tuners[tvid];
 	}
@@ -160,7 +160,7 @@ void editTunersets::retrieve()
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->tuners.count(tvid))
-		return error("retrieve", "tvid", tvid);
+		return error("retrieve", "Error", "Tuner settings \"" + to_string(tvid) + "\" not exists.");
 
 	e2db::tunersets tvs = dbih->tuners[tvid];
 

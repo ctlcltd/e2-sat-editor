@@ -67,7 +67,7 @@ void editMarker::store()
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->userbouquets.count(bname))
-		return error("store", "bname", bname);
+		return error("store", "Error", "Userbouquet \"" + bname + "\" not exists.");
 
 	e2db::userbouquet& ub = dbih->userbouquets[bname];
 	e2db::channel_reference chref;
@@ -75,12 +75,12 @@ void editMarker::store()
 	if (this->state.edit)
 	{
 		if (! ub.channels.count(chid))
-			return error("store", "chid", chid);
+			return error("store", "Error", "Channel reference \"" + chid + "\" not exists.");
 
 		chref = ub.channels[chid];
 
 		if (! chref.marker)
-			return error("store", "chid", chid);
+			return error("store", "Error", "Channel reference mismatch \"" + chid + "\".");
 	}
 	else
 	{
@@ -115,7 +115,7 @@ void editMarker::retrieve()
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->userbouquets.count(bname))
-		return error("retrieve", "bname", bname);
+		return error("retrieve", "Error", "Userbouquet \"" + bname + "\" not exists.");
 
 	e2db::userbouquet ub = dbih->userbouquets[bname];
 	e2db::channel_reference chref;
@@ -123,12 +123,12 @@ void editMarker::retrieve()
 	if (this->state.edit)
 	{
 		if (! ub.channels.count(chid))
-			return error("store", "chid", chid);
+			return error("store", "Error", "Channel reference \"" + chid + "\" not exists.");
 
 		chref = ub.channels[chid];
 
 		if (! chref.marker)
-			return error("store", "chid", chid);
+			return error("store", "Error", "Channel reference mismatch \"" + chid + "\".");
 	}
 
 	for (auto & item : fields)

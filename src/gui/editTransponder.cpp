@@ -665,7 +665,7 @@ void editTransponder::store()
 	if (this->state.edit)
 	{
 		if (! dbih->db.transponders.count(txid))
-			return error("store", "txid", txid);
+			return error("store", "Error", "Transponder \"" + txid + "\" not exists.");
 
 		txp = dbih->db.transponders[txid];
 	}
@@ -781,7 +781,7 @@ void editTransponder::retrieve()
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->db.transponders.count(txid))
-		return error("retrieve", "txid", txid);
+		return error("retrieve", "Error", "Transponder \"" + txid + "\" not exists.");
 
 	e2db::transponder txp = dbih->db.transponders[txid];
 
@@ -800,7 +800,7 @@ void editTransponder::retrieve(string txid)
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->db.transponders.count(txid))
-		return error("retrieve", "txid", txid);
+		return error("retrieve", "Error", "Transponder \"" + txid + "\" not exists.");
 
 	e2db::transponder txp = dbih->db.transponders[txid];
 

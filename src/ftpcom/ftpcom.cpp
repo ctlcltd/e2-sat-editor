@@ -154,7 +154,7 @@ vector<string> ftpcom::list_dir(string basedir)
 
 	if (! handle())
 	{
-		error("list_dir", trs("ftpcom error."));
+		error("list_dir", "ftpcom error.");
 		return list;
 	}
 
@@ -227,7 +227,7 @@ void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 	debug("download_data");
 
 	if (! handle())
-		return error("download_data", trs("ftpcom error."));
+		return error("download_data", "ftpcom error.");
 
 	sio data;
 	data.size = 0;
@@ -261,7 +261,7 @@ void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 void ftpcom::upload_data(string basedir, string filename, ftpcom_file file)
 {
 	if (! handle())
-		return error("upload_data", trs("ftpcom error."));
+		return error("upload_data", "ftpcom error.");
 
 	soi data;
 	data.data = file.data.data();

@@ -109,7 +109,7 @@ void editBouquet::store()
 	if (this->state.edit)
 	{
 		if (! dbih->userbouquets.count(bname))
-			return error("store", "bname", bname);
+			return error("store", "Error", "Userbouquet \"" + bname + "\" not exists.");
 
 		ub = dbih->userbouquets[bname];
 	}
@@ -143,7 +143,7 @@ void editBouquet::retrieve()
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->userbouquets.count(bname))
-		return error("retrieve", "bname", bname);
+		return error("retrieve", "Error", "Userbouquet \"" + bname + "\" not exists.");
 
 	e2db::userbouquet ub = dbih->userbouquets[bname];
 

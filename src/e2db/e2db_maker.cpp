@@ -528,7 +528,7 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 			}
 			else
 			{
-				error("make_userbouquet", "Maker Error", "Missing channel_reference \"" + x.second + "\".");
+				error("make_userbouquet", "Maker Error", "Missing channel reference \"" + x.second + "\".");
 			}
 		}
 		ss << dec;
@@ -1137,7 +1137,7 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 			{
 				if (! chref.marker)
 				{
-					error("make_bouquets_xml", "Maker Error", "Missing channel_reference \"" + x.second + "\".");
+					error("make_bouquets_xml", "Maker Error", "Missing channel reference \"" + x.second + "\".");
 				}
 			}
 		}
