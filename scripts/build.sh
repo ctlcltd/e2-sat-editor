@@ -39,7 +39,6 @@ $QMAKE
 
 echo "compiling ..."
 make release && $QMAKE
-# make && $QMAKE
 
 echo "done."
 

@@ -227,7 +227,7 @@ class gui : protected e2se::log_factory
 
 		gui(int argc, char* argv[]);
 		virtual ~gui() = default;
-		int exec();
+		int exited();
 		void settingsChanged();
 		int newTab(string filename = "");
 		int openTab(TAB_VIEW view);

@@ -605,11 +605,14 @@ void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string filename, bool ep
 		if (line.find("#SERVICE") != string::npos)
 		{
 			ub = userbouquet ();
+
 			if (epl)
 				parse_userbouquet_epl_reference(line.substr(9), ub);
 			else
 				parse_userbouquet_reference(line.substr(9), ub);
+
 			ub.pname = filename;
+
 			add_userbouquet(int (index["ubs"].size()), ub);
 		}
 		else if (line.find("#NAME") != string::npos)
@@ -1031,12 +1034,14 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)
 		if (! add && step == 1)
 		{
 			bidx++;
+
 			add_tunersets_table(bidx, tn, tv);
 		}
 		else if (add && step == 2)
 		{
-			char tnid[7];
-			std::snprintf(tnid, 7, "%c:%04x", yname, bidx);
+			char tnid[25];
+			std::snprintf(tnid, 25, "%c:%04x", yname, bidx);
+
 			tunersets_table& tn = tv.tables[tnid];
 			cidx++;
 			add_tunersets_transponder(cidx, tntxp, tn);
@@ -1465,7 +1470,7 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 	service_reference ref;
 	channel_reference chref;
 	int pos = -1;
-	bool locked;
+	bool locked = false;
 
 	vector<pair<userbouquet, vector<string>>> ubouquets;
 	vector<string> chindex;

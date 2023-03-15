@@ -29,6 +29,7 @@ about::about()
 
 	QDialog* dial = new QDialog;
 	dial->setWindowTitle("About e2 SAT Editor");
+	//TODO FIX SEGFAULT [linux] [Qt5]
 	dial->connect(dial, &QDialog::finished, [=]() { delete dial; delete this; });
 
 	QGridLayout* dfrm = new QGridLayout(dial);

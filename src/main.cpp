@@ -37,5 +37,5 @@ int main(int argc, char* argv[])
 
 	e2se_gui::gui* gui = new e2se_gui::gui(argc, argv);
 
-	return gui->exec();
+	return gui->exited();
 }

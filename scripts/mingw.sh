@@ -25,6 +25,7 @@ cleanup () {
 	rm build/CMakeCache.txt
 	rm build/cmake_install.cmake
 	rm build/Makefile
+	rm build/*.dll
 }
 
 prebuilt_release ()
@@ -60,6 +61,7 @@ prebuilt_release ()
 	cp /usr/x86_64-w64-mingw32/bin/libunistring-5.dll build/
 	# e2se
 	cp {COPYING,LICENSE} build/
+	echo "NOTE: libcurl-4.dll (brotli)"
 }
 
 prebuilt_release_early ()
@@ -133,13 +135,15 @@ fi
 
 [[ "$1" == "cleanup" ]] && cleanup
 
+mkdir -p build
+
 echo "preparing cmake ..."
+x86_64-w64-mingw32-cmake-static -G Ninja -B build -DCMAKE_BUILD_TYPE=Release
+# i686-w64-mingw32-cmake-static -G Ninja -B build -DWITH_QT5=ON -DCMAKE_BUILD_TYPE=Release
 
-# x86_64-w64-mingw32-cmake-static -G Ninja -B build -DCMAKE_BUILD_TYPE=Release
-i686-w64-mingw32-cmake-static -G Ninja -B build -DWITH_QT5=ON -DCMAKE_BUILD_TYPE=Release
-
-# x86_64-w64-mingw32-cmake -G Ninja -B build
-# x86_64-w64-mingw32-cmake -B build
+#testing
+# x86_64-w64-mingw32-cmake -B build -DCMAKE_BUILD_TYPE=Release
+# i686-w64-mingw32-cmake -B build -DWITH_QT5=ON -DCMAKE_BUILD_TYPE=Release
 
 echo "compiling ..."
 cmake --build build
@@ -148,8 +152,12 @@ cmake --build build
 [[ "$1" == "release-early" ]] && prebuilt_release_early
 [[ "$1" == "testing" ]] && prebuilt_mingw32_wine
 
+echo "binary strip ..."
+x86_64-w64-mingw32-strip --strip-unneeded build/e2-sat-editor.exe
+# i686-w64-mingw32-strip --strip-unneeded build/e2-sat-editor.exe
+
 echo "done."
 
-# x86_64-w64-mingw32-strip --strip-unneeded build/e2-sat-editor.exe
 # x86_64-w64-mingw32-wine build/e2-sat-editor.exe
+# i686-w64-mingw32-wine build/e2-sat-editor.exe
 
