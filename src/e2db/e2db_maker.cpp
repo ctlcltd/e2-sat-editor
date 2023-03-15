@@ -74,11 +74,6 @@ void e2db_maker::make_e2db_lamedb()
 		default:
 		return error("make_e2db_lamedb", "Maker Error", "Unknown Lamedb services file format.");
 	}
-
-	//TEST
-	if (MAKER_LAMEDB5)
-		make_e2db_lamedb("lamedb5", 5);
-	//TEST
 }
 
 void e2db_maker::make_e2db_lamedb(string filename, int ver)

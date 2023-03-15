@@ -516,6 +516,8 @@ void mainView::reset()
 	this->action.list_newch->setEnabled(true);
 	this->action.list_dnd->setDisabled(true);
 
+	updateReferenceBox();
+
 	resetStatusBar();
 }
 
@@ -588,16 +590,15 @@ void mainView::populate(QTreeWidget* tw)
 		QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() ? "service-whitelist" : "service-blacklist";
 
 		int i = 0;
+		size_t pad_width = std::to_string(int (dbih->index[bname].size())).size() + 1;
 
 		for (auto & ch : dbih->index[bname])
 		{
-			char ci[7];
-			std::snprintf(ci, 7, "%06d", i++);
 			bool marker = false;
 			bool locked = false;
-			QString chid = QString::fromStdString(ch.second);
-			QString x = QString::fromStdString(ci);
+			QString x = QString::number(i++).rightJustified(pad_width, '0');
 			QString idx;
+			QString chid = QString::fromStdString(ch.second);
 			QStringList entry;
 
 			if (dbih->db.services.count(ch.second))
@@ -624,11 +625,8 @@ void mainView::populate(QTreeWidget* tw)
 				}
 				else
 				{
-					//TEST
 					entry = QStringList({x, NULL, NULL, NULL, chid, NULL, NULL, NULL, "ERROR", NULL});
-					// idx = 0; //Qt5
-					error("populate", "chid", ch.second);
-					//TEST
+					error("populate", "Error: Channel reference mismatch", ch.second);
 				}
 			}
 
@@ -918,6 +916,7 @@ void mainView::visualReindexList()
 
 	int i = 0, y = 0, idx = 0;
 	int j = list->topLevelItemCount();
+	size_t pad_width = std::to_string(j).size() + 1;
 
 	if (reverse)
 	{
@@ -937,9 +936,7 @@ void mainView::visualReindexList()
 		QTreeWidgetItem* item = list->topLevelItem(i);
 		bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
 		idx = reverse ? j : i;
-		char ci[7];
-		std::snprintf(ci, 7, "%06d", idx++);
-		item->setText(ITEM_ROW_ROLE::x, QString::fromStdString(ci));
+		item->setText(ITEM_ROW_ROLE::x, QString::number(idx++).rightJustified(pad_width, '0'));
 		if (! marker)
 			item->setText(ITEM_ROW_ROLE::chnum, QString::number(idx - y));
 		i++;
@@ -1229,9 +1226,8 @@ void mainView::addService()
 
 	QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() ? "service-whitelist" : "service-blacklist";
 
-	char ci[7];
-	std::snprintf(ci, 7, "%06d", i++);
-	QString x = QString::fromStdString(ci);
+	size_t pad_width = std::to_string(int (dbih->index["chs"].size())).size() + 1;
+	QString x = QString::number(i++).rightJustified(pad_width, '0');
 	QString idx = QString::number(i);
 	QStringList entry = dbih->entries.services[chid];
 	bool locked = entry[1].size() || ub_locked;
@@ -1385,10 +1381,9 @@ void mainView::addMarker()
 	y = i + 1;
 
 	bool marker = true;
-	char ci[7];
-	std::snprintf(ci, 7, "%06d", i++);
-	QString x = QString::fromStdString(ci);
-	QString idx = "";
+	size_t pad_width = std::to_string(int (dbih->index[bname].size())).size() + 1;
+	QString x = QString::number(i++).rightJustified(pad_width, '0');
+	QString idx = QString::number(i);
 	QStringList entry = dbih->entryMarker(chref);
 	entry.prepend(x);
 
@@ -1966,9 +1961,8 @@ void mainView::putListItems(vector<QString> items)
 
 	for (QString & q : items)
 	{
-		char ci[7];
-		std::snprintf(ci, 7, "%06d", i++);
-		QString x = QString::fromStdString(ci);
+		size_t pad_width = std::to_string(int (dbih->index[bname].size())).size() + 1;
+		QString x = QString::number(i++).rightJustified(pad_width, '0');
 		QString idx = QString::number(i);
 
 		string refid;

@@ -214,14 +214,13 @@ void transpondersView::populate()
 
 	QList<QTreeWidgetItem*> items;
 	int i = 0;
+	size_t pad_width = std::to_string(int (dbih->index["txs"].size())).size() + 1;
 
 	for (auto & tp : dbih->index["txs"])
 	{
 		e2db::transponder txp = dbih->db.transponders[tp.second];
-		char ci[7];
-		std::snprintf(ci, 7, "%06d", i++);
-		QString x = QString::fromStdString(ci);
 
+		QString x = QString::number(i++).rightJustified(pad_width, '0');
 		QString idx = QString::number(tp.first);
 		QString txid = QString::fromStdString(txp.txid);
 		QStringList entry = dbih->entryTransponder(txp, true);
@@ -333,10 +332,9 @@ void transpondersView::addTransponder()
 
 	e2db::transponder txp = dbih->db.transponders[txid];
 
-	char ci[7];
-	std::snprintf(ci, 7, "%06d", i++);
-	QString x = QString::fromStdString(ci);
-	QString idx = QString::number(txp.index);
+	size_t pad_width = std::to_string(int (dbih->index["txs"].size())).size() + 1;
+	QString x = QString::number(i++).rightJustified(pad_width, '0');
+	QString idx = QString::number(i);
 	QStringList entry = dbih->entryTransponder(txp, true);
 	entry.prepend(x);
 	entry.removeAt(8);
@@ -528,9 +526,8 @@ void transpondersView::putListItems(vector<QString> items)
 
 	for (QString & q : items)
 	{
-		char ci[7];
-		std::snprintf(ci, 7, "%06d", i++);
-		QString x = QString::fromStdString(ci);
+		size_t pad_width = std::to_string(int (dbih->index["txs"].size())).size() + 1;
+		QString x = QString::number(i++).rightJustified(pad_width, '0');
 		QString idx = QString::number(i);
 
 		e2db::transponder tx;

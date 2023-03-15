@@ -282,19 +282,17 @@ void channelBookView::populate()
 	list->clear();
 
 	int i = 0;
+	size_t pad_width = std::to_string(int (dbih->index[curr].size())).size() + 1;
 
 	for (auto & chdata : this->index[curr])
 	{
-		char ci[7];
-		std::snprintf(ci, 7, "%06d", i++);
-		QString x = QString::fromStdString(ci);
-
 		if (dbih->db.services.count(chdata.second))
 		{
 			e2db::service ch = dbih->db.services[chdata.second];
 
 			int atype = dbih->value_service_super_type(ch);
 			bool disabled = this->state.sy != -1 && this->state.sy != atype;
+			QString x = QString::number(i++).rightJustified(pad_width, '0');
 			QString idx = QString::number(chdata.first);
 			QString chid = QString::fromStdString(chdata.second);
 
@@ -325,6 +323,10 @@ void channelBookView::populate()
 			item->setDisabled(disabled);
 
 			items.append(item);
+		}
+		else
+		{
+			i++;
 		}
 	}
 

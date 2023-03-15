@@ -93,7 +93,8 @@ gui::gui(int argc, char* argv[])
 	mroot->exec();
 }
 
-//TODO FIX SEGFAULT [MinGW-w64]
+//TODO TEST
+//TODO FIX SEGFAULT [?]
 int gui::exec()
 {
 	// return mroot->exec();

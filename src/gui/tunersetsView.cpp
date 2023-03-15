@@ -401,14 +401,13 @@ void tunersetsView::populate()
 
 	QList<QTreeWidgetItem*> items;
 	int i = 0;
+	size_t pad_width = std::to_string(int (dbih->index[tnid].size())).size() + 1;
 
 	for (auto & tp : dbih->index[tnid])
 	{
 		e2db::tunersets_transponder txp = tns.transponders[tp.second];
-		char ci[7];
-		std::snprintf(ci, 7, "%06d", i++);
-		QString x = QString::fromStdString(ci);
 
+		QString x = QString::number(i++).rightJustified(pad_width, '0');
 		QString idx = QString::number(tp.first);
 		QString trid = QString::fromStdString(txp.trid);
 		QStringList entry = dbih->entryTunersetsTransponder(txp, tns);
@@ -704,10 +703,9 @@ void tunersetsView::addTransponder()
 	e2db::tunersets_table tns = dbih->tuners[tvid].tables[tnid];
 	e2db::tunersets_transponder txp = tns.transponders[trid];
 
-	char ci[7];
-	std::snprintf(ci, 7, "%06d", i++);
-	QString x = QString::fromStdString(ci);
-	QString idx = QString::number(txp.index);
+	size_t pad_width = std::to_string(int (dbih->index[tnid].size())).size() + 1;
+	QString x = QString::number(i++).rightJustified(pad_width, '0');
+	QString idx = QString::number(i);
 	QStringList entry = dbih->entryTunersetsTransponder(txp, tns);
 	entry.prepend(x);
 
@@ -953,9 +951,8 @@ void tunersetsView::putListItems(vector<QString> items)
 
 	for (QString & q : items)
 	{
-		char ci[7];
-		std::snprintf(ci, 7, "%06d", i++);
-		QString x = QString::fromStdString(ci);
+		size_t pad_width = std::to_string(int (dbih->index[tnid].size())).size() + 1;
+		QString x = QString::number(i++).rightJustified(pad_width, '0');
 		QString idx = QString::number(i);
 
 		string trid;
