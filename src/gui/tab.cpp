@@ -571,13 +571,13 @@ void tab::importFile()
 
 	if (statusBarIsVisible())
 	{
-		string path;
+		string fname;
 		if (paths.size() > 0)
-			path = std::filesystem::path(path).remove_filename().u8string(); //C++17
+			fname = std::filesystem::path(paths[0]).parent_path().u8string(); //C++17
 		else
-			path = paths[0];
+			fname = paths[0];
 
-		statusBarMessage("Importing from " + path + " …");
+		statusBarMessage("Importing from " + fname + " …");
 	}
 
 	theme::setWaitCursor();
@@ -737,12 +737,12 @@ void tab::exportFile()
 	if (paths.size() > 0)
 	{
 		int dirsize = 0;
-		string base;
+		string basedir;
 		if (std::filesystem::is_directory(path)) //C++17
-			base = path;
+			basedir = path;
 		else
-			base = std::filesystem::path(path).parent_path().u8string(); //C++17
-		std::filesystem::directory_iterator dirlist (base); //C++17
+			basedir = std::filesystem::path(path).parent_path().u8string(); //C++17
+		std::filesystem::directory_iterator dirlist (basedir); //C++17
 		for (const auto & entry : dirlist)
 		{
 			if (std::filesystem::is_regular_file(entry)) //C++17
@@ -764,11 +764,13 @@ void tab::exportFile()
 	}
 	else
 	{
-		string basedir = std::filesystem::path(path).remove_filename().u8string(); //C++17
+		std::filesystem::path fp = std::filesystem::path(path); //C++17
+		string basedir = fp.parent_path().u8string(); //C++17
+		if (basedir.rfind('/') == string::npos)
+			basedir.append("/");
 
-		//TODO right-end trailing
-		for (string & fname : paths)
-			fname = basedir + fname;
+		for (string & path : paths)
+			path = basedir + path;
 	}
 
 	theme::setWaitCursor();
@@ -777,13 +779,13 @@ void tab::exportFile()
 
 	if (statusBarIsVisible())
 	{
-		string path;
+		string fname;
 		if (paths.size() > 0)
-			path = std::filesystem::path(path).remove_filename().u8string(); //C++17
+			fname = std::filesystem::path(paths[0]).parent_path().u8string(); //C++17
 		else
-			path = paths[0];
+			fname = paths[0];
 
-		statusBarMessage("Exported to " + path);
+		statusBarMessage("Exported to " + fname);
 	}
 	else
 	{
@@ -1256,32 +1258,37 @@ void tab::ftpUpload()
 	for (auto & x : files)
 	{
 		string filename = x.first;
-		string base;
+		string basedir;
 		string path;
 
 		if (filename.find(".tv") != string::npos || filename.find(".radio") != string::npos)
 		{
-			base = settings.value("pathBouquets").toString().toStdString();
+			basedir = settings.value("pathBouquets").toString().toStdString();
 		}
 		else if (filename == "satellites.xml" || filename == "terrestrial.xml" || filename == "cables.xml" || filename == "atsc.xml")
 		{
-			base = settings.value("pathTransponders").toString().toStdString();
+			basedir = settings.value("pathTransponders").toString().toStdString();
 		}
 		//TODO upload services, other data ... (eg. picons)
 		else
 		{
-			base = settings.value("pathServices").toString().toStdString();
+			basedir = settings.value("pathServices").toString().toStdString();
 		}
-		path = base + '/' + filename;
+
+		if (basedir.rfind('/') == string::npos)
+			basedir.append("/");
+
+		path = basedir + filename;
 
 		e2se_ftpcom::ftpcom::ftpcom_file file;
 		file.filename = x.second.filename;
-		file.data = x.second.data;
 		file.mime = x.second.mime;
+		file.data = x.second.data;
 		file.size = x.second.size;
 		ftp_files.emplace(path, file);
 
-		debug("ftpUpload", "file", base + '/' + file.filename + " | " + to_string(file.size));
+		debug("ftpUpload", "file path", basedir + file.filename);
+		debug("ftpUpload", "file size", to_string(file.size));
 	}
 	settings.endArray();
 	files.clear();
@@ -1324,11 +1331,12 @@ void tab::ftpDownload()
 	{
 		e2db::e2db_file file;
 		file.filename = x.second.filename;
-		file.data = x.second.data;
 		file.mime = x.second.mime;
+		file.data = x.second.data;
 		file.size = x.second.size;
 
-		debug("ftpDownload", "file", x.first + " | " + to_string(x.second.size));
+		debug("ftpDownload", "file path", x.first);
+		debug("ftpDownload", "file size", to_string(x.second.size));
 
 		files.emplace(file.filename, file);
 	}

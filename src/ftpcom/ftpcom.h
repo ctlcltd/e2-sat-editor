@@ -62,9 +62,10 @@ class ftpcom : protected e2se::log_factory
 		bool handle();
 		bool connect();
 		bool disconnect();
-		vector<string> list_dir(string base);
-		void download_data(string base, string filename, ftpcom_file& file);
-		void upload_data(string base, string filename, ftpcom_file file);
+		vector<string> list_dir(string basedir);
+		string file_mime_detect(string path);
+		void download_data(string basedir, string filename, ftpcom_file& file);
+		void upload_data(string basedir, string filename, ftpcom_file file);
 		void fetch_paths();
 		unordered_map<string, ftpcom_file> get_files();
 		void put_files(unordered_map<string, ftpcom_file> files);

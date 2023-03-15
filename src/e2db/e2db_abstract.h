@@ -436,7 +436,8 @@ struct e2db_abstract : protected e2se::log_factory
 		virtual ~e2db_abstract() = default;
 		static string editor_string(int html = 0);
 		static string editor_timestamp();
-		static FPORTS filetype_detect(string path);
+		static FPORTS file_type_detect(string path);
+		static string file_mime_detect(FPORTS fpi, string path);
 		static void value_channel_reference(string str, channel_reference& chref, service_reference& ref);
 		static string value_reference_id(service ch);
 		static string value_reference_id(channel_reference chref);

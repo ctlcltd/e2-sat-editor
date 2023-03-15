@@ -129,9 +129,12 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 
 	std::clock_t start = std::clock();
 
-	std::filesystem::path fpath = std::filesystem::path(path); //C++17
-	string base = fpath.parent_path().u8string(); //C++17
-	string filename = fpath.filename().u8string(); //C++17
+	std::filesystem::path fp = std::filesystem::path(path); //C++17
+	string basedir = fp.parent_path().u8string(); //C++17
+	if (basedir.rfind('/') == string::npos)
+		basedir.append("/");
+	string filename = fp.filename().u8string(); //C++17
+
 	opts.filename = filename;
 
 	vector<e2db_file> files;
@@ -174,9 +177,9 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 	{
 		string fpath;
 		if (once)
-			fpath = base + '/' + file.filename;
+			fpath = basedir + file.filename;
 		else
-			fpath = base + '/' + opts.filename;
+			fpath = basedir + opts.filename;
 
 		if (! OVERWRITE_FILE && std::filesystem::exists(fpath)) //C++17
 		{
@@ -209,8 +212,11 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 	std::clock_t start = std::clock();
 
 	std::filesystem::path fpath = std::filesystem::path(path); //C++17
-	string base = fpath.parent_path().u8string(); //C++17
+	string basedir = fpath.parent_path().u8string(); //C++17
+	if (basedir.rfind('/') == string::npos)
+		basedir.append("/");
 	string filename = fpath.filename().u8string(); //C++17
+
 	opts.filename = filename;
 
 	vector<e2db_file> files;
@@ -256,9 +262,9 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 	{
 		string fpath;
 		if (once)
-			fpath = base + '/' + file.filename;
+			fpath = basedir + file.filename;
 		else
-			fpath = base + '/' + opts.filename;
+			fpath = basedir + opts.filename;
 
 		if (! OVERWRITE_FILE && std::filesystem::exists(fpath)) //C++17
 		{
@@ -2310,7 +2316,7 @@ void e2db_converter::page_body_index_list(html_page& page, vector<string> paths)
 		string filename = std::filesystem::path(path).filename().u8string(); //C++17
 		string fname = filename;
 		string ftype;
-		FPORTS fpi = filetype_detect(path);
+		FPORTS fpi = file_type_detect(path);
 		switch (fpi)
 		{
 			case FPORTS::single_tunersets:
@@ -2738,8 +2744,8 @@ void e2db_converter::csv_document(e2db_file& file, string csv)
 {
 	debug("csv_document");
 
-	file.data = csv;
 	file.mime = "text/plain";
+	file.data = csv;
 	file.size = file.data.size();
 }
 
@@ -2756,8 +2762,9 @@ void e2db_converter::html_document(e2db_file& file, html_page page)
 	html.append("</body>\n");
 	html.append(doc_html_foot(page));
 	html.append("\n");
-	file.data = html;
+
 	file.mime = "text/html";
+	file.data = html;
 	file.size = file.data.size();
 }
 

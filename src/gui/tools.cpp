@@ -109,13 +109,13 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 
 	if (tid->statusBarIsVisible())
 	{
-		string path;
+		string fname;
 		if (paths.size() > 0)
-			path = std::filesystem::path(path).remove_filename().u8string(); //C++17
+			fname = std::filesystem::path(paths[0]).parent_path().u8string(); //C++17
 		else
-			path = paths[0];
+			fname = paths[0];
 
-		tid->statusBarMessage("Importing from " + path + " …");
+		tid->statusBarMessage("Importing from " + fname + " …");
 	}
 
 	theme::setWaitCursor();
@@ -143,12 +143,12 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 	if (opts.fc != e2db::FCONVS::convert_current)
 	{
 		int dirsize = 0;
-		string base;
+		string basedir;
 		if (std::filesystem::is_directory(path)) //C++17
-			base = path;
+			basedir = path;
 		else
-			base = std::filesystem::path(path).parent_path().u8string(); //C++17
-		std::filesystem::directory_iterator dirlist (base); //C++17
+			basedir = std::filesystem::path(path).parent_path().u8string(); //C++17
+		std::filesystem::directory_iterator dirlist (basedir); //C++17
 		for (const auto & entry : dirlist)
 		{
 			if (std::filesystem::is_regular_file(entry)) //C++17
@@ -187,12 +187,12 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 	if (opts.fc != e2db::FCONVS::convert_current)
 	{
 		int dirsize = 0;
-		string base;
+		string basedir;
 		if (std::filesystem::is_directory(path)) //C++17
-			base = path;
+			basedir = path;
 		else
-			base = std::filesystem::path(path).parent_path().u8string(); //C++17
-		std::filesystem::directory_iterator dirlist (base); //C++17
+			basedir = std::filesystem::path(path).parent_path().u8string(); //C++17
+		std::filesystem::directory_iterator dirlist (basedir); //C++17
 		for (const auto & entry : dirlist)
 		{
 			if (std::filesystem::is_regular_file(entry)) //C++17

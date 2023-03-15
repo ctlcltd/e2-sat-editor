@@ -271,7 +271,7 @@ void printable::pageBodyIndexList(html_page& page, vector<string> paths)
 		string filename = std::filesystem::path(path).filename().u8string(); //C++17
 		QString fname = QString::fromStdString(filename);
 		QString ftype;
-		e2db::FPORTS fpi = dbih->filetype_detect(path);
+		e2db::FPORTS fpi = dbih->file_type_detect(path);
 		switch (fpi)
 		{
 			case e2db::FPORTS::single_tunersets:

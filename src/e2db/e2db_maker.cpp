@@ -214,8 +214,8 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 	ss << formats[MAKER_FORMAT::b_comment] << "datetime: " << editor_timestamp() << endl;
 
 	file.filename = filename;
-	file.data = ss.str();
 	file.mime = "text/plain";
+	file.data = ss.str();
 	file.size = file.data.size();
 }
 
@@ -441,8 +441,8 @@ void e2db_maker::make_bouquet(string bname, e2db_file& file)
 	}
 
 	file.filename = bname;
-	file.data = ss.str();
 	file.mime = "text/plain";
+	file.data = ss.str();
 	file.size = file.data.size();
 }
 
@@ -470,8 +470,13 @@ void e2db_maker::make_bouquet_epl(string bname, e2db_file& file)
 	{
 		size_t pos = w.find('.');
 		size_t n = w.rfind('.');
+
 		string name;
-		string path = MAKER_BPATH + '/' + w;
+		string basedir = MAKER_BPATH;
+		if (basedir.rfind('/') == string::npos)
+			basedir.append("/");
+
+		string path = basedir + w;
 
 		if (pos != string::npos && n != string::npos)
 		{
@@ -487,8 +492,8 @@ void e2db_maker::make_bouquet_epl(string bname, e2db_file& file)
 	}
 
 	file.filename = filename;
-	file.data = ss.str();
 	file.mime = "text/plain";
+	file.data = ss.str();
 	file.size = file.data.size();
 }
 
@@ -536,8 +541,8 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 	}
 
 	file.filename = bname;
-	file.data = ss.str();
 	file.mime = "text/plain";
+	file.data = ss.str();
 	file.size = file.data.size();
 }
 
@@ -719,8 +724,8 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 	}
 
 	file.filename = filename;
-	file.data = str;
 	file.mime = "text/xml";
+	file.data = str;
 	file.size = file.data.size();
 }
 
@@ -1037,8 +1042,8 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 	}
 
 	file.filename = filename;
-	file.data = str;
 	file.mime = "text/xml";
+	file.data = str;
 	file.size = file.data.size();
 }
 
@@ -1169,8 +1174,8 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 	}
 
 	file.filename = filename;
-	file.data = str;
 	file.mime = "text/xml";
+	file.data = str;
 	file.size = file.data.size();
 }
 
@@ -1284,8 +1289,8 @@ void e2db_maker::make_parentallock_list(string filename, PARENTALLOCK ltype, e2d
 	}
 
 	file.filename = filename;
-	file.data = ss.str();
 	file.mime = "text/plain";
+	file.data = ss.str();
 	file.size = file.data.size();
 }
 
@@ -1316,7 +1321,10 @@ bool e2db_maker::push_file(string path)
 	}
 	for (auto & o: this->e2db_out)
 	{
-		string fpath = path + '/' + o.first;
+		if (path.rfind('/') == string::npos)
+			path.append("/");
+
+		string fpath = path + o.first;
 
 		if (! OVERWRITE_FILE && std::filesystem::exists(fpath)) //C++17
 		{

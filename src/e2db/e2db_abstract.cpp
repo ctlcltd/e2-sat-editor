@@ -47,7 +47,7 @@ string e2db_abstract::editor_timestamp()
 	return string (dt) + string (tz);
 }
 
-e2db_abstract::FPORTS e2db_abstract::filetype_detect(string path)
+e2db_abstract::FPORTS e2db_abstract::file_type_detect(string path)
 {
 	string filename = std::filesystem::path(path).filename().u8string(); //C++17
 
@@ -82,6 +82,55 @@ e2db_abstract::FPORTS e2db_abstract::filetype_detect(string path)
 	else if (filename == "services.locked")
 		return FPORTS::single_parentallock_locked;
 	return FPORTS::unsupported;
+}
+
+string e2db_abstract::file_mime_detect(FPORTS fpi, string path)
+{
+	switch (fpi)
+	{
+		case FPORTS::directory:
+		case FPORTS::unsupported:
+		return "application/octet-stream";
+		case FPORTS::all_services:
+		case FPORTS::all_services__2_4:
+		case FPORTS::all_services__2_5:
+		case FPORTS::all_services__2_3:
+		case FPORTS::all_services__2_2:
+		case FPORTS::all_bouquets:
+		case FPORTS::all_bouquets_epl:
+		case FPORTS::all_userbouquets:
+		case FPORTS::single_bouquet:
+		case FPORTS::single_bouquet_epl:
+		case FPORTS::single_bouquet_all:
+		case FPORTS::single_bouquet_all_epl:
+		case FPORTS::single_userbouquet:
+		case FPORTS::single_parentallock_locked:
+		case FPORTS::single_parentallock_blacklist:
+		case FPORTS::single_parentallock_whitelist:
+		return "text/plain";
+		case FPORTS::all_services_xml:
+		case FPORTS::all_services_xml__4:
+		case FPORTS::all_services_xml__3:
+		case FPORTS::all_services_xml__2:
+		case FPORTS::all_services_xml__1:
+		case FPORTS::all_bouquets_xml:
+		case FPORTS::all_bouquets_xml__4:
+		case FPORTS::all_bouquets_xml__3:
+		case FPORTS::all_bouquets_xml__2:
+		case FPORTS::all_bouquets_xml__1:
+		case FPORTS::all_tunersets:
+		case FPORTS::single_tunersets:
+		return "text/xml";
+		default:
+			if (path.rfind(".xml") != string::npos)
+				return "text/xml";
+			if (path.rfind(".csv") != string::npos)
+				return "text/csv";
+			if (path.rfind(".html") != string::npos)
+				return "text/html";
+			else
+				return "application/octet-stream";
+	}
 }
 
 void e2db_abstract::value_channel_reference(string str, channel_reference& chref, service_reference& ref)

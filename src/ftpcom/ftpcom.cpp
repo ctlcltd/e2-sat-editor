@@ -65,10 +65,17 @@ void ftpcom::setParameters(ftp_params params)
 	if (params.spath.empty())
 		error("ftpcom", trw("Missing \"%s\" path parameter.", "Services"));
 
-	//TODO remove trailing slash
 	baset = params.tpath;
 	baseb = params.bpath;
 	bases = params.spath;
+
+	if (baset.rfind('/') == string::npos)
+		baset.append("/");
+	if (baseb.rfind('/') == string::npos)
+		baseb.append("/");
+	if (bases.rfind('/') == string::npos)
+		bases.append("/");
+
 	ifreload = params.ifreload;
 	tnreload = params.tnreload;
 }
@@ -139,7 +146,7 @@ bool ftpcom::disconnect()
 	return true;
 }
 
-vector<string> ftpcom::list_dir(string base)
+vector<string> ftpcom::list_dir(string basedir)
 {
 	debug("list_dir");
 
@@ -152,7 +159,7 @@ vector<string> ftpcom::list_dir(string base)
 	}
 
 	stringstream data;
-	string remotedir = '/' + base + '/';
+	string remotedir = '/' + basedir;
 
 	curl_url_set(rph, CURLUPART_PATH, remotedir.c_str(), 0);
 	curl_easy_setopt(cph, CURLOPT_FTPLISTONLY, true);
@@ -183,8 +190,39 @@ vector<string> ftpcom::list_dir(string base)
 	return list;
 }
 
+string ftpcom::file_mime_detect(string path)
+{
+	string filename = std::filesystem::path(path).filename().u8string(); //C++17
+
+	if (filename == "lamedb")
+		return "text/plain";
+	else if (filename == "lamedb5")
+		return "text/plain";
+	else if (filename == "services")
+		return "text/plain";
+	else if (filename.find("bouquets.") != string::npos)
+		return "text/plain";
+	else if (filename.find("userbouquet.") != string::npos)
+		return "text/plain";
+	else if (filename.find("userbouquets.") != string::npos)
+		return "text/plain";
+	else if (filename == "blacklist")
+		return "text/plain";
+	else if (filename == "whitelist")
+		return "text/plain";
+	else if (filename == "services.locked")
+		return "text/plain";
+	else if (path.rfind(".xml") != string::npos)
+		return "text/xml";
+	else if (path.rfind(".csv") != string::npos)
+		return "text/csv";
+	else if (path.rfind(".html") != string::npos)
+		return "text/html";
+	return "application/octet-stream";
+}
+
 //TODO improve resuming
-void ftpcom::download_data(string base, string filename, ftpcom_file& file)
+void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 {
 	debug("download_data");
 
@@ -194,7 +232,7 @@ void ftpcom::download_data(string base, string filename, ftpcom_file& file)
 	sio data;
 	data.size = 0;
 	CURLcode res = CURLE_GOT_NOTHING;
-	string remotefile = '/' + base + '/' + filename;
+	string remotefile = '/' + basedir + filename;
 
 	debug("download_data", "file", remotefile);
 
@@ -212,14 +250,15 @@ void ftpcom::download_data(string base, string filename, ftpcom_file& file)
 
 	reset(cph, rph);
 
-	//TODO improve
+	string mime = file_mime_detect(remotefile);
+
 	file.filename = filename;
+	file.mime = mime;
 	file.data = data.data;
-	file.mime = "application/octet-stream";
 	file.size = data.size;
 }
 
-void ftpcom::upload_data(string base, string filename, ftpcom_file file)
+void ftpcom::upload_data(string basedir, string filename, ftpcom_file file)
 {
 	if (! handle())
 		return error("upload_data", trs("ftpcom error."));
@@ -229,7 +268,7 @@ void ftpcom::upload_data(string base, string filename, ftpcom_file file)
 	data.size = file.size;
 	size_t len = 0;
 	CURLcode res = CURLE_GOT_NOTHING;
-	string remotefile = '/' + base + '/' + filename;
+	string remotefile = '/' + basedir + filename;
 
 	debug("upload_data", "file", remotefile);
 
@@ -404,11 +443,11 @@ unordered_map<string, ftpcom::ftpcom_file> ftpcom::get_files()
 	for (string & w : ftdb)
 	{
 		std::filesystem::path fpath = std::filesystem::path(w); //C++17
-		string base = fpath.parent_path().u8string(); //C++17
+		string basedir = fpath.parent_path().u8string(); //C++17
 		string filename = fpath.filename().u8string(); //C++17
 
 		ftpcom_file file;
-		download_data(base, filename, file);
+		download_data(basedir, filename, file);
 
 		files[filename] = file;
 	}
@@ -427,10 +466,10 @@ void ftpcom::put_files(unordered_map<string, ftpcom_file> files)
 	for (auto & x : files)
 	{
 		std::filesystem::path fpath = std::filesystem::path(x.first); //C++17
-		string base = fpath.parent_path().u8string(); //C++17
+		string basedir = fpath.parent_path().u8string(); //C++17
 		string filename = fpath.filename().u8string(); //C++17
 
-		upload_data(base, filename, x.second);
+		upload_data(basedir, filename, x.second);
 	}
 }
 

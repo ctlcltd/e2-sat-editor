@@ -34,7 +34,6 @@ e2db::e2db()
 	this->log = new e2se::logger("e2db", "e2db");
 }
 
-//TODO improve
 void e2db::import_file(vector<string> paths)
 {
 	debug("import_file", "file path", "multiple");
@@ -65,18 +64,16 @@ void e2db::import_file(vector<string> paths)
 			return error("import_file", "File Error", "File \"" + path + "\" is not readable.");
 		}
 
-		FPORTS fpi = filetype_detect(path);
+		FPORTS fpi = file_type_detect(path);
+		string filename = std::filesystem::path(path).filename().u8string(); //C++17
+		string mime = file_mime_detect(fpi, path);
 
-		//TODO improve mime type
 		e2db_file file;
-		file.filename = path;
-		if (fpi == FPORTS::directory)
+		file.filename = filename;
+		file.mime = mime;
+
+		if (fpi != FPORTS::directory)
 		{
-			file.mime = "application/octet-stream";
-		}
-		else
-		{
-			file.mime = "application/octet-stream";
 			ifstream ifile (path);
 			string line;
 			while (std::getline(ifile, line))
@@ -155,9 +152,9 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 		break;
 		case FPORTS::single_bouquet_all:
 		case FPORTS::single_bouquet_all_epl:
-			if (filetype_detect(filename) == FPORTS::single_bouquet)
+			if (file_type_detect(filename) == FPORTS::single_bouquet)
 				dst->parse_e2db_bouquet(ifile, filename);
-			else if (filetype_detect(filename) == FPORTS::single_bouquet_epl)
+			else if (file_type_detect(filename) == FPORTS::single_bouquet_epl)
 				dst->parse_e2db_bouquet(ifile, filename, true);
 			else
 				dst->parse_e2db_userbouquet(ifile, filename);
@@ -201,7 +198,7 @@ void e2db::export_file(vector<string> paths)
 
 	for (string & w : paths)
 	{
-		FPORTS fpo = filetype_detect(w);
+		FPORTS fpo = file_type_detect(w);
 		export_file(fpo, w);
 	}
 }
@@ -287,9 +284,9 @@ void e2db::export_file(FPORTS fpo, string path)
 		break;
 		case FPORTS::single_bouquet_all:
 		case FPORTS::single_bouquet_all_epl:
-			if (filetype_detect(filename) == FPORTS::single_bouquet)
+			if (file_type_detect(filename) == FPORTS::single_bouquet)
 				make_bouquet(filename, file);
-			else if (filetype_detect(filename) == FPORTS::single_bouquet_epl)
+			else if (file_type_detect(filename) == FPORTS::single_bouquet_epl)
 				make_bouquet_epl(filename, file);
 			else
 				make_userbouquet(filename, file);
@@ -322,28 +319,32 @@ void e2db::export_file(FPORTS fpo, string path)
 		return error("export_file", "Error", "Unknown export option.");
 	}
 
-	if (! OVERWRITE_FILE && std::filesystem::exists(path)) //C++17
+	string fpath;
+
+	if (filename != file.filename)
 	{
-		return error("export_file", "File Error", "File \"" + path + "\" already exists.");
+		std::filesystem::path fp = std::filesystem::path(path); //C++17
+		string basedir = fp.parent_path().u8string(); //C++17
+		if (basedir.rfind('/') == string::npos)
+			basedir.append("/");
+
+		fpath = basedir + file.filename;
+	}
+
+	if (! OVERWRITE_FILE && std::filesystem::exists(fpath)) //C++17
+	{
+		return error("export_file", "File Error", "File \"" + fpath + "\" already exists.");
 	}
 	if
 	(
-		(std::filesystem::status(path).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
-		(std::filesystem::status(path).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
+		(std::filesystem::status(fpath).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
+		(std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
 	) //C++17
 	{
 		return error("export _file", "File Error", "File \"" + path + "\" is not writable.");
 	}
 
-	if (filename != file.filename)
-	{
-		string basedir = std::filesystem::path(path).remove_filename().u8string(); //C++17
-
-		//TODO right-end trailing
-		path = basedir + file.filename;
-	}
-
-	ofstream out (path);
+	ofstream out (fpath);
 	out << file.data;
 	out.close();
 }
