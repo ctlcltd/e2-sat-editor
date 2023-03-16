@@ -12,6 +12,7 @@
 #ifndef about_h
 #define about_h
 #include <QWidget>
+#include <QDialog>
 
 #include "../logger/logger.h"
 
@@ -22,6 +23,13 @@ class about : protected e2se::log_factory
 	public:
 		about();
 		virtual ~about() = default;
+		void display();
+		void destroy();
+
+	protected:
+		void layout();
+
+		QDialog* dial = nullptr;
 };
 }
 #endif /* about_h */

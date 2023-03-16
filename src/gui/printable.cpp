@@ -677,6 +677,7 @@ void printable::print()
 	QPrinter* printer = new QPrinter;
 	QTextDocument* doc = new QTextDocument;
 
+	//TODO FIX compiler warning [MinGW-64] [Qt5]
 #if QT_VERSION >= QT_VERSION_CHECK(5, 30, 0)
 	printer->setPageSize(QPageSize::A4);
 #else
@@ -706,7 +707,7 @@ void printable::print()
 	}
 }
 
-//TODO FIX borderSize [Qt5]
+//TODO FIX table cell borderSize [Qt5]
 QString printable::docHtmlHead()
 {
 	return "<html lang=\"en\">\

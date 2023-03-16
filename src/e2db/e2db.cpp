@@ -1438,7 +1438,6 @@ void e2db::merge(e2db_abstract* dst)
 
 	this->index = index;
 
-	//TODO TEST memory
 	cp_index_sts.clear();
 	cp_index_dst.clear();
 	cp_ubs_sts.clear();

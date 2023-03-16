@@ -9,7 +9,8 @@
  * @license GNU GPLv3 License
  */
 
-#include <QDialog>
+#include <QtGlobal>
+#include <QTimer>
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -26,11 +27,20 @@ namespace e2se_gui_dialog
 about::about()
 {
 	this->log = new logger("gui.dialog", "about");
+}
 
-	QDialog* dial = new QDialog;
+void about::layout()
+{
+	debug("layout");
+
+	this->dial = new QDialog;
 	dial->setWindowTitle("About e2 SAT Editor");
-	//TODO FIX SEGFAULT [linux] [Qt5]
-	dial->connect(dial, &QDialog::finished, [=]() { delete dial; delete this; });
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+	dial->connect(dial, &QDialog::finished, [=]() { QTimer::singleShot(0, [=]() { this->destroy(); }); });
+#else
+	dial->connect(dial, &QDialog::finished, [=]() { this->destroy(); });
+#endif
 
 	QGridLayout* dfrm = new QGridLayout(dial);
 
@@ -93,8 +103,23 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.");
 	dfrm->setSizeConstraint(QGridLayout::SetFixedSize);
 
 	dial->setLayout(dfrm);
+}
+
+void about::display()
+{
+	debug("display");
+
+	layout();
 
 	dial->open();
+}
+
+void about::destroy()
+{
+	debug("destroy");
+
+	delete this->dial;
+	delete this;
 }
 
 }

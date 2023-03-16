@@ -41,7 +41,7 @@ using namespace e2se;
 namespace e2se_gui_dialog
 {
 
-settings::settings(e2se_gui::gui* gid, QWidget* cwid)
+settings::settings(e2se_gui::gui* gid)
 {
 	this->log = new logger("gui.dialog", "settings");
 
@@ -49,8 +49,6 @@ settings::settings(e2se_gui::gui* gid, QWidget* cwid)
 	this->sets = new QSettings;
 
 	this->state.prev = -1;
-
-	display(cwid);
 }
 
 void settings::display(QWidget* cwid)
@@ -71,7 +69,6 @@ void settings::layout(QWidget* cwid)
 	this->dial = new QDialog(cwid);
 	dial->setWindowTitle(tr("Settings"));
 	dial->setStyleSheet("QGroupBox { spacing: 0; padding: 0; padding-top: 20px; border: 0; font-weight: bold } QGroupBox::title { margin: 0 10px }");
-	dial->connect(dial, &QDialog::finished, [=]() { delete dial; delete this; });
 
 	platform::osWindowBlend(dial);
 
@@ -779,6 +776,14 @@ void settings::cancel()
 	QTimer::singleShot(150, [=]() {
 		dial->close();
 	});
+}
+
+void settings::destroy()
+{
+	debug("destroy");
+
+	delete this->dial;
+	delete this;
 }
 
 }

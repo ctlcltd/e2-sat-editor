@@ -1813,7 +1813,7 @@ void e2db_parser::parse_xml_attribute(string line, string token, string& key, st
 		n = val.find('"');
 		if (n == string::npos)
 			n = val.find('\'');
-		else
+		if (n != string::npos)
 			val = val.substr(0, n);
 
 		std::transform(val.begin(), val.end(), val.begin(), [](unsigned char c) { return c ? c : ' '; });

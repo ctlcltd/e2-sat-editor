@@ -60,9 +60,10 @@ class settings : protected e2se::log_factory
 			Advanced
 		};
 
-		settings(e2se_gui::gui* gid, QWidget* cwid);
+		settings(e2se_gui::gui* gid);
 		virtual ~settings() = default;
 		void display(QWidget* cwid);
+		void destroy();
 
 	protected:
 		void layout(QWidget* cwid);

@@ -9,7 +9,9 @@
  * @license GNU GPLv3 License
  */
 
+#include <QtGlobal>
 #include <QWidget>
+#include <QTimer>
 
 #include "dialChannelBook.h"
 #include "theme.h"
@@ -50,7 +52,12 @@ void dialChannelBook::layout(QWidget* cwid)
 
 	dial->setMinimumSize(700, 400);
 	dial->setWindowTitle(tr("Add Channel"));
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+	dial->connect(dial, &QDialog::finished, [=]() { QTimer::singleShot(0, [=]() { this->destroy(); }); });
+#else
 	dial->connect(dial, &QDialog::finished, [=]() { this->destroy(); });
+#endif
 
 	this->cbv = new e2se_gui::channelBookView(this->data, this->stype);
 

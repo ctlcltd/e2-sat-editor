@@ -97,7 +97,7 @@ QIcon theme::spacer(int width)
 	return QIcon(":/icons/" + QString::number(width) + "x1.png");
 }
 
-//TODO strange behaviour [wine]
+//TODO strange behaviour [Wine]
 QString theme::fontFamily()
 {
 	return QFont().defaultFamily();

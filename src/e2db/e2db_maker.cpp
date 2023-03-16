@@ -214,7 +214,6 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 	file.size = file.data.size();
 }
 
-//TODO
 void e2db_maker::make_e2db_bouquets()
 {
 	debug("make_e2db_bouquets");
@@ -244,6 +243,7 @@ void e2db_maker::make_e2db_bouquets()
 		this->e2db_out[filename] = file;
 	}
 
+	//TODO
 	if (LAMEDB_VER < 4)
 	{
 		e2db_file empty;

@@ -47,6 +47,7 @@ void tools::inspector()
 	QDialog* dial = new QDialog(nullptr, Qt::WindowStaysOnTopHint);
 	dial->setWindowTitle("Inspector Log");
 	dial->setMinimumSize(450, 520);
+
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
 	dial->connect(dial, &QDialog::finished, [=]() { QTimer::singleShot(0, [=]() { delete dial; }); });
 #else

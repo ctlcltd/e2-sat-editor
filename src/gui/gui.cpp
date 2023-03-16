@@ -243,7 +243,7 @@ void gui::tabStackerLayout()
 
 	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 12ex; max-width: 25ex; height: 6.3ex; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button) } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight); border-color: transparent }");
 
-	//TODO FIX
+	//TODO FIX collapsed height [Windows]
 #ifdef Q_OS_WIN
 	twid->tabBar()->setFixedHeight(44);
 #endif
@@ -1279,19 +1279,25 @@ void gui::windowMinimize()
 {
 	debug("windowMinimize");
 
-	if (! this->mwid->isMinimized())
-		this->mwid->showMinimized();
+	if (! mwid->isMinimized())
+		mwid->showMinimized();
 }
 
 void gui::settingsDialog()
 {
-	new e2se_gui_dialog::settings(this, mwid);
+	debug("settingsDialog");
+
+	auto* dialog = new e2se_gui_dialog::settings(this);
+	dialog->display(mwid);
+	dialog->destroy();
 }
 
 void gui::aboutDialog()
 {
-	//TODO potential leak
-	new e2se_gui_dialog::about();
+	debug("aboutDialog");
+
+	auto* dialog = new e2se_gui_dialog::about();
+	dialog->display();
 }
 
 bool gui::getFlag(GUI_CXE bit)
