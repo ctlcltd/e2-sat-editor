@@ -965,7 +965,7 @@ void tunersetsView::putListItems(vector<QString> items)
 		if (q.contains(','))
 		{
 			auto qs = q.split(',');
-			//TODO improve
+			//TODO using trid in clipboard data
 			trid = txp.trid = qs[0].toStdString();
 			txp.freq = qs[1].toInt();
 

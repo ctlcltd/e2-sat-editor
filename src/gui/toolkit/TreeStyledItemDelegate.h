@@ -15,6 +15,7 @@
 
 namespace e2se_gui
 {
+//TODO FIX glitch [macOS]
 class TreeStyledItemDelegate : public QStyledItemDelegate
 {
 	using QStyledItemDelegate::QStyledItemDelegate;
@@ -27,7 +28,7 @@ class TreeStyledItemDelegate : public QStyledItemDelegate
 			{
 				if (opt.direction == Qt::LeftToRight)
 					opt.rect.adjust(-this->indent, 0, 0, 0);
-				//TODO FIX glitch
+				//TODO FIX glitch [rtl]
 				else if (opt.direction == Qt::RightToLeft)
 					opt.rect.adjust(0, 0, this->indent, 0);
 			}

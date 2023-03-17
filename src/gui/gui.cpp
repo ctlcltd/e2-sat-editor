@@ -416,20 +416,26 @@ void gui::updateSettings()
 {
 	debug("updateSettings");
 
-	if (! QSettings().contains("settings/version"))
-	{
-		QSettings settings;
+	QSettings settings;
+	float version = settings.value("application/version", 0).toFloat();
 
+	if (! settings.contains("settings/version"))
+	{
 		settings.setValue("settings/version", 1);
 		settings.setValue("settings/reset", false);
-
+		
 		settings.setValue("application/version", mroot->applicationVersion());
 	}
-#ifdef Q_OS_MAC
-	else if (QSettings().contains("preference/fixUnicodeChars"))
+	else if (version != mroot->applicationVersion().toFloat())
 	{
-		QSettings().setValue("application/fixUnicodeChars", true);
-		QSettings().remove("preference/fixUnicodeChars");
+		settings.setValue("application/version", mroot->applicationVersion());
+	}
+
+#ifdef Q_OS_MAC
+	if (settings.contains("preference/fixUnicodeChars"))
+	{
+		settings.setValue("application/fixUnicodeChars", true);
+		settings.remove("preference/fixUnicodeChars");
 	}
 #endif
 }

@@ -19,7 +19,7 @@
 
 namespace e2se_gui
 {
-//TODO persistent glitches with event reject, force a repaint on bouquets tree or his viewport
+//TODO persistent glitches with event reject
 class TreeEventHandler : public QObject
 {
 	public:

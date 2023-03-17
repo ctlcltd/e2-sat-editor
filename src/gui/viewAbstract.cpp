@@ -628,7 +628,7 @@ void viewAbstract::tabPrintFile(bool all)
 		tid->printFile(all);
 }
 
-//TODO viewport minimumWidth QPushButton are not supported
+//TODO improve viewport minimumWidth QPushButton are not supported
 QToolBar* viewAbstract::toolBar()
 {
 	QToolBar* toolbar = new QToolBar;

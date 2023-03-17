@@ -161,7 +161,7 @@ void e2db_parser::parse_e2db()
 	// commit: d9a9322	elapsed time: 67343
 	// commit: 9364c8f	elapsed time: 19122
 	// commit: 6559e93	elapsed time: 19939
-	// commit: HEAD 	elapsed time: 18829
+	// commit: f1cb80f	elapsed time: 18829
 
 	info("parse_e2db", "elapsed time", to_string(int (end - start)) + " ms.");
 }

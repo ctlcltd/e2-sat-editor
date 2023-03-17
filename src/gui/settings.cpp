@@ -445,7 +445,7 @@ void settings::connectionsLayout()
 	dtwid->addTab(rppage, tr("Connections"));
 }
 
-//TODO
+//TODO improve QLineEdit platform contextual menu QTableWidget
 void settings::advancedLayout()
 {
 	QWidget* dtpage = new QWidget;
