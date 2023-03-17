@@ -2618,6 +2618,7 @@ void mainView::updateListIndex()
 	this->state.chx_pending = false;
 }
 
+//TODO FIX channel reference marker after drop
 void mainView::updateListReferences(QTreeWidgetItem* current, QList<QTreeWidgetItem*> items)
 {
 	auto* dbih = this->data->dbih;
