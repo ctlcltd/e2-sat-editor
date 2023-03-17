@@ -108,6 +108,7 @@ void settings::layout(QWidget* cwid)
 	dial->setLayout(dfrm);
 }
 
+//TODO improve QLineEdit and QComboBox platform contextual menu
 void settings::preferencesLayout()
 {
 	QWidget* dtpage = new QWidget;
@@ -296,6 +297,7 @@ void settings::preferencesLayout()
 	dtwid->addTab(dtarea, tr("Preferences"));
 }
 
+//TODO improve QLineEdit and QComboBox platform contextual menu
 void settings::connectionsLayout()
 {
 	this->rppage = new WidgetWithBackdrop;

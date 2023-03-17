@@ -10,6 +10,7 @@
  */
 
 #include <cstdio>
+#include <cstring>
 #include <sstream>
 #include <algorithm>
 
