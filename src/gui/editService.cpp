@@ -640,13 +640,12 @@ void editService::store()
 
 		if (key == "raw_data" && this->state.raw_data != val)
 		{
-			stringstream ss (val);
-			string line;
 			map<char, vector<string>> cdata;
 
-			while (std::getline(ss, line, ','))
+			char* token = std::strtok(val.data(), ",");
+			while (token != 0)
 			{
-				char key = line[0];
+				char key = token[0];
 				switch (key)
 				{
 					case 'p': key = e2db::SDATA::p; break;
@@ -654,9 +653,12 @@ void editService::store()
 					case 'C': key = e2db::SDATA::C; break;
 					case 'f': key = e2db::SDATA::f; break;
 				}
-				string val = line.substr(2);
+				string val = string (token).substr(2);
 				cdata[key].push_back(val);
+
+				token = std::strtok(NULL, ",");
 			}
+
 			ch.data = cdata;
 		}
 		else
@@ -693,18 +695,20 @@ void editService::store()
 				ch.data[e2db::SDATA::c] = computePIDs(ch, e2db::SDATA_PIDS::pmt, val);
 			else if (key == "raw_C" && this->state.raw_C != val)
 			{
-				stringstream ss (val);
-				string line;
 				vector<string> cdata;
 
-				while (std::getline(ss, line, ','))
+				char* token = std::strtok(val.data(), ",");
+				while (token != 0)
 				{
-					char key = line[0];
+					char key = token[0];
 					if (key != 'C')
 						continue;
-					string val = line.substr(2);
+					string val = string (token).substr(2);
 					cdata.push_back(val);
+
+					token = std::strtok(NULL, ",");
 				}
+
 				ch.data[e2db::SDATA::C] = cdata;
 			}
 			else if (key == "fkeep")

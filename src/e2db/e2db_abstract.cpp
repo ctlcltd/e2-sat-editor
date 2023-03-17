@@ -1065,6 +1065,7 @@ void e2db_abstract::add_transponder(int idx, transponder& tx)
 	tx.txid = txid;
 
 	tx.index = idx;
+
 	db.transponders.emplace(tx.txid, tx);
 	index["txs"].emplace_back(pair (idx, tx.txid)); //C++17
 }
@@ -1092,6 +1093,7 @@ void e2db_abstract::add_service(int idx, service& ch)
 
 	string iname = "chs:" + (STYPE_EXT_TYPE.count(ch.stype) ? to_string(STYPE_EXT_TYPE.at(ch.stype)) : "0");
 	ch.index = idx;
+
 	db.services.emplace(ch.chid, ch);
 	index["chs"].emplace_back(pair (idx, ch.chid)); //C++17
 	index[iname].emplace_back(pair (idx, ch.chid)); //C++17
@@ -1100,6 +1102,7 @@ void e2db_abstract::add_service(int idx, service& ch)
 void e2db_abstract::add_bouquet(int idx, bouquet& bs)
 {
 	bs.index = idx;
+
 	bouquets.emplace(bs.bname, bs);
 	index["bss"].emplace_back(pair (idx, bs.bname)); //C++17
 }
@@ -1107,6 +1110,7 @@ void e2db_abstract::add_bouquet(int idx, bouquet& bs)
 void e2db_abstract::add_userbouquet(int idx, userbouquet& ub)
 {
 	ub.index = idx;
+
 	userbouquets.emplace(ub.bname, ub);
 	bouquets[ub.pname].userbouquets.emplace_back(ub.bname);
 	index["ubs"].emplace_back(pair (idx, ub.bname)); //C++17
@@ -1154,6 +1158,7 @@ void e2db_abstract::add_tunersets_table(int idx, tunersets_table& tn, tunersets&
 	std::snprintf(tnid, 25, "%c:%04x", yname, idx);
 	tn.tnid = tnid;
 	tn.index = idx;
+
 	tv.tables.emplace(tn.tnid, tn);
 	index[iname].emplace_back(pair (idx, tn.tnid)); //C++17
 	if (tn.ytype == YTYPE::satellite)
@@ -1167,6 +1172,7 @@ void e2db_abstract::add_tunersets_transponder(int idx, tunersets_transponder& tn
 	std::snprintf(trid, 25, "%c:%04x:%04x", yname, tntxp.freq, tntxp.sr);
 	tntxp.trid = trid;
 	tntxp.index = idx;
+
 	tn.transponders.emplace(tntxp.trid, tntxp);
 	index[tn.tnid].emplace_back(pair (idx, tntxp.trid)); //C++17
 }

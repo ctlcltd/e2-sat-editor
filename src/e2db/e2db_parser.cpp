@@ -161,6 +161,7 @@ void e2db_parser::parse_e2db()
 	// commit: d9a9322	elapsed time: 67343
 	// commit: 9364c8f	elapsed time: 19122
 	// commit: 6559e93	elapsed time: 19939
+	// commit: HEAD 	elapsed time: 18829
 
 	info("parse_e2db", "elapsed time", to_string(int (end - start)) + " ms.");
 }
@@ -559,19 +560,17 @@ void e2db_parser::parse_lamedb_service_params(string str, service& ch)
 	ch.snum = snum;
 }
 
-//TODO improve
 void e2db_parser::parse_lamedb_service_data(string str, service& ch)
 {
 	if (str.empty())
 		return;
 
-	stringstream ss (str);
-	string line;
 	map<char, vector<string>> cstr;
 
-	while (std::getline(ss, line, ','))
+	char* token = std::strtok(str.data(), ",");
+	while (token != 0)
 	{
-		char key = line[0];
+		char key = token[0];
 		switch (key)
 		{
 			case 'p': key = e2db_parser::SDATA::p; break;
@@ -579,9 +578,12 @@ void e2db_parser::parse_lamedb_service_data(string str, service& ch)
 			case 'C': key = e2db_parser::SDATA::C; break;
 			case 'f': key = e2db_parser::SDATA::f; break;
 		}
-		string val = line.substr(2);
+		string val = string (token).substr(2);
 		cstr[key].push_back(val);
+
+		token = std::strtok(NULL, ",");
 	}
+
 	ch.data = cstr;
 }
 

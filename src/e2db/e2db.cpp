@@ -355,6 +355,7 @@ void e2db::add_transponder(transponder& tx)
 
 	if (tx.index == -1)
 		tx.index = int (index["txs"].size()) + 1;
+
 	e2db_abstract::add_transponder(tx.index, tx);
 }
 
@@ -405,6 +406,7 @@ void e2db::add_service(service& ch)
 
 	if (ch.index == -1)
 		ch.index = int (index["chs"].size()) + 1;
+
 	e2db_abstract::add_service(ch.index, ch);
 }
 
@@ -492,6 +494,7 @@ void e2db::remove_service(string chid)
 	{
 		x.second.channels.erase(chid);
 	}
+
 	collisions.erase(kchid);
 }
 
@@ -514,7 +517,6 @@ void e2db::edit_bouquet(bouquet& bs)
 	bouquets[bs.bname] = bs;
 }
 
-//TODO FIX multiple erase and iterators
 void e2db::remove_bouquet(string bname)
 {
 	debug("remove_bouquet", "bname", bname);
@@ -530,13 +532,16 @@ void e2db::remove_bouquet(string bname)
 	for (auto it = index["ubs"].begin(); it != index["ubs"].end(); it++)
 	{
 		userbouquet ub = userbouquets[it->second];
+
 		if (ub.pname == bname)
 		{
 			index["ubs"].erase(it);
 			index.erase(ub.bname);
+
 			userbouquets.erase(ub.bname);
 		}
 	}
+
 	index.erase(bname);
 	bouquets.erase(bname);
 }
@@ -575,6 +580,7 @@ void e2db::add_userbouquet(userbouquet& ub)
 
 		ub.index = idx;
 	}
+
 	if (ub.bname.empty())
 	{
 		stringstream bname;
@@ -640,6 +646,7 @@ void e2db::remove_userbouquet(string bname)
 				index[ub.pname].emplace_back(pair ((index[ub.pname].size() + 1), x.first)); //C++17
 		}
 	}
+
 	index.erase(bname);
 	userbouquets.erase(bname);
 }
@@ -686,6 +693,7 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 
 	if (chref.index == -1 && ! chref.marker)
 		chref.index = int (index[bname].size()) + 1;
+
 	e2db_abstract::add_channel_reference(chref.index, ub, chref, ref);
 }
 
@@ -731,6 +739,7 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 			if (it->second == chid)
 				it->second = chref.chid;
 		}
+
 		if (chref.marker)
 		{
 			for (auto it = index["mks"].begin(); it != index["mks"].end(); it++)
@@ -770,6 +779,7 @@ void e2db::remove_channel_reference(channel_reference chref, string bname)
 			break;
 		}
 	}
+
 	if (! userbouquets[bname].channels.count(chid))
 		return error("remove_channel_reference", "Error", "Channel reference \"" + chid + "\" not exists.");
 
@@ -818,7 +828,7 @@ void e2db::remove_channel_reference(channel_reference chref, string bname)
 			index[ub.pname].erase(pos);
 		}
 	}
-	if (true)
+
 	{
 		unordered_map<string, channel_reference>::iterator pos;
 		for (auto it = userbouquets[bname].channels.begin(); it != userbouquets[bname].channels.end(); it++)
@@ -861,6 +871,7 @@ void e2db::remove_channel_reference(string chid, string bname)
 	{
 		index[bname].erase(pos);
 	}
+
 	if (chref.marker)
 	{
 		vector<pair<int, string>>::iterator pos;
@@ -893,6 +904,7 @@ void e2db::remove_channel_reference(string chid, string bname)
 			index[ub.pname].erase(pos);
 		}
 	}
+
 	ub.channels.erase(chid);
 }
 
@@ -933,6 +945,7 @@ void e2db::add_tunersets_table(tunersets_table& tn, tunersets tv)
 
 	if (tn.index == -1)
 		tn.index = index.count(iname) ? int (index[iname].size()) : 0;
+
 	e2db_abstract::add_tunersets_table(tn.index, tn, tv);
 	tuners[tv.ytype].tables[tn.tnid] = tn;
 }
@@ -965,6 +978,7 @@ void e2db::edit_tunersets_table(string tnid, tunersets_table& tn, tunersets tv)
 			if (it->second == tnid)
 				it->second = tn.tnid;
 		}
+
 		if (tn.ytype == YTYPE::satellite)
 		{
 			tuners_pos.erase(tn.pos);
@@ -999,10 +1013,12 @@ void e2db::remove_tunersets_table(string tnid, tunersets tv)
 	{
 		index[iname].erase(pos);
 	}
+
 	if (tn.ytype == YTYPE::satellite)
 	{
 		tuners_pos.erase(tn.pos);
 	}
+
 	tuners[tv.ytype].tables.erase(tnid);
 }
 
@@ -1012,6 +1028,7 @@ void e2db::add_tunersets_transponder(tunersets_transponder& tntxp, tunersets_tab
 
 	if (tntxp.index == -1)
 		tntxp.index = int (index[tn.tnid].size()) + 1;
+
 	e2db_abstract::add_tunersets_transponder(tntxp.index, tntxp, tn);
 	tuners[tn.ytype].tables[tn.tnid].transponders[tntxp.trid] = tntxp;
 }

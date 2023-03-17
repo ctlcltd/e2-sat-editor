@@ -445,6 +445,7 @@ void settings::connectionsLayout()
 	dtwid->addTab(rppage, tr("Connections"));
 }
 
+//TODO
 void settings::advancedLayout()
 {
 	QWidget* dtpage = new QWidget;
