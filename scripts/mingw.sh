@@ -19,9 +19,13 @@ cleanup () {
 	rm Makefile
 	rm .qmake.stash
 	rm qrc_resources.cpp
+	rm -R build/.ninja_deps
+	rm -R build/.ninja_log
+	rm -R build/.qt
 	rm -R build/.rcc
 	rm -R build/CMakeFiles
 	rm -R build/e2-sat-editor_autogen
+	rm build/build.ninja
 	rm build/CMakeCache.txt
 	rm build/cmake_install.cmake
 	rm build/Makefile
