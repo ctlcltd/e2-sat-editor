@@ -16,7 +16,7 @@
 
 int main(int argc, char* argv[])
 {
-	bool DEBUG = true;
+	bool DEBUG = false;
 
 	if (const char* envp = std::getenv("DEBUG"))
 	{

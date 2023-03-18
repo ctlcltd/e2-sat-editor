@@ -87,6 +87,7 @@ void channelBookView::layout()
 	this->list = new QTreeWidget;
 	this->tabv = new QTabBar;
 
+	//TODO improve vertical expanding [Windows]
 	tabv->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored);
 
 	list->setStyleSheet("QTreeWidget::item { padding: 2px 0 }");

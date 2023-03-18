@@ -65,7 +65,7 @@ void mainView::layout()
 
 	QGridLayout* frm = new QGridLayout(widget);
 
-	//TODO vertical scrollbar 1px gap [GTK+]
+	//TODO vertical scrollbar 1px gap [Linux] [Windows]
 	QSplitter* swid = new QSplitter;
 #ifdef Q_OS_MAC
 	swid->setStyleSheet("QSplitter::handle {}");

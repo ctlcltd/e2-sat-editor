@@ -45,6 +45,7 @@ gui::gui(int argc, char* argv[])
 
 	this->log = new logger("gui", "gui");
 
+	//TODO FIX locale warning wrong detected as US-ASCII [Qt6] [Xcode] [macOS]
 	this->mroot = new QApplication(argc, argv);
 	mroot->setOrganizationName("e2 SAT Editor Team");
 	mroot->setOrganizationDomain("e2se.org");

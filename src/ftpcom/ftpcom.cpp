@@ -11,6 +11,7 @@
 
 #include <cstdio>
 #include <cstring>
+#include <clocale>
 #include <algorithm>
 #include <string>
 #include <filesystem>
@@ -25,6 +26,8 @@ namespace e2se_ftpcom
 
 ftpcom::ftpcom()
 {
+	std::setlocale(LC_NUMERIC, "C");
+
 	this->log = new e2se::logger("ftpcom", "ftpcom");
 
 	curl_global_init(CURL_GLOBAL_DEFAULT);

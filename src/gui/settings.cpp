@@ -282,7 +282,7 @@ void settings::preferencesLayout()
 	dtform->addItem(new QSpacerItem(0, 5));
 	dtform->addWidget(dtl2);
 	dtform->addItem(new QSpacerItem(0, 5));
-	//TODO FIX column gap [Windows]
+	//TODO FIX column gap [Linux] [Windows]
 	dtform->addWidget(dtl3);
 	dtform->addItem(new QSpacerItem(0, 0));
 

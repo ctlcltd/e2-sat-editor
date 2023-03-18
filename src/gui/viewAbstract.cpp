@@ -146,6 +146,7 @@ void viewAbstract::searchLayout()
 	this->lsr_search.input->connect(this->lsr_search.input, &QLineEdit::textChanged, [=](const QString& text) { this->listFindPerform(text, LIST_FIND::fast); });
 	platform::osLineEdit(this->lsr_search.input);
 
+	//TODO FIX text color [Windows]
 	this->lsr_search.highlight = new QPushButton;
 	this->lsr_search.highlight->setObjectName("list_search_highlight");
 	this->lsr_search.highlight->setText("Highlight");
