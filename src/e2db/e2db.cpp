@@ -91,6 +91,7 @@ void e2db::import_file(vector<string> paths)
 	}
 }
 
+//TODO TEST
 void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 {
 	debug("import_file", "file path", "singular");
@@ -214,6 +215,7 @@ void e2db::export_file(FPORTS fpo, vector<string> paths)
 	}
 }
 
+//TODO TEST
 void e2db::export_file(FPORTS fpo, string path)
 {
 	debug("export_file", "file path", "singular");
@@ -325,7 +327,7 @@ void e2db::export_file(FPORTS fpo, string path)
 	{
 		std::filesystem::path fp = std::filesystem::path(path); //C++17
 		string basedir = fp.parent_path().u8string(); //C++17
-		if (basedir.rfind('/') == string::npos)
+		if (basedir.size() && basedir[basedir.size() - 1] != '/')
 			basedir.append("/");
 
 		fpath = basedir + file.filename;

@@ -402,13 +402,13 @@ void e2db_maker::make_e2db_parentallock_list()
 	}
 	else
 	{
-		string filename = db.parental ? "blacklist" : "whitelist";
+		string filename = db.parental ? "whitelist" : "blacklist";
 
 		e2db_file file;
 		make_parentallock_list(filename, db.parental, file);
 		this->e2db_out[filename] = file;
 
-		filename = db.parental ? "whitelist" : "blacklist";
+		filename = db.parental ? "blacklist" : "whitelist";
 		e2db_file empty;
 		empty.filename = filename;
 		empty.mime = "text/plain";
@@ -468,7 +468,7 @@ void e2db_maker::make_bouquet_epl(string bname, e2db_file& file)
 
 		string name;
 		string basedir = MAKER_BPATH;
-		if (basedir.rfind('/') == string::npos)
+		if (basedir.size() && basedir[basedir.size() - 1] != '/')
 			basedir.append("/");
 
 		string path = basedir + w;
@@ -1316,7 +1316,7 @@ bool e2db_maker::push_file(string path)
 	}
 	for (auto & o: this->e2db_out)
 	{
-		if (path.rfind('/') == string::npos)
+		if (path.size() && path[path.size() - 1] != '/')
 			path.append("/");
 
 		string fpath = path + o.first;

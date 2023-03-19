@@ -236,7 +236,7 @@ struct e2db_abstract : protected e2se::log_factory
 			int onid = 0;
 			int stype = 0;
 			int snum = 0;
-			int srcid = -1;
+			int srcid = 0;
 			int index = -1;
 			bool locked = false;
 			string txid;

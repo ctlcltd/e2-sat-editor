@@ -131,7 +131,7 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 
 	std::filesystem::path fp = std::filesystem::path(path); //C++17
 	string basedir = fp.parent_path().u8string(); //C++17
-	if (basedir.rfind('/') == string::npos)
+	if (basedir.size() && basedir[basedir.size() - 1] != '/')
 		basedir.append("/");
 	string filename = fp.filename().u8string(); //C++17
 
@@ -213,7 +213,7 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 
 	std::filesystem::path fpath = std::filesystem::path(path); //C++17
 	string basedir = fpath.parent_path().u8string(); //C++17
-	if (basedir.rfind('/') == string::npos)
+	if (basedir.size() && basedir[basedir.size() - 1] != '/')
 		basedir.append("/");
 	string filename = fpath.filename().u8string(); //C++17
 

@@ -72,13 +72,6 @@ void ftpcom::setParameters(ftp_params params)
 	baseb = params.bpath;
 	bases = params.spath;
 
-	if (baset.rfind('/') == string::npos)
-		baset.append("/");
-	if (baseb.rfind('/') == string::npos)
-		baseb.append("/");
-	if (bases.rfind('/') == string::npos)
-		bases.append("/");
-
 	ifreload = params.ifreload;
 	tnreload = params.tnreload;
 }
@@ -175,6 +168,10 @@ vector<string> ftpcom::list_dir(string basedir)
 	}
 
 	stringstream data;
+
+	if (basedir.size() && basedir[basedir.size() - 1] != '/')
+		basedir.append("/");
+
 	string remotedir = '/' + basedir;
 
 	curl_url_set(rph, CURLUPART_PATH, remotedir.c_str(), 0);
@@ -198,7 +195,8 @@ vector<string> ftpcom::list_dir(string basedir)
 	{
 		if (line.empty())
 			continue;
-		list.emplace_back(remotedir + line);
+
+		list.emplace_back(basedir + line);
 	}
 
 	reset(cph, rph);
@@ -249,9 +247,14 @@ void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 	sio data;
 	data.size = 0;
 	CURLcode res = CURLE_GOT_NOTHING;
-	string remotefile = '/' + basedir + filename;
 
-	debug("download_data", "file", remotefile);
+	if (basedir.size() && basedir[basedir.size() - 1] != '/')
+		basedir.append("/");
+
+	string path = basedir + filename;
+	string remotefile = '/' + path;
+
+	debug("download_data", "file", path);
 
 	curl_url_set(rph, CURLUPART_PATH, remotefile.c_str(), 0);
 	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_download_func);
@@ -268,7 +271,7 @@ void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 
 	reset(cph, rph);
 
-	string mime = file_mime_detect(remotefile);
+	string mime = file_mime_detect(path);
 
 	file.filename = filename;
 	file.mime = mime;
@@ -286,9 +289,14 @@ void ftpcom::upload_data(string basedir, string filename, ftpcom_file file)
 	data.size = file.size;
 	size_t len = 0;
 	CURLcode res = CURLE_GOT_NOTHING;
-	string remotefile = '/' + basedir + filename;
 
-	debug("upload_data", "file", remotefile);
+	if (basedir.size() && basedir[basedir.size() - 1] != '/')
+		basedir.append("/");
+
+	string path = basedir + filename;
+	string remotefile = '/' + path;
+
+	debug("upload_data", "file", path);
 
 	curl_url_set(rph, CURLUPART_PATH, remotefile.c_str(), 0);
 	curl_easy_setopt(cph, CURLOPT_UPLOAD, true);
@@ -462,6 +470,7 @@ unordered_map<string, ftpcom::ftpcom_file> ftpcom::get_files()
 		string filename = fpath.filename().u8string(); //C++17
 
 		ftpcom_file file;
+
 		download_data(basedir, filename, file);
 
 		files[filename] = file;
@@ -499,6 +508,7 @@ bool ftpcom::cmd_ifreload()
 		return false;
 
 	stringstream data;
+
 	this->rsh = curl_url();
 
 	curl_url_set(rsh, CURLUPART_SCHEME, "http", 0);

@@ -772,7 +772,7 @@ void tab::exportFile()
 	{
 		std::filesystem::path fp = std::filesystem::path(path); //C++17
 		string basedir = fp.parent_path().u8string(); //C++17
-		if (basedir.rfind('/') == string::npos)
+		if (basedir.size() && basedir[basedir.size() - 1] != '/')
 			basedir.append("/");
 
 		for (string & path : paths)
@@ -1292,7 +1292,7 @@ void tab::ftpUpload()
 			basedir = settings.value("pathServices").toString().toStdString();
 		}
 
-		if (basedir.rfind('/') == string::npos)
+		if (basedir.size() && basedir[basedir.size() - 1] != '/')
 			basedir.append("/");
 
 		path = basedir + filename;
@@ -1312,6 +1312,7 @@ void tab::ftpUpload()
 
 	ftih->put_files(ftp_files);
 
+	//TODO FIX
 	if (statusBarIsVisible())
 		statusBarMessage("Uploaded " + to_string(files.size()) + " files");
 	else
