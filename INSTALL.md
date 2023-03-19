@@ -6,7 +6,7 @@ Generic instructions to help with compiling e2 SAT Editor on different platforms
 
 Utils scripts in **scripts** folder.
 
-- For Linux or BSD or unix use scripts/build.sh
+- For Linux or BSD or Unix use scripts/build.sh
 
 - For macOS with Xcode use scripts/darwin.sh
 
@@ -88,9 +88,9 @@ cmake --build build
 ```
 
 
-## Linux – BSD - unix – qmake – CMake
+## Linux – BSD - Unix – qmake – CMake
 
-Compiling with **qmake** or **CMake** for Linux or BSD or unix.
+Compiling with **qmake** or **CMake** for Linux or BSD or Unix.
 
 I am testing under **Arch Linux** with Qt6 and under **Ubuntu LTS** with Qt5, using **qmake**.
 

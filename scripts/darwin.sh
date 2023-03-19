@@ -1,11 +1,51 @@
 #!/bin/bash
-# Pre-build and initialize an xcodeproj with qmake
+# Build or initialize an xcodeproj with QMake
 # 
 
-cd src
+usage () {
+	if [[ -z "$1" ]]; then
+		printf "%s\n\n" "Build or initialize an xcodeproj with QMake"
+	fi
+
+	printf "%s\n\n" "bash darwin.sh [OPTIONS]"
+	printf "%s\n"   "-c --cleanup       Task: cleanup"
+	printf "%s\n"   "-p --prepare       Task: prepare"
+	printf "%s\n"   "-b --build         Task: build"
+	printf "%s\n"   "-x --xcodeproj     Task: xcodeproj"
+	printf "%s\n"   "-d --default       Task: default"
+	printf "%s\n"   "-r --release       Task: release"
+	printf "%s\n"   "-h --help          Display this help and exit."
+}
+
+src () {
+	if [[ "$PWD" != "src"* ]]; then
+		cd src
+
+		if [[ "$PWD" != "src"* ]]; then
+			echo "Directory \"src\" not found.";
+
+			exit 1;
+		fi
+	fi
+}
+
+init () {
+	if [[ -z $(type -t qmake) ]]; then
+		echo "QMake not found."
+
+		exit 1;
+	fi
+	if [[ -z $(type -t make) ]]; then
+		echo "Make not found."
+
+		exit 1;
+	fi
+}
 
 cleanup () {
-	echo "cleanup."
+	printf "%s\n\n" "cleanup."
+
+	src
 	rm *.o
 	rm moc_*.cpp
 	rm moc_predefs.h
@@ -14,6 +54,30 @@ cleanup () {
 	rm Makefile.Release
 	rm .qmake.stash
 	rm qrc_resources.cpp
+}
+
+prepare () {
+	printf "%s\n\n" "prepare."
+	printf "%s\n\n" "preparing QMake ..."
+
+	src
+	qmake -spec macx-clang e2-sat-editor.pro
+}
+
+build () {
+	printf "%s\n\n" "build."
+	printf "%s\n\n" "compiling ..."
+
+	src
+	make && qmake
+}
+
+xcodeproj () {
+	printf "%s\n\n" "xcodeproj."
+	printf "%s\n\n" "preparing xcodeproj ..."
+
+	src
+	qmake -spec macx-xcode
 }
 
 cpframework () {
@@ -104,17 +168,17 @@ relinking () {
 	fi
 }
 
-prebuilt_release () {
-	echo "release."
+release () {
+	printf "%s\n\n" "release."
 
-	make release
+	src
 
 	mkdir -p build/Frameworks
 
 	cp -R "e2 SAT Editor.app" "e2 SAT Editor.app.bak"
 	cp "e2 SAT Editor.app/Contents/MacOS/e2 SAT Editor" "build/e2 SAT Editor"
 
-	echo "copying pre-built libs ..."
+	printf "%s\n\n" "copying pre-built libs ..."
 
 	cd build
 
@@ -138,29 +202,83 @@ prebuilt_release () {
 	cp "build/e2 SAT Editor" "e2 SAT Editor.app/Contents/MacOS/"
 }
 
+default () {
+	printf "%s\n\n" "default."
 
-if [[ -z $(type -t qmake) ]]; then
-	echo "qmake not found."
-	exit 1;
+	init
+	prepare
+	build
+	xcodeproj
+}
+
+complete () {
+	printf "\n%s\n" "done."
+}
+
+
+if [[ -z "$@" ]]; then
+	usage
+
+	exit 0
 fi
-if [[ -z $(type -t make) ]]; then
-	echo "make not found."
-	exit 1;
-fi
 
-[[ "$1" == "cleanup" ]] && cleanup
+for SRG in "$@"; do
+	case "$SRG" in
+		-q*|--qmake*)
+			QMAKE="$2"
+			init
+			shift
+			shift
+			;;
+		-c|--cleanup)
+			cleanup
+			shift
+			;;
+		-p|--prepare)
+			init
+			prepare
+			shift
+			;;
+		-b|--build)
+			init
+			build
+			shift
+			;;
+		-x|--xcodeproj)
+			init
+			prepare
+			xcodeproj
+			shift
+			;;
+		-d|--default)
+			default
+			shift
+			;;
+		-r|--release)
+			init
+			prepare
+			build
+			release
+			shift
+			;;
+		-h|--help)
+			usage
 
+			exit 0
+			;;
+		-*)
+			[[ "$1" == "-"* ]] && shift
+			printf "%s: %s %s\n\n" "$0" "Illegal option" "$2"
 
-echo "preparing qmake ..."
-qmake -spec macx-clang e2-sat-editor.pro
+			usage 1
 
-echo "compiling ..."
-make && qmake
+			exit 1
+			;;
+		*)
+			[[ "$1" != -* ]] && usage
+			;;
+	esac
+done
 
-echo "preparing xcodeproj ..."
-qmake -spec macx-xcode
-
-[[ "$1" == "release" ]] && prebuilt_release
-
-echo "done."
+complete
 

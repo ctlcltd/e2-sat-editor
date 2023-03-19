@@ -1,11 +1,58 @@
 #!/bin/bash
-# Build in *ux with qmake and Qt 5|6
+# Build in *ux with QMake
 # 
 
-cd src
+usage () {
+	if [[ -z "$1" ]]; then
+		printf "%s\n\n" "Build in *ux with QMake"
+	fi
+
+	printf "%s\n\n" "bash build.sh [OPTIONS] [-q qmake] [-q qmake6]"
+	printf "%s\n"   "-q --qmake         QMake executable."
+	printf "%s\n"   "-c --cleanup       Task: cleanup"
+	printf "%s\n"   "-p --prepare       Task: prepare"
+	printf "%s\n"   "-b --build         Task: build"
+	printf "%s\n"   "-d --default       Task: default"
+	printf "%s\n"   "-h --help          Display this help and exit."
+}
+
+src () {
+	if [[ "$PWD" != "src"* ]]; then
+		cd src
+
+		if [[ "$PWD" != "src"* ]]; then
+			echo "Directory \"src\" not found.";
+
+			exit 1;
+		fi
+	fi
+}
+
+init () {
+	if [[ -z "$QMAKE" ]]; then
+		if [[ -n $(type -t qmake6) ]]; then
+			QMAKE="qmake6"
+		elif [[ -n $(type -t qmake) ]]; then
+			QMAKE="qmake"
+		fi
+	fi
+
+	if [[ -z $(type -t "$QMAKE") ]]; then
+		echo "QMake not found."
+
+		exit 1;
+	fi
+	if [[ -z $(type -t make) ]]; then
+		echo "Make not found."
+
+		exit 1;
+	fi
+}
 
 cleanup () {
-	echo "cleanup."
+	printf "%s\n\n" "cleanup."
+
+	src
 	rm *.o
 	rm moc_*.cpp
 	rm moc_predefs.h
@@ -14,31 +61,85 @@ cleanup () {
 	rm qrc_resources.cpp
 }
 
+prepare () {
+	printf "%s\n\n" "prepare."
+	printf "%s\n\n" "preparing QMake ..."
 
-if [[ -z $QMAKE ]]; then
-	if [[ -n $(type -t qmake6) ]]; then
-		QMAKE="qmake6"
-	elif [[ -n $(type -t qmake) ]]; then
-		QMAKE="qmake"
-	fi
+	src
+	$QMAKE
+}
+
+build () {
+	printf "%s\n\n" "build."
+	printf "%s\n\n" "compiling ..."
+
+	src
+	make release && $QMAKE
+}
+
+default () {
+	printf "%s\n\n" "default."
+
+	init
+	prepare
+	build
+}
+
+complete () {
+	printf "\n%s\n" "done."
+}
+
+
+if [[ -z "$@" ]]; then
+	usage
+
+	exit 0
 fi
-if [[ -z $(type -t $QMAKE) ]]; then
-	echo "qmake not found."
-	exit 1;
-fi
-if [[ -z $(type -t make) ]]; then
-	echo "make not found."
-	exit 1;
-fi
 
+for SRG in "$@"; do
+	case "$SRG" in
+		-q*|--qmake*)
+			QMAKE="$2"
+			init
+			shift
+			shift
+			;;
+		-c|--cleanup)
+			cleanup
+			shift
+			;;
+		-p|--prepare)
+			init
+			prepare
+			shift
+			;;
+		-b|--build)
+			init
+			build
+			shift
+			;;
+		-d|--default)
+			default
+			shift
+			;;
+		-h|--help)
+			usage
 
-[[ "$1" == "cleanup" ]] && cleanup
+			exit 0
+			;;
+		-*)
+			[[ "$1" == "-"* ]] && shift
+			printf "%s: %s %s\n\n" "$0" "Illegal option" "$2"
 
-echo "preparing qmake ..."
-$QMAKE
+			usage 1
 
-echo "compiling ..."
-make release && $QMAKE
+			exit 1
+			;;
+		*)
+			[[ "$1" != -* ]] && usage
+			;;
+	esac
+done
 
-echo "done."
+complete
 
