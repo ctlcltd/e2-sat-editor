@@ -27,6 +27,7 @@ using std::vector, std::map;
 #include <QPushButton>
 
 #include "toolkit/WidgetWithBackdrop.h"
+#include "theme.h"
 #include "gui.h"
 
 using e2se_gui::WidgetWithBackdrop;
@@ -64,6 +65,7 @@ class settings : protected e2se::log_factory
 		virtual ~settings() = default;
 		void display(QWidget* cwid);
 		void destroy();
+		void themeChanged();
 
 	protected:
 		void layout(QWidget* cwid);
@@ -88,6 +90,7 @@ class settings : protected e2se::log_factory
 	private:
 		e2se_gui::gui* gid;
 		QDialog* dial = nullptr;
+		e2se_gui::theme* theme;
 		QSettings* sets;
 		QTabWidget* dtwid;
 		WidgetWithBackdrop* rppage;

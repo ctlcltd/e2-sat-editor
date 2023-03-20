@@ -243,6 +243,7 @@ void gui::tabStackerLayout()
 	twid->tabBar()->setChangeCurrentOnDrag(false);
 	twid->tabBar()->setElideMode(Qt::ElideRight);
 
+	//TODO FIX [Wine]
 #ifndef Q_OS_WIN
 	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 12ex; max-width: 25ex; height: 6.3ex; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button) } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight); border-color: transparent }");
 #else
@@ -300,6 +301,7 @@ void gui::tabStackerLayout()
 	ttbnew->setIcon(theme->dynamicIcon("add", ttbnew));
 	ttbnew->setShortcut(QKeySequence::AddTab);
 
+	//TODO FIX [Linux] [Wine]
 #ifndef Q_OS_WIN
 	ttbnew->setStyleSheet("QPushButton { min-width: 8ex; min-height: 7ex; padding-left: 3px; padding-right: 3px; font-size: 12px; font-weight: bold }");
 #else

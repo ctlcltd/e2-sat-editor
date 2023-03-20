@@ -15,7 +15,6 @@
 #include <unordered_map>
 #include <cstdio>
 
-// #define CURL_STATICLIB
 #include <curl/curl.h>
 
 #include "../logger/logger.h"
@@ -30,8 +29,10 @@ class ftpcom : protected e2se::log_factory
 {
 	public:
 
-		static const int MAX_RESUME_ATTEMPTS = 5;
+		static const bool VERBOSE = false;
+		static const int FTP_CONNECT_TIMEOUT = 10;
 		static const int HTTP_TIMEOUT = 60;
+		static const int MAX_RESUME_ATTEMPTS = 5;
 
 		struct ftp_params
 		{

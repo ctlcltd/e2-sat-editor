@@ -19,23 +19,23 @@
 namespace e2se_gui
 {
 
-bool TreeEventHandler::eventFilter(QObject* o, QEvent* e)
+bool TreeEventHandler::eventFilter(QObject* object, QEvent* event)
 {
-	if (e->type() == QEvent::Drop)
+	if (event->type() == QEvent::Drop)
 	{
-		QDropEvent* evt = static_cast<QDropEvent*>(e);
-		QTreeWidget* tree = qobject_cast<QTreeWidget*>(o->parent());
-		QTreeWidget* list = qobject_cast<QTreeWidget*>(evt->source());
+		QDropEvent* e = static_cast<QDropEvent*>(event);
+		QTreeWidget* tree = qobject_cast<QTreeWidget*>(object->parent());
+		QTreeWidget* list = qobject_cast<QTreeWidget*>(e->source());
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-		QPoint pos = evt->position().toPoint();
+		QPoint pos = e->position().toPoint();
 #else
-		QPoint pos = evt->pos();
+		QPoint pos = e->pos();
 #endif
 
 		QTreeWidgetItem* current = tree->itemAt(pos);
 		int ti = tree->indexOfTopLevelItem(current);
 
-		evt->setDropAction(Qt::DropAction::IgnoreAction);
+		e->setDropAction(Qt::DropAction::IgnoreAction);
 
 		// discard drop
 		// all | tv | radio
@@ -55,10 +55,10 @@ bool TreeEventHandler::eventFilter(QObject* o, QEvent* e)
 			callEventCallback(list, current);
 		}
 
-		return QObject::eventFilter(o, evt);
+		return QObject::eventFilter(object, e);
 	}
 
-	return QObject::eventFilter(o, e);
+	return QObject::eventFilter(object, event);
 }
 
 }

@@ -17,26 +17,26 @@
 namespace e2se_gui
 {
 
-bool ListEventHandler::eventFilter(QObject* o, QEvent* e)
+bool ListEventHandler::eventFilter(QObject* object, QEvent* event)
 {
-	if (e->type() == QEvent::Drop)
+	if (event->type() == QEvent::Drop)
 	{
-		QDropEvent* evt = static_cast<QDropEvent*>(e);
+		QDropEvent* e = static_cast<QDropEvent*>(event);
 
 		if (this->dnd)
 		{
-			QTreeWidget* list = qobject_cast<QTreeWidget*>(o->parent());
+			QTreeWidget* list = qobject_cast<QTreeWidget*>(object->parent());
 			callEventCallback(list);
 		}
 		else
 		{
-			evt->setDropAction(Qt::DropAction::IgnoreAction);
+			e->setDropAction(Qt::DropAction::IgnoreAction);
 		}
 
-		return QObject::eventFilter(o, evt);
+		return QObject::eventFilter(object, e);
 	}
 
-	return QObject::eventFilter(o, e);
+	return QObject::eventFilter(object, event);
 }
 
 }

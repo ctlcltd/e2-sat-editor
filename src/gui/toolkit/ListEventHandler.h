@@ -35,7 +35,7 @@ class ListEventHandler : public QObject
 		}
 
 	protected:
-		bool eventFilter(QObject* o, QEvent* e);
+		bool eventFilter(QObject* object, QEvent* event);
 		void callEventCallback(QTreeWidget* tw)
 		{
 			if (this->eventCallback != nullptr)

@@ -59,6 +59,7 @@ void tools::inspector()
 	dcnt->setReadOnly(true);
 	dcnt->document()->setDefaultStyleSheet("pre { font-size: 11px }");
 	dcnt->setHtml("<pre>" + QString::fromStdString(this->log->str()).toHtmlEscaped() + "</pre>");
+	platform::osTextEdit(dcnt);
 
 	// QTextEdit* dtdg = new QTextEdit;
 	QComboBox* dtft = new QComboBox;

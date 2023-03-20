@@ -35,6 +35,7 @@
 using std::to_string;
 
 using e2se_gui::theme;
+using e2se_gui::themeChangedEventFilter;
 
 using namespace e2se;
 
@@ -69,6 +70,12 @@ void settings::layout(QWidget* cwid)
 	this->dial = new QDialog(cwid);
 	dial->setWindowTitle(tr("Settings"));
 	dial->setStyleSheet("QGroupBox { spacing: 0; padding: 0; padding-top: 20px; border: 0; font-weight: bold } QGroupBox::title { margin: 0 10px }");
+
+	this->theme = new e2se_gui::theme;
+
+	themeChangedEventFilter* gce = new themeChangedEventFilter;
+	gce->setEventCallback([=]() { this->themeChanged(); });
+	dial->installEventFilter(gce);
 
 	platform::osWindowBlend(dial);
 
@@ -108,7 +115,6 @@ void settings::layout(QWidget* cwid)
 	dial->setLayout(dfrm);
 }
 
-//TODO improve QLineEdit and QComboBox platform contextual menu
 void settings::preferencesLayout()
 {
 	QWidget* dtpage = new QWidget;
@@ -297,7 +303,6 @@ void settings::preferencesLayout()
 	dtwid->addTab(dtarea, tr("Preferences"));
 }
 
-//TODO improve QLineEdit and QComboBox platform contextual menu
 void settings::connectionsLayout()
 {
 	this->rppage = new WidgetWithBackdrop;
@@ -311,6 +316,7 @@ void settings::connectionsLayout()
 	rplist->connect(rplist, &QListWidget::currentTextChanged, [=](QString text) { this->profileNameChanged(text); });
 	rplist->connect(rplist, &QAbstractItemView::viewportEntered, [=]() { this->renameProfile(false); });
 	rppage->connect(rppage, &WidgetWithBackdrop::backdrop, [=]() { this->renameProfile(false); });
+	platform::osPersistentEditor(rplist);
 
 	QToolBar* dttbar = new QToolBar;
 	dttbar->setIconSize(QSize(12, 12));
@@ -448,7 +454,6 @@ void settings::connectionsLayout()
 	dtwid->addTab(rppage, tr("Connections"));
 }
 
-//TODO improve QLineEdit platform contextual menu QTableWidget
 void settings::advancedLayout()
 {
 	QWidget* dtpage = new QWidget;
@@ -459,6 +464,7 @@ void settings::advancedLayout()
 	adtbl->setHorizontalHeaderLabels({"ID", "VALUE"});
 	adtbl->horizontalHeader()->setSectionsClickable(false);
 	adtbl->verticalHeader()->setVisible(false);
+	platform::osPersistentEditor(adtbl);
 
 	this->adntc = new QWidget;
 	QGridLayout* dtntcg = new QGridLayout;
@@ -492,6 +498,13 @@ void settings::advancedLayout()
 	dtwid->addTab(dtpage, tr("Advanced"));
 }
 
+void settings::themeChanged()
+{
+	debug("themeChanged");
+
+	theme->changed();
+}
+
 QListWidgetItem* settings::addProfile(int i)
 {
 	if (i == -1)
@@ -522,8 +535,8 @@ void settings::deleteProfile()
 {
 	debug("deleteProfile");
 
-	QListWidgetItem* curr = rplist->currentItem();
-	int i = curr->data(Qt::UserRole).toInt();
+	QListWidgetItem* item = rplist->currentItem();
+	int i = item->data(Qt::UserRole).toInt();
 	tmpps[i].clear();
 	this->state.dele = true;
 
@@ -534,11 +547,14 @@ void settings::deleteProfile()
 
 void settings::renameProfile(bool enabled)
 {
-	QListWidgetItem* curr = rplist->currentItem();
-	if (enabled && ! rplist->isPersistentEditorOpen(curr))
-		rplist->openPersistentEditor(curr);
+	debug("renameProfile", "enabled", enabled);
+
+	QListWidgetItem* item = rplist->currentItem();
+
+	if (enabled && ! rplist->isPersistentEditorOpen(item))
+		rplist->openPersistentEditor(item);
 	else
-		rplist->closePersistentEditor(curr);
+		rplist->closePersistentEditor(item);
 }
 
 void settings::updateProfile(QListWidgetItem* item)
@@ -560,8 +576,8 @@ void settings::profileNameChanged(QString text)
 {
 	debug("profileNameChanged");
 
-	QListWidgetItem* curr = rplist->currentItem();
-	int i = curr->data(Qt::UserRole).toInt();
+	QListWidgetItem* item = rplist->currentItem();
+	int i = item->data(Qt::UserRole).toInt();
 	tmpps[i]["profileName"] = text;
 }
 

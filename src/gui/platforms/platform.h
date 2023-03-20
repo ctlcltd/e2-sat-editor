@@ -17,6 +17,7 @@
 #include <QMenu>
 #include <QLineEdit>
 #include <QComboBox>
+#include <QTextEdit>
 
 class _platform
 {
@@ -59,6 +60,14 @@ class _platform
 		static QComboBox* osComboBox(QComboBox* select)
 		{
 			return select;
+		}
+		static QTextEdit* osTextEdit(QTextEdit* input)
+		{
+			return input;
+		}
+		static QWidget* osPersistentEditor(QWidget* widget)
+		{
+			return widget;
 		}
 
 	protected:

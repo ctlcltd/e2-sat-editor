@@ -14,14 +14,14 @@
 namespace e2se_gui
 {
 
-bool ListEventObserver::eventFilter(QObject* o, QEvent* e)
+bool ListEventObserver::eventFilter(QObject* object, QEvent* event)
 {
-	if (e->type() == QEvent::ChildRemoved)
+	if (event->type() == QEvent::ChildRemoved)
 		this->changed = this->changed ? false : true;
-	else if (e->type() == QEvent::ChildAdded)
+	else if (event->type() == QEvent::ChildAdded)
 		this->changed = this->changed ? false : true;
 
-	return false;
+	return QObject::eventFilter(object, event);
 }
 
 }

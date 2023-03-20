@@ -29,7 +29,7 @@ class ListEventObserver : public QObject
 		}
 
 	protected:
-		bool eventFilter(QObject* o, QEvent* e);
+		bool eventFilter(QObject* object, QEvent* event);
 
 	private:
 		bool changed = false;

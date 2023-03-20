@@ -29,7 +29,7 @@ class TreeEventHandler : public QObject
 		}
 
 	protected:
-		bool eventFilter(QObject* o, QEvent* e);
+		bool eventFilter(QObject* object, QEvent* event);
 		void callEventCallback(QTreeWidget* tw, QTreeWidgetItem* current)
 		{
 			if (this->eventCallback != nullptr)

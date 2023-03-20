@@ -99,10 +99,10 @@ bool ftpcom::handle()
 	curl_easy_setopt(cph, CURLOPT_PORT, ftport);
 	if (actv)
 		curl_easy_setopt(cph, CURLOPT_FTPPORT, "-");
-	//TODO TEST
-	curl_easy_setopt(cph, CURLOPT_CONNECTTIMEOUT, 10);
-	// curl_easy_setopt(cph, CURLOPT_FTP_RESPONSE_TIMEOUT, 10); // 0 = default no timeout
-	// curl_easy_setopt(cph, CURLOPT_VERBOSE, true);
+
+	curl_easy_setopt(cph, CURLOPT_CONNECTTIMEOUT, ftpcom::FTP_CONNECT_TIMEOUT);
+	if (ftpcom::VERBOSE)
+		curl_easy_setopt(cph, CURLOPT_VERBOSE, true);
 
 	return true;
 }
@@ -540,8 +540,11 @@ bool ftpcom::cmd_ifreload()
 	curl_easy_setopt(csh, CURLOPT_CURLU, rsh);
 	curl_easy_setopt(csh, CURLOPT_WRITEFUNCTION, data_write_func);
 	curl_easy_setopt(csh, CURLOPT_WRITEDATA, &data);
-	curl_easy_setopt(csh, CURLOPT_TIMEOUT, HTTP_TIMEOUT); // 0 = default no timeout
-	// curl_easy_setopt(csh, CURLOPT_VERBOSE, true);
+
+	curl_easy_setopt(csh, CURLOPT_TIMEOUT, ftpcom::HTTP_TIMEOUT); // 0 = default no timeout
+	if (ftpcom::VERBOSE)
+		curl_easy_setopt(csh, CURLOPT_VERBOSE, true);
+
 	CURLcode res = perform(csh);
 
 	if (res != CURLE_OK)
@@ -599,7 +602,9 @@ bool ftpcom::cmd_tnreload()
 	curl_easy_setopt(csh, CURLOPT_READDATA, &data);
 	curl_easy_setopt(csh, CURLOPT_WRITEFUNCTION, data_discard_func);
 	curl_easy_setopt(csh, CURLOPT_FAILONERROR, true);
-	// curl_easy_setopt(csh, CURLOPT_VERBOSE, true);
+
+	if (ftpcom::VERBOSE)
+		curl_easy_setopt(csh, CURLOPT_VERBOSE, true);
 
 	debug("cmd_tnreload", "stdout", "start");
 

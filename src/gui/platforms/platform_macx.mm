@@ -44,22 +44,22 @@ class _windowEventFilter : public QObject
 		}
 
 	protected:
-		bool eventFilter(QObject* o, QEvent* e)
+		bool eventFilter(QObject* object, QEvent* event)
 		{
-			if (e->type() == QEvent::Move)
+			if (event->type() == QEvent::Move)
 			{
 				NSView* superview = m_view.superview;
 
 				[m_view setFrame:superview.window.contentView.frame]; // fullscreen needed
 			}
-			else if (e->type() == QEvent::Destroy)
+			else if (event->type() == QEvent::Destroy)
 			{
 				[m_view removeFromSuperview];
 				[m_view release];
 			}
 
-			// std::cout << "window QEvent" << ' ' << e->type() << std::endl;
-			return QObject::eventFilter(o, e);
+			// std::cout << "window QEvent" << ' ' << event->type() << std::endl;
+			return QObject::eventFilter(object, event);
 		}
 
 		NSVisualEffectView* m_view;
@@ -75,11 +75,11 @@ class _widgetEventFilter : public QObject
 		}
 
 	protected:
-		bool eventFilter(QObject* o, QEvent* e)
+		bool eventFilter(QObject* object, QEvent* event)
 		{
-			if (e->type() == QEvent::Resize || e->type() == QEvent::Move)
+			if (event->type() == QEvent::Resize || event->type() == QEvent::Move)
 			{
-				QWidget* widget = qobject_cast<QWidget*>(o);
+				QWidget* widget = qobject_cast<QWidget*>(object);
 				QPoint framePos = widget->mapTo(widget->window(), QPoint());
 				QRect frameRect;
 				frameRect.setTopLeft(framePos);
@@ -89,11 +89,11 @@ class _widgetEventFilter : public QObject
 
 				[m_view setFrame:nsFrame];
 
-				// std::cout << "widget resizing" << ' ' << e->type() << ' ' << ' ' << frameRect.top() << ',' << frameRect.left() << ',' << frameRect.width() << ',' << frameRect.height() << ' ' << ' ' << widget->window()->width() << ',' << widget->window()->height() << std::endl;
+				// std::cout << "widget resizing" << ' ' << event->type() << ' ' << ' ' << frameRect.top() << ',' << frameRect.left() << ',' << frameRect.width() << ',' << frameRect.height() << ' ' << ' ' << widget->window()->width() << ',' << widget->window()->height() << std::endl;
 			}
-			else if (e->type() == QEvent::Show)
+			else if (event->type() == QEvent::Show)
 			{
-				QWidget* widget = qobject_cast<QWidget*>(o);
+				QWidget* widget = qobject_cast<QWidget*>(object);
 				QWindow* top = widget->window()->windowHandle();
 
 				if (top != nullptr)
@@ -107,23 +107,48 @@ class _widgetEventFilter : public QObject
 
 				[m_view setHidden:FALSE];
 			}
-			else if (e->type() == QEvent::Hide)
+			else if (event->type() == QEvent::Hide)
 			{
 				[m_view setHidden:TRUE];
 			}
-			else if (e->type() == QEvent::Destroy)
+			else if (event->type() == QEvent::Destroy)
 			{
 				[m_view removeFromSuperview];
 				[m_view release];
 			}
 
-			// std::cout << "widget QEvent" << ' ' << e->type() << std::endl;
-			return QObject::eventFilter(o, e);
+			// std::cout << "widget QEvent" << ' ' << event->type() << std::endl;
+			return QObject::eventFilter(object, event);
 		}
 
 		NSVisualEffectView* m_view;
 };
 
+class _osPersistentEditorEventFilter : public QObject
+{
+	protected:
+		bool eventFilter(QObject* object, QEvent* event)
+		{
+			QWidget* widget = qobject_cast<QWidget*>(object);
+
+			if (! widget)
+				return QObject::eventFilter(object, event);
+
+			if (event->type() == QEvent::FocusOut || (event->type() == QEvent::Hide && widget->isWindow())) {
+				if (! widget->isActiveWindow() || (QApplication::focusWidget() != widget)) {
+					QWidget* w = QApplication::focusWidget();
+
+					if (w == widget)
+						return QObject::eventFilter(object, event);
+
+					if (QLineEdit* input = qobject_cast<QLineEdit*>(w))
+						_platform_macx::osLineEdit(input, false);
+				}
+			}
+
+			return QObject::eventFilter(object, event);
+		}
+};
 
 class _ComboBoxProxyStyle : public QProxyStyle
 {
@@ -262,17 +287,20 @@ void _platform_macx::_osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint po
 }
 
 //TODO improve native macx context menu items
-QLineEdit* _platform_macx::_osLineEdit(QLineEdit* input)
+QLineEdit* _platform_macx::_osLineEdit(QLineEdit* input, bool destroy)
 {
 	input->setContextMenuPolicy(Qt::CustomContextMenu);
 	input->connect(input, &QLineEdit::customContextMenuRequested, [=](QPoint pos) {
 		QMenu* menu = input->createStandardContextMenu();
 		_osContextMenuPopup(menu, input, pos);
 
-		// menu delete after QAction signal trigger
-		QTimer::singleShot(300, [=]() {
-			delete menu;
-		});
+		if (destroy)
+		{
+			// menu delete after QAction signal trigger
+			QTimer::singleShot(300, [=]() {
+				menu->deleteLater();
+			});
+		}
 	});
 	return input;
 }
@@ -282,4 +310,30 @@ QComboBox* _platform_macx::_osComboBox(QComboBox* select)
 	select->setStyle(new _ComboBoxProxyStyle);
 	select->setEditable(false);
 	return select;
+}
+
+//TODO improve native macx context menu items
+QTextEdit* _platform_macx::_osTextEdit(QTextEdit* input, bool destroy)
+{
+	input->setContextMenuPolicy(Qt::CustomContextMenu);
+	input->connect(input, &QLineEdit::customContextMenuRequested, [=](QPoint pos) {
+		QMenu* menu = input->createStandardContextMenu();
+		_osContextMenuPopup(menu, input, pos);
+
+		if (destroy)
+		{
+			// menu delete after QAction signal trigger
+			QTimer::singleShot(300, [=]() {
+				menu->deleteLater();
+			});
+		}
+	});
+	return input;
+}
+
+//TODO improve native macx context menu items
+QWidget* _platform_macx::_osPersistentEditor(QWidget* widget)
+{
+	widget->installEventFilter(new _osPersistentEditorEventFilter);
+	return widget;
 }

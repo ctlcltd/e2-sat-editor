@@ -24,7 +24,6 @@ using std::pair, std::vector, std::unordered_map;
 
 namespace e2se_gui
 {
-
 class themeChangedEventFilter : public QObject
 {
 	public:
@@ -34,15 +33,15 @@ class themeChangedEventFilter : public QObject
 		}
 
 	protected:
-		bool eventFilter(QObject* o, QEvent* e)
+		bool eventFilter(QObject* object, QEvent* event)
 		{
-			if (e->type() == QEvent::ThemeChange/* || e->type() == QEvent::ApplicationPaletteChange*/)
+			if (event->type() == QEvent::ThemeChange/* || event->type() == QEvent::ApplicationPaletteChange*/)
 			{
 				//TODO improve call at once
 				callEventCallback();
 			}
 
-			return QObject::eventFilter(o, e);
+			return QObject::eventFilter(object, event);
 		}
 		void callEventCallback()
 		{
@@ -115,6 +114,5 @@ class theme
 		vector<QWidget*> styled;
 		vector<QObject*> imaged;
 };
-
 }
 #endif /* theme_h */

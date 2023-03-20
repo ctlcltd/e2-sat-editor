@@ -26,9 +26,11 @@ class WidgetWithBackdrop : public QWidget
 		void backdrop();
 
 	protected:
-		void mousePressEvent(QMouseEvent* e)
+		void mousePressEvent(QMouseEvent* event)
 		{
 			emit backdrop();
+
+			return QWidget::mousePressEvent(event);
 		}
 };
 }

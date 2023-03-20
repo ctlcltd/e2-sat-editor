@@ -11,11 +11,13 @@
 
 #ifndef _platform_macx_h
 #define _platform_macx_h
+#include <QApplication>
 #include <QSettings>
 #include <QWidget>
 #include <QMenu>
 #include <QLineEdit>
 #include <QComboBox>
+#include <QTextEdit>
 
 class _platform_macx
 {
@@ -89,28 +91,46 @@ class _platform_macx
 			else
 				menu->popup(widget->mapToGlobal(pos));
 		}
-		static QLineEdit* osLineEdit(QLineEdit* input)
+		static QLineEdit* osLineEdit(QLineEdit* input, bool destroy = true)
 		{
 			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
 			if (QSettings().value("preference/osContextMenu", experiment).toBool())
-				return _osLineEdit(input);
+				return _osLineEdit(input, destroy);
 			else
 				return input;
 		}
 		static QComboBox* osComboBox(QComboBox* select)
 		{
-			bool experiment = QSettings().value("preference/osExperiment", true).toBool();
+			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
 			if (QSettings().value("preference/osContextMenu", experiment).toBool())
 				return _osComboBox(select);
 			else
 				return select;
+		}
+		static QTextEdit* osTextEdit(QTextEdit* input, bool destroy = true)
+		{
+			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
+			if (QSettings().value("preference/osContextMenu", experiment).toBool())
+				return _osTextEdit(input, destroy);
+			else
+				return input;
+		}
+		static QWidget* osPersistentEditor(QWidget* widget)
+		{
+			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
+			if (QSettings().value("preference/osContextMenu", experiment).toBool())
+				return _osPersistentEditor(widget);
+			else
+				return widget;
 		}
 
 	protected:
 		static QWidget* _osWindowBlend(QWidget* widget);
 		static QWidget* _osWidgetBlend(QWidget* widget, FX_MATERIAL material, FX_BLENDING blending);
 		static void _osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint pos);
-		static QLineEdit* _osLineEdit(QLineEdit* input);
+		static QLineEdit* _osLineEdit(QLineEdit* input, bool destroy);
 		static QComboBox* _osComboBox(QComboBox* select);
+		static QTextEdit* _osTextEdit(QTextEdit* input, bool destroy);
+		static QWidget* _osPersistentEditor(QWidget* widget);
 };
 #endif /* _platform_macx_h */
