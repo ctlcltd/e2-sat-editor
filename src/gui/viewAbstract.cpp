@@ -43,6 +43,7 @@ void viewAbstract::themeChanged()
 	theme->changed();
 }
 
+//TODO FIX window width
 void viewAbstract::searchLayout()
 {
 	this->tree_search = new QWidget;

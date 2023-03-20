@@ -2618,7 +2618,6 @@ void mainView::updateListIndex()
 	this->state.chx_pending = false;
 }
 
-//TODO FIX channel reference marker after drop
 void mainView::updateListReferences(QTreeWidgetItem* current, QList<QTreeWidgetItem*> items)
 {
 	auto* dbih = this->data->dbih;
@@ -2642,12 +2641,10 @@ void mainView::updateListReferences(QTreeWidgetItem* current, QList<QTreeWidgetI
 			bool marker = item->data(mainView::ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
 
 			chref.marker = marker;
-			chref.chid = chid;
-			chref.index = idx;
 
 			if (marker)
 			{
-				string chname = item->text(mainView::ITEM_ROW_ROLE::chname).toStdString();
+				string value = item->text(mainView::ITEM_ROW_ROLE::chname).toStdString();
 				int atype = 0;
 				int anum = 0;
 				int ub_idx = -1;
@@ -2656,10 +2653,19 @@ void mainView::updateListReferences(QTreeWidgetItem* current, QList<QTreeWidgetI
 
 				chref.atype = atype;
 				chref.anum = anum;
-				chref.value = chname;
+				chref.value = value;
+			}
+			else
+			{
+				chref.chid = chid;
+				chref.index = idx;
 			}
 
 			dbih->addChannelReference(chref, bname);
+
+			QString chid = QString::fromStdString(chref.chid);
+			item->setData(mainView::ITEM_DATA_ROLE::chid, Qt::UserRole, chid);
+			item->setText(mainView::ITEM_ROW_ROLE::debug_chid, chid);
 		}
 	}
 }

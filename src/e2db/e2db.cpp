@@ -321,7 +321,7 @@ void e2db::export_file(FPORTS fpo, string path)
 		return error("export_file", "Error", "Unknown export option.");
 	}
 
-	string fpath;
+	string fpath = path;
 
 	if (filename != file.filename)
 	{

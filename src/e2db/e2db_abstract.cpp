@@ -518,7 +518,7 @@ int e2db_abstract::value_transponder_position(string str)
 			char pospoint = str.substr(pos)[0];
 			return (int ((pospoint == 'E' ? posdeg : -posdeg) * 10));
 		}
-		catch (const std::invalid_argument& exception)
+		catch (const std::invalid_argument& err)
 		{
 		}
 	}
