@@ -1086,10 +1086,8 @@ void tunersetsView::showTreeEditContextMenu(QPoint &pos)
 
 	QList<QTreeWidgetItem*> selected = tree->selectedItems();
 
-	if (selected.empty())
-	{
+	if (selected.empty() && tree->topLevelItemCount() != 0)
 		return;
-	}
 
 	QMenu* tree_edit = contextMenu();
 
@@ -1109,7 +1107,7 @@ void tunersetsView::showListEditContextMenu(QPoint &pos)
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
-	if (selected.empty())
+	if (selected.empty() && list->topLevelItemCount() != 0)
 		return;
 
 	bool editable = false;

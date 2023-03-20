@@ -2065,8 +2065,8 @@ void mainView::putListItems(vector<QString> items)
 				tx.tsid = ch.tsid;
 				tx.dvbns = ch.dvbns;
 				tx.sys = dbih->value_transponder_system(qs[9].toStdString());
-				tx.ytype = dbih->value_transponder_type(qs[10].toStdString());
-				tx.pos = dbih->value_transponder_position(qs[11].toStdString());
+				tx.ytype = dbih->value_transponder_type(qs[9].toStdString());
+				tx.pos = dbih->value_transponder_position(qs[10].toStdString());
 				tx.freq = qs[12].toInt();
 				tx.pol = dbih->value_transponder_polarization(qs[13].toStdString());
 				tx.sr = qs[14].toInt();
@@ -2206,7 +2206,7 @@ void mainView::showListEditContextMenu(QPoint& pos)
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
-	if (selected.empty())
+	if (selected.empty() && list->topLevelItemCount() != 0)
 		return;
 
 	bool marker = false;

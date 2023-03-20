@@ -11,6 +11,7 @@
 
 #include <cstdio>
 #include <cstring>
+#include <stdexcept>
 #include <filesystem>
 #include <algorithm>
 #include <iostream>
@@ -510,11 +511,16 @@ int e2db_abstract::value_transponder_position(string str)
 {
 	if (! str.empty())
 	{
-		size_t pos;
-		//TODO FIX invalid_argument
-		float posdeg = std::stof(str, &pos);
-		char pospoint = str.substr(pos)[0];
-		return (int ((pospoint == 'E' ? posdeg : -posdeg) * 10));
+		try
+		{
+			size_t pos;
+			float posdeg = std::stof(str, &pos);
+			char pospoint = str.substr(pos)[0];
+			return (int ((pospoint == 'E' ? posdeg : -posdeg) * 10));
+		}
+		catch (const std::invalid_argument& exception)
+		{
+		}
 	}
 	return -1;
 }
