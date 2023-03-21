@@ -238,6 +238,9 @@ void tunersetsView::layout()
 	list->connect(list, &QTreeWidget::itemSelectionChanged, [=]() { this->listItemSelectionChanged(); });
 	list->connect(list, &QTreeWidget::itemDoubleClicked, [=]() { this->listItemDoubleClicked(); });
 
+	QClipboard* clipboard = QGuiApplication::clipboard();
+	clipboard->connect(clipboard, &QClipboard::dataChanged, [=]() { this->clipboardDataChanged(); });
+
 	tbox->addWidget(tree);
 	tbox->addWidget(tree_search);
 	tbox->addWidget(tree_ats);
@@ -438,12 +441,15 @@ void tunersetsView::treeItemChanged(QTreeWidgetItem* current)
 
 	if (current != NULL)
 	{
-		tabSetFlag(gui::TabListPaste, true);
-
 		list->clearSelection();
 		list->scrollToTop();
 
 		this->action.list_newtr->setEnabled(true);
+
+		if (QGuiApplication::clipboard()->text().isEmpty())
+			tabSetFlag(gui::TabListPaste, false);
+		else
+			tabSetFlag(gui::TabListPaste, true);
 	}
 
 	updateListIndex();
@@ -492,6 +498,7 @@ void tunersetsView::listItemSelectionChanged()
 		tabSetFlag(gui::TabListCopy, true);
 		tabSetFlag(gui::TabListDelete, true);
 	}
+
 	if (selected.count() == 1)
 	{
 		tabSetFlag(gui::TabListEditService, true);
@@ -500,6 +507,13 @@ void tunersetsView::listItemSelectionChanged()
 	{
 		tabSetFlag(gui::TabListEditService, false);
 	}
+
+	if (QGuiApplication::clipboard()->text().isEmpty())
+		tabSetFlag(gui::TabListPaste, false);
+	else
+		tabSetFlag(gui::TabListPaste, true);
+
+	tabUpdateFlags();
 }
 
 void tunersetsView::listItemDoubleClicked()
@@ -863,6 +877,7 @@ void tunersetsView::listItemPaste()
 	QClipboard* clipboard = QGuiApplication::clipboard();
 	const QMimeData* mimeData = clipboard->mimeData();
 	vector<QString> items;
+	int commas = 9;
 
 	if (mimeData->hasText())
 	{
@@ -870,9 +885,13 @@ void tunersetsView::listItemPaste()
 
 		for (QString & data : list)
 		{
-			items.emplace_back(data);
+			if (data.count(',') == commas)
+				items.emplace_back(data);
+			else
+				return;
 		}
 	}
+
 	if (! items.empty())
 	{
 		putListItems(items);

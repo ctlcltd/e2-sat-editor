@@ -237,6 +237,9 @@ void mainView::layout()
 	list->connect(list, &QTreeWidget::itemSelectionChanged, [=]() { this->listItemSelectionChanged(); });
 	list->connect(list, &QTreeWidget::itemDoubleClicked, [=]() { this->listItemDoubleClicked(); });
 
+	QClipboard* clipboard = QGuiApplication::clipboard();
+	clipboard->connect(clipboard, &QClipboard::dataChanged, [=]() { this->clipboardDataChanged(); });
+
 	asbox->addWidget(side);
 	sfrm->setLayout(asbox);
 
@@ -725,8 +728,12 @@ void mainView::servicesItemChanged(QTreeWidgetItem* current)
 				allowDnD();
 		}
 
-		tabSetFlag(gui::TabListDelete, true);
-		tabSetFlag(gui::TabListPaste, true);
+		tabSetFlag(gui::TabListDelete, false);
+
+		if (QGuiApplication::clipboard()->text().isEmpty())
+			tabSetFlag(gui::TabListPaste, false);
+		else
+			tabSetFlag(gui::TabListPaste, true);
 
 		list->clearSelection();
 		list->scrollToTop();
@@ -763,9 +770,6 @@ void mainView::treeItemChanged(QTreeWidgetItem* current)
 			// sorting by
 			if (this->state.sort.first > 0)
 				this->action.list_dnd->setDisabled(true);
-
-			tabSetFlag(gui::TabListDelete, false);
-			tabSetFlag(gui::TabListPaste, false);
 		}
 		// userbouquet
 		else
@@ -780,13 +784,23 @@ void mainView::treeItemChanged(QTreeWidgetItem* current)
 			// sorting default
 			else
 				allowDnD();
-
-			tabSetFlag(gui::TabListDelete, true);
-			tabSetFlag(gui::TabListPaste, true);
 		}
 
 		list->clearSelection();
 		list->scrollToTop();
+	}
+
+	// services tree || userbouquet
+	if (! this->state.tc || this->state.ti == -1)
+	{
+		if (QGuiApplication::clipboard()->text().isEmpty())
+			tabSetFlag(gui::TabListPaste, false);
+		else
+			tabSetFlag(gui::TabListPaste, true);
+	}
+	else
+	{
+		tabSetFlag(gui::TabListPaste, false);
 	}
 
 	updateListIndex();
@@ -829,20 +843,25 @@ void mainView::listItemSelectionChanged()
 	{
 		tabSetFlag(gui::TabListCut, false);
 		tabSetFlag(gui::TabListCopy, false);
-
-		// userbouquet
-		if (this->state.ti == -1)
-			tabSetFlag(gui::TabListDelete, false);
+		tabSetFlag(gui::TabListDelete, false);
 	}
 	else
 	{
-		tabSetFlag(gui::TabListCut, true);
 		tabSetFlag(gui::TabListCopy, true);
 
-		// userbouquet
-		if (this->state.ti == -1)
+		// services tree || userbouquet
+		if (! this->state.tc || this->state.ti == -1)
+		{
+			tabSetFlag(gui::TabListCut, true);
 			tabSetFlag(gui::TabListDelete, true);
+		}
+		else
+		{
+			tabSetFlag(gui::TabListCut, false);
+			tabSetFlag(gui::TabListDelete, false);
+		}
 	}
+
 	if (selected.count() == 1)
 	{
 		QTreeWidgetItem* item = selected.first();
@@ -863,11 +882,21 @@ void mainView::listItemSelectionChanged()
 	{
 		tabSetFlag(gui::TabListEditService, false);
 		tabSetFlag(gui::TabListEditMarker, false);
+	}
 
+	// services tree || userbouquet
+	if (! this->state.tc || this->state.ti == -1)
+	{
+		if (QGuiApplication::clipboard()->text().isEmpty())
+			tabSetFlag(gui::TabListPaste, false);
+		else
+			tabSetFlag(gui::TabListPaste, true);
 	}
 
 	if (this->state.refbox)
 		updateReferenceBox();
+
+	tabUpdateFlags();
 }
 
 void mainView::listItemDoubleClicked()
@@ -993,6 +1022,17 @@ void mainView::visualReloadList()
 		item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
 		i++;
 	}
+}
+
+void mainView::clipboardDataChanged()
+{
+	// services tree || userbouquet
+	if (! this->state.tc || this->state.ti == -1)
+	{
+		return this->viewAbstract::clipboardDataChanged();
+	}
+
+	debug("clipboardDataChanged");
 }
 
 void mainView::sortByColumn(int column)
@@ -1783,6 +1823,9 @@ void mainView::listItemCopy(bool cut)
 			// chtname
 			else if (i == ITEM_ROW_ROLE::chtname && ! marker)
 				qstr.prepend("\"").append("\"");
+			// chfec
+			else if (i == ITEM_ROW_ROLE::chfec && ! marker)
+				qstr.prepend("\"").append("\"");
 			data.append(qstr);
 		}
 
@@ -1815,13 +1858,15 @@ void mainView::listItemPaste()
 {
 	debug("listItemPaste", "entered", ! (this->state.tc && this->state.ti != -1));
 
-	// services tree && bouquet: tv | radio
+	// bouquets tree && bouquet: tv | radio
 	if (this->state.tc && this->state.ti != -1)
 		return;
 
 	QClipboard* clipboard = QGuiApplication::clipboard();
 	const QMimeData* mimeData = clipboard->mimeData();
 	vector<QString> items;
+	int commas = 15;
+	int quotes = 10;
 
 	if (mimeData->hasText())
 	{
@@ -1829,7 +1874,12 @@ void mainView::listItemPaste()
 
 		for (QString & data : list)
 		{
-			items.emplace_back(data);
+			QString str = QString (data).replace(", ", "\0");
+
+			if (str.count(',') == commas && str.count('"') == quotes)
+				items.emplace_back(data);
+			else
+				return;
 		}
 	}
 
@@ -1869,7 +1919,7 @@ void mainView::listItemDelete()
 {
 	debug("listItemDelete", "entered", ! (this->state.tc && this->state.ti != -1));
 
-	// services tree && bouquet: tv | radio
+	// bouquets tree && bouquet: tv | radio
 	if (this->state.tc && this->state.ti != -1)
 		return;
 
@@ -1943,6 +1993,8 @@ void mainView::listItemDelete()
 	this->data->setChanged(true);
 }
 
+//TODO duplicates
+//TODO missing channel reference after listItemPaste with duplicates
 void mainView::putListItems(vector<QString> items)
 {
 	debug("putListItems");
@@ -2059,7 +2111,7 @@ void mainView::putListItems(vector<QString> items)
 					ch.tsid = tx.tsid = ref.tsid = qs[5].toInt();
 				ch.stype = dbih->value_service_type(qs[6].toStdString());
 				//TODO
-				// ch.data[e2db::SDATA::C]; qs[7]
+				// ch.data[e2db::SDATA::C]; qs[7].replace("\"", "")
 				ch.data[e2db::SDATA::p] = dbih->value_channel_provider(qs[8].replace("\"", "").toStdString());
 				ch.locked = locked || ub_locked;
 				tx.tsid = ch.tsid;
@@ -2070,7 +2122,7 @@ void mainView::putListItems(vector<QString> items)
 				tx.freq = qs[12].toInt();
 				tx.pol = dbih->value_transponder_polarization(qs[13].toStdString());
 				tx.sr = qs[14].toInt();
-				dbih->value_transponder_fec(qs[15].toStdString(), tx.ytype, fec);
+				dbih->value_transponder_fec(qs[15].replace("\"", "").toStdString(), tx.ytype, fec);
 				if (tx.ytype == e2db::YTYPE::satellite)
 				{
 					tx.fec = fec.inner_fec;

@@ -133,6 +133,7 @@ class mainView : public viewAbstract
 		void listPendingUpdate();
 		void visualReindexList();
 		void visualReloadList();
+		void clipboardDataChanged();
 		void sortByColumn(int column);
 		void allowDnD();
 		void disallowDnD();

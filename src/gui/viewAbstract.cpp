@@ -27,6 +27,7 @@
 #include <QGroupBox>
 #include <QToolBar>
 #include <QMenu>
+#include <QClipboard>
 
 #include "platforms/platform.h"
 
@@ -246,6 +247,18 @@ void viewAbstract::listItemSelectAll()
 	debug("listItemSelectAll");
 
 	list->selectAll();
+}
+
+void viewAbstract::clipboardDataChanged()
+{
+	debug("clipboardDataChanged");
+
+	if (QGuiApplication::clipboard()->text().isEmpty())
+		tabSetFlag(gui::TabListPaste, false);
+	else
+		tabSetFlag(gui::TabListPaste, true);
+
+	tabUpdateFlags();
 }
 
 void viewAbstract::treeSearchShow()
@@ -545,9 +558,9 @@ void viewAbstract::tabUpdateFlags()
 		tid->storeFlags();
 }
 
-void viewAbstract::tabUpdateFlags(int selector)
+void viewAbstract::tabUpdateFlags(int preset)
 {
-	tabSetFlags(selector);
+	tabSetFlags(preset);
 	tabUpdateFlags();
 }
 

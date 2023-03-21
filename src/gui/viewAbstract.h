@@ -137,6 +137,7 @@ class viewAbstract : protected e2se::log_factory
 
 		virtual void layout() = 0;
 		void searchLayout();
+		virtual void clipboardDataChanged();
 		void sortByColumn(int column);
 		bool tabGetFlag(gui::GUI_CXE bit);
 		void tabSetFlag(gui::GUI_CXE bit, bool flag);

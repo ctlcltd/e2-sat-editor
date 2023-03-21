@@ -454,6 +454,9 @@ QStringList e2db::entryTransponder(transponder tx, bool extended)
 {
 	QStringList entry = entries.transponders[tx.txid];
 
+	if (! extended)
+		return entry;
+
 	QString txid = QString::fromStdString(tx.txid);
 	QString combo = QString::fromStdString(value_transponder_combo(tx));
 	QString tsid = QString::number(tx.tsid);
