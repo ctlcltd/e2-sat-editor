@@ -16,11 +16,12 @@ usage () {
 	printf "%s\n"   "-h --help          Display this help and exit."
 }
 
+#//TODO improve
 src () {
-	if [[ "$PWD" != "src"* ]]; then
+	if [[ $(basename $PWD) != "src" ]]; then
 		cd src
 
-		if [[ "$PWD" != "src"* ]]; then
+		if [[ $(basename $PWD) != "src" ]]; then
 			echo "Directory \"src\" not found.";
 
 			exit 1;

@@ -24,6 +24,7 @@ class TreeStyledItemDelegate : public QStyledItemDelegate
 		void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override
 		{
 			QStyleOptionViewItem opt (option);
+
 			if (index.parent().isValid() && (! index.model() || ! index.model()->index(0, 0, index).isValid()))
 			{
 				if (opt.direction == Qt::LeftToRight)

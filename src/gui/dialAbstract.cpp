@@ -16,6 +16,7 @@
 
 #include "platforms/platform.h"
 
+#include "toolkit/ThemeChangeEventObserver.h"
 #include "dialAbstract.h"
 #include "theme.h"
 
@@ -31,7 +32,7 @@ void dialAbstract::layout(QWidget* cwid)
 
 	this->theme = new e2se_gui::theme;
 
-	themeChangedEventFilter* gce = new themeChangedEventFilter;
+	ThemeChangeEventObserver* gce = new ThemeChangeEventObserver;
 	gce->setEventCallback([=]() { this->themeChanged(); });
 	dial->installEventFilter(gce);
 

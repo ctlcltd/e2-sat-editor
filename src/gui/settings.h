@@ -30,9 +30,7 @@ using std::vector, std::map;
 #include "theme.h"
 #include "gui.h"
 
-using e2se_gui::WidgetWithBackdrop;
-
-namespace e2se_gui_dialog
+namespace e2se_gui
 {
 class settings : protected e2se::log_factory
 {
@@ -61,7 +59,7 @@ class settings : protected e2se::log_factory
 			Advanced
 		};
 
-		settings(e2se_gui::gui* gid);
+		settings(gui* gid);
 		virtual ~settings() = default;
 		void display(QWidget* cwid);
 		void destroy();
@@ -88,7 +86,7 @@ class settings : protected e2se::log_factory
 		void cancel();
 
 	private:
-		e2se_gui::gui* gid;
+		gui* gid;
 		QDialog* dial = nullptr;
 		e2se_gui::theme* theme;
 		QSettings* sets;

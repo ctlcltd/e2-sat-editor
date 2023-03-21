@@ -21,12 +21,12 @@
 
 using namespace e2se;
 
-namespace e2se_gui_dialog
+namespace e2se_gui
 {
 
 about::about()
 {
-	this->log = new logger("gui.dialog", "about");
+	this->log = new logger("gui", "about");
 }
 
 void about::layout()

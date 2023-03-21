@@ -138,11 +138,11 @@ class viewAbstract : protected e2se::log_factory
 		virtual void layout() = 0;
 		void searchLayout();
 		void sortByColumn(int column);
-		void tabSetFlag(gui::GUI_CXE bit, bool flag);
-		void tabSetFlag(gui::GUI_CXE bit);
 		bool tabGetFlag(gui::GUI_CXE bit);
+		void tabSetFlag(gui::GUI_CXE bit, bool flag);
+		void tabSetFlags(int preset);
 		void tabUpdateFlags();
-		void tabUpdateFlags(gui::GUI_CXE bit);
+		void tabUpdateFlags(int preset);
 		bool tabRemoveQuestion(QString title, QString text);
 		void tabUpdateToolBars();
 		virtual bool tabStatusBarIsVisible();

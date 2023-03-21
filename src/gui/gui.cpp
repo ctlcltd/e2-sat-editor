@@ -24,6 +24,7 @@
 
 #include "platforms/platform.h"
 
+#include "toolkit/ThemeChangeEventObserver.h"
 #include "toolkit/TabBarProxyStyle.h"
 #include "gui.h"
 #include "theme.h"
@@ -69,7 +70,7 @@ gui::gui(int argc, char* argv[])
 	this->theme = new e2se_gui::theme;
 	theme->initStyle();
 
-	themeChangedEventFilter* gce = new themeChangedEventFilter;
+	ThemeChangeEventObserver* gce = new ThemeChangeEventObserver;
 	gce->setEventCallback([=]() { this->themeChanged(); });
 	mwid->installEventFilter(gce);
 
@@ -149,15 +150,18 @@ void gui::menuBarLayout()
 	menuBarAction(mfile, tr("E&xit"), [=]() { this->mroot->quit(); }, QKeySequence::Quit);
 
 	QMenu* medit = menuBarMenu(menu, tr("&Edit"));
-	gmenu[GUI_CXE::TabListCut] = menuBarAction(medit, tr("Cu&t"), [=]() { this->tabAction(TAB_ATS::ListCut); }, QKeySequence::Cut);
-	gmenu[GUI_CXE::TabListCopy] = menuBarAction(medit, tr("&Copy"), [=]() { this->tabAction(TAB_ATS::ListCopy); }, QKeySequence::Copy);
-	gmenu[GUI_CXE::TabListPaste] = menuBarAction(medit, tr("&Paste"), [=]() { this->tabAction(TAB_ATS::ListPaste); }, QKeySequence::Paste);
-	gmenu[GUI_CXE::TabListDelete] = menuBarAction(medit, tr("&Delete"), [=]() { this->tabAction(TAB_ATS::ListDelete); }, QKeySequence::Delete);
+	gmenu[GUI_CXE::EditUndo] = menuBarAction(medit, tr("&Undo"), [=]() { this->editAction(GUI_CXE::EditUndo); }, QKeySequence::Undo);
+	gmenu[GUI_CXE::EditRedo] = menuBarAction(medit, tr("&Redo"), [=]() { this->editAction(GUI_CXE::EditRedo); }, QKeySequence::Redo);
+	menuBarSeparator(medit);
+	gmenu[GUI_CXE::EditCut] = menuBarAction(medit, tr("Cu&t"), [=]() { this->editAction(GUI_CXE::EditCut); }, QKeySequence::Cut);
+	gmenu[GUI_CXE::EditCopy] = menuBarAction(medit, tr("&Copy"), [=]() { this->editAction(GUI_CXE::EditCopy); }, QKeySequence::Copy);
+	gmenu[GUI_CXE::EditPaste] = menuBarAction(medit, tr("&Paste"), [=]() { this->editAction(GUI_CXE::EditPaste); }, QKeySequence::Paste);
+	gmenu[GUI_CXE::EditDelete] = menuBarAction(medit, tr("&Delete"), [=]() { this->editAction(GUI_CXE::EditDelete); }, QKeySequence::Delete);
 #ifdef Q_OS_MAC
-	gmenu[GUI_CXE::TabListDelete]->setShortcut(Qt::Key_Backspace);
+	gmenu[GUI_CXE::EditDelete]->setShortcut(Qt::Key_Backspace);
 #endif
 	menuBarSeparator(medit);
-	gmenu[GUI_CXE::TabListSelectAll] = menuBarAction(medit, tr("Select &All"), [=]() { this->tabAction(TAB_ATS::ListSelectAll); }, QKeySequence::SelectAll);
+	gmenu[GUI_CXE::EditSelectAll] = menuBarAction(medit, tr("Select &All"), [=]() { this->editAction(GUI_CXE::EditSelectAll); }, QKeySequence::SelectAll);
 
 	QMenu* mfind = menuBarMenu(menu, tr("&Find"));
 	gmenu[GUI_CXE::TabListFind] = menuBarAction(mfind, tr("&Find Channel…"), [=]() { this->tabAction(TAB_ATS::ListFind); }, QKeySequence::Find);
@@ -735,14 +739,14 @@ void gui::windowChanged()
 	{
 		debug("windowChanged", "mwind", "busy");
 		this->gxe = this->gex;
-		update();
+		updateMenu();
 	}
 	// main window idle
 	else
 	{
 		debug("windowChanged", "mwind", "idle");
 		this->gex = this->gxe;
-		update(GUI_CXE::idle);
+		setFlags(GUI_CXE::idle);
 	}
 
 	QSettings().setValue("geometry", mwid->saveGeometry());
@@ -1281,13 +1285,67 @@ void gui::filePrintAll()
 		ttab->printFile(true);
 }
 
-void gui::tabAction(TAB_ATS action)
+void gui::editAction(GUI_CXE bit)
 {
-	debug("tabAction", "action", action);
+	debug("editAction", "bit", bit);
+
+	QWidget* w = QApplication::focusWidget();
+
+	if (QLineEdit* input = qobject_cast<QLineEdit*>(w))
+	{
+		switch (bit)
+		{
+			case GUI_CXE::EditUndo: input->undo(); break;
+			case GUI_CXE::EditRedo: input->redo(); break;
+			//TODO QWidgetLineControl::q_delete_selected
+			case GUI_CXE::EditDelete: input->del(); break;
+			case GUI_CXE::EditSelectAll: input->selectAll(); break;
+			case GUI_CXE::EditCut: input->cut(); break;
+			case GUI_CXE::EditCopy: input->copy(); break;
+			case GUI_CXE::EditPaste: input->paste(); break;
+			default: return;
+		}
+	}
+	else if (QTextEdit* input = qobject_cast<QTextEdit*>(w))
+	{
+		switch (bit)
+		{
+			case GUI_CXE::EditUndo: input->undo(); break;
+			case GUI_CXE::EditRedo: input->redo(); break;
+			//TODO QWidgetTextControl::q_delete_selected
+			case GUI_CXE::EditDelete: input->clear(); break;
+			case GUI_CXE::EditSelectAll: input->selectAll(); break;
+			case GUI_CXE::EditCut: input->cut(); break;
+			case GUI_CXE::EditCopy: input->copy(); break;
+			case GUI_CXE::EditPaste: input->paste(); break;
+			default: return;
+		}
+	}
+	else
+	{
+		GUI_CXE act;
+		
+		switch (bit)
+		{
+			case GUI_CXE::EditDelete: act = GUI_CXE::TabListDelete; break;
+			case GUI_CXE::EditSelectAll: act = GUI_CXE::TabListSelectAll; break;
+			case GUI_CXE::EditCut: act = GUI_CXE::TabListCut; break;
+			case GUI_CXE::EditCopy: act = GUI_CXE::TabListCopy; break;
+			case GUI_CXE::EditPaste: act = GUI_CXE::TabListPaste; break;
+			default: return;
+		}
+		
+		tabAction(TAB_ATS (act));
+	}
+}
+
+void gui::tabAction(TAB_ATS bit)
+{
+	debug("tabAction", "bit", bit);
 
 	tab* ttab = getCurrentTabHandler();
 	if (ttab != nullptr)
-		ttab->actionCall(action);
+		ttab->actionCall(bit);
 }
 
 void gui::windowMinimize()
@@ -1302,7 +1360,7 @@ void gui::settingsDialog()
 {
 	debug("settingsDialog");
 
-	auto* dialog = new e2se_gui_dialog::settings(this);
+	auto* dialog = new e2se_gui::settings(this);
 	dialog->display(mwid);
 	dialog->destroy();
 }
@@ -1311,39 +1369,8 @@ void gui::aboutDialog()
 {
 	debug("aboutDialog");
 
-	auto* dialog = new e2se_gui_dialog::about();
+	auto* dialog = new e2se_gui::about();
 	dialog->display();
-}
-
-bool gui::getFlag(GUI_CXE bit)
-{
-	return this->gxe[bit];
-}
-
-bool gui::getFlag(int bit)
-{
-	return this->gxe[bit];
-}
-
-void gui::setFlag(GUI_CXE bit, bool flag)
-{
-	update(bit, flag);
-}
-
-bitset<256> gui::getFlags()
-{
-	return this->gxe;
-}
-
-void gui::setFlags(bitset<256> bits)
-{
-	this->gxe = bits;
-	update();
-}
-
-void gui::setFlags(vector<int> bits, bool flag)
-{
-	update(bits, flag);
 }
 
 int gui::getTabId(int index)
@@ -1370,79 +1397,150 @@ void gui::launcher()
 {
 	debug("launcher");
 
-	update(GUI_CXE::init);
+	setFlags(GUI_CXE::init);
 	newTab();
 	tabChanged(0);
 }
 
-void gui::update()
+bool gui::getFlag(GUI_CXE bit)
 {
-	debug("update");
+	// debug("getFlag");
+
+	return this->gxe[bit];
+}
+
+void gui::setFlag(GUI_CXE bit, bool flag)
+{
+	 // debug("setFlag", "overload", 1);
+
+	typedef size_t position_t;
+
+	this->gxe.set(position_t (bit), flag);
+	setTabEditActionFlag(bit, flag);
+
+	this->gex = this->gxe;
+
+	QAction* action = gmenu.count(bit) ? gmenu[bit] : nullptr;
+
+	if (action != nullptr)
+		action->setEnabled(flag);
+}
+
+bitset<256> gui::getFlags()
+{
+	// debug("getFlags");
+
+	return this->gxe;
+}
+
+void gui::setFlags(bitset<256> bits)
+{
+	// debug("setFlags", "overload", 0);
+
+	this->gxe = bits;
+
+	updateMenu();
+}
+
+void gui::setFlags(vector<int> bits)
+{
+	// debug("setFlags", "overload", 1);
+
+	typedef size_t position_t;
+
+	for (int & bit : bits)
+	{
+		this->gxe.set(position_t (bit), true);
+		setTabEditActionFlag(GUI_CXE (bit), true);
+	}
+
+	updateMenu();
+}
+
+void gui::setFlags(vector<int> bits, bool flag)
+{
+	// debug("setFlags", "overload", 2);
+
+	typedef size_t position_t;
+
+	for (int & bit : bits)
+	{
+		this->gxe.set(position_t (bit), flag);
+		setTabEditActionFlag(GUI_CXE (bit), flag);
+	}
+
+	updateMenu();
+}
+
+void gui::setFlags(int preset)
+{
+	// debug("setFlags", "overload", 3);
+
+	this->gxe.reset();
+
+	if (preset == 0)
+		setFlags(GUI_CXE__init);
+	else if (preset == -1)
+		setFlags(GUI_CXE__idle);
+
+	// note: is out of range
+	// debug("setFlags", "flags", getFlags().to_ullong());
+}
+
+int gui::getTabEditActionFlag(GUI_CXE bit)
+{
+	// debug("getTabEditActionFlag");
+
+	GUI_CXE act;
+
+	switch (bit)
+	{
+		case GUI_CXE::EditDelete: act = GUI_CXE::TabListDelete; break;
+		case GUI_CXE::EditSelectAll: act = GUI_CXE::TabListSelectAll; break;
+		case GUI_CXE::EditCut: act = GUI_CXE::TabListCut; break;
+		case GUI_CXE::EditCopy: act = GUI_CXE::TabListCopy; break;
+		case GUI_CXE::EditPaste: act = GUI_CXE::TabListPaste; break;
+		default: return 0;
+	}
+
+	return act;
+}
+
+void gui::setTabEditActionFlag(GUI_CXE bit, bool flag)
+{
+	// debug("getTabEditActionFlag");
+
+	GUI_CXE act;
+
+	switch (bit)
+	{
+		case GUI_CXE::TabListDelete: act = GUI_CXE::EditDelete; break;
+		case GUI_CXE::TabListSelectAll: act = GUI_CXE::EditSelectAll; break;
+		case GUI_CXE::TabListCut: act = GUI_CXE::EditCut; break;
+		case GUI_CXE::TabListCopy: act = GUI_CXE::EditCopy; break;
+		case GUI_CXE::TabListPaste: act = GUI_CXE::EditPaste; break;
+		default: return;
+	}
+
+	setFlag(act, flag);
+}
+
+void gui::updateMenu()
+{
+	debug("updateMenu");
 
 	for (auto & x : gmenu)
 	{
-		if (this->gxe[x.first])
+		int bit = x.first;
+
+		if (this->gxe[bit])
 			x.second->setEnabled(true);
 		else
 			x.second->setDisabled(true);
 	}
 
 	// note: is out of range
-	// debug("update", "flags", getActionFlags().to_ullong());
-}
-
-void gui::update(int bit, bool flag)
-{
-	 // debug("update", "overload", bit);
-
-	typedef size_t position_t;
-	QAction* action = gmenu.count(bit) ? gmenu[bit] : nullptr;
-
-	if (action != nullptr)
-		action->setEnabled(flag);
-
-	this->gxe.set(position_t (bit), flag);
-
-	this->gex = this->gxe;
-}
-
-void gui::update(vector<int> bits, bool flag)
-{
-	// debug("update", "overload", 1);
-
-	typedef size_t position_t;
-
-	for (int & bit : bits)
-		this->gxe.set(position_t (bit), flag);
-
-	update();
-}
-
-void gui::update(vector<int> bits)
-{
-	// debug("update", "overload", 0);
-
-	typedef size_t position_t;
-
-	for (int & bit : bits)
-		this->gxe.set(position_t (bit), true);
-
-	update();
-}
-
-void gui::update(int bit)
-{
-	// debug("update", "overload", 0);
-
-	this->gxe.reset();
-
-	if (bit == 0)
-		update(GUI_CXE__init);
-	else if (bit == -1)
-		update(GUI_CXE__idle);
-
-	// note: is out of range
-	// debug("update", "flags", getFlags().to_ullong());
+	// debug("updateMenu", "flags", getActionFlags().to_ullong());
 }
 
 QMenuBar* gui::menuBar(QLayout* layout)

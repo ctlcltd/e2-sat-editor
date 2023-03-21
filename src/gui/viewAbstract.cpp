@@ -30,6 +30,7 @@
 
 #include "platforms/platform.h"
 
+#include "toolkit/InputControlEditEventObserver.h"
 #include "viewAbstract.h"
 #include "tab.h"
 
@@ -110,6 +111,7 @@ void viewAbstract::searchLayout()
 	tsr_box->setSpacing(0);
 	this->tsr_search.input = new QLineEdit;
 	this->tsr_search.input->connect(this->tsr_search.input, &QLineEdit::textChanged, [=](const QString& text) { this->treeFindPerform(text); });
+	this->tsr_search.input->installEventFilter(new InputControlEditEventObserver(tid));
 	platform::osLineEdit(this->tsr_search.input);
 
 	this->tsr_search.next = new QPushButton("Find");
@@ -145,6 +147,7 @@ void viewAbstract::searchLayout()
 	this->lsr_search.input->setMinimumWidth(180);
 	this->lsr_search.input->setStyleSheet("QLineEdit { padding: 2px 0 }");
 	this->lsr_search.input->connect(this->lsr_search.input, &QLineEdit::textChanged, [=](const QString& text) { this->listFindPerform(text, LIST_FIND::fast); });
+	this->lsr_search.input->installEventFilter(new InputControlEditEventObserver(tid));
 	platform::osLineEdit(this->lsr_search.input);
 
 	//TODO FIX text color [Windows]
@@ -523,17 +526,17 @@ void viewAbstract::tabSetFlag(gui::GUI_CXE bit, bool flag)
 		tid->setFlag(bit, flag);
 }
 
-void viewAbstract::tabSetFlag(gui::GUI_CXE bit)
-{
-	if (tid != nullptr)
-		tid->setFlag(bit);
-}
-
 bool viewAbstract::tabGetFlag(gui::GUI_CXE bit)
 {
 	if (tid != nullptr)
 		return tid->getFlag(bit);
 	return true;
+}
+
+void viewAbstract::tabSetFlags(int preset)
+{
+	if (tid != nullptr)
+		tid->setFlags(preset);
 }
 
 void viewAbstract::tabUpdateFlags()
@@ -542,9 +545,9 @@ void viewAbstract::tabUpdateFlags()
 		tid->storeFlags();
 }
 
-void viewAbstract::tabUpdateFlags(gui::GUI_CXE bit)
+void viewAbstract::tabUpdateFlags(int selector)
 {
-	tabSetFlag(bit);
+	tabSetFlags(selector);
 	tabUpdateFlags();
 }
 

@@ -16,7 +16,7 @@
 
 #include "../logger/logger.h"
 
-namespace e2se_gui_dialog
+namespace e2se_gui
 {
 class about : protected e2se::log_factory
 {

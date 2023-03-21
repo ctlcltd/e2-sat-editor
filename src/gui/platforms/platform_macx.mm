@@ -35,10 +35,10 @@
 @end
 
 
-class _windowEventFilter : public QObject
+class _windowEventObserver : public QObject
 {
 	public:
-		_windowEventFilter(NSVisualEffectView* view)
+		_windowEventObserver(NSVisualEffectView* view)
 		{
 			this->m_view = view;
 		}
@@ -66,10 +66,10 @@ class _windowEventFilter : public QObject
 };
 
 
-class _widgetEventFilter : public QObject
+class _widgetEventObserver : public QObject
 {
 	public:
-		_widgetEventFilter(NSVisualEffectView* view)
+		_widgetEventObserver(NSVisualEffectView* view)
 		{
 			this->m_view = view;
 		}
@@ -124,7 +124,7 @@ class _widgetEventFilter : public QObject
 		NSVisualEffectView* m_view;
 };
 
-class _osPersistentEditorEventFilter : public QObject
+class _osPersistentEditorEventObserver : public QObject
 {
 	protected:
 		bool eventFilter(QObject* object, QEvent* event)
@@ -202,7 +202,7 @@ QWidget* _platform_macx::_osWindowBlend(QWidget* widget) {
 
 	[effectview addSubview:subview positioned:NSWindowAbove relativeTo:nil];
 
-	widget->installEventFilter(new _windowEventFilter(subview));
+	widget->installEventFilter(new _windowEventObserver(subview));
 
 	return widget;
 };
@@ -221,7 +221,7 @@ QWidget* _platform_macx::_osWidgetBlend(QWidget* widget, FX_MATERIAL material, F
 	[subview setWantsLayer:FALSE];
 	[subview setHidden:TRUE];
 
-	widget->installEventFilter(new _widgetEventFilter(subview));
+	widget->installEventFilter(new _widgetEventObserver(subview));
 
 	return widget;
 }
@@ -334,6 +334,6 @@ QTextEdit* _platform_macx::_osTextEdit(QTextEdit* input, bool destroy)
 //TODO improve native macx context menu items
 QWidget* _platform_macx::_osPersistentEditor(QWidget* widget)
 {
-	widget->installEventFilter(new _osPersistentEditorEventFilter);
+	widget->installEventFilter(new _osPersistentEditorEventObserver);
 	return widget;
 }

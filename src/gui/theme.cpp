@@ -9,7 +9,6 @@
  * @license GNU GPLv3 License
  */
 
-#include <iostream>
 #include <string>
 
 #include <QApplication>

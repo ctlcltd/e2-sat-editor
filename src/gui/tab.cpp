@@ -165,17 +165,17 @@ void tab::tabChangeName(string filename)
 
 void tab::setFlag(gui::GUI_CXE bit, bool flag)
 {
-	gid->update(bit, flag);
-}
-
-void tab::setFlag(gui::GUI_CXE bit)
-{
-	gid->update(bit);
+	gid->setFlag(bit, flag);
 }
 
 bool tab::getFlag(gui::GUI_CXE bit)
 {
 	return gid->getFlag(bit);
+}
+
+void tab::setFlags(int preset)
+{
+	gid->setFlags(preset);
 }
 
 void tab::storeFlags()
@@ -1054,11 +1054,11 @@ void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 	}
 }
 
-void tab::actionCall(int action)
+void tab::actionCall(int bit)
 {
-	debug("actionCall", "action", action);
+	debug("actionCall", "bit", bit);
 
-	switch (action)
+	switch (bit)
 	{
 		case gui::TAB_ATS::ListCut:
 			view->listItemCut();

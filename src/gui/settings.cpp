@@ -29,22 +29,20 @@
 
 #include "platforms/platform.h"
 
+#include "toolkit/ThemeChangeEventObserver.h"
 #include "settings.h"
 #include "theme.h"
 
 using std::to_string;
 
-using e2se_gui::theme;
-using e2se_gui::themeChangedEventFilter;
-
 using namespace e2se;
 
-namespace e2se_gui_dialog
+namespace e2se_gui
 {
 
-settings::settings(e2se_gui::gui* gid)
+settings::settings(gui* gid)
 {
-	this->log = new logger("gui.dialog", "settings");
+	this->log = new logger("gui", "settings");
 
 	this->gid = gid;
 	this->sets = new QSettings;
@@ -73,7 +71,7 @@ void settings::layout(QWidget* cwid)
 
 	this->theme = new e2se_gui::theme;
 
-	themeChangedEventFilter* gce = new themeChangedEventFilter;
+	ThemeChangeEventObserver* gce = new ThemeChangeEventObserver;
 	gce->setEventCallback([=]() { this->themeChanged(); });
 	dial->installEventFilter(gce);
 

@@ -67,8 +67,8 @@ class tab : protected e2se::log_factory
 		void tabSwitched();
 		void tabChangeName(string filename = "");
 		void setFlag(gui::GUI_CXE bit, bool flag);
-		void setFlag(gui::GUI_CXE bit);
 		bool getFlag(gui::GUI_CXE bit);
+		void setFlags(int preset);
 		void storeFlags();
 		void retrieveFlags();
 		void updateToolBars();
@@ -82,7 +82,7 @@ class tab : protected e2se::log_factory
 		void viewChannelBook(tab* parent);
 		void load();
 		void reset();
-		void actionCall(int action);
+		void actionCall(int bit);
 		void newFile();
 		void openFile();
 		bool readFile(string filename = "");

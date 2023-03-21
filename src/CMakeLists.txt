@@ -29,9 +29,11 @@ set(SOURCES
 	e2db/e2db.cpp
 	ftpcom/ftpcom.cpp
 	gui/platforms/platform.h
+	gui/toolkit/InputControlEditEventObserver.cpp
 	gui/toolkit/ListEventHandler.cpp
 	gui/toolkit/ListEventObserver.cpp
 	gui/toolkit/TabBarProxyStyle.h
+	gui/toolkit/ThemeChangeEventObserver.h
 	gui/toolkit/TreeEventHandler.cpp
 	gui/toolkit/TreeStyledItemDelegate.h
 	gui/toolkit/WidgetWithBackdrop.cpp

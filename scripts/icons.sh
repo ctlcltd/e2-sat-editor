@@ -17,8 +17,9 @@ usage () {
 	printf "%s\n"   "-h --help          Display this help and exit."
 }
 
+#//TODO improve
 cwt () {
-	if [[ "$PWD" != "e2-sat-editor"* ]]; then
+	if [[ $(basename $PWD) != "e2-sat-editor" ]]; then
 		echo "Current working directory differs from \"e2-sat-editor\".";
 
 		exit 1;

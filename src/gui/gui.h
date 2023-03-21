@@ -56,27 +56,34 @@ class gui : protected e2se::log_factory
 			FileExport = 19,
 			FilePrint = 12,
 			FilePrintAll = 13,
-			TabTreeEdit = 20,
-			TabTreeDelete = 22,
-			TabTreeFind = 29,
-			TabTreeFindNext = 27,
+			EditUndo = 21,
+			EditRedo = 20,
+			EditDelete = 26,
+			EditSelectAll = 25,
+			EditCut = 27,
+			EditCopy = 28,
+			EditPaste = 29,
+			TabTreeEdit = 30,
+			TabTreeDelete = 42,
+			TabTreeFind = 53,
+			TabTreeFindNext = 54,
 			TabListEditService = 32,
 			TabListEditMarker = 33,
 			TabListEditTransponder = 31,
-			TabListDelete = 34,
-			TabListSelectAll = 35,
-			TabListCut = 44,
-			TabListCopy = 42,
-			TabListPaste = 43,
-			TabListFind = 49,
-			TabListFindNext = 47,
-			TabListFindPrev = 45,
-			TabListFindAll = 48,
-			Transponders = 50,
-			TunersetsSat = 51,
-			TunersetsTerrestrial = 52,
-			TunersetsCable = 53,
-			TunersetsAtsc = 54,
+			TabListDelete = 46,
+			TabListSelectAll = 45,
+			TabListCut = 47,
+			TabListCopy = 48,
+			TabListPaste = 49,
+			TabListFind = 52,
+			TabListFindNext = 57,
+			TabListFindPrev = 56,
+			TabListFindAll = 59,
+			Transponders = 60,
+			TunersetsSat = 61,
+			TunersetsTerrestrial = 62,
+			TunersetsCable = 63,
+			TunersetsAtsc = 64,
 			OpenChannelBook = 70,
 			ToolsServicesOrder = 88,
 			ToolsServicesCache = 83,
@@ -100,8 +107,8 @@ class gui : protected e2se::log_factory
 			ToolsExportHTML_userbouquets = 121,
 			ToolsExportHTML_tunersets = 122,
 			ToolsInspector = 0xfe,
-			init = 0,
-			idle = -1
+			init = 0, // preset
+			idle = -1 // preset
 		};
 
 		inline static const vector<int> GUI_CXE__init = {
@@ -258,17 +265,15 @@ class gui : protected e2se::log_factory
 		void settingsDialog();
 		void aboutDialog();
 		bool getFlag(GUI_CXE bit);
-		bool getFlag(int bit);
 		void setFlag(GUI_CXE bit, bool flag);
 		bitset<256> getFlags();
 		void setFlags(bitset<256> bits);
-		//TODO improve bits sequence bitwise or
+		void setFlags(vector<int> bits);
 		void setFlags(vector<int> bits, bool flag);
-		void update();
-		void update(int bit, bool flag);
-		void update(vector<int> bits, bool flag);
-		void update(vector<int> bits);
-		void update(int bit);
+		void setFlags(int preset);
+		int getTabEditActionFlag(GUI_CXE bit);
+		void setTabEditActionFlag(GUI_CXE bit, bool flag);
+		void updateMenu();
 
 		e2se_gui::theme* theme;
 
@@ -281,6 +286,7 @@ class gui : protected e2se::log_factory
 		void initSettings();
 		void updateSettings();
 		void resetSettings();
+		void editAction(GUI_CXE bit);
 		void tabViewSwitch(TAB_VIEW ttv);
 		void tabViewSwitch(TAB_VIEW ttv, int arg);
 		void tabChanged(int index);
