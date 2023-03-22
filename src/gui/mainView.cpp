@@ -448,6 +448,7 @@ void mainView::load()
 	for (auto & bsi : dbih->index["bss"])
 	{
 		debug("load", "bouquet", bsi.second);
+
 		e2db::bouquet gboq = dbih->bouquets[bsi.second];
 		QString qbs = QString::fromStdString(bsi.second);
 		QString name = QString::fromStdString(gboq.nname.empty() ? gboq.name : gboq.nname);
@@ -465,6 +466,7 @@ void mainView::load()
 	for (auto & ubi : dbih->index["ubs"])
 	{
 		debug("load", "userbouquet", ubi.second);
+
 		e2db::userbouquet uboq = dbih->userbouquets[ubi.second];
 		QString qub = QString::fromStdString(ubi.second);
 		QTreeWidgetItem* pgroup = bgroups[ubi.second];
@@ -2597,18 +2599,19 @@ void mainView::updateTreeIndex()
 {
 	debug("updateTreeIndex");
 
-	int i = 0, y;
+	int i = 0, y = 0, idx = 0;
 	int count = tree->topLevelItemCount();
 	vector<pair<int, string>> bss;
 	vector<pair<int, string>> ubs;
-	unordered_map<string, vector<string>> index;
+	unordered_map<string, vector<string>> ubouquets;
 
 	while (i != count)
 	{
 		QTreeWidgetItem* parent = tree->topLevelItem(i);
 		QString qbs = parent->data(0, Qt::UserRole).toString();
 		string pname = qbs.toStdString();
-		bss.emplace_back(pair (i, pname)); //C++17
+		idx = i + 1;
+		bss.emplace_back(pair (idx, pname)); //C++17
 		y = 0;
 
 		if (parent->childCount())
@@ -2619,8 +2622,9 @@ void mainView::updateTreeIndex()
 				QTreeWidgetItem* item = parent->child(y);
 				QString qub = item->data(0, Qt::UserRole).toString();
 				string bname = qub.toStdString();
-				ubs.emplace_back(pair (i, bname)); //C++17
-				index[pname].emplace_back(bname);
+				idx = y + 1;
+				ubs.emplace_back(pair (idx, bname)); //C++17
+				ubouquets[pname].emplace_back(bname);
 				y++;
 			}
 		}
@@ -2638,7 +2642,7 @@ void mainView::updateTreeIndex()
 		dbih->index["ubs"].swap(ubs);
 
 		for (auto & x : dbih->bouquets)
-			x.second.userbouquets.swap(index[x.first]);
+			x.second.userbouquets.swap(ubouquets[x.first]);
 	}
 }
 

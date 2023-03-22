@@ -114,6 +114,7 @@ void e2db::createBouquets()
 	this->::e2se_e2db::e2db::add_bouquet(bs);
 }
 
+
 void e2db::fixBouquets()
 {
 	debug("fixBouquets");
@@ -133,7 +134,11 @@ void e2db::fixBouquets()
 				for (auto it = index["bss"].begin(); it != index["bss"].end(); it++)
 				{
 					if (it->second == bname)
+					{
 						index["bss"].erase(it);
+
+						del.emplace_back(bname);
+					}
 				}
 			}
 		}
@@ -389,7 +394,6 @@ bool e2db::write(string path)
 	return true;
 }
 
-//TODO FIX merge (this) sts is (this) dst (collisions)
 void e2db::importFile(vector<string> paths)
 {
 	debug("importFile");
@@ -398,7 +402,7 @@ void e2db::importFile(vector<string> paths)
 	import_file(paths);
 
 	cache(merge);
-	fixBouquets();
+	// fixBouquets();
 }
 
 void e2db::exportFile(int bit, vector<string> paths)

@@ -1226,7 +1226,7 @@ void tunersetsView::updateTreeIndex()
 	char yname = dbih->value_transponder_type(tvid);
 	iname += yname;
 
-	int i = 0;
+	int i = 0, idx = 0;
 	int count = tree->topLevelItemCount();
 	vector<pair<int, string>> tns;
 	unordered_map<string, vector<string>> index;
@@ -1235,7 +1235,8 @@ void tunersetsView::updateTreeIndex()
 	{
 		QTreeWidgetItem* item = tree->topLevelItem(i);
 		string tnid = item->data(0, Qt::UserRole).toString().toStdString();
-		tns.emplace_back(pair (i, tnid)); //C++17
+		idx = i + 1;
+		tns.emplace_back(pair (idx, tnid)); //C++17
 		i++;
 	}
 	if (tns != dbih->index[iname])
