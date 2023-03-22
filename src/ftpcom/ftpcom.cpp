@@ -35,6 +35,8 @@ ftpcom::ftpcom()
 
 ftpcom::~ftpcom()
 {
+	debug("~ftpcom");
+
 	curl_global_cleanup();
 }
 

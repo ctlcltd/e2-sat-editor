@@ -22,6 +22,7 @@
 class _platform_macx
 {
 	private:
+
 		enum _FX_BLENDING {
 			macx_fx_BehindWindow = 0,
 			macx_fx_WithinWindow = 1
@@ -45,8 +46,6 @@ class _platform_macx
 		};
 
 	public:
-
-		static const bool TESTING = false;
 
 		enum FX_BLENDING {
 			fx_translucent = _FX_BLENDING::macx_fx_BehindWindow,

@@ -23,10 +23,13 @@ ftpHandler::ftpHandler()
 
 ftpHandler::~ftpHandler()
 {
+	debug("~ftpHandler");
+
 	if (this->ftih != nullptr)
 		this->ftih->disconnect();
 
 	delete this->ftih;
+	delete this->log;
 }
 
 bool ftpHandler::openConnection()

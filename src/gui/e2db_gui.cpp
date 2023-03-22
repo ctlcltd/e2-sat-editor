@@ -37,6 +37,13 @@ e2db::e2db()
 	createBouquets();
 }
 
+e2db::~e2db()
+{
+	debug("~e2db");
+
+	delete this->log;
+}
+
 void e2db::setup()
 {
 	debug("setup");
@@ -382,6 +389,7 @@ bool e2db::write(string path)
 	return true;
 }
 
+//TODO FIX merge (this) sts is (this) dst (collisions)
 void e2db::importFile(vector<string> paths)
 {
 	debug("importFile");

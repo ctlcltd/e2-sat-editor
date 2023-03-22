@@ -41,6 +41,13 @@ tools::tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data)
 	this->data = data;
 }
 
+tools::~tools()
+{
+	debug("~tools");
+
+	delete this->log;
+}
+
 //TODO improve
 void tools::inspector()
 {

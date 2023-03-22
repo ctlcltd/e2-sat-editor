@@ -50,6 +50,14 @@ settings::settings(gui* gid)
 	this->state.prev = -1;
 }
 
+settings::~settings()
+{
+	debug("~settings");
+
+	delete this->sets;
+	delete this->log;
+}
+
 void settings::display(QWidget* cwid)
 {
 	debug("display");
@@ -800,6 +808,7 @@ void settings::destroy()
 {
 	debug("destroy");
 
+	delete this->theme;
 	delete this->dial;
 	delete this;
 }

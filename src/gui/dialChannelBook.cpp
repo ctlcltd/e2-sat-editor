@@ -100,6 +100,7 @@ void dialChannelBook::destroy()
 
 	delete this->cbv;
 	delete this->dial;
+	delete this->log;
 	delete this;
 }
 

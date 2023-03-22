@@ -56,6 +56,15 @@ tunersetsView::tunersetsView(tab* tid, QWidget* cwid, dataHandler* data, int yty
 	layout();
 }
 
+tunersetsView::~tunersetsView()
+{
+	debug("~tunersetsView");
+
+	delete this->widget;
+	delete this->theme;
+	delete this->log;
+}
+
 void tunersetsView::layout()
 {
 	debug("layout");
@@ -237,9 +246,6 @@ void tunersetsView::layout()
 	list->connect(list, &QTreeWidget::currentItemChanged, [=]() { this->listItemChanged(); });
 	list->connect(list, &QTreeWidget::itemSelectionChanged, [=]() { this->listItemSelectionChanged(); });
 	list->connect(list, &QTreeWidget::itemDoubleClicked, [=]() { this->listItemDoubleClicked(); });
-
-	QClipboard* clipboard = QGuiApplication::clipboard();
-	clipboard->connect(clipboard, &QClipboard::dataChanged, [=]() { this->clipboardDataChanged(); });
 
 	tbox->addWidget(tree);
 	tbox->addWidget(tree_search);

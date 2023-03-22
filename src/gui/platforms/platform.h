@@ -22,9 +22,6 @@
 class _platform
 {
 	public:
-
-		static const bool TESTING = false;
-
 		static QWidget* osWindowBlend(QWidget* widget)
 		{
 			bool experiment = QSettings().value("preference/osExperiment", false).toBool();

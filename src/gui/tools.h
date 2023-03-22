@@ -25,7 +25,7 @@ class tools : protected e2se::log_factory
 {
 	public:
 		tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data);
-		virtual ~tools() = default;
+		virtual ~tools();
 		void inspector();
 		void importFileCSV(e2db::FCONVS fci, e2db::fcopts opts);
 		void exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts);

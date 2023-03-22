@@ -67,6 +67,7 @@ class transpondersView : public viewAbstract
 		};
 
 		transpondersView(tab* twid, QWidget* cwid, dataHandler* data);
+		~transpondersView();
 		void load();
 		void reset();
 		void listItemCopy(bool cut = false);

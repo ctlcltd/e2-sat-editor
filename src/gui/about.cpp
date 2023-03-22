@@ -29,6 +29,13 @@ about::about()
 	this->log = new logger("gui", "about");
 }
 
+about::~about()
+{
+	debug("~about");
+
+	delete this->log;
+}
+
 void about::layout()
 {
 	debug("layout");

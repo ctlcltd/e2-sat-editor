@@ -104,6 +104,7 @@ class mainView : public viewAbstract
 		};
 
 		mainView(tab* tid, QWidget* cwid, dataHandler* data);
+		~mainView();
 		void load();
 		void reset();
 		void didChange();
@@ -112,6 +113,7 @@ class mainView : public viewAbstract
 		void listItemCopy(bool cut = false);
 		void listItemPaste();
 		void listItemDelete();
+		void clipboardDataChanged();
 		void updateIndex();
 
 		QTreeWidget* side = nullptr;
@@ -133,7 +135,6 @@ class mainView : public viewAbstract
 		void listPendingUpdate();
 		void visualReindexList();
 		void visualReloadList();
-		void clipboardDataChanged();
 		void sortByColumn(int column);
 		void allowDnD();
 		void disallowDnD();

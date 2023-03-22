@@ -233,6 +233,7 @@ class gui : protected e2se::log_factory
 		};
 
 		gui(int argc, char* argv[]);
+		//TODO destructor
 		virtual ~gui() = default;
 		int exited();
 		void settingsChanged();
@@ -283,6 +284,7 @@ class gui : protected e2se::log_factory
 		void tabStackerLayout();
 		void statusBarLayout();
 		void themeChanged();
+		void clipboardDataChanged();
 		void initSettings();
 		void updateSettings();
 		void resetSettings();

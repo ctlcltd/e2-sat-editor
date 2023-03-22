@@ -64,6 +64,7 @@ class tab : protected e2se::log_factory
 		string getFilename();
 		void settingsChanged();
 		void themeChanged();
+		void clipboardDataChanged();
 		void tabSwitched();
 		void tabChangeName(string filename = "");
 		void setFlag(gui::GUI_CXE bit, bool flag);

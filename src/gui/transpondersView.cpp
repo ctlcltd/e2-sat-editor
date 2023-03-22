@@ -47,6 +47,15 @@ transpondersView::transpondersView(tab* tid, QWidget* cwid, dataHandler* data)
 	layout();
 }
 
+transpondersView::~transpondersView()
+{
+	debug("~transpondersView");
+
+	delete this->widget;
+	delete this->theme;
+	delete this->log;
+}
+
 void transpondersView::layout()
 {
 	debug("layout");
@@ -147,9 +156,6 @@ void transpondersView::layout()
 	list->connect(list, &QTreeWidget::currentItemChanged, [=]() { this->listItemChanged(); });
 	list->connect(list, &QTreeWidget::itemSelectionChanged, [=]() { this->listItemSelectionChanged(); });
 	list->connect(list, &QTreeWidget::itemDoubleClicked, [=]() { this->listItemDoubleClicked(); });
-
-	QClipboard* clipboard = QGuiApplication::clipboard();
-	clipboard->connect(clipboard, &QClipboard::dataChanged, [=]() { this->clipboardDataChanged(); });
 
 	abox->addWidget(list);
 	abox->addWidget(list_search);

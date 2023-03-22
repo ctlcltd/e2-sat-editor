@@ -103,6 +103,7 @@ class tunersetsView : public viewAbstract
 		};
 
 		tunersetsView(tab* twid, QWidget* cwid, dataHandler* data, int ytype);
+		~tunersetsView();
 		void load();
 		void reset();
 		void treeItemDelete();

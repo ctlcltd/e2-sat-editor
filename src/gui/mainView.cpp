@@ -57,6 +57,15 @@ mainView::mainView(tab* tid, QWidget* cwid, dataHandler* data)
 	layout();
 }
 
+mainView::~mainView()
+{
+	debug("~mainView");
+
+	delete this->widget;
+	delete this->theme;
+	delete this->log;
+}
+
 void mainView::layout()
 {
 	debug("layout");
@@ -236,9 +245,6 @@ void mainView::layout()
 	list->connect(list, &QTreeWidget::currentItemChanged, [=]() { this->listItemChanged(); });
 	list->connect(list, &QTreeWidget::itemSelectionChanged, [=]() { this->listItemSelectionChanged(); });
 	list->connect(list, &QTreeWidget::itemDoubleClicked, [=]() { this->listItemDoubleClicked(); });
-
-	QClipboard* clipboard = QGuiApplication::clipboard();
-	clipboard->connect(clipboard, &QClipboard::dataChanged, [=]() { this->clipboardDataChanged(); });
 
 	asbox->addWidget(side);
 	sfrm->setLayout(asbox);

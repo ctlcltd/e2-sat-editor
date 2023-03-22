@@ -22,7 +22,7 @@ class about : protected e2se::log_factory
 {
 	public:
 		about();
-		virtual ~about() = default;
+		virtual ~about();
 		void display();
 		void destroy();
 

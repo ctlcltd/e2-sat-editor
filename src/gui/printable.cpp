@@ -37,6 +37,13 @@ printable::printable(QWidget* cwid, dataHandler* data)
 	this->data = data;
 }
 
+printable::~printable()
+{
+	debug("~printable");
+
+	delete this->log;
+}
+
 void printable::documentAll()
 {
 	debug("documentAll");
@@ -705,6 +712,9 @@ void printable::print()
 	if (pdial.exec() == QDialog::Accepted) {
 		doc->print(printer);
 	}
+
+	delete doc;
+	delete printer;
 }
 
 //TODO FIX table cell borderSize [Qt5]

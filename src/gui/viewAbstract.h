@@ -62,7 +62,8 @@ class viewAbstract : protected e2se::log_factory
 		virtual void load() = 0;
 		virtual void reset() = 0;
 		virtual void didChange() {};
-		void themeChanged();
+		virtual void themeChanged();
+		virtual void clipboardDataChanged();
 		virtual void treeItemDelete();
 		virtual void listItemCut();
 		virtual void listItemCopy(bool cut = false) = 0;
@@ -137,7 +138,6 @@ class viewAbstract : protected e2se::log_factory
 
 		virtual void layout() = 0;
 		void searchLayout();
-		virtual void clipboardDataChanged();
 		void sortByColumn(int column);
 		bool tabGetFlag(gui::GUI_CXE bit);
 		void tabSetFlag(gui::GUI_CXE bit, bool flag);

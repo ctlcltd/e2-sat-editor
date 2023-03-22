@@ -27,6 +27,14 @@ ftpcom::ftpcom()
 	setup();
 }
 
+//TODO
+/*ftpcom::~ftpcom()
+{
+	debug("~ftpcom");
+
+	delete this->log;
+}*/
+
 void ftpcom::setup()
 {
 	debug("setup");

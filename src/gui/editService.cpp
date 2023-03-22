@@ -969,6 +969,8 @@ void editService::destroy()
 
 	delete this->edittx;
 	delete this->dial;
+	delete this->theme;
+	delete this->log;
 	delete this;
 }
 

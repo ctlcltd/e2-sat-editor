@@ -59,6 +59,15 @@ channelBookView::channelBookView(tab* tid, QWidget* cwid, dataHandler* data)
 	layout();
 }
 
+channelBookView::~channelBookView()
+{
+	debug("~channelBookView");
+
+	delete this->widget;
+	delete this->theme;
+	delete this->log;
+}
+
 void channelBookView::layout()
 {
 	debug("layout");

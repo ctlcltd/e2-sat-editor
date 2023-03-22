@@ -70,11 +70,16 @@ tab::tab(gui* gid, QWidget* cwid)
 
 tab::~tab()
 {
+	debug("~tab");
+
 	if (! this->child)
-	{
 		delete this->data;
-	}
+
+	delete this->view;
+
 	delete this->widget;
+	delete this->theme;
+	delete this->log;
 }
 
 bool tab::isChild()
@@ -418,6 +423,16 @@ void tab::themeChanged()
 
 	for (auto & child : childs)
 		child->view->themeChanged();
+}
+
+void tab::clipboardDataChanged()
+{
+	debug("clipboardDataChanged");
+
+	view->clipboardDataChanged();
+
+	for (auto & child : childs)
+		child->view->clipboardDataChanged();
 }
 
 void tab::newFile()

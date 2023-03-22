@@ -181,11 +181,14 @@ void dialAbstract::save()
 	});
 }
 
+//TODO TEST
 void dialAbstract::destroy()
 {
 	debug("destroy");
 
 	delete this->dial;
+	delete this->theme;
+	delete this->log;
 	delete this;
 }
 

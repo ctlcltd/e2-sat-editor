@@ -66,6 +66,7 @@ class channelBookView : public viewAbstract
 
 		channelBookView(dataHandler* data, int stype);
 		channelBookView(tab* tid, QWidget* cwid, dataHandler* data);
+		~channelBookView();
 		void load();
 		void reset();
 		void filterChanged(bool enabled);

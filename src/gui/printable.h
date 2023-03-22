@@ -44,7 +44,7 @@ class printable : protected e2se::log_factory
 		};
 
 		printable(QWidget* cwid, dataHandler* data);
-		virtual ~printable() = default;
+		virtual ~printable();
 		void documentAll();
 		void documentIndex();
 		void documentServices();

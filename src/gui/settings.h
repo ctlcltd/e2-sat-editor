@@ -60,7 +60,7 @@ class settings : protected e2se::log_factory
 		};
 
 		settings(gui* gid);
-		virtual ~settings() = default;
+		virtual ~settings();
 		void display(QWidget* cwid);
 		void destroy();
 		void themeChanged();

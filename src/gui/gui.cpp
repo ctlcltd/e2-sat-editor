@@ -21,6 +21,7 @@
 #include <QTabWidget>
 #include <QPushButton>
 #include <QFileDialog>
+#include <QClipboard>
 
 #include "platforms/platform.h"
 
@@ -73,6 +74,9 @@ gui::gui(int argc, char* argv[])
 	ThemeChangeEventObserver* gce = new ThemeChangeEventObserver;
 	gce->setEventCallback([=]() { this->themeChanged(); });
 	mwid->installEventFilter(gce);
+
+	QClipboard* clipboard = QGuiApplication::clipboard();
+	clipboard->connect(clipboard, &QClipboard::dataChanged, [=]() { this->clipboardDataChanged(); });
 
 	platform::osWindowBlend(mwid);
 
@@ -382,6 +386,17 @@ void gui::themeChanged()
 	{
 		tab* tab = x.second;
 		tab->themeChanged();
+	}
+}
+
+void gui::clipboardDataChanged()
+{
+	debug("clipboardDataChanged");
+
+	for (auto & x : ttabs)
+	{
+		tab* tab = x.second;
+		tab->clipboardDataChanged();
 	}
 }
 
@@ -720,6 +735,7 @@ void gui::closeAllTabs()
 		int x = int (i);
 		debug("closeAllTabs", "index", x);
 
+		//TODO TEST
 		delete ttabs[x];
 		ttabs.erase(x);
 		ttmenu.erase(x);
@@ -1324,7 +1340,7 @@ void gui::editAction(GUI_CXE bit)
 	else
 	{
 		GUI_CXE act;
-		
+
 		switch (bit)
 		{
 			case GUI_CXE::EditDelete: act = GUI_CXE::TabListDelete; break;
@@ -1334,7 +1350,7 @@ void gui::editAction(GUI_CXE bit)
 			case GUI_CXE::EditPaste: act = GUI_CXE::TabListPaste; break;
 			default: return;
 		}
-		
+
 		tabAction(TAB_ATS (act));
 	}
 }

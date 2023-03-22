@@ -23,7 +23,10 @@ dataHandler::dataHandler()
 
 dataHandler::~dataHandler()
 {
+	debug("~dataHandler");
+
 	delete this->dbih;
+	delete this->log;
 }
 
 void dataHandler::newFile()
