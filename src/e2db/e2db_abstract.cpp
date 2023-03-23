@@ -1089,10 +1089,8 @@ void e2db_abstract::add_service(int idx, service& ch)
 
 	if (db.services.count(ch.chid))
 	{
-		int m;
 		string kchid = 's' + ch.chid;
-		if (ch.snum) m = ch.snum;
-		else m = int (collisions[kchid].size());
+		int m = int (collisions[kchid].size());
 		ch.chid += ':' + to_string(m);
 		collisions[kchid].emplace_back(pair (ch.chid, m)); //C++17
 	}
@@ -1136,13 +1134,21 @@ void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_refe
 	chref.chid = chid;
 	chref.index = idx;
 
+	bouquet& bs = bouquets[ub.pname];
 	ub.channels.emplace(chref.chid, chref);
 	index[ub.bname].emplace_back(pair (idx, chref.chid)); //C++17
 
 	if (chref.marker)
+	{
 		index["mks"].emplace_back(pair (ub.index, chref.chid)); //C++17
-	else
-		index[ub.pname].emplace_back(pair ((index[ub.pname].size() + 1), chref.chid)); //C++17
+	}
+	else if (bs.services.count(chref.chid) == 0)
+	{
+		int idx = int (index[ub.pname].size());
+		idx += 1;
+		bs.services.emplace(chref.chid);
+		index[ub.pname].emplace_back(pair (idx, chref.chid)); //C++17
+	}
 }
 
 void e2db_abstract::set_channel_reference_marker_value(userbouquet& ub, string chid, string value)
@@ -1288,14 +1294,17 @@ void e2db_abstract::merge(e2db_abstract* dst)
 {
 	debug("merge");
 
-	this->db.transponders.merge(dst->db.transponders); //C++17
-	this->db.services.merge(dst->db.services); //C++17
-	this->tuners.merge(dst->tuners); //C++17
-	this->bouquets.merge(dst->bouquets); //C++17
+	error("merge", "Error", "Abstract merge swap objects.");
 
-	this->collisions = dst->collisions;
+	this->db = dst->db;
+	this->bouquets = dst->bouquets;
+	this->userbouquets = dst->userbouquets;
+	this->tuners = dst->tuners;
 	this->tuners_pos = dst->tuners_pos;
+	this->datas = dst->datas;
+	this->comments = dst->comments;
 	this->index = dst->index;
+	this->collisions = dst->collisions;
 }
 
 void e2db_abstract::debugger()

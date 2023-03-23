@@ -952,8 +952,11 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 				userbouquets[ub.bname].channels.emplace(chref.chid, chref);
 
 				dst->index[ub.bname].emplace_back(pair (chref.index, chref.chid)); //C++17
+
 				if (chref.marker)
+				{
 					dst->index["mks"].emplace_back(pair (ub.index, chref.chid)); //C++17
+				}
 			}
 		}
 	}
@@ -1014,12 +1017,17 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 				dst->index["ubs"].emplace_back(pair (ub.index, ub.bname)); //C++17
 				dst->bouquets[ub.pname].userbouquets.emplace_back(ub.bname);
 
+				int idx = int (dst->index[ub.pname].size());
 				for (auto & x : dst->index[ub.bname])
 				{
 					channel_reference& chref = ub.channels[x.second];
 
-					if (! chref.marker)
-						dst->index[ub.pname].emplace_back(pair ((dst->index[ub.pname].size() + 1), chref.chid)); //C++17
+					if (! chref.marker && dst->bouquets[ub.pname].services.count(chref.chid) == 0)
+					{
+						idx += 1;
+						dst->bouquets[ub.pname].services.emplace(chref.chid);
+						dst->index[ub.pname].emplace_back(pair (idx, chref.chid)); //C++17
+					}
 				}
 			}
 		}
@@ -1250,8 +1258,11 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 
 				userbouquets[ub.bname].channels.emplace(chref.chid, chref);
 				dst->index[ub.bname].emplace_back(pair (chref.index, chref.chid)); //C++17
+
 				if (chref.marker)
+				{
 					dst->index["mks"].emplace_back(pair (ub.index, chref.chid)); //C++17
+				}
 			}
 		}
 	}
@@ -1312,12 +1323,17 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 				dst->index["ubs"].emplace_back(pair (ub.index, ub.bname)); //C++17
 				dst->bouquets[ub.pname].userbouquets.emplace_back(ub.bname);
 
+				int idx = int (dst->index[ub.pname].size());
 				for (auto & x : dst->index[ub.bname])
 				{
 					channel_reference& chref = ub.channels[x.second];
 
-					if (! chref.marker)
-						dst->index[ub.pname].emplace_back(pair ((dst->index[ub.pname].size() + 1), chref.chid)); //C++17
+					if (! chref.marker && dst->bouquets[ub.pname].services.count(chref.chid) == 0)
+					{
+						idx += 1;
+						dst->bouquets[ub.pname].services.emplace(chref.chid);
+						dst->index[ub.pname].emplace_back(pair (idx, chref.chid)); //C++17
+					}
 				}
 			}
 		}

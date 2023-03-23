@@ -162,6 +162,7 @@ void e2db_parser::parse_e2db()
 	// commit: 9364c8f	elapsed time: 19122
 	// commit: 6559e93	elapsed time: 19939
 	// commit: f1cb80f	elapsed time: 18829
+	// commit: HEAD 	elapsed time: 18506
 
 	info("parse_e2db", "elapsed time", to_string(int (end - start)) + " ms.");
 }
@@ -1659,10 +1660,7 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 		{
 			channel_reference chref = x.second;
 
-			if (chref.marker)
-				continue;
-
-			if (db.services.count(chref.chid))
+			if (! chref.marker && db.services.count(chref.chid))
 			{
 				service ch = db.services[chref.chid];
 				count.emplace(STYPE_EXT_TYPE.count(ch.stype) ? STYPE_EXT_TYPE.at(ch.stype) : 0, ch.chid);
@@ -1675,31 +1673,35 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 		else
 			bs = bouquets["bouquets.tv"];
 
-		stringstream bname;
 		string ktype;
 		if (bs.btype == STYPE::tv)
 			ktype = "tv";
 		else if (bs.btype == STYPE::radio)
 			ktype = "radio";
 
-		bname << "userbouquet.dbe" << setfill('0') << setw(2) << ub.index << '.' << ktype;
-		ub.bname = bname.str();
+		stringstream ub_bname;
+		ub_bname << "userbouquet.dbe" << setfill('0') << setw(2) << ub.index << '.' << ktype;
 
+		ub.bname = ub_bname.str();
 		ub.pname = bs.bname;
 
 		add_userbouquet(ub.index, ub);
 
+		int idx = int (index[ub.pname].size());
 		for (auto & w : q.second)
 		{
 			channel_reference chref = ub.channels[w];
 
-			if (chref.marker)
-				continue;
-
-			if (db.services.count(chref.chid))
+			if (! chref.marker && db.services.count(chref.chid))
 			{
 				index[ub.bname].emplace_back(pair (chref.index, chref.chid)); //C++17
-				index[ub.pname].emplace_back(pair ((index[ub.pname].size() + 1), chref.chid)); //C++17
+
+				if (bs.services.count(chref.chid) == 0)
+				{
+					idx += 1;
+					bs.services.emplace(chref.chid);
+					index[ub.pname].emplace_back(pair (idx, chref.chid)); //C++17
+				}
 			}
 		}
 

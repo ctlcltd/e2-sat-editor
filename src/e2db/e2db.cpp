@@ -441,10 +441,8 @@ void e2db::edit_service(string chid, service& ch)
 
 		if (db.services.count(ch.chid))
 		{
-			int m;
 			string kchid = 's' + ch.chid;
-			if (ch.snum) m = ch.snum;
-			else m = int (collisions[kchid].size());
+			int m = int (collisions[kchid].size());
 			ch.chid += ':' + to_string(m);
 			collisions[kchid].emplace_back(pair (ch.chid, m)); //C++17
 		}
@@ -585,15 +583,16 @@ void e2db::add_userbouquet(userbouquet& ub)
 
 	if (ub.bname.empty())
 	{
-		stringstream bname;
 		string ktype;
 		if (bs.btype == STYPE::tv)
 			ktype = "tv";
 		else if (bs.btype == STYPE::radio)
 			ktype = "radio";
 
-		bname << "userbouquet.dbe" << setfill('0') << setw(2) << ub.index << '.' << ktype;
-		ub.bname = bname.str();
+		stringstream ub_bname;
+		ub_bname << "userbouquet.dbe" << setfill('0') << setw(2) << ub.index << '.' << ktype;
+
+		ub.bname = ub_bname.str();
 	}
 
 	e2db_abstract::add_userbouquet(ub.index, ub);
@@ -640,12 +639,19 @@ void e2db::remove_userbouquet(string bname)
 	{
 		bs.userbouquets.erase(pos);
 	}
+
 	for (string & w : bs.userbouquets)
 	{
+		int idx = int (index[ub.pname].size());
+
+		//TODO
 		for (auto & x : userbouquets[w].channels)
 		{
 			if (! x.second.marker)
-				index[ub.pname].emplace_back(pair ((index[ub.pname].size() + 1), x.first)); //C++17
+			{
+				idx += 1;
+				index[ub.pname].emplace_back(pair (idx, x.first)); //C++17
+			}
 		}
 	}
 
@@ -1303,95 +1309,46 @@ map<string, vector<pair<int, string>>> e2db::get_az_index()
 	return _index;
 }
 
-//TODO
 void e2db::merge(e2db_abstract* dst)
 {
 	debug("merge");
 
-	debug("merge", "before", int (this->db.transponders.size()));
-	this->db.transponders.merge(dst->db.transponders); //C++17
-	debug("merge", "after", int (this->db.transponders.size()));
-
-	auto cp = this->db.services;
-
-	debug("merge", "before", int (this->db.services.size()));
-	this->db.services.merge(dst->db.services); //C++17
-	debug("merge", "after", int (this->db.services.size()));
-
-	for (auto & x : this->db.services)
-	{
-		if (! cp.count(x.first))
-			debug("merge", "chid", x.first);
-	}
-
-	this->tuners.merge(dst->tuners); //C++17
-	this->bouquets.merge(dst->bouquets); //C++17
-
-	//TODO
-	this->collisions.merge(dst->collisions); //C++17
+	std::clock_t start = std::clock();
 
 	unordered_map<string, vector<pair<int, string>>> index;
 
-	//TODO refresh cache data
+	this->db.transponders.merge(dst->db.transponders); //C++17
 
-	dst->index.erase("chs:0");
-	dst->index.erase("chs:1");
-	dst->index.erase("chs:2");
-	dst->index.erase("bss");
-	dst->index.erase("ubs");
-	dst->index.erase("mks");
-	dst->index.erase("bouquets.tv");
-	dst->index.erase("bouquets.radio");
+	this->db.services.merge(dst->db.services); //C++17
 
-	for (auto & i : dst->index)
+	for (auto & x : dst->collisions)
 	{
-		string key = i.first;
+		string kchid = x.first;
 
-		if (key.find("bouquet") != string::npos)
+		if (this->collisions.count(kchid))
 		{
-			continue;
-		}
-		if (this->index.count(key)) // merge
-		{
-			unordered_set<string> i_keys;
-			vector<pair<int, string>> i_diff;
-
-			for (auto & i : this->index[key])
+			for (auto & x : x.second)
 			{
-				i_keys.emplace(i.second);
-			}
-
-			std::copy_if(i.second.begin(), i.second.end(), std::inserter(i_diff, i_diff.begin()), [=] (pair<int, string> x) {
-				return ! i_keys.count(x.second);
-			});
-
-			index[key] = this->index[key];
-			index[key].insert(index[key].end(), i_diff.begin(), i_diff.end());
-
-			int idx = 0;
-			for (auto & x : index[key])
-			{
-				idx += 1;
-				x.first = idx;
+				int m = int (this->collisions[kchid].size());
+				collisions[kchid].emplace_back(pair (x.first, m)); //C++17
 			}
 		}
-		else // append
+		else
 		{
-			index.emplace(i);
+			this->collisions.emplace(x);
 		}
 	}
 
-	//TODO re-order index chs by tsid|ssid
-
-	int idx = 0;
-	for (auto & i : index["chs"])
+	for (auto & x : dst->db.services)
 	{
-		service& ch = this->db.services[i.second];
-		string iname = "chs:" + (STYPE_EXT_TYPE.count(ch.stype) ? to_string(STYPE_EXT_TYPE.at(ch.stype)) : "0");
-		idx = i.first;
-		index[iname].emplace_back(pair (idx, ch.chid)); //C++17
+		if (this->db.services.count(x.first))
+		{
+			if (x.second.data != this->db.services[x.first].data)
+				this->db.services[x.first].data.merge(x.second.data);
+		}
 	}
 
+	this->tuners.merge(dst->tuners); //C++17
 	this->tuners_pos.clear();
 
 	if (this->tuners.count(YTYPE::satellite))
@@ -1400,139 +1357,273 @@ void e2db::merge(e2db_abstract* dst)
 			this->tuners_pos.emplace(x.second.pos, x.second.tnid);
 	}
 
-	index["bss"] = this->index["bss"];
-	index["ubs"] = this->index["ubs"];
-	index["mks"] = this->index["mks"];
+	vector<string> i_names;
 
-	//TODO
-	for (auto & x : dst->bouquets)
+	for (auto & x : dst->index)
 	{
-		string bname = x.second.bname;
+		string iname = x.first;
 
-		if (this->bouquets.count(bname) == 0)
+		if (iname.find("bouquet") != string::npos)
+			continue;
+		else if (iname.find("chs:") != string::npos)
+			continue;
+		else if (iname == "bss")
+			continue;
+		else if (iname == "ubs")
+			continue;
+		else if (iname == "mks")
+			continue;
+		else
+			i_names.emplace_back(iname);
+	}
+
+	for (string & iname : i_names)
+	{
+		if (this->index.count(iname)) // merge
 		{
-			// if (bname.find(".epl"))
+			unordered_set<string> i_keys;
+			vector<pair<int, string>> i_diff;
+
+			for (auto & x : this->index[iname])
+			{
+				i_keys.emplace(x.second);
+			}
+
+			std::copy_if(dst->index[iname].begin(), dst->index[iname].end(), std::inserter(i_diff, i_diff.begin()), [=] (pair<int, string> x) {
+				return ! i_keys.count(x.second);
+			});
+
+			index[iname] = this->index[iname];
+			index[iname].insert(index[iname].end(), i_diff.begin(), i_diff.end());
+
+			int idx = 0;
+			for (auto & x : index[iname])
+			{
+				idx += 1;
+				x.first = idx;
+			}
+		}
+		else // append
+		{
+			index.emplace(iname, dst->index[iname]);
 		}
 	}
 
+	if (0) // order by tsid|ssid	elapsed time: 84290 ms.
+	{
+		unordered_map<string, int> txs;
+		vector<pair<int, string>> i_chs;
+
+		int idx = 0;
+		for (auto & x : index["txs"])
+		{
+			transponder tx = db.transponders[x.second];
+
+			if (! txs[tx.txid])
+			{
+				for (auto & x : index["chs"])
+				{
+					service ch = db.services[x.second];
+
+					if (ch.txid != tx.txid)
+						continue;
+
+					string iname = "chs:" + (STYPE_EXT_TYPE.count(ch.stype) ? to_string(STYPE_EXT_TYPE.at(ch.stype)) : "0");
+					idx += 1;
+					x.first = idx;
+					index[iname].emplace_back(x);
+					i_chs.emplace_back(x);
+				}
+
+				txs[tx.txid]++;
+			}
+		}
+
+		index["chs"].swap(i_chs);
+	}
+	else  // unordered append		elapsed time: 11086 ms.
+	{
+		for (auto & x : index["chs"])
+		{
+			service ch = this->db.services[x.second];
+			string iname = "chs:" + (STYPE_EXT_TYPE.count(ch.stype) ? to_string(STYPE_EXT_TYPE.at(ch.stype)) : "0");
+			index[iname].emplace_back(x);
+		}
+	}
+
+	index["bss"] = this->index["bss"];
+	index["ubs"] = this->index["ubs"];
+
 	unordered_map<string, string> ubs_names;
+	bool bss_epl = false;
+
+	for (auto & x : this->bouquets)
+	{
+		string bname = x.second.bname;
+
+		if (bname.rfind(".epl") != string::npos)
+		{
+			bss_epl = true;
+			break;
+		}
+	}
 
 	for (auto & x : this->userbouquets)
 	{
-		string key = x.second.bname;
+		string bname = x.second.bname;
 		bouquet bs = this->bouquets[x.second.pname];
 
+		string qw;
 		string ktype;
 		if (bs.btype == STYPE::tv)
 			ktype = "tv";
 		else if (bs.btype == STYPE::radio)
 			ktype = "radio";
 
-		//TODO trim and remove spaces
-		string qw = x.second.name + ktype;
+		if (bname.rfind(".favourites") != string::npos)
+			qw = bname;
+		else
+			qw = x.second.name + '$' + ktype;
 
-		ubs_names.emplace(qw, key);
-		index[key] = this->index[key];
+		ubs_names.emplace(qw, bname);
+		index[bname] = this->index[bname];
 	}
 
-	for (auto & x : dst->userbouquets)
+	for (auto & x : dst->index["ubs"])
 	{
-		bouquet bs = this->bouquets[x.second.pname];
+		userbouquet ub = dst->userbouquets[x.second];
+		bouquet bs = dst->bouquets[ub.pname];
 
+		string bname = ub.bname;
+		string pname;
+		string iname = bname;
+		int ub_idx = -1;
+
+		string qw;
 		string ktype;
 		if (bs.btype == STYPE::tv)
+		{
 			ktype = "tv";
+			pname = bss_epl ? "userbouquets.tv.epl" : "bouquets.tv";
+		}
 		else if (bs.btype == STYPE::radio)
+		{
 			ktype = "radio";
+			pname = bss_epl ? "userbouquets.radio.epl" : "bouquets.radio";
+		}
 
-		string qw = x.second.name + ktype;
+		qw = ub.name + '$' + ktype;
+
+		ub_idx = int (this->bouquets[pname].userbouquets.size());
+
+		bool merge = false;
 
 		if (ubs_names.count(qw)) // merge
 		{
-			string key = ubs_names[x.second.name];
-			userbouquet& ub = this->userbouquets[key];
+			merge = true;
+			bname = ubs_names[qw];
 
-			ub.channels.merge(x.second.channels);
+			this->userbouquets[bname].channels.merge(ub.channels);
+			ub = this->userbouquets[bname];
 
 			unordered_set<string> i_keys;
 			vector<pair<int, string>> i_diff;
 
-			for (auto & i : index[key])
+			for (auto & i : index[bname])
 			{
 				i_keys.emplace(i.second);
 			}
 
-			std::copy_if(dst->index[x.second.bname].begin(), dst->index[x.second.bname].end(), std::inserter(i_diff, i_diff.begin()), [=] (pair<int, string> x) {
+			std::copy_if(dst->index[iname].begin(), dst->index[iname].end(), std::inserter(i_diff, i_diff.begin()), [=] (pair<int, string> x) {
 				return ! i_keys.count(x.second);
 			});
 
-			index[key].insert(index[key].end(), i_diff.begin(), i_diff.end());
+			index[bname].insert(index[bname].end(), i_diff.begin(), i_diff.end());
+		}
+		else if (this->userbouquets.count(bname)) // rename append
+		{
+			ub_idx += 1;
 
-			int idx = 0;
-			for (auto & x : index[key])
+			stringstream ub_bname;
+			ub_bname << "userbouquet.dbe" << setfill('0') << setw(2) << ub_idx << '.' << ktype;
+
+			ub.bname = bname = ub_bname.str();
+			ub.index = ub_idx;
+
+			this->bouquets[pname].userbouquets.emplace_back(bname);
+			this->userbouquets.emplace(bname, ub);
+			index[bname] = dst->index[iname];
+			index["ubs"].emplace_back(pair (ub_idx, bname)); //C++17
+		}
+		else // append
+		{
+			ub_idx += 1;
+			ub.index = ub_idx;
+
+			this->bouquets[pname].userbouquets.emplace_back(bname);
+			this->userbouquets.emplace(bname, ub);
+			index[bname] = dst->index[iname];
+			index["ubs"].emplace_back(pair (ub_idx, bname)); //C++17
+		}
+
+		int idx = 0;
+		for (auto & x : index[bname])
+		{
+			channel_reference& chref = ub.channels[x.second];
+
+			if (! chref.marker)
 			{
-				channel_reference& chref = ub.channels[x.second];
-
-				if (chref.marker)
-				{
-					char chid[25];
-					// %4d:%2x:%d
-					std::snprintf(chid, 25, "%d:%x:%d", chref.atype, chref.anum, ub.index);
-					chref.chid = chid;
-					index["mks"].emplace_back(pair (ub.index, chid)); //C++17
-				}
-				else
+				if (merge)
 				{
 					idx += 1;
 					chref.index = idx;
 					x.first = chref.index;
 				}
+				if (this->bouquets[pname].services.count(chref.chid) == 0)
+				{
+					int idx = int (index[pname].size());
+					idx += 1;
+					this->bouquets[pname].services.emplace(chref.chid);
+					index[pname].emplace_back(pair (idx, chref.chid)); //C++17
+				}
 			}
-		}
-		else if (this->userbouquets.count(x.second.bname)) // rename append
-		{
-			string key = x.second.bname;
-			userbouquet& ub = dst->userbouquets[key];
-			bouquet& bs = dst->bouquets[ub.pname];
-
-			//TODO FIX wrong size
-			// per btype, bname (eg. favourites.tv)
-			int ub_idx = int (bs.userbouquets.size());
-
-			string ktype;
-			if (bs.btype == STYPE::tv)
-				ktype = "tv";
-			else if (bs.btype == STYPE::radio)
-				ktype = "radio";
-
-			stringstream bname;
-			bname << "userbouquet.dbe" << setfill('0') << setw(2) << ub_idx << '.' << ktype;
-
-			ub.bname = bname.str();
-			ub.index = ub_idx;
-
-			bs.userbouquets.emplace_back(ub.bname);
-			this->userbouquets.emplace(ub.bname, ub);
-			index[ub.bname] = dst->index[key];
-
-			//TOOO FIX unordered
-			index["ubs"].emplace_back(pair (ub.index, ub.bname)); //C++17
-		}
-		else // append
-		{
-			string key = x.second.bname;
-			this->bouquets[x.second.pname].userbouquets.emplace_back(key);
-			this->userbouquets.emplace(x);
-			index[key] = dst->index[key];
-
-			//TOOO FIX unordered
-			index["ubs"].emplace_back(pair (x.second.index, key)); //C++17
 		}
 	}
 
-	//TODO index bouquets (userbouquet)
+	int i = 0;
+	for (auto & x : index["ubs"])
+	{
+		userbouquet& ub = this->userbouquets[x.second];
+		string bname = ub.bname;
+		unordered_map<string, channel_reference> channels;
+
+		for (auto & x : index[bname])
+		{
+			channel_reference& chref = ub.channels[x.second];
+
+			if (chref.marker)
+			{
+				char chid[25];
+				// %4d:%2x:%d
+				std::snprintf(chid, 25, "%d:%x:%d", chref.atype, i, ub.index);
+				chref.chid = chid;
+				chref.anum = i;
+				x.second = chref.chid;
+				index["mks"].emplace_back(pair (ub.index, chid)); //C++17
+				i++;
+			}
+
+			channels.emplace(chref.chid, chref);
+		}
+
+		ub.channels.swap(channels);
+	}
 
 	this->index.swap(index);
+
+	std::clock_t end = std::clock();
+
+	info("merge", "elapsed time", to_string(int (end - start)) + " ms.");
 }
 
 }

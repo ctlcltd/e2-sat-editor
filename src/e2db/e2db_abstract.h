@@ -14,11 +14,12 @@
 #include <vector>
 #include <map>
 #include <unordered_map>
+#include <unordered_set>
 #include <fstream>
 
 #include "../logger/logger.h"
 
-using std::string, std::pair, std::vector, std::map, std::unordered_map;
+using std::string, std::pair, std::vector, std::map, std::unordered_map, std::unordered_set;
 
 #ifndef e2db_abstract_h
 #define e2db_abstract_h
@@ -310,6 +311,8 @@ struct e2db_abstract : protected e2se::log_factory
 			int btype;
 			// userbouquets <bname string>
 			vector<string> userbouquets;
+			// services <chid string>
+			unordered_set<string> services;
 			int index = -1;
 		};
 
