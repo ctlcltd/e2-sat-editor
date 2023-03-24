@@ -162,11 +162,10 @@ void e2db_parser::parse_e2db()
 	// commit: 9364c8f	elapsed time: 19122
 	// commit: 6559e93	elapsed time: 19939
 	// commit: f1cb80f	elapsed time: 18829
-	// commit: HEAD 	elapsed time: 18506
+	// commit: a7022d8	elapsed time: 18506
 
 	info("parse_e2db", "elapsed time", to_string(int (end - start)) + " ms.");
 }
-
 
 void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 {

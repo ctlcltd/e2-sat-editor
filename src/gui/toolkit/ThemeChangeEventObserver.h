@@ -30,11 +30,14 @@ class ThemeChangeEventObserver : public QObject
 		bool eventFilter(QObject* object, QEvent* event)
 		{
 			if (event->type() == QEvent::ThemeChange/* || event->type() == QEvent::ApplicationPaletteChange*/)
-			{
-				//TODO improve call at once
-				callEventCallback();
-			}
+				return eventThemeChange(object, event);
 
+			return QObject::eventFilter(object, event);
+		}
+		//TODO improve call at once
+		bool eventThemeChange(QObject* object, QEvent* event)
+		{
+			callEventCallback();
 			return QObject::eventFilter(object, event);
 		}
 		void callEventCallback()

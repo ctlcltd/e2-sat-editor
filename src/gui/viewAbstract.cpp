@@ -198,24 +198,7 @@ void viewAbstract::sortByColumn(int column)
 	Qt::SortOrder order = list->header()->sortIndicatorOrder();
 	column = column == 1 ? 0 : column;
 
-	// sorting by
-	if (column)
-	{
-		list->sortItems(column, order);
-		list->header()->setSortIndicatorShown(true);
-	}
-	// sorting default
-	else
-	{
-		list->sortItems(column, order);
-		list->header()->setSortIndicator(1, order);
-
-		// default column 0|asc
-		if (order == Qt::AscendingOrder)
-			list->header()->setSortIndicatorShown(false);
-		else
-			list->header()->setSortIndicatorShown(true);
-	}
+	treeSortItems(list, column, order);
 }
 
 void viewAbstract::treeItemDelete()
@@ -846,6 +829,55 @@ QAction* viewAbstract::contextMenuSeparator(QMenu* menu)
 	action->setSeparator(true);
 	menu->addAction(action);
 	return action;
+}
+
+void viewAbstract::treeSortItems(QTreeWidget* tw, int column, Qt::SortOrder order)
+{
+	bool is_numeric = tw->headerItem()->data(column, Qt::UserRole).toBool();
+
+	if (is_numeric)
+	{
+		tw->header()->setSortIndicatorShown(false);
+		tw->header()->setSortIndicator(column, order);
+
+		QList<QPair<QTreeWidgetItem*, int>> sorting (tw->topLevelItemCount());
+		for (int i = 0; i < sorting.size(); ++i) {
+			sorting[i].first = tw->topLevelItem(i);
+			sorting[i].second = i;
+		}
+
+		const auto compare = (order == Qt::AscendingOrder ? &viewAbstract::treeItemNumericLessThan : &viewAbstract::treeItemNumericGreaterThan);
+
+		std::stable_sort(sorting.begin(), sorting.end(), compare);
+
+		//TODO improve move or swap model index
+
+		QList<QTreeWidgetItem*> toList;
+
+		for (int r = 0; r < sorting.size(); ++r)
+			toList.append(sorting.at(r).first->clone());
+
+		tw->invisibleRootItem()->takeChildren();
+		tw->invisibleRootItem()->addChildren(toList);
+	}
+	else
+	{
+		tw->sortItems(column, order);
+	}
+
+	if (column)
+	{
+		tw->header()->setSortIndicatorShown(true);
+	}
+	else
+	{
+		tw->header()->setSortIndicator(1, order);
+
+		if (order == Qt::AscendingOrder)
+			tw->header()->setSortIndicatorShown(false);
+		else
+			tw->header()->setSortIndicatorShown(true);
+	}
 }
 
 }

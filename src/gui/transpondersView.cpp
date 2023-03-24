@@ -99,13 +99,13 @@ void transpondersView::layout()
 
 	list->setUniformRowHeights(true);
 	list->setRootIsDecorated(false);
-	list->setSelectionBehavior(QAbstractItemView::SelectRows);
-	list->setSelectionMode(QAbstractItemView::ExtendedSelection);
+	list->setSelectionBehavior(QTreeWidget::SelectRows);
+	list->setSelectionMode(QTreeWidget::ExtendedSelection);
 	list->setItemsExpandable(false);
 	list->setExpandsOnDoubleClick(false);
-	list->setDropIndicatorShown(true);
-	list->setDragDropMode(QAbstractItemView::InternalMove);
-	list->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	list->setDropIndicatorShown(false);
+	list->setDragDropMode(QTreeWidget::InternalMove);
+	list->setEditTriggers(QTreeWidget::NoEditTriggers);
 
 	QTreeWidgetItem* list_thead = new QTreeWidgetItem({NULL, "TXID", "Combo", "System", "Position", "Transport ID", "DVBNS", "ONID", "Frequency", "Polarization", "Symbol Rate", "FEC", "Modulation", "Bandwidth", "Pilot", "Roll offset", "Inversion", "Tmx Mode", "Guard", "Hierarchy"});
 	list->setHeaderItem(list_thead);
@@ -136,6 +136,14 @@ void transpondersView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::guard, 70);		// Guard
 	list->setColumnWidth(ITEM_ROW_ROLE::hier, 70);		// Hierarchy
 
+	// numeric items
+	QTreeWidgetItem* tree_head = list->headerItem();
+	tree_head->setData(ITEM_ROW_ROLE::tsid, Qt::UserRole, true);
+	tree_head->setData(ITEM_ROW_ROLE::dvbns, Qt::UserRole, true);
+	tree_head->setData(ITEM_ROW_ROLE::onid, Qt::UserRole, true);
+	tree_head->setData(ITEM_ROW_ROLE::freq, Qt::UserRole, true);
+	tree_head->setData(ITEM_ROW_ROLE::sr, Qt::UserRole, true);
+
 	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->sortByColumn(column); });
 
 	list->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -151,8 +159,10 @@ void transpondersView::layout()
 
 	this->action.list_search->setDisabled(true);
 
+	this->list_evth = new TreeDropIndicatorEventPainter;
 	this->list_evto = new ListEventObserver;
 	list->installEventFilter(list_evto);
+	list->viewport()->installEventFilter(list_evth);
 	list->connect(list, &QTreeWidget::currentItemChanged, [=]() { this->listItemChanged(); });
 	list->connect(list, &QTreeWidget::itemSelectionChanged, [=]() { this->listItemSelectionChanged(); });
 	list->connect(list, &QTreeWidget::itemDoubleClicked, [=]() { this->listItemDoubleClicked(); });
@@ -576,8 +586,8 @@ void transpondersView::putListItems(vector<QString> items)
 				case e2db::YTYPE::satellite:
 					tx.pol = dbih->value_transponder_polarization(qs[7].toStdString());
 					tx.sr = qs[8].toInt();
-					tx.fec = fec.inner_fec;
 					tx.sys = dbih->value_transponder_system(qs[1].toStdString());
+					tx.fec = fec.inner_fec;
 					tx.mod = dbih->value_transponder_modulation(qs[10].toStdString(), e2db::YTYPE::satellite);
 					tx.inv = dbih->value_transponder_inversion(qs[14].toStdString(), e2db::YTYPE::satellite);
 					tx.rol = dbih->value_transponder_rollof(qs[13].toStdString());
@@ -585,8 +595,8 @@ void transpondersView::putListItems(vector<QString> items)
 				break;
 				case e2db::YTYPE::terrestrial:
 					tx.tmod = dbih->value_transponder_modulation(qs[10].toStdString(), e2db::YTYPE::terrestrial);
-					tx.band = dbih->value_transponder_bandwidth(qs[11].toStdString());
 					tx.sys = dbih->value_transponder_system(qs[1].toStdString());
+					tx.band = dbih->value_transponder_bandwidth(qs[11].toStdString());
 					tx.tmx = dbih->value_transponder_tmx_mode(qs[15].toStdString());
 					tx.hpfec = fec.hp_fec;
 					tx.lpfec = fec.lp_fec;
@@ -597,6 +607,7 @@ void transpondersView::putListItems(vector<QString> items)
 				case e2db::YTYPE::cable:
 					tx.cmod = dbih->value_transponder_modulation(qs[10].toStdString(), e2db::YTYPE::cable);
 					tx.sr = qs[8].toInt();
+					tx.sys = dbih->value_transponder_system(qs[1].toStdString());
 					tx.fec = fec.inner_fec;
 					tx.inv = dbih->value_transponder_inversion(qs[14].toStdString(), e2db::YTYPE::cable);
 				break;

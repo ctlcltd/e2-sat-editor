@@ -178,6 +178,7 @@ class viewAbstract : protected e2se::log_factory
 		static QAction* contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger, QKeySequence shortcut);
 		static QAction* contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
 		static QAction* contextMenuSeparator(QMenu* menu);
+		static void treeSortItems(QTreeWidget* tw, int column, Qt::SortOrder order);
 
 		e2se_gui::theme* theme;
 		tab* tid = nullptr;
@@ -192,6 +193,18 @@ class viewAbstract : protected e2se::log_factory
 
 		__state state;
 		__action action;
+
+	private:
+		static bool treeItemNumericLessThan(const QPair<QTreeWidgetItem*, int>& left, const QPair<QTreeWidgetItem*, int>& right)
+		{
+			int column = left.first->treeWidget()->sortColumn();
+			return left.first->text(column).toInt() < right.first->text(column).toInt();
+		}
+		static bool treeItemNumericGreaterThan(const QPair<QTreeWidgetItem*, int>& left, const QPair<QTreeWidgetItem*, int>& right)
+		{
+			int column = left.first->treeWidget()->sortColumn();
+			return right.first->text(column).toInt() < left.first->text(column).toInt();
+		}
 };
 }
 #endif /* viewAbstract_h */

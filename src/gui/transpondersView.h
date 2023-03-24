@@ -16,6 +16,7 @@
 #include <QAction>
 #include <QPushButton>
 
+#include "toolkit/TreeDropIndicatorEventPainter.h"
 #include "toolkit/ListEventObserver.h"
 #include "viewAbstract.h"
 
@@ -93,6 +94,7 @@ class transpondersView : public viewAbstract
 		void updateStatusBar(bool current = false);
 		void updateListIndex();
 
+		TreeDropIndicatorEventPainter* list_evth;
 		ListEventObserver* list_evto;
 
 		__state state;

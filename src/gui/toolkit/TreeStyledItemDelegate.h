@@ -12,6 +12,7 @@
 #ifndef TreeStyledItemDelegate_h
 #define TreeStyledItemDelegate_h
 #include <QStyledItemDelegate>
+#include <QPainter>
 
 namespace e2se_gui
 {

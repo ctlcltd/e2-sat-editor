@@ -17,10 +17,12 @@
 #include <QEvent>
 #include <QTreeWidget>
 
+#include "TreeDropIndicatorEventPainter.h"
+
 namespace e2se_gui
 {
 //TODO persistent glitches with event reject
-class TreeEventHandler : public QObject
+class TreeEventHandler : public TreeDropIndicatorEventPainter
 {
 	public:
 		void setEventCallback(std::function<void(QTreeWidget* tw, QTreeWidgetItem* current)> func)
@@ -30,6 +32,7 @@ class TreeEventHandler : public QObject
 
 	protected:
 		bool eventFilter(QObject* object, QEvent* event);
+		bool eventDrop(QObject* object, QEvent* event);
 		void callEventCallback(QTreeWidget* tw, QTreeWidgetItem* current)
 		{
 			if (this->eventCallback != nullptr)

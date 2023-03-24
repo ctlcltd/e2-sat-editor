@@ -112,19 +112,19 @@ void tunersetsView::layout()
 	{
 		case e2db::YTYPE::satellite:
 			ths = QStringList ({NULL, "Name", "Position"});
-			lhs = QStringList ({NULL, "TRID", "Freq/Pol/SR", "Frequency", "Polarization", "Symbol Rate", "FEC", "System", "Modulation", "Inversion",  "Roll offset", "Pilot"});
+			lhs = QStringList ({NULL, "TRID", "Freq/Pol/SR", "Frequency", "Polarization", "Symbol Rate", "System", "FEC", "Modulation", "Inversion",  "Roll offset", "Pilot"});
 		break;
 		case e2db::YTYPE::terrestrial:
 			ths = QStringList ({NULL, "Name", "Country"});
-			lhs = QStringList ({NULL, "TRID", "Freq/Const/Band", "Frequency", "Constellation", "Bandwidth", "System", "Tmx Mode", "HP FEC", "LP FEC", "Inversion", "Guard", "Hierarchy"});
+			lhs = QStringList ({NULL, "TRID", "Freq/Const/Band", "Frequency", "Constellation", NULL, "System", "Bandwidth", "Tmx Mode", "HP FEC", "LP FEC", "Inversion", "Guard", "Hierarchy"});
 		break;
 		case e2db::YTYPE::cable:
 			ths = QStringList ({NULL, "Name", "Country"});
-			lhs = QStringList ({NULL, "TRID", "Freq/Mod/SR", "Frequency", "Modulation", "Symbol Rate", "FEC", "Inversion", "System"});
+			lhs = QStringList ({NULL, "TRID", "Freq/Mod/SR", "Frequency", "Modulation", "Symbol Rate", "System", "FEC", "Inversion"});
 		break;
 		case e2db::YTYPE::atsc:
 			ths = QStringList ({NULL, "Name"});
-			lhs = QStringList ({NULL, "TRID", NULL, "Frequency", "Modulation", "System"});
+			lhs = QStringList ({NULL, "TRID", NULL, "Frequency", "Modulation", NULL, "System"});
 		break;
 	}
 
@@ -165,13 +165,13 @@ void tunersetsView::layout()
 	tree->setMinimumWidth(240);
 	tree->setUniformRowHeights(true);
 	tree->setRootIsDecorated(false);
-	tree->setSelectionBehavior(QAbstractItemView::SelectRows);
-	tree->setSelectionMode(QAbstractItemView::SingleSelection);
+	tree->setSelectionBehavior(QTreeWidget::SelectRows);
+	tree->setSelectionMode(QTreeWidget::SingleSelection);
 	tree->setItemsExpandable(false);
 	tree->setExpandsOnDoubleClick(false);
-	tree->setDropIndicatorShown(true);
-	tree->setDragDropMode(QAbstractItemView::InternalMove);
-	tree->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	tree->setDropIndicatorShown(false);
+	tree->setDragDropMode(QTreeWidget::InternalMove);
+	tree->setEditTriggers(QTreeWidget::NoEditTriggers);
 
 	QTreeWidgetItem* tree_thead = new QTreeWidgetItem(ths);
 	tree->setHeaderItem(tree_thead);
@@ -181,13 +181,13 @@ void tunersetsView::layout()
 
 	list->setUniformRowHeights(true);
 	list->setRootIsDecorated(false);
-	list->setSelectionBehavior(QAbstractItemView::SelectRows);
-	list->setSelectionMode(QAbstractItemView::ExtendedSelection);
+	list->setSelectionBehavior(QTreeWidget::SelectRows);
+	list->setSelectionMode(QTreeWidget::ExtendedSelection);
 	list->setItemsExpandable(false);
 	list->setExpandsOnDoubleClick(false);
-	list->setDropIndicatorShown(true);
-	list->setDragDropMode(QAbstractItemView::InternalMove);
-	list->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	list->setDropIndicatorShown(false);
+	list->setDragDropMode(QTreeWidget::InternalMove);
+	list->setEditTriggers(QTreeWidget::NoEditTriggers);
 
 	QTreeWidgetItem* list_thead = new QTreeWidgetItem(lhs);
 	list->setHeaderItem(list_thead);
@@ -203,14 +203,22 @@ void tunersetsView::layout()
 	list->setColumnHidden(ITEM_ROW_ROLE::combo, true);
 	list->setColumnWidth(ITEM_ROW_ROLE::row3, 85);		// Frequency
 	list->setColumnWidth(ITEM_ROW_ROLE::row4, 85);		// Polarization | Constellation | Modulation
-	list->setColumnWidth(ITEM_ROW_ROLE::row5, 85);		// Symbol Rate | Bandwidth
-	list->setColumnWidth(ITEM_ROW_ROLE::row6, 75);		// FEC | System
-	list->setColumnWidth(ITEM_ROW_ROLE::row7, 75);		// System | Tmx Mode
-	list->setColumnWidth(ITEM_ROW_ROLE::row8, 75);		// Modulation | HP FEC | System
-	list->setColumnWidth(ITEM_ROW_ROLE::row9, 75);		// Inversion | LP FEC
-	list->setColumnWidth(ITEM_ROW_ROLE::rowA, 75);		// Pilot | Inversion
-	list->setColumnWidth(ITEM_ROW_ROLE::rowB, 70);		// Roll offset | Guard
-	list->setColumnWidth(ITEM_ROW_ROLE::rowC, 70);		// Hierarchy
+	list->setColumnWidth(ITEM_ROW_ROLE::row5, 85);		// Symbol Rate
+	if (lhs.at(ITEM_ROW_ROLE::row5).isEmpty())
+		list->setColumnHidden(ITEM_ROW_ROLE::row5, true);
+	list->setColumnWidth(ITEM_ROW_ROLE::row6, 75);		// System
+	list->setColumnWidth(ITEM_ROW_ROLE::row7, 75);		// FEC | Bandwidth
+	list->setColumnWidth(ITEM_ROW_ROLE::row8, 75);		// Modulation | Tmx Mod | Inversion
+	list->setColumnWidth(ITEM_ROW_ROLE::row9, 75);		// Inversion | HP FEC
+	list->setColumnWidth(ITEM_ROW_ROLE::rowA, 75);		// Roll offset | LP FEC
+	list->setColumnWidth(ITEM_ROW_ROLE::rowB, 75);		// Pilot | Inversion
+	list->setColumnWidth(ITEM_ROW_ROLE::rowC, 70);		// Guard
+	list->setColumnWidth(ITEM_ROW_ROLE::rowD, 70);		// Hierarchy
+
+	// numeric items
+	QTreeWidgetItem* tree_head = list->headerItem();
+	tree_head->setData(ITEM_ROW_ROLE::row3, Qt::UserRole, true);
+	tree_head->setData(ITEM_ROW_ROLE::row5, Qt::UserRole, true);
 
 	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->sortByColumn(column); });
 
@@ -237,12 +245,16 @@ void tunersetsView::layout()
 	this->action.list_newtr->setDisabled(true);
 	this->action.list_search->setDisabled(true);
 
+	this->tree_evth = new TreeDropIndicatorEventPainter;
+	this->list_evth = new TreeDropIndicatorEventPainter;
 	this->tree_evto = new ListEventObserver;
 	this->list_evto = new ListEventObserver;
 	tree->installEventFilter(tree_evto);
+	tree->viewport()->installEventFilter(tree_evth);
 	tree->connect(tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->treeItemChanged(current); });
 	tree->connect(tree, &QTreeWidget::itemDoubleClicked, [=]() { this->treeItemDoubleClicked(); });
 	list->installEventFilter(list_evto);
+	list->viewport()->installEventFilter(list_evth);
 	list->connect(list, &QTreeWidget::currentItemChanged, [=]() { this->listItemChanged(); });
 	list->connect(list, &QTreeWidget::itemSelectionChanged, [=]() { this->listItemSelectionChanged(); });
 	list->connect(list, &QTreeWidget::itemDoubleClicked, [=]() { this->listItemDoubleClicked(); });
@@ -868,6 +880,13 @@ void tunersetsView::listItemCopy(bool cut)
 		}
 
 		data.prepend(trid); // insert trid column [0]
+		switch (this->state.yx)
+		{
+			case e2db::YTYPE::terrestrial:
+			case e2db::YTYPE::atsc:
+				data.remove(3); // remove sr column [5]
+			break;
+		}
 		text.append(data.join(",")); // CSV
 	}
 	clipboard->setText(text.join("\n")); // CSV
@@ -999,8 +1018,8 @@ void tunersetsView::putListItems(vector<QString> items)
 				case e2db::YTYPE::satellite:
 					txp.pol = dbih->value_transponder_polarization(qs[2].toStdString());
 					txp.sr = qs[3].toInt();
-					txp.fec = dbih->value_transponder_fec(qs[4].toStdString(), e2db::YTYPE::satellite);
-					txp.sys = dbih->value_transponder_system(qs[5].toStdString());
+					txp.sys = dbih->value_transponder_system(qs[4].toStdString());
+					txp.fec = dbih->value_transponder_fec(qs[5].toStdString(), e2db::YTYPE::satellite);
 					txp.mod = dbih->value_transponder_modulation(qs[6].toStdString(), e2db::YTYPE::satellite);
 					txp.inv = dbih->value_transponder_inversion(qs[7].toStdString(), e2db::YTYPE::satellite);
 					txp.rol = dbih->value_transponder_rollof(qs[8].toStdString());
@@ -1008,8 +1027,8 @@ void tunersetsView::putListItems(vector<QString> items)
 				break;
 				case e2db::YTYPE::terrestrial:
 					txp.tmod = dbih->value_transponder_modulation(qs[2].toStdString(), e2db::YTYPE::terrestrial);
-					txp.band = dbih->value_transponder_bandwidth(qs[3].toStdString());
-					txp.sys = dbih->value_transponder_system(qs[4].toStdString());
+					txp.sys = dbih->value_transponder_system(qs[3].toStdString());
+					txp.band = dbih->value_transponder_bandwidth(qs[4].toStdString());
 					txp.tmx = dbih->value_transponder_tmx_mode(qs[5].toStdString());
 					txp.hpfec = dbih->value_transponder_fec(qs[6].toStdString(), e2db::YTYPE::terrestrial);
 					txp.lpfec = dbih->value_transponder_fec(qs[7].toStdString(), e2db::YTYPE::terrestrial);
@@ -1020,9 +1039,9 @@ void tunersetsView::putListItems(vector<QString> items)
 				case e2db::YTYPE::cable:
 					txp.cmod = dbih->value_transponder_modulation(qs[2].toStdString(), e2db::YTYPE::cable);
 					txp.sr = qs[3].toInt();
-					txp.cfec = dbih->value_transponder_fec(qs[4].toStdString(), e2db::YTYPE::cable);
-					txp.inv = dbih->value_transponder_inversion(qs[5].toStdString(), e2db::YTYPE::cable);
-					txp.sys = dbih->value_transponder_system(qs[6].toStdString());
+					txp.sys = dbih->value_transponder_system(qs[4].toStdString());
+					txp.cfec = dbih->value_transponder_fec(qs[5].toStdString(), e2db::YTYPE::cable);
+					txp.inv = dbih->value_transponder_inversion(qs[6].toStdString(), e2db::YTYPE::cable);
 				break;
 				case e2db::YTYPE::atsc:
 					txp.amod = dbih->value_transponder_modulation(qs[2].toStdString(), e2db::YTYPE::atsc);

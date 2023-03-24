@@ -1477,12 +1477,12 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 				// sr
 				else if (i == 5)
 					tntxp.sr = std::atoi(val.data());
-				// fec
-				else if (i == 6)
-					tntxp.fec = value_transponder_fec(val, YTYPE::satellite);
 				// sys
-				else if (i == 7)
+				else if (i == 6)
 					tntxp.sys = value_transponder_system(val);
+				// fec
+				else if (i == 7)
+					tntxp.fec = value_transponder_fec(val, YTYPE::satellite);
 				// mod
 				else if (i == 8)
 					tntxp.mod = value_transponder_modulation(val, YTYPE::satellite);
@@ -1504,12 +1504,12 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 				// tmod
 				else if (i == 4)
 					tntxp.tmod = value_transponder_modulation(val, YTYPE::terrestrial);
-				// band
-				else if (i == 5)
-					tntxp.band = std::atoi(val.data());
 				// sys
-				else if (i == 6)
+				else if (i == 5)
 					tntxp.sys = value_transponder_system(val);
+				// band
+				else if (i == 6)
+					tntxp.band = std::atoi(val.data());
 				// tmx
 				else if (i == 7)
 					tntxp.tmx = value_transponder_tmx_mode(val);
@@ -1540,15 +1540,15 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 				// sr
 				else if (i == 5)
 					tntxp.sr = std::atoi(val.data());
-				// fec
+				// sys
 				else if (i == 6)
+					tntxp.sys = value_transponder_system(val);
+				// fec
+				else if (i == 7)
 					tntxp.cfec = value_transponder_fec(val, YTYPE::cable);
 				// inv
-				else if (i == 7)
-					tntxp.inv = value_transponder_inversion(val, YTYPE::cable);
-				// sys
 				else if (i == 8)
-					tntxp.sys = value_transponder_system(val);
+					tntxp.inv = value_transponder_inversion(val, YTYPE::cable);
 			}
 			else if (ytype == YTYPE::atsc)
 			{
@@ -2125,19 +2125,19 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 			ss << CSV_ESCAPE << "Frequency" << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << "Polarization" << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << "Symbol Rate" << CSV_ESCAPE << CSV_SEPARATOR;
-			ss << CSV_ESCAPE << "FEC" << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << "System" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "FEC" << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << "Modulation" << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << "Inversion" << CSV_ESCAPE << CSV_SEPARATOR;
-			ss << CSV_ESCAPE << "Pilot" << CSV_ESCAPE << CSV_SEPARATOR;
-			ss << CSV_ESCAPE << "Roll Offset" << CSV_ESCAPE;
+			ss << CSV_ESCAPE << "Roll Offset" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Pilot" << CSV_ESCAPE;
 		}
 		else if (ytype == YTYPE::terrestrial)
 		{
 			ss << CSV_ESCAPE << "Frequency" << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << "Constellation" << CSV_ESCAPE << CSV_SEPARATOR;
-			ss << CSV_ESCAPE << "Bandwidth" << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << "System" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "Bandwidth" << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << "Tmx Mode" << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << "HP FEC" << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << "LP FEC" << CSV_ESCAPE << CSV_SEPARATOR;
@@ -2149,10 +2149,10 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 		{
 			ss << CSV_ESCAPE << "Frequency" << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << "Modulation" << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << "System" << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << "Symbol Rate" << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << "FEC" << CSV_ESCAPE << CSV_SEPARATOR;
-			ss << CSV_ESCAPE << "Inversion" << CSV_ESCAPE << CSV_SEPARATOR;
-			ss << CSV_ESCAPE << "System" << CSV_ESCAPE;
+			ss << CSV_ESCAPE << "Inversion" << CSV_ESCAPE;
 		}
 		else if (ytype == YTYPE::atsc)
 		{
@@ -2188,8 +2188,8 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 				int freq = tntxp.freq;
 				string pol = value_transponder_polarization(tntxp.pol);
 				int sr = tntxp.sr;
-				string fec = value_transponder_fec(tntxp.fec, YTYPE::satellite);
 				string sys = value_transponder_system(tntxp.sys, YTYPE::satellite);
+				string fec = value_transponder_fec(tntxp.fec, YTYPE::satellite);
 				string mod = value_transponder_modulation(tntxp.mod, YTYPE::satellite);
 				string inv = value_transponder_inversion(tntxp.inv, YTYPE::satellite);
 				string rol = value_transponder_rollof(tntxp.rol);
@@ -2198,8 +2198,8 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 				ss << freq << CSV_SEPARATOR;
 				ss << pol << CSV_SEPARATOR;
 				ss << sr << CSV_SEPARATOR;
-				ss << fec << CSV_SEPARATOR;
 				ss << sys << CSV_SEPARATOR;
+				ss << fec << CSV_SEPARATOR;
 				ss << mod << CSV_SEPARATOR;
 				ss << inv << CSV_SEPARATOR;
 				ss << rol << CSV_SEPARATOR;
@@ -2209,8 +2209,8 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 			{
 				int freq = tntxp.freq;
 				string tmod = value_transponder_modulation(tntxp.tmod, YTYPE::terrestrial);
-				string band = value_transponder_bandwidth(tntxp.band);
 				string sys = value_transponder_system(tntxp.sys, YTYPE::terrestrial);
+				string band = value_transponder_bandwidth(tntxp.band);
 				string tmx = value_transponder_tmx_mode(tntxp.tmx);
 				string hpfec = value_transponder_fec(tntxp.hpfec, YTYPE::terrestrial);
 				string lpfec = value_transponder_fec(tntxp.lpfec, YTYPE::terrestrial);
@@ -2220,8 +2220,8 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 
 				ss << freq << CSV_SEPARATOR;
 				ss << tmod << CSV_SEPARATOR;
-				ss << band << CSV_SEPARATOR;
 				ss << sys << CSV_SEPARATOR;
+				ss << band << CSV_SEPARATOR;
 				ss << tmx << CSV_SEPARATOR;
 				ss << hpfec << CSV_SEPARATOR;
 				ss << lpfec << CSV_SEPARATOR;
@@ -2234,21 +2234,21 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 				int freq = tntxp.freq;
 				string cmod = value_transponder_modulation(tntxp.cmod, YTYPE::cable);
 				int sr = tntxp.sr;
+				string sys = value_transponder_system(tntxp.sys, YTYPE::cable);
 				string cfec = value_transponder_fec(tntxp.cfec, YTYPE::cable);
 				string inv = value_transponder_inversion(tntxp.inv, YTYPE::cable);
-				string sys = value_transponder_system(tntxp.sys, YTYPE::cable);
 
 				ss << freq << CSV_SEPARATOR;
 				ss << cmod << CSV_SEPARATOR;
 				ss << sr << CSV_SEPARATOR;
+				ss << sys << CSV_SEPARATOR;
 				ss << cfec << CSV_SEPARATOR;
-				ss << inv << CSV_SEPARATOR;
-				ss << sys;
+				ss << inv;
 			}
 			else if (ytype == YTYPE::atsc)
 			{
 				int freq = tntxp.freq;
-				int amod = tntxp.amod;
+				string amod = value_transponder_modulation(tntxp.amod, YTYPE::cable);
 				string sys = value_transponder_system(tntxp.sys, YTYPE::atsc);
 
 				ss << freq << CSV_SEPARATOR;
@@ -2593,8 +2593,8 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 			page.body += "<th>Freq</th>\n";
 			page.body += "<th>Pol</th>\n";
 			page.body += "<th>SR</th>\n";
-			page.body += "<th>FEC</th>\n";
 			page.body += "<th>Sys</th>\n";
+			page.body += "<th>FEC</th>\n";
 			page.body += "<th>Mod</th>\n";
 			page.body += "<th>Inv</th>\n";
 			page.body += "<th>Rollof</th>\n";
@@ -2604,8 +2604,8 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 		{
 			page.body += "<th>Freq</th>\n";
 			page.body += "<th>Const</th>\n";
-			page.body += "<th>Band</th>\n";
 			page.body += "<th>Sys</th>\n";
+			page.body += "<th>Band</th>\n";
 			page.body += "<th>Tmx Mode</th>\n";
 			page.body += "<th>HP FEC</th>\n";
 			page.body += "<th>LP FEC</th>\n";
@@ -2618,9 +2618,9 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 			page.body += "<th>Freq</th>\n";
 			page.body += "<th>Mod</th>\n";
 			page.body += "<th>SR</th>\n";
+			page.body += "<th>Sys</th>\n";
 			page.body += "<th>FEC</th>\n";
 			page.body += "<th>Inv</th>\n";
-			page.body += "<th>Sys</th>\n";
 		}
 		else if (ytype == YTYPE::atsc)
 		{
@@ -2644,8 +2644,8 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 				string freq = to_string(tntxp.freq);
 				string pol = value_transponder_polarization(tntxp.pol);
 				string sr = value_transponder_sr(tntxp.sr);
-				string fec = value_transponder_fec(tntxp.fec, YTYPE::satellite);
 				string sys = value_transponder_system(tntxp.sys, YTYPE::satellite);
+				string fec = value_transponder_fec(tntxp.fec, YTYPE::satellite);
 				string mod = value_transponder_modulation(tntxp.mod, YTYPE::satellite);
 				string inv = value_transponder_inversion(tntxp.inv, YTYPE::satellite);
 				string rol = value_transponder_rollof(tntxp.rol);
@@ -2654,8 +2654,8 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 				page.body += "<td>" + freq + "</td>";
 				page.body += "<td>" + pol + "</td>";
 				page.body += "<td>" + sr + "</td>";
-				page.body += "<td>" + fec + "</td>";
 				page.body += "<td>" + sys + "</td>";
+				page.body += "<td>" + fec + "</td>";
 				page.body += "<td>" + mod + "</td>";
 				page.body += "<td>" + inv + "</td>";
 				page.body += "<td>" + rol + "</td>";
@@ -2665,8 +2665,8 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 			{
 				string freq = to_string(tntxp.freq);
 				string tmod = value_transponder_modulation(tntxp.tmod, YTYPE::terrestrial);
-				string band = value_transponder_bandwidth(tntxp.band);
 				string sys = value_transponder_system(tntxp.sys, YTYPE::terrestrial);
+				string band = value_transponder_bandwidth(tntxp.band);
 				string tmx = value_transponder_tmx_mode(tntxp.tmx);
 				string hpfec = value_transponder_fec(tntxp.hpfec, YTYPE::terrestrial);
 				string lpfec = value_transponder_fec(tntxp.lpfec, YTYPE::terrestrial);
@@ -2676,8 +2676,8 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 
 				page.body += "<td>" + freq + "</td>";
 				page.body += "<td>" + tmod + "</td>";
-				page.body += "<td>" + band + "</td>";
 				page.body += "<td>" + sys + "</td>";
+				page.body += "<td>" + band + "</td>";
 				page.body += "<td>" + tmx + "</td>";
 				page.body += "<td>" + hpfec + "</td>";
 				page.body += "<td>" + lpfec + "</td>";
@@ -2690,21 +2690,21 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 				string freq = to_string(tntxp.freq);
 				string cmod = value_transponder_modulation(tntxp.cmod, YTYPE::cable);
 				string sr = value_transponder_sr(tntxp.sr);
+				string sys = value_transponder_system(tntxp.sys, YTYPE::cable);
 				string cfec = value_transponder_fec(tntxp.cfec, YTYPE::cable);
 				string inv = value_transponder_inversion(tntxp.inv, YTYPE::cable);
-				string sys = value_transponder_system(tntxp.sys, YTYPE::cable);
 
 				page.body += "<td>" + freq + "</td>";
 				page.body += "<td>" + cmod + "</td>";
 				page.body += "<td>" + sr + "</td>";
+				page.body += "<td>" + sys + "</td>";
 				page.body += "<td>" + cfec + "</td>";
 				page.body += "<td>" + inv + "</td>";
-				page.body += "<td>" + sys + "</td>";
 			}
 			else if (ytype == YTYPE::atsc)
 			{
 				string freq = to_string(tntxp.freq);
-				string amod = to_string(tntxp.amod);
+				string amod = value_transponder_modulation(tntxp.amod, YTYPE::atsc);
 				string sys = value_transponder_system(tntxp.sys, YTYPE::atsc);
 
 				page.body += "<td>" + freq + "</td>";

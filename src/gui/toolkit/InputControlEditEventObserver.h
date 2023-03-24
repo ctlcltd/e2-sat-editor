@@ -28,6 +28,8 @@ class InputControlEditEventObserver : public QObject
 
 	protected:
 		bool eventFilter(QObject* object, QEvent* event);
+		bool eventFocusIn(QObject* object, QEvent* event);
+		bool eventFocusOut(QObject* object, QEvent* event);
 
 	private:
 		tab* tid;

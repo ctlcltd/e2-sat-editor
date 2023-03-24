@@ -316,11 +316,11 @@ void settings::connectionsLayout()
 
 	QVBoxLayout* dtvbox = new QVBoxLayout;
 	this->rplist = new QListWidget;
-	rplist->setEditTriggers(QAbstractItemView::EditKeyPressed | QAbstractItemView::DoubleClicked);
+	rplist->setEditTriggers(QListWidget::EditKeyPressed | QListWidget::DoubleClicked);
 	rplist->setStyleSheet("QListView::item { height: 44px; font: 16px } QListView QLineEdit { border: 1px solid palette(alternate-base) }");
 	rplist->connect(rplist, &QListWidget::currentItemChanged, [=](QListWidgetItem* current, QListWidgetItem* previous) { this->currentProfileChanged(current, previous); });
 	rplist->connect(rplist, &QListWidget::currentTextChanged, [=](QString text) { this->profileNameChanged(text); });
-	rplist->connect(rplist, &QAbstractItemView::viewportEntered, [=]() { this->renameProfile(false); });
+	rplist->connect(rplist, &QListWidget::viewportEntered, [=]() { this->renameProfile(false); });
 	rppage->connect(rppage, &WidgetWithBackdrop::backdrop, [=]() { this->renameProfile(false); });
 	platform::osPersistentEditor(rplist);
 

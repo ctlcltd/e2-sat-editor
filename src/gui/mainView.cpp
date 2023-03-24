@@ -146,23 +146,23 @@ void mainView::layout()
 	side->setItemsExpandable(false);
 	side->setExpandsOnDoubleClick(false);
 
-	tree->setSelectionBehavior(QAbstractItemView::SelectRows);
-	tree->setDropIndicatorShown(true);
-	tree->setDragDropMode(QAbstractItemView::DragDrop);
-	tree->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	tree->setSelectionBehavior(QTreeWidget::SelectRows);
+	tree->setDropIndicatorShown(false);
+	tree->setDragDropMode(QTreeWidget::DragDrop);
+	tree->setEditTriggers(QTreeWidget::NoEditTriggers);
 
 	list->setRootIsDecorated(false);
-	list->setSelectionBehavior(QAbstractItemView::SelectRows);
-	list->setSelectionMode(QAbstractItemView::ExtendedSelection);
+	list->setSelectionBehavior(QTreeWidget::SelectRows);
+	list->setSelectionMode(QTreeWidget::ExtendedSelection);
 	list->setItemsExpandable(false);
 	list->setExpandsOnDoubleClick(false);
-	list->setDropIndicatorShown(true);
-	list->setDragDropMode(QAbstractItemView::InternalMove);
-	list->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	list->setDropIndicatorShown(false);
+	list->setDragDropMode(QTreeWidget::InternalMove);
+	list->setEditTriggers(QTreeWidget::NoEditTriggers);
 
-	TreeStyledItemDelegate* bouquets_delegate = new TreeStyledItemDelegate(tree);
-	bouquets_delegate->setIndentation(tree->indentation());
-	tree->setItemDelegateForColumn(0, bouquets_delegate);
+	// TreeStyledItemDelegate* bouquets_delegate = new TreeStyledItemDelegate(tree);
+	// bouquets_delegate->setIndentation(tree->indentation());
+	// tree->setItemDelegateForColumn(0, bouquets_delegate);
 
 	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({NULL, "Index", "Name", "Parental", "CHID", "TXID", "Service ID", "Transport ID", "Type", "CAS", "Provider", "System", "Position", "Tuner", "Frequency", "Polarization", "Symbol Rate", "FEC"});
 
@@ -192,6 +192,13 @@ void mainView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::chpol, 85);		// Polarization
 	list->setColumnWidth(ITEM_ROW_ROLE::chsr, 95);		// Symbol Rate
 	list->setColumnWidth(ITEM_ROW_ROLE::chfec, 50);		// FEC
+
+	// numeric items
+	QTreeWidgetItem* tree_head = list->headerItem();
+	tree_head->setData(ITEM_ROW_ROLE::chssid, Qt::UserRole, true);
+	tree_head->setData(ITEM_ROW_ROLE::chtsid, Qt::UserRole, true);
+	tree_head->setData(ITEM_ROW_ROLE::chfreq, Qt::UserRole, true);
+	tree_head->setData(ITEM_ROW_ROLE::chsr, Qt::UserRole, true);
 
 	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->sortByColumn(column); });
 
@@ -1053,33 +1060,27 @@ void mainView::sortByColumn(int column)
 	// sorting by
 	if (column)
 	{
-		list->sortItems(column, order);
 		disallowDnD();
+
+		treeSortItems(list, column, order);
 
 		// userbouquet
 		if (this->state.ti == -1)
 			this->action.list_dnd->setEnabled(true);
-
-		list->header()->setSortIndicatorShown(true);
 	}
 	// sorting default
 	else
 	{
-		list->sortItems(column, order);
-		list->header()->setSortIndicator(1, order);
 		allowDnD();
 
-		this->action.list_dnd->setDisabled(true);
+		treeSortItems(list, column, order);
 
-		// default column 0|asc
-		if (order == Qt::AscendingOrder)
-			list->header()->setSortIndicatorShown(false);
-		else
-			list->header()->setSortIndicatorShown(true);
+		this->action.list_dnd->setDisabled(true);
 
 		if (this->state.vlx_pending)
 			this->visualReindexList();
 	}
+
 	this->state.sort = pair (column, order); //C++17
 }
 

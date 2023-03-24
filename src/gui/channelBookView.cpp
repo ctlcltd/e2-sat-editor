@@ -127,8 +127,8 @@ void channelBookView::layout()
 	list->setHidden(true);
 	list->setUniformRowHeights(true);
 	list->setRootIsDecorated(false);
-	list->setSelectionBehavior(QAbstractItemView::SelectRows);
-	list->setSelectionMode(QAbstractItemView::ExtendedSelection);
+	list->setSelectionBehavior(QTreeWidget::SelectRows);
+	list->setSelectionMode(QTreeWidget::ExtendedSelection);
 	list->setItemsExpandable(false);
 	list->setExpandsOnDoubleClick(false);
 

@@ -503,7 +503,7 @@ QStringList e2db::entryTransponder(transponder tx, bool extended)
 	}
 	else if (tx.ytype == YTYPE::atsc)
 	{
-		QString mod = QString::number(tx.amod);
+		QString mod = QString::fromStdString(value_transponder_modulation(tx.amod, YTYPE::atsc));
 		entry.append({mod});
 	}
 	entry.prepend(combo);
@@ -588,43 +588,41 @@ QStringList e2db::entryTunersetsTransponder(tunersets_transponder tntxp, tunerse
 	{
 		QString pol = QString::fromStdString(value_transponder_polarization(tntxp.pol));
 		QString sr = QString::fromStdString(value_transponder_sr(tntxp.sr));
-		QString fec = QString::fromStdString(value_transponder_fec(tntxp.fec, YTYPE::satellite));
 		QString sys = QString::fromStdString(value_transponder_system(tntxp.sys, YTYPE::satellite));
+		QString fec = QString::fromStdString(value_transponder_fec(tntxp.fec, YTYPE::satellite));
 		QString mod = QString::fromStdString(value_transponder_modulation(tntxp.mod, YTYPE::satellite));
 		QString inv = QString::fromStdString(value_transponder_inversion(tntxp.inv, YTYPE::satellite));
 		QString rol = QString::fromStdString(value_transponder_rollof(tntxp.rol));
 		QString pil = QString::fromStdString(value_transponder_pilot(tntxp.pil));
-		entry = QStringList ({trid, combo, freq, pol, sr, fec, sys, mod, inv, rol, pil});
+		entry = QStringList ({trid, combo, freq, pol, sr, sys, fec, mod, inv, rol, pil});
 	}
 	else if (tn.ytype == YTYPE::terrestrial)
 	{
 		QString tmod = QString::fromStdString(value_transponder_modulation(tntxp.tmod, YTYPE::terrestrial));
-		QString band = QString::fromStdString(value_transponder_bandwidth(tntxp.band));
 		QString sys = QString::fromStdString(value_transponder_system(tntxp.sys, YTYPE::terrestrial));
+		QString band = QString::fromStdString(value_transponder_bandwidth(tntxp.band));
 		QString tmx = QString::fromStdString(value_transponder_tmx_mode(tntxp.tmx));
 		QString hpfec = QString::fromStdString(value_transponder_fec(tntxp.hpfec, YTYPE::terrestrial));
 		QString lpfec = QString::fromStdString(value_transponder_fec(tntxp.lpfec, YTYPE::terrestrial));
 		QString inv = QString::fromStdString(value_transponder_inversion(tntxp.inv, YTYPE::terrestrial));
 		QString guard = QString::fromStdString(value_transponder_guard(tntxp.guard));
 		QString hier = QString::fromStdString(value_transponder_hier(tntxp.hier));
-		entry = QStringList ({trid, combo, freq, tmod, band, sys, tmx, hpfec, lpfec, inv, guard, hier});
+		entry = QStringList ({trid, combo, freq, tmod, NULL, sys, band, tmx, hpfec, lpfec, inv, guard, hier});
 	}
 	else if (tn.ytype == YTYPE::cable)
 	{
 		QString cmod = QString::fromStdString(value_transponder_modulation(tntxp.cmod, YTYPE::cable));
 		QString sr = QString::fromStdString(value_transponder_sr(tntxp.sr));
+		QString sys = QString::fromStdString(value_transponder_system(tntxp.sys, YTYPE::cable));
 		QString cfec = QString::fromStdString(value_transponder_fec(tntxp.cfec, YTYPE::cable));
 		QString inv = QString::fromStdString(value_transponder_inversion(tntxp.inv, YTYPE::cable));
-		QString sys = QString::fromStdString(value_transponder_system(tntxp.sys, YTYPE::cable));
-		entry = QStringList ({trid, combo, freq, cmod, sr, cfec, inv, sys});
+		entry = QStringList ({trid, combo, freq, cmod, sr, sys, cfec, inv});
 	}
 	else if (tn.ytype == YTYPE::atsc)
 	{
-		// combo = NULL;
-		combo = ""; //Qt5
-		QString amod = QString::number(tntxp.amod);
+		QString amod = QString::fromStdString(value_transponder_modulation(tntxp.amod, YTYPE::atsc));
 		QString sys = QString::fromStdString(value_transponder_system(tntxp.sys, YTYPE::atsc));
-		entry = QStringList ({trid, combo, freq, amod, sys});
+		entry = QStringList ({trid, combo, freq, amod, NULL, sys});
 	}
 
 	return entry;

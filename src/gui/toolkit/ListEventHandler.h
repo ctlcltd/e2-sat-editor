@@ -16,9 +16,11 @@
 #include <QObject>
 #include <QEvent>
 
+#include "TreeDropIndicatorEventPainter.h"
+
 namespace e2se_gui
 {
-class ListEventHandler : public QObject
+class ListEventHandler : public TreeDropIndicatorEventPainter
 {
 	public:
 		void setEventCallback(std::function<void(QTreeWidget* tw)> func)
@@ -36,6 +38,8 @@ class ListEventHandler : public QObject
 
 	protected:
 		bool eventFilter(QObject* object, QEvent* event);
+		bool eventDragMove(QObject* object, QEvent* event);
+		bool eventDrop(QObject* object, QEvent* event);
 		void callEventCallback(QTreeWidget* tw)
 		{
 			if (this->eventCallback != nullptr)

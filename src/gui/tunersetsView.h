@@ -16,6 +16,7 @@
 #include <QAction>
 #include <QPushButton>
 
+#include "toolkit/TreeDropIndicatorEventPainter.h"
 #include "toolkit/ListEventObserver.h"
 #include "viewAbstract.h"
 
@@ -72,34 +73,35 @@ class tunersetsView : public viewAbstract
 			rowA,
 			rowB,
 			rowC,
+			rowD,
 			s_freq = ITEM_ROW_ROLE::row3,
 			s_pol = ITEM_ROW_ROLE::row4,
 			s_sr = ITEM_ROW_ROLE::row5,
-			s_fec = ITEM_ROW_ROLE::row6,
-			s_sys = ITEM_ROW_ROLE::row7,
+			s_sys = ITEM_ROW_ROLE::row6,
+			s_fec = ITEM_ROW_ROLE::row7,
 			s_mod = ITEM_ROW_ROLE::row8,
 			s_inv = ITEM_ROW_ROLE::row9,
-			s_pil = ITEM_ROW_ROLE::rowA,
-			s_rol = ITEM_ROW_ROLE::rowB,
+			s_rol = ITEM_ROW_ROLE::rowA,
+			s_pil = ITEM_ROW_ROLE::rowB,
 			t_freq = ITEM_ROW_ROLE::row3,
 			t_tmod = ITEM_ROW_ROLE::row4,
-			t_band = ITEM_ROW_ROLE::row5,
 			t_sys = ITEM_ROW_ROLE::row6,
-			t_tmx = ITEM_ROW_ROLE::row7,
-			t_hpfec = ITEM_ROW_ROLE::row8,
-			t_lpfec = ITEM_ROW_ROLE::row9,
-			t_inv = ITEM_ROW_ROLE::rowA,
-			t_guard = ITEM_ROW_ROLE::rowB,
-			t_hier = ITEM_ROW_ROLE::rowC,
+			t_band = ITEM_ROW_ROLE::row7,
+			t_tmx = ITEM_ROW_ROLE::row8,
+			t_hpfec = ITEM_ROW_ROLE::row9,
+			t_lpfec = ITEM_ROW_ROLE::rowA,
+			t_inv = ITEM_ROW_ROLE::rowB,
+			t_guard = ITEM_ROW_ROLE::rowC,
+			t_hier = ITEM_ROW_ROLE::rowD,
 			c_freq = ITEM_ROW_ROLE::row3,
 			c_cmod = ITEM_ROW_ROLE::row4,
 			c_sr = ITEM_ROW_ROLE::row5,
-			c_cfec = ITEM_ROW_ROLE::row6,
-			c_inv = ITEM_ROW_ROLE::row7,
-			c_sys = ITEM_ROW_ROLE::row8,
+			c_sys = ITEM_ROW_ROLE::row6,
+			c_cfec = ITEM_ROW_ROLE::row7,
+			c_inv = ITEM_ROW_ROLE::row8,
 			a_freq = ITEM_ROW_ROLE::row3,
 			a_amod = ITEM_ROW_ROLE::row4,
-			a_sys = ITEM_ROW_ROLE::row5
+			a_sys = ITEM_ROW_ROLE::row6
 		};
 
 		tunersetsView(tab* twid, QWidget* cwid, dataHandler* data, int ytype);
@@ -140,6 +142,8 @@ class tunersetsView : public viewAbstract
 		void setPendingUpdateListIndex();
 		void unsetPendingUpdateListIndex();
 
+		TreeDropIndicatorEventPainter* tree_evth;
+		TreeDropIndicatorEventPainter* list_evth;
 		ListEventObserver* tree_evto;
 		ListEventObserver* list_evto;
 

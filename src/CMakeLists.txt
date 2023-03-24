@@ -34,6 +34,7 @@ set(SOURCES
 	gui/toolkit/ListEventObserver.cpp
 	gui/toolkit/TabBarProxyStyle.h
 	gui/toolkit/ThemeChangeEventObserver.h
+	gui/toolkit/TreeDropIndicatorEventPainter.h
 	gui/toolkit/TreeEventHandler.cpp
 	gui/toolkit/TreeStyledItemDelegate.h
 	gui/toolkit/WidgetWithBackdrop.cpp
