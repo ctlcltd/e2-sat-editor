@@ -32,7 +32,6 @@
 
 #include "platforms/platform.h"
 
-#include "toolkit/TreeStyledItemDelegate.h"
 #include "tab.h"
 #include "theme.h"
 #include "gui.h"

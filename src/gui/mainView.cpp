@@ -30,7 +30,7 @@
 
 #include "platforms/platform.h"
 
-#include "toolkit/TreeStyledItemDelegate.h"
+#include "toolkit/TreeProxyStyle.h"
 #include "mainView.h"
 #include "theme.h"
 #include "tab.h"
@@ -115,6 +115,10 @@ void mainView::layout()
 	this->tree = new QTreeWidget;
 	this->list = new QTreeWidget;
 
+	// side->setStyle(new TreeProxyStyle);
+	tree->setStyle(new TreeProxyStyle);
+	// list->setStyle(new TreeProxyStyle);
+
 	side->setStyleSheet("QTreeWidget { background: transparent } QTreeWidget::item { padding: 9px 0 }");
 	tree->setStyleSheet("QTreeWidget { background: transparent } QTreeWidget::item { margin: 1px 0 0; padding: 8px 0 }");
 	list->setStyleSheet("QTreeWidget::item { padding: 6px 0 }");
@@ -147,22 +151,24 @@ void mainView::layout()
 	side->setExpandsOnDoubleClick(false);
 
 	tree->setSelectionBehavior(QTreeWidget::SelectRows);
-	tree->setDropIndicatorShown(false);
 	tree->setDragDropMode(QTreeWidget::DragDrop);
+	tree->setDefaultDropAction(Qt::MoveAction);
+	tree->setDropIndicatorShown(true);
 	tree->setEditTriggers(QTreeWidget::NoEditTriggers);
+	tree->setIndentation(true);
 
 	list->setRootIsDecorated(false);
 	list->setSelectionBehavior(QTreeWidget::SelectRows);
 	list->setSelectionMode(QTreeWidget::ExtendedSelection);
 	list->setItemsExpandable(false);
 	list->setExpandsOnDoubleClick(false);
-	list->setDropIndicatorShown(false);
 	list->setDragDropMode(QTreeWidget::InternalMove);
+	// if (QSettings().value("preference/treeDropMove", false).toBool())
+	// 	list->setDefaultDropAction(Qt::MoveAction);
+	// else
+	// 	list->setDefaultDropAction(Qt::CopyAction);
+	list->setDropIndicatorShown(true);
 	list->setEditTriggers(QTreeWidget::NoEditTriggers);
-
-	// TreeStyledItemDelegate* bouquets_delegate = new TreeStyledItemDelegate(tree);
-	// bouquets_delegate->setIndentation(tree->indentation());
-	// tree->setItemDelegateForColumn(0, bouquets_delegate);
 
 	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({NULL, "Index", "Name", "Parental", "CHID", "TXID", "Service ID", "Transport ID", "Type", "CAS", "Provider", "System", "Position", "Tuner", "Frequency", "Polarization", "Symbol Rate", "FEC"});
 

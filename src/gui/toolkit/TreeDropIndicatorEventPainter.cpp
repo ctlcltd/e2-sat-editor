@@ -9,10 +9,13 @@
  * @license GNU GPLv3 License
  */
 
+#include <iostream>
+
 #include <Qt>
 #include <QtGlobal>
 #include <QDropEvent>
 #include <QDragMoveEvent>
+#include <QPaintEvent>
 #include <QPainter>
 #include <QTreeWidget>
 
@@ -20,6 +23,8 @@
 
 namespace e2se_gui
 {
+
+//TODO droppingOnItself ignore
 
 bool TreeDropIndicatorEventPainter::eventFilter(QObject* object, QEvent* event)
 {
@@ -47,7 +52,13 @@ bool TreeDropIndicatorEventPainter::eventDragMove(QObject* object, QEvent* event
 	if (index.isValid())
 	{
 		QRect rect = tree->visualItemRect(tree->itemFromIndex(index));
+
+		// Qt bug Qt::RightToLeft
+		rect.setX(tree->viewport()->pos().x() - 1);
+		rect.setWidth(tree->viewport()->width());
+
 		dropIndicatorRect = rect;
+
 		e->acceptProposedAction();
 	}
 
@@ -62,6 +73,8 @@ bool TreeDropIndicatorEventPainter::eventDrop(QObject* object, QEvent* event)
 
 bool TreeDropIndicatorEventPainter::eventPaint(QObject* object, QEvent* event)
 {
+	// std::cout << "evenPaint" << std::endl;
+
 	QTreeWidget* tree = qobject_cast<QTreeWidget*>(object->parent());
 	QPainter painter (tree->viewport());
 	painter.drawRect(dropIndicatorRect);

@@ -36,7 +36,7 @@ set(SOURCES
 	gui/toolkit/ThemeChangeEventObserver.h
 	gui/toolkit/TreeDropIndicatorEventPainter.h
 	gui/toolkit/TreeEventHandler.cpp
-	gui/toolkit/TreeStyledItemDelegate.h
+	gui/toolkit/TreeProxyStyle.h
 	gui/toolkit/WidgetWithBackdrop.cpp
 	gui/about.cpp
 	gui/channelBookView.cpp
