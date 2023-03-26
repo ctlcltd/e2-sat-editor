@@ -51,9 +51,9 @@ bool TreeDropIndicatorEventPainter::eventDragMove(QObject* object, QEvent* event
 
 	if (index.isValid())
 	{
+		// Qt bug Qt::RightToLeft
 		QRect rect = tree->visualItemRect(tree->itemFromIndex(index));
 
-		// Qt bug Qt::RightToLeft
 		rect.setX(tree->viewport()->pos().x() - 1);
 		rect.setWidth(tree->viewport()->width());
 

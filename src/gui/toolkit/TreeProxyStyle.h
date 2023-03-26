@@ -78,19 +78,28 @@ class TreeProxyStyle : public QProxyStyle
 		int firstColumn = 0;
 		bool firstColumnIndented = false;
 
+		//TODO branch indicator width gap
 		void drawPrimitiveIndicatorBranch(const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const
 		{
 			const QStyleOptionViewItem* o = qstyleoption_cast<const QStyleOptionViewItem*>(option);
 			QStyleOptionViewItem opt (*o);
 			QModelIndex index = opt.index;
+
 			int indent = this->firstColumnIndented ? (index.column() == this->firstColumn ? this->indent : 0) : this->indent;
+
+			if (! this->firstColumnIndented)
+			{
+				int gap = 1;
+				for (auto i = index; (i = i.parent()).isValid(); gap++);
+				indent -= gap;
+			}
 
 			if (indent)
 			{
 				if (opt.direction == Qt::LeftToRight)
-					opt.rect.setX(indent);
+					opt.rect.adjust(indent, 0, 0, 0);
 				else if (opt.direction == Qt::RightToLeft)
-					opt.rect.setX(opt.rect.x() - indent);
+					opt.rect.adjust(0, 0, -indent, 0);
 			}
 
 			opt.backgroundBrush = QBrush();
@@ -102,31 +111,33 @@ class TreeProxyStyle : public QProxyStyle
 			const QStyleOptionViewItem* o = qstyleoption_cast<const QStyleOptionViewItem*>(option);
 			QStyleOptionViewItem opt (*o);
 			QModelIndex index = opt.index;
+
 			int indent = this->firstColumnIndented ? (index.column() == this->firstColumn ? this->indent : 0) : this->indent;
 
-			//TODO FIX glitch
-			if (opt.direction == Qt::RightToLeft && this->firstColumnIndented && index.column() == 1)
+			if (! this->firstColumnIndented)
 			{
-				opt.rect.setX(0);
-
-				painter->setClipping(true);
+				int gap = 1;
+				for (auto i = index; (i = i.parent()).isValid(); gap++);
+				indent += gap;
 			}
-			else if (indent)
+
+			if (indent)
 			{
 				if (opt.direction == Qt::LeftToRight)
-				{
-					opt.rect.setX(0);
-
-					painter->setClipRect(opt.rect);
-				}
+					opt.rect.adjust(-indent, 0, 0, 0);
 				else if (opt.direction == Qt::RightToLeft)
 				{
-					// Qt bug Qt::RightToLeft glitch
-					opt.rect.setX(-1);
-					opt.rect.setWidth(opt.rect.width() + indent);
-
-					painter->setClipRect(opt.rect);
+					if (this->firstColumnIndented)
+						opt.rect.adjust(0, 0, indent, 0);
+					//TODO FIX 1px * depth - 1px rtl glitch
+					else
+					{
+						opt.rect.setX(-1);
+						opt.rect.setWidth(opt.rect.width() + this->indent);
+					}
 				}
+
+				painter->setClipRect(opt.rect);
 			}
 
 			QProxyStyle::drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, widget);
@@ -136,14 +147,28 @@ class TreeProxyStyle : public QProxyStyle
 			const QStyleOptionViewItem* o = qstyleoption_cast<const QStyleOptionViewItem*>(option);
 			QStyleOptionViewItem opt (*o);
 			QModelIndex index = opt.index;
+
 			int indent = this->firstColumnIndented ? (index.column() == this->firstColumn ? this->indent : 0) : this->indent;
+
+			if (! this->firstColumnIndented)
+			{
+				int gap = 1;
+				for (auto i = index; (i = i.parent()).isValid(); gap++);
+				indent -= gap;
+			}
 
 			if (indent)
 			{
 				if (opt.direction == Qt::LeftToRight)
 					opt.rect.adjust(indent, 0, 0, 0);
 				else if (opt.direction == Qt::RightToLeft)
-					opt.rect.adjust(0, 0, -indent, 0);
+				{
+					if (this->firstColumnIndented)
+						opt.rect.adjust(0, 0, -indent, 0);
+					//TODO FIX 1px * depth - 1px rtl glitch
+					else
+						opt.rect.adjust(0, 0, -this->indent, 0);
+				}
 			}
 
 			QProxyStyle::drawControl(QStyle::CE_ItemViewItem, &opt, painter, widget);

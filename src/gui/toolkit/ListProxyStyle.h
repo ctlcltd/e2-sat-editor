@@ -62,18 +62,10 @@ class ListProxyStyle : public QProxyStyle
 			const QStyleOptionViewItem* o = qstyleoption_cast<const QStyleOptionViewItem*>(option);
 			QStyleOptionViewItem opt (*o);
 
-			int indent = this->indent;
-
 			if (opt.direction == Qt::LeftToRight)
-			{
-				opt.rect.setX(0);
-			}
+				opt.rect.adjust(-indent, 0, 0, 0);
 			else if (opt.direction == Qt::RightToLeft)
-			{
-				// Qt bug Qt::RightToLeft glitch
-				opt.rect.setX(-1);
-				opt.rect.setWidth(opt.rect.width() + indent);
-			}
+				opt.rect.adjust(0, 0, indent, 0);
 
 			painter->setClipRect(opt.rect);
 
@@ -83,8 +75,6 @@ class ListProxyStyle : public QProxyStyle
 		{
 			const QStyleOptionViewItem* o = qstyleoption_cast<const QStyleOptionViewItem*>(option);
 			QStyleOptionViewItem opt (*o);
-
-			int indent = this->indent;
 
 			if (opt.direction == Qt::LeftToRight)
 				opt.rect.adjust(indent, 0, 0, 0);

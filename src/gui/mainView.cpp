@@ -158,7 +158,9 @@ void mainView::layout()
 	tree->setDefaultDropAction(Qt::MoveAction);
 	tree->setDropIndicatorShown(true);
 	tree->setEditTriggers(QTreeWidget::NoEditTriggers);
-	tree->setIndentation(true);
+	//TODO FIX 3px * depth - 1px rtl glitch
+	// tree->setIndentation(3);
+	tree->setIndentation(1);
 	tree_style->setIndentation(10);
 
 	list->setUniformRowHeights(true);
