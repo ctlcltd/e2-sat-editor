@@ -24,8 +24,8 @@ using std::map, std::unordered_map;
 #include <QList>
 
 #include "toolkit/TreeEventHandler.h"
-#include "toolkit/ListEventHandler.h"
-#include "toolkit/ListEventObserver.h"
+#include "toolkit/TreeDragDropEventHandler.h"
+#include "toolkit/TreeItemChangedEventObserver.h"
 #include "viewAbstract.h"
 
 namespace e2se_gui
@@ -45,6 +45,8 @@ class mainView : public viewAbstract
 			int tc;
 			// tree current top level index
 			int ti;
+			// side current top level index
+			int si;
 			// current bname
 			string curr;
 			// list sort (default sort 0|asc)
@@ -171,8 +173,8 @@ class mainView : public viewAbstract
 		map<int, QLabel*> ref_fields;
 		unordered_map<string, QList<QTreeWidgetItem*>> cache;
 		TreeEventHandler* tree_evth;
-		ListEventHandler* list_evth;
-		ListEventObserver* list_evto;
+		TreeDragDropEventHandler* list_evth;
+		TreeItemChangedEventObserver* list_evto;
 		QWidget* list_reference;
 		string filename;
 

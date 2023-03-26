@@ -17,7 +17,7 @@
 #include <QPushButton>
 
 #include "toolkit/TreeDropIndicatorEventPainter.h"
-#include "toolkit/ListEventObserver.h"
+#include "toolkit/TreeItemChangedEventObserver.h"
 #include "viewAbstract.h"
 
 namespace e2se_gui
@@ -144,8 +144,8 @@ class tunersetsView : public viewAbstract
 
 		TreeDropIndicatorEventPainter* tree_evth;
 		TreeDropIndicatorEventPainter* list_evth;
-		ListEventObserver* tree_evto;
-		ListEventObserver* list_evto;
+		TreeItemChangedEventObserver* tree_evto;
+		TreeItemChangedEventObserver* list_evto;
 
 		__state state;
 		__action action;

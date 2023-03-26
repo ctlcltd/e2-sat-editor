@@ -26,6 +26,7 @@
 
 #include "platforms/platform.h"
 
+#include "toolkit/TreeProxyStyle.h"
 #include "tunersetsView.h"
 #include "theme.h"
 #include "tab.h"
@@ -142,6 +143,11 @@ void tunersetsView::layout()
 		list->setContentsMargins(10, 0, 0, 0);
 	}
 
+	TreeProxyStyle* tree_style = new TreeProxyStyle;
+	tree->setStyle(tree_style);
+	TreeProxyStyle* list_style = new TreeProxyStyle;
+	list->setStyle(list_style);
+
 	tree->setStyleSheet("QTreeWidget::item { padding: 6px 0 }");
 	list->setStyleSheet("QTreeWidget::item { padding: 6px 0 }");
 
@@ -164,7 +170,6 @@ void tunersetsView::layout()
 
 	tree->setMinimumWidth(240);
 	tree->setUniformRowHeights(true);
-	tree->setRootIsDecorated(false);
 	tree->setSelectionBehavior(QTreeWidget::SelectRows);
 	tree->setSelectionMode(QTreeWidget::SingleSelection);
 	tree->setItemsExpandable(false);
@@ -172,6 +177,10 @@ void tunersetsView::layout()
 	tree->setDropIndicatorShown(false);
 	tree->setDragDropMode(QTreeWidget::InternalMove);
 	tree->setEditTriggers(QTreeWidget::NoEditTriggers);
+	tree->setRootIsDecorated(false);
+	tree->setIndentation(false);
+	tree_style->setIndentation(6, true);
+	tree_style->setFirstColumnIndent(1);
 
 	QTreeWidgetItem* tree_thead = new QTreeWidgetItem(ths);
 	tree->setHeaderItem(tree_thead);
@@ -180,7 +189,6 @@ void tunersetsView::layout()
 	tree->setColumnWidth(TREE_ROW_ROLE::trow2, 75);   // Position | Country
 
 	list->setUniformRowHeights(true);
-	list->setRootIsDecorated(false);
 	list->setSelectionBehavior(QTreeWidget::SelectRows);
 	list->setSelectionMode(QTreeWidget::ExtendedSelection);
 	list->setItemsExpandable(false);
@@ -188,6 +196,10 @@ void tunersetsView::layout()
 	list->setDropIndicatorShown(false);
 	list->setDragDropMode(QTreeWidget::InternalMove);
 	list->setEditTriggers(QTreeWidget::NoEditTriggers);
+	list->setRootIsDecorated(false);
+	list->setIndentation(false);
+	list_style->setIndentation(8, true);
+	list_style->setFirstColumnIndent(1);
 
 	QTreeWidgetItem* list_thead = new QTreeWidgetItem(lhs);
 	list->setHeaderItem(list_thead);
@@ -247,8 +259,8 @@ void tunersetsView::layout()
 
 	this->tree_evth = new TreeDropIndicatorEventPainter;
 	this->list_evth = new TreeDropIndicatorEventPainter;
-	this->tree_evto = new ListEventObserver;
-	this->list_evto = new ListEventObserver;
+	this->tree_evto = new TreeItemChangedEventObserver;
+	this->list_evto = new TreeItemChangedEventObserver;
 	tree->installEventFilter(tree_evto);
 	tree->viewport()->installEventFilter(tree_evth);
 	tree->connect(tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->treeItemChanged(current); });

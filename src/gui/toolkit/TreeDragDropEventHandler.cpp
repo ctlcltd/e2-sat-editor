@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/gui/toolkit/ListEventHandler.cpp
+ * e2-sat-editor/src/gui/toolkit/TreeDragDropEventHandler.cpp
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -16,12 +16,12 @@
 #include <QPainter>
 #include <QTreeWidget>
 
-#include "ListEventHandler.h"
+#include "TreeDragDropEventHandler.h"
 
 namespace e2se_gui
 {
 
-bool ListEventHandler::eventFilter(QObject* object, QEvent* event)
+bool TreeDragDropEventHandler::eventFilter(QObject* object, QEvent* event)
 {
 	if (event->type() == QEvent::DragMove)
 		return eventDragMove(object, event);
@@ -33,7 +33,7 @@ bool ListEventHandler::eventFilter(QObject* object, QEvent* event)
 	return QObject::eventFilter(object, event);
 }
 
-bool ListEventHandler::eventDragMove(QObject* object, QEvent* event)
+bool TreeDragDropEventHandler::eventDragMove(QObject* object, QEvent* event)
 {
 	QDragMoveEvent* e = static_cast<QDragMoveEvent*>(event);
 
@@ -49,15 +49,16 @@ bool ListEventHandler::eventDragMove(QObject* object, QEvent* event)
 	return QObject::eventFilter(object, e);
 }
 
-bool ListEventHandler::eventDrop(QObject* object, QEvent* event)
+bool TreeDragDropEventHandler::eventDrop(QObject* object, QEvent* event)
 {
 	QDropEvent* e = static_cast<QDropEvent*>(event);
 
 	if (this->dnd)
 	{
-		QTreeWidget* list = qobject_cast<QTreeWidget*>(object->parent());
 		this->TreeDropIndicatorEventPainter::eventDrop(object, event);
-		callEventCallback(list);
+
+		QTreeWidget* tree = qobject_cast<QTreeWidget*>(object->parent());
+		callEventCallback(tree);
 	}
 	else
 	{

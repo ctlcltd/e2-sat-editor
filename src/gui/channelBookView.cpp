@@ -22,6 +22,8 @@
 
 #include "platforms/platform.h"
 
+#include "toolkit/ListProxyStyle.h"
+#include "toolkit/TreeProxyStyle.h"
 #include "channelBookView.h"
 #include "theme.h"
 #include "tab.h"
@@ -99,6 +101,12 @@ void channelBookView::layout()
 	//TODO improve vertical expanding [Windows]
 	tabv->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored);
 
+	TreeProxyStyle* tree_style = new TreeProxyStyle;
+	tree->setStyle(tree_style);
+	TreeProxyStyle* list_style = new TreeProxyStyle;
+	list->setStyle(list_style);
+
+	tree->setStyleSheet("QTreeWidget::item { padding: 2px 0 }");
 	list->setStyleSheet("QTreeWidget::item { padding: 2px 0 }");
 	tabv->setStyleSheet("QTabBar::tab { min-width: 48px; margin-top: 0 }");
 
@@ -121,8 +129,10 @@ void channelBookView::layout()
 
 	tree->setHidden(true);
 	tree->setHeaderHidden(true);
-	tree->setUniformRowHeights(true);
 	tree->setMinimumWidth(180);
+	tree->setUniformRowHeights(true);
+	tree->setIndentation(true);
+	tree_style->setIndentation(12);
 
 	list->setHidden(true);
 	list->setUniformRowHeights(true);
@@ -131,6 +141,9 @@ void channelBookView::layout()
 	list->setSelectionMode(QTreeWidget::ExtendedSelection);
 	list->setItemsExpandable(false);
 	list->setExpandsOnDoubleClick(false);
+	list->setIndentation(false);
+	list_style->setIndentation(12, true);
+	list_style->setFirstColumnIndent(1);
 
 	QTreeWidgetItem* list_thead = new QTreeWidgetItem({NULL, "Index", "Name", "Type", "Provider", "Transponder", "Position", "System"});
 	list->setHeaderItem(list_thead);
@@ -177,7 +190,7 @@ void channelBookView::layout()
 	bswid->setStretchFactor(0, 1);
 	bswid->setStretchFactor(1, 5);
 
-	abox->addWidget(lwid);
+	abox->addWidget(side);
 	afrm->setLayout(abox);
 
 	bbox->addWidget(tabv);
@@ -200,26 +213,24 @@ void channelBookView::layout()
 
 void channelBookView::sideLayout()
 {
-	this->lwid = new QListWidget;
-	lwid->setStyleSheet("QListWidget { background: transparent; font-size: 15px } QListView::item { padding: 10px auto }");
+	this->side = new QListWidget;
 
-	lwid->addItem("Services");
-	lwid->addItem("Bouquets");
-	lwid->addItem("Positions");
-	lwid->addItem("Providers");
-	lwid->addItem("Resolution");
-	lwid->addItem("Encryption");
-	lwid->addItem("A-Z");
+	ListProxyStyle* side_style = new ListProxyStyle;
+	side->setStyle(side_style);
 
-	lwid->item(0)->setIcon(theme::spacer(2));
-	lwid->item(1)->setIcon(theme::spacer(2));
-	lwid->item(2)->setIcon(theme::spacer(2));
-	lwid->item(3)->setIcon(theme::spacer(2));
-	lwid->item(4)->setIcon(theme::spacer(2));
-	lwid->item(5)->setIcon(theme::spacer(2));
-	lwid->item(6)->setIcon(theme::spacer(2));
+	side_style->setIndentation(10);
 
-	lwid->connect(lwid, &QListWidget::currentRowChanged, [=](int index) { this->sideRowChanged(index); });
+	side->setStyleSheet("QListWidget { background: transparent; font-size: 15px } QListView::item { padding: 10px 0 }");
+
+	side->addItem("Services");
+	side->addItem("Bouquets");
+	side->addItem("Positions");
+	side->addItem("Providers");
+	side->addItem("Resolution");
+	side->addItem("Encryption");
+	side->addItem("A-Z");
+
+	side->connect(side, &QListWidget::currentRowChanged, [=](int index) { this->sideRowChanged(index); });
 }
 
 void channelBookView::load()
@@ -329,7 +340,6 @@ void channelBookView::populate()
 			QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 			item->setData(0, Qt::UserRole, chid);
 			item->setData(1, Qt::UserRole, disabled);
-			item->setIcon(1, theme::spacer(3));
 			item->setDisabled(disabled);
 
 			items.append(item);
@@ -701,6 +711,8 @@ void channelBookView::updateFlags()
 	tabSetFlag(gui::TabListFindNext, false);
 	tabSetFlag(gui::TabListFindPrev, false);
 	tabSetFlag(gui::TabListFindAll, false);
+	tabSetFlag(gui::TabTreeFind, false);
+	tabSetFlag(gui::TabTreeFindNext, false);
 
 	tabSetFlag(gui::TunersetsSat, true);
 	tabSetFlag(gui::TunersetsTerrestrial, true);

@@ -23,6 +23,7 @@
 
 #include "platforms/platform.h"
 
+#include "toolkit/TreeProxyStyle.h"
 #include "transpondersView.h"
 #include "theme.h"
 #include "tab.h"
@@ -78,6 +79,9 @@ void transpondersView::layout()
 
 	this->list = new QTreeWidget;
 
+	TreeProxyStyle* list_style = new TreeProxyStyle;
+	list->setStyle(list_style);
+
 	list->setStyleSheet("QTreeWidget::item { padding: 6px 0 }");
 
 #ifdef Q_OS_MAC
@@ -98,7 +102,6 @@ void transpondersView::layout()
 #endif
 
 	list->setUniformRowHeights(true);
-	list->setRootIsDecorated(false);
 	list->setSelectionBehavior(QTreeWidget::SelectRows);
 	list->setSelectionMode(QTreeWidget::ExtendedSelection);
 	list->setItemsExpandable(false);
@@ -106,6 +109,10 @@ void transpondersView::layout()
 	list->setDropIndicatorShown(false);
 	list->setDragDropMode(QTreeWidget::InternalMove);
 	list->setEditTriggers(QTreeWidget::NoEditTriggers);
+	list->setRootIsDecorated(false);
+	list->setIndentation(false);
+	list_style->setIndentation(8, true);
+	list_style->setFirstColumnIndent(1);
 
 	QTreeWidgetItem* list_thead = new QTreeWidgetItem({NULL, "TXID", "Combo", "System", "Position", "Transport ID", "DVBNS", "ONID", "Frequency", "Polarization", "Symbol Rate", "FEC", "Modulation", "Bandwidth", "Pilot", "Roll offset", "Inversion", "Tmx Mode", "Guard", "Hierarchy"});
 	list->setHeaderItem(list_thead);
@@ -160,7 +167,7 @@ void transpondersView::layout()
 	this->action.list_search->setDisabled(true);
 
 	this->list_evth = new TreeDropIndicatorEventPainter;
-	this->list_evto = new ListEventObserver;
+	this->list_evto = new TreeItemChangedEventObserver;
 	list->installEventFilter(list_evto);
 	list->viewport()->installEventFilter(list_evth);
 	list->connect(list, &QTreeWidget::currentItemChanged, [=]() { this->listItemChanged(); });

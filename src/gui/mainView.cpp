@@ -115,9 +115,12 @@ void mainView::layout()
 	this->tree = new QTreeWidget;
 	this->list = new QTreeWidget;
 
-	// side->setStyle(new TreeProxyStyle);
-	tree->setStyle(new TreeProxyStyle);
-	// list->setStyle(new TreeProxyStyle);
+	TreeProxyStyle* side_style = new TreeProxyStyle;
+	side->setStyle(side_style);
+	TreeProxyStyle* tree_style = new TreeProxyStyle;
+	tree->setStyle(tree_style);
+	TreeProxyStyle* list_style = new TreeProxyStyle;
+	list->setStyle(list_style);
 
 	side->setStyleSheet("QTreeWidget { background: transparent } QTreeWidget::item { padding: 9px 0 }");
 	tree->setStyleSheet("QTreeWidget { background: transparent } QTreeWidget::item { margin: 1px 0 0; padding: 8px 0 }");
@@ -142,33 +145,38 @@ void mainView::layout()
 
 	side->setHeaderHidden(true);
 	side->setUniformRowHeights(true);
-	tree->setHeaderHidden(true);
-	tree->setUniformRowHeights(true);
-	list->setUniformRowHeights(true);
-
-	side->setRootIsDecorated(false);
 	side->setItemsExpandable(false);
 	side->setExpandsOnDoubleClick(false);
+	side->setRootIsDecorated(false);
+	side->setIndentation(false);
+	side_style->setIndentation(10, true);
 
+	tree->setHeaderHidden(true);
+	tree->setUniformRowHeights(true);
 	tree->setSelectionBehavior(QTreeWidget::SelectRows);
 	tree->setDragDropMode(QTreeWidget::DragDrop);
 	tree->setDefaultDropAction(Qt::MoveAction);
 	tree->setDropIndicatorShown(true);
 	tree->setEditTriggers(QTreeWidget::NoEditTriggers);
 	tree->setIndentation(true);
+	tree_style->setIndentation(10);
 
-	list->setRootIsDecorated(false);
+	list->setUniformRowHeights(true);
 	list->setSelectionBehavior(QTreeWidget::SelectRows);
 	list->setSelectionMode(QTreeWidget::ExtendedSelection);
 	list->setItemsExpandable(false);
 	list->setExpandsOnDoubleClick(false);
 	list->setDragDropMode(QTreeWidget::InternalMove);
-	// if (QSettings().value("preference/treeDropMove", false).toBool())
-	// 	list->setDefaultDropAction(Qt::MoveAction);
-	// else
-	// 	list->setDefaultDropAction(Qt::CopyAction);
+	if (QSettings().value("preference/treeDropMove", false).toBool())
+		list->setDefaultDropAction(Qt::MoveAction);
+	else
+		list->setDefaultDropAction(Qt::CopyAction);
 	list->setDropIndicatorShown(true);
 	list->setEditTriggers(QTreeWidget::NoEditTriggers);
+	list->setRootIsDecorated(false);
+	list->setIndentation(false);
+	list_style->setIndentation(12, true);
+	list_style->setFirstColumnIndent(1);
 
 	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({NULL, "Index", "Name", "Parental", "CHID", "TXID", "Service ID", "Transport ID", "Type", "CAS", "Provider", "System", "Position", "Tuner", "Frequency", "Polarization", "Symbol Rate", "FEC"});
 
@@ -243,8 +251,8 @@ void mainView::layout()
 	this->action.list_search->setDisabled(true);
 
 	this->tree_evth = new TreeEventHandler;
-	this->list_evth = new ListEventHandler;
-	this->list_evto = new ListEventObserver;
+	this->list_evth = new TreeDragDropEventHandler;
+	this->list_evto = new TreeItemChangedEventObserver;
 	tree_evth->setEventCallback([=](QTreeWidget* tw, QTreeWidgetItem* current) { this->treeAfterDrop(tw, current); });
 	list_evth->setEventCallback([=](QTreeWidget* tw) { this->listAfterDrop(tw); });
 	side->connect(side, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { this->treeSwitched(side, item); });
@@ -312,7 +320,6 @@ void mainView::layout()
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 		item->setData(0, Qt::UserRole, x.first);
 		item->setText(0, x.second);
-		item->setIcon(0, theme::spacer(2));
 		side->addTopLevelItem(item);
 	}
 }
@@ -512,6 +519,7 @@ void mainView::reset()
 	this->state.refbox = list_reference->isVisible();
 	this->state.tc = 0;
 	this->state.ti = 0;
+	this->state.si = 0;
 	this->state.curr = "";
 	this->state.sort = pair (-1, Qt::AscendingOrder); //C++17
 
@@ -660,7 +668,6 @@ void mainView::populate(QTreeWidget* tw)
 			item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
 			item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, chid);
 			item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
-			item->setIcon(ITEM_ROW_ROLE::chnum, theme::spacer(4));
 			if (locked)
 			{
 				item->setIcon(ITEM_ROW_ROLE::chlock, theme::icon(parentalicon));
@@ -730,22 +737,30 @@ void mainView::servicesItemChanged(QTreeWidgetItem* current)
 
 	if (current != NULL)
 	{
-		int ti = side->indexOfTopLevelItem(current);
+		int si = side->indexOfTopLevelItem(current);
+		this->state.si = si;
 
 		this->action.list_addch->setDisabled(true);
 		this->action.list_addmk->setDisabled(true);
 		this->action.list_newch->setEnabled(true);
 
 		// tv | radio | data
-		if (ti)
+		if (si)
 		{
 			disallowDnD();
+
+			// sorting by
+			if (this->state.sort.first > 0)
+				this->action.list_dnd->setDisabled(true);
 		}
 		// all
 		else
 		{
+			// sorting by
+			if (this->state.sort.first > 0)
+				this->action.list_dnd->setEnabled(true);
 			// sorting default
-			if (this->state.sort.first == 0)
+			else
 				allowDnD();
 		}
 
@@ -1070,8 +1085,8 @@ void mainView::sortByColumn(int column)
 
 		treeSortItems(list, column, order);
 
-		// userbouquet
-		if (this->state.ti == -1)
+		// services: all | userbouquet
+		if (this->state.si == 0 || this->state.ti == -1)
 			this->action.list_dnd->setEnabled(true);
 	}
 	// sorting default
@@ -1302,7 +1317,6 @@ void mainView::addService()
 	item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, false);
 	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
 	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
-	item->setIcon(ITEM_ROW_ROLE::chnum, theme::spacer(4));
 	item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
 	item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 	item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
@@ -1456,7 +1470,6 @@ void mainView::addMarker()
 	item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
 	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
 	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, false);
-	item->setIcon(ITEM_ROW_ROLE::chnum, theme::spacer(4));
 	if (marker)
 	{
 		item->setFont(ITEM_ROW_ROLE::chname, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
@@ -2185,7 +2198,6 @@ void mainView::putListItems(vector<QString> items)
 		item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, chref.marker);
 		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chref.chid));
 		item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
-		item->setIcon(ITEM_ROW_ROLE::chnum, theme::spacer(4));
 		if (locked)
 		{
 			item->setIcon(ITEM_ROW_ROLE::chlock, theme::icon(parentalicon));

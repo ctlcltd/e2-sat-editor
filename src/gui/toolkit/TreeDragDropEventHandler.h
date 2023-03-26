@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/gui/toolkit/ListEventHandler.h
+ * e2-sat-editor/src/gui/toolkit/TreeDragDropEventHandler.h
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -11,8 +11,8 @@
 
 #include <functional>
 
-#ifndef ListEventHandler_h
-#define ListEventHandler_h
+#ifndef TreeDragDropEventHandler_h
+#define TreeDragDropEventHandler_h
 #include <QObject>
 #include <QEvent>
 
@@ -20,7 +20,7 @@
 
 namespace e2se_gui
 {
-class ListEventHandler : public TreeDropIndicatorEventPainter
+class TreeDragDropEventHandler : public TreeDropIndicatorEventPainter
 {
 	public:
 		void setEventCallback(std::function<void(QTreeWidget* tw)> func)
@@ -51,4 +51,4 @@ class ListEventHandler : public TreeDropIndicatorEventPainter
 		bool dnd = true;
 };
 }
-#endif /* ListEventHandler_h */
+#endif /* TreeDragDropEventHandler_h */

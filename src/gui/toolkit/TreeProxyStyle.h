@@ -14,109 +14,139 @@
 #ifndef TreeProxyStyle_h
 #define TreeProxyStyle_h
 #include <QProxyStyle>
-#include <QStyledItemDelegate>
 #include <QPainter>
-#include <QTreeWidget>
 
 namespace e2se_gui
 {
-//TODO custom first column indentation
-
+//TODO
 class TreeProxyStyle : public QProxyStyle
 {
 	public:
+		void setIndentation(int indent, bool firstColumnIndented = false)
+		{
+			this->indent = indent;
+			this->firstColumnIndented = firstColumnIndented;
+		}
+		int indentation()
+		{
+			return this->indent;
+		}
+		void setFirstColumnIndent(int column)
+		{
+			this->firstColumn = column;
+		}
+		int firstColumnIndent()
+		{
+			return this->firstColumn;
+		}
 		void drawPrimitive(PrimitiveElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const override
 		{
 			// std::cout << "drawPrimitive" << ':' << ' ' << element << std::endl;
 
-			// drawRow [QTreeView]
 			// QAbstractItemView::initViewItemOption
 			if (element == QStyle::PE_FrameFocusRect) // 3
-			{
 				return;
-			}
 			// drawBranch [QTreeView]
 			else if (element == QStyle::PE_IndicatorBranch) // 23
-			{
-				const QStyleOptionViewItem* o = qstyleoption_cast<const QStyleOptionViewItem*>(option);
-				QStyleOptionViewItem opt (*o);
-				int indent = 10;
-
-				if (opt.direction == Qt::LeftToRight)
-					opt.rect.setX(indent);
-				else if (opt.direction == Qt::RightToLeft)
-					opt.rect.setX(0);
-				opt.backgroundBrush = QBrush();
-
-				return QProxyStyle::drawPrimitive(element, &opt, painter, widget);
-			}
+				return drawPrimitiveIndicatorBranch(option, painter, widget);
 			// paintDropIndicator [QAbstractItemView]
 			// handled by TreeDropIndicatorEventPainter
 			else if (element == QStyle::PE_IndicatorItemViewItemDrop) // 43
-			{
 				return;
-			}
 			// drawRow [QTreeView]
 			else if (element == QStyle::PE_PanelItemViewItem) // 44
-			{
-				const QStyleOptionViewItem* o = qstyleoption_cast<const QStyleOptionViewItem*>(option);
-				QStyleOptionViewItem opt (*o);
-
-				opt.rect.setX(0);
-				// opt.backgroundBrush = QBrush(Qt::red);
-
-				//TODO FIX
-				painter->setClipping(false);
-
-				return QProxyStyle::drawPrimitive(element, &opt, painter, widget);
-			}
+				return drawPrimitivePanelItemViewItem(option, painter, widget);
 			// drawRow [QTreeView]
-			//TODO FIX fill gap
 			else if (element == QStyle::PE_PanelItemViewRow) // 45
-			{
 				return;
-			}
 
 			QProxyStyle::drawPrimitive(element, option, painter, widget);
 		}
-
 		void drawControl(ControlElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const override
 		{
 			// std::cout << "drawControl" << ':' << ' ' << element << std::endl;
 
 			// drawRow [QTreeView]
 			if (element == QStyle::CE_ItemViewItem) // 45
+				return drawControlItemViewItem(option, painter, widget);
+
+			QProxyStyle::drawControl(element, option, painter, widget);
+		}
+
+	protected:
+		int indent = 0;
+		int firstColumn = 0;
+		bool firstColumnIndented = false;
+
+		void drawPrimitiveIndicatorBranch(const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const
+		{
+			const QStyleOptionViewItem* o = qstyleoption_cast<const QStyleOptionViewItem*>(option);
+			QStyleOptionViewItem opt (*o);
+			QModelIndex index = opt.index;
+			int indent = this->firstColumnIndented ? (index.column() == this->firstColumn ? this->indent : 0) : this->indent;
+
+			if (indent)
 			{
-				const QStyleOptionViewItem* o = qstyleoption_cast<const QStyleOptionViewItem*>(option);
-				QStyleOptionViewItem opt (*o);
+				if (opt.direction == Qt::LeftToRight)
+					opt.rect.setX(indent);
+				else if (opt.direction == Qt::RightToLeft)
+					opt.rect.setX(opt.rect.x() - indent);
+			}
 
-				int indent = 10;
+			opt.backgroundBrush = QBrush();
 
+			QProxyStyle::drawPrimitive(QStyle::PE_IndicatorBranch, &opt, painter, widget);
+		}
+		void drawPrimitivePanelItemViewItem(const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const
+		{
+			const QStyleOptionViewItem* o = qstyleoption_cast<const QStyleOptionViewItem*>(option);
+			QStyleOptionViewItem opt (*o);
+			QModelIndex index = opt.index;
+			int indent = this->firstColumnIndented ? (index.column() == this->firstColumn ? this->indent : 0) : this->indent;
+
+			//TODO FIX glitch
+			if (opt.direction == Qt::RightToLeft && this->firstColumnIndented && index.column() == 1)
+			{
+				opt.rect.setX(0);
+
+				painter->setClipping(true);
+			}
+			else if (indent)
+			{
+				if (opt.direction == Qt::LeftToRight)
+				{
+					opt.rect.setX(0);
+
+					painter->setClipRect(opt.rect);
+				}
+				else if (opt.direction == Qt::RightToLeft)
+				{
+					// Qt bug Qt::RightToLeft glitch
+					opt.rect.setX(-1);
+					opt.rect.setWidth(opt.rect.width() + indent);
+
+					painter->setClipRect(opt.rect);
+				}
+			}
+
+			QProxyStyle::drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, widget);
+		}
+		void drawControlItemViewItem(const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const
+		{
+			const QStyleOptionViewItem* o = qstyleoption_cast<const QStyleOptionViewItem*>(option);
+			QStyleOptionViewItem opt (*o);
+			QModelIndex index = opt.index;
+			int indent = this->firstColumnIndented ? (index.column() == this->firstColumn ? this->indent : 0) : this->indent;
+
+			if (indent)
+			{
 				if (opt.direction == Qt::LeftToRight)
 					opt.rect.adjust(indent, 0, 0, 0);
 				else if (opt.direction == Qt::RightToLeft)
-					opt.rect.adjust(0, 0, 0, 0);
-
-				// const QTreeWidget* tree = qobject_cast<const QTreeWidget*>(widget);
-
-				// QModelIndex index = opt.index;
-				// int indent = tree->indentation();
-				// indent = index.parent().isValid() ? indent : 0;
-				//
-				// if (opt.direction == Qt::LeftToRight)
-				// 	opt.rect.adjust(-indent, 0, 0, 0);
-				//TODO FIX glitch
-				// else if (opt.direction == Qt::RightToLeft)
-				// 	opt.rect.adjust(0, 0, indent, 0);
-
-				return QProxyStyle::drawControl(element, &opt, painter, widget);
-			}
-			// [QStyleOptionFrame]
-			else if (element == QStyle::CE_ShapedFrame) // 46
-			{
+					opt.rect.adjust(0, 0, -indent, 0);
 			}
 
-			QProxyStyle::drawControl(element, option, painter, widget);
+			QProxyStyle::drawControl(QStyle::CE_ItemViewItem, &opt, painter, widget);
 		}
 };
 }

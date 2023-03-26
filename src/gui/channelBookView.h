@@ -88,7 +88,7 @@ class channelBookView : public viewAbstract
 		void showListEditContextMenu(QPoint &pos);
 		void updateFlags();
 
-		QListWidget* lwid;
+		QListWidget* side;
 		QTabBar* tabv;
 		map<string, vector<pair<int, string>>> index;
 

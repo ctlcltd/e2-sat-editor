@@ -19,12 +19,13 @@
 #include <QLineEdit>
 #include <QComboBox>
 
+#include <QMessageBox>
+
 #include "platforms/platform.h"
 
 #include "tools.h"
 #include "tab.h"
 #include "gui.h"
-#include "todo.h"
 
 using namespace e2se;
 
@@ -78,9 +79,9 @@ void tools::inspector()
 	dtft->addItem("Info");
 	dtft->addItem("Error");
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-	dtft->connect(dtft, &QComboBox::currentIndexChanged, e2se_gui::todo);
+	dtft->connect(dtft, &QComboBox::currentIndexChanged, []() { QMessageBox(QMessageBox::NoIcon, "TODO", "TODO").exec(); });
 #else
-	dtft->connect(dtft, QOverload<int>::of(&QComboBox::currentIndexChanged), e2se_gui::todo);
+	dtft->connect(dtft, QOverload<int>::of(&QComboBox::currentIndexChanged), []() { QMessageBox(QMessageBox::NoIcon, "TODO", "TODO").exec(); });
 #endif
 	platform::osComboBox(dtft);
 

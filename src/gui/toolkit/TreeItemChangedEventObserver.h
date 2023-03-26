@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/gui/toolkit/ListEventObserver.h
+ * e2-sat-editor/src/gui/toolkit/TreeItemChangedEventObserver.h
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -9,14 +9,14 @@
  * @license GNU GPLv3 License
  */
 
-#ifndef ListEventObserver_h
-#define ListEventObserver_h
+#ifndef TreeItemChangedEventObserver_h
+#define TreeItemChangedEventObserver_h
 #include <QObject>
 #include <QEvent>
 
 namespace e2se_gui
 {
-class ListEventObserver : public QObject
+class TreeItemChangedEventObserver : public QObject
 {
 	public:
 		bool isChanged()
@@ -35,4 +35,4 @@ class ListEventObserver : public QObject
 		bool changed = false;
 };
 }
-#endif /* ListEventObserver_h */
+#endif /* TreeItemChangedEventObserver_h */

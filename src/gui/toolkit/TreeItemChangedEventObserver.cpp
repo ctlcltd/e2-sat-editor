@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/gui/toolkit/ListEventObserver.cpp
+ * e2-sat-editor/src/gui/toolkit/TreeItemChangedEventObserver.cpp
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -9,12 +9,12 @@
  * @license GNU GPLv3 License
  */
 
-#include "ListEventObserver.h"
+#include "TreeItemChangedEventObserver.h"
 
 namespace e2se_gui
 {
 
-bool ListEventObserver::eventFilter(QObject* object, QEvent* event)
+bool TreeItemChangedEventObserver::eventFilter(QObject* object, QEvent* event)
 {
 	if (event->type() == QEvent::ChildRemoved)
 		this->changed = this->changed ? false : true;

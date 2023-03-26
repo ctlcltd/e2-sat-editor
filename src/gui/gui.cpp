@@ -32,7 +32,6 @@
 #include "tab.h"
 #include "settings.h"
 #include "about.h"
-#include "todo.h"
 
 using std::to_string;
 
@@ -207,10 +206,10 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::ToolsExportHTML_userbouquets] = menuBarAction(mexporthtml, "Export Userbouquets", [=]() { this->tabAction(TAB_ATS::ExportHTML_userbouquets); });
 	gmenu[GUI_CXE::ToolsExportHTML_tunersets] = menuBarAction(mexporthtml, "Export Tuner settings", [=]() { this->tabAction(TAB_ATS::ExportHTML_tunersets); });
 	menuBarSeparator(mtools);
-	gmenu[GUI_CXE::ToolsServicesOrder] = menuBarAction(mtools, "Order Services A-Z", todo);
-	gmenu[GUI_CXE::ToolsBouquetsOrder] = menuBarAction(mtools, "Order Userbouquets A-Z", todo);
-	gmenu[GUI_CXE::ToolsServicesCache] = menuBarAction(mtools, "Remove cached data from Services", todo);
-	gmenu[GUI_CXE::ToolsBouquetsDelete] = menuBarAction(mtools, "Delete all Bouquets", todo);
+	gmenu[GUI_CXE::ToolsServicesOrder] = menuBarAction(mtools, "Order Services A-Z", []() {});
+	gmenu[GUI_CXE::ToolsBouquetsOrder] = menuBarAction(mtools, "Order Userbouquets A-Z", []() {});
+	gmenu[GUI_CXE::ToolsServicesCache] = menuBarAction(mtools, "Remove cached data from Services", []() {});
+	gmenu[GUI_CXE::ToolsBouquetsDelete] = menuBarAction(mtools, "Delete all Bouquets", []() {});
 	menuBarSeparator(mtools);
 	gmenu[GUI_CXE::ToolsInspector] = menuBarAction(mtools, tr("Inspector Log"), [=]() { this->tabAction(TAB_ATS::Inspector); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
 
