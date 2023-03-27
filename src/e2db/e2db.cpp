@@ -44,12 +44,12 @@ void e2db::import_file(vector<string> paths)
 
 	for (string & path : paths)
 	{
-		if (! std::filesystem::exists(path)) //C++17
+		if (! std::filesystem::exists(path))
 		{
 			if (merge) delete dst;
 			return error("import_file", "File Error", "File \"" + path + "\" not exists.");
 		}
-		if (! std::filesystem::is_regular_file(path) && ! std::filesystem::is_directory(path)) //C++17
+		if (! std::filesystem::is_regular_file(path) && ! std::filesystem::is_directory(path))
 		{
 			if (merge) delete dst;
 			return error("import_file", "File Error", "File \"" + path + "\" is not a valid file.");
@@ -58,14 +58,14 @@ void e2db::import_file(vector<string> paths)
 		(
 			(std::filesystem::status(path).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none &&
 			(std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
-		) //C++17
+		)
 		{
 			if (merge) delete dst;
 			return error("import_file", "File Error", "File \"" + path + "\" is not readable.");
 		}
 
 		FPORTS fpi = file_type_detect(path);
-		string filename = std::filesystem::path(path).filename().u8string(); //C++17
+		string filename = std::filesystem::path(path).filename().u8string();
 		string mime = file_mime_detect(fpi, path);
 
 		e2db_file file;
@@ -97,7 +97,7 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 	debug("import_file", "file path", "singular");
 	debug("import_file", "file input", fpi);
 
-	string filename = std::filesystem::path(path).filename().u8string(); //C++17
+	string filename = std::filesystem::path(path).filename().u8string();
 	stringstream ifile;
 	ifile.write(&file.data[0], file.size);
 
@@ -222,7 +222,7 @@ void e2db::export_file(FPORTS fpo, string path)
 	debug("export_file", "file output", fpo);
 
 	e2db_file file;
-	string filename = std::filesystem::path(path).filename().u8string(); //C++17
+	string filename = std::filesystem::path(path).filename().u8string();
 
 	string fname = LAMEDB_VER == 5 ? "lamedb5" : (LAMEDB_VER < 4 ? "services" : "lamedb");
 
@@ -325,15 +325,15 @@ void e2db::export_file(FPORTS fpo, string path)
 
 	if (filename != file.filename)
 	{
-		std::filesystem::path fp = std::filesystem::path(path); //C++17
-		string basedir = fp.parent_path().u8string(); //C++17
+		std::filesystem::path fp = std::filesystem::path(path);
+		string basedir = fp.parent_path().u8string();
 		if (basedir.size() && basedir[basedir.size() - 1] != '/')
 			basedir.append("/");
 
 		fpath = basedir + file.filename;
 	}
 
-	if (! OVERWRITE_FILE && std::filesystem::exists(fpath)) //C++17
+	if (! OVERWRITE_FILE && std::filesystem::exists(fpath))
 	{
 		return error("export_file", "File Error", "File \"" + fpath + "\" already exists.");
 	}
@@ -341,7 +341,7 @@ void e2db::export_file(FPORTS fpo, string path)
 	(
 		(std::filesystem::status(fpath).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
 		(std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
-	) //C++17
+	)
 	{
 		return error("export _file", "File Error", "File \"" + path + "\" is not writable.");
 	}
@@ -444,7 +444,7 @@ void e2db::edit_service(string chid, service& ch)
 			string kchid = 's' + ch.chid;
 			int m = int (collisions[kchid].size());
 			ch.chid += ':' + to_string(m);
-			collisions[kchid].emplace_back(pair (ch.chid, m)); //C++17
+			collisions[kchid].emplace_back(pair (ch.chid, m));
 		}
 
 		db.services.erase(chid);
@@ -650,7 +650,7 @@ void e2db::remove_userbouquet(string bname)
 			if (! x.second.marker)
 			{
 				idx += 1;
-				index[ub.pname].emplace_back(pair (idx, x.first)); //C++17
+				index[ub.pname].emplace_back(pair (idx, x.first));
 			}
 		}
 	}
@@ -1317,9 +1317,9 @@ void e2db::merge(e2db_abstract* dst)
 
 	unordered_map<string, vector<pair<int, string>>> index;
 
-	this->db.transponders.merge(dst->db.transponders); //C++17
+	this->db.transponders.merge(dst->db.transponders);
 
-	this->db.services.merge(dst->db.services); //C++17
+	this->db.services.merge(dst->db.services);
 
 	for (auto & x : dst->collisions)
 	{
@@ -1330,7 +1330,7 @@ void e2db::merge(e2db_abstract* dst)
 			for (auto & x : x.second)
 			{
 				int m = int (this->collisions[kchid].size());
-				collisions[kchid].emplace_back(pair (x.first, m)); //C++17
+				collisions[kchid].emplace_back(pair (x.first, m));
 			}
 		}
 		else
@@ -1348,7 +1348,7 @@ void e2db::merge(e2db_abstract* dst)
 		}
 	}
 
-	this->tuners.merge(dst->tuners); //C++17
+	this->tuners.merge(dst->tuners);
 	this->tuners_pos.clear();
 
 	if (this->tuners.count(YTYPE::satellite))
@@ -1553,7 +1553,7 @@ void e2db::merge(e2db_abstract* dst)
 			this->bouquets[pname].userbouquets.emplace_back(bname);
 			this->userbouquets.emplace(bname, ub);
 			index[bname] = dst->index[iname];
-			index["ubs"].emplace_back(pair (ub_idx, bname)); //C++17
+			index["ubs"].emplace_back(pair (ub_idx, bname));
 		}
 		else // append
 		{
@@ -1563,7 +1563,7 @@ void e2db::merge(e2db_abstract* dst)
 			this->bouquets[pname].userbouquets.emplace_back(bname);
 			this->userbouquets.emplace(bname, ub);
 			index[bname] = dst->index[iname];
-			index["ubs"].emplace_back(pair (ub_idx, bname)); //C++17
+			index["ubs"].emplace_back(pair (ub_idx, bname));
 		}
 
 		int idx = 0;
@@ -1584,7 +1584,7 @@ void e2db::merge(e2db_abstract* dst)
 					int idx = int (index[pname].size());
 					idx += 1;
 					this->bouquets[pname].services.emplace(chref.chid);
-					index[pname].emplace_back(pair (idx, chref.chid)); //C++17
+					index[pname].emplace_back(pair (idx, chref.chid));
 				}
 			}
 		}
@@ -1609,7 +1609,7 @@ void e2db::merge(e2db_abstract* dst)
 				chref.chid = chid;
 				chref.anum = i;
 				x.second = chref.chid;
-				index["mks"].emplace_back(pair (ub.index, chid)); //C++17
+				index["mks"].emplace_back(pair (ub.index, chid));
 				i++;
 			}
 

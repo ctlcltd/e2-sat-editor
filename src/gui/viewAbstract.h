@@ -17,10 +17,10 @@ using std::string, std::pair, std::vector;
 
 #ifndef viewAbstract_h
 #define viewAbstract_h
+#include <QApplication>
 #include <QWidget>
 #include <QTreeWidget>
 #include <QToolBar>
-#include <QAction>
 #include <QLabel>
 #include <QPushButton>
 #include <QLineEdit>
@@ -40,6 +40,8 @@ class tab;
 
 class viewAbstract : protected e2se::log_factory
 {
+	Q_DECLARE_TR_FUNCTIONS(viewAbstract)
+
 	public:
 		enum LIST_FIND {
 			fast,

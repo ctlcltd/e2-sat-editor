@@ -24,6 +24,8 @@ namespace e2se_gui
 {
 class tunersetsView : public viewAbstract
 {
+	Q_DECLARE_TR_FUNCTIONS(tunersetsView)
+
 	public:
 		struct __state
 		{

@@ -76,7 +76,7 @@ void editTransponder::layout(QWidget* cwid)
 	QString dtitle = this->state.edit ? tr("Edit Transponder") : tr("Add Transponder");
 	dial->setWindowTitle(dtitle);
 
-	QStringList types = QStringList ({"Satellite", "Terrestrial", "Cable", "ATSC"});
+	QStringList types = QStringList ({tr("Satellite"), tr("Terrestrial"), tr("Cable"), tr("ATSC")});
 
 	QGroupBox* dtl0 = new QGroupBox(tr("Transponder"));
 	QFormLayout* dtf0 = new QFormLayout;

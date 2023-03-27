@@ -28,7 +28,7 @@ void dialAbstract::layout(QWidget* cwid)
 	debug("layout");
 
 	this->dial = new QDialog(cwid);
-	dial->setWindowTitle("Edit");
+	dial->setWindowTitle(tr("Edit"));
 
 	this->theme = new e2se_gui::theme;
 

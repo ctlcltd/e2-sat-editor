@@ -129,7 +129,7 @@ class TreeProxyStyle : public QProxyStyle
 				{
 					if (this->firstColumnIndented)
 						opt.rect.adjust(0, 0, indent, 0);
-					//TODO FIX 1px * depth - 1px rtl glitch
+					//TODO FIX tree->indentation() * depth - 1px rtl glitch
 					else
 					{
 						opt.rect.setX(-1);
@@ -165,7 +165,7 @@ class TreeProxyStyle : public QProxyStyle
 				{
 					if (this->firstColumnIndented)
 						opt.rect.adjust(0, 0, -indent, 0);
-					//TODO FIX 1px * depth - 1px rtl glitch
+					//TODO FIX tree->indentation() * depth - 1px rtl glitch
 					else
 						opt.rect.adjust(0, 0, -this->indent, 0);
 				}

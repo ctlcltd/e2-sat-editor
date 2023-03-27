@@ -77,11 +77,11 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 
 	std::clock_t start = std::clock();
 
-	if (! std::filesystem::exists(path)) //C++17
+	if (! std::filesystem::exists(path))
 	{
 		return error("import_csv_file", "File Error", "File \"" + path + "\" not exists.");
 	}
-	if (! std::filesystem::is_regular_file(path)) //C++17
+	if (! std::filesystem::is_regular_file(path))
 	{
 		return error("import_csv_file", "File Error", "File \"" + path + "\" is not a valid file.");
 	}
@@ -89,7 +89,7 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 	(
 		(std::filesystem::status(path).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none &&
 		(std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
-	) //C++17
+	)
 	{
 		return error("import_csv_file", "File Error", "File \"" + path + "\" is not readable.");
 	}
@@ -129,11 +129,11 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 
 	std::clock_t start = std::clock();
 
-	std::filesystem::path fp = std::filesystem::path(path); //C++17
-	string basedir = fp.parent_path().u8string(); //C++17
+	std::filesystem::path fp = std::filesystem::path(path);
+	string basedir = fp.parent_path().u8string();
 	if (basedir.size() && basedir[basedir.size() - 1] != '/')
 		basedir.append("/");
-	string filename = fp.filename().u8string(); //C++17
+	string filename = fp.filename().u8string();
 
 	opts.filename = filename;
 
@@ -181,7 +181,7 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 		else
 			fpath = basedir + opts.filename;
 
-		if (! OVERWRITE_FILE && std::filesystem::exists(fpath)) //C++17
+		if (! OVERWRITE_FILE && std::filesystem::exists(fpath))
 		{
 			return error("export_csv_file", "File Error", "File \"" + fpath + "\" already exists.");
 		}
@@ -189,7 +189,7 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 		(
 			(std::filesystem::status(fpath).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
 			(std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
-		) //C++17
+		)
 		{
 			return error("export_csv_file", "File Error", "File \"" + fpath + "\" is not writable.");
 		}
@@ -211,11 +211,11 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 
 	std::clock_t start = std::clock();
 
-	std::filesystem::path fpath = std::filesystem::path(path); //C++17
-	string basedir = fpath.parent_path().u8string(); //C++17
+	std::filesystem::path fpath = std::filesystem::path(path);
+	string basedir = fpath.parent_path().u8string();
 	if (basedir.size() && basedir[basedir.size() - 1] != '/')
 		basedir.append("/");
-	string filename = fpath.filename().u8string(); //C++17
+	string filename = fpath.filename().u8string();
 
 	opts.filename = filename;
 
@@ -266,7 +266,7 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 		else
 			fpath = basedir + opts.filename;
 
-		if (! OVERWRITE_FILE && std::filesystem::exists(fpath)) //C++17
+		if (! OVERWRITE_FILE && std::filesystem::exists(fpath))
 		{
 			return error("export_html_file", "File Error", "File \"" + fpath + "\" already exists.");
 		}
@@ -274,7 +274,7 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 		(
 			(std::filesystem::status(fpath).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
 			(std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
-		) //C++17
+		)
 		{
 			return error("export_html_file", "File Error", "File \"" + fpath + "\" is not writable.");
 		}
@@ -505,7 +505,7 @@ void e2db_converter::push_html_index(vector<e2db_file>& files)
 	debug("push_html_index");
 
 	string filename = "index";
-	string fname = std::filesystem::path(get_filepath()).filename().u8string(); //C++17
+	string fname = std::filesystem::path(get_filepath()).filename().u8string();
 	if (filename.empty())
 	{
 		fname = "Untitled";
@@ -539,7 +539,7 @@ void e2db_converter::push_html_services(vector<e2db_file>& files, int stype)
 	debug("push_html_services");
 
 	string filename = "services";
-	string fname = std::filesystem::path(get_services_filename()).filename().u8string(); //C++17
+	string fname = std::filesystem::path(get_services_filename()).filename().u8string();
 	string iname;
 	string xname;
 	string headname = fname;
@@ -927,14 +927,14 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 				tx.index = (int (dst->index["txs"].size()) + 1);
 
 				dst->db.transponders.emplace(tx.txid, tx);
-				dst->index["txs"].emplace_back(pair (tx.index, tx.txid)); //C++17
+				dst->index["txs"].emplace_back(pair (tx.index, tx.txid));
 			}
 			if (! dst->db.services.count(ch.chid))
 			{
 				dst->db.services.emplace(ch.chid, ch);
 				string iname = "chs:" + (STYPE_EXT_TYPE.count(ch.stype) ? to_string(STYPE_EXT_TYPE.at(ch.stype)) : "0");
-				dst->index["chs"].emplace_back(pair (ch.index, ch.chid)); //C++17
-				dst->index[iname].emplace_back(pair (ch.index, ch.chid)); //C++17
+				dst->index["chs"].emplace_back(pair (ch.index, ch.chid));
+				dst->index[iname].emplace_back(pair (ch.index, ch.chid));
 			}
 		}
 
@@ -951,11 +951,11 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 
 				userbouquets[ub.bname].channels.emplace(chref.chid, chref);
 
-				dst->index[ub.bname].emplace_back(pair (chref.index, chref.chid)); //C++17
+				dst->index[ub.bname].emplace_back(pair (chref.index, chref.chid));
 
 				if (chref.marker)
 				{
-					dst->index["mks"].emplace_back(pair (ub.index, chref.chid)); //C++17
+					dst->index["mks"].emplace_back(pair (ub.index, chref.chid));
 				}
 			}
 		}
@@ -1009,12 +1009,12 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 				ub.pname = bs.bname;
 
 				dst->bouquets.emplace(bs.bname, bs);
-				dst->index["bss"].emplace_back(pair (bs.index, bs.bname)); //C++17
+				dst->index["bss"].emplace_back(pair (bs.index, bs.bname));
 			}
 			if (! dst->userbouquets.count(ub.bname))
 			{
 				dst->userbouquets.emplace(ub.bname, ub);
-				dst->index["ubs"].emplace_back(pair (ub.index, ub.bname)); //C++17
+				dst->index["ubs"].emplace_back(pair (ub.index, ub.bname));
 				dst->bouquets[ub.pname].userbouquets.emplace_back(ub.bname);
 
 				int idx = int (dst->index[ub.pname].size());
@@ -1026,7 +1026,7 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 					{
 						idx += 1;
 						dst->bouquets[ub.pname].services.emplace(chref.chid);
-						dst->index[ub.pname].emplace_back(pair (idx, chref.chid)); //C++17
+						dst->index[ub.pname].emplace_back(pair (idx, chref.chid));
 					}
 				}
 			}
@@ -1234,14 +1234,14 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 				tx.index = (int (dst->index["txs"].size()) + 1);
 
 				dst->db.transponders.emplace(tx.txid, tx);
-				dst->index["txs"].emplace_back(pair (tx.index, tx.txid)); //C++17
+				dst->index["txs"].emplace_back(pair (tx.index, tx.txid));
 			}
 			if (! dst->db.services.count(ch.chid))
 			{
 				dst->db.services.emplace(ch.chid, ch);
 				string iname = "chs:" + (STYPE_EXT_TYPE.count(ch.stype) ? to_string(STYPE_EXT_TYPE.at(ch.stype)) : "0");
-				dst->index["chs"].emplace_back(pair (ch.index, ch.chid)); //C++17
-				dst->index[iname].emplace_back(pair (ch.index, ch.chid)); //C++17
+				dst->index["chs"].emplace_back(pair (ch.index, ch.chid));
+				dst->index[iname].emplace_back(pair (ch.index, ch.chid));
 			}
 		}
 
@@ -1257,11 +1257,11 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 				chref.index = (int (userbouquets[ub.bname].channels.size()) + 1);
 
 				userbouquets[ub.bname].channels.emplace(chref.chid, chref);
-				dst->index[ub.bname].emplace_back(pair (chref.index, chref.chid)); //C++17
+				dst->index[ub.bname].emplace_back(pair (chref.index, chref.chid));
 
 				if (chref.marker)
 				{
-					dst->index["mks"].emplace_back(pair (ub.index, chref.chid)); //C++17
+					dst->index["mks"].emplace_back(pair (ub.index, chref.chid));
 				}
 			}
 		}
@@ -1315,12 +1315,12 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 				ub.pname = bs.bname;
 
 				dst->bouquets.emplace(bs.bname, bs);
-				dst->index["bss"].emplace_back(pair (bs.index, bs.bname)); //C++17
+				dst->index["bss"].emplace_back(pair (bs.index, bs.bname));
 			}
 			if (! dst->userbouquets.count(ub.bname))
 			{
 				dst->userbouquets.emplace(ub.bname, ub);
-				dst->index["ubs"].emplace_back(pair (ub.index, ub.bname)); //C++17
+				dst->index["ubs"].emplace_back(pair (ub.index, ub.bname));
 				dst->bouquets[ub.pname].userbouquets.emplace_back(ub.bname);
 
 				int idx = int (dst->index[ub.pname].size());
@@ -1332,7 +1332,7 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 					{
 						idx += 1;
 						dst->bouquets[ub.pname].services.emplace(chref.chid);
-						dst->index[ub.pname].emplace_back(pair (idx, chref.chid)); //C++17
+						dst->index[ub.pname].emplace_back(pair (idx, chref.chid));
 					}
 				}
 			}
@@ -1405,14 +1405,14 @@ void e2db_converter::convert_csv_bouquet_list(vector<vector<string>> sxv, e2db_a
 		bs.index = int (dst->index["bss"].size());
 
 		dst->bouquets.emplace(bs.bname, bs);
-		dst->index["bss"].emplace_back(pair (bs.index, bs.bname)); //C++17
+		dst->index["bss"].emplace_back(pair (bs.index, bs.bname));
 	}
 	for (userbouquet & ub : userbouquets)
 	{
 		if (! dst->userbouquets.count(ub.bname))
 		{
 			dst->userbouquets.emplace(ub.bname, ub);
-			dst->index["ubs"].emplace_back(pair (ub.index, ub.bname)); //C++17
+			dst->index["ubs"].emplace_back(pair (ub.index, ub.bname));
 			dst->bouquets[ub.pname].userbouquets.emplace_back(ub.bname);
 		}
 	}
@@ -1601,12 +1601,12 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db
 			dst->tuners[tv.ytype].tables.emplace(tn.tnid, tn);
 			if (tn.ytype == YTYPE::satellite)
 				dst->tuners_pos.emplace(tn.pos, tn.tnid);
-			dst->index[iname].emplace_back(pair (tn.index, tn.tnid)); //C++17
+			dst->index[iname].emplace_back(pair (tn.index, tn.tnid));
 		}
 		if (! dst->tuners[tv.ytype].tables[tn.tnid].transponders.count(tntxp.trid))
 		{
 			dst->tuners[tv.ytype].tables[tn.tnid].transponders.emplace(tntxp.trid, tntxp);
-			dst->index[tn.tnid].emplace_back(pair (tntxp.index, tntxp.trid)); //C++17
+			dst->index[tn.tnid].emplace_back(pair (tntxp.index, tntxp.trid));
 		}
 	}
 }
@@ -2329,7 +2329,7 @@ void e2db_converter::page_body_index_list(html_page& page, vector<string> paths)
 	page.body += "<tbody>\n";
 	for (auto & path : paths)
 	{
-		string filename = std::filesystem::path(path).filename().u8string(); //C++17
+		string filename = std::filesystem::path(path).filename().u8string();
 		string fname = filename;
 		string ftype;
 		FPORTS fpi = file_type_detect(path);

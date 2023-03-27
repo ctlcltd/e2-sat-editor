@@ -774,7 +774,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 			tr.index = idx;
 
 			db.tables[tr.pos] = tr;
-			index["trs"].emplace_back(pair (tr.index, to_string(tr.pos))); //C++17
+			index["trs"].emplace_back(pair (tr.index, to_string(tr.pos)));
 		}
 	}
 
@@ -1293,7 +1293,7 @@ bool e2db_maker::push_file(string path)
 {
 	debug("push_file", "path", path);
 
-	if (std::filesystem::is_directory(path)) //C++17
+	if (std::filesystem::is_directory(path))
 	{
 		if (! OVERWRITE_FILE)
 		{
@@ -1303,13 +1303,13 @@ bool e2db_maker::push_file(string path)
 	}
 	else
 	{
-		std::filesystem::create_directory(path); //C++17
+		std::filesystem::create_directory(path);
 	}
 	if
 	(
 		(std::filesystem::status(path).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
 		(std::filesystem::status(path).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
-	) //C++17
+	)
 	{
 		error("push_file", "File Error", "File \"" + path + "\" is not writable.");
 		return false;
@@ -1321,7 +1321,7 @@ bool e2db_maker::push_file(string path)
 
 		string fpath = path + o.first;
 
-		if (! OVERWRITE_FILE && std::filesystem::exists(fpath)) //C++17
+		if (! OVERWRITE_FILE && std::filesystem::exists(fpath))
 		{
 			error("push_file", "File Error", "File \"" + fpath + "\" already exists.");
 			return false;
@@ -1330,7 +1330,7 @@ bool e2db_maker::push_file(string path)
 		(
 			(std::filesystem::status(fpath).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
 			(std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
-		) //C++17
+		)
 		{
 			error("push_file", "File Error", "File \"" + fpath + "\" is not writable.");
 			return false;

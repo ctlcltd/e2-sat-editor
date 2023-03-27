@@ -96,36 +96,36 @@ void tunersetsView::layout()
 	switch (this->state.yx)
 	{
 		case e2db::YTYPE::satellite:
-			tfrm->setTitle("Satellites");
+			tfrm->setTitle(tr("Satellites"));
 		break;
 		case e2db::YTYPE::terrestrial:
 		case e2db::YTYPE::cable:
 		case e2db::YTYPE::atsc:
-			tfrm->setTitle("Positions");
+			tfrm->setTitle(tr("Positions"));
 		break;
 		default:
 			error("layout", "Error", "Unknown tuner settings type.");
 	}
-	lfrm->setTitle("Transponders");
+	lfrm->setTitle(tr("Transponders"));
 
 	QStringList ths, lhs;
 	switch (this->state.yx)
 	{
 		case e2db::YTYPE::satellite:
-			ths = QStringList ({NULL, "Name", "Position"});
-			lhs = QStringList ({NULL, "TRID", "Freq/Pol/SR", "Frequency", "Polarization", "Symbol Rate", "System", "FEC", "Modulation", "Inversion",  "Roll offset", "Pilot"});
+			ths = QStringList ({NULL, tr("Name"), tr("Position")});
+			lhs = QStringList ({NULL, tr("TRID"), tr("Freq/Pol/SR"), tr("Frequency"), tr("Polarization"), tr("Symbol Rate"), tr("System"), tr("FEC"), tr("Modulation"), tr("Inversion"),  tr("Roll offset"), tr("Pilot")});
 		break;
 		case e2db::YTYPE::terrestrial:
-			ths = QStringList ({NULL, "Name", "Country"});
-			lhs = QStringList ({NULL, "TRID", "Freq/Const/Band", "Frequency", "Constellation", NULL, "System", "Bandwidth", "Tmx Mode", "HP FEC", "LP FEC", "Inversion", "Guard", "Hierarchy"});
+			ths = QStringList ({NULL, tr("Name"), tr("Country")});
+			lhs = QStringList ({NULL, tr("TRID"), tr("Freq/Const/Band"), tr("Frequency"), tr("Constellation"), NULL, tr("System"), tr("Bandwidth"), tr("Tmx Mode"), tr("HP FEC"), tr("LP FEC"), tr("Inversion"), tr("Guard"), tr("Hierarchy")});
 		break;
 		case e2db::YTYPE::cable:
-			ths = QStringList ({NULL, "Name", "Country"});
-			lhs = QStringList ({NULL, "TRID", "Freq/Mod/SR", "Frequency", "Modulation", "Symbol Rate", "System", "FEC", "Inversion"});
+			ths = QStringList ({NULL, tr("Name"), tr("Country")});
+			lhs = QStringList ({NULL, tr("TRID"), tr("Freq/Mod/SR"), tr("Frequency"), tr("Modulation"), tr("Symbol Rate"), tr("System"), tr("FEC"), tr("Inversion")});
 		break;
 		case e2db::YTYPE::atsc:
-			ths = QStringList ({NULL, "Name"});
-			lhs = QStringList ({NULL, "TRID", NULL, "Frequency", "Modulation", NULL, "System"});
+			ths = QStringList ({NULL, tr("Name")});
+			lhs = QStringList ({NULL, tr("TRID"), NULL, tr("Frequency"), tr("Modulation"), NULL, tr("System")});
 		break;
 	}
 
@@ -148,7 +148,7 @@ void tunersetsView::layout()
 	TreeProxyStyle* list_style = new TreeProxyStyle;
 	list->setStyle(list_style);
 
-	tree->setStyleSheet("QTreeWidget::item { padding: 6px 0 }");
+	tree->setStyleSheet(tr("QTreeWidget::item { padding: 6px 0 }"));
 	list->setStyleSheet("QTreeWidget::item { padding: 6px 0 }");
 
 #ifdef Q_OS_MAC
@@ -244,15 +244,15 @@ void tunersetsView::layout()
 	QToolBar* tree_ats = toolBar();
 	QToolBar* list_ats = toolBar();
 
-	this->action.tree_newtn = toolBarAction(tree_ats, "New Position", theme->dynamicIcon("add"), [=]() { this->addPosition(); });
+	this->action.tree_newtn = toolBarAction(tree_ats, tr("New Position", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addPosition(); });
 	toolBarSpacer(tree_ats);
-	this->action.tree_search = toolBarButton(tree_ats, "Find…", theme->dynamicIcon("search"), [=]() { this->treeSearchToggle(); });
+	this->action.tree_search = toolBarButton(tree_ats, tr("Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->treeSearchToggle(); });
 
 	this->action.tree_search->setDisabled(true);
 
-	this->action.list_newtr = toolBarAction(list_ats, "New Transponder", theme->dynamicIcon("add"), [=]() { this->addTransponder(); });
+	this->action.list_newtr = toolBarAction(list_ats, tr("New Transponder", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addTransponder(); });
 	toolBarSpacer(list_ats);
-	this->action.list_search = toolBarButton(list_ats, "Find…", theme->dynamicIcon("search"), [=]() { this->listSearchToggle(); });
+	this->action.list_search = toolBarButton(list_ats, tr("Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->listSearchToggle(); });
 
 	this->action.list_newtr->setDisabled(true);
 	this->action.list_search->setDisabled(true);
@@ -301,34 +301,34 @@ void tunersetsView::searchLayout()
 	switch (this->state.yx)
 	{
 		case e2db::YTYPE::satellite:
-			this->lsr_search.filter->addItem("Freq/Pol/SR", ITEM_ROW_ROLE::combo);
-			this->lsr_search.filter->addItem("Frequency", ITEM_ROW_ROLE::s_freq);
-			this->lsr_search.filter->addItem("Polarization", ITEM_ROW_ROLE::s_pol);
-			this->lsr_search.filter->addItem("Symbol Rate", ITEM_ROW_ROLE::s_sr);
-			this->lsr_search.filter->addItem("FEC", ITEM_ROW_ROLE::s_fec);
-			this->lsr_search.filter->addItem("System", ITEM_ROW_ROLE::s_sys);
+			this->lsr_search.filter->addItem(tr("Freq/Pol/SR"), ITEM_ROW_ROLE::combo);
+			this->lsr_search.filter->addItem(tr("Frequency"), ITEM_ROW_ROLE::s_freq);
+			this->lsr_search.filter->addItem(tr("Polarization"), ITEM_ROW_ROLE::s_pol);
+			this->lsr_search.filter->addItem(tr("Symbol Rate"), ITEM_ROW_ROLE::s_sr);
+			this->lsr_search.filter->addItem(tr("FEC"), ITEM_ROW_ROLE::s_fec);
+			this->lsr_search.filter->addItem(tr("System"), ITEM_ROW_ROLE::s_sys);
 		break;
 		case e2db::YTYPE::terrestrial:
-			this->lsr_search.filter->addItem("Freq/Const/Band", ITEM_ROW_ROLE::combo);
-			this->lsr_search.filter->addItem("Frequency", ITEM_ROW_ROLE::t_freq);
-			this->lsr_search.filter->addItem("Constellation", ITEM_ROW_ROLE::t_tmod);
-			this->lsr_search.filter->addItem("Bandwidth", ITEM_ROW_ROLE::t_band);
-			this->lsr_search.filter->addItem("HP FEC", ITEM_ROW_ROLE::t_hpfec);
-			this->lsr_search.filter->addItem("LP FEC", ITEM_ROW_ROLE::t_lpfec);
-			this->lsr_search.filter->addItem("System", ITEM_ROW_ROLE::t_sys);
+			this->lsr_search.filter->addItem(tr("Freq/Const/Band"), ITEM_ROW_ROLE::combo);
+			this->lsr_search.filter->addItem(tr("Frequency"), ITEM_ROW_ROLE::t_freq);
+			this->lsr_search.filter->addItem(tr("Constellation"), ITEM_ROW_ROLE::t_tmod);
+			this->lsr_search.filter->addItem(tr("Bandwidth"), ITEM_ROW_ROLE::t_band);
+			this->lsr_search.filter->addItem(tr("HP FEC"), ITEM_ROW_ROLE::t_hpfec);
+			this->lsr_search.filter->addItem(tr("LP FEC"), ITEM_ROW_ROLE::t_lpfec);
+			this->lsr_search.filter->addItem(tr("System"), ITEM_ROW_ROLE::t_sys);
 		break;
 		case e2db::YTYPE::cable:
-			this->lsr_search.filter->addItem("Freq/Mod/SR", ITEM_ROW_ROLE::combo);
-			this->lsr_search.filter->addItem("Frequency", ITEM_ROW_ROLE::c_freq);
-			this->lsr_search.filter->addItem("Modulation", ITEM_ROW_ROLE::c_cmod);
-			this->lsr_search.filter->addItem("Symbol Rate", ITEM_ROW_ROLE::c_sr);
-			this->lsr_search.filter->addItem("FEC", ITEM_ROW_ROLE::c_cfec);
-			this->lsr_search.filter->addItem("System", ITEM_ROW_ROLE::c_sys);
+			this->lsr_search.filter->addItem(tr("Freq/Mod/SR"), ITEM_ROW_ROLE::combo);
+			this->lsr_search.filter->addItem(tr("Frequency"), ITEM_ROW_ROLE::c_freq);
+			this->lsr_search.filter->addItem(tr("Modulation"), ITEM_ROW_ROLE::c_cmod);
+			this->lsr_search.filter->addItem(tr("Symbol Rate"), ITEM_ROW_ROLE::c_sr);
+			this->lsr_search.filter->addItem(tr("FEC"), ITEM_ROW_ROLE::c_cfec);
+			this->lsr_search.filter->addItem(tr("System"), ITEM_ROW_ROLE::c_sys);
 		break;
 		case e2db::YTYPE::atsc:
-			this->lsr_search.filter->addItem("Frequency", ITEM_ROW_ROLE::a_freq);
-			this->lsr_search.filter->addItem("Modulation", ITEM_ROW_ROLE::a_amod);
-			this->lsr_search.filter->addItem("System", ITEM_ROW_ROLE::a_sys);
+			this->lsr_search.filter->addItem(tr("Frequency"), ITEM_ROW_ROLE::a_freq);
+			this->lsr_search.filter->addItem(tr("Modulation"), ITEM_ROW_ROLE::a_amod);
+			this->lsr_search.filter->addItem(tr("System"), ITEM_ROW_ROLE::a_sys);
 		break;
 	}
 }
@@ -376,7 +376,7 @@ void tunersetsView::reset()
 	unsetPendingUpdateListIndex();
 
 	this->state.curr = "";
-	this->state.sort = pair (-1, Qt::AscendingOrder); //C++17
+	this->state.sort = pair (-1, Qt::AscendingOrder);
 
 	tree->reset();
 	tree->setDragEnabled(false);
@@ -841,7 +841,7 @@ void tunersetsView::treeItemDelete()
 		return;
 	}
 
-	bool remove = tabRemoveQuestion("Confirm deletetion", "Do you want to delete items?");
+	bool remove = tabRemoveQuestion(tr("Confirm deletetion"), tr("Do you want to delete items?"));
 	if (! remove)
 		return;
 
@@ -947,7 +947,7 @@ void tunersetsView::listItemDelete()
 	if (selected.empty())
 		return;
 
-	bool remove = tabRemoveQuestion("Confirm deletetion", "Do you want to delete items?");
+	bool remove = tabRemoveQuestion(tr("Confirm deletetion"), tr("Do you want to delete items?"));
 	if (! remove)
 		return;
 
@@ -1147,14 +1147,13 @@ void tunersetsView::showTreeEditContextMenu(QPoint &pos)
 
 	QMenu* tree_edit = contextMenu();
 
-	contextMenuAction(tree_edit, "Edit Position", [=]() { this->editPosition(); }, tabGetFlag(gui::TabTreeEdit));
+	contextMenuAction(tree_edit, tr("Edit Position", "context-menu"), [=]() { this->editPosition(); }, tabGetFlag(gui::TabTreeEdit));
 	contextMenuSeparator(tree_edit);
-	contextMenuAction(tree_edit, "Delete", [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
+	contextMenuAction(tree_edit, tr("Delete", "context-menu"), [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
 	contextMenuSeparator(tree_edit);
-	contextMenuAction(tree_edit, "Edit Settings", [=]() { this->editSettings(); });
+	contextMenuAction(tree_edit, tr("Edit Settings", "context-menu"), [=]() { this->editSettings(); });
 
 	platform::osContextMenuPopup(tree_edit, tree, pos);
-	// tree_edit->exec(tree->mapToGlobal(pos));
 }
 
 void tunersetsView::showListEditContextMenu(QPoint &pos)
@@ -1175,16 +1174,15 @@ void tunersetsView::showListEditContextMenu(QPoint &pos)
 
 	QMenu* list_edit = contextMenu();
 
-	contextMenuAction(list_edit, "Edit Transponder", [=]() { this->editTransponder(); }, editable && tabGetFlag(gui::TabListEditTransponder));
+	contextMenuAction(list_edit, tr("Edit Transponder", "context-menu"), [=]() { this->editTransponder(); }, editable && tabGetFlag(gui::TabListEditTransponder));
 	contextMenuSeparator(list_edit);
-	contextMenuAction(list_edit, "Cu&t", [=]() { this->listItemCut(); }, tabGetFlag(gui::TabListCut), QKeySequence::Cut);
-	contextMenuAction(list_edit, "&Copy", [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
-	contextMenuAction(list_edit, "&Paste", [=]() { this->listItemPaste(); }, tabGetFlag(gui::TabListPaste), QKeySequence::Paste);
+	contextMenuAction(list_edit, tr("Cu&t", "context-menu"), [=]() { this->listItemCut(); }, tabGetFlag(gui::TabListCut), QKeySequence::Cut);
+	contextMenuAction(list_edit, tr("&Copy", "context-menu"), [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
+	contextMenuAction(list_edit, tr("&Paste", "context-menu"), [=]() { this->listItemPaste(); }, tabGetFlag(gui::TabListPaste), QKeySequence::Paste);
 	contextMenuSeparator(list_edit);
-	contextMenuAction(list_edit, "&Delete", [=]() { this->listItemDelete(); }, tabGetFlag(gui::TabListDelete), QKeySequence::Delete);
+	contextMenuAction(list_edit, tr("&Delete", "context-menu"), [=]() { this->listItemDelete(); }, tabGetFlag(gui::TabListDelete), QKeySequence::Delete);
 
 	platform::osContextMenuPopup(list_edit, list, pos);
-	// list_edit->exec(list->mapToGlobal(pos));
 }
 
 void tunersetsView::updateFlags()
@@ -1267,7 +1265,7 @@ void tunersetsView::updateTreeIndex()
 		QTreeWidgetItem* item = tree->topLevelItem(i);
 		string tnid = item->data(0, Qt::UserRole).toString().toStdString();
 		idx = i + 1;
-		tns.emplace_back(pair (idx, tnid)); //C++17
+		tns.emplace_back(pair (idx, tnid));
 		i++;
 	}
 	if (tns != dbih->index[iname])
@@ -1291,7 +1289,9 @@ void tunersetsView::updateListIndex()
 
 	debug("updateListIndex", "current", tnid);
 
-	int sort_col = list->sortColumn();
+	int sort_column = list->sortColumn();
+	Qt::SortOrder sort_order = list->header()->sortIndicatorOrder();
+
 	list->sortItems(0, Qt::AscendingOrder);
 
 	while (i != count)
@@ -1299,12 +1299,11 @@ void tunersetsView::updateListIndex()
 		QTreeWidgetItem* item = list->topLevelItem(i);
 		string trid = item->data(ITEM_DATA_ROLE::trid, Qt::UserRole).toString().toStdString();
 		idx = i + 1;
-		dbih->index[tnid].emplace_back(pair (idx, trid)); //C++17
+		dbih->index[tnid].emplace_back(pair (idx, trid));
 		i++;
 	}
 
-	list->sortItems(this->state.sort.first, this->state.sort.second);
-	list->header()->setSortIndicator(sort_col, this->state.sort.second);
+	treeSortItems(list, sort_column, sort_order);
 
 	this->state.tvx_pending = false;
 }

@@ -75,10 +75,10 @@ void printable::documentIndex()
 
 	auto* dbih = this->data->dbih;
 
-	string filename = std::filesystem::path(dbih->get_filepath()).filename().u8string(); //C++17
+	string filename = std::filesystem::path(dbih->get_filepath()).filename().u8string();
 	if (filename.empty())
 	{
-		filename = "Untitled";
+		filename = tr("Untitled").toStdString();
 	}
 
 	html_page page;
@@ -106,11 +106,11 @@ void printable::documentServices(int stype)
 
 	auto* dbih = this->data->dbih;
 
-	string filename = std::filesystem::path(dbih->get_services_filename()).filename().u8string(); //C++17
+	string filename = std::filesystem::path(dbih->get_services_filename()).filename().u8string();
 	string iname;
 	string xname;
-	string headname = filename;
-	string footname = filename;
+	QString headname;
+	QString footname;
 	switch (stype)
 	{
 		// Data
@@ -132,15 +132,19 @@ void printable::documentServices(int stype)
 		default:
 			iname = "chs";
 	}
-	if (! xname.empty())
+	if (xname.empty())
 	{
-		headname += " <i>" + xname + "</i>";
-		footname += " (extract)";
+		headname = footname = QString::fromStdString(filename);
+	}
+	else
+	{
+		headname = QString("%1 <i>%2</i>").arg(QString::fromStdString(filename)).arg(QString::fromStdString(xname));
+		footname = QString("%1 %2").arg(QString::fromStdString(filename)), tr("(extract)", "printable");
 	}
 
 	html_page page;
-	pageHeader(page, headname, DOC_VIEW::view_services);
-	pageFooter(page, footname, DOC_VIEW::view_services);
+	pageHeader(page, headname.toStdString(), DOC_VIEW::view_services);
+	pageFooter(page, footname.toStdString(), DOC_VIEW::view_services);
 
 	pageBodyChannelList(page, iname, DOC_VIEW::view_services);
 
@@ -212,11 +216,11 @@ void printable::pageHeader(html_page& page, string filename, DOC_VIEW view)
 	page.header += "<div class=\"header\">";
 	if (view == DOC_VIEW::view_index)
 	{
-		name = "Settings";
+		name = tr("Settings", "printable");
 	}
 	else if (view == DOC_VIEW::view_tunersets)
 	{
-		name = "Tuner Settings";
+		name = tr("Tuner Settings", "printable");
 	}
 	else if (view == DOC_VIEW::view_bouquets)
 	{
@@ -236,7 +240,7 @@ void printable::pageHeader(html_page& page, string filename, DOC_VIEW view)
 	}
 	else
 	{
-		name = "Services List";
+		name = tr("Services List", "printable");
 	}
 	page.header += "<h1>" + name + "</h1>";
 	page.header += "<h3>" + QString::fromStdString(filename) + "</h3>";
@@ -251,9 +255,9 @@ void printable::pageFooter(html_page& page, string filename, DOC_VIEW view)
 	QString timestamp = QString::fromStdString(dbih->editor_timestamp());
 
 	page.footer += "<div class=\"footer\">";
-	page.footer += "File: <b>" + QString::fromStdString(filename) + "</b><br>";
-	page.footer += "Editor: <b>" + editor + "</b><br>";
-	page.footer += "Datetime: <b>" + timestamp + "</b>";
+	page.footer += QString("%1: <b>%2</b><br>").arg(tr("File", "printable")).arg(QString::fromStdString(filename));
+	page.footer += QString("%1: <b>%2</b><br>").arg(tr("Editor", "printable")).arg(editor);
+	page.footer += QString("%1: <b>%2</b>").arg(tr("Datetime", "printable")).arg(timestamp);
 	page.footer += "</div>";
 }
 
@@ -264,18 +268,18 @@ void printable::pageBodyIndexList(html_page& page, vector<string> paths)
 	auto* dbih = this->data->dbih;
 
 	page.body += "<div class=\"toc\">";
-	page.body += "<h4>Table of Contents</h4>";
+	page.body += "<h4>" + tr("Table of Contents", "printable") + "</h4>";
 	page.body += "<table>";
 	page.body += "<thead>";
 	page.body += "<tr>";
-	page.body += "<th>Content</th>";
-	page.body += "<th>Type</th>";
+	page.body += "<th>" + tr("Content", "printable") + "</th>";
+	page.body += "<th>" + tr("Type", "printable") + "</th>";
 	page.body += "</tr>";
 
 	page.body += "<tbody>";
 	for (auto & path : paths)
 	{
-		string filename = std::filesystem::path(path).filename().u8string(); //C++17
+		string filename = std::filesystem::path(path).filename().u8string();
 		QString fname = QString::fromStdString(filename);
 		QString ftype;
 		e2db::FPORTS fpi = dbih->file_type_detect(path);
@@ -321,22 +325,22 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 	page.body += "<table>";
 	page.body += "<thead>";
 	page.body += "<tr>";
-	page.body += "<th>Index</th>";
-	page.body += "<th>Name</th>";
-	// page.body += "<th>Reference ID</th>";
-	page.body += "<th>SSID</th>";
-	page.body += "<th>TSID</th>";
-	page.body += "<th>ONID</th>";
-	page.body += "<th>Type</th>";
-	page.body += "<th>CAS</th>";
-	page.body += "<th>Provider</th>";
-	page.body += "<th>Freq</th>";
-	page.body += "<th>Pol</th>";
-	page.body += "<th>SR</th>";
-	page.body += "<th>FEC</th>";
-	page.body += "<th>Sys</th>";
-	page.body += "<th>Pos</th>";
-	page.body += "<th>Tuner</th>";
+	page.body += "<th>" + tr("Index") + "</th>";
+	page.body += "<th>" + tr("Name") + "</th>";
+	// page.body += "<th>" + tr("Reference ID") + "</th>";
+	page.body += "<th>" + tr("SSID") + "</th>";
+	page.body += "<th>" + tr("TSID") + "</th>";
+	page.body += "<th>" + tr("ONID") + "</th>";
+	page.body += "<th>" + tr("Type") + "</th>";
+	page.body += "<th>" + tr("CAS") + "</th>";
+	page.body += "<th>" + tr("Provider") + "</th>";
+	page.body += "<th>" + tr("Freq") + "</th>";
+	page.body += "<th>" + tr("Pol") + "</th>";
+	page.body += "<th>" + tr("SR") + "</th>";
+	page.body += "<th>" + tr("FEC") + "</th>";
+	page.body += "<th>" + tr("Sys") + "</th>";
+	page.body += "<th>" + tr("Pos") + "</th>";
+	page.body += "<th>" + tr("Tuner") + "</th>";
 	page.body += "</tr>";
 	page.body += "</thead>";
 
@@ -482,11 +486,11 @@ void printable::pageBodyBouquetList(html_page& page, string bname)
 	page.body += "<table>";
 	page.body += "<thead>";
 	page.body += "<tr>";
-	page.body += "<th>Index</th>";
-	page.body += "<th>Bouquet</th>";
-	page.body += "<th>Userbouquet</th>";
-	page.body += "<th>Name</th>";
-	page.body += "<th>Type</th>";
+	page.body += "<th>" + tr("Index") + "</th>";
+	page.body += "<th>" + tr("Bouquet") + "</th>";
+	page.body += "<th>" + tr("Userbouquet") + "</th>";
+	page.body += "<th>" + tr("Name") + "</th>";
+	page.body += "<th>" + tr("Type") + "</th>";
 	page.body += "</tr>";
 
 	page.body += "<tbody>";
@@ -535,53 +539,53 @@ void printable::pageBodyTunersetsList(html_page& page, int ytype)
 		QString pos = QString::fromStdString(ppos);
 
 		page.body += "<div class=\"transponder\">";
-		page.body += "<h4>Transponders</h4>";
+		page.body += "<h4>" + tr("Transponders", "printable") + "</h4>";
 		page.body += "<h2>" + tnname + "</h2>";
 		if (ytype == e2db::YTYPE::satellite)
-			page.body += "<p>Position: <b>" + pos + "</b></p>";
+			page.body += QString("<p>%1: <b>%2</b></p>").arg(tr("Position")).arg(pos);
 		page.body += "<table>";
 		page.body += "<thead>";
 		page.body += "<tr>";
-		page.body += "<th>Index</th>";
+		page.body += "<th>" + tr("Index") + "</th>";
 		if (ytype == e2db::YTYPE::satellite)
 		{
-			page.body += "<th>Freq</th>";
-			page.body += "<th>Pol</th>";
-			page.body += "<th>SR</th>";
-			page.body += "<th>Sys</th>";
-			page.body += "<th>FEC</th>";
-			page.body += "<th>Mod</th>";
-			page.body += "<th>Inv</th>";
-			page.body += "<th>Rollof</th>";
-			page.body += "<th>Pilot</th>";
+			page.body += "<th>" + tr("Freq") + "</th>";
+			page.body += "<th>" + tr("Pol") + "</th>";
+			page.body += "<th>" + tr("SR") + "</th>";
+			page.body += "<th>" + tr("Sys") + "</th>";
+			page.body += "<th>" + tr("FEC") + "</th>";
+			page.body += "<th>" + tr("Mod") + "</th>";
+			page.body += "<th>" + tr("Inv") + "</th>";
+			page.body += "<th>" + tr("Rollof") + "</th>";
+			page.body += "<th>" + tr("Pilot") + "</th>";
 		}
 		else if (ytype == e2db::YTYPE::terrestrial)
 		{
-			page.body += "<th>Freq</th>";
-			page.body += "<th>Const</th>";
-			page.body += "<th>Sys</th>";
-			page.body += "<th>Band</th>";
-			page.body += "<th>Tmx Mode</th>";
-			page.body += "<th>HP FEC</th>";
-			page.body += "<th>LP FEC</th>";
-			page.body += "<th>Inv</th>";
-			page.body += "<th>Guard</th>";
-			page.body += "<th>Hier</th>";
+			page.body += "<th>" + tr("Freq") + "</th>";
+			page.body += "<th>" + tr("Const") + "</th>";
+			page.body += "<th>" + tr("Sys") + "</th>";
+			page.body += "<th>" + tr("Band") + "</th>";
+			page.body += "<th>" + tr("Tmx Mode") + "</th>";
+			page.body += "<th>" + tr("HP FEC") + "</th>";
+			page.body += "<th>" + tr("LP FEC") + "</th>";
+			page.body += "<th>" + tr("Inv") + "</th>";
+			page.body += "<th>" + tr("Guard") + "</th>";
+			page.body += "<th>" + tr("Hier") + "</th>";
 		}
 		else if (ytype == e2db::YTYPE::cable)
 		{
-			page.body += "<th>Freq</th>";
-			page.body += "<th>Mod</th>";
-			page.body += "<th>SR</th>";
-			page.body += "<th>Sys</th>";
-			page.body += "<th>FEC</th>";
-			page.body += "<th>Inv</th>";
+			page.body += "<th>" + tr("Freq") + "</th>";
+			page.body += "<th>" + tr("Mod") + "</th>";
+			page.body += "<th>" + tr("SR") + "</th>";
+			page.body += "<th>" + tr("Sys") + "</th>";
+			page.body += "<th>" + tr("FEC") + "</th>";
+			page.body += "<th>" + tr("Inv") + "</th>";
 		}
 		else if (ytype == e2db::YTYPE::atsc)
 		{
-			page.body += "<th>Freq</th>";
-			page.body += "<th>Mod</th>";
-			page.body += "<th>Sys</th>";
+			page.body += "<th>" + tr("Freq") + "</th>";
+			page.body += "<th>" + tr("Mod") + "</th>";
+			page.body += "<th>" + tr("Sys") + "</th>";
 		}
 		page.body += "</tr>";
 

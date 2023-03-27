@@ -67,7 +67,7 @@ void transpondersView::layout()
 
 	QVBoxLayout* abox = new QVBoxLayout;
 
-	QGroupBox* afrm = new QGroupBox("Transponders");
+	QGroupBox* afrm = new QGroupBox(tr("Transponders"));
 
 	frm->setContentsMargins(0, 0, 0, 0);
 	abox->setContentsMargins(0, 0, 0, 0);
@@ -114,7 +114,7 @@ void transpondersView::layout()
 	list_style->setIndentation(8, true);
 	list_style->setFirstColumnIndent(1);
 
-	QTreeWidgetItem* list_thead = new QTreeWidgetItem({NULL, "TXID", "Combo", "System", "Position", "Transport ID", "DVBNS", "ONID", "Frequency", "Polarization", "Symbol Rate", "FEC", "Modulation", "Bandwidth", "Pilot", "Roll offset", "Inversion", "Tmx Mode", "Guard", "Hierarchy"});
+	QTreeWidgetItem* list_thead = new QTreeWidgetItem({NULL, tr("TXID"), tr("Combo"), tr("System"), tr("Position"), tr("Transport ID"), tr("DVBNS"), tr("ONID"), tr("Frequency"), tr("Polarization"), tr("Symbol Rate"), tr("FEC"), tr("Modulation"), tr("Bandwidth"), tr("Pilot"), tr("Roll offset"), tr("Inversion"), tr("Tmx Mode"), tr("Guard"), tr("Hierarchy")});
 	list->setHeaderItem(list_thead);
 	list->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
 	if (QSettings().value("application/debug", true).toBool()) {
@@ -160,9 +160,9 @@ void transpondersView::layout()
 
 	QToolBar* list_ats = toolBar();
 
-	this->action.list_newtx = toolBarAction(list_ats, "New Transponder", theme->dynamicIcon("add"), [=]() { this->addTransponder(); });
+	this->action.list_newtx = toolBarAction(list_ats, tr("New Transponder", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addTransponder(); });
 	toolBarSpacer(list_ats);
-	this->action.list_search = toolBarButton(list_ats, "Find…", theme->dynamicIcon("search"), [=]() { this->listSearchToggle(); });
+	this->action.list_search = toolBarButton(list_ats, tr("Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->listSearchToggle(); });
 
 	this->action.list_search->setDisabled(true);
 
@@ -188,14 +188,14 @@ void transpondersView::searchLayout()
 {
 	this->viewAbstract::searchLayout();
 
-	this->lsr_search.filter->addItem("Combo", ITEM_ROW_ROLE::combo);
-	this->lsr_search.filter->addItem("Frequency", ITEM_ROW_ROLE::freq);
-	this->lsr_search.filter->addItem("Polarization", ITEM_ROW_ROLE::pol);
-	this->lsr_search.filter->addItem("Symbol Rate", ITEM_ROW_ROLE::sr);
-	this->lsr_search.filter->addItem("Modulation", ITEM_ROW_ROLE::mod);
-	this->lsr_search.filter->addItem("FEC", ITEM_ROW_ROLE::fec);
-	this->lsr_search.filter->addItem("Position", ITEM_ROW_ROLE::pos);
-	this->lsr_search.filter->addItem("System", ITEM_ROW_ROLE::sys);
+	this->lsr_search.filter->addItem(tr("Combo"), ITEM_ROW_ROLE::combo);
+	this->lsr_search.filter->addItem(tr("Frequency"), ITEM_ROW_ROLE::freq);
+	this->lsr_search.filter->addItem(tr("Polarization"), ITEM_ROW_ROLE::pol);
+	this->lsr_search.filter->addItem(tr("Symbol Rate"), ITEM_ROW_ROLE::sr);
+	this->lsr_search.filter->addItem(tr("Modulation"), ITEM_ROW_ROLE::mod);
+	this->lsr_search.filter->addItem(tr("FEC"), ITEM_ROW_ROLE::fec);
+	this->lsr_search.filter->addItem(tr("Position"), ITEM_ROW_ROLE::pos);
+	this->lsr_search.filter->addItem(tr("System"), ITEM_ROW_ROLE::sys);
 }
 
 void transpondersView::load()
@@ -214,7 +214,7 @@ void transpondersView::reset()
 {
 	debug("reset");
 
-	this->state.sort = pair (-1, Qt::AscendingOrder); //C++17
+	this->state.sort = pair (-1, Qt::AscendingOrder);
 
 	list->reset();
 	list->setDragEnabled(false);
@@ -518,7 +518,7 @@ void transpondersView::listItemDelete()
 	if (selected.empty())
 		return;
 
-	bool remove = tabRemoveQuestion("Confirm deletetion", "Do you want to delete items?");
+	bool remove = tabRemoveQuestion(tr("Confirm deletetion"), tr("Do you want to delete items?"));
 	if (! remove)
 		return;
 
@@ -701,16 +701,15 @@ void transpondersView::showListEditContextMenu(QPoint &pos)
 
 	QMenu* list_edit = contextMenu();
 
-	contextMenuAction(list_edit, "Edit Transponder", [=]() { this->editTransponder(); }, editable && tabGetFlag(gui::TabListEditTransponder));
+	contextMenuAction(list_edit, tr("Edit Transponder", "context-menu"), [=]() { this->editTransponder(); }, editable && tabGetFlag(gui::TabListEditTransponder));
 	contextMenuSeparator(list_edit);
-	contextMenuAction(list_edit, "Cu&t", [=]() { this->listItemCut(); }, tabGetFlag(gui::TabListCut), QKeySequence::Cut);
-	contextMenuAction(list_edit, "&Copy", [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
-	contextMenuAction(list_edit, "&Paste", [=]() { this->listItemPaste(); }, tabGetFlag(gui::TabListPaste), QKeySequence::Paste);
+	contextMenuAction(list_edit, tr("Cu&t", "context-menu"), [=]() { this->listItemCut(); }, tabGetFlag(gui::TabListCut), QKeySequence::Cut);
+	contextMenuAction(list_edit, tr("&Copy", "context-menu"), [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
+	contextMenuAction(list_edit, tr("&Paste", "context-menu"), [=]() { this->listItemPaste(); }, tabGetFlag(gui::TabListPaste), QKeySequence::Paste);
 	contextMenuSeparator(list_edit);
-	contextMenuAction(list_edit, "&Delete", [=]() { this->listItemDelete(); }, tabGetFlag(gui::TabListDelete), QKeySequence::Delete);
+	contextMenuAction(list_edit, tr("&Delete", "context-menu"), [=]() { this->listItemDelete(); }, tabGetFlag(gui::TabListDelete), QKeySequence::Delete);
 
 	platform::osContextMenuPopup(list_edit, list, pos);
-	// list_edit->exec(list->mapToGlobal(pos));
 }
 
 void transpondersView::updateFlags()
@@ -776,7 +775,9 @@ void transpondersView::updateListIndex()
 
 	debug("updateListIndex");
 
-	int sort_col = list->sortColumn();
+	int sort_column = list->sortColumn();
+	Qt::SortOrder sort_order = list->header()->sortIndicatorOrder();
+
 	list->sortItems(0, Qt::AscendingOrder);
 
 	while (i != count)
@@ -784,12 +785,11 @@ void transpondersView::updateListIndex()
 		QTreeWidgetItem* item = list->topLevelItem(i);
 		string txid = item->data(ITEM_DATA_ROLE::txid, Qt::UserRole).toString().toStdString();
 		idx = i + 1;
-		dbih->index["txs"].emplace_back(pair (idx, txid)); //C++17
+		dbih->index["txs"].emplace_back(pair (idx, txid));
 		i++;
 	}
 
-	list->sortItems(this->state.sort.first, this->state.sort.second);
-	list->header()->setSortIndicator(sort_col, this->state.sort.second);
+	treeSortItems(list, sort_column, sort_order);
 
 	this->state.txx_pending = false;
 }

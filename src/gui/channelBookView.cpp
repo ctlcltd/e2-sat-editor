@@ -145,7 +145,7 @@ void channelBookView::layout()
 	list_style->setIndentation(12, true);
 	list_style->setFirstColumnIndent(1);
 
-	QTreeWidgetItem* list_thead = new QTreeWidgetItem({NULL, "Index", "Name", "Type", "Provider", "Transponder", "Position", "System"});
+	QTreeWidgetItem* list_thead = new QTreeWidgetItem({NULL, tr("Index"), tr("Name"), tr("Type"), tr("Provider"), tr("Transponder"), tr("Position"), tr("System")});
 	list->setHeaderItem(list_thead);
 	list->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
 	list->setColumnWidth(ITEM_ROW_ROLE::chnum, 60);		// (Channel Number) Index
@@ -163,6 +163,7 @@ void channelBookView::layout()
 	tabv->setExpanding(false);
 	tabv->setDrawBase(true);
 
+	//TODO translation
 	string chars[27] = {"0-9","A","B","C","D","E","F","G","H","I","J","L","K","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
 	for (int i = 0; i < 27; i++)
@@ -222,13 +223,7 @@ void channelBookView::sideLayout()
 
 	side->setStyleSheet("QListWidget { background: transparent; font-size: 15px } QListView::item { padding: 10px 0 }");
 
-	side->addItem("Services");
-	side->addItem("Bouquets");
-	side->addItem("Positions");
-	side->addItem("Providers");
-	side->addItem("Resolution");
-	side->addItem("Encryption");
-	side->addItem("A-Z");
+	side->addItems({tr("Services"), tr("Bouquets"), tr("Positions"), tr("Providers"), tr("Resolution"), tr("Encryption"), tr("A-Z")});
 
 	side->connect(side, &QListWidget::currentRowChanged, [=](int index) { this->sideRowChanged(index); });
 }
@@ -501,7 +496,7 @@ void channelBookView::stacker(int vv)
 	}
 	else if (vv == views::Bouquets)
 	{
-		this->index.merge(dbih->get_userbouquets_index()); //C++17
+		this->index.merge(dbih->get_userbouquets_index());
 		tree->expandAll();
 	}
 
@@ -668,7 +663,7 @@ void channelBookView::showListEditContextMenu(QPoint &pos)
 
 	QMenu* list_edit = contextMenu();
 
-	contextMenuAction(list_edit, "&Copy", [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
+	contextMenuAction(list_edit, tr("&Copy", "context-menu"), [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
 
 	platform::osContextMenuPopup(list_edit, list, pos);
 	// list_edit->exec(list->mapToGlobal(pos));

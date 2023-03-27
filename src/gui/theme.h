@@ -51,8 +51,6 @@ class theme
 		static bool isLightMode();
 		// prefixed QIcon { white: dark, black: light }
 		static QIcon icon(QString icon, ICON_STYLE style = icon_default);
-		// spacer QIcon { 2, 3, 4, 5 } px
-		static QIcon spacer(int width);
 		// default fontFamily
 		static QString fontFamily();
 		// default fontSize

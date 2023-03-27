@@ -53,7 +53,7 @@ tools::~tools()
 void tools::inspector()
 {
 	QDialog* dial = new QDialog(nullptr, Qt::WindowStaysOnTopHint);
-	dial->setWindowTitle("Inspector Log");
+	dial->setWindowTitle(tr("Inspector Log"));
 	dial->setMinimumSize(450, 520);
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
@@ -74,7 +74,7 @@ void tools::inspector()
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 	dtft->setPlaceholderText("<Filter>");
 #endif
-	dtft->addItem("All Log");
+	dtft->addItem(tr("All Log"));
 	dtft->addItem("Debug");
 	dtft->addItem("Info");
 	dtft->addItem("Error");
@@ -121,11 +121,11 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 	{
 		string fname;
 		if (paths.size() > 0)
-			fname = std::filesystem::path(paths[0]).parent_path().u8string(); //C++17
+			fname = std::filesystem::path(paths[0]).parent_path().u8string();
 		else
 			fname = paths[0];
 
-		tid->statusBarMessage("Importing from " + fname + " …");
+		tid->statusBarMessage(tr("Importing from %1 …").arg(QString::fromStdString(fname)));
 	}
 
 	theme::setWaitCursor();
@@ -154,19 +154,19 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 	{
 		int dirsize = 0;
 		string basedir;
-		if (std::filesystem::is_directory(path)) //C++17
+		if (std::filesystem::is_directory(path))
 			basedir = path;
 		else
-			basedir = std::filesystem::path(path).parent_path().u8string(); //C++17
-		std::filesystem::directory_iterator dirlist (basedir); //C++17
+			basedir = std::filesystem::path(path).parent_path().u8string();
+		std::filesystem::directory_iterator dirlist (basedir);
 		for (const auto & entry : dirlist)
 		{
-			if (std::filesystem::is_regular_file(entry)) //C++17
+			if (std::filesystem::is_regular_file(entry))
 				dirsize++;
 		}
 		if (dirsize != 0)
 		{
-			bool overwrite = tid->saveQuestion("The destination contains files that will be overwritten.", "Do you want to overwrite them?");
+			bool overwrite = tid->saveQuestion(tr("The destination contains files that will be overwritten."), tr("Do you want to overwrite them?"));
 			if (! overwrite)
 				return;
 		}
@@ -179,9 +179,9 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 	theme::unsetWaitCursor();
 
 	if (tid->statusBarIsVisible())
-		tid->statusBarMessage("Exported to " + path);
+		tid->statusBarMessage(tr("Exported to %1").arg(QString::fromStdString(path)));
 	else
-		tid->infoMessage("Saved!");
+		tid->infoMessage(tr("Saved!"));
 }
 
 void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
@@ -198,19 +198,19 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 	{
 		int dirsize = 0;
 		string basedir;
-		if (std::filesystem::is_directory(path)) //C++17
+		if (std::filesystem::is_directory(path))
 			basedir = path;
 		else
-			basedir = std::filesystem::path(path).parent_path().u8string(); //C++17
-		std::filesystem::directory_iterator dirlist (basedir); //C++17
+			basedir = std::filesystem::path(path).parent_path().u8string();
+		std::filesystem::directory_iterator dirlist (basedir);
 		for (const auto & entry : dirlist)
 		{
-			if (std::filesystem::is_regular_file(entry)) //C++17
+			if (std::filesystem::is_regular_file(entry))
 				dirsize++;
 		}
 		if (dirsize != 0)
 		{
-			bool overwrite = tid->saveQuestion("The destination contains files that will be overwritten.", "Do you want to overwrite them?");
+			bool overwrite = tid->saveQuestion(tr("The destination contains files that will be overwritten."), tr("Do you want to overwrite them?"));
 			if (! overwrite)
 				return;
 		}
@@ -223,9 +223,9 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 	theme::unsetWaitCursor();
 
 	if (tid->statusBarIsVisible())
-		tid->statusBarMessage("Exported to " + path);
+		tid->statusBarMessage(tr("Exported to %1").arg(QString::fromStdString(path)));
 	else
-		tid->infoMessage("Saved!");
+		tid->infoMessage(tr("Saved!"));
 }
 
 void tools::destroy()

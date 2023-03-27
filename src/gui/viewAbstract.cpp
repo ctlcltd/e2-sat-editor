@@ -115,10 +115,11 @@ void viewAbstract::searchLayout()
 	this->tsr_search.input->installEventFilter(new InputControlEditEventObserver(tid));
 	platform::osLineEdit(this->tsr_search.input);
 
-	this->tsr_search.next = new QPushButton("Find");
+	this->tsr_search.next = new QPushButton(tr("Find"));
 	this->tsr_search.next->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
 	this->tsr_search.next->connect(this->tsr_search.next, &QPushButton::pressed, [=]() { this->treeFindPerform(); });
 
+	//TODO accessible text
 	this->tsr_search.close = new QPushButton;
 	this->tsr_search.close->setIconSize(QSize(10, 10));
 	this->tsr_search.close->setIcon(theme->dynamicIcon("close", this->tsr_search.close));
@@ -154,24 +155,25 @@ void viewAbstract::searchLayout()
 	//TODO FIX text color [Windows]
 	this->lsr_search.highlight = new QPushButton;
 	this->lsr_search.highlight->setObjectName("list_search_highlight");
-	this->lsr_search.highlight->setText("Highlight");
+	this->lsr_search.highlight->setText(tr("Highlight", "toolbar"));
 	this->lsr_search.highlight->setCheckable(true);
 	this->lsr_search.highlight->setChecked(true);
 	this->lsr_search.highlight->setStyleSheet("QPushButton, QPushButton:checked { margin: 0 2px; padding: 2px 2ex; border: 1px solid palette(button); border-radius: 2px; color: palette(highlight-text) }");
 	this->lsr_search.highlight->connect(this->lsr_search.highlight, &QPushButton::pressed, [=]() { this->listFindHighlightToggle(); });
 
-	this->lsr_search.next = new QPushButton("Find");
+	this->lsr_search.next = new QPushButton(tr("Find", "toolbar"));
 	this->lsr_search.next->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
 	this->lsr_search.next->connect(this->lsr_search.next, &QPushButton::pressed, [=]() { this->listFindPerform(LIST_FIND::next); });
 
-	this->lsr_search.prev = new QPushButton("Find Previous");
+	this->lsr_search.prev = new QPushButton(tr("Find Previous", "toolbar"));
 	this->lsr_search.prev->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
 	this->lsr_search.prev->connect(this->lsr_search.prev, &QPushButton::pressed, [=]() { this->listFindPerform(LIST_FIND::prev); });
 
-	this->lsr_search.all = new QPushButton("Find All");
+	this->lsr_search.all = new QPushButton(tr("Find All", "toolbar"));
 	this->lsr_search.all->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
 	this->lsr_search.all->connect(this->lsr_search.all, &QPushButton::pressed, [=]() { this->listFindPerform(LIST_FIND::all); });
 
+	//TODO accessible text
 	this->lsr_search.close = new QPushButton;
 	this->lsr_search.close->setIconSize(QSize(10, 10));
 	this->lsr_search.close->setIcon(theme->dynamicIcon("close", this->lsr_search.close));
@@ -851,6 +853,7 @@ void viewAbstract::treeSortItems(QTreeWidget* tw, int column, Qt::SortOrder orde
 		std::stable_sort(sorting.begin(), sorting.end(), compare);
 
 		//TODO improve move or swap model index
+		// tw->model()->moveRow | tw->model()->moveRows
 
 		QList<QTreeWidgetItem*> toList;
 

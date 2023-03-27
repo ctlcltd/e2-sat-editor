@@ -76,6 +76,7 @@ void e2db::setup()
 	e2db::CONVERTER_EXTENDED_FIELDS = settings.value("preference/toolsFieldsExtended", false).toBool();
 }
 
+//TODO translation
 void e2db::error(string msg, string optk, string optv)
 {
 	this->::e2se_e2db::e2db::error(msg, optk, optv);

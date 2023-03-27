@@ -22,6 +22,7 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map, std::bi
 #define tab_h
 #include <Qt>
 #include <QTimer>
+#include <QApplication>
 #include <QWidget>
 #include <QGridLayout>
 #include <QToolBar>
@@ -40,6 +41,8 @@ namespace e2se_gui
 {
 class tab : protected e2se::log_factory
 {
+	Q_DECLARE_TR_FUNCTIONS(tab)
+
 	public:
 
 		const int STATUSBAR_MESSAGE_DELAY = 1500;
@@ -92,7 +95,7 @@ class tab : protected e2se::log_factory
 		void exportFile();
 		void printFile(bool all);
 		void updateIndex();
-		QTimer* statusBarMessage(string title);
+		QTimer* statusBarMessage(QString title);
 		void statusBarMessage(QTimer* timer);
 		bool saveQuestion(QString title, QString text);
 		bool removeQuestion(QString title, QString text);

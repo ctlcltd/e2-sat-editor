@@ -11,6 +11,7 @@
 
 #ifndef tools_h
 #define tools_h
+#include <QApplication>
 #include <QWidget>
 
 #include "../logger/logger.h"
@@ -23,6 +24,8 @@ class tab;
 
 class tools : protected e2se::log_factory
 {
+	Q_DECLARE_TR_FUNCTIONS(tools)
+
 	public:
 		tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data);
 		virtual ~tools();

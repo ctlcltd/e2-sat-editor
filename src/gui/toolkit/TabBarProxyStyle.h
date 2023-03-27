@@ -9,6 +9,8 @@
  * @license GNU GPLv3 License
  */
 
+#include <iostream>
+
 #ifndef TabBarProxyStyle_h
 #define TabBarProxyStyle_h
 #include <QProxyStyle>
@@ -16,9 +18,25 @@
 
 namespace e2se_gui
 {
+//TODO
 class TabBarProxyStyle : public QProxyStyle
 {
 	public:
+		void drawPrimitive(PrimitiveElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const override
+		{
+			// std::cout << "drawPrimitive" << ':' << ' ' << element << std::endl;
+
+			if (element == QStyle::PE_FrameFocusRect) // 3
+				return;
+
+			QProxyStyle::drawPrimitive(element, option, painter, widget);
+		}
+		void drawControl(ControlElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const override
+		{
+			// std::cout << "drawControl" << ':' << ' ' << element << std::endl;
+
+			QProxyStyle::drawControl(element, option, painter, widget);
+		}
 		int styleHint(StyleHint hint, const QStyleOption* option = 0, const QWidget* widget = 0, QStyleHintReturn* returnData = 0) const override
 		{
 			if (hint == QStyle::SH_TabBar_CloseButtonPosition)

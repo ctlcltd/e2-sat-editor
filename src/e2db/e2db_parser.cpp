@@ -175,7 +175,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 
 	for (auto & x : files)
 	{
-		string filename = std::filesystem::path(x.first).filename().u8string(); //C++17
+		string filename = std::filesystem::path(x.first).filename().u8string();
 		this->e2db[filename] = x.first;
 	}
 	if (! find_services_file())
@@ -767,7 +767,7 @@ void e2db_parser::parse_userbouquet_epl_reference(string str, userbouquet& ub)
 	if (pos != string::npos)
 		path = str.substr(pos, str.length());
 
-	string filename = std::filesystem::path(path).filename().u8string(); //C++17
+	string filename = std::filesystem::path(path).filename().u8string();
 
 	ub.bname = filename;
 }
@@ -1418,7 +1418,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 			aidx++;
 			tr.index = aidx;
 			db.tables.emplace(tr.pos, tr);
-			index["trs"].emplace_back(pair (tr.index, to_string(tr.pos))); //C++17
+			index["trs"].emplace_back(pair (tr.index, to_string(tr.pos)));
 		}
 		else if (! add && step == 2)
 		{
@@ -1607,7 +1607,7 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 		{
 			bidx++;
 			ub.index = bidx;
-			ubouquets.emplace_back(pair (ub, chindex)); //C++17
+			ubouquets.emplace_back(pair (ub, chindex));
 		}
 		else if (add && step == 2)
 		{
@@ -1693,13 +1693,13 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 
 			if (! chref.marker && db.services.count(chref.chid))
 			{
-				index[ub.bname].emplace_back(pair (chref.index, chref.chid)); //C++17
+				index[ub.bname].emplace_back(pair (chref.index, chref.chid));
 
 				if (bs.services.count(chref.chid) == 0)
 				{
 					idx += 1;
 					bs.services.emplace(chref.chid);
-					index[ub.pname].emplace_back(pair (idx, chref.chid)); //C++17
+					index[ub.pname].emplace_back(pair (idx, chref.chid));
 				}
 			}
 		}
@@ -1874,7 +1874,7 @@ bool e2db_parser::list_file(string path)
 {
 	debug("list_file", "path", path);
 
-	if (! std::filesystem::exists(path)) //C++17
+	if (! std::filesystem::exists(path))
 	{
 		error("list_file", "File Error", "File \"" + path + "\" not exists.");
 		return false;
@@ -1883,17 +1883,17 @@ bool e2db_parser::list_file(string path)
 	(
 		(std::filesystem::status(path).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none &&
 		(std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
-	) //C++17
+	)
 	{
 		error("list_file", "File Error", "File \"" + path + "\" is not readable.");
 		return false;
 	}
 
-	std::filesystem::directory_iterator filelist (path); //C++17
+	std::filesystem::directory_iterator filelist (path);
 
 	for (const auto & entry : filelist)
 	{
-		if (! std::filesystem::is_regular_file(entry)) //C++17
+		if (! std::filesystem::is_regular_file(entry))
 		{
 			continue;
 		}
@@ -1901,14 +1901,14 @@ bool e2db_parser::list_file(string path)
 		(
 			(std::filesystem::status(entry).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none &&
 			(std::filesystem::status(entry).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
-		) //C++17
+		)
 		{
 			error("list_file", "File Error", "File \"" + path + "\" is not readable.");
 			return false;
 		}
 
-		string fpath = entry.path().u8string(); //C++17
-		string filename = std::filesystem::path(fpath).filename().u8string(); //C++17
+		string fpath = entry.path().u8string();
+		string filename = std::filesystem::path(fpath).filename().u8string();
 		this->e2db[filename] = fpath;
 	}
 	if (! find_services_file())

@@ -478,7 +478,8 @@ void settings::advancedLayout()
 	QWidget* dtntsp = new QWidget;
 	dtntsp->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	QLabel* dtntcl = new QLabel(tr("<h2>Please be carefull!</h2><br><p>Modifing these settings could break the program.</p>"));
+	//: HTML formattation: %1text%2%text%3 treat them as spaces
+	QLabel* dtntcl = new QLabel(tr("%1Please be carefull!%2Modifing these settings could break the program.%3").arg("<h2>").arg("</h2><br><p>").arg("</p>"));
 	dtntcl->setAlignment(Qt::AlignCenter);
 
 	QPushButton* dtntcb = new QPushButton;

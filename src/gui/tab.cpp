@@ -156,7 +156,7 @@ void tab::tabChangeName(string filename)
 	debug("tabChangeName");
 
 	if (! filename.empty())
-		filename = std::filesystem::path(filename).filename().u8string(); //C++17
+		filename = std::filesystem::path(filename).filename().u8string();
 
 	gid->tabChangeName(ttid, filename);
 
@@ -357,20 +357,20 @@ void tab::layout()
 #endif
 	platform::osComboBox(ftp_combo);
 
-	tbars[gui::FileOpen] = toolBarAction(top_toolbar, "&Open", theme->dynamicIcon("file-open"), [=]() { this->openFile(); }, QKeySequence::Open);
-	tbars[gui::FileSave] = toolBarAction(top_toolbar, "&Save", theme->dynamicIcon("save"), [=]() { this->saveFile(false); }, QKeySequence::Save);
+	tbars[gui::FileOpen] = toolBarAction(top_toolbar, tr("&Open", "toolbar"), theme->dynamicIcon("file-open"), [=]() { this->openFile(); }, QKeySequence::Open);
+	tbars[gui::FileSave] = toolBarAction(top_toolbar, tr("&Save", "toolbar"), theme->dynamicIcon("save"), [=]() { this->saveFile(false); }, QKeySequence::Save);
 	toolBarSeparator(top_toolbar);
-	tbars[gui::FileImport] = toolBarAction(top_toolbar, "Import", theme->dynamicIcon("import"), [=]() { this->importFile(); });
-	tbars[gui::FileExport] = toolBarAction(top_toolbar, "Export", theme->dynamicIcon("export"), [=]() { this->exportFile(); });
+	tbars[gui::FileImport] = toolBarAction(top_toolbar, tr("Import", "toolbar"), theme->dynamicIcon("import"), [=]() { this->importFile(); });
+	tbars[gui::FileExport] = toolBarAction(top_toolbar, tr("Export", "toolbar"), theme->dynamicIcon("export"), [=]() { this->exportFile(); });
 	toolBarSeparator(top_toolbar);
-	toolBarAction(top_toolbar, "Settings", theme->dynamicIcon("settings"), [=]() { gid->settingsDialog(); });
+	toolBarAction(top_toolbar, tr("Settings", "toolbar"), theme->dynamicIcon("settings"), [=]() { gid->settingsDialog(); });
 	toolBarSpacer(top_toolbar);
 	toolBarWidget(top_toolbar, ftp_combo);
-	toolBarAction(top_toolbar, "Connect", [=]() { this->ftpConnect(); });
-	toolBarAction(top_toolbar, "Disconnect", [=]() { this->ftpDisconnect(); });
+	toolBarAction(top_toolbar, tr("Connect", "toolbar"), [=]() { this->ftpConnect(); });
+	toolBarAction(top_toolbar, tr("Disconnect", "toolbar"), [=]() { this->ftpDisconnect(); });
 	toolBarSeparator(top_toolbar);
-	toolBarAction(top_toolbar, "Upload", [=]() { this->ftpUpload(); });
-	toolBarAction(top_toolbar, "Download", [=]() { this->ftpDownload(); });
+	toolBarAction(top_toolbar, tr("Upload", "toolbar"), [=]() { this->ftpUpload(); });
+	toolBarAction(top_toolbar, tr("Download", "toolbar"), [=]() { this->ftpDownload(); });
 
 	if (QSettings().value("application/debug", this->log->obj->debug).toBool())
 	{
@@ -480,7 +480,7 @@ bool tab::readFile(string filename)
 	QTimer* timer = nullptr;
 
 	if (statusBarIsVisible())
-		timer = statusBarMessage("Reading from " + filename + " …");
+		timer = statusBarMessage(tr("Reading from %1 …").arg(QString::fromStdString(filename)));
 
 	theme::setWaitCursor();
 	bool readen = this->data->readFile(filename);
@@ -496,7 +496,7 @@ bool tab::readFile(string filename)
 
 		error("readFile", "File Error", "Error reading file \"" + filename + "\".");
 
-		errorMessage("File Error", "Error opening files.");
+		errorMessage(tr("File Error"), tr("Error opening files."));
 
 		return false;
 	}
@@ -532,13 +532,13 @@ void tab::saveFile(bool saveas)
 	}
 	else if (this->data->hasChanged())
 	{
-		bool overwrite = saveQuestion("The file has been modified", "Do you want to save your changes?");
+		bool overwrite = saveQuestion(tr("The file has been modified"), tr("Do you want to save your changes?"));
 		if (! overwrite)
 			return;
 	}
 	else
 	{
-		bool overwrite = saveQuestion("The file will be overwritten", "Do you want to overwrite it?");
+		bool overwrite = saveQuestion(tr("The file will be overwritten"), tr("Do you want to overwrite it?"));
 		if (! overwrite)
 			return;
 	}
@@ -556,15 +556,15 @@ void tab::saveFile(bool saveas)
 
 	if (written) {
 		if (statusBarIsVisible())
-			statusBarMessage("Saved to " + path);
+			statusBarMessage(tr("Saved to %1").arg(QString::fromStdString(path)));
 		else
-			infoMessage("Saved!");
+			infoMessage(tr("Saved!"));
 	}
 	else
 	{
 		error("saveFile", "File Error", "Error writing file \"" + path + "\".");
 
-		errorMessage("File Error", "Error writing files.");
+		errorMessage(tr("File Error"), tr("Error writing files."));
 	}
 }
 
@@ -581,7 +581,7 @@ void tab::importFile()
 	// channelBook view
 	if (current == gui::TAB_VIEW::channelBook)
 	{
-		return infoMessage("Nothing to import", "You are in channel book.");
+		return infoMessage(tr("Nothing to import"), tr("You are in channel book."));
 	}
 
 	paths = gid->importFileDialog(gde);
@@ -593,11 +593,11 @@ void tab::importFile()
 	{
 		string fname;
 		if (paths.size() > 0)
-			fname = std::filesystem::path(paths[0]).parent_path().u8string(); //C++17
+			fname = std::filesystem::path(paths[0]).parent_path().u8string();
 		else
 			fname = paths[0];
 
-		statusBarMessage("Importing from " + fname + " …");
+		statusBarMessage(tr("Importing from %1 …").arg(QString::fromStdString(fname)));
 	}
 
 	theme::setWaitCursor();
@@ -735,7 +735,7 @@ void tab::exportFile()
 	// channelBook view
 	else if (current == gui::TAB_VIEW::channelBook)
 	{
-		return infoMessage("Nothing to export", "You are in channel book.");
+		return infoMessage(tr("Nothing to export"), tr("You are in channel book."));
 	}
 
 	if (paths.empty())
@@ -758,19 +758,19 @@ void tab::exportFile()
 	{
 		int dirsize = 0;
 		string basedir;
-		if (std::filesystem::is_directory(path)) //C++17
+		if (std::filesystem::is_directory(path))
 			basedir = path;
 		else
-			basedir = std::filesystem::path(path).parent_path().u8string(); //C++17
-		std::filesystem::directory_iterator dirlist (basedir); //C++17
+			basedir = std::filesystem::path(path).parent_path().u8string();
+		std::filesystem::directory_iterator dirlist (basedir);
 		for (const auto & entry : dirlist)
 		{
-			if (std::filesystem::is_regular_file(entry)) //C++17
+			if (std::filesystem::is_regular_file(entry))
 				dirsize++;
 		}
 		if (dirsize != 0)
 		{
-			bool overwrite = saveQuestion("The destination contains files that will be overwritten.", "Do you want to overwrite them?");
+			bool overwrite = saveQuestion(tr("The destination contains files that will be overwritten."), tr("Do you want to overwrite them?"));
 			if (! overwrite)
 				return;
 		}
@@ -784,8 +784,8 @@ void tab::exportFile()
 	}
 	else
 	{
-		std::filesystem::path fp = std::filesystem::path(path); //C++17
-		string basedir = fp.parent_path().u8string(); //C++17
+		std::filesystem::path fp = std::filesystem::path(path);
+		string basedir = fp.parent_path().u8string();
 		if (basedir.size() && basedir[basedir.size() - 1] != '/')
 			basedir.append("/");
 
@@ -801,15 +801,15 @@ void tab::exportFile()
 	{
 		string fname;
 		if (paths.size() > 0)
-			fname = std::filesystem::path(paths[0]).parent_path().u8string(); //C++17
+			fname = std::filesystem::path(paths[0]).parent_path().u8string();
 		else
 			fname = paths[0];
 
-		statusBarMessage("Exported to " + fname);
+		statusBarMessage(tr("Exported to %1").arg(QString::fromStdString(fname)));
 	}
 	else
 	{
-		infoMessage("Saved!");
+		infoMessage(tr("Saved!"));
 	}
 }
 
@@ -899,7 +899,7 @@ void tab::printFile(bool all)
 	delete printer;
 
 	if (statusBarIsVisible())
-		statusBarMessage("Printing …");
+		statusBarMessage(tr("Printing …"));
 }
 
 void tab::toolsInspector()
@@ -1225,16 +1225,16 @@ void tab::ftpConnect()
 	if (this->ftph->handleConnection())
 	{
 		if (statusBarIsVisible())
-			statusBarMessage("FTP connected successfully.");
+			statusBarMessage(tr("FTP connected successfully."));
 		else
-			infoMessage("Successfully connected!");
+			infoMessage(tr("Successfully connected!"));
 	}
 	else
 	{
 		string hostname = this->ftph->getServerHostname();
 		error("ftpConnect", "FTP Error", "Cannot connect to FTP \"" + hostname + "\".");
 
-		errorMessage("FTP Error", "Cannot connect to FTP Server!");
+		errorMessage(tr("FTP Error"), tr("Cannot connect to FTP Server!"));
 	}
 }
 
@@ -1245,9 +1245,9 @@ void tab::ftpDisconnect()
 	if (this->ftph->closeConnection())
 	{
 		if (statusBarIsVisible())
-			statusBarMessage("FTP disconnected successfully.");
+			statusBarMessage(tr("FTP disconnected successfully."));
 		else
-			infoMessage("Successfully disconnected!");
+			infoMessage(tr("Successfully disconnected!"));
 	}
 	else
 	{
@@ -1268,7 +1268,7 @@ void tab::ftpUpload()
 		string hostname = this->ftph->getServerHostname();
 		error("ftpConnect", "FTP Error", "Cannot connect to FTP \"" + hostname + "\".");
 
-		return errorMessage("FTP Error", "Cannot connect to FTP Server!");
+		return errorMessage(tr("FTP Error"), tr("Cannot connect to FTP Server!"));
 	}
 
 	QSettings settings;
@@ -1328,16 +1328,16 @@ void tab::ftpUpload()
 
 	//TODO FIX
 	if (statusBarIsVisible())
-		statusBarMessage("Uploaded " + to_string(files.size()) + " files");
+		statusBarMessage(tr("Uploaded %n files", "", files.size()));
 	else
 		infoMessage("Uploaded!");
 
 	if (ftih->cmd_ifreload() || ftih->cmd_tnreload())
 	{
 		if (statusBarIsVisible())
-			statusBarMessage("STB reload done.");
+			statusBarMessage(tr("STB reload done."));
 		else
-			infoMessage("STB reloaded!");
+			infoMessage(tr("STB reloaded!"));
 	}
 }
 
@@ -1351,7 +1351,7 @@ void tab::ftpDownload()
 		string hostname = this->ftph->getServerHostname();
 		error("ftpConnect", "FTP Error", "Cannot connect to FTP \"" + hostname + "\".");
 
-		return errorMessage("FTP Error", "Cannot connect to FTP Server!");
+		return errorMessage(tr("FTP Error"), tr("Cannot connect to FTP Server!"));
 	}
 
 	auto* ftih = this->ftph->ftih;
@@ -1399,11 +1399,11 @@ void tab::updateIndex()
 	view->updateIndex();
 }
 
-QTimer* tab::statusBarMessage(string text)
+QTimer* tab::statusBarMessage(QString text)
 {
 	gui::status msg;
 	msg.info = true;
-	msg.message = text;
+	msg.message = text.toStdString();
 	setStatusBar(msg);
 
 	QTimer* timer = new QTimer(this->cwid);
@@ -1511,7 +1511,8 @@ void tab::loadSeeds()
 	{
 		settings.setValue("application/seeds", "");
 
-		QMessageBox::information(this->cwid, NULL, "For debugging purpose.<br><br>Set application.seeds absolute path under Settings > Advanced tab, then restart the software.<br><br>Source seeds available at:<br><a href=\"https://github.com/ctlcltd/e2se-seeds\">https://github.com/ctlcltd/e2se-seeds</a>");
+		//: HTML formattation: text%1text%2text%3 treat them as spaces
+		QMessageBox::information(this->cwid, NULL, tr("For debugging purpose.%1Set application.seeds absolute path under Settings > Advanced tab, then restart the software.%2Source seeds available at:%3").arg("<br><br>").arg("<br><br>").arg("<br>%1").arg(QString("<a href=\"%1\">%1</a>").arg("https://github.com/ctlcltd/e2se-seeds")));
 	}
 }
 

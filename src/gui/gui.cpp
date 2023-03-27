@@ -232,7 +232,7 @@ void gui::menuBarLayout()
 	this->mwtabs = mwtabs;
 }
 
-//TODO improve
+//TODO improve TabBarProxyStyle
 //TODO FIX QTabBar::tab elide and icon size [Windows]
 void gui::tabStackerLayout()
 {
@@ -520,7 +520,7 @@ int gui::newTab(string filename)
 	ttab->viewMain();
 
 	bool read = ! filename.empty();
-	QString ttname = "Untitled";
+	QString ttname = tr("Untitled");
 	int index = twid->addTab(ttab->widget, ttname);
 	int count = index;
 
@@ -548,7 +548,7 @@ int gui::newTab(string filename)
 			return -1;
 		}
 
-		filename = std::filesystem::path(filename).filename().u8string(); //C++17
+		filename = std::filesystem::path(filename).filename().u8string();
 		ttname = QString::fromStdString(filename);
 	}
 	else
@@ -607,10 +607,9 @@ int gui::openTab(TAB_VIEW view, int arg)
 	debug("openTab", "ttid", ttid);
 
 	int curr = twid->tabBar()->currentIndex();
-	string parent_ttname = parent->getTabName();
 
 	QIcon tticon;
-	QString ttname = QString::fromStdString(parent_ttname);
+	QString ttname = QString::fromStdString(parent->getTabName());
 
 	switch (view)
 	{
@@ -622,20 +621,17 @@ int gui::openTab(TAB_VIEW view, int arg)
 		case TAB_VIEW::transponders:
 			ttab->viewTransponders(parent);
 			tticon = QIcon(theme::icon("transponders-view", theme::icon_highlight));
-			ttname.append(" - ");
-			ttname.append("Edit transponders");
+			ttname = tr("%1 - %2", "tab").arg(ttname).arg(tr("Edit transponders", "tab"));
 		break;
 		case TAB_VIEW::tunersets:
 			ttab->viewTunersets(parent, arg);
 			tticon = QIcon(theme::icon("tunersets-view", theme::icon_highlight));
-			ttname.append(" - ");
-			ttname.append("Edit settings");
+			ttname = tr("%1 - %2", "tab").arg(ttname).arg(tr("Edit settings", "tab"));
 		break;
 		case TAB_VIEW::channelBook:
 			ttab->viewChannelBook(parent);
 			tticon = QIcon(theme::icon("channelbook-view", theme::icon_highlight));
-			ttname.append(" - ");
-			ttname.append("Channel book");
+			ttname = tr("%1 - %2", "tab").arg(ttname).arg(tr("Channel book", "tab"));
 		break;
 	}
 
@@ -816,7 +812,7 @@ void gui::tabChangeName(int ttid, string filename)
 	int count = index;
 	int v = ttab->getTabView();
 
-	QString ttname = "Untitled";
+	QString ttname = tr("Untitled");
 
 	if (ttab->isChild())
 	{
@@ -851,16 +847,13 @@ void gui::tabChangeName(int ttid, string filename)
 	switch (v)
 	{
 		case TAB_VIEW::transponders:
-			ttname.append(" - ");
-			ttname.append("Edit transponders");
+			ttname = tr("%1 - %2", "tab").arg(ttname).arg(tr("Edit transponders", "tab"));
 		break;
 		case TAB_VIEW::tunersets:
-			ttname.append(" - ");
-			ttname.append("Edit settings");
+			ttname = tr("%1 - %2", "tab").arg(ttname).arg(tr("Edit settings", "tab"));
 		break;
 		case TAB_VIEW::channelBook:
-			ttname.append(" - ");
-			ttname.append("Channel book");
+			ttname = tr("%1 - %2", "tab").arg(ttname).arg(tr("Channel book", "tab"));
 		break;
 	}
 
@@ -874,7 +867,7 @@ string gui::openFileDialog()
 {
 	debug("openFileDialog");
 
-	QString caption = "Select data folder";
+	QString caption = tr("Select data folder");
 
 	string path;
 
@@ -896,7 +889,7 @@ string gui::saveFileDialog(string filename)
 {
 	debug("saveFileDialog", "filename", filename);
 
-	QString caption = "Select where to save";
+	QString caption = tr("Select where to save");
 
 	string path;
 
@@ -917,7 +910,7 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 {
 	debug("importFileDialog");
 
-	QString caption = "Select one or more files to open";
+	QString caption = tr("Select one or more files to open");
 	QStringList opts;
 	QFileDialog::FileMode fmode = QFileDialog::ExistingFiles;
 	switch (gde)
@@ -948,12 +941,8 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 			opts.append("Tuner settings (*.xml)");
 		break;
 		case GUI_DPORTS::CSV:
-			opts.append("CSV File (*.csv *.txt)");
-			opts.append("All Files (*)");
-		break;
-		case GUI_DPORTS::HTML:
-			opts.append("HTML File (*.html *.htm)");
-			opts.append("All Files (*)");
+			opts.append(QString("%1 (*.csv *.txt)").arg(tr("CSV File", "file-dialog")));
+			opts.append(QString("%1 (*)").arg(tr("All Files", "file-dialog")));
 		break;
 		default:
 			fmode = QFileDialog::AnyFile;
@@ -973,7 +962,7 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 			opts.append("Parental lock blacklist (blacklist)");
 			opts.append("Parental lock whitelist (whitelist)");
 			opts.append("Parental lock services (services.locked)");
-			opts.append("All Files (*)");
+			opts.append(QString("%1 (*)").arg(tr("All Files", "file-dialog")));
 	}
 
 	vector<string> paths;
@@ -998,7 +987,7 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& bit)
 {
 	debug("exportFileDialog", "filename", filename);
 
-	QString caption = "Select where to save";
+	QString caption = tr("Select where to save");
 	QStringList opts;
 	switch (gde)
 	{
@@ -1036,15 +1025,15 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& bit)
 			opts.append("Tuner settings (*.xml)");
 		break;
 		case GUI_DPORTS::CSV:
-			opts.append("CSV File (*.csv)");
-			opts.append("All Files (*)");
+			opts.append(QString("%1 (*.csv *.txt)").arg(tr("CSV File", "file-dialog")));
+			opts.append(QString("%1 (*)").arg(tr("All Files", "file-dialog")));
 		break;
 		case GUI_DPORTS::HTML:
-			opts.append("HTML File (*.html)");
-			opts.append("All Files (*)");
+			opts.append(QString("%1 (*.html)").arg(tr("HTML File", "file-dialog")));
+			opts.append(QString("%1 (*)").arg(tr("All Files", "file-dialog")));
 		break;
 		default:
-			opts.append("All Files (*)");
+			opts.append(QString("%1 (*)").arg(tr("All Files", "file-dialog")));
 	}
 
 	string path;
@@ -1150,16 +1139,17 @@ void gui::statusBarToggle()
 	}
 }
 
+//TODO improve
 void gui::setStatusBar(status msg)
 {
 	debug("setStatusBar");
 
 	QString separator = "   ";
-	QString text;
+	QStringList content;
 
 	if (msg.info && ! msg.message.empty())
 	{
-		text = QString::fromStdString(msg.message);
+		QString text = QString::fromStdString(msg.message);
 		sbwid->showMessage(text);
 	}
 	else if (msg.view == TAB_VIEW::main)
@@ -1167,53 +1157,51 @@ void gui::setStatusBar(status msg)
 		if (msg.update)
 		{
 			if (msg.counters[COUNTER::n_bouquet])
-			{
-				text.append("Channels: " + QString::number(msg.counters[COUNTER::n_bouquet]));
-			}
+				content.append(tr("%1: %2", "status-bar").arg(tr("Channels", "status-bar")).arg(msg.counters[COUNTER::n_bouquet]));
 			if (! msg.curr.empty())
-			{
-				text.append(separator);
-				text.append("Bouquet: " + QString::fromStdString(msg.curr));
-			}
-			sbwidl->setText(text);
+				content.append(tr("%1: %2", "status-bar").arg(tr("Bouquet", "status-bar")).arg(QString::fromStdString(msg.curr)));
+
+			if (QApplication::layoutDirection() == Qt::RightToLeft)
+				std::reverse(content.begin(), content.end());
+			sbwidl->setText(content.join(separator));
 		}
 		else
 		{
-			text.append("TV: " + QString::number(msg.counters[COUNTER::n_tv]));
-			text.append(separator);
-			text.append("Radio: " + QString::number(msg.counters[COUNTER::n_radio]));
-			text.append(separator);
-			text.append("Data: " + QString::number(msg.counters[COUNTER::n_data]));
-			text.append(separator);
-			text.append("Total: " + QString::number(msg.counters[COUNTER::n_services]));
-			sbwidr->setText(text);
+			content.append(tr("%1: %2", "status-bar").arg(tr("TV", "status-bar")).arg(msg.counters[COUNTER::n_tv]));
+			content.append(tr("%1: %2", "status-bar").arg(tr("Radio", "status-bar")).arg(msg.counters[COUNTER::n_radio]));
+			content.append(tr("%1: %2", "status-bar").arg(tr("Data", "status-bar")).arg(msg.counters[COUNTER::n_data]));
+			content.append(tr("%1: %2", "status-bar").arg(tr("Total", "status-bar")).arg(msg.counters[COUNTER::n_services]));
+
+			if (QApplication::layoutDirection() == Qt::RightToLeft)
+				std::reverse(content.begin(), content.end());
+			sbwidr->setText(content.join(separator));
 		}
 	}
 	else if (msg.view == TAB_VIEW::transponders)
 	{
-		text.append("Total: " + QString::number(msg.counters[COUNTER::n_transponders]));
+		content.append(tr("%1: %2", "status-bar").arg(tr("Total", "status-bar").arg(msg.counters[COUNTER::n_transponders])));
+
 		sbwidl->setText("");
-		sbwidr->setText(text);
+		sbwidr->setText(content.join(separator));
 	}
 	else if (msg.view == TAB_VIEW::tunersets)
 	{
 		if (msg.update)
 		{
 			if (msg.counters[COUNTER::n_position])
-			{
-				text.append("Transponders: " + QString::number(msg.counters[COUNTER::n_position]));
-			}
+				content.append(tr("%1: %2", "status-bar").arg(tr("Transponders", "status-bar").arg(msg.counters[COUNTER::n_position])));
 			if (! msg.curr.empty())
-			{
-				text.append(separator);
-				text.append("Position: " + QString::fromStdString(msg.curr));
-			}
-			sbwidl->setText(text);
+				content.append(tr("%1: %2", "status-bar").arg(tr("Position", "status-bar")).arg(QString::fromStdString(msg.curr)));
+
+			if (QApplication::layoutDirection() == Qt::RightToLeft)
+				std::reverse(content.begin(), content.end());
+			sbwidl->setText(content.join(separator));
 		}
 		else
 		{
-			text.append("Total: " + QString::number(msg.counters[COUNTER::n_transponders]));
-			sbwidr->setText(text);
+			content.append(tr("%1: %2", "status-bar").arg(tr("Total", "status-bar")).arg(msg.counters[COUNTER::n_transponders]));
+
+			sbwidr->setText(content.join(separator));
 		}
 	}
 }

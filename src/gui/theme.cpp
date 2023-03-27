@@ -91,11 +91,6 @@ QIcon theme::icon(QString icon, ICON_STYLE style)
 	return ico;
 }
 
-QIcon theme::spacer(int width)
-{
-	return QIcon(":/icons/" + QString::number(width) + "x1.png");
-}
-
 //TODO strange behaviour [Wine]
 QString theme::fontFamily()
 {
@@ -147,7 +142,7 @@ void theme::dynamicStyleSheet(QWidget* widget, QString stylesheet, STYLE style)
 
 pair<theme*, QString> theme::dynamicIcon(QString icon)
 {
-	return pair (this, icon); //C++17
+	return pair (this, icon);
 }
 
 QIcon theme::dynamicIcon(QString icon, QObject* object, ICON_STYLE style)

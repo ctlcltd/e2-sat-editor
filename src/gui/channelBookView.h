@@ -27,6 +27,8 @@ namespace e2se_gui
 {
 class channelBookView : public viewAbstract
 {
+	Q_DECLARE_TR_FUNCTIONS(channelBookView)
+
 	public:
 		struct __state
 		{

@@ -41,7 +41,7 @@ void about::layout()
 	debug("layout");
 
 	this->dial = new QDialog;
-	dial->setWindowTitle("About e2 SAT Editor");
+	dial->setWindowTitle(tr("About e2 SAT Editor", "about"));
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
 	dial->connect(dial, &QDialog::finished, [=]() { QTimer::singleShot(0, [=]() { this->destroy(); }); });
@@ -78,20 +78,19 @@ void about::layout()
 	acopy->setStyleSheet("margin: 10px 0 5px 0");
 
 	QLabel* alise = new QLabel;
-	alise->setText("This software is distributed under the terms of the <a href=\"https://www.gnu.org/licenses/gpl-3.0.html\">GNU GPLv3 License</a>.<br>\n\
-The source code of this free software is available here:<br>\n\
-<a href=\"https://github.com/ctlcltd/e2-sat-editor\">https://github.com/ctlcltd/e2-sat-editor</a>");
+	//: HTML formattation: text%1%2text%3 treat them as spaces
+	alise->setText(tr("This software is distributed under the terms of the %1.%2The source code of this free software is available here:%3", "about").arg(QString("<a href=\"%1\">%2</a>").arg("https://www.gnu.org/licenses/gpl-3.0.html").arg(tr("GPLv3 License"))).arg("<br>").arg("<br>%1").arg(QString("<a href=\"%1\">%1</a>").arg("https://github.com/ctlcltd/e2-sat-editor")));
 	alise->setStyleSheet("margin: 10px 0 5px 0; font-size: 10px");
 
 	QLabel* anote = new QLabel;
 	anote->setStyleSheet("font-size: 8px");
-	anote->setText("THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, \n\
+	anote->setText(tr("THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, \n\
 EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF \n\
 MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND \n\
 NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE \n\
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION \n\
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION \n\
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.");
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.", "about"));
 
 	dfrm->setColumnStretch(0, 1);
 	dfrm->setRowStretch(0, 1);

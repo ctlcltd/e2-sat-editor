@@ -50,9 +50,9 @@ string e2db_abstract::editor_timestamp()
 
 e2db_abstract::FPORTS e2db_abstract::file_type_detect(string path)
 {
-	string filename = std::filesystem::path(path).filename().u8string(); //C++17
+	string filename = std::filesystem::path(path).filename().u8string();
 
-	if (std::filesystem::is_directory(path)) //C++17
+	if (std::filesystem::is_directory(path))
 		return FPORTS::directory;
 	else if (filename == "lamedb")
 		return FPORTS::all_services; // autodetect
@@ -1073,7 +1073,7 @@ void e2db_abstract::add_transponder(int idx, transponder& tx)
 	tx.index = idx;
 
 	db.transponders.emplace(tx.txid, tx);
-	index["txs"].emplace_back(pair (idx, tx.txid)); //C++17
+	index["txs"].emplace_back(pair (idx, tx.txid));
 }
 
 void e2db_abstract::add_service(int idx, service& ch)
@@ -1092,15 +1092,15 @@ void e2db_abstract::add_service(int idx, service& ch)
 		string kchid = 's' + ch.chid;
 		int m = int (collisions[kchid].size());
 		ch.chid += ':' + to_string(m);
-		collisions[kchid].emplace_back(pair (ch.chid, m)); //C++17
+		collisions[kchid].emplace_back(pair (ch.chid, m));
 	}
 
 	string iname = "chs:" + (STYPE_EXT_TYPE.count(ch.stype) ? to_string(STYPE_EXT_TYPE.at(ch.stype)) : "0");
 	ch.index = idx;
 
 	db.services.emplace(ch.chid, ch);
-	index["chs"].emplace_back(pair (idx, ch.chid)); //C++17
-	index[iname].emplace_back(pair (idx, ch.chid)); //C++17
+	index["chs"].emplace_back(pair (idx, ch.chid));
+	index[iname].emplace_back(pair (idx, ch.chid));
 }
 
 void e2db_abstract::add_bouquet(int idx, bouquet& bs)
@@ -1108,7 +1108,7 @@ void e2db_abstract::add_bouquet(int idx, bouquet& bs)
 	bs.index = idx;
 
 	bouquets.emplace(bs.bname, bs);
-	index["bss"].emplace_back(pair (idx, bs.bname)); //C++17
+	index["bss"].emplace_back(pair (idx, bs.bname));
 }
 
 void e2db_abstract::add_userbouquet(int idx, userbouquet& ub)
@@ -1117,7 +1117,7 @@ void e2db_abstract::add_userbouquet(int idx, userbouquet& ub)
 
 	userbouquets.emplace(ub.bname, ub);
 	bouquets[ub.pname].userbouquets.emplace_back(ub.bname);
-	index["ubs"].emplace_back(pair (idx, ub.bname)); //C++17
+	index["ubs"].emplace_back(pair (idx, ub.bname));
 }
 
 void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_reference& chref, service_reference& ref)
@@ -1136,18 +1136,18 @@ void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_refe
 
 	bouquet& bs = bouquets[ub.pname];
 	ub.channels.emplace(chref.chid, chref);
-	index[ub.bname].emplace_back(pair (idx, chref.chid)); //C++17
+	index[ub.bname].emplace_back(pair (idx, chref.chid));
 
 	if (chref.marker)
 	{
-		index["mks"].emplace_back(pair (ub.index, chref.chid)); //C++17
+		index["mks"].emplace_back(pair (ub.index, chref.chid));
 	}
 	else if (bs.services.count(chref.chid) == 0)
 	{
 		int idx = int (index[ub.pname].size());
 		idx += 1;
 		bs.services.emplace(chref.chid);
-		index[ub.pname].emplace_back(pair (idx, chref.chid)); //C++17
+		index[ub.pname].emplace_back(pair (idx, chref.chid));
 	}
 }
 
@@ -1172,7 +1172,7 @@ void e2db_abstract::add_tunersets_table(int idx, tunersets_table& tn, tunersets&
 	tn.index = idx;
 
 	tv.tables.emplace(tn.tnid, tn);
-	index[iname].emplace_back(pair (idx, tn.tnid)); //C++17
+	index[iname].emplace_back(pair (idx, tn.tnid));
 	if (tn.ytype == YTYPE::satellite)
 		tuners_pos.emplace(tn.pos, tn.tnid);
 }
@@ -1186,7 +1186,7 @@ void e2db_abstract::add_tunersets_transponder(int idx, tunersets_transponder& tn
 	tntxp.index = idx;
 
 	tn.transponders.emplace(tntxp.trid, tntxp);
-	index[tn.tnid].emplace_back(pair (idx, tntxp.trid)); //C++17
+	index[tn.tnid].emplace_back(pair (idx, tntxp.trid));
 }
 
 void e2db_abstract::set_parentallock(string chid, string bname)
@@ -1287,7 +1287,7 @@ pair<unordered_map<string, e2db_abstract::bouquet>, unordered_map<string, e2db_a
 {
 	debug("get_bouquets");
 
-	return pair (this->bouquets, this->userbouquets); //C++17
+	return pair (this->bouquets, this->userbouquets);
 }
 
 void e2db_abstract::merge(e2db_abstract* dst)

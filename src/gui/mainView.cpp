@@ -89,9 +89,9 @@ void mainView::layout()
 	QVBoxLayout* tbox = new QVBoxLayout;
 	QVBoxLayout* lbox = new QVBoxLayout;
 
-	QGroupBox* sfrm = new QGroupBox("Services");
-	QGroupBox* tfrm = new QGroupBox("Bouquets");
-	QGroupBox* lfrm = new QGroupBox("Channels");
+	QGroupBox* sfrm = new QGroupBox(tr("Services"));
+	QGroupBox* tfrm = new QGroupBox(tr("Bouquets"));
+	QGroupBox* lfrm = new QGroupBox(tr("Channels"));
 
 	frm->setContentsMargins(0, 0, 0, 0);
 	asbox->setContentsMargins(0, 0, 0, 0);
@@ -158,8 +158,6 @@ void mainView::layout()
 	tree->setDefaultDropAction(Qt::MoveAction);
 	tree->setDropIndicatorShown(true);
 	tree->setEditTriggers(QTreeWidget::NoEditTriggers);
-	//TODO FIX 3px * depth - 1px rtl glitch
-	// tree->setIndentation(3);
 	tree->setIndentation(1);
 	tree_style->setIndentation(10);
 
@@ -180,7 +178,7 @@ void mainView::layout()
 	list_style->setIndentation(12, true);
 	list_style->setFirstColumnIndent(1);
 
-	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({NULL, "Index", "Name", "Parental", "CHID", "TXID", "Service ID", "Transport ID", "Type", "CAS", "Provider", "System", "Position", "Tuner", "Frequency", "Polarization", "Symbol Rate", "FEC"});
+	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({NULL, tr("Index"), tr("Name"), tr("Parental"), tr("CHID"), tr("TXID"), tr("Service ID"), tr("Transport ID"), tr("Type"), tr("CAS"), tr("Provider"), tr("System"), tr("Position"), tr("Tuner"), tr("Frequency"), tr("Polarization"), tr("Symbol Rate"), tr("FEC")});
 
 	list->setHeaderItem(lheader_item);
 	list->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
@@ -229,20 +227,21 @@ void mainView::layout()
 	QToolBar* tree_ats = toolBar();
 	QToolBar* list_ats = toolBar();
 
-	this->action.tree_newbq = toolBarAction(tree_ats, "New Bouquet", theme->dynamicIcon("add"), [=]() { this->addUserbouquet(); });
+	this->action.tree_newbq = toolBarAction(tree_ats, tr("New Bouquet", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addUserbouquet(); });
 	toolBarSpacer(tree_ats);
-	this->action.tree_search = toolBarButton(tree_ats, "Find…", theme->dynamicIcon("search"), [=]() { this->treeSearchToggle(); });
+	this->action.tree_search = toolBarButton(tree_ats, tr("Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->treeSearchToggle(); });
 
 	this->action.tree_search->setDisabled(true);
 
-	this->action.list_addch = toolBarAction(list_ats, "Add Channel", theme->dynamicIcon("add"), [=]() { this->addChannel(); });
-	this->action.list_addmk = toolBarAction(list_ats, "Add Marker", theme->dynamicIcon("add"), [=]() { this->addMarker(); });
-	this->action.list_newch = toolBarAction(list_ats, "New Service", theme->dynamicIcon("add"), [=]() { this->addService(); });
+	this->action.list_addch = toolBarAction(list_ats, tr("Add Channel", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addChannel(); });
+	this->action.list_addmk = toolBarAction(list_ats, tr("Add Marker", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addMarker(); });
+	this->action.list_newch = toolBarAction(list_ats, tr("New Service", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addService(); });
 	toolBarSeparator(list_ats);
-	this->action.list_dnd = toolBarButton(list_ats, "Drag&&Drop", [=]() { this->reharmDnD(); });
-	this->action.list_ref = toolBarButton(list_ats, "Reference", [=]() { this->listReferenceToggle(); });
+	//: Encoding: take care about && double ampersand
+	this->action.list_dnd = toolBarButton(list_ats, tr("Drag&&Drop", "toolbar"), [=]() { this->reharmDnD(); });
+	this->action.list_ref = toolBarButton(list_ats, tr("Reference", "toolbar"), [=]() { this->listReferenceToggle(); });
 	toolBarSpacer(list_ats);
-	this->action.list_search = toolBarButton(list_ats, "&Find…", theme->dynamicIcon("search"), [=]() { this->listSearchToggle(); });
+	this->action.list_search = toolBarButton(list_ats, tr("&Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->listSearchToggle(); });
 
 	this->action.list_dnd->setCheckable(true);
 	this->action.list_ref->setCheckable(true);
@@ -310,7 +309,7 @@ void mainView::layout()
 	toolBarStyleSheet();
 
 	vector<pair<QString, QString>> tree = {
-		{"chs", "All services"},
+		{"chs", tr("All services")},
 		{"chs:1", "TV"},
 		{"chs:2", "Radio"},
 		{"chs:0", "Data"}
@@ -330,11 +329,11 @@ void mainView::searchLayout()
 {
 	this->viewAbstract::searchLayout();
 
-	this->lsr_search.filter->addItem("Name", ITEM_ROW_ROLE::chname);
-	this->lsr_search.filter->addItem("Type", ITEM_ROW_ROLE::chtype);
-	this->lsr_search.filter->addItem("CAS", ITEM_ROW_ROLE::chcas);
-	this->lsr_search.filter->addItem("Provider", ITEM_ROW_ROLE::chpname);
-	this->lsr_search.filter->addItem("Position", ITEM_ROW_ROLE::chpos);
+	this->lsr_search.filter->addItem(tr("Name"), ITEM_ROW_ROLE::chname);
+	this->lsr_search.filter->addItem(tr("Type"), ITEM_ROW_ROLE::chtype);
+	this->lsr_search.filter->addItem(tr("CAS"), ITEM_ROW_ROLE::chcas);
+	this->lsr_search.filter->addItem(tr("Provider"), ITEM_ROW_ROLE::chpname);
+	this->lsr_search.filter->addItem(tr("Position"), ITEM_ROW_ROLE::chpos);
 }
 
 //TODO improve viewAbstract::themeChange()
@@ -397,21 +396,21 @@ void mainView::referenceBoxLayout()
 	ref_wrap->setObjectName("list_reference_wrap");
 
 	QGridLayout* ref_box = new QGridLayout;
-	QLabel* ref0lr = new QLabel("Reference ID");
+	QLabel* ref0lr = new QLabel(tr("Reference ID", "reference-box"));
 	QLabel* ref0tr = new QLabel("< >");
 	ref0lr->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref_fields[LIST_REF::ReferenceID] = ref0tr;
 	ref_box->addWidget(ref0lr, 0, 0, Qt::AlignTop);
 	ref_box->addWidget(ref0tr, 0, 1, Qt::AlignTop);
 
-	QLabel* ref1ls = new QLabel("Service ID");
+	QLabel* ref1ls = new QLabel(tr("Service ID", "reference-box"));
 	QLabel* ref1ts = new QLabel("< >");
 	ref1ls->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref_fields[LIST_REF::ServiceID] = ref1ts;
 	ref_box->addWidget(ref1ls, 0, 2, Qt::AlignTop);
 	ref_box->addWidget(ref1ts, 0, 3, Qt::AlignTop);
 
-	QLabel* ref2lt = new QLabel("Transponder");
+	QLabel* ref2lt = new QLabel(tr("Transponder", "reference-box"));
 	QLabel* ref2tt = new QLabel("< >");
 	ref2lt->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref_fields[LIST_REF::Transponder] = ref2tt;
@@ -419,21 +418,21 @@ void mainView::referenceBoxLayout()
 	ref_box->addWidget(ref2tt, 0, 5, Qt::AlignTop);
 	ref_box->addItem(new QSpacerItem(0, 12), 1, 0);
 
-	QLabel* ref3lu = new QLabel("Userbouquets");
+	QLabel* ref3lu = new QLabel(tr("Userbouquets", "reference-box"));
 	QLabel* ref3tu = new QLabel("< >");
 	ref3lu->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref_fields[LIST_REF::Userbouquets] = ref3tu;
 	ref_box->addWidget(ref3lu, 2, 0, Qt::AlignTop);
 	ref_box->addWidget(ref3tu, 2, 1, Qt::AlignTop);
 
-	QLabel* ref4lb = new QLabel("Bouquets");
+	QLabel* ref4lb = new QLabel(tr("Bouquets", "reference-box"));
 	QLabel* ref4tb = new QLabel("< >");
 	ref4lb->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref_fields[LIST_REF::Bouquets] = ref4tb;
 	ref_box->addWidget(ref4lb, 2, 2, Qt::AlignTop);
 	ref_box->addWidget(ref4tb, 2, 3, Qt::AlignTop);
 
-	QLabel* ref5ln = new QLabel("Tuner");
+	QLabel* ref5ln = new QLabel(tr("Tuner", "reference-box"));
 	QLabel* ref5tn = new QLabel("< >");
 	ref5ln->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref_fields[LIST_REF::Tuner] = ref5tn;
@@ -523,7 +522,7 @@ void mainView::reset()
 	this->state.ti = 0;
 	this->state.si = 0;
 	this->state.curr = "";
-	this->state.sort = pair (-1, Qt::AscendingOrder); //C++17
+	this->state.sort = pair (-1, Qt::AscendingOrder);
 
 	tree->reset();
 	tree->setDragEnabled(false);
@@ -578,7 +577,7 @@ void mainView::populate(QTreeWidget* tw)
 			items_prev.append(item->clone());
 		}
 		precached = true;
-		prev = string (this->state.curr);
+		prev = this->state.curr;
 	}
 
 	QTreeWidgetItem* selected = tw->currentItem();
@@ -695,11 +694,7 @@ void mainView::populate(QTreeWidget* tw)
 	// sorting by
 	if (this->state.sort.first != -1)
 	{
-		list->sortItems(this->state.sort.first, this->state.sort.second);
-
-		// sorting column 0|desc
-		if (this->state.sort.first == 0 && this->state.sort.second == Qt::DescendingOrder)
-			list->header()->setSortIndicator(1, this->state.sort.second);
+		treeSortItems(list, this->state.sort.first, this->state.sort.second);
 	}
 	// sorting default
 	else if (this->state.dnd)
@@ -1104,7 +1099,7 @@ void mainView::sortByColumn(int column)
 			this->visualReindexList();
 	}
 
-	this->state.sort = pair (column, order); //C++17
+	this->state.sort = pair (column, order);
 }
 
 void mainView::allowDnD()
@@ -1131,7 +1126,7 @@ void mainView::reharmDnD()
 	list->sortItems(0, Qt::AscendingOrder);
 	list->setDragEnabled(true);
 	list->setAcceptDrops(true);
-	this->state.sort = pair (0, Qt::AscendingOrder); //C++17
+	this->state.sort = pair (0, Qt::AscendingOrder);
 	this->action.list_dnd->setDisabled(true);
 }
 
@@ -1571,7 +1566,7 @@ void mainView::treeItemDelete()
 		return;
 	}
 
-	bool remove = tabRemoveQuestion("Confirm deletetion", "Do you want to delete items?");
+	bool remove = tabRemoveQuestion(tr("Confirm deletetion"), tr("Do you want to delete items?"));
 	if (! remove)
 		return;
 
@@ -2268,17 +2263,16 @@ void mainView::showTreeEditContextMenu(QPoint& pos)
 			ub_locked = uboq.locked;
 		}
 
-		contextMenuAction(tree_edit, "Edit Userbouquet", [=]() { this->editUserbouquet(); }, tabGetFlag(gui::TabTreeEdit));
+		contextMenuAction(tree_edit, tr("Edit Userbouquet", "context-menu"), [=]() { this->editUserbouquet(); }, tabGetFlag(gui::TabTreeEdit));
 		contextMenuSeparator(tree_edit);
-		contextMenuAction(tree_edit, ! ub_locked ? "Set Parental lock" : "Unset Parental lock", [=]() { this->toggleUserbouquetParentalLock(); });
+		contextMenuAction(tree_edit, ! ub_locked ? tr("Set Parental lock", "context-menu") : tr("Unset Parental lock", "context-menu"), [=]() { this->toggleUserbouquetParentalLock(); });
 		contextMenuSeparator(tree_edit);
-		contextMenuAction(tree_edit, "Delete", [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
+		contextMenuAction(tree_edit, tr("Delete", "context-menu"), [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
 		contextMenuSeparator(tree_edit);
 	}
-	contextMenuAction(tree_edit, "Export", [=]() { tabExportFile(); });
+	contextMenuAction(tree_edit, tr("Export", "context-menu"), [=]() { tabExportFile(); });
 
 	platform::osContextMenuPopup(tree_edit, tree, pos);
-	// tree_edit->exec(tree->mapToGlobal(pos));
 }
 
 void mainView::showListEditContextMenu(QPoint& pos)
@@ -2319,25 +2313,24 @@ void mainView::showListEditContextMenu(QPoint& pos)
 	QMenu* list_edit = contextMenu();
 
 	if (marker)
-		contextMenuAction(list_edit, "Edit Marker", [=]() { this->editMarker(); }, editable && tabGetFlag(gui::TabListEditMarker));
+		contextMenuAction(list_edit, tr("Edit Marker", "context-menu"), [=]() { this->editMarker(); }, editable && tabGetFlag(gui::TabListEditMarker));
 	else
-		contextMenuAction(list_edit, "Edit Service", [=]() { this->editService(); }, editable && tabGetFlag(gui::TabListEditService));
+		contextMenuAction(list_edit, tr("Edit Service", "context-menu"), [=]() { this->editService(); }, editable && tabGetFlag(gui::TabListEditService));
 	contextMenuSeparator(list_edit);
 	if (ub_locked)
-		contextMenuAction(list_edit, "Parental lock (Userbouquet)", [=]() {}, false);
+		contextMenuAction(list_edit, tr("Parental lock (Userbouquet)", "context-menu"), [=]() {}, false);
 	else if (selected.count() > 1)
-		contextMenuAction(list_edit, "Parental lock", [=]() {}, false);
+		contextMenuAction(list_edit, tr("Parental lock", "context-menu"), [=]() {}, false);
 	else
-		contextMenuAction(list_edit, ! locked ? "Set Parental lock" : "Unset Parental lock", [=]() { this->toggleServiceParentalLock(); }, editable && ! marker);
+		contextMenuAction(list_edit, ! locked ? tr("Set Parental lock", "context-menu") : tr("Unset Parental lock", "context-menu"), [=]() { this->toggleServiceParentalLock(); }, editable && ! marker);
 	contextMenuSeparator(list_edit);
-	contextMenuAction(list_edit, "Cu&t", [=]() { this->listItemCut(); }, tabGetFlag(gui::TabListCut), QKeySequence::Cut);
-	contextMenuAction(list_edit, "&Copy", [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
-	contextMenuAction(list_edit, "&Paste", [=]() { this->listItemPaste(); }, tabGetFlag(gui::TabListPaste), QKeySequence::Paste);
+	contextMenuAction(list_edit, tr("Cu&t", "context-menu"), [=]() { this->listItemCut(); }, tabGetFlag(gui::TabListCut), QKeySequence::Cut);
+	contextMenuAction(list_edit, tr("&Copy", "context-menu"), [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
+	contextMenuAction(list_edit, tr("&Paste", "context-menu"), [=]() { this->listItemPaste(); }, tabGetFlag(gui::TabListPaste), QKeySequence::Paste);
 	contextMenuSeparator(list_edit);
-	contextMenuAction(list_edit, "&Delete", [=]() { this->listItemDelete(); }, tabGetFlag(gui::TabListDelete), QKeySequence::Delete);
+	contextMenuAction(list_edit, tr("&Delete", "context-menu"), [=]() { this->listItemDelete(); }, tabGetFlag(gui::TabListDelete), QKeySequence::Delete);
 
 	platform::osContextMenuPopup(list_edit, list, pos);
-	// list_edit->exec(list->mapToGlobal(pos));
 }
 
 void mainView::treeAfterDrop(QTreeWidget* tw, QTreeWidgetItem* current)
@@ -2632,7 +2625,7 @@ void mainView::updateTreeIndex()
 		QString qbs = parent->data(0, Qt::UserRole).toString();
 		string pname = qbs.toStdString();
 		idx = i + 1;
-		bss.emplace_back(pair (idx, pname)); //C++17
+		bss.emplace_back(pair (idx, pname));
 		y = 0;
 
 		if (parent->childCount())
@@ -2644,7 +2637,7 @@ void mainView::updateTreeIndex()
 				QString qub = item->data(0, Qt::UserRole).toString();
 				string bname = qub.toStdString();
 				idx = y + 1;
-				ubs.emplace_back(pair (idx, bname)); //C++17
+				ubs.emplace_back(pair (idx, bname));
 				ubouquets[pname].emplace_back(bname);
 				y++;
 			}
@@ -2667,22 +2660,26 @@ void mainView::updateTreeIndex()
 	}
 }
 
+//TODO improve give tree model persistentIndexList and remove sort
 void mainView::updateListIndex()
 {
 	if (! this->state.chx_pending)
 		return;
 
+	string bname = this->state.curr;
+
+	debug("updateListIndex", "current", bname);
+
 	int i = 0, idx = 0;
 	int count = list->topLevelItemCount();
-	string bname = this->state.curr;
 
 	auto* dbih = this->data->dbih;
 
 	dbih->index[bname].clear();
 
-	debug("updateListIndex", "current", bname);
+	int sort_column = list->sortColumn();
+	Qt::SortOrder sort_order = list->header()->sortIndicatorOrder();
 
-	int sort_col = list->sortColumn();
 	list->sortItems(0, Qt::AscendingOrder);
 
 	while (i != count)
@@ -2691,12 +2688,11 @@ void mainView::updateListIndex()
 		string chid = item->data(mainView::ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 		bool marker = item->data(mainView::ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
 		idx = marker ? 0 : i + 1;
-		dbih->index[bname].emplace_back(pair (idx, chid)); //C++17
+		dbih->index[bname].emplace_back(pair (idx, chid));
 		i++;
 	}
 
-	list->sortItems(this->state.sort.first, this->state.sort.second);
-	list->header()->setSortIndicator(sort_col, this->state.sort.second);
+	treeSortItems(list, sort_column, sort_order);
 
 	this->state.chx_pending = false;
 }

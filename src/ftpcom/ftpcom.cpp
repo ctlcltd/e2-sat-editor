@@ -209,7 +209,7 @@ vector<string> ftpcom::list_dir(string basedir)
 
 string ftpcom::file_mime_detect(string path)
 {
-	string filename = std::filesystem::path(path).filename().u8string(); //C++17
+	string filename = std::filesystem::path(path).filename().u8string();
 
 	if (filename == "lamedb")
 		return "text/plain";
@@ -467,9 +467,9 @@ unordered_map<string, ftpcom::ftpcom_file> ftpcom::get_files()
 
 	for (string & w : ftdb)
 	{
-		std::filesystem::path fpath = std::filesystem::path(w); //C++17
-		string basedir = fpath.parent_path().u8string(); //C++17
-		string filename = fpath.filename().u8string(); //C++17
+		std::filesystem::path fpath = std::filesystem::path(w);
+		string basedir = fpath.parent_path().u8string();
+		string filename = fpath.filename().u8string();
 
 		ftpcom_file file;
 
@@ -492,9 +492,9 @@ void ftpcom::put_files(unordered_map<string, ftpcom_file> files)
 
 	for (auto & x : files)
 	{
-		std::filesystem::path fpath = std::filesystem::path(x.first); //C++17
-		string basedir = fpath.parent_path().u8string(); //C++17
-		string filename = fpath.filename().u8string(); //C++17
+		std::filesystem::path fpath = std::filesystem::path(x.first);
+		string basedir = fpath.parent_path().u8string();
+		string filename = fpath.filename().u8string();
 
 		upload_data(basedir, filename, x.second);
 	}

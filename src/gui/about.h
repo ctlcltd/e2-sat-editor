@@ -11,6 +11,7 @@
 
 #ifndef about_h
 #define about_h
+#include <QApplication>
 #include <QWidget>
 #include <QDialog>
 
@@ -20,6 +21,8 @@ namespace e2se_gui
 {
 class about : protected e2se::log_factory
 {
+	Q_DECLARE_TR_FUNCTIONS(about)
+
 	public:
 		about();
 		virtual ~about();

@@ -296,7 +296,7 @@ void editService::paramsLayout()
 	dtf2p->addRow(tr("Provider name"), dtf2pn);
 
 	dtw20->setLayout(dtf2p);
-	dtt2->addItem(dtw20, "Package");
+	dtt2->addItem(dtw20, tr("Package"));
 
 	QWidget* dtw21 = new QWidget;
 	QFormLayout* dtf2c = new QFormLayout;
@@ -449,7 +449,7 @@ void editService::paramsLayout()
 	dtc2d->addWidget(dtf2mt);
 
 	dtw21->setLayout(dtf2c);
-	dtt2->addItem(dtw21, "PIDs");
+	dtt2->addItem(dtw21, tr("PIDs"));
 
 	QWidget* dtw22 = new QWidget;
 	QFormLayout* dtf2C = new QFormLayout;
@@ -465,7 +465,7 @@ void editService::paramsLayout()
 	dtf2C->addRow(new QLabel(tr("<small>Enter them in comma separated values.<br>(eg. C:0100,C:0200,…)</small>")));
 
 	dtw22->setLayout(dtf2C);
-	dtt2->addItem(dtw22, "CAIDs");
+	dtt2->addItem(dtw22, tr("CAIDs"));
 
 	QWidget* dtw23 = new QWidget;
 	QFormLayout* dtf2f = new QFormLayout;
@@ -496,7 +496,7 @@ void editService::paramsLayout()
 	dtf2f->addRow(tr("Flag as new service"), dtf2fw);
 
 	dtw23->setLayout(dtf2f);
-	dtt2->addItem(dtw23, "Flags");
+	dtt2->addItem(dtw23, tr("Flags"));
 
 	QWidget* dtw24 = new QWidget;
 	QFormLayout* dtf2o = new QFormLayout;
@@ -512,7 +512,7 @@ void editService::paramsLayout()
 	dtf2o->addRow(new QLabel(tr("<small><b>It will overwrite any previously typed!</b><br>Enter them in comma separated values.<br>(eg. p:ProviderName,c:0100,C:0200,…)</small>")));
 
 	dtw24->setLayout(dtf2o);
-	dtt2->addItem(dtw24, "Extras");
+	dtt2->addItem(dtw24, tr("Extras"));
 
 	dtb20->addWidget(dtt2);
 	dtl2->setLayout(dtb20);

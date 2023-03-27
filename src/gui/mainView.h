@@ -18,7 +18,6 @@ using std::map, std::unordered_map;
 #define mainView_h
 #include <QWidget>
 #include <QTreeWidget>
-#include <QAction>
 #include <QLabel>
 #include <QPushButton>
 #include <QList>
@@ -32,6 +31,8 @@ namespace e2se_gui
 {
 class mainView : public viewAbstract
 {
+	Q_DECLARE_TR_FUNCTIONS(mainView)
+
 	public:
 		struct __state
 		{

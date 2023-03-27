@@ -17,6 +17,7 @@ using std::string, std::pair, std::vector, std::map;
 
 #ifndef printable_h
 #define printable_h
+#include <QApplication>
 #include <QWidget>
 
 #include "../logger/logger.h"
@@ -26,6 +27,8 @@ namespace e2se_gui
 {
 class printable : protected e2se::log_factory
 {
+	Q_DECLARE_TR_FUNCTIONS(printable)
+
 	public:
 		// relation with tab state tc (side tree focused)
 		enum DOC_VIEW {

@@ -13,7 +13,6 @@
 #define transpondersView_h
 #include <QWidget>
 #include <QTreeWidget>
-#include <QAction>
 #include <QPushButton>
 
 #include "toolkit/TreeDropIndicatorEventPainter.h"
@@ -24,6 +23,8 @@ namespace e2se_gui
 {
 class transpondersView : public viewAbstract
 {
+	Q_DECLARE_TR_FUNCTIONS(transpondersView)
+
 	public:
 		struct __state
 		{

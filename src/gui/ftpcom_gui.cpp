@@ -60,16 +60,17 @@ void ftpcom::setup()
 	setParameters(params);
 }
 
+//TODO translation
 void ftpcom::error(string fn, string optk, string optv)
 {
 	this->::e2se_ftpcom::ftpcom::error(fn, optk, optv);
-	QMessageBox::critical(nullptr, "FTP Error", QString::fromStdString(optv));
+	QMessageBox::critical(nullptr, tr("FTP Error"), QString::fromStdString(optv));
 }
 
 void ftpcom::error(string fn, string optk, int optv)
 {
 	this->::e2se_ftpcom::ftpcom::error(fn, optk, optv);
-	QMessageBox::critical(nullptr, "FTP Error", QString::number(optv));
+	QMessageBox::critical(nullptr, tr("FTP Error"), QString::number(optv));
 }
 
 string ftpcom::trs(string str)
