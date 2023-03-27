@@ -766,6 +766,8 @@ void transpondersView::updateFlags()
 
 void transpondersView::updateListIndex()
 {
+	debug("updateListIndex");
+
 	int i = 0, idx = 0;
 	int count = list->topLevelItemCount();
 
@@ -773,12 +775,13 @@ void transpondersView::updateListIndex()
 
 	dbih->index["txs"].clear();
 
-	debug("updateListIndex");
-
 	int sort_column = list->sortColumn();
 	Qt::SortOrder sort_order = list->header()->sortIndicatorOrder();
+	bool sorted = sort_column != 0 && sort_order != Qt::AscendingOrder;
+	sort_column = sort_column == 1 ? 0 : sort_column;
 
-	list->sortItems(0, Qt::AscendingOrder);
+	if (sorted)
+		list->sortItems(0, Qt::AscendingOrder);
 
 	while (i != count)
 	{
@@ -789,7 +792,8 @@ void transpondersView::updateListIndex()
 		i++;
 	}
 
-	treeSortItems(list, sort_column, sort_order);
+	if (sorted)
+		treeSortItems(list, sort_column, sort_order);
 
 	this->state.txx_pending = false;
 }

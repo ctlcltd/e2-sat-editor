@@ -2679,8 +2679,11 @@ void mainView::updateListIndex()
 
 	int sort_column = list->sortColumn();
 	Qt::SortOrder sort_order = list->header()->sortIndicatorOrder();
+	bool sorted = sort_column != 0 && sort_order != Qt::AscendingOrder;
+	sort_column = sort_column == 1 ? 0 : sort_column;
 
-	list->sortItems(0, Qt::AscendingOrder);
+	if (sorted)
+		list->sortItems(0, Qt::AscendingOrder);
 
 	while (i != count)
 	{
@@ -2692,7 +2695,8 @@ void mainView::updateListIndex()
 		i++;
 	}
 
-	treeSortItems(list, sort_column, sort_order);
+	if (sorted)
+		treeSortItems(list, sort_column, sort_order);
 
 	this->state.chx_pending = false;
 }

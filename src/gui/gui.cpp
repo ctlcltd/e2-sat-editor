@@ -15,7 +15,7 @@
 
 #include <QtGlobal>
 #include <QSettings>
-#include <QScreen>
+#include <QTranslator>
 #include <QSplitter>
 #include <QGroupBox>
 #include <QTabWidget>

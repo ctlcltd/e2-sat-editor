@@ -35,7 +35,7 @@ class TreeEventHandler : public TreeDropIndicatorEventPainter
 		bool eventDrop(QObject* object, QEvent* event);
 		void callEventCallback(QTreeWidget* tw, QTreeWidgetItem* current)
 		{
-			if (this->eventCallback != nullptr)
+			if (this->eventCallback)
 				this->eventCallback(tw, current);
 		}
 

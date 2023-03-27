@@ -102,6 +102,7 @@ bool ftpcom::handle()
 	if (actv)
 		curl_easy_setopt(cph, CURLOPT_FTPPORT, "-");
 
+	//TODO improve blocking with network on
 	curl_easy_setopt(cph, CURLOPT_CONNECTTIMEOUT, ftpcom::FTP_CONNECT_TIMEOUT);
 	if (ftpcom::VERBOSE)
 		curl_easy_setopt(cph, CURLOPT_VERBOSE, true);
@@ -454,7 +455,7 @@ string ftpcom::trw(string str, string param)
 	return string (tstr);
 }
 
-unordered_map<string, ftpcom::ftpcom_file> ftpcom::get_files()
+unordered_map<string, ftpcom::ftpcom_file> ftpcom::get_files(std::function<void(const string filename)> func)
 {
 	debug("get_files");
 
@@ -471,6 +472,9 @@ unordered_map<string, ftpcom::ftpcom_file> ftpcom::get_files()
 		string basedir = fpath.parent_path().u8string();
 		string filename = fpath.filename().u8string();
 
+		if (func)
+			func(filename);
+
 		ftpcom_file file;
 
 		download_data(basedir, filename, file);
@@ -481,7 +485,7 @@ unordered_map<string, ftpcom::ftpcom_file> ftpcom::get_files()
 	return files;
 }
 
-void ftpcom::put_files(unordered_map<string, ftpcom_file> files)
+void ftpcom::put_files(unordered_map<string, ftpcom_file> files, std::function<void(const string filename)> func)
 {
 	debug("put_files");
 
@@ -495,6 +499,9 @@ void ftpcom::put_files(unordered_map<string, ftpcom_file> files)
 		std::filesystem::path fpath = std::filesystem::path(x.first);
 		string basedir = fpath.parent_path().u8string();
 		string filename = fpath.filename().u8string();
+
+		if (func)
+			func(filename);
 
 		upload_data(basedir, filename, x.second);
 	}

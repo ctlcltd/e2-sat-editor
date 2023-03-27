@@ -9,6 +9,7 @@
  * @license GNU GPLv3 License
  */
 
+#include <functional>
 #include <string>
 #include <vector>
 #include <unordered_set>
@@ -69,8 +70,8 @@ class ftpcom : protected e2se::log_factory
 		void download_data(string basedir, string filename, ftpcom_file& file);
 		void upload_data(string basedir, string filename, ftpcom_file file);
 		void fetch_paths();
-		unordered_map<string, ftpcom_file> get_files();
-		void put_files(unordered_map<string, ftpcom_file> files);
+		unordered_map<string, ftpcom_file> get_files(std::function<void(const string filename)> func);
+		void put_files(unordered_map<string, ftpcom_file> files, std::function<void(const string filename)> func);
 		bool cmd_ifreload();
 		bool cmd_tnreload();
 

@@ -1279,20 +1279,24 @@ void tunersetsView::updateListIndex()
 	if (! this->state.tvx_pending)
 		return;
 
+	string tnid = this->state.curr;
+
+	debug("updateListIndex", "current", tnid);
+
 	int i = 0, idx = 0;
 	int count = list->topLevelItemCount();
-	string tnid = this->state.curr;
 
 	auto* dbih = this->data->dbih;
 
 	dbih->index[tnid].clear();
 
-	debug("updateListIndex", "current", tnid);
-
 	int sort_column = list->sortColumn();
 	Qt::SortOrder sort_order = list->header()->sortIndicatorOrder();
+	bool sorted = sort_column != 0 && sort_order != Qt::AscendingOrder;
+	sort_column = sort_column == 1 ? 0 : sort_column;
 
-	list->sortItems(0, Qt::AscendingOrder);
+	if (sorted)
+		list->sortItems(0, Qt::AscendingOrder);
 
 	while (i != count)
 	{
@@ -1303,7 +1307,8 @@ void tunersetsView::updateListIndex()
 		i++;
 	}
 
-	treeSortItems(list, sort_column, sort_order);
+	if (sorted)
+		treeSortItems(list, sort_column, sort_order);
 
 	this->state.tvx_pending = false;
 }

@@ -1324,11 +1324,16 @@ void tab::ftpUpload()
 	settings.endArray();
 	files.clear();
 
-	ftih->put_files(ftp_files);
+	ftih->put_files(ftp_files, [=](const string filename) {
+		if (statusBarIsVisible())
+			statusBarMessage(tr("Uploading file: %1").arg(QString::fromStdString(filename)));
+	});
+
+	int files_count = int (files.size());
 
 	//TODO FIX
 	if (statusBarIsVisible())
-		statusBarMessage(tr("Uploaded %n files", "", files.size()));
+		statusBarMessage(tr("Uploaded %n files", "", files_count));
 	else
 		infoMessage("Uploaded!");
 
@@ -1357,7 +1362,10 @@ void tab::ftpDownload()
 	auto* ftih = this->ftph->ftih;
 	auto* dbih = this->data->dbih;
 
-	unordered_map<string, e2se_ftpcom::ftpcom::ftpcom_file> ftp_files = ftih->get_files();
+	unordered_map<string, e2se_ftpcom::ftpcom::ftpcom_file> ftp_files = ftih->get_files([=](const string filename) {
+		if (statusBarIsVisible())
+			statusBarMessage(tr("Downloading file: %1").arg(QString::fromStdString(filename)));
+	});
 
 	if (ftp_files.empty())
 		return;
@@ -1377,6 +1385,12 @@ void tab::ftpDownload()
 
 		files.emplace(file.filename, file);
 	}
+
+	int files_count = int (files.size());
+
+	//TODO FIX
+	if (statusBarIsVisible())
+		statusBarMessage(tr("Downloaded %n files", "", files_count));
 
 	updateIndex();
 

@@ -42,7 +42,7 @@ class ThemeChangeEventObserver : public QObject
 		}
 		void callEventCallback()
 		{
-			if (this->eventCallback != nullptr)
+			if (this->eventCallback)
 				this->eventCallback();
 		}
 
