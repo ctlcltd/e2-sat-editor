@@ -661,14 +661,14 @@ void editTransponder::store()
 
 	auto* dbih = this->data->dbih;
 
-	e2db::transponder txp;
+	e2db::transponder tx;
 
 	if (this->state.edit)
 	{
 		if (! dbih->db.transponders.count(txid))
 			return error("store", "Error", "Transponder \"" + txid + "\" not exists.");
 
-		txp = dbih->db.transponders[txid];
+		tx = dbih->db.transponders[txid];
 	}
 
 	for (auto & item : fields)
@@ -689,90 +689,90 @@ void editTransponder::store()
 		}
 
 		if (key == "ytype")
-			txp.ytype = val;
+			tx.ytype = val;
 		else if (key == "tsid")
-			txp.tsid = val;
+			tx.tsid = val;
 		else if (key == "dvbns")
-			txp.dvbns = val;
+			tx.dvbns = val;
 		else if (key == "onid")
-			txp.onid = val;
+			tx.onid = val;
 
 		if (this->state.yx == e2db::YTYPE::satellite)
 		{
 			if (key == "s_freq")
-				txp.freq = val;
+				tx.freq = val;
 			else if (key == "s_sr")
-				txp.sr = val;
+				tx.sr = val;
 			else if (key == "s_pol")
-				txp.pol = val;
+				tx.pol = val;
 			else if (key == "s_fec")
-				txp.fec = val;
+				tx.fec = val;
 			else if (key == "s_inv")
-				txp.inv = val;
+				tx.inv = val;
 			else if (key == "s_sys")
-				txp.sys = val;
+				tx.sys = val;
 			else if (key == "s_mod")
-				txp.mod = val;
+				tx.mod = val;
 			else if (key == "s_rol")
-				txp.rol = val;
+				tx.rol = val;
 			else if (key == "s_pil")
-				txp.pil = val;
+				tx.pil = val;
 			else if (key == "s_flgs")
-				txp.flgs = val;
+				tx.flgs = val;
 		}
 		else if (this->state.yx == e2db::YTYPE::terrestrial)
 		{
 			if (key == "t_freq")
-				txp.freq = val;
+				tx.freq = val;
 			else if (key == "t_tmod")
-				txp.tmod = val;
+				tx.tmod = val;
 			else if (key == "t_band")
-				txp.band = val;
+				tx.band = val;
 			else if (key == "t_sys")
-				txp.sys = val;
+				tx.sys = val;
 			else if (key == "t_tmod")
-				txp.tmod = val;
+				tx.tmod = val;
 			else if (key == "t_tmx")
-				txp.tmx = val;
+				tx.tmx = val;
 			else if (key == "t_hpfec")
-				txp.hpfec = val;
+				tx.hpfec = val;
 			else if (key == "t_lpfec")
-				txp.lpfec = val;
+				tx.lpfec = val;
 			else if (key == "t_inv")
-				txp.inv = val;
+				tx.inv = val;
 			else if (key == "t_guard")
-				txp.guard = val;
+				tx.guard = val;
 			else if (key == "t_hier")
-				txp.hier = val;
+				tx.hier = val;
 		}
 		else if (this->state.yx == e2db::YTYPE::cable)
 		{
 			if (key == "c_freq")
-				txp.freq = val;
+				tx.freq = val;
 			else if (key == "c_sr")
-				txp.sr = val;
+				tx.sr = val;
 			else if (key == "c_cfec")
-				txp.cfec = val;
+				tx.cfec = val;
 			else if (key == "c_inv")
-				txp.inv = val;
+				tx.inv = val;
 			else if (key == "c_cmod")
-				txp.cmod = val;
+				tx.cmod = val;
 		}
 		else if (this->state.yx == e2db::YTYPE::atsc)
 		{
 			if (key == "a_freq")
-				txp.freq = val;
+				tx.freq = val;
 			else if (key == "a_amod")
-				txp.amod = val;
+				tx.amod = val;
 			else if (key == "a_sys")
-				txp.sys = val;
+				tx.sys = val;
 		}
 	}
 
 	if (this->state.edit)
-		this->txid = dbih->editTransponder(txid, txp);
+		this->txid = dbih->editTransponder(txid, tx);
 	else
-		this->txid = dbih->addTransponder(txp);
+		this->txid = dbih->addTransponder(tx);
 }
 
 void editTransponder::retrieve()
@@ -784,26 +784,26 @@ void editTransponder::retrieve()
 	if (! dbih->db.transponders.count(txid))
 		return error("retrieve", "Error", "Transponder \"" + txid + "\" not exists.");
 
-	e2db::transponder txp = dbih->db.transponders[txid];
+	e2db::transponder tx = dbih->db.transponders[txid];
 
-	if (txp.ytype != dtf0yx->currentIndex())
-		dtf0yx->setCurrentIndex(txp.ytype);
+	if (tx.ytype != dtf0yx->currentIndex())
+		dtf0yx->setCurrentIndex(tx.ytype);
 	else
-		typeComboChanged(txp.ytype);
+		typeComboChanged(tx.ytype);
 
 	retrieve(txid);
 }
 
 void editTransponder::retrieve(string txid)
 {
-	debug("retrieve", "overload", "txid");
+	debug("retrieve", "txid", txid);
 
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->db.transponders.count(txid))
 		return error("retrieve", "Error", "Transponder \"" + txid + "\" not exists.");
 
-	e2db::transponder txp = dbih->db.transponders[txid];
+	e2db::transponder tx = dbih->db.transponders[txid];
 
 	for (auto & item : fields)
 	{
@@ -813,81 +813,81 @@ void editTransponder::retrieve(string txid)
 		if (key == "ytype")
 			continue;
 		else if (key == "tsid")
-			val = txp.tsid;
+			val = tx.tsid;
 		else if (key == "dvbns")
-			val = txp.dvbns;
+			val = tx.dvbns;
 		else if (key == "onid")
-			val = txp.onid;
+			val = tx.onid;
 
 		if (this->state.yx == e2db::YTYPE::satellite)
 		{
 			if (key == "s_freq")
-				val = txp.freq;
+				val = tx.freq;
 			else if (key == "s_sr")
-				val = txp.sr;
+				val = tx.sr;
 			else if (key == "s_pol")
-				val = txp.pol;
+				val = tx.pol;
 			else if (key == "s_fec")
-				val = txp.fec;
+				val = tx.fec;
 			else if (key == "s_inv")
-				val = txp.inv;
+				val = tx.inv;
 			else if (key == "s_sys")
-				val = txp.sys;
+				val = tx.sys;
 			else if (key == "s_mod")
-				val = txp.mod;
+				val = tx.mod;
 			else if (key == "s_rol")
-				val = txp.rol;
+				val = tx.rol;
 			else if (key == "s_pil")
-				val = txp.pil;
+				val = tx.pil;
 			else if (key == "s_flgs")
-				val = txp.flgs;
+				val = tx.flgs;
 		}
 		else if (this->state.yx == e2db::YTYPE::terrestrial)
 		{
 			if (key == "t_freq")
-				val = txp.freq;
+				val = tx.freq;
 			else if (key == "t_tmod")
-				val = txp.tmod;
+				val = tx.tmod;
 			else if (key == "t_band")
-				val = txp.band;
+				val = tx.band;
 			else if (key == "t_sys")
-				val = txp.sys;
+				val = tx.sys;
 			else if (key == "t_tmod")
-				val = txp.tmod;
+				val = tx.tmod;
 			else if (key == "t_tmx")
-				val = txp.tmx;
+				val = tx.tmx;
 			else if (key == "t_hpfec")
-				val = txp.hpfec;
+				val = tx.hpfec;
 			else if (key == "t_lpfec")
-				val = txp.lpfec;
+				val = tx.lpfec;
 			else if (key == "t_inv")
-				val = txp.inv;
+				val = tx.inv;
 			else if (key == "t_guard")
-				val = txp.guard;
+				val = tx.guard;
 			else if (key == "t_hier")
-				val = txp.hier;
+				val = tx.hier;
 		}
 		else if (this->state.yx == e2db::YTYPE::cable)
 		{
 			if (key == "c_freq")
-				val = txp.freq;
+				val = tx.freq;
 			else if (key == "c_sr")
-				val = txp.sr;
+				val = tx.sr;
 			else if (key == "c_cfec")
-				val = txp.cfec;
+				val = tx.cfec;
 			else if (key == "c_inv")
-				val = txp.inv;
+				val = tx.inv;
 			else if (key == "c_cmod")
-				val = txp.cmod;
+				val = tx.cmod;
 		}
 		else if (this->state.yx == e2db::YTYPE::atsc)
 		{
 			if (key == "a_freq")
-				val = txp.freq;
+				val = tx.freq;
 			else if (key == "a_amod")
-				val = txp.amod;
+				val = tx.amod;
 			else if (key == "a_sys")
-				val = txp.sys;
+				val = tx.sys;
 		}
 
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))

@@ -47,8 +47,8 @@ class e2db : public ::e2se_e2db::e2db
 		string addService(service& ch);
 		string editService(string chid, service& ch);
 		void removeService(string chid);
-		void addBouquet(bouquet& bs);
-		void editBouquet(bouquet& bs);
+		string addBouquet(bouquet& bs);
+		string editBouquet(bouquet& bs);
 		void removeBouquet(string bname);
 		string addUserbouquet(userbouquet& ub);
 		string editUserbouquet(userbouquet& ub);

@@ -26,6 +26,9 @@ class transpondersView : public viewAbstract
 	Q_DECLARE_TR_FUNCTIONS(transpondersView)
 
 	public:
+
+		static const int TSV_TABS = 17;
+
 		struct __state
 		{
 			// list sort (default sort 0|asc)

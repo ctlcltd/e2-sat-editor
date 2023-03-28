@@ -10,6 +10,7 @@
  */
 
 #include <QFormLayout>
+#include <QGroupBox>
 #include <QLineEdit>
 
 #include "platforms/platform.h"
@@ -45,6 +46,7 @@ void editMarker::layout(QWidget* cwid)
 	QString dtitle = this->state.edit ? tr("Edit Marker") : tr("Add Marker");
 	dial->setWindowTitle(dtitle);
 
+	QGroupBox* dtl0 = new QGroupBox(tr("Marker"));
 	QFormLayout* dtf0 = new QFormLayout;
 	dtf0->setRowWrapPolicy(QFormLayout::WrapAllRows);
 
@@ -54,10 +56,11 @@ void editMarker::layout(QWidget* cwid)
 	dtf0mt->setMinimumWidth(240);
 	dtf0mt->setMaxLength(255);
 	platform::osLineEdit(dtf0mt);
-	dtf0->addRow(tr("Marker Text"), dtf0mt);
+	dtf0->addRow(tr("Marker text"), dtf0mt);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
-	dtform->addLayout(dtf0, 0, 0);
+	dtl0->setLayout(dtf0);
+	dtform->addWidget(dtl0, 0, 0);
 }
 
 void editMarker::store()

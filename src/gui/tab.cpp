@@ -1331,7 +1331,7 @@ void tab::ftpUpload()
 
 	int files_count = int (files.size());
 
-	//TODO FIX
+	//TODO FIX not shown
 	if (statusBarIsVisible())
 		statusBarMessage(tr("Uploaded %n files", "", files_count));
 	else
@@ -1346,7 +1346,6 @@ void tab::ftpUpload()
 	}
 }
 
-//TODO improve for status bar
 void tab::ftpDownload()
 {
 	debug("ftpDownload");
@@ -1388,7 +1387,7 @@ void tab::ftpDownload()
 
 	int files_count = int (files.size());
 
-	//TODO FIX
+	//TODO FIX not shown
 	if (statusBarIsVisible())
 		statusBarMessage(tr("Downloaded %n files", "", files_count));
 

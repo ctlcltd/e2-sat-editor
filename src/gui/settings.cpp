@@ -121,6 +121,7 @@ void settings::layout(QWidget* cwid)
 	dial->setLayout(dfrm);
 }
 
+//TODO improve twice frame
 void settings::preferencesLayout()
 {
 	QWidget* dtpage = new QWidget;
@@ -281,6 +282,7 @@ void settings::preferencesLayout()
 	dtb3->addLayout(dtf30);
 	dtb3->addItem(new QSpacerItem(10, 0));
 	dtb3->addLayout(dtf31);
+	dtb3->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Preferred));
 
 	dtl0->setLayout(dtf0);
 	dtl1->setLayout(dtf1);
@@ -294,7 +296,6 @@ void settings::preferencesLayout()
 	dtform->addItem(new QSpacerItem(0, 5));
 	dtform->addWidget(dtl2);
 	dtform->addItem(new QSpacerItem(0, 5));
-	//TODO FIX column gap [Linux] [Windows]
 	dtform->addWidget(dtl3);
 	dtform->addItem(new QSpacerItem(0, 0));
 
@@ -669,7 +670,7 @@ void settings::store()
 
 void settings::store(QTableWidget* adtbl)
 {
-	debug("store", "overload", "advanced");
+	debug("store", "index", 2);
 
 	for (int i = 0; i < adtbl->rowCount(); i++)
 	{
@@ -745,9 +746,10 @@ void settings::retrieve()
 
 void settings::retrieve(QListWidgetItem* item)
 {
-	debug("retrieve", "overload", "item");
-
 	int i = item->data(Qt::UserRole).toInt();
+
+	debug("retrieve", "item", i);
+
 	for (auto & item : prefs[PREF_SECTIONS::Connections])
 	{
 		QString pref = item->property("pref").toString();
@@ -760,7 +762,7 @@ void settings::retrieve(QListWidgetItem* item)
 
 void settings::retrieve(QTableWidget* adtbl)
 {
-	debug("retrieve", "overload", "advanced");
+	debug("retrieve", "index", 1);
 
 	QStringList keys = sets->allKeys().filter(QRegularExpression("^(application|preference|profile|settings)/"));
 	QStringList::const_iterator iq;

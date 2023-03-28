@@ -27,6 +27,9 @@ class tunersetsView : public viewAbstract
 	Q_DECLARE_TR_FUNCTIONS(tunersetsView)
 
 	public:
+
+		static const int TSV_TABS = 15;
+
 		struct __state
 		{
 			// tunersets tvid type

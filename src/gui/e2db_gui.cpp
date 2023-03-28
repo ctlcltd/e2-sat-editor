@@ -27,6 +27,8 @@ using std::string, std::unordered_set, std::to_string;
 namespace e2se_gui
 {
 
+//TODO improve custom bname (eg. userbouquet.favourites.tv)
+
 e2db::e2db()
 {
 	std::setlocale(LC_NUMERIC, "C");
@@ -220,6 +222,29 @@ void e2db::removeService(string chid)
 
 	this->::e2se_e2db::e2db::remove_service(chid);
 	entries.services.erase(chid);
+}
+
+string e2db::addBouquet(bouquet& bs)
+{
+	debug("addBouquet");
+
+	this->::e2se_e2db::e2db::add_bouquet(bs);
+	return bs.bname;
+}
+
+string e2db::editBouquet(bouquet& bs)
+{
+	debug("editBouquet");
+
+	this->::e2se_e2db::e2db::edit_bouquet(bs);
+	return bs.bname;
+}
+
+void e2db::removeBouquet(string bname)
+{
+	debug("removeBouquet", "bname", bname);
+
+	this->::e2se_e2db::e2db::remove_bouquet(bname);
 }
 
 string e2db::addUserbouquet(userbouquet& ub)

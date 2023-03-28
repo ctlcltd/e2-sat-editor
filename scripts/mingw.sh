@@ -71,10 +71,12 @@ cleanup () {
 	printf "%s\n\n" echo "cleanup."
 
 	src
-	rm *.o
-	rm moc_*.cpp
-	rm moc_predefs.h
+	rm -R *.o
+	rm -R moc_*.cpp
+	rm -R moc_predefs.h
 	rm Makefile
+	rm Makefile.Debug
+	rm Makefile.Release
 	rm .qmake.stash
 	rm qrc_resources.cpp
 	rm -R build/.ninja_deps

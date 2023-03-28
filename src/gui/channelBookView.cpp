@@ -163,7 +163,6 @@ void channelBookView::layout()
 	tabv->setExpanding(false);
 	tabv->setDrawBase(true);
 
-	//TODO translation
 	string chars[27] = {"0-9","A","B","C","D","E","F","G","H","I","J","L","K","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
 	for (int i = 0; i < 27; i++)
@@ -327,7 +326,8 @@ void channelBookView::populate()
 			entry.remove(1, 5);
 #else
 			entry.removeAt(7);
-			for (int i = 0; i != 5; i++) entry.removeAt(1);
+			for (int i = 0; i != 5; i++)
+				entry.removeAt(1);
 #endif
 			entry.prepend(idx);
 			entry.prepend(x);
@@ -594,29 +594,20 @@ void channelBookView::listItemCopy(bool cut)
 	auto* dbih = this->data->dbih;
 
 	QClipboard* clipboard = QGuiApplication::clipboard();
-	QStringList text;
+	QStringList content;
+
 	for (auto & item : selected)
 	{
 		QString qchid = item->data(0, Qt::UserRole).toString();
 		string chid = qchid.toStdString();
 
 		QStringList data;
+		data.reserve(TSV_TABS + 1);
+
 		// start from chnum column [1]
 		for (int i = ITEM_ROW_ROLE::chnum; i < list->columnCount(); i++)
 		{
 			QString qstr = item->data(i, Qt::DisplayRole).toString();
-			// chname
-			if (i == ITEM_ROW_ROLE::chname)
-				qstr.prepend("\"").append("\"");
-			// chpname
-			else if (i == ITEM_ROW_ROLE::chpname)
-				qstr.prepend("\"").append("\"");
-			// chtxp
-			else if (i == ITEM_ROW_ROLE::chtxp)
-				qstr.prepend("\"").append("\"");
-			// chpos
-			else if (i == ITEM_ROW_ROLE::chpos)
-				qstr.prepend("\"").append("\"");
 			data.append(qstr);
 		}
 
@@ -625,9 +616,10 @@ void channelBookView::listItemCopy(bool cut)
 		string crefid = dbih->get_reference_id(chid);
 		refid = QString::fromStdString(crefid);
 		data.insert(2, refid); // insert refid column [2]
-		text.append(data.join(",")); // CSV
+
+		content.append(data.join("\t")); // TSV
 	}
-	clipboard->setText(text.join("\n")); // CSV
+	clipboard->setText(content.join("\n"));
 
 	if (cut)
 		listItemDelete();
@@ -666,7 +658,6 @@ void channelBookView::showListEditContextMenu(QPoint &pos)
 	contextMenuAction(list_edit, tr("&Copy", "context-menu"), [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
 
 	platform::osContextMenuPopup(list_edit, list, pos);
-	// list_edit->exec(list->mapToGlobal(pos));
 }
 
 void channelBookView::updateFlags()

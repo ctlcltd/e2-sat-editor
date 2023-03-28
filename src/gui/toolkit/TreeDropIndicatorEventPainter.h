@@ -23,6 +23,7 @@ class TreeDropIndicatorEventPainter : public QObject
 	protected:
 		bool eventFilter(QObject* object, QEvent* event);
 		bool eventDragMove(QObject* object, QEvent* event);
+		bool eventDragLeave(QObject* object, QEvent* event);
 		bool eventDrop(QObject* object, QEvent* event);
 		bool eventPaint(QObject* object, QEvent* event);
 

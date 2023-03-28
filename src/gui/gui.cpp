@@ -1414,7 +1414,7 @@ bool gui::getFlag(GUI_CXE bit)
 
 void gui::setFlag(GUI_CXE bit, bool flag)
 {
-	 // debug("setFlag", "overload", 1);
+	 // debug("setFlag");
 
 	typedef size_t position_t;
 
@@ -1438,7 +1438,7 @@ bitset<256> gui::getFlags()
 
 void gui::setFlags(bitset<256> bits)
 {
-	// debug("setFlags", "overload", 0);
+	// debug("setFlags", "set", 1);
 
 	this->gxe = bits;
 
@@ -1447,7 +1447,7 @@ void gui::setFlags(bitset<256> bits)
 
 void gui::setFlags(vector<int> bits)
 {
-	// debug("setFlags", "overload", 1);
+	// debug("setFlags", "set", 0);
 
 	typedef size_t position_t;
 
@@ -1462,7 +1462,7 @@ void gui::setFlags(vector<int> bits)
 
 void gui::setFlags(vector<int> bits, bool flag)
 {
-	// debug("setFlags", "overload", 2);
+	// debug("setFlags", "set", 0);
 
 	typedef size_t position_t;
 
@@ -1477,7 +1477,7 @@ void gui::setFlags(vector<int> bits, bool flag)
 
 void gui::setFlags(int preset)
 {
-	// debug("setFlags", "overload", 3);
+	// debug("setFlags", "preset", preset);
 
 	this->gxe.reset();
 

@@ -596,14 +596,14 @@ void editTunersetsTransponder::store()
 	else
 		return error("store", "Error", "Tuner settings table \"" + tnid + "\" not exists.");
 
-	e2db::tunersets_transponder txp;
+	e2db::tunersets_transponder tntxp;
 
 	if (this->state.edit)
 	{
 		if (! tns.transponders.count(trid))
 			return error("store", "Error", "Tuner settings transponder \"" + trid + "\" not exists.");
 
-		txp = tns.transponders[trid];
+		tntxp = tns.transponders[trid];
 	}
 
 	for (auto & item : fields)
@@ -619,89 +619,89 @@ void editTunersetsTransponder::store()
 		if (this->state.yx == e2db::YTYPE::satellite)
 		{
 			if (key == "s_freq")
-				txp.freq = val;
+				tntxp.freq = val;
 			else if (key == "s_sr")
-				txp.sr = val;
+				tntxp.sr = val;
 			else if (key == "s_pol")
-				txp.pol = val;
+				tntxp.pol = val;
 			else if (key == "s_fec")
-				txp.fec = val;
+				tntxp.fec = val;
 			else if (key == "s_inv")
-				txp.inv = val;
+				tntxp.inv = val;
 			else if (key == "s_sys")
-				txp.sys = val;
+				tntxp.sys = val;
 			else if (key == "s_mod")
-				txp.mod = val;
+				tntxp.mod = val;
 			else if (key == "s_rol")
-				txp.rol = val;
+				tntxp.rol = val;
 			else if (key == "s_pil")
-				txp.pil = val;
+				tntxp.pil = val;
 			else if (key == "s_isid")
-				txp.isid = val;
+				tntxp.isid = val;
 			else if (key == "s_mts")
-				txp.mts = val;
+				tntxp.mts = val;
 			else if (key == "s_plsmode")
-				txp.plsmode = val;
+				tntxp.plsmode = val;
 			else if (key == "s_plscode")
-				txp.plscode = val;
+				tntxp.plscode = val;
 			else if (key == "s_plsn")
-				txp.plsn = val;
+				tntxp.plsn = val;
 		}
 		else if (this->state.yx == e2db::YTYPE::terrestrial)
 		{
 			if (key == "t_freq")
-				txp.freq = val;
+				tntxp.freq = val;
 			else if (key == "t_tmod")
-				txp.tmod = val;
+				tntxp.tmod = val;
 			else if (key == "t_band")
-				txp.band = val;
+				tntxp.band = val;
 			else if (key == "t_sys")
-				txp.sys = val;
+				tntxp.sys = val;
 			else if (key == "t_tmod")
-				txp.tmod = val;
+				tntxp.tmod = val;
 			else if (key == "t_tmx")
-				txp.tmx = val;
+				tntxp.tmx = val;
 			else if (key == "t_hpfec")
-				txp.hpfec = val;
+				tntxp.hpfec = val;
 			else if (key == "t_lpfec")
-				txp.lpfec = val;
+				tntxp.lpfec = val;
 			else if (key == "t_inv")
-				txp.inv = val;
+				tntxp.inv = val;
 			else if (key == "t_guard")
-				txp.guard = val;
+				tntxp.guard = val;
 			else if (key == "t_hier")
-				txp.hier = val;
+				tntxp.hier = val;
 		}
 		else if (this->state.yx == e2db::YTYPE::cable)
 		{
 			if (key == "c_freq")
-				txp.freq = val;
+				tntxp.freq = val;
 			else if (key == "c_sr")
-				txp.sr = val;
+				tntxp.sr = val;
 			else if (key == "c_cfec")
-				txp.cfec = val;
+				tntxp.cfec = val;
 			else if (key == "c_inv")
-				txp.inv = val;
+				tntxp.inv = val;
 			else if (key == "c_sys")
-				txp.sys = val;
+				tntxp.sys = val;
 			else if (key == "c_cmod")
-				txp.cmod = val;
+				tntxp.cmod = val;
 		}
 		else if (this->state.yx == e2db::YTYPE::atsc)
 		{
 			if (key == "a_freq")
-				txp.freq = val;
+				tntxp.freq = val;
 			else if (key == "a_amod")
-				txp.amod = val;
+				tntxp.amod = val;
 			else if (key == "a_sys")
-				txp.sys = val;
+				tntxp.sys = val;
 		}
 	}
 
 	if (this->state.edit)
-		this->trid = dbih->editTunersetsTransponder(trid, txp, tns);
+		this->trid = dbih->editTunersetsTransponder(trid, tntxp, tns);
 	else
-		this->trid = dbih->addTunersetsTransponder(txp, tns);
+		this->trid = dbih->addTunersetsTransponder(tntxp, tns);
 }
 
 void editTunersetsTransponder::retrieve()
@@ -726,7 +726,7 @@ void editTunersetsTransponder::retrieve()
 	if (! tns.transponders.count(trid))
 		return error("retrieve", "Error", "Tuner settings transponder \"" + trid + "\" not exists.");
 
-	e2db::tunersets_transponder txp = tns.transponders[trid];
+	e2db::tunersets_transponder tntxp = tns.transponders[trid];
 
 	for (auto & item : fields)
 	{
@@ -736,78 +736,78 @@ void editTunersetsTransponder::retrieve()
 		if (this->state.yx == e2db::YTYPE::satellite)
 		{
 			if (key == "s_freq")
-				val = txp.freq;
+				val = tntxp.freq;
 			else if (key == "s_sr")
-				val = txp.sr;
+				val = tntxp.sr;
 			else if (key == "s_pol")
-				val = txp.pol;
+				val = tntxp.pol;
 			else if (key == "s_fec")
-				val = txp.fec;
+				val = tntxp.fec;
 			else if (key == "s_inv")
-				val = txp.inv;
+				val = tntxp.inv;
 			else if (key == "s_sys")
-				val = txp.sys;
+				val = tntxp.sys;
 			else if (key == "s_mod")
-				val = txp.mod;
+				val = tntxp.mod;
 			else if (key == "s_rol")
-				val = txp.rol;
+				val = tntxp.rol;
 			else if (key == "s_pil")
-				val = txp.pil;
+				val = tntxp.pil;
 			else if (key == "s_isid")
-				val = txp.isid;
+				val = tntxp.isid;
 			else if (key == "s_mts")
-				val = txp.mts;
+				val = tntxp.mts;
 			else if (key == "s_plsmode")
-				val = txp.plsmode;
+				val = tntxp.plsmode;
 			else if (key == "s_plscode")
-				val = txp.plscode;
+				val = tntxp.plscode;
 			else if (key == "s_plsn")
-				val = txp.plsn;
+				val = tntxp.plsn;
 		}
 		else if (this->state.yx == e2db::YTYPE::terrestrial)
 		{
 			if (key == "t_freq")
-				val = txp.freq;
+				val = tntxp.freq;
 			else if (key == "t_tmod")
-				val = txp.tmod;
+				val = tntxp.tmod;
 			else if (key == "t_band")
-				val = txp.band;
+				val = tntxp.band;
 			else if (key == "t_sys")
-				val = txp.sys;
+				val = tntxp.sys;
 			else if (key == "t_tmod")
-				val = txp.tmod;
+				val = tntxp.tmod;
 			else if (key == "t_tmx")
-				val = txp.tmx;
+				val = tntxp.tmx;
 			else if (key == "t_hpfec")
-				val = txp.hpfec;
+				val = tntxp.hpfec;
 			else if (key == "t_lpfec")
-				val = txp.lpfec;
+				val = tntxp.lpfec;
 			else if (key == "t_inv")
-				val = txp.inv;
+				val = tntxp.inv;
 			else if (key == "t_guard")
-				val = txp.guard;
+				val = tntxp.guard;
 			else if (key == "t_hier")
-				val = txp.hier;
+				val = tntxp.hier;
 		}
 		else if (this->state.yx == e2db::YTYPE::cable)
 		{
 			if (key == "c_freq")
-				val = txp.freq;
+				val = tntxp.freq;
 			else if (key == "c_sr")
-				val = txp.sr;
+				val = tntxp.sr;
 			else if (key == "c_cfec")
-				val = txp.cfec;
+				val = tntxp.cfec;
 			else if (key == "c_inv")
-				val = txp.inv;
+				val = tntxp.inv;
 			else if (key == "c_cmod")
-				val = txp.cmod;
+				val = tntxp.cmod;
 		}
 		else if (this->state.yx == e2db::YTYPE::atsc)
 		{
 			if (key == "a_freq")
-				val = txp.freq;
+				val = tntxp.freq;
 			else if (key == "a_amod")
-				val = txp.amod;
+				val = tntxp.amod;
 		}
 
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))

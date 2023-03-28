@@ -9,8 +9,6 @@
  * @license GNU GPLv3 License
  */
 
-#include <iostream>
-
 #include <Qt>
 #include <QtGlobal>
 #include <QDropEvent>
@@ -24,12 +22,12 @@
 namespace e2se_gui
 {
 
-//TODO droppingOnItself ignore
-
 bool TreeDropIndicatorEventPainter::eventFilter(QObject* object, QEvent* event)
 {
 	if (event->type() == QEvent::DragMove)
 		return eventDragMove(object, event);
+	else if (event->type() == QEvent::DragLeave)
+		return eventDragLeave(object, event);
 	else if (event->type() == QEvent::Drop)
 		return eventDrop(object, event);
 	else if (event->type() == QEvent::Paint)
@@ -49,10 +47,16 @@ bool TreeDropIndicatorEventPainter::eventDragMove(QObject* object, QEvent* event
 #endif
 	QModelIndex index = tree->indexAt(pos);
 
-	if (index.isValid())
+	//TODO TEST droppingOnItself
+	if (index.isValid()/* && index != tree->currentIndex()*/)
 	{
-		// Qt bug Qt::RightToLeft
-		QRect rect = tree->visualItemRect(tree->itemFromIndex(index));
+		// Qt bug Qt::RightToLeft visualItemRect
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+		QRect rect = tree->visualItemRect(tree->itemFromIndex(index)); //Qt5 protected member
+#else
+		QRect rect = tree->visualItemRect(tree->itemAt(pos));
+#endif
 
 		rect.setX(tree->viewport()->pos().x() - 1);
 		rect.setWidth(tree->viewport()->width());
@@ -65,6 +69,12 @@ bool TreeDropIndicatorEventPainter::eventDragMove(QObject* object, QEvent* event
 	return QObject::eventFilter(object, e);
 }
 
+bool TreeDropIndicatorEventPainter::eventDragLeave(QObject* object, QEvent* event)
+{
+	dropIndicatorRect = QRect();
+	return QObject::eventFilter(object, event);
+}
+
 bool TreeDropIndicatorEventPainter::eventDrop(QObject* object, QEvent* event)
 {
 	dropIndicatorRect = QRect();
@@ -73,9 +83,8 @@ bool TreeDropIndicatorEventPainter::eventDrop(QObject* object, QEvent* event)
 
 bool TreeDropIndicatorEventPainter::eventPaint(QObject* object, QEvent* event)
 {
-	// std::cout << "evenPaint" << std::endl;
-
 	QTreeWidget* tree = qobject_cast<QTreeWidget*>(object->parent());
+
 	QPainter painter (tree->viewport());
 	painter.drawRect(dropIndicatorRect);
 

@@ -243,7 +243,7 @@ void e2db_maker::make_e2db_bouquets()
 		this->e2db_out[filename] = file;
 	}
 
-	//TODO
+	//TODO bouquets file
 	if (LAMEDB_VER < 4)
 	{
 		e2db_file empty;

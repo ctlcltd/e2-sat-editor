@@ -1069,10 +1069,10 @@ void e2db_parser::parse_zapit_services_xml(istream& iservicesxml, string filenam
 
 	while (std::getline(iservicesxml, line, '>'))
 	{
-		if (line.find("<zapit"))
+		if (line.find("<zapit") != string::npos)
 		{
 			string pver;
-			size_t pos = line.find("api");
+			size_t pos = line.find("api", line.find_first_of(' '));
 			size_t n;
 
 			if (pos != string::npos)
@@ -1096,9 +1096,9 @@ void e2db_parser::parse_zapit_services_xml(istream& iservicesxml, string filenam
 	iservicesxml.seekg(0);
 
 	if (valid)
-		ver = ver != -1 ? ver : 1;
+		ver = ver > 1 ? ver : 1;
 	else
-		error("parse_tunersets_xml", "Parser Error", "These settings are not supported.");
+		return error("parse_zapit_services_xml", "Parser Error", "These settings are not supported.");
 
 	if (ver < 1 || ver > 4)
 		return error("parse_zapit_services_xml", "Parser Error", "Unknown Zapit services file format.");

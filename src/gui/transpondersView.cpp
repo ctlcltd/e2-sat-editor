@@ -247,12 +247,12 @@ void transpondersView::populate()
 
 	for (auto & tp : dbih->index["txs"])
 	{
-		e2db::transponder txp = dbih->db.transponders[tp.second];
+		e2db::transponder tx = dbih->db.transponders[tp.second];
 
 		QString x = QString::number(i++).rightJustified(pad_width, '0');
 		QString idx = QString::number(tp.first);
-		QString txid = QString::fromStdString(txp.txid);
-		QStringList entry = dbih->entryTransponder(txp, true);
+		QString txid = QString::fromStdString(tx.txid);
+		QStringList entry = dbih->entryTransponder(tx, true);
 		entry.prepend(x);
 		entry.removeAt(8);
 
@@ -367,12 +367,12 @@ void transpondersView::addTransponder()
 	i = current != nullptr ? parent->indexOfChild(current) : list->topLevelItemCount();
 	y = i + 1;
 
-	e2db::transponder txp = dbih->db.transponders[txid];
+	e2db::transponder tx = dbih->db.transponders[txid];
 
 	size_t pad_width = 4;
 	QString x = QString::number(i++).rightJustified(pad_width, '0');
 	QString idx = QString::number(i);
-	QStringList entry = dbih->entryTransponder(txp, true);
+	QStringList entry = dbih->entryTransponder(tx, true);
 	entry.prepend(x);
 	entry.removeAt(8);
 
@@ -429,9 +429,9 @@ void transpondersView::editTransponder()
 	else
 		return error("editTransponder", "new txid", "Missing transponder key \"" + nw_txid + "\".");
 
-	e2db::transponder txp = dbih->db.transponders[nw_txid];
+	e2db::transponder tx = dbih->db.transponders[nw_txid];
 
-	QStringList entry = dbih->entryTransponder(txp, true);
+	QStringList entry = dbih->entryTransponder(tx, true);
 	entry.prepend(item->text(ITEM_ROW_ROLE::x));
 	entry.removeAt(8);
 	for (int i = 0; i < entry.count(); i++)
@@ -453,12 +453,13 @@ void transpondersView::listItemCopy(bool cut)
 		return;
 
 	QClipboard* clipboard = QGuiApplication::clipboard();
-	QStringList text;
+	QStringList content;
+
 	for (auto & item : selected)
 	{
-		QString txid = item->data(ITEM_DATA_ROLE::txid, Qt::UserRole).toString();
-
 		QStringList data;
+		data.reserve(TSV_TABS);
+
 		// start from combo column [2]
 		for (int i = ITEM_ROW_ROLE::combo; i < list->columnCount(); i++)
 		{
@@ -466,9 +467,9 @@ void transpondersView::listItemCopy(bool cut)
 			data.append(qstr);
 		}
 
-		text.append(data.join(",")); // CSV
+		content.append(data.join("\t")); // TSV
 	}
-	clipboard->setText(text.join("\n")); // CSV
+	clipboard->setText(content.join("\n"));
 
 	if (cut)
 		listItemDelete();
@@ -483,16 +484,28 @@ void transpondersView::listItemPaste()
 	QClipboard* clipboard = QGuiApplication::clipboard();
 	const QMimeData* mimeData = clipboard->mimeData();
 	vector<QString> items;
-	int commas = 17;
 
 	if (mimeData->hasText())
 	{
-		QStringList list = clipboard->text().split("\n");
+		QString text = clipboard->text();
+		QString separator;
 
-		for (QString & data : list)
+		if (text.endsWith("\r\n"))
+			separator = "\r\n";
+		else if (text.endsWith("\r"))
+			separator = "\r";
+		else
+			separator = "\n";
+
+		if (text.endsWith(separator))
+			text.remove(text.size() - separator.size(), separator.size());
+
+		QStringList data = text.split(separator);
+
+		for (QString & str : data)
 		{
-			if (data.count(',') == commas)
-				items.emplace_back(data);
+			if (str.count('\t') == TSV_TABS) // TSV
+				items.emplace_back(str);
 			else
 				return;
 		}
@@ -549,8 +562,7 @@ void transpondersView::listItemDelete()
 	this->data->setChanged(true);
 }
 
-//TODO improve
-//TODO duplicates
+//TODO handle duplicates
 void transpondersView::putListItems(vector<QString> items)
 {
 	debug("putListItems");
@@ -576,9 +588,11 @@ void transpondersView::putListItems(vector<QString> items)
 
 		e2db::transponder tx;
 
-		if (q.contains(','))
+		QStringList qs;
+
+		if (q.count('\t') == TSV_TABS) // TSV
 		{
-			auto qs = q.split(',');
+			qs = q.split('\t');
 			e2db::fec fec;
 			tx.ytype = dbih->value_transponder_type(qs[1].toStdString());
 			tx.pos = dbih->value_transponder_position(qs[2].toStdString());
@@ -599,7 +613,7 @@ void transpondersView::putListItems(vector<QString> items)
 					tx.inv = dbih->value_transponder_inversion(qs[14].toStdString(), e2db::YTYPE::satellite);
 					tx.rol = dbih->value_transponder_rollof(qs[13].toStdString());
 					tx.pil = dbih->value_transponder_pilot(qs[12].toStdString());
-				break;
+					break;
 				case e2db::YTYPE::terrestrial:
 					tx.tmod = dbih->value_transponder_modulation(qs[10].toStdString(), e2db::YTYPE::terrestrial);
 					tx.sys = dbih->value_transponder_system(qs[1].toStdString());
@@ -610,18 +624,18 @@ void transpondersView::putListItems(vector<QString> items)
 					tx.inv = dbih->value_transponder_inversion(qs[14].toStdString(), e2db::YTYPE::terrestrial);
 					tx.guard = dbih->value_transponder_guard(qs[16].toStdString());
 					tx.hier = dbih->value_transponder_hier(qs[17].toStdString());
-				break;
+					break;
 				case e2db::YTYPE::cable:
 					tx.cmod = dbih->value_transponder_modulation(qs[10].toStdString(), e2db::YTYPE::cable);
 					tx.sr = qs[8].toInt();
 					tx.sys = dbih->value_transponder_system(qs[1].toStdString());
 					tx.fec = fec.inner_fec;
 					tx.inv = dbih->value_transponder_inversion(qs[14].toStdString(), e2db::YTYPE::cable);
-				break;
+					break;
 				case e2db::YTYPE::atsc:
 					tx.amod = dbih->value_transponder_modulation(qs[2].toStdString(), e2db::YTYPE::atsc);
 					tx.sys = dbih->value_transponder_system(qs[1].toStdString());
-				break;
+					break;
 			}
 
 			char txid[25];
@@ -629,9 +643,15 @@ void transpondersView::putListItems(vector<QString> items)
 			std::snprintf(txid, 25, "%x:%x", tx.tsid, tx.dvbns);
 			tx.txid = txid;
 		}
-		else
+		else if (q.count(':') == 2) // txid
 		{
 			tx.txid = q.toStdString();
+		}
+		else
+		{
+			error("putListItems", "Error", "Not a valid data format.");
+
+			break;
 		}
 
 		QStringList entry;
@@ -640,8 +660,9 @@ void transpondersView::putListItems(vector<QString> items)
 		{
 			tx = dbih->db.transponders[tx.txid];
 		}
-		entry = dbih->entryTransponder(tx);
+		entry = dbih->entryTransponder(tx, true);
 		entry.prepend(x);
+		entry.removeAt(8);
 
 		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
@@ -652,21 +673,24 @@ void transpondersView::putListItems(vector<QString> items)
 		dbih->addTransponder(tx);
 	}
 
-	if (current == nullptr)
-		list->addTopLevelItems(clist);
-	else
-		list->insertTopLevelItems(y, clist);
+	if (! clist.empty())
+	{
+		if (current == nullptr)
+			list->addTopLevelItems(clist);
+		else
+			list->insertTopLevelItems(y, clist);
+
+		updateListIndex();
+
+		updateFlags();
+		updateStatusBar();
+
+		this->data->setChanged(true);
+	}
 
 	list->header()->setSectionsClickable(true);
 	list->setDragEnabled(true);
 	list->setAcceptDrops(true);
-
-	updateListIndex();
-
-	updateFlags();
-	updateStatusBar();
-
-	this->data->setChanged(true);
 }
 
 void transpondersView::updateStatusBar(bool current)

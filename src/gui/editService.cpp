@@ -724,7 +724,7 @@ void editService::store()
 				ch.data[e2db::SDATA::f] = computeFlags(ch, e2db::SDATA_FLAGS::fnew, val);
 		}
 	}
-	if (ch.data.at(e2db::SDATA::f).empty())
+	if (ch.data.count(e2db::SDATA::f) && ch.data[e2db::SDATA::f].empty())
 	{
 		ch.data.erase(e2db::SDATA::f);
 	}
@@ -807,11 +807,10 @@ void editService::retrieve()
 			val = getPIDValue(ch, e2db::SDATA_PIDS::pmt);
 		else if (key == "raw_C" && ch.data.count(e2db::SDATA::C))
 		{
-			//TODO improve
-			if (! ch.data.at(e2db::SDATA::C).empty())
+			if (ch.data.count(e2db::SDATA::C) && ! ch.data[e2db::SDATA::C].empty())
 			{
-				auto last_key = (*prev(ch.data.at(e2db::SDATA::C).cend()));
-				for (string & w : ch.data.at(e2db::SDATA::C))
+				auto last_key = (*prev(ch.data[e2db::SDATA::C].cend()));
+				for (string & w : ch.data[e2db::SDATA::C])
 				{
 					val += "C:" + w;
 					if (w != last_key)
@@ -832,24 +831,27 @@ void editService::retrieve()
 			val = getFlagValue(ch, e2db::SDATA_FLAGS::fnew);
 		else if (key == "raw_data")
 		{
-			auto last_key = (*prev(ch.data.cend()));
-			for (auto & q : ch.data)
+			if (! ch.data.empty())
 			{
-				char d;
-				switch (q.first)
+				auto last_key = (*prev(ch.data.cend()));
+				for (auto & q : ch.data)
 				{
-					case e2db::SDATA::p: d = 'p'; break;
-					case e2db::SDATA::c: d = 'c'; break;
-					case e2db::SDATA::C: d = 'C'; break;
-					case e2db::SDATA::f: d = 'f'; break;
-					default: d = q.first;
-				}
-				for (size_t i = 0; i < q.second.size(); i++)
-				{
-					val += d;
-					val += ':' + q.second[i];
-					if (! q.second[i].empty() && (i != q.second.size() - 1 || q.first != last_key.first))
-						val += ',';
+					char d;
+					switch (q.first)
+					{
+						case e2db::SDATA::p: d = 'p'; break;
+						case e2db::SDATA::c: d = 'c'; break;
+						case e2db::SDATA::C: d = 'C'; break;
+						case e2db::SDATA::f: d = 'f'; break;
+						default: d = q.first;
+					}
+					for (size_t i = 0; i < q.second.size(); i++)
+					{
+						val += d;
+						val += ':' + q.second[i];
+						if (! q.second[i].empty() && (i != q.second.size() - 1 || q.first != last_key.first))
+							val += ',';
+					}
 				}
 			}
 			this->state.raw_data = val;

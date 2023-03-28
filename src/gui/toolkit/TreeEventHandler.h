@@ -21,7 +21,6 @@
 
 namespace e2se_gui
 {
-//TODO persistent glitches with event reject
 class TreeEventHandler : public TreeDropIndicatorEventPainter
 {
 	public:

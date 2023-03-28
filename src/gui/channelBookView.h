@@ -30,6 +30,9 @@ class channelBookView : public viewAbstract
 	Q_DECLARE_TR_FUNCTIONS(channelBookView)
 
 	public:
+
+		static const int TSV_TABS = 7;
+
 		struct __state
 		{
 			// tree current

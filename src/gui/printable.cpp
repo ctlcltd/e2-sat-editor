@@ -688,10 +688,11 @@ void printable::print()
 	QPrinter* printer = new QPrinter;
 	QTextDocument* doc = new QTextDocument;
 
-	//TODO FIX compiler warning [MinGW-64] [Qt5]
 #if QT_VERSION >= QT_VERSION_CHECK(5, 30, 0)
+	// compiler warning 5.3.0 [Qt5]
 	printer->setPageSize(QPageSize::A4);
 #else
+	// compiler deprecation warning 5.15 [Qt5]
 	printer->setPageSize(QPagedPaintDevice::PageSize::A4);
 #endif
 	printer->setPageOrientation(QPageLayout::Landscape);
@@ -713,6 +714,7 @@ void printable::print()
 	doc->setHtml(html.join(""));
 
 	QPrintDialog pdial = QPrintDialog(printer, cwid);
+	//TODO file export to PDF
 	if (pdial.exec() == QDialog::Accepted) {
 		doc->print(printer);
 	}
@@ -721,7 +723,7 @@ void printable::print()
 	delete printer;
 }
 
-//TODO FIX table cell borderSize [Qt5]
+//TODO table cell borderSize [Qt5]
 QString printable::docHtmlHead()
 {
 	return "<html lang=\"en\">\

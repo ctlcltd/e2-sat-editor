@@ -211,8 +211,9 @@ void tunersetsView::layout()
 	{
 		list->setColumnHidden(ITEM_ROW_ROLE::debug_trid, true);
 	}
-	list->setColumnWidth(ITEM_ROW_ROLE::combo, 175);	// combo (s: freq|pol|sr, t: freq|tmod|band, c: freq|cmod|sr)
-	list->setColumnHidden(ITEM_ROW_ROLE::combo, true);
+	list->setColumnWidth(ITEM_ROW_ROLE::combo, 175);	// combo (s: freq|pol|sr, t: freq|tmod|band, c: freq|cmod|sr, a: freq)
+	if (lhs.at(ITEM_ROW_ROLE::combo).isEmpty())
+		list->setColumnHidden(ITEM_ROW_ROLE::combo, true);
 	list->setColumnWidth(ITEM_ROW_ROLE::row3, 85);		// Frequency
 	list->setColumnWidth(ITEM_ROW_ROLE::row4, 85);		// Polarization | Constellation | Modulation
 	list->setColumnWidth(ITEM_ROW_ROLE::row5, 85);		// Symbol Rate
@@ -438,12 +439,12 @@ void tunersetsView::populate()
 
 	for (auto & tp : dbih->index[tnid])
 	{
-		e2db::tunersets_transponder txp = tns.transponders[tp.second];
+		e2db::tunersets_transponder tntxp = tns.transponders[tp.second];
 
 		QString x = QString::number(i++).rightJustified(pad_width, '0');
 		QString idx = QString::number(tp.first);
-		QString trid = QString::fromStdString(txp.trid);
-		QStringList entry = dbih->entryTunersetsTransponder(txp, tns);
+		QString trid = QString::fromStdString(tntxp.trid);
+		QStringList entry = dbih->entryTunersetsTransponder(tntxp, tns);
 		entry.prepend(x);
 
 		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
@@ -747,12 +748,12 @@ void tunersetsView::addTransponder()
 	y = i + 1;
 
 	e2db::tunersets_table tns = dbih->tuners[tvid].tables[tnid];
-	e2db::tunersets_transponder txp = tns.transponders[trid];
+	e2db::tunersets_transponder tntxp = tns.transponders[trid];
 
 	size_t pad_width = 4;
 	QString x = QString::number(i++).rightJustified(pad_width, '0');
 	QString idx = QString::number(i);
-	QStringList entry = dbih->entryTunersetsTransponder(txp, tns);
+	QStringList entry = dbih->entryTunersetsTransponder(tntxp, tns);
 	entry.prepend(x);
 
 	QTreeWidgetItem* item = new QTreeWidgetItem(entry);
@@ -817,9 +818,9 @@ void tunersetsView::editTransponder()
 		return error("editTransponder", "Error", "Missing tuner settings transponder key \"" + nw_trid + "\".");
 
 	e2db::tunersets_table tns = dbih->tuners[tvid].tables[tnid];
-	e2db::tunersets_transponder txp = tns.transponders[nw_trid];
+	e2db::tunersets_transponder tntxp = tns.transponders[nw_trid];
 
-	QStringList entry = dbih->entryTunersetsTransponder(txp, tns);
+	QStringList entry = dbih->entryTunersetsTransponder(tntxp, tns);
 	entry.prepend(item->text(ITEM_ROW_ROLE::x));
 	for (int i = 0; i < entry.count(); i++)
 		item->setText(i, entry[i]);
@@ -879,11 +880,15 @@ void tunersetsView::listItemCopy(bool cut)
 
 	QClipboard* clipboard = QGuiApplication::clipboard();
 	QStringList text;
+
 	for (auto & item : selected)
 	{
 		QString trid = item->data(ITEM_DATA_ROLE::trid, Qt::UserRole).toString();
+		QChar ty = trid.isEmpty() ? '\0' : trid[0];
 
 		QStringList data;
+		data.reserve(TSV_TABS + 1);
+
 		// start from freq column [3]
 		for (int i = ITEM_ROW_ROLE::row3; i < list->columnCount(); i++)
 		{
@@ -891,17 +896,21 @@ void tunersetsView::listItemCopy(bool cut)
 			data.append(qstr);
 		}
 
-		data.prepend(trid); // insert trid column [0]
+		data.prepend(ty); // insert ty column [0]
 		switch (this->state.yx)
 		{
 			case e2db::YTYPE::terrestrial:
 			case e2db::YTYPE::atsc:
-				data.remove(3); // remove sr column [5]
+				//Qt5
+				data.removeAt(3); // remove sr column [5]
 			break;
 		}
-		text.append(data.join(",")); // CSV
+
+		data.resize(TSV_TABS + 1); // fill with empty columns
+
+		text.append(data.join("\t")); // TSV
 	}
-	clipboard->setText(text.join("\n")); // CSV
+	clipboard->setText(text.join("\n"));
 
 	if (cut)
 		listItemDelete();
@@ -914,16 +923,28 @@ void tunersetsView::listItemPaste()
 	QClipboard* clipboard = QGuiApplication::clipboard();
 	const QMimeData* mimeData = clipboard->mimeData();
 	vector<QString> items;
-	int commas = 9;
 
 	if (mimeData->hasText())
 	{
-		QStringList list = clipboard->text().split("\n");
+		QString text = clipboard->text();
+		QString separator;
 
-		for (QString & data : list)
+		if (text.endsWith("\r\n"))
+			separator = "\r\n";
+		else if (text.endsWith("\r"))
+			separator = "\r";
+		else
+			separator = "\n";
+
+		if (text.endsWith(separator))
+			text.remove(text.size() - separator.size(), separator.size());
+
+		QStringList data = text.split(separator);
+
+		for (QString & str : data)
 		{
-			if (data.count(',') == commas)
-				items.emplace_back(data);
+			if (str.count('\t') == TSV_TABS) // TSV
+				items.emplace_back(str);
 			else
 				return;
 		}
@@ -983,8 +1004,7 @@ void tunersetsView::listItemDelete()
 	this->data->setChanged(true);
 }
 
-//TODO improve
-//TODO duplicates
+//TODO handle duplicates
 void tunersetsView::putListItems(vector<QString> items)
 {
 	debug("putListItems");
@@ -1016,63 +1036,84 @@ void tunersetsView::putListItems(vector<QString> items)
 		QString idx = QString::number(i);
 
 		string trid;
-		e2db::tunersets_transponder txp;
+		e2db::tunersets_transponder tntxp;
 
-		if (q.contains(','))
+		QStringList qs;
+
+		if (q.count('\t') == TSV_TABS) // TSV
 		{
-			auto qs = q.split(',');
-			//TODO using trid in clipboard data
-			trid = txp.trid = qs[0].toStdString();
-			txp.freq = qs[1].toInt();
+			qs = q.split('\t');
+			char ty = qs[0].isEmpty() ? '\0' : qs[0].toStdString()[0];
+			int ytype = dbih->value_transponder_type(ty);
+
+			if (this->state.yx != ytype)
+			{
+				error("putListItems", "Error", "Tuner settings transponder type mismatch.");
+
+				continue;
+			}
+
+			tntxp.freq = qs[1].toInt();
 
 			switch (this->state.yx)
 			{
 				case e2db::YTYPE::satellite:
-					txp.pol = dbih->value_transponder_polarization(qs[2].toStdString());
-					txp.sr = qs[3].toInt();
-					txp.sys = dbih->value_transponder_system(qs[4].toStdString());
-					txp.fec = dbih->value_transponder_fec(qs[5].toStdString(), e2db::YTYPE::satellite);
-					txp.mod = dbih->value_transponder_modulation(qs[6].toStdString(), e2db::YTYPE::satellite);
-					txp.inv = dbih->value_transponder_inversion(qs[7].toStdString(), e2db::YTYPE::satellite);
-					txp.rol = dbih->value_transponder_rollof(qs[8].toStdString());
-					txp.pil = dbih->value_transponder_pilot(qs[9].toStdString());
+					tntxp.pol = dbih->value_transponder_polarization(qs[2].toStdString());
+					tntxp.sr = qs[3].toInt();
+					tntxp.sys = dbih->value_transponder_system(qs[4].toStdString());
+					tntxp.fec = dbih->value_transponder_fec(qs[5].toStdString(), e2db::YTYPE::satellite);
+					tntxp.mod = dbih->value_transponder_modulation(qs[6].toStdString(), e2db::YTYPE::satellite);
+					tntxp.inv = dbih->value_transponder_inversion(qs[7].toStdString(), e2db::YTYPE::satellite);
+					tntxp.rol = dbih->value_transponder_rollof(qs[8].toStdString());
+					tntxp.pil = dbih->value_transponder_pilot(qs[9].toStdString());
 				break;
 				case e2db::YTYPE::terrestrial:
-					txp.tmod = dbih->value_transponder_modulation(qs[2].toStdString(), e2db::YTYPE::terrestrial);
-					txp.sys = dbih->value_transponder_system(qs[3].toStdString());
-					txp.band = dbih->value_transponder_bandwidth(qs[4].toStdString());
-					txp.tmx = dbih->value_transponder_tmx_mode(qs[5].toStdString());
-					txp.hpfec = dbih->value_transponder_fec(qs[6].toStdString(), e2db::YTYPE::terrestrial);
-					txp.lpfec = dbih->value_transponder_fec(qs[7].toStdString(), e2db::YTYPE::terrestrial);
-					txp.inv = dbih->value_transponder_inversion(qs[8].toStdString(), e2db::YTYPE::terrestrial);
-					txp.guard = dbih->value_transponder_guard(qs[9].toStdString());
-					txp.hier = dbih->value_transponder_hier(qs[10].toStdString());
+					tntxp.tmod = dbih->value_transponder_modulation(qs[2].toStdString(), e2db::YTYPE::terrestrial);
+					tntxp.sys = dbih->value_transponder_system(qs[3].toStdString());
+					tntxp.band = dbih->value_transponder_bandwidth(qs[4].toStdString());
+					tntxp.tmx = dbih->value_transponder_tmx_mode(qs[5].toStdString());
+					tntxp.hpfec = dbih->value_transponder_fec(qs[6].toStdString(), e2db::YTYPE::terrestrial);
+					tntxp.lpfec = dbih->value_transponder_fec(qs[7].toStdString(), e2db::YTYPE::terrestrial);
+					tntxp.inv = dbih->value_transponder_inversion(qs[8].toStdString(), e2db::YTYPE::terrestrial);
+					tntxp.guard = dbih->value_transponder_guard(qs[9].toStdString());
+					tntxp.hier = dbih->value_transponder_hier(qs[10].toStdString());
 				break;
 				case e2db::YTYPE::cable:
-					txp.cmod = dbih->value_transponder_modulation(qs[2].toStdString(), e2db::YTYPE::cable);
-					txp.sr = qs[3].toInt();
-					txp.sys = dbih->value_transponder_system(qs[4].toStdString());
-					txp.cfec = dbih->value_transponder_fec(qs[5].toStdString(), e2db::YTYPE::cable);
-					txp.inv = dbih->value_transponder_inversion(qs[6].toStdString(), e2db::YTYPE::cable);
+					tntxp.cmod = dbih->value_transponder_modulation(qs[2].toStdString(), e2db::YTYPE::cable);
+					tntxp.sr = qs[3].toInt();
+					tntxp.sys = dbih->value_transponder_system(qs[4].toStdString());
+					tntxp.cfec = dbih->value_transponder_fec(qs[5].toStdString(), e2db::YTYPE::cable);
+					tntxp.inv = dbih->value_transponder_inversion(qs[6].toStdString(), e2db::YTYPE::cable);
 				break;
 				case e2db::YTYPE::atsc:
-					txp.amod = dbih->value_transponder_modulation(qs[2].toStdString(), e2db::YTYPE::atsc);
-					txp.sys = dbih->value_transponder_system(qs[3].toStdString());
+					tntxp.amod = dbih->value_transponder_modulation(qs[2].toStdString(), e2db::YTYPE::atsc);
+					tntxp.sys = dbih->value_transponder_system(qs[3].toStdString());
 				break;
 			}
+
+			char yname = dbih->value_transponder_type(tns.ytype);
+			char trid[25];
+			std::snprintf(trid, 25, "%c:%04x:%04x", yname, tntxp.freq, tntxp.sr);
+			tntxp.trid = trid;
+		}
+		else if (q.count(':') == 3) // trid
+		{
+			trid = q.toStdString();
 		}
 		else
 		{
-			trid = q.toStdString();
+			error("putListItems", "Error", "Not a valid data format.");
+
+			break;
 		}
 
 		QStringList entry;
 
 		if (tns.transponders.count(trid))
 		{
-			txp = tns.transponders[trid];
+			tntxp = tns.transponders[trid];
 		}
-		entry = dbih->entryTunersetsTransponder(txp, tns);
+		entry = dbih->entryTunersetsTransponder(tntxp, tns);
 		entry.prepend(x);
 
 		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
@@ -1081,24 +1122,27 @@ void tunersetsView::putListItems(vector<QString> items)
 		item->setData(ITEM_DATA_ROLE::trid, Qt::UserRole, QString::fromStdString(trid));
 		clist.append(item);
 
-		dbih->addTunersetsTransponder(txp, tns);
+		dbih->addTunersetsTransponder(tntxp, tns);
 	}
 
-	if (current == nullptr)
-		list->addTopLevelItems(clist);
-	else
-		list->insertTopLevelItems(y, clist);
+	if (! clist.empty())
+	{
+		if (current == nullptr)
+			list->addTopLevelItems(clist);
+		else
+			list->insertTopLevelItems(y, clist);
+
+		setPendingUpdateListIndex();
+
+		updateFlags();
+		updateStatusBar();
+
+		this->data->setChanged(true);
+	}
 
 	list->header()->setSectionsClickable(true);
 	list->setDragEnabled(true);
 	list->setAcceptDrops(true);
-
-	setPendingUpdateListIndex();
-
-	updateFlags();
-	updateStatusBar();
-
-	this->data->setChanged(true);
 }
 
 void tunersetsView::updateStatusBar(bool current)

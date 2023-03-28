@@ -52,6 +52,7 @@ set(SOURCES
 	gui/editTunersets.cpp
 	gui/editTunersetsTable.cpp
 	gui/editTunersetsTransponder.cpp
+	gui/editUserbouquet.cpp
 	gui/ftpcom_gui.cpp
 	gui/ftpHandler.cpp
 	gui/gui.cpp

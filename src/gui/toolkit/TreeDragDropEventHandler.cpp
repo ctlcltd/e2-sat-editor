@@ -25,6 +25,8 @@ bool TreeDragDropEventHandler::eventFilter(QObject* object, QEvent* event)
 {
 	if (event->type() == QEvent::DragMove)
 		return eventDragMove(object, event);
+	else if (event->type() == QEvent::DragLeave)
+		return eventDragLeave(object, event);
 	else if (event->type() == QEvent::Drop)
 		return eventDrop(object, event);
 	else if (event->type() == QEvent::Paint)

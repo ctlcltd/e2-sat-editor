@@ -9,6 +9,8 @@
  * @license GNU GPLv3 License
  */
 
+#include <cstring>
+
 #include <QFormLayout>
 #include <QGroupBox>
 #include <QLineEdit>
@@ -23,13 +25,11 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-//TODO improve custom bname (eg. userbouquet.favourites.tv)
-editBouquet::editBouquet(dataHandler* data, int ti)
+editBouquet::editBouquet(dataHandler* data)
 {
 	this->log = new logger("gui", "editBouquet");
 
 	this->data = data;
-	this->state.ti = ti;
 }
 
 void editBouquet::display(QWidget* cwid)
@@ -49,7 +49,7 @@ void editBouquet::layout(QWidget* cwid)
 	QString dtitle = this->state.edit ? tr("Edit Bouquet") : tr("Add Bouquet");
 	dial->setWindowTitle(dtitle);
 
-	QGroupBox* dtl0 = new QGroupBox(tr("Userbouquet"));
+	QGroupBox* dtl0 = new QGroupBox(tr("Bouquet"));
 	QFormLayout* dtf0 = new QFormLayout;
 	dtf0->setRowWrapPolicy(QFormLayout::WrapAllRows);
 
@@ -61,42 +61,41 @@ void editBouquet::layout(QWidget* cwid)
 	dtf0->addRow(tr("Bouquet name"), dtf0bn);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
-	QGroupBox* dtl1 = new QGroupBox(tr("Bouquet"));
-	QFormLayout* dtf1 = new QFormLayout;
-	dtf1->setRowWrapPolicy(QFormLayout::WrapAllRows);
-
-	auto* dbih = this->data->dbih;
-
-	QComboBox* dtf1bt = new QComboBox;
-	dtf1bt->setProperty("field", "pname");
-	fields.emplace_back(dtf1bt);
-	dtf1bt->setMaximumWidth(100);
-	platform::osComboBox(dtf1bt);
-	dtf1->addRow(dtf1bt);
-	dtf1->addItem(new QSpacerItem(0, 0));
-	for (auto & bsi : dbih->index["bss"])
+	if (! this->state.edit)
 	{
-		e2db::bouquet gboq = dbih->bouquets[bsi.second];
-		QString bgroup = QString::fromStdString(bsi.second);
-		QString name = QString::fromStdString(gboq.nname.empty() ? gboq.name : gboq.nname);
-		dtf1bt->addItem(name, bgroup);
-	}
+		QComboBox* dtf0bt = new QComboBox;
+		dtf0bt->setProperty("field", "btype");
+		fields.emplace_back(dtf0bt);
+		dtf0bt->setMaximumWidth(100);
+		dtf0bt->setValidator(new QIntValidator);
+		platform::osComboBox(dtf0bt);
+		dtf0->addRow(tr("Bouquet type"), dtf0bt);
+		dtf0->addItem(new QSpacerItem(0, 0));
 
-	// bouquet: tv | radio
-	if (this->state.ti != -1)
-	{
-		dtl1->setVisible(true);
-	}
-	// userbouquet
-	else
-	{
-		dtl1->setHidden(true);
+		dtf0bt->addItem("TV", e2db::STYPE::tv);
+		dtf0bt->addItem("Radio", e2db::STYPE::radio);
+
+		QLineEdit* dtf0bb = new QLineEdit;
+		dtf0bb->setProperty("field", "nname");
+		fields.emplace_back(dtf0bb);
+		dtf0bb->setMinimumWidth(240);
+		dtf0bb->setMaxLength(255);
+		dtf0->addRow(tr("Bouquet nice name"), dtf0bb);
+		dtf0->addItem(new QSpacerItem(0, 0));
+
+		QLineEdit* dtf0bf = new QLineEdit;
+		dtf0bf->setProperty("field", "rname");
+		fields.emplace_back(dtf0bf);
+		dtf0bf->setMinimumWidth(240);
+		dtf0bf->setMaxLength(255);
+		dtf0bf->setReadOnly(true);
+		dtf0bf->setDisabled(true);
+		dtf0->addRow(tr("Bouquet filename"), dtf0bf);
+		dtf0->addItem(new QSpacerItem(0, 0));
 	}
 
 	dtl0->setLayout(dtf0);
 	dtform->addWidget(dtl0, 0, 0);
-	dtl1->setLayout(dtf1);
-	dtform->addWidget(dtl1, 1, 0);
 }
 
 void editBouquet::store()
@@ -105,13 +104,13 @@ void editBouquet::store()
 
 	auto* dbih = this->data->dbih;
 
-	e2db::userbouquet ub;
+	e2db::bouquet bs;
 	if (this->state.edit)
 	{
-		if (! dbih->userbouquets.count(bname))
-			return error("store", "Error", "Userbouquet \"" + bname + "\" not exists.");
+		if (! dbih->bouquets.count(bname))
+			return error("store", "Error", "Bouquet \"" + bname + "\" not exists.");
 
-		ub = dbih->userbouquets[bname];
+		bs = dbih->bouquets[bname];
 	}
 
 	for (auto & item : fields)
@@ -124,16 +123,20 @@ void editBouquet::store()
 		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
 			val = field->currentData().toString().toStdString();
 
-		if (key == "name")
-			ub.name = val;
-		else if (key == "pname")
-			ub.pname = val;
+		if (key == "btype")
+			bs.btype = std::stoi(val);
+		else if (key == "rname")
+			bs.rname = val != bs.bname ? val : "";
+		else if (key == "name")
+			bs.name = val;
+		else if (key == "nname")
+			bs.nname = val;
 	}
 
 	if (this->state.edit)
-		this->bname = dbih->editUserbouquet(ub);
+		this->bname = dbih->editBouquet(bs);
 	else
-		this->bname = dbih->addUserbouquet(ub);
+		this->bname = dbih->addBouquet(bs);
 }
 
 void editBouquet::retrieve()
@@ -142,20 +145,24 @@ void editBouquet::retrieve()
 
 	auto* dbih = this->data->dbih;
 
-	if (! dbih->userbouquets.count(bname))
-		return error("retrieve", "Error", "Userbouquet \"" + bname + "\" not exists.");
+	if (! dbih->bouquets.count(bname))
+		return error("retrieve", "Error", "Bouquet \"" + bname + "\" not exists.");
 
-	e2db::userbouquet ub = dbih->userbouquets[bname];
+	e2db::bouquet bs = dbih->bouquets[bname];
 
 	for (auto & item : fields)
 	{
 		string key = item->property("field").toString().toStdString();
 		string val;
 
-		if (key == "name")
-			val = ub.name;
-		else if (key == "pname")
-			val = ub.pname;
+		if (key == "btype")
+			val = bs.btype;
+		else if (key == "rname")
+			val = bs.rname.empty() ? bs.bname : bs.rname;
+		else if (key == "name")
+			val = bs.name;
+		else if (key == "nname")
+			val = bs.nname;
 
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
 		{

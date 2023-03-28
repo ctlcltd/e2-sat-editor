@@ -35,6 +35,7 @@
 #include "theme.h"
 #include "tab.h"
 #include "editBouquet.h"
+#include "editUserbouquet.h"
 #include "editService.h"
 #include "editMarker.h"
 #include "dialChannelBook.h"
@@ -472,7 +473,7 @@ void mainView::load()
 
 		e2db::bouquet gboq = dbih->bouquets[bsi.second];
 		QString qbs = QString::fromStdString(bsi.second);
-		QString name = QString::fromStdString(gboq.nname.empty() ? gboq.name : gboq.nname);
+		QString name = gboq.nname.empty() ? e2db::fixUnicodeChars(gboq.name) : QString::fromStdString(gboq.nname);
 
 		QTreeWidgetItem* bitem = new QTreeWidgetItem();
 		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
@@ -853,8 +854,12 @@ void mainView::treeItemDoubleClicked()
 	if (selected.empty() || selected.count() > 1)
 		return;
 
+	// bouquet: tv | radio
+	// ExpandsOnDoubleClick
+	if (this->state.ti != -1)
+		return;
 	// userbouquet
-	if (this->state.ti == -1)
+	else
 		editUserbouquet();
 }
 
@@ -1130,12 +1135,96 @@ void mainView::reharmDnD()
 	this->action.list_dnd->setDisabled(true);
 }
 
+void mainView::addBouquet()
+{
+	debug("addBouquet");
+
+	string bname;
+	e2se_gui::editBouquet* add = new e2se_gui::editBouquet(this->data);
+	add->display(cwid);
+	bname = add->getAddId();
+	add->destroy();
+
+	auto* dbih = this->data->dbih;
+
+	if (dbih->bouquets.count(bname))
+		debug("addBouquet", "bname", bname);
+	else
+		return error("addBouquet", "Error", "Missing bouquet key \"" + bname + "\".");
+
+	tree->setDragEnabled(false);
+	tree->setAcceptDrops(false);
+
+	int i = 0, y;
+	QTreeWidgetItem* current = tree->currentItem();
+	bool isTopLevel = current != nullptr && tree->indexOfTopLevelItem(current) != -1;
+	QTreeWidgetItem* parent = current != nullptr && isTopLevel ? current->parent() : tree->invisibleRootItem();
+	i = current != nullptr && isTopLevel ? parent->indexOfChild(current) : tree->topLevelItemCount() - 1;
+	y = i + 1;
+
+	e2db::bouquet gboq = dbih->bouquets[bname];
+
+	QTreeWidgetItem* item = new QTreeWidgetItem;
+	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+	item->setData(0, Qt::UserRole, QString::fromStdString(gboq.bname));
+	item->setText(0, gboq.nname.empty() ? e2db::fixUnicodeChars(gboq.name) : QString::fromStdString(gboq.nname));
+
+	tree->insertTopLevelItem(y, item);
+
+	tree->setDragEnabled(true);
+	tree->setAcceptDrops(true);
+
+	updateTreeIndex();
+
+	this->data->setChanged(true);
+}
+
+void mainView::editBouquet()
+{
+	debug("editBouquet");
+
+	QList<QTreeWidgetItem*> selected = tree->selectedItems();
+
+	if (selected.empty() || selected.count() > 1)
+		return;
+
+	QTreeWidgetItem* item = selected.first();
+	QString qbs = item->data(0, Qt::UserRole).toString();
+	string bname = qbs.toStdString();
+	string nw_bname;
+
+	auto* dbih = this->data->dbih;
+
+	if (dbih->bouquets.count(bname))
+		debug("editBouquet", "bname", bname);
+	else
+		return error("editBouquet", "Error", "Bouquet \"" + bname + "\" not exists.");
+
+	e2se_gui::editBouquet* edit = new e2se_gui::editBouquet(this->data);
+	edit->setEditId(bname);
+	edit->display(cwid);
+	nw_bname = edit->getEditId();
+	edit->destroy();
+
+	if (dbih->bouquets.count(nw_bname))
+		debug("ediBouquet", "new bname", nw_bname);
+	else
+		return error("editBouquet", "Error", "Missing bouquet key \"" + nw_bname + "\".");
+
+	e2db::bouquet gboq = dbih->bouquets[nw_bname];
+	item->setText(0, gboq.nname.empty() ? e2db::fixUnicodeChars(gboq.name) : QString::fromStdString(gboq.nname));
+
+	updateTreeIndex();
+
+	this->data->setChanged(true);
+}
+
 void mainView::addUserbouquet()
 {
 	debug("addUserbouquet");
 
 	string bname;
-	e2se_gui::editBouquet* add = new e2se_gui::editBouquet(this->data, this->state.ti);
+	e2se_gui::editUserbouquet* add = new e2se_gui::editUserbouquet(this->data, this->state.ti);
 	add->display(cwid);
 	bname = add->getAddId();
 	add->destroy();
@@ -1196,7 +1285,7 @@ void mainView::editUserbouquet()
 	else
 		return error("editUserbouquet", "Error", "Userbouquet \"" + bname + "\" not exists.");
 
-	e2se_gui::editBouquet* edit = new e2se_gui::editBouquet(this->data, this->state.ti);
+	e2se_gui::editUserbouquet* edit = new e2se_gui::editUserbouquet(this->data, this->state.ti);
 	edit->setEditId(bname);
 	edit->display(cwid);
 	nw_bname = edit->getEditId();
@@ -1814,7 +1903,8 @@ void mainView::listItemCopy(bool cut)
 	auto* dbih = this->data->dbih;
 
 	QClipboard* clipboard = QGuiApplication::clipboard();
-	QStringList text;
+	QStringList content;
+
 	for (auto & item : selected)
 	{
 		QString qchid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString();
@@ -1823,15 +1913,14 @@ void mainView::listItemCopy(bool cut)
 		string chid = qchid.toStdString();
 
 		QStringList data;
+		data.reserve(TSV_TABS + 1);
+
 		// start from chnum column [1]
 		for (int i = ITEM_ROW_ROLE::chnum; i < list->columnCount(); i++)
 		{
 			QString qstr = item->data(i, Qt::DisplayRole).toString();
-			// chname
-			if (i == ITEM_ROW_ROLE::chname)
-				qstr.prepend("\"").append("\"");
 			// parental lock
-			else if (i == ITEM_ROW_ROLE::chlock)
+			if (i == ITEM_ROW_ROLE::chlock)
 				qstr = locked ? "1" : "0";
 			// debug_chid
 			else if (i == ITEM_ROW_ROLE::debug_chid)
@@ -1841,16 +1930,7 @@ void mainView::listItemCopy(bool cut)
 				continue;
 			// chcas
 			else if (i == ITEM_ROW_ROLE::chcas && ! marker)
-				qstr.prepend(qstr.isEmpty() ? "" : "$").prepend("\"").append("\"");
-			// chpname
-			else if (i == ITEM_ROW_ROLE::chpname && ! marker)
-				qstr.prepend("\"").append("\"");
-			// chtname
-			else if (i == ITEM_ROW_ROLE::chtname && ! marker)
-				qstr.prepend("\"").append("\"");
-			// chfec
-			else if (i == ITEM_ROW_ROLE::chfec && ! marker)
-				qstr.prepend("\"").append("\"");
+				qstr.prepend(qstr.isEmpty() ? "" : "$");
 			data.append(qstr);
 		}
 
@@ -1871,9 +1951,10 @@ void mainView::listItemCopy(bool cut)
 			refid = QString::fromStdString(dbih->get_reference_id(chid));
 		}
 		data.insert(2, refid); // insert refid column [2]
-		text.append(data.join(",")); // CSV
+
+		content.append(data.join("\t")); // TSV
 	}
-	clipboard->setText(text.join("\n")); // CSV
+	clipboard->setText(content.join("\n"));
 
 	if (cut)
 		listItemDelete();
@@ -1890,28 +1971,39 @@ void mainView::listItemPaste()
 	QClipboard* clipboard = QGuiApplication::clipboard();
 	const QMimeData* mimeData = clipboard->mimeData();
 	vector<QString> items;
-	int commas = 15;
-	int quotes = 10;
 
 	if (mimeData->hasText())
 	{
-		QStringList list = clipboard->text().split("\n");
+		QString text = clipboard->text();
+		QString separator;
 
-		for (QString & data : list)
+		if (text.endsWith("\r\n"))
+			separator = "\r\n";
+		else if (text.endsWith("\r"))
+			separator = "\r";
+		else
+			separator = "\n";
+
+		if (text.endsWith(separator))
+			text.remove(text.size() - separator.size(), separator.size());
+
+		QStringList data = text.split(separator);
+
+		for (QString & str : data)
 		{
-			QString str = QString (data).replace(", ", "\0");
-
-			if (str.count(',') == commas && str.count('"') == quotes)
-				items.emplace_back(data);
+			if (str.count('\t') == TSV_TABS) // TSV
+				items.emplace_back(str);
+			else if (str.count('\t') == channelBookView::TSV_TABS) // TSV
+				items.emplace_back(str);
 			else
 				return;
 		}
 	}
 
-	auto* dbih = this->data->dbih;
-
 	if (! items.empty())
 	{
+		auto* dbih = this->data->dbih;
+
 		putListItems(items);
 
 		if (list->currentItem() == nullptr)
@@ -2018,8 +2110,7 @@ void mainView::listItemDelete()
 	this->data->setChanged(true);
 }
 
-//TODO duplicates
-//TODO missing channel reference after listItemPaste with duplicates
+//TODO handle duplicates
 void mainView::putListItems(vector<QString> items)
 {
 	debug("putListItems");
@@ -2027,6 +2118,7 @@ void mainView::putListItems(vector<QString> items)
 	list->header()->setSectionsClickable(false);
 	list->setDragEnabled(false);
 	list->setAcceptDrops(false);
+
 	QList<QTreeWidgetItem*> clist;
 	int i = 0, y;
 	QTreeWidgetItem* current = list->currentItem();
@@ -2063,16 +2155,22 @@ void mainView::putListItems(vector<QString> items)
 		e2db::service_reference ref;
 
 		QStringList qs;
-		if (q.contains(','))
+
+		if (q.count('\t') == TSV_TABS || q.count('\t') == channelBookView::TSV_TABS) // TSV
 		{
-			qs = q.split(',');
+			qs = q.split('\t');
 			refid = qs[2].toStdString();
-			value = qs[1].replace("\"", "").toStdString();
-			locked = qs[3] == "0" ? false : true;
+			value = qs[1].toStdString();
+		}
+		else if (q.count(':') == 9) // refid
+		{
+			refid = q.toStdString();
 		}
 		else
 		{
-			refid = q.toStdString();
+			error("putListItems", "Error", "Not a valid data format.");
+
+			break;
 		}
 
 		QStringList entry;
@@ -2097,6 +2195,7 @@ void mainView::putListItems(vector<QString> items)
 		if (dbih->db.services.count(chid))
 		{
 			entry = dbih->entries.services[chid];
+			locked = entry[1].size() || ub_locked;
 			entry.prepend(idx);
 			entry.prepend(x);
 
@@ -2119,11 +2218,12 @@ void mainView::putListItems(vector<QString> items)
 				entry = dbih->entryMarker(chref);
 				entry.prepend(x);
 			}
-			else if (! qs.isEmpty())
+			else if (qs.size() == TSV_TABS)
 			{
 				e2db::service ch;
 				e2db::transponder tx;
 				e2db::fec fec;
+				locked = (qs[3] == "0" ? false : true) || ub_locked;
 
 				ch.ssid = ref.ssid;
 				ch.tsid = tx.tsid = ref.tsid;
@@ -2136,9 +2236,9 @@ void mainView::putListItems(vector<QString> items)
 					ch.tsid = tx.tsid = ref.tsid = qs[5].toInt();
 				ch.stype = dbih->value_service_type(qs[6].toStdString());
 				//TODO
-				// ch.data[e2db::SDATA::C]; qs[7].replace("\"", "")
-				ch.data[e2db::SDATA::p] = dbih->value_channel_provider(qs[8].replace("\"", "").toStdString());
-				ch.locked = locked || ub_locked;
+				// ch.data[e2db::SDATA::C]; qs[7]
+				ch.data[e2db::SDATA::p] = dbih->value_channel_provider(qs[8].toStdString());
+				ch.locked = locked;
 				tx.tsid = ch.tsid;
 				tx.dvbns = ch.dvbns;
 				tx.sys = dbih->value_transponder_system(qs[9].toStdString());
@@ -2147,7 +2247,7 @@ void mainView::putListItems(vector<QString> items)
 				tx.freq = qs[12].toInt();
 				tx.pol = dbih->value_transponder_polarization(qs[13].toStdString());
 				tx.sr = qs[14].toInt();
-				dbih->value_transponder_fec(qs[15].replace("\"", "").toStdString(), tx.ytype, fec);
+				dbih->value_transponder_fec(qs[15].toStdString(), tx.ytype, fec);
 				if (tx.ytype == e2db::YTYPE::satellite)
 				{
 					tx.fec = fec.inner_fec;
@@ -2185,10 +2285,12 @@ void mainView::putListItems(vector<QString> items)
 			}
 			else
 			{
-				error("putListItems", "Error", "Channel reference mismatch \"" + refid + "\".");
+				error("putListItems", "Error", "Channel reference mismatch.");
+
 				continue;
 			}
 		}
+
 		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
@@ -2216,27 +2318,30 @@ void mainView::putListItems(vector<QString> items)
 			dbih->addChannelReference(chref, bname);
 	}
 
-	if (current == nullptr)
-		list->addTopLevelItems(clist);
-	else
-		list->insertTopLevelItems(y, clist);
+	if (! clist.empty())
+	{
+		if (current == nullptr)
+			list->addTopLevelItems(clist);
+		else
+			list->insertTopLevelItems(y, clist);
+
+		// sorting default
+		if (this->state.dnd)
+			visualReindexList();
+		else
+			this->state.vlx_pending = true;
+
+		setPendingUpdateListIndex();
+
+		updateFlags();
+		updateStatusBar();
+
+		this->data->setChanged(true);
+	}
 
 	list->header()->setSectionsClickable(true);
 	list->setDragEnabled(true);
 	list->setAcceptDrops(true);
-
-	// sorting default
-	if (this->state.dnd)
-		visualReindexList();
-	else
-		this->state.vlx_pending = true;
-
-	setPendingUpdateListIndex();
-
-	updateFlags();
-	updateStatusBar();
-
-	this->data->setChanged(true);
 }
 
 void mainView::showTreeEditContextMenu(QPoint& pos)
@@ -2250,8 +2355,13 @@ void mainView::showTreeEditContextMenu(QPoint& pos)
 
 	QMenu* tree_edit = contextMenu();
 
+	// bouquet: tv | radio
+	if (this->state.ti != -1)
+	{
+		contextMenuAction(tree_edit, tr("Edit Bouquet", "context-menu"), [=]() { this->editBouquet(); }, tabGetFlag(gui::TabTreeEdit));
+	}
 	// userbouquet
-	if (this->state.ti == -1)
+	else
 	{
 		auto* dbih = this->data->dbih;
 
@@ -2268,8 +2378,8 @@ void mainView::showTreeEditContextMenu(QPoint& pos)
 		contextMenuAction(tree_edit, ! ub_locked ? tr("Set Parental lock", "context-menu") : tr("Unset Parental lock", "context-menu"), [=]() { this->toggleUserbouquetParentalLock(); });
 		contextMenuSeparator(tree_edit);
 		contextMenuAction(tree_edit, tr("Delete", "context-menu"), [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
-		contextMenuSeparator(tree_edit);
 	}
+	contextMenuSeparator(tree_edit);
 	contextMenuAction(tree_edit, tr("Export", "context-menu"), [=]() { tabExportFile(); });
 
 	platform::osContextMenuPopup(tree_edit, tree, pos);

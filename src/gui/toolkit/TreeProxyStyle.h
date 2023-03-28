@@ -125,11 +125,12 @@ class TreeProxyStyle : public QProxyStyle
 			{
 				if (opt.direction == Qt::LeftToRight)
 					opt.rect.adjust(-indent, 0, 0, 0);
+				// Qt bug Qt::RightToLeft glitch tree->viewport.width() - 1px
 				else if (opt.direction == Qt::RightToLeft)
 				{
 					if (this->firstColumnIndented)
 						opt.rect.adjust(0, 0, indent, 0);
-					//TODO FIX tree->indentation() * depth - 1px rtl glitch
+					//TODO FIX tree->indentation() * depth - 1px rtl
 					else
 					{
 						opt.rect.setX(-1);
@@ -165,7 +166,7 @@ class TreeProxyStyle : public QProxyStyle
 				{
 					if (this->firstColumnIndented)
 						opt.rect.adjust(0, 0, -indent, 0);
-					//TODO FIX tree->indentation() * depth - 1px rtl glitch
+					//TODO FIX tree->indentation() * depth - 1px rtl
 					else
 						opt.rect.adjust(0, 0, -this->indent, 0);
 				}

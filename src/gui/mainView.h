@@ -34,6 +34,9 @@ class mainView : public viewAbstract
 	Q_DECLARE_TR_FUNCTIONS(mainView)
 
 	public:
+
+		static const int TSV_TABS = 15;
+
 		struct __state
 		{
 			// list drag-and-drop toggle
@@ -142,6 +145,8 @@ class mainView : public viewAbstract
 		void allowDnD();
 		void disallowDnD();
 		void reharmDnD();
+		void addBouquet();
+		void editBouquet();
 		void addUserbouquet();
 		void editUserbouquet();
 		void addChannel();

@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/gui/editBouquet.h
+ * e2-sat-editor/src/gui/editUserbouquet.h
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -13,26 +13,28 @@
 
 using std::string;
 
-#ifndef editBouquet_h
-#define editBouquet_h
+#ifndef editUserbouquet_h
+#define editUserbouquet_h
 #include <QWidget>
 
 #include "dialAbstract.h"
 
 namespace e2se_gui
 {
-class editBouquet : public dialAbstract
+class editUserbouquet : public dialAbstract
 {
-	Q_DECLARE_TR_FUNCTIONS(editBouquet)
+	Q_DECLARE_TR_FUNCTIONS(editUserbouquet)
 
 	public:
 		struct __state
 		{
 			// edit { edit: true, add: false }
 			bool edit = false;
+			// tree top level index
+			int ti;
 		};
 
-		editBouquet(dataHandler* data);
+		editUserbouquet(dataHandler* data, int ti);
 		void display(QWidget* cwid);
 		void setEditId(string bname);
 		string getEditId();
@@ -51,4 +53,4 @@ class editBouquet : public dialAbstract
 		string bname;
 };
 }
-#endif /* editBouquet_h */
+#endif /* editUserbouquet_h */

@@ -306,6 +306,7 @@ struct e2db_abstract : protected e2se::log_factory
 		struct bouquet
 		{
 			string bname;
+			string rname;
 			string name;
 			string nname;
 			int btype;
@@ -319,6 +320,7 @@ struct e2db_abstract : protected e2se::log_factory
 		struct userbouquet
 		{
 			string bname;
+			string rname;
 			string name;
 			string pname;
 			// channels <chid string, channel_reference struct>

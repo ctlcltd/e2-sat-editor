@@ -887,7 +887,7 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 			// snum has priority over chref.anum
 			if (! ch.snum)
 				ch.snum = chref.anum;
-			if (ch.data[SDATA::C].empty())
+			if (ch.data.count(SDATA::C) && ch.data[SDATA::C].empty())
 				ch.data.erase(SDATA::C);
 
 			// fec condensed
@@ -905,10 +905,10 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 				tx.fec = fec.inner_fec;
 			}
 
-			if (ch.data[SDATA::C].empty())
-				ch.data.erase(SDATA::f);
-			if (ch.data[SDATA::c].empty())
+			if (ch.data.count(SDATA::c) && ch.data[SDATA::c].empty())
 				ch.data.erase(SDATA::c);
+			if (ch.data.count(SDATA::C) && ch.data[SDATA::C].empty())
+				ch.data.erase(SDATA::C);
 
 			char txid[25];
 			// %4x:%8x
@@ -1212,10 +1212,10 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 			if (! ch.snum)
 				ch.snum = chref.anum;
 
-			if (ch.data[SDATA::C].empty())
-				ch.data.erase(SDATA::f);
-			if (ch.data[SDATA::c].empty())
+			if (ch.data.count(SDATA::c) && ch.data[SDATA::c].empty())
 				ch.data.erase(SDATA::c);
+			if (ch.data.count(SDATA::C) && ch.data[SDATA::C].empty())
+				ch.data.erase(SDATA::C);
 
 			char txid[25];
 			// %4x:%8x
