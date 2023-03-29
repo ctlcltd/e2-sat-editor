@@ -23,7 +23,7 @@ class ftpcom : public ::e2se_ftpcom::ftpcom
 
 	public:
 		ftpcom();
-		// ~ftpcom();
+		~ftpcom(); // final destructor
 		void didChange();
 
 	protected:

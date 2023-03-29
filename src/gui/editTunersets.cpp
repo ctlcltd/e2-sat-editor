@@ -33,6 +33,13 @@ editTunersets::editTunersets(dataHandler* data, int yx)
 	this->state.yx = yx;
 }
 
+editTunersets::~editTunersets()
+{
+	debug("~editTunersets");
+
+	delete this->log;
+}
+
 void editTunersets::display(QWidget* cwid)
 {
 	layout(cwid);

@@ -39,7 +39,7 @@ class tunersetsView : public viewAbstract
 			// list sort (default sort 0|asc)
 			pair<int, Qt::SortOrder> sort;
 			// pending update list index
-			bool tvx_pending;
+			bool tvx_pending = false;
 		};
 
 		struct __action

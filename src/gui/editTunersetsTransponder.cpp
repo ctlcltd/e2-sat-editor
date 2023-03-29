@@ -33,6 +33,13 @@ editTunersetsTransponder::editTunersetsTransponder(dataHandler* data, int yx)
 	this->state.yx = yx;
 }
 
+editTunersetsTransponder::~editTunersetsTransponder()
+{
+	debug("~editTunersetsTransponder");
+
+	delete this->log;
+}
+
 void editTunersetsTransponder::display(QWidget* cwid)
 {
 	layout(cwid);

@@ -35,6 +35,7 @@ class editTunersetsTransponder : public dialAbstract
 		};
 
 		editTunersetsTransponder(dataHandler* data, int yx);
+		~editTunersetsTransponder();
 		void display(QWidget* cwid);
 		void setEditId(string trid, string tnid, int tvid);
 		string getEditId();

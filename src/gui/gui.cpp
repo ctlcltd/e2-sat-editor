@@ -98,6 +98,16 @@ gui::gui(int argc, char* argv[])
 	mroot->exec();
 }
 
+gui::~gui()
+{
+	debug("~gui");
+
+	delete this->mroot;
+	delete this->mwid;
+	delete this->theme;
+	delete this->log;
+}
+
 int gui::exited()
 {
 	return 0;
@@ -211,7 +221,7 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::ToolsServicesCache] = menuBarAction(mtools, "Remove cached data from Services", []() {});
 	gmenu[GUI_CXE::ToolsBouquetsDelete] = menuBarAction(mtools, "Delete all Bouquets", []() {});
 	menuBarSeparator(mtools);
-	gmenu[GUI_CXE::ToolsInspector] = menuBarAction(mtools, tr("Inspector Log"), [=]() { this->tabAction(TAB_ATS::Inspector); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
+	gmenu[GUI_CXE::ToolsInspector] = menuBarAction(mtools, tr("Log Inspector"), [=]() { this->tabAction(TAB_ATS::Inspector); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
 
 	QMenu* mwind = menuBarMenu(menu, tr("&Window"));
 	gmenu[GUI_CXE::WindowMinimize] = menuBarAction(mwind, tr("&Minimize"), [=]() { this->windowMinimize(); }, Qt::CTRL | Qt::Key_M);

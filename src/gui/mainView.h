@@ -40,11 +40,11 @@ class mainView : public viewAbstract
 		struct __state
 		{
 			// list drag-and-drop toggle
-			bool dnd;
+			bool dnd = false;
 			// list visual refresh pending
-			bool vlx_pending;
+			bool vlx_pending = false;
 			// reference box shown
-			bool refbox;
+			bool refbox = false;
 			// current tree { side = 0, tree = 1 }
 			int tc;
 			// tree current top level index
@@ -56,7 +56,7 @@ class mainView : public viewAbstract
 			// list sort (default sort 0|asc)
 			pair<int, Qt::SortOrder> sort;
 			// pending update list index
-			bool chx_pending;
+			bool chx_pending = false;
 		};
 
 		struct __action

@@ -44,6 +44,13 @@ editService::editService(dataHandler* data)
 	this->data = data;
 }
 
+editService::~editService()
+{
+	debug("~editService");
+
+	delete this->log;
+}
+
 void editService::display(QWidget* cwid)
 {
 	layout(cwid);
@@ -972,7 +979,6 @@ void editService::destroy()
 	delete this->edittx;
 	delete this->dial;
 	delete this->theme;
-	delete this->log;
 	delete this;
 }
 

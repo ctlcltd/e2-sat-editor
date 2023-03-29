@@ -13,6 +13,7 @@
 #define tools_h
 #include <QApplication>
 #include <QWidget>
+#include <QTextEdit>
 
 #include "../logger/logger.h"
 #include "dataHandler.h"
@@ -27,6 +28,14 @@ class tools : protected e2se::log_factory
 	Q_DECLARE_TR_FUNCTIONS(tools)
 
 	public:
+
+		enum INSPECT_FILTER {
+			AllLog,
+			Debug,
+			Info,
+			Error
+		};
+
 		tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data);
 		virtual ~tools();
 		void inspector();
@@ -35,11 +44,16 @@ class tools : protected e2se::log_factory
 		void exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts);
 		void destroy();
 
+	protected:
+		QString inspectContent(string str, int filter = 0);
+		void inspectUpdate(QTextEdit* view, int filter = 0);
+
 	private:
 		gui* gid;
 		tab* tid;
 		QWidget* cwid;
 		dataHandler* data = nullptr;
+		INSPECT_FILTER inspect_curr;
 };
 }
 #endif /* tools_h */

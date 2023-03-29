@@ -181,7 +181,6 @@ void dialAbstract::save()
 	});
 }
 
-//TODO TEST
 void dialAbstract::destroy()
 {
 	debug("destroy");

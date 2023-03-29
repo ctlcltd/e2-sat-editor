@@ -37,7 +37,7 @@ class e2db : public ::e2se_e2db::e2db
 		} entries;
 
 		e2db();
-		~e2db();
+		~e2db(); // final destructor
 		void didChange();
 		void cache(bool clear = false);
 		void fixBouquets();

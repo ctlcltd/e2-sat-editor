@@ -613,7 +613,7 @@ void transpondersView::putListItems(vector<QString> items)
 					tx.inv = dbih->value_transponder_inversion(qs[14].toStdString(), e2db::YTYPE::satellite);
 					tx.rol = dbih->value_transponder_rollof(qs[13].toStdString());
 					tx.pil = dbih->value_transponder_pilot(qs[12].toStdString());
-					break;
+				break;
 				case e2db::YTYPE::terrestrial:
 					tx.tmod = dbih->value_transponder_modulation(qs[10].toStdString(), e2db::YTYPE::terrestrial);
 					tx.sys = dbih->value_transponder_system(qs[1].toStdString());
@@ -624,18 +624,18 @@ void transpondersView::putListItems(vector<QString> items)
 					tx.inv = dbih->value_transponder_inversion(qs[14].toStdString(), e2db::YTYPE::terrestrial);
 					tx.guard = dbih->value_transponder_guard(qs[16].toStdString());
 					tx.hier = dbih->value_transponder_hier(qs[17].toStdString());
-					break;
+				break;
 				case e2db::YTYPE::cable:
 					tx.cmod = dbih->value_transponder_modulation(qs[10].toStdString(), e2db::YTYPE::cable);
 					tx.sr = qs[8].toInt();
 					tx.sys = dbih->value_transponder_system(qs[1].toStdString());
 					tx.fec = fec.inner_fec;
 					tx.inv = dbih->value_transponder_inversion(qs[14].toStdString(), e2db::YTYPE::cable);
-					break;
+				break;
 				case e2db::YTYPE::atsc:
 					tx.amod = dbih->value_transponder_modulation(qs[2].toStdString(), e2db::YTYPE::atsc);
 					tx.sys = dbih->value_transponder_system(qs[1].toStdString());
-					break;
+				break;
 			}
 
 			char txid[25];

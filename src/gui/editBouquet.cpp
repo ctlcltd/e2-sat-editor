@@ -32,6 +32,13 @@ editBouquet::editBouquet(dataHandler* data)
 	this->data = data;
 }
 
+editBouquet::~editBouquet()
+{
+	debug("~editBouquet");
+
+	delete this->log;
+}
+
 void editBouquet::display(QWidget* cwid)
 {
 	layout(cwid);

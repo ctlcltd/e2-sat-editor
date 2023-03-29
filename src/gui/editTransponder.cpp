@@ -34,6 +34,13 @@ editTransponder::editTransponder(dataHandler* data)
 	this->state.yx = -1;
 }
 
+editTransponder::~editTransponder()
+{
+	debug("~editTransponder");
+
+	delete this->log;
+}
+
 void editTransponder::display(QWidget* cwid)
 {
 	layout(cwid);

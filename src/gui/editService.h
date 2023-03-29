@@ -45,6 +45,7 @@ class editService : public dialAbstract
 		};
 
 		editService(dataHandler* data);
+		~editService();
 		void display(QWidget* cwid);
 		void destroy();
 		void setEditId(string chid);

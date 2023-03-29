@@ -29,6 +29,13 @@ editMarker::editMarker(dataHandler* data)
 	this->data = data;
 }
 
+editMarker::~editMarker()
+{
+	debug("~editMarker");
+
+	delete this->log;
+}
+
 void editMarker::display(QWidget* cwid)
 {
 	layout(cwid);

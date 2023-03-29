@@ -35,6 +35,13 @@ editTunersetsTable::editTunersetsTable(dataHandler* data, int yx)
 	this->state.yx = yx;
 }
 
+editTunersetsTable::~editTunersetsTable()
+{
+	debug("~editTunersetsTable");
+
+	delete this->log;
+}
+
 void editTunersetsTable::display(QWidget* cwid)
 {
 	layout(cwid);

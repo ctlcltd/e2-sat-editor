@@ -35,6 +35,7 @@ class editTunersetsTable : public dialAbstract
 		};
 
 		editTunersetsTable(dataHandler* data, int yx);
+		~editTunersetsTable();
 		void display(QWidget* cwid);
 		void setEditId(string tnid, int tvid);
 		string getEditId();

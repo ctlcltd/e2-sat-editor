@@ -15,7 +15,6 @@
 #include <QDialog>
 #include <QTimer>
 #include <QGridLayout>
-#include <QTextEdit>
 #include <QLineEdit>
 #include <QComboBox>
 
@@ -40,6 +39,7 @@ tools::tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data)
 	this->tid = tid;
 	this->cwid = cwid;
 	this->data = data;
+	this->inspect_curr = INSPECT_FILTER::AllLog;
 }
 
 tools::~tools()
@@ -49,11 +49,13 @@ tools::~tools()
 	delete this->log;
 }
 
-//TODO improve
+//TODO
 void tools::inspector()
 {
+	debug("inspector");
+
 	QDialog* dial = new QDialog(nullptr, Qt::WindowStaysOnTopHint);
-	dial->setWindowTitle(tr("Inspector Log"));
+	dial->setWindowTitle(tr("Log Inspector"));
 	dial->setMinimumSize(450, 520);
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
@@ -63,45 +65,91 @@ void tools::inspector()
 #endif
 
 	QGridLayout* dfrm = new QGridLayout(dial);
+
 	QTextEdit* dcnt = new QTextEdit;
 	dcnt->setReadOnly(true);
-	dcnt->document()->setDefaultStyleSheet("pre { font-size: 11px }");
-	dcnt->setHtml("<pre>" + QString::fromStdString(this->log->str()).toHtmlEscaped() + "</pre>");
+	dcnt->document()->setDefaultStyleSheet("* { margin: 0; padding: 0 } i { font-style: normal } pre { font-size: 11px }");
+	dcnt->setHtml("</div>");
 	platform::osTextEdit(dcnt);
 
-	// QTextEdit* dtdg = new QTextEdit;
 	QComboBox* dtft = new QComboBox;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
-	dtft->setPlaceholderText("<Filter>");
+	dtft->setPlaceholderText(QString("<%1>").arg(tr("Filter")));
 #endif
 	dtft->addItem(tr("All Log"));
 	dtft->addItem("Debug");
 	dtft->addItem("Info");
 	dtft->addItem("Error");
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-	dtft->connect(dtft, &QComboBox::currentIndexChanged, []() { QMessageBox(QMessageBox::NoIcon, "TODO", "TODO").exec(); });
+	dtft->connect(dtft, &QComboBox::currentIndexChanged, [=](int index) { this->inspectUpdate(dcnt, index); });
 #else
-	dtft->connect(dtft, QOverload<int>::of(&QComboBox::currentIndexChanged), []() { QMessageBox(QMessageBox::NoIcon, "TODO", "TODO").exec(); });
+	dtft->connect(dtft, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) { this->inspectUpdate(dcnt, index); });
 #endif
 	platform::osComboBox(dtft);
 
+	inspectUpdate(dcnt);
+
 	dfrm->setContentsMargins(0, 0, 0, 0);
 	dfrm->addWidget(dcnt);
-	// dfrm->addWidget(dtdg);
 	dfrm->addWidget(dtft);
 	dial->setLayout(dfrm);
 	dial->open();
 
 	QTimer* timer = new QTimer(dial);
-	timer->callOnTimeout([=]() {
-		if (this->log->pos() != this->log->last_pos())
-		{
-			dcnt->moveCursor(QTextCursor::End);
-			dcnt->append("<pre>" + QString::fromStdString(this->log->str_lend()).toHtmlEscaped() + "</pre>");
-			// dtdg->setPlainText(dcnt->toHtml());
-		}
-	});
+	timer->callOnTimeout([=]() { this->inspectUpdate(dcnt, this->inspect_curr); });
 	timer->start(1000);
+}
+
+QString tools::inspectContent(string str, int filter)
+{
+	QString text = QString::fromStdString(str);
+	QString separator;
+
+	if (text.endsWith("\r\n"))
+		separator = "\r\n";
+	else if (text.endsWith("\r"))
+		separator = "\r";
+	else
+		separator = "\n";
+
+	if (text.endsWith(separator))
+		text.remove(text.size() - separator.size(), separator.size());
+
+	QStringList data = text.split(separator);
+
+	QString selector;
+	switch (filter)
+	{
+		case INSPECT_FILTER::Debug: selector = "<Debug>"; break;
+		case INSPECT_FILTER::Info: selector = "<Info>"; break;
+		case INSPECT_FILTER::Error: selector = "<Error>"; break;
+	}
+
+	for (int i = 0; i < data.size(); i++)
+	{
+		if (filter && ! data[i].contains(selector))
+			data[i] = "";
+		else
+			data[i].replace(QRegularExpression("^([^ ]+ [^ ]+) <([^>]+)> ([^ ]+) ([^:]+)::([^:]+)(.*)$"), "<pre>\\1 <i>&lt;\\2&gt;</i> \\3 <b>\\4</b>::\\5\\6</pre>");
+	}
+
+	return data.join("\n");
+}
+
+void tools::inspectUpdate(QTextEdit* view, int filter)
+{
+	if (this->inspect_curr == filter)
+	{
+		if (this->log->pos() != this->log->last_pos())
+			view->append(inspectContent(this->log->str_lend(), filter));
+	}
+	else
+	{
+		view->setHtml("</div>");
+		view->setHtml(inspectContent(this->log->str(), filter));
+
+		this->inspect_curr = static_cast<INSPECT_FILTER>(filter);
+	}
 }
 
 void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)

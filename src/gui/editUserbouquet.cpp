@@ -31,6 +31,13 @@ editUserbouquet::editUserbouquet(dataHandler* data, int ti)
 	this->state.ti = ti;
 }
 
+editUserbouquet::~editUserbouquet()
+{
+	debug("~editUserbouquet");
+
+	delete this->log;
+}
+
 void editUserbouquet::display(QWidget* cwid)
 {
 	layout(cwid);

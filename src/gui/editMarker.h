@@ -34,6 +34,7 @@ class editMarker : public dialAbstract
 		};
 
 		editMarker(dataHandler* data);
+		~editMarker();
 		void display(QWidget* cwid);
 		void setEditId(string chid, string bname);
 		string getEditId();

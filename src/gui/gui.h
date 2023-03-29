@@ -228,13 +228,12 @@ class gui : protected e2se::log_factory
 			string curr;
 			string message;
 			int counters[5] = {0, 0, 0, 0, 0};
-			bool info;
-			bool update;
+			bool info = false;
+			bool update = false;
 		};
 
 		gui(int argc, char* argv[]);
-		//TODO destructor
-		virtual ~gui() = default;
+		~gui();
 		int exited();
 		void settingsChanged();
 		int newTab(string filename = "");

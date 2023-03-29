@@ -723,7 +723,7 @@ void printable::print()
 	delete printer;
 }
 
-//TODO table cell borderSize [Qt5]
+// table cell borderSize [Qt5]
 QString printable::docHtmlHead()
 {
 	return "<html lang=\"en\">\

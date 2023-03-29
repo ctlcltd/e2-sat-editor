@@ -35,6 +35,7 @@ class editUserbouquet : public dialAbstract
 		};
 
 		editUserbouquet(dataHandler* data, int ti);
+		~editUserbouquet();
 		void display(QWidget* cwid);
 		void setEditId(string bname);
 		string getEditId();

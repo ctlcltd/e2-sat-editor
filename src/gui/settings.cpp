@@ -811,8 +811,8 @@ void settings::destroy()
 {
 	debug("destroy");
 
-	delete this->theme;
 	delete this->dial;
+	delete this->theme;
 	delete this;
 }
 

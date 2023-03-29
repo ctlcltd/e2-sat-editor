@@ -40,7 +40,7 @@ class ftpcom : protected e2se::log_factory
 			string host;
 			int ftport;
 			int htport;
-			bool actv;
+			bool actv = false;
 			string user;
 			string pass;
 			string tpath;
@@ -55,7 +55,7 @@ class ftpcom : protected e2se::log_factory
 			string filename;
 			string data;
 			string mime;
-			size_t size;
+			size_t size = 0;
 		};
 
 		ftpcom();
@@ -79,13 +79,13 @@ class ftpcom : protected e2se::log_factory
 		struct sio
 		{
 			string data;
-			size_t size;
+			size_t size = 0;
 		};
 
 		struct soi
 		{
 			const char* data;
-			size_t size;
+			size_t size = 0;
 		};
 
 		struct tnvars
@@ -93,7 +93,7 @@ class ftpcom : protected e2se::log_factory
 			soi* ps;
 			string user;
 			string pass;
-			bool send;
+			bool send = false;
 			string cmd;
 		};
 

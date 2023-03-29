@@ -34,6 +34,13 @@ dialChannelBook::dialChannelBook(dataHandler* data, int stype)
 	this->frameFixed = false;
 }
 
+dialChannelBook::~dialChannelBook()
+{
+	debug("~dialChannelBook");
+
+	delete this->log;
+}
+
 void dialChannelBook::display(QWidget* cwid)
 {
 	debug("display");
@@ -100,7 +107,7 @@ void dialChannelBook::destroy()
 
 	delete this->cbv;
 	delete this->dial;
-	delete this->log;
+	delete this->theme;
 	delete this;
 }
 

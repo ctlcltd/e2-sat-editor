@@ -34,7 +34,7 @@ class transpondersView : public viewAbstract
 			// list sort (default sort 0|asc)
 			pair<int, Qt::SortOrder> sort;
 			// pending update list index
-			bool txx_pending;
+			bool txx_pending = false;
 		};
 
 		struct __action

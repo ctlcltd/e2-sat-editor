@@ -23,8 +23,8 @@ class logger
 	public:
 		struct data {
 			string log;
-			size_t size;
-			bool debug;
+			size_t size = 0;
+			bool debug = false;
 		};
 
 		inline static data* OBJECT;

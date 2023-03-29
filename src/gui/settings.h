@@ -42,9 +42,9 @@ class settings : protected e2se::log_factory
 			// previous tab index
 			int prev;
 			// profile retrieving
-			bool retr;
+			bool retr = false;
 			// profile deleting
-			bool dele;
+			bool dele = false;
 		};
 
 		struct __action
