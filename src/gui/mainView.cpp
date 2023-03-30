@@ -271,6 +271,7 @@ void mainView::layout()
 
 	asbox->addWidget(side);
 	sfrm->setLayout(asbox);
+	sfrm->setMaximumHeight(192);
 
 	atbox->addWidget(tree);
 	atbox->addWidget(tree_search);
@@ -278,7 +279,7 @@ void mainView::layout()
 	tfrm->setLayout(atbox);
 
 	tbox->addWidget(sfrm);
-	tbox->addItem(new QSpacerItem(0, 8, QSizePolicy::Preferred, QSizePolicy::Fixed));
+	tbox->addItem(new QSpacerItem(0, 4, QSizePolicy::Preferred, QSizePolicy::Fixed));
 	tbox->addWidget(tfrm, 1);
 	afrm->setLayout(tbox);
 
@@ -2380,7 +2381,7 @@ void mainView::showTreeEditContextMenu(QPoint& pos)
 		contextMenuAction(tree_edit, tr("Delete", "context-menu"), [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
 	}
 	contextMenuSeparator(tree_edit);
-	contextMenuAction(tree_edit, tr("Export", "context-menu"), [=]() { tabExportFile(); });
+	contextMenuAction(tree_edit, tr("Export", "context-menu"), [=]() { this->tabExportFile(); });
 
 	platform::osContextMenuPopup(tree_edit, tree, pos);
 }

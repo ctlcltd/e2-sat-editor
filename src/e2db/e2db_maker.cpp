@@ -427,10 +427,12 @@ void e2db_maker::make_bouquet(string bname, e2db_file& file)
 	ss << "#NAME " << bs.name << endl;
 	for (string & w : bs.userbouquets)
 	{
+		userbouquet ub = userbouquets[w];
+
 		ss << "#SERVICE ";
 		ss << "1:7:" << bs.btype << ":0:0:0:0:0:0:0:";
 		ss << "FROM BOUQUET ";
-		ss << "\"" << w << "\" ";
+		ss << "\"" << ub.bname << "\" ";
 		ss << "ORDER BY bouquet";
 		ss << endl;
 	}
@@ -463,19 +465,22 @@ void e2db_maker::make_bouquet_epl(string bname, e2db_file& file)
 	ss << "#NAME " << bs.name << endl;
 	for (string & w : bs.userbouquets)
 	{
-		size_t pos = w.find('.');
-		size_t n = w.rfind('.');
+		userbouquet ub = userbouquets[w];
+		string ub_bname = ub.bname;
+
+		size_t pos = ub_bname.find('.');
+		size_t n = ub_bname.rfind('.');
 
 		string name;
 		string basedir = MAKER_BPATH;
 		if (basedir.size() && basedir[basedir.size() - 1] != '/')
 			basedir.append("/");
 
-		string path = basedir + w;
+		string path = basedir + ub_bname;
 
 		if (pos != string::npos && n != string::npos)
 		{
-			name = w.substr(0, n);
+			name = ub_bname.substr(0, n);
 			name = name.substr(pos + 1);
 		}
 

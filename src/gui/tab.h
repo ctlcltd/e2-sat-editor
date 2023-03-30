@@ -94,6 +94,7 @@ class tab : protected e2se::log_factory
 		void importFile();
 		void exportFile();
 		void printFile(bool all);
+		void settingsDialog();
 		void updateIndex();
 		QTimer* statusBarMessage(QString title);
 		void statusBarMessage(QTimer* timer);

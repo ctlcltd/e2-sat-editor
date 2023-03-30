@@ -17,8 +17,9 @@
 
 #include <QtGlobal>
 #include <QGuiApplication>
-#include <QSettings>
+#include <QWindow>
 #include <QList>
+#include <QSettings>
 #include <QStyle>
 #include <QMessageBox>
 #include <QHBoxLayout>
@@ -72,8 +73,10 @@ tab::~tab()
 	debug("~tab");
 
 	if (! this->child)
+	{	delete this->tools;
 		delete this->data;
-
+		delete this->ftph;
+	}
 	delete this->view;
 
 	delete this->widget;
@@ -363,7 +366,7 @@ void tab::layout()
 	tbars[gui::FileImport] = toolBarAction(top_toolbar, tr("Import", "toolbar"), theme->dynamicIcon("import"), [=]() { this->importFile(); });
 	tbars[gui::FileExport] = toolBarAction(top_toolbar, tr("Export", "toolbar"), theme->dynamicIcon("export"), [=]() { this->exportFile(); });
 	toolBarSeparator(top_toolbar);
-	toolBarAction(top_toolbar, tr("Settings", "toolbar"), theme->dynamicIcon("settings"), [=]() { gid->settingsDialog(); });
+	toolBarAction(top_toolbar, tr("Settings", "toolbar"), theme->dynamicIcon("settings"), [=]() { this->settingsDialog(); });
 	toolBarSpacer(top_toolbar);
 	toolBarWidget(top_toolbar, ftp_combo);
 	toolBarAction(top_toolbar, tr("Connect", "toolbar"), [=]() { this->ftpConnect(); });
@@ -376,7 +379,7 @@ void tab::layout()
 	{
 		toolBarSeparator(bottom_toolbar);
 		toolBarAction(bottom_toolbar, "§ Load seeds", [=]() { this->loadSeeds(); });
-		toolBarAction(bottom_toolbar, "§ Reset", [=]() { this->newFile(); tabChangeName(); });
+		toolBarAction(bottom_toolbar, "§ Reset", [=]() { this->newFile(); this->tabChangeName(); });
 	}
 	toolBarSpacer(bottom_toolbar);
 
@@ -902,13 +905,35 @@ void tab::printFile(bool all)
 		statusBarMessage(tr("Printing …"));
 }
 
+void tab::settingsDialog()
+{
+	debug("settingsDialog");
+
+	gid->settingsDialog();
+}
+
 void tab::toolsInspector()
 {
+	for (auto & q : QGuiApplication::allWindows())
+	{
+		if (q->isWindowType() && q->objectName() == "inspectorWindow")
+		{
+			debug("toolsInspector", "raise", 1);
+
+			q->requestActivate();
+			return q->raise();
+		}
+	}
+
+	debug("toolsInspector");
+
 	tools->inspector();
 }
 
 void tab::toolsImportFromFile(TOOLS_FILE ftype, e2db::FCONVS fci)
 {
+	// debug("toolsImportFromFile");
+
 	e2db::fcopts opts;
 	opts.fc = fci;
 
@@ -926,6 +951,8 @@ void tab::toolsImportFromFile(TOOLS_FILE ftype, e2db::FCONVS fci)
 
 void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 {
+	// debug("toolsExportToFile");
+
 	gui::TAB_VIEW current = getTabView();
 	e2db::fcopts opts;
 	opts.fc = fco;
@@ -1181,7 +1208,7 @@ void tab::actionCall(int bit)
 		break;
 
 		case gui::TAB_ATS::Inspector:
-			tools->inspector();
+			toolsInspector();
 		break;
 	}
 }
@@ -1258,7 +1285,6 @@ void tab::ftpDisconnect()
 	}
 }
 
-//TODO improve for status bar
 void tab::ftpUpload()
 {
 	debug("ftpUpload");

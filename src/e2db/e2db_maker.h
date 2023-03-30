@@ -20,7 +20,6 @@ class e2db_maker : virtual public e2db_abstract
 {
 	public:
 
-		inline static bool MAKER_LAMEDB5 = false;
 		inline static bool MAKER_TUNERSETS = true;
 		inline static bool MAKER_PARENTALLOCK_LIST = true;
 

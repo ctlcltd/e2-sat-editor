@@ -47,12 +47,14 @@ class tools : protected e2se::log_factory
 	protected:
 		QString inspectContent(string str, int filter = 0);
 		void inspectUpdate(QTextEdit* view, int filter = 0);
+		void inspectReset();
 
 	private:
 		gui* gid;
 		tab* tid;
 		QWidget* cwid;
 		dataHandler* data = nullptr;
+		size_t inspect_pos = 0;
 		INSPECT_FILTER inspect_curr;
 };
 }

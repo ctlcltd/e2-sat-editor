@@ -1856,7 +1856,7 @@ bool e2db_parser::find_services_file()
 {
 	debug("find_services_file");
 
-	if (PARSER_LAMEDB5_PRIOR && this->e2db.count("lamedb5"))
+	if (PARSER_PRIOR_LAMEDB5 && this->e2db.count("lamedb5"))
 		this->services_filename = "lamedb5";
 	else if (this->e2db.count("lamedb"))
 		this->services_filename = "lamedb";

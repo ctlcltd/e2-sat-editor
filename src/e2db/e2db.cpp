@@ -624,8 +624,6 @@ void e2db::remove_userbouquet(string bname)
 			index["ubs"].erase(it);
 	}
 
-	index.erase(ub.pname);
-
 	vector<string>::iterator pos;
 	for (auto it = bs.userbouquets.begin(); it != bs.userbouquets.end(); it++)
 	{
@@ -640,17 +638,24 @@ void e2db::remove_userbouquet(string bname)
 		bs.userbouquets.erase(pos);
 	}
 
+	index.erase(ub.pname);
+	bs.services.clear();
+
+	int idx = 0;
 	for (string & w : bs.userbouquets)
 	{
-		int idx = int (index[ub.pname].size());
+		userbouquet ub = userbouquets[w];
+		string bname = ub.bname;
 
-		//TODO
-		for (auto & x : userbouquets[w].channels)
+		for (auto & x : index[bname])
 		{
-			if (! x.second.marker)
+			channel_reference chref = ub.channels[x.second];
+
+			if (! chref.marker && bs.services.count(chref.chid) == 0)
 			{
 				idx += 1;
-				index[ub.pname].emplace_back(pair (idx, x.first));
+				bs.services.emplace(chref.chid);
+				index[ub.pname].emplace_back(pair (idx, chref.chid));
 			}
 		}
 	}

@@ -53,13 +53,13 @@ void ftpcom::setParameters(ftp_params params)
 	if (! params.htport)
 		error("ftpcom", "FTP Error", trw("Missing \"%s\" parameter.", "HTTP port"));
 	if (params.actv)
-		actv = true;
+		this->actv = true;
 
-	host = params.host;
-	ftport = params.ftport;
-	htport = params.htport;
-	user = params.user;
-	pass = params.pass;
+	this->host = params.host;
+	this->ftport = params.ftport;
+	this->htport = params.htport;
+	this->user = params.user;
+	this->pass = params.pass;
 
 	if (params.tpath.empty())
 		error("ftpcom", "FTP Error", trw("Missing \"%s\" path parameter.", "Transponders"));
@@ -68,12 +68,12 @@ void ftpcom::setParameters(ftp_params params)
 	if (params.spath.empty())
 		error("ftpcom", "FTP Error", trw("Missing \"%s\" path parameter.", "Services"));
 
-	baset = params.tpath;
-	baseb = params.bpath;
-	bases = params.spath;
+	this->baset = params.tpath;
+	this->baseb = params.bpath;
+	this->bases = params.spath;
 
-	ifreload = params.ifreload;
-	tnreload = params.tnreload;
+	this->ifreload = params.ifreload;
+	this->tnreload = params.tnreload;
 }
 
 bool ftpcom::handle()
@@ -152,7 +152,7 @@ string ftpcom::get_server_hostname()
 {
 	debug("get_server_hostname");
 
-	return host.empty() ? host + ':' + to_string(ftport) : "";
+	return host.empty() ? "" : host + ':' + to_string(ftport);
 }
 
 vector<string> ftpcom::list_dir(string basedir)

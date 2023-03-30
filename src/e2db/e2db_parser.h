@@ -24,7 +24,7 @@ class e2db_parser : virtual public e2db_abstract
 {
 	public:
 
-		inline static bool PARSER_LAMEDB5_PRIOR = false;
+		inline static bool PARSER_PRIOR_LAMEDB5 = false;
 		inline static bool PARSER_TUNERSETS = true;
 		inline static bool PARSER_PARENTALLOCK_LIST = true;
 

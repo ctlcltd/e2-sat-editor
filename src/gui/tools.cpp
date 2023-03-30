@@ -12,8 +12,9 @@
 #include <filesystem>
 
 #include <QtGlobal>
-#include <QDialog>
 #include <QTimer>
+#include <QRegularExpression>
+#include <QDialog>
 #include <QGridLayout>
 #include <QLineEdit>
 #include <QComboBox>
@@ -55,13 +56,14 @@ void tools::inspector()
 	debug("inspector");
 
 	QDialog* dial = new QDialog(nullptr, Qt::WindowStaysOnTopHint);
-	dial->setWindowTitle(tr("Log Inspector"));
+	dial->setObjectName("inspector");
+	dial->setWindowTitle(tr("Log Inspector", "tools"));
 	dial->setMinimumSize(450, 520);
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-	dial->connect(dial, &QDialog::finished, [=]() { QTimer::singleShot(0, [=]() { delete dial; }); });
+	dial->connect(dial, &QDialog::finished, [=]() { QTimer::singleShot(0, [=]() { this->inspectReset(); delete dial; }); });
 #else
-	dial->connect(dial, &QDialog::finished, [=]() { delete dial; });
+	dial->connect(dial, &QDialog::finished, [=]() { this->inspectReset(); delete dial; });
 #endif
 
 	QGridLayout* dfrm = new QGridLayout(dial);
@@ -74,9 +76,9 @@ void tools::inspector()
 
 	QComboBox* dtft = new QComboBox;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
-	dtft->setPlaceholderText(QString("<%1>").arg(tr("Filter")));
+	dtft->setPlaceholderText(QString("<%1>").arg(tr("Filter", "tools")));
 #endif
-	dtft->addItem(tr("All Log"));
+	dtft->addItem(tr("All Log", "tools"));
 	dtft->addItem("Debug");
 	dtft->addItem("Info");
 	dtft->addItem("Error");
@@ -140,16 +142,25 @@ void tools::inspectUpdate(QTextEdit* view, int filter)
 {
 	if (this->inspect_curr == filter)
 	{
-		if (this->log->pos() != this->log->last_pos())
-			view->append(inspectContent(this->log->str_lend(), filter));
+		if (this->log->size() != this->inspect_pos)
+		{
+			view->append(inspectContent(this->log->str().substr(this->inspect_pos), filter));
+			this->inspect_pos = this->log->size();
+		}
 	}
 	else
 	{
 		view->setHtml("</div>");
 		view->setHtml(inspectContent(this->log->str(), filter));
-
+		this->inspect_pos = this->log->size();
 		this->inspect_curr = static_cast<INSPECT_FILTER>(filter);
 	}
+}
+
+void tools::inspectReset()
+{
+	this->inspect_pos = 0;
+	this->inspect_curr = INSPECT_FILTER::AllLog;
 }
 
 void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
@@ -158,7 +169,7 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 
 	vector<string> paths;
 
-	paths = gid->importFileDialog(gui::GUI_DPORTS::CSV);
+	paths = this->gid->importFileDialog(gui::GUI_DPORTS::CSV);
 	if (paths.empty())
 		return;
 
@@ -192,7 +203,7 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 {
 	debug("exportFileCSV");
 
-	string path = gid->exportFileDialog(gui::GUI_DPORTS::CSV, opts.filename);
+	string path = this->gid->exportFileDialog(gui::GUI_DPORTS::CSV, opts.filename);
 
 	if (path.empty())
 	{
@@ -236,7 +247,7 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 {
 	debug("exportFileHTML");
 
-	string path = gid->exportFileDialog(gui::GUI_DPORTS::HTML, opts.filename);
+	string path = this->gid->exportFileDialog(gui::GUI_DPORTS::HTML, opts.filename);
 
 	if (path.empty())
 	{

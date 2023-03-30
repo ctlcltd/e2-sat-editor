@@ -48,6 +48,7 @@ gui::gui(int argc, char* argv[])
 
 	//TODO FIX locale warning wrong detected as US-ASCII [Qt6] [Xcode] [macOS]
 	this->mroot = new QApplication(argc, argv);
+	std::setlocale(LC_NUMERIC, "C");
 	mroot->setOrganizationName("e2 SAT Editor Team");
 	mroot->setOrganizationDomain("e2se.org");
 	mroot->setApplicationName("e2-sat-editor");
@@ -233,7 +234,7 @@ void gui::menuBarLayout()
 	QActionGroup* mwtabs = menuBarActionGroup(mwind, true);
 
 	QMenu* mhelp = menuBarMenu(menu, tr("&Help"));
-	menuBarAction(mhelp, tr("About &Qt"), [=]() { mroot->aboutQt(); })->setMenuRole(QAction::NoRole);
+	menuBarAction(mhelp, tr("About &Qt"), [=]() { this->mroot->aboutQt(); })->setMenuRole(QAction::NoRole);
 	menuBarSeparator(mhelp);
 	menuBarAction(mhelp, tr("&About e2 SAT Editor"), [=]() { this->aboutDialog(); })->setMenuRole(QAction::NoRole);
 
@@ -247,9 +248,6 @@ void gui::menuBarLayout()
 void gui::tabStackerLayout()
 {
 	debug("tabStackerLayout");
-
-	QWidget* twwrap = new QWidget(mwid);
-	QGridLayout* twlayout = new QGridLayout(twwrap);
 
 	this->twid = new QTabWidget;
 	twid->setTabsClosable(true);
@@ -304,11 +302,6 @@ void gui::tabStackerLayout()
 	twid->connect(twid, &QTabWidget::tabCloseRequested, [=](int index) { this->closeTab(index); });
 	twid->tabBar()->connect(twid->tabBar(), &QTabBar::tabMoved, [=](int from, int to) { this->tabMoved(from, to); });
 
-	QWidget* twtbbase = new QWidget;
-	twtbbase->setStyleSheet("min-height: 7ex");
-	twtbbase->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	//TODO FIX 4px ? frame
-
 	QWidget* ttcornerwid = new QWidget;
 	QHBoxLayout* ttcornerlayout = new QHBoxLayout(ttcornerwid);
 
@@ -338,20 +331,14 @@ void gui::tabStackerLayout()
 
 	launcher();
 
-	platform::osWidgetOpaque(twtbbase);
-
-	twlayout->addWidget(twtbbase, 0, 0, Qt::AlignTop);
-	twlayout->addWidget(twid, 0, 0);
-	twlayout->setContentsMargins(0, 0, 0, 0);
-
-	mcnt->addWidget(twwrap);
+	mcnt->addWidget(twid);
 }
 
 void gui::statusBarLayout()
 {
 	debug("statusBarLayout");
 
-	this->sbwid = new QStatusBar(mwid);
+	this->sbwid = new QStatusBar;
 	this->sbwidl = new QLabel;
 	this->sbwidc = new QWidget;
 	this->sbwidr = new QLabel;
@@ -415,7 +402,7 @@ void gui::initSettings()
 
 	QSettings settings;
 
-	settings.setValue("settings/version", 1);
+	settings.setValue("settings/version", 0); // pre-release
 	settings.setValue("settings/reset", false);
 
 	settings.setValue("application/version", mroot->applicationVersion());
@@ -428,7 +415,6 @@ void gui::initSettings()
 
 	settings.beginGroup("preference");
 	settings.setValue("askConfirmation", false);
-	settings.setValue("nonDestructiveEdit", true);
 	settings.endGroup();
 
 	settings.beginWriteArray("profile");
@@ -458,7 +444,7 @@ void gui::updateSettings()
 
 	if (! settings.contains("settings/version"))
 	{
-		settings.setValue("settings/version", 1);
+		settings.setValue("settings/version", 0);
 		settings.setValue("settings/reset", false);
 
 		settings.setValue("application/version", mroot->applicationVersion());
@@ -466,15 +452,8 @@ void gui::updateSettings()
 	else if (version != mroot->applicationVersion().toFloat())
 	{
 		settings.setValue("application/version", mroot->applicationVersion());
+		settings.setValue("settings/version", 0);
 	}
-
-#ifdef Q_OS_MAC
-	if (settings.contains("preference/fixUnicodeChars"))
-	{
-		settings.setValue("application/fixUnicodeChars", true);
-		settings.remove("preference/fixUnicodeChars");
-	}
-#endif
 }
 
 void gui::resetSettings()

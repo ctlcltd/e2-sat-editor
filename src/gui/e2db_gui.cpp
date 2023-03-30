@@ -53,12 +53,11 @@ void e2db::setup()
 	QSettings settings;
 
 	e2db::OVERWRITE_FILE = true;
-	e2db::PARSER_LAMEDB5_PRIOR = settings.value("application/parserLamedb5", false).toBool();
-	e2db::MAKER_LAMEDB5 = settings.value("application/makerLamedb5", true).toBool();
-	e2db::PARSER_TUNERSETS = settings.value("application/parserTunerset", true).toBool();
-	e2db::MAKER_TUNERSETS = settings.value("application/makerTunerset", true).toBool();
-	e2db::PARSER_PARENTALLOCK_LIST = settings.value("application/parserParentalLock", true).toBool();
-	e2db::MAKER_PARENTALLOCK_LIST = settings.value("application/makerParentalLock", true).toBool();
+	e2db::PARSER_PRIOR_LAMEDB5 = settings.value("engine/parserPriorLamedb5", false).toBool();
+	e2db::PARSER_TUNERSETS = settings.value("engine/parserTunerset", true).toBool();
+	e2db::MAKER_TUNERSETS = settings.value("engine/makerTunerset", true).toBool();
+	e2db::PARSER_PARENTALLOCK_LIST = settings.value("engine/parserParentalLock", true).toBool();
+	e2db::MAKER_PARENTALLOCK_LIST = settings.value("engine/makerParentalLock", true).toBool();
 
 	int profile_sel = settings.value("profile/selected").toInt();
 	settings.beginReadArray("profile");
@@ -68,14 +67,14 @@ void e2db::setup()
 	e2db::MAKER_BPATH = settings.value("pathBouquets").toString().toStdString();
 	settings.endArray();
 
-	e2db::CSV_HEADER = settings.value("preference/toolsCsvHeader", true).toBool();
-	string csv_dlm = settings.value("preference/toolsCsvDelimiter", "\n").toString().toStdString();
-	string csv_sep = settings.value("preference/toolsCsvSeparator", ",").toString().toStdString();
-	string csv_esp = settings.value("preference/toolsCsvEscape", "\"").toString().toStdString();
+	e2db::CSV_HEADER = settings.value("engine/toolsCsvHeader", true).toBool();
+	string csv_dlm = settings.value("engine/toolsCsvDelimiter", "\n").toString().toStdString();
+	string csv_sep = settings.value("engine/toolsCsvSeparator", ",").toString().toStdString();
+	string csv_esp = settings.value("engine/toolsCsvEscape", "\"").toString().toStdString();
 	e2db::CSV_DELIMITER = csv_dlm.find("\n") != string::npos ? '\n' : (csv_dlm.size() == 1 ? csv_dlm[0] : '\n');
 	e2db::CSV_SEPARATOR = csv_sep.size() == 1 ? csv_sep[0] : ',';
 	e2db::CSV_ESCAPE = csv_esp.size() == 1 ? csv_esp[0] : '"';
-	e2db::CONVERTER_EXTENDED_FIELDS = settings.value("preference/toolsFieldsExtended", false).toBool();
+	e2db::CONVERTER_EXTENDED_FIELDS = settings.value("engine/toolsFieldsExtended", false).toBool();
 }
 
 //TODO translation

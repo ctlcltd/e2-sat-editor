@@ -154,32 +154,19 @@ string logger::timestamp()
 	std::tm* lct = std::localtime(&ct.tv_sec);
 	char t[80];
 	std::strftime(t, 80, "%Y-%m-%d %H:%M:%S", lct);
-	char c[5];
-	std::snprintf(c, 5, ".%03d", int (float (ct.tv_nsec) / 1e9 * 1e3));
+	char c[8];
+	std::snprintf(c, 8, ".%06d", int (float (ct.tv_nsec) / 1e9 * 1e6));
 	return string (t) + string (c);
 }
 
 string logger::str()
 {
-	this->obj->size = this->obj->log.size();
 	return this->obj->log;
 }
 
-string logger::str_lend()
-{
-	size_t pos = this->obj->size;
-	this->obj->size = this->obj->log.size();
-	return this->obj->log.substr(pos);
-}
-
-size_t logger::pos()
+size_t logger::size()
 {
 	return this->obj->log.size();
-}
-
-size_t logger::last_pos()
-{
-	return this->obj->size;
 }
 
 }

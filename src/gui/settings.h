@@ -56,6 +56,7 @@ class settings : protected e2se::log_factory
 		enum PREF_SECTIONS {
 			Connections,
 			Preferences,
+			Engine,
 			Advanced
 		};
 
@@ -67,8 +68,9 @@ class settings : protected e2se::log_factory
 
 	protected:
 		void layout(QWidget* cwid);
-		void preferencesLayout();
 		void connectionsLayout();
+		void preferencesLayout();
+		void engineLayout();
 		void advancedLayout();
 		QListWidgetItem* addProfile(int i = -1);
 		void deleteProfile();

@@ -23,7 +23,6 @@ class logger
 	public:
 		struct data {
 			string log;
-			size_t size = 0;
 			bool debug = false;
 		};
 
@@ -43,9 +42,7 @@ class logger
 		void error(string fn, string optk, int optv);
 		string timestamp();
 		string str();
-		string str_lend();
-		size_t pos();
-		size_t last_pos();
+		size_t size();
 		std::stringbuf* buf;
 		string ns;
 		string cn;

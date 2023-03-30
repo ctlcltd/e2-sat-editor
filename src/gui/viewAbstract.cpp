@@ -45,7 +45,6 @@ void viewAbstract::themeChanged()
 	theme->changed();
 }
 
-//TODO FIX window width
 void viewAbstract::searchLayout()
 {
 	this->tree_search = new QWidget;
@@ -58,6 +57,7 @@ void viewAbstract::searchLayout()
 	tree_search->setAutoFillBackground(true);
 	list_search->setAutoFillBackground(true);
 
+	//TODO FIX lsr_search.highlight button text color [Windows]
 #ifndef Q_OS_MAC
 	QColor searchbackground;
 	QColor searchcolor;
@@ -111,6 +111,7 @@ void viewAbstract::searchLayout()
 	tsr_box->setContentsMargins(4, 3, 3, 6);
 	tsr_box->setSpacing(0);
 	this->tsr_search.input = new QLineEdit;
+	this->tsr_search.input->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
 	this->tsr_search.input->connect(this->tsr_search.input, &QLineEdit::textChanged, [=](const QString& text) { this->treeFindPerform(text); });
 	this->tsr_search.input->installEventFilter(new InputControlEditEventObserver(tid));
 	platform::osLineEdit(this->tsr_search.input);
@@ -119,8 +120,8 @@ void viewAbstract::searchLayout()
 	this->tsr_search.next->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
 	this->tsr_search.next->connect(this->tsr_search.next, &QPushButton::pressed, [=]() { this->treeFindPerform(); });
 
-	//TODO accessible text
 	this->tsr_search.close = new QPushButton;
+	this->tsr_search.close->setAccessibleName(tr("Close"));
 	this->tsr_search.close->setIconSize(QSize(10, 10));
 	this->tsr_search.close->setIcon(theme->dynamicIcon("close", this->tsr_search.close));
 	this->tsr_search.close->setFlat(true);
@@ -131,7 +132,7 @@ void viewAbstract::searchLayout()
 	tsr_box->addWidget(this->tsr_search.input, 0, 1);
 	tsr_box->addItem(new QSpacerItem(2, 0), 0, 2);
 	tsr_box->addWidget(this->tsr_search.next, 0, 3);
-	tsr_box->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Preferred), 0, 4);
+	tsr_box->addItem(new QSpacerItem(5, 0, QSizePolicy::Minimum, QSizePolicy::Preferred), 0, 4);
 	tsr_box->addWidget(this->tsr_search.close, 0, 5);
 
 	QGridLayout* lsr_box = new QGridLayout(list_search);
@@ -146,13 +147,12 @@ void viewAbstract::searchLayout()
 	platform::osComboBox(this->lsr_search.filter);
 
 	this->lsr_search.input = new QLineEdit;
-	this->lsr_search.input->setMinimumWidth(180);
+	this->lsr_search.input->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
 	this->lsr_search.input->setStyleSheet("QLineEdit { padding: 2px 0 }");
 	this->lsr_search.input->connect(this->lsr_search.input, &QLineEdit::textChanged, [=](const QString& text) { this->listFindPerform(text, LIST_FIND::fast); });
 	this->lsr_search.input->installEventFilter(new InputControlEditEventObserver(tid));
 	platform::osLineEdit(this->lsr_search.input);
 
-	//TODO FIX text color [Windows]
 	this->lsr_search.highlight = new QPushButton;
 	this->lsr_search.highlight->setObjectName("list_search_highlight");
 	this->lsr_search.highlight->setText(tr("Highlight", "toolbar"));
@@ -173,8 +173,8 @@ void viewAbstract::searchLayout()
 	this->lsr_search.all->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
 	this->lsr_search.all->connect(this->lsr_search.all, &QPushButton::pressed, [=]() { this->listFindPerform(LIST_FIND::all); });
 
-	//TODO accessible text
 	this->lsr_search.close = new QPushButton;
+	this->lsr_search.close->setAccessibleName(tr("Close"));
 	this->lsr_search.close->setIconSize(QSize(10, 10));
 	this->lsr_search.close->setIcon(theme->dynamicIcon("close", this->lsr_search.close));
 	this->lsr_search.close->setFlat(true);
@@ -189,7 +189,7 @@ void viewAbstract::searchLayout()
 	lsr_box->addWidget(this->lsr_search.all, 0, 5);
 	lsr_box->addItem(new QSpacerItem(16, 0), 0, 6);
 	lsr_box->addWidget(this->lsr_search.highlight, 0, 7);
-	lsr_box->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Preferred), 0, 8);
+	lsr_box->addItem(new QSpacerItem(5, 0, QSizePolicy::Expanding, QSizePolicy::Preferred), 0, 8);
 	lsr_box->addWidget(this->lsr_search.close, 0, 9);
 }
 

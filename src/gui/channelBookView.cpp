@@ -453,10 +453,12 @@ void channelBookView::stacker(int vv)
 			disabled = this->state.sy != -1 && this->state.sy != bs.btype;
 			item = new QTreeWidgetItem({name});
 
-			for (string & ubname : bs.userbouquets)
+			for (string & w : bs.userbouquets)
 			{
-				e2db::userbouquet ub = dbih->userbouquets[ubname];
-				QString subindex = QString::fromStdString(ubname);
+				e2db::userbouquet ub = dbih->userbouquets[w];
+				string bname = ub.bname;
+
+				QString subindex = QString::fromStdString(bname);
 				QString name = QString::fromStdString(ub.name);
 				subitem = new QTreeWidgetItem(item, {name});
 				subitem->setData(0, Qt::UserRole, subindex);

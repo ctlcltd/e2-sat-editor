@@ -1956,6 +1956,7 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			int flgs = tx.flgs;
 			int txid = tx.index;
 			string txflgs = tx.oflgs;
+
 			string cached;
 			if (ch.data.count(SDATA::c))
 			{
@@ -2070,6 +2071,7 @@ void e2db_converter::csv_bouquet_list(string& csv, string bname)
 		error("csv_bouquet_list", "Error", "Bouquet \"" + bname + "\" not exists.");
 
 	bouquet bs = bouquets[bname];
+
 	string btype;
 	if (bs.btype == STYPE::tv)
 		btype = "TV";
@@ -2089,12 +2091,13 @@ void e2db_converter::csv_bouquet_list(string& csv, string bname)
 	}
 
 	int i = 1;
-	for (auto & bname : bs.userbouquets)
+	for (string & w : bs.userbouquets)
 	{
-		userbouquet ub = userbouquets[bname];
+		userbouquet ub = userbouquets[w];
+
 		ss << i++ << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << bs.name << CSV_ESCAPE << CSV_SEPARATOR;
-		ss << CSV_ESCAPE << bname << CSV_ESCAPE << CSV_SEPARATOR;
+		ss << CSV_ESCAPE << ub.bname << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << ub.name << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << btype;
 		ss << CSV_DELIMITER;
@@ -2327,6 +2330,7 @@ void e2db_converter::page_body_index_list(html_page& page, vector<string> paths)
 	page.body += "</tr>\n";
 
 	page.body += "<tbody>\n";
+
 	for (auto & path : paths)
 	{
 		string filename = std::filesystem::path(path).filename().u8string();
@@ -2353,6 +2357,7 @@ void e2db_converter::page_body_index_list(html_page& page, vector<string> paths)
 		page.body += "<td>" + ftype + "</td>";
 		page.body += "</tr>\n";
 	}
+
 	page.body += "</tbody>\n";
 
 	page.body += "</table>\n";
@@ -2392,6 +2397,7 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 	page.body += "</thead>\n";
 
 	page.body += "<tbody>\n";
+
 	for (auto & chdata : index[bname])
 	{
 		string chid = chdata.second;
@@ -2506,6 +2512,7 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 			page.body += "</tr>\n";
 		}
 	}
+
 	page.body += "</tbody>\n";
 
 	page.body += "</table>\n";
@@ -2520,11 +2527,13 @@ void e2db_converter::page_body_bouquet_list(html_page& page, string bname)
 		error("page_body_bouquet_list", "Error", "Bouquet \"" + bname + "\" not exists.");
 
 	bouquet bs = bouquets[bname];
+
 	string btype;
 	if (bs.btype == STYPE::tv)
 		btype = "TV";
 	else if (bs.btype == STYPE::radio)
 		btype = "Radio";
+
 	page.body += "<tr>";
 
 	page.body += "<div class=\"bouquet\">\n";
@@ -2539,17 +2548,20 @@ void e2db_converter::page_body_bouquet_list(html_page& page, string bname)
 	page.body += "</tr>\n";
 
 	page.body += "<tbody>\n";
+
 	int i = 1;
-	for (auto & bname : bs.userbouquets)
+	for (string & w : bs.userbouquets)
 	{
-		userbouquet ub = userbouquets[bname];
+		userbouquet ub = userbouquets[w];
+
 		page.body += "<td class=\"trid\">" + to_string(i++) + "</td>";
 		page.body += "<td>" + bs.name + "</td>";
-		page.body += "<td>" + bname + "</td>";
+		page.body += "<td>" + ub.bname + "</td>";
 		page.body += "<td>" + ub.name + "</td>";
 		page.body += "<td>" + btype + "</td>";
 		page.body += "</tr>\n";
 	}
+
 	page.body += "</tbody>\n";
 
 	page.body += "</table>\n";
@@ -2631,6 +2643,7 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 		page.body += "</tr>\n";
 
 		page.body += "<tbody>\n";
+
 		int i = 1;
 		for (auto & x : index[tn.tnid])
 		{
@@ -2713,6 +2726,7 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 			}
 			page.body += "</tr>\n";
 		}
+
 		page.body += "</tbody>\n";
 
 		page.body += "</table>\n";

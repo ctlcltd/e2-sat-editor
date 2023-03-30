@@ -277,6 +277,7 @@ void printable::pageBodyIndexList(html_page& page, vector<string> paths)
 	page.body += "</tr>";
 
 	page.body += "<tbody>";
+
 	for (auto & path : paths)
 	{
 		string filename = std::filesystem::path(path).filename().u8string();
@@ -303,6 +304,7 @@ void printable::pageBodyIndexList(html_page& page, vector<string> paths)
 		page.body += "<td>" + ftype + "</td>";
 		page.body += "</tr>";
 	}
+
 	page.body += "</tbody>";
 
 	page.body += "</table>";
@@ -345,6 +347,7 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 	page.body += "</thead>";
 
 	page.body += "<tbody>";
+
 	for (auto & chdata : dbih->index[bname])
 	{
 		string chid = chdata.second;
@@ -460,6 +463,7 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 			page.body += "</tr>";
 		}
 	}
+
 	page.body += "</tbody>";
 
 	page.body += "</table>";
@@ -494,6 +498,7 @@ void printable::pageBodyBouquetList(html_page& page, string bname)
 	page.body += "</tr>";
 
 	page.body += "<tbody>";
+
 	int i = 1;
 	for (auto & bname : gboq.userbouquets)
 	{
@@ -506,6 +511,7 @@ void printable::pageBodyBouquetList(html_page& page, string bname)
 		page.body += "<td>" + btype + "</td>";
 		page.body += "</tr>";
 	}
+
 	page.body += "</tbody>";
 
 	page.body += "</table>";
@@ -590,6 +596,7 @@ void printable::pageBodyTunersetsList(html_page& page, int ytype)
 		page.body += "</tr>";
 
 		page.body += "<tbody>";
+
 		int i = 1;
 		for (auto & x : dbih->index[tns.tnid])
 		{
@@ -672,6 +679,7 @@ void printable::pageBodyTunersetsList(html_page& page, int ytype)
 			}
 			page.body += "</tr>";
 		}
+
 		page.body += "</tbody>";
 
 		page.body += "</table>";
@@ -714,7 +722,7 @@ void printable::print()
 	doc->setHtml(html.join(""));
 
 	QPrintDialog pdial = QPrintDialog(printer, cwid);
-	//TODO file export to PDF
+
 	if (pdial.exec() == QDialog::Accepted) {
 		doc->print(printer);
 	}
