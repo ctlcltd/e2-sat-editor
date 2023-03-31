@@ -59,39 +59,38 @@ void ftpcom::setup()
 	setParameters(params);
 }
 
-//TODO translation
-void ftpcom::error(string fn, string optk, string optv)
+void ftpcom::didChange()
 {
-	this->::e2se_ftpcom::ftpcom::error(fn, optk, optv);
-	QMessageBox::critical(nullptr, tr("FTP Error"), QString::fromStdString(optv));
-}
+	debug("didChange");
 
-void ftpcom::error(string fn, string optk, int optv)
-{
-	this->::e2se_ftpcom::ftpcom::error(fn, optk, optv);
-	QMessageBox::critical(nullptr, tr("FTP Error"), QString::number(optv));
+	setup();
 }
 
 string ftpcom::trs(string str)
 {
-	return tr(str.data(), "ftpcom").toStdString();
+	return tr(str.data()).toStdString();
 }
 
 string ftpcom::trw(string str, string param)
 {
-	string trstr = tr(str.data(), "ftpcom").toStdString();
-	string trparam = tr(param.data(), "ftpcom").toStdString();
+	string trstr = tr(str.data()).toStdString();
+	string trparam = tr(param.data()).toStdString();
 	size_t tsize = trstr.length() + trparam.length();
 	char tstr[tsize];
 	std::snprintf(tstr, tsize, trstr.c_str(), trparam.c_str());
 	return string (tstr);
 }
 
-void ftpcom::didChange()
+void ftpcom::error(string fn, string optk, string optv)
 {
-	debug("didChange");
+	this->::e2se_ftpcom::ftpcom::error(fn, tr(optk.data(), "error").toStdString(), tr(optv.data()).toStdString());
+	QMessageBox::critical(nullptr, tr(optk.data(), "error"), tr(optv.data(), "error"));
+}
 
-	setup();
+void ftpcom::error(string fn, string optk, int optv)
+{
+	this->::e2se_ftpcom::ftpcom::error(fn, tr(optk.data(), "error").toStdString(), optv);
+	QMessageBox::critical(nullptr, tr(optk.data(), "error"), QString::number(optv));
 }
 
 }

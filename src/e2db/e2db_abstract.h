@@ -546,6 +546,9 @@ struct e2db_abstract : protected e2se::log_factory
 		void add_tunersets_transponder(int idx, tunersets_transponder& tntxp, tunersets_table& tn);
 		void set_parentallock(string chid, string bname = "");
 
+		virtual string trs(string str);
+		virtual string trf(string str, string param);
+
 		// e2db <filename string, full-path string>
 		unordered_map<string, string> e2db;
 		// e2db_out <filename string, e2db_file>

@@ -28,7 +28,7 @@ void dialAbstract::layout(QWidget* cwid)
 	debug("layout");
 
 	this->dial = new QDialog(cwid);
-	dial->setWindowTitle(tr("Edit"));
+	dial->setWindowTitle(tr("Edit", "dialog"));
 
 	this->theme = new e2se_gui::theme;
 
@@ -94,19 +94,19 @@ void dialAbstract::collapsibleLayout()
 	dttoggler->setIconSize(QSize(8, 8));
 	dttoggler->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 	dttoggler->setArrowType(Qt::UpArrow);
-	dttoggler->setText(" " + tr("collapse") + " ");
+	dttoggler->setText(" " + tr("collapse", "ui") + " ");
 	dttoggler->connect(dttoggler, &QToolButton::pressed, [=]() {
 		this->toggle();
 
 		if (dial->property("collapsible_collapsed").toBool())
 		{
 			dttoggler->setArrowType(Qt::DownArrow);
-			dttoggler->setText(" " + tr("expand") + " ");
+			dttoggler->setText(" " + tr("expand", "ui") + " ");
 		}
 		else
 		{
 			dttoggler->setArrowType(Qt::UpArrow);
-			dttoggler->setText(" " + tr("collapse") + " ");
+			dttoggler->setText(" " + tr("collapse", "ui") + " ");
 		}
 	});
 
@@ -187,7 +187,6 @@ void dialAbstract::destroy()
 
 	delete this->dial;
 	delete this->theme;
-	delete this->log;
 	delete this;
 }
 

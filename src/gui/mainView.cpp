@@ -601,7 +601,7 @@ void mainView::populate(QTreeWidget* tw)
 	if (dbih->index.count(bname))
 		debug("populate", "current", bname);
 	else
-		error("populate", "Error", "Missing index key \"" + bname + "\".");
+		error("populate", tr("Error", "error").toStdString(), tr("Missing index key \"%1\".", "error").arg(bname.data()).toStdString());
 
 	list->header()->setSortIndicatorShown(true);
 	list->header()->setSectionsClickable(false);
@@ -661,7 +661,7 @@ void mainView::populate(QTreeWidget* tw)
 				else
 				{
 					entry = QStringList({x, NULL, NULL, NULL, chid, NULL, NULL, NULL, "ERROR", NULL});
-					error("populate", "Error", "Channel reference mismatch \"" + ch.second + "\".");
+					error("populate", tr("Error", "error").toStdString(), tr("Channel reference mismatch \"%1\".", "error").arg(ch.second.data()).toStdString());
 				}
 			}
 
@@ -1151,7 +1151,7 @@ void mainView::addBouquet()
 	if (dbih->bouquets.count(bname))
 		debug("addBouquet", "bname", bname);
 	else
-		return error("addBouquet", "Error", "Missing bouquet key \"" + bname + "\".");
+		return error("addBouquet", tr("Error", "error").toStdString(), tr("Missing bouquet key \"%1\".", "error").arg(bname.data()).toStdString());
 
 	tree->setDragEnabled(false);
 	tree->setAcceptDrops(false);
@@ -1199,7 +1199,7 @@ void mainView::editBouquet()
 	if (dbih->bouquets.count(bname))
 		debug("editBouquet", "bname", bname);
 	else
-		return error("editBouquet", "Error", "Bouquet \"" + bname + "\" not exists.");
+		return error("editBouquet", tr("Error", "error").toStdString(), tr("Bouquet \"%1\" not exists.", "error").arg(bname.data()).toStdString());
 
 	e2se_gui::editBouquet* edit = new e2se_gui::editBouquet(this->data);
 	edit->setEditId(bname);
@@ -1210,7 +1210,7 @@ void mainView::editBouquet()
 	if (dbih->bouquets.count(nw_bname))
 		debug("ediBouquet", "new bname", nw_bname);
 	else
-		return error("editBouquet", "Error", "Missing bouquet key \"" + nw_bname + "\".");
+		return error("editBouquet", tr("Error", "error").toStdString(), tr("Missing bouquet key \"%1\".", "error").arg(nw_bname.data()).toStdString());
 
 	e2db::bouquet gboq = dbih->bouquets[nw_bname];
 	item->setText(0, gboq.nname.empty() ? e2db::fixUnicodeChars(gboq.name) : QString::fromStdString(gboq.nname));
@@ -1235,7 +1235,7 @@ void mainView::addUserbouquet()
 	if (dbih->userbouquets.count(bname))
 		debug("addUserbouquet", "bname", bname);
 	else
-		return error("addUserbouquet", "Error", "Missing userbouquet key \"" + bname + "\".");
+		return error("addUserbouquet", tr("Error", "error").toStdString(), tr("Missing userbouquet key \"%1\".", "error").arg(bname.data()).toStdString());
 
 	tree->setDragEnabled(false);
 	tree->setAcceptDrops(false);
@@ -1284,7 +1284,7 @@ void mainView::editUserbouquet()
 	if (dbih->userbouquets.count(bname))
 		debug("editUserbouquet", "bname", bname);
 	else
-		return error("editUserbouquet", "Error", "Userbouquet \"" + bname + "\" not exists.");
+		return error("editUserbouquet", tr("Error", "error").toStdString(), tr("Userbouquet \"%1\" not exists.", "error").arg(bname.data()).toStdString());
 
 	e2se_gui::editUserbouquet* edit = new e2se_gui::editUserbouquet(this->data, this->state.ti);
 	edit->setEditId(bname);
@@ -1295,7 +1295,7 @@ void mainView::editUserbouquet()
 	if (dbih->userbouquets.count(nw_bname))
 		debug("editUserbouquet", "new bname", nw_bname);
 	else
-		return error("editUserbouquet", "Error", "Missing userbouquet key \"" + nw_bname + "\".");
+		return error("editUserbouquet", tr("Error", "error").toStdString(), tr("Missing userbouquet key \"%1\".", "error").arg(nw_bname.data()).toStdString());
 
 	e2db::userbouquet uboq = dbih->userbouquets[nw_bname];
 	item->setText(0, e2db::fixUnicodeChars(uboq.name));
@@ -1356,7 +1356,7 @@ void mainView::addService()
 	if (dbih->db.services.count(chid))
 		debug("addService", "chid", chid);
 	else
-		return error("addService", "Error", "Missing service key \"" + chid + "\".");
+		return error("addService", tr("Error", "error").toStdString(), tr("Missing service key \"%1\".", "error").arg(chid.data()).toStdString());
 
 	for (auto & q : cache)
 		q.second.clear();
@@ -1453,7 +1453,7 @@ void mainView::editService()
 	if (! marker && dbih->db.services.count(chid))
 		debug("editService", "chid", chid);
 	else
-		return error("editService", "Error", "Service \"" + chid + "\" not exists or is a channel reference.");
+		return error("editService", tr("Error", "error").toStdString(), tr("Service \"%1\" not exists or is a channel reference.", "error").arg(chid.data()).toStdString());
 
 	e2se_gui::editService* edit = new e2se_gui::editService(this->data);
 	edit->setEditId(chid);
@@ -1472,7 +1472,7 @@ void mainView::editService()
 	if (dbih->db.services.count(nw_chid))
 		debug("editService", "new chid", nw_chid);
 	else
-		return error("editService", "Error", "Missing service key \"" + nw_chid + "\".");
+		return error("editService", tr("Error", "error").toStdString(), tr("Missing service key \"%1\".", "error").arg(nw_chid.data()).toStdString());
 
 	bool ub_locked = false;
 
@@ -1523,14 +1523,14 @@ void mainView::addMarker()
 	auto* dbih = this->data->dbih;
 
 	if (! (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(chid)))
-		return error("addMarker", "Error", "Missing channel reference key \"" + chid + "\".");
+		return error("addMarker", tr("Error", "error").toStdString(), tr("Missing channel reference key \"%1\".", "error").arg(chid.data()).toStdString());
 
 	e2db::channel_reference chref = dbih->userbouquets[bname].channels[chid];
 
 	if (chref.marker)
 		debug("addMarker", "chid", chid);
 	else
-		return error("addMarker", "Error", "Channel reference \"" + chid + "\" is not a valid marker.");
+		return error("addMarker", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" is not a valid marker.", "error").arg(chid.data()).toStdString());
 
 	cache[bname].clear();
 
@@ -1609,14 +1609,14 @@ void mainView::editMarker()
 	auto* dbih = this->data->dbih;
 
 	if (! (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(chid)))
-		return error("editMarker", "Error", "Channel reference\"" + chid + "\" not exists.");
+		return error("editMarker", tr("Error", "error").toStdString(), tr("Channel reference\"%1\" not exists.", "error").arg(chid.data()).toStdString());
 
 	e2db::channel_reference chref = dbih->userbouquets[bname].channels[chid];
 
 	if (marker && chref.marker)
 		debug("editMarker", "chid", chid);
 	else
-		return error("editMarker", "Error", "Channel reference \"" + chid + "\" is not a valid marker.");
+		return error("editMarker", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" is not a valid marker.", "error").arg(chid.data()).toStdString());
 
 	e2se_gui::editMarker* edit = new e2se_gui::editMarker(this->data);
 	edit->setEditId(chid, bname);
@@ -1625,12 +1625,12 @@ void mainView::editMarker()
 	edit->destroy();
 
 	if (! dbih->userbouquets[bname].channels.count(nw_chid))
-		return error("editMarker", "Error", "Missing channel reference key \"" + nw_chid + "\".");
+		return error("editMarker", tr("Error", "error").toStdString(), tr("Missing channel reference key \"%1\".", "error").arg(nw_chid.data()).toStdString());
 
 	if (chref.marker)
 		debug("editMarker", "new chid", nw_chid);
 	else
-		return error("editMarker", "Error", "Channel reference \"" + nw_chid + "\" is not a valid marker.");
+		return error("editMarker", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" is not a valid marker.", "error").arg(nw_chid.data()).toStdString());
 
 	chref = dbih->userbouquets[bname].channels[nw_chid];
 
@@ -1704,7 +1704,7 @@ void mainView::setServiceParentalLock()
 	if (! marker && dbih->db.services.count(chid))
 		debug("setServiceParentalLock", "chid", chid);
 	else
-		return error("setServiceParentalLock", "Error", "Service \"" + chid + "\" not exists or is a channel reference.");
+		return error("setServiceParentalLock", tr("Error", "error").toStdString(), tr("Service \"%1\" not exists or is a channel reference.", "error").arg(chid.data()).toStdString());
 
 	string bname = this->state.curr;
 	cache[bname].clear();
@@ -1742,7 +1742,7 @@ void mainView::unsetServiceParentalLock()
 	if (! marker && dbih->db.services.count(chid))
 		debug("unsetServiceParentalLock", "chid", chid);
 	else
-		return error("unsetServiceParentalLock", "Error", "Service \"" + chid + "\" not exists or is a channel reference.");
+		return error("unsetServiceParentalLock", tr("Error", "error").toStdString(), tr("Service \"%1\" not exists or is a channel reference.", "error").arg(chid.data()).toStdString());
 
 	string bname = this->state.curr;
 	cache[bname].clear();
@@ -1797,7 +1797,7 @@ void mainView::setUserbouquetParentalLock()
 	if (dbih->userbouquets.count(bname))
 		debug("setUserbouquetParentalLock", "bname", bname);
 	else
-		return error("setUserbouquetParentalLock", "Error", "Userbouquet \"" + bname + "\" not exists.");
+		return error("setUserbouquetParentalLock", tr("Error", "error").toStdString(), tr("Userbouquet \"%1\" not exists.", "error").arg(bname.data()).toStdString());
 
 	dbih->setUserbouquetParentalLock(bname);
 
@@ -1828,7 +1828,7 @@ void mainView::unsetUserbouquetParentalLock()
 	if (dbih->userbouquets.count(bname))
 		debug("unsetUserbouquetParentalLock", "bname", bname);
 	else
-		return error("unsetUserbouquetParentalLock", "Error", "Userbouquet \"" + bname + "\" not exists.");
+		return error("unsetUserbouquetParentalLock", tr("Error", "error").toStdString(), tr("Userbouquet \"%1\" not exists.", "error").arg(bname.data()).toStdString());
 
 	dbih->unsetUserbouquetParentalLock(bname);
 
@@ -1859,7 +1859,7 @@ void mainView::toggleUserbouquetParentalLock()
 	if (dbih->userbouquets.count(bname))
 		debug("toggleUserbouquetParentalLock", "bname", bname);
 	else
-		return error("toggleUserbouquetParentalLock", "Error", "Userbouquet \"" + bname + "\" not exists.");
+		return error("toggleUserbouquetParentalLock", tr("Error", "error").toStdString(), tr("Userbouquet \"%1\" not exists.", "error").arg(bname.data()).toStdString());
 
 	e2db::userbouquet uboq = dbih->userbouquets[bname];
 
@@ -2169,7 +2169,7 @@ void mainView::putListItems(vector<QString> items)
 		}
 		else
 		{
-			error("putListItems", "Error", "Not a valid data format.");
+			error("putListItems", tr("Error", "error").toStdString(), tr("Not a valid data format.", "error").toStdString());
 
 			break;
 		}
@@ -2286,7 +2286,7 @@ void mainView::putListItems(vector<QString> items)
 			}
 			else
 			{
-				error("putListItems", "Error", "Channel reference mismatch.");
+				error("putListItems", tr("Error", "error").toStdString(), tr("Channel reference mismatch.", "error").toStdString());
 
 				continue;
 			}

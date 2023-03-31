@@ -79,11 +79,11 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 
 	if (! std::filesystem::exists(path))
 	{
-		return error("import_csv_file", "File Error", "File \"" + path + "\" not exists.");
+		return error("import_csv_file", "File Error", trf("File \"%s\" not exists.", path));
 	}
 	if (! std::filesystem::is_regular_file(path))
 	{
-		return error("import_csv_file", "File Error", "File \"" + path + "\" is not a valid file.");
+		return error("import_csv_file", "File Error", trf("File \"%s\" is not a valid file.", path));
 	}
 	if
 	(
@@ -91,7 +91,7 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 		(std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
 	)
 	{
-		return error("import_csv_file", "File Error", "File \"" + path + "\" is not readable.");
+		return error("import_csv_file", "File Error", trf("File \"%s\" is not readable.", path));
 	}
 
 	ifstream ifile (path);
@@ -183,7 +183,7 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 
 		if (! OVERWRITE_FILE && std::filesystem::exists(fpath))
 		{
-			return error("export_csv_file", "File Error", "File \"" + fpath + "\" already exists.");
+			return error("export_csv_file", "File Error", trf("File \"%s\" already exists.", fpath));
 		}
 		if
 		(
@@ -191,7 +191,7 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 			(std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
 		)
 		{
-			return error("export_csv_file", "File Error", "File \"" + fpath + "\" is not writable.");
+			return error("export_csv_file", "File Error", trf("File \"%s\" is not writable.", fpath));
 		}
 
 		ofstream out (fpath);
@@ -268,7 +268,7 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 
 		if (! OVERWRITE_FILE && std::filesystem::exists(fpath))
 		{
-			return error("export_html_file", "File Error", "File \"" + fpath + "\" already exists.");
+			return error("export_html_file", "File Error", trf("File \"%s\" already exists.", fpath));
 		}
 		if
 		(
@@ -276,7 +276,7 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 			(std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
 		)
 		{
-			return error("export_html_file", "File Error", "File \"" + fpath + "\" is not writable.");
+			return error("export_html_file", "File Error", trf("File \"%s\" is not writable.", fpath));
 		}
 
 		ofstream out (fpath);
@@ -1616,7 +1616,7 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 	if (index.count(bname))
 		debug("csv_channel_list", "bname", bname);
 	else
-		error("csv_channel_list", "Error", "Missing index key \"" + bname + "\".");
+		error("csv_channel_list", "Error", trf("Missing index key \"%s\".", bname));
 	debug("csv_channel_list", "view", view);
 
 	string ub_name;
@@ -1804,7 +1804,7 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 	if (index.count(bname))
 		debug("csv_channel_list_extended", "bname", bname);
 	else
-		error("csv_channel_list_extended", "Error", "Missing index key \"" + bname + "\".");
+		error("csv_channel_list_extended", "Error", trf("Missing index key \"%s\".", bname));
 	debug("csv_channel_list_extended", "view", view);
 
 	string ub_name;
@@ -2068,7 +2068,7 @@ void e2db_converter::csv_bouquet_list(string& csv, string bname)
 	if (bouquets.count(bname))
 		debug("csv_bouquet_list", "bname", bname);
 	else
-		error("csv_bouquet_list", "Error", "Bouquet \"" + bname + "\" not exists.");
+		error("csv_bouquet_list", "Error", trf("Bouquet \"%s\" not exists.", bname));
 
 	bouquet bs = bouquets[bname];
 
@@ -2369,7 +2369,7 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 	if (index.count(bname))
 		debug("page_body_channel_list", "bname", bname);
 	else
-		error("page_body_channel_list", "Error", "Missing index key \"" + bname + "\".");
+		error("page_body_channel_list", "Error", trf("Missing index key \"%s\".", bname));
 	debug("page_body_channel_list", "view", view);
 
 	string cssname = view == DOC_VIEW::view_bouquets ? "userbouquet" : "services";
@@ -2524,7 +2524,7 @@ void e2db_converter::page_body_bouquet_list(html_page& page, string bname)
 	if (bouquets.count(bname))
 		debug("page_body_bouquet_list", "bname", bname);
 	else
-		error("page_body_bouquet_list", "Error", "Bouquet \"" + bname + "\" not exists.");
+		error("page_body_bouquet_list", "Error", trf("Bouquet \"%s\" not exists.", bname));
 
 	bouquet bs = bouquets[bname];
 

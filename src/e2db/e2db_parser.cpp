@@ -1876,7 +1876,7 @@ bool e2db_parser::list_file(string path)
 
 	if (! std::filesystem::exists(path))
 	{
-		error("list_file", "File Error", "File \"" + path + "\" not exists.");
+		error("list_file", "File Error", trf("File \"%s\" not exists.", path));
 		return false;
 	}
 	if
@@ -1885,7 +1885,7 @@ bool e2db_parser::list_file(string path)
 		(std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
 	)
 	{
-		error("list_file", "File Error", "File \"" + path + "\" is not readable.");
+		error("list_file", "File Error", trf("File \"%s\" is not readable.", path));
 		return false;
 	}
 
@@ -1903,7 +1903,7 @@ bool e2db_parser::list_file(string path)
 			(std::filesystem::status(entry).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
 		)
 		{
-			error("list_file", "File Error", "File \"" + path + "\" is not readable.");
+			error("list_file", "File Error", trf("File \"%s\" is not readable.", path));
 			return false;
 		}
 

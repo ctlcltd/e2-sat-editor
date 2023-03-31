@@ -77,13 +77,6 @@ void e2db::setup()
 	e2db::CONVERTER_EXTENDED_FIELDS = settings.value("engine/toolsFieldsExtended", false).toBool();
 }
 
-//TODO translation
-void e2db::error(string msg, string optk, string optv)
-{
-	this->::e2se_e2db::e2db::error(msg, optk, optv);
-	QMessageBox::critical(nullptr, QString::fromStdString(optk), QString::fromStdString(optv));
-}
-
 void e2db::didChange()
 {
 	debug("didChange");
@@ -660,6 +653,32 @@ QString e2db::fixUnicodeChars(string str)
 		return QString::fromStdString(str).remove(QRegularExpression("[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{S}\\s]+"));
 	else
 		return QString::fromStdString(str);
+}
+
+string e2db::trs(string str)
+{
+	return tr(str.data()).toStdString();
+}
+
+string e2db::trf(string str, string param)
+{
+	string trstr = tr(str.data()).toStdString();
+	size_t tsize = trstr.length() + param.length();
+	char tstr[tsize];
+	std::snprintf(tstr, tsize, trstr.c_str(), param.c_str());
+	return string (tstr);
+}
+
+void e2db::error(string fn, string optk, string optv)
+{
+	this->::e2se_e2db::e2db::error(fn, tr(optk.data(), "error").toStdString(), optv);
+	QMessageBox::critical(nullptr, tr(optk.data(), "error"), QString(optv.data()));
+}
+
+void e2db::error(string fn, string optk, int optv)
+{
+	this->::e2se_e2db::e2db::error(fn, tr(optk.data(), "error").toStdString(), optv);
+	QMessageBox::critical(nullptr, tr(optk.data(), "error"), QString::number(optv));
 }
 
 }

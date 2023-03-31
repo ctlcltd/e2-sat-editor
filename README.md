@@ -69,6 +69,7 @@ Instructions on how to compile in [INSTALL.md](https://github.com/ctlcltd/e2-sat
 |**scripts**|Utility bash scripts, used to build.|
 |**src**|The main source of this software.|
 |**vendor**|It contains symbolic links to external libraries.|
+|**translations**|Translation source files for gui (Qt).|
 |**workspace**|Utility python scripts, used for emulation: ftp, telnet, webif.|
 
 &nbsp;
@@ -81,7 +82,7 @@ Instructions on how to compile in [INSTALL.md](https://github.com/ctlcltd/e2-sat
 - [x] print and import/export CSV
 - [ ] smart edit userbouquets
 - [ ] cli
-- [ ] basic translations
+- [x] basic translations
 - [ ] multi-windowed gui
 - [ ] extensions and/or scripting
 - [ ] picons support

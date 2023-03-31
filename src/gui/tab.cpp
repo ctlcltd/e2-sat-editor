@@ -483,7 +483,7 @@ bool tab::readFile(string filename)
 	QTimer* timer = nullptr;
 
 	if (statusBarIsVisible())
-		timer = statusBarMessage(tr("Reading from %1 …").arg(QString::fromStdString(filename)));
+		timer = statusBarMessage(tr("Reading from %1 …", "message").arg(filename.data()));
 
 	theme::setWaitCursor();
 	bool readen = this->data->readFile(filename);
@@ -497,9 +497,9 @@ bool tab::readFile(string filename)
 	{
 		tabChangeName();
 
-		error("readFile", "File Error", "Error reading file \"" + filename + "\".");
+		error("readFile", tr("File Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(filename.data()).toStdString());
 
-		errorMessage(tr("File Error"), tr("Error opening files."));
+		errorMessage(tr("File Error", "error"), tr("Error opening files.", "error"));
 
 		return false;
 	}
@@ -535,13 +535,13 @@ void tab::saveFile(bool saveas)
 	}
 	else if (this->data->hasChanged())
 	{
-		bool overwrite = saveQuestion(tr("The file has been modified"), tr("Do you want to save your changes?"));
+		bool overwrite = saveQuestion(tr("The file has been modified", "message"), tr("Do you want to save your changes?", "message"));
 		if (! overwrite)
 			return;
 	}
 	else
 	{
-		bool overwrite = saveQuestion(tr("The file will be overwritten"), tr("Do you want to overwrite it?"));
+		bool overwrite = saveQuestion(tr("The file will be overwritten", "message"), tr("Do you want to overwrite it?", "message"));
 		if (! overwrite)
 			return;
 	}
@@ -559,15 +559,15 @@ void tab::saveFile(bool saveas)
 
 	if (written) {
 		if (statusBarIsVisible())
-			statusBarMessage(tr("Saved to %1").arg(QString::fromStdString(path)));
+			statusBarMessage(tr("Saved to %1", "message").arg(path.data()));
 		else
-			infoMessage(tr("Saved!"));
+			infoMessage(tr("Saved!", "message"));
 	}
 	else
 	{
-		error("saveFile", "File Error", "Error writing file \"" + path + "\".");
+		error("saveFile", tr("File Error", "error").toStdString(), tr("Error writing file \"%1\".", "error").arg(path.data()).toStdString());
 
-		errorMessage(tr("File Error"), tr("Error writing files."));
+		errorMessage(tr("File Error", "error"), tr("Error writing files.", "error"));
 	}
 }
 
@@ -584,7 +584,7 @@ void tab::importFile()
 	// channelBook view
 	if (current == gui::TAB_VIEW::channelBook)
 	{
-		return infoMessage(tr("Nothing to import"), tr("You are in channel book."));
+		return infoMessage(tr("Nothing to import", "message"), tr("You are in channel book.", "message"));
 	}
 
 	paths = gid->importFileDialog(gde);
@@ -600,7 +600,7 @@ void tab::importFile()
 		else
 			fname = paths[0];
 
-		statusBarMessage(tr("Importing from %1 …").arg(QString::fromStdString(fname)));
+		statusBarMessage(tr("Importing from %1 …", "message").arg(fname.data()));
 	}
 
 	theme::setWaitCursor();
@@ -738,7 +738,7 @@ void tab::exportFile()
 	// channelBook view
 	else if (current == gui::TAB_VIEW::channelBook)
 	{
-		return infoMessage(tr("Nothing to export"), tr("You are in channel book."));
+		return infoMessage(tr("Nothing to export", "message"), tr("You are in channel book.", "message"));
 	}
 
 	if (paths.empty())
@@ -773,7 +773,7 @@ void tab::exportFile()
 		}
 		if (dirsize != 0)
 		{
-			bool overwrite = saveQuestion(tr("The destination contains files that will be overwritten."), tr("Do you want to overwrite them?"));
+			bool overwrite = saveQuestion(tr("The destination contains files that will be overwritten.", "message"), tr("Do you want to overwrite them?", "message"));
 			if (! overwrite)
 				return;
 		}
@@ -1252,16 +1252,16 @@ void tab::ftpConnect()
 	if (this->ftph->handleConnection())
 	{
 		if (statusBarIsVisible())
-			statusBarMessage(tr("FTP connected successfully."));
+			statusBarMessage(tr("FTP connected successfully.", "message"));
 		else
-			infoMessage(tr("Successfully connected!"));
+			infoMessage(tr("Successfully connected!", "message"));
 	}
 	else
 	{
 		string hostname = this->ftph->getServerHostname();
-		error("ftpConnect", "FTP Error", "Cannot connect to FTP \"" + hostname + "\".");
+		error("ftpConnect", tr("FTP Error", "error").toStdString(), tr("Cannot connect to FTP \"%1\".", "error").arg(hostname.data()).toStdString());
 
-		errorMessage(tr("FTP Error"), tr("Cannot connect to FTP Server!"));
+		errorMessage(tr("FTP Error", "error"), tr("Cannot connect to FTP Server!", "error"));
 	}
 }
 
@@ -1272,16 +1272,16 @@ void tab::ftpDisconnect()
 	if (this->ftph->closeConnection())
 	{
 		if (statusBarIsVisible())
-			statusBarMessage(tr("FTP disconnected successfully."));
+			statusBarMessage(tr("FTP disconnected successfully.", "message"));
 		else
-			infoMessage(tr("Successfully disconnected!"));
+			infoMessage(tr("Successfully disconnected!", "message"));
 	}
 	else
 	{
 		string hostname = this->ftph->getServerHostname();
-		error("ftpDisconnect", "FTP Error", "Cannot disconnect from FTP \"" + hostname + "\".");
+		error("ftpDisconnect", tr("FTP Error", "error").toStdString(), tr("Cannot disconnect from FTP \"%1\".", "error").arg(hostname.data()).toStdString());
 
-		errorMessage("FTP Error", "Cannot disconnect from FTP Server!");
+		errorMessage(tr("FTP Error", "error"), tr("Cannot disconnect from FTP Server!", "error"));
 	}
 }
 
@@ -1292,9 +1292,9 @@ void tab::ftpUpload()
 	if (! this->ftph->handleConnection())
 	{
 		string hostname = this->ftph->getServerHostname();
-		error("ftpConnect", "FTP Error", "Cannot connect to FTP \"" + hostname + "\".");
+		error("ftpConnect", tr("FTP Error", "error").toStdString(), tr("Cannot connect to FTP \"%1\".", "error").arg(hostname.data()).toStdString());
 
-		return errorMessage(tr("FTP Error"), tr("Cannot connect to FTP Server!"));
+		return errorMessage(tr("FTP Error", "error"), tr("Cannot connect to FTP Server!", "error"));
 	}
 
 	QSettings settings;
@@ -1352,23 +1352,23 @@ void tab::ftpUpload()
 
 	ftih->put_files(ftp_files, [=](const string filename) {
 		if (statusBarIsVisible())
-			statusBarMessage(tr("Uploading file: %1").arg(QString::fromStdString(filename)));
+			statusBarMessage(tr("Uploading file: %1", "message").arg(filename.data()));
 	});
 
 	int files_count = int (files.size());
 
 	//TODO FIX not shown
 	if (statusBarIsVisible())
-		statusBarMessage(tr("Uploaded %n files", "", files_count));
+		statusBarMessage(tr("Uploaded %n files", "message", files_count));
 	else
-		infoMessage("Uploaded!");
+		infoMessage(tr("Uploaded!", "message"));
 
 	if (ftih->cmd_ifreload() || ftih->cmd_tnreload())
 	{
 		if (statusBarIsVisible())
-			statusBarMessage(tr("STB reload done."));
+			statusBarMessage(tr("STB reload done.", "message"));
 		else
-			infoMessage(tr("STB reloaded!"));
+			infoMessage(tr("STB reloaded!", "message"));
 	}
 }
 
@@ -1379,9 +1379,9 @@ void tab::ftpDownload()
 	if (! this->ftph->handleConnection())
 	{
 		string hostname = this->ftph->getServerHostname();
-		error("ftpConnect", "FTP Error", "Cannot connect to FTP \"" + hostname + "\".");
+		error("ftpConnect", tr("FTP Error", "error").toStdString(), tr("Cannot connect to FTP \"%1\".", "error").arg(hostname.data()).toStdString());
 
-		return errorMessage(tr("FTP Error"), tr("Cannot connect to FTP Server!"));
+		return errorMessage(tr("FTP Error", "error"), tr("Cannot connect to FTP Server!", "error"));
 	}
 
 	auto* ftih = this->ftph->ftih;
@@ -1389,7 +1389,7 @@ void tab::ftpDownload()
 
 	unordered_map<string, e2se_ftpcom::ftpcom::ftpcom_file> ftp_files = ftih->get_files([=](const string filename) {
 		if (statusBarIsVisible())
-			statusBarMessage(tr("Downloading file: %1").arg(QString::fromStdString(filename)));
+			statusBarMessage(tr("Downloading file: %1", "message").arg(filename.data()));
 	});
 
 	if (ftp_files.empty())
@@ -1415,7 +1415,7 @@ void tab::ftpDownload()
 
 	//TODO FIX not shown
 	if (statusBarIsVisible())
-		statusBarMessage(tr("Downloaded %n files", "", files_count));
+		statusBarMessage(tr("Downloaded %n files", "message", files_count));
 
 	updateIndex();
 
@@ -1551,7 +1551,7 @@ void tab::loadSeeds()
 		settings.setValue("application/seeds", "");
 
 		//: HTML formattation: text%1text%2text%3 treat them as spaces
-		QMessageBox::information(this->cwid, NULL, tr("For debugging purpose.%1Set application.seeds absolute path under Settings > Advanced tab, then restart the software.%2Source seeds available at:%3").arg("<br><br>").arg("<br><br>").arg("<br>%1").arg(QString("<a href=\"%1\">%1</a>").arg("https://github.com/ctlcltd/e2se-seeds")));
+		QMessageBox::information(this->cwid, NULL, tr("For debugging purpose.%1Set application.seeds absolute path under Settings > Advanced tab, then restart the software.%2Source seeds available at:%3", "message").arg("<br><br>").arg("<br><br>").arg("<br>%1").arg(QString("<a href=\"%1\">%1</a>").arg("https://github.com/ctlcltd/e2se-seeds")));
 	}
 }
 

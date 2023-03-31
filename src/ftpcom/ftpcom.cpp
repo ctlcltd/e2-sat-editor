@@ -43,15 +43,15 @@ void ftpcom::setParameters(ftp_params params)
 	debug("setParameters");
 
 	if (params.user.empty())
-		error("ftpcom", "FTP Error", trw("Missing \"%s\" parameter.", "username"));
+		error("setParameters", "FTP Error", trw("Missing \"%s\" parameter.", "username"));
 	if (params.pass.empty())
-		error("ftpcom", "FTP Error", trw("Missing \"%s\" parameter.", "password"));
+		error("setParameters", "FTP Error", trw("Missing \"%s\" parameter.", "password"));
 	if (params.host.empty())
-		error("ftpcom", "FTP Error", trw("Missing \"%s\" parameter.", "IP address"));
+		error("setParameters", "FTP Error", trw("Missing \"%s\" parameter.", "IP address"));
 	if (! params.ftport)
-		error("ftpcom", "FTP Error", trw("Missing \"%s\" parameter.", "FTP port"));
+		error("setParameters", "FTP Error", trw("Missing \"%s\" parameter.", "FTP port"));
 	if (! params.htport)
-		error("ftpcom", "FTP Error", trw("Missing \"%s\" parameter.", "HTTP port"));
+		error("setParameters", "FTP Error", trw("Missing \"%s\" parameter.", "HTTP port"));
 	if (params.actv)
 		this->actv = true;
 
@@ -62,11 +62,11 @@ void ftpcom::setParameters(ftp_params params)
 	this->pass = params.pass;
 
 	if (params.tpath.empty())
-		error("ftpcom", "FTP Error", trw("Missing \"%s\" path parameter.", "Transponders"));
+		error("setParameters", "FTP Error", trw("Missing \"%s\" path parameter.", "Transponders"));
 	if (params.bpath.empty())
-		error("ftpcom", "FTP Error", trw("Missing \"%s\" path parameter.", "Bouquets"));
+		error("setParameters", "FTP Error", trw("Missing \"%s\" path parameter.", "Bouquets"));
 	if (params.spath.empty())
-		error("ftpcom", "FTP Error", trw("Missing \"%s\" path parameter.", "Services"));
+		error("setParameters", "FTP Error", trw("Missing \"%s\" path parameter.", "Services"));
 
 	this->baset = params.tpath;
 	this->baseb = params.bpath;
@@ -440,19 +440,6 @@ size_t ftpcom::get_content_length_func(void* csi, size_t size, size_t nmemb, voi
 	return relsize;
 }
 
-string ftpcom::trs(string str)
-{
-	return str;
-}
-
-string ftpcom::trw(string str, string param)
-{
-	size_t tsize = str.size() + param.size();
-	char tstr[tsize];
-	std::snprintf(tstr, tsize, str.c_str(), param.c_str());
-	return string (tstr);
-}
-
 unordered_map<string, ftpcom::ftpcom_file> ftpcom::get_files(std::function<void(const string filename)> func)
 {
 	debug("get_files");
@@ -630,6 +617,19 @@ bool ftpcom::cmd_tnreload()
 	reset(csh, rsh);
 
 	return true;
+}
+
+string ftpcom::trs(string str)
+{
+	return str;
+}
+
+string ftpcom::trw(string str, string param)
+{
+	size_t tsize = str.size() + param.size();
+	char tstr[tsize];
+	std::snprintf(tstr, tsize, str.c_str(), param.c_str());
+	return string (tstr);
 }
 
 }

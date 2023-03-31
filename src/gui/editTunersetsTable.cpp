@@ -56,7 +56,7 @@ void editTunersetsTable::layout(QWidget* cwid)
 {
 	this->dialAbstract::layout(cwid);
 
-	QString dtitle = this->state.edit ? tr("Edit Position") : tr("Add Position");
+	QString dtitle = this->state.edit ? tr("Edit Position", "dialog") : tr("Add Position", "dialog");
 	dial->setWindowTitle(dtitle);
 
 	switch (this->state.yx)
@@ -255,14 +255,14 @@ void editTunersetsTable::store()
 	if (dbih->tuners.count(tvid))
 		tvs = dbih->tuners[tvid];
 	else
-		return error("store", "Error", "Tuner settings \"" + to_string(tvid) + "\" not exists.");
+		return error("store", tr("Error", "error").toStdString(), tr("Tuner settings \"%1\" not exists.", "error").arg(tvid).toStdString());
 
 	e2db::tunersets_table tns;
 
 	if (this->state.edit)
 	{
 		if (! tvs.tables.count(tnid))
-			return error("store", "Error", "Tuner settings table \"" + tnid + "\" not exists.");
+			return error("store", tr("Error", "error").toStdString(), tr("Tuner settings table \"%1\" not exists.", "error").arg(tnid.data()).toStdString());
 
 		tns = tvs.tables[tnid];
 	}
@@ -338,10 +338,10 @@ void editTunersetsTable::retrieve()
 	if (dbih->tuners.count(tvid))
 		tvs = dbih->tuners[tvid];
 	else
-		return error("retrieve", "Error", "Tuner settings \"" + to_string(tvid) + "\" not exists.");
+		return error("retrieve", tr("Error", "error").toStdString(), tr("Tuner settings \"%1\" not exists.", "error").arg(tvid).toStdString());
 
 	if (! tvs.tables.count(tnid))
-		return error("retrieve", "Error", "Tuner settings table \"" + tnid + "\" not exists.");
+		return error("retrieve", tr("Error", "error").toStdString(), tr("Tuner settings table \"%1\" not exists.", "error").arg(tnid.data()).toStdString());
 
 	e2db::tunersets_table tns = tvs.tables[tnid];
 

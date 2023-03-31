@@ -355,7 +355,7 @@ void transpondersView::addTransponder()
 	if (dbih->db.transponders.count(txid))
 		debug("addTransponder", "txid", txid);
 	else
-		return error("addTransponder", "Error", "Missing transponder key \"" + txid + "\".");
+		return error("addTransponder", tr("Error", "error").toStdString(), tr("Missing transponder key \"%1\".", "error").arg(txid.data()).toStdString());
 
 	list->header()->setSectionsClickable(false);
 	list->setDragEnabled(false);
@@ -416,7 +416,7 @@ void transpondersView::editTransponder()
 	if (dbih->db.transponders.count(txid))
 		debug("editTransponder", "txid", txid);
 	else
-		return error("editTransponder", "txid", "Transponder \"" + txid + "\" not exists.");
+		return error("editTransponder", tr("Error", "error").toStdString(), tr("Transponder \"%1\" not exists.", "error").arg(txid.data()).toStdString());
 
 	e2se_gui::editTransponder* edit = new e2se_gui::editTransponder(this->data);
 	edit->setEditId(txid);
@@ -427,7 +427,7 @@ void transpondersView::editTransponder()
 	if (dbih->db.transponders.count(nw_txid))
 		debug("editTransponder", "new txid", nw_txid);
 	else
-		return error("editTransponder", "new txid", "Missing transponder key \"" + nw_txid + "\".");
+		return error("editTransponder", tr("Error", "error").toStdString(), tr("Missing transponder key \"%1\".", "error").arg(nw_txid.data()).toStdString());
 
 	e2db::transponder tx = dbih->db.transponders[nw_txid];
 
@@ -649,7 +649,7 @@ void transpondersView::putListItems(vector<QString> items)
 		}
 		else
 		{
-			error("putListItems", "Error", "Not a valid data format.");
+			error("putListItems", tr("Error", "error").toStdString(), tr("Not a valid data format.", "error").toStdString());
 
 			break;
 		}

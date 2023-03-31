@@ -54,7 +54,7 @@ void editTunersets::layout(QWidget* cwid)
 {
 	this->dialAbstract::layout(cwid);
 
-	QString dtitle = tr("Edit Settings");
+	QString dtitle = tr("Edit Settings", "dialog");
 	dial->setWindowTitle(dtitle);
 
 	QGroupBox* dtl0 = new QGroupBox;
@@ -96,7 +96,7 @@ void editTunersets::store()
 	if (this->state.edit)
 	{
 		if (! dbih->tuners.count(tvid))
-			return error("store", "Error", "Tuner settings \"" + to_string(tvid) + "\" not exists.");
+			return error("store", tr("Error", "error").toStdString(), tr("Tuner settings \"%1\" not exists.", "error").arg(tvid).toStdString());
 
 		tvs = dbih->tuners[tvid];
 	}
@@ -167,7 +167,7 @@ void editTunersets::retrieve()
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->tuners.count(tvid))
-		return error("retrieve", "Error", "Tuner settings \"" + to_string(tvid) + "\" not exists.");
+		return error("retrieve", tr("Error", "error").toStdString(), tr("Tuner settings \"%1\" not exists.", "error").arg(tvid).toStdString());
 
 	e2db::tunersets tvs = dbih->tuners[tvid];
 

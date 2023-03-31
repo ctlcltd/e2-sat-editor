@@ -533,7 +533,7 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 			}
 			else
 			{
-				error("make_userbouquet", "Maker Error", "Missing channel reference \"" + x.second + "\".");
+				error("make_userbouquet", "Maker Error", trf("Missing channel reference \"%s\".", x.second));
 			}
 		}
 		ss << dec;
@@ -1142,7 +1142,7 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 			{
 				if (! chref.marker)
 				{
-					error("make_bouquets_xml", "Maker Error", "Missing channel reference \"" + x.second + "\".");
+					error("make_bouquets_xml", "Maker Error", trf("Missing channel reference \"%s\".", x.second));
 				}
 			}
 		}
@@ -1302,7 +1302,7 @@ bool e2db_maker::push_file(string path)
 	{
 		if (! OVERWRITE_FILE)
 		{
-			error("push_file", "File Error", "File \"" + path + "\" already exists.");
+			error("push_file", "File Error", trf("File \"%s\" already exists.", path));
 			return false;
 		}
 	}
@@ -1316,7 +1316,7 @@ bool e2db_maker::push_file(string path)
 		(std::filesystem::status(path).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
 	)
 	{
-		error("push_file", "File Error", "File \"" + path + "\" is not writable.");
+		error("push_file", "File Error", trf("File \"%s\" is not writable.", path));
 		return false;
 	}
 	for (auto & o: this->e2db_out)
@@ -1328,7 +1328,7 @@ bool e2db_maker::push_file(string path)
 
 		if (! OVERWRITE_FILE && std::filesystem::exists(fpath))
 		{
-			error("push_file", "File Error", "File \"" + fpath + "\" already exists.");
+			error("push_file", "File Error", trf("File \"%s\" already exists.", fpath));
 			return false;
 		}
 		if
@@ -1337,7 +1337,7 @@ bool e2db_maker::push_file(string path)
 			(std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
 		)
 		{
-			error("push_file", "File Error", "File \"" + fpath + "\" is not writable.");
+			error("push_file", "File Error", trf("File \"%s\" is not writable.", fpath));
 			return false;
 		}
 

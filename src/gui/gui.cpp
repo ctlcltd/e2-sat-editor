@@ -49,11 +49,24 @@ gui::gui(int argc, char* argv[])
 	//TODO FIX locale warning wrong detected as US-ASCII [Qt6] [Xcode] [macOS]
 	this->mroot = new QApplication(argc, argv);
 	std::setlocale(LC_NUMERIC, "C");
+
 	mroot->setOrganizationName("e2 SAT Editor Team");
 	mroot->setOrganizationDomain("e2se.org");
 	mroot->setApplicationName("e2-sat-editor");
 	mroot->setApplicationVersion("0.5");
+
 	mroot->connect(mroot, &QApplication::focusChanged, [=]() { this->windowChanged(); });
+
+	QString appPath = mroot->applicationDirPath();
+	if (appPath.contains("/src"))
+		appPath = appPath.sliced(0, appPath.indexOf("/src"));
+#ifdef Q_OS_MACOS
+	if (appPath.contains("/e2 SAT Editor.app"))
+		appPath = appPath.sliced(0, appPath.indexOf("/e2 SAT Editor.app"));
+#endif
+
+	// portable QSettings
+	// QSettings::setPath(QSettings::IniFormat, QSettings::UserScope, appPath);
 
 	if (QSettings().value("settings/reset", false).toBool())
 		resetSettings();
@@ -61,6 +74,15 @@ gui::gui(int argc, char* argv[])
 		updateSettings();
 	else
 		initSettings();
+
+	// i18n
+	QTranslator translator;
+	if (translator.load(QLocale::system(), "e2se", "_", QString(appPath).append("/res/locale")))
+	{
+		debug("gui", "language", translator.language().toStdString());
+
+		QCoreApplication::installTranslator(&translator);
+	}
 
 	this->mwid = new QWidget;
 	mwid->setWindowTitle("e2 SAT Editor");
@@ -509,7 +531,7 @@ int gui::newTab(string filename)
 	ttab->viewMain();
 
 	bool read = ! filename.empty();
-	QString ttname = tr("Untitled");
+	QString ttname = tr("Untitled", "tab");
 	int index = twid->addTab(ttab->widget, ttname);
 	int count = index;
 
@@ -526,7 +548,7 @@ int gui::newTab(string filename)
 	{
 		if (! ttab->readFile(filename))
 		{
-			error("newTab", "Error", "Error reading file \"" + filename + "\".");
+			error("newTab", tr("Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(filename.data()).toStdString());
 
 			twid->removeTab(index);
 			delete ttmenu[ttid];
@@ -567,7 +589,7 @@ int gui::openTab(TAB_VIEW view, int arg)
 
 	if (current == nullptr)
 	{
-		error("openTab", "Error", "Missing current tab reference.");
+		error("openTab", tr("Error", "error").toStdString(), tr("Missing current tab reference.", "error").toStdString());
 		return -1;
 	}
 	else if (current->isChild())
@@ -603,24 +625,24 @@ int gui::openTab(TAB_VIEW view, int arg)
 	switch (view)
 	{
 		case TAB_VIEW::main:
-			error("openTab", "Error", "Missing parent tab for tab reference \"" + to_string(ttid) + "\".");
+			error("openTab", tr("Error", "error").toStdString(), tr("Missing parent tab for tab reference \"%1\".", "error").arg(ttid).toStdString());
 			delete ttab;
 			return -1;
 		break;
 		case TAB_VIEW::transponders:
 			ttab->viewTransponders(parent);
 			tticon = QIcon(theme::icon("transponders-view", theme::icon_highlight));
-			ttname = tr("%1 - %2", "tab").arg(ttname).arg(tr("Edit transponders", "tab"));
+			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit transponders", "tab"));
 		break;
 		case TAB_VIEW::tunersets:
 			ttab->viewTunersets(parent, arg);
 			tticon = QIcon(theme::icon("tunersets-view", theme::icon_highlight));
-			ttname = tr("%1 - %2", "tab").arg(ttname).arg(tr("Edit settings", "tab"));
+			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit settings", "tab"));
 		break;
 		case TAB_VIEW::channelBook:
 			ttab->viewChannelBook(parent);
 			tticon = QIcon(theme::icon("channelbook-view", theme::icon_highlight));
-			ttname = tr("%1 - %2", "tab").arg(ttname).arg(tr("Channel book", "tab"));
+			ttname = QString("%1 - %2").arg(ttname).arg(tr("Channel book", "tab"));
 		break;
 	}
 
@@ -651,7 +673,7 @@ void gui::closeTab(int index)
 
 	if (! ttabs.count(ttid))
 	{
-		return error("closeTab", "Error", "Missing tab reference \"" + to_string(ttid) + "\".");
+		return error("closeTab", tr("Error", "error").toStdString(), tr("Missing tab reference \"%1\".", "error").arg(ttid).toStdString());
 	}
 
 	tab* current = ttabs[ttid];
@@ -793,7 +815,7 @@ void gui::tabChangeName(int ttid, string filename)
 
 	if (! ttabs.count(ttid))
 	{
-		return error("tabChangeName", "Error", "Missing tab reference \"" + to_string(ttid) + "\".");
+		return error("tabChangeName", tr("Error", "error").toStdString(), tr("Missing tab reference \"%1\".", "error").arg(ttid).toStdString());
 	}
 
 	tab* ttab = ttabs[ttid];
@@ -801,7 +823,7 @@ void gui::tabChangeName(int ttid, string filename)
 	int count = index;
 	int v = ttab->getTabView();
 
-	QString ttname = tr("Untitled");
+	QString ttname = tr("Untitled", "tab");
 
 	if (ttab->isChild())
 	{
@@ -836,13 +858,13 @@ void gui::tabChangeName(int ttid, string filename)
 	switch (v)
 	{
 		case TAB_VIEW::transponders:
-			ttname = tr("%1 - %2", "tab").arg(ttname).arg(tr("Edit transponders", "tab"));
+			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit transponders", "tab"));
 		break;
 		case TAB_VIEW::tunersets:
-			ttname = tr("%1 - %2", "tab").arg(ttname).arg(tr("Edit settings", "tab"));
+			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit settings", "tab"));
 		break;
 		case TAB_VIEW::channelBook:
-			ttname = tr("%1 - %2", "tab").arg(ttname).arg(tr("Channel book", "tab"));
+			ttname = QString("%1 - %2").arg(ttname).arg(tr("Channel book", "tab"));
 		break;
 	}
 
@@ -856,7 +878,7 @@ string gui::openFileDialog()
 {
 	debug("openFileDialog");
 
-	QString caption = tr("Select data folder");
+	QString caption = tr("Select data folder", "file-dialog");
 
 	string path;
 
@@ -878,7 +900,7 @@ string gui::saveFileDialog(string filename)
 {
 	debug("saveFileDialog", "filename", filename);
 
-	QString caption = tr("Select where to save");
+	QString caption = tr("Select where to save", "file-dialog");
 
 	string path;
 
@@ -899,7 +921,7 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 {
 	debug("importFileDialog");
 
-	QString caption = tr("Select one or more files to open");
+	QString caption = tr("Select one or more files to open", "file-dialog");
 	QStringList opts;
 	QFileDialog::FileMode fmode = QFileDialog::ExistingFiles;
 	switch (gde)
@@ -976,7 +998,7 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& bit)
 {
 	debug("exportFileDialog", "filename", filename);
 
-	QString caption = tr("Select where to save");
+	QString caption = tr("Select where to save", "file-dialog");
 	QStringList opts;
 	switch (gde)
 	{
@@ -1146,9 +1168,9 @@ void gui::setStatusBar(status msg)
 		if (msg.update)
 		{
 			if (msg.counters[COUNTER::n_bouquet])
-				content.append(tr("%1: %2", "status-bar").arg(tr("Channels", "status-bar")).arg(msg.counters[COUNTER::n_bouquet]));
+				content.append(QString(QApplication::layoutDirection() == Qt::RightToLeft ? "%2 :%1" : "%1: %2").arg(tr("Channels", "status-bar")).arg(msg.counters[COUNTER::n_bouquet]));
 			if (! msg.curr.empty())
-				content.append(tr("%1: %2", "status-bar").arg(tr("Bouquet", "status-bar")).arg(QString::fromStdString(msg.curr)));
+				content.append(QString(QApplication::layoutDirection() == Qt::RightToLeft ? "%2 :%1" : "%1: %2").arg(tr("Bouquet", "status-bar")).arg(msg.curr.data()));
 
 			if (QApplication::layoutDirection() == Qt::RightToLeft)
 				std::reverse(content.begin(), content.end());
@@ -1156,10 +1178,10 @@ void gui::setStatusBar(status msg)
 		}
 		else
 		{
-			content.append(tr("%1: %2", "status-bar").arg(tr("TV", "status-bar")).arg(msg.counters[COUNTER::n_tv]));
-			content.append(tr("%1: %2", "status-bar").arg(tr("Radio", "status-bar")).arg(msg.counters[COUNTER::n_radio]));
-			content.append(tr("%1: %2", "status-bar").arg(tr("Data", "status-bar")).arg(msg.counters[COUNTER::n_data]));
-			content.append(tr("%1: %2", "status-bar").arg(tr("Total", "status-bar")).arg(msg.counters[COUNTER::n_services]));
+			content.append(QString(QApplication::layoutDirection() == Qt::RightToLeft ? "%2 :%1" : "%1: %2").arg(tr("TV", "status-bar")).arg(msg.counters[COUNTER::n_tv]));
+			content.append(QString(QApplication::layoutDirection() == Qt::RightToLeft ? "%2 :%1" : "%1: %2").arg(tr("Radio", "status-bar")).arg(msg.counters[COUNTER::n_radio]));
+			content.append(QString(QApplication::layoutDirection() == Qt::RightToLeft ? "%2 :%1" : "%1: %2").arg(tr("Data", "status-bar")).arg(msg.counters[COUNTER::n_data]));
+			content.append(QString(QApplication::layoutDirection() == Qt::RightToLeft ? "%2 :%1" : "%1: %2").arg(tr("Total", "status-bar")).arg(msg.counters[COUNTER::n_services]));
 
 			if (QApplication::layoutDirection() == Qt::RightToLeft)
 				std::reverse(content.begin(), content.end());
@@ -1168,7 +1190,7 @@ void gui::setStatusBar(status msg)
 	}
 	else if (msg.view == TAB_VIEW::transponders)
 	{
-		content.append(tr("%1: %2", "status-bar").arg(tr("Total", "status-bar").arg(msg.counters[COUNTER::n_transponders])));
+		content.append(QString(QApplication::layoutDirection() == Qt::RightToLeft ? "%2 :%1" : "%1: %2").arg(tr("Total", "status-bar")).arg(msg.counters[COUNTER::n_transponders]));
 
 		sbwidl->setText("");
 		sbwidr->setText(content.join(separator));
@@ -1178,9 +1200,9 @@ void gui::setStatusBar(status msg)
 		if (msg.update)
 		{
 			if (msg.counters[COUNTER::n_position])
-				content.append(tr("%1: %2", "status-bar").arg(tr("Transponders", "status-bar").arg(msg.counters[COUNTER::n_position])));
+				content.append(QString(QApplication::layoutDirection() == Qt::RightToLeft ? "%2 :%1" : "%1: %2").arg(tr("Transponders", "status-bar")).arg(msg.counters[COUNTER::n_position]));
 			if (! msg.curr.empty())
-				content.append(tr("%1: %2", "status-bar").arg(tr("Position", "status-bar")).arg(QString::fromStdString(msg.curr)));
+				content.append(QString(QApplication::layoutDirection() == Qt::RightToLeft ? "%2 :%1" : "%1: %2").arg(tr("Position", "status-bar")).arg(msg.curr.data()));
 
 			if (QApplication::layoutDirection() == Qt::RightToLeft)
 				std::reverse(content.begin(), content.end());
@@ -1188,7 +1210,7 @@ void gui::setStatusBar(status msg)
 		}
 		else
 		{
-			content.append(tr("%1: %2", "status-bar").arg(tr("Total", "status-bar")).arg(msg.counters[COUNTER::n_transponders]));
+			content.append(QString(QApplication::layoutDirection() == Qt::RightToLeft ? "%2 :%1" : "%1: %2").arg(tr("Total", "status-bar")).arg(msg.counters[COUNTER::n_transponders]));
 
 			sbwidr->setText(content.join(separator));
 		}

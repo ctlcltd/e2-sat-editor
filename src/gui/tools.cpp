@@ -76,9 +76,9 @@ void tools::inspector()
 
 	QComboBox* dtft = new QComboBox;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
-	dtft->setPlaceholderText(QString("<%1>").arg(tr("Filter", "tools")));
+	dtft->setPlaceholderText(QString("<%1>").arg(tr("Filter", "ui")));
 #endif
-	dtft->addItem(tr("All Log", "tools"));
+	dtft->addItem(tr("All Log"));
 	dtft->addItem("Debug");
 	dtft->addItem("Info");
 	dtft->addItem("Error");
@@ -169,7 +169,7 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 
 	vector<string> paths;
 
-	paths = this->gid->importFileDialog(gui::GUI_DPORTS::CSV);
+	paths = gid->importFileDialog(gui::GUI_DPORTS::CSV);
 	if (paths.empty())
 		return;
 
@@ -184,7 +184,7 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 		else
 			fname = paths[0];
 
-		tid->statusBarMessage(tr("Importing from %1 …").arg(QString::fromStdString(fname)));
+		tid->statusBarMessage(tr("Importing from %1 …", "message").arg(fname.data()));
 	}
 
 	theme::setWaitCursor();
@@ -203,7 +203,7 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 {
 	debug("exportFileCSV");
 
-	string path = this->gid->exportFileDialog(gui::GUI_DPORTS::CSV, opts.filename);
+	string path = gid->exportFileDialog(gui::GUI_DPORTS::CSV, opts.filename);
 
 	if (path.empty())
 	{
@@ -225,7 +225,7 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 		}
 		if (dirsize != 0)
 		{
-			bool overwrite = tid->saveQuestion(tr("The destination contains files that will be overwritten."), tr("Do you want to overwrite them?"));
+			bool overwrite = tid->saveQuestion(tr("The destination contains files that will be overwritten.", "message"), tr("Do you want to overwrite them?", "message"));
 			if (! overwrite)
 				return;
 		}
@@ -238,7 +238,7 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 	theme::unsetWaitCursor();
 
 	if (tid->statusBarIsVisible())
-		tid->statusBarMessage(tr("Exported to %1").arg(QString::fromStdString(path)));
+		tid->statusBarMessage(tr("Exported to %1").arg(path.data()));
 	else
 		tid->infoMessage(tr("Saved!"));
 }
@@ -247,7 +247,7 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 {
 	debug("exportFileHTML");
 
-	string path = this->gid->exportFileDialog(gui::GUI_DPORTS::HTML, opts.filename);
+	string path = gid->exportFileDialog(gui::GUI_DPORTS::HTML, opts.filename);
 
 	if (path.empty())
 	{
@@ -269,7 +269,7 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 		}
 		if (dirsize != 0)
 		{
-			bool overwrite = tid->saveQuestion(tr("The destination contains files that will be overwritten."), tr("Do you want to overwrite them?"));
+			bool overwrite = tid->saveQuestion(tr("The destination contains files that will be overwritten.", "message"), tr("Do you want to overwrite them?", "message"));
 			if (! overwrite)
 				return;
 		}
@@ -282,9 +282,9 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 	theme::unsetWaitCursor();
 
 	if (tid->statusBarIsVisible())
-		tid->statusBarMessage(tr("Exported to %1").arg(QString::fromStdString(path)));
+		tid->statusBarMessage(tr("Exported to %1", "message").arg(path.data()));
 	else
-		tid->infoMessage(tr("Saved!"));
+		tid->infoMessage(tr("Saved!", "message"));
 }
 
 void tools::destroy()

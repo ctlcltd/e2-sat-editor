@@ -53,10 +53,10 @@ void editBouquet::layout(QWidget* cwid)
 {
 	this->dialAbstract::layout(cwid);
 
-	QString dtitle = this->state.edit ? tr("Edit Bouquet") : tr("Add Bouquet");
+	QString dtitle = this->state.edit ? tr("Edit Bouquet", "dialog") : tr("Add Bouquet", "dialog");
 	dial->setWindowTitle(dtitle);
 
-	QGroupBox* dtl0 = new QGroupBox(tr("Bouquet"));
+	QGroupBox* dtl0 = new QGroupBox(tr("Bouquet", "dialog"));
 	QFormLayout* dtf0 = new QFormLayout;
 	dtf0->setRowWrapPolicy(QFormLayout::WrapAllRows);
 
@@ -115,7 +115,7 @@ void editBouquet::store()
 	if (this->state.edit)
 	{
 		if (! dbih->bouquets.count(bname))
-			return error("store", "Error", "Bouquet \"" + bname + "\" not exists.");
+			return error("store", tr("Error", "error").toStdString(), tr("Bouquet \"%1\" not exists.", "error").arg(bname.data()).toStdString());
 
 		bs = dbih->bouquets[bname];
 	}
@@ -153,7 +153,7 @@ void editBouquet::retrieve()
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->bouquets.count(bname))
-		return error("retrieve", "Error", "Bouquet \"" + bname + "\" not exists.");
+		return error("retrieve", tr("Error", "error").toStdString(), tr("Bouquet \"%1\" not exists.", "error").arg(bname.data()).toStdString());
 
 	e2db::bouquet bs = dbih->bouquets[bname];
 

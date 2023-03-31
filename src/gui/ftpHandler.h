@@ -21,7 +21,7 @@ class ftpHandler : protected e2se::log_factory
 {
 	public:
 		ftpHandler();
-		~ftpHandler();
+		virtual ~ftpHandler();
 		bool openConnection();
 		bool closeConnection();
 		bool handleConnection();

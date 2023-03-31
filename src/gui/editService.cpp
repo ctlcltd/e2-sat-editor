@@ -65,7 +65,7 @@ void editService::layout(QWidget* cwid)
 {
 	this->dialAbstract::layout(cwid);
 
-	QString dtitle = this->state.edit ? tr("Edit Service") : tr("Add Service");
+	QString dtitle = this->state.edit ? tr("Edit Service", "dialog") : tr("Add Service", "dialog");
 	dial->setWindowTitle(dtitle);
 
 	auto* dbih = this->data->dbih;
@@ -87,8 +87,8 @@ void editService::layout(QWidget* cwid)
 
 	dtch->setLayout(dtpage);
 
-	dtwid->addTab(dtch, tr("Service"));
-	dtwid->addTab(dttx, tr("Transponder"));
+	dtwid->addTab(dtch, tr("Service", "dialog"));
+	dtwid->addTab(dttx, tr("Transponder", "dialog"));
 
 	dtform->addWidget(dtwid, 0, 0);
 }
@@ -97,7 +97,7 @@ void editService::serviceLayout()
 {
 	debug("serviceLayout");
 
-	QGroupBox* dtl0 = new QGroupBox(tr("Service"));
+	QGroupBox* dtl0 = new QGroupBox(tr("Service", "dialog"));
 	QFormLayout* dtf0 = new QFormLayout;
 	dtf0->setRowWrapPolicy(QFormLayout::WrapAllRows);
 
@@ -218,7 +218,7 @@ void editService::transponderLayout()
 {
 	debug("transponderLayout");
 
-	QGroupBox* dtl1 = new QGroupBox(tr("Tuner"));
+	QGroupBox* dtl1 = new QGroupBox(tr("Tuner", "dialog"));
 	QFormLayout* dtf1 = new QFormLayout;
 	dtf1->setSpacing(12);
 
@@ -282,7 +282,7 @@ void editService::paramsLayout()
 {
 	debug("paramsLayout");
 
-	QGroupBox* dtl2 = new QGroupBox(tr("Parameters"));
+	QGroupBox* dtl2 = new QGroupBox(tr("Parameters", "dialog"));
 	dtl2->setMinimumWidth(250);
 	QVBoxLayout* dtb20 = new QVBoxLayout;
 
@@ -392,7 +392,7 @@ void editService::paramsLayout()
 	dtf2ad->setValidator(new QIntValidator);
 	platform::osLineEdit(dtf2ad);
 	dtc27->addWidget(dtf2ad);
-	dtc27->addWidget(new QLabel("<small>ms.</small>"));
+	dtc27->addWidget(new QLabel(QString("<small>%1</small>").arg(tr("ms."))));
 
 	QHBoxLayout* dtc28 = new QHBoxLayout;
 	dtf2c->addRow(tr("pcm delay"), dtc28);
@@ -403,7 +403,7 @@ void editService::paramsLayout()
 	dtf2pd->setValidator(new QIntValidator);
 	platform::osLineEdit(dtf2pd);
 	dtc28->addWidget(dtf2pd);
-	dtc28->addWidget(new QLabel("<small>ms.</small>"));
+	dtc28->addWidget(new QLabel(QString("<small>%1</small>").arg(tr("ms."))));
 
 	QHBoxLayout* dtc29 = new QHBoxLayout;
 	dtf2c->addRow(tr("subtitle"), dtc29);
@@ -469,7 +469,8 @@ void editService::paramsLayout()
 	dtf2cd->setMaxLength(255);
 	platform::osLineEdit(dtf2cd);
 	dtf2C->addRow(tr("Card ID flags"), dtf2cd);
-	dtf2C->addRow(new QLabel(tr("<small>Enter them in comma separated values.<br>(eg. C:0100,C:0200,…)</small>")));
+	//: HTML formattation: text%1text treat them as spaces
+	dtf2C->addRow(new QLabel(QString("<small>%1</small>").arg(tr("Enter them in comma separated values.%1(eg. C:0100,C:0200,…)").arg("<br>"))));
 
 	dtw22->setLayout(dtf2C);
 	dtt2->addItem(dtw22, tr("CAIDs"));
@@ -516,7 +517,8 @@ void editService::paramsLayout()
 	dtf2oc->setMaxLength(255);
 	platform::osLineEdit(dtf2oc);
 	dtf2o->addRow(tr("Custom edit flags"), dtf2oc);
-	dtf2o->addRow(new QLabel(tr("<small><b>It will overwrite any previously typed!</b><br>Enter them in comma separated values.<br>(eg. p:ProviderName,c:0100,C:0200,…)</small>")));
+	//: HTML formattation: %1text%2text%3text treat them as spaces
+	dtf2o->addRow(new QLabel(QString("<small>$1</small>").arg(tr("%1It will overwrite any previously typed!%2Enter them in comma separated values.%3(eg. p:ProviderName,c:0100,C:0200,…)")).arg("<b>").arg("</b><br>")));
 
 	dtw24->setLayout(dtf2o);
 	dtt2->addItem(dtw24, tr("Extras"));
@@ -612,7 +614,7 @@ void editService::store()
 	if (this->state.edit)
 	{
 		if (! dbih->db.services.count(chid))
-			return error("store", "Error", "Service \"" + chid + "\" not exists.");
+			return error("store", tr("Error", "error").toStdString(), tr("Service \"%1\" not exists.", "error").arg(chid.data()).toStdString());
 
 		ch = dbih->db.services[chid];
 	}
@@ -758,7 +760,7 @@ void editService::retrieve()
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->db.services.count(chid))
-		return error("retrieve", "Error", "Service \"" + chid + "\" not exists.");
+		return error("retrieve", tr("Error", "error").toStdString(), tr("Service \"%1\" not exists.", "error").arg(chid.data()).toStdString());
 
 	e2db::service ch = dbih->db.services[chid];
 	e2db::transponder tx;

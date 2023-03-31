@@ -47,12 +47,12 @@ void e2db::import_file(vector<string> paths)
 		if (! std::filesystem::exists(path))
 		{
 			if (merge) delete dst;
-			return error("import_file", "File Error", "File \"" + path + "\" not exists.");
+			return error("import_file", "File Error", trf("File \"%s\" not exists.", path));
 		}
 		if (! std::filesystem::is_regular_file(path) && ! std::filesystem::is_directory(path))
 		{
 			if (merge) delete dst;
-			return error("import_file", "File Error", "File \"" + path + "\" is not a valid file.");
+			return error("import_file", "File Error", trf("File \"%s\" is not a valid file.", path));
 		}
 		if
 		(
@@ -61,7 +61,7 @@ void e2db::import_file(vector<string> paths)
 		)
 		{
 			if (merge) delete dst;
-			return error("import_file", "File Error", "File \"" + path + "\" is not readable.");
+			return error("import_file", "File Error", trf("File \"%s\" is not readable.", path));
 		}
 
 		FPORTS fpi = file_type_detect(path);
@@ -335,7 +335,7 @@ void e2db::export_file(FPORTS fpo, string path)
 
 	if (! OVERWRITE_FILE && std::filesystem::exists(fpath))
 	{
-		return error("export_file", "File Error", "File \"" + fpath + "\" already exists.");
+		return error("export_file", "File Error", trf("File \"%s\" already exists.", fpath));
 	}
 	if
 	(
@@ -343,7 +343,7 @@ void e2db::export_file(FPORTS fpo, string path)
 		(std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
 	)
 	{
-		return error("export _file", "File Error", "File \"" + path + "\" is not writable.");
+		return error("export _file", "File Error", trf("File \"%s\" is not writable.", path));
 	}
 
 	ofstream out (fpath);
@@ -417,7 +417,7 @@ void e2db::edit_service(string chid, service& ch)
 	debug("edit_service", "chid", chid);
 
 	if (! db.services.count(chid))
-		return error("edit_service", "Error", "Service \"" + chid + "\" not exists.");
+		return error("edit_service", "Error", trf("Service \"%s\" not exists.", chid));
 
 	char nw_chid[25];
 	char nw_txid[25];
@@ -476,7 +476,7 @@ void e2db::remove_service(string chid)
 	debug("remove_service", "chid", chid);
 
 	if (! db.services.count(chid))
-		return error("remove_service", "Error", "Service \"" + chid + "\" not exists.");
+		return error("remove_service", "Error", trf("Service \"%s\" not exists.", chid));
 
 	service ch = db.services[chid];
 	string kchid = 's' + chid;
@@ -512,7 +512,7 @@ void e2db::edit_bouquet(bouquet& bs)
 	debug("edit_bouquet", "bname", bs.bname);
 
 	if (! bouquets.count(bs.bname))
-		return error("edit_bouquet", "Error", "Bouquet \"" + bs.bname + "\" not exists.");
+		return error("edit_bouquet", "Error", trf("Bouquet \"%s\" not exists.", bs.bname));
 
 	bouquets[bs.bname] = bs;
 }
@@ -522,7 +522,7 @@ void e2db::remove_bouquet(string bname)
 	debug("remove_bouquet", "bname", bname);
 
 	if (! bouquets.count(bname))
-		return error("remove_bouquet", "Error", "Bouquet \"" + bname + "\" not exists.");
+		return error("remove_bouquet", "Error", trf("Bouquet \"%s\" not exists.", bname));
 
 	for (auto it = index["bss"].begin(); it != index["bss"].end(); it++)
 	{
@@ -603,7 +603,7 @@ void e2db::edit_userbouquet(userbouquet& ub)
 	debug("edit_userbouquet", "bname", ub.bname);
 
 	if (! userbouquets.count(ub.bname))
-		return error("edit_userbouquet", "Error", "Userbouquet \"" + ub.bname + "\" not exists.");
+		return error("edit_userbouquet", "Error", trf("Userbouquet \"%s\" not exists.", ub.bname));
 
 	userbouquets[ub.bname] = ub;
 }
@@ -613,7 +613,7 @@ void e2db::remove_userbouquet(string bname)
 	debug("remove_userbouquet", "bname", bname);
 
 	if (! userbouquets.count(bname))
-		return error("remove_userbouquet", "Error", "Userbouquet \"" + bname + "\" not exists.");
+		return error("remove_userbouquet", "Error", trf("Userbouquet \"%s\" not exists.", bname));
 
 	userbouquet ub = userbouquets[bname];
 	bouquet& bs = bouquets[ub.pname];
@@ -669,7 +669,7 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 	debug("add_channel_reference", "chid", chref.chid);
 
 	if (! userbouquets.count(bname))
-		return error("add_channel_reference", "Error", "Userbouquet \"" + bname + "\" not exists.");
+		return error("add_channel_reference", "Error", trf("Userbouquet \"%s\" not exists.", bname));
 
 	userbouquet& ub = userbouquets[bname];
 	service_reference ref;
@@ -695,7 +695,7 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 	else
 	{
 		if (! db.services.count(chref.chid))
-			return error("add_channel_reference", "Error", "Service \"" + chref.chid + "\" not exists.");
+			return error("add_channel_reference", "Error", trf("Service \"%s\" not exists.", chref.chid));
 
 		service ch = db.services[chref.chid];
 
@@ -715,7 +715,7 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 	debug("edit_channel_reference", "chid", chid);
 
 	if (! userbouquets.count(bname))
-		return error("edit_channel_reference", "Error", "Userbouquet \"" + bname + "\" not exists.");
+		return error("edit_channel_reference", "Error", trf("Userbouquet \"%s\" not exists.", bname));
 
 	userbouquet& ub = userbouquets[bname];
 
@@ -724,7 +724,7 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 	if (chref.chid == chid)
 	{
 		if (! chref.marker && ! db.services.count(chref.chid))
-			return error("edit_channel_reference", "Error", "Service \"" + chref.chid + "\" not exists.");
+			return error("edit_channel_reference", "Error", trf("Service \"%s\" not exists.", chref.chid));
 
 		ub.channels[chref.chid] = chref;
 	}
@@ -735,7 +735,7 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 		if (! chref.marker)
 		{
 			if (! db.services.count(chref.chid))
-				return error("edit_channel_reference", "Error", "Service \"" + chref.chid + "\" not exists.");
+				return error("edit_channel_reference", "Error", trf("Service \"%s\" not exists.", chref.chid));
 
 			service ch = db.services[chref.chid];
 
@@ -777,7 +777,7 @@ void e2db::remove_channel_reference(channel_reference chref, string bname)
 	debug("remove_channel_reference", "chref.chid", chref.chid);
 
 	if (! userbouquets.count(bname))
-		return error("remove_channel_reference", "Error", "Userbouquet \"" + bname + "\" not exists.");
+		return error("remove_channel_reference", "Error", trf("Userbouquet \"%s\" not exists.", bname));
 
 	userbouquet& ub = userbouquets[bname];
 	int idx = -1;
@@ -794,7 +794,7 @@ void e2db::remove_channel_reference(channel_reference chref, string bname)
 	}
 
 	if (! userbouquets[bname].channels.count(chid))
-		return error("remove_channel_reference", "Error", "Channel reference \"" + chid + "\" not exists.");
+		return error("remove_channel_reference", "Error", trf("Channel reference \"%s\" not exists.", chid));
 
 	vector<pair<int, string>>::iterator pos;
 	for (auto it = index[bname].begin(); it != index[bname].end(); it++)
@@ -864,9 +864,9 @@ void e2db::remove_channel_reference(string chid, string bname)
 	debug("remove_channel_reference", "chid", chid);
 
 	if (! userbouquets.count(bname))
-		return error("remove_channel_reference", "Error", "Userbouquet \"" + bname + "\" not exists.");
+		return error("remove_channel_reference", "Error", trf("Userbouquet \"%s\" not exists.", bname));
 	if (! userbouquets[bname].channels.count(chid))
-		return error("remove_channel_reference", "Error", "Channel reference \"" + chid + "\" not exists.");
+		return error("remove_channel_reference", "Error", trf("Channel reference \"%s\" not exists.", chid));
 
 	channel_reference chref = userbouquets[bname].channels[chid];
 	userbouquet& ub = userbouquets[bname];
@@ -1005,7 +1005,7 @@ void e2db::remove_tunersets_table(string tnid, tunersets tv)
 	debug("remove_tunersets_table", "tnid", tnid);
 
 	if (! tv.tables.count(tnid))
-		return error("remove_tunersets_table", "Error", "Tunersets table \"" + tnid + "\" not exists.");
+		return error("remove_tunersets_table", "Error", trf("Tunersets table \"%s\" not exists.", tnid));
 
 	tunersets_table tn = tv.tables[tnid];
 
@@ -1080,7 +1080,7 @@ void e2db::set_service_parentallock(string chid)
 	debug("set_service_parentallock", "chid", chid);
 
 	if (! db.services.count(chid))
-		return error("set_service_parentallock", "Error", "Service \"" + chid + "\" not exists.");
+		return error("set_service_parentallock", "Error", trf("Service \"%s\" not exists.", chid));
 
 	service& ch = db.services[chid];
 	ch.locked = true;
@@ -1091,7 +1091,7 @@ void e2db::unset_service_parentallock(string chid)
 	debug("unset_service_parentallock", "chid", chid);
 
 	if (! db.services.count(chid))
-		return error("unset_service_parentallock", "Error", "Service \"" + chid + "\" not exists.");
+		return error("unset_service_parentallock", "Error", trf("Service \"%s\" not exists.", chid));
 
 	service& ch = db.services[chid];
 	ch.locked = false;
@@ -1102,7 +1102,7 @@ void e2db::set_userbouquet_parentallock(string bname)
 	debug("set_userbouquet_parentallock", "bname", bname);
 
 	if (! userbouquets.count(bname))
-		return error("set_userbouquet_parentallock", "Error", "Userbouquet \"" + bname + "\" not exists.");
+		return error("set_userbouquet_parentallock", "Error", trf("Userbouquet \"%s\" not exists.", bname));
 
 	userbouquet& ub = userbouquets[bname];
 	ub.locked = true;
@@ -1113,7 +1113,7 @@ void e2db::unset_userbouquet_parentallock(string bname)
 	debug("unset_userbouquet_parentallock", "bname", bname);
 
 	if (! userbouquets.count(bname))
-		return error("unset_userbouquet_parentallock", "Error", "Userbouquet \"" + bname + "\" not exists.");
+		return error("unset_userbouquet_parentallock", "Error", trf("Userbouquet \"%s\" not exists.", bname));
 
 	userbouquet& ub = userbouquets[bname];
 	ub.locked = false;

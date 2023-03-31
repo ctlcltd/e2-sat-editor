@@ -139,7 +139,7 @@ void printable::documentServices(int stype)
 	else
 	{
 		headname = QString("%1 <i>%2</i>").arg(QString::fromStdString(filename)).arg(QString::fromStdString(xname));
-		footname = QString("%1 %2").arg(QString::fromStdString(filename)), tr("(extract)", "printable");
+		footname = QString("%1 %2").arg(QString::fromStdString(filename)), tr("(extract)");
 	}
 
 	html_page page;
@@ -216,11 +216,11 @@ void printable::pageHeader(html_page& page, string filename, DOC_VIEW view)
 	page.header += "<div class=\"header\">";
 	if (view == DOC_VIEW::view_index)
 	{
-		name = tr("Settings", "printable");
+		name = tr("Settings");
 	}
 	else if (view == DOC_VIEW::view_tunersets)
 	{
-		name = tr("Tuner Settings", "printable");
+		name = tr("Tuner Settings");
 	}
 	else if (view == DOC_VIEW::view_bouquets)
 	{
@@ -240,7 +240,7 @@ void printable::pageHeader(html_page& page, string filename, DOC_VIEW view)
 	}
 	else
 	{
-		name = tr("Services List", "printable");
+		name = tr("Services List");
 	}
 	page.header += "<h1>" + name + "</h1>";
 	page.header += "<h3>" + QString::fromStdString(filename) + "</h3>";
@@ -255,9 +255,9 @@ void printable::pageFooter(html_page& page, string filename, DOC_VIEW view)
 	QString timestamp = QString::fromStdString(dbih->editor_timestamp());
 
 	page.footer += "<div class=\"footer\">";
-	page.footer += QString("%1: <b>%2</b><br>").arg(tr("File", "printable")).arg(QString::fromStdString(filename));
-	page.footer += QString("%1: <b>%2</b><br>").arg(tr("Editor", "printable")).arg(editor);
-	page.footer += QString("%1: <b>%2</b>").arg(tr("Datetime", "printable")).arg(timestamp);
+	page.footer += QString("%1: <b>%2</b><br>").arg(tr("File")).arg(QString::fromStdString(filename));
+	page.footer += QString("%1: <b>%2</b><br>").arg(tr("Editor")).arg(editor);
+	page.footer += QString("%1: <b>%2</b>").arg(tr("Datetime")).arg(timestamp);
 	page.footer += "</div>";
 }
 
@@ -268,12 +268,12 @@ void printable::pageBodyIndexList(html_page& page, vector<string> paths)
 	auto* dbih = this->data->dbih;
 
 	page.body += "<div class=\"toc\">";
-	page.body += "<h4>" + tr("Table of Contents", "printable") + "</h4>";
+	page.body += "<h4>" + tr("Table of Contents") + "</h4>";
 	page.body += "<table>";
 	page.body += "<thead>";
 	page.body += "<tr>";
-	page.body += "<th>" + tr("Content", "printable") + "</th>";
-	page.body += "<th>" + tr("Type", "printable") + "</th>";
+	page.body += "<th>" + tr("Content") + "</th>";
+	page.body += "<th>" + tr("Type") + "</th>";
 	page.body += "</tr>";
 
 	page.body += "<tbody>";
@@ -318,7 +318,7 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 	if (dbih->index.count(bname))
 		debug("pageBodyChannelList", "bname", bname);
 	else
-		error("pageBodyChannelList", "Error", "Missing index key \"" + bname + "\".");
+		error("pageBodyChannelList", tr("Error", "error").toStdString(), tr("Missing index key \"%1\".", "error").arg(bname.data()).toStdString());
 	debug("pageBodyChannelList", "view", view);
 
 	QString cssname = view == DOC_VIEW::view_bouquets ? "userbouquet" : "services";
@@ -477,7 +477,7 @@ void printable::pageBodyBouquetList(html_page& page, string bname)
 	if (dbih->bouquets.count(bname))
 		debug("pageBodyBouquetList", "bname", bname);
 	else
-		error("pageBodyBouquetList", "Error", "Missing index key \"" + bname + "\".");
+		error("pageBodyBouquetList", tr("Error", "error").toStdString(), tr("Missing index key \"%1\".", "error").arg(bname.data()).toStdString());
 
 	e2db::bouquet gboq = dbih->bouquets[bname];
 	QString btype;
@@ -545,7 +545,7 @@ void printable::pageBodyTunersetsList(html_page& page, int ytype)
 		QString pos = QString::fromStdString(ppos);
 
 		page.body += "<div class=\"transponder\">";
-		page.body += "<h4>" + tr("Transponders", "printable") + "</h4>";
+		page.body += "<h4>" + tr("Transponders") + "</h4>";
 		page.body += "<h2>" + tnname + "</h2>";
 		if (ytype == e2db::YTYPE::satellite)
 			page.body += QString("<p>%1: <b>%2</b></p>").arg(tr("Position")).arg(pos);

@@ -104,7 +104,7 @@ void tunersetsView::layout()
 			tfrm->setTitle(tr("Positions"));
 		break;
 		default:
-			error("layout", "Error", "Unknown tuner settings type.");
+			error("layout", tr("Error", "error").toStdString(), tr("Unknown tuner settings type.", "error").toStdString());
 	}
 	lfrm->setTitle(tr("Transponders"));
 
@@ -148,7 +148,7 @@ void tunersetsView::layout()
 	TreeProxyStyle* list_style = new TreeProxyStyle;
 	list->setStyle(list_style);
 
-	tree->setStyleSheet(tr("QTreeWidget::item { padding: 6px 0 }"));
+	tree->setStyleSheet("QTreeWidget::item { padding: 6px 0 }");
 	list->setStyleSheet("QTreeWidget::item { padding: 6px 0 }");
 
 #ifdef Q_OS_MAC
@@ -425,7 +425,7 @@ void tunersetsView::populate()
 	if (tvs.tables.count(tnid))
 		debug("populate", "current", tnid);
 	else
-		error("populate", "Error", "Missing tuner settings table key \"" + tnid + "\".");
+		error("populate", tr("Error", "error").toStdString(), tr("Missing tuner settings table key \"%1\".", "error").arg(tnid.data()).toStdString());
 
 	e2db::tunersets_table tns = tvs.tables[tnid];
 
@@ -626,7 +626,7 @@ void tunersetsView::addPosition()
 	if (dbih->tuners[tvid].tables.count(tnid))
 		debug("addPosition", "tnid", tnid);
 	else
-		return error("addPosition", "Error", "Missing tuner setting table key \"" + tnid + "\".");
+		return error("addPosition", tr("Error", "error").toStdString(), tr("Missing tuner setting table key \"%1\".", "error").arg(tnid.data()).toStdString());
 
 	tree->header()->setSectionsClickable(false);
 	tree->setDragEnabled(false);
@@ -681,12 +681,12 @@ void tunersetsView::editPosition()
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->tuners.count(tvid))
-		return error("editPosition", "Error", "Missing tuner settings key \"" + to_string(tvid) + "\".");
+		return error("editPosition", tr("Error", "error").toStdString(), tr("Missing tuner settings key \"%1\".", "error").arg(tvid).toStdString());
 
 	if (dbih->tuners[tvid].tables.count(tnid))
 		debug("editPosition", "tnid", tnid);
 	else
-		return error("editPosition", "Error", "Tuner settings table \"" + tnid + "\" not exists.");
+		return error("editPosition", tr("Error", "error").toStdString(), tr("Tuner settings table \"%1\" not exists.", "error").arg(tnid.data()).toStdString());
 
 	e2se_gui::editTunersetsTable* edit = new e2se_gui::editTunersetsTable(this->data, tvid);
 	edit->setEditId(tnid, tvid);
@@ -697,7 +697,7 @@ void tunersetsView::editPosition()
 	if (dbih->tuners[tvid].tables.count(nw_tnid))
 		debug("editPosition", "new tnid", nw_tnid);
 	else
-		return error("editPosition", "Error", "Missing tuner settings table key \"" + nw_tnid + "\".");
+		return error("editPosition", tr("Error", "error").toStdString(), tr("Missing tuner settings table key \"%1\".", "error").arg(nw_tnid.data()).toStdString());
 
 	e2db::tunersets_table tns = dbih->tuners[tvid].tables[nw_tnid];
 
@@ -720,10 +720,10 @@ void tunersetsView::addTransponder()
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->tuners.count(tvid))
-		return error("addTransponder", "Error", "Missing tuner settings key \"" + to_string(tvid) + "\".");
+		return error("addTransponder", tr("Error", "error").toStdString(), tr("Missing tuner settings key \"%1\".", "error").arg(tvid).toStdString());
 
 	if (! dbih->tuners[tvid].tables.count(tnid))
-		return error("addTransponder", "Error", "Missing tuner settings table key \"" + tnid + "\".");
+		return error("addTransponder", tr("Error", "error").toStdString(), tr("Missing tuner settings table key \"%1\".", "error").arg(tnid.data()).toStdString());
 
 	string trid;
 	e2se_gui::editTunersetsTransponder* add = new e2se_gui::editTunersetsTransponder(this->data, tvid);
@@ -735,7 +735,7 @@ void tunersetsView::addTransponder()
 	if (dbih->tuners[tvid].tables[tnid].transponders.count(trid))
 		debug("addTransponder", "trid", trid);
 	else
-		return error("addTransponder", "Error", "Missing tuner settings transponder key \"" + trid + "\".");
+		return error("addTransponder", tr("Error", "error").toStdString(), tr("Missing tuner settings transponder key \"%1\".", "error").arg(trid.data()).toStdString());
 
 	list->header()->setSectionsClickable(false);
 	list->setDragEnabled(false);
@@ -796,15 +796,15 @@ void tunersetsView::editTransponder()
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->tuners.count(tvid))
-		return error("editTransponder", "Error", "Missing tuner settings key \"" + to_string(tvid) + "\".");
+		return error("editTransponder", tr("Error", "error").toStdString(), tr("Missing tuner settings key \"%1\".", "error").arg(tvid).toStdString());
 
 	if (! dbih->tuners[tvid].tables.count(tnid))
-		return error("editTransponder", "Error", "Missing tuner settings table key \"" + tnid + "\".");
+		return error("editTransponder", tr("Error", "error").toStdString(), tr("Missing tuner settings table key \"%1\".", "error").arg(tnid.data()).toStdString());
 
 	if (dbih->tuners[tvid].tables[tnid].transponders.count(trid))
 		debug("editTransponder", "trid", trid);
 	else
-		return error("editTransponder", "Error", "Tuner settings transponder \"" + trid + "\" not exists.");
+		return error("editTransponder", tr("Error", "error").toStdString(), tr("Tuner settings transponder \"%1\" not exists.", "error").arg(trid.data()).toStdString());
 
 	e2se_gui::editTunersetsTransponder* edit = new e2se_gui::editTunersetsTransponder(this->data, tvid);
 	edit->setEditId(trid, tnid, tvid);
@@ -815,7 +815,7 @@ void tunersetsView::editTransponder()
 	if (dbih->tuners[tvid].tables[tnid].transponders.count(nw_trid))
 		debug("editTransponder", "new trid", nw_trid);
 	else
-		return error("editTransponder", "Error", "Missing tuner settings transponder key \"" + nw_trid + "\".");
+		return error("editTransponder", tr("Error", "error").toStdString(), tr("Missing tuner settings transponder key \"%1\".", "error").arg(nw_trid.data()).toStdString());
 
 	e2db::tunersets_table tns = dbih->tuners[tvid].tables[tnid];
 	e2db::tunersets_transponder tntxp = tns.transponders[nw_trid];
@@ -1048,7 +1048,7 @@ void tunersetsView::putListItems(vector<QString> items)
 
 			if (this->state.yx != ytype)
 			{
-				error("putListItems", "Error", "Tuner settings transponder type mismatch.");
+				error("putListItems", tr("Error", "error").toStdString(), tr("Tuner settings transponder type mismatch.", "error").toStdString());
 
 				continue;
 			}
@@ -1102,7 +1102,7 @@ void tunersetsView::putListItems(vector<QString> items)
 		}
 		else
 		{
-			error("putListItems", "Error", "Not a valid data format.");
+			error("putListItems", tr("Error", "error").toStdString(), tr("Not a valid data format.", "error").toStdString());
 
 			break;
 		}

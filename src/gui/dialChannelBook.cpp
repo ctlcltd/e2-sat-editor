@@ -58,7 +58,7 @@ void dialChannelBook::layout(QWidget* cwid)
 	dial->setAttribute(Qt::WA_MacAlwaysShowToolWindow);
 
 	dial->setMinimumSize(700, 400);
-	dial->setWindowTitle(tr("Add Channel"));
+	dial->setWindowTitle(tr("Add Channel", "dialog"));
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
 	dial->connect(dial, &QDialog::finished, [=]() { QTimer::singleShot(0, [=]() { this->destroy(); }); });

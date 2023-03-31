@@ -116,12 +116,12 @@ void viewAbstract::searchLayout()
 	this->tsr_search.input->installEventFilter(new InputControlEditEventObserver(tid));
 	platform::osLineEdit(this->tsr_search.input);
 
-	this->tsr_search.next = new QPushButton(tr("Find"));
+	this->tsr_search.next = new QPushButton(tr("Find", "toolbar"));
 	this->tsr_search.next->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
 	this->tsr_search.next->connect(this->tsr_search.next, &QPushButton::pressed, [=]() { this->treeFindPerform(); });
 
 	this->tsr_search.close = new QPushButton;
-	this->tsr_search.close->setAccessibleName(tr("Close"));
+	this->tsr_search.close->setAccessibleName(tr("Close", "toolbar"));
 	this->tsr_search.close->setIconSize(QSize(10, 10));
 	this->tsr_search.close->setIcon(theme->dynamicIcon("close", this->tsr_search.close));
 	this->tsr_search.close->setFlat(true);
@@ -174,7 +174,7 @@ void viewAbstract::searchLayout()
 	this->lsr_search.all->connect(this->lsr_search.all, &QPushButton::pressed, [=]() { this->listFindPerform(LIST_FIND::all); });
 
 	this->lsr_search.close = new QPushButton;
-	this->lsr_search.close->setAccessibleName(tr("Close"));
+	this->lsr_search.close->setAccessibleName(tr("Close", "toolbar"));
 	this->lsr_search.close->setIconSize(QSize(10, 10));
 	this->lsr_search.close->setIcon(theme->dynamicIcon("close", this->lsr_search.close));
 	this->lsr_search.close->setFlat(true);

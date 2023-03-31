@@ -74,7 +74,7 @@ void settings::layout(QWidget* cwid)
 	debug("layout");
 
 	this->dial = new QDialog(cwid);
-	dial->setWindowTitle(tr("Settings"));
+	dial->setWindowTitle(tr("Settings", "dialog"));
 	dial->setStyleSheet("QGroupBox { spacing: 0; padding: 0; padding-top: 20px; border: 0; font-weight: bold } QGroupBox::title { margin: 0 10px }");
 
 	this->theme = new e2se_gui::theme;
@@ -270,7 +270,7 @@ void settings::connectionsLayout()
 
 	rppage->setLayout(dtcnt);
 
-	dtwid->addTab(rppage, tr("Connections"));
+	dtwid->addTab(rppage, tr("Connections", "dialog"));
 }
 
 void settings::preferencesLayout()
@@ -359,8 +359,7 @@ void settings::preferencesLayout()
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2oe);
 	dtf2oe->setChecked(true);
 	dtf2->addRow(dtf2oe);
-
-	dtf2->addRow(new QLabel(tr("<small>The software might need to be restarted.</small>")));
+	dtf2->addRow(new QLabel(QString("<small>%1</small>").arg(tr("The software might need to be restarted."))));
 
 	dtl0->setLayout(dtf0);
 	dtl1->setLayout(dtf1);
@@ -383,7 +382,7 @@ void settings::preferencesLayout()
 	dtarea->setWidgetResizable(true);
 	dtarea->setStyleSheet("QScrollArea, #preferences_page { background: transparent }");
 
-	dtwid->addTab(dtarea, tr("Preferences"));
+	dtwid->addTab(dtarea, tr("Preferences", "dialog"));
 }
 
 void settings::engineLayout()
@@ -507,7 +506,7 @@ void settings::engineLayout()
 	dtarea->setWidgetResizable(true);
 	dtarea->setStyleSheet("QScrollArea, #engine_page { background: transparent }");
 
-	dtwid->addTab(dtarea, tr("Engine"));
+	dtwid->addTab(dtarea, tr("Engine", "dialog"));
 }
 
 void settings::advancedLayout()
@@ -552,7 +551,7 @@ void settings::advancedLayout()
 
 	dtpage->setLayout(dtcnt);
 
-	dtwid->addTab(dtpage, tr("Advanced"));
+	dtwid->addTab(dtpage, tr("Advanced", "dialog"));
 }
 
 void settings::themeChanged()

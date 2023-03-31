@@ -50,10 +50,10 @@ void editMarker::layout(QWidget* cwid)
 {
 	this->dialAbstract::layout(cwid);
 
-	QString dtitle = this->state.edit ? tr("Edit Marker") : tr("Add Marker");
+	QString dtitle = this->state.edit ? tr("Edit Marker", "dialog") : tr("Add Marker", "dialog");
 	dial->setWindowTitle(dtitle);
 
-	QGroupBox* dtl0 = new QGroupBox(tr("Marker"));
+	QGroupBox* dtl0 = new QGroupBox(tr("Marker", "dialog"));
 	QFormLayout* dtf0 = new QFormLayout;
 	dtf0->setRowWrapPolicy(QFormLayout::WrapAllRows);
 
@@ -77,7 +77,7 @@ void editMarker::store()
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->userbouquets.count(bname))
-		return error("store", "Error", "Userbouquet \"" + bname + "\" not exists.");
+		return error("store", tr("Error", "error").toStdString(), tr("Userbouquet \"%1\" not exists.", "error").arg(bname.data()).toStdString());
 
 	e2db::userbouquet& ub = dbih->userbouquets[bname];
 	e2db::channel_reference chref;
@@ -85,12 +85,12 @@ void editMarker::store()
 	if (this->state.edit)
 	{
 		if (! ub.channels.count(chid))
-			return error("store", "Error", "Channel reference \"" + chid + "\" not exists.");
+			return error("store", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" not exists.", "error").arg(chid.data()).toStdString());
 
 		chref = ub.channels[chid];
 
 		if (! chref.marker)
-			return error("store", "Error", "Channel reference mismatch \"" + chid + "\".");
+			return error("store", tr("Error", "error").toStdString(), tr("Channel reference mismatch \"%1\".", "error").arg(chid.data()).toStdString());
 	}
 	else
 	{
@@ -125,7 +125,7 @@ void editMarker::retrieve()
 	auto* dbih = this->data->dbih;
 
 	if (! dbih->userbouquets.count(bname))
-		return error("retrieve", "Error", "Userbouquet \"" + bname + "\" not exists.");
+		return error("retrieve", tr("Error", "error").toStdString(), tr("Userbouquet \"%1\" not exists.", "error").arg(bname.data()).toStdString());
 
 	e2db::userbouquet ub = dbih->userbouquets[bname];
 	e2db::channel_reference chref;
@@ -133,12 +133,12 @@ void editMarker::retrieve()
 	if (this->state.edit)
 	{
 		if (! ub.channels.count(chid))
-			return error("store", "Error", "Channel reference \"" + chid + "\" not exists.");
+			return error("store", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" not exists.", "error").arg(chid.data()).toStdString());
 
 		chref = ub.channels[chid];
 
 		if (! chref.marker)
-			return error("store", "Error", "Channel reference mismatch \"" + chid + "\".");
+			return error("store", tr("Error", "error").toStdString(), tr("Channel reference mismatch \"%1\".", "error").arg(chid.data()).toStdString());
 	}
 
 	for (auto & item : fields)
