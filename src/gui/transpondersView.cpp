@@ -531,7 +531,7 @@ void transpondersView::listItemDelete()
 	if (selected.empty())
 		return;
 
-	bool remove = tabRemoveQuestion(tr("Confirm deletetion"), tr("Do you want to delete items?"));
+	bool remove = tabRemoveQuestion(tr("Confirm deletetion", "message"), tr("Do you want to delete items?", "message"));
 	if (! remove)
 		return;
 

@@ -175,7 +175,7 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::CloseTab] = menuBarAction(mfile, tr("Close Tab"), [=]() { this->closeTab(); }, QKeySequence::Close);
 	gmenu[GUI_CXE::CloseAllTabs] = menuBarAction(mfile, tr("Close All Tabs"), [=]() { this->closeAllTabs(); }, Qt::CTRL | Qt::ALT | Qt::Key_W);
 	menuBarSeparator(mfile);
-	gmenu[GUI_CXE::FilePrint] = menuBarAction(mfile, tr("&Print"), [=]() { this->filePrint(); }, QKeySequence::Print);
+	gmenu[GUI_CXE::FilePrint] = menuBarAction(mfile, tr("&Print…"), [=]() { this->filePrint(); }, QKeySequence::Print);
 	gmenu[GUI_CXE::FilePrintAll] = menuBarAction(mfile, tr("Print &All"), [=]() { this->filePrintAll(); }, Qt::CTRL | Qt::SHIFT | Qt::Key_P);
 	menuBarSeparator(mfile);
 	menuBarAction(mfile, tr("Settings"), [=]() { this->settingsDialog(); }, QKeySequence::Preferences);

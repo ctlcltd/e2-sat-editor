@@ -57,7 +57,7 @@ void tools::inspector()
 
 	QDialog* dial = new QDialog(nullptr, Qt::WindowStaysOnTopHint);
 	dial->setObjectName("inspector");
-	dial->setWindowTitle(tr("Log Inspector", "tools"));
+	dial->setWindowTitle(tr("Log Inspector", "dialog"));
 	dial->setMinimumSize(450, 520);
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
@@ -238,9 +238,9 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 	theme::unsetWaitCursor();
 
 	if (tid->statusBarIsVisible())
-		tid->statusBarMessage(tr("Exported to %1").arg(path.data()));
+		tid->statusBarMessage(tr("Exported to %1", "message").arg(path.data()));
 	else
-		tid->infoMessage(tr("Saved!"));
+		tid->infoMessage(tr("Saved!", "message"));
 }
 
 void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)

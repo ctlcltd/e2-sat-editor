@@ -9,6 +9,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/gui/about.cpp" line="69"/>
+        <source>Version %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/gui/about.cpp" line="82"/>
         <source>This software is distributed under the terms of the %1.%2The source code of this software is available here:%3</source>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -467,16 +472,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
 <context>
     <name>editService</name>
     <message>
-        <location filename="../src/gui/editService.cpp" line="269"/>
-        <source>Transponder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/editService.cpp" line="110"/>
-        <source>Service name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/gui/editService.cpp" line="68"/>
         <source>Edit Service</source>
         <comment>dialog</comment>
@@ -502,6 +497,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/gui/editService.cpp" line="110"/>
+        <source>Service name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/gui/editService.cpp" line="114"/>
         <source>Service type</source>
         <translation type="unfinished"></translation>
@@ -517,19 +517,24 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/gui/editService.cpp" line="221"/>
+        <source>Tuner</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/gui/editService.cpp" line="268"/>
         <source>Satellite</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/editService.cpp" line="273"/>
-        <source>New Transponder</source>
+        <location filename="../src/gui/editService.cpp" line="269"/>
+        <source>Transponder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/editService.cpp" line="221"/>
-        <source>Tuner</source>
-        <comment>dialog</comment>
+        <location filename="../src/gui/editService.cpp" line="273"/>
+        <source>New Transponder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -641,12 +646,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/editService.cpp" line="521"/>
-        <source>%1It will overwrite any previously typed!%2Enter them in comma separated values.%3(eg. p:ProviderName,c:0100,C:0200,…)</source>
-        <extracomment>HTML formattation: %1text%2text%3text treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/gui/editService.cpp" line="476"/>
         <source>CAIDs</source>
         <translation type="unfinished"></translation>
@@ -687,6 +686,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/gui/editService.cpp" line="521"/>
+        <source>%1It will overwrite any previously typed!%2Enter them in comma separated values.%3(eg. p:ProviderName,c:0100,C:0200,…)</source>
+        <extracomment>HTML formattation: %1text%2text%3text treat them as spaces</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/gui/editService.cpp" line="524"/>
         <source>Extras</source>
         <translation type="unfinished"></translation>
@@ -709,6 +714,18 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
 <context>
     <name>editTransponder</name>
     <message>
+        <location filename="../src/gui/editTransponder.cpp" line="83"/>
+        <source>Edit Transponder</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/editTransponder.cpp" line="83"/>
+        <source>Add Transponder</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/gui/editTransponder.cpp" line="86"/>
         <source>Satellite</source>
         <translation type="unfinished"></translation>
@@ -726,6 +743,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/editTransponder.cpp" line="86"/>
         <source>ATSC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/editTransponder.cpp" line="88"/>
+        <source>Transponder</source>
+        <comment>dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -759,24 +782,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/editTransponder.cpp" line="215"/>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/editTransponder.cpp" line="83"/>
-        <source>Edit Transponder</source>
-        <comment>dialog</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/editTransponder.cpp" line="83"/>
-        <source>Add Transponder</source>
-        <comment>dialog</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/editTransponder.cpp" line="88"/>
-        <source>Transponder</source>
-        <comment>dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1010,6 +1015,18 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
 <context>
     <name>editTunersetsTransponder</name>
     <message>
+        <location filename="../src/gui/editTunersetsTransponder.cpp" line="57"/>
+        <source>Edit Transponder</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/editTunersetsTransponder.cpp" line="57"/>
+        <source>Add Transponder</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/gui/editTunersetsTransponder.cpp" line="96"/>
         <location filename="../src/gui/editTunersetsTransponder.cpp" line="173"/>
         <location filename="../src/gui/editTunersetsTransponder.cpp" line="255"/>
@@ -1020,18 +1037,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/editTunersetsTransponder.cpp" line="105"/>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/editTunersetsTransponder.cpp" line="57"/>
-        <source>Edit Transponder</source>
-        <comment>dialog</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/editTunersetsTransponder.cpp" line="57"/>
-        <source>Add Transponder</source>
-        <comment>dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1201,16 +1206,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
 <context>
     <name>editUserbouquet</name>
     <message>
-        <location filename="../src/gui/editUserbouquet.cpp" line="67"/>
-        <source>Userbouquet name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/editUserbouquet.cpp" line="77"/>
-        <source>Userbouquet filename</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/gui/editUserbouquet.cpp" line="55"/>
         <source>Edit Userbouquet</source>
         <comment>dialog</comment>
@@ -1226,6 +1221,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/editUserbouquet.cpp" line="58"/>
         <source>Userbouquet</source>
         <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/editUserbouquet.cpp" line="67"/>
+        <source>Userbouquet name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/editUserbouquet.cpp" line="77"/>
+        <source>Userbouquet filename</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1296,400 +1301,400 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
 <context>
     <name>gui</name>
     <message>
-        <location filename="../src/gui/gui.cpp" line="157"/>
+        <location filename="../src/gui/gui.cpp" line="165"/>
         <source>&amp;File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="158"/>
+        <location filename="../src/gui/gui.cpp" line="166"/>
         <source>&amp;New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="159"/>
+        <location filename="../src/gui/gui.cpp" line="167"/>
         <source>&amp;Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="161"/>
+        <location filename="../src/gui/gui.cpp" line="169"/>
         <source>&amp;Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="162"/>
+        <location filename="../src/gui/gui.cpp" line="170"/>
         <source>Save &amp;As…</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="164"/>
+        <location filename="../src/gui/gui.cpp" line="172"/>
         <source>Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="165"/>
+        <location filename="../src/gui/gui.cpp" line="173"/>
         <source>Export</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="167"/>
+        <location filename="../src/gui/gui.cpp" line="175"/>
         <source>Close Tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="168"/>
+        <location filename="../src/gui/gui.cpp" line="176"/>
         <source>Close All Tabs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="170"/>
-        <source>&amp;Print</source>
+        <location filename="../src/gui/gui.cpp" line="178"/>
+        <source>&amp;Print…</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="171"/>
+        <location filename="../src/gui/gui.cpp" line="179"/>
         <source>Print &amp;All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="173"/>
+        <location filename="../src/gui/gui.cpp" line="181"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="175"/>
+        <location filename="../src/gui/gui.cpp" line="183"/>
         <source>&amp;About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="178"/>
+        <location filename="../src/gui/gui.cpp" line="186"/>
         <source>E&amp;xit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="180"/>
+        <location filename="../src/gui/gui.cpp" line="188"/>
         <source>&amp;Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="181"/>
+        <location filename="../src/gui/gui.cpp" line="189"/>
         <source>&amp;Undo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="182"/>
+        <location filename="../src/gui/gui.cpp" line="190"/>
         <source>&amp;Redo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="184"/>
+        <location filename="../src/gui/gui.cpp" line="192"/>
         <source>Cu&amp;t</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="185"/>
+        <location filename="../src/gui/gui.cpp" line="193"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="186"/>
+        <location filename="../src/gui/gui.cpp" line="194"/>
         <source>&amp;Paste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="187"/>
+        <location filename="../src/gui/gui.cpp" line="195"/>
         <source>&amp;Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="192"/>
+        <location filename="../src/gui/gui.cpp" line="200"/>
         <source>Select &amp;All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="194"/>
+        <location filename="../src/gui/gui.cpp" line="202"/>
         <source>&amp;Find</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="195"/>
+        <location filename="../src/gui/gui.cpp" line="203"/>
         <source>&amp;Find Channel…</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="196"/>
+        <location filename="../src/gui/gui.cpp" line="204"/>
         <source>Find &amp;Next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="197"/>
+        <location filename="../src/gui/gui.cpp" line="205"/>
         <source>Find &amp;Previous</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="198"/>
+        <location filename="../src/gui/gui.cpp" line="206"/>
         <source>Find &amp;All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="200"/>
+        <location filename="../src/gui/gui.cpp" line="208"/>
         <source>Find &amp;Bouquet…</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="201"/>
-        <location filename="../src/gui/gui.cpp" line="496"/>
-        <location filename="../src/gui/gui.cpp" line="501"/>
-        <location filename="../src/gui/gui.cpp" line="511"/>
+        <location filename="../src/gui/gui.cpp" line="209"/>
+        <location filename="../src/gui/gui.cpp" line="504"/>
+        <location filename="../src/gui/gui.cpp" line="509"/>
+        <location filename="../src/gui/gui.cpp" line="519"/>
         <source>Find N&amp;ext Bouquet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="203"/>
+        <location filename="../src/gui/gui.cpp" line="211"/>
         <source>&amp;Tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="213"/>
+        <location filename="../src/gui/gui.cpp" line="221"/>
         <source>Import from CSV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="218"/>
+        <location filename="../src/gui/gui.cpp" line="226"/>
         <source>Export to CSV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="225"/>
+        <location filename="../src/gui/gui.cpp" line="233"/>
         <source>Export to HTML</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="239"/>
+        <location filename="../src/gui/gui.cpp" line="247"/>
         <source>Log Inspector</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="241"/>
+        <location filename="../src/gui/gui.cpp" line="249"/>
         <source>&amp;Window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="242"/>
+        <location filename="../src/gui/gui.cpp" line="250"/>
         <source>&amp;Minimize</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="244"/>
-        <location filename="../src/gui/gui.cpp" line="1120"/>
+        <location filename="../src/gui/gui.cpp" line="252"/>
+        <location filename="../src/gui/gui.cpp" line="1128"/>
         <source>Hide &amp;Status Bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="246"/>
-        <location filename="../src/gui/gui.cpp" line="323"/>
+        <location filename="../src/gui/gui.cpp" line="254"/>
+        <location filename="../src/gui/gui.cpp" line="331"/>
         <source>New &amp;Tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="250"/>
+        <location filename="../src/gui/gui.cpp" line="258"/>
         <source>&amp;Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="251"/>
+        <location filename="../src/gui/gui.cpp" line="259"/>
         <source>About &amp;Qt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="253"/>
+        <location filename="../src/gui/gui.cpp" line="261"/>
         <source>&amp;About e2 SAT Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="494"/>
-        <location filename="../src/gui/gui.cpp" line="509"/>
+        <location filename="../src/gui/gui.cpp" line="502"/>
+        <location filename="../src/gui/gui.cpp" line="517"/>
         <source>&amp;Find Channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="495"/>
-        <location filename="../src/gui/gui.cpp" line="500"/>
-        <location filename="../src/gui/gui.cpp" line="510"/>
+        <location filename="../src/gui/gui.cpp" line="503"/>
+        <location filename="../src/gui/gui.cpp" line="508"/>
+        <location filename="../src/gui/gui.cpp" line="518"/>
         <source>Find &amp;Bouquet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="499"/>
-        <location filename="../src/gui/gui.cpp" line="504"/>
+        <location filename="../src/gui/gui.cpp" line="507"/>
+        <location filename="../src/gui/gui.cpp" line="512"/>
         <source>&amp;Find Transponder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="505"/>
+        <location filename="../src/gui/gui.cpp" line="513"/>
         <source>Find &amp;Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="506"/>
+        <location filename="../src/gui/gui.cpp" line="514"/>
         <source>Find N&amp;ext Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="526"/>
-        <location filename="../src/gui/gui.cpp" line="818"/>
+        <location filename="../src/gui/gui.cpp" line="534"/>
+        <location filename="../src/gui/gui.cpp" line="826"/>
         <source>Untitled</source>
         <comment>tab</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="873"/>
-        <source>Select data folder</source>
-        <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/gui.cpp" line="895"/>
-        <location filename="../src/gui/gui.cpp" line="993"/>
-        <source>Select where to save</source>
-        <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/gui.cpp" line="916"/>
-        <source>Select one or more files to open</source>
-        <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/gui.cpp" line="543"/>
-        <location filename="../src/gui/gui.cpp" line="584"/>
-        <location filename="../src/gui/gui.cpp" line="620"/>
-        <location filename="../src/gui/gui.cpp" line="668"/>
-        <location filename="../src/gui/gui.cpp" line="810"/>
+        <location filename="../src/gui/gui.cpp" line="551"/>
+        <location filename="../src/gui/gui.cpp" line="592"/>
+        <location filename="../src/gui/gui.cpp" line="628"/>
+        <location filename="../src/gui/gui.cpp" line="676"/>
+        <location filename="../src/gui/gui.cpp" line="818"/>
         <source>Error</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="543"/>
+        <location filename="../src/gui/gui.cpp" line="551"/>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="584"/>
+        <location filename="../src/gui/gui.cpp" line="592"/>
         <source>Missing current tab reference.</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="620"/>
+        <location filename="../src/gui/gui.cpp" line="628"/>
         <source>Missing parent tab for tab reference &quot;%1&quot;.</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="627"/>
-        <location filename="../src/gui/gui.cpp" line="853"/>
+        <location filename="../src/gui/gui.cpp" line="635"/>
+        <location filename="../src/gui/gui.cpp" line="861"/>
         <source>Edit transponders</source>
         <comment>tab</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="632"/>
-        <location filename="../src/gui/gui.cpp" line="856"/>
+        <location filename="../src/gui/gui.cpp" line="640"/>
+        <location filename="../src/gui/gui.cpp" line="864"/>
         <source>Edit settings</source>
         <comment>tab</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="637"/>
-        <location filename="../src/gui/gui.cpp" line="859"/>
+        <location filename="../src/gui/gui.cpp" line="645"/>
+        <location filename="../src/gui/gui.cpp" line="867"/>
         <source>Channel book</source>
         <comment>tab</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="668"/>
-        <location filename="../src/gui/gui.cpp" line="810"/>
+        <location filename="../src/gui/gui.cpp" line="676"/>
+        <location filename="../src/gui/gui.cpp" line="818"/>
         <source>Missing tab reference &quot;%1&quot;.</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="947"/>
-        <location filename="../src/gui/gui.cpp" line="1031"/>
+        <location filename="../src/gui/gui.cpp" line="881"/>
+        <source>Select data folder</source>
+        <comment>file-dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="903"/>
+        <location filename="../src/gui/gui.cpp" line="1001"/>
+        <source>Select where to save</source>
+        <comment>file-dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="924"/>
+        <source>Select one or more files to open</source>
+        <comment>file-dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="955"/>
+        <location filename="../src/gui/gui.cpp" line="1039"/>
         <source>CSV File</source>
         <comment>file-dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="948"/>
-        <location filename="../src/gui/gui.cpp" line="968"/>
-        <location filename="../src/gui/gui.cpp" line="1032"/>
-        <location filename="../src/gui/gui.cpp" line="1036"/>
-        <location filename="../src/gui/gui.cpp" line="1039"/>
+        <location filename="../src/gui/gui.cpp" line="956"/>
+        <location filename="../src/gui/gui.cpp" line="976"/>
+        <location filename="../src/gui/gui.cpp" line="1040"/>
+        <location filename="../src/gui/gui.cpp" line="1044"/>
+        <location filename="../src/gui/gui.cpp" line="1047"/>
         <source>All Files</source>
         <comment>file-dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="1035"/>
+        <location filename="../src/gui/gui.cpp" line="1043"/>
         <source>HTML File</source>
         <comment>file-dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="1128"/>
+        <location filename="../src/gui/gui.cpp" line="1136"/>
         <source>Show &amp;Status Bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="1163"/>
+        <location filename="../src/gui/gui.cpp" line="1171"/>
         <source>Channels</source>
         <comment>status-bar</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="1165"/>
+        <location filename="../src/gui/gui.cpp" line="1173"/>
         <source>Bouquet</source>
         <comment>status-bar</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="1173"/>
+        <location filename="../src/gui/gui.cpp" line="1181"/>
         <source>TV</source>
         <comment>status-bar</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="1174"/>
+        <location filename="../src/gui/gui.cpp" line="1182"/>
         <source>Radio</source>
         <comment>status-bar</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="1175"/>
+        <location filename="../src/gui/gui.cpp" line="1183"/>
         <source>Data</source>
         <comment>status-bar</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="1176"/>
-        <location filename="../src/gui/gui.cpp" line="1185"/>
-        <location filename="../src/gui/gui.cpp" line="1205"/>
+        <location filename="../src/gui/gui.cpp" line="1184"/>
+        <location filename="../src/gui/gui.cpp" line="1193"/>
+        <location filename="../src/gui/gui.cpp" line="1213"/>
         <source>Total</source>
         <comment>status-bar</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="1195"/>
+        <location filename="../src/gui/gui.cpp" line="1203"/>
         <source>Transponders</source>
         <comment>status-bar</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="1197"/>
+        <location filename="../src/gui/gui.cpp" line="1205"/>
         <source>Position</source>
         <comment>status-bar</comment>
         <translation type="unfinished"></translation>
@@ -2001,11 +2006,13 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/mainView.cpp" line="1659"/>
         <source>Confirm deletetion</source>
+        <comment>message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/mainView.cpp" line="1659"/>
         <source>Do you want to delete items?</source>
+        <comment>message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2115,55 +2122,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/printable.cpp" line="321"/>
-        <location filename="../src/gui/printable.cpp" line="480"/>
-        <source>Error</source>
-        <comment>error</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/printable.cpp" line="321"/>
-        <location filename="../src/gui/printable.cpp" line="480"/>
-        <source>Missing index key &quot;%1&quot;.</source>
-        <comment>error</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/printable.cpp" line="330"/>
-        <location filename="../src/gui/printable.cpp" line="493"/>
-        <location filename="../src/gui/printable.cpp" line="555"/>
-        <source>Index</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/printable.cpp" line="331"/>
-        <location filename="../src/gui/printable.cpp" line="496"/>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/printable.cpp" line="333"/>
-        <source>SSID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/printable.cpp" line="334"/>
-        <source>TSID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/printable.cpp" line="335"/>
-        <source>ONID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/printable.cpp" line="276"/>
-        <location filename="../src/gui/printable.cpp" line="336"/>
-        <location filename="../src/gui/printable.cpp" line="497"/>
-        <source>Type</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/gui/printable.cpp" line="142"/>
         <source>(extract)</source>
         <translation type="unfinished"></translation>
@@ -2206,6 +2164,55 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/printable.cpp" line="275"/>
         <source>Content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/printable.cpp" line="276"/>
+        <location filename="../src/gui/printable.cpp" line="336"/>
+        <location filename="../src/gui/printable.cpp" line="497"/>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/printable.cpp" line="321"/>
+        <location filename="../src/gui/printable.cpp" line="480"/>
+        <source>Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/printable.cpp" line="321"/>
+        <location filename="../src/gui/printable.cpp" line="480"/>
+        <source>Missing index key &quot;%1&quot;.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/printable.cpp" line="330"/>
+        <location filename="../src/gui/printable.cpp" line="493"/>
+        <location filename="../src/gui/printable.cpp" line="555"/>
+        <source>Index</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/printable.cpp" line="331"/>
+        <location filename="../src/gui/printable.cpp" line="496"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/printable.cpp" line="333"/>
+        <source>SSID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/printable.cpp" line="334"/>
+        <source>TSID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/printable.cpp" line="335"/>
+        <source>ONID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2349,19 +2356,14 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
 <context>
     <name>settings</name>
     <message>
-        <location filename="../src/gui/settings.cpp" line="401"/>
+        <location filename="../src/gui/settings.cpp" line="77"/>
         <source>Settings</source>
+        <comment>dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/settings.cpp" line="98"/>
         <source>Save Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/settings.cpp" line="77"/>
-        <source>Settings</source>
-        <comment>dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2456,29 +2458,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="362"/>
-        <source>The software might need to be restarted.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/settings.cpp" line="385"/>
-        <source>Preferences</source>
-        <comment>dialog</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/settings.cpp" line="509"/>
-        <source>Engine</source>
-        <comment>dialog</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/settings.cpp" line="554"/>
-        <source>Advanced</source>
-        <comment>dialog</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/gui/settings.cpp" line="289"/>
         <source>General</source>
         <translation type="unfinished"></translation>
@@ -2541,6 +2520,22 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/settings.cpp" line="357"/>
         <source>Enable experimental features</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/settings.cpp" line="362"/>
+        <source>The software might need to be restarted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/settings.cpp" line="385"/>
+        <source>Preferences</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/settings.cpp" line="401"/>
+        <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2634,6 +2629,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/gui/settings.cpp" line="509"/>
+        <source>Engine</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/gui/settings.cpp" line="531"/>
         <source>%1Please be carefull!%2Modifing these settings could break the program.%3</source>
         <extracomment>HTML formattation: %1text%2%text%3 treat them as spaces</extracomment>
@@ -2642,6 +2643,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/settings.cpp" line="535"/>
         <source>OK, I understood this.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/settings.cpp" line="554"/>
+        <source>Advanced</source>
+        <comment>dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2714,6 +2721,21 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/gui/tab.cpp" line="500"/>
+        <location filename="../src/gui/tab.cpp" line="502"/>
+        <location filename="../src/gui/tab.cpp" line="568"/>
+        <location filename="../src/gui/tab.cpp" line="570"/>
+        <source>File Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tab.cpp" line="500"/>
+        <source>Error reading file &quot;%1&quot;.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/gui/tab.cpp" line="502"/>
         <source>Error opening files.</source>
         <comment>error</comment>
@@ -2751,8 +2773,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <location filename="../src/gui/tab.cpp" line="564"/>
+        <location filename="../src/gui/tab.cpp" line="815"/>
         <source>Saved!</source>
         <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tab.cpp" line="568"/>
+        <source>Error writing file &quot;%1&quot;.</source>
+        <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2799,6 +2828,18 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/gui/tab.cpp" line="811"/>
+        <source>Exported to %1</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tab.cpp" line="905"/>
+        <source>Printing …</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/gui/tab.cpp" line="1255"/>
         <source>FTP connected successfully.</source>
         <comment>message</comment>
@@ -2808,6 +2849,27 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/tab.cpp" line="1257"/>
         <source>Successfully connected!</source>
         <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tab.cpp" line="1262"/>
+        <location filename="../src/gui/tab.cpp" line="1264"/>
+        <location filename="../src/gui/tab.cpp" line="1282"/>
+        <location filename="../src/gui/tab.cpp" line="1284"/>
+        <location filename="../src/gui/tab.cpp" line="1295"/>
+        <location filename="../src/gui/tab.cpp" line="1297"/>
+        <location filename="../src/gui/tab.cpp" line="1382"/>
+        <location filename="../src/gui/tab.cpp" line="1384"/>
+        <source>FTP Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tab.cpp" line="1262"/>
+        <location filename="../src/gui/tab.cpp" line="1295"/>
+        <location filename="../src/gui/tab.cpp" line="1382"/>
+        <source>Cannot connect to FTP &quot;%1&quot;.</source>
+        <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2828,6 +2890,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/tab.cpp" line="1277"/>
         <source>Successfully disconnected!</source>
         <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tab.cpp" line="1282"/>
+        <source>Cannot disconnect from FTP &quot;%1&quot;.</source>
+        <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2889,76 +2957,13 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../src/gui/tab.cpp" line="500"/>
-        <location filename="../src/gui/tab.cpp" line="502"/>
-        <location filename="../src/gui/tab.cpp" line="568"/>
-        <location filename="../src/gui/tab.cpp" line="570"/>
-        <source>File Error</source>
-        <comment>error</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tab.cpp" line="500"/>
-        <source>Error reading file &quot;%1&quot;.</source>
-        <comment>error</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tab.cpp" line="815"/>
-        <source>Saved!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tab.cpp" line="568"/>
-        <source>Error writing file &quot;%1&quot;.</source>
-        <comment>error</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tab.cpp" line="811"/>
-        <source>Exported to %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tab.cpp" line="905"/>
-        <source>Printing …</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tab.cpp" line="1262"/>
-        <location filename="../src/gui/tab.cpp" line="1264"/>
-        <location filename="../src/gui/tab.cpp" line="1282"/>
-        <location filename="../src/gui/tab.cpp" line="1284"/>
-        <location filename="../src/gui/tab.cpp" line="1295"/>
-        <location filename="../src/gui/tab.cpp" line="1297"/>
-        <location filename="../src/gui/tab.cpp" line="1382"/>
-        <location filename="../src/gui/tab.cpp" line="1384"/>
-        <source>FTP Error</source>
-        <comment>error</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tab.cpp" line="1262"/>
-        <location filename="../src/gui/tab.cpp" line="1295"/>
-        <location filename="../src/gui/tab.cpp" line="1382"/>
-        <source>Cannot connect to FTP &quot;%1&quot;.</source>
-        <comment>error</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tab.cpp" line="1282"/>
-        <source>Cannot disconnect from FTP &quot;%1&quot;.</source>
-        <comment>error</comment>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>tools</name>
     <message>
         <location filename="../src/gui/tools.cpp" line="60"/>
         <source>Log Inspector</source>
-        <comment>tools</comment>
+        <comment>dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2994,21 +2999,13 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <location filename="../src/gui/tools.cpp" line="241"/>
-        <source>Exported to %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tools.cpp" line="243"/>
-        <source>Saved!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/gui/tools.cpp" line="285"/>
         <source>Exported to %1</source>
         <comment>message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/gui/tools.cpp" line="243"/>
         <location filename="../src/gui/tools.cpp" line="287"/>
         <source>Saved!</source>
         <comment>message</comment>
@@ -3162,11 +3159,13 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/transpondersView.cpp" line="534"/>
         <source>Confirm deletetion</source>
+        <comment>message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/transpondersView.cpp" line="534"/>
         <source>Do you want to delete items?</source>
+        <comment>message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3470,12 +3469,14 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/tunersetsView.cpp" line="845"/>
         <location filename="../src/gui/tunersetsView.cpp" line="971"/>
         <source>Confirm deletetion</source>
+        <comment>message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/tunersetsView.cpp" line="845"/>
         <location filename="../src/gui/tunersetsView.cpp" line="971"/>
         <source>Do you want to delete items?</source>
+        <comment>message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3542,12 +3543,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
 <context>
     <name>viewAbstract</name>
     <message>
-        <location filename="../src/gui/viewAbstract.cpp" line="158"/>
-        <source>Highlight</source>
-        <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/gui/viewAbstract.cpp" line="119"/>
         <location filename="../src/gui/viewAbstract.cpp" line="164"/>
         <source>Find</source>
@@ -3558,6 +3553,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/viewAbstract.cpp" line="124"/>
         <location filename="../src/gui/viewAbstract.cpp" line="177"/>
         <source>Close</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/viewAbstract.cpp" line="158"/>
+        <source>Highlight</source>
         <comment>toolbar</comment>
         <translation type="unfinished"></translation>
     </message>

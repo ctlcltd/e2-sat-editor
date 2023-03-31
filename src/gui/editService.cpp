@@ -518,7 +518,7 @@ void editService::paramsLayout()
 	platform::osLineEdit(dtf2oc);
 	dtf2o->addRow(tr("Custom edit flags"), dtf2oc);
 	//: HTML formattation: %1text%2text%3text treat them as spaces
-	dtf2o->addRow(new QLabel(QString("<small>$1</small>").arg(tr("%1It will overwrite any previously typed!%2Enter them in comma separated values.%3(eg. p:ProviderName,c:0100,C:0200,…)")).arg("<b>").arg("</b><br>")));
+	dtf2o->addRow(new QLabel(QString("<small>%1</small>").arg(tr("%1It will overwrite any previously typed!%2Enter them in comma separated values.%3(eg. p:ProviderName,c:0100,C:0200,…)")).arg("<b>").arg("</b><br>").arg("<br>")));
 
 	dtw24->setLayout(dtf2o);
 	dtt2->addItem(dtw24, tr("Extras"));

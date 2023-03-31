@@ -808,11 +808,11 @@ void tab::exportFile()
 		else
 			fname = paths[0];
 
-		statusBarMessage(tr("Exported to %1").arg(QString::fromStdString(fname)));
+		statusBarMessage(tr("Exported to %1", "message").arg(QString::fromStdString(fname)));
 	}
 	else
 	{
-		infoMessage(tr("Saved!"));
+		infoMessage(tr("Saved!", "message"));
 	}
 }
 
@@ -902,7 +902,7 @@ void tab::printFile(bool all)
 	delete printer;
 
 	if (statusBarIsVisible())
-		statusBarMessage(tr("Printing …"));
+		statusBarMessage(tr("Printing …", "message"));
 }
 
 void tab::settingsDialog()
