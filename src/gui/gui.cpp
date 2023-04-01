@@ -167,11 +167,13 @@ void gui::menuBarLayout()
 
 	QMenuBar* menu = menuBar(mfrm);
 
+	//: Platform: File menu
 	QMenu* mfile = menuBarMenu(menu, tr("&File", "menu"));
 	gmenu[GUI_CXE::FileNew] = menuBarAction(mfile, tr("&New", "menu"), [=]() { this->newTab(); }, QKeySequence::New);
 	gmenu[GUI_CXE::FileOpen] = menuBarAction(mfile, tr("&Open", "menu"), [=]() { this->fileOpen(); }, QKeySequence::Open);
 	menuBarSeparator(mfile);
 	gmenu[GUI_CXE::FileSave] = menuBarAction(mfile, tr("&Save", "menu"), [=]() { this->fileSave(); }, QKeySequence::Save);
+	//: Encoding: take care about 3 dots ellipsys symbol
 	gmenu[GUI_CXE::FileSaveAs] = menuBarAction(mfile, tr("Save &As…", "menu"), [=]() { this->fileSaveAs(); }, QKeySequence::SaveAs);
 	menuBarSeparator(mfile);
 	gmenu[GUI_CXE::FileImport] = menuBarAction(mfile, tr("Import", "menu"), [=]() { this->fileImport(); });
@@ -180,16 +182,34 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::CloseTab] = menuBarAction(mfile, tr("Close Tab", "menu"), [=]() { this->closeTab(); }, QKeySequence::Close);
 	gmenu[GUI_CXE::CloseAllTabs] = menuBarAction(mfile, tr("Close All Tabs", "menu"), [=]() { this->closeAllTabs(); }, Qt::CTRL | Qt::ALT | Qt::Key_W);
 	menuBarSeparator(mfile);
+	//: Encoding: take care about 3 dots ellipsys symbol
 	gmenu[GUI_CXE::FilePrint] = menuBarAction(mfile, tr("&Print…", "menu"), [=]() { this->filePrint(); }, QKeySequence::Print);
 	gmenu[GUI_CXE::FilePrintAll] = menuBarAction(mfile, tr("Print &All", "menu"), [=]() { this->filePrintAll(); }, Qt::CTRL | Qt::SHIFT | Qt::Key_P);
 	menuBarSeparator(mfile);
-	menuBarAction(mfile, tr("Settings", "menu"), [=]() { this->settingsDialog(); }, QKeySequence::Preferences);
 #ifdef Q_OS_MAC
-	menuBarAction(mfile, tr("&About", "menu"), [=]() { this->aboutDialog(); });
+	//: Platform: Preferences item in macOS Application Menu |
+	//: Encoding: take care about 3 dots ellipsys symbol
+	menuBarAction(mfile, tr("Preferences…", "menu"), [=]() { this->settingsDialog(); }, QKeySequence::Preferences)->setMenuRole(QAction::PreferencesRole);
+	//: Platform: About [$BUNDLE_NAME] item in macOS Application Menu
+	menuBarAction(mfile, tr("About", "menu"), [=]() { this->aboutDialog(); })->setMenuRole(QAction::AboutRole);
 #endif
+	menuBarAction(mfile, tr("Settings", "menu"), [=]() { this->settingsDialog(); }, QKeySequence::Preferences);
 	menuBarSeparator(mfile);
+	//: Platform: Exit | Quit item
 	menuBarAction(mfile, tr("E&xit", "menu"), [=]() { this->mroot->quit(); }, QKeySequence::Quit);
 
+#ifdef Q_OS_MAC
+	//: Platform: Edit menu in macOS Menu bar
+	QT_TRANSLATE_NOOP("QCocoaMenu", "Edit");
+	//: Platform: edit item in macOS Edit Menu |
+	//: Encoding: take care about 3 singular dots ellipsys
+	QT_TRANSLATE_NOOP("QCocoaMenuItem", "Start Dictation...");
+	//: Platform: edit item in macOS Edit Menu |
+	//: Encoding: take care about double ampersand
+	QT_TRANSLATE_NOOP("QCocoaMenuItem", "Emoji && Symbols");
+#endif
+
+	//: Platform: Edit menu
 	QMenu* medit = menuBarMenu(menu, tr("&Edit", "menu"));
 	gmenu[GUI_CXE::EditUndo] = menuBarAction(medit, tr("&Undo", "menu"), [=]() { this->editAction(GUI_CXE::EditUndo); }, QKeySequence::Undo);
 	gmenu[GUI_CXE::EditRedo] = menuBarAction(medit, tr("&Redo", "menu"), [=]() { this->editAction(GUI_CXE::EditRedo); }, QKeySequence::Redo);
@@ -204,12 +224,15 @@ void gui::menuBarLayout()
 	menuBarSeparator(medit);
 	gmenu[GUI_CXE::EditSelectAll] = menuBarAction(medit, tr("Select &All", "menu"), [=]() { this->editAction(GUI_CXE::EditSelectAll); }, QKeySequence::SelectAll);
 
+	//: Platform: Find menu
 	QMenu* mfind = menuBarMenu(menu, tr("&Find", "menu"));
+	//: Encoding: take care about 3 dots ellipsys symbol
 	gmenu[GUI_CXE::TabListFind] = menuBarAction(mfind, tr("&Find Channel…", "menu"), [=]() { this->tabAction(TAB_ATS::ListFind); }, QKeySequence::Find);
 	gmenu[GUI_CXE::TabListFindNext] = menuBarAction(mfind, tr("Find &Next", "menu"), [=]() { this->tabAction(TAB_ATS::ListFindNext); }, QKeySequence::FindNext);
 	gmenu[GUI_CXE::TabListFindPrev] = menuBarAction(mfind, tr("Find &Previous", "menu"), [=]() { this->tabAction(TAB_ATS::ListFindPrev); }, QKeySequence::FindPrevious);
 	gmenu[GUI_CXE::TabListFindAll] = menuBarAction(mfind, tr("Find &All", "menu"), [=]() { this->tabAction(TAB_ATS::ListFindAll); });
 	menuBarSeparator(mfind);
+	//: Encoding: take care about 3 dots ellipsys symbol
 	gmenu[GUI_CXE::TabTreeFind] = menuBarAction(mfind, tr("Find &Bouquet…", "menu"), [=]() { this->tabAction(TAB_ATS::TreeFind); }, Qt::CTRL | Qt::ALT | Qt::Key_F);
 	gmenu[GUI_CXE::TabTreeFindNext] = menuBarAction(mfind, tr("Find N&ext Bouquet", "menu"), [=]() { this->tabAction(TAB_ATS::TreeFindNext); }, Qt::CTRL | Qt::ALT | Qt::Key_E);
 
@@ -217,15 +240,15 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::Transponders] = menuBarAction(mtools, tr("Edit Transponders", "menu"), [=]() { this->tabAction(TAB_ATS::EditTransponders); });
 	menuBarSeparator(mtools);
 	//: Note: %1 is xml filename
-	gmenu[GUI_CXE::TunersetsSat] = menuBarAction(mtools, tr("Edit %1").arg("satellites.xml", "menu"), [=]() { this->tabAction(TAB_ATS::EditTunersetsSat); });
+	gmenu[GUI_CXE::TunersetsSat] = menuBarAction(mtools, tr("Edit %1", "menu").arg("satellites.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsSat); });
 	//: Note: %1 is xml filename
-	gmenu[GUI_CXE::TunersetsTerrestrial] = menuBarAction(mtools, tr("Edit %1").arg("terrestrial.xml", "menu"), [=]() { this->tabAction(TAB_ATS::EditTunersetsTerrestrial); });
+	gmenu[GUI_CXE::TunersetsTerrestrial] = menuBarAction(mtools, tr("Edit %1", "menu").arg("terrestrial.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsTerrestrial); });
 	//: Note: %1 is xml filename
-	gmenu[GUI_CXE::TunersetsCable] = menuBarAction(mtools, tr("Edit %1").arg("cables.xml", "menu"), [=]() { this->tabAction(TAB_ATS::EditTunersetsCable); });
+	gmenu[GUI_CXE::TunersetsCable] = menuBarAction(mtools, tr("Edit %1", "menu").arg("cables.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsCable); });
 	//: Note: %1 is xml filename
-	gmenu[GUI_CXE::TunersetsAtsc] = menuBarAction(mtools, tr("Edit %1").arg("atsc.xml", "menu"), [=]() { this->tabAction(TAB_ATS::EditTunersetsAtsc); });
+	gmenu[GUI_CXE::TunersetsAtsc] = menuBarAction(mtools, tr("Edit %1", "menu").arg("atsc.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsAtsc); });
 	menuBarSeparator(mtools);
-	gmenu[GUI_CXE::OpenChannelBook] = menuBarAction(mtools, tr("Show Channel book", "menu"), [=]() { this->tabAction(TAB_ATS::ShowChannelBook); });
+	gmenu[GUI_CXE::OpenChannelBook] = menuBarAction(mtools, tr("Channel book", "menu"), [=]() { this->tabAction(TAB_ATS::ShowChannelBook); });
 	menuBarSeparator(mtools);
 	QMenu* mimportcsv = menuBarMenu(mtools, tr("Import from CSV", "menu"));
 	gmenu[GUI_CXE::ToolsImportCSV_services] = menuBarAction(mimportcsv, tr("Import Services", "menu"), [=]() { this->tabAction(TAB_ATS::ImportCSV_services); });
@@ -255,6 +278,7 @@ void gui::menuBarLayout()
 	menuBarSeparator(mtools);
 	gmenu[GUI_CXE::ToolsInspector] = menuBarAction(mtools, tr("Log Inspector", "menu"), [=]() { this->tabAction(TAB_ATS::Inspector); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
 
+	//: Platform: Window menu
 	QMenu* mwind = menuBarMenu(menu, tr("&Window", "menu"));
 	gmenu[GUI_CXE::WindowMinimize] = menuBarAction(mwind, tr("&Minimize", "menu"), [=]() { this->windowMinimize(); }, Qt::CTRL | Qt::Key_M);
 	menuBarSeparator(mwind);
@@ -264,6 +288,7 @@ void gui::menuBarLayout()
 	menuBarSeparator(mwind);
 	QActionGroup* mwtabs = menuBarActionGroup(mwind, true);
 
+	//: Platform: Help menu
 	QMenu* mhelp = menuBarMenu(menu, tr("&Help", "menu"));
 	menuBarAction(mhelp, tr("About &Qt", "menu"), [=]() { this->mroot->aboutQt(); })->setMenuRole(QAction::NoRole);
 	menuBarSeparator(mhelp);

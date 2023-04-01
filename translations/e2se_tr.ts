@@ -2,6 +2,30 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="tr_TR">
 <context>
+    <name>QCocoaMenu</name>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="203"/>
+        <source>Edit</source>
+        <extracomment>Platform: Edit menu in macOS Menu bar</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QCocoaMenuItem</name>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="206"/>
+        <source>Start Dictation...</source>
+        <extracomment>Platform: edit item in macOS Edit Menu | Encoding: take care about 3 singular dots ellipsys</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="209"/>
+        <source>Emoji &amp;&amp; Symbols</source>
+        <extracomment>Platform: edit item in macOS Edit Menu | Encoding: take care about double ampersand</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>about</name>
     <message>
         <location filename="../src/gui/about.cpp" line="44"/>
@@ -1305,547 +1329,566 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
 <context>
     <name>gui</name>
     <message>
-        <location filename="../src/gui/gui.cpp" line="170"/>
+        <location filename="../src/gui/gui.cpp" line="171"/>
         <source>&amp;File</source>
         <comment>menu</comment>
+        <extracomment>Platform: File menu</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="171"/>
+        <location filename="../src/gui/gui.cpp" line="172"/>
         <source>&amp;New</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="172"/>
+        <location filename="../src/gui/gui.cpp" line="173"/>
         <source>&amp;Open</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="174"/>
+        <location filename="../src/gui/gui.cpp" line="175"/>
         <source>&amp;Save</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="175"/>
+        <location filename="../src/gui/gui.cpp" line="177"/>
         <source>Save &amp;As…</source>
         <comment>menu</comment>
+        <extracomment>Encoding: take care about 3 dots ellipsys symbol</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="177"/>
+        <location filename="../src/gui/gui.cpp" line="179"/>
         <source>Import</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="178"/>
+        <location filename="../src/gui/gui.cpp" line="180"/>
         <source>Export</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="180"/>
+        <location filename="../src/gui/gui.cpp" line="182"/>
         <source>Close Tab</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="181"/>
+        <location filename="../src/gui/gui.cpp" line="183"/>
         <source>Close All Tabs</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="183"/>
+        <location filename="../src/gui/gui.cpp" line="186"/>
         <source>&amp;Print…</source>
         <comment>menu</comment>
+        <extracomment>Encoding: take care about 3 dots ellipsys symbol</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="184"/>
+        <location filename="../src/gui/gui.cpp" line="187"/>
         <source>Print &amp;All</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="186"/>
+        <location filename="../src/gui/gui.cpp" line="192"/>
+        <source>Preferences…</source>
+        <comment>menu</comment>
+        <extracomment>Platform: Preferences item in macOS Application Menu | Encoding: take care about 3 dots ellipsys symbol</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="194"/>
+        <source>About</source>
+        <comment>menu</comment>
+        <extracomment>Platform: About [$BUNDLE_NAME] item in macOS Application Menu</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="196"/>
         <source>Settings</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="188"/>
-        <source>&amp;About</source>
-        <comment>menu</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/gui.cpp" line="191"/>
+        <location filename="../src/gui/gui.cpp" line="199"/>
         <source>E&amp;xit</source>
         <comment>menu</comment>
+        <extracomment>Platform: Exit | Quit item</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="193"/>
+        <location filename="../src/gui/gui.cpp" line="213"/>
         <source>&amp;Edit</source>
         <comment>menu</comment>
+        <extracomment>Platform: Edit menu</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="194"/>
+        <location filename="../src/gui/gui.cpp" line="214"/>
         <source>&amp;Undo</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="195"/>
+        <location filename="../src/gui/gui.cpp" line="215"/>
         <source>&amp;Redo</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="197"/>
+        <location filename="../src/gui/gui.cpp" line="217"/>
         <source>Cu&amp;t</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="198"/>
+        <location filename="../src/gui/gui.cpp" line="218"/>
         <source>&amp;Copy</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="199"/>
+        <location filename="../src/gui/gui.cpp" line="219"/>
         <source>&amp;Paste</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="200"/>
+        <location filename="../src/gui/gui.cpp" line="220"/>
         <source>&amp;Delete</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="205"/>
+        <location filename="../src/gui/gui.cpp" line="225"/>
         <source>Select &amp;All</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="207"/>
+        <location filename="../src/gui/gui.cpp" line="228"/>
         <source>&amp;Find</source>
         <comment>menu</comment>
+        <extracomment>Platform: Find menu</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="208"/>
+        <location filename="../src/gui/gui.cpp" line="230"/>
         <source>&amp;Find Channel…</source>
         <comment>menu</comment>
+        <extracomment>Encoding: take care about 3 dots ellipsys symbol</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="209"/>
+        <location filename="../src/gui/gui.cpp" line="231"/>
         <source>Find &amp;Next</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="210"/>
+        <location filename="../src/gui/gui.cpp" line="232"/>
         <source>Find &amp;Previous</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="211"/>
+        <location filename="../src/gui/gui.cpp" line="233"/>
         <source>Find &amp;All</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="213"/>
+        <location filename="../src/gui/gui.cpp" line="236"/>
         <source>Find &amp;Bouquet…</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/gui.cpp" line="214"/>
-        <source>Find N&amp;ext Bouquet</source>
-        <comment>menu</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/gui.cpp" line="216"/>
-        <source>&amp;Tools</source>
-        <comment>menu</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/gui.cpp" line="217"/>
-        <source>Edit Transponders</source>
-        <comment>menu</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/gui.cpp" line="220"/>
-        <location filename="../src/gui/gui.cpp" line="222"/>
-        <location filename="../src/gui/gui.cpp" line="224"/>
-        <location filename="../src/gui/gui.cpp" line="226"/>
-        <source>Edit %1</source>
-        <extracomment>Note: %1 is xml filename</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/gui.cpp" line="228"/>
-        <source>Show Channel book</source>
-        <comment>menu</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/gui.cpp" line="230"/>
-        <source>Import from CSV</source>
-        <comment>menu</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/gui.cpp" line="231"/>
-        <source>Import Services</source>
-        <comment>menu</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/gui.cpp" line="232"/>
-        <source>Import Bouquet</source>
-        <comment>menu</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/gui.cpp" line="233"/>
-        <source>Import Userbouquet</source>
-        <comment>menu</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/gui.cpp" line="234"/>
-        <source>Import Tuner settings</source>
-        <comment>menu</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/gui.cpp" line="235"/>
-        <source>Export to CSV</source>
-        <comment>menu</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/gui.cpp" line="236"/>
-        <location filename="../src/gui/gui.cpp" line="243"/>
-        <source>Export current</source>
-        <comment>menu</comment>
+        <extracomment>Encoding: take care about 3 dots ellipsys symbol</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="237"/>
-        <location filename="../src/gui/gui.cpp" line="244"/>
-        <source>Export All</source>
-        <comment>menu</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/gui.cpp" line="238"/>
-        <location filename="../src/gui/gui.cpp" line="246"/>
-        <source>Export Services</source>
+        <source>Find N&amp;ext Bouquet</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="239"/>
-        <location filename="../src/gui/gui.cpp" line="247"/>
-        <source>Export Bouquets</source>
+        <source>&amp;Tools</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="240"/>
-        <location filename="../src/gui/gui.cpp" line="248"/>
-        <source>Export Userbouquets</source>
+        <source>Edit Transponders</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="241"/>
-        <location filename="../src/gui/gui.cpp" line="249"/>
-        <source>Export Tuner settings</source>
-        <comment>menu</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/gui.cpp" line="242"/>
-        <source>Export to HTML</source>
-        <comment>menu</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
+        <location filename="../src/gui/gui.cpp" line="243"/>
         <location filename="../src/gui/gui.cpp" line="245"/>
-        <source>Export Index</source>
+        <location filename="../src/gui/gui.cpp" line="247"/>
+        <location filename="../src/gui/gui.cpp" line="249"/>
+        <source>Edit %1</source>
+        <comment>menu</comment>
+        <extracomment>Note: %1 is xml filename</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="251"/>
+        <source>Channel book</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="253"/>
+        <source>Import from CSV</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="254"/>
+        <source>Import Services</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="255"/>
+        <source>Import Bouquet</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="256"/>
-        <source>Log Inspector</source>
+        <source>Import Userbouquet</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="257"/>
+        <source>Import Tuner settings</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="258"/>
-        <source>&amp;Window</source>
+        <source>Export to CSV</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="259"/>
-        <source>&amp;Minimize</source>
+        <location filename="../src/gui/gui.cpp" line="266"/>
+        <source>Export current</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="260"/>
+        <location filename="../src/gui/gui.cpp" line="267"/>
+        <source>Export All</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="261"/>
-        <source>Hide &amp;Status Bar</source>
+        <location filename="../src/gui/gui.cpp" line="269"/>
+        <source>Export Services</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="262"/>
+        <location filename="../src/gui/gui.cpp" line="270"/>
+        <source>Export Bouquets</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="263"/>
-        <source>New &amp;Tab</source>
+        <location filename="../src/gui/gui.cpp" line="271"/>
+        <source>Export Userbouquets</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="267"/>
-        <source>&amp;Help</source>
+        <location filename="../src/gui/gui.cpp" line="264"/>
+        <location filename="../src/gui/gui.cpp" line="272"/>
+        <source>Export Tuner settings</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="265"/>
+        <source>Export to HTML</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="268"/>
+        <source>Export Index</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="279"/>
+        <source>Log Inspector</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="282"/>
+        <source>&amp;Window</source>
+        <comment>menu</comment>
+        <extracomment>Platform: Window menu</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="283"/>
+        <source>&amp;Minimize</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="285"/>
+        <source>Hide &amp;Status Bar</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="287"/>
+        <source>New &amp;Tab</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="292"/>
+        <source>&amp;Help</source>
+        <comment>menu</comment>
+        <extracomment>Platform: Help menu</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gui.cpp" line="293"/>
         <source>About &amp;Qt</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="270"/>
+        <location filename="../src/gui/gui.cpp" line="295"/>
         <source>&amp;About e2 SAT Editor</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="340"/>
+        <location filename="../src/gui/gui.cpp" line="365"/>
         <source>New &amp;Tab</source>
         <comment>tab</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="511"/>
-        <location filename="../src/gui/gui.cpp" line="526"/>
+        <location filename="../src/gui/gui.cpp" line="536"/>
+        <location filename="../src/gui/gui.cpp" line="551"/>
         <source>&amp;Find Channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="512"/>
-        <location filename="../src/gui/gui.cpp" line="517"/>
-        <location filename="../src/gui/gui.cpp" line="527"/>
+        <location filename="../src/gui/gui.cpp" line="537"/>
+        <location filename="../src/gui/gui.cpp" line="542"/>
+        <location filename="../src/gui/gui.cpp" line="552"/>
         <source>Find &amp;Bouquet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="513"/>
-        <location filename="../src/gui/gui.cpp" line="518"/>
-        <location filename="../src/gui/gui.cpp" line="528"/>
+        <location filename="../src/gui/gui.cpp" line="538"/>
+        <location filename="../src/gui/gui.cpp" line="543"/>
+        <location filename="../src/gui/gui.cpp" line="553"/>
         <source>Find N&amp;ext Bouquet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="516"/>
-        <location filename="../src/gui/gui.cpp" line="521"/>
+        <location filename="../src/gui/gui.cpp" line="541"/>
+        <location filename="../src/gui/gui.cpp" line="546"/>
         <source>&amp;Find Transponder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="522"/>
+        <location filename="../src/gui/gui.cpp" line="547"/>
         <source>Find &amp;Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="523"/>
+        <location filename="../src/gui/gui.cpp" line="548"/>
         <source>Find N&amp;ext Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="543"/>
-        <location filename="../src/gui/gui.cpp" line="835"/>
+        <location filename="../src/gui/gui.cpp" line="568"/>
+        <location filename="../src/gui/gui.cpp" line="860"/>
         <source>Untitled</source>
         <comment>tab</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="560"/>
-        <location filename="../src/gui/gui.cpp" line="601"/>
-        <location filename="../src/gui/gui.cpp" line="637"/>
-        <location filename="../src/gui/gui.cpp" line="685"/>
-        <location filename="../src/gui/gui.cpp" line="827"/>
+        <location filename="../src/gui/gui.cpp" line="585"/>
+        <location filename="../src/gui/gui.cpp" line="626"/>
+        <location filename="../src/gui/gui.cpp" line="662"/>
+        <location filename="../src/gui/gui.cpp" line="710"/>
+        <location filename="../src/gui/gui.cpp" line="852"/>
         <source>Error</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="560"/>
+        <location filename="../src/gui/gui.cpp" line="585"/>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="601"/>
+        <location filename="../src/gui/gui.cpp" line="626"/>
         <source>Missing current tab reference.</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="637"/>
+        <location filename="../src/gui/gui.cpp" line="662"/>
         <source>Missing parent tab for tab reference &quot;%1&quot;.</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="644"/>
-        <location filename="../src/gui/gui.cpp" line="870"/>
+        <location filename="../src/gui/gui.cpp" line="669"/>
+        <location filename="../src/gui/gui.cpp" line="895"/>
         <source>Edit transponders</source>
         <comment>tab</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="649"/>
-        <location filename="../src/gui/gui.cpp" line="873"/>
+        <location filename="../src/gui/gui.cpp" line="674"/>
+        <location filename="../src/gui/gui.cpp" line="898"/>
         <source>Edit settings</source>
         <comment>tab</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="654"/>
-        <location filename="../src/gui/gui.cpp" line="876"/>
+        <location filename="../src/gui/gui.cpp" line="679"/>
+        <location filename="../src/gui/gui.cpp" line="901"/>
         <source>Channel book</source>
         <comment>tab</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="685"/>
-        <location filename="../src/gui/gui.cpp" line="827"/>
+        <location filename="../src/gui/gui.cpp" line="710"/>
+        <location filename="../src/gui/gui.cpp" line="852"/>
         <source>Missing tab reference &quot;%1&quot;.</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="890"/>
+        <location filename="../src/gui/gui.cpp" line="915"/>
         <source>Select data folder</source>
         <comment>file-dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="912"/>
-        <location filename="../src/gui/gui.cpp" line="1010"/>
+        <location filename="../src/gui/gui.cpp" line="937"/>
+        <location filename="../src/gui/gui.cpp" line="1035"/>
         <source>Select where to save</source>
         <comment>file-dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="933"/>
+        <location filename="../src/gui/gui.cpp" line="958"/>
         <source>Select one or more files to open</source>
         <comment>file-dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="964"/>
-        <location filename="../src/gui/gui.cpp" line="1048"/>
+        <location filename="../src/gui/gui.cpp" line="989"/>
+        <location filename="../src/gui/gui.cpp" line="1073"/>
         <source>CSV File</source>
         <comment>file-dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="965"/>
-        <location filename="../src/gui/gui.cpp" line="985"/>
-        <location filename="../src/gui/gui.cpp" line="1049"/>
-        <location filename="../src/gui/gui.cpp" line="1053"/>
-        <location filename="../src/gui/gui.cpp" line="1056"/>
+        <location filename="../src/gui/gui.cpp" line="990"/>
+        <location filename="../src/gui/gui.cpp" line="1010"/>
+        <location filename="../src/gui/gui.cpp" line="1074"/>
+        <location filename="../src/gui/gui.cpp" line="1078"/>
+        <location filename="../src/gui/gui.cpp" line="1081"/>
         <source>All Files</source>
         <comment>file-dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="1052"/>
+        <location filename="../src/gui/gui.cpp" line="1077"/>
         <source>HTML File</source>
         <comment>file-dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="1137"/>
+        <location filename="../src/gui/gui.cpp" line="1162"/>
         <source>Hide &amp;Status Bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="1145"/>
+        <location filename="../src/gui/gui.cpp" line="1170"/>
         <source>Show &amp;Status Bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="1180"/>
+        <location filename="../src/gui/gui.cpp" line="1205"/>
         <source>Channels</source>
         <comment>status-bar</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="1182"/>
+        <location filename="../src/gui/gui.cpp" line="1207"/>
         <source>Bouquet</source>
         <comment>status-bar</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="1190"/>
+        <location filename="../src/gui/gui.cpp" line="1215"/>
         <source>TV</source>
         <comment>status-bar</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="1191"/>
+        <location filename="../src/gui/gui.cpp" line="1216"/>
         <source>Radio</source>
         <comment>status-bar</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="1192"/>
+        <location filename="../src/gui/gui.cpp" line="1217"/>
         <source>Data</source>
         <comment>status-bar</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="1193"/>
-        <location filename="../src/gui/gui.cpp" line="1202"/>
-        <location filename="../src/gui/gui.cpp" line="1222"/>
+        <location filename="../src/gui/gui.cpp" line="1218"/>
+        <location filename="../src/gui/gui.cpp" line="1227"/>
+        <location filename="../src/gui/gui.cpp" line="1247"/>
         <source>Total</source>
         <comment>status-bar</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="1212"/>
+        <location filename="../src/gui/gui.cpp" line="1237"/>
         <source>Transponders</source>
         <comment>status-bar</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gui.cpp" line="1214"/>
+        <location filename="../src/gui/gui.cpp" line="1239"/>
         <source>Position</source>
         <comment>status-bar</comment>
         <translation type="unfinished"></translation>
@@ -1982,7 +2025,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/mainView.cpp" line="242"/>
         <source>Drag&amp;&amp;Drop</source>
         <comment>toolbar</comment>
-        <extracomment>Encoding: take care about &amp;&amp; double ampersand</extracomment>
+        <extracomment>Encoding: take care about double ampersand</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2515,293 +2558,293 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="143"/>
+        <location filename="../src/gui/settings.cpp" line="152"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="144"/>
+        <location filename="../src/gui/settings.cpp" line="153"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="152"/>
+        <location filename="../src/gui/settings.cpp" line="212"/>
         <source>Connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="162"/>
+        <location filename="../src/gui/settings.cpp" line="222"/>
         <source>IP address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="165"/>
+        <location filename="../src/gui/settings.cpp" line="225"/>
         <source>FTP port</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="174"/>
+        <location filename="../src/gui/settings.cpp" line="234"/>
         <source>Use active FTP</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="188"/>
+        <location filename="../src/gui/settings.cpp" line="248"/>
         <source>HTTP port</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="190"/>
+        <location filename="../src/gui/settings.cpp" line="250"/>
         <source>Login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="200"/>
+        <location filename="../src/gui/settings.cpp" line="260"/>
         <source>Username</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="208"/>
+        <location filename="../src/gui/settings.cpp" line="268"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="210"/>
+        <location filename="../src/gui/settings.cpp" line="270"/>
         <source>Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="215"/>
+        <location filename="../src/gui/settings.cpp" line="275"/>
         <source>Transponders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="224"/>
+        <location filename="../src/gui/settings.cpp" line="284"/>
         <source>Services</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="233"/>
+        <location filename="../src/gui/settings.cpp" line="293"/>
         <source>Bouquets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="241"/>
+        <location filename="../src/gui/settings.cpp" line="301"/>
         <source>Commands</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="250"/>
+        <location filename="../src/gui/settings.cpp" line="310"/>
         <source>Custom webif reload URL address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="256"/>
+        <location filename="../src/gui/settings.cpp" line="316"/>
         <source>Custom telnet reload command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="273"/>
+        <location filename="../src/gui/settings.cpp" line="333"/>
         <source>Connections</source>
         <comment>dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="289"/>
+        <location filename="../src/gui/settings.cpp" line="349"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="295"/>
+        <location filename="../src/gui/settings.cpp" line="355"/>
         <source>Show confirmation messages when deleting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="300"/>
+        <location filename="../src/gui/settings.cpp" line="360"/>
         <source>Parental lock whitelist (exclusion instead inclusion list)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="305"/>
+        <location filename="../src/gui/settings.cpp" line="365"/>
         <source>Drag and Drop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="311"/>
+        <location filename="../src/gui/settings.cpp" line="371"/>
         <source>Switch to current bouquet item after the drop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="321"/>
+        <location filename="../src/gui/settings.cpp" line="381"/>
         <source>Channel operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="327"/>
+        <location filename="../src/gui/settings.cpp" line="387"/>
         <source>Copy channels (preserving)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="334"/>
+        <location filename="../src/gui/settings.cpp" line="394"/>
         <source>Move channels (deleting)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="342"/>
+        <location filename="../src/gui/settings.cpp" line="402"/>
         <source>Theme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="351"/>
+        <location filename="../src/gui/settings.cpp" line="411"/>
         <source>Default (system theme)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="352"/>
+        <location filename="../src/gui/settings.cpp" line="412"/>
         <source>Dark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="353"/>
+        <location filename="../src/gui/settings.cpp" line="413"/>
         <source>Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="357"/>
+        <location filename="../src/gui/settings.cpp" line="417"/>
         <source>Enable experimental features</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="362"/>
+        <location filename="../src/gui/settings.cpp" line="422"/>
         <source>The software might need to be restarted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="385"/>
+        <location filename="../src/gui/settings.cpp" line="445"/>
         <source>Preferences</source>
         <comment>dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="401"/>
+        <location filename="../src/gui/settings.cpp" line="461"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="412"/>
+        <location filename="../src/gui/settings.cpp" line="472"/>
         <source>Lamedb 2.4 [Enigma 2]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="413"/>
+        <location filename="../src/gui/settings.cpp" line="473"/>
         <source>Lamedb 2.5 [Enigma 2]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="414"/>
+        <location filename="../src/gui/settings.cpp" line="474"/>
         <source>Lamedb 2.3 [Enigma 1]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="415"/>
+        <location filename="../src/gui/settings.cpp" line="475"/>
         <source>Lamedb 2.2 [Enigma 1]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="416"/>
+        <location filename="../src/gui/settings.cpp" line="476"/>
         <source>Zapit api-v4 [Neutrino]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="417"/>
+        <location filename="../src/gui/settings.cpp" line="477"/>
         <source>Zapit api-v3 [Neutrino]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="418"/>
+        <location filename="../src/gui/settings.cpp" line="478"/>
         <source>Zapit api-v2 [Neutrino]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="419"/>
+        <location filename="../src/gui/settings.cpp" line="479"/>
         <source>Zapit api-v1 [Neutrino]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="422"/>
+        <location filename="../src/gui/settings.cpp" line="482"/>
         <source>Default format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="424"/>
+        <location filename="../src/gui/settings.cpp" line="484"/>
         <source>Tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="431"/>
+        <location filename="../src/gui/settings.cpp" line="491"/>
         <source>CSV Import/Export</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="434"/>
+        <location filename="../src/gui/settings.cpp" line="494"/>
         <source>Allow header columns in CSV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="445"/>
+        <location filename="../src/gui/settings.cpp" line="505"/>
         <source>CSV delimiter character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="453"/>
+        <location filename="../src/gui/settings.cpp" line="513"/>
         <source>CSV separator character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="461"/>
+        <location filename="../src/gui/settings.cpp" line="521"/>
         <source>CSV escape character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="467"/>
+        <location filename="../src/gui/settings.cpp" line="527"/>
         <source>Fields Import/Export</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="473"/>
+        <location filename="../src/gui/settings.cpp" line="533"/>
         <source>Default (same fields as visual)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="480"/>
+        <location filename="../src/gui/settings.cpp" line="540"/>
         <source>Extended (all fields)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="509"/>
+        <location filename="../src/gui/settings.cpp" line="569"/>
         <source>Engine</source>
         <comment>dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="531"/>
+        <location filename="../src/gui/settings.cpp" line="591"/>
         <source>%1Please be carefull!%2Modifing these settings could break the program.%3</source>
         <extracomment>HTML formattation: %1text%2%text%3 treat them as spaces</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="535"/>
+        <location filename="../src/gui/settings.cpp" line="595"/>
         <source>OK, I understood this.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="554"/>
+        <location filename="../src/gui/settings.cpp" line="614"/>
         <source>Advanced</source>
         <comment>dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settings.cpp" line="570"/>
-        <location filename="../src/gui/settings.cpp" line="574"/>
+        <location filename="../src/gui/settings.cpp" line="630"/>
+        <location filename="../src/gui/settings.cpp" line="634"/>
         <source>Profile</source>
         <translation type="unfinished"></translation>
     </message>

@@ -138,10 +138,70 @@ void settings::connectionsLayout()
 	platform::osPersistentEditor(rplist);
 
 	QToolBar* dttbar = new QToolBar;
-	dttbar->setIconSize(QSize(12, 12));
+	dttbar->setObjectName("profile_toolbar");
 	dttbar->setToolButtonStyle(Qt::ToolButtonIconOnly);
+#ifndef Q_OS_MAC
+	dttbar->setIconSize(QSize(16, 16));
+	dttbar->setStyleSheet("QToolBar { spacing: 0 } QToolButton { margin: -1px 0; border: 1px solid }");
+#else
+	//TODO
+	dttbar->setIconSize(QSize(13, 13));
+	dttbar->setStyleSheet("QToolBar { spacing: 0 } QToolButton { margin: -1px 0; width: 24px; height: 18px; border: 1px solid }");
+#endif
+
 	dttbar->addAction(theme::icon("add"), tr("Add"), [=]() { this->addProfile(); });
 	dttbar->addAction(theme::icon("remove"), tr("Remove"), [=]() { this->deleteProfile(); });
+
+	QColor tbshade;
+	QColor tbfocus;
+	QString tbshade_hexArgb;
+	QString tbfocus_hexArgb;
+#ifndef Q_OS_MAC
+	tbshade = QPalette().color(QPalette::Base);
+	tbshade.setAlphaF(0.25);
+	tbshade_hexArgb = tbshade.name(QColor::HexArgb);
+
+	tbfocus = QPalette().color(QPalette::Mid);
+	tbfocus.setAlphaF(0.19);
+	tbfocus_hexArgb = tbshade.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(dttbar, "#profile_toolbar QToolButton { border-color: " + tbshade_hexArgb + " } #profile_toolbar QToolButton:pressed { background-color: " + tbfocus_hexArgb + " }", theme::light);
+
+	tbshade = QPalette().color(QPalette::Mid);
+	tbshade.setAlphaF(0.22);
+	tbshade_hexArgb = tbshade.name(QColor::HexArgb);
+
+	tbfocus = QPalette().color(QPalette::Mid);
+	tbfocus.setAlphaF(0.15);
+	tbfocus_hexArgb = tbshade.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(dttbar, "#profile_toolbar QToolButton { border-color: " + tbshade_hexArgb + " } #profile_toolbar QToolButton:pressed { background-color: " + tbfocus_hexArgb + " }", theme::dark);
+#else
+	tbshade = QColor(Qt::black);
+	tbshade.setAlphaF(0.08);
+	tbshade_hexArgb = tbshade.name(QColor::HexArgb);
+
+	tbfocus = QColor(Qt::black);
+	tbfocus.setAlphaF(0.20);
+	tbfocus_hexArgb = tbshade.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(dttbar, "#profile_toolbar QToolButton { border-color: " + tbshade_hexArgb + " } #profile_toolbar QToolButton:pressed { background-color: " + tbfocus_hexArgb + " }", theme::light);
+
+	tbshade = QPalette().color(QPalette::Dark).darker();
+	tbshade.setAlphaF(0.28);
+	tbshade_hexArgb = tbshade.name(QColor::HexArgb);
+
+	tbfocus = QPalette().color(QPalette::Dark).darker();
+	tbfocus.setAlphaF(0.34);
+	tbfocus_hexArgb = tbshade.name(QColor::HexArgb);
+
+	theme->dynamicStyleSheet(dttbar, "#profile_toolbar QToolButton { border-color: " + tbshade_hexArgb + " } #profile_toolbar QToolButton:pressed { background-color: " + tbfocus_hexArgb + " }", theme::dark);
+#endif
+
+	if (dttbar->layoutDirection() == Qt::LeftToRight)
+		dttbar->widgetForAction(dttbar->actions().first())->setStyleSheet("margin-right: -1px");
+	else
+		dttbar->widgetForAction(dttbar->actions().first())->setStyleSheet("margin-left: -1px");
 
 	dtvbox->setSpacing(0);
 	dtvbox->addWidget(rplist);
