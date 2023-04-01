@@ -80,9 +80,9 @@ void dialAbstract::toolbarLayout()
 	toolBarStyleSheet();
 
 	toolBarSpacer(dtbar);
-	this->action.cancel = toolBarAction(dtbar, tr("Cancel"), [=]() { this->cancel(); });
+	this->action.cancel = toolBarAction(dtbar, tr("Cancel", "dialog"), [=]() { this->cancel(); });
 	toolBarSeparator(dtbar);
-	this->action.save = toolBarAction(dtbar, tr("Save"), theme->dynamicIcon("edit"), [=]() { this->save(); });
+	this->action.save = toolBarAction(dtbar, tr("Save", "dialog"), theme->dynamicIcon("edit"), [=]() { this->save(); });
 }
 
 void dialAbstract::collapsibleLayout()

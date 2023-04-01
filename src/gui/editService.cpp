@@ -65,7 +65,7 @@ void editService::layout(QWidget* cwid)
 {
 	this->dialAbstract::layout(cwid);
 
-	QString dtitle = this->state.edit ? tr("Edit Service", "dialog") : tr("Add Service", "dialog");
+	QString dtitle = this->state.edit ? tr("Edit Service", "dialog") : tr("New Service", "dialog");
 	dial->setWindowTitle(dtitle);
 
 	auto* dbih = this->data->dbih;

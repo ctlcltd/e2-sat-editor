@@ -56,7 +56,7 @@ void editTunersetsTable::layout(QWidget* cwid)
 {
 	this->dialAbstract::layout(cwid);
 
-	QString dtitle = this->state.edit ? tr("Edit Position", "dialog") : tr("Add Position", "dialog");
+	QString dtitle = this->state.edit ? tr("Edit Position", "dialog") : tr("New Position", "dialog");
 	dial->setWindowTitle(dtitle);
 
 	switch (this->state.yx)

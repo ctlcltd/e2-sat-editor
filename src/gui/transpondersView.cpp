@@ -114,7 +114,7 @@ void transpondersView::layout()
 	list_style->setIndentation(8, true);
 	list_style->setFirstColumnIndent(1);
 
-	QTreeWidgetItem* list_thead = new QTreeWidgetItem({NULL, tr("TXID"), tr("Combo"), tr("System"), tr("Position"), tr("Transport ID"), tr("DVBNS"), tr("ONID"), tr("Frequency"), tr("Polarization"), tr("Symbol Rate"), tr("FEC"), tr("Modulation"), tr("Bandwidth"), tr("Pilot"), tr("Roll offset"), tr("Inversion"), tr("Tmx Mode"), tr("Guard"), tr("Hierarchy")});
+	QTreeWidgetItem* list_thead = new QTreeWidgetItem({NULL, "TXID", tr("Combo"), tr("System"), tr("Position"), tr("Transport ID"), tr("DVBNS"), tr("ONID"), tr("Frequency"), tr("Polarization"), tr("Symbol Rate"), tr("FEC"), tr("Modulation"), tr("Bandwidth"), tr("Pilot"), tr("Roll offset"), tr("Inversion"), tr("Tmx Mode"), tr("Guard"), tr("Hierarchy")});
 	list->setHeaderItem(list_thead);
 	list->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
 	if (QSettings().value("application/debug", true).toBool()) {

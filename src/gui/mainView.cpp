@@ -179,7 +179,7 @@ void mainView::layout()
 	list_style->setIndentation(12, true);
 	list_style->setFirstColumnIndent(1);
 
-	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({NULL, tr("Index"), tr("Name"), tr("Parental"), tr("CHID"), tr("TXID"), tr("Service ID"), tr("Transport ID"), tr("Type"), tr("CAS"), tr("Provider"), tr("System"), tr("Position"), tr("Tuner"), tr("Frequency"), tr("Polarization"), tr("Symbol Rate"), tr("FEC")});
+	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({NULL, tr("Index"), tr("Name"), tr("Parental"), "CHID", "TXID", tr("Service ID"), tr("Transport ID"), tr("Type"), tr("CAS"), tr("Provider"), tr("System"), tr("Position"), tr("Tuner"), tr("Frequency"), tr("Polarization"), tr("Symbol Rate"), tr("FEC")});
 
 	list->setHeaderItem(lheader_item);
 	list->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
@@ -2378,7 +2378,7 @@ void mainView::showTreeEditContextMenu(QPoint& pos)
 		contextMenuSeparator(tree_edit);
 		contextMenuAction(tree_edit, ! ub_locked ? tr("Set Parental lock", "context-menu") : tr("Unset Parental lock", "context-menu"), [=]() { this->toggleUserbouquetParentalLock(); });
 		contextMenuSeparator(tree_edit);
-		contextMenuAction(tree_edit, tr("Delete", "context-menu"), [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
+		contextMenuAction(tree_edit, tr("&amp;Delete", "context-menu"), [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
 	}
 	contextMenuSeparator(tree_edit);
 	contextMenuAction(tree_edit, tr("Export", "context-menu"), [=]() { this->tabExportFile(); });

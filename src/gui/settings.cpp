@@ -95,11 +95,11 @@ void settings::layout(QWidget* cwid)
 
 	this->action.dtsave = new QPushButton;
 	this->action.dtsave->setDefault(true);
-	this->action.dtsave->setText(tr("Save Settings"));
+	this->action.dtsave->setText(tr("Save", "dialog"));
 	this->action.dtsave->connect(this->action.dtsave, &QPushButton::pressed, [=]() { this->save(); });
 
 	this->action.dtcancel = new QPushButton;
-	this->action.dtcancel->setText(tr("Cancel"));
+	this->action.dtcancel->setText(tr("Cancel", "dialog"));
 	this->action.dtcancel->connect(this->action.dtcancel, &QPushButton::pressed, [=]() { this->cancel(); });
 
 	connectionsLayout();
@@ -207,7 +207,7 @@ void settings::connectionsLayout()
 	platform::osLineEdit(dtf1lp);
 	dtf1->addRow(tr("Password"), dtf1lp); // show/hide
 
-	QGroupBox* dtl2 = new QGroupBox("Configuration");
+	QGroupBox* dtl2 = new QGroupBox(tr("Configuration"));
 	QFormLayout* dtf2 = new QFormLayout;
 	dtf2->setFormAlignment(Qt::AlignLeft);
 

@@ -113,19 +113,19 @@ void tunersetsView::layout()
 	{
 		case e2db::YTYPE::satellite:
 			ths = QStringList ({NULL, tr("Name"), tr("Position")});
-			lhs = QStringList ({NULL, tr("TRID"), tr("Freq/Pol/SR"), tr("Frequency"), tr("Polarization"), tr("Symbol Rate"), tr("System"), tr("FEC"), tr("Modulation"), tr("Inversion"),  tr("Roll offset"), tr("Pilot")});
+			lhs = QStringList ({NULL, "TRID", tr("Freq/Pol/SR"), tr("Frequency"), tr("Polarization"), tr("Symbol Rate"), tr("System"), tr("FEC"), tr("Modulation"), tr("Inversion"),  tr("Roll offset"), tr("Pilot")});
 		break;
 		case e2db::YTYPE::terrestrial:
 			ths = QStringList ({NULL, tr("Name"), tr("Country")});
-			lhs = QStringList ({NULL, tr("TRID"), tr("Freq/Const/Band"), tr("Frequency"), tr("Constellation"), NULL, tr("System"), tr("Bandwidth"), tr("Tmx Mode"), tr("HP FEC"), tr("LP FEC"), tr("Inversion"), tr("Guard"), tr("Hierarchy")});
+			lhs = QStringList ({NULL, "TRID", tr("Freq/Const/Band"), tr("Frequency"), tr("Constellation"), NULL, tr("System"), tr("Bandwidth"), tr("Tmx Mode"), tr("HP FEC"), tr("LP FEC"), tr("Inversion"), tr("Guard"), tr("Hierarchy")});
 		break;
 		case e2db::YTYPE::cable:
 			ths = QStringList ({NULL, tr("Name"), tr("Country")});
-			lhs = QStringList ({NULL, tr("TRID"), tr("Freq/Mod/SR"), tr("Frequency"), tr("Modulation"), tr("Symbol Rate"), tr("System"), tr("FEC"), tr("Inversion")});
+			lhs = QStringList ({NULL, "TRID", tr("Freq/Mod/SR"), tr("Frequency"), tr("Modulation"), tr("Symbol Rate"), tr("System"), tr("FEC"), tr("Inversion")});
 		break;
 		case e2db::YTYPE::atsc:
 			ths = QStringList ({NULL, tr("Name")});
-			lhs = QStringList ({NULL, tr("TRID"), NULL, tr("Frequency"), tr("Modulation"), NULL, tr("System")});
+			lhs = QStringList ({NULL, "TRID", NULL, tr("Frequency"), tr("Modulation"), NULL, tr("System")});
 		break;
 	}
 
@@ -626,7 +626,7 @@ void tunersetsView::addPosition()
 	if (dbih->tuners[tvid].tables.count(tnid))
 		debug("addPosition", "tnid", tnid);
 	else
-		return error("addPosition", tr("Error", "error").toStdString(), tr("Missing tuner setting table key \"%1\".", "error").arg(tnid.data()).toStdString());
+		return error("addPosition", tr("Error", "error").toStdString(), tr("Missing tuner settings table key \"%1\".", "error").arg(tnid.data()).toStdString());
 
 	tree->header()->setSectionsClickable(false);
 	tree->setDragEnabled(false);
@@ -1193,7 +1193,7 @@ void tunersetsView::showTreeEditContextMenu(QPoint &pos)
 
 	contextMenuAction(tree_edit, tr("Edit Position", "context-menu"), [=]() { this->editPosition(); }, tabGetFlag(gui::TabTreeEdit));
 	contextMenuSeparator(tree_edit);
-	contextMenuAction(tree_edit, tr("Delete", "context-menu"), [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
+	contextMenuAction(tree_edit, tr("&Delete", "context-menu"), [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
 	contextMenuSeparator(tree_edit);
 	contextMenuAction(tree_edit, tr("Edit Settings", "context-menu"), [=]() { this->editSettings(); });
 
