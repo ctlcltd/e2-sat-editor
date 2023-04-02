@@ -401,6 +401,7 @@ void mainView::referenceBoxLayout()
 	QLabel* ref0lr = new QLabel(tr("Reference ID", "reference-box"));
 	QLabel* ref0tr = new QLabel("< >");
 	ref0lr->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
+	ref0tr->setAlignment(ref0tr->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	ref_fields[LIST_REF::ReferenceID] = ref0tr;
 	ref_box->addWidget(ref0lr, 0, 0, Qt::AlignTop);
 	ref_box->addWidget(ref0tr, 0, 1, Qt::AlignTop);
@@ -408,41 +409,48 @@ void mainView::referenceBoxLayout()
 	QLabel* ref1ls = new QLabel(tr("Service ID", "reference-box"));
 	QLabel* ref1ts = new QLabel("< >");
 	ref1ls->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
+	ref1ts->setAlignment(ref1ts->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	ref_fields[LIST_REF::ServiceID] = ref1ts;
 	ref_box->addWidget(ref1ls, 0, 2, Qt::AlignTop);
-	ref_box->addWidget(ref1ts, 0, 3, Qt::AlignTop);
+	ref_box->addWidget(ref1ts, 0, 3, Qt::AlignLeading | Qt::AlignTop);
 
 	QLabel* ref2lt = new QLabel(tr("Transponder", "reference-box"));
 	QLabel* ref2tt = new QLabel("< >");
 	ref2lt->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
+	ref2tt->setAlignment(ref2tt->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	ref_fields[LIST_REF::Transponder] = ref2tt;
 	ref_box->addWidget(ref2lt, 0, 4, Qt::AlignTop);
-	ref_box->addWidget(ref2tt, 0, 5, Qt::AlignTop);
+	ref_box->addWidget(ref2tt, 0, 5, Qt::AlignLeading | Qt::AlignTop);
 	ref_box->addItem(new QSpacerItem(0, 12), 1, 0);
 
 	QLabel* ref3lu = new QLabel(tr("Userbouquets", "reference-box"));
 	QLabel* ref3tu = new QLabel("< >");
 	ref3lu->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
+	ref3tu->setAlignment(ref3tu->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	ref_fields[LIST_REF::Userbouquets] = ref3tu;
 	ref_box->addWidget(ref3lu, 2, 0, Qt::AlignTop);
-	ref_box->addWidget(ref3tu, 2, 1, Qt::AlignTop);
+	ref_box->addWidget(ref3tu, 2, 1, Qt::AlignLeading | Qt::AlignTop);
 
 	QLabel* ref4lb = new QLabel(tr("Bouquets", "reference-box"));
 	QLabel* ref4tb = new QLabel("< >");
 	ref4lb->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
+	ref4tb->setAlignment(ref4tb->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	ref_fields[LIST_REF::Bouquets] = ref4tb;
 	ref_box->addWidget(ref4lb, 2, 2, Qt::AlignTop);
-	ref_box->addWidget(ref4tb, 2, 3, Qt::AlignTop);
+	ref_box->addWidget(ref4tb, 2, 3, Qt::AlignLeading | Qt::AlignTop);
 
 	QLabel* ref5ln = new QLabel(tr("Tuner", "reference-box"));
 	QLabel* ref5tn = new QLabel("< >");
 	ref5ln->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
+	ref5tn->setAlignment(ref5tn->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	ref_fields[LIST_REF::Tuner] = ref5tn;
 	ref_box->addWidget(ref5ln, 2, 4, Qt::AlignTop);
-	ref_box->addWidget(ref5tn, 2, 5, Qt::AlignTop);
+	ref_box->addWidget(ref5tn, 2, 5, Qt::AlignLeading | Qt::AlignTop);
+
+	ref_box->addItem(new QSpacerItem(0, 0), 0, 6, 3, 1);
 
 	ref_box->setRowStretch(2, 1);
-	ref_box->setColumnStretch(5, 1);
+	ref_box->setColumnStretch(6, 1);
 	ref_box->setColumnMinimumWidth(1, 300);
 	ref_box->setColumnMinimumWidth(3, 200);
 	ref_box->setColumnMinimumWidth(5, 200);
@@ -468,12 +476,12 @@ void mainView::load()
 
 	unordered_map<string, QTreeWidgetItem*> bgroups;
 
-	for (auto & bsi : dbih->index["bss"])
+	for (auto & x : dbih->index["bss"])
 	{
-		debug("load", "bouquet", bsi.second);
+		debug("load", "bouquet", x.second);
 
-		e2db::bouquet gboq = dbih->bouquets[bsi.second];
-		QString qbs = QString::fromStdString(bsi.second);
+		e2db::bouquet gboq = dbih->bouquets[x.second];
+		QString qbs = QString::fromStdString(x.second);
 		QString name = gboq.nname.empty() ? e2db::fixUnicodeChars(gboq.name) : QString::fromStdString(gboq.nname);
 
 		QTreeWidgetItem* bitem = new QTreeWidgetItem();
@@ -486,13 +494,13 @@ void mainView::load()
 		for (string & ubname : gboq.userbouquets)
 			bgroups[ubname] = bitem;
 	}
-	for (auto & ubi : dbih->index["ubs"])
+	for (auto & x : dbih->index["ubs"])
 	{
-		debug("load", "userbouquet", ubi.second);
+		debug("load", "userbouquet", x.second);
 
-		e2db::userbouquet uboq = dbih->userbouquets[ubi.second];
-		QString qub = QString::fromStdString(ubi.second);
-		QTreeWidgetItem* pgroup = bgroups[ubi.second];
+		e2db::userbouquet uboq = dbih->userbouquets[x.second];
+		QString qub = QString::fromStdString(x.second);
+		QTreeWidgetItem* pgroup = bgroups[x.second];
 		QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
 		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
 		bitem->setData(0, Qt::UserRole, qub);
@@ -638,6 +646,7 @@ void mainView::populate(QTreeWidget* tw)
 
 			if (dbih->db.services.count(ch.second))
 			{
+				//TODO FIX i18n rtl chname, chpname, chtname punctuation
 				entry = dbih->entries.services[ch.second];
 				//TODO TEST idx changed after edit
 				idx = QString::number(ch.first);
@@ -1329,8 +1338,9 @@ void mainView::addChannel()
 		{
 			QString qub = parent->data(0, Qt::UserRole).toString();
 			string bname = qub.toStdString();
-			e2db::bouquet bsoq = dbih->bouquets[bname];
-			stype = bsoq.btype;
+
+			e2db::bouquet gboq = dbih->bouquets[bname];
+			stype = gboq.btype;
 		}
 	}
 
@@ -2539,11 +2549,29 @@ void mainView::updateStatusBar(bool current)
 	if (current && ! this->state.curr.empty())
 	{
 		string bname = this->state.curr;
+
 		msg.counters[gui::COUNTER::n_bouquet] = int (dbih->index[bname].size());
 
 		// bouquets tree
 		if (this->state.tc)
-			msg.curr = bname;
+		{
+			string filename;
+
+			// bouquet: tv | radio
+			if (this->state.ti != -1)
+			{
+				e2db::bouquet gboq = dbih->bouquets[bname];
+				filename = gboq.rname.empty() ? gboq.bname : gboq.rname;
+			}
+			// userbouquet
+			else
+			{
+				e2db::userbouquet uboq = dbih->userbouquets[bname];
+				filename = uboq.rname.empty() ? uboq.bname : uboq.rname;
+			}
+
+			msg.curr = filename;
+		}
 	}
 	else
 	{
@@ -2634,6 +2662,7 @@ void mainView::updateReferenceBox()
 			{
 				e2db::transponder tx = dbih->db.transponders[ch.txid];
 
+				// i18n rtl combo (LRM)
 				string ptxp = dbih->value_transponder_combo(tx);
 				string sys = dbih->value_transponder_system(tx);
 				string pos = dbih->value_transponder_position(tx);

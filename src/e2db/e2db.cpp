@@ -419,12 +419,14 @@ void e2db::edit_service(string chid, service& ch)
 	if (! db.services.count(chid))
 		return error("edit_service", "Error", trf("Service \"%s\" not exists.", chid));
 
-	char nw_chid[25];
 	char nw_txid[25];
 	// %4x:%8x
 	std::snprintf(nw_txid, 25, "%x:%x", ch.tsid, ch.dvbns);
+
+	char nw_chid[25];
 	// %4x:%4x:%8x
 	std::snprintf(nw_chid, 25, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
+
 	ch.txid = nw_txid;
 	ch.chid = nw_chid;
 
@@ -437,6 +439,7 @@ void e2db::edit_service(string chid, service& ch)
 	else
 	{
 		string kchid = 's' + chid;
+
 		collisions.erase(kchid);
 
 		if (db.services.count(ch.chid))
@@ -458,12 +461,14 @@ void e2db::edit_service(string chid, service& ch)
 					it->second = ch.chid;
 			}
 		}
+
 		for (auto & x : userbouquets)
 		{
 			if (x.second.channels.count(chid))
 			{
 				channel_reference chref = x.second.channels[chid];
 				chref.chid = ch.chid;
+
 				x.second.channels.erase(chid);
 				x.second.channels.emplace(ch.chid, chref);
 			}
@@ -480,6 +485,7 @@ void e2db::remove_service(string chid)
 
 	service ch = db.services[chid];
 	string kchid = 's' + chid;
+
 	db.services.erase(chid);
 
 	for (auto & x : index)
@@ -490,6 +496,7 @@ void e2db::remove_service(string chid)
 				x.second.erase(it);
 		}
 	}
+
 	for (auto & x : userbouquets)
 	{
 		x.second.channels.erase(chid);
@@ -504,6 +511,29 @@ void e2db::add_bouquet(bouquet& bs)
 
 	if (bs.index == -1)
 		bs.index = int (index["bss"].size()) + 1;
+
+	if (! bs.rname.empty())
+	{
+		bool found = false;
+
+		for (auto it = index["bss"].begin(); it != index["bss"].end(); it++)
+		{
+			if (it->second == bs.rname)
+			{
+				found = true;
+				break;
+			}
+		}
+
+		if (found)
+			error("add_bouquet", "Error", trf("Bouquet \"%s\" already exists.", bs.rname));
+		else
+			bs.bname = bs.rname;
+	}
+
+	if (bouquets.count(bs.bname))
+		return error("add_bouquet", "Error", trf("Bouquet \"%s\" already exists.", bs.bname));
+
 	e2db_abstract::add_bouquet(bs.index, bs);
 }
 
@@ -513,6 +543,23 @@ void e2db::edit_bouquet(bouquet& bs)
 
 	if (! bouquets.count(bs.bname))
 		return error("edit_bouquet", "Error", trf("Bouquet \"%s\" not exists.", bs.bname));
+
+	if (! bs.rname.empty())
+	{
+		bool found = false;
+
+		for (auto it = index["bss"].begin(); it != index["bss"].end(); it++)
+		{
+			if (it->second == bs.rname)
+			{
+				found = true;
+				break;
+			}
+		}
+
+		if (found)
+			error("edit_bouquet", "Error", trf("Bouquet \"%s\" already exists.", bs.rname));
+	}
 
 	bouquets[bs.bname] = bs;
 }
@@ -529,6 +576,7 @@ void e2db::remove_bouquet(string bname)
 		if (it->second == bname)
 			index["bss"].erase(it);
 	}
+
 	for (auto it = index["ubs"].begin(); it != index["ubs"].end(); it++)
 	{
 		userbouquet ub = userbouquets[it->second];
@@ -552,48 +600,87 @@ void e2db::add_userbouquet(userbouquet& ub)
 
 	bouquet bs = bouquets[ub.pname];
 
+	string ktype;
+	if (bs.btype == STYPE::tv)
+		ktype = "tv";
+	else if (bs.btype == STYPE::radio)
+		ktype = "radio";
+
 	if (ub.index == -1)
 	{
 		int idx = 0;
-		string ktype;
-		if (bs.btype == STYPE::tv)
-			ktype = "tv";
-		else if (bs.btype == STYPE::radio)
-			ktype = "radio";
 
 		if (index.count("ubs"))
 		{
-			for (auto it = index["ubs"].begin(); it != index["ubs"].end(); it++)
+			int nmax = -1;
+
+			for (auto it = bs.userbouquets.begin(); it != bs.userbouquets.end(); it++)
 			{
-				size_t pos0 = it->second.find(".dbe");
-				size_t pos1 = it->second.find('.' + ktype);
-				size_t len = it->second.length();
-				int n = 0;
-				if (pos0 != string::npos && pos1 != string::npos)
+				string bname = *it;
+				size_t len = bname.rfind('.' + ktype);
+
+				if (len != string::npos)
 				{
-					n = std::atoi(it->second.substr(pos0 + 4, len - pos1 - 1).data());
-					idx = n > idx ? n : idx;
+					size_t pos = bname.rfind('.', len - 1);
+					string str = bname.substr(pos + 1, len - pos - 1);
+					string prefix, num;
+
+					size_t i = 0;
+					while (i != str.size())
+					{
+						if (std::isdigit(str[i]))
+							num += str[i];
+						else
+							prefix += str[i];
+						i++;
+					}
+
+					if (! num.empty())
+					{
+						int n = std::atoi(num.data());
+						nmax = n > nmax ? n : nmax;
+					}
 				}
 			}
-			idx = idx + 1;
+
+			if (nmax == -1)
+				nmax = int (bs.userbouquets.size());
+
+			idx = nmax + 1;
 		}
 
 		ub.index = idx;
 	}
 
+	if (! ub.rname.empty())
+	{
+		bool found = false;
+
+		for (auto it = index["ubs"].begin(); it != index["ubs"].end(); it++)
+		{
+			if (it->second == ub.rname)
+			{
+				found = true;
+				break;
+			}
+		}
+
+		if (found)
+			error("add_userbouquet", "Error", trf("Userbouquet \"%s\" already exists.", ub.rname));
+		else
+			ub.bname = ub.rname;
+	}
+
 	if (ub.bname.empty())
 	{
-		string ktype;
-		if (bs.btype == STYPE::tv)
-			ktype = "tv";
-		else if (bs.btype == STYPE::radio)
-			ktype = "radio";
-
 		stringstream ub_bname;
 		ub_bname << "userbouquet.dbe" << setfill('0') << setw(2) << ub.index << '.' << ktype;
 
 		ub.bname = ub_bname.str();
 	}
+
+	if (userbouquets.count(ub.bname))
+		return error("edit_userbouquet", "Error", trf("Userbouquet \"%s\" already exists.", ub.bname));
 
 	e2db_abstract::add_userbouquet(ub.index, ub);
 }
@@ -604,6 +691,25 @@ void e2db::edit_userbouquet(userbouquet& ub)
 
 	if (! userbouquets.count(ub.bname))
 		return error("edit_userbouquet", "Error", trf("Userbouquet \"%s\" not exists.", ub.bname));
+
+	bouquet bs = bouquets[ub.pname];
+
+	if (! ub.rname.empty())
+	{
+		bool found = false;
+
+		for (auto it = index["ubs"].begin(); it != index["ubs"].end(); it++)
+		{
+			if (it->second == ub.rname)
+			{
+				found = true;
+				break;
+			}
+		}
+
+		if (found)
+			error("edit_userbouquet", "Error", trf("Userbouquet \"%s\" already exists.", ub.rname));
+	}
 
 	userbouquets[ub.bname] = ub;
 }
@@ -809,6 +915,7 @@ void e2db::remove_channel_reference(channel_reference chref, string bname)
 	{
 		index[bname].erase(pos);
 	}
+
 	if (chref.marker)
 	{
 		vector<pair<int, string>>::iterator pos;
@@ -1611,9 +1718,12 @@ void e2db::merge(e2db_abstract* dst)
 				char chid[25];
 				// %4d:%2x:%d
 				std::snprintf(chid, 25, "%d:%x:%d", chref.atype, i, ub.index);
+
 				chref.chid = chid;
 				chref.anum = i;
+
 				x.second = chref.chid;
+
 				index["mks"].emplace_back(pair (ub.index, chid));
 				i++;
 			}

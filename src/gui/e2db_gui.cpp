@@ -27,8 +27,6 @@ using std::string, std::unordered_set, std::to_string;
 namespace e2se_gui
 {
 
-//TODO improve custom bname (eg. userbouquet.favourites.tv)
-
 e2db::e2db()
 {
 	std::setlocale(LC_NUMERIC, "C");
@@ -666,6 +664,7 @@ string e2db::trf(string str, string param)
 	size_t tsize = trstr.length() + param.length();
 	char tstr[tsize];
 	std::snprintf(tstr, tsize, trstr.c_str(), param.c_str());
+
 	return string (tstr);
 }
 

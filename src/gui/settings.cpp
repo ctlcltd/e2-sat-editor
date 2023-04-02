@@ -109,7 +109,8 @@ void settings::layout(QWidget* cwid)
 
 	dfrm->setColumnStretch(0, 1);
 	dfrm->setRowStretch(0, 1);
-	dhbox->setAlignment(Qt::AlignRight);
+
+	dhbox->setAlignment(Qt::AlignTrailing);
 
 	dvbox->addWidget(dtwid);
 	dhbox->addWidget(this->action.dtcancel);
@@ -128,6 +129,8 @@ void settings::connectionsLayout()
 	QHBoxLayout* dtcnt = new QHBoxLayout(rppage);
 
 	QVBoxLayout* dtvbox = new QVBoxLayout;
+
+	//TODO FIX i18n rtl profile name punctuation
 	this->rplist = new QListWidget;
 	rplist->setEditTriggers(QListWidget::EditKeyPressed | QListWidget::DoubleClicked);
 	rplist->setStyleSheet("QListView::item { height: 44px; font: 16px } QListView QLineEdit { border: 1px solid palette(alternate-base) }");
@@ -211,7 +214,7 @@ void settings::connectionsLayout()
 
 	QGroupBox* dtl0 = new QGroupBox(tr("Connection"));
 	QFormLayout* dtf0 = new QFormLayout;
-	dtf0->setFormAlignment(Qt::AlignLeft);
+	dtf0->setFormAlignment(Qt::AlignLeading);
 	dtf0->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
 	QLineEdit* dtf0ia = new QLineEdit("192.168.0.2");
@@ -249,7 +252,7 @@ void settings::connectionsLayout()
 
 	QGroupBox* dtl1 = new QGroupBox(tr("Login"));
 	QFormLayout* dtf1 = new QFormLayout;
-	dtf1->setFormAlignment(Qt::AlignLeft);
+	dtf1->setFormAlignment(Qt::AlignLeading);
 	dtf1->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
 	QLineEdit* dtf1lu = new QLineEdit("root");
@@ -269,7 +272,7 @@ void settings::connectionsLayout()
 
 	QGroupBox* dtl2 = new QGroupBox(tr("Configuration"));
 	QFormLayout* dtf2 = new QFormLayout;
-	dtf2->setFormAlignment(Qt::AlignLeft);
+	dtf2->setFormAlignment(Qt::AlignLeading);
 
 	QHBoxLayout* dtb20 = new QHBoxLayout;
 	dtf2->addRow(tr("Transponders"), dtb20);
@@ -300,7 +303,7 @@ void settings::connectionsLayout()
 
 	QGroupBox* dtl3 = new QGroupBox(tr("Commands"));
 	QFormLayout* dtf3 = new QFormLayout;
-	dtf3->setFormAlignment(Qt::AlignLeft);
+	dtf3->setFormAlignment(Qt::AlignLeading);
 	dtf3->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
 
 	QLineEdit* dtf3ca = new QLineEdit;
@@ -344,12 +347,12 @@ void settings::preferencesLayout()
 
 	QFormLayout* dtform = new QFormLayout;
 	dtform->setSpacing(10);
-	dtform->setFormAlignment(Qt::AlignLeft | Qt::AlignTop);
+	dtform->setFormAlignment(Qt::AlignLeading | Qt::AlignTop);
 
 	QGroupBox* dtl0 = new QGroupBox(tr("General"));
 	QFormLayout* dtf0 = new QFormLayout;
 	dtf0->setSpacing(20);
-	dtf0->setFormAlignment(Qt::AlignLeft);
+	dtf0->setFormAlignment(Qt::AlignLeading);
 	dtf0->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
 	QCheckBox* dtf0ac = new QCheckBox(tr("Show confirmation messages when deleting"));
@@ -365,7 +368,7 @@ void settings::preferencesLayout()
 	QGroupBox* dtl1 = new QGroupBox(tr("Drag and Drop"));
 	QFormLayout* dtf1 = new QFormLayout;
 	dtf1->setSpacing(20);
-	dtf1->setFormAlignment(Qt::AlignLeft);
+	dtf1->setFormAlignment(Qt::AlignLeading);
 	dtf1->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
 	QCheckBox* dtf1sc = new QCheckBox(tr("Switch to current bouquet item after the drop"));
@@ -376,9 +379,12 @@ void settings::preferencesLayout()
 
 	QFormLayout* dtf11 = new QFormLayout;
 	dtf11->setSpacing(20);
-	dtf11->setFormAlignment(Qt::AlignLeft);
+	dtf11->setFormAlignment(Qt::AlignLeading);
 	dtf11->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+	//TODO FIX i18n rtl
 	QLabel* dth11 = new QLabel(tr("Channel operations"));
+	dth11->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+	dth11->setAlignment(Qt::AlignLeft);
 	dtf11->addRow(dth11);
 
 	QButtonGroup* dtg1 = new QButtonGroup;
@@ -402,7 +408,7 @@ void settings::preferencesLayout()
 	QGroupBox* dtl2 = new QGroupBox(tr("Theme"));
 	QFormLayout* dtf2 = new QFormLayout;
 	dtf2->setSpacing(20);
-	dtf2->setFormAlignment(Qt::AlignLeft);
+	dtf2->setFormAlignment(Qt::AlignLeading);
 	dtf2->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
 	QComboBox* dtf2td = new QComboBox;
@@ -433,7 +439,7 @@ void settings::preferencesLayout()
 	dtform->addWidget(dtl2);
 	dtform->addItem(new QSpacerItem(0, 0));
 
-	dtcnt->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+	dtcnt->setAlignment(Qt::AlignLeading | Qt::AlignTop);
 	dtcnt->addLayout(dtform, 0);
 	dtpage->setLayout(dtcnt);
 
@@ -456,12 +462,12 @@ void settings::engineLayout()
 
 	QFormLayout* dtform = new QFormLayout;
 	dtform->setSpacing(10);
-	dtform->setFormAlignment(Qt::AlignLeft | Qt::AlignTop);
+	dtform->setFormAlignment(Qt::AlignLeading | Qt::AlignTop);
 
 	QGroupBox* dtl0 = new QGroupBox(tr("Settings"));
 	QFormLayout* dtf0 = new QFormLayout;
 	dtf0->setSpacing(20);
-	dtf0->setFormAlignment(Qt::AlignLeft);
+	dtf0->setFormAlignment(Qt::AlignLeading);
 	dtf0->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
 	QComboBox* dtf0td = new QComboBox;
@@ -486,8 +492,9 @@ void settings::engineLayout()
 
 	QFormLayout* dtf20 = new QFormLayout;
 	dtf20->setSpacing(20);
-	dtf20->setFormAlignment(Qt::AlignLeft);
+	dtf20->setFormAlignment(Qt::AlignLeading);
 	dtf20->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+	//TODO FIX i18n rtl
 	QLabel* dth20 = new QLabel(tr("CSV Import/Export"));
 	dtf20->addRow(dth20);
 
@@ -522,8 +529,9 @@ void settings::engineLayout()
 
 	QFormLayout* dtf21 = new QFormLayout;
 	dtf21->setSpacing(20);
-	dtf21->setFormAlignment(Qt::AlignLeft);
+	dtf21->setFormAlignment(Qt::AlignLeading);
 	dtf21->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+	//TODO FIX i18n rtl
 	QLabel* dth21 = new QLabel(tr("Fields Import/Export"));
 	dtf21->addRow(dth21);
 
@@ -557,7 +565,7 @@ void settings::engineLayout()
 	dtform->addWidget(dtl2);
 	dtform->addItem(new QSpacerItem(0, 0));
 
-	dtcnt->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+	dtcnt->setAlignment(Qt::AlignLeading | Qt::AlignTop);
 	dtcnt->addLayout(dtform, 0);
 	dtpage->setLayout(dtcnt);
 
@@ -913,6 +921,7 @@ void settings::retrieve(QTableWidget* adtbl)
 		field->setText((*iq).toLocal8Bit().replace("/", ".")); //Qt5
 		field->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 		adtbl->setItem(i, 0, field);
+		//TODO i18n rtl setting value punctuation
 		adtbl->setItem(i, 1, new QTableWidgetItem(sets->value(*iq).toString()));
 		i++;
 	}

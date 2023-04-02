@@ -352,6 +352,7 @@ void tunersetsView::load()
 	{
 		e2db::tunersets_table tns = dbih->tuners[tvid].tables[x.second];
 		QString idx = QString::fromStdString(tns.tnid);
+		//TODO FIX i18n rtl name punctuation
 		QStringList entry = dbih->entryTunersetsTable(tns);
 
 		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
@@ -444,6 +445,7 @@ void tunersetsView::populate()
 		QString x = QString::number(i++).rightJustified(pad_width, '0');
 		QString idx = QString::number(tp.first);
 		QString trid = QString::fromStdString(tntxp.trid);
+		//TODO FIX i18n rtl combo (LRM)
 		QStringList entry = dbih->entryTunersetsTransponder(tntxp, tns);
 		entry.prepend(x);
 
@@ -1092,6 +1094,7 @@ void tunersetsView::putListItems(vector<QString> items)
 			}
 
 			char yname = dbih->value_transponder_type(tns.ytype);
+
 			char trid[25];
 			std::snprintf(trid, 25, "%c:%04x:%04x", yname, tntxp.freq, tntxp.sr);
 			tntxp.trid = trid;
@@ -1164,6 +1167,7 @@ void tunersetsView::updateStatusBar(bool current)
 			e2db::tunersets_table tns = dbih->tuners[tvid].tables[tnid];
 			msg.curr = dbih->value_transponder_position(tns);
 		}
+
 		msg.counters[gui::COUNTER::n_position] = int (dbih->index[tnid].size());
 	}
 	else
@@ -1171,9 +1175,13 @@ void tunersetsView::updateStatusBar(bool current)
 		string iname = "tns:";
 		char yname = dbih->value_transponder_type(tvid);
 		iname += yname;
+
+		msg.counters[gui::COUNTER::n_transponders] = 0;
+
 		for (auto & x : dbih->index[iname])
 		{
-			msg.counters[gui::COUNTER::n_transponders] += dbih->index[x.second].size();
+			string tnid = x.second;
+			msg.counters[gui::COUNTER::n_transponders] += int (dbih->index[tnid].size());
 		}
 	}
 

@@ -70,6 +70,7 @@ void tools::inspector()
 
 	QTextEdit* dcnt = new QTextEdit;
 	dcnt->setReadOnly(true);
+	//TODO FIX i18n QTextDocument rtl layout direction
 	dcnt->document()->setDefaultStyleSheet("* { margin: 0; padding: 0 } i { font-style: normal } pre { font-size: 11px }");
 	dcnt->setHtml("</div>");
 	platform::osTextEdit(dcnt);

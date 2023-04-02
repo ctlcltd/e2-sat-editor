@@ -154,8 +154,10 @@ string logger::timestamp()
 	std::tm* lct = std::localtime(&ct.tv_sec);
 	char t[80];
 	std::strftime(t, 80, "%Y-%m-%d %H:%M:%S", lct);
+
 	char c[8];
 	std::snprintf(c, 8, ".%06d", int (float (ct.tv_nsec) / 1e9 * 1e6));
+
 	return string (t) + string (c);
 }
 

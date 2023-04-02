@@ -76,7 +76,7 @@ gui::gui(int argc, char* argv[])
 	else
 		initSettings();
 
-	// i18n
+	// L10n
 	QTranslator qtTranslator;
 	if (qtTranslator.load(QLocale::system(), "qtbase", "_", QLibraryInfo::path(QLibraryInfo::TranslationsPath))) {
 		mroot->installTranslator(&qtTranslator);
@@ -92,7 +92,7 @@ gui::gui(int argc, char* argv[])
 	this->mwid = new QWidget;
 	mwid->setWindowTitle("e2 SAT Editor");
 
-	//TODO intl. rtl
+	//TODO i18n rtl
 	// mroot->setLayoutDirection(Qt::RightToLeft);
 
 	this->theme = new e2se_gui::theme;

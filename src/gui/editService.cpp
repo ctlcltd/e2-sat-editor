@@ -85,6 +85,8 @@ void editService::layout(QWidget* cwid)
 	transponderLayout();
 	paramsLayout();
 
+	dtpage->addItem(new QSpacerItem(0, 0), 1, 0);
+
 	dtch->setLayout(dtpage);
 
 	dtwid->addTab(dtch, tr("Service", "dialog"));
@@ -110,10 +112,12 @@ void editService::serviceLayout()
 	dtf0->addRow(tr("Service name"), dtf0sn);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
-	QHBoxLayout* dtb10 = new QHBoxLayout;
-	dtf0->addRow(tr("Service type"), dtb10);
+	QWidget* dtw10 = new QWidget;
+	dtw10->setMinimumHeight(50);
+	QHBoxLayout* dtb10 = new QHBoxLayout(dtw10);
+	dtb10->setContentsMargins(0, 0, 0, 0);
+	dtf0->addRow(tr("Service type"), dtw10);
 
-	//TODO improve height
 	QLineEdit* dtf0st = new QLineEdit;
 	dtf0st->setProperty("field", "stype");
 	dtf0st->setVisible(false);
@@ -125,7 +129,6 @@ void editService::serviceLayout()
 	dtf0sc->setMaximumWidth(100);
 	dtf0sc->setValidator(new QIntValidator);
 	platform::osComboBox(dtf0sc);
-	dtf0->addItem(new QSpacerItem(0, 0));
 
 	vector<int> stypes;
 	for (auto & x : e2db::STYPE_EXT_TYPE)
@@ -275,7 +278,7 @@ void editService::transponderLayout()
 	dtf1->addRow(NULL, dtf1nt);
 
 	dtl1->setLayout(dtf1);
-	dtpage->addWidget(dtl1, 1, 0);
+	dtpage->addWidget(dtl1, 2, 0);
 }
 
 void editService::paramsLayout()
@@ -288,7 +291,7 @@ void editService::paramsLayout()
 
 	QToolBox* dtt2 = new QToolBox;
 	dtt2->setFixedWidth(240);
-	dtt2->setFixedHeight(290);
+	dtt2->setFixedHeight(320);
 
 	QWidget* dtw20 = new QWidget;
 	QFormLayout* dtf2p = new QFormLayout;
@@ -525,7 +528,8 @@ void editService::paramsLayout()
 
 	dtb20->addWidget(dtt2);
 	dtl2->setLayout(dtb20);
-	dtpage->addWidget(dtl2, 0, 1, 2, 1);
+
+	dtpage->addWidget(dtl2, 0, 1, 3, 1);
 }
 
 void editService::tunerComboChanged(int index)
@@ -899,8 +903,10 @@ vector<string> editService::computePIDs(e2db::service ch, e2db::SDATA_PIDS x, st
 	vector<string> data = ch.data[e2db::SDATA::c];
 	string cpx = (x > 9 ? "" : "0") + to_string(x);
 	int cval = std::atoi(val.data());
+
 	char pid[7];
 	std::snprintf(pid, 7, "%2s%04x", cpx.c_str(), cval);
+
 	for (auto it = data.begin(); it != data.end(); it++)
 	{
 		if ((*it).substr(0, 2) == cpx)
@@ -922,6 +928,7 @@ vector<string> editService::computePIDs(e2db::service ch, e2db::SDATA_PIDS x, st
 string editService::getFlagValue(e2db::service ch, e2db::SDATA_FLAGS x)
 {
 	long flags = std::strtol(ch.data[e2db::SDATA::f][0].data(), NULL, 16);
+
 	if (flags & x)
 		return "1";
 	return "";
@@ -931,15 +938,19 @@ vector<string> editService::computeFlags(e2db::service ch, e2db::SDATA_FLAGS x, 
 {
 	vector<string> data = ch.data[e2db::SDATA::f];
 	long flags = data.empty() ? 0 : std::strtol(data[0].data(), NULL, 16);
+
 	if (flags & x)
 		flags -= x;
 	if (val == "1")
 		flags += x;
+
 	char cflags[3];
 	std::snprintf(cflags, 3, "%02x", int (flags));
 	data.clear();
+
 	if (flags)
 		data.emplace_back(cflags);
+
 	return data;
 }
 

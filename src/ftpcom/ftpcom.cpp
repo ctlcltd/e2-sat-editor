@@ -629,6 +629,7 @@ string ftpcom::trw(string str, string param)
 	size_t tsize = str.size() + param.size();
 	char tstr[tsize];
 	std::snprintf(tstr, tsize, str.c_str(), param.c_str());
+
 	return string (tstr);
 }
 

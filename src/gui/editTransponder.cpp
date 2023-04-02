@@ -192,7 +192,7 @@ void editTransponder::leadSatLayout()
 {
 	debug("leadSatLayout");
 
-	QGroupBox* dtl0 = new QGroupBox;
+	QGroupBox* dtl0 = new QGroupBox(" ");
 	QFormLayout* dtf0 = new QFormLayout;
 	dtf0->setRowWrapPolicy(QFormLayout::WrapAllRows);
 
@@ -269,7 +269,7 @@ void editTransponder::leadTerrestrialLayout()
 {
 	debug("leadTerrestrialLayout");
 
-	QGroupBox* dtl0 = new QGroupBox;
+	QGroupBox* dtl0 = new QGroupBox(" ");
 	QFormLayout* dtf0 = new QFormLayout;
 	dtf0->setRowWrapPolicy(QFormLayout::WrapAllRows);
 
@@ -366,7 +366,7 @@ void editTransponder::leadCableLayout()
 {
 	debug("leadCableLayout");
 
-	QGroupBox* dtl0 = new QGroupBox;
+	QGroupBox* dtl0 = new QGroupBox(" ");
 	QFormLayout* dtf0 = new QFormLayout;
 	dtf0->setRowWrapPolicy(QFormLayout::WrapAllRows);
 
@@ -428,7 +428,7 @@ void editTransponder::leadAtscLayout()
 {
 	debug("leadAtscLayout");
 
-	QGroupBox* dtl0 = new QGroupBox;
+	QGroupBox* dtl0 = new QGroupBox(" ");
 	QFormLayout* dtf0 = new QFormLayout;
 	dtf0->setRowWrapPolicy(QFormLayout::WrapAllRows);
 
@@ -480,7 +480,7 @@ void editTransponder::sideSatLayout()
 {
 	debug("sideSatLayout");
 
-	QGroupBox* dtl1 = new QGroupBox;
+	QGroupBox* dtl1 = new QGroupBox(" ");
 	QFormLayout* dtf1 = new QFormLayout;
 	dtf1->setRowWrapPolicy(QFormLayout::WrapAllRows);
 
@@ -552,7 +552,7 @@ void editTransponder::sideTerrestrialLayout()
 {
 	debug("sideTerrestrialLayout");
 
-	QGroupBox* dtl1 = new QGroupBox;
+	QGroupBox* dtl1 = new QGroupBox(" ");
 	QFormLayout* dtf1 = new QFormLayout;
 	dtf1->setRowWrapPolicy(QFormLayout::WrapAllRows);
 
@@ -624,7 +624,7 @@ void editTransponder::sideCableLayout()
 {
 	debug("sideCableLayout");
 
-	QGroupBox* dtl1 = new QGroupBox;
+	QGroupBox* dtl1 = new QGroupBox(" ");
 	QFormLayout* dtf1 = new QFormLayout;
 	dtf1->setRowWrapPolicy(QFormLayout::WrapAllRows);
 

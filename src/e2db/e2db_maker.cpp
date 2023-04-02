@@ -81,7 +81,9 @@ void e2db_maker::make_e2db_lamedb(string filename, int ver)
 	debug("make_e2db_lamedb", "version", ver);
 
 	e2db_file file;
+
 	make_lamedb(filename, file, ver);
+
 	this->e2db_out[filename] = file;
 }
 
@@ -92,12 +94,15 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 	const string (&formats)[13] = ver < 5 ? LAMEDBX_FORMATS : LAMEDB5_FORMATS;
 
 	stringstream ss;
+
 	ss << "eDVB services /" << ver << "/" << endl;
 
 	ss << formats[MAKER_FORMAT::b_transponders_start];
+
 	for (auto & x : index["txs"])
 	{
 		transponder tx = db.transponders[x.second];
+
 		ss << formats[MAKER_FORMAT::b_transponder_flag] << formats[MAKER_FORMAT::b_delimiter];
 		ss << hex;
 		ss << setfill('0') << setw(8) << tx.dvbns;
@@ -106,6 +111,7 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 		ss << dec;
 		ss << formats[MAKER_FORMAT::b_transponder_params_separator];
 		ss << value_transponder_type(tx.ytype) << formats[MAKER_FORMAT::b_transponder_space_delimiter];
+
 		switch (tx.ytype)
 		{
 			case YTYPE::satellite: // DVB-S
@@ -159,14 +165,17 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 			default:
 			return error("make_lamedb", "Maker Error", "Unknown transponder type.");
 		}
+
 		ss << formats[MAKER_FORMAT::b_transponder_endline];
 	}
 	ss << formats[MAKER_FORMAT::b_section_end];
 
 	ss << formats[MAKER_FORMAT::b_services_start];
+
 	for (auto & x : index["chs"])
 	{
 		service ch = db.services[x.second];
+
 		ss << formats[MAKER_FORMAT::b_service_flag] << formats[MAKER_FORMAT::b_delimiter];
 		ss << hex;
 		ss << setfill('0') << setw(4) << ch.ssid;
@@ -201,6 +210,7 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 					ss << ',';
 			}
 		}
+
 		ss << formats[MAKER_FORMAT::b_service_endline];
 	}
 	ss << formats[MAKER_FORMAT::b_section_end];
@@ -220,26 +230,20 @@ void e2db_maker::make_e2db_bouquets()
 
 	for (auto & x : bouquets)
 	{
-		string filename = x.first;
-		string bname = x.first;
+		bouquet bs = x.second;
 
-		if (LAMEDB_VER < 4 && filename.find(".epl") == string::npos)
-		{
-			bouquet bs = x.second;
-
-			string ktype;
-			if (bs.btype == STYPE::tv)
-				ktype = "tv";
-			else if (bs.btype == STYPE::radio)
-				ktype = "radio";
-			filename = "userbouquets." + ktype + ".epl";
-		}
+		string filename = bs.rname.empty() ? bs.bname : bs.rname;
+		string bname = bs.bname;
 
 		e2db_file file;
-		if (LAMEDB_VER < 4)
+
+		if (LAMEDB_VER < 4 || filename.rfind(".epl") == string::npos)
 			make_bouquet_epl(bname, file);
 		else
 			make_bouquet(bname, file);
+
+		filename = file.filename;
+
 		this->e2db_out[filename] = file;
 	}
 
@@ -251,6 +255,7 @@ void e2db_maker::make_e2db_bouquets()
 		empty.filename = "bouquets";
 		empty.mime = "text/plain";
 		empty.size = empty.data.size();
+
 		this->e2db_out[empty.filename] = empty;
 	}
 }
@@ -264,7 +269,9 @@ void e2db_maker::make_e2db_userbouquets()
 		string filename = x.first;
 
 		e2db_file file;
+
 		make_userbouquet(filename, file);
+
 		this->e2db_out[filename] = file;
 	}
 }
@@ -279,6 +286,7 @@ void e2db_maker::make_db_tunersets()
 			continue;
 
 		string filename;
+
 		switch (x.first)
 		{
 			case YTYPE::satellite:
@@ -296,8 +304,11 @@ void e2db_maker::make_db_tunersets()
 			default:
 			return error("make_db_tunersets", "Maker Error", "These settings are not supported.");
 		}
+
 		e2db_file file;
+
 		make_tunersets_xml(filename, x.first, file);
+
 		this->e2db_out[filename] = file;
 	}
 }
@@ -343,7 +354,9 @@ void e2db_maker::make_zapit_services(int ver)
 	debug("make_zapit_services", "version", ver);
 
 	e2db_file file;
+
 	make_services_xml("services.xml", file, ver);
+
 	this->e2db_out["services.xml"] = file;
 }
 
@@ -376,7 +389,9 @@ void e2db_maker::make_zapit_bouquets(int ver)
 		filename = "bouquets.xml";
 
 	e2db_file file;
+
 	make_bouquets_xml(filename, file, ver);
+
 	this->e2db_out[filename] = file;
 
 	if (ver > 1)
@@ -386,6 +401,7 @@ void e2db_maker::make_zapit_bouquets(int ver)
 		empty.filename = "bouquets.xml";
 		empty.mime = "text/xml";
 		empty.size = empty.data.size();
+
 		this->e2db_out[empty.filename] = empty;
 	}
 }
@@ -397,7 +413,9 @@ void e2db_maker::make_e2db_parentallock_list()
 	if (LAMEDB_VER < 4)
 	{
 		e2db_file file;
+
 		make_parentallock_list("services.locked", PARENTALLOCK::locked, file);
+
 		this->e2db_out["services.locked"] = file;
 	}
 	else
@@ -405,14 +423,18 @@ void e2db_maker::make_e2db_parentallock_list()
 		string filename = db.parental ? "whitelist" : "blacklist";
 
 		e2db_file file;
+
 		make_parentallock_list(filename, db.parental, file);
+
 		this->e2db_out[filename] = file;
 
 		filename = db.parental ? "blacklist" : "whitelist";
+
 		e2db_file empty;
 		empty.filename = filename;
 		empty.mime = "text/plain";
 		empty.size = 0;
+
 		this->e2db_out[empty.filename] = empty;
 	}
 }
@@ -422,9 +444,13 @@ void e2db_maker::make_bouquet(string bname, e2db_file& file)
 	debug("make_bouquet", "bname", bname);
 
 	bouquet bs = bouquets[bname];
+
+	string filename = bs.rname.empty() ? bs.bname : bs.rname;
+
 	stringstream ss;
 
 	ss << "#NAME " << bs.name << endl;
+
 	for (string & w : bs.userbouquets)
 	{
 		userbouquet ub = userbouquets[w];
@@ -437,7 +463,7 @@ void e2db_maker::make_bouquet(string bname, e2db_file& file)
 		ss << endl;
 	}
 
-	file.filename = bname;
+	file.filename = filename;
 	file.mime = "text/plain";
 	file.data = ss.str();
 	file.size = file.data.size();
@@ -447,22 +473,25 @@ void e2db_maker::make_bouquet_epl(string bname, e2db_file& file)
 {
 	debug("make_bouquet_epl", "bname", bname);
 
-	string filename = bname;
 	bouquet bs = bouquets[bname];
 
-	if (bname.find(".epl") == string::npos)
+	string filename = bs.rname.empty() ? bs.bname : bs.rname;
+
+	if (filename.rfind(".epl") == string::npos)
 	{
 		string ktype;
 		if (bs.btype == STYPE::tv)
 			ktype = "tv";
 		else if (bs.btype == STYPE::radio)
 			ktype = "radio";
+
 		filename = "userbouquets." + ktype + ".epl";
 	}
 
 	stringstream ss;
 
 	ss << "#NAME " << bs.name << endl;
+
 	for (string & w : bs.userbouquets)
 	{
 		userbouquet ub = userbouquets[w];
@@ -473,6 +502,7 @@ void e2db_maker::make_bouquet_epl(string bname, e2db_file& file)
 
 		string name;
 		string basedir = MAKER_BPATH;
+
 		if (basedir.size() && basedir[basedir.size() - 1] != '/')
 			basedir.append("/");
 
@@ -502,12 +532,17 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 	debug("make_userbouquet", "bname", bname);
 
 	userbouquet ub = userbouquets[bname];
+
+	string filename = ub.rname.empty() ? ub.bname : ub.rname;
+
 	stringstream ss;
 
 	ss << "#NAME " << ub.name << endl;
+
 	for (auto & x : index[bname])
 	{
 		channel_reference chref = userbouquets[bname].channels[x.second];
+
 		ss << "#SERVICE ";
 		ss << "1:";
 		ss << chref.atype << ':';
@@ -540,7 +575,7 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 		ss << endl;
 	}
 
-	file.filename = bname;
+	file.filename = filename;
 	file.mime = "text/plain";
 	file.data = ss.str();
 	file.size = file.data.size();
@@ -562,6 +597,7 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 	}
 
 	tunersets tv = tuners[ytype];
+
 	stringstream ss;
 
 	string iname = "tns:";
@@ -618,6 +654,7 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 			tunersets_transponder tntxp = tn.transponders[x.second];
 
 			ss << "\t\t" << '<' << tags[2];
+
 			switch (tn.ytype)
 			{
 				case YTYPE::satellite:
@@ -784,6 +821,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 	}
 
 	datasets dat = datas[dname];
+
 	stringstream ss;
 
 	string iname = dname;
@@ -1069,6 +1107,7 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 	}
 
 	datasets dat = datas[dname];
+
 	stringstream ss;
 
 	string iname = dname;
@@ -1152,6 +1191,7 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 	ss << '<' << '/' << tags[0] << '>' << endl;
 
 	string str = ss.str();
+
 	if (comments.count(iname))
 	{
 		int i = 0;

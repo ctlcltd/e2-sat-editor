@@ -164,6 +164,7 @@ void e2db_parser::parse_e2db()
 	// commit: f1cb80f	elapsed time: 18829
 	// commit: a7022d8	elapsed time: 18506
 
+	//TODO number format [MinGW-64] [Windows]
 	info("parse_e2db", "elapsed time", to_string(int (end - start)) + " ms.");
 }
 
@@ -624,12 +625,12 @@ void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string filename, bool ep
 
 			bs.bname = filename;
 			bs.name = line.substr(6);
-			if (filename.find(".tv") != string::npos)
+			if (filename.rfind(".tv") != string::npos)
 			{
 				bs.btype = 1;
 				bs.nname = "TV";
 			}
-			else if (filename.find(".radio") != string::npos)
+			else if (filename.rfind(".radio") != string::npos)
 			{
 				bs.btype = 2;
 				bs.nname = "Radio";
@@ -756,7 +757,7 @@ void e2db_parser::parse_userbouquet_reference(string str, userbouquet& ub)
 	std::sscanf(str.c_str(), "%32s BOUQUET %32s ORDER BY %12s", refid, fname, oby);
 
 	ub.bname = string (fname);
-	ub.bname = ub.bname.substr(1, ub.bname.length() - 2);
+	ub.bname = ub.bname.substr(1, ub.bname.size() - 2);
 }
 
 void e2db_parser::parse_userbouquet_epl_reference(string str, userbouquet& ub)

@@ -702,7 +702,7 @@ void transpondersView::updateStatusBar(bool current)
 
 	auto* dbih = this->data->dbih;
 
-	msg.counters[gui::COUNTER::n_transponders] += dbih->index["txs"].size();
+	msg.counters[gui::COUNTER::n_transponders] = int (dbih->index["txs"].size());
 
 	tabSetStatusBar(msg);
 }

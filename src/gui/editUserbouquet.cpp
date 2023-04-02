@@ -10,7 +10,9 @@
  */
 
 #include <QFormLayout>
+#include <QVBoxLayout>
 #include <QGroupBox>
+#include <QLabel>
 #include <QLineEdit>
 #include <QComboBox>
 
@@ -58,24 +60,37 @@ void editUserbouquet::layout(QWidget* cwid)
 	QGroupBox* dtl0 = new QGroupBox(tr("Userbouquet", "dialog"));
 	QFormLayout* dtf0 = new QFormLayout;
 	dtf0->setRowWrapPolicy(QFormLayout::WrapAllRows);
+	dtl0->setStyleSheet("#dial_field_description { margin-right: 1px; margin-left: 1px }");
 
+	QVBoxLayout* dtb10 = new QVBoxLayout;
+	dtf0->addRow(tr("Name"), dtb10);
+	QLabel* dtd10 = new QLabel(QString("<small>%1</small>").arg(tr("full name")));
+	dtd10->setObjectName("dial_field_description");
 	QLineEdit* dtf0bn = new QLineEdit;
 	dtf0bn->setProperty("field", "name");
 	fields.emplace_back(dtf0bn);
 	dtf0bn->setMinimumWidth(240);
 	dtf0bn->setMaxLength(255);
-	dtf0->addRow(tr("Userbouquet name"), dtf0bn);
+	dtb10->addWidget(dtf0bn);
+	dtb10->addWidget(dtd10);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
-	QLineEdit* dtf0bf = new QLineEdit;
-	dtf0bf->setProperty("field", "rname");
-	fields.emplace_back(dtf0bf);
-	dtf0bf->setMinimumWidth(240);
-	dtf0bf->setMaxLength(255);
-	dtf0bf->setReadOnly(true);
-	dtf0bf->setDisabled(true);
-	dtf0->addRow(tr("Userbouquet filename"), dtf0bf);
-	dtf0->addItem(new QSpacerItem(0, 0));
+	//TODO
+	if (1)
+	{
+		QVBoxLayout* dtb11 = new QVBoxLayout;
+		dtf0->addRow(tr("Filename"), dtb11);
+		QLabel* dtd11 = new QLabel(QString("<small>%1</small>").arg(tr("custom filename, leave empty to auto-fill")));
+		dtd11->setObjectName("dial_field_description");
+		QLineEdit* dtf0bf = new QLineEdit;
+		dtf0bf->setProperty("field", "rname");
+		fields.emplace_back(dtf0bf);
+		dtf0bf->setMinimumWidth(240);
+		dtf0bf->setMaxLength(255);
+		dtb11->addWidget(dtf0bf);
+		dtb11->addWidget(dtd11);
+		dtf0->addItem(new QSpacerItem(0, 0));
+	}
 
 	QGroupBox* dtl1 = new QGroupBox(tr("Bouquet", "dialog"));
 	QFormLayout* dtf1 = new QFormLayout;
@@ -88,7 +103,7 @@ void editUserbouquet::layout(QWidget* cwid)
 	fields.emplace_back(dtf1bp);
 	dtf1bp->setMaximumWidth(100);
 	platform::osComboBox(dtf1bp);
-	dtf1->addRow(tr("Bouquet parent"), dtf1bp);
+	dtf1->addRow(tr("Parent Bouquet"), dtf1bp);
 	dtf1->addItem(new QSpacerItem(0, 0));
 	for (auto & bsi : dbih->index["bss"])
 	{
@@ -102,6 +117,9 @@ void editUserbouquet::layout(QWidget* cwid)
 	if (this->state.ti != -1)
 	{
 		dtl1->setVisible(true);
+
+		int idx = this->state.ti;
+		dtf1bp->setCurrentIndex(idx);
 	}
 	// userbouquet
 	else
@@ -110,9 +128,11 @@ void editUserbouquet::layout(QWidget* cwid)
 	}
 
 	dtl0->setLayout(dtf0);
-	dtform->addWidget(dtl0, 0, 0);
 	dtl1->setLayout(dtf1);
-	dtform->addWidget(dtl1, 1, 0);
+
+	dtform->addWidget(dtl0, 0, 0);
+	dtform->addItem(new QSpacerItem(0, 18), 1, 0);
+	dtform->addWidget(dtl1, 2, 0);
 }
 
 void editUserbouquet::store()

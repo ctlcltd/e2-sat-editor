@@ -37,14 +37,18 @@ string e2db_abstract::editor_timestamp()
 {
 	std::time_t ct = std::time(0);
 	int zh = 0;
+
 	std::tm* lct = std::localtime(&ct);
 	zh = lct->tm_hour + lct->tm_isdst;
+
 	char dt[80];
 	std::strftime(dt, 80, "%Y-%m-%d %H:%M:%S", lct);
 	std::tm* gmt = std::gmtime(&ct);
 	zh = (zh - gmt->tm_hour) * 100;
+
 	char tz[7];
 	std::snprintf(tz, 7, "%+05d", zh);
+
 	return string (dt) + string (tz);
 }
 
@@ -178,6 +182,7 @@ string e2db_abstract::value_reference_id(service ch)
 	char refid[44];
 	// %1d:%4d:%4X:%4X:%4X:%4X:%6X:0:0:0:
 	std::snprintf(refid, 44, "%d:%d:%X:%X:%X:%X:%X:0:0:0", 1, stype, snum, ssid, tsid, onid, dvbns);
+
 	return refid;
 }
 
@@ -193,6 +198,7 @@ string e2db_abstract::value_reference_id(channel_reference chref)
 	char refid[44];
 	// %1d:%4d:%4X:%4X:%4X:%4X:%6X:0:0:0:
 	std::snprintf(refid, 44, "%d:%d:%X:%X:%X:%X:%X:0:0:0", 1, atype, anum, ssid, tsid, onid, dvbns);
+
 	return refid;
 }
 
@@ -222,6 +228,7 @@ string e2db_abstract::value_reference_id(channel_reference chref, service ch)
 	char refid[44];
 	// %1d:%4d:%4X:%4X:%4X:%4X:%6X:0:0:0:
 	std::snprintf(refid, 44, "%d:%d:%X:%X:%X:%X:%X:0:0:0", 1, atype, anum, ssid, tsid, onid, dvbns);
+
 	return refid;
 }
 
@@ -431,6 +438,7 @@ int e2db_abstract::value_transponder_dvbns(string str)
 {
 	int dvbns = 0;
 	std::sscanf(str.c_str(), "%X", &dvbns);
+
 	return dvbns;
 }
 
@@ -454,6 +462,7 @@ string e2db_abstract::value_transponder_dvbns(int dvbns)
 {
 	char cdvbns[7];
 	std::snprintf(cdvbns, 7, "%6X", dvbns);
+
 	return cdvbns;
 }
 
@@ -1069,7 +1078,6 @@ void e2db_abstract::add_transponder(int idx, transponder& tx)
 	// %4x:%8x
 	std::snprintf(txid, 25, "%x:%x", tx.tsid, tx.dvbns);
 	tx.txid = txid;
-
 	tx.index = idx;
 
 	db.transponders.emplace(tx.txid, tx);
@@ -1078,12 +1086,14 @@ void e2db_abstract::add_transponder(int idx, transponder& tx)
 
 void e2db_abstract::add_service(int idx, service& ch)
 {
-	char chid[25];
 	char txid[25];
 	// %4x:%8x
 	std::snprintf(txid, 25, "%x:%x", ch.tsid, ch.dvbns);
+
+	char chid[25];
 	// %4x:%4x:%8x
 	std::snprintf(chid, 25, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
+
 	ch.txid = txid;
 	ch.chid = chid;
 
@@ -1166,6 +1176,7 @@ void e2db_abstract::add_tunersets_table(int idx, tunersets_table& tn, tunersets&
 	string iname = "tns:";
 	char yname = value_transponder_type(tn.ytype);
 	iname += yname;
+
 	char tnid[25];
 	std::snprintf(tnid, 25, "%c:%04x", yname, idx);
 	tn.tnid = tnid;
@@ -1180,6 +1191,7 @@ void e2db_abstract::add_tunersets_table(int idx, tunersets_table& tn, tunersets&
 void e2db_abstract::add_tunersets_transponder(int idx, tunersets_transponder& tntxp, tunersets_table& tn)
 {
 	char yname = value_transponder_type(tn.ytype);
+
 	char trid[25];
 	std::snprintf(trid, 25, "%c:%04x:%04x", yname, tntxp.freq, tntxp.sr);
 	tntxp.trid = trid;
@@ -1461,6 +1473,7 @@ string e2db_abstract::trf(string str, string param)
 	size_t tsize = str.size() + param.size();
 	char tstr[tsize];
 	std::snprintf(tstr, tsize, str.c_str(), param.c_str());
+
 	return string (tstr);
 }
 
