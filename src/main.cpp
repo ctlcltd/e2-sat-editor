@@ -9,6 +9,14 @@
  * @license GNU GPLv3 License
  */
 
+#define E2SE_TARGET_DEBUG 0
+#define E2SE_TARGET_RELEASE 1
+
+
+// build target: debug, release
+#define E2SE_BUILD E2SE_TARGET_DEBUG
+
+
 #include <cstdlib>
 
 #include "logger/logger.h"
@@ -16,9 +24,13 @@
 
 int main(int argc, char* argv[])
 {
-	bool DEBUG = true;
+	bool DEBUG = false;
+#if E2SE_BUILD == E2SE_TARGET_DEBUG
+	DEBUG = true;
+#endif
 
-	if (const char* envp = std::getenv("DEBUG"))
+	const char* envp = std::getenv("DEBUG");
+	if (envp)
 	{
 		DEBUG = true;
 	}

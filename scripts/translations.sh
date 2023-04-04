@@ -68,19 +68,24 @@ i18n_generate () {
 	$LUPDATE -recursive $ABSDIR -ts translations/e2se_fi.ts
 	$LUPDATE -recursive $ABSDIR -ts translations/e2se_fr.ts
 	$LUPDATE -recursive $ABSDIR -ts translations/e2se_gd.ts
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_gl.ts
 	$LUPDATE -recursive $ABSDIR -ts translations/e2se_he.ts
 	$LUPDATE -recursive $ABSDIR -ts translations/e2se_hr.ts
 	$LUPDATE -recursive $ABSDIR -ts translations/e2se_hu.ts
 	$LUPDATE -recursive $ABSDIR -ts translations/e2se_it.ts
 	$LUPDATE -recursive $ABSDIR -ts translations/e2se_ja.ts
 	$LUPDATE -recursive $ABSDIR -ts translations/e2se_ko.ts
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_lt.ts
 	$LUPDATE -recursive $ABSDIR -ts translations/e2se_lv.ts
 	$LUPDATE -recursive $ABSDIR -ts translations/e2se_nl.ts
 	$LUPDATE -recursive $ABSDIR -ts translations/e2se_nn.ts
 	$LUPDATE -recursive $ABSDIR -ts translations/e2se_pl.ts
 	$LUPDATE -recursive $ABSDIR -ts translations/e2se_pt_BR.ts
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_pt_PT.ts
 	$LUPDATE -recursive $ABSDIR -ts translations/e2se_ru.ts
 	$LUPDATE -recursive $ABSDIR -ts translations/e2se_sk.ts
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_sl.ts
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_sv.ts
 	$LUPDATE -recursive $ABSDIR -ts translations/e2se_tr.ts
 	$LUPDATE -recursive $ABSDIR -ts translations/e2se_uk.ts
 	$LUPDATE -recursive $ABSDIR -ts translations/e2se_zh_CN.ts
@@ -105,19 +110,24 @@ i18n_make () {
 	$LRELEASE translations/e2se_fi.ts -qm res/locale/e2se_fi.qm
 	$LRELEASE translations/e2se_fr.ts -qm res/locale/e2se_fr.qm
 	$LRELEASE translations/e2se_gd.ts -qm res/locale/e2se_gd.qm
+	$LRELEASE translations/e2se_gl.ts -qm res/locale/e2se_gl.qm
 	$LRELEASE translations/e2se_he.ts -qm res/locale/e2se_he.qm
 	$LRELEASE translations/e2se_hr.ts -qm res/locale/e2se_hr.qm
 	$LRELEASE translations/e2se_hu.ts -qm res/locale/e2se_hu.qm
 	$LRELEASE translations/e2se_it.ts -qm res/locale/e2se_it.qm
 	$LRELEASE translations/e2se_ja.ts -qm res/locale/e2se_ja.qm
 	$LRELEASE translations/e2se_ko.ts -qm res/locale/e2se_ko.qm
+	$LRELEASE translations/e2se_lt.ts -qm res/locale/e2se_lt.qm
 	$LRELEASE translations/e2se_lv.ts -qm res/locale/e2se_lv.qm
 	$LRELEASE translations/e2se_nl.ts -qm res/locale/e2se_nl.qm
 	$LRELEASE translations/e2se_nn.ts -qm res/locale/e2se_nn.qm
 	$LRELEASE translations/e2se_pl.ts -qm res/locale/e2se_pl.qm
 	$LRELEASE translations/e2se_pt_BR.ts -qm res/locale/e2se_pt_BR.qm
+	$LRELEASE translations/e2se_pt_PT.ts -qm res/locale/e2se_pt_PT.qm
 	$LRELEASE translations/e2se_ru.ts -qm res/locale/e2se_ru.qm
 	$LRELEASE translations/e2se_sk.ts -qm res/locale/e2se_sk.qm
+	$LRELEASE translations/e2se_sl.ts -qm res/locale/e2se_sl.qm
+	$LRELEASE translations/e2se_sv.ts -qm res/locale/e2se_sv.qm
 	$LRELEASE translations/e2se_tr.ts -qm res/locale/e2se_tr.qm
 	$LRELEASE translations/e2se_uk.ts -qm res/locale/e2se_uk.qm
 	$LRELEASE translations/e2se_zh_CN.ts -qm res/locale/e2se_zh_CN.qm

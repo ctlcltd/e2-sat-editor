@@ -375,7 +375,11 @@ void tab::layout()
 	toolBarAction(top_toolbar, tr("Upload", "toolbar"), [=]() { this->ftpUpload(); });
 	toolBarAction(top_toolbar, tr("Download", "toolbar"), [=]() { this->ftpDownload(); });
 
-	if (QSettings().value("application/debug", this->log->obj->debug).toBool())
+	bool DEBUG = false;
+#if E2SE_BUILD == E2SE_TARGET_DEBUG
+	DEBUG = true;
+#endif
+	if (QSettings().value("application/debug", DEBUG).toBool())
 	{
 		toolBarSeparator(bottom_toolbar);
 		toolBarAction(bottom_toolbar, "§ Load seeds", [=]() { this->loadSeeds(); });

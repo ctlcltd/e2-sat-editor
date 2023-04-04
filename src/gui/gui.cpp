@@ -59,11 +59,13 @@ gui::gui(int argc, char* argv[])
 	mroot->connect(mroot, &QApplication::focusChanged, [=]() { this->windowChanged(); });
 
 	QString appPath = mroot->applicationDirPath();
+#if E2SE_BUILD == E2SE_TARGET_DEBUG
 	if (appPath.contains("/src"))
 		appPath = appPath.sliced(0, appPath.indexOf("/src"));
 #ifdef Q_OS_MACOS
 	if (appPath.contains("/e2 SAT Editor.app"))
 		appPath = appPath.sliced(0, appPath.indexOf("/e2 SAT Editor.app"));
+#endif
 #endif
 
 	// portable QSettings
@@ -77,14 +79,27 @@ gui::gui(int argc, char* argv[])
 		initSettings();
 
 	// L10n
+	QString appLang = QSettings().value("preference/language").toString();
+	QLocale appLocale = appLang.isEmpty() ? QLocale::system() : QLocale(appLang);
+	QString appTranslationsPath;
+#if E2SE_BUILD == E2SE_TARGET_DEBUG
+	appTranslationsPath = QString(appPath).append("/res/locale");
+// // #else
+// // #ifndef Q_OS_MACOS
+// // #else
+// #endif
+#endif
+
+	debug("gui", "language preference", appLang.isEmpty() ? "system" : appLang.toStdString());
+
 	QTranslator qtTranslator;
-	if (qtTranslator.load(QLocale::system(), "qtbase", "_", QLibraryInfo::path(QLibraryInfo::TranslationsPath))) {
+	if (qtTranslator.load(appLocale, "qtbase", "_", QLibraryInfo::path(QLibraryInfo::TranslationsPath))) {
 		mroot->installTranslator(&qtTranslator);
 	}
 	QTranslator appTranslator;
-	if (appTranslator.load(QLocale::system(), "e2se", "_", QString(appPath).append("/res/locale")))
+	if (appTranslator.load(appLocale, "e2se", "_", appTranslationsPath))
 	{
-		debug("gui", "language", appTranslator.language().toStdString());
+		debug("gui", "language loaded", appTranslator.language().toStdString());
 
 		mroot->installTranslator(&appTranslator);
 	}

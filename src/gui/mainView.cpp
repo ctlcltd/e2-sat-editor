@@ -2388,7 +2388,7 @@ void mainView::showTreeEditContextMenu(QPoint& pos)
 		contextMenuSeparator(tree_edit);
 		contextMenuAction(tree_edit, ! ub_locked ? tr("Set Parental lock", "context-menu") : tr("Unset Parental lock", "context-menu"), [=]() { this->toggleUserbouquetParentalLock(); });
 		contextMenuSeparator(tree_edit);
-		contextMenuAction(tree_edit, tr("&amp;Delete", "context-menu"), [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
+		contextMenuAction(tree_edit, tr("&Delete", "context-menu"), [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
 	}
 	contextMenuSeparator(tree_edit);
 	contextMenuAction(tree_edit, tr("Export", "context-menu"), [=]() { this->tabExportFile(); });

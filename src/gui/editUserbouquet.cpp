@@ -62,33 +62,28 @@ void editUserbouquet::layout(QWidget* cwid)
 	dtf0->setRowWrapPolicy(QFormLayout::WrapAllRows);
 	dtl0->setStyleSheet("#dial_field_description { margin-right: 1px; margin-left: 1px }");
 
-	QVBoxLayout* dtb10 = new QVBoxLayout;
-	dtf0->addRow(tr("Name"), dtb10);
-	QLabel* dtd10 = new QLabel(QString("<small>%1</small>").arg(tr("full name")));
-	dtd10->setObjectName("dial_field_description");
 	QLineEdit* dtf0bn = new QLineEdit;
 	dtf0bn->setProperty("field", "name");
 	fields.emplace_back(dtf0bn);
 	dtf0bn->setMinimumWidth(240);
 	dtf0bn->setMaxLength(255);
-	dtb10->addWidget(dtf0bn);
-	dtb10->addWidget(dtd10);
+	dtf0->addRow(tr("Name"), dtf0bn);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
 	//TODO
 	if (1)
 	{
-		QVBoxLayout* dtb11 = new QVBoxLayout;
-		dtf0->addRow(tr("Filename"), dtb11);
-		QLabel* dtd11 = new QLabel(QString("<small>%1</small>").arg(tr("custom filename, leave empty to auto-fill")));
-		dtd11->setObjectName("dial_field_description");
+		QVBoxLayout* dtb10 = new QVBoxLayout;
+		dtf0->addRow(tr("Filename"), dtb10);
+		QLabel* dtd10 = new QLabel(QString("<small>%1</small>").arg(tr("custom filename, leave empty to auto-fill")));
+		dtd10->setObjectName("dial_field_description");
 		QLineEdit* dtf0bf = new QLineEdit;
 		dtf0bf->setProperty("field", "rname");
 		fields.emplace_back(dtf0bf);
 		dtf0bf->setMinimumWidth(240);
 		dtf0bf->setMaxLength(255);
-		dtb11->addWidget(dtf0bf);
-		dtb11->addWidget(dtd11);
+		dtb10->addWidget(dtf0bf);
+		dtb10->addWidget(dtd10);
 		dtf0->addItem(new QSpacerItem(0, 0));
 	}
 

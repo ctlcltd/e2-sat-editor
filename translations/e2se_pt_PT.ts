@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="cs_CZ">
+<TS version="2.1" language="pt_PT">
 <context>
     <name>QCocoaMenu</name>
     <message>
@@ -30,7 +30,7 @@
     <message>
         <location filename="../src/gui/about.cpp" line="45"/>
         <source>About e2 SAT Editor</source>
-        <translation>O e2 SAT Editor</translation>
+        <translation>Sobre o e2 SAT Editor</translation>
     </message>
     <message>
         <location filename="../src/gui/about.cpp" line="70"/>
@@ -70,12 +70,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/channelBookView.cpp" line="148"/>
         <source>Name</source>
-        <translation>Název</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/gui/channelBookView.cpp" line="148"/>
         <source>Type</source>
-        <translation>Typ</translation>
+        <translation>Tipo</translation>
     </message>
     <message>
         <location filename="../src/gui/channelBookView.cpp" line="148"/>
@@ -90,17 +90,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/channelBookView.cpp" line="148"/>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Posição</translation>
     </message>
     <message>
         <location filename="../src/gui/channelBookView.cpp" line="148"/>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>Sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/channelBookView.cpp" line="225"/>
         <source>Services</source>
-        <translation>Služby</translation>
+        <translation>Serviços</translation>
     </message>
     <message>
         <location filename="../src/gui/channelBookView.cpp" line="225"/>
@@ -136,7 +136,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/channelBookView.cpp" line="660"/>
         <source>&amp;Copy</source>
         <comment>context-menu</comment>
-        <translation>&amp;Kopírovat</translation>
+        <translation>&amp;Copiar</translation>
     </message>
 </context>
 <context>
@@ -151,13 +151,13 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/dialAbstract.cpp" line="83"/>
         <source>Cancel</source>
         <comment>dialog</comment>
-        <translation>Zrušit</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../src/gui/dialAbstract.cpp" line="85"/>
         <source>Save</source>
         <comment>dialog</comment>
-        <translation>Uložit</translation>
+        <translation>Gravar</translation>
     </message>
     <message>
         <location filename="../src/gui/dialAbstract.cpp" line="97"/>
@@ -190,7 +190,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/dialChannelBook.cpp" line="90"/>
         <source>Cancel</source>
         <comment>dialog</comment>
-        <translation>Zrušit</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../src/gui/dialChannelBook.cpp" line="92"/>
@@ -205,7 +205,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/e2db_qt_i18n.h" line="12"/>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/gui/e2db_qt_i18n.h" line="13"/>
@@ -407,7 +407,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/editBouquet.cpp" line="67"/>
         <source>Name</source>
-        <translation>Název</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/gui/editBouquet.cpp" line="68"/>
@@ -417,7 +417,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/editBouquet.cpp" line="87"/>
         <source>Type</source>
-        <translation>Typ</translation>
+        <translation>Tipo</translation>
     </message>
     <message>
         <location filename="../src/gui/editBouquet.cpp" line="96"/>
@@ -444,7 +444,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/editBouquet.cpp" line="178"/>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/gui/editBouquet.cpp" line="140"/>
@@ -488,7 +488,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/editMarker.cpp" line="141"/>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/gui/editMarker.cpp" line="80"/>
@@ -744,7 +744,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/editService.cpp" line="767"/>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/gui/editService.cpp" line="621"/>
@@ -797,7 +797,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/editTransponder.cpp" line="97"/>
         <source>Type</source>
-        <translation>Typ</translation>
+        <translation>Tipo</translation>
     </message>
     <message>
         <location filename="../src/gui/editTransponder.cpp" line="114"/>
@@ -869,7 +869,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/editTransponder.cpp" line="352"/>
         <location filename="../src/gui/editTransponder.cpp" line="466"/>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>Sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/editTransponder.cpp" line="292"/>
@@ -941,7 +941,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/editTransponder.cpp" line="811"/>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/gui/editTransponder.cpp" line="676"/>
@@ -975,7 +975,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/editTunersets.cpp" line="170"/>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/gui/editTunersets.cpp" line="99"/>
@@ -1005,12 +1005,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/editTunersetsTable.cpp" line="181"/>
         <location filename="../src/gui/editTunersetsTable.cpp" line="230"/>
         <source>Name</source>
-        <translation>Název</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/gui/editTunersetsTable.cpp" line="104"/>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Posição</translation>
     </message>
     <message>
         <location filename="../src/gui/editTunersetsTable.cpp" line="116"/>
@@ -1038,7 +1038,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/editTunersetsTable.cpp" line="344"/>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/gui/editTunersetsTable.cpp" line="258"/>
@@ -1122,7 +1122,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/editTunersetsTransponder.cpp" line="145"/>
         <location filename="../src/gui/editTunersetsTransponder.cpp" line="341"/>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>Sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/editTunersetsTransponder.cpp" line="182"/>
@@ -1222,7 +1222,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/editTunersetsTransponder.cpp" line="734"/>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/gui/editTunersetsTransponder.cpp" line="599"/>
@@ -1269,7 +1269,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/editUserbouquet.cpp" line="70"/>
         <source>Name</source>
-        <translation>Název</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/gui/editUserbouquet.cpp" line="77"/>
@@ -1297,7 +1297,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/editUserbouquet.cpp" line="179"/>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/gui/editUserbouquet.cpp" line="143"/>
@@ -1313,7 +1313,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/ftpcom_qt_i18n.h" line="12"/>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/gui/ftpcom_qt_i18n.h" line="13"/>
@@ -1353,25 +1353,25 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>&amp;File</source>
         <comment>menu</comment>
         <extracomment>Platform: File menu</extracomment>
-        <translation type="unfinished">Soubor</translation>
+        <translation type="unfinished">Ficheiro</translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="187"/>
         <source>&amp;New</source>
         <comment>menu</comment>
-        <translation type="unfinished">Nový</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="188"/>
         <source>&amp;Open</source>
         <comment>menu</comment>
-        <translation>&amp;Otevřít</translation>
+        <translation>&amp;Abrir</translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="190"/>
         <source>&amp;Save</source>
         <comment>menu</comment>
-        <translation>&amp;Uložit</translation>
+        <translation>&amp;Gravar</translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="192"/>
@@ -1396,7 +1396,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/gui.cpp" line="197"/>
         <source>Close Tab</source>
         <comment>menu</comment>
-        <translation>Zavřít kartu</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="198"/>
@@ -1429,20 +1429,20 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>About</source>
         <comment>menu</comment>
         <extracomment>Platform: About [$BUNDLE_NAME] item in macOS Application Menu</extracomment>
-        <translation>O</translation>
+        <translation>Sobre</translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="211"/>
         <source>Settings</source>
         <comment>menu</comment>
-        <translation>Nastavení</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="214"/>
         <source>E&amp;xit</source>
         <comment>menu</comment>
         <extracomment>Platform: Exit | Quit item</extracomment>
-        <translation type="unfinished">Ukončit</translation>
+        <translation type="unfinished">Sair</translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="228"/>
@@ -1455,50 +1455,50 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/gui.cpp" line="229"/>
         <source>&amp;Undo</source>
         <comment>menu</comment>
-        <translation>&amp;Zpět</translation>
+        <translation>&amp;Desfazer</translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="230"/>
         <source>&amp;Redo</source>
         <comment>menu</comment>
-        <translation>&amp;Znovu</translation>
+        <translation>&amp;Refazer</translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="232"/>
         <source>Cu&amp;t</source>
         <comment>menu</comment>
-        <translation>Vyj&amp;mout</translation>
+        <translation>Cor&amp;tar</translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="233"/>
         <source>&amp;Copy</source>
         <comment>menu</comment>
-        <translation>&amp;Kopírovat</translation>
+        <translation>&amp;Copiar</translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="234"/>
         <source>&amp;Paste</source>
         <comment>menu</comment>
-        <translation>&amp;Vložit</translation>
+        <translation>Co&amp;lar</translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="235"/>
         <source>&amp;Delete</source>
         <comment>menu</comment>
-        <translation>&amp;Smazat</translation>
+        <translation>&amp;Apagar</translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="240"/>
         <source>Select &amp;All</source>
         <comment>menu</comment>
-        <translation>&amp;Vybrat vše</translation>
+        <translation type="unfinished">Seleccionar Tudo</translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="243"/>
         <source>&amp;Find</source>
         <comment>menu</comment>
         <extracomment>Platform: Find menu</extracomment>
-        <translation type="unfinished">Najít</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="245"/>
@@ -1542,7 +1542,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/gui.cpp" line="254"/>
         <source>&amp;Tools</source>
         <comment>menu</comment>
-        <translation type="unfinished">Nástroje</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="255"/>
@@ -1673,7 +1673,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/gui.cpp" line="298"/>
         <source>&amp;Minimize</source>
         <comment>menu</comment>
-        <translation>Zmen&amp;šit</translation>
+        <translation>Mi&amp;nimizar</translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="300"/>
@@ -1692,19 +1692,19 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>&amp;Help</source>
         <comment>menu</comment>
         <extracomment>Platform: Help menu</extracomment>
-        <translation>&amp;Nápověda</translation>
+        <translation>&amp;Ajuda</translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="308"/>
         <source>About &amp;Qt</source>
         <comment>menu</comment>
-        <translation type="unfinished">O Qt</translation>
+        <translation type="unfinished">Acerca do Qt</translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="310"/>
         <source>&amp;About e2 SAT Editor</source>
         <comment>menu</comment>
-        <translation type="unfinished">O e2 SAT Editor</translation>
+        <translation type="unfinished">Sobre o e2 SAT Editor</translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="380"/>
@@ -1763,7 +1763,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/gui.cpp" line="867"/>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="600"/>
@@ -1911,7 +1911,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/gui.cpp" line="1254"/>
         <source>Position</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Posição</translation>
     </message>
 </context>
 <context>
@@ -1919,7 +1919,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/mainView.cpp" line="93"/>
         <source>Services</source>
-        <translation>Služby</translation>
+        <translation>Serviços</translation>
     </message>
     <message>
         <location filename="../src/gui/mainView.cpp" line="94"/>
@@ -1940,7 +1940,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/mainView.cpp" line="182"/>
         <location filename="../src/gui/mainView.cpp" line="334"/>
         <source>Name</source>
-        <translation>Název</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/gui/mainView.cpp" line="182"/>
@@ -1961,7 +1961,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/mainView.cpp" line="182"/>
         <location filename="../src/gui/mainView.cpp" line="335"/>
         <source>Type</source>
-        <translation>Typ</translation>
+        <translation>Tipo</translation>
     </message>
     <message>
         <location filename="../src/gui/mainView.cpp" line="182"/>
@@ -1978,13 +1978,13 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/mainView.cpp" line="182"/>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>Sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/mainView.cpp" line="182"/>
         <location filename="../src/gui/mainView.cpp" line="338"/>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Posição</translation>
     </message>
     <message>
         <location filename="../src/gui/mainView.cpp" line="182"/>
@@ -2128,7 +2128,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/mainView.cpp" line="2299"/>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/gui/mainView.cpp" line="612"/>
@@ -2262,7 +2262,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/mainView.cpp" line="2452"/>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation>&amp;Smazat</translation>
+        <translation>&amp;Apagar</translation>
     </message>
     <message>
         <location filename="../src/gui/mainView.cpp" line="2394"/>
@@ -2298,19 +2298,19 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/mainView.cpp" line="2448"/>
         <source>Cu&amp;t</source>
         <comment>context-menu</comment>
-        <translation>Vyj&amp;mout</translation>
+        <translation>Cor&amp;tar</translation>
     </message>
     <message>
         <location filename="../src/gui/mainView.cpp" line="2449"/>
         <source>&amp;Copy</source>
         <comment>context-menu</comment>
-        <translation>&amp;Kopírovat</translation>
+        <translation>&amp;Copiar</translation>
     </message>
     <message>
         <location filename="../src/gui/mainView.cpp" line="2450"/>
         <source>&amp;Paste</source>
         <comment>context-menu</comment>
-        <translation>&amp;Vložit</translation>
+        <translation>Co&amp;lar</translation>
     </message>
 </context>
 <context>
@@ -2328,7 +2328,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/printable.cpp" line="219"/>
         <source>Settings</source>
-        <translation>Nastavení</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/printable.cpp" line="223"/>
@@ -2343,7 +2343,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/printable.cpp" line="258"/>
         <source>File</source>
-        <translation>Soubor</translation>
+        <translation>Ficheiro</translation>
     </message>
     <message>
         <location filename="../src/gui/printable.cpp" line="259"/>
@@ -2370,14 +2370,14 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/printable.cpp" line="336"/>
         <location filename="../src/gui/printable.cpp" line="497"/>
         <source>Type</source>
-        <translation>Typ</translation>
+        <translation>Tipo</translation>
     </message>
     <message>
         <location filename="../src/gui/printable.cpp" line="321"/>
         <location filename="../src/gui/printable.cpp" line="480"/>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/gui/printable.cpp" line="321"/>
@@ -2397,7 +2397,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/printable.cpp" line="331"/>
         <location filename="../src/gui/printable.cpp" line="496"/>
         <source>Name</source>
-        <translation>Název</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/gui/printable.cpp" line="333"/>
@@ -2490,7 +2490,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/printable.cpp" line="551"/>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Posição</translation>
     </message>
     <message>
         <location filename="../src/gui/printable.cpp" line="563"/>
@@ -2558,19 +2558,19 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/settings.cpp" line="77"/>
         <source>Settings</source>
         <comment>dialog</comment>
-        <translation>Nastavení</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/settings.cpp" line="98"/>
         <source>Save</source>
         <comment>dialog</comment>
-        <translation>Uložit</translation>
+        <translation>Gravar</translation>
     </message>
     <message>
         <location filename="../src/gui/settings.cpp" line="102"/>
         <source>Cancel</source>
         <comment>dialog</comment>
-        <translation>Zrušit</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../src/gui/settings.cpp" line="155"/>
@@ -2580,7 +2580,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/settings.cpp" line="156"/>
         <source>Remove</source>
-        <translation>Odstranit</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/settings.cpp" line="215"/>
@@ -2625,7 +2625,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/settings.cpp" line="273"/>
         <source>Configuration</source>
-        <translation>Nastavení</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/settings.cpp" line="278"/>
@@ -2635,7 +2635,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/settings.cpp" line="287"/>
         <source>Services</source>
-        <translation>Služby</translation>
+        <translation>Serviços</translation>
     </message>
     <message>
         <location filename="../src/gui/settings.cpp" line="296"/>
@@ -2737,7 +2737,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/settings.cpp" line="469"/>
         <source>Light</source>
-        <translation>Jemné</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/settings.cpp" line="473"/>
@@ -2748,12 +2748,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/settings.cpp" line="504"/>
         <source>Preferences</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Preferências</translation>
     </message>
     <message>
         <location filename="../src/gui/settings.cpp" line="520"/>
         <source>Settings</source>
-        <translation>Nastavení</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/settings.cpp" line="531"/>
@@ -2803,7 +2803,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <location filename="../src/gui/settings.cpp" line="543"/>
         <source>Tools</source>
-        <translation>Nástroje</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/settings.cpp" line="551"/>
@@ -2881,13 +2881,13 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/tab.cpp" line="363"/>
         <source>&amp;Open</source>
         <comment>toolbar</comment>
-        <translation>&amp;Otevřít</translation>
+        <translation>&amp;Abrir</translation>
     </message>
     <message>
         <location filename="../src/gui/tab.cpp" line="364"/>
         <source>&amp;Save</source>
         <comment>toolbar</comment>
-        <translation>&amp;Uložit</translation>
+        <translation>&amp;Gravar</translation>
     </message>
     <message>
         <location filename="../src/gui/tab.cpp" line="366"/>
@@ -2905,7 +2905,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/tab.cpp" line="369"/>
         <source>Settings</source>
         <comment>toolbar</comment>
-        <translation>Nastavení</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/tab.cpp" line="372"/>
@@ -2929,7 +2929,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/tab.cpp" line="376"/>
         <source>Download</source>
         <comment>toolbar</comment>
-        <translation>Stahování</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/tab.cpp" line="490"/>
@@ -3134,7 +3134,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
             <numerusform></numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -3166,7 +3165,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>Downloaded %n files</source>
         <comment>message</comment>
         <translation type="unfinished">
-            <numerusform></numerusform>
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
@@ -3250,13 +3248,13 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/transpondersView.cpp" line="117"/>
         <location filename="../src/gui/transpondersView.cpp" line="198"/>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>Sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/transpondersView.cpp" line="117"/>
         <location filename="../src/gui/transpondersView.cpp" line="197"/>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Posição</translation>
     </message>
     <message>
         <location filename="../src/gui/transpondersView.cpp" line="117"/>
@@ -3357,7 +3355,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/transpondersView.cpp" line="652"/>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/gui/transpondersView.cpp" line="358"/>
@@ -3400,25 +3398,25 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/transpondersView.cpp" line="730"/>
         <source>Cu&amp;t</source>
         <comment>context-menu</comment>
-        <translation>Vyj&amp;mout</translation>
+        <translation>Cor&amp;tar</translation>
     </message>
     <message>
         <location filename="../src/gui/transpondersView.cpp" line="731"/>
         <source>&amp;Copy</source>
         <comment>context-menu</comment>
-        <translation>&amp;Kopírovat</translation>
+        <translation>&amp;Copiar</translation>
     </message>
     <message>
         <location filename="../src/gui/transpondersView.cpp" line="732"/>
         <source>&amp;Paste</source>
         <comment>context-menu</comment>
-        <translation>&amp;Vložit</translation>
+        <translation>Co&amp;lar</translation>
     </message>
     <message>
         <location filename="../src/gui/transpondersView.cpp" line="734"/>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation>&amp;Smazat</translation>
+        <translation>&amp;Apagar</translation>
     </message>
 </context>
 <context>
@@ -3451,7 +3449,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/tunersetsView.cpp" line="1108"/>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/gui/tunersetsView.cpp" line="107"/>
@@ -3470,12 +3468,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/tunersetsView.cpp" line="123"/>
         <location filename="../src/gui/tunersetsView.cpp" line="127"/>
         <source>Name</source>
-        <translation>Název</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/gui/tunersetsView.cpp" line="115"/>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Posição</translation>
     </message>
     <message>
         <location filename="../src/gui/tunersetsView.cpp" line="116"/>
@@ -3519,7 +3517,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/tunersetsView.cpp" line="327"/>
         <location filename="../src/gui/tunersetsView.cpp" line="332"/>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>Sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/tunersetsView.cpp" line="116"/>
@@ -3705,7 +3703,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/tunersetsView.cpp" line="1235"/>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation>&amp;Smazat</translation>
+        <translation>&amp;Apagar</translation>
     </message>
     <message>
         <location filename="../src/gui/tunersetsView.cpp" line="1206"/>
@@ -3723,19 +3721,19 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/tunersetsView.cpp" line="1231"/>
         <source>Cu&amp;t</source>
         <comment>context-menu</comment>
-        <translation>Vyj&amp;mout</translation>
+        <translation>Cor&amp;tar</translation>
     </message>
     <message>
         <location filename="../src/gui/tunersetsView.cpp" line="1232"/>
         <source>&amp;Copy</source>
         <comment>context-menu</comment>
-        <translation>&amp;Kopírovat</translation>
+        <translation>&amp;Copiar</translation>
     </message>
     <message>
         <location filename="../src/gui/tunersetsView.cpp" line="1233"/>
         <source>&amp;Paste</source>
         <comment>context-menu</comment>
-        <translation>&amp;Vložit</translation>
+        <translation>Co&amp;lar</translation>
     </message>
 </context>
 <context>
@@ -3745,14 +3743,14 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <location filename="../src/gui/viewAbstract.cpp" line="164"/>
         <source>Find</source>
         <comment>toolbar</comment>
-        <translation>Najít</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/viewAbstract.cpp" line="124"/>
         <location filename="../src/gui/viewAbstract.cpp" line="177"/>
         <source>Close</source>
         <comment>toolbar</comment>
-        <translation>Zavřít</translation>
+        <translation>Fechar</translation>
     </message>
     <message>
         <location filename="../src/gui/viewAbstract.cpp" line="158"/>

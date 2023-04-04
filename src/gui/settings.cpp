@@ -405,31 +405,82 @@ void settings::preferencesLayout()
 
 	dtf1->addRow(dtf11);
 
-	QGroupBox* dtl2 = new QGroupBox(tr("Theme"));
+	QGroupBox* dtl2 = new QGroupBox(tr("Language"));
 	QFormLayout* dtf2 = new QFormLayout;
 	dtf2->setSpacing(20);
 	dtf2->setFormAlignment(Qt::AlignLeading);
 	dtf2->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
-	QComboBox* dtf2td = new QComboBox;
-	dtf2td->setProperty("field", "theme");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2td);
-	dtf2td->addItem(tr("Default (system theme)"), "");
-	dtf2td->addItem(tr("Dark"), "dark");
-	dtf2td->addItem(tr("Light"), "light");
-	platform::osComboBox(dtf2td);
-	dtf2->addRow(dtf2td);
-
-	QCheckBox* dtf2oe = new QCheckBox(tr("Enable experimental features"));
-	dtf2oe->setProperty("field", "osExperiment");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2oe);
-	dtf2oe->setChecked(true);
-	dtf2->addRow(dtf2oe);
+	QComboBox* dtf2ln = new QComboBox;
+	dtf2ln->setProperty("field", "language");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2ln);
+	dtf2ln->addItem(tr("Default (system language)"), "");
+	dtf2ln->addItem(QLocale::languageToString(QLocale::English), "en");
+	dtf2ln->addItem(QLocale::languageToString(QLocale::Italian), "it");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Arabic), "ar");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Bulgarian), "bg");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Catalan), "ca");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Czech), "cs");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Danish), "da");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::German), "de");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::English), "en");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Spanish), "es");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Persian), "fa");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Finnish), "fi");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::French), "fr");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Gaelic), "gd");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Galician), "gl");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Hebrew), "he");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Croatian), "hr");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Hungarian), "hu");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Italian), "it");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Japanese), "ja");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Korean), "ko");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Lithuanian), "lt");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Latvian), "lv");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Dutch), "nl");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::NorwegianNynorsk), "nn");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Polish), "pl");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Portuguese).append(" (%1)").arg(QLocale::countryToString(QLocale::Brazil)), "pt_BR");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Portuguese).append(" (%1)").arg(QLocale::countryToString(QLocale::Portugal)), "pt_PT");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Russian), "ru");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Slovak), "sk");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Slovenian), "sl");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Swedish), "sv");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Turkish), "tr");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Ukrainian), "uk");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Chinese).append(" (%1)").arg(QLocale::countryToString(QLocale::China)), "zh_CN");
+	// dtf2ln->addItem(QLocale::languageToString(QLocale::Chinese).append(" (%1)").arg(QLocale::countryToString(QLocale::Taiwan)), "zh_TW");
+	platform::osComboBox(dtf2ln);
+	dtf2->addRow(dtf2ln);
 	dtf2->addRow(new QLabel(QString("<small>%1</small>").arg(tr("The software might need to be restarted."))));
+
+	QGroupBox* dtl3 = new QGroupBox(tr("Theme"));
+	QFormLayout* dtf3 = new QFormLayout;
+	dtf3->setSpacing(20);
+	dtf3->setFormAlignment(Qt::AlignLeading);
+	dtf3->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+
+	QComboBox* dtf3td = new QComboBox;
+	dtf3td->setProperty("field", "theme");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf3td);
+	dtf3td->addItem(tr("Default (system theme)"), "");
+	dtf3td->addItem(tr("Dark"), "dark");
+	dtf3td->addItem(tr("Light"), "light");
+	platform::osComboBox(dtf3td);
+	dtf3->addRow(dtf3td);
+
+	QCheckBox* dtf3oe = new QCheckBox(tr("Enable experimental features"));
+	dtf3oe->setProperty("field", "osExperiment");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf3oe);
+	dtf3oe->setChecked(true);
+	dtf3->addRow(dtf3oe);
+	dtf3->addRow(new QLabel(QString("<small>%1</small>").arg(tr("The software might need to be restarted."))));
 
 	dtl0->setLayout(dtf0);
 	dtl1->setLayout(dtf1);
 	dtl2->setLayout(dtf2);
+	dtl3->setLayout(dtf3);
 
 	dtform->addItem(new QSpacerItem(0, 0));
 	dtform->addWidget(dtl0);
@@ -437,6 +488,8 @@ void settings::preferencesLayout()
 	dtform->addWidget(dtl1);
 	dtform->addItem(new QSpacerItem(0, 5));
 	dtform->addWidget(dtl2);
+	dtform->addItem(new QSpacerItem(0, 5));
+	dtform->addWidget(dtl3);
 	dtform->addItem(new QSpacerItem(0, 0));
 
 	dtcnt->setAlignment(Qt::AlignLeading | Qt::AlignTop);

@@ -946,6 +946,7 @@ vector<string> editService::computeFlags(e2db::service ch, e2db::SDATA_FLAGS x, 
 
 	char cflags[3];
 	std::snprintf(cflags, 3, "%02x", int (flags));
+
 	data.clear();
 
 	if (flags)
