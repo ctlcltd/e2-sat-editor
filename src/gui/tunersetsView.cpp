@@ -885,7 +885,7 @@ void tunersetsView::listItemCopy(bool cut)
 	for (auto & item : selected)
 	{
 		QString trid = item->data(ITEM_DATA_ROLE::trid, Qt::UserRole).toString();
-		QChar ty = trid.isEmpty() ? '\0' : trid[0];
+		QChar ty = trid.isEmpty() ? '\0' : QChar (trid[0]); //Qt5
 
 		QStringList data;
 		data.reserve(TSV_TABS + 1);
@@ -907,7 +907,14 @@ void tunersetsView::listItemCopy(bool cut)
 			break;
 		}
 
-		data.resize(TSV_TABS + 1); // fill with empty columns
+		// fill with empty columns
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+		data.resize(TSV_TABS + 1);
+#else
+		//TODO TEST
+		for (int i = data.size(); i != TSV_TABS + 1; i++)
+			data.append("");
+#endif
 
 		text.append(data.join("\t")); // TSV
 	}

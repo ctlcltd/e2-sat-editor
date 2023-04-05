@@ -62,7 +62,7 @@ gui::gui(int argc, char* argv[])
 	QString appPath = mroot->applicationDirPath();
 #if E2SE_BUILD == E2SE_TARGET_DEBUG
 	if (appPath.contains("/src"))
-		appPath = appPath.sliced(0, appPath.indexOf("/src"));
+		appPath.truncate(appPath.indexOf("/src"));
 #endif
 
 	// portable QSettings
@@ -78,26 +78,31 @@ gui::gui(int argc, char* argv[])
 	// L10n
 	QString appLang = QSettings().value("preference/language").toString();
 	QLocale appLocale = appLang.isEmpty() ? QLocale::system() : QLocale(appLang);
-	QString appTranslationsPath;
 #if E2SE_BUILD == E2SE_TARGET_DEBUG
-	appTranslationsPath = QString(appPath).append("/res/locale");
+	QString appTranslationsPath = QString(appPath).append("/res/locale");
 #else
-	appTranslationsPath = mroot->applicationDirPath();
+	QString appTranslationsPath = mroot->applicationDirPath();
 #ifndef Q_OS_MACOS
 	appTranslationsPath.append("/translations");
 #else
 	if (appTranslationsPath.contains("/Contents/MacOS"))
 	{
-		appTranslationsPath = appTranslationsPath.sliced(0, appTranslationsPath.indexOf("/Contents/MacOS"));
+		appTranslationsPath.truncate(appTranslationsPath.indexOf("/Contents/MacOS"));
 		appTranslationsPath.append("/Resources/translations");
 	}
 #endif
 #endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	QString qtTranslationsPath = QLibraryInfo::path(QLibraryInfo::TranslationsPath);
+#else
+	QString qtTranslationsPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+#endif
+
 	debug("gui", "language preference", appLang.isEmpty() ? "system" : appLang.toStdString());
 
 	QTranslator qtTranslator;
-	if (qtTranslator.load(appLocale, "qtbase", "_", QLibraryInfo::path(QLibraryInfo::TranslationsPath))) {
+	if (qtTranslator.load(appLocale, "qtbase", "_", qtTranslationsPath)) {
 		mroot->installTranslator(&qtTranslator);
 	}
 	QTranslator appTranslator;
