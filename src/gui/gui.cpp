@@ -24,6 +24,7 @@
 #include <QFileDialog>
 #include <QClipboard>
 
+#include "../e2se_defs.h"
 #include "platforms/platform.h"
 
 #include "toolkit/ThemeChangeEventObserver.h"
@@ -62,10 +63,6 @@ gui::gui(int argc, char* argv[])
 #if E2SE_BUILD == E2SE_TARGET_DEBUG
 	if (appPath.contains("/src"))
 		appPath = appPath.sliced(0, appPath.indexOf("/src"));
-#ifdef Q_OS_MACOS
-	if (appPath.contains("/e2 SAT Editor.app"))
-		appPath = appPath.sliced(0, appPath.indexOf("/e2 SAT Editor.app"));
-#endif
 #endif
 
 	// portable QSettings
@@ -84,10 +81,17 @@ gui::gui(int argc, char* argv[])
 	QString appTranslationsPath;
 #if E2SE_BUILD == E2SE_TARGET_DEBUG
 	appTranslationsPath = QString(appPath).append("/res/locale");
-// // #else
-// // #ifndef Q_OS_MACOS
-// // #else
-// #endif
+#else
+	appTranslationsPath = mroot->applicationDirPath();
+#ifndef Q_OS_MACOS
+	appTranslationsPath.append("/translations");
+#else
+	if (appTranslationsPath.contains("/Contents/MacOS"))
+	{
+		appTranslationsPath = appTranslationsPath.sliced(0, appTranslationsPath.indexOf("/Contents/MacOS"));
+		appTranslationsPath.append("/Resources/translations");
+	}
+#endif
 #endif
 
 	debug("gui", "language preference", appLang.isEmpty() ? "system" : appLang.toStdString());

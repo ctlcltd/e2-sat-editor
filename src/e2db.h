@@ -11,5 +11,7 @@
 
 #ifndef e2se_e2db_h
 #define e2se_e2db_h
+
 #include "e2db/e2db.h"
-#endif
+
+#endif /* e2se_e2db_h */

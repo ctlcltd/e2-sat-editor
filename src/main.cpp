@@ -9,16 +9,9 @@
  * @license GNU GPLv3 License
  */
 
-#define E2SE_TARGET_DEBUG 0
-#define E2SE_TARGET_RELEASE 1
-
-
-// build target: debug, release
-#define E2SE_BUILD E2SE_TARGET_DEBUG
-
-
 #include <cstdlib>
 
+#include "e2se_defs.h"
 #include "logger/logger.h"
 #include "gui/gui.h"
 

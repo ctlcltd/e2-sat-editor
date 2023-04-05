@@ -31,6 +31,7 @@
 #include <QClipboard>
 #include <QMimeData>
 
+#include "../e2se_defs.h"
 #include "platforms/platform.h"
 
 #include "tab.h"

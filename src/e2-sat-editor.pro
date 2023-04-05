@@ -14,6 +14,7 @@ SOURCES += e2db/*.cpp
 SOURCES += gui/toolkit/*.cpp
 SOURCES += gui/*.cpp
 
+HEADERS += e2se_defs.h
 HEADERS += logger/*.h
 HEADERS += ftpcom/*.h
 HEADERS += e2db/*.h
