@@ -646,7 +646,6 @@ void mainView::populate(QTreeWidget* tw)
 
 			if (dbih->db.services.count(ch.second))
 			{
-				//TODO FIX i18n rtl chname, chpname, chtname punctuation
 				entry = dbih->entries.services[ch.second];
 				//TODO TEST idx changed after edit
 				idx = QString::number(ch.first);

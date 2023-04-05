@@ -252,6 +252,7 @@ void transpondersView::populate()
 		QString x = QString::number(i++).rightJustified(pad_width, '0');
 		QString idx = QString::number(tp.first);
 		QString txid = QString::fromStdString(tx.txid);
+
 		QStringList entry = dbih->entryTransponder(tx, true);
 		entry.prepend(x);
 		entry.removeAt(8);

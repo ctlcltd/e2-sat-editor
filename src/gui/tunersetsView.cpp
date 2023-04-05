@@ -352,7 +352,6 @@ void tunersetsView::load()
 	{
 		e2db::tunersets_table tns = dbih->tuners[tvid].tables[x.second];
 		QString idx = QString::fromStdString(tns.tnid);
-		//TODO FIX i18n rtl name punctuation
 		QStringList entry = dbih->entryTunersetsTable(tns);
 
 		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
@@ -445,7 +444,6 @@ void tunersetsView::populate()
 		QString x = QString::number(i++).rightJustified(pad_width, '0');
 		QString idx = QString::number(tp.first);
 		QString trid = QString::fromStdString(tntxp.trid);
-		//TODO FIX i18n rtl combo (LRM)
 		QStringList entry = dbih->entryTunersetsTransponder(tntxp, tns);
 		entry.prepend(x);
 
@@ -643,6 +641,7 @@ void tunersetsView::addPosition()
 	e2db::tunersets_table tns = dbih->tuners[tvid].tables[tnid];
 
 	QString idx = QString::fromStdString(tns.tnid);
+
 	QStringList entry = dbih->entryTunersetsTable(tns);
 
 	QTreeWidgetItem* item = new QTreeWidgetItem(entry);

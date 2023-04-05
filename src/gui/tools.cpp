@@ -70,8 +70,9 @@ void tools::inspector()
 
 	QTextEdit* dcnt = new QTextEdit;
 	dcnt->setReadOnly(true);
-	//TODO FIX i18n QTextDocument rtl layout direction
-	dcnt->document()->setDefaultStyleSheet("* { margin: 0; padding: 0 } i { font-style: normal } pre { font-size: 11px }");
+	//TODO FIX i18n rtl QTextDocument
+	QString textAlign = QApplication::layoutDirection() == Qt::LeftToRight ? "left" : "right";
+	dcnt->document()->setDefaultStyleSheet("* { margin: 0; padding: 0 } i { font-style: normal } pre { font-size: 11px; text-align: " + textAlign + " }");
 	dcnt->setHtml("</div>");
 	platform::osTextEdit(dcnt);
 
@@ -128,15 +129,27 @@ QString tools::inspectContent(string str, int filter)
 		case INSPECT_FILTER::Error: selector = "<Error>"; break;
 	}
 
+	bool valid = true;
+
 	for (int i = 0; i < data.size(); i++)
 	{
 		if (filter && ! data[i].contains(selector))
+		{
 			data[i] = "";
+		}
 		else
-			data[i].replace(QRegularExpression("^([^ ]+ [^ ]+) <([^>]+)> ([^ ]+) ([^:]+)::([^:]+)(.*)$"), "<pre>\\1 <i>&lt;\\2&gt;</i> \\3 <b>\\4</b>::\\5\\6</pre>");
+		{
+			QString before = data[i];
+
+			if (data[i].replace(QRegularExpression("^([^ ]+ [^ ]+) <([^>]+)> ([^ ]+) ([^:]+)::([^:]+)(.*)$"), "<pre>\\1 <i>&lt;\\2&gt;</i> \\3 <b>\\4</b>::\\5\\6</pre>") == before)
+			{
+				valid = false;
+				break;
+			}
+		}
 	}
 
-	return data.join("\n");
+	return valid ? data.join("\n") : "";
 }
 
 void tools::inspectUpdate(QTextEdit* view, int filter)

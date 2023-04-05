@@ -462,6 +462,7 @@ QStringList e2db::entryTransponder(transponder tx)
 	QString pol = QString::fromStdString(value_transponder_polarization(tx.pol));
 	QString sr = QString::fromStdString(value_transponder_sr(tx.sr));
 	QString fec;
+
 	switch (tx.ytype)
 	{
 		case e2db::YTYPE::satellite:
@@ -473,6 +474,11 @@ QStringList e2db::entryTransponder(transponder tx)
 			fec.append(" | ");
 			fec.append(QString::fromStdString(value_transponder_fec(tx.lpfec, tx.ytype)));
 		break;
+	}
+
+	if (QApplication::layoutDirection() == Qt::RightToLeft)
+	{
+		tname.append(QChar(0x200e)); // LRM
 	}
 
 	return QStringList ({sys, pos, tname, freq, pol, sr, fec});
@@ -522,6 +528,12 @@ QStringList e2db::entryTransponder(transponder tx, bool extended)
 		QString mod = QString::fromStdString(value_transponder_modulation(tx.amod, YTYPE::atsc));
 		entry.append({mod});
 	}
+
+	if (QApplication::layoutDirection() == Qt::RightToLeft)
+	{
+		combo.prepend(QChar(0x200e)); // LRM
+	}
+
 	entry.prepend(combo);
 	entry.prepend(txid);
 
@@ -556,6 +568,12 @@ QStringList e2db::entryService(service ch)
 	}
 	QString pname = QString::fromStdString(value_channel_provider(ch));
 
+	if (QApplication::layoutDirection() == Qt::RightToLeft)
+	{
+		chname.append(QChar(0x200e)); // LRM
+		pname.append(QChar(0x200e)); // LRM
+	}
+
 	QStringList entry = QStringList ({chname, locked, chid, txid, ssid, tsid, stype, scas, pname});
 	entry.append(entries.transponders[ch.txid]);
 	return entry;
@@ -574,6 +592,11 @@ QStringList e2db::entryTunersetsTable(tunersets_table tn)
 	QStringList entry;
 	QString tnid = QString::fromStdString(tn.tnid);
 	QString name = QString::fromStdString(tn.name);
+
+	if (QApplication::layoutDirection() == Qt::RightToLeft)
+	{
+		name.append(QChar(0x200e)); // LRM
+	}
 
 	if (tn.ytype == e2db::YTYPE::satellite)
 	{
@@ -599,6 +622,11 @@ QStringList e2db::entryTunersetsTransponder(tunersets_transponder tntxp, tunerse
 	QString trid = QString::fromStdString(tntxp.trid);
 	QString freq = QString::number(tntxp.freq);
 	QString combo = QString::fromStdString(value_transponder_combo(tntxp, tn));
+
+	if (QApplication::layoutDirection() == Qt::RightToLeft)
+	{
+		combo.prepend(QChar(0x200e)); // LRM
+	}
 
 	if (tn.ytype == YTYPE::satellite)
 	{

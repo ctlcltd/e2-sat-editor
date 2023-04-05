@@ -130,7 +130,6 @@ void settings::connectionsLayout()
 
 	QVBoxLayout* dtvbox = new QVBoxLayout;
 
-	//TODO FIX i18n rtl profile name punctuation
 	this->rplist = new QListWidget;
 	rplist->setEditTriggers(QListWidget::EditKeyPressed | QListWidget::DoubleClicked);
 	rplist->setStyleSheet("QListView::item { height: 44px; font: 16px } QListView QLineEdit { border: 1px solid palette(alternate-base) }");
@@ -381,10 +380,9 @@ void settings::preferencesLayout()
 	dtf11->setSpacing(20);
 	dtf11->setFormAlignment(Qt::AlignLeading);
 	dtf11->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
-	//TODO FIX i18n rtl
+
 	QLabel* dth11 = new QLabel(tr("Channel operations"));
-	dth11->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
-	dth11->setAlignment(Qt::AlignLeft);
+	dth11->setAlignment(dth11->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	dtf11->addRow(dth11);
 
 	QButtonGroup* dtg1 = new QButtonGroup;
@@ -547,8 +545,9 @@ void settings::engineLayout()
 	dtf20->setSpacing(20);
 	dtf20->setFormAlignment(Qt::AlignLeading);
 	dtf20->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
-	//TODO FIX i18n rtl
+
 	QLabel* dth20 = new QLabel(tr("CSV Import/Export"));
+	dth20->setAlignment(dth20->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	dtf20->addRow(dth20);
 
 	QCheckBox* dtf2th = new QCheckBox(tr("Allow header columns in CSV"));
@@ -584,8 +583,9 @@ void settings::engineLayout()
 	dtf21->setSpacing(20);
 	dtf21->setFormAlignment(Qt::AlignLeading);
 	dtf21->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
-	//TODO FIX i18n rtl
+
 	QLabel* dth21 = new QLabel(tr("Fields Import/Export"));
+	dth21->setAlignment(dth21->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	dtf21->addRow(dth21);
 
 	QButtonGroup* dtg2 = new QButtonGroup;
@@ -758,6 +758,12 @@ void settings::profileNameChanged(QString text)
 
 	QListWidgetItem* item = rplist->currentItem();
 	int i = item->data(Qt::UserRole).toInt();
+
+	if (QApplication::layoutDirection() == Qt::RightToLeft)
+	{
+		item->setText(item->text().append(QChar(0x200e))); // LRM
+	}
+
 	tmpps[i]["profileName"] = text;
 }
 
@@ -840,6 +846,7 @@ void settings::store()
 		for (auto & item : prefs[i])
 		{
 			QString pref = item->property("field").toString();
+
 			if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
 				sets->setValue(pref, field->isChecked());
 			else if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
@@ -858,12 +865,17 @@ void settings::store(QTableWidget* adtbl)
 	for (int i = 0; i < adtbl->rowCount(); i++)
 	{
 		QString pref = adtbl->item(i, 0)->text().replace(".", "/");
-		QString field = adtbl->item(i, 1)->text();
+		QString value = adtbl->item(i, 1)->text();
 
-		if (field.contains(QRegularExpression("false|true")))
-			sets->setValue(pref, (field == "true" ? true : false));
+		if (QApplication::layoutDirection() == Qt::RightToLeft)
+		{
+			value.remove(QChar(0x200e)); // LRM
+		}
+
+		if (value.contains(QRegularExpression("false|true")))
+			sets->setValue(pref, (value == "true" ? true : false));
 		else
-			sets->setValue(pref, field);
+			sets->setValue(pref, value);
 	}
 }
 
@@ -891,6 +903,7 @@ void settings::retrieve()
 		{
 			QString pref = item->property("field").toString();
 			tmpps[i][pref] = sets->value(pref);
+
 			if (i == selected)
 			{
 				if (sets->value(pref).isNull())
@@ -921,6 +934,7 @@ void settings::retrieve()
 		for (auto & item : prefs[i])
 		{
 			QString pref = item->property("field").toString();
+
 			if (sets->value(pref).isNull())
 			{
 				continue;
@@ -952,6 +966,7 @@ void settings::retrieve(QListWidgetItem* item)
 	for (auto & item : prefs[PREF_SECTIONS::Connections])
 	{
 		QString pref = item->property("field").toString();
+
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
 			field->setText(tmpps[i][pref].toString());
 		else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
@@ -970,12 +985,21 @@ void settings::retrieve(QTableWidget* adtbl)
 	int i = 0;
 	for (iq = keys.constBegin(); iq != keys.constEnd(); ++iq)
 	{
+		QString pref = (*iq).toLocal8Bit().replace("/", "."); //Qt5
+		QString value = sets->value(*iq).toString();
+
+		if (QApplication::layoutDirection() == Qt::RightToLeft)
+		{
+			value.prepend(QChar(0x200e)); // LRM
+		}
+
 		QTableWidgetItem* field = new QTableWidgetItem;
-		field->setText((*iq).toLocal8Bit().replace("/", ".")); //Qt5
+		field->setText(pref);
 		field->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+
 		adtbl->setItem(i, 0, field);
-		//TODO i18n rtl setting value punctuation
-		adtbl->setItem(i, 1, new QTableWidgetItem(sets->value(*iq).toString()));
+		adtbl->setItem(i, 1, new QTableWidgetItem(value));
+
 		i++;
 	}
 	adtbl->resizeColumnsToContents();

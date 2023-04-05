@@ -45,6 +45,7 @@ void viewAbstract::themeChanged()
 	theme->changed();
 }
 
+//TODO FIX behaviour listFindHighlightToggle with listFindPerform(LIST_FIND::all)
 void viewAbstract::searchLayout()
 {
 	this->tree_search = new QWidget;
