@@ -7,7 +7,8 @@ usage () {
 		printf "%s\n\n" "Build or initialize an xcodeproj with QMake"
 	fi
 
-	printf "%s\n\n" "bash darwin.sh [OPTIONS]"
+	printf "%s\n\n" "bash darwin.sh [OPTIONS] [-b debug | release]"
+	printf "%s\n"   "-q --qmake         QMake executable."
 	printf "%s\n"   "-c --cleanup       Task: cleanup"
 	printf "%s\n"   "-p --prepare       Task: prepare"
 	printf "%s\n"   "-b --build         Task: build"
@@ -31,6 +32,12 @@ src () {
 }
 
 init () {
+	if [[ -z "$QMAKE" ]]; then
+		if [[ -n $(type -t qmake) ]]; then
+			QMAKE="qmake"
+		fi
+	fi
+
 	if [[ -z $(type -t qmake) ]]; then
 		echo "QMake not found."
 
@@ -41,6 +48,24 @@ init () {
 
 		exit 1;
 	fi
+
+	if [[ "$TARGET" == "debug" ]]; then
+		TARGET="debug"
+	else
+		TARGET="release"
+	fi
+}
+
+compiler () {
+	local compiler="QMake"
+
+	if [[ -n "$TARGET" ]]; then
+		compiler="$compiler $TARGET"
+	fi
+
+	printf "%s\n\n" "$compiler"
+
+	$QMAKE --version
 }
 
 cleanup () {
@@ -61,26 +86,29 @@ cleanup () {
 
 prepare () {
 	printf "%s\n\n" "prepare."
+	compiler
 	printf "%s\n\n" "preparing QMake ..."
 
 	src
-	qmake -spec macx-clang e2-sat-editor.pro
+	$QMAKE -spec macx-clang e2-sat-editor.pro
 }
 
 build () {
 	printf "%s\n\n" "build."
+	compiler
 	printf "%s\n\n" "compiling ..."
 
 	src
-	make && qmake
+	make $TARGET && $QMAKE
 }
 
 xcodeproj () {
 	printf "%s\n\n" "xcodeproj."
+	compiler
 	printf "%s\n\n" "preparing xcodeproj ..."
 
 	src
-	qmake -spec macx-xcode
+	$QMAKE -spec macx-xcode
 }
 
 cpframework () {
@@ -242,9 +270,11 @@ for SRG in "$@"; do
 			prepare
 			shift
 			;;
-		-b|--build)
+		-b*|--build*)
+			TARGET="$2"
 			init
 			build
+			shift
 			shift
 			;;
 		-x|--xcodeproj)

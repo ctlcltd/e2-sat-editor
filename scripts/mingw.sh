@@ -14,7 +14,7 @@ usage () {
 		printf "%s\n\n" "Build with CMake targeting MinGW-64 in Linux host"
 	fi
 
-	printf "%s\n\n" "bash mingw.sh [OPTIONS] [-a i686] [-a x86_64]"
+	printf "%s\n\n" "bash mingw.sh [OPTIONS] [-a i686] [-a x86_64] [-p debug | release]"
 	printf "%s\n"   "-a --arch          Cross-compile architecture."
 	printf "%s\n"   "-d --dynamic       Cross-compile dynamic libs."
 	printf "%s\n"   "-c --cleanup       Task: cleanup"
@@ -65,10 +65,34 @@ init () {
 	fi
 
 	CCSTRIP="$ARCH-mingw32-strip"
+
+	if [[ "$TARGET" == "debug" ]]; then
+		CCTARGET="Debug"
+	else
+		CCTARGET="Release"
+	fi
+}
+
+compiler () {
+	local compiler="CMake MinGW-64"
+
+	if [[ -n "$ARCH" ]]; then
+		compiler="$compiler $ARCH"
+	fi
+	if [[ -n "$CCNINJA" ]]; then
+		compiler="$compiler Ninja"
+	fi
+	if [[ -n "$CCQT5" ]]; then
+		compiler="$compiler Qt5"
+	else
+		compiler="$compiler Qt6"
+	fi
+
+	printf "%s\n\n" "$compiler"
 }
 
 cleanup () {
-	printf "%s\n\n" echo "cleanup."
+	printf "%s\n\n" "cleanup."
 
 	src
 	rm -R *.o
@@ -94,14 +118,20 @@ cleanup () {
 
 prepare () {
 	printf "%s\n\n" "prepare."
+
+	compiler
+
 	printf "%s\n\n" "preparing CMake ..."
 
 	src
-	$CCMAKE $CCNINJA -B build $CCQT5 -DCMAKE_BUILD_TYPE=Release
+	$CCMAKE $CCNINJA -B build $CCQT5 -DCMAKE_BUILD_TYPE=$CCTARGET
 }
 
 build () {
 	printf "%s\n\n" "build."
+
+	compiler
+
 	printf "%s\n\n" "compiling ..."
 
 	src
@@ -274,9 +304,11 @@ for SRG in "$@"; do
 			cleanup
 			shift
 			;;
-		-p|--prepare)
+		-p*|--prepare*)
+			TARGET="$2"
 			init
 			prepare
+			shift
 			shift
 			;;
 		-b|--build)

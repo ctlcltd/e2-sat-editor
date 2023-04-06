@@ -1695,6 +1695,7 @@ void mainView::treeItemDelete()
 	this->data->setChanged(true);
 }
 
+//TODO TEST
 void mainView::setServiceParentalLock()
 {
 	debug("setServiceParentalLock");
@@ -1720,6 +1721,7 @@ void mainView::setServiceParentalLock()
 
 	dbih->setServiceParentalLock(chid);
 
+	//TODO FIX
 	QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
 
 	QStringList entry = dbih->entries.services[chid];
@@ -1733,6 +1735,7 @@ void mainView::setServiceParentalLock()
 	this->data->setChanged(true);
 }
 
+//TODO TEST
 void mainView::unsetServiceParentalLock()
 {
 	debug("unsetServiceParentalLock");

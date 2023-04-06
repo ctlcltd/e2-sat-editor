@@ -410,7 +410,7 @@ struct e2db_abstract : protected e2se::log_factory
 			// services <chid string, service struct>
 			unordered_map<string, service> services;
 			// parental lock type
-			PARENTALLOCK parental;
+			PARENTALLOCK parental = PARENTALLOCK::blacklist;
 		};
 
 		struct comment

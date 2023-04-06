@@ -34,7 +34,7 @@ e2db::e2db()
 	this->log = new e2se::logger("gui", "e2db");
 
 	setup();
-	createBouquets();
+	primer();
 }
 
 e2db::~e2db()
@@ -75,21 +75,20 @@ void e2db::setup()
 	e2db::CONVERTER_EXTENDED_FIELDS = settings.value("engine/toolsFieldsExtended", false).toBool();
 }
 
-void e2db::didChange()
+void e2db::primer()
 {
-	debug("didChange");
+	debug("primer");
 
-	setup();
-}
-
-void e2db::createBouquets()
-{
-	debug("createBouquets");
+	// set parental lock type
+	int parental_invert = QSettings().value("preference/parentalLockInvert", false).toInt();
+	e2db::PARENTALLOCK ltype = static_cast<e2db::PARENTALLOCK>(parental_invert);
+	db.parental = ltype;
 
 	// empty services list - touch index["chs"]
 	if (! index.count("chs"))
 		index["chs"];
 
+	// create bouquets
 	e2db::bouquet bs;
 
 	bs = e2db::bouquet();
@@ -107,6 +106,31 @@ void e2db::createBouquets()
 	this->::e2se_e2db::e2db::add_bouquet(bs);
 }
 
+void e2db::didChange()
+{
+	debug("didChange");
+
+	setup();
+}
+
+void e2db::cache(bool clear)
+{
+	debug("cache");
+
+	if (clear)
+	{
+		entries.transponders.clear();
+		entries.services.clear();
+	}
+	for (auto & txdata : db.transponders)
+	{
+		entries.transponders[txdata.first] = entryTransponder(txdata.second);
+	}
+	for (auto & chdata : db.services)
+	{
+		entries.services[chdata.first] = entryService(chdata.second);
+	}
+}
 
 void e2db::fixBouquets()
 {
@@ -140,25 +164,6 @@ void e2db::fixBouquets()
 			bouquets.erase(w);
 		}
 		del.clear();
-	}
-}
-
-void e2db::cache(bool clear)
-{
-	debug("cache");
-
-	if (clear)
-	{
-		entries.transponders.clear();
-		entries.services.clear();
-	}
-	for (auto & txdata : db.transponders)
-	{
-		entries.transponders[txdata.first] = entryTransponder(txdata.second);
-	}
-	for (auto & chdata : db.services)
-	{
-		entries.services[chdata.first] = entryService(chdata.second);
 	}
 }
 

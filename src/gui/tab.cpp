@@ -225,9 +225,12 @@ void tab::setStatusBar(gui::status msg)
 	gid->setStatusBar(msg);
 }
 
+//TODO tab::statusBarMessage this (gui*) is 0x0 with deleted tab* QTimer [Qt5]
 void tab::resetStatusBar()
 {
-	gid->resetStatusBar();
+	//TODO TEST gui::closeAllTabs
+	if (gid != nullptr)
+		gid->resetStatusBar();
 }
 
 void tab::viewMain()
@@ -1450,7 +1453,7 @@ QTimer* tab::statusBarMessage(QString text)
 	msg.message = text.toStdString();
 	setStatusBar(msg);
 
-	QTimer* timer = new QTimer(this->cwid);
+	QTimer* timer = new QTimer(widget);
 	timer->setSingleShot(true);
 	timer->setInterval(STATUSBAR_MESSAGE_TIMEOUT);
 	timer->callOnTimeout([=]() { this->resetStatusBar(); delete timer; });
@@ -1462,7 +1465,7 @@ void tab::statusBarMessage(QTimer* timer)
 {
 	if (timer == nullptr)
 	{
-		QTimer* timer = new QTimer(this->cwid);
+		QTimer* timer = new QTimer(widget);
 		timer->setSingleShot(true);
 		timer->setInterval(STATUSBAR_MESSAGE_DELAY);
 		timer->callOnTimeout([=]() { this->resetStatusBar(); delete timer; });

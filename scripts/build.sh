@@ -7,7 +7,7 @@ usage () {
 		printf "%s\n\n" "Build in *ux with QMake"
 	fi
 
-	printf "%s\n\n" "bash build.sh [OPTIONS] [-q qmake] [-q qmake6]"
+	printf "%s\n\n" "bash build.sh [OPTIONS] [-q qmake] [-q qmake6] [-b debug | release]"
 	printf "%s\n"   "-q --qmake         QMake executable."
 	printf "%s\n"   "-c --cleanup       Task: cleanup"
 	printf "%s\n"   "-p --prepare       Task: prepare"
@@ -29,6 +29,18 @@ src () {
 	fi
 }
 
+compiler () {
+	local compiler="QMake"
+
+	if [[ -n "$TARGET" ]]; then
+		compiler="$compiler $TARGET"
+	fi
+
+	printf "%s\n\n" "$compiler"
+
+	$QMAKE --version
+}
+
 init () {
 	if [[ -z "$QMAKE" ]]; then
 		if [[ -n $(type -t qmake6) ]]; then
@@ -47,6 +59,12 @@ init () {
 		echo "Make not found."
 
 		exit 1;
+	fi
+
+	if [[ "$TARGET" == "debug" ]]; then
+		TARGET="debug"
+	else
+		TARGET="release"
 	fi
 }
 
@@ -68,6 +86,7 @@ cleanup () {
 
 prepare () {
 	printf "%s\n\n" "prepare."
+	compiler
 	printf "%s\n\n" "preparing QMake ..."
 
 	src
@@ -76,10 +95,11 @@ prepare () {
 
 build () {
 	printf "%s\n\n" "build."
+	compiler
 	printf "%s\n\n" "compiling ..."
 
 	src
-	make release && $QMAKE
+	make $TARGET && $QMAKE
 }
 
 default () {
@@ -118,9 +138,11 @@ for SRG in "$@"; do
 			prepare
 			shift
 			;;
-		-b|--build)
+		-b*|--build*)
+			TARGET="$2"
 			init
 			build
+			shift
 			shift
 			;;
 		-d|--default)

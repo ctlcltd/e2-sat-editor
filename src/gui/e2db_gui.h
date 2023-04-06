@@ -86,7 +86,7 @@ class e2db : public ::e2se_e2db::e2db
 	protected:
 		e2db* newptr() override { return new e2se_gui::e2db; };
 		void setup();
-		void createBouquets();
+		void primer();
 
 		string trs(string str) override;
 		string trf(string str, string param) override;
