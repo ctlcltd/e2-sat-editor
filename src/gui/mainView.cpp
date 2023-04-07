@@ -125,7 +125,7 @@ void mainView::layout()
 
 	side->setStyleSheet("QTreeWidget { background: transparent } QTreeWidget::item { padding: 9px 0 }");
 	tree->setStyleSheet("QTreeWidget { background: transparent } QTreeWidget::item { margin: 1px 0 0; padding: 8px 0 }");
-	list->setStyleSheet("QTreeWidget::item { padding: 6px 0 }");
+	list->setStyleSheet("QTreeWidget::item { height: 32px }");
 
 #ifdef Q_OS_MAC
 	QColor itembackground;
@@ -1695,7 +1695,6 @@ void mainView::treeItemDelete()
 	this->data->setChanged(true);
 }
 
-//TODO TEST
 void mainView::setServiceParentalLock()
 {
 	debug("setServiceParentalLock");
@@ -1716,12 +1715,12 @@ void mainView::setServiceParentalLock()
 	else
 		return error("setServiceParentalLock", tr("Error", "error").toStdString(), tr("Service \"%1\" not exists or is a channel reference.", "error").arg(chid.data()).toStdString());
 
-	string bname = this->state.curr;
-	cache[bname].clear();
+	for (auto & q : cache)
+		q.second.clear();
+	cache.clear();
 
 	dbih->setServiceParentalLock(chid);
 
-	//TODO FIX
 	QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
 
 	QStringList entry = dbih->entries.services[chid];
@@ -1735,7 +1734,6 @@ void mainView::setServiceParentalLock()
 	this->data->setChanged(true);
 }
 
-//TODO TEST
 void mainView::unsetServiceParentalLock()
 {
 	debug("unsetServiceParentalLock");
@@ -1756,8 +1754,9 @@ void mainView::unsetServiceParentalLock()
 	else
 		return error("unsetServiceParentalLock", tr("Error", "error").toStdString(), tr("Service \"%1\" not exists or is a channel reference.", "error").arg(chid.data()).toStdString());
 
-	string bname = this->state.curr;
-	cache[bname].clear();
+	for (auto & q : cache)
+		q.second.clear();
+	cache.clear();
 
 	dbih->unsetServiceParentalLock(chid);
 
@@ -1789,7 +1788,6 @@ void mainView::toggleServiceParentalLock()
 	else
 		setServiceParentalLock();
 }
-
 
 void mainView::setUserbouquetParentalLock()
 {

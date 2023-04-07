@@ -108,7 +108,7 @@ void channelBookView::layout()
 
 	tree->setStyleSheet("QTreeWidget::item { padding: 2px 0 }");
 	list->setStyleSheet("QTreeWidget::item { padding: 2px 0 }");
-	tabv->setStyleSheet("QTabBar::tab { min-width: 48px; margin-top: 0 }");
+	tabv->setStyleSheet("QTabBar::tab { width: 48px; margin-top: 0 }");
 
 #ifdef Q_OS_MAC
 	QColor itembackground;
