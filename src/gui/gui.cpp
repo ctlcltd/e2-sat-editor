@@ -83,12 +83,20 @@ gui::gui(int argc, char* argv[])
 #else
 	QString appTranslationsPath = mroot->applicationDirPath();
 #ifndef Q_OS_MACOS
-	appTranslationsPath.append("/translations");
+	if (appTranslationsPath.contains("/bin"))
+	{
+		appTranslationsPath.truncate(appTranslationsPath.indexOf("/bin"));
+		appTranslationsPath.append("/share/e2-sat-editor/translations");
+	}
+	else
+	{
+		appTranslationsPath.append("/translations");
+	}
 #else
 	if (appTranslationsPath.contains("/Contents/MacOS"))
 	{
 		appTranslationsPath.truncate(appTranslationsPath.indexOf("/Contents/MacOS"));
-		appTranslationsPath.append("/Resources/translations");
+		appTranslationsPath.append("/Contents/Resources/translations");
 	}
 #endif
 #endif

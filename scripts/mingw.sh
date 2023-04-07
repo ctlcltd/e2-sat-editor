@@ -176,11 +176,19 @@ release ()
 	cp /usr/x86_64-w64-mingw32/bin/libssl-3-x64.dll build/
 	cp /usr/x86_64-w64-mingw32/bin/libunistring-5.dll build/
 
+	printf "%s\n\n" "NOTE: libcurl-4.dll (brotli)"
+
+	# translations
+	printf "%s\n\n" "copying translations ..."
+
+	mkdir -p build/translations
+	cp ../res/locale/*.qm build/translations
+
 	# e2se
+	printf "%s\n\n" "copying e2se files ..."
+
 	cp {COPYING,LICENSE} build/
 	cp ../README.md build/
-
-	printf "%s\n\n" "NOTE: libcurl-4.dll (brotli)"
 }
 
 release_early ()
@@ -230,7 +238,15 @@ release_early ()
 	cp /usr/i686-w64-mingw32/bin/libssl-3.dll build/
 	cp /usr/i686-w64-mingw32/bin/libunistring-5.dll build/
 
+	# translations
+	printf "%s\n\n" "copying translations ..."
+
+	mkdir -p build/translations
+	cp ../res/locale/*.qm build/translations
+
 	# e2se
+	printf "%s\n\n" "copying e2se files ..."
+
 	cp {COPYING,LICENSE} build/
 	cp ../README.md build/
 }
@@ -257,7 +273,15 @@ testing_wine ()
 	cp /usr/x86_64-w64-mingw32/lib/qt6/plugins/platforms/qwindows.dll build/platforms
 	cp /usr/x86_64-w64-mingw32/lib/qt6/plugins/styles/qwindowsvistastyle.dll build/styles
 
+	# translations
+	printf "%s\n\n" "copying translations ..."
+
+	mkdir -p build/translations
+	cp ../res/locale/*.qm build/translations
+
 	# e2se
+	printf "%s\n\n" "copying e2se files ..."
+
 	cp {COPYING,LICENSE} build/
 	cp ../README.md build/
 }

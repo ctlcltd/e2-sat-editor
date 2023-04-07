@@ -205,6 +205,7 @@ release () {
 	src
 
 	mkdir -p build/Frameworks
+	mkdir -p build/translations
 
 	cp -R "e2 SAT Editor.app" "e2 SAT Editor.app.bak"
 	cp "e2 SAT Editor.app/Contents/MacOS/e2 SAT Editor" "build/e2 SAT Editor"
@@ -228,8 +229,17 @@ release () {
 	done
 
 	cd ..
+
 	mkdir -p "e2 SAT Editor.app/Contents/Frameworks"
 	cp -R build/Frameworks "e2 SAT Editor.app/Contents/"
+
+	printf "%s\n\n" "copying translations ..."
+
+	mkdir -p "e2 SAT Editor.app/Contents/Resources/translations"
+	cp ../res/locale/*.qm build/translations
+	cp -R build/translations "e2 SAT Editor.app/Contents/Resources/"
+
+	printf "%s\n\n" "copying executable ..."
 	cp "build/e2 SAT Editor" "e2 SAT Editor.app/Contents/MacOS/"
 }
 
