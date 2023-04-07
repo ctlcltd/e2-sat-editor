@@ -34,7 +34,7 @@ set(SOURCES
 	gui/toolkit/TabBarProxyStyle.h
 	gui/toolkit/ThemeChangeEventObserver.h
 	gui/toolkit/TreeDragDropEventHandler.cpp
-	gui/toolkit/TreeDropIndicatorEventPainter.h
+	gui/toolkit/TreeDropIndicatorEventPainter.cpp
 	gui/toolkit/TreeEventHandler.cpp
 	gui/toolkit/TreeItemChangedEventObserver.cpp
 	gui/toolkit/TreeProxyStyle.h

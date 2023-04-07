@@ -52,7 +52,7 @@ init () {
 		ARCH="x86_64"
 	fi
 
-	CCMAKE="$ARCH-mingw32-cmake"
+	CCMAKE="$ARCH-w64-mingw32-cmake"
 	if [[ -z "$DYNAMIC" ]]; then
 		CCMAKE="$CCMAKE-static"
 	fi
@@ -64,7 +64,7 @@ init () {
 		CCQT5="-DWITH_QT5=ON"
 	fi
 
-	CCSTRIP="$ARCH-mingw32-strip"
+	CCSTRIP="$ARCH-w64-mingw32-strip"
 
 	if [[ "$TARGET" == "debug" ]]; then
 		CCTARGET="Debug"
@@ -103,17 +103,7 @@ cleanup () {
 	rm Makefile.Release
 	rm .qmake.stash
 	rm qrc_resources.cpp
-	rm -R build/.ninja_deps
-	rm -R build/.ninja_log
-	rm -R build/.qt
-	rm -R build/.rcc
-	rm -R build/CMakeFiles
-	rm -R build/e2-sat-editor_autogen
-	rm build/build.ninja
-	rm build/CMakeCache.txt
-	rm build/cmake_install.cmake
-	rm build/Makefile
-	rm build/*.dll
+	rm -R build
 }
 
 prepare () {
@@ -124,6 +114,7 @@ prepare () {
 	printf "%s\n\n" "preparing CMake ..."
 
 	src
+	mkdir -p build
 	$CCMAKE $CCNINJA -B build $CCQT5 -DCMAKE_BUILD_TYPE=$CCTARGET
 }
 
@@ -135,6 +126,7 @@ build () {
 	printf "%s\n\n" "compiling ..."
 
 	src
+	mkdir -p build
 	cmake --build build
 }
 

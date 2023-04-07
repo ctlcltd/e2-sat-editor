@@ -17,7 +17,7 @@
 
 
 // build target: debug, release
-#define E2SE_BUILD E2SE_TARGET_RELEASE
+#define E2SE_BUILD E2SE_TARGET_DEBUG
 
 
 #endif /* e2se_defs_h */
