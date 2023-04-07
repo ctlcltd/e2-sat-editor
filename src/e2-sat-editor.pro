@@ -54,8 +54,8 @@ unix:!mac {
 	icon_64.path = $$PREFIX/share/icons/hicolor/64x64/apps
 	icon_64.files += ../dist/linux/icons/64x64/e2-sat-editor.png
 	translations.path = $$PREFIX/share/e2-sat-editor/translations
-	translations.files = ../res/locale/*.qm
+	translations.files += ../res/locale/*.qm
 
-	INSTALLS += target desktop icon icon_128 icon_64
+	INSTALLS += target desktop icon icon_128 icon_64 translations
 }
 
