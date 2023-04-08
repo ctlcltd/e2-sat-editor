@@ -252,12 +252,10 @@ void e2db_cli::shell_command_add()
 	string id;
 	std::getline(cin, id);
 
-	if (0)
-		shell_debugger();
-	else if (id == "service")
-		add_service();
+	if (id == "service")
+		shell_entry_edit(ENTRY::service);
 	else if (id == "transponder")
-		add_transponder();
+		shell_entry_edit(ENTRY::transponder);
 }
 
 void e2db_cli::shell_debugger()
@@ -272,111 +270,271 @@ void e2db_cli::shell_debugger()
 	dbih->debugger();
 }
 
-void e2db_cli::add_transponder()
+void e2db_cli::shell_entry_edit(ENTRY entry_type, string id)
 {
-	string question = ": ";
-	string required = " *";
+	using std::any_cast;
 
-	string is;
-
-	e2db::transponder tx;
-
-	while (true) {
-		cout << "DVBNS" << required << question, cin >> is;
-		if (! is.empty()) { tx.dvbns = std::atoi(is.data()); break; }
-	}
-	while (true) {
-		cout << "TSID" << required << question, cin >> is;
-		if (! is.empty()) { tx.tsid = std::atoi(is.data()); break; }
-	}
-	while (true) {
-		cout << "ONID" << required << question, cin >> is;
-		if (! is.empty()) { tx.onid = std::atoi(is.data()); break; }
-	}
-	while (true) {
-		cout << "Position" << required << question, cin >> is;
-		if (! is.empty()) { tx.pos = std::atoi(is.data()); break; }
-	}
-	while (true) {
-		cout << "Transponder Type" << required << question, cin >> is;
-		if (! is.empty()) { tx.ytype = std::atoi(is.data()); break; }
-	}
-	while (true) {
-		cout << "Frequency" << required << question, cin >> is;
-		if (! is.empty()) { tx.freq = std::atoi(is.data()); break; }
-	}
-	if (tx.ytype == ::e2se_e2db::e2db::YTYPE::satellite)
+	if (entry_type == ENTRY::transponder)
 	{
+		e2db::transponder tx;
+
+		tx.ytype = any_cast<int>(field(TYPE::yname, true));
+		tx.pos = any_cast<int>(field(TYPE::pos, true));
+		tx.sys = any_cast<int>(field(TYPE::sys));
+		tx.tsid = any_cast<int>(field(TYPE::tsid, true));
+		tx.onid = any_cast<int>(field(TYPE::onid, true));
+		tx.dvbns = dbih->value_transponder_dvbns(tx);
+		tx.freq = any_cast<int>(field(TYPE::freq, true));
+
+		if (tx.ytype == e2db::YTYPE::satellite)
 		{
-			cout << "Symbol Rate" << question, cin >> is;
-			if (! is.empty()) { tx.sr = std::atoi(is.data()); }
+			tx.pol = any_cast<int>(field(TYPE::pol, true));
+			tx.sr = any_cast<int>(field(TYPE::sr));
+			tx.fec = any_cast<int>(field(TYPE::fec));
+			tx.mod = any_cast<int>(field(TYPE::mod));
+			// tx.inv = any_cast<int>(field(TYPE::inv));
+			tx.rol = any_cast<int>(field(TYPE::rol));
+			tx.pil = any_cast<int>(field(TYPE::pil));
+			tx.flgs = any_cast<int>(field(TYPE::flgs));
 		}
+		else if (tx.ytype == e2db::YTYPE::terrestrial)
 		{
-			cout << "Polarization" << question, cin >> is;
-			if (! is.empty()) { tx.pol = std::atoi(is.data()); }
+			tx.tmod = any_cast<int>(field(TYPE::tmod));
+			tx.band = any_cast<int>(field(TYPE::band));
+			tx.tmx = any_cast<int>(field(TYPE::tmx));
+			tx.hpfec = any_cast<int>(field(TYPE::hpfec));
+			tx.lpfec = any_cast<int>(field(TYPE::lpfec));
+			// tx.inv = any_cast<int>(field(TYPE::inv));
+			tx.guard = any_cast<int>(field(TYPE::guard));
+			tx.hier = any_cast<int>(field(TYPE::hier));
 		}
+		else if (tx.ytype == e2db::YTYPE::cable)
 		{
-			cout << "FEC" << question, cin >> is;
-			if (! is.empty()) { tx.fec = std::atoi(is.data()); }
+			tx.cmod = any_cast<int>(field(TYPE::cmod));
+			tx.sr = any_cast<int>(field(TYPE::sr));
+			tx.cfec = any_cast<int>(field(TYPE::cfec));
+			// tx.inv = any_cast<int>(field(TYPE::inv));
+		}
+		else if (tx.ytype == e2db::YTYPE::atsc)
+		{
+			tx.amod = any_cast<int>(field(TYPE::amod));
+		}
+
+		dbih->add_transponder(tx);
+	}
+	else if (entry_type == ENTRY::service)
+	{
+		e2db::service ch;
+
+		ch.txid = any_cast<string>(field(TYPE::txid, true));
+		ch.stype = any_cast<int>(field(TYPE::stype, true));
+		ch.ssid = any_cast<int>(field(TYPE::ssid, true));
+		ch.chname = any_cast<string>(field(TYPE::chname, true));
+		// ch.data;
+		ch.snum = any_cast<int>(field(TYPE::snum));
+		ch.srcid = any_cast<int>(field(TYPE::srcid));
+
+		if (dbih->db.transponders.count(ch.txid))
+		{
+			e2db::transponder tx = dbih->db.transponders[ch.txid];
+
+			ch.tsid = tx.tsid;
+			ch.onid = tx.onid;
+			ch.dvbns = tx.dvbns;
+		}
+		else
+		{
+			cerr << "Error" << ':' << ' ' << "Transponder \"%s\" not exists." << endl;
 		}
 	}
-
-	dbih->add_transponder(tx);
 }
 
-void e2db_cli::add_service()
+std::any e2db_cli::field(TYPE type, bool required)
 {
-	string question = ": ";
-	string required = " *";
+	string label, description;
+
+	switch (type)
+	{
+		case TYPE::type: label = "type"; break;
+		case TYPE::parental: label = "parental"; break;
+		case TYPE::index: label = "index"; break;
+		case TYPE::chid: label = "CHID"; description = "Channel ID [ssid]:[tsid]:[dvbns] eg. 4d2:3e8:eeee0000"; break;
+		case TYPE::txid: label = "TXID"; description = "Transponder ID [tsid]:[dvbns] eg. 3e8:eeee0000"; break;
+		case TYPE::refid: label = "REFID"; description = "Reference ID, colon separated values"; break;
+		case TYPE::tnid: label = "TNID"; description = "Tunersets Table ID [yname]:[idx] eg. s:0001"; break;
+		case TYPE::trid: label = "TRID"; description = "Tunersets Transponder ID [yname]:[freq]:[sr] eg. s:2710:55f0"; break;
+		case TYPE::yname: label = "YNAME"; description = "Tuner Type: s = satellite, t = terrestrial, c = cable, a = atsc"; break;
+		case TYPE::ytype: label = "YTYPE"; description = "Tuner Type: 0 = satellite, 1 = terrestrial, 2 = cable, 3 = atsc"; break;
+		case TYPE::ssid: label = "SSID"; description = "Service ID, in digits"; break;
+		case TYPE::dvbns: label = "DVBNS"; break;
+		case TYPE::tsid: label = "TSID"; description = "Transport ID, in digits"; break;
+		case TYPE::onid: label = "ONID"; break;
+		case TYPE::stype: label = "Service Type"; description = "Data, TV, Radio, HD, H.264, H.265, UHD"; break;
+		case TYPE::snum: label = "snum"; description = "Service Number"; break;
+		case TYPE::srcid: label = "srcid"; description = "Source ID"; break;
+		case TYPE::locked: label = "locked"; break;
+		case TYPE::chname: label = "Service Name"; break;
+		case TYPE::mname: label = "Marker Name"; break;
+		case TYPE::marker: label = "Marker"; break;
+		case TYPE::freq: label = "Frequency"; description = "in Hertz, 6 digits"; break;
+		case TYPE::sr: label = "Symbol Rate"; break;
+		case TYPE::pol: label = "Polarization"; description = "H = horizontal, V = vertical, L = Left Circular, R = Right Circular"; break;
+		case TYPE::fec: label = "FEC"; description = "eg. 3/4, <empty> for Auto"; break;
+		case TYPE::hpfec: label = "HP FEC"; description = "eg. 3/4, <empty> for Auto"; break;
+		case TYPE::lpfec: label = "LP FEC"; description = "eg. 3/4, <empty> for Auto"; break;
+		case TYPE::cfec: label = "Inner FEC"; description = "eg. 3/4, <empty> for Auto"; break;
+		case TYPE::inv: label = "Inversion"; description = "<empty>, Off, On"; break;
+		case TYPE::sys: label = "System"; description = "eg. DVB-S or ATSC"; break;
+		case TYPE::mod: case TYPE::cmod: case TYPE::amod: label = "Modulation"; break;
+		case TYPE::tmod: label = "Constellation"; break;
+		case TYPE::rol: label = "Roll Offset"; description = "<empty>, 0.35, 0.25, 0.20"; break;
+		case TYPE::pil: label = "Pilot"; description = "<empty>, Off, On, Auto"; break;
+		case TYPE::band: label = "Bandwidth"; description = "in MHz or <empty>, eg. 8"; break;
+		case TYPE::tmx: label = "Transmission Mode"; description = "<empty>, 2k, 8k, 4k, 1k, 16k, 32k"; break;
+		case TYPE::guard: label = "Guard Interval"; description = "<empty>, 1/32, 1/16, 1/8, 1/4, 1/128, 19/128, 19/256"; break;
+		case TYPE::hier: label = "Hierarchy"; description = "<empty>, 0, 1, 2, 4"; break;
+		case TYPE::isid: label = "isid"; break;
+		case TYPE::mts: label = "mts"; break;
+		case TYPE::plsmode: label = "plsmode"; break;
+		case TYPE::plscode: label = "plscode"; break;
+		case TYPE::plsn: label = "plsn"; break;
+		case TYPE::pos: label = "Position"; description = "in degree, eg. 0.0E, 0.0W"; break;
+		case TYPE::diseqc: label = "diseqc"; break;
+		case TYPE::uncomtd: label = "uncomtd"; break;
+		case TYPE::charset: label = "Charset"; description = "characters encoding: UTF-8, ISO-8859-1"; break;
+		case TYPE::tname: label = "Position Name"; description = "eg. Sputnik 0.0E"; break;
+		case TYPE::country: label = "Country"; description = "3 letters ISO-3166 Country Code, eg. XYZ"; break;
+		case TYPE::feed: label = "Feed"; break;
+		case TYPE::bname: label = "Bouquet Filename [bname]"; description = "eg. userbouquet.dbe01.tv, bouquet.radio"; break;
+		case TYPE::pname: label = "Parent Bouquet [bname]"; description = "eg. bouquets.tv, bouquets.radio"; break;
+		case TYPE::rname: label = "New Bouquet Name [rname]"; description = "eg. userbouquet.dbe01.tv, bouquet.radio"; break;
+		case TYPE::qname: label = "Bouquet Name"; description = "eg. User - bouquet (TV)"; break;
+		case TYPE::nname: label = "Bouquet Nice Name"; description = "eg. TV, Radio"; break;
+		case TYPE::btype: label = "Bouquet Type"; description = "TV, Radio"; break;
+		case TYPE::hidden: label = "hidden"; break;
+		case TYPE::dname: label = "dname"; break;
+		case TYPE::itype: label = "itype"; break;
+		case TYPE::flgs: label = "Flags"; break;
+		case TYPE::oflgs: label = "Other Flags"; break;
+	}
 
 	string is;
 
-	e2db::service ch;
+	while (true)
+	{
+		cout << label;
+		if (! description.empty())
+			cout << ' ' << '(' << description << ')';
+		if (required)
+			cout << ' ' << '*';
+		cout << ':' << ' ';
 
-	while (true) {
-		cout << "SSID" << required << question, cin >> is;
-		if (! is.empty()) { ch.ssid = std::atoi(is.data()); break; }
-	}
-	while (true) {
-		cout << "DVBNS" << required << question, cin >> is;
-		if (! is.empty()) { ch.dvbns = std::atoi(is.data()); break; }
-	}
-	while (true) {
-		cout << "ONID" << required << question, cin >> is;
-		if (! is.empty()) { ch.onid = std::atoi(is.data()); break; }
-	}
-	while (true) {
-		cout << "TSID" << required << question, cin >> is;
-		if (! is.empty()) { ch.tsid = std::atoi(is.data()); break; }
-	}
-	{
-		cout << "Service Name" << question, cin >> is;
-		if (! is.empty()) { ch.chname = is; }
-	}
-	while (true) {
-		cout << "Service Type" << required << question, cin >> is;
-		if (! is.empty()) { ch.stype = std::atoi(is.data()); break; }
-	}
-	{
-		cout << "Service Number" << question, cin >> is;
-		if (! is.empty()) { ch.snum = std::atoi(is.data()); }
-	}
-	{
-		cout << "Src ID" << question, cin >> is;
-		if (! is.empty()) { ch.srcid = std::atoi(is.data()); }
-	}
-	{
-		cout << "Service Data" << question, cin >> is;
+		cin >> is;
+
 		if (! is.empty())
 		{
+			switch (type)
 			{
-				cout << "Provider Name" << question, cin >> is;
-				if (! is.empty()) { ch.data[::e2db::SDATA::p] = { is }; }
+				case TYPE::index:
+				case TYPE::ytype:
+				case TYPE::ssid:
+				case TYPE::dvbns:
+				case TYPE::tsid:
+				case TYPE::onid:
+				case TYPE::snum:
+				case TYPE::srcid:
+				case TYPE::freq:
+				case TYPE::sr:
+				case TYPE::isid:
+				case TYPE::mts:
+				case TYPE::plsmode:
+				case TYPE::plscode:
+				case TYPE::plsn:
+				case TYPE::diseqc:
+				case TYPE::uncomtd:
+				case TYPE::flgs:
+					return std::atoi(is.data());
+				break;
+				case TYPE::type:
+				case TYPE::locked:
+				case TYPE::marker:
+					{
+						int d = std::atoi(is.data());
+						if (d < 0 || d > 1)
+							continue;
+						else
+							return d;
+					}
+				break;
+				case TYPE::yname:
+					if (is.size() == 1)
+						return dbih->value_transponder_type(is[0]);
+					else
+						continue;
+				break;
+				case TYPE::sys:
+					return dbih->value_transponder_system(is);
+				break;
+				case TYPE::pos:
+					return dbih->value_transponder_position(is);
+				break;
+				case TYPE::pol:
+					return dbih->value_transponder_polarization(is);
+				break;
+				case TYPE::fec:
+					return dbih->value_transponder_fec(is, e2db::YTYPE::satellite);
+				break;
+				case TYPE::hpfec:
+				case TYPE::lpfec:
+					return dbih->value_transponder_fec(is, e2db::YTYPE::terrestrial);
+				break;
+				case TYPE::cfec:
+					return dbih->value_transponder_fec(is, e2db::YTYPE::atsc);
+				break;
+				case TYPE::mod:
+					return dbih->value_transponder_modulation(is, e2db::YTYPE::satellite);
+				break;
+				case TYPE::tmod:
+					return dbih->value_transponder_modulation(is, e2db::YTYPE::terrestrial);
+				break;
+				case TYPE::cmod:
+					return dbih->value_transponder_modulation(is, e2db::YTYPE::cable);
+				break;
+				case TYPE::amod:
+					return dbih->value_transponder_modulation(is, e2db::YTYPE::atsc);
+				break;
+				case TYPE::rol:
+					return dbih->value_transponder_rollof(is);
+				break;
+				case TYPE::pil:
+					return dbih->value_transponder_pilot(is);
+				break;
+				case TYPE::band:
+					return dbih->value_transponder_bandwidth(is);
+				break;
+				case TYPE::tmx:
+					return dbih->value_transponder_tmx_mode(is);
+				break;
+				case TYPE::guard:
+					return dbih->value_transponder_guard(is);
+				break;
+				case TYPE::hier:
+					return dbih->value_transponder_hier(is);
+				break;
+				case TYPE::btype:
+					return dbih->value_bouquet_type(is);
+				break;
+				default:
+					return is;
 			}
+		}
+		else if (! required)
+		{
+			break;
 		}
 	}
 
-	dbih->add_service(ch);
+	return -1;
 }
 
 }

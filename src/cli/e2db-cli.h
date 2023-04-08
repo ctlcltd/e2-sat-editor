@@ -10,6 +10,7 @@
  */
 
 #include <string>
+#include <any>
 
 using std::string;
 
@@ -30,6 +31,25 @@ class e2db_cli
 		int exited();
 
 	protected:
+
+		enum ENTRY {
+			transponder, service, bouquet, userbouquet, channel_reference, tunersets, tunersets_table, tunersets_transponder
+		};
+
+		enum TYPE {
+			type, parental, index, 
+			chid, txid, refid, tnid, trid, yname, ytype, 
+			ssid, dvbns, tsid, onid, stype, snum, srcid, locked, chname, 
+			marker, mname, 
+			freq, sr, pol, fec, hpfec, lpfec, cfec, inv, sys, mod, tmod, cmod, amod, rol, pil, band, tmx, guard, hier, 
+			isid, mts, plsmode, plscode, plsn, 
+			pos, diseqc, uncomtd, charset, 
+			tname, country, feed, 
+			bname, pname, rname, qname, nname, btype, hidden, 
+			dname, itype, 
+			flgs, oflgs
+		};
+
 		void options(int argc, char* argv[]);
 		void version(bool verbose);
 		void cmd_shell();
@@ -51,44 +71,8 @@ class e2db_cli
 		void shell_command_unset() {};
 		void shell_command_print() {};
 		void shell_debugger();
-
-		// e2db_abstract
-
-		// e2db
-		virtual void add_transponder();
-		virtual void edit_transponder() {};
-		virtual void remove_transponder() {};
-		virtual void add_service();
-		virtual void edit_service() {};
-		virtual void remove_service() {};
-		virtual void add_bouquet() {};
-		virtual void edit_bouquet() {};
-		virtual void remove_bouquet() {};
-		virtual void add_userbouquet() {};
-		virtual void edit_userbouquet() {};
-		virtual void remove_userbouquet() {};
-		virtual void add_channel_reference() {};
-		virtual void edit_channel_reference() {};
-		virtual void remove_channel_reference() {};
-		virtual void add_tunersets() {};
-		virtual void edit_tunersets() {};
-		virtual void remove_tunersets() {};
-		virtual void add_tunersets_table() {};
-		virtual void edit_tunersets_table() {};
-		virtual void remove_tunersets_table() {};
-		virtual void add_tunersets_transponder() {};
-		virtual void edit_tunersets_transponder() {};
-		virtual void remove_tunersets_transponder() {};
-		virtual void set_service_parentallock() {};
-		virtual void unset_service_parentallock() {};
-		virtual void set_userbouquet_parentallock() {};
-		virtual void unset_userbouquet_parentallock() {};
-
-		// e2db_parser
-
-		// e2db_maker
-
-		// e2db_converter
+		void shell_entry_edit(ENTRY entry_type, string id = "");
+		std::any field(TYPE type, bool required = false);
 
 	private:
 		e2db* dbih = nullptr;
