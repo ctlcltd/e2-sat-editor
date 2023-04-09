@@ -434,12 +434,17 @@ string e2db_abstract::value_transponder_combo(tunersets_transponder tntxp, tuner
 	return ptxp;
 }
 
+//TODO TEST
 int e2db_abstract::value_transponder_dvbns(string str)
 {
-	int dvbns = 0;
-	std::sscanf(str.c_str(), "%X", &dvbns);
-
-	return dvbns;
+	try
+	{
+		return std::stol(str, nullptr, 16);
+	}
+	catch (const std::invalid_argument& err)
+	{
+		return 0;
+	}
 }
 
 int e2db_abstract::value_transponder_dvbns(transponder tx)
@@ -529,6 +534,7 @@ int e2db_abstract::value_transponder_position(string str)
 		}
 		catch (const std::invalid_argument& err)
 		{
+			return -1;
 		}
 	}
 	return -1;

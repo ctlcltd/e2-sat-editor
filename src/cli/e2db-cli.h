@@ -37,16 +37,16 @@ class e2db_cli
 		};
 
 		enum TYPE {
-			type, parental, index, 
+			dbtype, dbparental, idx, 
 			chid, txid, refid, tnid, trid, yname, ytype, 
-			ssid, dvbns, tsid, onid, stype, snum, srcid, locked, chname, 
-			marker, mname, 
-			freq, sr, pol, fec, hpfec, lpfec, cfec, inv, sys, mod, tmod, cmod, amod, rol, pil, band, tmx, guard, hier, 
+			ssid, dvbns, tsid, onid, stype, snum, srcid, locked, chname, chdata,
+			sdata_p, sdata_c, sdata_C, sdata_f,
+			freq, sr, pol, fec, hpfec, lpfec, cfec, inv, tinv, cinv, sys, mod, tmod, cmod, amod, rol, pil, band, tmx, guard, hier, 
 			isid, mts, plsmode, plscode, plsn, 
 			pos, diseqc, uncomtd, charset, 
 			tname, country, feed, 
 			bname, pname, rname, qname, nname, btype, hidden, 
-			dname, itype, 
+			mname, dname, itype, 
 			flgs, oflgs
 		};
 
@@ -76,6 +76,8 @@ class e2db_cli
 
 	private:
 		e2db* dbih = nullptr;
+		string last_label;
+		string last_is;
 };
 }
 #endif /* e2db_cli_h */
