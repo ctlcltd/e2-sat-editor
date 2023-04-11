@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/cli/e2db-cli.cpp
+ * e2-sat-editor/src/cli/e2db_cli.cpp
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -9,6 +9,7 @@
  * @license GNU GPLv3 License
  */
 
+#include <cstdio>
 #include <clocale>
 #include <cstring>
 #include <cctype>
@@ -16,7 +17,9 @@
 #include <iostream>
 #include <iomanip>
 
-#include "e2db-cli.h"
+#include "e2db_termctl.h"
+
+#include "e2db_cli.h"
 
 using std::cout, std::cerr, std::cin, std::endl, std::left;
 
@@ -75,44 +78,48 @@ void e2db_cli::cmd_shell()
 
 	this->dbih = new e2db;
 
-	string is;
+	string str;
 
-	while (true) {
-		cout << '>';
-		cout.flush();
-		cin >> is;
+	e2db_termctl* term = new e2db_termctl;
 
-		if (cin.fail())
-			break;
+	while (true)
+	{
+		std::istream* is = term->input();
+		*is >> str;
+		is->clear();
+		/*std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
+		is_buf->str("");*/
 
-		if (is == "quit" || is == "exit" || is == "q")
+		if (str == "quit" || str == "exit" || str == "q")
 			return shell_exit();
-		if (is == "version" || is == "v")
+		else if (str == "version" || str == "v")
 			shell_command_version();
-		else if (is == "help" || is == "h")
+		else if (str == "help" || str == "h")
 			shell_command_help();
-		else if (is == "read" || is == "i")
+		else if (str == "read" || str == "i")
 			shell_command_read();
-		else if (is == "list" || is == "l")
+		else if (str == "list" || str == "l")
 			shell_command_list();
-		else if (is == "add" || is == "a")
+		else if (str == "add" || str == "a")
 			shell_command_add();
-		else if (is == "edit" || is == "e")
+		else if (str == "edit" || str == "e")
 			shell_command_edit();
-		else if (is == "remove" || is == "r")
+		else if (str == "remove" || str == "r")
 			shell_command_remove();
-		else if (is == "set" || is == "s")
+		else if (str == "set" || str == "s")
 			shell_command_set();
-		else if (is == "unset" || is == "u")
+		else if (str == "unset" || str == "u")
 			shell_command_unset();
-		else if (is == "print" || is == "p")
+		else if (str == "print" || str == "p")
 			shell_command_print();
-		else if (is == "debug" || is == "d")
+		else if (str == "debug" || str == "d")
 			shell_debugger();
 		else
-			shell_error(is);
+			shell_error(str);
 
-		// cout << "input: " << is << endl;
+		// cout << "input: " << str << endl;
+
+		str.clear();
 	}
 }
 
@@ -123,6 +130,8 @@ void e2db_cli::cmd_version()
 
 void e2db_cli::cmd_error(string option)
 {
+	e2db_termctl::reset();
+
 	cerr << "e2se-cli" << ':' << ' ' << "Illegal option" << ' ' << option << endl;
 	cerr << endl;
 
@@ -137,12 +146,13 @@ void e2db_cli::cmd_usage(bool descriptive)
 	cout << "e2se-cli [OPTIONS]" << endl;
 	cout << endl;
 	cout << '\t', cout.width(18), cout << left << "-s --shell", cout << ' ' << "Interactive shell" << endl;
-	cout << '\t', cout.width(18), cout << left << "-v --version", cout << ' ' << "Display version" << endl;
+	cout << '\t', cout.width(18), cout << left << "-v --version", cout << ' ' << "Dstrplay version" << endl;
 	cout << '\t', cout.width(18), cout << left << "-h --help", cout << ' ' << "Display this help and exit" << endl;
 }
 
 void e2db_cli::shell_exit()
 {
+	e2db_termctl::reset();
 	exit(0);
 }
 
@@ -250,6 +260,7 @@ void e2db_cli::shell_command_read()
 
 void e2db_cli::shell_command_add()
 {
+	cout << "add" << endl;
 	cin >> std::ws;
 	string id;
 	std::getline(cin, id);
@@ -362,6 +373,7 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, string id)
 	}
 	catch (const std::runtime_error& err)
 	{
+		//TODO FIX
 		size_t csize = sizeof(err.what()) + this->last_is.size();
 		char cstr[csize];
 		std::snprintf(cstr, csize, err.what(), this->last_is.c_str());

@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/cli/e2db-cli.h
+ * e2-sat-editor/src/cli/e2db_cli.h
  * 
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -10,9 +10,10 @@
  */
 
 #include <string>
+#include <vector>
 #include <any>
 
-using std::string;
+using std::string, std::vector;
 
 #ifndef e2db_cli_h
 #define e2db_cli_h

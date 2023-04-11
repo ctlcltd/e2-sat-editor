@@ -10,7 +10,7 @@
  */
 
 #include "../logger/logger.h"
-#include "e2db-cli.h"
+#include "e2db_cli.h"
 
 int main(int argc, char* argv[])
 {
