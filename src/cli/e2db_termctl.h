@@ -9,11 +9,7 @@
  * @license GNU GPLv3 License
  */
 
-#include <string>
-#include <vector>
 #include <iostream>
-
-using std::string, std::vector;
 
 #ifndef e2db_termctl_h
 #define e2db_termctl_h
@@ -26,6 +22,9 @@ class e2db_termctl
 		~e2db_termctl();
 		static void reset();
 		std::istream* input();
+		std::istream* clear();
+		void debugger();
+		void tmp_history();
 
 	private:
 		static void tty_set_raw(int tty_fd = 0);
@@ -38,7 +37,7 @@ class e2db_termctl
 
 		std::iostream* is;
 		std::iostream* history;
-		int history_ln = 0;
+		std::streampos last;
 };
 }
 #endif /* e2db_termctl_h */

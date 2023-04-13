@@ -51,16 +51,16 @@ void e2db_cli::options(int argc, char* argv[])
 		// cout << "argc" << ':' << ' ' << i << endl;
 		// cout << "argv" << ':' << ' ' << argv[i] << endl;
 
-		string option = argv[i];
+		string opt = argv[i];
 
-		if (option == "-v" || option == "--version")
+		if (opt == "-v" || opt == "--version")
 			return cmd_version();
-		else if (option == "-h" || option == "--help")
+		else if (opt == "-h" || opt == "--help")
 			return cmd_usage();
-		else if (option == "-s" || option == "--shell")
+		else if (opt == "-s" || opt == "--shell")
 			return cmd_shell();
 		else
-			return cmd_error(option);
+			return cmd_error(opt);
 			
 	}
 }
@@ -78,48 +78,49 @@ void e2db_cli::cmd_shell()
 
 	this->dbih = new e2db;
 
-	string str;
+	string cmd;
 
 	e2db_termctl* term = new e2db_termctl;
 
 	while (true)
 	{
 		std::istream* is = term->input();
-		*is >> str;
-		is->clear();
-		/*std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
-		is_buf->str("");*/
+		*is >> cmd;
+		term->clear();
 
-		if (str == "quit" || str == "exit" || str == "q")
+		if (cmd == "quit" || cmd == "exit" || cmd == "q")
+		{
+			// term->tmp_history();
 			return shell_exit();
-		else if (str == "version" || str == "v")
+		}
+		else if (cmd == "version" || cmd == "v")
 			shell_command_version();
-		else if (str == "help" || str == "h")
+		else if (cmd == "help" || cmd == "h")
 			shell_command_help();
-		else if (str == "read" || str == "i")
+		else if (cmd == "read" || cmd == "i")
 			shell_command_read();
-		else if (str == "list" || str == "l")
+		else if (cmd == "list" || cmd == "l")
 			shell_command_list();
-		else if (str == "add" || str == "a")
+		else if (cmd == "add" || cmd == "a")
 			shell_command_add();
-		else if (str == "edit" || str == "e")
+		else if (cmd == "edit" || cmd == "e")
 			shell_command_edit();
-		else if (str == "remove" || str == "r")
+		else if (cmd == "remove" || cmd == "r")
 			shell_command_remove();
-		else if (str == "set" || str == "s")
+		else if (cmd == "set" || cmd == "s")
 			shell_command_set();
-		else if (str == "unset" || str == "u")
+		else if (cmd == "unset" || cmd == "u")
 			shell_command_unset();
-		else if (str == "print" || str == "p")
+		else if (cmd == "print" || cmd == "p")
 			shell_command_print();
-		else if (str == "debug" || str == "d")
+		else if (cmd == "debug" || cmd == "d")
 			shell_debugger();
-		else
-			shell_error(str);
+		else if (! cmd.empty())
+			shell_error(cmd);
 
-		// cout << "input: " << str << endl;
+		cout << "input: " << cmd << endl;
 
-		str.clear();
+		cmd.clear();
 	}
 }
 
@@ -146,7 +147,7 @@ void e2db_cli::cmd_usage(bool descriptive)
 	cout << "e2se-cli [OPTIONS]" << endl;
 	cout << endl;
 	cout << '\t', cout.width(18), cout << left << "-s --shell", cout << ' ' << "Interactive shell" << endl;
-	cout << '\t', cout.width(18), cout << left << "-v --version", cout << ' ' << "Dstrplay version" << endl;
+	cout << '\t', cout.width(18), cout << left << "-v --version", cout << ' ' << "Display version" << endl;
 	cout << '\t', cout.width(18), cout << left << "-h --help", cout << ' ' << "Display this help and exit" << endl;
 }
 
