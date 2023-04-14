@@ -282,7 +282,7 @@ void tunersetsView::layout()
 	lbox->addWidget(list_ats);
 	lfrm->setLayout(lbox);
 
- 	platform::osWidgetOpaque(swid);
+	platform::osWidgetOpaque(swid);
 
 	swid->addWidget(tfrm);
 	swid->addWidget(lfrm);

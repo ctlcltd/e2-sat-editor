@@ -18,6 +18,26 @@ namespace e2se_cli
 class e2db_termctl
 {
 	public:
+
+		enum KEY_MAP {
+			EscapeSequence = 27,
+			KeyUp = 65,
+			KeyDown = 66,
+			KeyRight = 67,
+			KeyLeft = 68,
+			KeyDelete = 127,
+			KeyReturn = 10
+		};
+
+		enum EVENT {
+			HistoryBack = KeyUp,
+			HistoryForward = KeyDown,
+			CursorForward = KeyRight,
+			CursorBackward = KeyLeft,
+			DeleteChar = KeyDelete,
+			StdinRelease = KeyReturn
+		};
+
 		e2db_termctl();
 		~e2db_termctl();
 		static void reset();
@@ -30,9 +50,9 @@ class e2db_termctl
 		static void tty_set_raw(int tty_fd = 0);
 		static void tty_set_sane(int tty_fd = 0);
 		static void tty_gotoxy(int x, int y);
-		static void tty_gotoright();
-		static void tty_gotoleft();
-		static void tty_erase();
+		static void tty_goforward();
+		static void tty_gobackward();
+		static void tty_delchar();
 		static void tty_bell();
 
 		std::iostream* is;

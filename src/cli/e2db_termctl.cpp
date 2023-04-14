@@ -76,18 +76,19 @@ std::istream* e2db_termctl::input()
 
 	std::printf("> ");
 
+	bool ins = false;
+
 	size_t cur, len;
 	cur = len = 0;
 
 	int prev, next;
 	prev = next = 0;
 
-	std::string str;
+	std::string input;
 	char c;
 	while ((c = std::getchar()) != EOF)
 	{
-		// escape sequence
-		if (c == 27)
+		if (c == KEY_MAP::EscapeSequence)
 		{
 			while (! std::isalpha(c))
 			{
@@ -95,17 +96,21 @@ std::istream* e2db_termctl::input()
 			}
 			switch (c)
 			{
-				// KeyUp
-				// history previous
-				case 65:
+				case KEY_MAP::KeyUp:
+
+					next = EVENT::HistoryBack;
+
 					{
+						is->sync();
 						std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
 
 						std::streampos pos = history->tellg();
 
-						// if (pos == 0 && str.empty())
-						// 	str = std::string (is_buf->str());
-
+						// current input
+						if (prev != EVENT::HistoryBack)
+						{
+							input = std::string (is_buf->str());
+						}
 						// next repeat pos -1
 						if (prev != next && pos == EOF)
 						{
@@ -116,14 +121,14 @@ std::istream* e2db_termctl::input()
 						// next repeat last 0
 						else if (prev != 0 && last == 0)
 						{
-							history->clear();
+							// history->clear();
 							history->seekg(EOF);
 							last = pos = EOF;
 						}
 						if (pos != EOF)
 						{
 							pos = 0;
-							history->clear();
+							// history->clear();
 							history->seekg(pos);
 							while (history->ignore(std::numeric_limits<std::streamsize>::max(), '\n'))
 							{
@@ -159,13 +164,16 @@ std::istream* e2db_termctl::input()
 							*is << line;
 						}
 					}
-					prev = c;
+
+					prev = next;
 					continue;
 				break;
-				// KeyDown
-				// history next
-				case 66:
+				case KEY_MAP::KeyDown:
+
+					next = EVENT::HistoryForward;
+
 					{
+						is->sync();
 						std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
 
 						std::streampos pos = history->tellg();
@@ -182,12 +190,12 @@ std::istream* e2db_termctl::input()
 
 						if (std::getline(*history, line))
 							last = pos;
-						else if (str != is_buf->str())
-							line = str;
+						else if (input != is_buf->str())
+							line = input;
 						else
 							tty_bell();
 
-						// if (! line.empty())
+						if (! line.empty() || pos != EOF)
 						{
 							is_buf->str("");
 							is->clear();
@@ -201,92 +209,174 @@ std::istream* e2db_termctl::input()
 							*is << line;
 						}
 					}
-					prev = c;
+
+					prev = next;
 					continue;
 				break;
-				// KeyRight
-				// move cursor right
-				case 67: // key Right
+				case KEY_MAP::KeyRight:
+
+					next = EVENT::CursorForward;
+
 					if (cur < len && len != 0)
 					{
-						tty_gotoright();
+						tty_goforward();
+
 						cur++;
+
+						is->seekp(0, std::ios_base::end);
+						std::streamoff offset = cur - len;
+						is->seekp(offset, std::ios_base::end);
 					}
 					else
 					{
 						tty_bell();
 					}
-					prev = c;
+
+					prev = next;
 					continue;
 				break;
-				// KeyLeft
-				// move cursor left
-				case 68:
+				case KEY_MAP::KeyLeft:
+
+					next = EVENT::CursorBackward;
+
 					if (cur > 0 && len != 0)
-					{	
-						tty_gotoleft();
+					{
+						tty_gobackward();
+
 						cur--;
+
+						is->seekp(0, std::ios_base::end);
+						std::streamoff offset = cur - len;
+						is->seekp(offset, std::ios_base::end);
 					}
 					else
 					{
 						tty_bell();
 					}
-					prev = c;
+
+					prev = next;
 					continue;
 				break;
 			}
 		}
-		// KeyDel
-		// delete char
-		else if (c == 127)
+		else if (c == KEY_MAP::KeyDelete)
 		{
+			next = EVENT::DeleteChar;
+
 			if (cur > 0 && len != 0)
 			{
-				is->get(); // erase char
-				tty_erase();
+				tty_delchar();
+
+				std::streamoff offset = is->tellp();
+
+				is->seekp(0, std::ios_base::beg);
+
+				is->sync();
+				std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
+
+				std::string str = is_buf->str();
+				try {
+					str.erase(cur - 1, 1);
+				} catch (...) {
+					std::string str = is_buf->str();
+					std::cerr << "out_of_range delete str:[" << str << "] cur:" << cur << " len:" << len << " size:" << str.size() << std::endl;
+				}
+				is_buf->str(str);
+				is->sync();
+
+				is->seekp(offset - 1);
+
 				cur--, len--;
 			}
 			else
 			{
 				tty_bell();
 			}
-			prev = c;
+
+			prev = next;
 			continue;
 		}
-		// KeyReturn
-		// stdin release
-		else if (c == 10)
+		else if (c == KEY_MAP::KeyReturn)
 		{
+			next = EVENT::StdinRelease;
+
+			is->seekp(0, std::ios_base::beg);
+
+			is->sync();
 			std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
 
 			if (! is_buf->str().empty())
 			{
+				history->clear();
+				history->seekp(0, std::ios_base::end);
+
+				*history << is_buf->str();
 				*history << std::endl;
 
-				history->clear();
+				// history->clear();
 				history->seekg(0);
 				last = history->tellg();
-				str = "";
+
+				input = "";
 			}
 
 			std::putchar(c);
 
-			prev = c;
+			is->seekp(0, std::ios_base::end);
+
+			prev = next;
 			break;
 		}
 
 		// std::printf("char: '%c'\n", c);
 
-		//TODO FIX replace
-		std::putchar(c);
+		// append
+		if (! ins && cur != len)
+		{
+			std::streamoff offset = is->tellp();
 
-		*is << c;
-		*history << c;
+			is->seekp(0, std::ios_base::beg);
 
-		if (cur != len)
+			is->sync();
+			std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
+
+			std::string str = is_buf->str();
+
+			std::printf("%c%s", c, str.substr(cur).c_str());
+
+			size_t n = len - cur;
+
+			for (size_t i = 0; i != n; i++)
+				std::putchar('\b');
+
+			try {
+				str.insert(cur, 1, c);
+			} catch (...) {
+				std::string str = is_buf->str();
+				std::cerr << "out_of_range append str:[" << str << "] cur:" << cur << " len:" << len << " size:" << str.size() << std::endl;
+			}
+
+			is_buf->str(str);
+			is->sync();
+
+			is->seekp(offset + 1);
+		}
+		// insert | replace
+		else
+		{
+			std::putchar(c);
+
+			*is << c;
+		}
+
+		// insert
+		if (ins && cur != len)
 			cur++;
+		// append | replace
 		else
 			cur++, len++;
+
+		prev = next = 0;
 	}
 
 #ifndef WIN32
@@ -372,7 +462,7 @@ void e2db_termctl::tty_gotoxy(int x, int y)
 #endif
 }
 
-void e2db_termctl::tty_gotoright()
+void e2db_termctl::tty_goforward()
 {
 #ifdef WIN32
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -385,7 +475,7 @@ void e2db_termctl::tty_gotoright()
 #endif
 }
 
-void e2db_termctl::tty_gotoleft()
+void e2db_termctl::tty_gobackward()
 {
 #ifdef WIN32
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -399,9 +489,9 @@ void e2db_termctl::tty_gotoleft()
 #endif
 }
 
-void e2db_termctl::tty_erase()
+void e2db_termctl::tty_delchar()
 {
-	std::printf("\b\e\x5b\x4b");
+	std::printf("\b\e\x5b\x50");
 }
 
 void e2db_termctl::tty_bell()

@@ -1491,7 +1491,7 @@ bool gui::getFlag(GUI_CXE bit)
 
 void gui::setFlag(GUI_CXE bit, bool flag)
 {
-	 // debug("setFlag");
+	// debug("setFlag");
 
 	typedef size_t position_t;
 

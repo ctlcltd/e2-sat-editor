@@ -61,7 +61,6 @@ void e2db_cli::options(int argc, char* argv[])
 			return cmd_shell();
 		else
 			return cmd_error(opt);
-			
 	}
 }
 
@@ -118,7 +117,7 @@ void e2db_cli::cmd_shell()
 		else if (! cmd.empty())
 			shell_error(cmd);
 
-		cout << "input: " << cmd << endl;
+		// cout << "input: " << cmd << endl;
 
 		cmd.clear();
 	}

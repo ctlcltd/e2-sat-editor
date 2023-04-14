@@ -395,7 +395,7 @@ void viewAbstract::listFindPerform(const QString& value, LIST_FIND flag)
 		//
 		// QModelIndex start;
 		// if (list_tree->currentIndex().isValid())
-		//	start = list_tree->currentIndex();
+		// 	start = list_tree->currentIndex();
 		// else
 		// 	start = list_tree->model()->index(0, 0);
 		//
