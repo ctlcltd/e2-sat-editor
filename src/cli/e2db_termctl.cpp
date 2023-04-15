@@ -45,11 +45,12 @@ e2db_termctl::e2db_termctl()
 	std::stringbuf* history_buf = new std::stringbuf;
 	this->history = new std::iostream(history_buf);
 
-	*history << "dolor amet lorem 5" << std::endl;
-	*history << "lorem amet 4" << std::endl;
-	*history << "ipsum dolor sit 3" << std::endl;
-	*history << "sit dolor 2" << std::endl;
-	*history << "amet lorem ipsum 1" << std::endl;
+	*history << "read directory-not-exists" << std::endl;
+	*history << "edit userbouquet id" << std::endl;
+	*history << "add tunersets id" << std::endl;
+	*history << "edit tunersets_transponder id" << std::endl;
+	*history << "add transponder" << std::endl;
+	*history << "edit service id" << std::endl;
 
 	this->last = this->history->tellg();
 }
@@ -68,7 +69,7 @@ void e2db_termctl::reset()
 #endif
 }
 
-std::istream* e2db_termctl::input()
+void e2db_termctl::input()
 {
 #ifndef WIN32
 	tty_set_raw();
@@ -109,7 +110,7 @@ std::istream* e2db_termctl::input()
 						// current input
 						if (prev != EVENT::HistoryBack)
 						{
-							input = std::string (is_buf->str());
+							input = is_buf->str();
 						}
 						// next repeat pos -1
 						if (prev != next && pos == EOF)
@@ -382,17 +383,94 @@ std::istream* e2db_termctl::input()
 #ifndef WIN32
 	tty_set_sane();
 #endif
-
-	return is;
 }
 
-std::istream* e2db_termctl::clear()
+const std::string e2db_termctl::str()
+{
+	std::string str;
+	*is >> str;
+	return str;
+}
+
+std::istream* e2db_termctl::stream()
+{
+	is->sync();
+
+	std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
+	std::stringbuf* cp_buf = new std::stringbuf;
+	cp_buf->str(is_buf->str());
+
+	return new std::istream(cp_buf);
+}
+
+void e2db_termctl::clear()
 {
 	std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
 	is->clear();
 	is_buf->str("");
+}
 
-	return is;
+int e2db_termctl::paged()
+{
+#ifndef WIN32
+	tty_set_raw();
+#endif
+
+	std::cout << "Press key Up or Down to move ";
+
+	int curr = 0;
+
+	int c;
+	while ((c = std::getchar()) != EOF)
+	{
+		if (c == KEY_MAP::EscapeSequence)
+		{
+			while (! std::isalpha(c))
+			{
+				c = curr = std::getchar();
+			}
+			switch (c)
+			{
+				case KEY_MAP::KeyUp:
+					curr = EVENT::PagePrev;
+				break;
+				break;
+				case KEY_MAP::KeyDown:
+					curr = EVENT::PageNext;
+				break;
+				break;
+				case KEY_MAP::KeyRight:
+					curr = EVENT::PageNext;
+				break;
+				break;
+				case KEY_MAP::KeyLeft:
+					curr = EVENT::PagePrev;
+				break;
+				break;
+				default:
+					tty_bell();
+			}
+		}
+		else if (c == KEY_MAP::KeyReturn)
+		{
+			curr = EVENT::PageNext;
+			break;
+		}
+		else if (c == 'q' || c == 'Q')
+		{
+			break;
+		}
+		else
+		{
+			tty_bell();
+		}
+	}
+
+#ifndef WIN32
+	tty_set_sane();
+#endif
+
+	return curr;
 }
 
 void e2db_termctl::debugger()

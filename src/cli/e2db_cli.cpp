@@ -15,6 +15,7 @@
 #include <cctype>
 #include <stdexcept>
 #include <iostream>
+#include <sstream>
 #include <iomanip>
 
 #include "e2db_termctl.h"
@@ -53,10 +54,14 @@ void e2db_cli::options(int argc, char* argv[])
 
 		string opt = argv[i];
 
-		if (opt == "-v" || opt == "--version")
-			return cmd_version();
-		else if (opt == "-h" || opt == "--help")
+		if (opt == "-h" || opt == "--help")
 			return cmd_usage();
+#ifdef WIN32
+		else if (opt == "/?")
+			return cmd_usage();
+#endif
+		else if (opt == "-v" || opt == "--version")
+			return cmd_version();
 		else if (opt == "-s" || opt == "--shell")
 			return cmd_shell();
 		else
@@ -77,14 +82,13 @@ void e2db_cli::cmd_shell()
 
 	this->dbih = new e2db;
 
-	string cmd;
-
 	e2db_termctl* term = new e2db_termctl;
 
 	while (true)
 	{
-		std::istream* is = term->input();
-		*is >> cmd;
+		term->input();
+		string cmd = term->str();
+		std::istream* is = term->stream();
 		term->clear();
 
 		if (cmd == "quit" || cmd == "exit" || cmd == "q")
@@ -92,34 +96,32 @@ void e2db_cli::cmd_shell()
 			// term->tmp_history();
 			return shell_exit();
 		}
-		else if (cmd == "version" || cmd == "v")
-			shell_command_version();
 		else if (cmd == "help" || cmd == "h")
 			shell_command_help();
+		else if (cmd == "version" || cmd == "v")
+			shell_command_version();
 		else if (cmd == "read" || cmd == "i")
-			shell_command_read();
+			shell_command_read(is);
 		else if (cmd == "list" || cmd == "l")
-			shell_command_list();
+			shell_command_list(is);
 		else if (cmd == "add" || cmd == "a")
-			shell_command_add();
+			shell_command_add(is);
 		else if (cmd == "edit" || cmd == "e")
-			shell_command_edit();
+			shell_command_edit(is);
 		else if (cmd == "remove" || cmd == "r")
-			shell_command_remove();
+			shell_command_remove(is);
 		else if (cmd == "set" || cmd == "s")
-			shell_command_set();
+			shell_command_set(is);
 		else if (cmd == "unset" || cmd == "u")
-			shell_command_unset();
+			shell_command_unset(is);
 		else if (cmd == "print" || cmd == "p")
-			shell_command_print();
-		else if (cmd == "debug" || cmd == "d")
-			shell_debugger();
+			shell_command_print(is);
 		else if (! cmd.empty())
 			shell_error(cmd);
 
 		// cout << "input: " << cmd << endl;
 
-		cmd.clear();
+		delete is;
 	}
 }
 
@@ -164,9 +166,9 @@ void e2db_cli::shell_header()
 	cout << endl;
 }
 
-void e2db_cli::shell_error(string is)
+void e2db_cli::shell_error(const string& cmd)
 {
-	cerr << "Error" << ':' << ' ' << "Syntax error near" << ' ' << '"' << is << '"' << endl;
+	cerr << "Error" << ':' << ' ' << "Syntax error near" << ' ' << '"' << cmd << '"' << endl;
 }
 
 void e2db_cli::shell_command_version()
@@ -233,15 +235,16 @@ void e2db_cli::shell_command_help()
 	cout << endl;
 
 	cout << "  ", cout.width(7), cout << left << "print", cout << ' ';
-	cout.width(24), cout << left << "index", cout << ' ' << "Print debug informations." << endl;
+	cout.width(24), cout << left << "debug", cout << ' ' << "Print debug informations." << endl;
+	cout.width(10), cout << ' ', cout << "index" << endl;
 	cout << endl;
 
 	cout << "  ", cout.width(32), cout << left << "debug", cout << ' ' << "Debugger." << endl;
 	cout << endl;
 
-	cout << "  ", cout.width(7), cout << left << "history", cout << ' ';
-	cout.width(24), cout << left << "file", cout << ' ' << "Save history to file, instead of memory." << endl;
-	cout << endl;
+	// cout << "  ", cout.width(7), cout << left << "history", cout << ' ';
+	// cout.width(24), cout << left << "file", cout << ' ' << "Save history to file, instead of memory." << endl;
+	// cout << endl;
 
 	cout << "  ", cout.width(32), cout << left << "version", cout << ' ' << "Display version." << endl;
 	cout << endl;
@@ -249,49 +252,406 @@ void e2db_cli::shell_command_help()
 	cout << "  ", cout.width(32), cout << left << "help", cout << ' ' << "Display this help and exit." << endl;
 }
 
-void e2db_cli::shell_command_read()
+void e2db_cli::shell_resolver(COMMAND command, istream* is)
 {
-	cin >> std::ws;
-	string path;
-	std::getline(cin, path);
+	string src;
+	*is >> std::skipws >> src;
 
-	dbih->read(path);
-}
-
-void e2db_cli::shell_command_add()
-{
-	cout << "add" << endl;
-	cin >> std::ws;
-	string id;
-	std::getline(cin, id);
-
-	if (id == "service")
-		shell_entry_edit(ENTRY::service);
-	else if (id == "transponder")
-		shell_entry_edit(ENTRY::transponder);
-}
-
-void e2db_cli::shell_debugger()
-{
-	if (this->dbih == nullptr)
+	if (command == COMMAND::read)
 	{
-		cerr << "Error" << ':' << ' ' << "No file opened." << endl;
+		string path;
+		*is >> std::skipws >> path;
 
-		return;
+		shell_file_read(path);
+	}
+	else if (command == COMMAND::write)
+	{
+		string path;
+		*is >> std::skipws >> path;
+
+		shell_file_write(path);
+	}
+	else if (command == COMMAND::list)
+	{
+		string type;
+		*is >> std::skipws >> type;
+
+		if (type == "services")
+			shell_entry_list(ENTRY::service);
+		else if (type == "transponders")
+			shell_entry_list(ENTRY::transponder);
+		else if (type == "bouquets")
+			shell_entry_list(ENTRY::bouquet);
+		else if (type == "userbouquets")
+			shell_entry_list(ENTRY::userbouquet);
+		else if (type == "tunersets_transponders")
+			shell_entry_list(ENTRY::userbouquet);
+		else if (type == "tunersets_tables")
+			shell_entry_list(ENTRY::tunersets_table);
+		else if (type == "tunersets")
+			shell_entry_list(ENTRY::userbouquet);
+		else
+			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
+	}
+	else if (command == COMMAND::add)
+	{
+		string type;
+		*is >> std::skipws >> type;
+
+		if (type == "service")
+			shell_entry_add(ENTRY::service);
+		else if (type == "transponder")
+			shell_entry_add(ENTRY::transponder);
+		else if (type == "bouquet")
+			shell_entry_add(ENTRY::bouquet);
+		else if (type == "userbouquet")
+			shell_entry_add(ENTRY::userbouquet);
+		else if (type == "tunersets_transponder")
+			shell_entry_add(ENTRY::userbouquet);
+		else if (type == "tunersets_table")
+			shell_entry_add(ENTRY::tunersets_table);
+		else if (type == "tunersets")
+			shell_entry_add(ENTRY::userbouquet);
+		else
+			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
+	}
+	else if (command == COMMAND::edit)
+	{
+		string type, id;
+		*is >> std::skipws >> type >> id;
+
+		if (type == "service")
+			shell_entry_edit(ENTRY::service, id);
+		else if (type == "transponder")
+			shell_entry_edit(ENTRY::transponder, id);
+		else if (type == "bouquet")
+			shell_entry_edit(ENTRY::bouquet, id);
+		else if (type == "userbouquet")
+			shell_entry_edit(ENTRY::userbouquet, id);
+		else if (type == "tunersets_transponder")
+			shell_entry_edit(ENTRY::userbouquet, id);
+		else if (type == "tunersets_table")
+			shell_entry_edit(ENTRY::tunersets_table, id);
+		else if (type == "tunersets")
+			shell_entry_edit(ENTRY::userbouquet, id);
+		else
+			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
+	}
+	else if (command == COMMAND::remove)
+	{
+		string type, id;
+		*is >> std::skipws >> type >> id;
+
+		if (type == "service")
+			shell_entry_remove(ENTRY::service, id);
+		else if (type == "transponder")
+			shell_entry_remove(ENTRY::transponder, id);
+		else if (type == "bouquet")
+			shell_entry_remove(ENTRY::bouquet, id);
+		else if (type == "userbouquet")
+			shell_entry_remove(ENTRY::userbouquet, id);
+		else if (type == "tunersets_transponder")
+			shell_entry_remove(ENTRY::userbouquet, id);
+		else if (type == "tunersets_table")
+			shell_entry_remove(ENTRY::tunersets_table, id);
+		else if (type == "tunersets")
+			shell_entry_remove(ENTRY::userbouquet, id);
+		else
+			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
+	}
+	else if (command == COMMAND::set)
+	{
+		string type, id;
+		*is >> std::skipws >> type >> id;
+
+		if (type == "service")
+			shell_entry_parentallock(ENTRY::service, id, true);
+		else if (type == "userbouquet")
+			shell_entry_parentallock(ENTRY::userbouquet, id, true);
+		else
+			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
+	}
+	else if (command == COMMAND::unset)
+	{
+		string type, id;
+		*is >> std::skipws >> type >> id;
+
+		if (type == "service")
+			shell_entry_parentallock(ENTRY::service, id, false);
+		else if (type == "userbouquet")
+			shell_entry_parentallock(ENTRY::userbouquet, id, false);
+		else
+			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
+	}
+	else if (command == COMMAND::print)
+	{
+		string type;
+		*is >> std::skipws >> type;
+
+		if (type == "debug")
+			shell_debug(0);
+		else if (type == "index")
+			shell_debug(1);
+		else
+			cerr << "Error" << ':' << ' ' << "Unknown command." << endl;
+	}
+	else
+	{
+		cerr << "Error" << ':' << ' ' << "Unknown command." << endl;
+	}
+}
+
+void e2db_cli::shell_file_read(string path)
+{
+	if (! dbih->read(path))
+		cerr << "File Error" << ':' << ' ' << "Error reading file." << endl;
+}
+
+void e2db_cli::shell_file_write(string path)
+{
+	if (! dbih->write(path))
+		cerr << "File Error" << ':' << ' ' << "Error writing file." << endl;
+}
+
+void e2db_cli::shell_entry_list(ENTRY entry_type, int offset)
+{
+	if (entry_type == ENTRY::transponder)
+	{
+		for (auto it = dbih->index["txs"].begin(); it != dbih->index["txs"].end(); it++)
+		{
+			e2db::transponder tx = dbih->db.transponders[it->second];
+
+			cout << "txid: " << tx.txid << endl;
+			cout << std::hex;
+			cout << "dvbns: " << tx.dvbns << endl;
+			cout << "tsid: " << tx.tsid << endl;
+			cout << "onid: " << tx.onid << endl;
+			cout << std::dec;
+			cout << "ytype: " << tx.ytype << endl;
+			cout << "freq: " << tx.freq << endl;
+			cout << "sr: " << tx.sr << endl;
+			cout << "pol: " << tx.pol << endl;
+			cout << "fec: " << tx.fec << endl;
+			cout << "hpfec: " << tx.hpfec << endl;
+			cout << "lpfec: " << tx.lpfec << endl;
+			cout << "cfec: " << tx.cfec << endl;
+			cout << "pos: " << tx.pos << endl;
+			cout << "inv: " << tx.inv << endl;
+			cout << "flgs: " << tx.flgs << endl;
+			cout << "sys: " << tx.sys << endl;
+			cout << "mod: " << tx.mod << endl;
+			cout << "tmod: " << tx.tmod << endl;
+			cout << "cmod: " << tx.cmod << endl;
+			cout << "amod: " << tx.amod << endl;
+			cout << "rol: " << tx.rol << endl;
+			cout << "pil: " << tx.pil << endl;
+			cout << "band: " << tx.band << endl;
+			cout << "tmx: " << tx.tmx << endl;
+			cout << "guard: " << tx.guard << endl;
+			cout << "hier: " << tx.hier << endl;
+			cout << "oflgs: " << tx.oflgs << endl;
+			cout << endl;
+		}
+	}
+	else if (entry_type == ENTRY::service)
+	{
+		for (auto it = dbih->index["chs"].begin(); it != dbih->index["chs"].end(); it++)
+		{
+			e2db::service ch = dbih->db.services[it->second];
+
+			cout << "chid: " << ch.chid << endl;
+			cout << "txid: " << ch.txid << endl;
+			cout << std::hex;
+			cout << "ssid: " << ch.ssid << endl;
+			cout << "dvbns: " << ch.dvbns << endl;
+			cout << "tsid: " << ch.tsid << endl;
+			cout << std::dec;
+			cout << "onid: " << ch.onid << endl;
+			cout << "stype: " << ch.stype << endl;
+			cout << "snum: " << ch.snum << endl;
+			cout << "srcid: " << ch.srcid << endl;
+			cout << "chname: " << ch.chname << endl;
+			cout << "data: [" << endl << endl;
+			for (auto & q : ch.data)
+			{
+				cout << q.first << ": [" << endl;
+				for (string & w : q.second)
+					cout << w << ", ";
+				cout << endl << "]";
+			}
+			cout << "]" << endl << endl;
+			cout << "index: " << ch.index << endl;
+			cout << endl;
+		}
+	}
+	else if (entry_type == ENTRY::bouquet)
+	{
+		for (auto & x : dbih->bouquets)
+		{
+			cout << "filename: " << x.first << endl;
+			cout << "name: " << x.second.name << endl;
+			cout << "nname: " << x.second.nname << endl;
+			cout << "btype: " << x.second.btype << endl;
+			cout << "userbouquets: [" << endl << endl;
+			for (string & w : x.second.userbouquets)
+				cout << w << endl;
+			cout << endl;
+			cout << "]" << endl << endl;
+		}
+	}
+	else if (entry_type == ENTRY::userbouquet)
+	{
+		for (auto & x : dbih->userbouquets)
+		{
+			cout << "filename: " << x.first << endl;
+			cout << "name: " << x.second.name << endl;
+			cout << "channels: [" << endl << endl;
+			for (auto & q : x.second.channels)
+			{
+				cout << "chid: " << q.first << endl;
+				cout << "index: " << q.second.index << endl;
+				cout << endl;
+			}
+			cout << "]" << endl << endl;
+		}
+	}
+	else if (entry_type == ENTRY::tunersets)
+	{
+		for (auto & x : dbih->tuners)
+		{
+			cout << "ytype: " << x.first << endl;
+			cout << "charset: " << x.first << endl;
+			cout << "tables: [" << endl << endl;
+			for (auto & q : x.second.tables)
+			{
+				cout << "tnid: " << q.second.tnid << endl;
+				cout << endl;
+			}
+			cout << "]" << endl << endl;
+		}
+	}
+	else if (entry_type == ENTRY::tunersets_table)
+	{
+		for (auto & x : dbih->tuners)
+		{
+			for (auto & q : x.second.tables)
+			{
+				cout << "tnid: " << q.second.tnid << endl;
+				cout << "ytype: " << q.second.ytype << endl;
+				cout << "name: " << q.second.name << endl;
+				cout << "flags: " << q.second.flgs << endl;
+				cout << "pos: " << q.second.pos << endl;
+				cout << "index: " << q.second.index << endl;
+				cout << "transponders: [" << endl << endl;
+				for (auto & x : q.second.transponders)
+				{
+					cout << "trid: " << x.first << endl;
+					cout << endl;
+				}
+				cout << "]" << endl << endl;
+			}
+			cout << "]" << endl << endl;
+		}
+	}
+	else if (entry_type == ENTRY::tunersets_transponder)
+	{
+		for (auto & x : dbih->tuners)
+		{
+			for (auto & q : x.second.tables)
+			{
+				for (auto & x : q.second.transponders)
+				{
+					cout << "trid: " << x.first << endl;
+					cout << "tnid: " << q.second.tnid << endl;
+					cout << "ytype: " << q.second.ytype << endl;
+					cout << "pos: " << q.second.pos << endl;
+					cout << "freq: " << x.second.freq << endl;
+					cout << "sr: " << x.second.sr << endl;
+					cout << "pol: " << x.second.pol << endl;
+					cout << "fec: " << x.second.fec << endl;
+					cout << "hpfec: " << x.second.hpfec << endl;
+					cout << "lpfec: " << x.second.lpfec << endl;
+					cout << "cfec: " << x.second.cfec << endl;
+					cout << "inv: " << x.second.inv << endl;
+					cout << "sys: " << x.second.sys << endl;
+					cout << "mod: " << x.second.mod << endl;
+					cout << "tmod: " << x.second.tmod << endl;
+					cout << "cmod: " << x.second.cmod << endl;
+					cout << "amod: " << x.second.amod << endl;
+					cout << "band: " << x.second.band << endl;
+					cout << "tmx: " << x.second.tmx << endl;
+					cout << "guard: " << x.second.guard << endl;
+					cout << "hier: " << x.second.hier << endl;
+					cout << "rol: " << x.second.rol << endl;
+					cout << "pil: " << x.second.pil << endl;
+					cout << "isid: " << x.second.isid << endl;
+					cout << "plsmode: " << x.second.plsmode << endl;
+					cout << "plscode: " << x.second.plscode << endl;
+					cout << "index: " << x.second.index << endl;
+					cout << endl;
+				}
+			}
+			cout << "]" << endl << endl;
+		}
 	}
 
-	dbih->debugger();
+	while (true)
+	{
+		int curr = e2db_termctl::paged();
+
+		switch (curr)
+		{
+			case 0:
+				return;
+			case 65:
+				offset -= 15;
+			break;
+			default:
+				offset += 15;
+			break;
+		}
+
+		break;
+	}
+
+	shell_entry_list(entry_type, offset);
+}
+
+void e2db_cli::shell_entry_add(ENTRY entry_type)
+{
+	shell_entry_edit(entry_type, false);
 }
 
 void e2db_cli::shell_entry_edit(ENTRY entry_type, string id)
 {
+	shell_entry_edit(entry_type, true, id);
+}
+
+void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id)
+{
 	using std::any_cast;
+
+	if (edit && id.empty())
+	{
+		cerr << "Error" << ':' << ' ' << "Wrong parameter identifier." << endl;
+		return;
+	}
+
+	this->last_is = id;
 
 	try
 	{
 		if (entry_type == ENTRY::transponder)
 		{
 			e2db::transponder tx;
+
+			if (edit)
+			{
+				if (dbih->db.transponders.count(id))
+					tx = dbih->db.transponders[id];
+				else
+					throw std::runtime_error ("Transponder \"%s\" not exists.");
+			}
 
 			tx.ytype = any_cast<int>(field(TYPE::yname, true));
 			tx.pos = any_cast<int>(field(TYPE::pos, true));
@@ -335,11 +695,22 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, string id)
 			}
 			tx.dvbns = dbih->value_transponder_dvbns(tx);
 
-			dbih->add_transponder(tx);
+			if (edit)
+				dbih->edit_transponder(id, tx);
+			else
+				dbih->add_transponder(tx);
 		}
 		else if (entry_type == ENTRY::service)
 		{
 			e2db::service ch;
+
+			if (edit)
+			{
+				if (dbih->db.services.count(id))
+					ch = dbih->db.services[id];
+				else
+					throw std::runtime_error ("Service \"%s\" not exists.");
+			}
 
 			ch.txid = any_cast<string>(field(TYPE::txid, true));
 
@@ -369,12 +740,192 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, string id)
 				ch.data[e2db::SDATA::C] = any_cast<vector<string>>(field(TYPE::sdata_C));
 				ch.data[e2db::SDATA::f] = any_cast<vector<string>>(field(TYPE::sdata_f));
 			}
+
+			if (edit)
+				dbih->edit_service(id, ch);
+			else
+				dbih->add_service(ch);
+		}
+		else if (entry_type == ENTRY::bouquet)
+		{
+			e2db::bouquet bs;
+
+			if (edit)
+			{
+				if (dbih->bouquets.count(id))
+					bs = dbih->bouquets[id];
+				else
+					throw std::runtime_error ("Bouquet \"%s\" not exists.");
+			}
+
+			// edit bs.rname
+			bs.btype = any_cast<int>(field(TYPE::btype, true));
+			bs.bname = any_cast<string>(field(TYPE::bname, true));
+			bs.name = any_cast<string>(field(TYPE::qname, true));
+			bs.nname = any_cast<string>(field(TYPE::nname));
+
+			if (edit)
+				dbih->edit_bouquet(bs);
+			else
+				dbih->add_bouquet(bs);
+		}
+		else if (entry_type == ENTRY::userbouquet)
+		{
+			e2db::userbouquet ub;
+
+			if (edit)
+			{
+				if (dbih->userbouquets.count(id))
+					ub = dbih->userbouquets[id];
+				else
+					throw std::runtime_error ("Userbouquet \"%s\" not exists.");
+			}
+
+			// edit ub.rname
+			ub.bname = any_cast<string>(field(TYPE::bname, true));
+			ub.pname = any_cast<string>(field(TYPE::pname, true));
+			ub.name = any_cast<string>(field(TYPE::qname, true));
+
+			if (edit)
+				dbih->edit_userbouquet(ub);
+			else
+				dbih->add_userbouquet(ub);
+		}
+		else if (entry_type == ENTRY::tunersets)
+		{
+			e2db::tunersets tv;
+
+			int tvid = -1;
+
+			if (edit)
+			{
+				if (dbih->tuners.count(tvid))
+					tv = dbih->tuners[tvid];
+				else
+					throw std::runtime_error ("Tuner settings \"%s\" not exists.");
+			}
+
+			tv.ytype = any_cast<int>(field(TYPE::ytype, true));
+			tv.charset = any_cast<string>(field(TYPE::charset));
+
+			if (tv.charset.empty())
+				tv.charset = "UTF-8";
+
+			if (edit)
+				dbih->edit_tunersets(tvid, tv);
+			else
+				dbih->add_tunersets(tv);
+		}
+		else if (entry_type == ENTRY::tunersets_table)
+		{
+			e2db::tunersets_table tn;
+
+			int tvid = -1;
+			e2db::tunersets tv;
+
+			if (edit)
+			{
+				/*if (dbih->tunersets_table.count(id))
+					tn = dbih->tunersets_table[id];
+				else
+					throw std::runtime_error ("Tuner settings table \"%s\" not exists.");*/
+			}
+
+			tn.ytype = any_cast<int>(field(TYPE::ytype, true));
+			tn.name = any_cast<string>(field(TYPE::tname, true));
+
+			if (tn.ytype == e2db::YTYPE::satellite)
+			{
+				tn.pos = any_cast<int>(field(TYPE::pos, true));
+			}
+			else if (tn.ytype == e2db::YTYPE::terrestrial)
+			{
+				tn.country = any_cast<string>(field(TYPE::country));
+			}
+			else if (tn.ytype == e2db::YTYPE::cable)
+			{
+				tn.country = any_cast<string>(field(TYPE::country));
+				tn.feed = any_cast<int>(field(TYPE::feed));
+			}
+
+			tn.flgs = any_cast<int>(field(TYPE::flgs));
+
+			if (edit)
+				dbih->edit_tunersets_table(id, tn, tv);
+			else
+				dbih->add_tunersets_table(tn, tv);
+		}
+		else if (entry_type == ENTRY::tunersets_transponder)
+		{
+			e2db::tunersets_transponder tntxp;
+
+			int tvid = -1;
+			int tnid = -1;
+			e2db::tunersets_table tn;
+			int tn_ytype = -1;
+
+			if (edit)
+			{
+				/*if (dbih->tunersets_transponder.count(id))
+					tntxp = dbih->tunersets_transponder[id];
+				else
+					throw std::runtime_error ("Tuner settings transponder \"%s\" not exists.");*/
+			}
+
+			tntxp.sys = any_cast<int>(field(TYPE::sys));
+			tntxp.freq = any_cast<int>(field(TYPE::freq, true));
+
+			if (tn.ytype == e2db::YTYPE::satellite)
+			{
+				tntxp.pol = any_cast<int>(field(TYPE::pol, true));
+				tntxp.sr = any_cast<int>(field(TYPE::sr));
+				tntxp.fec = any_cast<int>(field(TYPE::fec));
+				tntxp.mod = any_cast<int>(field(TYPE::mod));
+				tntxp.inv = any_cast<int>(field(TYPE::inv));
+				tntxp.rol = any_cast<int>(field(TYPE::rol));
+				tntxp.pil = any_cast<int>(field(TYPE::pil));
+
+				if (any_cast<int>(field(TYPE::txdata)))
+				{
+					tntxp.isid = any_cast<int>(field(TYPE::isid));
+					tntxp.mts = any_cast<int>(field(TYPE::mts));
+					tntxp.plsmode = any_cast<int>(field(TYPE::plsmode));
+					tntxp.plscode = any_cast<int>(field(TYPE::plscode));
+					tntxp.plsn = any_cast<int>(field(TYPE::plsn));
+				}
+			}
+			else if (tn.ytype == e2db::YTYPE::terrestrial)
+			{
+				tntxp.tmod = any_cast<int>(field(TYPE::tmod));
+				tntxp.band = any_cast<int>(field(TYPE::band));
+				tntxp.tmx = any_cast<int>(field(TYPE::tmx));
+				tntxp.hpfec = any_cast<int>(field(TYPE::hpfec));
+				tntxp.lpfec = any_cast<int>(field(TYPE::lpfec));
+				tntxp.inv = any_cast<int>(field(TYPE::tinv));
+				tntxp.guard = any_cast<int>(field(TYPE::guard));
+				tntxp.hier = any_cast<int>(field(TYPE::hier));
+			}
+			else if (tn.ytype == e2db::YTYPE::cable)
+			{
+				tntxp.cmod = any_cast<int>(field(TYPE::cmod));
+				tntxp.sr = any_cast<int>(field(TYPE::sr));
+				tntxp.cfec = any_cast<int>(field(TYPE::cfec));
+				tntxp.inv = any_cast<int>(field(TYPE::cinv));
+			}
+			else if (tn.ytype == e2db::YTYPE::atsc)
+			{
+				tntxp.amod = any_cast<int>(field(TYPE::amod));
+			}
+
+			if (edit)
+				dbih->edit_tunersets_transponder(id, tntxp, tn);
+			else
+				dbih->add_tunersets_transponder(tntxp, tn);
 		}
 	}
 	catch (const std::runtime_error& err)
 	{
-		//TODO FIX
-		size_t csize = sizeof(err.what()) + this->last_is.size();
+		size_t csize = std::strlen(err.what()) + this->last_is.size();
 		char cstr[csize];
 		std::snprintf(cstr, csize, err.what(), this->last_is.c_str());
 
@@ -392,6 +943,139 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, string id)
 
 		cerr << "Error" << ':' << ' ' << cstr << endl;
 	}
+}
+
+void e2db_cli::shell_entry_remove(ENTRY entry_type, string id)
+{
+	if (id.empty())
+	{
+		cerr << "Error" << ':' << ' ' << "Wrong parameter identifier." << endl;
+		return;
+	}
+
+	this->last_is = id;
+
+	try
+	{
+		if (entry_type == ENTRY::transponder)
+		{
+			if (! dbih->db.transponders.count(id))
+				throw std::runtime_error ("Transponder \"%s\" not exists.");
+
+			dbih->remove_transponder(id);
+		}
+		else if (entry_type == ENTRY::service)
+		{
+			if (! dbih->db.services.count(id))
+				throw std::runtime_error ("Service \"%s\" not exists.");
+
+			dbih->remove_service(id);
+		}
+		else if (entry_type == ENTRY::bouquet)
+		{
+			if (! dbih->bouquets.count(id))
+				throw std::runtime_error ("Bouquet \"%s\" not exists.");
+
+			dbih->remove_bouquet(id);
+		}
+		else if (entry_type == ENTRY::userbouquet)
+		{
+			if (! dbih->userbouquets.count(id))
+				throw std::runtime_error ("Userbouquet \"%s\" not exists.");
+
+			dbih->remove_userbouquet(id);
+		}
+		else if (entry_type == ENTRY::tunersets)
+		{
+			int tvid = -1;
+
+			if (! dbih->tuners.count(tvid))
+				throw std::runtime_error ("Tuner settings \"%s\" not exists.");
+
+			dbih->remove_tunersets(tvid);
+		}
+		else if (entry_type == ENTRY::tunersets_table)
+		{
+			int tvid = -1;
+			e2db::tunersets tv;
+
+			/*if (! dbih->tunersets_table.count(id))
+				throw std::runtime_error ("Tuner settings table \"%s\" not exists.");*/
+
+			dbih->remove_tunersets_table(id, tv);
+		}
+		else if (entry_type == ENTRY::tunersets_transponder)
+		{
+			int tvid = -1;
+			int tnid = -1;
+			e2db::tunersets_table tn;
+			int tn_ytype = -1;
+
+			/*if (! dbih->tunersets_transponder.count(id))
+				throw std::runtime_error ("Tuner settings transponder \"%s\" not exists.");*/
+
+			dbih->remove_tunersets_transponder(id, tn);
+		}
+	}
+	catch (const std::runtime_error& err)
+	{
+		size_t csize = std::strlen(err.what()) + this->last_is.size();
+		char cstr[csize];
+		std::snprintf(cstr, csize, err.what(), this->last_is.c_str());
+
+		cerr << "Error" << ':' << ' ' << cstr << endl;
+	}
+}
+
+void e2db_cli::shell_entry_parentallock(ENTRY entry_type, string id, bool flag)
+{
+	if (id.empty())
+	{
+		cerr << "Error" << ':' << ' ' << "Wrong parameter identifier." << endl;
+		return;
+	}
+
+	this->last_is = id;
+
+	try
+	{
+		if (entry_type == ENTRY::service)
+		{
+			if (! dbih->db.services.count(id))
+				throw std::runtime_error ("Service \"%s\" not exists.");
+
+			if (flag)
+				dbih->set_service_parentallock(id);
+			else
+				dbih->unset_service_parentallock(id);
+		}
+		else if (entry_type == ENTRY::userbouquet)
+		{
+			if (! dbih->userbouquets.count(id))
+				throw std::runtime_error ("Userbouquet \"%s\" not exists.");
+
+			if (flag)
+				dbih->set_userbouquet_parentallock(id);
+			else
+				dbih->unset_userbouquet_parentallock(id);
+		}
+	}
+	catch (const std::runtime_error& err)
+	{
+		size_t csize = std::strlen(err.what()) + this->last_is.size();
+		char cstr[csize];
+		std::snprintf(cstr, csize, err.what(), this->last_is.c_str());
+
+		cerr << "Error" << ':' << ' ' << cstr << endl;
+	}
+}
+
+void e2db_cli::shell_debug(int opt)
+{
+	if (opt)
+		cout << "TODO" << endl;
+	else
+		dbih->debugger();
 }
 
 std::any e2db_cli::field(TYPE type, bool required)
@@ -419,7 +1103,8 @@ std::any e2db_cli::field(TYPE type, bool required)
 		case TYPE::srcid: label = "srcid"; description = "Source ID, in digits"; break;
 		case TYPE::locked: label = "Parental locked"; description = "[Y]es or [N]one"; break;
 		case TYPE::chname: label = "Service Name"; break;
-		case TYPE::chdata: label = "Service Data"; description = "[Y]es or [N]one"; break;
+		case TYPE::chdata: label = "Add Service Data?"; description = "[Y]es or [N]one"; break;
+		case TYPE::txdata: label = "Add Transponder Data?"; description = "[Y]es or [N]one"; break;
 		case TYPE::sdata_p: label = "Provider Name"; break;
 		case TYPE::sdata_c: label = "Service Cache"; description = "comma separated values in hex or <empty>, eg. c:0101,c:0202"; break;
 		case TYPE::sdata_C: label = "Service CAS"; description = "comma separated values in hex or <empty>, eg. C:0101,C:0202"; break;
@@ -483,8 +1168,8 @@ std::any e2db_cli::field(TYPE type, bool required)
 		cin >> is;
 
 		// failsafe string trim
-		is.erase(0, is.find_first_not_of(" \n\r\t\v\a\b\f"));
-		is.erase(is.find_last_not_of(" \n\r\t\v\a\b\f") + 1);
+		is.erase(0, is.find_first_not_of(" \n\r\t\v\b\f"));
+		is.erase(is.find_last_not_of(" \n\r\t\v\b\f") + 1);
 
 		this->last_label = label;
 		this->last_is = is;
@@ -536,6 +1221,7 @@ std::any e2db_cli::field(TYPE type, bool required)
 						continue;
 				break;
 				case TYPE::chdata:
+				case TYPE::txdata:
 				case TYPE::locked:
 				case TYPE::feed:
 				case TYPE::hidden:
@@ -631,6 +1317,12 @@ std::any e2db_cli::field(TYPE type, bool required)
 					// failsafe string uppercase
 					std::transform(is.begin(), is.end(), is.begin(), [](unsigned char c) { return std::toupper(c); });
 					return is;
+				break;
+				case TYPE::charset:
+					// failsafe string uppercase
+					std::transform(is.begin(), is.end(), is.begin(), [](unsigned char c) { return std::toupper(c); });
+					return is;
+				break;
 				default:
 					return is;
 			}

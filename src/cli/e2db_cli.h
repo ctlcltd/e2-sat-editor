@@ -33,17 +33,37 @@ class e2db_cli
 
 	protected:
 
+		enum COMMAND {
+			read,
+			write,
+			list,
+			add,
+			edit,
+			remove,
+			set,
+			unset,
+			print
+		};
+
 		enum ENTRY {
-			transponder, service, bouquet, userbouquet, channel_reference, tunersets, tunersets_table, tunersets_transponder
+			transponder,
+			service,
+			bouquet,
+			userbouquet,
+			channel_reference,
+			tunersets,
+			tunersets_table,
+			tunersets_transponder
 		};
 
 		enum TYPE {
 			dbtype, dbparental, idx, 
 			chid, txid, refid, tnid, trid, yname, ytype, 
-			ssid, dvbns, tsid, onid, stype, snum, srcid, locked, chname, chdata,
-			sdata_p, sdata_c, sdata_C, sdata_f,
+			ssid, dvbns, tsid, onid, stype, snum, srcid, locked, chname, 
+			sdata_p, sdata_c, sdata_C, sdata_f, 
 			freq, sr, pol, fec, hpfec, lpfec, cfec, inv, tinv, cinv, sys, mod, tmod, cmod, amod, rol, pil, band, tmx, guard, hier, 
 			isid, mts, plsmode, plscode, plsn, 
+			chdata, txdata, 
 			pos, diseqc, uncomtd, charset, 
 			tname, country, feed, 
 			bname, pname, rname, qname, nname, btype, hidden, 
@@ -59,20 +79,28 @@ class e2db_cli
 		void cmd_usage(bool descriptive = false);
 		void shell_exit();
 		void shell_header();
-		void shell_error(string is);
+		void shell_error(const string& cmd);
 		void shell_command_version();
 		void shell_command_help();
-		void shell_command_read();
-		void shell_command_write() {};
-		void shell_command_list() {};
-		void shell_command_add();
-		void shell_command_edit() {};
-		void shell_command_remove() {};
-		void shell_command_set() {};
-		void shell_command_unset() {};
-		void shell_command_print() {};
-		void shell_debugger();
-		void shell_entry_edit(ENTRY entry_type, string id = "");
+		void shell_command_read(istream* is) { shell_resolver(COMMAND::read, is); };
+		void shell_command_write(istream* is) { shell_resolver(COMMAND::write, is); };
+		void shell_command_list(istream* is) { shell_resolver(COMMAND::list, is); };
+		void shell_command_add(istream* is) { shell_resolver(COMMAND::add, is); };
+		void shell_command_edit(istream* is) { shell_resolver(COMMAND::edit, is); };
+		void shell_command_remove(istream* is) { shell_resolver(COMMAND::remove, is); };
+		void shell_command_set(istream* is) { shell_resolver(COMMAND::set, is); };
+		void shell_command_unset(istream* is) { shell_resolver(COMMAND::unset, is); };
+		void shell_command_print(istream* is) { shell_resolver(COMMAND::print, is); };
+		void shell_resolver(COMMAND command, istream* is);
+		void shell_file_read(string path);
+		void shell_file_write(string path);
+		void shell_entry_list(ENTRY entry_type, int offset = 0);
+		void shell_entry_add(ENTRY entry_type);
+		void shell_entry_edit(ENTRY entry_type, string id);
+		void shell_entry_edit(ENTRY entry_type, bool edit, string id = "");
+		void shell_entry_remove(ENTRY entry_type, string id);
+		void shell_entry_parentallock(ENTRY entry_type, string id, bool flag);
+		void shell_debug(int opt);
 		std::any field(TYPE type, bool required = false);
 
 	private:

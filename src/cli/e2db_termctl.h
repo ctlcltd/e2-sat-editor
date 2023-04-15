@@ -32,6 +32,8 @@ class e2db_termctl
 		enum EVENT {
 			HistoryBack = KeyUp,
 			HistoryForward = KeyDown,
+			PagePrev = KeyUp,
+			PageNext = KeyDown,
 			CursorForward = KeyRight,
 			CursorBackward = KeyLeft,
 			DeleteChar = KeyDelete,
@@ -41,8 +43,11 @@ class e2db_termctl
 		e2db_termctl();
 		~e2db_termctl();
 		static void reset();
-		std::istream* input();
-		std::istream* clear();
+		void input();
+		void clear();
+		const std::string str();
+		std::istream* stream();
+		static int paged();
 		void debugger();
 		void tmp_history();
 
