@@ -422,34 +422,35 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int offset)
 			e2db::transponder tx = dbih->db.transponders[it->second];
 
 			cout << "txid: " << tx.txid << endl;
-			cout << std::hex;
-			cout << "dvbns: " << tx.dvbns << endl;
-			cout << "tsid: " << tx.tsid << endl;
-			cout << "onid: " << tx.onid << endl;
-			cout << std::dec;
 			cout << "ytype: " << tx.ytype << endl;
-			cout << "freq: " << tx.freq << endl;
-			cout << "sr: " << tx.sr << endl;
-			cout << "pol: " << tx.pol << endl;
-			cout << "fec: " << tx.fec << endl;
-			cout << "hpfec: " << tx.hpfec << endl;
-			cout << "lpfec: " << tx.lpfec << endl;
-			cout << "cfec: " << tx.cfec << endl;
 			cout << "pos: " << tx.pos << endl;
-			cout << "inv: " << tx.inv << endl;
-			cout << "flgs: " << tx.flgs << endl;
+			cout << "tsid: " << tx.tsid << endl;
+			cout << std::hex;
+			cout << "onid: " << tx.onid << endl;
+			cout << "dvbns: " << tx.dvbns << endl;
+			cout << std::dec;
 			cout << "sys: " << tx.sys << endl;
+			cout << "freq: " << tx.freq << endl;
+			cout << "pol: " << tx.pol << endl;
+			cout << "sr: " << tx.sr << endl;
 			cout << "mod: " << tx.mod << endl;
 			cout << "tmod: " << tx.tmod << endl;
 			cout << "cmod: " << tx.cmod << endl;
 			cout << "amod: " << tx.amod << endl;
-			cout << "rol: " << tx.rol << endl;
-			cout << "pil: " << tx.pil << endl;
 			cout << "band: " << tx.band << endl;
 			cout << "tmx: " << tx.tmx << endl;
+			cout << "fec: " << tx.fec << endl;
+			cout << "hpfec: " << tx.hpfec << endl;
+			cout << "lpfec: " << tx.lpfec << endl;
+			cout << "cfec: " << tx.cfec << endl;
+			cout << "inv: " << tx.inv << endl;
+			cout << "rol: " << tx.rol << endl;
+			cout << "pil: " << tx.pil << endl;
 			cout << "guard: " << tx.guard << endl;
 			cout << "hier: " << tx.hier << endl;
+			cout << "flgs: " << tx.flgs << endl;
 			cout << "oflgs: " << tx.oflgs << endl;
+			cout << "index: " << it->first << endl;
 			cout << endl;
 		}
 	}
@@ -461,137 +462,218 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int offset)
 
 			cout << "chid: " << ch.chid << endl;
 			cout << "txid: " << ch.txid << endl;
-			cout << std::hex;
+			cout << "chname: " << ch.chname << endl;
 			cout << "ssid: " << ch.ssid << endl;
-			cout << "dvbns: " << ch.dvbns << endl;
 			cout << "tsid: " << ch.tsid << endl;
-			cout << std::dec;
+			cout << std::hex;
 			cout << "onid: " << ch.onid << endl;
+			cout << "dvbns: " << ch.dvbns << endl;
+			cout << std::dec;
 			cout << "stype: " << ch.stype << endl;
 			cout << "snum: " << ch.snum << endl;
 			cout << "srcid: " << ch.srcid << endl;
-			cout << "chname: " << ch.chname << endl;
-			cout << "data: [" << endl << endl;
-			for (auto & q : ch.data)
+			cout << "data: " << endl << "[" << endl;
+			for (auto & x : ch.data)
 			{
-				cout << q.first << ": [" << endl;
-				for (string & w : q.second)
+				cout << x.first << ": " << endl << "[" << endl;
+				for (string & w : x.second)
+				{
 					cout << w << ", ";
+				}
 				cout << endl << "]";
 			}
-			cout << "]" << endl << endl;
-			cout << "index: " << ch.index << endl;
+			cout << "]" << endl;
+			cout << "locked: " << ch.locked << endl;
+			cout << "index: " << it->first << endl;
 			cout << endl;
 		}
 	}
 	else if (entry_type == ENTRY::bouquet)
 	{
-		for (auto & x : dbih->bouquets)
+		for (auto it = dbih->index["bss"].begin(); it != dbih->index["bss"].end(); it++)
 		{
-			cout << "filename: " << x.first << endl;
-			cout << "name: " << x.second.name << endl;
-			cout << "nname: " << x.second.nname << endl;
-			cout << "btype: " << x.second.btype << endl;
-			cout << "userbouquets: [" << endl << endl;
-			for (string & w : x.second.userbouquets)
+			e2db::bouquet bs = dbih->bouquets[it->second];
+
+			cout << "bname: " << bs.bname << endl;
+			cout << "rname: " << bs.rname << endl;
+			cout << "btype: " << bs.btype << endl;
+			cout << "name: " << bs.name << endl;
+			cout << "nname: " << bs.nname << endl;
+			cout << "userbouquets: " << endl << "[" << endl;
+			for (string & w : bs.userbouquets)
+			{
 				cout << w << endl;
+			}
 			cout << endl;
-			cout << "]" << endl << endl;
+			cout << "]" << endl;
+			cout << "index: " << it->first << endl;
+			cout << endl;
 		}
 	}
 	else if (entry_type == ENTRY::userbouquet)
 	{
-		for (auto & x : dbih->userbouquets)
+		for (auto it = dbih->index["ubs"].begin(); it != dbih->index["ubs"].end(); it++)
 		{
-			cout << "filename: " << x.first << endl;
-			cout << "name: " << x.second.name << endl;
-			cout << "channels: [" << endl << endl;
-			for (auto & q : x.second.channels)
+			e2db::userbouquet ub = dbih->userbouquets[it->second];
+
+			cout << "bname: " << ub.bname << endl;
+			cout << "rname: " << ub.rname << endl;
+			cout << "name: " << ub.name << endl;
+			cout << "pname: " << ub.pname << endl;
+			cout << "channels: " << endl << "[" << endl;
+			for (auto & x : ub.channels)
 			{
-				cout << "chid: " << q.first << endl;
-				cout << "index: " << q.second.index << endl;
+				e2db::channel_reference chref = x.second;
+
+				cout << "chid: " << chref.chid << endl;
 				cout << endl;
 			}
-			cout << "]" << endl << endl;
+			cout << "]" << endl;
+			cout << "locked: " << ub.locked << endl;
+			cout << "hidden: " << ub.hidden << endl;
+			cout << "index: " << it->first << endl;
+			cout << endl;
 		}
 	}
 	else if (entry_type == ENTRY::tunersets)
 	{
-		for (auto & x : dbih->tuners)
+		vector<int> _index;
+
+		for (auto & ytype : {0, 1, 2, 3})
 		{
-			cout << "ytype: " << x.first << endl;
-			cout << "charset: " << x.first << endl;
-			cout << "tables: [" << endl << endl;
-			for (auto & q : x.second.tables)
+			_index.push_back(ytype);
+		}
+
+		for (auto it = _index.begin(); it !=_index.end(); it++)
+		{
+			int tvid = *it;
+			e2db::tunersets tv = dbih->tuners[tvid];
+
+			cout << "tvid: " << tv.ytype << endl;
+			cout << "ytype: " << tv.ytype << endl;
+			cout << "charset: " << tv.charset << endl;
+			cout << "tables: " << endl << "[" << endl;
+			for (auto & x : tv.tables)
 			{
-				cout << "tnid: " << q.second.tnid << endl;
+				e2db::tunersets_table tn = x.second;
+
+				cout << "tnid: " << tn.tnid << endl;
+				cout << "idx: " << tn.index << endl;
 				cout << endl;
 			}
-			cout << "]" << endl << endl;
+			cout << "]" << endl;
+			cout << endl;
 		}
 	}
 	else if (entry_type == ENTRY::tunersets_table)
 	{
-		for (auto & x : dbih->tuners)
+		vector<string> _index;
+
+		for (auto & ytype : {0, 1, 2, 3})
 		{
-			for (auto & q : x.second.tables)
+			string iname = "tns:";
+			char yname = dbih->value_transponder_type(ytype);
+			iname += yname;
+
+			for (auto & x : dbih->index[iname])
 			{
-				cout << "tnid: " << q.second.tnid << endl;
-				cout << "ytype: " << q.second.ytype << endl;
-				cout << "name: " << q.second.name << endl;
-				cout << "flags: " << q.second.flgs << endl;
-				cout << "pos: " << q.second.pos << endl;
-				cout << "index: " << q.second.index << endl;
-				cout << "transponders: [" << endl << endl;
-				for (auto & x : q.second.transponders)
-				{
-					cout << "trid: " << x.first << endl;
-					cout << endl;
-				}
-				cout << "]" << endl << endl;
+				string tnid = x.second;
+				_index.push_back(tnid);
 			}
-			cout << "]" << endl << endl;
+		}
+
+		for (auto it = _index.begin(); it !=_index.end(); it++)
+		{
+			string tnid = *it;
+			char ty = tnid[0];
+			int tvid = dbih->value_transponder_type(ty);
+
+			e2db::tunersets_table tn = dbih->tuners[tvid].tables[tnid];
+
+			cout << "tnid: " << tn.tnid << endl;
+			cout << "ytype: " << tn.ytype << endl;
+			cout << "name: " << tn.name << endl;
+			cout << "pos: " << tn.pos << endl;
+			cout << "country: " << tn.country << endl;
+			cout << "feed: " << tn.feed << endl;
+			cout << "flags: " << tn.flgs << endl;
+			cout << "transponders: " << endl << "[" << endl;
+			for (auto & x : tn.transponders)
+			{
+				e2db::tunersets_transponder tntxp = x.second;
+
+				cout << "trid: " << tntxp.trid << endl;
+				cout << "idx: " << tntxp.index << endl;
+				cout << endl;
+			}
+			cout << "]" << endl;
+			cout << "idx: " << tn.index << endl;
+			cout << endl;
 		}
 	}
 	else if (entry_type == ENTRY::tunersets_transponder)
 	{
-		for (auto & x : dbih->tuners)
+		vector<pair<string, string>> _index;
+
+		for (auto & d : {0, 1, 2, 3})
 		{
-			for (auto & q : x.second.tables)
+			e2db::tunersets tv = dbih->tuners[d];
+
+			string iname = "tns:";
+			char yname = dbih->value_transponder_type(tv.ytype);
+			iname += yname;
+
+			for (auto & x : dbih->index[iname])
 			{
-				for (auto & x : q.second.transponders)
+				string tnid = x.second;
+
+				for (auto & x : dbih->index[tnid])
 				{
-					cout << "trid: " << x.first << endl;
-					cout << "tnid: " << q.second.tnid << endl;
-					cout << "ytype: " << q.second.ytype << endl;
-					cout << "pos: " << q.second.pos << endl;
-					cout << "freq: " << x.second.freq << endl;
-					cout << "sr: " << x.second.sr << endl;
-					cout << "pol: " << x.second.pol << endl;
-					cout << "fec: " << x.second.fec << endl;
-					cout << "hpfec: " << x.second.hpfec << endl;
-					cout << "lpfec: " << x.second.lpfec << endl;
-					cout << "cfec: " << x.second.cfec << endl;
-					cout << "inv: " << x.second.inv << endl;
-					cout << "sys: " << x.second.sys << endl;
-					cout << "mod: " << x.second.mod << endl;
-					cout << "tmod: " << x.second.tmod << endl;
-					cout << "cmod: " << x.second.cmod << endl;
-					cout << "amod: " << x.second.amod << endl;
-					cout << "band: " << x.second.band << endl;
-					cout << "tmx: " << x.second.tmx << endl;
-					cout << "guard: " << x.second.guard << endl;
-					cout << "hier: " << x.second.hier << endl;
-					cout << "rol: " << x.second.rol << endl;
-					cout << "pil: " << x.second.pil << endl;
-					cout << "isid: " << x.second.isid << endl;
-					cout << "plsmode: " << x.second.plsmode << endl;
-					cout << "plscode: " << x.second.plscode << endl;
-					cout << "index: " << x.second.index << endl;
-					cout << endl;
+					string trid = x.second;
+					_index.push_back(pair (trid, tnid));
 				}
+				
 			}
-			cout << "]" << endl << endl;
+		}
+
+		for (auto it = _index.begin(); it !=_index.end(); it++)
+		{
+			string trid = it->first;
+			string tnid = it->second;
+			char ty = tnid[0];
+			int tvid = dbih->value_transponder_type(ty);
+			
+			e2db::tunersets_table tn = dbih->tuners[tvid].tables[tnid];
+			e2db::tunersets_transponder tntxp = dbih->tuners[tvid].tables[tnid].transponders[trid];
+
+			cout << "trid: " << tntxp.trid << endl;
+			cout << "tnid: " << tn.tnid << endl;
+			cout << "ytype: " << tn.ytype << endl;
+			cout << "pos: " << tn.pos << endl;
+			cout << "sys: " << tntxp.sys << endl;
+			cout << "freq: " << tntxp.freq << endl;
+			cout << "pol: " << tntxp.pol << endl;
+			cout << "sr: " << tntxp.sr << endl;
+			cout << "mod: " << tntxp.mod << endl;
+			cout << "tmod: " << tntxp.tmod << endl;
+			cout << "cmod: " << tntxp.cmod << endl;
+			cout << "amod: " << tntxp.amod << endl;
+			cout << "band: " << tntxp.band << endl;
+			cout << "tmx: " << tntxp.tmx << endl;
+			cout << "fec: " << tntxp.fec << endl;
+			cout << "hpfec: " << tntxp.hpfec << endl;
+			cout << "lpfec: " << tntxp.lpfec << endl;
+			cout << "cfec: " << tntxp.cfec << endl;
+			cout << "inv: " << tntxp.inv << endl;
+			cout << "rol: " << tntxp.rol << endl;
+			cout << "pil: " << tntxp.pil << endl;
+			cout << "guard: " << tntxp.guard << endl;
+			cout << "hier: " << tntxp.hier << endl;
+			cout << "isid: " << tntxp.isid << endl;
+			cout << "plsmode: " << tntxp.plsmode << endl;
+			cout << "plscode: " << tntxp.plscode << endl;
+			cout << "idx: " << tntxp.index << endl;
+			cout << endl;
 		}
 	}
 
@@ -758,9 +840,11 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id)
 					throw std::runtime_error ("Bouquet \"%s\" not exists.");
 			}
 
-			// edit bs.rname
 			bs.btype = any_cast<int>(field(TYPE::btype, true));
-			bs.bname = any_cast<string>(field(TYPE::bname, true));
+			if (edit && 1)
+				bs.rname = any_cast<string>(field(TYPE::rname));
+			else
+				bs.bname = any_cast<string>(field(TYPE::bname, true));
 			bs.name = any_cast<string>(field(TYPE::qname, true));
 			bs.nname = any_cast<string>(field(TYPE::nname));
 
@@ -781,8 +865,10 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id)
 					throw std::runtime_error ("Userbouquet \"%s\" not exists.");
 			}
 
-			// edit ub.rname
-			ub.bname = any_cast<string>(field(TYPE::bname, true));
+			if (edit && 1)
+				ub.rname = any_cast<string>(field(TYPE::rname));
+			else
+				ub.bname = any_cast<string>(field(TYPE::bname, true));
 			ub.pname = any_cast<string>(field(TYPE::pname, true));
 			ub.name = any_cast<string>(field(TYPE::qname, true));
 
@@ -799,10 +885,17 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id)
 
 			if (edit)
 			{
-				if (dbih->tuners.count(tvid))
-					tv = dbih->tuners[tvid];
-				else
+				try
+				{
+					tvid = std::stoi(id);
+
+					if (dbih->tuners.count(tvid))
+						tv = dbih->tuners[tvid];
+				}
+				catch (...)
+				{
 					throw std::runtime_error ("Tuner settings \"%s\" not exists.");
+				}
 			}
 
 			tv.ytype = any_cast<int>(field(TYPE::ytype, true));
@@ -818,17 +911,27 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id)
 		}
 		else if (entry_type == ENTRY::tunersets_table)
 		{
-			e2db::tunersets_table tn;
-
-			int tvid = -1;
 			e2db::tunersets tv;
+			e2db::tunersets_table tn;
 
 			if (edit)
 			{
-				/*if (dbih->tunersets_table.count(id))
-					tn = dbih->tunersets_table[id];
-				else
-					throw std::runtime_error ("Tuner settings table \"%s\" not exists.");*/
+				bool found = false;
+
+				for (auto & x : dbih->tuners)
+				{
+					tv = x.second;
+
+					if (tv.tables.count(id))
+					{
+						found = true;
+						tn = x.second.tables[id];
+						break;
+					}
+				}
+
+				if (! found)
+					throw std::runtime_error ("Tuner settings table \"%s\" not exists.");
 			}
 
 			tn.ytype = any_cast<int>(field(TYPE::ytype, true));
@@ -857,19 +960,34 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id)
 		}
 		else if (entry_type == ENTRY::tunersets_transponder)
 		{
-			e2db::tunersets_transponder tntxp;
-
-			int tvid = -1;
-			int tnid = -1;
+			e2db::tunersets tv;
 			e2db::tunersets_table tn;
-			int tn_ytype = -1;
+			e2db::tunersets_transponder tntxp;
 
 			if (edit)
 			{
-				/*if (dbih->tunersets_transponder.count(id))
-					tntxp = dbih->tunersets_transponder[id];
-				else
-					throw std::runtime_error ("Tuner settings transponder \"%s\" not exists.");*/
+				bool found = false;
+
+				for (auto & x : dbih->tuners)
+				{
+					tv = x.second;
+
+					for (auto & x : tv.tables)
+					{
+						tn = x.second;
+
+						if (tn.transponders.count(id))
+						{
+							found = true;
+							tntxp = tn.transponders[id];
+							break;
+							break;
+						}
+					}
+				}
+
+				if (! found)
+					throw std::runtime_error ("Tuner settings transponder \"%s\" not exists.");
 			}
 
 			tntxp.sys = any_cast<int>(field(TYPE::sys));
