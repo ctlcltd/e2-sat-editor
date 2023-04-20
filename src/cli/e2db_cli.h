@@ -94,7 +94,8 @@ class e2db_cli
 		void shell_resolver(COMMAND command, istream* is);
 		void shell_file_read(string path);
 		void shell_file_write(string path);
-		void shell_entry_list(ENTRY entry_type, int offset = 0);
+		void shell_entry_list(ENTRY entry_type, bool paged = true, int limit = 0);
+		void shell_entry_list(ENTRY entry_type, int pos, int offset, int& end);
 		void shell_entry_add(ENTRY entry_type);
 		void shell_entry_edit(ENTRY entry_type, string id);
 		void shell_entry_edit(ENTRY entry_type, bool edit, string id = "");

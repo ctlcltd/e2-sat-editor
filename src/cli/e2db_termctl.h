@@ -47,17 +47,20 @@ class e2db_termctl
 		void clear();
 		const std::string str();
 		std::istream* stream();
-		static int paged();
+		static int paged(int pos, int offset);
+		static std::pair<int, int> screensize();
 		void debugger();
 		void tmp_history();
 
 	private:
 		static void tty_set_raw(int tty_fd = 0);
 		static void tty_set_sane(int tty_fd = 0);
+		static std::pair<int, int> tty_get_screensize();
 		static void tty_gotoxy(int x, int y);
 		static void tty_goforward();
 		static void tty_gobackward();
 		static void tty_delchar();
+		static void tty_eraseline(int cols = 0);
 		static void tty_bell();
 
 		std::iostream* is;

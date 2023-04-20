@@ -1417,7 +1417,6 @@ void e2db_abstract::debugger()
 		{
 			cout << w << endl;
 		}
-		cout << endl;
 		cout << "]" << endl;
 		cout << "idx: " << bs.index << endl;
 		cout << endl;

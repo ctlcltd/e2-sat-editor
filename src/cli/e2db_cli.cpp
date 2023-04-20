@@ -22,7 +22,7 @@
 
 #include "e2db_cli.h"
 
-using std::cout, std::cerr, std::cin, std::endl, std::left;
+using std::pair, std::cout, std::cerr, std::cin, std::endl, std::left;
 
 namespace e2se_cli
 {
@@ -413,11 +413,78 @@ void e2db_cli::shell_file_write(string path)
 		cerr << "File Error" << ':' << ' ' << "Error writing file." << endl;
 }
 
-void e2db_cli::shell_entry_list(ENTRY entry_type, int offset)
+void e2db_cli::shell_entry_list(ENTRY entry_type, bool paged, int limit)
+{
+	int pos = 0;
+	int offset = 0;
+	int end = 0;
+	int rows = 1;
+
+	switch (entry_type)
+	{
+		case ENTRY::transponder: rows = 32; break;
+		case ENTRY::service: rows = 24; break;
+		case ENTRY::bouquet: rows = 6; break;
+		case ENTRY::userbouquet: rows = 1; break;
+		case ENTRY::tunersets: rows = 10; break;
+		case ENTRY::tunersets_table: rows = 5; break;
+		case ENTRY::tunersets_transponder: rows = 29; break;
+		case ENTRY::channel_reference: rows = 1; break;
+	}
+
+	if (paged)
+	{
+		if (limit == 0)
+		{
+			auto screensize = e2db_termctl::screensize();
+			offset = screensize.first ? rows / screensize.first : 1;
+		}
+
+		shell_entry_list(entry_type, pos, offset, end);
+
+		while (! end)
+		{
+			if (limit == 0)
+			{
+				auto screensize = e2db_termctl::screensize();
+				offset = screensize.first ? rows / screensize.first : 1;
+			}
+
+			int curr = e2db_termctl::paged(pos, offset);
+
+			switch (curr)
+			{
+				case 0: return;
+				case 65: pos -= offset; break;
+				default: pos += offset;
+			}
+
+			shell_entry_list(entry_type, pos, offset, end);
+		}
+	}
+	else
+	{
+		shell_entry_list(entry_type, pos, offset, end);
+	}
+}
+
+//TODO TEST
+void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end)
 {
 	if (entry_type == ENTRY::transponder)
 	{
-		for (auto it = dbih->index["txs"].begin(); it != dbih->index["txs"].end(); it++)
+		auto it = dbih->index["txs"].begin();
+		auto last = dbih->index["txs"].end();
+
+		if (offset != 0)
+		{
+			it += pos;
+			last = it + offset;
+		}
+
+		end = (last == dbih->index["txs"].end());
+
+		for (; it != last; it++)
 		{
 			e2db::transponder tx = dbih->db.transponders[it->second];
 
@@ -504,7 +571,6 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int offset)
 			{
 				cout << w << endl;
 			}
-			cout << endl;
 			cout << "]" << endl;
 			cout << "index: " << it->first << endl;
 			cout << endl;
@@ -676,27 +742,6 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int offset)
 			cout << endl;
 		}
 	}
-
-	while (true)
-	{
-		int curr = e2db_termctl::paged();
-
-		switch (curr)
-		{
-			case 0:
-				return;
-			case 65:
-				offset -= 15;
-			break;
-			default:
-				offset += 15;
-			break;
-		}
-
-		break;
-	}
-
-	shell_entry_list(entry_type, offset);
 }
 
 void e2db_cli::shell_entry_add(ENTRY entry_type)

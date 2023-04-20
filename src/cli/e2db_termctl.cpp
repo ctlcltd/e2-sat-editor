@@ -21,6 +21,8 @@
 #ifdef WIN32
 #include <windows.h>
 #else
+#include <sys/ioctl.h>
+#include <unistd.h>
 #include <termios.h>
 #endif
 
@@ -51,6 +53,7 @@ e2db_termctl::e2db_termctl()
 	*history << "edit tunersets_transponder id" << std::endl;
 	*history << "add transponder" << std::endl;
 	*history << "edit service id" << std::endl;
+	*history << "list transponders" << std::endl;
 
 	this->last = this->history->tellg();
 }
@@ -156,9 +159,7 @@ void e2db_termctl::input()
 							is_buf->str("");
 							is->clear();
 
-							std::printf("\r> ");
-							for (int i = 0; i != len; i++)
-								std::putchar(' ');
+							tty_eraseline(len);
 
 							std::printf("\r> %s", line.c_str());
 							cur = len = line.size();
@@ -201,9 +202,7 @@ void e2db_termctl::input()
 							is_buf->str("");
 							is->clear();
 
-							std::printf("\r> ");
-							for (int i = 0; i != len; i++)
-								std::putchar(' ');
+							tty_eraseline(len);
 
 							std::printf("\r> %s", line.c_str());
 							cur = len = line.size();
@@ -410,13 +409,13 @@ void e2db_termctl::clear()
 	is_buf->str("");
 }
 
-int e2db_termctl::paged()
+int e2db_termctl::paged(int pos, int offset)
 {
 #ifndef WIN32
 	tty_set_raw();
 #endif
 
-	std::cout << "Press key Up or Down to move ";
+	std::printf("Press key Up or Down to move ");
 
 	int curr = 0;
 
@@ -434,21 +433,31 @@ int e2db_termctl::paged()
 				case KEY_MAP::KeyUp:
 					curr = EVENT::PagePrev;
 				break;
-				break;
 				case KEY_MAP::KeyDown:
 					curr = EVENT::PageNext;
-				break;
 				break;
 				case KEY_MAP::KeyRight:
 					curr = EVENT::PageNext;
 				break;
-				break;
 				case KEY_MAP::KeyLeft:
 					curr = EVENT::PagePrev;
 				break;
-				break;
 				default:
 					tty_bell();
+			}
+			if (curr != 0)
+			{
+				if (curr == EVENT::PagePrev)
+				{
+					if (pos - offset < 0)
+					{
+						tty_bell();
+
+						continue;
+					}
+				}
+
+				break;
 			}
 		}
 		else if (c == KEY_MAP::KeyReturn)
@@ -458,6 +467,7 @@ int e2db_termctl::paged()
 		}
 		else if (c == 'q' || c == 'Q')
 		{
+			std::putchar('\n');
 			break;
 		}
 		else
@@ -466,11 +476,18 @@ int e2db_termctl::paged()
 		}
 	}
 
+	tty_eraseline();
+
 #ifndef WIN32
 	tty_set_sane();
 #endif
 
 	return curr;
+}
+
+std::pair<int, int> e2db_termctl::screensize()
+{
+	return e2db_termctl::tty_get_screensize();
 }
 
 void e2db_termctl::debugger()
@@ -529,6 +546,20 @@ void e2db_termctl::tty_set_sane(int tty_fd)
 }
 #endif
 
+std::pair<int, int> e2db_termctl::tty_get_screensize()
+{
+#ifdef WIN32
+	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
+	GetConsoleScreenBufferInfo(hStdout, &csbiInfo);
+	return std::pair (csbiInfo.dwSize.Y, csbiInfo.dwSize.X);
+#else
+	struct winsize w;
+	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+	return std::pair (w.ws_row, w.ws_col);
+#endif
+}
+
 void e2db_termctl::tty_gotoxy(int x, int y)
 {
 #ifdef WIN32
@@ -545,7 +576,7 @@ void e2db_termctl::tty_goforward()
 #ifdef WIN32
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
-	GetConsoleScreenBufferInfo(hStdout, &csbi);
+	GetConsoleScreenBufferInfo(hStdout, &csbiInfo);
 	COORD coordPos = {csbiInfo.dwCursorPosition.X + 1, csbiInfo.dwCursorPosition.Y};
 	SetConsoleCursorPosition(hStdout, coordPos);
 #else
@@ -562,14 +593,22 @@ void e2db_termctl::tty_gobackward()
 	COORD coordPos = {csbiInfo.dwCursorPosition.X - 1, csbiInfo.dwCursorPosition.Y};
 	SetConsoleCursorPosition(hStdout, coordPos);
 #else
-	std::putchar('\b');
-	// std::printf("\e\x5b\1\x44");
+	std::printf("\e\x5b\1\x44");
+	// std::putchar('\b');
 #endif
 }
 
 void e2db_termctl::tty_delchar()
 {
 	std::printf("\b\e\x5b\x50");
+}
+
+void e2db_termctl::tty_eraseline(int cols)
+{
+	std::printf("\r\b\e\x5b\2\x4b");
+	// std::printf("\r  ");
+	// for (int i = 0; i != cols; i++)
+	// 	std::putchar(' ');
 }
 
 void e2db_termctl::tty_bell()
