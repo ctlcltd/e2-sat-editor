@@ -435,6 +435,14 @@ string e2db_abstract::value_transponder_combo(tunersets_transponder tntxp, tuner
 	return ptxp;
 }
 
+string e2db_abstract::value_transponder_onid(int onid)
+{
+	char conid[7];
+	std::snprintf(conid, 7, "%X", onid);
+
+	return conid;
+}
+
 //TODO TEST
 int e2db_abstract::value_transponder_dvbns(string str)
 {

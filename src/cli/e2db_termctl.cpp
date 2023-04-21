@@ -55,6 +55,15 @@ e2db_termctl::e2db_termctl()
 	*history << "edit service id" << std::endl;
 	*history << "list transponders" << std::endl;
 
+
+
+
+
+	*history << "read /Users/leo/repositories/e2se-seeds/enigma_db" << std::endl;
+
+
+
+
 	this->last = this->history->tellg();
 }
 
@@ -415,7 +424,7 @@ int e2db_termctl::paged(int pos, int offset)
 	tty_set_raw();
 #endif
 
-	std::printf("Press key Up or Down to move ");
+	std::printf("Press key [Up] | [Down] to Move, [q] to Exit");
 
 	int curr = 0;
 
@@ -465,7 +474,7 @@ int e2db_termctl::paged(int pos, int offset)
 			curr = EVENT::PageNext;
 			break;
 		}
-		else if (c == 'q' || c == 'Q')
+		else if (c == 'q' || c == 'Q' || c == 'x' || c == 'X')
 		{
 			std::putchar('\n');
 			break;

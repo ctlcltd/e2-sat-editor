@@ -823,11 +823,11 @@ void editService::retrieve()
 		{
 			if (ch.data.count(e2db::SDATA::C) && ! ch.data[e2db::SDATA::C].empty())
 			{
-				auto last_key = (*prev(ch.data[e2db::SDATA::C].cend()));
+				auto z = std::prev(ch.data[e2db::SDATA::C].cend());
 				for (string & w : ch.data[e2db::SDATA::C])
 				{
 					val += "C:" + w;
-					if (w != last_key)
+					if (w != (*z))
 						val += ',';
 				}
 			}
@@ -847,7 +847,7 @@ void editService::retrieve()
 		{
 			if (! ch.data.empty())
 			{
-				auto last_key = (*prev(ch.data.cend()));
+				auto z = std::prev(ch.data.cend());
 				for (auto & q : ch.data)
 				{
 					char d;
@@ -863,7 +863,7 @@ void editService::retrieve()
 					{
 						val += d;
 						val += ':' + q.second[i];
-						if (! q.second[i].empty() && (i != q.second.size() - 1 || q.first != last_key.first))
+						if (! q.second[i].empty() && (i != q.second.size() - 1 || q.first != (*z).first))
 							val += ',';
 					}
 				}

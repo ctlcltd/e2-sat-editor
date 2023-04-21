@@ -191,7 +191,8 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 		ss << formats[MAKER_FORMAT::b_service_param_escape] << ch.chname << formats[MAKER_FORMAT::b_service_param_escape];
 		ss << formats[MAKER_FORMAT::b_service_params_separator];
 
-		auto last_key = (*prev(ch.data.cend()));
+		//TODO FIX
+		auto z = std::prev(ch.data.cend());
 		for (auto & q : ch.data)
 		{
 			char d;
@@ -206,7 +207,7 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 			for (size_t i = 0; i < q.second.size(); i++)
 			{
 				ss << d << ':' << q.second[i];
-				if (! q.second[i].empty() && (i != q.second.size() - 1 || q.first != last_key.first))
+				if (! q.second[i].empty() && (i != q.second.size() - 1 || q.first != (*z).first))
 					ss << ',';
 			}
 		}
