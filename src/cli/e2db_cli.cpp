@@ -203,14 +203,59 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		string hint;
 		*is >> std::skipws >> hint;
 
-		shell_usage(hint);
+		if (hint.empty())
+			shell_usage(COMMAND::usage);
+		else if (hint == "read")
+			shell_usage(COMMAND::fread);
+		else if (hint == "write")
+			shell_usage(COMMAND::fwrite);
+		else if (hint == "list")
+			shell_usage(COMMAND::list);
+		else if (hint == "add")
+			shell_usage(COMMAND::add);
+		else if (hint == "edit")
+			shell_usage(COMMAND::edit);
+		else if (hint == "remove")
+			shell_usage(COMMAND::remove);
+		else if (hint == "copy")
+			shell_usage(COMMAND::copy);
+		else if (hint == "move")
+			shell_usage(COMMAND::move);
+		else if (hint == "set")
+			shell_usage(COMMAND::set);
+		else if (hint == "unset")
+			shell_usage(COMMAND::unset);
+		else if (hint == "import")
+			shell_usage(COMMAND::fimport);
+		else if (hint == "export")
+			shell_usage(COMMAND::fexport);
+		else if (hint == "merge")
+			shell_usage(COMMAND::merge);
+		else if (hint == "print")
+			shell_usage(COMMAND::print);
+		else if (hint == "parse")
+			shell_usage(COMMAND::parse);
+		else if (hint == "make")
+			shell_usage(COMMAND::make);
+		else if (hint == "convert")
+			shell_usage(COMMAND::convert);
+		else
+		{
+			cerr << "Type Error" << ':' << ' ' << "Unknown usage type." << endl;
+			cout << endl;
+
+			shell_usage(COMMAND::usage);
+		}
 	}
 	else if (command == COMMAND::fread)
 	{
 		string path;
 		*is >> std::skipws >> path;
 
-		shell_file_read(path);
+		if (path.empty())
+			shell_usage(command);
+		else
+			shell_file_read(path);
 	}
 	else if (command == COMMAND::fwrite)
 	{
@@ -222,24 +267,34 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 	else if (command == COMMAND::list)
 	{
 		string type, bname;
-		*is >> std::skipws >> type >> bname;
+		int offset0 = -1;
+		int offset1 = -1;
+
+		*is >> std::skipws >> type;
+
+		if (type == "channels")
+			*is >> std::skipws >> bname >> offset0 >> offset1;
+		else
+			*is >> std::skipws >> offset0 >> offset1;
 
 		if (type == "services")
-			shell_entry_list(ENTRY::service);
+			shell_entry_list(ENTRY::service, offset0, offset1);
 		else if (type == "transponders")
-			shell_entry_list(ENTRY::transponder);
+			shell_entry_list(ENTRY::transponder, offset0, offset1);
 		else if (type == "bouquets")
-			shell_entry_list(ENTRY::bouquet);
+			shell_entry_list(ENTRY::bouquet, offset0, offset1);
 		else if (type == "userbouquets")
-			shell_entry_list(ENTRY::userbouquet);
+			shell_entry_list(ENTRY::userbouquet, offset0, offset1);
 		else if (type == "tunersets_transponders")
-			shell_entry_list(ENTRY::tunersets_transponder);
+			shell_entry_list(ENTRY::tunersets_transponder, offset0, offset1);
 		else if (type == "tunersets_tables")
-			shell_entry_list(ENTRY::tunersets_table);
+			shell_entry_list(ENTRY::tunersets_table, offset0, offset1);
 		else if (type == "tunersets")
-			shell_entry_list(ENTRY::tunersets);
+			shell_entry_list(ENTRY::tunersets, offset0, offset1);
 		else if (type == "channels")
-			shell_entry_list(ENTRY::channel_reference, bname);
+			shell_entry_list(ENTRY::channel_reference, bname, offset0, offset1);
+		else if (type.empty())
+			shell_usage(command);
 		else
 			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
 	}
@@ -266,6 +321,8 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 			shell_entry_add(ENTRY::channel_reference, 1, bname);
 		else if (type == "marker")
 			shell_entry_add(ENTRY::channel_reference, 0, bname);
+		else if (type.empty())
+			shell_usage(command);
 		else
 			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
 	}
@@ -292,6 +349,8 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 			shell_entry_edit(ENTRY::channel_reference, 1, bname, id);
 		else if (type == "marker")
 			shell_entry_edit(ENTRY::channel_reference, 0, bname, id);
+		else if (type.empty())
+			shell_usage(command);
 		else
 			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
 	}
@@ -318,6 +377,8 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 			shell_entry_remove(ENTRY::channel_reference, 1, bname, id);
 		else if (type == "marker")
 			shell_entry_remove(ENTRY::channel_reference, 0, bname, id);
+		else if (type.empty())
+			shell_usage(command);
 		else
 			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
 	}
@@ -330,6 +391,8 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 			shell_entry_parentallock(ENTRY::service, id, true);
 		else if (type == "userbouquet")
 			shell_entry_parentallock(ENTRY::userbouquet, id, true);
+		else if (type.empty())
+			shell_usage(command);
 		else
 			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
 	}
@@ -342,8 +405,22 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 			shell_entry_parentallock(ENTRY::service, id, false);
 		else if (type == "userbouquet")
 			shell_entry_parentallock(ENTRY::userbouquet, id, false);
+		else if (type.empty())
+			shell_usage(command);
 		else
 			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
+	}
+	else if (command == COMMAND::fimport)
+	{
+		cout << "TODO" << endl;
+	}
+	else if (command == COMMAND::fexport)
+	{
+		cout << "TODO" << endl;
+	}
+	else if (command == COMMAND::merge)
+	{
+		cout << "TODO" << endl;
 	}
 	else if (command == COMMAND::print)
 	{
@@ -354,8 +431,22 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 			shell_debug(0);
 		else if (type == "index")
 			shell_debug(1);
+		else if (type.empty())
+			shell_usage(command);
 		else
-			cerr << "Error" << ':' << ' ' << "Unknown command." << endl;
+			cerr << "Error" << ':' << ' ' << "Unknown print type." << endl;
+	}
+	else if (command == COMMAND::parse)
+	{
+		cout << "TODO" << endl;
+	}
+	else if (command == COMMAND::make)
+	{
+		cout << "TODO" << endl;
+	}
+	else if (command == COMMAND::convert)
+	{
+		cout << "TODO" << endl;
 	}
 	else
 	{
@@ -363,9 +454,37 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 	}
 }
 
-void e2db_cli::shell_usage(string hint)
+void e2db_cli::shell_usage(COMMAND hint, bool specs)
 {
-	if (hint.empty())
+	if (hint == COMMAND::usage)
+	{
+		shell_usage(COMMAND::add, false);
+		shell_usage(COMMAND::edit, false);
+		shell_usage(COMMAND::remove, false);
+		shell_usage(COMMAND::list, false);
+		shell_usage(COMMAND::set, false);
+		shell_usage(COMMAND::unset, false);
+		shell_usage(COMMAND::fread, false);
+		shell_usage(COMMAND::fwrite, false);
+		shell_usage(COMMAND::print, false);
+
+		// cout << "  ", cout.width(7), cout << left << "history", cout << ' ';
+		// cout.width(24), cout << left << "file", cout << ' ' << "Save history to file, instead of memory." << endl;
+		// cout << endl;
+
+		cout << "  ", cout.width(32), cout << left << "version", cout << ' ' << "Display version." << endl;
+		cout << endl;
+
+		cout << "  ", cout.width(32), cout << left << "help", cout << ' ' << "Display usage hints." << endl;
+		cout.width(10), cout << ' ', cout << "list" << endl;
+		cout.width(10), cout << ' ', cout << "import" << endl;
+		cout.width(10), cout << ' ', cout << "export" << endl;
+		cout.width(10), cout << ' ', cout << "merge" << endl;
+		cout.width(10), cout << ' ', cout << "parse" << endl;
+		cout.width(10), cout << ' ', cout << "make" << endl;
+		cout.width(10), cout << ' ', cout << "convert" << endl;
+	}
+	else if (hint == COMMAND::add)
 	{
 		cout << "  ", cout.width(7), cout << left << "add", cout << ' ';
 		cout.width(24), cout << left << "service  [chid]", cout << ' ' << "Add new entry." << endl;
@@ -375,10 +494,12 @@ void e2db_cli::shell_usage(string hint)
 		cout.width(10), cout << ' ', cout << "tunersets-transponder  [trid]" << endl;
 		cout.width(10), cout << ' ', cout << "tunersets-table  [tnid]" << endl;
 		cout.width(10), cout << ' ', cout << "tunersets  [ytype]" << endl;
-		cout.width(10), cout << ' ', cout.width(24), cout << left << "channel  [chid]  [bname]", cout << ' ' << "Add service reference to userbouquet." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "channel  [chid] [bname]", cout << ' ' << "Add service reference to userbouquet." << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "marker  [bname]", cout << ' ' << "Add marker to userbouquet." << endl;
 		cout << endl;
-
+	}
+	else if (hint == COMMAND::edit)
+	{
 		cout << "  ", cout.width(7), cout << left << "edit", cout << ' ';
 		cout.width(24), cout << left << "service  [chid]", cout << ' ' << "Edit an entry." << endl;
 		cout.width(10), cout << ' ', cout << "transponder  [txid]" << endl;
@@ -387,21 +508,25 @@ void e2db_cli::shell_usage(string hint)
 		cout.width(10), cout << ' ', cout << "tunersets-transponder  [trid]" << endl;
 		cout.width(10), cout << ' ', cout << "tunersets-table  [tnid]" << endl;
 		cout.width(10), cout << ' ', cout << "tunersets  [ytype]" << endl;
-		cout.width(10), cout << ' ', cout.width(24), cout << left << "marker  [chid]  [bname]", cout << ' ' << "Edit marker from userbouquet." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "marker  [chid] [bname]", cout << ' ' << "Edit marker from userbouquet." << endl;
 		cout << endl;
-
+	}
+	else if (hint == COMMAND::remove)
+	{
 		cout << "  ", cout.width(7), cout << left << "remove", cout << ' ';
-		cout.width(24), cout << left << "service", cout << ' ' << "Remove an entry." << endl;
+		cout.width(24), cout << left << "service  [chid]", cout << ' ' << "Remove an entry." << endl;
 		cout.width(10), cout << ' ', cout << "transponder  [txid]" << endl;
 		cout.width(10), cout << ' ', cout << "userbouquet  [bname]" << endl;
 		cout.width(10), cout << ' ', cout << "bouquet  [bname]" << endl;
 		cout.width(10), cout << ' ', cout << "tunersets-transponder  [trid]" << endl;
 		cout.width(10), cout << ' ', cout << "tunersets-table  [tnid]" << endl;
 		cout.width(10), cout << ' ', cout << "tunersets  [ytype]" << endl;
-		cout.width(10), cout << ' ', cout.width(24), cout << left << "channel  [chid]  [bname]", cout << ' ' << "Remove service reference from userbouquet." << endl;
-		cout.width(10), cout << ' ', cout.width(24), cout << left << "marker  [chid]  [bname]", cout << ' ' << "Remove marker from userbouquet." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "channel  [chid] [bname]", cout << ' ' << "Remove service reference from userbouquet." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "marker  [chid] [bname]", cout << ' ' << "Remove marker from userbouquet." << endl;
 		cout << endl;
-
+	}
+	else if (hint == COMMAND::list)
+	{
 		cout << "  ", cout.width(7), cout << left << "list", cout << ' ';
 		cout.width(24), cout << left << "services", cout << ' ' << "List entries." << endl;
 		cout.width(10), cout << ' ', cout << "transponders" << endl;
@@ -413,40 +538,162 @@ void e2db_cli::shell_usage(string hint)
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "channels  [bname]", cout << ' ' << "List channels from userbouquet." << endl;
 		cout << endl;
 
+		if (specs)
+		{
+			cout << "  ", cout.width(7), cout << left << "list", cout << ' ';
+			cout.width(24), cout << left << "[ENTRY] [limit]", cout << ' ' << "Set the number of items to display per page." << endl;
+			cout.width(10), cout << ' ', cout.width(24), cout << left << "[ENTRY] [start] [limit]";
+			cout << endl << endl;
+			cout << "  ", cout << "EXAMPLE" << endl << endl;
+			cout << "  ", cout.width(24), cout << left << "list services 15", cout << ' ' << "Displays 15 items per page." << endl;
+			cout << "  ", cout.width(24), cout << left << "list services 20 15", cout << ' ' << "Displays 15 items per page starting from 20." << endl;
+			cout << "  ", cout.width(24), cout << left << "list services 0", cout << ' ' << "Turn off pagination." << endl;
+			cout << endl;
+		}
+	}
+	else if (hint == COMMAND::set)
+	{
 		cout << "  ", cout.width(7), cout << left << "set", cout << ' ';
-		cout.width(39), cout << left << "parentallock  service  [chid]", cout << ' ' << "Set parental lock." << endl;
-		cout.width(10), cout << ' ', cout << "parentallock  userbouquet  [bname]" << endl;
+		cout.width(39), cout << left << "parentallock service  [chid]", cout << ' ' << "Set parental lock." << endl;
+		cout.width(10), cout << ' ', cout << "parentallock userbouquet  [bname]" << endl;
 		cout << endl;
-
+	}
+	else if (hint == COMMAND::unset)
+	{
 		cout << "  ", cout.width(7), cout << left << "unset", cout << ' ';
-		cout.width(39), cout << left << "parentallock  service  [chid]", cout << ' ' << "Unset parental lock." << endl;
-		cout.width(10), cout << ' ', cout << "parentallock  userbouquet  [bname]" << endl;
+		cout.width(39), cout << left << "parentallock service  [chid]", cout << ' ' << "Unset parental lock." << endl;
+		cout.width(10), cout << ' ', cout << "parentallock userbouquet  [bname]" << endl;
 		cout << endl;
-
+	}
+	else if (hint == COMMAND::fread)
+	{
 		cout << "  ", cout.width(7), cout << left << "read", cout << ' ';
-		cout.width(24), cout << left << "[file]", cout << ' ' << "Read from file." << endl;
+		cout.width(24), cout << left << "[directory]", cout << ' ' << "Read from directory file." << endl;
 		cout << endl;
-
+	}
+	else if (hint == COMMAND::fwrite)
+	{
 		cout << "  ", cout.width(7), cout << left << "write", cout << ' ';
-		cout.width(24), cout << left << "[file]", cout << ' ' << "Write to file." << endl;
+		cout.width(24), cout << left << "[directory]", cout << ' ' << "Write to directory file." << endl;
 		cout << endl;
-
+	}
+	else if (hint == COMMAND::print)
+	{
 		cout << "  ", cout.width(7), cout << left << "print", cout << ' ';
 		cout.width(24), cout << left << "debug", cout << ' ' << "Print debug informations." << endl;
 		cout.width(10), cout << ' ', cout << "index" << endl;
 		cout << endl;
+	}
+	else if (hint == COMMAND::fimport || hint == COMMAND::fexport)
+	{
+		string name;
+		string text;
 
-		cout << "  ", cout.width(32), cout << left << "debug", cout << ' ' << "Debugger." << endl;
+		if (hint == COMMAND::fimport)
+		{
+			name = "import";
+			text = "Import one or more files.";
+		}
+		else
+		{
+			name = "export";
+			text = "Export one or more files.";
+		}
+
+		cout << "  ", cout.width(7), cout << left << name, cout << ' ';
+		cout.width(24), cout << left << "directory  [directory]", cout << ' ' << text << endl;
+		cout.width(10), cout << ' ', cout << "service  [files]" << endl;
+		cout.width(10), cout << ' ', cout << "userbouquet  [files]" << endl;
+		cout.width(10), cout << ' ', cout << "bouquet  [files]" << endl;
+		cout.width(10), cout << ' ', cout << "tunersets  [files]" << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left <<"parentallock locked  [file]", cout << ' ' << "For Enigma .locked parental lock file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left <<"parentallock blacklist  [file]", cout << ' ' << "For Enigma blacklist parental lock file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left <<"parentallock whitelist  [file]", cout << ' ' << "For Enigma whitelist parental lock file." << endl;
 		cout << endl;
 
-		// cout << "  ", cout.width(7), cout << left << "history", cout << ' ';
-		// cout.width(24), cout << left << "file", cout << ' ' << "Save history to file, instead of memory." << endl;
-		// cout << endl;
-
-		cout << "  ", cout.width(32), cout << left << "version", cout << ' ' << "Display version." << endl;
+		if (specs)
+		{
+			cout << "  ", cout.width(7), cout << left << name, cout << ' ';
+			cout.width(24), cout << left << "[ENTRY] [version]", cout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
+			cout << endl;
+		}
+	}
+	else if (hint == COMMAND::merge)
+	{
+		cout << "  ", cout.width(7), cout << left << "merge", cout << ' ';
+		cout.width(24), cout << left << "[file]", cout << ' ' << "Merge with supported file." << endl;
+		cout.width(10), cout << ' ', cout << "[directory]" << endl;
+		cout << endl;
+	}
+	else if (hint == COMMAND::parse)
+	{
+		cout << "  ", cout.width(7), cout << left << "parse", cout << ' ';
+		cout.width(24), cout << left << "lamedb  [file]", cout << ' ' << "Parse Lamedb services file." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "bouquet  [file]", cout << ' ' << "Parse Enigma bouquet file." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "userbouquet  [file]", cout << ' ' << "Parse Enigma userbouquet file." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "zapit services  [file]", cout << ' ' << "Parse Neutrino services file." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "zapit bouquets  [file]", cout << ' ' << "Parse Neutrino bouquets file." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "tunersets  [file]", cout << ' ' << "Parse tuner settings xml file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock locked  [file]", cout << ' ' << "Parse Enigma .locked parental lock file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock blacklist  [file]", cout << ' ' << "Parse Enigma blacklist parental lock file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock whitelist  [file]", cout << ' ' << "Parse Enigma whitelist parental lock file." << endl;
 		cout << endl;
 
-		cout << "  ", cout.width(32), cout << left << "help", cout << ' ' << "Display this help and exit." << endl;
+		if (specs)
+		{
+			cout << "  ", cout.width(7), cout << left << "parse", cout << ' ';
+			cout.width(24), cout << left << "[ENTRY] [version]", cout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
+			cout << endl;
+		}
+	}
+	else if (hint == COMMAND::make)
+	{
+		cout << "  ", cout.width(7), cout << left << "make", cout << ' ';
+		cout.width(24), cout << left << "lamedb  [file]", cout << ' ' << "Make Lamedb services file." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "bouquet  [file]", cout << ' ' << "Make Enigma bouquet file." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "bouquets  [directory]", cout << ' ' << "Make Enigma bouquet files to directory." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "userbouquet  [file]", cout << ' ' << "Make Enigma userbouquet file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "userbouquets  [directory]", cout << ' ' << "Make Enigma userbouquet files to directory." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "zapit services  [file]", cout << ' ' << "Make Neutrino services file." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "zapit bouquets  [file]", cout << ' ' << "Make Neutrino bouquets file." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "tunersets  [file]", cout << ' ' << "Make tuner settings xml file." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "tunersets  [files]", cout << ' ' << "Make tuner settings xml files." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock locked  [file]", cout << ' ' << "Make Enigma .locked parental lock file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock blacklist  [file]", cout << ' ' << "Make Enigma blacklist parental lock file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock whitelist  [file]", cout << ' ' << "Make Enigma whitelist parental lock file." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "parentallock  [files]", cout << ' ' << "Make Enigma parental lock files according to global settings." << endl;
+		cout << endl;
+
+		if (specs)
+		{
+			cout << "  ", cout.width(7), cout << left << "make", cout << ' ';
+			cout.width(24), cout << left << "[ENTRY] [version]", cout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
+			cout << endl;
+		}
+	}
+	else if (hint == COMMAND::convert)
+	{
+		cout << "  ", cout.width(7), cout << left << "convert", cout << ' ';
+		cout.width(39), cout << left << "from csv services  [file]", cout << ' ' << "Convert from CSV services file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "from csv bouquets  [file]", cout << ' ' << "Convert from CSV bouquets file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "from csv userbouquets  [file]", cout << ' ' << "Convert from CSV userbouquets file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "from csv tunersets  [file]", cout << ' ' << "Convert from CSV tuner settings file." << endl;
+		cout << endl;
+		cout << "  ", cout.width(7), cout << left << "convert", cout << ' ';
+		cout.width(39), cout << left << "to csv  [file]", cout << ' ' << "Convert all the entries to CSV file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "to csv services  [file]", cout << ' ' << "Convert to CSV services file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "to csv bouquets  [file]", cout << ' ' << "Convert to CSV bouquets file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "to csv userbouquets  [file]", cout << ' ' << "Convert to CSV userbouquets file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "to csv tunersets  [file]", cout << ' ' << "Convert to CSV tuner settings file." << endl;
+		cout << endl;
+		cout << "  ", cout.width(7), cout << left << "convert", cout << ' ';
+		cout.width(39), cout << left << "to html  [file]", cout << ' ' << "Convert all the entries to HTML files." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "to html index  [file]", cout << ' ' << "Convert to HTML index of contents files." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "to html services  [file]", cout << ' ' << "Convert to HTML services files." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "to html bouquets  [file]", cout << ' ' << "Convert to HTML bouquets files." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "to html userbouquets  [file]", cout << ' ' << "Convert to HTML userbouquets files." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "to html tunersets  [file]", cout << ' ' << "Convert to HTML tuner settings files." << endl;
+		cout << endl;
 	}
 }
 
@@ -462,9 +709,23 @@ void e2db_cli::shell_file_write(string path)
 		cerr << "File Error" << ':' << ' ' << "Error writing file." << endl;
 }
 
-void e2db_cli::shell_entry_list(ENTRY entry_type, string bname, int limit)
+void e2db_cli::shell_entry_list(ENTRY entry_type, string bname, int offset0, int offset1)
 {
-	int pos = 0;
+	shell_entry_list(entry_type, offset0, offset1, bname);
+}
+
+void e2db_cli::shell_entry_list(ENTRY entry_type, int offset0, int offset1, string bname)
+{
+	if (offset0 != -1 && offset1 != -1) // [start] [limit]
+		shell_entry_list(entry_type, offset1 != 0, offset1, offset0, bname);
+	else if (offset0 != -1) // [limit]
+		shell_entry_list(entry_type, offset0 != 0, offset0, 0, bname);
+	else
+		shell_entry_list(entry_type, true, PAGED_LIMIT, 0, bname);
+}
+
+void e2db_cli::shell_entry_list(ENTRY entry_type, bool paged, int limit, int pos, string bname)
+{
 	int offset = 0;
 	int end = 0;
 	int rows = 1;
@@ -493,7 +754,7 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, string bname, int limit)
 		rows = 4;
 	}
 
-	if (1) // paged == true
+	if (paged)
 	{
 		if (limit == 0)
 		{

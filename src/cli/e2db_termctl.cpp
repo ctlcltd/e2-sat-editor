@@ -55,7 +55,7 @@ e2db_termctl::e2db_termctl()
 	*history << "edit service id" << std::endl;
 	*history << "list transponders" << std::endl;
 	*history << "list channels userbouquet.dbe01.tv" << std::endl;
-	*history << "read e2se-seeds/enigma_db" << std::endl;
+	*history << "read /Users/leo/repositories/e2se-seeds/enigma_db" << std::endl;
 
 	this->last = this->history->tellg();
 }

@@ -33,6 +33,8 @@ class e2db_cli
 
 	protected:
 
+		static const int PAGED_LIMIT = 10;
+
 		enum COMMAND {
 			usage,
 			fread,
@@ -141,14 +143,16 @@ class e2db_cli
 		void shell_command_merge(istream* is) { shell_resolver(COMMAND::merge, is); };
 
 		void shell_resolver(COMMAND command, istream* is);
-		void shell_usage(string hint);
+		void shell_usage(COMMAND hint, bool specs = true);
 		void shell_file_read(string path);
 		void shell_file_write(string path);
 		void shell_e2db_parse();
 		void shell_e2db_make();
 		void shell_e2db_convert();
 		void shell_e2db_merge();
-		void shell_entry_list(ENTRY entry_type, string bname = "", int limit = 0);
+		void shell_entry_list(ENTRY entry_type, string bname, int offset0, int offset1);
+		void shell_entry_list(ENTRY entry_type, int offset0, int offset1, string bname = "");
+		void shell_entry_list(ENTRY entry_type, bool paged = true, int limit = 0, int pos = 0, string bname = "");
 		void shell_entry_list(ENTRY entry_type, int pos, int offset, int& end, string bname = "");
 		void shell_entry_add(ENTRY entry_type);
 		void shell_entry_add(ENTRY entry_type, int ref, string bname);
