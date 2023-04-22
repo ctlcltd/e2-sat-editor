@@ -35,15 +35,23 @@ class e2db_cli
 
 		enum COMMAND {
 			usage,
-			read,
-			write,
+			fread,
+			fwrite,
 			list,
 			add,
 			edit,
 			remove,
+			copy,
+			move,
 			set,
 			unset,
-			print
+			fimport,
+			fexport,
+			merge,
+			print,
+			parse,
+			make,
+			convert
 		};
 
 		enum ENTRY {
@@ -116,26 +124,39 @@ class e2db_cli
 		void shell_error(const string& cmd);
 		void shell_command_version();
 		void shell_command_help(istream* is) { shell_resolver(COMMAND::usage, is); };
-		void shell_command_read(istream* is) { shell_resolver(COMMAND::read, is); };
-		void shell_command_write(istream* is) { shell_resolver(COMMAND::write, is); };
+		void shell_command_read(istream* is) { shell_resolver(COMMAND::fread, is); };
+		void shell_command_write(istream* is) { shell_resolver(COMMAND::fwrite, is); };
 		void shell_command_list(istream* is) { shell_resolver(COMMAND::list, is); };
 		void shell_command_add(istream* is) { shell_resolver(COMMAND::add, is); };
 		void shell_command_edit(istream* is) { shell_resolver(COMMAND::edit, is); };
 		void shell_command_remove(istream* is) { shell_resolver(COMMAND::remove, is); };
+		void shell_command_copy(istream* is) { shell_resolver(COMMAND::copy, is); };
+		void shell_command_move(istream* is) { shell_resolver(COMMAND::move, is); };
 		void shell_command_set(istream* is) { shell_resolver(COMMAND::set, is); };
 		void shell_command_unset(istream* is) { shell_resolver(COMMAND::unset, is); };
 		void shell_command_print(istream* is) { shell_resolver(COMMAND::print, is); };
+		void shell_command_parse(istream* is) { shell_resolver(COMMAND::parse, is); };
+		void shell_command_make(istream* is) { shell_resolver(COMMAND::make, is); };
+		void shell_command_convert(istream* is) { shell_resolver(COMMAND::convert, is); };
+		void shell_command_merge(istream* is) { shell_resolver(COMMAND::merge, is); };
 
 		void shell_resolver(COMMAND command, istream* is);
 		void shell_usage(string hint);
 		void shell_file_read(string path);
 		void shell_file_write(string path);
-		void shell_entry_list(ENTRY entry_type, bool paged = true, int limit = 0);
-		void shell_entry_list(ENTRY entry_type, int pos, int offset, int& end);
+		void shell_e2db_parse();
+		void shell_e2db_make();
+		void shell_e2db_convert();
+		void shell_e2db_merge();
+		void shell_entry_list(ENTRY entry_type, string bname = "", int limit = 0);
+		void shell_entry_list(ENTRY entry_type, int pos, int offset, int& end, string bname = "");
 		void shell_entry_add(ENTRY entry_type);
+		void shell_entry_add(ENTRY entry_type, int ref, string bname);
 		void shell_entry_edit(ENTRY entry_type, string id);
-		void shell_entry_edit(ENTRY entry_type, bool edit, string id = "");
-		void shell_entry_remove(ENTRY entry_type, string id);
+		void shell_entry_edit(ENTRY entry_type, int ref, string bname, string id);
+		void shell_entry_edit(ENTRY entry_type, bool edit, string id = "", int ref = 0, string bname = "");
+		void shell_entry_remove(ENTRY entry_type, int ref, string bname, string id);
+		void shell_entry_remove(ENTRY entry_type, string id, string bname = "");
 		void shell_entry_parentallock(ENTRY entry_type, string id, bool flag);
 		void shell_debug(int opt);
 

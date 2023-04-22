@@ -115,12 +115,24 @@ void e2db_cli::cmd_shell()
 			shell_command_edit(is);
 		else if (cmd == "remove" || cmd == "r")
 			shell_command_remove(is);
+		else if (cmd == "copy" || cmd == "c")
+			shell_command_copy(is);
+		else if (cmd == "move" || cmd == "m")
+			shell_command_move(is);
 		else if (cmd == "set" || cmd == "s")
 			shell_command_set(is);
 		else if (cmd == "unset" || cmd == "u")
 			shell_command_unset(is);
+		else if (cmd == "merge")
+			shell_command_merge(is);
 		else if (cmd == "print" || cmd == "p")
 			shell_command_print(is);
+		else if (cmd == "parse")
+			shell_command_parse(is);
+		else if (cmd == "make")
+			shell_command_make(is);
+		else if (cmd == "convert")
+			shell_command_convert(is);
 		else if (! cmd.empty())
 			shell_error(cmd);
 
@@ -193,14 +205,14 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 
 		shell_usage(hint);
 	}
-	else if (command == COMMAND::read)
+	else if (command == COMMAND::fread)
 	{
 		string path;
 		*is >> std::skipws >> path;
 
 		shell_file_read(path);
 	}
-	else if (command == COMMAND::write)
+	else if (command == COMMAND::fwrite)
 	{
 		string path;
 		*is >> std::skipws >> path;
@@ -209,8 +221,8 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 	}
 	else if (command == COMMAND::list)
 	{
-		string type;
-		*is >> std::skipws >> type;
+		string type, bname;
+		*is >> std::skipws >> type >> bname;
 
 		if (type == "services")
 			shell_entry_list(ENTRY::service);
@@ -226,13 +238,15 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 			shell_entry_list(ENTRY::tunersets_table);
 		else if (type == "tunersets")
 			shell_entry_list(ENTRY::tunersets);
+		else if (type == "channels")
+			shell_entry_list(ENTRY::channel_reference, bname);
 		else
 			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
 	}
 	else if (command == COMMAND::add)
 	{
-		string type;
-		*is >> std::skipws >> type;
+		string type, bname;
+		*is >> std::skipws >> type >> bname;
 
 		if (type == "service")
 			shell_entry_add(ENTRY::service);
@@ -248,13 +262,17 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 			shell_entry_add(ENTRY::tunersets_table);
 		else if (type == "tunersets")
 			shell_entry_add(ENTRY::tunersets);
+		else if (type == "channel")
+			shell_entry_add(ENTRY::channel_reference, 1, bname);
+		else if (type == "marker")
+			shell_entry_add(ENTRY::channel_reference, 0, bname);
 		else
 			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
 	}
 	else if (command == COMMAND::edit)
 	{
-		string type, id;
-		*is >> std::skipws >> type >> id;
+		string type, id, bname;
+		*is >> std::skipws >> type >> id >> bname;
 
 		if (type == "service")
 			shell_entry_edit(ENTRY::service, id);
@@ -270,13 +288,17 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 			shell_entry_edit(ENTRY::tunersets_table, id);
 		else if (type == "tunersets")
 			shell_entry_edit(ENTRY::tunersets, id);
+		else if (type == "channel")
+			shell_entry_edit(ENTRY::channel_reference, 1, bname, id);
+		else if (type == "marker")
+			shell_entry_edit(ENTRY::channel_reference, 0, bname, id);
 		else
 			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
 	}
 	else if (command == COMMAND::remove)
 	{
-		string type, id;
-		*is >> std::skipws >> type >> id;
+		string type, id, bname;
+		*is >> std::skipws >> type >> id >> bname;
 
 		if (type == "service")
 			shell_entry_remove(ENTRY::service, id);
@@ -292,6 +314,10 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 			shell_entry_remove(ENTRY::tunersets_table, id);
 		else if (type == "tunersets")
 			shell_entry_remove(ENTRY::tunersets, id);
+		else if (type == "channel")
+			shell_entry_remove(ENTRY::channel_reference, 1, bname, id);
+		else if (type == "marker")
+			shell_entry_remove(ENTRY::channel_reference, 0, bname, id);
 		else
 			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
 	}
@@ -349,6 +375,8 @@ void e2db_cli::shell_usage(string hint)
 		cout.width(10), cout << ' ', cout << "tunersets-transponder  [trid]" << endl;
 		cout.width(10), cout << ' ', cout << "tunersets-table  [tnid]" << endl;
 		cout.width(10), cout << ' ', cout << "tunersets  [ytype]" << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "channel  [chid]  [bname]", cout << ' ' << "Add service reference to userbouquet." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "marker  [bname]", cout << ' ' << "Add marker to userbouquet." << endl;
 		cout << endl;
 
 		cout << "  ", cout.width(7), cout << left << "edit", cout << ' ';
@@ -359,6 +387,7 @@ void e2db_cli::shell_usage(string hint)
 		cout.width(10), cout << ' ', cout << "tunersets-transponder  [trid]" << endl;
 		cout.width(10), cout << ' ', cout << "tunersets-table  [tnid]" << endl;
 		cout.width(10), cout << ' ', cout << "tunersets  [ytype]" << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "marker  [chid]  [bname]", cout << ' ' << "Edit marker from userbouquet." << endl;
 		cout << endl;
 
 		cout << "  ", cout.width(7), cout << left << "remove", cout << ' ';
@@ -369,6 +398,8 @@ void e2db_cli::shell_usage(string hint)
 		cout.width(10), cout << ' ', cout << "tunersets-transponder  [trid]" << endl;
 		cout.width(10), cout << ' ', cout << "tunersets-table  [tnid]" << endl;
 		cout.width(10), cout << ' ', cout << "tunersets  [ytype]" << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "channel  [chid]  [bname]", cout << ' ' << "Remove service reference from userbouquet." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "marker  [chid]  [bname]", cout << ' ' << "Remove marker from userbouquet." << endl;
 		cout << endl;
 
 		cout << "  ", cout.width(7), cout << left << "list", cout << ' ';
@@ -379,6 +410,7 @@ void e2db_cli::shell_usage(string hint)
 		cout.width(10), cout << ' ', cout << "tunersets-transponders" << endl;
 		cout.width(10), cout << ' ', cout << "tunersets-tables" << endl;
 		cout.width(10), cout << ' ', cout << "tunersets" << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "channels  [bname]", cout << ' ' << "List channels from userbouquet." << endl;
 		cout << endl;
 
 		cout << "  ", cout.width(7), cout << left << "set", cout << ' ';
@@ -391,10 +423,12 @@ void e2db_cli::shell_usage(string hint)
 		cout.width(10), cout << ' ', cout << "parentallock  userbouquet  [bname]" << endl;
 		cout << endl;
 
-		cout << "  ", cout.width(32), cout << left << "read", cout << ' ' << "Read from file." << endl;
+		cout << "  ", cout.width(7), cout << left << "read", cout << ' ';
+		cout.width(24), cout << left << "[file]", cout << ' ' << "Read from file." << endl;
 		cout << endl;
 
-		cout << "  ", cout.width(32), cout << left << "write", cout << ' ' << "Write to file." << endl;
+		cout << "  ", cout.width(7), cout << left << "write", cout << ' ';
+		cout.width(24), cout << left << "[file]", cout << ' ' << "Write to file." << endl;
 		cout << endl;
 
 		cout << "  ", cout.width(7), cout << left << "print", cout << ' ';
@@ -428,7 +462,7 @@ void e2db_cli::shell_file_write(string path)
 		cerr << "File Error" << ':' << ' ' << "Error writing file." << endl;
 }
 
-void e2db_cli::shell_entry_list(ENTRY entry_type, bool paged, int limit)
+void e2db_cli::shell_entry_list(ENTRY entry_type, string bname, int limit)
 {
 	int pos = 0;
 	int offset = 0;
@@ -459,7 +493,7 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, bool paged, int limit)
 		rows = 4;
 	}
 
-	if (paged)
+	if (1) // paged == true
 	{
 		if (limit == 0)
 		{
@@ -467,7 +501,7 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, bool paged, int limit)
 			offset = screensize.first ? screensize.first / rows : 1;
 		}
 
-		shell_entry_list(entry_type, pos, offset, end);
+		shell_entry_list(entry_type, pos, offset, end, bname);
 
 		while (! end)
 		{
@@ -486,16 +520,16 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, bool paged, int limit)
 				default: pos += offset;
 			}
 
-			shell_entry_list(entry_type, pos, offset, end);
+			shell_entry_list(entry_type, pos, offset, end, bname);
 		}
 	}
 	else
 	{
-		shell_entry_list(entry_type, pos, offset, end);
+		shell_entry_list(entry_type, pos, offset, end, bname);
 	}
 }
 
-void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end)
+void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end, string bname)
 {
 	if (entry_type == ENTRY::transponder)
 	{
@@ -907,6 +941,86 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end)
 			print_obj_end(), print_obj_dlm();
 		}
 	}
+	else if (entry_type == ENTRY::channel_reference)
+	{
+		this->last_is = bname;
+
+		if (! dbih->userbouquets.count(bname))
+		{
+			string msg = "Userbouquet \"%s\" not exists.";
+
+			size_t csize = msg.size() + this->last_is.size();
+			char cstr[csize];
+			std::snprintf(cstr, csize, msg.c_str(), this->last_is.c_str());
+
+			cerr << "Error" << ':' << ' ' << cstr << endl;
+
+			end = 1;
+
+			return;
+		}
+
+		auto it = dbih->index[bname].begin();
+		auto last = dbih->index[bname].end();
+
+		if (offset != 0)
+		{
+			if (it + pos < last)
+				it += pos;
+			else
+				it = last;
+			if (it + offset < last)
+				last = it + offset;
+		}
+
+		end = (last == dbih->index[bname].end());
+
+		for (; it != last; it++)
+		{
+			e2db::channel_reference chref = dbih->userbouquets[bname].channels[it->second];
+
+			if (chref.marker)
+			{
+				print_obj_begin(), print_obj_sep(-1);
+				print_obj_pair(TYPE::chid, chref.chid), print_obj_sep();
+				print_obj_pair(TYPE::mname, chref.value), print_obj_sep();
+				 //TODO
+				print_obj_pair(TYPE::stype, int (e2db::STYPE::marker)), print_obj_sep();
+				print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
+				print_obj_end(), print_obj_dlm();
+			}
+			else if (dbih->db.services.count(chref.chid))
+			{
+				e2db::service ch = dbih->db.services[chref.chid];
+				vector<string> vxnul;
+
+				print_obj_begin(), print_obj_sep(-1);
+				print_obj_pair(TYPE::chid, ch.chid), print_obj_sep();
+				print_obj_pair(TYPE::txid, ch.txid), print_obj_sep();
+				print_obj_pair(TYPE::chname, ch.chname), print_obj_sep();
+				print_obj_pair(TYPE::ssid, ch.ssid), print_obj_sep();
+				print_obj_pair(TYPE::tsid, ch.tsid), print_obj_sep();
+				print_obj_pair(TYPE::stype, ch.stype), print_obj_sep();
+
+				//TODO
+				print_obj_pair(TYPE::chdata, NULL);
+				print_obj_begin(1), print_obj_sep(-1);
+				print_obj_pair(TYPE::sdata_p, ch.data.count(e2db::SDATA::p) ? ch.data[e2db::SDATA::p] : vxnul), print_obj_sep();
+				print_obj_pair(TYPE::sdata_c, ch.data.count(e2db::SDATA::c) ? ch.data[e2db::SDATA::c] : vxnul), print_obj_sep();
+				print_obj_pair(TYPE::sdata_C, ch.data.count(e2db::SDATA::C) ? ch.data[e2db::SDATA::C] : vxnul), print_obj_sep();
+				print_obj_pair(TYPE::sdata_f, ch.data.count(e2db::SDATA::f) ? ch.data[e2db::SDATA::f] : vxnul), print_obj_sep(1);
+				print_obj_end(1), print_obj_sep();
+
+				print_obj_pair(TYPE::locked, ch.locked), print_obj_sep();
+				print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
+				print_obj_end(), print_obj_dlm();
+			}
+			else
+			{
+				// orphan
+			}
+		}
+	}
 }
 
 void e2db_cli::shell_entry_add(ENTRY entry_type)
@@ -914,12 +1028,22 @@ void e2db_cli::shell_entry_add(ENTRY entry_type)
 	shell_entry_edit(entry_type, false);
 }
 
+void e2db_cli::shell_entry_add(ENTRY entry_type, int ref, string bname)
+{
+	shell_entry_edit(entry_type, false, "", ref, bname);
+}
+
 void e2db_cli::shell_entry_edit(ENTRY entry_type, string id)
 {
 	shell_entry_edit(entry_type, true, id);
 }
 
-void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id)
+void e2db_cli::shell_entry_edit(ENTRY entry_type, int ref, string bname, string id)
+{
+	shell_entry_edit(entry_type, true, id, ref, bname);
+}
+
+void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref, string bname)
 {
 	using std::any_cast;
 
@@ -1250,6 +1374,31 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id)
 			else
 				dbih->add_tunersets_transponder(tntxp, tn);
 		}
+		else if (entry_type == ENTRY::channel_reference)
+		{
+			if (! dbih->userbouquets.count(bname))
+				throw std::runtime_error ("Userbouquet \"%s\" not exists.");
+
+			e2db::channel_reference chref;
+
+			if (ref == 0) // marker
+			{
+				chref.marker = true;
+				chref.value = any_cast<string>(field(TYPE::mname));
+			}
+			else // service
+			{
+				if (! dbih->db.services.count(id))
+					throw std::runtime_error ("Service \"%s\" not exists.");
+
+				chref.chid = id;
+			}
+
+			if (edit)
+				dbih->edit_channel_reference(id, chref, bname);
+			else
+				dbih->add_channel_reference(chref, bname);
+		}
 	}
 	catch (const std::runtime_error& err)
 	{
@@ -1273,7 +1422,12 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id)
 	}
 }
 
-void e2db_cli::shell_entry_remove(ENTRY entry_type, string id)
+void e2db_cli::shell_entry_remove(ENTRY entry_type, int ref, string bname, string id)
+{
+	shell_entry_remove(entry_type, id, bname);
+}
+
+void e2db_cli::shell_entry_remove(ENTRY entry_type, string id, string bname)
 {
 	if (id.empty())
 	{
@@ -1379,6 +1533,17 @@ void e2db_cli::shell_entry_remove(ENTRY entry_type, string id)
 				throw std::runtime_error ("Tuner settings transponder \"%s\" not exists.");
 
 			dbih->remove_tunersets_transponder(id, tn);
+		}
+		else if (entry_type == ENTRY::channel_reference)
+		{
+			if (! dbih->userbouquets.count(bname))
+				throw std::runtime_error ("Userbouquet \"%s\" not exists.");
+			if (! dbih->userbouquets[bname].channels.count(id))
+				throw std::runtime_error ("Channel reference \"%s\" not exists.");
+
+			e2db::channel_reference chref = dbih->userbouquets[bname].channels[id];
+
+			dbih->remove_channel_reference(chref, bname);
 		}
 	}
 	catch (const std::runtime_error& err)
