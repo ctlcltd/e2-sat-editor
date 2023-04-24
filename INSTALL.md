@@ -28,6 +28,14 @@ Libraries required as dependencies:
 * libstdc++ >= 3
 * libcurl
 
+Additional requirements for WebAssembly:
+
+* compiled Qt for Wasm
+* emscripten
+* emsdk
+* ninja
+* python3
+
 
 ## Windows – MinGW-64 – CMake
 
@@ -117,6 +125,41 @@ If you prefer CMake:
 cd src
 cmake -B build
 cmake --build build
+```
+
+
+## WebAssembly – Qt for WebAssembly - CMake
+
+Compiling with **CMake** for Qt for WebAssembly in supported host.
+
+In order to compile, the following packages are required:
+g++, make, cmake, ninja, qt6-base, emscripten, emsdk, python3
+
+Follow the instructions from the Qt Documentation website to right compile Qt for Wasm in your host.
+
+&nbsp;
+
+Clone the repository, then from the source directory, execute commands:
+```
+cp -R e2se-seeds/enigma_db res/enigma_db
+mv src/CMakeLists.txt src/CMakeLists.txt.bak
+cp dist/wasm/CMakeLists.txt src/CMakeLists.txt
+cd src
+./qt-everywhere-src/qtbase/bin/qt-cmake .
+cmake --build build
+```
+
+To match the requirement of the demo, you need also *e2se-seeds/enigma_db* folder from the repository **e2se-seeds**.
+```
+cp -R e2se-seeds/enigma_db res/enigma_db
+```
+
+This is an example on how to compile Qt for WebAssembly from your host environment:
+```
+em++ --version
+cd qt-everywhere-src
+./configure -qt-host-path /path/to/Qt -platform wasm-emscripten -prefix qtbase
+cmake --build . --parallel -t qtbase -t qtimageformats -t qtsvg
 ```
 
 

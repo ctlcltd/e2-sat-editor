@@ -34,6 +34,11 @@
 #include "../e2se_defs.h"
 #include "platforms/platform.h"
 
+#ifdef E2SE_DEMO
+#include <QFileDialog>
+#include <QResource>
+#endif
+
 #include "tab.h"
 #include "theme.h"
 #include "gui.h"
@@ -469,6 +474,11 @@ void tab::openFile()
 {
 	debug("openFile");
 
+#ifdef E2SE_DEMO
+	return this->loadSeeds();
+#endif
+
+#ifndef Q_OS_WASM
 	string path = gid->openFileDialog();
 
 	if (path.empty())
@@ -477,6 +487,24 @@ void tab::openFile()
 	}
 
 	readFile(path);
+#else
+	auto fileContentReady = [=](const QString& filename, const QByteArray& filedata)
+	{
+		if (! filename.isEmpty())
+		{
+			gui::gui_file file;
+			file.data = filedata.toStdString();
+			file.filename = filename.toStdString();
+			file.size = filedata.size();
+
+			gid->blobs.emplace_back(file);
+
+			readFile(filename.toStdString());
+		}
+	};
+
+	QFileDialog::getOpenFileContent("All Files (*.*)", fileContentReady);
+#endif
 }
 
 bool tab::readFile(string filename)
@@ -492,10 +520,30 @@ bool tab::readFile(string filename)
 
 	if (statusBarIsVisible())
 		timer = statusBarMessage(tr("Reading from %1 …", "message").arg(filename.data()));
-
+	
+#ifndef E2SE_DEMO
 	theme::setWaitCursor();
 	bool readen = this->data->readFile(filename);
 	theme::unsetWaitCursor();
+#else
+	unordered_map<string, e2db::e2db_file> files;
+
+	for (auto & q : gid->blobs)
+	{
+		e2db::e2db_file file;
+		file.filename = q.filename;
+		file.mime = q.mime;
+		file.data = q.data;
+		file.size = q.size;
+
+		debug("readFile", "file.path", q.filename);
+		debug("readFile", "file.size", q.size);
+
+		files.emplace(file.filename, file);
+	}
+
+	bool readen = this->data->readBlob(filename, files);
+#endif
 
 	if (readen)
 	{
@@ -529,6 +577,10 @@ bool tab::readFile(string filename)
 void tab::saveFile(bool saveas)
 {
 	debug("saveFile", "saveas", saveas);
+
+#ifdef E2SE_DEMO
+	return this->demoMessage();
+#endif
 
 	string path;
 	string filename = path = this->data->getFilename();
@@ -583,6 +635,10 @@ void tab::importFile()
 {
 	debug("importFile");
 
+#ifdef E2SE_DEMO
+	return this->demoMessage();
+#endif
+
 	auto* dbih = this->data->dbih;
 
 	gui::TAB_VIEW current = getTabView();
@@ -624,6 +680,10 @@ void tab::importFile()
 void tab::exportFile()
 {
 	debug("exportFile");
+
+#ifdef E2SE_DEMO
+	return this->demoMessage();
+#endif
 
 	auto* dbih = this->data->dbih;
 
@@ -828,6 +888,10 @@ void tab::printFile(bool all)
 {
 	debug("printFile");
 
+#ifdef E2SE_DEMO
+	return this->demoMessage();
+#endif
+
 	gui::TAB_VIEW current = getTabView();
 	printable* printer = new printable(this->cwid, this->data);
 
@@ -940,7 +1004,11 @@ void tab::toolsInspector()
 
 void tab::toolsImportFromFile(TOOLS_FILE ftype, e2db::FCONVS fci)
 {
-	// debug("toolsImportFromFile");
+	debug("toolsImportFromFile");
+
+#ifdef E2SE_DEMO
+	return this->demoMessage();
+#endif
 
 	e2db::fcopts opts;
 	opts.fc = fci;
@@ -959,7 +1027,11 @@ void tab::toolsImportFromFile(TOOLS_FILE ftype, e2db::FCONVS fci)
 
 void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 {
-	// debug("toolsExportToFile");
+	debug("toolsExportToFile");
+
+#ifdef E2SE_DEMO
+	return this->demoMessage();
+#endif
 
 	gui::TAB_VIEW current = getTabView();
 	e2db::fcopts opts;
@@ -1257,6 +1329,10 @@ void tab::ftpConnect()
 {
 	debug("ftpConnect");
 
+#ifdef E2SE_DEMO
+	return this->demoMessage();
+#endif
+
 	if (this->ftph->handleConnection())
 	{
 		if (statusBarIsVisible())
@@ -1277,6 +1353,10 @@ void tab::ftpDisconnect()
 {
 	debug("ftpDisconnect");
 
+#ifdef E2SE_DEMO
+	return this->demoMessage();
+#endif
+
 	if (this->ftph->closeConnection())
 	{
 		if (statusBarIsVisible())
@@ -1296,6 +1376,10 @@ void tab::ftpDisconnect()
 void tab::ftpUpload()
 {
 	debug("ftpUpload");
+
+#ifdef E2SE_DEMO
+	return this->demoMessage();
+#endif
 
 	if (! this->ftph->handleConnection())
 	{
@@ -1383,6 +1467,10 @@ void tab::ftpUpload()
 void tab::ftpDownload()
 {
 	debug("ftpDownload");
+
+#ifdef E2SE_DEMO
+	return this->demoMessage();
+#endif
 
 	if (! this->ftph->handleConnection())
 	{
@@ -1546,12 +1634,51 @@ void tab::errorMessage(QString title, QString text)
 	QMessageBox::critical(this->cwid, title, text);
 }
 
+void tab::demoMessage()
+{
+	QMessageBox::information(this->cwid, NULL, tr("DEMO MODE", "message"));
+}
+
 void tab::loadSeeds()
 {
 	QSettings settings;
 
 	if (settings.contains("application/seeds"))
 	{
+#ifdef E2SE_DEMO
+		gid->blobs.clear();
+
+		vector<QString> files = {
+			":/e2se-seeds/enigma_db/blacklist",
+			":/e2se-seeds/enigma_db/bouquets.radio",
+			":/e2se-seeds/enigma_db/bouquets.tv",
+			":/e2se-seeds/enigma_db/lamedb",
+			":/e2se-seeds/enigma_db/lamedb5",
+			":/e2se-seeds/enigma_db/userbouquet.dbe01.radio",
+			":/e2se-seeds/enigma_db/userbouquet.dbe01.tv",
+			":/e2se-seeds/enigma_db/userbouquet.dbe02.radio",
+			":/e2se-seeds/enigma_db/userbouquet.dbe02.tv",
+			":/e2se-seeds/enigma_db/userbouquet.dbe03.radio",
+			":/e2se-seeds/enigma_db/userbouquet.dbe03.tv",
+			":/e2se-seeds/enigma_db/userbouquet.dbe04.tv",
+			":/e2se-seeds/enigma_db/whitelist",
+			":/e2se-seeds/enigma_db/atsc.xml",
+			":/e2se-seeds/enigma_db/cables.xml",
+			":/e2se-seeds/enigma_db/satellites.xml",
+			":/e2se-seeds/enigma_db/terrestrial.xml"
+		};
+
+		for (auto & path : files)
+		{
+			gui::gui_file file;
+			file.data = QResource(path).uncompressedData().toStdString();
+			file.size = QResource(path).size();
+			file.filename = path.remove(0, 1).toStdString();
+
+			gid->blobs.emplace_back(file);
+		}
+#endif
+
 		readFile(settings.value("application/seeds").toString().toStdString());
 	}
 	else

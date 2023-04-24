@@ -312,8 +312,10 @@ void gui::menuBarLayout()
 
 	//: Platform: Window menu
 	QMenu* mwind = menuBarMenu(menu, tr("&Window", "menu"));
+#ifndef E2SE_DEMO
 	gmenu[GUI_CXE::WindowMinimize] = menuBarAction(mwind, tr("&Minimize", "menu"), [=]() { this->windowMinimize(); }, Qt::CTRL | Qt::Key_M);
 	menuBarSeparator(mwind);
+#endif
 	gmenu[GUI_CXE::StatusBar] = menuBarAction(mwind, tr("Hide &Status Bar", "menu"), [=]() { this->statusBarToggle(); }, Qt::CTRL | Qt::ALT | Qt::Key_B);
 	menuBarSeparator(mwind);
 	gmenu[GUI_CXE::NewTab] = menuBarAction(mwind, tr("New &Tab", "menu"), [=]() { this->newTab(); }, Qt::CTRL | Qt::Key_T);
@@ -494,7 +496,12 @@ void gui::initSettings()
 	settings.setValue("settings/reset", false);
 
 	settings.setValue("application/version", mroot->applicationVersion());
+#ifdef E2SE_DEMO
+	settings.setValue("application/debug", true);
+	settings.setValue("application/seeds", ":/e2se-seeds/enigma_db");
+#else
 	settings.setValue("application/debug", false);
+#endif
 #ifndef Q_OS_MAC
 	settings.setValue("application/fixUnicodeChars", false);
 #else
@@ -833,8 +840,10 @@ void gui::windowChanged()
 	else
 	{
 		debug("windowChanged", "mwind", "idle");
+#ifndef E2SE_DEMO
 		this->gex = this->gxe;
 		setFlags(GUI_CXE::idle);
+#endif
 	}
 
 	QSettings().setValue("geometry", mwid->saveGeometry());
@@ -1305,10 +1314,34 @@ void gui::fileOpen()
 {
 	debug("fileOpen");
 
+#ifdef E2SE_DEMO
+	newTab();
+	return;
+#endif
+
+#ifndef Q_OS_WASM
 	string path = openFileDialog();
 
 	if (! path.empty())
 		newTab(path);
+#else
+	auto fileContentReady = [=](const QString& filename, const QByteArray& filedata)
+	{
+		if (! filename.isEmpty())
+		{
+			gui::gui_file file;
+			file.data = filedata.toStdString();
+			file.filename = filename.toStdString();
+			file.size = filedata.size();
+
+			this->blobs.emplace_back(file);
+
+			newTab(filename.toStdString());
+		}
+	};
+
+	QFileDialog::getOpenFileContent("All Files (*.*)", fileContentReady);
+#endif
 }
 
 void gui::fileSave()

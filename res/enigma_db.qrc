@@ -1,0 +1,22 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+<qresource prefix="/e2se-seeds">
+	<file compress="0" compress-algo="none">enigma_db/blacklist</file>
+	<file compress="0" compress-algo="none">enigma_db/bouquets.radio</file>
+	<file compress="0" compress-algo="none">enigma_db/bouquets.tv</file>
+	<file compress="0" compress-algo="none">enigma_db/lamedb</file>
+	<file compress="0" compress-algo="none">enigma_db/lamedb5</file>
+	<file compress="0" compress-algo="none">enigma_db/userbouquet.dbe01.radio</file>
+	<file compress="0" compress-algo="none">enigma_db/userbouquet.dbe01.tv</file>
+	<file compress="0" compress-algo="none">enigma_db/userbouquet.dbe02.radio</file>
+	<file compress="0" compress-algo="none">enigma_db/userbouquet.dbe02.tv</file>
+	<file compress="0" compress-algo="none">enigma_db/userbouquet.dbe03.radio</file>
+	<file compress="0" compress-algo="none">enigma_db/userbouquet.dbe03.tv</file>
+	<file compress="0" compress-algo="none">enigma_db/userbouquet.dbe04.tv</file>
+	<file compress="0" compress-algo="none">enigma_db/whitelist</file>
+	<file compress="0" compress-algo="none">enigma_db/atsc.xml</file>
+	<file compress="0" compress-algo="none">enigma_db/cables.xml</file>
+	<file compress="0" compress-algo="none">enigma_db/satellites.xml</file>
+	<file compress="0" compress-algo="none">enigma_db/terrestrial.xml</file>
+</qresource>
+</RCC>

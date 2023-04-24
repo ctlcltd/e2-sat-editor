@@ -27,6 +27,8 @@
 #include <QValidator>
 #include <QHeaderView>
 
+#include "../e2se_defs.h"
+
 #include "platforms/platform.h"
 
 #include "toolkit/ThemeChangeEventObserver.h"
@@ -413,6 +415,7 @@ void settings::preferencesLayout()
 	dtf2ln->setProperty("field", "language");
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2ln);
 	dtf2ln->addItem(tr("Default (system language)"), "");
+#ifndef E2SE_DEMO
 	dtf2ln->addItem(QLocale::languageToString(QLocale::English), "en");
 	dtf2ln->addItem(QLocale::languageToString(QLocale::Italian), "it");
 	// dtf2ln->addItem(QLocale::languageToString(QLocale::Arabic), "ar");
@@ -449,6 +452,7 @@ void settings::preferencesLayout()
 	// dtf2ln->addItem(QLocale::languageToString(QLocale::Ukrainian), "uk");
 	// dtf2ln->addItem(QLocale::languageToString(QLocale::Chinese).append(" (%1)").arg(QLocale::countryToString(QLocale::China)), "zh_CN");
 	// dtf2ln->addItem(QLocale::languageToString(QLocale::Chinese).append(" (%1)").arg(QLocale::countryToString(QLocale::Taiwan)), "zh_TW");
+#endif
 	platform::osComboBox(dtf2ln);
 	dtf2->addRow(dtf2ln);
 	dtf2->addRow(new QLabel(QString("<small>%1</small>").arg(tr("The software might need to be restarted."))));

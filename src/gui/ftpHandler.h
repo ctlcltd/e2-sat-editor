@@ -13,6 +13,9 @@
 #define ftpHandler_h
 
 #include "../logger/logger.h"
+#ifdef E2SE_DEMO
+#include "ftpcom_gui_wasm.h"
+#else
 #include "ftpcom_gui.h"
 
 namespace e2se_gui

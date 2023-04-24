@@ -91,6 +91,8 @@ class _platform
 	class platform : public _platform_macx {};
 #elif defined Q_OS_LINUX
 	class platform : public _platform {};
+#else
+	class platform : public _platform {};
 #endif
 
 #endif /* platform_h */

@@ -232,6 +232,18 @@ class gui : protected e2se::log_factory
 			bool update = false;
 		};
 
+#ifdef E2SE_DEMO
+		struct gui_file
+		{
+			string data;
+			string mime;
+			string filename;
+			size_t size;
+		};
+
+		vector<gui_file> blobs;
+#endif
+
 		gui(int argc, char* argv[]);
 		~gui();
 		int exited();

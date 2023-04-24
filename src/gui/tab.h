@@ -103,6 +103,7 @@ class tab : protected e2se::log_factory
 		void infoMessage(QString title);
 		void infoMessage(QString title, QString text);
 		void errorMessage(QString title, QString text);
+		void demoMessage();
 
 		QWidget* widget = nullptr;
 		dataHandler* data = nullptr;

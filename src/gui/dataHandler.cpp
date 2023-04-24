@@ -9,6 +9,8 @@
  * @license GNU GPLv3 License
  */
 
+#include "../e2se_defs.h"
+
 #include "dataHandler.h"
 
 using namespace e2se;
@@ -58,6 +60,28 @@ bool dataHandler::readFile(string filename)
 	}
 
 	return false;
+}
+
+bool dataHandler::readBlob(string filename, unordered_map<string, e2db::e2db_file> files)
+{
+	debug("readBlob");
+
+#ifndef E2SE_DEMO
+	return false;
+#endif
+
+	delete this->dbih;
+
+	this->dbih = new e2db;
+	this->newfile = false;
+	this->changed = false;
+
+	this->dbih->importBlob(files);
+
+	if (this->filename.empty())
+		this->filename = filename;
+
+	return true;
 }
 
 bool dataHandler::writeFile(string path)

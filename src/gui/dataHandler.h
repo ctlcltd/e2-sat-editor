@@ -28,6 +28,7 @@ class dataHandler : protected e2se::log_factory
 		virtual ~dataHandler();
 		void newFile();
 		bool readFile(string filename);
+		bool readBlob(string filename, unordered_map<string, e2db::e2db_file> files);
 		bool writeFile(string path);
 		void setChanged(bool changed);
 		bool hasChanged();

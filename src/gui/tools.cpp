@@ -19,7 +19,7 @@
 #include <QLineEdit>
 #include <QComboBox>
 
-#include <QMessageBox>
+#include "../e2se_defs.h"
 
 #include "platforms/platform.h"
 

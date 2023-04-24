@@ -14,6 +14,7 @@ cmake_install.cmake
 .ninja*
 .qt
 .rcc
+__
 moc_predefs.h
 moc_*.cpp
 qrc_resources.cpp
