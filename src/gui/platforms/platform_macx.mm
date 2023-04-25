@@ -134,8 +134,10 @@ class _osPersistentEditorEventObserver : public QObject
 			if (! widget)
 				return QObject::eventFilter(object, event);
 
-			if (event->type() == QEvent::FocusOut || (event->type() == QEvent::Hide && widget->isWindow())) {
-				if (! widget->isActiveWindow() || (QApplication::focusWidget() != widget)) {
+			if (event->type() == QEvent::FocusOut || (event->type() == QEvent::Hide && widget->isWindow()))
+			{
+				if (! widget->isActiveWindow() || (QApplication::focusWidget() != widget))
+				{
 					QWidget* w = QApplication::focusWidget();
 
 					if (w == widget)

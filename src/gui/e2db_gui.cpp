@@ -441,18 +441,7 @@ void e2db::importBlob(unordered_map<string, e2db_file> files)
 	debug("importBlob");
 
 	bool merge = this->get_input().size() != 0 ? true : false;
-
-	if (merge)
-	{
-		auto* dst = newptr();
-		dst->parse_e2db(files);
-		this->::e2se_e2db::e2db::merge(dst);
-		delete dst;
-	}
-	else
-	{
-		this->parse_e2db(files);
-	}
+	import_blob(files);
 
 	cache(merge);
 	fixBouquets();
@@ -686,15 +675,10 @@ QString e2db::fixUnicodeChars(string str)
 		return QString::fromStdString(str);
 }
 
-string e2db::trs(string str)
-{
-	return tr(str.data()).toStdString();
-}
-
-string e2db::trf(string str, string param)
+string e2db::msg(string str, string param)
 {
 	string trstr = tr(str.data()).toStdString();
-	size_t tsize = trstr.length() + param.length();
+	size_t tsize = trstr.size() + param.size();
 	char tstr[tsize];
 	std::snprintf(tstr, tsize, trstr.c_str(), param.c_str());
 

@@ -12,11 +12,14 @@
 #ifndef ftpHandler_h
 #define ftpHandler_h
 
+#include <QtGlobal>
+
 #include "../logger/logger.h"
-#ifdef E2SE_DEMO
+#ifdef Q_OS_WASM
 #include "ftpcom_gui_wasm.h"
 #else
 #include "ftpcom_gui.h"
+#endif
 
 namespace e2se_gui
 {

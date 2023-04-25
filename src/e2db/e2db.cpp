@@ -19,6 +19,7 @@
 #include <fstream>
 #include <iomanip>
 #include <filesystem>
+#include <stdexcept>
 
 #include "e2db.h"
 
@@ -39,55 +40,75 @@ void e2db::import_file(vector<string> paths)
 	debug("import_file", "file path", "multiple");
 	debug("import_file", "file input", "auto");
 
-	bool merge = this->get_input().size() != 0 ? true : false;
-	auto* dst = merge ? newptr() : this;
-
-	for (string & path : paths)
+	try
 	{
-		if (! std::filesystem::exists(path))
+		bool merge = this->get_input().size() != 0 ? true : false;
+		auto* dst = merge ? newptr() : this;
+
+		for (string & path : paths)
 		{
-			if (merge) delete dst;
-			return error("import_file", "File Error", trf("File \"%s\" not exists.", path));
-		}
-		if (! std::filesystem::is_regular_file(path) && ! std::filesystem::is_directory(path))
-		{
-			if (merge) delete dst;
-			return error("import_file", "File Error", trf("File \"%s\" is not a valid file.", path));
-		}
-		if
-		(
-			(std::filesystem::status(path).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none &&
-			(std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
-		)
-		{
-			if (merge) delete dst;
-			return error("import_file", "File Error", trf("File \"%s\" is not readable.", path));
+			if (! std::filesystem::exists(path))
+			{
+				if (merge) delete dst;
+				return error("import_file", "File Error", msg("File \"%s\" not exists.", path));
+			}
+			if (! std::filesystem::is_regular_file(path) && ! std::filesystem::is_directory(path))
+			{
+				if (merge) delete dst;
+				return error("import_file", "File Error", msg("File \"%s\" is not a valid file.", path));
+			}
+			if
+				(
+				 (std::filesystem::status(path).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none &&
+				 (std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
+				 )
+			{
+				if (merge) delete dst;
+				return error("import_file", "File Error", msg("File \"%s\" is not readable.", path));
+			}
+
+			FPORTS fpi = file_type_detect(path);
+			string filename = std::filesystem::path(path).filename().u8string();
+			string mime = file_mime_detect(fpi, path);
+
+			e2db_file file;
+			file.filename = filename;
+			file.mime = mime;
+
+			if (fpi != FPORTS::directory)
+			{
+				ifstream ifile (path);
+				string line;
+				while (std::getline(ifile, line))
+					file.data.append(line + '\n');
+				ifile.close();
+			}
+			file.size = file.data.size();
+
+			import_file(fpi, dst, file, path);
 		}
 
-		FPORTS fpi = file_type_detect(path);
-		string filename = std::filesystem::path(path).filename().u8string();
-		string mime = file_mime_detect(fpi, path);
-
-		e2db_file file;
-		file.filename = filename;
-		file.mime = mime;
-
-		if (fpi != FPORTS::directory)
+		if (merge)
 		{
-			ifstream ifile (path);
-			string line;
-			while (std::getline(ifile, line))
-				file.data.append(line + '\n');
-			ifile.close();
+			this->merge(dst);
+			delete dst;
 		}
-		file.size = file.data.size();
-
-		import_file(fpi, dst, file, path);
 	}
-	if (merge)
+	catch (const std::invalid_argument& err)
 	{
-		this->merge(dst);
-		delete dst;
+		exception("import_file", "Error", msg(MSG::except_invalid_argument, err.what()));
+	}
+	catch (const std::out_of_range& err)
+	{
+		exception("import_file", "Error", msg(MSG::except_out_of_range, err.what()));
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		exception("import_file", "Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (...)
+	{
+		exception("import_file", "Error", msg(MSG::except_uncaught));
 	}
 }
 
@@ -97,98 +118,117 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 	debug("import_file", "file path", "singular");
 	debug("import_file", "file input", fpi);
 
-	string filename = std::filesystem::path(path).filename().u8string();
-	stringstream ifile;
-	ifile.write(&file.data[0], file.size);
-
-	switch (fpi)
+	try
 	{
-		case FPORTS::directory:
-			dst->read(path);
-		break;
-		case FPORTS::all_services:
-			dst->parse_e2db_lamedb(ifile);
-		break;
-		case FPORTS::all_services__2_4:
-			dst->parse_e2db_lamedbx(ifile, 4);
-		break;
-		case FPORTS::all_services__2_5:
-			dst->parse_e2db_lamedb5(ifile);
-		break;
-		case FPORTS::all_services__2_3:
-			dst->parse_e2db_lamedbx(ifile, 3);
-		break;
-		case FPORTS::all_services__2_2:
-			dst->parse_e2db_lamedbx(ifile, 2);
-		break;
-		case FPORTS::all_services_xml:
-		case FPORTS::all_services_xml__4:
-		case FPORTS::all_services_xml__3:
-		case FPORTS::all_services_xml__2:
-		case FPORTS::all_services_xml__1:
-			dst->parse_zapit_services_xml(ifile, filename);
-		break;
-		case FPORTS::single_tunersets:
-		case FPORTS::all_tunersets:
-			if (filename == "satellites.xml")
-				dst->parse_tunersets_xml(YTYPE::satellite, ifile);
-			else if (filename == "terrestrial.xml")
-				dst->parse_tunersets_xml(YTYPE::terrestrial, ifile);
-			else if (filename == "cables.xml")
-				dst->parse_tunersets_xml(YTYPE::cable, ifile);
-			else if (filename == "atsc.xml")
-				dst->parse_tunersets_xml(YTYPE::atsc, ifile);
-		break;
-		case FPORTS::single_bouquet:
-		case FPORTS::all_bouquets:
-			dst->parse_e2db_bouquet(ifile, filename);
-		break;
-		case FPORTS::single_bouquet_epl:
-		case FPORTS::all_bouquets_epl:
-			dst->parse_e2db_bouquet(ifile, filename, true);
-		break;
-		case FPORTS::single_userbouquet:
-		case FPORTS::all_userbouquets:
-			dst->parse_e2db_userbouquet(ifile, filename);
-		break;
-		case FPORTS::single_bouquet_all:
-		case FPORTS::single_bouquet_all_epl:
-			if (file_type_detect(filename) == FPORTS::single_bouquet)
+		string filename = std::filesystem::path(path).filename().u8string();
+		stringstream ifile;
+		ifile.write(&file.data[0], file.size);
+
+		switch (fpi)
+		{
+			case FPORTS::directory:
+				dst->read(path);
+			break;
+			case FPORTS::all_services:
+				dst->parse_e2db_lamedb(ifile);
+			break;
+			case FPORTS::all_services__2_4:
+				dst->parse_e2db_lamedbx(ifile, 4);
+			break;
+			case FPORTS::all_services__2_5:
+				dst->parse_e2db_lamedb5(ifile);
+			break;
+			case FPORTS::all_services__2_3:
+				dst->parse_e2db_lamedbx(ifile, 3);
+			break;
+			case FPORTS::all_services__2_2:
+				dst->parse_e2db_lamedbx(ifile, 2);
+			break;
+			case FPORTS::all_services_xml:
+			case FPORTS::all_services_xml__4:
+			case FPORTS::all_services_xml__3:
+			case FPORTS::all_services_xml__2:
+			case FPORTS::all_services_xml__1:
+				dst->parse_zapit_services_xml(ifile, filename);
+			break;
+			case FPORTS::single_tunersets:
+			case FPORTS::all_tunersets:
+				if (filename == "satellites.xml")
+					dst->parse_tunersets_xml(YTYPE::satellite, ifile);
+				else if (filename == "terrestrial.xml")
+					dst->parse_tunersets_xml(YTYPE::terrestrial, ifile);
+				else if (filename == "cables.xml")
+					dst->parse_tunersets_xml(YTYPE::cable, ifile);
+				else if (filename == "atsc.xml")
+					dst->parse_tunersets_xml(YTYPE::atsc, ifile);
+			break;
+			case FPORTS::single_bouquet:
+			case FPORTS::all_bouquets:
 				dst->parse_e2db_bouquet(ifile, filename);
-			else if (file_type_detect(filename) == FPORTS::single_bouquet_epl)
+			break;
+			case FPORTS::single_bouquet_epl:
+			case FPORTS::all_bouquets_epl:
 				dst->parse_e2db_bouquet(ifile, filename, true);
-			else
+			break;
+			case FPORTS::single_userbouquet:
+			case FPORTS::all_userbouquets:
 				dst->parse_e2db_userbouquet(ifile, filename);
-		break;
-		case FPORTS::all_bouquets_xml:
-			if (filename == "bouquets.xml")
+			break;
+			case FPORTS::single_bouquet_all:
+			case FPORTS::single_bouquet_all_epl:
+				if (file_type_detect(filename) == FPORTS::single_bouquet)
+					dst->parse_e2db_bouquet(ifile, filename);
+				else if (file_type_detect(filename) == FPORTS::single_bouquet_epl)
+					dst->parse_e2db_bouquet(ifile, filename, true);
+				else
+					dst->parse_e2db_userbouquet(ifile, filename);
+			break;
+			case FPORTS::all_bouquets_xml:
+				if (filename == "bouquets.xml")
+					dst->parse_zapit_bouquets_apix_xml(ifile, filename, 1);
+				else
+					dst->parse_zapit_bouquets_apix_xml(ifile, filename, (ZAPIT_VER != -1 ? ZAPIT_VER : 4));
+			break;
+			case FPORTS::all_bouquets_xml__4:
+				dst->parse_zapit_bouquets_apix_xml(ifile, filename, 4);
+			break;
+			case FPORTS::all_bouquets_xml__3:
+				dst->parse_zapit_bouquets_apix_xml(ifile, filename, 3);
+			break;
+			case FPORTS::all_bouquets_xml__2:
+				dst->parse_zapit_bouquets_apix_xml(ifile, filename, 2);
+			break;
+			case FPORTS::all_bouquets_xml__1:
 				dst->parse_zapit_bouquets_apix_xml(ifile, filename, 1);
-			else
-				dst->parse_zapit_bouquets_apix_xml(ifile, filename, (ZAPIT_VER != -1 ? ZAPIT_VER : 4));
-		break;
-		case FPORTS::all_bouquets_xml__4:
-			dst->parse_zapit_bouquets_apix_xml(ifile, filename, 4);
-		break;
-		case FPORTS::all_bouquets_xml__3:
-			dst->parse_zapit_bouquets_apix_xml(ifile, filename, 3);
-		break;
-		case FPORTS::all_bouquets_xml__2:
-			dst->parse_zapit_bouquets_apix_xml(ifile, filename, 2);
-		break;
-		case FPORTS::all_bouquets_xml__1:
-			dst->parse_zapit_bouquets_apix_xml(ifile, filename, 1);
-		break;
-		case FPORTS::single_parentallock_blacklist:
-			dst->parse_e2db_parentallock_list(PARENTALLOCK::blacklist, ifile);
-		break;
-		case FPORTS::single_parentallock_whitelist:
-			dst->parse_e2db_parentallock_list(PARENTALLOCK::whitelist, ifile);
-		break;
-		case FPORTS::single_parentallock_locked:
-			dst->parse_e2db_parentallock_list(PARENTALLOCK::locked, ifile);
-		break;
-		default:
-		return error("import_file", "Error", "Unknown import option.");
+			break;
+			case FPORTS::single_parentallock_blacklist:
+				dst->parse_e2db_parentallock_list(PARENTALLOCK::blacklist, ifile);
+			break;
+			case FPORTS::single_parentallock_whitelist:
+				dst->parse_e2db_parentallock_list(PARENTALLOCK::whitelist, ifile);
+			break;
+			case FPORTS::single_parentallock_locked:
+				dst->parse_e2db_parentallock_list(PARENTALLOCK::locked, ifile);
+			break;
+			default:
+			return error("import_file", "Error", "Unknown import option.");
+		}
+	}
+	catch (const std::invalid_argument& err)
+	{
+		exception("import_file", "Error", msg(MSG::except_invalid_argument, err.what()));
+	}
+	catch (const std::out_of_range& err)
+	{
+		exception("import_file", "Error", msg(MSG::except_out_of_range, err.what()));
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		exception("import_file", "Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (...)
+	{
+		exception("import_file", "Error", msg(MSG::except_uncaught));
 	}
 }
 
@@ -221,134 +261,189 @@ void e2db::export_file(FPORTS fpo, string path)
 	debug("export_file", "file path", "singular");
 	debug("export_file", "file output", fpo);
 
-	e2db_file file;
-	string filename = std::filesystem::path(path).filename().u8string();
-
-	string fname = LAMEDB_VER == 5 ? "lamedb5" : (LAMEDB_VER < 4 ? "services" : "lamedb");
-
-	switch (fpo)
+	try
 	{
-		case FPORTS::directory:
-			write(path);
-		return;
-		case FPORTS::all_services:
-			make_lamedb(fname, file, LAMEDB_VER);
-		break;
-		case FPORTS::all_services__2_4:
-			make_lamedb("lamedb", file, 4);
-		break;
-		case FPORTS::all_services__2_5:
-			make_lamedb("lamedb5", file, 5);
-		break;
-		case FPORTS::all_services__2_3:
-			make_lamedb("services", file, 3);
-		break;
-		case FPORTS::all_services__2_2:
-			make_lamedb("services", file, 2);
-		break;
-		case FPORTS::all_services_xml:
-			make_services_xml(filename, file, (ZAPIT_VER != -1 ? ZAPIT_VER : 4));
-		break;
-		case FPORTS::all_services_xml__4:
-			make_services_xml(filename, file, 4);
-		break;
-		case FPORTS::all_services_xml__3:
-			make_services_xml(filename, file, 3);
-		break;
-		case FPORTS::all_services_xml__2:
-			make_services_xml(filename, file, 2);
-		break;
-		case FPORTS::all_services_xml__1:
-			make_services_xml(filename, file, 1);
-		break;
-		case FPORTS::single_tunersets:
-		case FPORTS::all_tunersets:
-			if (filename == "satellites.xml")
-				make_tunersets_xml(filename, YTYPE::satellite, file);
-			else if (filename == "terrestrial.xml")
-				make_tunersets_xml(filename, YTYPE::terrestrial, file);
-			else if (filename == "cables.xml")
-				make_tunersets_xml(filename, YTYPE::cable, file);
-			else if (filename == "atsc.xml")
-				make_tunersets_xml(filename, YTYPE::atsc, file);
-		break;
-		case FPORTS::single_bouquet:
-		case FPORTS::all_bouquets:
-			make_bouquet(filename, file);
-		break;
-		case FPORTS::single_bouquet_epl:
-		case FPORTS::all_bouquets_epl:
-			make_bouquet_epl(filename, file);
-		break;
-		case FPORTS::single_userbouquet:
-		case FPORTS::all_userbouquets:
-			make_userbouquet(filename, file);
-		break;
-		case FPORTS::single_bouquet_all:
-		case FPORTS::single_bouquet_all_epl:
-			if (file_type_detect(filename) == FPORTS::single_bouquet)
+		e2db_file file;
+		string filename = std::filesystem::path(path).filename().u8string();
+
+		string fname = LAMEDB_VER == 5 ? "lamedb5" : (LAMEDB_VER < 4 ? "services" : "lamedb");
+
+		switch (fpo)
+		{
+			case FPORTS::directory:
+				write(path);
+			return;
+			case FPORTS::all_services:
+				make_lamedb(fname, file, LAMEDB_VER);
+			break;
+			case FPORTS::all_services__2_4:
+				make_lamedb("lamedb", file, 4);
+			break;
+			case FPORTS::all_services__2_5:
+				make_lamedb("lamedb5", file, 5);
+			break;
+			case FPORTS::all_services__2_3:
+				make_lamedb("services", file, 3);
+			break;
+			case FPORTS::all_services__2_2:
+				make_lamedb("services", file, 2);
+			break;
+			case FPORTS::all_services_xml:
+				make_services_xml(filename, file, (ZAPIT_VER != -1 ? ZAPIT_VER : 4));
+			break;
+			case FPORTS::all_services_xml__4:
+				make_services_xml(filename, file, 4);
+			break;
+			case FPORTS::all_services_xml__3:
+				make_services_xml(filename, file, 3);
+			break;
+			case FPORTS::all_services_xml__2:
+				make_services_xml(filename, file, 2);
+			break;
+			case FPORTS::all_services_xml__1:
+				make_services_xml(filename, file, 1);
+			break;
+			case FPORTS::single_tunersets:
+			case FPORTS::all_tunersets:
+				if (filename == "satellites.xml")
+					make_tunersets_xml(filename, YTYPE::satellite, file);
+				else if (filename == "terrestrial.xml")
+					make_tunersets_xml(filename, YTYPE::terrestrial, file);
+				else if (filename == "cables.xml")
+					make_tunersets_xml(filename, YTYPE::cable, file);
+				else if (filename == "atsc.xml")
+					make_tunersets_xml(filename, YTYPE::atsc, file);
+			break;
+			case FPORTS::single_bouquet:
+			case FPORTS::all_bouquets:
 				make_bouquet(filename, file);
-			else if (file_type_detect(filename) == FPORTS::single_bouquet_epl)
+			break;
+			case FPORTS::single_bouquet_epl:
+			case FPORTS::all_bouquets_epl:
 				make_bouquet_epl(filename, file);
-			else
+			break;
+			case FPORTS::single_userbouquet:
+			case FPORTS::all_userbouquets:
 				make_userbouquet(filename, file);
-		break;
-		case FPORTS::all_bouquets_xml:
-			make_bouquets_xml(filename, file, (ZAPIT_VER != -1 ? ZAPIT_VER : 4));
-		break;
-		case FPORTS::all_bouquets_xml__4:
-			make_bouquets_xml(filename, file, 4);
-		break;
-		case FPORTS::all_bouquets_xml__3:
-			make_bouquets_xml(filename, file, 3);
-		break;
-		case FPORTS::all_bouquets_xml__2:
-			make_bouquets_xml(filename, file, 2);
-		break;
-		case FPORTS::all_bouquets_xml__1:
-			make_bouquets_xml(filename, file, 1);
-		break;
-		case FPORTS::single_parentallock_blacklist:
-			make_parentallock_list(filename, PARENTALLOCK::blacklist, file);
-		break;
-		case FPORTS::single_parentallock_whitelist:
-			make_parentallock_list(filename, PARENTALLOCK::whitelist, file);
-		break;
-		case FPORTS::single_parentallock_locked:
-			make_parentallock_list(filename, PARENTALLOCK::locked, file);
-		break;
-		default:
-		return error("export_file", "Error", "Unknown export option.");
+			break;
+			case FPORTS::single_bouquet_all:
+			case FPORTS::single_bouquet_all_epl:
+				if (file_type_detect(filename) == FPORTS::single_bouquet)
+					make_bouquet(filename, file);
+				else if (file_type_detect(filename) == FPORTS::single_bouquet_epl)
+					make_bouquet_epl(filename, file);
+				else
+					make_userbouquet(filename, file);
+			break;
+			case FPORTS::all_bouquets_xml:
+				make_bouquets_xml(filename, file, (ZAPIT_VER != -1 ? ZAPIT_VER : 4));
+			break;
+			case FPORTS::all_bouquets_xml__4:
+				make_bouquets_xml(filename, file, 4);
+			break;
+			case FPORTS::all_bouquets_xml__3:
+				make_bouquets_xml(filename, file, 3);
+			break;
+			case FPORTS::all_bouquets_xml__2:
+				make_bouquets_xml(filename, file, 2);
+			break;
+			case FPORTS::all_bouquets_xml__1:
+				make_bouquets_xml(filename, file, 1);
+			break;
+			case FPORTS::single_parentallock_blacklist:
+				make_parentallock_list(filename, PARENTALLOCK::blacklist, file);
+			break;
+			case FPORTS::single_parentallock_whitelist:
+				make_parentallock_list(filename, PARENTALLOCK::whitelist, file);
+			break;
+			case FPORTS::single_parentallock_locked:
+				make_parentallock_list(filename, PARENTALLOCK::locked, file);
+			break;
+			default:
+			return error("export_file", "Error", "Unknown export option.");
+		}
+
+		string fpath = path;
+
+		if (filename != file.filename)
+		{
+			std::filesystem::path fp = std::filesystem::path(path);
+			string basedir = fp.parent_path().u8string();
+			if (basedir.size() && basedir[basedir.size() - 1] != '/')
+				basedir.append("/");
+
+			fpath = basedir + file.filename;
+		}
+
+		if (! OVERWRITE_FILE && std::filesystem::exists(fpath))
+		{
+			return error("export_file", "File Error", msg("File \"%s\" already exists.", fpath));
+		}
+		if
+		(
+			(std::filesystem::status(fpath).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
+			(std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
+		)
+		{
+			return error("export_file", "File Error", msg("File \"%s\" is not writable.", path));
+		}
+
+		ofstream out (fpath);
+		out << file.data;
+		out.close();
 	}
-
-	string fpath = path;
-
-	if (filename != file.filename)
+	catch (const std::invalid_argument& err)
 	{
-		std::filesystem::path fp = std::filesystem::path(path);
-		string basedir = fp.parent_path().u8string();
-		if (basedir.size() && basedir[basedir.size() - 1] != '/')
-			basedir.append("/");
-
-		fpath = basedir + file.filename;
+		exception("export_file", "Error", msg(MSG::except_invalid_argument, err.what()));
 	}
-
-	if (! OVERWRITE_FILE && std::filesystem::exists(fpath))
+	catch (const std::out_of_range& err)
 	{
-		return error("export_file", "File Error", trf("File \"%s\" already exists.", fpath));
+		exception("export_file", "Error", msg(MSG::except_out_of_range, err.what()));
 	}
-	if
-	(
-		(std::filesystem::status(fpath).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
-		(std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
-	)
+	catch (const std::filesystem::filesystem_error& err)
 	{
-		return error("export _file", "File Error", trf("File \"%s\" is not writable.", path));
+		exception("export_file", "Error", msg(MSG::except_filesystem, err.what()));
 	}
+	catch (...)
+	{
+		exception("export_file", "Error", msg(MSG::except_uncaught));
+	}
+}
 
-	ofstream out (fpath);
-	out << file.data;
-	out.close();
+void e2db::import_blob(unordered_map<string, e2db_file> files)
+{
+	try
+	{
+		bool merge = this->get_input().size() != 0 ? true : false;
+
+		if (merge)
+		{
+			auto* dst = newptr();
+			dst->parse_e2db(files);
+			this->merge(dst);
+			delete dst;
+		}
+		else
+		{
+			parse_e2db(files);
+		}
+	}
+	catch (const std::invalid_argument& err)
+	{
+		exception("import_blob", "Error", msg(MSG::except_invalid_argument, err.what()));
+	}
+	catch (const std::out_of_range& err)
+	{
+		exception("import_blob", "Error", msg(MSG::except_out_of_range, err.what()));
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		exception("import_blob", "Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (...)
+	{
+		exception("import_blob", "Error", msg(MSG::except_uncaught));
+	}
 }
 
 void e2db::add_transponder(transponder& tx)
@@ -417,7 +512,7 @@ void e2db::edit_service(string chid, service& ch)
 	debug("edit_service", "chid", chid);
 
 	if (! db.services.count(chid))
-		return error("edit_service", "Error", trf("Service \"%s\" not exists.", chid));
+		return error("edit_service", "Error", msg("Service \"%s\" not exists.", chid));
 
 	char nw_txid[25];
 	// %4x:%8x
@@ -481,7 +576,7 @@ void e2db::remove_service(string chid)
 	debug("remove_service", "chid", chid);
 
 	if (! db.services.count(chid))
-		return error("remove_service", "Error", trf("Service \"%s\" not exists.", chid));
+		return error("remove_service", "Error", msg("Service \"%s\" not exists.", chid));
 
 	service ch = db.services[chid];
 	string kchid = 's' + chid;
@@ -526,13 +621,13 @@ void e2db::add_bouquet(bouquet& bs)
 		}
 
 		if (found)
-			error("add_bouquet", "Error", trf("Bouquet \"%s\" already exists.", bs.rname));
+			error("add_bouquet", "Error", msg("Bouquet \"%s\" already exists.", bs.rname));
 		else
 			bs.bname = bs.rname;
 	}
 
 	if (bouquets.count(bs.bname))
-		return error("add_bouquet", "Error", trf("Bouquet \"%s\" already exists.", bs.bname));
+		return error("add_bouquet", "Error", msg("Bouquet \"%s\" already exists.", bs.bname));
 
 	e2db_abstract::add_bouquet(bs.index, bs);
 }
@@ -542,7 +637,7 @@ void e2db::edit_bouquet(bouquet& bs)
 	debug("edit_bouquet", "bname", bs.bname);
 
 	if (! bouquets.count(bs.bname))
-		return error("edit_bouquet", "Error", trf("Bouquet \"%s\" not exists.", bs.bname));
+		return error("edit_bouquet", "Error", msg("Bouquet \"%s\" not exists.", bs.bname));
 
 	if (! bs.rname.empty())
 	{
@@ -558,7 +653,7 @@ void e2db::edit_bouquet(bouquet& bs)
 		}
 
 		if (found)
-			error("edit_bouquet", "Error", trf("Bouquet \"%s\" already exists.", bs.rname));
+			error("edit_bouquet", "Error", msg("Bouquet \"%s\" already exists.", bs.rname));
 	}
 
 	bouquets[bs.bname] = bs;
@@ -569,7 +664,7 @@ void e2db::remove_bouquet(string bname)
 	debug("remove_bouquet", "bname", bname);
 
 	if (! bouquets.count(bname))
-		return error("remove_bouquet", "Error", trf("Bouquet \"%s\" not exists.", bname));
+		return error("remove_bouquet", "Error", msg("Bouquet \"%s\" not exists.", bname));
 
 	for (auto it = index["bss"].begin(); it != index["bss"].end(); it++)
 	{
@@ -666,7 +761,7 @@ void e2db::add_userbouquet(userbouquet& ub)
 		}
 
 		if (found)
-			error("add_userbouquet", "Error", trf("Userbouquet \"%s\" already exists.", ub.rname));
+			error("add_userbouquet", "Error", msg("Userbouquet \"%s\" already exists.", ub.rname));
 		else
 			ub.bname = ub.rname;
 	}
@@ -680,7 +775,7 @@ void e2db::add_userbouquet(userbouquet& ub)
 	}
 
 	if (userbouquets.count(ub.bname))
-		return error("edit_userbouquet", "Error", trf("Userbouquet \"%s\" already exists.", ub.bname));
+		return error("edit_userbouquet", "Error", msg("Userbouquet \"%s\" already exists.", ub.bname));
 
 	e2db_abstract::add_userbouquet(ub.index, ub);
 }
@@ -690,7 +785,7 @@ void e2db::edit_userbouquet(userbouquet& ub)
 	debug("edit_userbouquet", "bname", ub.bname);
 
 	if (! userbouquets.count(ub.bname))
-		return error("edit_userbouquet", "Error", trf("Userbouquet \"%s\" not exists.", ub.bname));
+		return error("edit_userbouquet", "Error", msg("Userbouquet \"%s\" not exists.", ub.bname));
 
 	bouquet bs = bouquets[ub.pname];
 
@@ -708,7 +803,7 @@ void e2db::edit_userbouquet(userbouquet& ub)
 		}
 
 		if (found)
-			error("edit_userbouquet", "Error", trf("Userbouquet \"%s\" already exists.", ub.rname));
+			error("edit_userbouquet", "Error", msg("Userbouquet \"%s\" already exists.", ub.rname));
 	}
 
 	userbouquets[ub.bname] = ub;
@@ -719,7 +814,7 @@ void e2db::remove_userbouquet(string bname)
 	debug("remove_userbouquet", "bname", bname);
 
 	if (! userbouquets.count(bname))
-		return error("remove_userbouquet", "Error", trf("Userbouquet \"%s\" not exists.", bname));
+		return error("remove_userbouquet", "Error", msg("Userbouquet \"%s\" not exists.", bname));
 
 	userbouquet ub = userbouquets[bname];
 	bouquet& bs = bouquets[ub.pname];
@@ -775,7 +870,7 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 	debug("add_channel_reference", "chid", chref.chid);
 
 	if (! userbouquets.count(bname))
-		return error("add_channel_reference", "Error", trf("Userbouquet \"%s\" not exists.", bname));
+		return error("add_channel_reference", "Error", msg("Userbouquet \"%s\" not exists.", bname));
 
 	userbouquet& ub = userbouquets[bname];
 	service_reference ref;
@@ -801,7 +896,7 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 	else
 	{
 		if (! db.services.count(chref.chid))
-			return error("add_channel_reference", "Error", trf("Service \"%s\" not exists.", chref.chid));
+			return error("add_channel_reference", "Error", msg("Service \"%s\" not exists.", chref.chid));
 
 		service ch = db.services[chref.chid];
 
@@ -821,7 +916,7 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 	debug("edit_channel_reference", "chid", chid);
 
 	if (! userbouquets.count(bname))
-		return error("edit_channel_reference", "Error", trf("Userbouquet \"%s\" not exists.", bname));
+		return error("edit_channel_reference", "Error", msg("Userbouquet \"%s\" not exists.", bname));
 
 	userbouquet& ub = userbouquets[bname];
 
@@ -830,7 +925,7 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 	if (chref.chid == chid)
 	{
 		if (! chref.marker && ! db.services.count(chref.chid))
-			return error("edit_channel_reference", "Error", trf("Service \"%s\" not exists.", chref.chid));
+			return error("edit_channel_reference", "Error", msg("Service \"%s\" not exists.", chref.chid));
 
 		ub.channels[chref.chid] = chref;
 	}
@@ -841,7 +936,7 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 		if (! chref.marker)
 		{
 			if (! db.services.count(chref.chid))
-				return error("edit_channel_reference", "Error", trf("Service \"%s\" not exists.", chref.chid));
+				return error("edit_channel_reference", "Error", msg("Service \"%s\" not exists.", chref.chid));
 
 			service ch = db.services[chref.chid];
 
@@ -883,7 +978,7 @@ void e2db::remove_channel_reference(channel_reference chref, string bname)
 	debug("remove_channel_reference", "chref.chid", chref.chid);
 
 	if (! userbouquets.count(bname))
-		return error("remove_channel_reference", "Error", trf("Userbouquet \"%s\" not exists.", bname));
+		return error("remove_channel_reference", "Error", msg("Userbouquet \"%s\" not exists.", bname));
 
 	userbouquet& ub = userbouquets[bname];
 	int idx = -1;
@@ -900,7 +995,7 @@ void e2db::remove_channel_reference(channel_reference chref, string bname)
 	}
 
 	if (! userbouquets[bname].channels.count(chid))
-		return error("remove_channel_reference", "Error", trf("Channel reference \"%s\" not exists.", chid));
+		return error("remove_channel_reference", "Error", msg("Channel reference \"%s\" not exists.", chid));
 
 	vector<pair<int, string>>::iterator pos;
 	for (auto it = index[bname].begin(); it != index[bname].end(); it++)
@@ -971,9 +1066,9 @@ void e2db::remove_channel_reference(string chid, string bname)
 	debug("remove_channel_reference", "chid", chid);
 
 	if (! userbouquets.count(bname))
-		return error("remove_channel_reference", "Error", trf("Userbouquet \"%s\" not exists.", bname));
+		return error("remove_channel_reference", "Error", msg("Userbouquet \"%s\" not exists.", bname));
 	if (! userbouquets[bname].channels.count(chid))
-		return error("remove_channel_reference", "Error", trf("Channel reference \"%s\" not exists.", chid));
+		return error("remove_channel_reference", "Error", msg("Channel reference \"%s\" not exists.", chid));
 
 	channel_reference chref = userbouquets[bname].channels[chid];
 	userbouquet& ub = userbouquets[bname];
@@ -1112,7 +1207,7 @@ void e2db::remove_tunersets_table(string tnid, tunersets tv)
 	debug("remove_tunersets_table", "tnid", tnid);
 
 	if (! tv.tables.count(tnid))
-		return error("remove_tunersets_table", "Error", trf("Tunersets table \"%s\" not exists.", tnid));
+		return error("remove_tunersets_table", "Error", msg("Tunersets table \"%s\" not exists.", tnid));
 
 	tunersets_table tn = tv.tables[tnid];
 
@@ -1187,7 +1282,7 @@ void e2db::set_service_parentallock(string chid)
 	debug("set_service_parentallock", "chid", chid);
 
 	if (! db.services.count(chid))
-		return error("set_service_parentallock", "Error", trf("Service \"%s\" not exists.", chid));
+		return error("set_service_parentallock", "Error", msg("Service \"%s\" not exists.", chid));
 
 	service& ch = db.services[chid];
 	ch.locked = true;
@@ -1198,7 +1293,7 @@ void e2db::unset_service_parentallock(string chid)
 	debug("unset_service_parentallock", "chid", chid);
 
 	if (! db.services.count(chid))
-		return error("unset_service_parentallock", "Error", trf("Service \"%s\" not exists.", chid));
+		return error("unset_service_parentallock", "Error", msg("Service \"%s\" not exists.", chid));
 
 	service& ch = db.services[chid];
 	ch.locked = false;
@@ -1209,7 +1304,7 @@ void e2db::set_userbouquet_parentallock(string bname)
 	debug("set_userbouquet_parentallock", "bname", bname);
 
 	if (! userbouquets.count(bname))
-		return error("set_userbouquet_parentallock", "Error", trf("Userbouquet \"%s\" not exists.", bname));
+		return error("set_userbouquet_parentallock", "Error", msg("Userbouquet \"%s\" not exists.", bname));
 
 	userbouquet& ub = userbouquets[bname];
 	ub.locked = true;
@@ -1220,7 +1315,7 @@ void e2db::unset_userbouquet_parentallock(string bname)
 	debug("unset_userbouquet_parentallock", "bname", bname);
 
 	if (! userbouquets.count(bname))
-		return error("unset_userbouquet_parentallock", "Error", trf("Userbouquet \"%s\" not exists.", bname));
+		return error("unset_userbouquet_parentallock", "Error", msg("Userbouquet \"%s\" not exists.", bname));
 
 	userbouquet& ub = userbouquets[bname];
 	ub.locked = false;

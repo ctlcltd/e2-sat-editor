@@ -62,13 +62,10 @@ bool dataHandler::readFile(string filename)
 	return false;
 }
 
+//TODO FIX sort bss TV, Radio
 bool dataHandler::readBlob(string filename, unordered_map<string, e2db::e2db_file> files)
 {
 	debug("readBlob");
-
-#ifndef E2SE_DEMO
-	return false;
-#endif
 
 	delete this->dbih;
 

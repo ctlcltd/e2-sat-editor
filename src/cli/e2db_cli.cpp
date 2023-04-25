@@ -13,10 +13,10 @@
 #include <clocale>
 #include <cstring>
 #include <cctype>
-#include <stdexcept>
 #include <iostream>
 #include <sstream>
 #include <iomanip>
+#include <stdexcept>
 
 #include "e2db_termctl.h"
 
@@ -151,7 +151,7 @@ void e2db_cli::cmd_error(string option)
 {
 	e2db_termctl::reset();
 
-	cerr << "e2se-cli" << ':' << ' ' << "Illegal option" << ' ' << option << endl;
+	cerr << "e2se-cli: " << msg("Illegal option \"%s\"", option) << endl;
 	cerr << endl;
 
 	exit(1);
@@ -185,7 +185,7 @@ void e2db_cli::shell_header()
 
 void e2db_cli::shell_error(const string& cmd)
 {
-	cerr << "Error" << ':' << ' ' << "Syntax error near" << ' ' << '"' << cmd << '"' << endl;
+	cerr << "Error: " << msg("Syntax error near: %s", cmd) << endl;
 }
 
 void e2db_cli::shell_command_version()
@@ -241,7 +241,7 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 			shell_usage(COMMAND::convert);
 		else
 		{
-			cerr << "Type Error" << ':' << ' ' << "Unknown usage type." << endl;
+			cerr << "Type Error: " << msg("Unknown usage type: %s", hint) << endl;
 			cout << endl;
 
 			shell_usage(COMMAND::usage);
@@ -296,7 +296,7 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			shell_usage(command);
 		else
-			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
+			cerr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
 	}
 	else if (command == COMMAND::add)
 	{
@@ -324,7 +324,7 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			shell_usage(command);
 		else
-			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
+			cerr << "Type Error" << msg("Unknown entry type: %s", type) << endl;
 	}
 	else if (command == COMMAND::edit)
 	{
@@ -352,7 +352,7 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			shell_usage(command);
 		else
-			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
+			cerr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
 	}
 	else if (command == COMMAND::remove)
 	{
@@ -380,7 +380,7 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			shell_usage(command);
 		else
-			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
+			cerr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
 	}
 	else if (command == COMMAND::set)
 	{
@@ -394,7 +394,7 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			shell_usage(command);
 		else
-			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
+			cerr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
 	}
 	else if (command == COMMAND::unset)
 	{
@@ -408,7 +408,7 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			shell_usage(command);
 		else
-			cerr << "Type Error" << ':' << ' ' << "Unknown entry type." << endl;
+			cerr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
 	}
 	else if (command == COMMAND::fimport)
 	{
@@ -434,7 +434,7 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			shell_usage(command);
 		else
-			cerr << "Error" << ':' << ' ' << "Unknown print type." << endl;
+			cerr << "Type Error" << msg("Unknown print type: %s", type) << endl;
 	}
 	else if (command == COMMAND::parse)
 	{
@@ -450,7 +450,7 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 	}
 	else
 	{
-		cerr << "Error" << ':' << ' ' << "Unknown command." << endl;
+		cerr << "Error: " << msg("Unknown command") << endl;
 	}
 }
 
@@ -700,13 +700,13 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 void e2db_cli::shell_file_read(string path)
 {
 	if (! dbih->read(path))
-		cerr << "File Error" << ':' << ' ' << "Error reading file." << endl;
+		cerr << "File Error: " << msg("Error reading file.") << endl;
 }
 
 void e2db_cli::shell_file_write(string path)
 {
 	if (! dbih->write(path))
-		cerr << "File Error" << ':' << ' ' << "Error writing file." << endl;
+		cerr << "File Error: " << msg("Error writing file.") << endl;
 }
 
 void e2db_cli::shell_entry_list(ENTRY entry_type, string bname, int offset0, int offset1)
@@ -792,467 +792,89 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, bool paged, int limit, int pos
 
 void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end, string bname)
 {
-	if (entry_type == ENTRY::transponder)
+	try
 	{
-		auto it = dbih->index["txs"].begin();
-		auto last = dbih->index["txs"].end();
-
-		if (offset != 0)
+		if (entry_type == ENTRY::transponder)
 		{
-			if (it + pos < last)
-				it += pos;
-			else
-				it = last;
-			if (it + offset < last)
-				last = it + offset;
-		}
+			auto it = dbih->index["txs"].begin();
+			auto last = dbih->index["txs"].end();
 
-		end = (last == dbih->index["txs"].end());
-
-		for (; it != last; it++)
-		{
-			e2db::transponder tx = dbih->db.transponders[it->second];
-
-			print_obj_begin(), print_obj_sep(-1);
-			print_obj_pair(TYPE::txid, tx.txid), print_obj_sep();
-			print_obj_pair(TYPE::ytype, tx.ytype), print_obj_sep();
-			print_obj_pair(TYPE::pos, tx.pos), print_obj_sep();
-			print_obj_pair(TYPE::tsid, tx.tsid), print_obj_sep();
-			print_obj_pair(TYPE::onid, tx.onid), print_obj_sep();
-			print_obj_pair(TYPE::dvbns, tx.dvbns), print_obj_sep();
-			TYPE sys;
-			switch (tx.ytype)
+			if (offset != 0)
 			{
-				case e2db::YTYPE::satellite: sys = TYPE::sys; break;
-				case e2db::YTYPE::terrestrial: sys = TYPE::tsys; break;
-				case e2db::YTYPE::cable: sys = TYPE::csys; break;
-				case e2db::YTYPE::atsc: sys = TYPE::asys; break;
+				if (it + pos < last)
+					it += pos;
+				else
+					it = last;
+				if (it + offset < last)
+					last = it + offset;
 			}
-			print_obj_pair(sys, tx.sys), print_obj_sep();
-			print_obj_pair(TYPE::freq, tx.freq), print_obj_sep();
-			print_obj_pair(TYPE::pol, tx.pol), print_obj_sep();
-			print_obj_pair(TYPE::sr, tx.sr), print_obj_sep();
-			print_obj_pair(TYPE::mod, tx.mod), print_obj_sep();
-			print_obj_pair(TYPE::tmod, tx.tmod), print_obj_sep();
-			print_obj_pair(TYPE::cmod, tx.cmod), print_obj_sep();
-			print_obj_pair(TYPE::amod, tx.amod), print_obj_sep();
-			print_obj_pair(TYPE::band, tx.band), print_obj_sep();
-			print_obj_pair(TYPE::tmx, tx.tmx), print_obj_sep();
-			print_obj_pair(TYPE::fec, tx.fec), print_obj_sep();
-			print_obj_pair(TYPE::hpfec, tx.hpfec), print_obj_sep();
-			print_obj_pair(TYPE::lpfec, tx.lpfec), print_obj_sep();
-			print_obj_pair(TYPE::cfec, tx.cfec), print_obj_sep();
-			print_obj_pair(TYPE::inv, tx.inv), print_obj_sep();
-			print_obj_pair(TYPE::rol, tx.rol), print_obj_sep();
-			print_obj_pair(TYPE::pil, tx.pil), print_obj_sep();
-			print_obj_pair(TYPE::guard, tx.guard), print_obj_sep();
-			print_obj_pair(TYPE::hier, tx.hier), print_obj_sep();
-			print_obj_pair(TYPE::flgs, tx.flgs), print_obj_sep();
-			print_obj_pair(TYPE::oflgs, tx.oflgs), print_obj_sep();
-			print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
-			print_obj_end(), print_obj_dlm();
-		}
-	}
-	else if (entry_type == ENTRY::service)
-	{
-		auto it = dbih->index["chs"].begin();
-		auto last = dbih->index["chs"].end();
 
-		if (offset != 0)
-		{
-			if (it + pos < last)
-				it += pos;
-			else
-				it = last;
-			if (it + offset < last)
-				last = it + offset;
-		}
+			end = (last == dbih->index["txs"].end());
 
-		end = (last == dbih->index["chs"].end());
-
-		for (; it != last; it++)
-		{
-			e2db::service ch = dbih->db.services[it->second];
-			vector<string> vxnul;
-
-			print_obj_begin(), print_obj_sep(-1);
-			print_obj_pair(TYPE::chid, ch.chid), print_obj_sep();
-			print_obj_pair(TYPE::txid, ch.txid), print_obj_sep();
-			print_obj_pair(TYPE::chname, ch.chname), print_obj_sep();
-			print_obj_pair(TYPE::ssid, ch.ssid), print_obj_sep();
-			print_obj_pair(TYPE::tsid, ch.tsid), print_obj_sep();
-			print_obj_pair(TYPE::onid, ch.onid), print_obj_sep();
-			print_obj_pair(TYPE::dvbns, ch.dvbns), print_obj_sep();
-			print_obj_pair(TYPE::stype, ch.stype), print_obj_sep();
-			print_obj_pair(TYPE::snum, ch.snum), print_obj_sep();
-			print_obj_pair(TYPE::srcid, ch.srcid), print_obj_sep();
-
-			//TODO
-			print_obj_pair(TYPE::chdata, NULL);
-			print_obj_begin(1), print_obj_sep(-1);
-			print_obj_pair(TYPE::sdata_p, ch.data.count(e2db::SDATA::p) ? ch.data[e2db::SDATA::p] : vxnul), print_obj_sep();
-			print_obj_pair(TYPE::sdata_c, ch.data.count(e2db::SDATA::c) ? ch.data[e2db::SDATA::c] : vxnul), print_obj_sep();
-			print_obj_pair(TYPE::sdata_C, ch.data.count(e2db::SDATA::C) ? ch.data[e2db::SDATA::C] : vxnul), print_obj_sep();
-			print_obj_pair(TYPE::sdata_f, ch.data.count(e2db::SDATA::f) ? ch.data[e2db::SDATA::f] : vxnul), print_obj_sep(1);
-			print_obj_end(1), print_obj_sep();
-
-			print_obj_pair(TYPE::locked, ch.locked), print_obj_sep();
-			print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
-			print_obj_end(), print_obj_dlm();
-		}
-	}
-	else if (entry_type == ENTRY::bouquet)
-	{
-		auto it = dbih->index["bss"].begin();
-		auto last = dbih->index["bss"].end();
-
-		if (offset != 0)
-		{
-			if (it + pos < last)
-				it += pos;
-			else
-				it = last;
-			if (it + offset < last)
-				last = it + offset;
-		}
-
-		end = (last == dbih->index["bss"].end());
-
-		for (; it != last; it++)
-		{
-			e2db::bouquet bs = dbih->bouquets[it->second];
-
-			print_obj_begin(), print_obj_sep(-1);
-			print_obj_pair(TYPE::bname, bs.bname), print_obj_sep();
-			print_obj_pair(TYPE::rname, bs.rname), print_obj_sep();
-			print_obj_pair(TYPE::btype, bs.btype), print_obj_sep();
-			print_obj_pair(TYPE::qname, bs.name), print_obj_sep();
-			print_obj_pair(TYPE::nname, bs.nname), print_obj_sep();
-			print_obj_pair(TYPE::bsdata, NULL);
-			print_obj_begin(1), print_obj_sep(-1);
-			size_t i = 0;
-			for (string & w : bs.userbouquets)
+			for (; it != last; it++)
 			{
-				i++;
+				e2db::transponder tx = dbih->db.transponders[it->second];
 
-				print_obj_begin(2), print_obj_sep(-1);
-				print_obj_pair(TYPE::bname, w), print_obj_sep(1);
-				print_obj_end(2), print_obj_dlm(2, i == bs.userbouquets.size());
-			}
-			print_obj_end(1), print_obj_sep();
-			print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
-			print_obj_end(), print_obj_dlm();
-		}
-	}
-	else if (entry_type == ENTRY::userbouquet)
-	{
-		auto it = dbih->index["ubs"].begin();
-		auto last = dbih->index["ubs"].end();
-
-		if (offset != 0)
-		{
-			if (it + pos < last)
-				it += pos;
-			else
-				it = last;
-			if (it + offset < last)
-				last = it + offset;
-		}
-
-		end = (last == dbih->index["ubs"].end());
-
-		for (; it != last; it++)
-		{
-			e2db::userbouquet ub = dbih->userbouquets[it->second];
-
-			print_obj_begin(), print_obj_sep(-1);
-			print_obj_pair(TYPE::bname, ub.bname), print_obj_sep();
-			print_obj_pair(TYPE::rname, ub.rname), print_obj_sep();
-			print_obj_pair(TYPE::qname, ub.name), print_obj_sep();
-			print_obj_pair(TYPE::pname, ub.pname), print_obj_sep();
-			print_obj_pair(TYPE::ubdata, NULL);
-			print_obj_begin(1), print_obj_sep(-1);
-			size_t i = 0;
-			for (auto & x : ub.channels)
-			{
-				e2db::channel_reference chref = x.second;
-				i++;
-
-				print_obj_begin(2), print_obj_sep(-1);
-				print_obj_pair(TYPE::chid, chref.chid), print_obj_sep(1);
-				print_obj_end(2), print_obj_dlm(2, i == ub.channels.size());
-			}
-			print_obj_end(1), print_obj_sep();
-			print_obj_pair(TYPE::locked, ub.locked), print_obj_sep();
-			print_obj_pair(TYPE::hidden, ub.hidden), print_obj_sep();
-			print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
-			print_obj_end(), print_obj_dlm();
-		}
-	}
-	else if (entry_type == ENTRY::tunersets)
-	{
-		vector<int> _index;
-
-		if (dbih->tuners.size() == 4)
-		{
-			for (auto & ytype : {0, 1, 2, 3})
-			{
-				_index.push_back(ytype);
-			}
-		}
-
-		auto it = _index.begin();
-		auto last = _index.end();
-
-		if (offset != 0)
-		{
-			if (it + pos < last)
-				it += pos;
-			else
-				it = last;
-			if (it + offset < last)
-				last = it + offset;
-		}
-
-		end = (last == _index.end());
-
-		for (; it != last; it++)
-		{
-			int tvid = *it;
-			e2db::tunersets tv = dbih->tuners[tvid];
-
-			print_obj_begin(), print_obj_sep(-1);
-			print_obj_pair(TYPE::tvid, tv.ytype), print_obj_sep();
-			print_obj_pair(TYPE::ytype, tv.ytype), print_obj_sep();
-			print_obj_pair(TYPE::charset, tv.charset), print_obj_sep();
-			print_obj_pair(TYPE::tvdata, NULL);
-			print_obj_begin(1), print_obj_sep(-1);
-			size_t i = 0;
-			for (auto & x : tv.tables)
-			{
-				e2db::tunersets_table tn = x.second;
-				i++;
-
-				print_obj_begin(2), print_obj_sep(-1);
-				print_obj_pair(TYPE::tnid, tn.tnid), print_obj_sep();
-				print_obj_pair(TYPE::idx, tn.index), print_obj_sep(1);
-				print_obj_end(2), print_obj_dlm(2, i == tv.tables.size());
-			}
-			print_obj_end(1);
-			print_obj_end(), print_obj_dlm();
-		}
-	}
-	else if (entry_type == ENTRY::tunersets_table)
-	{
-		vector<string> _index;
-
-		if (dbih->tuners.size() == 4)
-		{
-			for (auto & ytype : {0, 1, 2, 3})
-			{
-				string iname = "tns:";
-				char yname = dbih->value_transponder_type(ytype);
-				iname += yname;
-
-				for (auto & x : dbih->index[iname])
-				{
-					string tnid = x.second;
-					_index.push_back(tnid);
-				}
-			}
-		}
-
-		auto it = _index.begin();
-		auto last = _index.end();
-
-		if (offset != 0)
-		{
-			if (it + pos < last)
-				it += pos;
-			else
-				it = last;
-			if (it + offset < last)
-				last = it + offset;
-		}
-
-		end = (last == _index.end());
-
-		for (; it != last; it++)
-		{
-			string tnid = *it;
-			char ty = tnid[0];
-			int tvid = dbih->value_transponder_type(ty);
-
-			e2db::tunersets_table tn = dbih->tuners[tvid].tables[tnid];
-
-			print_obj_begin(), print_obj_sep(-1);
-			print_obj_pair(TYPE::tnid, tn.tnid), print_obj_sep();
-			print_obj_pair(TYPE::ytype, tn.ytype), print_obj_sep();
-			print_obj_pair(TYPE::tname, tn.name), print_obj_sep();
-			print_obj_pair(TYPE::pos, tn.pos), print_obj_sep();
-			print_obj_pair(TYPE::country, tn.country), print_obj_sep();
-			print_obj_pair(TYPE::feed, tn.feed), print_obj_sep();
-			print_obj_pair(TYPE::flgs, tn.flgs), print_obj_sep();
-			print_obj_pair(TYPE::tndata, NULL);
-			print_obj_begin(1), print_obj_sep(-1);
-			size_t i = 0;
-			for (auto & x : tn.transponders)
-			{
-				e2db::tunersets_transponder tntxp = x.second;
-				i++;
-
-				print_obj_begin(2), print_obj_sep(-1);
-				print_obj_pair(TYPE::trid, tntxp.trid), print_obj_sep();
-				print_obj_pair(TYPE::idx, tntxp.index), print_obj_sep(1);
-				print_obj_end(2), print_obj_dlm(2, i == tn.transponders.size());
-			}
-			print_obj_end(1), print_obj_sep();
-			print_obj_pair(TYPE::idx, tn.index), print_obj_sep(1);
-			print_obj_end(), print_obj_dlm();
-		}
-	}
-	else if (entry_type == ENTRY::tunersets_transponder)
-	{
-		vector<pair<string, string>> _index;
-
-		if (dbih->tuners.size() == 4)
-		{
-			for (auto & d : {0, 1, 2, 3})
-			{
-				e2db::tunersets tv = dbih->tuners[d];
-
-				string iname = "tns:";
-				char yname = dbih->value_transponder_type(tv.ytype);
-				iname += yname;
-
-				for (auto & x : dbih->index[iname])
-				{
-					string tnid = x.second;
-
-					for (auto & x : dbih->index[tnid])
-					{
-						string trid = x.second;
-						_index.push_back(pair (trid, tnid));
-					}
-				}
-			}
-		}
-
-		auto it = _index.begin();
-		auto last = _index.end();
-
-		if (offset != 0)
-		{
-			if (it + pos < last)
-				it += pos;
-			else
-				it = last;
-			if (it + offset < last)
-				last = it + offset;
-		}
-
-		end = (last == _index.end());
-
-		for (; it != last; it++)
-		{
-			string trid = it->first;
-			string tnid = it->second;
-			char ty = tnid[0];
-			int tvid = dbih->value_transponder_type(ty);
-
-			e2db::tunersets_table tn = dbih->tuners[tvid].tables[tnid];
-			e2db::tunersets_transponder tntxp = dbih->tuners[tvid].tables[tnid].transponders[trid];
-
-			print_obj_begin(), print_obj_sep(-1);
-			print_obj_pair(TYPE::trid, tntxp.trid), print_obj_sep();
-			print_obj_pair(TYPE::tnid, tn.tnid), print_obj_sep();
-			print_obj_pair(TYPE::ytype, tn.ytype), print_obj_sep();
-			print_obj_pair(TYPE::pos, tn.pos), print_obj_sep();
-			TYPE sys;
-			switch (tn.ytype)
-			{
-				case e2db::YTYPE::satellite: sys = TYPE::sys; break;
-				case e2db::YTYPE::terrestrial: sys = TYPE::tsys; break;
-				case e2db::YTYPE::cable: sys = TYPE::csys; break;
-				case e2db::YTYPE::atsc: sys = TYPE::asys; break;
-			}
-			print_obj_pair(sys, tntxp.sys), print_obj_sep();
-			print_obj_pair(TYPE::freq, tntxp.freq), print_obj_sep();
-			print_obj_pair(TYPE::pol, tntxp.pol), print_obj_sep();
-			print_obj_pair(TYPE::sr, tntxp.sr), print_obj_sep();
-			print_obj_pair(TYPE::mod, tntxp.mod), print_obj_sep();
-			print_obj_pair(TYPE::tmod, tntxp.tmod), print_obj_sep();
-			print_obj_pair(TYPE::cmod, tntxp.cmod), print_obj_sep();
-			print_obj_pair(TYPE::amod, tntxp.amod), print_obj_sep();
-			print_obj_pair(TYPE::band, tntxp.band), print_obj_sep();
-			print_obj_pair(TYPE::tmx, tntxp.tmx), print_obj_sep();
-			print_obj_pair(TYPE::fec, tntxp.fec), print_obj_sep();
-			print_obj_pair(TYPE::hpfec, tntxp.hpfec), print_obj_sep();
-			print_obj_pair(TYPE::lpfec, tntxp.lpfec), print_obj_sep();
-			print_obj_pair(TYPE::cfec, tntxp.cfec), print_obj_sep();
-			print_obj_pair(TYPE::inv, tntxp.inv), print_obj_sep();
-			print_obj_pair(TYPE::rol, tntxp.rol), print_obj_sep();
-			print_obj_pair(TYPE::pil, tntxp.pil), print_obj_sep();
-			print_obj_pair(TYPE::guard, tntxp.guard), print_obj_sep();
-			print_obj_pair(TYPE::hier, tntxp.hier), print_obj_sep();
-			print_obj_pair(TYPE::isid, tntxp.isid), print_obj_sep();
-			print_obj_pair(TYPE::plsmode, tntxp.plsmode), print_obj_sep();
-			print_obj_pair(TYPE::plscode, tntxp.plscode), print_obj_sep();
-			print_obj_pair(TYPE::idx, tntxp.index), print_obj_sep(1);
-			print_obj_end(), print_obj_dlm();
-		}
-	}
-	else if (entry_type == ENTRY::channel_reference)
-	{
-		this->last_is = bname;
-
-		if (! dbih->userbouquets.count(bname))
-		{
-			string msg = "Userbouquet \"%s\" not exists.";
-
-			size_t csize = msg.size() + this->last_is.size();
-			char cstr[csize];
-			std::snprintf(cstr, csize, msg.c_str(), this->last_is.c_str());
-
-			cerr << "Error" << ':' << ' ' << cstr << endl;
-
-			end = 1;
-
-			return;
-		}
-
-		auto it = dbih->index[bname].begin();
-		auto last = dbih->index[bname].end();
-
-		if (offset != 0)
-		{
-			if (it + pos < last)
-				it += pos;
-			else
-				it = last;
-			if (it + offset < last)
-				last = it + offset;
-		}
-
-		end = (last == dbih->index[bname].end());
-
-		for (; it != last; it++)
-		{
-			e2db::channel_reference chref = dbih->userbouquets[bname].channels[it->second];
-
-			if (chref.marker)
-			{
 				print_obj_begin(), print_obj_sep(-1);
-				print_obj_pair(TYPE::chid, chref.chid), print_obj_sep();
-				print_obj_pair(TYPE::mname, chref.value), print_obj_sep();
-				 //TODO
-				print_obj_pair(TYPE::stype, int (e2db::STYPE::marker)), print_obj_sep();
+				print_obj_pair(TYPE::txid, tx.txid), print_obj_sep();
+				print_obj_pair(TYPE::ytype, tx.ytype), print_obj_sep();
+				print_obj_pair(TYPE::pos, tx.pos), print_obj_sep();
+				print_obj_pair(TYPE::tsid, tx.tsid), print_obj_sep();
+				print_obj_pair(TYPE::onid, tx.onid), print_obj_sep();
+				print_obj_pair(TYPE::dvbns, tx.dvbns), print_obj_sep();
+				TYPE sys;
+				switch (tx.ytype)
+				{
+					case e2db::YTYPE::satellite: sys = TYPE::sys; break;
+					case e2db::YTYPE::terrestrial: sys = TYPE::tsys; break;
+					case e2db::YTYPE::cable: sys = TYPE::csys; break;
+					case e2db::YTYPE::atsc: sys = TYPE::asys; break;
+				}
+				print_obj_pair(sys, tx.sys), print_obj_sep();
+				print_obj_pair(TYPE::freq, tx.freq), print_obj_sep();
+				print_obj_pair(TYPE::pol, tx.pol), print_obj_sep();
+				print_obj_pair(TYPE::sr, tx.sr), print_obj_sep();
+				print_obj_pair(TYPE::mod, tx.mod), print_obj_sep();
+				print_obj_pair(TYPE::tmod, tx.tmod), print_obj_sep();
+				print_obj_pair(TYPE::cmod, tx.cmod), print_obj_sep();
+				print_obj_pair(TYPE::amod, tx.amod), print_obj_sep();
+				print_obj_pair(TYPE::band, tx.band), print_obj_sep();
+				print_obj_pair(TYPE::tmx, tx.tmx), print_obj_sep();
+				print_obj_pair(TYPE::fec, tx.fec), print_obj_sep();
+				print_obj_pair(TYPE::hpfec, tx.hpfec), print_obj_sep();
+				print_obj_pair(TYPE::lpfec, tx.lpfec), print_obj_sep();
+				print_obj_pair(TYPE::cfec, tx.cfec), print_obj_sep();
+				print_obj_pair(TYPE::inv, tx.inv), print_obj_sep();
+				print_obj_pair(TYPE::rol, tx.rol), print_obj_sep();
+				print_obj_pair(TYPE::pil, tx.pil), print_obj_sep();
+				print_obj_pair(TYPE::guard, tx.guard), print_obj_sep();
+				print_obj_pair(TYPE::hier, tx.hier), print_obj_sep();
+				print_obj_pair(TYPE::flgs, tx.flgs), print_obj_sep();
+				print_obj_pair(TYPE::oflgs, tx.oflgs), print_obj_sep();
 				print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
 				print_obj_end(), print_obj_dlm();
 			}
-			else if (dbih->db.services.count(chref.chid))
+		}
+		else if (entry_type == ENTRY::service)
+		{
+			auto it = dbih->index["chs"].begin();
+			auto last = dbih->index["chs"].end();
+
+			if (offset != 0)
 			{
-				e2db::service ch = dbih->db.services[chref.chid];
+				if (it + pos < last)
+					it += pos;
+				else
+					it = last;
+				if (it + offset < last)
+					last = it + offset;
+			}
+
+			end = (last == dbih->index["chs"].end());
+
+			for (; it != last; it++)
+			{
+				e2db::service ch = dbih->db.services[it->second];
 				vector<string> vxnul;
 
 				print_obj_begin(), print_obj_sep(-1);
@@ -1261,7 +883,11 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end,
 				print_obj_pair(TYPE::chname, ch.chname), print_obj_sep();
 				print_obj_pair(TYPE::ssid, ch.ssid), print_obj_sep();
 				print_obj_pair(TYPE::tsid, ch.tsid), print_obj_sep();
+				print_obj_pair(TYPE::onid, ch.onid), print_obj_sep();
+				print_obj_pair(TYPE::dvbns, ch.dvbns), print_obj_sep();
 				print_obj_pair(TYPE::stype, ch.stype), print_obj_sep();
+				print_obj_pair(TYPE::snum, ch.snum), print_obj_sep();
+				print_obj_pair(TYPE::srcid, ch.srcid), print_obj_sep();
 
 				//TODO
 				print_obj_pair(TYPE::chdata, NULL);
@@ -1276,11 +902,401 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end,
 				print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
 				print_obj_end(), print_obj_dlm();
 			}
-			else
+		}
+		else if (entry_type == ENTRY::bouquet)
+		{
+			auto it = dbih->index["bss"].begin();
+			auto last = dbih->index["bss"].end();
+
+			if (offset != 0)
 			{
-				// orphan
+				if (it + pos < last)
+					it += pos;
+				else
+					it = last;
+				if (it + offset < last)
+					last = it + offset;
+			}
+
+			end = (last == dbih->index["bss"].end());
+
+			for (; it != last; it++)
+			{
+				e2db::bouquet bs = dbih->bouquets[it->second];
+
+				print_obj_begin(), print_obj_sep(-1);
+				print_obj_pair(TYPE::bname, bs.bname), print_obj_sep();
+				print_obj_pair(TYPE::rname, bs.rname), print_obj_sep();
+				print_obj_pair(TYPE::btype, bs.btype), print_obj_sep();
+				print_obj_pair(TYPE::qname, bs.name), print_obj_sep();
+				print_obj_pair(TYPE::nname, bs.nname), print_obj_sep();
+				print_obj_pair(TYPE::bsdata, NULL);
+				print_obj_begin(1), print_obj_sep(-1);
+				size_t i = 0;
+				for (string & w : bs.userbouquets)
+				{
+					i++;
+
+					print_obj_begin(2), print_obj_sep(-1);
+					print_obj_pair(TYPE::bname, w), print_obj_sep(1);
+					print_obj_end(2), print_obj_dlm(2, i == bs.userbouquets.size());
+				}
+				print_obj_end(1), print_obj_sep();
+				print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
+				print_obj_end(), print_obj_dlm();
 			}
 		}
+		else if (entry_type == ENTRY::userbouquet)
+		{
+			auto it = dbih->index["ubs"].begin();
+			auto last = dbih->index["ubs"].end();
+
+			if (offset != 0)
+			{
+				if (it + pos < last)
+					it += pos;
+				else
+					it = last;
+				if (it + offset < last)
+					last = it + offset;
+			}
+
+			end = (last == dbih->index["ubs"].end());
+
+			for (; it != last; it++)
+			{
+				e2db::userbouquet ub = dbih->userbouquets[it->second];
+
+				print_obj_begin(), print_obj_sep(-1);
+				print_obj_pair(TYPE::bname, ub.bname), print_obj_sep();
+				print_obj_pair(TYPE::rname, ub.rname), print_obj_sep();
+				print_obj_pair(TYPE::qname, ub.name), print_obj_sep();
+				print_obj_pair(TYPE::pname, ub.pname), print_obj_sep();
+				print_obj_pair(TYPE::ubdata, NULL);
+				print_obj_begin(1), print_obj_sep(-1);
+				size_t i = 0;
+				for (auto & x : ub.channels)
+				{
+					e2db::channel_reference chref = x.second;
+					i++;
+
+					print_obj_begin(2), print_obj_sep(-1);
+					print_obj_pair(TYPE::chid, chref.chid), print_obj_sep(1);
+					print_obj_end(2), print_obj_dlm(2, i == ub.channels.size());
+				}
+				print_obj_end(1), print_obj_sep();
+				print_obj_pair(TYPE::locked, ub.locked), print_obj_sep();
+				print_obj_pair(TYPE::hidden, ub.hidden), print_obj_sep();
+				print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
+				print_obj_end(), print_obj_dlm();
+			}
+		}
+		else if (entry_type == ENTRY::tunersets)
+		{
+			vector<int> _index;
+
+			if (dbih->tuners.size() == 4)
+			{
+				for (auto & ytype : {0, 1, 2, 3})
+				{
+					_index.push_back(ytype);
+				}
+			}
+
+			auto it = _index.begin();
+			auto last = _index.end();
+
+			if (offset != 0)
+			{
+				if (it + pos < last)
+					it += pos;
+				else
+					it = last;
+				if (it + offset < last)
+					last = it + offset;
+			}
+
+			end = (last == _index.end());
+
+			for (; it != last; it++)
+			{
+				int tvid = *it;
+				e2db::tunersets tv = dbih->tuners[tvid];
+
+				print_obj_begin(), print_obj_sep(-1);
+				print_obj_pair(TYPE::tvid, tv.ytype), print_obj_sep();
+				print_obj_pair(TYPE::ytype, tv.ytype), print_obj_sep();
+				print_obj_pair(TYPE::charset, tv.charset), print_obj_sep();
+				print_obj_pair(TYPE::tvdata, NULL);
+				print_obj_begin(1), print_obj_sep(-1);
+				size_t i = 0;
+				for (auto & x : tv.tables)
+				{
+					e2db::tunersets_table tn = x.second;
+					i++;
+
+					print_obj_begin(2), print_obj_sep(-1);
+					print_obj_pair(TYPE::tnid, tn.tnid), print_obj_sep();
+					print_obj_pair(TYPE::idx, tn.index), print_obj_sep(1);
+					print_obj_end(2), print_obj_dlm(2, i == tv.tables.size());
+				}
+				print_obj_end(1);
+				print_obj_end(), print_obj_dlm();
+			}
+		}
+		else if (entry_type == ENTRY::tunersets_table)
+		{
+			vector<string> _index;
+
+			if (dbih->tuners.size() == 4)
+			{
+				for (auto & ytype : {0, 1, 2, 3})
+				{
+					string iname = "tns:";
+					char yname = dbih->value_transponder_type(ytype);
+					iname += yname;
+
+					for (auto & x : dbih->index[iname])
+					{
+						string tnid = x.second;
+						_index.push_back(tnid);
+					}
+				}
+			}
+
+			auto it = _index.begin();
+			auto last = _index.end();
+
+			if (offset != 0)
+			{
+				if (it + pos < last)
+					it += pos;
+				else
+					it = last;
+				if (it + offset < last)
+					last = it + offset;
+			}
+
+			end = (last == _index.end());
+
+			for (; it != last; it++)
+			{
+				string tnid = *it;
+				char ty = tnid[0];
+				int tvid = dbih->value_transponder_type(ty);
+
+				e2db::tunersets_table tn = dbih->tuners[tvid].tables[tnid];
+
+				print_obj_begin(), print_obj_sep(-1);
+				print_obj_pair(TYPE::tnid, tn.tnid), print_obj_sep();
+				print_obj_pair(TYPE::ytype, tn.ytype), print_obj_sep();
+				print_obj_pair(TYPE::tname, tn.name), print_obj_sep();
+				print_obj_pair(TYPE::pos, tn.pos), print_obj_sep();
+				print_obj_pair(TYPE::country, tn.country), print_obj_sep();
+				print_obj_pair(TYPE::feed, tn.feed), print_obj_sep();
+				print_obj_pair(TYPE::flgs, tn.flgs), print_obj_sep();
+				print_obj_pair(TYPE::tndata, NULL);
+				print_obj_begin(1), print_obj_sep(-1);
+				size_t i = 0;
+				for (auto & x : tn.transponders)
+				{
+					e2db::tunersets_transponder tntxp = x.second;
+					i++;
+
+					print_obj_begin(2), print_obj_sep(-1);
+					print_obj_pair(TYPE::trid, tntxp.trid), print_obj_sep();
+					print_obj_pair(TYPE::idx, tntxp.index), print_obj_sep(1);
+					print_obj_end(2), print_obj_dlm(2, i == tn.transponders.size());
+				}
+				print_obj_end(1), print_obj_sep();
+				print_obj_pair(TYPE::idx, tn.index), print_obj_sep(1);
+				print_obj_end(), print_obj_dlm();
+			}
+		}
+		else if (entry_type == ENTRY::tunersets_transponder)
+		{
+			vector<pair<string, string>> _index;
+
+			if (dbih->tuners.size() == 4)
+			{
+				for (auto & d : {0, 1, 2, 3})
+				{
+					e2db::tunersets tv = dbih->tuners[d];
+
+					string iname = "tns:";
+					char yname = dbih->value_transponder_type(tv.ytype);
+					iname += yname;
+
+					for (auto & x : dbih->index[iname])
+					{
+						string tnid = x.second;
+
+						for (auto & x : dbih->index[tnid])
+						{
+							string trid = x.second;
+							_index.push_back(pair (trid, tnid));
+						}
+					}
+				}
+			}
+
+			auto it = _index.begin();
+			auto last = _index.end();
+
+			if (offset != 0)
+			{
+				if (it + pos < last)
+					it += pos;
+				else
+					it = last;
+				if (it + offset < last)
+					last = it + offset;
+			}
+
+			end = (last == _index.end());
+
+			for (; it != last; it++)
+			{
+				string trid = it->first;
+				string tnid = it->second;
+				char ty = tnid[0];
+				int tvid = dbih->value_transponder_type(ty);
+
+				e2db::tunersets_table tn = dbih->tuners[tvid].tables[tnid];
+				e2db::tunersets_transponder tntxp = dbih->tuners[tvid].tables[tnid].transponders[trid];
+
+				print_obj_begin(), print_obj_sep(-1);
+				print_obj_pair(TYPE::trid, tntxp.trid), print_obj_sep();
+				print_obj_pair(TYPE::tnid, tn.tnid), print_obj_sep();
+				print_obj_pair(TYPE::ytype, tn.ytype), print_obj_sep();
+				print_obj_pair(TYPE::pos, tn.pos), print_obj_sep();
+				TYPE sys;
+				switch (tn.ytype)
+				{
+					case e2db::YTYPE::satellite: sys = TYPE::sys; break;
+					case e2db::YTYPE::terrestrial: sys = TYPE::tsys; break;
+					case e2db::YTYPE::cable: sys = TYPE::csys; break;
+					case e2db::YTYPE::atsc: sys = TYPE::asys; break;
+				}
+				print_obj_pair(sys, tntxp.sys), print_obj_sep();
+				print_obj_pair(TYPE::freq, tntxp.freq), print_obj_sep();
+				print_obj_pair(TYPE::pol, tntxp.pol), print_obj_sep();
+				print_obj_pair(TYPE::sr, tntxp.sr), print_obj_sep();
+				print_obj_pair(TYPE::mod, tntxp.mod), print_obj_sep();
+				print_obj_pair(TYPE::tmod, tntxp.tmod), print_obj_sep();
+				print_obj_pair(TYPE::cmod, tntxp.cmod), print_obj_sep();
+				print_obj_pair(TYPE::amod, tntxp.amod), print_obj_sep();
+				print_obj_pair(TYPE::band, tntxp.band), print_obj_sep();
+				print_obj_pair(TYPE::tmx, tntxp.tmx), print_obj_sep();
+				print_obj_pair(TYPE::fec, tntxp.fec), print_obj_sep();
+				print_obj_pair(TYPE::hpfec, tntxp.hpfec), print_obj_sep();
+				print_obj_pair(TYPE::lpfec, tntxp.lpfec), print_obj_sep();
+				print_obj_pair(TYPE::cfec, tntxp.cfec), print_obj_sep();
+				print_obj_pair(TYPE::inv, tntxp.inv), print_obj_sep();
+				print_obj_pair(TYPE::rol, tntxp.rol), print_obj_sep();
+				print_obj_pair(TYPE::pil, tntxp.pil), print_obj_sep();
+				print_obj_pair(TYPE::guard, tntxp.guard), print_obj_sep();
+				print_obj_pair(TYPE::hier, tntxp.hier), print_obj_sep();
+				print_obj_pair(TYPE::isid, tntxp.isid), print_obj_sep();
+				print_obj_pair(TYPE::plsmode, tntxp.plsmode), print_obj_sep();
+				print_obj_pair(TYPE::plscode, tntxp.plscode), print_obj_sep();
+				print_obj_pair(TYPE::idx, tntxp.index), print_obj_sep(1);
+				print_obj_end(), print_obj_dlm();
+			}
+		}
+		else if (entry_type == ENTRY::channel_reference)
+		{
+			if (! dbih->userbouquets.count(bname))
+			{
+				cerr << "Error: " << msg("Userbouquet \"%s\" not exists.", bname) << endl;
+
+				end = 1;
+
+				return;
+			}
+
+			auto it = dbih->index[bname].begin();
+			auto last = dbih->index[bname].end();
+
+			if (offset != 0)
+			{
+				if (it + pos < last)
+					it += pos;
+				else
+					it = last;
+				if (it + offset < last)
+					last = it + offset;
+			}
+
+			end = (last == dbih->index[bname].end());
+
+			for (; it != last; it++)
+			{
+				e2db::channel_reference chref = dbih->userbouquets[bname].channels[it->second];
+
+				if (chref.marker)
+				{
+					print_obj_begin(), print_obj_sep(-1);
+					print_obj_pair(TYPE::chid, chref.chid), print_obj_sep();
+					print_obj_pair(TYPE::mname, chref.value), print_obj_sep();
+					 //TODO
+					print_obj_pair(TYPE::stype, int (e2db::STYPE::marker)), print_obj_sep();
+					print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
+					print_obj_end(), print_obj_dlm();
+				}
+				else if (dbih->db.services.count(chref.chid))
+				{
+					e2db::service ch = dbih->db.services[chref.chid];
+					vector<string> vxnul;
+
+					print_obj_begin(), print_obj_sep(-1);
+					print_obj_pair(TYPE::chid, ch.chid), print_obj_sep();
+					print_obj_pair(TYPE::txid, ch.txid), print_obj_sep();
+					print_obj_pair(TYPE::chname, ch.chname), print_obj_sep();
+					print_obj_pair(TYPE::ssid, ch.ssid), print_obj_sep();
+					print_obj_pair(TYPE::tsid, ch.tsid), print_obj_sep();
+					print_obj_pair(TYPE::stype, ch.stype), print_obj_sep();
+
+					//TODO
+					print_obj_pair(TYPE::chdata, NULL);
+					print_obj_begin(1), print_obj_sep(-1);
+					print_obj_pair(TYPE::sdata_p, ch.data.count(e2db::SDATA::p) ? ch.data[e2db::SDATA::p] : vxnul), print_obj_sep();
+					print_obj_pair(TYPE::sdata_c, ch.data.count(e2db::SDATA::c) ? ch.data[e2db::SDATA::c] : vxnul), print_obj_sep();
+					print_obj_pair(TYPE::sdata_C, ch.data.count(e2db::SDATA::C) ? ch.data[e2db::SDATA::C] : vxnul), print_obj_sep();
+					print_obj_pair(TYPE::sdata_f, ch.data.count(e2db::SDATA::f) ? ch.data[e2db::SDATA::f] : vxnul), print_obj_sep(1);
+					print_obj_end(1), print_obj_sep();
+
+					print_obj_pair(TYPE::locked, ch.locked), print_obj_sep();
+					print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
+					print_obj_end(), print_obj_dlm();
+				}
+				else
+				{
+					// orphan
+				}
+			}
+		}
+	}
+	catch (const std::invalid_argument& err)
+	{
+		cerr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+	}
+	catch (const std::out_of_range& err)
+	{
+		cerr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+	}
+	//TODO
+	catch (const std::bad_any_cast& err)
+	{
+		cerr << "Error: " << msg(MSG::except_bad_any_cast, err.what()) << endl;
+	}
+	catch (const std::runtime_error& err)
+	{
+		cerr << "Error: " << err.what() << endl;
+	}
+	catch (...)
+	{
+		cerr << "Error: " << msg(MSG::except_uncaught) << endl;
 	}
 }
 
@@ -1310,11 +1326,10 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 
 	if (edit && id.empty())
 	{
-		cerr << "Error" << ':' << ' ' << "Wrong parameter identifier." << endl;
+		cerr << "Error: " << msg("Wrong parameter identifier.") << endl;
+
 		return;
 	}
-
-	this->last_is = id;
 
 	try
 	{
@@ -1327,7 +1342,7 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 				if (dbih->db.transponders.count(id))
 					tx = dbih->db.transponders[id];
 				else
-					throw std::runtime_error ("Transponder \"%s\" not exists.");
+					throw std::runtime_error (msg("Transponder \"%s\" not exists.", id));
 			}
 
 			tx.ytype = any_cast<int>(field(TYPE::yname, true));
@@ -1386,7 +1401,7 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 				if (dbih->db.services.count(id))
 					ch = dbih->db.services[id];
 				else
-					throw std::runtime_error ("Service \"%s\" not exists.");
+					throw std::runtime_error (msg("Service \"%s\" not exists.", id));
 			}
 
 			ch.txid = any_cast<string>(field(TYPE::txid, true));
@@ -1401,7 +1416,7 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 			}
 			else
 			{
-				throw std::runtime_error ("Transponder \"%s\" not exists.");
+				throw std::runtime_error (msg("Transponder \"%s\" not exists.", ch.txid));
 			}
 
 			ch.stype = any_cast<int>(field(TYPE::stype, true));
@@ -1432,7 +1447,7 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 				if (dbih->bouquets.count(id))
 					bs = dbih->bouquets[id];
 				else
-					throw std::runtime_error ("Bouquet \"%s\" not exists.");
+					throw std::runtime_error (msg("Bouquet \"%s\" not exists.", id));
 			}
 
 			bs.btype = any_cast<int>(field(TYPE::btype, true));
@@ -1457,7 +1472,7 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 				if (dbih->userbouquets.count(id))
 					ub = dbih->userbouquets[id];
 				else
-					throw std::runtime_error ("Userbouquet \"%s\" not exists.");
+					throw std::runtime_error (msg("Userbouquet \"%s\" not exists.", id));
 			}
 
 			if (edit && 1)
@@ -1489,7 +1504,7 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 				}
 				catch (...)
 				{
-					throw std::runtime_error ("Tuner settings \"%s\" not exists.");
+					throw std::runtime_error (msg("Tuner settings \"%s\" not exists.", id));
 				}
 			}
 
@@ -1526,7 +1541,7 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 				}
 
 				if (! found)
-					throw std::runtime_error ("Tuner settings table \"%s\" not exists.");
+					throw std::runtime_error (msg("Tuner settings table \"%s\" not exists.", id));
 			}
 
 			tn.ytype = any_cast<int>(field(TYPE::ytype, true));
@@ -1582,7 +1597,7 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 				}
 
 				if (! found)
-					throw std::runtime_error ("Tuner settings transponder \"%s\" not exists.");
+					throw std::runtime_error (msg("Tuner settings transponder \"%s\" not exists.", id));
 			}
 
 			tntxp.sys = any_cast<int>(field(TYPE::sys));
@@ -1638,7 +1653,7 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 		else if (entry_type == ENTRY::channel_reference)
 		{
 			if (! dbih->userbouquets.count(bname))
-				throw std::runtime_error ("Userbouquet \"%s\" not exists.");
+				throw std::runtime_error (msg("Userbouquet \"%s\" not exists.", bname));
 
 			e2db::channel_reference chref;
 
@@ -1650,7 +1665,7 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 			else // service
 			{
 				if (! dbih->db.services.count(id))
-					throw std::runtime_error ("Service \"%s\" not exists.");
+					throw std::runtime_error (msg("Service \"%s\" not exists.", id));
 
 				chref.chid = id;
 			}
@@ -1661,25 +1676,26 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 				dbih->add_channel_reference(chref, bname);
 		}
 	}
+
+	catch (const std::invalid_argument& err)
+	{
+		cerr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+	}
+	catch (const std::out_of_range& err)
+	{
+		cerr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+	}
+	catch (const std::bad_any_cast& err)
+	{
+		cerr << "Error: " << msg("Wrong input data in \"%s\" field.", this->last_label) << endl;
+	}
 	catch (const std::runtime_error& err)
 	{
-		size_t csize = std::strlen(err.what()) + this->last_is.size();
-		char cstr[csize];
-		std::snprintf(cstr, csize, err.what(), this->last_is.c_str());
-
-		cerr << "Error" << ':' << ' ' << cstr << endl;
+		cerr << "Error: " << err.what() << endl;
 	}
-	// catch (const std::bad_any_cast& err)
-	// catch (const std::invalid_argument& err)
 	catch (...)
 	{
-		string msg = "Wrong input data in \"%s\" field.";
-
-		size_t csize = msg.size() + this->last_label.size();
-		char cstr[csize];
-		std::snprintf(cstr, csize, msg.c_str(), this->last_label.c_str());
-
-		cerr << "Error" << ':' << ' ' << cstr << endl;
+		cerr << "Error: " << msg(MSG::except_uncaught) << endl;
 	}
 }
 
@@ -1692,39 +1708,38 @@ void e2db_cli::shell_entry_remove(ENTRY entry_type, string id, string bname)
 {
 	if (id.empty())
 	{
-		cerr << "Error" << ':' << ' ' << "Wrong parameter identifier." << endl;
+		cerr << "Error: " << msg("Wrong parameter identifier.") << endl;
+
 		return;
 	}
-
-	this->last_is = id;
 
 	try
 	{
 		if (entry_type == ENTRY::transponder)
 		{
 			if (! dbih->db.transponders.count(id))
-				throw std::runtime_error ("Transponder \"%s\" not exists.");
+				throw std::runtime_error (msg("Transponder \"%s\" not exists.", id));
 
 			dbih->remove_transponder(id);
 		}
 		else if (entry_type == ENTRY::service)
 		{
 			if (! dbih->db.services.count(id))
-				throw std::runtime_error ("Service \"%s\" not exists.");
+				throw std::runtime_error (msg("Service \"%s\" not exists.", id));
 
 			dbih->remove_service(id);
 		}
 		else if (entry_type == ENTRY::bouquet)
 		{
 			if (! dbih->bouquets.count(id))
-				throw std::runtime_error ("Bouquet \"%s\" not exists.");
+				throw std::runtime_error (msg("Bouquet \"%s\" not exists.", id));
 
 			dbih->remove_bouquet(id);
 		}
 		else if (entry_type == ENTRY::userbouquet)
 		{
 			if (! dbih->userbouquets.count(id))
-				throw std::runtime_error ("Userbouquet \"%s\" not exists.");
+				throw std::runtime_error (msg("Userbouquet \"%s\" not exists.", id));
 
 			dbih->remove_userbouquet(id);
 		}
@@ -1741,7 +1756,7 @@ void e2db_cli::shell_entry_remove(ENTRY entry_type, string id, string bname)
 			}
 			catch (...)
 			{
-				throw std::runtime_error ("Tuner settings \"%s\" not exists.");
+				throw std::runtime_error (msg("Tuner settings \"%s\" not exists.", id));
 			}
 
 			dbih->remove_tunersets(tvid);
@@ -1763,7 +1778,7 @@ void e2db_cli::shell_entry_remove(ENTRY entry_type, string id, string bname)
 			}
 
 			if (! found)
-				throw std::runtime_error ("Tuner settings table \"%s\" not exists.");
+				throw std::runtime_error (msg("Tuner settings table \"%s\" not exists.", id));
 
 			dbih->remove_tunersets_table(id, tv);
 		}
@@ -1791,16 +1806,17 @@ void e2db_cli::shell_entry_remove(ENTRY entry_type, string id, string bname)
 			}
 
 			if (! found)
-				throw std::runtime_error ("Tuner settings transponder \"%s\" not exists.");
+				throw std::runtime_error (msg("Tuner settings transponder \"%s\" not exists.", id));
 
 			dbih->remove_tunersets_transponder(id, tn);
 		}
 		else if (entry_type == ENTRY::channel_reference)
 		{
 			if (! dbih->userbouquets.count(bname))
-				throw std::runtime_error ("Userbouquet \"%s\" not exists.");
+				throw std::runtime_error (msg("Userbouquet \"%s\" not exists.", bname));
+
 			if (! dbih->userbouquets[bname].channels.count(id))
-				throw std::runtime_error ("Channel reference \"%s\" not exists.");
+				throw std::runtime_error (msg("Channel reference \"%s\" not exists.", id));
 
 			e2db::channel_reference chref = dbih->userbouquets[bname].channels[id];
 
@@ -1809,11 +1825,11 @@ void e2db_cli::shell_entry_remove(ENTRY entry_type, string id, string bname)
 	}
 	catch (const std::runtime_error& err)
 	{
-		size_t csize = std::strlen(err.what()) + this->last_is.size();
-		char cstr[csize];
-		std::snprintf(cstr, csize, err.what(), this->last_is.c_str());
-
-		cerr << "Error" << ':' << ' ' << cstr << endl;
+		cerr << "Error: " << err.what() << endl;
+	}
+	catch (...)
+	{
+		cerr << "Error: " << msg(MSG::except_uncaught) << endl;
 	}
 }
 
@@ -1821,18 +1837,17 @@ void e2db_cli::shell_entry_parentallock(ENTRY entry_type, string id, bool flag)
 {
 	if (id.empty())
 	{
-		cerr << "Error" << ':' << ' ' << "Wrong parameter identifier." << endl;
+		cerr << "Error: " << msg("Wrong parameter identifier.") << endl;
+
 		return;
 	}
-
-	this->last_is = id;
 
 	try
 	{
 		if (entry_type == ENTRY::service)
 		{
 			if (! dbih->db.services.count(id))
-				throw std::runtime_error ("Service \"%s\" not exists.");
+				throw std::runtime_error (msg("Service \"%s\" not exists.", id));
 
 			if (flag)
 				dbih->set_service_parentallock(id);
@@ -1842,7 +1857,7 @@ void e2db_cli::shell_entry_parentallock(ENTRY entry_type, string id, bool flag)
 		else if (entry_type == ENTRY::userbouquet)
 		{
 			if (! dbih->userbouquets.count(id))
-				throw std::runtime_error ("Userbouquet \"%s\" not exists.");
+				throw std::runtime_error (msg("Userbouquet \"%s\" not exists.", id));
 
 			if (flag)
 				dbih->set_userbouquet_parentallock(id);
@@ -1852,11 +1867,11 @@ void e2db_cli::shell_entry_parentallock(ENTRY entry_type, string id, bool flag)
 	}
 	catch (const std::runtime_error& err)
 	{
-		size_t csize = std::strlen(err.what()) + this->last_is.size();
-		char cstr[csize];
-		std::snprintf(cstr, csize, err.what(), this->last_is.c_str());
-
-		cerr << "Error" << ':' << ' ' << cstr << endl;
+		cerr << "Error: " << err.what() << endl;
+	}
+	catch (...)
+	{
+		cerr << "Error: " << msg(MSG::except_uncaught) << endl;
 	}
 }
 
@@ -2408,7 +2423,6 @@ std::any e2db_cli::field(TYPE type, bool required)
 		is.erase(is.find_last_not_of(" \n\r\t\v\b\f") + 1);
 
 		this->last_label = label;
-		this->last_is = is;
 
 		if (! is.empty())
 		{

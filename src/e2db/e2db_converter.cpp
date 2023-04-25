@@ -19,6 +19,7 @@
 #include <sstream>
 #include <fstream>
 #include <filesystem>
+#include <stdexcept>
 
 #include "e2db_converter.h"
 
@@ -39,17 +40,36 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, vector<string> pat
 	debug("import_csv_file", "file path", "multiple");
 	debug("import_csv_file", "file input", fci);
 
-	bool merge = this->get_input().size() != 0 ? true : false;
-	auto* dst = merge ? newptr() : this;
+	try
+	{
+		bool merge = this->get_input().size() != 0 ? true : false;
+		auto* dst = merge ? newptr() : this;
 
-	for (string & path : paths)
-	{
-		import_csv_file(fci, opts, dst, path);
+		for (string & path : paths)
+		{
+			import_csv_file(fci, opts, dst, path);
+		}
+		if (merge)
+		{
+			this->merge(dst);
+			delete dst;
+		}
 	}
-	if (merge)
+	catch (const std::invalid_argument& err)
 	{
-		this->merge(dst);
-		delete dst;
+		exception("import_csv_file", "Error", msg(MSG::except_invalid_argument, err.what()));
+	}
+	catch (const std::out_of_range& err)
+	{
+		exception("import_csv_file", "Error", msg(MSG::except_out_of_range, err.what()));
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		exception("import_csv_file", "Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (...)
+	{
+		exception("import_csv_file", "Error", msg(MSG::except_uncaught));
 	}
 }
 
@@ -58,15 +78,34 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, string path)
 	debug("import_csv_file", "file path", "singular");
 	debug("import_csv_file", "file input", fci);
 
-	bool merge = this->get_input().size() != 0 ? true : false;
-	auto* dst = merge ? newptr() : this;
-
-	import_csv_file(fci, opts, dst, path);
-
-	if (merge)
+	try
 	{
-		this->merge(dst);
-		delete dst;
+		bool merge = this->get_input().size() != 0 ? true : false;
+		auto* dst = merge ? newptr() : this;
+
+		import_csv_file(fci, opts, dst, path);
+
+		if (merge)
+		{
+			this->merge(dst);
+			delete dst;
+		}
+	}
+	catch (const std::invalid_argument& err)
+	{
+		exception("import_csv_file", "Error", msg(MSG::except_invalid_argument, err.what()));
+	}
+	catch (const std::out_of_range& err)
+	{
+		exception("import_csv_file", "Error", msg(MSG::except_out_of_range, err.what()));
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		exception("import_csv_file", "Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (...)
+	{
+		exception("import_csv_file", "Error", msg(MSG::except_uncaught));
 	}
 }
 
@@ -77,45 +116,64 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 
 	std::clock_t start = std::clock();
 
-	if (! std::filesystem::exists(path))
+	try
 	{
-		return error("import_csv_file", "File Error", trf("File \"%s\" not exists.", path));
-	}
-	if (! std::filesystem::is_regular_file(path))
-	{
-		return error("import_csv_file", "File Error", trf("File \"%s\" is not a valid file.", path));
-	}
-	if
-	(
-		(std::filesystem::status(path).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none &&
-		(std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
-	)
-	{
-		return error("import_csv_file", "File Error", trf("File \"%s\" is not readable.", path));
-	}
+		if (! std::filesystem::exists(path))
+		{
+			return error("import_csv_file", "File Error", msg("File \"%s\" not exists.", path));
+		}
+		if (! std::filesystem::is_regular_file(path))
+		{
+			return error("import_csv_file", "File Error", msg("File \"%s\" is not a valid file.", path));
+		}
+		if
+		(
+			(std::filesystem::status(path).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none &&
+			(std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
+		)
+		{
+			return error("import_csv_file", "File Error", msg("File \"%s\" is not readable.", path));
+		}
 
-	ifstream ifile (path);
+		ifstream ifile (path);
 
-	switch (fci)
-	{
-		case FCONVS::convert_services:
-			pull_csv_services(ifile, dst);
-		break;
-		case FCONVS::convert_bouquets:
-			pull_csv_bouquets(ifile, dst);
-		break;
-		case FCONVS::convert_userbouquets:
-			pull_csv_userbouquets(ifile, dst);
-		break;
-		case FCONVS::convert_tunersets:
-			pull_csv_tunersets(ifile, dst);
-		break;
-		default:
-			ifile.close();
-		return error("import_csv_file", "Error", "Unknown import option.");
+		switch (fci)
+		{
+			case FCONVS::convert_services:
+				pull_csv_services(ifile, dst);
+			break;
+			case FCONVS::convert_bouquets:
+				pull_csv_bouquets(ifile, dst);
+			break;
+			case FCONVS::convert_userbouquets:
+				pull_csv_userbouquets(ifile, dst);
+			break;
+			case FCONVS::convert_tunersets:
+				pull_csv_tunersets(ifile, dst);
+			break;
+			default:
+				ifile.close();
+			return error("import_csv_file", "Error", "Unknown import option.");
+		}
+
+		ifile.close();
 	}
-
-	ifile.close();
+	catch (const std::invalid_argument& err)
+	{
+		exception("import_csv_file", "Error", msg(MSG::except_invalid_argument, err.what()));
+	}
+	catch (const std::out_of_range& err)
+	{
+		exception("import_csv_file", "Error", msg(MSG::except_out_of_range, err.what()));
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		exception("import_csv_file", "Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (...)
+	{
+		exception("import_csv_file", "Error", msg(MSG::except_uncaught));
+	}
 
 	std::clock_t end = std::clock();
 
@@ -129,74 +187,93 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 
 	std::clock_t start = std::clock();
 
-	std::filesystem::path fp = std::filesystem::path(path);
-	string basedir = fp.parent_path().u8string();
-	if (basedir.size() && basedir[basedir.size() - 1] != '/')
-		basedir.append("/");
-	string filename = fp.filename().u8string();
-
-	opts.filename = filename;
-
-	vector<e2db_file> files;
-
-	switch (fco)
+	try
 	{
-		case FCONVS::convert_all:
-			push_csv_all(files);
-		break;
-		case FCONVS::convert_services:
-			if (opts.fc == FCONVS::convert_current)
-				push_csv_services(files, opts.stype);
+		std::filesystem::path fp = std::filesystem::path(path);
+		string basedir = fp.parent_path().u8string();
+		if (basedir.size() && basedir[basedir.size() - 1] != '/')
+			basedir.append("/");
+		string filename = fp.filename().u8string();
+
+		opts.filename = filename;
+
+		vector<e2db_file> files;
+
+		switch (fco)
+		{
+			case FCONVS::convert_all:
+				push_csv_all(files);
+			break;
+			case FCONVS::convert_services:
+				if (opts.fc == FCONVS::convert_current)
+					push_csv_services(files, opts.stype);
+				else
+					push_csv_services(files);
+			break;
+			case FCONVS::convert_bouquets:
+				if (opts.fc == FCONVS::convert_current)
+					push_csv_bouquets(files, opts.bname);
+				else
+					push_csv_bouquets(files);
+			break;
+			case FCONVS::convert_userbouquets:
+				if (opts.fc == FCONVS::convert_current)
+					push_csv_userbouquets(files, opts.bname);
+				else
+					push_csv_userbouquets(files);
+			break;
+			case FCONVS::convert_tunersets:
+				if (opts.fc == FCONVS::convert_current)
+					push_csv_tunersets(files, opts.ytype);
+				else
+					push_csv_tunersets(files);
+			break;
+			default:
+			return error("export_csv_file", "Error", "Unknown export option.");
+		}
+
+		bool once = !! files.size();
+		for (auto & file : files)
+		{
+			string fpath;
+			if (once)
+				fpath = basedir + file.filename;
 			else
-				push_csv_services(files);
-		break;
-		case FCONVS::convert_bouquets:
-			if (opts.fc == FCONVS::convert_current)
-				push_csv_bouquets(files, opts.bname);
-			else
-				push_csv_bouquets(files);
-		break;
-		case FCONVS::convert_userbouquets:
-			if (opts.fc == FCONVS::convert_current)
-				push_csv_userbouquets(files, opts.bname);
-			else
-				push_csv_userbouquets(files);
-		break;
-		case FCONVS::convert_tunersets:
-			if (opts.fc == FCONVS::convert_current)
-				push_csv_tunersets(files, opts.ytype);
-			else
-				push_csv_tunersets(files);
-		break;
-		default:
-		return error("export_csv_file", "Error", "Unknown export option.");
+				fpath = basedir + opts.filename;
+
+			if (! OVERWRITE_FILE && std::filesystem::exists(fpath))
+			{
+				return error("export_csv_file", "File Error", msg("File \"%s\" already exists.", fpath));
+			}
+			if
+			(
+				(std::filesystem::status(fpath).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
+				(std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
+			)
+			{
+				return error("export_csv_file", "File Error", msg("File \"%s\" is not writable.", fpath));
+			}
+
+			ofstream out (fpath);
+			out << file.data;
+			out.close();
+		}
 	}
-
-	bool once = !! files.size();
-	for (auto & file : files)
+	catch (const std::invalid_argument& err)
 	{
-		string fpath;
-		if (once)
-			fpath = basedir + file.filename;
-		else
-			fpath = basedir + opts.filename;
-
-		if (! OVERWRITE_FILE && std::filesystem::exists(fpath))
-		{
-			return error("export_csv_file", "File Error", trf("File \"%s\" already exists.", fpath));
-		}
-		if
-		(
-			(std::filesystem::status(fpath).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
-			(std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
-		)
-		{
-			return error("export_csv_file", "File Error", trf("File \"%s\" is not writable.", fpath));
-		}
-
-		ofstream out (fpath);
-		out << file.data;
-		out.close();
+		exception("export_csv_file", "Error", msg(MSG::except_invalid_argument, err.what()));
+	}
+	catch (const std::out_of_range& err)
+	{
+		exception("export_csv_file", "Error", msg(MSG::except_out_of_range, err.what()));
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		exception("export_csv_file", "Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (...)
+	{
+		exception("export_csv_file", "Error", msg(MSG::except_uncaught));
 	}
 
 	std::clock_t end = std::clock();
@@ -211,77 +288,96 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 
 	std::clock_t start = std::clock();
 
-	std::filesystem::path fpath = std::filesystem::path(path);
-	string basedir = fpath.parent_path().u8string();
-	if (basedir.size() && basedir[basedir.size() - 1] != '/')
-		basedir.append("/");
-	string filename = fpath.filename().u8string();
-
-	opts.filename = filename;
-
-	vector<e2db_file> files;
-
-	switch (fco)
+	try
 	{
-		case FCONVS::convert_all:
-			push_html_all(files);
-		break;
-		case FCONVS::convert_index:
-			push_html_index(files);
-		break;
-		case FCONVS::convert_services:
-			if (opts.fc == FCONVS::convert_current)
-				push_html_services(files, opts.stype);
+		std::filesystem::path fpath = std::filesystem::path(path);
+		string basedir = fpath.parent_path().u8string();
+		if (basedir.size() && basedir[basedir.size() - 1] != '/')
+			basedir.append("/");
+		string filename = fpath.filename().u8string();
+
+		opts.filename = filename;
+
+		vector<e2db_file> files;
+
+		switch (fco)
+		{
+			case FCONVS::convert_all:
+				push_html_all(files);
+			break;
+			case FCONVS::convert_index:
+				push_html_index(files);
+			break;
+			case FCONVS::convert_services:
+				if (opts.fc == FCONVS::convert_current)
+					push_html_services(files, opts.stype);
+				else
+					push_html_services(files);
+			break;
+			case FCONVS::convert_bouquets:
+				if (opts.fc == FCONVS::convert_current)
+					push_html_bouquets(files, opts.bname);
+				else
+					push_html_bouquets(files);
+			break;
+			case FCONVS::convert_userbouquets:
+				if (opts.fc == FCONVS::convert_current)
+					push_html_userbouquets(files, opts.bname);
+				else
+					push_html_userbouquets(files);
+			break;
+			case FCONVS::convert_tunersets:
+				if (opts.fc == FCONVS::convert_current)
+					push_html_tunersets(files, opts.ytype);
+				else
+					push_html_tunersets(files);
+			break;
+			default:
+			return error("export_html_file", "Error", "Unknown export option.");
+		}
+
+		bool once = !! files.size();
+		for (e2db_file & file : files)
+		{
+			string fpath;
+			if (once)
+				fpath = basedir + file.filename;
 			else
-				push_html_services(files);
-		break;
-		case FCONVS::convert_bouquets:
-			if (opts.fc == FCONVS::convert_current)
-				push_html_bouquets(files, opts.bname);
-			else
-				push_html_bouquets(files);
-		break;
-		case FCONVS::convert_userbouquets:
-			if (opts.fc == FCONVS::convert_current)
-				push_html_userbouquets(files, opts.bname);
-			else
-				push_html_userbouquets(files);
-		break;
-		case FCONVS::convert_tunersets:
-			if (opts.fc == FCONVS::convert_current)
-				push_html_tunersets(files, opts.ytype);
-			else
-				push_html_tunersets(files);
-		break;
-		default:
-		return error("export_html_file", "Error", "Unknown export option.");
+				fpath = basedir + opts.filename;
+
+			if (! OVERWRITE_FILE && std::filesystem::exists(fpath))
+			{
+				return error("export_html_file", "File Error", msg("File \"%s\" already exists.", fpath));
+			}
+			if
+			(
+				(std::filesystem::status(fpath).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
+				(std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
+			)
+			{
+				return error("export_html_file", "File Error", msg("File \"%s\" is not writable.", fpath));
+			}
+
+			ofstream out (fpath);
+			out << file.data;
+			out.close();
+		}
 	}
-
-	bool once = !! files.size();
-	for (e2db_file & file : files)
+	catch (const std::invalid_argument& err)
 	{
-		string fpath;
-		if (once)
-			fpath = basedir + file.filename;
-		else
-			fpath = basedir + opts.filename;
-
-		if (! OVERWRITE_FILE && std::filesystem::exists(fpath))
-		{
-			return error("export_html_file", "File Error", trf("File \"%s\" already exists.", fpath));
-		}
-		if
-		(
-			(std::filesystem::status(fpath).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
-			(std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
-		)
-		{
-			return error("export_html_file", "File Error", trf("File \"%s\" is not writable.", fpath));
-		}
-
-		ofstream out (fpath);
-		out << file.data;
-		out.close();
+		exception("export_html_file", "Error", msg(MSG::except_invalid_argument, err.what()));
+	}
+	catch (const std::out_of_range& err)
+	{
+		exception("export_html_file", "Error", msg(MSG::except_out_of_range, err.what()));
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		exception("export_html_file", "Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (...)
+	{
+		exception("export_html_file", "Error", msg(MSG::except_uncaught));
 	}
 
 	std::clock_t end = std::clock();
@@ -1616,7 +1712,7 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 	if (index.count(bname))
 		debug("csv_channel_list", "bname", bname);
 	else
-		error("csv_channel_list", "Error", trf("Missing index key \"%s\".", bname));
+		error("csv_channel_list", "Error", msg("Missing index key \"%s\".", bname));
 	debug("csv_channel_list", "view", view);
 
 	string ub_name;
@@ -1804,7 +1900,7 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 	if (index.count(bname))
 		debug("csv_channel_list_extended", "bname", bname);
 	else
-		error("csv_channel_list_extended", "Error", trf("Missing index key \"%s\".", bname));
+		error("csv_channel_list_extended", "Error", msg("Missing index key \"%s\".", bname));
 	debug("csv_channel_list_extended", "view", view);
 
 	string ub_name;
@@ -2068,7 +2164,7 @@ void e2db_converter::csv_bouquet_list(string& csv, string bname)
 	if (bouquets.count(bname))
 		debug("csv_bouquet_list", "bname", bname);
 	else
-		error("csv_bouquet_list", "Error", trf("Bouquet \"%s\" not exists.", bname));
+		error("csv_bouquet_list", "Error", msg("Bouquet \"%s\" not exists.", bname));
 
 	bouquet bs = bouquets[bname];
 
@@ -2369,7 +2465,7 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 	if (index.count(bname))
 		debug("page_body_channel_list", "bname", bname);
 	else
-		error("page_body_channel_list", "Error", trf("Missing index key \"%s\".", bname));
+		error("page_body_channel_list", "Error", msg("Missing index key \"%s\".", bname));
 	debug("page_body_channel_list", "view", view);
 
 	string cssname = view == DOC_VIEW::view_bouquets ? "userbouquet" : "services";
@@ -2524,7 +2620,7 @@ void e2db_converter::page_body_bouquet_list(html_page& page, string bname)
 	if (bouquets.count(bname))
 		debug("page_body_bouquet_list", "bname", bname);
 	else
-		error("page_body_bouquet_list", "Error", trf("Bouquet \"%s\" not exists.", bname));
+		error("page_body_bouquet_list", "Error", msg("Bouquet \"%s\" not exists.", bname));
 
 	bouquet bs = bouquets[bname];
 

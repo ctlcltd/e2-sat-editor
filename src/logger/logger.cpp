@@ -38,31 +38,31 @@ logger::logger(data* obj, string ns, string cn)
 
 void logger::debug(string fn)
 {
-	std::ostream out (buf);
-	out << timestamp();
-	out << ' ' << "<Debug>";
-	out << ' ' << '[' << ns << ']';
-	out << ' ' << cn << "::" << fn;
-	out << std::endl;
+	std::ostream os (buf);
+	os << timestamp();
+	os << ' ' << "<Debug>";
+	os << ' ' << '[' << ns << ']';
+	os << ' ' << cn << "::" << fn;
+	os << std::endl;
 	if (this->obj->debug)
-		std::cout << out.rdbuf();
+		std::cout << os.rdbuf();
 	this->obj->log.append(buf->str());
 	buf->str("");
 }
 
 void logger::debug(string fn, string optk, string optv)
 {
-	std::ostream out (buf);
-	out << timestamp();
-	out << ' ' << "<Debug>";
-	out << ' ' << '[' << ns << ']';
-	out << ' ' << cn << "::" << fn;
-	out << ' ';
-	out << ' ' << optk << ':';
-	out << ' ' << optv;
-	out << std::endl;
+	std::ostream os (buf);
+	os << timestamp();
+	os << ' ' << "<Debug>";
+	os << ' ' << '[' << ns << ']';
+	os << ' ' << cn << "::" << fn;
+	os << ' ';
+	os << ' ' << optk << ':';
+	os << ' ' << optv;
+	os << std::endl;
 	if (this->obj->debug)
-		std::cout << out.rdbuf();
+		std::cout << os.rdbuf();
 	this->obj->log.append(buf->str());
 	buf->str("");
 }
@@ -74,31 +74,31 @@ void logger::debug(string fn, string optk, int optv)
 
 void logger::info(string fn)
 {
-	std::ostream out (buf);
-	out << timestamp();
-	out << ' ' << "<Info>";
-	out << ' ' << '[' << ns << ']';
-	out << ' ' << cn << "::" << fn;
-	out << std::endl;
+	std::ostream os (buf);
+	os << timestamp();
+	os << ' ' << "<Info>";
+	os << ' ' << '[' << ns << ']';
+	os << ' ' << cn << "::" << fn;
+	os << std::endl;
 	if (this->obj->debug)
-		std::cout << out.rdbuf();
+		std::cout << os.rdbuf();
 	this->obj->log.append(buf->str());
 	buf->str("");
 }
 
 void logger::info(string fn, string optk, string optv)
 {
-	std::ostream out (buf);
-	out << timestamp();
-	out << ' ' << "<Info>";
-	out << ' ' << '[' << ns << ']';
-	out << ' ' << cn << "::" << fn;
-	out << ' ';
-	out << ' ' << optk << ':';
-	out << ' ' << optv;
-	out << std::endl;
+	std::ostream os (buf);
+	os << timestamp();
+	os << ' ' << "<Info>";
+	os << ' ' << '[' << ns << ']';
+	os << ' ' << cn << "::" << fn;
+	os << ' ';
+	os << ' ' << optk << ':';
+	os << ' ' << optv;
+	os << std::endl;
 	if (this->obj->debug)
-		std::cout << out.rdbuf();
+		std::cout << os.rdbuf();
 	this->obj->log.append(buf->str());
 	buf->str("");
 }
@@ -110,29 +110,29 @@ void logger::info(string fn, string optk, int optv)
 
 void logger::error(string fn)
 {
-	std::ostream err (buf);
-	err << timestamp();
-	err << ' ' << "<Error>";
-	err << ' ' << '[' << ns << ']';
-	err << ' ' << cn << "::" << fn;
-	err << std::endl;
-	std::cerr << err.rdbuf();
+	std::ostream os (buf);
+	os << timestamp();
+	os << ' ' << "<Error>";
+	os << ' ' << '[' << ns << ']';
+	os << ' ' << cn << "::" << fn;
+	os << std::endl;
+	std::cerr << os.rdbuf();
 	this->obj->log.append(buf->str());
 	buf->str("");
 }
 
 void logger::error(string fn, string optk, string optv)
 {
-	std::ostream err (buf);
-	err << timestamp();
-	err << ' ' << "<Error>";
-	err << ' ' << '[' << ns << ']';
-	err << ' ' << cn << "::" << fn;
-	err << ' ';
-	err << ' ' << optk << ':';
-	err << ' ' << optv;
-	err << std::endl;
-	std::cerr << err.rdbuf();
+	std::ostream os (buf);
+	os << timestamp();
+	os << ' ' << "<Error>";
+	os << ' ' << '[' << ns << ']';
+	os << ' ' << cn << "::" << fn;
+	os << ' ';
+	os << ' ' << optk << ':';
+	os << ' ' << optv;
+	os << std::endl;
+	std::cerr << os.rdbuf();
 	this->obj->log.append(buf->str());
 	buf->str("");
 }
@@ -140,6 +140,22 @@ void logger::error(string fn, string optk, string optv)
 void logger::error(string fn, string optk, int optv)
 {
 	this->logger::error(fn, optk, std::to_string(optv));
+}
+
+void logger::exception(string fn, string optk, string optv)
+{
+	std::ostream os (buf);
+	os << timestamp();
+	os << ' ' << "<Error>";
+	os << ' ' << '[' << ns << ']';
+	os << ' ' << cn << "::" << fn;
+	os << ' ';
+	os << ' ' << optk << ':';
+	os << ' ' << optv;
+	os << std::endl;
+	std::clog << os.rdbuf();
+	this->obj->log.append(buf->str());
+	buf->str("");
 }
 
 string logger::timestamp()
@@ -169,6 +185,44 @@ string logger::str()
 size_t logger::size()
 {
 	return this->obj->log.size();
+}
+
+string logger::msg(string str, string param)
+{
+	size_t csize = str.size() + param.size();
+	char cstr[csize];
+	std::snprintf(cstr, csize, str.c_str(), param.c_str());
+
+	return cstr;
+}
+
+string logger::msg(MSG msg, const char* param)
+{
+	string str = logger::msg(msg);
+	str.append(" %s");
+	return logger::msg(str, param);
+}
+
+string logger::msg(MSG msg)
+{
+	switch (msg)
+	{
+		case MSG::except_invalid_argument:
+			return "Invalid argument exception";
+		case MSG::except_out_of_range:
+			return "Out of range exception";
+		case MSG::except_bad_any_cast:
+			return "Bad any cast exception";
+		case MSG::except_filesystem:
+			return "Filesystem exception";
+		default:
+			return "Uncaught exception";
+	}
+}
+
+string logger::msg(string str)
+{
+	return str;
 }
 
 }

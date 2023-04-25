@@ -80,7 +80,7 @@ QIcon theme::icon(QString icon, ICON_STYLE style)
 	QBitmap mask = ico.createMaskFromColor(theme::absLuma() ? Qt::white : Qt::black, Qt::MaskOutColor);
 	QColor color;
 #ifndef Q_OS_MAC
-	color = theme::absLuma() ? QPalette().color(QPalette::Dark) : QPalette().color(QPalette::Mid).darker();
+	color = theme::absLuma() ? QPalette().color(QPalette::Light) : QPalette().color(QPalette::Mid).darker();
 #else
 	color = theme::absLuma() ? Qt::white : Qt::black;
 	color.setAlphaF(theme::absLuma() ? 0.73 : 0.67);
@@ -176,6 +176,7 @@ void theme::changed()
 	}
 }
 
+//TODO FIX system dark
 void theme::styleLight()
 {
 	QStyle* style = QStyleFactory::create("Fusion");

@@ -29,8 +29,8 @@ class ftpcom : public ::e2se_ftpcom::ftpcom
 	protected:
 		void setup();
 
-		string trs(string str) override;
-		string trw(string str, string param) override;
+		string msg(string str, string param) override;
+		string msg(string str) override;
 
 		void error(string fn, string optk, string optv) override;
 		void error(string fn, string optk, int optv) override;

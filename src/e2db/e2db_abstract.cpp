@@ -12,10 +12,10 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <stdexcept>
 #include <filesystem>
 #include <algorithm>
 #include <iostream>
+#include <stdexcept>
 
 #include "e2db_abstract.h"
 
@@ -352,7 +352,8 @@ vector<string> e2db_abstract::value_channel_cached(string str)
 
 int e2db_abstract::value_transponder_type(char ty)
 {
-	switch (ty) {
+	switch (ty)
+	{
 		case 's': return YTYPE::satellite;
 		case 't': return YTYPE::terrestrial;
 		case 'c': return YTYPE::cable;
@@ -384,7 +385,8 @@ char e2db_abstract::value_transponder_type(int yx)
 
 char e2db_abstract::value_transponder_type(YTYPE ytype)
 {
-	switch (ytype) {
+	switch (ytype)
+	{
 		case YTYPE::satellite: return 's';
 		case YTYPE::terrestrial: return 't';
 		case YTYPE::cable: return 'c';
@@ -574,7 +576,8 @@ string e2db_abstract::value_transponder_system(int sys, int yx)
 string e2db_abstract::value_transponder_system(int sys, YTYPE ytype)
 {
 	string psys;
-	switch (ytype) {
+	switch (ytype)
+	{
 		case YTYPE::satellite:
 			psys = sys != -1 ? SAT_SYS[sys] : "DVB-S";
 		break;
@@ -1224,37 +1227,43 @@ void e2db_abstract::set_parentallock(string chid, string bname)
 		db.services[chid].locked = true;
 }
 
-int e2db_abstract::get_e2db_services_type() {
+int e2db_abstract::get_e2db_services_type()
+{
 	debug("get_e2db_services_type");
 
 	return db.type;
 }
 
-void e2db_abstract::set_e2db_services_type(int type) {
+void e2db_abstract::set_e2db_services_type(int type)
+{
 	debug("set_e2db_services_type");
 
 	db.type = !! type;
 }
 
-int e2db_abstract::get_lamedb_version() {
+int e2db_abstract::get_lamedb_version()
+{
 	debug("get_lamedb_version", "version", LAMEDB_VER);
 
 	return LAMEDB_VER;
 }
 
-void e2db_abstract::set_lamedb_version(int ver) {
+void e2db_abstract::set_lamedb_version(int ver)
+{
 	debug("set_lamedb_version", "version", ver);
 
 	LAMEDB_VER = ver;
 }
 
-int e2db_abstract::get_zapit_version() {
+int e2db_abstract::get_zapit_version()
+{
 	debug("get_zapit_version", "version", ZAPIT_VER);
 
 	return ZAPIT_VER;
 }
 
-void e2db_abstract::set_zapit_version(int ver) {
+void e2db_abstract::set_zapit_version(int ver)
+{
 	debug("set_zapit_version", "version", ZAPIT_VER);
 
 	ZAPIT_VER = ver;
@@ -1517,20 +1526,6 @@ void e2db_abstract::debugger()
 		cout << "]" << endl;
 	}
 	cout << endl;
-}
-
-string e2db_abstract::trs(string str)
-{
-	return str;
-}
-
-string e2db_abstract::trf(string str, string param)
-{
-	size_t tsize = str.size() + param.size();
-	char tstr[tsize];
-	std::snprintf(tstr, tsize, str.c_str(), param.c_str());
-
-	return string (tstr);
 }
 
 }

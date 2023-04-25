@@ -17,6 +17,7 @@ using std::string, std::vector;
 
 #ifndef e2db_cli_h
 #define e2db_cli_h
+#include "../logger/logger.h"
 #include "../e2db/e2db.h"
 
 using namespace e2se_e2db;
@@ -172,10 +173,15 @@ class e2db_cli
 		string obj_escape(ESCAPE esc, VALUE value_type);
 		std::any field(TYPE type, bool required = false);
 
+		using MSG = e2se::logger::MSG;
+		static string msg(string str, string param) { return e2se::logger::msg(str, param); };
+		static string msg(string str) { return e2se::logger::msg(str); };
+		static string msg(e2se::logger::MSG msg, const char* param) { return e2se::logger::msg(msg, param); };
+		static string msg(e2se::logger::MSG msg) { return e2se::logger::msg(msg); };
+
 	private:
 		e2db* dbih = nullptr;
 		string last_label;
-		string last_is;
 };
 }
 #endif /* e2db_cli_h */

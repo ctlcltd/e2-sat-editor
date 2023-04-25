@@ -43,15 +43,15 @@ void ftpcom::setParameters(ftp_params params)
 	debug("setParameters");
 
 	if (params.user.empty())
-		error("setParameters", "FTP Error", trw("Missing \"%s\" parameter.", "username"));
+		error("setParameters", "FTP Error", msg("Missing \"%s\" parameter.", "username"));
 	if (params.pass.empty())
-		error("setParameters", "FTP Error", trw("Missing \"%s\" parameter.", "password"));
+		error("setParameters", "FTP Error", msg("Missing \"%s\" parameter.", "password"));
 	if (params.host.empty())
-		error("setParameters", "FTP Error", trw("Missing \"%s\" parameter.", "IP address"));
+		error("setParameters", "FTP Error", msg("Missing \"%s\" parameter.", "IP address"));
 	if (! params.ftport)
-		error("setParameters", "FTP Error", trw("Missing \"%s\" parameter.", "FTP port"));
+		error("setParameters", "FTP Error", msg("Missing \"%s\" parameter.", "FTP port"));
 	if (! params.htport)
-		error("setParameters", "FTP Error", trw("Missing \"%s\" parameter.", "HTTP port"));
+		error("setParameters", "FTP Error", msg("Missing \"%s\" parameter.", "HTTP port"));
 	if (params.actv)
 		this->actv = true;
 
@@ -62,11 +62,11 @@ void ftpcom::setParameters(ftp_params params)
 	this->pass = params.pass;
 
 	if (params.tpath.empty())
-		error("setParameters", "FTP Error", trw("Missing \"%s\" path parameter.", "Transponders"));
+		error("setParameters", "FTP Error", msg("Missing \"%s\" path parameter.", "Transponders"));
 	if (params.bpath.empty())
-		error("setParameters", "FTP Error", trw("Missing \"%s\" path parameter.", "Bouquets"));
+		error("setParameters", "FTP Error", msg("Missing \"%s\" path parameter.", "Bouquets"));
 	if (params.spath.empty())
-		error("setParameters", "FTP Error", trw("Missing \"%s\" path parameter.", "Services"));
+		error("setParameters", "FTP Error", msg("Missing \"%s\" path parameter.", "Services"));
 
 	this->baset = params.tpath;
 	this->baseb = params.bpath;
@@ -145,6 +145,7 @@ bool ftpcom::disconnect()
 		return false;
 
 	cleanup(cph);
+
 	return true;
 }
 
@@ -183,10 +184,11 @@ vector<string> ftpcom::list_dir(string basedir)
 
 	if (res != CURLE_OK)
 	{
-		error("list_dir", "FTP Error", trs(curl_easy_strerror(res))); // var error string
+		error("list_dir", "FTP Error", msg(curl_easy_strerror(res))); // var error string
 
 		reset(cph, rph);
 		data.clear();
+
 		return list;
 	}
 
@@ -264,9 +266,10 @@ void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 
 	if (res != CURLE_OK)
 	{
-		error("download_data", "FTP Error", trs(curl_easy_strerror(res))); // var error string
+		error("download_data", "FTP Error", msg(curl_easy_strerror(res))); // var error string
 
 		reset(cph, rph);
+
 		return;
 	}
 
@@ -308,8 +311,10 @@ void ftpcom::upload_data(string basedir, string filename, ftpcom_file file)
 	curl_easy_setopt(cph, CURLOPT_READDATA, &data);
 	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_discard_func);
 
-	for (int a = 0; (res != CURLE_OK) && (a < MAX_RESUME_ATTEMPTS); a++) {
+	for (int a = 0; (res != CURLE_OK) && (a < MAX_RESUME_ATTEMPTS); a++)
+	{
 		debug("upload_data", "attempt", (a + 1));
+
 		if (a)
 		{
 			curl_easy_setopt(cph, CURLOPT_NOBODY, true);
@@ -332,9 +337,10 @@ void ftpcom::upload_data(string basedir, string filename, ftpcom_file file)
 
 	if (res != CURLE_OK)
 	{
-		error("upload_data", "FTP Error", trs(curl_easy_strerror(res))); // var error string
+		error("upload_data", "FTP Error", msg(curl_easy_strerror(res))); // var error string
 
 		reset(cph, rph);
+
 		return;
 	}
 
@@ -543,10 +549,11 @@ bool ftpcom::cmd_ifreload()
 
 	if (res != CURLE_OK)
 	{
-		error("cmd_ifreload", "FTP Error", trs(curl_easy_strerror(res))); // var error string
+		error("cmd_ifreload", "FTP Error", msg(curl_easy_strerror(res))); // var error string
 
 		reset(csh, rsh);
 		data.clear();
+
 		return false;
 	}
 
@@ -606,9 +613,10 @@ bool ftpcom::cmd_tnreload()
 
 	if (res != CURLE_OK)
 	{
-		error("cmd_tnreload", "FTP Error", trs(curl_easy_strerror(res))); // var error string
+		error("cmd_tnreload", "FTP Error", msg(curl_easy_strerror(res))); // var error string
 
 		reset(csh, rsh);
+
 		return false;
 	}
 
@@ -617,20 +625,6 @@ bool ftpcom::cmd_tnreload()
 	reset(csh, rsh);
 
 	return true;
-}
-
-string ftpcom::trs(string str)
-{
-	return str;
-}
-
-string ftpcom::trw(string str, string param)
-{
-	size_t tsize = str.size() + param.size();
-	char tstr[tsize];
-	std::snprintf(tstr, tsize, str.c_str(), param.c_str());
-
-	return string (tstr);
 }
 
 }

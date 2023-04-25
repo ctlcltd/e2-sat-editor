@@ -66,19 +66,20 @@ void ftpcom::didChange()
 	setup();
 }
 
-string ftpcom::trs(string str)
-{
-	return tr(str.data()).toStdString();
-}
-
-string ftpcom::trw(string str, string param)
+string ftpcom::msg(string str, string param)
 {
 	string trstr = tr(str.data()).toStdString();
 	string trparam = tr(param.data()).toStdString();
 	size_t tsize = trstr.length() + trparam.length();
 	char tstr[tsize];
 	std::snprintf(tstr, tsize, trstr.c_str(), trparam.c_str());
+
 	return string (tstr);
+}
+
+string ftpcom::msg(string str)
+{
+	return tr(str.data()).toStdString();
 }
 
 void ftpcom::error(string fn, string optk, string optv)

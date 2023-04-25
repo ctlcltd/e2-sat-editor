@@ -845,7 +845,8 @@ void viewAbstract::treeSortItems(QTreeWidget* tw, int column, Qt::SortOrder orde
 
 		//Qt5
 		vector<QPair<QTreeWidgetItem*, int>> sorting (tw->topLevelItemCount());
-		for (int i = 0; i < int (sorting.size()); ++i) {
+		for (int i = 0; i < int (sorting.size()); ++i)
+		{
 			sorting[i].first = tw->topLevelItem(i);
 			sorting[i].second = i;
 		}

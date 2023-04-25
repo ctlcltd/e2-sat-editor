@@ -232,7 +232,7 @@ class gui : protected e2se::log_factory
 			bool update = false;
 		};
 
-#ifdef E2SE_DEMO
+#if defined Q_OS_WASM || defined E2SE_DEMO
 		struct gui_file
 		{
 			string data;

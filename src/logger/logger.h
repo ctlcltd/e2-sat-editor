@@ -21,7 +21,16 @@ namespace e2se
 class logger
 {
 	public:
-		struct data {
+		enum MSG {
+			except_uncaught,
+			except_invalid_argument,
+			except_out_of_range,
+			except_bad_any_cast,
+			except_filesystem
+		};
+
+		struct data
+		{
 			string log;
 			bool debug = false;
 		};
@@ -40,9 +49,14 @@ class logger
 		void error(string fn);
 		void error(string fn, string optk, string optv);
 		void error(string fn, string optk, int optv);
+		void exception(string fn, string optk, string optv);
 		string timestamp();
 		string str();
 		size_t size();
+		static string msg(string str, string param);
+		static string msg(string str);
+		static string msg(MSG msg, const char* param);
+		static string msg(MSG msg);
 		std::stringbuf* buf;
 		string ns;
 		string cn;
@@ -87,6 +101,10 @@ struct log_factory
 		virtual void error(string fn, string optk, int optv)
 		{
 			this->log->error(fn, optk, optv);
+		}
+		virtual void exception(string fn, string optk, string optv)
+		{
+			this->log->exception(fn, optk, optv);
 		}
 
 		logger* log;

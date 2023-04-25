@@ -34,8 +34,10 @@
 #include "../e2se_defs.h"
 #include "platforms/platform.h"
 
-#ifdef E2SE_DEMO
+#ifdef Q_OS_WASM
 #include <QFileDialog>
+#endif
+#ifdef E2SE_DEMO
 #include <QResource>
 #endif
 
@@ -488,6 +490,8 @@ void tab::openFile()
 
 	readFile(path);
 #else
+	gid->blobs.clear();
+
 	auto fileContentReady = [=](const QString& filename, const QByteArray& filedata)
 	{
 		if (! filename.isEmpty())
@@ -503,7 +507,7 @@ void tab::openFile()
 		}
 	};
 
-	QFileDialog::getOpenFileContent("All Files (*.*)", fileContentReady);
+	QFileDialog::getOpenFileContent("All Files (*)", fileContentReady);
 #endif
 }
 
@@ -520,8 +524,8 @@ bool tab::readFile(string filename)
 
 	if (statusBarIsVisible())
 		timer = statusBarMessage(tr("Reading from %1 …", "message").arg(filename.data()));
-	
-#ifndef E2SE_DEMO
+
+#ifndef Q_OS_WASM
 	theme::setWaitCursor();
 	bool readen = this->data->readFile(filename);
 	theme::unsetWaitCursor();
@@ -537,7 +541,7 @@ bool tab::readFile(string filename)
 		file.size = q.size;
 
 		debug("readFile", "file.path", q.filename);
-		debug("readFile", "file.size", q.size);
+		debug("readFile", "file.size", to_string(q.size));
 
 		files.emplace(file.filename, file);
 	}
@@ -617,7 +621,8 @@ void tab::saveFile(bool saveas)
 	bool written = this->data->writeFile(path);
 	theme::unsetWaitCursor();
 
-	if (written) {
+	if (written)
+	{
 		if (statusBarIsVisible())
 			statusBarMessage(tr("Saved to %1", "message").arg(path.data()));
 		else

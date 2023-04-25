@@ -312,7 +312,7 @@ void gui::menuBarLayout()
 
 	//: Platform: Window menu
 	QMenu* mwind = menuBarMenu(menu, tr("&Window", "menu"));
-#ifndef E2SE_DEMO
+#ifndef Q_OS_WASM
 	gmenu[GUI_CXE::WindowMinimize] = menuBarAction(mwind, tr("&Minimize", "menu"), [=]() { this->windowMinimize(); }, Qt::CTRL | Qt::Key_M);
 	menuBarSeparator(mwind);
 #endif
@@ -663,6 +663,7 @@ int gui::openTab(TAB_VIEW view, int arg)
 	if (current == nullptr)
 	{
 		error("openTab", tr("Error", "error").toStdString(), tr("Missing current tab reference.", "error").toStdString());
+
 		return -1;
 	}
 	else if (current->isChild())
@@ -699,7 +700,9 @@ int gui::openTab(TAB_VIEW view, int arg)
 	{
 		case TAB_VIEW::main:
 			error("openTab", tr("Error", "error").toStdString(), tr("Missing parent tab for tab reference \"%1\".", "error").arg(ttid).toStdString());
+
 			delete ttab;
+
 			return -1;
 		break;
 		case TAB_VIEW::transponders:
@@ -840,7 +843,7 @@ void gui::windowChanged()
 	else
 	{
 		debug("windowChanged", "mwind", "idle");
-#ifndef E2SE_DEMO
+#ifndef Q_OS_WASM
 		this->gex = this->gxe;
 		setFlags(GUI_CXE::idle);
 #endif
@@ -999,6 +1002,7 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 	QString caption = tr("Select one or more files to open", "file-dialog");
 	QStringList opts;
 	QFileDialog::FileMode fmode = QFileDialog::ExistingFiles;
+
 	switch (gde)
 	{
 		case GUI_DPORTS::Services:
@@ -1075,6 +1079,7 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& bit)
 
 	QString caption = tr("Select where to save", "file-dialog");
 	QStringList opts;
+
 	switch (gde)
 	{
 		case GUI_DPORTS::Services:
@@ -1316,6 +1321,7 @@ void gui::fileOpen()
 
 #ifdef E2SE_DEMO
 	newTab();
+
 	return;
 #endif
 

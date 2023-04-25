@@ -18,6 +18,7 @@
 #include <sstream>
 #include <fstream>
 #include <filesystem>
+#include <stdexcept>
 
 #include "e2db_parser.h"
 
@@ -1877,7 +1878,7 @@ bool e2db_parser::list_file(string path)
 
 	if (! std::filesystem::exists(path))
 	{
-		error("list_file", "File Error", trf("File \"%s\" not exists.", path));
+		error("list_file", "File Error", msg("File \"%s\" not exists.", path));
 		return false;
 	}
 	if
@@ -1886,7 +1887,7 @@ bool e2db_parser::list_file(string path)
 		(std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
 	)
 	{
-		error("list_file", "File Error", trf("File \"%s\" is not readable.", path));
+		error("list_file", "File Error", msg("File \"%s\" is not readable.", path));
 		return false;
 	}
 
@@ -1904,7 +1905,7 @@ bool e2db_parser::list_file(string path)
 			(std::filesystem::status(entry).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
 		)
 		{
-			error("list_file", "File Error", trf("File \"%s\" is not readable.", path));
+			error("list_file", "File Error", msg("File \"%s\" is not readable.", path));
 			return false;
 		}
 
@@ -1926,15 +1927,37 @@ bool e2db_parser::read(string path)
 {
 	debug("read", "path", path);
 
-	if (list_file(path))
-		parse_e2db();
-	else
-		return false;
+	try
+	{
+		if (list_file(path))
+			parse_e2db();
+		else
+			return false;
 
-	return true;
+		return true;
+	}
+	catch (const std::invalid_argument& err)
+	{
+		exception("read", "Parser Error", msg(MSG::except_invalid_argument, err.what()));
+	}
+	catch (const std::out_of_range& err)
+	{
+		exception("read", "Parser Error", msg(MSG::except_out_of_range, err.what()));
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		exception("read", "Parser Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (...)
+	{
+		exception("read", "Parser Error", msg(MSG::except_uncaught));
+	}
+
+	return false;
 }
 
-unordered_map<string, string> e2db_parser::get_input() {
+unordered_map<string, string> e2db_parser::get_input()
+{
 	debug("get_input");
 
 	return this->e2db;

@@ -1906,7 +1906,7 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
         <location filename="../src/gui/gui.cpp" line="1262"/>
         <source>Total</source>
         <comment>status-bar</comment>
-        <translation>Totale</translation>
+        <translation>Totali</translation>
     </message>
     <message>
         <location filename="../src/gui/gui.cpp" line="1252"/>
