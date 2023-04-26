@@ -33,7 +33,6 @@ class ftpcom : public ::e2se_ftpcom::ftpcom
 		string msg(string str) override;
 
 		void error(string fn, string optk, string optv) override;
-		void error(string fn, string optk, int optv) override;
 };
 }
 #endif /* ftpcom_gui_h */

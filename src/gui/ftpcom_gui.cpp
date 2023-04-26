@@ -88,10 +88,4 @@ void ftpcom::error(string fn, string optk, string optv)
 	QMessageBox::critical(nullptr, tr(optk.data(), "error"), tr(optv.data(), "error"));
 }
 
-void ftpcom::error(string fn, string optk, int optv)
-{
-	this->::e2se_ftpcom::ftpcom::error(fn, tr(optk.data(), "error").toStdString(), optv);
-	QMessageBox::critical(nullptr, tr(optk.data(), "error"), QString::number(optv));
-}
-
 }

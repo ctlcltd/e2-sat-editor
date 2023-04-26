@@ -43,13 +43,9 @@ class logger
 		void debug(string fn);
 		void debug(string fn, string optk, string optv);
 		void debug(string fn, string optk, int optv);
-		void info(string fn);
 		void info(string fn, string optk, string optv);
 		void info(string fn, string optk, int optv);
-		void error(string fn);
 		void error(string fn, string optk, string optv);
-		void error(string fn, string optk, int optv);
-		void exception(string fn, string optk, string optv);
 		string timestamp();
 		string str();
 		size_t size();
@@ -78,10 +74,6 @@ struct log_factory
 		{
 			this->log->debug(fn, optk, optv);
 		}
-		virtual void info(string fn)
-		{
-			this->log->info(fn);
-		}
 		virtual void info(string fn, string optk, string optv)
 		{
 			this->log->info(fn, optk, optv);
@@ -90,21 +82,13 @@ struct log_factory
 		{
 			this->log->info(fn, optk, optv);
 		}
-		virtual void error(string fn)
-		{
-			this->log->error(fn);
-		}
 		virtual void error(string fn, string optk, string optv)
-		{
-			this->log->error(fn, optk, optv);
-		}
-		virtual void error(string fn, string optk, int optv)
 		{
 			this->log->error(fn, optk, optv);
 		}
 		virtual void exception(string fn, string optk, string optv)
 		{
-			this->log->exception(fn, optk, optv);
+			this->log->error(fn, optk, optv);
 		}
 
 		logger* log;

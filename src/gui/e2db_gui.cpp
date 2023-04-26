@@ -691,10 +691,4 @@ void e2db::error(string fn, string optk, string optv)
 	QMessageBox::critical(nullptr, tr(optk.data(), "error"), QString(optv.data()));
 }
 
-void e2db::error(string fn, string optk, int optv)
-{
-	this->::e2se_e2db::e2db::error(fn, tr(optk.data(), "error").toStdString(), optv);
-	QMessageBox::critical(nullptr, tr(optk.data(), "error"), QString::number(optv));
-}
-
 }

@@ -91,7 +91,6 @@ class e2db : public ::e2se_e2db::e2db
 		string msg(string str, string param) override;
 
 		void error(string msg, string optk, string optv) override;
-		void error(string msg, string optk, int optv) override;
 };
 }
 #endif /* e2db_gui_h */
