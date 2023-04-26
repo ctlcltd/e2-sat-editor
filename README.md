@@ -23,6 +23,7 @@ Experiment online **DEMO**: https://github.com/ctlcltd/e2se-wasm-demo
 
 The demo was built with Qt for WebAssembly.
 
+&nbsp;
 
 ### Requirements
 
@@ -72,7 +73,7 @@ Instructions on how to compile in [INSTALL.md](https://github.com/ctlcltd/e2-sat
 |Folder|Description|
 |-|-|
 |**dist**|Specific target files, required during build.|
-|**res**|Graphic resources, used in this software.|
+|**res**|Resource files, used in this software.|
 |**scripts**|Utility bash scripts, used to build.|
 |**src**|The main source of this software.|
 |**vendor**|It contains symbolic links to external libraries.|
@@ -88,7 +89,7 @@ Instructions on how to compile in [INSTALL.md](https://github.com/ctlcltd/e2-sat
 - [x] satellites.xml editing
 - [x] print and import/export CSV
 - [ ] smart edit userbouquets
-- [ ] cli
+- [x] cli
 - [x] basic translations
 - [ ] multi-windowed gui
 - [ ] extensions and/or scripting
