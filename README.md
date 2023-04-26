@@ -17,6 +17,13 @@ And it supports also Neutrino xml (api v1, v2, v3, v4).
 [![A screenshot of e2 SAT Editor](https://github.com/ctlcltd/e2-sat-editor/raw/main/res/screenshot.png "e2 SAT Editor (screenshot)")](https://github.com/ctlcltd/e2-sat-editor/blob/main/res/screenshot.png?raw=true)
 
 
+## Try the demo
+
+Experiment online **DEMO**: https://github.com/ctlcltd/e2se-wasm-demo
+
+The demo was built with Qt for WebAssembly.
+
+
 ### Requirements
 
 * build tools (gcc, g++, make, cmake, qmake)
@@ -69,6 +76,7 @@ Instructions on how to compile in [INSTALL.md](https://github.com/ctlcltd/e2-sat
 |**scripts**|Utility bash scripts, used to build.|
 |**src**|The main source of this software.|
 |**vendor**|It contains symbolic links to external libraries.|
+|**translations**|Translation source files for gui (Qt).|
 |**workspace**|Utility python scripts, used for emulation: ftp, telnet, webif.|
 
 &nbsp;
@@ -81,7 +89,7 @@ Instructions on how to compile in [INSTALL.md](https://github.com/ctlcltd/e2-sat
 - [x] print and import/export CSV
 - [ ] smart edit userbouquets
 - [ ] cli
-- [ ] basic translations
+- [x] basic translations
 - [ ] multi-windowed gui
 - [ ] extensions and/or scripting
 - [ ] picons support
