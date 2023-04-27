@@ -27,7 +27,7 @@ set(SOURCES
 	e2db/e2db_maker.cpp
 	e2db/e2db_parser.cpp
 	e2db/e2db.cpp
-#  	ftpcom/ftpcom.cpp
+# 	ftpcom/ftpcom.cpp
 	gui/platforms/platform.h
 	gui/toolkit/InputControlEditEventObserver.cpp
 	gui/toolkit/ListProxyStyle.h
@@ -53,7 +53,7 @@ set(SOURCES
 	gui/editTunersetsTable.cpp
 	gui/editTunersetsTransponder.cpp
 	gui/editUserbouquet.cpp
-	gui/ftpcom_gui.cpp
+# 	gui/ftpcom_gui.cpp
 	gui/ftpHandler.cpp
 	gui/gui.cpp
 	gui/mainView.cpp

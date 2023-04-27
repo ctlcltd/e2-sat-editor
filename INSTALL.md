@@ -146,7 +146,7 @@ mv src/CMakeLists.txt src/CMakeLists.txt.bak
 cp dist/wasm/CMakeLists.txt src/CMakeLists.txt
 cd src
 ./qt-everywhere-src/qtbase/bin/qt-cmake .
-cmake --build build
+cmake --build .
 ```
 
 To match the requirement of the demo, you need also *e2se-seeds/enigma_db* folder from the repository **e2se-seeds**.

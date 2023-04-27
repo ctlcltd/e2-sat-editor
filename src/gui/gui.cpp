@@ -121,11 +121,17 @@ gui::gui(int argc, char* argv[])
 		mroot->installTranslator(&appTranslator);
 	}
 
-	this->mwid = new QWidget;
-	mwid->setWindowTitle("e2 SAT Editor");
+#ifdef Q_OS_WASM
+	QFont font = mroot->font();
+	font.setPointSize(font.pointSize() - 2);
+	mroot->setFont(font);
+#endif
 
 	//TODO i18n rtl
 	// mroot->setLayoutDirection(Qt::RightToLeft);
+
+	this->mwid = new QWidget;
+	mwid->setWindowTitle("e2 SAT Editor");
 
 	this->theme = new e2se_gui::theme;
 	theme->initStyle();
