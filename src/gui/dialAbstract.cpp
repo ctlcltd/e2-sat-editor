@@ -270,12 +270,11 @@ QWidget* dialAbstract::toolBarSpacer(QToolBar* toolbar)
 
 void dialAbstract::toolBarStyleSheet()
 {
-#ifndef Q_OS_MAC
 	if (! theme::isDefault())
 	{
 		theme->dynamicStyleSheet(dtbar, "#dial_toolbar { background: palette(mid) }");
 	}
-#else
+#ifdef Q_OS_MAC
 	QColor tbshade;
 	QString tbshade_hexArgb;
 

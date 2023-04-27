@@ -101,38 +101,54 @@ void channelBookView::layout()
 	//TODO improve vertical expanding [Windows]
 	tabv->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored);
 
+#ifdef TWS_TESTING
 	TreeProxyStyle* tree_style = new TreeProxyStyle;
 	tree->setStyle(tree_style);
+#endif
 	TreeProxyStyle* list_style = new TreeProxyStyle;
 	list->setStyle(list_style);
 
-	tree->setStyleSheet("QTreeWidget::item { padding: 2px 0 }");
-	list->setStyleSheet("QTreeWidget::item { padding: 2px 0 }");
+	if (theme::isDefault())
+	{
+		tree->setStyleSheet("QTreeWidget::item { padding: 2px 0 }");
+		list->setStyleSheet("QTreeWidget::item { padding: 2px 0 }");
+	}
+	else
+	{
+		tree->setStyleSheet("QTreeWidget { border: 0 } QTreeWidget::item { padding: 2px 0 }");
+		list->setStyleSheet("QTreeWidget { border: 0 } QTreeWidget::item { padding: 2px 0 }");
+	}
+	//TODO FIX
 	tabv->setStyleSheet("QTabBar::tab { width: 48px; margin-top: 0 }");
 
 #ifdef Q_OS_MAC
-	QColor itembackground;
-	QString itembackground_hexArgb;
+	if (theme::isDefault())
+	{
+		QColor itembackground;
+		QString itembackground_hexArgb;
 
-	itembackground = QColor(Qt::black);
-	itembackground.setAlphaF(0.08);
-	itembackground_hexArgb = itembackground.name(QColor::HexArgb);
+		itembackground = QColor(Qt::black);
+		itembackground.setAlphaF(0.08);
+		itembackground_hexArgb = itembackground.name(QColor::HexArgb);
 
-	theme->dynamicStyleSheet(widget, "QTreeWidget::item:selected:!active, QListWidget::item:selected:!active { selection-background-color: " + itembackground_hexArgb + " }", theme::light);
+		theme->dynamicStyleSheet(widget, "QTreeWidget::item:selected:!active, QListWidget::item:selected:!active { selection-background-color: " + itembackground_hexArgb + " }", theme::light);
 
-	itembackground = QPalette().color(QPalette::Dark);
-	itembackground.setAlphaF(0.15);
-	itembackground_hexArgb = itembackground.name(QColor::HexArgb);
+		itembackground = QPalette().color(QPalette::Dark);
+		itembackground.setAlphaF(0.15);
+		itembackground_hexArgb = itembackground.name(QColor::HexArgb);
 
-	theme->dynamicStyleSheet(widget, "QTreeWidget::item:selected:!active, QListWidget::item:selected:!active { selection-background-color: " + itembackground_hexArgb + " }", theme::dark);
+		theme->dynamicStyleSheet(widget, "QTreeWidget::item:selected:!active, QListWidget::item:selected:!active { selection-background-color: " + itembackground_hexArgb + " }", theme::dark);
+	}
 #endif
 
 	tree->setHidden(true);
 	tree->setHeaderHidden(true);
 	tree->setMinimumWidth(180);
 	tree->setUniformRowHeights(true);
+#ifdef TWS_TESTING
 	tree->setIndentation(true);
 	tree_style->setIndentation(12);
+#endif
 
 	list->setHidden(true);
 	list->setUniformRowHeights(true);
@@ -220,7 +236,14 @@ void channelBookView::sideLayout()
 
 	side_style->setIndentation(10);
 
-	side->setStyleSheet("QListWidget { background: transparent; font-size: 15px } QListView::item { padding: 10px 0 }");
+	if (theme::isDefault())
+	{
+		side->setStyleSheet("QListWidget { background: transparent; font-size: 15px } QListView::item { padding: 10px 0 }");
+	}
+	else
+	{
+		side->setStyleSheet("QListWidget { background: transparent; font-size: 15px; border: 0 } QListView::item { padding: 10px 0 }");
+	}
 
 	side->addItems({tr("Services"), tr("Bouquets"), tr("Positions"), tr("Providers"), tr("Resolution"), tr("Encryption"), tr("A-Z")});
 

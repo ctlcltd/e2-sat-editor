@@ -118,30 +118,44 @@ void mainView::layout()
 
 	TreeProxyStyle* side_style = new TreeProxyStyle;
 	side->setStyle(side_style);
+#ifdef TWS_TESTING
 	TreeProxyStyle* tree_style = new TreeProxyStyle;
 	tree->setStyle(tree_style);
+#endif
 	TreeProxyStyle* list_style = new TreeProxyStyle;
 	list->setStyle(list_style);
 
-	side->setStyleSheet("QTreeWidget { background: transparent } QTreeWidget::item { padding: 9px 0 }");
-	tree->setStyleSheet("QTreeWidget { background: transparent } QTreeWidget::item { margin: 1px 0 0; padding: 8px 0 }");
-	list->setStyleSheet("QTreeWidget::item { height: 32px }");
+	if (theme::isDefault())
+	{
+		side->setStyleSheet("QTreeWidget { background: transparent } QTreeWidget::item { padding: 9px 0 }");
+		tree->setStyleSheet("QTreeWidget { background: transparent } QTreeWidget::item { margin: 1px 0 0; padding: 8px 0 }");
+		list->setStyleSheet("QTreeWidget::item { height: 32px }");
+	}
+	else
+	{
+		side->setStyleSheet("QTreeWidget { background: transparent; border: 0 } QTreeWidget::item { padding: 9px 0 }");
+		tree->setStyleSheet("QTreeWidget { background: transparent; border: 0 } QTreeWidget::item { margin: 1px 0 0; padding: 8px 0 }");
+		list->setStyleSheet("QTreeWidget { border: 0 } QTreeWidget::item { height: 32px }");
+	}
 
 #ifdef Q_OS_MAC
-	QColor itembackground;
-	QString itembackground_hexArgb;
+	if (theme::isDefault())
+	{
+		QColor itembackground;
+		QString itembackground_hexArgb;
 
-	itembackground = QColor(Qt::black);
-	itembackground.setAlphaF(0.08);
-	itembackground_hexArgb = itembackground.name(QColor::HexArgb);
+		itembackground = QColor(Qt::black);
+		itembackground.setAlphaF(0.08);
+		itembackground_hexArgb = itembackground.name(QColor::HexArgb);
 
-	theme->dynamicStyleSheet(widget, "QTreeWidget::item:selected:!active { selection-background-color: " + itembackground_hexArgb + " }", theme::light);
+		theme->dynamicStyleSheet(widget, "QTreeWidget::item:selected:!active { selection-background-color: " + itembackground_hexArgb + " }", theme::light);
 
-	itembackground = QPalette().color(QPalette::Dark);
-	itembackground.setAlphaF(0.15);
-	itembackground_hexArgb = itembackground.name(QColor::HexArgb);
+		itembackground = QPalette().color(QPalette::Dark);
+		itembackground.setAlphaF(0.15);
+		itembackground_hexArgb = itembackground.name(QColor::HexArgb);
 
-	theme->dynamicStyleSheet(widget, "QTreeWidget::item:selected:!active { selection-background-color: " + itembackground_hexArgb + " }", theme::dark);
+		theme->dynamicStyleSheet(widget, "QTreeWidget::item:selected:!active { selection-background-color: " + itembackground_hexArgb + " }", theme::dark);
+	}
 #endif
 
 	side->setHeaderHidden(true);
@@ -159,8 +173,10 @@ void mainView::layout()
 	tree->setDefaultDropAction(Qt::MoveAction);
 	tree->setDropIndicatorShown(true);
 	tree->setEditTriggers(QTreeWidget::NoEditTriggers);
+#ifdef TWS_TESTING
 	tree->setIndentation(1);
 	tree_style->setIndentation(10);
+#endif
 
 	list->setUniformRowHeights(true);
 	list->setSelectionBehavior(QTreeWidget::SelectRows);

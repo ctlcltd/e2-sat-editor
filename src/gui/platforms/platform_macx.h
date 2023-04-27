@@ -9,6 +9,8 @@
  * @license GNU GPLv3 License
  */
 
+#include "../theme.h"
+
 #ifndef _platform_macx_h
 #define _platform_macx_h
 #include <QApplication>
@@ -65,6 +67,7 @@ class _platform_macx
 		static QWidget* osWindowBlend(QWidget* widget)
 		{
 			bool experiment = QSettings().value("preference/osExperiment", true).toBool();
+			experiment = e2se_gui::theme::isDefault() ? experiment : false;
 			if (QSettings().value("preference/osTranslucency", experiment).toBool())
 				return _osWindowBlend(widget);
 			else
@@ -73,6 +76,7 @@ class _platform_macx
 		static QWidget* osWidgetBlend(QWidget* widget, FX_MATERIAL material = fx_translucent_background, FX_BLENDING blending = fx_translucent)
 		{
 			bool experiment = QSettings().value("preference/osExperiment", true).toBool();
+			experiment = e2se_gui::theme::isDefault() ? experiment : false;
 			if (QSettings().value("preference/osTranslucency", experiment).toBool())
 				return _osWidgetBlend(widget, material, blending);
 			else

@@ -1789,12 +1789,11 @@ QWidget* tab::toolBarSpacer(QToolBar* toolbar)
 
 void tab::toolBarStyleSheet()
 {
-#ifndef Q_OS_MAC
 	if (! theme::isDefault())
 	{
 		theme->dynamicStyleSheet(widget, "#tab_top_toolbar, #tab_bottom_toolbar { background: palette(mid) }");
 	}
-#else
+#ifdef Q_OS_MAC
 	theme->dynamicStyleSheet(widget, "QToolBar { border-style: solid; border-width: 1px 0 }");
 
 	QColor tbshade;

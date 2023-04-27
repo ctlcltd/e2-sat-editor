@@ -750,13 +750,12 @@ QWidget* viewAbstract::toolBarSpacer(QToolBar* toolbar)
 
 void viewAbstract::toolBarStyleSheet()
 {
-#ifndef Q_OS_MAC
 	if (! theme::isDefault())
 	{
 		theme->dynamicStyleSheet(widget, "#view_toolbar { background: palette(highlighted-text) }", theme::light);
 		theme->dynamicStyleSheet(widget, "#view_toolbar { background: palette(dark) }", theme::dark);
 	}
-#else
+#ifdef Q_OS_MAC
 	theme->dynamicStyleSheet(widget, "QToolBar { border: 0; border-top: 1px solid } QToolBar::separator { border: 0 }");
 
 	QColor tbshade;

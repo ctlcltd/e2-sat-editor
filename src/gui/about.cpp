@@ -75,12 +75,13 @@ void about::layout()
 	aauts->setStyleSheet("margin: 2px 0 0 0");
 
 	QLabel* acopy = new QLabel;
-	acopy->setText("Copyright 2023 © e2 SAT Editor Team [Leonardo Laureti].");
+	acopy->setText("Copyright 2023 © e2 SAT Editor Team");
 	acopy->setStyleSheet("margin: 10px 0 5px 0");
 
 	QLabel* alise = new QLabel;
 	//: HTML formattation: text%1text%2text%3 treat them as spaces
 	alise->setText(tr("This software is distributed under the terms of the %1.%2The source code of this software is available here:%3").arg(QString("<a href=\"%1\">%2</a>").arg("https://www.gnu.org/licenses/gpl-3.0.html").arg(tr("GNU GPLv3 License"))).arg("<br>").arg("<br>%1").arg(QString("<a href=\"%1\">%1</a>").arg("https://github.com/ctlcltd/e2-sat-editor")));
+	alise->setOpenExternalLinks(true);
 	alise->setStyleSheet("margin: 10px 0 5px 0; font-size: 10px");
 
 	QLabel* anote = new QLabel;

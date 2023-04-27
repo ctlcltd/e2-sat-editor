@@ -16,9 +16,18 @@
 #include <QProxyStyle>
 #include <QPainter>
 
+#include <QtGlobal>
+
+#ifdef Q_OS_MAC
+#define TWS_TESTING
+#endif
+// #ifndef TWS_TESTING
+// #define TWS_TESTING
+// #endif
+
 namespace e2se_gui
 {
-//TODO
+//TODO FIX [Wasm] [Linux] [Windows]
 class TreeProxyStyle : public QProxyStyle
 {
 	public:
@@ -56,9 +65,11 @@ class TreeProxyStyle : public QProxyStyle
 			// drawRow [QTreeView]
 			else if (element == QStyle::PE_PanelItemViewItem) // 44
 				return drawPrimitivePanelItemViewItem(option, painter, widget);
+#ifdef Q_OS_MAC
 			// drawRow [QTreeView]
 			else if (element == QStyle::PE_PanelItemViewRow) // 45
 				return;
+#endif
 
 			QProxyStyle::drawPrimitive(element, option, painter, widget);
 		}

@@ -176,22 +176,56 @@ void theme::changed()
 	}
 }
 
-//TODO FIX system dark
+// custom Fusion light
 void theme::styleLight()
 {
 	QStyle* style = QStyleFactory::create("Fusion");
 	QApplication::setStyle(style);
 	QPalette palette = style->standardPalette();
-	palette.setColor(QPalette::Mid, QColor(249, 249, 249)); // QColor(184, 184, 184);
-	palette.setColor(QPalette::HighlightedText, QColor(249, 249, 249));
-	palette.setColor(QPalette::HighlightedText, Qt::white); // QColor(249, 249, 249);
+
+	palette.setColor(QPalette::WindowText, Qt::black);
+	palette.setColor(QPalette::Button, QColor(239, 239, 239));
+	palette.setColor(QPalette::Light, QColor(239, 239, 239).lighter(150));
+	palette.setColor(QPalette::Midlight, QColor(239, 239, 239).darker(130).lighter(110));
+	palette.setColor(QPalette::Dark, QColor(239, 239, 239).darker(150));
+	palette.setColor(QPalette::Mid, QColor(249, 249, 249)); // QColor(239, 239, 239).darker(150)
+	palette.setColor(QPalette::Text, Qt::black);
+	palette.setColor(QPalette::BrightText, Qt::white);
+	palette.setColor(QPalette::ButtonText, Qt::black);
+	palette.setColor(QPalette::Base, Qt::white);
+	palette.setColor(QPalette::Window, QColor(239, 239, 239));
+	palette.setColor(QPalette::Shadow, QColor(239, 239, 239).darker(150).darker(135));
+	palette.setColor(QPalette::Active, QPalette::Highlight, QColor(48, 140, 198));
+	palette.setColor(QPalette::Inactive, QPalette::Highlight, QColor(48, 140, 198));
+	palette.setColor(QPalette::HighlightedText, Qt::white);
+	palette.setColor(QPalette::AlternateBase, QColor(239, 239, 239));
+	palette.setColor(QPalette::NoRole, Qt::black);
+	palette.setColor(QPalette::ToolTipBase, Qt::white);
+	palette.setColor(QPalette::ToolTipText, Qt::black);
+
+	QColor placeholder = Qt::white;
+	placeholder.setAlpha(128);
+	palette.setColor(QPalette::PlaceholderText, placeholder);
+
+	palette.setColor(QPalette::Disabled, QPalette::WindowText, QColor(190, 190, 190));
+	palette.setBrush(QPalette::Disabled, QPalette::Dark, QColor(209, 209, 209).darker(110));
+	palette.setColor(QPalette::Disabled, QPalette::Text, QColor(190, 190, 190));
+	palette.setColor(QPalette::Disabled, QPalette::ButtonText, QColor(190, 190, 190));
+	palette.setBrush(QPalette::Disabled, QPalette::Base, QColor(239, 239, 239));
+	palette.setBrush(QPalette::Disabled, QPalette::Shadow, QColor(239, 239, 239).darker(150).darker(135).lighter(150));
+	palette.setBrush(QPalette::Disabled, QPalette::Highlight, QColor(145, 145, 145));
+	palette.setColor(QPalette::Disabled, QPalette::HighlightedText, QColor(190, 190, 190));
+
 	QApplication::setPalette(palette);
 }
 
+// custom Fusion darker
 void theme::styleDark()
 {
-	QApplication::setStyle("Fusion");
-	QPalette palette;
+	QStyle* style = QStyleFactory::create("Fusion");
+	QApplication::setStyle(style);
+	QPalette palette = style->standardPalette();
+
 	palette.setColor(QPalette::WindowText, Qt::white);
 	palette.setColor(QPalette::Button, QColor(74, 73, 71).darker(175)); // QColor(66, 66, 69)
 	palette.setColor(QPalette::Light, QColor(151, 151, 151));
@@ -204,19 +238,27 @@ void theme::styleDark()
 	palette.setColor(QPalette::Base, QColor(48, 47, 46).darker(250)); // QColor(61, 61, 61)
 	palette.setColor(QPalette::Window, QColor(34, 32, 32));
 	palette.setColor(QPalette::Shadow, QColor(231, 228, 224));
-	palette.setColor(QPalette::Highlight, QColor(18, 96, 138));
+	palette.setColor(QPalette::Active, QPalette::Highlight, QColor(18, 96, 138));
+	palette.setColor(QPalette::Inactive, QPalette::Highlight, QColor(18, 96, 138));
 	palette.setColor(QPalette::HighlightedText, QColor(249, 249, 249));
-	palette.setColor(QPalette::Link, QColor(9, 134, 211));
-	palette.setColor(QPalette::LinkVisited, QColor(167, 11, 6));
-	palette.setColor(QPalette::AlternateBase, QColor(92, 91, 90));
+	palette.setColor(QPalette::AlternateBase, QColor(34, 32, 32));
 	palette.setColor(QPalette::NoRole, Qt::black);
 	palette.setColor(QPalette::ToolTipBase, QColor(63, 63, 54));
 	palette.setColor(QPalette::ToolTipText, Qt::white);
-	palette.setColor(QPalette::PlaceholderText, Qt::white);
+
+	QColor placeholder = Qt::white;
+	placeholder.setAlpha(128);
+	palette.setColor(QPalette::PlaceholderText, placeholder);
+
 	palette.setColor(QPalette::Disabled, QPalette::WindowText, QColor(128, 128, 128));
+	palette.setBrush(QPalette::Disabled, QPalette::Dark, QColor(209, 209, 209).darker(110));
 	palette.setColor(QPalette::Disabled, QPalette::Text, QColor(128, 128, 128));
 	palette.setColor(QPalette::Disabled, QPalette::ButtonText, QColor(128, 128, 128));
+	palette.setBrush(QPalette::Disabled, QPalette::Base, QColor(34, 32, 32));
+	palette.setBrush(QPalette::Disabled, QPalette::Shadow, QColor(231, 228, 224).lighter(150));
+	palette.setBrush(QPalette::Disabled, QPalette::Highlight, QColor(145, 145, 145));
 	palette.setColor(QPalette::Disabled, QPalette::HighlightedText, QColor(128, 128, 128));
+
 	QApplication::setPalette(palette);
 }
 
