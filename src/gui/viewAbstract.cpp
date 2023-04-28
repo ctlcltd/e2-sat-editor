@@ -754,8 +754,20 @@ void viewAbstract::toolBarStyleSheet()
 		theme->dynamicStyleSheet(widget, "#view_toolbar { background: palette(highlighted-text) }", theme::light);
 		theme->dynamicStyleSheet(widget, "#view_toolbar { background: palette(dark) }", theme::dark);
 	}
-#ifdef Q_OS_MAC
-	theme->dynamicStyleSheet(widget, "QToolBar { border: 0; border-top: 1px solid } QToolBar::separator { border: 0 }");
+#ifndef Q_OS_MAC
+	else
+	{
+		QColor tbshade;
+		QString tbshade_hexArgb;
+
+		tbshade = theme::absLuma() ? QPalette().color(QPalette::Shadow).darker() : QPalette().color(QPalette::Shadow).lighter();
+		tbshade.setAlpha(theme::absLuma() ? 60 : 90);
+		tbshade_hexArgb = tbshade.name(QColor::HexArgb);
+
+		theme->dynamicStyleSheet(widget, "#view_toolbar { border: 0; border-top: 1px solid; border-color: border-color: " + tbshade_hexArgb + " }");
+	}
+#else
+	theme->dynamicStyleSheet(widget, "#view_toolbar { border: 0; border-top: 1px solid } #view_toolbar::separator { border: 0 }");
 
 	QColor tbshade;
 	QString tbshade_hexArgb;

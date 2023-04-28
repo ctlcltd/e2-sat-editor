@@ -84,13 +84,9 @@ class _platform
 		}
 };
 
-#if defined Q_OS_WIN
-	class platform : public _platform {};
-#elif defined Q_OS_MAC
-	#include "platform_macx.h"
+#ifdef Q_OS_MAC
+#include "platform_macx.h"
 	class platform : public _platform_macx {};
-#elif defined Q_OS_LINUX
-	class platform : public _platform {};
 #else
 	class platform : public _platform {};
 #endif

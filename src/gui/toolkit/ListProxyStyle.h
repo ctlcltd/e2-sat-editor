@@ -9,10 +9,9 @@
  * @license GNU GPLv3 License
  */
 
-#include <iostream>
-
 #ifndef ListProxyStyle_h
 #define ListProxyStyle_h
+// #include <QtGlobal>
 #include <QProxyStyle>
 #include <QPainter>
 
@@ -32,7 +31,7 @@ class ListProxyStyle : public QProxyStyle
 		}
 		void drawPrimitive(PrimitiveElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const override
 		{
-			// std::cout << "drawPrimitive" << ':' << ' ' << element << std::endl;
+			// qDebug() << "drawPrimitive" << ':' << ' ' << element;
 
 			// QAbstractItemView::initViewItemOption
 			if (element == QStyle::PE_FrameFocusRect) // 3
@@ -45,7 +44,7 @@ class ListProxyStyle : public QProxyStyle
 		}
 		void drawControl(ControlElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const override
 		{
-			// std::cout << "drawControl" << ':' << ' ' << element << std::endl;
+			// qDebug() << "drawControl" << ':' << ' ' << element;
 
 			// paintEvent [QListView]
 			if (element == QStyle::CE_ItemViewItem) // 45

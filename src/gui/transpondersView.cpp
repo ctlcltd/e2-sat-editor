@@ -113,7 +113,7 @@ void transpondersView::layout()
 	list->setDragDropMode(QTreeWidget::InternalMove);
 	list->setEditTriggers(QTreeWidget::NoEditTriggers);
 	list->setRootIsDecorated(false);
-	list->setIndentation(false);
+	list->setIndentation(0);
 	list_style->setIndentation(8, true);
 	list_style->setFirstColumnIndent(1);
 

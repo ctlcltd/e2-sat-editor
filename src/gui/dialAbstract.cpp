@@ -198,7 +198,7 @@ QToolBar* dialAbstract::toolBar()
 	toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
 #ifndef Q_OS_MAC
-	toolbar->setStyleSheet("QToolBar { padding: 0 8px } QToolButton { font-size: 16px }");
+	toolbar->setStyleSheet("QToolBar { border-top: 1px solid; padding: 0 8px } QToolButton { font-size: 16px }");
 #else
 	toolbar->setStyleSheet("QToolBar { border-top: 1px solid; padding: 0 8px; background: transparent } QToolButton { font-size: 16px }");
 #endif
@@ -274,7 +274,19 @@ void dialAbstract::toolBarStyleSheet()
 	{
 		theme->dynamicStyleSheet(dtbar, "#dial_toolbar { background: palette(mid) }");
 	}
-#ifdef Q_OS_MAC
+#ifndef Q_OS_MAC
+	else
+	{
+		QColor tbshade;
+		QString tbshade_hexArgb;
+
+		tbshade = QColor(Qt::black);
+		tbshade.setAlpha(18);
+		tbshade_hexArgb = tbshade.name(QColor::HexArgb);
+
+		theme->dynamicStyleSheet(dtbar, "#dial_toolbar { border-color: " + tbshade_hexArgb + " }");
+	}
+#else
 	QColor tbshade;
 	QString tbshade_hexArgb;
 

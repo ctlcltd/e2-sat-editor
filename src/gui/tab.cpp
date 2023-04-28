@@ -1793,8 +1793,20 @@ void tab::toolBarStyleSheet()
 	{
 		theme->dynamicStyleSheet(widget, "#tab_top_toolbar, #tab_bottom_toolbar { background: palette(mid) }");
 	}
-#ifdef Q_OS_MAC
-	theme->dynamicStyleSheet(widget, "QToolBar { border-style: solid; border-width: 1px 0 }");
+#ifndef Q_OS_MAC
+	else
+	{
+		QColor tbshade;
+		QString tbshade_hexArgb;
+
+		tbshade = theme::absLuma() ? QPalette().color(QPalette::Shadow).darker() : QPalette().color(QPalette::Shadow).lighter();
+		tbshade.setAlpha(theme::absLuma() ? 60 : 90);
+		tbshade_hexArgb = tbshade.name(QColor::HexArgb);
+
+		theme->dynamicStyleSheet(widget, "#tab_top_toolbar, #tab_bottom_toolbar { border-style: solid; border-width: 1px 0; border-color: " + tbshade_hexArgb + " }");
+	}
+#else
+	theme->dynamicStyleSheet(widget, "#tab_top_toolbar, #tab_bottom_toolbar { border-style: solid; border-width: 1px 0 }");
 
 	QColor tbshade;
 	QString tbshade_hexArgb;

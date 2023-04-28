@@ -118,10 +118,8 @@ void mainView::layout()
 
 	TreeProxyStyle* side_style = new TreeProxyStyle;
 	side->setStyle(side_style);
-#ifdef TWS_TESTING 
 	TreeProxyStyle* tree_style = new TreeProxyStyle;
 	tree->setStyle(tree_style);
-#endif
 	TreeProxyStyle* list_style = new TreeProxyStyle;
 	list->setStyle(list_style);
 
@@ -154,7 +152,7 @@ void mainView::layout()
 	side->setItemsExpandable(false);
 	side->setExpandsOnDoubleClick(false);
 	side->setRootIsDecorated(false);
-	side->setIndentation(false);
+	side->setIndentation(0);
 	side_style->setIndentation(10, true);
 
 	tree->setHeaderHidden(true);
@@ -164,10 +162,9 @@ void mainView::layout()
 	tree->setDefaultDropAction(Qt::MoveAction);
 	tree->setDropIndicatorShown(true);
 	tree->setEditTriggers(QTreeWidget::NoEditTriggers);
-#ifdef TWS_TESTING
-	tree->setIndentation(1);
+	tree->setRootIsDecorated(false);
+	tree->setIndentation(0);
 	tree_style->setIndentation(10);
-#endif
 
 	list->setUniformRowHeights(true);
 	list->setSelectionBehavior(QTreeWidget::SelectRows);
@@ -182,7 +179,7 @@ void mainView::layout()
 	list->setDropIndicatorShown(true);
 	list->setEditTriggers(QTreeWidget::NoEditTriggers);
 	list->setRootIsDecorated(false);
-	list->setIndentation(false);
+	list->setIndentation(0);
 	list_style->setIndentation(12, true);
 	list_style->setFirstColumnIndent(1);
 

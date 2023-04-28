@@ -110,7 +110,8 @@ gui::gui(int argc, char* argv[])
 	debug("gui", "language preference", appLang.isEmpty() ? "system" : appLang.toStdString());
 
 	QTranslator qtTranslator;
-	if (qtTranslator.load(appLocale, "qtbase", "_", qtTranslationsPath)) {
+	if (qtTranslator.load(appLocale, "qtbase", "_", qtTranslationsPath))
+	{
 		mroot->installTranslator(&qtTranslator);
 	}
 	QTranslator appTranslator;
@@ -364,13 +365,13 @@ void gui::tabStackerLayout()
 	QColor twtbshade;
 	QString twtbshade_hexArgb;
 #ifndef Q_OS_MAC
-	twtbshade = QPalette().color(QPalette::Base);
+	twtbshade = QPalette().color(QPalette::Shadow).lighter();
 	twtbshade.setAlphaF(0.25);
 	twtbshade_hexArgb = twtbshade.name(QColor::HexArgb);
 
 	theme->dynamicStyleSheet(twid, "#tabwidget_tabbar, #tabwidget_tabbar::tab { border-color: " + twtbshade_hexArgb + " }", theme::light);
 
-	twtbshade = QPalette().color(QPalette::Mid);
+	twtbshade = QPalette().color(QPalette::Shadow).darker();
 	twtbshade.setAlphaF(0.22);
 	twtbshade_hexArgb = twtbshade.name(QColor::HexArgb);
 
@@ -389,6 +390,7 @@ void gui::tabStackerLayout()
 	theme->dynamicStyleSheet(twid, "#tabwidget_tabbar, #tabwidget_tabbar::tab { border-color: " + twtbshade_hexArgb + " }", theme::dark);
 #endif
 
+	//TODO tab-bar left border 1px gap
 	if (twid->layoutDirection() == Qt::LeftToRight)
 		twid->tabBar()->setStyleSheet("QTabBar { border-width: 0 0 0 1px } QTabBar::tab { margin: 0 0 0 -1px }");
 	else
@@ -408,18 +410,23 @@ void gui::tabStackerLayout()
 	ttbnew->setShortcut(QKeySequence::AddTab);
 
 	int ttbspacer = 1;
-	ttbnew->setStyleSheet("QPushButton { min-width: 8ex; height: 32px; margin: 4px; padding-top: 4px; padding-bottom: 4px; padding-left: 3px; padding-right: 3px; font-size: 12px; font-weight: bold }");
-#ifdef Q_OS_MAC
+#ifndef Q_OS_MAC
+	ttbnew->setStyleSheet("QPushButton { min-width: 8ex; height: 32px; margin: 5px 4px 3px 4px; padding-top: 4px; padding-bottom: 4px; padding-left: 3px; padding-right: 3px; font-size: 12px; font-weight: bold }");
+#else
 	if (theme::isDefault())
 	{
 		ttbspacer = 5;
 		ttbnew->setStyleSheet("QPushButton { min-width: 8ex; height: 44px; padding-left: 3px; padding-right: 3px; font-size: 12px; font-weight: bold }");
 	}
+	else
+	{
+		ttbnew->setStyleSheet("QPushButton { min-width: 8ex; height: 32px; margin: 4px; padding-top: 4px; padding-bottom: 4px; padding-left: 3px; padding-right: 3px; font-size: 12px; font-weight: bold }");
+	}
 #endif
 
 	ttbnew->connect(ttbnew, &QPushButton::pressed, [=]() { this->newTab(); });
 
-	ttcornerlayout->addWidget(ttbnew);
+	ttcornerlayout->addWidget(ttbnew, 0, Qt::AlignVCenter);
 	ttcornerlayout->addItem(new QSpacerItem(ttbspacer, 0));
 	ttcornerlayout->setContentsMargins(0, 0, 0, 0);
 	ttcornerlayout->setSpacing(0);

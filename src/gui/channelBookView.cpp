@@ -101,10 +101,8 @@ void channelBookView::layout()
 	//TODO improve vertical expanding [Windows]
 	tabv->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored);
 
-#ifdef TWS_TESTING
 	TreeProxyStyle* tree_style = new TreeProxyStyle;
 	tree->setStyle(tree_style);
-#endif
 	TreeProxyStyle* list_style = new TreeProxyStyle;
 	list->setStyle(list_style);
 
@@ -137,10 +135,9 @@ void channelBookView::layout()
 	tree->setHeaderHidden(true);
 	tree->setMinimumWidth(180);
 	tree->setUniformRowHeights(true);
-#ifdef TWS_TESTING
+	tree->setRootIsDecorated(false);
 	tree->setIndentation(true);
 	tree_style->setIndentation(12);
-#endif
 
 	list->setHidden(true);
 	list->setUniformRowHeights(true);
@@ -149,7 +146,8 @@ void channelBookView::layout()
 	list->setSelectionMode(QTreeWidget::ExtendedSelection);
 	list->setItemsExpandable(false);
 	list->setExpandsOnDoubleClick(false);
-	list->setIndentation(false);
+	list->setRootIsDecorated(false);
+	list->setIndentation(0);
 	list_style->setIndentation(12, true);
 	list_style->setFirstColumnIndent(1);
 

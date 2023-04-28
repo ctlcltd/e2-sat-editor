@@ -9,8 +9,6 @@
  * @license GNU GPLv3 License
  */
 
-#include <iostream>
-
 #ifndef TreeProxyStyle_h
 #define TreeProxyStyle_h
 #include <QProxyStyle>
@@ -18,16 +16,9 @@
 
 #include <QtGlobal>
 
-#ifdef Q_OS_MAC
-#define TWS_TESTING
-#endif
-// #ifndef TWS_TESTING
-// #define TWS_TESTING
-// #endif
-
 namespace e2se_gui
 {
-//TODO FIX [Wasm] [Linux] [Windows]
+//TODO
 class TreeProxyStyle : public QProxyStyle
 {
 	public:
@@ -50,32 +41,31 @@ class TreeProxyStyle : public QProxyStyle
 		}
 		void drawPrimitive(PrimitiveElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const override
 		{
-			// std::cout << "drawPrimitive" << ':' << ' ' << element << std::endl;
+			// qDebug() << "drawPrimitive" << ':' << ' ' << element;
 
 			// QAbstractItemView::initViewItemOption
 			if (element == QStyle::PE_FrameFocusRect) // 3
 				return;
 			// drawBranch [QTreeView]
+			// drawn by drawPrimitivePanelItemViewItem
 			else if (element == QStyle::PE_IndicatorBranch) // 23
-				return drawPrimitiveIndicatorBranch(option, painter, widget);
+				return;
 			// paintDropIndicator [QAbstractItemView]
-			// handled by TreeDropIndicatorEventPainter
+			// drawn by e2se_gui::TreeDropIndicatorEventPainter
 			else if (element == QStyle::PE_IndicatorItemViewItemDrop) // 43
 				return;
 			// drawRow [QTreeView]
 			else if (element == QStyle::PE_PanelItemViewItem) // 44
 				return drawPrimitivePanelItemViewItem(option, painter, widget);
-#ifdef Q_OS_MAC
 			// drawRow [QTreeView]
 			else if (element == QStyle::PE_PanelItemViewRow) // 45
 				return;
-#endif
 
 			QProxyStyle::drawPrimitive(element, option, painter, widget);
 		}
 		void drawControl(ControlElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const override
 		{
-			// std::cout << "drawControl" << ':' << ' ' << element << std::endl;
+			// qDebug() << "drawControl" << ':' << ' ' << element;
 
 			// drawRow [QTreeView]
 			if (element == QStyle::CE_ItemViewItem) // 45
@@ -89,31 +79,40 @@ class TreeProxyStyle : public QProxyStyle
 		int firstColumn = 0;
 		bool firstColumnIndented = false;
 
-		//TODO branch indicator width gap
 		void drawPrimitiveIndicatorBranch(const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const
 		{
 			const QStyleOptionViewItem* o = qstyleoption_cast<const QStyleOptionViewItem*>(option);
 			QStyleOptionViewItem opt (*o);
 			QModelIndex index = opt.index;
 
-			int indent = this->firstColumnIndented ? (index.column() == this->firstColumn ? this->indent : 0) : this->indent;
+			opt.rect = QRect(0, opt.rect.y(), opt.rect.height(), opt.rect.height());
+			opt.backgroundBrush = QBrush();
+
+			int dx = 0;
 
 			if (! this->firstColumnIndented)
 			{
 				int gap = 1;
 				for (auto i = index; (i = i.parent()).isValid(); gap++);
-				indent -= gap;
+				dx += gap;
 			}
 
-			if (indent)
+			if (dx)
 			{
 				if (opt.direction == Qt::LeftToRight)
-					opt.rect.adjust(indent, 0, 0, 0);
+				{
+					opt.rect.setX(- (opt.rect.height() / 2));
+					opt.rect.adjust(dx - 2, 0, 0, 0);
+				}
+				//TODO FIX rtl
 				else if (opt.direction == Qt::RightToLeft)
-					opt.rect.adjust(0, 0, -indent, 0);
+				{
+					// opt.rect.setX(widget->width() - opt.rect.height() + opt.rect.height() / 2);
+					// opt.rect.setX(option->rect.right() * 2 - opt.rect.height() + opt.rect.height() / 2);
+					opt.rect.setX(option->rect.right() * 2 - opt.rect.height());
+					opt.rect.adjust(0, 0, dx + 2 + 2, 0);
+				}
 			}
-
-			opt.backgroundBrush = QBrush();
 
 			QProxyStyle::drawPrimitive(QStyle::PE_IndicatorBranch, &opt, painter, widget);
 		}
@@ -123,36 +122,37 @@ class TreeProxyStyle : public QProxyStyle
 			QStyleOptionViewItem opt (*o);
 			QModelIndex index = opt.index;
 
-			int indent = this->firstColumnIndented ? (index.column() == this->firstColumn ? this->indent : 0) : this->indent;
+			int dx = this->firstColumnIndented ? (index.column() == this->firstColumn ? this->indent : 0) : this->indent;
 
 			if (! this->firstColumnIndented)
 			{
 				int gap = 1;
 				for (auto i = index; (i = i.parent()).isValid(); gap++);
-				indent += gap;
+				dx += gap;
 			}
 
-			if (indent)
+			if (dx)
 			{
 				if (opt.direction == Qt::LeftToRight)
-					opt.rect.adjust(-indent, 0, 0, 0);
-				// Qt bug Qt::RightToLeft glitch tree->viewport.width() - 1px
+				{
+					opt.rect.adjust(-dx, 0, 0, 0);
+				}
 				else if (opt.direction == Qt::RightToLeft)
 				{
+					//TODO FIX rtl
 					if (this->firstColumnIndented)
-						opt.rect.adjust(0, 0, indent, 0);
-					//TODO FIX tree->indentation() * depth - 1px rtl
-					else
-					{
-						opt.rect.setX(-1);
-						opt.rect.setWidth(opt.rect.width() + this->indent);
-					}
+						opt.rect.setWidth(option->rect.right() * 2);
+
+					opt.rect.adjust(0, 0, dx, 0);
 				}
 
 				painter->setClipRect(opt.rect);
 			}
 
 			QProxyStyle::drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, widget);
+
+			if (opt.state & QProxyStyle::State_Children)
+				drawPrimitiveIndicatorBranch(option, painter, widget);
 		}
 		void drawControlItemViewItem(const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const
 		{
@@ -160,26 +160,24 @@ class TreeProxyStyle : public QProxyStyle
 			QStyleOptionViewItem opt (*o);
 			QModelIndex index = opt.index;
 
-			int indent = this->firstColumnIndented ? (index.column() == this->firstColumn ? this->indent : 0) : this->indent;
+			int dx = this->firstColumnIndented ? (index.column() == this->firstColumn ? this->indent : 0) : this->indent;
 
 			if (! this->firstColumnIndented)
 			{
 				int gap = 1;
 				for (auto i = index; (i = i.parent()).isValid(); gap++);
-				indent -= gap;
+				dx += gap;
 			}
 
-			if (indent)
+			if (dx)
 			{
 				if (opt.direction == Qt::LeftToRight)
-					opt.rect.adjust(indent, 0, 0, 0);
+				{
+					opt.rect.adjust(dx, 0, 0, 0);
+				}
 				else if (opt.direction == Qt::RightToLeft)
 				{
-					if (this->firstColumnIndented)
-						opt.rect.adjust(0, 0, -indent, 0);
-					//TODO FIX tree->indentation() * depth - 1px rtl
-					else
-						opt.rect.adjust(0, 0, -this->indent, 0);
+					opt.rect.adjust(0, 0, -dx, 0);
 				}
 			}
 

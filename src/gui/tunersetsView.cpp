@@ -181,7 +181,7 @@ void tunersetsView::layout()
 	tree->setDragDropMode(QTreeWidget::InternalMove);
 	tree->setEditTriggers(QTreeWidget::NoEditTriggers);
 	tree->setRootIsDecorated(false);
-	tree->setIndentation(false);
+	tree->setIndentation(0);
 	tree_style->setIndentation(6, true);
 	tree_style->setFirstColumnIndent(1);
 
@@ -200,7 +200,7 @@ void tunersetsView::layout()
 	list->setDragDropMode(QTreeWidget::InternalMove);
 	list->setEditTriggers(QTreeWidget::NoEditTriggers);
 	list->setRootIsDecorated(false);
-	list->setIndentation(false);
+	list->setIndentation(0);
 	list_style->setIndentation(8, true);
 	list_style->setFirstColumnIndent(1);
 

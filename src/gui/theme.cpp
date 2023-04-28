@@ -80,7 +80,7 @@ QIcon theme::icon(QString icon, ICON_STYLE style)
 	if (style == ICON_STYLE::icon_default)
 	{
 #ifndef Q_OS_MAC
-		color = theme::absLuma() ? QPalette().color(QPalette::Light) : QPalette().color(QPalette::Mid).darker();
+		color = theme::absLuma() ? QPalette().color(QPalette::Text).darker(130) : QPalette().color(QPalette::Mid).darker();
 #else
 		color.setAlphaF(theme::absLuma() ? 0.73 : 0.67);
 #endif
