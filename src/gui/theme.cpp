@@ -72,19 +72,20 @@ bool theme::isDarkMode()
 
 QIcon theme::icon(QString icon, ICON_STYLE style)
 {
-	QPixmap ico = QPixmap(":/icons/" + QString (theme::absLuma() ? "dark" : "light") + "/" + icon + ".png");
+	QPixmap ico = QPixmap(":/icons/" + icon + ".png");
 
-	if (style == ICON_STYLE::icon_highlight)
-		return ico;
+	QBitmap mask = ico.createMaskFromColor(Qt::black, Qt::MaskOutColor);
+	QColor color = theme::absLuma() ? Qt::white : Qt::black;
 
-	QBitmap mask = ico.createMaskFromColor(theme::absLuma() ? Qt::white : Qt::black, Qt::MaskOutColor);
-	QColor color;
+	if (style == ICON_STYLE::icon_default)
+	{
 #ifndef Q_OS_MAC
-	color = theme::absLuma() ? QPalette().color(QPalette::Light) : QPalette().color(QPalette::Mid).darker();
+		color = theme::absLuma() ? QPalette().color(QPalette::Light) : QPalette().color(QPalette::Mid).darker();
 #else
-	color = theme::absLuma() ? Qt::white : Qt::black;
-	color.setAlphaF(theme::absLuma() ? 0.73 : 0.67);
+		color.setAlphaF(theme::absLuma() ? 0.73 : 0.67);
 #endif
+	}
+
 	ico.fill(color);
 	ico.setMask(mask);
 

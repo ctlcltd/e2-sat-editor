@@ -118,25 +118,16 @@ void mainView::layout()
 
 	TreeProxyStyle* side_style = new TreeProxyStyle;
 	side->setStyle(side_style);
-#ifdef TWS_TESTING
+#ifdef TWS_TESTING 
 	TreeProxyStyle* tree_style = new TreeProxyStyle;
 	tree->setStyle(tree_style);
 #endif
 	TreeProxyStyle* list_style = new TreeProxyStyle;
 	list->setStyle(list_style);
 
-	if (theme::isDefault())
-	{
-		side->setStyleSheet("QTreeWidget { background: transparent } QTreeWidget::item { padding: 9px 0 }");
-		tree->setStyleSheet("QTreeWidget { background: transparent } QTreeWidget::item { margin: 1px 0 0; padding: 8px 0 }");
-		list->setStyleSheet("QTreeWidget::item { height: 32px }");
-	}
-	else
-	{
-		side->setStyleSheet("QTreeWidget { background: transparent; border: 0 } QTreeWidget::item { padding: 9px 0 }");
-		tree->setStyleSheet("QTreeWidget { background: transparent; border: 0 } QTreeWidget::item { margin: 1px 0 0; padding: 8px 0 }");
-		list->setStyleSheet("QTreeWidget { border: 0 } QTreeWidget::item { height: 32px }");
-	}
+	side->setStyleSheet("QTreeWidget { background: transparent; border-style: none } QTreeWidget::item { padding: 9px 0 }");
+	tree->setStyleSheet("QTreeWidget { background: transparent; border-style: none } QTreeWidget::item { margin: 1px 0 0; padding: 8px 0 }");
+	list->setStyleSheet("QTreeWidget { border-style: none } QTreeWidget::item { height: 32px }");
 
 #ifdef Q_OS_MAC
 	if (theme::isDefault())

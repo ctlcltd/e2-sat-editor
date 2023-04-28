@@ -108,16 +108,8 @@ void channelBookView::layout()
 	TreeProxyStyle* list_style = new TreeProxyStyle;
 	list->setStyle(list_style);
 
-	if (theme::isDefault())
-	{
-		tree->setStyleSheet("QTreeWidget::item { padding: 2px 0 }");
-		list->setStyleSheet("QTreeWidget::item { padding: 2px 0 }");
-	}
-	else
-	{
-		tree->setStyleSheet("QTreeWidget { border: 0 } QTreeWidget::item { padding: 2px 0 }");
-		list->setStyleSheet("QTreeWidget { border: 0 } QTreeWidget::item { padding: 2px 0 }");
-	}
+	tree->setStyleSheet("QTreeWidget { border-style: none } QTreeWidget::item { padding: 2px 0 }");
+	list->setStyleSheet("QTreeWidget { border-style: none } QTreeWidget::item { padding: 2px 0 }");
 	//TODO FIX
 	tabv->setStyleSheet("QTabBar::tab { width: 48px; margin-top: 0 }");
 
@@ -236,14 +228,7 @@ void channelBookView::sideLayout()
 
 	side_style->setIndentation(10);
 
-	if (theme::isDefault())
-	{
-		side->setStyleSheet("QListWidget { background: transparent; font-size: 15px } QListView::item { padding: 10px 0 }");
-	}
-	else
-	{
-		side->setStyleSheet("QListWidget { background: transparent; font-size: 15px; border: 0 } QListView::item { padding: 10px 0 }");
-	}
+	side->setStyleSheet("QListWidget { background: transparent; font-size: 15px; border-style: none } QListView::item { padding: 10px 0 }");
 
 	side->addItems({tr("Services"), tr("Bouquets"), tr("Positions"), tr("Providers"), tr("Resolution"), tr("Encryption"), tr("A-Z")});
 

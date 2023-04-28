@@ -55,7 +55,7 @@ void about::layout()
 	QHBoxLayout* dhbox = new QHBoxLayout;
 	QVBoxLayout* dvbox = new QVBoxLayout;
 
-	QPixmap apxm = QIcon(":/icons/e2-sat-editor.png").pixmap(QSize(96, 96));
+	QPixmap apxm = QIcon(":/icons/e2-sat-editor/icon-256.png").pixmap(QSize(96, 96));
 
 	QLabel* aicon = new QLabel;
 	aicon->setPixmap(apxm);

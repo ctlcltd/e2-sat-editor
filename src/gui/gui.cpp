@@ -127,7 +127,7 @@ gui::gui(int argc, char* argv[])
 	mroot->setFont(font);
 #endif
 
-	//TODO i18n rtl
+	// i18n rtl
 	// mroot->setLayoutDirection(Qt::RightToLeft);
 
 	this->mwid = new QWidget;
@@ -356,9 +356,9 @@ void gui::tabStackerLayout()
 
 	//TODO FIX [Wine]
 #ifndef Q_OS_WIN
-	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 12ex; max-width: 25ex; height: 6.3ex; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button) } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight); border-color: transparent }");
+	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 12ex; max-width: 25ex; height: 44px; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button) } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight); border-color: transparent }");
 #else
-	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 25ex; height: 6.3ex; padding-top: 11px; padding-bottom: 11px; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button) } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight); border-color: transparent }");
+	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 25ex; height: 44px; padding-top: 11px; padding-bottom: 11px; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button) } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight); border-color: transparent }");
 #endif
 
 	QColor twtbshade;
@@ -407,17 +407,20 @@ void gui::tabStackerLayout()
 	ttbnew->setIcon(theme->dynamicIcon("add", ttbnew));
 	ttbnew->setShortcut(QKeySequence::AddTab);
 
-	//TODO FIX [Linux] [Wine]
-#ifndef Q_OS_WIN
-	ttbnew->setStyleSheet("QPushButton { min-width: 8ex; min-height: 7ex; padding-left: 3px; padding-right: 3px; font-size: 12px; font-weight: bold }");
-#else
-	ttbnew->setStyleSheet("QPushButton { min-width: 8ex; height: 7ex; margin: 0 0 2px 0; padding-top: 4px; padding-bottom: 4px; padding-left: 3px; padding-right: 3px; font-size: 12px; font-weight: bold }");
+	int ttbspacer = 1;
+	ttbnew->setStyleSheet("QPushButton { min-width: 8ex; height: 32px; margin: 4px; padding-top: 4px; padding-bottom: 4px; padding-left: 3px; padding-right: 3px; font-size: 12px; font-weight: bold }");
+#ifdef Q_OS_MAC
+	if (theme::isDefault())
+	{
+		ttbspacer = 5;
+		ttbnew->setStyleSheet("QPushButton { min-width: 8ex; height: 44px; padding-left: 3px; padding-right: 3px; font-size: 12px; font-weight: bold }");
+	}
 #endif
 
 	ttbnew->connect(ttbnew, &QPushButton::pressed, [=]() { this->newTab(); });
 
 	ttcornerlayout->addWidget(ttbnew);
-	ttcornerlayout->addItem(new QSpacerItem(4, 0));
+	ttcornerlayout->addItem(new QSpacerItem(ttbspacer, 0));
 	ttcornerlayout->setContentsMargins(0, 0, 0, 0);
 	ttcornerlayout->setSpacing(0);
 

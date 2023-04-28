@@ -82,14 +82,7 @@ void transpondersView::layout()
 	TreeProxyStyle* list_style = new TreeProxyStyle;
 	list->setStyle(list_style);
 
-	if (theme::isDefault())
-	{
-		list->setStyleSheet("QTreeWidget::item { padding: 6px 0 }");
-	}
-	else
-	{
-		list->setStyleSheet("QTreeWidget { border: 0 } QTreeWidget::item { padding: 6px 0 }");
-	}
+	list->setStyleSheet("QTreeWidget { border-style: none } QTreeWidget::item { padding: 6px 0 }");
 
 #ifdef Q_OS_MAC
 	if (theme::isDefault())

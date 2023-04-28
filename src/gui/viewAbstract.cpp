@@ -45,7 +45,6 @@ void viewAbstract::themeChanged()
 	theme->changed();
 }
 
-//TODO FIX behaviour listFindHighlightToggle with listFindPerform(LIST_FIND::all)
 void viewAbstract::searchLayout()
 {
 	this->tree_search = new QWidget;
@@ -58,7 +57,6 @@ void viewAbstract::searchLayout()
 	tree_search->setAutoFillBackground(true);
 	list_search->setAutoFillBackground(true);
 
-	//TODO FIX lsr_search.highlight button text color [Windows]
 #ifndef Q_OS_MAC
 	QColor searchbackground;
 	QColor searchcolor;
@@ -159,7 +157,7 @@ void viewAbstract::searchLayout()
 	this->lsr_search.highlight->setText(tr("Highlight", "toolbar"));
 	this->lsr_search.highlight->setCheckable(true);
 	this->lsr_search.highlight->setChecked(true);
-	this->lsr_search.highlight->setStyleSheet("QPushButton, QPushButton:checked { margin: 0 2px; padding: 2px 2ex; border: 1px solid palette(button); border-radius: 2px; color: palette(highlight-text) }");
+	this->lsr_search.highlight->setStyleSheet("QPushButton, QPushButton:checked { margin: 0 2px; padding: 2px 2ex; border: 1px solid palette(button); border-radius: 2px } QPushButton:checked { color: palette(bright-text) }");
 	this->lsr_search.highlight->connect(this->lsr_search.highlight, &QPushButton::pressed, [=]() { this->listFindHighlightToggle(); });
 
 	this->lsr_search.next = new QPushButton(tr("Find", "toolbar"));
@@ -487,8 +485,9 @@ void viewAbstract::listFindPerform(const QString& value, LIST_FIND flag)
 
 void viewAbstract::listFindHighlightToggle()
 {
+	bool highlight = this->lsr_find.highlight;
 	listFindReset();
-	this->lsr_find.highlight = ! this->lsr_find.highlight;
+	this->lsr_find.highlight = ! highlight;
 }
 
 void viewAbstract::listFindClear(bool hidden)
