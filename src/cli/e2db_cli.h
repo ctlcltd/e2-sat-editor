@@ -58,14 +58,25 @@ class e2db_cli
 		};
 
 		enum ENTRY {
+			index,
+			all,
+			lamedb,
+			zapit,
 			transponder,
 			service,
+			lamedb_services = service,
+			zapit_services,
 			bouquet,
+			zapit_bouquets,
 			userbouquet,
 			channel_reference,
 			tunersets,
 			tunersets_table,
-			tunersets_transponder
+			tunersets_transponder,
+			parentallock,
+			parentallock_blacklist,
+			parentallock_whitelist,
+			parentallock_locked
 		};
 
 		enum TYPE {
@@ -147,9 +158,9 @@ class e2db_cli
 		void shell_usage(COMMAND hint, bool specs = true);
 		void shell_file_read(string path);
 		void shell_file_write(string path);
-		void shell_e2db_parse();
-		void shell_e2db_make();
-		void shell_e2db_convert();
+		void shell_e2db_parse(ENTRY entry_type, string path, int ver = -1, bool dir = false);
+		void shell_e2db_make(ENTRY entry_type, string path, int ver = -1, bool dir = false, string bname = "");
+		void shell_e2db_convert(ENTRY entry_type, int fopt, int ftype, string path);
 		void shell_e2db_merge();
 		void shell_entry_list(ENTRY entry_type, string bname, int offset0, int offset1);
 		void shell_entry_list(ENTRY entry_type, int offset0, int offset1, string bname = "");

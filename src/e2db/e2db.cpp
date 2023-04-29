@@ -75,6 +75,7 @@ void e2db::import_file(vector<string> paths)
 			file.filename = filename;
 			file.mime = mime;
 
+			//TODO
 			if (fpi != FPORTS::directory)
 			{
 				ifstream ifile (path);

@@ -426,7 +426,7 @@ void gui::tabStackerLayout()
 
 	ttbnew->connect(ttbnew, &QPushButton::pressed, [=]() { this->newTab(); });
 
-	ttcornerlayout->addWidget(ttbnew, 0, Qt::AlignVCenter);
+	ttcornerlayout->addWidget(ttbnew);
 	ttcornerlayout->addItem(new QSpacerItem(ttbspacer, 0));
 	ttcornerlayout->setContentsMargins(0, 0, 0, 0);
 	ttcornerlayout->setSpacing(0);

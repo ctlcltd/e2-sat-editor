@@ -13,8 +13,9 @@
 #include <clocale>
 #include <cstring>
 #include <cctype>
+#include <algorithm>
 #include <iostream>
-#include <sstream>
+#include <fstream>
 #include <iomanip>
 #include <stdexcept>
 
@@ -22,7 +23,7 @@
 
 #include "e2db_cli.h"
 
-using std::pair, std::cout, std::cerr, std::cin, std::endl, std::left;
+using std::pair, std::cout, std::cerr, std::cin, std::endl, std::left, std::ifstream, std::ofstream;
 
 namespace e2se_cli
 {
@@ -438,15 +439,125 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 	}
 	else if (command == COMMAND::parse)
 	{
-		cout << "TODO" << endl;
+		string opt0, opt1, opt2, opt3;
+		string type, path;
+		int ver = -1;
+		*is >> std::skipws >> opt0 >> opt1 >> opt2 >> opt3;
+
+		if (opt0 == "zapit" || opt0 == "parentallock" && ! opt1.empty())
+			type = opt0 + ' ' + opt1, path = opt2, ver = std::atoi(opt3.data());
+		else
+			type = opt0, path = opt1, ver = std::atoi(opt2.data());
+
+		if (type == "enigma")
+			shell_e2db_parse(ENTRY::lamedb, path, ver, true);
+		else if (type == "neutrino")
+			shell_e2db_parse(ENTRY::zapit, path, ver, true);
+		else if (type == "lamedb")
+			shell_e2db_parse(ENTRY::lamedb_services, path, ver);
+		else if (type == "bouquet")
+			shell_e2db_parse(ENTRY::bouquet, path);
+		else if (type == "userbouquet")
+			shell_e2db_parse(ENTRY::userbouquet, path);
+		else if (type == "zapit services")
+			shell_e2db_parse(ENTRY::zapit_services, path, ver);
+		else if (type == "zapit bouquets")
+			shell_e2db_parse(ENTRY::zapit_bouquets, path, ver);
+		else if (type == "tunersets")
+			shell_e2db_parse(ENTRY::tunersets, path);
+		else if (type == "parentallock locked")
+			shell_e2db_parse(ENTRY::parentallock_locked, path);
+		else if (type == "parentallock blacklist")
+			shell_e2db_parse(ENTRY::parentallock_blacklist, path);
+		else if (type == "parentallock whitelist")
+			shell_e2db_parse(ENTRY::parentallock_whitelist, path);
+		else if (type.empty())
+			shell_usage(command);
+		else
+			cerr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
 	}
 	else if (command == COMMAND::make)
 	{
-		cout << "TODO" << endl;
+		string opt0, opt1, opt2, opt3;
+		string type, path, bname;
+		int ver = -1;
+		*is >> std::skipws >> opt0 >> opt1 >> opt2 >> opt3;
+
+		if (opt0 == "zapit" || opt0 == "parentallock" && ! opt1.empty())
+			type = opt0 + ' ' + opt1, path = opt2, ver = std::atoi(opt3.data());
+		else if (opt0 == "bouquet" || opt0 == "userbouquet")
+		{
+			if (opt3.empty())
+				type = opt0, path = opt1, ver = std::atoi(opt2.data());
+			else
+				type = opt0, path = opt1, bname = opt2, ver = std::atoi(opt3.data());
+		}
+		else
+			type = opt0, path = opt1, ver = std::atoi(opt2.data());
+
+		if (type == "enigma")
+			shell_e2db_make(ENTRY::lamedb, path, ver, true);
+		else if (type == "neutrino")
+			shell_e2db_make(ENTRY::zapit, path, ver, true);
+		else if (type == "lamedb")
+			shell_e2db_make(ENTRY::lamedb_services, path, ver);
+		else if (type == "bouquet")
+			shell_e2db_make(ENTRY::bouquet, path, ver, false, bname);
+		else if (type == "bouquets")
+			shell_e2db_make(ENTRY::bouquet, path, ver, true);
+		else if (type == "userbouquet")
+			shell_e2db_make(ENTRY::userbouquet, path, -1, false, bname);
+		else if (type == "userbouquets")
+			shell_e2db_make(ENTRY::userbouquet, path, -1, true);
+		else if (type == "zapit services")
+			shell_e2db_make(ENTRY::zapit_services, path, ver);
+		else if (type == "zapit bouquets")
+			shell_e2db_make(ENTRY::zapit_bouquets, path, ver);
+		else if (type == "tunersets")
+			shell_e2db_make(ENTRY::tunersets, path);
+		else if (type == "parentallock locked")
+			shell_e2db_make(ENTRY::parentallock_locked, path);
+		else if (type == "parentallock blacklist")
+			shell_e2db_make(ENTRY::parentallock_blacklist, path);
+		else if (type == "parentallock whitelist")
+			shell_e2db_make(ENTRY::parentallock_whitelist, path);
+		else if (type == "parentallock")
+			shell_e2db_make(ENTRY::parentallock, path);
+		else if (type.empty())
+			shell_usage(command);
+		else
+			cerr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
 	}
 	else if (command == COMMAND::convert)
 	{
-		cout << "TODO" << endl;
+		string opt0, opt1;
+		string type, path;
+		int fopt = -1, ftype = -1;
+		*is >> std::skipws >> opt0 >> opt1 >> type >> path;
+
+		if (opt0 == "from")
+			fopt = 0;
+		else if (opt1 == "to")
+			fopt = 1;
+		if (opt1 == "csv")
+			ftype = 0;
+		else if (opt1 == "html")
+			ftype = 1;
+
+		if (type == "index")
+			shell_e2db_convert(ENTRY::index, fopt, ftype, path);
+		else if (type == "services")
+			shell_e2db_convert(ENTRY::service, fopt, ftype, path);
+		else if (type == "bouquets")
+			shell_e2db_convert(ENTRY::bouquet, fopt, ftype, path);
+		else if (type == "userbouquets")
+			shell_e2db_convert(ENTRY::userbouquet, fopt, ftype, path);
+		else if (type == "tunersets")
+			shell_e2db_convert(ENTRY::tunersets, fopt, ftype, path);
+		else if (type.empty())
+			shell_e2db_convert(ENTRY::all, fopt, ftype, path);
+		else
+			cerr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
 	}
 	else
 	{
@@ -614,7 +725,7 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 		if (specs)
 		{
 			cout << "  ", cout.width(7), cout << left << name, cout << ' ';
-			cout.width(24), cout << left << "[ENTRY] [version]", cout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
+			cout.width(24), cout << left << "[ENTRY] [...] [version]", cout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
 			cout << endl;
 		}
 	}
@@ -628,7 +739,9 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 	else if (hint == COMMAND::parse)
 	{
 		cout << "  ", cout.width(7), cout << left << "parse", cout << ' ';
-		cout.width(24), cout << left << "lamedb  [file]", cout << ' ' << "Parse Lamedb services file." << endl;
+		cout.width(24), cout << left << "enigma  [directory]", cout << ' ' << "Parse Enigma directory." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "neutrino  [directory]", cout << ' ' << "Parse Neutrino directory." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "lamedb  [file]", cout << ' ' << "Parse Lamedb services file." << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "bouquet  [file]", cout << ' ' << "Parse Enigma bouquet file." << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "userbouquet  [file]", cout << ' ' << "Parse Enigma userbouquet file." << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "zapit services  [file]", cout << ' ' << "Parse Neutrino services file." << endl;
@@ -642,32 +755,34 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 		if (specs)
 		{
 			cout << "  ", cout.width(7), cout << left << "parse", cout << ' ';
-			cout.width(24), cout << left << "[ENTRY] [version]", cout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
+			cout.width(24), cout << left << "[ENTRY] [...] [version]", cout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
 			cout << endl;
 		}
 	}
 	else if (hint == COMMAND::make)
 	{
 		cout << "  ", cout.width(7), cout << left << "make", cout << ' ';
-		cout.width(24), cout << left << "lamedb  [file]", cout << ' ' << "Make Lamedb services file." << endl;
-		cout.width(10), cout << ' ', cout.width(24), cout << left << "bouquet  [file]", cout << ' ' << "Make Enigma bouquet file." << endl;
+		cout.width(24), cout << left << "enigma  [directory]", cout << ' ' << "Make Enigma files to directory." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "neutrino  [directory]", cout << ' ' << "Make Neutrino files to directory." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "lamedb  [file]", cout << ' ' << "Make Lamedb services file." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "bouquet  [bname] [file]", cout << ' ' << "Make Enigma bouquet file." << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "bouquets  [directory]", cout << ' ' << "Make Enigma bouquet files to directory." << endl;
-		cout.width(10), cout << ' ', cout.width(39), cout << left << "userbouquet  [file]", cout << ' ' << "Make Enigma userbouquet file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "userbouquet  [bname] [file]", cout << ' ' << "Make Enigma userbouquet file." << endl;
 		cout.width(10), cout << ' ', cout.width(39), cout << left << "userbouquets  [directory]", cout << ' ' << "Make Enigma userbouquet files to directory." << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "zapit services  [file]", cout << ' ' << "Make Neutrino services file." << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "zapit bouquets  [file]", cout << ' ' << "Make Neutrino bouquets file." << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "tunersets  [file]", cout << ' ' << "Make tuner settings xml file." << endl;
-		cout.width(10), cout << ' ', cout.width(24), cout << left << "tunersets  [files]", cout << ' ' << "Make tuner settings xml files." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "tunersets  [directory]", cout << ' ' << "Make tuner settings xml files." << endl;
 		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock locked  [file]", cout << ' ' << "Make Enigma .locked parental lock file." << endl;
 		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock blacklist  [file]", cout << ' ' << "Make Enigma blacklist parental lock file." << endl;
 		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock whitelist  [file]", cout << ' ' << "Make Enigma whitelist parental lock file." << endl;
-		cout.width(10), cout << ' ', cout.width(24), cout << left << "parentallock  [files]", cout << ' ' << "Make Enigma parental lock files according to global settings." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "parentallock  [directory]", cout << ' ' << "Make Enigma parental lock files according to global settings." << endl;
 		cout << endl;
 
 		if (specs)
 		{
 			cout << "  ", cout.width(7), cout << left << "make", cout << ' ';
-			cout.width(24), cout << left << "[ENTRY] [version]", cout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
+			cout.width(24), cout << left << "[ENTRY] [...] [version]", cout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
 			cout << endl;
 		}
 	}
@@ -709,6 +824,449 @@ void e2db_cli::shell_file_write(string path)
 		cerr << "File Error: " << msg("Error writing file.") << endl;
 }
 
+void e2db_cli::shell_e2db_parse(ENTRY entry_type, string path, int ver, bool dir)
+{
+	if (path.empty())
+	{
+		cerr << "Error: " << msg("Wrong parameter path.") << endl;
+
+		return;
+	}
+
+	try
+	{
+		//TODO directory check
+
+		if (! std::filesystem::exists(path))
+			throw std::runtime_error (msg("File \"%s\" not exists.", path));
+
+		if
+		(
+			(std::filesystem::status(path).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none &&
+			(std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
+		)
+			throw std::runtime_error (msg("File \"%s\" is not readable.", path));
+
+		string filename = std::filesystem::path(path).filename().u8string();
+
+		if (entry_type == ENTRY::lamedb || entry_type == ENTRY::zapit)
+		{
+			bool merge = dbih->get_input().size() != 0 ? true : false;
+			auto* dst = merge ? new e2db : dbih;
+
+			bool readen = dst->read(path);
+
+			if (! readen)
+			{
+				if (merge) delete dst;
+				throw std::runtime_error (msg("Error reading file."));
+			}
+			if (merge)
+			{
+				dbih->merge(dst);
+				delete dst;
+			}
+		}
+		else if (entry_type == ENTRY::lamedb_services)
+		{
+			ifstream iservices (path);
+			if (ver == 5)
+				dbih->parse_e2db_lamedb5(iservices);
+			else if (ver > 0 && ver < 5)
+				dbih->parse_e2db_lamedbx(iservices, ver);
+			else
+				dbih->parse_e2db_lamedb(iservices);
+			iservices.close();
+		}
+		else if (entry_type == ENTRY::bouquet)
+		{
+			string fext = filename.substr(filename.rfind('.') + 1);
+
+			if (fext != "tv" && fext != "radio" && fext != "epl")
+				throw std::runtime_error (msg("Unknown Bouquet file."));
+
+			ifstream ibouquet (path);
+			dbih->parse_e2db_bouquet(ibouquet, filename, fext == "epl");
+			ibouquet.close();
+		}
+		else if (entry_type == ENTRY::userbouquet)
+		{
+			ifstream iuserbouquet (path);
+			dbih->parse_e2db_userbouquet(iuserbouquet, filename);
+			iuserbouquet.close();
+		}
+		else if (entry_type == ENTRY::zapit_services)
+		{
+			ifstream iservices (path);
+			if (ver != -1)
+				dbih->parse_zapit_services_apix_xml(iservices, filename, ver);
+			else
+				dbih->parse_zapit_services_xml(iservices, filename);
+			iservices.close();
+		}
+		else if (entry_type == ENTRY::zapit_bouquets)
+		{
+			ver = ver != -1 ? ver : dbih->get_zapit_version();
+
+			ifstream ibouquetsxml (path);
+			dbih->parse_zapit_bouquets_apix_xml(ibouquetsxml, filename, ver);
+			ibouquetsxml.close();
+		}
+		else if (entry_type == ENTRY::tunersets)
+		{
+			e2db::YTYPE ytype = e2db::YTYPE::satellite;
+
+			if (filename == "satellites.xml")
+				ytype = e2db::YTYPE::satellite;
+			else if (filename == "terrestrial.xml")
+				ytype = e2db::YTYPE::terrestrial;
+			else if (filename == "cables.xml")
+				ytype = e2db::YTYPE::cable;
+			else if (filename == "atsc.xml")
+				ytype = e2db::YTYPE::atsc;
+			else
+				throw std::runtime_error (msg("Unknown Tuner settings type."));
+
+			ifstream itunxml (path);
+			dbih->parse_tunersets_xml(ytype, itunxml);
+			itunxml.close();
+		}
+		else if (entry_type == ENTRY::parentallock_locked)
+		{
+			ifstream ilocked (path);
+			dbih->parse_e2db_parentallock_list(e2db::PARENTALLOCK::locked, ilocked);
+			ilocked.close();
+		}
+		else if (entry_type == ENTRY::parentallock_blacklist)
+		{
+			ifstream ilocked (path);
+			dbih->parse_e2db_parentallock_list(e2db::PARENTALLOCK::blacklist, ilocked);
+			ilocked.close();
+		}
+		else if (entry_type == ENTRY::parentallock_whitelist)
+		{
+			ifstream ilocked (path);
+			dbih->parse_e2db_parentallock_list(e2db::PARENTALLOCK::whitelist, ilocked);
+			ilocked.close();
+		}
+	}
+	catch (const std::invalid_argument& err)
+	{
+		cerr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+	}
+	catch (const std::out_of_range& err)
+	{
+		cerr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		cerr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
+	}
+	catch (const std::runtime_error& err)
+	{
+		cerr << "Error: " << err.what() << endl;
+	}
+	catch (...)
+	{
+		cerr << "Error: " << msg(MSG::except_uncaught) << endl;
+	}
+}
+
+void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir, string bname)
+{
+	if (path.empty())
+	{
+		cerr << "Error: " << msg("Wrong parameter path.") << endl;
+
+		return;
+	}
+
+	try
+	{
+		//TODO overwrite check
+		//TODO directory check
+
+		bool overwrite = e2db::OVERWRITE_FILE;
+
+		if (! overwrite && std::filesystem::exists(path))
+			throw std::runtime_error (msg("File \"%s\" already exists.", path));
+
+		if (
+			(std::filesystem::status(path).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
+			(std::filesystem::status(path).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
+		)
+			throw std::runtime_error (msg("File \"%s\" is not writable.", path));
+
+		string filename = std::filesystem::path(path).filename().u8string();
+
+		if (entry_type == ENTRY::lamedb || entry_type == ENTRY::zapit)
+		{
+			int lamedb_ver = dbih->get_lamedb_version();
+			int zapit_ver = dbih->get_zapit_version();
+			ver = ver != -1 ? ver : 4;
+
+			if (entry_type == ENTRY::lamedb)
+			{
+				dbih->set_lamedb_version(ver);
+				dbih->set_zapit_version(-1);
+			}
+			else if (entry_type == ENTRY::zapit)
+			{
+				dbih->set_lamedb_version(-1);
+				dbih->set_zapit_version(ver);
+			}
+
+			bool written = dbih->write(path);
+
+			dbih->set_lamedb_version(lamedb_ver);
+			dbih->set_zapit_version(zapit_ver);
+
+			if (! written)
+				throw std::runtime_error (msg("Error writing file."));
+		}
+		else if (entry_type == ENTRY::lamedb_services)
+		{
+			e2db::e2db_file file;
+
+			dbih->make_lamedb(filename, file, ver);
+
+			ofstream out (path);
+			out << file.data;
+			out.close();
+		}
+		else if (entry_type == ENTRY::bouquet)
+		{
+			ver = ver != -1 ? ver : 4;
+			vector<string> bouquets;
+
+			if (dir)
+			{
+				for (auto & x : dbih->bouquets)
+					bouquets.emplace_back(x.first);
+			}
+			else if (dbih->bouquets.count(bname))
+			{
+				bouquets.emplace_back(bname);
+			}
+			else
+			{
+				throw std::runtime_error (msg("Bouquet \"%s\" not exists.", bname));
+			}
+
+			for (string & bname : bouquets)
+			{
+				e2db::e2db_file file;
+
+				string fext = filename.substr(filename.rfind('.') + 1);
+
+				if (fext == "epl" || ver < 4)
+					dbih->make_bouquet_epl(filename, file);
+				else
+					dbih->make_bouquet(filename, file);
+
+				ofstream out (path);
+				out << file.data;
+				out.close();
+			}
+		}
+		else if (entry_type == ENTRY::userbouquet)
+		{
+			vector<string> userbouquets;
+
+			if (dir)
+			{
+				for (auto & x : dbih->userbouquets)
+					userbouquets.emplace_back(x.first);
+			}
+			else if (dbih->userbouquets.count(bname))
+			{
+				userbouquets.emplace_back(bname);
+			}
+			else
+			{
+				throw std::runtime_error (msg("Userbouquet \"%s\" not exists.", bname));
+			}
+
+			for (string & bname : userbouquets)
+			{
+				e2db::e2db_file file;
+
+				dbih->make_userbouquet(bname, file);
+
+				ofstream out (path);
+				out << file.data;
+				out.close();
+			}
+		}
+		else if (entry_type == ENTRY::zapit_services)
+		{
+			ver = ver != -1 ? ver : 4;
+
+			e2db::e2db_file file;
+
+			dbih->make_bouquets_xml(filename, file, ver);
+
+			ofstream out (path);
+			out << file.data;
+			out.close();
+		}
+		else if (entry_type == ENTRY::zapit_bouquets)
+		{
+			ver = ver != -1 ? ver : 4;
+
+			e2db::e2db_file file;
+
+			dbih->make_bouquets_xml(filename, file, ver);
+
+			ofstream out (path);
+			out << file.data;
+			out.close();
+		}
+		else if (entry_type == ENTRY::tunersets)
+		{
+			e2db::e2db_file file;
+
+			e2db::YTYPE ytype = e2db::YTYPE::satellite;
+
+			if (filename == "satellites.xml")
+				ytype = e2db::YTYPE::satellite;
+			else if (filename == "terrestrial.xml")
+				ytype = e2db::YTYPE::terrestrial;
+			else if (filename == "cables.xml")
+				ytype = e2db::YTYPE::cable;
+			else if (filename == "atsc.xml")
+				ytype = e2db::YTYPE::atsc;
+			else
+				throw std::runtime_error (msg("Unknown Tuner settings type."));
+
+			dbih->make_tunersets_xml(filename, ytype, file);
+
+			ofstream out (path);
+			out << file.data;
+			out.close();
+		}
+		else if (entry_type == ENTRY::parentallock_locked)
+		{
+			e2db::e2db_file file;
+
+			dbih->make_parentallock_list(filename, e2db::PARENTALLOCK::locked, file);
+
+			ofstream out (path);
+			out << file.data;
+			out.close();
+		}
+		else if (entry_type == ENTRY::parentallock_blacklist)
+		{
+			e2db::e2db_file file;
+
+			dbih->make_parentallock_list(filename, e2db::PARENTALLOCK::blacklist, file);
+
+			ofstream out (path);
+			out << file.data;
+			out.close();
+		}
+		else if (entry_type == ENTRY::parentallock_whitelist)
+		{
+			e2db::e2db_file file;
+
+			dbih->make_parentallock_list(filename, e2db::PARENTALLOCK::whitelist, file);
+
+			ofstream out (path);
+			out << file.data;
+			out.close();
+		}
+	}
+	catch (const std::invalid_argument& err)
+	{
+		cerr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+	}
+	catch (const std::out_of_range& err)
+	{
+		cerr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		cerr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
+	}
+	catch (const std::runtime_error& err)
+	{
+		cerr << "Error: " << err.what() << endl;
+	}
+	catch (...)
+	{
+		cerr << "Error: " << msg(MSG::except_uncaught) << endl;
+	}
+}
+
+void e2db_cli::shell_e2db_convert(ENTRY entry_type, int fopt, int ftype, string path)
+{
+	if (path.empty())
+	{
+		cerr << "Error: " << msg("Wrong parameter path.") << endl;
+
+		return;
+	}
+
+	try
+	{
+		// from html raise
+		if (fopt == 0 && ftype == 1)
+			throw 1;
+
+		//TODO overwrite check
+
+		string filename = std::filesystem::path(path).filename().u8string();
+
+		e2db::FCONVS fcx = e2db::FCONVS::convert_current;
+
+		e2db::fcopts opts;
+		opts.filename = filename;
+
+		switch (entry_type)
+		{
+			case ENTRY::index: fcx = e2db::FCONVS::convert_index; break;
+			case ENTRY::all: fcx = e2db::FCONVS::convert_all; break;
+			case ENTRY::service: fcx = e2db::FCONVS::convert_services; break;
+			case ENTRY::bouquet: fcx = e2db::FCONVS::convert_bouquets; break;
+			case ENTRY::userbouquet: fcx = e2db::FCONVS::convert_userbouquets; break;
+			case ENTRY::tunersets: fcx = e2db::FCONVS::convert_tunersets; break; 
+			default: throw 1;
+		}
+
+		if (ftype == 0)
+		{
+			if (fopt == 0)
+				dbih->import_csv_file(fcx, opts, path);
+			else if (fopt == 1)
+				dbih->export_csv_file(fcx, opts, path);
+		}
+		else if (ftype == 1)
+		{
+			dbih->export_html_file(fcx, opts, path);
+		}
+	}
+	catch (const std::invalid_argument& err)
+	{
+		cerr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+	}
+	catch (const std::out_of_range& err)
+	{
+		cerr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		cerr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
+	}
+	catch (const std::runtime_error& err)
+	{
+		cerr << "Error: " << err.what() << endl;
+	}
+	catch (...)
+	{
+		cerr << "Error: " << msg(MSG::except_uncaught) << endl;
+	}
+}
+
 void e2db_cli::shell_entry_list(ENTRY entry_type, string bname, int offset0, int offset1)
 {
 	shell_entry_list(entry_type, offset0, offset1, bname);
@@ -743,6 +1301,7 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, bool paged, int limit, int pos
 			case ENTRY::tunersets_table: rows = 5; break;
 			case ENTRY::tunersets_transponder: rows = 29; break;
 			case ENTRY::channel_reference: rows = 1; break;
+			default: rows = 1;
 		}
 	}
 	else if (__objio.out == OBJIO::tabular)

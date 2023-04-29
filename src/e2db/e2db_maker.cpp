@@ -1264,8 +1264,8 @@ void e2db_maker::make_parentallock_list(string filename, PARENTALLOCK ltype, e2d
 
 			if (locked)
 			{
-				size_t pos = ub.bname.find(".");
-				size_t n = ub.bname.rfind(".");
+				size_t pos = ub.bname.find('.');
+				size_t n = ub.bname.rfind('.');
 				string name;
 				string path = MAKER_BPATH + '/' + ub.bname;
 

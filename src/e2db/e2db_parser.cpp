@@ -104,7 +104,7 @@ void e2db_parser::parse_e2db()
 		{
 			if (x.first.find("bouquets.") != string::npos)
 			{
-				string fext = x.first.substr(x.first.rfind(".") + 1);
+				string fext = x.first.substr(x.first.rfind('.') + 1);
 
 				if (fext != "tv" && fext != "radio" && fext != "epl")
 					continue;
@@ -244,7 +244,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 		{
 			if (x.first.find("bouquets.") != string::npos)
 			{
-				string fext = x.first.substr(x.first.rfind(".") + 1);
+				string fext = x.first.substr(x.first.rfind('.') + 1);
 
 				if (fext != "tv" && fext != "radio" && fext != "epl")
 					continue;
