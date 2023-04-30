@@ -104,6 +104,7 @@ void tools::inspector()
 	timer->start(1000);
 }
 
+//TODO html escape cli
 QString tools::inspectContent(string str, int filter)
 {
 	QString text = QString::fromStdString(str);

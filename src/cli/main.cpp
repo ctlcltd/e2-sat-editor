@@ -16,6 +16,7 @@ int main(int argc, char* argv[])
 {
 	e2se::logger::OBJECT = new e2se::logger::data;
 	e2se::logger::OBJECT->debug = false;
+    e2se::logger::OBJECT->cli = true;
 
 	e2se_cli::e2db_cli* cli = new e2se_cli::e2db_cli(argc, argv);
 

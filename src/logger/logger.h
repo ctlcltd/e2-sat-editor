@@ -11,6 +11,7 @@
 
 #include <string>
 #include <sstream>
+#include <iostream>
 
 using std::string;
 
@@ -33,6 +34,7 @@ class logger
 		{
 			string log;
 			bool debug = false;
+			bool cli = false;
 		};
 
 		inline static data* OBJECT;
@@ -77,18 +79,30 @@ struct log_factory
 		virtual void info(string fn, string optk, string optv)
 		{
 			this->log->info(fn, optk, optv);
+
+			if (this->log->obj->cli)
+				std::cout << "Info: " << optk << ": " << optv << std::endl;
 		}
 		virtual void info(string fn, string optk, int optv)
 		{
 			this->log->info(fn, optk, optv);
+
+			if (this->log->obj->cli)
+				std::cout << "Info: " << optk << ": " << optv << std::endl;
 		}
 		virtual void error(string fn, string optk, string optv)
 		{
 			this->log->error(fn, optk, optv);
+
+			if (this->log->obj->cli)
+				throw std::runtime_error (optk + ": " + optv);
 		}
 		virtual void exception(string fn, string optk, string optv)
 		{
 			this->log->error(fn, optk, optv);
+
+			if (this->log->obj->cli)
+				throw;
 		}
 
 		logger* log;

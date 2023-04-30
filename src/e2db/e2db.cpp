@@ -45,54 +45,62 @@ void e2db::import_file(vector<string> paths)
 		bool merge = this->get_input().size() != 0 ? true : false;
 		auto* dst = merge ? newptr() : this;
 
-		for (string & path : paths)
+		try
 		{
-			if (! std::filesystem::exists(path))
+			for (string & path : paths)
 			{
-				if (merge) delete dst;
-				return error("import_file", "File Error", msg("File \"%s\" not exists.", path));
-			}
-			if (! std::filesystem::is_regular_file(path) && ! std::filesystem::is_directory(path))
-			{
-				if (merge) delete dst;
-				return error("import_file", "File Error", msg("File \"%s\" is not a valid file.", path));
-			}
-			if
-				(
-				 (std::filesystem::status(path).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none &&
-				 (std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
-				 )
-			{
-				if (merge) delete dst;
-				return error("import_file", "File Error", msg("File \"%s\" is not readable.", path));
+				if (! std::filesystem::exists(path))
+				{
+					if (merge) delete dst;
+					return error("import_file", "File Error", msg("File \"%s\" not exists.", path));
+				}
+				if (! std::filesystem::is_regular_file(path) && ! std::filesystem::is_directory(path))
+				{
+					if (merge) delete dst;
+					return error("import_file", "File Error", msg("File \"%s\" is not a valid file.", path));
+				}
+				if
+					(
+					 (std::filesystem::status(path).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none &&
+					 (std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
+					 )
+				{
+					if (merge) delete dst;
+					return error("import_file", "File Error", msg("File \"%s\" is not readable.", path));
+				}
+
+				FPORTS fpi = file_type_detect(path);
+				string filename = std::filesystem::path(path).filename().u8string();
+				string mime = file_mime_detect(fpi, path);
+
+				e2db_file file;
+				file.filename = filename;
+				file.mime = mime;
+
+				//TODO
+				if (fpi != FPORTS::directory)
+				{
+					ifstream ifile (path);
+					string line;
+					while (std::getline(ifile, line))
+						file.data.append(line + '\n');
+					ifile.close();
+				}
+				file.size = file.data.size();
+
+				import_file(fpi, dst, file, path);
 			}
 
-			FPORTS fpi = file_type_detect(path);
-			string filename = std::filesystem::path(path).filename().u8string();
-			string mime = file_mime_detect(fpi, path);
-
-			e2db_file file;
-			file.filename = filename;
-			file.mime = mime;
-
-			//TODO
-			if (fpi != FPORTS::directory)
+			if (merge)
 			{
-				ifstream ifile (path);
-				string line;
-				while (std::getline(ifile, line))
-					file.data.append(line + '\n');
-				ifile.close();
+				this->merge(dst);
+				delete dst;
 			}
-			file.size = file.data.size();
-
-			import_file(fpi, dst, file, path);
 		}
-
-		if (merge)
+		catch (...)
 		{
-			this->merge(dst);
-			delete dst;
+			if (merge) delete dst;
+			throw;
 		}
 	}
 	catch (const std::invalid_argument& err)
@@ -113,6 +121,7 @@ void e2db::import_file(vector<string> paths)
 	}
 }
 
+//TODO stringstream memory
 //TODO TEST
 void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 {
@@ -122,6 +131,7 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 	try
 	{
 		string filename = std::filesystem::path(path).filename().u8string();
+
 		stringstream ifile;
 		ifile.write(&file.data[0], file.size);
 
@@ -420,9 +430,19 @@ void e2db::import_blob(unordered_map<string, e2db_file> files)
 		if (merge)
 		{
 			auto* dst = newptr();
-			dst->parse_e2db(files);
-			this->merge(dst);
-			delete dst;
+
+			try
+			{
+				dst->parse_e2db(files);
+
+				this->merge(dst);
+				delete dst;
+			}
+			catch (...)
+			{
+				delete dst;
+				throw;
+			}
 		}
 		else
 		{

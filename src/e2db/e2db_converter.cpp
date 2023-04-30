@@ -45,14 +45,22 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, vector<string> pat
 		bool merge = this->get_input().size() != 0 ? true : false;
 		auto* dst = merge ? newptr() : this;
 
-		for (string & path : paths)
+		try
 		{
-			import_csv_file(fci, opts, dst, path);
+			for (string & path : paths)
+			{
+				import_csv_file(fci, opts, dst, path);
+			}
+			if (merge)
+			{
+				this->merge(dst);
+				delete dst;
+			}
 		}
-		if (merge)
+		catch (...)
 		{
-			this->merge(dst);
-			delete dst;
+			if (merge) delete dst;
+			throw;
 		}
 	}
 	catch (const std::invalid_argument& err)
@@ -83,12 +91,20 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, string path)
 		bool merge = this->get_input().size() != 0 ? true : false;
 		auto* dst = merge ? newptr() : this;
 
-		import_csv_file(fci, opts, dst, path);
-
-		if (merge)
+		try
 		{
-			this->merge(dst);
-			delete dst;
+			import_csv_file(fci, opts, dst, path);
+
+			if (merge)
+			{
+				this->merge(dst);
+				delete dst;
+			}
+		}
+		catch (...)
+		{
+			if (merge) delete dst;
+			throw;
 		}
 	}
 	catch (const std::invalid_argument& err)
@@ -136,26 +152,32 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 		}
 
 		ifstream ifile (path);
-
-		switch (fci)
+		try
 		{
-			case FCONVS::convert_services:
-				pull_csv_services(ifile, dst);
-			break;
-			case FCONVS::convert_bouquets:
-				pull_csv_bouquets(ifile, dst);
-			break;
-			case FCONVS::convert_userbouquets:
-				pull_csv_userbouquets(ifile, dst);
-			break;
-			case FCONVS::convert_tunersets:
-				pull_csv_tunersets(ifile, dst);
-			break;
-			default:
-				ifile.close();
-			return error("import_csv_file", "Error", "Unknown import option.");
+			switch (fci)
+			{
+				case FCONVS::convert_services:
+					pull_csv_services(ifile, dst);
+					break;
+				case FCONVS::convert_bouquets:
+					pull_csv_bouquets(ifile, dst);
+					break;
+				case FCONVS::convert_userbouquets:
+					pull_csv_userbouquets(ifile, dst);
+					break;
+				case FCONVS::convert_tunersets:
+					pull_csv_tunersets(ifile, dst);
+					break;
+				default:
+					ifile.close();
+					return error("import_csv_file", "Error", "Unknown import option.");
+			}
 		}
-
+		catch (...)
+		{
+			ifile.close();
+			throw;
+		}
 		ifile.close();
 	}
 	catch (const std::invalid_argument& err)

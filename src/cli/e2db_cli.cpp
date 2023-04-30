@@ -86,6 +86,7 @@ void e2db_cli::cmd_shell()
 {
 	shell_header();
 
+	this->log = new e2se::logger("cli", "cmd_shell");
 	this->dbih = new e2db;
 
 	e2db_termctl* term = new e2db_termctl;
@@ -134,6 +135,8 @@ void e2db_cli::cmd_shell()
 			shell_command_make(is);
 		else if (cmd == "convert")
 			shell_command_convert(is);
+		else if (cmd == "debug")
+			shell_command_debug(is);
 		else if (! cmd.empty())
 			shell_error(cmd);
 
@@ -429,9 +432,9 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		*is >> std::skipws >> type;
 
 		if (type == "debug")
-			shell_debug(0);
+			shell_print(0);
 		else if (type == "index")
-			shell_debug(1);
+			shell_print(1);
 		else if (type.empty())
 			shell_usage(command);
 		else
@@ -559,6 +562,10 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		else
 			cerr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
 	}
+	else if (command == COMMAND::debug)
+	{
+		shell_debug();
+	}
 	else
 	{
 		cerr << "Error: " << msg("Unknown command") << endl;
@@ -582,6 +589,9 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 		// cout << "  ", cout.width(7), cout << left << "history", cout << ' ';
 		// cout.width(24), cout << left << "file", cout << ' ' << "Save history to file, instead of memory." << endl;
 		// cout << endl;
+
+		cout << "  ", cout.width(32), cout << left << "debug", cout << ' ' << "Display debug info." << endl;
+		cout << endl;
 
 		cout << "  ", cout.width(32), cout << left << "version", cout << ' ' << "Display version." << endl;
 		cout << endl;
@@ -814,14 +824,60 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 
 void e2db_cli::shell_file_read(string path)
 {
-	if (! dbih->read(path))
-		cerr << "File Error: " << msg("Error reading file.") << endl;
+	try
+	{
+		if (dbih->read(path))
+			cout << "Info: " << msg("File readen: %s", path) << endl;
+	}
+	catch (const std::invalid_argument& err)
+	{
+		cerr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+	}
+	catch (const std::out_of_range& err)
+	{
+		cerr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		cerr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
+	}
+	catch (const std::runtime_error& err)
+	{
+		cerr << "Error: " << err.what() << endl;
+	}
+	catch (...)
+	{
+		cerr << "Error: " << msg(MSG::except_uncaught) << endl;
+	}
 }
 
 void e2db_cli::shell_file_write(string path)
 {
-	if (! dbih->write(path))
-		cerr << "File Error: " << msg("Error writing file.") << endl;
+	try
+	{
+		if (dbih->write(path))
+			cout << "Info: " << msg("File written: %s", path) << endl;
+	}
+	catch (const std::invalid_argument& err)
+	{
+		cerr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+	}
+	catch (const std::out_of_range& err)
+	{
+		cerr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		cerr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
+	}
+	catch (const std::runtime_error& err)
+	{
+		cerr << "Error: " << err.what() << endl;
+	}
+	catch (...)
+	{
+		cerr << "Error: " << msg(MSG::except_uncaught) << endl;
+	}
 }
 
 void e2db_cli::shell_e2db_parse(ENTRY entry_type, string path, int ver, bool dir)
@@ -854,28 +910,44 @@ void e2db_cli::shell_e2db_parse(ENTRY entry_type, string path, int ver, bool dir
 			bool merge = dbih->get_input().size() != 0 ? true : false;
 			auto* dst = merge ? new e2db : dbih;
 
-			bool readen = dst->read(path);
+			try
+			{
+				bool readen = dst->read(path);
 
-			if (! readen)
+				if (! readen)
+				{
+					if (merge) delete dst;
+					throw std::runtime_error (msg("Error reading file."));
+				}
+				if (merge)
+				{
+					dbih->merge(dst);
+					delete dst;
+				}
+			}
+			catch (...)
 			{
 				if (merge) delete dst;
-				throw std::runtime_error (msg("Error reading file."));
-			}
-			if (merge)
-			{
-				dbih->merge(dst);
-				delete dst;
+				throw;
 			}
 		}
 		else if (entry_type == ENTRY::lamedb_services)
 		{
 			ifstream iservices (path);
-			if (ver == 5)
-				dbih->parse_e2db_lamedb5(iservices);
-			else if (ver > 0 && ver < 5)
-				dbih->parse_e2db_lamedbx(iservices, ver);
-			else
-				dbih->parse_e2db_lamedb(iservices);
+			try
+			{
+				if (ver == 5)
+					dbih->parse_e2db_lamedb5(iservices);
+				else if (ver > 0 && ver < 5)
+					dbih->parse_e2db_lamedbx(iservices, ver);
+				else
+					dbih->parse_e2db_lamedb(iservices);
+			}
+			catch (...)
+			{
+				iservices.close();
+				throw;
+			}
 			iservices.close();
 		}
 		else if (entry_type == ENTRY::bouquet)
@@ -886,30 +958,62 @@ void e2db_cli::shell_e2db_parse(ENTRY entry_type, string path, int ver, bool dir
 				throw std::runtime_error (msg("Unknown Bouquet file."));
 
 			ifstream ibouquet (path);
-			dbih->parse_e2db_bouquet(ibouquet, filename, fext == "epl");
+			try
+			{
+				dbih->parse_e2db_bouquet(ibouquet, filename, fext == "epl");
+			}
+			catch (...)
+			{
+				ibouquet.close();
+				throw;
+			}
 			ibouquet.close();
 		}
 		else if (entry_type == ENTRY::userbouquet)
 		{
 			ifstream iuserbouquet (path);
-			dbih->parse_e2db_userbouquet(iuserbouquet, filename);
+			try
+			{
+				dbih->parse_e2db_userbouquet(iuserbouquet, filename);
+			}
+			catch (...)
+			{
+				iuserbouquet.close();
+				throw;
+			}
 			iuserbouquet.close();
 		}
 		else if (entry_type == ENTRY::zapit_services)
 		{
-			ifstream iservices (path);
-			if (ver != -1)
-				dbih->parse_zapit_services_apix_xml(iservices, filename, ver);
-			else
-				dbih->parse_zapit_services_xml(iservices, filename);
-			iservices.close();
+			ifstream iservicesxml (path);
+			try
+			{
+				if (ver != -1)
+					dbih->parse_zapit_services_apix_xml(iservicesxml, filename, ver);
+				else
+					dbih->parse_zapit_services_xml(iservicesxml, filename);
+			}
+			catch (...)
+			{
+				iservicesxml.close();
+				throw;
+			}
+			iservicesxml.close();
 		}
 		else if (entry_type == ENTRY::zapit_bouquets)
 		{
 			ver = ver != -1 ? ver : dbih->get_zapit_version();
 
 			ifstream ibouquetsxml (path);
-			dbih->parse_zapit_bouquets_apix_xml(ibouquetsxml, filename, ver);
+			try
+			{
+				dbih->parse_zapit_bouquets_apix_xml(ibouquetsxml, filename, ver);
+			}
+			catch (...)
+			{
+				ibouquetsxml.close();
+				throw;
+			}
 			ibouquetsxml.close();
 		}
 		else if (entry_type == ENTRY::tunersets)
@@ -928,25 +1032,57 @@ void e2db_cli::shell_e2db_parse(ENTRY entry_type, string path, int ver, bool dir
 				throw std::runtime_error (msg("Unknown Tuner settings type."));
 
 			ifstream itunxml (path);
-			dbih->parse_tunersets_xml(ytype, itunxml);
+			try
+			{
+				dbih->parse_tunersets_xml(ytype, itunxml);
+			}
+			catch (...)
+			{
+				itunxml.close();
+				throw;
+			}
 			itunxml.close();
 		}
 		else if (entry_type == ENTRY::parentallock_locked)
 		{
 			ifstream ilocked (path);
-			dbih->parse_e2db_parentallock_list(e2db::PARENTALLOCK::locked, ilocked);
+			try
+			{
+				dbih->parse_e2db_parentallock_list(e2db::PARENTALLOCK::locked, ilocked);
+			}
+			catch (...)
+			{
+				ilocked.close();
+				throw;
+			}
 			ilocked.close();
 		}
 		else if (entry_type == ENTRY::parentallock_blacklist)
 		{
 			ifstream ilocked (path);
-			dbih->parse_e2db_parentallock_list(e2db::PARENTALLOCK::blacklist, ilocked);
+			try
+			{
+				dbih->parse_e2db_parentallock_list(e2db::PARENTALLOCK::blacklist, ilocked);
+			}
+			catch (...)
+			{
+				ilocked.close();
+				throw;
+			}
 			ilocked.close();
 		}
 		else if (entry_type == ENTRY::parentallock_whitelist)
 		{
 			ifstream ilocked (path);
-			dbih->parse_e2db_parentallock_list(e2db::PARENTALLOCK::whitelist, ilocked);
+			try
+			{
+				dbih->parse_e2db_parentallock_list(e2db::PARENTALLOCK::whitelist, ilocked);
+			}
+			catch (...)
+			{
+				ilocked.close();
+				throw;
+			}
 			ilocked.close();
 		}
 	}
@@ -2434,12 +2570,32 @@ void e2db_cli::shell_entry_parentallock(ENTRY entry_type, string id, bool flag)
 	}
 }
 
-void e2db_cli::shell_debug(int opt)
+void e2db_cli::shell_print(int opt)
 {
-	if (opt)
-		cout << "TODO" << endl;
-	else
-		dbih->debugger();
+	try
+	{
+		if (opt)
+			cout << "TODO" << endl;
+		else
+			dbih->debugger();
+	}
+	catch (const std::invalid_argument& err)
+	{
+		cerr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+	}
+	catch (const std::out_of_range& err)
+	{
+		cerr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+	}
+	catch (...)
+	{
+		cerr << "Error: " << msg(MSG::except_uncaught) << endl;
+	}
+}
+
+void e2db_cli::shell_debug()
+{
+	cout << log->str();
 }
 
 void e2db_cli::print_obj_begin(int depth)

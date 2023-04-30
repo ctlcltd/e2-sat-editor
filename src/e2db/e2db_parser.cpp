@@ -44,14 +44,22 @@ void e2db_parser::parse_e2db()
 		return error("parse_e2db", "Error", "Services file not found.");
 
 	ifstream iservices (this->e2db[this->services_filename]);
-	if (this->e2db.count("services.xml"))
+	try
 	{
-		db.type = 1;
-		parse_zapit_services_xml(iservices, "services.xml");
+		if (this->e2db.count("services.xml"))
+		{
+			db.type = 1;
+			parse_zapit_services_xml(iservices, "services.xml");
+		}
+		else
+		{
+			parse_e2db_lamedb(iservices);
+		}
 	}
-	else
+	catch (...)
 	{
-		parse_e2db_lamedb(iservices);
+		iservices.close();
+		throw;
 	}
 	iservices.close();
 
@@ -60,25 +68,58 @@ void e2db_parser::parse_e2db()
 		if (this->e2db.count("satellites.xml"))
 		{
 			ifstream itunxml (this->e2db["satellites.xml"]);
-			parse_tunersets_xml(YTYPE::satellite, itunxml);
+			try
+			{
+				parse_tunersets_xml(YTYPE::satellite, itunxml);
+			}
+			catch (...)
+			{
+				itunxml.close();
+				throw;
+			}
 			itunxml.close();
 		}
 		if (this->e2db.count("terrestrial.xml"))
 		{
 			ifstream itunxml (this->e2db["terrestrial.xml"]);
-			parse_tunersets_xml(YTYPE::terrestrial, itunxml);
+			try
+			{
+				parse_tunersets_xml(YTYPE::terrestrial, itunxml);
+			}
+			catch (...)
+			{
+				itunxml.close();
+				throw;
+			}
 			itunxml.close();
+
 		}
 		if (this->e2db.count("cables.xml"))
 		{
 			ifstream itunxml (this->e2db["cables.xml"]);
-			parse_tunersets_xml(YTYPE::cable, itunxml);
+			try
+			{
+				parse_tunersets_xml(YTYPE::cable, itunxml);
+			}
+			catch (...)
+			{
+				itunxml.close();
+				throw;
+			}
 			itunxml.close();
 		}
 		if (this->e2db.count("atsc.xml"))
 		{
 			ifstream itunxml (this->e2db["atsc.xml"]);
-			parse_tunersets_xml(YTYPE::atsc, itunxml);
+			try
+			{
+				parse_tunersets_xml(YTYPE::atsc, itunxml);
+			}
+			catch (...)
+			{
+				itunxml.close();
+				throw;
+			}
 			itunxml.close();
 		}
 	}
@@ -88,13 +129,29 @@ void e2db_parser::parse_e2db()
 		if (this->e2db.count("ubouquets.xml"))
 		{
 			ifstream ibouquetsxml (this->e2db["ubouquets.xml"]);
-			parse_zapit_bouquets_apix_xml(ibouquetsxml, "ubouquets.xml", ZAPIT_VER);
+			try
+			{
+				parse_zapit_bouquets_apix_xml(ibouquetsxml, "ubouquets.xml", ZAPIT_VER);
+			}
+			catch (...)
+			{
+				ibouquetsxml.close();
+				throw;
+			}
 			ibouquetsxml.close();
 		}
 		if (this->e2db.count("bouquets.xml"))
 		{
 			ifstream ibouquetsxml (this->e2db["bouquets.xml"]);
-			parse_zapit_bouquets_apix_xml(ibouquetsxml, "bouquets.xml", ZAPIT_VER);
+			try
+			{
+				parse_zapit_bouquets_apix_xml(ibouquetsxml, "bouquets.xml", ZAPIT_VER);
+			}
+			catch (...)
+			{
+				ibouquetsxml.close();
+				throw;
+			}
 			ibouquetsxml.close();
 		}
 	}
@@ -110,7 +167,15 @@ void e2db_parser::parse_e2db()
 					continue;
 
 				ifstream ibouquet (this->e2db[x.first]);
-				parse_e2db_bouquet(ibouquet, x.first, fext == "epl");
+				try
+				{
+					parse_e2db_bouquet(ibouquet, x.first, fext == "epl");
+				}
+				catch (...)
+				{
+					ibouquet.close();
+					throw;
+				}
 				ibouquet.close();
 			}
 		}
@@ -119,7 +184,15 @@ void e2db_parser::parse_e2db()
 			for (string & fname : x.second.userbouquets)
 			{
 				ifstream iuserbouquet (this->e2db[fname]);
-				parse_e2db_userbouquet(iuserbouquet, fname);
+				try
+				{
+					parse_e2db_userbouquet(iuserbouquet, fname);
+				}
+				catch (...)
+				{
+					iuserbouquet.close();
+					throw;
+				}
 				iuserbouquet.close();
 			}
 		}
@@ -131,7 +204,15 @@ void e2db_parser::parse_e2db()
 				if (this->e2db.count("services.locked"))
 				{
 					ifstream ilocked (this->e2db["services.locked"]);
-					parse_e2db_parentallock_list(PARENTALLOCK::locked, ilocked);
+					try
+					{
+						parse_e2db_parentallock_list(PARENTALLOCK::locked, ilocked);
+					}
+					catch (...)
+					{
+						ilocked.close();
+						throw;
+					}
 					ilocked.close();
 				}
 			}
@@ -140,13 +221,29 @@ void e2db_parser::parse_e2db()
 				if (this->e2db.count("blacklist"))
 				{
 					ifstream ilocked (this->e2db["blacklist"]);
-					parse_e2db_parentallock_list(PARENTALLOCK::blacklist, ilocked);
+					try
+					{
+						parse_e2db_parentallock_list(PARENTALLOCK::blacklist, ilocked);
+					}
+					catch (...)
+					{
+						ilocked.close();
+						throw;
+					}
 					ilocked.close();
 				}
 				if (this->e2db.count("whitelist"))
 				{
 					ifstream ilocked (this->e2db["whitelist"]);
-					parse_e2db_parentallock_list(PARENTALLOCK::whitelist, ilocked);
+					try
+					{
+						parse_e2db_parentallock_list(PARENTALLOCK::whitelist, ilocked);
+					}
+					catch (...)
+					{
+						ilocked.close();
+						throw;
+					}
 					ilocked.close();
 				}
 			}
@@ -169,6 +266,7 @@ void e2db_parser::parse_e2db()
 	info("parse_e2db", "elapsed time", to_string(int (end - start)) + " ms.");
 }
 
+//TODO stringstream memory
 void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 {
 	debug("parse_e2db");

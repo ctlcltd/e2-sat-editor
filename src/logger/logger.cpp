@@ -11,7 +11,7 @@
 
 #include <cstdio>
 #include <ctime>
-#include <iostream>
+#include <stdexcept>
 
 #include "logger.h"
 
@@ -105,7 +105,8 @@ void logger::error(string fn, string optk, string optv)
 	os << ' ' << optk << ':';
 	os << ' ' << optv;
 	os << std::endl;
-	std::cerr << os.rdbuf();
+	if (! this->obj->cli)
+		std::cerr << os.rdbuf();
 	this->obj->log.append(buf->str());
 	buf->str("");
 }

@@ -54,7 +54,8 @@ class e2db_cli
 			print,
 			parse,
 			make,
-			convert
+			convert,
+			debug
 		};
 
 		enum ENTRY {
@@ -153,6 +154,7 @@ class e2db_cli
 		void shell_command_make(istream* is) { shell_resolver(COMMAND::make, is); };
 		void shell_command_convert(istream* is) { shell_resolver(COMMAND::convert, is); };
 		void shell_command_merge(istream* is) { shell_resolver(COMMAND::merge, is); };
+		void shell_command_debug(istream* is) { shell_resolver(COMMAND::debug, is); };
 
 		void shell_resolver(COMMAND command, istream* is);
 		void shell_usage(COMMAND hint, bool specs = true);
@@ -174,7 +176,8 @@ class e2db_cli
 		void shell_entry_remove(ENTRY entry_type, int ref, string bname, string id);
 		void shell_entry_remove(ENTRY entry_type, string id, string bname = "");
 		void shell_entry_parentallock(ENTRY entry_type, string id, bool flag);
-		void shell_debug(int opt);
+		void shell_print(int opt);
+		void shell_debug();
 
 		void print_obj_begin(int depth = 0);
 		void print_obj_end(int depth = 0);
@@ -192,6 +195,7 @@ class e2db_cli
 
 	private:
 		e2db* dbih = nullptr;
+		e2se::logger* log;
 		string last_label;
 };
 }
