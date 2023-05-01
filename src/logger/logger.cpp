@@ -11,7 +11,6 @@
 
 #include <cstdio>
 #include <ctime>
-#include <stdexcept>
 
 #include "logger.h"
 
@@ -67,11 +66,6 @@ void logger::debug(string fn, string optk, string optv)
 	buf->str("");
 }
 
-void logger::debug(string fn, string optk, int optv)
-{
-	this->logger::debug(fn, optk, std::to_string(optv));
-}
-
 void logger::info(string fn, string optk, string optv)
 {
 	std::ostream os (buf);
@@ -87,11 +81,6 @@ void logger::info(string fn, string optk, string optv)
 		std::cout << os.rdbuf();
 	this->obj->log.append(buf->str());
 	buf->str("");
-}
-
-void logger::info(string fn, string optk, int optv)
-{
-	this->logger::info(fn, optk, std::to_string(optv));
 }
 
 void logger::error(string fn, string optk, string optv)

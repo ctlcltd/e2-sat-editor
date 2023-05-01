@@ -164,6 +164,8 @@ class e2db_cli
 		void shell_e2db_make(ENTRY entry_type, string path, int ver = -1, bool dir = false, string bname = "");
 		void shell_e2db_convert(ENTRY entry_type, int fopt, int ftype, string path);
 		void shell_e2db_merge();
+		void shell_e2db_import(ENTRY entry_type, vector<string> paths, int ver = -1, bool dir = false);
+		void shell_e2db_export(ENTRY entry_type, vector<string> paths, int ver = -1, bool dir = false, string bname = "");
 		void shell_entry_list(ENTRY entry_type, string bname, int offset0, int offset1);
 		void shell_entry_list(ENTRY entry_type, int offset0, int offset1, string bname = "");
 		void shell_entry_list(ENTRY entry_type, bool paged = true, int limit = 0, int pos = 0, string bname = "");

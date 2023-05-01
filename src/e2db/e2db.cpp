@@ -222,7 +222,7 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 				dst->parse_e2db_parentallock_list(PARENTALLOCK::locked, ifile);
 			break;
 			default:
-			return error("import_file", "Error", "Unknown import option.");
+				return error("import_file", "Error", "Unknown import option.");
 		}
 	}
 	catch (const std::invalid_argument& err)
@@ -371,7 +371,7 @@ void e2db::export_file(FPORTS fpo, string path)
 				make_parentallock_list(filename, PARENTALLOCK::locked, file);
 			break;
 			default:
-			return error("export_file", "Error", "Unknown export option.");
+				return error("export_file", "Error", "Unknown export option.");
 		}
 
 		string fpath = path;

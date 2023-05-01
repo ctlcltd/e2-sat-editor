@@ -452,7 +452,8 @@ int e2db_abstract::value_transponder_dvbns(string str)
 	{
 		return std::stoi(str, nullptr, 16);
 	}
-	catch (const std::invalid_argument& err)
+	// catch (const std::invalid_argument& err)
+	catch (...)
 	{
 		return 0;
 	}
@@ -543,7 +544,8 @@ int e2db_abstract::value_transponder_position(string str)
 			char pospoint = str.substr(pos)[0];
 			return (int ((pospoint == 'E' ? posdeg : -posdeg) * 10));
 		}
-		catch (const std::invalid_argument& err)
+		// catch (const std::invalid_argument& err)
+		catch (...)
 		{
 			return -1;
 		}

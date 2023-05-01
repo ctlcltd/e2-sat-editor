@@ -12,6 +12,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <stdexcept>
 
 using std::string;
 
@@ -44,9 +45,7 @@ class logger
 		logger(data* obj, string ns, string cn);
 		void debug(string fn);
 		void debug(string fn, string optk, string optv);
-		void debug(string fn, string optk, int optv);
 		void info(string fn, string optk, string optv);
-		void info(string fn, string optk, int optv);
 		void error(string fn, string optk, string optv);
 		string timestamp();
 		string str();
@@ -74,16 +73,9 @@ struct log_factory
 		}
 		virtual void debug(string fn, string optk, int optv)
 		{
-			this->log->debug(fn, optk, optv);
+			this->log->debug(fn, optk, std::to_string(optv));
 		}
 		virtual void info(string fn, string optk, string optv)
-		{
-			this->log->info(fn, optk, optv);
-
-			if (this->log->obj->cli)
-				std::cout << "Info: " << optk << ": " << optv << std::endl;
-		}
-		virtual void info(string fn, string optk, int optv)
 		{
 			this->log->info(fn, optk, optv);
 

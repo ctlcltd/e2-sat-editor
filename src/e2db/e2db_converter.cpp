@@ -158,16 +158,16 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 			{
 				case FCONVS::convert_services:
 					pull_csv_services(ifile, dst);
-					break;
+				break;
 				case FCONVS::convert_bouquets:
 					pull_csv_bouquets(ifile, dst);
-					break;
+				break;
 				case FCONVS::convert_userbouquets:
 					pull_csv_userbouquets(ifile, dst);
-					break;
+				break;
 				case FCONVS::convert_tunersets:
 					pull_csv_tunersets(ifile, dst);
-					break;
+				break;
 				default:
 					ifile.close();
 					return error("import_csv_file", "Error", "Unknown import option.");
