@@ -58,7 +58,7 @@ struct e2db_abstract : protected e2se::log_factory
 
 		// import / export enum
 		enum FPORTS {
-			unsupported = 0x0000,
+			unknown = 0x0000,
 			directory = 0x0001,
 			all_services = 0x1000,
 			all_services__2_4 = 0x1224,

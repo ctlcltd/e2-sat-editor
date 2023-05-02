@@ -1,7 +1,7 @@
 #!/bin/bash
 # Convert icons
 # - iconutil (macOS)
-# - straight copy (Linux)
+# - straight copy (*ux)
 # - IMagick (Windows)
 # 
 
@@ -56,10 +56,10 @@ icons_ux () {
 
 	cwt
 
-	mkdir -p dist/linux/icons/{scalable,128x128,64x64}
-	cp res/e2-sat-editor/icon.svg dist/linux/icons/scalable/e2-sat-editor.svg
-	cp res/e2-sat-editor/icon-128.png dist/linux/icons/128x128/e2-sat-editor.png
-	cp res/e2-sat-editor/icon-64.png dist/linux/icons/64x64/e2-sat-editor.png
+	mkdir -p dist/xdg/icons/{scalable,128x128,64x64}
+	cp res/e2-sat-editor/icon.svg dist/xdg/icons/scalable/e2-sat-editor.svg
+	cp res/e2-sat-editor/icon-128.png dist/xdg/icons/128x128/e2-sat-editor.png
+	cp res/e2-sat-editor/icon-64.png dist/xdg/icons/64x64/e2-sat-editor.png
 }
 
 complete () {

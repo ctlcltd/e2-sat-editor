@@ -163,7 +163,8 @@ class e2db_cli
 		void shell_e2db_parse(ENTRY entry_type, string path, int ver = -1, bool dir = false);
 		void shell_e2db_make(ENTRY entry_type, string path, int ver = -1, bool dir = false, string bname = "");
 		void shell_e2db_convert(ENTRY entry_type, int fopt, int ftype, string path);
-		void shell_e2db_merge();
+		void shell_e2db_merge(ENTRY entry_type, string path, int ver = -1, bool dir = false);
+		void shell_e2db_merge(ENTRY entry_type, int ver = -1, string bname0 = "", string bname1 = "");
 		void shell_e2db_import(ENTRY entry_type, vector<string> paths, int ver = -1, bool dir = false);
 		void shell_e2db_export(ENTRY entry_type, vector<string> paths, int ver = -1, bool dir = false, string bname = "");
 		void shell_entry_list(ENTRY entry_type, string bname, int offset0, int offset1);

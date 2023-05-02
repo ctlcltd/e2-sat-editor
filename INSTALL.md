@@ -100,7 +100,9 @@ cmake --build build
 
 Compiling with **qmake** or **CMake** for Linux or BSD or Unix.
 
-I am testing under **Arch Linux** with Qt6 and under **Ubuntu LTS** with Qt5, using **qmake**.
+I am testing under **Arch Linux** with Qt6 and under **Ubuntu 20.04 LTS** with Qt5, using **qmake**.
+
+I am testing under **FreeBSD 13** with Qt6, using **qmake**.
 
 In order to compile, the following packages are required, on Arch:
 base-devel, make, qt6-base, curl

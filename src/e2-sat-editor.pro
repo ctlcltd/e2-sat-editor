@@ -46,13 +46,13 @@ unix:!mac {
 	target.path = $$PREFIX/bin
 	target.files += $$TARGET
 	desktop.path = $$PREFIX/share/applications
-	desktop.files += ../dist/linux/e2-sat-editor.desktop
+	desktop.files += ../dist/xdg/e2-sat-editor.desktop
 	icon.path = $$PREFIX/share/icons/hicolor/scalable/apps
-	icon.files += ../dist/linux/icons/scalable/e2-sat-editor.svg
+	icon.files += ../dist/xdg/icons/scalable/e2-sat-editor.svg
 	icon_128.path = $$PREFIX/share/icons/hicolor/128x128/apps
-	icon_128.files += ../dist/linux/icons/128x128/e2-sat-editor.png
+	icon_128.files += ../dist/xdg/icons/128x128/e2-sat-editor.png
 	icon_64.path = $$PREFIX/share/icons/hicolor/64x64/apps
-	icon_64.files += ../dist/linux/icons/64x64/e2-sat-editor.png
+	icon_64.files += ../dist/xdg/icons/64x64/e2-sat-editor.png
 	translations.path = $$PREFIX/share/e2-sat-editor/translations
 	translations.files += ../res/locale/*.qm
 

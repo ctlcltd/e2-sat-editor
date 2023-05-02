@@ -24,6 +24,7 @@ class e2db : public e2db_parser, public e2db_maker, public e2db_converter
 		e2db();
 		virtual ~e2db() = default;
 		void import_file(vector<string> paths);
+		void import_file(FPORTS fpi, vector<string> paths);
 		void import_file(FPORTS fpi, e2db* dst, e2db_file file, string path);
 		void export_file(vector<string> paths);
 		void export_file(FPORTS fpo, vector<string> paths);

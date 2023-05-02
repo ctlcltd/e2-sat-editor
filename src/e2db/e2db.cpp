@@ -40,6 +40,14 @@ void e2db::import_file(vector<string> paths)
 	debug("import_file", "file path", "multiple");
 	debug("import_file", "file input", "auto");
 
+	import_file(FPORTS::unknown, paths);
+}
+
+void e2db::import_file(FPORTS fpi, vector<string> paths)
+{
+	debug("import_file", "file path", "multiple");
+	debug("import_file", "file input", fpi);
+
 	try
 	{
 		bool merge = this->get_input().size() != 0 ? true : false;
@@ -69,7 +77,9 @@ void e2db::import_file(vector<string> paths)
 					return error("import_file", "File Error", msg("File \"%s\" is not readable.", path));
 				}
 
-				FPORTS fpi = file_type_detect(path);
+				if (fpi == FPORTS::unknown)
+					fpi = file_type_detect(path);
+
 				string filename = std::filesystem::path(path).filename().u8string();
 				string mime = file_mime_detect(fpi, path);
 

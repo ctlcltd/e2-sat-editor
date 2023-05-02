@@ -424,7 +424,7 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		int ver = -1;
 		*is >> std::skipws >> opt0 >> opt1;
 
-		if (opt0 == "zapit" || opt0 == "parentallock" && ! opt1.empty())
+		if (opt0 == "zapit" || opt0 == "parentallock")
 			type = opt0 + ' ' + opt1;
 		else
 			type = opt0, paths.emplace_back(opt1);
@@ -435,9 +435,9 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		catch (...) {}
 
 		if (type == "enigma")
-			shell_e2db_import(ENTRY::lamedb, paths, ver);
+			shell_e2db_import(ENTRY::lamedb, paths);
 		else if (type == "neutrino")
-			shell_e2db_import(ENTRY::zapit, paths, ver);
+			shell_e2db_import(ENTRY::zapit, paths);
 		else if (type == "lamedb")
 			shell_e2db_import(ENTRY::lamedb_services, paths, ver);
 		else if (type == "bouquets")
@@ -450,12 +450,12 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 			shell_e2db_import(ENTRY::zapit_bouquets, paths, ver);
 		else if (type == "tunersets")
 			shell_e2db_import(ENTRY::tunersets, paths);
-		else if (type == "parentallock locked")
-			shell_e2db_import(ENTRY::parentallock_locked, paths);
 		else if (type == "parentallock blacklist")
 			shell_e2db_import(ENTRY::parentallock_blacklist, paths);
 		else if (type == "parentallock whitelist")
 			shell_e2db_import(ENTRY::parentallock_whitelist, paths);
+		else if (type == "parentallock locked")
+			shell_e2db_import(ENTRY::parentallock_locked, paths);
 		else if (type.empty())
 			shell_usage(command);
 		else
@@ -469,7 +469,7 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		int ver = -1;
 		*is >> std::skipws >> opt0 >> opt1;
 
-		if (opt0 == "zapit" || opt0 == "parentallock" && ! opt1.empty())
+		if (opt0 == "zapit" || (opt0 == "parentallock" && (opt1 == "locked" || opt1 == "blacklist" || opt1 == "whitelist")))
 			type = opt0 + ' ' + opt1;
 		else if (opt0 == "bouquet" || opt0 == "userbouquet")
 			type = opt0, bname = opt1;
@@ -478,14 +478,13 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 
 		while (std::getline(*is, optx, ' '))
 			paths.emplace_back(optx);
-
 		try { int ver = std::stoi(optx); paths.pop_back(); }
 		catch (...) {}
 
 		if (type == "enigma")
-			shell_e2db_export(ENTRY::lamedb, paths, ver, true);
+			shell_e2db_export(ENTRY::lamedb, paths, -1, true);
 		else if (type == "neutrino")
-			shell_e2db_export(ENTRY::zapit, paths, ver, true);
+			shell_e2db_export(ENTRY::zapit, paths, -1, true);
 		else if (type == "lamedb")
 			shell_e2db_export(ENTRY::lamedb_services, paths, ver);
 		else if (type == "bouquet")
@@ -502,12 +501,12 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 			shell_e2db_export(ENTRY::zapit_bouquets, paths, ver);
 		else if (type == "tunersets")
 			shell_e2db_export(ENTRY::tunersets, paths);
-		else if (type == "parentallock locked")
-			shell_e2db_export(ENTRY::parentallock_locked, paths);
 		else if (type == "parentallock blacklist")
 			shell_e2db_export(ENTRY::parentallock_blacklist, paths);
 		else if (type == "parentallock whitelist")
 			shell_e2db_export(ENTRY::parentallock_whitelist, paths);
+		else if (type == "parentallock locked")
+			shell_e2db_export(ENTRY::parentallock_locked, paths);
 		else if (type == "parentallock")
 			shell_e2db_export(ENTRY::parentallock, paths);
 		else if (type.empty())
@@ -517,7 +516,61 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 	}
 	else if (command == COMMAND::merge)
 	{
-		cout << "TODO" << endl;
+		string opt0, opt1, opt2, opt3;
+		string type, path, bname0, bname1;
+		int ver = -1;
+		*is >> std::skipws >> opt0 >> opt1 >> opt2 >> opt3;
+
+		if (opt0 == "zapit" || opt0 == "parentallock" && ! opt1.empty())
+		{
+			type = opt0 + ' ' + opt1, path = opt2;
+			try { ver = std::stoi(opt3); } catch (...) {}
+		}
+		else if (opt0 == "bouquets" || opt0 == "userbouquets" && ! opt2.empty())
+		{
+			type = opt0, bname0 = opt1, bname1 = opt2;
+			try { ver = std::stoi(opt3); } catch (...) {}
+		}
+		else
+		{
+			type = opt0, path = opt1;
+			try { ver = std::stoi(opt2); } catch (...) {}
+		}
+
+		if (type == "enigma")
+			shell_e2db_merge(ENTRY::lamedb, path, -1, true);
+		else if (type == "neutrino")
+			shell_e2db_merge(ENTRY::zapit, path, -1, true);
+		else if (type == "lamedb")
+			shell_e2db_merge(ENTRY::lamedb_services, path, ver);
+		else if (type == "bouquet")
+			shell_e2db_merge(ENTRY::bouquet, path, ver);
+		else if (type == "bouquets" && path.empty())
+			shell_e2db_merge(ENTRY::bouquet, path, ver, true);
+		else if (type == "bouquets")
+			shell_e2db_merge(ENTRY::bouquet, ver, bname0, bname1);
+		else if (type == "userbouquet")
+			shell_e2db_merge(ENTRY::userbouquet, path);
+		else if (type == "userbouquets" && path.empty())
+			shell_e2db_merge(ENTRY::userbouquet, -1, bname0, bname1);
+		else if (type == "userbouquets")
+			shell_e2db_merge(ENTRY::userbouquet, path, -1, true);
+		else if (type == "zapit services")
+			shell_e2db_merge(ENTRY::zapit_services, path, ver);
+		else if (type == "zapit bouquets")
+			shell_e2db_merge(ENTRY::zapit_bouquets, path, ver);
+		else if (type == "tunersets")
+			shell_e2db_merge(ENTRY::tunersets, path);
+		else if (type == "parentallock blacklist")
+			shell_e2db_merge(ENTRY::parentallock_blacklist, path);
+		else if (type == "parentallock whitelist")
+			shell_e2db_merge(ENTRY::parentallock_whitelist, path);
+		else if (type == "parentallock locked")
+			shell_e2db_merge(ENTRY::parentallock_locked, path);
+		else if (type.empty())
+			shell_usage(command);
+		else
+			cerr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
 	}
 	else if (command == COMMAND::print)
 	{
@@ -552,9 +605,9 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		}
 
 		if (type == "enigma")
-			shell_e2db_parse(ENTRY::lamedb, path, ver, true);
+			shell_e2db_parse(ENTRY::lamedb, path, -1, true);
 		else if (type == "neutrino")
-			shell_e2db_parse(ENTRY::zapit, path, ver, true);
+			shell_e2db_parse(ENTRY::zapit, path, -1, true);
 		else if (type == "lamedb")
 			shell_e2db_parse(ENTRY::lamedb_services, path, ver);
 		else if (type == "bouquet")
@@ -567,12 +620,12 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 			shell_e2db_parse(ENTRY::zapit_bouquets, path, ver);
 		else if (type == "tunersets")
 			shell_e2db_parse(ENTRY::tunersets, path);
-		else if (type == "parentallock locked")
-			shell_e2db_parse(ENTRY::parentallock_locked, path);
 		else if (type == "parentallock blacklist")
 			shell_e2db_parse(ENTRY::parentallock_blacklist, path);
 		else if (type == "parentallock whitelist")
 			shell_e2db_parse(ENTRY::parentallock_whitelist, path);
+		else if (type == "parentallock locked")
+			shell_e2db_parse(ENTRY::parentallock_locked, path);
 		else if (type.empty())
 			shell_usage(command);
 		else
@@ -602,9 +655,9 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		}
 
 		if (type == "enigma")
-			shell_e2db_make(ENTRY::lamedb, path, ver, true);
+			shell_e2db_make(ENTRY::lamedb, path, -1, true);
 		else if (type == "neutrino")
-			shell_e2db_make(ENTRY::zapit, path, ver, true);
+			shell_e2db_make(ENTRY::zapit, path, -1, true);
 		else if (type == "lamedb")
 			shell_e2db_make(ENTRY::lamedb_services, path, ver);
 		else if (type == "bouquet")
@@ -621,12 +674,12 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 			shell_e2db_make(ENTRY::zapit_bouquets, path, ver);
 		else if (type == "tunersets")
 			shell_e2db_make(ENTRY::tunersets, path);
-		else if (type == "parentallock locked")
-			shell_e2db_make(ENTRY::parentallock_locked, path);
 		else if (type == "parentallock blacklist")
 			shell_e2db_make(ENTRY::parentallock_blacklist, path);
 		else if (type == "parentallock whitelist")
 			shell_e2db_make(ENTRY::parentallock_whitelist, path);
+		else if (type == "parentallock locked")
+			shell_e2db_make(ENTRY::parentallock_locked, path);
 		else if (type == "parentallock")
 			shell_e2db_make(ENTRY::parentallock, path);
 		else if (type.empty())
@@ -652,6 +705,8 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 
 		if (type == "index")
 			shell_e2db_convert(ENTRY::index, fopt, ftype, path);
+		else if (type == "all")
+			shell_e2db_convert(ENTRY::all, fopt, ftype, path);
 		else if (type == "services")
 			shell_e2db_convert(ENTRY::service, fopt, ftype, path);
 		else if (type == "bouquets")
@@ -817,15 +872,15 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "zapit services  [files]", cout << ' ' << "Import Neutrino services files." << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "zapit bouquets  [files]", cout << ' ' << "Import Neutrino bouquets files." << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "tunersets  [files]", cout << ' ' << "Import tuner settings xml files." << endl;
-		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock locked  [files]", cout << ' ' << "Import Enigma .locked parental lock files." << endl;
-		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock blacklist  [files]", cout << ' ' << "Import Enigma blacklist parental lock files." << endl;
-		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock whitelist  [files]", cout << ' ' << "Import Enigma whitelist parental lock files." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock blacklist  [file]", cout << ' ' << "Import Enigma blacklist parental lock file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock whitelist  [file]", cout << ' ' << "Import Enigma whitelist parental lock file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock locked  [file]", cout << ' ' << "Import Enigma .locked parental lock file." << endl;
 		cout << endl;
 
 		if (specs)
 		{
 			cout << "  ", cout.width(7), cout << left << "import", cout << ' ';
-			cout.width(24), cout << left << "[ENTRY] [...] [version]", cout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
+			cout.width(24), cout << left << "[ENTRY] [files] [version]", cout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
 			cout << endl;
 		}
 	}
@@ -843,9 +898,10 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "zapit bouquets  [files]", cout << ' ' << "Export Neutrino bouquets files." << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "tunersets  [file]", cout << ' ' << "Export tuner settings xml file." << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "tunersets  [directory]", cout << ' ' << "Export tuner settings xml files to directory." << endl;
-		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock locked  [files]", cout << ' ' << "Export Enigma .locked parental lock files." << endl;
-		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock blacklist  [files]", cout << ' ' << "Export Enigma blacklist parental lock files." << endl;
-		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock whitelist  [files]", cout << ' ' << "Export Enigma whitelist parental lock files." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock blacklist  [file]", cout << ' ' << "Export Enigma blacklist parental lock file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock whitelist  [file]", cout << ' ' << "Export Enigma whitelist parental lock file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock locked  [file]", cout << ' ' << "Export Enigma .locked parental lock file." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "parentallock  [directory]", cout << ' ' << "Export Enigma parental lock files to directory." << endl;
 		cout << endl;
 
 		if (specs)
@@ -858,9 +914,30 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 	else if (hint == COMMAND::merge)
 	{
 		cout << "  ", cout.width(7), cout << left << "merge", cout << ' ';
-		cout.width(24), cout << left << "[file]", cout << ' ' << "Merge with supported file." << endl;
-		cout.width(10), cout << ' ', cout << "[directory]" << endl;
+		cout.width(24), cout << left << "enigma  [directory]", cout << ' ' << "Merge with Enigma directory." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "neutrino  [directory]", cout << ' ' << "Merge with Neutrino directory." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "lamedb  [file]", cout << ' ' << "Merge with Lamedb services file." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "bouquet  [file]", cout << ' ' << "Merge with Enigma bouquet file." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "bouquets  [bname] [bname]", cout << ' ' << "Merge two Enigma bouquet." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "bouquets  [directory]", cout << ' ' << "Merge Enigma bouquet files from directory." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "userbouquet  [file]", cout << ' ' << "Merge with Enigma userbouquet file." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "userbouquets  [bname] [bname]", cout << ' ' << "Merge two Enigma userbouquet." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "userbouquets  [directory]", cout << ' ' << "Merge Enigma userbouquet files from directory." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "zapit services  [file]", cout << ' ' << "Merge with Neutrino services file." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "zapit bouquets  [file]", cout << ' ' << "Merge with Neutrino bouquets file." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "tunersets  [file]", cout << ' ' << "Merge with tuner settings xml file." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "tunersets  [directory]", cout << ' ' << "Merge tuner settings xml files from directory." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock blacklist  [file]", cout << ' ' << "Merge with Enigma blacklist parental lock file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock whitelist  [file]", cout << ' ' << "Merge with Enigma whitelist parental lock file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock locked  [file]", cout << ' ' << "Merge with Enigma .locked parental lock file." << endl;
 		cout << endl;
+
+		if (specs)
+		{
+			cout << "  ", cout.width(7), cout << left << "merge", cout << ' ';
+			cout.width(24), cout << left << "[ENTRY] [file] [version]", cout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
+			cout << endl;
+		}
 	}
 	else if (hint == COMMAND::parse)
 	{
@@ -873,15 +950,15 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "zapit services  [file]", cout << ' ' << "Parse Neutrino services file." << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "zapit bouquets  [file]", cout << ' ' << "Parse Neutrino bouquets file." << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "tunersets  [file]", cout << ' ' << "Parse tuner settings xml file." << endl;
-		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock locked  [file]", cout << ' ' << "Parse Enigma .locked parental lock file." << endl;
 		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock blacklist  [file]", cout << ' ' << "Parse Enigma blacklist parental lock file." << endl;
 		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock whitelist  [file]", cout << ' ' << "Parse Enigma whitelist parental lock file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock locked  [file]", cout << ' ' << "Parse Enigma .locked parental lock file." << endl;
 		cout << endl;
 
 		if (specs)
 		{
 			cout << "  ", cout.width(7), cout << left << "parse", cout << ' ';
-			cout.width(24), cout << left << "[ENTRY] [...] [version]", cout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
+			cout.width(24), cout << left << "[ENTRY] [file] [version]", cout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
 			cout << endl;
 		}
 	}
@@ -899,10 +976,10 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "zapit bouquets  [file]", cout << ' ' << "Make Neutrino bouquets file." << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "tunersets  [file]", cout << ' ' << "Make tuner settings xml file." << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "tunersets  [directory]", cout << ' ' << "Make tuner settings xml files." << endl;
-		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock locked  [file]", cout << ' ' << "Make Enigma .locked parental lock file." << endl;
 		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock blacklist  [file]", cout << ' ' << "Make Enigma blacklist parental lock file." << endl;
 		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock whitelist  [file]", cout << ' ' << "Make Enigma whitelist parental lock file." << endl;
-		cout.width(10), cout << ' ', cout.width(24), cout << left << "parentallock  [directory]", cout << ' ' << "Make Enigma parental lock files according to global settings." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "parentallock locked  [file]", cout << ' ' << "Make Enigma .locked parental lock file." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "parentallock  [directory]", cout << ' ' << "Make Enigma parental lock files to directory." << endl;
 		cout << endl;
 
 		if (specs)
@@ -1012,11 +1089,12 @@ void e2db_cli::shell_e2db_parse(ENTRY entry_type, string path, int ver, bool dir
 
 	try
 	{
-		//TODO directory check
-
 		if (! std::filesystem::exists(path))
 			throw std::runtime_error (msg("File \"%s\" not exists.", path));
-
+		if (! std::filesystem::is_regular_file(path))
+			throw std::runtime_error (msg("File \"%s\" is not a valid file.", path));
+		if (dir && ! std::filesystem::is_directory(path))
+			throw std::runtime_error (msg("File \"%s\" is not a valid directory.", path));
 		if
 		(
 			(std::filesystem::status(path).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none &&
@@ -1241,13 +1319,15 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 	try
 	{
 		//TODO overwrite check
-		//TODO directory check
 
 		bool overwrite = e2db::OVERWRITE_FILE;
 
 		if (! overwrite && std::filesystem::exists(path))
 			throw std::runtime_error (msg("File \"%s\" already exists.", path));
-
+		if (! std::filesystem::is_regular_file(path))
+			throw std::runtime_error (msg("File \"%s\" is not a valid file.", path));
+		if (dir && ! std::filesystem::is_directory(path))
+			throw std::runtime_error (msg("File \"%s\" is not a valid directory.", path));
 		if (
 			(std::filesystem::status(path).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
 			(std::filesystem::status(path).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
@@ -1381,26 +1461,64 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 		}
 		else if (entry_type == ENTRY::tunersets)
 		{
-			e2db::e2db_file file;
+			vector<string> files;
 
-			e2db::YTYPE ytype = e2db::YTYPE::satellite;
+			if (dir)
+			{
+				for (auto & x : dbih->tuners)
+				{
+					if (dbih->get_zapit_version() != -1 && x.first != e2db::YTYPE::satellite)
+						continue;
 
-			if (filename == "satellites.xml")
-				ytype = e2db::YTYPE::satellite;
-			else if (filename == "terrestrial.xml")
-				ytype = e2db::YTYPE::terrestrial;
-			else if (filename == "cables.xml")
-				ytype = e2db::YTYPE::cable;
-			else if (filename == "atsc.xml")
-				ytype = e2db::YTYPE::atsc;
+					string filename;
+
+					switch (x.first)
+					{
+						case e2db::YTYPE::satellite:
+							filename = "satellites.xml";
+						break;
+						case e2db::YTYPE::terrestrial:
+							filename = "terrestrial.xml";
+						break;
+						case e2db::YTYPE::cable:
+							filename = "cables.xml";
+						break;
+						case e2db::YTYPE::atsc:
+							filename = "atsc.xml";
+						break;
+					}
+
+					files.emplace_back(filename);
+				}
+			}
 			else
-				throw std::runtime_error (msg("Unknown Tuner settings type."));
+			{
+				files.emplace_back(filename);
+			}
 
-			dbih->make_tunersets_xml(filename, ytype, file);
+			for (string & filename : files)
+			{
+				e2db::e2db_file file;
 
-			ofstream out (path);
-			out << file.data;
-			out.close();
+				e2db::YTYPE ytype = e2db::YTYPE::satellite;
+
+				if (filename == "satellites.xml")
+					ytype = e2db::YTYPE::satellite;
+				else if (filename == "terrestrial.xml")
+					ytype = e2db::YTYPE::terrestrial;
+				else if (filename == "cables.xml")
+					ytype = e2db::YTYPE::cable;
+				else if (filename == "atsc.xml")
+					ytype = e2db::YTYPE::atsc;
+				else
+					throw std::runtime_error (msg("Unknown Tuner settings type."));
+
+				dbih->make_tunersets_xml(filename, ytype, file);
+
+				ofstream out (path);
+				out << file.data;
+				out.close();
+			}
 		}
 		else if (entry_type == ENTRY::parentallock_locked)
 		{
@@ -1432,6 +1550,44 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 			out << file.data;
 			out.close();
 		}
+		else if (entry_type == ENTRY::parentallock)
+		{
+			e2db::e2db_file file;
+
+			if (ver < 4)
+			{
+				filename = "services.locked";
+
+				dbih->make_parentallock_list(filename, e2db::PARENTALLOCK::locked, file);
+
+				ofstream out (path);
+				out << file.data;
+				out.close();
+			}
+			else
+			{
+				filename = dbih->db.parental ? "whitelist" : "blacklist";
+
+				dbih->make_parentallock_list(filename, dbih->db.parental, file);
+
+				ofstream out (path);
+				out << file.data;
+				out.close();
+
+				{
+					filename = dbih->db.parental ? "blacklist" : "whitelist";
+
+					e2db::e2db_file empty;
+					empty.filename = filename;
+					empty.mime = "text/plain";
+					empty.size = 0;
+
+					ofstream out (path);
+					out << empty.data;
+					out.close();
+				}
+			}
+		}
 	}
 	catch (const std::invalid_argument& err)
 	{
@@ -1455,6 +1611,7 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 	}
 }
 
+//TODO
 void e2db_cli::shell_e2db_convert(ENTRY entry_type, int fopt, int ftype, string path)
 {
 	if (path.empty())
@@ -1471,6 +1628,7 @@ void e2db_cli::shell_e2db_convert(ENTRY entry_type, int fopt, int ftype, string 
 			throw 1;
 
 		//TODO overwrite check
+		//TODO directory check
 
 		string filename = std::filesystem::path(path).filename().u8string();
 
@@ -1524,19 +1682,102 @@ void e2db_cli::shell_e2db_convert(ENTRY entry_type, int fopt, int ftype, string 
 	}
 }
 
-//TODO
-void e2db_cli::shell_e2db_import(ENTRY entry_type, vector<string> paths, int ver, bool dir)
+void e2db_cli::shell_e2db_merge(ENTRY entry_type, string path, int ver, bool dir)
 {
-	if (paths.size() == 0)
+	if (path.empty())
 	{
-		cerr << "Error: " << msg("Wrong parameter paths.") << endl;
+		cerr << "Error: " << msg("Wrong parameter path.") << endl;
 
 		return;
 	}
 
 	try
 	{
-		dbih->import_file(paths);
+		if (! std::filesystem::is_regular_file(path))
+			throw std::runtime_error (msg("File \"%s\" is not a valid file.", path));
+		if (dir && ! std::filesystem::is_directory(path))
+			throw std::runtime_error (msg("File \"%s\" is not a valid directory.", path));
+
+		e2db::FPORTS fpi = e2db::FPORTS::unknown;
+
+		switch (entry_type)
+		{
+			case ENTRY::lamedb:
+			case ENTRY::zapit:
+				fpi = e2db::FPORTS::directory;
+			break;
+			case ENTRY::lamedb_services:
+				if (ver == 5)
+					fpi = e2db::FPORTS::all_services__2_5;
+				else if (ver == 4)
+					fpi = e2db::FPORTS::all_services__2_4;
+				else if (ver == 3)
+					fpi = e2db::FPORTS::all_services__2_3;
+				else if (ver == 2)
+					fpi = e2db::FPORTS::all_services__2_2;
+				else
+					fpi = e2db::FPORTS::all_services;
+			break;
+			case ENTRY::bouquet:
+				if (dir && ver < 4)
+					fpi = e2db::FPORTS::all_bouquets_epl;
+				else if (dir)
+					fpi = e2db::FPORTS::all_bouquets;
+				else if (ver < 4)
+					fpi = e2db::FPORTS::single_bouquet_epl;
+				else
+					fpi = e2db::FPORTS::single_bouquet;
+			break;
+			case ENTRY::userbouquet:
+				if (dir)
+					fpi = e2db::FPORTS::all_userbouquets;
+				else
+					fpi = e2db::FPORTS::single_userbouquet;
+			break;
+			case ENTRY::zapit_services:
+				if (ver == 4)
+					fpi = e2db::FPORTS::all_services_xml__4;
+				else if (ver == 3)
+					fpi = e2db::FPORTS::all_services_xml__3;
+				else if (ver == 2)
+					fpi = e2db::FPORTS::all_services_xml__2;
+				else if (ver == 1)
+					fpi = e2db::FPORTS::all_services_xml__1;
+				else
+					fpi = e2db::FPORTS::all_services_xml;
+			break;
+			case ENTRY::zapit_bouquets:
+				if (ver == 4)
+					fpi = e2db::FPORTS::all_bouquets_xml__4;
+				else if (ver == 3)
+					fpi = e2db::FPORTS::all_bouquets_xml__3;
+				else if (ver == 2)
+					fpi = e2db::FPORTS::all_bouquets_xml__2;
+				else if (ver == 1)
+					fpi = e2db::FPORTS::all_bouquets_xml__1;
+				else
+					fpi = e2db::FPORTS::all_bouquets_xml;
+			break;
+			case ENTRY::tunersets:
+				if (dir)
+					fpi = e2db::FPORTS::all_tunersets;
+				else
+					fpi = e2db::FPORTS::single_tunersets;
+			break;
+			case ENTRY::parentallock_blacklist:
+				fpi = e2db::FPORTS::single_parentallock_blacklist;
+			break;
+			case ENTRY::parentallock_whitelist:
+				fpi = e2db::FPORTS::single_parentallock_whitelist;
+			break;
+			case ENTRY::parentallock_locked:
+				fpi = e2db::FPORTS::single_parentallock_locked;
+			break;
+			default:
+			break;
+		}
+
+		dbih->import_file(fpi, { path });
 	}
 	catch (const std::invalid_argument& err)
 	{
@@ -1561,20 +1802,286 @@ void e2db_cli::shell_e2db_import(ENTRY entry_type, vector<string> paths, int ver
 }
 
 //TODO
-void e2db_cli::shell_e2db_export(ENTRY entry_type, vector<string> paths, int ver, bool dir, string bname)
+void e2db_cli::shell_e2db_merge(ENTRY entry_type, int ver, string bname0, string bname1)
+{
+	try
+	{
+		if (entry_type == ENTRY::bouquet)
+		{
+		}
+		else if (entry_type == ENTRY::userbouquet)
+		{
+		}
+
+		cout << "TODO" << endl;
+	}
+	catch (const std::invalid_argument& err)
+	{
+		cerr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+	}
+	catch (const std::out_of_range& err)
+	{
+		cerr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		cerr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
+	}
+	catch (const std::runtime_error& err)
+	{
+		cerr << "Error: " << err.what() << endl;
+	}
+	catch (...)
+	{
+		cerr << "Error: " << msg(MSG::except_uncaught) << endl;
+	}
+}
+
+void e2db_cli::shell_e2db_import(ENTRY entry_type, vector<string> paths, int ver, bool dir)
 {
 	if (paths.size() == 0)
 	{
-		cerr << "Error: " << msg("Wrong parameter path.") << endl;
+		cerr << "Error: " << msg("Wrong parameter paths.") << endl;
 
 		return;
 	}
 
 	try
 	{
-		//TODO overwrite check
+		for (string & path : paths)
+		{
+			if (! std::filesystem::is_regular_file(path))
+				throw std::runtime_error (msg("File \"%s\" is not a valid file.", path));
+			if (dir && ! std::filesystem::is_directory(path))
+				throw std::runtime_error (msg("File \"%s\" is not a valid directory.", path));
+		}
 
-		dbih->export_file(paths);
+		e2db::FPORTS fpi = e2db::FPORTS::unknown;
+
+		switch (entry_type)
+		{
+			case ENTRY::lamedb:
+			case ENTRY::zapit:
+				fpi = e2db::FPORTS::directory;
+			break;
+			case ENTRY::lamedb_services:
+				if (ver == 5)
+					fpi = e2db::FPORTS::all_services__2_5;
+				else if (ver == 4)
+					fpi = e2db::FPORTS::all_services__2_4;
+				else if (ver == 3)
+					fpi = e2db::FPORTS::all_services__2_3;
+				else if (ver == 2)
+					fpi = e2db::FPORTS::all_services__2_2;
+				else
+					fpi = e2db::FPORTS::all_services;
+			break;
+			case ENTRY::bouquet:
+				if (ver < 4)
+					fpi = e2db::FPORTS::all_bouquets_epl;
+				else
+					fpi = e2db::FPORTS::all_bouquets;
+			break;
+			case ENTRY::userbouquet:
+				fpi = e2db::FPORTS::all_userbouquets;
+			break;
+			case ENTRY::zapit_services:
+				if (ver == 4)
+					fpi = e2db::FPORTS::all_services_xml__4;
+				else if (ver == 3)
+					fpi = e2db::FPORTS::all_services_xml__3;
+				else if (ver == 2)
+					fpi = e2db::FPORTS::all_services_xml__2;
+				else if (ver == 1)
+					fpi = e2db::FPORTS::all_services_xml__1;
+				else
+					fpi = e2db::FPORTS::all_services_xml;
+			break;
+			case ENTRY::zapit_bouquets:
+				if (ver == 4)
+					fpi = e2db::FPORTS::all_bouquets_xml__4;
+				else if (ver == 3)
+					fpi = e2db::FPORTS::all_bouquets_xml__3;
+				else if (ver == 2)
+					fpi = e2db::FPORTS::all_bouquets_xml__2;
+				else if (ver == 1)
+					fpi = e2db::FPORTS::all_bouquets_xml__1;
+				else
+					fpi = e2db::FPORTS::all_bouquets_xml;
+			break;
+			case ENTRY::tunersets:
+				fpi = e2db::FPORTS::all_tunersets;
+			break;
+			case ENTRY::parentallock_blacklist:
+				fpi = e2db::FPORTS::single_parentallock_blacklist;
+			break;
+			case ENTRY::parentallock_whitelist:
+				fpi = e2db::FPORTS::single_parentallock_whitelist;
+			break;
+			case ENTRY::parentallock_locked:
+				fpi = e2db::FPORTS::single_parentallock_locked;
+			break;
+			default:
+			break;
+		}
+
+		dbih->import_file(fpi, paths);
+	}
+	catch (const std::invalid_argument& err)
+	{
+		cerr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+	}
+	catch (const std::out_of_range& err)
+	{
+		cerr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		cerr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
+	}
+	catch (const std::runtime_error& err)
+	{
+		cerr << "Error: " << err.what() << endl;
+	}
+	catch (...)
+	{
+		cerr << "Error: " << msg(MSG::except_uncaught) << endl;
+	}
+}
+
+void e2db_cli::shell_e2db_export(ENTRY entry_type, vector<string> paths, int ver, bool dir, string bname)
+{
+	if (paths.size() == 0)
+	{
+		cerr << "Error: " << msg("Wrong parameter paths.") << endl;
+
+		return;
+	}
+
+	try
+	{
+		for (string & path : paths)
+		{
+			if (! std::filesystem::is_regular_file(path))
+				throw std::runtime_error (msg("File \"%s\" is not a valid file.", path));
+			if (dir && ! std::filesystem::is_directory(path))
+				throw std::runtime_error (msg("File \"%s\" is not a valid directory.", path));
+		}
+
+		e2db::FPORTS fpo = e2db::FPORTS::unknown;
+
+		switch (entry_type)
+		{
+			case ENTRY::lamedb:
+			case ENTRY::zapit:
+				{
+					fpo = e2db::FPORTS::directory;
+
+					int lamedb_ver = dbih->get_lamedb_version();
+					int zapit_ver = dbih->get_zapit_version();
+					ver = ver != -1 ? ver : 4;
+
+					if (entry_type == ENTRY::lamedb)
+					{
+						dbih->set_lamedb_version(ver);
+						dbih->set_zapit_version(-1);
+					}
+					else if (entry_type == ENTRY::zapit)
+					{
+						dbih->set_lamedb_version(-1);
+						dbih->set_zapit_version(ver);
+					}
+
+					dbih->export_file(fpo, paths);
+
+					dbih->set_lamedb_version(lamedb_ver);
+					dbih->set_zapit_version(zapit_ver);
+				}
+			return;
+			case ENTRY::lamedb_services:
+				if (ver == 5)
+					fpo = e2db::FPORTS::all_services__2_5;
+				else if (ver == 4)
+					fpo = e2db::FPORTS::all_services__2_4;
+				else if (ver == 3)
+					fpo = e2db::FPORTS::all_services__2_3;
+				else if (ver == 2)
+					fpo = e2db::FPORTS::all_services__2_2;
+				else
+					fpo = e2db::FPORTS::all_services;
+			break;
+			case ENTRY::bouquet:
+				if (dir && ver < 4)
+					fpo = e2db::FPORTS::all_bouquets_epl;
+				else if (dir)
+					fpo = e2db::FPORTS::all_bouquets;
+				else if (ver < 4)
+					fpo = e2db::FPORTS::single_bouquet_epl;
+				else
+					fpo = e2db::FPORTS::single_bouquet;
+			break;
+			case ENTRY::userbouquet:
+				if (dir)
+					fpo = e2db::FPORTS::all_userbouquets;
+				else
+					fpo = e2db::FPORTS::single_userbouquet;
+			break;
+			case ENTRY::zapit_services:
+				if (ver == 4)
+					fpo = e2db::FPORTS::all_services_xml__4;
+				else if (ver == 3)
+					fpo = e2db::FPORTS::all_services_xml__3;
+				else if (ver == 2)
+					fpo = e2db::FPORTS::all_services_xml__2;
+				else if (ver == 1)
+					fpo = e2db::FPORTS::all_services_xml__1;
+				else
+					fpo = e2db::FPORTS::all_services_xml;
+			break;
+			case ENTRY::zapit_bouquets:
+				if (ver == 4)
+					fpo = e2db::FPORTS::all_bouquets_xml__4;
+				else if (ver == 3)
+					fpo = e2db::FPORTS::all_bouquets_xml__3;
+				else if (ver == 2)
+					fpo = e2db::FPORTS::all_bouquets_xml__2;
+				else if (ver == 1)
+					fpo = e2db::FPORTS::all_bouquets_xml__1;
+				else
+					fpo = e2db::FPORTS::all_bouquets_xml;
+			break;
+			case ENTRY::tunersets:
+				for (string & path : paths)
+				{
+					if (std::filesystem::is_directory(path))
+					{
+						dir = true;
+					}
+					else
+					{
+						dir = false;
+						break;
+					}
+				}
+				if (dir)
+					fpo = e2db::FPORTS::all_tunersets;
+				else
+					fpo = e2db::FPORTS::single_tunersets;
+			break;
+			case ENTRY::parentallock_blacklist:
+				fpo = e2db::FPORTS::single_parentallock_blacklist;
+			break;
+			case ENTRY::parentallock_whitelist:
+				fpo = e2db::FPORTS::single_parentallock_whitelist;
+			break;
+			case ENTRY::parentallock_locked:
+				fpo = e2db::FPORTS::single_parentallock_locked;
+			break;
+			default:
+			break;
+		}
+
+		dbih->export_file(fpo, paths);
 	}
 	catch (const std::invalid_argument& err)
 	{

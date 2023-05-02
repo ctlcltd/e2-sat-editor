@@ -18,7 +18,7 @@ This project is free software. Each contribution must comply with the licensing 
 
 - You can follow the "unwritten rules", look at the already written code. For example, consecutive conditional statements must have brackets, within the statement unbracketed conditional statements are allowed, in a single line, but only if they are consecutive.
 
-- Cross-compatibility for these platforms: Linux, Macos, Windows; and these compilers: **gnu-g++**, **macos-clang**, **mingw**.
+- Cross-compatibility for these platforms: Linux, macOS, Unix-like BSD, Windows; and these compilers: **gnu-g++**, **macos-clang**, **mingw**.
 
 - Use only **standard C++** functions with well-defined behaviors, and maintain some compatibility with C++11. This is to maintain some backwards compatibility with other devices. Using C++17 is allowed, but do not abuse it. Keep in mind the cross-platform compatibility.
 

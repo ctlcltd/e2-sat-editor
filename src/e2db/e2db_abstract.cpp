@@ -87,7 +87,7 @@ e2db_abstract::FPORTS e2db_abstract::file_type_detect(string path)
 		return FPORTS::single_parentallock_whitelist;
 	else if (filename == "services.locked")
 		return FPORTS::single_parentallock_locked;
-	return FPORTS::unsupported;
+	return FPORTS::unknown;
 }
 
 string e2db_abstract::file_mime_detect(FPORTS fpi, string path)
@@ -95,7 +95,6 @@ string e2db_abstract::file_mime_detect(FPORTS fpi, string path)
 	switch (fpi)
 	{
 		case FPORTS::directory:
-		case FPORTS::unsupported:
 		return "application/octet-stream";
 		case FPORTS::all_services:
 		case FPORTS::all_services__2_4:
@@ -135,7 +134,7 @@ string e2db_abstract::file_mime_detect(FPORTS fpi, string path)
 			if (path.rfind(".html") != string::npos)
 				return "text/html";
 			else
-				return "application/octet-stream";
+				return "";
 	}
 }
 
