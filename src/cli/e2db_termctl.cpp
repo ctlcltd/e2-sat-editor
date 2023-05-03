@@ -18,12 +18,21 @@
 #include <sstream>
 #include <limits>
 
-#ifdef WIN32
-#include <windows.h>
-#else
+#if defined(unix) || defined(__unix__) || defined(__unix) || defined(linux) || defined(__linux__) || defined(__APPLE__)
+#define PLATFORM_UX
+#endif
+
+#if defined(WIN32) || defined(_WIN32)
+#define PLATFORM_WIN
+#endif
+
+#ifdef PLATFORM_UX
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <termios.h>
+#endif
+#ifdef PLATFORM_WIN
+#include <windows.h>
 #endif
 
 #include "e2db_termctl.h"
@@ -31,7 +40,7 @@
 namespace e2se_cli
 {
 
-#ifndef WIN32
+#ifdef PLATFORM_UX
 bool tty_raw = false;
 struct termios tty_attr;
 #endif
@@ -69,20 +78,21 @@ e2db_termctl::~e2db_termctl()
 
 void e2db_termctl::reset()
 {
-#ifndef WIN32
+#ifdef PLATFORM_UX
 	tty_set_sane();
 #endif
 }
 
-void e2db_termctl::input()
+void e2db_termctl::input(bool shell, bool ins)
 {
-#ifndef WIN32
+#ifdef PLATFORM_UX
 	tty_set_raw();
 #endif
 
-	std::printf("> ");
-
-	bool ins = false;
+	if (shell)
+	{
+		std::printf("> ");
+	}
 
 	size_t cur, len;
 	cur = len = 0;
@@ -106,6 +116,7 @@ void e2db_termctl::input()
 
 					next = EVENT::HistoryBack;
 
+					if (shell)
 					{
 						is->sync();
 						std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
@@ -176,6 +187,7 @@ void e2db_termctl::input()
 
 					next = EVENT::HistoryForward;
 
+					if (shell)
 					{
 						is->sync();
 						std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
@@ -307,7 +319,7 @@ void e2db_termctl::input()
 			is->sync();
 			std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
 
-			if (! is_buf->str().empty())
+			if (shell && ! is_buf->str().empty())
 			{
 				history->clear();
 				history->seekp(0, std::ios_base::end);
@@ -381,7 +393,7 @@ void e2db_termctl::input()
 		prev = next = 0;
 	}
 
-#ifndef WIN32
+#ifdef PLATFORM_UX
 	tty_set_sane();
 #endif
 }
@@ -413,7 +425,7 @@ void e2db_termctl::clear()
 
 int e2db_termctl::paged(int pos, int offset)
 {
-#ifndef WIN32
+#ifdef PLATFORM_UX
 	tty_set_raw();
 #endif
 
@@ -480,7 +492,7 @@ int e2db_termctl::paged(int pos, int offset)
 
 	tty_eraseline();
 
-#ifndef WIN32
+#ifdef PLATFORM_UX
 	tty_set_sane();
 #endif
 
@@ -529,7 +541,7 @@ void e2db_termctl::tmp_history()
 	log.close();
 }
 
-#ifndef WIN32
+#ifdef PLATFORM_UX
 void e2db_termctl::tty_set_raw(int tty_fd)
 {
 	struct termios ta;
@@ -550,21 +562,23 @@ void e2db_termctl::tty_set_sane(int tty_fd)
 
 std::pair<int, int> e2db_termctl::tty_get_screensize()
 {
-#ifdef WIN32
+#if defined(PLATFORM_WIN)
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
 	GetConsoleScreenBufferInfo(hStdout, &csbiInfo);
 	return std::pair (csbiInfo.dwSize.Y, csbiInfo.dwSize.X);
-#else
+#elif defined(PLATFORM_UX)
 	struct winsize w;
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 	return std::pair (w.ws_row, w.ws_col);
+#else
+	return std::pair (24, 80);
 #endif
 }
 
 void e2db_termctl::tty_gotoxy(int x, int y)
 {
-#ifdef WIN32
+#ifdef PLATFORM_WIN
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD coordPos = {short (x), short (y)};
 	SetConsoleCursorPosition(hStdout, coordPos);
@@ -575,7 +589,7 @@ void e2db_termctl::tty_gotoxy(int x, int y)
 
 void e2db_termctl::tty_goforward()
 {
-#ifdef WIN32
+#ifdef PLATFORM_WIN
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
 	GetConsoleScreenBufferInfo(hStdout, &csbiInfo);
@@ -588,7 +602,7 @@ void e2db_termctl::tty_goforward()
 
 void e2db_termctl::tty_gobackward()
 {
-#ifdef WIN32
+#ifdef PLATFORM_WIN
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
 	GetConsoleScreenBufferInfo(hStdout, &csbiInfo);

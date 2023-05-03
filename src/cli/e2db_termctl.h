@@ -43,7 +43,7 @@ class e2db_termctl
 		e2db_termctl();
 		~e2db_termctl();
 		static void reset();
-		void input();
+		void input(bool shell = false, bool ins = false);
 		void clear();
 		const std::string str();
 		std::istream* stream();

@@ -56,7 +56,6 @@ class e2db_converter : virtual public e2db_abstract
 			string filename;
 			string bname;
 			int stype;
-			int btype;
 			int ytype;
 		};
 

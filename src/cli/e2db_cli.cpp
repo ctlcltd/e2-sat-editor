@@ -93,7 +93,7 @@ void e2db_cli::cmd_shell()
 
 	while (true)
 	{
-		term->input();
+		term->input(true);
 		string cmd = term->str();
 		std::istream* is = term->stream();
 		term->clear();
@@ -689,10 +689,13 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 	}
 	else if (command == COMMAND::convert)
 	{
-		string opt0, opt1;
-		string type, path;
+		string opt0, opt1, opt2, opt3, opt4;
+		string type, path, bname;
+		int stype = -1, ytype = -1;
 		int fopt = -1, ftype = -1;
-		*is >> std::skipws >> opt0 >> opt1 >> type >> path;
+		*is >> std::skipws >> opt0 >> opt1 >> opt2 >> opt3 >> opt4;
+
+		type = opt2;
 
 		if (opt0 == "from")
 			fopt = 0;
@@ -703,18 +706,41 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		else if (opt1 == "html")
 			ftype = 1;
 
+		if (opt2 == "services" && ! opt3.empty())
+		{
+			path = opt4;
+			try { stype = std::stoi(opt3); } catch (...) {}
+		}
+		else if (opt2 == "bouquet" || opt2 == "userbouquet")
+		{
+			path = opt4, bname = opt3;
+		}
+		else if (opt2 == "tunersets" && ! opt3.empty())
+		{
+			path = opt4;
+			try { ytype = std::stoi(opt3); } catch (...) {}
+		}
+		else
+		{
+			path = opt3;
+		}
+
 		if (type == "index")
 			shell_e2db_convert(ENTRY::index, fopt, ftype, path);
 		else if (type == "all")
 			shell_e2db_convert(ENTRY::all, fopt, ftype, path);
 		else if (type == "services")
-			shell_e2db_convert(ENTRY::service, fopt, ftype, path);
+			shell_e2db_convert(ENTRY::service, fopt, ftype, path, "", stype);
 		else if (type == "bouquets")
 			shell_e2db_convert(ENTRY::bouquet, fopt, ftype, path);
+		else if (type == "bouquet")
+			shell_e2db_convert(ENTRY::bouquet, fopt, ftype, path, bname);
 		else if (type == "userbouquets")
 			shell_e2db_convert(ENTRY::userbouquet, fopt, ftype, path);
+		else if (type == "userbouquet")
+			shell_e2db_convert(ENTRY::userbouquet, fopt, ftype, path, bname);
 		else if (type == "tunersets")
-			shell_e2db_convert(ENTRY::tunersets, fopt, ftype, path);
+			shell_e2db_convert(ENTRY::tunersets, fopt, ftype, path, "", -1, ytype);
 		else if (type.empty())
 			shell_e2db_convert(ENTRY::all, fopt, ftype, path);
 		else
@@ -764,13 +790,13 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 	else if (hint == COMMAND::add)
 	{
 		cout << "  ", cout.width(7), cout << left << "add", cout << ' ';
-		cout.width(24), cout << left << "service  [chid]", cout << ' ' << "Add new entry." << endl;
-		cout.width(10), cout << ' ', cout << "transponder  [txid]" << endl;
-		cout.width(10), cout << ' ', cout << "userbouquet  [bname]" << endl;
-		cout.width(10), cout << ' ', cout << "bouquet  [bname]" << endl;
-		cout.width(10), cout << ' ', cout << "tunersets-transponder  [trid]" << endl;
-		cout.width(10), cout << ' ', cout << "tunersets-table  [tnid]" << endl;
-		cout.width(10), cout << ' ', cout << "tunersets  [ytype]" << endl;
+		cout.width(24), cout << left << "transponder", cout << ' ' << "Add new entry." << endl;
+		cout.width(10), cout << ' ', cout << "service" << endl;
+		cout.width(10), cout << ' ', cout << "bouquet" << endl;
+		cout.width(10), cout << ' ', cout << "userbouquet" << endl;
+		cout.width(10), cout << ' ', cout << "tunersets" << endl;
+		cout.width(10), cout << ' ', cout << "tunersets-table" << endl;
+		cout.width(10), cout << ' ', cout << "tunersets-transponder" << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "channel  [chid] [bname]", cout << ' ' << "Add service reference to userbouquet." << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "marker  [bname]", cout << ' ' << "Add marker to userbouquet." << endl;
 		cout << endl;
@@ -778,26 +804,26 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 	else if (hint == COMMAND::edit)
 	{
 		cout << "  ", cout.width(7), cout << left << "edit", cout << ' ';
-		cout.width(24), cout << left << "service  [chid]", cout << ' ' << "Edit an entry." << endl;
-		cout.width(10), cout << ' ', cout << "transponder  [txid]" << endl;
-		cout.width(10), cout << ' ', cout << "userbouquet  [bname]" << endl;
+		cout.width(24), cout << left << "transponder  [txid]", cout << ' ' << "Edit an entry." << endl;
+		cout.width(10), cout << ' ', cout << "service  [txid]" << endl;
 		cout.width(10), cout << ' ', cout << "bouquet  [bname]" << endl;
-		cout.width(10), cout << ' ', cout << "tunersets-transponder  [trid]" << endl;
-		cout.width(10), cout << ' ', cout << "tunersets-table  [tnid]" << endl;
+		cout.width(10), cout << ' ', cout << "userbouquet  [bname]" << endl;
 		cout.width(10), cout << ' ', cout << "tunersets  [ytype]" << endl;
+		cout.width(10), cout << ' ', cout << "tunersets-table  [tnid]" << endl;
+		cout.width(10), cout << ' ', cout << "tunersets-transponder  [trid]" << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "marker  [chid] [bname]", cout << ' ' << "Edit marker from userbouquet." << endl;
 		cout << endl;
 	}
 	else if (hint == COMMAND::remove)
 	{
 		cout << "  ", cout.width(7), cout << left << "remove", cout << ' ';
-		cout.width(24), cout << left << "service  [chid]", cout << ' ' << "Remove an entry." << endl;
-		cout.width(10), cout << ' ', cout << "transponder  [txid]" << endl;
-		cout.width(10), cout << ' ', cout << "userbouquet  [bname]" << endl;
+		cout.width(24), cout << left << "transponder  [txid]", cout << ' ' << "Remove an entry." << endl;
+		cout.width(10), cout << ' ', cout << "service  [txid]" << endl;
 		cout.width(10), cout << ' ', cout << "bouquet  [bname]" << endl;
-		cout.width(10), cout << ' ', cout << "tunersets-transponder  [trid]" << endl;
-		cout.width(10), cout << ' ', cout << "tunersets-table  [tnid]" << endl;
+		cout.width(10), cout << ' ', cout << "userbouquet  [bname]" << endl;
 		cout.width(10), cout << ' ', cout << "tunersets  [ytype]" << endl;
+		cout.width(10), cout << ' ', cout << "tunersets-table  [tnid]" << endl;
+		cout.width(10), cout << ' ', cout << "tunersets-transponder  [trid]" << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "channel  [chid] [bname]", cout << ' ' << "Remove service reference from userbouquet." << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "marker  [chid] [bname]", cout << ' ' << "Remove marker from userbouquet." << endl;
 		cout << endl;
@@ -805,13 +831,13 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 	else if (hint == COMMAND::list)
 	{
 		cout << "  ", cout.width(7), cout << left << "list", cout << ' ';
-		cout.width(24), cout << left << "services", cout << ' ' << "List entries." << endl;
-		cout.width(10), cout << ' ', cout << "transponders" << endl;
-		cout.width(10), cout << ' ', cout << "userbouquets" << endl;
+		cout.width(24), cout << left << "transponders", cout << ' ' << "List entries." << endl;
+		cout.width(10), cout << ' ', cout << "services" << endl;
 		cout.width(10), cout << ' ', cout << "bouquets" << endl;
-		cout.width(10), cout << ' ', cout << "tunersets-transponders" << endl;
-		cout.width(10), cout << ' ', cout << "tunersets-tables" << endl;
+		cout.width(10), cout << ' ', cout << "userbouquets" << endl;
 		cout.width(10), cout << ' ', cout << "tunersets" << endl;
+		cout.width(10), cout << ' ', cout << "tunersets-tables" << endl;
+		cout.width(10), cout << ' ', cout << "tunersets-transponders" << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "channels  [bname]", cout << ' ' << "List channels from userbouquet." << endl;
 		cout << endl;
 
@@ -1000,17 +1026,25 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 		cout << "  ", cout.width(7), cout << left << "convert", cout << ' ';
 		cout.width(39), cout << left << "to csv  [file]", cout << ' ' << "Convert all the entries to CSV file." << endl;
 		cout.width(10), cout << ' ', cout.width(39), cout << left << "to csv services  [file]", cout << ' ' << "Convert to CSV services file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "to csv services  [stype] [file]", cout << ' ' << "Convert services of type to CSV services file." << endl;
 		cout.width(10), cout << ' ', cout.width(39), cout << left << "to csv bouquets  [file]", cout << ' ' << "Convert to CSV bouquets file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "to csv bouquet  [bname] [file]", cout << ' ' << "Convert a bouquet to CSV bouquet file." << endl;
 		cout.width(10), cout << ' ', cout.width(39), cout << left << "to csv userbouquets  [file]", cout << ' ' << "Convert to CSV userbouquets file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "to csv userbouquet  [bname] [file]", cout << ' ' << "Convert an userbouquet to CSV userbouquet file." << endl;
 		cout.width(10), cout << ' ', cout.width(39), cout << left << "to csv tunersets  [file]", cout << ' ' << "Convert to CSV tuner settings file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "to csv tunersets  [ytype] [file]", cout << ' ' << "Convert a tuner settings to CSV tuner settings file." << endl;
 		cout << endl;
 		cout << "  ", cout.width(7), cout << left << "convert", cout << ' ';
 		cout.width(39), cout << left << "to html  [file]", cout << ' ' << "Convert all the entries to HTML files." << endl;
 		cout.width(10), cout << ' ', cout.width(39), cout << left << "to html index  [file]", cout << ' ' << "Convert to HTML index of contents files." << endl;
 		cout.width(10), cout << ' ', cout.width(39), cout << left << "to html services  [file]", cout << ' ' << "Convert to HTML services files." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "to html services  [stype] [file]", cout << ' ' << "Convert services of type to HTML services files." << endl;
 		cout.width(10), cout << ' ', cout.width(39), cout << left << "to html bouquets  [file]", cout << ' ' << "Convert to HTML bouquets files." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "to html bouquet  [bname] [file]", cout << ' ' << "Convert a bouquet to HTML bouquets files." << endl;
 		cout.width(10), cout << ' ', cout.width(39), cout << left << "to html userbouquets  [file]", cout << ' ' << "Convert to HTML userbouquets files." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "to html userbouquet  [bname] [file]", cout << ' ' << "Convert an userbouquet to HTML userbouquets files." << endl;
 		cout.width(10), cout << ' ', cout.width(39), cout << left << "to html tunersets  [file]", cout << ' ' << "Convert to HTML tuner settings files." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "to html tunersets  [ytype] [file]", cout << ' ' << "Convert a tuner settings to HTML tuner settings files." << endl;
 		cout << endl;
 	}
 	else if (hint == COMMAND::debug)
@@ -1318,7 +1352,7 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 
 	try
 	{
-		//TODO overwrite check
+		//TODO local overwrite
 
 		bool overwrite = e2db::OVERWRITE_FILE;
 
@@ -1611,8 +1645,7 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 	}
 }
 
-//TODO
-void e2db_cli::shell_e2db_convert(ENTRY entry_type, int fopt, int ftype, string path)
+void e2db_cli::shell_e2db_convert(ENTRY entry_type, int fopt, int ftype, string path, string bname, int stype, int ytype)
 {
 	if (path.empty())
 	{
@@ -1627,8 +1660,7 @@ void e2db_cli::shell_e2db_convert(ENTRY entry_type, int fopt, int ftype, string 
 		if (fopt == 0 && ftype == 1)
 			throw 1;
 
-		//TODO overwrite check
-		//TODO directory check
+		//TODO local overwrite
 
 		string filename = std::filesystem::path(path).filename().u8string();
 
@@ -1639,13 +1671,38 @@ void e2db_cli::shell_e2db_convert(ENTRY entry_type, int fopt, int ftype, string 
 
 		switch (entry_type)
 		{
-			case ENTRY::index: fcx = e2db::FCONVS::convert_index; break;
-			case ENTRY::all: fcx = e2db::FCONVS::convert_all; break;
-			case ENTRY::service: fcx = e2db::FCONVS::convert_services; break;
-			case ENTRY::bouquet: fcx = e2db::FCONVS::convert_bouquets; break;
-			case ENTRY::userbouquet: fcx = e2db::FCONVS::convert_userbouquets; break;
-			case ENTRY::tunersets: fcx = e2db::FCONVS::convert_tunersets; break; 
-			default: throw 1;
+			case ENTRY::index:
+				fcx = e2db::FCONVS::convert_index;
+			break;
+			case ENTRY::all:
+				fcx = e2db::FCONVS::convert_all;
+			break;
+			case ENTRY::service:
+				if (stype != -1)
+					opts.stype = stype;
+				else
+					fcx = e2db::FCONVS::convert_services;
+			break;
+			case ENTRY::bouquet:
+				if (! bname.empty())
+					opts.bname = bname;
+				else
+					fcx = e2db::FCONVS::convert_bouquets;
+			break;
+			case ENTRY::userbouquet:
+				if (! bname.empty())
+					opts.bname = bname;
+				else
+					fcx = e2db::FCONVS::convert_userbouquets;
+			break;
+			case ENTRY::tunersets:
+				if (ytype != -1)
+					opts.ytype = ytype;
+				else
+					fcx = e2db::FCONVS::convert_tunersets;
+			break; 
+			default:
+				throw 1;
 		}
 
 		if (ftype == 0)
@@ -3822,7 +3879,7 @@ std::any e2db_cli::field(TYPE type, bool required)
 		default: return -1;
 	}
 
-	string is;
+	e2db_termctl* term = new e2db_termctl;
 
 	while (true)
 	{
@@ -3833,15 +3890,17 @@ std::any e2db_cli::field(TYPE type, bool required)
 			cout << ' ' << '*';
 		cout << ':' << ' ';
 
-		cin >> is;
+		term->input();
+		string str = term->str();
+		term->clear();
 
 		// failsafe string trim
-		is.erase(0, is.find_first_not_of(" \n\r\t\v\b\f"));
-		is.erase(is.find_last_not_of(" \n\r\t\v\b\f") + 1);
+		str.erase(0, str.find_first_not_of(" \n\r\t\v\b\f"));
+		str.erase(str.find_last_not_of(" \n\r\t\v\b\f") + 1);
 
 		this->last_label = label;
 
-		if (! is.empty())
+		if (! str.empty())
 		{
 			int d = -1;
 
@@ -3863,27 +3922,27 @@ std::any e2db_cli::field(TYPE type, bool required)
 				case TYPE::diseqc:
 				case TYPE::uncomtd:
 				case TYPE::flgs:
-					d = std::atoi(is.data());
+					d = std::atoi(str.data());
 					if (! d && required)
 						continue;
 				break;
 				case TYPE::dvbns:
-					d = std::stol(is, nullptr, 16);
+					d = std::stol(str, nullptr, 16);
 					if (d == 0 && required)
 						continue;
 				break;
 				case TYPE::dbtype:
-					d = std::atoi(is.data());
+					d = std::atoi(str.data());
 					if (d < 0 || d > 1 && required)
 						continue;
 				break;
 				case TYPE::dbparental:
-					d = std::atoi(is.data());
+					d = std::atoi(str.data());
 					if (d < 0 || d > 2 && required)
 						continue;
 				break;
 				case TYPE::ytype:
-					d = std::atoi(is.data());
+					d = std::atoi(str.data());
 					if (d < 0 || d > 3 && required)
 						continue;
 				break;
@@ -3892,106 +3951,106 @@ std::any e2db_cli::field(TYPE type, bool required)
 				case TYPE::locked:
 				case TYPE::feed:
 				case TYPE::hidden:
-					if (is == "Y" || is == "y")
+					if (str == "Y" || str == "y")
 						d = 1;
-					else if (is == "N" || is == "n")
+					else if (str == "N" || str == "n")
 						d = 0;
 					else if (required)
 						continue;
 				break;
 				case TYPE::sdata_p:
-					return { is };
+					return { str };
 				break;
 				case TYPE::yname:
-					if (is.size() == 1)
-						d = dbih->value_transponder_type(is[0]);
+					if (str.size() == 1)
+						d = dbih->value_transponder_type(str[0]);
 					else if (required)
 						continue;
 				break;
 				case TYPE::sys:
 					// failsafe string uppercase
-					std::transform(is.begin(), is.end(), is.begin(), [](unsigned char c) { return std::toupper(c); });
-					d = dbih->value_transponder_system(is);
+					std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::toupper(c); });
+					d = dbih->value_transponder_system(str);
 				break;
 				case TYPE::pos:
 					// failsafe string uppercase
-					std::transform(is.begin(), is.end(), is.begin(), [](unsigned char c) { return std::toupper(c); });
-					d = dbih->value_transponder_position(is);
+					std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::toupper(c); });
+					d = dbih->value_transponder_position(str);
 				break;
 				case TYPE::pol:
 					// failsafe string uppercase
-					std::transform(is.begin(), is.end(), is.begin(), [](unsigned char c) { return std::toupper(c); });
-					d = dbih->value_transponder_polarization(is);
+					std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::toupper(c); });
+					d = dbih->value_transponder_polarization(str);
 				break;
 				case TYPE::fec:
-					d = dbih->value_transponder_fec(is, e2db::YTYPE::satellite);
+					d = dbih->value_transponder_fec(str, e2db::YTYPE::satellite);
 				break;
 				case TYPE::hpfec:
 				case TYPE::lpfec:
-					d = dbih->value_transponder_fec(is, e2db::YTYPE::terrestrial);
+					d = dbih->value_transponder_fec(str, e2db::YTYPE::terrestrial);
 				break;
 				case TYPE::cfec:
-					d = dbih->value_transponder_fec(is, e2db::YTYPE::atsc);
+					d = dbih->value_transponder_fec(str, e2db::YTYPE::atsc);
 				break;
 				case TYPE::mod:
-					d = dbih->value_transponder_modulation(is, e2db::YTYPE::satellite);
+					d = dbih->value_transponder_modulation(str, e2db::YTYPE::satellite);
 				break;
 				case TYPE::tmod:
-					d = dbih->value_transponder_modulation(is, e2db::YTYPE::terrestrial);
+					d = dbih->value_transponder_modulation(str, e2db::YTYPE::terrestrial);
 				break;
 				case TYPE::cmod:
-					d = dbih->value_transponder_modulation(is, e2db::YTYPE::cable);
+					d = dbih->value_transponder_modulation(str, e2db::YTYPE::cable);
 				break;
 				case TYPE::amod:
-					d = dbih->value_transponder_modulation(is, e2db::YTYPE::atsc);
+					d = dbih->value_transponder_modulation(str, e2db::YTYPE::atsc);
 				break;
 				case TYPE::inv:
-					d = dbih->value_transponder_inversion(is, e2db::YTYPE::satellite);
+					d = dbih->value_transponder_inversion(str, e2db::YTYPE::satellite);
 				break;
 				case TYPE::tinv:
-					d = dbih->value_transponder_inversion(is, e2db::YTYPE::terrestrial);
+					d = dbih->value_transponder_inversion(str, e2db::YTYPE::terrestrial);
 				break;
 				case TYPE::cinv:
-					d = dbih->value_transponder_inversion(is, e2db::YTYPE::cable);
+					d = dbih->value_transponder_inversion(str, e2db::YTYPE::cable);
 				break;
 				case TYPE::rol:
-					d = dbih->value_transponder_rollof(is);
+					d = dbih->value_transponder_rollof(str);
 				break;
 				case TYPE::pil:
-					d = dbih->value_transponder_pilot(is);
+					d = dbih->value_transponder_pilot(str);
 				break;
 				case TYPE::band:
-					d = dbih->value_transponder_bandwidth(is);
+					d = dbih->value_transponder_bandwidth(str);
 				break;
 				case TYPE::tmx:
-					d = dbih->value_transponder_tmx_mode(is);
+					d = dbih->value_transponder_tmx_mode(str);
 				break;
 				case TYPE::guard:
-					d = dbih->value_transponder_guard(is);
+					d = dbih->value_transponder_guard(str);
 				break;
 				case TYPE::hier:
-					d = dbih->value_transponder_hier(is);
+					d = dbih->value_transponder_hier(str);
 				break;
 				case TYPE::stype:
-					d = dbih->value_service_type(is);
+					d = dbih->value_service_type(str);
 				break;
 				case TYPE::btype:
-					d = dbih->value_bouquet_type(is);
+					d = dbih->value_bouquet_type(str);
 				break;
 				case TYPE::country:
-					if (is.size() < 3 || is.size() > 3 && required)
+					if (str.size() < 3 || str.size() > 3 && required)
 						continue;
 					// failsafe string uppercase
-					std::transform(is.begin(), is.end(), is.begin(), [](unsigned char c) { return std::toupper(c); });
-					return is;
+					std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::toupper(c); });
+					return str;
 				break;
 				case TYPE::charset:
 					// failsafe string uppercase
-					std::transform(is.begin(), is.end(), is.begin(), [](unsigned char c) { return std::toupper(c); });
-					return is;
+					std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::toupper(c); });
+					return str;
 				break;
 				default:
-					return is;
+					return str;
 			}
 
 			if (d == -1 && required)
