@@ -1,0 +1,27 @@
+app-id: io.github.ctlcltd.e2-sat-editor
+runtime: org.kde.Platform
+runtime-version: '6.4'
+sdk: org.kde.Sdk
+command: e2-sat-editor
+finish-args:
+  - --share=ipc
+  - --share=network
+  - --socket=wayland
+  - --socket=x11
+  - --socket=cups
+  - --filesystem=host
+rename-desktop-file: e2-sat-editor.desktop
+rename-icon: e2-sat-editor
+modules:
+  - name: e2-sat-editor
+    buildsystem: qmake
+    # config-opts:
+    #   - CONFIG-="debug"
+    # build-commands:
+    #   - install -Dm644 COPYING app/usr/share/licenses/e2-sat-editor/COPYING
+    subdir: src
+    sources:
+      - type: git
+        url: https://github.com/ctlcltd/e2-sat-editor.git
+        branch: main
+
