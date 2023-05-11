@@ -4,7 +4,7 @@ summary: "??"
 description: An enigma2 channel list editor
 license: GPL-3.0
 title: e2 SAT Editor
-confinement: classic
+confinement: devmode
 base: core22
 parts:
   e2-sat-editor:
