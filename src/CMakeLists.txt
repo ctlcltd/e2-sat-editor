@@ -13,11 +13,11 @@ option(WITH_QT5 "build requiring Qt5")
 if(WITH_QT5)
 	set(USE_QT_NAMES Qt5)
 else()
-	set(USE_QT_NAMES Qt5 Qt6)
+	set(USE_QT_NAMES Qt6)
 endif()
 
 find_package(QT NAMES ${USE_QT_NAMES} REQUIRED COMPONENTS Core)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui Widgets PrintSupport)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets PrintSupport)
 find_package(CURL)
 
 set(SOURCES
@@ -96,7 +96,6 @@ add_executable(e2-sat-editor WIN32 MACOSX_BUNDLE ${SOURCES})
 
 target_link_libraries(e2-sat-editor PUBLIC
 	Qt::Core
-	Qt::Gui
 	Qt::Widgets
 	Qt::PrintSupport
 	CURL::libcurl
