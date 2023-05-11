@@ -101,3 +101,20 @@ target_link_libraries(e2-sat-editor PUBLIC
 	CURL::libcurl
 )
 
+install(TARGETS e2-sat-editor)
+
+if(UNIX AND NOT APPLE)
+	install(FILES "../dist/xdg/e2-sat-editor.desktop"
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/applications))
+	install(FILES "../dist/xdg/icons/scalable/e2-sat-editor.svg"
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
+	install(FILES "../dist/xdg/icons/256x256/e2-sat-editor.png"
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/256x256/apps)
+	install(FILES "../dist/xdg/icons/128x128/e2-sat-editor.png"
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/128x128/apps)
+	install(FILES "../dist/xdg/icons/128x128/e2-sat-editor.png"
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/apps)
+	install(DIRECTORY "../res/locale" DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor/translations
+			FILES_MATCHING PATTERN "*.qm")
+endif()
+

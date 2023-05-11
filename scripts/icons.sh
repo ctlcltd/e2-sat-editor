@@ -56,8 +56,9 @@ icons_ux () {
 
 	cwt
 
-	mkdir -p dist/xdg/icons/{scalable,128x128,64x64}
+	mkdir -p dist/xdg/icons/{scalable,256x256,128x128,64x64}
 	cp res/e2-sat-editor/icon.svg dist/xdg/icons/scalable/e2-sat-editor.svg
+	cp res/e2-sat-editor/icon-256.png dist/xdg/icons/256x256/e2-sat-editor.png
 	cp res/e2-sat-editor/icon-128.png dist/xdg/icons/128x128/e2-sat-editor.png
 	cp res/e2-sat-editor/icon-64.png dist/xdg/icons/64x64/e2-sat-editor.png
 }

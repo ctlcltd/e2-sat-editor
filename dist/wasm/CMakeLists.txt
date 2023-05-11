@@ -8,17 +8,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-option(WITH_QT5 "build requiring Qt5")
-
-if(WITH_QT5)
-	set(USE_QT_NAMES Qt5)
-else()
-	set(USE_QT_NAMES Qt5 Qt6)
-endif()
-
-find_package(QT NAMES ${USE_QT_NAMES} REQUIRED COMPONENTS Core)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui Widgets PrintSupport)
-# find_package(CURL)
+find_package(QT NAMES Qt6 REQUIRED COMPONENTS Core)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets PrintSupport)
 
 set(SOURCES
 	logger/logger.cpp
@@ -27,7 +18,6 @@ set(SOURCES
 	e2db/e2db_maker.cpp
 	e2db/e2db_parser.cpp
 	e2db/e2db.cpp
-# 	ftpcom/ftpcom.cpp
 	gui/platforms/platform.h
 	gui/toolkit/InputControlEditEventObserver.cpp
 	gui/toolkit/ListProxyStyle.h
@@ -53,7 +43,6 @@ set(SOURCES
 	gui/editTunersetsTable.cpp
 	gui/editTunersetsTransponder.cpp
 	gui/editUserbouquet.cpp
-# 	gui/ftpcom_gui.cpp
 	gui/ftpHandler.cpp
 	gui/gui.cpp
 	gui/mainView.cpp
@@ -69,40 +58,16 @@ set(SOURCES
 	../res/resources.qrc
 )
 
-if(APPLE)
-	list(APPEND SOURCES gui/platforms/platform_macx.mm)
-endif()
-
-
-if(WIN32)
-	ENABLE_LANGUAGE(RC)
-	# ENABLE_LANGUAGE(RC OPTIONAL)
-endif()
-
-set(app_icon_resource_windows "../dist/windows/e2-sat-editor.rc")
-list(APPEND SOURCES ${app_icon_resource_windows})
-
-set(MACOSX_BUNDLE_BUNDLE_NAME "e2 SAT Editor")
-set(MACOSX_BUNDLE_BUNDLE_VERSION 0.6)
-set(MACOSX_BUNDLE_ICON_FILE e2-sat-editor.icns)
-
-set(app_icon_macos "../dist/macos/e2-sat-editor.icns")
-set_source_files_properties(${app_icon_macos} PROPERTIES
-	MACOSX_PACKAGE_LOCATION "Resources")
-list(APPEND SOURCES ${app_icon_resource_windows})
-
 qt_add_resources(SOURCES ../res/enigma_db.qrc OPTIONS -no-compress)
 
 
-qt_add_executable(e2-sat-editor WIN32 MACOSX_BUNDLE ${SOURCES})
+qt_add_executable(e2-sat-editor ${SOURCES})
 
 target_link_options(e2-sat-editor PUBLIC -sASYNCIFY -Os)
 
 target_link_libraries(e2-sat-editor PUBLIC
 	Qt::Core
-	Qt::Gui
 	Qt::Widgets
 	Qt::PrintSupport
-# 	CURL::libcurl
 )
 
