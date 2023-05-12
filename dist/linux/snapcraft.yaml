@@ -44,6 +44,4 @@ parts:
 apps:
   e2-sat-editor:
     command: e2-sat-editor
-  e2se-cli:
-    command: e2se-cli
 
