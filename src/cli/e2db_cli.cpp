@@ -17,6 +17,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <filesystem>
 #include <stdexcept>
 
 #include "e2db_termctl.h"

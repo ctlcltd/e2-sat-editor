@@ -30,17 +30,17 @@ parts:
       - libqt6widgets6
       - libqt6printsupport6
       - libcurl4
-      - libqt6dbus6
-      - libqt6waylandclient6
-      - libqt6waylandcompositor6
-      - libqt6waylandeglclienthwintegration6
-      - libqt6waylandeglcompositorhwintegration6
-      - qt6-gtk-platformtheme
-      - qt6-image-formats-plugins
-      - qt6-qpa-plugins
-      - qt6-translations-l10n
-      - qt6-wayland
-      - qt6-xdgdesktopportal-platformtheme
+      # - libqt6dbus6
+      # - libqt6waylandclient6
+      # - libqt6waylandcompositor6
+      # - libqt6waylandeglclienthwintegration6
+      # - libqt6waylandeglcompositorhwintegration6
+      # - qt6-gtk-platformtheme
+      # - qt6-image-formats-plugins
+      # - qt6-qpa-plugins
+      # - qt6-translations-l10n
+      # - qt6-wayland
+      # - qt6-xdgdesktopportal-platformtheme
 apps:
   e2-sat-editor:
     command: e2-sat-editor
