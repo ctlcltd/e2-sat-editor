@@ -9,6 +9,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 option(WITH_QT5 "build requiring Qt5")
+option(WITHOUT_CLI "make the bundle without e2se-cli")
 
 if(WITH_QT5)
 	set(USE_QT_NAMES Qt5)
@@ -116,5 +117,9 @@ if(UNIX AND NOT APPLE)
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/apps)
 	install(DIRECTORY "../res/locale" DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor/translations
 			FILES_MATCHING PATTERN "*.qm")
+endif()
+
+if(NOT WITHOUT_CLI)
+	add_subdirectory(cli)
 endif()
 
