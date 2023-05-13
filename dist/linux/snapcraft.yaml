@@ -35,13 +35,19 @@ parts:
       # - libqt6waylandcompositor6
       # - libqt6waylandeglclienthwintegration6
       # - libqt6waylandeglcompositorhwintegration6
-      # - qt6-gtk-platformtheme
+      - qt6-gtk-platformtheme
       # - qt6-image-formats-plugins
-      # - qt6-qpa-plugins
+      - qt6-qpa-plugins
       # - qt6-translations-l10n
-      # - qt6-wayland
+      - qt6-wayland
       # - qt6-xdgdesktopportal-platformtheme
 apps:
   e2-sat-editor:
     command: e2-sat-editor
+    plugs:
+      - desktop
+      - desktop-legacy
+      - wayland
+      - x11
+      - unity7
 
