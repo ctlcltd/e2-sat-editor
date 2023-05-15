@@ -12,7 +12,7 @@ snapcraft clean
 snapcraft --debug
 
 # snap install --devmode e2-sat-editor_*.snap
-# snap run --shell e2-sat-editor.e2-sat-editor
+# snap run --shell e2-sat-editor
 
 # e2-sat-editor
 # exit

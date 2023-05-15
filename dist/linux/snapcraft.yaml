@@ -1,9 +1,11 @@
 name: e2-sat-editor
-version: "0.6"
-summary: "??"
-description: An enigma2 channel list editor
+summary: "Satellite channel lists editor: Enigma2, Neutrino, dreambox"
+description: ??
 license: GPL-3.0
 title: e2 SAT Editor
+source: https://github.com/ctlcltd/e2-sat-editor.git
+website: https://ctlcltd.github.io/e2-sat-editor/
+issues: https://github.com/ctlcltd/e2-sat-editor/issues
 confinement: devmode
 base: core22
 parts:
@@ -16,10 +18,11 @@ parts:
     cmake-generator: Ninja
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=Release
-      - -DCMAKE_INSTALL_PREFIX:PATH=/usr
+      - -DCMAKE_INSTALL_PREFIX=/usr
     build-packages:
       - build-essential
       - qt6-base-dev
+      - libxcb-xkb-dev
       - libgl1-mesa-dev
       - libglvnd-dev
       - curl
@@ -30,17 +33,10 @@ parts:
       - libqt6widgets6
       - libqt6printsupport6
       - libcurl4
-      # - libqt6dbus6
-      # - libqt6waylandclient6
-      # - libqt6waylandcompositor6
-      # - libqt6waylandeglclienthwintegration6
-      # - libqt6waylandeglcompositorhwintegration6
       - qt6-gtk-platformtheme
-      # - qt6-image-formats-plugins
       - qt6-qpa-plugins
-      # - qt6-translations-l10n
       - qt6-wayland
-      # - qt6-xdgdesktopportal-platformtheme
+      - cups-client
 apps:
   e2-sat-editor:
     command: e2-sat-editor
@@ -49,5 +45,11 @@ apps:
       - desktop-legacy
       - wayland
       - x11
-      - unity7
+      - home
+      - network
+      - removable-media
+      - cups
+    extensions: ['gnome']
+    environment:
+      QT_PLUGIN_PATH: "$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/qt6/plugins"
 

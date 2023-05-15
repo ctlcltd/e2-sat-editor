@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.ctlcltd.e2-sat-editor</id>
+  <name>e2 SAT Editor</name>
+  <summary>Satellite channel lists editor: Enigma2, Neutrino, dreambox</summary>
+  <metadata_license>MIT</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <description>
+    <p>
+      ??
+    </p>
+  </description>
+  <launchable type="desktop-id">e2-sat-editor.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>screenshot.png</image>
+    </screenshot>
+  </screenshots>
+</component>

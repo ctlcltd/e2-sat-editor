@@ -1,7 +1,7 @@
 # e2-sat-editor-pre-0.6
 
 pkgname=e2-sat-editor
-pkgdesc="An enigma2 channel list editor"
+pkgdesc="Satellite channel lists editor: Enigma2, Neutrino, dreambox"
 pkgver=0.6.0
 pkgrel=1
 arch=('i686' 'x86_64')

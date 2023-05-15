@@ -1,6 +1,6 @@
 ## e2 SAT Editor
 
-e2 SAT Editor is an Enigma 2 channel list editor, cross-platform (Windows, macOS, Linux, Unix-like BSD) and free to use.
+e2 SAT Editor is a satellite channel lists editor, for Enigma2, Neutrino, dreambox lists. Cross-platform (Windows, macOS, Linux, Unix-like BSD) and free to use.
 
 <img src="https://github.com/ctlcltd/e2-sat-editor/raw/main/res/e2-sat-editor.svg" width="192" height="192" alt="e2 SAT Editor (icon)" title="Icon">
 

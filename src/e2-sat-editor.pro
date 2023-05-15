@@ -49,7 +49,7 @@ unix:!mac {
 	desktop.files += ../dist/xdg/e2-sat-editor.desktop
 	icon.path = $$PREFIX/share/icons/hicolor/scalable/apps
 	icon.files += ../dist/xdg/icons/scalable/e2-sat-editor.svg
-	icon_256.path = $$PREFIX/share/icons/hicolor/128x128/apps
+	icon_256.path = $$PREFIX/share/icons/hicolor/256x256/apps
 	icon_256.files += ../dist/xdg/icons/256x256/e2-sat-editor.png
 	icon_128.path = $$PREFIX/share/icons/hicolor/128x128/apps
 	icon_128.files += ../dist/xdg/icons/128x128/e2-sat-editor.png

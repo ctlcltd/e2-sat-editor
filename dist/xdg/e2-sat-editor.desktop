@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=e2 SAT Editor
-Comment=An enigma2 channel list editor
+Comment=Satellite channel lists editor: Enigma2, Neutrino, dreambox
 TryExec=e2-sat-editor
 Exec=e2-sat-editor %F
 Icon=e2-sat-editor
