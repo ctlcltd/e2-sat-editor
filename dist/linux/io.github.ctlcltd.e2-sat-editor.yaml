@@ -14,11 +14,9 @@ rename-desktop-file: e2-sat-editor.desktop
 rename-icon: e2-sat-editor
 modules:
   - name: e2-sat-editor
-    buildsystem: qmake
-    # config-opts:
-    #   - CONFIG-="debug"
-    # build-commands:
-    #   - install -Dm644 COPYING app/usr/share/licenses/e2-sat-editor/COPYING
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
     subdir: src
     sources:
       - type: git

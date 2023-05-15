@@ -57,7 +57,9 @@ unix:!mac {
 	icon_64.files += ../dist/xdg/icons/64x64/e2-sat-editor.png
 	translations.path = $$PREFIX/share/e2-sat-editor/translations
 	translations.files += ../res/locale/*.qm
+	license.path = $$PREFIX/share/e2-sat-editor
+	license.files += COPYING
 
-	INSTALLS += target desktop icon icon_256 icon_128 icon_64 translations
+	INSTALLS += target desktop icon icon_256 icon_128 icon_64 translations license
 }
 

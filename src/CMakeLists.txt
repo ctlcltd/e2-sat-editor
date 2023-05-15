@@ -105,6 +105,8 @@ target_link_libraries(e2-sat-editor PUBLIC
 install(TARGETS e2-sat-editor)
 
 if(UNIX AND NOT APPLE)
+	include(GNUInstallDirs)
+
 	install(FILES "../dist/xdg/e2-sat-editor.desktop"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
 	install(FILES "../dist/xdg/icons/scalable/e2-sat-editor.svg"
@@ -117,6 +119,8 @@ if(UNIX AND NOT APPLE)
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/apps)
 	install(DIRECTORY "../res/locale" DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor/translations
 			FILES_MATCHING PATTERN "*.qm")
+	install(FILES "COPYING"
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor)
 endif()
 
 if(NOT WITHOUT_CLI)
