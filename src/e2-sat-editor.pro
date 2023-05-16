@@ -1,6 +1,6 @@
 VERSION = 0.6.0
 QMAKE_TARGET_BUNDLE_PREFIX = org.e2se
-QMAKE_BUNDLE = e2-sat-editor
+QMAKE_BUNDLE = e2se
 QMAKE_APPLICATION_BUNDLE_NAME = e2" "SAT" "Editor
 
 CONFIG += qt debug_and_release c++17
@@ -47,6 +47,8 @@ unix:!mac {
 	target.files += $$TARGET
 	desktop.path = $$PREFIX/share/applications
 	desktop.files += ../dist/xdg/e2-sat-editor.desktop
+	metainfo.path = $$PREFIX/share/metainfo
+	metainfo.files += ../dist/xdg/io.github.ctlcltd.e2se.desktop
 	icon.path = $$PREFIX/share/icons/hicolor/scalable/apps
 	icon.files += ../dist/xdg/icons/scalable/e2-sat-editor.svg
 	icon_256.path = $$PREFIX/share/icons/hicolor/256x256/apps
@@ -60,6 +62,6 @@ unix:!mac {
 	license.path = $$PREFIX/share/e2-sat-editor
 	license.files += COPYING
 
-	INSTALLS += target desktop icon icon_256 icon_128 icon_64 translations license
+	INSTALLS += target desktop metainfo icon icon_256 icon_128 icon_64 translations license
 }
 

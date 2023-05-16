@@ -109,6 +109,8 @@ if(UNIX AND NOT APPLE)
 
 	install(FILES "../dist/xdg/e2-sat-editor.desktop"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+	install(FILES "../dist/xdg/io.github.ctlcltd.e2se.metainfo.xml"
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
 	install(FILES "../dist/xdg/icons/scalable/e2-sat-editor.svg"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
 	install(FILES "../dist/xdg/icons/256x256/e2-sat-editor.png"

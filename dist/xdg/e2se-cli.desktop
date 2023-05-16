@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=e2se-cli
+Comment=e2 SAT Editor command-line interface
+TryExec=e2se-cli
+Exec=e2se-cli
+Terminal=true
+NoDisplay=true
+Categories=Video;Utility;

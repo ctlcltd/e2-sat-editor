@@ -53,8 +53,8 @@ gui::gui(int argc, char* argv[])
 	std::setlocale(LC_NUMERIC, "C");
 
 	mroot->setOrganizationName("e2 SAT Editor Team");
-	mroot->setOrganizationDomain("e2se.org");
-	mroot->setApplicationName("e2-sat-editor");
+	mroot->setOrganizationDomain("io.github.ctlcltd");
+	mroot->setApplicationName("e2se");
 	mroot->setApplicationVersion("0.6");
 
 	mroot->connect(mroot, &QApplication::focusChanged, [=]() { this->windowChanged(); });

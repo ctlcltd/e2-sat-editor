@@ -14,7 +14,7 @@ And it supports also Neutrino xml (api v1, v2, v3, v4).
 
 🆕 **There are pre-releases available for testing** 📡
 
-[![A screenshot of e2 SAT Editor](https://github.com/ctlcltd/e2-sat-editor/raw/main/res/screenshot.png "e2 SAT Editor (screenshot)")](https://github.com/ctlcltd/e2-sat-editor/blob/main/res/screenshot.png?raw=true)
+[![A screenshot of e2 SAT Editor](https://github.com/ctlcltd/e2-sat-editor/raw/main/res/screenshot.webp "e2 SAT Editor (screenshot)")](https://github.com/ctlcltd/e2-sat-editor/blob/main/res/screenshot.webp?raw=true)
 
 
 ## Try the demo

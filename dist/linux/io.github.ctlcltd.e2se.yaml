@@ -1,4 +1,4 @@
-app-id: io.github.ctlcltd.e2-sat-editor
+app-id: io.github.ctlcltd.e2se
 runtime: org.kde.Platform
 runtime-version: '6.4'
 sdk: org.kde.Sdk

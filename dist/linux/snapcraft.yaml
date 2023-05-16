@@ -1,12 +1,10 @@
 name: e2-sat-editor
-summary: "Satellite channel lists editor: Enigma2, Neutrino, dreambox"
-description: ??
-license: GPL-3.0
+version: '0.6'
+summary: 'Satellite channel lists editor: Enigma2, Neutrino, dreambox'
 title: e2 SAT Editor
-source: https://github.com/ctlcltd/e2-sat-editor.git
-website: https://ctlcltd.github.io/e2-sat-editor/
-issues: https://github.com/ctlcltd/e2-sat-editor/issues
-confinement: devmode
+license: GPL-3.0
+adopt-info: e2-sat-editor
+confinement: strict
 base: core22
 parts:
   e2-sat-editor:
@@ -22,7 +20,6 @@ parts:
     build-packages:
       - build-essential
       - qt6-base-dev
-      - libxcb-xkb-dev
       - libgl1-mesa-dev
       - libglvnd-dev
       - curl
@@ -33,13 +30,16 @@ parts:
       - libqt6widgets6
       - libqt6printsupport6
       - libcurl4
+      - qt6-translations-l10n
       - qt6-gtk-platformtheme
       - qt6-qpa-plugins
       - qt6-wayland
       - cups-client
+    parse-info: [usr/share/metainfo/io.github.ctlcltd.e2se.metainfo.xml]
 apps:
   e2-sat-editor:
     command: e2-sat-editor
+    # desktop: usr/share/applications/e2-sat-editor.desktop
     plugs:
       - desktop
       - desktop-legacy
@@ -49,7 +49,7 @@ apps:
       - network
       - removable-media
       - cups
-    extensions: ['gnome']
-    environment:
-      QT_PLUGIN_PATH: "$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/qt6/plugins"
+    extensions: [gnome]
+environment:
+  QT_PLUGIN_PATH: "$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/qt6/plugins"
 
