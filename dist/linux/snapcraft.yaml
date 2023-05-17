@@ -38,7 +38,7 @@ parts:
     parse-info: [usr/share/metainfo/io.github.ctlcltd.e2se.metainfo.xml]
 apps:
   e2-sat-editor:
-    command: e2-sat-editor
+    command: usr/bin/e2-sat-editor
     # desktop: usr/share/applications/e2-sat-editor.desktop
     plugs:
       - desktop
@@ -46,10 +46,21 @@ apps:
       - wayland
       - x11
       - home
-      - network
       - removable-media
+      - network
       - cups
     extensions: [gnome]
+  e2se-cli:
+    command: usr/bin/e2se-cli
+    # desktop: usr/share/applications/e2se-cli.desktop
+    plugs:
+      - desktop
+      - desktop-legacy
+      - wayland
+      - x11
+      - home
+      - removable-media
+      - network
 environment:
   QT_PLUGIN_PATH: "$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/qt6/plugins"
 

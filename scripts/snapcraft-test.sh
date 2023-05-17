@@ -8,6 +8,8 @@ cd dist/linux
 # snap list
 # snap remove e2-sat-editor
 
+# snapcraft expand-extensions
+
 snapcraft clean
 snapcraft --debug
 

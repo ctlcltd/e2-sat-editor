@@ -66,7 +66,9 @@ gui::gui(int argc, char* argv[])
 #endif
 
 	// portable QSettings
-	// QSettings::setPath(QSettings::IniFormat, QSettings::UserScope, appPath);
+#ifdef E2SE_PORTABLE
+	QSettings::setPath(QSettings::IniFormat, QSettings::UserScope, appPath);
+#endif
 
 	if (QSettings().value("settings/reset", false).toBool())
 		resetSettings();

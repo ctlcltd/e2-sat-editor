@@ -19,6 +19,10 @@
 // build target: debug, release
 #define E2SE_BUILD E2SE_TARGET_DEBUG
 
+// portable application
+// #define E2SE_PORTABLE
+
+
 // demo mode
 // #define E2SE_DEMO
 

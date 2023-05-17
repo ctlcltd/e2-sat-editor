@@ -92,6 +92,9 @@ set_source_files_properties(${app_icon_macos} PROPERTIES
 	MACOSX_PACKAGE_LOCATION "Resources")
 list(APPEND SOURCES ${app_icon_resource_windows})
 
+if(NOT WITHOUT_CLI)
+	add_subdirectory(cli)
+endif()
 
 add_executable(e2-sat-editor WIN32 MACOSX_BUNDLE ${SOURCES})
 
@@ -109,6 +112,10 @@ if(UNIX AND NOT APPLE)
 
 	install(FILES "../dist/xdg/e2-sat-editor.desktop"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+	if(NOT WITHOUT_CLI)
+		install(FILES "../dist/xdg/e2se-cli.desktop"
+				DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+	endif()
 	install(FILES "../dist/xdg/io.github.ctlcltd.e2se.metainfo.xml"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
 	install(FILES "../dist/xdg/icons/scalable/e2-sat-editor.svg"
@@ -123,9 +130,5 @@ if(UNIX AND NOT APPLE)
 			FILES_MATCHING PATTERN "*.qm")
 	install(FILES "COPYING"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor)
-endif()
-
-if(NOT WITHOUT_CLI)
-	add_subdirectory(cli)
 endif()
 
