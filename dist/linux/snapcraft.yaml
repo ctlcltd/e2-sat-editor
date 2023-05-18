@@ -4,8 +4,9 @@ summary: 'Satellite channel lists editor: Enigma2, Neutrino, dreambox'
 title: e2 SAT Editor
 license: GPL-3.0
 adopt-info: e2-sat-editor
-confinement: strict
 base: core22
+confinement: strict
+compression: lzo
 parts:
   e2-sat-editor:
     plugin: cmake

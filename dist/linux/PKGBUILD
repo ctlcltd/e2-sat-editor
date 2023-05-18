@@ -9,7 +9,7 @@ url="https://github.com/ctlcltd/e2-sat-editor"
 license=('GPL3')
 
 depends=('qt6-base' 'curl')
-makedepends=('git' 'cmake')
+makedepends=('git' 'cmake' 'ninja')
 provides=('e2-sat-editor')
 conflicts=('e2-sat-editor')
 
@@ -19,7 +19,7 @@ sha512sums=('SKIP')
 build() {
 	cd "$srcdir/$pkgname/src"
 
-	cmake \
+	cmake -B build -G Ninja\
 		-DCMAKE_BUILD_TYPE=Release\
 		-DCMAKE_INSTALL_PREFIX=/usr
 	make
@@ -30,6 +30,7 @@ package() {
 
 	make DESTDIR="$pkgdir" install
 
-	install -Dm 644 "$srcdir/$pkgname/src/COPYING" "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+	install -Dm644 "COPYING" "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+	install -Dm644 "README.md" "$pkgdir/usr/share/doc/$pkgname/README.md"
 }
 

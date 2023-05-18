@@ -81,7 +81,7 @@ gui::gui(int argc, char* argv[])
 	QString appLang = QSettings().value("preference/language").toString();
 	QLocale appLocale = appLang.isEmpty() ? QLocale::system() : QLocale(appLang);
 #if E2SE_BUILD == E2SE_TARGET_DEBUG
-	QString appTranslationsPath = QString(appPath).append("/res/locale");
+	QString appTranslationsPath = QString(appPath).append("/dist/translations");
 #else
 	QString appTranslationsPath = mroot->applicationDirPath();
 #ifndef Q_OS_MACOS

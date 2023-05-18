@@ -10,8 +10,12 @@
       ??
     </p>
   </description>
+  <categories>
+    <category>AudioVideo</category>
+    <category>Video</category>
+    <category>TV</category>
+  </categories>
   <launchable type="desktop-id">io.github.ctlcltd.e2se.desktop</launchable>
-  <icon type="local">e2-sat-editor.png</icon>
   <screenshots>
     <screenshot type="default">
       <image>https://ctlcltd.github.io/e2se/screenshot.png</image>

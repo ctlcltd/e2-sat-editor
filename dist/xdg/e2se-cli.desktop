@@ -6,4 +6,4 @@ TryExec=e2se-cli
 Exec=e2se-cli
 Terminal=true
 NoDisplay=true
-Categories=Video;Utility;
+Categories=AudioVideo;Video;TV;

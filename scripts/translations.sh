@@ -99,39 +99,39 @@ i18n_make () {
 
 	mkdir -p res/locale
 
-	$LRELEASE translations/e2se_ar.ts -qm res/locale/e2se_ar.qm
-	$LRELEASE translations/e2se_bg.ts -qm res/locale/e2se_bg.qm
-	$LRELEASE translations/e2se_ca.ts -qm res/locale/e2se_ca.qm
-	$LRELEASE translations/e2se_cs.ts -qm res/locale/e2se_cs.qm
-	$LRELEASE translations/e2se_da.ts -qm res/locale/e2se_da.qm
-	$LRELEASE translations/e2se_de.ts -qm res/locale/e2se_de.qm
-	$LRELEASE translations/e2se_es.ts -qm res/locale/e2se_es.qm
-	$LRELEASE translations/e2se_fa.ts -qm res/locale/e2se_fa.qm
-	$LRELEASE translations/e2se_fi.ts -qm res/locale/e2se_fi.qm
-	$LRELEASE translations/e2se_fr.ts -qm res/locale/e2se_fr.qm
-	$LRELEASE translations/e2se_gd.ts -qm res/locale/e2se_gd.qm
-	$LRELEASE translations/e2se_gl.ts -qm res/locale/e2se_gl.qm
-	$LRELEASE translations/e2se_he.ts -qm res/locale/e2se_he.qm
-	$LRELEASE translations/e2se_hr.ts -qm res/locale/e2se_hr.qm
-	$LRELEASE translations/e2se_hu.ts -qm res/locale/e2se_hu.qm
-	$LRELEASE translations/e2se_it.ts -qm res/locale/e2se_it.qm
-	$LRELEASE translations/e2se_ja.ts -qm res/locale/e2se_ja.qm
-	$LRELEASE translations/e2se_ko.ts -qm res/locale/e2se_ko.qm
-	$LRELEASE translations/e2se_lt.ts -qm res/locale/e2se_lt.qm
-	$LRELEASE translations/e2se_lv.ts -qm res/locale/e2se_lv.qm
-	$LRELEASE translations/e2se_nl.ts -qm res/locale/e2se_nl.qm
-	$LRELEASE translations/e2se_nn.ts -qm res/locale/e2se_nn.qm
-	$LRELEASE translations/e2se_pl.ts -qm res/locale/e2se_pl.qm
-	$LRELEASE translations/e2se_pt_BR.ts -qm res/locale/e2se_pt_BR.qm
-	$LRELEASE translations/e2se_pt_PT.ts -qm res/locale/e2se_pt_PT.qm
-	$LRELEASE translations/e2se_ru.ts -qm res/locale/e2se_ru.qm
-	$LRELEASE translations/e2se_sk.ts -qm res/locale/e2se_sk.qm
-	$LRELEASE translations/e2se_sl.ts -qm res/locale/e2se_sl.qm
-	$LRELEASE translations/e2se_sv.ts -qm res/locale/e2se_sv.qm
-	$LRELEASE translations/e2se_tr.ts -qm res/locale/e2se_tr.qm
-	$LRELEASE translations/e2se_uk.ts -qm res/locale/e2se_uk.qm
-	$LRELEASE translations/e2se_zh_CN.ts -qm res/locale/e2se_zh_CN.qm
-	$LRELEASE translations/e2se_zh_TW.ts -qm res/locale/e2se_zh_TW.qm
+	$LRELEASE translations/e2se_ar.ts -qm dist/translations/e2se_ar.qm
+	$LRELEASE translations/e2se_bg.ts -qm dist/translations/e2se_bg.qm
+	$LRELEASE translations/e2se_ca.ts -qm dist/translations/e2se_ca.qm
+	$LRELEASE translations/e2se_cs.ts -qm dist/translations/e2se_cs.qm
+	$LRELEASE translations/e2se_da.ts -qm dist/translations/e2se_da.qm
+	$LRELEASE translations/e2se_de.ts -qm dist/translations/e2se_de.qm
+	$LRELEASE translations/e2se_es.ts -qm dist/translations/e2se_es.qm
+	$LRELEASE translations/e2se_fa.ts -qm dist/translations/e2se_fa.qm
+	$LRELEASE translations/e2se_fi.ts -qm dist/translations/e2se_fi.qm
+	$LRELEASE translations/e2se_fr.ts -qm dist/translations/e2se_fr.qm
+	$LRELEASE translations/e2se_gd.ts -qm dist/translations/e2se_gd.qm
+	$LRELEASE translations/e2se_gl.ts -qm dist/translations/e2se_gl.qm
+	$LRELEASE translations/e2se_he.ts -qm dist/translations/e2se_he.qm
+	$LRELEASE translations/e2se_hr.ts -qm dist/translations/e2se_hr.qm
+	$LRELEASE translations/e2se_hu.ts -qm dist/translations/e2se_hu.qm
+	$LRELEASE translations/e2se_it.ts -qm dist/translations/e2se_it.qm
+	$LRELEASE translations/e2se_ja.ts -qm dist/translations/e2se_ja.qm
+	$LRELEASE translations/e2se_ko.ts -qm dist/translations/e2se_ko.qm
+	$LRELEASE translations/e2se_lt.ts -qm dist/translations/e2se_lt.qm
+	$LRELEASE translations/e2se_lv.ts -qm dist/translations/e2se_lv.qm
+	$LRELEASE translations/e2se_nl.ts -qm dist/translations/e2se_nl.qm
+	$LRELEASE translations/e2se_nn.ts -qm dist/translations/e2se_nn.qm
+	$LRELEASE translations/e2se_pl.ts -qm dist/translations/e2se_pl.qm
+	$LRELEASE translations/e2se_pt_BR.ts -qm dist/translations/e2se_pt_BR.qm
+	$LRELEASE translations/e2se_pt_PT.ts -qm dist/translations/e2se_pt_PT.qm
+	$LRELEASE translations/e2se_ru.ts -qm dist/translations/e2se_ru.qm
+	$LRELEASE translations/e2se_sk.ts -qm dist/translations/e2se_sk.qm
+	$LRELEASE translations/e2se_sl.ts -qm dist/translations/e2se_sl.qm
+	$LRELEASE translations/e2se_sv.ts -qm dist/translations/e2se_sv.qm
+	$LRELEASE translations/e2se_tr.ts -qm dist/translations/e2se_tr.qm
+	$LRELEASE translations/e2se_uk.ts -qm dist/translations/e2se_uk.qm
+	$LRELEASE translations/e2se_zh_CN.ts -qm dist/translations/e2se_zh_CN.qm
+	$LRELEASE translations/e2se_zh_TW.ts -qm dist/translations/e2se_zh_TW.qm
 }
 
 complete () {

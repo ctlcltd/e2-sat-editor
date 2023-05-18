@@ -118,6 +118,7 @@ if(UNIX AND NOT APPLE)
 	endif()
 	install(FILES "../dist/xdg/io.github.ctlcltd.e2se.metainfo.xml"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
+
 	install(FILES "../dist/xdg/icons/scalable/e2-sat-editor.svg"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
 	install(FILES "../dist/xdg/icons/256x256/e2-sat-editor.png"
@@ -126,8 +127,10 @@ if(UNIX AND NOT APPLE)
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/128x128/apps)
 	install(FILES "../dist/xdg/icons/128x128/e2-sat-editor.png"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/apps)
-	install(DIRECTORY "../res/locale" DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor/translations
+
+	install(DIRECTORY "../dist/translations" DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor
 			FILES_MATCHING PATTERN "*.qm")
+
 	install(FILES "COPYING"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor)
 endif()
