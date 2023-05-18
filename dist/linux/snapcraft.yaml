@@ -2,7 +2,7 @@ name: e2-sat-editor
 version: '0.6'
 summary: 'Satellite channel lists editor: Enigma2, Neutrino, dreambox'
 title: e2 SAT Editor
-license: GPL-3.0
+license: GPL-3.0-or-later
 adopt-info: e2-sat-editor
 base: core22
 confinement: strict
@@ -13,6 +13,7 @@ parts:
     source-type: git
     source: https://github.com/ctlcltd/e2-sat-editor.git
     source-branch: main
+    source-tag: v0.6.0-pre
     source-subdir: src
     cmake-generator: Ninja
     cmake-parameters:
@@ -21,6 +22,7 @@ parts:
     build-packages:
       - build-essential
       - qt6-base-dev
+      - libxkbcommon-dev
       - libgl1-mesa-dev
       - libglvnd-dev
       - curl
@@ -36,11 +38,14 @@ parts:
       - qt6-qpa-plugins
       - qt6-wayland
       - cups-client
-    parse-info: [usr/share/metainfo/io.github.ctlcltd.e2se.metainfo.xml]
+    override-pull: |
+      craftctl default
+      sed -i 's|Icon=e2-sat-editor|Icon=/usr/share/icons/hicolor/256x256/apps/e2-sat-editor\.png|' dist/xdg/e2-sat-editor.desktop
+    parse-info: usr/share/metainfo/io.github.ctlcltd.e2se.metainfo.xml
 apps:
   e2-sat-editor:
     command: usr/bin/e2-sat-editor
-    # desktop: usr/share/applications/e2-sat-editor.desktop
+    desktop: usr/share/applications/e2-sat-editor.desktop
     plugs:
       - desktop
       - desktop-legacy
@@ -53,7 +58,7 @@ apps:
     extensions: [gnome]
   e2se-cli:
     command: usr/bin/e2se-cli
-    # desktop: usr/share/applications/e2se-cli.desktop
+    desktop: usr/share/applications/e2se-cli.desktop
     plugs:
       - desktop
       - desktop-legacy
@@ -64,4 +69,3 @@ apps:
       - network
 environment:
   QT_PLUGIN_PATH: "$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/qt6/plugins"
-

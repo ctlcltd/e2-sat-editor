@@ -19,7 +19,5 @@ modules:
       - -DCMAKE_BUILD_TYPE=Release
     subdir: src
     sources:
-      - type: git
-        url: https://github.com/ctlcltd/e2-sat-editor.git
-        branch: main
-
+      - type: archive
+        url: https://github.com/ctlcltd/e2-sat-editor/archive/v0.6.0-pre.tar.gz

@@ -103,6 +103,7 @@ gui::gui(int argc, char* argv[])
 #endif
 #endif
 
+	//TODO FIX builds
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 	QString qtTranslationsPath = QLibraryInfo::path(QLibraryInfo::TranslationsPath);
 #else

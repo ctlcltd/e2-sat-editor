@@ -1,4 +1,4 @@
-# e2-sat-editor-pre-0.6
+# Maintainer: Leonardo Laureti <lrtlnrd at hotmail dot com>
 
 pkgname=e2-sat-editor
 pkgdesc="Satellite channel lists editor: Enigma2, Neutrino, dreambox"
@@ -9,11 +9,11 @@ url="https://github.com/ctlcltd/e2-sat-editor"
 license=('GPL3')
 
 depends=('qt6-base' 'curl')
-makedepends=('git' 'cmake' 'ninja')
+makedepends=('cmake' 'ninja')
 provides=('e2-sat-editor')
 conflicts=('e2-sat-editor')
 
-source=("git+https://github.com/ctlcltd/e2-sat-editor.git")
+source=("$pkgname-$pkgver.tar.gz::https://github.com/ctlcltd/e2-sat-editor/archive/v$pkgver-pre.tar.gz")
 sha512sums=('SKIP')
 
 build() {
@@ -30,7 +30,6 @@ package() {
 
 	make DESTDIR="$pkgdir" install
 
-	install -Dm644 "COPYING" "$pkgdir/usr/share/licenses/$pkgname/COPYING"
-	install -Dm644 "README.md" "$pkgdir/usr/share/doc/$pkgname/README.md"
+	install -Dm644 "$srcdir/$pkgname/src/COPYING" "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+	install -Dm644 "$srcdir/$pkgname/README.md" "$pkgdir/usr/share/doc/$pkgname/README.md"
 }
-
