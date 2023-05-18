@@ -20,3 +20,7 @@ snapcraft --debug
 # e2-sat-editor
 # exit
 
+# cd dist/xdg
+# desktop-file-validate e2-sat-editor.desktop
+# desktop-file-validate e2se-cli.desktop
+

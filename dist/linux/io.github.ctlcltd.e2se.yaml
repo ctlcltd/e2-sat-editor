@@ -13,11 +13,23 @@ finish-args:
 rename-desktop-file: e2-sat-editor.desktop
 rename-icon: e2-sat-editor
 modules:
+  - name: libcurl4
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DBUILD_CURL_EXE=OFF
+      - -DBUILD_SHARED_LIBS=OFF
+    sources:
+      - type: archive
+        url: https://deb.debian.org/pool/main/c/curl/curl_7.88.1.orig.tar.gz
+        sha256: cdb38b72e36bc5d33d5b8810f8018ece1baa29a8f215b4495e495ded82bbf3c7
   - name: e2-sat-editor
     buildsystem: cmake-ninja
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
     subdir: src
     sources:
-      - type: archive
-        url: https://github.com/ctlcltd/e2-sat-editor/archive/v0.6.0-pre.tar.gz
+      - type: git
+        url: https://github.com/ctlcltd/e2-sat-editor.git
+        branch: main
+        # tag: v0.6.0-pre
+        # commit: 408e494aae7b38b9a2426bf9d3d6d14a58ace9f3

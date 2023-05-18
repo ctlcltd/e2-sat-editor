@@ -1,6 +1,6 @@
 # To start python venv
 
 source ./.pythonenv/bin/activate
-python3 start-ftp.py
+python3 start-ftp.py {{E2SE_SEEDS_REPO_LOCAL}}
 python3 start-webif.py
 python3 start-telnet.py
