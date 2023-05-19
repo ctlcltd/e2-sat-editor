@@ -1,0 +1,29 @@
+version: 1
+AppDir:
+  path: ../../src/AppDir
+  app_info:
+    id: io.github.ctlcltd.e2se
+    name: e2 SAT Editor
+    icon: e2-sat-editor
+    version: 0.7.0
+    exec: usr/bin/e2-sat-editor
+  pacman:
+    include:
+      - qt6-base
+      - curl
+    #TODO TEST
+    exclude:
+      - bash
+      - cmake
+      - harfbuzz
+      - perl
+      - python
+  files:
+    include:
+      - e2-sat-editor
+    # https://github.com/AppImageCommunity/pkg2appimage/blob/master/excludelist
+    exclude:
+      - libfreetype.so.6
+AppImage:
+  arch: x86_64
+  sign-key: None
