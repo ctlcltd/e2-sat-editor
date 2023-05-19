@@ -302,32 +302,32 @@ void settings::connectionsLayout()
 	dtb22->addWidget(dtf2pb);
 	dtb22->addWidget(new QLabel("<small>(*.bouquet, *.userbouquet)</small>"));
 
-	QGroupBox* dtl3 = new QGroupBox(tr("Commands"));
-	QFormLayout* dtf3 = new QFormLayout;
-	dtf3->setFormAlignment(Qt::AlignLeading);
-	dtf3->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
+	// QGroupBox* dtl3 = new QGroupBox(tr("Commands"));
+	// QFormLayout* dtf3 = new QFormLayout;
+	// dtf3->setFormAlignment(Qt::AlignLeading);
+	// dtf3->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
 
-	QLineEdit* dtf3ca = new QLineEdit;
-	dtf3ca->setProperty("field", "customWebifReloadUrl");
-	prefs[PREF_SECTIONS::Connections].emplace_back(dtf3ca);
-	platform::osLineEdit(dtf3ca);
-	dtf3->addRow(tr("Custom webif reload URL address"), dtf3ca);
+	// QLineEdit* dtf3ca = new QLineEdit;
+	// dtf3ca->setProperty("field", "customWebifReloadUrl");
+	// prefs[PREF_SECTIONS::Connections].emplace_back(dtf3ca);
+	// platform::osLineEdit(dtf3ca);
+	// dtf3->addRow(tr("Custom webif reload URL address"), dtf3ca);
 
-	QLineEdit* dtf3cc = new QLineEdit;
-	dtf3cc->setProperty("field", "customTelnetReloadCmd");
-	prefs[PREF_SECTIONS::Connections].emplace_back(dtf3cc);
-	platform::osLineEdit(dtf3cc);
-	dtf3->addRow(tr("Custom telnet reload command"), dtf3cc);
+	// QLineEdit* dtf3cc = new QLineEdit;
+	// dtf3cc->setProperty("field", "customTelnetReloadCmd");
+	// prefs[PREF_SECTIONS::Connections].emplace_back(dtf3cc);
+	// platform::osLineEdit(dtf3cc);
+	// dtf3->addRow(tr("Custom telnet reload command"), dtf3cc);
 
 	dtl0->setLayout(dtf0);
 	dtl1->setLayout(dtf1);
 	dtl2->setLayout(dtf2);
-	dtl3->setLayout(dtf3);
+	// dtl3->setLayout(dtf3);
 
 	dtform->addRow(dtl0);
 	dtform->addRow(dtl1);
 	dtform->addRow(dtl2);
-	dtform->addRow(dtl3);
+	// dtform->addRow(dtl3);
 
 	dtcnt->addLayout(dtvbox, 0);
 	dtcnt->addLayout(dtform, 1);

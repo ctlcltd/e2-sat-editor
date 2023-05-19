@@ -1686,7 +1686,7 @@ void tab::loadSeeds()
 
 		readFile(settings.value("application/seeds").toString().toStdString());
 	}
-	else
+	else if (settings.value("applications/seeds").toString().isEmpty())
 	{
 		settings.setValue("application/seeds", "");
 

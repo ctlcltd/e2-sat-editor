@@ -22,14 +22,13 @@ HEADERS += gui/platforms/platform.h
 HEADERS += gui/toolkit/*.h
 HEADERS += gui/*.h
 
-INCLUDEPATH += ../vendor/curl/include
-LIBS += -L../vendor/curl/lib -lcurl
-
 RESOURCES = ../res/resources.qrc
 
 QMAKE_CXXFLAGS += -std=c++17
 
 macx {
+	INCLUDEPATH += /usr/local/opt/curl/include
+	LIBS += -L/usr/local/opt/curl/lib -lcurl
 	HEADERS += gui/platforms/platform_macx.h
 	SOURCES += gui/platforms/platform_macx.mm
 	TARGET = e2" "SAT" "Editor

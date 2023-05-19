@@ -35,6 +35,7 @@
 #include <windows.h>
 #endif
 
+#include "../e2se_defs.h"
 #include "e2db_termctl.h"
 
 namespace e2se_cli
@@ -56,6 +57,7 @@ e2db_termctl::e2db_termctl()
 	std::stringbuf* history_buf = new std::stringbuf;
 	this->history = new std::iostream(history_buf);
 
+#if E2SE_BUILD == E2SE_TARGET_DEBUG
 	*history << "read directory-not-exists" << std::endl;
 	*history << "edit userbouquet id" << std::endl;
 	*history << "add tunersets id" << std::endl;
@@ -65,6 +67,7 @@ e2db_termctl::e2db_termctl()
 	*history << "list transponders" << std::endl;
 	*history << "list channels userbouquet.dbe01.tv" << std::endl;
 	*history << "read e2se-seeds/enigma_db" << std::endl;
+#endif
 
 	this->last = this->history->tellg();
 }

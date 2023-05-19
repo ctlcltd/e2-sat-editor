@@ -76,7 +76,6 @@ Instructions on how to compile in [INSTALL.md](https://github.com/ctlcltd/e2-sat
 |**res**|Resource files, used in this software.|
 |**scripts**|Utility bash scripts, used to build.|
 |**src**|The main source of this software.|
-|**vendor**|It contains symbolic links to external libraries.|
 |**translations**|Translation source files for gui (Qt).|
 |**workspace**|Utility python scripts, used for emulation: ftp, telnet, webif.|
 

@@ -312,11 +312,11 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::ToolsExportHTML_bouquets] = menuBarAction(mexporthtml, tr("Export Bouquets", "menu"), [=]() { this->tabAction(TAB_ATS::ExportHTML_bouquets); });
 	gmenu[GUI_CXE::ToolsExportHTML_userbouquets] = menuBarAction(mexporthtml, tr("Export Userbouquets", "menu"), [=]() { this->tabAction(TAB_ATS::ExportHTML_userbouquets); });
 	gmenu[GUI_CXE::ToolsExportHTML_tunersets] = menuBarAction(mexporthtml, tr("Export Tuner settings", "menu"), [=]() { this->tabAction(TAB_ATS::ExportHTML_tunersets); });
-	menuBarSeparator(mtools);
-	gmenu[GUI_CXE::ToolsServicesOrder] = menuBarAction(mtools, "Order Services A-Z", []() {});
-	gmenu[GUI_CXE::ToolsBouquetsOrder] = menuBarAction(mtools, "Order Userbouquets A-Z", []() {});
-	gmenu[GUI_CXE::ToolsServicesCache] = menuBarAction(mtools, "Remove cached data from Services", []() {});
-	gmenu[GUI_CXE::ToolsBouquetsDelete] = menuBarAction(mtools, "Delete all Bouquets", []() {});
+	// menuBarSeparator(mtools);
+	// gmenu[GUI_CXE::ToolsServicesOrder] = menuBarAction(mtools, "Order Services A-Z", []() {});
+	// gmenu[GUI_CXE::ToolsBouquetsOrder] = menuBarAction(mtools, "Order Userbouquets A-Z", []() {});
+	// gmenu[GUI_CXE::ToolsServicesCache] = menuBarAction(mtools, "Remove cached data from Services", []() {});
+	// gmenu[GUI_CXE::ToolsBouquetsDelete] = menuBarAction(mtools, "Delete all Bouquets", []() {});
 	menuBarSeparator(mtools);
 	gmenu[GUI_CXE::ToolsInspector] = menuBarAction(mtools, tr("Log Inspector", "menu"), [=]() { this->tabAction(TAB_ATS::Inspector); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
 
@@ -511,7 +511,7 @@ void gui::initSettings()
 
 	QSettings settings;
 
-	settings.setValue("settings/version", 0); // pre-release
+	settings.setValue("settings/version", 1);
 	settings.setValue("settings/reset", false);
 
 	settings.setValue("application/version", mroot->applicationVersion());
@@ -529,6 +529,28 @@ void gui::initSettings()
 
 	settings.beginGroup("preference");
 	settings.setValue("askConfirmation", false);
+	settings.setValue("parentalLockInvert", false);
+	settings.setValue("treeCurrentAfterDrop", true);
+	settings.setValue("treeDropCopy", true);
+	settings.setValue("treeDropMove", false);
+	settings.setValue("language", "");
+	settings.setValue("theme", "");
+	settings.setValue("osExperiment", true);
+	settings.endGroup();
+
+	settings.beginGroup("engine");
+	settings.setValue("dbTypeDefault", 0x1224);
+	settings.setValue("parserPriorLamedb5", false);
+	settings.setValue("parserTunerset", true);
+	settings.setValue("makerTunerset", true);
+	settings.setValue("parserParentalLock", true);
+	settings.setValue("makerParentalLock", true);
+	settings.setValue("toolsCsvHeader", true);
+	settings.setValue("toolsCsvDelimiter", "\n");
+	settings.setValue("toolsCsvSeparator", ",");
+	settings.setValue("toolsCsvEscape", "\"");
+	settings.setValue("toolsFieldsDefault", true);
+	settings.setValue("toolsFieldsExtended", false);
 	settings.endGroup();
 
 	settings.beginWriteArray("profile");
@@ -558,7 +580,7 @@ void gui::updateSettings()
 
 	if (! settings.contains("settings/version"))
 	{
-		settings.setValue("settings/version", 0);
+		settings.setValue("settings/version", 1);
 		settings.setValue("settings/reset", false);
 
 		settings.setValue("application/version", mroot->applicationVersion());
@@ -566,7 +588,7 @@ void gui::updateSettings()
 	else if (version != mroot->applicationVersion().toFloat())
 	{
 		settings.setValue("application/version", mroot->applicationVersion());
-		settings.setValue("settings/version", 0);
+		settings.setValue("settings/version", 1);
 	}
 }
 
@@ -847,7 +869,7 @@ void gui::closeAllTabs()
 	launcher();
 }
 
-//TODO FIX
+
 void gui::windowChanged()
 {
 	// debug("windowChanged");
@@ -864,8 +886,11 @@ void gui::windowChanged()
 	{
 		debug("windowChanged", "mwind", "idle");
 #ifndef Q_OS_WASM
+		//TODO FIX
+#if E2SE_BUILD == E2SE_TARGET_DEBUG
 		this->gex = this->gxe;
 		setFlags(GUI_CXE::idle);
+#endif
 #endif
 	}
 
