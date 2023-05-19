@@ -241,10 +241,11 @@ void mainView::layout()
 	this->action.list_addch = toolBarAction(list_ats, tr("Add Channel", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addChannel(); });
 	this->action.list_addmk = toolBarAction(list_ats, tr("Add Marker", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addMarker(); });
 	this->action.list_newch = toolBarAction(list_ats, tr("New Service", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addService(); });
+	
+	this->action.list_ref = toolBarButton(list_ats, tr("Reference", "toolbar"), [=]() { this->listReferenceToggle(); });
 	toolBarSeparator(list_ats);
 	//: Encoding: take care about double ampersand
 	this->action.list_dnd = toolBarButton(list_ats, tr("Drag&&Drop", "toolbar"), [=]() { this->reharmDnD(); });
-	this->action.list_ref = toolBarButton(list_ats, tr("Reference", "toolbar"), [=]() { this->listReferenceToggle(); });
 	toolBarSpacer(list_ats);
 	this->action.list_search = toolBarButton(list_ats, tr("&Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->listSearchToggle(); });
 

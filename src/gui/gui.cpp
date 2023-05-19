@@ -847,6 +847,7 @@ void gui::closeAllTabs()
 	launcher();
 }
 
+//TODO FIX
 void gui::windowChanged()
 {
 	// debug("windowChanged");

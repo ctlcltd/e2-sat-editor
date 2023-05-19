@@ -141,6 +141,7 @@ void settings::connectionsLayout()
 	rppage->connect(rppage, &WidgetWithBackdrop::backdrop, [=]() { this->renameProfile(false); });
 	platform::osPersistentEditor(rplist);
 
+	//TODO
 	QToolBar* dttbar = new QToolBar;
 	dttbar->setObjectName("profile_toolbar");
 	dttbar->setToolButtonStyle(Qt::ToolButtonIconOnly);
@@ -148,7 +149,6 @@ void settings::connectionsLayout()
 	dttbar->setIconSize(QSize(16, 16));
 	dttbar->setStyleSheet("QToolBar { spacing: 0 } QToolButton { margin: -1px 0; border: 1px solid }");
 #else
-	//TODO
 	dttbar->setIconSize(QSize(13, 13));
 	dttbar->setStyleSheet("QToolBar { spacing: 0 } QToolButton { margin: -1px 0; width: 24px; height: 18px; border: 1px solid }");
 #endif
