@@ -6,7 +6,7 @@
 # desktop-file-validate e2-sat-editor.desktop
 # desktop-file-validate e2se-cli.desktop
 
-./scripts/translations.sh -r
+./scripts/translations.sh -m
 ./scripts/icons.sh -x
 
 cd dist/linux

@@ -4,11 +4,14 @@
 
 # wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
 # wget https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
+# wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
 # chmod +x linuxdeploy*.AppImage
+# chmod +x appimagetool*.AppImage
 # mv linuxdeploy-x86_64.AppImage /usr/local/bin/linuxdeploy
 # mv linuxdeploy-plugin-qt-x86_64.AppImage /usr/local/bin/linuxdeploy-plugin-qt
+# mv appimagetool-x86_64.AppImage /usr/local/bin/appimagetool
 
-./scripts/translations.sh -r
+./scripts/translations.sh -m
 ./scripts/icons.sh -x
 
 cd src
@@ -20,11 +23,14 @@ mv AppDir/usr/share/metainfo/io.github.ctlctld.e2se.metainfo.xml AppDir/usr/shar
 mkdir -p AppDir/usr/share/doc/e2-sat-editor
 mv AppDir/usr/share/e2-sat-editor/COPYING AppDir/usr/share/doc/e2-sat-editor/copyright
 
-export QMAKE=qmake6
+QMAKE=qmake6 linuxdeploy --appdir AppDir --plugin qt
 
-linuxdeploy --appdir AppDir --plugin qt --output appimage
+appimagetool AppDir --sign --sign-key 0xB6D8434D
 
-mv e2\ SAT\ Editor*.AppImage e2-sat-editor-0.7.0-x86_64.AppImage
+chmod +x e2_SAT_Editor*.AppImage
+mv e2_SAT_Editor*.AppImage e2-sat-editor-0.7.0-x86_64.AppImage
 
 # ./e2-sat-editor-0.7.0-x86_64.AppImage
+
+# ./e2-sat-editor-0.7.0-x86_64.AppImage --appimage-signature
 
