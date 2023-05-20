@@ -16,19 +16,23 @@ conflicts=('e2-sat-editor')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/ctlcltd/e2-sat-editor/archive/v$pkgver-pre.tar.gz")
 sha512sums=('SKIP')
 
+# makedepends=('git' 'cmake' 'ninja')
+# source=("git+https://github.com/ctlcltd/e2-sat-editor.git")
+# sha512sums=('SKIP')
+
 build() {
 	cd "$srcdir/$pkgname/src"
 
-	cmake -B build -G Ninja\
+	cmake -G Ninja -B build\
 		-DCMAKE_BUILD_TYPE=Release\
 		-DCMAKE_INSTALL_PREFIX=/usr
-	make
+	ninja -C build
 }
 
 package() {
 	cd "$srcdir/$pkgname/src"
 
-	make DESTDIR="$pkgdir" install
+	DESTDIR="$pkgdir" ninja -C build install
 
 	install -Dm644 "$srcdir/$pkgname/src/COPYING" "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 	install -Dm644 "$srcdir/$pkgname/README.md" "$pkgdir/usr/share/doc/$pkgname/README.md"
