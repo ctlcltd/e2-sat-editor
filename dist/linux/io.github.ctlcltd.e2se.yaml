@@ -20,7 +20,7 @@ modules:
       - -DBUILD_SHARED_LIBS=OFF
     sources:
       - type: archive
-        url: https://deb.debian.org/pool/main/c/curl/curl_7.88.1.orig.tar.gz
+        url: https://deb.debian.org/debian/pool/main/c/curl/curl_7.88.1.orig.tar.gz
         sha256: cdb38b72e36bc5d33d5b8810f8018ece1baa29a8f215b4495e495ded82bbf3c7
   - name: e2-sat-editor
     buildsystem: cmake-ninja

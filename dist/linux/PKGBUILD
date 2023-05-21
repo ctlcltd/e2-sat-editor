@@ -21,7 +21,8 @@ sha512sums=('SKIP')
 # sha512sums=('SKIP')
 
 build() {
-	cd "$srcdir/$pkgname/src"
+	cd "$srcdir/$pkgname-$pkgver/src"
+	# cd "$srcdir/$pkgname/src"
 
 	cmake -G Ninja -B build\
 		-DCMAKE_BUILD_TYPE=Release\
@@ -30,10 +31,13 @@ build() {
 }
 
 package() {
-	cd "$srcdir/$pkgname/src"
+	cd "$srcdir/$pkgname-$pkgver/src"
+	# cd "$srcdir/$pkgname/src"
 
 	DESTDIR="$pkgdir" ninja -C build install
 
-	install -Dm644 "$srcdir/$pkgname/src/COPYING" "$pkgdir/usr/share/licenses/$pkgname/COPYING"
-	install -Dm644 "$srcdir/$pkgname/README.md" "$pkgdir/usr/share/doc/$pkgname/README.md"
+	install -Dm644 "$srcdir/$pkgname-$pkgver/src/COPYING" "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+	install -Dm644 "$srcdir/$pkgname-$pkgver/README.md" "$pkgdir/usr/share/doc/$pkgname/README.md"
+	# install -Dm644 "$srcdir/$pkgname/src/COPYING" "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+	# install -Dm644 "$srcdir/$pkgname/README.md" "$pkgdir/usr/share/doc/$pkgname/README.md"
 }
