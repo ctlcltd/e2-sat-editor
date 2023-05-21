@@ -174,12 +174,13 @@ release ()
 	printf "%s\n\n" "copying translations ..."
 
 	mkdir -p build/translations
-	cp ../res/locale/*.qm build/translations
+	cp ../dist/translations/*.qm build/translations
+	cp /usr/share/qt6/translations/qtbase_*.qm build/translations
 
 	# e2se
 	printf "%s\n\n" "copying e2se files ..."
 
-	cp {COPYING,LICENSE} build/
+	cp COPYING build/
 	cp ../README.md build/
 }
 
@@ -234,12 +235,13 @@ release_early ()
 	printf "%s\n\n" "copying translations ..."
 
 	mkdir -p build/translations
-	cp ../res/locale/*.qm build/translations
+	cp ../dist/translations/*.qm build/translations
+	cp /usr/share/qt6/translations/qtbase_*.qm build/translations
 
 	# e2se
 	printf "%s\n\n" "copying e2se files ..."
 
-	cp {COPYING,LICENSE} build/
+	cp COPYING build/
 	cp ../README.md build/
 }
 
@@ -269,12 +271,13 @@ testing_wine ()
 	printf "%s\n\n" "copying translations ..."
 
 	mkdir -p build/translations
-	cp ../res/locale/*.qm build/translations
+	cp ../dist/translations/*.qm build/translations
+	cp /usr/share/qt6/translations/qtbase_*.qm build/translations
 
 	# e2se
 	printf "%s\n\n" "copying e2se files ..."
 
-	cp {COPYING,LICENSE} build/
+	cp COPYING build/
 	cp ../README.md build/
 }
 
@@ -345,13 +348,16 @@ for SRG in "$@"; do
 			init
 			prepare
 			build
+			strip
 			release
 			shift
 			;;
 		-e|--release-early)
+			ARCH="i686"
 			init
 			prepare
 			build
+			strip
 			release_early
 			shift
 			;;

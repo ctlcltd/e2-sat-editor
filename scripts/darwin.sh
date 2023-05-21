@@ -236,7 +236,8 @@ release () {
 	printf "%s\n\n" "copying translations ..."
 
 	mkdir -p "e2 SAT Editor.app/Contents/Resources/translations"
-	cp ../res/locale/*.qm build/translations
+	cp ../dist/translations/*.qm build/translations
+	cp /usr/local/share/qt/translations/qtbase_*.qm build/translations
 	cp -R build/translations "e2 SAT Editor.app/Contents/Resources/"
 
 	printf "%s\n\n" "copying executable ..."
