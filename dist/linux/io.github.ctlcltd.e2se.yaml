@@ -17,7 +17,7 @@ modules:
     buildsystem: cmake-ninja
     config-opts:
       - -DBUILD_CURL_EXE=OFF
-      - -DBUILD_SHARED_LIBS=OFF
+      - -DBUILD_SHARED_LIBS=ON
     sources:
       - type: archive
         url: https://deb.debian.org/debian/pool/main/c/curl/curl_7.88.1.orig.tar.gz
