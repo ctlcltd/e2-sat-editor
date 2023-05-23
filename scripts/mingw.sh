@@ -210,6 +210,7 @@ release_early ()
 	cp /usr/i686-w64-mingw32/bin/libssp-0.dll build/
 	cp /usr/i686-w64-mingw32/bin/libstdc++-6.dll build/
 	cp /usr/i686-w64-mingw32/bin/libwinpthread-1.dll build/
+	cp /usr/i686-w64-mingw32/bin/libzstd.dll build/
 	cp /usr/i686-w64-mingw32/bin/zlib1.dll build/
 
 	# qt5-base
