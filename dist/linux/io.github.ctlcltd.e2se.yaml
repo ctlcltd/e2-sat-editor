@@ -30,6 +30,6 @@ modules:
     sources:
       - type: git
         url: https://github.com/ctlcltd/e2-sat-editor.git
-        branch: main
+        # branch: main
         tag: v0.7.0
         commit: 801dc65d3a5d9fbb5a2b0d75bb2792ac2ce4b98b

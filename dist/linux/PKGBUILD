@@ -13,7 +13,7 @@ makedepends=('cmake' 'ninja')
 provides=('e2-sat-editor')
 conflicts=('e2-sat-editor')
 
-source=("$pkgname-$pkgver.tar.gz::https://github.com/ctlcltd/e2-sat-editor/archive/v$pkgver-pre.tar.gz")
+source=("$pkgname-$pkgver.tar.gz::https://github.com/ctlcltd/e2-sat-editor/archive/v$pkgver.tar.gz")
 sha512sums=('SKIP')
 
 # makedepends=('git' 'cmake' 'ninja')
