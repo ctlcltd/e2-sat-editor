@@ -199,12 +199,87 @@ relinking () {
 	fi
 }
 
+fixes () {
+	cd Frameworks
+
+	# missing: libbrotlicommon.1.dylib in: Frameworks/libbrotlidec.1.dylib
+	cp /usr/local/Cellar/brotli/1.0.9/lib/libbrotlicommon.1.0.9.dylib libbrotlicommon.1.dylib
+	install_name_tool -id @rpath/libbrotlicommon.1.dylib "libbrotlicommon.1.dylib"
+	codesign --force -s - "libbrotlicommon.1.dylib"
+	# wrong path: libbrotlicommon.1.dylib in: Frameworks/libbrotlidec.1.dylib
+	install_name_tool -change @loader_path/libbrotlicommon.1.dylib @rpath/libbrotlicommon.1.dylib "libbrotlidec.1.dylib"
+
+	# wrong path: libldap.2.dylib in: Frameworks/libgthread-2.0.0.dylib
+	install_name_tool -change /usr/local/Cellar/glib/2.76.2/lib/libglib-2.0.0.dylib @rpath/libglib-2.0.0.dylib "libgthread-2.0.0.dylib"
+
+	# wrong path: libicuuc.72.dylib in: Frameworks/libicui18n.72.dylib
+	install_name_tool -change @loader_path/libicuuc.72.dylib @rpath/libicuuc.72.dylib "libicui18n.72.dylib"
+	# wrong path: libicudata.72.dylib in Frameworks/libicui18n.72.dylib
+	install_name_tool -change @loader_path/libicudata.72.dylib @rpath/libicudata.72.dylib "libicui18n.72.dylib"
+	# wrong path: libicudata.72.dylib in: Frameworks/libicuuc.72.dylib
+	install_name_tool -change @loader_path/libicudata.72.dylib @rpath/libicudata.72.dylib "libicuuc.72.dylib"
+
+	# wrong path: liblber.2.dylib in: Frameworks/libldap.2.dylib
+	install_name_tool -change /usr/local/Cellar/openldap/2.6.4/lib/liblber.2.dylib @rpath/liblber.2.dylib "libldap.2.dylib"
+
+	# wrong path: /../lib/ in: Frameworks/libmd4c.0.dylib
+	install_name_tool -delete_rpath @loader_path/../lib "libmd4c.0.dylib"
+
+	# wrong path: libcrypto.1.1.dylib in: Frameworks/libssl.1.1.dylib
+	install_name_tool -change /usr/local/Cellar/openssl@1.1/1.1.1t/lib/libcrypto.1.1.dylib @rpath/libcrypto.1.1.dylib "libssl.1.1.dylib"
+
+	# wrong path: /../lib in: Frameworks/libzstd.1.dylib
+	install_name_tool -delete_rpath @loader_path/../lib "libzstd.1.dylib"
+
+	# wrong path: /../../../ in: Frameworks/*.framework
+	install_name_tool -delete_rpath @loader_path/../../../ "QtCore.framework/Versions/A/QtCore"
+	install_name_tool -delete_rpath @loader_path/../../../ "QtDBus.framework/Versions/A/QtDBus"
+	install_name_tool -delete_rpath @loader_path/../../../ "QtGui.framework/Versions/A/QtGui"
+	install_name_tool -delete_rpath @loader_path/../../../ "QtPrintSupport.framework/Versions/A/QtPrintSupport"
+	install_name_tool -delete_rpath @loader_path/../../../ "QtWidgets.framework/Versions/A/QtWidgets"
+
+	install_name_tool -add_rpath @executable_path/../Frameworks "QtCore.framework/Versions/A/QtCore"
+	install_name_tool -add_rpath @executable_path/../Frameworks "QtDBus.framework/Versions/A/QtDBus"
+	install_name_tool -add_rpath @executable_path/../Frameworks "QtGui.framework/Versions/A/QtGui"
+	install_name_tool -add_rpath @executable_path/../Frameworks "QtPrintSupport.framework/Versions/A/QtPrintSupport"
+	install_name_tool -add_rpath @executable_path/../Frameworks "QtWidgets.framework/Versions/A/QtWidgets"
+
+	install_name_tool -add_rpath @loader_path/Frameworks "QtCore.framework/Versions/A/QtCore"
+	install_name_tool -add_rpath @loader_path/Frameworks "QtDBus.framework/Versions/A/QtDBus"
+	install_name_tool -add_rpath @loader_path/Frameworks "QtGui.framework/Versions/A/QtGui"
+	install_name_tool -add_rpath @loader_path/Frameworks "QtPrintSupport.framework/Versions/A/QtPrintSupport"
+	install_name_tool -add_rpath @loader_path/Frameworks "QtWidgets.framework/Versions/A/QtWidgets"
+
+	cd ../PlugIns
+
+	# wrong path: /../../../../lib in: PlugIns/*
+	install_name_tool -delete_rpath @loader_path/../../../../lib "platforms/libqcocoa.dylib"
+	install_name_tool -delete_rpath @loader_path/../../../../lib "styles/libqmacstyle.dylib"
+
+	install_name_tool -add_rpath @executable_path/../Frameworks "platforms/libqcocoa.dylib"
+	install_name_tool -add_rpath @executable_path/../Frameworks "styles/libqmacstyle.dylib"
+
+	codesign --force -s - "platforms/libqcocoa.dylib"
+	codesign --force -s - "styles/libqmacstyle.dylib"
+
+	cd ..
+
+	# wrong path: /usr/local/lib in: e2 SAT Editor
+	install_name_tool -delete_rpath /usr/local/lib "e2 SAT Editor"
+	install_name_tool -delete_rpath @executable_path/../Frameworks "e2 SAT Editor"
+
+	install_name_tool -add_rpath @loader_path/ "e2 SAT Editor"
+	install_name_tool -add_rpath @executable_path/../MacOS "e2 SAT Editor"
+	install_name_tool -add_rpath @executable_path/../Frameworks "e2 SAT Editor"
+}
+
 release () {
 	printf "%s\n\n" "release."
 
 	src
 
 	mkdir -p build/Frameworks
+	mkdir -p build/PlugIns
 	mkdir -p build/translations
 
 	cp -R "e2 SAT Editor.app" "e2 SAT Editor.app.bak"
@@ -228,10 +303,19 @@ release () {
 		cd ../..
 	done
 
+	mkdir PlugIns/{platforms,styles}
+	cp /usr/local/share/qt/plugins/platforms/libqcocoa.dylib PlugIns/styles/libqcocoa.dylib
+	cp /usr/local/share/qt/plugins/styles/libqmacstyle.dylib PlugIns/styles/libqmacstyle.dylib
+
+	printf "%s\n\n" "applying current fixes libs ..."
+
+	fixes
+
 	cd ..
 
 	mkdir -p "e2 SAT Editor.app/Contents/Frameworks"
-	cp -R build/Frameworks "e2 SAT Editor.app/Contents/"
+	mkdir -p "e2 SAT Editor.app/Contents/PlugIns"
+	cp -R build/{Frameworks,PlugIns} "e2 SAT Editor.app/Contents/"
 
 	printf "%s\n\n" "copying translations ..."
 
