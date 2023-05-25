@@ -12,7 +12,7 @@ parts:
     plugin: cmake
     source-type: git
     source: https://github.com/ctlcltd/e2-sat-editor.git
-    source-branch: main
+    # source-branch: main
     source-tag: v0.7.0
     source-subdir: src
     cmake-generator: Ninja
@@ -41,7 +41,7 @@ parts:
     override-pull: |
       craftctl default
       sed -i 's|Icon=e2-sat-editor|Icon=/usr/share/icons/hicolor/256x256/apps/e2-sat-editor\.png|' dist/xdg/e2-sat-editor.desktop
-    parse-info: usr/share/metainfo/io.github.ctlcltd.e2se.metainfo.xml
+    parse-info: ['usr/share/metainfo/io.github.ctlcltd.e2se.metainfo.xml']
 apps:
   e2-sat-editor:
     command: usr/bin/e2-sat-editor

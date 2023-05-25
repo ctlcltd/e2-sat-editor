@@ -7,6 +7,9 @@
 # desktop-file-validate e2se-cli.desktop
 # cd ../..
 
+# apt-get install qt6-i10n-tools qmake6
+## BUG-1964763 https://askubuntu.com/a/1460243
+
 ./scripts/translations.sh -m
 ./scripts/icons.sh -x
 
@@ -20,6 +23,8 @@ cd dist/linux
 
 snapcraft clean
 snapcraft --debug
+
+# snapcraft remote-build --build-on=amd64,arm64
 
 # snap install --devmode e2-sat-editor_*.snap
 # snap install --dangerous e2-sat-editor_*.snap
