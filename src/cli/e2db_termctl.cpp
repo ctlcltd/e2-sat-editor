@@ -365,7 +365,6 @@ void e2db_termctl::input(bool shell, bool ins)
 
 			for (size_t i = 0; i != n; i++)
 				std::putchar('\b');
-
 			try {
 				str.insert(cur, 1, c);
 			} catch (...) {
@@ -485,6 +484,7 @@ int e2db_termctl::paged(int pos, int offset)
 		else if (c == 'q' || c == 'Q' || c == 'x' || c == 'X')
 		{
 			std::putchar('\n');
+
 			break;
 		}
 		else
@@ -586,7 +586,8 @@ void e2db_termctl::tty_gotoxy(int x, int y)
 	COORD coordPos = {short (x), short (y)};
 	SetConsoleCursorPosition(hStdout, coordPos);
 #else
-	std::printf("\e\x5b%d;%df", y, x);
+	std::printf("\033[%d;%df", y, x);
+	// std::printf("\033[%d;%dH", y, x);
 #endif
 }
 
@@ -599,7 +600,7 @@ void e2db_termctl::tty_goforward()
 	COORD coordPos = {csbiInfo.dwCursorPosition.X + 1, csbiInfo.dwCursorPosition.Y};
 	SetConsoleCursorPosition(hStdout, coordPos);
 #else
-	std::printf("\e\x5b\1\x43");
+	std::printf("\033[1C");
 #endif
 }
 
@@ -612,19 +613,19 @@ void e2db_termctl::tty_gobackward()
 	COORD coordPos = {csbiInfo.dwCursorPosition.X - 1, csbiInfo.dwCursorPosition.Y};
 	SetConsoleCursorPosition(hStdout, coordPos);
 #else
-	std::printf("\e\x5b\1\x44");
+	std::printf("\033[1D");
 	// std::putchar('\b');
 #endif
 }
 
 void e2db_termctl::tty_delchar()
 {
-	std::printf("\b\e\x5b\x50");
+	std::printf("\b\033[P");
 }
 
 void e2db_termctl::tty_eraseline(int cols)
 {
-	std::printf("\r\b\e\x5b\2\x4b");
+	std::printf("\r\b\033[2K");
 	// std::printf("\r  ");
 	// for (int i = 0; i != cols; i++)
 	// 	std::putchar(' ');
