@@ -84,7 +84,7 @@ class e2db : public ::e2se_e2db::e2db
 		static QString fixUnicodeChars(string str);
 
 	protected:
-		e2db* newptr() override { return new e2se_gui::e2db; };
+		e2db* newptr() override { return new e2se_gui::e2db; }
 		void setup();
 		void primer();
 

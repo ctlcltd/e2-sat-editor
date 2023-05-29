@@ -516,8 +516,8 @@ struct e2db_abstract : protected e2se::log_factory
 		void set_lamedb_version(int ver);
 		int get_zapit_version();
 		void set_zapit_version(int ver);
-		virtual string get_filepath() { return this->filepath; };
-		virtual string get_services_filename() { return this->services_filename; };
+		virtual string get_filepath() { return this->filepath; }
+		virtual string get_services_filename() { return this->services_filename; }
 		void set_index(unordered_map<string, vector<pair<int, string>>> index);
 		unordered_map<string, vector<pair<int, string>>> get_index();
 		void set_transponders(unordered_map<string, transponder> transponders);
@@ -526,8 +526,8 @@ struct e2db_abstract : protected e2se::log_factory
 		void set_services(unordered_map<string, service> services);
 		void set_bouquets(pair<unordered_map<string, bouquet>, unordered_map<string, userbouquet>> bouquets);
 		pair<unordered_map<string, bouquet>, unordered_map<string, userbouquet>> get_bouquets();
-		virtual unordered_map<string, string> get_input() { return this->e2db; };
-		virtual unordered_map<string, e2db_file> get_output() { return this->e2db_out; };
+		virtual unordered_map<string, string> get_input() { return this->e2db; }
+		virtual unordered_map<string, e2db_file> get_output() { return this->e2db_out; }
 		virtual void merge(e2db_abstract* dst);
 		virtual void debugger();
 
@@ -548,9 +548,9 @@ struct e2db_abstract : protected e2se::log_factory
 		void set_parentallock(string chid, string bname = "");
 
 		using MSG = e2se::logger::MSG;
-		virtual string msg(string str, string param) { return e2se::logger::msg(str, param); };
-		virtual string msg(e2se::logger::MSG msg, const char* param) { return e2se::logger::msg(msg, param); };
-		virtual string msg(e2se::logger::MSG msg) { return e2se::logger::msg(msg); };
+		virtual string msg(string str, string param) { return e2se::logger::msg(str, param); }
+		virtual string msg(e2se::logger::MSG msg, const char* param) { return e2se::logger::msg(msg, param); }
+		virtual string msg(e2se::logger::MSG msg) { return e2se::logger::msg(msg); }
 
 		// e2db <filename string, full-path string>
 		unordered_map<string, string> e2db;

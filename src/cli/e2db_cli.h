@@ -138,23 +138,23 @@ class e2db_cli
 		void shell_header();
 		void shell_error(const string& cmd);
 		void shell_command_version();
-		void shell_command_help(istream* is) { shell_resolver(COMMAND::usage, is); };
-		void shell_command_read(istream* is) { shell_resolver(COMMAND::fread, is); };
-		void shell_command_write(istream* is) { shell_resolver(COMMAND::fwrite, is); };
-		void shell_command_list(istream* is) { shell_resolver(COMMAND::list, is); };
-		void shell_command_add(istream* is) { shell_resolver(COMMAND::add, is); };
-		void shell_command_edit(istream* is) { shell_resolver(COMMAND::edit, is); };
-		void shell_command_remove(istream* is) { shell_resolver(COMMAND::remove, is); };
-		void shell_command_copy(istream* is) { shell_resolver(COMMAND::copy, is); };
-		void shell_command_move(istream* is) { shell_resolver(COMMAND::move, is); };
-		void shell_command_set(istream* is) { shell_resolver(COMMAND::set, is); };
-		void shell_command_unset(istream* is) { shell_resolver(COMMAND::unset, is); };
-		void shell_command_print(istream* is) { shell_resolver(COMMAND::print, is); };
-		void shell_command_parse(istream* is) { shell_resolver(COMMAND::parse, is); };
-		void shell_command_make(istream* is) { shell_resolver(COMMAND::make, is); };
-		void shell_command_convert(istream* is) { shell_resolver(COMMAND::convert, is); };
-		void shell_command_merge(istream* is) { shell_resolver(COMMAND::merge, is); };
-		void shell_command_debug(istream* is) { shell_resolver(COMMAND::debug, is); };
+		void shell_command_help(istream* is) { shell_resolver(COMMAND::usage, is); }
+		void shell_command_read(istream* is) { shell_resolver(COMMAND::fread, is); }
+		void shell_command_write(istream* is) { shell_resolver(COMMAND::fwrite, is); }
+		void shell_command_list(istream* is) { shell_resolver(COMMAND::list, is); }
+		void shell_command_add(istream* is) { shell_resolver(COMMAND::add, is); }
+		void shell_command_edit(istream* is) { shell_resolver(COMMAND::edit, is); }
+		void shell_command_remove(istream* is) { shell_resolver(COMMAND::remove, is); }
+		void shell_command_copy(istream* is) { shell_resolver(COMMAND::copy, is); }
+		void shell_command_move(istream* is) { shell_resolver(COMMAND::move, is); }
+		void shell_command_set(istream* is) { shell_resolver(COMMAND::set, is); }
+		void shell_command_unset(istream* is) { shell_resolver(COMMAND::unset, is); }
+		void shell_command_print(istream* is) { shell_resolver(COMMAND::print, is); }
+		void shell_command_parse(istream* is) { shell_resolver(COMMAND::parse, is); }
+		void shell_command_make(istream* is) { shell_resolver(COMMAND::make, is); }
+		void shell_command_convert(istream* is) { shell_resolver(COMMAND::convert, is); }
+		void shell_command_merge(istream* is) { shell_resolver(COMMAND::merge, is); }
+		void shell_command_debug(istream* is) { shell_resolver(COMMAND::debug, is); }
 
 		void shell_resolver(COMMAND command, istream* is);
 		void shell_usage(COMMAND hint, bool specs = true);
@@ -191,10 +191,10 @@ class e2db_cli
 		std::any field(TYPE type, bool required = false);
 
 		using MSG = e2se::logger::MSG;
-		static string msg(string str, string param) { return e2se::logger::msg(str, param); };
-		static string msg(string str) { return e2se::logger::msg(str); };
-		static string msg(e2se::logger::MSG msg, const char* param) { return e2se::logger::msg(msg, param); };
-		static string msg(e2se::logger::MSG msg) { return e2se::logger::msg(msg); };
+		static string msg(string str, string param) { return e2se::logger::msg(str, param); }
+		static string msg(string str) { return e2se::logger::msg(str); }
+		static string msg(e2se::logger::MSG msg, const char* param) { return e2se::logger::msg(msg, param); }
+		static string msg(e2se::logger::MSG msg) { return e2se::logger::msg(msg); }
 
 	private:
 		e2db* dbih = nullptr;

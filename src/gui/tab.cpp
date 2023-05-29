@@ -162,12 +162,14 @@ void tab::tabSwitched()
 	view->updateStatusBar(true);
 }
 
-void tab::tabChangeName(string filename)
+void tab::tabChangeName(string path)
 {
 	debug("tabChangeName");
 
-	if (! filename.empty())
-		filename = std::filesystem::path(filename).filename().u8string();
+	string filename;
+
+	if (! path.empty())
+		filename = std::filesystem::path(path).filename().u8string();
 
 	gid->tabChangeName(ttid, filename);
 
@@ -492,18 +494,18 @@ void tab::openFile()
 #else
 	gid->blobs.clear();
 
-	auto fileContentReady = [=](const QString& filename, const QByteArray& filedata)
+	auto fileContentReady = [=](const QString& path, const QByteArray& filedata)
 	{
-		if (! filename.isEmpty())
+		if (! path.isEmpty())
 		{
 			gui::gui_file file;
 			file.data = filedata.toStdString();
-			file.filename = filename.toStdString();
+			file.filename = path.toStdString();
 			file.size = filedata.size();
 
 			gid->blobs.emplace_back(file);
 
-			readFile(filename.toStdString());
+			readFile(path.toStdString());
 		}
 	};
 
@@ -511,11 +513,11 @@ void tab::openFile()
 #endif
 }
 
-bool tab::readFile(string filename)
+bool tab::readFile(string path)
 {
-	debug("readFile", "filename", filename);
+	debug("readFile", "path", path);
 
-	if (filename.empty())
+	if (path.empty())
 		return false;
 
 	reset();
@@ -523,11 +525,11 @@ bool tab::readFile(string filename)
 	QTimer* timer = nullptr;
 
 	if (statusBarIsVisible())
-		timer = statusBarMessage(tr("Reading from %1 …", "message").arg(filename.data()));
+		timer = statusBarMessage(tr("Reading from %1 …", "message").arg(path.data()));
 
 #ifndef Q_OS_WASM
 	theme::setWaitCursor();
-	bool readen = this->data->readFile(filename);
+	bool readen = this->data->readFile(path);
 	theme::unsetWaitCursor();
 #else
 	unordered_map<string, e2db::e2db_file> files;
@@ -535,29 +537,29 @@ bool tab::readFile(string filename)
 	for (auto & q : gid->blobs)
 	{
 		e2db::e2db_file file;
-		file.filename = q.filename;
+		file.filename = q.path;
 		file.mime = q.mime;
 		file.data = q.data;
 		file.size = q.size;
 
-		debug("readFile", "file.path", q.filename);
+		debug("readFile", "file.path", q.path);
 		debug("readFile", "file.size", to_string(q.size));
 
-		files.emplace(file.filename, file);
+		files.emplace(file.path, file);
 	}
 
-	bool readen = this->data->readBlob(filename, files);
+	bool readen = this->data->readBlob(path, files);
 #endif
 
 	if (readen)
 	{
-		tabChangeName(filename);
+		tabChangeName(path);
 	}
 	else
 	{
 		tabChangeName();
 
-		error("readFile", tr("File Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(filename.data()).toStdString());
+		error("readFile", tr("File Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(path.data()).toStdString());
 
 		errorMessage(tr("File Error", "error"), tr("Error opening files.", "error"));
 
@@ -586,8 +588,8 @@ void tab::saveFile(bool saveas)
 	return this->demoMessage();
 #endif
 
-	string path;
-	string filename = path = this->data->getFilename();
+	string path = this->data->getPath();
+	string nw_path;
 
 	if (this->data->hasChanged())
 	{
@@ -595,7 +597,7 @@ void tab::saveFile(bool saveas)
 	}
 	if (saveas || this->data->isNewfile())
 	{
-		path = gid->saveFileDialog(filename);
+		nw_path = gid->saveFileDialog(path);
 	}
 	else if (this->data->hasChanged())
 	{
@@ -610,9 +612,13 @@ void tab::saveFile(bool saveas)
 			return;
 	}
 
-	if (path.empty())
+	if (nw_path.empty())
 	{
 		return;
+	}
+	else
+	{
+		path = nw_path;
 	}
 
 	debug("saveFile", "path", path);
@@ -623,6 +629,9 @@ void tab::saveFile(bool saveas)
 
 	if (written)
 	{
+		if (saveas)
+			tabChangeName(path);
+
 		if (statusBarIsVisible())
 			statusBarMessage(tr("Saved to %1", "message").arg(path.data()));
 		else

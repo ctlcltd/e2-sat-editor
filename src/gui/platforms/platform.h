@@ -24,28 +24,16 @@ class _platform
 	public:
 		static QWidget* osWindowBlend(QWidget* widget)
 		{
-			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
-			if (QSettings().value("preference/osTranslucency", experiment).toBool())
-				return _osWindowBlend(widget);
-			else
-				return widget;
-		};
+			return widget;
+		}
 		static QWidget* osWidgetBlend(QWidget* widget)
 		{
-			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
-			if (QSettings().value("preference/osTranslucency", experiment).toBool())
-				return _osWidgetBlend(widget);
-			else
-				return widget;
-		};
+			return widget;
+		}
 		static QWidget* osWidgetOpaque(QWidget* widget)
 		{
-			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
-			if (QSettings().value("preference/osTranslucency", experiment).toBool())
-				return _osWidgetOpaque(widget);
-			else
-				return widget;
-		};
+			return widget;
+		}
 		static void osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 		{
 			menu->popup(widget->mapToGlobal(pos));
@@ -71,15 +59,13 @@ class _platform
 		static QWidget* _osWindowBlend(QWidget* widget)
 		{
 			return widget;
-		};
+		}
 		static QWidget* _osWidgetBlend(QWidget* widget)
 		{
-			widget->setAttribute(Qt::WA_TranslucentBackground);
 			return widget;
-		};
+		}
 		static QWidget* _osWidgetOpaque(QWidget* widget)
 		{
-			widget->setAttribute(Qt::WA_TintedBackground);
 			return widget;
 		}
 };

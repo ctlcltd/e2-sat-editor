@@ -140,6 +140,17 @@ void editTransponder::layout(QWidget* cwid)
 	dtf0->addRow(tr("ONID"), dtf0on);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
+	QLineEdit* dtf0sp = new QLineEdit;
+	dtf0sp->setProperty("field", "pos");
+	fields.emplace_back(dtf0sp);
+	dtf0sp->setMinimumWidth(100);
+	dtf0sp->setInputMask("000.0>A");
+	dtf0sp->setValidator(new QRegularExpressionValidator(QRegularExpression("[\\d]{,3}.\\d\\w")));
+	dtf0sp->setText("0.00W");
+	platform::osLineEdit(dtf0sp);
+	dtf0->addRow(tr("Position"), dtf0sp);
+	dtf0->addItem(new QSpacerItem(0, 0));
+
 	afields.insert(afields.begin(), fields.begin(), fields.end());
 
 	dtl0->setLayout(dtf0);
@@ -685,7 +696,9 @@ void editTransponder::store()
 
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
 		{
-			if (key == "dvbns")
+			if (key == "pos")
+				val = dbih->value_transponder_position(field->text().toStdString());
+			else if (key == "dvbns")
 				val = dbih->value_transponder_dvbns(field->text().toStdString());
 			else
 				val = field->text().isEmpty() ? -1 : field->text().toInt();
@@ -706,7 +719,9 @@ void editTransponder::store()
 
 		if (this->state.yx == e2db::YTYPE::satellite)
 		{
-			if (key == "s_freq")
+			if (key == "pos")
+				tx.pos = val;
+			else if (key == "s_freq")
 				tx.freq = val;
 			else if (key == "s_sr")
 				tx.sr = val;
@@ -729,7 +744,9 @@ void editTransponder::store()
 		}
 		else if (this->state.yx == e2db::YTYPE::terrestrial)
 		{
-			if (key == "t_freq")
+			if (key == "pos")
+				tx.pos = -1;
+			else if (key == "t_freq")
 				tx.freq = val;
 			else if (key == "t_tmod")
 				tx.tmod = val;
@@ -754,7 +771,9 @@ void editTransponder::store()
 		}
 		else if (this->state.yx == e2db::YTYPE::cable)
 		{
-			if (key == "c_freq")
+			if (key == "pos")
+				tx.pos = -1;
+			else if (key == "c_freq")
 				tx.freq = val;
 			else if (key == "c_sr")
 				tx.sr = val;
@@ -767,7 +786,9 @@ void editTransponder::store()
 		}
 		else if (this->state.yx == e2db::YTYPE::atsc)
 		{
-			if (key == "a_freq")
+			if (key == "pos")
+				tx.pos = val;
+			else if (key == "a_freq")
 				tx.freq = val;
 			else if (key == "a_amod")
 				tx.amod = val;
@@ -825,6 +846,8 @@ void editTransponder::retrieve(string txid)
 			val = tx.dvbns;
 		else if (key == "onid")
 			val = tx.onid;
+		else if (key == "pos")
+			val = tx.pos;
 
 		if (this->state.yx == e2db::YTYPE::satellite)
 		{
@@ -899,7 +922,9 @@ void editTransponder::retrieve(string txid)
 
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
 		{
-			if (key == "dvbns")
+			if (key == "pos")
+				field->setText(QString::fromStdString(dbih->value_transponder_position(val)));
+			else if (key == "dvbns")
 				field->setText(QString::fromStdString(dbih->value_transponder_dvbns(val)));
 			else
 				field->setText(val != -1 ? QString::number(val) : "");

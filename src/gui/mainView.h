@@ -124,7 +124,7 @@ class mainView : public viewAbstract
 
 		QTreeWidget* side = nullptr;
 
-		__state currentState() { return this->state; };
+		__state currentState() { return this->state; }
 
 	protected:
 		void layout();

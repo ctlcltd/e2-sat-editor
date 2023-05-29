@@ -42,7 +42,7 @@ void dataHandler::newFile()
 	this->changed = false;
 }
 
-bool dataHandler::readFile(string filename)
+bool dataHandler::readFile(string path)
 {
 	debug("readFile");
 
@@ -52,9 +52,9 @@ bool dataHandler::readFile(string filename)
 	this->newfile = false;
 	this->changed = false;
 
-	if (this->dbih->prepare(filename))
+	if (this->dbih->prepare(path))
 	{
-		this->filename = filename;
+		this->path = path;
 		this->newfile = false;
 		return true;
 	}
@@ -63,7 +63,7 @@ bool dataHandler::readFile(string filename)
 }
 
 //TODO TEST sort bss TV, Radio
-bool dataHandler::readBlob(string filename, unordered_map<string, e2db::e2db_file> files)
+bool dataHandler::readBlob(string path, unordered_map<string, e2db::e2db_file> files)
 {
 	debug("readBlob");
 
@@ -75,8 +75,8 @@ bool dataHandler::readBlob(string filename, unordered_map<string, e2db::e2db_fil
 
 	this->dbih->importBlob(files);
 
-	if (this->filename.empty())
-		this->filename = filename;
+	if (this->path.empty())
+		this->path = path;
 
 	return true;
 }
@@ -90,7 +90,7 @@ bool dataHandler::writeFile(string path)
 
 	if (this->dbih->write(path))
 	{
-		this->filename = path;
+		this->path = path;
 		return true;
 	}
 
@@ -117,9 +117,9 @@ bool dataHandler::isNewfile()
 	return this->newfile;
 }
 
-string dataHandler::getFilename()
+string dataHandler::getPath()
 {
-	return this->filename;
+	return this->path;
 }
 
 void dataHandler::settingsChanged()

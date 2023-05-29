@@ -80,7 +80,7 @@ class transpondersView : public viewAbstract
 		void listItemDelete();
 		void updateIndex();
 
-		__state currentState() { return this->state; };
+		__state currentState() { return this->state; }
 
 	protected:
 		void layout();

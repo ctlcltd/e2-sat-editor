@@ -69,7 +69,7 @@ class tab : protected e2se::log_factory
 		void themeChanged();
 		void clipboardDataChanged();
 		void tabSwitched();
-		void tabChangeName(string filename = "");
+		void tabChangeName(string path = "");
 		void setFlag(gui::GUI_CXE bit, bool flag);
 		bool getFlag(gui::GUI_CXE bit);
 		void setFlags(int preset);
@@ -89,7 +89,7 @@ class tab : protected e2se::log_factory
 		void actionCall(int bit);
 		void newFile();
 		void openFile();
-		bool readFile(string filename = "");
+		bool readFile(string path = "");
 		void saveFile(bool saveas);
 		void importFile();
 		void exportFile();

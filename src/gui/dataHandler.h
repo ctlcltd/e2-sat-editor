@@ -27,20 +27,20 @@ class dataHandler : protected e2se::log_factory
 		dataHandler();
 		virtual ~dataHandler();
 		void newFile();
-		bool readFile(string filename);
-		bool readBlob(string filename, unordered_map<string, e2db::e2db_file> files);
+		bool readFile(string path);
+		bool readBlob(string path, unordered_map<string, e2db::e2db_file> files);
 		bool writeFile(string path);
 		void setChanged(bool changed);
 		bool hasChanged();
 		void setNewfile(bool newfile);
 		bool isNewfile();
-		string getFilename();
+		string getPath();
 		void settingsChanged();
 
 		e2db* dbih = nullptr;
 
 	protected:
-		string filename;
+		string path;
 		bool newfile = false;
 		bool changed = false;
 };

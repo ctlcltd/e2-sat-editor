@@ -635,7 +635,7 @@ void gui::tabViewSwitch(TAB_VIEW ttv, int arg)
 	}
 }
 
-int gui::newTab(string filename)
+int gui::newTab(string path)
 {
 	tab* ttab = new tab(this, mwid);
 	int ttid = ttab->getTabId();
@@ -644,7 +644,7 @@ int gui::newTab(string filename)
 
 	ttab->viewMain();
 
-	bool read = ! filename.empty();
+	bool read = ! path.empty();
 	QString ttname = tr("Untitled", "tab");
 	int index = twid->addTab(ttab->widget, ttname);
 	int count = index;
@@ -660,9 +660,9 @@ int gui::newTab(string filename)
 
 	if (read)
 	{
-		if (! ttab->readFile(filename))
+		if (! ttab->readFile(path))
 		{
-			error("newTab", tr("Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(filename.data()).toStdString());
+			error("newTab", tr("Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(path.data()).toStdString());
 
 			twid->removeTab(index);
 			delete ttmenu[ttid];
@@ -673,7 +673,7 @@ int gui::newTab(string filename)
 			return -1;
 		}
 
-		filename = std::filesystem::path(filename).filename().u8string();
+		string filename = std::filesystem::path(path).filename().u8string();
 		ttname = QString::fromStdString(filename);
 	}
 	else
@@ -932,7 +932,7 @@ void gui::tabMoved(int from, int to)
 	}
 }
 
-void gui::tabChangeName(int ttid, string filename)
+void gui::tabChangeName(int ttid, string path)
 {
 	debug("tabChangeName", "ttid", ttid);
 
@@ -960,20 +960,20 @@ void gui::tabChangeName(int ttid, string filename)
 					{
 						int ttid = tab.second->getTabId();
 						count = twid->indexOf(tab.second->widget);
-						tabChangeName(ttid, filename);
+						tabChangeName(ttid, path);
 						break;
 					}
 				}
 			}
 		}
 	}
-	if (filename.empty())
+	if (path.empty())
 	{
 		ttname.append(QString::fromStdString(count ? " " + to_string(count) : ""));
 	}
 	else
 	{
-		ttname = QString::fromStdString(filename);
+		ttname = QString::fromStdString(path);
 	}
 
 	// debug("tabChangeName", "index", index);
@@ -1019,15 +1019,16 @@ string gui::openFileDialog()
 	return path;
 }
 
-string gui::saveFileDialog(string filename)
+//TODO FIX save as folder
+string gui::saveFileDialog(string path)
 {
-	debug("saveFileDialog", "filename", filename);
+	debug("saveFileDialog", "path", path);
 
 	QString caption = tr("Select where to save", "file-dialog");
 
-	string path;
+	string nw_path;
 
-	QFileDialog fdial = QFileDialog(mwid, caption, QString::fromStdString(filename));
+	QFileDialog fdial = QFileDialog(mwid, caption, QString::fromStdString(path));
 	fdial.setAcceptMode(QFileDialog::AcceptOpen);
 	fdial.setFilter(QDir::AllDirs | QDir::NoSymLinks);
 	if (fdial.exec() == QDialog::Accepted)
@@ -1035,9 +1036,9 @@ string gui::saveFileDialog(string filename)
 		QUrl url = fdial.selectedUrls().value(0);
 		if (url.isLocalFile() || url.isEmpty())
 			url = url.toLocalFile();
-		path = url.toString().toStdString();
+		nw_path = url.toString().toStdString();
 	}
-	return path;
+	return nw_path;
 }
 
 vector<string> gui::importFileDialog(GUI_DPORTS gde)
@@ -1118,9 +1119,9 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 	return paths;
 }
 
-string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& bit)
+string gui::exportFileDialog(GUI_DPORTS gde, string path, int& bit)
 {
-	debug("exportFileDialog", "filename", filename);
+	debug("exportFileDialog", "path", path);
 
 	QString caption = tr("Select where to save", "file-dialog");
 	QStringList opts;
@@ -1172,10 +1173,10 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& bit)
 			opts.append(QString("%1 (*)").arg(tr("All Files", "file-dialog")));
 	}
 
-	string path;
+	string nw_path;
 
 	QString selected;
-	QFileDialog fdial = QFileDialog(mwid, caption, QString::fromStdString(filename));
+	QFileDialog fdial = QFileDialog(mwid, caption, QString::fromStdString(path));
 	fdial.setAcceptMode(QFileDialog::AcceptSave);
 	fdial.setFilter(QDir::AllDirs | QDir::NoSymLinks);
 	fdial.setNameFilters(opts);
@@ -1224,15 +1225,15 @@ string gui::exportFileDialog(GUI_DPORTS gde, string filename, int& bit)
 		QUrl url = fdial.selectedUrls().value(0);
 		if (url.isLocalFile() || url.isEmpty())
 			url = url.toLocalFile();
-		path = url.toString().toStdString();
+		nw_path = url.toString().toStdString();
 	}
-	return path;
+	return nw_path;
 }
 
-string gui::exportFileDialog(GUI_DPORTS gde, string filename)
+string gui::exportFileDialog(GUI_DPORTS gde, string path)
 {
 	int bit = 0;
-	return exportFileDialog(gde, filename, bit);
+	return exportFileDialog(gde, path, bit);
 }
 
 bool gui::statusBarIsVisible()
@@ -1376,18 +1377,18 @@ void gui::fileOpen()
 	if (! path.empty())
 		newTab(path);
 #else
-	auto fileContentReady = [=](const QString& filename, const QByteArray& filedata)
+	auto fileContentReady = [=](const QString& path, const QByteArray& filedata)
 	{
-		if (! filename.isEmpty())
+		if (! path.isEmpty())
 		{
 			gui::gui_file file;
 			file.data = filedata.toStdString();
-			file.filename = filename.toStdString();
+			file.filename = path.toStdString();
 			file.size = filedata.size();
 
 			this->blobs.emplace_back(file);
 
-			newTab(filename.toStdString());
+			newTab(path.toStdString());
 		}
 	};
 

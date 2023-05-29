@@ -81,7 +81,7 @@ class channelBookView : public viewAbstract
 		void listItemDelete() {};
 		vector<QString> getSelected();
 
-		__state currentState() { return this->state; };
+		__state currentState() { return this->state; }
 
 	protected:
 		void layout();
