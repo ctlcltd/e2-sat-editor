@@ -17,6 +17,7 @@
 #include <QSettings>
 #include <QTranslator>
 #include <QLibraryInfo>
+#include <QByteArray>
 #include <QSplitter>
 #include <QGroupBox>
 #include <QTabWidget>
@@ -102,11 +103,16 @@ gui::gui(int argc, char* argv[])
 #endif
 #endif
 
-	//TODO FIX builds
+#if defined E2SE_PORTABLE
+	QString qtTranslationsPath = appTranslationsPath;
+#elif defined Q_OS_MACOS && E2SE_BUILD == E2SE_TARGET_RELEASE
+	QString qtTranslationsPath = appTranslationsPath;
+#else
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 	QString qtTranslationsPath = QLibraryInfo::path(QLibraryInfo::TranslationsPath);
 #else
 	QString qtTranslationsPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+#endif
 #endif
 
 	debug("gui", "language preference", appLang.isEmpty() ? "system" : appLang.toStdString());
@@ -588,6 +594,18 @@ void gui::updateSettings()
 	{
 		settings.setValue("application/version", mroot->applicationVersion());
 		settings.setValue("settings/version", 1);
+
+		if (version < 0.8)
+		{
+			int size = settings.beginReadArray("profile");
+			for (int i = 0; i < size; i++)
+			{
+				settings.setArrayIndex(i);
+				QByteArray ba (settings.value("password").toString().toUtf8());
+				settings.setValue("password", ba.toBase64());
+			}
+			settings.endArray();
+		}
 	}
 }
 

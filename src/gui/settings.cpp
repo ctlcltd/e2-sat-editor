@@ -12,6 +12,7 @@
 #include <Qt>
 #include <QTimer>
 #include <QRegularExpression>
+#include <QByteArray>
 #include <QScrollArea>
 #include <QGridLayout>
 #include <QHBoxLayout>
@@ -263,13 +264,14 @@ void settings::connectionsLayout()
 	platform::osLineEdit(dtf1lu);
 	dtf1->addRow(tr("Username"), dtf1lu);
 
+	//TODO show/hide
 	QLineEdit* dtf1lp = new QLineEdit;
 	dtf1lp->setProperty("field", "password");
 	dtf1lp->setEchoMode(QLineEdit::Password);
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf1lp);
 	dtf1lp->setMinimumWidth(120);
 	platform::osLineEdit(dtf1lp);
-	dtf1->addRow(tr("Password"), dtf1lp); // show/hide
+	dtf1->addRow(tr("Password"), dtf1lp); 
 
 	QGroupBox* dtl2 = new QGroupBox(tr("Configuration"));
 	QFormLayout* dtf2 = new QFormLayout;
@@ -749,10 +751,23 @@ void settings::updateProfile(QListWidgetItem* item)
 	for (auto & item : prefs[PREF_SECTIONS::Connections])
 	{
 		QString pref = item->property("field").toString();
+
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
-			tmpps[i][pref] = field->text();
+		{
+			QString val = field->text();
+
+			if (pref == "password")
+			{
+				QByteArray ba (val.toUtf8());
+				val = ba.toBase64();
+			}
+
+			tmpps[i][pref] = val;
+		}
 		else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
+		{
 			tmpps[i][pref] = field->isChecked();
+		}
 	}
 }
 
@@ -908,14 +923,29 @@ void settings::retrieve()
 			QString pref = item->property("field").toString();
 			tmpps[i][pref] = sets->value(pref);
 
+			//TODO
 			if (i == selected)
 			{
 				if (sets->value(pref).isNull())
+				{
 					continue;
+				}
 				if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
-					field->setText(sets->value(pref).toString());
+				{
+					QString val = sets->value(pref).toString();
+
+					if (pref == "password")
+					{
+						QByteArray ba (val.toUtf8());
+						val = QByteArray::fromBase64(ba);
+					}
+
+					field->setText(val);
+				}
 				else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
+				{
 					field->setChecked(sets->value(pref).toBool());
+				}
 			}
 		}
 	}
@@ -972,9 +1002,21 @@ void settings::retrieve(QListWidgetItem* item)
 		QString pref = item->property("field").toString();
 
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
-			field->setText(tmpps[i][pref].toString());
+		{
+			QString val = tmpps[i][pref].toString();
+
+			if (pref == "password")
+			{
+				QByteArray ba (val.toUtf8());
+				val = QByteArray::fromBase64(ba);
+			}
+
+			field->setText(val);
+		}
 		else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
+		{
 			field->setChecked(tmpps[i][pref].toBool());
+		}
 	}
 }
 

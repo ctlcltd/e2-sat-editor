@@ -480,7 +480,7 @@ void editService::paramsLayout()
 	dtf2cd->setMinimumWidth(200);
 	dtf2cd->setMaxLength(255);
 	platform::osLineEdit(dtf2cd);
-	dtf2C->addRow(tr("Card ID flags"), dtf2cd);
+	dtf2C->addRow(tr("Card ID parameters"), dtf2cd);
 	//: HTML formattation: text%1text treat them as spaces
 	dtf2C->addRow(new QLabel(QString("<small>%1</small>").arg(tr("Enter them in comma separated values.%1(eg. C:0100,C:0200,…)").arg("<br>"))));
 
@@ -519,21 +519,45 @@ void editService::paramsLayout()
 	dtt2->addItem(dtw23, tr("Flags"));
 
 	QWidget* dtw24 = new QWidget;
-	QFormLayout* dtf2o = new QFormLayout;
-	dtf2o->setRowWrapPolicy(QFormLayout::WrapAllRows);
+	QFormLayout* dtf2r = new QFormLayout;
+	dtf2r->setRowWrapPolicy(QFormLayout::WrapAllRows);
 
-	QLineEdit* dtf2oc = new QLineEdit;
-	dtf2oc->setProperty("field", "raw_data");
-	fields.emplace_back(dtf2oc);
-	dtf2oc->setMinimumWidth(200);
-	dtf2oc->setMaxLength(255);
-	platform::osLineEdit(dtf2oc);
-	dtf2o->addRow(tr("Custom edit flags"), dtf2oc);
+	QLineEdit* dtf2rc = new QLineEdit;
+	dtf2rc->setProperty("field", "raw_data");
+	fields.emplace_back(dtf2rc);
+	dtf2rc->setMinimumWidth(200);
+	dtf2rc->setMaxLength(255);
+	platform::osLineEdit(dtf2rc);
+	dtf2r->addRow(tr("Raw edit parameters"), dtf2rc);
 	//: HTML formattation: %1text%2text%3text treat them as spaces
-	dtf2o->addRow(new QLabel(QString("<small>%1</small>").arg(tr("%1It will overwrite any previously typed!%2Enter them in comma separated values.%3(eg. p:ProviderName,c:0100,C:0200,…)")).arg("<b>").arg("</b><br>").arg("<br>")));
+	dtf2r->addRow(new QLabel(QString("<small>%1</small>").arg(tr("%1It will overwrite any previously typed!%2Enter them in comma separated values.%3(eg. p:ProviderName,c:0100,C:0200,…)")).arg("<b>").arg("</b><br>").arg("<br>")));
 
-	dtw24->setLayout(dtf2o);
-	dtt2->addItem(dtw24, tr("Extras"));
+	dtw24->setLayout(dtf2r);
+	dtt2->addItem(dtw24, tr("Custom"));
+
+	QWidget* dtw25 = new QWidget;
+	QFormLayout* dtf2e = new QFormLayout;
+	dtf2e->setFormAlignment(Qt::AlignLeading);
+	dtf2e->setRowWrapPolicy(QFormLayout::WrapAllRows);
+	
+	QLineEdit* dtf2sn = new QLineEdit;
+	dtf2sn->setProperty("field", "snum");
+	fields.emplace_back(dtf2sn);
+	dtf2sn->setMaximumWidth(60);
+	dtf2sn->setValidator(new QIntValidator);
+	platform::osLineEdit(dtf2sn);
+	dtf2e->addRow(tr("Service Number"), dtf2sn);
+
+	QLineEdit* dtf2sr = new QLineEdit;
+	dtf2sr->setProperty("field", "srcid");
+	fields.emplace_back(dtf2sr);
+	dtf2sr->setMaximumWidth(60);
+	dtf2sr->setValidator(new QIntValidator);
+	platform::osLineEdit(dtf2sr);
+	dtf2e->addRow(tr("Src ID"), dtf2sr);
+
+	dtw25->setLayout(dtf2e);
+	dtt2->addItem(dtw25, tr("Extras"));
 
 	dtb20->addWidget(dtt2);
 	dtl2->setLayout(dtb20);
@@ -660,6 +684,10 @@ void editService::store()
 			ch.ssid = val.empty() ? 0 : std::stoi(val);
 		else if (key == "txid")
 			ch.txid = val;
+		else if (key == "snum")
+			ch.snum = val.empty() ? 0 : std::stoi(val);
+		else if (key == "srcid")
+			ch.srcid = val.empty() ? 0 : std::stoi(val);
 
 		if (key == "raw_data" && this->state.raw_data != val)
 		{
@@ -796,6 +824,10 @@ void editService::retrieve()
 			val = to_string(tx.pos);
 		else if (key == "txid")
 			val = ch.txid;
+		else if (key == "snum")
+			val = to_string(ch.snum);
+		else if (key == "srcid")
+			val = to_string(ch.srcid);
 
 		if (key == "p" && ch.data.count(e2db::SDATA::p))
 			val = ch.data[e2db::SDATA::p][0];
