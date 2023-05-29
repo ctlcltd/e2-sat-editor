@@ -48,7 +48,6 @@ gui::gui(int argc, char* argv[])
 
 	this->log = new logger("gui", "gui");
 
-	//TODO FIX locale warning wrong detected as US-ASCII [Qt6] [Xcode] [macOS]
 	this->mroot = new QApplication(argc, argv);
 	std::setlocale(LC_NUMERIC, "C");
 
@@ -358,7 +357,7 @@ void gui::tabStackerLayout()
 	twid->tabBar()->setChangeCurrentOnDrag(false);
 	twid->tabBar()->setElideMode(Qt::ElideRight);
 
-	//TODO FIX [Windows]
+	//TODO FIX wrong height size [Windows]
 #ifndef Q_OS_WIN
 	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 12ex; max-width: 25ex; height: 44px; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button) } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight); border-color: transparent }");
 #else
@@ -393,7 +392,7 @@ void gui::tabStackerLayout()
 	theme->dynamicStyleSheet(twid, "#tabwidget_tabbar, #tabwidget_tabbar::tab { border-color: " + twtbshade_hexArgb + " }", theme::dark);
 #endif
 
-	//TODO tab-bar left border 1px gap
+	//TODO FIX tab-bar left border 1px gap
 	if (twid->layoutDirection() == Qt::LeftToRight)
 		twid->tabBar()->setStyleSheet("QTabBar { border-width: 0 0 0 1px } QTabBar::tab { margin: 0 0 0 -1px }");
 	else
@@ -886,7 +885,7 @@ void gui::windowChanged()
 	{
 		debug("windowChanged", "mwind", "idle");
 #ifndef Q_OS_WASM
-		//TODO FIX
+		//TODO FIX sometimes fails to restore previous items visibility
 #if E2SE_BUILD == E2SE_TARGET_DEBUG
 		this->gex = this->gxe;
 		setFlags(GUI_CXE::idle);

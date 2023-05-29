@@ -70,7 +70,7 @@ void tools::inspector()
 
 	QTextEdit* dcnt = new QTextEdit;
 	dcnt->setReadOnly(true);
-	//TODO FIX i18n rtl QTextDocument
+	//TODO i18n rtl QTextDocument
 	QString textAlign = QApplication::layoutDirection() == Qt::LeftToRight ? "left" : "right";
 	dcnt->document()->setDefaultStyleSheet("* { margin: 0; padding: 0 } i { font-style: normal } pre { font-size: 11px; text-align: " + textAlign + " }");
 	dcnt->setHtml("</div>");

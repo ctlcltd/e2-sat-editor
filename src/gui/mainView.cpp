@@ -75,7 +75,7 @@ void mainView::layout()
 
 	QGridLayout* frm = new QGridLayout(widget);
 
-	//TODO vertical scrollbar 1px gap [Linux] [FreeBSD] [Windows]
+	//WONTFIX vertical scrollbar 1px gap [Linux] [FreeBSD] [Windows]
 	QSplitter* swid = new QSplitter;
 #ifdef Q_OS_MAC
 	swid->setStyleSheet("QSplitter::handle {}");
@@ -343,7 +343,7 @@ void mainView::searchLayout()
 	this->lsr_search.filter->addItem(tr("Position"), ITEM_ROW_ROLE::chpos);
 }
 
-//TODO improve viewAbstract::themeChange()
+//TODO improve with viewAbstract::themeChange()
 void mainView::referenceBoxLayout()
 {
 	this->list_reference = new QWidget;

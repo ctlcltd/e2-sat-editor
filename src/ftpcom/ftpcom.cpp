@@ -239,7 +239,7 @@ string ftpcom::file_mime_detect(string path)
 	return "application/octet-stream";
 }
 
-//TODO improve resuming
+//TODO improve download auto-resume
 void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 {
 	debug("download_data");

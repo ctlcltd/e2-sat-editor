@@ -193,7 +193,7 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 		ss << formats[MAKER_FORMAT::b_service_param_escape] << ch.chname << formats[MAKER_FORMAT::b_service_param_escape];
 		ss << formats[MAKER_FORMAT::b_service_params_separator];
 
-		//TODO FIX
+		//TODO FIX potential SEGFAULT
 		auto z = std::prev(ch.data.cend());
 		for (auto & q : ch.data)
 		{
@@ -1026,7 +1026,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 							}
 							ss << ' ' << "s=\"" << (ch.data[SDATA::C].empty() ? 0 : 1) << "\"";
 							ss << ' ' << "num=\"" << ch.snum << "\"";
-							//TODO
+							//TODO improve
 							ss << ' ' << "f=\"" << 0 << "\"";
 						}
 					}

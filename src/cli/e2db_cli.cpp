@@ -2740,7 +2740,7 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end,
 	{
 		cerr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
 	}
-	//TODO
+	//TODO better message
 	catch (const std::bad_any_cast& err)
 	{
 		cerr << "Error: " << msg(MSG::except_bad_any_cast, err.what()) << endl;

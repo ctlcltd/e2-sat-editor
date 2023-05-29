@@ -1321,7 +1321,7 @@ void tab::ftpComboItems()
 		if (! settings.contains("profileName"))
 			continue;
 
-		//TODO profile/selected and array index differs trouble
+		//TODO improve profile/selected and array index differs trouble
 		ftp_combo->addItem(settings.value("profileName").toString(), i + 1);
 	}
 	settings.endArray();

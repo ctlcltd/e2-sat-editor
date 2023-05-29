@@ -141,7 +141,7 @@ void settings::connectionsLayout()
 	rppage->connect(rppage, &WidgetWithBackdrop::backdrop, [=]() { this->renameProfile(false); });
 	platform::osPersistentEditor(rplist);
 
-	//TODO
+	//TODO improve ui
 	QToolBar* dttbar = new QToolBar;
 	dttbar->setObjectName("profile_toolbar");
 	dttbar->setToolButtonStyle(Qt::ToolButtonIconOnly);

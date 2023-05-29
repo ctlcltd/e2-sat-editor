@@ -104,7 +104,7 @@ class TreeProxyStyle : public QProxyStyle
 					opt.rect.setX(- (opt.rect.height() / 2));
 					opt.rect.adjust(dx - 2, 0, 0, 0);
 				}
-				//TODO FIX rtl
+				//TODO improve rtl
 				else if (opt.direction == Qt::RightToLeft)
 				{
 					// opt.rect.setX(widget->width() - opt.rect.height() + opt.rect.height() / 2);
@@ -139,7 +139,7 @@ class TreeProxyStyle : public QProxyStyle
 				}
 				else if (opt.direction == Qt::RightToLeft)
 				{
-					//TODO FIX rtl
+					//TODO improve rtl
 					if (this->firstColumnIndented)
 						opt.rect.setWidth(option->rect.right() * 2);
 

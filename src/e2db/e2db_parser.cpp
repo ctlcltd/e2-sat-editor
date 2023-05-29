@@ -1457,7 +1457,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 				}
 				else if (key == "num")
 					ch.snum = std::atoi(val.data());
-				//TODO
+				//TODO improve
 				// else if (key == "f")
 			}
 			else
