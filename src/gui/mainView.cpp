@@ -2512,7 +2512,8 @@ void mainView::treeDropFromList(QTreeWidgetItem* current)
 {
 	debug("treeDropFromList");
 
-	if (tree->currentItem() == current)
+	// all | tv | radio && dropping on itself
+	if (this->state.ti != -1 && tree->currentItem() == current)
 		return;
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
