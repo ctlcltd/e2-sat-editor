@@ -11,10 +11,10 @@
 
 #include <cstdio>
 #include <cstdlib>
-#include <ctime>
 #include <cstring>
 #include <clocale>
 #include <algorithm>
+#include <chrono>
 #include <sstream>
 #include <fstream>
 #include <filesystem>
@@ -38,7 +38,7 @@ void e2db_parser::parse_e2db()
 {
 	debug("parse_e2db");
 
-	std::clock_t start = std::clock();
+	auto t_start = std::chrono::high_resolution_clock::now();
 
 	if (! find_services_file())
 		return error("parse_e2db", "Error", "Services file not found.");
@@ -250,8 +250,6 @@ void e2db_parser::parse_e2db()
 		}
 	}
 
-	std::clock_t end = std::clock();
-
 	// ctlcltd/e2se-seeds/enigma_db
 	// commit: 67b6442	elapsed time: 65520
 	// commit: d47fec7	elapsed time: 498870
@@ -262,8 +260,10 @@ void e2db_parser::parse_e2db()
 	// commit: f1cb80f	elapsed time: 18829
 	// commit: a7022d8	elapsed time: 18506
 
-	//TODO number format [MinGW-64] [Windows]
-	info("parse_e2db", "elapsed time", to_string(int (end - start)) + " ms.");
+	auto t_end = std::chrono::high_resolution_clock::now();
+	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
+
+	info("parse_e2db", "elapsed time", to_string(elapsed) + " μs");
 }
 
 //TODO stringstream memory
@@ -271,7 +271,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 {
 	debug("parse_e2db");
 
-	std::clock_t start = std::clock();
+	auto t_start = std::chrono::high_resolution_clock::now();
 
 	for (auto & x : files)
 	{
@@ -391,9 +391,10 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 		}
 	}
 
-	std::clock_t end = std::clock();
+	auto t_end = std::chrono::high_resolution_clock::now();
+	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
 
-	info("parse_e2db", "elapsed time", to_string(int (end - start)) + " ms.");
+	info("parse_e2db", "elapsed time", to_string(elapsed) + " μs");
 }
 
 void e2db_parser::parse_e2db_lamedb(istream& ilamedb)

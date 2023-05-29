@@ -14,8 +14,9 @@
 #include <cmath>
 #include <cstring>
 #include <clocale>
-#include <unordered_set>
 #include <algorithm>
+#include <chrono>
+#include <unordered_set>
 #include <sstream>
 #include <fstream>
 #include <filesystem>
@@ -130,7 +131,7 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 	debug("import_csv_file", "file path", "singular");
 	debug("import_csv_file", "file input", fci);
 
-	std::clock_t start = std::clock();
+	auto t_start = std::chrono::high_resolution_clock::now();
 
 	try
 	{
@@ -197,9 +198,10 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 		exception("import_csv_file", "Error", msg(MSG::except_uncaught));
 	}
 
-	std::clock_t end = std::clock();
+	auto t_end = std::chrono::high_resolution_clock::now();
+	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
 
-	info("import_csv_file", "elapsed time", to_string(int (end - start)) + " ms.");
+	info("import_csv_file", "elapsed time", to_string(elapsed) + " μs");
 }
 
 void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
@@ -207,7 +209,7 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 	debug("export_csv_file", "file path", "singular");
 	debug("export_csv_file", "file output", fco);
 
-	std::clock_t start = std::clock();
+	auto t_start = std::chrono::high_resolution_clock::now();
 
 	try
 	{
@@ -298,9 +300,10 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 		exception("export_csv_file", "Error", msg(MSG::except_uncaught));
 	}
 
-	std::clock_t end = std::clock();
+	auto t_end = std::chrono::high_resolution_clock::now();
+	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
 
-	info("export_csv_file", "elapsed time", to_string(int (end - start)) + " ms.");
+	info("export_csv_file", "elapsed time", to_string(elapsed) + " μs");
 }
 
 void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
@@ -308,7 +311,7 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 	debug("export_html_file", "file path", "singular");
 	debug("export_html_file", "file output", fco);
 
-	std::clock_t start = std::clock();
+	auto t_start = std::chrono::high_resolution_clock::now();
 
 	try
 	{
@@ -402,9 +405,10 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 		exception("export_html_file", "Error", msg(MSG::except_uncaught));
 	}
 
-	std::clock_t end = std::clock();
+	auto t_end = std::chrono::high_resolution_clock::now();
+	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
 
-	info("export_html_file", "elapsed time", to_string(int (end - start)) + " ms.");
+	info("export_html_file", "elapsed time", to_string(elapsed) + " μs");
 }
 
 void e2db_converter::pull_csv_services(istream& ifile, e2db_abstract* dst)

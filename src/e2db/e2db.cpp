@@ -14,6 +14,7 @@
 #include <cmath>
 #include <clocale>
 #include <algorithm>
+#include <chrono>
 #include <unordered_set>
 #include <sstream>
 #include <fstream>
@@ -1551,7 +1552,7 @@ void e2db::merge(e2db_abstract* dst)
 {
 	debug("merge");
 
-	std::clock_t start = std::clock();
+	auto t_start = std::chrono::high_resolution_clock::now();
 
 	unordered_map<string, vector<pair<int, string>>> index;
 
@@ -1647,7 +1648,7 @@ void e2db::merge(e2db_abstract* dst)
 		}
 	}
 
-	if (0) // order by tsid|ssid	elapsed time: 84290 ms.
+	if (0) // order by tsid|ssid	elapsed time: 84290
 	{
 		unordered_map<string, int> txs;
 		vector<pair<int, string>> i_chs;
@@ -1679,7 +1680,7 @@ void e2db::merge(e2db_abstract* dst)
 
 		index["chs"].swap(i_chs);
 	}
-	else  // unordered append		elapsed time: 11086 ms.
+	else  // unordered append		elapsed time: 11086
 	{
 		for (auto & x : index["chs"])
 		{
@@ -1862,9 +1863,10 @@ void e2db::merge(e2db_abstract* dst)
 
 	this->index.swap(index);
 
-	std::clock_t end = std::clock();
+	auto t_end = std::chrono::high_resolution_clock::now();
+	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
 
-	info("merge", "elapsed time", to_string(int (end - start)) + " ms.");
+	info("merge", "elapsed time", to_string(elapsed) + " μs");
 }
 
 }

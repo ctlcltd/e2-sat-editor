@@ -10,9 +10,9 @@
  */
 
 #include <cstdio>
-#include <ctime>
 #include <clocale>
 #include <algorithm>
+#include <chrono>
 #include <sstream>
 #include <fstream>
 #include <iostream>
@@ -38,7 +38,7 @@ void e2db_maker::make_e2db()
 {
 	debug("make_e2db");
 
-	std::clock_t start = std::clock();
+	auto t_start = std::chrono::high_resolution_clock::now();
 
 	if (LAMEDB_VER == -1 && ZAPIT_VER != -1)
 		LAMEDB_VER = 4;
@@ -51,9 +51,10 @@ void e2db_maker::make_e2db()
 	if (MAKER_PARENTALLOCK_LIST)
 		make_e2db_parentallock_list();
 
-	std::clock_t end = std::clock();
+	auto t_end = std::chrono::high_resolution_clock::now();
+	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
 
-	info("make_e2db", "elapsed time", to_string(int (end - start)) + " ms.");
+	info("make_e2db", "elapsed time", to_string(elapsed) + " μs");
 }
 
 void e2db_maker::make_e2db_lamedb()
@@ -319,7 +320,7 @@ void e2db_maker::make_zapit()
 {
 	debug("make_zapit");
 
-	std::clock_t start = std::clock();
+	auto t_start = std::chrono::high_resolution_clock::now();
 
 	if (ZAPIT_VER == -1 && LAMEDB_VER != -1)
 		ZAPIT_VER = 4;
@@ -329,9 +330,10 @@ void e2db_maker::make_zapit()
 	if (MAKER_TUNERSETS)
 		make_db_tunersets();
 
-	std::clock_t end = std::clock();
+	auto t_end = std::chrono::high_resolution_clock::now();
+	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
 
-	info("make_zapit", "elapsed time", to_string(int (end - start)) + " ms.");
+	info("make_zapit", "elapsed time", to_string(elapsed) + " μs");
 }
 
 void e2db_maker::make_zapit_services()
