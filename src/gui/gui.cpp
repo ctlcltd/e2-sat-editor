@@ -358,7 +358,7 @@ void gui::tabStackerLayout()
 	twid->tabBar()->setChangeCurrentOnDrag(false);
 	twid->tabBar()->setElideMode(Qt::ElideRight);
 
-	//TODO FIX [Wine]
+	//TODO FIX [Windows]
 #ifndef Q_OS_WIN
 	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 12ex; max-width: 25ex; height: 44px; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button) } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight); border-color: transparent }");
 #else

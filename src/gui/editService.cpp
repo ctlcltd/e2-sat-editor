@@ -16,6 +16,7 @@
 #include <algorithm>
 
 #include <QtGlobal>
+#include <QTimer>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QFormLayout>
@@ -150,18 +151,23 @@ void editService::serviceLayout()
 	dtf0sb->setChecked(false);
 
 	dtf0sb->connect(dtf0sb, &QPushButton::pressed, [=]() {
-		if (dtf0sb->isChecked())
-		{
-			dtf0st->hide();
-			dtf0sc->show();
-			dtf0sc->setFocus();
-		}
-		else
-		{
-			dtf0sc->hide();
-			dtf0st->show();
-			dtf0st->setFocus();
-		}
+		// delay too fast
+		QTimer::singleShot(150, [=]() {
+			if (dtf0sc->isHidden())
+			{
+				dtf0st->hide();
+				dtf0sc->show();
+				dtf0sb->setChecked(true);
+				dtf0sc->setFocus();
+			}
+			else
+			{
+				dtf0sc->hide();
+				dtf0st->show();
+				dtf0sb->setChecked(false);
+				dtf0st->setFocus();
+			}
+		});
 	});
 
 	dtf0st->connect(dtf0st, &QLineEdit::textChanged, [=](QString text) {
@@ -180,6 +186,7 @@ void editService::serviceLayout()
 		}
 		else
 		{
+			dtf0sb->setChecked(false);
 			dtf0st->setText(dtf0sc->currentData().toString());
 		}
 	});
@@ -194,6 +201,7 @@ void editService::serviceLayout()
 		}
 		else
 		{
+			dtf0sb->setChecked(false);
 			dtf0st->setText(dtf0sc->currentData().toString());
 		}
 	});
