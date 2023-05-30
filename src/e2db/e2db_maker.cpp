@@ -240,7 +240,7 @@ void e2db_maker::make_e2db_bouquets()
 
 		e2db_file file;
 
-		if (LAMEDB_VER < 4 || filename.rfind(".epl") == string::npos)
+		if (LAMEDB_VER < 4 || filename.rfind(".epl") != string::npos)
 			make_bouquet_epl(bname, file);
 		else
 			make_bouquet(bname, file);
@@ -551,12 +551,12 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 		ss << "1:";
 		ss << chref.atype << ':';
 		ss << hex;
-		ss << uppercase << chref.anum << ':';
 
 		if (db.services.count(x.second))
 		{
 			service ch = db.services[x.second];
 
+			ss << uppercase << ch.stype << ':';
 			ss << uppercase << ch.ssid << ':';
 			ss << uppercase << ch.tsid << ':';
 			ss << uppercase << ch.onid << ':';
@@ -567,6 +567,7 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 		{
 			if (chref.marker)
 			{
+				ss << uppercase << chref.anum << ':';
 				ss << "0:0:0:0:0:0:0:0:" << endl;
 				ss << "#DESCRIPTION " << chref.value;
 			}

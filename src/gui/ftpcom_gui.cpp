@@ -13,6 +13,7 @@
 
 #include <QSettings>
 #include <QString>
+#include <QByteArray>
 #include <QMessageBox>
 
 #include "ftpcom_gui.h"
@@ -48,7 +49,8 @@ void ftpcom::setup()
 	params.ftport = settings.value("ftpPort").toInt();
 	params.htport = settings.value("httpPort").toInt();
 	params.user = settings.value("username").toString().toStdString();
-	params.pass = settings.value("password").toString().toStdString();
+	QByteArray ba (settings.value("password").toString().toUtf8());
+	params.pass = QByteArray::fromBase64(ba).toStdString();
 	params.tpath = settings.value("pathTransponders").toString().toStdString();
 	params.spath = settings.value("pathServices").toString().toStdString();
 	params.bpath = settings.value("pathBouquets").toString().toStdString();

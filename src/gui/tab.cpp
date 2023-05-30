@@ -598,6 +598,34 @@ void tab::saveFile(bool saveas)
 	if (saveas || this->data->isNewfile())
 	{
 		nw_path = gid->saveFileDialog(path);
+
+		if (nw_path.empty())
+		{
+			return;
+		}
+		else
+		{
+			path = nw_path;
+
+			int dirsize = 0;
+			string basedir;
+			if (std::filesystem::is_directory(path))
+				basedir = path;
+			else
+				basedir = std::filesystem::path(path).parent_path().u8string();
+			std::filesystem::directory_iterator dirlist (basedir);
+			for (const auto & entry : dirlist)
+			{
+				if (std::filesystem::is_regular_file(entry))
+					dirsize++;
+			}
+			if (dirsize != 0)
+			{
+				bool overwrite = saveQuestion(tr("The destination contains files that will be overwritten.", "message"), tr("Do you want to overwrite them?", "message"));
+				if (! overwrite)
+					return;
+			}
+		}
 	}
 	else if (this->data->hasChanged())
 	{
@@ -605,20 +633,12 @@ void tab::saveFile(bool saveas)
 		if (! overwrite)
 			return;
 	}
-	else
-	{
-		bool overwrite = saveQuestion(tr("The file will be overwritten", "message"), tr("Do you want to overwrite it?", "message"));
-		if (! overwrite)
-			return;
-	}
 
-	if (nw_path.empty())
+	if (path.empty())
 	{
+		error("saveFile", tr("File Error", "error").toStdString(), tr("Empty path.", "error").toStdString());
+
 		return;
-	}
-	else
-	{
-		path = nw_path;
 	}
 
 	debug("saveFile", "path", path);
