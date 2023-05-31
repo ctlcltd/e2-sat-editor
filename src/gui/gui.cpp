@@ -150,6 +150,7 @@ gui::gui(int argc, char* argv[])
 	mwid->installEventFilter(gce);
 
 	QClipboard* clipboard = mroot->clipboard();
+	//TODO potential SEGFAULT
 	clipboard->connect(clipboard, &QClipboard::dataChanged, [=]() { this->clipboardDataChanged(); });
 
 	platform::osWindowBlend(mwid);
@@ -1036,7 +1037,6 @@ string gui::openFileDialog()
 	return path;
 }
 
-//TODO FIX save as folder
 string gui::saveFileDialog(string path)
 {
 	debug("saveFileDialog", "path", path);
@@ -1046,8 +1046,14 @@ string gui::saveFileDialog(string path)
 	string nw_path;
 
 	QFileDialog fdial = QFileDialog(mwid, caption, QString::fromStdString(path));
-	fdial.setAcceptMode(QFileDialog::AcceptOpen);
+	/*
+	 * qt-base/src/plugins/platformthemes/gtk3/qgtk3dialoghelpers.cpp
+	 * Gtk.FileChooserAction.GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER
+	 */
+	// fdial.setAcceptMode(QFileDialog::AcceptOpen);
+	fdial.setFileMode(QFileDialog::Directory);
 	fdial.setFilter(QDir::AllDirs | QDir::NoSymLinks);
+	fdial.setLabelText(QFileDialog::Accept, QFileDialog::tr("&Save"));
 	if (fdial.exec() == QDialog::Accepted)
 	{
 		QUrl url = fdial.selectedUrls().value(0);
@@ -1124,6 +1130,7 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 	fdial.setAcceptMode(QFileDialog::AcceptOpen);
 	fdial.setFileMode(fmode);
 	fdial.setNameFilters(opts);
+	fdial.setLabelText(QFileDialog::Accept, tr("Import", "file-dialog"));
 	if (fdial.exec() == QDialog::Accepted)
 	{
 		for (QUrl & url : fdial.selectedUrls())
@@ -1197,6 +1204,7 @@ string gui::exportFileDialog(GUI_DPORTS gde, string path, int& bit)
 	fdial.setAcceptMode(QFileDialog::AcceptSave);
 	fdial.setFilter(QDir::AllDirs | QDir::NoSymLinks);
 	fdial.setNameFilters(opts);
+	fdial.setLabelText(QFileDialog::Accept, tr("Export", "file-dialog"));
 	if (fdial.exec() == QDialog::Accepted)
 	{
 		selected = fdial.selectedNameFilter();
