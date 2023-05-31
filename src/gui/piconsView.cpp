@@ -80,12 +80,12 @@ void piconsView::layout()
 
 	this->list = new QListWidget;
 
-	list->setStyleSheet("QListWidget { spacing: 40px; border-style: none } QListWidget::item { margin: 20px 12px; padding: 10px 8px; border: 8px dashed palette(mid); border-radius: 25px }");
+	list->setStyleSheet("QListWidget { border-style: none } QListWidget::item { min-width: 128px; min-height: 102px; margin: 10px 12px; padding: 12px 8px 2px; border: 8px dashed palette(mid); border-radius: 15px }");
 
 	list->setViewMode(QListWidget::IconMode);
 	list->setResizeMode(QListWidget::Adjust);
 	list->setUniformItemSizes(true);
-	list->setIconSize(QSize(220, 132));
+	list->setIconSize(QSize(112, 60));
 	list->setSelectionBehavior(QListWidget::SelectItems);
 	list->setSelectionMode(QListWidget::SingleSelection);
 	list->setDropIndicatorShown(true);
@@ -255,7 +255,7 @@ void piconsView::populate()
 		if (! this->state.picons_dir.empty() && QFile::exists(path))
 			item->setIcon(QIcon(path));
 		else
-			item->setIcon(QIcon());
+			item->setIcon(QIcon(":/icons/picon.png"));
 		item->setData(Qt::UserRole, entry);
 
 		list->addItem(item);
@@ -469,7 +469,7 @@ void piconsView::listChangedPiconsPath()
 		if (! this->state.picons_dir.empty() && QFile::exists(path))
 			item->setIcon(QIcon(path));
 		else
-			item->setIcon(QIcon());
+			item->setIcon(QIcon(":/icons/picon.png"));
 		i++;
 	}
 }

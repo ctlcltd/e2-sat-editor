@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 100 60" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-3064,-3040)">
+        <g id="picon" transform="matrix(0.78125,0,0,0.46875,670.25,1615)">
+            <rect x="3064" y="3040" width="128" height="128" style="fill:none;"/>
+            <clipPath id="_clip1">
+                <rect x="3064" y="3040" width="128" height="128"/>
+            </clipPath>
+            <g clip-path="url(#_clip1)">
+                <g transform="matrix(1.04918,0,0,1.04918,-153.836,2239.48)">
+                    <g transform="matrix(0.947516,0,0,0.941403,1751.68,51.8582)">
+                        <path d="M1516.94,755.406L1388.18,755.406L1388.18,885L1516.94,885L1516.94,755.406ZM1514.37,759.726L1514.37,880.68C1514.37,880.68 1390.76,880.68 1390.76,880.68C1390.76,880.68 1390.76,759.726 1390.76,759.726L1514.37,759.726Z" style="fill:rgb(128,128,128);fill-opacity:0.2;"/>
+                    </g>
+                    <g transform="matrix(1.22,0,0,2.03333,-671.08,-5418.33)">
+                        <path d="M3114.1,3069.71L3099.66,3060.93L3099.25,3061.62L3113.32,3070.17L3099.25,3078.38C3099.25,3078.38 3099.66,3079.07 3099.66,3079.07L3114.1,3070.64L3114.1,3070.65L3114.1,3070.64L3128.34,3079.07L3128.75,3078.38L3114.87,3070.17C3114.87,3070.17 3128.76,3061.61 3128.76,3061.61L3128.34,3060.93L3114.1,3069.71Z" style="fill:rgb(128,128,128);fill-opacity:0.25;"/>
+                    </g>
+                    <g transform="matrix(0.424496,0,0,0.476277,1778.98,431.511)">
+                        <path d="M3222.02,864.752L3222.02,783.404L3133.82,783.404L3133.82,864.752L3222.02,864.752ZM3219.72,786.819L3136.12,786.819L3136.12,861.337L3219.72,861.337L3219.72,786.819Z" style="fill:rgb(154,154,154);fill-opacity:0.33;"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -12,16 +12,10 @@
 	<file>icons/delete.png</file>
 	<file>icons/edit.png</file>
 	<file>icons/export.png</file>
-	<file>icons/file-new.png</file>
 	<file>icons/file-open.png</file>
-	<file>icons/file.png</file>
 	<file>icons/import.png</file>
+	<file>icons/picon.png</file>
 	<file>icons/remove.png</file>
-	<file>icons/round-checkmark.png</file>
-	<file>icons/round-delete.png</file>
-	<file>icons/round-info.png</file>
-	<file>icons/round-question.png</file>
-	<file>icons/round-warning.png</file>
 	<file>icons/save.png</file>
 	<file>icons/search.png</file>
 	<file>icons/service-blacklist.png</file>
