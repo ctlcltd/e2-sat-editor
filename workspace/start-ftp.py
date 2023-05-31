@@ -7,7 +7,7 @@ from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
 
 authorizer = DummyAuthorizer()
-authorizer.add_user("root", "test", sys.argv[1], perm="elradfmwMT")
+authorizer.add_user("root", "password", sys.argv[1], perm="elradfmwMT")
 
 handler = FTPHandler
 handler.authorizer = authorizer

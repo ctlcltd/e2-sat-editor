@@ -138,8 +138,8 @@ class tunersetsView : public viewAbstract
 		void addTransponder();
 		void editTransponder();
 		void putListItems(vector<QString> items);
-		void showTreeEditContextMenu(QPoint &pos);
-		void showListEditContextMenu(QPoint &pos);
+		void showTreeEditContextMenu(QPoint& pos);
+		void showListEditContextMenu(QPoint& pos);
 		void updateFlags();
 		void updateStatusBar(bool current = false);
 		void updateTreeIndex();

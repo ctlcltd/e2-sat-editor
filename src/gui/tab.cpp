@@ -48,6 +48,7 @@
 #include "ftpcom_gui.h"
 #include "transpondersView.h"
 #include "tunersetsView.h"
+#include "piconsView.h"
 #include "channelBookView.h"
 #include "editBouquet.h"
 #include "editService.h"
@@ -298,6 +299,29 @@ void tab::viewTunersets(tab* parent, int ytype)
 	this->view = new tunersetsView(this, this->cwid, this->data, ytype);
 
 	this->ttv = gui::TAB_VIEW::tunersets;
+
+	layout();
+
+	this->root->addWidget(view->widget, 0, 0, 1, 1);
+
+	load();
+}
+
+void tab::viewPicons(tab* parent)
+{
+	debug("viewPicons");
+
+	parent->addChild(this);
+
+	this->parent = parent;
+	this->child = true;
+
+	this->data = parent->data;
+	this->ftph = parent->ftph;
+	this->tools = parent->tools;
+	this->view = new piconsView(this, this->cwid, this->data);
+
+	this->ttv = gui::TAB_VIEW::picons;
 
 	layout();
 
@@ -1264,6 +1288,9 @@ void tab::actionCall(int bit)
 		break;
 		case gui::TAB_ATS::EditTunersetsAtsc:
 			gid->openTab(gui::TAB_VIEW::tunersets, e2db::YTYPE::atsc);
+		break;
+		case gui::TAB_ATS::EditPicons:
+			gid->openTab(gui::TAB_VIEW::picons);
 		break;
 		case gui::TAB_ATS::ShowChannelBook:
 			gid->openTab(gui::TAB_VIEW::channelBook);

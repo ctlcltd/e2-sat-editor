@@ -711,7 +711,7 @@ void transpondersView::updateStatusBar(bool current)
 	tabSetStatusBar(msg);
 }
 
-void transpondersView::showListEditContextMenu(QPoint &pos)
+void transpondersView::showListEditContextMenu(QPoint& pos)
 {
 	debug("showListEditContextMenu");
 
@@ -772,10 +772,12 @@ void transpondersView::updateFlags()
 
 	if (dbih->index.count("chs"))
 	{
+		tabSetFlag(gui::Picons, true);
 		tabSetFlag(gui::OpenChannelBook, true);
 	}
 	else
 	{
+		tabSetFlag(gui::Picons, false);
 		tabSetFlag(gui::OpenChannelBook, false);
 	}
 

@@ -83,6 +83,7 @@ class tab : protected e2se::log_factory
 		void viewMain();
 		void viewTransponders(tab* parent);
 		void viewTunersets(tab* parent, int ytype);
+		void viewPicons(tab* parent);
 		void viewChannelBook(tab* parent);
 		void load();
 		void reset();

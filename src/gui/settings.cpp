@@ -265,7 +265,7 @@ void settings::connectionsLayout()
 	dtf1->addRow(tr("Username"), dtf1lu);
 
 	//TODO show/hide
-	QLineEdit* dtf1lp = new QLineEdit;
+	QLineEdit* dtf1lp = new QLineEdit("password");
 	dtf1lp->setProperty("field", "password");
 	dtf1lp->setEchoMode(QLineEdit::Password);
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf1lp);
@@ -279,7 +279,7 @@ void settings::connectionsLayout()
 
 	QHBoxLayout* dtb20 = new QHBoxLayout;
 	dtf2->addRow(tr("Transponders"), dtb20);
-	QLineEdit* dtf2pt = new QLineEdit("/etc/tuxbox");
+	QLineEdit* dtf2pt = new QLineEdit("/etc/tuxbox/");
 	dtf2pt->setProperty("field", "pathTransponders");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2pt);
 	platform::osLineEdit(dtf2pt);
@@ -288,7 +288,7 @@ void settings::connectionsLayout()
 
 	QHBoxLayout* dtb21 = new QHBoxLayout;
 	dtf2->addRow(tr("Services"), dtb21);
-	QLineEdit* dtf2ps = new QLineEdit("/etc/enigma2");
+	QLineEdit* dtf2ps = new QLineEdit("/etc/enigma2/");
 	dtf2ps->setProperty("field", "pathServices");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2ps);
 	platform::osLineEdit(dtf2ps);
@@ -297,12 +297,21 @@ void settings::connectionsLayout()
 
 	QHBoxLayout* dtb22 = new QHBoxLayout;
 	dtf2->addRow(tr("Bouquets"), dtb22);
-	QLineEdit* dtf2pb = new QLineEdit("/etc/enigma2");
+	QLineEdit* dtf2pb = new QLineEdit("/etc/enigma2/");
 	dtf2pb->setProperty("field", "pathBouquets");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2pb);
 	platform::osLineEdit(dtf2pb);
 	dtb22->addWidget(dtf2pb);
 	dtb22->addWidget(new QLabel("<small>(*.bouquet, *.userbouquet)</small>"));
+
+	QHBoxLayout* dtb23 = new QHBoxLayout;
+	dtf2->addRow(tr("Picons"), dtb23);
+	QLineEdit* dtf2pi = new QLineEdit("/usr/share/enigma2/picon/");
+	dtf2pi->setProperty("field", "pathPicons");
+	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2pi);
+	platform::osLineEdit(dtf2pi);
+	dtb23->addWidget(dtf2pi);
+	dtb23->addWidget(new QLabel("<small>(*.png)</small>"));
 
 	// QGroupBox* dtl3 = new QGroupBox(tr("Commands"));
 	// QFormLayout* dtf3 = new QFormLayout;

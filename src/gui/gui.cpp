@@ -296,6 +296,7 @@ void gui::menuBarLayout()
 	//: Note: %1 is xml filename
 	gmenu[GUI_CXE::TunersetsAtsc] = menuBarAction(mtools, tr("Edit %1", "menu").arg("atsc.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsAtsc); });
 	menuBarSeparator(mtools);
+	gmenu[GUI_CXE::Picons] = menuBarAction(mtools, tr("Edit Picons", "menu"), [=]() { this->tabAction(TAB_ATS::EditPicons); });
 	gmenu[GUI_CXE::OpenChannelBook] = menuBarAction(mtools, tr("Channel book", "menu"), [=]() { this->tabAction(TAB_ATS::ShowChannelBook); });
 	menuBarSeparator(mtools);
 	QMenu* mimportcsv = menuBarMenu(mtools, tr("Import from CSV", "menu"));
@@ -532,6 +533,7 @@ void gui::initSettings()
 #else
 	settings.setValue("application/fixUnicodeChars", true);
 #endif
+	settings.setValue("application/latestPiconsBrowsePath", "");
 
 	settings.beginGroup("preference");
 	settings.setValue("askConfirmation", false);
@@ -562,15 +564,16 @@ void gui::initSettings()
 	settings.beginWriteArray("profile");
 	settings.setArrayIndex(0);
 	settings.setValue("profileName", "Default");
-	settings.setValue("ipAddress", "127.0.0.1");
-	settings.setValue("ftpPort", 2121);
+	settings.setValue("ipAddress", "192.168.0.2");
+	settings.setValue("ftpPort", 21);
 	settings.setValue("ftpActive", false);
 	settings.setValue("httpPort", 80);
 	settings.setValue("username", "root");
-	settings.setValue("password", "test");
-	settings.setValue("pathTransponders", "/enigma_db");
-	settings.setValue("pathServices", "/enigma_db");
-	settings.setValue("pathBouquets", "/enigma_db");
+	settings.setValue("password", "password");
+	settings.setValue("pathTransponders", "/etc/enigma2/");
+	settings.setValue("pathServices", "/etc/tuxbox/");
+	settings.setValue("pathBouquets", "/etc/enigma2/");
+	settings.setValue("pathPicons", "/usr/share/enigma2/picon/");
 	settings.setValue("customWebifReloadUrl", "");
 	settings.setValue("customTelnetReloadCmd", ""); 
 	settings.endArray();
@@ -630,11 +633,6 @@ void gui::tabViewSwitch(TAB_VIEW ttv, int arg)
 
 	switch (ttv)
 	{
-		case TAB_VIEW::main:
-			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Channel"));
-			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Bouquet"));
-			gmenu[GUI_CXE::TabTreeFindNext]->setText(tr("Find N&ext Bouquet"));
-		break;
 		case TAB_VIEW::transponders:
 			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Transponder"));
 			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Bouquet"));
@@ -645,11 +643,10 @@ void gui::tabViewSwitch(TAB_VIEW ttv, int arg)
 			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Position"));
 			gmenu[GUI_CXE::TabTreeFindNext]->setText(tr("Find N&ext Position"));
 		break;
-		case TAB_VIEW::channelBook:
+		default:
 			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Channel"));
 			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Bouquet"));
 			gmenu[GUI_CXE::TabTreeFindNext]->setText(tr("Find N&ext Bouquet"));
-		break;
 	}
 }
 
@@ -773,6 +770,11 @@ int gui::openTab(TAB_VIEW view, int arg)
 			ttab->viewTunersets(parent, arg);
 			tticon = QIcon(theme::icon("tunersets-view", theme::icon_highlight));
 			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit settings", "tab"));
+		break;
+		case TAB_VIEW::picons:
+			ttab->viewPicons(parent);
+			tticon = QIcon(theme::icon("picons-view", theme::icon_highlight));
+			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit picons", "tab"));
 		break;
 		case TAB_VIEW::channelBook:
 			ttab->viewChannelBook(parent);
@@ -1003,6 +1005,9 @@ void gui::tabChangeName(int ttid, string path)
 		break;
 		case TAB_VIEW::tunersets:
 			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit settings", "tab"));
+		break;
+		case TAB_VIEW::picons:
+			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit picons", "tab"));
 		break;
 		case TAB_VIEW::channelBook:
 			ttname = QString("%1 - %2").arg(ttname).arg(tr("Channel book", "tab"));

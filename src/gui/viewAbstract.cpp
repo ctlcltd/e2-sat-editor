@@ -348,10 +348,12 @@ void viewAbstract::listFindPerform(LIST_FIND flag)
 //TODO FIX multiple selection with shortcut FindNext when search_box is closed
 void viewAbstract::listFindPerform(const QString& value, LIST_FIND flag)
 {
-	// QTreeWidgetItem* item list->currentItem() || list->topLevelItem(0)
-	// int column || QTreeWidget::currentColumn()
-	// void QTreeWidget::setCurrentItem(QTreeWidgetItem* item, int column)
-	// void QTreeView::keyboardSearch(const QString& search)
+	/*
+	 * QTreeWidgetItem* item list->currentItem() || list->topLevelItem(0)
+	 * int column || QTreeWidget::currentColumn()
+	 * void QTreeWidget::setCurrentItem(QTreeWidgetItem* item, int column)
+	 * void QTreeView::keyboardSearch(const QString& search)
+	 */
 
 	int column = this->lsr_search.filter->currentData().toInt();
 	int delay = flag == LIST_FIND::fast ? QApplication::keyboardInputInterval() : 0;
@@ -392,10 +394,10 @@ void viewAbstract::listFindPerform(const QString& value, LIST_FIND flag)
 		// fast i match(..., ..., ..., 1, ...)
 		//
 		// QModelIndex start;
-		// if (list_tree->currentIndex().isValid())
-		// 	start = list_tree->currentIndex();
+		// if (list->currentIndex().isValid())
+		// 	start = list->currentIndex();
 		// else
-		// 	start = list_tree->model()->index(0, 0);
+		// 	start = list->model()->index(0, 0);
 		//
 		QModelIndex start = list->model()->index(0, column);
 		int limit = -1;
@@ -463,7 +465,7 @@ void viewAbstract::listFindPerform(const QString& value, LIST_FIND flag)
 				list->scrollTo(match.at(0));
 			i = -1;
 		}
-		// int i = list_tree->indexOfTopLevelItem(QTreeWidgetItem* item);
+		// int i = list->indexOfTopLevelItem(QTreeWidgetItem* item);
 		this->lsr_find.curr = i;
 
 		tabSetFlag(gui::TabListFindNext, true);

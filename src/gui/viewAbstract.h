@@ -63,7 +63,7 @@ class viewAbstract : protected e2se::log_factory
 		virtual ~viewAbstract() = default;
 		virtual void load() = 0;
 		virtual void reset() = 0;
-		virtual void didChange() {};
+		virtual void didChange() {}
 		virtual void themeChanged();
 		virtual void clipboardDataChanged();
 		virtual void treeItemDelete();
@@ -80,13 +80,13 @@ class viewAbstract : protected e2se::log_factory
 		void listSearchHide();
 		void listSearchToggle();
 		void listSearchClose();
-		void treeFindPerform();
-		void treeFindPerform(const QString& value);
-		void listFindPerform(LIST_FIND flag);
-		void listFindPerform(const QString& value, LIST_FIND flag);
-		void listFindHighlightToggle();
-		void listFindClear(bool hidden = true);
-		void listFindReset();
+		virtual void treeFindPerform();
+		virtual void treeFindPerform(const QString& value);
+		virtual void listFindPerform(LIST_FIND flag);
+		virtual void listFindPerform(const QString& value, LIST_FIND flag);
+		virtual void listFindHighlightToggle();
+		virtual void listFindClear(bool hidden = true);
+		virtual void listFindReset();
 		virtual void updateFlags()
 		{
 			tabUpdateFlags();
@@ -109,7 +109,7 @@ class viewAbstract : protected e2se::log_factory
 		{
 			tabResetStatusBar();
 		}
-		virtual void updateIndex() {};
+		virtual void updateIndex() {}
 
 		QWidget* widget = nullptr;
 		QTreeWidget* list = nullptr;

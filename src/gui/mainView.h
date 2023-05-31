@@ -161,8 +161,8 @@ class mainView : public viewAbstract
 		void unsetUserbouquetParentalLock();
 		void toggleUserbouquetParentalLock();
 		void putListItems(vector<QString> items);
-		void showTreeEditContextMenu(QPoint &pos);
-		void showListEditContextMenu(QPoint &pos);
+		void showTreeEditContextMenu(QPoint& pos);
+		void showListEditContextMenu(QPoint& pos);
 		void treeAfterDrop(QTreeWidget* tw, QTreeWidgetItem* current);
 		void listAfterDrop(QTreeWidget* tw);
 		void treeDropFromTree(QTreeWidgetItem* current);

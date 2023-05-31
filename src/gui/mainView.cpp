@@ -2735,10 +2735,12 @@ void mainView::updateFlags()
 
 	if (dbih->index.count("chs"))
 	{
+		tabSetFlag(gui::Picons, true);
 		tabSetFlag(gui::OpenChannelBook, true);
 	}
 	else
 	{
+		tabSetFlag(gui::Picons, false);
 		tabSetFlag(gui::OpenChannelBook, false);
 	}
 

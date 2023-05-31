@@ -1197,7 +1197,7 @@ void tunersetsView::updateStatusBar(bool current)
 	tabSetStatusBar(msg);
 }
 
-void tunersetsView::showTreeEditContextMenu(QPoint &pos)
+void tunersetsView::showTreeEditContextMenu(QPoint& pos)
 {
 	debug("showTreeEditContextMenu");
 
@@ -1217,7 +1217,7 @@ void tunersetsView::showTreeEditContextMenu(QPoint &pos)
 	platform::osContextMenuPopup(tree_edit, tree, pos);
 }
 
-void tunersetsView::showListEditContextMenu(QPoint &pos)
+void tunersetsView::showListEditContextMenu(QPoint& pos)
 {
 	debug("showListEditContextMenu");
 
@@ -1284,10 +1284,12 @@ void tunersetsView::updateFlags()
 
 	if (dbih->index.count("chs"))
 	{
+		tabSetFlag(gui::Picons, true);
 		tabSetFlag(gui::OpenChannelBook, true);
 	}
 	else
 	{
+		tabSetFlag(gui::Picons, false);
 		tabSetFlag(gui::OpenChannelBook, false);
 	}
 

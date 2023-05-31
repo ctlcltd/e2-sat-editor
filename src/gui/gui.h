@@ -84,6 +84,7 @@ class gui : protected e2se::log_factory
 			TunersetsTerrestrial = 62,
 			TunersetsCable = 63,
 			TunersetsAtsc = 64,
+			Picons = 69,
 			OpenChannelBook = 70,
 			ToolsServicesOrder = 88,
 			ToolsServicesCache = 83,
@@ -174,6 +175,7 @@ class gui : protected e2se::log_factory
 			EditTunersetsTerrestrial = GUI_CXE::TunersetsTerrestrial,
 			EditTunersetsCable = GUI_CXE::TunersetsCable,
 			EditTunersetsAtsc = GUI_CXE::TunersetsAtsc,
+			EditPicons = GUI_CXE::Picons,
 			ShowChannelBook = GUI_CXE::OpenChannelBook,
 			ImportCSV_services = GUI_CXE::ToolsImportCSV_services,
 			ImportCSV_bouquet = GUI_CXE::ToolsImportCSV_bouquet,
@@ -199,6 +201,7 @@ class gui : protected e2se::log_factory
 			main,
 			transponders,
 			tunersets,
+			picons,
 			channelBook
 		};
 

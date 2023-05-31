@@ -68,7 +68,7 @@ class _platform_macx
 		{
 			bool experiment = QSettings().value("preference/osExperiment", true).toBool();
 			experiment = e2se_gui::theme::isDefault() ? experiment : false;
-			if (QSettings().value("preference/osTranslucency", experiment).toBool())
+			if (QSettings().value("application/platformOsTranslucency", experiment).toBool())
 				return _osWindowBlend(widget);
 			else
 				return widget;
@@ -77,7 +77,7 @@ class _platform_macx
 		{
 			bool experiment = QSettings().value("preference/osExperiment", true).toBool();
 			experiment = e2se_gui::theme::isDefault() ? experiment : false;
-			if (QSettings().value("preference/osTranslucency", experiment).toBool())
+			if (QSettings().value("application/platformOsTranslucency", experiment).toBool())
 				return _osWidgetBlend(widget, material, blending);
 			else
 				return widget;
@@ -89,7 +89,7 @@ class _platform_macx
 		static void osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 		{
 			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
-			if (QSettings().value("preference/osContextMenu", experiment).toBool())
+			if (QSettings().value("application/platformOsContextMenu", experiment).toBool())
 				_osContextMenuPopup(menu, widget, pos);
 			else
 				menu->popup(widget->mapToGlobal(pos));
@@ -97,7 +97,7 @@ class _platform_macx
 		static QLineEdit* osLineEdit(QLineEdit* input, bool destroy = true)
 		{
 			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
-			if (QSettings().value("preference/osContextMenu", experiment).toBool())
+			if (QSettings().value("application/platformOsContextMenu", experiment).toBool())
 				return _osLineEdit(input, destroy);
 			else
 				return input;
@@ -105,7 +105,7 @@ class _platform_macx
 		static QComboBox* osComboBox(QComboBox* select)
 		{
 			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
-			if (QSettings().value("preference/osContextMenu", experiment).toBool())
+			if (QSettings().value("application/platformOsContextMenu", experiment).toBool())
 				return _osComboBox(select);
 			else
 				return select;
@@ -113,7 +113,7 @@ class _platform_macx
 		static QTextEdit* osTextEdit(QTextEdit* input, bool destroy = true)
 		{
 			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
-			if (QSettings().value("preference/osContextMenu", experiment).toBool())
+			if (QSettings().value("application/platformOsContextMenu", experiment).toBool())
 				return _osTextEdit(input, destroy);
 			else
 				return input;
@@ -121,7 +121,7 @@ class _platform_macx
 		static QWidget* osPersistentEditor(QWidget* widget)
 		{
 			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
-			if (QSettings().value("preference/osContextMenu", experiment).toBool())
+			if (QSettings().value("application/platformOsContextMenu", experiment).toBool())
 				return _osPersistentEditor(widget);
 			else
 				return widget;

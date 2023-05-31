@@ -75,11 +75,13 @@ class channelBookView : public viewAbstract
 		void load();
 		void reset();
 		void filterChanged(bool enabled);
-		void listItemCut() {};
+		void listItemCut() {}
 		void listItemCopy(bool cut = false);
-		void listItemPaste() {};
-		void listItemDelete() {};
+		void listItemPaste() {}
+		void listItemDelete() {}
 		vector<QString> getSelected();
+
+		QListWidget* side = nullptr;
 
 		__state currentState() { return this->state; }
 
@@ -90,10 +92,9 @@ class channelBookView : public viewAbstract
 		void stacker(int vv);
 		void sideRowChanged(int index);
 		void listItemSelectionChanged();
-		void showListEditContextMenu(QPoint &pos);
+		void showListEditContextMenu(QPoint& pos);
 		void updateFlags();
 
-		QListWidget* side;
 		QTabBar* tabv;
 		map<string, vector<pair<int, string>>> index;
 

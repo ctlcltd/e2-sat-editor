@@ -40,7 +40,7 @@ using ftpcom_file = e2se_ftpcom::ftpcom::ftpcom_file;
 class ftpcom
 {
 	public:
-		ftpcom() {};
+		ftpcom() {}
 		virtual ~ftpcom() = default;
 		bool connect() { return false; }
 		bool disconnect() { return false; }

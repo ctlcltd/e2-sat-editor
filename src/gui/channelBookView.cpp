@@ -652,7 +652,7 @@ vector<QString> channelBookView::getSelected()
 	return items;
 }
 
-void channelBookView::showListEditContextMenu(QPoint &pos)
+void channelBookView::showListEditContextMenu(QPoint& pos)
 {
 	debug("showListEditContextMenu");
 
@@ -694,10 +694,12 @@ void channelBookView::updateFlags()
 
 	if (dbih->index.count("chs"))
 	{
+		tabSetFlag(gui::Picons, true);
 		tabSetFlag(gui::OpenChannelBook, true);
 	}
 	else
 	{
+		tabSetFlag(gui::Picons, false);
 		tabSetFlag(gui::OpenChannelBook, false);
 	}
 

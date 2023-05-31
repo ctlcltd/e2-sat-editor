@@ -93,7 +93,7 @@ class transpondersView : public viewAbstract
 		void addTransponder();
 		void editTransponder();
 		void putListItems(vector<QString> items);
-		void showListEditContextMenu(QPoint &pos);
+		void showListEditContextMenu(QPoint& pos);
 		void updateFlags();
 		void updateStatusBar(bool current = false);
 		void updateListIndex();

@@ -48,8 +48,8 @@ class dialChannelBook : public dialAbstract
 	protected:
 		void layout(QWidget* cwid);
 		void toolbarLayout();
-		void store() {};
-		void retrieve() {};
+		void store() {}
+		void retrieve() {}
 		void sender();
 		void callEventCallback(vector<QString> items)
 		{
