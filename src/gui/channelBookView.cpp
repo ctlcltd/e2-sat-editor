@@ -15,10 +15,10 @@
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QSplitter>
-#include <QHeaderView>
 #include <QLabel>
 #include <QClipboard>
 #include <QMimeData>
+#include <QHeaderView>
 
 #include "platforms/platform.h"
 
@@ -305,19 +305,19 @@ void channelBookView::populate()
 	int i = 0;
 	size_t pad_width = std::to_string(int (dbih->index["chs"].size())).size() + 1;
 
-	for (auto & chdata : this->index[curr])
+	for (auto & chi : this->index[curr])
 	{
-		if (dbih->db.services.count(chdata.second))
+		if (dbih->db.services.count(chi.second))
 		{
-			e2db::service ch = dbih->db.services[chdata.second];
+			e2db::service ch = dbih->db.services[chi.second];
 
 			int atype = dbih->value_service_super_type(ch);
 			bool disabled = this->state.sy != -1 && this->state.sy != atype;
 			QString x = QString::number(i++).rightJustified(pad_width, '0');
-			QString idx = QString::number(chdata.first);
-			QString chid = QString::fromStdString(chdata.second);
+			QString idx = QString::number(chi.first);
+			QString chid = QString::fromStdString(chi.second);
 
-			QStringList entry = dbih->entries.services[chdata.second];
+			QStringList entry = dbih->entries.services[chi.second];
 			QString txp;
 			if (ch.tsid != 0)
 			{

@@ -348,18 +348,18 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 
 	page.body += "<tbody>";
 
-	for (auto & chdata : dbih->index[bname])
+	for (auto & x : dbih->index[bname])
 	{
-		string chid = chdata.second;
+		string chid = x.second;
 
-		if (dbih->db.services.count(chdata.second))
+		if (dbih->db.services.count(x.second))
 		{
 			e2db::service ch = dbih->db.services[chid];
 			e2db::transponder tx;
 			if (ch.tsid != 0)
 				tx = dbih->db.transponders[ch.txid];
 
-			QString idx = QString::number(chdata.first);
+			QString idx = QString::number(x.first);
 			QString chname = QString::fromStdString(ch.chname);
 			QString refid;
 

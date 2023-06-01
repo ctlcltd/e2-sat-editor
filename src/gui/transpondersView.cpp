@@ -14,12 +14,11 @@
 #include <QGridLayout>
 #include <QSplitter>
 #include <QGroupBox>
-#include <QHeaderView>
 #include <QToolBar>
 #include <QMenu>
-#include <QScrollArea>
 #include <QClipboard>
 #include <QMimeData>
+#include <QHeaderView>
 
 #include "platforms/platform.h"
 
@@ -248,12 +247,12 @@ void transpondersView::populate()
 	if (! dbih->index.count("txs"))
 		error("populate", "current", "Missing index key \"txs\".");
 
-	for (auto & tp : dbih->index["txs"])
+	for (auto & txi : dbih->index["txs"])
 	{
-		e2db::transponder tx = dbih->db.transponders[tp.second];
+		e2db::transponder tx = dbih->db.transponders[txi.second];
 
 		QString x = QString::number(i++).rightJustified(pad_width, '0');
-		QString idx = QString::number(tp.first);
+		QString idx = QString::number(txi.first);
 		QString txid = QString::fromStdString(tx.txid);
 
 		QStringList entry = dbih->entryTransponder(tx, true);

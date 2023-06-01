@@ -16,18 +16,10 @@
 #include <QApplication>
 #include <QTimer>
 #include <QGridLayout>
-#include <QSplitter>
-#include <QGroupBox>
-#include <QHeaderView>
-#include <QStyle>
-#include <QMessageBox>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QSplitter>
-#include <QGroupBox>
 #include <QToolBar>
 #include <QMenu>
 #include <QClipboard>
+#include <QHeaderView>
 
 #include "platforms/platform.h"
 
@@ -363,10 +355,12 @@ void viewAbstract::listFindPerform(const QString& value, LIST_FIND flag)
 	{
 		bool keyboardTimeWasValid = this->lsr_find.timer.isValid();
 		qint64 elapsed;
+
 		if (keyboardTimeWasValid)
 			elapsed = this->lsr_find.timer.restart();
 		else
 			this->lsr_find.timer.start();
+
 		if (value.isEmpty() || ! keyboardTimeWasValid || elapsed > delay)
 		{
 			text = value;
@@ -442,8 +436,8 @@ void viewAbstract::listFindPerform(const QString& value, LIST_FIND flag)
 		}
 		else if (type == LIST_FIND::all)
 		{
-
 			listFindClear(false);
+
 			while (i != j)
 			{
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
@@ -459,12 +453,16 @@ void viewAbstract::listFindPerform(const QString& value, LIST_FIND flag)
 					item->setSelected(true);
 				else
 					item->setHidden(false);
+
 				i++;
 			}
+
 			if (this->lsr_find.highlight)
 				list->scrollTo(match.at(0));
+
 			i = -1;
 		}
+
 		// int i = list->indexOfTopLevelItem(QTreeWidgetItem* item);
 		this->lsr_find.curr = i;
 
@@ -513,6 +511,7 @@ void viewAbstract::listFindReset()
 
 	this->lsr_find.flag = LIST_FIND::fast;
 	this->lsr_find.filter = 0;
+	//TODO FIX
 	this->lsr_find.highlight = true;
 	this->lsr_find.curr = -1;
 	this->lsr_find.input = "";

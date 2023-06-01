@@ -1780,16 +1780,16 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 		ss << CSV_DELIMITER;
 	}
 
-	for (auto & chdata : index[bname])
+	for (auto & x : index[bname])
 	{
-		string chid = chdata.second;
+		string chid = x.second;
 
-		if (db.services.count(chdata.second))
+		if (db.services.count(x.second))
 		{
 			service ch = db.services[chid];
 			transponder tx = db.transponders[ch.txid];
 
-			int idx = chdata.first;
+			int idx = x.first;
 			string chname = ch.chname;
 			string refid;
 
@@ -1983,16 +1983,16 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 		ss << CSV_DELIMITER;
 	}
 
-	for (auto & chdata : index[bname])
+	for (auto & x : index[bname])
 	{
-		string chid = chdata.second;
+		string chid = x.second;
 
-		if (db.services.count(chdata.second))
+		if (db.services.count(x.second))
 		{
 			service ch = db.services[chid];
 			transponder tx = db.transponders[ch.txid];
 
-			int idx = chdata.first;
+			int idx = x.first;
 			string chname = ch.chname;
 			string refid;
 
@@ -2520,16 +2520,16 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 
 	page.body += "<tbody>\n";
 
-	for (auto & chdata : index[bname])
+	for (auto & x : index[bname])
 	{
-		string chid = chdata.second;
+		string chid = x.second;
 
-		if (db.services.count(chdata.second))
+		if (db.services.count(x.second))
 		{
 			service ch = db.services[chid];
 			transponder tx = db.transponders[ch.txid];
 
-			string idx = to_string(chdata.first);
+			string idx = to_string(x.first);
 			string chname = ch.chname;
 			string refid;
 

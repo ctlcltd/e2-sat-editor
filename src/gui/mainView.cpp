@@ -14,19 +14,15 @@
 #include <QTimer>
 #include <QList>
 #include <QGridLayout>
-#include <QSplitter>
-#include <QGroupBox>
-#include <QHeaderView>
-#include <QStyle>
-#include <QMessageBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QSplitter>
 #include <QGroupBox>
-#include <QMenu>
 #include <QScrollArea>
+#include <QMenu>
 #include <QClipboard>
 #include <QMimeData>
+#include <QHeaderView>
 
 #include "platforms/platform.h"
 
@@ -241,7 +237,7 @@ void mainView::layout()
 	this->action.list_addch = toolBarAction(list_ats, tr("Add Channel", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addChannel(); });
 	this->action.list_addmk = toolBarAction(list_ats, tr("Add Marker", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addMarker(); });
 	this->action.list_newch = toolBarAction(list_ats, tr("New Service", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addService(); });
-	
+
 	this->action.list_ref = toolBarButton(list_ats, tr("Reference", "toolbar"), [=]() { this->listReferenceToggle(); });
 	toolBarSeparator(list_ats);
 	//: Encoding: take care about double ampersand
@@ -640,20 +636,20 @@ void mainView::populate(QTreeWidget* tw)
 		int i = 0;
 		size_t pad_width = std::to_string(int (dbih->index[bname].size())).size() + 1;
 
-		for (auto & ch : dbih->index[bname])
+		for (auto & chi : dbih->index[bname])
 		{
 			bool marker = false;
 			bool locked = false;
 			QString x = QString::number(i++).rightJustified(pad_width, '0');
 			QString idx;
-			QString chid = QString::fromStdString(ch.second);
+			QString chid = QString::fromStdString(chi.second);
 			QStringList entry;
 
-			if (dbih->db.services.count(ch.second))
+			if (dbih->db.services.count(chi.second))
 			{
-				entry = dbih->entries.services[ch.second];
+				entry = dbih->entries.services[chi.second];
 				//TODO TEST idx changed after edit
-				idx = QString::number(ch.first);
+				idx = QString::number(chi.first);
 				locked = entry[1].size() || ub_locked;
 				entry.prepend(idx);
 				entry.prepend(x);
@@ -662,7 +658,7 @@ void mainView::populate(QTreeWidget* tw)
 			{
 				e2db::channel_reference chref;
 				if (dbih->userbouquets.count(bname))
-					chref = dbih->userbouquets[bname].channels[ch.second];
+					chref = dbih->userbouquets[bname].channels[chi.second];
 
 				if (chref.marker)
 				{
@@ -674,7 +670,7 @@ void mainView::populate(QTreeWidget* tw)
 				else
 				{
 					entry = QStringList({x, NULL, NULL, NULL, chid, NULL, NULL, NULL, "ERROR", NULL});
-					error("populate", tr("Error", "error").toStdString(), tr("Channel reference mismatch \"%1\".", "error").arg(ch.second.data()).toStdString());
+					error("populate", tr("Error", "error").toStdString(), tr("Channel reference mismatch \"%1\".", "error").arg(chi.second.data()).toStdString());
 				}
 			}
 

@@ -31,6 +31,7 @@ set(SOURCES
 	ftpcom/ftpcom.cpp
 	gui/platforms/platform.h
 	gui/toolkit/InputControlEditEventObserver.cpp
+	gui/toolkit/ListIconDragDropEventHandler.cpp
 	gui/toolkit/ListProxyStyle.h
 	gui/toolkit/TabBarProxyStyle.h
 	gui/toolkit/ThemeChangeEventObserver.h

@@ -74,7 +74,7 @@ class editService : public dialAbstract
 		QComboBox* dtf1tn;
 		QComboBox* dtf1tx;
 		editTransponder* edittx;
-		map<string, vector<pair<int, string>>> txdata;
+		map<string, vector<pair<int, string>>> txp_index;
 
 		__state state;
 		__action action;

@@ -1651,7 +1651,7 @@ void e2db::merge(e2db_abstract* dst)
 	if (0) // order by tsid|ssid	elapsed time: 84290
 	{
 		unordered_map<string, int> txs;
-		vector<pair<int, string>> i_chs;
+		vector<pair<int, string>> chis;
 
 		int idx = 0;
 		for (auto & x : index["txs"])
@@ -1671,14 +1671,14 @@ void e2db::merge(e2db_abstract* dst)
 					idx += 1;
 					x.first = idx;
 					index[iname].emplace_back(x);
-					i_chs.emplace_back(x);
+					chis.emplace_back(x);
 				}
 
 				txs[tx.txid]++;
 			}
 		}
 
-		index["chs"].swap(i_chs);
+		index["chs"].swap(chis);
 	}
 	else  // unordered append		elapsed time: 11086
 	{

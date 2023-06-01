@@ -63,7 +63,7 @@ void e2db::setup()
 		case 0x1012: e2db::LAMEDB_VER = -1; e2db::ZAPIT_VER = 2; db.type = 1; break;
 		case 0x1011: e2db::LAMEDB_VER = -1; e2db::ZAPIT_VER = 1; db.type = 1; break;
 	}
-	
+
 	e2db::OVERWRITE_FILE = true;
 	e2db::PARSER_PRIOR_LAMEDB5 = settings.value("engine/parserPriorLamedb5", false).toBool();
 	e2db::PARSER_TUNERSETS = settings.value("engine/parserTunerset", true).toBool();
@@ -136,13 +136,13 @@ void e2db::cache(bool clear)
 		entries.transponders.clear();
 		entries.services.clear();
 	}
-	for (auto & txdata : db.transponders)
+	for (auto & tx : db.transponders)
 	{
-		entries.transponders[txdata.first] = entryTransponder(txdata.second);
+		entries.transponders[tx.first] = entryTransponder(tx.second);
 	}
-	for (auto & chdata : db.services)
+	for (auto & ch : db.services)
 	{
-		entries.services[chdata.first] = entryService(chdata.second);
+		entries.services[ch.first] = entryService(ch.second);
 	}
 }
 

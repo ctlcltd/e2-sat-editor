@@ -15,6 +15,7 @@
 #include <QListWidget>
 #include <QPushButton>
 
+#include "toolkit/ListIconDragDropEventHandler.h"
 #include "viewAbstract.h"
 
 namespace e2se_gui
@@ -76,6 +77,10 @@ class piconsView : public viewAbstract
 		void updateFlags();
 		void updateStatusBar(bool current = false);
 
+		static QString piconPathname(string chname);
+
+		ListIconDragDropEventHandler* list_evth;
+		ListIconDragDropEventFilter* list_evte;
 		QWidget* list_browse;
 
 		__state state;

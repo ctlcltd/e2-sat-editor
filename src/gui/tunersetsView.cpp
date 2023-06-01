@@ -17,12 +17,11 @@
 #include <QGridLayout>
 #include <QSplitter>
 #include <QGroupBox>
-#include <QHeaderView>
 #include <QToolBar>
 #include <QMenu>
-#include <QScrollArea>
 #include <QClipboard>
 #include <QMimeData>
+#include <QHeaderView>
 
 #include "platforms/platform.h"
 
@@ -440,12 +439,12 @@ void tunersetsView::populate()
 	int i = 0;
 	size_t pad_width = 4;
 
-	for (auto & tp : dbih->index[tnid])
+	for (auto & tpi : dbih->index[tnid])
 	{
-		e2db::tunersets_transponder tntxp = tns.transponders[tp.second];
+		e2db::tunersets_transponder tntxp = tns.transponders[tpi.second];
 
 		QString x = QString::number(i++).rightJustified(pad_width, '0');
-		QString idx = QString::number(tp.first);
+		QString idx = QString::number(tpi.first);
 		QString trid = QString::fromStdString(tntxp.trid);
 		QStringList entry = dbih->entryTunersetsTransponder(tntxp, tns);
 		entry.prepend(x);

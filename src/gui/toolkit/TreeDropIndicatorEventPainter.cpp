@@ -11,8 +11,8 @@
 
 #include <Qt>
 #include <QtGlobal>
-#include <QDropEvent>
 #include <QDragMoveEvent>
+#include <QDropEvent>
 #include <QPaintEvent>
 #include <QPainter>
 #include <QTreeWidget>

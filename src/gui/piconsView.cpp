@@ -10,16 +10,15 @@
  */
 
 #include <QTimer>
+#include <QRegularExpression>
 #include <QSettings>
 #include <QGridLayout>
-#include <QSplitter>
-#include <QGroupBox>
-#include <QFormLayout>
 #include <QHBoxLayout>
+#include <QFormLayout>
+#include <QGroupBox>
 #include <QLineEdit>
 #include <QToolBar>
 #include <QMenu>
-#include <QScrollArea>
 #include <QFileDialog>
 #include <QClipboard>
 #include <QMimeData>
@@ -78,12 +77,17 @@ void piconsView::layout()
 
 	afrm->setFlat(true);
 
+	this->tree = new QTreeWidget;
 	this->list = new QListWidget;
 
-	list->setStyleSheet("QListWidget { border-style: none } QListWidget::item { min-width: 128px; min-height: 102px; margin: 10px 12px; padding: 12px 8px 2px; border: 8px dashed palette(mid); border-radius: 15px }");
+	list->setStyleSheet("QListWidget { border-style: none } QListWidget::item { min-width: 128px; min-height: 102px; margin: 10px 12px; padding: 12px 8px 2px; border: 8px dashed palette(mid); border-radius: 15px } QListWidget::item:selected { background-color: palette(highlight) }");
+
+	// tree acts as shadow model for list
+	tree->setColumnCount(13);
 
 	list->setViewMode(QListWidget::IconMode);
 	list->setResizeMode(QListWidget::Adjust);
+	list->setSelectionRectVisible(true);
 	list->setUniformItemSizes(true);
 	list->setIconSize(QSize(112, 60));
 	list->setSelectionBehavior(QListWidget::SelectItems);
@@ -106,6 +110,12 @@ void piconsView::layout()
 	this->action.list_search = toolBarButton(list_ats, tr("Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->listSearchToggle(); });
 
 	this->action.list_search->setDisabled(true);
+
+	this->list_evth = new ListIconDragDropEventHandler(list);
+	this->list_evte = new ListIconDragDropEventFilter;
+	list->viewport()->installEventFilter(list_evte);
+	widget->installEventFilter(list_evth);
+	widget->setAcceptDrops(true);
 
 	list->connect(list, &QListWidget::currentItemChanged, [=]() { this->listItemChanged(); });
 	list->connect(list, &QListWidget::itemSelectionChanged, [=]() { this->listItemSelectionChanged(); });
@@ -195,9 +205,11 @@ void piconsView::reset()
 {
 	debug("reset");
 
+	tree->clear();
+
 	list->reset();
 	list->setDragEnabled(false);
-	list->setAcceptDrops(false);
+	// list->setAcceptDrops(false);
 	list->clear();
 
 	this->lsr_find.curr = -1;
@@ -210,45 +222,49 @@ void piconsView::populate()
 {
 	auto* dbih = this->data->dbih;
 
+	tree->clear();
 	list->clear();
 
-	QList<QListWidgetItem*> items;
+	QList<QTreeWidgetItem*> s_items;
 
 	if (! dbih->index.count("chs"))
 		error("populate", "current", "Missing index key \"chs\".");
 
-	for (auto & ch : dbih->index["chs"])
+	for (auto & chi : dbih->index["chs"])
 	{
 		QString idx;
-		QString chid = QString::fromStdString(ch.second);
+		QString chid = QString::fromStdString(chi.second);
 		QString chname;
 		QString filename;
 		QStringList entry;
 
-		if (dbih->db.services.count(ch.second))
+		if (dbih->db.services.count(chi.second))
 		{
-			entry = dbih->entries.services[ch.second];
-			idx = QString::number(ch.first);
+			e2db::service ch = dbih->db.services[chi.second];
+			entry = dbih->entries.services[chi.second];
+			idx = QString::number(chi.first);
 			entry.prepend(idx);
 			chname = entry[ITEM_DATA_ROLE::chname];
-			if (chname.isEmpty())
+			filename = piconPathname(ch.chname);
+			if (filename.isEmpty())
 			{
-				QString refid = QString::fromStdString(dbih->get_reference_id(ch.second));
+				QString refid = QString::fromStdString(dbih->get_reference_id(chi.second));
 				filename = QString(refid).replace(":", "_").append(".png");
 			}
 			else
 			{
-				filename = QString(chname).remove(QRegularExpression("[\\p{P}\\p{S}\\s]+")).toLower().append(".png");
+				filename.append(".png");
 			}
 			entry.insert(ITEM_DATA_ROLE::filename, filename);
 		}
 		else
 		{
-			error("populate", tr("Error", "error").toStdString(), tr("Channel mismatch \"%1\".", "error").arg(ch.second.data()).toStdString());
+			error("populate", tr("Error", "error").toStdString(), tr("Channel mismatch \"%1\".", "error").arg(chi.second.data()).toStdString());
 		}
 
+		QTreeWidgetItem* s_item = new QTreeWidgetItem;
 		QListWidgetItem* item = new QListWidgetItem;
-		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
+		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
 		item->setText(chname);
 		item->setToolTip(filename);
 		QString path = filename.prepend("/").prepend(QString::fromStdString(this->state.picons_dir));
@@ -256,13 +272,27 @@ void piconsView::populate()
 			item->setIcon(QIcon(path));
 		else
 			item->setIcon(QIcon(":/icons/picon.png"));
-		item->setData(Qt::UserRole, entry);
+
+		s_item->setData(ITEM_DATA_ROLE::x, Qt::UserRole, entry[ITEM_DATA_ROLE::x]);
+		s_item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, entry[ITEM_DATA_ROLE::chid]);
+		s_item->setData(ITEM_DATA_ROLE::txid, Qt::UserRole, entry[ITEM_DATA_ROLE::txid]);
+		s_item->setData(ITEM_DATA_ROLE::chname, Qt::UserRole, entry[ITEM_DATA_ROLE::chname]);
+		s_item->setData(ITEM_DATA_ROLE::chtype, Qt::UserRole, entry[ITEM_DATA_ROLE::chtype]);
+		s_item->setData(ITEM_DATA_ROLE::chcas, Qt::UserRole, entry[ITEM_DATA_ROLE::chcas]);
+		s_item->setData(ITEM_DATA_ROLE::chpname, Qt::UserRole, entry[ITEM_DATA_ROLE::chpname]);
+		s_item->setData(ITEM_DATA_ROLE::filename, Qt::UserRole, entry[ITEM_DATA_ROLE::filename]);
+		s_item->setData(ITEM_DATA_ROLE::txtname, Qt::UserRole, entry[ITEM_DATA_ROLE::txtname]);
+		s_item->setData(ITEM_DATA_ROLE::txpos, Qt::UserRole, entry[ITEM_DATA_ROLE::txpos]);
+		s_item->setData(ITEM_DATA_ROLE::txsys, Qt::UserRole, entry[ITEM_DATA_ROLE::txsys]);
 
 		list->addItem(item);
+		s_items.append(s_item);
 	}
 
+	tree->addTopLevelItems(s_items);
+
 	list->setDragEnabled(true);
-	list->setAcceptDrops(true);
+	// list->setAcceptDrops(true);
 }
 
 void piconsView::listItemChanged()
@@ -317,10 +347,12 @@ void piconsView::listFindPerform(const QString& value, LIST_FIND flag)
 	{
 		bool keyboardTimeWasValid = this->lsr_find.timer.isValid();
 		qint64 elapsed;
+
 		if (keyboardTimeWasValid)
 			elapsed = this->lsr_find.timer.restart();
 		else
 			this->lsr_find.timer.start();
+
 		if (value.isEmpty() || ! keyboardTimeWasValid || elapsed > delay)
 		{
 			text = value;
@@ -344,18 +376,9 @@ void piconsView::listFindPerform(const QString& value, LIST_FIND flag)
 
 	if (this->lsr_find.match.isEmpty() || this->lsr_find.filter != column || this->lsr_find.input != text)
 	{
-		// fast 0 --> start
-		// fast i match(..., ..., ..., 1, ...)
-		//
-		// QModelIndex start;
-		// if (list->currentIndex().isValid())
-		// 	start = list->currentIndex();
-		// else
-		// 	start = list->model()->index(0, 0);
-		//
-		QModelIndex start = list->model()->index(0, column);
+		QModelIndex start = tree->model()->index(0, column);
 		int limit = -1;
-		match = list->model()->match(start, Qt::DisplayRole, text, limit, Qt::MatchFlag::MatchContains);
+		match = tree->model()->match(start, Qt::UserRole, text, limit, Qt::MatchFlag::MatchContains);
 
 		if (this->lsr_find.flag == LIST_FIND::all)
 			listFindClear();
@@ -365,15 +388,6 @@ void piconsView::listFindPerform(const QString& value, LIST_FIND flag)
 	else
 	{
 		match = this->lsr_find.match;
-
-		//TODO improve
-		/*if (flag == LIST_FIND::fast && this->lsr_find.flag == LIST_FIND::all)
-		{
-			if (list->currentIndex().isValid())
-				return;
-			else
-				this->lsr_find.curr = -1;
-		}*/
 	}
 
 	if (match.count())
@@ -386,25 +400,28 @@ void piconsView::listFindPerform(const QString& value, LIST_FIND flag)
 		{
 			i = int (this->lsr_find.curr);
 			i = i == j - 1 ? 0 : i + 1;
-			list->setCurrentIndex(match.at(i));
+			QModelIndex index = list->model()->index(match.at(i).row(), 0);
+			list->setCurrentIndex(index);
 		}
 		else if (type == LIST_FIND::prev)
 		{
 			i = int (this->lsr_find.curr);
 			i = i <= 0 ? j - 1 : i - 1;
-			list->setCurrentIndex(match.at(i));
+			QModelIndex index = list->model()->index(match.at(i).row(), 0);
+			list->setCurrentIndex(index);
 		}
 		else if (type == LIST_FIND::all)
 		{
-
 			listFindClear(false);
+
 			while (i != j)
 			{
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-				QListWidgetItem* item = list->itemFromIndex(match.at(i)); //Qt5 protected member
+				QModelIndex index = list->model()->index(match.at(i).row(), 0);
+				QListWidgetItem* item = list->itemFromIndex(index); //Qt5 protected member
 #else
 				QListWidgetItem* item;
-				QModelIndex index = match.at(i);
+				QModelIndex index = list->model()->index(match.at(i).row(), 0);
 				if (index.isValid())
 					item = static_cast<QListWidgetItem*>(index.internalPointer());
 #endif
@@ -413,13 +430,16 @@ void piconsView::listFindPerform(const QString& value, LIST_FIND flag)
 					item->setSelected(true);
 				else
 					item->setHidden(false);
+
 				i++;
 			}
+
 			if (this->lsr_find.highlight)
 				list->scrollTo(match.at(0));
+
 			i = -1;
 		}
-		// int i = list->item(QListWidgetItem* item);
+
 		this->lsr_find.curr = i;
 
 		tabSetFlag(gui::TabListFindNext, true);
@@ -464,8 +484,8 @@ void piconsView::listChangedPiconsPath()
 	while (i != j)
 	{
 		QListWidgetItem* item = list->item(i);
-		QStringList qchdata = item->data(Qt::UserRole).toStringList();
-		QString path = qchdata[ITEM_DATA_ROLE::filename].prepend("/").prepend(QString::fromStdString(this->state.picons_dir));
+		QStringList qch = item->data(Qt::UserRole).toStringList();
+		QString path = qch[ITEM_DATA_ROLE::filename].prepend("/").prepend(QString::fromStdString(this->state.picons_dir));
 		if (! this->state.picons_dir.empty() && QFile::exists(path))
 			item->setIcon(QIcon(path));
 		else
@@ -534,6 +554,18 @@ void piconsView::updateFlags()
 	tabSetFlag(gui::TunersetsAtsc, true);
 
 	tabUpdateFlags();
+}
+
+QString piconsView::piconPathname(string chname)
+{
+	QString qstr = QString::fromStdString(chname).toLower();
+	qstr.replace("æ", "ae");
+	qstr.replace("œ", "oe");
+	qstr.replace("+", "plus");
+	qstr = qstr.normalized(QString::NormalizationForm_KD);
+	qstr.remove(QRegularExpression("[^a-z0-9]"));
+
+	return qstr;
 }
 
 string piconsView::browseFileDialog(string path)

@@ -72,7 +72,7 @@ void editService::layout(QWidget* cwid)
 
 	auto* dbih = this->data->dbih;
 
-	this->txdata = dbih->get_transponders_index();
+	this->txp_index = dbih->get_transponders_index();
 
 	this->dtwid = new QTabWidget;
 	dtwid->connect(dtwid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
@@ -259,7 +259,7 @@ void editService::transponderLayout()
 #else
 	dtf1tx->connect(dtf1tx, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) { this->transponderComboChanged(index); });
 #endif
-	for (auto & q : txdata)
+	for (auto & q : txp_index)
 	{
 		QString name;
 		int pos = std::stoi(q.first);
@@ -539,7 +539,7 @@ void editService::paramsLayout()
 	QFormLayout* dtf2e = new QFormLayout;
 	dtf2e->setFormAlignment(Qt::AlignLeading);
 	dtf2e->setRowWrapPolicy(QFormLayout::WrapAllRows);
-	
+
 	QLineEdit* dtf2sn = new QLineEdit;
 	dtf2sn->setProperty("field", "snum");
 	fields.emplace_back(dtf2sn);
@@ -572,12 +572,12 @@ void editService::tunerComboChanged(int index)
 	QString qpos = dtf1tn->currentData().toString();
 	string pos = qpos.toStdString();
 
-	if (! txdata.count(pos))
+	if (! txp_index.count(pos))
 		return;
 
 	auto* dbih = this->data->dbih;
 
-	for (auto & x : txdata[pos])
+	for (auto & x : txp_index[pos])
 	{
 		e2db::transponder tx = dbih->db.transponders[x.second];
 		QString txid = QString::fromStdString(x.second);
