@@ -251,7 +251,9 @@ void mainView::layout()
 	this->action.list_addmk->setDisabled(true);
 	this->action.list_newch->setDisabled(true);
 	this->action.list_dnd->setDisabled(true);
+	this->action.list_dnd->actions().first()->setDisabled(true);
 	this->action.list_search->setDisabled(true);
+	this->action.list_search->actions().first()->setDisabled(true);
 
 	this->tree_evth = new TreeEventHandler;
 	this->list_evth = new TreeDragDropEventHandler;
@@ -559,6 +561,7 @@ void mainView::reset()
 	this->action.list_addmk->setDisabled(true);
 	this->action.list_newch->setEnabled(true);
 	this->action.list_dnd->setDisabled(true);
+	this->action.list_dnd->actions().first()->setDisabled(true);
 
 	updateReferenceBox();
 
@@ -759,17 +762,25 @@ void mainView::servicesItemChanged(QTreeWidgetItem* current)
 
 			// sorting by
 			if (this->state.sort.first > 0)
+			{
 				this->action.list_dnd->setDisabled(true);
+				this->action.list_dnd->actions().first()->setDisabled(true);
+			}
 		}
 		// all
 		else
 		{
 			// sorting by
 			if (this->state.sort.first > 0)
+			{
 				this->action.list_dnd->setEnabled(true);
+				this->action.list_dnd->actions().first()->setEnabled(true);
+			}
 			// sorting default
 			else
+			{
 				allowDnD();
+			}
 		}
 
 		tabSetFlag(gui::TabListDelete, false);
@@ -813,7 +824,10 @@ void mainView::treeItemChanged(QTreeWidgetItem* current)
 
 			// sorting by
 			if (this->state.sort.first > 0)
+			{
 				this->action.list_dnd->setDisabled(true);
+				this->action.list_dnd->actions().first()->setDisabled(true);
+			}
 		}
 		// userbouquet
 		else
@@ -824,10 +838,15 @@ void mainView::treeItemChanged(QTreeWidgetItem* current)
 
 			// sorting by
 			if (this->state.sort.first > 0)
+			{
 				this->action.list_dnd->setEnabled(true);
+				this->action.list_dnd->actions().first()->setEnabled(true);
+			}
 			// sorting default
 			else
+			{
 				allowDnD();
+			}
 		}
 
 		list->clearSelection();
@@ -1099,7 +1118,10 @@ void mainView::sortByColumn(int column)
 
 		// services: all | userbouquet
 		if (this->state.si == 0 || this->state.ti == -1)
+		{
 			this->action.list_dnd->setEnabled(true);
+			this->action.list_dnd->actions().first()->setEnabled(true);
+		}
 	}
 	// sorting default
 	else
@@ -1109,6 +1131,7 @@ void mainView::sortByColumn(int column)
 		treeSortItems(list, column, order);
 
 		this->action.list_dnd->setDisabled(true);
+		this->action.list_dnd->actions().first()->setDisabled(true);
 
 		if (this->state.vlx_pending)
 			this->visualReindexList();
@@ -1143,6 +1166,7 @@ void mainView::reharmDnD()
 	list->setAcceptDrops(true);
 	this->state.sort = pair (0, Qt::AscendingOrder);
 	this->action.list_dnd->setDisabled(true);
+	this->action.list_dnd->actions().first()->setDisabled(true);
 }
 
 void mainView::addBouquet()
@@ -2705,6 +2729,7 @@ void mainView::updateFlags()
 		tabSetFlag(gui::TabTreeDelete, true);
 		tabSetFlag(gui::TabTreeFind, true);
 		this->action.tree_search->setEnabled(true);
+		this->action.tree_search->actions().first()->setEnabled(true);
 	}
 	else
 	{
@@ -2712,6 +2737,7 @@ void mainView::updateFlags()
 		tabSetFlag(gui::TabTreeDelete, false);
 		tabSetFlag(gui::TabTreeFind, false);
 		this->action.tree_search->setDisabled(true);
+		this->action.tree_search->actions().first()->setDisabled(true);
 	}
 
 	if (list->topLevelItemCount())
@@ -2719,12 +2745,14 @@ void mainView::updateFlags()
 		tabSetFlag(gui::TabListSelectAll, true);
 		tabSetFlag(gui::TabListFind, true);
 		this->action.list_search->setEnabled(true);
+		this->action.list_search->actions().first()->setEnabled(true);
 	}
 	else
 	{
 		tabSetFlag(gui::TabListSelectAll, false);
 		tabSetFlag(gui::TabListFind, false);
 		this->action.list_search->setDisabled(true);
+		this->action.list_search->actions().first()->setDisabled(true);
 	}
 
 	auto* dbih = this->data->dbih;

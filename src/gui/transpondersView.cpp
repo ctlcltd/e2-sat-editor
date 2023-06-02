@@ -167,6 +167,7 @@ void transpondersView::layout()
 	this->action.list_search = toolBarButton(list_ats, tr("Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->listSearchToggle(); });
 
 	this->action.list_search->setDisabled(true);
+	this->action.list_search->actions().first()->setDisabled(true);
 
 	this->list_evth = new TreeDropIndicatorEventPainter;
 	this->list_evto = new TreeItemChangedEventObserver;
@@ -753,6 +754,7 @@ void transpondersView::updateFlags()
 		tabSetFlag(gui::TabListSelectAll, true);
 		tabSetFlag(gui::TabListFind, true);
 		this->action.list_search->setEnabled(true);
+		this->action.list_search->actions().first()->setEnabled(true);
 	}
 	else
 	{
@@ -760,6 +762,7 @@ void transpondersView::updateFlags()
 		tabSetFlag(gui::TabListSelectAll, false);
 		tabSetFlag(gui::TabListFind, false);
 		this->action.list_search->setDisabled(true);
+		this->action.list_search->actions().first()->setDisabled(true);
 	}
 
 	if (QGuiApplication::clipboard()->text().isEmpty())

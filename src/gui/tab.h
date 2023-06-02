@@ -130,7 +130,8 @@ class tab : protected e2se::log_factory
 		static QAction* toolBarAction(QToolBar* toolbar, QString text, pair<e2se_gui::theme*, QString> icon, std::function<void()> trigger);
 		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger, QKeySequence shortcut);
 		static QAction* toolBarAction(QToolBar* toolbar, QString text, pair<e2se_gui::theme*, QString> icon, std::function<void()> trigger, QKeySequence shortcut);
-		static QWidget* toolBarWidget(QToolBar* toolbar, QWidget* widget);
+		static QWidget* toolBarWidget(QToolBar* toolbar, QString text, QWidget* widget);
+		static QWidget* toolBarWidget(QToolBar* toolbar, QString text, QWidget* widget, std::function<void()> trigger);
 		static QAction* toolBarSeparator(QToolBar* toolbar);
 		static QWidget* toolBarSpacer(QToolBar* toolbar);
 		void toolBarStyleSheet();

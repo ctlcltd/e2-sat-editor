@@ -246,8 +246,9 @@ QAction* dialAbstract::toolBarAction(QToolBar* toolbar, QString text, pair<e2se_
 	return action;
 }
 
-QWidget* dialAbstract::toolBarWidget(QToolBar* toolbar, QWidget* widget)
+QWidget* dialAbstract::toolBarWidget(QToolBar* toolbar, QString text, QWidget* widget)
 {
+	widget->setAccessibleName(text);
 	toolbar->addWidget(widget);
 	return widget;
 }

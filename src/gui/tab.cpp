@@ -405,7 +405,7 @@ void tab::layout()
 	toolBarSeparator(top_toolbar);
 	toolBarAction(top_toolbar, tr("Settings", "toolbar"), theme->dynamicIcon("settings"), [=]() { this->settingsDialog(); });
 	toolBarSpacer(top_toolbar);
-	toolBarWidget(top_toolbar, ftp_combo);
+	toolBarWidget(top_toolbar, tr("Select profile", "toolbar"), ftp_combo, [=]() { ftp_combo->showPopup(); });
 	toolBarAction(top_toolbar, tr("Connect", "toolbar"), [=]() { this->ftpConnect(); });
 	toolBarAction(top_toolbar, tr("Disconnect", "toolbar"), [=]() { this->ftpDisconnect(); });
 	toolBarSeparator(top_toolbar);
@@ -1821,9 +1821,21 @@ QAction* tab::toolBarAction(QToolBar* toolbar, QString text, pair<e2se_gui::them
 	return action;
 }
 
-QWidget* tab::toolBarWidget(QToolBar* toolbar, QWidget* widget)
+QWidget* tab::toolBarWidget(QToolBar* toolbar, QString text, QWidget* widget)
 {
+	widget->setAccessibleName(text);
 	toolbar->addWidget(widget);
+	return widget;
+}
+
+QWidget* tab::toolBarWidget(QToolBar* toolbar, QString text, QWidget* widget, std::function<void()> trigger)
+{
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->connect(action, &QAction::triggered, trigger);
+	toolbar->addWidget(widget);
+	toolbar->addAction(action);
+	toolbar->widgetForAction(action)->setFixedWidth(0);
 	return widget;
 }
 

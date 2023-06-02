@@ -252,6 +252,7 @@ void tunersetsView::layout()
 	this->action.tree_search = toolBarButton(tree_ats, tr("Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->treeSearchToggle(); });
 
 	this->action.tree_search->setDisabled(true);
+	this->action.tree_search->actions().first()->setDisabled(true);
 
 	this->action.list_newtr = toolBarAction(list_ats, tr("New Transponder", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addTransponder(); });
 	toolBarSpacer(list_ats);
@@ -259,6 +260,7 @@ void tunersetsView::layout()
 
 	this->action.list_newtr->setDisabled(true);
 	this->action.list_search->setDisabled(true);
+	this->action.tree_search->actions().first()->setDisabled(true);
 
 	this->tree_evth = new TreeDropIndicatorEventPainter;
 	this->list_evth = new TreeDropIndicatorEventPainter;
@@ -1255,6 +1257,7 @@ void tunersetsView::updateFlags()
 		tabSetFlag(gui::TabTreeDelete, true);
 		tabSetFlag(gui::TabTreeFind, true);
 		this->action.tree_search->setEnabled(true);
+		this->action.tree_search->actions().first()->setEnabled(true);
 	}
 	else
 	{
@@ -1262,6 +1265,7 @@ void tunersetsView::updateFlags()
 		tabSetFlag(gui::TabTreeDelete, false);
 		tabSetFlag(gui::TabTreeFind, false);
 		this->action.tree_search->setDisabled(true);
+		this->action.tree_search->actions().first()->setEnabled(true);
 	}
 
 	if (list->topLevelItemCount())
@@ -1270,6 +1274,7 @@ void tunersetsView::updateFlags()
 		tabSetFlag(gui::TabListSelectAll, true);
 		tabSetFlag(gui::TabListFind, true);
 		this->action.list_search->setEnabled(true);
+		this->action.list_search->actions().first()->setEnabled(true);
 	}
 	else
 	{
@@ -1277,6 +1282,7 @@ void tunersetsView::updateFlags()
 		tabSetFlag(gui::TabListSelectAll, false);
 		tabSetFlag(gui::TabListFind, false);
 		this->action.list_search->setDisabled(true);
+		this->action.list_search->actions().first()->setEnabled(true);
 	}
 
 	auto* dbih = this->data->dbih;

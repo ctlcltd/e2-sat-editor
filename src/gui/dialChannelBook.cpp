@@ -81,11 +81,11 @@ void dialChannelBook::toolbarLayout()
 	this->dtbar = toolBar();
 	toolBarStyleSheet();
 
-	this->action.filter = new QCheckBox(tr("Filters for service type"));
+	this->action.filter = new QCheckBox(tr("Filters for service type", "dialog"));
 	this->action.filter->setChecked(true);
 	this->action.filter->connect(this->action.filter, &QCheckBox::stateChanged, [=](int checked) { this->cbv->filterChanged(checked); });
 
-	toolBarWidget(dtbar, this->action.filter);
+	toolBarWidget(dtbar, tr("Filters for service type", "dialog"), this->action.filter);
 	toolBarSpacer(dtbar);
 	this->action.cancel = toolBarAction(dtbar, tr("Cancel", "dialog"), [=]() { this->cancel(); });
 	toolBarSeparator(dtbar);

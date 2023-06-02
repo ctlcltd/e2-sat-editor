@@ -105,11 +105,12 @@ void piconsView::layout()
 
 	browseLayout();
 
-	this->action.list_browse = toolBarWidget(list_ats, list_browse);
+	this->action.list_browse = toolBarWidget(list_ats, tr("&Browse…", "toolbar"), list_browse);
 	toolBarSpacer(list_ats);
 	this->action.list_search = toolBarButton(list_ats, tr("Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->listSearchToggle(); });
 
 	this->action.list_search->setDisabled(true);
+	this->action.list_search->actions().first()->setDisabled(true);
 
 	this->list_evth = new ListIconDragDropEventHandler(list);
 	this->list_evte = new ListIconDragDropEventFilter;
@@ -517,12 +518,14 @@ void piconsView::updateFlags()
 		tabSetFlag(gui::TabListSelectAll, true);
 		tabSetFlag(gui::TabListFind, true);
 		this->action.list_search->setEnabled(true);
+		this->action.list_search->actions().first()->setEnabled(true);
 	}
 	else
 	{
 		tabSetFlag(gui::TabListSelectAll, false);
 		tabSetFlag(gui::TabListFind, false);
 		this->action.list_search->setDisabled(true);
+		this->action.list_search->actions().first()->setDisabled(true);
 	}
 
 	if (QGuiApplication::clipboard()->text().isEmpty())

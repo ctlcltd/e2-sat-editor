@@ -632,7 +632,6 @@ void viewAbstract::tabPrintFile(bool all)
 		tid->printFile(all);
 }
 
-//TODO improve viewport minimumWidth QPushButton are not supported
 QToolBar* viewAbstract::toolBar()
 {
 	QToolBar* toolbar = new QToolBar;
@@ -691,7 +690,13 @@ QPushButton* viewAbstract::toolBarButton(QToolBar* toolbar, QString text, std::f
 	QPushButton* button = new QPushButton(toolbar);
 	button->setText(text);
 	button->connect(button, &QPushButton::pressed, trigger);
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->connect(action, &QAction::triggered, trigger);
 	toolbar->addWidget(button);
+	toolbar->addAction(action);
+	toolbar->widgetForAction(action)->setFixedWidth(0);
+	button->addAction(action);
 	return button;
 }
 
@@ -701,7 +706,13 @@ QPushButton* viewAbstract::toolBarButton(QToolBar* toolbar, QString text, pair<e
 	button->setText(text);
 	button->setIcon(icon.first->dynamicIcon(icon.second, button));
 	button->connect(button, &QPushButton::pressed, trigger);
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->connect(action, &QAction::triggered, trigger);
 	toolbar->addWidget(button);
+	toolbar->addAction(action);
+	toolbar->widgetForAction(action)->setFixedWidth(0);
+	button->addAction(action);
 	return button;
 }
 
@@ -711,7 +722,13 @@ QPushButton* viewAbstract::toolBarButton(QToolBar* toolbar, QString text, std::f
 	button->setText(text);
 	button->setShortcut(shortcut);
 	button->connect(button, &QPushButton::pressed, trigger);
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->connect(action, &QAction::triggered, trigger);
 	toolbar->addWidget(button);
+	toolbar->addAction(action);
+	toolbar->widgetForAction(action)->setFixedWidth(0);
+	button->addAction(action);
 	return button;
 }
 
@@ -722,12 +739,19 @@ QPushButton* viewAbstract::toolBarButton(QToolBar* toolbar, QString text, pair<e
 	button->setIcon(icon.first->dynamicIcon(icon.second, button));
 	button->setShortcut(shortcut);
 	button->connect(button, &QPushButton::pressed, trigger);
+	QAction* action = new QAction(toolbar);
+	action->setText(text);
+	action->connect(action, &QAction::triggered, trigger);
 	toolbar->addWidget(button);
+	toolbar->addAction(action);
+	toolbar->widgetForAction(action)->setFixedWidth(0);
+	button->addAction(action);
 	return button;
 }
 
-QWidget* viewAbstract::toolBarWidget(QToolBar* toolbar, QWidget* widget)
+QWidget* viewAbstract::toolBarWidget(QToolBar* toolbar, QString text, QWidget* widget)
 {
+	widget->setAccessibleName(text);
 	toolbar->addWidget(widget);
 	return widget;
 }
