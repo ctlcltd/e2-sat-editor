@@ -12,6 +12,7 @@
 #include <QTimer>
 #include <QRegularExpression>
 #include <QSettings>
+#include <QMessageBox>
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QFormLayout>
@@ -91,10 +92,10 @@ void piconsView::layout()
 	list->setUniformItemSizes(true);
 	list->setIconSize(QSize(112, 60));
 	list->setSelectionBehavior(QListWidget::SelectItems);
-	list->setSelectionMode(QListWidget::SingleSelection);
+	list->setSelectionMode(QListWidget::ExtendedSelection);
 	list->setDropIndicatorShown(true);
 	list->setDragDropMode(QListWidget::DragDrop);
-	// list->setEditTriggers(QListWidget::NoEditTriggers);
+	list->setEditTriggers(QListWidget::NoEditTriggers);
 
 	list->setContextMenuPolicy(Qt::CustomContextMenu);
 	list->connect(list, &QListWidget::customContextMenuRequested, [=](QPoint pos) { this->showListEditContextMenu(pos); });
@@ -114,12 +115,14 @@ void piconsView::layout()
 
 	this->list_evth = new ListIconDragDropEventHandler(list);
 	this->list_evte = new ListIconDragDropEventFilter;
+	list_evth->setEventCallback([=](QListWidgetItem* item, string path) { this->changePicon(item, path); });
 	list->viewport()->installEventFilter(list_evte);
 	widget->installEventFilter(list_evth);
 	widget->setAcceptDrops(true);
 
 	list->connect(list, &QListWidget::currentItemChanged, [=]() { this->listItemChanged(); });
 	list->connect(list, &QListWidget::itemSelectionChanged, [=]() { this->listItemSelectionChanged(); });
+	list->connect(list, &QListWidget::itemDoubleClicked, [=]() { this->listItemDoubleClicked(); });
 
 	abox->addWidget(list);
 	abox->addWidget(list_search);
@@ -148,6 +151,7 @@ void piconsView::browseLayout()
 	QLineEdit* browseinput = new QLineEdit;
 	browseinput->setReadOnly(true);
 	browseinput->setText(QString::fromStdString(this->state.picons_dir));
+	platform::osLineEdit(browseinput);
 
 	QPushButton* browsebutton = new QPushButton;
 	browsebutton->setText(tr("&Browse…", "toolbar"));
@@ -268,9 +272,9 @@ void piconsView::populate()
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
 		item->setText(chname);
 		item->setToolTip(filename);
-		QString path = filename.prepend("/").prepend(QString::fromStdString(this->state.picons_dir));
-		if (! this->state.picons_dir.empty() && QFile::exists(path))
-			item->setIcon(QIcon(path));
+		QString filepath = filename.prepend("/").prepend(QString::fromStdString(this->state.picons_dir));
+		if (! this->state.picons_dir.empty() && QFile::exists(filepath))
+			item->setIcon(QIcon(filepath));
 		else
 			item->setIcon(QIcon(":/icons/picon.png"));
 
@@ -322,11 +326,11 @@ void piconsView::listItemSelectionChanged()
 
 	if (selected.count() == 1)
 	{
-		tabSetFlag(gui::TabListEditService, true);
+		tabSetFlag(gui::TabListEditPicon, true);
 	}
 	else
 	{
-		tabSetFlag(gui::TabListEditService, false);
+		tabSetFlag(gui::TabListEditPicon, false);
 	}
 
 	if (QGuiApplication::clipboard()->text().isEmpty())
@@ -335,6 +339,18 @@ void piconsView::listItemSelectionChanged()
 		tabSetFlag(gui::TabListPaste, true);
 
 	tabUpdateFlags();
+}
+
+void piconsView::listItemDoubleClicked()
+{
+	debug("listItemDoubleClicked");
+
+	QList<QListWidgetItem*> selected = list->selectedItems();
+
+	if (selected.empty() || selected.count() > 1)
+		return;
+
+	editPicon();
 }
 
 //TODO FIX multiple selection with shortcut FindNext when search_box is closed
@@ -486,12 +502,185 @@ void piconsView::listChangedPiconsPath()
 	{
 		QListWidgetItem* item = list->item(i);
 		QStringList qch = item->data(Qt::UserRole).toStringList();
-		QString path = qch[ITEM_DATA_ROLE::filename].prepend("/").prepend(QString::fromStdString(this->state.picons_dir));
-		if (! this->state.picons_dir.empty() && QFile::exists(path))
-			item->setIcon(QIcon(path));
+		QString filepath = qch[ITEM_DATA_ROLE::filename].prepend("/").prepend(QString::fromStdString(this->state.picons_dir));
+		if (! this->state.picons_dir.empty() && QFile::exists(filepath))
+			item->setIcon(QIcon(filepath));
 		else
 			item->setIcon(QIcon(":/icons/picon.png"));
 		i++;
+	}
+}
+
+void piconsView::editPicon()
+{
+	debug("editPicon");
+
+	QList<QListWidgetItem*> selected = list->selectedItems();
+
+	if (selected.empty() || selected.count() > 1)
+		return;
+
+	QListWidgetItem* item = selected.first();
+
+	QString curr_dir = QString::fromStdString(this->state.picons_dir);
+
+	string path = this->importFileDialog(curr_dir.toStdString());
+
+	changePicon(item, path);
+}
+
+void piconsView::changePicon(QListWidgetItem* item, string path)
+{
+	debug("changePicon", "index", list->row(item));
+	debug("changePicon", "path", path);
+
+	QString piconpath = QString::fromStdString(path);
+
+	if (! QFile::exists(piconpath))
+		return;
+
+	QTreeWidgetItem* s_item = tree->topLevelItem(list->row(item));
+	QString filename = s_item->data(ITEM_DATA_ROLE::filename, Qt::UserRole).toString();
+	QString filepath = filename.prepend("/").prepend(QString::fromStdString(this->state.picons_dir));
+
+	QFile file (piconpath);
+	file.copy(filepath);
+	file.close();
+
+	item->setIcon(QIcon(filepath));
+	// item->setIcon(QIcon(piconpath));
+}
+
+void piconsView::listItemCopy(bool cut)
+{
+	debug("listItemCopy");
+
+	QList<QListWidgetItem*> selected = list->selectedItems();
+
+	if (selected.empty())
+		return;
+
+	QClipboard* clipboard = QGuiApplication::clipboard();
+
+	if (selected.count() > 1)
+	{
+		QMimeData* content = new QMimeData;
+		QList<QUrl> urls;
+		
+		for (auto & item : selected)
+		{
+			QTreeWidgetItem* s_item = tree->topLevelItem(list->row(item));
+			QString filename = s_item->data(ITEM_DATA_ROLE::filename, Qt::UserRole).toString();
+			QString filepath = filename.prepend("/").prepend(QString::fromStdString(this->state.picons_dir));
+
+			if (QFile::exists(filepath))
+				urls.append(QUrl(filepath));
+		}
+
+		content->setUrls(urls);
+		clipboard->setMimeData(content);
+	}
+	else
+	{
+		QListWidgetItem* item = selected.first();
+		QTreeWidgetItem* s_item = tree->topLevelItem(list->row(item));
+		QString filename = s_item->data(ITEM_DATA_ROLE::filename, Qt::UserRole).toString();
+		QString filepath = filename.prepend("/").prepend(QString::fromStdString(this->state.picons_dir));
+
+		if (QFile::exists(filepath))
+			clipboard->setImage(QImage(filepath));
+	}
+
+	if (cut)
+		listItemDelete();
+
+	tabSetFlag(gui::TabListPaste, true);
+}
+
+void piconsView::listItemPaste()
+{
+	debug("listItemPaste");
+
+	QList<QListWidgetItem*> selected = list->selectedItems();
+
+	if (selected.empty())
+		return;
+
+	QClipboard* clipboard = QGuiApplication::clipboard();
+	const QMimeData* mimeData = clipboard->mimeData();
+
+	if (mimeData->hasUrls())
+	{
+		int i = 0;
+		for (auto & item : selected)
+		{
+			QUrl url = mimeData->urls().at(i);
+
+			if (QFile::exists(url.toLocalFile()))
+			{
+				QTreeWidgetItem* s_item = tree->topLevelItem(list->row(item));
+				QString filename = s_item->data(ITEM_DATA_ROLE::filename, Qt::UserRole).toString();
+				QString filepath = filename.prepend("/").prepend(QString::fromStdString(this->state.picons_dir));
+			}
+			if (i++ == mimeData->urls().size())
+			{
+				break;
+			}
+		}
+	}
+	else if (mimeData->hasImage() && selected.count() == 1)
+	{
+		QListWidgetItem* item = selected.first();
+		QTreeWidgetItem* s_item = tree->topLevelItem(list->row(item));
+		QString filename = s_item->data(ITEM_DATA_ROLE::filename, Qt::UserRole).toString();
+		QString filepath = filename.prepend("/").prepend(QString::fromStdString(this->state.picons_dir));
+
+		QFile file (filepath);
+		file.write(mimeData->imageData().toByteArray());
+		file.close();
+
+		item->setIcon(QIcon(filepath));
+	}
+}
+
+void piconsView::listItemDelete()
+{
+	debug("listItemDelete");
+
+	QList<QListWidgetItem*> selected = list->selectedItems();
+
+	if (selected.empty())
+		return;
+
+	QString title = tr("Delete images", "message");
+	QString text = tr("Do you want to delete the images from disk?", "message");
+
+	text.prepend("<span style=\"white-space: nowrap\">");
+	text.append("</span><br>");
+	//TODO improve
+	QMessageBox msg = QMessageBox(this->cwid);
+
+	msg.setWindowFlags(Qt::Sheet | Qt::MSWindowsFixedSizeDialogHint);
+#ifdef Q_OS_MAC
+	msg.setAttribute(Qt::WA_TranslucentBackground);
+#endif
+
+	msg.setText(title);
+	msg.setInformativeText(text);
+	msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Retry);
+	msg.setDefaultButton(QMessageBox::Ok);
+
+	if (msg.exec() != QMessageBox::Ok)
+		return;
+
+	for (auto & item : selected)
+	{
+		QTreeWidgetItem* s_item = tree->topLevelItem(list->row(item));
+		QString filename = s_item->data(ITEM_DATA_ROLE::filename, Qt::UserRole).toString();
+		QString filepath = filename.prepend("/").prepend(QString::fromStdString(this->state.picons_dir));
+
+		if (QFile::exists(filepath))
+			QFile::moveToTrash(filepath);
 	}
 }
 
@@ -503,6 +692,30 @@ void piconsView::updateStatusBar(bool current)
 void piconsView::showListEditContextMenu(QPoint& pos)
 {
 	debug("showListEditContextMenu");
+
+	QList<QListWidgetItem*> selected = list->selectedItems();
+
+	if (selected.empty() && list->count() != 0)
+		return;
+
+	bool editable = false;
+
+	if (selected.count() == 1)
+	{
+		editable = true;
+	}
+
+	QMenu* list_edit = contextMenu();
+
+	contextMenuAction(list_edit, tr("Change picon", "context-menu"), [=]() { this->editPicon(); }, editable && tabGetFlag(gui::TabListEditPicon));
+	contextMenuSeparator(list_edit);
+	contextMenuAction(list_edit, tr("Cu&t", "context-menu"), [=]() { this->listItemCut(); }, tabGetFlag(gui::TabListCut), QKeySequence::Cut);
+	contextMenuAction(list_edit, tr("&Copy", "context-menu"), [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
+	contextMenuAction(list_edit, tr("&Paste", "context-menu"), [=]() { this->listItemPaste(); }, tabGetFlag(gui::TabListPaste), QKeySequence::Paste);
+	contextMenuSeparator(list_edit);
+	contextMenuAction(list_edit, tr("&Delete", "context-menu"), [=]() { this->listItemDelete(); }, tabGetFlag(gui::TabListDelete), QKeySequence::Delete);
+
+	platform::osContextMenuPopup(list_edit, list, pos);
 }
 
 void piconsView::updateFlags()
@@ -575,6 +788,15 @@ string piconsView::browseFileDialog(string path)
 {
 #ifndef E2SE_DEMO
 	return QFileDialog::getExistingDirectory(nullptr, tr("Select picons folder", "file-dialog"), QString::fromStdString(path)).toStdString();
+#else
+	return "";
+#endif
+}
+
+string piconsView::importFileDialog(string path)
+{
+#ifndef E2SE_DEMO
+	return QFileDialog::getOpenFileName(nullptr, tr("Select picon image", "file-dialog"), QString::fromStdString(path), "File PNG (*.png)").toStdString();
 #else
 	return "";
 #endif

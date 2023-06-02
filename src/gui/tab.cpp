@@ -1633,7 +1633,9 @@ bool tab::saveQuestion(QString title, QString text)
 	QMessageBox msg = QMessageBox(this->cwid);
 
 	msg.setWindowFlags(Qt::Sheet | Qt::MSWindowsFixedSizeDialogHint);
+#ifdef Q_OS_MAC
 	msg.setAttribute(Qt::WA_TranslucentBackground);
+#endif
 
 	msg.setText(title);
 	msg.setInformativeText(text);
@@ -1652,7 +1654,9 @@ bool tab::removeQuestion(QString title, QString text)
 	QMessageBox msg = QMessageBox(this->cwid);
 
 	msg.setWindowFlags(Qt::Sheet | Qt::MSWindowsFixedSizeDialogHint);
+#ifdef Q_OS_MAC
 	msg.setAttribute(Qt::WA_TranslucentBackground);
+#endif
 
 	msg.setText(title);
 	msg.setInformativeText(text);

@@ -55,9 +55,9 @@ class piconsView : public viewAbstract
 		~piconsView();
 		void load();
 		void reset();
-		void listItemCopy(bool cut = false) {}
-		void listItemPaste() {}
-		void listItemDelete() {}
+		void listItemCopy(bool cut = false);
+		void listItemPaste();
+		void listItemDelete();
 		void listFindPerform(const QString& value, LIST_FIND flag);
 		void listFindClear(bool hidden = true);
 
@@ -73,6 +73,9 @@ class piconsView : public viewAbstract
 		void listChangedPiconsPath();
 		void listItemChanged();
 		void listItemSelectionChanged();
+		void listItemDoubleClicked();
+		void editPicon();
+		void changePicon(QListWidgetItem* item, string path);
 		void showListEditContextMenu(QPoint& pos);
 		void updateFlags();
 		void updateStatusBar(bool current = false);
@@ -88,6 +91,7 @@ class piconsView : public viewAbstract
 
 	private:
 		static string browseFileDialog(string path);
+		static string importFileDialog(string path);
 
 		QWidget* cwid;
 };

@@ -70,6 +70,7 @@ class gui : protected e2se::log_factory
 			TabListEditService = 32,
 			TabListEditMarker = 33,
 			TabListEditTransponder = 31,
+			TabListEditPicon = 34,
 			TabListDelete = 46,
 			TabListSelectAll = 45,
 			TabListCut = 47,

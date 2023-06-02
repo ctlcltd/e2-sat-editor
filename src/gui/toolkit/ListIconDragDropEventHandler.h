@@ -10,6 +10,9 @@
  */
 
 #include <functional>
+#include <string>
+
+using std::string;
 
 #ifndef ListIconDragDropEventHandler_h
 #define ListIconDragDropEventHandler_h
@@ -27,7 +30,7 @@ class ListIconDragDropEventHandler : public QObject
 		{
 			this->list = source;
 		}
-		void setEventCallback(std::function<void(QListWidgetItem* item)> func)
+		void setEventCallback(std::function<void(QListWidgetItem* item, const string path)> func)
 		{
 			this->eventCallback = func;
 		}
@@ -39,15 +42,15 @@ class ListIconDragDropEventHandler : public QObject
 		bool eventDragLeave(QObject* object, QEvent* event);
 		bool eventDrop(QObject* object, QEvent* event);
 		void raiseWindow();
-		void callEventCallback(QListWidgetItem* item)
+		void callEventCallback(QListWidgetItem* item, const string path)
 		{
 			if (this->eventCallback)
-				this->eventCallback(item);
+				this->eventCallback(item, path);
 		}
 
 	private:
 		QListWidget* list = nullptr;
-		std::function<void(QListWidgetItem* item)> eventCallback;
+		std::function<void(QListWidgetItem* item, const string path)> eventCallback;
 };
 
 //TODO
