@@ -1371,6 +1371,23 @@ void gui::setStatusBar(status msg)
 			sbwidr->setText(content.join(separator));
 		}
 	}
+	else if (msg.view == TAB_VIEW::picons)
+	{
+		if (msg.update)
+		{
+			if (! msg.curr.empty())
+				content.append(QString(QApplication::layoutDirection() == Qt::RightToLeft ? "%2 :%1" : "%1: %2").arg(tr("Filename", "status-bar")).arg(msg.curr.data()));
+
+			if (QApplication::layoutDirection() == Qt::RightToLeft)
+				std::reverse(content.begin(), content.end());
+			sbwidl->setText(content.join(separator));
+		}
+		else
+		{
+			sbwidl->setText("");
+			sbwidr->setText("");
+		}
+	}
 }
 
 void gui::resetStatusBar()

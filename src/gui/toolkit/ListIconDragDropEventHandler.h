@@ -30,7 +30,7 @@ class ListIconDragDropEventHandler : public QObject
 		{
 			this->list = source;
 		}
-		void setEventCallback(std::function<void(QListWidgetItem* item, const string path)> func)
+		void setEventCallback(std::function<void(QListWidgetItem* item, const QString path)> func)
 		{
 			this->eventCallback = func;
 		}
@@ -42,7 +42,7 @@ class ListIconDragDropEventHandler : public QObject
 		bool eventDragLeave(QObject* object, QEvent* event);
 		bool eventDrop(QObject* object, QEvent* event);
 		void raiseWindow();
-		void callEventCallback(QListWidgetItem* item, const string path)
+		void callEventCallback(QListWidgetItem* item, const QString path)
 		{
 			if (this->eventCallback)
 				this->eventCallback(item, path);
@@ -50,7 +50,7 @@ class ListIconDragDropEventHandler : public QObject
 
 	private:
 		QListWidget* list = nullptr;
-		std::function<void(QListWidgetItem* item, const string path)> eventCallback;
+		std::function<void(QListWidgetItem* item, const QString path)> eventCallback;
 };
 
 //TODO

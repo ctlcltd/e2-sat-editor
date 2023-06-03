@@ -13,7 +13,6 @@
 #include <QtGlobal>
 #include <QDragEnterEvent>
 #include <QDragMoveEvent>
-#include <QDragLeaveEvent>
 #include <QDropEvent>
 #include <QMimeData>
 
@@ -50,7 +49,7 @@ bool ListIconDragDropEventHandler::eventDragEnter(QObject* object, QEvent* event
 
 	// qDebug() << "closest drag: " << e;
 	// qDebug() << " enter urls: " << e->mimeData()->hasUrls();
-	/// qDebug() << " enter image: " << e->mimeData()->hasImage();
+	// qDebug() << " enter image: " << e->mimeData()->hasImage();
 
 	if (e->mimeData()->hasUrls())
 	{
@@ -59,7 +58,9 @@ bool ListIconDragDropEventHandler::eventDragEnter(QObject* object, QEvent* event
 		QModelIndex index = list->indexAt(pos);
 
 		if (index.isValid())
+		{
 			list->setCurrentIndex(index);
+		}
 
 		e->acceptProposedAction();
 		e->accept();
@@ -93,7 +94,9 @@ bool ListIconDragDropEventHandler::eventDragMove(QObject* object, QEvent* event)
 		QModelIndex index = list->indexAt(pos);
 
 		if (index.isValid())
+		{
 			list->setCurrentIndex(index);
+		}
 
 		e->acceptProposedAction();
 		e->accept();
@@ -130,7 +133,7 @@ bool ListIconDragDropEventHandler::eventDrop(QObject* object, QEvent* event)
 	QPoint pos = e->pos();
 #endif
 
-	qDebug() << "closest drop: " << e;
+	// qDebug() << "closest drop: " << e;
 
 	if (e->mimeData()->hasUrls())
 	{
@@ -142,7 +145,7 @@ bool ListIconDragDropEventHandler::eventDrop(QObject* object, QEvent* event)
 		if (index.isValid())
 		{
 			QListWidgetItem* item = list->itemAt(pos);
-			callEventCallback(item, e->mimeData()->urls().first().toLocalFile().toStdString());
+			callEventCallback(item, e->mimeData()->urls().first().toLocalFile());
 			list->setCurrentIndex(index);
 		}
 
@@ -170,27 +173,30 @@ bool ListIconDragDropEventFilter::eventFilter(QObject* object, QEvent* event)
 	if (event->type() == QEvent::DragEnter)
 	{
 		QDragEnterEvent* e = static_cast<QDragEnterEvent*>(event);
-		// e->acceptProposedAction();
+		qDebug() << "list enter: " << e;
+		e->setDropAction(Qt::DropAction::IgnoreAction);
 		e->ignore();
 		return QObject::eventFilter(object, e);
 	}
 	else if (event->type() == QEvent::DragMove)
 	{
 		QDragMoveEvent* e = static_cast<QDragMoveEvent*>(event);
-
-		// qDebug() << "list move: " << e;
-
-		if (e->mimeData()->formats().contains("application/x-qt-mime-type-name"))
-		{
-			// qDebug() << " move urls: " << e->mimeData()->hasUrls();
-			// qDebug() << " move image: " << e->mimeData()->hasImage();
-		}
-
-		event->ignore();
+		qDebug() << "list move: " << e;
+		e->setDropAction(Qt::DropAction::IgnoreAction);
+		e->ignore();
+		return QObject::eventFilter(object, e);
+	}
+	else if (event->type() == QEvent::DragLeave)
+	{
+		qDebug() << "list leave: " << event;
 	}
 	else if (event->type() == QEvent::Drop)
 	{
-		event->accept();
+		QDropEvent* e = static_cast<QDropEvent*>(event);
+		qDebug() << "list drop: " << e;
+		e->setDropAction(Qt::DropAction::IgnoreAction);
+		e->ignore();
+		return QObject::eventFilter(object, e);
 	}
 
 	// qDebug() << "list event: " << event;

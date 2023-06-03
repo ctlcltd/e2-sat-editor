@@ -11,6 +11,7 @@
 
 #ifndef piconsView_h
 #define piconsView_h
+#include <QByteArray>
 #include <QWidget>
 #include <QListWidget>
 #include <QPushButton>
@@ -28,7 +29,8 @@ class piconsView : public viewAbstract
 
 		struct __state
 		{
-			string picons_dir;
+			QString picons_dir;
+			string curr_picon;
 		};
 
 		struct __action
@@ -75,7 +77,8 @@ class piconsView : public viewAbstract
 		void listItemSelectionChanged();
 		void listItemDoubleClicked();
 		void editPicon();
-		void changePicon(QListWidgetItem* item, string path);
+		void changePicon(QListWidgetItem* item, QString path);
+		void changePicon(QListWidgetItem* item, QByteArray data);
 		void showListEditContextMenu(QPoint& pos);
 		void updateFlags();
 		void updateStatusBar(bool current = false);
@@ -90,8 +93,8 @@ class piconsView : public viewAbstract
 		__action action;
 
 	private:
-		static string browseFileDialog(string path);
-		static string importFileDialog(string path);
+		static QString browseFileDialog(QString path);
+		static QString importFileDialog(QString path);
 
 		QWidget* cwid;
 };

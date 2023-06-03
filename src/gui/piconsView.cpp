@@ -115,7 +115,7 @@ void piconsView::layout()
 
 	this->list_evth = new ListIconDragDropEventHandler(list);
 	this->list_evte = new ListIconDragDropEventFilter;
-	list_evth->setEventCallback([=](QListWidgetItem* item, string path) { this->changePicon(item, path); });
+	list_evth->setEventCallback([=](QListWidgetItem* item, QString path) { this->changePicon(item, path); });
 	list->viewport()->installEventFilter(list_evte);
 	widget->installEventFilter(list_evth);
 	widget->setAcceptDrops(true);
@@ -138,7 +138,7 @@ void piconsView::browseLayout()
 {
 	debug("browseLayout");
 
-	this->state.picons_dir = QSettings().value("application/latestPiconsBrowsePath").toString().toStdString();
+	this->state.picons_dir = QSettings().value("application/latestPiconsBrowsePath").toString();
 
 	this->list_browse = new QWidget;
 
@@ -150,21 +150,21 @@ void piconsView::browseLayout()
 
 	QLineEdit* browseinput = new QLineEdit;
 	browseinput->setReadOnly(true);
-	browseinput->setText(QString::fromStdString(this->state.picons_dir));
+	browseinput->setText(this->state.picons_dir);
 	platform::osLineEdit(browseinput);
 
 	QPushButton* browsebutton = new QPushButton;
 	browsebutton->setText(tr("&Browse…", "toolbar"));
 	browsebutton->connect(browsebutton, &QPushButton::pressed, [=]() {
 #ifndef E2SE_DEMO
-		string curr_dir = this->state.picons_dir;
-		string dir = this->browseFileDialog(curr_dir);
+		QString curr_dir = this->state.picons_dir;
+		QString dir = this->browseFileDialog(curr_dir);
 
 		if (curr_dir != dir)
 		{
 			this->state.picons_dir = dir;
-			browseinput->setText(QString::fromStdString(dir));
-			QSettings().setValue("application/latestPiconsBrowsePath", QString::fromStdString(dir));
+			browseinput->setText(dir);
+			QSettings().setValue("application/latestPiconsBrowsePath", dir);
 
 			listChangedPiconsPath();
 		}
@@ -214,7 +214,7 @@ void piconsView::reset()
 
 	list->reset();
 	list->setDragEnabled(false);
-	// list->setAcceptDrops(false);
+	list->setAcceptDrops(false);
 	list->clear();
 
 	this->lsr_find.curr = -1;
@@ -272,8 +272,12 @@ void piconsView::populate()
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
 		item->setText(chname);
 		item->setToolTip(filename);
-		QString filepath = filename.prepend("/").prepend(QString::fromStdString(this->state.picons_dir));
-		if (! this->state.picons_dir.empty() && QFile::exists(filepath))
+
+		QString filepath = filename.prepend("/").prepend(this->state.picons_dir);
+
+		item->setData(Qt::UserRole, filepath);
+
+		if (! this->state.picons_dir.isEmpty() && QFile::exists(filepath))
 			item->setIcon(QIcon(filepath));
 		else
 			item->setIcon(QIcon(":/icons/picon.png"));
@@ -297,17 +301,17 @@ void piconsView::populate()
 	tree->addTopLevelItems(s_items);
 
 	list->setDragEnabled(true);
-	// list->setAcceptDrops(true);
+	list->setAcceptDrops(true);
 }
 
 void piconsView::listItemChanged()
 {
-	debug("listItemChanged");
+	// debug("listItemChanged");
 }
 
 void piconsView::listItemSelectionChanged()
 {
-	debug("listItemSelectionChanged");
+	// debug("listItemSelectionChanged");
 
 	QList<QListWidgetItem*> selected = list->selectedItems();
 
@@ -327,6 +331,9 @@ void piconsView::listItemSelectionChanged()
 	if (selected.count() == 1)
 	{
 		tabSetFlag(gui::TabListEditPicon, true);
+
+		QListWidgetItem* item = selected.first();
+		this->state.curr_picon = item->toolTip().toStdString();
 	}
 	else
 	{
@@ -338,6 +345,7 @@ void piconsView::listItemSelectionChanged()
 	else
 		tabSetFlag(gui::TabListPaste, true);
 
+	updateStatusBar(selected.count() == 1);
 	tabUpdateFlags();
 }
 
@@ -501,12 +509,17 @@ void piconsView::listChangedPiconsPath()
 	while (i != j)
 	{
 		QListWidgetItem* item = list->item(i);
-		QStringList qch = item->data(Qt::UserRole).toStringList();
-		QString filepath = qch[ITEM_DATA_ROLE::filename].prepend("/").prepend(QString::fromStdString(this->state.picons_dir));
-		if (! this->state.picons_dir.empty() && QFile::exists(filepath))
+		QTreeWidgetItem* s_item = tree->topLevelItem(list->row(item));
+		QString filename = s_item->data(ITEM_DATA_ROLE::filename, Qt::UserRole).toString();
+		QString filepath = filename.prepend("/").prepend(this->state.picons_dir);
+
+		item->setData(Qt::UserRole, filepath);
+
+		if (! this->state.picons_dir.isEmpty() && QFile::exists(filepath))
 			item->setIcon(QIcon(filepath));
 		else
 			item->setIcon(QIcon(":/icons/picon.png"));
+
 		i++;
 	}
 }
@@ -522,33 +535,46 @@ void piconsView::editPicon()
 
 	QListWidgetItem* item = selected.first();
 
-	QString curr_dir = QString::fromStdString(this->state.picons_dir);
-
-	string path = this->importFileDialog(curr_dir.toStdString());
+	QString path = this->importFileDialog(this->state.picons_dir);
 
 	changePicon(item, path);
 }
 
-void piconsView::changePicon(QListWidgetItem* item, string path)
+void piconsView::changePicon(QListWidgetItem* item, QString path)
 {
 	debug("changePicon", "index", list->row(item));
-	debug("changePicon", "path", path);
+	debug("changePicon", "path", path.toStdString());
 
-	QString piconpath = QString::fromStdString(path);
-
-	if (! QFile::exists(piconpath))
+	if (! QFile::exists(path))
 		return;
 
-	QTreeWidgetItem* s_item = tree->topLevelItem(list->row(item));
-	QString filename = s_item->data(ITEM_DATA_ROLE::filename, Qt::UserRole).toString();
-	QString filepath = filename.prepend("/").prepend(QString::fromStdString(this->state.picons_dir));
+	QString filepath = item->data(Qt::UserRole).toString();
 
-	QFile file (piconpath);
-	file.copy(filepath);
+	//TODO TEST
+	/*QFile file (filepath);
+	file.copy(path);
 	file.close();
 
-	item->setIcon(QIcon(filepath));
-	// item->setIcon(QIcon(piconpath));
+	item->setIcon(QIcon(filepath));*/
+	item->setIcon(QIcon(path));
+}
+
+void piconsView::changePicon(QListWidgetItem* item, QByteArray data)
+{
+	debug("changePicon", "index", list->row(item));
+	debug("changePicon", "data", true);
+
+	if (data.isEmpty())
+		return;
+
+	QString filepath = item->data(Qt::UserRole).toString();
+
+	//TODO TEST
+	/*QFile file (filepath);
+	file.write(data);
+	file.close();
+
+	item->setIcon(QIcon(filepath));*/
 }
 
 void piconsView::listItemCopy(bool cut)
@@ -566,12 +592,10 @@ void piconsView::listItemCopy(bool cut)
 	{
 		QMimeData* content = new QMimeData;
 		QList<QUrl> urls;
-		
+
 		for (auto & item : selected)
 		{
-			QTreeWidgetItem* s_item = tree->topLevelItem(list->row(item));
-			QString filename = s_item->data(ITEM_DATA_ROLE::filename, Qt::UserRole).toString();
-			QString filepath = filename.prepend("/").prepend(QString::fromStdString(this->state.picons_dir));
+			QString filepath = item->data(Qt::UserRole).toString();
 
 			if (QFile::exists(filepath))
 				urls.append(QUrl(filepath));
@@ -583,9 +607,7 @@ void piconsView::listItemCopy(bool cut)
 	else
 	{
 		QListWidgetItem* item = selected.first();
-		QTreeWidgetItem* s_item = tree->topLevelItem(list->row(item));
-		QString filename = s_item->data(ITEM_DATA_ROLE::filename, Qt::UserRole).toString();
-		QString filepath = filename.prepend("/").prepend(QString::fromStdString(this->state.picons_dir));
+		QString filepath = item->data(Qt::UserRole).toString();
 
 		if (QFile::exists(filepath))
 			clipboard->setImage(QImage(filepath));
@@ -617,29 +639,17 @@ void piconsView::listItemPaste()
 			QUrl url = mimeData->urls().at(i);
 
 			if (QFile::exists(url.toLocalFile()))
-			{
-				QTreeWidgetItem* s_item = tree->topLevelItem(list->row(item));
-				QString filename = s_item->data(ITEM_DATA_ROLE::filename, Qt::UserRole).toString();
-				QString filepath = filename.prepend("/").prepend(QString::fromStdString(this->state.picons_dir));
-			}
+				changePicon(item, url.toLocalFile());
 			if (i++ == mimeData->urls().size())
-			{
 				break;
-			}
 		}
 	}
 	else if (mimeData->hasImage() && selected.count() == 1)
 	{
 		QListWidgetItem* item = selected.first();
-		QTreeWidgetItem* s_item = tree->topLevelItem(list->row(item));
-		QString filename = s_item->data(ITEM_DATA_ROLE::filename, Qt::UserRole).toString();
-		QString filepath = filename.prepend("/").prepend(QString::fromStdString(this->state.picons_dir));
+		QString filepath = item->data(Qt::UserRole).toString();
 
-		QFile file (filepath);
-		file.write(mimeData->imageData().toByteArray());
-		file.close();
-
-		item->setIcon(QIcon(filepath));
+		changePicon(item, mimeData->imageData().toByteArray());
 	}
 }
 
@@ -677,7 +687,7 @@ void piconsView::listItemDelete()
 	{
 		QTreeWidgetItem* s_item = tree->topLevelItem(list->row(item));
 		QString filename = s_item->data(ITEM_DATA_ROLE::filename, Qt::UserRole).toString();
-		QString filepath = filename.prepend("/").prepend(QString::fromStdString(this->state.picons_dir));
+		QString filepath = filename.prepend("/").prepend(this->state.picons_dir);
 
 		if (QFile::exists(filepath))
 			QFile::moveToTrash(filepath);
@@ -687,6 +697,14 @@ void piconsView::listItemDelete()
 void piconsView::updateStatusBar(bool current)
 {
 	debug("updateStatusBar");
+
+	gui::status msg;
+	msg.update = current;
+
+	if (current && ! this->state.curr_picon.empty())
+		msg.curr = this->state.curr_picon;
+
+	tabSetStatusBar(msg);
 }
 
 void piconsView::showListEditContextMenu(QPoint& pos)
@@ -784,19 +802,19 @@ QString piconsView::piconPathname(string chname)
 	return qstr;
 }
 
-string piconsView::browseFileDialog(string path)
+QString piconsView::browseFileDialog(QString path)
 {
 #ifndef E2SE_DEMO
-	return QFileDialog::getExistingDirectory(nullptr, tr("Select picons folder", "file-dialog"), QString::fromStdString(path)).toStdString();
+	return QFileDialog::getExistingDirectory(nullptr, tr("Select picons folder", "file-dialog"), path);
 #else
 	return "";
 #endif
 }
 
-string piconsView::importFileDialog(string path)
+QString piconsView::importFileDialog(QString path)
 {
 #ifndef E2SE_DEMO
-	return QFileDialog::getOpenFileName(nullptr, tr("Select picon image", "file-dialog"), QString::fromStdString(path), "File PNG (*.png)").toStdString();
+	return QFileDialog::getOpenFileName(nullptr, tr("Select picon image", "file-dialog"), path, "Image PNG (*.png)");
 #else
 	return "";
 #endif
