@@ -61,6 +61,8 @@ class mainView : public viewAbstract
 
 		struct __action
 		{
+			QPushButton* scrn_sets;
+			QPushButton* lcrn_prefs;
 			QAction* tree_newbq;
 			QAction* list_addch;
 			QAction* list_addmk;
@@ -70,6 +72,8 @@ class mainView : public viewAbstract
 			QPushButton* list_search;
 			QPushButton* list_ref;
 			QPushButton* list_dnd;
+			QMenu* scrn_sets_menu = nullptr;
+			QMenu* lcrn_prefs_menu = nullptr;
 		};
 
 		enum ITEM_DATA_ROLE {
@@ -145,6 +149,9 @@ class mainView : public viewAbstract
 		void allowDnD();
 		void disallowDnD();
 		void reharmDnD();
+		QMenu* servicesSetsCornerMenu();
+		QMenu* listPrefsCornerMenu();
+		void convert(int bit);
 		void addBouquet();
 		void editBouquet();
 		void addUserbouquet();

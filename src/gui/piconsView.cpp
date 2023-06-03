@@ -138,7 +138,7 @@ void piconsView::browseLayout()
 {
 	debug("browseLayout");
 
-	this->state.picons_dir = QSettings().value("application/latestPiconsBrowsePath").toString();
+	this->state.picons_dir = QSettings().value("application/piconsBrowsePath").toString();
 
 	this->list_browse = new QWidget;
 
@@ -164,7 +164,7 @@ void piconsView::browseLayout()
 		{
 			this->state.picons_dir = dir;
 			browseinput->setText(dir);
-			QSettings().setValue("application/latestPiconsBrowsePath", dir);
+			QSettings().setValue("application/piconsBrowsePath", dir);
 
 			listChangedPiconsPath();
 		}
@@ -250,16 +250,26 @@ void piconsView::populate()
 			idx = QString::number(chi.first);
 			entry.prepend(idx);
 			chname = entry[ITEM_DATA_ROLE::chname];
-			filename = piconPathname(ch.chname);
-			if (filename.isEmpty())
+
+			if (QSettings().value("preference/piconsUseChname").toBool())
+			{
+				filename = piconPathname(ch.chname);
+				if (filename.isEmpty())
+				{
+					QString refid = QString::fromStdString(dbih->get_reference_id(chi.second));
+					filename = QString(refid).replace(":", "_").append(".png");
+				}
+				else
+				{
+					filename.append(".png");
+				}
+			}
+			else
 			{
 				QString refid = QString::fromStdString(dbih->get_reference_id(chi.second));
 				filename = QString(refid).replace(":", "_").append(".png");
 			}
-			else
-			{
-				filename.append(".png");
-			}
+
 			entry.insert(ITEM_DATA_ROLE::filename, filename);
 		}
 		else
@@ -739,6 +749,10 @@ void piconsView::showListEditContextMenu(QPoint& pos)
 void piconsView::updateFlags()
 {
 	debug("updateFlags");
+
+	tabSetFlag(gui::FileImport, false);
+	tabSetFlag(gui::FileExport, false);
+	tabUpdateToolBars();
 
 	tabSetFlag(gui::TabTreeEdit, false);
 	tabSetFlag(gui::TabTreeDelete, false);

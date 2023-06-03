@@ -44,6 +44,7 @@ class tunersetsView : public viewAbstract
 
 		struct __action
 		{
+			QPushButton* tcrn_edit;
 			QAction* tree_newtn;
 			QAction* list_newtr;
 			QPushButton* tree_search;

@@ -703,10 +703,17 @@ void tab::importFile()
 	gui::GUI_DPORTS gde = gui::GUI_DPORTS::AllFiles;
 	vector<string> paths;
 
-	// channelBook view
-	if (current == gui::TAB_VIEW::channelBook)
+	// other views
+	if (current == gui::TAB_VIEW::picons || current == gui::TAB_VIEW::channelBook)
 	{
-		return infoMessage(tr("Nothing to import", "message"), tr("You are in channel book.", "message"));
+		// picons view
+		if (current == gui::TAB_VIEW::picons)
+			infoMessage(tr("Nothing to import", "message"), tr("You are in Edit Picons.", "message"));
+		// channelBook view
+		else if (current == gui::TAB_VIEW::channelBook)
+			infoMessage(tr("Nothing to import", "message"), tr("You are in Channel Book.", "message"));
+
+		return;
 	}
 
 	paths = gid->importFileDialog(gde);
@@ -774,6 +781,25 @@ void tab::exportFile()
 			case e2db::YTYPE::atsc:
 				filename = "atsc.xml";
 			break;
+		}
+
+		paths.push_back(filename);
+	}
+	// transponders view
+	else if (current == gui::TAB_VIEW::transponders)
+	{
+		gde = gui::GUI_DPORTS::Services;
+		if (dbtype == 0)
+		{
+			int ver = dbih->get_zapit_version();
+
+			bit = e2db::FPORTS::all_services;
+			filename = ver > 4 ? "lamedb5" : "lamedb";
+		}
+		else
+		{
+			bit = e2db::FPORTS::all_services_xml;
+			filename = "services.xml";
 		}
 
 		paths.push_back(filename);
@@ -861,10 +887,17 @@ void tab::exportFile()
 			}
 		}
 	}
-	// channelBook view
-	else if (current == gui::TAB_VIEW::channelBook)
+	// other views
+	else
 	{
-		return infoMessage(tr("Nothing to export", "message"), tr("You are in channel book.", "message"));
+		// picons view
+		if (current == gui::TAB_VIEW::picons)
+			infoMessage(tr("Nothing to export", "message"), tr("You are in Edit Picons.", "message"));
+		// channelBook view
+		else if (current == gui::TAB_VIEW::channelBook)
+			infoMessage(tr("Nothing to export", "message"), tr("You are in Channel Book.", "message"));
+
+		return;
 	}
 
 	if (paths.empty())

@@ -377,123 +377,157 @@ void settings::preferencesLayout()
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf0li);
 	dtf0->addRow(dtf0li);
 
-	QGroupBox* dtl1 = new QGroupBox(tr("Drag and Drop"));
+	QGroupBox* dtl1 = new QGroupBox(tr("Language"));
 	QFormLayout* dtf1 = new QFormLayout;
 	dtf1->setSpacing(20);
 	dtf1->setFormAlignment(Qt::AlignLeading);
 	dtf1->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
-	QCheckBox* dtf1sc = new QCheckBox(tr("Switch to current bouquet item after the drop"));
-	dtf1sc->setProperty("field", "treeCurrentAfterDrop");
-	dtf1sc->setChecked(true);
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf1sc);
-	dtf1->addRow(dtf1sc);
+	QComboBox* dtf1ln = new QComboBox;
+	dtf1ln->setProperty("field", "language");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf1ln);
+	dtf1ln->addItem(tr("Default (system language)"), "");
+#ifndef E2SE_DEMO
+	dtf1ln->addItem(QLocale::languageToString(QLocale::English), "en");
+	dtf1ln->addItem(QLocale::languageToString(QLocale::Italian), "it");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Arabic), "ar");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Bulgarian), "bg");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Catalan), "ca");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Czech), "cs");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Danish), "da");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::German), "de");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::English), "en");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Spanish), "es");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Persian), "fa");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Finnish), "fi");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::French), "fr");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Gaelic), "gd");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Galician), "gl");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Hebrew), "he");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Croatian), "hr");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Hungarian), "hu");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Italian), "it");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Japanese), "ja");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Korean), "ko");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Lithuanian), "lt");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Latvian), "lv");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Dutch), "nl");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::NorwegianNynorsk), "nn");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Polish), "pl");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Portuguese).append(" (%1)").arg(QLocale::countryToString(QLocale::Brazil)), "pt_BR");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Portuguese).append(" (%1)").arg(QLocale::countryToString(QLocale::Portugal)), "pt_PT");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Russian), "ru");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Slovak), "sk");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Slovenian), "sl");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Swedish), "sv");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Turkish), "tr");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Ukrainian), "uk");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Chinese).append(" (%1)").arg(QLocale::countryToString(QLocale::China)), "zh_CN");
+	// dtf1ln->addItem(QLocale::languageToString(QLocale::Chinese).append(" (%1)").arg(QLocale::countryToString(QLocale::Taiwan)), "zh_TW");
+#endif
+	platform::osComboBox(dtf1ln);
+	dtf1->addRow(dtf1ln);
+	dtf1->addRow(new QLabel(QString("<small>%1</small>").arg(tr("The software might need to be restarted."))));
 
-	QFormLayout* dtf11 = new QFormLayout;
-	dtf11->setSpacing(20);
-	dtf11->setFormAlignment(Qt::AlignLeading);
-	dtf11->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
-
-	QLabel* dth11 = new QLabel(tr("Channel operations"));
-	dth11->setAlignment(dth11->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
-	dtf11->addRow(dth11);
-
-	QButtonGroup* dtg1 = new QButtonGroup;
-	dtg1->setExclusive(true);
-
-	QCheckBox* dtf1ci = new QCheckBox(tr("Copy channels (preserving)"));
-	dtf1ci->setProperty("field", "treeDropCopy");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf1ci);
-	dtf1ci->setChecked(true);
-	dtg1->addButton(dtf1ci);
-	dtf11->addRow(dtf1ci);
-
-	QCheckBox* dtf1mi = new QCheckBox(tr("Move channels (deleting)"));
-	dtf1mi->setProperty("field", "treeDropMove");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf1mi);
-	dtg1->addButton(dtf1mi);
-	dtf11->addRow(dtf1mi);
-
-	dtf1->addRow(dtf11);
-
-	QGroupBox* dtl2 = new QGroupBox(tr("Language"));
+	QGroupBox* dtl2 = new QGroupBox(tr("Theme"));
 	QFormLayout* dtf2 = new QFormLayout;
 	dtf2->setSpacing(20);
 	dtf2->setFormAlignment(Qt::AlignLeading);
 	dtf2->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
-	QComboBox* dtf2ln = new QComboBox;
-	dtf2ln->setProperty("field", "language");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2ln);
-	dtf2ln->addItem(tr("Default (system language)"), "");
-#ifndef E2SE_DEMO
-	dtf2ln->addItem(QLocale::languageToString(QLocale::English), "en");
-	dtf2ln->addItem(QLocale::languageToString(QLocale::Italian), "it");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Arabic), "ar");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Bulgarian), "bg");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Catalan), "ca");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Czech), "cs");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Danish), "da");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::German), "de");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::English), "en");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Spanish), "es");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Persian), "fa");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Finnish), "fi");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::French), "fr");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Gaelic), "gd");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Galician), "gl");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Hebrew), "he");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Croatian), "hr");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Hungarian), "hu");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Italian), "it");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Japanese), "ja");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Korean), "ko");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Lithuanian), "lt");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Latvian), "lv");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Dutch), "nl");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::NorwegianNynorsk), "nn");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Polish), "pl");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Portuguese).append(" (%1)").arg(QLocale::countryToString(QLocale::Brazil)), "pt_BR");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Portuguese).append(" (%1)").arg(QLocale::countryToString(QLocale::Portugal)), "pt_PT");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Russian), "ru");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Slovak), "sk");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Slovenian), "sl");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Swedish), "sv");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Turkish), "tr");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Ukrainian), "uk");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Chinese).append(" (%1)").arg(QLocale::countryToString(QLocale::China)), "zh_CN");
-	// dtf2ln->addItem(QLocale::languageToString(QLocale::Chinese).append(" (%1)").arg(QLocale::countryToString(QLocale::Taiwan)), "zh_TW");
-#endif
-	platform::osComboBox(dtf2ln);
-	dtf2->addRow(dtf2ln);
+	QComboBox* dtf2td = new QComboBox;
+	dtf2td->setProperty("field", "theme");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2td);
+	dtf2td->addItem(tr("Default (system theme)"), "");
+	dtf2td->addItem(tr("Dark"), "dark");
+	dtf2td->addItem(tr("Light"), "light");
+	platform::osComboBox(dtf2td);
+	dtf2->addRow(dtf2td);
+
+	QCheckBox* dtf2oe = new QCheckBox(tr("Enable experimental features"));
+	dtf2oe->setProperty("field", "osExperiment");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf2oe);
+	dtf2oe->setChecked(true);
+	dtf2->addRow(dtf2oe);
 	dtf2->addRow(new QLabel(QString("<small>%1</small>").arg(tr("The software might need to be restarted."))));
 
-	QGroupBox* dtl3 = new QGroupBox(tr("Theme"));
+	QGroupBox* dtl3 = new QGroupBox(tr("Drag and Drop"));
 	QFormLayout* dtf3 = new QFormLayout;
 	dtf3->setSpacing(20);
 	dtf3->setFormAlignment(Qt::AlignLeading);
 	dtf3->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
-	QComboBox* dtf3td = new QComboBox;
-	dtf3td->setProperty("field", "theme");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf3td);
-	dtf3td->addItem(tr("Default (system theme)"), "");
-	dtf3td->addItem(tr("Dark"), "dark");
-	dtf3td->addItem(tr("Light"), "light");
-	platform::osComboBox(dtf3td);
-	dtf3->addRow(dtf3td);
+	QCheckBox* dtf3sc = new QCheckBox(tr("Switch to current bouquet item after the drop"));
+	dtf3sc->setProperty("field", "treeCurrentAfterDrop");
+	dtf3sc->setChecked(true);
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf3sc);
+	dtf3->addRow(dtf3sc);
 
-	QCheckBox* dtf3oe = new QCheckBox(tr("Enable experimental features"));
-	dtf3oe->setProperty("field", "osExperiment");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf3oe);
-	dtf3oe->setChecked(true);
-	dtf3->addRow(dtf3oe);
-	dtf3->addRow(new QLabel(QString("<small>%1</small>").arg(tr("The software might need to be restarted."))));
+	QFormLayout* dtf31 = new QFormLayout;
+	dtf31->setSpacing(20);
+	dtf31->setFormAlignment(Qt::AlignLeading);
+	dtf31->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+
+	QLabel* dth31 = new QLabel(tr("Channel operations"));
+	dth31->setAlignment(dth31->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
+	dtf31->addRow(dth31);
+
+	QButtonGroup* dtg3 = new QButtonGroup;
+	dtg3->setExclusive(true);
+
+	QCheckBox* dtf3ci = new QCheckBox(tr("Copy channels (preserving)"));
+	dtf3ci->setProperty("field", "treeDropCopy");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf3ci);
+	dtf3ci->setChecked(true);
+	dtg3->addButton(dtf3ci);
+	dtf31->addRow(dtf3ci);
+
+	QCheckBox* dtf3mi = new QCheckBox(tr("Move channels (deleting)"));
+	dtf3mi->setProperty("field", "treeDropMove");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf3mi);
+	dtg3->addButton(dtf3mi);
+	dtf31->addRow(dtf3mi);
+
+	dtf3->addRow(dtf31);
+
+	QGroupBox* dtl4 = new QGroupBox(tr("Picons"));
+	QFormLayout* dtf4 = new QFormLayout;
+	dtf4->setSpacing(20);
+	dtf4->setFormAlignment(Qt::AlignLeading);
+	dtf4->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+
+	QFormLayout* dtf41 = new QFormLayout;
+	dtf41->setSpacing(20);
+	dtf41->setFormAlignment(Qt::AlignLeading);
+	dtf41->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+
+	QLabel* dth41 = new QLabel(tr("Filename format"));
+	dth41->setAlignment(dth41->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
+	dtf41->addRow(dth41);
+
+	QButtonGroup* dtg4 = new QButtonGroup;
+	dtg4->setExclusive(true);
+
+	QCheckBox* dtf4ri = new QCheckBox(tr("Use reference ID"));
+	dtf4ri->setProperty("field", "piconsUseRefid");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf4ri);
+	dtf4ri->setChecked(true);
+	dtg4->addButton(dtf4ri);
+	dtf41->addRow(dtf4ri);
+
+	QCheckBox* dtf4sn = new QCheckBox(tr("Use service name"));
+	dtf4sn->setProperty("field", "piconsUseChname");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf4sn);
+	dtg4->addButton(dtf4sn);
+	dtf41->addRow(dtf4sn);
+
+	dtf4->addRow(dtf41);
 
 	dtl0->setLayout(dtf0);
 	dtl1->setLayout(dtf1);
 	dtl2->setLayout(dtf2);
 	dtl3->setLayout(dtf3);
+	dtl4->setLayout(dtf4);
 
 	dtform->addItem(new QSpacerItem(0, 0));
 	dtform->addWidget(dtl0);
@@ -503,6 +537,8 @@ void settings::preferencesLayout()
 	dtform->addWidget(dtl2);
 	dtform->addItem(new QSpacerItem(0, 5));
 	dtform->addWidget(dtl3);
+	dtform->addItem(new QSpacerItem(0, 5));
+	dtform->addWidget(dtl4);
 	dtform->addItem(new QSpacerItem(0, 0));
 
 	dtcnt->setAlignment(Qt::AlignLeading | Qt::AlignTop);

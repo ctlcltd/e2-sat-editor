@@ -75,6 +75,11 @@ void tunersetsView::layout()
 
 	QSplitter* swid = new QSplitter;
 
+	QWidget* afrm = new QWidget;
+	QWidget* bfrm = new QWidget;
+
+	QGridLayout* twrap = new QGridLayout;
+	QGridLayout* lwrap = new QGridLayout;
 	QVBoxLayout* tbox = new QVBoxLayout;
 	QVBoxLayout* lbox = new QVBoxLayout;
 
@@ -82,10 +87,14 @@ void tunersetsView::layout()
 	QGroupBox* lfrm = new QGroupBox;
 
 	frm->setContentsMargins(0, 0, 0, 0);
+	twrap->setContentsMargins(0, 0, 0, 0);
+	lwrap->setContentsMargins(0, 0, 0, 0);
 	tbox->setContentsMargins(0, 0, 0, 0);
 	lbox->setContentsMargins(0, 0, 0, 0);
 
 	frm->setSpacing(0);
+	twrap->setSpacing(0);
+	lwrap->setSpacing(0);
 	tbox->setSpacing(0);
 	lbox->setSpacing(0);
 
@@ -244,6 +253,23 @@ void tunersetsView::layout()
 
 	searchLayout();
 
+	QWidget* tcrn = new QWidget;
+	tcrn->setStyleSheet("position: absolute; top: 0");
+	QHBoxLayout* tcrn_box = new QHBoxLayout;
+	tcrn_box->setContentsMargins(0, 0, 0, 0);
+	tcrn_box->setSizeConstraint(QLayout::SetMinimumSize);
+
+	this->action.tcrn_edit = new QPushButton;
+#ifdef Q_OS_MAC
+	this->action.tcrn_edit->setFlat(true);
+#endif
+	this->action.tcrn_edit->setIcon(theme->dynamicIcon("settings", this->action.tcrn_edit));
+	this->action.tcrn_edit->setWhatsThis(tr("Edit Settings", "corner"));
+	this->action.tcrn_edit->connect(this->action.tcrn_edit, &QPushButton::pressed, [=]() { this->editSettings(); });
+
+	tcrn_box->addWidget(this->action.tcrn_edit, 0, Qt::AlignTrailing);
+	tcrn->setLayout(tcrn_box);
+
 	QToolBar* tree_ats = toolBar();
 	QToolBar* list_ats = toolBar();
 
@@ -280,16 +306,22 @@ void tunersetsView::layout()
 	tbox->addWidget(tree_search);
 	tbox->addWidget(tree_ats);
 	tfrm->setLayout(tbox);
+	twrap->addWidget(tfrm, 0, 0);
+	twrap->addWidget(tcrn, 0, 0, Qt::AlignTop | Qt::AlignTrailing);
 
 	lbox->addWidget(list);
 	lbox->addWidget(list_search);
 	lbox->addWidget(list_ats);
 	lfrm->setLayout(lbox);
+	lwrap->addWidget(lfrm, 0, 0);
+
+	afrm->setLayout(twrap);
+	bfrm->setLayout(lwrap);
 
 	platform::osWidgetOpaque(swid);
 
-	swid->addWidget(tfrm);
-	swid->addWidget(lfrm);
+	swid->addWidget(afrm);
+	swid->addWidget(bfrm);
 
 	swid->setStretchFactor(0, 1);
 	swid->setStretchFactor(1, 5);
@@ -1212,8 +1244,8 @@ void tunersetsView::showTreeEditContextMenu(QPoint& pos)
 	contextMenuAction(tree_edit, tr("Edit Position", "context-menu"), [=]() { this->editPosition(); }, tabGetFlag(gui::TabTreeEdit));
 	contextMenuSeparator(tree_edit);
 	contextMenuAction(tree_edit, tr("&Delete", "context-menu"), [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
-	contextMenuSeparator(tree_edit);
-	contextMenuAction(tree_edit, tr("Edit Settings", "context-menu"), [=]() { this->editSettings(); });
+	// contextMenuSeparator(tree_edit);
+	// contextMenuAction(tree_edit, tr("Edit Settings", "context-menu"), [=]() { this->editSettings(); });
 
 	platform::osContextMenuPopup(tree_edit, tree, pos);
 }

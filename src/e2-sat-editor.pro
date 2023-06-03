@@ -33,6 +33,8 @@ macx {
 	SOURCES += gui/platforms/platform_macx.mm
 	TARGET = e2" "SAT" "Editor
 } else {
+	INCLUDEPATH += /usr/curl/include
+	LIBS += -L/usr/curl/lib -lcurl
 	TARGET = e2-sat-editor
 }
 

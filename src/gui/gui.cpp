@@ -297,7 +297,7 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::TunersetsAtsc] = menuBarAction(mtools, tr("Edit %1", "menu").arg("atsc.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsAtsc); });
 	menuBarSeparator(mtools);
 	gmenu[GUI_CXE::Picons] = menuBarAction(mtools, tr("Edit Picons", "menu"), [=]() { this->tabAction(TAB_ATS::EditPicons); });
-	gmenu[GUI_CXE::OpenChannelBook] = menuBarAction(mtools, tr("Channel book", "menu"), [=]() { this->tabAction(TAB_ATS::ShowChannelBook); });
+	gmenu[GUI_CXE::OpenChannelBook] = menuBarAction(mtools, tr("Channel Book", "menu"), [=]() { this->tabAction(TAB_ATS::ShowChannelBook); });
 	menuBarSeparator(mtools);
 	QMenu* mimportcsv = menuBarMenu(mtools, tr("Import from CSV", "menu"));
 	gmenu[GUI_CXE::ToolsImportCSV_services] = menuBarAction(mimportcsv, tr("Import Services", "menu"), [=]() { this->tabAction(TAB_ATS::ImportCSV_services); });
@@ -533,17 +533,19 @@ void gui::initSettings()
 #else
 	settings.setValue("application/fixUnicodeChars", true);
 #endif
-	settings.setValue("application/latestPiconsBrowsePath", "");
+	settings.setValue("application/piconsBrowsePath", "");
 
 	settings.beginGroup("preference");
 	settings.setValue("askConfirmation", false);
 	settings.setValue("parentalLockInvert", false);
-	settings.setValue("treeCurrentAfterDrop", true);
-	settings.setValue("treeDropCopy", true);
-	settings.setValue("treeDropMove", false);
 	settings.setValue("language", "");
 	settings.setValue("theme", "");
 	settings.setValue("osExperiment", true);
+	settings.setValue("treeCurrentAfterDrop", true);
+	settings.setValue("treeDropCopy", true);
+	settings.setValue("treeDropMove", false);
+	settings.setValue("piconsUseRefid", true);
+	settings.setValue("piconsUseChname", false);
 	settings.endGroup();
 
 	settings.beginGroup("engine");
@@ -609,6 +611,10 @@ void gui::updateSettings()
 				settings.setValue("password", ba.toBase64());
 			}
 			settings.endArray();
+
+			settings.setValue("application/piconsBrowsePath", "");
+			settings.setValue("preference/piconsUseRefid", true);
+			settings.setValue("preference/piconsUseChname", false);
 		}
 	}
 }
@@ -764,22 +770,22 @@ int gui::openTab(TAB_VIEW view, int arg)
 		case TAB_VIEW::transponders:
 			ttab->viewTransponders(parent);
 			tticon = QIcon(theme::icon("transponders-view", theme::icon_highlight));
-			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit transponders", "tab"));
+			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit Transponders", "tab"));
 		break;
 		case TAB_VIEW::tunersets:
 			ttab->viewTunersets(parent, arg);
 			tticon = QIcon(theme::icon("tunersets-view", theme::icon_highlight));
-			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit settings", "tab"));
+			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit Settings", "tab"));
 		break;
 		case TAB_VIEW::picons:
 			ttab->viewPicons(parent);
 			tticon = QIcon(theme::icon("picons-view", theme::icon_highlight));
-			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit picons", "tab"));
+			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit Picons", "tab"));
 		break;
 		case TAB_VIEW::channelBook:
 			ttab->viewChannelBook(parent);
 			tticon = QIcon(theme::icon("channelbook-view", theme::icon_highlight));
-			ttname = QString("%1 - %2").arg(ttname).arg(tr("Channel book", "tab"));
+			ttname = QString("%1 - %2").arg(ttname).arg(tr("Channel Book", "tab"));
 		break;
 	}
 
@@ -1001,16 +1007,16 @@ void gui::tabChangeName(int ttid, string path)
 	switch (v)
 	{
 		case TAB_VIEW::transponders:
-			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit transponders", "tab"));
+			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit Transponders", "tab"));
 		break;
 		case TAB_VIEW::tunersets:
-			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit settings", "tab"));
+			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit Settings", "tab"));
 		break;
 		case TAB_VIEW::picons:
-			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit picons", "tab"));
+			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit Picons", "tab"));
 		break;
 		case TAB_VIEW::channelBook:
-			ttname = QString("%1 - %2").arg(ttname).arg(tr("Channel book", "tab"));
+			ttname = QString("%1 - %2").arg(ttname).arg(tr("Channel Book", "tab"));
 		break;
 	}
 

@@ -80,6 +80,9 @@ void mainView::layout()
 	QWidget* afrm = new QWidget;
 	QWidget* bfrm = new QWidget;
 
+	QGridLayout* swrap = new QGridLayout;
+	QGridLayout* twrap = new QGridLayout;
+	QGridLayout* lwrap = new QGridLayout;
 	QVBoxLayout* asbox = new QVBoxLayout;
 	QVBoxLayout* atbox = new QVBoxLayout;
 	QGridLayout* bbox = new QGridLayout;
@@ -91,6 +94,9 @@ void mainView::layout()
 	QGroupBox* lfrm = new QGroupBox(tr("Channels"));
 
 	frm->setContentsMargins(0, 0, 0, 0);
+	swrap->setContentsMargins(0, 0, 0, 0);
+	twrap->setContentsMargins(0, 0, 0, 0);
+	lwrap->setContentsMargins(0, 0, 0, 0);
 	asbox->setContentsMargins(0, 0, 0, 0);
 	atbox->setContentsMargins(0, 0, 0, 0);
 	bbox->setContentsMargins(0, 0, 0, 0);
@@ -98,6 +104,9 @@ void mainView::layout()
 	lbox->setContentsMargins(0, 0, 0, 0);
 
 	frm->setSpacing(0);
+	swrap->setSpacing(0);
+	twrap->setSpacing(0);
+	lwrap->setSpacing(0);
 	asbox->setSpacing(0);
 	atbox->setSpacing(0);
 	bbox->setSpacing(0);
@@ -225,6 +234,48 @@ void mainView::layout()
 	searchLayout();
 	referenceBoxLayout();
 
+	QWidget* scrn = new QWidget;
+	scrn->setStyleSheet("position: absolute; top: 0");
+	QHBoxLayout* scrn_box = new QHBoxLayout;
+	scrn_box->setContentsMargins(0, 0, 0, 0);
+	scrn_box->setSizeConstraint(QLayout::SetMinimumSize);
+
+	QWidget* lcrn = new QWidget;
+	lcrn->setStyleSheet("position: absolute; top: 0");
+	QHBoxLayout* lcrn_box = new QHBoxLayout;
+	lcrn_box->setContentsMargins(0, 0, 0, 0);
+	lcrn_box->setSizeConstraint(QLayout::SetMinimumSize);
+
+	this->action.scrn_sets = new QPushButton;
+#ifdef Q_OS_MAC
+	this->action.scrn_sets->setFlat(true);
+#endif
+	this->action.scrn_sets->setIcon(theme->dynamicIcon("add", this->action.scrn_sets));
+	this->action.scrn_sets->setWhatsThis(tr("Settings Convert", "corner"));
+	this->action.scrn_sets->connect(this->action.scrn_sets, &QPushButton::pressed, [=]() {
+		QMenu* menu = servicesSetsCornerMenu();
+		// menu->popup(this->action.scrn_sets->mapToGlobal(this->action.scrn_sets->pos()));
+		platform::osContextMenuPopup(menu, this->action.scrn_sets, this->action.scrn_sets->pos());
+	});
+
+	this->action.lcrn_prefs = new QPushButton;
+#ifdef Q_OS_MAC
+	this->action.lcrn_prefs->setFlat(true);
+#endif
+	this->action.lcrn_prefs->setIcon(theme->dynamicIcon("settings", this->action.lcrn_prefs));
+	this->action.lcrn_prefs->setWhatsThis(tr("Drag&&Drop Preferences", "corner"));
+	this->action.lcrn_prefs->connect(this->action.lcrn_prefs, &QPushButton::pressed, [=]() {
+		QMenu* menu = listPrefsCornerMenu();
+		// menu->popup(this->action.lcrn_prefs->mapToGlobal(this->action.lcrn_prefs->pos()));
+		platform::osContextMenuPopup(menu, this->action.lcrn_prefs, this->action.lcrn_prefs->pos());
+	});
+
+	scrn_box->addWidget(this->action.scrn_sets, 0, Qt::AlignTrailing);
+	scrn->setLayout(scrn_box);
+
+	lcrn_box->addWidget(this->action.lcrn_prefs, 0, Qt::AlignTrailing);
+	lcrn->setLayout(lcrn_box);
+
 	QToolBar* tree_ats = toolBar();
 	QToolBar* list_ats = toolBar();
 
@@ -275,13 +326,16 @@ void mainView::layout()
 	asbox->addWidget(side);
 	sfrm->setLayout(asbox);
 	sfrm->setMaximumHeight(192);
+	swrap->addWidget(sfrm, 0, 0);
+	swrap->addWidget(scrn, 0, 0, Qt::AlignTop | Qt::AlignTrailing);
 
 	atbox->addWidget(tree);
 	atbox->addWidget(tree_search);
 	atbox->addWidget(tree_ats);
 	tfrm->setLayout(atbox);
+	twrap->addWidget(tfrm, 0, 0);
 
-	tbox->addWidget(sfrm);
+	tbox->addItem(swrap);
 	tbox->addItem(new QSpacerItem(0, 4, QSizePolicy::Preferred, QSizePolicy::Fixed));
 	tbox->addWidget(tfrm, 1);
 	afrm->setLayout(tbox);
@@ -291,11 +345,13 @@ void mainView::layout()
 	lbox->addWidget(list_reference);
 	lbox->addWidget(list_ats);
 	lfrm->setLayout(lbox);
+	lwrap->addWidget(lfrm, 0, 0);
+	lwrap->addWidget(lcrn, 0, 0, Qt::AlignTop | Qt::AlignTrailing);
 
 	afrm->setMinimumWidth(250);
 	lfrm->setMinimumWidth(510);
 
-	bbox->addWidget(lfrm);
+	bbox->addItem(lwrap, 0, 0);
 	bfrm->setLayout(bbox);
 
 	platform::osWidgetBlend(afrm);
@@ -1167,6 +1223,187 @@ void mainView::reharmDnD()
 	this->state.sort = pair (0, Qt::AscendingOrder);
 	this->action.list_dnd->setDisabled(true);
 	this->action.list_dnd->actions().first()->setDisabled(true);
+}
+
+QMenu* mainView::servicesSetsCornerMenu()
+{
+	if (this->action.scrn_sets_menu == nullptr)
+	{
+		QMenu* menu = this->action.scrn_sets_menu = new QMenu;
+		menu->setStyleSheet("font-size: small");
+
+		QMenu* submenu = new QMenu(tr("Convert", "corner"));
+
+		QList<QPair<int, QString>> opts = {
+			{0x1224, tr("Lamedb 2.4 [Enigma 2]")},
+			{0x1225, tr("Lamedb 2.5 [Enigma 2]")},
+			{0x1223, tr("Lamedb 2.3 [Enigma 1]")},
+			{0x1222, tr("Lamedb 2.2 [Enigma 1]")},
+			{0x1014, tr("Zapit api-v4 [Neutrino]")},
+			{0x1013, tr("Zapit api-v3 [Neutrino]")},
+			{0x1012, tr("Zapit api-v2 [Neutrino]")},
+			{0x1011, tr("Zapit api-v1 [Neutrino]")},
+		};
+		for (auto & opt : opts)
+		{
+			QAction* action = new QAction;
+			action->setText(opt.second);
+			action->setCheckable(true);
+			action->connect(action, &QAction::triggered, [=]() { this->convert(opt.first); });
+			submenu->addAction(action);
+		}
+
+		menu->addMenu(submenu);
+	}
+
+	auto* dbih = this->data->dbih;
+
+	QMenu* menu = this->action.scrn_sets_menu;
+
+	auto actions = menu->menuInAction(menu->actions().first())->actions();
+	int lamedb_ver = dbih->get_lamedb_version();
+	int zapit_ver = dbih->get_zapit_version();
+
+	for (auto & act : actions)
+		act->setChecked(false);
+
+	if (lamedb_ver == 4)
+		actions.at(0)->setChecked(true);
+	else if (lamedb_ver == 5)
+		actions.at(1)->setChecked(true);
+	else if (lamedb_ver == 3)
+		actions.at(2)->setChecked(true);
+	else if (lamedb_ver == 2)
+		actions.at(3)->setChecked(true);
+
+	if (zapit_ver == 4)
+		actions.at(4)->setChecked(true);
+	else if (zapit_ver == 3)
+		actions.at(5)->setChecked(true);
+	else if (zapit_ver == 2)
+		actions.at(6)->setChecked(true);
+	else if (zapit_ver == 1)
+		actions.at(7)->setChecked(true);
+
+	return menu;
+}
+
+QMenu* mainView::listPrefsCornerMenu()
+{
+	QSettings* settings = new QSettings;
+	settings->beginGroup("preference");
+
+	if (this->action.lcrn_prefs_menu == nullptr)
+	{
+		QMenu* menu = this->action.lcrn_prefs_menu = new QMenu;
+		menu->setStyleSheet("font-size: small");
+
+		menu->addSection(tr("Drag and Drop"));
+		{
+			QAction* action = new QAction;
+			action->setText(tr("Switch to bouquet after drop"));
+			action->setCheckable(true);
+			action->connect(action, &QAction::triggered, [=]()
+			{
+				settings->setValue("treeCurrentAfterDrop", ! settings->value("treeCurrentAfterDrop").toBool());
+			});
+			menu->addAction(action);
+		}
+		menu->addSection(tr("Channel operations"));
+		{
+			QAction* action = new QAction;
+			action->setText(tr("Copy channels (preserving)"));
+			action->setCheckable(true);
+			action->connect(action, &QAction::triggered, [=]()
+			{
+				settings->setValue("treeDropCopy", ! settings->value("treeDropCopy").toBool());
+				settings->setValue("treeDropMove", ! settings->value("treeDropMove").toBool());
+			});
+			menu->addAction(action);
+		}
+		{
+			QAction* action = new QAction;
+			action->setText(tr("Move channels (deleting)"));
+			action->setCheckable(true);
+			action->connect(action, &QAction::triggered, [=]()
+			{
+				settings->setValue("treeDropCopy", ! settings->value("treeDropCopy").toBool());
+				settings->setValue("treeDropMove", ! settings->value("treeDropMove").toBool());
+			});
+			menu->addAction(action);
+		}
+	}
+
+	QMenu* menu = this->action.lcrn_prefs_menu;
+
+	auto actions = menu->actions();
+
+	for (auto & act : actions)
+		act->setChecked(false);
+
+	actions.at(1)->setChecked(settings->value("treeCurrentAfterDrop").toBool());
+	actions.at(3)->setChecked(settings->value("treeDropCopy").toBool());
+	actions.at(4)->setChecked(settings->value("treeDropMove").toBool());
+
+	settings->endGroup();
+
+	return menu;
+}
+
+//TODO improve
+void mainView::convert(int bit)
+{
+	debug("convert", "bit", bit);
+
+	auto* dbih = this->data->dbih;
+
+	e2db::FPORTS fpx = static_cast<e2db::FPORTS>(bit);
+
+	switch (fpx)
+	{
+		case e2db::FPORTS::all_services__2_4:
+			dbih->set_e2db_services_type(0);
+			dbih->set_lamedb_version(4);
+			dbih->set_zapit_version(-1);
+		break;
+		case e2db::FPORTS::all_services__2_5:
+			dbih->set_e2db_services_type(0);
+			dbih->set_lamedb_version(5);
+			dbih->set_zapit_version(-1);
+		break;
+		case e2db::FPORTS::all_services__2_3:
+			dbih->set_e2db_services_type(0);
+			dbih->set_lamedb_version(3);
+			dbih->set_zapit_version(-1);
+		break;
+		case e2db::FPORTS::all_services__2_2:
+			dbih->set_e2db_services_type(0);
+			dbih->set_lamedb_version(2);
+			dbih->set_zapit_version(-1);
+		break;
+		case e2db::FPORTS::all_services_xml__4:
+			dbih->set_e2db_services_type(1);
+			dbih->set_lamedb_version(-1);
+			dbih->set_zapit_version(4);
+		break;
+		case e2db::FPORTS::all_services_xml__3:
+			dbih->set_e2db_services_type(1);
+			dbih->set_lamedb_version(-1);
+			dbih->set_zapit_version(3);
+		break;
+		case e2db::FPORTS::all_services_xml__2:
+			dbih->set_e2db_services_type(1);
+			dbih->set_lamedb_version(-1);
+			dbih->set_zapit_version(2);
+		break;
+		case e2db::FPORTS::all_services_xml__1:
+			dbih->set_e2db_services_type(1);
+			dbih->set_lamedb_version(-1);
+			dbih->set_zapit_version(1);
+		break;
+		default:
+			return;
+	}
 }
 
 void mainView::addBouquet()
