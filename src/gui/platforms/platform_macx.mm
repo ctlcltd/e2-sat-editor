@@ -228,7 +228,7 @@ QWidget* _platform_macx::_osWidgetBlend(QWidget* widget, FX_MATERIAL material, F
 	return widget;
 }
 
-void _platform_macx::_osContextMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
+void _platform_macx::_osMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 {
 	QWidget* top = widget->window();
 	QWindow* tlw = top->windowHandle();
@@ -294,7 +294,7 @@ QLineEdit* _platform_macx::_osLineEdit(QLineEdit* input, bool destroy)
 	input->setContextMenuPolicy(Qt::CustomContextMenu);
 	input->connect(input, &QLineEdit::customContextMenuRequested, [=](QPoint pos) {
 		QMenu* menu = input->createStandardContextMenu();
-		_osContextMenuPopup(menu, input, pos);
+		_osMenuPopup(menu, input, pos);
 
 		if (destroy)
 		{
@@ -320,7 +320,7 @@ QTextEdit* _platform_macx::_osTextEdit(QTextEdit* input, bool destroy)
 	input->setContextMenuPolicy(Qt::CustomContextMenu);
 	input->connect(input, &QLineEdit::customContextMenuRequested, [=](QPoint pos) {
 		QMenu* menu = input->createStandardContextMenu();
-		_osContextMenuPopup(menu, input, pos);
+		_osMenuPopup(menu, input, pos);
 
 		if (destroy)
 		{

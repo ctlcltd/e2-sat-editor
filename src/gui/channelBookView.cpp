@@ -665,7 +665,7 @@ void channelBookView::showListEditContextMenu(QPoint& pos)
 
 	contextMenuAction(list_edit, tr("&Copy", "context-menu"), [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
 
-	platform::osContextMenuPopup(list_edit, list, pos);
+	platform::osMenuPopup(list_edit, list, pos);
 }
 
 void channelBookView::updateFlags()

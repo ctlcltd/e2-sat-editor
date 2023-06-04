@@ -20,9 +20,11 @@
 #include <QGroupBox>
 #include <QScrollArea>
 #include <QMenu>
+#include <QWidgetAction>
 #include <QClipboard>
 #include <QMimeData>
 #include <QHeaderView>
+#include <QMouseEvent>
 
 #include "platforms/platform.h"
 
@@ -252,10 +254,15 @@ void mainView::layout()
 #endif
 	this->action.scrn_sets->setIcon(theme->dynamicIcon("add", this->action.scrn_sets));
 	this->action.scrn_sets->setWhatsThis(tr("Settings Convert", "corner"));
-	this->action.scrn_sets->connect(this->action.scrn_sets, &QPushButton::pressed, [=]() {
-		QMenu* menu = servicesSetsCornerMenu();
+	this->action.scrn_sets->connect(this->action.scrn_sets, &QPushButton::pressed, [=]()
+	{
+		QMenu* menu = this->servicesSetsCornerMenu();
 		// menu->popup(this->action.scrn_sets->mapToGlobal(this->action.scrn_sets->pos()));
-		platform::osContextMenuPopup(menu, this->action.scrn_sets, this->action.scrn_sets->pos());
+		platform::osMenuPopup(menu, this->action.scrn_sets, this->action.scrn_sets->pos());
+
+		QMouseEvent mouseRelease(QEvent::MouseButtonRelease, this->action.scrn_sets->pos(), this->action.scrn_sets->mapToGlobal(QPoint(0, 0)),
+								  Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
+		QCoreApplication::sendEvent(this->action.scrn_sets, &mouseRelease);
 	});
 
 	this->action.lcrn_prefs = new QPushButton;
@@ -264,10 +271,15 @@ void mainView::layout()
 #endif
 	this->action.lcrn_prefs->setIcon(theme->dynamicIcon("settings", this->action.lcrn_prefs));
 	this->action.lcrn_prefs->setWhatsThis(tr("Drag&&Drop Preferences", "corner"));
-	this->action.lcrn_prefs->connect(this->action.lcrn_prefs, &QPushButton::pressed, [=]() {
-		QMenu* menu = listPrefsCornerMenu();
+	this->action.lcrn_prefs->connect(this->action.lcrn_prefs, &QPushButton::pressed, [=]()
+	{
+		QMenu* menu = this->listPrefsCornerMenu();
 		// menu->popup(this->action.lcrn_prefs->mapToGlobal(this->action.lcrn_prefs->pos()));
-		platform::osContextMenuPopup(menu, this->action.lcrn_prefs, this->action.lcrn_prefs->pos());
+		platform::osMenuPopup(menu, this->action.lcrn_prefs, this->action.lcrn_prefs->pos());
+
+		QMouseEvent mouseRelease(QEvent::MouseButtonRelease, this->action.lcrn_prefs->pos(), this->action.lcrn_prefs->mapToGlobal(QPoint(0, 0)),
+								  Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
+		QCoreApplication::sendEvent(this->action.lcrn_prefs, &mouseRelease);
 	});
 
 	scrn_box->addWidget(this->action.scrn_sets, 0, Qt::AlignTrailing);
@@ -1290,34 +1302,57 @@ QMenu* mainView::servicesSetsCornerMenu()
 
 QMenu* mainView::listPrefsCornerMenu()
 {
-	QSettings* settings = new QSettings;
-	settings->beginGroup("preference");
-
 	if (this->action.lcrn_prefs_menu == nullptr)
 	{
 		QMenu* menu = this->action.lcrn_prefs_menu = new QMenu;
-		menu->setStyleSheet("font-size: small");
 
-		menu->addSection(tr("Drag and Drop"));
+		{
+			QWidgetAction* action = new QWidgetAction(nullptr);
+			QLabel* label = new QLabel(tr("Drag and Drop"));
+#ifndef Q_OS_MAC
+			label->setStyleSheet("QLabel { margin: 5px 10px }");
+#else
+			label->setStyleSheet("QLabel { margin: 5px 10px; font-weight: bold }");
+#endif
+			action->setDefaultWidget(label);
+			menu->addAction(action);
+		}
 		{
 			QAction* action = new QAction;
 			action->setText(tr("Switch to bouquet after drop"));
 			action->setCheckable(true);
-			action->connect(action, &QAction::triggered, [=]()
+			action->connect(action, &QAction::triggered, [=](bool checked)
 			{
-				settings->setValue("treeCurrentAfterDrop", ! settings->value("treeCurrentAfterDrop").toBool());
+				QSettings settings;
+				settings.setValue("preference/treeCurrentAfterDrop", checked);
+				settings.sync();
+				action->setChecked(checked);
 			});
 			menu->addAction(action);
 		}
-		menu->addSection(tr("Channel operations"));
+		{
+			menu->addSeparator();
+			QWidgetAction* action = new QWidgetAction(nullptr);
+			QLabel* label = new QLabel(tr("Channel operations"));
+#ifndef Q_OS_MAC
+			label->setStyleSheet("QLabel { margin: 5px 10px }");
+#else
+			label->setStyleSheet("QLabel { margin: 5px 10px; font-weight: bold }");
+#endif
+			action->setDefaultWidget(label);
+			menu->addAction(action);
+		}
 		{
 			QAction* action = new QAction;
 			action->setText(tr("Copy channels (preserving)"));
 			action->setCheckable(true);
-			action->connect(action, &QAction::triggered, [=]()
+			action->connect(action, &QAction::triggered, [=](bool checked)
 			{
-				settings->setValue("treeDropCopy", ! settings->value("treeDropCopy").toBool());
-				settings->setValue("treeDropMove", ! settings->value("treeDropMove").toBool());
+				QSettings settings;
+				settings.setValue("preference/treeDropCopy", checked);
+				settings.setValue("preference/treeDropMove", ! checked);
+				settings.sync();
+				action->setChecked(checked);
 			});
 			menu->addAction(action);
 		}
@@ -1325,10 +1360,13 @@ QMenu* mainView::listPrefsCornerMenu()
 			QAction* action = new QAction;
 			action->setText(tr("Move channels (deleting)"));
 			action->setCheckable(true);
-			action->connect(action, &QAction::triggered, [=]()
+			action->connect(action, &QAction::triggered, [=](bool checked)
 			{
-				settings->setValue("treeDropCopy", ! settings->value("treeDropCopy").toBool());
-				settings->setValue("treeDropMove", ! settings->value("treeDropMove").toBool());
+				QSettings settings;
+				settings.setValue("preference/treeDropCopy", ! checked);
+				settings.setValue("preference/treeDropMove", checked);
+				settings.sync();
+				action->setChecked(checked);
 			});
 			menu->addAction(action);
 		}
@@ -1337,15 +1375,14 @@ QMenu* mainView::listPrefsCornerMenu()
 	QMenu* menu = this->action.lcrn_prefs_menu;
 
 	auto actions = menu->actions();
+	QSettings settings;
 
 	for (auto & act : actions)
 		act->setChecked(false);
 
-	actions.at(1)->setChecked(settings->value("treeCurrentAfterDrop").toBool());
-	actions.at(3)->setChecked(settings->value("treeDropCopy").toBool());
-	actions.at(4)->setChecked(settings->value("treeDropMove").toBool());
-
-	settings->endGroup();
+	actions.at(1)->setChecked(settings.value("preference/treeCurrentAfterDrop").toBool());
+	actions.at(4)->setChecked(settings.value("preference/treeDropCopy").toBool());
+	actions.at(5)->setChecked(settings.value("preference/treeDropMove").toBool());
 
 	return menu;
 }
@@ -2655,7 +2692,7 @@ void mainView::showTreeEditContextMenu(QPoint& pos)
 	contextMenuSeparator(tree_edit);
 	contextMenuAction(tree_edit, tr("Export", "context-menu"), [=]() { this->tabExportFile(); });
 
-	platform::osContextMenuPopup(tree_edit, tree, pos);
+	platform::osMenuPopup(tree_edit, tree, pos);
 }
 
 void mainView::showListEditContextMenu(QPoint& pos)
@@ -2713,7 +2750,7 @@ void mainView::showListEditContextMenu(QPoint& pos)
 	contextMenuSeparator(list_edit);
 	contextMenuAction(list_edit, tr("&Delete", "context-menu"), [=]() { this->listItemDelete(); }, tabGetFlag(gui::TabListDelete), QKeySequence::Delete);
 
-	platform::osContextMenuPopup(list_edit, list, pos);
+	platform::osMenuPopup(list_edit, list, pos);
 }
 
 void mainView::treeAfterDrop(QTreeWidget* tw, QTreeWidgetItem* current)

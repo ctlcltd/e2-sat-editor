@@ -133,6 +133,7 @@ void settings::connectionsLayout()
 
 	QVBoxLayout* dtvbox = new QVBoxLayout;
 
+	//TODO context-menu rename/remove profile
 	this->rplist = new QListWidget;
 	rplist->setEditTriggers(QListWidget::EditKeyPressed | QListWidget::DoubleClicked);
 	rplist->setStyleSheet("QListView::item { height: 44px; font: 16px } QListView QLineEdit { border: 1px solid palette(alternate-base) }");
@@ -156,6 +157,7 @@ void settings::connectionsLayout()
 
 	dttbar->addAction(theme::icon("add"), tr("Add"), [=]() { this->addProfile(); });
 	dttbar->addAction(theme::icon("remove"), tr("Remove"), [=]() { this->deleteProfile(); });
+	//TODO presets
 
 	QColor tbshade;
 	QColor tbfocus;

@@ -22,6 +22,7 @@
 #include <QClipboard>
 #include <QMimeData>
 #include <QHeaderView>
+#include <QMouseEvent>
 
 #include "platforms/platform.h"
 
@@ -265,7 +266,14 @@ void tunersetsView::layout()
 #endif
 	this->action.tcrn_edit->setIcon(theme->dynamicIcon("settings", this->action.tcrn_edit));
 	this->action.tcrn_edit->setWhatsThis(tr("Edit Settings", "corner"));
-	this->action.tcrn_edit->connect(this->action.tcrn_edit, &QPushButton::pressed, [=]() { this->editSettings(); });
+	this->action.tcrn_edit->connect(this->action.tcrn_edit, &QPushButton::pressed, [=]()
+	{
+		QMouseEvent mouseRelease(QEvent::MouseButtonRelease, this->action.tcrn_edit->pos(), this->action.tcrn_edit->mapToGlobal(QPoint(0, 0)),
+								  Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
+		QCoreApplication::sendEvent(this->action.tcrn_edit, &mouseRelease);
+
+		this->editSettings();
+	});
 
 	tcrn_box->addWidget(this->action.tcrn_edit, 0, Qt::AlignTrailing);
 	tcrn->setLayout(tcrn_box);
@@ -1247,7 +1255,7 @@ void tunersetsView::showTreeEditContextMenu(QPoint& pos)
 	// contextMenuSeparator(tree_edit);
 	// contextMenuAction(tree_edit, tr("Edit Settings", "context-menu"), [=]() { this->editSettings(); });
 
-	platform::osContextMenuPopup(tree_edit, tree, pos);
+	platform::osMenuPopup(tree_edit, tree, pos);
 }
 
 void tunersetsView::showListEditContextMenu(QPoint& pos)
@@ -1276,7 +1284,7 @@ void tunersetsView::showListEditContextMenu(QPoint& pos)
 	contextMenuSeparator(list_edit);
 	contextMenuAction(list_edit, tr("&Delete", "context-menu"), [=]() { this->listItemDelete(); }, tabGetFlag(gui::TabListDelete), QKeySequence::Delete);
 
-	platform::osContextMenuPopup(list_edit, list, pos);
+	platform::osMenuPopup(list_edit, list, pos);
 }
 
 void tunersetsView::updateFlags()
