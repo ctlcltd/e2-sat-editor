@@ -31,10 +31,15 @@ class ftpHandler : protected e2se::log_factory
 		bool openConnection();
 		bool closeConnection();
 		bool handleConnection();
+		bool isConnected();
+		bool isDisconnected();
 		void settingsChanged();
 		string getServerHostname();
 
 		ftpcom* ftih = nullptr;
+
+	protected:
+		bool connected = false;
 };
 }
 #endif /* ftpHandler_h */

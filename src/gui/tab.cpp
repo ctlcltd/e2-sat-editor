@@ -40,6 +40,9 @@
 #ifdef E2SE_DEMO
 #include <QResource>
 #endif
+#ifndef E2SE_DEMO
+#include <QThread>
+#endif
 
 #include "tab.h"
 #include "theme.h"
@@ -1427,20 +1430,19 @@ void tab::ftpConnect()
 	return this->demoMessage();
 #endif
 
-	if (this->ftph->handleConnection())
+	QThread* thread = QThread::create([=]()
 	{
-		if (statusBarIsVisible())
-			statusBarMessage(tr("FTP connected successfully.", "message"));
+		if (this->ftph->openConnection())
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectSuccessNotify(); }, Qt::QueuedConnection);
 		else
-			infoMessage(tr("Successfully connected!", "message"));
-	}
-	else
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectErrorNotify(); }, Qt::QueuedConnection);
+	});
+	thread->connect(thread, &QThread::started, [=]()
 	{
-		string hostname = this->ftph->getServerHostname();
-		error("ftpConnect", tr("FTP Error", "error").toStdString(), tr("Cannot connect to FTP \"%1\".", "error").arg(hostname.data()).toStdString());
-
-		errorMessage(tr("FTP Error", "error"), tr("Cannot connect to FTP Server!", "error"));
-	}
+		QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectingNotify(); }, Qt::QueuedConnection);
+	});
+	thread->start();
+	thread->quit();
 }
 
 void tab::ftpDisconnect()
@@ -1451,20 +1453,19 @@ void tab::ftpDisconnect()
 	return this->demoMessage();
 #endif
 
-	if (this->ftph->closeConnection())
+	QThread* thread = QThread::create([=]()
 	{
-		if (statusBarIsVisible())
-			statusBarMessage(tr("FTP disconnected successfully.", "message"));
+		if (this->ftph->closeConnection())
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbDisconnectSuccessNotify(); }, Qt::QueuedConnection);
 		else
-			infoMessage(tr("Successfully disconnected!", "message"));
-	}
-	else
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbDisconnectErrorNotify(); }, Qt::QueuedConnection);
+	});
+	thread->connect(thread, &QThread::started, [=]()
 	{
-		string hostname = this->ftph->getServerHostname();
-		error("ftpDisconnect", tr("FTP Error", "error").toStdString(), tr("Cannot disconnect from FTP \"%1\".", "error").arg(hostname.data()).toStdString());
-
-		errorMessage(tr("FTP Error", "error"), tr("Cannot disconnect from FTP Server!", "error"));
-	}
+		QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbDisconnectingNotify(); }, Qt::QueuedConnection);
+	});
+	thread->start();
+	thread->quit();
 }
 
 void tab::ftpUpload()
@@ -1475,48 +1476,55 @@ void tab::ftpUpload()
 	return this->demoMessage();
 #endif
 
-	if (! this->ftph->handleConnection())
 	{
-		string hostname = this->ftph->getServerHostname();
-		error("ftpConnect", tr("FTP Error", "error").toStdString(), tr("Cannot connect to FTP \"%1\".", "error").arg(hostname.data()).toStdString());
-
-		return errorMessage(tr("FTP Error", "error"), tr("Cannot connect to FTP Server!", "error"));
+		QThread* thread = QThread::create([=]()
+		{
+			if (! this->ftph->handleConnection())
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectErrorNotify(); }, Qt::QueuedConnection);
+		});
+		thread->connect(thread, &QThread::started, [=]()
+		{
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbHandlingNotify(); }, Qt::QueuedConnection);
+		});
+		thread->start();
+		thread->wait();
+		thread->quit();
 	}
 
+	if (! this->ftph->isConnected())
+		return;
+
 	QSettings settings;
+	int profile_sel = settings.value("profile/selected", 0).toInt();
+	settings.beginReadArray("profile");
+	settings.setArrayIndex(profile_sel);
+	string baset = settings.value("pathTransponders").toString().toStdString();
+	string bases = settings.value("pathServices").toString().toStdString();
+	string baseb = settings.value("pathBouquets").toString().toStdString();
+	string basep = settings.value("pathPicons").toString().toStdString();
+	settings.endArray();
 
 	auto* ftih = this->ftph->ftih;
 	auto* dbih = this->data->dbih;
 
-	unordered_map<string, e2db::e2db_file> files = dbih->get_output();
+	this->files = dbih->get_output();
 
-	if (files.empty())
+	if (this->files.empty())
 		return;
 
-	unordered_map<string, e2se_ftpcom::ftpcom::ftpcom_file> ftp_files;
-
-	int profile_sel = settings.value("profile/selected", 0).toInt();
-	settings.beginReadArray("profile");
-	settings.setArrayIndex(profile_sel);
-	for (auto & x : files)
+	for (auto & x : this->files)
 	{
 		string filename = x.first;
 		string basedir;
 		string path;
 
 		if (filename.find(".tv") != string::npos || filename.find(".radio") != string::npos)
-		{
-			basedir = settings.value("pathBouquets").toString().toStdString();
-		}
+			basedir = baseb;
 		else if (filename == "satellites.xml" || filename == "terrestrial.xml" || filename == "cables.xml" || filename == "atsc.xml")
-		{
-			basedir = settings.value("pathTransponders").toString().toStdString();
-		}
+			basedir = baset;
 		//TODO upload services, other data ... (eg. picons)
 		else
-		{
-			basedir = settings.value("pathServices").toString().toStdString();
-		}
+			basedir = bases;
 
 		if (basedir.size() && basedir[basedir.size() - 1] != '/')
 			basedir.append("/");
@@ -1533,28 +1541,37 @@ void tab::ftpUpload()
 		debug("ftpUpload", "file path", basedir + file.filename);
 		debug("ftpUpload", "file size", to_string(file.size));
 	}
-	settings.endArray();
+
 	files.clear();
 
-	ftih->put_files(ftp_files, [=](const string filename) {
-		if (statusBarIsVisible())
-			statusBarMessage(tr("Uploading file: %1", "message").arg(filename.data()));
-	});
-
-	int files_count = int (files.size());
-
-	//TODO FIX not shown
-	if (statusBarIsVisible())
-		statusBarMessage(tr("Uploaded %n files", "message", files_count));
-	else
-		infoMessage(tr("Uploaded!", "message"));
-
-	if (ftih->cmd_ifreload() || ftih->cmd_tnreload())
 	{
-		if (statusBarIsVisible())
-			statusBarMessage(tr("STB reload done.", "message"));
-		else
-			infoMessage(tr("STB reloaded!", "message"));
+		QThread* thread = QThread::create([=]()
+		{
+			if (this->ftp_files.empty())
+				return;
+
+			for (auto & x : this->ftp_files)
+			{
+				std::filesystem::path fpath = std::filesystem::path(x.first);
+				string basedir = fpath.parent_path().u8string();
+				string filename = fpath.filename().u8string();
+
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbUploadNotify(filename); }, Qt::QueuedConnection);
+
+				ftih->upload_data(basedir, filename, x.second);
+			}
+		});
+		thread->connect(thread, &QThread::finished, [=]()
+		{
+			this->ftp_files.clear();
+
+			int files_count = int (ftp_files.size());
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbUploadNotify(files_count); }, Qt::QueuedConnection);
+
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpReloadStb(); }, Qt::QueuedConnection);
+		});
+		thread->start();
+		thread->quit();
 	}
 }
 
@@ -1566,55 +1583,213 @@ void tab::ftpDownload()
 	return this->demoMessage();
 #endif
 
-	if (! this->ftph->handleConnection())
 	{
-		string hostname = this->ftph->getServerHostname();
-		error("ftpConnect", tr("FTP Error", "error").toStdString(), tr("Cannot connect to FTP \"%1\".", "error").arg(hostname.data()).toStdString());
-
-		return errorMessage(tr("FTP Error", "error"), tr("Cannot connect to FTP Server!", "error"));
+		QThread* thread = QThread::create([=]()
+		{
+			if (! this->ftph->handleConnection())
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectErrorNotify(); }, Qt::QueuedConnection);
+		});
+		thread->connect(thread, &QThread::started, [=]()
+		{
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbHandlingNotify(); }, Qt::QueuedConnection);
+		});
+		thread->start();
+		thread->wait();
+		thread->quit();
 	}
+
+	if (! this->ftph->isConnected())
+		return;
 
 	auto* ftih = this->ftph->ftih;
 	auto* dbih = this->data->dbih;
 
-	unordered_map<string, e2se_ftpcom::ftpcom::ftpcom_file> ftp_files = ftih->get_files([=](const string filename) {
-		if (statusBarIsVisible())
-			statusBarMessage(tr("Downloading file: %1", "message").arg(filename.data()));
-	});
-
-	if (ftp_files.empty())
-		return;
-
-	unordered_map<string, e2db::e2db_file> files;
-
-	for (auto & x : ftp_files)
 	{
-		e2db::e2db_file file;
-		file.filename = x.second.filename;
-		file.mime = x.second.mime;
-		file.data = x.second.data;
-		file.size = x.second.size;
+		QThread* thread = QThread::create([=]()
+		{
+			//TODO improve
+			ftih->fetch_paths();
 
-		debug("ftpDownload", "file path", x.first);
-		debug("ftpDownload", "file size", to_string(x.second.size));
+			for (string & w : ftih->ftdb)
+			{
+				std::filesystem::path fpath = std::filesystem::path(w);
+				string basedir = fpath.parent_path().u8string();
+				string filename = fpath.filename().u8string();
 
-		files.emplace(file.filename, file);
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbDownloadNotify(filename); }, Qt::QueuedConnection);
+
+				e2se_ftpcom::ftpcom::ftpcom_file file;
+
+				ftih->download_data(basedir, filename, file);
+
+				this->ftp_files[filename] = file;
+			}
+		});
+		thread->connect(thread, &QThread::finished, [=]()
+		{
+			for (auto & x : this->ftp_files)
+			{
+				e2db::e2db_file file;
+				file.filename = x.second.filename;
+				file.mime = x.second.mime;
+				file.data = x.second.data;
+				file.size = x.second.size;
+
+				debug("ftpDownload", "file path", x.first);
+				debug("ftpDownload", "file size", to_string(x.second.size));
+
+				this->files.emplace(file.filename, file);
+			}
+
+			this->ftp_files.clear();
+
+			int files_count = int (this->files.size());
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbDownloadNotify(files_count); }, Qt::QueuedConnection);
+
+			if (this->files.empty())
+				return;
+
+			QMetaObject::invokeMethod(this->cwid, [=]() { updateIndex(); }, Qt::QueuedConnection);
+
+			dbih->importBlob(this->files);
+
+			QMetaObject::invokeMethod(this->cwid, [=]()
+			{
+				view->reset();
+				view->load();
+
+				this->data->setChanged(true);
+			}, Qt::QueuedConnection);
+
+			this->files.clear();
+		});
+		thread->start();
+		thread->quit();
 	}
+}
 
-	int files_count = int (files.size());
+void tab::ftpReloadStb()
+{
+	debug("ftpReloadStb");
 
-	//TODO FIX not shown
+	auto* ftih = this->ftph->ftih;
+
+	QThread* thread = QThread::create([=]()
+	{
+		if (ftih->cmd_ifreload() || ftih->cmd_tnreload())
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadSuccessNotify(); }, Qt::QueuedConnection);
+		else
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadErrorNotify(); }, Qt::QueuedConnection);
+	});
+	thread->connect(thread, &QThread::started, [=]()
+	{
+		QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadingNotify(); }, Qt::QueuedConnection);
+	});
+	thread->start();
+	thread->quit();
+}
+
+void tab::ftpStbConnectingNotify()
+{
+	if (statusBarIsVisible())
+		statusBarMessage(tr("FTP connecting ...", "message"));
+}
+
+void tab::ftpStbDisconnectingNotify()
+{
+	if (statusBarIsVisible())
+		statusBarMessage(tr("FTP disconnecting ...", "message"));
+}
+
+void tab::ftpStbHandlingNotify()
+{
+	if (statusBarIsVisible())
+	{
+		if (ftph->isConnected())
+			statusBarMessage(tr("Trying to resume FTP connection ...", "message"));
+		else
+			statusBarMessage(tr("FTP connecting ...", "message"));
+	}
+}
+
+void tab::ftpStbReloadingNotify()
+{
+	if (statusBarIsVisible())
+		statusBarMessage(tr("STB reloading ...", "message"));
+}
+
+void tab::ftpStbConnectSuccessNotify()
+{
+	if (statusBarIsVisible())
+		statusBarMessage(tr("FTP connected successfully.", "message"));
+	else
+		infoMessage(tr("FTP connected successfully.", "message"));
+}
+
+void tab::ftpStbConnectErrorNotify()
+{
+	string hostname = this->ftph->getServerHostname();
+	error("ftpStbConnectErrorNotify", tr("FTP Error", "error").toStdString(), tr("Cannot connect to FTP \"%1\".", "error").arg(hostname.data()).toStdString());
+
+	errorMessage(tr("FTP Error", "error"), tr("Cannot connect to FTP Server!", "error"));
+}
+
+void tab::ftpStbDisconnectSuccessNotify()
+{
+	if (statusBarIsVisible())
+		statusBarMessage(tr("FTP disconnected successfully.", "message"));
+	else
+		infoMessage(tr("FTP disconnected successfully.", "message"));
+}
+
+void tab::ftpStbDisconnectErrorNotify()
+{
+	string hostname = this->ftph->getServerHostname();
+	error("ftpStbDisconnectErrorNotify", tr("FTP Error", "error").toStdString(), tr("Cannot disconnect from FTP \"%1\".", "error").arg(hostname.data()).toStdString());
+
+	errorMessage(tr("FTP Error", "error"), tr("Cannot disconnect from FTP Server!", "error"));
+}
+
+void tab::ftpStbUploadNotify(int files_count)
+{
+	if (statusBarIsVisible())
+		statusBarMessage(tr("Uploaded %n files", "message", files_count));
+	else
+		infoMessage(tr("Uploaded %n files", "message", files_count));
+}
+
+void tab::ftpStbUploadNotify(string filename)
+{
+	if (statusBarIsVisible())
+		statusBarMessage(tr("Uploading file: %1", "message").arg(filename.data()));
+}
+
+void tab::ftpStbDownloadNotify(int files_count)
+{
 	if (statusBarIsVisible())
 		statusBarMessage(tr("Downloaded %n files", "message", files_count));
+}
 
-	updateIndex();
+void tab::ftpStbDownloadNotify(string filename)
+{
+	if (statusBarIsVisible())
+		statusBarMessage(tr("Downloading file: %1", "message").arg(filename.data()));
+}
 
-	dbih->importBlob(files);
+void tab::ftpStbReloadSuccessNotify()
+{
+	if (statusBarIsVisible())
+		statusBarMessage(tr("STB reload done.", "message"));
+	else
+		infoMessage(tr("STB reload done.", "message"));
+}
 
-	view->reset();
-	view->load();
+void tab::ftpStbReloadErrorNotify()
+{
+	string hostname = this->ftph->getServerHostname();
+	error("ftpStbReloadErrorNotify", tr("FTP Error", "error").toStdString(), tr("Cannot reload STB \"%1\".", "error").arg(hostname.data()).toStdString());
 
-	this->data->setChanged(true);
+	errorMessage(tr("FTP Error", "error"), tr("Cannot reload STB!", "error"));
 }
 
 void tab::updateIndex()

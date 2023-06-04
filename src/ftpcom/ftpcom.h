@@ -75,6 +75,8 @@ class ftpcom : protected e2se::log_factory
 		bool cmd_ifreload();
 		bool cmd_tnreload();
 
+		vector<string> ftdb;
+
 	protected:
 		struct sio
 		{
@@ -109,8 +111,6 @@ class ftpcom : protected e2se::log_factory
 
 		virtual string msg(string str, string param) { return e2se::logger::msg(str, param); }
 		virtual string msg(string str) { return e2se::logger::msg(str); }
-
-		vector<string> ftdb;
 
 	private:
 		bool actv;

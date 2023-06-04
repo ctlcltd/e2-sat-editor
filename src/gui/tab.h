@@ -118,11 +118,25 @@ class tab : protected e2se::log_factory
 		void toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco);
 		void ftpComboItems();
 		void ftpComboChanged(int index);
-		bool ftpHandle();
 		void ftpConnect();
 		void ftpDisconnect();
 		void ftpUpload();
 		void ftpDownload();
+		void ftpReloadStb();
+		void ftpStbConnectingNotify();
+		void ftpStbDisconnectingNotify();
+		void ftpStbHandlingNotify();
+		void ftpStbReloadingNotify();
+		void ftpStbDownloadNotify(int files_count);
+		void ftpStbDownloadNotify(string filename);
+		void ftpStbUploadNotify(int files_count);
+		void ftpStbUploadNotify(string filename);
+		void ftpStbReloadSuccessNotify();
+		void ftpStbReloadErrorNotify();
+		void ftpStbConnectSuccessNotify();
+		void ftpStbConnectErrorNotify();
+		void ftpStbDisconnectSuccessNotify();
+		void ftpStbDisconnectErrorNotify();
 		void loadSeeds();
 
 		static QToolBar* toolBar(int type);
@@ -144,6 +158,9 @@ class tab : protected e2se::log_factory
 		QToolBar* top_toolbar;
 		QToolBar* bottom_toolbar;
 		QComboBox* ftp_combo;
+
+		unordered_map<string, e2se_ftpcom::ftpcom::ftpcom_file> ftp_files;
+		unordered_map<string, e2db::e2db_file> files;
 
 		// stored gui bit flags
 		bitset<256> gxe;

@@ -132,17 +132,21 @@ bool ftpcom::connect()
 	{
 		return false;
 	}
+
 	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_discard_func);
 	CURLcode res = perform(cph);
-	return (res == CURLE_OK) ? true : false;
+	return (res == CURLE_OK);
 }
 
+//TODO improve
 bool ftpcom::disconnect()
 {
 	debug("disconnect");
 
 	if (! cph)
+	{
 		return false;
+	}
 
 	cleanup(cph);
 

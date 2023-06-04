@@ -34,10 +34,7 @@ ftpHandler::~ftpHandler()
 
 bool ftpHandler::openConnection()
 {
-	if (this->ftih == nullptr)
-		this->ftih = new ftpcom;
-
-	return this->ftih->connect();
+	return handleConnection();
 }
 
 bool ftpHandler::closeConnection()
@@ -50,16 +47,32 @@ bool ftpHandler::closeConnection()
 	delete this->ftih;
 
 	this->ftih = nullptr;
+	this->connected = ! ret;
 
 	return ret;
 }
 
 bool ftpHandler::handleConnection()
 {
+	bool ret = false;
+
 	if (this->ftih == nullptr)
 		this->ftih = new ftpcom;
 
-	return this->ftih->connect();
+	ret = this->ftih->connect();
+	this->connected = ret;
+
+	return ret;
+}
+
+bool ftpHandler::isConnected()
+{
+	return this->connected;
+}
+
+bool ftpHandler::isDisconnected()
+{
+	return ! this->connected;
 }
 
 void ftpHandler::settingsChanged()
