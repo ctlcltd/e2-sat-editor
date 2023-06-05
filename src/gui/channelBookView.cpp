@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.7
+ * @version 0.8
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -108,7 +108,7 @@ void channelBookView::layout()
 
 	tree->setStyleSheet("QTreeWidget { border-style: none } QTreeWidget::item { padding: 2px 0 }");
 	list->setStyleSheet("QTreeWidget { border-style: none } QTreeWidget::item { padding: 2px 0 }");
-	//TODO FIX wrong size width
+	//TODO FIX wrong width size
 	tabv->setStyleSheet("QTabBar::tab { width: 48px; margin-top: 0 }");
 
 #ifdef Q_OS_MAC

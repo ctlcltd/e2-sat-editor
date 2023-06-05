@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.7
+ * @version 0.8
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -193,7 +193,7 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 		ss << formats[MAKER_FORMAT::b_service_param_escape] << ch.chname << formats[MAKER_FORMAT::b_service_param_escape];
 		ss << formats[MAKER_FORMAT::b_service_params_separator];
 
-		//TODO FIX potential SEGFAULT
+		//TODO potential SEGFAULT
 		auto z = std::prev(ch.data.cend());
 		for (auto & q : ch.data)
 		{

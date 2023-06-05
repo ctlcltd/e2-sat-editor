@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(e2-sat-editor VERSION 0.7 LANGUAGES CXX)
+project(e2-sat-editor VERSION 0.8 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -20,6 +20,7 @@ set(SOURCES
 	e2db/e2db.cpp
 	gui/platforms/platform.h
 	gui/toolkit/InputControlEditEventObserver.cpp
+	gui/toolkit/ListIconDragDropEventHandler.cpp
 	gui/toolkit/ListProxyStyle.h
 	gui/toolkit/TabBarProxyStyle.h
 	gui/toolkit/ThemeChangeEventObserver.h

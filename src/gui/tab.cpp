@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.7
+ * @version 0.8
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -1803,6 +1803,7 @@ void tab::updateIndex()
 	view->updateIndex();
 }
 
+//TODO potential SEGFAULT
 QTimer* tab::statusBarMessage(QString text)
 {
 	gui::status msg;
