@@ -544,6 +544,7 @@ void gui::initSettings()
 	settings.setValue("treeCurrentAfterDrop", true);
 	settings.setValue("treeDropCopy", true);
 	settings.setValue("treeDropMove", false);
+	settings.setValue("piconsBackup", true);
 	settings.setValue("piconsUseRefid", true);
 	settings.setValue("piconsUseChname", false);
 	settings.endGroup();
@@ -613,6 +614,7 @@ void gui::updateSettings()
 			settings.endArray();
 
 			settings.setValue("application/piconsBrowsePath", "");
+			settings.setValue("preference/piconsBackup", true);
 			settings.setValue("preference/piconsUseRefid", true);
 			settings.setValue("preference/piconsUseChname", false);
 		}

@@ -349,7 +349,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 
 				stringstream ibouquet;
 				ibouquet.write(&files[x.second].data[0], files[x.second].size);
-				parse_e2db_bouquet(ibouquet, x.second, fext == "epl");
+				parse_e2db_bouquet(ibouquet, x.first, fext == "epl");
 			}
 		}
 		for (auto & x : bouquets)

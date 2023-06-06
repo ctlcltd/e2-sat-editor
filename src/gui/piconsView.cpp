@@ -19,10 +19,13 @@
 #include <QGroupBox>
 #include <QLineEdit>
 #include <QToolBar>
-#include <QMenu>
 #include <QFileDialog>
+#include <QFile>
+#include <QMenu>
+#include <QWidgetAction>
 #include <QClipboard>
 #include <QMimeData>
+#include <QMouseEvent>
 
 #include "platforms/platform.h"
 
@@ -66,14 +69,17 @@ void piconsView::layout()
 
 	QGridLayout* frm = new QGridLayout(widget);
 
+	QGridLayout* awrap = new QGridLayout;
 	QVBoxLayout* abox = new QVBoxLayout;
 
 	QGroupBox* afrm = new QGroupBox(tr("Picons"));
 
 	frm->setContentsMargins(0, 0, 0, 0);
+	awrap->setContentsMargins(0, 0, 0, 0);
 	abox->setContentsMargins(0, 0, 0, 0);
 
 	frm->setSpacing(0);
+	awrap->setSpacing(0);
 	abox->setSpacing(0);
 
 	afrm->setFlat(true);
@@ -101,10 +107,35 @@ void piconsView::layout()
 	list->connect(list, &QListWidget::customContextMenuRequested, [=](QPoint pos) { this->showListEditContextMenu(pos); });
 
 	searchLayout();
+	browseLayout();
+
+	QWidget* acrn = new QWidget;
+	acrn->setStyleSheet("position: absolute; top: 0");
+	QHBoxLayout* acrn_box = new QHBoxLayout;
+	acrn_box->setContentsMargins(0, 0, 0, 0);
+	acrn_box->setSizeConstraint(QLayout::SetMinimumSize);
+
+	this->action.acrn_prefs = new QPushButton;
+#ifdef Q_OS_MAC
+	this->action.acrn_prefs->setFlat(true);
+#endif
+	this->action.acrn_prefs->setIcon(theme->dynamicIcon("settings", this->action.acrn_prefs));
+	this->action.acrn_prefs->setWhatsThis(tr("Picons Preferences", "corner"));
+	this->action.acrn_prefs->connect(this->action.acrn_prefs, &QPushButton::pressed, [=]()
+	{
+		QMenu* menu = this->listPrefsCornerMenu();
+		// menu->popup(this->action.acrn_prefs->mapToGlobal(this->action.acrn_prefs->pos()));
+		platform::osMenuPopup(menu, this->action.acrn_prefs, this->action.acrn_prefs->pos());
+
+		QMouseEvent mouseRelease(QEvent::MouseButtonRelease, this->action.acrn_prefs->pos(), this->action.acrn_prefs->mapToGlobal(QPoint(0, 0)),
+								  Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
+		QCoreApplication::sendEvent(this->action.acrn_prefs, &mouseRelease);
+	});
+
+	acrn_box->addWidget(this->action.acrn_prefs, 0, Qt::AlignTrailing);
+	acrn->setLayout(acrn_box);
 
 	QToolBar* list_ats = toolBar();
-
-	browseLayout();
 
 	this->action.list_browse = toolBarWidget(list_ats, tr("&Browse…", "toolbar"), list_browse);
 	toolBarSpacer(list_ats);
@@ -128,8 +159,12 @@ void piconsView::layout()
 	abox->addWidget(list_search);
 	abox->addWidget(list_ats);
 	afrm->setLayout(abox);
+	awrap->addWidget(afrm, 0, 0);
+	awrap->addWidget(acrn, 0, 0, Qt::AlignTop | Qt::AlignTrailing);
 
-	frm->addWidget(afrm);
+	QWidget* wrap = new QWidget;
+	wrap->setLayout(awrap);
+	frm->addWidget(wrap);
 
 	toolBarStyleSheet();
 }
@@ -534,6 +569,93 @@ void piconsView::listChangedPiconsPath()
 	}
 }
 
+QMenu* piconsView::listPrefsCornerMenu()
+{
+	if (this->action.acrn_prefs_menu == nullptr)
+	{
+		QMenu* menu = this->action.acrn_prefs_menu = new QMenu;
+
+		{
+			QWidgetAction* action = new QWidgetAction(nullptr);
+			QLabel* label = new QLabel(tr("Picons"));
+#ifndef Q_OS_MAC
+			label->setStyleSheet("QLabel { margin: 5px 10px }");
+#else
+			label->setStyleSheet("QLabel { margin: 5px 10px; font-weight: bold }");
+#endif
+			action->setDefaultWidget(label);
+			menu->addAction(action);
+		}
+		{
+			QAction* action = new QAction;
+			action->setText(tr("Backup picon when replaced"));
+			action->setCheckable(true);
+			action->connect(action, &QAction::triggered, [=](bool checked)
+			{
+				QSettings settings;
+				settings.setValue("preference/piconsBackup", checked);
+				settings.sync();
+				action->setChecked(checked);
+			});
+			menu->addAction(action);
+		}
+		{
+			menu->addSeparator();
+			QWidgetAction* action = new QWidgetAction(nullptr);
+			QLabel* label = new QLabel(tr("Filename format"));
+#ifndef Q_OS_MAC
+			label->setStyleSheet("QLabel { margin: 5px 10px }");
+#else
+			label->setStyleSheet("QLabel { margin: 5px 10px; font-weight: bold }");
+#endif
+			action->setDefaultWidget(label);
+			menu->addAction(action);
+		}
+		{
+			QAction* action = new QAction;
+			action->setText(tr("Use reference ID"));
+			action->setCheckable(true);
+			action->connect(action, &QAction::triggered, [=](bool checked)
+			{
+				QSettings settings;
+				settings.setValue("preference/piconsUseRefid", checked);
+				settings.setValue("preference/piconsUseChname", ! checked);
+				settings.sync();
+				action->setChecked(checked);
+			});
+			menu->addAction(action);
+		}
+		{
+			QAction* action = new QAction;
+			action->setText(tr("Use service name"));
+			action->setCheckable(true);
+			action->connect(action, &QAction::triggered, [=](bool checked)
+			{
+				QSettings settings;
+				settings.setValue("preference/piconsUseRefid", ! checked);
+				settings.setValue("preference/piconsUseChname", checked);
+				settings.sync();
+				action->setChecked(checked);
+			});
+			menu->addAction(action);
+		}
+	}
+
+	QMenu* menu = this->action.acrn_prefs_menu;
+
+	auto actions = menu->actions();
+	QSettings settings;
+
+	for (auto & act : actions)
+		act->setChecked(false);
+
+	actions.at(1)->setChecked(settings.value("preference/piconsBackup", true).toBool());
+	actions.at(4)->setChecked(settings.value("preference/piconsUseRefid", true).toBool());
+	actions.at(5)->setChecked(settings.value("preference/piconsUseChname", false).toBool());
+
+	return menu;
+}
+
 void piconsView::editPicon()
 {
 	debug("editPicon");
@@ -560,31 +682,56 @@ void piconsView::changePicon(QListWidgetItem* item, QString path)
 
 	QString filepath = item->data(Qt::UserRole).toString();
 
-	//TODO TEST
-	/*QFile file (filepath);
+	if (QFile::exists(filepath))
+	{
+		if (QSettings().value("preference/piconsBackup", true).toBool())
+		{
+			QFileInfo fi = QFileInfo(filepath);
+			QString bak = fi.baseName();
+			bak.append("_bak").append(fi.completeSuffix());
+			bak = fi.dir().filePath(bak);
+			QFile::rename(filepath, bak);
+		}
+		
+		QFile::remove(filepath);
+	}
+
+	QFile file (filepath);
 	file.copy(path);
 	file.close();
 
-	item->setIcon(QIcon(filepath));*/
-	item->setIcon(QIcon(path));
+	item->setIcon(QIcon(filepath));
 }
 
 void piconsView::changePicon(QListWidgetItem* item, QByteArray data)
 {
 	debug("changePicon", "index", list->row(item));
 	debug("changePicon", "data", true);
-
+	
 	if (data.isEmpty())
 		return;
-
+	
 	QString filepath = item->data(Qt::UserRole).toString();
+	
+	if (QFile::exists(filepath))
+	{
+		if (QSettings().value("preference/piconsBackup", true).toBool())
+		{
+			QFileInfo fi = QFileInfo(filepath);
+			QString bak = fi.baseName();
+			bak.append("_bak").append(fi.completeSuffix());
+			bak = fi.dir().filePath(bak);
+			QFile::rename(filepath, bak);
+		}
 
-	//TODO TEST
-	/*QFile file (filepath);
+		QFile::remove(filepath);
+	}
+
+	QFile file (filepath);
 	file.write(data);
 	file.close();
 
-	item->setIcon(QIcon(filepath));*/
+	item->setIcon(QIcon(filepath));
 }
 
 void piconsView::listItemCopy(bool cut)
@@ -677,7 +824,8 @@ void piconsView::listItemDelete()
 
 	text.prepend("<span style=\"white-space: nowrap\">");
 	text.append("</span><br>");
-	//TODO improve
+	//TODO improve ui
+	//TODO improve option remember setting
 	QMessageBox msg = QMessageBox(this->cwid);
 
 	msg.setWindowFlags(Qt::Sheet | Qt::MSWindowsFixedSizeDialogHint);
@@ -700,7 +848,14 @@ void piconsView::listItemDelete()
 		QString filepath = filename.prepend("/").prepend(this->state.picons_dir);
 
 		if (QFile::exists(filepath))
-			QFile::moveToTrash(filepath);
+		{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+			if (! QFile::moveToTrash(filepath))
+				QFile::remove(filepath);
+#else
+			QFile::remove(filepath);
+#endif
+		}
 	}
 }
 

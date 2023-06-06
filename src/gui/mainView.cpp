@@ -1380,9 +1380,9 @@ QMenu* mainView::listPrefsCornerMenu()
 	for (auto & act : actions)
 		act->setChecked(false);
 
-	actions.at(1)->setChecked(settings.value("preference/treeCurrentAfterDrop").toBool());
-	actions.at(4)->setChecked(settings.value("preference/treeDropCopy").toBool());
-	actions.at(5)->setChecked(settings.value("preference/treeDropMove").toBool());
+	actions.at(1)->setChecked(settings.value("preference/treeCurrentAfterDrop", true).toBool());
+	actions.at(4)->setChecked(settings.value("preference/treeDropCopy", true).toBool());
+	actions.at(5)->setChecked(settings.value("preference/treeDropMove", false).toBool());
 
 	return menu;
 }

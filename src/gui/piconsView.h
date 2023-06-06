@@ -35,8 +35,10 @@ class piconsView : public viewAbstract
 
 		struct __action
 		{
+			QPushButton* acrn_prefs;
 			QWidget* list_browse;
 			QPushButton* list_search;
+			QMenu* acrn_prefs_menu = nullptr;
 		};
 
 		enum ITEM_DATA_ROLE {
@@ -72,10 +74,11 @@ class piconsView : public viewAbstract
 		void browseLayout();
 		void searchLayout();
 		void populate();
-		void listChangedPiconsPath();
 		void listItemChanged();
 		void listItemSelectionChanged();
 		void listItemDoubleClicked();
+		void listChangedPiconsPath();
+		QMenu* listPrefsCornerMenu();
 		void editPicon();
 		void changePicon(QListWidgetItem* item, QString path);
 		void changePicon(QListWidgetItem* item, QByteArray data);

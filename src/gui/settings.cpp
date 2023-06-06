@@ -498,6 +498,12 @@ void settings::preferencesLayout()
 	dtf4->setFormAlignment(Qt::AlignLeading);
 	dtf4->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
+	QCheckBox* dtf4bp = new QCheckBox(tr("Backup picon when replaced"));
+	dtf4bp->setProperty("field", "piconsBackup");
+	dtf4bp->setChecked(true);
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf4bp);
+	dtf4->addRow(dtf4bp);
+
 	QFormLayout* dtf41 = new QFormLayout;
 	dtf41->setSpacing(20);
 	dtf41->setFormAlignment(Qt::AlignLeading);
