@@ -22,7 +22,7 @@ HEADERS += gui/platforms/platform.h
 HEADERS += gui/toolkit/*.h
 HEADERS += gui/*.h
 
-RESOURCES = ../res/resources.qrc
+RESOURCES += ../res/resources.qrc
 
 QMAKE_CXXFLAGS += -std=c++17
 
@@ -31,10 +31,12 @@ macx {
 	LIBS += -L/usr/local/opt/curl/lib -lcurl
 	HEADERS += gui/platforms/platform_macx.h
 	SOURCES += gui/platforms/platform_macx.mm
+	RESOURCES += ../res/resources-toolbar-macx.qrc
 	TARGET = e2" "SAT" "Editor
 } else {
 	INCLUDEPATH += /usr/curl/include
 	LIBS += -L/usr/curl/lib -lcurl
+	RESOURCES += ../res/resources-toolbar.qrc
 	TARGET = e2-sat-editor
 }
 

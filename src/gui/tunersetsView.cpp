@@ -264,7 +264,7 @@ void tunersetsView::layout()
 #ifdef Q_OS_MAC
 	this->action.tcrn_edit->setFlat(true);
 #endif
-	this->action.tcrn_edit->setIcon(theme->dynamicIcon("settings", this->action.tcrn_edit));
+	this->action.tcrn_edit->setIcon(theme->dynamicIcon("edit-tunersets", this->action.tcrn_edit));
 	this->action.tcrn_edit->setWhatsThis(tr("Edit Settings", "corner"));
 	this->action.tcrn_edit->connect(this->action.tcrn_edit, &QPushButton::pressed, [=]()
 	{

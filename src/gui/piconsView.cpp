@@ -119,7 +119,7 @@ void piconsView::layout()
 #ifdef Q_OS_MAC
 	this->action.acrn_prefs->setFlat(true);
 #endif
-	this->action.acrn_prefs->setIcon(theme->dynamicIcon("settings", this->action.acrn_prefs));
+	this->action.acrn_prefs->setIcon(theme->dynamicIcon("list-prefs-menu", this->action.acrn_prefs));
 	this->action.acrn_prefs->setWhatsThis(tr("Picons Preferences", "corner"));
 	this->action.acrn_prefs->connect(this->action.acrn_prefs, &QPushButton::pressed, [=]()
 	{
@@ -692,7 +692,7 @@ void piconsView::changePicon(QListWidgetItem* item, QString path)
 			bak = fi.dir().filePath(bak);
 			QFile::rename(filepath, bak);
 		}
-		
+
 		QFile::remove(filepath);
 	}
 
@@ -707,12 +707,12 @@ void piconsView::changePicon(QListWidgetItem* item, QByteArray data)
 {
 	debug("changePicon", "index", list->row(item));
 	debug("changePicon", "data", true);
-	
+
 	if (data.isEmpty())
 		return;
-	
+
 	QString filepath = item->data(Qt::UserRole).toString();
-	
+
 	if (QFile::exists(filepath))
 	{
 		if (QSettings().value("preference/piconsBackup", true).toBool())

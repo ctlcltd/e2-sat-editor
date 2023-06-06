@@ -9,17 +9,20 @@
 	<file>icons/channelbook-view.png</file>
 	<file>icons/close.png</file>
 	<file>icons/crypted.png</file>
-	<file>icons/delete.png</file>
+	<file>icons/edit-tunersets.png</file>
 	<file>icons/edit.png</file>
 	<file>icons/export.png</file>
 	<file>icons/file-open.png</file>
 	<file>icons/import.png</file>
+	<file>icons/list-prefs-menu.png</file>
 	<file>icons/picon.png</file>
+	<file>icons/picons-view.png</file>
 	<file>icons/remove.png</file>
 	<file>icons/save.png</file>
 	<file>icons/search.png</file>
 	<file>icons/service-blacklist.png</file>
 	<file>icons/service-whitelist.png</file>
+	<file>icons/services-sets-menu.png</file>
 	<file>icons/settings.png</file>
 	<file>icons/transponders-view.png</file>
 	<file>icons/tunersets-view.png</file>

@@ -151,12 +151,12 @@ void settings::connectionsLayout()
 	dttbar->setIconSize(QSize(16, 16));
 	dttbar->setStyleSheet("QToolBar { spacing: 0 } QToolButton { margin: -1px 0; border: 1px solid }");
 #else
-	dttbar->setIconSize(QSize(13, 13));
-	dttbar->setStyleSheet("QToolBar { spacing: 0 } QToolButton { margin: -1px 0; width: 24px; height: 18px; border: 1px solid }");
+	dttbar->setIconSize(QSize(20, 20));
+	dttbar->setStyleSheet("QToolBar { spacing: 0 } QToolButton { margin: -1px 0; width: 23px; height: 18px; border: 1px solid }");
 #endif
 
-	dttbar->addAction(theme::icon("add"), tr("Add"), [=]() { this->addProfile(); });
-	dttbar->addAction(theme::icon("remove"), tr("Remove"), [=]() { this->deleteProfile(); });
+	dttbar->addAction(theme::icon("tool-add"), tr("Add"), [=]() { this->addProfile(); });
+	dttbar->addAction(theme::icon("tool-remove"), tr("Remove"), [=]() { this->deleteProfile(); });
 	//TODO presets
 
 	QColor tbshade;
@@ -195,7 +195,7 @@ void settings::connectionsLayout()
 	theme->dynamicStyleSheet(dttbar, "#profile_toolbar QToolButton { border-color: " + tbshade_hexArgb + " } #profile_toolbar QToolButton:pressed { background-color: " + tbfocus_hexArgb + " }", theme::light);
 
 	tbshade = QPalette().color(QPalette::Dark).darker();
-	tbshade.setAlphaF(0.28);
+	tbshade.setAlphaF(0.63);
 	tbshade_hexArgb = tbshade.name(QColor::HexArgb);
 
 	tbfocus = QPalette().color(QPalette::Dark).darker();

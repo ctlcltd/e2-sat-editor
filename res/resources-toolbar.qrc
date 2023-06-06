@@ -1,0 +1,8 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+<qresource prefix="/">
+	<file>icons/tool-add.png</file>
+	<file>icons/tool-menu.png</file>
+	<file>icons/tool-remove.png</file>
+</qresource>
+</RCC>

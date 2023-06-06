@@ -74,6 +74,9 @@ set(SOURCES
 
 if(APPLE)
 	list(APPEND SOURCES gui/platforms/platform_macx.mm)
+	list(APPEND SOURCES ../res/resources-toolbar-macx.qrc)
+else()
+	list(APPEND SOURCES ../res/resources-toolbar.qrc)
 endif()
 
 

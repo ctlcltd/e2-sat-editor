@@ -57,6 +57,7 @@ set(SOURCES
 	gui/viewAbstract.cpp
 	main.cpp
 	../res/resources.qrc
+	../res/resources-toolbar.qrc
 )
 
 qt_add_resources(SOURCES ../res/enigma_db.qrc OPTIONS -no-compress)

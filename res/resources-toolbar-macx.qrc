@@ -1,0 +1,8 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+<qresource prefix="/">
+	<file alias="icons/tool-add.png">icons/macx-tool-add.png</file>
+	<file alias="icons/tool-menu.png">icons/macx-tool-menu.png</file>
+	<file alias="icons/tool-remove.png">icons/macx-tool-remove.png</file>
+</qresource>
+</RCC>

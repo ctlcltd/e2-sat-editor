@@ -252,7 +252,7 @@ void mainView::layout()
 #ifdef Q_OS_MAC
 	this->action.scrn_sets->setFlat(true);
 #endif
-	this->action.scrn_sets->setIcon(theme->dynamicIcon("add", this->action.scrn_sets));
+	this->action.scrn_sets->setIcon(theme->dynamicIcon("services-sets-menu", this->action.scrn_sets));
 	this->action.scrn_sets->setWhatsThis(tr("Settings Convert", "corner"));
 	this->action.scrn_sets->connect(this->action.scrn_sets, &QPushButton::pressed, [=]()
 	{
@@ -269,7 +269,7 @@ void mainView::layout()
 #ifdef Q_OS_MAC
 	this->action.lcrn_prefs->setFlat(true);
 #endif
-	this->action.lcrn_prefs->setIcon(theme->dynamicIcon("settings", this->action.lcrn_prefs));
+	this->action.lcrn_prefs->setIcon(theme->dynamicIcon("list-prefs-menu", this->action.lcrn_prefs));
 	this->action.lcrn_prefs->setWhatsThis(tr("Drag&&Drop Preferences", "corner"));
 	this->action.lcrn_prefs->connect(this->action.lcrn_prefs, &QPushButton::pressed, [=]()
 	{
