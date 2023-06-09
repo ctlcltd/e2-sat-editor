@@ -1,0 +1,130 @@
+name: Bug report
+description: Create a report to help us improve
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps To Reproduce
+      description: How do you trigger this bug? Please walk us through it step by step.
+      value: |
+        1. 
+        2. 
+        3. 
+        ...
+    validations:
+      required: false
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: |
+        ## Environment
+        Please complete the following information:
+  - type: dropdown
+    id: software-version
+    attributes:
+      label: Software version
+      description: What version of our software are you running?
+      options:
+        - 0.8
+        - 0.7
+        - other (please specify)
+    validations:
+      required: true
+  - type: dropdown
+    id: download-medium
+    attributes:
+      label: Download medium
+      description: How did you download the software?
+      options:
+        - GitHub Releases page
+        - Snap Store
+        - Flathub
+        - built from source
+        - other (please specify)
+    validations:
+      required: true
+  - type: dropdown
+    id: platform-running
+    attributes:
+      label: Platform running
+      description: What operating system are you using?
+      options:
+        - I do not know
+        - Linux Gnome
+        - Linux KDE
+        - Linux other DE
+        - BSD-like
+        - Windows 11
+        - Windows 10
+        - Windows 8.1
+        - macOS Ventura
+        - macOS Monterey
+        - macOS Big Sur
+        - other (please specify)
+    validations:
+      required: true
+  - type: dropdown
+    id: architecture-running
+    attributes:
+      label: Architecture running
+      description: 
+      options:
+        - I do not know
+        - x86_64 (64-bit)
+        - i686 (32-bit)
+        - arm64
+        - other (please specify)
+    validations:
+      required: true
+  - type: textarea
+    id: specify
+    attributes:
+      label: Other (please specify)
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: |
+        ## Anything else?
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add any other context about the problem here.
+      placeholder: What were you doing when the problem occurred. What happened. Any error messages shown.
+    validations:
+      required: false
+  - type: textarea
+    id: log
+    attributes:
+      label: Log
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      placeholder: Go to Tools > Log Inspector, select all text and Copy
+      render: shell
+    validations:
+      required: false
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot
+      description: If necessary, add one screenshot to help explain the problem.
+    validations:
+      required: false

@@ -100,7 +100,6 @@ bool ftpcom::handle()
 	if (actv)
 		curl_easy_setopt(cph, CURLOPT_FTPPORT, "-");
 
-	//TODO improve blocking with network on
 	curl_easy_setopt(cph, CURLOPT_CONNECTTIMEOUT, ftpcom::FTP_CONNECT_TIMEOUT);
 	if (ftpcom::VERBOSE)
 		curl_easy_setopt(cph, CURLOPT_VERBOSE, true);
