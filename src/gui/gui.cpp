@@ -24,6 +24,8 @@
 #include <QPushButton>
 #include <QFileDialog>
 #include <QClipboard>
+#include <QUrl>
+#include <QDesktopServices>
 
 #include "../e2se_defs.h"
 #include "platforms/platform.h"
@@ -342,6 +344,10 @@ void gui::menuBarLayout()
 	//: Platform: Help menu
 	QMenu* mhelp = menuBarMenu(menu, tr("&Help", "menu"));
 	menuBarAction(mhelp, tr("About &Qt", "menu"), [=]() { this->mroot->aboutQt(); })->setMenuRole(QAction::NoRole);
+	menuBarSeparator(mhelp);
+	menuBarAction(mhelp, tr("Report a bug", "menu"), [=]() { this->linkToRepoIssues(); });
+	menuBarAction(mhelp, tr("Check for updates…", "menu"), [=]() { this->linkToRepoReleases(); });
+	menuBarAction(mhelp, tr("Go to E2SE repository…", "menu"), [=]() { this->linkToRepo(); });
 	menuBarSeparator(mhelp);
 	menuBarAction(mhelp, tr("&About e2 SAT Editor", "menu"), [=]() { this->aboutDialog(); })->setMenuRole(QAction::NoRole);
 
@@ -1591,6 +1597,27 @@ void gui::aboutDialog()
 
 	auto* dialog = new e2se_gui::about();
 	dialog->display();
+}
+
+void gui::linkToRepo()
+{
+	debug("linkToRepo");
+
+	QDesktopServices::openUrl(QUrl("https://github.com/ctlcltd/e2-sat-editor"));
+}
+
+void gui::linkToRepoIssues()
+{
+	debug("linkToRepoIssues");
+
+	QDesktopServices::openUrl(QUrl("https://github.com/ctlcltd/e2-sat-editor/issues/new/choose"));
+}
+
+void gui::linkToRepoReleases()
+{
+	debug("linkToRepoReleases");
+
+	QDesktopServices::openUrl(QUrl("https://github.com/ctlcltd/e2-sat-editor/releases"));
 }
 
 int gui::getTabId(int index)
