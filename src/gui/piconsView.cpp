@@ -728,7 +728,8 @@ void piconsView::changePicon(QListWidgetItem* item, QString path)
 	}
 }
 
-void piconsView::changePicon(QListWidgetItem* item, QByteArray data)
+//TODO png image
+/*void piconsView::changePicon(QListWidgetItem* item, QByteArray data)
 {
 	debug("changePicon", "index", list->row(item));
 	debug("changePicon", "data", true);
@@ -771,7 +772,7 @@ void piconsView::changePicon(QListWidgetItem* item, QByteArray data)
 
 		item->setIcon(QIcon(":/icons/picon.png"));
 	}
-}
+}*/
 
 void piconsView::listItemCopy(bool cut)
 {
@@ -788,7 +789,7 @@ void piconsView::listItemCopy(bool cut)
 
 	QClipboard* clipboard = QGuiApplication::clipboard();
 
-	if (selected.count() > 1)
+	/*if (selected.count() > 1)*/
 	{
 		QMimeData* content = new QMimeData;
 		QList<QUrl> urls;
@@ -804,14 +805,14 @@ void piconsView::listItemCopy(bool cut)
 		content->setUrls(urls);
 		clipboard->setMimeData(content);
 	}
-	else
+	/*else
 	{
 		QListWidgetItem* item = selected.first();
 		QString filepath = item->data(Qt::UserRole).toString();
 
 		if (QFile::exists(filepath))
 			clipboard->setImage(QImage(filepath));
-	}
+	}*/
 
 	if (cut)
 		listItemDelete();
@@ -848,13 +849,13 @@ void piconsView::listItemPaste()
 				break;
 		}
 	}
-	else if (mimeData->hasImage() && selected.count() == 1)
+	/*else if (mimeData->hasImage() && selected.count() == 1)
 	{
 		QListWidgetItem* item = selected.first();
 		QString filepath = item->data(Qt::UserRole).toString();
 
 		changePicon(item, mimeData->imageData().toByteArray());
-	}
+	}*/
 }
 
 void piconsView::listItemDelete()
