@@ -47,6 +47,7 @@ set(SOURCES
 	gui/ftpHandler.cpp
 	gui/gui.cpp
 	gui/mainView.cpp
+	gui/piconsView.cpp
 	gui/printable.cpp
 	gui/settings.cpp
 	gui/tab.cpp

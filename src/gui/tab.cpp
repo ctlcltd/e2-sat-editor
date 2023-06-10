@@ -37,11 +37,11 @@
 #ifdef Q_OS_WASM
 #include <QFileDialog>
 #endif
+#ifndef Q_OS_WASM
+#include <QThread>
+#endif
 #ifdef E2SE_DEMO
 #include <QResource>
-#endif
-#ifndef E2SE_DEMO
-#include <QThread>
 #endif
 
 #include "tab.h"
@@ -564,15 +564,15 @@ bool tab::readFile(string path)
 	for (auto & q : gid->blobs)
 	{
 		e2db::e2db_file file;
-		file.filename = q.path;
+		file.filename = q.filename;
 		file.mime = q.mime;
 		file.data = q.data;
 		file.size = q.size;
 
-		debug("readFile", "file.path", q.path);
+		debug("readFile", "file.filename", q.filename);
 		debug("readFile", "file.size", to_string(q.size));
 
-		files.emplace(file.path, file);
+		files.emplace(file.filename, file);
 	}
 
 	bool readen = this->data->readBlob(path, files);
@@ -1430,6 +1430,7 @@ void tab::ftpConnect()
 	return this->demoMessage();
 #endif
 
+#ifndef Q_OS_WASM
 	QThread* thread = QThread::create([=]()
 	{
 		if (this->ftph->openConnection())
@@ -1443,6 +1444,7 @@ void tab::ftpConnect()
 	});
 	thread->start();
 	thread->quit();
+#endif
 }
 
 void tab::ftpDisconnect()
@@ -1453,6 +1455,7 @@ void tab::ftpDisconnect()
 	return this->demoMessage();
 #endif
 
+#ifndef Q_OS_WASM
 	QThread* thread = QThread::create([=]()
 	{
 		if (this->ftph->closeConnection())
@@ -1466,6 +1469,7 @@ void tab::ftpDisconnect()
 	});
 	thread->start();
 	thread->quit();
+#endif
 }
 
 void tab::ftpUpload()
@@ -1476,6 +1480,7 @@ void tab::ftpUpload()
 	return this->demoMessage();
 #endif
 
+#ifndef Q_OS_WASM
 	{
 		QThread* thread = QThread::create([=]()
 		{
@@ -1573,6 +1578,7 @@ void tab::ftpUpload()
 		thread->start();
 		thread->quit();
 	}
+#endif
 }
 
 void tab::ftpDownload()
@@ -1583,6 +1589,7 @@ void tab::ftpDownload()
 	return this->demoMessage();
 #endif
 
+#ifndef Q_OS_WASM
 	{
 		QThread* thread = QThread::create([=]()
 		{
@@ -1666,12 +1673,18 @@ void tab::ftpDownload()
 		thread->start();
 		thread->quit();
 	}
+#endif
 }
 
 void tab::ftpReloadStb()
 {
 	debug("ftpReloadStb");
 
+#ifdef E2SE_DEMO
+	return this->demoMessage();
+#endif
+
+#ifndef Q_OS_WASM
 	auto* ftih = this->ftph->ftih;
 
 	QThread* thread = QThread::create([=]()
@@ -1687,6 +1700,7 @@ void tab::ftpReloadStb()
 	});
 	thread->start();
 	thread->quit();
+#endif
 }
 
 void tab::ftpStbConnectingNotify()

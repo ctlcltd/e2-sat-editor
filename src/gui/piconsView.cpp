@@ -27,6 +27,7 @@
 #include <QMimeData>
 #include <QMouseEvent>
 
+#include "../e2se_defs.h"
 #include "platforms/platform.h"
 
 #include "piconsView.h"
@@ -322,10 +323,12 @@ void piconsView::populate()
 
 		item->setData(Qt::UserRole, filepath);
 
+#ifndef Q_OS_WASM
 		if (! this->state.picons_dir.isEmpty() && QFile::exists(filepath))
 			item->setIcon(QIcon(filepath));
 		else
 			item->setIcon(QIcon(":/icons/picon.png"));
+#endif
 
 		s_item->setData(ITEM_DATA_ROLE::x, Qt::UserRole, entry[ITEM_DATA_ROLE::x]);
 		s_item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, entry[ITEM_DATA_ROLE::chid]);
@@ -665,6 +668,10 @@ void piconsView::editPicon()
 	if (selected.empty() || selected.count() > 1)
 		return;
 
+#ifdef E2SE_DEMO
+	return tid->demoMessage();
+#endif
+
 	QListWidgetItem* item = selected.first();
 
 	QString path = this->importFileDialog(this->state.picons_dir);
@@ -676,6 +683,10 @@ void piconsView::changePicon(QListWidgetItem* item, QString path)
 {
 	debug("changePicon", "index", list->row(item));
 	debug("changePicon", "path", path.toStdString());
+
+#ifdef E2SE_DEMO
+	return;
+#endif
 
 	if (! QFile::exists(path))
 		return;
@@ -743,6 +754,10 @@ void piconsView::listItemCopy(bool cut)
 	if (selected.empty())
 		return;
 
+#ifdef E2SE_DEMO
+	return;
+#endif
+
 	QClipboard* clipboard = QGuiApplication::clipboard();
 
 	if (selected.count() > 1)
@@ -784,6 +799,10 @@ void piconsView::listItemPaste()
 
 	if (selected.empty())
 		return;
+
+#ifdef E2SE_DEMO
+	return;
+#endif
 
 	QClipboard* clipboard = QGuiApplication::clipboard();
 	const QMimeData* mimeData = clipboard->mimeData();
@@ -840,6 +859,10 @@ void piconsView::listItemDelete()
 
 	if (msg.exec() != QMessageBox::Ok)
 		return;
+
+#ifdef E2SE_DEMO
+	return tid->demoMessage();
+#endif
 
 	for (auto & item : selected)
 	{

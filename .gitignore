@@ -17,7 +17,7 @@ cmake_install.cmake
 __
 moc_predefs.h
 moc_*.cpp
-qrc_resources.cpp
+qrc_resources*.cpp
 .xcode
 .qmake.stash
 *.app

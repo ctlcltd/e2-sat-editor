@@ -67,7 +67,7 @@ body:
       label: Platform running
       description: What operating system are you using?
       options:
-        - I do not know
+        - I don't know
         - Linux Gnome
         - Linux KDE
         - Linux other DE
@@ -85,9 +85,8 @@ body:
     id: architecture-running
     attributes:
       label: Architecture running
-      description: 
       options:
-        - I do not know
+        - I don't know
         - x86_64 (64-bit)
         - i686 (32-bit)
         - arm64
