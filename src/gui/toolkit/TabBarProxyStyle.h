@@ -9,8 +9,6 @@
  * @license GNU GPLv3 License
  */
 
-#include <iostream>
-
 #ifndef TabBarProxyStyle_h
 #define TabBarProxyStyle_h
 #include <QProxyStyle>
@@ -18,13 +16,12 @@
 
 namespace e2se_gui
 {
-//TODO
 class TabBarProxyStyle : public QProxyStyle
 {
 	public:
 		void drawPrimitive(PrimitiveElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const override
 		{
-			// std::cout << "drawPrimitive" << ':' << ' ' << element << std::endl;
+			// qDebug() << "drawPrimitive" << ':' << ' ' << element;
 
 			if (element == QStyle::PE_FrameFocusRect) // 3
 				return;
@@ -33,7 +30,7 @@ class TabBarProxyStyle : public QProxyStyle
 		}
 		void drawControl(ControlElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const override
 		{
-			// std::cout << "drawControl" << ':' << ' ' << element << std::endl;
+			// qDebug() << "drawControl" << ':' << ' ' << element;
 
 			QProxyStyle::drawControl(element, option, painter, widget);
 		}

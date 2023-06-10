@@ -122,14 +122,12 @@ void piconsView::layout()
 #endif
 	this->action.acrn_prefs->setIcon(theme->dynamicIcon("list-prefs-menu", this->action.acrn_prefs));
 	this->action.acrn_prefs->setWhatsThis(tr("Picons Preferences", "corner"));
-	this->action.acrn_prefs->connect(this->action.acrn_prefs, &QPushButton::pressed, [=]()
-	{
+	this->action.acrn_prefs->connect(this->action.acrn_prefs, &QPushButton::pressed, [=]() {
 		QMenu* menu = this->listPrefsCornerMenu();
 		// menu->popup(this->action.acrn_prefs->mapToGlobal(this->action.acrn_prefs->pos()));
 		platform::osMenuPopup(menu, this->action.acrn_prefs, this->action.acrn_prefs->pos());
 
-		QMouseEvent mouseRelease(QEvent::MouseButtonRelease, this->action.acrn_prefs->pos(), this->action.acrn_prefs->mapToGlobal(QPoint(0, 0)),
-								  Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
+		QMouseEvent mouseRelease(QEvent::MouseButtonRelease, this->action.acrn_prefs->pos(), this->action.acrn_prefs->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
 		QCoreApplication::sendEvent(this->action.acrn_prefs, &mouseRelease);
 	});
 

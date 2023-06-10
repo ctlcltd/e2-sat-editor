@@ -11,8 +11,6 @@
 
 #import <AppKit/AppKit.h>
 
-#include <iostream>
-
 #include <QtGui>
 #include <QProxyStyle>
 #include <QStyleOption>
@@ -58,7 +56,7 @@ class _windowEventObserver : public QObject
 				[m_view release];
 			}
 
-			// std::cout << "window QEvent" << ' ' << event->type() << std::endl;
+			// qDebug() << "window QEvent" << ' ' << event->type();
 			return QObject::eventFilter(object, event);
 		}
 
@@ -89,7 +87,7 @@ class _widgetEventObserver : public QObject
 
 				[m_view setFrame:nsFrame];
 
-				// std::cout << "widget resizing" << ' ' << event->type() << ' ' << ' ' << frameRect.top() << ',' << frameRect.left() << ',' << frameRect.width() << ',' << frameRect.height() << ' ' << ' ' << widget->window()->width() << ',' << widget->window()->height() << std::endl;
+				// qDebug() << "widget resizing" << ' ' << event->type() << ' ' << ' ' << frameRect.top() << ',' << frameRect.left() << ',' << frameRect.width() << ',' << frameRect.height() << ' ' << ' ' << widget->window()->width() << ',' << widget->window()->height();
 			}
 			else if (event->type() == QEvent::Show)
 			{
@@ -117,7 +115,7 @@ class _widgetEventObserver : public QObject
 				[m_view release];
 			}
 
-			// std::cout << "widget QEvent" << ' ' << event->type() << std::endl;
+			// qDebug() << "widget QEvent" << ' ' << event->type();
 			return QObject::eventFilter(object, event);
 		}
 

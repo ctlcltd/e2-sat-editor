@@ -254,14 +254,12 @@ void mainView::layout()
 #endif
 	this->action.scrn_sets->setIcon(theme->dynamicIcon("services-sets-menu", this->action.scrn_sets));
 	this->action.scrn_sets->setWhatsThis(tr("Settings Convert", "corner"));
-	this->action.scrn_sets->connect(this->action.scrn_sets, &QPushButton::pressed, [=]()
-	{
+	this->action.scrn_sets->connect(this->action.scrn_sets, &QPushButton::pressed, [=]() {
 		QMenu* menu = this->servicesSetsCornerMenu();
 		// menu->popup(this->action.scrn_sets->mapToGlobal(this->action.scrn_sets->pos()));
 		platform::osMenuPopup(menu, this->action.scrn_sets, this->action.scrn_sets->pos());
 
-		QMouseEvent mouseRelease(QEvent::MouseButtonRelease, this->action.scrn_sets->pos(), this->action.scrn_sets->mapToGlobal(QPoint(0, 0)),
-								  Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
+		QMouseEvent mouseRelease(QEvent::MouseButtonRelease, this->action.scrn_sets->pos(), this->action.scrn_sets->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
 		QCoreApplication::sendEvent(this->action.scrn_sets, &mouseRelease);
 	});
 
@@ -271,14 +269,12 @@ void mainView::layout()
 #endif
 	this->action.lcrn_prefs->setIcon(theme->dynamicIcon("list-prefs-menu", this->action.lcrn_prefs));
 	this->action.lcrn_prefs->setWhatsThis(tr("Drag&&Drop Preferences", "corner"));
-	this->action.lcrn_prefs->connect(this->action.lcrn_prefs, &QPushButton::pressed, [=]()
-	{
+	this->action.lcrn_prefs->connect(this->action.lcrn_prefs, &QPushButton::pressed, [=]() {
 		QMenu* menu = this->listPrefsCornerMenu();
 		// menu->popup(this->action.lcrn_prefs->mapToGlobal(this->action.lcrn_prefs->pos()));
 		platform::osMenuPopup(menu, this->action.lcrn_prefs, this->action.lcrn_prefs->pos());
 
-		QMouseEvent mouseRelease(QEvent::MouseButtonRelease, this->action.lcrn_prefs->pos(), this->action.lcrn_prefs->mapToGlobal(QPoint(0, 0)),
-								  Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
+		QMouseEvent mouseRelease(QEvent::MouseButtonRelease, this->action.lcrn_prefs->pos(), this->action.lcrn_prefs->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
 		QCoreApplication::sendEvent(this->action.lcrn_prefs, &mouseRelease);
 	});
 

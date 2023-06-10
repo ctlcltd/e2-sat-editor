@@ -22,7 +22,6 @@ using std::string;
 
 namespace e2se_gui
 {
-//TODO
 class ListIconDragDropEventHandler : public QObject
 {
 	public:
@@ -53,7 +52,6 @@ class ListIconDragDropEventHandler : public QObject
 		std::function<void(QListWidgetItem* item, const QString path)> eventCallback;
 };
 
-//TODO
 class ListIconDragDropEventFilter : public QObject
 {
 	protected:

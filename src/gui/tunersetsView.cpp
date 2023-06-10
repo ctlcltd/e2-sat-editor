@@ -122,7 +122,7 @@ void tunersetsView::layout()
 	{
 		case e2db::YTYPE::satellite:
 			ths = QStringList ({NULL, tr("Name"), tr("Position")});
-			lhs = QStringList ({NULL, "TRID", tr("Freq/Pol/SR"), tr("Frequency"), tr("Polarization"), tr("Symbol Rate"), tr("System"), tr("FEC"), tr("Modulation"), tr("Inversion"),  tr("Roll offset"), tr("Pilot")});
+			lhs = QStringList ({NULL, "TRID", tr("Freq/Pol/SR"), tr("Frequency"), tr("Polarization"), tr("Symbol Rate"), tr("System"), tr("FEC"), tr("Modulation"), tr("Inversion"), tr("Roll offset"), tr("Pilot")});
 		break;
 		case e2db::YTYPE::terrestrial:
 			ths = QStringList ({NULL, tr("Name"), tr("Country")});
@@ -266,10 +266,8 @@ void tunersetsView::layout()
 #endif
 	this->action.tcrn_edit->setIcon(theme->dynamicIcon("edit-tunersets", this->action.tcrn_edit));
 	this->action.tcrn_edit->setWhatsThis(tr("Edit Settings", "corner"));
-	this->action.tcrn_edit->connect(this->action.tcrn_edit, &QPushButton::pressed, [=]()
-	{
-		QMouseEvent mouseRelease(QEvent::MouseButtonRelease, this->action.tcrn_edit->pos(), this->action.tcrn_edit->mapToGlobal(QPoint(0, 0)),
-								  Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
+	this->action.tcrn_edit->connect(this->action.tcrn_edit, &QPushButton::pressed, [=]() {
+		QMouseEvent mouseRelease(QEvent::MouseButtonRelease, this->action.tcrn_edit->pos(), this->action.tcrn_edit->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
 		QCoreApplication::sendEvent(this->action.tcrn_edit, &mouseRelease);
 
 		this->editSettings();

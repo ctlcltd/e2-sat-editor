@@ -92,7 +92,6 @@ QIcon theme::icon(QString icon, ICON_STYLE style)
 	return ico;
 }
 
-//TODO TEST strange behaviour [Wine]
 QString theme::fontFamily()
 {
 	return QFont().defaultFamily();

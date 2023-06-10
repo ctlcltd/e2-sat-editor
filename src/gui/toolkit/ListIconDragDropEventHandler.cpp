@@ -173,7 +173,7 @@ bool ListIconDragDropEventFilter::eventFilter(QObject* object, QEvent* event)
 	if (event->type() == QEvent::DragEnter)
 	{
 		QDragEnterEvent* e = static_cast<QDragEnterEvent*>(event);
-		qDebug() << "list enter: " << e;
+		// qDebug() << "list enter: " << e;
 		e->setDropAction(Qt::DropAction::IgnoreAction);
 		e->ignore();
 		return QObject::eventFilter(object, e);
@@ -181,19 +181,19 @@ bool ListIconDragDropEventFilter::eventFilter(QObject* object, QEvent* event)
 	else if (event->type() == QEvent::DragMove)
 	{
 		QDragMoveEvent* e = static_cast<QDragMoveEvent*>(event);
-		qDebug() << "list move: " << e;
+		// qDebug() << "list move: " << e;
 		e->setDropAction(Qt::DropAction::IgnoreAction);
 		e->ignore();
 		return QObject::eventFilter(object, e);
 	}
 	else if (event->type() == QEvent::DragLeave)
 	{
-		qDebug() << "list leave: " << event;
+		// qDebug() << "list leave: " << event;
 	}
 	else if (event->type() == QEvent::Drop)
 	{
 		QDropEvent* e = static_cast<QDropEvent*>(event);
-		qDebug() << "list drop: " << e;
+		// qDebug() << "list drop: " << e;
 		e->setDropAction(Qt::DropAction::IgnoreAction);
 		e->ignore();
 		return QObject::eventFilter(object, e);

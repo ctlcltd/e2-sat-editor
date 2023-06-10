@@ -108,8 +108,8 @@ void channelBookView::layout()
 
 	tree->setStyleSheet("QTreeWidget { border-style: none } QTreeWidget::item { padding: 2px 0 }");
 	list->setStyleSheet("QTreeWidget { border-style: none } QTreeWidget::item { padding: 2px 0 }");
-	//TODO FIX wrong width size
-	tabv->setStyleSheet("QTabBar::tab { width: 48px; margin-top: 0 }");
+	//TODO improve ui
+	tabv->setStyleSheet("QTabBar { width: 100% } QTabBar::tab { min-width: 48px; max-height: 22px }");
 
 #ifdef Q_OS_MAC
 	if (theme::isDefault())
@@ -163,11 +163,11 @@ void channelBookView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 75);		// System
 
 	tabv->setHidden(true);
-	tabv->setShape(QTabBar::RoundedWest);
 	tabv->setDocumentMode(true);
 	tabv->setUsesScrollButtons(true);
 	tabv->setExpanding(false);
 	tabv->setDrawBase(true);
+	tabv->setShape(QTabBar::RoundedWest);
 
 	string chars[27] = {"0-9","A","B","C","D","E","F","G","H","I","J","L","K","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
@@ -206,7 +206,6 @@ void channelBookView::layout()
 	platform::osWidgetBlend(afrm);
 	platform::osWidgetOpaque(bfrm);
 
-	//TODO FIX
 	afrm->setMinimumWidth(150);
 	afrm->setMaximumWidth(250);
 
@@ -290,6 +289,12 @@ void channelBookView::populate()
 		int selected = tabv->currentIndex();
 		QString index = tabv->tabData(selected).toString();
 		curr = index.toStdString();
+
+#ifdef Q_OS_WIN
+		for (int i = 0; i < tabv->count(); i++)
+			tabv->tabButton(i, QTabBar::LeftSide)->setStyleSheet("color: palette(text)");
+		tabv->tabButton(selected, QTabBar::LeftSide)->setStyleSheet("color: palette(highlighted-text)");
+#endif
 	}
 
 	this->state.curr = curr;

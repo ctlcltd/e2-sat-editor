@@ -47,8 +47,7 @@ bool TreeDropIndicatorEventPainter::eventDragMove(QObject* object, QEvent* event
 #endif
 	QModelIndex index = tree->indexAt(pos);
 
-	//TODO TEST droppingOnItself
-	if (index.isValid()/* && index != tree->currentIndex()*/)
+	if (index.isValid())
 	{
 		// Qt bug Qt::RightToLeft visualItemRect
 
