@@ -86,7 +86,7 @@ gui::gui(int argc, char* argv[])
 	QString appTranslationsPath = QString(appPath).append("/dist/translations");
 #else
 	QString appTranslationsPath = mroot->applicationDirPath();
-#ifndef Q_OS_MACOS
+#ifndef Q_OS_MAC
 	if (appTranslationsPath.contains("/bin"))
 	{
 		appTranslationsPath.truncate(appTranslationsPath.indexOf("/bin"));
@@ -107,7 +107,7 @@ gui::gui(int argc, char* argv[])
 
 #if defined E2SE_PORTABLE
 	QString qtTranslationsPath = appTranslationsPath;
-#elif defined Q_OS_MACOS && E2SE_BUILD == E2SE_TARGET_RELEASE
+#elif defined Q_OS_MAC && E2SE_BUILD == E2SE_TARGET_RELEASE
 	QString qtTranslationsPath = appTranslationsPath;
 #else
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
@@ -374,7 +374,7 @@ void gui::tabStackerLayout()
 
 #if defined Q_OS_WIN
 	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 25ex; height: 22px; padding-top: 11px; padding-bottom: 11px; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button) } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight); border-color: transparent }");
-#elif defined Q_OS_MACOS
+#elif defined Q_OS_MAC
 	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 12ex; max-width: 25ex; height: 44px; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button) } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight); border-color: transparent }");
 #else
 	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 25ex; height: 44px; padding-top: 11px; padding-bottom: 11px; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button) } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight); border-color: transparent }");
@@ -429,7 +429,7 @@ void gui::tabStackerLayout()
 	int ttbspacer = 1;
 #if defined Q_OS_WIN
 	ttbnew->setStyleSheet("QPushButton { min-width: 8ex; height: 22px; margin: 5px 4px 3px 4px; padding-top: 4px; padding-bottom: 4px; padding-left: 3px; padding-right: 3px; font-size: 12px; font-weight: bold }");
-#elif defined Q_OS_MACOS
+#elif defined Q_OS_MAC
 	if (theme::isDefault())
 	{
 		ttbspacer = 5;
@@ -819,6 +819,7 @@ int gui::openTab(TAB_VIEW view, int arg)
 	return index;
 }
 
+//TODO FIX previous menu items visibility on tab close
 void gui::closeTab(int index)
 {
 	// debug("closeTab", "index", index);
@@ -923,7 +924,7 @@ void gui::windowChanged()
 	{
 		debug("windowChanged", "mwind", "idle");
 #ifndef Q_OS_WASM
-		//TODO FIX sometimes fails to restore previous items visibility
+		//TODO FIX sometimes fails to restore previous menu items visibility
 #if E2SE_BUILD == E2SE_TARGET_DEBUG
 		this->gex = this->gxe;
 		setFlags(GUI_CXE::idle);

@@ -544,6 +544,7 @@ void viewAbstract::tabUpdateFlags()
 		tid->storeFlags();
 }
 
+//TODO FIX previous menu items visibility on tab close
 void viewAbstract::tabUpdateFlags(int preset)
 {
 	tabSetFlags(preset);

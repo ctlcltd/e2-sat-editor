@@ -623,6 +623,8 @@ QMenu* piconsView::listPrefsCornerMenu()
 				settings.setValue("preference/piconsUseChname", ! checked);
 				settings.sync();
 				action->setChecked(checked);
+
+				this->listChangedPiconsPath();
 			});
 			menu->addAction(action);
 		}
@@ -637,6 +639,8 @@ QMenu* piconsView::listPrefsCornerMenu()
 				settings.setValue("preference/piconsUseChname", checked);
 				settings.sync();
 				action->setChecked(checked);
+
+				this->listChangedPiconsPath();
 			});
 			menu->addAction(action);
 		}
@@ -687,7 +691,11 @@ void piconsView::changePicon(QListWidgetItem* item, QString path)
 #endif
 
 	if (! QFile::exists(path))
+	{
+		error("changePicon", tr("File Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(path.data()).toStdString());
+
 		return;
+	}
 
 	QString filepath = item->data(Qt::UserRole).toString();
 
@@ -697,19 +705,27 @@ void piconsView::changePicon(QListWidgetItem* item, QString path)
 		{
 			QFileInfo fi = QFileInfo(filepath);
 			QString bak = fi.baseName();
-			bak.append("_bak").append(fi.completeSuffix());
+			bak.prepend("_bak__").append('.').append(fi.completeSuffix());
 			bak = fi.dir().filePath(bak);
+
 			QFile::rename(filepath, bak);
 		}
 
 		QFile::remove(filepath);
 	}
 
-	QFile file (filepath);
-	file.copy(path);
-	file.close();
+	QFile::copy(path, filepath);
 
-	item->setIcon(QIcon(filepath));
+	if (QFile::exists(filepath))
+	{
+		item->setIcon(QIcon(filepath));
+	}
+	else
+	{
+		error("changePicon", tr("File Error", "error").toStdString(), tr("Error writing file \"%1\".", "error").arg(filepath).toStdString());
+
+		item->setIcon(QIcon(":/icons/picon.png"));
+	}
 }
 
 void piconsView::changePicon(QListWidgetItem* item, QByteArray data)
@@ -718,7 +734,11 @@ void piconsView::changePicon(QListWidgetItem* item, QByteArray data)
 	debug("changePicon", "data", true);
 
 	if (data.isEmpty())
+	{
+		error("changePicon", tr("Error", "error").toStdString(), tr("Not a valid data format.", "error").toStdString());
+
 		return;
+	}
 
 	QString filepath = item->data(Qt::UserRole).toString();
 
@@ -728,8 +748,9 @@ void piconsView::changePicon(QListWidgetItem* item, QByteArray data)
 		{
 			QFileInfo fi = QFileInfo(filepath);
 			QString bak = fi.baseName();
-			bak.append("_bak").append(fi.completeSuffix());
+			bak.prepend("_bak__").append('.').append(fi.completeSuffix());
 			bak = fi.dir().filePath(bak);
+
 			QFile::rename(filepath, bak);
 		}
 
@@ -740,7 +761,16 @@ void piconsView::changePicon(QListWidgetItem* item, QByteArray data)
 	file.write(data);
 	file.close();
 
-	item->setIcon(QIcon(filepath));
+	if (QFile::exists(filepath))
+	{
+		item->setIcon(QIcon(filepath));
+	}
+	else
+	{
+		error("changePicon", tr("File Error", "error").toStdString(), tr("Error writing file \"%1\".", "error").arg(filepath).toStdString());
+
+		item->setIcon(QIcon(":/icons/picon.png"));
+	}
 }
 
 void piconsView::listItemCopy(bool cut)
