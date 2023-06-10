@@ -711,7 +711,7 @@ void tab::importFile()
 	{
 		// picons view
 		if (current == gui::TAB_VIEW::picons)
-			infoMessage(tr("Nothing to import", "message"), tr("You are in Edit Picons.", "message"));
+			infoMessage(tr("Nothing to import", "message"), tr("You are in Picons editor.", "message"));
 		// channelBook view
 		else if (current == gui::TAB_VIEW::channelBook)
 			infoMessage(tr("Nothing to import", "message"), tr("You are in Channel Book.", "message"));
@@ -895,7 +895,7 @@ void tab::exportFile()
 	{
 		// picons view
 		if (current == gui::TAB_VIEW::picons)
-			infoMessage(tr("Nothing to export", "message"), tr("You are in Edit Picons.", "message"));
+			infoMessage(tr("Nothing to export", "message"), tr("You are in Picons editor.", "message"));
 		// channelBook view
 		else if (current == gui::TAB_VIEW::channelBook)
 			infoMessage(tr("Nothing to export", "message"), tr("You are in Channel Book.", "message"));

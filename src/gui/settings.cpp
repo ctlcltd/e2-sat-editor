@@ -492,7 +492,7 @@ void settings::preferencesLayout()
 
 	dtf3->addRow(dtf31);
 
-	QGroupBox* dtl4 = new QGroupBox(tr("Picons"));
+	QGroupBox* dtl4 = new QGroupBox(tr("Picons editor"));
 	QFormLayout* dtf4 = new QFormLayout;
 	dtf4->setSpacing(20);
 	dtf4->setFormAlignment(Qt::AlignLeading);

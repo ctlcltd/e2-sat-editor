@@ -223,7 +223,7 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::FileOpen] = menuBarAction(mfile, tr("&Open", "menu"), [=]() { this->fileOpen(); }, QKeySequence::Open);
 	menuBarSeparator(mfile);
 	gmenu[GUI_CXE::FileSave] = menuBarAction(mfile, tr("&Save", "menu"), [=]() { this->fileSave(); }, QKeySequence::Save);
-	//: Encoding: take care about 3 dots ellipsys symbol
+	//: Encoding: preserve 3-dots ellipsis symbol
 	gmenu[GUI_CXE::FileSaveAs] = menuBarAction(mfile, tr("Save &As…", "menu"), [=]() { this->fileSaveAs(); }, QKeySequence::SaveAs);
 	menuBarSeparator(mfile);
 	gmenu[GUI_CXE::FileImport] = menuBarAction(mfile, tr("Import", "menu"), [=]() { this->fileImport(); });
@@ -232,13 +232,13 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::CloseTab] = menuBarAction(mfile, tr("Close Tab", "menu"), [=]() { this->closeTab(); }, QKeySequence::Close);
 	gmenu[GUI_CXE::CloseAllTabs] = menuBarAction(mfile, tr("Close All Tabs", "menu"), [=]() { this->closeAllTabs(); }, Qt::CTRL | Qt::ALT | Qt::Key_W);
 	menuBarSeparator(mfile);
-	//: Encoding: take care about 3 dots ellipsys symbol
+	//: Encoding: preserve 3-dots ellipsis symbol
 	gmenu[GUI_CXE::FilePrint] = menuBarAction(mfile, tr("&Print…", "menu"), [=]() { this->filePrint(); }, QKeySequence::Print);
 	gmenu[GUI_CXE::FilePrintAll] = menuBarAction(mfile, tr("Print &All", "menu"), [=]() { this->filePrintAll(); }, Qt::CTRL | Qt::SHIFT | Qt::Key_P);
 	menuBarSeparator(mfile);
 #ifdef Q_OS_MAC
 	//: Platform: Preferences item in macOS Application Menu |
-	//: Encoding: take care about 3 dots ellipsys symbol
+	//: Encoding: preserve 3-dots ellipsis symbol
 	menuBarAction(mfile, tr("Preferences…", "menu"), [=]() { this->settingsDialog(); }, QKeySequence::Preferences)->setMenuRole(QAction::PreferencesRole);
 	//: Platform: About [$BUNDLE_NAME] item in macOS Application Menu
 	menuBarAction(mfile, tr("About", "menu"), [=]() { this->aboutDialog(); })->setMenuRole(QAction::AboutRole);
@@ -252,10 +252,10 @@ void gui::menuBarLayout()
 	//: Platform: Edit menu in macOS Menu bar
 	QT_TRANSLATE_NOOP("QCocoaMenu", "Edit");
 	//: Platform: edit item in macOS Edit Menu |
-	//: Encoding: take care about 3 singular dots ellipsys
+	//: Encoding: preserve 3 singular dots
 	QT_TRANSLATE_NOOP("QCocoaMenuItem", "Start Dictation...");
 	//: Platform: edit item in macOS Edit Menu |
-	//: Encoding: take care about double ampersand
+	//: Encoding: note double ampersand
 	QT_TRANSLATE_NOOP("QCocoaMenuItem", "Emoji && Symbols");
 #endif
 
@@ -276,13 +276,13 @@ void gui::menuBarLayout()
 
 	//: Platform: Find menu
 	QMenu* mfind = menuBarMenu(menu, tr("&Find", "menu"));
-	//: Encoding: take care about 3 dots ellipsys symbol
+	//: Encoding: preserve 3-dots ellipsis symbol
 	gmenu[GUI_CXE::TabListFind] = menuBarAction(mfind, tr("&Find Channel…", "menu"), [=]() { this->tabAction(TAB_ATS::ListFind); }, QKeySequence::Find);
 	gmenu[GUI_CXE::TabListFindNext] = menuBarAction(mfind, tr("Find &Next", "menu"), [=]() { this->tabAction(TAB_ATS::ListFindNext); }, QKeySequence::FindNext);
 	gmenu[GUI_CXE::TabListFindPrev] = menuBarAction(mfind, tr("Find &Previous", "menu"), [=]() { this->tabAction(TAB_ATS::ListFindPrev); }, QKeySequence::FindPrevious);
 	gmenu[GUI_CXE::TabListFindAll] = menuBarAction(mfind, tr("Find &All", "menu"), [=]() { this->tabAction(TAB_ATS::ListFindAll); });
 	menuBarSeparator(mfind);
-	//: Encoding: take care about 3 dots ellipsys symbol
+	//: Encoding: preserve 3-dots ellipsis symbol
 	gmenu[GUI_CXE::TabTreeFind] = menuBarAction(mfind, tr("Find &Bouquet…", "menu"), [=]() { this->tabAction(TAB_ATS::TreeFind); }, Qt::CTRL | Qt::ALT | Qt::Key_F);
 	gmenu[GUI_CXE::TabTreeFindNext] = menuBarAction(mfind, tr("Find N&ext Bouquet", "menu"), [=]() { this->tabAction(TAB_ATS::TreeFindNext); }, Qt::CTRL | Qt::ALT | Qt::Key_E);
 
@@ -298,7 +298,7 @@ void gui::menuBarLayout()
 	//: Note: %1 is xml filename
 	gmenu[GUI_CXE::TunersetsAtsc] = menuBarAction(mtools, tr("Edit %1", "menu").arg("atsc.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsAtsc); });
 	menuBarSeparator(mtools);
-	gmenu[GUI_CXE::Picons] = menuBarAction(mtools, tr("Edit Picons", "menu"), [=]() { this->tabAction(TAB_ATS::EditPicons); });
+	gmenu[GUI_CXE::Picons] = menuBarAction(mtools, tr("Picons editor", "menu"), [=]() { this->tabAction(TAB_ATS::EditPicons); });
 	gmenu[GUI_CXE::OpenChannelBook] = menuBarAction(mtools, tr("Channel Book", "menu"), [=]() { this->tabAction(TAB_ATS::ShowChannelBook); });
 	menuBarSeparator(mtools);
 	QMenu* mimportcsv = menuBarMenu(mtools, tr("Import from CSV", "menu"));
@@ -788,7 +788,7 @@ int gui::openTab(TAB_VIEW view, int arg)
 		case TAB_VIEW::picons:
 			ttab->viewPicons(parent);
 			tticon = QIcon(theme::icon("picons-view", theme::icon_highlight));
-			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit Picons", "tab"));
+			ttname = QString("%1 - %2").arg(ttname).arg(tr("Picons editor", "tab"));
 		break;
 		case TAB_VIEW::channelBook:
 			ttab->viewChannelBook(parent);
@@ -1021,7 +1021,7 @@ void gui::tabChangeName(int ttid, string path)
 			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit Settings", "tab"));
 		break;
 		case TAB_VIEW::picons:
-			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit Picons", "tab"));
+			ttname = QString("%1 - %2").arg(ttname).arg(tr("Picons editor", "tab"));
 		break;
 		case TAB_VIEW::channelBook:
 			ttname = QString("%1 - %2").arg(ttname).arg(tr("Channel Book", "tab"));

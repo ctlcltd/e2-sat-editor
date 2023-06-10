@@ -303,7 +303,7 @@ void mainView::layout()
 
 	this->action.list_ref = toolBarButton(list_ats, tr("Reference", "toolbar"), [=]() { this->listReferenceToggle(); });
 	toolBarSeparator(list_ats);
-	//: Encoding: take care about double ampersand
+	//: Encoding: note double ampersand
 	this->action.list_dnd = toolBarButton(list_ats, tr("Drag&&Drop", "toolbar"), [=]() { this->reharmDnD(); });
 	toolBarSpacer(list_ats);
 	this->action.list_search = toolBarButton(list_ats, tr("&Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->listSearchToggle(); });
