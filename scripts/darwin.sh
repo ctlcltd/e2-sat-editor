@@ -79,7 +79,7 @@ cleanup () {
 	rm Makefile.Debug
 	rm Makefile.Release
 	rm .qmake.stash
-	rm qrc_resources.cpp
+	rm qrc_resources*.cpp
 	rm -R debug
 	rm -R release
 }
@@ -210,7 +210,7 @@ fixes () {
 	install_name_tool -change @loader_path/libbrotlicommon.1.dylib @rpath/libbrotlicommon.1.dylib "libbrotlidec.1.dylib"
 
 	# wrong path: libldap.2.dylib in: Frameworks/libgthread-2.0.0.dylib
-	install_name_tool -change /usr/local/Cellar/glib/2.76.2/lib/libglib-2.0.0.dylib @rpath/libglib-2.0.0.dylib "libgthread-2.0.0.dylib"
+	install_name_tool -change /usr/local/Cellar/glib/2.76.3/lib/libglib-2.0.0.dylib @rpath/libglib-2.0.0.dylib "libgthread-2.0.0.dylib"
 
 	# wrong path: libicuuc.72.dylib in: Frameworks/libicui18n.72.dylib
 	install_name_tool -change @loader_path/libicuuc.72.dylib @rpath/libicuuc.72.dylib "libicui18n.72.dylib"
@@ -226,7 +226,7 @@ fixes () {
 	install_name_tool -delete_rpath @loader_path/../lib "libmd4c.0.dylib"
 
 	# wrong path: libcrypto.1.1.dylib in: Frameworks/libssl.1.1.dylib
-	install_name_tool -change /usr/local/Cellar/openssl@1.1/1.1.1t/lib/libcrypto.1.1.dylib @rpath/libcrypto.1.1.dylib "libssl.1.1.dylib"
+	install_name_tool -change /usr/local/Cellar/openssl@1.1/1.1.1u/lib/libcrypto.1.1.dylib @rpath/libcrypto.1.1.dylib "libssl.1.1.dylib"
 
 	# wrong path: /../lib in: Frameworks/libzstd.1.dylib
 	install_name_tool -delete_rpath @loader_path/../lib "libzstd.1.dylib"
@@ -304,7 +304,7 @@ release () {
 	done
 
 	mkdir PlugIns/{platforms,styles}
-	cp /usr/local/share/qt/plugins/platforms/libqcocoa.dylib PlugIns/styles/libqcocoa.dylib
+	cp /usr/local/share/qt/plugins/platforms/libqcocoa.dylib PlugIns/platforms/libqcocoa.dylib
 	cp /usr/local/share/qt/plugins/styles/libqmacstyle.dylib PlugIns/styles/libqmacstyle.dylib
 
 	printf "%s\n\n" "applying current fixes libs ..."

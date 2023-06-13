@@ -89,7 +89,7 @@ body:
         - I don't know
         - x86_64 (64-bit)
         - i686 (32-bit)
-        - arm64
+        - arm64 (aarch64)
         - other (please specify)
     validations:
       required: true

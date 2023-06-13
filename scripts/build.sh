@@ -79,7 +79,7 @@ cleanup () {
 	rm Makefile.Debug
 	rm Makefile.Release
 	rm .qmake.stash
-	rm qrc_resources.cpp
+	rm qrc_resources*.cpp
 	rm -R debug
 	rm -R release
 }

@@ -24,13 +24,13 @@
 # apt-get install build-essential cmake ninja-build python3 wget
 # cd $HOME
 # wget https://github.com/Kitware/CMake/releases/download/v3.26.4/cmake-3.26.4-linux-x86_64.sh
-# wget https://master.qt.io/archive/qt/6.5/6.5.0/single/qt-everywhere-src-6.5.0.tar.xz
-# wget https://curl.se/download/curl-8.1.0.tar.xz
+# wget https://master.qt.io/archive/qt/6.5/6.5.1/single/qt-everywhere-src-6.5.1.tar.xz
+# wget https://curl.se/download/curl-8.1.2.tar.xz
 # chmod +x cmake-3.26.4-linux-x86_64.sh
 # ./cmake-3.26.4-linux-x86_64.sh --prefix=/usr/local
-# tar -xf qt-everywhere-src-6.5.0.tar.xz
-# tar -xf curl-8.1.0.tar.xz
-# cd $HOME/qt-everywhere-src-6.5.0
+# tar -xf qt-everywhere-src-6.5.1.tar.xz
+# tar -xf curl-8.1.2.tar.xz
+# cd $HOME/qt-everywhere-src-6.5.1
 # apt-get install libgl1-mesa-dev libglvnd-dev libdrm-dev libfontconfig-dev libfreetype-dev libharfbuzz-dev libgbm-dev libvulkan-dev libwayland-dev libgles-dev libglu1-mesa-dev libgl-dev libinput-dev libxcb-xinput-dev libxcb-xinerama0-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-util-dev libxcb-xfixes0-dev lib-xext-dev libxcb-xkb-dev libxkbcommon-x11-dev libx11-xcb-dev libxcb-cursor-dev libxcb-keysyms1-dev libxcb-icccm4-dev libxcb-glx0-dev
 # apt-get install libatspi2.0-dev libglib2.0-dev libicu-dev libdouble-conversion-dev libgtk-3-dev libjpeg-dev libpng-dev libmd4c-dev libpcre2-dev libts-dev libudev-dev libssl-dev libpq-dev libproxy-dev libsctp-dev libsystemd-dev libb2-dev libdbus-1-dev libcups2-dev dh-exec
 # apt-get install libkrb5-dev liblttng-ust-dev default-libmysqlclient-dev firebird-dev libsqlite3-dev unixodbc-dev
@@ -46,10 +46,10 @@
 # cd .../qtwayland
 # cmake --install .
 # cd
-# export LD_LIBRARY_PATH=/usr/local/Qt-6.5.0/lib:$LD_LIBRARY_PATH
-# export PATH=/usr/local/Qt-6.5.0/bin:$PATH
+# export LD_LIBRARY_PATH=/usr/local/Qt-6.5.1/lib:$LD_LIBRARY_PATH
+# export PATH=/usr/local/Qt-6.5.1/bin:$PATH
 # qmake --version
-# cd $HOME/curl-8.1.0
+# cd $HOME/curl-8.1.2
 # apt-get install libssl-dev
 # df -h
 # ./configure --prefix=/usr/local --with-openssl --enable-versioned-symbols
@@ -60,8 +60,8 @@
 
 # apt-get install build-essential cmake ninja-build git
 # apt-get install libgl1-mesa-dev libglvnd-dev libxcb-xkb-dev libxkbcommon-x11-dev libvulkan-dev
-# export LD_LIBRARY_PATH=/usr/local/Qt-6.5.0/lib:$LD_LIBRARY_PATH
-# export PATH=/usr/local/Qt-6.5.0/bin:$PATH
+# export LD_LIBRARY_PATH=/usr/local/Qt-6.5.1/lib:$LD_LIBRARY_PATH
+# export PATH=/usr/local/Qt-6.5.1/bin:$PATH
 # ldconfig
 # cd $HOME
 
@@ -76,7 +76,7 @@
 # mv appimagetool-x86_64.AppImage /usr/local/bin/appimagetool
 
 # git clone https://github.com/ctlcltd/e2-sat-editor.git
-# git checkout v0.7.0
+# git checkout v0.8.0
 # cd e2-sat-editor
 
 ./scripts/translations.sh -m
@@ -95,16 +95,23 @@ mv AppDir/usr/share/e2-sat-editor/COPYING AppDir/usr/share/doc/e2-sat-editor/cop
 linuxdeploy --appdir AppDir --plugin qt --output appimage
 
 chmod +x e2_SAT_Editor*.AppImage
-mv e2_SAT_Editor*.AppImage e2-sat-editor-0.7.0-x86_64.AppImage
 
-# ./e2-sat-editor-0.7.0-x86_64.AppImage
+# ./e2_SAT_Editor-x86_64.AppImage
 
 
 # apt-get install nano
 # nano /etc/resolv.conf
 # systemctl restart systemd-resolved
 
-appimagetool AppDir --sign --sign-key $MY_SIGN_KEY
+./e2_SAT_Editor*.AppImage --appimage-extract
 
-# ./e2-sat-editor-0.7.0-x86_64.AppImage --appimage-signature
+mkdir squashfs-root/usr/translations
+cp /usr/local/Qt-6.5.1/share/translations/qtbase_*.qm squashfs-root/usr/translations
+echo "Translations = translations" >> squashfs-root/usr/bin/qt.conf
+
+appimagetool squashfs-root --sign --sign-key $MY_SIGN_KEY
+
+mv e2_SAT_Editor*.AppImage e2-sat-editor-0.8.0-x86_64.AppImage
+
+# ./e2-sat-editor-0.8.0-x86_64.AppImage --appimage-signature
 
