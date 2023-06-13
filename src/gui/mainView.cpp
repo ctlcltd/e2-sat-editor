@@ -1268,7 +1268,12 @@ QMenu* mainView::servicesSetsCornerMenu()
 
 	QMenu* menu = this->action.scrn_sets_menu;
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 	auto actions = menu->menuInAction(menu->actions().first())->actions();
+#else
+	auto actions = menu->actions().first()->menu()->actions();
+#endif
+
 	int lamedb_ver = dbih->get_lamedb_version();
 	int zapit_ver = dbih->get_zapit_version();
 
