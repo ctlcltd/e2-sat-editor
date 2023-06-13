@@ -108,7 +108,7 @@ void channelBookView::layout()
 
 	tree->setStyleSheet("QTreeWidget { border-style: none } QTreeWidget::item { padding: 2px 0 }");
 	list->setStyleSheet("QTreeWidget { border-style: none } QTreeWidget::item { padding: 2px 0 }");
-	//TODO improve ui
+	//TODO FIX ui
 	tabv->setStyleSheet("QTabBar { width: 100% } QTabBar::tab { min-width: 48px; max-height: 22px }");
 
 #ifdef Q_OS_MAC
