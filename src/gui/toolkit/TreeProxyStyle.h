@@ -18,7 +18,6 @@
 
 namespace e2se_gui
 {
-//TODO
 class TreeProxyStyle : public QProxyStyle
 {
 	public:

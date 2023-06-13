@@ -17,7 +17,6 @@
 
 namespace e2se_gui
 {
-//TODO
 class ListProxyStyle : public QProxyStyle
 {
 	public:
