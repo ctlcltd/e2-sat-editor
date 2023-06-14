@@ -171,7 +171,7 @@ gui::gui(int argc, char* argv[])
 	}
 
 	// screenshot
-	// mwid->resize(QSize(1024, 720));
+	// mwid->setGeometry(280, 120, 1024, 720);
 
 	mroot->exec();
 }
