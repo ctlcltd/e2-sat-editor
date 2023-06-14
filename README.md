@@ -91,10 +91,10 @@ Instructions on how to compile in [INSTALL.md](https://github.com/ctlcltd/e2-sat
 - [x] print and import/export CSV
 - [ ] smart edit userbouquets
 - [x] cli
-- [x] basic translations
+- [ ] basic translations
 - [ ] multi-windowed gui
 - [ ] extensions and/or scripting
-- [ ] picons support
+- [x] picons support
 - [ ] automated build
 
 &nbsp;
