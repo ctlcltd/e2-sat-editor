@@ -13,7 +13,7 @@ parts:
     source-type: git
     source: https://github.com/ctlcltd/e2-sat-editor.git
     # source-branch: main
-    source-tag: v0.8.0
+    source-commit: 2556a13dfe3245d71218242a511cdaac18ff0ce7
     source-subdir: src
     cmake-generator: Ninja
     cmake-parameters:
