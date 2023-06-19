@@ -57,39 +57,39 @@ i18n_generate () {
 
 	mkdir -p translations
 
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_ar.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_bg.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_ca.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_cs.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_da.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_de.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_es.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_fa.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_fi.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_fr.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_gd.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_gl.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_he.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_hr.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_hu.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_it.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_ja.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_ko.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_lt.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_lv.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_nl.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_nn.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_pl.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_pt_BR.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_pt_PT.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_ru.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_sk.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_sl.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_sv.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_tr.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_uk.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_zh_CN.ts
-	$LUPDATE -recursive $ABSDIR -ts translations/e2se_zh_TW.ts
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_ar.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_bg.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_ca.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_cs.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_da.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_de.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_es.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_fa.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_fi.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_fr.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_gd.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_gl.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_he.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_hr.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_hu.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_it.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_ja.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_ko.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_lt.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_lv.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_nl.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_nn.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_pl.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_pt_BR.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_pt_PT.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_ru.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_sk.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_sl.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_sv.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_tr.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_uk.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_zh_CN.ts -locations none
+	$LUPDATE -recursive $ABSDIR -ts translations/e2se_zh_TW.ts -locations none
 }
 
 i18n_make () {
