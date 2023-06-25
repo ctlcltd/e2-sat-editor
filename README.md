@@ -38,7 +38,7 @@ The demo was built with Qt for WebAssembly.
 
 * qt6-base \| qt5-base
 * libstdc++ >= 3
-* libcurl
+* libcurl4
 
 &nbsp;
 

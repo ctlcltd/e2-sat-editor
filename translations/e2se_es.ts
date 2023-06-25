@@ -642,7 +642,7 @@ O EL USO U OTROS TRATOS EN EL SOFTWARE.</translation>
     <message>
         <source>Edit Transponder</source>
         <comment>dialog</comment>
-        <translation>Editar transpondedor</translation>
+        <translation>Editar Transpondedor</translation>
     </message>
     <message>
         <source>New Transponder</source>
@@ -853,7 +853,7 @@ O EL USO U OTROS TRATOS EN EL SOFTWARE.</translation>
     <message>
         <source>Edit Transponder</source>
         <comment>dialog</comment>
-        <translation>Editar transpondedor</translation>
+        <translation>Editar Transpondedor</translation>
     </message>
     <message>
         <source>New Transponder</source>
@@ -1662,7 +1662,7 @@ O EL USO U OTROS TRATOS EN EL SOFTWARE.</translation>
     <message>
         <source>Drag&amp;&amp;Drop Preferences</source>
         <comment>corner</comment>
-        <translation>Preferencias de arrastrar y soltar</translation>
+        <translation>Preferencias de Drag&amp;&amp;Drop</translation>
     </message>
     <message>
         <source>&amp;Find…</source>
@@ -2320,7 +2320,7 @@ O EL USO U OTROS TRATOS EN EL SOFTWARE.</translation>
     </message>
     <message>
         <source>Switch to current bouquet item after the drop</source>
-        <translation>Cambiar al elemento bbouquett actual después del ddropp</translation>
+        <translation>Cambiar al elemento bouquet actual después del drop</translation>
     </message>
     <message>
         <source>Channel operations</source>
@@ -2650,17 +2650,17 @@ O EL USO U OTROS TRATOS EN EL SOFTWARE.</translation>
     <message>
         <source>FTP connecting ...</source>
         <comment>message</comment>
-        <translation>Conexión FTP…</translation>
+        <translation>Conexión FTP ...</translation>
     </message>
     <message>
         <source>FTP disconnecting ...</source>
         <comment>message</comment>
-        <translation>FTP desconectando …</translation>
+        <translation>FTP desconectando ...</translation>
     </message>
     <message>
         <source>Trying to resume FTP connection ...</source>
         <comment>message</comment>
-        <translation>Intentando reanudar la conexión FTP …</translation>
+        <translation>Intentando reanudar la conexión FTP ...</translation>
     </message>
     <message>
         <source>STB reloading ...</source>
@@ -2918,7 +2918,7 @@ O EL USO U OTROS TRATOS EN EL SOFTWARE.</translation>
     <message>
         <source>Edit Transponder</source>
         <comment>context-menu</comment>
-        <translation>Editar transpondedor</translation>
+        <translation>Editar Transpondedor</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3131,7 +3131,7 @@ O EL USO U OTROS TRATOS EN EL SOFTWARE.</translation>
     <message>
         <source>Edit Transponder</source>
         <comment>context-menu</comment>
-        <translation>Editar transpondedor</translation>
+        <translation>Editar Transpondedor</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>

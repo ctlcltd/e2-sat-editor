@@ -1227,7 +1227,7 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
     <message>
         <source>Edit Transponders</source>
         <comment>menu</comment>
-        <translation>Transponder bearbeiten</translation>
+        <translation>Transponders bearbeiten</translation>
     </message>
     <message>
         <source>Edit %1</source>
@@ -1243,7 +1243,7 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
     <message>
         <source>Edit Transponders</source>
         <comment>tab</comment>
-        <translation>Transponder bearbeiten</translation>
+        <translation>Transponders bearbeiten</translation>
     </message>
     <message>
         <source>Edit Settings</source>
