@@ -2004,7 +2004,7 @@ L&apos;UTILISATION OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation>Erreur d&apos;écriture du fichier « %1 ».</translation>
+        <translation>Erreur d&apos;écriture du fichier «&#xa0;%1&#xa0;».</translation>
     </message>
     <message>
         <source>Delete images</source>
@@ -2591,7 +2591,7 @@ L&apos;UTILISATION OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation>Erreur d&apos;écriture du fichier « %1 ».</translation>
+        <translation>Erreur d&apos;écriture du fichier «&#xa0;%1&#xa0;».</translation>
     </message>
     <message>
         <source>Error writing files.</source>
@@ -2711,10 +2711,10 @@ L&apos;UTILISATION OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     <message numerus="yes">
         <source>Uploaded %n files</source>
         <comment>message</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        <translation>%n fichiers chargés</translation>
+        <translation>
+            <numerusform>%n fichier chargé</numerusform>
+            <numerusform>%n fichiers chargés</numerusform>
+        </translation>
     </message>
     <message>
         <source>STB reload done.</source>
@@ -2729,10 +2729,10 @@ L&apos;UTILISATION OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     <message numerus="yes">
         <source>Downloaded %n files</source>
         <comment>message</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        <translation>%n fichiers téléchargés</translation>
+        <translation>
+            <numerusform>%n fichier téléchargé</numerusform>
+            <numerusform>%n fichiers téléchargés</numerusform>
+        </translation>
     </message>
     <message>
         <source>Cannot reload STB &quot;%1&quot;.</source>
@@ -2753,7 +2753,7 @@ L&apos;UTILISATION OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
-        <translation>À des fins de débogage.%1Définissez le chemin absolu de l&apos;application.seeds sous l&apos;onglet Paramètres > Avancé, puis redémarrez le logiciel.%2Sources de départ disponibles à:%3</translation>
+        <translation>À des fins de débogage.%1Définissez le chemin absolu de l&apos;application.seeds sous l&apos;onglet Paramètres&#xa0;&gt; Avancé, puis redémarrez le logiciel.%2Sources de départ disponibles à:%3</translation>
     </message>
 </context>
 <context>
@@ -3179,4 +3179,3 @@ L&apos;UTILISATION OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     </message>
 </context>
 </TS>
-

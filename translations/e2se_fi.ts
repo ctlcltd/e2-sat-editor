@@ -2705,15 +2705,15 @@ TAI MUUN KÄYTÖSTÄ TAI SIIHEN YHTEYDESSÄ. OHJELMISTO.</translation>
     <message>
         <source>Uploading file: %1</source>
         <comment>message</comment>
-        <translation>Ladataan tiedostoa: %1</translation>
+        <translation>Lähetetään tiedostoa: %1</translation>
     </message>
     <message numerus="yes">
         <source>Uploaded %n files</source>
         <comment>message</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        <translation>Ladattu %n tiedostoa</translation>
+        <translation>
+            <numerusform>%n tiedosto ladattu</numerusform>
+            <numerusform>%n tiedostoa ladattu</numerusform>
+        </translation>
     </message>
     <message>
         <source>STB reload done.</source>
@@ -2723,15 +2723,15 @@ TAI MUUN KÄYTÖSTÄ TAI SIIHEN YHTEYDESSÄ. OHJELMISTO.</translation>
     <message>
         <source>Downloading file: %1</source>
         <comment>message</comment>
-        <translation>Ladataan tiedostoa: %1</translation>
+        <translation>Lataa tiedosto: %1</translation>
     </message>
     <message numerus="yes">
         <source>Downloaded %n files</source>
         <comment>message</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        <translation>Ladattu %n tiedostoa</translation>
+        <translation>
+            <numerusform>Ladattu %n tiedosto</numerusform>
+            <numerusform>Ladattu %n tiedostoa</numerusform>
+        </translation>
     </message>
     <message>
         <source>Cannot reload STB &quot;%1&quot;.</source>
@@ -2752,7 +2752,7 @@ TAI MUUN KÄYTÖSTÄ TAI SIIHEN YHTEYDESSÄ. OHJELMISTO.</translation>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
-        <translation>Virheenkorjausta varten.%1Aseta application.seeds absoluuttinen polku kohdassa Asetukset > Lisäasetukset-välilehti ja käynnistä sitten ohjelmisto uudelleen.%2Siemenlähde saatavilla osoitteessa:%3</translation>
+        <translation>Virheenkorjausta varten.%1Aseta application.seeds absoluuttinen polku kohdassa Asetukset &gt; Lisäasetukset-välilehti ja käynnistä sitten ohjelmisto uudelleen.%2Siemenlähde saatavilla osoitteessa:%3</translation>
     </message>
 </context>
 <context>
@@ -3178,4 +3178,3 @@ TAI MUUN KÄYTÖSTÄ TAI SIIHEN YHTEYDESSÄ. OHJELMISTO.</translation>
     </message>
 </context>
 </TS>
-
