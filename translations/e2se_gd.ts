@@ -6,7 +6,7 @@
     <message>
         <source>Edit</source>
         <extracomment>Platform: Edit menu in macOS Menu bar</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich</translation>
     </message>
 </context>
 <context>
@@ -14,39 +14,39 @@
     <message>
         <source>Start Dictation...</source>
         <extracomment>Platform: edit item in macOS Edit Menu | Encoding: preserve 3 singular dots</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Tòisich dictation...</translation>
     </message>
     <message>
         <source>Emoji &amp;&amp; Symbols</source>
         <extracomment>Platform: edit item in macOS Edit Menu | Encoding: note double ampersand</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Emoji &amp;&amp; Samhlaidhean</translation>
     </message>
 </context>
 <context>
     <name>QFileDialog</name>
     <message>
         <source>&amp;Save</source>
-        <translation type="unfinished">&amp;Sàbhail</translation>
+        <translation>&amp;Sàbhail</translation>
     </message>
 </context>
 <context>
     <name>about</name>
     <message>
         <source>About e2 SAT Editor</source>
-        <translation>Mu e2 SAT Editor</translation>
+        <translation>Mu dheidhinn deasaiche e2 SAT</translation>
     </message>
     <message>
         <source>Version %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tionndadh %1</translation>
     </message>
     <message>
         <source>This software is distributed under the terms of the %1.%2The source code of this software is available here:%3</source>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Tha am bathar-bog seo ga sgaoileadh fo theirmichean %1.%2Tha còd tùsail a&apos; bhathar-bhog seo ri fhaighinn an-seo:%3</translation>
     </message>
     <message>
         <source>GNU GPLv3 License</source>
-        <translation type="unfinished"></translation>
+        <translation>Cead GNU GPLv3</translation>
     </message>
     <message>
         <source>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, 
@@ -56,14 +56,14 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION 
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
-        <translation type="unfinished"></translation>
+        <translation>THA AM BATHAR-BOG AIR A SHOLARACHADH “MAR A THA”, GUN BARANTAS DE SHINEADH, SÒNRAICHTE NO CHOITCHEANN, A’ GABHAIL A-STEACH ACH NACH EIL A CHUINGEACHADH RI BARANTASAN MALAIRTEACH, IONNSACHADH AIRSON ADHBHAR SÒNRAICHTE AGUS NACH EIL. CHA BHI NA H-ÙGHDARAN NO AN LUCHD-SEILBH CHÒRAICHEAN CUNNTACHAIL AIRSON CÀILEACHD, DÙTHCHAS NO DÙTHCHAS SAM BITH EILE, GE BITH AN ANN AN GNÌOMH CÙMHNANT, TORT NO EILE, AG ÈIRIGH BHO, A-MACH À, NO CO-CHEANGAILTE RIS A’ BHATHAR-BHOG NO AN CLEACHDADH EILE. BOGADH.</translation>
     </message>
 </context>
 <context>
     <name>channelBookView</name>
     <message>
         <source>Index</source>
-        <translation type="unfinished"></translation>
+        <translation>Clàr-innse</translation>
     </message>
     <message>
         <source>Name</source>
@@ -75,19 +75,19 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>Solaraiche</translation>
     </message>
     <message>
         <source>Transponder</source>
-        <translation type="unfinished"></translation>
+        <translation>Transponder</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Dreuchd</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>Siostam</translation>
     </message>
     <message>
         <source>Services</source>
@@ -95,27 +95,27 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Bouquets</source>
-        <translation type="unfinished"></translation>
+        <translation>Bouquets</translation>
     </message>
     <message>
         <source>Positions</source>
-        <translation type="unfinished"></translation>
+        <translation>Dreuchdan</translation>
     </message>
     <message>
         <source>Providers</source>
-        <translation type="unfinished"></translation>
+        <translation>Luchd-solair</translation>
     </message>
     <message>
         <source>Resolution</source>
-        <translation type="unfinished"></translation>
+        <translation>Fuasgladh</translation>
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Crioptachadh</translation>
     </message>
     <message>
         <source>A-Z</source>
-        <translation type="unfinished"></translation>
+        <translation>A-Z</translation>
     </message>
     <message>
         <source>&amp;Copy</source>
@@ -128,7 +128,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -138,17 +138,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Save</source>
         <comment>dialog</comment>
-        <translation>Sàbhail</translation>
+        <translation>&amp;Sàbhail</translation>
     </message>
     <message>
         <source>collapse</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>cromadh</translation>
     </message>
     <message>
         <source>expand</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>leudachadh</translation>
     </message>
 </context>
 <context>
@@ -156,12 +156,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Add Channel</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cuir ris an t-sianal</translation>
     </message>
     <message>
         <source>Filters for service type</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Filters airson seòrsa seirbheis</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -171,7 +171,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Add</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cuir ris</translation>
     </message>
 </context>
 <context>
@@ -179,152 +179,152 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd</translation>
     </message>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd Fhaidhle</translation>
     </message>
     <message>
         <source>Parser Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd Parser</translation>
     </message>
     <message>
         <source>Maker Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd Maker</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil am faidhle &quot;%s&quot; ann.</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; already exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tha faidhle &quot;%s&quot; ann mu thràth.</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; is not a valid file.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan e faidhle dligheach a tha ann am faidhle &quot;%s&quot;.</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; is not readable.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil am faidhle &quot;%s&quot; ri leughadh.</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; is not writable.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan urrainn am faidhle &quot;%s&quot; a sgrìobhadh.</translation>
     </message>
     <message>
         <source>These settings are not supported.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil taic ris na roghainnean seo.</translation>
     </message>
     <message>
         <source>Services file not found.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cha deach faidhle seirbheisean a lorg.</translation>
     </message>
     <message>
         <source>Malformed or unknown XML file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Fòrmat faidhle XML mì-chruthaichte no neo-aithnichte.</translation>
     </message>
     <message>
         <source>Unknown file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Fòrmat faidhle neo-aithnichte.</translation>
     </message>
     <message>
         <source>Unknown services file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Fòrmat faidhle seirbheisean neo-aithnichte.</translation>
     </message>
     <message>
         <source>Unknown bouquets file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Fòrmat faidhle bouquets neo-aithnichte.</translation>
     </message>
     <message>
         <source>Unknown transponder type.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Seòrsa transponder neo-aithnichte.</translation>
     </message>
     <message>
         <source>Unknown import option.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Roghainn in-mhalairt neo-aithnichte.</translation>
     </message>
     <message>
         <source>Unknown export option.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Roghainn às-mhalairt neo-aithnichte.</translation>
     </message>
     <message>
         <source>Unknown Lamedb services file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Fòrmat faidhle seirbheisean Lamedb neo-aithnichte.</translation>
     </message>
     <message>
         <source>Unknown Zapit services file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Fòrmat faidhle seirbheisean Zapit neo-aithnichte.</translation>
     </message>
     <message>
         <source>Unknown Zapit bouquets file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Fòrmat faidhle bouquets Zapit neo-aithnichte.</translation>
     </message>
     <message>
         <source>Missing index key &quot;%s&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Iuchair clàr-amais &quot;%s&quot; a dhìth.</translation>
     </message>
     <message>
         <source>Missing channel reference &quot;%s&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Iomradh seanail &quot;%s&quot; a dhìth.</translation>
     </message>
     <message>
         <source>Service &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil an t-seirbheis &quot;%s&quot; ann.</translation>
     </message>
     <message>
         <source>Bouquet &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil bouquet &quot;%s&quot; ann.</translation>
     </message>
     <message>
         <source>Userbouquet &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil userbouquet &quot;%s&quot; ann.</translation>
     </message>
     <message>
         <source>Channel reference &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil iomradh seanail &quot;%s&quot; ann.</translation>
     </message>
     <message>
         <source>Tunersets table &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil clàr tunerset &quot;%s&quot; ann.</translation>
     </message>
     <message>
         <source>Abstract merge swap objects.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Abstract merge suaip nithean.</translation>
     </message>
     <message>
         <source>Not supported yet.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil taic ann fhathast.</translation>
     </message>
 </context>
 <context>
@@ -332,17 +332,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Bouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich Bouquet</translation>
     </message>
     <message>
         <source>New Bouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bouquet Ùr</translation>
     </message>
     <message>
         <source>Bouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bouquet</translation>
     </message>
     <message>
         <source>Name</source>
@@ -350,7 +350,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>full name</source>
-        <translation type="unfinished"></translation>
+        <translation>Làn ainm</translation>
     </message>
     <message>
         <source>Type</source>
@@ -358,29 +358,29 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Nice name</source>
-        <translation type="unfinished"></translation>
+        <translation>Ainm Abbr</translation>
     </message>
     <message>
         <source>condensed name (eg. TV, Radio)</source>
-        <translation type="unfinished"></translation>
+        <translation>ainm dlùth (m.e. TV, Radio)</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Ainm faidhle</translation>
     </message>
     <message>
         <source>custom filename, leave empty to auto-fill</source>
-        <translation type="unfinished"></translation>
+        <translation>ainm faidhle àbhaisteach, fàg falamh airson a lìonadh gu fèin-ghluasadach</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd</translation>
     </message>
     <message>
         <source>Bouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil bouquet &quot;%1&quot; ann.</translation>
     </message>
 </context>
 <context>
@@ -388,41 +388,41 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Marker</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich Marker</translation>
     </message>
     <message>
         <source>Add Marker</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cruthaich Marker</translation>
     </message>
     <message>
         <source>Marker</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Marker</translation>
     </message>
     <message>
         <source>Marker text</source>
-        <translation type="unfinished"></translation>
+        <translation>Teacs marker</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd</translation>
     </message>
     <message>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil userbouquet &quot;%1&quot; ann.</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil iomradh seanail &quot;%1&quot; ann.</translation>
     </message>
     <message>
         <source>Channel reference mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mì-fhreagairt an t-seanail &quot;%1&quot;.</translation>
     </message>
 </context>
 <context>
@@ -430,68 +430,68 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Service</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich Seirbheis</translation>
     </message>
     <message>
         <source>New Service</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Seirbheis Ùr</translation>
     </message>
     <message>
         <source>Service</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Seirbheis</translation>
     </message>
     <message>
         <source>Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Transponder</translation>
     </message>
     <message>
         <source>Service name</source>
-        <translation type="unfinished"></translation>
+        <translation>Ainm seirbheis</translation>
     </message>
     <message>
         <source>Service type</source>
-        <translation type="unfinished"></translation>
+        <translation>Seòrsa seirbheis</translation>
     </message>
     <message>
         <source>custom</source>
-        <translation type="unfinished"></translation>
+        <translation>gnàthaichte</translation>
     </message>
     <message>
         <source>Service ID</source>
-        <translation type="unfinished">Service ID</translation>
+        <translation>Service ID</translation>
     </message>
     <message>
         <source>Tuner</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tuner</translation>
     </message>
     <message>
         <source>Satellite</source>
-        <translation type="unfinished">Satellite</translation>
+        <translation>Satailteach</translation>
     </message>
     <message>
         <source>Transponder</source>
-        <translation type="unfinished"></translation>
+        <translation>Transponder</translation>
     </message>
     <message>
         <source>New Transponder</source>
-        <translation type="unfinished"></translation>
+        <translation>Transponder Ùr</translation>
     </message>
     <message>
         <source>Parameters</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Paramadairean</translation>
     </message>
     <message>
         <source>Provider name</source>
-        <translation type="unfinished"></translation>
+        <translation>Ainm solaraiche</translation>
     </message>
     <message>
         <source>Package</source>
-        <translation type="unfinished"></translation>
+        <translation>Package</translation>
     </message>
     <message>
         <source>video</source>
@@ -515,31 +515,31 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>video type</source>
-        <translation type="unfinished">video type</translation>
+        <translation>seòrsa bhidio</translation>
     </message>
     <message>
         <source>audio channel</source>
-        <translation type="unfinished">audio channel</translation>
+        <translation>sianal claisneachd</translation>
     </message>
     <message>
         <source>ac3 delay</source>
-        <translation type="unfinished">ac3 delay</translation>
+        <translation>ac3 dàil</translation>
     </message>
     <message>
         <source>ms.</source>
-        <translation type="unfinished">ms.</translation>
+        <translation>ms.</translation>
     </message>
     <message>
         <source>pcm delay</source>
-        <translation type="unfinished">pcm delay</translation>
+        <translation>dàil pcm</translation>
     </message>
     <message>
         <source>subtitle</source>
-        <translation type="unfinished">subtitle</translation>
+        <translation>fo-thiotal</translation>
     </message>
     <message>
         <source>audio type</source>
-        <translation type="unfinished">audio type</translation>
+        <translation>seòrsa claisneachd</translation>
     </message>
     <message>
         <source>apid</source>
@@ -555,79 +555,79 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>PIDs</source>
-        <translation type="unfinished"></translation>
+        <translation>PID</translation>
     </message>
     <message>
         <source>Card ID parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramadairean ID Cairt</translation>
     </message>
     <message>
         <source>Raw edit parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich na paramadairean amh</translation>
     </message>
     <message>
         <source>Enter them in comma separated values.%1(eg. C:0100,C:0200,…)</source>
         <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Cuir a-steach iad ann an luachan dealaichte le cromag.% (m.e. C:0100,C:0200,…)</translation>
     </message>
     <message>
         <source>CAIDs</source>
-        <translation type="unfinished"></translation>
+        <translation>CAID</translation>
     </message>
     <message>
         <source>Do not update</source>
-        <translation type="unfinished"></translation>
+        <translation>Na ùraich</translation>
     </message>
     <message>
         <source>Hide in service list</source>
-        <translation type="unfinished"></translation>
+        <translation>Falaich ann an liosta seirbheis</translation>
     </message>
     <message>
         <source>Use edited PIDs instead</source>
-        <translation type="unfinished"></translation>
+        <translation>Cleachd PID deasaichte na àite</translation>
     </message>
     <message>
         <source>Hold service name</source>
-        <translation type="unfinished"></translation>
+        <translation>Cùm ainm seirbheis</translation>
     </message>
     <message>
         <source>Flag as new service</source>
-        <translation type="unfinished"></translation>
+        <translation>Bratach mar sheirbheis ùr</translation>
     </message>
     <message>
         <source>Flags</source>
-        <translation type="unfinished"></translation>
+        <translation>Flags</translation>
     </message>
     <message>
         <source>%1It will overwrite any previously typed!%2Enter them in comma separated values.%3(eg. p:ProviderName,c:0100,C:0200,…)</source>
         <extracomment>HTML formattation: %1text%2text%3text treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1Sgrìobhaidh e thairis air gin a thaidhpeadh roimhe!%2Cuir a-steach iad ann an luachan dealaichte cromag.%3(m.e. p:ProviderName,c:0100,C:0200,…)</translation>
     </message>
     <message>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>Gnàthaichte</translation>
     </message>
     <message>
         <source>Service Number</source>
-        <translation type="unfinished"></translation>
+        <translation>Àireamh seirbheis</translation>
     </message>
     <message>
         <source>Src ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Src ID</translation>
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"></translation>
+        <translation>Extras</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd</translation>
     </message>
     <message>
         <source>Service &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil an t-seirbheis &quot;%1&quot; ann.</translation>
     </message>
 </context>
 <context>
@@ -635,33 +635,33 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich Transponder</translation>
     </message>
     <message>
         <source>New Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Transponder Ùr</translation>
     </message>
     <message>
         <source>Satellite</source>
-        <translation type="unfinished">Satellite</translation>
+        <translation>Satailteach</translation>
     </message>
     <message>
         <source>Terrestrial</source>
-        <translation type="unfinished">Terrestrial</translation>
+        <translation>Talmhaidh</translation>
     </message>
     <message>
         <source>Cable</source>
-        <translation type="unfinished">Cable</translation>
+        <translation>Càball</translation>
     </message>
     <message>
         <source>ATSC</source>
-        <translation type="unfinished">ATSC</translation>
+        <translation>ATSC</translation>
     </message>
     <message>
         <source>Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Transponder</translation>
     </message>
     <message>
         <source>Type</source>
@@ -669,7 +669,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Transport ID</source>
-        <translation type="unfinished">Transport ID</translation>
+        <translation>Transport ID</translation>
     </message>
     <message>
         <source>DVBNS</source>
@@ -681,90 +681,90 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Dreuchd</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>Tricead</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>Polarachadh</translation>
     </message>
     <message>
         <source>empty</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>falamh</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>Siostam</translation>
     </message>
     <message>
         <source>Constellation</source>
-        <translation type="unfinished"></translation>
+        <translation>Constellation</translation>
     </message>
     <message>
         <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
+        <translation>Bandwidth</translation>
     </message>
     <message>
         <source>HP FEC</source>
-        <translation type="unfinished">HP FEC</translation>
+        <translation>HP FEC</translation>
     </message>
     <message>
         <source>LP FEC</source>
-        <translation type="unfinished">LP FEC</translation>
+        <translation>LP FEC</translation>
     </message>
     <message>
         <source>Modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Modalachd</translation>
     </message>
     <message>
         <source>Inner FEC</source>
-        <translation type="unfinished">Inner FEC</translation>
+        <translation>Inner FEC</translation>
     </message>
     <message>
         <source>Inversion</source>
-        <translation type="unfinished"></translation>
+        <translation>Inversion</translation>
     </message>
     <message>
         <source>Roll Offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Roll Offset</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Transmission Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Modh Tar-chuir</translation>
     </message>
     <message>
         <source>Guard Interval</source>
-        <translation type="unfinished"></translation>
+        <translation>Eadar-ama Geàrd</translation>
     </message>
     <message>
         <source>Hierarchy</source>
-        <translation type="unfinished"></translation>
+        <translation>Rangachd</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd</translation>
     </message>
     <message>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil transponder &quot;%1&quot; ann.</translation>
     </message>
 </context>
 <context>
@@ -772,25 +772,25 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Settings</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich roghainnean</translation>
     </message>
     <message>
         <source>Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Beachd</translation>
     </message>
     <message>
         <source>Charset</source>
-        <translation type="unfinished"></translation>
+        <translation>Charset</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd</translation>
     </message>
     <message>
         <source>Tuner settings &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil roghainnean an tuner &quot;%1&quot; ann.</translation>
     </message>
 </context>
 <context>
@@ -798,12 +798,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Position</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich Suidheachadh</translation>
     </message>
     <message>
         <source>New Position</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Dreuchd Ùr</translation>
     </message>
     <message>
         <source>Name</source>
@@ -811,34 +811,34 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Dreuchd</translation>
     </message>
     <message>
         <source>Flags</source>
-        <translation type="unfinished"></translation>
+        <translation>Flags</translation>
     </message>
     <message>
         <source>Country</source>
-        <translation type="unfinished"></translation>
+        <translation>Dùthaich</translation>
     </message>
     <message>
         <source>Feed</source>
-        <translation type="unfinished">Feed</translation>
+        <translation>Feed</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd</translation>
     </message>
     <message>
         <source>Tuner settings &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil roghainnean an tuner &quot;%1&quot; ann.</translation>
     </message>
     <message>
         <source>Tuner settings table &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil clàr roghainnean an tuner &quot;%1&quot; ann.</translation>
     </message>
 </context>
 <context>
@@ -846,85 +846,85 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich Transponder</translation>
     </message>
     <message>
         <source>New Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Transponder Ùr</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>Tricead</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>Polarachadh</translation>
     </message>
     <message>
         <source>empty</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>falamh</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>Siostam</translation>
     </message>
     <message>
         <source>Constellation</source>
-        <translation type="unfinished"></translation>
+        <translation>Constellation</translation>
     </message>
     <message>
         <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
+        <translation>Bandwidth</translation>
     </message>
     <message>
         <source>HP FEC</source>
-        <translation type="unfinished">HP FEC</translation>
+        <translation>HP FEC</translation>
     </message>
     <message>
         <source>LP FEC</source>
-        <translation type="unfinished">LP FEC</translation>
+        <translation>LP FEC</translation>
     </message>
     <message>
         <source>Modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Modalachd</translation>
     </message>
     <message>
         <source>Inner FEC</source>
-        <translation type="unfinished">Inner FEC</translation>
+        <translation>Inner FEC</translation>
     </message>
     <message>
         <source>Inversion</source>
-        <translation type="unfinished"></translation>
+        <translation>Inversion</translation>
     </message>
     <message>
         <source>Roll Offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Roll Offset</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Transmission Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Modh Tar-chuir</translation>
     </message>
     <message>
         <source>Guard Interval</source>
-        <translation type="unfinished"></translation>
+        <translation>Eadar-ama Geàrd</translation>
     </message>
     <message>
         <source>Hierarchy</source>
-        <translation type="unfinished"></translation>
+        <translation>Rangachd</translation>
     </message>
     <message>
         <source>isid</source>
@@ -949,22 +949,22 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd</translation>
     </message>
     <message>
         <source>Tuner settings &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil roghainnean an tuner &quot;%1&quot; ann.</translation>
     </message>
     <message>
         <source>Tuner settings table &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil clàr roghainnean an tuner &quot;%1&quot; ann.</translation>
     </message>
     <message>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil an neach-freagairt &quot;%1&quot; ann an roghainnean tuner.</translation>
     </message>
 </context>
 <context>
@@ -972,17 +972,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Userbouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich Userbouquet</translation>
     </message>
     <message>
         <source>New Userbouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Userboquet Ùr</translation>
     </message>
     <message>
         <source>Userbouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Userbouquet</translation>
     </message>
     <message>
         <source>Name</source>
@@ -990,30 +990,30 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Ainm faidhle</translation>
     </message>
     <message>
         <source>custom filename, leave empty to auto-fill</source>
-        <translation type="unfinished"></translation>
+        <translation>ainm faidhle àbhaisteach, fàg falamh airson a lìonadh gu fèin-ghluasadach</translation>
     </message>
     <message>
         <source>Bouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bouquet</translation>
     </message>
     <message>
         <source>Parent Bouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>Bouquet phàrant</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd</translation>
     </message>
     <message>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil userbouquet &quot;%1&quot; ann.</translation>
     </message>
 </context>
 <context>
@@ -1021,32 +1021,32 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd</translation>
     </message>
     <message>
         <source>FTP Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd FTP</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil am faidhle &quot;%s&quot; ann.</translation>
     </message>
     <message>
         <source>Missing &quot;%s&quot; parameter.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Paramadair &quot;%s&quot; a dhìth.</translation>
     </message>
     <message>
         <source>Missing &quot;%s&quot; path parameter.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Paramadair slighe &quot;%s&quot; a dhìth.</translation>
     </message>
     <message>
         <source>Failed to resume FTP connection.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Dh&apos;fhàillig ath-thòiseachadh an ceangal FTP.</translation>
     </message>
 </context>
 <context>
@@ -1055,12 +1055,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>&amp;File</source>
         <comment>menu</comment>
         <extracomment>Platform: File menu</extracomment>
-        <translation type="unfinished">Faidhle</translation>
+        <translation>Faidhle</translation>
     </message>
     <message>
         <source>&amp;New</source>
         <comment>menu</comment>
-        <translation type="unfinished">Ùr</translation>
+        <translation>Ùr</translation>
     </message>
     <message>
         <source>&amp;Open</source>
@@ -1076,17 +1076,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>Save &amp;As…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Sàbhail &amp;mar…</translation>
     </message>
     <message>
         <source>Import</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cuir a-steach</translation>
     </message>
     <message>
         <source>Export</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Às-mhalairt</translation>
     </message>
     <message>
         <source>Close Tab</source>
@@ -1096,18 +1096,18 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Close All Tabs</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Dùin a h-uile taba</translation>
     </message>
     <message>
         <source>&amp;Print…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Clò-bhuail…</translation>
     </message>
     <message>
         <source>Print &amp;All</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Clò-bhuail &amp; Uile</translation>
     </message>
     <message>
         <source>Preferences…</source>
@@ -1130,13 +1130,13 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>E&amp;xit</source>
         <comment>menu</comment>
         <extracomment>Platform: Exit | Quit item</extracomment>
-        <translation type="unfinished">Fàg an-seo</translation>
+        <translation>Fàg an-seo</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
         <comment>menu</comment>
         <extracomment>Platform: Edit menu</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich</translation>
     </message>
     <message>
         <source>&amp;Undo</source>
@@ -1177,161 +1177,161 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>&amp;Find</source>
         <comment>menu</comment>
         <extracomment>Platform: Find menu</extracomment>
-        <translation type="unfinished">Lorg</translation>
+        <translation>Lorg</translation>
     </message>
     <message>
         <source>&amp;Find Channel…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Lorg Sianal…</translation>
     </message>
     <message>
         <source>Find &amp;Next</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Lorg air adhart</translation>
     </message>
     <message>
         <source>Find &amp;Previous</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Lorg roimhe</translation>
     </message>
     <message>
         <source>Find &amp;All</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Lorg a h-uile</translation>
     </message>
     <message>
         <source>Find &amp;Bouquet…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Lorg Bouquet…</translation>
     </message>
     <message>
         <source>Find N&amp;ext Bouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Lorg air adhart Bouquet</translation>
     </message>
     <message>
         <source>&amp;Tools</source>
         <comment>menu</comment>
-        <translation type="unfinished">Innealan</translation>
+        <translation>Innealan</translation>
     </message>
     <message>
         <source>Edit Transponders</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich Transponders</translation>
     </message>
     <message>
         <source>Edit %1</source>
         <comment>menu</comment>
         <extracomment>Note: %1 is xml filename</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich %1</translation>
     </message>
     <message>
         <source>Picons editor</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaiche Picons</translation>
     </message>
     <message>
         <source>Edit Transponders</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich Transponders</translation>
     </message>
     <message>
         <source>Edit Settings</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich roghainnean</translation>
     </message>
     <message>
         <source>Channel Book</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>Leabhar Sianal</translation>
     </message>
     <message>
         <source>Filename</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ainm faidhle</translation>
     </message>
     <message>
         <source>Import from CSV</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cuir a-steach bho CSV</translation>
     </message>
     <message>
         <source>Import Services</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cuir a-steach seirbheisean</translation>
     </message>
     <message>
         <source>Import Bouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cuir a-steach bouquet</translation>
     </message>
     <message>
         <source>Import Userbouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cuir a-steach userbouquet</translation>
     </message>
     <message>
         <source>Import Tuner settings</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cuir a-steach roghainnean tuner</translation>
     </message>
     <message>
         <source>Export to CSV</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Às-mhalairt gu CSV</translation>
     </message>
     <message>
         <source>Export current</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Às-mhalairt sruth</translation>
     </message>
     <message>
         <source>Export All</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Às-mhalairt a h-uile</translation>
     </message>
     <message>
         <source>Export Services</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Às-mhalairt seirbheisean</translation>
     </message>
     <message>
         <source>Export Bouquets</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Às-mhalairt bouquets</translation>
     </message>
     <message>
         <source>Export Userbouquets</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Às-mhalairt userbouquets</translation>
     </message>
     <message>
         <source>Export Tuner settings</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Às-mhalairt tuner roghainnean</translation>
     </message>
     <message>
         <source>Export to HTML</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Às-mhalairt gu HTML</translation>
     </message>
     <message>
         <source>Export Index</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Às-mhalairt clàr-innse</translation>
     </message>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Neach-sgrùdaidh Log</translation>
     </message>
     <message>
         <source>&amp;Window</source>
         <comment>menu</comment>
         <extracomment>Platform: Window menu</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Uinneag</translation>
     </message>
     <message>
         <source>&amp;Minimize</source>
@@ -1341,12 +1341,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Hide &amp;Status Bar</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Falaich &amp; Bàr Inbhe</translation>
     </message>
     <message>
         <source>New &amp;Tab</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ùr &amp;Tab</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -1357,184 +1357,184 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>About &amp;Qt</source>
         <comment>menu</comment>
-        <translation type="unfinished">Mu Qt</translation>
+        <translation>Mu Qt</translation>
     </message>
     <message>
         <source>Report a bug</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Dèan aithris air bug</translation>
     </message>
     <message>
         <source>Check for updates…</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Thoir sùil airson ùrachaidhean…</translation>
     </message>
     <message>
         <source>Go to E2SE repository…</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Rach gu stòr E2SE…</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>
         <comment>menu</comment>
-        <translation type="unfinished">Mu e2 SAT Editor</translation>
+        <translation>Mu dheidhinn deasaiche e2 SAT</translation>
     </message>
     <message>
         <source>New &amp;Tab</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ùr &amp;Tab</translation>
     </message>
     <message>
         <source>&amp;Find Channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Lorg Sianal</translation>
     </message>
     <message>
         <source>Find &amp;Bouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>Lorg Bouquet</translation>
     </message>
     <message>
         <source>Find N&amp;ext Bouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>Lorg air adhart Bouquet</translation>
     </message>
     <message>
         <source>&amp;Find Transponder</source>
-        <translation type="unfinished"></translation>
+        <translation>Lorg Transponder</translation>
     </message>
     <message>
         <source>Channel Book</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Leabhar Sianal</translation>
     </message>
     <message>
         <source>Find &amp;Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Lorg Suidheachadh</translation>
     </message>
     <message>
         <source>Find N&amp;ext Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Lorg an ath Shuidheachadh</translation>
     </message>
     <message>
         <source>Untitled</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>Gun tiotal</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Thachair mearachd le leughadh an fhaidhle &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Missing current tab reference.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Iomradh tab gnàthaichte a dhìth.</translation>
     </message>
     <message>
         <source>Missing parent tab for tab reference &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tab pàrant a dhìth airson iomradh taba &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Picons editor</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaiche Picons</translation>
     </message>
     <message>
         <source>Missing tab reference &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Iomradh taba a dhìth &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Select data folder</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tagh pasgan dàta</translation>
     </message>
     <message>
         <source>Select where to save</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tagh far an sàbhail thu</translation>
     </message>
     <message>
         <source>Select one or more files to open</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tagh aon fhaidhle no barrachd airson fhosgladh</translation>
     </message>
     <message>
         <source>CSV File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Faidhle CSV</translation>
     </message>
     <message>
         <source>All Files</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>A h-uile Files</translation>
     </message>
     <message>
         <source>Import</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cuir a-steach</translation>
     </message>
     <message>
         <source>HTML File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Faidhle HTML</translation>
     </message>
     <message>
         <source>Export</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Às-mhalairt</translation>
     </message>
     <message>
         <source>Hide &amp;Status Bar</source>
-        <translation type="unfinished"></translation>
+        <translation>Falaich &amp; Bàr Inbhe</translation>
     </message>
     <message>
         <source>Show &amp;Status Bar</source>
-        <translation type="unfinished"></translation>
+        <translation>Seall Bàr Inbhe</translation>
     </message>
     <message>
         <source>Channels</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Sianalan</translation>
     </message>
     <message>
         <source>Bouquet</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bouquet</translation>
     </message>
     <message>
         <source>TV</source>
         <comment>status-bar</comment>
-        <translation type="unfinished">TV</translation>
+        <translation>TV</translation>
     </message>
     <message>
         <source>Radio</source>
         <comment>status-bar</comment>
-        <translation type="unfinished">Radio</translation>
+        <translation>Radio</translation>
     </message>
     <message>
         <source>Data</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Data</translation>
     </message>
     <message>
         <source>Total</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Iomlan</translation>
     </message>
     <message>
         <source>Transponders</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Transponders</translation>
     </message>
     <message>
         <source>Position</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Dreuchd</translation>
     </message>
 </context>
 <context>
@@ -1545,15 +1545,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Bouquets</source>
-        <translation type="unfinished"></translation>
+        <translation>Bouquets</translation>
     </message>
     <message>
         <source>Channels</source>
-        <translation type="unfinished"></translation>
+        <translation>Sianalan</translation>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished"></translation>
+        <translation>Clàr-innse</translation>
     </message>
     <message>
         <source>Name</source>
@@ -1561,15 +1561,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Parental</source>
-        <translation type="unfinished"></translation>
+        <translation>Pàrant-glas</translation>
     </message>
     <message>
         <source>Service ID</source>
-        <translation type="unfinished">Service ID</translation>
+        <translation>Service ID</translation>
     </message>
     <message>
         <source>Transport ID</source>
-        <translation type="unfinished">Transport ID</translation>
+        <translation>Transport ID</translation>
     </message>
     <message>
         <source>Type</source>
@@ -1577,281 +1577,281 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>CAS</source>
-        <translation type="unfinished">CAS</translation>
+        <translation>CAS</translation>
     </message>
     <message>
         <source>Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>Solaraiche</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>Siostam</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Dreuchd</translation>
     </message>
     <message>
         <source>Tuner</source>
-        <translation type="unfinished"></translation>
+        <translation>Tuner</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>Tricead</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>Polarachadh</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>New Bouquet</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bouquet Ùr</translation>
     </message>
     <message>
         <source>Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Lorg…</translation>
     </message>
     <message>
         <source>Add Channel</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cuir ris an t-sianal</translation>
     </message>
     <message>
         <source>Add Marker</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cruthaich Marker</translation>
     </message>
     <message>
         <source>New Service</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Seirbheis Ùr</translation>
     </message>
     <message>
         <source>Drag&amp;&amp;Drop</source>
         <comment>toolbar</comment>
         <extracomment>Encoding: note double ampersand</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Drag&amp;&amp;Drop</translation>
     </message>
     <message>
         <source>Reference</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Reference</translation>
     </message>
     <message>
         <source>Settings Convert</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tionndadh roghainnean</translation>
     </message>
     <message>
         <source>Drag&amp;&amp;Drop Preferences</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>Slaod &amp; &amp; leig às roghainnean</translation>
     </message>
     <message>
         <source>&amp;Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Lorg…</translation>
     </message>
     <message>
         <source>All services</source>
-        <translation type="unfinished"></translation>
+        <translation>A h-uile seirbheis</translation>
     </message>
     <message>
         <source>Reference ID</source>
         <comment>reference-box</comment>
-        <translation type="unfinished">Reference ID</translation>
+        <translation>Reference ID</translation>
     </message>
     <message>
         <source>Service ID</source>
         <comment>reference-box</comment>
-        <translation type="unfinished">Service ID</translation>
+        <translation>Service ID</translation>
     </message>
     <message>
         <source>Transponder</source>
         <comment>reference-box</comment>
-        <translation type="unfinished"></translation>
+        <translation>Transponder</translation>
     </message>
     <message>
         <source>Userbouquets</source>
         <comment>reference-box</comment>
-        <translation type="unfinished"></translation>
+        <translation>Userbouquets</translation>
     </message>
     <message>
         <source>Bouquets</source>
         <comment>reference-box</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bouquets</translation>
     </message>
     <message>
         <source>Tuner</source>
         <comment>reference-box</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tuner</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd</translation>
     </message>
     <message>
         <source>Missing index key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Iuchair clàr-amais &quot;%1&quot; a dhìth.</translation>
     </message>
     <message>
         <source>Channel reference mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mì-fhreagairt an t-seanail &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Convert</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tionndadh</translation>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.4 [Enigma 2]</translation>
+        <translation>Lamedb 2.4 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.5 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.5 [Enigma 2]</translation>
+        <translation>Lamedb 2.5 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.3 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.3 [Enigma 1]</translation>
+        <translation>Lamedb 2.3 [Enigma 1]</translation>
     </message>
     <message>
         <source>Lamedb 2.2 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.2 [Enigma 1]</translation>
+        <translation>Lamedb 2.2 [Enigma 1]</translation>
     </message>
     <message>
         <source>Zapit api-v4 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v4 [Neutrino]</translation>
+        <translation>Zapit api-v4 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v3 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v3 [Neutrino]</translation>
+        <translation>Zapit api-v3 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v2 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v2 [Neutrino]</translation>
+        <translation>Zapit api-v2 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+        <translation>Zapit api-v1 [Neutrino]</translation>
     </message>
     <message>
         <source>Drag and Drop</source>
-        <translation type="unfinished"></translation>
+        <translation>Drag and Drop</translation>
     </message>
     <message>
         <source>Switch to bouquet after drop</source>
-        <translation type="unfinished"></translation>
+        <translation>Tionndaidh gu bouquet às deidh drop</translation>
     </message>
     <message>
         <source>Channel operations</source>
-        <translation type="unfinished"></translation>
+        <translation>Obraichean sianal</translation>
     </message>
     <message>
         <source>Copy channels (preserving)</source>
-        <translation type="unfinished"></translation>
+        <translation>Dèan lethbhreac de shianalan (gleidheadh)</translation>
     </message>
     <message>
         <source>Move channels (deleting)</source>
-        <translation type="unfinished"></translation>
+        <translation>Gluais seanalan (sguabadh às)</translation>
     </message>
     <message>
         <source>Missing bouquet key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Iuchair bouquet &quot;%1&quot; a dhìth.</translation>
     </message>
     <message>
         <source>Bouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil bouquet &quot;%1&quot; ann.</translation>
     </message>
     <message>
         <source>Missing userbouquet key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Iuchair userbouquet &quot;%1&quot; a dhìth.</translation>
     </message>
     <message>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil userbouquet &quot;%1&quot; ann.</translation>
     </message>
     <message>
         <source>Missing service key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Iuchair seirbheise &quot;%1&quot; a dhìth.</translation>
     </message>
     <message>
         <source>Service &quot;%1&quot; not exists or is a channel reference.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil seirbheis &quot;%1&quot; ann no &apos;s e iomradh seanail a th&apos; ann.</translation>
     </message>
     <message>
         <source>Missing channel reference key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Iuchair iomraidh seanail &quot;%1&quot; a dhìth.</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; is not a valid marker.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan e marker dligheach a tha ann an iomradh seanail &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Channel reference&quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil iomradh seanail&quot;%1&quot; ann.</translation>
     </message>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Dearbhaich an sguabadh às</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>A bheil thu airson nithean a sguabadh às?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan e cruth dàta dligheach.</translation>
     </message>
     <message>
         <source>Channel reference mismatch.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Iomradh air an t-sianal mì-fhreagarrach.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich Bouquet</translation>
     </message>
     <message>
         <source>Edit Userbouquet</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich Userbouquet</translation>
     </message>
     <message>
         <source>Set Parental lock</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Suidhich glas phàrantan</translation>
     </message>
     <message>
         <source>Unset Parental lock</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Neo-shuidhich glasadh phàrantan</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -1861,27 +1861,27 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Export</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Às-mhalairt</translation>
     </message>
     <message>
         <source>Edit Marker</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich Marker</translation>
     </message>
     <message>
         <source>Edit Service</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich Seirbheis</translation>
     </message>
     <message>
         <source>Parental lock (Userbouquet)</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Glasadh phàrantan (Userbouquet)</translation>
     </message>
     <message>
         <source>Parental lock</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Glasadh phàrantan</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -1903,156 +1903,156 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <name>piconsView</name>
     <message>
         <source>Picons</source>
-        <translation type="unfinished"></translation>
+        <translation>Picons</translation>
     </message>
     <message>
         <source>Picons Preferences</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>Roghainnean Picons</translation>
     </message>
     <message>
         <source>&amp;Browse…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Rùraich…</translation>
     </message>
     <message>
         <source>Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Lorg…</translation>
     </message>
     <message>
         <source>Folder</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Foillear</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished">Ainm</translation>
+        <translation>Ainm</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished">Seòrsa</translation>
+        <translation>Seòrsa</translation>
     </message>
     <message>
         <source>CAS</source>
-        <translation type="unfinished">CAS</translation>
+        <translation>CAS</translation>
     </message>
     <message>
         <source>Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>Solaraiche</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Ainm faidhle</translation>
     </message>
     <message>
         <source>Tuner</source>
-        <translation type="unfinished"></translation>
+        <translation>Tuner</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Dreuchd</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>Siostam</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd</translation>
     </message>
     <message>
         <source>Channel mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mì-chòrdadh seanail &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Backup picon when replaced</source>
-        <translation type="unfinished"></translation>
+        <translation>Cùl-taic picon nuair a thèid a chuir na àite</translation>
     </message>
     <message>
         <source>Filename format</source>
-        <translation type="unfinished"></translation>
+        <translation>Cruth ainm faidhle</translation>
     </message>
     <message>
         <source>Use reference ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Cleachd reference ID</translation>
     </message>
     <message>
         <source>Use service name</source>
-        <translation type="unfinished"></translation>
+        <translation>Cleachd ainm seirbheis</translation>
     </message>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd Fhaidhle</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Thachair mearachd le leughadh an fhaidhle &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Thachair mearachd le sgrìobhadh an fhaidhle &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Delete images</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Sguab às dealbhan</translation>
     </message>
     <message>
         <source>Do you want to delete the images from disk?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>A bheil thu airson na dealbhan a sguabadh às an diosg?</translation>
     </message>
     <message>
         <source>Change picon</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Atharraich am picon</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">&amp;Gearr às</translation>
+        <translation>&amp;Gearr às</translation>
     </message>
     <message>
         <source>&amp;Copy</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">Dèan lethbhrea&amp;c</translation>
+        <translation>Dèan lethbhrea&amp;c</translation>
     </message>
     <message>
         <source>&amp;Paste</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">Cuir a&amp;nn</translation>
+        <translation>Cuir a&amp;nn</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">&amp;Sguab às</translation>
+        <translation>&amp;Sguab às</translation>
     </message>
     <message>
         <source>Select picons folder</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tagh pasgan picons</translation>
     </message>
     <message>
         <source>Select picon image</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tagh ìomhaigh picon</translation>
     </message>
 </context>
 <context>
     <name>printable</name>
     <message>
         <source>Untitled</source>
-        <translation type="unfinished"></translation>
+        <translation>Gun tiotal</translation>
     </message>
     <message>
         <source>(extract)</source>
-        <translation type="unfinished"></translation>
+        <translation>(earrann)</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -2060,11 +2060,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Tuner Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Roghainnean Tuner</translation>
     </message>
     <message>
         <source>Services List</source>
-        <translation type="unfinished"></translation>
+        <translation>Liosta Sheirbheisean</translation>
     </message>
     <message>
         <source>File</source>
@@ -2072,19 +2072,19 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Deasaiche</translation>
     </message>
     <message>
         <source>Datetime</source>
-        <translation type="unfinished"></translation>
+        <translation>Ceann-latha</translation>
     </message>
     <message>
         <source>Table of Contents</source>
-        <translation type="unfinished"></translation>
+        <translation>Clàr-innse</translation>
     </message>
     <message>
         <source>Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Susbaint</translation>
     </message>
     <message>
         <source>Type</source>
@@ -2093,16 +2093,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd</translation>
     </message>
     <message>
         <source>Missing index key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Iuchair clàr-amais &quot;%1&quot; a dhìth.</translation>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished"></translation>
+        <translation>Clàr-innse</translation>
     </message>
     <message>
         <source>Name</source>
@@ -2122,99 +2122,99 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>CAS</source>
-        <translation type="unfinished">CAS</translation>
+        <translation>CAS</translation>
     </message>
     <message>
         <source>Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>Solaraiche</translation>
     </message>
     <message>
         <source>Freq</source>
-        <translation type="unfinished"></translation>
+        <translation>Freq</translation>
     </message>
     <message>
         <source>Pol</source>
-        <translation type="unfinished"></translation>
+        <translation>Pol</translation>
     </message>
     <message>
         <source>SR</source>
-        <translation type="unfinished"></translation>
+        <translation>SR</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>Sys</source>
-        <translation type="unfinished"></translation>
+        <translation>Sios</translation>
     </message>
     <message>
         <source>Pos</source>
-        <translation type="unfinished"></translation>
+        <translation>Pos</translation>
     </message>
     <message>
         <source>Tuner</source>
-        <translation type="unfinished"></translation>
+        <translation>Tuner</translation>
     </message>
     <message>
         <source>Bouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>Bouquet</translation>
     </message>
     <message>
         <source>Userbouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>Userbouquet</translation>
     </message>
     <message>
         <source>Transponders</source>
-        <translation type="unfinished"></translation>
+        <translation>Transponders</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Dreuchd</translation>
     </message>
     <message>
         <source>Mod</source>
-        <translation type="unfinished"></translation>
+        <translation>Mod</translation>
     </message>
     <message>
         <source>Inv</source>
-        <translation type="unfinished"></translation>
+        <translation>Inv</translation>
     </message>
     <message>
         <source>Rollof</source>
-        <translation type="unfinished"></translation>
+        <translation>Rollof</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Const</source>
-        <translation type="unfinished"></translation>
+        <translation>Const</translation>
     </message>
     <message>
         <source>Band</source>
-        <translation type="unfinished"></translation>
+        <translation>Band</translation>
     </message>
     <message>
         <source>Tmx Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Modh Tmx</translation>
     </message>
     <message>
         <source>HP FEC</source>
-        <translation type="unfinished">HP FEC</translation>
+        <translation>HP FEC</translation>
     </message>
     <message>
         <source>LP FEC</source>
-        <translation type="unfinished">LP FEC</translation>
+        <translation>LP FEC</translation>
     </message>
     <message>
         <source>Guard</source>
-        <translation type="unfinished"></translation>
+        <translation>Geàrd</translation>
     </message>
     <message>
         <source>Hier</source>
-        <translation type="unfinished"></translation>
+        <translation>Hier</translation>
     </message>
 </context>
 <context>
@@ -2227,7 +2227,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Save</source>
         <comment>dialog</comment>
-        <translation>Sàbhail</translation>
+        <translation>&amp;Sàbhail</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -2236,7 +2236,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Cuir ris</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -2244,35 +2244,35 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Ceangal</translation>
     </message>
     <message>
         <source>IP address</source>
-        <translation type="unfinished"></translation>
+        <translation>Seòladh IP</translation>
     </message>
     <message>
         <source>FTP port</source>
-        <translation type="unfinished"></translation>
+        <translation>Port FTP</translation>
     </message>
     <message>
         <source>Use active FTP</source>
-        <translation type="unfinished"></translation>
+        <translation>FTP gnìomhach</translation>
     </message>
     <message>
         <source>HTTP port</source>
-        <translation type="unfinished"></translation>
+        <translation>Port HTTP</translation>
     </message>
     <message>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation>Login</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Username</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Password</translation>
     </message>
     <message>
         <source>Configuration</source>
@@ -2280,7 +2280,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Transponders</source>
-        <translation type="unfinished"></translation>
+        <translation>Transponders</translation>
     </message>
     <message>
         <source>Services</source>
@@ -2288,105 +2288,105 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Bouquets</source>
-        <translation type="unfinished"></translation>
+        <translation>Bouquets</translation>
     </message>
     <message>
         <source>Connections</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ceanglaichean</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Coitcheann</translation>
     </message>
     <message>
         <source>Show confirmation messages when deleting</source>
-        <translation type="unfinished"></translation>
+        <translation>Seall teachdaireachdan dearbhaidh nuair a sguabas tu às</translation>
     </message>
     <message>
         <source>Parental lock whitelist (exclusion instead inclusion list)</source>
-        <translation type="unfinished"></translation>
+        <translation>Liosta geal glasaidh phàrantan (liosta às-dùnadh)</translation>
     </message>
     <message>
         <source>Drag and Drop</source>
-        <translation type="unfinished"></translation>
+        <translation>Drag and Drop</translation>
     </message>
     <message>
         <source>Switch to current bouquet item after the drop</source>
-        <translation type="unfinished"></translation>
+        <translation>Atharraich gu rud bouquet gnàthach às deidh an drop</translation>
     </message>
     <message>
         <source>Channel operations</source>
-        <translation type="unfinished"></translation>
+        <translation>Obraichean sianal</translation>
     </message>
     <message>
         <source>Copy channels (preserving)</source>
-        <translation type="unfinished"></translation>
+        <translation>Dèan lethbhreac de shianalan (gleidheadh)</translation>
     </message>
     <message>
         <source>Move channels (deleting)</source>
-        <translation type="unfinished"></translation>
+        <translation>Gluais seanalan (sguabadh às)</translation>
     </message>
     <message>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>Cànain</translation>
     </message>
     <message>
         <source>Picons</source>
-        <translation type="unfinished"></translation>
+        <translation>Picons</translation>
     </message>
     <message>
         <source>Default (system language)</source>
-        <translation type="unfinished"></translation>
+        <translation>Default (cànan an t-siostaim)</translation>
     </message>
     <message>
         <source>The software might need to be restarted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Is dòcha gum feumar am bathar-bog ath-thòiseachadh.</translation>
     </message>
     <message>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Cuspair</translation>
     </message>
     <message>
         <source>Default (system theme)</source>
-        <translation type="unfinished"></translation>
+        <translation>Default (cuspair siostam)</translation>
     </message>
     <message>
         <source>Dark</source>
-        <translation type="unfinished"></translation>
+        <translation>Dorch</translation>
     </message>
     <message>
         <source>Light</source>
-        <translation>Aotrom</translation>
+        <translation>Solas</translation>
     </message>
     <message>
         <source>Enable experimental features</source>
-        <translation type="unfinished"></translation>
+        <translation>Dèan comas air feartan deuchainneach</translation>
     </message>
     <message>
         <source>Picons editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Deasaiche Picons</translation>
     </message>
     <message>
         <source>Backup picon when replaced</source>
-        <translation type="unfinished"></translation>
+        <translation>Cùl-taic picon nuair a thèid a chuir na àite</translation>
     </message>
     <message>
         <source>Filename format</source>
-        <translation type="unfinished"></translation>
+        <translation>Cruth ainm faidhle</translation>
     </message>
     <message>
         <source>Use reference ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Cleachd reference ID</translation>
     </message>
     <message>
         <source>Use service name</source>
-        <translation type="unfinished"></translation>
+        <translation>Cleachd ainm seirbheis</translation>
     </message>
     <message>
         <source>Preferences</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Roghainnean</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -2426,7 +2426,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Default format</source>
-        <translation type="unfinished"></translation>
+        <translation>Cruth bunaiteach</translation>
     </message>
     <message>
         <source>Tools</source>
@@ -2434,58 +2434,58 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>CSV Import/Export</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV Import/às-mhalairt</translation>
     </message>
     <message>
         <source>Allow header columns in CSV</source>
-        <translation type="unfinished"></translation>
+        <translation>Ceadaich colbhan cinn ann an CSV</translation>
     </message>
     <message>
         <source>CSV delimiter character</source>
-        <translation type="unfinished"></translation>
+        <translation>Caractar delimiter CSV</translation>
     </message>
     <message>
         <source>CSV separator character</source>
-        <translation type="unfinished"></translation>
+        <translation>Caractar sgaraidh CSV</translation>
     </message>
     <message>
         <source>CSV escape character</source>
-        <translation type="unfinished"></translation>
+        <translation>Caractar teicheadh ​​CSV</translation>
     </message>
     <message>
         <source>Fields Import/Export</source>
-        <translation type="unfinished"></translation>
+        <translation>Fields Import/Export</translation>
     </message>
     <message>
         <source>Default (same fields as visual)</source>
-        <translation type="unfinished"></translation>
+        <translation>Default (na h-aon raointean ri lèirsinneach)</translation>
     </message>
     <message>
         <source>Extended (all fields)</source>
-        <translation type="unfinished"></translation>
+        <translation>Leudaichte (gach raon)</translation>
     </message>
     <message>
         <source>Engine</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Einnsean</translation>
     </message>
     <message>
         <source>%1Please be carefull!%2Modifing these settings could break the program.%3</source>
         <extracomment>HTML formattation: %1text%2%text%3 treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1 Bi faiceallachl!%2Ma dh&apos;atharraicheas tu na roghainnean seo dh&apos; fhaodadh sin am prògram a bhriseadh.%3</translation>
     </message>
     <message>
         <source>OK, I understood this.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ceart gu leòr, thuig mi seo.</translation>
     </message>
     <message>
         <source>Advanced</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Adhartach</translation>
     </message>
     <message>
         <source>Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Pròifil</translation>
     </message>
 </context>
 <context>
@@ -2503,12 +2503,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Import</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cuir a-steach</translation>
     </message>
     <message>
         <source>Export</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Às-mhalairt</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -2518,238 +2518,238 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Select profile</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tagh pròifil</translation>
     </message>
     <message>
         <source>Connect</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ceangail</translation>
     </message>
     <message>
         <source>Disconnect</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Dì-ceangail</translation>
     </message>
     <message>
         <source>Upload</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Luchdaich suas</translation>
     </message>
     <message>
         <source>Download</source>
         <comment>toolbar</comment>
-        <translation>Luchdadh a-nuas</translation>
+        <translation>Luchdaich sìos</translation>
     </message>
     <message>
         <source>Reading from %1 …</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>A&apos; leughadh o %1 …</translation>
     </message>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd Fhaidhle</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Thachair mearachd le leughadh an fhaidhle &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Thachair mearachd le fosgladh fhaidhlichean.</translation>
     </message>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chaidh am faidhle atharrachadh</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>A bheil thu airson na h-atharraichean agad a shàbhaladh?</translation>
     </message>
     <message>
         <source>Saved to %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Sàbhaladh gu %1</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Air a shàbhaladh!</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Thachair mearachd le sgrìobhadh an fhaidhle &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error writing files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Thachair mearachd a&apos; sgrìobhadh fhaidhlichean.</translation>
     </message>
     <message>
         <source>Nothing to import</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil dad ri thoirt a-steach</translation>
     </message>
     <message>
         <source>You are in Picons editor.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tha thu ann an Deasaiche Picons.</translation>
     </message>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ag ion-phortachadh o %1 …</translation>
     </message>
     <message>
         <source>Nothing to export</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil dad ri às-mhalairt</translation>
     </message>
     <message>
         <source>The destination contains files that will be overwritten.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Anns a &apos;cheann-uidhe tha faidhlichean a thèid ath-sgrìobhadh.</translation>
     </message>
     <message>
         <source>Do you want to overwrite them?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>A bheil thu airson sgrìobhadh thairis orra?</translation>
     </message>
     <message>
         <source>Empty path.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Slighe falamh.</translation>
     </message>
     <message>
         <source>You are in Channel Book.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tha thu ann an Leabhar Sianal.</translation>
     </message>
     <message>
         <source>Exported to %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Às-phortaich gu %1</translation>
     </message>
     <message>
         <source>Printing …</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>A’ clò-bhualadh…</translation>
     </message>
     <message>
         <source>FTP connecting ...</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP a’ ceangal ...</translation>
     </message>
     <message>
         <source>FTP disconnecting ...</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP a’ dì-cheangal ...</translation>
     </message>
     <message>
         <source>Trying to resume FTP connection ...</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>A&apos; feuchainn ri ceangal FTP ath-thòiseachadh ...</translation>
     </message>
     <message>
         <source>STB reloading ...</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>STB luchdadh a-nuas ...</translation>
     </message>
     <message>
         <source>FTP connected successfully.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP ceangailte gu soirbheachail.</translation>
     </message>
     <message>
         <source>FTP Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd FTP</translation>
     </message>
     <message>
         <source>Cannot connect to FTP &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cha ghabh ceangal ri FTP &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Cannot connect to FTP Server!</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan urrainn dhuinn ceangal ris an fhrithealaiche FTP!</translation>
     </message>
     <message>
         <source>FTP disconnected successfully.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP air a dhì-cheangal gu soirbheachail.</translation>
     </message>
     <message>
         <source>Cannot disconnect from FTP &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cha ghabh a dhì-cheangal o FTP &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Cannot disconnect from FTP Server!</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cha ghabh a dhì-cheangal on fhrithealaiche FTP!</translation>
     </message>
     <message>
         <source>Uploading file: %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>A&apos; luchdadh suas faidhle: %1</translation>
     </message>
     <message numerus="yes">
         <source>Uploaded %n files</source>
         <comment>message</comment>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>Chaidh %n faidhle a luchdadh suas</numerusform>
+            <numerusform>Chaidh %n faidhle a luchdadh suas</numerusform>
+            <numerusform>Chaidh %n faidhle a luchdadh suas</numerusform>
+            <numerusform>Chaidh %n faidhle a luchdadh suas</numerusform>
         </translation>
     </message>
     <message>
         <source>STB reload done.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>STB ath-luchdaich a-nuas.</translation>
     </message>
     <message>
         <source>Downloading file: %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>A&apos; luchdadh a-nuas an fhaidhle: %1</translation>
     </message>
     <message numerus="yes">
         <source>Downloaded %n files</source>
         <comment>message</comment>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>Luchdaich a-nuas %n faidhlichean</numerusform>
+            <numerusform>Luchdaich a-nuas %n faidhlichean</numerusform>
+            <numerusform>Luchdaich a-nuas %n faidhlichean</numerusform>
+            <numerusform>Luchdaich a-nuas %n faidhlichean</numerusform>
         </translation>
     </message>
     <message>
         <source>Cannot reload STB &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cha ghabh STB &quot;%1&quot; ath-luchdachadh.</translation>
     </message>
     <message>
         <source>Cannot reload STB!</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cha ghabh STB ath-luchdachadh!</translation>
     </message>
     <message>
         <source>DEMO MODE</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>MODE DEMO</translation>
     </message>
     <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Airson adhbhar dì-bhugachaidh.%1 Suidhich application.seeds slighe iomlan fo Roghainnean&gt; tab adhartach, ath-thòisich am bathar-bog an uairsin.%2Sìol stòr ri fhaighinn aig:%3</translation>
     </message>
 </context>
 <context>
@@ -2757,64 +2757,64 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Log Inspector</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Neach-sgrùdaidh Log</translation>
     </message>
     <message>
         <source>Filter</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>Criathraich</translation>
     </message>
     <message>
         <source>All Log</source>
-        <translation type="unfinished"></translation>
+        <translation>Log a h-uile</translation>
     </message>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ag ion-phortachadh o %1 …</translation>
     </message>
     <message>
         <source>The destination contains files that will be overwritten.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Anns a &apos;cheann-uidhe tha faidhlichean a thèid ath-sgrìobhadh.</translation>
     </message>
     <message>
         <source>Do you want to overwrite them?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>A bheil thu airson sgrìobhadh thairis orra?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Às-phortaich gu %1</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Air a shàbhaladh!</translation>
     </message>
 </context>
 <context>
     <name>transpondersView</name>
     <message>
         <source>Transponders</source>
-        <translation type="unfinished"></translation>
+        <translation>Transponders</translation>
     </message>
     <message>
         <source>Combo</source>
-        <translation type="unfinished"></translation>
+        <translation>Combo</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>Siostam</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Dreuchd</translation>
     </message>
     <message>
         <source>Transport ID</source>
-        <translation type="unfinished">Transport ID</translation>
+        <translation>Transport ID</translation>
     </message>
     <message>
         <source>DVBNS</source>
@@ -2826,96 +2826,96 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>Tricead</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>Polarachadh</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>Modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Modalachd</translation>
     </message>
     <message>
         <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
+        <translation>Bandwidth</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Roll offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Roll offset</translation>
     </message>
     <message>
         <source>Inversion</source>
-        <translation type="unfinished"></translation>
+        <translation>Inversion</translation>
     </message>
     <message>
         <source>Tmx Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Modh Tmx</translation>
     </message>
     <message>
         <source>Guard</source>
-        <translation type="unfinished"></translation>
+        <translation>Geàrd</translation>
     </message>
     <message>
         <source>Hierarchy</source>
-        <translation type="unfinished"></translation>
+        <translation>Rangachd</translation>
     </message>
     <message>
         <source>New Transponder</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Transponder Ùr</translation>
     </message>
     <message>
         <source>Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Lorg…</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd</translation>
     </message>
     <message>
         <source>Missing transponder key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Iuchair transponder &quot;%1&quot; a dhìth.</translation>
     </message>
     <message>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil transponder &quot;%1&quot; ann.</translation>
     </message>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Dearbhaich an sguabadh às</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>A bheil thu airson nithean a sguabadh às?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan e cruth dàta dligheach.</translation>
     </message>
     <message>
         <source>Edit Transponder</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich Transponder</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -2942,25 +2942,25 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <name>tunersetsView</name>
     <message>
         <source>Satellites</source>
-        <translation type="unfinished"></translation>
+        <translation>Satailitean</translation>
     </message>
     <message>
         <source>Positions</source>
-        <translation type="unfinished"></translation>
+        <translation>Dreuchdan</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd</translation>
     </message>
     <message>
         <source>Unknown tuner settings type.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Seòrsa roghainnean tuner neo-aithnichte.</translation>
     </message>
     <message>
         <source>Transponders</source>
-        <translation type="unfinished"></translation>
+        <translation>Transponders</translation>
     </message>
     <message>
         <source>Name</source>
@@ -2968,157 +2968,157 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Dreuchd</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>
-        <translation type="unfinished"></translation>
+        <translation>Freq/Pol/SR</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>Tricead</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>Polarachadh</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>Siostam</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>Modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Modalachd</translation>
     </message>
     <message>
         <source>Inversion</source>
-        <translation type="unfinished"></translation>
+        <translation>Inversion</translation>
     </message>
     <message>
         <source>Roll offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Roll offset</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Country</source>
-        <translation type="unfinished"></translation>
+        <translation>Dùthaich</translation>
     </message>
     <message>
         <source>Freq/Const/Band</source>
-        <translation type="unfinished"></translation>
+        <translation>Freq/Const/Band</translation>
     </message>
     <message>
         <source>Constellation</source>
-        <translation type="unfinished"></translation>
+        <translation>Constellation</translation>
     </message>
     <message>
         <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
+        <translation>Bandwidth</translation>
     </message>
     <message>
         <source>Tmx Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Modh Tmx</translation>
     </message>
     <message>
         <source>HP FEC</source>
-        <translation type="unfinished">HP FEC</translation>
+        <translation>HP FEC</translation>
     </message>
     <message>
         <source>LP FEC</source>
-        <translation type="unfinished">LP FEC</translation>
+        <translation>LP FEC</translation>
     </message>
     <message>
         <source>Guard</source>
-        <translation type="unfinished"></translation>
+        <translation>Geàrd</translation>
     </message>
     <message>
         <source>Hierarchy</source>
-        <translation type="unfinished"></translation>
+        <translation>Rangachd</translation>
     </message>
     <message>
         <source>Freq/Mod/SR</source>
-        <translation type="unfinished"></translation>
+        <translation>Freq/Mod/SR</translation>
     </message>
     <message>
         <source>Edit Settings</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich roghainnean</translation>
     </message>
     <message>
         <source>New Position</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Dreuchd Ùr</translation>
     </message>
     <message>
         <source>Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Lorg…</translation>
     </message>
     <message>
         <source>New Transponder</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Transponder Ùr</translation>
     </message>
     <message>
         <source>Missing tuner settings table key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Iuchair clàr nan roghainnean tuner a dhìth &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Missing tuner settings key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Iuchair roghainnean tuner &quot;%1&quot; a dhìth.</translation>
     </message>
     <message>
         <source>Tuner settings table &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil clàr roghainnean an tuner &quot;%1&quot; ann.</translation>
     </message>
     <message>
         <source>Missing tuner settings transponder key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Iuchair transponder roghainnean tuner a dhìth &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil an neach-freagairt &quot;%1&quot; ann an roghainnean tuner.</translation>
     </message>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Dearbhaich an sguabadh às</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>A bheil thu airson nithean a sguabadh às?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tuner roghainnean seòrsa transponder mì-fhreagarrachd.</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan e cruth dàta dligheach.</translation>
     </message>
     <message>
         <source>Edit Position</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich Suidheachadh</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -3128,7 +3128,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Transponder</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich Transponder</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3161,17 +3161,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Highlight</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Thoir an aire</translation>
     </message>
     <message>
         <source>Find Previous</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Lorg roimhe</translation>
     </message>
     <message>
         <source>Find All</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Lorg a h-uile</translation>
     </message>
 </context>
 </TS>

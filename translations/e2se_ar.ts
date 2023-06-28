@@ -37,7 +37,7 @@
     </message>
     <message>
         <source>Version %1</source>
-        <translation>%النسخة 1</translation>
+        <translation>النسخة %1</translation>
     </message>
     <message>
         <source>This software is distributed under the terms of the %1.%2The source code of this software is available here:%3</source>
@@ -90,7 +90,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Position</source>
-        <translation>موضع</translation>
+        <translation>موقف</translation>
     </message>
     <message>
         <source>System</source>
@@ -369,7 +369,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>condensed name (eg. TV, Radio)</source>
-        <translation>الاسم المختصر (مثل التلفزيون والراديو)</translation>
+        <translation>الاسم المختصر (مثل TV, Radio)</translation>
     </message>
     <message>
         <source>Filename</source>
@@ -688,7 +688,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Position</source>
-        <translation>موضع</translation>
+        <translation>موقف</translation>
     </message>
     <message>
         <source>Frequency</source>
@@ -818,7 +818,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Position</source>
-        <translation>موضع</translation>
+        <translation>موقف</translation>
     </message>
     <message>
         <source>Flags</source>
@@ -1541,7 +1541,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Position</source>
         <comment>status-bar</comment>
-        <translation>موضع</translation>
+        <translation>موقف</translation>
     </message>
 </context>
 <context>
@@ -1596,7 +1596,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Position</source>
-        <translation>موضع</translation>
+        <translation>موقف</translation>
     </message>
     <message>
         <source>Tuner</source>
@@ -1958,7 +1958,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Position</source>
-        <translation>موضع</translation>
+        <translation>موقف</translation>
     </message>
     <message>
         <source>System</source>
@@ -2177,7 +2177,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Position</source>
-        <translation>موضع</translation>
+        <translation>موقف</translation>
     </message>
     <message>
         <source>Mod</source>
@@ -2821,7 +2821,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Position</source>
-        <translation>موضع</translation>
+        <translation>موقف</translation>
     </message>
     <message>
         <source>Transport ID</source>
@@ -2979,7 +2979,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Position</source>
-        <translation>موضع</translation>
+        <translation>موقف</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>

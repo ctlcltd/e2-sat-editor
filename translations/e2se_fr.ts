@@ -1303,7 +1303,7 @@ L&apos;UTILISATION OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     <message>
         <source>Export Services</source>
         <comment>menu</comment>
-        <translation>Exporterr services</translation>
+        <translation>Exporter services</translation>
     </message>
     <message>
         <source>Export Bouquets</source>
@@ -2206,7 +2206,7 @@ L&apos;UTILISATION OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     </message>
     <message>
         <source>Tmx Mode</source>
-        <translation>Mode TMX</translation>
+        <translation>Mode Tmx</translation>
     </message>
     <message>
         <source>HP FEC</source>
@@ -2284,7 +2284,7 @@ L&apos;UTILISATION OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     </message>
     <message>
         <source>Configuration</source>
-        <translation>Supprimer</translation>
+        <translation>Configuration</translation>
     </message>
     <message>
         <source>Transponders</source>
@@ -2345,7 +2345,7 @@ L&apos;UTILISATION OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     </message>
     <message>
         <source>Default (system language)</source>
-        <translation>Par défaut (langue du système)</translation>
+        <translation>Défaut (langue du système)</translation>
     </message>
     <message>
         <source>The software might need to be restarted.</source>
@@ -2357,7 +2357,7 @@ L&apos;UTILISATION OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     </message>
     <message>
         <source>Default (system theme)</source>
-        <translation>Par défaut (thème système)</translation>
+        <translation>Défaut (thème système)</translation>
     </message>
     <message>
         <source>Dark</source>
@@ -2442,7 +2442,7 @@ L&apos;UTILISATION OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     </message>
     <message>
         <source>CSV Import/Export</source>
-        <translation>Importation/exportation CSV</translation>
+        <translation>Importer/Exporter CSV</translation>
     </message>
     <message>
         <source>Allow header columns in CSV</source>
@@ -2462,11 +2462,11 @@ L&apos;UTILISATION OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     </message>
     <message>
         <source>Fields Import/Export</source>
-        <translation>Champs Importer/Exporter</translation>
+        <translation>Importer/Exporter Champs</translation>
     </message>
     <message>
         <source>Default (same fields as visual)</source>
-        <translation>Par défaut (mêmes champs que le visuel)</translation>
+        <translation>Défaut (mêmes champs que le visuel)</translation>
     </message>
     <message>
         <source>Extended (all fields)</source>
@@ -2858,7 +2858,7 @@ L&apos;UTILISATION OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     </message>
     <message>
         <source>Roll offset</source>
-        <translation>Supprimer</translation>
+        <translation>Roll offset</translation>
     </message>
     <message>
         <source>Inversion</source>
@@ -2866,7 +2866,7 @@ L&apos;UTILISATION OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     </message>
     <message>
         <source>Tmx Mode</source>
-        <translation>Mode TMX</translation>
+        <translation>Mode Tmx</translation>
     </message>
     <message>
         <source>Guard</source>
@@ -3008,7 +3008,7 @@ L&apos;UTILISATION OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     </message>
     <message>
         <source>Roll offset</source>
-        <translation>Supprimer</translation>
+        <translation>Roll offset</translation>
     </message>
     <message>
         <source>Pilot</source>
@@ -3032,7 +3032,7 @@ L&apos;UTILISATION OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     </message>
     <message>
         <source>Tmx Mode</source>
-        <translation>Mode TMX</translation>
+        <translation>Mode Tmx</translation>
     </message>
     <message>
         <source>HP FEC</source>

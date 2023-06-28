@@ -2461,7 +2461,7 @@ O EL USO U OTROS TRATOS EN EL SOFTWARE.</translation>
     </message>
     <message>
         <source>Fields Import/Export</source>
-        <translation>Importación/exportación de campos</translation>
+        <translation>Importar/Exportar de campos</translation>
     </message>
     <message>
         <source>Default (same fields as visual)</source>
@@ -2630,7 +2630,7 @@ O EL USO U OTROS TRATOS EN EL SOFTWARE.</translation>
     <message>
         <source>Empty path.</source>
         <comment>error</comment>
-        <translation>Camino vacío.</translation>
+        <translation>Ruta vacía.</translation>
     </message>
     <message>
         <source>You are in Channel Book.</source>
@@ -2670,7 +2670,7 @@ O EL USO U OTROS TRATOS EN EL SOFTWARE.</translation>
     <message>
         <source>FTP connected successfully.</source>
         <comment>message</comment>
-        <translation>FTP conectado correctamente.</translation>
+        <translation>FTP conectado.</translation>
     </message>
     <message>
         <source>FTP Error</source>
@@ -2690,7 +2690,7 @@ O EL USO U OTROS TRATOS EN EL SOFTWARE.</translation>
     <message>
         <source>FTP disconnected successfully.</source>
         <comment>message</comment>
-        <translation>FTP desconectado con éxito.</translation>
+        <translation>FTP desconectado.</translation>
     </message>
     <message>
         <source>Cannot disconnect from FTP &quot;%1&quot;.</source>

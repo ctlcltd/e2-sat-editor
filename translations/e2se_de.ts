@@ -2321,7 +2321,7 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
     </message>
     <message>
         <source>Switch to current bouquet item after the drop</source>
-        <translation>Wechseln Sie nach dem Drop zum aktuellen Bouquet-Element</translation>
+        <translation>Wechseln Sie nach dem drop zum aktuellen Bouquet-element</translation>
     </message>
     <message>
         <source>Channel operations</source>

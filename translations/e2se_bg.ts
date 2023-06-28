@@ -370,7 +370,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>condensed name (eg. TV, Radio)</source>
-        <translation>съкратено име (напр. телевизия, радио)</translation>
+        <translation>съкратено име (напр. TV, Radio)</translation>
     </message>
     <message>
         <source>Filename</source>

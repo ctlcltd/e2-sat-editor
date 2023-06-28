@@ -391,18 +391,18 @@ void settings::preferencesLayout()
 	dtf1ln->addItem(tr("Default (system language)"), "");
 #ifndef E2SE_DEMO
 	dtf1ln->addItem(QLocale::languageToString(QLocale::English), "en");
-	// dtf1ln->addItem(QLocale::languageToString(QLocale::Arabic), "ar");
-	// dtf1ln->addItem(QLocale::languageToString(QLocale::Bulgarian), "bg");
+	dtf1ln->addItem(QLocale::languageToString(QLocale::Arabic), "ar");
+	dtf1ln->addItem(QLocale::languageToString(QLocale::Bulgarian), "bg");
 	dtf1ln->addItem(QLocale::languageToString(QLocale::Catalan), "ca");
 	dtf1ln->addItem(QLocale::languageToString(QLocale::Czech), "cs");
 	dtf1ln->addItem(QLocale::languageToString(QLocale::Danish), "da");
 	dtf1ln->addItem(QLocale::languageToString(QLocale::German), "de");
 	dtf1ln->addItem(QLocale::languageToString(QLocale::Spanish), "es");
-	// dtf1ln->addItem(QLocale::languageToString(QLocale::Persian), "fa");
-	// dtf1ln->addItem(QLocale::languageToString(QLocale::Finnish), "fi");
-	// dtf1ln->addItem(QLocale::languageToString(QLocale::French), "fr");
-	// dtf1ln->addItem(QLocale::languageToString(QLocale::Gaelic), "gd");
-	// dtf1ln->addItem(QLocale::languageToString(QLocale::Galician), "gl");
+	dtf1ln->addItem(QLocale::languageToString(QLocale::Persian), "fa");
+	dtf1ln->addItem(QLocale::languageToString(QLocale::Finnish), "fi");
+	dtf1ln->addItem(QLocale::languageToString(QLocale::French), "fr");
+	dtf1ln->addItem(QLocale::languageToString(QLocale::Gaelic), "gd");
+	dtf1ln->addItem(QLocale::languageToString(QLocale::Galician), "gl");
 	// dtf1ln->addItem(QLocale::languageToString(QLocale::Hebrew), "he");
 	// dtf1ln->addItem(QLocale::languageToString(QLocale::Croatian), "hr");
 	// dtf1ln->addItem(QLocale::languageToString(QLocale::Hungarian), "hu");

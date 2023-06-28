@@ -2441,7 +2441,7 @@ O L&apos;ALTRE ÚS DEL PROGRAMARI O EN RELACIÓ AMB ELS. PROGRAMARI.</translatio
     </message>
     <message>
         <source>CSV Import/Export</source>
-        <translation>Importació/Exportació CSV</translation>
+        <translation>Importa/Exporta CSV</translation>
     </message>
     <message>
         <source>Allow header columns in CSV</source>
@@ -2461,7 +2461,7 @@ O L&apos;ALTRE ÚS DEL PROGRAMARI O EN RELACIÓ AMB ELS. PROGRAMARI.</translatio
     </message>
     <message>
         <source>Fields Import/Export</source>
-        <translation>Importació/Exportació de camps</translation>
+        <translation>Importa/Exporta de camps</translation>
     </message>
     <message>
         <source>Default (same fields as visual)</source>
@@ -2670,7 +2670,7 @@ O L&apos;ALTRE ÚS DEL PROGRAMARI O EN RELACIÓ AMB ELS. PROGRAMARI.</translatio
     <message>
         <source>FTP connected successfully.</source>
         <comment>message</comment>
-        <translation>FTP connectat correctament.</translation>
+        <translation>FTP connectat.</translation>
     </message>
     <message>
         <source>FTP Error</source>
@@ -2690,7 +2690,7 @@ O L&apos;ALTRE ÚS DEL PROGRAMARI O EN RELACIÓ AMB ELS. PROGRAMARI.</translatio
     <message>
         <source>FTP disconnected successfully.</source>
         <comment>message</comment>
-        <translation>L&apos;FTP s&apos;ha desconnectat correctament.</translation>
+        <translation>FTP desconnectat.</translation>
     </message>
     <message>
         <source>Cannot disconnect from FTP &quot;%1&quot;.</source>

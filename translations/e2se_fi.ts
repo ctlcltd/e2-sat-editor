@@ -485,7 +485,7 @@ TAI MUUN KÄYTÖSTÄ TAI SIIHEN YHTEYDESSÄ. OHJELMISTO.</translation>
     </message>
     <message>
         <source>New Transponder</source>
-        <translation>Uusi transponderi</translation>
+        <translation>Uusi Transponderi</translation>
     </message>
     <message>
         <source>Parameters</source>
@@ -647,7 +647,7 @@ TAI MUUN KÄYTÖSTÄ TAI SIIHEN YHTEYDESSÄ. OHJELMISTO.</translation>
     <message>
         <source>New Transponder</source>
         <comment>dialog</comment>
-        <translation>Uusi transponderi</translation>
+        <translation>Uusi Transponderi</translation>
     </message>
     <message>
         <source>Satellite</source>
@@ -858,7 +858,7 @@ TAI MUUN KÄYTÖSTÄ TAI SIIHEN YHTEYDESSÄ. OHJELMISTO.</translation>
     <message>
         <source>New Transponder</source>
         <comment>dialog</comment>
-        <translation>Uusi transponderi</translation>
+        <translation>Uusi Transponderi</translation>
     </message>
     <message>
         <source>Frequency</source>
@@ -2320,7 +2320,7 @@ TAI MUUN KÄYTÖSTÄ TAI SIIHEN YHTEYDESSÄ. OHJELMISTO.</translation>
     </message>
     <message>
         <source>Switch to current bouquet item after the drop</source>
-        <translation>Vaihda nykyiseen bouquet-tuotteeseen ddropp:n jälkeen</translation>
+        <translation>Vaihda nykyiseen bouquet-tuotteeseen drop:n jälkeen</translation>
     </message>
     <message>
         <source>Channel operations</source>
@@ -2550,7 +2550,7 @@ TAI MUUN KÄYTÖSTÄ TAI SIIHEN YHTEYDESSÄ. OHJELMISTO.</translation>
     <message>
         <source>Reading from %1 …</source>
         <comment>message</comment>
-        <translation>Luetaan kohteesta % 1…</translation>
+        <translation>Luetaan kohteesta %1…</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2610,7 +2610,7 @@ TAI MUUN KÄYTÖSTÄ TAI SIIHEN YHTEYDESSÄ. OHJELMISTO.</translation>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
-        <translation>Tuodaan kohteesta % 1…</translation>
+        <translation>Tuodaan kohteesta %1…</translation>
     </message>
     <message>
         <source>Nothing to export</source>
@@ -2774,7 +2774,7 @@ TAI MUUN KÄYTÖSTÄ TAI SIIHEN YHTEYDESSÄ. OHJELMISTO.</translation>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
-        <translation>Tuodaan kohteesta % 1…</translation>
+        <translation>Tuodaan kohteesta %1…</translation>
     </message>
     <message>
         <source>The destination contains files that will be overwritten.</source>
@@ -2878,7 +2878,7 @@ TAI MUUN KÄYTÖSTÄ TAI SIIHEN YHTEYDESSÄ. OHJELMISTO.</translation>
     <message>
         <source>New Transponder</source>
         <comment>toolbar</comment>
-        <translation>Uusi transponderi</translation>
+        <translation>Uusi Transponderi</translation>
     </message>
     <message>
         <source>Find…</source>
@@ -3071,7 +3071,7 @@ TAI MUUN KÄYTÖSTÄ TAI SIIHEN YHTEYDESSÄ. OHJELMISTO.</translation>
     <message>
         <source>New Transponder</source>
         <comment>toolbar</comment>
-        <translation>Uusi transponderi</translation>
+        <translation>Uusi Transponderi</translation>
     </message>
     <message>
         <source>Missing tuner settings table key &quot;%1&quot;.</source>
