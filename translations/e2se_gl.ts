@@ -123,12 +123,12 @@ OU DO OUTRO USO OU EN RELACIÓN CON CO. SOFTWARE.</translation>
     </message>
     <message>
         <source>A-Z</source>
-        <translation>Posición</translation>
+        <translation>A-Z</translation>
     </message>
     <message>
         <source>&amp;Copy</source>
         <comment>context-menu</comment>
-        <translation>Sistema</translation>
+        <translation>&amp;Copiar</translation>
     </message>
 </context>
 <context>
@@ -141,7 +141,7 @@ OU DO OUTRO USO OU EN RELACIÓN CON CO. SOFTWARE.</translation>
     <message>
         <source>Cancel</source>
         <comment>dialog</comment>
-        <translation>Servizos</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <source>Save</source>
@@ -174,7 +174,7 @@ OU DO OUTRO USO OU EN RELACIÓN CON CO. SOFTWARE.</translation>
     <message>
         <source>Cancel</source>
         <comment>dialog</comment>
-        <translation>Servizos</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <source>Add</source>
@@ -1164,7 +1164,7 @@ OU DO OUTRO USO OU EN RELACIÓN CON CO. SOFTWARE.</translation>
     <message>
         <source>&amp;Copy</source>
         <comment>menu</comment>
-        <translation>Sistema</translation>
+        <translation>&amp;Copiar</translation>
     </message>
     <message>
         <source>&amp;Paste</source>
@@ -1349,7 +1349,7 @@ OU DO OUTRO USO OU EN RELACIÓN CON CO. SOFTWARE.</translation>
     <message>
         <source>Hide &amp;Status Bar</source>
         <comment>menu</comment>
-        <translation>Ocultar &amp;barra de estado</translation>
+        <translation>Ocultar barra de estado</translation>
     </message>
     <message>
         <source>New &amp;Tab</source>
@@ -1498,7 +1498,7 @@ OU DO OUTRO USO OU EN RELACIÓN CON CO. SOFTWARE.</translation>
     </message>
     <message>
         <source>Hide &amp;Status Bar</source>
-        <translation>Ocultar &amp;barra de estado</translation>
+        <translation>Ocultar barra de estado</translation>
     </message>
     <message>
         <source>Show &amp;Status Bar</source>
@@ -1899,7 +1899,7 @@ OU DO OUTRO USO OU EN RELACIÓN CON CO. SOFTWARE.</translation>
     <message>
         <source>&amp;Copy</source>
         <comment>context-menu</comment>
-        <translation>Sistema</translation>
+        <translation>&amp;Copiar</translation>
     </message>
     <message>
         <source>&amp;Paste</source>
@@ -2029,7 +2029,7 @@ OU DO OUTRO USO OU EN RELACIÓN CON CO. SOFTWARE.</translation>
     <message>
         <source>&amp;Copy</source>
         <comment>context-menu</comment>
-        <translation>Sistema</translation>
+        <translation>&amp;Copiar</translation>
     </message>
     <message>
         <source>&amp;Paste</source>
@@ -2240,7 +2240,7 @@ OU DO OUTRO USO OU EN RELACIÓN CON CO. SOFTWARE.</translation>
     <message>
         <source>Cancel</source>
         <comment>dialog</comment>
-        <translation>Servizos</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <source>Add</source>
@@ -2929,7 +2929,7 @@ OU DO OUTRO USO OU EN RELACIÓN CON CO. SOFTWARE.</translation>
     <message>
         <source>&amp;Copy</source>
         <comment>context-menu</comment>
-        <translation>Sistema</translation>
+        <translation>&amp;Copiar</translation>
     </message>
     <message>
         <source>&amp;Paste</source>
@@ -3142,7 +3142,7 @@ OU DO OUTRO USO OU EN RELACIÓN CON CO. SOFTWARE.</translation>
     <message>
         <source>&amp;Copy</source>
         <comment>context-menu</comment>
-        <translation>Sistema</translation>
+        <translation>&amp;Copiar</translation>
     </message>
     <message>
         <source>&amp;Paste</source>

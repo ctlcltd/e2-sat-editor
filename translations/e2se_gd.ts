@@ -1350,7 +1350,7 @@ NO AN CLEACHDADH EILE. BOGADH.</translation>
     <message>
         <source>Hide &amp;Status Bar</source>
         <comment>menu</comment>
-        <translation>Falaich &amp; Bàr Inbhe</translation>
+        <translation>Falaich Bàr Inbhe</translation>
     </message>
     <message>
         <source>New &amp;Tab</source>
@@ -1499,7 +1499,7 @@ NO AN CLEACHDADH EILE. BOGADH.</translation>
     </message>
     <message>
         <source>Hide &amp;Status Bar</source>
-        <translation>Falaich &amp; Bàr Inbhe</translation>
+        <translation>Falaich Bàr Inbhe</translation>
     </message>
     <message>
         <source>Show &amp;Status Bar</source>
@@ -1664,7 +1664,7 @@ NO AN CLEACHDADH EILE. BOGADH.</translation>
     <message>
         <source>Drag&amp;&amp;Drop Preferences</source>
         <comment>corner</comment>
-        <translation>Slaod &amp; &amp; leig às roghainnean</translation>
+        <translation>Roghainnean Drag&amp;&amp;Drop</translation>
     </message>
     <message>
         <source>&amp;Find…</source>

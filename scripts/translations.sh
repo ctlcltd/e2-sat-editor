@@ -97,7 +97,7 @@ i18n_make () {
 
 	cwt
 
-	mkdir -p res/locale
+	mkdir -p dist/translations
 
 	$LRELEASE translations/e2se_ar.ts -qm dist/translations/e2se_ar.qm
 	$LRELEASE translations/e2se_bg.ts -qm dist/translations/e2se_bg.qm
