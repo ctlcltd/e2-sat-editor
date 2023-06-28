@@ -56,7 +56,14 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION 
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
-        <translation>نرمافزار «همانطور که هست»، بدون ضمانت از هر نوع، صریح یا ضمنی، شامل اما نه محدود به ضمانتهای کالای تجاری، تناسب برای یک هدف خاص و غیر از آن، ارائه میشود. در هیچ موردی نویسندگان یا دارندگان حق نسخهبرداری در قبال ادعا، خسارت یا مسئولیت دیگری، اعم از اینکه در یک اقدام قراردادی، ظلم یا در غیر این صورت، ناشی از خارج از این موضوع باشد، مسئول نخواهند بود. معاملات در نرم افزار.</translation>
+        <translation>نرمافزار «همانطور که هست»، بدون ضمانت از هر نوع،
+ صریح یا ضمنی، شامل اما نه محدود به ضمانتهای کالای تجاری،
+ تناسب برای یک هدف خاص و غیر از آن، ارائه میشود. 
+ در هیچ موردی نویسندگان یا دارندگان حق نسخهبرداری 
+ در قبال ادعا، خسارت یا مسئولیت دیگری، اعم از اینکه 
+ در یک اقدام قراردادی، ظلم یا در غیر این صورت،
+ ناشی از خارج از این موضوع باشد، مسئول نخواهند بود. 
+ معاملات در نرم افزار.</translation>
     </message>
 </context>
 <context>
@@ -2743,7 +2750,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>برای هدف اشکال زدایی%1application.seeds مسیر مطلق را در تب Settings &gt; Advanced تنظیم کنید، سپس نرم افزار را مجددا راه اندازی کنید.%2دانه های منبع موجود در:%3</translation>
     </message>
 </context>
 <context>

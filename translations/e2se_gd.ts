@@ -56,7 +56,16 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION 
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
-        <translation>THA AM BATHAR-BOG AIR A SHOLARACHADH “MAR A THA”, GUN BARANTAS DE SHINEADH, SÒNRAICHTE NO CHOITCHEANN, A’ GABHAIL A-STEACH ACH NACH EIL A CHUINGEACHADH RI BARANTASAN MALAIRTEACH, IONNSACHADH AIRSON ADHBHAR SÒNRAICHTE AGUS NACH EIL. CHA BHI NA H-ÙGHDARAN NO AN LUCHD-SEILBH CHÒRAICHEAN CUNNTACHAIL AIRSON CÀILEACHD, DÙTHCHAS NO DÙTHCHAS SAM BITH EILE, GE BITH AN ANN AN GNÌOMH CÙMHNANT, TORT NO EILE, AG ÈIRIGH BHO, A-MACH À, NO CO-CHEANGAILTE RIS A’ BHATHAR-BHOG NO AN CLEACHDADH EILE. BOGADH.</translation>
+        <translation>THA AM BATHAR-BOG AIR A SHOLARACHADH “MAR A THA”, 
+GUN BARANTAS DE SHINEADH, SÒNRAICHTE NO CHOITCHEANN, 
+A’ GABHAIL A-STEACH ACH NACH EIL A CHUINGEACHADH RI 
+BARANTASAN MALAIRTEACH, IONNSACHADH AIRSON ADHBHAR SÒNRAICHTE 
+AGUS NACH EIL. CHA BHI NA H-ÙGHDARAN NO AN LUCHD-SEILBH 
+CHÒRAICHEAN CUNNTACHAIL AIRSON CÀILEACHD, 
+DÙTHCHAS NO DÙTHCHAS SAM BITH EILE, GE BITH 
+AN ANN AN GNÌOMH CÙMHNANT, TORT NO EILE, AG ÈIRIGH BHO, 
+A-MACH À, NO CO-CHEANGAILTE RIS A’ BHATHAR-BHOG 
+NO AN CLEACHDADH EILE. BOGADH.</translation>
     </message>
 </context>
 <context>
@@ -568,7 +577,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Enter them in comma separated values.%1(eg. C:0100,C:0200,…)</source>
         <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
-        <translation>Cuir a-steach iad ann an luachan dealaichte le cromag.% (m.e. C:0100,C:0200,…)</translation>
+        <translation>Cuir a-steach iad ann an luachan dealaichte le cromag.%1(m.e. C:0100,C:0200,…)</translation>
     </message>
     <message>
         <source>CAIDs</source>
@@ -2472,7 +2481,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>%1Please be carefull!%2Modifing these settings could break the program.%3</source>
         <extracomment>HTML formattation: %1text%2%text%3 treat them as spaces</extracomment>
-        <translation>%1 Bi faiceallachl!%2Ma dh&apos;atharraicheas tu na roghainnean seo dh&apos; fhaodadh sin am prògram a bhriseadh.%3</translation>
+        <translation>%1Bi faiceallachl!%2Ma dh&apos;atharraicheas tu na roghainnean seo dh&apos; fhaodadh sin am prògram a bhriseadh.%3</translation>
     </message>
     <message>
         <source>OK, I understood this.</source>
@@ -2749,7 +2758,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
-        <translation>Airson adhbhar dì-bhugachaidh.%1 Suidhich application.seeds slighe iomlan fo Roghainnean&gt; tab adhartach, ath-thòisich am bathar-bog an uairsin.%2Sìol stòr ri fhaighinn aig:%3</translation>
+        <translation>Airson adhbhar dì-bhugachaidh.%1Suidhich application.seeds slighe iomlan fo tab Roghainnean &gt; Adhartach, ath-thòisich am bathar-bog an uairsin.%2Sìol stòr ri fhaighinn aig:%3</translation>
     </message>
 </context>
 <context>
