@@ -407,9 +407,9 @@ void settings::preferencesLayout()
 	dtf1ln->addItem(QLocale::languageToString(QLocale::Croatian), "hr");
 	dtf1ln->addItem(QLocale::languageToString(QLocale::Hungarian), "hu");
 	dtf1ln->addItem(QLocale::languageToString(QLocale::Italian), "it");
-	// dtf1ln->addItem(QLocale::languageToString(QLocale::Japanese), "ja");
-	// dtf1ln->addItem(QLocale::languageToString(QLocale::Korean), "ko");
-	// dtf1ln->addItem(QLocale::languageToString(QLocale::Lithuanian), "lt");
+	dtf1ln->addItem(QLocale::languageToString(QLocale::Japanese), "ja");
+	dtf1ln->addItem(QLocale::languageToString(QLocale::Korean), "ko");
+	dtf1ln->addItem(QLocale::languageToString(QLocale::Lithuanian), "lt");
 	// dtf1ln->addItem(QLocale::languageToString(QLocale::Latvian), "lv");
 	// dtf1ln->addItem(QLocale::languageToString(QLocale::Dutch), "nl");
 	// dtf1ln->addItem(QLocale::languageToString(QLocale::NorwegianNynorsk), "nn");

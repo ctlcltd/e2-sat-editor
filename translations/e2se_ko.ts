@@ -6,7 +6,7 @@
     <message>
         <source>Edit</source>
         <extracomment>Platform: Edit menu in macOS Menu bar</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>편집하다</translation>
     </message>
 </context>
 <context>
@@ -14,19 +14,19 @@
     <message>
         <source>Start Dictation...</source>
         <extracomment>Platform: edit item in macOS Edit Menu | Encoding: preserve 3 singular dots</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>받아쓰기 시작...</translation>
     </message>
     <message>
         <source>Emoji &amp;&amp; Symbols</source>
         <extracomment>Platform: edit item in macOS Edit Menu | Encoding: note double ampersand</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>그림 이모티콘 및 기호</translation>
     </message>
 </context>
 <context>
     <name>QFileDialog</name>
     <message>
         <source>&amp;Save</source>
-        <translation type="unfinished">저장(&amp;S)</translation>
+        <translation>저장(&amp;S)</translation>
     </message>
 </context>
 <context>
@@ -37,16 +37,16 @@
     </message>
     <message>
         <source>Version %1</source>
-        <translation type="unfinished"></translation>
+        <translation>버전 %1</translation>
     </message>
     <message>
         <source>This software is distributed under the terms of the %1.%2The source code of this software is available here:%3</source>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>이 소프트웨어는 %1의 조건에 따라 배포됩니다.%2이 소프트웨어의 소스 코드는 다음에서 사용할 수 있습니다:%3</translation>
     </message>
     <message>
         <source>GNU GPLv3 License</source>
-        <translation type="unfinished"></translation>
+        <translation>GNU GPLv3 라이센스</translation>
     </message>
     <message>
         <source>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, 
@@ -56,14 +56,14 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION 
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
-        <translation type="unfinished"></translation>
+        <translation>소프트웨어는 상품성, 특정 목적에의 적합성 및 비침해성에 대한 보증을 포함하되 이에 국한되지 않고 명시적이든 묵시적이든 어떠한 종류의 보증 없이 &quot;있는 그대로&quot; 제공됩니다. 어떤 경우에도 작성자나 저작권 보유자는 소프트웨어 또는 소프트웨어의 사용 또는 기타 거래로 인해 또는 이와 관련하여 발생하는 계약, 불법 행위 또는 기타 행위에 관계없이 청구, 손해 또는 기타 책임에 대해 책임을 지지 않습니다. 소프트웨어.</translation>
     </message>
 </context>
 <context>
     <name>channelBookView</name>
     <message>
         <source>Index</source>
-        <translation type="unfinished"></translation>
+        <translation>색인</translation>
     </message>
     <message>
         <source>Name</source>
@@ -75,19 +75,19 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>공급자</translation>
     </message>
     <message>
         <source>Transponder</source>
-        <translation type="unfinished"></translation>
+        <translation>트랜스폰더</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>위치</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>체계</translation>
     </message>
     <message>
         <source>Services</source>
@@ -95,27 +95,27 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Bouquets</source>
-        <translation type="unfinished"></translation>
+        <translation>채널 그룹</translation>
     </message>
     <message>
         <source>Positions</source>
-        <translation type="unfinished"></translation>
+        <translation>더 위치</translation>
     </message>
     <message>
         <source>Providers</source>
-        <translation type="unfinished"></translation>
+        <translation>공급자</translation>
     </message>
     <message>
         <source>Resolution</source>
-        <translation type="unfinished"></translation>
+        <translation>해상도</translation>
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>암호화</translation>
     </message>
     <message>
         <source>A-Z</source>
-        <translation type="unfinished"></translation>
+        <translation>A-Z</translation>
     </message>
     <message>
         <source>&amp;Copy</source>
@@ -128,7 +128,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>편집하다</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -138,17 +138,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Save</source>
         <comment>dialog</comment>
-        <translation>저장(S)</translation>
+        <translation>저장(&amp;S)</translation>
     </message>
     <message>
         <source>collapse</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>무너지다</translation>
     </message>
     <message>
         <source>expand</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>확장하다</translation>
     </message>
 </context>
 <context>
@@ -156,12 +156,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Add Channel</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 추가</translation>
     </message>
     <message>
         <source>Filters for service type</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>서비스 유형에 대한 필터</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -171,7 +171,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Add</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>추가하다</translation>
     </message>
 </context>
 <context>
@@ -179,152 +179,152 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>오류</translation>
     </message>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>File 오류</translation>
     </message>
     <message>
         <source>Parser Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Parser 오류</translation>
     </message>
     <message>
         <source>Maker Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Maker 오류</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>파일 &quot;%s&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; already exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>파일 &quot;%s&quot;이(가) 이미 있습니다.</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; is not a valid file.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>파일 &quot;%s&quot;은(는) 유효한 파일이 아닙니다.</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; is not readable.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>파일 &quot;%s&quot;을(를) 읽을 수 없습니다.</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; is not writable.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>파일 &quot;%s&quot;에 쓸 수 없습니다.</translation>
     </message>
     <message>
         <source>These settings are not supported.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>이러한 설정은 지원되지 않습니다.</translation>
     </message>
     <message>
         <source>Services file not found.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>서비스 파일을 찾을 수 없습니다.</translation>
     </message>
     <message>
         <source>Malformed or unknown XML file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>형식이 잘못되었거나 알 수 없는 XML 파일 형식입니다.</translation>
     </message>
     <message>
         <source>Unknown file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>알 수 없는 파일 형식입니다.</translation>
     </message>
     <message>
         <source>Unknown services file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>알 수 없는 서비스 파일 형식입니다.</translation>
     </message>
     <message>
         <source>Unknown bouquets file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>알 수 없는 채널 그룹 파일 형식입니다.</translation>
     </message>
     <message>
         <source>Unknown transponder type.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>알 수 없는 응답기 유형입니다.</translation>
     </message>
     <message>
         <source>Unknown import option.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>알 수 없는 가져오기 옵션입니다.</translation>
     </message>
     <message>
         <source>Unknown export option.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>알 수 없는 내보내기 옵션입니다.</translation>
     </message>
     <message>
         <source>Unknown Lamedb services file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>알 수 없는 Lamedb 서비스 파일 형식입니다.</translation>
     </message>
     <message>
         <source>Unknown Zapit services file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>알 수 없는 Zapit 서비스 파일 형식입니다.</translation>
     </message>
     <message>
         <source>Unknown Zapit bouquets file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>알 수 없는 Zapit 채널 그룹 파일 형식입니다.</translation>
     </message>
     <message>
         <source>Missing index key &quot;%s&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>인덱스 키 &quot;%s&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>Missing channel reference &quot;%s&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 참조 &quot;%s&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>Service &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>서비스 &quot;%s&quot;이(가) 존재하지 않습니다.</translation>
     </message>
     <message>
         <source>Bouquet &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 그룹 &quot;%s&quot;이(가) 존재하지 않습니다.</translation>
     </message>
     <message>
         <source>Userbouquet &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>사용자 채널 그룹 &quot;%s&quot;이(가) 존재하지 않습니다.</translation>
     </message>
     <message>
         <source>Channel reference &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 참조 &quot;%s&quot;이(가) 존재하지 않습니다.</translation>
     </message>
     <message>
         <source>Tunersets table &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>튜너 설정 테이블 &quot;%s&quot;이(가) 존재하지 않습니다.</translation>
     </message>
     <message>
         <source>Abstract merge swap objects.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>이것은 추상 병합, 교체된 개체입니다.</translation>
     </message>
     <message>
         <source>Not supported yet.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>아직 지원되지 않습니다.</translation>
     </message>
 </context>
 <context>
@@ -332,17 +332,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Bouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 그룹 편집</translation>
     </message>
     <message>
         <source>New Bouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>새 채널 그룹</translation>
     </message>
     <message>
         <source>Bouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 그룹</translation>
     </message>
     <message>
         <source>Name</source>
@@ -350,7 +350,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>full name</source>
-        <translation type="unfinished"></translation>
+        <translation>성명</translation>
     </message>
     <message>
         <source>Type</source>
@@ -358,29 +358,29 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Nice name</source>
-        <translation type="unfinished"></translation>
+        <translation>약어 이름</translation>
     </message>
     <message>
         <source>condensed name (eg. TV, Radio)</source>
-        <translation type="unfinished"></translation>
+        <translation>축약된 이름(예: TV, Radio)</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>파일 이름</translation>
     </message>
     <message>
         <source>custom filename, leave empty to auto-fill</source>
-        <translation type="unfinished"></translation>
+        <translation>맞춤 파일 이름, 자동 채우기를 위해 비워두세요.</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>오류</translation>
     </message>
     <message>
         <source>Bouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 그룹 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
 </context>
 <context>
@@ -388,41 +388,41 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Marker</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>마커 편집</translation>
     </message>
     <message>
         <source>Add Marker</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>마커 추가</translation>
     </message>
     <message>
         <source>Marker</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>채점자</translation>
     </message>
     <message>
         <source>Marker text</source>
-        <translation type="unfinished"></translation>
+        <translation>마커 텍스트</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>오류</translation>
     </message>
     <message>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>사용자 채널 그룹 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 참조 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>Channel reference mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 참조 불일치 &quot;%1&quot;.</translation>
     </message>
 </context>
 <context>
@@ -430,68 +430,68 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Service</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>서비스 편집</translation>
     </message>
     <message>
         <source>New Service</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>새로운 서비스</translation>
     </message>
     <message>
         <source>Service</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>서비스</translation>
     </message>
     <message>
         <source>Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>트랜스폰더</translation>
     </message>
     <message>
         <source>Service name</source>
-        <translation type="unfinished"></translation>
+        <translation>서비스 이름</translation>
     </message>
     <message>
         <source>Service type</source>
-        <translation type="unfinished"></translation>
+        <translation>서비스 종류</translation>
     </message>
     <message>
         <source>custom</source>
-        <translation type="unfinished"></translation>
+        <translation>맞춤형</translation>
     </message>
     <message>
         <source>Service ID</source>
-        <translation type="unfinished">Service ID</translation>
+        <translation>Service ID</translation>
     </message>
     <message>
         <source>Tuner</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>조율사</translation>
     </message>
     <message>
         <source>Satellite</source>
-        <translation type="unfinished">Satellite</translation>
+        <translation>위성</translation>
     </message>
     <message>
         <source>Transponder</source>
-        <translation type="unfinished"></translation>
+        <translation>트랜스폰더</translation>
     </message>
     <message>
         <source>New Transponder</source>
-        <translation type="unfinished"></translation>
+        <translation>새 트랜스폰더</translation>
     </message>
     <message>
         <source>Parameters</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>매개변수</translation>
     </message>
     <message>
         <source>Provider name</source>
-        <translation type="unfinished"></translation>
+        <translation>공급자 이름</translation>
     </message>
     <message>
         <source>Package</source>
-        <translation type="unfinished"></translation>
+        <translation>패키지</translation>
     </message>
     <message>
         <source>video</source>
@@ -515,31 +515,31 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>video type</source>
-        <translation type="unfinished">video type</translation>
+        <translation>video type</translation>
     </message>
     <message>
         <source>audio channel</source>
-        <translation type="unfinished">audio channel</translation>
+        <translation>audio channel</translation>
     </message>
     <message>
         <source>ac3 delay</source>
-        <translation type="unfinished">ac3 delay</translation>
+        <translation>ac3 delay</translation>
     </message>
     <message>
         <source>ms.</source>
-        <translation type="unfinished">ms.</translation>
+        <translation>ms.</translation>
     </message>
     <message>
         <source>pcm delay</source>
-        <translation type="unfinished">pcm delay</translation>
+        <translation>pcm delay</translation>
     </message>
     <message>
         <source>subtitle</source>
-        <translation type="unfinished">subtitle</translation>
+        <translation>subtitle</translation>
     </message>
     <message>
         <source>audio type</source>
-        <translation type="unfinished">audio type</translation>
+        <translation>audio type</translation>
     </message>
     <message>
         <source>apid</source>
@@ -555,79 +555,79 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>PIDs</source>
-        <translation type="unfinished"></translation>
+        <translation>PID</translation>
     </message>
     <message>
         <source>Card ID parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Card-ID 매개변수</translation>
     </message>
     <message>
         <source>Raw edit parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>원시 편집 매개 변수</translation>
     </message>
     <message>
         <source>Enter them in comma separated values.%1(eg. C:0100,C:0200,…)</source>
         <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>쉼표로 구분된 값으로 입력하세요.%1(예: C:0100,C:0200,…)</translation>
     </message>
     <message>
         <source>CAIDs</source>
-        <translation type="unfinished"></translation>
+        <translation>CAID</translation>
     </message>
     <message>
         <source>Do not update</source>
-        <translation type="unfinished"></translation>
+        <translation>업데이트하지 않음</translation>
     </message>
     <message>
         <source>Hide in service list</source>
-        <translation type="unfinished"></translation>
+        <translation>서비스 목록에서 숨기기</translation>
     </message>
     <message>
         <source>Use edited PIDs instead</source>
-        <translation type="unfinished"></translation>
+        <translation>대신 수정된 PID 사용</translation>
     </message>
     <message>
         <source>Hold service name</source>
-        <translation type="unfinished"></translation>
+        <translation>보류 서비스 이름</translation>
     </message>
     <message>
         <source>Flag as new service</source>
-        <translation type="unfinished"></translation>
+        <translation>새 서비스로 플래그 지정</translation>
     </message>
     <message>
         <source>Flags</source>
-        <translation type="unfinished"></translation>
+        <translation>비트 플래그</translation>
     </message>
     <message>
         <source>%1It will overwrite any previously typed!%2Enter them in comma separated values.%3(eg. p:ProviderName,c:0100,C:0200,…)</source>
         <extracomment>HTML formattation: %1text%2text%3text treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1이전에 입력한 모든 내용을 덮어씁니다!%2쉼표로 구분된 값으로 입력하세요.%3(예: p:ProviderName,c:0100,C:0200,…)</translation>
     </message>
     <message>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>맞춤형</translation>
     </message>
     <message>
         <source>Service Number</source>
-        <translation type="unfinished"></translation>
+        <translation>Service Number</translation>
     </message>
     <message>
         <source>Src ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Src ID</translation>
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"></translation>
+        <translation>엑스트라</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>오류</translation>
     </message>
     <message>
         <source>Service &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>서비스 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
 </context>
 <context>
@@ -635,33 +635,33 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>응답기 편집</translation>
     </message>
     <message>
         <source>New Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>새 트랜스폰더</translation>
     </message>
     <message>
         <source>Satellite</source>
-        <translation type="unfinished">Satellite</translation>
+        <translation>위성</translation>
     </message>
     <message>
         <source>Terrestrial</source>
-        <translation type="unfinished">Terrestrial</translation>
+        <translation>지구의</translation>
     </message>
     <message>
         <source>Cable</source>
-        <translation type="unfinished">Cable</translation>
+        <translation>케이블</translation>
     </message>
     <message>
         <source>ATSC</source>
-        <translation type="unfinished">ATSC</translation>
+        <translation>ATSC</translation>
     </message>
     <message>
         <source>Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>트랜스폰더</translation>
     </message>
     <message>
         <source>Type</source>
@@ -669,7 +669,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Transport ID</source>
-        <translation type="unfinished">Transport ID</translation>
+        <translation>Transport ID</translation>
     </message>
     <message>
         <source>DVBNS</source>
@@ -681,90 +681,90 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>위치</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>빈도</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>편광</translation>
     </message>
     <message>
         <source>empty</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>—</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>체계</translation>
     </message>
     <message>
         <source>Constellation</source>
-        <translation type="unfinished"></translation>
+        <translation>별자리</translation>
     </message>
     <message>
         <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
+        <translation>대역폭</translation>
     </message>
     <message>
         <source>HP FEC</source>
-        <translation type="unfinished">HP FEC</translation>
+        <translation>HP FEC</translation>
     </message>
     <message>
         <source>LP FEC</source>
-        <translation type="unfinished">LP FEC</translation>
+        <translation>LP FEC</translation>
     </message>
     <message>
         <source>Modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>조정</translation>
     </message>
     <message>
         <source>Inner FEC</source>
-        <translation type="unfinished">Inner FEC</translation>
+        <translation>Inner FEC</translation>
     </message>
     <message>
         <source>Inversion</source>
-        <translation type="unfinished"></translation>
+        <translation>반전</translation>
     </message>
     <message>
         <source>Roll Offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Roll Offset</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Transmission Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>전송 모드</translation>
     </message>
     <message>
         <source>Guard Interval</source>
-        <translation type="unfinished"></translation>
+        <translation>가드 간격</translation>
     </message>
     <message>
         <source>Hierarchy</source>
-        <translation type="unfinished"></translation>
+        <translation>계층</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>오류</translation>
     </message>
     <message>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>응답기 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
 </context>
 <context>
@@ -772,25 +772,25 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Settings</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>설정 수정</translation>
     </message>
     <message>
         <source>Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>논평</translation>
     </message>
     <message>
         <source>Charset</source>
-        <translation type="unfinished"></translation>
+        <translation>문자셋</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>오류</translation>
     </message>
     <message>
         <source>Tuner settings &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>튜너 설정 &quot;%1&quot;이(가) 존재하지 않습니다.</translation>
     </message>
 </context>
 <context>
@@ -798,12 +798,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Position</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>응답기 위치 편집</translation>
     </message>
     <message>
         <source>New Position</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>새 응답기 위치</translation>
     </message>
     <message>
         <source>Name</source>
@@ -811,34 +811,34 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>위치</translation>
     </message>
     <message>
         <source>Flags</source>
-        <translation type="unfinished"></translation>
+        <translation>비트 플래그</translation>
     </message>
     <message>
         <source>Country</source>
-        <translation type="unfinished"></translation>
+        <translation>국가</translation>
     </message>
     <message>
         <source>Feed</source>
-        <translation type="unfinished">Feed</translation>
+        <translation>피드</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>오류</translation>
     </message>
     <message>
         <source>Tuner settings &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>튜너 설정 &quot;%1&quot;이(가) 존재하지 않습니다.</translation>
     </message>
     <message>
         <source>Tuner settings table &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>튜너 설정 테이블 &quot;%1&quot;이(가) 존재하지 않습니다.</translation>
     </message>
 </context>
 <context>
@@ -846,85 +846,85 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>응답기 편집</translation>
     </message>
     <message>
         <source>New Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>새 트랜스폰더</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>빈도</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>편광</translation>
     </message>
     <message>
         <source>empty</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>—</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>체계</translation>
     </message>
     <message>
         <source>Constellation</source>
-        <translation type="unfinished"></translation>
+        <translation>별자리</translation>
     </message>
     <message>
         <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
+        <translation>대역폭</translation>
     </message>
     <message>
         <source>HP FEC</source>
-        <translation type="unfinished">HP FEC</translation>
+        <translation>HP FEC</translation>
     </message>
     <message>
         <source>LP FEC</source>
-        <translation type="unfinished">LP FEC</translation>
+        <translation>LP FEC</translation>
     </message>
     <message>
         <source>Modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>조정</translation>
     </message>
     <message>
         <source>Inner FEC</source>
-        <translation type="unfinished">Inner FEC</translation>
+        <translation>Inner FEC</translation>
     </message>
     <message>
         <source>Inversion</source>
-        <translation type="unfinished"></translation>
+        <translation>반전</translation>
     </message>
     <message>
         <source>Roll Offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Roll Offset</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Transmission Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>전송 모드</translation>
     </message>
     <message>
         <source>Guard Interval</source>
-        <translation type="unfinished"></translation>
+        <translation>가드 간격</translation>
     </message>
     <message>
         <source>Hierarchy</source>
-        <translation type="unfinished"></translation>
+        <translation>계층</translation>
     </message>
     <message>
         <source>isid</source>
@@ -949,22 +949,22 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>오류</translation>
     </message>
     <message>
         <source>Tuner settings &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>튜너 설정 &quot;%1&quot;이(가) 존재하지 않습니다.</translation>
     </message>
     <message>
         <source>Tuner settings table &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>튜너 설정 테이블 &quot;%1&quot;이(가) 존재하지 않습니다.</translation>
     </message>
     <message>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>튜너 설정 응답기 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
 </context>
 <context>
@@ -972,17 +972,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Userbouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>사용자 채널 그룹 편집</translation>
     </message>
     <message>
         <source>New Userbouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>새 사용자 채널 그룹</translation>
     </message>
     <message>
         <source>Userbouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>사용자 채널 그룹</translation>
     </message>
     <message>
         <source>Name</source>
@@ -990,30 +990,30 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>파일 이름</translation>
     </message>
     <message>
         <source>custom filename, leave empty to auto-fill</source>
-        <translation type="unfinished"></translation>
+        <translation>맞춤 파일 이름, 자동 채우기를 위해 비워두세요.</translation>
     </message>
     <message>
         <source>Bouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 그룹</translation>
     </message>
     <message>
         <source>Parent Bouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>상위 채널 그룹</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>오류</translation>
     </message>
     <message>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>사용자 채널 그룹 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
 </context>
 <context>
@@ -1021,32 +1021,32 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>오류</translation>
     </message>
     <message>
         <source>FTP Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP 오류</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>파일 &quot;%s&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>Missing &quot;%s&quot; parameter.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>&quot;%s&quot; 매개변수가 없습니다.</translation>
     </message>
     <message>
         <source>Missing &quot;%s&quot; path parameter.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>&quot;%s&quot; 경로 매개변수가 없습니다.</translation>
     </message>
     <message>
         <source>Failed to resume FTP connection.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP 연결을 다시 시작하지 못했습니다.</translation>
     </message>
 </context>
 <context>
@@ -1055,12 +1055,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>&amp;File</source>
         <comment>menu</comment>
         <extracomment>Platform: File menu</extracomment>
-        <translation type="unfinished">파일</translation>
+        <translation>파일</translation>
     </message>
     <message>
         <source>&amp;New</source>
         <comment>menu</comment>
-        <translation type="unfinished">새로 만들기</translation>
+        <translation>새로 만들기</translation>
     </message>
     <message>
         <source>&amp;Open</source>
@@ -1076,17 +1076,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>Save &amp;As…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>다른 이름으로 저장…</translation>
     </message>
     <message>
         <source>Import</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>수입</translation>
     </message>
     <message>
         <source>Export</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>내보내다</translation>
     </message>
     <message>
         <source>Close Tab</source>
@@ -1096,18 +1096,18 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Close All Tabs</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>모든 탭 닫기</translation>
     </message>
     <message>
         <source>&amp;Print…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>인쇄(&amp;P)</translation>
     </message>
     <message>
         <source>Print &amp;All</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>모두 인쇄</translation>
     </message>
     <message>
         <source>Preferences…</source>
@@ -1130,13 +1130,13 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>E&amp;xit</source>
         <comment>menu</comment>
         <extracomment>Platform: Exit | Quit item</extracomment>
-        <translation type="unfinished">끝내기</translation>
+        <translation>끝내기</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
         <comment>menu</comment>
         <extracomment>Platform: Edit menu</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>편집하다</translation>
     </message>
     <message>
         <source>&amp;Undo</source>
@@ -1177,161 +1177,161 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>&amp;Find</source>
         <comment>menu</comment>
         <extracomment>Platform: Find menu</extracomment>
-        <translation type="unfinished">찾기</translation>
+        <translation>찾기</translation>
     </message>
     <message>
         <source>&amp;Find Channel…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>채널 찾기…</translation>
     </message>
     <message>
         <source>Find &amp;Next</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>다음 찾기</translation>
     </message>
     <message>
         <source>Find &amp;Previous</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>이전 찾기</translation>
     </message>
     <message>
         <source>Find &amp;All</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>모두 찾기</translation>
     </message>
     <message>
         <source>Find &amp;Bouquet…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>채널 그룹 찾기…</translation>
     </message>
     <message>
         <source>Find N&amp;ext Bouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>다음 채널 그룹 찾기</translation>
     </message>
     <message>
         <source>&amp;Tools</source>
         <comment>menu</comment>
-        <translation type="unfinished">도구</translation>
+        <translation>도구</translation>
     </message>
     <message>
         <source>Edit Transponders</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>응답기 편집</translation>
     </message>
     <message>
         <source>Edit %1</source>
         <comment>menu</comment>
         <extracomment>Note: %1 is xml filename</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1 수정</translation>
     </message>
     <message>
         <source>Picons editor</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Picons 편집기</translation>
     </message>
     <message>
         <source>Edit Transponders</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>응답기 편집</translation>
     </message>
     <message>
         <source>Edit Settings</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>설정 수정</translation>
     </message>
     <message>
         <source>Channel Book</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널북</translation>
     </message>
     <message>
         <source>Filename</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>파일 이름</translation>
     </message>
     <message>
         <source>Import from CSV</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>CSV에서 가져오기</translation>
     </message>
     <message>
         <source>Import Services</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널/서비스 가져오기</translation>
     </message>
     <message>
         <source>Import Bouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 그룹 가져오기</translation>
     </message>
     <message>
         <source>Import Userbouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>사용자 채널 그룹 가져오기</translation>
     </message>
     <message>
         <source>Import Tuner settings</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>튜너 설정 가져오기</translation>
     </message>
     <message>
         <source>Export to CSV</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>CSV로 내보내기</translation>
     </message>
     <message>
         <source>Export current</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>현재 내보내기</translation>
     </message>
     <message>
         <source>Export All</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>모두 내보내기</translation>
     </message>
     <message>
         <source>Export Services</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>수출 채널/서비스</translation>
     </message>
     <message>
         <source>Export Bouquets</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 그룹 내보내기</translation>
     </message>
     <message>
         <source>Export Userbouquets</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>사용자 채널 그룹 내보내기</translation>
     </message>
     <message>
         <source>Export Tuner settings</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>튜너 설정 내보내기</translation>
     </message>
     <message>
         <source>Export to HTML</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>HTML로 내보내기</translation>
     </message>
     <message>
         <source>Export Index</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>수출 지수</translation>
     </message>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>로그 검사기</translation>
     </message>
     <message>
         <source>&amp;Window</source>
         <comment>menu</comment>
         <extracomment>Platform: Window menu</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>창문</translation>
     </message>
     <message>
         <source>&amp;Minimize</source>
@@ -1341,12 +1341,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Hide &amp;Status Bar</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>상태 표시줄 숨기기</translation>
     </message>
     <message>
         <source>New &amp;Tab</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>새 탭(&amp;T)</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -1357,184 +1357,184 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>About &amp;Qt</source>
         <comment>menu</comment>
-        <translation type="unfinished">Qt 정보</translation>
+        <translation>Qt 정보</translation>
     </message>
     <message>
         <source>Report a bug</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>버그 신고</translation>
     </message>
     <message>
         <source>Check for updates…</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>업데이트 확인…</translation>
     </message>
     <message>
         <source>Go to E2SE repository…</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>E2SE 저장소로 이동…</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>
         <comment>menu</comment>
-        <translation type="unfinished">e2 SAT Editor 정보</translation>
+        <translation>e2 SAT Editor 정보</translation>
     </message>
     <message>
         <source>New &amp;Tab</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>새 탭(&amp;T)</translation>
     </message>
     <message>
         <source>&amp;Find Channel</source>
-        <translation type="unfinished"></translation>
+        <translation>채널 찾기</translation>
     </message>
     <message>
         <source>Find &amp;Bouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>채널 그룹 찾기</translation>
     </message>
     <message>
         <source>Find N&amp;ext Bouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>다음 채널 그룹 찾기</translation>
     </message>
     <message>
         <source>&amp;Find Transponder</source>
-        <translation type="unfinished"></translation>
+        <translation>응답기 찾기</translation>
     </message>
     <message>
         <source>Channel Book</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널북</translation>
     </message>
     <message>
         <source>Find &amp;Position</source>
-        <translation type="unfinished"></translation>
+        <translation>응답기 위치 찾기</translation>
     </message>
     <message>
         <source>Find N&amp;ext Position</source>
-        <translation type="unfinished"></translation>
+        <translation>다음 응답기 위치 찾기</translation>
     </message>
     <message>
         <source>Untitled</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>무제</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>오류</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>파일 &quot;%1&quot;을(를) 읽는 중 오류가 발생했습니다.</translation>
     </message>
     <message>
         <source>Missing current tab reference.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>현재 탭 참조가 없습니다.</translation>
     </message>
     <message>
         <source>Missing parent tab for tab reference &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>탭 참조 &quot;%1&quot;에 대한 상위 탭이 없습니다.</translation>
     </message>
     <message>
         <source>Picons editor</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>Picons 편집기</translation>
     </message>
     <message>
         <source>Missing tab reference &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>탭 참조 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>Select data folder</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>데이터 폴더 선택</translation>
     </message>
     <message>
         <source>Select where to save</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>저장할 위치 선택</translation>
     </message>
     <message>
         <source>Select one or more files to open</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>열려는 파일을 하나 이상 선택하십시오.</translation>
     </message>
     <message>
         <source>CSV File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>CSV 파일</translation>
     </message>
     <message>
         <source>All Files</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>모든 파일</translation>
     </message>
     <message>
         <source>Import</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>수입</translation>
     </message>
     <message>
         <source>HTML File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>HTML 파일</translation>
     </message>
     <message>
         <source>Export</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>내보내다</translation>
     </message>
     <message>
         <source>Hide &amp;Status Bar</source>
-        <translation type="unfinished"></translation>
+        <translation>상태 표시줄 숨기기</translation>
     </message>
     <message>
         <source>Show &amp;Status Bar</source>
-        <translation type="unfinished"></translation>
+        <translation>상태 표시줄 표시</translation>
     </message>
     <message>
         <source>Channels</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널</translation>
     </message>
     <message>
         <source>Bouquet</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 그룹</translation>
     </message>
     <message>
         <source>TV</source>
         <comment>status-bar</comment>
-        <translation type="unfinished">TV</translation>
+        <translation>TV</translation>
     </message>
     <message>
         <source>Radio</source>
         <comment>status-bar</comment>
-        <translation type="unfinished">Radio</translation>
+        <translation>라디오</translation>
     </message>
     <message>
         <source>Data</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>데이터</translation>
     </message>
     <message>
         <source>Total</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>합계</translation>
     </message>
     <message>
         <source>Transponders</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>트랜스폰더</translation>
     </message>
     <message>
         <source>Position</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>위치</translation>
     </message>
 </context>
 <context>
@@ -1545,15 +1545,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Bouquets</source>
-        <translation type="unfinished"></translation>
+        <translation>채널 그룹</translation>
     </message>
     <message>
         <source>Channels</source>
-        <translation type="unfinished"></translation>
+        <translation>채널</translation>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished"></translation>
+        <translation>색인</translation>
     </message>
     <message>
         <source>Name</source>
@@ -1561,15 +1561,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Parental</source>
-        <translation type="unfinished"></translation>
+        <translation>부모 잠금</translation>
     </message>
     <message>
         <source>Service ID</source>
-        <translation type="unfinished">Service ID</translation>
+        <translation>Service ID</translation>
     </message>
     <message>
         <source>Transport ID</source>
-        <translation type="unfinished">Transport ID</translation>
+        <translation>Transport ID</translation>
     </message>
     <message>
         <source>Type</source>
@@ -1577,281 +1577,281 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>CAS</source>
-        <translation type="unfinished">CAS</translation>
+        <translation>CAS</translation>
     </message>
     <message>
         <source>Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>공급자</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>체계</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>위치</translation>
     </message>
     <message>
         <source>Tuner</source>
-        <translation type="unfinished"></translation>
+        <translation>조율사</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>빈도</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>편광</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>New Bouquet</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>새 채널 그룹</translation>
     </message>
     <message>
         <source>Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>찾기…</translation>
     </message>
     <message>
         <source>Add Channel</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 추가</translation>
     </message>
     <message>
         <source>Add Marker</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>마커 추가</translation>
     </message>
     <message>
         <source>New Service</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>새로운 서비스</translation>
     </message>
     <message>
         <source>Drag&amp;&amp;Drop</source>
         <comment>toolbar</comment>
         <extracomment>Encoding: note double ampersand</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>드래그 앤 드롭</translation>
     </message>
     <message>
         <source>Reference</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>참조</translation>
     </message>
     <message>
         <source>Settings Convert</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>설정 변환</translation>
     </message>
     <message>
         <source>Drag&amp;&amp;Drop Preferences</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>드래그 앤 드롭 기본 설정</translation>
     </message>
     <message>
         <source>&amp;Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>찾기…</translation>
     </message>
     <message>
         <source>All services</source>
-        <translation type="unfinished"></translation>
+        <translation>모든 서비스</translation>
     </message>
     <message>
         <source>Reference ID</source>
         <comment>reference-box</comment>
-        <translation type="unfinished">Reference ID</translation>
+        <translation>참조 ID</translation>
     </message>
     <message>
         <source>Service ID</source>
         <comment>reference-box</comment>
-        <translation type="unfinished">Service ID</translation>
+        <translation>Service ID</translation>
     </message>
     <message>
         <source>Transponder</source>
         <comment>reference-box</comment>
-        <translation type="unfinished"></translation>
+        <translation>트랜스폰더</translation>
     </message>
     <message>
         <source>Userbouquets</source>
         <comment>reference-box</comment>
-        <translation type="unfinished"></translation>
+        <translation>사용자 부케</translation>
     </message>
     <message>
         <source>Bouquets</source>
         <comment>reference-box</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 그룹</translation>
     </message>
     <message>
         <source>Tuner</source>
         <comment>reference-box</comment>
-        <translation type="unfinished"></translation>
+        <translation>조율사</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>오류</translation>
     </message>
     <message>
         <source>Missing index key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>인덱스 키 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>Channel reference mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 참조 불일치 &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Convert</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>전환하다</translation>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.4 [Enigma 2]</translation>
+        <translation>Lamedb 2.4 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.5 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.5 [Enigma 2]</translation>
+        <translation>Lamedb 2.5 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.3 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.3 [Enigma 1]</translation>
+        <translation>Lamedb 2.3 [Enigma 1]</translation>
     </message>
     <message>
         <source>Lamedb 2.2 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.2 [Enigma 1]</translation>
+        <translation>Lamedb 2.2 [Enigma 1]</translation>
     </message>
     <message>
         <source>Zapit api-v4 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v4 [Neutrino]</translation>
+        <translation>Zapit api-v4 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v3 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v3 [Neutrino]</translation>
+        <translation>Zapit api-v3 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v2 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v2 [Neutrino]</translation>
+        <translation>Zapit api-v2 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+        <translation>Zapit api-v1 [Neutrino]</translation>
     </message>
     <message>
         <source>Drag and Drop</source>
-        <translation type="unfinished"></translation>
+        <translation>끌어서 놓기</translation>
     </message>
     <message>
         <source>Switch to bouquet after drop</source>
-        <translation type="unfinished"></translation>
+        <translation>삭제 후 채널 그룹으로 전환</translation>
     </message>
     <message>
         <source>Channel operations</source>
-        <translation type="unfinished"></translation>
+        <translation>채널 운영</translation>
     </message>
     <message>
         <source>Copy channels (preserving)</source>
-        <translation type="unfinished"></translation>
+        <translation>채널 복사(보존)</translation>
     </message>
     <message>
         <source>Move channels (deleting)</source>
-        <translation type="unfinished"></translation>
+        <translation>채널 이동(삭제)</translation>
     </message>
     <message>
         <source>Missing bouquet key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 그룹 키 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>Bouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 그룹 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>Missing userbouquet key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>사용자 채널 그룹 키 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>사용자 채널 그룹 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>Missing service key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>서비스 키 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>Service &quot;%1&quot; not exists or is a channel reference.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>서비스 &quot;%1&quot;이(가) 존재하지 않거나 채널 참조입니다.</translation>
     </message>
     <message>
         <source>Missing channel reference key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 참조 키 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; is not a valid marker.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 참조 &quot;%1&quot;은(는) 유효한 마커가 아닙니다.</translation>
     </message>
     <message>
         <source>Channel reference&quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 참조 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>삭제 확인</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>항목을 삭제하시겠습니까?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>유효한 데이터 형식이 아닙니다.</translation>
     </message>
     <message>
         <source>Channel reference mismatch.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 참조 불일치.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 그룹 편집</translation>
     </message>
     <message>
         <source>Edit Userbouquet</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>사용자 채널 그룹 편집</translation>
     </message>
     <message>
         <source>Set Parental lock</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>자녀 보호 설정</translation>
     </message>
     <message>
         <source>Unset Parental lock</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>자녀 보호 잠금 해제</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -1861,27 +1861,27 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Export</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>내보내다</translation>
     </message>
     <message>
         <source>Edit Marker</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>마커 편집</translation>
     </message>
     <message>
         <source>Edit Service</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>서비스 편집</translation>
     </message>
     <message>
         <source>Parental lock (Userbouquet)</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>자녀 보호(사용자-채널-그룹)</translation>
     </message>
     <message>
         <source>Parental lock</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>부모의 잠금</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -1903,156 +1903,156 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <name>piconsView</name>
     <message>
         <source>Picons</source>
-        <translation type="unfinished"></translation>
+        <translation>Picons</translation>
     </message>
     <message>
         <source>Picons Preferences</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>Picons 기본 설정</translation>
     </message>
     <message>
         <source>&amp;Browse…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>검색…</translation>
     </message>
     <message>
         <source>Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>찾기…</translation>
     </message>
     <message>
         <source>Folder</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>폴더</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished">이름</translation>
+        <translation>이름</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished">형식</translation>
+        <translation>형식</translation>
     </message>
     <message>
         <source>CAS</source>
-        <translation type="unfinished">CAS</translation>
+        <translation>CAS</translation>
     </message>
     <message>
         <source>Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>공급자</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>파일 이름</translation>
     </message>
     <message>
         <source>Tuner</source>
-        <translation type="unfinished"></translation>
+        <translation>조율사</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>위치</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>체계</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>오류</translation>
     </message>
     <message>
         <source>Channel mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널 불일치 &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Backup picon when replaced</source>
-        <translation type="unfinished"></translation>
+        <translation>교체 시 백업 picon</translation>
     </message>
     <message>
         <source>Filename format</source>
-        <translation type="unfinished"></translation>
+        <translation>파일 이름 형식</translation>
     </message>
     <message>
         <source>Use reference ID</source>
-        <translation type="unfinished"></translation>
+        <translation>참조 ID 사용</translation>
     </message>
     <message>
         <source>Use service name</source>
-        <translation type="unfinished"></translation>
+        <translation>서비스 이름 사용</translation>
     </message>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>File 오류</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>파일 &quot;%1&quot;을(를) 읽는 중 오류가 발생했습니다.</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>파일 &quot;%1&quot;을(를) 쓰는 중 오류가 발생했습니다.</translation>
     </message>
     <message>
         <source>Delete images</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>이미지 삭제</translation>
     </message>
     <message>
         <source>Do you want to delete the images from disk?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>디스크에서 이미지를 삭제하시겠습니까?</translation>
     </message>
     <message>
         <source>Change picon</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>picon 변경</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">잘라내기(&amp;T)</translation>
+        <translation>잘라내기(&amp;T)</translation>
     </message>
     <message>
         <source>&amp;Copy</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">복사(&amp;C)</translation>
+        <translation>복사(&amp;C)</translation>
     </message>
     <message>
         <source>&amp;Paste</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">붙여넣기(&amp;P)</translation>
+        <translation>붙여넣기(&amp;P)</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">삭제(&amp;D)</translation>
+        <translation>삭제(&amp;D)</translation>
     </message>
     <message>
         <source>Select picons folder</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>picons 폴더 선택</translation>
     </message>
     <message>
         <source>Select picon image</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>picon 이미지 선택</translation>
     </message>
 </context>
 <context>
     <name>printable</name>
     <message>
         <source>Untitled</source>
-        <translation type="unfinished"></translation>
+        <translation>무제</translation>
     </message>
     <message>
         <source>(extract)</source>
-        <translation type="unfinished"></translation>
+        <translation>(발췌)</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -2060,11 +2060,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Tuner Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>튜너 설정</translation>
     </message>
     <message>
         <source>Services List</source>
-        <translation type="unfinished"></translation>
+        <translation>서비스 목록</translation>
     </message>
     <message>
         <source>File</source>
@@ -2072,19 +2072,19 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>발전기</translation>
     </message>
     <message>
         <source>Datetime</source>
-        <translation type="unfinished"></translation>
+        <translation>날짜</translation>
     </message>
     <message>
         <source>Table of Contents</source>
-        <translation type="unfinished"></translation>
+        <translation>색인</translation>
     </message>
     <message>
         <source>Content</source>
-        <translation type="unfinished"></translation>
+        <translation>콘텐츠</translation>
     </message>
     <message>
         <source>Type</source>
@@ -2093,16 +2093,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>오류</translation>
     </message>
     <message>
         <source>Missing index key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>인덱스 키 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished"></translation>
+        <translation>색인</translation>
     </message>
     <message>
         <source>Name</source>
@@ -2122,99 +2122,99 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>CAS</source>
-        <translation type="unfinished">CAS</translation>
+        <translation>CAS</translation>
     </message>
     <message>
         <source>Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>공급자</translation>
     </message>
     <message>
         <source>Freq</source>
-        <translation type="unfinished"></translation>
+        <translation>Freq</translation>
     </message>
     <message>
         <source>Pol</source>
-        <translation type="unfinished"></translation>
+        <translation>Pol</translation>
     </message>
     <message>
         <source>SR</source>
-        <translation type="unfinished"></translation>
+        <translation>SR</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>Sys</source>
-        <translation type="unfinished"></translation>
+        <translation>Sys</translation>
     </message>
     <message>
         <source>Pos</source>
-        <translation type="unfinished"></translation>
+        <translation>Pos</translation>
     </message>
     <message>
         <source>Tuner</source>
-        <translation type="unfinished"></translation>
+        <translation>조율사</translation>
     </message>
     <message>
         <source>Bouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>채널 그룹</translation>
     </message>
     <message>
         <source>Userbouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>사용자 채널 그룹</translation>
     </message>
     <message>
         <source>Transponders</source>
-        <translation type="unfinished"></translation>
+        <translation>트랜스폰더</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>위치</translation>
     </message>
     <message>
         <source>Mod</source>
-        <translation type="unfinished"></translation>
+        <translation>Mod</translation>
     </message>
     <message>
         <source>Inv</source>
-        <translation type="unfinished"></translation>
+        <translation>Inv</translation>
     </message>
     <message>
         <source>Rollof</source>
-        <translation type="unfinished"></translation>
+        <translation>Rollof</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Const</source>
-        <translation type="unfinished"></translation>
+        <translation>Const</translation>
     </message>
     <message>
         <source>Band</source>
-        <translation type="unfinished"></translation>
+        <translation>Band</translation>
     </message>
     <message>
         <source>Tmx Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Tmx Mode</translation>
     </message>
     <message>
         <source>HP FEC</source>
-        <translation type="unfinished">HP FEC</translation>
+        <translation>HP FEC</translation>
     </message>
     <message>
         <source>LP FEC</source>
-        <translation type="unfinished">LP FEC</translation>
+        <translation>LP FEC</translation>
     </message>
     <message>
         <source>Guard</source>
-        <translation type="unfinished"></translation>
+        <translation>Guard</translation>
     </message>
     <message>
         <source>Hier</source>
-        <translation type="unfinished"></translation>
+        <translation>Hier</translation>
     </message>
 </context>
 <context>
@@ -2227,7 +2227,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Save</source>
         <comment>dialog</comment>
-        <translation>저장(S)</translation>
+        <translation>저장(&amp;S)</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -2236,7 +2236,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>추가하다</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -2244,35 +2244,35 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Connection</source>
-        <translation type="unfinished"></translation>
+        <translation>연결</translation>
     </message>
     <message>
         <source>IP address</source>
-        <translation type="unfinished"></translation>
+        <translation>IP 주소</translation>
     </message>
     <message>
         <source>FTP port</source>
-        <translation type="unfinished"></translation>
+        <translation>FTP 포트</translation>
     </message>
     <message>
         <source>Use active FTP</source>
-        <translation type="unfinished"></translation>
+        <translation>활성 FTP 사용</translation>
     </message>
     <message>
         <source>HTTP port</source>
-        <translation type="unfinished"></translation>
+        <translation>HTTP 포트</translation>
     </message>
     <message>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation>로그인</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>사용자 이름</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>비밀번호</translation>
     </message>
     <message>
         <source>Configuration</source>
@@ -2280,7 +2280,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Transponders</source>
-        <translation type="unfinished"></translation>
+        <translation>트랜스폰더</translation>
     </message>
     <message>
         <source>Services</source>
@@ -2288,72 +2288,72 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Bouquets</source>
-        <translation type="unfinished"></translation>
+        <translation>채널 그룹</translation>
     </message>
     <message>
         <source>Connections</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>사이</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>일반적인</translation>
     </message>
     <message>
         <source>Show confirmation messages when deleting</source>
-        <translation type="unfinished"></translation>
+        <translation>삭제할 때 확인 메시지 표시</translation>
     </message>
     <message>
         <source>Parental lock whitelist (exclusion instead inclusion list)</source>
-        <translation type="unfinished"></translation>
+        <translation>자녀 보호 허용 목록(제외 목록)</translation>
     </message>
     <message>
         <source>Drag and Drop</source>
-        <translation type="unfinished"></translation>
+        <translation>끌어서 놓기</translation>
     </message>
     <message>
         <source>Switch to current bouquet item after the drop</source>
-        <translation type="unfinished"></translation>
+        <translation>드롭 후 현재 채널 그룹 항목으로 전환</translation>
     </message>
     <message>
         <source>Channel operations</source>
-        <translation type="unfinished"></translation>
+        <translation>채널 운영</translation>
     </message>
     <message>
         <source>Copy channels (preserving)</source>
-        <translation type="unfinished"></translation>
+        <translation>채널 복사(보존)</translation>
     </message>
     <message>
         <source>Move channels (deleting)</source>
-        <translation type="unfinished"></translation>
+        <translation>채널 이동(삭제)</translation>
     </message>
     <message>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>언어</translation>
     </message>
     <message>
         <source>Picons</source>
-        <translation type="unfinished"></translation>
+        <translation>Picons</translation>
     </message>
     <message>
         <source>Default (system language)</source>
-        <translation type="unfinished"></translation>
+        <translation>기본값(시스템 언어)</translation>
     </message>
     <message>
         <source>The software might need to be restarted.</source>
-        <translation type="unfinished"></translation>
+        <translation>소프트웨어를 다시 시작해야 할 수 있습니다.</translation>
     </message>
     <message>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>주제</translation>
     </message>
     <message>
         <source>Default (system theme)</source>
-        <translation type="unfinished"></translation>
+        <translation>기본(시스템 테마)</translation>
     </message>
     <message>
         <source>Dark</source>
-        <translation type="unfinished"></translation>
+        <translation>어두운</translation>
     </message>
     <message>
         <source>Light</source>
@@ -2361,32 +2361,32 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Enable experimental features</source>
-        <translation type="unfinished"></translation>
+        <translation>실험적 기능 사용</translation>
     </message>
     <message>
         <source>Picons editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Picons 편집기</translation>
     </message>
     <message>
         <source>Backup picon when replaced</source>
-        <translation type="unfinished"></translation>
+        <translation>교체 시 백업 picon</translation>
     </message>
     <message>
         <source>Filename format</source>
-        <translation type="unfinished"></translation>
+        <translation>파일 이름 형식</translation>
     </message>
     <message>
         <source>Use reference ID</source>
-        <translation type="unfinished"></translation>
+        <translation>참조 ID 사용</translation>
     </message>
     <message>
         <source>Use service name</source>
-        <translation type="unfinished"></translation>
+        <translation>서비스 이름 사용</translation>
     </message>
     <message>
         <source>Preferences</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>기본 설정</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -2426,7 +2426,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Default format</source>
-        <translation type="unfinished"></translation>
+        <translation>기본 형식</translation>
     </message>
     <message>
         <source>Tools</source>
@@ -2434,49 +2434,49 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>CSV Import/Export</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV 가져오기/내보내기</translation>
     </message>
     <message>
         <source>Allow header columns in CSV</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV에서 헤더 열 허용</translation>
     </message>
     <message>
         <source>CSV delimiter character</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV 구분 문자</translation>
     </message>
     <message>
         <source>CSV separator character</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV 구분 문자</translation>
     </message>
     <message>
         <source>CSV escape character</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV 이스케이프 문자</translation>
     </message>
     <message>
         <source>Fields Import/Export</source>
-        <translation type="unfinished"></translation>
+        <translation>필드 가져오기/내보내기</translation>
     </message>
     <message>
         <source>Default (same fields as visual)</source>
-        <translation type="unfinished"></translation>
+        <translation>기본값(시각적 필드와 동일한 필드)</translation>
     </message>
     <message>
         <source>Extended (all fields)</source>
-        <translation type="unfinished"></translation>
+        <translation>확장(모든 필드)</translation>
     </message>
     <message>
         <source>Engine</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>엔진</translation>
     </message>
     <message>
         <source>%1Please be carefull!%2Modifing these settings could break the program.%3</source>
         <extracomment>HTML formattation: %1text%2%text%3 treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1조심하세요!%2이 설정을 수정하면 프로그램이 중단될 수 있습니다.%3</translation>
     </message>
     <message>
         <source>OK, I understood this.</source>
-        <translation type="unfinished"></translation>
+        <translation>알겠습니다. 이해했습니다.</translation>
     </message>
     <message>
         <source>Advanced</source>
@@ -2485,7 +2485,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>프로필</translation>
     </message>
 </context>
 <context>
@@ -2503,12 +2503,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Import</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>수입</translation>
     </message>
     <message>
         <source>Export</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>내보내다</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -2518,22 +2518,22 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Select profile</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>프로필 선택</translation>
     </message>
     <message>
         <source>Connect</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>연결하다</translation>
     </message>
     <message>
         <source>Disconnect</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>연결 끊기</translation>
     </message>
     <message>
         <source>Upload</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>업로드</translation>
     </message>
     <message>
         <source>Download</source>
@@ -2543,207 +2543,207 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Reading from %1 …</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1에서 읽는 중 …</translation>
     </message>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>File 오류</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>파일 &quot;%1&quot;을(를) 읽는 중 오류가 발생했습니다.</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>파일을 여는 중 오류가 발생했습니다.</translation>
     </message>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>파일이 수정되었습니다</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>변경 사항을 저장하시겠습니까?</translation>
     </message>
     <message>
         <source>Saved to %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1에 저장됨</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>저장되었습니다!</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>파일 &quot;%1&quot;을(를) 쓰는 중 오류가 발생했습니다.</translation>
     </message>
     <message>
         <source>Error writing files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>파일을 쓰는 중 오류가 발생했습니다.</translation>
     </message>
     <message>
         <source>Nothing to import</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>가져올 항목 없음</translation>
     </message>
     <message>
         <source>You are in Picons editor.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>당신은 Picons 편집기에 있습니다.</translation>
     </message>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1에서 가져오는 중 …</translation>
     </message>
     <message>
         <source>Nothing to export</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>내보낼 항목 없음</translation>
     </message>
     <message>
         <source>The destination contains files that will be overwritten.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>대상에 덮어쓸 파일이 포함되어 있습니다.</translation>
     </message>
     <message>
         <source>Do you want to overwrite them?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>덮어쓰시겠습니까?</translation>
     </message>
     <message>
         <source>Empty path.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>빈 경로.</translation>
     </message>
     <message>
         <source>You are in Channel Book.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>당신은 채널북에 있습니다.</translation>
     </message>
     <message>
         <source>Exported to %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1(으)로 내보냄</translation>
     </message>
     <message>
         <source>Printing …</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>인쇄 중 …</translation>
     </message>
     <message>
         <source>FTP connecting ...</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP 연결 중 ...</translation>
     </message>
     <message>
         <source>FTP disconnecting ...</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP 연결 해제 중 ...</translation>
     </message>
     <message>
         <source>Trying to resume FTP connection ...</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP 연결을 재개하는 중 ...</translation>
     </message>
     <message>
         <source>STB reloading ...</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>셋톱박스 다시 로드 중 ...</translation>
     </message>
     <message>
         <source>FTP connected successfully.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP가 성공적으로 연결되었습니다.</translation>
     </message>
     <message>
         <source>FTP Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP 오류</translation>
     </message>
     <message>
         <source>Cannot connect to FTP &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP &quot;%1&quot;에 연결할 수 없습니다.</translation>
     </message>
     <message>
         <source>Cannot connect to FTP Server!</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP 서버에 연결할 수 없습니다!</translation>
     </message>
     <message>
         <source>FTP disconnected successfully.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP가 성공적으로 연결 해제되었습니다.</translation>
     </message>
     <message>
         <source>Cannot disconnect from FTP &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP &quot;%1&quot;에서 연결을 끊을 수 없습니다.</translation>
     </message>
     <message>
         <source>Cannot disconnect from FTP Server!</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP 서버에서 연결을 끊을 수 없습니다!</translation>
     </message>
     <message>
         <source>Uploading file: %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>파일 업로드 중: %1</translation>
     </message>
     <message numerus="yes">
         <source>Uploaded %n files</source>
         <comment>message</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>업로드된 %n 파일</numerusform>
         </translation>
     </message>
     <message>
         <source>STB reload done.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>셋톱박스 재로드가 완료되었습니다.</translation>
     </message>
     <message>
         <source>Downloading file: %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>파일 다운로드 중: %1</translation>
     </message>
     <message numerus="yes">
         <source>Downloaded %n files</source>
         <comment>message</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n개의 파일을 다운로드했습니다.</numerusform>
         </translation>
     </message>
     <message>
         <source>Cannot reload STB &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>셋톱박스 &quot;%1&quot;을(를) 다시 로드할 수 없습니다.</translation>
     </message>
     <message>
         <source>Cannot reload STB!</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>셋톱박스를 다시 로드할 수 없습니다!</translation>
     </message>
     <message>
         <source>DEMO MODE</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>데모 모드</translation>
     </message>
     <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>디버깅 목적으로.%1설정 &gt; 고급 탭에서 application.seeds 절대 경로를 설정한 다음 소프트웨어를 다시 시작하십시오.%2소스 시드 사용 가능 위치:%3</translation>
     </message>
 </context>
 <context>
@@ -2751,64 +2751,64 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Log Inspector</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>로그 검사기</translation>
     </message>
     <message>
         <source>Filter</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>필터</translation>
     </message>
     <message>
         <source>All Log</source>
-        <translation type="unfinished"></translation>
+        <translation>모든 로그</translation>
     </message>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1에서 가져오는 중 …</translation>
     </message>
     <message>
         <source>The destination contains files that will be overwritten.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>대상에 덮어쓸 파일이 포함되어 있습니다.</translation>
     </message>
     <message>
         <source>Do you want to overwrite them?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>덮어쓰시겠습니까?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1(으)로 내보냄</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>저장되었습니다!</translation>
     </message>
 </context>
 <context>
     <name>transpondersView</name>
     <message>
         <source>Transponders</source>
-        <translation type="unfinished"></translation>
+        <translation>트랜스폰더</translation>
     </message>
     <message>
         <source>Combo</source>
-        <translation type="unfinished"></translation>
+        <translation>콤보</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>체계</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>위치</translation>
     </message>
     <message>
         <source>Transport ID</source>
-        <translation type="unfinished">Transport ID</translation>
+        <translation>Transport ID</translation>
     </message>
     <message>
         <source>DVBNS</source>
@@ -2820,96 +2820,96 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>빈도</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>편광</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>Modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>조정</translation>
     </message>
     <message>
         <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
+        <translation>대역폭</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Roll offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Roll offset</translation>
     </message>
     <message>
         <source>Inversion</source>
-        <translation type="unfinished"></translation>
+        <translation>반전</translation>
     </message>
     <message>
         <source>Tmx Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Tmx Mode</translation>
     </message>
     <message>
         <source>Guard</source>
-        <translation type="unfinished"></translation>
+        <translation>Guard</translation>
     </message>
     <message>
         <source>Hierarchy</source>
-        <translation type="unfinished"></translation>
+        <translation>계층</translation>
     </message>
     <message>
         <source>New Transponder</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>새 트랜스폰더</translation>
     </message>
     <message>
         <source>Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>찾기…</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>오류</translation>
     </message>
     <message>
         <source>Missing transponder key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>응답기 키 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>응답기 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>삭제 확인</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>항목을 삭제하시겠습니까?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>유효한 데이터 형식이 아닙니다.</translation>
     </message>
     <message>
         <source>Edit Transponder</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>응답기 편집</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -2936,25 +2936,25 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <name>tunersetsView</name>
     <message>
         <source>Satellites</source>
-        <translation type="unfinished"></translation>
+        <translation>위성</translation>
     </message>
     <message>
         <source>Positions</source>
-        <translation type="unfinished"></translation>
+        <translation>더 위치</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>오류</translation>
     </message>
     <message>
         <source>Unknown tuner settings type.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>알 수 없는 튜너 설정 유형입니다.</translation>
     </message>
     <message>
         <source>Transponders</source>
-        <translation type="unfinished"></translation>
+        <translation>트랜스폰더</translation>
     </message>
     <message>
         <source>Name</source>
@@ -2962,157 +2962,157 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>위치</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>
-        <translation type="unfinished"></translation>
+        <translation>Freq/Pol/SR</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>빈도</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>편광</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>체계</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>Modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>조정</translation>
     </message>
     <message>
         <source>Inversion</source>
-        <translation type="unfinished"></translation>
+        <translation>반전</translation>
     </message>
     <message>
         <source>Roll offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Roll offset</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Country</source>
-        <translation type="unfinished"></translation>
+        <translation>국가</translation>
     </message>
     <message>
         <source>Freq/Const/Band</source>
-        <translation type="unfinished"></translation>
+        <translation>Freq/Const/Band</translation>
     </message>
     <message>
         <source>Constellation</source>
-        <translation type="unfinished"></translation>
+        <translation>별자리</translation>
     </message>
     <message>
         <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
+        <translation>대역폭</translation>
     </message>
     <message>
         <source>Tmx Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Tmx Mode</translation>
     </message>
     <message>
         <source>HP FEC</source>
-        <translation type="unfinished">HP FEC</translation>
+        <translation>HP FEC</translation>
     </message>
     <message>
         <source>LP FEC</source>
-        <translation type="unfinished">LP FEC</translation>
+        <translation>LP FEC</translation>
     </message>
     <message>
         <source>Guard</source>
-        <translation type="unfinished"></translation>
+        <translation>Guard</translation>
     </message>
     <message>
         <source>Hierarchy</source>
-        <translation type="unfinished"></translation>
+        <translation>계층</translation>
     </message>
     <message>
         <source>Freq/Mod/SR</source>
-        <translation type="unfinished"></translation>
+        <translation>Freq/Mod/SR</translation>
     </message>
     <message>
         <source>Edit Settings</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>설정 수정</translation>
     </message>
     <message>
         <source>New Position</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>새 응답기 위치</translation>
     </message>
     <message>
         <source>Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>찾기…</translation>
     </message>
     <message>
         <source>New Transponder</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>새 트랜스폰더</translation>
     </message>
     <message>
         <source>Missing tuner settings table key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>튜너 설정 테이블 키 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>Missing tuner settings key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>튜너 설정 키 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>Tuner settings table &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>튜너 설정 테이블 &quot;%1&quot;이(가) 존재하지 않습니다.</translation>
     </message>
     <message>
         <source>Missing tuner settings transponder key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>튜너 설정 응답기 키 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>튜너 설정 응답기 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>삭제 확인</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>항목을 삭제하시겠습니까?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>튜너 설정 응답기 유형이 일치하지 않습니다.</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>유효한 데이터 형식이 아닙니다.</translation>
     </message>
     <message>
         <source>Edit Position</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>응답기 위치 편집</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -3122,7 +3122,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Transponder</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>응답기 편집</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3155,17 +3155,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Highlight</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>가장 밝은 부분</translation>
     </message>
     <message>
         <source>Find Previous</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>이전 찾기</translation>
     </message>
     <message>
         <source>Find All</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>모두 찾기</translation>
     </message>
 </context>
 </TS>

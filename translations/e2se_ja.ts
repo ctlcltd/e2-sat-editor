@@ -6,7 +6,7 @@
     <message>
         <source>Edit</source>
         <extracomment>Platform: Edit menu in macOS Menu bar</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>編集</translation>
     </message>
 </context>
 <context>
@@ -14,39 +14,39 @@
     <message>
         <source>Start Dictation...</source>
         <extracomment>Platform: edit item in macOS Edit Menu | Encoding: preserve 3 singular dots</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>ディクテーションを開始...</translation>
     </message>
     <message>
         <source>Emoji &amp;&amp; Symbols</source>
         <extracomment>Platform: edit item in macOS Edit Menu | Encoding: note double ampersand</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>絵文字と記号</translation>
     </message>
 </context>
 <context>
     <name>QFileDialog</name>
     <message>
         <source>&amp;Save</source>
-        <translation type="unfinished">保存(&amp;S)</translation>
+        <translation>保存(&amp;S)</translation>
     </message>
 </context>
 <context>
     <name>about</name>
     <message>
         <source>About e2 SAT Editor</source>
-        <translation>e2 SAT Editor について</translation>
+        <translation>e2 SAT エディターについて</translation>
     </message>
     <message>
         <source>Version %1</source>
-        <translation type="unfinished"></translation>
+        <translation>バージョン %1</translation>
     </message>
     <message>
         <source>This software is distributed under the terms of the %1.%2The source code of this software is available here:%3</source>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>このソフトウェアは %1 の条件に基づいて配布されています。%2このソフトウェアのソース コードはここで入手できます:%3</translation>
     </message>
     <message>
         <source>GNU GPLv3 License</source>
-        <translation type="unfinished"></translation>
+        <translation>GNU GPLv3 ライセンス</translation>
     </message>
     <message>
         <source>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, 
@@ -56,14 +56,14 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION 
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
-        <translation type="unfinished"></translation>
+        <translation>ソフトウェアは「現状のまま」提供され、明示的か黙示的かを問わず、商品性、特定目的への適合性、および非侵害の保証を含むがこれらに限定されない、いかなる種類の保証も行われません。 いかなる場合においても、作者または著作権所有者は、契約行為、不法行為、またはその他の行為であるかどうかにかかわらず、ソフトウェアまたはソフトウェアの使用またはその他の取引に起因または関連して生じる、いかなる請求、損害、またはその他の責任に対しても責任を負いません。 ソフトウェア。</translation>
     </message>
 </context>
 <context>
     <name>channelBookView</name>
     <message>
         <source>Index</source>
-        <translation type="unfinished"></translation>
+        <translation>索引</translation>
     </message>
     <message>
         <source>Name</source>
@@ -75,19 +75,19 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>プロバイダー</translation>
     </message>
     <message>
         <source>Transponder</source>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダ</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>の位置</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>システム</translation>
     </message>
     <message>
         <source>Services</source>
@@ -95,27 +95,27 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Bouquets</source>
-        <translation type="unfinished"></translation>
+        <translation>チャネルグループ</translation>
     </message>
     <message>
         <source>Positions</source>
-        <translation type="unfinished"></translation>
+        <translation>の位置</translation>
     </message>
     <message>
         <source>Providers</source>
-        <translation type="unfinished"></translation>
+        <translation>プロバイダー</translation>
     </message>
     <message>
         <source>Resolution</source>
-        <translation type="unfinished"></translation>
+        <translation>解像度</translation>
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>の暗号化</translation>
     </message>
     <message>
         <source>A-Z</source>
-        <translation type="unfinished"></translation>
+        <translation>A-Z</translation>
     </message>
     <message>
         <source>&amp;Copy</source>
@@ -128,7 +128,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>編集</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -138,17 +138,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Save</source>
         <comment>dialog</comment>
-        <translation>保存(S)</translation>
+        <translation>保存(&amp;S)</translation>
     </message>
     <message>
         <source>collapse</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>崩壊</translation>
     </message>
     <message>
         <source>expand</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>拡大</translation>
     </message>
 </context>
 <context>
@@ -156,12 +156,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Add Channel</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャンネルの追加</translation>
     </message>
     <message>
         <source>Filters for service type</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>サービスタイプのフィルタ</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -171,7 +171,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Add</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>追加</translation>
     </message>
 </context>
 <context>
@@ -179,152 +179,152 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>File エラー</translation>
     </message>
     <message>
         <source>Parser Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Parser エラー</translation>
     </message>
     <message>
         <source>Maker Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Maker エラー</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイル &quot;%s&quot; は存在しません。</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; already exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイル &quot;%s&quot; はすでに存在します。</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; is not a valid file.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイル &quot;%s&quot; は有効なファイルではありません。</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; is not readable.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイル &quot;%s&quot; を読み取ることができません。</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; is not writable.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイル &quot;%s&quot; は書き込み可能ではありません。</translation>
     </message>
     <message>
         <source>These settings are not supported.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>これらの設定はサポートされていません。</translation>
     </message>
     <message>
         <source>Services file not found.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>サービス ファイルが見つかりません。</translation>
     </message>
     <message>
         <source>Malformed or unknown XML file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>不正な形式または不明な XML ファイル形式です。</translation>
     </message>
     <message>
         <source>Unknown file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>不明なファイル形式です。</translation>
     </message>
     <message>
         <source>Unknown services file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>不明なサービス ファイル形式です。</translation>
     </message>
     <message>
         <source>Unknown bouquets file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>不明なチャネル グループ ファイル形式です。</translation>
     </message>
     <message>
         <source>Unknown transponder type.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>不明なトランスポンダーのタイプです。</translation>
     </message>
     <message>
         <source>Unknown import option.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>不明なインポート オプションです。</translation>
     </message>
     <message>
         <source>Unknown export option.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>不明なエクスポート オプションです。</translation>
     </message>
     <message>
         <source>Unknown Lamedb services file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>不明な Lamedb サービスのファイル形式です。</translation>
     </message>
     <message>
         <source>Unknown Zapit services file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>不明な Zapit サービス ファイル形式です。</translation>
     </message>
     <message>
         <source>Unknown Zapit bouquets file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>不明な Zapit チャネル グループ ファイル形式です。</translation>
     </message>
     <message>
         <source>Missing index key &quot;%s&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>インデックス キー &quot;%s&quot; がありません。</translation>
     </message>
     <message>
         <source>Missing channel reference &quot;%s&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャネル参照 &quot;%s&quot; が欠落しています。</translation>
     </message>
     <message>
         <source>Service &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>サービス &quot;%s&quot; は存在しません。</translation>
     </message>
     <message>
         <source>Bouquet &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャネルグループ &quot;%s&quot; は存在しません。</translation>
     </message>
     <message>
         <source>Userbouquet &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>ユーザー チャネル グループ &quot;%s&quot; は存在しません。</translation>
     </message>
     <message>
         <source>Channel reference &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャネル参照 &quot;%s&quot; は存在しません。</translation>
     </message>
     <message>
         <source>Tunersets table &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チューナー設定テーブル &quot;%s&quot; が存在しません。</translation>
     </message>
     <message>
         <source>Abstract merge swap objects.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>これは抽象マージ、スワップされたオブジェクトです。</translation>
     </message>
     <message>
         <source>Not supported yet.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>まだサポートされていません。</translation>
     </message>
 </context>
 <context>
@@ -332,17 +332,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Bouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャネルグループの編集</translation>
     </message>
     <message>
         <source>New Bouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>新しいチャネルグループ</translation>
     </message>
     <message>
         <source>Bouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャネルグループ</translation>
     </message>
     <message>
         <source>Name</source>
@@ -350,7 +350,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>full name</source>
-        <translation type="unfinished"></translation>
+        <translation>宗派</translation>
     </message>
     <message>
         <source>Type</source>
@@ -358,29 +358,29 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Nice name</source>
-        <translation type="unfinished"></translation>
+        <translation>略称</translation>
     </message>
     <message>
         <source>condensed name (eg. TV, Radio)</source>
-        <translation type="unfinished"></translation>
+        <translation>圧縮名 (例: TV、Radio)</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル名</translation>
     </message>
     <message>
         <source>custom filename, leave empty to auto-fill</source>
-        <translation type="unfinished"></translation>
+        <translation>カスタム ファイル名、自動入力するには空のままにしておきます</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <source>Bouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャネル グループ &quot;%1&quot; は存在しません。</translation>
     </message>
 </context>
 <context>
@@ -388,41 +388,41 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Marker</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>マーカーの編集</translation>
     </message>
     <message>
         <source>Add Marker</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>マーカーを追加</translation>
     </message>
     <message>
         <source>Marker</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>マーカー</translation>
     </message>
     <message>
         <source>Marker text</source>
-        <translation type="unfinished"></translation>
+        <translation>マーカーテキスト</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>ユーザー チャネル グループ &quot;%1&quot; は存在しません。</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャネル参照 &quot;%1&quot; は存在しません。</translation>
     </message>
     <message>
         <source>Channel reference mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャネル参照 &quot;%1&quot; が一致しません。</translation>
     </message>
 </context>
 <context>
@@ -430,68 +430,68 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Service</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>サービスの編集</translation>
     </message>
     <message>
         <source>New Service</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>新サービス</translation>
     </message>
     <message>
         <source>Service</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>サービス</translation>
     </message>
     <message>
         <source>Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダ</translation>
     </message>
     <message>
         <source>Service name</source>
-        <translation type="unfinished"></translation>
+        <translation>サービス名</translation>
     </message>
     <message>
         <source>Service type</source>
-        <translation type="unfinished"></translation>
+        <translation>サービスの種類</translation>
     </message>
     <message>
         <source>custom</source>
-        <translation type="unfinished"></translation>
+        <translation>カスタマイズされた</translation>
     </message>
     <message>
         <source>Service ID</source>
-        <translation type="unfinished">Service ID</translation>
+        <translation>Service ID</translation>
     </message>
     <message>
         <source>Tuner</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>チューナー</translation>
     </message>
     <message>
         <source>Satellite</source>
-        <translation type="unfinished">Satellite</translation>
+        <translation>衛星</translation>
     </message>
     <message>
         <source>Transponder</source>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダ</translation>
     </message>
     <message>
         <source>New Transponder</source>
-        <translation type="unfinished"></translation>
+        <translation>新しいトランスポンダー</translation>
     </message>
     <message>
         <source>Parameters</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>パラメーター</translation>
     </message>
     <message>
         <source>Provider name</source>
-        <translation type="unfinished"></translation>
+        <translation>プロバイダ名</translation>
     </message>
     <message>
         <source>Package</source>
-        <translation type="unfinished"></translation>
+        <translation>パッケージ</translation>
     </message>
     <message>
         <source>video</source>
@@ -515,31 +515,31 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>video type</source>
-        <translation type="unfinished">video type</translation>
+        <translation>video type</translation>
     </message>
     <message>
         <source>audio channel</source>
-        <translation type="unfinished">audio channel</translation>
+        <translation>audio channel</translation>
     </message>
     <message>
         <source>ac3 delay</source>
-        <translation type="unfinished">ac3 delay</translation>
+        <translation>ac3 delay</translation>
     </message>
     <message>
         <source>ms.</source>
-        <translation type="unfinished">ms.</translation>
+        <translation>ms.</translation>
     </message>
     <message>
         <source>pcm delay</source>
-        <translation type="unfinished">pcm delay</translation>
+        <translation>pcm delay</translation>
     </message>
     <message>
         <source>subtitle</source>
-        <translation type="unfinished">subtitle</translation>
+        <translation>subtitle</translation>
     </message>
     <message>
         <source>audio type</source>
-        <translation type="unfinished">audio type</translation>
+        <translation>audio type</translation>
     </message>
     <message>
         <source>apid</source>
@@ -555,79 +555,79 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>PIDs</source>
-        <translation type="unfinished"></translation>
+        <translation>PID</translation>
     </message>
     <message>
         <source>Card ID parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Card-IDパラメータ</translation>
     </message>
     <message>
         <source>Raw edit parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>パラメータを生編集する</translation>
     </message>
     <message>
         <source>Enter them in comma separated values.%1(eg. C:0100,C:0200,…)</source>
         <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>カンマ区切り値で入力してください。%1(例: C:0100,C:0200,…)</translation>
     </message>
     <message>
         <source>CAIDs</source>
-        <translation type="unfinished"></translation>
+        <translation>CAID</translation>
     </message>
     <message>
         <source>Do not update</source>
-        <translation type="unfinished"></translation>
+        <translation>更新しないでください</translation>
     </message>
     <message>
         <source>Hide in service list</source>
-        <translation type="unfinished"></translation>
+        <translation>サービスリストに隠す</translation>
     </message>
     <message>
         <source>Use edited PIDs instead</source>
-        <translation type="unfinished"></translation>
+        <translation>代わりに編集した PID を使用してください</translation>
     </message>
     <message>
         <source>Hold service name</source>
-        <translation type="unfinished"></translation>
+        <translation>保留サービス名</translation>
     </message>
     <message>
         <source>Flag as new service</source>
-        <translation type="unfinished"></translation>
+        <translation>新しいサービスとしてフラグを立てる</translation>
     </message>
     <message>
         <source>Flags</source>
-        <translation type="unfinished"></translation>
+        <translation>ビットフラグ</translation>
     </message>
     <message>
         <source>%1It will overwrite any previously typed!%2Enter them in comma separated values.%3(eg. p:ProviderName,c:0100,C:0200,…)</source>
         <extracomment>HTML formattation: %1text%2text%3text treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1以前に入力した内容は上書きされます!%2カンマ区切りの値で入力してください。%3(例: p:ProviderName,c:0100,C:0200,…)</translation>
     </message>
     <message>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>カスタマイズされた</translation>
     </message>
     <message>
         <source>Service Number</source>
-        <translation type="unfinished"></translation>
+        <translation>Service Number</translation>
     </message>
     <message>
         <source>Src ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Src ID</translation>
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"></translation>
+        <translation>エクストラ</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <source>Service &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>サービス &quot;%1&quot; は存在しません。</translation>
     </message>
 </context>
 <context>
@@ -635,33 +635,33 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダーの編集</translation>
     </message>
     <message>
         <source>New Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>新しいトランスポンダー</translation>
     </message>
     <message>
         <source>Satellite</source>
-        <translation type="unfinished">Satellite</translation>
+        <translation>衛星</translation>
     </message>
     <message>
         <source>Terrestrial</source>
-        <translation type="unfinished">Terrestrial</translation>
+        <translation>地上波</translation>
     </message>
     <message>
         <source>Cable</source>
-        <translation type="unfinished">Cable</translation>
+        <translation>ケーブル</translation>
     </message>
     <message>
         <source>ATSC</source>
-        <translation type="unfinished">ATSC</translation>
+        <translation>ATSC</translation>
     </message>
     <message>
         <source>Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダ</translation>
     </message>
     <message>
         <source>Type</source>
@@ -669,7 +669,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Transport ID</source>
-        <translation type="unfinished">Transport ID</translation>
+        <translation>Transport ID</translation>
     </message>
     <message>
         <source>DVBNS</source>
@@ -681,90 +681,90 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>の位置</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>周波数</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>分極</translation>
     </message>
     <message>
         <source>empty</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>—</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>システム</translation>
     </message>
     <message>
         <source>Constellation</source>
-        <translation type="unfinished"></translation>
+        <translation>星座</translation>
     </message>
     <message>
         <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
+        <translation>帯域幅</translation>
     </message>
     <message>
         <source>HP FEC</source>
-        <translation type="unfinished">HP FEC</translation>
+        <translation>HP FEC</translation>
     </message>
     <message>
         <source>LP FEC</source>
-        <translation type="unfinished">LP FEC</translation>
+        <translation>LP FEC</translation>
     </message>
     <message>
         <source>Modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>変調</translation>
     </message>
     <message>
         <source>Inner FEC</source>
-        <translation type="unfinished">Inner FEC</translation>
+        <translation>Inner FEC</translation>
     </message>
     <message>
         <source>Inversion</source>
-        <translation type="unfinished"></translation>
+        <translation>反転</translation>
     </message>
     <message>
         <source>Roll Offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Roll Offset</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Transmission Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>送信モード</translation>
     </message>
     <message>
         <source>Guard Interval</source>
-        <translation type="unfinished"></translation>
+        <translation>ガードインターバル</translation>
     </message>
     <message>
         <source>Hierarchy</source>
-        <translation type="unfinished"></translation>
+        <translation>階層</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダ &quot;%1&quot; は存在しません。</translation>
     </message>
 </context>
 <context>
@@ -772,25 +772,25 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Settings</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>編集の設定</translation>
     </message>
     <message>
         <source>Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>コメント</translation>
     </message>
     <message>
         <source>Charset</source>
-        <translation type="unfinished"></translation>
+        <translation>文字コード</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <source>Tuner settings &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チューナー設定 &quot;%1&quot; は存在しません。</translation>
     </message>
 </context>
 <context>
@@ -798,12 +798,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Position</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダーの位置を編集する</translation>
     </message>
     <message>
         <source>New Position</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>新しいトランスポンダーの位置</translation>
     </message>
     <message>
         <source>Name</source>
@@ -811,34 +811,34 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>の位置</translation>
     </message>
     <message>
         <source>Flags</source>
-        <translation type="unfinished"></translation>
+        <translation>ビットフラグ</translation>
     </message>
     <message>
         <source>Country</source>
-        <translation type="unfinished"></translation>
+        <translation>国</translation>
     </message>
     <message>
         <source>Feed</source>
-        <translation type="unfinished">Feed</translation>
+        <translation>衛星フィード</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <source>Tuner settings &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チューナー設定 &quot;%1&quot; は存在しません。</translation>
     </message>
     <message>
         <source>Tuner settings table &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チューナー設定テーブル &quot;%1&quot; は存在しません。</translation>
     </message>
 </context>
 <context>
@@ -846,85 +846,85 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダーの編集</translation>
     </message>
     <message>
         <source>New Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>新しいトランスポンダー</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>周波数</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>分極</translation>
     </message>
     <message>
         <source>empty</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>—</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>システム</translation>
     </message>
     <message>
         <source>Constellation</source>
-        <translation type="unfinished"></translation>
+        <translation>星座</translation>
     </message>
     <message>
         <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
+        <translation>帯域幅</translation>
     </message>
     <message>
         <source>HP FEC</source>
-        <translation type="unfinished">HP FEC</translation>
+        <translation>HP FEC</translation>
     </message>
     <message>
         <source>LP FEC</source>
-        <translation type="unfinished">LP FEC</translation>
+        <translation>LP FEC</translation>
     </message>
     <message>
         <source>Modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>変調</translation>
     </message>
     <message>
         <source>Inner FEC</source>
-        <translation type="unfinished">Inner FEC</translation>
+        <translation>Inner FEC</translation>
     </message>
     <message>
         <source>Inversion</source>
-        <translation type="unfinished"></translation>
+        <translation>反転</translation>
     </message>
     <message>
         <source>Roll Offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Roll Offset</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Transmission Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>送信モード</translation>
     </message>
     <message>
         <source>Guard Interval</source>
-        <translation type="unfinished"></translation>
+        <translation>ガードインターバル</translation>
     </message>
     <message>
         <source>Hierarchy</source>
-        <translation type="unfinished"></translation>
+        <translation>階層</translation>
     </message>
     <message>
         <source>isid</source>
@@ -949,22 +949,22 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <source>Tuner settings &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チューナー設定 &quot;%1&quot; は存在しません。</translation>
     </message>
     <message>
         <source>Tuner settings table &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チューナー設定テーブル &quot;%1&quot; は存在しません。</translation>
     </message>
     <message>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チューナー設定トランスポンダー &quot;%1&quot; が存在しません。</translation>
     </message>
 </context>
 <context>
@@ -972,17 +972,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Userbouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>ユーザーチャネルグループの編集</translation>
     </message>
     <message>
         <source>New Userbouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>新しいユーザー チャネル グループ</translation>
     </message>
     <message>
         <source>Userbouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>ユーザーチャネルグループ</translation>
     </message>
     <message>
         <source>Name</source>
@@ -990,30 +990,30 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル名</translation>
     </message>
     <message>
         <source>custom filename, leave empty to auto-fill</source>
-        <translation type="unfinished"></translation>
+        <translation>カスタム ファイル名、自動入力するには空のままにしておきます</translation>
     </message>
     <message>
         <source>Bouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャネルグループ</translation>
     </message>
     <message>
         <source>Parent Bouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>親チャネルグループ</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>ユーザー チャネル グループ &quot;%1&quot; は存在しません。</translation>
     </message>
 </context>
 <context>
@@ -1021,32 +1021,32 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <source>FTP Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTPエラー</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイル &quot;%s&quot; は存在しません。</translation>
     </message>
     <message>
         <source>Missing &quot;%s&quot; parameter.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation> &quot;%s&quot; パラメータが欠落しています。</translation>
     </message>
     <message>
         <source>Missing &quot;%s&quot; path parameter.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation> &quot;%s&quot; パスパラメータが欠落しています。</translation>
     </message>
     <message>
         <source>Failed to resume FTP connection.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP接続の再開に失敗しました。</translation>
     </message>
 </context>
 <context>
@@ -1055,12 +1055,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>&amp;File</source>
         <comment>menu</comment>
         <extracomment>Platform: File menu</extracomment>
-        <translation type="unfinished">ファイル</translation>
+        <translation>ファイル</translation>
     </message>
     <message>
         <source>&amp;New</source>
         <comment>menu</comment>
-        <translation type="unfinished">新規</translation>
+        <translation>新規</translation>
     </message>
     <message>
         <source>&amp;Open</source>
@@ -1076,17 +1076,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>Save &amp;As…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>名前を付けて保存…</translation>
     </message>
     <message>
         <source>Import</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>輸入</translation>
     </message>
     <message>
         <source>Export</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>輸出</translation>
     </message>
     <message>
         <source>Close Tab</source>
@@ -1096,18 +1096,18 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Close All Tabs</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>すべてのタブを閉じる</translation>
     </message>
     <message>
         <source>&amp;Print…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>印刷(&amp;P)</translation>
     </message>
     <message>
         <source>Print &amp;All</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>すべて印刷</translation>
     </message>
     <message>
         <source>Preferences…</source>
@@ -1130,13 +1130,13 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>E&amp;xit</source>
         <comment>menu</comment>
         <extracomment>Platform: Exit | Quit item</extracomment>
-        <translation type="unfinished">終了</translation>
+        <translation>終了</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
         <comment>menu</comment>
         <extracomment>Platform: Edit menu</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>編集</translation>
     </message>
     <message>
         <source>&amp;Undo</source>
@@ -1177,161 +1177,161 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>&amp;Find</source>
         <comment>menu</comment>
         <extracomment>Platform: Find menu</extracomment>
-        <translation type="unfinished">検索</translation>
+        <translation>検索</translation>
     </message>
     <message>
         <source>&amp;Find Channel…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>チャンネルを探す…</translation>
     </message>
     <message>
         <source>Find &amp;Next</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>次を見つける</translation>
     </message>
     <message>
         <source>Find &amp;Previous</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>前を検索</translation>
     </message>
     <message>
         <source>Find &amp;All</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>すべて検索</translation>
     </message>
     <message>
         <source>Find &amp;Bouquet…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>チャネルグループを検索…</translation>
     </message>
     <message>
         <source>Find N&amp;ext Bouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>次のチャネルグループを検索</translation>
     </message>
     <message>
         <source>&amp;Tools</source>
         <comment>menu</comment>
-        <translation type="unfinished">ツール</translation>
+        <translation>ツール</translation>
     </message>
     <message>
         <source>Edit Transponders</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダーの編集</translation>
     </message>
     <message>
         <source>Edit %1</source>
         <comment>menu</comment>
         <extracomment>Note: %1 is xml filename</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1を編集</translation>
     </message>
     <message>
         <source>Picons editor</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Piconsエディタ</translation>
     </message>
     <message>
         <source>Edit Transponders</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダーの編集</translation>
     </message>
     <message>
         <source>Edit Settings</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>編集の設定</translation>
     </message>
     <message>
         <source>Channel Book</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャンネルブック</translation>
     </message>
     <message>
         <source>Filename</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイル名</translation>
     </message>
     <message>
         <source>Import from CSV</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>CSVからインポート</translation>
     </message>
     <message>
         <source>Import Services</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>インポートチャネル/サービス</translation>
     </message>
     <message>
         <source>Import Bouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャネルグループのインポート</translation>
     </message>
     <message>
         <source>Import Userbouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>ユーザー チャネル グループのインポート</translation>
     </message>
     <message>
         <source>Import Tuner settings</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>チューナー設定のインポート</translation>
     </message>
     <message>
         <source>Export to CSV</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>CSVにエクスポート</translation>
     </message>
     <message>
         <source>Export current</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>輸出電流</translation>
     </message>
     <message>
         <source>Export All</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>すべてエクスポート</translation>
     </message>
     <message>
         <source>Export Services</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>輸出チャネル/サービス</translation>
     </message>
     <message>
         <source>Export Bouquets</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>エクスポートチャネルグループ</translation>
     </message>
     <message>
         <source>Export Userbouquets</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>ユーザー チャネル グループのエクスポート</translation>
     </message>
     <message>
         <source>Export Tuner settings</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>チューナー設定のエクスポート</translation>
     </message>
     <message>
         <source>Export to HTML</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>HTMLにエクスポート</translation>
     </message>
     <message>
         <source>Export Index</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>輸出指数</translation>
     </message>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>ログインスペクター</translation>
     </message>
     <message>
         <source>&amp;Window</source>
         <comment>menu</comment>
         <extracomment>Platform: Window menu</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>窓</translation>
     </message>
     <message>
         <source>&amp;Minimize</source>
@@ -1341,12 +1341,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Hide &amp;Status Bar</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>ステータスバーを非表示にする</translation>
     </message>
     <message>
         <source>New &amp;Tab</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>新しいタブ(&amp;T)</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -1357,184 +1357,184 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>About &amp;Qt</source>
         <comment>menu</comment>
-        <translation type="unfinished">Qt について</translation>
+        <translation>Qt について</translation>
     </message>
     <message>
         <source>Report a bug</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>バグを報告</translation>
     </message>
     <message>
         <source>Check for updates…</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>アップデートを確認…</translation>
     </message>
     <message>
         <source>Go to E2SE repository…</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>E2SE リポジトリに移動します…</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>
         <comment>menu</comment>
-        <translation type="unfinished">e2 SAT Editor について</translation>
+        <translation>e2 SAT エディターについて</translation>
     </message>
     <message>
         <source>New &amp;Tab</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>新しいタブ(&amp;T)</translation>
     </message>
     <message>
         <source>&amp;Find Channel</source>
-        <translation type="unfinished"></translation>
+        <translation>チャンネルを探す</translation>
     </message>
     <message>
         <source>Find &amp;Bouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>チャネルグループの検索</translation>
     </message>
     <message>
         <source>Find N&amp;ext Bouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>次のチャネルグループを検索</translation>
     </message>
     <message>
         <source>&amp;Find Transponder</source>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダーを探す</translation>
     </message>
     <message>
         <source>Channel Book</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャンネルブック</translation>
     </message>
     <message>
         <source>Find &amp;Position</source>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダーの位置を見つける</translation>
     </message>
     <message>
         <source>Find N&amp;ext Position</source>
-        <translation type="unfinished"></translation>
+        <translation>次のトランスポンダー位置を検索</translation>
     </message>
     <message>
         <source>Untitled</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>無題</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイル &quot;%1&quot; の読み取り中にエラーが発生しました。</translation>
     </message>
     <message>
         <source>Missing current tab reference.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>現在のタブ参照がありません。</translation>
     </message>
     <message>
         <source>Missing parent tab for tab reference &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>タブ参照 &quot;%1&quot; の親タブがありません。</translation>
     </message>
     <message>
         <source>Picons editor</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>Piconsエディタ</translation>
     </message>
     <message>
         <source>Missing tab reference &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>タブ参照 &quot;%1&quot; がありません。</translation>
     </message>
     <message>
         <source>Select data folder</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>データフォルダを選択</translation>
     </message>
     <message>
         <source>Select where to save</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>保存する場所を選択してください</translation>
     </message>
     <message>
         <source>Select one or more files to open</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>開くファイルを %1 つ以上選択してください</translation>
     </message>
     <message>
         <source>CSV File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>CSVファイル</translation>
     </message>
     <message>
         <source>All Files</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>すべてのファイル</translation>
     </message>
     <message>
         <source>Import</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>輸入</translation>
     </message>
     <message>
         <source>HTML File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>HTMLファイル</translation>
     </message>
     <message>
         <source>Export</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>輸出</translation>
     </message>
     <message>
         <source>Hide &amp;Status Bar</source>
-        <translation type="unfinished"></translation>
+        <translation>ステータスバーを非表示にする</translation>
     </message>
     <message>
         <source>Show &amp;Status Bar</source>
-        <translation type="unfinished"></translation>
+        <translation>ステータスバーを表示</translation>
     </message>
     <message>
         <source>Channels</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャンネル</translation>
     </message>
     <message>
         <source>Bouquet</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャネルグループ</translation>
     </message>
     <message>
         <source>TV</source>
         <comment>status-bar</comment>
-        <translation type="unfinished">TV</translation>
+        <translation>テレビ</translation>
     </message>
     <message>
         <source>Radio</source>
         <comment>status-bar</comment>
-        <translation type="unfinished">Radio</translation>
+        <translation>無線</translation>
     </message>
     <message>
         <source>Data</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>データ</translation>
     </message>
     <message>
         <source>Total</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>合計</translation>
     </message>
     <message>
         <source>Transponders</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダー</translation>
     </message>
     <message>
         <source>Position</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>の位置</translation>
     </message>
 </context>
 <context>
@@ -1545,15 +1545,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Bouquets</source>
-        <translation type="unfinished"></translation>
+        <translation>チャネルグループ</translation>
     </message>
     <message>
         <source>Channels</source>
-        <translation type="unfinished"></translation>
+        <translation>チャンネル</translation>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished"></translation>
+        <translation>索引</translation>
     </message>
     <message>
         <source>Name</source>
@@ -1561,15 +1561,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Parental</source>
-        <translation type="unfinished"></translation>
+        <translation>ペアレンタル</translation>
     </message>
     <message>
         <source>Service ID</source>
-        <translation type="unfinished">Service ID</translation>
+        <translation>Service ID</translation>
     </message>
     <message>
         <source>Transport ID</source>
-        <translation type="unfinished">Transport ID</translation>
+        <translation>Transport ID</translation>
     </message>
     <message>
         <source>Type</source>
@@ -1577,281 +1577,281 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>CAS</source>
-        <translation type="unfinished">CAS</translation>
+        <translation>CAS</translation>
     </message>
     <message>
         <source>Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>プロバイダー</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>システム</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>の位置</translation>
     </message>
     <message>
         <source>Tuner</source>
-        <translation type="unfinished"></translation>
+        <translation>チューナー</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>周波数</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>分極</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>New Bouquet</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>新しいチャネルグループ</translation>
     </message>
     <message>
         <source>Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>検索…</translation>
     </message>
     <message>
         <source>Add Channel</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャンネルの追加</translation>
     </message>
     <message>
         <source>Add Marker</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>マーカーを追加</translation>
     </message>
     <message>
         <source>New Service</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>新サービス</translation>
     </message>
     <message>
         <source>Drag&amp;&amp;Drop</source>
         <comment>toolbar</comment>
         <extracomment>Encoding: note double ampersand</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>ドラッグドロップ</translation>
     </message>
     <message>
         <source>Reference</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>参照</translation>
     </message>
     <message>
         <source>Settings Convert</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>設定変換</translation>
     </message>
     <message>
         <source>Drag&amp;&amp;Drop Preferences</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>ドラッグ&amp;ドロップの設定</translation>
     </message>
     <message>
         <source>&amp;Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>検索…</translation>
     </message>
     <message>
         <source>All services</source>
-        <translation type="unfinished"></translation>
+        <translation>すべてのサービス</translation>
     </message>
     <message>
         <source>Reference ID</source>
         <comment>reference-box</comment>
-        <translation type="unfinished">Reference ID</translation>
+        <translation>参照ID</translation>
     </message>
     <message>
         <source>Service ID</source>
         <comment>reference-box</comment>
-        <translation type="unfinished">Service ID</translation>
+        <translation>Service ID</translation>
     </message>
     <message>
         <source>Transponder</source>
         <comment>reference-box</comment>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダ</translation>
     </message>
     <message>
         <source>Userbouquets</source>
         <comment>reference-box</comment>
-        <translation type="unfinished"></translation>
+        <translation>ユーザーブーケ</translation>
     </message>
     <message>
         <source>Bouquets</source>
         <comment>reference-box</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャネルグループ</translation>
     </message>
     <message>
         <source>Tuner</source>
         <comment>reference-box</comment>
-        <translation type="unfinished"></translation>
+        <translation>チューナー</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <source>Missing index key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>インデックス キー &quot;%1&quot; がありません。</translation>
     </message>
     <message>
         <source>Channel reference mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャネル参照 &quot;%1&quot; が一致しません。</translation>
     </message>
     <message>
         <source>Convert</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>変換</translation>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.4 [Enigma 2]</translation>
+        <translation>Lamedb 2.4 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.5 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.5 [Enigma 2]</translation>
+        <translation>Lamedb 2.5 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.3 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.3 [Enigma 1]</translation>
+        <translation>Lamedb 2.3 [Enigma 1]</translation>
     </message>
     <message>
         <source>Lamedb 2.2 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.2 [Enigma 1]</translation>
+        <translation>Lamedb 2.2 [Enigma 1]</translation>
     </message>
     <message>
         <source>Zapit api-v4 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v4 [Neutrino]</translation>
+        <translation>Zapit api-v4 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v3 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v3 [Neutrino]</translation>
+        <translation>Zapit api-v3 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v2 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v2 [Neutrino]</translation>
+        <translation>Zapit api-v2 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+        <translation>Zapit api-v1 [Neutrino]</translation>
     </message>
     <message>
         <source>Drag and Drop</source>
-        <translation type="unfinished"></translation>
+        <translation>ドラッグアンドドロップ</translation>
     </message>
     <message>
         <source>Switch to bouquet after drop</source>
-        <translation type="unfinished"></translation>
+        <translation>ドロップ後にチャネルグループに切り替える</translation>
     </message>
     <message>
         <source>Channel operations</source>
-        <translation type="unfinished"></translation>
+        <translation>チャネル操作</translation>
     </message>
     <message>
         <source>Copy channels (preserving)</source>
-        <translation type="unfinished"></translation>
+        <translation>チャンネルをコピーする（保存）</translation>
     </message>
     <message>
         <source>Move channels (deleting)</source>
-        <translation type="unfinished"></translation>
+        <translation>チャンネルを移動（削除）する</translation>
     </message>
     <message>
         <source>Missing bouquet key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャネルグループキー &quot;%1&quot; がありません。</translation>
     </message>
     <message>
         <source>Bouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャネル グループ &quot;%1&quot; は存在しません。</translation>
     </message>
     <message>
         <source>Missing userbouquet key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>ユーザー チャネル グループ キー &quot;%1&quot; がありません。</translation>
     </message>
     <message>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>ユーザー チャネル グループ &quot;%1&quot; は存在しません。</translation>
     </message>
     <message>
         <source>Missing service key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>サービス キー &quot;%1&quot; がありません。</translation>
     </message>
     <message>
         <source>Service &quot;%1&quot; not exists or is a channel reference.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>サービス &quot;%1&quot; が存在しないか、チャネル参照です。</translation>
     </message>
     <message>
         <source>Missing channel reference key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャネル参照キー &quot;%1&quot; がありません。</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; is not a valid marker.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャネル参照 &quot;%1&quot; は有効なマーカーではありません。</translation>
     </message>
     <message>
         <source>Channel reference&quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャネル参照 &quot;%1&quot; は存在しません。</translation>
     </message>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>削除の確認</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>項目を削除しますか?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>有効なデータ形式ではありません。</translation>
     </message>
     <message>
         <source>Channel reference mismatch.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャンネルリファレンスの不一致。</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャネルグループの編集</translation>
     </message>
     <message>
         <source>Edit Userbouquet</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>ユーザーチャネルグループの編集</translation>
     </message>
     <message>
         <source>Set Parental lock</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>ペアレンタルロックを設定する</translation>
     </message>
     <message>
         <source>Unset Parental lock</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>ペアレンタルロックの解除</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -1861,27 +1861,27 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Export</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>輸出</translation>
     </message>
     <message>
         <source>Edit Marker</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>マーカーの編集</translation>
     </message>
     <message>
         <source>Edit Service</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>サービスの編集</translation>
     </message>
     <message>
         <source>Parental lock (Userbouquet)</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>ペアレンタルロック (ユーザー-チャンネル-グループ)</translation>
     </message>
     <message>
         <source>Parental lock</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>ペアレンタルロック</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -1903,156 +1903,156 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <name>piconsView</name>
     <message>
         <source>Picons</source>
-        <translation type="unfinished"></translation>
+        <translation>Picons</translation>
     </message>
     <message>
         <source>Picons Preferences</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>Piconsの設定</translation>
     </message>
     <message>
         <source>&amp;Browse…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>ブラウズ…</translation>
     </message>
     <message>
         <source>Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>検索…</translation>
     </message>
     <message>
         <source>Folder</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>フォルダ</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished">名前</translation>
+        <translation>名前</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished">タイプ</translation>
+        <translation>タイプ</translation>
     </message>
     <message>
         <source>CAS</source>
-        <translation type="unfinished">CAS</translation>
+        <translation>CAS</translation>
     </message>
     <message>
         <source>Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>プロバイダー</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル名</translation>
     </message>
     <message>
         <source>Tuner</source>
-        <translation type="unfinished"></translation>
+        <translation>チューナー</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>の位置</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>システム</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <source>Channel mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャンネル &quot;%1&quot; が一致しません。</translation>
     </message>
     <message>
         <source>Backup picon when replaced</source>
-        <translation type="unfinished"></translation>
+        <translation>交換時に picon をバックアップする</translation>
     </message>
     <message>
         <source>Filename format</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル名の形式</translation>
     </message>
     <message>
         <source>Use reference ID</source>
-        <translation type="unfinished"></translation>
+        <translation>参照IDを使用する</translation>
     </message>
     <message>
         <source>Use service name</source>
-        <translation type="unfinished"></translation>
+        <translation>サービス名を使用する</translation>
     </message>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>File エラー</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイル &quot;%1&quot; の読み取り中にエラーが発生しました。</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイル &quot;%1&quot; の書き込み中にエラーが発生しました。</translation>
     </message>
     <message>
         <source>Delete images</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>画像を削除する</translation>
     </message>
     <message>
         <source>Do you want to delete the images from disk?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>ディスクからイメージを削除しますか?</translation>
     </message>
     <message>
         <source>Change picon</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>piconを変更する</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">切り取り(&amp;T)</translation>
+        <translation>切り取り(&amp;T)</translation>
     </message>
     <message>
         <source>&amp;Copy</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">コピー(&amp;C)</translation>
+        <translation>コピー(&amp;C)</translation>
     </message>
     <message>
         <source>&amp;Paste</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">貼り付け(&amp;P)</translation>
+        <translation>貼り付け(&amp;P)</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">削除(&amp;D)</translation>
+        <translation>削除(&amp;D)</translation>
     </message>
     <message>
         <source>Select picons folder</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>piconsフォルダーを選択します</translation>
     </message>
     <message>
         <source>Select picon image</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>picon イメージを選択してください</translation>
     </message>
 </context>
 <context>
     <name>printable</name>
     <message>
         <source>Untitled</source>
-        <translation type="unfinished"></translation>
+        <translation>無題</translation>
     </message>
     <message>
         <source>(extract)</source>
-        <translation type="unfinished"></translation>
+        <translation>（エキス）</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -2060,11 +2060,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Tuner Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>チューナーの設定</translation>
     </message>
     <message>
         <source>Services List</source>
-        <translation type="unfinished"></translation>
+        <translation>サービス一覧</translation>
     </message>
     <message>
         <source>File</source>
@@ -2072,19 +2072,19 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>発生器</translation>
     </message>
     <message>
         <source>Datetime</source>
-        <translation type="unfinished"></translation>
+        <translation>日にち</translation>
     </message>
     <message>
         <source>Table of Contents</source>
-        <translation type="unfinished"></translation>
+        <translation>索引</translation>
     </message>
     <message>
         <source>Content</source>
-        <translation type="unfinished"></translation>
+        <translation>コンテンツ</translation>
     </message>
     <message>
         <source>Type</source>
@@ -2093,16 +2093,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <source>Missing index key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>インデックス キー &quot;%1&quot; がありません。</translation>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished"></translation>
+        <translation>索引</translation>
     </message>
     <message>
         <source>Name</source>
@@ -2122,99 +2122,99 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>CAS</source>
-        <translation type="unfinished">CAS</translation>
+        <translation>CAS</translation>
     </message>
     <message>
         <source>Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>プロバイダー</translation>
     </message>
     <message>
         <source>Freq</source>
-        <translation type="unfinished"></translation>
+        <translation>Freq</translation>
     </message>
     <message>
         <source>Pol</source>
-        <translation type="unfinished"></translation>
+        <translation>Pol</translation>
     </message>
     <message>
         <source>SR</source>
-        <translation type="unfinished"></translation>
+        <translation>SR</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>Sys</source>
-        <translation type="unfinished"></translation>
+        <translation>Sys</translation>
     </message>
     <message>
         <source>Pos</source>
-        <translation type="unfinished"></translation>
+        <translation>Pos</translation>
     </message>
     <message>
         <source>Tuner</source>
-        <translation type="unfinished"></translation>
+        <translation>チューナー</translation>
     </message>
     <message>
         <source>Bouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>チャネルグループ</translation>
     </message>
     <message>
         <source>Userbouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>ユーザーチャネルグループ</translation>
     </message>
     <message>
         <source>Transponders</source>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダー</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>の位置</translation>
     </message>
     <message>
         <source>Mod</source>
-        <translation type="unfinished"></translation>
+        <translation>Mod</translation>
     </message>
     <message>
         <source>Inv</source>
-        <translation type="unfinished"></translation>
+        <translation>Inv</translation>
     </message>
     <message>
         <source>Rollof</source>
-        <translation type="unfinished"></translation>
+        <translation>Rollof</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Const</source>
-        <translation type="unfinished"></translation>
+        <translation>Const</translation>
     </message>
     <message>
         <source>Band</source>
-        <translation type="unfinished"></translation>
+        <translation>Band</translation>
     </message>
     <message>
         <source>Tmx Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Tmx Mode</translation>
     </message>
     <message>
         <source>HP FEC</source>
-        <translation type="unfinished">HP FEC</translation>
+        <translation>HP FEC</translation>
     </message>
     <message>
         <source>LP FEC</source>
-        <translation type="unfinished">LP FEC</translation>
+        <translation>LP FEC</translation>
     </message>
     <message>
         <source>Guard</source>
-        <translation type="unfinished"></translation>
+        <translation>Guard</translation>
     </message>
     <message>
         <source>Hier</source>
-        <translation type="unfinished"></translation>
+        <translation>Hier</translation>
     </message>
 </context>
 <context>
@@ -2227,7 +2227,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Save</source>
         <comment>dialog</comment>
-        <translation>保存(S)</translation>
+        <translation>保存(&amp;S)</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -2236,7 +2236,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>追加</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -2244,35 +2244,35 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Connection</source>
-        <translation type="unfinished"></translation>
+        <translation>繋がり</translation>
     </message>
     <message>
         <source>IP address</source>
-        <translation type="unfinished"></translation>
+        <translation>IPアドレス</translation>
     </message>
     <message>
         <source>FTP port</source>
-        <translation type="unfinished"></translation>
+        <translation>FTPポート</translation>
     </message>
     <message>
         <source>Use active FTP</source>
-        <translation type="unfinished"></translation>
+        <translation>アクティブな FTP を使用する</translation>
     </message>
     <message>
         <source>HTTP port</source>
-        <translation type="unfinished"></translation>
+        <translation>HTTPポート</translation>
     </message>
     <message>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation>ログイン</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>ユーザー名</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>パスワード</translation>
     </message>
     <message>
         <source>Configuration</source>
@@ -2280,7 +2280,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Transponders</source>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダー</translation>
     </message>
     <message>
         <source>Services</source>
@@ -2288,105 +2288,105 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Bouquets</source>
-        <translation type="unfinished"></translation>
+        <translation>チャネルグループ</translation>
     </message>
     <message>
         <source>Connections</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>接続</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>全般的</translation>
     </message>
     <message>
         <source>Show confirmation messages when deleting</source>
-        <translation type="unfinished"></translation>
+        <translation>削除時に確認メッセージを表示する</translation>
     </message>
     <message>
         <source>Parental lock whitelist (exclusion instead inclusion list)</source>
-        <translation type="unfinished"></translation>
+        <translation>ペアレンタルロックのホワイトリスト（除外リスト）</translation>
     </message>
     <message>
         <source>Drag and Drop</source>
-        <translation type="unfinished"></translation>
+        <translation>ドラッグアンドドロップ</translation>
     </message>
     <message>
         <source>Switch to current bouquet item after the drop</source>
-        <translation type="unfinished"></translation>
+        <translation>ドロップ後に現在のチャネルグループ項目に切り替える</translation>
     </message>
     <message>
         <source>Channel operations</source>
-        <translation type="unfinished"></translation>
+        <translation>チャネル操作</translation>
     </message>
     <message>
         <source>Copy channels (preserving)</source>
-        <translation type="unfinished"></translation>
+        <translation>チャンネルをコピーする（保存）</translation>
     </message>
     <message>
         <source>Move channels (deleting)</source>
-        <translation type="unfinished"></translation>
+        <translation>チャンネルを移動（削除）する</translation>
     </message>
     <message>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>言語</translation>
     </message>
     <message>
         <source>Picons</source>
-        <translation type="unfinished"></translation>
+        <translation>Picons</translation>
     </message>
     <message>
         <source>Default (system language)</source>
-        <translation type="unfinished"></translation>
+        <translation>デフォルト (システム言語)</translation>
     </message>
     <message>
         <source>The software might need to be restarted.</source>
-        <translation type="unfinished"></translation>
+        <translation>ソフトウェアの再起動が必要になる場合があります。</translation>
     </message>
     <message>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>テーマ</translation>
     </message>
     <message>
         <source>Default (system theme)</source>
-        <translation type="unfinished"></translation>
+        <translation>デフォルト（システムテーマ）</translation>
     </message>
     <message>
         <source>Dark</source>
-        <translation type="unfinished"></translation>
+        <translation>暗い</translation>
     </message>
     <message>
         <source>Light</source>
-        <translation>細字</translation>
+        <translation>ライト</translation>
     </message>
     <message>
         <source>Enable experimental features</source>
-        <translation type="unfinished"></translation>
+        <translation>実験的な機能を有効にする</translation>
     </message>
     <message>
         <source>Picons editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Piconsエディタ</translation>
     </message>
     <message>
         <source>Backup picon when replaced</source>
-        <translation type="unfinished"></translation>
+        <translation>交換時に picon をバックアップする</translation>
     </message>
     <message>
         <source>Filename format</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル名の形式</translation>
     </message>
     <message>
         <source>Use reference ID</source>
-        <translation type="unfinished"></translation>
+        <translation>参照IDを使用する</translation>
     </message>
     <message>
         <source>Use service name</source>
-        <translation type="unfinished"></translation>
+        <translation>サービス名を使用する</translation>
     </message>
     <message>
         <source>Preferences</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>環境設定</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -2426,7 +2426,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Default format</source>
-        <translation type="unfinished"></translation>
+        <translation>デフォルトの形式</translation>
     </message>
     <message>
         <source>Tools</source>
@@ -2434,58 +2434,58 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>CSV Import/Export</source>
-        <translation type="unfinished"></translation>
+        <translation>CSVインポート/エクスポート</translation>
     </message>
     <message>
         <source>Allow header columns in CSV</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV でヘッダー列を許可する</translation>
     </message>
     <message>
         <source>CSV delimiter character</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV区切り文字</translation>
     </message>
     <message>
         <source>CSV separator character</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV区切り文字</translation>
     </message>
     <message>
         <source>CSV escape character</source>
-        <translation type="unfinished"></translation>
+        <translation>CSVエスケープ文字</translation>
     </message>
     <message>
         <source>Fields Import/Export</source>
-        <translation type="unfinished"></translation>
+        <translation>フィールドのインポート/エクスポート</translation>
     </message>
     <message>
         <source>Default (same fields as visual)</source>
-        <translation type="unfinished"></translation>
+        <translation>デフォルト (ビジュアルと同じフィールド)</translation>
     </message>
     <message>
         <source>Extended (all fields)</source>
-        <translation type="unfinished"></translation>
+        <translation>拡張（全フィールド）</translation>
     </message>
     <message>
         <source>Engine</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>エンジン</translation>
     </message>
     <message>
         <source>%1Please be carefull!%2Modifing these settings could break the program.%3</source>
         <extracomment>HTML formattation: %1text%2%text%3 treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1注意してください!%2これらの設定を変更すると、プログラムが破損する可能性があります。%3</translation>
     </message>
     <message>
         <source>OK, I understood this.</source>
-        <translation type="unfinished"></translation>
+        <translation>はい、わかりました。</translation>
     </message>
     <message>
         <source>Advanced</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>高度</translation>
     </message>
     <message>
         <source>Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>プロフィール</translation>
     </message>
 </context>
 <context>
@@ -2503,12 +2503,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Import</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>輸入</translation>
     </message>
     <message>
         <source>Export</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>輸出</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -2518,22 +2518,22 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Select profile</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>プロファイルの選択</translation>
     </message>
     <message>
         <source>Connect</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>接続</translation>
     </message>
     <message>
         <source>Disconnect</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>切断する</translation>
     </message>
     <message>
         <source>Upload</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>アップロード</translation>
     </message>
     <message>
         <source>Download</source>
@@ -2543,207 +2543,207 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Reading from %1 …</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 から読み取り中 …</translation>
     </message>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>File エラー</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイル &quot;%1&quot; の読み取り中にエラーが発生しました。</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイルを開くときにエラーが発生しました。</translation>
     </message>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイルが変更されました</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>変更を保存しますか?</translation>
     </message>
     <message>
         <source>Saved to %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1に保存されました</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>保存しました！</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイル &quot;%1&quot; の書き込み中にエラーが発生しました。</translation>
     </message>
     <message>
         <source>Error writing files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイルの書き込みエラー。</translation>
     </message>
     <message>
         <source>Nothing to import</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>インポートするものがありません</translation>
     </message>
     <message>
         <source>You are in Picons editor.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Picons エディターを使用しています。</translation>
     </message>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 からインポート中 …</translation>
     </message>
     <message>
         <source>Nothing to export</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>エクスポートするものがありません</translation>
     </message>
     <message>
         <source>The destination contains files that will be overwritten.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>宛先には上書きされるファイルが含まれています。</translation>
     </message>
     <message>
         <source>Do you want to overwrite them?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>上書きしますか?</translation>
     </message>
     <message>
         <source>Empty path.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>空のパス。</translation>
     </message>
     <message>
         <source>You are in Channel Book.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャンネルブックにいます。</translation>
     </message>
     <message>
         <source>Exported to %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 にエクスポートされました</translation>
     </message>
     <message>
         <source>Printing …</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>印刷中…</translation>
     </message>
     <message>
         <source>FTP connecting ...</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP接続中...</translation>
     </message>
     <message>
         <source>FTP disconnecting ...</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTPが切断中です...</translation>
     </message>
     <message>
         <source>Trying to resume FTP connection ...</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP接続を再開しようとしています...</translation>
     </message>
     <message>
         <source>STB reloading ...</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>STBをリロードしています...</translation>
     </message>
     <message>
         <source>FTP connected successfully.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP が正常に接続されました。</translation>
     </message>
     <message>
         <source>FTP Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTPエラー</translation>
     </message>
     <message>
         <source>Cannot connect to FTP &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP &quot;%1&quot; に接続できません。</translation>
     </message>
     <message>
         <source>Cannot connect to FTP Server!</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTPサーバーに接続できません!</translation>
     </message>
     <message>
         <source>FTP disconnected successfully.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP が正常に切断されました。</translation>
     </message>
     <message>
         <source>Cannot disconnect from FTP &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP &quot;%1&quot; から切断できません。</translation>
     </message>
     <message>
         <source>Cannot disconnect from FTP Server!</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTPサーバーから切断できません!</translation>
     </message>
     <message>
         <source>Uploading file: %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイルをアップロードしています: %1</translation>
     </message>
     <message numerus="yes">
         <source>Uploaded %n files</source>
         <comment>message</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n ファイルをアップロードしました</numerusform>
         </translation>
     </message>
     <message>
         <source>STB reload done.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>STBのリロードが完了しました。</translation>
     </message>
     <message>
         <source>Downloading file: %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイルをダウンロード中: %1</translation>
     </message>
     <message numerus="yes">
         <source>Downloaded %n files</source>
         <comment>message</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n ファイルをダウンロードしました</numerusform>
         </translation>
     </message>
     <message>
         <source>Cannot reload STB &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>STB &quot;%1&quot; をリロードできません。</translation>
     </message>
     <message>
         <source>Cannot reload STB!</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>STBをリロードできません!</translation>
     </message>
     <message>
         <source>DEMO MODE</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>デモモード</translation>
     </message>
     <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>デバッグ目的。%1[設定] &gt; [詳細] タブで application.seeds 絶対パスを設定し、ソフトウェアを再起動します。%2ソース シードは次の場所で入手できます:%3</translation>
     </message>
 </context>
 <context>
@@ -2751,64 +2751,64 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Log Inspector</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>ログインスペクター</translation>
     </message>
     <message>
         <source>Filter</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>フィルター</translation>
     </message>
     <message>
         <source>All Log</source>
-        <translation type="unfinished"></translation>
+        <translation>すべてのログ</translation>
     </message>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 からインポート中 …</translation>
     </message>
     <message>
         <source>The destination contains files that will be overwritten.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>宛先には上書きされるファイルが含まれています。</translation>
     </message>
     <message>
         <source>Do you want to overwrite them?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>上書きしますか?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 にエクスポートされました</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>保存しました！</translation>
     </message>
 </context>
 <context>
     <name>transpondersView</name>
     <message>
         <source>Transponders</source>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダー</translation>
     </message>
     <message>
         <source>Combo</source>
-        <translation type="unfinished"></translation>
+        <translation>コンボ</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>システム</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>の位置</translation>
     </message>
     <message>
         <source>Transport ID</source>
-        <translation type="unfinished">Transport ID</translation>
+        <translation>Transport ID</translation>
     </message>
     <message>
         <source>DVBNS</source>
@@ -2820,96 +2820,96 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>周波数</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>分極</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>Modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>変調</translation>
     </message>
     <message>
         <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
+        <translation>帯域幅</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Roll offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Roll offset</translation>
     </message>
     <message>
         <source>Inversion</source>
-        <translation type="unfinished"></translation>
+        <translation>反転</translation>
     </message>
     <message>
         <source>Tmx Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Tmx Mode</translation>
     </message>
     <message>
         <source>Guard</source>
-        <translation type="unfinished"></translation>
+        <translation>Guard</translation>
     </message>
     <message>
         <source>Hierarchy</source>
-        <translation type="unfinished"></translation>
+        <translation>階層</translation>
     </message>
     <message>
         <source>New Transponder</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>新しいトランスポンダー</translation>
     </message>
     <message>
         <source>Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>検索…</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <source>Missing transponder key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダ キー &quot;%1&quot; がありません。</translation>
     </message>
     <message>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダ &quot;%1&quot; は存在しません。</translation>
     </message>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>削除の確認</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>項目を削除しますか?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>有効なデータ形式ではありません。</translation>
     </message>
     <message>
         <source>Edit Transponder</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダーの編集</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -2936,25 +2936,25 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <name>tunersetsView</name>
     <message>
         <source>Satellites</source>
-        <translation type="unfinished"></translation>
+        <translation>衛星</translation>
     </message>
     <message>
         <source>Positions</source>
-        <translation type="unfinished"></translation>
+        <translation>の位置</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <source>Unknown tuner settings type.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>不明なチューナー設定タイプです。</translation>
     </message>
     <message>
         <source>Transponders</source>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダー</translation>
     </message>
     <message>
         <source>Name</source>
@@ -2962,157 +2962,157 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>の位置</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>
-        <translation type="unfinished"></translation>
+        <translation>Freq/Pol/SR</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>周波数</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>分極</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>システム</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>Modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>変調</translation>
     </message>
     <message>
         <source>Inversion</source>
-        <translation type="unfinished"></translation>
+        <translation>反転</translation>
     </message>
     <message>
         <source>Roll offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Roll offset</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Country</source>
-        <translation type="unfinished"></translation>
+        <translation>国</translation>
     </message>
     <message>
         <source>Freq/Const/Band</source>
-        <translation type="unfinished"></translation>
+        <translation>Freq/Const/Band</translation>
     </message>
     <message>
         <source>Constellation</source>
-        <translation type="unfinished"></translation>
+        <translation>星座</translation>
     </message>
     <message>
         <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
+        <translation>帯域幅</translation>
     </message>
     <message>
         <source>Tmx Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Tmx Mode</translation>
     </message>
     <message>
         <source>HP FEC</source>
-        <translation type="unfinished">HP FEC</translation>
+        <translation>HP FEC</translation>
     </message>
     <message>
         <source>LP FEC</source>
-        <translation type="unfinished">LP FEC</translation>
+        <translation>LP FEC</translation>
     </message>
     <message>
         <source>Guard</source>
-        <translation type="unfinished"></translation>
+        <translation>Guard</translation>
     </message>
     <message>
         <source>Hierarchy</source>
-        <translation type="unfinished"></translation>
+        <translation>階層</translation>
     </message>
     <message>
         <source>Freq/Mod/SR</source>
-        <translation type="unfinished"></translation>
+        <translation>Freq/Mod/SR</translation>
     </message>
     <message>
         <source>Edit Settings</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>編集の設定</translation>
     </message>
     <message>
         <source>New Position</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>新しいトランスポンダーの位置</translation>
     </message>
     <message>
         <source>Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>検索…</translation>
     </message>
     <message>
         <source>New Transponder</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>新しいトランスポンダー</translation>
     </message>
     <message>
         <source>Missing tuner settings table key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チューナー設定テーブル キー &quot;%1&quot; がありません。</translation>
     </message>
     <message>
         <source>Missing tuner settings key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チューナー設定キー &quot;%1&quot; がありません。</translation>
     </message>
     <message>
         <source>Tuner settings table &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チューナー設定テーブル &quot;%1&quot; は存在しません。</translation>
     </message>
     <message>
         <source>Missing tuner settings transponder key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チューナー設定のトランスポンダー キー &quot;%1&quot; がありません。</translation>
     </message>
     <message>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チューナー設定トランスポンダー &quot;%1&quot; が存在しません。</translation>
     </message>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>削除の確認</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>項目を削除しますか?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>チューナー設定のトランスポンダー タイプが一致しません。</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>有効なデータ形式ではありません。</translation>
     </message>
     <message>
         <source>Edit Position</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダーの位置を編集する</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -3122,7 +3122,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Transponder</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>トランスポンダーの編集</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3155,17 +3155,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Highlight</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>ハイライト</translation>
     </message>
     <message>
         <source>Find Previous</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>前を検索</translation>
     </message>
     <message>
         <source>Find All</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>すべて検索</translation>
     </message>
 </context>
 </TS>

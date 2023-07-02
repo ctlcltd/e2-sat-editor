@@ -6,7 +6,7 @@
     <message>
         <source>Edit</source>
         <extracomment>Platform: Edit menu in macOS Menu bar</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti</translation>
     </message>
 </context>
 <context>
@@ -14,19 +14,19 @@
     <message>
         <source>Start Dictation...</source>
         <extracomment>Platform: edit item in macOS Edit Menu | Encoding: preserve 3 singular dots</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Pradėti diktantą...</translation>
     </message>
     <message>
         <source>Emoji &amp;&amp; Symbols</source>
         <extracomment>Platform: edit item in macOS Edit Menu | Encoding: note double ampersand</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Jaustukai ir simboliai</translation>
     </message>
 </context>
 <context>
     <name>QFileDialog</name>
     <message>
         <source>&amp;Save</source>
-        <translation type="unfinished">Į&amp;rašyti</translation>
+        <translation>Į&amp;rašyti</translation>
     </message>
 </context>
 <context>
@@ -37,16 +37,16 @@
     </message>
     <message>
         <source>Version %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Versija %1</translation>
     </message>
     <message>
         <source>This software is distributed under the terms of the %1.%2The source code of this software is available here:%3</source>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Ši programinė įranga platinama pagal %1 sąlygas.%2Šios programinės įrangos šaltinio kodą rasite čia:%3</translation>
     </message>
     <message>
         <source>GNU GPLv3 License</source>
-        <translation type="unfinished"></translation>
+        <translation>„GNU GPLv3 licencija“</translation>
     </message>
     <message>
         <source>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, 
@@ -56,14 +56,14 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION 
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
-        <translation type="unfinished"></translation>
+        <translation>PROGRAMINĖ ĮRANGA TEIKIAMA „TOKI, KOKIA YRA“, BE JOKIŲ RŪŠIŲ, AIŠKIŲ AR NUMANOMŲ GARANTIJŲ, ĮSKAITANT, BET JOMIS, JOMIS GARANTIJAS, DĖL TINKAMUMO PARDUOTI, TINKAMUMO KONKREČIAM TIKSLU IR NEPAŽEIDIMO. JOKIU ATVEJU AUTORIAI AR AUTORIŲ TEISIŲ TURĖTOJAI NEATSAKO UŽ JOKIUS REIKALAVIMUS, ŽALĄ AR KITĄ ATSAKOMYBĘ, ATSIŽVELGIANT Į SUTARTIES VEIKSMUS, NESKELIMUS AR KITĄ KITĄ ATSAKOMYBĘ, KILMĘ DĖL, NAUDOJIMO AR SU KITAIS SU JAIS PROGRAMINĖ ĮRANGA.</translation>
     </message>
 </context>
 <context>
     <name>channelBookView</name>
     <message>
         <source>Index</source>
-        <translation type="unfinished"></translation>
+        <translation>Indeksas</translation>
     </message>
     <message>
         <source>Name</source>
@@ -75,11 +75,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>Teikėjas</translation>
     </message>
     <message>
         <source>Transponder</source>
-        <translation type="unfinished"></translation>
+        <translation>Atsakiklis</translation>
     </message>
     <message>
         <source>Position</source>
@@ -87,35 +87,35 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>System</source>
-        <translation>Sistemos antraštė</translation>
+        <translation>Sistema</translation>
     </message>
     <message>
         <source>Services</source>
-        <translation>Tarnybos</translation>
+        <translation>Paslaugos</translation>
     </message>
     <message>
         <source>Bouquets</source>
-        <translation type="unfinished"></translation>
+        <translation>Bouquets</translation>
     </message>
     <message>
         <source>Positions</source>
-        <translation type="unfinished"></translation>
+        <translation>Pozicijos</translation>
     </message>
     <message>
         <source>Providers</source>
-        <translation type="unfinished"></translation>
+        <translation>Teikėjai</translation>
     </message>
     <message>
         <source>Resolution</source>
-        <translation type="unfinished"></translation>
+        <translation>Rezoliucija</translation>
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Kodifikavimas</translation>
     </message>
     <message>
         <source>A-Z</source>
-        <translation type="unfinished"></translation>
+        <translation>A-Z</translation>
     </message>
     <message>
         <source>&amp;Copy</source>
@@ -128,7 +128,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -138,17 +138,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Save</source>
         <comment>dialog</comment>
-        <translation>Įrašyti</translation>
+        <translation>Į&amp;rašyti</translation>
     </message>
     <message>
         <source>collapse</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>griūtis</translation>
     </message>
     <message>
         <source>expand</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>išplėsti</translation>
     </message>
 </context>
 <context>
@@ -156,12 +156,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Add Channel</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pridėti Kanalą</translation>
     </message>
     <message>
         <source>Filters for service type</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Filtrai pagal paslaugų tipą</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -171,7 +171,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Add</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Papildyti</translation>
     </message>
 </context>
 <context>
@@ -184,147 +184,147 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Failo Klaida</translation>
     </message>
     <message>
         <source>Parser Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Parser Klaida</translation>
     </message>
     <message>
         <source>Maker Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Maker Klaida</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Failas „%s“ neegzistuoja.</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; already exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Failas „%s“ jau yra.</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; is not a valid file.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Failas „%s“ nėra tinkamas failas.</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; is not readable.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Failas „%s“ neįskaitomas.</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; is not writable.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Failas „%s“ neįrašomas.</translation>
     </message>
     <message>
         <source>These settings are not supported.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Šie nustatymai nepalaikomi.</translation>
     </message>
     <message>
         <source>Services file not found.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Paslaugų failas nerastas.</translation>
     </message>
     <message>
         <source>Malformed or unknown XML file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Netinkamai suformuotas arba nežinomas XML failo formatas.</translation>
     </message>
     <message>
         <source>Unknown file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nežinomas failo formatas.</translation>
     </message>
     <message>
         <source>Unknown services file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nežinomas paslaugų failo formatas.</translation>
     </message>
     <message>
         <source>Unknown bouquets file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nežinomas bouquets failo formatas.</translation>
     </message>
     <message>
         <source>Unknown transponder type.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nežinomas atsakiklio tipas.</translation>
     </message>
     <message>
         <source>Unknown import option.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nežinoma importavimo parinktis.</translation>
     </message>
     <message>
         <source>Unknown export option.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nežinoma eksportavimo parinktis.</translation>
     </message>
     <message>
         <source>Unknown Lamedb services file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nežinomas Lamedb paslaugų failo formatas.</translation>
     </message>
     <message>
         <source>Unknown Zapit services file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nežinomas Zapit paslaugų failo formatas.</translation>
     </message>
     <message>
         <source>Unknown Zapit bouquets file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nežinomas Zapit bouquets failo formatas.</translation>
     </message>
     <message>
         <source>Missing index key &quot;%s&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Trūksta indekso rakto „%s“.</translation>
     </message>
     <message>
         <source>Missing channel reference &quot;%s&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Trūksta kanalo nuorodos „%s“.</translation>
     </message>
     <message>
         <source>Service &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Paslauga „%s“ neegzistuoja.</translation>
     </message>
     <message>
         <source>Bouquet &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bouquet „%s“ neegzistuoja.</translation>
     </message>
     <message>
         <source>Userbouquet &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Userbouquet „%s“ neegzistuoja.</translation>
     </message>
     <message>
         <source>Channel reference &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kanalo nuoroda „%s“ neegzistuoja.</translation>
     </message>
     <message>
         <source>Tunersets table &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tunersets lentelė „%s“ neegzistuoja.</translation>
     </message>
     <message>
         <source>Abstract merge swap objects.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Abstract merge apsikeiskite objektais.</translation>
     </message>
     <message>
         <source>Not supported yet.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Dar nepalaikoma.</translation>
     </message>
 </context>
 <context>
@@ -332,17 +332,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Bouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti Bouquet</translation>
     </message>
     <message>
         <source>New Bouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nauja Bouquet</translation>
     </message>
     <message>
         <source>Bouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bouquet</translation>
     </message>
     <message>
         <source>Name</source>
@@ -350,7 +350,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>full name</source>
-        <translation type="unfinished"></translation>
+        <translation>pavadinimas</translation>
     </message>
     <message>
         <source>Type</source>
@@ -358,19 +358,19 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Nice name</source>
-        <translation type="unfinished"></translation>
+        <translation>Sutrumpintas</translation>
     </message>
     <message>
         <source>condensed name (eg. TV, Radio)</source>
-        <translation type="unfinished"></translation>
+        <translation>sutrumpintas pavadinimas (pvz., TV, Radio)</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Failo pavadinimas</translation>
     </message>
     <message>
         <source>custom filename, leave empty to auto-fill</source>
-        <translation type="unfinished"></translation>
+        <translation>tinkintas failo pavadinimas, palikite tuščią auto pildymui</translation>
     </message>
     <message>
         <source>Error</source>
@@ -380,7 +380,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Bouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bouquet „%1“ neegzistuoja.</translation>
     </message>
 </context>
 <context>
@@ -388,21 +388,21 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Marker</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti Marker</translation>
     </message>
     <message>
         <source>Add Marker</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pridėti Marker</translation>
     </message>
     <message>
         <source>Marker</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Marker</translation>
     </message>
     <message>
         <source>Marker text</source>
-        <translation type="unfinished"></translation>
+        <translation>Marker tekstas</translation>
     </message>
     <message>
         <source>Error</source>
@@ -412,17 +412,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Userbouquet „%1“ neegzistuoja.</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kanalo nuoroda „%1“ neegzistuoja.</translation>
     </message>
     <message>
         <source>Channel reference mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kanalo nuorodos neatitikimas „%1“.</translation>
     </message>
 </context>
 <context>
@@ -430,68 +430,68 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Service</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti Paslaugą</translation>
     </message>
     <message>
         <source>New Service</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nauja Paslaugą</translation>
     </message>
     <message>
         <source>Service</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Paslaugą</translation>
     </message>
     <message>
         <source>Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Atsakiklis</translation>
     </message>
     <message>
         <source>Service name</source>
-        <translation type="unfinished"></translation>
+        <translation>Paslaugos pavadinimas</translation>
     </message>
     <message>
         <source>Service type</source>
-        <translation type="unfinished"></translation>
+        <translation>Paslaugos tipas</translation>
     </message>
     <message>
         <source>custom</source>
-        <translation type="unfinished"></translation>
+        <translation>pritaikyti</translation>
     </message>
     <message>
         <source>Service ID</source>
-        <translation type="unfinished">Service ID</translation>
+        <translation>Service ID</translation>
     </message>
     <message>
         <source>Tuner</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tuner</translation>
     </message>
     <message>
         <source>Satellite</source>
-        <translation type="unfinished">Satellite</translation>
+        <translation>Palydovas</translation>
     </message>
     <message>
         <source>Transponder</source>
-        <translation type="unfinished"></translation>
+        <translation>Atsakiklis</translation>
     </message>
     <message>
         <source>New Transponder</source>
-        <translation type="unfinished"></translation>
+        <translation>Naujas Atsakiklis</translation>
     </message>
     <message>
         <source>Parameters</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Parametrai</translation>
     </message>
     <message>
         <source>Provider name</source>
-        <translation type="unfinished"></translation>
+        <translation>Teikėjo pavadinimas</translation>
     </message>
     <message>
         <source>Package</source>
-        <translation type="unfinished"></translation>
+        <translation>Package</translation>
     </message>
     <message>
         <source>video</source>
@@ -515,31 +515,31 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>video type</source>
-        <translation type="unfinished">video type</translation>
+        <translation>video tipas</translation>
     </message>
     <message>
         <source>audio channel</source>
-        <translation type="unfinished">audio channel</translation>
+        <translation>garso kanalas</translation>
     </message>
     <message>
         <source>ac3 delay</source>
-        <translation type="unfinished">ac3 delay</translation>
+        <translation>ac3 vėlavimas</translation>
     </message>
     <message>
         <source>ms.</source>
-        <translation type="unfinished">ms.</translation>
+        <translation>ms.</translation>
     </message>
     <message>
         <source>pcm delay</source>
-        <translation type="unfinished">pcm delay</translation>
+        <translation>pcm vėlavimas</translation>
     </message>
     <message>
         <source>subtitle</source>
-        <translation type="unfinished">subtitle</translation>
+        <translation>paantraštė</translation>
     </message>
     <message>
         <source>audio type</source>
-        <translation type="unfinished">audio type</translation>
+        <translation>garso tipas</translation>
     </message>
     <message>
         <source>apid</source>
@@ -555,69 +555,69 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>PIDs</source>
-        <translation type="unfinished"></translation>
+        <translation>PID</translation>
     </message>
     <message>
         <source>Card ID parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Kortelės ID parametrai</translation>
     </message>
     <message>
         <source>Raw edit parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Neapdorotas parametrų redagavimas</translation>
     </message>
     <message>
         <source>Enter them in comma separated values.%1(eg. C:0100,C:0200,…)</source>
         <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Įveskite jas kableliais atskirtomis reikšmėmis.%1(pvz., C:0100,C:0200,…)</translation>
     </message>
     <message>
         <source>CAIDs</source>
-        <translation type="unfinished"></translation>
+        <translation>CAID</translation>
     </message>
     <message>
         <source>Do not update</source>
-        <translation type="unfinished"></translation>
+        <translation>Neatnaujinti</translation>
     </message>
     <message>
         <source>Hide in service list</source>
-        <translation type="unfinished"></translation>
+        <translation>Paslėpti paslaugų sąraše</translation>
     </message>
     <message>
         <source>Use edited PIDs instead</source>
-        <translation type="unfinished"></translation>
+        <translation>Vietoj to naudokite redaguotą PID</translation>
     </message>
     <message>
         <source>Hold service name</source>
-        <translation type="unfinished"></translation>
+        <translation>Laikykite paslaugos pavadinimą</translation>
     </message>
     <message>
         <source>Flag as new service</source>
-        <translation type="unfinished"></translation>
+        <translation>Pažymėti kaip naują paslaugą</translation>
     </message>
     <message>
         <source>Flags</source>
-        <translation type="unfinished"></translation>
+        <translation>Flags</translation>
     </message>
     <message>
         <source>%1It will overwrite any previously typed!%2Enter them in comma separated values.%3(eg. p:ProviderName,c:0100,C:0200,…)</source>
         <extracomment>HTML formattation: %1text%2text%3text treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1Jis perrašys visus anksčiau įvestus!%2Įveskite jas kableliais atskirtomis reikšmėmis.%3(pvz., p:Teikėjo pavadinimas,c:0100,C:0200,...)</translation>
     </message>
     <message>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>Pritaikyta</translation>
     </message>
     <message>
         <source>Service Number</source>
-        <translation type="unfinished"></translation>
+        <translation>Paslaugos numeris</translation>
     </message>
     <message>
         <source>Src ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Src ID</translation>
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"></translation>
+        <translation>Priedai</translation>
     </message>
     <message>
         <source>Error</source>
@@ -627,7 +627,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Service &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Paslauga „%1“ neegzistuoja.</translation>
     </message>
 </context>
 <context>
@@ -635,33 +635,33 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti Atsakiklį</translation>
     </message>
     <message>
         <source>New Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Naujas Atsakiklis</translation>
     </message>
     <message>
         <source>Satellite</source>
-        <translation type="unfinished">Satellite</translation>
+        <translation>Palydovas</translation>
     </message>
     <message>
         <source>Terrestrial</source>
-        <translation type="unfinished">Terrestrial</translation>
+        <translation>Antžeminis</translation>
     </message>
     <message>
         <source>Cable</source>
-        <translation type="unfinished">Cable</translation>
+        <translation>Kabelis</translation>
     </message>
     <message>
         <source>ATSC</source>
-        <translation type="unfinished">ATSC</translation>
+        <translation>ATSC</translation>
     </message>
     <message>
         <source>Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Atsakiklis</translation>
     </message>
     <message>
         <source>Type</source>
@@ -669,7 +669,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Transport ID</source>
-        <translation type="unfinished">Transport ID</translation>
+        <translation>Transport ID</translation>
     </message>
     <message>
         <source>DVBNS</source>
@@ -681,80 +681,80 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished">Padėtis</translation>
+        <translation>Padėtis</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>Dažnis</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>Poliarizacija</translation>
     </message>
     <message>
         <source>empty</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>tuščia</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>System</source>
-        <translation>Sistemos antraštė</translation>
+        <translation>Sistema</translation>
     </message>
     <message>
         <source>Constellation</source>
-        <translation type="unfinished"></translation>
+        <translation>Constellation</translation>
     </message>
     <message>
         <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
+        <translation>Bandwidth</translation>
     </message>
     <message>
         <source>HP FEC</source>
-        <translation type="unfinished">HP FEC</translation>
+        <translation>HP FEC</translation>
     </message>
     <message>
         <source>LP FEC</source>
-        <translation type="unfinished">LP FEC</translation>
+        <translation>LP FEC</translation>
     </message>
     <message>
         <source>Modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Moduliavimas</translation>
     </message>
     <message>
         <source>Inner FEC</source>
-        <translation type="unfinished">Inner FEC</translation>
+        <translation>Inner FEC</translation>
     </message>
     <message>
         <source>Inversion</source>
-        <translation type="unfinished"></translation>
+        <translation>Inversija</translation>
     </message>
     <message>
         <source>Roll Offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Roll Offset</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Transmission Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Perdavimo Režimas</translation>
     </message>
     <message>
         <source>Guard Interval</source>
-        <translation type="unfinished"></translation>
+        <translation>Guard Interval</translation>
     </message>
     <message>
         <source>Hierarchy</source>
-        <translation type="unfinished"></translation>
+        <translation>Hierarchija</translation>
     </message>
     <message>
         <source>Error</source>
@@ -764,7 +764,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Atsakiklis „%1“ neegzistuoja.</translation>
     </message>
 </context>
 <context>
@@ -772,15 +772,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Settings</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti Nustatymus</translation>
     </message>
     <message>
         <source>Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Komentuoti</translation>
     </message>
     <message>
         <source>Charset</source>
-        <translation type="unfinished"></translation>
+        <translation>Charset</translation>
     </message>
     <message>
         <source>Error</source>
@@ -790,7 +790,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Tuner settings &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tuner nustatymų „%1“ nėra.</translation>
     </message>
 </context>
 <context>
@@ -798,12 +798,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Position</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti Poziciją</translation>
     </message>
     <message>
         <source>New Position</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nauja Pozicija</translation>
     </message>
     <message>
         <source>Name</source>
@@ -815,15 +815,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Flags</source>
-        <translation type="unfinished"></translation>
+        <translation>Flags</translation>
     </message>
     <message>
         <source>Country</source>
-        <translation type="unfinished"></translation>
+        <translation>Šalis</translation>
     </message>
     <message>
         <source>Feed</source>
-        <translation type="unfinished">Feed</translation>
+        <translation>Feed</translation>
     </message>
     <message>
         <source>Error</source>
@@ -833,12 +833,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Tuner settings &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tuner nustatymų „%1“ nėra.</translation>
     </message>
     <message>
         <source>Tuner settings table &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tuner nustatymų lentelė „%1“ neegzistuoja.</translation>
     </message>
 </context>
 <context>
@@ -846,85 +846,85 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti Atsakiklį</translation>
     </message>
     <message>
         <source>New Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Naujas Atsakiklis</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>Dažnis</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>Poliarizacija</translation>
     </message>
     <message>
         <source>empty</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>tuščia</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>System</source>
-        <translation>Sistemos antraštė</translation>
+        <translation>Sistema</translation>
     </message>
     <message>
         <source>Constellation</source>
-        <translation type="unfinished"></translation>
+        <translation>Constellation</translation>
     </message>
     <message>
         <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
+        <translation>Bandwidth</translation>
     </message>
     <message>
         <source>HP FEC</source>
-        <translation type="unfinished">HP FEC</translation>
+        <translation>HP FEC</translation>
     </message>
     <message>
         <source>LP FEC</source>
-        <translation type="unfinished">LP FEC</translation>
+        <translation>LP FEC</translation>
     </message>
     <message>
         <source>Modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Moduliavimas</translation>
     </message>
     <message>
         <source>Inner FEC</source>
-        <translation type="unfinished">Inner FEC</translation>
+        <translation>Inner FEC</translation>
     </message>
     <message>
         <source>Inversion</source>
-        <translation type="unfinished"></translation>
+        <translation>Inversija</translation>
     </message>
     <message>
         <source>Roll Offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Roll Offset</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Transmission Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Perdavimo Režimas</translation>
     </message>
     <message>
         <source>Guard Interval</source>
-        <translation type="unfinished"></translation>
+        <translation>Guard Interval</translation>
     </message>
     <message>
         <source>Hierarchy</source>
-        <translation type="unfinished"></translation>
+        <translation>Hierarchija</translation>
     </message>
     <message>
         <source>isid</source>
@@ -954,17 +954,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Tuner settings &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tuner nustatymų „%1“ nėra.</translation>
     </message>
     <message>
         <source>Tuner settings table &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tuner nustatymų lentelė „%1“ neegzistuoja.</translation>
     </message>
     <message>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tuner nustatymų atsakiklis „%1“ neegzistuoja.</translation>
     </message>
 </context>
 <context>
@@ -972,17 +972,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Userbouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti Userbouquet</translation>
     </message>
     <message>
         <source>New Userbouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nauja Userbouquet</translation>
     </message>
     <message>
         <source>Userbouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Userbouquet</translation>
     </message>
     <message>
         <source>Name</source>
@@ -990,20 +990,20 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Failo pavadinimas</translation>
     </message>
     <message>
         <source>custom filename, leave empty to auto-fill</source>
-        <translation type="unfinished"></translation>
+        <translation>tinkintas failo pavadinimas, palikite tuščią auto pildymui</translation>
     </message>
     <message>
         <source>Bouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bouquet</translation>
     </message>
     <message>
         <source>Parent Bouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>Tėvas bouquet</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1013,7 +1013,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Userbouquet „%1“ neegzistuoja.</translation>
     </message>
 </context>
 <context>
@@ -1026,27 +1026,27 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>FTP Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP Klaida</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Failas „%s“ neegzistuoja.</translation>
     </message>
     <message>
         <source>Missing &quot;%s&quot; parameter.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Trūksta parametro „%s“.</translation>
     </message>
     <message>
         <source>Missing &quot;%s&quot; path parameter.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Trūksta „%s“ kelio parametro.</translation>
     </message>
     <message>
         <source>Failed to resume FTP connection.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nepavyko atnaujinti FTP ryšio.</translation>
     </message>
 </context>
 <context>
@@ -1055,12 +1055,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>&amp;File</source>
         <comment>menu</comment>
         <extracomment>Platform: File menu</extracomment>
-        <translation type="unfinished">Failas</translation>
+        <translation>Failas</translation>
     </message>
     <message>
         <source>&amp;New</source>
         <comment>menu</comment>
-        <translation type="unfinished">Naujas</translation>
+        <translation>Naujas</translation>
     </message>
     <message>
         <source>&amp;Open</source>
@@ -1076,17 +1076,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>Save &amp;As…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Išsaugoti kaip…</translation>
     </message>
     <message>
         <source>Import</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Importuoti</translation>
     </message>
     <message>
         <source>Export</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Eksportuoti</translation>
     </message>
     <message>
         <source>Close Tab</source>
@@ -1096,18 +1096,18 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Close All Tabs</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Uždarykite visas korteles</translation>
     </message>
     <message>
         <source>&amp;Print…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Spausdinti…</translation>
     </message>
     <message>
         <source>Print &amp;All</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Spausdinti viską</translation>
     </message>
     <message>
         <source>Preferences…</source>
@@ -1119,24 +1119,24 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>About</source>
         <comment>menu</comment>
         <extracomment>Platform: About [$BUNDLE_NAME] item in macOS Application Menu</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Apie</translation>
     </message>
     <message>
         <source>Settings</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nustatymai</translation>
     </message>
     <message>
         <source>E&amp;xit</source>
         <comment>menu</comment>
         <extracomment>Platform: Exit | Quit item</extracomment>
-        <translation type="unfinished">Baigti</translation>
+        <translation>Baigti</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
         <comment>menu</comment>
         <extracomment>Platform: Edit menu</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti</translation>
     </message>
     <message>
         <source>&amp;Undo</source>
@@ -1177,13 +1177,13 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>&amp;Find</source>
         <comment>menu</comment>
         <extracomment>Platform: Find menu</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Ieškoti</translation>
     </message>
     <message>
         <source>&amp;Find Channel…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Ieškoti Kanalą…</translation>
     </message>
     <message>
         <source>Find &amp;Next</source>
@@ -1198,140 +1198,140 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Find &amp;All</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ieškoti viską</translation>
     </message>
     <message>
         <source>Find &amp;Bouquet…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Ieškoti Bouquet…</translation>
     </message>
     <message>
         <source>Find N&amp;ext Bouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ieškoti atgal Bouquet</translation>
     </message>
     <message>
         <source>&amp;Tools</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Įrankiai</translation>
     </message>
     <message>
         <source>Edit Transponders</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti Atsakiklius</translation>
     </message>
     <message>
         <source>Edit %1</source>
         <comment>menu</comment>
         <extracomment>Note: %1 is xml filename</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti %1</translation>
     </message>
     <message>
         <source>Picons editor</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Picons redaktorius</translation>
     </message>
     <message>
         <source>Edit Transponders</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti Atsakiklius</translation>
     </message>
     <message>
         <source>Edit Settings</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti Nustatymus</translation>
     </message>
     <message>
         <source>Channel Book</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kanalų knyga</translation>
     </message>
     <message>
         <source>Filename</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Failo pavadinimas</translation>
     </message>
     <message>
         <source>Import from CSV</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Importuoti iš CSV</translation>
     </message>
     <message>
         <source>Import Services</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Importo paslaugos</translation>
     </message>
     <message>
         <source>Import Bouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Importo bouquet</translation>
     </message>
     <message>
         <source>Import Userbouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Importo userbouquet</translation>
     </message>
     <message>
         <source>Import Tuner settings</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Importo tuner nustatymus</translation>
     </message>
     <message>
         <source>Export to CSV</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Eksportuoti į CSV</translation>
     </message>
     <message>
         <source>Export current</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Eksporto srovę</translation>
     </message>
     <message>
         <source>Export All</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Eksporto viską</translation>
     </message>
     <message>
         <source>Export Services</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Eksporto paslaugos</translation>
     </message>
     <message>
         <source>Export Bouquets</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Eksporto bouquets</translation>
     </message>
     <message>
         <source>Export Userbouquets</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Eksporto userbouquets</translation>
     </message>
     <message>
         <source>Export Tuner settings</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Eksporto tuner nustatymus</translation>
     </message>
     <message>
         <source>Export to HTML</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Eksportuoti į HTML</translation>
     </message>
     <message>
         <source>Export Index</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Eksporto indeksas</translation>
     </message>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Rąstų Inspekt</translation>
     </message>
     <message>
         <source>&amp;Window</source>
         <comment>menu</comment>
         <extracomment>Platform: Window menu</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Langas</translation>
     </message>
     <message>
         <source>&amp;Minimize</source>
@@ -1341,12 +1341,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Hide &amp;Status Bar</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Slėpti būsenos juostą</translation>
     </message>
     <message>
         <source>New &amp;Tab</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nauja Kor&amp;telė</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -1357,66 +1357,66 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>About &amp;Qt</source>
         <comment>menu</comment>
-        <translation type="unfinished">Apie „Qt“</translation>
+        <translation>Apie „Qt“</translation>
     </message>
     <message>
         <source>Report a bug</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Panešti apie klaidą</translation>
     </message>
     <message>
         <source>Check for updates…</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tikrinti, ar yra atnaujinimų…</translation>
     </message>
     <message>
         <source>Go to E2SE repository…</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Eikite į E2SE saugyklą…</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>
         <comment>menu</comment>
-        <translation type="unfinished">Apie „e2 SAT Editor“</translation>
+        <translation>Apie „e2 SAT Editor“</translation>
     </message>
     <message>
         <source>New &amp;Tab</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nauja Kor&amp;telė</translation>
     </message>
     <message>
         <source>&amp;Find Channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Ieškoti Kanalą</translation>
     </message>
     <message>
         <source>Find &amp;Bouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>Ieškoti Bouquet</translation>
     </message>
     <message>
         <source>Find N&amp;ext Bouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>Ieškoti atgal Bouquet</translation>
     </message>
     <message>
         <source>&amp;Find Transponder</source>
-        <translation type="unfinished"></translation>
+        <translation>Ieškoti Atsakiklį</translation>
     </message>
     <message>
         <source>Channel Book</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kanalų knyga</translation>
     </message>
     <message>
         <source>Find &amp;Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Ieškoti Poziciją</translation>
     </message>
     <message>
         <source>Find N&amp;ext Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Ieškoti atgal Poziciją</translation>
     </message>
     <message>
         <source>Untitled</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>Be pavadinimo</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1426,110 +1426,110 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Klaida skaitant failą „%1“.</translation>
     </message>
     <message>
         <source>Missing current tab reference.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Trūksta dabartinės kortelės nuorodos.</translation>
     </message>
     <message>
         <source>Missing parent tab for tab reference &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Trūksta pagrindinės kortelės kortelės nuorodai „%1“.</translation>
     </message>
     <message>
         <source>Picons editor</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>Picons redaktorius</translation>
     </message>
     <message>
         <source>Missing tab reference &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Trūksta kortelės nuorodos „%1“.</translation>
     </message>
     <message>
         <source>Select data folder</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pasirinkite duomenų aplanką</translation>
     </message>
     <message>
         <source>Select where to save</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pasirinkite kur išsaugoti</translation>
     </message>
     <message>
         <source>Select one or more files to open</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pasirinkite vieną ar daugiau failų</translation>
     </message>
     <message>
         <source>CSV File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>CSV failas</translation>
     </message>
     <message>
         <source>All Files</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Visi failai</translation>
     </message>
     <message>
         <source>Import</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Importuoti</translation>
     </message>
     <message>
         <source>HTML File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>HTML failas</translation>
     </message>
     <message>
         <source>Export</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Eksportuoti</translation>
     </message>
     <message>
         <source>Hide &amp;Status Bar</source>
-        <translation type="unfinished"></translation>
+        <translation>Slėpti būsenos juostą</translation>
     </message>
     <message>
         <source>Show &amp;Status Bar</source>
-        <translation type="unfinished"></translation>
+        <translation>Rodyti būsenos juostą</translation>
     </message>
     <message>
         <source>Channels</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kanalai</translation>
     </message>
     <message>
         <source>Bouquet</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bouquet</translation>
     </message>
     <message>
         <source>TV</source>
         <comment>status-bar</comment>
-        <translation type="unfinished">TV</translation>
+        <translation>TV</translation>
     </message>
     <message>
         <source>Radio</source>
         <comment>status-bar</comment>
-        <translation type="unfinished">Radio</translation>
+        <translation>Radio</translation>
     </message>
     <message>
         <source>Data</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Data</translation>
     </message>
     <message>
         <source>Total</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Sumos</translation>
     </message>
     <message>
         <source>Transponders</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Atsakikliai</translation>
     </message>
     <message>
         <source>Position</source>
@@ -1541,19 +1541,19 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <name>mainView</name>
     <message>
         <source>Services</source>
-        <translation>Tarnybos</translation>
+        <translation>Paslaugos</translation>
     </message>
     <message>
         <source>Bouquets</source>
-        <translation type="unfinished"></translation>
+        <translation>Bouquets</translation>
     </message>
     <message>
         <source>Channels</source>
-        <translation type="unfinished"></translation>
+        <translation>Kanalai</translation>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished"></translation>
+        <translation>Indeksas</translation>
     </message>
     <message>
         <source>Name</source>
@@ -1561,15 +1561,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Parental</source>
-        <translation type="unfinished"></translation>
+        <translation>Tėvų</translation>
     </message>
     <message>
         <source>Service ID</source>
-        <translation type="unfinished">Service ID</translation>
+        <translation>Service ID</translation>
     </message>
     <message>
         <source>Transport ID</source>
-        <translation type="unfinished">Transport ID</translation>
+        <translation>Transport ID</translation>
     </message>
     <message>
         <source>Type</source>
@@ -1577,15 +1577,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>CAS</source>
-        <translation type="unfinished">CAS</translation>
+        <translation>CAS</translation>
     </message>
     <message>
         <source>Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>Teikėjas</translation>
     </message>
     <message>
         <source>System</source>
-        <translation>Sistemos antraštė</translation>
+        <translation>Sistema</translation>
     </message>
     <message>
         <source>Position</source>
@@ -1593,108 +1593,108 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Tuner</source>
-        <translation type="unfinished"></translation>
+        <translation>Tuner</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>Dažnis</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>Poliarizacija</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>New Bouquet</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nauja Bouquet</translation>
     </message>
     <message>
         <source>Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ieškoti…</translation>
     </message>
     <message>
         <source>Add Channel</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pridėti Kanalą</translation>
     </message>
     <message>
         <source>Add Marker</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pridėti Marker</translation>
     </message>
     <message>
         <source>New Service</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nauja Paslaugą</translation>
     </message>
     <message>
         <source>Drag&amp;&amp;Drop</source>
         <comment>toolbar</comment>
         <extracomment>Encoding: note double ampersand</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Drag&amp;&amp;Drop</translation>
     </message>
     <message>
         <source>Reference</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Reference</translation>
     </message>
     <message>
         <source>Settings Convert</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nustatymai konvertuoti</translation>
     </message>
     <message>
         <source>Drag&amp;&amp;Drop Preferences</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>Drag&amp;&amp;Drop parinktys</translation>
     </message>
     <message>
         <source>&amp;Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ieškoti…</translation>
     </message>
     <message>
         <source>All services</source>
-        <translation type="unfinished"></translation>
+        <translation>Visos paslaugos</translation>
     </message>
     <message>
         <source>Reference ID</source>
         <comment>reference-box</comment>
-        <translation type="unfinished">Reference ID</translation>
+        <translation>Reference ID</translation>
     </message>
     <message>
         <source>Service ID</source>
         <comment>reference-box</comment>
-        <translation type="unfinished">Service ID</translation>
+        <translation>Service ID</translation>
     </message>
     <message>
         <source>Transponder</source>
         <comment>reference-box</comment>
-        <translation type="unfinished"></translation>
+        <translation>Atsakiklis</translation>
     </message>
     <message>
         <source>Userbouquets</source>
         <comment>reference-box</comment>
-        <translation type="unfinished"></translation>
+        <translation>Userbouquets</translation>
     </message>
     <message>
         <source>Bouquets</source>
         <comment>reference-box</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bouquets</translation>
     </message>
     <message>
         <source>Tuner</source>
         <comment>reference-box</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tuner</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1704,154 +1704,154 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Missing index key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Trūksta indekso rakto „%1“.</translation>
     </message>
     <message>
         <source>Channel reference mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kanalo nuorodos neatitikimas „%1“.</translation>
     </message>
     <message>
         <source>Convert</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>Paversti</translation>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.4 [Enigma 2]</translation>
+        <translation>Lamedb 2.4 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.5 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.5 [Enigma 2]</translation>
+        <translation>Lamedb 2.5 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.3 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.3 [Enigma 1]</translation>
+        <translation>Lamedb 2.3 [Enigma 1]</translation>
     </message>
     <message>
         <source>Lamedb 2.2 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.2 [Enigma 1]</translation>
+        <translation>Lamedb 2.2 [Enigma 1]</translation>
     </message>
     <message>
         <source>Zapit api-v4 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v4 [Neutrino]</translation>
+        <translation>Zapit api-v4 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v3 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v3 [Neutrino]</translation>
+        <translation>Zapit api-v3 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v2 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v2 [Neutrino]</translation>
+        <translation>Zapit api-v2 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+        <translation>Zapit api-v1 [Neutrino]</translation>
     </message>
     <message>
         <source>Drag and Drop</source>
-        <translation type="unfinished"></translation>
+        <translation>Drag and Drop</translation>
     </message>
     <message>
         <source>Switch to bouquet after drop</source>
-        <translation type="unfinished"></translation>
+        <translation>Perjunkite į bouquet po drop</translation>
     </message>
     <message>
         <source>Channel operations</source>
-        <translation type="unfinished"></translation>
+        <translation>Kanalo operacijos</translation>
     </message>
     <message>
         <source>Copy channels (preserving)</source>
-        <translation type="unfinished"></translation>
+        <translation>Kanalų kopijavimas (išsaugojimas)</translation>
     </message>
     <message>
         <source>Move channels (deleting)</source>
-        <translation type="unfinished"></translation>
+        <translation>Perkelti kanalus (ištrynimas)</translation>
     </message>
     <message>
         <source>Missing bouquet key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Trūksta bouquet rakto „%1“.</translation>
     </message>
     <message>
         <source>Bouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bouquet „%1“ neegzistuoja.</translation>
     </message>
     <message>
         <source>Missing userbouquet key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Trūksta userbouquet rakto „%1“.</translation>
     </message>
     <message>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Userbouquet „%1“ neegzistuoja.</translation>
     </message>
     <message>
         <source>Missing service key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Trūksta paslaugos rakto „%1“.</translation>
     </message>
     <message>
         <source>Service &quot;%1&quot; not exists or is a channel reference.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Paslauga „%1“ neegzistuoja arba yra kanalo nuoroda.</translation>
     </message>
     <message>
         <source>Missing channel reference key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Trūksta kanalo nuorodos rakto „%1“.</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; is not a valid marker.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kanalo nuoroda „%1“ nėra tinkamas marker.</translation>
     </message>
     <message>
         <source>Channel reference&quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kanalo nuoroda „%1“ neegzistuoja.</translation>
     </message>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Patvirtinkite ištrynimą</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ar norite ištrinti elementus?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Netinkamas duomenų formatas.</translation>
     </message>
     <message>
         <source>Channel reference mismatch.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kanalo nuorodos neatitikimas.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti Bouquet</translation>
     </message>
     <message>
         <source>Edit Userbouquet</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti Userbouquet</translation>
     </message>
     <message>
         <source>Set Parental lock</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nustatykite tėvų užraktą</translation>
     </message>
     <message>
         <source>Unset Parental lock</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Išjungti tėvų užraktą</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -1861,27 +1861,27 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Export</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Eksportuoti</translation>
     </message>
     <message>
         <source>Edit Marker</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti Marker</translation>
     </message>
     <message>
         <source>Edit Service</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti Paslaugą</translation>
     </message>
     <message>
         <source>Parental lock (Userbouquet)</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tėvų užraktas (Userbouquet)</translation>
     </message>
     <message>
         <source>Parental lock</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tėvų užraktas</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -1903,168 +1903,168 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <name>piconsView</name>
     <message>
         <source>Picons</source>
-        <translation type="unfinished"></translation>
+        <translation>Picons</translation>
     </message>
     <message>
         <source>Picons Preferences</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>Picons parinktys</translation>
     </message>
     <message>
         <source>&amp;Browse…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Naršyti…</translation>
     </message>
     <message>
         <source>Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ieškoti…</translation>
     </message>
     <message>
         <source>Folder</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Aplankas</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished">Vardas</translation>
+        <translation>Vardas</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished">Tipas</translation>
+        <translation>Tipas</translation>
     </message>
     <message>
         <source>CAS</source>
-        <translation type="unfinished">CAS</translation>
+        <translation>CAS</translation>
     </message>
     <message>
         <source>Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>Teikėjas</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Failo pavadinimas</translation>
     </message>
     <message>
         <source>Tuner</source>
-        <translation type="unfinished"></translation>
+        <translation>Tuner</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished">Padėtis</translation>
+        <translation>Padėtis</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished">Sistemos antraštė</translation>
+        <translation>Sistema</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Klaida</translation>
+        <translation>Klaida</translation>
     </message>
     <message>
         <source>Channel mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kanalo neatitikimas „%1“.</translation>
     </message>
     <message>
         <source>Backup picon when replaced</source>
-        <translation type="unfinished"></translation>
+        <translation>Pakeitus atsarginę picon kopiją</translation>
     </message>
     <message>
         <source>Filename format</source>
-        <translation type="unfinished"></translation>
+        <translation>Failo pavadinimo formatas</translation>
     </message>
     <message>
         <source>Use reference ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Naudokite reference ID</translation>
     </message>
     <message>
         <source>Use service name</source>
-        <translation type="unfinished"></translation>
+        <translation>Naudokite paslaugos pavadinimą</translation>
     </message>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Failo Klaida</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Klaida skaitant failą „%1“.</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Klaida rašant failą „%1“.</translation>
     </message>
     <message>
         <source>Delete images</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ištrinti vaizdus</translation>
     </message>
     <message>
         <source>Do you want to delete the images from disk?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ar norite ištrinti vaizdus iš disko?</translation>
     </message>
     <message>
         <source>Change picon</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Keisti picon</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">Iški&amp;rpti</translation>
+        <translation>Iški&amp;rpti</translation>
     </message>
     <message>
         <source>&amp;Copy</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">&amp;Kopijuoti</translation>
+        <translation>&amp;Kopijuoti</translation>
     </message>
     <message>
         <source>&amp;Paste</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">Į&amp;dėti</translation>
+        <translation>Į&amp;dėti</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">Pa&amp;šalinti</translation>
+        <translation>Pa&amp;šalinti</translation>
     </message>
     <message>
         <source>Select picons folder</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pasirinkite picons aplanką</translation>
     </message>
     <message>
         <source>Select picon image</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pasirinkite picon vaizdą</translation>
     </message>
 </context>
 <context>
     <name>printable</name>
     <message>
         <source>Untitled</source>
-        <translation type="unfinished"></translation>
+        <translation>Be pavadinimo</translation>
     </message>
     <message>
         <source>(extract)</source>
-        <translation type="unfinished"></translation>
+        <translation>(ištrauka)</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Nustatymai</translation>
     </message>
     <message>
         <source>Tuner Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Tuner Nustatymai</translation>
     </message>
     <message>
         <source>Services List</source>
-        <translation type="unfinished"></translation>
+        <translation>Paslaugų sąrašas</translation>
     </message>
     <message>
         <source>File</source>
@@ -2072,19 +2072,19 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Generatorius</translation>
     </message>
     <message>
         <source>Datetime</source>
-        <translation type="unfinished"></translation>
+        <translation>Data</translation>
     </message>
     <message>
         <source>Table of Contents</source>
-        <translation type="unfinished"></translation>
+        <translation>Indeksas</translation>
     </message>
     <message>
         <source>Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Turinys</translation>
     </message>
     <message>
         <source>Type</source>
@@ -2098,11 +2098,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Missing index key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Trūksta indekso rakto „%1“.</translation>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished"></translation>
+        <translation>Indeksas</translation>
     </message>
     <message>
         <source>Name</source>
@@ -2122,51 +2122,51 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>CAS</source>
-        <translation type="unfinished">CAS</translation>
+        <translation>CAS</translation>
     </message>
     <message>
         <source>Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>Teikėjas</translation>
     </message>
     <message>
         <source>Freq</source>
-        <translation type="unfinished"></translation>
+        <translation>Dažn</translation>
     </message>
     <message>
         <source>Pol</source>
-        <translation type="unfinished"></translation>
+        <translation>Pol</translation>
     </message>
     <message>
         <source>SR</source>
-        <translation type="unfinished"></translation>
+        <translation>SR</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>Sys</source>
-        <translation type="unfinished"></translation>
+        <translation>Sys</translation>
     </message>
     <message>
         <source>Pos</source>
-        <translation type="unfinished"></translation>
+        <translation>Poz</translation>
     </message>
     <message>
         <source>Tuner</source>
-        <translation type="unfinished"></translation>
+        <translation>Tuner</translation>
     </message>
     <message>
         <source>Bouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>Bouquet</translation>
     </message>
     <message>
         <source>Userbouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>Userbouquet</translation>
     </message>
     <message>
         <source>Transponders</source>
-        <translation type="unfinished"></translation>
+        <translation>Atsakikliai</translation>
     </message>
     <message>
         <source>Position</source>
@@ -2174,47 +2174,47 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Mod</source>
-        <translation type="unfinished"></translation>
+        <translation>Mod</translation>
     </message>
     <message>
         <source>Inv</source>
-        <translation type="unfinished"></translation>
+        <translation>Inv</translation>
     </message>
     <message>
         <source>Rollof</source>
-        <translation type="unfinished"></translation>
+        <translation>Rollof</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Const</source>
-        <translation type="unfinished"></translation>
+        <translation>Const</translation>
     </message>
     <message>
         <source>Band</source>
-        <translation type="unfinished"></translation>
+        <translation>Band</translation>
     </message>
     <message>
         <source>Tmx Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Tmx Režimas</translation>
     </message>
     <message>
         <source>HP FEC</source>
-        <translation type="unfinished">HP FEC</translation>
+        <translation>HP FEC</translation>
     </message>
     <message>
         <source>LP FEC</source>
-        <translation type="unfinished">LP FEC</translation>
+        <translation>LP FEC</translation>
     </message>
     <message>
         <source>Guard</source>
-        <translation type="unfinished"></translation>
+        <translation>Guard</translation>
     </message>
     <message>
         <source>Hier</source>
-        <translation type="unfinished"></translation>
+        <translation>Hier</translation>
     </message>
 </context>
 <context>
@@ -2222,12 +2222,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Settings</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nustatymai</translation>
     </message>
     <message>
         <source>Save</source>
         <comment>dialog</comment>
-        <translation>Įrašyti</translation>
+        <translation>Į&amp;rašyti</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -2236,7 +2236,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Papildyti</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -2244,153 +2244,153 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Ryšys</translation>
     </message>
     <message>
         <source>IP address</source>
-        <translation type="unfinished"></translation>
+        <translation>IP adresas</translation>
     </message>
     <message>
         <source>FTP port</source>
-        <translation type="unfinished"></translation>
+        <translation>FTP prievadas</translation>
     </message>
     <message>
         <source>Use active FTP</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktyvųjį FTP</translation>
     </message>
     <message>
         <source>HTTP port</source>
-        <translation type="unfinished"></translation>
+        <translation>HTTP prievadas</translation>
     </message>
     <message>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation>Login</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Username</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Password</translation>
     </message>
     <message>
         <source>Configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfigūracija</translation>
     </message>
     <message>
         <source>Transponders</source>
-        <translation type="unfinished"></translation>
+        <translation>Atsakikliai</translation>
     </message>
     <message>
         <source>Services</source>
-        <translation>Tarnybos</translation>
+        <translation>Paslaugos</translation>
     </message>
     <message>
         <source>Bouquets</source>
-        <translation type="unfinished"></translation>
+        <translation>Bouquets</translation>
     </message>
     <message>
         <source>Connections</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Jungtys</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Generolas</translation>
     </message>
     <message>
         <source>Show confirmation messages when deleting</source>
-        <translation type="unfinished"></translation>
+        <translation>Ištrinant rodyti patvirtinimo pranešimus</translation>
     </message>
     <message>
         <source>Parental lock whitelist (exclusion instead inclusion list)</source>
-        <translation type="unfinished"></translation>
+        <translation>Baltasis tėvų užrakto sąrašas (išimčių sąrašas)</translation>
     </message>
     <message>
         <source>Drag and Drop</source>
-        <translation type="unfinished"></translation>
+        <translation>Drag and Drop</translation>
     </message>
     <message>
         <source>Switch to current bouquet item after the drop</source>
-        <translation type="unfinished"></translation>
+        <translation>Po drop perjunkite į dabartinį bouquet elementą</translation>
     </message>
     <message>
         <source>Channel operations</source>
-        <translation type="unfinished"></translation>
+        <translation>Kanalo operacijos</translation>
     </message>
     <message>
         <source>Copy channels (preserving)</source>
-        <translation type="unfinished"></translation>
+        <translation>Kanalų kopijavimas (išsaugojimas)</translation>
     </message>
     <message>
         <source>Move channels (deleting)</source>
-        <translation type="unfinished"></translation>
+        <translation>Perkelti kanalus (ištrynimas)</translation>
     </message>
     <message>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>Kalba</translation>
     </message>
     <message>
         <source>Picons</source>
-        <translation type="unfinished"></translation>
+        <translation>Picons</translation>
     </message>
     <message>
         <source>Default (system language)</source>
-        <translation type="unfinished"></translation>
+        <translation>Numatytoji (sistemos kalba)</translation>
     </message>
     <message>
         <source>The software might need to be restarted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gali tekti iš naujo paleisti programinę įrangą.</translation>
     </message>
     <message>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Tema</translation>
     </message>
     <message>
         <source>Default (system theme)</source>
-        <translation type="unfinished"></translation>
+        <translation>Numatytoji (sistemos tema)</translation>
     </message>
     <message>
         <source>Dark</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamsus</translation>
     </message>
     <message>
         <source>Light</source>
-        <translation>Lengvas</translation>
+        <translation>Šviesa</translation>
     </message>
     <message>
         <source>Enable experimental features</source>
-        <translation type="unfinished"></translation>
+        <translation>Įgalinti eksperimentines funkcijas</translation>
     </message>
     <message>
         <source>Picons editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Picons redaktorius</translation>
     </message>
     <message>
         <source>Backup picon when replaced</source>
-        <translation type="unfinished"></translation>
+        <translation>Pakeitus atsarginę picon kopiją</translation>
     </message>
     <message>
         <source>Filename format</source>
-        <translation type="unfinished"></translation>
+        <translation>Failo pavadinimo formatas</translation>
     </message>
     <message>
         <source>Use reference ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Naudokite reference ID</translation>
     </message>
     <message>
         <source>Use service name</source>
-        <translation type="unfinished"></translation>
+        <translation>Naudokite paslaugos pavadinimą</translation>
     </message>
     <message>
         <source>Preferences</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Parinktys</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Nustatymai</translation>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
@@ -2426,57 +2426,57 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Default format</source>
-        <translation type="unfinished"></translation>
+        <translation>Numatytasis formatas</translation>
     </message>
     <message>
         <source>Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>Įrankiai</translation>
     </message>
     <message>
         <source>CSV Import/Export</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV Importuoti/eksportuoti</translation>
     </message>
     <message>
         <source>Allow header columns in CSV</source>
-        <translation type="unfinished"></translation>
+        <translation>Leisti antraštės stulpelius CSV</translation>
     </message>
     <message>
         <source>CSV delimiter character</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV skyriklio simbolis</translation>
     </message>
     <message>
         <source>CSV separator character</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV skyriklio simbolis</translation>
     </message>
     <message>
         <source>CSV escape character</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV pabėgimo simbolis</translation>
     </message>
     <message>
         <source>Fields Import/Export</source>
-        <translation type="unfinished"></translation>
+        <translation>Laukai Importuoti/eksportuoti</translation>
     </message>
     <message>
         <source>Default (same fields as visual)</source>
-        <translation type="unfinished"></translation>
+        <translation>Numatytasis (kaip ir vaizdiniai)</translation>
     </message>
     <message>
         <source>Extended (all fields)</source>
-        <translation type="unfinished"></translation>
+        <translation>Išplėstas (visi laukai)</translation>
     </message>
     <message>
         <source>Engine</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Variklis</translation>
     </message>
     <message>
         <source>%1Please be carefull!%2Modifing these settings could break the program.%3</source>
         <extracomment>HTML formattation: %1text%2%text%3 treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1Būkite atsargūs!%2Šių nustatymų pakeitimas gali sugadinti programą.%3</translation>
     </message>
     <message>
         <source>OK, I understood this.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gerai, aš tai supratau.</translation>
     </message>
     <message>
         <source>Advanced</source>
@@ -2485,7 +2485,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Profilis</translation>
     </message>
 </context>
 <context>
@@ -2503,251 +2503,251 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Import</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Importuoti</translation>
     </message>
     <message>
         <source>Export</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Eksportuoti</translation>
     </message>
     <message>
         <source>Settings</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nustatymai</translation>
     </message>
     <message>
         <source>Select profile</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pasirinkite profilį</translation>
     </message>
     <message>
         <source>Connect</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Prisijungti</translation>
     </message>
     <message>
         <source>Disconnect</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Atsijungti</translation>
     </message>
     <message>
         <source>Upload</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Įkelti</translation>
     </message>
     <message>
         <source>Download</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Atsisiųsti</translation>
     </message>
     <message>
         <source>Reading from %1 …</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Skaitoma iš %1 …</translation>
     </message>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Failo Klaida</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Klaida skaitant failą „%1“.</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Klaida atidarant failus.</translation>
     </message>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Failas buvo pakeistas</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ar norite išsaugoti pakeitimus?</translation>
     </message>
     <message>
         <source>Saved to %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Išsaugota %1</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Išsaugota!</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Klaida rašant failą „%1“.</translation>
     </message>
     <message>
         <source>Error writing files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Klaida rašant failus.</translation>
     </message>
     <message>
         <source>Nothing to import</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nėra ką importuoti</translation>
     </message>
     <message>
         <source>You are in Picons editor.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Esate Picons redaktoriuje.</translation>
     </message>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Importuojama iš %1 …</translation>
     </message>
     <message>
         <source>Nothing to export</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nėra ko eksportuoti</translation>
     </message>
     <message>
         <source>The destination contains files that will be overwritten.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Paskirties vietoje yra failai, kurie bus perrašyti.</translation>
     </message>
     <message>
         <source>Do you want to overwrite them?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ar norite juos perrašyti?</translation>
     </message>
     <message>
         <source>Empty path.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tuščias kelias.</translation>
     </message>
     <message>
         <source>You are in Channel Book.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Jūs esate Kanalų knygoje.</translation>
     </message>
     <message>
         <source>Exported to %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Eksportuota į %1</translation>
     </message>
     <message>
         <source>Printing …</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Spausdinimas …</translation>
     </message>
     <message>
         <source>FTP connecting ...</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP jungiasi ...</translation>
     </message>
     <message>
         <source>FTP disconnecting ...</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP atsijungia ...</translation>
     </message>
     <message>
         <source>Trying to resume FTP connection ...</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bandoma atnaujinti FTP ryšį ...</translation>
     </message>
     <message>
         <source>STB reloading ...</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>STB perkraunama ...</translation>
     </message>
     <message>
         <source>FTP connected successfully.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP sėkmingai prijungtas.</translation>
     </message>
     <message>
         <source>FTP Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP Klaida</translation>
     </message>
     <message>
         <source>Cannot connect to FTP &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nepavyko prisijungti prie FTP „%1“.</translation>
     </message>
     <message>
         <source>Cannot connect to FTP Server!</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nepavyksta prisijungti prie FTP serverio!</translation>
     </message>
     <message>
         <source>FTP disconnected successfully.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP sėkmingai atjungtas.</translation>
     </message>
     <message>
         <source>Cannot disconnect from FTP &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nepavyko atsijungti nuo FTP „%1“.</translation>
     </message>
     <message>
         <source>Cannot disconnect from FTP Server!</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Negalima atsijungti nuo FTP serverio!</translation>
     </message>
     <message>
         <source>Uploading file: %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Įkeliamas failas: %1</translation>
     </message>
     <message numerus="yes">
         <source>Uploaded %n files</source>
         <comment>message</comment>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>Įkelta %n failų</numerusform>
+            <numerusform>Įkelta %n failų</numerusform>
+            <numerusform>Įkelta %n failų</numerusform>
         </translation>
     </message>
     <message>
         <source>STB reload done.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>STB perkrovimas atliktas.</translation>
     </message>
     <message>
         <source>Downloading file: %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Atsisiunčiamas failas: %1</translation>
     </message>
     <message numerus="yes">
         <source>Downloaded %n files</source>
         <comment>message</comment>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>Atsisiųsta %n failų</numerusform>
+            <numerusform>Atsisiųsta %n failų</numerusform>
+            <numerusform>Atsisiųsta %n failų</numerusform>
         </translation>
     </message>
     <message>
         <source>Cannot reload STB &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nepavyko iš naujo įkelti STB „%1“.</translation>
     </message>
     <message>
         <source>Cannot reload STB!</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Negalima iš naujo įkelti STB!</translation>
     </message>
     <message>
         <source>DEMO MODE</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>DEMO REŽIMAS</translation>
     </message>
     <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Derinimo tikslais.%1Nustatykite application.seeds absoliutų kelią skirtuke Nustatymai &gt; Išplėstinė, tada iš naujo paleiskite programinę įrangą.%2Sėklų šaltinį galima rasti:%3</translation>
     </message>
 </context>
 <context>
@@ -2755,56 +2755,56 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Log Inspector</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Rąstų Inspekt</translation>
     </message>
     <message>
         <source>Filter</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>Filtras</translation>
     </message>
     <message>
         <source>All Log</source>
-        <translation type="unfinished"></translation>
+        <translation>Žurnalą</translation>
     </message>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Importuojama iš %1 …</translation>
     </message>
     <message>
         <source>The destination contains files that will be overwritten.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Paskirties vietoje yra failai, kurie bus perrašyti.</translation>
     </message>
     <message>
         <source>Do you want to overwrite them?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ar norite juos perrašyti?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Eksportuota į %1</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Išsaugota!</translation>
     </message>
 </context>
 <context>
     <name>transpondersView</name>
     <message>
         <source>Transponders</source>
-        <translation type="unfinished"></translation>
+        <translation>Atsakikliai</translation>
     </message>
     <message>
         <source>Combo</source>
-        <translation type="unfinished"></translation>
+        <translation>Combo</translation>
     </message>
     <message>
         <source>System</source>
-        <translation>Sistemos antraštė</translation>
+        <translation>Sistema</translation>
     </message>
     <message>
         <source>Position</source>
@@ -2812,7 +2812,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Transport ID</source>
-        <translation type="unfinished">Transport ID</translation>
+        <translation>Transport ID</translation>
     </message>
     <message>
         <source>DVBNS</source>
@@ -2824,61 +2824,61 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>Dažnis</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>Poliarizacija</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>Modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Moduliavimas</translation>
     </message>
     <message>
         <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
+        <translation>Bandwidth</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Roll offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Roll offset</translation>
     </message>
     <message>
         <source>Inversion</source>
-        <translation type="unfinished"></translation>
+        <translation>Inversija</translation>
     </message>
     <message>
         <source>Tmx Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Tmx Režimas</translation>
     </message>
     <message>
         <source>Guard</source>
-        <translation type="unfinished"></translation>
+        <translation>Guard</translation>
     </message>
     <message>
         <source>Hierarchy</source>
-        <translation type="unfinished"></translation>
+        <translation>Hierarchija</translation>
     </message>
     <message>
         <source>New Transponder</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Naujas Atsakiklis</translation>
     </message>
     <message>
         <source>Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ieškoti…</translation>
     </message>
     <message>
         <source>Error</source>
@@ -2888,32 +2888,32 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Missing transponder key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Trūksta atsakiklio rakto „%1“.</translation>
     </message>
     <message>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Atsakiklis „%1“ neegzistuoja.</translation>
     </message>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Patvirtinkite ištrynimą</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ar norite ištrinti elementus?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Netinkamas duomenų formatas.</translation>
     </message>
     <message>
         <source>Edit Transponder</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti Atsakiklį</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -2940,11 +2940,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <name>tunersetsView</name>
     <message>
         <source>Satellites</source>
-        <translation type="unfinished"></translation>
+        <translation>Palydovai</translation>
     </message>
     <message>
         <source>Positions</source>
-        <translation type="unfinished"></translation>
+        <translation>Pozicijos</translation>
     </message>
     <message>
         <source>Error</source>
@@ -2954,11 +2954,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Unknown tuner settings type.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nežinomas tuner nustatymų tipas.</translation>
     </message>
     <message>
         <source>Transponders</source>
-        <translation type="unfinished"></translation>
+        <translation>Atsakikliai</translation>
     </message>
     <message>
         <source>Name</source>
@@ -2970,153 +2970,153 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Freq/Pol/SR</source>
-        <translation type="unfinished"></translation>
+        <translation>Dažn/Pol/SR</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>Dažnis</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>Poliarizacija</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>System</source>
-        <translation>Sistemos antraštė</translation>
+        <translation>Sistema</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>Modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Moduliavimas</translation>
     </message>
     <message>
         <source>Inversion</source>
-        <translation type="unfinished"></translation>
+        <translation>Inversija</translation>
     </message>
     <message>
         <source>Roll offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Roll offset</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Country</source>
-        <translation type="unfinished"></translation>
+        <translation>Šalis</translation>
     </message>
     <message>
         <source>Freq/Const/Band</source>
-        <translation type="unfinished"></translation>
+        <translation>Dažn/Const/Band</translation>
     </message>
     <message>
         <source>Constellation</source>
-        <translation type="unfinished"></translation>
+        <translation>Constellation</translation>
     </message>
     <message>
         <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
+        <translation>Bandwidth</translation>
     </message>
     <message>
         <source>Tmx Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Tmx Režimas</translation>
     </message>
     <message>
         <source>HP FEC</source>
-        <translation type="unfinished">HP FEC</translation>
+        <translation>HP FEC</translation>
     </message>
     <message>
         <source>LP FEC</source>
-        <translation type="unfinished">LP FEC</translation>
+        <translation>LP FEC</translation>
     </message>
     <message>
         <source>Guard</source>
-        <translation type="unfinished"></translation>
+        <translation>Guard</translation>
     </message>
     <message>
         <source>Hierarchy</source>
-        <translation type="unfinished"></translation>
+        <translation>Hierarchija</translation>
     </message>
     <message>
         <source>Freq/Mod/SR</source>
-        <translation type="unfinished"></translation>
+        <translation>Dažn/Mod/SR</translation>
     </message>
     <message>
         <source>Edit Settings</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti Nustatymus</translation>
     </message>
     <message>
         <source>New Position</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nauja Pozicija</translation>
     </message>
     <message>
         <source>Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ieškoti…</translation>
     </message>
     <message>
         <source>New Transponder</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Naujas Atsakiklis</translation>
     </message>
     <message>
         <source>Missing tuner settings table key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Trūksta tuner nustatymų lentelės klavišo „%1“.</translation>
     </message>
     <message>
         <source>Missing tuner settings key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Trūksta tuner nustatymų klavišo „%1“.</translation>
     </message>
     <message>
         <source>Tuner settings table &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tuner nustatymų lentelė „%1“ neegzistuoja.</translation>
     </message>
     <message>
         <source>Missing tuner settings transponder key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Trūksta tuner nustatymų atsakiklio rakto „%1“.</translation>
     </message>
     <message>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tuner nustatymų atsakiklis „%1“ neegzistuoja.</translation>
     </message>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Patvirtinkite ištrynimą</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ar norite ištrinti elementus?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tuner nustatymų atsakiklio tipo neatitikimas.</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Netinkamas duomenų formatas.</translation>
     </message>
     <message>
         <source>Edit Position</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti Poziciją</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -3126,7 +3126,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Transponder</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Redaguoti Atsakiklį</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3149,7 +3149,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Find</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ieškoti</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3159,17 +3159,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Highlight</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Paryškinti</translation>
     </message>
     <message>
         <source>Find Previous</source>
         <comment>toolbar</comment>
-        <translation>Ieškoti atgal</translation>
+        <translation>Ieškoti &amp;atgal</translation>
     </message>
     <message>
         <source>Find All</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ieškoti viską</translation>
     </message>
 </context>
 </TS>
