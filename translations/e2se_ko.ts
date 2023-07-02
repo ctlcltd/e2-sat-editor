@@ -56,7 +56,12 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION 
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
-        <translation>소프트웨어는 상품성, 특정 목적에의 적합성 및 비침해성에 대한 보증을 포함하되 이에 국한되지 않고 명시적이든 묵시적이든 어떠한 종류의 보증 없이 &quot;있는 그대로&quot; 제공됩니다. 어떤 경우에도 작성자나 저작권 보유자는 소프트웨어 또는 소프트웨어의 사용 또는 기타 거래로 인해 또는 이와 관련하여 발생하는 계약, 불법 행위 또는 기타 행위에 관계없이 청구, 손해 또는 기타 책임에 대해 책임을 지지 않습니다. 소프트웨어.</translation>
+        <translation>소프트웨어는 상품성, 특정 목적에의 적합성 및 비침해성에 대한 보증을 포함하되 
+이에 국한되지 않고 명시적이든 묵시적이든 어떠한 종류의 보증 없이 
+&quot;있는 그대로&quot; 제공됩니다. 어떤 경우에도 작성자나 저작권 보유자는 소프트웨어 
+또는 소프트웨어의 사용 또는 기타 거래로 인해 또는 이와 관련하여 발생하는 계약, 
+불법 행위 또는 기타 행위에 관계없이 청구, 손해 또는 기타 책임에 
+대해 책임을 지지 않습니다. 소프트웨어.</translation>
     </message>
 </context>
 <context>

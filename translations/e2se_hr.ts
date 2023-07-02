@@ -19,7 +19,7 @@
     <message>
         <source>Emoji &amp;&amp; Symbols</source>
         <extracomment>Platform: edit item in macOS Edit Menu | Encoding: note double ampersand</extracomment>
-        <translation>Emoji i&amp; simboli</translation>
+        <translation>Emoji &amp;&amp; simboli</translation>
     </message>
 </context>
 <context>
@@ -2979,7 +2979,7 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>
-        <translation>Frekvencija/Pol/SR</translation>
+        <translation>Frekv/Pol/SR</translation>
     </message>
     <message>
         <source>Frequency</source>
@@ -3023,7 +3023,7 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
     </message>
     <message>
         <source>Freq/Const/Band</source>
-        <translation>Frekv./konst./pojas</translation>
+        <translation>Frekv/Konst/Band</translation>
     </message>
     <message>
         <source>Constellation</source>
@@ -3055,7 +3055,7 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
     </message>
     <message>
         <source>Freq/Mod/SR</source>
-        <translation>Frekvencija/Mod/SR</translation>
+        <translation>Frekv/Mod/SR</translation>
     </message>
     <message>
         <source>Edit Settings</source>

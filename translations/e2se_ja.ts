@@ -56,7 +56,15 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION 
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
-        <translation>ソフトウェアは「現状のまま」提供され、明示的か黙示的かを問わず、商品性、特定目的への適合性、および非侵害の保証を含むがこれらに限定されない、いかなる種類の保証も行われません。 いかなる場合においても、作者または著作権所有者は、契約行為、不法行為、またはその他の行為であるかどうかにかかわらず、ソフトウェアまたはソフトウェアの使用またはその他の取引に起因または関連して生じる、いかなる請求、損害、またはその他の責任に対しても責任を負いません。 ソフトウェア。</translation>
+        <translation>ソフトウェアは &quot;現状のまま&quot; 提供され、
+明示的か黙示的かを問わず、商品性、特定目的への適合性、
+および非侵害の保証を含むがこれらに限定されない、
+いかなる種類の保証も行われません。 いかなる場合においても、
+作者または著作権所有者は、契約行為、不法行為、
+またはその他の行為であるかどうかにかかわらず、
+ソフトウェアまたはソフトウェアの使用またはその他の取引に起因または関連して生じる、
+いかなる請求、損害、またはその他の責任に対しても責任を負いません。 
+ソフトウェア。</translation>
     </message>
 </context>
 <context>
@@ -457,7 +465,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>custom</source>
-        <translation>カスタマイズされた</translation>
+        <translation>カスタマイ</translation>
     </message>
     <message>
         <source>Service ID</source>
@@ -605,7 +613,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Custom</source>
-        <translation>カスタマイズされた</translation>
+        <translation>カスタマイ</translation>
     </message>
     <message>
         <source>Service Number</source>

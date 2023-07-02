@@ -192,7 +192,7 @@ AZ EGYÉBŐL VAGY AZZAL KAPCSOLATBAN KERÜLŐDŐ. SZOFTVER.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation>Fájl hiba</translation>
+        <translation>Fájl Hiba</translation>
     </message>
     <message>
         <source>Parser Error</source>
@@ -1677,7 +1677,7 @@ AZ EGYÉBŐL VAGY AZZAL KAPCSOLATBAN KERÜLŐDŐ. SZOFTVER.</translation>
     <message>
         <source>Reference ID</source>
         <comment>reference-box</comment>
-        <translation>Hivatkozási azonosító</translation>
+        <translation>Reference ID</translation>
     </message>
     <message>
         <source>Service ID</source>
@@ -1692,7 +1692,7 @@ AZ EGYÉBŐL VAGY AZZAL KAPCSOLATBAN KERÜLŐDŐ. SZOFTVER.</translation>
     <message>
         <source>Userbouquets</source>
         <comment>reference-box</comment>
-        <translation>Felhasználói csokrok</translation>
+        <translation>Userbouquets</translation>
     </message>
     <message>
         <source>Bouquets</source>
@@ -1994,7 +1994,7 @@ AZ EGYÉBŐL VAGY AZZAL KAPCSOLATBAN KERÜLŐDŐ. SZOFTVER.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation>Fájl hiba</translation>
+        <translation>Fájl Hiba</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
@@ -2556,7 +2556,7 @@ AZ EGYÉBŐL VAGY AZZAL KAPCSOLATBAN KERÜLŐDŐ. SZOFTVER.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation>Fájl hiba</translation>
+        <translation>Fájl Hiba</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
