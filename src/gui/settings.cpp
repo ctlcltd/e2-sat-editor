@@ -410,9 +410,9 @@ void settings::preferencesLayout()
 	dtf1ln->addItem(QLocale::languageToString(QLocale::Japanese), "ja");
 	dtf1ln->addItem(QLocale::languageToString(QLocale::Korean), "ko");
 	dtf1ln->addItem(QLocale::languageToString(QLocale::Lithuanian), "lt");
-	// dtf1ln->addItem(QLocale::languageToString(QLocale::Latvian), "lv");
-	// dtf1ln->addItem(QLocale::languageToString(QLocale::Dutch), "nl");
-	// dtf1ln->addItem(QLocale::languageToString(QLocale::NorwegianNynorsk), "nn");
+	dtf1ln->addItem(QLocale::languageToString(QLocale::Latvian), "lv");
+	dtf1ln->addItem(QLocale::languageToString(QLocale::Dutch), "nl");
+	dtf1ln->addItem(QLocale::languageToString(QLocale::NorwegianNynorsk), "nn");
 	// dtf1ln->addItem(QLocale::languageToString(QLocale::Polish), "pl");
 	// dtf1ln->addItem(QLocale::languageToString(QLocale::Portuguese).append(" (%1)").arg(QLocale::countryToString(QLocale::Brazil)), "pt_BR");
 	// dtf1ln->addItem(QLocale::languageToString(QLocale::Portuguese).append(" (%1)").arg(QLocale::countryToString(QLocale::Portugal)), "pt_PT");
