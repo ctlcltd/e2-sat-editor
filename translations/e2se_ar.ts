@@ -1267,7 +1267,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Import Services</source>
         <comment>menu</comment>
-        <translation>خدمات الاستيراد</translation>
+        <translation>استيراد خدمات القنوات</translation>
     </message>
     <message>
         <source>Import Bouquet</source>
@@ -1292,7 +1292,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Export current</source>
         <comment>menu</comment>
-        <translation>تصدير التيار</translation>
+        <translation>تصدير الحالي</translation>
     </message>
     <message>
         <source>Export All</source>
@@ -1302,7 +1302,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Export Services</source>
         <comment>menu</comment>
-        <translation>خدمات التصدير</translation>
+        <translation>استيراد خدمات القنوات</translation>
     </message>
     <message>
         <source>Export Bouquets</source>

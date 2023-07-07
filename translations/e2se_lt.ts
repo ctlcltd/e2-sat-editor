@@ -2440,7 +2440,7 @@ NAUDOJIMO AR SU KITAIS SU JAIS PROGRAMINĖ ĮRANGA.</translation>
     </message>
     <message>
         <source>CSV Import/Export</source>
-        <translation>CSV Importuoti/eksportuoti</translation>
+        <translation>CSV Importuoti/Eksportuoti</translation>
     </message>
     <message>
         <source>Allow header columns in CSV</source>
@@ -2460,7 +2460,7 @@ NAUDOJIMO AR SU KITAIS SU JAIS PROGRAMINĖ ĮRANGA.</translation>
     </message>
     <message>
         <source>Fields Import/Export</source>
-        <translation>Laukai Importuoti/eksportuoti</translation>
+        <translation>Laukai Importuoti/Eksportuoti</translation>
     </message>
     <message>
         <source>Default (same fields as visual)</source>
@@ -2604,7 +2604,7 @@ NAUDOJIMO AR SU KITAIS SU JAIS PROGRAMINĖ ĮRANGA.</translation>
     <message>
         <source>You are in Picons editor.</source>
         <comment>message</comment>
-        <translation>Esate Picons redaktoriuje.</translation>
+        <translation>Jūs esate Picons redaktorius.</translation>
     </message>
     <message>
         <source>Importing from %1 …</source>
@@ -2634,7 +2634,7 @@ NAUDOJIMO AR SU KITAIS SU JAIS PROGRAMINĖ ĮRANGA.</translation>
     <message>
         <source>You are in Channel Book.</source>
         <comment>message</comment>
-        <translation>Jūs esate Kanalų knygoje.</translation>
+        <translation>Jūs esate Kanalų knyga.</translation>
     </message>
     <message>
         <source>Exported to %1</source>

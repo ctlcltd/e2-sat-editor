@@ -62,8 +62,8 @@ INKLUDERT, MEN IKKE BEGRENSET TIL GARANTIER FOR SALGBARHET,
 EGNETHET FOR ET BESTEMT FORMÅL OG IKKE-KRENKELSE. UNDER INGEN 
 OMSTENDIGHET SKAL FORFATTERNE ELLER OPPHAVSRETTIGHETER VÆRE ANSVARLIGE 
 FOR NOEN KRAV, SKADER ELLER ANNET ANSVAR, ENTEN I EN KONTRAKTSHANDLING, 
-TORT ELLER ANNET, SOM STÅR AV, UT AV ELLER I FORBINDELSE MED 
-DEN ANDRE PROGRAMVAREN. PROGRAMVARE.</translation>
+TORT ELLER ANNEN MÅTE, SOM STÅR AV, UT AV ELLER I FORBINDELSE MED 
+PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
     </message>
 </context>
 <context>
@@ -2660,7 +2660,7 @@ DEN ANDRE PROGRAMVAREN. PROGRAMVARE.</translation>
     <message>
         <source>Trying to resume FTP connection ...</source>
         <comment>message</comment>
-        <translation>Prøver å gjenoppta FTP-tilkoblingen ...</translation>
+        <translation>Prøver å gjenoppta FTP tilkoblingen ...</translation>
     </message>
     <message>
         <source>STB reloading ...</source>
@@ -2685,7 +2685,7 @@ DEN ANDRE PROGRAMVAREN. PROGRAMVARE.</translation>
     <message>
         <source>Cannot connect to FTP Server!</source>
         <comment>error</comment>
-        <translation>Kan ikke koble til FTP-server!</translation>
+        <translation>Kan ikke koble til FTP server!</translation>
     </message>
     <message>
         <source>FTP disconnected successfully.</source>
@@ -2700,7 +2700,7 @@ DEN ANDRE PROGRAMVAREN. PROGRAMVARE.</translation>
     <message>
         <source>Cannot disconnect from FTP Server!</source>
         <comment>error</comment>
-        <translation>Kan ikke koble fra FTP-serveren!</translation>
+        <translation>Kan ikke koble fra FTP serveren!</translation>
     </message>
     <message>
         <source>Uploading file: %1</source>
@@ -2710,15 +2710,15 @@ DEN ANDRE PROGRAMVAREN. PROGRAMVARE.</translation>
     <message numerus="yes">
         <source>Uploaded %n files</source>
         <comment>message</comment>
-        <translation type="unfinished">
-            <numerusform>Lastet opp %n filer</numerusform>
+        <translation>
+            <numerusform>Lastet opp %n fil</numerusform>
             <numerusform>Lastet opp %n filer</numerusform>
         </translation>
     </message>
     <message>
         <source>STB reload done.</source>
         <comment>message</comment>
-        <translation>STB-innlasting utført.</translation>
+        <translation>STB innlasting utført.</translation>
     </message>
     <message>
         <source>Downloading file: %1</source>
@@ -2728,8 +2728,8 @@ DEN ANDRE PROGRAMVAREN. PROGRAMVARE.</translation>
     <message numerus="yes">
         <source>Downloaded %n files</source>
         <comment>message</comment>
-        <translation type="unfinished">
-            <numerusform>Lastet ned %n filer</numerusform>
+        <translation>
+            <numerusform>Lastet ned %n fil</numerusform>
             <numerusform>Lastet ned %n filer</numerusform>
         </translation>
     </message>

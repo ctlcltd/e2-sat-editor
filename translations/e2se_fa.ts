@@ -19,7 +19,7 @@
     <message>
         <source>Emoji &amp;&amp; Symbols</source>
         <extracomment>Platform: edit item in macOS Edit Menu | Encoding: note double ampersand</extracomment>
-        <translation>ایموجی ها &amp;&amp; نمادها</translation>
+        <translation>ایموجی و نمادها</translation>
     </message>
 </context>
 <context>
@@ -1267,7 +1267,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Import Services</source>
         <comment>menu</comment>
-        <translation>واردات کانال/خدمات</translation>
+        <translation>واردات کانال خدمات</translation>
     </message>
     <message>
         <source>Import Bouquet</source>
@@ -1292,7 +1292,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Export current</source>
         <comment>menu</comment>
-        <translation>جریان صادراتی</translation>
+        <translation>جریان را صادر کنید</translation>
     </message>
     <message>
         <source>Export All</source>
@@ -1302,7 +1302,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Export Services</source>
         <comment>menu</comment>
-        <translation>صادرات کانال/خدمات</translation>
+        <translation>صادرات کانال خدمات</translation>
     </message>
     <message>
         <source>Export Bouquets</source>

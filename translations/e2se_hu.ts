@@ -56,15 +56,15 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION 
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
-        <translation>A SZOFTVER &quot;AHOGY VAN”, MINDEN FÉLE, 
+        <translation>A SZOFTVER &quot;AHOGY VAN&quot;, MINDEN FÉLE, 
 KIFEJEZETT VAGY VÉLEMEZTETETT GARANCIA NÉLKÜL, BELEÉRTVE, 
-DE NEM KORLÁTOZOTT AZ ELADHATÓSÁGRA, A MEGHATÁROZOTT 
-CÉLRA VALÓ ALKALMASSÁGRA ÉS A JOGSÉRTÉSRE VONATKOZÓ GARANCIA NÉLKÜL. 
-A SZERZŐK VAGY A SZERZŐI JOGOK TULAJDONOSAI SEMMILYEN ESETBEN 
-NEM VÁLLALKOZNAK FELELŐSSÉGET SEMMILYEN KÖVETELÉSÉRT, 
-KÁROKÉRT VAGY EGYÉB FELELŐSSÉGÉRT, AKÁR AKÁR SZERZŐDÉS 
-CSELEKVÉSÉBŐL, VAGY EGYÉBEN, AZ EGYÉB HASZNÁLATBÓL, 
-AZ EGYÉBŐL VAGY AZZAL KAPCSOLATBAN KERÜLŐDŐ. SZOFTVER.</translation>
+DE NEM KORLÁTOZOTT AZ ELADHATÓSÁGRA, A MEGHATÁROZOTT CÉLRA VALÓ ALKALMASSÁGRA 
+ÉS A JOGSÉRTÉSRE VONATKOZÓ GARANCIA NÉLKÜL. A SZERZŐK VAGY A 
+SZERZŐI JOGOK TULAJDONOSAI SEMMILYEN ESETBEN NEM VÁLLALKOZNAK 
+FELELŐSSÉGET SEMMILYEN KÖVETELÉSÉRT, KÁROKÉRT VAGY EGYÉB FELELŐSSÉGÉRT, 
+AKÁR AKÁR SZERZŐDÉS KERETÉBŐL, VÁROSSÁGBAN VAGY EGYÉBEN, 
+AKÁR A SZERZŐDÉSBŐL, AZTÓL KÍVÜL VAGY KAPCSOLATBAN, 
+VAGY A SZOFTVER FELHASZNÁLÁSA VAGY EGYÉB KERESKEDELME.</translation>
     </message>
 </context>
 <context>
@@ -322,7 +322,7 @@ AZ EGYÉBŐL VAGY AZZAL KAPCSOLATBAN KERÜLŐDŐ. SZOFTVER.</translation>
     <message>
         <source>Tunersets table &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation>A &quot;%s” tunersets-tábla nem létezik.</translation>
+        <translation>A &quot;%s&quot; tunersets-tábla nem létezik.</translation>
     </message>
     <message>
         <source>Abstract merge swap objects.</source>
@@ -1819,7 +1819,7 @@ AZ EGYÉBŐL VAGY AZZAL KAPCSOLATBAN KERÜLŐDŐ. SZOFTVER.</translation>
     <message>
         <source>Channel reference&quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation>A &quot;%1” csatornahivatkozás nem létezik.</translation>
+        <translation>A &quot;%1&quot; csatornahivatkozás nem létezik.</translation>
     </message>
     <message>
         <source>Confirm deletetion</source>
@@ -2466,7 +2466,7 @@ AZ EGYÉBŐL VAGY AZZAL KAPCSOLATBAN KERÜLŐDŐ. SZOFTVER.</translation>
     </message>
     <message>
         <source>Default (same fields as visual)</source>
-        <translation>Default (ugyanazok a mezők, mint a vizuális)</translation>
+        <translation>Default (mint a vizuális)</translation>
     </message>
     <message>
         <source>Extended (all fields)</source>

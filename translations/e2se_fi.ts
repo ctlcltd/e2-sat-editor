@@ -46,7 +46,7 @@
     </message>
     <message>
         <source>GNU GPLv3 License</source>
-        <translation>GNU GPLv3-lisenssi</translation>
+        <translation>GNU GPLv3 lisenssi</translation>
     </message>
     <message>
         <source>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, 
@@ -59,11 +59,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation>OHJELMISTO TARJOTAAN &quot;SELLAISENAAN&quot;, 
 ILMAN MINKÄÄNLAISTA, NIMENOMAISTA TAI OLUETTUA TAKUUTTA, 
 MUKAAN MUKAAN MUKAAN MUKAAN RAJOITTAAN TAKUUT MYYNTIKELPOISUUDESTA, 
-SOVELTUVUUDESTA TIETTYYN TARKOITUKSEEN JA LOUKKAMATTA. 
+SOVELTUVUUDESTA TIETTYYN TARKOITUKSEEN JA LOUKKAMATTA.
 TEKIJÄT TAI TEKIJÄNOIKEUDEN HALTIJAT EIVÄT OLE MISSÄÄN 
-TAPAUKSESSA VASTUUSSA MISTÄÄN SOPIMUSTOIMINNASSA TAI TEKIJÄNOIKEUDEN 
-HALTIJAT SOPIMUSTOIMINNASSA TAI MUUSTA VASTUUSTA, JOKA JOKA SYNTYY 
-TAI MUUN KÄYTÖSTÄ TAI SIIHEN YHTEYDESSÄ. OHJELMISTO.</translation>
+TAPAUKSESSA VASTUUSSA SOPIMUSTOIMINNASSA, VAHINGOISTA TAI MUUSTA 
+VASTUUSTA, JOKA JOHTOPÄÄ SOPIMUSTOIMINNASSA, JOHTOPÄÄN SOPIMUKSESTA 
+TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</translation>
     </message>
 </context>
 <context>
@@ -369,7 +369,7 @@ TAI MUUN KÄYTÖSTÄ TAI SIIHEN YHTEYDESSÄ. OHJELMISTO.</translation>
     </message>
     <message>
         <source>condensed name (eg. TV, Radio)</source>
-        <translation>tiivistetty nimi (esim. TV, radio)</translation>
+        <translation>tiivistetty nimi (esim. TV, Radio)</translation>
     </message>
     <message>
         <source>Filename</source>

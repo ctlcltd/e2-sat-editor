@@ -56,16 +56,15 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION 
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
-        <translation>THA AM BATHAR-BOG AIR A SHOLARACHADH “MAR A THA”, 
+        <translation>THA AM BATHAR-BOG AIR A SHOLARACHADH &quot;MAR A THA&quot;, 
 GUN BARANTAS DE SHINEADH, SÒNRAICHTE NO CHOITCHEANN, 
-A’ GABHAIL A-STEACH ACH NACH EIL A CHUINGEACHADH RI 
+A&apos; GABHAIL A-STEACH ACH NACH EIL A CHUINGEACHADH RI 
 BARANTASAN MALAIRTEACH, IONNSACHADH AIRSON ADHBHAR SÒNRAICHTE 
-AGUS NACH EIL. CHA BHI NA H-ÙGHDARAN NO AN LUCHD-SEILBH 
-CHÒRAICHEAN CUNNTACHAIL AIRSON CÀILEACHD, 
-DÙTHCHAS NO DÙTHCHAS SAM BITH EILE, GE BITH 
-AN ANN AN GNÌOMH CÙMHNANT, TORT NO EILE, AG ÈIRIGH BHO, 
-A-MACH À, NO CO-CHEANGAILTE RIS A’ BHATHAR-BHOG 
-NO AN CLEACHDADH EILE. BOGADH.</translation>
+AGUS NACH EIL. CHAN EIL ÙGHDARRAICHEAN NO CUMHACHD AIRSON 
+CÒRRADH NO DLEASTANAS SAM BITH EILE, GE BITH CO-DHIÙ 
+ANN AN GNÌOMH CÙMHNANT, TORT NO EILE, AG ÈIRIGH BHO, A-MACH À, 
+NO ANN AN CO-CHEANGAL RIS A&apos; BHATHAR-BHOG, NO AN 
+CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     </message>
 </context>
 <context>
@@ -2647,17 +2646,17 @@ NO AN CLEACHDADH EILE. BOGADH.</translation>
     <message>
         <source>Printing …</source>
         <comment>message</comment>
-        <translation>A’ clò-bhualadh…</translation>
+        <translation>A&apos; clò-bhualadh…</translation>
     </message>
     <message>
         <source>FTP connecting ...</source>
         <comment>message</comment>
-        <translation>FTP a’ ceangal ...</translation>
+        <translation>FTP a&apos; ceangal ...</translation>
     </message>
     <message>
         <source>FTP disconnecting ...</source>
         <comment>message</comment>
-        <translation>FTP a’ dì-cheangal ...</translation>
+        <translation>FTP a&apos; dì-cheangal ...</translation>
     </message>
     <message>
         <source>Trying to resume FTP connection ...</source>

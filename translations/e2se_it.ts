@@ -1211,7 +1211,7 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
         <source>Find &amp;Bouquet…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation>Trova &amp;Bouquet</translation>
+        <translation>Trova Bouquet</translation>
     </message>
     <message>
         <source>Find N&amp;ext Bouquet</source>

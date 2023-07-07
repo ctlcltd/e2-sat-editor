@@ -46,7 +46,7 @@
     </message>
     <message>
         <source>GNU GPLv3 License</source>
-        <translation>GNU GPLv3-licens</translation>
+        <translation>GNU GPLv3 licens</translation>
     </message>
     <message>
         <source>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, 
@@ -368,7 +368,7 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
     </message>
     <message>
         <source>condensed name (eg. TV, Radio)</source>
-        <translation>sammenfattet navn (f.eks. tv, radio)</translation>
+        <translation>sammenfattet navn (eks. TV, Radio)</translation>
     </message>
     <message>
         <source>Filename</source>
@@ -574,7 +574,7 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
     <message>
         <source>Enter them in comma separated values.%1(eg. C:0100,C:0200,…)</source>
         <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
-        <translation>Indtast dem i kommaseparerede værdier.%1(f.eks. C:0100,C:0200,…)</translation>
+        <translation>Indtast dem i kommaseparerede værdier.%1(eks. C:0100,C:0200,…)</translation>
     </message>
     <message>
         <source>CAIDs</source>
@@ -607,7 +607,7 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
     <message>
         <source>%1It will overwrite any previously typed!%2Enter them in comma separated values.%3(eg. p:ProviderName,c:0100,C:0200,…)</source>
         <extracomment>HTML formattation: %1text%2text%3text treat them as spaces</extracomment>
-        <translation>%1Det vil overskrive alle tidligere indtastede!%2Indtast dem i kommaseparerede værdier.%3(f.eks. p:ProviderName,c:0100,C:0200,…)</translation>
+        <translation>%1Det vil overskrive alle tidligere indtastede!%2Indtast dem i kommaseparerede værdier.%3(eks. p:ProviderName,c:0100,C:0200,…)</translation>
     </message>
     <message>
         <source>Custom</source>
