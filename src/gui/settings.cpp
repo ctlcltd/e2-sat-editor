@@ -416,14 +416,14 @@ void settings::preferencesLayout()
 	dtf1ln->addItem(QLocale::languageToString(QLocale::Polish), "pl");
 	dtf1ln->addItem(QLocale::languageToString(QLocale::Portuguese).append(" (%1)").arg(QLocale::countryToString(QLocale::Brazil)), "pt_BR");
 	dtf1ln->addItem(QLocale::languageToString(QLocale::Portuguese).append(" (%1)").arg(QLocale::countryToString(QLocale::Portugal)), "pt_PT");
-	// dtf1ln->addItem(QLocale::languageToString(QLocale::Russian), "ru");
+	dtf1ln->addItem(QLocale::languageToString(QLocale::Russian), "ru");
 	// dtf1ln->addItem(QLocale::languageToString(QLocale::Slovak), "sk");
 	// dtf1ln->addItem(QLocale::languageToString(QLocale::Slovenian), "sl");
 	// dtf1ln->addItem(QLocale::languageToString(QLocale::Swedish), "sv");
 	// dtf1ln->addItem(QLocale::languageToString(QLocale::Turkish), "tr");
-	// dtf1ln->addItem(QLocale::languageToString(QLocale::Ukrainian), "uk");
-	// dtf1ln->addItem(QLocale::languageToString(QLocale::Chinese).append(" (%1)").arg(QLocale::countryToString(QLocale::China)), "zh_CN");
-	// dtf1ln->addItem(QLocale::languageToString(QLocale::Chinese).append(" (%1)").arg(QLocale::countryToString(QLocale::Taiwan)), "zh_TW");
+	dtf1ln->addItem(QLocale::languageToString(QLocale::Ukrainian), "uk");
+	dtf1ln->addItem(QLocale::languageToString(QLocale::Chinese).append(" (%1)").arg(QLocale::countryToString(QLocale::China)), "zh_CN");
+	dtf1ln->addItem(QLocale::languageToString(QLocale::Chinese).append(" (%1)").arg(QLocale::countryToString(QLocale::Taiwan)), "zh_TW");
 #endif
 	platform::osComboBox(dtf1ln);
 	dtf1->addRow(dtf1ln);

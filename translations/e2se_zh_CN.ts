@@ -6,7 +6,7 @@
     <message>
         <source>Edit</source>
         <extracomment>Platform: Edit menu in macOS Menu bar</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>编辑</translation>
     </message>
 </context>
 <context>
@@ -14,19 +14,19 @@
     <message>
         <source>Start Dictation...</source>
         <extracomment>Platform: edit item in macOS Edit Menu | Encoding: preserve 3 singular dots</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>开始听写...</translation>
     </message>
     <message>
         <source>Emoji &amp;&amp; Symbols</source>
         <extracomment>Platform: edit item in macOS Edit Menu | Encoding: note double ampersand</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>表情符号和符号</translation>
     </message>
 </context>
 <context>
     <name>QFileDialog</name>
     <message>
         <source>&amp;Save</source>
-        <translation type="unfinished">保存(&amp;S)</translation>
+        <translation>保存(&amp;S)</translation>
     </message>
 </context>
 <context>
@@ -37,16 +37,16 @@
     </message>
     <message>
         <source>Version %1</source>
-        <translation type="unfinished"></translation>
+        <translation>版本%1</translation>
     </message>
     <message>
         <source>This software is distributed under the terms of the %1.%2The source code of this software is available here:%3</source>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>此软件是根据 %1 的条款分发的。%2此软件的源代码可在此处获取：%3</translation>
     </message>
     <message>
         <source>GNU GPLv3 License</source>
-        <translation type="unfinished"></translation>
+        <translation>GNU GPLv3 许可证</translation>
     </message>
     <message>
         <source>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, 
@@ -56,14 +56,18 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION 
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
-        <translation type="unfinished"></translation>
+        <translation>本软件按 &quot;原样&quot; 提供，不提供任何明示或暗示的保证，
+包括但不限于适销性、特定用途的适用性和不侵权的保证。在任何情况下，
+作者或版权所有者均不对因本软件或本软件的使用或其他交易而引起、
+引起或与之相关的任何索赔、损害或其他责任负责，
+无论是合同行为、侵权行为还是其他行为。</translation>
     </message>
 </context>
 <context>
     <name>channelBookView</name>
     <message>
         <source>Index</source>
-        <translation type="unfinished"></translation>
+        <translation>指数</translation>
     </message>
     <message>
         <source>Name</source>
@@ -75,19 +79,19 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>提供者</translation>
     </message>
     <message>
         <source>Transponder</source>
-        <translation type="unfinished"></translation>
+        <translation>应答器</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>位置</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>系统</translation>
     </message>
     <message>
         <source>Services</source>
@@ -95,27 +99,27 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Bouquets</source>
-        <translation type="unfinished"></translation>
+        <translation>频道组</translation>
     </message>
     <message>
         <source>Positions</source>
-        <translation type="unfinished"></translation>
+        <translation>位置</translation>
     </message>
     <message>
         <source>Providers</source>
-        <translation type="unfinished"></translation>
+        <translation>供应商</translation>
     </message>
     <message>
         <source>Resolution</source>
-        <translation type="unfinished"></translation>
+        <translation>分辨率</translation>
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>加密</translation>
     </message>
     <message>
         <source>A-Z</source>
-        <translation type="unfinished"></translation>
+        <translation>A-Z</translation>
     </message>
     <message>
         <source>&amp;Copy</source>
@@ -128,7 +132,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>编辑</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -138,17 +142,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Save</source>
         <comment>dialog</comment>
-        <translation>保存(S)</translation>
+        <translation>保存(&amp;S)</translation>
     </message>
     <message>
         <source>collapse</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>折叠</translation>
     </message>
     <message>
         <source>expand</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>展开</translation>
     </message>
 </context>
 <context>
@@ -156,12 +160,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Add Channel</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>添加频道</translation>
     </message>
     <message>
         <source>Filters for service type</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>服务类型过滤器</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -171,7 +175,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Add</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>添加</translation>
     </message>
 </context>
 <context>
@@ -179,152 +183,152 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误 File</translation>
     </message>
     <message>
         <source>Parser Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误 Parser</translation>
     </message>
     <message>
         <source>Maker Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误 Maker</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>文件 &quot;%s&quot; 不存在。</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; already exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>文件 &quot;%s&quot; 已存在。</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; is not a valid file.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>文件 &quot;%s&quot; 不是有效文件。</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; is not readable.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>文件 &quot;%s&quot; 不可读。</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; is not writable.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>文件 &quot;%s&quot; 不可写。</translation>
     </message>
     <message>
         <source>These settings are not supported.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>不支持这些设置。</translation>
     </message>
     <message>
         <source>Services file not found.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>未找到服务文件。</translation>
     </message>
     <message>
         <source>Malformed or unknown XML file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>XML 文件格式错误或未知。</translation>
     </message>
     <message>
         <source>Unknown file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>未知的文件格式。</translation>
     </message>
     <message>
         <source>Unknown services file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>未知的服务文件格式。</translation>
     </message>
     <message>
         <source>Unknown bouquets file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>未知的通道组文件格式。</translation>
     </message>
     <message>
         <source>Unknown transponder type.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>未知应答器类型。</translation>
     </message>
     <message>
         <source>Unknown import option.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>未知的导入选项。</translation>
     </message>
     <message>
         <source>Unknown export option.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>未知的导出选项。</translation>
     </message>
     <message>
         <source>Unknown Lamedb services file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>未知的 Lamedb 服务文件格式。</translation>
     </message>
     <message>
         <source>Unknown Zapit services file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>未知的 Zapit 服务文件格式。</translation>
     </message>
     <message>
         <source>Unknown Zapit bouquets file format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>未知的 Zapit 通道组文件格式。</translation>
     </message>
     <message>
         <source>Missing index key &quot;%s&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>缺少索引键 &quot;%s&quot; 。</translation>
     </message>
     <message>
         <source>Missing channel reference &quot;%s&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>缺少通道参考 &quot;%s&quot; 。</translation>
     </message>
     <message>
         <source>Service &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>服务 &quot;%s&quot; 不存在。</translation>
     </message>
     <message>
         <source>Bouquet &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>通道组 &quot;%s&quot; 不存在。</translation>
     </message>
     <message>
         <source>Userbouquet &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>用户通道组 &quot;%s&quot; 不存在。</translation>
     </message>
     <message>
         <source>Channel reference &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>通道引用 &quot;%s&quot; 不存在。</translation>
     </message>
     <message>
         <source>Tunersets table &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>调谐器设置表 &quot;%s&quot; 不存在。</translation>
     </message>
     <message>
         <source>Abstract merge swap objects.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>这是抽象合并、交换对象。</translation>
     </message>
     <message>
         <source>Not supported yet.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>尚不支持。</translation>
     </message>
 </context>
 <context>
@@ -332,17 +336,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Bouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>编辑频道组</translation>
     </message>
     <message>
         <source>New Bouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>新频道组</translation>
     </message>
     <message>
         <source>Bouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>频道组</translation>
     </message>
     <message>
         <source>Name</source>
@@ -350,7 +354,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>full name</source>
-        <translation type="unfinished"></translation>
+        <translation>面值</translation>
     </message>
     <message>
         <source>Type</source>
@@ -358,29 +362,29 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Nice name</source>
-        <translation type="unfinished"></translation>
+        <translation>缩写名称</translation>
     </message>
     <message>
         <source>condensed name (eg. TV, Radio)</source>
-        <translation type="unfinished"></translation>
+        <translation>缩写名称（例 TV, Radio）</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>文件名</translation>
     </message>
     <message>
         <source>custom filename, leave empty to auto-fill</source>
-        <translation type="unfinished"></translation>
+        <translation>自定义文件名，留空以自动填充</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Bouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>通道组 &quot;%1&quot; 不存在。</translation>
     </message>
 </context>
 <context>
@@ -388,41 +392,41 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Marker</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>编辑标记</translation>
     </message>
     <message>
         <source>Add Marker</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>添加标记</translation>
     </message>
     <message>
         <source>Marker</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>标记</translation>
     </message>
     <message>
         <source>Marker text</source>
-        <translation type="unfinished"></translation>
+        <translation>标记文本</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>用户通道组 &quot;%1&quot; 不存在。</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>通道引用 &quot;%1&quot; 不存在。</translation>
     </message>
     <message>
         <source>Channel reference mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>通道参考不匹配 &quot;%1&quot; 。</translation>
     </message>
 </context>
 <context>
@@ -430,68 +434,68 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Service</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>编辑服务</translation>
     </message>
     <message>
         <source>New Service</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>新服务</translation>
     </message>
     <message>
         <source>Service</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>服务</translation>
     </message>
     <message>
         <source>Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>应答器</translation>
     </message>
     <message>
         <source>Service name</source>
-        <translation type="unfinished"></translation>
+        <translation>服务名称</translation>
     </message>
     <message>
         <source>Service type</source>
-        <translation type="unfinished"></translation>
+        <translation>服务类型</translation>
     </message>
     <message>
         <source>custom</source>
-        <translation type="unfinished"></translation>
+        <translation>定制</translation>
     </message>
     <message>
         <source>Service ID</source>
-        <translation type="unfinished">Service ID</translation>
+        <translation>Service ID</translation>
     </message>
     <message>
         <source>Tuner</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>调音器</translation>
     </message>
     <message>
         <source>Satellite</source>
-        <translation type="unfinished">Satellite</translation>
+        <translation>卫星</translation>
     </message>
     <message>
         <source>Transponder</source>
-        <translation type="unfinished"></translation>
+        <translation>应答器</translation>
     </message>
     <message>
         <source>New Transponder</source>
-        <translation type="unfinished"></translation>
+        <translation>新应答器</translation>
     </message>
     <message>
         <source>Parameters</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>参数</translation>
     </message>
     <message>
         <source>Provider name</source>
-        <translation type="unfinished"></translation>
+        <translation>提供商名称</translation>
     </message>
     <message>
         <source>Package</source>
-        <translation type="unfinished"></translation>
+        <translation>包裹</translation>
     </message>
     <message>
         <source>video</source>
@@ -515,31 +519,31 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>video type</source>
-        <translation type="unfinished">video type</translation>
+        <translation>video type</translation>
     </message>
     <message>
         <source>audio channel</source>
-        <translation type="unfinished">audio channel</translation>
+        <translation>audio channel</translation>
     </message>
     <message>
         <source>ac3 delay</source>
-        <translation type="unfinished">ac3 delay</translation>
+        <translation>ac3 delay</translation>
     </message>
     <message>
         <source>ms.</source>
-        <translation type="unfinished">ms.</translation>
+        <translation>ms.</translation>
     </message>
     <message>
         <source>pcm delay</source>
-        <translation type="unfinished">pcm delay</translation>
+        <translation>pcm delay</translation>
     </message>
     <message>
         <source>subtitle</source>
-        <translation type="unfinished">subtitle</translation>
+        <translation>subtitle</translation>
     </message>
     <message>
         <source>audio type</source>
-        <translation type="unfinished">audio type</translation>
+        <translation>audio type</translation>
     </message>
     <message>
         <source>apid</source>
@@ -555,79 +559,79 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>PIDs</source>
-        <translation type="unfinished"></translation>
+        <translation>PID</translation>
     </message>
     <message>
         <source>Card ID parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Card-ID参数</translation>
     </message>
     <message>
         <source>Raw edit parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>原始编辑参数</translation>
     </message>
     <message>
         <source>Enter them in comma separated values.%1(eg. C:0100,C:0200,…)</source>
         <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>以逗号分隔值的形式输入它们。%1（例 C:0100,C:0200,...）</translation>
     </message>
     <message>
         <source>CAIDs</source>
-        <translation type="unfinished"></translation>
+        <translation>CAID</translation>
     </message>
     <message>
         <source>Do not update</source>
-        <translation type="unfinished"></translation>
+        <translation>不更新</translation>
     </message>
     <message>
         <source>Hide in service list</source>
-        <translation type="unfinished"></translation>
+        <translation>隐藏在服务列表中</translation>
     </message>
     <message>
         <source>Use edited PIDs instead</source>
-        <translation type="unfinished"></translation>
+        <translation>使用编辑过的 PID 代替</translation>
     </message>
     <message>
         <source>Hold service name</source>
-        <translation type="unfinished"></translation>
+        <translation>保留服务名称</translation>
     </message>
     <message>
         <source>Flag as new service</source>
-        <translation type="unfinished"></translation>
+        <translation>标记为新服务</translation>
     </message>
     <message>
         <source>Flags</source>
-        <translation type="unfinished"></translation>
+        <translation>位标志</translation>
     </message>
     <message>
         <source>%1It will overwrite any previously typed!%2Enter them in comma separated values.%3(eg. p:ProviderName,c:0100,C:0200,…)</source>
         <extracomment>HTML formattation: %1text%2text%3text treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1它将覆盖之前输入的任何内容！%2以逗号分隔的值输入它们。%3（例 p:ProviderName,c:0100,C:0200,...）</translation>
     </message>
     <message>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>定制</translation>
     </message>
     <message>
         <source>Service Number</source>
-        <translation type="unfinished"></translation>
+        <translation>Service Number</translation>
     </message>
     <message>
         <source>Src ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Src ID</translation>
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"></translation>
+        <translation>附加功能</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Service &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>服务 &quot;%1&quot; 不存在。</translation>
     </message>
 </context>
 <context>
@@ -635,33 +639,33 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>编辑应答器</translation>
     </message>
     <message>
         <source>New Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>新应答器</translation>
     </message>
     <message>
         <source>Satellite</source>
-        <translation type="unfinished">Satellite</translation>
+        <translation>卫星</translation>
     </message>
     <message>
         <source>Terrestrial</source>
-        <translation type="unfinished">Terrestrial</translation>
+        <translation>陆地的</translation>
     </message>
     <message>
         <source>Cable</source>
-        <translation type="unfinished">Cable</translation>
+        <translation>电缆</translation>
     </message>
     <message>
         <source>ATSC</source>
-        <translation type="unfinished">ATSC</translation>
+        <translation>ATSC</translation>
     </message>
     <message>
         <source>Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>应答器</translation>
     </message>
     <message>
         <source>Type</source>
@@ -669,7 +673,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Transport ID</source>
-        <translation type="unfinished">Transport ID</translation>
+        <translation>Transport ID</translation>
     </message>
     <message>
         <source>DVBNS</source>
@@ -681,90 +685,90 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>位置</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>频率</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>极化</translation>
     </message>
     <message>
         <source>empty</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>—</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>系统</translation>
     </message>
     <message>
         <source>Constellation</source>
-        <translation type="unfinished"></translation>
+        <translation>星座</translation>
     </message>
     <message>
         <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
+        <translation>带宽</translation>
     </message>
     <message>
         <source>HP FEC</source>
-        <translation type="unfinished">HP FEC</translation>
+        <translation>HP FEC</translation>
     </message>
     <message>
         <source>LP FEC</source>
-        <translation type="unfinished">LP FEC</translation>
+        <translation>LP FEC</translation>
     </message>
     <message>
         <source>Modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>调制</translation>
     </message>
     <message>
         <source>Inner FEC</source>
-        <translation type="unfinished">Inner FEC</translation>
+        <translation>Inner FEC</translation>
     </message>
     <message>
         <source>Inversion</source>
-        <translation type="unfinished"></translation>
+        <translation>反转</translation>
     </message>
     <message>
         <source>Roll Offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Roll offset</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Transmission Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>传输方式</translation>
     </message>
     <message>
         <source>Guard Interval</source>
-        <translation type="unfinished"></translation>
+        <translation>保护间隔</translation>
     </message>
     <message>
         <source>Hierarchy</source>
-        <translation type="unfinished"></translation>
+        <translation>等级制度</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>应答器 &quot;%1&quot; 不存在。</translation>
     </message>
 </context>
 <context>
@@ -772,25 +776,25 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Settings</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>编辑设置</translation>
     </message>
     <message>
         <source>Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>评论</translation>
     </message>
     <message>
         <source>Charset</source>
-        <translation type="unfinished"></translation>
+        <translation>字符集</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Tuner settings &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>调谐器设置 &quot;%1&quot; 不存在。</translation>
     </message>
 </context>
 <context>
@@ -798,12 +802,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Position</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>编辑位置</translation>
     </message>
     <message>
         <source>New Position</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>新位置</translation>
     </message>
     <message>
         <source>Name</source>
@@ -811,34 +815,34 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>位置</translation>
     </message>
     <message>
         <source>Flags</source>
-        <translation type="unfinished"></translation>
+        <translation>位标志</translation>
     </message>
     <message>
         <source>Country</source>
-        <translation type="unfinished"></translation>
+        <translation>国家</translation>
     </message>
     <message>
         <source>Feed</source>
-        <translation type="unfinished">Feed</translation>
+        <translation>馈送</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Tuner settings &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>调谐器设置 &quot;%1&quot; 不存在。</translation>
     </message>
     <message>
         <source>Tuner settings table &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>调谐器设置表 &quot;%1&quot; 不存在。</translation>
     </message>
 </context>
 <context>
@@ -846,85 +850,85 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>编辑应答器</translation>
     </message>
     <message>
         <source>New Transponder</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>新应答器</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>频率</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>极化</translation>
     </message>
     <message>
         <source>empty</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>—</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>系统</translation>
     </message>
     <message>
         <source>Constellation</source>
-        <translation type="unfinished"></translation>
+        <translation>星座</translation>
     </message>
     <message>
         <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
+        <translation>带宽</translation>
     </message>
     <message>
         <source>HP FEC</source>
-        <translation type="unfinished">HP FEC</translation>
+        <translation>HP FEC</translation>
     </message>
     <message>
         <source>LP FEC</source>
-        <translation type="unfinished">LP FEC</translation>
+        <translation>LP FEC</translation>
     </message>
     <message>
         <source>Modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>调制</translation>
     </message>
     <message>
         <source>Inner FEC</source>
-        <translation type="unfinished">Inner FEC</translation>
+        <translation>Inner FEC</translation>
     </message>
     <message>
         <source>Inversion</source>
-        <translation type="unfinished"></translation>
+        <translation>反转</translation>
     </message>
     <message>
         <source>Roll Offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Roll offset</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Transmission Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>传输方式</translation>
     </message>
     <message>
         <source>Guard Interval</source>
-        <translation type="unfinished"></translation>
+        <translation>保护间隔</translation>
     </message>
     <message>
         <source>Hierarchy</source>
-        <translation type="unfinished"></translation>
+        <translation>等级制度</translation>
     </message>
     <message>
         <source>isid</source>
@@ -949,22 +953,22 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Tuner settings &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>调谐器设置 &quot;%1&quot; 不存在。</translation>
     </message>
     <message>
         <source>Tuner settings table &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>调谐器设置表 &quot;%1&quot; 不存在。</translation>
     </message>
     <message>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>调谐器设置应答器 &quot;%1&quot; 不存在。</translation>
     </message>
 </context>
 <context>
@@ -972,17 +976,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Userbouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>编辑用户频道组</translation>
     </message>
     <message>
         <source>New Userbouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>新用户频道组</translation>
     </message>
     <message>
         <source>Userbouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>用户频道组</translation>
     </message>
     <message>
         <source>Name</source>
@@ -990,30 +994,30 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>文件名</translation>
     </message>
     <message>
         <source>custom filename, leave empty to auto-fill</source>
-        <translation type="unfinished"></translation>
+        <translation>自定义文件名，留空以自动填充</translation>
     </message>
     <message>
         <source>Bouquet</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>频道组</translation>
     </message>
     <message>
         <source>Parent Bouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>家长频道组</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>用户通道组 &quot;%1&quot; 不存在。</translation>
     </message>
 </context>
 <context>
@@ -1021,32 +1025,32 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>FTP Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误 FTP</translation>
     </message>
     <message>
         <source>File &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>文件 &quot;%s&quot; 不存在。</translation>
     </message>
     <message>
         <source>Missing &quot;%s&quot; parameter.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>缺少 &quot;%s&quot; 参数。</translation>
     </message>
     <message>
         <source>Missing &quot;%s&quot; path parameter.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>缺少 &quot;%s&quot; 路径参数。</translation>
     </message>
     <message>
         <source>Failed to resume FTP connection.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>无法恢复 FTP 连接。</translation>
     </message>
 </context>
 <context>
@@ -1055,12 +1059,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>&amp;File</source>
         <comment>menu</comment>
         <extracomment>Platform: File menu</extracomment>
-        <translation type="unfinished">文件</translation>
+        <translation>文件</translation>
     </message>
     <message>
         <source>&amp;New</source>
         <comment>menu</comment>
-        <translation type="unfinished">新建</translation>
+        <translation>新建</translation>
     </message>
     <message>
         <source>&amp;Open</source>
@@ -1076,17 +1080,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>Save &amp;As…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>另存为…</translation>
     </message>
     <message>
         <source>Import</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>进口</translation>
     </message>
     <message>
         <source>Export</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>出口</translation>
     </message>
     <message>
         <source>Close Tab</source>
@@ -1096,18 +1100,18 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Close All Tabs</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>关闭所有选项卡</translation>
     </message>
     <message>
         <source>&amp;Print…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>打印…</translation>
     </message>
     <message>
         <source>Print &amp;All</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>打印全部</translation>
     </message>
     <message>
         <source>Preferences…</source>
@@ -1130,13 +1134,13 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>E&amp;xit</source>
         <comment>menu</comment>
         <extracomment>Platform: Exit | Quit item</extracomment>
-        <translation type="unfinished">退出</translation>
+        <translation>退出</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
         <comment>menu</comment>
         <extracomment>Platform: Edit menu</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>编辑</translation>
     </message>
     <message>
         <source>&amp;Undo</source>
@@ -1171,167 +1175,167 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Select &amp;All</source>
         <comment>menu</comment>
-        <translation>全选(&amp;S)</translation>
+        <translation>关于</translation>
     </message>
     <message>
         <source>&amp;Find</source>
         <comment>menu</comment>
         <extracomment>Platform: Find menu</extracomment>
-        <translation type="unfinished">查找</translation>
+        <translation>寻找</translation>
     </message>
     <message>
         <source>&amp;Find Channel…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>寻找频道...</translation>
     </message>
     <message>
         <source>Find &amp;Next</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>寻找下一个</translation>
     </message>
     <message>
         <source>Find &amp;Previous</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>寻找上一个</translation>
     </message>
     <message>
         <source>Find &amp;All</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>寻找全部</translation>
     </message>
     <message>
         <source>Find &amp;Bouquet…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>寻找频道组...</translation>
     </message>
     <message>
         <source>Find N&amp;ext Bouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>寻找下一个频道组</translation>
     </message>
     <message>
         <source>&amp;Tools</source>
         <comment>menu</comment>
-        <translation type="unfinished">工具</translation>
+        <translation>工具</translation>
     </message>
     <message>
         <source>Edit Transponders</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>编辑应答器</translation>
     </message>
     <message>
         <source>Edit %1</source>
         <comment>menu</comment>
         <extracomment>Note: %1 is xml filename</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>编辑 %1</translation>
     </message>
     <message>
         <source>Picons editor</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Picons 编辑器</translation>
     </message>
     <message>
         <source>Edit Transponders</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>编辑应答器</translation>
     </message>
     <message>
         <source>Edit Settings</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>编辑设置</translation>
     </message>
     <message>
         <source>Channel Book</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>频道簿</translation>
     </message>
     <message>
         <source>Filename</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>文件名</translation>
     </message>
     <message>
         <source>Import from CSV</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>导入 CSV</translation>
     </message>
     <message>
         <source>Import Services</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>导入服务</translation>
     </message>
     <message>
         <source>Import Bouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>导入通道组</translation>
     </message>
     <message>
         <source>Import Userbouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>导入用户频道组</translation>
     </message>
     <message>
         <source>Import Tuner settings</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>导入调音器设置</translation>
     </message>
     <message>
         <source>Export to CSV</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>导出为 CSV</translation>
     </message>
     <message>
         <source>Export current</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>导出当前</translation>
     </message>
     <message>
         <source>Export All</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>导出全部</translation>
     </message>
     <message>
         <source>Export Services</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>导出服务</translation>
     </message>
     <message>
         <source>Export Bouquets</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>导出通道组</translation>
     </message>
     <message>
         <source>Export Userbouquets</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>导出用户频道组</translation>
     </message>
     <message>
         <source>Export Tuner settings</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>导出调音器设置</translation>
     </message>
     <message>
         <source>Export to HTML</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>导出为 HTML</translation>
     </message>
     <message>
         <source>Export Index</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>导出索引</translation>
     </message>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>日志检查器</translation>
     </message>
     <message>
         <source>&amp;Window</source>
         <comment>menu</comment>
         <extracomment>Platform: Window menu</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>窗户</translation>
     </message>
     <message>
         <source>&amp;Minimize</source>
@@ -1341,12 +1345,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Hide &amp;Status Bar</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>隐藏状态栏</translation>
     </message>
     <message>
         <source>New &amp;Tab</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>新标签(&amp;T)</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -1357,184 +1361,184 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>About &amp;Qt</source>
         <comment>menu</comment>
-        <translation type="unfinished">关于 Qt</translation>
+        <translation>关于 Qt</translation>
     </message>
     <message>
         <source>Report a bug</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>报告错误</translation>
     </message>
     <message>
         <source>Check for updates…</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>检查更新…</translation>
     </message>
     <message>
         <source>Go to E2SE repository…</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>转到 E2SE 存储库...</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>
         <comment>menu</comment>
-        <translation type="unfinished">关于 e2 SAT Editor</translation>
+        <translation>关于 e2 SAT Editor</translation>
     </message>
     <message>
         <source>New &amp;Tab</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>新标签(&amp;T)</translation>
     </message>
     <message>
         <source>&amp;Find Channel</source>
-        <translation type="unfinished"></translation>
+        <translation>寻找频道</translation>
     </message>
     <message>
         <source>Find &amp;Bouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>寻找频道组</translation>
     </message>
     <message>
         <source>Find N&amp;ext Bouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>寻找下一个频道组</translation>
     </message>
     <message>
         <source>&amp;Find Transponder</source>
-        <translation type="unfinished"></translation>
+        <translation>寻找应答器</translation>
     </message>
     <message>
         <source>Channel Book</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>频道簿</translation>
     </message>
     <message>
         <source>Find &amp;Position</source>
-        <translation type="unfinished"></translation>
+        <translation>寻找位置</translation>
     </message>
     <message>
         <source>Find N&amp;ext Position</source>
-        <translation type="unfinished"></translation>
+        <translation>寻找下一个位置</translation>
     </message>
     <message>
         <source>Untitled</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>无标题</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>读取文件 &quot;%1&quot; 时出错。</translation>
     </message>
     <message>
         <source>Missing current tab reference.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>缺少当前选项卡引用。</translation>
     </message>
     <message>
         <source>Missing parent tab for tab reference &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>缺少选项卡引用 &quot;%1&quot; 的父选项卡。</translation>
     </message>
     <message>
         <source>Picons editor</source>
         <comment>tab</comment>
-        <translation type="unfinished"></translation>
+        <translation>Picons 编辑器</translation>
     </message>
     <message>
         <source>Missing tab reference &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>缺少选项卡引用 &quot;%1&quot; 。</translation>
     </message>
     <message>
         <source>Select data folder</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>选择数据文件夹</translation>
     </message>
     <message>
         <source>Select where to save</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>选择保存位置</translation>
     </message>
     <message>
         <source>Select one or more files to open</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>选择要打开的一个或多个文件</translation>
     </message>
     <message>
         <source>CSV File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>CSV 文件</translation>
     </message>
     <message>
         <source>All Files</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>全部文件</translation>
     </message>
     <message>
         <source>Import</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>进口</translation>
     </message>
     <message>
         <source>HTML File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>HTML 文件</translation>
     </message>
     <message>
         <source>Export</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>出口</translation>
     </message>
     <message>
         <source>Hide &amp;Status Bar</source>
-        <translation type="unfinished"></translation>
+        <translation>隐藏状态栏</translation>
     </message>
     <message>
         <source>Show &amp;Status Bar</source>
-        <translation type="unfinished"></translation>
+        <translation>显示状态栏</translation>
     </message>
     <message>
         <source>Channels</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>渠道</translation>
     </message>
     <message>
         <source>Bouquet</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>频道组</translation>
     </message>
     <message>
         <source>TV</source>
         <comment>status-bar</comment>
-        <translation type="unfinished">TV</translation>
+        <translation>电视</translation>
     </message>
     <message>
         <source>Radio</source>
         <comment>status-bar</comment>
-        <translation type="unfinished">Radio</translation>
+        <translation>收音机</translation>
     </message>
     <message>
         <source>Data</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>数据</translation>
     </message>
     <message>
         <source>Total</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>总计</translation>
     </message>
     <message>
         <source>Transponders</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>应答器</translation>
     </message>
     <message>
         <source>Position</source>
         <comment>status-bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>位置</translation>
     </message>
 </context>
 <context>
@@ -1545,15 +1549,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Bouquets</source>
-        <translation type="unfinished"></translation>
+        <translation>频道组</translation>
     </message>
     <message>
         <source>Channels</source>
-        <translation type="unfinished"></translation>
+        <translation>渠道</translation>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished"></translation>
+        <translation>指数</translation>
     </message>
     <message>
         <source>Name</source>
@@ -1561,15 +1565,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Parental</source>
-        <translation type="unfinished"></translation>
+        <translation>家长锁</translation>
     </message>
     <message>
         <source>Service ID</source>
-        <translation type="unfinished">Service ID</translation>
+        <translation>Service ID</translation>
     </message>
     <message>
         <source>Transport ID</source>
-        <translation type="unfinished">Transport ID</translation>
+        <translation>Transport ID</translation>
     </message>
     <message>
         <source>Type</source>
@@ -1577,281 +1581,281 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>CAS</source>
-        <translation type="unfinished">CAS</translation>
+        <translation>CAS</translation>
     </message>
     <message>
         <source>Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>提供者</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>系统</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>位置</translation>
     </message>
     <message>
         <source>Tuner</source>
-        <translation type="unfinished"></translation>
+        <translation>调音器</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>频率</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>极化</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>New Bouquet</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>新频道组</translation>
     </message>
     <message>
         <source>Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>寻找…</translation>
     </message>
     <message>
         <source>Add Channel</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>添加频道</translation>
     </message>
     <message>
         <source>Add Marker</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>添加标记</translation>
     </message>
     <message>
         <source>New Service</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>新服务</translation>
     </message>
     <message>
         <source>Drag&amp;&amp;Drop</source>
         <comment>toolbar</comment>
         <extracomment>Encoding: note double ampersand</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>拖放</translation>
     </message>
     <message>
         <source>Reference</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>参考</translation>
     </message>
     <message>
         <source>Settings Convert</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>设置转换</translation>
     </message>
     <message>
         <source>Drag&amp;&amp;Drop Preferences</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>拖放首选项</translation>
     </message>
     <message>
         <source>&amp;Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>寻找…</translation>
     </message>
     <message>
         <source>All services</source>
-        <translation type="unfinished"></translation>
+        <translation>所有服务</translation>
     </message>
     <message>
         <source>Reference ID</source>
         <comment>reference-box</comment>
-        <translation type="unfinished">Reference ID</translation>
+        <translation>参考编号</translation>
     </message>
     <message>
         <source>Service ID</source>
         <comment>reference-box</comment>
-        <translation type="unfinished">Service ID</translation>
+        <translation>Service ID</translation>
     </message>
     <message>
         <source>Transponder</source>
         <comment>reference-box</comment>
-        <translation type="unfinished"></translation>
+        <translation>应答器</translation>
     </message>
     <message>
         <source>Userbouquets</source>
         <comment>reference-box</comment>
-        <translation type="unfinished"></translation>
+        <translation>用户频道组</translation>
     </message>
     <message>
         <source>Bouquets</source>
         <comment>reference-box</comment>
-        <translation type="unfinished"></translation>
+        <translation>频道组</translation>
     </message>
     <message>
         <source>Tuner</source>
         <comment>reference-box</comment>
-        <translation type="unfinished"></translation>
+        <translation>调音器</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Missing index key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>缺少索引键 &quot;%1&quot; 。</translation>
     </message>
     <message>
         <source>Channel reference mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>通道参考不匹配 &quot;%1&quot; 。</translation>
     </message>
     <message>
         <source>Convert</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>转变</translation>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.4 [Enigma 2]</translation>
+        <translation>Lamedb 2.4 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.5 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.5 [Enigma 2]</translation>
+        <translation>Lamedb 2.5 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.3 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.3 [Enigma 1]</translation>
+        <translation>Lamedb 2.3 [Enigma 1]</translation>
     </message>
     <message>
         <source>Lamedb 2.2 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.2 [Enigma 1]</translation>
+        <translation>Lamedb 2.2 [Enigma 1]</translation>
     </message>
     <message>
         <source>Zapit api-v4 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v4 [Neutrino]</translation>
+        <translation>Zapit api-v4 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v3 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v3 [Neutrino]</translation>
+        <translation>Zapit api-v3 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v2 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v2 [Neutrino]</translation>
+        <translation>Zapit api-v2 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+        <translation>Zapit api-v1 [Neutrino]</translation>
     </message>
     <message>
         <source>Drag and Drop</source>
-        <translation type="unfinished"></translation>
+        <translation>拖放</translation>
     </message>
     <message>
         <source>Switch to bouquet after drop</source>
-        <translation type="unfinished"></translation>
+        <translation>删除后切换到频道组</translation>
     </message>
     <message>
         <source>Channel operations</source>
-        <translation type="unfinished"></translation>
+        <translation>渠道运营</translation>
     </message>
     <message>
         <source>Copy channels (preserving)</source>
-        <translation type="unfinished"></translation>
+        <translation>复制频道（保留）</translation>
     </message>
     <message>
         <source>Move channels (deleting)</source>
-        <translation type="unfinished"></translation>
+        <translation>移动频道（删除）</translation>
     </message>
     <message>
         <source>Missing bouquet key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>缺少通道组键 &quot;%1&quot; 。</translation>
     </message>
     <message>
         <source>Bouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>通道组 &quot;%1&quot; 不存在。</translation>
     </message>
     <message>
         <source>Missing userbouquet key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>缺少用户通道组密钥 &quot;%1&quot; 。</translation>
     </message>
     <message>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>用户通道组 &quot;%1&quot; 不存在。</translation>
     </message>
     <message>
         <source>Missing service key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>缺少服务密钥 &quot;%1&quot; 。</translation>
     </message>
     <message>
         <source>Service &quot;%1&quot; not exists or is a channel reference.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>服务 &quot;%1&quot; 不存在或者是通道引用。</translation>
     </message>
     <message>
         <source>Missing channel reference key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>缺少通道参考键 &quot;%1&quot; 。</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; is not a valid marker.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>通道引用 &quot;%1&quot; 不是有效标记。</translation>
     </message>
     <message>
         <source>Channel reference&quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>通道引用 &quot;%1&quot; 不存在。</translation>
     </message>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>确认删除</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>您想删除项目吗？</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>不是有效的数据格式。</translation>
     </message>
     <message>
         <source>Channel reference mismatch.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>通道参考不匹配。</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>编辑频道组</translation>
     </message>
     <message>
         <source>Edit Userbouquet</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>编辑用户频道组</translation>
     </message>
     <message>
         <source>Set Parental lock</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>设置家长锁</translation>
     </message>
     <message>
         <source>Unset Parental lock</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>取消家长锁</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -1861,27 +1865,27 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Export</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>出口</translation>
     </message>
     <message>
         <source>Edit Marker</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>编辑标记</translation>
     </message>
     <message>
         <source>Edit Service</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>编辑服务</translation>
     </message>
     <message>
         <source>Parental lock (Userbouquet)</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>家长锁（用户-频道-组）</translation>
     </message>
     <message>
         <source>Parental lock</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>家长锁</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -1903,156 +1907,156 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <name>piconsView</name>
     <message>
         <source>Picons</source>
-        <translation type="unfinished"></translation>
+        <translation>Picons</translation>
     </message>
     <message>
         <source>Picons Preferences</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>Picons 首选项</translation>
     </message>
     <message>
         <source>&amp;Browse…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>浏览…</translation>
     </message>
     <message>
         <source>Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>寻找…</translation>
     </message>
     <message>
         <source>Folder</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>文件夹</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished">名称</translation>
+        <translation>名称</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished">类型</translation>
+        <translation>类型</translation>
     </message>
     <message>
         <source>CAS</source>
-        <translation type="unfinished">CAS</translation>
+        <translation>CAS</translation>
     </message>
     <message>
         <source>Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>提供者</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>文件名</translation>
     </message>
     <message>
         <source>Tuner</source>
-        <translation type="unfinished"></translation>
+        <translation>调音器</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>位置</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>系统</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Channel mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>通道不匹配 &quot;%1&quot; 。</translation>
     </message>
     <message>
         <source>Backup picon when replaced</source>
-        <translation type="unfinished"></translation>
+        <translation>更换时备份 picon</translation>
     </message>
     <message>
         <source>Filename format</source>
-        <translation type="unfinished"></translation>
+        <translation>文件名格式</translation>
     </message>
     <message>
         <source>Use reference ID</source>
-        <translation type="unfinished"></translation>
+        <translation>使用参考编号</translation>
     </message>
     <message>
         <source>Use service name</source>
-        <translation type="unfinished"></translation>
+        <translation>使用服务名称</translation>
     </message>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误 File</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>读取文件 &quot;%1&quot; 时出错。</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>写入文件 &quot;%1&quot; 时出错。</translation>
     </message>
     <message>
         <source>Delete images</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>删除图像</translation>
     </message>
     <message>
         <source>Do you want to delete the images from disk?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>您想从磁盘中删除图像吗？</translation>
     </message>
     <message>
         <source>Change picon</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>更改 picon</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">剪切(&amp;T)</translation>
+        <translation>剪切(&amp;T)</translation>
     </message>
     <message>
         <source>&amp;Copy</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">复制(&amp;C)</translation>
+        <translation>复制(&amp;C)</translation>
     </message>
     <message>
         <source>&amp;Paste</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">粘贴(&amp;P)</translation>
+        <translation>粘贴(&amp;P)</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">删除(&amp;D)</translation>
+        <translation>删除(&amp;D)</translation>
     </message>
     <message>
         <source>Select picons folder</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>选择 picons 文件夹</translation>
     </message>
     <message>
         <source>Select picon image</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>选择 picon 图像</translation>
     </message>
 </context>
 <context>
     <name>printable</name>
     <message>
         <source>Untitled</source>
-        <translation type="unfinished"></translation>
+        <translation>无标题</translation>
     </message>
     <message>
         <source>(extract)</source>
-        <translation type="unfinished"></translation>
+        <translation>（提炼）</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -2060,11 +2064,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Tuner Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>调音器设置</translation>
     </message>
     <message>
         <source>Services List</source>
-        <translation type="unfinished"></translation>
+        <translation>服务清单</translation>
     </message>
     <message>
         <source>File</source>
@@ -2072,19 +2076,19 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>发电机</translation>
     </message>
     <message>
         <source>Datetime</source>
-        <translation type="unfinished"></translation>
+        <translation>日期</translation>
     </message>
     <message>
         <source>Table of Contents</source>
-        <translation type="unfinished"></translation>
+        <translation>指数</translation>
     </message>
     <message>
         <source>Content</source>
-        <translation type="unfinished"></translation>
+        <translation>内容</translation>
     </message>
     <message>
         <source>Type</source>
@@ -2093,16 +2097,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Missing index key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>缺少索引键 &quot;%1&quot; 。</translation>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished"></translation>
+        <translation>指数</translation>
     </message>
     <message>
         <source>Name</source>
@@ -2122,99 +2126,99 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>CAS</source>
-        <translation type="unfinished">CAS</translation>
+        <translation>CAS</translation>
     </message>
     <message>
         <source>Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>提供者</translation>
     </message>
     <message>
         <source>Freq</source>
-        <translation type="unfinished"></translation>
+        <translation>Freq</translation>
     </message>
     <message>
         <source>Pol</source>
-        <translation type="unfinished"></translation>
+        <translation>Pol</translation>
     </message>
     <message>
         <source>SR</source>
-        <translation type="unfinished"></translation>
+        <translation>SR</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>Sys</source>
-        <translation type="unfinished"></translation>
+        <translation>Sys</translation>
     </message>
     <message>
         <source>Pos</source>
-        <translation type="unfinished"></translation>
+        <translation>Pos</translation>
     </message>
     <message>
         <source>Tuner</source>
-        <translation type="unfinished"></translation>
+        <translation>调音器</translation>
     </message>
     <message>
         <source>Bouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>频道组</translation>
     </message>
     <message>
         <source>Userbouquet</source>
-        <translation type="unfinished"></translation>
+        <translation>用户频道组</translation>
     </message>
     <message>
         <source>Transponders</source>
-        <translation type="unfinished"></translation>
+        <translation>应答器</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>位置</translation>
     </message>
     <message>
         <source>Mod</source>
-        <translation type="unfinished"></translation>
+        <translation>Mod</translation>
     </message>
     <message>
         <source>Inv</source>
-        <translation type="unfinished"></translation>
+        <translation>Inv</translation>
     </message>
     <message>
         <source>Rollof</source>
-        <translation type="unfinished"></translation>
+        <translation>Rollof</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Const</source>
-        <translation type="unfinished"></translation>
+        <translation>Const</translation>
     </message>
     <message>
         <source>Band</source>
-        <translation type="unfinished"></translation>
+        <translation>Band</translation>
     </message>
     <message>
         <source>Tmx Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Tmx Mode</translation>
     </message>
     <message>
         <source>HP FEC</source>
-        <translation type="unfinished">HP FEC</translation>
+        <translation>HP FEC</translation>
     </message>
     <message>
         <source>LP FEC</source>
-        <translation type="unfinished">LP FEC</translation>
+        <translation>LP FEC</translation>
     </message>
     <message>
         <source>Guard</source>
-        <translation type="unfinished"></translation>
+        <translation>Guard</translation>
     </message>
     <message>
         <source>Hier</source>
-        <translation type="unfinished"></translation>
+        <translation>Hier</translation>
     </message>
 </context>
 <context>
@@ -2227,7 +2231,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Save</source>
         <comment>dialog</comment>
-        <translation>保存(S)</translation>
+        <translation>保存(&amp;S)</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -2236,7 +2240,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>添加</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -2244,35 +2248,35 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Connection</source>
-        <translation type="unfinished"></translation>
+        <translation>联系</translation>
     </message>
     <message>
         <source>IP address</source>
-        <translation type="unfinished"></translation>
+        <translation>IP地址</translation>
     </message>
     <message>
         <source>FTP port</source>
-        <translation type="unfinished"></translation>
+        <translation>FTP端口</translation>
     </message>
     <message>
         <source>Use active FTP</source>
-        <translation type="unfinished"></translation>
+        <translation>使用主动 FTP</translation>
     </message>
     <message>
         <source>HTTP port</source>
-        <translation type="unfinished"></translation>
+        <translation>HTTP端口</translation>
     </message>
     <message>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation>登录</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>用户名</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>密码</translation>
     </message>
     <message>
         <source>Configuration</source>
@@ -2280,7 +2284,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Transponders</source>
-        <translation type="unfinished"></translation>
+        <translation>应答器</translation>
     </message>
     <message>
         <source>Services</source>
@@ -2288,105 +2292,105 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Bouquets</source>
-        <translation type="unfinished"></translation>
+        <translation>频道组</translation>
     </message>
     <message>
         <source>Connections</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>连接</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>般的</translation>
     </message>
     <message>
         <source>Show confirmation messages when deleting</source>
-        <translation type="unfinished"></translation>
+        <translation>删除时显示确认消息</translation>
     </message>
     <message>
         <source>Parental lock whitelist (exclusion instead inclusion list)</source>
-        <translation type="unfinished"></translation>
+        <translation>家长锁白名单（排除列表）</translation>
     </message>
     <message>
         <source>Drag and Drop</source>
-        <translation type="unfinished"></translation>
+        <translation>拖放</translation>
     </message>
     <message>
         <source>Switch to current bouquet item after the drop</source>
-        <translation type="unfinished"></translation>
+        <translation>拖放后切换到当前频道组项目</translation>
     </message>
     <message>
         <source>Channel operations</source>
-        <translation type="unfinished"></translation>
+        <translation>渠道运营</translation>
     </message>
     <message>
         <source>Copy channels (preserving)</source>
-        <translation type="unfinished"></translation>
+        <translation>复制频道（保留）</translation>
     </message>
     <message>
         <source>Move channels (deleting)</source>
-        <translation type="unfinished"></translation>
+        <translation>移动频道（删除）</translation>
     </message>
     <message>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>语言</translation>
     </message>
     <message>
         <source>Picons</source>
-        <translation type="unfinished"></translation>
+        <translation>Picons</translation>
     </message>
     <message>
         <source>Default (system language)</source>
-        <translation type="unfinished"></translation>
+        <translation>默认（系统语言）</translation>
     </message>
     <message>
         <source>The software might need to be restarted.</source>
-        <translation type="unfinished"></translation>
+        <translation>该软件可能需要重新启动。</translation>
     </message>
     <message>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>主题</translation>
     </message>
     <message>
         <source>Default (system theme)</source>
-        <translation type="unfinished"></translation>
+        <translation>默认（系统主题）</translation>
     </message>
     <message>
         <source>Dark</source>
-        <translation type="unfinished"></translation>
+        <translation>深色</translation>
     </message>
     <message>
         <source>Light</source>
-        <translation>细体 (Light)</translation>
+        <translation>浅色</translation>
     </message>
     <message>
         <source>Enable experimental features</source>
-        <translation type="unfinished"></translation>
+        <translation>启用实验性功能</translation>
     </message>
     <message>
         <source>Picons editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Picons 编辑器</translation>
     </message>
     <message>
         <source>Backup picon when replaced</source>
-        <translation type="unfinished"></translation>
+        <translation>更换时备份 picon</translation>
     </message>
     <message>
         <source>Filename format</source>
-        <translation type="unfinished"></translation>
+        <translation>文件名格式</translation>
     </message>
     <message>
         <source>Use reference ID</source>
-        <translation type="unfinished"></translation>
+        <translation>使用参考编号</translation>
     </message>
     <message>
         <source>Use service name</source>
-        <translation type="unfinished"></translation>
+        <translation>使用服务名称</translation>
     </message>
     <message>
         <source>Preferences</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>优先</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -2426,7 +2430,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Default format</source>
-        <translation type="unfinished"></translation>
+        <translation>默认格式</translation>
     </message>
     <message>
         <source>Tools</source>
@@ -2434,49 +2438,49 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>CSV Import/Export</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV 导入/导出</translation>
     </message>
     <message>
         <source>Allow header columns in CSV</source>
-        <translation type="unfinished"></translation>
+        <translation>允许 CSV 中的标题列</translation>
     </message>
     <message>
         <source>CSV delimiter character</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV 分隔符</translation>
     </message>
     <message>
         <source>CSV separator character</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV 分隔符</translation>
     </message>
     <message>
         <source>CSV escape character</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV 转义字符</translation>
     </message>
     <message>
         <source>Fields Import/Export</source>
-        <translation type="unfinished"></translation>
+        <translation>字段导入/导出</translation>
     </message>
     <message>
         <source>Default (same fields as visual)</source>
-        <translation type="unfinished"></translation>
+        <translation>默认（与视觉相同的字段）</translation>
     </message>
     <message>
         <source>Extended (all fields)</source>
-        <translation type="unfinished"></translation>
+        <translation>扩展（所有字段）</translation>
     </message>
     <message>
         <source>Engine</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>引擎</translation>
     </message>
     <message>
         <source>%1Please be carefull!%2Modifing these settings could break the program.%3</source>
         <extracomment>HTML formattation: %1text%2%text%3 treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1请小心！%2修改这些设置可能会破坏程序。%3</translation>
     </message>
     <message>
         <source>OK, I understood this.</source>
-        <translation type="unfinished"></translation>
+        <translation>好吧，我明白了。</translation>
     </message>
     <message>
         <source>Advanced</source>
@@ -2485,7 +2489,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>轮廓</translation>
     </message>
 </context>
 <context>
@@ -2503,12 +2507,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Import</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>进口</translation>
     </message>
     <message>
         <source>Export</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>出口</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -2518,22 +2522,22 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Select profile</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>选择个人资料</translation>
     </message>
     <message>
         <source>Connect</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>连接</translation>
     </message>
     <message>
         <source>Disconnect</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>断开</translation>
     </message>
     <message>
         <source>Upload</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>上传</translation>
     </message>
     <message>
         <source>Download</source>
@@ -2543,207 +2547,207 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Reading from %1 …</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>从 %1 读取 ...</translation>
     </message>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误 File</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>读取文件 &quot;%1&quot; 时出错。</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>打开文件时出错。</translation>
     </message>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>文件已被修改</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>您想保存更改吗？</translation>
     </message>
     <message>
         <source>Saved to %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>已保存至 %1</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>得救了！</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>写入文件 &quot;%1&quot; 时出错。</translation>
     </message>
     <message>
         <source>Error writing files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>写入文件时出错。</translation>
     </message>
     <message>
         <source>Nothing to import</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>没有什么可导入的</translation>
     </message>
     <message>
         <source>You are in Picons editor.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>您现在位于 Picons 编辑器中。</translation>
     </message>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>正在从 %1 导入 ...</translation>
     </message>
     <message>
         <source>Nothing to export</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>没有什么可导出的</translation>
     </message>
     <message>
         <source>The destination contains files that will be overwritten.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>目标包含将被覆盖的文件。</translation>
     </message>
     <message>
         <source>Do you want to overwrite them?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>您想覆盖它们吗？</translation>
     </message>
     <message>
         <source>Empty path.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>空路。</translation>
     </message>
     <message>
         <source>You are in Channel Book.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>您现在位于 频道簿中。</translation>
     </message>
     <message>
         <source>Exported to %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>已导出至 %1</translation>
     </message>
     <message>
         <source>Printing …</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>印刷 …</translation>
     </message>
     <message>
         <source>FTP connecting ...</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP 连接 ...</translation>
     </message>
     <message>
         <source>FTP disconnecting ...</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP 断开连接 ...</translation>
     </message>
     <message>
         <source>Trying to resume FTP connection ...</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>正在尝试恢复 FTP 连接 ...</translation>
     </message>
     <message>
         <source>STB reloading ...</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>STB 正在重新加载 ...</translation>
     </message>
     <message>
         <source>FTP connected successfully.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP 连接成功。</translation>
     </message>
     <message>
         <source>FTP Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误 FTP</translation>
     </message>
     <message>
         <source>Cannot connect to FTP &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>无法连接到 FTP &quot;%1&quot;。</translation>
     </message>
     <message>
         <source>Cannot connect to FTP Server!</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>无法连接到 FTP 服务器！</translation>
     </message>
     <message>
         <source>FTP disconnected successfully.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP 已成功断开连接。</translation>
     </message>
     <message>
         <source>Cannot disconnect from FTP &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>无法断开与 FTP &quot;%1&quot; 的连接。</translation>
     </message>
     <message>
         <source>Cannot disconnect from FTP Server!</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>无法断开与 FTP 服务器的连接！</translation>
     </message>
     <message>
         <source>Uploading file: %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>正在上传文件：%1</translation>
     </message>
     <message numerus="yes">
         <source>Uploaded %n files</source>
         <comment>message</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>已上传 %n 个文件</numerusform>
         </translation>
     </message>
     <message>
         <source>STB reload done.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>STB 重新加载完成。</translation>
     </message>
     <message>
         <source>Downloading file: %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>正在下载文件：%1</translation>
     </message>
     <message numerus="yes">
         <source>Downloaded %n files</source>
         <comment>message</comment>
         <translation type="unfinished">
-            <numerusform></numerusform>
+            <numerusform>已下载 %n 个文件</numerusform>
         </translation>
     </message>
     <message>
         <source>Cannot reload STB &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>无法重新加载 STB &quot;%1&quot;。</translation>
     </message>
     <message>
         <source>Cannot reload STB!</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>无法重新加载 STB！</translation>
     </message>
     <message>
         <source>DEMO MODE</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>演示模式</translation>
     </message>
     <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>出于调试目的。%1在 设置 &gt; 高级 选项卡下设置 application.seeds 绝对路径，然后重新启动软件。%2源种子位于：%3</translation>
     </message>
 </context>
 <context>
@@ -2751,64 +2755,64 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Log Inspector</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>日志检查器</translation>
     </message>
     <message>
         <source>Filter</source>
         <comment>ui</comment>
-        <translation type="unfinished"></translation>
+        <translation>筛选</translation>
     </message>
     <message>
         <source>All Log</source>
-        <translation type="unfinished"></translation>
+        <translation>所有日志</translation>
     </message>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>正在从 %1 导入 ...</translation>
     </message>
     <message>
         <source>The destination contains files that will be overwritten.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>目标包含将被覆盖的文件。</translation>
     </message>
     <message>
         <source>Do you want to overwrite them?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>您想覆盖它们吗？</translation>
     </message>
     <message>
         <source>Exported to %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>已导出至 %1</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>得救了！</translation>
     </message>
 </context>
 <context>
     <name>transpondersView</name>
     <message>
         <source>Transponders</source>
-        <translation type="unfinished"></translation>
+        <translation>应答器</translation>
     </message>
     <message>
         <source>Combo</source>
-        <translation type="unfinished"></translation>
+        <translation>组合</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>系统</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>位置</translation>
     </message>
     <message>
         <source>Transport ID</source>
-        <translation type="unfinished">Transport ID</translation>
+        <translation>Transport ID</translation>
     </message>
     <message>
         <source>DVBNS</source>
@@ -2820,96 +2824,96 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>频率</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>极化</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>Modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>调制</translation>
     </message>
     <message>
         <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
+        <translation>带宽</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Roll offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Roll offset</translation>
     </message>
     <message>
         <source>Inversion</source>
-        <translation type="unfinished"></translation>
+        <translation>反转</translation>
     </message>
     <message>
         <source>Tmx Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Tmx Mode</translation>
     </message>
     <message>
         <source>Guard</source>
-        <translation type="unfinished"></translation>
+        <translation>Guard</translation>
     </message>
     <message>
         <source>Hierarchy</source>
-        <translation type="unfinished"></translation>
+        <translation>等级制度</translation>
     </message>
     <message>
         <source>New Transponder</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>新应答器</translation>
     </message>
     <message>
         <source>Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>寻找…</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Missing transponder key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>缺少应答器密钥 &quot;%1&quot;。</translation>
     </message>
     <message>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>应答器 &quot;%1&quot; 不存在。</translation>
     </message>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>确认删除</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>您想删除项目吗？</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>不是有效的数据格式。</translation>
     </message>
     <message>
         <source>Edit Transponder</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>编辑应答器</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -2936,25 +2940,25 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <name>tunersetsView</name>
     <message>
         <source>Satellites</source>
-        <translation type="unfinished"></translation>
+        <translation>卫星</translation>
     </message>
     <message>
         <source>Positions</source>
-        <translation type="unfinished"></translation>
+        <translation>位置</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Unknown tuner settings type.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>未知的调谐器设置类型。</translation>
     </message>
     <message>
         <source>Transponders</source>
-        <translation type="unfinished"></translation>
+        <translation>应答器</translation>
     </message>
     <message>
         <source>Name</source>
@@ -2962,157 +2966,157 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>位置</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>
-        <translation type="unfinished"></translation>
+        <translation>Freq/Pol/SR</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>频率</translation>
     </message>
     <message>
         <source>Polarization</source>
-        <translation type="unfinished"></translation>
+        <translation>极化</translation>
     </message>
     <message>
         <source>Symbol Rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol Rate</translation>
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>系统</translation>
     </message>
     <message>
         <source>FEC</source>
-        <translation type="unfinished">FEC</translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <source>Modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>调制</translation>
     </message>
     <message>
         <source>Inversion</source>
-        <translation type="unfinished"></translation>
+        <translation>反转</translation>
     </message>
     <message>
         <source>Roll offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Roll offset</translation>
     </message>
     <message>
         <source>Pilot</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilot</translation>
     </message>
     <message>
         <source>Country</source>
-        <translation type="unfinished"></translation>
+        <translation>国家</translation>
     </message>
     <message>
         <source>Freq/Const/Band</source>
-        <translation type="unfinished"></translation>
+        <translation>Freq/Const/Band</translation>
     </message>
     <message>
         <source>Constellation</source>
-        <translation type="unfinished"></translation>
+        <translation>星座</translation>
     </message>
     <message>
         <source>Bandwidth</source>
-        <translation type="unfinished"></translation>
+        <translation>带宽</translation>
     </message>
     <message>
         <source>Tmx Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Tmx Mode</translation>
     </message>
     <message>
         <source>HP FEC</source>
-        <translation type="unfinished">HP FEC</translation>
+        <translation>HP FEC</translation>
     </message>
     <message>
         <source>LP FEC</source>
-        <translation type="unfinished">LP FEC</translation>
+        <translation>LP FEC</translation>
     </message>
     <message>
         <source>Guard</source>
-        <translation type="unfinished"></translation>
+        <translation>Guard</translation>
     </message>
     <message>
         <source>Hierarchy</source>
-        <translation type="unfinished"></translation>
+        <translation>等级制度</translation>
     </message>
     <message>
         <source>Freq/Mod/SR</source>
-        <translation type="unfinished"></translation>
+        <translation>Freq/Mod/SR</translation>
     </message>
     <message>
         <source>Edit Settings</source>
         <comment>corner</comment>
-        <translation type="unfinished"></translation>
+        <translation>编辑设置</translation>
     </message>
     <message>
         <source>New Position</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>新位置</translation>
     </message>
     <message>
         <source>Find…</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>寻找…</translation>
     </message>
     <message>
         <source>New Transponder</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>新应答器</translation>
     </message>
     <message>
         <source>Missing tuner settings table key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>缺少调谐器设置表键 &quot;%1&quot;。</translation>
     </message>
     <message>
         <source>Missing tuner settings key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>缺少调谐器设置键 &quot;%1&quot;。</translation>
     </message>
     <message>
         <source>Tuner settings table &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>调谐器设置表 &quot;%1&quot; 不存在。</translation>
     </message>
     <message>
         <source>Missing tuner settings transponder key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>缺少调谐器设置应答器密钥 &quot;%1&quot;。</translation>
     </message>
     <message>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>调谐器设置应答器 &quot;%1&quot; 不存在。</translation>
     </message>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>确认删除</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>您想删除项目吗？</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>调谐器设置应答器类型不匹配。</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>不是有效的数据格式。</translation>
     </message>
     <message>
         <source>Edit Position</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>编辑位置</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -3122,7 +3126,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Transponder</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>编辑应答器</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3145,7 +3149,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Find</source>
         <comment>toolbar</comment>
-        <translation>查找</translation>
+        <translation>寻找</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3155,17 +3159,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Highlight</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>强调</translation>
     </message>
     <message>
         <source>Find Previous</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>寻找上一个</translation>
     </message>
     <message>
         <source>Find All</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>寻找全部</translation>
     </message>
 </context>
 </TS>
