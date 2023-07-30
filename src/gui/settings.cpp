@@ -417,8 +417,8 @@ void settings::preferencesLayout()
 	dtf1ln->addItem(QLocale::languageToString(QLocale::Portuguese).append(" (%1)").arg(QLocale::countryToString(QLocale::Brazil)), "pt_BR");
 	dtf1ln->addItem(QLocale::languageToString(QLocale::Portuguese).append(" (%1)").arg(QLocale::countryToString(QLocale::Portugal)), "pt_PT");
 	dtf1ln->addItem(QLocale::languageToString(QLocale::Russian), "ru");
-	// dtf1ln->addItem(QLocale::languageToString(QLocale::Slovak), "sk");
-	// dtf1ln->addItem(QLocale::languageToString(QLocale::Slovenian), "sl");
+	dtf1ln->addItem(QLocale::languageToString(QLocale::Slovak), "sk");
+	dtf1ln->addItem(QLocale::languageToString(QLocale::Slovenian), "sl");
 	// dtf1ln->addItem(QLocale::languageToString(QLocale::Swedish), "sv");
 	// dtf1ln->addItem(QLocale::languageToString(QLocale::Turkish), "tr");
 	dtf1ln->addItem(QLocale::languageToString(QLocale::Ukrainian), "uk");
