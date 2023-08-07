@@ -1378,9 +1378,9 @@ LUB INNYCH DZIAŁALNOŚCI W OPROGRAMOWANIE.</translation>
         <translation>Sprawdź aktualizacje…</translation>
     </message>
     <message>
-        <source>Go to E2SE repository…</source>
+        <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>Przejdź do repozytorium E2SE…</translation>
+        <translation>Przejdź do repozytorium e2SE…</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>

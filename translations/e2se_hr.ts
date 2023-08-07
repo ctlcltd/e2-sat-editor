@@ -1379,9 +1379,9 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
         <translation>Provjerite ima li ažuriranja...</translation>
     </message>
     <message>
-        <source>Go to E2SE repository…</source>
+        <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>Idi na E2SE repozitorij…</translation>
+        <translation>Idi na e2SE repozitorij…</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>

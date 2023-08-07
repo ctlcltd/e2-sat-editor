@@ -347,7 +347,7 @@ void gui::menuBarLayout()
 	menuBarSeparator(mhelp);
 	menuBarAction(mhelp, tr("Report a bug", "menu"), [=]() { this->linkToRepoIssues(); });
 	menuBarAction(mhelp, tr("Check for updates…", "menu"), [=]() { this->linkToRepoReleases(); });
-	menuBarAction(mhelp, tr("Go to E2SE repository…", "menu"), [=]() { this->linkToRepo(); });
+	menuBarAction(mhelp, tr("Go to e2SE repository…", "menu"), [=]() { this->linkToRepo(); });
 	menuBarSeparator(mhelp);
 	menuBarAction(mhelp, tr("&About e2 SAT Editor", "menu"), [=]() { this->aboutDialog(); })->setMenuRole(QAction::NoRole);
 

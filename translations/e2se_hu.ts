@@ -1378,9 +1378,9 @@ VAGY A SZOFTVER FELHASZNÁLÁSA VAGY EGYÉB KERESKEDELME.</translation>
         <translation>Frissítések keresése…</translation>
     </message>
     <message>
-        <source>Go to E2SE repository…</source>
+        <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>Ugrás az E2SE adattárhoz…</translation>
+        <translation>Ugrás az e2SE adattárhoz…</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>

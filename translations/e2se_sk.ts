@@ -1377,9 +1377,9 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
         <translation>Skontroluj aktualizácie…</translation>
     </message>
     <message>
-        <source>Go to E2SE repository…</source>
+        <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>Prejsť do úložiska E2SE…</translation>
+        <translation>Prejsť do úložiska e2SE…</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>

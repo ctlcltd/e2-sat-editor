@@ -1380,9 +1380,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation>Проверить наличие обновлений…</translation>
     </message>
     <message>
-        <source>Go to E2SE repository…</source>
+        <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>Перейти в репозиторий E2SE…</translation>
+        <translation>Перейти в репозиторий e2SE…</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>

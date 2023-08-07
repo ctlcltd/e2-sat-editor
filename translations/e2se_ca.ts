@@ -1377,9 +1377,9 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
         <translation>Buscar actualitzacions…</translation>
     </message>
     <message>
-        <source>Go to E2SE repository…</source>
+        <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>Vés al repositori E2SE…</translation>
+        <translation>Vés al repositori e2SE…</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>

@@ -1376,9 +1376,9 @@ NAUDOJIMO AR SU KITAIS SU JAIS PROGRAMINĖ ĮRANGA.</translation>
         <translation>Tikrinti, ar yra atnaujinimų…</translation>
     </message>
     <message>
-        <source>Go to E2SE repository…</source>
+        <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>Eikite į E2SE saugyklą…</translation>
+        <translation>Eikite į e2SE saugyklą…</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>

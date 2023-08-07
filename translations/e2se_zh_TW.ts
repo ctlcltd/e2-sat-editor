@@ -1374,9 +1374,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation>檢查更新…</translation>
     </message>
     <message>
-        <source>Go to E2SE repository…</source>
+        <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>轉到 E2SE 存儲庫...</translation>
+        <translation>轉到 e2SE 存儲庫...</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>

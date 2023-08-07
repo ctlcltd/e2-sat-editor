@@ -1378,9 +1378,9 @@ HANDELINGEN IN DE SOFTWARE.</translation>
         <translation>Controleren op updates...</translation>
     </message>
     <message>
-        <source>Go to E2SE repository…</source>
+        <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>Ga naar E2SE repository...</translation>
+        <translation>Ga naar e2SE repository...</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>

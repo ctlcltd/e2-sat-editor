@@ -1378,9 +1378,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation>Провери за актуализации…</translation>
     </message>
     <message>
-        <source>Go to E2SE repository…</source>
+        <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>Отидете до хранилището на E2SE...</translation>
+        <translation>Отидете до хранилището на e2SE...</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>

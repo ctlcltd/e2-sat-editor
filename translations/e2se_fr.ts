@@ -1379,9 +1379,9 @@ OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
         <translation>Vérifiez les mises à jour…</translation>
     </message>
     <message>
-        <source>Go to E2SE repository…</source>
+        <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>Aller au dépôt E2SE…</translation>
+        <translation>Aller au dépôt e2SE…</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>

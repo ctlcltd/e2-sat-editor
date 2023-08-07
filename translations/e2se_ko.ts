@@ -1375,9 +1375,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation>업데이트 확인…</translation>
     </message>
     <message>
-        <source>Go to E2SE repository…</source>
+        <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>E2SE 저장소로 이동…</translation>
+        <translation>e2SE 저장소로 이동…</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>

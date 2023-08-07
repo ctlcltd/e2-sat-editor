@@ -1378,9 +1378,9 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
         <translation>Thoir sùil airson ùrachaidhean…</translation>
     </message>
     <message>
-        <source>Go to E2SE repository…</source>
+        <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>Rach gu stòr E2SE…</translation>
+        <translation>Rach gu stòr e2SE…</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>

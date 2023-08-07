@@ -1377,9 +1377,9 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
         <translation>Se etter oppdateringer…</translation>
     </message>
     <message>
-        <source>Go to E2SE repository…</source>
+        <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>Gå til E2SE depotet...</translation>
+        <translation>Gå til e2SE depotet...</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>

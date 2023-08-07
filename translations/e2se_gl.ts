@@ -1378,9 +1378,9 @@ OU O USO OU OUTROS TRATOS DO SOFTWARE.</translation>
         <translation>Comproba se hai actualizacións...</translation>
     </message>
     <message>
-        <source>Go to E2SE repository…</source>
+        <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>Ir ao repositorio E2SE...</translation>
+        <translation>Ir ao repositorio e2SE...</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>

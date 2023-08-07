@@ -1377,9 +1377,9 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
         <translation>Preveri za posodobitve…</translation>
     </message>
     <message>
-        <source>Go to E2SE repository…</source>
+        <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>Pojdi v repozitorij E2SE ...</translation>
+        <translation>Pojdi v repozitorij e2SE ...</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>

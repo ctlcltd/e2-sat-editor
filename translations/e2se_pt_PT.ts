@@ -1377,9 +1377,9 @@ O SOFTWARE OU O USO OU OUTROS NEGÓCIOS NO PROGRAMAS.</translation>
         <translation>Verifique se há atualizações…</translation>
     </message>
     <message>
-        <source>Go to E2SE repository…</source>
+        <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>Vá para o repositório E2SE…</translation>
+        <translation>Vá para o repositório e2SE…</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>

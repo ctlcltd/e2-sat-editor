@@ -1376,9 +1376,9 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
         <translation>Kontrola aktualizací…</translation>
     </message>
     <message>
-        <source>Go to E2SE repository…</source>
+        <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>Přejít do úložiště E2SE…</translation>
+        <translation>Přejít do úložiště e2SE…</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>

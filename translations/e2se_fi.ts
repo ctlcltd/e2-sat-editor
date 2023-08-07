@@ -1377,9 +1377,9 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
         <translation>Tarkista päivitykset…</translation>
     </message>
     <message>
-        <source>Go to E2SE repository…</source>
+        <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>Siirry E2SE tietovarastoon…</translation>
+        <translation>Siirry e2SE tietovarastoon…</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>
