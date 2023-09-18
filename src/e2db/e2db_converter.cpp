@@ -2587,11 +2587,11 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 			page.body += "<tr>";
 			page.body += "<td class=\"trid\">" + idx + "</td>";
 			page.body += "<td class=\"chname\">" + chname + "</td>";
-			page.body += "<td class=\"refid\"><span >" + refid + "</span></td>";
+			page.body += "<td class=\"refid\"><span>" + refid + "</span></td>";
 			page.body += "<td>" + ssid + "</td>";
 			page.body += "<td>" + tsid + "</td>";
 			page.body += "<td>" + stype + "</td>";
-			page.body += "<td class=\"scas\">" + scas + "</span></td>";
+			page.body += "<td class=\"scas\">" + scas + "</td>";
 			page.body += "<td class=\"pname\">" + pname + "</td>";
 			page.body += "<td>" + freq + "</td>";
 			page.body += "<td>" + pol + "</td>";

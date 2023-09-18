@@ -40,7 +40,7 @@ string e2db_abstract::editor_timestamp()
 	int zh = 0;
 
 	std::tm* lct = std::localtime(&ct);
-	zh = lct->tm_hour + lct->tm_isdst;
+	zh = lct->tm_hour;
 
 	char dt[80];
 	std::strftime(dt, 80, "%Y-%m-%d %H:%M:%S", lct);

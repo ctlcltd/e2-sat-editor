@@ -1404,12 +1404,12 @@ bool e2db_maker::write(string path)
 
 	try
 	{
-		if (LAMEDB_VER != -1)
+		this->e2db_out.clear();
+
+		if (db.type == 0)
 			make_e2db();
-		else if (ZAPIT_VER != -1)
+		else if (db.type == 1)
 			make_zapit();
-		else
-			make_e2db();
 
 		if (push_file(path))
 			return true;
@@ -1442,12 +1442,12 @@ unordered_map<string, e2db_abstract::e2db_file> e2db_maker::get_output()
 
 	try
 	{
-		if (LAMEDB_VER != -1)
+		this->e2db_out.clear();
+
+		if (db.type == 0) 
 			make_e2db();
-		else if (ZAPIT_VER != -1)
+		else if (db.type == 1)
 			make_zapit();
-		else
-			make_e2db();
 
 		return this->e2db_out;
 	}
