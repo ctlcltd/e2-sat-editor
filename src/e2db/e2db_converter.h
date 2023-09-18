@@ -117,6 +117,7 @@ class e2db_converter : virtual public e2db_abstract
 		void page_body_tunersets_list(html_page& page, int ytype);
 		void html_document(e2db_file& file, html_page page);
 		void csv_document(e2db_file& file, string csv);
+		string filename_format(string fname, string fext);
 		string doc_html_head(html_page page);
 		string doc_html_foot(html_page page);
 };

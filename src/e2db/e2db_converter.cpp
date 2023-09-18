@@ -499,7 +499,8 @@ void e2db_converter::push_csv_services(vector<e2db_file>& files, int stype)
 		default:
 			iname = "chs";
 	}
-	filename += ".csv";
+
+	filename = filename_format(filename, "csv");
 
 	string csv;
 	if (CONVERTER_EXTENDED_FIELDS)
@@ -529,7 +530,7 @@ void e2db_converter::push_csv_bouquets(vector<e2db_file>& files, string bname)
 {
 	debug("push_csv_bouquets", "bname", bname);
 
-	string filename = bname + ".csv";
+	string filename = filename_format(bname, "csv");
 
 	string csv;
 	csv_bouquet_list(csv, bname);
@@ -556,7 +557,7 @@ void e2db_converter::push_csv_userbouquets(vector<e2db_file>& files, string bnam
 {
 	debug("push_csv_userbouquet", "bname", bname);
 
-	string filename = bname + ".csv";
+	string filename = filename_format(bname, "csv");
 
 	string csv;
 	if (CONVERTER_EXTENDED_FIELDS)
@@ -600,7 +601,9 @@ void e2db_converter::push_csv_tunersets(vector<e2db_file>& files, int ytype)
 			filename = "atsc";
 		break;
 	}
-	filename += ".csv";
+	filename += ".xml";
+
+	filename = filename_format(filename, "csv");
 
 	string csv;
 	csv_tunersets_list(csv, ytype);
@@ -632,7 +635,8 @@ void e2db_converter::push_html_index(vector<e2db_file>& files)
 	{
 		fname = "Untitled";
 	}
-	filename += ".html";
+
+	filename = filename_format(filename, "html");
 
 	html_page page;
 	page_header(page, filename, DOC_VIEW::view_index);
@@ -695,7 +699,8 @@ void e2db_converter::push_html_services(vector<e2db_file>& files, int stype)
 		headname += " <i>" + xname + "</i>";
 		footname += " (extract)";
 	}
-	filename += ".html";
+
+	filename = filename_format(filename, "html");
 
 	html_page page;
 	page_header(page, headname, DOC_VIEW::view_services);
@@ -725,7 +730,7 @@ void e2db_converter::push_html_bouquets(vector<e2db_file>& files, string bname)
 {
 	debug("push_html_bouquets", "bname", bname);
 
-	string filename = bname + ".html";
+	string filename = filename_format(bname, "html");
 
 	html_page page;
 	page_header(page, bname, DOC_VIEW::view_bouquets);
@@ -755,7 +760,7 @@ void e2db_converter::push_html_userbouquets(vector<e2db_file>& files, string bna
 {
 	debug("push_html_userbouquet", "bname", bname);
 
-	string filename = bname + ".html";
+	string filename = filename_format(bname, "html");
 
 	html_page page;
 	page_header(page, bname, DOC_VIEW::view_userbouquets);
@@ -799,8 +804,9 @@ void e2db_converter::push_html_tunersets(vector<e2db_file>& files, int ytype)
 			fname = "atsc";
 		break;
 	}
-	string filename = fname + ".html";
 	fname += ".xml";
+
+	string filename = filename_format(fname, "html");
 
 	html_page page;
 	page_header(page, fname, DOC_VIEW::view_tunersets);
@@ -2856,6 +2862,13 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 	}
 
 	page.body += "</div>\n";
+}
+
+string e2db_converter::filename_format(string fname, string ext)
+{
+	std::transform(fname.begin(), fname.end(), fname.begin(), [](unsigned char c) { return c == '.' ? '-' : c; });
+
+	return fname + '.' + ext;
 }
 
 string e2db_converter::doc_html_head(html_page page)

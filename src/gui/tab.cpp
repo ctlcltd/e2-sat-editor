@@ -1155,6 +1155,8 @@ void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 					filename = "atsc";
 				break;
 			}
+			filename += "-xml";
+
 			opts.ytype = state.yx;
 			fco = e2db::FCONVS::convert_tunersets;
 		}
@@ -1169,28 +1171,30 @@ void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 			{
 				int ti = view->side->indexOfTopLevelItem(view->side->currentItem());
 				int stype;
+
+				filename = "services";
 				switch (ti)
 				{
 					// TV
 					case 1:
 						stype = e2db::STYPE::tv;
-						filename = "services-tv";
+						filename += "-tv";
 					break;
 					// Radio
 					case 2:
 						stype = e2db::STYPE::radio;
-						filename = "services-radio";
+						filename += "-radio";
 					break;
 					// Data
 					case 3:
 						stype = e2db::STYPE::data;
-						filename = "services-data";
+						filename += "-data";
 					break;
 					// All Services
 					default:
 						stype = -1;
-						filename = "services";
 				}
+
 				opts.stype = stype;
 				fco = e2db::FCONVS::convert_services;
 			}
@@ -1223,6 +1227,7 @@ void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 					}
 
 					filename = bname;
+					std::transform(filename.begin(), filename.end(), filename.begin(), [](unsigned char c) { return c == '.' ? '-' : c; });
 				}
 			}
 		}
@@ -1233,7 +1238,7 @@ void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 		switch (fco)
 		{
 			case e2db::FCONVS::convert_all:
-				filename = "all";
+				filename = "index";
 			break;
 			case e2db::FCONVS::convert_index:
 				filename = "index";
@@ -1248,7 +1253,7 @@ void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 				filename = "userbouquets";
 			break;
 			case e2db::FCONVS::convert_tunersets:
-				filename = "tunersets";
+				filename = "tunersets-xml";
 			break;
 			default:
 			return;
@@ -1378,7 +1383,7 @@ void tab::actionCall(int bit)
 			toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_bouquets);
 		break;
 		case gui::TAB_ATS::ExportHTML_userbouquets:
-			toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_tunersets);
+			toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_userbouquets);
 		break;
 		case gui::TAB_ATS::ExportHTML_tunersets:
 			toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_tunersets);
