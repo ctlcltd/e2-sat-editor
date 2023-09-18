@@ -20,7 +20,7 @@ All notable changes to this project will be documented in this file.
 **Full Changelog**: [v0.7.0...v0.8.0](https://github.com/ctlcltd/e2-sat-editor/compare/v0.7.0...v0.8.0)
 
 - Bugfix, stability, Qt compatibility
-- Added Picon editor
+- Added Picons editor
 - Threaded FTP
 - Fix: file operations, edit service fields, XML encoding
 - Improve CLI
@@ -44,7 +44,7 @@ All notable changes to this project will be documented in this file.
 **Release Date**: 2023-04-07  
 **Full Changelog**: [v0.5.0-pre...v0.6.0-pre](https://github.com/ctlcltd/e2-sat-editor/compare/v0.5.0-pre...v0.6.0-pre)
 
-- FIX: clipboard releated issues
+- Fix: clipboard releated issues
 - Improve Drag and Drop and copy/paste operations
 - Improve merge
 - Improve RTL support
