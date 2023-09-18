@@ -715,7 +715,6 @@ void mainView::populate(QTreeWidget* tw)
 			if (dbih->db.services.count(chi.second))
 			{
 				entry = dbih->entries.services[chi.second];
-				//TODO TEST idx changed after edit
 				idx = QString::number(chi.first);
 				locked = entry[1].size() || ub_locked;
 				entry.prepend(idx);
@@ -3117,7 +3116,7 @@ void mainView::updateListIndex()
 
 	debug("updateListIndex", "current", bname);
 
-	int i = 0, idx = 0;
+	int i = 0, y = 0, idx = 0;
 	int count = list->topLevelItemCount();
 
 	auto* dbih = this->data->dbih;
@@ -3137,7 +3136,11 @@ void mainView::updateListIndex()
 		QTreeWidgetItem* item = list->topLevelItem(i);
 		string chid = item->data(mainView::ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 		bool marker = item->data(mainView::ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
-		idx = marker ? 0 : i + 1;
+		if (! marker)
+		{
+			y++;
+		}
+		idx = marker ? 0 : y;
 		dbih->index[bname].emplace_back(pair (idx, chid));
 		i++;
 	}
