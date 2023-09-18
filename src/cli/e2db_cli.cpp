@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 0.8
+ * @version 0.9
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -80,7 +80,7 @@ void e2db_cli::version(bool verbose)
 {
 	if (verbose)
 		cout << "e2se-cli" << ' ' << "version" << ' ';
-	cout << "0.8" << endl;
+	cout << "0.9" << endl;
 }
 
 void e2db_cli::cmd_shell()
