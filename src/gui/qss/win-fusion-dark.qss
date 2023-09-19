@@ -1,0 +1,25 @@
+/* e2-sat-editor.exe -style fusion -stylesheet win-fusion-dark.qss */
+
+QPushButton, QToolButton, QLineEdit, QComboBox { border-radius: 0; }
+QPushButton, QComboBox { padding: 1px; }
+QToolBar QPushButton, QDialog QPushButton { padding: 2px 3ex; }
+QToolBar QComboBox, QDialog QComboBox { padding: 2px 4px; }
+QToolButton { padding: 5px 0; }
+QLineEdit { padding: 1px; }
+QPushButton { background: transparent; border: 2px solid palette(midlight); }
+QPushButton:hover { background: palette(button); }
+QPushButton:pressed { border-color: palette(button-text); }
+QToolButton { background: transparent; border: 1px solid transparent; }
+QToolButton:hover { background: palette(mid); }
+QToolButton:pressed { background: palette(midlight); border-color: palette(button-text); }
+QLineEdit, QComboBox { background: transparent; border: 1px solid palette(midlight); }
+QLineEdit:hover, QComboBox:hover, QComboBox:focus { border-color: palette(light); }
+QLineEdit:focus { border-color: palette(button-text); }
+QToolBox:tab { background: palette(base); border: 2px solid palette(midlight); }
+QToolBox QWidget { background: palette(base); }
+QTabWidget, QTabBar { background: palette(window); }
+QHeaderView:section { padding: 1px 5px; border-radius: 0; border-right: 1px solid palette(shadow); border-left: 1px solid palette(light); }
+QTreeWidget, QHeaderView:section { background: palette(window); }
+QTabWidget:pane QSplitter { background: palette(mid); }
+#tree_search QPushButton, #list_search QPushButton { border-color: transparent; }
+#tree_search QPushButton:pressed, #list_search QPushButton:pressed { background: palette(light); }

@@ -132,20 +132,14 @@ gui::gui(int argc, char* argv[])
 		mroot->installTranslator(&appTranslator);
 	}
 
-#ifdef Q_OS_WASM
-	QFont font = mroot->font();
-	font.setPointSize(font.pointSize() - 2);
-	mroot->setFont(font);
-#endif
-
 	// i18n rtl
 	// mroot->setLayoutDirection(Qt::RightToLeft);
 
+	this->theme = new e2se_gui::theme(mroot);
+	theme->initStyle();
+
 	this->mwid = new QWidget;
 	mwid->setWindowTitle("e2 SAT Editor");
-
-	this->theme = new e2se_gui::theme;
-	theme->initStyle();
 
 	ThemeChangeEventObserver* gce = new ThemeChangeEventObserver;
 	gce->setEventCallback([=]() { this->themeChanged(); });

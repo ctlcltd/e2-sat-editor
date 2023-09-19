@@ -34,6 +34,18 @@ theme::theme()
 {
 }
 
+theme::theme(QApplication* mroot)
+{
+#ifdef Q_OS_WIN
+	styleWin(mroot);
+#endif
+#ifdef Q_OS_WASM
+	QFont font = mroot->font();
+	font.setPointSize(font.pointSize() - 2);
+	mroot->setFont(font);
+#endif
+}
+
 void theme::initStyle()
 {
 	QString style = theme::preference();
@@ -220,6 +232,7 @@ void theme::styleLight()
 }
 
 // custom Fusion darker
+//TODO FIX scrollbars and tree headerview [Windows]
 void theme::styleDark()
 {
 	QStyle* style = QStyleFactory::create("Fusion");
@@ -260,6 +273,120 @@ void theme::styleDark()
 	palette.setColor(QPalette::Disabled, QPalette::HighlightedText, QColor(128, 128, 128));
 
 	QApplication::setPalette(palette);
+}
+
+// custom windows
+//TODO improve stylesheet, fix light mode tools QPushButton
+//TODO FIX dark mode scrollbars and tree headerview, tree item selection highlight, QApplication init style override
+void theme::styleWin(QApplication* mroot)
+{
+	QStyle* style = QStyleFactory::create("windows");
+	QApplication::setStyle(style);
+
+	QColor highlightColor;
+	QSettings accentColor = QSettings ("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Accent", QSettings::NativeFormat);
+	if (accentColor.contains("AccentColorMenu")) {
+		int color = accentColor.value("AccentColorMenu").toInt();
+		int r = color & 0xff;
+		int g = (color >> 8) & 0xff;
+		int b = (color >> 16) & 0xff;
+		highlightColor.setRgb(r, g, b);
+	}
+
+	// dark mode: fusion
+	if (theme::absLuma())
+	{
+		QPalette p1 = QGuiApplication::palette();
+
+		QStyle* style = QStyleFactory::create("fusion");
+		QApplication::setStyle(style);
+
+		QPalette p2 = style->standardPalette();
+		p1.setCurrentColorGroup(QPalette::Normal);
+		p2.setColor(QPalette::WindowText, p1.windowText().color());
+		p2.setColor(QPalette::Button, p1.button().color());
+		p2.setColor(QPalette::Light, p1.light().color());
+		p2.setColor(QPalette::Midlight, p1.midlight().color());
+		p2.setColor(QPalette::Dark, p1.dark().color());
+		p2.setColor(QPalette::Mid, p1.mid().color());
+		p2.setColor(QPalette::Text, p1.text().color());
+		p2.setColor(QPalette::BrightText, p1.brightText().color());
+		p2.setColor(QPalette::ButtonText, p1.buttonText().color());
+		p2.setColor(QPalette::Base, p1.base().color());
+		p2.setColor(QPalette::Window, p1.window().color());
+		p2.setColor(QPalette::Shadow, p1.shadow().color());
+
+		if (highlightColor.isValid())
+		{
+			// QColor highlightedTextColor = highlightColor.toHsl().lightness() > 128 ? false : true ? Qt::white : Qt::black;
+			p2.setColor(QPalette::Active, QPalette::Highlight, highlightColor);
+			highlightColor.setAlphaF(highlightColor.alphaF() - 51);
+			p2.setColor(QPalette::Inactive, QPalette::Highlight, highlightColor);
+			highlightColor.setAlphaF(highlightColor.alphaF() - 76);
+			p2.setBrush(QPalette::Disabled, QPalette::Highlight, highlightColor);
+			// p2.setColor(QPalette::HighlightedText, highlightedTextColor);
+			// p2.setColor(QPalette::Disabled, QPalette::HighlightedText, highlightedTextColor);
+		}
+		else
+		{
+			p1.setCurrentColorGroup(QPalette::Active);
+			p2.setColor(QPalette::Active, QPalette::Highlight, p1.highlight().color());
+			p1.setCurrentColorGroup(QPalette::Inactive);
+			p2.setColor(QPalette::Inactive, QPalette::Highlight, p1.highlight().color());
+			p1.setCurrentColorGroup(QPalette::Normal);
+			// p2.setColor(QPalette::HighlightedText, p1.highlightedText().color());
+			p1.setCurrentColorGroup(QPalette::Disabled);
+			p2.setBrush(QPalette::Disabled, QPalette::Highlight, p1.highlight().color());
+			// p2.setColor(QPalette::Disabled, QPalette::HighlightedText, p1.highlightedText().color());
+			p1.setCurrentColorGroup(QPalette::Normal);
+		}
+
+		p2.setColor(QPalette::AlternateBase, p1.alternateBase().color());
+		p2.setColor(QPalette::NoRole, Qt::black);
+		p2.setColor(QPalette::ToolTipBase, p1.toolTipBase().color());
+		p2.setColor(QPalette::ToolTipText, p1.toolTipText().color());
+		p2.setColor(QPalette::PlaceholderText, p1.placeholderText().color());
+		p1.setCurrentColorGroup(QPalette::Disabled);
+		p2.setColor(QPalette::Disabled, QPalette::WindowText, p1.windowText().color());
+		p2.setBrush(QPalette::Disabled, QPalette::Dark, p1.dark().color());
+		p2.setColor(QPalette::Disabled, QPalette::Text, p1.text().color());
+		p2.setColor(QPalette::Disabled, QPalette::ButtonText, p1.buttonText().color());
+		p2.setBrush(QPalette::Disabled, QPalette::Base, p1.base().color());
+		p2.setBrush(QPalette::Disabled, QPalette::Shadow, p1.shadow().color());
+
+		p1.setCurrentColorGroup(QPalette::Normal);
+
+		QApplication::setPalette(p2);
+
+		mroot->setStyleSheet(win_fusion_DarkStyleSheet());
+	}
+	// light mode: vista
+	else
+	{
+		QStyle* style = QStyleFactory::create("windowsvista");
+		QApplication::setStyle(style);
+
+		if (highlightColor.isValid())
+		{
+			QPalette p = QGuiApplication::palette();
+
+			QColor highlightedTextColor = highlightColor.toHsl().lightness() > 128 ? false : true ? Qt::white : Qt::black;
+			p.setColor(QPalette::Active, QPalette::Highlight, highlightColor);
+			highlightColor.setAlphaF(highlightColor.alphaF() - 51);
+			p.setColor(QPalette::Inactive, QPalette::Highlight, highlightColor);
+			highlightColor.setAlphaF(highlightColor.alphaF() - 76);
+			p.setBrush(QPalette::Disabled, QPalette::Highlight, highlightColor);
+			// p.setColor(QPalette::HighlightedText, highlightedTextColor);
+			// p.setColor(QPalette::Disabled, QPalette::HighlightedText, highlightedTextColor);
+
+			QApplication::setPalette(p);
+		}
+	}
+}
+
+QString theme::win_fusion_DarkStyleSheet()
+{
+	return "QPushButton,QToolButton,QLineEdit,QComboBox{border-radius:0}QPushButton,QComboBox{padding:1px}QToolBar QPushButton,QDialog QPushButton{padding:2px 3ex}QToolBar QComboBox,QDialog QComboBox{padding:2px 4px}QToolButton{padding:5px 0}QLineEdit{padding:1px}QPushButton{background:transparent;border:2px solid palette(midlight)}QPushButton:hover{background:palette(button)}QPushButton:pressed{border-color:palette(button-text)}QToolButton{background:transparent;border:1px solid transparent}QToolButton:hover{background:palette(mid)}QToolButton:pressed{background:palette(midlight);border-color:palette(button-text)}QLineEdit,QComboBox{background:transparent;border:1px solid palette(midlight)}QLineEdit:hover,QComboBox:hover,QComboBox:focus{border-color:palette(light)}QLineEdit:focus{border-color:palette(button-text)}QToolBox:tab{background:palette(base);border:2px solid palette(midlight)}QToolBox QWidget{background:palette(base)}QTabWidget,QTabBar{background:palette(window)}QHeaderView:section{padding:1px 5px;border-radius:0;border-right:1px solid palette(shadow);border-left:1px solid palette(light)}QTreeWidget,QHeaderView:section{background:palette(window)}QTabWidget:pane QSplitter{background:palette(mid)}#tree_search QPushButton,#list_search QPushButton{border-color:transparent}#tree_search QPushButton:pressed,#list_search QPushButton:pressed{background:palette(light)}";
 }
 
 }
