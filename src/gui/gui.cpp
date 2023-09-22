@@ -140,6 +140,7 @@ gui::gui(int argc, char* argv[])
 
 	this->mwid = new QWidget;
 	mwid->setWindowTitle("e2 SAT Editor");
+	theme->fix(mwid);
 
 	ThemeChangeEventObserver* gce = new ThemeChangeEventObserver;
 	gce->setEventCallback([=]() { this->themeChanged(); });
@@ -367,9 +368,9 @@ void gui::tabStackerLayout()
 	twid->tabBar()->setElideMode(Qt::ElideRight);
 
 #ifndef Q_OS_WIN
-	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 12ex; max-width: 25ex; height: 44px; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button) } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight); border-color: transparent }");
+	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 12ex; max-width: 25ex; height: 44px; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button) } QTabBar::tab:selected { color: palette(highlighted-text); background: palette(highlight); border-color: transparent }");
 #else
-	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 25ex; height: 22px; padding-top: 11px; padding-bottom: 11px; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button) } QTabBar::tab:selected { color:palette(highlighted-text); background: palette(highlight); border-color: transparent }");
+	twid->setStyleSheet("QTabWidget::tab-bar { left: 0 } QTabBar { border-style: solid } QTabWidget::pane { border: 0; border-radius: 0 } QTabBar::tab { min-width: 25ex; height: 22px; padding-top: 11px; padding-bottom: 11px; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button) } QTabBar::tab:selected { color: palette(highlighted-text); background: palette(highlight); border-color: transparent }");
 #endif
 
 	QColor twtbshade;

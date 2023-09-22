@@ -4,7 +4,9 @@ QFrame { border: 0; }
 QMenuBar { background: transparent; }
 QMenu { margin: 0 -1px; padding: 3px 2px; }
 QMenu:separator { height: 1px; border-width: 1px; border-color: #000; }
+
 QToolButton, QComboBox, QCheckBox, QToolBox:tab { margin: -1px; padding: 4px; }
 QPushButton { padding: 3px; border: 2px solid #fff; }
 QLineEdit { margin: -1px; padding: 3px; border: 1px solid #fff; }
+
 QHeaderView:section { padding: 0 5px; border: 0; border-right: 1px solid #000; border-left: 1px solid #fff; }

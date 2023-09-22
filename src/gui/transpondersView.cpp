@@ -19,6 +19,10 @@
 #include <QClipboard>
 #include <QMimeData>
 #include <QHeaderView>
+#ifdef Q_OS_WIN
+#include <QStyleFactory>
+#include <QScrollBar>
+#endif
 
 #include "platforms/platform.h"
 
@@ -80,6 +84,16 @@ void transpondersView::layout()
 
 	TreeProxyStyle* list_style = new TreeProxyStyle;
 	list->setStyle(list_style);
+
+#ifdef Q_OS_WIN
+	if (theme::absLuma() || ! theme::isDefault())
+	{
+		QStyle* style = QStyleFactory::create("fusion");
+		list->verticalScrollBar()->setStyle(style);
+		list->horizontalScrollBar()->setStyle(style);
+		list->header()->setStyle(style);
+	}
+#endif
 
 	list->setStyleSheet("QTreeWidget { border-style: none } QTreeWidget::item { padding: 6px 0 }");
 

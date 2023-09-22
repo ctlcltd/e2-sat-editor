@@ -27,10 +27,11 @@ void dialAbstract::layout(QWidget* cwid)
 {
 	debug("layout");
 
+	this->theme = new e2se_gui::theme;
+
 	this->dial = new QDialog(cwid);
 	dial->setWindowTitle(tr("Edit", "dialog"));
-
-	this->theme = new e2se_gui::theme;
+	theme->fix(dial);
 
 	ThemeChangeEventObserver* gce = new ThemeChangeEventObserver;
 	gce->setEventCallback([=]() { this->themeChanged(); });
@@ -90,6 +91,7 @@ void dialAbstract::collapsibleLayout()
 	debug("collapsibleLayout");
 
 	this->dttoggler = new QToolButton;
+	dttoggler->setObjectName("dial_toggler");
 	dttoggler->setFixedHeight(20);
 	dttoggler->setIconSize(QSize(8, 8));
 	dttoggler->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);

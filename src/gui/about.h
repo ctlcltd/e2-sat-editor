@@ -16,6 +16,7 @@
 #include <QDialog>
 
 #include "../logger/logger.h"
+#include "theme.h"
 
 namespace e2se_gui
 {
@@ -33,6 +34,7 @@ class about : protected e2se::log_factory
 		void layout();
 
 		QDialog* dial = nullptr;
+		e2se_gui::theme* theme;
 };
 }
 #endif /* about_h */

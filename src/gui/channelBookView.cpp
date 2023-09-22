@@ -19,6 +19,10 @@
 #include <QClipboard>
 #include <QMimeData>
 #include <QHeaderView>
+#ifdef Q_OS_WIN
+#include <QStyleFactory>
+#include <QScrollBar>
+#endif
 
 #include "platforms/platform.h"
 
@@ -105,6 +109,18 @@ void channelBookView::layout()
 	tree->setStyle(tree_style);
 	TreeProxyStyle* list_style = new TreeProxyStyle;
 	list->setStyle(list_style);
+
+#ifdef Q_OS_WIN
+	if (theme::absLuma() || ! theme::isDefault())
+	{
+		QStyle* style = QStyleFactory::create("fusion");
+		tree->verticalScrollBar()->setStyle(style);
+		tree->horizontalScrollBar()->setStyle(style);
+		list->verticalScrollBar()->setStyle(style);
+		list->horizontalScrollBar()->setStyle(style);
+		list->header()->setStyle(style);
+	}
+#endif
 
 	tree->setStyleSheet("QTreeWidget { border-style: none } QTreeWidget::item { padding: 2px 0 }");
 	list->setStyleSheet("QTreeWidget { border-style: none } QTreeWidget::item { padding: 2px 0 }");
@@ -223,9 +239,9 @@ void channelBookView::sideLayout()
 	ListProxyStyle* side_style = new ListProxyStyle;
 	side->setStyle(side_style);
 
-	side_style->setIndentation(10);
-
 	side->setStyleSheet("QListWidget { background: transparent; font-size: 15px; border-style: none } QListView::item { padding: 10px 0 }");
+
+	side_style->setIndentation(10);
 
 	side->addItems({tr("Services"), tr("Bouquets"), tr("Positions"), tr("Providers"), tr("Resolution"), tr("Encryption"), tr("A-Z")});
 

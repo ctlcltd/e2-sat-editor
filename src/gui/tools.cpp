@@ -18,6 +18,10 @@
 #include <QGridLayout>
 #include <QLineEdit>
 #include <QComboBox>
+#ifdef Q_OS_WIN
+#include <QStyleFactory>
+#include <QScrollBar>
+#endif
 
 #include "../e2se_defs.h"
 
@@ -40,6 +44,7 @@ tools::tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data)
 	this->tid = tid;
 	this->cwid = cwid;
 	this->data = data;
+	this->theme = new e2se_gui::theme;
 	this->inspect_curr = INSPECT_FILTER::AllLog;
 }
 
@@ -47,6 +52,7 @@ tools::~tools()
 {
 	debug("~tools");
 
+	delete this->theme;
 	delete this->log;
 }
 
@@ -73,6 +79,14 @@ void tools::inspector()
 	QString textAlign = QApplication::layoutDirection() == Qt::LeftToRight ? "left" : "right";
 	dcnt->document()->setDefaultStyleSheet("* { margin: 0; padding: 0 } i { font-style: normal } pre { font-size: 11px; text-align: " + textAlign + " }");
 	dcnt->setHtml("</div>");
+#ifdef Q_OS_WIN
+	if (theme::absLuma() || ! theme::isDefault())
+	{
+		QStyle* style = QStyleFactory::create("fusion");
+		dcnt->verticalScrollBar()->setStyle(style);
+		dcnt->horizontalScrollBar()->setStyle(style);
+	}
+#endif
 	platform::osTextEdit(dcnt);
 
 	QComboBox* dtft = new QComboBox;

@@ -27,6 +27,10 @@
 #include <QComboBox>
 #include <QValidator>
 #include <QHeaderView>
+#ifdef Q_OS_WIN
+#include <QStyleFactory>
+#include <QScrollBar>
+#endif
 
 #include "../e2se_defs.h"
 
@@ -76,11 +80,13 @@ void settings::layout(QWidget* cwid)
 {
 	debug("layout");
 
+	this->theme = new e2se_gui::theme;
+
 	this->dial = new QDialog(cwid);
 	dial->setWindowTitle(tr("Settings", "dialog"));
-	dial->setStyleSheet("QGroupBox { spacing: 0; padding: 0; padding-top: 20px; border: 0; font-weight: bold } QGroupBox::title { margin: 0 10px }");
+	theme->fix(dial);
 
-	this->theme = new e2se_gui::theme;
+	dial->setStyleSheet("QGroupBox { spacing: 0; padding: 0; padding-top: 20px; border: 0; font-weight: bold } QGroupBox::title { margin: 0 10px }");
 
 	ThemeChangeEventObserver* gce = new ThemeChangeEventObserver;
 	gce->setEventCallback([=]() { this->themeChanged(); });
@@ -136,7 +142,18 @@ void settings::connectionsLayout()
 	//TODO context-menu rename/remove profile
 	this->rplist = new QListWidget;
 	rplist->setEditTriggers(QListWidget::EditKeyPressed | QListWidget::DoubleClicked);
+
+#ifdef Q_OS_WIN
+	if (theme::absLuma() || ! theme::isDefault())
+	{
+		QStyle* style = QStyleFactory::create("fusion");
+		rplist->verticalScrollBar()->setStyle(style);
+		rplist->horizontalScrollBar()->setStyle(style);
+	}
+#endif
+
 	rplist->setStyleSheet("QListView::item { height: 44px; font: 16px } QListView QLineEdit { border: 1px solid palette(alternate-base) }");
+
 	rplist->connect(rplist, &QListWidget::currentItemChanged, [=](QListWidgetItem* current, QListWidgetItem* previous) { this->currentProfileChanged(current, previous); });
 	rplist->connect(rplist, &QListWidget::currentTextChanged, [=](QString text) { this->profileNameChanged(text); });
 	rplist->connect(rplist, &QListWidget::viewportEntered, [=]() { this->renameProfile(false); });
@@ -356,6 +373,15 @@ void settings::preferencesLayout()
 	dtpage->setObjectName("preferences_page");
 	QScrollArea* dtarea = new QScrollArea;
 
+#ifdef Q_OS_WIN
+	if (theme::absLuma() || ! theme::isDefault())
+	{
+		QStyle* style = QStyleFactory::create("fusion");
+		dtarea->verticalScrollBar()->setStyle(style);
+		dtarea->horizontalScrollBar()->setStyle(style);
+	}
+#endif
+
 	QHBoxLayout* dtcnt = new QHBoxLayout(dtpage);
 	dtpage->setStyleSheet("QGroupBox { font-weight: bold }");
 
@@ -565,6 +591,15 @@ void settings::engineLayout()
 	dtpage->setObjectName("engine_page");
 	QScrollArea* dtarea = new QScrollArea;
 
+#ifdef Q_OS_WIN
+	if (theme::absLuma() || ! theme::isDefault())
+	{
+		QStyle* style = QStyleFactory::create("fusion");
+		dtarea->verticalScrollBar()->setStyle(style);
+		dtarea->horizontalScrollBar()->setStyle(style);
+	}
+#endif
+
 	QHBoxLayout* dtcnt = new QHBoxLayout(dtpage);
 	dtpage->setStyleSheet("QGroupBox { font-weight: bold }");
 
@@ -697,6 +732,16 @@ void settings::advancedLayout()
 	adtbl->setHorizontalHeaderLabels({"ID", "VALUE"});
 	adtbl->horizontalHeader()->setSectionsClickable(false);
 	adtbl->verticalHeader()->setVisible(false);
+
+#ifdef Q_OS_WIN
+	if (theme::absLuma() || ! theme::isDefault())
+	{
+		QStyle* style = QStyleFactory::create("fusion");
+		adtbl->verticalScrollBar()->setStyle(style);
+		adtbl->horizontalScrollBar()->setStyle(style);
+	}
+#endif
+
 	platform::osPersistentEditor(adtbl);
 
 	this->adntc = new QWidget;

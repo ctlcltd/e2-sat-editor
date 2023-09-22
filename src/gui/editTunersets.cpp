@@ -13,6 +13,10 @@
 #include <QGroupBox>
 #include <QLineEdit>
 #include <QTextEdit>
+#ifdef Q_OS_WIN
+#include <QStyleFactory>
+#include <QScrollBar>
+#endif
 
 #include "platforms/platform.h"
 
@@ -67,6 +71,15 @@ void editTunersets::layout(QWidget* cwid)
 	fields.emplace_back(dtf0ch);
 	dtf0ch->setMinimumWidth(240);
 	dtf0ch->setMaximumHeight(100);
+#ifdef Q_OS_WIN
+	if (theme::absLuma() || ! theme::isDefault())
+	{
+		QStyle* style = QStyleFactory::create("fusion");
+		dtf0ch->verticalScrollBar()->setStyle(style);
+		dtf0ch->horizontalScrollBar()->setStyle(style);
+	}
+#endif
+	platform::osTextEdit(dtf0ch);
 	dtf0->addRow(tr("Comment"), dtf0ch);
 	dtf0->addItem(new QSpacerItem(0, 0));
 

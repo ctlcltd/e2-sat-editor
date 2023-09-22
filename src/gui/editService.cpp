@@ -26,6 +26,10 @@
 #include <QLineEdit>
 #include <QCheckBox>
 #include <QPushButton>
+#ifdef Q_OS_WIN
+#include <QStyleFactory>
+#include <QScrollBar>
+#endif
 
 #include "platforms/platform.h"
 
@@ -301,6 +305,14 @@ void editService::paramsLayout()
 	QToolBox* dtt2 = new QToolBox;
 	dtt2->setFixedWidth(240);
 	dtt2->setFixedHeight(320);
+
+#ifdef Q_OS_WIN
+	if (theme::absLuma() || ! theme::isDefault())
+	{
+		QStyle* style = QStyleFactory::create("fusion");
+		dtt2->setStyle(style);
+	}
+#endif
 
 	QWidget* dtw20 = new QWidget;
 	QFormLayout* dtf2p = new QFormLayout;

@@ -16,6 +16,7 @@
 #include <QTextEdit>
 
 #include "../logger/logger.h"
+#include "theme.h"
 #include "dataHandler.h"
 
 namespace e2se_gui
@@ -50,6 +51,7 @@ class tools : protected e2se::log_factory
 		void inspectReset();
 
 	private:
+		e2se_gui::theme* theme;
 		gui* gid;
 		tab* tid;
 		QWidget* cwid;

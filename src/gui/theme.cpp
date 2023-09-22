@@ -37,7 +37,7 @@ theme::theme()
 theme::theme(QApplication* mroot)
 {
 #ifdef Q_OS_WIN
-	styleWin(mroot);
+	styleWin();
 #endif
 #ifdef Q_OS_WASM
 	QFont font = mroot->font();
@@ -191,7 +191,7 @@ void theme::changed()
 // custom Fusion light
 void theme::styleLight()
 {
-	QStyle* style = QStyleFactory::create("Fusion");
+	QStyle* style = QStyleFactory::create("fusion");
 	QApplication::setStyle(style);
 	QPalette palette = style->standardPalette();
 
@@ -232,10 +232,9 @@ void theme::styleLight()
 }
 
 // custom Fusion darker
-//TODO FIX scrollbars and tree headerview [Windows]
 void theme::styleDark()
 {
-	QStyle* style = QStyleFactory::create("Fusion");
+	QStyle* style = QStyleFactory::create("fusion");
 	QApplication::setStyle(style);
 	QPalette palette = style->standardPalette();
 
@@ -276,9 +275,7 @@ void theme::styleDark()
 }
 
 // custom windows
-//TODO improve stylesheet, fix light mode tools QPushButton
-//TODO FIX dark mode scrollbars and tree headerview, tree item selection highlight, QApplication init style override
-void theme::styleWin(QApplication* mroot)
+void theme::styleWin()
 {
 	QStyle* style = QStyleFactory::create("windows");
 	QApplication::setStyle(style);
@@ -310,7 +307,7 @@ void theme::styleWin(QApplication* mroot)
 		p2.setColor(QPalette::Dark, p1.dark().color());
 		p2.setColor(QPalette::Mid, p1.mid().color());
 		p2.setColor(QPalette::Text, p1.text().color());
-		p2.setColor(QPalette::BrightText, p1.brightText().color());
+		p2.setColor(QPalette::BrightText, p1.brightText().color()); // accent
 		p2.setColor(QPalette::ButtonText, p1.buttonText().color());
 		p2.setColor(QPalette::Base, p1.base().color());
 		p2.setColor(QPalette::Window, p1.window().color());
@@ -318,14 +315,13 @@ void theme::styleWin(QApplication* mroot)
 
 		if (highlightColor.isValid())
 		{
-			// QColor highlightedTextColor = highlightColor.toHsl().lightness() > 128 ? false : true ? Qt::white : Qt::black;
+			QColor highlightedTextColor = highlightColor.toHsl().lightness() > 128 ? Qt::black : Qt::white;
 			p2.setColor(QPalette::Active, QPalette::Highlight, highlightColor);
 			highlightColor.setAlphaF(highlightColor.alphaF() - 51);
 			p2.setColor(QPalette::Inactive, QPalette::Highlight, highlightColor);
 			highlightColor.setAlphaF(highlightColor.alphaF() - 76);
 			p2.setBrush(QPalette::Disabled, QPalette::Highlight, highlightColor);
-			// p2.setColor(QPalette::HighlightedText, highlightedTextColor);
-			// p2.setColor(QPalette::Disabled, QPalette::HighlightedText, highlightedTextColor);
+			p2.setColor(QPalette::HighlightedText, highlightedTextColor);
 		}
 		else
 		{
@@ -334,10 +330,10 @@ void theme::styleWin(QApplication* mroot)
 			p1.setCurrentColorGroup(QPalette::Inactive);
 			p2.setColor(QPalette::Inactive, QPalette::Highlight, p1.highlight().color());
 			p1.setCurrentColorGroup(QPalette::Normal);
-			// p2.setColor(QPalette::HighlightedText, p1.highlightedText().color());
+			p2.setColor(QPalette::HighlightedText, p1.highlightedText().color()); // accent
 			p1.setCurrentColorGroup(QPalette::Disabled);
 			p2.setBrush(QPalette::Disabled, QPalette::Highlight, p1.highlight().color());
-			// p2.setColor(QPalette::Disabled, QPalette::HighlightedText, p1.highlightedText().color());
+			p2.setColor(QPalette::Disabled, QPalette::HighlightedText, p1.highlightedText().color());
 			p1.setCurrentColorGroup(QPalette::Normal);
 		}
 
@@ -353,12 +349,9 @@ void theme::styleWin(QApplication* mroot)
 		p2.setColor(QPalette::Disabled, QPalette::ButtonText, p1.buttonText().color());
 		p2.setBrush(QPalette::Disabled, QPalette::Base, p1.base().color());
 		p2.setBrush(QPalette::Disabled, QPalette::Shadow, p1.shadow().color());
-
 		p1.setCurrentColorGroup(QPalette::Normal);
 
 		QApplication::setPalette(p2);
-
-		mroot->setStyleSheet(win_fusion_DarkStyleSheet());
 	}
 	// light mode: vista
 	else
@@ -370,23 +363,43 @@ void theme::styleWin(QApplication* mroot)
 		{
 			QPalette p = QGuiApplication::palette();
 
-			QColor highlightedTextColor = highlightColor.toHsl().lightness() > 128 ? false : true ? Qt::white : Qt::black;
+			QColor highlightedTextColor = highlightColor.toHsl().lightness() > 128 ? Qt::black : Qt::white;
 			p.setColor(QPalette::Active, QPalette::Highlight, highlightColor);
 			highlightColor.setAlphaF(highlightColor.alphaF() - 51);
 			p.setColor(QPalette::Inactive, QPalette::Highlight, highlightColor);
 			highlightColor.setAlphaF(highlightColor.alphaF() - 76);
 			p.setBrush(QPalette::Disabled, QPalette::Highlight, highlightColor);
-			// p.setColor(QPalette::HighlightedText, highlightedTextColor);
-			// p.setColor(QPalette::Disabled, QPalette::HighlightedText, highlightedTextColor);
+			p.setColor(QPalette::HighlightedText, highlightedTextColor);
 
 			QApplication::setPalette(p);
 		}
 	}
 }
 
+//TODO improve stylesheet [Windows]
 QString theme::win_fusion_DarkStyleSheet()
 {
-	return "QPushButton,QToolButton,QLineEdit,QComboBox{border-radius:0}QPushButton,QComboBox{padding:1px}QToolBar QPushButton,QDialog QPushButton{padding:2px 3ex}QToolBar QComboBox,QDialog QComboBox{padding:2px 4px}QToolButton{padding:5px 0}QLineEdit{padding:1px}QPushButton{background:transparent;border:2px solid palette(midlight)}QPushButton:hover{background:palette(button)}QPushButton:pressed{border-color:palette(button-text)}QToolButton{background:transparent;border:1px solid transparent}QToolButton:hover{background:palette(mid)}QToolButton:pressed{background:palette(midlight);border-color:palette(button-text)}QLineEdit,QComboBox{background:transparent;border:1px solid palette(midlight)}QLineEdit:hover,QComboBox:hover,QComboBox:focus{border-color:palette(light)}QLineEdit:focus{border-color:palette(button-text)}QToolBox:tab{background:palette(base);border:2px solid palette(midlight)}QToolBox QWidget{background:palette(base)}QTabWidget,QTabBar{background:palette(window)}QHeaderView:section{padding:1px 5px;border-radius:0;border-right:1px solid palette(shadow);border-left:1px solid palette(light)}QTreeWidget,QHeaderView:section{background:palette(window)}QTabWidget:pane QSplitter{background:palette(mid)}#tree_search QPushButton,#list_search QPushButton{border-color:transparent}#tree_search QPushButton:pressed,#list_search QPushButton:pressed{background:palette(light)}";
+	return "QMenuBar{background:palette(base)}QMenuBar:active{background:palette(shadow)}QMenu{border:1px solid palette(light)}QPushButton,QToolButton,QLineEdit,QComboBox,QCheckBox,QRadioButton{border-radius:0}QPushButton,QComboBox{padding:1px}QToolBar QPushButton,QDialog QPushButton{padding:2px 3ex}QToolBar QComboBox,QDialog QComboBox{padding:2px 4px}QToolButton{padding:5px 0}QLineEdit{padding:1px}QPushButton{background:transparent;border:2px solid palette(midlight)}QPushButton:hover{background:palette(button)}QPushButton:pressed{border-color:palette(button-text)}QToolButton{background:transparent;border:1px solid transparent}QToolButton:hover{background:palette(mid)}QToolButton:pressed{background:palette(midlight);border-color:palette(button-text)}QLineEdit,QComboBox{background:transparent;border:1px solid palette(midlight)}QLineEdit:hover,QComboBox:hover,QComboBox:focus{border-color:palette(light)}QLineEdit:focus{border-color:palette(button-text)}QPushButton,QCheckBox,QRadioButton{outline:none}QCheckBox:focus:!pressed:!hover,QRadioButton:focus:!pressed:!hover{outline:1px solid palette(button-text)}QCheckBox:focus:pressed{outline:none}QPushButton:focus:!pressed:!hover:!open{border-color:palette(light)}QToolBox:tab{background:palette(base);border:2px solid palette(midlight)}QToolBox QWidget{background:palette(base)}QTabWidget,QTabBar{background:palette(window)}QTreeWidget,QHeaderView:section{background:palette(window)}QTabWidget:pane QSplitter{background:palette(mid)}#tree_search QPushButton,#list_search QPushButton{border-color:transparent}#tree_search QPushButton:pressed,#list_search QPushButton:pressed{background:palette(light)}";
+}
+
+// before QApplication
+void theme::fix()
+{
+// QApplication style override
+#ifdef Q_OS_WIN
+	QSettings personalize = QSettings ("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", QSettings::NativeFormat);
+	if (personalize.contains("AppsUseLightTheme") && ! personalize.value("AppsUseLightTheme").toBool())
+		qputenv("QT_STYLE_OVERRIDE", "fusion");
+#endif
+}
+
+// after top level widget
+void theme::fix(QWidget* tlw)
+{
+#ifdef Q_OS_WIN
+	if (theme::isDefault() && theme::absLuma())
+		tlw->setStyleSheet(win_fusion_DarkStyleSheet());
+#endif
 }
 
 }

@@ -77,9 +77,13 @@ class theme
 		// style Fusion modified variant dark
 		static void styleDark();
 		// style win modified  light: vista  dark: fusion
-		static void styleWin(QApplication* mroot);
+		static void styleWin();
 		// stylesheet win fusion dark mode
 		static QString win_fusion_DarkStyleSheet();
+		// fix theme before QApplication
+		static void fix();
+		// fix theme after top level widget
+		static void fix(QWidget* tlw);
 
 	private:
 		vector<QWidget*> styled;

@@ -33,6 +33,7 @@ about::~about()
 {
 	debug("~about");
 
+	delete this->theme;
 	delete this->log;
 }
 
@@ -41,8 +42,11 @@ void about::layout()
 {
 	debug("layout");
 
+	this->theme = new e2se_gui::theme;
+
 	this->dial = new QDialog;
 	dial->setWindowTitle(tr("About e2 SAT Editor"));
+	theme->fix(dial);
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
 	dial->connect(dial, &QDialog::finished, [=]() { QTimer::singleShot(0, [=]() { this->destroy(); }); });

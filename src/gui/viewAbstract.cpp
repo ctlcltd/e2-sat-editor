@@ -37,6 +37,7 @@ void viewAbstract::themeChanged()
 	theme->changed();
 }
 
+//TODO fix QPushButton vista [Windows]
 void viewAbstract::searchLayout()
 {
 	this->tree_search = new QWidget;
@@ -46,8 +47,6 @@ void viewAbstract::searchLayout()
 	list_search->setObjectName("list_search");
 	tree_search->setHidden(true);
 	list_search->setHidden(true);
-	tree_search->setAutoFillBackground(true);
-	list_search->setAutoFillBackground(true);
 
 #ifndef Q_OS_MAC
 	QColor searchbackground;
@@ -66,7 +65,7 @@ void viewAbstract::searchLayout()
 
 	theme->dynamicStyleSheet(widget, "#tree_search, #list_search { color: " + searchcolor_hexArgb + "; background: " + searchbackground_hexArgb + " } #list_search_highlight { background: " + searchbackground_hexArgb + " } #list_search_highlight:checked { background: " + searchhighlight_hexArgb + " }", theme::light);
 
-	searchbackground = QPalette().color(QPalette::Mid).darker();
+	searchbackground = QPalette().color(QPalette::Mid).lighter();
 	searchcolor = QColor(Qt::white);
 	searchhighlight = searchhighlight.darker(200);
 	searchbackground_hexArgb = searchbackground.name(QColor::HexArgb);
@@ -108,7 +107,7 @@ void viewAbstract::searchLayout()
 	platform::osLineEdit(this->tsr_search.input);
 
 	this->tsr_search.next = new QPushButton(tr("Find", "toolbar"));
-	this->tsr_search.next->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
+	this->tsr_search.next->setStyleSheet("QPushButton { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
 	this->tsr_search.next->connect(this->tsr_search.next, &QPushButton::pressed, [=]() { this->treeFindPerform(); });
 
 	this->tsr_search.close = new QPushButton;
@@ -149,19 +148,19 @@ void viewAbstract::searchLayout()
 	this->lsr_search.highlight->setText(tr("Highlight", "toolbar"));
 	this->lsr_search.highlight->setCheckable(true);
 	this->lsr_search.highlight->setChecked(true);
-	this->lsr_search.highlight->setStyleSheet("QPushButton, QPushButton:checked { margin: 0 2px; padding: 2px 2ex; border: 1px solid palette(button); border-radius: 2px } QPushButton:checked { color: palette(bright-text) }");
+	this->lsr_search.highlight->setStyleSheet("QPushButton { margin: 0 2px; padding: 2px 2ex; border: 1px solid palette(button); border-radius: 2px } QPushButton:checked { color: palette(bright-text) }");
 	this->lsr_search.highlight->connect(this->lsr_search.highlight, &QPushButton::pressed, [=]() { this->listFindHighlightToggle(); });
 
 	this->lsr_search.next = new QPushButton(tr("Find", "toolbar"));
-	this->lsr_search.next->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
+	this->lsr_search.next->setStyleSheet("QPushButton { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
 	this->lsr_search.next->connect(this->lsr_search.next, &QPushButton::pressed, [=]() { this->listFindPerform(LIST_FIND::next); });
 
 	this->lsr_search.prev = new QPushButton(tr("Find Previous", "toolbar"));
-	this->lsr_search.prev->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
+	this->lsr_search.prev->setStyleSheet("QPushButton { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
 	this->lsr_search.prev->connect(this->lsr_search.prev, &QPushButton::pressed, [=]() { this->listFindPerform(LIST_FIND::prev); });
 
 	this->lsr_search.all = new QPushButton(tr("Find All", "toolbar"));
-	this->lsr_search.all->setStyleSheet("QPushButton, QPushButton:pressed { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
+	this->lsr_search.all->setStyleSheet("QPushButton { margin: 0 2px; padding: 3px 2ex; border: 1px solid transparent; border-radius: 3px; background: palette(button) } QPushButton:pressed { background: palette(light) }");
 	this->lsr_search.all->connect(this->lsr_search.all, &QPushButton::pressed, [=]() { this->listFindPerform(LIST_FIND::all); });
 
 	this->lsr_search.close = new QPushButton;

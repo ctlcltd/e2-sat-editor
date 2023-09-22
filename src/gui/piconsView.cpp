@@ -26,6 +26,10 @@
 #include <QClipboard>
 #include <QMimeData>
 #include <QMouseEvent>
+#ifdef Q_OS_WIN
+#include <QStyleFactory>
+#include <QScrollBar>
+#endif
 
 #include "../e2se_defs.h"
 #include "platforms/platform.h"
@@ -87,6 +91,15 @@ void piconsView::layout()
 
 	this->tree = new QTreeWidget;
 	this->list = new QListWidget;
+
+#ifdef Q_OS_WIN
+	if (theme::absLuma() || ! theme::isDefault())
+	{
+		QStyle* style = QStyleFactory::create("fusion");
+		list->verticalScrollBar()->setStyle(style);
+		list->horizontalScrollBar()->setStyle(style);
+	}
+#endif
 
 	list->setStyleSheet("QListWidget { border-style: none } QListWidget::item { min-width: 128px; min-height: 102px; margin: 10px 12px; padding: 12px 8px 2px; border: 8px dashed palette(mid); border-radius: 15px } QListWidget::item:selected { background-color: palette(highlight) }");
 
