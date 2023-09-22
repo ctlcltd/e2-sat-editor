@@ -142,6 +142,28 @@ gui::gui(int argc, char* argv[])
 	mwid->setWindowTitle("e2 SAT Editor");
 	theme->fix(mwid);
 
+	// additional fix application wide
+	// 
+	// keep QApplication stylesheet available
+	// when passed from command line argument
+	// -stylesheet file.qss
+#ifdef Q_OS_WIN
+	bool stylesheet = false;
+
+	for (int i = 0; i < argc; i++)
+	{
+		if (string (argv[i]).find("-stylesheet") != string::npos)
+		{
+			stylesheet = true;
+			break;
+		}
+	}
+	if (! stylesheet)
+	{
+		theme->fix(mroot);
+	}
+#endif
+
 	ThemeChangeEventObserver* gce = new ThemeChangeEventObserver;
 	gce->setEventCallback([=]() { this->themeChanged(); });
 	mwid->installEventFilter(gce);

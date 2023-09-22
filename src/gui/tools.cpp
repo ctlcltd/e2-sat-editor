@@ -28,6 +28,7 @@
 #include "platforms/platform.h"
 
 #include "tools.h"
+#include "theme.h"
 #include "tab.h"
 #include "gui.h"
 

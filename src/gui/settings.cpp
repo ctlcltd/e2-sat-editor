@@ -732,16 +732,15 @@ void settings::advancedLayout()
 	adtbl->setHorizontalHeaderLabels({"ID", "VALUE"});
 	adtbl->horizontalHeader()->setSectionsClickable(false);
 	adtbl->verticalHeader()->setVisible(false);
-
 #ifdef Q_OS_WIN
 	if (theme::absLuma() || ! theme::isDefault())
 	{
 		QStyle* style = QStyleFactory::create("fusion");
 		adtbl->verticalScrollBar()->setStyle(style);
 		adtbl->horizontalScrollBar()->setStyle(style);
+		adtbl->horizontalHeader()->setStyle(style);
 	}
 #endif
-
 	platform::osPersistentEditor(adtbl);
 
 	this->adntc = new QWidget;

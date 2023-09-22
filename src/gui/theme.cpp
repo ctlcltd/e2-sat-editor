@@ -377,9 +377,13 @@ void theme::styleWin()
 }
 
 //TODO improve stylesheet [Windows]
-QString theme::win_fusion_DarkStyleSheet()
+QString theme::win_fusion_DarkStyleSheet_tlw()
 {
-	return "QMenuBar{background:palette(base)}QMenuBar:active{background:palette(shadow)}QMenu{border:1px solid palette(light)}QPushButton,QToolButton,QLineEdit,QComboBox,QCheckBox,QRadioButton{border-radius:0}QPushButton,QComboBox{padding:1px}QToolBar QPushButton,QDialog QPushButton{padding:2px 3ex}QToolBar QComboBox,QDialog QComboBox{padding:2px 4px}QToolButton{padding:5px 0}QLineEdit{padding:1px}QPushButton{background:transparent;border:2px solid palette(midlight)}QPushButton:hover{background:palette(button)}QPushButton:pressed{border-color:palette(button-text)}QToolButton{background:transparent;border:1px solid transparent}QToolButton:hover{background:palette(mid)}QToolButton:pressed{background:palette(midlight);border-color:palette(button-text)}QLineEdit,QComboBox{background:transparent;border:1px solid palette(midlight)}QLineEdit:hover,QComboBox:hover,QComboBox:focus{border-color:palette(light)}QLineEdit:focus{border-color:palette(button-text)}QPushButton,QCheckBox,QRadioButton{outline:none}QCheckBox:focus:!pressed:!hover,QRadioButton:focus:!pressed:!hover{outline:1px solid palette(button-text)}QCheckBox:focus:pressed{outline:none}QPushButton:focus:!pressed:!hover:!open{border-color:palette(light)}QToolBox:tab{background:palette(base);border:2px solid palette(midlight)}QToolBox QWidget{background:palette(base)}QTabWidget,QTabBar{background:palette(window)}QTreeWidget,QHeaderView:section{background:palette(window)}QTabWidget:pane QSplitter{background:palette(mid)}#tree_search QPushButton,#list_search QPushButton{border-color:transparent}#tree_search QPushButton:pressed,#list_search QPushButton:pressed{background:palette(light)}";
+	return "QMenuBar { background: palette(base) } QMenuBar:active { background: palette(shadow) } QMenu { border: 1px solid palette(light) } QPushButton, QToolButton, QLineEdit, QComboBox, QCheckBox, QRadioButton { border-radius: 0 } QPushButton, QComboBox { padding: 1px } QToolBar QPushButton, QDialog QPushButton { padding: 2px 3ex } QToolBar QComboBox, QDialog QComboBox { padding: 2px 4px } QToolButton { padding: 5px 0 } QLineEdit { padding: 1px } QPushButton { background: transparent; border: 2px solid palette(midlight) } QPushButton:hover { background: palette(button) } QPushButton:pressed { border-color: palette(button-text) } QToolButton { background: transparent; border: 1px solid transparent } QToolButton:hover { background: palette(mid) } QToolButton:pressed { background: palette(midlight); border-color: palette(button-text) } QLineEdit, QComboBox { background: transparent; border: 1px solid palette(midlight) } QLineEdit:hover, QComboBox:hover, QComboBox:focus { border-color: palette(light) } QLineEdit:focus { border-color: palette(button-text) } QPushButton, QCheckBox, QRadioButton { outline: none } QCheckBox:focus:!pressed:!hover, QRadioButton:focus:!pressed:!hover { outline: 1px solid palette(button-text) } QCheckBox:focus:pressed { outline: none } QPushButton:focus:!pressed:!hover:!open { border-color: palette(light) } QToolBox:tab { background: palette(base); border: 2px solid palette(midlight) } QToolBox QWidget { background: palette(base) } QTabWidget, QTabBar { background: palette(window) } QTreeWidget, QHeaderView:section { background: palette(window) } QTabWidget:pane QSplitter { background: palette(mid) } #tree_search QPushButton, #list_search QPushButton { border-color: transparent } #tree_search QPushButton:pressed, #list_search QPushButton:pressed { background: palette(light) }";
+}
+QString theme::win_fusion_DarkStyleSheet_root()
+{
+	return "QMenu { border: 1px solid palette(light) }";
 }
 
 // before QApplication
@@ -398,7 +402,16 @@ void theme::fix(QWidget* tlw)
 {
 #ifdef Q_OS_WIN
 	if (theme::isDefault() && theme::absLuma())
-		tlw->setStyleSheet(win_fusion_DarkStyleSheet());
+		tlw->setStyleSheet(win_fusion_DarkStyleSheet_tlw());
+#endif
+}
+
+// after QApplication
+void theme::fix(QApplication* mroot)
+{
+#ifdef Q_OS_WIN
+	if (theme::isDefault() && theme::absLuma())
+		mroot->setStyleSheet(win_fusion_DarkStyleSheet_root());
 #endif
 }
 

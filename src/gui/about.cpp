@@ -18,6 +18,7 @@
 #include <QIcon>
 
 #include "about.h"
+#include "theme.h"
 
 using namespace e2se;
 
