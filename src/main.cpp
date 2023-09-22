@@ -10,6 +10,7 @@
  */
 
 #include <cstdlib>
+#include <string>
 
 #include "e2se_defs.h"
 #include "logger/logger.h"
@@ -30,7 +31,9 @@ int main(int argc, char* argv[])
 
 	for (int i = 0; i < argc; i++)
 	{
-		if (string (argv[i]) == "debug")
+		std::string arg = argv[i];
+
+		if (arg == "-debug" || arg == "--debug")
 		{
 			DEBUG = true;
 			break;

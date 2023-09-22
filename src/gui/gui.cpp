@@ -148,17 +148,7 @@ gui::gui(int argc, char* argv[])
 	// when passed from command line argument
 	// -stylesheet file.qss
 #ifdef Q_OS_WIN
-	bool stylesheet = false;
-
-	for (int i = 0; i < argc; i++)
-	{
-		if (string (argv[i]).find("-stylesheet") != string::npos)
-		{
-			stylesheet = true;
-			break;
-		}
-	}
-	if (! stylesheet)
+	if (mroot->styleSheet().isEmpty())
 	{
 		theme->fix(mroot);
 	}

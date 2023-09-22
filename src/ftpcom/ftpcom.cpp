@@ -589,7 +589,7 @@ bool ftpcom::cmd_tnreload()
 	data.user = user;
 	data.pass = pass;
 	data.send = false;
-	data.cmd = "init 3";
+	data.cmd = tnreload.empty() ? "init 3" : tnreload;
 
 	curl_url_set(rsh, CURLUPART_SCHEME, "telnet", 0);
 	curl_url_set(rsh, CURLUPART_HOST, host.c_str(), 0);

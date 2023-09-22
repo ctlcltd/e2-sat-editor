@@ -10,6 +10,8 @@ QToolBar QPushButton, QDialog QPushButton { padding: 2px 3ex; }
 QToolBar QComboBox, QDialog QComboBox { padding: 2px 4px; }
 QToolButton { padding: 5px 0; }
 QLineEdit { padding: 1px; }
+QHeaderView:section { padding: 4px 5px 6px; }
+#dial_toggler { padding: 0; }
 
 QPushButton { background: transparent; border: 2px solid palette(midlight); }
 QPushButton:hover { background: palette(button); }
@@ -34,5 +36,3 @@ QTreeWidget, QHeaderView:section { background: palette(window); }
 QTabWidget:pane QSplitter { background: palette(mid); }
 #tree_search QPushButton, #list_search QPushButton { border-color: transparent; }
 #tree_search QPushButton:pressed, #list_search QPushButton:pressed { background: palette(light); }
-
-QHeaderView:section { padding: 1px 5px; border-radius: 0; border-right: 1px solid palette(shadow); border-left: 1px solid palette(light); }

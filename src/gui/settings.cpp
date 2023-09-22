@@ -231,6 +231,19 @@ void settings::connectionsLayout()
 	dtvbox->addWidget(rplist);
 	dtvbox->addWidget(dttbar);
 
+	QWidget* dtpage = new QWidget;
+	dtpage->setObjectName("connections_page");
+	QScrollArea* dtarea = new QScrollArea;
+
+#ifdef Q_OS_WIN
+	if (theme::absLuma() || ! theme::isDefault())
+	{
+		QStyle* style = QStyleFactory::create("fusion");
+		dtarea->verticalScrollBar()->setStyle(style);
+		dtarea->horizontalScrollBar()->setStyle(style);
+	}
+#endif
+
 	QFormLayout* dtform = new QFormLayout;
 
 	QGroupBox* dtl0 = new QGroupBox(tr("Connection"));
@@ -332,36 +345,42 @@ void settings::connectionsLayout()
 	dtb23->addWidget(dtf2pi);
 	dtb23->addWidget(new QLabel("<small>(*.png)</small>"));
 
-	// QGroupBox* dtl3 = new QGroupBox(tr("Commands"));
-	// QFormLayout* dtf3 = new QFormLayout;
-	// dtf3->setFormAlignment(Qt::AlignLeading);
-	// dtf3->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
+	QGroupBox* dtl3 = new QGroupBox(tr("Commands"));
+	QFormLayout* dtf3 = new QFormLayout;
+	dtf3->setFormAlignment(Qt::AlignLeading);
+	dtf3->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
 
-	// QLineEdit* dtf3ca = new QLineEdit;
-	// dtf3ca->setProperty("field", "customWebifReloadUrl");
-	// prefs[PREF_SECTIONS::Connections].emplace_back(dtf3ca);
-	// platform::osLineEdit(dtf3ca);
-	// dtf3->addRow(tr("Custom webif reload URL address"), dtf3ca);
+	QLineEdit* dtf3ca = new QLineEdit;
+	dtf3ca->setProperty("field", "customWebifReloadUrl");
+	prefs[PREF_SECTIONS::Connections].emplace_back(dtf3ca);
+	platform::osLineEdit(dtf3ca);
+	dtf3->addRow(tr("Custom webif reload URL address"), dtf3ca);
 
-	// QLineEdit* dtf3cc = new QLineEdit;
-	// dtf3cc->setProperty("field", "customTelnetReloadCmd");
-	// prefs[PREF_SECTIONS::Connections].emplace_back(dtf3cc);
-	// platform::osLineEdit(dtf3cc);
-	// dtf3->addRow(tr("Custom telnet reload command"), dtf3cc);
+	QLineEdit* dtf3cc = new QLineEdit;
+	dtf3cc->setProperty("field", "customTelnetReloadCmd");
+	prefs[PREF_SECTIONS::Connections].emplace_back(dtf3cc);
+	platform::osLineEdit(dtf3cc);
+	dtf3->addRow(tr("Custom telnet reload command"), dtf3cc);
 
 	dtl0->setLayout(dtf0);
 	dtl1->setLayout(dtf1);
 	dtl2->setLayout(dtf2);
-	// dtl3->setLayout(dtf3);
+	dtl3->setLayout(dtf3);
 
 	dtform->addRow(dtl0);
 	dtform->addRow(dtl1);
 	dtform->addRow(dtl2);
-	// dtform->addRow(dtl3);
+	dtform->addRow(dtl3);
+
+	dtpage->setLayout(dtform);
+
+	dtarea->setFrameRect(QRect());
+	dtarea->setWidget(dtpage);
+	dtarea->setWidgetResizable(true);
+	dtarea->setStyleSheet("QScrollArea, #connections_page { background: transparent }");
 
 	dtcnt->addLayout(dtvbox, 0);
-	dtcnt->addLayout(dtform, 1);
-
+	dtcnt->addWidget(dtarea, 1);
 	rppage->setLayout(dtcnt);
 
 	dtwid->addTab(rppage, tr("Connections", "dialog"));

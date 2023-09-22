@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 
 - Translations, 33 languages (same as qt-base): Arabic, Bulgarian, Catalan, Czech, Danish, German, Spanish, Persian, Finnish, French, Gaelic, Galician, Hebrew, Croatian, Hungarian, Italian, Japanese, Korean, Lithuanian, Latvian, Dutch, Norwegian Nynorsk, Polish, Portuguese (Brazil), Portuguese (Portugal), Russian, Slovak, Slovenian, Swedish, Turkish, Ukrainian, Chinese (China), Chinese (Taiwan)
 - Bugfix
+- Win10 dark mode
 
 
 ## [v0.8.0]
