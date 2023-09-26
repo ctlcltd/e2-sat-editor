@@ -212,12 +212,12 @@ fixes () {
 	# wrong path: libldap.2.dylib in: Frameworks/libgthread-2.0.0.dylib
 	install_name_tool -change /usr/local/Cellar/glib/2.76.3/lib/libglib-2.0.0.dylib @rpath/libglib-2.0.0.dylib "libgthread-2.0.0.dylib"
 
-	# wrong path: libicuuc.72.dylib in: Frameworks/libicui18n.72.dylib
-	install_name_tool -change @loader_path/libicuuc.72.dylib @rpath/libicuuc.72.dylib "libicui18n.72.dylib"
-	# wrong path: libicudata.72.dylib in Frameworks/libicui18n.72.dylib
-	install_name_tool -change @loader_path/libicudata.72.dylib @rpath/libicudata.72.dylib "libicui18n.72.dylib"
-	# wrong path: libicudata.72.dylib in: Frameworks/libicuuc.72.dylib
-	install_name_tool -change @loader_path/libicudata.72.dylib @rpath/libicudata.72.dylib "libicuuc.72.dylib"
+	# wrong path: libicuuc.73.dylib in: Frameworks/libicui18n.73.dylib
+	install_name_tool -change @loader_path/libicuuc.73.dylib @rpath/libicuuc.73.dylib "libicui18n.73.dylib"
+	# wrong path: libicudata.73.dylib in Frameworks/libicui18n.73.dylib
+	install_name_tool -change @loader_path/libicudata.73.dylib @rpath/libicudata.73.dylib "libicui18n.73.dylib"
+	# wrong path: libicudata.73.dylib in: Frameworks/libicuuc.73.dylib
+	install_name_tool -change @loader_path/libicudata.73.dylib @rpath/libicudata.73.dylib "libicuuc.73.dylib"
 
 	# wrong path: liblber.2.dylib in: Frameworks/libldap.2.dylib
 	install_name_tool -change /usr/local/Cellar/openldap/2.6.4/lib/liblber.2.dylib @rpath/liblber.2.dylib "libldap.2.dylib"
