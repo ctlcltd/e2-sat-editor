@@ -1,6 +1,6 @@
 app-id: io.github.ctlcltd.e2se
 runtime: org.kde.Platform
-runtime-version: '6.4'
+runtime-version: '6.5'
 sdk: org.kde.Sdk
 command: e2-sat-editor
 finish-args:
@@ -28,8 +28,8 @@ modules:
       - type: git
         url: https://github.com/ctlcltd/e2-sat-editor.git
         # branch: main
-        tag: v0.8.0
-        commit: 2c093578b7b0d8422d182982fa636f17a0fc4be1
+        tag: v0.9.0
+        commit: e0161e5793f4a4c2946fe650306657763d4d152f
     # modules:
     #   - name: libcurl4
     #     buildsystem: cmake-ninja
