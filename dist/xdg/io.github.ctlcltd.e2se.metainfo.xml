@@ -7,6 +7,8 @@
   <project_license>GPL-3.0-or-later</project_license>
   <description>
     <p>e2 SAT Editor is a satellite channel lists editor with tabbed nav, for Enigma2, Neutrino, dreambox lists.</p>
+    <p>With this software you can upload, download and edit channel lists of your Enigma or Neutrino decoder, merge channel lists, convert lists, export and import channels with spreadsheets, edit services, flags, transponders, markers and picons, channel logos.</p>
+    <p>It supports Enigma2, Lamedb 4 and Lamedb 5 channel lists (2.4, 2.5, 2.3, 2.2), Enigma1, Neutrino Zapit XML channel lists (api v1, v2, v3, v4).</p>
   </description>
   <categories>
     <category>AudioVideo</category>
@@ -27,19 +29,31 @@
     <binary>e2se-cli</binary>
   </provides>
   <releases>
+    <release version="0.9.0" date="2023-09-26">
+      <description>
+        <ul>
+          <li>Translations: Arabic, Bulgarian, Catalan, Czech, Danish, German, Spanish, Persian, Finnish, French, Gaelic, Galician, Hebrew, Croatian, Hungarian, Italian, Japanese, Korean, Lithuanian, Latvian, Dutch, Norwegian Nynorsk, Polish, Portuguese (Brazil), Portuguese (Portugal), Russian, Slovak, Slovenian, Swedish, Turkish, Ukrainian, Chinese (China), Chinese (Taiwan)</li>
+          <li>Bugfix</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.8.0" date="2023-06-13">
-      <ul>
-        <li>New Picons editor</li>
-        <li>Bugfix and stability</li>
-        <li>Improvements to FTP</li>
-        <li>Fix: file operations, edit service fields, XML encoding</li>
-      </ul>
+      <description>
+        <ul>
+          <li>New Picons editor</li>
+          <li>Bugfix and stability</li>
+          <li>Improvements to FTP</li>
+          <li>Fix: file operations, edit service fields, XML encoding</li>
+        </ul>
+      </description>
     </release>
     <release version="0.7.0" date="2023-05-21">
-      <ul>
-        <li>Improvements: tree views, log inspector, icon resources</li>
-        <li>Testing and fixing for platforms</li>
-      </ul>
+      <description>
+        <ul>
+          <li>Improvements: tree views, log inspector, icon resources</li>
+          <li>Testing and fixing for platforms</li>
+        </ul>
+      </description>
     </release>
     <release version="0.6.0-pre" type="development" date="2023-04-07" />
     <release version="0.5.0-pre" type="development" date="2023-03-18" />

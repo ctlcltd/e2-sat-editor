@@ -287,6 +287,7 @@ strip () {
 	printf "%s\n\n" "binary strip ..."
 
 	$CCSTRIP --strip-unneeded build/e2-sat-editor.exe
+	$CCSTRIP --strip-unneeded build/cli/e2se-cli.exe
 }
 
 default () {

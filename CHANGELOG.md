@@ -3,11 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 
-## [next]
+## [v0.9.0]
 
 **Version**: 0.9  
-**Release Date**: *unreleased*  
-**Full Changelog**: [v0.8.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v0.8.0...HEAD)
+**Release Date**: 2023-09-26  
+**Full Changelog**: [v0.8.0...v0.9.0](https://github.com/ctlcltd/e2-sat-editor/compare/v0.8.0...v0.9.0)
 
 - Translations, 33 languages (same as qt-base): Arabic, Bulgarian, Catalan, Czech, Danish, German, Spanish, Persian, Finnish, French, Gaelic, Galician, Hebrew, Croatian, Hungarian, Italian, Japanese, Korean, Lithuanian, Latvian, Dutch, Norwegian Nynorsk, Polish, Portuguese (Brazil), Portuguese (Portugal), Russian, Slovak, Slovenian, Swedish, Turkish, Ukrainian, Chinese (China), Chinese (Taiwan)
 - Bugfix

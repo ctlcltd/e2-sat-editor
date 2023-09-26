@@ -58,13 +58,13 @@
 # ldconfig
 # curl --version
 
+
 # apt-get install build-essential cmake ninja-build git
 # apt-get install libgl1-mesa-dev libglvnd-dev libxcb-xkb-dev libxkbcommon-x11-dev libvulkan-dev
-# export LD_LIBRARY_PATH=/usr/local/Qt-6.5.1/lib:$LD_LIBRARY_PATH
-# export PATH=/usr/local/Qt-6.5.1/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/Qt-6.5.1/lib:$LD_LIBRARY_PATH
+export PATH=/usr/local/Qt-6.5.1/bin:$PATH
 # ldconfig
 # cd $HOME
-
 
 # wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
 # wget https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
@@ -76,16 +76,18 @@
 # mv appimagetool-x86_64.AppImage /usr/local/bin/appimagetool
 
 # git clone https://github.com/ctlcltd/e2-sat-editor.git
-# git checkout v0.8.0
+# git checkout v0.9.0
 # cd e2-sat-editor
 
 ./scripts/translations.sh -m
 ./scripts/icons.sh -x
 
 cd src
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DWITHOUT_CLI=ON -G Ninja -B build
+rm -R build
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -G Ninja -B build
 ninja -C build
 DESTDIR=../AppDir ninja -C build install
+rm AppDir/usr/share/applications/e2se-cli.desktop
 mv AppDir/usr/share/applications/e2-sat-editor.desktop AppDir/usr/share/applications/io.github.ctlcltd.e2se.desktop
 mv AppDir/usr/share/metainfo/io.github.ctlcltd.e2se.metainfo.xml AppDir/usr/share/metainfo/io.github.ctlcltd.e2se.appdata.xml
 mkdir -p AppDir/usr/share/doc/e2-sat-editor
@@ -96,7 +98,7 @@ linuxdeploy --appdir AppDir --plugin qt --output appimage
 
 chmod +x e2_SAT_Editor*.AppImage
 
-# ./e2_SAT_Editor-x86_64.AppImage
+# ./e2_SAT_Editor-*-x86_64.AppImage
 
 
 # apt-get install nano
@@ -111,7 +113,7 @@ echo "Translations = translations" >> squashfs-root/usr/bin/qt.conf
 
 appimagetool squashfs-root --sign --sign-key $MY_SIGN_KEY
 
-mv e2_SAT_Editor*.AppImage e2-sat-editor-0.8.0-x86_64.AppImage
+mv e2_SAT_Editor*.AppImage e2-sat-editor-0.9.0-x86_64.AppImage
 
-# ./e2-sat-editor-0.8.0-x86_64.AppImage --appimage-signature
+# ./e2-sat-editor-0.9.0-x86_64.AppImage --appimage-signature
 
