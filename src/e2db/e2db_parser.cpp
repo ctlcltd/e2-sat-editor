@@ -43,7 +43,7 @@ void e2db_parser::parse_e2db()
 	if (! find_services_file())
 		return error("parse_e2db", "Error", "Services file not found.");
 
-	ifstream iservices (this->e2db[this->services_filename]);
+	ifstream iservices (this->e2db[this->services_filename].path);
 	try
 	{
 		if (this->e2db.count("services.xml"))
@@ -67,7 +67,7 @@ void e2db_parser::parse_e2db()
 	{
 		if (this->e2db.count("satellites.xml"))
 		{
-			ifstream itunxml (this->e2db["satellites.xml"]);
+			ifstream itunxml (this->e2db["satellites.xml"].path);
 			try
 			{
 				parse_tunersets_xml(YTYPE::satellite, itunxml);
@@ -81,7 +81,7 @@ void e2db_parser::parse_e2db()
 		}
 		if (this->e2db.count("terrestrial.xml"))
 		{
-			ifstream itunxml (this->e2db["terrestrial.xml"]);
+			ifstream itunxml (this->e2db["terrestrial.xml"].path);
 			try
 			{
 				parse_tunersets_xml(YTYPE::terrestrial, itunxml);
@@ -96,7 +96,7 @@ void e2db_parser::parse_e2db()
 		}
 		if (this->e2db.count("cables.xml"))
 		{
-			ifstream itunxml (this->e2db["cables.xml"]);
+			ifstream itunxml (this->e2db["cables.xml"].path);
 			try
 			{
 				parse_tunersets_xml(YTYPE::cable, itunxml);
@@ -110,7 +110,7 @@ void e2db_parser::parse_e2db()
 		}
 		if (this->e2db.count("atsc.xml"))
 		{
-			ifstream itunxml (this->e2db["atsc.xml"]);
+			ifstream itunxml (this->e2db["atsc.xml"].path);
 			try
 			{
 				parse_tunersets_xml(YTYPE::atsc, itunxml);
@@ -128,7 +128,7 @@ void e2db_parser::parse_e2db()
 	{
 		if (this->e2db.count("ubouquets.xml"))
 		{
-			ifstream ibouquetsxml (this->e2db["ubouquets.xml"]);
+			ifstream ibouquetsxml (this->e2db["ubouquets.xml"].path);
 			try
 			{
 				parse_zapit_bouquets_apix_xml(ibouquetsxml, "ubouquets.xml", ZAPIT_VER);
@@ -142,7 +142,7 @@ void e2db_parser::parse_e2db()
 		}
 		if (this->e2db.count("bouquets.xml"))
 		{
-			ifstream ibouquetsxml (this->e2db["bouquets.xml"]);
+			ifstream ibouquetsxml (this->e2db["bouquets.xml"].path);
 			try
 			{
 				parse_zapit_bouquets_apix_xml(ibouquetsxml, "bouquets.xml", ZAPIT_VER);
@@ -166,7 +166,7 @@ void e2db_parser::parse_e2db()
 				if (fext != "tv" && fext != "radio" && fext != "epl")
 					continue;
 
-				ifstream ibouquet (this->e2db[x.first]);
+				ifstream ibouquet (this->e2db[x.first].path);
 				try
 				{
 					parse_e2db_bouquet(ibouquet, x.first, fext == "epl");
@@ -183,7 +183,7 @@ void e2db_parser::parse_e2db()
 		{
 			for (string & fname : x.second.userbouquets)
 			{
-				ifstream iuserbouquet (this->e2db[fname]);
+				ifstream iuserbouquet (this->e2db[fname].path);
 				try
 				{
 					parse_e2db_userbouquet(iuserbouquet, fname);
@@ -203,7 +203,7 @@ void e2db_parser::parse_e2db()
 			{
 				if (this->e2db.count("services.locked"))
 				{
-					ifstream ilocked (this->e2db["services.locked"]);
+					ifstream ilocked (this->e2db["services.locked"].path);
 					try
 					{
 						parse_e2db_parentallock_list(PARENTALLOCK::locked, ilocked);
@@ -220,7 +220,7 @@ void e2db_parser::parse_e2db()
 			{
 				if (this->e2db.count("blacklist"))
 				{
-					ifstream ilocked (this->e2db["blacklist"]);
+					ifstream ilocked (this->e2db["blacklist"].path);
 					try
 					{
 						parse_e2db_parentallock_list(PARENTALLOCK::blacklist, ilocked);
@@ -234,7 +234,7 @@ void e2db_parser::parse_e2db()
 				}
 				if (this->e2db.count("whitelist"))
 				{
-					ifstream ilocked (this->e2db["whitelist"]);
+					ifstream ilocked (this->e2db["whitelist"].path);
 					try
 					{
 						parse_e2db_parentallock_list(PARENTALLOCK::whitelist, ilocked);
@@ -275,14 +275,26 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 
 	for (auto & x : files)
 	{
-		string filename = std::filesystem::path(x.first).filename().u8string();
-		this->e2db[filename] = x.first;
+		string fpath = x.first;
+		string filename = std::filesystem::path(fpath).filename().u8string();
+		FPORTS fpi = file_type_detect(fpath);
+		string mime = file_mime_detect(fpi, fpath);
+		std::uintmax_t fsize = std::filesystem::file_size(fpath);
+
+		e2db_file file;
+		file.origin = FORG::filesys;
+		file.path = fpath;
+		file.filename = filename;
+		file.mime = mime;
+		file.size = fsize;
+
+		this->e2db[filename] = file;
 	}
 	if (! find_services_file())
 		return error("parse_e2db", "Error", "Services file not found.");
 
 	stringstream iservices;
-	iservices.write(&files[this->e2db[this->services_filename]].data[0], files[this->e2db[this->services_filename]].size);
+	iservices.write(&files[this->e2db[this->services_filename].path].data[0], files[this->e2db[this->services_filename].path].size);
 	if (this->e2db.count("services.xml"))
 	{
 		db.type = 1;
@@ -298,25 +310,25 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 		if (this->e2db.count("satellites.xml"))
 		{
 			stringstream itunxml;
-			itunxml.write(&files[this->e2db["satellites.xml"]].data[0], files[this->e2db["satellites.xml"]].size);
+			itunxml.write(&files[this->e2db["satellites.xml"].path].data[0], files[this->e2db["satellites.xml"].path].size);
 			parse_tunersets_xml(YTYPE::satellite, itunxml);
 		}
 		if (this->e2db.count("terrestrial.xml"))
 		{
 			stringstream itunxml;
-			itunxml.write(&files[this->e2db["terrestrial.xml"]].data[0], files[this->e2db["terrestrial.xml"]].size);
+			itunxml.write(&files[this->e2db["terrestrial.xml"].path].data[0], files[this->e2db["terrestrial.xml"].path].size);
 			parse_tunersets_xml(YTYPE::terrestrial, itunxml);
 		}
 		if (this->e2db.count("cables.xml"))
 		{
 			stringstream itunxml;
-			itunxml.write(&files[this->e2db["cables.xml"]].data[0], files[this->e2db["cables.xml"]].size);
+			itunxml.write(&files[this->e2db["cables.xml"].path].data[0], files[this->e2db["cables.xml"].path].size);
 			parse_tunersets_xml(YTYPE::cable, itunxml);
 		}
 		if (this->e2db.count("atsc.xml"))
 		{
 			stringstream itunxml;
-			itunxml.write(&files[this->e2db["atsc.xml"]].data[0], files[this->e2db["atsc.xml"]].size);
+			itunxml.write(&files[this->e2db["atsc.xml"].path].data[0], files[this->e2db["atsc.xml"].path].size);
 			parse_tunersets_xml(YTYPE::atsc, itunxml);
 		}
 	}
@@ -326,13 +338,13 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 		if (this->e2db.count("ubouquets.xml"))
 		{
 			stringstream ibouquetsxml;
-			ibouquetsxml.write(&files[this->e2db["ubouquets.xml"]].data[0], files[this->e2db["ubouquets.xml"]].size);
+			ibouquetsxml.write(&files[this->e2db["ubouquets.xml"].path].data[0], files[this->e2db["ubouquets.xml"].path].size);
 			parse_zapit_bouquets_apix_xml(ibouquetsxml, "ubouquets.xml", ZAPIT_VER);
 		}
 		if (this->e2db.count("bouquets.xml"))
 		{
 			stringstream ibouquetsxml;
-			ibouquetsxml.write(&files[this->e2db["bouquets.xml"]].data[0], files[this->e2db["bouquets.xml"]].size);
+			ibouquetsxml.write(&files[this->e2db["bouquets.xml"].path].data[0], files[this->e2db["bouquets.xml"].path].size);
 			parse_zapit_bouquets_apix_xml(ibouquetsxml, "bouquets.xml", ZAPIT_VER);
 		}
 	}
@@ -348,7 +360,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 					continue;
 
 				stringstream ibouquet;
-				ibouquet.write(&files[x.second].data[0], files[x.second].size);
+				ibouquet.write(&files[x.second.path].data[0], files[x.second.path].size);
 				parse_e2db_bouquet(ibouquet, x.first, fext == "epl");
 			}
 		}
@@ -357,7 +369,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 			for (string & filename : x.second.userbouquets)
 			{
 				stringstream iuserbouquet;
-				iuserbouquet.write(&files[this->e2db[filename]].data[0], files[this->e2db[filename]].size);
+				iuserbouquet.write(&files[this->e2db[filename].path].data[0], files[this->e2db[filename].path].size);
 				parse_e2db_userbouquet(iuserbouquet, filename);
 			}
 		}
@@ -369,7 +381,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 				if (this->e2db.count("services.locked"))
 				{
 					stringstream ilocked;
-					ilocked.write(&files[this->e2db["services.locked"]].data[0], files[this->e2db["services.locked"]].size);
+					ilocked.write(&files[this->e2db["services.locked"].path].data[0], files[this->e2db["services.locked"].path].size);
 					parse_e2db_parentallock_list(PARENTALLOCK::locked, ilocked);
 				}
 			}
@@ -378,13 +390,13 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 				if (this->e2db.count("blacklist"))
 				{
 					stringstream ilocked;
-					ilocked.write(&files[this->e2db["blacklist"]].data[0], files[this->e2db["blacklist"]].size);
+					ilocked.write(&files[this->e2db["blacklist"].path].data[0], files[this->e2db["blacklist"].path].size);
 					parse_e2db_parentallock_list(PARENTALLOCK::blacklist, ilocked);
 				}
 				if (this->e2db.count("whitelist"))
 				{
 					stringstream ilocked;
-					ilocked.write(&files[this->e2db["whitelist"]].data[0], files[this->e2db["whitelist"]].size);
+					ilocked.write(&files[this->e2db["whitelist"].path].data[0], files[this->e2db["whitelist"].path].size);
 					parse_e2db_parentallock_list(PARENTALLOCK::whitelist, ilocked);
 				}
 			}
@@ -428,6 +440,9 @@ void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 	debug("parse_e2db_lamedb5", "version", 5);
 
 	LAMEDB_VER = 5;
+	if (this->e2db.size() == 0)
+		db.version = 0x1225;
+
 	bool step;
 	int tidx = 0;
 	int sidx = 0;
@@ -482,6 +497,9 @@ void e2db_parser::parse_e2db_lamedbx(istream& ilamedb, int ver)
 		return error("parse_e2db_lamedbx", "Parser Error", "Unknown Lamedb services file format.");
 
 	LAMEDB_VER = ver;
+	if (this->e2db.size() == 0)
+		db.version = 0x1220 + ver;
+
 	int step = 0;
 	int s = 0;
 	int tidx = 0;
@@ -1216,6 +1234,8 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 		return error("parse_zapit_services_apix_xml", "Parser Error", "Unknown Zapit services file format.");
 
 	ZAPIT_VER = ver;
+	if (this->e2db.size() == 0)
+		db.version = 0x1010 + ver;
 
 	string charset = "UTF-8";
 	bool valid = parse_xml_head(iservicesxml, charset);
@@ -2010,7 +2030,18 @@ bool e2db_parser::list_file(string path)
 
 		string fpath = entry.path().u8string();
 		string filename = std::filesystem::path(fpath).filename().u8string();
-		this->e2db[filename] = fpath;
+		FPORTS fpi = file_type_detect(fpath);
+		string mime = file_mime_detect(fpi, fpath);
+		std::uintmax_t fsize = std::filesystem::file_size(fpath);
+
+		e2db_file file;
+		file.origin = FORG::filesys;
+		file.path = fpath;
+		file.filename = filename;
+		file.mime = mime;
+		file.size = int (fsize);
+
+		this->e2db[filename] = file;
 	}
 	if (! find_services_file())
 	{
@@ -2055,7 +2086,7 @@ bool e2db_parser::read(string path)
 	return false;
 }
 
-unordered_map<string, string> e2db_parser::get_input()
+unordered_map<string, e2db_abstract::e2db_file> e2db_parser::get_input()
 {
 	debug("get_input");
 

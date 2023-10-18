@@ -286,7 +286,6 @@ void _platform_macx::_osMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 	menu->aboutToHide();
 }
 
-//TODO improve native macx context menu items
 QLineEdit* _platform_macx::_osLineEdit(QLineEdit* input, bool destroy)
 {
 	input->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -312,11 +311,10 @@ QComboBox* _platform_macx::_osComboBox(QComboBox* select)
 	return select;
 }
 
-//TODO improve native macx context menu items
 QTextEdit* _platform_macx::_osTextEdit(QTextEdit* input, bool destroy)
 {
 	input->setContextMenuPolicy(Qt::CustomContextMenu);
-	input->connect(input, &QLineEdit::customContextMenuRequested, [=](QPoint pos) {
+	input->connect(input, &QTextEdit::customContextMenuRequested, [=](QPoint pos) {
 		QMenu* menu = input->createStandardContextMenu();
 		_osMenuPopup(menu, input, pos);
 
@@ -331,7 +329,6 @@ QTextEdit* _platform_macx::_osTextEdit(QTextEdit* input, bool destroy)
 	return input;
 }
 
-//TODO improve native macx context menu items
 QWidget* _platform_macx::_osPersistentEditor(QWidget* widget)
 {
 	widget->installEventFilter(new _osPersistentEditorEventObserver);

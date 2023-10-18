@@ -26,6 +26,7 @@
 #include <QClipboard>
 #include <QUrl>
 #include <QDesktopServices>
+#include <QMouseEvent>
 
 #include "../e2se_defs.h"
 #include "platforms/platform.h"
@@ -238,6 +239,8 @@ void gui::menuBarLayout()
 	menuBarSeparator(mfile);
 	gmenu[GUI_CXE::CloseTab] = menuBarAction(mfile, tr("Close Tab", "menu"), [=]() { this->closeTab(); }, QKeySequence::Close);
 	gmenu[GUI_CXE::CloseAllTabs] = menuBarAction(mfile, tr("Close All Tabs", "menu"), [=]() { this->closeAllTabs(); }, Qt::CTRL | Qt::ALT | Qt::Key_W);
+	menuBarSeparator(mfile);
+	gmenu[GUI_CXE::FileInfo] = menuBarAction(mfile, tr("File Information", "menu"), [=]() { this->fileInfo(); });
 	menuBarSeparator(mfile);
 	//: Encoding: preserve 3-dots ellipsis symbol
 	gmenu[GUI_CXE::FilePrint] = menuBarAction(mfile, tr("&Print…", "menu"), [=]() { this->filePrint(); }, QKeySequence::Print);
@@ -472,8 +475,10 @@ void gui::statusBarLayout()
 	this->sbwidl = new QLabel;
 	this->sbwidc = new QWidget;
 	this->sbwidr = new QLabel;
+	this->sbwidi = new QPushButton;
 
-	sbwid->setStyleSheet("QStatusBar QLabel { padding: 0 2ex }");
+	sbwidl->setStyleSheet("padding: 0 2ex");
+	sbwidr->setStyleSheet("padding: 0 1ex");
 
 #ifdef Q_OS_MAC
 	theme->dynamicStyleSheet(sbwid, "QStatusBar { background: transparent }");
@@ -484,9 +489,19 @@ void gui::statusBarLayout()
 	sbwidl->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
 	sbwidr->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
 
+	sbwidi->setFlat(true);
+	sbwidi->setIcon(theme->dynamicIcon("file-info", sbwidi));
+	sbwidi->connect(sbwidi, &QPushButton::pressed, [=]() {
+		this->fileInfo();
+
+		QMouseEvent mouseRelease(QEvent::MouseButtonRelease, sbwidi->pos(), sbwidi->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
+		QCoreApplication::sendEvent(sbwidi, &mouseRelease);
+	});
+
 	sbwid->addWidget(sbwidl, 0);
 	sbwid->addWidget(sbwidc, 1);
 	sbwid->addWidget(sbwidr, 0);
+	sbwid->addPermanentWidget(sbwidi, 0);
 
 	mstatusb->addWidget(sbwid);
 }
@@ -1365,6 +1380,14 @@ void gui::setStatusBar(status msg)
 			if (QApplication::layoutDirection() == Qt::RightToLeft)
 				std::reverse(content.begin(), content.end());
 			sbwidr->setText(content.join(separator));
+
+			QString text = getFileFormatName(msg.version);
+			if (msg.convert != 0)
+			{
+				QString convert = getFileFormatName(msg.convert);
+				text = QString(QApplication::layoutDirection() == Qt::RightToLeft ? "%2 < %1" : "%1 > %2").arg(text).arg(convert);
+			}
+			sbwidi->setToolTip(text);
 		}
 	}
 	else if (msg.view == TAB_VIEW::transponders)
@@ -1500,6 +1523,15 @@ void gui::fileExport()
 	tab* ttab = getCurrentTabHandler();
 	if (ttab != nullptr)
 		ttab->exportFile();
+}
+
+void gui::fileInfo()
+{
+	debug("fileInfo");
+
+	tab* ttab = getCurrentTabHandler();
+	if (ttab != nullptr)
+		ttab->infoFile();
 }
 
 void gui::filePrint()
@@ -1797,6 +1829,29 @@ void gui::updateMenu()
 
 	// note: is out of range
 	// debug("updateMenu", "flags", getActionFlags().to_ullong());
+}
+
+QLocale gui::getLocale()
+{
+	QString appLang = QSettings().value("preference/language").toString();
+	return appLang.isEmpty() ? QLocale::system() : QLocale(appLang);
+}
+
+QString gui::getFileFormatName(int ver)
+{
+	switch (ver)
+	{
+		case 0x1224: return tr("Lamedb 2.4 [Enigma 2]");
+		case 0x1225: return tr("Lamedb 2.5 [Enigma 2]");
+		case 0x1223: return tr("Lamedb 2.3 [Enigma 2]");
+		case 0x1222: return tr("Lamedb 2.2 [Enigma 2]");
+		case 0x1014: return tr("Zapit api-v4 [Neutrino]");
+		case 0x1013: return tr("Zapit api-v3 [Neutrino]");
+		case 0x1012: return tr("Zapit api-v2 [Neutrino]");
+		case 0x1011: return tr("Zapit api-v1 [Neutrino]");
+	}
+
+	return "";
 }
 
 QMenuBar* gui::menuBar(QLayout* layout)

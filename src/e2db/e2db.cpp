@@ -85,6 +85,8 @@ void e2db::import_file(FPORTS fpi, vector<string> paths)
 				string mime = file_mime_detect(fpi, path);
 
 				e2db_file file;
+				file.origin = e2db::FORG::filesys;
+				file.path = path;
 				file.filename = filename;
 				file.mime = mime;
 

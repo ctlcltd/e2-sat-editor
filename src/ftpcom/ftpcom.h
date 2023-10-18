@@ -52,6 +52,7 @@ class ftpcom : protected e2se::log_factory
 
 		struct ftpcom_file
 		{
+			string path;
 			string filename;
 			string data;
 			string mime;

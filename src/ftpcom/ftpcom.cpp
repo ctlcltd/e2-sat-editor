@@ -280,6 +280,7 @@ void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 
 	string mime = file_mime_detect(path);
 
+	file.path = path;
 	file.filename = filename;
 	file.mime = mime;
 	file.data = data.data;

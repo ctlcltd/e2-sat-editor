@@ -65,6 +65,7 @@ void tools::inspector()
 	dial->setObjectName("inspector");
 	dial->setWindowTitle(tr("Log Inspector", "dialog"));
 	dial->setMinimumSize(450, 520);
+	theme->fix(dial);
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
 	dial->connect(dial, &QDialog::finished, [=]() { QTimer::singleShot(0, [=]() { this->inspectReset(); delete dial; }); });

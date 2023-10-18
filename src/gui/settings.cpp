@@ -303,7 +303,7 @@ void settings::connectionsLayout()
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf1lp);
 	dtf1lp->setMinimumWidth(120);
 	platform::osLineEdit(dtf1lp);
-	dtf1->addRow(tr("Password"), dtf1lp); 
+	dtf1->addRow(tr("Password"), dtf1lp);
 
 	QGroupBox* dtl2 = new QGroupBox(tr("Configuration"));
 	QFormLayout* dtf2 = new QFormLayout;

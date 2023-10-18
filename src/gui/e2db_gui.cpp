@@ -54,14 +54,14 @@ void e2db::setup()
 
 	switch (datadb_type)
 	{
-		case 0x1224: e2db::LAMEDB_VER = 4; e2db::ZAPIT_VER = -1; db.type = 0; break;
-		case 0x1225: e2db::LAMEDB_VER = 5; e2db::ZAPIT_VER = -1; db.type = 0; break;
-		case 0x1223: e2db::LAMEDB_VER = 3; e2db::ZAPIT_VER = -1; db.type = 0; break;
-		case 0x1222: e2db::LAMEDB_VER = 2; e2db::ZAPIT_VER = -1; db.type = 0; break;
-		case 0x1014: e2db::LAMEDB_VER = -1; e2db::ZAPIT_VER = 4; db.type = 1; break;
-		case 0x1013: e2db::LAMEDB_VER = -1; e2db::ZAPIT_VER = 3; db.type = 1; break;
-		case 0x1012: e2db::LAMEDB_VER = -1; e2db::ZAPIT_VER = 2; db.type = 1; break;
-		case 0x1011: e2db::LAMEDB_VER = -1; e2db::ZAPIT_VER = 1; db.type = 1; break;
+		case 0x1224: e2db::LAMEDB_VER = 4; e2db::ZAPIT_VER = -1; db.type = 0; db.version = 0x1224; break;
+		case 0x1225: e2db::LAMEDB_VER = 5; e2db::ZAPIT_VER = -1; db.type = 0; db.version = 0x1225; break;
+		case 0x1223: e2db::LAMEDB_VER = 3; e2db::ZAPIT_VER = -1; db.type = 0; db.version = 0x1223; break;
+		case 0x1222: e2db::LAMEDB_VER = 2; e2db::ZAPIT_VER = -1; db.type = 0; db.version = 0x1222; break;
+		case 0x1014: e2db::LAMEDB_VER = -1; e2db::ZAPIT_VER = 4; db.type = 1; db.version = 0x1014; break;
+		case 0x1013: e2db::LAMEDB_VER = -1; e2db::ZAPIT_VER = 3; db.type = 1; db.version = 0x1012; break;
+		case 0x1012: e2db::LAMEDB_VER = -1; e2db::ZAPIT_VER = 2; db.type = 1; db.version = 0x1012; break;
+		case 0x1011: e2db::LAMEDB_VER = -1; e2db::ZAPIT_VER = 1; db.type = 1; db.version = 0x1011; break;
 	}
 
 	e2db::OVERWRITE_FILE = true;

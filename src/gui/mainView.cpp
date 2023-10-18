@@ -1468,6 +1468,8 @@ void mainView::convert(int bit)
 		default:
 			return;
 	}
+
+	updateStatusBar();
 }
 
 void mainView::addBouquet()
@@ -2902,6 +2904,20 @@ void mainView::updateStatusBar(bool current)
 	}
 	else
 	{
+		int srcver = dbih->db.version;
+		int dstver = 0;
+		int lamedb_ver = dbih->get_lamedb_version();
+		int zapit_ver = dbih->get_zapit_version();
+
+		if (lamedb_ver != -1)
+			dstver = 0x1220 + lamedb_ver;
+		else if (zapit_ver != -1)
+			dstver = 0x1010 + zapit_ver;
+
+		msg.version = srcver;
+		if (srcver != dstver)
+			msg.convert = dstver;
+
 		msg.counters[gui::COUNTER::n_data] = int (dbih->index["chs:0"].size());
 		msg.counters[gui::COUNTER::n_tv] = int (dbih->index["chs:1"].size());
 		msg.counters[gui::COUNTER::n_radio] = int (dbih->index["chs:2"].size());

@@ -29,6 +29,7 @@ using std::string, std::vector, std::unordered_map, std::bitset;
 #include <QTabWidget>
 #include <QActionGroup>
 #include <QLabel>
+#include <QPushButton>
 
 #include "../logger/logger.h"
 #include "theme.h"
@@ -54,6 +55,7 @@ class gui : protected e2se::log_factory
 			FileSaveAs = 16,
 			FileImport = 18,
 			FileExport = 19,
+			FileInfo = 14,
 			FilePrint = 12,
 			FilePrintAll = 13,
 			EditUndo = 21,
@@ -125,6 +127,7 @@ class gui : protected e2se::log_factory
 			GUI_CXE::FileSaveAs,
 			GUI_CXE::FileImport,
 			GUI_CXE::FileExport,
+			GUI_CXE::FileInfo,
 			GUI_CXE::FilePrint,
 			GUI_CXE::FilePrintAll,
 			GUI_CXE::Transponders,
@@ -158,6 +161,7 @@ class gui : protected e2se::log_factory
 		};
 
 		enum TAB_ATS {
+			Info = GUI_CXE::FileInfo,
 			Print = GUI_CXE::FilePrint,
 			PrintAll = GUI_CXE::FilePrintAll,
 			TreeFind = GUI_CXE::TabTreeFind,
@@ -234,14 +238,17 @@ class gui : protected e2se::log_factory
 			int counters[5] = {0, 0, 0, 0, 0};
 			bool info = false;
 			bool update = false;
+			int version = 0;
+			int convert = 0;
 		};
 
 #if defined Q_OS_WASM || defined E2SE_DEMO
 		struct gui_file
 		{
+			string path;
+			string filename;
 			string data;
 			string mime;
-			string filename;
 			size_t size;
 		};
 
@@ -275,6 +282,7 @@ class gui : protected e2se::log_factory
 		void fileSaveAs();
 		void fileImport();
 		void fileExport();
+		void fileInfo();
 		void filePrint();
 		void filePrintAll();
 		void windowMinimize();
@@ -293,6 +301,9 @@ class gui : protected e2se::log_factory
 		int getTabEditActionFlag(GUI_CXE bit);
 		void setTabEditActionFlag(GUI_CXE bit, bool flag);
 		void updateMenu();
+		QLocale getLocale();
+
+		static QString getFileFormatName(int ver);
 
 		e2se_gui::theme* theme;
 
@@ -341,6 +352,7 @@ class gui : protected e2se::log_factory
 		QLabel* sbwidl;
 		QWidget* sbwidc;
 		QLabel* sbwidr;
+		QPushButton* sbwidi;
 		QTabWidget* twid;
 		QMenuBar* menu;
 		QMenu* mwind;

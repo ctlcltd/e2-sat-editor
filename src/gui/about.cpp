@@ -124,7 +124,7 @@ void about::display()
 
 	layout();
 
-	dial->open();
+	dial->exec();
 }
 
 void about::destroy()

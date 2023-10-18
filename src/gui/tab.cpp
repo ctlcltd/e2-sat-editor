@@ -24,12 +24,17 @@
 #include <QMessageBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QFormLayout>
 #include <QSplitter>
 #include <QGroupBox>
 #include <QMenu>
 #include <QScrollArea>
 #include <QClipboard>
 #include <QMimeData>
+#ifdef Q_OS_WIN
+#include <QStyleFactory>
+#include <QScrollBar>
+#endif
 
 #include "../e2se_defs.h"
 #include "platforms/platform.h"
@@ -564,6 +569,8 @@ bool tab::readFile(string path)
 	for (auto & q : gid->blobs)
 	{
 		e2db::e2db_file file;
+		file.origin = e2db::FORG::fileblob;
+		file.path = q.path;
 		file.filename = q.filename;
 		file.mime = q.mime;
 		file.data = q.data;
@@ -976,6 +983,167 @@ void tab::exportFile()
 	{
 		infoMessage(tr("Saved!", "message"));
 	}
+}
+
+//TODO
+void tab::infoFile()
+{
+	debug("infoFile");
+
+	auto* dbih = this->data->dbih;
+
+	Qt::WindowFlags wflags = Qt::Dialog;
+	wflags |= Qt::CustomizeWindowHint;
+	wflags |= Qt::WindowTitleHint;
+	wflags |= Qt::WindowMinMaxButtonsHint;
+	wflags &= ~Qt::WindowMaximizeButtonHint;
+	wflags |= Qt::WindowCloseButtonHint;
+
+	QDialog* dial = new QDialog(cwid, wflags);
+	dial->setObjectName("fileinfo");
+	dial->setWindowTitle(tr("File Information", "dialog"));
+	dial->setMinimumSize(450, 520);
+	theme->fix(dial);
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+	dial->connect(dial, &QDialog::finished, [=]() { QTimer::singleShot(0, [=]() { delete dial; }); });
+#else
+	dial->connect(dial, &QDialog::finished, [=]() { delete dial; });
+#endif
+
+	QGridLayout* dfrm = new QGridLayout(dial);
+
+	QFormLayout* dtform = new QFormLayout;
+
+	QGroupBox* dtl0 = new QGroupBox(tr("File Info"));
+	QFormLayout* dtf0 = new QFormLayout;
+	dtf0->setFormAlignment(Qt::AlignLeading);
+	dtf0->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+
+	string fpath = dbih->get_filepath();
+	string fname = std::filesystem::path(fpath).filename().u8string();
+
+	int srcver = dbih->db.version;
+	int dstver = 0;
+	int lamedb_ver = dbih->get_lamedb_version();
+	int zapit_ver = dbih->get_zapit_version();
+
+	if (lamedb_ver != -1)
+		dstver = 0x1220 + lamedb_ver;
+	else if (zapit_ver != -1)
+		dstver = 0x1010 + zapit_ver;
+
+	QString fformat = gid->getFileFormatName(srcver);
+	QString fconvert = "–";
+	if (srcver != dstver)
+		fconvert = gid->getFileFormatName(dstver);
+
+	auto flist = dbih->get_input();
+
+	QLabel* dtf0fn = new QLabel;
+	dtf0fn->setText(QString::fromStdString(fname));
+	dtf0fn->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	dtf0->addRow(QString(QApplication::layoutDirection() == Qt::RightToLeft ? ":%1" : "%1:").arg(tr("File name")), dtf0fn);
+
+	QLabel* dtf0fp = new QLabel;
+	dtf0fp->setText(QString::fromStdString(fpath));
+	dtf0fp->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	dtf0->addRow(QString(QApplication::layoutDirection() == Qt::RightToLeft ? ":%1" : "%1:").arg(tr("File path")), dtf0fp);
+
+	QLabel* dtf0ff = new QLabel;
+	dtf0ff->setText(fformat);
+	dtf0ff->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	dtf0->addRow(QString(QApplication::layoutDirection() == Qt::RightToLeft ? ":%1" : "%1:").arg(tr("File format")), dtf0ff);
+
+	QLabel* dtf0fc = new QLabel;
+	dtf0fc->setText(fconvert);
+	dtf0fc->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	dtf0->addRow(QString(QApplication::layoutDirection() == Qt::RightToLeft ? ":%1" : "%1:").arg(tr("File convert")), dtf0fc);
+
+	QGroupBox* dtl1 = new QGroupBox(tr("Counters"));
+	QFormLayout* dtf1 = new QFormLayout;
+	dtf1->setFormAlignment(Qt::AlignLeading);
+	dtf1->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+
+	QLabel* dtf1tv = new QLabel;
+	dtf1tv->setText(QString::number(int (dbih->index["chs:1"].size())));
+	dtf1tv->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	dtf1->addRow(QString(QApplication::layoutDirection() == Qt::RightToLeft ? ":%1" : "%1:").arg(tr("TV")), dtf1tv);
+
+	QLabel* dtf1rd = new QLabel;
+	dtf1rd->setText(QString::number(int (dbih->index["chs:2"].size())));
+	dtf1rd->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	dtf1->addRow(QString(QApplication::layoutDirection() == Qt::RightToLeft ? ":%1" : "%1:").arg(tr("Radio")), dtf1rd);
+
+	QLabel* dtf1dt = new QLabel;
+	dtf1dt->setText(QString::number(int (dbih->index["chs:0"].size())));
+	dtf1dt->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	dtf1->addRow(QString(QApplication::layoutDirection() == Qt::RightToLeft ? ":%1" : "%1:").arg(tr("Data")), dtf1dt);
+
+	QLabel* dtf1tt = new QLabel;
+	dtf1tt->setText(QString::number(int (dbih->index["chs"].size())));
+	dtf1tt->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	dtf1->addRow(QString(QApplication::layoutDirection() == Qt::RightToLeft ? ":%1" : "%1:").arg(tr("Total")), dtf1tt);
+
+	QGroupBox* dtl2 = new QGroupBox(tr("File Tree"));
+	QVBoxLayout* dtb2 = new QVBoxLayout;
+
+	QTreeWidget* dtw2ft = new QTreeWidget;
+	dtw2ft->setHeaderLabels({tr("Filename"), tr("Size"), tr("Origin")});
+	dtw2ft->setColumnWidth(0, 200);
+	dtw2ft->setColumnWidth(1, 100);
+#ifdef Q_OS_WIN
+	if (theme::absLuma() || ! theme::isDefault())
+	{
+		QStyle* style = QStyleFactory::create("fusion");
+		dtw2ft->verticalScrollBar()->setStyle(style);
+		dtw2ft->horizontalScrollBar()->setStyle(style);
+	}
+#endif
+
+	QList<QTreeWidgetItem*> ftree;
+	for (auto & x : flist)
+	{
+		QString filename = QString::fromStdString(x.second.filename);
+		QString filesize = "–";
+		QString fileorigin = "–";
+		switch (x.second.origin)
+		{
+			case e2db::FORG::filesys: fileorigin = tr("local", "file"); break;
+			case e2db::FORG::fileport: fileorigin = tr("remote", "file"); break;
+			case e2db::FORG::fileblob: fileorigin = tr("blob", "file"); break;
+		}
+		{
+			QLocale appLocale = gid->getLocale();
+			filesize = appLocale.formattedDataSize(qint64 (x.second.size), 2, QLocale::DataSizeTraditionalFormat);
+		}
+
+		QTreeWidgetItem* item = new QTreeWidgetItem;
+		item->setText(0, filename);
+		item->setText(1, filesize);
+		item->setText(2, fileorigin);
+		ftree.append(item);
+	}
+	dtw2ft->addTopLevelItems(ftree);
+
+	dtb2->addWidget(dtw2ft);
+
+	dtl0->setLayout(dtf0);
+	dtl1->setLayout(dtf1);
+	dtl2->setLayout(dtb2);
+
+	QString qss = "QLabel { min-width: 12ex; min-height: 20px }";
+	dtl0->setStyleSheet(qss);
+	dtl1->setStyleSheet(qss);
+
+	dtform->addRow(dtl0);
+	dtform->addRow(dtl1);
+	dtform->addRow(dtl2);
+
+	dfrm->setContentsMargins(0, 0, 0, 0);
+	dfrm->addLayout(dtform, 0, 0);
+	dial->setLayout(dfrm);
+	dial->exec();
 }
 
 void tab::printFile(bool all)
@@ -1630,6 +1798,8 @@ void tab::ftpDownload()
 			for (auto & x : this->ftp_files)
 			{
 				e2db::e2db_file file;
+				file.origin = e2db::FORG::fileport;
+				file.path = x.second.path;
 				file.filename = x.second.filename;
 				file.mime = x.second.mime;
 				file.data = x.second.data;
@@ -1951,6 +2121,7 @@ void tab::loadSeeds()
 			gui::gui_file file;
 			file.data = QResource(path).uncompressedData().toStdString();
 			file.size = QResource(path).size();
+			file.path = path;
 			file.filename = path.remove(0, 1).toStdString();
 
 			gid->blobs.emplace_back(file);

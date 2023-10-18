@@ -21,6 +21,7 @@
 #include <QComboBox>
 #include <QTextEdit>
 
+//TODO improve native macx context menu items
 class _platform_macx
 {
 	private:

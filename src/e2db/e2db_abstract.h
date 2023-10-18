@@ -90,6 +90,13 @@ struct e2db_abstract : protected e2se::log_factory
 			single_parentallock_whitelist = 0xfe
 		};
 
+		// file origin
+		enum FORG {
+			filesys,  // filesystem
+			fileport, // ftp
+			fileblob  // blob
+		};
+
 		// tuner settings type
 		enum YTYPE {
 			satellite,
@@ -222,9 +229,11 @@ struct e2db_abstract : protected e2se::log_factory
 
 		struct e2db_file
 		{
+			int origin;
+			string path;
+			string filename;
 			string data;
 			string mime;
-			string filename;
 			size_t size;
 		};
 
@@ -403,6 +412,7 @@ struct e2db_abstract : protected e2se::log_factory
 		struct datadb
 		{
 			int type = 0; // 0: lamedb, 1: zapit
+			int version = 0x1224;
 			// tables <pos int, table struct>
 			unordered_map<int, table> tables;
 			// transponders <txid string, transponder struct>
@@ -526,7 +536,7 @@ struct e2db_abstract : protected e2se::log_factory
 		void set_services(unordered_map<string, service> services);
 		void set_bouquets(pair<unordered_map<string, bouquet>, unordered_map<string, userbouquet>> bouquets);
 		pair<unordered_map<string, bouquet>, unordered_map<string, userbouquet>> get_bouquets();
-		virtual unordered_map<string, string> get_input() { return this->e2db; }
+		virtual unordered_map<string, e2db_file> get_input() { return this->e2db; }
 		virtual unordered_map<string, e2db_file> get_output() { return this->e2db_out; }
 		virtual void merge(e2db_abstract* dst);
 		virtual void debugger();
@@ -552,8 +562,8 @@ struct e2db_abstract : protected e2se::log_factory
 		virtual string msg(e2se::logger::MSG msg, const char* param) { return e2se::logger::msg(msg, param); }
 		virtual string msg(e2se::logger::MSG msg) { return e2se::logger::msg(msg); }
 
-		// e2db <filename string, full-path string>
-		unordered_map<string, string> e2db;
+		// e2db <filename string, e2db_file>
+		unordered_map<string, e2db_file> e2db;
 		// e2db_out <filename string, e2db_file>
 		unordered_map<string, e2db_file> e2db_out;
 		string filepath;

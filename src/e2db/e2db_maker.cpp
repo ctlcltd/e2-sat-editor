@@ -1393,6 +1393,8 @@ bool e2db_maker::push_file(string path)
 		ofstream out (fpath);
 		out << o.second.data;
 		out.close();
+
+		o.second.path = fpath;
 	}
 
 	return true;

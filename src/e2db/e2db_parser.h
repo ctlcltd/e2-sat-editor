@@ -48,7 +48,7 @@ class e2db_parser : virtual public e2db_abstract
 		bool find_services_file();
 		bool list_file(string path);
 		bool read(string path);
-		unordered_map<string, string> get_input();
+		unordered_map<string, e2db_file> get_input();
 
 	protected:
 		void parse_lamedb_transponder_params(string str, transponder& tx);
