@@ -277,18 +277,8 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 	{
 		string fpath = x.first;
 		string filename = std::filesystem::path(fpath).filename().u8string();
-		FPORTS fpi = file_type_detect(fpath);
-		string mime = file_mime_detect(fpi, fpath);
-		std::uintmax_t fsize = std::filesystem::file_size(fpath);
 
-		e2db_file file;
-		file.origin = FORG::filesys;
-		file.path = fpath;
-		file.filename = filename;
-		file.mime = mime;
-		file.size = fsize;
-
-		this->e2db[filename] = file;
+		this->e2db[filename] = x.second;
 	}
 	if (! find_services_file())
 		return error("parse_e2db", "Error", "Services file not found.");

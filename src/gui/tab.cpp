@@ -1704,13 +1704,14 @@ void tab::ftpUpload()
 		path = basedir + filename;
 
 		e2se_ftpcom::ftpcom::ftpcom_file file;
+		file.path = basedir + x.second.filename;
 		file.filename = x.second.filename;
 		file.mime = x.second.mime;
 		file.data = x.second.data;
 		file.size = x.second.size;
 		ftp_files.emplace(path, file);
 
-		debug("ftpUpload", "file path", basedir + file.filename);
+		debug("ftpUpload", "file path", file.path);
 		debug("ftpUpload", "file size", to_string(file.size));
 	}
 
@@ -1805,8 +1806,8 @@ void tab::ftpDownload()
 				file.data = x.second.data;
 				file.size = x.second.size;
 
-				debug("ftpDownload", "file path", x.first);
-				debug("ftpDownload", "file size", to_string(x.second.size));
+				debug("ftpDownload", "file path", file.path);
+				debug("ftpDownload", "file size", to_string(file.size));
 
 				this->files.emplace(file.filename, file);
 			}
