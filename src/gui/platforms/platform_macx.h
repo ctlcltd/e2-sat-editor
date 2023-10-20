@@ -20,10 +20,13 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QTextEdit>
+#include <QLabel>
 
 //TODO improve native macx context menu items
 class _platform_macx
 {
+	Q_DECLARE_TR_FUNCTIONS(_platform_macx)
+
 	private:
 
 		enum _FX_BLENDING {
@@ -119,6 +122,14 @@ class _platform_macx
 			else
 				return input;
 		}
+		static QLabel* osLabel(QLabel* label, bool destroy = true)
+		{
+			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
+			if (QSettings().value("application/platformOsMenuPopup", experiment).toBool())
+				return _osLabel(label, destroy);
+			else
+				return label;
+		}
 		static QWidget* osPersistentEditor(QWidget* widget)
 		{
 			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
@@ -135,6 +146,7 @@ class _platform_macx
 		static QLineEdit* _osLineEdit(QLineEdit* input, bool destroy);
 		static QComboBox* _osComboBox(QComboBox* select);
 		static QTextEdit* _osTextEdit(QTextEdit* input, bool destroy);
+		static QLabel* _osLabel(QLabel* label, bool destroy);
 		static QWidget* _osPersistentEditor(QWidget* widget);
 };
 #endif /* _platform_macx_h */

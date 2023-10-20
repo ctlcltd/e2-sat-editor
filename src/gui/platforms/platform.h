@@ -18,6 +18,7 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QTextEdit>
+#include <QLabel>
 
 class _platform
 {
@@ -49,6 +50,10 @@ class _platform
 		static QTextEdit* osTextEdit(QTextEdit* input)
 		{
 			return input;
+		}
+		static QLabel* osLabel(QLabel* label)
+		{
+			return label;
 		}
 		static QWidget* osPersistentEditor(QWidget* widget)
 		{

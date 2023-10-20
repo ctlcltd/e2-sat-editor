@@ -1040,24 +1040,36 @@ void tab::infoFile()
 
 	auto flist = dbih->get_input();
 
+	QUrl qfpath = QUrl::fromLocalFile(QString::fromStdString(fpath));
+
 	QLabel* dtf0fn = new QLabel;
 	dtf0fn->setText(QString::fromStdString(fname));
 	dtf0fn->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	platform::osLabel(dtf0fn);
 	dtf0->addRow(QString(QApplication::layoutDirection() == Qt::RightToLeft ? ":%1" : "%1:").arg(tr("File name")), dtf0fn);
 
 	QLabel* dtf0fp = new QLabel;
-	dtf0fp->setText(QString::fromStdString(fpath));
-	dtf0fp->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	if (qfpath.isLocalFile())
+	{
+		dtf0fp->setText(QString("<a href=\"%1\">%2</a>").arg(qfpath.toString()).arg(QString::fromStdString(fpath)));
+#ifndef E2SE_DEMO
+		dtf0fp->setOpenExternalLinks(true);
+#endif
+	}
+	dtf0fp->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard | Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
+	platform::osLabel(dtf0fp);
 	dtf0->addRow(QString(QApplication::layoutDirection() == Qt::RightToLeft ? ":%1" : "%1:").arg(tr("File path")), dtf0fp);
 
 	QLabel* dtf0ff = new QLabel;
 	dtf0ff->setText(fformat);
 	dtf0ff->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	platform::osLabel(dtf0ff);
 	dtf0->addRow(QString(QApplication::layoutDirection() == Qt::RightToLeft ? ":%1" : "%1:").arg(tr("File format")), dtf0ff);
 
 	QLabel* dtf0fc = new QLabel;
 	dtf0fc->setText(fconvert);
 	dtf0fc->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	platform::osLabel(dtf0fc);
 	dtf0->addRow(QString(QApplication::layoutDirection() == Qt::RightToLeft ? ":%1" : "%1:").arg(tr("File convert")), dtf0fc);
 
 	QGroupBox* dtl1 = new QGroupBox(tr("Counters"));
@@ -1068,21 +1080,25 @@ void tab::infoFile()
 	QLabel* dtf1tv = new QLabel;
 	dtf1tv->setText(QString::number(int (dbih->index["chs:1"].size())));
 	dtf1tv->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	platform::osLabel(dtf1tv);
 	dtf1->addRow(QString(QApplication::layoutDirection() == Qt::RightToLeft ? ":%1" : "%1:").arg(tr("TV")), dtf1tv);
 
 	QLabel* dtf1rd = new QLabel;
 	dtf1rd->setText(QString::number(int (dbih->index["chs:2"].size())));
 	dtf1rd->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	platform::osLabel(dtf1rd);
 	dtf1->addRow(QString(QApplication::layoutDirection() == Qt::RightToLeft ? ":%1" : "%1:").arg(tr("Radio")), dtf1rd);
 
 	QLabel* dtf1dt = new QLabel;
 	dtf1dt->setText(QString::number(int (dbih->index["chs:0"].size())));
 	dtf1dt->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	platform::osLabel(dtf1dt);
 	dtf1->addRow(QString(QApplication::layoutDirection() == Qt::RightToLeft ? ":%1" : "%1:").arg(tr("Data")), dtf1dt);
 
 	QLabel* dtf1tt = new QLabel;
 	dtf1tt->setText(QString::number(int (dbih->index["chs"].size())));
 	dtf1tt->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	platform::osLabel(dtf1tt);
 	dtf1->addRow(QString(QApplication::layoutDirection() == Qt::RightToLeft ? ":%1" : "%1:").arg(tr("Total")), dtf1tt);
 
 	QGroupBox* dtl2 = new QGroupBox(tr("File Tree"));

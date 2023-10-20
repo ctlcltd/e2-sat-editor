@@ -329,6 +329,63 @@ QTextEdit* _platform_macx::_osTextEdit(QTextEdit* input, bool destroy)
 	return input;
 }
 
+QLabel* _platform_macx::_osLabel(QLabel* label, bool destroy)
+{
+	label->setContextMenuPolicy(Qt::CustomContextMenu);
+	label->connect(label, &QLabel::customContextMenuRequested, [=](QPoint pos) {
+		bool isLink = label->textInteractionFlags() & Qt::LinksAccessibleByMouse || label->textInteractionFlags() & Qt::LinksAccessibleByKeyboard;
+		QString linkToCopy;
+		if (isLink)
+		{
+			QRegularExpressionMatch match = QRegularExpression("<a[^>]+>([^<]+)</a>").match(label->text());
+			if (match.hasMatch())
+			{
+				linkToCopy = match.captured(1);
+			}
+		}
+
+		QMenu* menu = new QMenu;
+		{
+			QAction* action = menu->addAction(QCoreApplication::translate("QWidgetTextControl", "&Copy"));
+			action->setObjectName(QStringLiteral("edit-copy"));
+			action->setEnabled(label->hasSelectedText());
+			action->connect(action, &QAction::triggered, [=]() {
+				QClipboard* clipboard = QApplication::clipboard();
+				clipboard->setText(label->selectedText());
+			});
+		}
+		if (isLink)
+		{
+			QAction* action = menu->addAction(QCoreApplication::translate("QWidgetTextControl", "Copy &Link Location"));
+			action->setObjectName(QStringLiteral("edit-cut"));
+			action->connect(action, &QAction::triggered, [=]() {
+				QClipboard* clipboard = QApplication::clipboard();
+				clipboard->setText(linkToCopy);
+			});
+		}
+		menu->addSeparator();
+		{
+			QAction* action = menu->addAction(QCoreApplication::translate("QWidgetTextControl", "Select All"));
+			action->setObjectName(QStringLiteral("select-all"));
+			// Qt bug QLabel::setSelection rich text
+			action->setDisabled(label->text().isEmpty() || isLink);
+			action->connect(action, &QAction::triggered, [=]() {
+				label->setSelection(0, int (label->text().length()));
+			});
+		}
+		_osMenuPopup(menu, label, pos);
+
+		if (destroy)
+		{
+			// menu delete after QAction signal trigger
+			QTimer::singleShot(300, [=]() {
+				menu->deleteLater();
+			});
+		}
+	});
+	return label;
+}
+
 QWidget* _platform_macx::_osPersistentEditor(QWidget* widget)
 {
 	widget->installEventFilter(new _osPersistentEditorEventObserver);
