@@ -22,11 +22,11 @@ This project is free software. Each contribution must comply with the licensing 
 
 - Use only **standard C++** functions with well-defined behaviors, and maintain some compatibility with C++11. This is to maintain some backwards compatibility with other devices. Using C++17 is allowed, but do not abuse it. Keep in mind the cross-platform compatibility.
 
-- The only dependencies are **Qt** and **libcurl**. Do not use dependencies when not strictly necessary, use only standard C++ functions. For example, libboost will not become a dependency of this software.
+- The only dependencies are **Qt** and **libcurl4**. Do not use dependencies when not strictly necessary, use only standard C++ functions. For example, libboost will not become a dependency of this software.
 
 - Do not consider Qt strictly necessary but a useful thing, to not strictly bind to Qt and to make porting easier. Do not extend *gui* classes from classes derived from *QObject* and *QWidget*.
 
-- The C++ code in this project is written with indentation and **4-width tabs**. For output to other formats within the software, look at the already written code.
+- The C++ code in this project is written with indentation and **4-width tab**. For output to other formats within the software, look at the already written code.
 
 - Do not introduce in the code: unwanted behaviors, useless complexity, undefined behavior, return values or behaviors of functions that are different between platforms, memory leaks, conflicts, malfunctions.
 
@@ -36,18 +36,18 @@ This project is free software. Each contribution must comply with the licensing 
 
 - Remember to keep core components isolated from *gui*. These components have their counterpart for *gui* integration. For example, *e2se::e2db* and *e2se::ftpccom* have their counterparts *e2se_gui::e2db* and *e2se_gui::ftpcom* inside *gui*. These components will be usable as dependencies and also from the command line, they will not use the toolkit. Qt should absolutely not be used within core components.
 
-- Do not force things from the beginning into the basement. For example, it is a stretch to create a foundation class for everything when each derived class will have different behavior. Another example, *e2se_gui::printable* generates HTML 4.0 Strict for printing with Qt functions, HTML and CSS support is limited. However *e2se_e2db::e2db_converter* does not use Qt, it generates more current, generic and non-printable HTML and CSS.
+- Do not force things. For example, it is a stretch to create a foundation class for everything when each derived class will have different behavior. Another example, *e2se_gui::printable* generates HTML 4.0 Strict for printing with Qt functions, HTML and CSS support is limited. However *e2se_e2db::e2db_converter* does not use Qt, it generates more current, generic and non-printable HTML and CSS.
 
 - Do not create new files, new classes, new folders, when it is not strictly necessary. Keep the pre-existing folder structure intact.
 
-- It may seem superfluous. Submitted code must be your own, you must not steal code from other projects or snippets. And keep in mind performance.
+- It may seem superfluous. Submitted code must be your own, you must not steal code from other projects or snippets. And keep in mind intuitiveness, strenghtness, performance.
 
 Your contributions to this project will be signed, your GitHub username will be added to the contributors list, in the *e2 SAT Editor team*. If you prefer otherwise, let us know at the time of the Pull Request or at a later time.
 
 
 ### Roadmap
 
-This project has not reached the stable stage. For a roadmap refer to the TODO list in the [README.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/README.md). Things like: cli, translations, plug-in system, etc., are not defined yet. If you want to collaborate on these not yet defined things, we can discuss them in [Discussions](https://github.com/ctlcltd/e2-sat-editor/discussions).
+For a roadmap refer to the TODO list in the [README.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/README.md). We can discuss in [Discussions](https://github.com/ctlcltd/e2-sat-editor/discussions).
 
 
 ### Code of Conduct

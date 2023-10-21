@@ -356,9 +356,11 @@ void gui::menuBarLayout()
 	menuBarAction(mhelp, tr("About &Qt", "menu"), [=]() { this->mroot->aboutQt(); })->setMenuRole(QAction::NoRole);
 	menuBarSeparator(mhelp);
 	menuBarAction(mhelp, tr("Report a bug", "menu"), [=]() { this->linkToRepoIssues(); });
-	menuBarAction(mhelp, tr("Check for updates…", "menu"), [=]() { this->linkToRepoReleases(); });
+	menuBarAction(mhelp, tr("Help with translations", "menu"), [=]() { this->linkToTranslate(); });
 	menuBarAction(mhelp, tr("Go to e2SE repository…", "menu"), [=]() { this->linkToRepo(); });
+	menuBarAction(mhelp, tr("Donate", "menu"), [=]() { this->linkToDonate(); });
 	menuBarSeparator(mhelp);
+	menuBarAction(mhelp, tr("Check for updates…", "menu"), [=]() { this->linkToRepoReleases(); });
 	menuBarAction(mhelp, tr("&About e2 SAT Editor", "menu"), [=]() { this->aboutDialog(); })->setMenuRole(QAction::NoRole);
 
 	this->menu = menu;
@@ -1661,6 +1663,20 @@ void gui::linkToRepoReleases()
 	QDesktopServices::openUrl(QUrl("https://github.com/ctlcltd/e2-sat-editor/releases"));
 }
 
+void gui::linkToTranslate()
+{
+	debug("linkToTranslate");
+
+	QDesktopServices::openUrl(QUrl("https://e2sateditor.com/translate/"));
+}
+
+void gui::linkToDonate()
+{
+	debug("linkToDonate");
+
+	QDesktopServices::openUrl(QUrl("https://e2sateditor.com"));
+}
+
 int gui::getTabId(int index)
 {
 	int ttid = twid->tabBar()->tabData(index).toInt();
@@ -1843,8 +1859,8 @@ QString gui::getFileFormatName(int ver)
 	{
 		case 0x1224: return tr("Lamedb 2.4 [Enigma 2]");
 		case 0x1225: return tr("Lamedb 2.5 [Enigma 2]");
-		case 0x1223: return tr("Lamedb 2.3 [Enigma 2]");
-		case 0x1222: return tr("Lamedb 2.2 [Enigma 2]");
+		case 0x1223: return tr("Lamedb 2.3 [Enigma 1]");
+		case 0x1222: return tr("Lamedb 2.2 [Enigma 1]");
 		case 0x1014: return tr("Zapit api-v4 [Neutrino]");
 		case 0x1013: return tr("Zapit api-v3 [Neutrino]");
 		case 0x1012: return tr("Zapit api-v2 [Neutrino]");

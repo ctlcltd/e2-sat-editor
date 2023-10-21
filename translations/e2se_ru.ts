@@ -1546,6 +1546,53 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>status-bar</comment>
         <translation>Позиция</translation>
     </message>
+    <message>
+        <source>File Information</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Help with translations</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Donate</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lamedb 2.4 [Enigma 2]</source>
+        <translation type="unfinished">Lamedb 2.4 [Enigma 2]</translation>
+    </message>
+    <message>
+        <source>Lamedb 2.5 [Enigma 2]</source>
+        <translation type="unfinished">Lamedb 2.5 [Enigma 2]</translation>
+    </message>
+    <message>
+        <source>Lamedb 2.3 [Enigma 1]</source>
+        <translation type="unfinished">Lamedb 2.3 [Enigma 1]</translation>
+    </message>
+    <message>
+        <source>Lamedb 2.2 [Enigma 1]</source>
+        <translation type="unfinished">Lamedb 2.2 [Enigma 1]</translation>
+    </message>
+    <message>
+        <source>Zapit api-v4 [Neutrino]</source>
+        <translation type="unfinished">Zapit api-v4 [Neutrino]</translation>
+    </message>
+    <message>
+        <source>Zapit api-v3 [Neutrino]</source>
+        <translation type="unfinished">Zapit api-v3 [Neutrino]</translation>
+    </message>
+    <message>
+        <source>Zapit api-v2 [Neutrino]</source>
+        <translation type="unfinished">Zapit api-v2 [Neutrino]</translation>
+    </message>
+    <message>
+        <source>Zapit api-v1 [Neutrino]</source>
+        <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2497,6 +2544,18 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>Profile</source>
         <translation>Профиль</translation>
     </message>
+    <message>
+        <source>Commands</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom webif reload URL address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom telnet reload command</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>tab</name>
@@ -2758,6 +2817,82 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
         <translation>В целях отладки.%1Задайте абсолютный путь application.seeds на вкладке Настройки &gt; Дополнительно, затем перезапустите программу.%2Исходные начальные значения доступны по адресу:%3.</translation>
+    </message>
+    <message>
+        <source>File Information</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File convert</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Counters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TV</source>
+        <translation type="unfinished">ТВ</translation>
+    </message>
+    <message>
+        <source>Radio</source>
+        <translation type="unfinished">Радио</translation>
+    </message>
+    <message>
+        <source>Data</source>
+        <translation type="unfinished">Данные</translation>
+    </message>
+    <message>
+        <source>Total</source>
+        <translation type="unfinished">Итоги</translation>
+    </message>
+    <message>
+        <source>File Tree</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation type="unfinished">Имя файла</translation>
+    </message>
+    <message>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>local</source>
+        <comment>file</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>remote</source>
+        <comment>file</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>blob</source>
+        <comment>file</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
