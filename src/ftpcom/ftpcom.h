@@ -30,7 +30,7 @@ class ftpcom : protected e2se::log_factory
 {
 	public:
 
-		static const bool VERBOSE = false;
+		static const bool VERBOSE = true;
 		static const int FTP_CONNECT_TIMEOUT = 10;
 		static const int HTTP_TIMEOUT = 60;
 		static const int MAX_RESUME_ATTEMPTS = 5;
