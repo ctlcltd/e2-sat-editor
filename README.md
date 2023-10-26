@@ -53,6 +53,15 @@ There are a few important things you should know to better contribute to this pr
 Please read the [contribution guidelines](https://github.com/ctlcltd/e2-sat-editor/blob/main/CONTRIBUTING.md).
 
 
+## Translation
+
+The software is available in 33 languages: Arabic, Bulgarian, Catalan, Czech, Danish, German, Spanish, Persian, Finnish, French, Gaelic, Galician, Hebrew, Croatian, Hungarian, Italian, Japanese, Korean, Lithuanian, Latvian, Dutch, Norwegian Nynorsk, Polish, Portuguese (Brazil), Portuguese (Portugal), Russian, Slovak, Slovenian, Swedish, Turkish, Ukrainian, Chinese (China), Chinese (Taiwan).
+
+To contribute there is **Translations** app *\[beta\]* on the website: https://e2sateditor.com/translate/
+
+Same languages as `qt-base`, new languages could be added using the website app.
+
+
 ## Development
 
 - Before start, you need to install build tools and Qt: https://www.qt.io/download
