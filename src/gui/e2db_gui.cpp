@@ -14,7 +14,9 @@
 #include <clocale>
 #include <cmath>
 #include <string>
+#include <sstream>
 #include <unordered_set>
+#include <stdexcept>
 
 #include <QRegularExpression>
 #include <QSettings>
@@ -22,7 +24,7 @@
 
 #include "e2db_gui.h"
 
-using std::string, std::unordered_set, std::to_string;
+using std::string, std::unordered_set, std::stringstream, std::to_string;
 
 namespace e2se_gui
 {
@@ -71,7 +73,7 @@ void e2db::setup()
 	e2db::PARSER_PARENTALLOCK_LIST = settings.value("engine/parserParentalLock", true).toBool();
 	e2db::MAKER_PARENTALLOCK_LIST = settings.value("engine/makerParentalLock", true).toBool();
 
-	int profile_sel = settings.value("profile/selected").toInt();
+	int profile_sel = settings.value("profile/selected", 0).toInt();
 	settings.beginReadArray("profile");
 	settings.setArrayIndex(profile_sel);
 	e2db::MAKER_TPATH = settings.value("pathTransponders").toString().toStdString();
@@ -450,15 +452,19 @@ void e2db::exportFile(int bit, vector<string> paths)
 		export_file(paths);
 }
 
-void e2db::importBlob(unordered_map<string, e2db_file> files)
+void e2db::importBlob(unordered_map<string, e2db_file> files, bool threading)
 {
 	debug("importBlob");
+
+	this->threading = threading;
 
 	bool merge = this->get_input().size() != 0 ? true : false;
 	import_blob(files);
 
 	cache(merge);
 	fixBouquets();
+
+	this->threading = ! threading;
 }
 
 QStringList e2db::entryTransponder(transponder tx)
@@ -702,7 +708,20 @@ string e2db::msg(string str, string param)
 void e2db::error(string fn, string optk, string optv)
 {
 	this->::e2se_e2db::e2db::error(fn, tr(optk.data(), "error").toStdString(), optv);
-	QMessageBox::critical(nullptr, tr(optk.data(), "error"), QString(optv.data()));
+	if (this->threading)
+		throw std::runtime_error(optk + '\t' + optv + '\t' + fn);
+	else
+		QMessageBox::critical(nullptr, tr(optk.data(), "error"), QString(optv.data()));
+}
+
+void e2db::showError(string str)
+{
+	stringstream ss (str);
+	string optk, optv, fn;
+	std::getline(ss, optk, '\t');
+	std::getline(ss, optv, '\t');
+	std::getline(ss, fn, '\t');
+	QMessageBox::critical(nullptr, tr(optk.data(), "error"), tr(optv.data(), "error"));
 }
 
 }

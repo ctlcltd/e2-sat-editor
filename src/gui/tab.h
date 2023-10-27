@@ -138,6 +138,7 @@ class tab : protected e2se::log_factory
 		void ftpStbConnectErrorNotify();
 		void ftpStbDisconnectSuccessNotify();
 		void ftpStbDisconnectErrorNotify();
+		void ftpGenericError(string context);
 		void loadSeeds();
 
 		static QToolBar* toolBar(int type);

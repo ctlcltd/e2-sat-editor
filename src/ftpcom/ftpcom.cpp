@@ -52,14 +52,13 @@ void ftpcom::setParameters(ftp_params params)
 		error("setParameters", "FTP Error", msg("Missing \"%s\" parameter.", "FTP port"));
 	if (! params.htport)
 		error("setParameters", "FTP Error", msg("Missing \"%s\" parameter.", "HTTP port"));
-	if (params.actv)
-		this->actv = true;
 
 	this->host = params.host;
 	this->ftport = params.ftport;
 	this->htport = params.htport;
 	this->user = params.user;
 	this->pass = params.pass;
+	this->actv = params.actv;
 
 	if (params.tpath.empty())
 		error("setParameters", "FTP Error", msg("Missing \"%s\" path parameter.", "Transponders"));

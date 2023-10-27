@@ -10,6 +10,8 @@
  */
 
 #include <cstdio>
+#include <sstream>
+#include <stdexcept>
 
 #include <QSettings>
 #include <QString>
@@ -17,6 +19,8 @@
 #include <QMessageBox>
 
 #include "ftpcom_gui.h"
+
+using std::string, std::stringstream;
 
 namespace e2se_gui
 {
@@ -41,7 +45,14 @@ void ftpcom::setup()
 
 	QSettings settings;
 
-	int profile_sel = settings.value("profile/selected").toInt();
+	settings.beginReadArray("ftpcom");
+	ftpcom::VERBOSE = settings.value("debug", false).toBool();
+	ftpcom::FTP_CONNECT_TIMEOUT = settings.value("ftpConnectTimeout", 10).toInt();
+	ftpcom::HTTP_TIMEOUT = settings.value("httpTimeout", 60).toInt();
+	ftpcom::MAX_RESUME_ATTEMPTS = settings.value("maxResumeAttempts", 5).toInt();
+	settings.endArray();
+
+	int profile_sel = settings.value("profile/selected", 0).toInt();
 	settings.beginReadArray("profile");
 	settings.setArrayIndex(profile_sel);
 	ftpcom::ftp_params params;
@@ -87,6 +98,16 @@ string ftpcom::msg(string str)
 void ftpcom::error(string fn, string optk, string optv)
 {
 	this->::e2se_ftpcom::ftpcom::error(fn, tr(optk.data(), "error").toStdString(), tr(optv.data()).toStdString());
+	throw std::runtime_error(optk + '\t' + optv + '\t' + fn);
+}
+
+void ftpcom::showError(string str)
+{
+	stringstream ss (str);
+	string optk, optv, fn;
+	std::getline(ss, optk, '\t');
+	std::getline(ss, optv, '\t');
+	std::getline(ss, fn, '\t');
 	QMessageBox::critical(nullptr, tr(optk.data(), "error"), tr(optv.data(), "error"));
 }
 

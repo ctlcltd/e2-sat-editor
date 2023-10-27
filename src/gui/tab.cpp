@@ -1695,6 +1695,9 @@ void tab::ftpUpload()
 	auto* ftih = this->ftph->ftih;
 	auto* dbih = this->data->dbih;
 
+	this->files.clear();
+	this->ftp_files.clear();
+
 	this->files = dbih->get_output();
 
 	if (this->files.empty())
@@ -1704,7 +1707,7 @@ void tab::ftpUpload()
 	{
 		string filename = x.first;
 		string basedir;
-		string path;
+		string fpath;
 
 		if (filename.find(".tv") != string::npos || filename.find(".radio") != string::npos)
 			basedir = baseb;
@@ -1717,7 +1720,7 @@ void tab::ftpUpload()
 		if (basedir.size() && basedir[basedir.size() - 1] != '/')
 			basedir.append("/");
 
-		path = basedir + filename;
+		fpath = basedir + filename;
 
 		e2se_ftpcom::ftpcom::ftpcom_file file;
 		file.path = basedir + x.second.filename;
@@ -1725,13 +1728,13 @@ void tab::ftpUpload()
 		file.mime = x.second.mime;
 		file.data = x.second.data;
 		file.size = x.second.size;
-		ftp_files.emplace(path, file);
+		this->ftp_files.emplace(fpath, file);
 
 		debug("ftpUpload", "file path", file.path);
 		debug("ftpUpload", "file size", to_string(file.size));
 	}
 
-	files.clear();
+	this->files.clear();
 
 	{
 		QThread* thread = QThread::create([=]() {
@@ -1746,16 +1749,29 @@ void tab::ftpUpload()
 
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbUploadNotify(filename); }, Qt::QueuedConnection);
 
-				ftih->upload_data(basedir, filename, x.second);
+				try {
+					ftih->upload_data(basedir, filename, x.second);
+				} catch (std::runtime_error& err) {
+					this->ftp_files.clear();
+					QMetaObject::invokeMethod(this->cwid, [=]() { ftih->showError(err.what()); }, Qt::QueuedConnection);
+					return;
+				} catch (...) {
+					this->ftp_files.clear();
+					QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpGenericError("FTP Error"); }, Qt::QueuedConnection);
+					return;
+				}
 			}
 		});
 		thread->connect(thread, &QThread::finished, [=]() {
-			this->ftp_files.clear();
+			if (this->ftp_files.empty())
+				return;
 
-			int files_count = int (ftp_files.size());
+			int files_count = int (this->ftp_files.size());
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbUploadNotify(files_count); }, Qt::QueuedConnection);
 
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpReloadStb(); }, Qt::QueuedConnection);
+
+			this->ftp_files.clear();
 		});
 		thread->start();
 		thread->quit();
@@ -1791,10 +1807,20 @@ void tab::ftpDownload()
 	auto* ftih = this->ftph->ftih;
 	auto* dbih = this->data->dbih;
 
+	this->files.clear();
+	this->ftp_files.clear();
+
 	{
 		QThread* thread = QThread::create([=]() {
-			//TODO improve
-			ftih->fetch_paths();
+			try {
+				ftih->fetch_paths();
+			} catch (std::runtime_error& err) {
+				QMetaObject::invokeMethod(this->cwid, [=]() { ftih->showError(err.what()); }, Qt::QueuedConnection);
+				return;
+			} catch (...) {
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpGenericError("FTP Error"); }, Qt::QueuedConnection);
+				return;
+			}
 
 			for (string & w : ftih->ftdb)
 			{
@@ -1806,12 +1832,25 @@ void tab::ftpDownload()
 
 				e2se_ftpcom::ftpcom::ftpcom_file file;
 
-				ftih->download_data(basedir, filename, file);
+				try {
+					ftih->download_data(basedir, filename, file);
+				} catch (std::runtime_error& err) {
+					this->ftp_files.clear();
+					QMetaObject::invokeMethod(this->cwid, [=]() { ftih->showError(err.what()); }, Qt::QueuedConnection);
+					return;
+				} catch (...) {
+					this->ftp_files.clear();
+					QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpGenericError("FTP Error"); }, Qt::QueuedConnection);
+					return;
+				}
 
 				this->ftp_files[filename] = file;
 			}
 		});
 		thread->connect(thread, &QThread::finished, [=]() {
+			if (this->ftp_files.empty())
+				return;
+
 			for (auto & x : this->ftp_files)
 			{
 				e2db::e2db_file file;
@@ -1836,10 +1875,23 @@ void tab::ftpDownload()
 			if (this->files.empty())
 				return;
 
-			QMetaObject::invokeMethod(this->cwid, [=]() { updateIndex(); }, Qt::QueuedConnection);
+			//TODO TEST
+			// QMetaObject::invokeMethod(this->cwid, [=]() { updateIndex(); }, Qt::QueuedConnection);
 
-			dbih->importBlob(this->files);
+			try {
+				dbih->importBlob(this->files, true);
+			} catch(std::runtime_error& err) {
+				this->files.clear();
+				QMetaObject::invokeMethod(this->cwid, [=]() { dbih->showError(err.what()); }, Qt::QueuedConnection);
+				return;
+			} catch (...) {
+				this->files.clear();
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpGenericError("File Error"); }, Qt::QueuedConnection);
+				return;
+			}
 
+			//TODO potential SEGFAULT
+			// QMessageBox and main thread
 			QMetaObject::invokeMethod(this->cwid, [=]() {
 				view->reset();
 				view->load();
@@ -1867,10 +1919,19 @@ void tab::ftpReloadStb()
 	auto* ftih = this->ftph->ftih;
 
 	QThread* thread = QThread::create([=]() {
-		if (ftih->cmd_ifreload() || ftih->cmd_tnreload())
-			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadSuccessNotify(); }, Qt::QueuedConnection);
-		else
-			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadErrorNotify(); }, Qt::QueuedConnection);
+		try
+		{
+			if (ftih->cmd_ifreload() || ftih->cmd_tnreload())
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadSuccessNotify(); }, Qt::QueuedConnection);
+			else
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadErrorNotify(); }, Qt::QueuedConnection);
+		} catch (std::runtime_error& err) {
+			QMetaObject::invokeMethod(this->cwid, [=]() { ftih->showError(err.what()); }, Qt::QueuedConnection);
+			return;
+		} catch (...) {
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpGenericError("FTP Error"); }, Qt::QueuedConnection);
+			return;
+		}
 	});
 	thread->connect(thread, &QThread::started, [=]() {
 		QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadingNotify(); }, Qt::QueuedConnection);
@@ -1981,6 +2042,11 @@ void tab::ftpStbReloadErrorNotify()
 	error("ftpStbReloadErrorNotify", tr("FTP Error", "error").toStdString(), tr("Cannot reload STB \"%1\".", "error").arg(hostname.data()).toStdString());
 
 	errorMessage(tr("FTP Error", "error"), tr("Cannot reload STB!", "error"));
+}
+
+void tab::ftpGenericError(string context)
+{
+	errorMessage(tr(context.data(), "error"), tr("Error", "error"));
 }
 
 void tab::updateIndex()

@@ -74,7 +74,7 @@ class e2db : public ::e2se_e2db::e2db
 		bool write(string path);
 		void importFile(vector<string> paths);
 		void exportFile(int flags, vector<string> paths);
-		void importBlob(unordered_map<string, e2db_file> files);
+		void importBlob(unordered_map<string, e2db_file> files, bool threading = false);
 		QStringList entryTransponder(transponder tx);
 		QStringList entryTransponder(transponder tx, bool extended);
 		QStringList entryService(service ch);
@@ -82,6 +82,7 @@ class e2db : public ::e2se_e2db::e2db
 		QStringList entryTunersetsTable(tunersets_table tn);
 		QStringList entryTunersetsTransponder(tunersets_transponder tntxp, tunersets_table tn);
 		static QString fixUnicodeChars(string str);
+		void showError(string str);
 
 	protected:
 		e2db* newptr() override { return new e2se_gui::e2db; }
@@ -91,6 +92,7 @@ class e2db : public ::e2se_e2db::e2db
 		string msg(string str, string param) override;
 
 		void error(string msg, string optk, string optv) override;
+		bool threading = false;
 };
 }
 #endif /* e2db_gui_h */

@@ -612,6 +612,13 @@ void gui::initSettings()
 	settings.setValue("customTelnetReloadCmd", ""); 
 	settings.endArray();
 	settings.setValue("profile/selected", 0);
+
+	settings.beginWriteArray("ftpcom");
+	settings.setValue("debug", false);
+	settings.setValue("ftpConnectTimeout", 10);
+	settings.setValue("httpTimeout", 60);
+	settings.setValue("maxResumeAttempts", 5);
+	settings.endArray();
 }
 
 void gui::updateSettings()
@@ -648,6 +655,13 @@ void gui::updateSettings()
 			settings.setValue("preference/piconsBackup", true);
 			settings.setValue("preference/piconsUseRefid", true);
 			settings.setValue("preference/piconsUseChname", false);
+		}
+		if (version < 1.0)
+		{
+			settings.setValue("ftpcom/debug", false);
+			settings.setValue("ftpcom/ftpConnectTimeout", 10);
+			settings.setValue("ftpcom/httpTimeout", 60);
+			settings.setValue("ftpcom/maxResumeAttempts", 5);
 		}
 	}
 }
