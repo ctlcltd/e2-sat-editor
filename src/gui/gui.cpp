@@ -353,14 +353,18 @@ void gui::menuBarLayout()
 
 	//: Platform: Help menu
 	QMenu* mhelp = menuBarMenu(menu, tr("&Help", "menu"));
+	menuBarAction(mhelp, tr("Quick start", "menu"), [=]() { this->linkToOnlineHelp(1); });
+	menuBarAction(mhelp, tr("Online help", "menu"), [=]() { this->linkToOnlineHelp(0); });
+	menuBarAction(mhelp, tr("Troubleshooting", "menu"), [=]() { this->linkToOnlineHelp(2); });
+	menuBarSeparator(mhelp);
 	menuBarAction(mhelp, tr("About &Qt", "menu"), [=]() { this->mroot->aboutQt(); })->setMenuRole(QAction::NoRole);
 	menuBarSeparator(mhelp);
-	menuBarAction(mhelp, tr("Report a bug", "menu"), [=]() { this->linkToRepoIssues(); });
-	menuBarAction(mhelp, tr("Help with translations", "menu"), [=]() { this->linkToTranslate(); });
-	menuBarAction(mhelp, tr("Go to e2SE repository…", "menu"), [=]() { this->linkToRepo(); });
-	menuBarAction(mhelp, tr("Donate", "menu"), [=]() { this->linkToDonate(); });
+	menuBarAction(mhelp, tr("Report a bug", "menu"), [=]() { this->linkToRepository(2); });
+	menuBarAction(mhelp, tr("Help with translations", "menu"), [=]() { this->linkToWebsite(2); });
+	menuBarAction(mhelp, tr("Go to e2SE repository…", "menu"), [=]() { this->linkToRepository(0); });
+	menuBarAction(mhelp, tr("Donate", "menu"), [=]() { this->linkToWebsite(1); });
 	menuBarSeparator(mhelp);
-	menuBarAction(mhelp, tr("Check for updates…", "menu"), [=]() { this->linkToRepoReleases(); });
+	menuBarAction(mhelp, tr("Check for updates…", "menu"), [=]() { this->linkToRepository(1); });
 	menuBarAction(mhelp, tr("&About e2 SAT Editor", "menu"), [=]() { this->aboutDialog(); })->setMenuRole(QAction::NoRole);
 
 	this->menu = menu;
@@ -1656,39 +1660,49 @@ void gui::aboutDialog()
 	dialog->display();
 }
 
-void gui::linkToRepo()
+void gui::linkToRepository(int page)
 {
-	debug("linkToRepo");
+	debug("linkToRepository", "page", page);
 
-	QDesktopServices::openUrl(QUrl("https://github.com/ctlcltd/e2-sat-editor"));
+	QString url = "https://github.com/ctlcltd/e2-sat-editor";
+
+	switch (page)
+	{
+		case 1: url.append("/releases"); break;
+		case 2: url.append("/issues/new/choose"); break;
+	}
+
+	QDesktopServices::openUrl(QUrl(url));
 }
 
-void gui::linkToRepoIssues()
+void gui::linkToWebsite(int page)
 {
-	debug("linkToRepoIssues");
+	debug("linkToWebsite", "page", page);
 
-	QDesktopServices::openUrl(QUrl("https://github.com/ctlcltd/e2-sat-editor/issues/new/choose"));
+	QString url = "https://e2sateditor.com";
+
+	switch (page)
+	{
+		// case 1: url.append("/donate/"); break;
+		case 2: url.append("/translate/"); break;
+	}
+
+	QDesktopServices::openUrl(QUrl(url));
 }
 
-void gui::linkToRepoReleases()
+void gui::linkToOnlineHelp(int page)
 {
-	debug("linkToRepoReleases");
+	debug("linkToOnlineHelp", "page", page);
 
-	QDesktopServices::openUrl(QUrl("https://github.com/ctlcltd/e2-sat-editor/releases"));
-}
+	QString url = "https://e2sateditor.com/help/";
 
-void gui::linkToTranslate()
-{
-	debug("linkToTranslate");
+	switch (page)
+	{
+		case 1: url.append("quick-start.html"); break;
+		case 2: url.append("troubleshooting.html"); break;
+	}
 
-	QDesktopServices::openUrl(QUrl("https://e2sateditor.com/translate/"));
-}
-
-void gui::linkToDonate()
-{
-	debug("linkToDonate");
-
-	QDesktopServices::openUrl(QUrl("https://e2sateditor.com"));
+	QDesktopServices::openUrl(QUrl(url));
 }
 
 int gui::getTabId(int index)

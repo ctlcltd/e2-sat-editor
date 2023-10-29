@@ -288,11 +288,9 @@ class gui : protected e2se::log_factory
 		void windowMinimize();
 		void settingsDialog();
 		void aboutDialog();
-		void linkToRepo();
-		void linkToRepoIssues();
-		void linkToRepoReleases();
-		void linkToTranslate();
-		void linkToDonate();
+		void linkToRepository(int page = 0);
+		void linkToWebsite(int page = 0);
+		void linkToOnlineHelp(int page = 0);
 		bool getFlag(GUI_CXE bit);
 		void setFlag(GUI_CXE bit, bool flag);
 		bitset<256> getFlags();
