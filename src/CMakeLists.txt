@@ -58,6 +58,7 @@ set(SOURCES
 	gui/ftpcom_gui.cpp
 	gui/ftpHandler.cpp
 	gui/gui.cpp
+	gui/l10n.h
 	gui/mainView.cpp
 	gui/piconsView.cpp
 	gui/printable.cpp

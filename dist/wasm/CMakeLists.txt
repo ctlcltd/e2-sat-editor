@@ -46,6 +46,7 @@ set(SOURCES
 	gui/editUserbouquet.cpp
 	gui/ftpHandler.cpp
 	gui/gui.cpp
+	gui/l10n.h
 	gui/mainView.cpp
 	gui/piconsView.cpp
 	gui/printable.cpp

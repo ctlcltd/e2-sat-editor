@@ -39,6 +39,7 @@
 #include "toolkit/ThemeChangeEventObserver.h"
 #include "settings.h"
 #include "theme.h"
+#include "l10n.h"
 
 using std::to_string;
 
@@ -434,41 +435,41 @@ void settings::preferencesLayout()
 	dtf1ln->setProperty("field", "language");
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf1ln);
 	dtf1ln->addItem(tr("Default (system language)"), "");
+	dtf1ln->addItem(languageName(Language::English), languageCode(Language::English));
 #ifndef E2SE_DEMO
-	dtf1ln->addItem(QLocale::languageToString(QLocale::English), "en");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Arabic), "ar");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Bulgarian), "bg");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Catalan), "ca");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Czech), "cs");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Danish), "da");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::German), "de");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Spanish), "es");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Persian), "fa");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Finnish), "fi");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::French), "fr");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Gaelic), "gd");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Galician), "gl");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Hebrew), "he");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Croatian), "hr");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Hungarian), "hu");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Italian), "it");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Japanese), "ja");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Korean), "ko");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Lithuanian), "lt");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Latvian), "lv");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Dutch), "nl");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::NorwegianNynorsk), "nn");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Polish), "pl");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Portuguese).append(" (%1)").arg(QLocale::countryToString(QLocale::Brazil)), "pt_BR");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Portuguese).append(" (%1)").arg(QLocale::countryToString(QLocale::Portugal)), "pt_PT");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Russian), "ru");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Slovak), "sk");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Slovenian), "sl");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Swedish), "sv");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Turkish), "tr");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Ukrainian), "uk");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Chinese).append(" (%1)").arg(QLocale::countryToString(QLocale::China)), "zh_CN");
-	dtf1ln->addItem(QLocale::languageToString(QLocale::Chinese).append(" (%1)").arg(QLocale::countryToString(QLocale::Taiwan)), "zh_TW");
+	dtf1ln->addItem(languageName(Language::Arabic), languageCode(Language::Arabic));
+	dtf1ln->addItem(languageName(Language::Bulgarian), languageCode(Language::Bulgarian));
+	dtf1ln->addItem(languageName(Language::Catalan), languageCode(Language::Catalan));
+	dtf1ln->addItem(languageName(Language::Czech), languageCode(Language::Czech));
+	dtf1ln->addItem(languageName(Language::Danish), languageCode(Language::Danish));
+	dtf1ln->addItem(languageName(Language::German), languageCode(Language::German));
+	dtf1ln->addItem(languageName(Language::Spanish), languageCode(Language::Spanish));
+	dtf1ln->addItem(languageName(Language::Persian), languageCode(Language::Persian));
+	dtf1ln->addItem(languageName(Language::Finnish), languageCode(Language::Finnish));
+	dtf1ln->addItem(languageName(Language::French), languageCode(Language::French));
+	dtf1ln->addItem(languageName(Language::Gaelic), languageCode(Language::Gaelic));
+	dtf1ln->addItem(languageName(Language::Galician), languageCode(Language::Galician));
+	dtf1ln->addItem(languageName(Language::Hebrew), languageCode(Language::Hebrew));
+	dtf1ln->addItem(languageName(Language::Croatian), languageCode(Language::Croatian));
+	dtf1ln->addItem(languageName(Language::Hungarian), languageCode(Language::Hungarian));
+	dtf1ln->addItem(languageName(Language::Italian), languageCode(Language::Italian));
+	dtf1ln->addItem(languageName(Language::Japanese), languageCode(Language::Japanese));
+	dtf1ln->addItem(languageName(Language::Korean), languageCode(Language::Korean));
+	dtf1ln->addItem(languageName(Language::Lithuanian), languageCode(Language::Lithuanian));
+	dtf1ln->addItem(languageName(Language::Latvian), languageCode(Language::Latvian));
+	dtf1ln->addItem(languageName(Language::Dutch), languageCode(Language::Dutch));
+	dtf1ln->addItem(languageName(Language::NorwegianNynorsk), languageCode(Language::NorwegianNynorsk));
+	dtf1ln->addItem(languageName(Language::Polish), languageCode(Language::Polish));
+	dtf1ln->addItem(languageName(Language::Portuguese_Brazil), languageCode(Language::Portuguese_Brazil));
+	dtf1ln->addItem(languageName(Language::Portuguese_Portugal), languageCode(Language::Portuguese_Portugal));
+	dtf1ln->addItem(languageName(Language::Russian), languageCode(Language::Russian));
+	dtf1ln->addItem(languageName(Language::Slovak), languageCode(Language::Slovak));
+	dtf1ln->addItem(languageName(Language::Slovenian), languageCode(Language::Slovenian));
+	dtf1ln->addItem(languageName(Language::Swedish), languageCode(Language::Swedish));
+	dtf1ln->addItem(languageName(Language::Turkish), languageCode(Language::Turkish));
+	dtf1ln->addItem(languageName(Language::Ukrainian), languageCode(Language::Ukrainian));
+	dtf1ln->addItem(languageName(Language::Chinese_China), languageCode(Language::Chinese_China));
+	dtf1ln->addItem(languageName(Language::Chinese_Taiwan), languageCode(Language::Chinese_Taiwan));
 #endif
 	platform::osComboBox(dtf1ln);
 	dtf1->addRow(dtf1ln);
