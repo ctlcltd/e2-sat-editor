@@ -113,16 +113,12 @@ QString languageName(Language language)
 	{
 		case Language::Portuguese_Portugal:
 			return QLocale::languageToString(QLocale::Portuguese).append(" (%1)").arg(stateName(QLocale::Portugal));
-		break;
 		case Language::Portuguese_Brazil:
 			return QLocale::languageToString(QLocale::Portuguese).append(" (%1)").arg(stateName(QLocale::Brazil));
-		break;
 		case Language::Chinese_China:
 			return QLocale::languageToString(QLocale::Chinese).append(" (%1)").arg(stateName(QLocale::China));
-		break;
 		case Language::Chinese_Taiwan:
 			return QLocale::languageToString(QLocale::Chinese).append(" (%1)").arg(stateName(QLocale::Taiwan));
-		break;
 		default:
 			return QLocale::languageToString(static_cast<QLocale::Language>(language));
 	}
@@ -132,40 +128,40 @@ QString languageCode(Language language)
 {
 	switch (language)
 	{
-		case Language::English: return "en"; break;
-		case Language::Arabic: return "ar"; break;
-		case Language::Bulgarian: return "bg"; break;
-		case Language::Catalan: return "ca"; break;
-		case Language::Czech: return "cs"; break;
-		case Language::Danish: return "da"; break;
-		case Language::German: return "de"; break;
-		case Language::Spanish: return "es"; break;
-		case Language::Persian: return "fa"; break;
-		case Language::Finnish: return "fi"; break;
-		case Language::French: return "fr"; break;
-		case Language::Gaelic: return "gd"; break;
-		case Language::Galician: return "gl"; break;
-		case Language::Hebrew: return "he"; break;
-		case Language::Croatian: return "hr"; break;
-		case Language::Hungarian: return "hu"; break;
-		case Language::Italian: return "it"; break;
-		case Language::Japanese: return "ja"; break;
-		case Language::Korean: return "ko"; break;
-		case Language::Lithuanian: return "lt"; break;
-		case Language::Latvian: return "lv"; break;
-		case Language::Dutch: return "nl"; break;
-		case Language::NorwegianNynorsk: return "nn"; break;
-		case Language::Polish: return "pl"; break;
-		case Language::Portuguese_Portugal: return "pt_BR"; break;
-		case Language::Portuguese_Brazil: return "pt_PT"; break;
-		case Language::Russian: return "ru"; break;
-		case Language::Slovak: return "sk"; break;
-		case Language::Slovenian: return "sl"; break;
-		case Language::Swedish: return "sv"; break;
-		case Language::Turkish: return "tr"; break;
-		case Language::Ukrainian: return "uk"; break;
-		case Language::Chinese_China: return "zh_CN"; break;
-		case Language::Chinese_Taiwan: return "zh_TW"; break;
+		case Language::English: return "en";
+		case Language::Arabic: return "ar";
+		case Language::Bulgarian: return "bg";
+		case Language::Catalan: return "ca";
+		case Language::Czech: return "cs";
+		case Language::Danish: return "da";
+		case Language::German: return "de";
+		case Language::Spanish: return "es";
+		case Language::Persian: return "fa";
+		case Language::Finnish: return "fi";
+		case Language::French: return "fr";
+		case Language::Gaelic: return "gd";
+		case Language::Galician: return "gl";
+		case Language::Hebrew: return "he";
+		case Language::Croatian: return "hr";
+		case Language::Hungarian: return "hu";
+		case Language::Italian: return "it";
+		case Language::Japanese: return "ja";
+		case Language::Korean: return "ko";
+		case Language::Lithuanian: return "lt";
+		case Language::Latvian: return "lv";
+		case Language::Dutch: return "nl";
+		case Language::NorwegianNynorsk: return "nn";
+		case Language::Polish: return "pl";
+		case Language::Portuguese_Portugal: return "pt_BR";
+		case Language::Portuguese_Brazil: return "pt_PT";
+		case Language::Russian: return "ru";
+		case Language::Slovak: return "sk";
+		case Language::Slovenian: return "sl";
+		case Language::Swedish: return "sv";
+		case Language::Turkish: return "tr";
+		case Language::Ukrainian: return "uk";
+		case Language::Chinese_China: return "zh_CN";
+		case Language::Chinese_Taiwan: return "zh_TW";
 		default: return "";
 	}
 };
