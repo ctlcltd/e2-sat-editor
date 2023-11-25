@@ -357,6 +357,7 @@ void gui::menuBarLayout()
 	menuBarAction(mhelp, tr("Online help", "menu"), [=]() { this->linkToOnlineHelp(0); });
 	menuBarAction(mhelp, tr("Troubleshooting", "menu"), [=]() { this->linkToOnlineHelp(2); });
 	menuBarSeparator(mhelp);
+	menuBarAction(mhelp, tr("Software licenses…", "menu"), [=]() { this->linkToWebsite(3); });
 	menuBarAction(mhelp, tr("About &Qt", "menu"), [=]() { this->mroot->aboutQt(); })->setMenuRole(QAction::NoRole);
 	menuBarSeparator(mhelp);
 	menuBarAction(mhelp, tr("Report a bug", "menu"), [=]() { this->linkToRepository(2); });
@@ -1688,8 +1689,9 @@ void gui::linkToWebsite(int page)
 
 	switch (page)
 	{
-		// case 1: url.append("/donate/"); break;
+		case 1: url.append("/donate/"); break;
 		case 2: url.append("/translate/"); break;
+		case 3: url.append("/licenses/"); break;
 	}
 
 	QDesktopServices::openUrl(QUrl(url));

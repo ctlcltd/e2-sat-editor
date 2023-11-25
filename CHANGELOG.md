@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 
 - File Information dialog
 - Bugfix
+- Online Help
 
 
 ## [v0.9.0]
