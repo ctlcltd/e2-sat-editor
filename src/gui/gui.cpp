@@ -490,10 +490,15 @@ void gui::statusBarLayout()
 	theme->dynamicStyleSheet(sbwid, "QStatusBar { background: transparent }");
 #endif
 
+	//TODO FIX QStatusBar layout expanding
+	sbwid->layout()->setSpacing(0);
+
 	sbwidl->setAlignment(Qt::AlignVCenter);
 	sbwidr->setAlignment(Qt::AlignVCenter);
 	sbwidl->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
-	sbwidr->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
+	sbwidc->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
+	sbwidr->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored);
+	sbwidi->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored);
 
 	sbwidi->setFlat(true);
 	sbwidi->setIcon(theme->dynamicIcon("file-info", sbwidi));
@@ -947,13 +952,14 @@ void gui::closeAllTabs()
 	launcher();
 }
 
-
+//TODO FIX sometimes fails to restore previous menu items visibility
 void gui::windowChanged()
 {
 	// debug("windowChanged");
 
+#ifndef Q_OS_WASM
 	// main window busy
-	if (mroot->activeWindow())
+	if (mroot->activeWindow() || mroot->activeModalWidget() || mroot->activePopupWidget())
 	{
 		debug("windowChanged", "mwind", "busy");
 		this->gxe = this->gex;
@@ -963,14 +969,13 @@ void gui::windowChanged()
 	else
 	{
 		debug("windowChanged", "mwind", "idle");
-#ifndef Q_OS_WASM
-		//TODO FIX sometimes fails to restore previous menu items visibility
-#if E2SE_BUILD == E2SE_TARGET_DEBUG
 		this->gex = this->gxe;
 		setFlags(GUI_CXE::idle);
-#endif
-#endif
 	}
+#else
+	this->gxe = this->gex;
+	updateMenu();
+#endif
 
 	QSettings().setValue("geometry", mwid->saveGeometry());
 }
@@ -1456,21 +1461,21 @@ void gui::setStatusBar(status msg)
 	}
 }
 
-void gui::resetStatusBar()
+void gui::resetStatusBar(bool message)
 {
 	debug("resetStatusBar");
 
-	if (sbwid->currentMessage().isEmpty())
-	{
-		sbwidl->setText("");
-		sbwidr->setText("");
-	}
-	else
+	if (message)
 	{
 		sbwid->clearMessage();
 		sbwid->addWidget(sbwidl, 0);
 		sbwid->addWidget(sbwidc, 1);
 		sbwid->addWidget(sbwidr, 0);
+	}
+	else
+	{
+		sbwidl->setText("");
+		sbwidr->setText("");
 	}
 }
 

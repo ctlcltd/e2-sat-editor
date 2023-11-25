@@ -241,6 +241,7 @@ void viewAbstract::treeSearchShow()
 	debug("treeSearchShow");
 
 	tree_search->show();
+	tsr_search.input->setFocus();
 }
 
 void viewAbstract::treeSearchHide()
@@ -248,6 +249,7 @@ void viewAbstract::treeSearchHide()
 	debug("treeSearchHide");
 
 	tree_search->hide();
+	widget->setFocus();
 }
 
 void viewAbstract::treeSearchToggle()
@@ -279,6 +281,7 @@ void viewAbstract::listSearchShow()
 
 	list_search->show();
 	this->lsr_find.timer.start();
+	lsr_search.input->setFocus();
 }
 
 void viewAbstract::listSearchHide()
@@ -288,6 +291,7 @@ void viewAbstract::listSearchHide()
 	list_search->hide();
 	if (! this->lsr_find.highlight)
 		listFindClear();
+	widget->setFocus();
 }
 
 void viewAbstract::listSearchToggle()

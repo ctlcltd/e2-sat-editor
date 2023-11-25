@@ -276,7 +276,7 @@ class gui : protected e2se::log_factory
 		void statusBarHide();
 		void statusBarToggle();
 		void setStatusBar(status msg);
-		void resetStatusBar();
+		void resetStatusBar(bool message = false);
 		void fileOpen();
 		void fileSave();
 		void fileSaveAs();

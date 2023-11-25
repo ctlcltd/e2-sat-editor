@@ -79,7 +79,7 @@ class tab : protected e2se::log_factory
 		bool statusBarIsVisible();
 		bool statusBarIsHidden();
 		void setStatusBar(gui::status msg);
-		void resetStatusBar();
+		void resetStatusBar(bool messsage = false);
 		void viewMain();
 		void viewTransponders(tab* parent);
 		void viewTunersets(tab* parent, int ytype);
