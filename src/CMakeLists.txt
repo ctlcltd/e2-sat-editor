@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(e2-sat-editor VERSION 0.9 LANGUAGES CXX)
+project(e2-sat-editor VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -90,7 +90,7 @@ set(app_icon_resource_windows "../dist/windows/e2-sat-editor.rc")
 list(APPEND SOURCES ${app_icon_resource_windows})
 
 set(MACOSX_BUNDLE_BUNDLE_NAME "e2 SAT Editor")
-set(MACOSX_BUNDLE_BUNDLE_VERSION 0.9)
+set(MACOSX_BUNDLE_BUNDLE_VERSION 1.0)
 set(MACOSX_BUNDLE_ICON_FILE e2-sat-editor.icns)
 
 set(app_icon_macos "../dist/macos/e2-sat-editor.icns")
