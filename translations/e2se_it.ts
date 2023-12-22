@@ -26,7 +26,7 @@
     <name>QFileDialog</name>
     <message>
         <source>&amp;Save</source>
-        <translation type="unfinished">&amp;Salva</translation>
+        <translation>&amp;Salva</translation>
     </message>
 </context>
 <context>
@@ -118,7 +118,7 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished">Crittaggio</translation>
+        <translation>Crittaggio</translation>
     </message>
     <message>
         <source>A-Z</source>
@@ -600,23 +600,23 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     </message>
     <message>
         <source>Do not update</source>
-        <translation type="unfinished">Non aggiornare</translation>
+        <translation>Non aggiornare</translation>
     </message>
     <message>
         <source>Hide in service list</source>
-        <translation type="unfinished">Nascondi nella lista servizi</translation>
+        <translation>Nascondi nella lista servizi</translation>
     </message>
     <message>
         <source>Use edited PIDs instead</source>
-        <translation type="unfinished">Utilizza PID modificato</translation>
+        <translation>Utilizza PID modificato</translation>
     </message>
     <message>
         <source>Hold service name</source>
-        <translation type="unfinished">Blocca il nome del servizio</translation>
+        <translation>Blocca il nome del servizio</translation>
     </message>
     <message>
         <source>Flag as new service</source>
-        <translation type="unfinished">Segna come nuovo servizio</translation>
+        <translation>Segna come nuovo servizio</translation>
     </message>
     <message>
         <source>Flags</source>
@@ -1083,7 +1083,7 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
         <source>Save &amp;As…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished">Salva con nome…</translation>
+        <translation>Salva con nome…</translation>
     </message>
     <message>
         <source>Import</source>
@@ -1098,23 +1098,23 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>Close Tab</source>
         <comment>menu</comment>
-        <translation type="unfinished">Chiudi tab</translation>
+        <translation>Chiudi tab</translation>
     </message>
     <message>
         <source>Close All Tabs</source>
         <comment>menu</comment>
-        <translation type="unfinished">Chiudi tutte le tab</translation>
+        <translation>Chiudi tutte le tab</translation>
     </message>
     <message>
         <source>&amp;Print…</source>
         <comment>menu</comment>
         <extracomment>Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished">Stampa…</translation>
+        <translation>Stampa…</translation>
     </message>
     <message>
         <source>Print &amp;All</source>
         <comment>menu</comment>
-        <translation type="unfinished">Stampa tutto</translation>
+        <translation>Stampa tutto</translation>
     </message>
     <message>
         <source>Preferences…</source>
@@ -1348,17 +1348,17 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>&amp;Minimize</source>
         <comment>menu</comment>
-        <translation type="unfinished">&amp;Minimizza</translation>
+        <translation>&amp;Minimizza</translation>
     </message>
     <message>
         <source>Hide &amp;Status Bar</source>
         <comment>menu</comment>
-        <translation type="unfinished">Nascondi la barra di &amp;stato</translation>
+        <translation>Nascondi la barra di &amp;stato</translation>
     </message>
     <message>
         <source>New &amp;Tab</source>
         <comment>menu</comment>
-        <translation type="unfinished">Nuova &amp;Tab</translation>
+        <translation>Nuova &amp;Tab</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -1394,7 +1394,7 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>New &amp;Tab</source>
         <comment>tab</comment>
-        <translation type="unfinished">Nuova &amp;Tab</translation>
+        <translation>Nuova &amp;Tab</translation>
     </message>
     <message>
         <source>&amp;Find Channel</source>
@@ -1473,35 +1473,35 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>CSV File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished">File CSV</translation>
+        <translation>File CSV</translation>
     </message>
     <message>
         <source>All Files</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished">Tutti i file</translation>
+        <translation>Tutti i file</translation>
     </message>
     <message>
         <source>Import</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished">Importa</translation>
+        <translation>Importa</translation>
     </message>
     <message>
         <source>HTML File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished">File HTML</translation>
+        <translation>File HTML</translation>
     </message>
     <message>
         <source>Export</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished">Esporta</translation>
+        <translation>Esporta</translation>
     </message>
     <message>
         <source>Hide &amp;Status Bar</source>
-        <translation type="unfinished">Nascondi la barra di &amp;stato</translation>
+        <translation>Nascondi la barra di &amp;stato</translation>
     </message>
     <message>
         <source>Show &amp;Status Bar</source>
-        <translation type="unfinished">Mostra la barra di &amp;stato</translation>
+        <translation>Mostra la barra di &amp;stato</translation>
     </message>
     <message>
         <source>Channels</source>
@@ -1546,17 +1546,17 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>File Information</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Informazioni file</translation>
     </message>
     <message>
         <source>Help with translations</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Aiuto traduzioni</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Donazione</translation>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
@@ -1589,6 +1589,26 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
         <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+    </message>
+    <message>
+        <source>Quick start</source>
+        <comment>menu</comment>
+        <translation>Guida rapida</translation>
+    </message>
+    <message>
+        <source>Online help</source>
+        <comment>menu</comment>
+        <translation>Guida in linea</translation>
+    </message>
+    <message>
+        <source>Troubleshooting</source>
+        <comment>menu</comment>
+        <translation>Risoluzione dei problemi</translation>
+    </message>
+    <message>
+        <source>Software licenses…</source>
+        <comment>menu</comment>
+        <translation>Licenze software…</translation>
     </message>
 </context>
 <context>
@@ -2040,17 +2060,17 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Errore File</translation>
+        <translation>Errore File</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Errore di lettura da file &quot;%1&quot;.</translation>
+        <translation>Errore di lettura da file &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Errore di scrittura su file &quot;%1&quot;.</translation>
+        <translation>Errore di scrittura su file &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Delete images</source>
@@ -2816,78 +2836,83 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>File Information</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Informazioni file</translation>
     </message>
     <message>
         <source>File Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Info file</translation>
     </message>
     <message>
         <source>File name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome file</translation>
     </message>
     <message>
         <source>File path</source>
-        <translation type="unfinished"></translation>
+        <translation>Percorso file</translation>
     </message>
     <message>
         <source>File format</source>
-        <translation type="unfinished"></translation>
+        <translation>Formato file</translation>
     </message>
     <message>
         <source>File convert</source>
-        <translation type="unfinished"></translation>
+        <translation>Conversione file</translation>
     </message>
     <message>
         <source>Counters</source>
-        <translation type="unfinished"></translation>
+        <translation>Contatori</translation>
     </message>
     <message>
         <source>TV</source>
-        <translation type="unfinished">TV</translation>
+        <translation>TV</translation>
     </message>
     <message>
         <source>Radio</source>
-        <translation type="unfinished">Radio</translation>
+        <translation>Radio</translation>
     </message>
     <message>
         <source>Data</source>
-        <translation type="unfinished">Data</translation>
+        <translation>Data</translation>
     </message>
     <message>
         <source>Total</source>
-        <translation type="unfinished">Totali</translation>
+        <translation>Totali</translation>
     </message>
     <message>
         <source>File Tree</source>
-        <translation type="unfinished"></translation>
+        <translation>Albero</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished">Nome file</translation>
+        <translation>Nome file</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensioni</translation>
     </message>
     <message>
         <source>Origin</source>
-        <translation type="unfinished"></translation>
+        <translation>Origine</translation>
     </message>
     <message>
         <source>local</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>locale</translation>
     </message>
     <message>
         <source>remote</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>remoto</translation>
     </message>
     <message>
         <source>blob</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>blob</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <comment>error</comment>
+        <translation>Errore</translation>
     </message>
 </context>
 <context>

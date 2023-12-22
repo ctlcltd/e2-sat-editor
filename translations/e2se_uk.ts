@@ -1548,17 +1548,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>File Information</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Інформація файл</translation>
     </message>
     <message>
         <source>Help with translations</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Допомога перекладами</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Пожертвування</translation>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
@@ -1591,6 +1591,26 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
         <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+    </message>
+    <message>
+        <source>Quick start</source>
+        <comment>menu</comment>
+        <translation>Швидкий початок</translation>
+    </message>
+    <message>
+        <source>Online help</source>
+        <comment>menu</comment>
+        <translation>Онлайн довідка</translation>
+    </message>
+    <message>
+        <source>Troubleshooting</source>
+        <comment>menu</comment>
+        <translation>Вирішення проблем</translation>
+    </message>
+    <message>
+        <source>Software licenses…</source>
+        <comment>menu</comment>
+        <translation>Ліцензії на пз…</translation>
     </message>
 </context>
 <context>
@@ -2545,15 +2565,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Commands</source>
-        <translation type="unfinished"></translation>
+        <translation>Команди</translation>
     </message>
     <message>
         <source>Custom webif reload URL address</source>
-        <translation type="unfinished"></translation>
+        <translation>Спеціальна URL адреса перезавантаження webif</translation>
     </message>
     <message>
         <source>Custom telnet reload command</source>
-        <translation type="unfinished"></translation>
+        <translation>Спеціальна команда перезавантаження telnet</translation>
     </message>
 </context>
 <context>
@@ -2820,78 +2840,83 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>File Information</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Інформація файл</translation>
     </message>
     <message>
         <source>File Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Інформ файлу</translation>
     </message>
     <message>
         <source>File name</source>
-        <translation type="unfinished"></translation>
+        <translation>Назва файлу</translation>
     </message>
     <message>
         <source>File path</source>
-        <translation type="unfinished"></translation>
+        <translation>Шлях файлу</translation>
     </message>
     <message>
         <source>File format</source>
-        <translation type="unfinished"></translation>
+        <translation>Формат файлу</translation>
     </message>
     <message>
         <source>File convert</source>
-        <translation type="unfinished"></translation>
+        <translation>Конвертація файлу</translation>
     </message>
     <message>
         <source>Counters</source>
-        <translation type="unfinished"></translation>
+        <translation>Лічильники</translation>
     </message>
     <message>
         <source>TV</source>
-        <translation type="unfinished">ТБ</translation>
+        <translation>ТБ</translation>
     </message>
     <message>
         <source>Radio</source>
-        <translation type="unfinished">Радіо</translation>
+        <translation>Радіо</translation>
     </message>
     <message>
         <source>Data</source>
-        <translation type="unfinished">Дані</translation>
+        <translation>Дані</translation>
     </message>
     <message>
         <source>Total</source>
-        <translation type="unfinished">Підсумки</translation>
+        <translation>Підсумки</translation>
     </message>
     <message>
         <source>File Tree</source>
-        <translation type="unfinished"></translation>
+        <translation>Дерево</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished">Назва файлу</translation>
+        <translation>Назва файлу</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Розмір</translation>
     </message>
     <message>
         <source>Origin</source>
-        <translation type="unfinished"></translation>
+        <translation>Походження</translation>
     </message>
     <message>
         <source>local</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>локальний</translation>
     </message>
     <message>
         <source>remote</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>дистанційний</translation>
     </message>
     <message>
         <source>blob</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>blob</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <comment>error</comment>
+        <translation>Помилка</translation>
     </message>
 </context>
 <context>

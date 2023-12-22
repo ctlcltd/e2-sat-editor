@@ -1547,17 +1547,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>File Information</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイル情報</translation>
     </message>
     <message>
         <source>Help with translations</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>翻訳の手伝い</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>寄付</translation>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
@@ -1590,6 +1590,26 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
         <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+    </message>
+    <message>
+        <source>Quick start</source>
+        <comment>menu</comment>
+        <translation>クイックスタート</translation>
+    </message>
+    <message>
+        <source>Online help</source>
+        <comment>menu</comment>
+        <translation>オンラインヘルプ</translation>
+    </message>
+    <message>
+        <source>Troubleshooting</source>
+        <comment>menu</comment>
+        <translation>トラブルシューティング</translation>
+    </message>
+    <message>
+        <source>Software licenses…</source>
+        <comment>menu</comment>
+        <translation>ソフトウェアライセンス…</translation>
     </message>
 </context>
 <context>
@@ -2544,15 +2564,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Commands</source>
-        <translation type="unfinished"></translation>
+        <translation>コマンド</translation>
     </message>
     <message>
         <source>Custom webif reload URL address</source>
-        <translation type="unfinished"></translation>
+        <translation>カスタム webif リロード URL アドレス</translation>
     </message>
     <message>
         <source>Custom telnet reload command</source>
-        <translation type="unfinished"></translation>
+        <translation>カスタム telnet リロード コマンド</translation>
     </message>
 </context>
 <context>
@@ -2815,78 +2835,83 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>File Information</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイル情報</translation>
     </message>
     <message>
         <source>File Info</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル情報</translation>
     </message>
     <message>
         <source>File name</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル名</translation>
     </message>
     <message>
         <source>File path</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイルパス</translation>
     </message>
     <message>
         <source>File format</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル形式</translation>
     </message>
     <message>
         <source>File convert</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル変換</translation>
     </message>
     <message>
         <source>Counters</source>
-        <translation type="unfinished"></translation>
+        <translation>カウンタ</translation>
     </message>
     <message>
         <source>TV</source>
-        <translation type="unfinished">テレビ</translation>
+        <translation>テレビ</translation>
     </message>
     <message>
         <source>Radio</source>
-        <translation type="unfinished">無線</translation>
+        <translation>無線</translation>
     </message>
     <message>
         <source>Data</source>
-        <translation type="unfinished">データ</translation>
+        <translation>データ</translation>
     </message>
     <message>
         <source>Total</source>
-        <translation type="unfinished">合計</translation>
+        <translation>合計</translation>
     </message>
     <message>
         <source>File Tree</source>
-        <translation type="unfinished"></translation>
+        <translation>ツリ</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished">ファイル名</translation>
+        <translation>ファイル名</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>サイズ</translation>
     </message>
     <message>
         <source>Origin</source>
-        <translation type="unfinished"></translation>
+        <translation>の生成元</translation>
     </message>
     <message>
         <source>local</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>ロカル</translation>
     </message>
     <message>
         <source>remote</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>リモト</translation>
     </message>
     <message>
         <source>blob</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>BLOB</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <comment>error</comment>
+        <translation>エラー</translation>
     </message>
 </context>
 <context>

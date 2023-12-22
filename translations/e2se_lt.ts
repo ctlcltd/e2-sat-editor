@@ -1545,17 +1545,17 @@ NAUDOJIMO AR SU KITAIS SU JAIS PROGRAMINĖ ĮRANGA.</translation>
     <message>
         <source>File Information</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Failo informacija</translation>
     </message>
     <message>
         <source>Help with translations</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pagalba vertimais</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Paaukoti</translation>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
@@ -1588,6 +1588,26 @@ NAUDOJIMO AR SU KITAIS SU JAIS PROGRAMINĖ ĮRANGA.</translation>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
         <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+    </message>
+    <message>
+        <source>Quick start</source>
+        <comment>menu</comment>
+        <translation>Greita pradžia</translation>
+    </message>
+    <message>
+        <source>Online help</source>
+        <comment>menu</comment>
+        <translation>Pagalba internete</translation>
+    </message>
+    <message>
+        <source>Troubleshooting</source>
+        <comment>menu</comment>
+        <translation>Problemų sprendimas</translation>
+    </message>
+    <message>
+        <source>Software licenses…</source>
+        <comment>menu</comment>
+        <translation>Programinės įrangos licencijos…</translation>
     </message>
 </context>
 <context>
@@ -2542,15 +2562,15 @@ NAUDOJIMO AR SU KITAIS SU JAIS PROGRAMINĖ ĮRANGA.</translation>
     </message>
     <message>
         <source>Commands</source>
-        <translation type="unfinished"></translation>
+        <translation>Komandos</translation>
     </message>
     <message>
         <source>Custom webif reload URL address</source>
-        <translation type="unfinished"></translation>
+        <translation>Pasirinktinis webif perkrovimo URL adresas</translation>
     </message>
     <message>
         <source>Custom telnet reload command</source>
-        <translation type="unfinished"></translation>
+        <translation>Pasirinktinė telnet perkrovimo komanda</translation>
     </message>
 </context>
 <context>
@@ -2817,78 +2837,83 @@ NAUDOJIMO AR SU KITAIS SU JAIS PROGRAMINĖ ĮRANGA.</translation>
     <message>
         <source>File Information</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Failo informacija</translation>
     </message>
     <message>
         <source>File Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Failo inform</translation>
     </message>
     <message>
         <source>File name</source>
-        <translation type="unfinished"></translation>
+        <translation>Failo pavadinimas</translation>
     </message>
     <message>
         <source>File path</source>
-        <translation type="unfinished"></translation>
+        <translation>Failo kelias</translation>
     </message>
     <message>
         <source>File format</source>
-        <translation type="unfinished"></translation>
+        <translation>Failo formatas</translation>
     </message>
     <message>
         <source>File convert</source>
-        <translation type="unfinished"></translation>
+        <translation>Failo konvert</translation>
     </message>
     <message>
         <source>Counters</source>
-        <translation type="unfinished"></translation>
+        <translation>Skaitikliai</translation>
     </message>
     <message>
         <source>TV</source>
-        <translation type="unfinished">TV</translation>
+        <translation>TV</translation>
     </message>
     <message>
         <source>Radio</source>
-        <translation type="unfinished">Radio</translation>
+        <translation>Radio</translation>
     </message>
     <message>
         <source>Data</source>
-        <translation type="unfinished">Data</translation>
+        <translation>Data</translation>
     </message>
     <message>
         <source>Total</source>
-        <translation type="unfinished">Sumos</translation>
+        <translation>Sumos</translation>
     </message>
     <message>
         <source>File Tree</source>
-        <translation type="unfinished"></translation>
+        <translation>Medis</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished">Failo pavadinimas</translation>
+        <translation>Failo pavadinimas</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Dydis</translation>
     </message>
     <message>
         <source>Origin</source>
-        <translation type="unfinished"></translation>
+        <translation>Kilmė</translation>
     </message>
     <message>
         <source>local</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>vietinis</translation>
     </message>
     <message>
         <source>remote</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>nuotolinis</translation>
     </message>
     <message>
         <source>blob</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>blob</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <comment>error</comment>
+        <translation>Klaida</translation>
     </message>
 </context>
 <context>

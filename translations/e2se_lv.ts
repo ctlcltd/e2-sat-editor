@@ -1545,17 +1545,17 @@ VAI LIETOŠANA VAI CITI DARĪJUMI AR PROGRAMMATŪRU.</translation>
     <message>
         <source>File Information</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Faila informācija</translation>
     </message>
     <message>
         <source>Help with translations</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Palīdzība tulkojumiem</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ziedot</translation>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
@@ -1588,6 +1588,26 @@ VAI LIETOŠANA VAI CITI DARĪJUMI AR PROGRAMMATŪRU.</translation>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
         <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+    </message>
+    <message>
+        <source>Quick start</source>
+        <comment>menu</comment>
+        <translation>Ātrs sākums</translation>
+    </message>
+    <message>
+        <source>Online help</source>
+        <comment>menu</comment>
+        <translation>Tiešsaistes palīdzība</translation>
+    </message>
+    <message>
+        <source>Troubleshooting</source>
+        <comment>menu</comment>
+        <translation>Problēmu novēršana</translation>
+    </message>
+    <message>
+        <source>Software licenses…</source>
+        <comment>menu</comment>
+        <translation>Programmatūras licences…</translation>
     </message>
 </context>
 <context>
@@ -2542,15 +2562,15 @@ VAI LIETOŠANA VAI CITI DARĪJUMI AR PROGRAMMATŪRU.</translation>
     </message>
     <message>
         <source>Commands</source>
-        <translation type="unfinished"></translation>
+        <translation>Komandas</translation>
     </message>
     <message>
         <source>Custom webif reload URL address</source>
-        <translation type="unfinished"></translation>
+        <translation>Pielāgota webif atkārtotas ielādes URL adrese</translation>
     </message>
     <message>
         <source>Custom telnet reload command</source>
-        <translation type="unfinished"></translation>
+        <translation>Pielāgota telnet pārlādēšanas komanda</translation>
     </message>
 </context>
 <context>
@@ -2817,78 +2837,83 @@ VAI LIETOŠANA VAI CITI DARĪJUMI AR PROGRAMMATŪRU.</translation>
     <message>
         <source>File Information</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Faila informācija</translation>
     </message>
     <message>
         <source>File Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Faila inform</translation>
     </message>
     <message>
         <source>File name</source>
-        <translation type="unfinished"></translation>
+        <translation>Faila nosaukums</translation>
     </message>
     <message>
         <source>File path</source>
-        <translation type="unfinished"></translation>
+        <translation>Faila ceļš</translation>
     </message>
     <message>
         <source>File format</source>
-        <translation type="unfinished"></translation>
+        <translation>Faila formāts</translation>
     </message>
     <message>
         <source>File convert</source>
-        <translation type="unfinished"></translation>
+        <translation>Faila konvert</translation>
     </message>
     <message>
         <source>Counters</source>
-        <translation type="unfinished"></translation>
+        <translation>Skaitītāji</translation>
     </message>
     <message>
         <source>TV</source>
-        <translation type="unfinished">TV</translation>
+        <translation>TV</translation>
     </message>
     <message>
         <source>Radio</source>
-        <translation type="unfinished">Radio</translation>
+        <translation>Radio</translation>
     </message>
     <message>
         <source>Data</source>
-        <translation type="unfinished">Data</translation>
+        <translation>Data</translation>
     </message>
     <message>
         <source>Total</source>
-        <translation type="unfinished">Kopā</translation>
+        <translation>Kopā</translation>
     </message>
     <message>
         <source>File Tree</source>
-        <translation type="unfinished"></translation>
+        <translation>Koks</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished">Faila nosaukums</translation>
+        <translation>Faila nosaukums</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Lielums</translation>
     </message>
     <message>
         <source>Origin</source>
-        <translation type="unfinished"></translation>
+        <translation>Izcelsme</translation>
     </message>
     <message>
         <source>local</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>lokālais</translation>
     </message>
     <message>
         <source>remote</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>attālais</translation>
     </message>
     <message>
         <source>blob</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>blob</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <comment>error</comment>
+        <translation>Kļūda</translation>
     </message>
 </context>
 <context>

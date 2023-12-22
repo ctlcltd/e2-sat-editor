@@ -1375,12 +1375,12 @@ OU O USO OU OUTROS TRATOS DO SOFTWARE.</translation>
     <message>
         <source>Check for updates…</source>
         <comment>menu</comment>
-        <translation>Comproba se hai actualizacións...</translation>
+        <translation>Comproba se hai actualizacións…</translation>
     </message>
     <message>
         <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>Ir ao repositorio e2SE...</translation>
+        <translation>Ir ao repositorio e2SE…</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>
@@ -1547,17 +1547,17 @@ OU O USO OU OUTROS TRATOS DO SOFTWARE.</translation>
     <message>
         <source>File Information</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Información do ficheiro</translation>
     </message>
     <message>
         <source>Help with translations</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Axuda traducións</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Doa</translation>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
@@ -1590,6 +1590,26 @@ OU O USO OU OUTROS TRATOS DO SOFTWARE.</translation>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
         <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+    </message>
+    <message>
+        <source>Quick start</source>
+        <comment>menu</comment>
+        <translation>Inicio rápido</translation>
+    </message>
+    <message>
+        <source>Online help</source>
+        <comment>menu</comment>
+        <translation>Axuda en liña</translation>
+    </message>
+    <message>
+        <source>Troubleshooting</source>
+        <comment>menu</comment>
+        <translation>Solución de problemas</translation>
+    </message>
+    <message>
+        <source>Software licenses…</source>
+        <comment>menu</comment>
+        <translation>Licenzas de software…</translation>
     </message>
 </context>
 <context>
@@ -2544,15 +2564,15 @@ OU O USO OU OUTROS TRATOS DO SOFTWARE.</translation>
     </message>
     <message>
         <source>Commands</source>
-        <translation type="unfinished"></translation>
+        <translation>Comandos</translation>
     </message>
     <message>
         <source>Custom webif reload URL address</source>
-        <translation type="unfinished"></translation>
+        <translation>Enderezo URL personalizado de recarga webif</translation>
     </message>
     <message>
         <source>Custom telnet reload command</source>
-        <translation type="unfinished"></translation>
+        <translation>Comando de recarga telnet personalizado</translation>
     </message>
 </context>
 <context>
@@ -2817,78 +2837,83 @@ OU O USO OU OUTROS TRATOS DO SOFTWARE.</translation>
     <message>
         <source>File Information</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Información do ficheiro</translation>
     </message>
     <message>
         <source>File Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Info ficheiro</translation>
     </message>
     <message>
         <source>File name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome ficheiro</translation>
     </message>
     <message>
         <source>File path</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruta ficheiro</translation>
     </message>
     <message>
         <source>File format</source>
-        <translation type="unfinished"></translation>
+        <translation>Formato ficheiro</translation>
     </message>
     <message>
         <source>File convert</source>
-        <translation type="unfinished"></translation>
+        <translation>Converter ficheiro</translation>
     </message>
     <message>
         <source>Counters</source>
-        <translation type="unfinished"></translation>
+        <translation>Contadores</translation>
     </message>
     <message>
         <source>TV</source>
-        <translation type="unfinished">TV</translation>
+        <translation>TV</translation>
     </message>
     <message>
         <source>Radio</source>
-        <translation type="unfinished">Radio</translation>
+        <translation>Radio</translation>
     </message>
     <message>
         <source>Data</source>
-        <translation type="unfinished">Data</translation>
+        <translation>Data</translation>
     </message>
     <message>
         <source>Total</source>
-        <translation type="unfinished">Totais</translation>
+        <translation>Totais</translation>
     </message>
     <message>
         <source>File Tree</source>
-        <translation type="unfinished"></translation>
+        <translation>Arbore</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished">Nome arquivo</translation>
+        <translation>Nome arquivo</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamaño</translation>
     </message>
     <message>
         <source>Origin</source>
-        <translation type="unfinished"></translation>
+        <translation>Orixe</translation>
     </message>
     <message>
         <source>local</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>local</translation>
     </message>
     <message>
         <source>remote</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>remoto</translation>
     </message>
     <message>
         <source>blob</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>blob</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <comment>error</comment>
+        <translation>Erro</translation>
     </message>
 </context>
 <context>

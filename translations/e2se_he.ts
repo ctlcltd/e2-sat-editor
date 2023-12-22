@@ -1378,7 +1378,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>עבור אל מאגר e2SE...</translation>
+        <translation>עבור אל מאגר e2SE…</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>
@@ -1545,17 +1545,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>File Information</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>מידע על הקובץ</translation>
     </message>
     <message>
         <source>Help with translations</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>עזרה בתרגומים</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>לִתְרוֹם</translation>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
@@ -1588,6 +1588,26 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
         <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+    </message>
+    <message>
+        <source>Quick start</source>
+        <comment>menu</comment>
+        <translation>התחלה מהירה</translation>
+    </message>
+    <message>
+        <source>Online help</source>
+        <comment>menu</comment>
+        <translation>עזרה אינטרנטית</translation>
+    </message>
+    <message>
+        <source>Troubleshooting</source>
+        <comment>menu</comment>
+        <translation>פתרון תקלות</translation>
+    </message>
+    <message>
+        <source>Software licenses…</source>
+        <comment>menu</comment>
+        <translation>רישיונות תוכנה…</translation>
     </message>
 </context>
 <context>
@@ -2542,15 +2562,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Commands</source>
-        <translation type="unfinished"></translation>
+        <translation>פקודות</translation>
     </message>
     <message>
         <source>Custom webif reload URL address</source>
-        <translation type="unfinished"></translation>
+        <translation>כתובת URL מותאמת אישית לטעינה מחדש</translation>
     </message>
     <message>
         <source>Custom telnet reload command</source>
-        <translation type="unfinished"></translation>
+        <translation>פקודת טעינה מחדש של telnet מותאמת אישית</translation>
     </message>
 </context>
 <context>
@@ -2815,78 +2835,83 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>File Information</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>מידע על הקובץ</translation>
     </message>
     <message>
         <source>File Info</source>
-        <translation type="unfinished"></translation>
+        <translation>קובץ מידע</translation>
     </message>
     <message>
         <source>File name</source>
-        <translation type="unfinished"></translation>
+        <translation>שם קובץ</translation>
     </message>
     <message>
         <source>File path</source>
-        <translation type="unfinished"></translation>
+        <translation>נתיב הקובץ</translation>
     </message>
     <message>
         <source>File format</source>
-        <translation type="unfinished"></translation>
+        <translation>פורמט קובץ</translation>
     </message>
     <message>
         <source>File convert</source>
-        <translation type="unfinished"></translation>
+        <translation>המרת קובץ</translation>
     </message>
     <message>
         <source>Counters</source>
-        <translation type="unfinished"></translation>
+        <translation>מונים</translation>
     </message>
     <message>
         <source>TV</source>
-        <translation type="unfinished">טֵלֶוִיזִיָה</translation>
+        <translation>טֵלֶוִיזִיָה</translation>
     </message>
     <message>
         <source>Radio</source>
-        <translation type="unfinished">רָדִיוֹ</translation>
+        <translation>רָדִיוֹ</translation>
     </message>
     <message>
         <source>Data</source>
-        <translation type="unfinished">נתונים</translation>
+        <translation>נתונים</translation>
     </message>
     <message>
         <source>Total</source>
-        <translation type="unfinished">סיכומים</translation>
+        <translation>סיכומים</translation>
     </message>
     <message>
         <source>File Tree</source>
-        <translation type="unfinished"></translation>
+        <translation>עץ</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished">שם קובץ</translation>
+        <translation>שם קובץ</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>גודל</translation>
     </message>
     <message>
         <source>Origin</source>
-        <translation type="unfinished"></translation>
+        <translation>מקור</translation>
     </message>
     <message>
         <source>local</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>local</translation>
     </message>
     <message>
         <source>remote</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>remote</translation>
     </message>
     <message>
         <source>blob</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>blob</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <comment>error</comment>
+        <translation>שְׁגִיאָה</translation>
     </message>
 </context>
 <context>

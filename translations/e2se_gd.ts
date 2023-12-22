@@ -33,7 +33,7 @@
     <name>about</name>
     <message>
         <source>About e2 SAT Editor</source>
-        <translation>Mu dheidhinn deasaiche e2 SAT</translation>
+        <translation>Mu dheidhinn e2 SAT Editor</translation>
     </message>
     <message>
         <source>Version %1</source>
@@ -1385,7 +1385,7 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     <message>
         <source>&amp;About e2 SAT Editor</source>
         <comment>menu</comment>
-        <translation>Mu dheidhinn deasaiche e2 SAT</translation>
+        <translation>Mu dheidhinn e2 SAT Editor</translation>
     </message>
     <message>
         <source>New &amp;Tab</source>
@@ -1547,17 +1547,17 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     <message>
         <source>File Information</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Fiosrachadh Faidhle</translation>
     </message>
     <message>
         <source>Help with translations</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cuideachadh theangachaidhean</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tabhartas</translation>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
@@ -1590,6 +1590,26 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
         <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+    </message>
+    <message>
+        <source>Quick start</source>
+        <comment>menu</comment>
+        <translation>Tòiseachadh Luath</translation>
+    </message>
+    <message>
+        <source>Online help</source>
+        <comment>menu</comment>
+        <translation>Taic Air-loidhne</translation>
+    </message>
+    <message>
+        <source>Troubleshooting</source>
+        <comment>menu</comment>
+        <translation>Fuasgladh thrioblaidean</translation>
+    </message>
+    <message>
+        <source>Software licenses…</source>
+        <comment>menu</comment>
+        <translation>Ceadan bathar-bog…</translation>
     </message>
 </context>
 <context>
@@ -2544,15 +2564,15 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     </message>
     <message>
         <source>Commands</source>
-        <translation type="unfinished"></translation>
+        <translation>Àitheantan</translation>
     </message>
     <message>
         <source>Custom webif reload URL address</source>
-        <translation type="unfinished"></translation>
+        <translation>Seòladh URL ath-luchdachadh webif gnàthaichte</translation>
     </message>
     <message>
         <source>Custom telnet reload command</source>
-        <translation type="unfinished"></translation>
+        <translation>Òrdugh ath-luchdachadh gnàthaichte telnet</translation>
     </message>
 </context>
 <context>
@@ -2821,78 +2841,83 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     <message>
         <source>File Information</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Fiosrachadh Faidhle</translation>
     </message>
     <message>
         <source>File Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Fios faidhle</translation>
     </message>
     <message>
         <source>File name</source>
-        <translation type="unfinished"></translation>
+        <translation>Ainm faidhle</translation>
     </message>
     <message>
         <source>File path</source>
-        <translation type="unfinished"></translation>
+        <translation>Slighe faidhle</translation>
     </message>
     <message>
         <source>File format</source>
-        <translation type="unfinished"></translation>
+        <translation>Fòrmat faidhle</translation>
     </message>
     <message>
         <source>File convert</source>
-        <translation type="unfinished"></translation>
+        <translation>Tionndadh faidhle</translation>
     </message>
     <message>
         <source>Counters</source>
-        <translation type="unfinished"></translation>
+        <translation>Cunntairean</translation>
     </message>
     <message>
         <source>TV</source>
-        <translation type="unfinished">TV</translation>
+        <translation>TV</translation>
     </message>
     <message>
         <source>Radio</source>
-        <translation type="unfinished">Radio</translation>
+        <translation>Radio</translation>
     </message>
     <message>
         <source>Data</source>
-        <translation type="unfinished">Data</translation>
+        <translation>Data</translation>
     </message>
     <message>
         <source>Total</source>
-        <translation type="unfinished">Iomlan</translation>
+        <translation>Iomlan</translation>
     </message>
     <message>
         <source>File Tree</source>
-        <translation type="unfinished"></translation>
+        <translation>Crann</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished">Ainm faidhle</translation>
+        <translation>Ainm faidhle</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Meud</translation>
     </message>
     <message>
         <source>Origin</source>
-        <translation type="unfinished"></translation>
+        <translation>Tùs</translation>
     </message>
     <message>
         <source>local</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>ionadail</translation>
     </message>
     <message>
         <source>remote</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>iomallach</translation>
     </message>
     <message>
         <source>blob</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>blob</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <comment>error</comment>
+        <translation>Mearachd</translation>
     </message>
 </context>
 <context>

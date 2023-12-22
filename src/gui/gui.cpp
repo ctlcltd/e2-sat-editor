@@ -1689,9 +1689,9 @@ void gui::linkToWebsite(int page)
 
 	switch (page)
 	{
-		case 1: url.append("/donate/"); break;
+		case 1: url.append("/donate.html"); break;
 		case 2: url.append("/translate/"); break;
-		case 3: url.append("/licenses/"); break;
+		case 3: url.append("/licenses.html"); break;
 	}
 
 	QDesktopServices::openUrl(QUrl(url));

@@ -1379,7 +1379,7 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     <message>
         <source>Go to e2SE repository…</source>
         <comment>menu</comment>
-        <translation>Pojdi v repozitorij e2SE ...</translation>
+        <translation>Pojdi v repozitorij e2SE…</translation>
     </message>
     <message>
         <source>&amp;About e2 SAT Editor</source>
@@ -1546,17 +1546,17 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     <message>
         <source>File Information</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Informacije datoteki</translation>
     </message>
     <message>
         <source>Help with translations</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pomoč prevodih</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Donirajte</translation>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
@@ -1589,6 +1589,26 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
         <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+    </message>
+    <message>
+        <source>Quick start</source>
+        <comment>menu</comment>
+        <translation>Hiter začetek</translation>
+    </message>
+    <message>
+        <source>Online help</source>
+        <comment>menu</comment>
+        <translation>Spletna pomoč</translation>
+    </message>
+    <message>
+        <source>Troubleshooting</source>
+        <comment>menu</comment>
+        <translation>Odpravljanje težav</translation>
+    </message>
+    <message>
+        <source>Software licenses…</source>
+        <comment>menu</comment>
+        <translation>Licence programske opreme…</translation>
     </message>
 </context>
 <context>
@@ -2543,15 +2563,15 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     </message>
     <message>
         <source>Commands</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukazi</translation>
     </message>
     <message>
         <source>Custom webif reload URL address</source>
-        <translation type="unfinished"></translation>
+        <translation>Naslov URL za vnovično nalaganje webif po meri</translation>
     </message>
     <message>
         <source>Custom telnet reload command</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukaz za vnovično nalaganje telnet po meri</translation>
     </message>
 </context>
 <context>
@@ -2820,78 +2840,83 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     <message>
         <source>File Information</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Informacije datoteki</translation>
     </message>
     <message>
         <source>File Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Info datoteke</translation>
     </message>
     <message>
         <source>File name</source>
-        <translation type="unfinished"></translation>
+        <translation>Ime datoteke</translation>
     </message>
     <message>
         <source>File path</source>
-        <translation type="unfinished"></translation>
+        <translation>Pot datoteke</translation>
     </message>
     <message>
         <source>File format</source>
-        <translation type="unfinished"></translation>
+        <translation>Format datoteke</translation>
     </message>
     <message>
         <source>File convert</source>
-        <translation type="unfinished"></translation>
+        <translation>Pretvorba datoteke</translation>
     </message>
     <message>
         <source>Counters</source>
-        <translation type="unfinished"></translation>
+        <translation>Števci</translation>
     </message>
     <message>
         <source>TV</source>
-        <translation type="unfinished">TV</translation>
+        <translation>TV</translation>
     </message>
     <message>
         <source>Radio</source>
-        <translation type="unfinished">Radio</translation>
+        <translation>Radio</translation>
     </message>
     <message>
         <source>Data</source>
-        <translation type="unfinished">Data</translation>
+        <translation>Data</translation>
     </message>
     <message>
         <source>Total</source>
-        <translation type="unfinished">Skupno</translation>
+        <translation>Skupno</translation>
     </message>
     <message>
         <source>File Tree</source>
-        <translation type="unfinished"></translation>
+        <translation>Drevo</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished">Ime datoteke</translation>
+        <translation>Ime datoteke</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Velikost</translation>
     </message>
     <message>
         <source>Origin</source>
-        <translation type="unfinished"></translation>
+        <translation>Lzvor</translation>
     </message>
     <message>
         <source>local</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>lokalna</translation>
     </message>
     <message>
         <source>remote</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>oddaljena</translation>
     </message>
     <message>
         <source>blob</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>blob</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <comment>error</comment>
+        <translation>Napaka</translation>
     </message>
 </context>
 <context>

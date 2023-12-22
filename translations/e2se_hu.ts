@@ -1547,17 +1547,17 @@ VAGY A SZOFTVER FELHASZNÁLÁSA VAGY EGYÉB KERESKEDELME.</translation>
     <message>
         <source>File Information</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Fájl információ</translation>
     </message>
     <message>
         <source>Help with translations</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Segítség fordításokhoz</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Adományoz</translation>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
@@ -1590,6 +1590,26 @@ VAGY A SZOFTVER FELHASZNÁLÁSA VAGY EGYÉB KERESKEDELME.</translation>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
         <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+    </message>
+    <message>
+        <source>Quick start</source>
+        <comment>menu</comment>
+        <translation>Gyors indítás</translation>
+    </message>
+    <message>
+        <source>Online help</source>
+        <comment>menu</comment>
+        <translation>Online segítség</translation>
+    </message>
+    <message>
+        <source>Troubleshooting</source>
+        <comment>menu</comment>
+        <translation>Hibaelhárítás</translation>
+    </message>
+    <message>
+        <source>Software licenses…</source>
+        <comment>menu</comment>
+        <translation>Szoftver licencek…</translation>
     </message>
 </context>
 <context>
@@ -2544,15 +2564,15 @@ VAGY A SZOFTVER FELHASZNÁLÁSA VAGY EGYÉB KERESKEDELME.</translation>
     </message>
     <message>
         <source>Commands</source>
-        <translation type="unfinished"></translation>
+        <translation>Parancsok</translation>
     </message>
     <message>
         <source>Custom webif reload URL address</source>
-        <translation type="unfinished"></translation>
+        <translation>Egyéni webes újratöltési URL-cím</translation>
     </message>
     <message>
         <source>Custom telnet reload command</source>
-        <translation type="unfinished"></translation>
+        <translation>Egyéni telnet újratöltési parancs</translation>
     </message>
 </context>
 <context>
@@ -2770,7 +2790,7 @@ VAGY A SZOFTVER FELHASZNÁLÁSA VAGY EGYÉB KERESKEDELME.</translation>
     <message numerus="yes">
         <source>Uploaded %n files</source>
         <comment>message</comment>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n fájl feltöltve</numerusform>
         </translation>
     </message>
@@ -2787,7 +2807,7 @@ VAGY A SZOFTVER FELHASZNÁLÁSA VAGY EGYÉB KERESKEDELME.</translation>
     <message numerus="yes">
         <source>Downloaded %n files</source>
         <comment>message</comment>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n fájl letöltve</numerusform>
         </translation>
     </message>
@@ -2815,78 +2835,83 @@ VAGY A SZOFTVER FELHASZNÁLÁSA VAGY EGYÉB KERESKEDELME.</translation>
     <message>
         <source>File Information</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Fájl információ</translation>
     </message>
     <message>
         <source>File Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Fájl inform</translation>
     </message>
     <message>
         <source>File name</source>
-        <translation type="unfinished"></translation>
+        <translation>Fájl név</translation>
     </message>
     <message>
         <source>File path</source>
-        <translation type="unfinished"></translation>
+        <translation>Fájl útvonal</translation>
     </message>
     <message>
         <source>File format</source>
-        <translation type="unfinished"></translation>
+        <translation>Fájl formátum</translation>
     </message>
     <message>
         <source>File convert</source>
-        <translation type="unfinished"></translation>
+        <translation>Fájl konvert</translation>
     </message>
     <message>
         <source>Counters</source>
-        <translation type="unfinished"></translation>
+        <translation>Számlálók</translation>
     </message>
     <message>
         <source>TV</source>
-        <translation type="unfinished">TV</translation>
+        <translation>TV</translation>
     </message>
     <message>
         <source>Radio</source>
-        <translation type="unfinished">Radio</translation>
+        <translation>Radio</translation>
     </message>
     <message>
         <source>Data</source>
-        <translation type="unfinished">Data</translation>
+        <translation>Data</translation>
     </message>
     <message>
         <source>Total</source>
-        <translation type="unfinished">Összesen</translation>
+        <translation>Összesen</translation>
     </message>
     <message>
         <source>File Tree</source>
-        <translation type="unfinished"></translation>
+        <translation>Fa</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished">Fájl név</translation>
+        <translation>Fájl név</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Méret</translation>
     </message>
     <message>
         <source>Origin</source>
-        <translation type="unfinished"></translation>
+        <translation>Eredet</translation>
     </message>
     <message>
         <source>local</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>helyi</translation>
     </message>
     <message>
         <source>remote</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>távoli</translation>
     </message>
     <message>
         <source>blob</source>
         <comment>file</comment>
-        <translation type="unfinished"></translation>
+        <translation>blob</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <comment>error</comment>
+        <translation>Hiba</translation>
     </message>
 </context>
 <context>
