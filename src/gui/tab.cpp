@@ -424,13 +424,17 @@ void tab::layout()
 #if E2SE_BUILD == E2SE_TARGET_DEBUG
 	DEBUG = true;
 #endif
+	toolBarSeparator(bottom_toolbar);
 	if (QSettings().value("application/debug", DEBUG).toBool())
 	{
-		toolBarSeparator(bottom_toolbar);
 		toolBarAction(bottom_toolbar, "§ Load seeds", [=]() { this->loadSeeds(); });
 		toolBarAction(bottom_toolbar, "§ Reset", [=]() { this->newFile(); this->tabChangeName(); });
 	}
 	toolBarSpacer(bottom_toolbar);
+#ifndef E2SE_DEMO
+	toolBarAction(bottom_toolbar, tr("Donate", "toolbar"), [=]() { this->linkToWebsite(1); });
+#endif
+	toolBarSeparator(bottom_toolbar);
 
 	top->addWidget(top_toolbar);
 	bottom->addWidget(bottom_toolbar);
@@ -2047,6 +2051,21 @@ void tab::ftpStbReloadErrorNotify()
 void tab::ftpGenericError(string context)
 {
 	errorMessage(tr(context.data(), "error"), tr("Error", "error"));
+}
+
+void tab::linkToRepository(int page)
+{
+	gid->linkToRepository(page);
+}
+
+void tab::linkToWebsite(int page)
+{
+	gid->linkToWebsite(page);
+}
+
+void tab::linkToOnlineHelp(int page)
+{
+	gid->linkToOnlineHelp(page);
 }
 
 void tab::updateIndex()

@@ -2918,6 +2918,11 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
         <comment>error</comment>
         <translation>Napaka</translation>
     </message>
+    <message>
+        <source>Donate</source>
+        <comment>toolbar</comment>
+        <translation>Donirajte</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>

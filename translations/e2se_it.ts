@@ -2914,6 +2914,11 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Errore</translation>
     </message>
+    <message>
+        <source>Donate</source>
+        <comment>toolbar</comment>
+        <translation>Donazione</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>

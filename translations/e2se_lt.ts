@@ -2915,6 +2915,11 @@ NAUDOJIMO AR SU KITAIS SU JAIS PROGRAMINĖ ĮRANGA.</translation>
         <comment>error</comment>
         <translation>Klaida</translation>
     </message>
+    <message>
+        <source>Donate</source>
+        <comment>toolbar</comment>
+        <translation>Paaukoti</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>

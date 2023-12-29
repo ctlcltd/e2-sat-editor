@@ -2914,6 +2914,11 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
         <comment>error</comment>
         <translation>Feil</translation>
     </message>
+    <message>
+        <source>Donate</source>
+        <comment>toolbar</comment>
+        <translation>Donere</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>

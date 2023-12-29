@@ -2913,6 +2913,11 @@ VAGY A SZOFTVER FELHASZNÁLÁSA VAGY EGYÉB KERESKEDELME.</translation>
         <comment>error</comment>
         <translation>Hiba</translation>
     </message>
+    <message>
+        <source>Donate</source>
+        <comment>toolbar</comment>
+        <translation>Adományoz</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>

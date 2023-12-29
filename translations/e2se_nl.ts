@@ -2915,6 +2915,11 @@ HANDELINGEN IN DE SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Fout</translation>
     </message>
+    <message>
+        <source>Donate</source>
+        <comment>toolbar</comment>
+        <translation>Doneer</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>

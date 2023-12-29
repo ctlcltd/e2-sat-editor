@@ -2917,6 +2917,11 @@ LUB INNYCH DZIAŁALNOŚCI W OPROGRAMOWANIE.</translation>
         <comment>error</comment>
         <translation>Błąd</translation>
     </message>
+    <message>
+        <source>Donate</source>
+        <comment>toolbar</comment>
+        <translation>Darowizna</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>

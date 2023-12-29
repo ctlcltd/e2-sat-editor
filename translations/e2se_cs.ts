@@ -2915,6 +2915,11 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Chyba</translation>
     </message>
+    <message>
+        <source>Donate</source>
+        <comment>toolbar</comment>
+        <translation>Darovat</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>

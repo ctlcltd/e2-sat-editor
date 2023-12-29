@@ -2915,6 +2915,11 @@ OU O USO OU OUTROS TRATOS DO SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Erro</translation>
     </message>
+    <message>
+        <source>Donate</source>
+        <comment>toolbar</comment>
+        <translation>Doa</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>

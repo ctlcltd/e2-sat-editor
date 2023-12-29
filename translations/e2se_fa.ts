@@ -2912,6 +2912,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>error</comment>
         <translation>خطا</translation>
     </message>
+    <message>
+        <source>Donate</source>
+        <comment>toolbar</comment>
+        <translation>اهداء</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>

@@ -2916,6 +2916,11 @@ OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
         <comment>error</comment>
         <translation>Erreur</translation>
     </message>
+    <message>
+        <source>Donate</source>
+        <comment>toolbar</comment>
+        <translation>Donation</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>

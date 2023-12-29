@@ -2915,6 +2915,11 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Fehler</translation>
     </message>
+    <message>
+        <source>Donate</source>
+        <comment>toolbar</comment>
+        <translation>Spenden</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>

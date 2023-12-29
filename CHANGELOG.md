@@ -10,8 +10,8 @@ All notable changes to this project will be documented in this file.
 **Full Changelog**: [v0.9.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v0.9.0...HEAD)
 
 - File Information dialog
-- Bugfix
 - Online Help
+- Bugfix
 
 
 ## [v0.9.0]

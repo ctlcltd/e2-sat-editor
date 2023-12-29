@@ -2909,6 +2909,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>error</comment>
         <translation>錯誤</translation>
     </message>
+    <message>
+        <source>Donate</source>
+        <comment>toolbar</comment>
+        <translation>捐款</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>

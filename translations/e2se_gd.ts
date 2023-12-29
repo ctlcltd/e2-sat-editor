@@ -2919,6 +2919,11 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
         <comment>error</comment>
         <translation>Mearachd</translation>
     </message>
+    <message>
+        <source>Donate</source>
+        <comment>toolbar</comment>
+        <translation>Tabhartas</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>

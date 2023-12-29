@@ -2913,6 +2913,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>error</comment>
         <translation>שְׁגִיאָה</translation>
     </message>
+    <message>
+        <source>Donate</source>
+        <comment>toolbar</comment>
+        <translation>לִתְרוֹם</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>

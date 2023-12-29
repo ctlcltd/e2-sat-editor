@@ -2914,6 +2914,11 @@ O SOFTWARE OU O USO OU OUTROS NEGÓCIOS NO PROGRAMAS.</translation>
         <comment>error</comment>
         <translation>Erro</translation>
     </message>
+    <message>
+        <source>Donate</source>
+        <comment>toolbar</comment>
+        <translation>Doar</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>

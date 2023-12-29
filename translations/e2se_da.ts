@@ -2913,6 +2913,11 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Fejl</translation>
     </message>
+    <message>
+        <source>Donate</source>
+        <comment>toolbar</comment>
+        <translation>Doner</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>

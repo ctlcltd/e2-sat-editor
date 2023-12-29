@@ -2918,6 +2918,11 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
         <comment>error</comment>
         <translation>Greška</translation>
     </message>
+    <message>
+        <source>Donate</source>
+        <comment>toolbar</comment>
+        <translation>Donirajte</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>

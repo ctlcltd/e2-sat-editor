@@ -2914,6 +2914,11 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
         <comment>error</comment>
         <translation>Error</translation>
     </message>
+    <message>
+        <source>Donate</source>
+        <comment>toolbar</comment>
+        <translation>Donar</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>

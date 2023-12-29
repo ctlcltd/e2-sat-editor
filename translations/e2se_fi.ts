@@ -2914,6 +2914,11 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
         <comment>error</comment>
         <translation>Virhe</translation>
     </message>
+    <message>
+        <source>Donate</source>
+        <comment>toolbar</comment>
+        <translation>Lahjoittaa</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>

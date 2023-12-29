@@ -2915,6 +2915,11 @@ VAI LIETOŠANA VAI CITI DARĪJUMI AR PROGRAMMATŪRU.</translation>
         <comment>error</comment>
         <translation>Kļūda</translation>
     </message>
+    <message>
+        <source>Donate</source>
+        <comment>toolbar</comment>
+        <translation>Ziedot</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
