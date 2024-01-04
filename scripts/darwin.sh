@@ -321,6 +321,7 @@ release () {
 
 	mkdir -p "e2 SAT Editor.app/Contents/Resources/translations"
 	cp ../dist/translations/*.qm build/translations
+	cp /usr/local/share/qt/translations/qt_*.qm build/translations
 	cp /usr/local/share/qt/translations/qtbase_*.qm build/translations
 	cp -R build/translations "e2 SAT Editor.app/Contents/Resources/"
 

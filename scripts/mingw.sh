@@ -175,6 +175,7 @@ release ()
 
 	mkdir -p build/translations
 	cp ../dist/translations/*.qm build/translations
+	cp /usr/share/qt6/translations/qt_*.qm build/translations
 	cp /usr/share/qt6/translations/qtbase_*.qm build/translations
 
 	# e2se
@@ -237,6 +238,7 @@ release_early ()
 
 	mkdir -p build/translations
 	cp ../dist/translations/*.qm build/translations
+	cp /usr/share/qt6/translations/qt_*.qm build/translations
 	cp /usr/share/qt6/translations/qtbase_*.qm build/translations
 
 	# e2se
@@ -273,6 +275,7 @@ testing_wine ()
 
 	mkdir -p build/translations
 	cp ../dist/translations/*.qm build/translations
+	cp /usr/share/qt6/translations/qt_*.qm build/translations
 	cp /usr/share/qt6/translations/qtbase_*.qm build/translations
 
 	# e2se
