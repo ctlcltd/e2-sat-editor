@@ -3,11 +3,18 @@
 All notable changes to this project will be documented in this file.
 
 
+## [v1.1.0]
+
+**Version**: 1.1  
+**Release Date**: *unreleased*  
+**Full Changelog**: [v1.0.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.0.0...HEAD)
+
+
 ## [v1.0.0]
 
 **Version**: 1.0  
-**Release Date**: *unreleased*  
-**Full Changelog**: [v0.9.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v0.9.0...HEAD)
+**Release Date**: 2024-01-04  
+**Full Changelog**: [v0.9.0...v1.0.0](https://github.com/ctlcltd/e2-sat-editor/compare/v0.9.0...v1.0.0)
 
 - File Information dialog
 - Online Help
