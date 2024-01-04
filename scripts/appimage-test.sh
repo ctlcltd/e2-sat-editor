@@ -70,8 +70,9 @@
 # for tsfile in qt_*.ts; do lrelease $tsfile -qm "${%tsfile.ts}.qm"; done
 # for tsfile in qtbase_*.ts; do lrelease $tsfile -qm "${%tsfile.ts}.qm"; done
 # mkdir -p /usr/local/translations
-# cp -P qt_*.qm /usr/local/translations
-# cp -P qtbase_*.qm /usr/local/translations
+# cp -R qt_*.qm /usr/local/translations
+# cp -R qtbase_*.qm /usr/local/translations
+# rm -R /usr/local/translations/qt_help_*.qm
 
 
 # apt install fuse wget

@@ -177,6 +177,7 @@ release ()
 	cp ../dist/translations/*.qm build/translations
 	cp /usr/share/qt6/translations/qt_*.qm build/translations
 	cp /usr/share/qt6/translations/qtbase_*.qm build/translations
+	rm -R build/translations/qt_help_*.qm
 
 	# e2se
 	printf "%s\n\n" "copying e2se files ..."
@@ -240,6 +241,7 @@ release_early ()
 	cp ../dist/translations/*.qm build/translations
 	cp /usr/share/qt6/translations/qt_*.qm build/translations
 	cp /usr/share/qt6/translations/qtbase_*.qm build/translations
+	rm -R build/translations/qt_help_*.qm
 
 	# e2se
 	printf "%s\n\n" "copying e2se files ..."
@@ -277,6 +279,7 @@ testing_wine ()
 	cp ../dist/translations/*.qm build/translations
 	cp /usr/share/qt6/translations/qt_*.qm build/translations
 	cp /usr/share/qt6/translations/qtbase_*.qm build/translations
+	rm -R build/translations/qt_help_*.qm
 
 	# e2se
 	printf "%s\n\n" "copying e2se files ..."

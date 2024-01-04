@@ -203,14 +203,14 @@ fixes () {
 	cd Frameworks
 
 	# missing: libbrotlicommon.1.dylib in: Frameworks/libbrotlidec.1.dylib
-	cp /usr/local/Cellar/brotli/1.0.9/lib/libbrotlicommon.1.0.9.dylib libbrotlicommon.1.dylib
+	cp /usr/local/Cellar/brotli/1.1.0/lib/libbrotlicommon.1.1.0.dylib libbrotlicommon.1.dylib
 	install_name_tool -id @rpath/libbrotlicommon.1.dylib "libbrotlicommon.1.dylib"
 	codesign --force -s - "libbrotlicommon.1.dylib"
 	# wrong path: libbrotlicommon.1.dylib in: Frameworks/libbrotlidec.1.dylib
-	install_name_tool -change @loader_path/libbrotlicommon.1.dylib @rpath/libbrotlicommon.1.dylib "libbrotlidec.1.dylib"
+	install_name_tool -change /usr/local/Cellar/brotli/1.1.0/lib/libbrotlicommon.1.dylib @rpath/libbrotlicommon.1.dylib "libbrotlidec.1.dylib"
 
 	# wrong path: libldap.2.dylib in: Frameworks/libgthread-2.0.0.dylib
-	install_name_tool -change /usr/local/Cellar/glib/2.76.3/lib/libglib-2.0.0.dylib @rpath/libglib-2.0.0.dylib "libgthread-2.0.0.dylib"
+	install_name_tool -change /usr/local/Cellar/glib/2.78.3/lib/libglib-2.0.0.dylib @rpath/libglib-2.0.0.dylib "libgthread-2.0.0.dylib"
 
 	# wrong path: libicuuc.73.dylib in: Frameworks/libicui18n.73.dylib
 	install_name_tool -change @loader_path/libicuuc.73.dylib @rpath/libicuuc.73.dylib "libicui18n.73.dylib"
@@ -220,13 +220,17 @@ fixes () {
 	install_name_tool -change @loader_path/libicudata.73.dylib @rpath/libicudata.73.dylib "libicuuc.73.dylib"
 
 	# wrong path: liblber.2.dylib in: Frameworks/libldap.2.dylib
-	install_name_tool -change /usr/local/Cellar/openldap/2.6.4/lib/liblber.2.dylib @rpath/liblber.2.dylib "libldap.2.dylib"
+	install_name_tool -change @loader_path/liblber.2.dylib @rpath/liblber.2.dylib "libldap.2.dylib"
+	# wrong path: libssl.3.dylib in: Frameworks/libssl.3.dylib
+	install_name_tool -change @loader_path/../../../../opt/openssl@3/lib/libssl.3.dylib @rpath/libssl.3.dylib "libldap.2.dylib"
+	# wrong path: libcrypto.3.dylib in: Frameworks/libcrypto.3.dylib
+	install_name_tool -change @loader_path/../../../../opt/openssl@3/lib/libcrypto.3.dylib @rpath/libcrypto.3.dylib "libldap.2.dylib"
 
 	# wrong path: /../lib/ in: Frameworks/libmd4c.0.dylib
 	install_name_tool -delete_rpath @loader_path/../lib "libmd4c.0.dylib"
 
-	# wrong path: libcrypto.1.1.dylib in: Frameworks/libssl.1.1.dylib
-	install_name_tool -change /usr/local/Cellar/openssl@1.1/1.1.1u/lib/libcrypto.1.1.dylib @rpath/libcrypto.1.1.dylib "libssl.1.1.dylib"
+	# wrong path: libcrypto.3.dylib in: Frameworks/libssl.3.dylib
+	install_name_tool -change /usr/local/Cellar/openssl@3/3.2.0_1/lib/libcrypto.3.dylib @rpath/libcrypto.3.dylib "libssl.3.dylib"
 
 	# wrong path: /../lib in: Frameworks/libzstd.1.dylib
 	install_name_tool -delete_rpath @loader_path/../lib "libzstd.1.dylib"
@@ -323,6 +327,7 @@ release () {
 	cp ../dist/translations/*.qm build/translations
 	cp /usr/local/share/qt/translations/qt_*.qm build/translations
 	cp /usr/local/share/qt/translations/qtbase_*.qm build/translations
+	rm -R build/translations/qt_help_*.qm
 	cp -R build/translations "e2 SAT Editor.app/Contents/Resources/"
 
 	printf "%s\n\n" "copying executable ..."
