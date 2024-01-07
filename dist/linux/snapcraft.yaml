@@ -69,4 +69,4 @@ apps:
   #     - removable-media
   #     - network
 environment:
-  QT_PLUGIN_PATH: "$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/qt6/plugins"
+  QT_PLUGIN_PATH: "$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins"

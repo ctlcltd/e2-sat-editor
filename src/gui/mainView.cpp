@@ -2831,6 +2831,7 @@ void mainView::treeDropFromTree(QTreeWidgetItem* current)
 	tree->setCurrentItem(items.first());
 }
 
+//TODO FIX dnd reference after ::updateListIndex
 void mainView::treeDropFromList(QTreeWidgetItem* current)
 {
 	debug("treeDropFromList");

@@ -27,9 +27,9 @@
 # apt install wget
 # cd
 # apt install libssl-dev
-# wget https://curl.se/download/curl-8.1.2.tar.xz
-# tar -xf curl-8.1.2.tar.xz
-# cd curl-8.1.2
+# wget https://curl.se/download/curl-8.5.0.tar.xz
+# tar -xf curl-8.5.0.tar.xz
+# cd curl-8.5.0
 # ./configure --prefix=/usr/local --with-openssl --enable-versioned-symbols
 # make -j 2
 # make install

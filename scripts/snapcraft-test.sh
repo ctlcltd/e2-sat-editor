@@ -24,7 +24,7 @@ cd dist/linux
 snapcraft clean
 snapcraft --debug
 
-# snapcraft remote-build --build-on=amd64,arm64
+# snapcraft remote-build --build-for=amd64,arm64
 
 # snap install --devmode e2-sat-editor_*.snap
 # snap install --dangerous e2-sat-editor_*.snap

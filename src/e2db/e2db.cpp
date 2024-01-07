@@ -605,6 +605,7 @@ void e2db::edit_service(string chid, service& ch)
 	}
 }
 
+//TODO FIX dnd reference EXC_BAD_ACCESS
 void e2db::remove_service(string chid)
 {
 	debug("remove_service", "chid", chid);
@@ -1095,6 +1096,7 @@ void e2db::remove_channel_reference(channel_reference chref, string bname)
 	}
 }
 
+//TODO dnd reference
 void e2db::remove_channel_reference(string chid, string bname)
 {
 	debug("remove_channel_reference", "chid", chid);
@@ -1137,7 +1139,7 @@ void e2db::remove_channel_reference(string chid, string bname)
 			index["mks"].erase(pos);
 		}
 	}
-	else
+	/*else
 	{
 		vector<pair<int, string>>::iterator pos;
 		for (auto it = index[ub.pname].begin(); it != index[ub.pname].end(); it++)
@@ -1152,7 +1154,7 @@ void e2db::remove_channel_reference(string chid, string bname)
 		{
 			index[ub.pname].erase(pos);
 		}
-	}
+	}*/
 
 	ub.channels.erase(chid);
 }
