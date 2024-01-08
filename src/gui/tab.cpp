@@ -2223,7 +2223,7 @@ void tab::loadSeeds()
 			gui::gui_file file;
 			file.data = QResource(path).uncompressedData().toStdString();
 			file.size = QResource(path).size();
-			file.path = path;
+			file.path = path.toStdString();
 			file.filename = path.remove(0, 1).toStdString();
 
 			gid->blobs.emplace_back(file);
