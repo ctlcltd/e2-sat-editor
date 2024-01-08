@@ -2831,7 +2831,6 @@ void mainView::treeDropFromTree(QTreeWidgetItem* current)
 	tree->setCurrentItem(items.first());
 }
 
-//TODO FIX dnd reference after ::updateListIndex
 void mainView::treeDropFromList(QTreeWidgetItem* current)
 {
 	debug("treeDropFromList");
@@ -2858,6 +2857,7 @@ void mainView::treeDropFromList(QTreeWidgetItem* current)
 
 	if (QSettings().value("preference/treeCurrentAfterDrop", true).toBool())
 	{
+		tree->setCurrentItem(nullptr); // should reset QTreeView::currentIndex 
 		tree->setCurrentItem(current);
 
 		list->addTopLevelItems(items);
@@ -3205,6 +3205,8 @@ void mainView::updateListReferences(QTreeWidgetItem* current, QList<QTreeWidgetI
 		return;
 
 	debug("updateListReferences", "current", bname);
+
+	cache[bname].clear();
 
 	for (auto & item : items)
 	{
