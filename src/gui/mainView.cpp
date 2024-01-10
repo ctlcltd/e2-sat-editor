@@ -2415,7 +2415,15 @@ void mainView::listItemDelete()
 		// bouquets tree
 		if (this->state.tc)
 		{
-			dbih->removeChannelReference(chid, bname);
+			if (dbih->userbouquets[bname].channels.count(chid))
+			{
+				e2db::channel_reference chref = dbih->userbouquets[bname].channels[chid];
+				dbih->removeChannelReference(chref, bname);
+			}
+			else
+			{
+				dbih->removeChannelReference(chid, bname);
+			}
 
 			cache[pname].clear();
 		}
@@ -2424,10 +2432,9 @@ void mainView::listItemDelete()
 		{
 			dbih->removeService(chid);
 
-			cache["chs"].clear();
-			cache["chs:0"].clear();
-			cache["chs:1"].clear();
-			cache["chs:2"].clear();
+			for (auto & q : cache)
+				q.second.clear();
+			cache.clear();
 		}
 	}
 
