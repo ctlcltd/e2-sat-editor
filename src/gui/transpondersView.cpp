@@ -132,6 +132,9 @@ void transpondersView::layout()
 
 	QTreeWidgetItem* list_thead = new QTreeWidgetItem({NULL, "TXID", tr("Combo"), tr("System"), tr("Position"), tr("Transport ID"), tr("DVBNS"), tr("ONID"), tr("Frequency"), tr("Polarization"), tr("Symbol Rate"), tr("FEC"), tr("Modulation"), tr("Bandwidth"), tr("Pilot"), tr("Roll offset"), tr("Inversion"), tr("Tmx Mode"), tr("Guard"), tr("Hierarchy")});
 	list->setHeaderItem(list_thead);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+	list->header()->setDefaultSectionSize(0);
+#endif
 	list->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
 	if (QSettings().value("application/debug", true).toBool()) {
 		list->setColumnWidth(ITEM_ROW_ROLE::debug_txid, 175);

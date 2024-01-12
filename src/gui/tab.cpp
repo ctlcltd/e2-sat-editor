@@ -989,7 +989,6 @@ void tab::exportFile()
 	}
 }
 
-//TODO
 void tab::infoFile()
 {
 	debug("infoFile");
@@ -1024,7 +1023,7 @@ void tab::infoFile()
 	dtf0->setFormAlignment(Qt::AlignLeading);
 	dtf0->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
-	string fpath = dbih->get_filepath();
+	string fpath = this->data->getPath();
 	string fname = std::filesystem::path(fpath).filename().u8string();
 
 	int srcver = dbih->db.version;
@@ -2224,7 +2223,7 @@ void tab::loadSeeds()
 			file.data = QResource(path).uncompressedData().toStdString();
 			file.size = QResource(path).size();
 			file.path = path.toStdString();
-			file.filename = path.remove(0, 1).toStdString();
+			file.filename = path.remove(0, 23).toStdString();
 
 			gid->blobs.emplace_back(file);
 		}

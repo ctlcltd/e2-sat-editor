@@ -211,6 +211,9 @@ void mainView::layout()
 	QTreeWidgetItem* lheader_item = new QTreeWidgetItem({NULL, tr("Index"), tr("Name"), tr("Parental"), "CHID", "TXID", tr("Service ID"), tr("Transport ID"), tr("Type"), tr("CAS"), tr("Provider"), tr("System"), tr("Position"), tr("Tuner"), tr("Frequency"), tr("Polarization"), tr("Symbol Rate"), tr("FEC")});
 
 	list->setHeaderItem(lheader_item);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+	list->header()->setDefaultSectionSize(0);
+#endif
 	list->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
 	list->setColumnWidth(ITEM_ROW_ROLE::chnum, 65);		// (Channel Number) Index
 	list->setColumnWidth(ITEM_ROW_ROLE::chname, 200);	// (Channel) Name

@@ -213,6 +213,9 @@ void tunersetsView::layout()
 
 	QTreeWidgetItem* tree_thead = new QTreeWidgetItem(ths);
 	tree->setHeaderItem(tree_thead);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+	tree->header()->setDefaultSectionSize(0);
+#endif
 	tree->setColumnHidden(TREE_ROW_ROLE::tnid, true); // hidden tnid
 	tree->setColumnWidth(TREE_ROW_ROLE::trow1, 200);  // Name
 	tree->setColumnWidth(TREE_ROW_ROLE::trow2, 75);   // Position | Country
@@ -232,6 +235,9 @@ void tunersetsView::layout()
 
 	QTreeWidgetItem* list_thead = new QTreeWidgetItem(lhs);
 	list->setHeaderItem(list_thead);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+	list->header()->setDefaultSectionSize(0);
+#endif
 	list->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
 	if (QSettings().value("application/debug", true).toBool()) {
 		list->setColumnWidth(ITEM_ROW_ROLE::debug_trid, 175);

@@ -169,6 +169,9 @@ void channelBookView::layout()
 
 	QTreeWidgetItem* list_thead = new QTreeWidgetItem({NULL, tr("Index"), tr("Name"), tr("Type"), tr("Provider"), tr("Transponder"), tr("Position"), tr("System")});
 	list->setHeaderItem(list_thead);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+	list->header()->setDefaultSectionSize(0);
+#endif
 	list->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
 	list->setColumnWidth(ITEM_ROW_ROLE::chnum, 60);		// (Channel Number) Index
 	list->setColumnWidth(ITEM_ROW_ROLE::chname, 175);	// Name

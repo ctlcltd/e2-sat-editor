@@ -75,7 +75,7 @@ bool dataHandler::readBlob(string path, unordered_map<string, e2db::e2db_file> f
 
 	this->dbih->importBlob(files);
 
-	if (this->path.empty())
+	if (! this->path.empty())
 		this->path = path;
 
 	return true;
