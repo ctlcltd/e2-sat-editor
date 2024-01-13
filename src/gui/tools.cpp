@@ -242,16 +242,30 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 	if (opts.fc != e2db::FCONVS::convert_current)
 	{
 		int dirsize = 0;
-		string basedir;
-		if (std::filesystem::is_directory(path))
-			basedir = path;
-		else
-			basedir = std::filesystem::path(path).parent_path().u8string();
-		std::filesystem::directory_iterator dirlist (basedir);
-		for (const auto & entry : dirlist)
+
+		try
 		{
-			if (std::filesystem::is_regular_file(entry))
-				dirsize++;
+			string basedir;
+			if (std::filesystem::is_directory(path))
+				basedir = path;
+			else
+				basedir = std::filesystem::path(path).parent_path().u8string();
+
+			std::filesystem::directory_iterator dirlist (basedir);
+
+			for (const auto & entry : dirlist)
+			{
+				if (std::filesystem::is_regular_file(entry))
+					dirsize++;
+			}
+		}
+		catch (const std::filesystem::filesystem_error& err)
+		{
+			error("exportFileCSV", tr("File Error", "error").toStdString(), e2se::logger::msg(e2se::logger::MSG::except_filesystem, err.what()));
+
+			tid->errorMessage(tr("File Error", "error"), tr("Error opening files.", "error"));
+
+			return;
 		}
 		if (dirsize != 0)
 		{
@@ -286,16 +300,30 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 	if (opts.fc != e2db::FCONVS::convert_current)
 	{
 		int dirsize = 0;
-		string basedir;
-		if (std::filesystem::is_directory(path))
-			basedir = path;
-		else
-			basedir = std::filesystem::path(path).parent_path().u8string();
-		std::filesystem::directory_iterator dirlist (basedir);
-		for (const auto & entry : dirlist)
+
+		try
 		{
-			if (std::filesystem::is_regular_file(entry))
-				dirsize++;
+			string basedir;
+			if (std::filesystem::is_directory(path))
+				basedir = path;
+			else
+				basedir = std::filesystem::path(path).parent_path().u8string();
+
+			std::filesystem::directory_iterator dirlist (basedir);
+
+			for (const auto & entry : dirlist)
+			{
+				if (std::filesystem::is_regular_file(entry))
+					dirsize++;
+			}
+		}
+		catch (const std::filesystem::filesystem_error& err)
+		{
+			error("exportFileHTML", tr("File Error", "error").toStdString(), e2se::logger::msg(e2se::logger::MSG::except_filesystem, err.what()));
+
+			tid->errorMessage(tr("File Error", "error"), tr("Error opening files.", "error"));
+
+			return;
 		}
 		if (dirsize != 0)
 		{

@@ -646,16 +646,30 @@ void tab::saveFile(bool saveas)
 			path = nw_path;
 
 			int dirsize = 0;
-			string basedir;
-			if (std::filesystem::is_directory(path))
-				basedir = path;
-			else
-				basedir = std::filesystem::path(path).parent_path().u8string();
-			std::filesystem::directory_iterator dirlist (basedir);
-			for (const auto & entry : dirlist)
+
+			try
 			{
-				if (std::filesystem::is_regular_file(entry))
-					dirsize++;
+				string basedir;
+				if (std::filesystem::is_directory(path))
+					basedir = path;
+				else
+					basedir = std::filesystem::path(path).parent_path().u8string();
+
+				std::filesystem::directory_iterator dirlist (basedir);
+				
+				for (const auto & entry : dirlist)
+				{
+					if (std::filesystem::is_regular_file(entry))
+						dirsize++;
+				}
+			}
+			catch (const std::filesystem::filesystem_error& err)
+			{
+				error("saveFile", tr("File Error", "error").toStdString(), e2se::logger::msg(e2se::logger::MSG::except_filesystem, err.what()));
+
+				errorMessage(tr("File Error", "error"), tr("Error opening files.", "error"));
+
+				return;
 			}
 			if (dirsize != 0)
 			{
@@ -933,16 +947,30 @@ void tab::exportFile()
 	if (paths.size() > 0)
 	{
 		int dirsize = 0;
-		string basedir;
-		if (std::filesystem::is_directory(path))
-			basedir = path;
-		else
-			basedir = std::filesystem::path(path).parent_path().u8string();
-		std::filesystem::directory_iterator dirlist (basedir);
-		for (const auto & entry : dirlist)
+
+		try
 		{
-			if (std::filesystem::is_regular_file(entry))
-				dirsize++;
+			string basedir;
+			if (std::filesystem::is_directory(path))
+				basedir = path;
+			else
+				basedir = std::filesystem::path(path).parent_path().u8string();
+
+			std::filesystem::directory_iterator dirlist (basedir);
+
+			for (const auto & entry : dirlist)
+			{
+				if (std::filesystem::is_regular_file(entry))
+					dirsize++;
+			}
+		}
+		catch (const std::filesystem::filesystem_error& err)
+		{
+			error("exportFile", tr("File Error", "error").toStdString(), e2se::logger::msg(e2se::logger::MSG::except_filesystem, err.what()));
+
+			errorMessage(tr("File Error", "error"), tr("Error opening files.", "error"));
+
+			return;
 		}
 		if (dirsize != 0)
 		{
