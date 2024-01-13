@@ -2765,9 +2765,6 @@ void mainView::showListEditContextMenu(QPoint& pos)
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
-	if (selected.empty() && list->topLevelItemCount() != 0)
-		return;
-
 	bool marker = false;
 	bool locked = false;
 	bool ub_locked = false;

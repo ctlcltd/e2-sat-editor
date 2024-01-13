@@ -1112,9 +1112,17 @@ void e2db::remove_channel_reference(channel_reference chref, string bname)
 					break;
 				}
 			}
-			if (pos != index[ub.pname].end())
+			//TODO TEST EXC_BAD_ACCESS
+			try
 			{
-				index[ub.pname].erase(pos);
+				if (pos != index[ub.pname].end())
+				{
+					index[ub.pname].erase(pos);
+				}
+			}
+			catch (...)
+			{
+				debug("remove_channel_reference", "fault", "parent index remove position");
 			}
 		}
 	}
@@ -1198,9 +1206,17 @@ void e2db::remove_channel_reference(string chid, string bname)
 					break;
 				}
 			}
-			if (pos != index[ub.pname].end())
+			//TODO TEST EXC_BAD_ACCESS
+			try
 			{
-				index[ub.pname].erase(pos);
+				if (pos != index[ub.pname].end())
+				{
+					index[ub.pname].erase(pos);
+				}
+			}
+			catch (...)
+			{
+				debug("remove_channel_reference", "fault", "parent index remove position");
 			}
 		}
 	}
