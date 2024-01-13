@@ -1038,7 +1038,6 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 	}
 }
 
-//TODO channel_reference.index not implemented
 void e2db::remove_channel_reference(channel_reference chref, string bname)
 {
 	debug("remove_channel_reference", "chref.chid", chref.chid);
@@ -1047,14 +1046,14 @@ void e2db::remove_channel_reference(channel_reference chref, string bname)
 		return error("remove_channel_reference", "Error", msg("Userbouquet \"%s\" not exists.", bname));
 
 	userbouquet& ub = userbouquets[bname];
-	/*int idx = chref.index;*/
+	int idx = chref.index;
 	string chid = chref.chid;
 	
 	for (auto & x : userbouquets[bname].channels)
 	{
-		if (/*x.second.index == idx && */x.second.chid == chid)
+		if (x.second.index == idx && x.second.chid == chid)
 		{
-			/*idx = x.second.index;*/
+			idx = x.second.index;
 			chid = x.first;
 			break;
 		}
@@ -1066,7 +1065,7 @@ void e2db::remove_channel_reference(channel_reference chref, string bname)
 	vector<pair<int, string>>::iterator pos;
 	for (auto it = index[bname].begin(); it != index[bname].end(); it++)
 	{
-		if (/*it->first == idx && */it->second == chid)
+		if (it->first == idx && it->second == chid)
 		{
 			pos = it;
 			break;
@@ -1124,7 +1123,7 @@ void e2db::remove_channel_reference(channel_reference chref, string bname)
 		unordered_map<string, channel_reference>::iterator pos;
 		for (auto it = userbouquets[bname].channels.begin(); it != userbouquets[bname].channels.end(); it++)
 		{
-			if (/*it->second.index == idx && */it->second.chid == chid)
+			if (it->second.index == idx && it->second.chid == chid)
 			{
 				pos = it;
 				break;

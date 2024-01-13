@@ -29,6 +29,14 @@
     <binary>e2se-cli</binary>
   </provides>
   <releases>
+    <release version="1.1.0" date="1970-01-01">
+      <description>
+        <ul>
+          <li>Important fixes: remove channel reference, remove service, Drag and Drop logic, tree column widths</li>
+          <li>Prevent crash and strange behaviour</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.0.0" date="2024-01-04">
       <description>
         <ul>

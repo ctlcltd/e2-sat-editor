@@ -2374,6 +2374,7 @@ void mainView::listItemPaste()
 	}
 }
 
+//TODO TEST random crash with put items
 void mainView::listItemDelete()
 {
 	debug("listItemDelete", "entered", ! (this->state.tc && this->state.ti != -1));
@@ -2390,6 +2391,11 @@ void mainView::listItemDelete()
 	bool remove = tabRemoveQuestion("Confirm deletetion", "Do you want to delete items?");
 	if (! remove)
 		return;
+
+	if (this->state.chx_pending)
+	{
+		updateListIndex();
+	}
 
 	list->header()->setSectionsClickable(false);
 	list->setDragEnabled(false);
@@ -2412,20 +2418,37 @@ void mainView::listItemDelete()
 	for (auto & item : selected)
 	{
 		int i = list->indexOfTopLevelItem(item);
+		int idx = item->data(ITEM_DATA_ROLE::idx, Qt::UserRole).toInt();
 		string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 		list->takeTopLevelItem(i);
+
+		bool found_duplicates = false;
+
+		int count = 0;
+		for (auto & x : dbih->index[bname])
+		{
+			if (x.second == chid)
+			{
+				count++;
+			}
+			if (count > 1)
+			{
+				found_duplicates = true;
+				break;
+			}
+		}
 
 		// bouquets tree
 		if (this->state.tc)
 		{
-			if (dbih->userbouquets[bname].channels.count(chid))
+			if (! found_duplicates && dbih->userbouquets[bname].channels.count(chid))
 			{
-				e2db::channel_reference chref = dbih->userbouquets[bname].channels[chid];
-				dbih->removeChannelReference(chref, bname);
-			}
-			else
-			{
-				dbih->removeChannelReference(chid, bname);
+				e2db::channel_reference& chref = dbih->userbouquets[bname].channels[chid];
+				
+				if (chref.index == idx)
+					dbih->removeChannelReference(chref, bname);
+				else
+					dbih->removeChannelReference(chid, bname);
 			}
 
 			cache[pname].clear();
@@ -2433,7 +2456,10 @@ void mainView::listItemDelete()
 		// services tree
 		else
 		{
-			dbih->removeService(chid);
+			if (! found_duplicates && dbih->db.services.count(chid))
+			{
+				dbih->removeService(chid);
+			}
 
 			for (auto & q : cache)
 				q.second.clear();
@@ -2459,7 +2485,6 @@ void mainView::listItemDelete()
 	this->data->setChanged(true);
 }
 
-//TODO handle duplicates
 void mainView::putListItems(vector<QString> items)
 {
 	debug("putListItems");
@@ -3196,7 +3221,23 @@ void mainView::updateListIndex()
 		}
 		idx = marker ? 0 : y;
 		dbih->index[bname].emplace_back(pair (idx, chid));
+		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
 		i++;
+	}
+
+	if (dbih->userbouquets.count(bname))
+	{
+		idx = 0;
+		for (auto & x : dbih->userbouquets[bname].channels)
+		{
+			e2db::channel_reference& chref = x.second;
+
+			if (! chref.marker)
+			{
+				idx += 1;
+				chref.index = idx;
+			}
+		}
 	}
 
 	if (sorted)
