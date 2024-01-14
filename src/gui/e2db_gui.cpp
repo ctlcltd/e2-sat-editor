@@ -203,7 +203,7 @@ string e2db::editTransponder(string txid, transponder& tx)
 
 void e2db::removeTransponder(string txid)
 {
-	debug("removTransponder", "txid", txid);
+	debug("removeTransponder", "txid", txid);
 
 	this->::e2se_e2db::e2db::remove_transponder(txid);
 	entries.transponders.erase(txid);

@@ -2922,14 +2922,20 @@ void mainView::updateStatusBar(bool current)
 			// bouquet: tv | radio
 			if (this->state.ti != -1)
 			{
-				e2db::bouquet gboq = dbih->bouquets[bname];
-				filename = gboq.rname.empty() ? gboq.bname : gboq.rname;
+				if (dbih->bouquets.count(bname))
+				{
+					e2db::bouquet gboq = dbih->bouquets[bname];
+					filename = gboq.rname.empty() ? gboq.bname : gboq.rname;
+				}
 			}
 			// userbouquet
 			else
 			{
-				e2db::userbouquet uboq = dbih->userbouquets[bname];
-				filename = uboq.rname.empty() ? uboq.bname : uboq.rname;
+				if (dbih->userbouquets.count(bname))
+				{
+					e2db::userbouquet uboq = dbih->userbouquets[bname];
+					filename = uboq.rname.empty() ? uboq.bname : uboq.rname;
+				}
 			}
 
 			msg.curr = filename;

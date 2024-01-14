@@ -524,10 +524,18 @@ void e2db::remove_transponder(string txid)
 
 	db.transponders.erase(txid);
 
+	vector<pair<int, string>>::iterator pos;
 	for (auto it = index["txs"].begin(); it != index["txs"].end(); it++)
 	{
 		if (it->second == txid)
-			index["txs"].erase(it);
+		{
+			pos = it;
+			break;
+		}
+	}
+	if (pos != index["txs"].end())
+	{
+		index["txs"].erase(pos);
 	}
 }
 
@@ -731,23 +739,40 @@ void e2db::remove_bouquet(string bname)
 	if (! bouquets.count(bname))
 		return error("remove_bouquet", "Error", msg("Bouquet \"%s\" not exists.", bname));
 
+	vector<pair<int, string>>::iterator pos;
 	for (auto it = index["bss"].begin(); it != index["bss"].end(); it++)
 	{
 		if (it->second == bname)
-			index["bss"].erase(it);
+		{
+			pos = it;
+			break;
+		}
+	}
+	if (pos != index["bss"].end())
+	{
+		index["bss"].erase(pos);
 	}
 
+	vector<string> i_names;
+	vector<vector<pair<int, string>>::iterator> itx;
 	for (auto it = index["ubs"].begin(); it != index["ubs"].end(); it++)
 	{
-		userbouquet ub = userbouquets[it->second];
+		userbouquet& ub = userbouquets[it->second];
 
 		if (ub.pname == bname)
 		{
-			index["ubs"].erase(it);
-			index.erase(ub.bname);
-
-			userbouquets.erase(ub.bname);
+			itx.push_back(it);
+			i_names.push_back(ub.bname);
 		}
+	}
+	for (auto pos = itx.begin(); pos != itx.end(); pos++)
+	{
+		index["ubs"].erase(*pos);
+	}
+	for (string & bname : i_names)
+	{
+		index.erase(bname);
+		userbouquets.erase(bname);
 	}
 
 	index.erase(bname);
@@ -877,17 +902,27 @@ void e2db::edit_userbouquet(userbouquet& ub)
 void e2db::remove_userbouquet(string bname)
 {
 	debug("remove_userbouquet", "bname", bname);
-
+	
 	if (! userbouquets.count(bname))
 		return error("remove_userbouquet", "Error", msg("Userbouquet \"%s\" not exists.", bname));
-
+	
 	userbouquet ub = userbouquets[bname];
 	bouquet& bs = bouquets[ub.pname];
 
-	for (auto it = index["ubs"].begin(); it != index["ubs"].end(); it++)
 	{
-		if (it->second == bname)
-			index["ubs"].erase(it);
+		vector<pair<int, string>>::iterator pos;
+		for (auto it = index["ubs"].begin(); it != index["ubs"].end(); it++)
+		{
+			if (it->second == bname)
+			{
+				pos = it;
+				break;
+			}
+		}
+		if (pos != index["ubs"].end())
+		{
+			index["ubs"].erase(pos);
+		}
 	}
 
 	vector<string>::iterator pos;
