@@ -21,8 +21,14 @@
       <image>https://ctlcltd.github.io/e2se/screenshot.png</image>
     </screenshot>
   </screenshots>
-  <url type="homepage">https://ctlcltd.github.io/e2-sat-editor/</url>
+  <developer>
+    <id>io.github.ctlcltd</id>
+    <name>Leonardo Laureti</name>
+  </developer>
+  <url type="homepage">https://e2sateditor.com</url>
   <url type="bugtracker">https://github.com/ctlcltd/e2-sat-editor/issues</url>
+  <url type="contribute">https://github.com/ctlcltd/e2-sat-editor</url>
+  <url type="help">https://e2sateditor.com/help/</url>
   <content_rating type="oars-1.1" />
   <provides>
     <binary>e2-sat-editor</binary>

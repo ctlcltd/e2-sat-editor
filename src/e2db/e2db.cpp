@@ -902,10 +902,10 @@ void e2db::edit_userbouquet(userbouquet& ub)
 void e2db::remove_userbouquet(string bname)
 {
 	debug("remove_userbouquet", "bname", bname);
-	
+
 	if (! userbouquets.count(bname))
 		return error("remove_userbouquet", "Error", msg("Userbouquet \"%s\" not exists.", bname));
-	
+
 	userbouquet ub = userbouquets[bname];
 	bouquet& bs = bouquets[ub.pname];
 
