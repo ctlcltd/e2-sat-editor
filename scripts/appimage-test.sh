@@ -108,11 +108,13 @@ DESTDIR=../AppDir ninja -C build install
 # mkdir -p AppDir/usr/share/qt6/translations
 # cp /usr/share/qt6/translations/qt_*.qm AppDir/usr/share/qt6/translations
 # cp /usr/share/qt6/translations/qtbase_*.qm AppDir/usr/share/qt6/translations
+# rm -R AppDir/usr/share/qt6/translations/qt_help_*.qm
 
 
 mkdir -p AppDir/usr/share/qt/translations
 cp /usr/local/translations/qt_*.qm AppDir/usr/share/qt/translations
 cp /usr/local/translations/qtbase_*.qm AppDir/usr/share/qt/translations
+rm -R AppDir/usr/share/qt/translations/qt_help_*.qm
 
 
 rm AppDir/usr/share/applications/e2se-cli.desktop
@@ -121,7 +123,7 @@ mv AppDir/usr/share/metainfo/io.github.ctlcltd.e2se.metainfo.xml AppDir/usr/shar
 mkdir -p AppDir/usr/share/doc/e2-sat-editor
 mv AppDir/usr/share/e2-sat-editor/COPYING AppDir/usr/share/doc/e2-sat-editor/copyright
 
-# export QMAKE=qmake6
+export QMAKE=qmake6
 linuxdeploy --appdir AppDir --plugin qt --output appimage
 
 chmod +x e2_SAT_Editor-x86_64.AppImage
