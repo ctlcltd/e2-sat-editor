@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 ## [v1.1.0]
 
 **Version**: 1.1  
-**Release Date**: *unreleased*  
+**Release Date**: 2024-01-15  
 **Full Changelog**: [v1.0.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.0.0...HEAD)
 
 - Important fixes: remove channel reference, remove service, Drag and Drop logic, tree column widths 
