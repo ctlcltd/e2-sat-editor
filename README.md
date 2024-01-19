@@ -49,6 +49,26 @@ You can open [issues](https://github.com/ctlcltd/e2-sat-editor/issues) to report
 Please read the [contribution guidelines](https://github.com/ctlcltd/e2-sat-editor/blob/main/CONTRIBUTING.md).
 
 
+## Roadmap
+
+The Roadmap contains ± ambitious points.
+
+A list of points from the Roadmap:
+- Enhancements
+- Scripting support
+- Extensions support
+  - Add-on: JavaScript built-in
+  - Add-on: Standard streams (stdio)
+- Automated build
+- Smart Userbouquet
+- Multiple files: Enigma2 directory format
+  - Flatpak sandbox (save multiple files)
+  - WASM (save and open multiple files)
+- Multi-windowed GUI
+
+Please read the full [Roadmap](https://github.com/ctlcltd/e2-sat-editor/blob/main/ROADMAP.md).
+
+
 ## Translation
 
 The software is available in 33 languages: Arabic, Bulgarian, Catalan, Czech, Danish, German, Spanish, Persian, Finnish, French, Gaelic, Galician, Hebrew, Croatian, Hungarian, Italian, Japanese, Korean, Lithuanian, Latvian, Dutch, Norwegian Nynorsk, Polish, Portuguese (Brazil), Portuguese (Portugal), Russian, Slovak, Slovenian, Swedish, Turkish, Ukrainian, Chinese (China), Chinese (Taiwan).
@@ -85,22 +105,6 @@ Instructions on how to compile in [INSTALL.md](https://github.com/ctlcltd/e2-sat
 |**src**|The main source of this software.|
 |**translations**|Translation source files for gui (Qt).|
 |**workspace**|Utility python scripts, used for emulation: ftp, telnet, webif.|
-
-&nbsp;
-
-### TODO
-
-- [x] search filters
-- [x] terrestrial.xml and cable.xml support
-- [x] satellites.xml editing
-- [x] print and import/export CSV
-- [ ] smart edit userbouquets
-- [x] cli
-- [x] translations
-- [ ] multi-windowed gui
-- [ ] extensions and/or scripting
-- [x] picons support
-- [ ] automated build
 
 &nbsp;
 
