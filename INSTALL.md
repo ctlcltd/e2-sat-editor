@@ -1,4 +1,4 @@
-## Installation instructions
+# Installation instructions
 
 Generic instructions to help with compiling e2 SAT Editor on different platforms.
 
