@@ -312,7 +312,7 @@ void settings::connectionsLayout()
 
 	QHBoxLayout* dtb20 = new QHBoxLayout;
 	dtf2->addRow(tr("Transponders"), dtb20);
-	QLineEdit* dtf2pt = new QLineEdit("/etc/tuxbox/");
+	QLineEdit* dtf2pt = new QLineEdit("/etc/tuxbox");
 	dtf2pt->setProperty("field", "pathTransponders");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2pt);
 	platform::osLineEdit(dtf2pt);
@@ -321,7 +321,7 @@ void settings::connectionsLayout()
 
 	QHBoxLayout* dtb21 = new QHBoxLayout;
 	dtf2->addRow(tr("Services"), dtb21);
-	QLineEdit* dtf2ps = new QLineEdit("/etc/enigma2/");
+	QLineEdit* dtf2ps = new QLineEdit("/etc/enigma2");
 	dtf2ps->setProperty("field", "pathServices");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2ps);
 	platform::osLineEdit(dtf2ps);
@@ -330,7 +330,7 @@ void settings::connectionsLayout()
 
 	QHBoxLayout* dtb22 = new QHBoxLayout;
 	dtf2->addRow(tr("Bouquets"), dtb22);
-	QLineEdit* dtf2pb = new QLineEdit("/etc/enigma2/");
+	QLineEdit* dtf2pb = new QLineEdit("/etc/enigma2");
 	dtf2pb->setProperty("field", "pathBouquets");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2pb);
 	platform::osLineEdit(dtf2pb);
@@ -339,7 +339,7 @@ void settings::connectionsLayout()
 
 	QHBoxLayout* dtb23 = new QHBoxLayout;
 	dtf2->addRow(tr("Picons"), dtb23);
-	QLineEdit* dtf2pi = new QLineEdit("/usr/share/enigma2/picon/");
+	QLineEdit* dtf2pi = new QLineEdit("/usr/share/enigma2/picon");
 	dtf2pi->setProperty("field", "pathPicons");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf2pi);
 	platform::osLineEdit(dtf2pi);

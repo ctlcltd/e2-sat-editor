@@ -614,10 +614,10 @@ void gui::initSettings()
 	settings.setValue("httpPort", 80);
 	settings.setValue("username", "root");
 	settings.setValue("password", "password");
-	settings.setValue("pathTransponders", "/etc/enigma2/");
-	settings.setValue("pathServices", "/etc/tuxbox/");
-	settings.setValue("pathBouquets", "/etc/enigma2/");
-	settings.setValue("pathPicons", "/usr/share/enigma2/picon/");
+	settings.setValue("pathTransponders", "/etc/tuxbox");
+	settings.setValue("pathServices", "/etc/enigma2");
+	settings.setValue("pathBouquets", "/etc/enigma2");
+	settings.setValue("pathPicons", "/usr/share/enigma2/picon");
 	settings.setValue("customWebifReloadUrl", "");
 	settings.setValue("customTelnetReloadCmd", ""); 
 	settings.endArray();
