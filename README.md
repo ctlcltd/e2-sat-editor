@@ -58,12 +58,12 @@ A list of points from the Roadmap:
 - Scripting support
 - Extensions support
   - Add-on: JavaScript built-in
-  - Add-on: Standard streams (stdio)
+  - Add-on: Standard streams
 - Automated build
 - Smart Userbouquet
 - Multiple files: Enigma2 directory format
   - Flatpak sandbox (save multiple files)
-  - WASM (save and open multiple files)
+  - WebAssembly (save and open multiple files)
 - Multi-windowed GUI
 
 Please read the full [Roadmap](https://github.com/ctlcltd/e2-sat-editor/blob/main/ROADMAP.md).
