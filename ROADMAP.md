@@ -26,37 +26,37 @@ Improvements:
 
 ## Scripting support
 
-A command line **GUI** side to perform actions on running software, **Console**. The language used must be JavaScript alike and the Console will response in JSON format. Using JSON included in *Qt* there are no additional dependencies. The idea is to partially exposes the written `e2db_cli` API and maybe add a **GUI** dependent API part, which will alse be used for extensions.
+A command line **GUI** side to perform actions on running software, **Console**. The language used must be JavaScript alike and the Console will response in JSON format. Using JSON included in *Qt* there are no additional dependencies. The idea is to partially exposes the written `e2db_cli` API and maybe add a **GUI** dependent API part, which will also be used for extensions.
 
 **Console** will look similar to a browser inspector, although with fewer features as it is not a browser.
 
 
 ## Extensions support
 
-Add extension support and use interpreted languages. *Qt* has plugin support, but they should be compiled. It would be nice to create add-ons in multiple languages. I experimented with *Swig* and *shared memory* but it adds too much complexity, and build anyway. Build makes extensibility and deployment complicated.
+Add extension support and use interpreted languages. *Qt* has plugin support, but they should be build. It would be very nice to create add-ons in multiple languages. I experimented with *Swig* and *shared memory* but it adds too much complexity, and to build anyway. Build makes extensibility and deployment complicated.
 
-Keep in mind, the software is cross-platform, compilation time, limited number of libraries, *socket* require network and permissions, *web services* require network and permissions, *shared memory* requires permissions, sandbox limitations.
+Keep in mind, the software is cross-platform, build time, limited number of libraries, *socket* require network and permissions, *web services* require network and permissions, *shared memory* requires permissions, sandbox limitations.
 
 Will need an API used by add-ons. The API to operate on channels, import and export channel lists, as well as advanced operations on the **GUI**, for example to add columns and items to tree views, add tabs with a custom view.
 
 Add-ons will come from an official repository, will distributed with tarballs and have a manifest file describing them. It will also be possible to load an add-on from a local environment by granting the authorization.
 
-Extension support might have two interface types: 1) JavaScript built-in, 2) Standard streams (stdio).
+Extension support might have two interface types: 1) JavaScript built-in, 2) Standard streams.
 
 
 ### 1) Add-on: JavaScript built-in
 
-At the basis of the JavaScript built-in support will be Qt `QJSEngine` engine. `QJSEngine` is part of `QML` module in Qt. `QML` can be used to extend the **GUI**.
+At the basis of the JavaScript built-in support will be Qt `QJSEngine`. `QJSEngine` is part of `QML` module in Qt. `QML` can be used to extend the **GUI**.
 
 This will require more attention to deployment. `QJSEngine` and `QML` require additional libraries to append to the Qt bundled.
 
 **Pros**
 - Built-in JavaScript support
-- **GUI** extensibility
+- GUI extensibility
 
 **Cons**
 - More Qt dependencies at deploy
-- `QML` is niche
+- QML is niche
 
 
 ### 2) Add-on: Standard streams
@@ -73,7 +73,7 @@ Legacy but universal approach. Standard streams do not require network and are a
 
 **Cons**
 - Requires a download manager, decompress tarball, integrity check
-- **GUI** extensibility is difficult
+- GUI extensibility is difficult
 - Single execution
 - Latency
 - Presence of language interpreter binaries
@@ -98,7 +98,7 @@ Smart Userbouquets are userbouquets created through filtering. The idea behind S
 
 It will be possible to create Userbouquet from provider name or frequencies, or both.
 
-Distinguish concrete userbouquets from userbouquets to be reviewed and confirmed. Not to be saved userbouquets is partially supported. Provide visual feedback, for example: "Concrete Userbouquet", *"Smart Userbouquet \*"*.
+Distinguish concrete userbouquets from userbouquets to be reviewed and confirmed. Not-to-be-saved userbouquets is partially supported. Provide visual feedback, for example: "Concrete Userbouquet", *"Smart Userbouquet \*"*.
 
 
 ## Multiple files: Enigma2 directory format
@@ -107,7 +107,7 @@ The **Enigma2** file format is a directory with multiple files.
 
 It is not possible to create or register a **MIME type** for the **Enigma2** directory file format.
 
-Several environments have limitations in opening and/or saving multiple files and directories: 1) Flatpak sandbox, 2) WASM.
+Several environments have limitations in opening and/or saving multiple files and directories: 1) Flatpak sandbox, 2) WebAssembly.
 
 
 ### 1) Flatpak sandbox (save multiple files)
@@ -136,7 +136,7 @@ Evaluate whether the **demo** with almost full functionality can be useful or no
 
 ## Multi-windowed GUI
 
-Multi-windowed GUI to allow multiple software session and multiple window and drag tab from one session to another.
+Multi-windowed GUI allow multiple software session and multiple window and drag tab from one session to another.
 
 Need to extend: `QTabWidget`, `QTabBar`, `QStackedWidget` to make Drag and Drop of tabs and widgets possible.
 
