@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 1.1
+ * @version 1.1.1
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -14,6 +14,7 @@
 #include <cmath>
 #include <algorithm>
 #include <filesystem>
+#include <sstream>
 
 #include <QtGlobal>
 #include <QGuiApplication>
@@ -63,7 +64,7 @@
 #include "editMarker.h"
 #include "printable.h"
 
-using std::pair, std::to_string, std::sort;
+using std::pair, std::stringstream, std::to_string, std::sort;
 
 using namespace e2se;
 
@@ -1774,7 +1775,9 @@ void tab::ftpUpload()
 
 			for (auto & x : this->ftp_files)
 			{
-				std::filesystem::path fpath = std::filesystem::path(x.first);
+				string fname = x.first;
+
+				std::filesystem::path fpath = std::filesystem::path(fname);
 				string basedir = fpath.parent_path().u8string();
 				string filename = fpath.filename().u8string();
 
@@ -1783,9 +1786,7 @@ void tab::ftpUpload()
 				try {
 					ftih->upload_data(basedir, filename, x.second);
 				} catch (std::runtime_error& err) {
-					this->ftp_files.clear();
-					QMetaObject::invokeMethod(this->cwid, [=]() { ftih->showError(err.what()); }, Qt::QueuedConnection);
-					return;
+					this->ftp_errors.emplace(fname, err.what());
 				} catch (...) {
 					this->ftp_files.clear();
 					QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpGenericError("FTP Error"); }, Qt::QueuedConnection);
@@ -1794,8 +1795,33 @@ void tab::ftpUpload()
 			}
 		});
 		thread->connect(thread, &QThread::finished, [=]() {
+			if (! this->ftp_errors.empty())
+			{
+				string optk, fn;
+				QStringList errors;
+
+				for (auto & x : this->ftp_errors)
+				{
+					stringstream ss (x.second);
+					string optv;
+					std::getline(ss, optk, '\t');
+					std::getline(ss, optv, '\t');
+					std::getline(ss, fn, '\t');
+					QString err = QString(QApplication::layoutDirection() == Qt::RightToLeft ? "%2 :%1" : "%1: %2").arg(optv.data()).arg(x.first.data());
+					errors.append(err);
+				}
+
+				string error_msg = optk + '\t' + errors.join("\n").toStdString() + '\t' + fn;
+
+				QMetaObject::invokeMethod(this->cwid, [=]() { ftih->showError(error_msg); }, Qt::QueuedConnection);
+
+				this->ftp_errors.clear();
+			}
+
 			if (this->ftp_files.empty())
+			{
 				return;
+			}
 
 			int files_count = int (this->ftp_files.size());
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbUploadNotify(files_count); }, Qt::QueuedConnection);
@@ -1853,9 +1879,9 @@ void tab::ftpDownload()
 				return;
 			}
 
-			for (string & w : ftih->ftdb)
+			for (string & fname : ftih->ftdb)
 			{
-				std::filesystem::path fpath = std::filesystem::path(w);
+				std::filesystem::path fpath = std::filesystem::path(fname);
 				string basedir = fpath.parent_path().u8string();
 				string filename = fpath.filename().u8string();
 
@@ -1866,9 +1892,7 @@ void tab::ftpDownload()
 				try {
 					ftih->download_data(basedir, filename, file);
 				} catch (std::runtime_error& err) {
-					this->ftp_files.clear();
-					QMetaObject::invokeMethod(this->cwid, [=]() { ftih->showError(err.what()); }, Qt::QueuedConnection);
-					return;
+					this->ftp_errors.emplace(fname, err.what());
 				} catch (...) {
 					this->ftp_files.clear();
 					QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpGenericError("FTP Error"); }, Qt::QueuedConnection);
@@ -1879,8 +1903,33 @@ void tab::ftpDownload()
 			}
 		});
 		thread->connect(thread, &QThread::finished, [=]() {
+			if (! this->ftp_errors.empty())
+			{
+				string optk, fn;
+				QStringList errors;
+
+				for (auto & x : this->ftp_errors)
+				{
+					stringstream ss (x.second);
+					string optv;
+					std::getline(ss, optk, '\t');
+					std::getline(ss, optv, '\t');
+					std::getline(ss, fn, '\t');
+					QString err = QString(QApplication::layoutDirection() == Qt::RightToLeft ? "%2 :%1" : "%1: %2").arg(optv.data()).arg(x.first.data());
+					errors.append(err);
+				}
+
+				string error_msg = optk + '\t' + errors.join("\n").toStdString() + '\t' + fn;
+
+				QMetaObject::invokeMethod(this->cwid, [=]() { ftih->showError(error_msg); }, Qt::QueuedConnection);
+
+				this->ftp_errors.clear();
+			}
+
 			if (this->ftp_files.empty())
+			{
 				return;
+			}
 
 			for (auto & x : this->ftp_files)
 			{

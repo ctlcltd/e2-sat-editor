@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 1.1
+ * @version 1.1.1
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -17,7 +17,7 @@
 
 
 // build target: debug, release
-#define E2SE_BUILD E2SE_TARGET_DEBUG
+#define E2SE_BUILD E2SE_TARGET_RELEASE
 
 // portable application
 // #define E2SE_PORTABLE

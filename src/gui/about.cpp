@@ -72,7 +72,7 @@ void about::layout()
 	aname->setStyleSheet("font-size: 24px");
 
 	QLabel* aver = new QLabel;
-	aver->setText(tr("Version %1").arg("1.1"));
+	aver->setText(tr("Version %1").arg("1.1.1"));
 	aver->setStyleSheet("font-size: 16px");
 
 	QLabel* aauts = new QLabel;

@@ -5,9 +5,18 @@ All notable changes to this project will be documented in this file.
 
 ## [v1.2.0]
 
-**Version**: 1.2  
+**Version**: 1.2.0  
 **Release Date**: *unreleased*  
 **Full Changelog**: [v1.1.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.1.0...HEAD)
+
+
+## [v1.1.1]
+
+**Version**: 1.1.1 
+**Release Date**: 2024-01-20  
+**Full Changelog**: [v1.1.0...v.1.1.1](https://github.com/ctlcltd/e2-sat-editor/compare/v1.1.0...v.1.1.1)
+
+- Fix: FTP issue, file listing and directory
 
 
 ## [v1.1.0]

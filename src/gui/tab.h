@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 1.1
+ * @version 1.1.1
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -165,6 +165,7 @@ class tab : protected e2se::log_factory
 		QComboBox* ftp_combo;
 
 		unordered_map<string, e2se_ftpcom::ftpcom::ftpcom_file> ftp_files;
+		unordered_map<string, string> ftp_errors;
 		unordered_map<string, e2db::e2db_file> files;
 
 		// stored gui bit flags
