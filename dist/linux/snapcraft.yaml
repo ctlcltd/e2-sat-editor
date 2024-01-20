@@ -1,5 +1,5 @@
 name: e2-sat-editor
-version: '1.1.0'
+version: '1.1.1'
 summary: 'Satellite channel lists editor: Enigma2, Neutrino, dreambox'
 title: e2 SAT Editor
 license: GPL-3.0-or-later
@@ -13,7 +13,7 @@ parts:
     source-type: git
     source: https://github.com/ctlcltd/e2-sat-editor.git
     # source-branch: main
-    source-commit: 0df44ee26fa295bb0e7867edce48c342f1868a6a
+    source-commit: 2fc9ffc20324259394518e2bdde973d2c30c1b2b
     source-subdir: src
     cmake-generator: Ninja
     cmake-parameters:
