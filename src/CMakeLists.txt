@@ -89,14 +89,10 @@ endif()
 set(app_icon_resource_windows "../dist/windows/e2-sat-editor.rc")
 list(APPEND SOURCES ${app_icon_resource_windows})
 
-set(MACOSX_BUNDLE_BUNDLE_NAME "e2 SAT Editor")
-set(MACOSX_BUNDLE_BUNDLE_VERSION 1.1)
-set(MACOSX_BUNDLE_ICON_FILE e2-sat-editor.icns)
-
 set(app_icon_macos "../dist/macos/e2-sat-editor.icns")
 set_source_files_properties(${app_icon_macos} PROPERTIES
 	MACOSX_PACKAGE_LOCATION "Resources")
-list(APPEND SOURCES ${app_icon_resource_windows})
+list(APPEND SOURCES ${app_icon_macos})
 
 if(NOT WITHOUT_CLI)
 	add_subdirectory(cli)
@@ -111,7 +107,16 @@ target_link_libraries(e2-sat-editor PUBLIC
 	CURL::libcurl
 )
 
-install(TARGETS e2-sat-editor)
+if(APPLE)
+	set_target_properties(e2-sat-editor PROPERTIES
+		MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/../dist/macos/Info.plist.in
+		OUTPUT_NAME "e2 SAT Editor"
+	)
+
+	install(TARGETS e2-sat-editor BUNDLE DESTINATION .)
+else()
+	install(TARGETS e2-sat-editor)
+endif()
 
 if(UNIX AND NOT APPLE)
 	include(GNUInstallDirs)
@@ -120,7 +125,7 @@ if(UNIX AND NOT APPLE)
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
 	if(NOT WITHOUT_CLI)
 		install(FILES "../dist/xdg/e2se-cli.desktop"
-				DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
 	endif()
 	install(FILES "../dist/xdg/io.github.ctlcltd.e2se.metainfo.xml"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
@@ -134,7 +139,8 @@ if(UNIX AND NOT APPLE)
 	install(FILES "../dist/xdg/icons/128x128/e2-sat-editor.png"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/apps)
 
-	install(DIRECTORY "../dist/translations" DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor
+	install(DIRECTORY "../dist/translations"
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor
 			FILES_MATCHING PATTERN "*.qm")
 
 	install(FILES "COPYING"

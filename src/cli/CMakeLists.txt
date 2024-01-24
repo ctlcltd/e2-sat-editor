@@ -20,5 +20,9 @@ set(SOURCES
 
 add_executable(e2se-cli ${SOURCES})
 
-install(TARGETS e2se-cli)
+if(APPLE)
+	install(TARGETS e2se-cli DESTINATION .)
+else()
+	install(TARGETS e2se-cli)
+endif()
 
