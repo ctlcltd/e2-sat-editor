@@ -625,7 +625,7 @@ remove_sign () {
 	fi
 
 	if [[ "$_SIMULATE" == false ]]; then
-		codesign --force --remove-signature "$path"
+		codesign --force -s - "$path"
 	elif [[ "$_VERBOSE" == true ]]; then
 		printf "  remove sign on \"%s\"\n" "$path"
 	fi
