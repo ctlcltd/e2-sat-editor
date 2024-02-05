@@ -572,8 +572,12 @@ copy_dependency () {
 				mkdir -p "$dstpath/Versions/A"
 
 				cp "$srcpath/Versions/A/$filename" "$dstpath/Versions/A/$filename"
-				ln -s "$dstpath/Versions/A/$filename" "$dstpath/$filename"
-				ln -s "$dstpath/Versions/A" "$dstpath/Versions/Current"
+
+				local pwd="$PWD"
+				cd "$dstpath"
+				ln -s "Versions/A/$filename" "$filename"
+				ln -s "Versions/A" "Versions/Current"
+				cd "$pwd"
 			else
 				cp -R "$srcpath" "$dstpath"
 			fi
