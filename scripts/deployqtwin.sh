@@ -2,7 +2,7 @@
 # deployqtwin.sh
 # Finalize distributable as alternative to windeployqt
 # 
-# link: https://github.com/e2se/windeployqt
+# link: https://github.com/e2se/deployqtwin
 # copyright: e2 SAT Editor Team
 # author: Leonardo Laureti
 # license: MIT License
