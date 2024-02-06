@@ -143,6 +143,8 @@ if(UNIX AND NOT APPLE)
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor
 			FILES_MATCHING PATTERN "*.qm")
 
+	install(FILES "../dist/common/Readme.txt.in"
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor)
 	install(FILES "COPYING"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor)
 endif()

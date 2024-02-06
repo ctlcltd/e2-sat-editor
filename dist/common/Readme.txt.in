@@ -1,0 +1,105 @@
+e2 SAT Editor
+=============
+
+e2 SAT Editor is a satellite channel lists editor, for Enigma2, Neutrino,
+dreambox lists. Cross-platform (Windows, macOS, Linux, Unix-like BSD)
+and free to use.
+
+It has tabbed navigation with global Cut-Copy-Paste support; Drag and Drop
+support; import and export of Lamedb, bouquets and userbouquets; FTP support;
+built-in Picons editor; tools for sorting and management of channel lists;
+non-destructive editing; dark and light themes.
+
+It supports both Enigma2, Lamedb 4 and Lamedb 5 formats (2.4 and 2.5)
+and Enigma1 (2.3 and 2.2).
+
+And it supports also Neutrino xml (api v1, v2, v3, v4).
+
+
+🆕 Releases available to download from Releases:
+------------------------------------------------
+https://github.com/ctlcltd/e2-sat-editor/releases
+
+📡
+
+A screenshot of e2 SAT Editor:
+------------------------------
+https://github.com/ctlcltd/e2-sat-editor/raw/main/res/screenshot.webp
+
+
+Get Help
+========
+
+You can find the Online Help on the website:
+https://e2sateditor.com/help/
+
+On portable release (Windows, macOS) there is an offline help
+check the 'user-manual' folder. Index at file 'index.html'
+
+
+Get involved
+============
+
+All the informations in the official repository:
+https://github.com/ctlcltd/e2-sat-editor
+
+Your contribution to this project are amazing.
+
+You can open issues:
+https://github.com/ctlcltd/e2-sat-editor/issues
+to report bug, request features and send Pull Request:
+https://github.com/ctlcltd/e2-sat-editor/pulls
+
+Please read the contribution guidelines:
+https://github.com/ctlcltd/e2-sat-editor/blob/main/CONTRIBUTING.md
+
+
+Roadmap
+=======
+
+The Roadmap contains ± ambitious points.
+
+A list of points from the Roadmap:
+- Enhancements
+- Scripting support
+- Extensions support
+  - Add-on: JavaScript built-in
+  - Add-on: Standard streams
+- Automated build
+- Smart Userbouquet
+- Multiple files: Enigma2 directory format
+  - Flatpak sandbox (save multiple files)
+  - WebAssembly (save and open multiple files)
+- Multi-windowed GUI
+
+Please read the full Roadmap:
+https://github.com/ctlcltd/e2-sat-editor/blob/main/ROADMAP.md
+
+
+Translation
+===========
+
+The software is available in 33 languages:
+Arabic, Bulgarian, Catalan, Czech, Danish, German, Spanish, Persian,
+Finnish, French, Gaelic, Galician, Hebrew, Croatian, Hungarian, Italian,
+Japanese, Korean, Lithuanian, Latvian, Dutch, Norwegian Nynorsk, Polish,
+Portuguese (Brazil), Portuguese (Portugal), Russian, Slovak, Slovenian,
+Swedish, Turkish, Ukrainian, Chinese (China), Chinese (Taiwan).
+
+To contribute there is Translations app [beta] on the website:
+https://e2sateditor.com/translate/
+
+Same languages as 'qt-base', new languages could be added using
+the website app.
+
+
+License
+=======
+
+This software will be distribuited under the terms of the GNU GPLv3 License.
+
+Source code licensed under the terms of the MIT License:
+https://github.com/ctlcltd/e2-sat-editor/blob/main/LICENSE-MIT
+It is also licensed under the terms of the GNU GPLv3 License:
+https://github.com/ctlcltd/e2-sat-editor/blob/main/LICENSE-GPL-3.0-or-later
+

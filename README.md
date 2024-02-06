@@ -110,7 +110,7 @@ Instructions on how to compile in [INSTALL.md](https://github.com/ctlcltd/e2-sat
 
 ## License
 
-Source code licensed under the terms of the [MIT License](https://github.com/ctlcltd/e2-sat-editor/blob/main/LICENSE-MIT). It is also licensed under the terms of the [GNU GPLv3](https://github.com/ctlcltd/e2-sat-editor/blob/main/LICENSE-GPL-3.0-or-later).
+Source code licensed under the terms of the [MIT License](https://github.com/ctlcltd/e2-sat-editor/blob/main/LICENSE-MIT). It is also licensed under the terms of the [GNU GPLv3 License](https://github.com/ctlcltd/e2-sat-editor/blob/main/LICENSE-GPL-3.0-or-later).
 
-This software will be distribuited under the terms of the GNU GPLv3.
+This software will be distribuited under the terms of the GNU GPLv3 License.
 
