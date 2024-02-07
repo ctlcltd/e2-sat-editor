@@ -392,9 +392,16 @@ deploy_module () {
 		elif [[ "$_SYSTEM" == "CLANG64" || "$_SYSTEM" == "CLANG32" || "$_SYSTEM" == "CLANGARM64" ]]; then
 			deps+=("libc++" "libunwind")
 		fi
+		if [[ $(is_msys) ]]; then
+			deps+=("libdouble-conversion" "libicuin74" "libicuuc74" "libicudt74")
+			if [[ "$__QTVER" == 6 ]]; then
+				deps+=("libb2-1")
+			fi
+		else
+			deps+=("libssp-0")
+		fi
 		deps+=(
 			"libpcre2-16-0"
-			"libssp-0"
 			"libzstd"
 			"zlib1"
 		)
@@ -412,6 +419,9 @@ deploy_module () {
 			"libpcre2-8-0"
 			"libpng16-16"
 		)
+		if [[ $(is_msys) ]]; then
+			deps+=("libmd4c")
+		fi
 		# requires: Core
 	elif [[ "$module" == "Widgets" ]]; then
 		deps=()
