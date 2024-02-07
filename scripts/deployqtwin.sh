@@ -192,6 +192,13 @@ lib_path () {
 		fi
 	fi
 
+	if [[ -z "$lib_path" ]]; then
+		local tip="You should provide lib path through -lib-path argument."
+		error "$(printf "Error lib path unknown\n  %s\n" "$tip")"
+
+		return 1
+	fi
+
 	if [[ ! -e "$lib_path" ]]; then
 		error "$(printf "Error lib path not found: %s\n" "$lib_path")"
 
@@ -337,10 +344,10 @@ deploy_module () {
 		printf "module: %s  as: %s\n" "$module" "$modulename"
 	fi
 
+	local basepath=$(framework_path)
 	local path="${modulename}.dll"
 
-	local basepath=$(framework_path)
-	local path="${basepath}/$path"
+	path="${basepath}/$path"
 
 	if [[ ! -e "$path" ]]; then
 		error "$(printf "Error module file not found: %s\n" "$path")"
@@ -373,19 +380,22 @@ deploy_module () {
 	local deps=()
 
 	if [[ "$module" == "Core" ]]; then
-		deps=(
+		if [[ "$_SYSTEM" == "MINGW64" || "$_SYSTEM" == "UCRT64" ]]; then
+			deps=("libgcc_s_seh-1")
+		elif [[ "$_SYSTEM" == "MINGW32" ]]; then
+			deps=("libgcc_s_dw2-1")
+		fi
+		if [[ "$_SYSTEM" == "MINGW64" || "$_SYSTEM" == "MINGW32" || "$_SYSTEM" == "UCRT64" ]]; then
+			deps+=("libstdc++-6" "libwinpthread-1")
+		elif [[ "$_SYSTEM" == "CLANG64" || "$_SYSTEM" == "CLANG32" || "$_SYSTEM" == "CLANGARM64" ]]; then
+			deps+=("libc++" "libunwind")
+		fi
+		deps+=(
 			"libpcre2-16-0"
 			"libssp-0"
-			"libstdc++-6"
-			"libwinpthread-1"
 			"libzstd"
 			"zlib1"
 		)
-		if [[ "$_SYSTEM" == "MINGW64" ]]; then
-			deps+=("libgcc_s_seh-1")
-		elif [[ "$_SYSTEM" == "MINGW32" ]]; then
-			deps+=("libgcc_s_dw2-1")
-		fi
 	elif [[ "$module" == "Gui" ]]; then
 		deps=(
 			"libbrotlicommon"
@@ -397,17 +407,16 @@ deploy_module () {
 			"libharfbuzz-0"
 			"libiconv-2"
 			"libintl-8"
-			#"libjpeg-8"
 			"libpcre2-8-0"
 			"libpng16-16"
 		)
-		# modules: Core
+		# requires: Core
 	elif [[ "$module" == "Widgets" ]]; then
 		deps=()
-		# modules: Core,Gui
+		# requires: Core,Gui
 	elif [[ "$module" == "PrintSupport" ]]; then
 		deps=()
-		# modules: Core,Gui,Widgets
+		# requires: Core,Gui,Widgets
 	fi
 
 	for $dep in "${deps[@]}"; do
@@ -560,9 +569,18 @@ deploy () {
 
 			return 1
 		fi
+
+		printf "base: %s\n" "$dest_dir"
 	else
 		dest_dir=$(dirname "$input_file")
 		_DEST_DIR="$dest_dir"
+	fi
+
+	if [[ "$_SYSTEM" == "MSVC" ]]; then
+		local tip="You should put Visual C++ Redistributable runtime along the distributable directory."
+		printf "system: %s\n  %s\n" "$_SYSTEM" "$tip"
+	else
+		printf "system: %s\n" "$_SYSTEM"
 	fi
 
 	if [[
@@ -570,10 +588,12 @@ deploy () {
 		"$_SYSTEM" != "MINGW32" ||
 		"$_SYSTEM" != "UCRT64" ||
 		"$_SYSTEM" != "CLANG64" ||
-		"$_SYSTEM" != "CLANG32"
+		"$_SYSTEM" != "CLANG32" ||
+		"$_SYSTEM" != "CLANGARM64" ||
+		"$_SYSTEM" != "MSVC"
 	]]
 	then
-		local tip="Allowed values: MINGW64 MINGW32 UCRT64 CLANG64 CLANG32"
+		local tip="Allowed values: MINGW64 MINGW32 UCRT64 CLANG64 CLANG32 CLANGARM64 MSVC"
 		error "$(printf "Error system value not valid: %s\n  %s\n" "$_SYSTEM" "$tip")"
 
 		return 1
@@ -586,7 +606,14 @@ deploy () {
 
 	mkdir -p "${dest_dir}"
 
-	local modules=("${_MODULES[@]}")
+	local modules=()
+
+	if [[ "${modules[*]}" =~ "Core" ]]; then
+		modules=("${_MODULES[@]}")
+	else
+		modules+=("Core")
+		modules+=("${_MODULES[@]}")
+	fi
 
 	for module in "${modules[@]}"; do
 		module=$(trim "$module")
