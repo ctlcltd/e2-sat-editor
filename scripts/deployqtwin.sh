@@ -217,12 +217,6 @@ qt_path () {
 
 	local qt_path=$(lib_path)
 
-	if [[ -e "${qt_path}/qt" ]]; then
-		qt_path="${qt_path}/qt"
-	else
-		qt_path="${qt_path}/qt{$__QTVER}"
-	fi
-
 	if [[ ! -e "$qt_path" ]]; then
 		error "$(printf "Error Qt path not found: %s\n" "$qt_path")"
 
@@ -255,7 +249,13 @@ plugins_path () {
 	fi
 
 	local qt_path=$(qt_path)
-	local plugins_path="${qt_path}/plugins"
+	local plugins_path
+
+	if [[ $(is_msys) ]]; then
+		plugins_path="${qt_path}/share/qt${__QTVER}/plugins"
+	else
+		plugins_path="${qt_path}/lib/qt${__QTVER}/plugins"
+	fi
 
 	if [[ ! -e "$plugins_path" ]]; then
 		error "$(printf "Error Qt plugins path not found: %s\n" "$plugins_path")"
@@ -340,7 +340,7 @@ copy_dependency () {
 deploy_module () {
 	local module="$1"
 
-	local modulename="Qt${$__QTVER}${module}"
+	local modulename="Qt${__QTVER}${module}"
 
 	if [[ "$_VERBOSE" == true ]]; then
 		printf "module: %s  as: %s\n" "$module" "$modulename"
@@ -421,7 +421,7 @@ deploy_module () {
 		# requires: Core,Gui,Widgets
 	fi
 
-	for $dep in "${deps[@]}"; do
+	for dep in "${deps[@]}"; do
 		local basepath=$(lib_path)
 		local path="${dep}.dll"
 
@@ -485,7 +485,7 @@ deploy_plugin () {
 
 	local deps=()
 
-	for $dep in "${deps[@]}"; do
+	for dep in "${deps[@]}"; do
 		local basepath=$(lib_path)
 		local path="${dep}.dll"
 
@@ -512,7 +512,7 @@ deploy_library () {
 		path="$library"
 	else
 		basepath=$(lib_path)
-		path="${basepath}/$library"
+		path="${basepath}/bin/$library"
 	fi
 
 	if [[ ! -e "$path" ]]; then
@@ -586,12 +586,12 @@ deploy () {
 	fi
 
 	if [[
-		"$_SYSTEM" != "MINGW64" ||
-		"$_SYSTEM" != "MINGW32" ||
-		"$_SYSTEM" != "UCRT64" ||
-		"$_SYSTEM" != "CLANG64" ||
-		"$_SYSTEM" != "CLANG32" ||
-		"$_SYSTEM" != "CLANGARM64" ||
+		"$_SYSTEM" != "MINGW64" &&
+		"$_SYSTEM" != "MINGW32" &&
+		"$_SYSTEM" != "UCRT64" &&
+		"$_SYSTEM" != "CLANG64" &&
+		"$_SYSTEM" != "CLANG32" &&
+		"$_SYSTEM" != "CLANGARM64" &&
 		"$_SYSTEM" != "MSVC"
 	]]
 	then
@@ -601,6 +601,7 @@ deploy () {
 		return 1
 	fi
 
+	qt_version
 	lib_path
 	qt_path
 	framework_path
@@ -610,7 +611,7 @@ deploy () {
 
 	local modules=()
 
-	if [[ "${modules[*]}" =~ "Core" ]]; then
+	if [[ "${_MODULES[*]}" =~ "Core" ]]; then
 		modules=("${_MODULES[@]}")
 	else
 		modules+=("Core")
