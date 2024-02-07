@@ -25,6 +25,8 @@ _QT_VERSION=6
 _MODULES=("Core" "Gui" "Widgets")
 # private array _PLUGINS
 _PLUGINS=("platforms" "styles")
+# private array _APPEND_LIBS
+_APPEND_LIBS=()
 # private string _LIB_PATH
 _LIB_PATH=""
 # private string _QT_PATH
@@ -647,6 +649,8 @@ if [[ -z "$@" ]]; then
 	exit 0
 fi
 
+_INPUT_FILE="$1"
+
 for SRG in "$@"; do
 	case "$SRG" in
 		--verbose)
@@ -721,15 +725,14 @@ for SRG in "$@"; do
 			exit 0
 			;;
 		-*)
-			[[ "$1" == "-"* ]] && shift
-			printf "%s: %s %s\n\n" "$0" "Illegal option" "$2"
+			printf "%s: %s %s\n\n" "$0" "Illegal option" "$1"
 
 			usage 1
 
 			exit 1
 			;;
 		*)
-			[[ "$1" != -* ]] && _INPUT_FILE="$1"
+			[[ "$1" != "-"* ]] && shift
 			;;
 	esac
 done

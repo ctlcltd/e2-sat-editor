@@ -878,6 +878,8 @@ if [[ -z "$@" ]]; then
 	exit 0
 fi
 
+_INPUT_FILE="$1"
+
 for SRG in "$@"; do
 	case "$SRG" in
 		--verbose)
@@ -931,7 +933,6 @@ for SRG in "$@"; do
 			exit 0
 			;;
 		-*)
-			[[ "$1" == "-"* ]] && shift
 			printf "%s: %s %s\n\n" "$0" "Illegal option" "$2"
 
 			usage 1
@@ -939,7 +940,7 @@ for SRG in "$@"; do
 			exit 1
 			;;
 		*)
-			[[ "$1" != -* ]] && _INPUT_FILE="$1"
+			[[ "$1" != "-"* ]] && shift
 			;;
 	esac
 done
