@@ -60,8 +60,8 @@ usage () {
 	printf "%s\n"   "-e --print-excluded       Print excluded files"
 	printf "%s\n"   "-f --force                Force overwrite of files"
 	printf "%s\n"   "-np --no-deploy-plugins   Disallow plugins deploy"
-	printf "%s\n"   "-plugins                  Plugins to deploy (platforms styles)"
-	printf "%s\n"   "-exclude-lib-paths        Library paths to exclude (/usr/lib /System/Library)"
+	printf "%s\n"   "-plugins                  Plugins to deploy (platforms,styles)"
+	printf "%s\n"   "-exclude-lib-paths        Library paths to exclude (/usr/lib,/System/Library)"
 	printf "%s\n"   "-qt-path                  Set Qt path"
 	printf "%s\n"   "-framework-path           Set Qt framework path"
 	printf "%s\n"   "-plugins-path             Set Qt plugins path"
@@ -569,6 +569,14 @@ copy_dependency () {
 				local filename=$(basename "$srcpath")
 				filename="${filename%%.framework}"
 
+				if [[ -e "$dstpath" ]]; then
+					if [[ "$_FORCE_OVERWRITE" == true ]];
+						rm -Rf "$dstpath"
+					else
+						return 0
+					fi
+				fi
+
 				mkdir -p "$dstpath/Versions/A"
 
 				cp "$srcpath/Versions/A/$filename" "$dstpath/Versions/A/$filename"
@@ -578,10 +586,14 @@ copy_dependency () {
 				ln -s "Versions/A/$filename" "$filename"
 				ln -s "Versions/A" "Versions/Current"
 				cd "$pwd"
-			else
+			elif [[ "$_FORCE_OVERWRITE" == true ]];
+				cp -Rf "$srcpath" "$dstpath"
+			elif [[ ! -e "$dstpath" ]]
 				cp -R "$srcpath" "$dstpath"
 			fi
-		else
+		elif [[ "$_FORCE_OVERWRITE" == true ]]; then
+			cp -f "$srcpath" "$dstpath"
+		elif [[ ! -e "$$dstpath" ]]; then
 			cp "$srcpath" "$dstpath"
 		fi
 	elif [[ "$_VERBOSE" == true ]]; then
@@ -889,12 +901,12 @@ for SRG in "$@"; do
 			shift
 			;;
 		-plugins*)
-			_PLUGINS=("$2")
+			_PLUGINS=(${2//,/ })
 			shift
 			shift
 			;;
 		-exclude-lib-paths*)
-			_EXCLUDE_LIB_PATHS=("$2")
+			_EXCLUDE_LIB_PATHS=(${2//,/ })
 			shift
 			shift
 			;;
