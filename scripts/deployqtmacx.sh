@@ -570,7 +570,7 @@ copy_dependency () {
 				filename="${filename%%.framework}"
 
 				if [[ -e "$dstpath" ]]; then
-					if [[ "$_FORCE_OVERWRITE" == true ]];
+					if [[ "$_FORCE_OVERWRITE" == true ]]; then
 						rm -Rf "$dstpath"
 					else
 						return 0
@@ -586,9 +586,9 @@ copy_dependency () {
 				ln -s "Versions/A/$filename" "$filename"
 				ln -s "Versions/A" "Versions/Current"
 				cd "$pwd"
-			elif [[ "$_FORCE_OVERWRITE" == true ]];
+			elif [[ "$_FORCE_OVERWRITE" == true ]]; then
 				cp -Rf "$srcpath" "$dstpath"
-			elif [[ ! -e "$dstpath" ]]
+			elif [[ ! -e "$dstpath" ]]; then
 				cp -R "$srcpath" "$dstpath"
 			fi
 		elif [[ "$_FORCE_OVERWRITE" == true ]]; then
