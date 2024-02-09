@@ -6,11 +6,11 @@ Generic instructions to help with compiling e2 SAT Editor on different platforms
 
 Utils scripts in **scripts** folder.
 
-- For Linux or BSD or Unix use `scripts/build.sh`
+- For Linux or BSD or Unix use `scripts/build-qmake.sh`
 
-- For macOS with Xcode use `scripts/darwin.sh`
+- For macOS with Xcode use `scripts/build-darwin.sh`
 
-- For Windows with MinGW-64 use `scripts/mingw.sh`
+- For Windows with MinGW-64 use `scripts/build-mingw.sh`
 
 
 ### Required dependencies

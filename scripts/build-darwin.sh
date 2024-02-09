@@ -1,22 +1,24 @@
 #!/bin/bash
-# Build in *ux with QMake
+# Build or initialize an xcodeproj with QMake
 # 
 
 usage () {
 	if [[ -z "$1" ]]; then
-		printf "%s\n\n" "Build in *ux with QMake"
+		printf "%s\n\n" "Build or initialize an xcodeproj with QMake"
 	fi
 
-	printf "%s\n\n" "bash build.sh [OPTIONS] [-q qmake] [-q qmake6] [-b debug | release]"
+	printf "%s\n\n" "bash build-darwin.sh [OPTIONS] [-b debug | release]"
 	printf "%s\n"   "-q --qmake         QMake executable."
 	printf "%s\n"   "-c --cleanup       Task: cleanup"
 	printf "%s\n"   "-p --prepare       Task: prepare"
 	printf "%s\n"   "-b --build         Task: build"
+	printf "%s\n"   "-x --xcodeproj     Task: xcodeproj"
 	printf "%s\n"   "-d --default       Task: default"
+	printf "%s\n"   "-r --release       Task: release"
 	printf "%s\n"   "-h --help          Display this help and exit."
 }
 
-#//TODO improve
+#TODO improve
 src () {
 	if [[ $(basename $PWD) != "src" ]]; then
 		cd src
@@ -29,28 +31,14 @@ src () {
 	fi
 }
 
-compiler () {
-	local compiler="QMake"
-
-	if [[ -n "$TARGET" ]]; then
-		compiler="$compiler $TARGET"
-	fi
-
-	printf "%s\n\n" "$compiler"
-
-	$QMAKE --version
-}
-
 init () {
 	if [[ -z "$QMAKE" ]]; then
-		if [[ -n $(type -t qmake6) ]]; then
-			QMAKE="qmake6"
-		elif [[ -n $(type -t qmake) ]]; then
+		if [[ -n $(type -t qmake) ]]; then
 			QMAKE="qmake"
 		fi
 	fi
 
-	if [[ -z $(type -t "$QMAKE") ]]; then
+	if [[ -z $(type -t qmake) ]]; then
 		echo "QMake not found."
 
 		exit 1;
@@ -66,6 +54,18 @@ init () {
 	else
 		TARGET="release"
 	fi
+}
+
+compiler () {
+	local compiler="QMake"
+
+	if [[ -n "$TARGET" ]]; then
+		compiler="$compiler $TARGET"
+	fi
+
+	printf "%s\n\n" "$compiler"
+
+	$QMAKE --version
 }
 
 cleanup () {
@@ -90,7 +90,7 @@ prepare () {
 	printf "%s\n\n" "preparing QMake ..."
 
 	src
-	$QMAKE
+	$QMAKE -spec macx-clang e2-sat-editor.pro
 }
 
 build () {
@@ -102,12 +102,52 @@ build () {
 	make $TARGET && $QMAKE
 }
 
+xcodeproj () {
+	printf "%s\n\n" "xcodeproj."
+	compiler
+	printf "%s\n\n" "preparing xcodeproj ..."
+
+	src
+	$QMAKE -spec macx-xcode
+}
+
+release () {
+	printf "%s\n\n" "release."
+
+	src
+
+	cp -R "e2 SAT Editor.app" "build/e2 SAT Editor.app"
+
+	printf "%s\n\n" "pre actions ..."
+
+	QMDIR="build/e2 SAT Editor.app/Contents/Resources/translations"
+
+	mkdir -p "$QMDIR"
+	cp ../dist/translations/*.qm "$QMDIR"
+	cp /usr/local/share/qt/translations/qt_*.qm "$QMDIR"
+	cp /usr/local/share/qt/translations/qtbase_*.qm "$QMDIR"
+	rm -R "$QMDIR"/qt_help_*.qm
+
+	cp "../dist/macos/Info.plist.in" "build/e2 SAT Editor.app/Contents/Info.plist"
+	cp "../dist/macos/PkgInfo.in" "build/e2 SAT Editor.app/Contents/PkgInfo"
+
+	printf "%s\n\n" "run deploy script ..."
+
+	bash ../scripts/deployqtmacx.sh "build/e2 SAT Editor.app" --verbose
+
+	printf "%s\n\n" "copying e2se files ..."
+
+	cp ../dist/common/Readme.txt.in build/Readme.txt
+	cp COPYING build/License.txt
+}
+
 default () {
 	printf "%s\n\n" "default."
 
 	init
 	prepare
 	build
+	xcodeproj
 }
 
 complete () {
@@ -145,8 +185,21 @@ for SRG in "$@"; do
 			shift
 			shift
 			;;
+		-x|--xcodeproj)
+			init
+			prepare
+			xcodeproj
+			shift
+			;;
 		-d|--default)
 			default
+			shift
+			;;
+		-r|--release)
+			init
+			prepare
+			build
+			release
 			shift
 			;;
 		-h|--help)

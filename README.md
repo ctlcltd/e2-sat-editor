@@ -90,8 +90,6 @@ Same languages as `qt-base`, new languages could be added using the website app.
 
 ```git clone https://github.com/ctlcltd/e2-sat-editor.git```
 
-&nbsp;
-
 Instructions on how to compile in [INSTALL.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/INSTALL.md) file.
 
 

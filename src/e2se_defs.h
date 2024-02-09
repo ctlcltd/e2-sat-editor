@@ -17,14 +17,44 @@
 
 
 // build target: debug, release
-#define E2SE_BUILD E2SE_TARGET_DEBUG
+//#define E2SE_BUILD E2SE_TARGET_DEBUG
 
 // portable application
-// #define E2SE_PORTABLE
-
+//#define E2SE_PORTABLE
 
 // demo mode
-// #define E2SE_DEMO
+//#define E2SE_DEMO
+
+
+#ifndef NOAUTODISCOVER
+
+#ifndef E2SE_BUILD
+#if defined(CMAKE_BUILD_TYPE)
+#if CMAKE_BUILD_TYPE == "Debug"
+#define E2SE_BUILD E2SE_TARGET_DEBUG
+#else
+#define E2SE_BUILD E2SE_TARGET_RELEASE
+#endif
+#elif defined(NDEBUG) || defined(_NDEBUG)
+#define E2SE_BUILD E2SE_TARGET_RELEASE
+#else
+#define E2SE_BUILD E2SE_TARGET_DEBUG
+#endif
+#endif
+
+#ifndef E2SE_PORTABLE
+#if defined(WIN32) || defined(_WIN32)
+#define E2SE_PORTABLE
+#endif
+#endif
+
+#ifndef E2SE_DEMO
+#if defined(__EMSCRIPTEN__)
+#define E2SE_DEMO
+#endif
+#endif
+
+#endif
 
 
 #endif /* e2se_defs_h */
