@@ -1,0 +1,101 @@
+name: build-win32
+
+on:
+  workflow_dispatch:
+
+jobs:
+  user-manual:
+    uses: ./.github/workflows/user-manual.yml
+    with:
+      runs-on: ubuntu-latest
+
+  build:
+
+    runs-on: windows-2022
+    needs: user-manual
+
+    env:
+      BUILD_TYPE: Release
+
+    steps:
+    - run: git config --global core.autocrlf input
+    - uses: actions/checkout@v4
+      with:
+        repository: ctlcltd/e2-sat-editor
+        path: e2-sat-editor
+
+    - name: Setup MSYS2
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: MINGW32
+        pacboy: >-
+          cc:i cmake:i ninja:i qt5-base:i qt5-translations:i curl:i
+
+    - name: Configure CMake
+      working-directory: ${{github.workspace}}/e2-sat-editor/src
+      shell: msys2 {0}
+      run: |
+        cmake \
+        -G Ninja \
+        -B build \
+        -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} \
+        -DWITH_QT5=ON
+
+    - name: Build
+      working-directory: ${{github.workspace}}/e2-sat-editor/src
+      shell: msys2 {0}
+      run: cmake --build build --config ${{ env.BUILD_TYPE }}
+
+    - name: Download user-manual artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: user-manual
+        path: user-manual
+        run-id: ${{ needs.user-manual.outputs.run-id }}
+
+    - name: Deploy
+      working-directory: ${{github.workspace}}/e2-sat-editor/src
+      continue-on-error: true
+      shell: msys2 {0}
+      run: |
+        DESTDIR=../AppDir ninja -C build install
+        # pre actions
+        QMDIR="AppDir/Program Files (x86)/e2-sat-editor/bin/translations"
+        mkdir -p "$QMDIR"
+        cp ../dist/translations/*.qm "$QMDIR"
+        cp /mingw32/share/qt5/translations/qt_*.qm "$QMDIR"
+        cp /mingw32/share/qt5/translations/qtbase_*.qm "$QMDIR"
+        rm -R "$QMDIR"/qt_help_*.qm
+        # run deploy script
+        bash ../scripts/deployqtwin.sh "AppDir/Program Files (x86)/e2-sat-editor/bin/e2-sat-editor.exe" \
+        --verbose \
+        -system MINGW32 \
+        -qt-version 5 \
+        -modules Core,Gui,Widgets,PrintSupport \
+        -plugins platforms,styles,printsupport \
+        -libraries libcurl-4.dll,libcrypto-3.dll,libidn2-0.dll,libnghttp2-14.dll,libpsl-5.dll,libssh2-1.dll,libssl-3.dll,libunistring-5.dll
+        # post actions
+        rm "AppDir/Program Files (x86)/e2-sat-editor/bin/platforms/qdirect2d.dll"
+        # package
+        mkdir -p ../artifact/{cli,user-manual}
+        cp ../dist/common/Readme.txt.in ../artifact/Readme.txt
+        cp COPYING ../artifact/License.txt
+        mv "AppDir/Program Files (x86)/e2-sat-editor/bin/"*.dll ../artifact/
+        mv "AppDir/Program Files (x86)/e2-sat-editor/bin/"{platforms,styles,printsupport,translations} ../artifact/
+        mv "AppDir/Program Files (x86)/e2-sat-editor/bin/e2-sat-editor.exe" ../artifact/
+        mv "AppDir/Program Files (x86)/e2-sat-editor/bin/e2se-cli.exe" ../artifact/cli/
+        cp ../artifact/{libgcc_s_dw2-1,libstdc++-6,libwinpthread-1}.dll ../artifact/cli/
+        mv "${{github.workspace}}/user-manual" ../artifact/
+
+    # - name: Test
+    #   working-directory: ${{github.workspace}}/e2-sat-editor/artifact
+    #   continue-on-error: true
+    #   timeout-minutes: 1
+    #   shell: pwsh
+    #   run: |
+    #     $env:DEBUG=1; $env:QT_QPA_PLATFORM=minimal; .\e2-sat-editor.exe
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        path: ${{github.workspace}}/e2-sat-editor/artifact

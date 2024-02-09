@@ -7,7 +7,7 @@ usage () {
 		printf "%s\n\n" "Build in *ux with QMake"
 	fi
 
-	printf "%s\n\n" "bash build-qmake-ux.sh [OPTIONS] [-q qmake] [-q qmake6] [-b debug | release]"
+	printf "%s\n\n" "bash build-qmake.sh [OPTIONS] [-q qmake] [-q qmake6] [-b debug | release]"
 	printf "%s\n"   "-q --qmake         QMake executable."
 	printf "%s\n"   "-c --cleanup       Task: cleanup"
 	printf "%s\n"   "-p --prepare       Task: prepare"

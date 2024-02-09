@@ -1,0 +1,83 @@
+name: build-macos-intel
+
+on:
+  workflow_dispatch:
+
+jobs:
+  user-manual:
+    uses: ./.github/workflows/user-manual.yml
+    with:
+      runs-on: ubuntu-latest
+
+  build:
+
+    runs-on: macos-12
+    needs: user-manual
+
+    env:
+      BUILD_TYPE: Release
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: ctlcltd/e2-sat-editor
+        path: e2-sat-editor
+
+    - name: Setup Homebrew
+      run: brew install cmake ninja qt6 curl
+
+    - name: Configure CMake
+      working-directory: ${{github.workspace}}/e2-sat-editor/src
+      run: |
+        export PKG_CONFIG_PATH="/usr/local/opt/curl/lib/pkgconfig"
+        cmake \
+        -G Ninja \
+        -B build \
+        -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+
+    - name: Build
+      working-directory: ${{github.workspace}}/e2-sat-editor/src
+      run: cmake --build build --config ${{ env.BUILD_TYPE }}
+
+    - name: Download user-manual artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: user-manual
+        path: user-manual
+        run-id: ${{ needs.user-manual.outputs.run-id }}
+
+    - name: Deploy
+      working-directory: ${{github.workspace}}/e2-sat-editor/src
+      continue-on-error: true
+      run: |
+        DESTDIR=../AppDir ninja -C build install
+        cp ../dist/macos/PkgInfo.in AppDir/usr/local/e2\ SAT\ Editor.app/Contents/PkgInfo
+        # pre actions
+        QMDIR=AppDir/usr/local/e2\ SAT\ Editor.app/Contents/Resources/translations
+        mkdir -p "$QMDIR"
+        cp ../dist/translations/*.qm "$QMDIR"
+        cp /usr/local/opt/qt/share/qt/translations/qt_*.qm "$QMDIR"
+        cp /usr/local/opt/qt/share/qt/translations/qtbase_*.qm "$QMDIR"
+        rm -R "$QMDIR"/qt_help_*.qm
+        # run deploy script
+        bash ../scripts/deployqtmacx.sh AppDir/usr/local/e2\ SAT\ Editor.app
+        # package
+        mkdir -p ../artifact/{cli,user-manual}
+        cp ../dist/common/Readme.txt.in ../artifact/Readme.txt
+        cp COPYING ../artifact/License.txt
+        mv AppDir/usr/local/e2\ SAT\ Editor.app ../artifact/
+        mv AppDir/usr/local/e2se-cli ../artifact/cli/
+        mv "${{github.workspace}}/user-manual" ../artifact/
+
+    # - name: Test
+    #   working-directory: ${{github.workspace}}/e2-sat-editor/artifact
+    #   continue-on-error: true
+    #   timeout-minutes: 1
+    #   run: |
+    #     sudo mv /usr/local/Cellar /usr/local/Cellar.bak 
+    #     DEBUG=1 QT_QPA_PLATFORM=minimal ./e2\ SAT\ Editor.app/Contents/MacOS/e2\ SAT\ Editor
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        path: ${{github.workspace}}/e2-sat-editor/artifact

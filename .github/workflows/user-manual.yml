@@ -1,0 +1,43 @@
+name: user-manual
+
+on:
+  workflow_call:
+    inputs:
+      runs-on:
+        type: string
+        default: ubuntu-latest
+    outputs:
+      run-id:
+        value: ${{github.run_id}}
+  workflow_dispatch:
+    inputs:
+      runs-on:
+        type: string
+        default: ubuntu-latest
+
+jobs:
+  build:
+
+    runs-on: ${{ inputs.runs-on }}
+
+    steps:
+    - run: git config --global core.autocrlf input
+    - uses: actions/checkout@v4
+      with:
+        repository: ctlcltd/e2se-site
+        path: e2se-site
+
+    - name: NPM install
+      working-directory: ${{github.workspace}}/e2se-site/src
+      run: npm install
+
+    - name: Build user-manual
+      working-directory: ${{github.workspace}}/e2se-site/src
+      run: |
+        npm run dist.help -- --dest=${{github.workspace}}/e2se-site/out/
+
+    - name: Archive user-manual artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: user-manual
+        path: ${{github.workspace}}/e2se-site/out
