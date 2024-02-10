@@ -139,7 +139,7 @@ cd src
 cmake --build .
 ```
 
-To match the requirement of the demo, you need also *e2se-seeds/enigma_db* folder from the repository **e2se-seeds**.
+To match the requirement of the demo, you need also *e2se-seeds/enigma_db* folder from the repository `ctlcltd/e2se-seeds`.
 ```
 cp -R e2se-seeds/enigma_db res/enigma_db
 ```
