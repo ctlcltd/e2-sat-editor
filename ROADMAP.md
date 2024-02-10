@@ -6,6 +6,8 @@ One of the goals is automated build, but without continuous integration, to crea
 
 Another main goal, extensions and scripting, import and export other channel list formats, add tools, remote control and other utilities.
 
+To discuss the Roadmap, use [Discussions](https://github.com/ctlcltd/e2-sat-editor/discussions/13).
+
 
 ## Enhancements
 
@@ -20,8 +22,9 @@ Less ambitious features:
 - picon image transformation, resize, apply image masks
 
 Improvements:
+- [automated build](https://github.com/ctlcltd/e2-sat-editor/discussions/17)
 - less memory usage
-- improve file handling
+- file handling
 
 
 ## Scripting support
@@ -79,19 +82,6 @@ Legacy but universal approach. Standard streams do not require network and are a
 - Presence of language interpreter binaries
 
 
-## Automated build
-
-Set up an automated build system, for example *GitHub Actions*. Need to focus on resources, limitations, usage limits per account.
-
-Need stable and recent versions of *Qt* and *libcurl4*, pre-distributed and trusted binaries.
-
-Currently `macdeployqt` and `windeployqt` do not generate working builds.
-
-Need to create *script* to automatically resolve and link dependencies, all the libraries that will be bundled with the software.
-
-The software distributed for *Windows* and *macOS* is not signed, nor distributed through the main distribution channels, for example *Windows Store* and *App Store*. Distribution through these channels may have limitations, for example: *Qt* built to be compliant with App Store. The software for macOS is distributed only for *Intel x86_64* architecture. Bringing reliable developers into the team, with the ability to sign, could make possible to sign the software and build and test it for *Silicon* architecture.
-
-
 ## Smart Userbouquet
 
 Smart Userbouquets are userbouquets created through filtering. The idea behind Smart Userbouquets is font collections created with metadata.
@@ -116,9 +106,11 @@ The software is currently published and distributed on Flathub, it is the main *
 
 Need to test again the software to open and save with Flatpak sandbox and restricted permissions.
 
-Note: *Qt* internally uses *GTK+* API to a limited extent to open and write files and directories.
+> [!NOTE]
+> Note: *Qt* internally uses *GTK+* API to a limited extent to open and write files and directories.
 
-Note: *Ubuntu 22.04 LTS* (EOSS: April 2027, EOL: April 2032), contains `xdg-desktop-portal` version 1.14.3, from 2022; *Ubuntu 20.04 LTS* (ESM, EOSS: April 2025, EOL: April 2030), contains `xdg-desktop-portal` version 1.6.0, from 2019; *Ubuntu 18.04 LTS* (ESM, EOSS: June 2023, EOL: April 2028), still mentioned on Flathub, contains `xdg-desktop-portal` version 1.0.3, from 2019.
+> [!NOTE]
+> Note: *Ubuntu 22.04 LTS* (EOSS: April 2027, EOL: April 2032), contains `xdg-desktop-portal` version 1.14.3, from 2022; *Ubuntu 20.04 LTS* (ESM, EOSS: April 2025, EOL: April 2030), contains `xdg-desktop-portal` version 1.6.0, from 2019; *Ubuntu 18.04 LTS* (ESM, EOSS: June 2023, EOL: April 2028), still mentioned on Flathub, contains `xdg-desktop-portal` version 1.0.3, from 2019.
 
 
 ### 2) WebAssembly (save and open multiple files)
@@ -127,7 +119,8 @@ At present the online **demo** has limitations. *Qt for WebAssembly* is used.
 
 On *Qt for WASM* is not possible to open and save multiple files from file dialog. Multiple files is the nature of the Enigma2 directory format. *Qt for WASM* has support to open and save directory, but is currently not implemented in the public API, maybe unstable.
 
-Note: Qt Wasm versions upper then 6.4.3 seems to have issues with `QDialog`, showing accessibility warns instead of window content.
+> [!NOTE]
+> Note: Qt Wasm versions upper then 6.4.3 seems to have issues with `QDialog`, showing accessibility warns instead of window content.
 
 Need to test again the software for compatibility with Qt version upper than 6.4.3.
 
@@ -145,7 +138,5 @@ Need to extend also: `e2se::gui`, `e2se::tab`, may also be involved *pointers* a
 This could increase the software complexity.
 
 &nbsp;
-
-To discuss the Roadmap, use [Discussions](https://github.com/ctlcltd/e2-sat-editor/discussions).
 
 Suggestions of any kind, open a [Feature request](https://github.com/ctlcltd/e2-sat-editor/issues/new?template=feature_request.yml).
