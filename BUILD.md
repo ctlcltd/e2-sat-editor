@@ -12,19 +12,16 @@ Utils scripts in **scripts** folder.
 ### Required dependencies
 
 Requirements needed to compile:
-
 - build tools (`qmake` `cmake` `ninja`)
 - C++17 (`gcc` `clang`)
 
 Libraries required as dependencies:
-
 - `qt6-base` \| `qt5-base`
 - `qt6-base-dev` \| `qt5-base-dev`
 - `qt6-translations` \| `qt5-translations`
 - `libcurl4` `libcurl-dev`
 
 Additional requirements for *WebAssembly*:
-
 - *Qt for WebAssembly* to cross-compile
 - `emscripten`
 - `emsdk`
@@ -36,16 +33,16 @@ Additional requirements for *WebAssembly*:
 
 Compiling with CMake and MinGW-64 for Windows in Linux host.
 
-In order to cross-compile, the following packages are required:
+In order to cross-compile, the following packages are required:  
 `base-devel`, `cmake`, `mingw-w64-cmake-static`, `mingw-w64-qt6-base-static`, `mingw-w64-curl`
  
-To build with shared libraries, the following:
+To build with shared libraries, the following:  
 `mingw-w64-cmake`, `mingw-w64-qt6-base`
 
 > [!TIP]
 > I used custom *Arch Linux* repositories: `Martchus/PKGBUILDs` from **@Martchus**
 
-With *MSYS2*, the following:
+With *MSYS2*, the following:  
 `cc`, `cmake`, `ninja`, `qt6-base`, `qt6-translations`, `curl`
 
 Clone the repository, then from the source directory, execute commands:
@@ -67,10 +64,10 @@ cmake --build build
 
 Compiling with qmake or CMake in macOS host.
 
-In order to compile, the following packages are required:
+In order to compile, the following packages are required:  
 Xcode, Xcode Command Line Tools, Qt, curl
 
-And at your choice:
+And at your choice:  
 `cmake` or `qmake`
 
 Clone the repository, then from the source directory, execute commands:
@@ -93,15 +90,15 @@ cmake --build build
 
 Compiling with qmake or CMake for Linux or BSD or Unix.
 
-In order to compile, the following packages are required, on *Arch Linux*:
+In order to compile, the following packages are required, on *Arch Linux*:  
 `base-devel`, `qt6-base`, `curl`
 
-On *Ubuntu*, the following:
-`curl`, `libcurl4-openssl-dev`
-`qt6-base-dev`, `qt6-translations-l10n`
+On *Ubuntu*, the following:  
+`curl`, `libcurl4-openssl-dev`  
+`qt6-base-dev`, `qt6-translations-l10n`  
 `libgl1-mesa-dev`, `libglvnd-dev`, `libxcb-xkb-dev`, `libxkbcommon-x11-dev`, `libvulkan-dev`
 
-And at your choice:
+And at your choice:  
 `cmake` or `qmake`
 
 Clone the repository, then from the source directory, execute commands:
@@ -123,7 +120,7 @@ cmake --build build
 
 Compiling with CMake for *Qt for WebAssembly* on supported host.
 
-In order to cross-compile, the following packages are required:
+In order to cross-compile, the following packages are required:  
 `gcc`, `clang`, `llvm`, `cmake`, `ninja`, `qt6-base`, `emscripten`, `emsdk`, `python3`
 
 Follow the instructions from the Qt Documentation website to obtain or build Qt Wasm in your host.
