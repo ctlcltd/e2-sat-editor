@@ -17,7 +17,9 @@
 #include <QSettings>
 #include <QTranslator>
 #include <QLibraryInfo>
+#include <QCommandLineParser>
 #include <QByteArray>
+#include <QMessageBox>
 #include <QSplitter>
 #include <QGroupBox>
 #include <QTabWidget>
@@ -68,8 +70,8 @@ gui::gui(int argc, char* argv[])
 		appPath.truncate(appPath.indexOf("/src"));
 #endif
 
-	// portable QSettings
 #ifdef E2SE_PORTABLE
+	QSettings::setDefaultFormat(QSettings::IniFormat);
 	QSettings::setPath(QSettings::IniFormat, QSettings::UserScope, appPath);
 #endif
 
@@ -135,6 +137,17 @@ gui::gui(int argc, char* argv[])
 
 	// i18n rtl
 	// mroot->setLayoutDirection(Qt::RightToLeft);
+
+	QCommandLineParser clp;
+	clp.addVersionOption();
+	clp.addPositionalArgument("file", "");
+	clp.process((*mroot->instance()));
+
+	QStringList args = clp.positionalArguments();
+	if (! args.isEmpty() && ! args.first().isEmpty())
+	{
+		this->ifp = args.first().toStdString();
+	}
 
 	this->theme = new e2se_gui::theme(mroot);
 	theme->initStyle();
@@ -1734,7 +1747,33 @@ void gui::launcher()
 	debug("launcher");
 
 	setFlags(GUI_CXE::init);
-	newTab();
+
+	string path = this->ifp;
+
+	if (! path.empty())
+	{
+		if (
+			std::filesystem::exists(path) &&
+			! ((std::filesystem::status(path).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none) &&
+			! ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none)
+		)
+		{
+			newTab(path);
+		}
+		else
+		{
+			error("launcher", tr("Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(path.data()).toStdString());
+
+			QMessageBox::critical(this->mwid, tr("File Error", "error"), tr("Error opening files.", "error"));
+
+			newTab();
+		}
+	}
+	else
+	{
+		newTab();
+	}
+
 	tabChanged(0);
 }
 

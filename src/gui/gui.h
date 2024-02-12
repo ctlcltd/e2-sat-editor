@@ -357,6 +357,7 @@ class gui : protected e2se::log_factory
 		QMenuBar* menu;
 		QMenu* mwind;
 		QActionGroup* mwtabs;
+		string ifp;
 		unordered_map<int, QAction*> gmenu;
 		unordered_map<int, QAction*> ttmenu;
 		unordered_map<int, tab*> ttabs;

@@ -226,6 +226,7 @@ QWidget* _platform_macx::_osWidgetBlend(QWidget* widget, FX_MATERIAL material, F
 	return widget;
 }
 
+//TODO improve native macx context menu items
 void _platform_macx::_osMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 {
 	QWidget* top = widget->window();

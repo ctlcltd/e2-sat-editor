@@ -73,6 +73,10 @@ class _platform
 		{
 			return widget;
 		}
+		static bool osExperiment()
+		{
+			return QSettings().value("preference/osExperiment", true).toBool();
+		}
 };
 
 #ifdef Q_OS_MAC

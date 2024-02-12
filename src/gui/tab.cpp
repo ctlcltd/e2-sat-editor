@@ -1624,7 +1624,6 @@ void tab::ftpComboItems()
 		if (! settings.contains("profileName"))
 			continue;
 
-		//TODO improve profile selected and array index
 		ftp_combo->addItem(settings.value("profileName").toString(), i + 1);
 	}
 	settings.endArray();
@@ -1969,8 +1968,7 @@ void tab::ftpDownload()
 				return;
 			}
 
-			//TODO TEST potential SEGFAULT
-			// QMessageBox and main thread
+			//TODO TEST potential SEGFAULT QMessageBox and main thread
 			QMetaObject::invokeMethod(this->cwid, [=]() {
 				view->reset();
 				view->load();

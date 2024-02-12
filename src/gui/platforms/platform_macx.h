@@ -22,7 +22,6 @@
 #include <QTextEdit>
 #include <QLabel>
 
-//TODO improve native macx context menu items
 class _platform_macx
 {
 	Q_DECLARE_TR_FUNCTIONS(_platform_macx)
@@ -70,18 +69,14 @@ class _platform_macx
 
 		static QWidget* osWindowBlend(QWidget* widget)
 		{
-			bool experiment = QSettings().value("preference/osExperiment", true).toBool();
-			experiment = e2se_gui::theme::isDefault() ? experiment : false;
-			if (QSettings().value("application/platformOsTranslucency", experiment).toBool())
+			if (osExperiment() && e2se_gui::theme::isDefault())
 				return _osWindowBlend(widget);
 			else
 				return widget;
 		}
 		static QWidget* osWidgetBlend(QWidget* widget, FX_MATERIAL material = fx_translucent_background, FX_BLENDING blending = fx_translucent)
 		{
-			bool experiment = QSettings().value("preference/osExperiment", true).toBool();
-			experiment = e2se_gui::theme::isDefault() ? experiment : false;
-			if (QSettings().value("application/platformOsTranslucency", experiment).toBool())
+			if (osExperiment() && e2se_gui::theme::isDefault())
 				return _osWidgetBlend(widget, material, blending);
 			else
 				return widget;
@@ -92,48 +87,42 @@ class _platform_macx
 		}
 		static void osMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 		{
-			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
-			if (QSettings().value("application/platformOsMenuPopup", experiment).toBool())
+			if (osExperiment())
 				_osMenuPopup(menu, widget, pos);
 			else
 				menu->popup(widget->mapToGlobal(pos));
 		}
 		static QLineEdit* osLineEdit(QLineEdit* input, bool destroy = true)
 		{
-			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
-			if (QSettings().value("application/platformOsMenuPopup", experiment).toBool())
+			if (osExperiment())
 				return _osLineEdit(input, destroy);
 			else
 				return input;
 		}
 		static QComboBox* osComboBox(QComboBox* select)
 		{
-			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
-			if (QSettings().value("application/platformOsMenuPopup", experiment).toBool())
+			if (osExperiment())
 				return _osComboBox(select);
 			else
 				return select;
 		}
 		static QTextEdit* osTextEdit(QTextEdit* input, bool destroy = true)
 		{
-			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
-			if (QSettings().value("application/platformOsMenuPopup", experiment).toBool())
+			if (osExperiment())
 				return _osTextEdit(input, destroy);
 			else
 				return input;
 		}
 		static QLabel* osLabel(QLabel* label, bool destroy = true)
 		{
-			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
-			if (QSettings().value("application/platformOsMenuPopup", experiment).toBool())
+			if (osExperiment())
 				return _osLabel(label, destroy);
 			else
 				return label;
 		}
 		static QWidget* osPersistentEditor(QWidget* widget)
 		{
-			bool experiment = QSettings().value("preference/osExperiment", false).toBool();
-			if (QSettings().value("application/platformOsMenuPopup", experiment).toBool())
+			if (osExperiment())
 				return _osPersistentEditor(widget);
 			else
 				return widget;
@@ -148,5 +137,14 @@ class _platform_macx
 		static QTextEdit* _osTextEdit(QTextEdit* input, bool destroy);
 		static QLabel* _osLabel(QLabel* label, bool destroy);
 		static QWidget* _osPersistentEditor(QWidget* widget);
+		// note: platform minimal causes crash at startup even with osExperiment=false
+		// due to cocoa plug-in needs, as workaround use fusion style
+		static bool osExperiment()
+		{
+			if (QGuiApplication::platformName() != "cocoa")
+				return false;
+			else
+				return QSettings().value("preference/osExperiment", true).toBool();
+		}
 };
 #endif /* _platform_macx_h */
