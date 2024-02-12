@@ -1360,8 +1360,8 @@ QMenu* mainView::listPrefsCornerMenu()
 			});
 			menu->addAction(action);
 		}
+		menu->addSeparator();
 		{
-			menu->addSeparator();
 			QWidgetAction* action = new QWidgetAction(nullptr);
 			QLabel* label = new QLabel(tr("Channel operations"));
 #ifndef Q_OS_MAC

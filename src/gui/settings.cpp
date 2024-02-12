@@ -26,7 +26,10 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QValidator>
+#include <QMenu>
+#include <QWidgetAction>
 #include <QHeaderView>
+#include <QMouseEvent>
 #ifdef Q_OS_WIN
 #include <QStyleFactory>
 #include <QScrollBar>
@@ -40,6 +43,7 @@
 #include "settings.h"
 #include "theme.h"
 #include "l10n.h"
+#include "connectionPresets.h"
 
 using std::to_string;
 
@@ -160,6 +164,8 @@ void settings::connectionsLayout()
 	rplist->connect(rplist, &QListWidget::viewportEntered, [=]() { this->renameProfile(false); });
 	rppage->connect(rppage, &WidgetWithBackdrop::backdrop, [=]() { this->renameProfile(false); });
 	platform::osPersistentEditor(rplist);
+	rplist->setContextMenuPolicy(Qt::CustomContextMenu);
+	rplist->connect(rplist, &QListWidget::customContextMenuRequested, [=](QPoint pos) { this->showProfileEditContextMenu(pos); });
 
 	//TODO improve ui
 	QToolBar* dttbar = new QToolBar;
@@ -175,8 +181,22 @@ void settings::connectionsLayout()
 
 	dttbar->addAction(theme::icon("tool-add"), tr("Add"), [=]() { this->addProfile(); });
 	dttbar->addAction(theme::icon("tool-remove"), tr("Remove"), [=]() { this->deleteProfile(); });
+#ifndef Q_OS_MAC
+	QWidget* spacer = new QWidget;
+	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
+	dttbar->addWidget(spacer);
+#endif
+	dttbar->addAction(theme::icon("tool-menu"), tr("Menu"));
+	dttbar->actions().last()->connect(dttbar->actions().last(), &QAction::triggered, [=]() {
+		QMenu* menu = this->profileMenu();
+		QWidget* widget = dttbar->widgetForAction(dttbar->actions().last());
+		QPoint pos = widget->pos();
+		// menu->popup(widget->mapToGlobal(pos)));
+		platform::osMenuPopup(menu, widget, pos);
 
-	//TODO connection presets
+		QMouseEvent mouseRelease(QEvent::MouseButtonRelease, pos, widget->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
+		QCoreApplication::sendEvent(widget, &mouseRelease);
+	});
 
 	QColor tbshade;
 	QColor tbfocus;
@@ -224,10 +244,18 @@ void settings::connectionsLayout()
 	theme->dynamicStyleSheet(dttbar, "#profile_toolbar QToolButton { border-color: " + tbshade_hexArgb + " } #profile_toolbar QToolButton:pressed { background-color: " + tbfocus_hexArgb + " }", theme::dark);
 #endif
 
+#ifdef Q_OS_MAC
 	if (dttbar->layoutDirection() == Qt::LeftToRight)
+	{
 		dttbar->widgetForAction(dttbar->actions().first())->setStyleSheet("margin-right: -1px");
+		dttbar->widgetForAction(dttbar->actions().last())->setStyleSheet("margin-left: -1px");
+	}
 	else
+	{
 		dttbar->widgetForAction(dttbar->actions().first())->setStyleSheet("margin-left: -1px");
+		dttbar->widgetForAction(dttbar->actions().last())->setStyleSheet("margin-right: -1px");
+	}
+#endif
 
 	dtvbox->setSpacing(0);
 	dtvbox->addWidget(rplist);
@@ -887,6 +915,67 @@ void settings::updateProfile(QListWidgetItem* item)
 	}
 }
 
+QMenu* settings::profileMenu()
+{
+	QMenu* menu = new QMenu;
+
+	QList<QListWidgetItem*> selected = rplist->selectedItems();
+
+	bool editable = false;
+
+	if (selected.count() == 1)
+	{
+		editable = true;
+	}
+
+	{
+		QAction* action = new QAction;
+		action->setText(tr("Import Profile…"));
+		action->connect(action, &QAction::triggered, [=]() {});
+		menu->addAction(action);
+	}
+	{
+		QAction* action = new QAction;
+		action->setText(tr("Export Profile…"));
+		action->setEnabled(editable);
+		action->connect(action, &QAction::triggered, [=]() {});
+		menu->addAction(action);
+	}
+	menu->addSeparator();
+	{
+		QWidgetAction* action = new QWidgetAction(nullptr);
+		QLabel* label = new QLabel(tr("Presets"));
+#ifndef Q_OS_MAC
+		label->setStyleSheet("QLabel { margin: 5px 10px }");
+#else
+		label->setStyleSheet("QLabel { margin: 5px 10px; font-weight: bold }");
+#endif
+		action->setDefaultWidget(label);
+		menu->addAction(action);
+	}
+	for (connectionPresets::PRESET & preset : connectionPresets::presets()) {
+		QAction* action = new QAction;
+		QString text;
+	
+		switch (preset)
+		{
+			case connectionPresets::enigma_24: text = "Enigma 2.4"; break;
+			case connectionPresets::neutrino: text = "Neutrino"; break;
+			case connectionPresets::enigma_24_23: text = "Enigma 2.3 / 2.4"; break;
+			case connectionPresets::enigma_1: text = "Enigma 1"; break;
+			case connectionPresets::gx_24: text = "GX NationalChip Octagon 2.4"; break;
+			case connectionPresets::dddragon: text = "Triple Dragon"; break;
+			case connectionPresets::wtplay: text = "WeTek Play"; break;
+		}
+
+		action->setText(text);
+		action->connect(action, &QAction::triggered, [=]() {});
+		menu->addAction(action);
+	}
+
+	return menu;
+}
+
 void settings::profileNameChanged(QString text)
 {
 	debug("profileNameChanged");
@@ -911,6 +1000,32 @@ void settings::currentProfileChanged(QListWidgetItem* current, QListWidgetItem* 
 
 	this->retrieve(current);
 	this->state.dele = false;
+}
+
+void settings::showProfileEditContextMenu(QPoint& pos)
+{
+	debug("showProfileEditContextMenu");
+
+	QList<QListWidgetItem*> selected = rplist->selectedItems();
+
+	if (selected.empty() && rplist->count() != 0)
+		return;
+
+	bool editable = false;
+
+	if (selected.count() == 1)
+	{
+		editable = true;
+	}
+
+	QMenu* list_edit = contextMenu();
+
+	contextMenuAction(list_edit, tr("Export Profile", "context-menu"), [=]() {}, editable);
+	contextMenuSeparator(list_edit);
+	contextMenuAction(list_edit, tr("Rename", "context-menu"), [=]() { this->renameProfile(true); }, editable);
+	contextMenuAction(list_edit, tr("&Delete", "context-menu"), [=]() { this->deleteProfile(); });
+
+	platform::osMenuPopup(list_edit, rplist, pos);
 }
 
 void settings::tabChanged(int index)
@@ -1201,6 +1316,64 @@ void settings::destroy()
 	delete this->dial;
 	delete this->theme;
 	delete this;
+}
+
+QMenu* settings::contextMenu()
+{
+	return new QMenu;
+}
+
+QMenu* settings::contextMenu(QMenu* menu)
+{
+	return new QMenu(menu);
+}
+
+QAction* settings::contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger)
+{
+	QAction* action = new QAction(menu);
+	action->setText(text);
+	action->connect(action, &QAction::triggered, trigger);
+	menu->addAction(action);
+	return action;
+}
+
+QAction* settings::contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger, bool enabled)
+{
+	QAction* action = new QAction(menu);
+	action->setText(text);
+	action->setEnabled(enabled);
+	action->connect(action, &QAction::triggered, trigger);
+	menu->addAction(action);
+	return action;
+}
+
+QAction* settings::contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger, QKeySequence shortcut)
+{
+	QAction* action = new QAction(menu);
+	action->setText(text);
+	action->setShortcut(shortcut);
+	action->connect(action, &QAction::triggered, trigger);
+	menu->addAction(action);
+	return action;
+}
+
+QAction* settings::contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut)
+{
+	QAction* action = new QAction(menu);
+	action->setText(text);
+	action->setShortcut(shortcut);
+	action->setEnabled(enabled);
+	action->connect(action, &QAction::triggered, trigger);
+	menu->addAction(action);
+	return action;
+}
+
+QAction* settings::contextMenuSeparator(QMenu* menu)
+{
+	QAction* action = new QAction(menu);
+	action->setSeparator(true);
+	menu->addAction(action);
+	return action;
 }
 
 }

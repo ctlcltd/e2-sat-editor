@@ -76,8 +76,10 @@ class settings : protected e2se::log_factory
 		void deleteProfile();
 		void renameProfile(bool enabled = true);
 		void updateProfile(QListWidgetItem* item);
+		QMenu* profileMenu();
 		void profileNameChanged(QString text);
 		void currentProfileChanged(QListWidgetItem* current, QListWidgetItem* previous);
+		void showProfileEditContextMenu(QPoint& pos);
 		void tabChanged(int index);
 		void store();
 		void store(QTableWidget* adtbl);
@@ -86,6 +88,14 @@ class settings : protected e2se::log_factory
 		void retrieve(QTableWidget* adtbl);
 		void save();
 		void cancel();
+
+		static QMenu* contextMenu();
+		static QMenu* contextMenu(QMenu* menu);
+		static QAction* contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger);
+		static QAction* contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger, bool enabled);
+		static QAction* contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger, QKeySequence shortcut);
+		static QAction* contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
+		static QAction* contextMenuSeparator(QMenu* menu);
 
 	private:
 		gui* gid;
