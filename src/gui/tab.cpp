@@ -244,10 +244,9 @@ void tab::setStatusBar(gui::status msg)
 	gid->setStatusBar(msg);
 }
 
-//TODO tab::statusBarMessage this (gui*) is 0x0 with deleted tab* QTimer [Qt5]
+// note: tab::statusBarMessage this (gui*) is 0x0 with deleted tab* QTimer [Qt5]
 void tab::resetStatusBar(bool message)
 {
-	//TODO TEST gui::closeAllTabs
 	if (gid != nullptr)
 		gid->resetStatusBar(message);
 }
@@ -1625,7 +1624,7 @@ void tab::ftpComboItems()
 		if (! settings.contains("profileName"))
 			continue;
 
-		//TODO improve profile/selected and array index differs trouble
+		//TODO improve profile selected and array index
 		ftp_combo->addItem(settings.value("profileName").toString(), i + 1);
 	}
 	settings.endArray();
@@ -1970,7 +1969,7 @@ void tab::ftpDownload()
 				return;
 			}
 
-			//TODO potential SEGFAULT
+			//TODO TEST potential SEGFAULT
 			// QMessageBox and main thread
 			QMetaObject::invokeMethod(this->cwid, [=]() {
 				view->reset();
@@ -2155,7 +2154,7 @@ void tab::updateIndex()
 	view->updateIndex();
 }
 
-//TODO potential SEGFAULT
+//TODO TEST potential SEGFAULT
 QTimer* tab::statusBarMessage(QString text)
 {
 	gui::status msg;

@@ -38,7 +38,7 @@ about::~about()
 	delete this->log;
 }
 
-//TODO i18n rtl
+//TODO improve i18n rtl
 void about::layout()
 {
 	debug("layout");

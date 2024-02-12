@@ -46,7 +46,6 @@ bool tty_raw = false;
 struct termios tty_attr;
 #endif
 
-//TODO
 e2db_termctl::e2db_termctl()
 {
 	std::setlocale(LC_NUMERIC, "C");

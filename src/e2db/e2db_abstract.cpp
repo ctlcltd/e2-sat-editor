@@ -463,7 +463,7 @@ int e2db_abstract::value_transponder_dvbns(transponder tx)
 	return value_transponder_dvbns(tx.pos, tx.onid, tx.freq, tx.pol);
 }
 
-//TODO
+//TODO calculate dvbns namespace
 int e2db_abstract::value_transponder_dvbns(int pos, int onid, int freq, int pol)
 {
 	return value_transponder_dvbns(pos, onid);

@@ -24,7 +24,6 @@ using namespace e2se_e2db;
 
 namespace e2se_cli
 {
-//TODO
 class e2db_cli
 {
 	public:

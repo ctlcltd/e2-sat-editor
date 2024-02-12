@@ -102,7 +102,7 @@ void channelBookView::layout()
 	this->list = new QTreeWidget;
 	this->tabv = new QTabBar;
 
-	//TODO improve vertical expanding [Windows]
+	//TODO vertical expanding [Windows]
 	tabv->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored);
 
 	TreeProxyStyle* tree_style = new TreeProxyStyle;

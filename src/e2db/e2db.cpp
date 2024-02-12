@@ -134,8 +134,7 @@ void e2db::import_file(FPORTS fpi, vector<string> paths)
 	}
 }
 
-//TODO stringstream memory
-//TODO TEST
+//TODO improve stringstream memory
 void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 {
 	debug("import_file", "file path", "singular");
@@ -279,7 +278,6 @@ void e2db::export_file(FPORTS fpo, vector<string> paths)
 	}
 }
 
-//TODO TEST
 void e2db::export_file(FPORTS fpo, string path)
 {
 	debug("export_file", "file path", "singular");

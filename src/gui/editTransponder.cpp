@@ -170,7 +170,6 @@ void editTransponder::layoutChange(int vx)
 			item->widget()->setVisible(false);
 			delete item->widget();
 
-			//TODO improve
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 			dtform->takeAt(dtform->indexOf(item));
 #endif

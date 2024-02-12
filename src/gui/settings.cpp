@@ -175,7 +175,8 @@ void settings::connectionsLayout()
 
 	dttbar->addAction(theme::icon("tool-add"), tr("Add"), [=]() { this->addProfile(); });
 	dttbar->addAction(theme::icon("tool-remove"), tr("Remove"), [=]() { this->deleteProfile(); });
-	//TODO presets
+
+	//TODO connection presets
 
 	QColor tbshade;
 	QColor tbfocus;
@@ -1038,7 +1039,7 @@ void settings::retrieve()
 			QString pref = item->property("field").toString();
 			tmpps[i][pref] = sets->value(pref);
 
-			//TODO
+			//TODO TEST
 			if (i == selected)
 			{
 				if (sets->value(pref).isNull())

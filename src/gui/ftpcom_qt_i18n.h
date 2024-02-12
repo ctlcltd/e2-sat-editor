@@ -16,4 +16,4 @@ QT_TRANSLATE_NOOP3("ftpcom", "Missing \"%s\" parameter.", "error");
 QT_TRANSLATE_NOOP3("ftpcom", "Missing \"%s\" path parameter.", "error");
 QT_TRANSLATE_NOOP3("ftpcom", "Failed to resume FTP connection.", "error");
 
-//TODO curl_easy_strerror var error string
+//TODO improve curl_easy_strerror var error string

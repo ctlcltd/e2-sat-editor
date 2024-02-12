@@ -37,7 +37,7 @@ void viewAbstract::themeChanged()
 	theme->changed();
 }
 
-//TODO fix QPushButton vista [Windows]
+//TODO TEST QPushButton ui [Windows]
 void viewAbstract::searchLayout()
 {
 	this->tree_search = new QWidget;
@@ -340,7 +340,7 @@ void viewAbstract::listFindPerform(LIST_FIND flag)
 	listFindPerform(this->lsr_search.input->text(), flag);
 }
 
-//TODO FIX multiple selection with shortcut FindNext when search_box is closed
+//TODO TEST multiple selection with shortcut FindNext when search_box is closed
 void viewAbstract::listFindPerform(const QString& value, LIST_FIND flag)
 {
 	/*
@@ -409,7 +409,7 @@ void viewAbstract::listFindPerform(const QString& value, LIST_FIND flag)
 	{
 		match = this->lsr_find.match;
 
-		//TODO improve
+		//TODO TEST
 		/*if (flag == LIST_FIND::fast && this->lsr_find.flag == LIST_FIND::all)
 		{
 			if (list->currentIndex().isValid())
@@ -514,7 +514,6 @@ void viewAbstract::listFindReset()
 
 	this->lsr_find.flag = LIST_FIND::fast;
 	this->lsr_find.filter = 0;
-	//TODO FIX
 	this->lsr_find.highlight = true;
 	this->lsr_find.curr = -1;
 	this->lsr_find.input = "";
@@ -547,7 +546,6 @@ void viewAbstract::tabUpdateFlags()
 		tid->storeFlags();
 }
 
-//TODO FIX previous menu items visibility on tab close
 void viewAbstract::tabUpdateFlags(int preset)
 {
 	tabSetFlags(preset);

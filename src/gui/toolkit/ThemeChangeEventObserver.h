@@ -29,7 +29,7 @@ class ThemeChangeEventObserver : public QObject
 	protected:
 		bool eventFilter(QObject* object, QEvent* event)
 		{
-			//TODO call once
+			//TODO TEST call once
 			if (event->type() == QEvent::ThemeChange/* || event->type() == QEvent::ApplicationPaletteChange*/)
 				return eventThemeChange(object, event);
 

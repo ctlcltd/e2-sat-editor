@@ -2234,7 +2234,6 @@ void e2db_converter::csv_bouquet_list(string& csv, string bname)
 	csv = ss.str();
 }
 
-//TODO improve list
 void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 {
 	debug("csv_tunersets_list", "ytype", ytype);
@@ -2696,7 +2695,6 @@ void e2db_converter::page_body_bouquet_list(html_page& page, string bname)
 	page.body += "</div>\n";
 }
 
-//TODO improve list
 void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 {
 	debug("page_body_tunersets_list", "ytype", ytype);

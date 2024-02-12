@@ -70,22 +70,18 @@ void editUserbouquet::layout(QWidget* cwid)
 	dtf0->addRow(tr("Name"), dtf0bn);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
-	//TODO
-	if (1)
-	{
-		QVBoxLayout* dtb10 = new QVBoxLayout;
-		dtf0->addRow(tr("Filename"), dtb10);
-		QLabel* dtd10 = new QLabel(QString("<small>%1</small>").arg(tr("custom filename, leave empty to auto-fill")));
-		dtd10->setObjectName("dial_field_description");
-		QLineEdit* dtf0bf = new QLineEdit;
-		dtf0bf->setProperty("field", "rname");
-		fields.emplace_back(dtf0bf);
-		dtf0bf->setMinimumWidth(240);
-		dtf0bf->setMaxLength(255);
-		dtb10->addWidget(dtf0bf);
-		dtb10->addWidget(dtd10);
-		dtf0->addItem(new QSpacerItem(0, 0));
-	}
+	QVBoxLayout* dtb10 = new QVBoxLayout;
+	dtf0->addRow(tr("Filename"), dtb10);
+	QLabel* dtd10 = new QLabel(QString("<small>%1</small>").arg(tr("custom filename, leave empty to auto-fill")));
+	dtd10->setObjectName("dial_field_description");
+	QLineEdit* dtf0bf = new QLineEdit;
+	dtf0bf->setProperty("field", "rname");
+	fields.emplace_back(dtf0bf);
+	dtf0bf->setMinimumWidth(240);
+	dtf0bf->setMaxLength(255);
+	dtb10->addWidget(dtf0bf);
+	dtb10->addWidget(dtd10);
+	dtf0->addItem(new QSpacerItem(0, 0));
 
 	QGroupBox* dtl1 = new QGroupBox(tr("Bouquet", "dialog"));
 	QFormLayout* dtf1 = new QFormLayout;

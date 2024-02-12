@@ -266,7 +266,7 @@ void e2db_parser::parse_e2db()
 	info("parse_e2db", "elapsed time", to_string(elapsed) + " μs");
 }
 
-//TODO stringstream memory
+//TODO improve stringstream memory
 void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 {
 	debug("parse_e2db");
@@ -1467,7 +1467,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 				}
 				else if (key == "num")
 					ch.snum = std::atoi(val.data());
-				//TODO improve
+				//TODO zapit flags
 				// else if (key == "f")
 			}
 			else

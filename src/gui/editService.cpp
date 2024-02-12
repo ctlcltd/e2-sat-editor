@@ -305,7 +305,7 @@ void editService::paramsLayout()
 	QToolBox* dtt2 = new QToolBox;
 	dtt2->setFixedWidth(240);
 	dtt2->setFixedHeight(320);
-	//TODO scrollbar dark mode [Windows]
+	//TODO TEST scrollbar dark mode [Windows]
 #ifdef Q_OS_WIN
 	if (theme::absLuma() || ! theme::isDefault())
 	{

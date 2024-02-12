@@ -420,7 +420,7 @@ void piconsView::listItemDoubleClicked()
 	editPicon();
 }
 
-//TODO FIX multiple selection with shortcut FindNext when search_box is closed
+//TODO TEST multiple selection with shortcut FindNext when search_box is closed
 void piconsView::listFindPerform(const QString& value, LIST_FIND flag)
 {
 	int column = this->lsr_search.filter->currentData().toInt();

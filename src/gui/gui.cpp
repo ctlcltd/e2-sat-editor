@@ -160,7 +160,7 @@ gui::gui(int argc, char* argv[])
 	mwid->installEventFilter(gce);
 
 	QClipboard* clipboard = mroot->clipboard();
-	//TODO potential SEGFAULT
+	//TODO TEST potential SEGFAULT
 	clipboard->connect(clipboard, &QClipboard::dataChanged, [=]() { this->clipboardDataChanged(); });
 
 	platform::osWindowBlend(mwid);
@@ -373,9 +373,9 @@ void gui::menuBarLayout()
 	this->mwtabs = mwtabs;
 }
 
-//TODO FIX QTabBar::tab elide and icon size [Windows]
-//TODO FIX font-size height hidpi
-//TODO FIX tab-bar left border 1px gap
+//TODO QTabBar::tab elide and icon size [Windows]
+//TODO font-size height hidpi
+//TODO tab-bar left border 1px gap
 void gui::tabStackerLayout()
 {
 	debug("tabStackerLayout");
@@ -491,7 +491,7 @@ void gui::statusBarLayout()
 	theme->dynamicStyleSheet(sbwid, "QStatusBar { background: transparent }");
 #endif
 
-	//TODO FIX QStatusBar layout expanding
+	//TODO QStatusBar layout expanding
 	sbwid->layout()->setSpacing(0);
 
 	sbwidl->setAlignment(Qt::AlignVCenter);
@@ -865,7 +865,6 @@ int gui::openTab(TAB_VIEW view, int arg)
 	return index;
 }
 
-//TODO FIX previous menu items visibility on tab close
 void gui::closeTab(int index)
 {
 	// debug("closeTab", "index", index);
@@ -953,7 +952,6 @@ void gui::closeAllTabs()
 	launcher();
 }
 
-//TODO FIX sometimes fails to restore previous menu items visibility
 void gui::windowChanged()
 {
 	// debug("windowChanged");
@@ -1370,7 +1368,6 @@ void gui::statusBarToggle()
 	}
 }
 
-//TODO improve
 void gui::setStatusBar(status msg)
 {
 	debug("setStatusBar");
@@ -1590,7 +1587,7 @@ void gui::editAction(GUI_CXE bit)
 		{
 			case GUI_CXE::EditUndo: input->undo(); break;
 			case GUI_CXE::EditRedo: input->redo(); break;
-			//TODO QWidgetLineControl::q_delete_selected
+			// note: QWidgetLineControl::q_delete_selected
 			case GUI_CXE::EditDelete: input->del(); break;
 			case GUI_CXE::EditSelectAll: input->selectAll(); break;
 			case GUI_CXE::EditCut: input->cut(); break;
@@ -1605,7 +1602,7 @@ void gui::editAction(GUI_CXE bit)
 		{
 			case GUI_CXE::EditUndo: input->undo(); break;
 			case GUI_CXE::EditRedo: input->redo(); break;
-			//TODO QWidgetTextControl::q_delete_selected
+			// note: QWidgetTextControl::q_delete_selected
 			case GUI_CXE::EditDelete: input->clear(); break;
 			case GUI_CXE::EditSelectAll: input->selectAll(); break;
 			case GUI_CXE::EditCut: input->cut(); break;

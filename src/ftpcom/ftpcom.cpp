@@ -136,7 +136,6 @@ bool ftpcom::connect()
 	return (res == CURLE_OK);
 }
 
-//TODO improve
 bool ftpcom::disconnect()
 {
 	debug("disconnect");
@@ -241,7 +240,7 @@ string ftpcom::file_mime_detect(string path)
 	return "application/octet-stream";
 }
 
-//TODO improve download auto-resume
+//TODO download auto-resume
 void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 {
 	debug("download_data");

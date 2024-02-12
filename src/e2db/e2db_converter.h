@@ -39,7 +39,7 @@ class e2db_converter : virtual public e2db_abstract
 			convert_services = 0x10,
 			convert_bouquets = 0x20,
 			convert_userbouquets = 0x40,
-			convert_tunersets = 0x80 //TODO current
+			convert_tunersets = 0x80 //TODO pass current
 		};
 
 		enum DOC_VIEW {

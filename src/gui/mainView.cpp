@@ -426,7 +426,7 @@ void mainView::searchLayout()
 	this->lsr_search.filter->addItem(tr("Position"), ITEM_ROW_ROLE::chpos);
 }
 
-//TODO improve with viewAbstract::themeChange()
+//TODO TEST viewAbstract::themeChange()
 void mainView::referenceBoxLayout()
 {
 	this->list_reference = new QWidget;
@@ -1417,7 +1417,6 @@ QMenu* mainView::listPrefsCornerMenu()
 	return menu;
 }
 
-//TODO improve
 void mainView::convert(int bit)
 {
 	debug("convert", "bit", bit);
@@ -2609,7 +2608,7 @@ void mainView::putListItems(vector<QString> items)
 				if (! qs[5].isEmpty())
 					ch.tsid = tx.tsid = ref.tsid = qs[5].toInt();
 				ch.stype = dbih->value_service_type(qs[6].toStdString());
-				//TODO
+				//TODO CAS flags
 				// ch.data[e2db::SDATA::C]; qs[7]
 				ch.data[e2db::SDATA::p] = dbih->value_channel_provider(qs[8].toStdString());
 				ch.locked = locked;
@@ -3188,7 +3187,7 @@ void mainView::updateTreeIndex()
 	}
 }
 
-//TODO improve give tree model persistentIndexList and remove sort
+//TODO improve remove sort tree model persistentIndexList
 void mainView::updateListIndex()
 {
 	if (! this->state.chx_pending)
