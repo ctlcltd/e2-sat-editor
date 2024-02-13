@@ -10,11 +10,14 @@
  */
 
 #include <cstring>
+#include <stdexcept>
 
 #include <Qt>
 #include <QTimer>
+#include <QApplication>
 #include <QRegularExpression>
 #include <QByteArray>
+#include <QMessageBox>
 #include <QScrollArea>
 #include <QGridLayout>
 #include <QHBoxLayout>
@@ -36,6 +39,9 @@
 #include <QStyleFactory>
 #include <QScrollBar>
 #endif
+#include <QFile>
+#include <QXmlStreamReader>
+#include <QXmlStreamWriter>
 
 #include "../e2se_defs.h"
 
@@ -837,11 +843,15 @@ QListWidgetItem* settings::addProfile(int i)
 {
 	if (i == -1)
 	{
-		i = sets->value("profile/size").toInt();
+		//TODO FIX
+		// i = sets->value("profile/size").toInt();
 		// i++;
+
+		i = int (tmpps.size());
+
 		tmpps[i]["profileName"] = tr("Profile");
 	}
-	debug("addProfile", "index", i);
+	debug("addProfile", "item", i);
 
 	QListWidgetItem* item = new QListWidgetItem(tr("Profile"), rplist);
 	item->setText(item->text() + ' ' + QString::number(i));
@@ -949,24 +959,190 @@ void settings::importProfile()
 	paths = gid->importFileDialog(gui::GUI_DPORTS::ConnectionProfile);
 
 	if (paths.empty())
+	{
 		return;
+	}
+
+	updateProfile(rplist->currentItem());
 
 	QListWidgetItem* current = nullptr;
 
-	for (string & path : paths)
+	for (auto & path : paths)
 	{
-		//TODO
+		if (path.empty())
+		{
+			continue;
+		}
 
-		this->state.retr = true;
-		QListWidgetItem* item = addProfile();
-		this->state.retr = false;
+		QString filepath = QString::fromStdString(path);
+		QFile file (filepath);
 
-		current = item;
+		if (! file.open(QIODevice::ReadOnly | QIODevice::Text))
+		{
+			error("importProfile", tr("File Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(path.data()).toStdString());
+
+			errorMessage(tr("File Error", "error"), tr("Error opening files.", "error"));
+
+			return;
+		}
+
+		try
+		{
+			QXmlStreamReader xml (&file);
+			xml.setNamespaceProcessing(false);
+
+			int step = 0;
+			QString name, value;
+			QXmlStreamAttributes attrs;
+
+			map<QString, QVariant> values;
+
+			while (! xml.atEnd())
+			{
+				xml.readNext();
+
+				// qDebug() << "step: " << step;
+				// qDebug() << "name: " << xml.name().toString();
+				// qDebug() << "value: " << xml.text();
+
+				if (! step && xml.isStartElement() && xml.name().toString() == "Servers")
+				{
+					step = 1;
+				}
+				else if (step && xml.name().toString() == "Server")
+				{
+					if (xml.isStartElement())
+						step = 2;
+					else if (xml.isEndElement())
+						step = 0;
+				}
+				else if (step == 2)
+				{
+					if (xml.isStartElement())
+					{
+						name = xml.name().toString();
+						attrs = xml.attributes();
+						continue;
+					}
+					else if (xml.isCharacters())
+					{
+						value = xml.text().toString();
+						continue;
+					}
+					else if (xml.isEndElement() && xml.name().toString() == name)
+					{
+						step = 2;
+					}
+					else
+					{
+						continue;
+					}
+
+					QString pref;
+
+					if (name == "ProfileName")
+						pref = "profileName";
+					if (name == "Host")
+						pref = "ipAddress";
+					else if (name == "Port")
+						pref = "ftpPort";
+					else if (name == "User")
+						pref = "username";
+					else if (name == "Pass")
+						pref = "Pass";
+					else if (name == "PasvMode")
+						pref = "ftpActive";
+					else if (name == "PathTransponders")
+						pref = "pathTransponders";
+					else if (name == "PathServices")
+						pref = "pathServices";
+					else if (name == "PathBouquets")
+						pref = "pathBouquets";
+					else if (name == "PathPicons")
+						pref = "pathPicons";
+					else if (name == "HttpPort")
+						pref = "httpPort";
+					else if (name == "CustomWebifReloadUrl")
+						pref = "customWebifReloadUrl";
+					else if (name == "CustomTelnetReloadCmd")
+						pref = "customTelnetReloadCmd";
+					else
+						continue;
+
+					if (! pref.isEmpty())
+					{
+						QVariant _value;
+
+						if (name == "Pass")
+						{
+							if (attrs.hasAttribute("encoding"))
+							{
+								if (attrs.value("encoding").toString() == "base64")
+								{
+									//TODO validate base64
+									_value = value;
+								}
+							}
+							else
+							{
+								//TODO encode base64
+							}
+						}
+						else if (name == "ftpActive")
+						{
+							_value = (value == "MODE_ACTIVE");
+						}
+						else
+						{
+							_value = value;
+						}
+
+						values[pref] = _value;
+					}
+
+					name = value = QString();
+					attrs = QXmlStreamAttributes();
+				}
+			}
+
+			if (xml.hasError())
+			{
+				error("importProfile", tr("Error", "error").toStdString(), xml.errorString().toStdString());
+
+				throw std::runtime_error("QXmlStreamReader");
+			}
+			else
+			{
+				int i = int (tmpps.size());
+				tmpps.emplace(i, values);
+
+				QString name = values["profileName"].toString();
+
+				QListWidgetItem* item = new QListWidgetItem(name, rplist);
+				item->setText(name);
+				item->setData(Qt::UserRole, i);
+				item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
+
+				qDebug() << values;
+
+				current = item;
+			}
+		}
+		catch (...)
+		{
+			error("importProfile", tr("Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(path.data()).toStdString());
+
+			errorMessage(tr("Error", "error"), tr("Error reading files.", "error"));
+		}
 	}
 
-	rplist->setCurrentItem(current);
+	if (current != nullptr)
+	{
+		rplist->setCurrentItem(current);
+	}
 }
 
+//TODO multiple selection
 void settings::exportProfile()
 {
 	debug("exportProfile");
@@ -986,7 +1162,119 @@ void settings::exportProfile()
 		return;
 	}
 
-	//TODO
+	updateProfile(rplist->currentItem());
+
+	QString filepath = QString::fromStdString(path);
+	QFile file (filepath);
+
+	if (! file.open(QIODevice::WriteOnly | QIODevice::Text))
+	{
+		error("exportProfile", tr("File Error", "error").toStdString(), tr("Error writing file \"%1\".", "error").arg(path.data()).toStdString());
+
+		errorMessage(tr("File Error", "error"), tr("Error opening files.", "error"));
+
+		return;
+	}
+
+	vector<QString> keys = {
+		"profileName",
+		"ipAddress",
+		"ftpPort",
+		"username",
+		"password",
+		"ftpActive",
+		"_pathServices",
+		"pathTransponders",
+		"pathServices",
+		"pathBouquets",
+		"pathPicons",
+		"httpPort",
+		"customWebIfReloadUrl",
+		"customTelnetReloadCmd"
+	};
+
+	try
+	{
+		QXmlStreamWriter xml (&file);
+		xml.setAutoFormatting(true);
+		xml.writeStartDocument("1.0");
+		xml.writeStartElement("e2se");
+		xml.writeAttribute("version", QApplication::applicationVersion());
+		xml.writeStartElement("Servers");
+
+		for (size_t i = 0; i < tmpps.size(); i++)
+		{
+			//TODO selection
+			int x = int (i);
+			if (tmpps[x].size())
+			{
+				xml.writeStartElement("Server");
+
+				for (QString & pref : keys)
+				{
+					QString _pref = pref;
+
+					if (pref == "_pathServices")
+						_pref = "pathServices";
+
+					QString name;
+					QVariant value = tmpps[x][_pref];
+
+					if (pref == "ipAddress")
+						name = "Host";
+					else if (pref == "ftpPort")
+						name = "Port";
+					else if (pref == "username")
+						name = "User";
+					else if (pref == "password")
+						name = "Pass";
+					else if (pref == "_pathServices")
+						name = "RemoteDir";
+					else if (pref == "ftpActive")
+					{
+						name = "PasvMode";
+						value = value.toBool() ? "MODE_ACTIVE" : "MODE_DEFAULT";
+					}
+					else
+					{
+						_pref.replace(0, 1, _pref[0].toUpper());
+						name = QString("e2se:").append(_pref);
+					}
+
+					if (pref == "password")
+					{
+						xml.writeStartElement(name);
+						xml.writeAttribute("encoding", "base64");
+						xml.writeCharacters(value.toString());
+						xml.writeEndElement();
+					}
+					else
+					{
+						xml.writeTextElement(name, value.toString());
+					}
+				}
+
+				xml.writeEndElement();
+			}
+		}
+
+		xml.writeEndElement();
+		xml.writeEndElement();
+		xml.writeEndDocument();
+
+		if (xml.hasError())
+		{
+			throw std::runtime_error("QXmlStreamWriter");
+		}
+	}
+	catch (...)
+	{
+		error("exportProfile", tr("Error", "error").toStdString(), tr("Error writing file \"%1\".", "error").arg(path.data()).toStdString());
+
+		errorMessage(tr("Error", "error"), tr("Error writing files.", "error"));
+	}
+
+	infoMessage(tr("Saved!", "message"));
 }
 
 QMenu* settings::profileMenu()
@@ -1126,18 +1414,13 @@ void settings::applyPreset(connectionPresets::PRESET preset)
 		{
 			continue;
 		}
-		if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
-		{
-			field->setChecked(values[key] == "true");
-		}
-		else if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
+		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
 		{
 			field->setText(QString::fromStdString(values[key]));
 		}
-		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
+		else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
 		{
-			int index = field->findData(QString::fromStdString(values[key]), Qt::UserRole);
-			field->setCurrentIndex(index);
+			field->setChecked(values[key] == "true");
 		}
 	}
 }
@@ -1279,6 +1562,7 @@ void settings::retrieve()
 				{
 					QString val = sets->value(pref).toString();
 
+					//TODO validate base64
 					if (pref == "password")
 					{
 						QByteArray ba (val.toUtf8());
@@ -1338,7 +1622,9 @@ void settings::retrieve()
 
 void settings::retrieve(QListWidgetItem* item)
 {
-	debug("retrieve", "index", 1);
+	int row = rplist->row(item);
+
+	debug("retrieve", "row", row);
 
 	int i = item->data(Qt::UserRole).toInt();
 
@@ -1350,6 +1636,7 @@ void settings::retrieve(QListWidgetItem* item)
 		{
 			QString val = tmpps[i][pref].toString();
 
+			//TODO validate base64
 			if (pref == "password")
 			{
 				QByteArray ba (val.toUtf8());
@@ -1430,6 +1717,41 @@ void settings::destroy()
 	delete this->dial;
 	delete this->theme;
 	delete this;
+}
+
+//TODO FIX
+void settings::infoMessage(QString title)
+{
+	QMessageBox msg = QMessageBox(nullptr);
+
+	msg.setWindowFlags(Qt::Popup);
+
+	msg.setText(title);
+	QRect pos = msg.geometry();
+	pos.moveCenter(QPoint(this->dial->width() / 2, this->dial->height() / 2));
+	msg.setGeometry(pos);
+	msg.exec();
+}
+
+void settings::infoMessage(QString title, QString text)
+{
+	text.prepend("<span style=\"white-space: nowrap\">");
+	text.append("</span><br>");
+	QMessageBox msg = QMessageBox(nullptr);
+
+	msg.setWindowFlags(Qt::Popup);
+
+	msg.setText(title);
+	msg.setInformativeText(text);
+	QRect pos = msg.geometry();
+	pos.moveCenter(QPoint(this->dial->width() / 2, this->dial->height() / 2));
+	msg.setGeometry(pos);
+	msg.exec();
+}
+
+void settings::errorMessage(QString title, QString text)
+{
+	QMessageBox::critical(nullptr, title, text);
 }
 
 QMenu* settings::contextMenu()

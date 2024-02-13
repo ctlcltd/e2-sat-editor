@@ -66,6 +66,9 @@ class settings : protected e2se::log_factory
 		void display(QWidget* cwid);
 		void destroy();
 		void themeChanged();
+		void infoMessage(QString title);
+		void infoMessage(QString title, QString text);
+		void errorMessage(QString title, QString text);
 
 	protected:
 		void layout(QWidget* cwid);
@@ -101,6 +104,7 @@ class settings : protected e2se::log_factory
 		static QAction* contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger, QKeySequence shortcut);
 		static QAction* contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
 		static QAction* contextMenuSeparator(QMenu* menu);
+
 
 	private:
 		gui* gid;

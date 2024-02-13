@@ -1772,7 +1772,7 @@ void gui::launcher()
 		{
 			error("launcher", tr("Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(path.data()).toStdString());
 
-			QMessageBox::critical(this->mwid, tr("File Error", "error"), tr("Error opening files.", "error"));
+			errorMessage(tr("File Error", "error"), tr("Error opening files.", "error"));
 
 			newTab();
 		}
@@ -1930,6 +1930,11 @@ QLocale gui::getLocale()
 {
 	QString appLang = QSettings().value("preference/language").toString();
 	return appLang.isEmpty() ? QLocale::system() : QLocale(appLang);
+}
+
+void gui::errorMessage(QString title, QString text)
+{
+	QMessageBox::critical(this->mwid, title, text);
 }
 
 QString gui::getFileFormatName(int ver)
