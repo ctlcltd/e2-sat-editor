@@ -105,7 +105,6 @@ class settings : protected e2se::log_factory
 		static QAction* contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
 		static QAction* contextMenuSeparator(QMenu* menu);
 
-
 	private:
 		gui* gid;
 		QDialog* dial = nullptr;

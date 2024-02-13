@@ -151,7 +151,6 @@ void settings::connectionsLayout()
 
 	QVBoxLayout* dtvbox = new QVBoxLayout;
 
-	//TODO context-menu rename/remove profile
 	this->rplist = new QListWidget;
 	rplist->setEditTriggers(QListWidget::EditKeyPressed | QListWidget::DoubleClicked);
 
@@ -839,23 +838,23 @@ void settings::themeChanged()
 	theme->changed();
 }
 
-QListWidgetItem* settings::addProfile(int i)
+QListWidgetItem* settings::addProfile(int idx)
 {
-	if (i == -1)
+	if (idx == -1)
 	{
-		//TODO FIX
+		//TODO TEST
 		// i = sets->value("profile/size").toInt();
 		// i++;
 
-		i = int (tmpps.size());
+		idx = int (tmpps.size());
 
-		tmpps[i]["profileName"] = tr("Profile");
+		tmpps[idx]["profileName"] = tr("Profile");
 	}
-	debug("addProfile", "item", i);
+	debug("addProfile", "item", idx);
 
 	QListWidgetItem* item = new QListWidgetItem(tr("Profile"), rplist);
-	item->setText(item->text() + ' ' + QString::number(i));
-	item->setData(Qt::UserRole, i);
+	item->setText(item->text() + ' ' + QString::number(idx));
+	item->setData(Qt::UserRole, idx);
 	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
 
 	if (! this->state.retr)
@@ -897,8 +896,8 @@ void settings::deleteProfile(QListWidgetItem* item)
 
 	debug("deleteProfile", "row", row);
 
-	int i = item->data(Qt::UserRole).toInt();
-	tmpps[i].clear();
+	int idx = item->data(Qt::UserRole).toInt();
+	tmpps[idx].clear();
 
 	this->state.dele = true;
 
@@ -925,7 +924,7 @@ void settings::updateProfile(QListWidgetItem* item)
 
 	debug("updateProfile", "row", row);
 
-	int i = item->data(Qt::UserRole).toInt();
+	int idx = item->data(Qt::UserRole).toInt();
 
 	for (auto & item : prefs[PREF_SECTIONS::Connections])
 	{
@@ -941,11 +940,11 @@ void settings::updateProfile(QListWidgetItem* item)
 				val = ba.toBase64();
 			}
 
-			tmpps[i][pref] = val;
+			tmpps[idx][pref] = val;
 		}
 		else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
 		{
-			tmpps[i][pref] = field->isChecked();
+			tmpps[idx][pref] = field->isChecked();
 		}
 	}
 }
@@ -992,7 +991,7 @@ void settings::importProfile()
 			xml.setNamespaceProcessing(false);
 
 			int step = 0;
-			QString name, value;
+			QString name, val;
 			QXmlStreamAttributes attrs;
 
 			map<QString, QVariant> values;
@@ -1000,10 +999,6 @@ void settings::importProfile()
 			while (! xml.atEnd())
 			{
 				xml.readNext();
-
-				// qDebug() << "step: " << step;
-				// qDebug() << "name: " << xml.name().toString();
-				// qDebug() << "value: " << xml.text();
 
 				if (! step && xml.isStartElement() && xml.name().toString() == "Servers")
 				{
@@ -1026,7 +1021,7 @@ void settings::importProfile()
 					}
 					else if (xml.isCharacters())
 					{
-						value = xml.text().toString();
+						val = xml.text().toString();
 						continue;
 					}
 					else if (xml.isEndElement() && xml.name().toString() == name)
@@ -1042,7 +1037,7 @@ void settings::importProfile()
 
 					if (name == "ProfileName")
 						pref = "profileName";
-					if (name == "Host")
+					else if (name == "Host")
 						pref = "ipAddress";
 					else if (name == "Port")
 						pref = "ftpPort";
@@ -1071,7 +1066,7 @@ void settings::importProfile()
 
 					if (! pref.isEmpty())
 					{
-						QVariant _value;
+						QVariant value;
 
 						if (name == "Pass")
 						{
@@ -1080,27 +1075,29 @@ void settings::importProfile()
 								if (attrs.value("encoding").toString() == "base64")
 								{
 									//TODO validate base64
-									_value = value;
+									value = val;
 								}
 							}
 							else
 							{
-								//TODO encode base64
+								QByteArray ba (val.toUtf8());
+								val = ba.toBase64();
+								value = val;
 							}
 						}
 						else if (name == "ftpActive")
 						{
-							_value = (value == "MODE_ACTIVE");
+							value = (val == "MODE_ACTIVE");
 						}
 						else
 						{
-							_value = value;
+							value = val;
 						}
 
-						values[pref] = _value;
+						values[pref] = value;
 					}
 
-					name = value = QString();
+					name = val = QString();
 					attrs = QXmlStreamAttributes();
 				}
 			}
@@ -1113,17 +1110,15 @@ void settings::importProfile()
 			}
 			else
 			{
-				int i = int (tmpps.size());
-				tmpps.emplace(i, values);
+				int idx = int (tmpps.size());
+				tmpps.emplace(idx, values);
 
 				QString name = values["profileName"].toString();
 
 				QListWidgetItem* item = new QListWidgetItem(name, rplist);
 				item->setText(name);
-				item->setData(Qt::UserRole, i);
+				item->setData(Qt::UserRole, idx);
 				item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
-
-				qDebug() << values;
 
 				current = item;
 			}
@@ -1163,6 +1158,8 @@ void settings::exportProfile()
 	}
 
 	updateProfile(rplist->currentItem());
+
+	int curr = item->data(Qt::UserRole).toInt();
 
 	QString filepath = QString::fromStdString(path);
 	QFile file (filepath);
@@ -1204,9 +1201,14 @@ void settings::exportProfile()
 
 		for (size_t i = 0; i < tmpps.size(); i++)
 		{
-			//TODO selection
-			int x = int (i);
-			if (tmpps[x].size())
+			int idx = int (i);
+
+			if (curr != -1 && curr != idx)
+			{
+				continue;
+			}
+
+			if (tmpps[idx].size())
 			{
 				xml.writeStartElement("Server");
 
@@ -1218,7 +1220,7 @@ void settings::exportProfile()
 						_pref = "pathServices";
 
 					QString name;
-					QVariant value = tmpps[x][_pref];
+					QVariant value = tmpps[idx][_pref];
 
 					if (pref == "ipAddress")
 						name = "Host";
@@ -1343,14 +1345,14 @@ void settings::profileNameChanged(QString text)
 	debug("profileNameChanged");
 
 	QListWidgetItem* item = rplist->currentItem();
-	int i = item->data(Qt::UserRole).toInt();
+	int idx = item->data(Qt::UserRole).toInt();
 
 	if (QApplication::layoutDirection() == Qt::RightToLeft)
 	{
 		item->setText(item->text().append(QChar(0x200e))); // LRM
 	}
 
-	tmpps[i]["profileName"] = text;
+	tmpps[idx]["profileName"] = text;
 }
 
 void settings::currentProfileChanged(QListWidgetItem* current, QListWidgetItem* previous)
@@ -1458,13 +1460,15 @@ void settings::store()
 	sets->beginWriteArray("profile");
 	for (size_t i = 0; i < tmpps.size(); i++)
 	{
-		int x = int (i);
-		sets->setArrayIndex(x);
-		if (tmpps[x].size())
+		int idx = int (i);
+
+		sets->setArrayIndex(idx);
+
+		if (tmpps[idx].size())
 		{
 			if (! sets->contains("profileName"))
 				size++;
-			for (auto & field : tmpps[x])
+			for (auto & field : tmpps[idx])
 				sets->setValue(field.first, field.second);
 		}
 		else
@@ -1488,6 +1492,7 @@ void settings::store()
 			case PREF_SECTIONS::Preferences: prefix = "preference"; break;
 			case PREF_SECTIONS::Engine: prefix = "engine"; break;
 		}
+
 		sets->beginGroup(prefix);
 
 		for (auto & item : prefs[i])
@@ -1542,14 +1547,15 @@ void settings::retrieve()
 		if (! sets->contains("profileName"))
 			continue;
 
-		tmpps[i]["profileName"] = sets->value("profileName");
-		QListWidgetItem* item = addProfile(i);
+		int idx = i;
+		tmpps[idx]["profileName"] = sets->value("profileName");
+		QListWidgetItem* item = addProfile(idx);
 		item->setText(sets->value("profileName").toString());
 
 		for (auto & item : prefs[PREF_SECTIONS::Connections])
 		{
 			QString pref = item->property("field").toString();
-			tmpps[i][pref] = sets->value(pref);
+			tmpps[idx][pref] = sets->value(pref);
 
 			//TODO TEST
 			if (i == selected)
@@ -1626,7 +1632,7 @@ void settings::retrieve(QListWidgetItem* item)
 
 	debug("retrieve", "row", row);
 
-	int i = item->data(Qt::UserRole).toInt();
+	int idx = item->data(Qt::UserRole).toInt();
 
 	for (auto & item : prefs[PREF_SECTIONS::Connections])
 	{
@@ -1634,7 +1640,7 @@ void settings::retrieve(QListWidgetItem* item)
 
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
 		{
-			QString val = tmpps[i][pref].toString();
+			QString val = tmpps[idx][pref].toString();
 
 			//TODO validate base64
 			if (pref == "password")
@@ -1647,7 +1653,7 @@ void settings::retrieve(QListWidgetItem* item)
 		}
 		else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
 		{
-			field->setChecked(tmpps[i][pref].toBool());
+			field->setChecked(tmpps[idx][pref].toBool());
 		}
 	}
 }
