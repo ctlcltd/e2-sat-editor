@@ -29,6 +29,7 @@ using std::vector, std::map;
 #include "toolkit/WidgetWithBackdrop.h"
 #include "theme.h"
 #include "gui.h"
+#include "connectionPresets.h"
 
 namespace e2se_gui
 {
@@ -74,12 +75,16 @@ class settings : protected e2se::log_factory
 		void advancedLayout();
 		QListWidgetItem* addProfile(int i = -1);
 		void deleteProfile();
+		void deleteProfile(QListWidgetItem* item);
 		void renameProfile(bool enabled = true);
 		void updateProfile(QListWidgetItem* item);
+		void importProfile();
+		void exportProfile();
 		QMenu* profileMenu();
 		void profileNameChanged(QString text);
 		void currentProfileChanged(QListWidgetItem* current, QListWidgetItem* previous);
 		void showProfileEditContextMenu(QPoint& pos);
+		void applyPreset(connectionPresets::PRESET preset);
 		void tabChanged(int index);
 		void store();
 		void store(QTableWidget* adtbl);

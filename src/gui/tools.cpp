@@ -200,6 +200,7 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 	vector<string> paths;
 
 	paths = gid->importFileDialog(gui::GUI_DPORTS::CSV);
+
 	if (paths.empty())
 		return;
 

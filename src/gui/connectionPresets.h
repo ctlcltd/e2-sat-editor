@@ -25,24 +25,24 @@ class connectionPresets
 	public:
 		enum PRESET {
 			enigma_24,
-			enigma_24_23,
-			enigma_1,
 			neutrino,
+			enigma_23,
 			gx_24,
 			dddragon,
-			wtplay
+			wtplay,
+			enigma_1
 		};
 
 		static vector<PRESET> presets();
 		static map<string, string> call(PRESET preset);
 
-		static map<string, string> preset_enigma_24_23();
 		static map<string, string> preset_enigma_24();
-		static map<string, string> preset_enigma_1();
 		static map<string, string> preset_neutrino();
+		static map<string, string> preset_enigma_23();
 		static map<string, string> preset_gx_24();
 		static map<string, string> preset_dddragon();
 		static map<string, string> preset_wtplay();
+		static map<string, string> preset_enigma_1();
 };
 }
 #endif /* connectionPresets_h */

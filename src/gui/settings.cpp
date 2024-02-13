@@ -9,6 +9,8 @@
  * @license GNU GPLv3 License
  */
 
+#include <cstring>
+
 #include <Qt>
 #include <QTimer>
 #include <QRegularExpression>
@@ -43,7 +45,6 @@
 #include "settings.h"
 #include "theme.h"
 #include "l10n.h"
-#include "connectionPresets.h"
 
 using std::to_string;
 
@@ -854,7 +855,7 @@ QListWidgetItem* settings::addProfile(int i)
 		rplist->setCurrentItem(item);
 
 		if (rplist->count() != 1)
-			renameProfile();
+			renameProfile(true);
 	}
 	return item;
 }
@@ -863,7 +864,28 @@ void settings::deleteProfile()
 {
 	debug("deleteProfile");
 
-	QListWidgetItem* item = rplist->currentItem();
+	QList<QListWidgetItem*> selected = rplist->selectedItems();
+
+	if (selected.empty() && rplist->count() != 0)
+		return;
+
+	// note: do not remove default profile
+	if (rplist->count() == 1)
+	{
+		return debug("deleteProfile", "inhibit", "default");
+	}
+
+	for (auto & item : selected)
+	{
+		this->deleteProfile(item);
+	}
+}
+
+void settings::deleteProfile(QListWidgetItem* item)
+{
+	int row = rplist->row(item);
+
+	debug("deleteProfile", "row", row);
 
 	int i = item->data(Qt::UserRole).toInt();
 	tmpps[i].clear();
@@ -871,8 +893,8 @@ void settings::deleteProfile()
 	this->state.dele = true;
 
 	renameProfile(false);
-	if (rplist->count() != 1)
-		rplist->takeItem(rplist->currentRow());
+
+	rplist->takeItem(row);
 }
 
 void settings::renameProfile(bool enabled)
@@ -889,9 +911,12 @@ void settings::renameProfile(bool enabled)
 
 void settings::updateProfile(QListWidgetItem* item)
 {
-	debug("updateProfile");
+	int row = rplist->row(item);
+
+	debug("updateProfile", "row", row);
 
 	int i = item->data(Qt::UserRole).toInt();
+
 	for (auto & item : prefs[PREF_SECTIONS::Connections])
 	{
 		QString pref = item->property("field").toString();
@@ -915,6 +940,55 @@ void settings::updateProfile(QListWidgetItem* item)
 	}
 }
 
+void settings::importProfile()
+{
+	debug("importProfile");
+
+	vector<string> paths;
+
+	paths = gid->importFileDialog(gui::GUI_DPORTS::ConnectionProfile);
+
+	if (paths.empty())
+		return;
+
+	QListWidgetItem* current = nullptr;
+
+	for (string & path : paths)
+	{
+		//TODO
+
+		this->state.retr = true;
+		QListWidgetItem* item = addProfile();
+		this->state.retr = false;
+
+		current = item;
+	}
+
+	rplist->setCurrentItem(current);
+}
+
+void settings::exportProfile()
+{
+	debug("exportProfile");
+
+	QListWidgetItem* item = rplist->currentItem();
+
+	if (item == nullptr)
+		return;
+
+	string filename = item->text().toStdString();
+	filename.append(".profile");
+
+	string path = gid->exportFileDialog(gui::GUI_DPORTS::ConnectionProfile, filename);
+
+	if (path.empty())
+	{
+		return;
+	}
+
+	//TODO
+}
+
 QMenu* settings::profileMenu()
 {
 	QMenu* menu = new QMenu;
@@ -931,14 +1005,14 @@ QMenu* settings::profileMenu()
 	{
 		QAction* action = new QAction;
 		action->setText(tr("Import Profile…"));
-		action->connect(action, &QAction::triggered, [=]() {});
+		action->connect(action, &QAction::triggered, [=]() { this->importProfile(); });
 		menu->addAction(action);
 	}
 	{
 		QAction* action = new QAction;
 		action->setText(tr("Export Profile…"));
 		action->setEnabled(editable);
-		action->connect(action, &QAction::triggered, [=]() {});
+		action->connect(action, &QAction::triggered, [=]() { this->exportProfile(); });
 		menu->addAction(action);
 	}
 	menu->addSeparator();
@@ -961,7 +1035,7 @@ QMenu* settings::profileMenu()
 		{
 			case connectionPresets::enigma_24: text = "Enigma 2.4"; break;
 			case connectionPresets::neutrino: text = "Neutrino"; break;
-			case connectionPresets::enigma_24_23: text = "Enigma 2.3 / 2.4"; break;
+			case connectionPresets::enigma_23: text = "Enigma 2.3 / 2.4"; break;
 			case connectionPresets::enigma_1: text = "Enigma 1"; break;
 			case connectionPresets::gx_24: text = "GX NationalChip Octagon 2.4"; break;
 			case connectionPresets::dddragon: text = "Triple Dragon"; break;
@@ -969,7 +1043,7 @@ QMenu* settings::profileMenu()
 		}
 
 		action->setText(text);
-		action->connect(action, &QAction::triggered, [=]() {});
+		action->connect(action, &QAction::triggered, [=]() { this->applyPreset(preset); });
 		menu->addAction(action);
 	}
 
@@ -1020,12 +1094,52 @@ void settings::showProfileEditContextMenu(QPoint& pos)
 
 	QMenu* list_edit = contextMenu();
 
-	contextMenuAction(list_edit, tr("Export Profile", "context-menu"), [=]() {}, editable);
+	contextMenuAction(list_edit, tr("Export Profile", "context-menu"), [=]() { this->exportProfile(); }, editable);
 	contextMenuSeparator(list_edit);
 	contextMenuAction(list_edit, tr("Rename", "context-menu"), [=]() { this->renameProfile(true); }, editable);
 	contextMenuAction(list_edit, tr("&Delete", "context-menu"), [=]() { this->deleteProfile(); });
 
 	platform::osMenuPopup(list_edit, rplist, pos);
+}
+
+void settings::applyPreset(connectionPresets::PRESET preset)
+{
+	debug("applyPreset", "choice", int (preset));
+
+	map<string, string> values;
+
+	try
+	{
+		values = connectionPresets::call(preset);
+	}
+	catch (...)
+	{
+		return error("applyPreset", tr("Error", "error").toStdString(), tr("Preset error", "error").toStdString());
+	}
+
+	for (auto & item : prefs[PREF_SECTIONS::Connections])
+	{
+		QString pref = item->property("field").toString();
+		string key = pref.toStdString();
+
+		if (! values.count(key))
+		{
+			continue;
+		}
+		if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
+		{
+			field->setChecked(values[key] == "true");
+		}
+		else if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
+		{
+			field->setText(QString::fromStdString(values[key]));
+		}
+		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
+		{
+			int index = field->findData(QString::fromStdString(values[key]), Qt::UserRole);
+			field->setCurrentIndex(index);
+		}
+	}
 }
 
 void settings::tabChanged(int index)

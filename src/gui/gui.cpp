@@ -1183,6 +1183,10 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 			opts.append(QString("%1 (*.csv *.txt)").arg(tr("CSV File", "file-dialog")));
 			opts.append(QString("%1 (*)").arg(tr("All Files", "file-dialog")));
 		break;
+		case GUI_DPORTS::ConnectionProfile:
+			opts.append(QString("%1 (*.profile)").arg(tr("Connection profile File", "file-dialog")));
+			opts.append(QString("%1 (*)").arg(tr("All Files", "file-dialog")));
+		break; 
 		default:
 			fmode = QFileDialog::AnyFile;
 			opts.append("Enigma2 folder (*)");
@@ -1273,6 +1277,10 @@ string gui::exportFileDialog(GUI_DPORTS gde, string path, int& bit)
 			opts.append(QString("%1 (*.html)").arg(tr("HTML File", "file-dialog")));
 			opts.append(QString("%1 (*)").arg(tr("All Files", "file-dialog")));
 		break;
+		case GUI_DPORTS::ConnectionProfile:
+			opts.append(QString("%1 (*.profile)").arg(tr("Connection profile File", "file-dialog")));
+			opts.append(QString("%1 (*)").arg(tr("All Files", "file-dialog")));
+		break;	
 		default:
 			opts.append(QString("%1 (*)").arg(tr("All Files", "file-dialog")));
 	}

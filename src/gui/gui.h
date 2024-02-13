@@ -217,7 +217,8 @@ class gui : protected e2se::log_factory
 			Userbouquets = 0x4,
 			Tunersets = 0x8,
 			CSV = 0x10,
-			HTML = 0x20
+			HTML = 0x20,
+			ConnectionProfile = 0x100
 		};
 
 		enum COUNTER {
