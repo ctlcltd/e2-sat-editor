@@ -49,7 +49,9 @@ map<string, string> connectionPresets::preset_enigma_24()
 		{"pathTransponders", spath},
 		{"pathServices", spath},
 		{"pathBouquets", spath},
-		{"pathPicons", "/usr/share/enigma2/picon"}
+		{"pathPicons", "/usr/share/enigma2/picon"},
+		{"customWebifReloadUrl", "/web/servicelistreload?mode=0"},
+		{"customTelnetReloadCmd", "init 3"}
 	};
 }
 
@@ -61,7 +63,9 @@ map<string, string> connectionPresets::preset_neutrino()
 		{"pathTransponders", "/var/tuxbox/config"},
 		{"pathServices", spath},
 		{"pathBouquets", spath},
-		{"pathPicons", "/var/share/tuxbox/neutrino/icons"}
+		{"pathPicons", "/var/share/tuxbox/neutrino/icons"},
+		{"customWebifReloadUrl", "/control/reloadchannels"},
+		{"customTelnetReloadCmd", "pzapit -c"}
 	};
 }
 
@@ -72,7 +76,10 @@ map<string, string> connectionPresets::preset_enigma_23()
 	return {
 		{"pathTransponders", "/etc/tuxbox"},
 		{"pathServices", spath},
-		{"pathBouquets", spath}
+		{"pathBouquets", spath},
+		{"pathPicons", "/usr/share/enigma2/picon"},
+		{"customWebifReloadUrl", "/web/servicelistreload?mode=0"},
+		{"customTelnetReloadCmd", "init 3"}
 	};
 }
 
@@ -83,7 +90,10 @@ map<string, string> connectionPresets::preset_gx_24()
 	return {
 		{"pathTransponders", spath},
 		{"pathServices", spath},
-		{"pathBouquets", spath}
+		{"pathBouquets", spath},
+		{"pathPicons", ""},
+		{"customWebifReloadUrl", "/web/servicelistreload?mode=0"},
+		{"customTelnetReloadCmd", "init 3"}
 	};
 }
 
@@ -94,7 +104,10 @@ map<string, string> connectionPresets::preset_dddragon()
 	return {
 		{"pathTransponders", spath},
 		{"pathServices", spath},
-		{"pathBouquets", spath}
+		{"pathBouquets", spath},
+		{"pathPicons", ""},
+		{"customWebifReloadUrl", ""},
+		{"customTelnetReloadCmd", ""}
 	};
 }
 
@@ -105,7 +118,10 @@ map<string, string> connectionPresets::preset_wtplay()
 	return {
 		{"pathTransponders", spath},
 		{"pathServices", spath},
-		{"pathBouquets", spath}
+		{"pathBouquets", spath},
+		{"pathPicons", ""},
+		{"customWebifReloadUrl", ""},
+		{"customTelnetReloadCmd", "killall com.amlogic.tvservice && killall com.amlogic.DTVPlayer"}
 	};
 }
 
@@ -116,7 +132,10 @@ map<string, string> connectionPresets::preset_enigma_1()
 	return {
 		{"pathTransponders", "/var/etc"},
 		{"pathServices", spath},
-		{"pathBouquets", spath}
+		{"pathBouquets", spath},
+		{"pathPicons", ""},
+		{"customWebifReloadUrl", "/cgi-bin/reloadSettings"},
+		{"customTelnetReloadCmd", "init 3"}
 	};
 }
 

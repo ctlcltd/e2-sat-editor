@@ -1612,7 +1612,17 @@ void tab::actionCall(int bit)
 
 void tab::ftpComboItems()
 {
-	// debug("ftpComboItems");
+	debug("ftpComboItems");
+
+	if  (ftp_combo->count())
+	{
+		ftp_combo->clear();
+
+		for (int i = 0; i < ftp_combo->count(); i++)
+		{
+			ftp_combo->removeItem(i);
+		}
+	}
 
 	QSettings settings;
 

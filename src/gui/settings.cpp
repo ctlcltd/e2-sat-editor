@@ -334,10 +334,23 @@ void settings::connectionsLayout()
 	platform::osLineEdit(dtf1lu);
 	dtf1->addRow(tr("Username"), dtf1lu);
 
-	//TODO show/hide
-	QLineEdit* dtf1lp = new QLineEdit("password");
+	//TODO show/hide icons
+	QLineEdit* dtf1lp = new QLineEdit();
+	QAction* dtf1lpr = dtf1lp->addAction(theme::icon("edit"), QLineEdit::TrailingPosition);
+	dtf1lpr->connect(dtf1lpr, &QAction::triggered, [=]() {
+		if (dtf1lp->echoMode() == QLineEdit::Normal)
+		{
+			dtf1lp->setEchoMode(QLineEdit::PasswordEchoOnEdit);
+			dtf1lpr->setIcon(theme::icon("edit"));
+		}
+		else
+		{
+			dtf1lp->setEchoMode(QLineEdit::Normal);
+			dtf1lpr->setIcon(theme::icon("close"));
+		}
+	});
 	dtf1lp->setProperty("field", "password");
-	dtf1lp->setEchoMode(QLineEdit::Password);
+	dtf1lp->setEchoMode(QLineEdit::PasswordEchoOnEdit);
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf1lp);
 	dtf1lp->setMinimumWidth(120);
 	platform::osLineEdit(dtf1lp);
@@ -844,18 +857,34 @@ QListWidgetItem* settings::addProfile(int idx)
 {
 	if (idx == -1)
 	{
-		//TODO TEST
-		// i = sets->value("profile/size").toInt();
-		// i++;
-
 		idx = int (tmpps.size());
 
-		tmpps[idx]["profileName"] = tr("Profile");
+		QString name = tr("Profile") + ' ' + QString::number(idx);
+
+		map<QString, QVariant> values = {
+			{"profileName", name},
+			{"ipAddress", "192.168.0.2"},
+			{"ftpPort", 21},
+			{"ftpActive", false},
+			{"httpPort", 80},
+			{"username", "root"},
+			{"password", ""},
+			{"pathTransponders", "/etc/tuxbox"},
+			{"pathServices", "/etc/enigma2"},
+			{"pathBouquets", "/etc/enigma2"},
+			{"pathPicons", "/usr/share/enigma2/picon"},
+			{"customWebifReloadUrl", ""},
+			{"customTelnetReloadCmd", ""}
+		};
+
+		tmpps.emplace(idx, values);
 	}
+
 	debug("addProfile", "item", idx);
 
-	QListWidgetItem* item = new QListWidgetItem(tr("Profile"), rplist);
-	item->setText(item->text() + ' ' + QString::number(idx));
+	QString name = tmpps[idx]["profileName"].toString();
+
+	QListWidgetItem* item = new QListWidgetItem(name, rplist);
 	item->setData(Qt::UserRole, idx);
 	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
 
@@ -1131,16 +1160,14 @@ void settings::importProfile()
 			else if (valid)
 			{
 				int idx = int (tmpps.size());
+
 				tmpps.emplace(idx, values);
 
 				QString name = values["profileName"].toString();
 
 				QListWidgetItem* item = new QListWidgetItem(name, rplist);
-				item->setText(name);
 				item->setData(Qt::UserRole, idx);
 				item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
-
-				qDebug() << values;
 
 				current = item;
 			}
@@ -1231,7 +1258,7 @@ void settings::exportProfile()
 		"pathBouquets",
 		"pathPicons",
 		"httpPort",
-		"customWebIfReloadUrl",
+		"customWebifReloadUrl",
 		"customTelnetReloadCmd"
 	};
 
