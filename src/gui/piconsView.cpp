@@ -871,6 +871,8 @@ void piconsView::listItemPaste()
 	}*/
 }
 
+//TODO improve ui
+//TODO improve option remember setting
 void piconsView::listItemDelete()
 {
 	debug("listItemDelete");
@@ -883,10 +885,10 @@ void piconsView::listItemDelete()
 	QString title = tr("Delete images", "message");
 	QString text = tr("Do you want to delete the images from disk?", "message");
 
+	text = text.toHtmlEscaped();
 	text.prepend("<span style=\"white-space: nowrap\">");
 	text.append("</span><br>");
-	//TODO improve ui
-	//TODO improve option remember setting
+
 	QMessageBox msg = QMessageBox(this->cwid);
 
 	msg.setWindowFlags(Qt::Sheet | Qt::MSWindowsFixedSizeDialogHint);
@@ -894,6 +896,7 @@ void piconsView::listItemDelete()
 	msg.setAttribute(Qt::WA_TranslucentBackground);
 #endif
 
+	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
 	msg.setInformativeText(text);
 	msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Retry);

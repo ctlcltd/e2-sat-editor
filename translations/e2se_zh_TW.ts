@@ -1607,6 +1607,21 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>menu</comment>
         <translation>軟體許可證…</translation>
     </message>
+    <message>
+        <source>Connection profile File</source>
+        <comment>file-dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <comment>error</comment>
+        <translation type="unfinished">錯誤 File</translation>
+    </message>
+    <message>
+        <source>Error opening files.</source>
+        <comment>error</comment>
+        <translation type="unfinished">打開文件時出錯。</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2570,6 +2585,84 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>Custom telnet reload command</source>
         <translation>自定義 telnet 重新加載命令</translation>
     </message>
+    <message>
+        <source>Menu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <comment>error</comment>
+        <translation type="unfinished">錯誤 File</translation>
+    </message>
+    <message>
+        <source>Error reading file &quot;%1&quot;.</source>
+        <comment>error</comment>
+        <translation type="unfinished">讀取文件 &quot;%1&quot; 時出錯。</translation>
+    </message>
+    <message>
+        <source>Error opening files.</source>
+        <comment>error</comment>
+        <translation type="unfinished">打開文件時出錯。</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <comment>error</comment>
+        <translation type="unfinished">錯誤</translation>
+    </message>
+    <message>
+        <source>Error reading files.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error writing file &quot;%1&quot;.</source>
+        <comment>error</comment>
+        <translation type="unfinished">寫入文件 &quot;%1&quot; 時出錯。</translation>
+    </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation type="unfinished">寫入文件時出錯。</translation>
+    </message>
+    <message>
+        <source>Saved!</source>
+        <comment>message</comment>
+        <translation type="unfinished">得救了！</translation>
+    </message>
+    <message>
+        <source>Import Profiles…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Export Profile(s)…</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Presets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export Profile</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Delete</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished">刪除(&amp;D)</translation>
+    </message>
+    <message>
+        <source>Preset error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>tab</name>
@@ -2955,6 +3048,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>Saved!</source>
         <comment>message</comment>
         <translation>得救了！</translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <comment>error</comment>
+        <translation type="unfinished">錯誤 File</translation>
+    </message>
+    <message>
+        <source>Error opening files.</source>
+        <comment>error</comment>
+        <translation type="unfinished">打開文件時出錯。</translation>
     </message>
 </context>
 <context>

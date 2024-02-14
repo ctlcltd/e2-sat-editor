@@ -152,6 +152,8 @@ void settings::connectionsLayout()
 	QVBoxLayout* dtvbox = new QVBoxLayout;
 
 	this->rplist = new QListWidget;
+	rplist->setUniformItemSizes(true);
+	rplist->setSelectionMode(QListWidget::ExtendedSelection);
 	rplist->setEditTriggers(QListWidget::EditKeyPressed | QListWidget::DoubleClicked);
 
 #ifdef Q_OS_WIN
@@ -875,7 +877,7 @@ void settings::deleteProfile()
 
 	QList<QListWidgetItem*> selected = rplist->selectedItems();
 
-	if (selected.empty() && rplist->count() != 0)
+	if (selected.empty() || rplist->count() == 0)
 		return;
 
 	// note: do not remove default profile
@@ -920,9 +922,12 @@ void settings::renameProfile(bool enabled)
 
 void settings::updateProfile(QListWidgetItem* item)
 {
-	int row = rplist->row(item);
+	int row = item != nullptr ? rplist->row(item) : -1;
 
 	debug("updateProfile", "row", row);
+	
+	if (item == nullptr)
+		return;
 
 	int idx = item->data(Qt::UserRole).toInt();
 
@@ -991,6 +996,7 @@ void settings::importProfile()
 			xml.setNamespaceProcessing(false);
 
 			int step = 0;
+			bool valid = false;
 			QString name, val;
 			QXmlStreamAttributes attrs;
 
@@ -1000,18 +1006,28 @@ void settings::importProfile()
 			{
 				xml.readNext();
 
-				if (! step && xml.isStartElement() && xml.name().toString() == "Servers")
+				if (! step && xml.name().toString() == "e2se")
 				{
-					step = 1;
+					if (xml.isStartElement())
+						step = 1;
+					else if (xml.isEndElement())
+						valid = true;
 				}
-				else if (step && xml.name().toString() == "Server")
+				else if (step && xml.name().toString() == "Servers")
 				{
 					if (xml.isStartElement())
 						step = 2;
 					else if (xml.isEndElement())
 						step = 0;
 				}
-				else if (step == 2)
+				else if (step && xml.name().toString() == "Server")
+				{
+					if (xml.isStartElement())
+						step = 3;
+					else if (xml.isEndElement())
+						step = 1;
+				}
+				else if (step == 3)
 				{
 					if (xml.isStartElement())
 					{
@@ -1026,7 +1042,7 @@ void settings::importProfile()
 					}
 					else if (xml.isEndElement() && xml.name().toString() == name)
 					{
-						step = 2;
+						step = 3;
 					}
 					else
 					{
@@ -1074,8 +1090,12 @@ void settings::importProfile()
 							{
 								if (attrs.value("encoding").toString() == "base64")
 								{
-									//TODO validate base64
-									value = val;
+									QByteArray ba (val.toUtf8());
+
+									if (! QByteArray::fromBase64(ba, QByteArray::AbortOnBase64DecodingErrors).isEmpty())
+									{
+										value = val;
+									}
 								}
 							}
 							else
@@ -1108,7 +1128,7 @@ void settings::importProfile()
 
 				throw std::runtime_error("QXmlStreamReader");
 			}
-			else
+			else if (valid)
 			{
 				int idx = int (tmpps.size());
 				tmpps.emplace(idx, values);
@@ -1119,6 +1139,8 @@ void settings::importProfile()
 				item->setText(name);
 				item->setData(Qt::UserRole, idx);
 				item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
+
+				qDebug() << values;
 
 				current = item;
 			}
@@ -1133,22 +1155,47 @@ void settings::importProfile()
 
 	if (current != nullptr)
 	{
+		rplist->reset(); // should reset QListView::currentIndex
 		rplist->setCurrentItem(current);
 	}
 }
 
-//TODO multiple selection
 void settings::exportProfile()
 {
 	debug("exportProfile");
 
-	QListWidgetItem* item = rplist->currentItem();
+	QList<QListWidgetItem*> items = rplist->selectedItems();
 
-	if (item == nullptr)
-		return;
+	string filename = "e2se";
 
-	string filename = item->text().toStdString();
+	if (items.count() == 1)
+	{
+		QListWidgetItem* item = rplist->currentItem();
+		filename = item->text().toStdString();
+	}
+	else
+	{
+		filename = "e2se";
+	}
+
 	filename.append(".profile");
+
+	vector<int> rows;
+
+	if (items.empty())
+	{
+		for (auto & x : tmpps)
+		{
+			rows.emplace_back(x.first);
+		}
+	}
+	else
+	{
+		for (auto & item : items)
+		{
+			rows.emplace_back(item->data(Qt::UserRole).toInt());
+		}
+	}
 
 	string path = gid->exportFileDialog(gui::GUI_DPORTS::ConnectionProfile, filename);
 
@@ -1158,8 +1205,6 @@ void settings::exportProfile()
 	}
 
 	updateProfile(rplist->currentItem());
-
-	int curr = item->data(Qt::UserRole).toInt();
 
 	QString filepath = QString::fromStdString(path);
 	QFile file (filepath);
@@ -1199,15 +1244,8 @@ void settings::exportProfile()
 		xml.writeAttribute("version", QApplication::applicationVersion());
 		xml.writeStartElement("Servers");
 
-		for (size_t i = 0; i < tmpps.size(); i++)
+		for (int & idx : rows)
 		{
-			int idx = int (i);
-
-			if (curr != -1 && curr != idx)
-			{
-				continue;
-			}
-
 			if (tmpps[idx].size())
 			{
 				xml.writeStartElement("Server");
@@ -1294,14 +1332,13 @@ QMenu* settings::profileMenu()
 
 	{
 		QAction* action = new QAction;
-		action->setText(tr("Import Profile…"));
+		action->setText(tr("Import Profiles…"));
 		action->connect(action, &QAction::triggered, [=]() { this->importProfile(); });
 		menu->addAction(action);
 	}
 	{
 		QAction* action = new QAction;
-		action->setText(tr("Export Profile…"));
-		action->setEnabled(editable);
+		action->setText(tr("Export Profile(s)…", nullptr, int (selected.count())));
 		action->connect(action, &QAction::triggered, [=]() { this->exportProfile(); });
 		menu->addAction(action);
 	}
@@ -1333,6 +1370,7 @@ QMenu* settings::profileMenu()
 		}
 
 		action->setText(text);
+		action->setEnabled(editable);
 		action->connect(action, &QAction::triggered, [=]() { this->applyPreset(preset); });
 		menu->addAction(action);
 	}
@@ -1342,9 +1380,14 @@ QMenu* settings::profileMenu()
 
 void settings::profileNameChanged(QString text)
 {
-	debug("profileNameChanged");
-
 	QListWidgetItem* item = rplist->currentItem();
+	int row = item != nullptr ? rplist->row(item) : -1;
+
+	debug("profileNameChanged", "row", row);
+
+	if (item == nullptr)
+		return;
+
 	int idx = item->data(Qt::UserRole).toInt();
 
 	if (QApplication::layoutDirection() == Qt::RightToLeft)
@@ -1362,7 +1405,9 @@ void settings::currentProfileChanged(QListWidgetItem* current, QListWidgetItem* 
 	if (previous != nullptr && ! this->state.dele)
 		updateProfile(previous);
 
-	this->retrieve(current);
+	if (current != nullptr)
+		this->retrieve(current);
+
 	this->state.dele = false;
 }
 
@@ -1568,11 +1613,10 @@ void settings::retrieve()
 				{
 					QString val = sets->value(pref).toString();
 
-					//TODO validate base64
 					if (pref == "password")
 					{
 						QByteArray ba (val.toUtf8());
-						val = QByteArray::fromBase64(ba);
+						val = QByteArray::fromBase64(ba, QByteArray::AbortOnBase64DecodingErrors);
 					}
 
 					field->setText(val);
@@ -1628,9 +1672,12 @@ void settings::retrieve()
 
 void settings::retrieve(QListWidgetItem* item)
 {
-	int row = rplist->row(item);
+	int row = item != nullptr ? rplist->row(item) : -1;
 
 	debug("retrieve", "row", row);
+
+	if (item == nullptr)
+		return;
 
 	int idx = item->data(Qt::UserRole).toInt();
 
@@ -1642,11 +1689,10 @@ void settings::retrieve(QListWidgetItem* item)
 		{
 			QString val = tmpps[idx][pref].toString();
 
-			//TODO validate base64
 			if (pref == "password")
 			{
 				QByteArray ba (val.toUtf8());
-				val = QByteArray::fromBase64(ba);
+				val = QByteArray::fromBase64(ba, QByteArray::AbortOnBase64DecodingErrors);
 			}
 
 			field->setText(val);
@@ -1725,13 +1771,13 @@ void settings::destroy()
 	delete this;
 }
 
-//TODO FIX
 void settings::infoMessage(QString title)
 {
-	QMessageBox msg = QMessageBox(nullptr);
+	QMessageBox msg = QMessageBox(this->dial);
 
-	msg.setWindowFlags(Qt::Popup);
+	// msg.setWindowFlags(Qt::Popup);
 
+	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
 	QRect pos = msg.geometry();
 	pos.moveCenter(QPoint(this->dial->width() / 2, this->dial->height() / 2));
@@ -1741,12 +1787,15 @@ void settings::infoMessage(QString title)
 
 void settings::infoMessage(QString title, QString text)
 {
+	text = text.toHtmlEscaped();
 	text.prepend("<span style=\"white-space: nowrap\">");
 	text.append("</span><br>");
-	QMessageBox msg = QMessageBox(nullptr);
 
-	msg.setWindowFlags(Qt::Popup);
+	QMessageBox msg = QMessageBox(this->dial);
 
+	// msg.setWindowFlags(Qt::Popup);
+
+	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
 	msg.setInformativeText(text);
 	QRect pos = msg.geometry();
@@ -1757,7 +1806,10 @@ void settings::infoMessage(QString title, QString text)
 
 void settings::errorMessage(QString title, QString text)
 {
-	QMessageBox::critical(nullptr, title, text);
+	title = title.toHtmlEscaped();
+	text = text.toHtmlEscaped();
+
+	QMessageBox::critical(this->dial, title, text);
 }
 
 QMenu* settings::contextMenu()

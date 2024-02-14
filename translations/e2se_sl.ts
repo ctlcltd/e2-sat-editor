@@ -1610,6 +1610,21 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
         <comment>menu</comment>
         <translation>Licence programske opreme…</translation>
     </message>
+    <message>
+        <source>Connection profile File</source>
+        <comment>file-dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <comment>error</comment>
+        <translation type="unfinished">Napaka Datoteke</translation>
+    </message>
+    <message>
+        <source>Error opening files.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Napaka pri odpiranju datotek.</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2573,6 +2588,87 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
         <source>Custom telnet reload command</source>
         <translation>Ukaz za vnovično nalaganje telnet po meri</translation>
     </message>
+    <message>
+        <source>Menu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <comment>error</comment>
+        <translation type="unfinished">Napaka Datoteke</translation>
+    </message>
+    <message>
+        <source>Error reading file &quot;%1&quot;.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Napaka pri branju datoteke &quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <source>Error opening files.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Napaka pri odpiranju datotek.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <comment>error</comment>
+        <translation type="unfinished">Napaka</translation>
+    </message>
+    <message>
+        <source>Error reading files.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error writing file &quot;%1&quot;.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Napaka pri pisanju datoteke &quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Napaka pri pisanju datotek.</translation>
+    </message>
+    <message>
+        <source>Saved!</source>
+        <comment>message</comment>
+        <translation type="unfinished">Shranjeno!</translation>
+    </message>
+    <message>
+        <source>Import Profiles…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Export Profile(s)…</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Presets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export Profile</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Delete</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished">&amp;Izbriši</translation>
+    </message>
+    <message>
+        <source>Preset error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>tab</name>
@@ -2964,6 +3060,16 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
         <source>Saved!</source>
         <comment>message</comment>
         <translation>Shranjeno!</translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <comment>error</comment>
+        <translation type="unfinished">Napaka Datoteke</translation>
+    </message>
+    <message>
+        <source>Error opening files.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Napaka pri odpiranju datotek.</translation>
     </message>
 </context>
 <context>

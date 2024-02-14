@@ -1609,6 +1609,21 @@ VAI LIETOŠANA VAI CITI DARĪJUMI AR PROGRAMMATŪRU.</translation>
         <comment>menu</comment>
         <translation>Programmatūras licences…</translation>
     </message>
+    <message>
+        <source>Connection profile File</source>
+        <comment>file-dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <comment>error</comment>
+        <translation type="unfinished">Faila Kļūda</translation>
+    </message>
+    <message>
+        <source>Error opening files.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Kļūda atverot failus.</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2572,6 +2587,86 @@ VAI LIETOŠANA VAI CITI DARĪJUMI AR PROGRAMMATŪRU.</translation>
         <source>Custom telnet reload command</source>
         <translation>Pielāgota telnet pārlādēšanas komanda</translation>
     </message>
+    <message>
+        <source>Menu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <comment>error</comment>
+        <translation type="unfinished">Faila Kļūda</translation>
+    </message>
+    <message>
+        <source>Error reading file &quot;%1&quot;.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Kļūda, lasot failu &quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <source>Error opening files.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Kļūda atverot failus.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <comment>error</comment>
+        <translation type="unfinished">Kļūda</translation>
+    </message>
+    <message>
+        <source>Error reading files.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error writing file &quot;%1&quot;.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Kļūda, rakstot failu &quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Kļūda rakstot failus.</translation>
+    </message>
+    <message>
+        <source>Saved!</source>
+        <comment>message</comment>
+        <translation type="unfinished">Saglabāts!</translation>
+    </message>
+    <message>
+        <source>Import Profiles…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Export Profile(s)…</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Presets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export Profile</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Delete</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished">&amp;Dzēst</translation>
+    </message>
+    <message>
+        <source>Preset error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>tab</name>
@@ -2961,6 +3056,16 @@ VAI LIETOŠANA VAI CITI DARĪJUMI AR PROGRAMMATŪRU.</translation>
         <source>Saved!</source>
         <comment>message</comment>
         <translation>Saglabāts!</translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <comment>error</comment>
+        <translation type="unfinished">Faila Kļūda</translation>
+    </message>
+    <message>
+        <source>Error opening files.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Kļūda atverot failus.</translation>
     </message>
 </context>
 <context>

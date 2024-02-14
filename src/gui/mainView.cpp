@@ -2888,7 +2888,7 @@ void mainView::treeDropFromList(QTreeWidgetItem* current)
 
 	if (QSettings().value("preference/treeCurrentAfterDrop", true).toBool())
 	{
-		tree->setCurrentItem(nullptr); // should reset QTreeView::currentIndex 
+		tree->setCurrentItem(nullptr); // should reset QTreeView::currentIndex
 		tree->setCurrentItem(current);
 
 		list->addTopLevelItems(items);

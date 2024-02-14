@@ -1603,6 +1603,21 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>menu</comment>
         <translation>Yazılım lisansları…</translation>
     </message>
+    <message>
+        <source>Connection profile File</source>
+        <comment>file-dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <comment>error</comment>
+        <translation type="unfinished">Dosya Hatası</translation>
+    </message>
+    <message>
+        <source>Error opening files.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Dosyalar açılırken hata oluştu.</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2566,6 +2581,84 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>Custom telnet reload command</source>
         <translation>Özel telnet yeniden yükleme komutu</translation>
     </message>
+    <message>
+        <source>Menu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <comment>error</comment>
+        <translation type="unfinished">Dosya Hatası</translation>
+    </message>
+    <message>
+        <source>Error reading file &quot;%1&quot;.</source>
+        <comment>error</comment>
+        <translation type="unfinished">&quot;%1&quot; dosyası okunurken hata oluştu.</translation>
+    </message>
+    <message>
+        <source>Error opening files.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Dosyalar açılırken hata oluştu.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <comment>error</comment>
+        <translation type="unfinished">Hatası</translation>
+    </message>
+    <message>
+        <source>Error reading files.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error writing file &quot;%1&quot;.</source>
+        <comment>error</comment>
+        <translation type="unfinished">&quot;%1&quot; dosyası yazılırken hata oluştu.</translation>
+    </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Dosyalar yazılırken hata oluştu.</translation>
+    </message>
+    <message>
+        <source>Saved!</source>
+        <comment>message</comment>
+        <translation type="unfinished">Kaydedildi!</translation>
+    </message>
+    <message>
+        <source>Import Profiles…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Export Profile(s)…</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Presets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export Profile</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Delete</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished">&amp;Sil</translation>
+    </message>
+    <message>
+        <source>Preset error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>tab</name>
@@ -2951,6 +3044,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>Saved!</source>
         <comment>message</comment>
         <translation>Kaydedildi!</translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <comment>error</comment>
+        <translation type="unfinished">Dosya Hatası</translation>
+    </message>
+    <message>
+        <source>Error opening files.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Dosyalar açılırken hata oluştu.</translation>
     </message>
 </context>
 <context>

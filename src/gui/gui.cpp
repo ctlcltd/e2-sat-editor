@@ -1934,6 +1934,9 @@ QLocale gui::getLocale()
 
 void gui::errorMessage(QString title, QString text)
 {
+	title = title.toHtmlEscaped();
+	text = text.toHtmlEscaped();
+
 	QMessageBox::critical(this->mwid, title, text);
 }
 

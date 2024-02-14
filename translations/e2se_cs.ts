@@ -1609,6 +1609,21 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
         <comment>menu</comment>
         <translation>Softwarové licence…</translation>
     </message>
+    <message>
+        <source>Connection profile File</source>
+        <comment>file-dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <comment>error</comment>
+        <translation type="unfinished">Chyba Souboru</translation>
+    </message>
+    <message>
+        <source>Error opening files.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Při otevírání souborů došlo k chybě.</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2572,6 +2587,86 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
         <source>Custom telnet reload command</source>
         <translation>Vlastní příkaz znovu načíst telnet</translation>
     </message>
+    <message>
+        <source>Menu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <comment>error</comment>
+        <translation type="unfinished">Chyba Souboru</translation>
+    </message>
+    <message>
+        <source>Error reading file &quot;%1&quot;.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Chyba při čtení souboru &quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <source>Error opening files.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Při otevírání souborů došlo k chybě.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <comment>error</comment>
+        <translation type="unfinished">Chyba</translation>
+    </message>
+    <message>
+        <source>Error reading files.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error writing file &quot;%1&quot;.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Chyba při zápisu souboru &quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Chyba při zápisu souborů.</translation>
+    </message>
+    <message>
+        <source>Saved!</source>
+        <comment>message</comment>
+        <translation type="unfinished">Uložené!</translation>
+    </message>
+    <message>
+        <source>Import Profiles…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Export Profile(s)…</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Presets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export Profile</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Delete</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished">&amp;Smazat</translation>
+    </message>
+    <message>
+        <source>Preset error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>tab</name>
@@ -2961,6 +3056,16 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
         <source>Saved!</source>
         <comment>message</comment>
         <translation>Uložené!</translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <comment>error</comment>
+        <translation type="unfinished">Chyba Souboru</translation>
+    </message>
+    <message>
+        <source>Error opening files.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Při otevírání souborů došlo k chybě.</translation>
     </message>
 </context>
 <context>

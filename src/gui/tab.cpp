@@ -2165,6 +2165,7 @@ QTimer* tab::statusBarMessage(QString text)
 	timer->setInterval(STATUSBAR_MESSAGE_TIMEOUT);
 	timer->callOnTimeout([=]() { this->resetStatusBar(true); delete timer; });
 	timer->start();
+
 	return timer;
 }
 
@@ -2187,7 +2188,9 @@ void tab::statusBarMessage(QTimer* timer)
 
 bool tab::saveQuestion(QString title, QString text)
 {
+	text = text.toHtmlEscaped();
 	text.append("\n");
+
 	QMessageBox msg = QMessageBox(this->cwid);
 
 	msg.setWindowFlags(Qt::Sheet | Qt::MSWindowsFixedSizeDialogHint);
@@ -2195,10 +2198,12 @@ bool tab::saveQuestion(QString title, QString text)
 	msg.setAttribute(Qt::WA_TranslucentBackground);
 #endif
 
+	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
 	msg.setInformativeText(text);
 	msg.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
 	msg.setDefaultButton(QMessageBox::Save);
+
 	return (msg.exec() == QMessageBox::Save);
 }
 
@@ -2207,8 +2212,10 @@ bool tab::removeQuestion(QString title, QString text)
 	if (! QSettings().value("preference/askConfirmation", false).toBool())
 		return true;
 
+	text = text.toHtmlEscaped();
 	text.prepend("<span style=\"white-space: nowrap\">");
 	text.append("</span><br>");
+
 	QMessageBox msg = QMessageBox(this->cwid);
 
 	msg.setWindowFlags(Qt::Sheet | Qt::MSWindowsFixedSizeDialogHint);
@@ -2216,10 +2223,12 @@ bool tab::removeQuestion(QString title, QString text)
 	msg.setAttribute(Qt::WA_TranslucentBackground);
 #endif
 
+	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
 	msg.setInformativeText(text);
 	msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Retry);
 	msg.setDefaultButton(QMessageBox::Ok);
+
 	return (msg.exec() == QMessageBox::Ok);
 }
 
@@ -2229,6 +2238,7 @@ void tab::infoMessage(QString title)
 
 	msg.setWindowFlags(Qt::Popup);
 
+	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
 	QRect pos = msg.geometry();
 	pos.moveCenter(QPoint(this->cwid->width() / 2, this->cwid->height() / 2));
@@ -2238,12 +2248,15 @@ void tab::infoMessage(QString title)
 
 void tab::infoMessage(QString title, QString text)
 {
+	text = text.toHtmlEscaped();
 	text.prepend("<span style=\"white-space: nowrap\">");
 	text.append("</span><br>");
+
 	QMessageBox msg = QMessageBox(this->cwid);
 
 	msg.setWindowFlags(Qt::Popup);
 
+	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
 	msg.setInformativeText(text);
 	QRect pos = msg.geometry();
@@ -2254,6 +2267,9 @@ void tab::infoMessage(QString title, QString text)
 
 void tab::errorMessage(QString title, QString text)
 {
+	title = title.toHtmlEscaped();
+	text = text.toHtmlEscaped();
+
 	QMessageBox::critical(this->cwid, title, text);
 }
 

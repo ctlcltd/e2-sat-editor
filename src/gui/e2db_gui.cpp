@@ -708,10 +708,18 @@ string e2db::msg(string str, string param)
 void e2db::error(string fn, string optk, string optv)
 {
 	this->::e2se_e2db::e2db::error(fn, tr(optk.data(), "error").toStdString(), optv);
+
 	if (this->threading)
+	{
 		throw std::runtime_error(optk + '\t' + optv + '\t' + fn);
+	}
 	else
-		QMessageBox::critical(nullptr, tr(optk.data(), "error"), QString(optv.data()));
+	{
+		QString qoptk = QString(optk.data()).toHtmlEscaped();
+		QString qoptv = QString(optv.data()).toHtmlEscaped();
+
+		QMessageBox::critical(nullptr, tr(qoptk.toStdString().data(), "error"), qoptv);
+	}
 }
 
 void e2db::showError(string str)
@@ -721,7 +729,11 @@ void e2db::showError(string str)
 	std::getline(ss, optk, '\t');
 	std::getline(ss, optv, '\t');
 	std::getline(ss, fn, '\t');
-	QMessageBox::critical(nullptr, tr(optk.data(), "error"), tr(optv.data(), "error"));
+
+	QString qoptk = QString(optk.data()).toHtmlEscaped();
+	QString qoptv = QString(optv.data()).toHtmlEscaped();
+
+	QMessageBox::critical(nullptr, tr(qoptk.toStdString().data(), "error"), tr(qoptv.toStdString().data(), "error"));
 }
 
 }
