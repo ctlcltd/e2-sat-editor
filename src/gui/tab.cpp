@@ -1647,6 +1647,8 @@ void tab::ftpComboChanged(int index)
 {
 	debug("profileComboChanged", "index", index);
 
+	this->ftph->closeConnection();
+
 	QSettings().setValue("profile/selected", index);
 
 	ftp_combo->setCurrentIndex(index);
@@ -2253,8 +2255,11 @@ void tab::ftpcomError(string error)
 	title = title.toHtmlEscaped();
 	message = message.replace("<", "&lt;").replace(">", "&gt;");
 
-	// QString text = QString("%1\n\n%2").arg(title).arg(message);
+#ifndef Q_OS_MAC
 	QString text = message;
+#else
+	QString text = QString("%1\n\n%2").arg(title).arg(message);
+#endif
 
 	QMessageBox::critical(this->cwid, title, text);
 }
@@ -2293,9 +2298,9 @@ void tab::ftpcomError(unordered_map<string, string> errors)
 	msg.setText(title);
 	msg.setInformativeText(message);
 	msg.setDetailedText(error_detailed);
-	QRect pos = msg.geometry();
-	pos.moveCenter(QPoint(this->cwid->width() / 2, this->cwid->height() / 2));
-	msg.setGeometry(pos);
+	// QRect pos = msg.geometry();
+	// pos.moveCenter(QPoint(this->cwid->width() / 2, this->cwid->height() / 2));
+	// msg.setGeometry(pos);
 	msg.exec();
 }
 
@@ -2322,8 +2327,11 @@ void tab::e2dbError(string error)
 	title = title.toHtmlEscaped();
 	message = message.replace("<", "&lt;").replace(">", "&gt;");
 
-	// QString text = QString("%1\n\n%2").arg(title).arg(message);
+#ifndef Q_OS_MAC
 	QString text = message;
+#else
+	QString text = QString("%1\n\n%2").arg(title).arg(message);
+#endif
 
 	QMessageBox::critical(this->cwid, title, text);
 }
@@ -2445,9 +2453,9 @@ void tab::infoMessage(QString title)
 
 	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
-	QRect pos = msg.geometry();
-	pos.moveCenter(QPoint(this->cwid->width() / 2, this->cwid->height() / 2));
-	msg.setGeometry(pos);
+	// QRect pos = msg.geometry();
+	// pos.moveCenter(QPoint(this->cwid->width() / 2, this->cwid->height() / 2));
+	// msg.setGeometry(pos);
 	msg.exec();
 }
 
@@ -2463,9 +2471,9 @@ void tab::infoMessage(QString title, QString message)
 	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
 	msg.setInformativeText(message);
-	QRect pos = msg.geometry();
-	pos.moveCenter(QPoint(this->cwid->width() / 2, this->cwid->height() / 2));
-	msg.setGeometry(pos);
+	// QRect pos = msg.geometry();
+	// pos.moveCenter(QPoint(this->cwid->width() / 2, this->cwid->height() / 2));
+	// msg.setGeometry(pos);
 	msg.exec();
 }
 
@@ -2474,8 +2482,11 @@ void tab::errorMessage(QString title, QString message)
 	title = title.toHtmlEscaped();
 	message = message.replace("<", "&lt;").replace(">", "&gt;");
 
-	// QString text = QString("%1\n\n%2").arg(title).arg(message);
+#ifndef Q_OS_MAC
 	QString text = message;
+#else
+	QString text = QString("%1\n\n%2").arg(title).arg(message);
+#endif
 
 	QMessageBox::critical(this->cwid, title, text);
 }

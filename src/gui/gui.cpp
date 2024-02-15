@@ -1937,8 +1937,11 @@ void gui::errorMessage(QString title, QString message)
 	title = title.toHtmlEscaped();
 	message = message.replace("<", "&lt;").replace(">", "&gt;");
 
-	// QString text = QString("%1\n\n%2").arg(title).arg(message);
-	QString text = message;
+#ifndef Q_OS_MAC
+	QString text = message; 
+#else
+	QString text = QString("%1\n\n%2").arg(title).arg(message);
+#endif
 
 	QMessageBox::critical(this->mwid, title, text);
 }

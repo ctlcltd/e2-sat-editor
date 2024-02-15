@@ -1808,9 +1808,9 @@ void settings::infoMessage(QString title)
 
 	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
-	QRect pos = msg.geometry();
-	pos.moveCenter(QPoint(this->dial->width() / 2, this->dial->height() / 2));
-	msg.setGeometry(pos);
+	// QRect pos = msg.geometry();
+	// pos.moveCenter(QPoint(this->dial->width() / 2, this->dial->height() / 2));
+	// msg.setGeometry(pos);
 	msg.exec();
 }
 
@@ -1826,9 +1826,9 @@ void settings::infoMessage(QString title, QString message)
 	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
 	msg.setInformativeText(message);
-	QRect pos = msg.geometry();
-	pos.moveCenter(QPoint(this->dial->width() / 2, this->dial->height() / 2));
-	msg.setGeometry(pos);
+	// QRect pos = msg.geometry();
+	// pos.moveCenter(QPoint(this->dial->width() / 2, this->dial->height() / 2));
+	// msg.setGeometry(pos);
 	msg.exec();
 }
 
@@ -1837,8 +1837,11 @@ void settings::errorMessage(QString title, QString message)
 	title = title.toHtmlEscaped();
 	message = message.replace("<", "&lt;").replace(">", "&gt;");
 
-	// QString text = QString("%1\n\n%2").arg(title).arg(message);
+#ifndef Q_OS_MAC
 	QString text = message;
+#else
+	QString text = QString("%1\n\n%2").arg(title).arg(message);
+#endif
 
 	QMessageBox::critical(this->dial, title, text);
 }
