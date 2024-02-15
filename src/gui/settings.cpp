@@ -996,6 +996,8 @@ void settings::importProfile()
 		return;
 	}
 
+	theme::setWaitCursor();
+
 	updateProfile(rplist->currentItem());
 
 	QListWidgetItem* current = nullptr;
@@ -1012,6 +1014,8 @@ void settings::importProfile()
 
 		if (! file.open(QIODevice::ReadOnly | QIODevice::Text))
 		{
+			theme::unsetWaitCursor();
+
 			error("importProfile", tr("File Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(path.data()).toStdString());
 
 			errorMessage(tr("File Error", "error"), tr("Error opening files.", "error"));
@@ -1174,11 +1178,15 @@ void settings::importProfile()
 		}
 		catch (...)
 		{
+			theme::unsetWaitCursor();
+
 			error("importProfile", tr("Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(path.data()).toStdString());
 
 			errorMessage(tr("Error", "error"), tr("Error reading files.", "error"));
 		}
 	}
+
+	theme::unsetWaitCursor();
 
 	if (current != nullptr)
 	{
@@ -1231,6 +1239,8 @@ void settings::exportProfile()
 		return;
 	}
 
+	theme::setWaitCursor();
+
 	updateProfile(rplist->currentItem());
 
 	QString filepath = QString::fromStdString(path);
@@ -1238,6 +1248,8 @@ void settings::exportProfile()
 
 	if (! file.open(QIODevice::WriteOnly | QIODevice::Text))
 	{
+		theme::unsetWaitCursor();
+
 		error("exportProfile", tr("File Error", "error").toStdString(), tr("Error writing file \"%1\".", "error").arg(path.data()).toStdString());
 
 		errorMessage(tr("File Error", "error"), tr("Error opening files.", "error"));
@@ -1336,10 +1348,14 @@ void settings::exportProfile()
 	}
 	catch (...)
 	{
+		theme::unsetWaitCursor();
+
 		error("exportProfile", tr("Error", "error").toStdString(), tr("Error writing file \"%1\".", "error").arg(path.data()).toStdString());
 
 		errorMessage(tr("Error", "error"), tr("Error writing files.", "error"));
 	}
+
+	theme::unsetWaitCursor();
 
 	infoMessage(tr("Saved!", "message"));
 }

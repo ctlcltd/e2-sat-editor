@@ -219,7 +219,19 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 	}
 
 	theme::setWaitCursor();
-	dbih->import_csv_file(fci, opts, paths);
+
+	try
+	{
+		dbih->import_csv_file(fci, opts, paths);
+	}
+	// handled by e2db_gui::e2db::error
+	catch (...)
+	{
+		theme::unsetWaitCursor();
+
+		return;
+	}
+
 	theme::unsetWaitCursor();
 
 	tid->reset();
@@ -279,7 +291,19 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 	auto* dbih = this->data->dbih;
 
 	theme::setWaitCursor();
-	dbih->export_csv_file(fco, opts, path);
+
+	try
+	{
+		dbih->export_csv_file(fco, opts, path);
+	}
+	// handled by e2db_gui::e2db::error
+	catch (...)
+	{
+		theme::unsetWaitCursor();
+
+		return;
+	}
+
 	theme::unsetWaitCursor();
 
 	if (tid->statusBarIsVisible())
@@ -337,7 +361,19 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 	auto* dbih = this->data->dbih;
 
 	theme::setWaitCursor();
-	dbih->export_html_file(fco, opts, path);
+
+	try
+	{
+		dbih->export_html_file(fco, opts, path);
+	}
+	// handled by e2db_gui::e2db::error
+	catch (...)
+	{
+		theme::unsetWaitCursor();
+
+		return;
+	}
+
 	theme::unsetWaitCursor();
 
 	if (tid->statusBarIsVisible())

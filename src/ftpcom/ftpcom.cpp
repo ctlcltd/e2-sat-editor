@@ -300,7 +300,7 @@ vector<string> ftpcom::list_dir_mlsd(string basedir)
 
 		size_t pos = line.rfind("; ");
 
-		if (pos == string::npos) // not vali
+		if (pos == string::npos) // not valid
 			throw std::runtime_error("102");
 
 		string filename = line.substr(pos + 2);
@@ -625,6 +625,7 @@ bool ftpcom::cmd_ifreload()
 	curl_url_set(rsh, CURLUPART_SCHEME, "http", 0);
 	curl_url_set(rsh, CURLUPART_HOST, host.c_str(), 0);
 	curl_url_set(rsh, CURLUPART_PORT, to_string(htport).c_str(), 0);
+
 	if (ifreload.empty())
 	{
 		curl_url_set(rsh, CURLUPART_PATH, "/web/servicelistreload", 0);
@@ -660,7 +661,14 @@ bool ftpcom::cmd_ifreload()
 
 	if (res != CURLE_OK)
 	{
-		error("cmd_ifreload", "FTP Error", msg(curl_easy_strerror(res))); // var error string
+		string message;
+
+		if (res == CURLE_COULDNT_CONNECT)
+			message = msg("Couldn't connect to STB Webif");
+		else
+			message = msg(curl_easy_strerror(res)); // var error string
+
+		error("cmd_ifreload", "Webif Reload Error", message);
 
 		reset(csh, rsh);
 		data.clear();
@@ -718,20 +726,27 @@ bool ftpcom::cmd_tnreload()
 	if (ftpcom::VERBOSE)
 		curl_easy_setopt(csh, CURLOPT_VERBOSE, true);
 
-	debug("cmd_tnreload", "stdout", "start");
+	// debug("cmd_tnreload", "stdout", "start");
 
 	CURLcode res = perform(csh);
 
 	if (res != CURLE_OK)
 	{
-		error("cmd_tnreload", "FTP Error", msg(curl_easy_strerror(res))); // var error string
+		string message;
+
+		if (res == CURLE_COULDNT_CONNECT)
+			message = msg("Couldn't connect to STB Telnet");
+		else
+			message = msg(curl_easy_strerror(res)); // var error string
+
+		error("cmd_tnreload", "Telnet Reload Error", message);
 
 		reset(csh, rsh);
 
 		return false;
 	}
 
-	debug("cmd_tnreload", "stdout", "end");
+	// debug("cmd_tnreload", "stdout", "end");
 
 	reset(csh, rsh);
 

@@ -56,6 +56,7 @@ bool dataHandler::readFile(string path)
 	{
 		this->path = path;
 		this->newfile = false;
+
 		return true;
 	}
 
@@ -73,10 +74,18 @@ bool dataHandler::readBlob(string path, unordered_map<string, e2db::e2db_file> f
 	this->newfile = false;
 	this->changed = false;
 
-	this->dbih->importBlob(files);
+	try
+	{
+		this->dbih->importBlob(files);
 
-	if (! this->path.empty())
-		this->path = path;
+		if (! this->path.empty())
+			this->path = path;
+	}
+	// handled by e2db_gui::e2db::error
+	catch (...)
+	{
+		return false;
+	}
 
 	return true;
 }
@@ -91,6 +100,7 @@ bool dataHandler::writeFile(string path)
 	if (this->dbih->write(path))
 	{
 		this->path = path;
+
 		return true;
 	}
 

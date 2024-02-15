@@ -1420,19 +1420,19 @@ bool e2db_maker::write(string path)
 	}
 	catch (const std::invalid_argument& err)
 	{
-		exception("read", "Maker Error", msg(MSG::except_invalid_argument, err.what()));
+		exception("write", "Maker Error", msg(MSG::except_invalid_argument, err.what()));
 	}
 	catch (const std::out_of_range& err)
 	{
-		exception("read", "Maker Error", msg(MSG::except_out_of_range, err.what()));
+		exception("write", "Maker Error", msg(MSG::except_out_of_range, err.what()));
 	}
 	catch (const std::filesystem::filesystem_error& err)
 	{
-		exception("read", "Maker Error", msg(MSG::except_filesystem, err.what()));
+		exception("write", "Maker Error", msg(MSG::except_filesystem, err.what()));
 	}
 	catch (...)
 	{
-		exception("read", "Maker Error", msg(MSG::except_uncaught));
+		exception("write", "Maker Error", msg(MSG::except_uncaught));
 	}
 
 	return false;

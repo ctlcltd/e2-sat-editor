@@ -127,7 +127,7 @@ class ftpcom : protected e2se::log_factory
 		string baseb;
 		string ifreload;
 		string tnreload;
-		bool mlsd = false;
+		bool mlsd = true;
 		CURL* cph = nullptr;
 		CURL* csh = nullptr;
 		CURLU* rph = nullptr;

@@ -127,6 +127,7 @@ class tab : protected e2se::log_factory
 		void ftpUpload();
 		void ftpDownload();
 		void ftpReloadStb();
+		void ftpReloadStb(int mode);
 		void ftpStbConnectingNotify();
 		void ftpStbDisconnectingNotify();
 		void ftpStbHandlingNotify();
@@ -136,14 +137,14 @@ class tab : protected e2se::log_factory
 		void ftpStbUploadNotify(int files_count);
 		void ftpStbUploadNotify(string filename);
 		void ftpStbReloadSuccessNotify();
-		void ftpStbReloadErrorNotify();
+		void ftpStbReloadErrorNotify(unordered_map<string, string> errors);
 		void ftpStbConnectSuccessNotify();
 		void ftpStbConnectErrorNotify();
 		void ftpStbDisconnectSuccessNotify();
 		void ftpStbDisconnectErrorNotify();
 		void ftpcomError();
 		void ftpcomError(string error);
-		void ftpcomError(unordered_map<string, string> errors);
+		void ftpcomError(unordered_map<string, string> errors, bool reload = false);
 		void e2dbError();
 		void e2dbError(string error);
 		void loadSeeds();
@@ -170,6 +171,7 @@ class tab : protected e2se::log_factory
 
 		unordered_map<string, e2se_ftpcom::ftpcom::ftpcom_file> ftp_files;
 		unordered_map<string, string> ftp_errors;
+		int stb_reload = 0;
 		unordered_map<string, e2db::e2db_file> files;
 
 		// stored gui bit flags

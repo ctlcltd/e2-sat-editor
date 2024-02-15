@@ -411,8 +411,18 @@ bool e2db::prepare(string filename)
 {
 	debug("prepare");
 
-	if (! this->read(filename))
+	try
+	{
+		if (! this->read(filename))
+		{
+			return false;
+		}
+	}
+	// handled by e2db_gui::e2db::error
+	catch (...)
+	{
 		return false;
+	}
 
 	cache();
 	fixBouquets();
@@ -424,49 +434,88 @@ bool e2db::write(string path)
 {
 	debug("write");
 
-	if (! this->::e2se_e2db::e2db::write(path))
+	try
+	{
+		if (! this->::e2se_e2db::e2db::write(path))
+		{
+			return false;
+		}
+	}
+	// handled by e2db_gui::e2db::error
+	catch (...)
+	{
 		return false;
+	}
 
 	return true;
 }
 
-//TODO exceptions
 void e2db::importFile(vector<string> paths)
 {
 	debug("importFile");
 
-	bool merge = this->get_input().size() != 0 ? true : false;
-	import_file(paths);
+	bool merge = false;
+
+	try
+	{
+		merge = this->get_input().size() != 0 ? true : false;
+
+		import_file(paths);
+	}
+	// handled by e2db_gui::e2db::error
+	catch (...)
+	{
+		return;
+	}
 
 	cache(merge);
 	// fixBouquets();
 }
 
-//TODO exceptions
 void e2db::exportFile(int bit, vector<string> paths)
 {
 	debug("exportFile");
 
-	if (bit != -1)
-		export_file(FPORTS (bit), paths);
-	else
-		export_file(paths);
+	try
+	{
+		if (bit != -1)
+			export_file(FPORTS (bit), paths);
+		else
+			export_file(paths);
+	}
+	// handled by e2db_gui::e2db::error
+	catch (...)
+	{
+	}
 }
 
-//TODO exceptions
 void e2db::importBlob(unordered_map<string, e2db_file> files, bool threading)
 {
 	debug("importBlob");
 
-	this->threading = threading;
+	bool merge = false;
 
-	bool merge = this->get_input().size() != 0 ? true : false;
-	import_blob(files);
+	try
+	{
+		this->threading = threading;
+
+		merge = this->get_input().size() != 0 ? true : false;
+
+		import_blob(files);
+
+		this->threading = ! threading;
+	}
+	// handled by e2db_gui::e2db::error
+	catch (...)
+	{
+		this->threading = ! threading;
+
+		// note: forward exceptions
+		throw;
+	}
 
 	cache(merge);
 	fixBouquets();
-
-	this->threading = ! threading;
 }
 
 QStringList e2db::entryTransponder(transponder tx)
@@ -726,7 +775,11 @@ void e2db::error(string fn, string optk, string optv)
 		title = title.toHtmlEscaped();
 		message = message.replace("<", "&lt;").replace(">", "&gt;");
 
+#ifndef Q_OS_MAC
+		QString text = message;
+#else
 		QString text = QString("%1\n\n%2").arg(title).arg(message);
+#endif
 
 		QMessageBox::critical(nullptr, title, text);
 	}

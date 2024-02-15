@@ -1863,6 +1863,8 @@ void tab::ftpUpload()
 				catch (std::runtime_error& err)
 				{
 					this->ftp_errors.emplace(fname, err.what());
+
+					this->ftp_files.erase(filename);
 				}
 				catch (...)
 				{
@@ -1975,19 +1977,24 @@ void tab::ftpDownload()
 
 				e2se_ftpcom::ftpcom::ftpcom_file file;
 
-				try {
+				try
+				{
 					ftih->download_data(basedir, filename, file);
-				} catch (std::runtime_error& err) {
+
+					this->ftp_files[filename] = file;
+				}
+				catch (std::runtime_error& err)
+				{
 					this->ftp_errors.emplace(fname, err.what());
-				} catch (...) {
+				}
+				catch (...)
+				{
 					this->ftp_files.clear();
 
 					QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(); }, Qt::QueuedConnection);
 
 					return;
 				}
-
-				this->ftp_files[filename] = file;
 			}
 		});
 		thread->connect(thread, &QThread::finished, [=]() {
@@ -2033,7 +2040,12 @@ void tab::ftpDownload()
 			{
 				this->files.clear();
 
-				QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(err.what()); }, Qt::QueuedConnection);
+				QMetaObject::invokeMethod(this->cwid, [=]() {
+					// note: consecutive call SEGFAULT
+					this->newFile();
+
+					this->e2dbError(err.what());
+				}, Qt::QueuedConnection);
 
 				return;
 			}
@@ -2041,7 +2053,12 @@ void tab::ftpDownload()
 			{
 				this->files.clear();
 
-				QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(); }, Qt::QueuedConnection);
+				QMetaObject::invokeMethod(this->cwid, [=]() {
+					// note: consecutive call SEGFAULT
+					this->newFile();
+
+					this->e2dbError();
+				}, Qt::QueuedConnection);
 
 				return;
 			}
@@ -2073,29 +2090,45 @@ void tab::ftpReloadStb()
 
 	auto* ftih = this->ftph->ftih;
 
+	this->ftp_errors.clear();
+	this->stb_reload = 1;
+
 	QThread* thread = QThread::create([=]() {
 		try
 		{
-			if (ftih->cmd_ifreload() || ftih->cmd_tnreload())
-				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadSuccessNotify(); }, Qt::QueuedConnection);
-			else
-				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadErrorNotify(); }, Qt::QueuedConnection);
+			if (ftih->cmd_ifreload())
+				this->stb_reload++;
 		}
 		catch (std::runtime_error& err)
 		{
-			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(err.what()); }, Qt::QueuedConnection);
-
-			return;
+			this->ftp_errors.emplace("Webif", err.what());
 		}
 		catch (...)
 		{
-			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(); }, Qt::QueuedConnection);
+		}
 
-			return;
+		try
+		{
+			if (ftih->cmd_tnreload())
+				this->stb_reload++;
+		}
+		catch (std::runtime_error& err)
+		{
+			this->ftp_errors.emplace("Telnet", err.what());
+		}
+		catch (...)
+		{
 		}
 	});
 	thread->connect(thread, &QThread::started, [=]() {
 		QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadingNotify(); }, Qt::QueuedConnection);
+	});
+	thread->connect(thread, &QThread::finished, [=]() {
+		if (this->stb_reload)
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadSuccessNotify(); }, Qt::QueuedConnection);
+
+		if (! this->stb_reload || ! this->ftp_errors.empty())
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadErrorNotify(this->ftp_errors); }, Qt::QueuedConnection);
 	});
 	thread->start();
 	thread->quit();
@@ -2215,7 +2248,7 @@ void tab::ftpStbReloadSuccessNotify()
 		infoMessage(tr("STB reload done.", "message"));
 }
 
-void tab::ftpStbReloadErrorNotify()
+void tab::ftpStbReloadErrorNotify(unordered_map<string, string> errors)
 {
 	string hostname;
 
@@ -2227,14 +2260,17 @@ void tab::ftpStbReloadErrorNotify()
 	{
 	}
 
-	error("ftpStbReloadErrorNotify", tr("FTP Error", "error").toStdString(), tr("Cannot reload STB \"%1\".", "error").arg(hostname.data()).toStdString());
+	error("ftpStbReloadErrorNotify", tr("STB Reload Error", "error").toStdString(), tr("Cannot reload STB \"%1\".", "error").arg(hostname.data()).toStdString());
 
-	errorMessage(tr("FTP Error", "error"), tr("Cannot reload STB!", "error"));
+	if (errors.empty())
+		errorMessage(tr("STB Reload Error", "error"), tr("Errors occurred during STB reload operations.", "error"));
+	else
+		ftpcomError(errors, true);
 }
 
 void tab::ftpcomError()
 {
-	errorMessage(tr("FTP Error", "error"), tr("An error occurred during FTP operations.", "error"));
+	errorMessage(tr("FTP Error", "error"), tr("Errors occurred during FTP operations.", "error"));
 }
 
 void tab::ftpcomError(string error)
@@ -2264,7 +2300,7 @@ void tab::ftpcomError(string error)
 	QMessageBox::critical(this->cwid, title, text);
 }
 
-void tab::ftpcomError(unordered_map<string, string> errors)
+void tab::ftpcomError(unordered_map<string, string> errors, bool reload)
 {
 	QStringList errlist;
 
@@ -2278,14 +2314,28 @@ void tab::ftpcomError(unordered_map<string, string> errors)
 		std::getline(ss, optv, '\t');
 		std::getline(ss, fn, '\t');
 
-		QString error = QString(QApplication::layoutDirection() == Qt::RightToLeft ? "(%4) %3 :%2 %1" : "%1 %2: %3 (%4)").arg(filename.data()).arg(optk.data()).arg(optv.data()).arg(fn.data());
+		QString error = QString(QApplication::layoutDirection() == Qt::RightToLeft ? "(%4) %3 :%2 \"%1\"" : "\"%1\" %2: %3 (%4)").arg(filename.data()).arg(optk.data()).arg(optv.data()).arg(fn.data());
 
 		errlist.append(error);
 	}
 
-	QString title = tr("FTP Error", "error");
-	QString message = tr("An error occurred during FTP operations.", "error");
+	QString title, message;
 	QString error_detailed = errlist.join("\n");
+
+	if (! reload)
+	{
+		title = tr("FTP Notice", "error");
+		message = QString("%1\n\n%2")
+			.arg(tr("Successfully transfer.", "message"))
+			.arg(tr("Errors occurred during FTP operations.", "error"));
+	}
+	else
+	{
+		title = tr("STB Reload Notice", "error");
+		message = QString("%1\n\n%2")
+			.arg(tr("STB reload done.", "message"))
+			.arg(tr("Errors occurred during STB reload operations.", "error"));
+	}
 
 	title = title.toHtmlEscaped();
 	message = message.replace("<", "&lt;").replace(">", "&gt;");
@@ -2293,7 +2343,7 @@ void tab::ftpcomError(unordered_map<string, string> errors)
 
 	QMessageBox msg = QMessageBox(this->cwid);
 
-	msg.setIcon(QMessageBox::Critical);
+	msg.setIcon(QMessageBox::Warning);
 	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
 	msg.setInformativeText(message);
@@ -2306,7 +2356,7 @@ void tab::ftpcomError(unordered_map<string, string> errors)
 
 void tab::e2dbError()
 {
-	errorMessage(tr("File Error", "error"), tr("An error occurred during parsing operations.", "error"));
+	errorMessage(tr("File Error", "error"), tr("Errors occurred during parsing operations.", "error"));
 }
 
 void tab::e2dbError(string error)

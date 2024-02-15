@@ -93,8 +93,8 @@ struct log_factory
 		{
 			this->log->error(fn, optk, optv);
 
-			if (this->log->obj->cli)
-				throw;
+			// note: forward exceptions
+			throw;
 		}
 
 		logger* log;
