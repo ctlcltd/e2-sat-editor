@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <filesystem>
 #include <sstream>
+#include <stdexcept>
 
 #include <QtGlobal>
 #include <QGuiApplication>
@@ -656,7 +657,7 @@ void tab::saveFile(bool saveas)
 					basedir = std::filesystem::path(path).parent_path().u8string();
 
 				std::filesystem::directory_iterator dirlist (basedir);
-				
+
 				for (const auto & entry : dirlist)
 				{
 					if (std::filesystem::is_regular_file(entry))
@@ -1634,7 +1635,7 @@ void tab::ftpComboItems()
 		if (! settings.contains("profileName"))
 			continue;
 
-		ftp_combo->addItem(settings.value("profileName").toString(), i + 1);
+		ftp_combo->addItem(settings.value("profileName").toString(), i);
 	}
 	settings.endArray();
 
@@ -1644,7 +1645,7 @@ void tab::ftpComboItems()
 
 void tab::ftpComboChanged(int index)
 {
-	debug("profileComboChanged", "selected", index);
+	debug("profileComboChanged", "index", index);
 
 	QSettings().setValue("profile/selected", index);
 
@@ -1661,10 +1662,25 @@ void tab::ftpConnect()
 
 #ifndef Q_OS_WASM
 	QThread* thread = QThread::create([=]() {
-		if (this->ftph->openConnection())
-			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectSuccessNotify(); }, Qt::QueuedConnection);
-		else
-			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectErrorNotify(); }, Qt::QueuedConnection);
+		try
+		{
+			if (this->ftph->openConnection())
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectSuccessNotify(); }, Qt::QueuedConnection);
+			else
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectErrorNotify(); }, Qt::QueuedConnection);
+		}
+		catch (std::runtime_error& err)
+		{
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(err.what()); }, Qt::QueuedConnection);
+
+			return;
+		}
+		catch (...)
+		{
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(); }, Qt::QueuedConnection);
+
+			return;
+		}
 	});
 	thread->connect(thread, &QThread::started, [=]() {
 		QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectingNotify(); }, Qt::QueuedConnection);
@@ -1684,10 +1700,25 @@ void tab::ftpDisconnect()
 
 #ifndef Q_OS_WASM
 	QThread* thread = QThread::create([=]() {
-		if (this->ftph->closeConnection())
-			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbDisconnectSuccessNotify(); }, Qt::QueuedConnection);
-		else
-			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbDisconnectErrorNotify(); }, Qt::QueuedConnection);
+		try
+		{
+			if (this->ftph->closeConnection())
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbDisconnectSuccessNotify(); }, Qt::QueuedConnection);
+			else
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbDisconnectErrorNotify(); }, Qt::QueuedConnection);
+		}
+		catch (std::runtime_error& err)
+		{
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(err.what()); }, Qt::QueuedConnection);
+
+			return;
+		}
+		catch (...)
+		{
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(); }, Qt::QueuedConnection);
+
+			return;
+		}
 	});
 	thread->connect(thread, &QThread::started, [=]() {
 		QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbDisconnectingNotify(); }, Qt::QueuedConnection);
@@ -1708,8 +1739,23 @@ void tab::ftpUpload()
 #ifndef Q_OS_WASM
 	{
 		QThread* thread = QThread::create([=]() {
-			if (! this->ftph->handleConnection())
-				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectErrorNotify(); }, Qt::QueuedConnection);
+			try
+			{
+				if (! this->ftph->handleConnection())
+					QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectErrorNotify(); }, Qt::QueuedConnection);
+			}
+			catch (std::runtime_error& err)
+			{
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(err.what()); }, Qt::QueuedConnection);
+
+				return;
+			}
+			catch (...)
+			{
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(); }, Qt::QueuedConnection);
+
+				return;
+			}
 		});
 		thread->connect(thread, &QThread::started, [=]() {
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbHandlingNotify(); }, Qt::QueuedConnection);
@@ -1738,10 +1784,25 @@ void tab::ftpUpload()
 	this->files.clear();
 	this->ftp_files.clear();
 
-	this->files = dbih->get_output();
+	try
+	{
+		this->files = dbih->get_output();
 
-	if (this->files.empty())
+		if (this->files.empty())
+			return;
+	}
+	catch (std::runtime_error& err)
+	{
+		this->e2dbError(err.what());
+
 		return;
+	}
+	catch (...)
+	{
+		this->e2dbError();
+
+		return;
+	}
 
 	for (auto & x : this->files)
 	{
@@ -1768,6 +1829,7 @@ void tab::ftpUpload()
 		file.mime = x.second.mime;
 		file.data = x.second.data;
 		file.size = x.second.size;
+
 		this->ftp_files.emplace(fpath, file);
 
 		debug("ftpUpload", "file path", file.path);
@@ -1775,6 +1837,7 @@ void tab::ftpUpload()
 	}
 
 	this->files.clear();
+	this->ftp_errors.clear();
 
 	{
 		QThread* thread = QThread::create([=]() {
@@ -1791,13 +1854,20 @@ void tab::ftpUpload()
 
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbUploadNotify(filename); }, Qt::QueuedConnection);
 
-				try {
+				try
+				{
 					ftih->upload_data(basedir, filename, x.second);
-				} catch (std::runtime_error& err) {
+				}
+				catch (std::runtime_error& err)
+				{
 					this->ftp_errors.emplace(fname, err.what());
-				} catch (...) {
+				}
+				catch (...)
+				{
 					this->ftp_files.clear();
-					QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpGenericError("FTP Error"); }, Qt::QueuedConnection);
+
+					QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(); }, Qt::QueuedConnection);
+
 					return;
 				}
 			}
@@ -1805,25 +1875,7 @@ void tab::ftpUpload()
 		thread->connect(thread, &QThread::finished, [=]() {
 			if (! this->ftp_errors.empty())
 			{
-				string optk, fn;
-				QStringList errors;
-
-				for (auto & x : this->ftp_errors)
-				{
-					stringstream ss (x.second);
-					string optv;
-					std::getline(ss, optk, '\t');
-					std::getline(ss, optv, '\t');
-					std::getline(ss, fn, '\t');
-					QString err = QString(QApplication::layoutDirection() == Qt::RightToLeft ? "%2 :%1" : "%1: %2").arg(optv.data()).arg(x.first.data());
-					errors.append(err);
-				}
-
-				string error_msg = optk + '\t' + errors.join("\n").toStdString() + '\t' + fn;
-
-				QMetaObject::invokeMethod(this->cwid, [=]() { ftih->showError(error_msg); }, Qt::QueuedConnection);
-
-				this->ftp_errors.clear();
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(this->ftp_errors); }, Qt::QueuedConnection);
 			}
 
 			if (this->ftp_files.empty())
@@ -1832,6 +1884,7 @@ void tab::ftpUpload()
 			}
 
 			int files_count = int (this->ftp_files.size());
+
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbUploadNotify(files_count); }, Qt::QueuedConnection);
 
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpReloadStb(); }, Qt::QueuedConnection);
@@ -1855,8 +1908,23 @@ void tab::ftpDownload()
 #ifndef Q_OS_WASM
 	{
 		QThread* thread = QThread::create([=]() {
-			if (! this->ftph->handleConnection())
-				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectErrorNotify(); }, Qt::QueuedConnection);
+			try
+			{
+				if (! this->ftph->handleConnection())
+					QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectErrorNotify(); }, Qt::QueuedConnection);
+			}
+			catch (std::runtime_error& err)
+			{
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(err.what()); }, Qt::QueuedConnection);
+
+				return;
+			}
+			catch (...)
+			{
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(); }, Qt::QueuedConnection);
+
+				return;
+			}
 		});
 		thread->connect(thread, &QThread::started, [=]() {
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbHandlingNotify(); }, Qt::QueuedConnection);
@@ -1874,16 +1942,24 @@ void tab::ftpDownload()
 
 	this->files.clear();
 	this->ftp_files.clear();
+	this->ftp_errors.clear();
 
 	{
 		QThread* thread = QThread::create([=]() {
-			try {
+			try
+			{
 				ftih->fetch_paths();
-			} catch (std::runtime_error& err) {
-				QMetaObject::invokeMethod(this->cwid, [=]() { ftih->showError(err.what()); }, Qt::QueuedConnection);
+			}
+			catch (std::runtime_error& err)
+			{
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(err.what()); }, Qt::QueuedConnection);
+
 				return;
-			} catch (...) {
-				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpGenericError("FTP Error"); }, Qt::QueuedConnection);
+			}
+			catch (...)
+			{
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(); }, Qt::QueuedConnection);
+
 				return;
 			}
 
@@ -1903,7 +1979,9 @@ void tab::ftpDownload()
 					this->ftp_errors.emplace(fname, err.what());
 				} catch (...) {
 					this->ftp_files.clear();
-					QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpGenericError("FTP Error"); }, Qt::QueuedConnection);
+
+					QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(); }, Qt::QueuedConnection);
+
 					return;
 				}
 
@@ -1913,25 +1991,7 @@ void tab::ftpDownload()
 		thread->connect(thread, &QThread::finished, [=]() {
 			if (! this->ftp_errors.empty())
 			{
-				string optk, fn;
-				QStringList errors;
-
-				for (auto & x : this->ftp_errors)
-				{
-					stringstream ss (x.second);
-					string optv;
-					std::getline(ss, optk, '\t');
-					std::getline(ss, optv, '\t');
-					std::getline(ss, fn, '\t');
-					QString err = QString(QApplication::layoutDirection() == Qt::RightToLeft ? "%2 :%1" : "%1: %2").arg(optv.data()).arg(x.first.data());
-					errors.append(err);
-				}
-
-				string error_msg = optk + '\t' + errors.join("\n").toStdString() + '\t' + fn;
-
-				QMetaObject::invokeMethod(this->cwid, [=]() { ftih->showError(error_msg); }, Qt::QueuedConnection);
-
-				this->ftp_errors.clear();
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(this->ftp_errors); }, Qt::QueuedConnection);
 			}
 
 			if (this->ftp_files.empty())
@@ -1963,22 +2023,27 @@ void tab::ftpDownload()
 			if (this->files.empty())
 				return;
 
-			//TODO TEST
-			// QMetaObject::invokeMethod(this->cwid, [=]() { updateIndex(); }, Qt::QueuedConnection);
-
-			try {
+			try
+			{
 				dbih->importBlob(this->files, true);
-			} catch(std::runtime_error& err) {
+			}
+			catch(std::runtime_error& err)
+			{
 				this->files.clear();
-				QMetaObject::invokeMethod(this->cwid, [=]() { dbih->showError(err.what()); }, Qt::QueuedConnection);
+
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(err.what()); }, Qt::QueuedConnection);
+
 				return;
-			} catch (...) {
+			}
+			catch (...)
+			{
 				this->files.clear();
-				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpGenericError("File Error"); }, Qt::QueuedConnection);
+
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(); }, Qt::QueuedConnection);
+
 				return;
 			}
 
-			//TODO TEST potential SEGFAULT QMessageBox and main thread
 			QMetaObject::invokeMethod(this->cwid, [=]() {
 				view->reset();
 				view->load();
@@ -2003,6 +2068,7 @@ void tab::ftpReloadStb()
 #endif
 
 #ifndef Q_OS_WASM
+
 	auto* ftih = this->ftph->ftih;
 
 	QThread* thread = QThread::create([=]() {
@@ -2012,11 +2078,17 @@ void tab::ftpReloadStb()
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadSuccessNotify(); }, Qt::QueuedConnection);
 			else
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadErrorNotify(); }, Qt::QueuedConnection);
-		} catch (std::runtime_error& err) {
-			QMetaObject::invokeMethod(this->cwid, [=]() { ftih->showError(err.what()); }, Qt::QueuedConnection);
+		}
+		catch (std::runtime_error& err)
+		{
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(err.what()); }, Qt::QueuedConnection);
+
 			return;
-		} catch (...) {
-			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpGenericError("FTP Error"); }, Qt::QueuedConnection);
+		}
+		catch (...)
+		{
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(); }, Qt::QueuedConnection);
+
 			return;
 		}
 	});
@@ -2044,7 +2116,7 @@ void tab::ftpStbHandlingNotify()
 {
 	if (statusBarIsVisible())
 	{
-		if (ftph->isConnected())
+		if (this->ftph->isConnected())
 			statusBarMessage(tr("Trying to resume FTP connection ...", "message"));
 		else
 			statusBarMessage(tr("FTP connecting ...", "message"));
@@ -2067,7 +2139,16 @@ void tab::ftpStbConnectSuccessNotify()
 
 void tab::ftpStbConnectErrorNotify()
 {
-	string hostname = this->ftph->getServerHostname();
+	string hostname;
+
+	try
+	{
+		hostname = this->ftph->getServerHostname();
+	}
+	catch (...)
+	{
+	}
+
 	error("ftpStbConnectErrorNotify", tr("FTP Error", "error").toStdString(), tr("Cannot connect to FTP \"%1\".", "error").arg(hostname.data()).toStdString());
 
 	errorMessage(tr("FTP Error", "error"), tr("Cannot connect to FTP Server!", "error"));
@@ -2083,7 +2164,16 @@ void tab::ftpStbDisconnectSuccessNotify()
 
 void tab::ftpStbDisconnectErrorNotify()
 {
-	string hostname = this->ftph->getServerHostname();
+	string hostname;
+
+	try
+	{
+		hostname = this->ftph->getServerHostname();
+	}
+	catch (...)
+	{
+	}
+
 	error("ftpStbDisconnectErrorNotify", tr("FTP Error", "error").toStdString(), tr("Cannot disconnect from FTP \"%1\".", "error").arg(hostname.data()).toStdString());
 
 	errorMessage(tr("FTP Error", "error"), tr("Cannot disconnect from FTP Server!", "error"));
@@ -2125,15 +2215,117 @@ void tab::ftpStbReloadSuccessNotify()
 
 void tab::ftpStbReloadErrorNotify()
 {
-	string hostname = this->ftph->getServerHostname();
+	string hostname;
+
+	try
+	{
+		hostname = this->ftph->getServerHostname();
+	}
+	catch (...)
+	{
+	}
+
 	error("ftpStbReloadErrorNotify", tr("FTP Error", "error").toStdString(), tr("Cannot reload STB \"%1\".", "error").arg(hostname.data()).toStdString());
 
 	errorMessage(tr("FTP Error", "error"), tr("Cannot reload STB!", "error"));
 }
 
-void tab::ftpGenericError(string context)
+void tab::ftpcomError()
 {
-	errorMessage(tr(context.data(), "error"), tr("Error", "error"));
+	errorMessage(tr("FTP Error", "error"), tr("An error occurred during FTP operations.", "error"));
+}
+
+void tab::ftpcomError(string error)
+{
+	stringstream ss (error);
+
+	string optk, optv, fn;
+	std::getline(ss, optk, '\t');
+	std::getline(ss, optv, '\t');
+	std::getline(ss, fn, '\t');
+
+	QString qoptk = QString(optk.data());
+	QString qoptv = QString(optv.data());
+
+	QString title = tr(qoptk.toStdString().data(), "error");
+	QString message = tr(qoptv.toStdString().data(), "error");
+
+	title = title.toHtmlEscaped();
+	message = message.replace("<", "&lt;").replace(">", "&gt;");
+
+	// QString text = QString("%1\n\n%2").arg(title).arg(message);
+	QString text = message;
+
+	QMessageBox::critical(this->cwid, title, text);
+}
+
+void tab::ftpcomError(unordered_map<string, string> errors)
+{
+	QStringList errlist;
+
+	for (auto & x : errors)
+	{
+		string filename = x.first;
+		stringstream ss (x.second);
+
+		string optk, optv, fn;
+		std::getline(ss, optk, '\t');
+		std::getline(ss, optv, '\t');
+		std::getline(ss, fn, '\t');
+
+		QString error = QString(QApplication::layoutDirection() == Qt::RightToLeft ? "(%4) %3 :%2 %1" : "%1 %2: %3 (%4)").arg(filename.data()).arg(optk.data()).arg(optv.data()).arg(fn.data());
+
+		errlist.append(error);
+	}
+
+	QString title = tr("FTP Error", "error");
+	QString message = tr("An error occurred during FTP operations.", "error");
+	QString error_detailed = errlist.join("\n");
+
+	title = title.toHtmlEscaped();
+	message = message.replace("<", "&lt;").replace(">", "&gt;");
+	error_detailed = error_detailed.replace("<", "&lt;").replace(">", "&gt;");
+
+	QMessageBox msg = QMessageBox(this->cwid);
+
+	msg.setIcon(QMessageBox::Critical);
+	msg.setTextFormat(Qt::PlainText);
+	msg.setText(title);
+	msg.setInformativeText(message);
+	msg.setDetailedText(error_detailed);
+	QRect pos = msg.geometry();
+	pos.moveCenter(QPoint(this->cwid->width() / 2, this->cwid->height() / 2));
+	msg.setGeometry(pos);
+	msg.exec();
+}
+
+void tab::e2dbError()
+{
+	errorMessage(tr("File Error", "error"), tr("An error occurred during parsing operations.", "error"));
+}
+
+void tab::e2dbError(string error)
+{
+	stringstream ss (error);
+
+	string optk, optv, fn;
+	std::getline(ss, optk, '\t');
+	std::getline(ss, optv, '\t');
+	std::getline(ss, fn, '\t');
+
+	QString qoptk = QString(optk.data());
+	QString qoptv = QString(optv.data());
+
+	QString title = e2db::tr(qoptk.toStdString().data(), "error");
+	QString message = e2db::tr(qoptv.toStdString().data(), "error");
+
+	title = title.toHtmlEscaped();
+	message = message.replace("<", "&lt;").replace(">", "&gt;");
+
+	// QString text = QString("%1\n\n%2").arg(title).arg(message);
+	QString text = message;
+
+	QMessageBox::critical(this->cwid, title, text);
 }
 
 void tab::linkToRepository(int page)
@@ -2163,11 +2355,11 @@ void tab::updateIndex()
 }
 
 //TODO TEST potential SEGFAULT
-QTimer* tab::statusBarMessage(QString text)
+QTimer* tab::statusBarMessage(QString message)
 {
 	gui::status msg;
 	msg.info = true;
-	msg.message = text.toStdString();
+	msg.message = message.toStdString();
 	setStatusBar(msg);
 
 	QTimer* timer = new QTimer(widget);
@@ -2196,10 +2388,10 @@ void tab::statusBarMessage(QTimer* timer)
 	}
 }
 
-bool tab::saveQuestion(QString title, QString text)
+bool tab::saveQuestion(QString title, QString message)
 {
-	text = text.toHtmlEscaped();
-	text.append("\n");
+	title = title.toHtmlEscaped();
+	message = message.replace("<", "&lt;").replace(">", "&gt;");
 
 	QMessageBox msg = QMessageBox(this->cwid);
 
@@ -2208,23 +2400,23 @@ bool tab::saveQuestion(QString title, QString text)
 	msg.setAttribute(Qt::WA_TranslucentBackground);
 #endif
 
+	msg.setIcon(QMessageBox::Question);
 	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
-	msg.setInformativeText(text);
+	msg.setInformativeText(message);
 	msg.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
 	msg.setDefaultButton(QMessageBox::Save);
 
 	return (msg.exec() == QMessageBox::Save);
 }
 
-bool tab::removeQuestion(QString title, QString text)
+bool tab::removeQuestion(QString title, QString message)
 {
 	if (! QSettings().value("preference/askConfirmation", false).toBool())
 		return true;
 
-	text = text.toHtmlEscaped();
-	text.prepend("<span style=\"white-space: nowrap\">");
-	text.append("</span><br>");
+	title = title.toHtmlEscaped();
+	message = message.replace("<", "&lt;").replace(">", "&gt;");
 
 	QMessageBox msg = QMessageBox(this->cwid);
 
@@ -2233,9 +2425,10 @@ bool tab::removeQuestion(QString title, QString text)
 	msg.setAttribute(Qt::WA_TranslucentBackground);
 #endif
 
+	msg.setIcon(QMessageBox::Question);
 	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
-	msg.setInformativeText(text);
+	msg.setInformativeText(message);
 	msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Retry);
 	msg.setDefaultButton(QMessageBox::Ok);
 
@@ -2244,9 +2437,11 @@ bool tab::removeQuestion(QString title, QString text)
 
 void tab::infoMessage(QString title)
 {
+	title = title.toHtmlEscaped();
+
 	QMessageBox msg = QMessageBox(this->cwid);
 
-	msg.setWindowFlags(Qt::Popup);
+	// msg.setWindowFlags(Qt::Popup);
 
 	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
@@ -2256,36 +2451,42 @@ void tab::infoMessage(QString title)
 	msg.exec();
 }
 
-void tab::infoMessage(QString title, QString text)
-{
-	text = text.toHtmlEscaped();
-	text.prepend("<span style=\"white-space: nowrap\">");
-	text.append("</span><br>");
-
-	QMessageBox msg = QMessageBox(this->cwid);
-
-	msg.setWindowFlags(Qt::Popup);
-
-	msg.setTextFormat(Qt::PlainText);
-	msg.setText(title);
-	msg.setInformativeText(text);
-	QRect pos = msg.geometry();
-	pos.moveCenter(QPoint(this->cwid->width() / 2, this->cwid->height() / 2));
-	msg.setGeometry(pos);
-	msg.exec();
-}
-
-void tab::errorMessage(QString title, QString text)
+void tab::infoMessage(QString title, QString message)
 {
 	title = title.toHtmlEscaped();
-	text = text.toHtmlEscaped();
+	message = message.replace("<", "&lt;").replace(">", "&gt;");
+
+	QMessageBox msg = QMessageBox(this->cwid);
+
+	// msg.setWindowFlags(Qt::Popup);
+
+	msg.setTextFormat(Qt::PlainText);
+	msg.setText(title);
+	msg.setInformativeText(message);
+	QRect pos = msg.geometry();
+	pos.moveCenter(QPoint(this->cwid->width() / 2, this->cwid->height() / 2));
+	msg.setGeometry(pos);
+	msg.exec();
+}
+
+void tab::errorMessage(QString title, QString message)
+{
+	title = title.toHtmlEscaped();
+	message = message.replace("<", "&lt;").replace(">", "&gt;");
+
+	// QString text = QString("%1\n\n%2").arg(title).arg(message);
+	QString text = message;
 
 	QMessageBox::critical(this->cwid, title, text);
 }
 
 void tab::demoMessage()
 {
-	QMessageBox::information(this->cwid, NULL, tr("DEMO MODE", "message"));
+	QString text = tr("DEMO MODE", "message");
+
+	text = text.replace("<", "&lt;").replace(">", "&gt;");
+
+	QMessageBox::information(this->cwid, NULL, text);
 }
 
 void tab::loadSeeds()

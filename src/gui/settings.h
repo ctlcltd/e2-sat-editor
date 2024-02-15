@@ -67,8 +67,8 @@ class settings : protected e2se::log_factory
 		void destroy();
 		void themeChanged();
 		void infoMessage(QString title);
-		void infoMessage(QString title, QString text);
-		void errorMessage(QString title, QString text);
+		void infoMessage(QString title, QString message);
+		void errorMessage(QString title, QString message);
 
 	protected:
 		void layout(QWidget* cwid);

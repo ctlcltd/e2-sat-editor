@@ -82,7 +82,6 @@ class e2db : public ::e2se_e2db::e2db
 		QStringList entryTunersetsTable(tunersets_table tn);
 		QStringList entryTunersetsTransponder(tunersets_transponder tntxp, tunersets_table tn);
 		static QString fixUnicodeChars(string str);
-		void showError(string str);
 
 	protected:
 		e2db* newptr() override { return new e2se_gui::e2db; }

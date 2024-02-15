@@ -16,6 +16,7 @@
 #include <string>
 #include <filesystem>
 #include <sstream>
+#include <stdexcept>
 
 #include "ftpcom.h"
 
@@ -161,13 +162,54 @@ vector<string> ftpcom::list_dir(string basedir)
 {
 	debug("list_dir");
 
-	vector<string> list;
+	try
+	{
+		if (this->mlsd)
+			return list_dir_mlsd(basedir);
+		else
+			return list_dir_nlst(basedir);
+	}
+	catch (std::runtime_error& err)
+	{
+		int code = std::stoi(err.what());
+
+		if (code == 101)
+		{
+			error("list_dir", "FTP Error", "Failed to resume FTP connection.");
+		}
+		else if (code == 102)
+		{
+			error("list_dir", "FTP Error", "Error");
+		}
+		// fallback to NLST
+		else if (this->mlsd)
+		{
+			this->mlsd = false;
+
+			return this->list_dir(basedir);
+		}
+		else
+		{
+			CURLcode res = (CURLcode) code;
+
+			error("list_dir", "FTP Error", msg(curl_easy_strerror(res))); // var error string
+		}
+	}
+	catch (...)
+	{
+		error("list_dir", "FTP Error", "Error");
+	}
+
+	return {};
+}
+
+vector<string> ftpcom::list_dir_nlst(string basedir)
+{
+	debug("list_dir_nlst");
 
 	if (! handle())
 	{
-		error("list_dir", "FTP Error", "Failed to resume FTP connection.");
-
-		return list;
+		throw std::runtime_error("101");
 	}
 
 	stringstream data;
@@ -185,13 +227,13 @@ vector<string> ftpcom::list_dir(string basedir)
 
 	if (res != CURLE_OK)
 	{
-		error("list_dir", "FTP Error", msg(curl_easy_strerror(res))); // var error string
-
 		reset(cph, rph);
 		data.clear();
 
-		return list;
+		throw std::runtime_error(to_string(res));
 	}
+
+	vector<string> list;
 
 	string line;
 
@@ -200,7 +242,73 @@ vector<string> ftpcom::list_dir(string basedir)
 		if (line.empty())
 			continue;
 
-		list.emplace_back(basedir + line);
+		string filename = line;
+
+		if (filename[0] == '.') // hidden file
+			continue;
+
+		list.emplace_back(basedir + filename);
+	}
+
+	reset(cph, rph);
+	data.clear();
+
+	return list;
+}
+
+vector<string> ftpcom::list_dir_mlsd(string basedir)
+{
+	debug("list_dir_mlsd");
+
+	if (! handle())
+	{
+		throw std::runtime_error("101");
+	}
+
+	stringstream data;
+
+	if (basedir.size() && basedir[basedir.size() - 1] != '/')
+		basedir.append("/");
+
+	string remotedir = '/' + basedir;
+
+	curl_url_set(rph, CURLUPART_PATH, remotedir.c_str(), 0);
+	curl_easy_setopt(cph, CURLOPT_CUSTOMREQUEST, "MLSD");
+	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_write_func);
+	curl_easy_setopt(cph, CURLOPT_WRITEDATA, &data);
+	CURLcode res = perform(cph);
+
+	if (res != CURLE_OK)
+	{
+		reset(cph, rph);
+		data.clear();
+
+		throw std::runtime_error(to_string(res));
+	}
+
+	vector<string> list;
+
+	string line;
+
+	while (std::getline(data, line))
+	{
+		if (line.empty())
+			continue;
+
+		if (line.rfind("type=dir;") != string::npos) // directory
+			continue;
+
+		size_t pos = line.rfind("; ");
+
+		if (pos == string::npos) // not vali
+			throw std::runtime_error("102");
+
+		string filename = line.substr(pos + 2);
+
+		if (filename[0] == '.') // hidden file
+			continue;
+
+		list.emplace_back(basedir + filename);
 	}
 
 	reset(cph, rph);
@@ -265,6 +373,7 @@ void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 	curl_easy_setopt(cph, CURLOPT_WRITEDATA, &data);
 	res = perform(cph);
 
+	//TODO mlsd=false discard dir error ?
 	if (res != CURLE_OK)
 	{
 		error("download_data", "FTP Error", msg(curl_easy_strerror(res))); // var error string

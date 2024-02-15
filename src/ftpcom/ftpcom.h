@@ -103,6 +103,8 @@ class ftpcom : protected e2se::log_factory
 		static CURLcode perform(CURL* ch);
 		static void reset(CURL* ch, CURLU* rh);
 		static void cleanup(CURL* ch);
+		vector<string> list_dir_nlst(string basedir);
+		vector<string> list_dir_mlsd(string basedir);
 		static size_t data_download_func(void* csi, size_t size, size_t nmemb, void* pso);
 		static size_t data_upload_func(char* cso, size_t size, size_t nmemb, void* psi);
 		static size_t data_write_func(void* csi, size_t size, size_t nmemb, void* pso);
@@ -125,6 +127,7 @@ class ftpcom : protected e2se::log_factory
 		string baseb;
 		string ifreload;
 		string tnreload;
+		bool mlsd = true;
 		CURL* cph = nullptr;
 		CURL* csh = nullptr;
 		CURLU* rph = nullptr;

@@ -954,7 +954,7 @@ void settings::updateProfile(QListWidgetItem* item)
 	int row = item != nullptr ? rplist->row(item) : -1;
 
 	debug("updateProfile", "row", row);
-	
+
 	if (item == nullptr)
 		return;
 
@@ -1384,7 +1384,7 @@ QMenu* settings::profileMenu()
 	for (connectionPresets::PRESET & preset : connectionPresets::presets()) {
 		QAction* action = new QAction;
 		QString text;
-	
+
 		switch (preset)
 		{
 			case connectionPresets::enigma_24: text = "Enigma 2.4"; break;
@@ -1800,6 +1800,8 @@ void settings::destroy()
 
 void settings::infoMessage(QString title)
 {
+	title = title.toHtmlEscaped();
+
 	QMessageBox msg = QMessageBox(this->dial);
 
 	// msg.setWindowFlags(Qt::Popup);
@@ -1812,29 +1814,31 @@ void settings::infoMessage(QString title)
 	msg.exec();
 }
 
-void settings::infoMessage(QString title, QString text)
-{
-	text = text.toHtmlEscaped();
-	text.prepend("<span style=\"white-space: nowrap\">");
-	text.append("</span><br>");
-
-	QMessageBox msg = QMessageBox(this->dial);
-
-	// msg.setWindowFlags(Qt::Popup);
-
-	msg.setTextFormat(Qt::PlainText);
-	msg.setText(title);
-	msg.setInformativeText(text);
-	QRect pos = msg.geometry();
-	pos.moveCenter(QPoint(this->dial->width() / 2, this->dial->height() / 2));
-	msg.setGeometry(pos);
-	msg.exec();
-}
-
-void settings::errorMessage(QString title, QString text)
+void settings::infoMessage(QString title, QString message)
 {
 	title = title.toHtmlEscaped();
-	text = text.toHtmlEscaped();
+	message = message.replace("<", "&lt;").replace(">", "&gt;");
+
+	QMessageBox msg = QMessageBox(this->dial);
+
+	// msg.setWindowFlags(Qt::Popup);
+
+	msg.setTextFormat(Qt::PlainText);
+	msg.setText(title);
+	msg.setInformativeText(message);
+	QRect pos = msg.geometry();
+	pos.moveCenter(QPoint(this->dial->width() / 2, this->dial->height() / 2));
+	msg.setGeometry(pos);
+	msg.exec();
+}
+
+void settings::errorMessage(QString title, QString message)
+{
+	title = title.toHtmlEscaped();
+	message = message.replace("<", "&lt;").replace(">", "&gt;");
+
+	// QString text = QString("%1\n\n%2").arg(title).arg(message);
+	QString text = message;
 
 	QMessageBox::critical(this->dial, title, text);
 }

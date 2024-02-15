@@ -2020,6 +2020,12 @@ bool e2db_parser::list_file(string path)
 
 		string fpath = entry.path().u8string();
 		string filename = std::filesystem::path(fpath).filename().u8string();
+
+		if (filename[0] == '.') // hidden file
+		{
+			continue;
+		}
+
 		FPORTS fpi = file_type_detect(fpath);
 		string mime = file_mime_detect(fpi, fpath);
 		std::uintmax_t fsize = std::filesystem::file_size(fpath);

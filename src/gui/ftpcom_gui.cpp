@@ -10,7 +10,6 @@
  */
 
 #include <cstdio>
-#include <sstream>
 #include <stdexcept>
 
 #include <QSettings>
@@ -20,7 +19,7 @@
 
 #include "ftpcom_gui.h"
 
-using std::string, std::stringstream;
+using std::string;
 
 namespace e2se_gui
 {
@@ -72,13 +71,6 @@ void ftpcom::setup()
 	setParameters(params);
 }
 
-void ftpcom::didChange()
-{
-	debug("didChange");
-
-	setup();
-}
-
 string ftpcom::msg(string str, string param)
 {
 	string trstr = tr(str.data()).toStdString();
@@ -100,20 +92,6 @@ void ftpcom::error(string fn, string optk, string optv)
 	this->::e2se_ftpcom::ftpcom::error(fn, tr(optk.data(), "error").toStdString(), tr(optv.data()).toStdString());
 
 	throw std::runtime_error(optk + '\t' + optv + '\t' + fn);
-}
-
-void ftpcom::showError(string str)
-{
-	stringstream ss (str);
-	string optk, optv, fn;
-	std::getline(ss, optk, '\t');
-	std::getline(ss, optv, '\t');
-	std::getline(ss, fn, '\t');
-
-	QString qoptk = QString(optk.data()).toHtmlEscaped();
-	QString qoptv = QString(optv.data()).toHtmlEscaped();
-
-	QMessageBox::critical(nullptr, tr(qoptk.toStdString().data(), "error"), tr(qoptv.toStdString().data(), "error"));
 }
 
 }

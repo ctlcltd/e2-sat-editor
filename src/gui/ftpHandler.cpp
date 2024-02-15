@@ -47,7 +47,7 @@ bool ftpHandler::closeConnection()
 	delete this->ftih;
 
 	this->ftih = nullptr;
-	this->connected = ! ret;
+	this->connected = false;
 
 	return ret;
 }
@@ -80,7 +80,12 @@ void ftpHandler::settingsChanged()
 	debug("settingsChanged");
 
 	if (this->ftih != nullptr)
-		this->ftih->didChange();
+		this->ftih->disconnect();
+
+	delete this->ftih;
+
+	this->ftih = nullptr;
+	this->connected = false;
 }
 
 string ftpHandler::getServerHostname()

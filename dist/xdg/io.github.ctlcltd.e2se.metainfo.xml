@@ -32,6 +32,16 @@
     <binary>e2se-cli</binary>
   </provides>
   <releases>
+    <release version="1.2.0" date="1970-01-01">
+      <description>
+        <ul>
+          <li>Connection presets with most common Set-Top-Box settings</li>
+          <li>Connection profile import and export</li>
+          <li>FTP improvements</li>
+          <li>Bugfix</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.1.1" date="2024-01-20">
       <description>
         <ul>

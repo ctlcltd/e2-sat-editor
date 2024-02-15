@@ -2443,7 +2443,7 @@ void mainView::listItemDelete()
 			if (! found_duplicates && dbih->userbouquets[bname].channels.count(chid))
 			{
 				e2db::channel_reference& chref = dbih->userbouquets[bname].channels[chid];
-				
+
 				if (chref.index == idx)
 					dbih->removeChannelReference(chref, bname);
 				else

@@ -14,7 +14,6 @@
 #include <clocale>
 #include <cmath>
 #include <string>
-#include <sstream>
 #include <unordered_set>
 #include <stdexcept>
 
@@ -24,7 +23,7 @@
 
 #include "e2db_gui.h"
 
-using std::string, std::unordered_set, std::stringstream, std::to_string;
+using std::string, std::unordered_set, std::to_string;
 
 namespace e2se_gui
 {
@@ -431,6 +430,7 @@ bool e2db::write(string path)
 	return true;
 }
 
+//TODO exceptions
 void e2db::importFile(vector<string> paths)
 {
 	debug("importFile");
@@ -442,6 +442,7 @@ void e2db::importFile(vector<string> paths)
 	// fixBouquets();
 }
 
+//TODO exceptions
 void e2db::exportFile(int bit, vector<string> paths)
 {
 	debug("exportFile");
@@ -452,6 +453,7 @@ void e2db::exportFile(int bit, vector<string> paths)
 		export_file(paths);
 }
 
+//TODO exceptions
 void e2db::importBlob(unordered_map<string, e2db_file> files, bool threading)
 {
 	debug("importBlob");
@@ -707,7 +709,7 @@ string e2db::msg(string str, string param)
 
 void e2db::error(string fn, string optk, string optv)
 {
-	this->::e2se_e2db::e2db::error(fn, tr(optk.data(), "error").toStdString(), optv);
+	this->::e2se_e2db::e2db::error(fn, tr(optk.data(), "error").toStdString(), tr(optv.data(), "error").toStdString());
 
 	if (this->threading)
 	{
@@ -715,25 +717,19 @@ void e2db::error(string fn, string optk, string optv)
 	}
 	else
 	{
-		QString qoptk = QString(optk.data()).toHtmlEscaped();
-		QString qoptv = QString(optv.data()).toHtmlEscaped();
+		QString qoptk = QString(optk.data());
+		QString qoptv = QString(optv.data());
 
-		QMessageBox::critical(nullptr, tr(qoptk.toStdString().data(), "error"), qoptv);
+		QString title = tr(qoptk.toStdString().data(), "error");
+		QString message = tr(qoptv.toStdString().data(), "error");
+
+		title = title.toHtmlEscaped();
+		message = message.replace("<", "&lt;").replace(">", "&gt;");
+
+		QString text = QString("%1\n\n%2").arg(title).arg(message);
+
+		QMessageBox::critical(nullptr, title, text);
 	}
-}
-
-void e2db::showError(string str)
-{
-	stringstream ss (str);
-	string optk, optv, fn;
-	std::getline(ss, optk, '\t');
-	std::getline(ss, optv, '\t');
-	std::getline(ss, fn, '\t');
-
-	QString qoptk = QString(optk.data()).toHtmlEscaped();
-	QString qoptv = QString(optv.data()).toHtmlEscaped();
-
-	QMessageBox::critical(nullptr, tr(qoptk.toStdString().data(), "error"), tr(qoptv.toStdString().data(), "error"));
 }
 
 }

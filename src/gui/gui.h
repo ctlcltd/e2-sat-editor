@@ -303,7 +303,7 @@ class gui : protected e2se::log_factory
 		void setTabEditActionFlag(GUI_CXE bit, bool flag);
 		void updateMenu();
 		QLocale getLocale();
-		void errorMessage(QString title, QString text);
+		void errorMessage(QString title, QString message);
 
 		static QString getFileFormatName(int ver);
 

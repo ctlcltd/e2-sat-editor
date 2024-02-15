@@ -1280,7 +1280,7 @@ string gui::exportFileDialog(GUI_DPORTS gde, string path, int& bit)
 		case GUI_DPORTS::ConnectionProfile:
 			opts.append(QString("%1 (*.profile)").arg(tr("Connection profile File", "file-dialog")));
 			opts.append(QString("%1 (*)").arg(tr("All Files", "file-dialog")));
-		break;	
+		break;
 		default:
 			opts.append(QString("%1 (*)").arg(tr("All Files", "file-dialog")));
 	}
@@ -1932,10 +1932,13 @@ QLocale gui::getLocale()
 	return appLang.isEmpty() ? QLocale::system() : QLocale(appLang);
 }
 
-void gui::errorMessage(QString title, QString text)
+void gui::errorMessage(QString title, QString message)
 {
 	title = title.toHtmlEscaped();
-	text = text.toHtmlEscaped();
+	message = message.replace("<", "&lt;").replace(">", "&gt;");
+
+	// QString text = QString("%1\n\n%2").arg(title).arg(message);
+	QString text = message;
 
 	QMessageBox::critical(this->mwid, title, text);
 }

@@ -1074,14 +1074,14 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 void e2db::remove_channel_reference(channel_reference chref, string bname)
 {
 	debug("remove_channel_reference", "chref.chid", chref.chid);
-	
+
 	if (! userbouquets.count(bname))
 		return error("remove_channel_reference", "Error", msg("Userbouquet \"%s\" not exists.", bname));
 
 	userbouquet& ub = userbouquets[bname];
 	int idx = chref.index;
 	string chid = chref.chid;
-	
+
 	for (auto & x : userbouquets[bname].channels)
 	{
 		if (x.second.index == idx && x.second.chid == chid)

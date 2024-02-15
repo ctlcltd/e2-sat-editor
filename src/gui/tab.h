@@ -101,13 +101,13 @@ class tab : protected e2se::log_factory
 		void linkToWebsite(int page = 0);
 		void linkToOnlineHelp(int page = 0);
 		void updateIndex();
-		QTimer* statusBarMessage(QString title);
+		QTimer* statusBarMessage(QString message);
 		void statusBarMessage(QTimer* timer);
-		bool saveQuestion(QString title, QString text);
-		bool removeQuestion(QString title, QString text);
-		void infoMessage(QString title);
-		void infoMessage(QString title, QString text);
-		void errorMessage(QString title, QString text);
+		bool saveQuestion(QString title, QString message);
+		bool removeQuestion(QString title, QString message);
+		void infoMessage(QString message);
+		void infoMessage(QString title, QString message);
+		void errorMessage(QString title, QString message);
 		void demoMessage();
 
 		QWidget* widget = nullptr;
@@ -141,7 +141,11 @@ class tab : protected e2se::log_factory
 		void ftpStbConnectErrorNotify();
 		void ftpStbDisconnectSuccessNotify();
 		void ftpStbDisconnectErrorNotify();
-		void ftpGenericError(string context);
+		void ftpcomError();
+		void ftpcomError(string error);
+		void ftpcomError(unordered_map<string, string> errors);
+		void e2dbError();
+		void e2dbError(string error);
 		void loadSeeds();
 
 		static QToolBar* toolBar(int type);

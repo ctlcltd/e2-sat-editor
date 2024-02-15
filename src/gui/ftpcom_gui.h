@@ -24,8 +24,6 @@ class ftpcom : public ::e2se_ftpcom::ftpcom
 	public:
 		ftpcom();
 		~ftpcom(); // final destructor
-		void didChange();
-		void showError(string str);
 
 	protected:
 		void setup();
