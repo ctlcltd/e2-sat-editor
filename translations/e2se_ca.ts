@@ -1058,17 +1058,22 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>No s&apos;ha pogut connectar al servidor</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Webif</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>No s&apos;ha pogut connectar a STB Webif</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Telnet</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>No s&apos;ha pogut connectar a STB Telnet</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB FTP</source>
+        <comment>error</comment>
+        <translation>No s&apos;ha pogut connectar a STB FTP</translation>
     </message>
 </context>
 <context>
@@ -1628,7 +1633,7 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
     <message>
         <source>Connection profile File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Fitxer Perfil connexió</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2605,7 +2610,7 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
     </message>
     <message>
         <source>Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Menú</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2630,7 +2635,7 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
     <message>
         <source>Error reading files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Error en llegir els fitxers.</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
@@ -2649,28 +2654,28 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
-        <translation type="unfinished"></translation>
+        <translation>Importa Perfils…</translation>
     </message>
     <message numerus="yes">
         <source>Export Profile(s)…</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Exporta Perfil…</numerusform>
+            <numerusform>Exporta Perfils…</numerusform>
         </translation>
     </message>
     <message>
         <source>Presets</source>
-        <translation type="unfinished"></translation>
+        <translation>Presets</translation>
     </message>
     <message>
         <source>Export Profile</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Exporta perfil</translation>
     </message>
     <message>
         <source>Rename</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Canvia nom</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -2678,9 +2683,9 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
         <translation>&amp;Suprimeix</translation>
     </message>
     <message>
-        <source>Preset error</source>
+        <source>Preset Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Error Preset</translation>
     </message>
 </context>
 <context>
@@ -3031,37 +3036,37 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
     <message>
         <source>STB Reload Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Error Recàrrega STB</translation>
     </message>
     <message>
         <source>Errors occurred during STB reload operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>S&apos;han produït errors durant les operacions de recàrrega STB.</translation>
     </message>
     <message>
         <source>Errors occurred during FTP operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>S&apos;han produït errors durant les operacions FTP.</translation>
     </message>
     <message>
         <source>FTP Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Avís FTP</translation>
     </message>
     <message>
-        <source>Successfully transfer.</source>
+        <source>Successfull transfer.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Transferència amb èxit.</translation>
     </message>
     <message>
         <source>STB Reload Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Avís Recàrrega STB</translation>
     </message>
     <message>
         <source>Errors occurred during parsing operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>S&apos;han produït errors durant les operacions de parsing.</translation>
     </message>
 </context>
 <context>

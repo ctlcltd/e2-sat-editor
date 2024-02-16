@@ -1058,17 +1058,22 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Povezave s strežnikom ni bilo mogoče vzpostaviti</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Webif</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Povezave s STB Webif ni bilo mogoče vzpostaviti</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Telnet</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Povezave s STB Telnet ni bilo mogoče vzpostaviti</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB FTP</source>
+        <comment>error</comment>
+        <translation>Povezave s STB FTP ni bilo mogoče vzpostaviti</translation>
     </message>
 </context>
 <context>
@@ -1628,7 +1633,7 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     <message>
         <source>Connection profile File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Datoteka profila povezave</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2605,7 +2610,7 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     </message>
     <message>
         <source>Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Meni</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2630,7 +2635,7 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     <message>
         <source>Error reading files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Napaka pri branju datotek.</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
@@ -2649,30 +2654,30 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
-        <translation type="unfinished"></translation>
+        <translation>Uvozi Profile…</translation>
     </message>
     <message numerus="yes">
         <source>Export Profile(s)…</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>Izvozi Profil…</numerusform>
+            <numerusform>Izvozi Profile…</numerusform>
+            <numerusform>Izvozi Profile…</numerusform>
+            <numerusform>Izvozi Profile…</numerusform>
         </translation>
     </message>
     <message>
         <source>Presets</source>
-        <translation type="unfinished"></translation>
+        <translation>Presets</translation>
     </message>
     <message>
         <source>Export Profile</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Izvozi profil</translation>
     </message>
     <message>
         <source>Rename</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Preimenuj</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -2680,9 +2685,9 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
         <translation>&amp;Izbriši</translation>
     </message>
     <message>
-        <source>Preset error</source>
+        <source>Preset Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Napaka Preset</translation>
     </message>
 </context>
 <context>
@@ -3037,37 +3042,37 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     <message>
         <source>STB Reload Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Napaka ponovnem nalaganju STB</translation>
     </message>
     <message>
         <source>Errors occurred during STB reload operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Med ponovnim nalaganjem STB je prišlo do napak.</translation>
     </message>
     <message>
         <source>Errors occurred during FTP operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Med operacijami FTP je prišlo do napak.</translation>
     </message>
     <message>
         <source>FTP Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP Obvestilo</translation>
     </message>
     <message>
-        <source>Successfully transfer.</source>
+        <source>Successfull transfer.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Uspešen prenos.</translation>
     </message>
     <message>
         <source>STB Reload Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Obvestilo ponovnem nalaganju STB</translation>
     </message>
     <message>
         <source>Errors occurred during parsing operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Med operacijami parsing je prišlo do napak.</translation>
     </message>
 </context>
 <context>

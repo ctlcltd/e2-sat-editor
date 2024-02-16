@@ -1055,17 +1055,22 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>無法連接到伺服器</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Webif</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>無法連線到 STB Webif</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Telnet</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>無法連線到 STB Telnet</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB FTP</source>
+        <comment>error</comment>
+        <translation>無法連線到 STB FTP</translation>
     </message>
 </context>
 <context>
@@ -1625,7 +1630,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Connection profile File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>連線設定檔</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2602,7 +2607,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>選單</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2627,7 +2632,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error reading files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>讀取文件時發生錯誤。</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
@@ -2646,27 +2651,27 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Import Profiles…</source>
-        <translation type="unfinished"></translation>
+        <translation>導入設定檔…</translation>
     </message>
     <message numerus="yes">
         <source>Export Profile(s)…</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>匯出設定檔…</numerusform>
         </translation>
     </message>
     <message>
         <source>Presets</source>
-        <translation type="unfinished"></translation>
+        <translation>預設</translation>
     </message>
     <message>
         <source>Export Profile</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>出口簡介</translation>
     </message>
     <message>
         <source>Rename</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>改名</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -2674,9 +2679,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation>刪除(&amp;D)</translation>
     </message>
     <message>
-        <source>Preset error</source>
+        <source>Preset Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>預設錯誤</translation>
     </message>
 </context>
 <context>
@@ -3025,37 +3030,37 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>STB Reload Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>STB 重新載入錯誤</translation>
     </message>
     <message>
         <source>Errors occurred during STB reload operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>STB 重新載入操作期間發生錯誤。</translation>
     </message>
     <message>
         <source>Errors occurred during FTP operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP 操作期間發生錯誤。</translation>
     </message>
     <message>
         <source>FTP Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP 通知</translation>
     </message>
     <message>
-        <source>Successfully transfer.</source>
+        <source>Successfull transfer.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>已成功轉移。</translation>
     </message>
     <message>
         <source>STB Reload Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>機上盒儲值通知</translation>
     </message>
     <message>
         <source>Errors occurred during parsing operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>解析操作期間發生錯誤。</translation>
     </message>
 </context>
 <context>

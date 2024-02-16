@@ -1056,17 +1056,22 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>서버에 연결할 수 없습니다</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Webif</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>STB Webif 에 연결할 수 없습니다.</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Telnet</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>STB Telnet 에 연결할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB FTP</source>
+        <comment>error</comment>
+        <translation>STB FTP 에 연결할 수 없습니다.</translation>
     </message>
 </context>
 <context>
@@ -1626,7 +1631,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Connection profile File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>연결 프로필 파일</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2603,7 +2608,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>메뉴</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2628,7 +2633,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error reading files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>파일을 읽는 중에 오류가 발생했습니다.</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
@@ -2647,27 +2652,27 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Import Profiles…</source>
-        <translation type="unfinished"></translation>
+        <translation>프로필 가져오기…</translation>
     </message>
     <message numerus="yes">
         <source>Export Profile(s)…</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>프로필 내보내기…</numerusform>
         </translation>
     </message>
     <message>
         <source>Presets</source>
-        <translation type="unfinished"></translation>
+        <translation>사전 설정</translation>
     </message>
     <message>
         <source>Export Profile</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>프로필 내보내기</translation>
     </message>
     <message>
         <source>Rename</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>이름 바꾸기</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -2675,9 +2680,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation>삭제(&amp;D)</translation>
     </message>
     <message>
-        <source>Preset error</source>
+        <source>Preset Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>사전 설정 오류</translation>
     </message>
 </context>
 <context>
@@ -3026,37 +3031,37 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>STB Reload Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>STB 다시 로드 오류</translation>
     </message>
     <message>
         <source>Errors occurred during STB reload operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>STB 다시 로드 작업 중에 오류가 발생했습니다.</translation>
     </message>
     <message>
         <source>Errors occurred during FTP operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP 작업 중에 오류가 발생했습니다.</translation>
     </message>
     <message>
         <source>FTP Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP 공지</translation>
     </message>
     <message>
-        <source>Successfully transfer.</source>
+        <source>Successfull transfer.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>성공적으로 전송되었습니다.</translation>
     </message>
     <message>
         <source>STB Reload Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>STB 재로드 알림</translation>
     </message>
     <message>
         <source>Errors occurred during parsing operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>구문 분석 작업 중에 오류가 발생했습니다.</translation>
     </message>
 </context>
 <context>

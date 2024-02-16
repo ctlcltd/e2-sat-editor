@@ -1058,17 +1058,22 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kunne ikke koble til serveren</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Webif</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kunne ikke koble til STB Webif</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Telnet</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kunne ikke koble til STB Telnet</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB FTP</source>
+        <comment>error</comment>
+        <translation>Kunne ikke koble til STB FTP</translation>
     </message>
 </context>
 <context>
@@ -1628,7 +1633,7 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
     <message>
         <source>Connection profile File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tilkoblingsprofil Fil</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2605,7 +2610,7 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
     </message>
     <message>
         <source>Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Meny</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2630,7 +2635,7 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
     <message>
         <source>Error reading files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Feil ved lesing av filer.</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
@@ -2649,28 +2654,28 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
-        <translation type="unfinished"></translation>
+        <translation>Importer Profiler…</translation>
     </message>
     <message numerus="yes">
         <source>Export Profile(s)…</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Eksporter Profil…</numerusform>
+            <numerusform>Eksporter Profiler…</numerusform>
         </translation>
     </message>
     <message>
         <source>Presets</source>
-        <translation type="unfinished"></translation>
+        <translation>Presets</translation>
     </message>
     <message>
         <source>Export Profile</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Eksporter profil</translation>
     </message>
     <message>
         <source>Rename</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Gi nytt navn</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -2678,9 +2683,9 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
         <translation>&amp;Slett</translation>
     </message>
     <message>
-        <source>Preset error</source>
+        <source>Preset Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Preset Feil</translation>
     </message>
 </context>
 <context>
@@ -3031,37 +3036,37 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
     <message>
         <source>STB Reload Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>STB-innlastings Feil</translation>
     </message>
     <message>
         <source>Errors occurred during STB reload operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Det oppsto feil under STB-innlastings operasjoner.</translation>
     </message>
     <message>
         <source>Errors occurred during FTP operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Det oppsto feil under FTP operasjoner.</translation>
     </message>
     <message>
         <source>FTP Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP Varsel</translation>
     </message>
     <message>
-        <source>Successfully transfer.</source>
+        <source>Successfull transfer.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Vellykket overføring.</translation>
     </message>
     <message>
         <source>STB Reload Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>STB-innlastings Varsel</translation>
     </message>
     <message>
         <source>Errors occurred during parsing operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Det oppsto feil under parsing operasjoner.</translation>
     </message>
 </context>
 <context>

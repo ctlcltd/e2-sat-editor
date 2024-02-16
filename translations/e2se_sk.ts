@@ -1058,17 +1058,22 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nepodarilo sa pripojiť k serveru</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Webif</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nepodarilo sa pripojiť k STB Webif</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Telnet</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nepodarilo sa pripojiť k STB Telnet</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB FTP</source>
+        <comment>error</comment>
+        <translation>Nepodarilo sa pripojiť k STB FTP</translation>
     </message>
 </context>
 <context>
@@ -1628,7 +1633,7 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     <message>
         <source>Connection profile File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Súbor profilu pripojenia</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2605,7 +2610,7 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     </message>
     <message>
         <source>Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Ponuka</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2630,7 +2635,7 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     <message>
         <source>Error reading files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chyba pri čítaní súborov.</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
@@ -2649,29 +2654,29 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
-        <translation type="unfinished"></translation>
+        <translation>Importovať Profily…</translation>
     </message>
     <message numerus="yes">
         <source>Export Profile(s)…</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>Exportovať Profil…</numerusform>
+            <numerusform>Exportovať Profily…</numerusform>
+            <numerusform>Exportovať Profily…</numerusform>
         </translation>
     </message>
     <message>
         <source>Presets</source>
-        <translation type="unfinished"></translation>
+        <translation>Presets</translation>
     </message>
     <message>
         <source>Export Profile</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Exportovať profil</translation>
     </message>
     <message>
         <source>Rename</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Premenovať</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -2679,9 +2684,9 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
         <translation>Z&amp;mazať</translation>
     </message>
     <message>
-        <source>Preset error</source>
+        <source>Preset Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chyba Preset</translation>
     </message>
 </context>
 <context>
@@ -3034,37 +3039,37 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     <message>
         <source>STB Reload Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chyba opätovného načítania STB</translation>
     </message>
     <message>
         <source>Errors occurred during STB reload operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Počas operácií opätovného načítania STB sa vyskytli chyby.</translation>
     </message>
     <message>
         <source>Errors occurred during FTP operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Počas operácií FTP sa vyskytli chyby.</translation>
     </message>
     <message>
         <source>FTP Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Oznámenie FTP</translation>
     </message>
     <message>
-        <source>Successfully transfer.</source>
+        <source>Successfull transfer.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Úspešný prenos.</translation>
     </message>
     <message>
         <source>STB Reload Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Oznámenie opätovnom načítaní STB</translation>
     </message>
     <message>
         <source>Errors occurred during parsing operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Počas parsing operácií sa vyskytli chyby.</translation>
     </message>
 </context>
 <context>

@@ -2326,7 +2326,7 @@ void tab::ftpcomError(unordered_map<string, string> errors, bool reload)
 	{
 		title = tr("FTP Notice", "error");
 		message = QString("%1\n\n%2")
-			.arg(tr("Successfully transfer.", "message"))
+			.arg(tr("Successfull transfer.", "message"))
 			.arg(tr("Errors occurred during FTP operations.", "error"));
 	}
 	else

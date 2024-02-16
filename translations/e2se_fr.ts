@@ -1060,17 +1060,22 @@ OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de se connecter au serveur</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Webif</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de se connecter à STB Webif</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Telnet</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de se connecter à STB Telnet</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB FTP</source>
+        <comment>error</comment>
+        <translation>Impossible de se connecter à STB FTP</translation>
     </message>
 </context>
 <context>
@@ -1630,7 +1635,7 @@ OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     <message>
         <source>Connection profile File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Fichier Profil connexion</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2607,7 +2612,7 @@ OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     </message>
     <message>
         <source>Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Menu</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2632,7 +2637,7 @@ OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     <message>
         <source>Error reading files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Erreur lors de la lecture des fichiers.</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
@@ -2651,28 +2656,28 @@ OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
-        <translation type="unfinished"></translation>
+        <translation>Importer Profils…</translation>
     </message>
     <message numerus="yes">
         <source>Export Profile(s)…</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Exporter Profil…</numerusform>
+            <numerusform>Exporter Profils…</numerusform>
         </translation>
     </message>
     <message>
         <source>Presets</source>
-        <translation type="unfinished"></translation>
+        <translation>Presets</translation>
     </message>
     <message>
         <source>Export Profile</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Exporter profil</translation>
     </message>
     <message>
         <source>Rename</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Renommer</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -2680,9 +2685,9 @@ OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
         <translation>Suppri&amp;mer</translation>
     </message>
     <message>
-        <source>Preset error</source>
+        <source>Preset Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Erreur Preset</translation>
     </message>
 </context>
 <context>
@@ -3033,37 +3038,37 @@ OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
     <message>
         <source>STB Reload Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Erreur Rechargement STB</translation>
     </message>
     <message>
         <source>Errors occurred during STB reload operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Des erreurs se sont produites lors des opérations de rechargement du STB.</translation>
     </message>
     <message>
         <source>Errors occurred during FTP operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Des erreurs se sont produites lors des opérations FTP.</translation>
     </message>
     <message>
         <source>FTP Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Avis FTP</translation>
     </message>
     <message>
-        <source>Successfully transfer.</source>
+        <source>Successfull transfer.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Transfert réussi.</translation>
     </message>
     <message>
         <source>STB Reload Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Avis Rechargement STB</translation>
     </message>
     <message>
         <source>Errors occurred during parsing operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Des erreurs se sont produites lors des opérations de parsing.</translation>
     </message>
 </context>
 <context>

@@ -1063,6 +1063,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Couldn&apos;t connect to STB FTP</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>gui</name>
@@ -2646,7 +2651,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message numerus="yes">
         <source>Export Profile(s)…</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>Export Profile…</numerusform>
             <numerusform>Export Profiles…</numerusform>
         </translation>
@@ -2671,7 +2676,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Preset error</source>
+        <source>Preset Error</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -3032,11 +3037,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Successfully transfer.</source>
-        <comment>message</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>STB Reload Notice</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
@@ -3044,6 +3044,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Errors occurred during parsing operations.</source>
         <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Successfull transfer.</source>
+        <comment>message</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>

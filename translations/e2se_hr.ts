@@ -1060,17 +1060,22 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nije moguće spojiti se na poslužitelj</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Webif</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nije moguće spojiti se na STB Webif</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Telnet</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nije moguće spojiti se na STB Telnet</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB FTP</source>
+        <comment>error</comment>
+        <translation>Nije moguće spojiti se na STB FTP</translation>
     </message>
 </context>
 <context>
@@ -1630,7 +1635,7 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
     <message>
         <source>Connection profile File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Datoteka profila veze</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2607,7 +2612,7 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
     </message>
     <message>
         <source>Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Izbornik</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2632,7 +2637,7 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
     <message>
         <source>Error reading files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pogreška pri čitanju datoteka.</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
@@ -2651,29 +2656,29 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
-        <translation type="unfinished"></translation>
+        <translation>Uvezi Profile…</translation>
     </message>
     <message numerus="yes">
         <source>Export Profile(s)…</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>Izvoz Profila…</numerusform>
+            <numerusform>Izvoz Profile…</numerusform>
+            <numerusform>Izvoz Profile…</numerusform>
         </translation>
     </message>
     <message>
         <source>Presets</source>
-        <translation type="unfinished"></translation>
+        <translation>Presets</translation>
     </message>
     <message>
         <source>Export Profile</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Izvoz profila</translation>
     </message>
     <message>
         <source>Rename</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Preimenuj</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -2681,9 +2686,9 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
         <translation>&amp;Ukloni</translation>
     </message>
     <message>
-        <source>Preset error</source>
+        <source>Preset Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Preset Greška</translation>
     </message>
 </context>
 <context>
@@ -3036,37 +3041,37 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
     <message>
         <source>STB Reload Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>STB pogreška ponovnog učitavanja</translation>
     </message>
     <message>
         <source>Errors occurred during STB reload operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Došlo je do pogrešaka tijekom operacija ponovnog učitavanja STB-a.</translation>
     </message>
     <message>
         <source>Errors occurred during FTP operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Došlo je do pogrešaka tijekom FTP operacija.</translation>
     </message>
     <message>
         <source>FTP Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP Obavijest</translation>
     </message>
     <message>
-        <source>Successfully transfer.</source>
+        <source>Successfull transfer.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Uspješan transfer.</translation>
     </message>
     <message>
         <source>STB Reload Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Obavijest Ponovnom Učitavanju STB-a</translation>
     </message>
     <message>
         <source>Errors occurred during parsing operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Došlo je do pogrešaka tijekom operacija parsinga.</translation>
     </message>
 </context>
 <context>

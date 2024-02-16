@@ -296,7 +296,7 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>Missing channel reference &quot;%s&quot;.</source>
         <comment>error</comment>
-        <translation>Channel reference &quot;%s&quot; smarrita.</translation>
+        <translation>Riferimento canale &quot;%s&quot; smarrito.</translation>
     </message>
     <message>
         <source>Service &quot;%s&quot; not exists.</source>
@@ -316,7 +316,7 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>Channel reference &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation>Channel reference &quot;%s&quot; non esistente.</translation>
+        <translation>Riferimento canale &quot;%s&quot; non esistente.</translation>
     </message>
     <message>
         <source>Tunersets table &quot;%s&quot; not exists.</source>
@@ -424,12 +424,12 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation>Channel reference &quot;%1&quot; non esistente.</translation>
+        <translation>Riferimento canale &quot;%1&quot; non esistente.</translation>
     </message>
     <message>
         <source>Channel reference mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Channel reference &quot;%1&quot; scombinata.</translation>
+        <translation>Riferimento canale &quot;%1&quot; errato.</translation>
     </message>
 </context>
 <context>
@@ -1058,17 +1058,22 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile connettersi al server</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Webif</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile connettersi a STB Webif</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Telnet</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile connettersi a STB Telnet</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB FTP</source>
+        <comment>error</comment>
+        <translation>Impossibile connettersi a STB FTP</translation>
     </message>
 </context>
 <context>
@@ -1628,7 +1633,7 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>Connection profile File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>File di Profilo connessione</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -1813,7 +1818,7 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>Channel reference mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Channel reference &quot;%1&quot; scombinata.</translation>
+        <translation>Riferimento canale &quot;%1&quot; errato.</translation>
     </message>
     <message>
         <source>Convert</source>
@@ -1900,22 +1905,22 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>Service &quot;%1&quot; not exists or is a channel reference.</source>
         <comment>error</comment>
-        <translation type="unfinished">Servizio &quot;%1&quot; non esistente oppure channel reference.</translation>
+        <translation>Servizio &quot;%1&quot; non esistente oppure è un riferimento canale.</translation>
     </message>
     <message>
         <source>Missing channel reference key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation>Chiave indice channel reference &quot;%1&quot; smarrita.</translation>
+        <translation>Chiave indice riferimento canale &quot;%1&quot; smarrita.</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; is not a valid marker.</source>
         <comment>error</comment>
-        <translation>Channel reference &quot;%1&quot; non è un marker valido.</translation>
+        <translation>Riferimento canale &quot;%1&quot; non è un marker valido.</translation>
     </message>
     <message>
         <source>Channel reference&quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation>Channel reference &quot;%1&quot; non esistente.</translation>
+        <translation>Riferimento canale &quot;%1&quot; non esistente.</translation>
     </message>
     <message>
         <source>Confirm deletetion</source>
@@ -1935,7 +1940,7 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>Channel reference mismatch.</source>
         <comment>error</comment>
-        <translation type="unfinished">Channel reference scombinata.</translation>
+        <translation>Riferimento canale errato.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
@@ -2069,7 +2074,7 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>Channel mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Channel &quot;%1&quot; scombinato.</translation>
+        <translation>Canale &quot;%1&quot; errato.</translation>
     </message>
     <message>
         <source>Backup picon when replaced</source>
@@ -2605,7 +2610,7 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     </message>
     <message>
         <source>Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Menu</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2630,7 +2635,7 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>Error reading files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Errore di lettura da file.</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
@@ -2649,28 +2654,28 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
-        <translation type="unfinished"></translation>
+        <translation>Importa Profili…</translation>
     </message>
     <message numerus="yes">
         <source>Export Profile(s)…</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Esporta Profilo…</numerusform>
+            <numerusform>Esporta Profili…</numerusform>
         </translation>
     </message>
     <message>
         <source>Presets</source>
-        <translation type="unfinished"></translation>
+        <translation>Presets</translation>
     </message>
     <message>
         <source>Export Profile</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Esporta profilo</translation>
     </message>
     <message>
         <source>Rename</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Rinomina</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -2678,9 +2683,9 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
         <translation>Elimina</translation>
     </message>
     <message>
-        <source>Preset error</source>
+        <source>Preset Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Errore Preset</translation>
     </message>
 </context>
 <context>
@@ -3031,37 +3036,37 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>STB Reload Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Errore Riavvio STB</translation>
     </message>
     <message>
         <source>Errors occurred during STB reload operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Si sono verificati degli errori durante le operazioni di riavvio del STB.</translation>
     </message>
     <message>
         <source>Errors occurred during FTP operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Si sono verificati degli errori durante le operazioni FTP.</translation>
     </message>
     <message>
         <source>FTP Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Avviso FTP</translation>
     </message>
     <message>
-        <source>Successfully transfer.</source>
+        <source>Successfull transfer.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Trasferimento completato.</translation>
     </message>
     <message>
         <source>STB Reload Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Avviso Riavvio STB</translation>
     </message>
     <message>
         <source>Errors occurred during parsing operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Si sono verificati degli errori durante le operazioni di parsing.</translation>
     </message>
 </context>
 <context>
@@ -3430,7 +3435,7 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>Tuner settings transponder type mismatch.</source>
         <comment>error</comment>
-        <translation type="unfinished">Tipo di tuner settings transponder scombinato.</translation>
+        <translation>Tipo di tuner settings transponder errato.</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>

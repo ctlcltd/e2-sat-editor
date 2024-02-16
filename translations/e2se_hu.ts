@@ -1059,17 +1059,22 @@ VAGY A SZOFTVER FELHASZNÁLÁSA VAGY EGYÉB KERESKEDELME.</translation>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült csatlakozni a szerverhez</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Webif</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült csatlakozni az STB Webifhez</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Telnet</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült csatlakozni az STB Telnethez</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB FTP</source>
+        <comment>error</comment>
+        <translation>Nem sikerült csatlakozni az STB FTP-hez</translation>
     </message>
 </context>
 <context>
@@ -1629,7 +1634,7 @@ VAGY A SZOFTVER FELHASZNÁLÁSA VAGY EGYÉB KERESKEDELME.</translation>
     <message>
         <source>Connection profile File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kapcsolati profil fájl</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2606,7 +2611,7 @@ VAGY A SZOFTVER FELHASZNÁLÁSA VAGY EGYÉB KERESKEDELME.</translation>
     </message>
     <message>
         <source>Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Menü</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2631,7 +2636,7 @@ VAGY A SZOFTVER FELHASZNÁLÁSA VAGY EGYÉB KERESKEDELME.</translation>
     <message>
         <source>Error reading files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Hiba a fájlok olvasásakor.</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
@@ -2650,27 +2655,27 @@ VAGY A SZOFTVER FELHASZNÁLÁSA VAGY EGYÉB KERESKEDELME.</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
-        <translation type="unfinished"></translation>
+        <translation>Profilok importálása…</translation>
     </message>
     <message numerus="yes">
         <source>Export Profile(s)…</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
+            <numerusform>Profilok exportálása…</numerusform>
         </translation>
     </message>
     <message>
         <source>Presets</source>
-        <translation type="unfinished"></translation>
+        <translation>Preset</translation>
     </message>
     <message>
         <source>Export Profile</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Profil exportálása</translation>
     </message>
     <message>
         <source>Rename</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Átnevezés</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -2678,9 +2683,9 @@ VAGY A SZOFTVER FELHASZNÁLÁSA VAGY EGYÉB KERESKEDELME.</translation>
         <translation>&amp;Törlés</translation>
     </message>
     <message>
-        <source>Preset error</source>
+        <source>Preset Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Preset Hiba</translation>
     </message>
 </context>
 <context>
@@ -3029,37 +3034,37 @@ VAGY A SZOFTVER FELHASZNÁLÁSA VAGY EGYÉB KERESKEDELME.</translation>
     <message>
         <source>STB Reload Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>STB újratöltési Hiba</translation>
     </message>
     <message>
         <source>Errors occurred during STB reload operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Hibák történtek az STB újratöltési műveletei során.</translation>
     </message>
     <message>
         <source>Errors occurred during FTP operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Az FTP műveletek során hibák történtek.</translation>
     </message>
     <message>
         <source>FTP Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>FTP Figyelmeztetés</translation>
     </message>
     <message>
-        <source>Successfully transfer.</source>
+        <source>Successfull transfer.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Sikeres átvitel.</translation>
     </message>
     <message>
         <source>STB Reload Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>STB újratöltési Figyelmeztetés</translation>
     </message>
     <message>
         <source>Errors occurred during parsing operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>A parsing műveletek során hibák történtek.</translation>
     </message>
 </context>
 <context>

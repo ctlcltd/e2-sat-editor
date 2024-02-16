@@ -19,6 +19,7 @@ QT_TRANSLATE_NOOP3("ftpcom", "Failed to resume FTP connection.", "error");
 // curl_easy_strerror var error string
 QT_TRANSLATE_NOOP3("ftpcom", "Couldn't connect to server", "error");
 
+QT_TRANSLATE_NOOP3("ftpcom", "Couldn't connect to STB FTP", "error");
 QT_TRANSLATE_NOOP3("ftpcom", "Couldn't connect to STB Webif", "error");
 QT_TRANSLATE_NOOP3("ftpcom", "Couldn't connect to STB Telnet", "error");
 

@@ -1059,17 +1059,22 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cha b&apos; urrainn dhuinn ceangal ris an fhrithealaiche</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Webif</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cha b&apos; urrainn dhuinn ceangal a dhèanamh ri STB Webif</translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Telnet</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cha b&apos; urrainn dhuinn ceangal a dhèanamh ri STB Telnet</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB FTP</source>
+        <comment>error</comment>
+        <translation>Cha b&apos; urrainn dhuinn ceangal a dhèanamh ri STB FTP</translation>
     </message>
 </context>
 <context>
@@ -1629,7 +1634,7 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     <message>
         <source>Connection profile File</source>
         <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Faidhle pròifil ceangail</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2606,7 +2611,7 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     </message>
     <message>
         <source>Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Clàr</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2631,7 +2636,7 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     <message>
         <source>Error reading files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd a&apos; leughadh fhaidhlichean.</translation>
     </message>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
@@ -2650,30 +2655,30 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
-        <translation type="unfinished"></translation>
+        <translation>Cuir a-steach Pròifilean…</translation>
     </message>
     <message numerus="yes">
         <source>Export Profile(s)…</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>Às-mhalairt Pròifil…</numerusform>
+            <numerusform>Às-phortaich Pròifilean…</numerusform>
+            <numerusform>Às-phortaich Pròifilean…</numerusform>
+            <numerusform>Às-phortaich Pròifilean…</numerusform>
         </translation>
     </message>
     <message>
         <source>Presets</source>
-        <translation type="unfinished"></translation>
+        <translation>Presets</translation>
     </message>
     <message>
         <source>Export Profile</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Às-phortaich pròifil</translation>
     </message>
     <message>
         <source>Rename</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ath-ainmich</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -2681,9 +2686,9 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
         <translation>&amp;Sguab às</translation>
     </message>
     <message>
-        <source>Preset error</source>
+        <source>Preset Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd Preset</translation>
     </message>
 </context>
 <context>
@@ -3038,37 +3043,37 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     <message>
         <source>STB Reload Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd STB ath-luchdachadh</translation>
     </message>
     <message>
         <source>Errors occurred during STB reload operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Thachair mearachdan ri linn gnìomhachd ath-luchdachadh STB.</translation>
     </message>
     <message>
         <source>Errors occurred during FTP operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Thachair mearachdan rè obrachaidhean FTP.</translation>
     </message>
     <message>
         <source>FTP Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Sanas FTP</translation>
     </message>
     <message>
-        <source>Successfully transfer.</source>
+        <source>Successfull transfer.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Gluasad soirbheachail.</translation>
     </message>
     <message>
         <source>STB Reload Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Sanas STB luchdadh a-nuas</translation>
     </message>
     <message>
         <source>Errors occurred during parsing operations.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Thachair mearachdan ri linn gnìomhachd parsing.</translation>
     </message>
 </context>
 <context>

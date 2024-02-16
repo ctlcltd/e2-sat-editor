@@ -1495,7 +1495,7 @@ void settings::applyPreset(connectionPresets::PRESET preset)
 	}
 	catch (...)
 	{
-		return error("applyPreset", tr("Error", "error").toStdString(), tr("Preset error", "error").toStdString());
+		return error("applyPreset", tr("Error", "error").toStdString(), tr("Preset Error", "error").toStdString());
 	}
 
 	for (auto & item : prefs[PREF_SECTIONS::Connections])
