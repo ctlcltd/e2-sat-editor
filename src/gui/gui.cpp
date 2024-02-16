@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 1.1
+ * @version 1.2.0
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -60,7 +60,7 @@ gui::gui(int argc, char* argv[])
 	mroot->setOrganizationName("e2 SAT Editor Team");
 	mroot->setOrganizationDomain("io.github.ctlcltd");
 	mroot->setApplicationName("e2se");
-	mroot->setApplicationVersion("1.1");
+	mroot->setApplicationVersion("1.2");
 
 	mroot->connect(mroot, &QApplication::focusChanged, [=]() { this->windowChanged(); });
 
