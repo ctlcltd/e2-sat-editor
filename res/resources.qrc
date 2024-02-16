@@ -14,6 +14,7 @@
 	<file>icons/export.png</file>
 	<file>icons/file-info.png</file>
 	<file>icons/file-open.png</file>
+	<file>icons/hide.png</file>
 	<file>icons/import.png</file>
 	<file>icons/list-prefs-menu.png</file>
 	<file>icons/picon.png</file>
@@ -25,6 +26,7 @@
 	<file>icons/service-whitelist.png</file>
 	<file>icons/services-sets-menu.png</file>
 	<file>icons/settings.png</file>
+	<file>icons/show.png</file>
 	<file>icons/transponders-view.png</file>
 	<file>icons/tunersets-view.png</file>
 </qresource>

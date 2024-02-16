@@ -81,7 +81,7 @@ bool dataHandler::readBlob(string path, unordered_map<string, e2db::e2db_file> f
 		if (! this->path.empty())
 			this->path = path;
 	}
-	// handled by e2db_gui::e2db::error
+	// handled by e2se_gui::e2db::error
 	catch (...)
 	{
 		return false;

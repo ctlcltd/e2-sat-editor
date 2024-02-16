@@ -418,7 +418,7 @@ bool e2db::prepare(string filename)
 			return false;
 		}
 	}
-	// handled by e2db_gui::e2db::error
+	// handled by e2se_gui::e2db::error
 	catch (...)
 	{
 		return false;
@@ -441,7 +441,7 @@ bool e2db::write(string path)
 			return false;
 		}
 	}
-	// handled by e2db_gui::e2db::error
+	// handled by e2se_gui::e2db::error
 	catch (...)
 	{
 		return false;
@@ -462,7 +462,7 @@ void e2db::importFile(vector<string> paths)
 
 		import_file(paths);
 	}
-	// handled by e2db_gui::e2db::error
+	// handled by e2se_gui::e2db::error
 	catch (...)
 	{
 		return;
@@ -483,7 +483,7 @@ void e2db::exportFile(int bit, vector<string> paths)
 		else
 			export_file(paths);
 	}
-	// handled by e2db_gui::e2db::error
+	// handled by e2se_gui::e2db::error
 	catch (...)
 	{
 	}
@@ -505,7 +505,7 @@ void e2db::importBlob(unordered_map<string, e2db_file> files, bool threading)
 
 		this->threading = ! threading;
 	}
-	// handled by e2db_gui::e2db::error
+	// handled by e2se_gui::e2db::error
 	catch (...)
 	{
 		this->threading = ! threading;

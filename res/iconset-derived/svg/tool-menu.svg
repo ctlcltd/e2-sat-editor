@@ -4,14 +4,14 @@
     <g transform="matrix(1,0,0,1,-1544,-3040)">
         <g id="tool-menu" transform="matrix(0.5,0,0,0.5,772,1520)">
             <rect x="1544" y="3040" width="128" height="128" style="fill:none;"/>
-            <g transform="matrix(2,0,0,2,-1544,-3040)">
-                <path d="M1571.42,3091L1580.58,3091L1580.58,3083L1571.42,3083L1571.42,3091Z"/>
+            <g transform="matrix(2,0,0,2,-1542,-3040)">
+                <rect x="1571.42" y="3083" width="9.167" height="8"/>
             </g>
-            <g transform="matrix(2,0,0,2,-1544,-3040)">
-                <path d="M1580.58,3068L1571.42,3068L1571.42,3076L1580.58,3076L1580.58,3068Z"/>
+            <g transform="matrix(2,0,0,2,-1542,-3040)">
+                <rect x="1571.42" y="3068" width="9.167" height="8"/>
             </g>
-            <g transform="matrix(2,0,0,2,-1544,-3040)">
-                <path d="M1571.42,3061L1580.58,3061L1580.58,3053L1571.42,3053L1571.42,3061Z"/>
+            <g transform="matrix(2,0,0,2,-1542,-3040)">
+                <rect x="1571.42" y="3053" width="9.167" height="8"/>
             </g>
         </g>
     </g>

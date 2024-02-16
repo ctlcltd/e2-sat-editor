@@ -4,8 +4,8 @@
     <g transform="matrix(1,0,0,1,-1848,-3040)">
         <g id="macx-tool-remove" transform="matrix(0.5,0,0,0.5,924,1520)">
             <rect x="1848" y="3040" width="128" height="128" style="fill:none;"/>
-            <g transform="matrix(2,0,0,2,-1848,-3040)">
-                <path d="M1863.03,3070C1863.03,3070 1863.03,3074 1863.03,3074L1896.97,3074L1896.97,3070L1863.03,3070Z"/>
+            <g transform="matrix(2.06239,0,0,2,-1966.36,-3040)">
+                <rect x="1863.03" y="3070" width="33.941" height="4"/>
             </g>
         </g>
     </g>

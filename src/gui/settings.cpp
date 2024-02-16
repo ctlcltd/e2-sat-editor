@@ -175,16 +175,15 @@ void settings::connectionsLayout()
 	rplist->setContextMenuPolicy(Qt::CustomContextMenu);
 	rplist->connect(rplist, &QListWidget::customContextMenuRequested, [=](QPoint pos) { this->showProfileEditContextMenu(pos); });
 
-	//TODO improve ui
 	QToolBar* dttbar = new QToolBar;
 	dttbar->setObjectName("profile_toolbar");
 	dttbar->setToolButtonStyle(Qt::ToolButtonIconOnly);
 #ifndef Q_OS_MAC
 	dttbar->setIconSize(QSize(16, 16));
-	dttbar->setStyleSheet("QToolBar { spacing: 0 } QToolButton { margin: -1px 0; border: 1px solid }");
+	dttbar->setStyleSheet("QToolBar { spacing: 0 } QToolButton { margin-top: 2px; width: 20px; border: 1px solid }");
 #else
-	dttbar->setIconSize(QSize(20, 20));
-	dttbar->setStyleSheet("QToolBar { spacing: 0 } QToolButton { margin: -1px 0; width: 23px; height: 18px; border: 1px solid }");
+	dttbar->setIconSize(QSize(40, 20));
+	dttbar->setStyleSheet("QToolBar { spacing: 0 } QToolButton { width: 21px; height: 16px; border: 1px solid }");
 #endif
 
 	dttbar->addAction(theme::icon("tool-add"), tr("Add"), [=]() { this->addProfile(); });
@@ -211,33 +210,32 @@ void settings::connectionsLayout()
 	QString tbshade_hexArgb;
 	QString tbfocus_hexArgb;
 #ifndef Q_OS_MAC
-	tbshade = QPalette().color(QPalette::Base);
-	tbshade.setAlphaF(0.25);
+	tbshade = QPalette().color(QPalette::Dark);
+	tbshade.setAlphaF(0.55);
 	tbshade_hexArgb = tbshade.name(QColor::HexArgb);
 
-	tbfocus = QPalette().color(QPalette::Mid);
+	tbfocus = QPalette().color(QPalette::Dark);
 	tbfocus.setAlphaF(0.19);
-	tbfocus_hexArgb = tbshade.name(QColor::HexArgb);
+	tbfocus_hexArgb = tbfocus.name(QColor::HexArgb);
 
 	theme->dynamicStyleSheet(dttbar, "#profile_toolbar QToolButton { border-color: " + tbshade_hexArgb + " } #profile_toolbar QToolButton:pressed { background-color: " + tbfocus_hexArgb + " }", theme::light);
 
-	tbshade = QPalette().color(QPalette::Mid);
-	tbshade.setAlphaF(0.22);
+	tbshade = QPalette().color(QPalette::Base);
 	tbshade_hexArgb = tbshade.name(QColor::HexArgb);
 
 	tbfocus = QPalette().color(QPalette::Mid);
 	tbfocus.setAlphaF(0.15);
-	tbfocus_hexArgb = tbshade.name(QColor::HexArgb);
+	tbfocus_hexArgb = tbfocus.name(QColor::HexArgb);
 
 	theme->dynamicStyleSheet(dttbar, "#profile_toolbar QToolButton { border-color: " + tbshade_hexArgb + " } #profile_toolbar QToolButton:pressed { background-color: " + tbfocus_hexArgb + " }", theme::dark);
 #else
 	tbshade = QColor(Qt::black);
-	tbshade.setAlphaF(0.08);
+	tbshade.setAlphaF(0.2);
 	tbshade_hexArgb = tbshade.name(QColor::HexArgb);
 
 	tbfocus = QColor(Qt::black);
-	tbfocus.setAlphaF(0.20);
-	tbfocus_hexArgb = tbshade.name(QColor::HexArgb);
+	tbfocus.setAlphaF(0.08);
+	tbfocus_hexArgb = tbfocus.name(QColor::HexArgb);
 
 	theme->dynamicStyleSheet(dttbar, "#profile_toolbar QToolButton { border-color: " + tbshade_hexArgb + " } #profile_toolbar QToolButton:pressed { background-color: " + tbfocus_hexArgb + " }", theme::light);
 
@@ -247,23 +245,29 @@ void settings::connectionsLayout()
 
 	tbfocus = QPalette().color(QPalette::Dark).darker();
 	tbfocus.setAlphaF(0.34);
-	tbfocus_hexArgb = tbshade.name(QColor::HexArgb);
+	tbfocus_hexArgb = tbfocus.name(QColor::HexArgb);
 
 	theme->dynamicStyleSheet(dttbar, "#profile_toolbar QToolButton { border-color: " + tbshade_hexArgb + " } #profile_toolbar QToolButton:pressed { background-color: " + tbfocus_hexArgb + " }", theme::dark);
 #endif
 
-#ifdef Q_OS_MAC
 	if (dttbar->layoutDirection() == Qt::LeftToRight)
 	{
 		dttbar->widgetForAction(dttbar->actions().first())->setStyleSheet("margin-right: -1px");
-		dttbar->widgetForAction(dttbar->actions().last())->setStyleSheet("margin-left: -1px");
+#ifndef Q_OS_MAC
+		dttbar->widgetForAction(dttbar->actions().last())->setStyleSheet("width: 23px");
+#else
+		dttbar->widgetForAction(dttbar->actions().last())->setStyleSheet("width: 25px; margin-left: -1px");
+#endif
 	}
 	else
 	{
 		dttbar->widgetForAction(dttbar->actions().first())->setStyleSheet("margin-left: -1px");
-		dttbar->widgetForAction(dttbar->actions().last())->setStyleSheet("margin-right: -1px");
-	}
+#ifndef Q_OS_MAC
+		dttbar->widgetForAction(dttbar->actions().last())->setStyleSheet("width: 23px");
+#else
+		dttbar->widgetForAction(dttbar->actions().last())->setStyleSheet("width: 25px; margin-right: -1px");
 #endif
+	}
 
 	dtvbox->setSpacing(0);
 	dtvbox->addWidget(rplist);
@@ -334,19 +338,18 @@ void settings::connectionsLayout()
 	platform::osLineEdit(dtf1lu);
 	dtf1->addRow(tr("Username"), dtf1lu);
 
-	//TODO show/hide icons
 	QLineEdit* dtf1lp = new QLineEdit();
-	QAction* dtf1lpr = dtf1lp->addAction(theme::icon("edit"), QLineEdit::TrailingPosition);
+	QAction* dtf1lpr = dtf1lp->addAction(theme::icon("show"), QLineEdit::TrailingPosition);
 	dtf1lpr->connect(dtf1lpr, &QAction::triggered, [=]() {
 		if (dtf1lp->echoMode() == QLineEdit::Normal)
 		{
 			dtf1lp->setEchoMode(QLineEdit::PasswordEchoOnEdit);
-			dtf1lpr->setIcon(theme::icon("edit"));
+			dtf1lpr->setIcon(theme::icon("show"));
 		}
 		else
 		{
 			dtf1lp->setEchoMode(QLineEdit::Normal);
-			dtf1lpr->setIcon(theme::icon("close"));
+			dtf1lpr->setIcon(theme::icon("hide"));
 		}
 	});
 	dtf1lp->setProperty("field", "password");
@@ -1645,7 +1648,6 @@ void settings::retrieve()
 			QString pref = item->property("field").toString();
 			tmpps[idx][pref] = sets->value(pref);
 
-			//TODO TEST
 			if (i == selected)
 			{
 				if (sets->value(pref).isNull())

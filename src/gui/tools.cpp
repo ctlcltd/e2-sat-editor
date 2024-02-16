@@ -224,7 +224,7 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 	{
 		dbih->import_csv_file(fci, opts, paths);
 	}
-	// handled by e2db_gui::e2db::error
+	// handled by e2se_gui::e2db::error
 	catch (...)
 	{
 		theme::unsetWaitCursor();
@@ -296,7 +296,7 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 	{
 		dbih->export_csv_file(fco, opts, path);
 	}
-	// handled by e2db_gui::e2db::error
+	// handled by e2se_gui::e2db::error
 	catch (...)
 	{
 		theme::unsetWaitCursor();
@@ -366,7 +366,7 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 	{
 		dbih->export_html_file(fco, opts, path);
 	}
-	// handled by e2db_gui::e2db::error
+	// handled by e2se_gui::e2db::error
 	catch (...)
 	{
 		theme::unsetWaitCursor();
