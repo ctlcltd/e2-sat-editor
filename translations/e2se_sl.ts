@@ -1055,6 +1055,21 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
         <comment>error</comment>
         <translation>Povezave FTP ni bilo mogoče nadaljevati.</translation>
     </message>
+    <message>
+        <source>Couldn&apos;t connect to server</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Webif</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Telnet</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>gui</name>
@@ -1618,12 +1633,12 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Napaka Datoteke</translation>
+        <translation>Napaka Datoteke</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Napaka pri odpiranju datotek.</translation>
+        <translation>Napaka pri odpiranju datotek.</translation>
     </message>
 </context>
 <context>
@@ -2595,22 +2610,22 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Napaka Datoteke</translation>
+        <translation>Napaka Datoteke</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Napaka pri branju datoteke &quot;%1&quot;.</translation>
+        <translation>Napaka pri branju datoteke &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Napaka pri odpiranju datotek.</translation>
+        <translation>Napaka pri odpiranju datotek.</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Napaka</translation>
+        <translation>Napaka</translation>
     </message>
     <message>
         <source>Error reading files.</source>
@@ -2620,17 +2635,17 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Napaka pri pisanju datoteke &quot;%1&quot;.</translation>
+        <translation>Napaka pri pisanju datoteke &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error writing files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Napaka pri pisanju datotek.</translation>
+        <translation>Napaka pri pisanju datotek.</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished">Shranjeno!</translation>
+        <translation>Shranjeno!</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
@@ -2662,7 +2677,7 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     <message>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">&amp;Izbriši</translation>
+        <translation>&amp;Izbriši</translation>
     </message>
     <message>
         <source>Preset error</source>
@@ -2920,7 +2935,7 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     <message>
         <source>Cannot reload STB!</source>
         <comment>error</comment>
-        <translation>STB ni mogoče znova naložiti!</translation>
+        <translation type="vanished">STB ni mogoče znova naložiti!</translation>
     </message>
     <message>
         <source>DEMO MODE</source>
@@ -3012,12 +3027,47 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation>Napaka</translation>
+        <translation type="vanished">Napaka</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>Donirajte</translation>
+    </message>
+    <message>
+        <source>STB Reload Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during STB reload operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during FTP operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FTP Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Successfully transfer.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STB Reload Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during parsing operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3064,12 +3114,12 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Napaka Datoteke</translation>
+        <translation>Napaka Datoteke</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Napaka pri odpiranju datotek.</translation>
+        <translation>Napaka pri odpiranju datotek.</translation>
     </message>
 </context>
 <context>

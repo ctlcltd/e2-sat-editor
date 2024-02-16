@@ -1055,6 +1055,21 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>error</comment>
         <translation>از سرگیری اتصال FTP ناموفق بود.</translation>
     </message>
+    <message>
+        <source>Couldn&apos;t connect to server</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Webif</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Telnet</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>gui</name>
@@ -1618,12 +1633,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">خطای File</translation>
+        <translation>خطای File</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">خطا در باز کردن فایل ها</translation>
+        <translation>خطا در باز کردن فایل ها</translation>
     </message>
 </context>
 <context>
@@ -2595,22 +2610,22 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">خطای File</translation>
+        <translation>خطای File</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">خطا در خواندن فایل &quot;%1&quot;.</translation>
+        <translation>خطا در خواندن فایل &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">خطا در باز کردن فایل ها</translation>
+        <translation>خطا در باز کردن فایل ها</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished">خطا</translation>
+        <translation>خطا</translation>
     </message>
     <message>
         <source>Error reading files.</source>
@@ -2620,17 +2635,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">خطا در نوشتن فایل &quot;%1&quot;.</translation>
+        <translation>خطا در نوشتن فایل &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error writing files.</source>
         <comment>error</comment>
-        <translation type="unfinished">خطا در نوشتن فایل ها</translation>
+        <translation>خطا در نوشتن فایل ها</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished">ذخیره!</translation>
+        <translation>ذخیره!</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
@@ -2659,7 +2674,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">&amp;حذف</translation>
+        <translation>&amp;حذف</translation>
     </message>
     <message>
         <source>Preset error</source>
@@ -2911,7 +2926,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Cannot reload STB!</source>
         <comment>error</comment>
-        <translation>نمی توان ست تاپ باکس را دوباره بارگیری کرد!</translation>
+        <translation type="vanished">نمی توان ست تاپ باکس را دوباره بارگیری کرد!</translation>
     </message>
     <message>
         <source>DEMO MODE</source>
@@ -3003,12 +3018,47 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation>خطا</translation>
+        <translation type="vanished">خطا</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>اهداء</translation>
+    </message>
+    <message>
+        <source>STB Reload Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during STB reload operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during FTP operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FTP Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Successfully transfer.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STB Reload Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during parsing operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3055,12 +3105,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">خطای File</translation>
+        <translation>خطای File</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">خطا در باز کردن فایل ها</translation>
+        <translation>خطا در باز کردن فایل ها</translation>
     </message>
 </context>
 <context>

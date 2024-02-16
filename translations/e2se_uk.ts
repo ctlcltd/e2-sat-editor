@@ -1057,6 +1057,21 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>error</comment>
         <translation>Не вдалося відновити з’єднання FTP.</translation>
     </message>
+    <message>
+        <source>Couldn&apos;t connect to server</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Webif</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Telnet</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>gui</name>
@@ -1620,12 +1635,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Помилка File</translation>
+        <translation>Помилка File</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Помилка відкриття файлів.</translation>
+        <translation>Помилка відкриття файлів.</translation>
     </message>
 </context>
 <context>
@@ -2597,22 +2612,22 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Помилка File</translation>
+        <translation>Помилка File</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Помилка читання файлу &quot;%1&quot;.</translation>
+        <translation>Помилка читання файлу &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Помилка відкриття файлів.</translation>
+        <translation>Помилка відкриття файлів.</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Помилка</translation>
+        <translation>Помилка</translation>
     </message>
     <message>
         <source>Error reading files.</source>
@@ -2622,17 +2637,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Помилка запису файлу &quot;%1&quot;.</translation>
+        <translation>Помилка запису файлу &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error writing files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Помилка запису файлів.</translation>
+        <translation>Помилка запису файлів.</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished">Збережено!</translation>
+        <translation>Збережено!</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
@@ -2663,7 +2678,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">&amp;Видалити</translation>
+        <translation>&amp;Видалити</translation>
     </message>
     <message>
         <source>Preset error</source>
@@ -2919,7 +2934,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Cannot reload STB!</source>
         <comment>error</comment>
-        <translation>Неможливо перезавантажити телеприставку!</translation>
+        <translation type="vanished">Неможливо перезавантажити телеприставку!</translation>
     </message>
     <message>
         <source>DEMO MODE</source>
@@ -3011,12 +3026,47 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation>Помилка</translation>
+        <translation type="vanished">Помилка</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>Пожертвування</translation>
+    </message>
+    <message>
+        <source>STB Reload Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during STB reload operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during FTP operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FTP Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Successfully transfer.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STB Reload Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during parsing operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3063,12 +3113,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Помилка File</translation>
+        <translation>Помилка File</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Помилка відкриття файлів.</translation>
+        <translation>Помилка відкриття файлів.</translation>
     </message>
 </context>
 <context>

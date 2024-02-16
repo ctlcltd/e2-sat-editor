@@ -1056,6 +1056,21 @@ HANDELINGEN IN DE SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Kan de FTP verbinding niet hervatten.</translation>
     </message>
+    <message>
+        <source>Couldn&apos;t connect to server</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Webif</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Telnet</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>gui</name>
@@ -1619,12 +1634,12 @@ HANDELINGEN IN DE SOFTWARE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Bestands Fout</translation>
+        <translation>Bestands Fout</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Fout bij openen van bestanden.</translation>
+        <translation>Fout bij openen van bestanden.</translation>
     </message>
 </context>
 <context>
@@ -2596,22 +2611,22 @@ HANDELINGEN IN DE SOFTWARE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Bestands Fout</translation>
+        <translation>Bestands Fout</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Fout bij lezen van bestand &quot;%1&quot;.</translation>
+        <translation>Fout bij lezen van bestand &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Fout bij openen van bestanden.</translation>
+        <translation>Fout bij openen van bestanden.</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Fout</translation>
+        <translation>Fout</translation>
     </message>
     <message>
         <source>Error reading files.</source>
@@ -2621,17 +2636,17 @@ HANDELINGEN IN DE SOFTWARE.</translation>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Fout bij het schrijven van bestand &quot;%1&quot;.</translation>
+        <translation>Fout bij het schrijven van bestand &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error writing files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Fout bij het schrijven van bestanden.</translation>
+        <translation>Fout bij het schrijven van bestanden.</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished">Opgeslagen!</translation>
+        <translation>Opgeslagen!</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
@@ -2661,7 +2676,7 @@ HANDELINGEN IN DE SOFTWARE.</translation>
     <message>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">Verwij&amp;deren</translation>
+        <translation>Verwij&amp;deren</translation>
     </message>
     <message>
         <source>Preset error</source>
@@ -2915,7 +2930,7 @@ HANDELINGEN IN DE SOFTWARE.</translation>
     <message>
         <source>Cannot reload STB!</source>
         <comment>error</comment>
-        <translation>Kan STB niet herladen!</translation>
+        <translation type="vanished">Kan STB niet herladen!</translation>
     </message>
     <message>
         <source>DEMO MODE</source>
@@ -3007,12 +3022,47 @@ HANDELINGEN IN DE SOFTWARE.</translation>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation>Fout</translation>
+        <translation type="vanished">Fout</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>Doneer</translation>
+    </message>
+    <message>
+        <source>STB Reload Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during STB reload operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during FTP operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FTP Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Successfully transfer.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STB Reload Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during parsing operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3059,12 +3109,12 @@ HANDELINGEN IN DE SOFTWARE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Bestands Fout</translation>
+        <translation>Bestands Fout</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Fout bij openen van bestanden.</translation>
+        <translation>Fout bij openen van bestanden.</translation>
     </message>
 </context>
 <context>

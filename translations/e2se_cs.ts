@@ -1054,6 +1054,21 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Nepodařilo se obnovit připojení FTP.</translation>
     </message>
+    <message>
+        <source>Couldn&apos;t connect to server</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Webif</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Telnet</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>gui</name>
@@ -1617,12 +1632,12 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Chyba Souboru</translation>
+        <translation>Chyba Souboru</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Při otevírání souborů došlo k chybě.</translation>
+        <translation>Při otevírání souborů došlo k chybě.</translation>
     </message>
 </context>
 <context>
@@ -2594,22 +2609,22 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Chyba Souboru</translation>
+        <translation>Chyba Souboru</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Chyba při čtení souboru &quot;%1&quot;.</translation>
+        <translation>Chyba při čtení souboru &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Při otevírání souborů došlo k chybě.</translation>
+        <translation>Při otevírání souborů došlo k chybě.</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Chyba</translation>
+        <translation>Chyba</translation>
     </message>
     <message>
         <source>Error reading files.</source>
@@ -2619,17 +2634,17 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Chyba při zápisu souboru &quot;%1&quot;.</translation>
+        <translation>Chyba při zápisu souboru &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error writing files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Chyba při zápisu souborů.</translation>
+        <translation>Chyba při zápisu souborů.</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished">Uložené!</translation>
+        <translation>Uložené!</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
@@ -2660,7 +2675,7 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
     <message>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">&amp;Smazat</translation>
+        <translation>&amp;Smazat</translation>
     </message>
     <message>
         <source>Preset error</source>
@@ -2916,7 +2931,7 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
     <message>
         <source>Cannot reload STB!</source>
         <comment>error</comment>
-        <translation>Nelze znovu načíst STB!</translation>
+        <translation type="vanished">Nelze znovu načíst STB!</translation>
     </message>
     <message>
         <source>DEMO MODE</source>
@@ -3008,12 +3023,47 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation>Chyba</translation>
+        <translation type="vanished">Chyba</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>Darovat</translation>
+    </message>
+    <message>
+        <source>STB Reload Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during STB reload operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during FTP operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FTP Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Successfully transfer.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STB Reload Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during parsing operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3060,12 +3110,12 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Chyba Souboru</translation>
+        <translation>Chyba Souboru</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Při otevírání souborů došlo k chybě.</translation>
+        <translation>Při otevírání souborů došlo k chybě.</translation>
     </message>
 </context>
 <context>

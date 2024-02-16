@@ -1054,6 +1054,21 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
         <comment>error</comment>
         <translation>FTP-forbindelsen kunne ikke genoptages.</translation>
     </message>
+    <message>
+        <source>Couldn&apos;t connect to server</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Webif</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Telnet</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>gui</name>
@@ -1617,12 +1632,12 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Fil Fejl</translation>
+        <translation>Fil Fejl</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Fejl ved åbning af filer.</translation>
+        <translation>Fejl ved åbning af filer.</translation>
     </message>
 </context>
 <context>
@@ -2594,22 +2609,22 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Fil Fejl</translation>
+        <translation>Fil Fejl</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Fejl ved læsning af filen &quot;%1&quot;.</translation>
+        <translation>Fejl ved læsning af filen &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Fejl ved åbning af filer.</translation>
+        <translation>Fejl ved åbning af filer.</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Fejl</translation>
+        <translation>Fejl</translation>
     </message>
     <message>
         <source>Error reading files.</source>
@@ -2619,17 +2634,17 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Fejl ved skrivning af filen &quot;%1&quot;.</translation>
+        <translation>Fejl ved skrivning af filen &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error writing files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Fejl ved skrivning af filer.</translation>
+        <translation>Fejl ved skrivning af filer.</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished">Gemt!</translation>
+        <translation>Gemt!</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
@@ -2659,7 +2674,7 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
     <message>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">&amp;Slet</translation>
+        <translation>&amp;Slet</translation>
     </message>
     <message>
         <source>Preset error</source>
@@ -2913,7 +2928,7 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
     <message>
         <source>Cannot reload STB!</source>
         <comment>error</comment>
-        <translation>Kan ikke genindlæse STB!</translation>
+        <translation type="vanished">Kan ikke genindlæse STB!</translation>
     </message>
     <message>
         <source>DEMO MODE</source>
@@ -3005,12 +3020,47 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation>Fejl</translation>
+        <translation type="vanished">Fejl</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>Doner</translation>
+    </message>
+    <message>
+        <source>STB Reload Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during STB reload operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during FTP operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FTP Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Successfully transfer.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STB Reload Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during parsing operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3057,12 +3107,12 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Fil Fejl</translation>
+        <translation>Fil Fejl</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Fejl ved åbning af filer.</translation>
+        <translation>Fejl ved åbning af filer.</translation>
     </message>
 </context>
 <context>

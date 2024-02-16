@@ -1055,6 +1055,21 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Nepodarilo sa obnoviť pripojenie FTP.</translation>
     </message>
+    <message>
+        <source>Couldn&apos;t connect to server</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Webif</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Telnet</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>gui</name>
@@ -1618,12 +1633,12 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Chyba Súboru</translation>
+        <translation>Chyba Súboru</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Chyba pri otváraní súborov.</translation>
+        <translation>Chyba pri otváraní súborov.</translation>
     </message>
 </context>
 <context>
@@ -2595,22 +2610,22 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Chyba Súboru</translation>
+        <translation>Chyba Súboru</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Chyba pri čítaní súboru &quot;%1&quot;.</translation>
+        <translation>Chyba pri čítaní súboru &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Chyba pri otváraní súborov.</translation>
+        <translation>Chyba pri otváraní súborov.</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Chyba</translation>
+        <translation>Chyba</translation>
     </message>
     <message>
         <source>Error reading files.</source>
@@ -2620,17 +2635,17 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Chyba pri zápise súboru &quot;%1&quot;.</translation>
+        <translation>Chyba pri zápise súboru &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error writing files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Chyba pri zapisovaní súborov.</translation>
+        <translation>Chyba pri zapisovaní súborov.</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished">Uložené!</translation>
+        <translation>Uložené!</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
@@ -2661,7 +2676,7 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     <message>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">Z&amp;mazať</translation>
+        <translation>Z&amp;mazať</translation>
     </message>
     <message>
         <source>Preset error</source>
@@ -2917,7 +2932,7 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     <message>
         <source>Cannot reload STB!</source>
         <comment>error</comment>
-        <translation>Nedá sa načítať STB!</translation>
+        <translation type="vanished">Nedá sa načítať STB!</translation>
     </message>
     <message>
         <source>DEMO MODE</source>
@@ -3009,12 +3024,47 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation>Chyba</translation>
+        <translation type="vanished">Chyba</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>Darovať</translation>
+    </message>
+    <message>
+        <source>STB Reload Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during STB reload operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during FTP operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FTP Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Successfully transfer.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STB Reload Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during parsing operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3061,12 +3111,12 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Chyba Súboru</translation>
+        <translation>Chyba Súboru</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Chyba pri otváraní súborov.</translation>
+        <translation>Chyba pri otváraní súborov.</translation>
     </message>
 </context>
 <context>

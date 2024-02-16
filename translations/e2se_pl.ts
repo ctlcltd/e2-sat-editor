@@ -1056,6 +1056,21 @@ LUB INNYCH DZIAŁALNOŚCI W OPROGRAMOWANIE.</translation>
         <comment>error</comment>
         <translation>Nie udało się wznowić połączenia FTP.</translation>
     </message>
+    <message>
+        <source>Couldn&apos;t connect to server</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Webif</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Telnet</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>gui</name>
@@ -1619,12 +1634,12 @@ LUB INNYCH DZIAŁALNOŚCI W OPROGRAMOWANIE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Błąd Pliku</translation>
+        <translation>Błąd Pliku</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Błąd podczas otwierania plików.</translation>
+        <translation>Błąd podczas otwierania plików.</translation>
     </message>
 </context>
 <context>
@@ -2596,22 +2611,22 @@ LUB INNYCH DZIAŁALNOŚCI W OPROGRAMOWANIE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Błąd Pliku</translation>
+        <translation>Błąd Pliku</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Błąd odczytu pliku „%1”.</translation>
+        <translation>Błąd odczytu pliku „%1”.</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Błąd podczas otwierania plików.</translation>
+        <translation>Błąd podczas otwierania plików.</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Błąd</translation>
+        <translation>Błąd</translation>
     </message>
     <message>
         <source>Error reading files.</source>
@@ -2621,17 +2636,17 @@ LUB INNYCH DZIAŁALNOŚCI W OPROGRAMOWANIE.</translation>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Błąd podczas zapisywania pliku „%1”.</translation>
+        <translation>Błąd podczas zapisywania pliku „%1”.</translation>
     </message>
     <message>
         <source>Error writing files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Błąd podczas zapisywania plików.</translation>
+        <translation>Błąd podczas zapisywania plików.</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished">Zapisane!</translation>
+        <translation>Zapisane!</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
@@ -2662,7 +2677,7 @@ LUB INNYCH DZIAŁALNOŚCI W OPROGRAMOWANIE.</translation>
     <message>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">&amp;Usuń</translation>
+        <translation>&amp;Usuń</translation>
     </message>
     <message>
         <source>Preset error</source>
@@ -2918,7 +2933,7 @@ LUB INNYCH DZIAŁALNOŚCI W OPROGRAMOWANIE.</translation>
     <message>
         <source>Cannot reload STB!</source>
         <comment>error</comment>
-        <translation>Nie można ponownie załadować STB!</translation>
+        <translation type="vanished">Nie można ponownie załadować STB!</translation>
     </message>
     <message>
         <source>DEMO MODE</source>
@@ -3010,12 +3025,47 @@ LUB INNYCH DZIAŁALNOŚCI W OPROGRAMOWANIE.</translation>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation>Błąd</translation>
+        <translation type="vanished">Błąd</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>Darowizna</translation>
+    </message>
+    <message>
+        <source>STB Reload Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during STB reload operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during FTP operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FTP Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Successfully transfer.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STB Reload Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during parsing operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3062,12 +3112,12 @@ LUB INNYCH DZIAŁALNOŚCI W OPROGRAMOWANIE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Błąd Pliku</translation>
+        <translation>Błąd Pliku</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Błąd podczas otwierania plików.</translation>
+        <translation>Błąd podczas otwierania plików.</translation>
     </message>
 </context>
 <context>

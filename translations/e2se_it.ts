@@ -1055,6 +1055,21 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Impossibile ripristinare la connessione FTP.</translation>
     </message>
+    <message>
+        <source>Couldn&apos;t connect to server</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Webif</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Telnet</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>gui</name>
@@ -1618,12 +1633,12 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Errore File</translation>
+        <translation>Errore File</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Errore di apertura file.</translation>
+        <translation>Errore di apertura file.</translation>
     </message>
 </context>
 <context>
@@ -2595,22 +2610,22 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Errore File</translation>
+        <translation>Errore File</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Errore di lettura da file &quot;%1&quot;.</translation>
+        <translation>Errore di lettura da file &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Errore di apertura file.</translation>
+        <translation>Errore di apertura file.</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Errore</translation>
+        <translation>Errore</translation>
     </message>
     <message>
         <source>Error reading files.</source>
@@ -2620,17 +2635,17 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Errore di scrittura su file &quot;%1&quot;.</translation>
+        <translation>Errore di scrittura su file &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error writing files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Errore di scrittura su file.</translation>
+        <translation>Errore di scrittura su file.</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished">Salvato!</translation>
+        <translation>Salvato!</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
@@ -2660,7 +2675,7 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">Elimina</translation>
+        <translation>Elimina</translation>
     </message>
     <message>
         <source>Preset error</source>
@@ -2914,7 +2929,7 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>Cannot reload STB!</source>
         <comment>error</comment>
-        <translation>Impossibile riavviare il STB!</translation>
+        <translation type="vanished">Impossibile riavviare il STB!</translation>
     </message>
     <message>
         <source>DEMO MODE</source>
@@ -3006,12 +3021,47 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation>Errore</translation>
+        <translation type="vanished">Errore</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>Donazione</translation>
+    </message>
+    <message>
+        <source>STB Reload Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during STB reload operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during FTP operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FTP Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Successfully transfer.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STB Reload Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during parsing operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3058,12 +3108,12 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Errore File</translation>
+        <translation>Errore File</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Errore di apertura file.</translation>
+        <translation>Errore di apertura file.</translation>
     </message>
 </context>
 <context>

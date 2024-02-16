@@ -1055,6 +1055,21 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
         <comment>error</comment>
         <translation>FTP-yhteyden jatkaminen epäonnistui.</translation>
     </message>
+    <message>
+        <source>Couldn&apos;t connect to server</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Webif</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Telnet</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>gui</name>
@@ -1618,12 +1633,12 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Tiedosto Virhe</translation>
+        <translation>Tiedosto Virhe</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Virhe avattaessa tiedostoja.</translation>
+        <translation>Virhe avattaessa tiedostoja.</translation>
     </message>
 </context>
 <context>
@@ -2595,22 +2610,22 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Tiedosto Virhe</translation>
+        <translation>Tiedosto Virhe</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Virhe luettaessa tiedostoa &quot;%1&quot;.</translation>
+        <translation>Virhe luettaessa tiedostoa &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Virhe avattaessa tiedostoja.</translation>
+        <translation>Virhe avattaessa tiedostoja.</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Virhe</translation>
+        <translation>Virhe</translation>
     </message>
     <message>
         <source>Error reading files.</source>
@@ -2620,17 +2635,17 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Virhe kirjoitettaessa tiedostoa &quot;%1&quot;.</translation>
+        <translation>Virhe kirjoitettaessa tiedostoa &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error writing files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Virhe tiedostojen kirjoittamisessa.</translation>
+        <translation>Virhe tiedostojen kirjoittamisessa.</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished">Tallennettu!</translation>
+        <translation>Tallennettu!</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
@@ -2660,7 +2675,7 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
     <message>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">&amp;Poista</translation>
+        <translation>&amp;Poista</translation>
     </message>
     <message>
         <source>Preset error</source>
@@ -2914,7 +2929,7 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
     <message>
         <source>Cannot reload STB!</source>
         <comment>error</comment>
-        <translation>STB:tä ei voi ladata uudelleen!</translation>
+        <translation type="vanished">STB:tä ei voi ladata uudelleen!</translation>
     </message>
     <message>
         <source>DEMO MODE</source>
@@ -3006,12 +3021,47 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation>Virhe</translation>
+        <translation type="vanished">Virhe</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>Lahjoittaa</translation>
+    </message>
+    <message>
+        <source>STB Reload Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during STB reload operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during FTP operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FTP Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Successfully transfer.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STB Reload Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during parsing operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3058,12 +3108,12 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Tiedosto Virhe</translation>
+        <translation>Tiedosto Virhe</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Virhe avattaessa tiedostoja.</translation>
+        <translation>Virhe avattaessa tiedostoja.</translation>
     </message>
 </context>
 <context>

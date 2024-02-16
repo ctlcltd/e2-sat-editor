@@ -1056,6 +1056,21 @@ OU O USO OU OUTROS TRATOS DO SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Produciuse un erro ao retomar a conexión FTP.</translation>
     </message>
+    <message>
+        <source>Couldn&apos;t connect to server</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Webif</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Telnet</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>gui</name>
@@ -1619,12 +1634,12 @@ OU O USO OU OUTROS TRATOS DO SOFTWARE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Erro Ficheiro</translation>
+        <translation>Erro Ficheiro</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Erro ao abrir os ficheiros.</translation>
+        <translation>Erro ao abrir os ficheiros.</translation>
     </message>
 </context>
 <context>
@@ -2596,22 +2611,22 @@ OU O USO OU OUTROS TRATOS DO SOFTWARE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Erro Ficheiro</translation>
+        <translation>Erro Ficheiro</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Erro ao ler o ficheiro &quot;%1&quot;.</translation>
+        <translation>Erro ao ler o ficheiro &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Erro ao abrir os ficheiros.</translation>
+        <translation>Erro ao abrir os ficheiros.</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Erro</translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <source>Error reading files.</source>
@@ -2621,17 +2636,17 @@ OU O USO OU OUTROS TRATOS DO SOFTWARE.</translation>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Erro ao escribir o ficheiro &quot;%1&quot;.</translation>
+        <translation>Erro ao escribir o ficheiro &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error writing files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Erro ao escribir ficheiros.</translation>
+        <translation>Erro ao escribir ficheiros.</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished">Gardado!</translation>
+        <translation>Gardado!</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
@@ -2661,7 +2676,7 @@ OU O USO OU OUTROS TRATOS DO SOFTWARE.</translation>
     <message>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">&amp;Borrar</translation>
+        <translation>&amp;Borrar</translation>
     </message>
     <message>
         <source>Preset error</source>
@@ -2915,7 +2930,7 @@ OU O USO OU OUTROS TRATOS DO SOFTWARE.</translation>
     <message>
         <source>Cannot reload STB!</source>
         <comment>error</comment>
-        <translation>Non se pode recargar STB!</translation>
+        <translation type="vanished">Non se pode recargar STB!</translation>
     </message>
     <message>
         <source>DEMO MODE</source>
@@ -3007,12 +3022,47 @@ OU O USO OU OUTROS TRATOS DO SOFTWARE.</translation>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation>Erro</translation>
+        <translation type="vanished">Erro</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>Doa</translation>
+    </message>
+    <message>
+        <source>STB Reload Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during STB reload operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during FTP operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FTP Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Successfully transfer.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STB Reload Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during parsing operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3059,12 +3109,12 @@ OU O USO OU OUTROS TRATOS DO SOFTWARE.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Erro Ficheiro</translation>
+        <translation>Erro Ficheiro</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Erro ao abrir os ficheiros.</translation>
+        <translation>Erro ao abrir os ficheiros.</translation>
     </message>
 </context>
 <context>

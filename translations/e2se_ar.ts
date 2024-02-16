@@ -1055,6 +1055,21 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>error</comment>
         <translation>فشل استئناف اتصال FTP.</translation>
     </message>
+    <message>
+        <source>Couldn&apos;t connect to server</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Webif</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Telnet</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>gui</name>
@@ -1618,12 +1633,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">خطأ File</translation>
+        <translation>خطأ File</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">خطأ في فتح الملفات.</translation>
+        <translation>خطأ في فتح الملفات.</translation>
     </message>
 </context>
 <context>
@@ -2595,22 +2610,22 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">خطأ File</translation>
+        <translation>خطأ File</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">خطأ في قراءة الملف &quot;%1&quot;.</translation>
+        <translation>خطأ في قراءة الملف &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">خطأ في فتح الملفات.</translation>
+        <translation>خطأ في فتح الملفات.</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished">خطأ</translation>
+        <translation>خطأ</translation>
     </message>
     <message>
         <source>Error reading files.</source>
@@ -2620,17 +2635,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">خطأ في كتابة الملف &quot;%1&quot;.</translation>
+        <translation>خطأ في كتابة الملف &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error writing files.</source>
         <comment>error</comment>
-        <translation type="unfinished">خطأ في كتابة الملفات.</translation>
+        <translation>خطأ في كتابة الملفات.</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished">أنقذ!</translation>
+        <translation>أنقذ!</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
@@ -2664,7 +2679,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">ا&amp;حذف</translation>
+        <translation>ا&amp;حذف</translation>
     </message>
     <message>
         <source>Preset error</source>
@@ -2926,7 +2941,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Cannot reload STB!</source>
         <comment>error</comment>
-        <translation>لا يمكن إعادة تحميل STB!</translation>
+        <translation type="vanished">لا يمكن إعادة تحميل STB!</translation>
     </message>
     <message>
         <source>DEMO MODE</source>
@@ -3018,12 +3033,47 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation>خطأ</translation>
+        <translation type="vanished">خطأ</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>هبة</translation>
+    </message>
+    <message>
+        <source>STB Reload Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during STB reload operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during FTP operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FTP Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Successfully transfer.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STB Reload Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during parsing operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3070,12 +3120,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">خطأ File</translation>
+        <translation>خطأ File</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">خطأ في فتح الملفات.</translation>
+        <translation>خطأ في فتح الملفات.</translation>
     </message>
 </context>
 <context>

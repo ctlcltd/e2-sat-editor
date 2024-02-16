@@ -1054,6 +1054,21 @@ VAI LIETOŠANA VAI CITI DARĪJUMI AR PROGRAMMATŪRU.</translation>
         <comment>error</comment>
         <translation>Neizdevās atsākt FTP savienojumu.</translation>
     </message>
+    <message>
+        <source>Couldn&apos;t connect to server</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Webif</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Telnet</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>gui</name>
@@ -1617,12 +1632,12 @@ VAI LIETOŠANA VAI CITI DARĪJUMI AR PROGRAMMATŪRU.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Faila Kļūda</translation>
+        <translation>Faila Kļūda</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Kļūda atverot failus.</translation>
+        <translation>Kļūda atverot failus.</translation>
     </message>
 </context>
 <context>
@@ -2594,22 +2609,22 @@ VAI LIETOŠANA VAI CITI DARĪJUMI AR PROGRAMMATŪRU.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Faila Kļūda</translation>
+        <translation>Faila Kļūda</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Kļūda, lasot failu &quot;%1&quot;.</translation>
+        <translation>Kļūda, lasot failu &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Kļūda atverot failus.</translation>
+        <translation>Kļūda atverot failus.</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Kļūda</translation>
+        <translation>Kļūda</translation>
     </message>
     <message>
         <source>Error reading files.</source>
@@ -2619,17 +2634,17 @@ VAI LIETOŠANA VAI CITI DARĪJUMI AR PROGRAMMATŪRU.</translation>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Kļūda, rakstot failu &quot;%1&quot;.</translation>
+        <translation>Kļūda, rakstot failu &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error writing files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Kļūda rakstot failus.</translation>
+        <translation>Kļūda rakstot failus.</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished">Saglabāts!</translation>
+        <translation>Saglabāts!</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
@@ -2660,7 +2675,7 @@ VAI LIETOŠANA VAI CITI DARĪJUMI AR PROGRAMMATŪRU.</translation>
     <message>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">&amp;Dzēst</translation>
+        <translation>&amp;Dzēst</translation>
     </message>
     <message>
         <source>Preset error</source>
@@ -2916,7 +2931,7 @@ VAI LIETOŠANA VAI CITI DARĪJUMI AR PROGRAMMATŪRU.</translation>
     <message>
         <source>Cannot reload STB!</source>
         <comment>error</comment>
-        <translation>Nevar atkārtoti ielādēt STB!</translation>
+        <translation type="vanished">Nevar atkārtoti ielādēt STB!</translation>
     </message>
     <message>
         <source>DEMO MODE</source>
@@ -3008,12 +3023,47 @@ VAI LIETOŠANA VAI CITI DARĪJUMI AR PROGRAMMATŪRU.</translation>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation>Kļūda</translation>
+        <translation type="vanished">Kļūda</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>Ziedot</translation>
+    </message>
+    <message>
+        <source>STB Reload Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during STB reload operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during FTP operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FTP Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Successfully transfer.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STB Reload Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during parsing operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3060,12 +3110,12 @@ VAI LIETOŠANA VAI CITI DARĪJUMI AR PROGRAMMATŪRU.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Faila Kļūda</translation>
+        <translation>Faila Kļūda</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Kļūda atverot failus.</translation>
+        <translation>Kļūda atverot failus.</translation>
     </message>
 </context>
 <context>

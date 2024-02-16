@@ -1056,6 +1056,21 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
         <comment>error</comment>
         <translation>Dh&apos;fhàillig ath-thòiseachadh an ceangal FTP.</translation>
     </message>
+    <message>
+        <source>Couldn&apos;t connect to server</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Webif</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Telnet</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>gui</name>
@@ -1619,12 +1634,12 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Mearachd Fhaidhle</translation>
+        <translation>Mearachd Fhaidhle</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Thachair mearachd le fosgladh fhaidhlichean.</translation>
+        <translation>Thachair mearachd le fosgladh fhaidhlichean.</translation>
     </message>
 </context>
 <context>
@@ -2596,22 +2611,22 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Mearachd Fhaidhle</translation>
+        <translation>Mearachd Fhaidhle</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Thachair mearachd le leughadh an fhaidhle &quot;%1&quot;.</translation>
+        <translation>Thachair mearachd le leughadh an fhaidhle &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Thachair mearachd le fosgladh fhaidhlichean.</translation>
+        <translation>Thachair mearachd le fosgladh fhaidhlichean.</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Mearachd</translation>
+        <translation>Mearachd</translation>
     </message>
     <message>
         <source>Error reading files.</source>
@@ -2621,17 +2636,17 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Thachair mearachd le sgrìobhadh an fhaidhle &quot;%1&quot;.</translation>
+        <translation>Thachair mearachd le sgrìobhadh an fhaidhle &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error writing files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Thachair mearachd a&apos; sgrìobhadh fhaidhlichean.</translation>
+        <translation>Thachair mearachd a&apos; sgrìobhadh fhaidhlichean.</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished">Air a shàbhaladh!</translation>
+        <translation>Air a shàbhaladh!</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
@@ -2663,7 +2678,7 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     <message>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">&amp;Sguab às</translation>
+        <translation>&amp;Sguab às</translation>
     </message>
     <message>
         <source>Preset error</source>
@@ -2921,7 +2936,7 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     <message>
         <source>Cannot reload STB!</source>
         <comment>error</comment>
-        <translation>Cha ghabh STB ath-luchdachadh!</translation>
+        <translation type="vanished">Cha ghabh STB ath-luchdachadh!</translation>
     </message>
     <message>
         <source>DEMO MODE</source>
@@ -3013,12 +3028,47 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation>Mearachd</translation>
+        <translation type="vanished">Mearachd</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>Tabhartas</translation>
+    </message>
+    <message>
+        <source>STB Reload Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during STB reload operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during FTP operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FTP Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Successfully transfer.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STB Reload Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during parsing operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3065,12 +3115,12 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Mearachd Fhaidhle</translation>
+        <translation>Mearachd Fhaidhle</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Thachair mearachd le fosgladh fhaidhlichean.</translation>
+        <translation>Thachair mearachd le fosgladh fhaidhlichean.</translation>
     </message>
 </context>
 <context>

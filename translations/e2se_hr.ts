@@ -1057,6 +1057,21 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
         <comment>error</comment>
         <translation>Nastavak FTP veze nije uspio.</translation>
     </message>
+    <message>
+        <source>Couldn&apos;t connect to server</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Webif</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB Telnet</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>gui</name>
@@ -1620,12 +1635,12 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Greška Datoteke</translation>
+        <translation>Greška Datoteke</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Pogreška pri otvaranju datoteka.</translation>
+        <translation>Pogreška pri otvaranju datoteka.</translation>
     </message>
 </context>
 <context>
@@ -2597,22 +2612,22 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Greška Datoteke</translation>
+        <translation>Greška Datoteke</translation>
     </message>
     <message>
         <source>Error reading file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Pogreška pri čitanju datoteke &quot;%1&quot;.</translation>
+        <translation>Pogreška pri čitanju datoteke &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Pogreška pri otvaranju datoteka.</translation>
+        <translation>Pogreška pri otvaranju datoteka.</translation>
     </message>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Greška</translation>
+        <translation>Greška</translation>
     </message>
     <message>
         <source>Error reading files.</source>
@@ -2622,17 +2637,17 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
     <message>
         <source>Error writing file &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation type="unfinished">Pogreška pri pisanju datoteke &quot;%1&quot;.</translation>
+        <translation>Pogreška pri pisanju datoteke &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Error writing files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Greška pri pisanju datoteka.</translation>
+        <translation>Greška pri pisanju datoteka.</translation>
     </message>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
-        <translation type="unfinished">Spremljeno!</translation>
+        <translation>Spremljeno!</translation>
     </message>
     <message>
         <source>Import Profiles…</source>
@@ -2663,7 +2678,7 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
     <message>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
-        <translation type="unfinished">&amp;Ukloni</translation>
+        <translation>&amp;Ukloni</translation>
     </message>
     <message>
         <source>Preset error</source>
@@ -2919,7 +2934,7 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
     <message>
         <source>Cannot reload STB!</source>
         <comment>error</comment>
-        <translation>Nije moguće ponovno učitati STB!</translation>
+        <translation type="vanished">Nije moguće ponovno učitati STB!</translation>
     </message>
     <message>
         <source>DEMO MODE</source>
@@ -3011,12 +3026,47 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
     <message>
         <source>Error</source>
         <comment>error</comment>
-        <translation>Greška</translation>
+        <translation type="vanished">Greška</translation>
     </message>
     <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>Donirajte</translation>
+    </message>
+    <message>
+        <source>STB Reload Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during STB reload operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during FTP operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FTP Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Successfully transfer.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STB Reload Notice</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors occurred during parsing operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3063,12 +3113,12 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
     <message>
         <source>File Error</source>
         <comment>error</comment>
-        <translation type="unfinished">Greška Datoteke</translation>
+        <translation>Greška Datoteke</translation>
     </message>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished">Pogreška pri otvaranju datoteka.</translation>
+        <translation>Pogreška pri otvaranju datoteka.</translation>
     </message>
 </context>
 <context>
