@@ -1919,7 +1919,7 @@ VAGY A SZOFTVER FELHASZNÁLÁSA VAGY EGYÉB KERESKEDELME.</translation>
         <translation>A &quot;%1&quot; csatornahivatkozás nem érvényes jelölő.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>A &quot;%1&quot; csatornahivatkozás nem létezik.</translation>
     </message>

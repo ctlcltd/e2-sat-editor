@@ -1916,7 +1916,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation>채널 참조 &quot;%1&quot;은(는) 유효한 마커가 아닙니다.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>채널 참조 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>

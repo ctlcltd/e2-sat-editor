@@ -1919,7 +1919,7 @@ OU O USO OU OUTROS TRATOS DO SOFTWARE.</translation>
         <translation>A referencia da canle &quot;%1&quot; non é un marker válido.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>A referencia da canle &quot;%1&quot; non existe.</translation>
     </message>

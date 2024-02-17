@@ -1917,9 +1917,9 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
         <translation>Kanalreference &quot;%1&quot; er ikke en gyldig marker.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation>Kanalreferencen&quot;%1&quot; findes ikke.</translation>
+        <translation>Kanalreferencen &quot;%1&quot; findes ikke.</translation>
     </message>
     <message>
         <source>Confirm deletetion</source>

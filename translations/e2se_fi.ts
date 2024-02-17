@@ -1918,7 +1918,7 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
         <translation>Kanavaviite &quot;%1&quot; ei ole kelvollinen marker.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Kanavaviite &quot;%1&quot; ei ole olemassa.</translation>
     </message>

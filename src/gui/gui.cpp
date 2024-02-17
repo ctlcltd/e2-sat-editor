@@ -139,6 +139,8 @@ gui::gui(int argc, char* argv[])
 	// mroot->setLayoutDirection(Qt::RightToLeft);
 
 	QCommandLineParser clp;
+	QCommandLineOption debugOption ("debug");
+	clp.addOption(debugOption);
 	clp.addVersionOption();
 	clp.addPositionalArgument("file", "");
 	clp.process((*mroot->instance()));

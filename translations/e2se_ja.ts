@@ -1919,7 +1919,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation>チャネル参照 &quot;%1&quot; は有効なマーカーではありません。</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>チャネル参照 &quot;%1&quot; は存在しません。</translation>
     </message>

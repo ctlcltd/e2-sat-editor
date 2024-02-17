@@ -1918,7 +1918,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation>مرجع کانال &quot;%1&quot; یک نشانگر معتبر نیست.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>مرجع کانال &quot;%1&quot; وجود ندارد.</translation>
     </message>

@@ -1918,7 +1918,7 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
         <translation>Odkaz na kanál &quot;%1&quot; nie je platný marker.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Odkaz na kanál &quot;%1&quot; neexistuje.</translation>
     </message>

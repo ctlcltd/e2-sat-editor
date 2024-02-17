@@ -1920,7 +1920,7 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
         <translation>Referenca kanala &quot;%1&quot; nije važeća oznaka.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Referenca kanala &quot;%1&quot; ne postoji.</translation>
     </message>

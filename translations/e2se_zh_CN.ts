@@ -1915,7 +1915,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation>通道引用 &quot;%1&quot; 不是有效标记。</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>通道引用 &quot;%1&quot; 不存在。</translation>
     </message>

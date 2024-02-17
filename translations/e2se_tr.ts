@@ -1911,7 +1911,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation>&quot;%1&quot; kanal referansı geçerli bir marker değil.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>&quot;%1&quot; kanal referansı mevcut değil.</translation>
     </message>

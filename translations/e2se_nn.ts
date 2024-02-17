@@ -1918,7 +1918,7 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
         <translation>Kanal referanse &quot;%1&quot; er ikke en gyldig marker.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Kanal referansen &quot;%1&quot; finnes ikke.</translation>
     </message>

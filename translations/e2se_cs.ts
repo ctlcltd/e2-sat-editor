@@ -1917,7 +1917,7 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
         <translation>Odkaz kanálu &quot;%1&quot; není platná značka marker.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Odkaz kanálu &quot;%1&quot; neexistuje.</translation>
     </message>

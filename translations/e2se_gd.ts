@@ -1919,9 +1919,9 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
         <translation>Chan e marker dligheach a tha ann an iomradh seanail &quot;%1&quot;.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation>Chan eil iomradh seanail&quot;%1&quot; ann.</translation>
+        <translation>Chan eil iomradh seanail &quot;%1&quot; ann.</translation>
     </message>
     <message>
         <source>Confirm deletetion</source>

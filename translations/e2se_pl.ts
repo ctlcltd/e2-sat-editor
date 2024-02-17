@@ -1919,7 +1919,7 @@ LUB INNYCH DZIAŁALNOŚCI W OPROGRAMOWANIE.</translation>
         <translation>Odwołanie do kanału „%1” nie jest prawidłowym marker.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Odniesienie do kanału „%1” nie istnieje.</translation>
     </message>

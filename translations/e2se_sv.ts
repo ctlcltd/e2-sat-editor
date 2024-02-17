@@ -1911,7 +1911,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation>Kanalreferens &quot;%1&quot; är inte en giltig marker.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Kanalreferens &quot;%1&quot; finns inte.</translation>
     </message>

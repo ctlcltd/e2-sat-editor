@@ -1919,7 +1919,7 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
         <translation>Die Kanalreferenz „%1“ ist kein gültiger Marker.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Kanalreferenz „%1“ existiert nicht.</translation>
     </message>

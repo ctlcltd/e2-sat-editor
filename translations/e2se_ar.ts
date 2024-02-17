@@ -1918,7 +1918,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation>مرجع القناة &quot;%1&quot; ليس علامة صالحة.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>مرجع القناة &quot;%1&quot; غير موجود.</translation>
     </message>

@@ -1917,9 +1917,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation>הפניה לערוץ &quot;%1&quot; אינה סמן חוקי.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation>הפניה לערוץ&quot;%1&quot; אינה קיימת.</translation>
+        <translation>הפניה לערוץ &quot;%1&quot; אינה קיימת.</translation>
     </message>
     <message>
         <source>Confirm deletetion</source>

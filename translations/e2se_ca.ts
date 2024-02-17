@@ -1918,7 +1918,7 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
         <translation>La referència del canal &quot;%1&quot; no és un marker vàlid.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>La referència del canal &quot;%1&quot; no existeix.</translation>
     </message>

@@ -2487,10 +2487,10 @@ bool tab::removeQuestion(QString title, QString message)
 	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
 	msg.setInformativeText(message);
-	msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Retry);
-	msg.setDefaultButton(QMessageBox::Ok);
+	msg.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+	msg.setDefaultButton(QMessageBox::Yes);
 
-	return (msg.exec() == QMessageBox::Ok);
+	return (msg.exec() == QMessageBox::Yes);
 }
 
 void tab::infoMessage(QString title)

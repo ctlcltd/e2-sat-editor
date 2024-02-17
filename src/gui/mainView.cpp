@@ -1948,7 +1948,7 @@ void mainView::editMarker()
 	auto* dbih = this->data->dbih;
 
 	if (! (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(chid)))
-		return error("editMarker", tr("Error", "error").toStdString(), tr("Channel reference\"%1\" not exists.", "error").arg(chid.data()).toStdString());
+		return error("editMarker", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" not exists.", "error").arg(chid.data()).toStdString());
 
 	e2db::channel_reference chref = dbih->userbouquets[bname].channels[chid];
 
@@ -2387,7 +2387,7 @@ void mainView::listItemDelete()
 	if (selected.empty())
 		return;
 
-	bool remove = tabRemoveQuestion("Confirm deletetion", "Do you want to delete items?");
+	bool remove = tabRemoveQuestion(tr("Confirm deletetion", "message"), tr("Do you want to delete items?", "message"));
 	if (! remove)
 		return;
 

@@ -1920,7 +1920,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation>Посилання на канал &quot;%1&quot; не є дійсним маркером.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Посилання на канал &quot;%1&quot; не існує.</translation>
     </message>

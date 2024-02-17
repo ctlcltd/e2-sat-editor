@@ -1920,7 +1920,7 @@ OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
         <translation>La référence de canal &quot;%1&quot; n&apos;est pas un marker valide.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>La référence de canal &quot;%1&quot; n&apos;existe pas.</translation>
     </message>

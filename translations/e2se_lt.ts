@@ -1917,7 +1917,7 @@ NAUDOJIMO AR SU KITAIS SU JAIS PROGRAMINĖ ĮRANGA.</translation>
         <translation>Kanalo nuoroda „%1“ nėra tinkamas marker.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Kanalo nuoroda „%1“ neegzistuoja.</translation>
     </message>

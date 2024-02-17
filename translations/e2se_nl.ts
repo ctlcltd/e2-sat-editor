@@ -1919,7 +1919,7 @@ HANDELINGEN IN DE SOFTWARE.</translation>
         <translation>Kanaal-referentie &quot;%1&quot; is geen geldige marker.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Kanaal-referentie &quot;%1&quot; bestaat niet.</translation>
     </message>

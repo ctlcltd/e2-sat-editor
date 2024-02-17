@@ -1917,9 +1917,9 @@ VAI LIETOŠANA VAI CITI DARĪJUMI AR PROGRAMMATŪRU.</translation>
         <translation>Kanāla atsauce &quot;%1&quot; nav derīgs marker.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation>Kanāla atsauce&quot;%1&quot; nepastāv.</translation>
+        <translation>Kanāla atsauce &quot;%1&quot; nepastāv.</translation>
     </message>
     <message>
         <source>Confirm deletetion</source>

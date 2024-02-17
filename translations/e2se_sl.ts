@@ -1918,7 +1918,7 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
         <translation>Referenca kanala &quot;%1&quot; ni veljaven marker.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Referenca kanala &quot;%1&quot; ne obstaja.</translation>
     </message>

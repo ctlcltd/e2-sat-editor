@@ -1918,7 +1918,7 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
         <translation>Riferimento canale &quot;%1&quot; non è un marker valido.</translation>
     </message>
     <message>
-        <source>Channel reference&quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Riferimento canale &quot;%1&quot; non esistente.</translation>
     </message>
