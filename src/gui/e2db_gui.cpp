@@ -644,6 +644,25 @@ QStringList e2db::entryService(service ch)
 	return entry;
 }
 
+QStringList e2db::entryChannel(channel_reference chref)
+{
+	QString chid = QString::fromStdString(chref.chid);
+	QString value = QString::fromStdString(chref.value);
+	QString ssid = QString::number(chref.ref.ssid);
+	QString tsid = QString::number(chref.ref.tsid);
+	QString sys;
+
+	switch (chref.etype)
+	{
+		case e2db::ETYPE::ecast: sys = "[cast]"; break;
+		case e2db::ETYPE::efile: sys = "[file]"; break;
+		case e2db::ETYPE::ecustom: sys = "[custom]"; break;
+		case e2db::ETYPE::eservice: sys = "[eService]"; break;
+	}
+
+	return QStringList ({value, NULL, chid, NULL, ssid, tsid, "STREAM", NULL, NULL, sys});
+}
+
 QStringList e2db::entryMarker(channel_reference chref)
 {
 	QString chid = QString::fromStdString(chref.chid);

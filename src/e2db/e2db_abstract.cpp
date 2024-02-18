@@ -1155,17 +1155,28 @@ void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_refe
 
 	if (chref.marker)
 		// %4d:%2x:%d
-		std::snprintf(chid, 25, "%d:%x:%d", chref.atype, chref.anum, ub.index);
+		std::snprintf(chid, 25, "1:%d:%x:%d", chref.atype, chref.anum, ub.index);
+	else if (chref.stream)
+		// %4d:%4x:%d
+		std::snprintf(chid, 25, "2:%d:%x:%d", chref.atype, db.istreams, ub.index);
 	else
 		// %4x:%4x:%8x
 		std::snprintf(chid, 25, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
 
 	chref.chid = chid;
 	chref.index = idx;
+	chref.ref = ref;
 
 	bouquet& bs = bouquets[ub.pname];
 	ub.channels.emplace(chref.chid, chref);
 	index[ub.bname].emplace_back(pair (idx, chref.chid));
+
+	if (chref.marker)
+		db.imarkers++;
+	else if (chref.stream)
+		db.istreams++;
+	else
+		db.iservices++;
 
 	if (chref.marker)
 	{
@@ -1180,9 +1191,9 @@ void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_refe
 	}
 }
 
-void e2db_abstract::set_channel_reference_marker_value(userbouquet& ub, string chid, string value)
+void e2db_abstract::set_channel_reference_description(userbouquet& ub, channel_reference& chref, string value)
 {
-	ub.channels[chid].value = value;
+	ub.channels[chref.chid].value = value;
 }
 
 void e2db_abstract::add_tunersets(tunersets& tv)

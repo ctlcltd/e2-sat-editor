@@ -105,6 +105,14 @@ struct e2db_abstract : protected e2se::log_factory
 			atsc
 		};
 
+		// entry type
+		enum ETYPE {
+			ecast = 1,
+			efile = 2,
+			ecustom = 4097,
+			eservice = 8193
+		};
+
 		// service type
 		enum STYPE {
 			data = 0,
@@ -305,10 +313,17 @@ struct e2db_abstract : protected e2se::log_factory
 		struct channel_reference
 		{
 			string chid;
+			int etype;
 			bool marker = false;
+			bool stream = false;
 			int atype;
 			int anum;
+			string uri;
 			string value;
+			service_reference ref;
+			int x7 = 0;
+			int x8 = 0;
+			int x9 = 0;
 			int index = -1;
 		};
 
@@ -336,6 +351,7 @@ struct e2db_abstract : protected e2se::log_factory
 			unordered_map<string, channel_reference> channels;
 			bool locked = false;
 			bool hidden = false;
+			string order;
 			int index = -1;
 		};
 
@@ -421,6 +437,9 @@ struct e2db_abstract : protected e2se::log_factory
 			unordered_map<string, service> services;
 			// parental lock type
 			PARENTALLOCK parental = PARENTALLOCK::blacklist;
+			int iservices = 0;
+			int imarkers = 0;
+			int istreams = 0;
 		};
 
 		struct comment
@@ -551,7 +570,7 @@ struct e2db_abstract : protected e2se::log_factory
 		void add_bouquet(int idx, bouquet& bs);
 		void add_userbouquet(int idx, userbouquet& ub);
 		void add_channel_reference(int idx, userbouquet& ub, channel_reference& chref, service_reference& ref);
-		void set_channel_reference_marker_value(userbouquet& ub, string chid, string value);
+		void set_channel_reference_description(userbouquet& ub, channel_reference& chref, string value);
 		void add_tunersets(tunersets& tv);
 		void add_tunersets_table(int idx, tunersets_table& tn, tunersets& tv);
 		void add_tunersets_transponder(int idx, tunersets_transponder& tntxp, tunersets_table& tn);

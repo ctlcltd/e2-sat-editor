@@ -735,6 +735,7 @@ void mainView::populate(QTreeWidget* tw)
 
 		for (auto & chi : dbih->index[bname])
 		{
+			int reftype = 0;
 			bool marker = false;
 			bool locked = false;
 			QString x = QString::number(i++).rightJustified(pad_width, '0');
@@ -758,9 +759,19 @@ void mainView::populate(QTreeWidget* tw)
 
 				if (chref.marker)
 				{
+					reftype = REF_TYPE::marker;
 					marker = true;
 					entry = dbih->entryMarker(chref);
 					idx = entry[1];
+					entry.prepend(x);
+				}
+				else if (chref.stream)
+				{
+					reftype = REF_TYPE::stream;
+					entry = dbih->entryChannel(chref);
+					idx = QString::number(chi.first);
+					locked = entry[1].size() || ub_locked;
+					entry.prepend(idx);
 					entry.prepend(x);
 				}
 				else
@@ -773,7 +784,7 @@ void mainView::populate(QTreeWidget* tw)
 			QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 			item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 			item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
-			item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
+			item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
 			item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, chid);
 			item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
 			if (locked)
@@ -1025,7 +1036,7 @@ void mainView::listItemSelectionChanged()
 	if (selected.count() == 1)
 	{
 		QTreeWidgetItem* item = selected.first();
-		bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+		bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 
 		if (marker)
 		{
@@ -1069,7 +1080,7 @@ void mainView::listItemDoubleClicked()
 		return;
 
 	QTreeWidgetItem* item = selected.first();
-	bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+	bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 
 	if (marker)
 		editMarker();
@@ -1112,7 +1123,7 @@ void mainView::visualReindexList()
 		while (j--)
 		{
 			QTreeWidgetItem* item = list->topLevelItem(i);
-			bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+			bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 			if (marker)
 				y++;
 			i++;
@@ -1123,7 +1134,7 @@ void mainView::visualReindexList()
 	while (reverse ? j-- : i != j)
 	{
 		QTreeWidgetItem* item = list->topLevelItem(i);
-		bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+		bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 		idx = reverse ? j : i;
 		item->setText(ITEM_ROW_ROLE::x, QString::number(idx++).rightJustified(pad_width, '0'));
 		if (! marker)
@@ -1163,7 +1174,7 @@ void mainView::visualReloadList()
 	{
 		QTreeWidgetItem* item = list->topLevelItem(i);
 		string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
-		bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+		bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 
 		if (marker || ! dbih->entries.services.count(chid))
 		{
@@ -1683,6 +1694,7 @@ void mainView::addService()
 	debug("addService");
 
 	string chid;
+	int reftype = 0;
 	bool reload = false;
 	e2se_gui::editService* add = new e2se_gui::editService(this->data);
 	add->display(cwid);
@@ -1740,7 +1752,7 @@ void mainView::addService()
 	QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 	item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
-	item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, false);
+	item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
 	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
 	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
 	item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
@@ -1785,7 +1797,17 @@ void mainView::editService()
 	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 	string nw_chid;
 	bool reload = false;
-	bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+	bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
+	bool stream = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::stream;
+
+	if (stream)
+	{
+		error("editService", "Feature Error", "Stream type edit is not supported yet.");
+
+		tid->errorMessage("Feature Error", "Stream type edit is not supported yet.");
+
+		return;
+	}
 
 	auto* dbih = this->data->dbih;
 
@@ -1834,7 +1856,7 @@ void mainView::editService()
 	entry.prepend(item->text(ITEM_ROW_ROLE::x));
 	for (int i = 0; i < entry.count(); i++)
 		item->setText(i, entry[i]);
-	item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, false);
+	item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
 	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
 	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
 	item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
@@ -1893,7 +1915,7 @@ void mainView::addMarker()
 	QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 	item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
-	item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, marker);
+	item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, REF_TYPE::marker);
 	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
 	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, false);
 	if (marker)
@@ -1943,7 +1965,7 @@ void mainView::editMarker()
 	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 	string nw_chid;
 	string bname = this->state.curr;
-	bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+	bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 
 	auto* dbih = this->data->dbih;
 
@@ -2036,7 +2058,7 @@ void mainView::setServiceParentalLock()
 
 	QTreeWidgetItem* item = selected.first();
 	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
-	bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+	bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 
 	auto* dbih = this->data->dbih;
 
@@ -2075,11 +2097,11 @@ void mainView::unsetServiceParentalLock()
 
 	QTreeWidgetItem* item = selected.first();
 	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
-	bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+	bool service = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 
 	auto* dbih = this->data->dbih;
 
-	if (! marker && dbih->db.services.count(chid))
+	if (service && dbih->db.services.count(chid))
 		debug("unsetServiceParentalLock", "chid", chid);
 	else
 		return error("unsetServiceParentalLock", tr("Error", "error").toStdString(), tr("Service \"%1\" not exists or is a channel reference.", "error").arg(chid.data()).toStdString());
@@ -2249,7 +2271,7 @@ void mainView::listItemCopy(bool cut)
 	for (auto & item : selected)
 	{
 		QString qchid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString();
-		bool marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+		bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 		bool locked = item->data(ITEM_DATA_ROLE::locked, Qt::UserRole).toBool();
 		string chid = qchid.toStdString();
 
@@ -2521,6 +2543,7 @@ void mainView::putListItems(vector<QString> items)
 		QString x = QString::number(i++).rightJustified(pad_width, '0');
 		QString idx = QString::number(i);
 
+		int reftype = 0;
 		string refid;
 		string value;
 		bool locked = false;
@@ -2587,6 +2610,7 @@ void mainView::putListItems(vector<QString> items)
 				chref.value = value;
 				chref.index = -1;
 				idx = "";
+				reftype = REF_TYPE::marker;
 
 				entry = dbih->entryMarker(chref);
 				entry.prepend(x);
@@ -2647,6 +2671,9 @@ void mainView::putListItems(vector<QString> items)
 				chref.chid = ch.chid;
 				chref.index = idx.toInt();
 
+				if (chref.stream)
+					reftype = REF_TYPE::stream;
+
 				if (! dbih->db.transponders.count(tx.txid))
 					dbih->addTransponder(tx);
 				if (! dbih->db.services.count(ch.chid))
@@ -2667,7 +2694,7 @@ void mainView::putListItems(vector<QString> items)
 		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
-		item->setData(ITEM_DATA_ROLE::marker, Qt::UserRole, chref.marker);
+		item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
 		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chref.chid));
 		item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
 		if (locked)
@@ -2764,6 +2791,7 @@ void mainView::showListEditContextMenu(QPoint& pos)
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
+	bool service = false;
 	bool marker = false;
 	bool locked = false;
 	bool ub_locked = false;
@@ -2785,7 +2813,8 @@ void mainView::showListEditContextMenu(QPoint& pos)
 	if (selected.count() == 1)
 	{
 		QTreeWidgetItem* item = selected.first();
-		marker = item->data(ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+		service = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::service;
+		marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 		locked = item->data(ITEM_DATA_ROLE::locked, Qt::UserRole).toBool();
 		editable = true;
 	}
@@ -2802,7 +2831,7 @@ void mainView::showListEditContextMenu(QPoint& pos)
 	else if (selected.count() > 1)
 		contextMenuAction(list_edit, tr("Parental lock", "context-menu"), [=]() {}, false);
 	else
-		contextMenuAction(list_edit, ! locked ? tr("Set Parental lock", "context-menu") : tr("Unset Parental lock", "context-menu"), [=]() { this->toggleServiceParentalLock(); }, editable && ! marker);
+		contextMenuAction(list_edit, ! locked ? tr("Set Parental lock", "context-menu") : tr("Unset Parental lock", "context-menu"), [=]() { this->toggleServiceParentalLock(); }, editable && service);
 	contextMenuSeparator(list_edit);
 	contextMenuAction(list_edit, tr("Cu&t", "context-menu"), [=]() { this->listItemCut(); }, tabGetFlag(gui::TabListCut), QKeySequence::Cut);
 	contextMenuAction(list_edit, tr("&Copy", "context-menu"), [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
@@ -3216,7 +3245,7 @@ void mainView::updateListIndex()
 	{
 		QTreeWidgetItem* item = list->topLevelItem(i);
 		string chid = item->data(mainView::ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
-		bool marker = item->data(mainView::ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+		bool marker = item->data(mainView::ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 		if (! marker)
 		{
 			y++;
@@ -3270,7 +3299,7 @@ void mainView::updateListReferences(QTreeWidgetItem* current, QList<QTreeWidgetI
 			e2db::channel_reference chref;
 
 			int idx = item->data(mainView::ITEM_DATA_ROLE::idx, Qt::UserRole).toInt();
-			bool marker = item->data(mainView::ITEM_DATA_ROLE::marker, Qt::UserRole).toBool();
+			bool marker = item->data(mainView::ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 
 			chref.marker = marker;
 

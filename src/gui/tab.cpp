@@ -2041,8 +2041,9 @@ void tab::ftpDownload()
 				this->files.clear();
 
 				QMetaObject::invokeMethod(this->cwid, [=]() {
+					//TODO TEST potential SEGFAULT
 					// note: consecutive call SEGFAULT
-					this->newFile();
+					// this->newFile();
 
 					this->e2dbError(err.what());
 				}, Qt::QueuedConnection);
@@ -2054,8 +2055,9 @@ void tab::ftpDownload()
 				this->files.clear();
 
 				QMetaObject::invokeMethod(this->cwid, [=]() {
+					//TODO TEST potential SEGFAULT
 					// note: consecutive call SEGFAULT
-					this->newFile();
+					// this->newFile();
 
 					this->e2dbError();
 				}, Qt::QueuedConnection);

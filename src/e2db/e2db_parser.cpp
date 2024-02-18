@@ -713,7 +713,7 @@ void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string filename, bool ep
 
 	while (std::getline(ibouquet, line))
 	{
-		if (line.find("#SERVICE") != string::npos)
+		if (line.size() >= 9 && line.find("#SERVICE") != string::npos)
 		{
 			ub = userbouquet ();
 
@@ -726,7 +726,7 @@ void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string filename, bool ep
 
 			add_userbouquet(int (index["ubs"].size()), ub);
 		}
-		else if (line.find("#NAME") != string::npos)
+		else if (line.size() >= 6 && line.find("#NAME") != string::npos)
 		{
 			if (add)
 				bs = bouquet ();
@@ -765,20 +765,19 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string filename)
 
 	while (std::getline(iuserbouquet, line))
 	{
-		if (! step && line.find("#NAME") != string::npos)
+		if (! step && line.size() >= 6 && line.find("#NAME") != string::npos)
 		{
 			ub.name = line.substr(6);
-			step = 1;
+			step = true;
 			continue;
 		}
-		else if (step == 2)
+		else if (step && line.size() >= 13 && line.find("#DESCRIPTION") != string::npos)
 		{
-			if (line.find("#DESCRIPTION") != string::npos)
-				set_channel_reference_marker_value(ub, chref.chid, line.substr(13));
-			step = 1;
+			set_channel_reference_description(ub, chref, line.substr(13));
+
 			continue;
 		}
-		else if (step && line.find("#SORT") != string::npos)
+		else if (step && line.size() >= 6 && line.find("#SORT") != string::npos)
 		{
 			continue;
 		}
@@ -787,7 +786,7 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string filename)
 			continue;
 		}
 
-		if (step)
+		if (step && line.size() >= 9)
 		{
 			chref = channel_reference ();
 			ref = service_reference ();
@@ -796,7 +795,6 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string filename)
 
 			if (chref.marker)
 			{
-				step = 2;
 				idx = 0;
 			}
 			else
@@ -860,12 +858,14 @@ void e2db_parser::parse_userbouquet_reference(string str, userbouquet& ub)
 {
 	char refid[33];
 	char fname[33];
-	char oby[13];
+	char order[33];
 
-	std::sscanf(str.c_str(), "%32s BOUQUET %32s ORDER BY %12s", refid, fname, oby);
+	if (! std::sscanf(str.c_str(), "%32s BOUQUET %32s ORDER BY %32s", refid, fname, order))
+		return;
 
 	ub.bname = string (fname);
 	ub.bname = ub.bname.substr(1, ub.bname.size() - 2);
+	ub.order = order;
 }
 
 void e2db_parser::parse_userbouquet_epl_reference(string str, userbouquet& ub)
@@ -883,10 +883,55 @@ void e2db_parser::parse_userbouquet_epl_reference(string str, userbouquet& ub)
 
 void e2db_parser::parse_channel_reference(string str, channel_reference& chref, service_reference& ref)
 {
-	int i, atype, anum, ssid, tsid, onid, dvbns;
-	i = 0, atype = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0;
+	int etype, atype, anum, ssid, tsid, onid, dvbns;
+	char xdata[513];
+	etype = 0, atype = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0;
 
-	std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X", &i, &atype, &anum, &ssid, &tsid, &onid, &dvbns);
+	if (! std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X:%s", &etype, &atype, &anum, &ssid, &tsid, &onid, &dvbns, xdata))
+		return;
+
+	ref.ssid = ssid;
+	ref.tsid = tsid;
+	ref.onid = onid;
+	ref.dvbns = dvbns;
+
+	if (std::strlen(xdata))
+	{
+		int x7, x8, x9;
+		char adata[385];
+		x7 = 0, x8 = 0, x9 = 0;
+
+		std::sscanf(xdata, "%d:%d:%d:%s", &x7, &x8, &x9, adata);
+
+		chref.x7 = x7;
+		chref.x8 = x8;
+		chref.x9 = x9;
+
+		if (std::strlen(adata))
+		{
+			string estream = adata;
+			size_t pos = estream.rfind(':');
+
+			if (pos != string::npos)
+			{
+				chref.uri = estream.substr(0, pos);
+				chref.value = estream.substr(pos);
+				chref.stream = ! chref.uri.empty();
+			}
+		}
+	}
+
+	switch (etype)
+	{
+		// service or stream
+		case ETYPE::ecast:
+		// stream
+		case ETYPE::ecustom:
+		case ETYPE::eservice:
+		break;
+		default:
+			error("parse_channel_reference", "Parser Error", "Not supported yet.");
+	}
 
 	switch (atype)
 	{
@@ -904,11 +949,9 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 		// service
 		default:
 			chref.marker = false;
-			ref.ssid = ssid;
-			ref.dvbns = dvbns;
-			ref.tsid = tsid;
 	}
 
+	chref.etype = etype;
 	chref.atype = atype;
 	chref.anum = anum;
 }

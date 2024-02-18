@@ -463,7 +463,11 @@ void e2db_maker::make_bouquet(string bname, e2db_file& file)
 		ss << "1:7:" << bs.btype << ":0:0:0:0:0:0:0:";
 		ss << "FROM BOUQUET ";
 		ss << "\"" << ub.bname << "\" ";
-		ss << "ORDER BY bouquet";
+		ss << "ORDER BY ";
+		if (ub.order.empty())
+			ss << "bouquet";
+		else
+			ss << ub.order;
 		ss << endl;
 	}
 
@@ -547,28 +551,57 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 	{
 		channel_reference chref = userbouquets[bname].channels[x.second];
 
+		ss << dec;
 		ss << "#SERVICE ";
-		ss << "1:";
+		ss << chref.etype << ':';
 		ss << chref.atype << ':';
-		ss << hex;
 
 		if (db.services.count(x.second))
 		{
 			service ch = db.services[x.second];
 
+			ss << hex;
 			ss << uppercase << ch.stype << ':';
 			ss << uppercase << ch.ssid << ':';
 			ss << uppercase << ch.tsid << ':';
 			ss << uppercase << ch.onid << ':';
 			ss << uppercase << ch.dvbns << ':';
-			ss << "0:0:0:";
+			ss << dec;
+			ss << chref.x7 << ':';
+			ss << chref.x8 << ':';
+			ss << chref.x9 << ':';
+
+			if (! chref.marker && ! chref.value.empty())
+			{
+				ss << endl;
+				ss << "#DESCRIPTION " << chref.value;
+			}
 		}
 		else
 		{
 			if (chref.marker)
 			{
+				ss << hex;
 				ss << uppercase << chref.anum << ':';
+				ss << dec;
 				ss << "0:0:0:0:0:0:0:0:" << endl;
+				ss << "#DESCRIPTION " << chref.value;
+			}
+			else if (chref.stream)
+			{
+				ss << hex;
+				ss << uppercase << chref.anum << ':';
+				ss << uppercase << chref.ref.ssid << ':';
+				ss << uppercase << chref.ref.tsid << ':';
+				ss << uppercase << chref.ref.onid << ':';
+				ss << uppercase << chref.ref.dvbns << ':';
+				ss << dec;
+				ss << chref.x7 << ':';
+				ss << chref.x8 << ':';
+				ss << chref.x9 << ':';
+				ss << dec;
+				ss << chref.uri << ':';
+				ss << chref.value << endl;
 				ss << "#DESCRIPTION " << chref.value;
 			}
 			else
@@ -576,7 +609,7 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 				error("make_userbouquet", "Maker Error", msg("Missing channel reference \"%s\".", x.second));
 			}
 		}
-		ss << dec;
+
 		ss << endl;
 	}
 

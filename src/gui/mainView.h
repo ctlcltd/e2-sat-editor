@@ -78,7 +78,7 @@ class mainView : public viewAbstract
 
 		enum ITEM_DATA_ROLE {
 			idx,
-			marker,
+			reftype,
 			chid,
 			locked
 		};
@@ -102,6 +102,12 @@ class mainView : public viewAbstract
 			chpol,
 			chsr,
 			chfec
+		};
+
+		enum REF_TYPE {
+			service,
+			marker,
+			stream
 		};
 
 		enum LIST_REF {
