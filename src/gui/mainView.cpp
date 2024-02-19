@@ -232,7 +232,7 @@ void mainView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::chtype, 85);	// (Channel) Type
 	list->setColumnWidth(ITEM_ROW_ROLE::chcas, 45);		// CAS
 	list->setColumnWidth(ITEM_ROW_ROLE::chpname, 150);	// Provider
-	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 75);		// System
+	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 85);		// System
 	list->setColumnWidth(ITEM_ROW_ROLE::chpos, 80);		// Position
 	list->setColumnWidth(ITEM_ROW_ROLE::chtname, 125);	// Tuner Name
 	list->setColumnWidth(ITEM_ROW_ROLE::chfreq, 95);	// Frequency
@@ -735,12 +735,13 @@ void mainView::populate(QTreeWidget* tw)
 
 		for (auto & chi : dbih->index[bname])
 		{
-			int reftype = 0;
+			int reftype = REF_TYPE::service;
 			bool marker = false;
 			bool locked = false;
 			QString x = QString::number(i++).rightJustified(pad_width, '0');
 			QString idx;
 			QString chid = QString::fromStdString(chi.second);
+			QString uri;
 			QStringList entry;
 
 			if (dbih->db.services.count(chi.second))
@@ -771,6 +772,7 @@ void mainView::populate(QTreeWidget* tw)
 					entry = dbih->entryChannel(chref);
 					idx = QString::number(chi.first);
 					locked = entry[1].size() || ub_locked;
+					uri = entry[11];
 					entry.prepend(idx);
 					entry.prepend(x);
 				}
@@ -787,6 +789,7 @@ void mainView::populate(QTreeWidget* tw)
 			item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
 			item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, chid);
 			item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
+			item->setData(ITEM_DATA_ROLE::uri, Qt::UserRole, uri);
 			if (locked)
 			{
 				item->setIcon(ITEM_ROW_ROLE::chlock, theme::icon(parentalicon));
@@ -1694,7 +1697,7 @@ void mainView::addService()
 	debug("addService");
 
 	string chid;
-	int reftype = 0;
+	int reftype = REF_TYPE::service;
 	bool reload = false;
 	e2se_gui::editService* add = new e2se_gui::editService(this->data);
 	add->display(cwid);
@@ -1797,6 +1800,7 @@ void mainView::editService()
 	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 	string nw_chid;
 	bool reload = false;
+	int reftype = REF_TYPE::service;
 	bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 	bool stream = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::stream;
 
@@ -2272,6 +2276,7 @@ void mainView::listItemCopy(bool cut)
 	{
 		QString qchid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString();
 		bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
+		bool stream = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::stream;
 		bool locked = item->data(ITEM_DATA_ROLE::locked, Qt::UserRole).toBool();
 		string chid = qchid.toStdString();
 
@@ -2294,6 +2299,9 @@ void mainView::listItemCopy(bool cut)
 			// chcas
 			else if (i == ITEM_ROW_ROLE::chcas && ! marker)
 				qstr.prepend(qstr.isEmpty() ? "" : "$");
+			// uri
+			else if (i == ITEM_ROW_ROLE::chtname && stream)
+				qstr = item->data(ITEM_DATA_ROLE::uri, Qt::UserRole).toString();
 			data.append(qstr);
 		}
 
@@ -2320,7 +2328,7 @@ void mainView::listItemCopy(bool cut)
 	clipboard->setText(content.join("\n"));
 
 	if (cut)
-		listItemDelete();
+		listItemDelete(cut);
 }
 
 void mainView::listItemPaste()
@@ -2396,7 +2404,7 @@ void mainView::listItemPaste()
 }
 
 //TODO TEST random crash with put items
-void mainView::listItemDelete()
+void mainView::listItemDelete(bool cut)
 {
 	debug("listItemDelete", "entered", ! (this->state.tc && this->state.ti != -1));
 
@@ -2409,9 +2417,12 @@ void mainView::listItemDelete()
 	if (selected.empty())
 		return;
 
-	bool remove = tabRemoveQuestion(tr("Confirm deletetion", "message"), tr("Do you want to delete items?", "message"));
-	if (! remove)
-		return;
+	if (! cut)
+	{
+		bool remove = tabRemoveQuestion(tr("Confirm deletetion", "message"), tr("Do you want to delete items?", "message"));
+		if (! remove)
+			return;
+	}
 
 	if (this->state.chx_pending)
 	{
@@ -2525,7 +2536,8 @@ void mainView::putListItems(vector<QString> items)
 
 	int ub_idx = -1;
 	bool ub_locked = false;
-	int anum_count = 0;
+	int marker_count = 0;
+	int stream_count = 0;
 	string bname = this->state.curr;
 	if (dbih->userbouquets.count(bname))
 	{
@@ -2533,7 +2545,8 @@ void mainView::putListItems(vector<QString> items)
 		ub_idx = uboq.index;
 		ub_locked = uboq.locked;
 	}
-	anum_count = int (dbih->index["mks"].size());
+	marker_count = dbih->db.imarkers;
+	stream_count = dbih->db.istreams;
 
 	QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
 
@@ -2542,8 +2555,9 @@ void mainView::putListItems(vector<QString> items)
 		size_t pad_width = std::to_string(int (dbih->index[bname].size())).size() + 1;
 		QString x = QString::number(i++).rightJustified(pad_width, '0');
 		QString idx = QString::number(i);
+		QString uri;
 
-		int reftype = 0;
+		int reftype = REF_TYPE::service;
 		string refid;
 		string value;
 		bool locked = false;
@@ -2557,6 +2571,13 @@ void mainView::putListItems(vector<QString> items)
 			qs = q.split('\t');
 			refid = qs[2].toStdString();
 			value = qs[1].toStdString();
+
+			qDebug() << "qs " << qs;
+
+			if (qs[6] == "MARKER")
+				reftype = REF_TYPE::marker;
+			else if (qs[6] == "STREAM" && ! qs[11].isEmpty())
+				reftype = REF_TYPE::stream;
 		}
 		else if (q.count(':') == 9) // refid
 		{
@@ -2575,12 +2596,15 @@ void mainView::putListItems(vector<QString> items)
 
 		char chid[25];
 
-		if (chref.marker)
+		if (reftype == REF_TYPE::marker)
 		{
-			anum_count++;
-
 			// %4d:%2x:%d
-			std::snprintf(chid, 25, "%d:%x:%d", chref.atype, anum_count, ub_idx);
+			std::snprintf(chid, 25, "1:%d:%x:%d", chref.atype, marker_count + 1, ub_idx);
+		}
+		else if (reftype == REF_TYPE::stream)
+		{
+			// %4d:%2x:%d
+			std::snprintf(chid, 25, "2:%d:%x:%d", chref.atype, stream_count + 1, ub_idx);
 		}
 		else
 		{
@@ -2596,32 +2620,55 @@ void mainView::putListItems(vector<QString> items)
 			entry.prepend(x);
 
 			chref.marker = false;
+			chref.stream = false;
 			chref.chid = chid;
 			chref.atype = 0;
 			chref.anum = 0;
 			chref.index = idx.toInt();
 		}
-		else
+		else if (qs.size() == TSV_TABS + 1)
 		{
-			if (chref.marker)
+			if (reftype == REF_TYPE::marker)
 			{
+				reftype = REF_TYPE::marker;
+				chref.marker = true;
 				chref.chid = chid;
-				chref.anum = anum_count;
+				chref.anum = marker_count;
 				chref.value = value;
+				chref.ref = ref;
 				chref.index = -1;
 				idx = "";
-				reftype = REF_TYPE::marker;
-
+				
 				entry = dbih->entryMarker(chref);
 				entry.prepend(x);
+
+				marker_count++;
 			}
-			else if (qs.size() == TSV_TABS)
+			else if (reftype == REF_TYPE::stream)
+			{
+				reftype = REF_TYPE::stream;
+				locked = (qs[3] == "0" ? false : true) || ub_locked;
+				uri = qs[11];
+				chref.stream = true;
+				chref.chid = chid;
+				chref.value = value;
+				chref.uri = uri.toStdString();
+				chref.ref = ref;
+				chref.index = idx.toInt();
+
+				entry = dbih->entryChannel(chref);
+				entry.prepend(idx);
+				entry.prepend(x);
+
+				stream_count++;
+			}
+			else
 			{
 				e2db::service ch;
 				e2db::transponder tx;
 				e2db::fec fec;
 				locked = (qs[3] == "0" ? false : true) || ub_locked;
-
+				
 				ch.ssid = ref.ssid;
 				ch.tsid = tx.tsid = ref.tsid;
 				ch.dvbns = tx.dvbns = ref.dvbns;
@@ -2658,37 +2705,35 @@ void mainView::putListItems(vector<QString> items)
 				{
 					tx.fec = fec.inner_fec;
 				}
-
+				
 				char txid[25];
 				// %4x:%8x
 				std::snprintf(txid, 25, "%x:%x", tx.tsid, tx.dvbns);
 				tx.txid = ch.txid = txid;
-
+				
 				char chid[25];
 				std::snprintf(chid, 25, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
 				ch.chid = chid;
-
+				
 				chref.chid = ch.chid;
+				chref.ref = ref;
 				chref.index = idx.toInt();
-
-				if (chref.stream)
-					reftype = REF_TYPE::stream;
-
+				
 				if (! dbih->db.transponders.count(tx.txid))
 					dbih->addTransponder(tx);
 				if (! dbih->db.services.count(ch.chid))
 					dbih->addService(ch);
-
+				
 				entry = dbih->entries.services[chid];
 				entry.prepend(idx);
 				entry.prepend(x);
 			}
-			else
-			{
-				error("putListItems", tr("Error", "error").toStdString(), tr("Channel reference mismatch.", "error").toStdString());
+		}
+		else
+		{
+			error("putListItems", tr("Error", "error").toStdString(), tr("Channel reference mismatch.", "error").toStdString());
 
-				continue;
-			}
+			continue;
 		}
 
 		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
@@ -2697,6 +2742,7 @@ void mainView::putListItems(vector<QString> items)
 		item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
 		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chref.chid));
 		item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
+		item->setData(ITEM_DATA_ROLE::uri, Qt::UserRole, uri);
 		if (locked)
 		{
 			item->setIcon(ITEM_ROW_ROLE::chlock, theme::icon(parentalicon));
@@ -2994,6 +3040,7 @@ void mainView::updateStatusBar(bool current)
 	tabSetStatusBar(msg);
 }
 
+//TODO text selection
 void mainView::updateReferenceBox()
 {
 	debug("updateReferenceBox");
@@ -3013,18 +3060,20 @@ void mainView::updateReferenceBox()
 		string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 		QString ssid, refid, txp, tns, bsls, ubls;
 
+		string bname = this->state.curr;
+		e2db::channel_reference chref;
+		if (dbih->userbouquets.count(bname))
+		{
+			chref = dbih->userbouquets[bname].channels[chid];
+		}
+
 		// debug("updateReferenceBox", "chid", chid);
 
 		// bouquets tree
 		if (this->state.tc)
 		{
-			string bname = this->state.curr;
-			if (dbih->userbouquets.count(bname))
-			{
-				e2db::channel_reference chref = dbih->userbouquets[bname].channels[chid];
-				string crefid = dbih->get_reference_id(chref);
-				refid = QString::fromStdString(crefid);
-			}
+			string crefid = dbih->get_reference_id(chref);
+			refid = QString::fromStdString(crefid);
 		}
 		// services tree
 		else
@@ -3065,12 +3114,13 @@ void mainView::updateReferenceBox()
 		if (dbih->db.services.count(chid))
 		{
 			e2db::service ch = dbih->db.services[chid];
+			string txid = ch.txid;
 
 			ssid = QString::number(ch.ssid);
 
-			if (ch.tsid != 0)
+			if (dbih->db.transponders.count(txid))
 			{
-				e2db::transponder tx = dbih->db.transponders[ch.txid];
+				e2db::transponder tx = dbih->db.transponders[txid];
 
 				// i18n rtl combo (LRM)
 				string ptxp = dbih->value_transponder_combo(tx);
@@ -3088,6 +3138,49 @@ void mainView::updateReferenceBox()
 
 				tns = "<p style=\"line-height: 125%\">" + QString::fromStdString(sys + "<br>" + ppos) + "</p>";
 			}
+			else
+			{
+				txp = tns = "< >";
+			}
+		}
+		else if (chref.stream)
+		{
+			ssid = QString::number(chref.ref.ssid);
+
+			string sys;
+			string uri = chref.uri;
+
+			switch (chref.etype)
+			{
+				case e2db::ETYPE::ecast: sys = "[broadcast]"; break;
+				case e2db::ETYPE::efile: sys = "[file]"; break;
+				case e2db::ETYPE::ecustom: sys = "[custom]"; break;
+				case e2db::ETYPE::eservice: sys = "[eservice]"; break;
+				case e2db::ETYPE::eytube: sys = "[youtube]"; break;
+			}
+
+			char txid[25];
+
+			if (chref.ref.tsid != 0)
+			{
+				// %4x:%8x
+				std::snprintf(txid, 25, "%x:%x", chref.ref.tsid, chref.ref.dvbns);
+			}
+
+			if (dbih->db.transponders.count(txid))
+			{
+				e2db::transponder tx = dbih->db.transponders[txid];
+
+				// i18n rtl combo (LRM)
+				string ptxp = dbih->value_transponder_combo(tx);
+				txp = QString::fromStdString(ptxp);
+			}
+			else
+			{
+				txp = "< >";
+			}
+
+			tns = "<p style=\"line-height: 125%\">" + QString::fromStdString(sys + "<br>" + uri) + "</p>";
 		}
 		else
 		{

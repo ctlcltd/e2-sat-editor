@@ -39,7 +39,7 @@ class editTransponder : public dialAbstract
 		editTransponder(dataHandler* data);
 		~editTransponder();
 		void display(QWidget* cwid);
-		void show();
+		void show(bool retr = false);
 		void change();
 		void layout(QWidget* cwid);
 		void layoutChange(int vx);

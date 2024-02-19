@@ -140,10 +140,23 @@ string e2db_abstract::file_mime_detect(FPORTS fpi, string path)
 
 void e2db_abstract::value_channel_reference(string str, channel_reference& chref, service_reference& ref)
 {
-	int i, atype, anum, ssid, tsid, onid, dvbns;
-	i = 0, atype = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0;
+	int etype, atype, anum, ssid, tsid, onid, dvbns, x7, x8, x9;
+	etype = 0, atype = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0;
 
-	std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X", &i, &atype, &anum, &ssid, &tsid, &onid, &dvbns);
+	std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X:%d:%d:%d", &etype, &atype, &anum, &ssid, &tsid, &onid, &dvbns, &x7, &x8, &x9);
+
+	switch (etype)
+	{
+		// service or stream
+		case ETYPE::ecast:
+		// stream
+		case ETYPE::ecustom:
+		case ETYPE::eservice:
+		case ETYPE::eytube:
+		break;
+		default:
+			return;
+	}
 
 	switch (atype)
 	{
@@ -160,18 +173,25 @@ void e2db_abstract::value_channel_reference(string str, channel_reference& chref
 		// service
 		default:
 			chref.marker = false;
-			ref.ssid = ssid;
-			ref.dvbns = dvbns;
-			ref.tsid = tsid;
-			ref.onid = onid;
 	}
 
+	ref.ssid = ssid;
+	ref.dvbns = dvbns;
+	ref.tsid = tsid;
+	ref.onid = onid;
+
+	chref.etype = etype;
 	chref.atype = atype;
 	chref.anum = anum;
+	chref.x7 = x7;
+	chref.x8 = x8;
+	chref.x9 = x9;
+	chref.ref = ref;
 }
 
 string e2db_abstract::value_reference_id(service ch)
 {
+	int etype = 1;
 	int stype = ch.stype != -1 ? ch.stype : 0;
 	int snum = ch.snum != -1 ? ch.snum : 0;
 	int ssid = ch.ssid;
@@ -181,37 +201,62 @@ string e2db_abstract::value_reference_id(service ch)
 
 	char refid[44];
 	// %1d:%4d:%4X:%4X:%4X:%4X:%6X:0:0:0:
-	std::snprintf(refid, 44, "%d:%d:%X:%X:%X:%X:%X:0:0:0", 1, stype, snum, ssid, tsid, onid, dvbns);
+	std::snprintf(refid, 44, "%d:%d:%X:%X:%X:%X:%X:0:0:0", etype, stype, snum, ssid, tsid, onid, dvbns);
 
 	return refid;
 }
 
 string e2db_abstract::value_reference_id(channel_reference chref)
 {
+	int etype = chref.etype != -1 ? chref.etype : 1;
 	int atype = chref.atype != -1 ? chref.atype : 0;
 	int anum = chref.anum != -1 ? chref.anum : 0;
-	int ssid = 0;
-	int tsid = 0;
-	int onid = 0;
-	int dvbns = 0;
+	int ssid = chref.ref.ssid != -1 ? chref.ref.ssid : 0;
+	int tsid = chref.ref.tsid != -1 ? chref.ref.tsid : 0;
+	int onid =  chref.ref.onid != -1 ? chref.ref.onid : 0;
+	int dvbns = chref.ref.dvbns != -1 ? chref.ref.dvbns : 0;
+	int x7 = chref.x7 != -1 ? chref.x7 : 0;
+	int x8 = chref.x8 != -1 ? chref.x8 : 0;
+	int x9 = chref.x9 != -1 ? chref.x9 : 0;
 
 	char refid[44];
-	// %1d:%4d:%4X:%4X:%4X:%4X:%6X:0:0:0:
-	std::snprintf(refid, 44, "%d:%d:%X:%X:%X:%X:%X:0:0:0", 1, atype, anum, ssid, tsid, onid, dvbns);
+	// %1d:%4d:%4X:%4X:%4X:%4X:%6X:%d:%d:%d:
+	std::snprintf(refid, 44, "%d:%d:%X:%X:%X:%X:%X:%d:%d:%d", etype, atype, anum, ssid, tsid, onid, dvbns, x7, x8, x9);
 
 	return refid;
 }
 
 string e2db_abstract::value_reference_id(channel_reference chref, service ch)
 {
-	int atype, anum;
+	int etype = 0;
+	int atype = 0;
+	int anum = 0;
 	int ssid = 0;
 	int tsid = 0;
 	int onid = 0;
 	int dvbns = 0;
+	int x7 = 0;
+	int x8 = 0;
+	int x9 = 0;
 
-	if (! chref.marker)
+	if (chref.marker)
 	{
+		atype = chref.atype != -1 ? chref.atype : 0;
+		anum = chref.anum != -1 ? chref.anum : 0;
+	}
+	else if (chref.stream)
+	{
+		etype = chref.etype != -1 ? chref.etype : 1;
+		atype = chref.atype != -1 ? chref.atype : 0;
+		anum = chref.anum != -1 ? chref.anum : 0;
+		ssid = chref.ref.ssid != -1 ? chref.ref.ssid : 0;
+		tsid = chref.ref.tsid != -1 ? chref.ref.tsid : 0;
+		onid =  chref.ref.onid != -1 ? chref.ref.onid : 0;
+		dvbns = chref.ref.dvbns != -1 ? chref.ref.dvbns : 0;
+	}
+	else
+	{
+		etype = 1;
 		atype = ch.stype != -1 ? ch.stype : 0;
 		anum = ch.snum != -1 ? ch.snum : 0;
 		ssid = ch.ssid;
@@ -219,15 +264,14 @@ string e2db_abstract::value_reference_id(channel_reference chref, service ch)
 		onid = ch.onid;
 		dvbns = ch.dvbns;
 	}
-	else
-	{
-		atype = chref.atype != -1 ? chref.atype : 0;
-		anum = chref.anum != -1 ? chref.anum : 0;
-	}
+
+	x7 = chref.x7 != -1 ? chref.x7 : 0;
+	x8 = chref.x8 != -1 ? chref.x8 : 0;
+	x9 = chref.x9 != -1 ? chref.x9 : 0;
 
 	char refid[44];
-	// %1d:%4d:%4X:%4X:%4X:%4X:%6X:0:0:0:
-	std::snprintf(refid, 44, "%d:%d:%X:%X:%X:%X:%X:0:0:0", 1, atype, anum, ssid, tsid, onid, dvbns);
+	// %1d:%4d:%4X:%4X:%4X:%4X:%6X:%d:%d:%d:
+	std::snprintf(refid, 44, "%d:%d:%X:%X:%X:%X:%X:%d:%d:%d", etype, atype, anum, ssid, tsid, onid, dvbns, x7, x8, x9);
 
 	return refid;
 }
@@ -250,6 +294,8 @@ int e2db_abstract::value_service_type(string str)
 		return 31;
 	else if (str == "UHD")
 		return 17;
+	else if (str == "STREAM")
+		return -1;
 	else
 		return STYPE::data;
 }
@@ -1068,7 +1114,7 @@ string e2db_abstract::get_reference_id(channel_reference chref)
 {
 	// debug("get_reference_id", "chref.chid", chref.chid);
 
-	if (! chref.marker && db.services.count(chref.chid))
+	if (! chref.marker && ! chref.stream && db.services.count(chref.chid))
 		return value_reference_id(chref, db.services[chref.chid]);
 	else
 		return value_reference_id(chref);
@@ -1158,7 +1204,7 @@ void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_refe
 		std::snprintf(chid, 25, "1:%d:%x:%d", chref.atype, chref.anum, ub.index);
 	else if (chref.stream)
 		// %4d:%4x:%d
-		std::snprintf(chid, 25, "2:%d:%x:%d", chref.atype, db.istreams, ub.index);
+		std::snprintf(chid, 25, "2:%d:%x:%d", chref.atype, db.istreams + 1, ub.index);
 	else
 		// %4x:%4x:%8x
 		std::snprintf(chid, 25, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);

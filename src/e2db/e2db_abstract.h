@@ -110,7 +110,8 @@ struct e2db_abstract : protected e2se::log_factory
 			ecast = 1,
 			efile = 2,
 			ecustom = 4097,
-			eservice = 8193
+			eservice = 8193,
+			eytube = 8139
 		};
 
 		// service type

@@ -787,6 +787,7 @@ void piconsView::changePicon(QListWidgetItem* item, QString path)
 	}
 }*/
 
+//TODO listItemCut
 void piconsView::listItemCopy(bool cut)
 {
 	debug("listItemCopy");
@@ -826,9 +827,6 @@ void piconsView::listItemCopy(bool cut)
 		if (QFile::exists(filepath))
 			clipboard->setImage(QImage(filepath));
 	}*/
-
-	if (cut)
-		listItemDelete();
 
 	tabSetFlag(gui::TabListPaste, true);
 }
@@ -873,7 +871,7 @@ void piconsView::listItemPaste()
 
 //TODO improve ui
 //TODO improve option remember setting
-void piconsView::listItemDelete()
+void piconsView::listItemDelete(bool cut)
 {
 	debug("listItemDelete");
 

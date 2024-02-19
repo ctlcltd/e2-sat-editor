@@ -652,9 +652,6 @@ void channelBookView::listItemCopy(bool cut)
 		content.append(data.join("\t")); // TSV
 	}
 	clipboard->setText(content.join("\n"));
-
-	if (cut)
-		listItemDelete();
 }
 
 vector<QString> channelBookView::getSelected()

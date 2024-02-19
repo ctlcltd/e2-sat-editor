@@ -51,14 +51,14 @@ void editTransponder::display(QWidget* cwid)
 	dial->exec();
 }
 
-void editTransponder::show()
+void editTransponder::show(bool retr)
 {
 	debug("show");
 
 	if (dtform == nullptr)
 		return;
 
-	if (this->state.edit)
+	if (retr && this->state.edit)
 		retrieve();
 }
 
@@ -117,7 +117,7 @@ void editTransponder::layout(QWidget* cwid)
 	dtf0ts->setProperty("field", "tsid");
 	fields.emplace_back(dtf0ts);
 	dtf0ts->setMaximumWidth(60);
-	dtf0ts->setValidator(new QIntValidator);
+	dtf0ts->setValidator(new QIntValidator(0, 65535));
 	platform::osLineEdit(dtf0ts);
 	dtb01->addWidget(dtf0ts);
 	dtb01->addWidget(new QLabel("[TSID]"));
@@ -126,7 +126,7 @@ void editTransponder::layout(QWidget* cwid)
 	dtf0ns->setProperty("field", "dvbns");
 	fields.emplace_back(dtf0ns);
 	dtf0ns->setMaximumWidth(80);
-	dtf0ns->setValidator(new QIntValidator);
+	// dtf0ns->setValidator(new QIntValidator(0, 999999999));
 	platform::osLineEdit(dtf0ns);
 	dtf0->addRow(tr("DVBNS"), dtf0ns);
 	dtf0->addItem(new QSpacerItem(0, 0));
@@ -135,7 +135,7 @@ void editTransponder::layout(QWidget* cwid)
 	dtf0on->setProperty("field", "onid");
 	fields.emplace_back(dtf0on);
 	dtf0on->setMaximumWidth(60);
-	dtf0on->setValidator(new QIntValidator);
+	dtf0on->setValidator(new QIntValidator(0, 65535));
 	platform::osLineEdit(dtf0on);
 	dtf0->addRow(tr("ONID"), dtf0on);
 	dtf0->addItem(new QSpacerItem(0, 0));
@@ -210,7 +210,7 @@ void editTransponder::leadSatLayout()
 	dtf0sf->setProperty("field", "s_freq");
 	fields.emplace_back(dtf0sf);
 	dtf0sf->setMinimumWidth(100);
-	dtf0sf->setValidator(new QIntValidator);
+	dtf0sf->setValidator(new QIntValidator(0, 99999999));
 	dtf0sf->setMaxLength(6);
 	platform::osLineEdit(dtf0sf);
 	dtf0->addRow(tr("Frequency"), dtf0sf);
@@ -235,7 +235,7 @@ void editTransponder::leadSatLayout()
 	dtf0ss->setProperty("field", "s_sr");
 	fields.emplace_back(dtf0ss);
 	dtf0ss->setMinimumWidth(100);
-	dtf0ss->setValidator(new QIntValidator);
+	dtf0ss->setValidator(new QIntValidator(-1, 65535));
 	dtf0ss->setMaxLength(6);
 	platform::osLineEdit(dtf0ss);
 	dtf0->addRow(tr("Symbol Rate"), dtf0ss);
@@ -287,7 +287,7 @@ void editTransponder::leadTerrestrialLayout()
 	dtf0tf->setProperty("field", "t_freq");
 	fields.emplace_back(dtf0tf);
 	dtf0tf->setMinimumWidth(100);
-	dtf0tf->setValidator(new QIntValidator);
+	dtf0tf->setValidator(new QIntValidator(0, 999999999));
 	dtf0tf->setMaxLength(6);
 	platform::osLineEdit(dtf0tf);
 	dtf0->addRow(tr("Frequency"), dtf0tf);
@@ -384,7 +384,7 @@ void editTransponder::leadCableLayout()
 	dtf0cf->setProperty("field", "c_freq");
 	fields.emplace_back(dtf0cf);
 	dtf0cf->setMinimumWidth(100);
-	dtf0cf->setValidator(new QIntValidator);
+	dtf0cf->setValidator(new QIntValidator(0, 999999999));
 	dtf0cf->setMaxLength(6);
 	platform::osLineEdit(dtf0cf);
 	dtf0->addRow(tr("Frequency"), dtf0cf);
@@ -409,7 +409,7 @@ void editTransponder::leadCableLayout()
 	dtf0cs->setProperty("field", "c_sr");
 	fields.emplace_back(dtf0cs);
 	dtf0cs->setMinimumWidth(100);
-	dtf0cs->setValidator(new QIntValidator);
+	dtf0cs->setValidator(new QIntValidator(0, 65535));
 	dtf0cs->setMaxLength(6);
 	platform::osLineEdit(dtf0cs);
 	dtf0->addRow(tr("Symbol Rate"), dtf0cs);
@@ -446,7 +446,7 @@ void editTransponder::leadAtscLayout()
 	dtf0af->setProperty("field", "a_freq");
 	fields.emplace_back(dtf0af);
 	dtf0af->setMinimumWidth(100);
-	dtf0af->setValidator(new QIntValidator);
+	dtf0af->setValidator(new QIntValidator(0, 999999999));
 	dtf0af->setMaxLength(6);
 	platform::osLineEdit(dtf0af);
 	dtf0->addRow(tr("Frequency"), dtf0af);

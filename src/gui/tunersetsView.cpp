@@ -986,7 +986,7 @@ void tunersetsView::listItemCopy(bool cut)
 	clipboard->setText(text.join("\n"));
 
 	if (cut)
-		listItemDelete();
+		listItemDelete(cut);
 }
 
 void tunersetsView::listItemPaste()
@@ -1032,7 +1032,7 @@ void tunersetsView::listItemPaste()
 	}
 }
 
-void tunersetsView::listItemDelete()
+void tunersetsView::listItemDelete(bool cut)
 {
 	debug("listItemDelete");
 
@@ -1041,9 +1041,12 @@ void tunersetsView::listItemDelete()
 	if (selected.empty())
 		return;
 
-	bool remove = tabRemoveQuestion(tr("Confirm deletetion", "message"), tr("Do you want to delete items?", "message"));
-	if (! remove)
-		return;
+	if (! cut)
+	{
+		bool remove = tabRemoveQuestion(tr("Confirm deletetion", "message"), tr("Do you want to delete items?", "message"));
+		if (! remove)
+			return;
+	}
 
 	list->header()->setSectionsClickable(false);
 	list->setDragEnabled(false);

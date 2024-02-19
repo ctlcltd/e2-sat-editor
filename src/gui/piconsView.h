@@ -61,7 +61,7 @@ class piconsView : public viewAbstract
 		void reset();
 		void listItemCopy(bool cut = false);
 		void listItemPaste();
-		void listItemDelete();
+		void listItemDelete(bool cut = false);
 		void listFindPerform(const QString& value, LIST_FIND flag);
 		void listFindClear(bool hidden = true);
 

@@ -70,7 +70,7 @@ class viewAbstract : protected e2se::log_factory
 		virtual void listItemCut();
 		virtual void listItemCopy(bool cut = false) = 0;
 		virtual void listItemPaste() = 0;
-		virtual void listItemDelete() = 0;
+		virtual void listItemDelete(bool cut = false) = 0;
 		virtual void listItemSelectAll();
 		void treeSearchHide();
 		void treeSearchShow();

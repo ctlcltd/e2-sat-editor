@@ -80,7 +80,8 @@ class mainView : public viewAbstract
 			idx,
 			reftype,
 			chid,
-			locked
+			locked,
+			uri
 		};
 
 		enum ITEM_ROW_ROLE {
@@ -128,7 +129,7 @@ class mainView : public viewAbstract
 		void listReferenceToggle();
 		void listItemCopy(bool cut = false);
 		void listItemPaste();
-		void listItemDelete();
+		void listItemDelete(bool cut = false);
 		void clipboardDataChanged();
 		void updateIndex();
 

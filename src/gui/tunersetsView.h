@@ -117,7 +117,7 @@ class tunersetsView : public viewAbstract
 		void treeItemDelete();
 		void listItemCopy(bool cut = false);
 		void listItemPaste();
-		void listItemDelete();
+		void listItemDelete(bool cut = false);
 		void updateIndex();
 
 		__state currentState() { return this->state; }

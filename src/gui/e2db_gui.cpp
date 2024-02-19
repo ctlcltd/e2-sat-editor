@@ -651,16 +651,18 @@ QStringList e2db::entryChannel(channel_reference chref)
 	QString ssid = QString::number(chref.ref.ssid);
 	QString tsid = QString::number(chref.ref.tsid);
 	QString sys;
+	QString uri = QString::fromStdString(chref.uri);
 
 	switch (chref.etype)
 	{
-		case e2db::ETYPE::ecast: sys = "[cast]"; break;
+		case e2db::ETYPE::ecast: sys = "[broadcast]"; break;
 		case e2db::ETYPE::efile: sys = "[file]"; break;
 		case e2db::ETYPE::ecustom: sys = "[custom]"; break;
-		case e2db::ETYPE::eservice: sys = "[eService]"; break;
+		case e2db::ETYPE::eservice: sys = "[eservice]"; break;
+		case e2db::ETYPE::eytube: sys = "[youtube]"; break;
 	}
 
-	return QStringList ({value, NULL, chid, NULL, ssid, tsid, "STREAM", NULL, NULL, sys});
+	return QStringList ({value, NULL, chid, NULL, ssid, tsid, "STREAM", NULL, NULL, sys, NULL, uri});
 }
 
 QStringList e2db::entryMarker(channel_reference chref)

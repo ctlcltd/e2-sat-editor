@@ -78,7 +78,7 @@ class channelBookView : public viewAbstract
 		void listItemCut() {}
 		void listItemCopy(bool cut = false);
 		void listItemPaste() {}
-		void listItemDelete() {}
+		void listItemDelete(bool cut = false) {}
 		vector<QString> getSelected();
 
 		QListWidget* side = nullptr;

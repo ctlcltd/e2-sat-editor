@@ -513,6 +513,93 @@ void e2db::edit_transponder(string txid, transponder& tx)
 			if (it->second == txid)
 				it->second = tx.txid;
 		}
+
+		if (0)
+		{
+			unordered_map<string, string> i_tmp;
+
+			for (auto & x : db.services)
+			{
+				service& ch = x.second;
+
+				if (ch.txid == txid)
+				{
+					string chid = x.first;
+					char nw_chid[25];
+					// %4x:%4x:%8x
+					std::snprintf(nw_chid, 25, "%x:%x:%x", ch.ssid, tx.tsid, tx.dvbns);
+
+					i_tmp.emplace(ch.chid, nw_chid);
+
+					ch.chid = nw_chid;
+					ch.txid = tx.txid;
+				}
+			}
+
+			for (auto & x : userbouquets)
+			{
+				for (auto & q : x.second.channels)
+				{
+					channel_reference& chref = q.second;
+
+					if (i_tmp.count(chref.chid) && ! chref.marker)
+					{
+						string chid = chref.chid;
+						string nw_chid = i_tmp[chref.chid];
+
+						chref.chid = nw_chid;
+					}
+				}
+			}
+
+			vector<string> i_names;
+
+			for (auto & x : index)
+			{
+				string iname = x.first;
+
+				if (iname == "txs")
+					continue;
+				else if (iname == "mks")
+					continue;
+				else if (iname.find("tns:") != string::npos)
+					continue;
+				else
+					i_names.emplace_back(iname);
+			}
+
+			for (string & iname : i_names)
+			{
+				for (auto & x : index[iname])
+				{
+					if (i_tmp.count(x.second))
+					{
+						string chid = x.second;
+						string nw_chid = i_tmp[x.second];
+
+						x.second = nw_chid;
+					}
+				}
+			}
+
+			for (auto & i : i_tmp)
+			{
+				service ch = db.services[i.first];
+				db.services.erase(i.first);
+				db.services.emplace(i.second, ch);
+
+				for (auto & x : userbouquets)
+				{
+					if (x.second.channels.count(i.first))
+					{
+						channel_reference chref = x.second.channels[i.first];
+
+						x.second.channels.erase(i.first);
+						x.second.channels.emplace(i.second, chref);
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -971,7 +1058,7 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 		return error("add_channel_reference", "Error", msg("Userbouquet \"%s\" not exists.", bname));
 
 	userbouquet& ub = userbouquets[bname];
-	service_reference ref;
+	service_reference& ref = chref.ref;
 
 	if (chref.marker)
 	{
@@ -981,10 +1068,18 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 		}
 		if (! chref.anum)
 		{
-			int anum_count = int (index["mks"].size());
-			anum_count++;
-			chref.anum = anum_count;
+			int marker_count = db.imarkers;
+			marker_count++;
+			chref.anum = marker_count;
 		}
+		if (! chref.index)
+		{
+			int ub_idx = ub.index;
+			chref.index = ub_idx;
+		}
+	}
+	else if (chref.stream)
+	{
 		if (! chref.index)
 		{
 			int ub_idx = ub.index;
@@ -1003,7 +1098,7 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 		ref.tsid = ch.tsid;
 	}
 
-	if (chref.index == -1 && ! chref.marker)
+	if (chref.index == -1 && ! chref.marker && ! chref.stream)
 		chref.index = int (index[bname].size()) + 1;
 
 	e2db_abstract::add_channel_reference(chref.index, ub, chref, ref);
@@ -1029,7 +1124,7 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 	}
 	else
 	{
-		service_reference ref;
+		service_reference& ref = chref.ref;
 
 		if (! chref.marker)
 		{

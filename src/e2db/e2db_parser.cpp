@@ -647,8 +647,7 @@ void e2db_parser::parse_lamedb_transponder_feparms(string str, char ty, transpon
 void e2db_parser::parse_lamedb_service_params(string str, service& ch)
 {
 	int ssid, dvbns, tsid, onid, stype, snum;
-	ssid = 0, dvbns = 0, tsid = 0, onid = 0;
-	stype = -1, snum = -1;
+	ssid = 0, dvbns = 0, tsid = 0, onid = 0, stype = 0, snum = 0;
 
 	if (LAMEDB_VER == 5)
 	{
@@ -887,7 +886,7 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 	char xdata[513];
 	etype = 0, atype = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0;
 
-	if (! std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X:%s", &etype, &atype, &anum, &ssid, &tsid, &onid, &dvbns, xdata))
+	if (! std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X%s", &etype, &atype, &anum, &ssid, &tsid, &onid, &dvbns, xdata))
 		return;
 
 	ref.ssid = ssid;
@@ -895,27 +894,30 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 	ref.onid = onid;
 	ref.dvbns = dvbns;
 
-	if (std::strlen(xdata))
+	if (std::strlen(xdata) > 1)
 	{
 		int x7, x8, x9;
 		char adata[385];
 		x7 = 0, x8 = 0, x9 = 0;
 
-		std::sscanf(xdata, "%d:%d:%d:%s", &x7, &x8, &x9, adata);
+		std::sscanf(xdata, ":%d:%d:%d%s", &x7, &x8, &x9, adata);
 
 		chref.x7 = x7;
 		chref.x8 = x8;
 		chref.x9 = x9;
 
-		if (std::strlen(adata))
+		if (std::strlen(adata) > 1)
 		{
-			string estream = adata;
-			size_t pos = estream.rfind(':');
+			string edata = adata;
+			size_t pos = edata.rfind(':');
 
 			if (pos != string::npos)
 			{
-				chref.uri = estream.substr(0, pos);
-				chref.value = estream.substr(pos);
+				chref.uri = edata.substr(0, pos);
+				chref.uri = chref.uri.size() > 1 ? chref.uri.substr(1) : "";
+				chref.uri = chref.uri.size() != 1 ? chref.uri : "";
+				chref.value = edata.substr(pos);
+				chref.value = chref.value.size() > 1 ? chref.value.substr(1) : "";
 				chref.stream = ! chref.uri.empty();
 			}
 		}
@@ -928,6 +930,7 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 		// stream
 		case ETYPE::ecustom:
 		case ETYPE::eservice:
+		case ETYPE::eytube:
 		break;
 		default:
 			error("parse_channel_reference", "Parser Error", "Not supported yet.");

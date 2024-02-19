@@ -110,7 +110,7 @@ void editTunersetsTable::tableSatLayout()
 	dtf0ss->setProperty("field", "flgs");
 	fields.emplace_back(dtf0ss);
 	dtf0ss->setMaximumWidth(100);
-	dtf0ss->setValidator(new QIntValidator);
+	dtf0ss->setValidator(new QIntValidator(0, 65535));
 	dtf0ss->setMaxLength(2);
 	platform::osLineEdit(dtf0ss);
 	dtf0->addRow(tr("Flags"), dtf0ss);
@@ -154,7 +154,7 @@ void editTunersetsTable::tableTerrestrialLayout()
 	dtf0ts->setProperty("field", "flgs");
 	fields.emplace_back(dtf0ts);
 	dtf0ts->setMaximumWidth(100);
-	dtf0ts->setValidator(new QIntValidator);
+	dtf0ts->setValidator(new QIntValidator(0, 65535));
 	dtf0ts->setMaxLength(2);
 	platform::osLineEdit(dtf0ts);
 	dtf0->addRow(tr("Flags"), dtf0ts);
@@ -197,7 +197,7 @@ void editTunersetsTable::tableCableLayout()
 	dtf0cs->setProperty("field", "flgs");
 	fields.emplace_back(dtf0cs);
 	dtf0cs->setMaximumWidth(100);
-	dtf0cs->setValidator(new QIntValidator);
+	dtf0cs->setValidator(new QIntValidator(0, 65535));
 	dtf0cs->setMaxLength(2);
 	platform::osLineEdit(dtf0cs);
 	dtf0->addRow(tr("Flags"), dtf0cs);
@@ -234,7 +234,7 @@ void editTunersetsTable::tableAtscLayout()
 	dtf0as->setProperty("field", "flgs");
 	fields.emplace_back(dtf0as);
 	dtf0as->setMaximumWidth(100);
-	dtf0as->setValidator(new QIntValidator);
+	dtf0as->setValidator(new QIntValidator(0, 65535));
 	dtf0as->setMaxLength(2);
 	platform::osLineEdit(dtf0as);
 	dtf0->addRow(tr("Flags"), dtf0as);

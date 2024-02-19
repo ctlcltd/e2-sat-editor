@@ -221,7 +221,7 @@ void editService::serviceLayout()
 	dtf0sx->setProperty("field", "ssid");
 	fields.emplace_back(dtf0sx);
 	dtf0sx->setMaximumWidth(60);
-	dtf0sx->setValidator(new QIntValidator);
+	dtf0sx->setValidator(new QIntValidator(0, 999999999));
 	platform::osLineEdit(dtf0sx);
 	dtb11->addWidget(dtf0sx);
 	dtb11->addWidget(new QLabel("[SID]"));
@@ -338,7 +338,7 @@ void editService::paramsLayout()
 	dtf2vp->setProperty("field", "vpid");
 	fields.emplace_back(dtf2vp);
 	dtf2vp->setMaximumWidth(48);
-	dtf2vp->setValidator(new QIntValidator);
+	dtf2vp->setValidator(new QIntValidator(0, 65535));
 	platform::osLineEdit(dtf2vp);
 	dtc20->addWidget(dtf2vp);
 	dtc20->addWidget(new QLabel("[VPID]"));
@@ -349,7 +349,7 @@ void editService::paramsLayout()
 	dtf2ma->setProperty("field", "mpegapid");
 	fields.emplace_back(dtf2ma);
 	dtf2ma->setMaximumWidth(48);
-	dtf2ma->setValidator(new QIntValidator);
+	dtf2ma->setValidator(new QIntValidator(0, 65535));
 	platform::osLineEdit(dtf2ma);
 	dtc21->addWidget(dtf2ma);
 	dtc21->addWidget(new QLabel("[APID]"));
@@ -360,7 +360,7 @@ void editService::paramsLayout()
 	dtf2tp->setProperty("field", "tpid");
 	fields.emplace_back(dtf2tp);
 	dtf2tp->setMaximumWidth(48);
-	dtf2tp->setValidator(new QIntValidator);
+	dtf2tp->setValidator(new QIntValidator(0, 65535));
 	platform::osLineEdit(dtf2tp);
 	dtc22->addWidget(dtf2tp);
 	dtc22->addWidget(new QLabel("[TXTPID]"));
@@ -371,7 +371,7 @@ void editService::paramsLayout()
 	dtf2pp->setProperty("field", "pcrpid");
 	fields.emplace_back(dtf2pp);
 	dtf2pp->setMaximumWidth(48);
-	dtf2pp->setValidator(new QIntValidator);
+	dtf2pp->setValidator(new QIntValidator(0, 65535));
 	platform::osLineEdit(dtf2pp);
 	dtc23->addWidget(dtf2pp);
 	dtc23->addWidget(new QLabel("[PCRPID]"));
@@ -382,7 +382,7 @@ void editService::paramsLayout()
 	dtf2a3->setProperty("field", "ac3pid");
 	fields.emplace_back(dtf2a3);
 	dtf2a3->setMaximumWidth(48);
-	dtf2a3->setValidator(new QIntValidator);
+	dtf2a3->setValidator(new QIntValidator(0, 65535));
 	platform::osLineEdit(dtf2a3);
 	dtc24->addWidget(dtf2a3);
 	dtc24->addWidget(new QLabel("[AC3PID]"));
@@ -393,7 +393,7 @@ void editService::paramsLayout()
 	dtf2vt->setProperty("field", "vtype");
 	fields.emplace_back(dtf2vt);
 	dtf2vt->setMaximumWidth(48);
-	dtf2vt->setValidator(new QIntValidator);
+	dtf2vt->setValidator(new QIntValidator(0, 65535));
 	platform::osLineEdit(dtf2vt);
 	dtc25->addWidget(dtf2vt);
 
@@ -403,7 +403,7 @@ void editService::paramsLayout()
 	dtf2ac->setProperty("field", "achannel");
 	fields.emplace_back(dtf2ac);
 	dtf2ac->setMaximumWidth(48);
-	dtf2ac->setValidator(new QIntValidator);
+	dtf2ac->setValidator(new QIntValidator(0, 65535));
 	platform::osLineEdit(dtf2ac);
 	dtc26->addWidget(dtf2ac);
 
@@ -413,7 +413,7 @@ void editService::paramsLayout()
 	dtf2ad->setProperty("field", "ac3delay");
 	fields.emplace_back(dtf2ad);
 	dtf2ad->setMaximumWidth(48);
-	dtf2ad->setValidator(new QIntValidator);
+	dtf2ad->setValidator(new QIntValidator(0, 65535));
 	platform::osLineEdit(dtf2ad);
 	dtc27->addWidget(dtf2ad);
 	dtc27->addWidget(new QLabel(QString("<small>%1</small>").arg(tr("ms."))));
@@ -424,7 +424,7 @@ void editService::paramsLayout()
 	dtf2pd->setProperty("field", "pcmdelay");
 	fields.emplace_back(dtf2pd);
 	dtf2pd->setMaximumWidth(48);
-	dtf2pd->setValidator(new QIntValidator);
+	dtf2pd->setValidator(new QIntValidator(0, 65535));
 	platform::osLineEdit(dtf2pd);
 	dtc28->addWidget(dtf2pd);
 	dtc28->addWidget(new QLabel(QString("<small>%1</small>").arg(tr("ms."))));
@@ -435,7 +435,7 @@ void editService::paramsLayout()
 	dtf2xt->setProperty("field", "subtitle");
 	fields.emplace_back(dtf2xt);
 	dtf2xt->setMaximumWidth(48);
-	dtf2xt->setValidator(new QIntValidator);
+	dtf2xt->setValidator(new QIntValidator(0, 65535));
 	platform::osLineEdit(dtf2xt);
 	dtc29->addWidget(dtf2xt);
 
@@ -445,7 +445,7 @@ void editService::paramsLayout()
 	dtf2at->setProperty("field", "atype");
 	fields.emplace_back(dtf2at);
 	dtf2at->setMaximumWidth(48);
-	dtf2at->setValidator(new QIntValidator);
+	dtf2at->setValidator(new QIntValidator(0, 65535));
 	platform::osLineEdit(dtf2at);
 	dtc2a->addWidget(dtf2at);
 
@@ -455,7 +455,7 @@ void editService::paramsLayout()
 	dtf2ap->setProperty("field", "apid");
 	fields.emplace_back(dtf2ap);
 	dtf2ap->setMaximumWidth(48);
-	dtf2ap->setValidator(new QIntValidator);
+	dtf2ap->setValidator(new QIntValidator(0, 65535));
 	platform::osLineEdit(dtf2ap);
 	dtc2b->addWidget(dtf2ap);
 
@@ -465,7 +465,7 @@ void editService::paramsLayout()
 	dtf2cx->setProperty("field", "cmax");
 	fields.emplace_back(dtf2cx);
 	dtf2cx->setMaximumWidth(48);
-	dtf2cx->setValidator(new QIntValidator);
+	dtf2cx->setValidator(new QIntValidator(0, 65535));
 	platform::osLineEdit(dtf2cx);
 	dtc2c->addWidget(dtf2cx);
 
@@ -475,7 +475,7 @@ void editService::paramsLayout()
 	dtf2mt->setProperty("field", "pmt");
 	fields.emplace_back(dtf2mt);
 	dtf2mt->setMaximumWidth(48);
-	dtf2mt->setValidator(new QIntValidator);
+	dtf2mt->setValidator(new QIntValidator(0, 65535));
 	platform::osLineEdit(dtf2mt);
 	dtc2d->addWidget(dtf2mt);
 
@@ -538,7 +538,7 @@ void editService::paramsLayout()
 	dtf2rc->setProperty("field", "raw_data");
 	fields.emplace_back(dtf2rc);
 	dtf2rc->setMinimumWidth(200);
-	dtf2rc->setMaxLength(255);
+	dtf2rc->setMaxLength(511);
 	platform::osLineEdit(dtf2rc);
 	dtf2r->addRow(tr("Raw edit parameters"), dtf2rc);
 	//: HTML formattation: %1text%2text%3text treat them as spaces
@@ -556,7 +556,7 @@ void editService::paramsLayout()
 	dtf2sn->setProperty("field", "snum");
 	fields.emplace_back(dtf2sn);
 	dtf2sn->setMaximumWidth(60);
-	dtf2sn->setValidator(new QIntValidator);
+	dtf2sn->setValidator(new QIntValidator(0, 999999999));
 	platform::osLineEdit(dtf2sn);
 	dtf2e->addRow(tr("Service Number"), dtf2sn);
 
@@ -564,7 +564,7 @@ void editService::paramsLayout()
 	dtf2sr->setProperty("field", "srcid");
 	fields.emplace_back(dtf2sr);
 	dtf2sr->setMaximumWidth(60);
-	dtf2sr->setValidator(new QIntValidator);
+	dtf2sr->setValidator(new QIntValidator(0, 999999999));
 	platform::osLineEdit(dtf2sr);
 	dtf2e->addRow(tr("Src ID"), dtf2sr);
 
@@ -588,6 +588,8 @@ void editService::tunerComboChanged(int index)
 		return;
 
 	auto* dbih = this->data->dbih;
+
+	dtf1tx->clear();
 
 	for (auto & x : txp_index[pos])
 	{
@@ -619,6 +621,8 @@ void editService::tabChanged(int index)
 		return;
 	}
 
+	bool retr = false;
+
 	if (dtf1tx->currentData().isNull())
 	{
 		edittx->setAddId();
@@ -628,11 +632,14 @@ void editService::tabChanged(int index)
 		QString qtxid = dtf1tx->currentData().toString();
 		string txid = qtxid.toStdString();
 
+		if (! this->state.transponder || this->txid != txid)
+			retr = true;
+
 		edittx->setEditId(txid);
 	}
 
 	edittx->layout(this->dial);
-	edittx->show();
+	edittx->show(retr);
 
 	QGridLayout* layout = new QGridLayout;
 	layout->setContentsMargins(0, 0, 0, 0);
@@ -660,6 +667,8 @@ void editService::store()
 	auto* dbih = this->data->dbih;
 
 	e2db::service ch;
+	string nw_txid;
+
 	if (this->state.edit)
 	{
 		if (! dbih->db.services.count(chid))
@@ -673,7 +682,7 @@ void editService::store()
 
 		string txid = edittx->getAddId();
 		if (! txid.empty())
-			ch.txid = txid;
+			nw_txid = txid;
 	}
 
 	for (auto & item : fields)
@@ -791,6 +800,10 @@ void editService::store()
 		ch.data.erase(e2db::SDATA::f);
 	}
 
+	if (! nw_txid.empty())
+	{
+		ch.txid = nw_txid;
+	}
 	if (ch.txid != this->txid)
 	{
 		e2db::transponder tx = dbih->db.transponders[ch.txid];
@@ -798,6 +811,12 @@ void editService::store()
 		ch.dvbns = tx.dvbns;
 		ch.onid = tx.onid;
 		this->txid = ch.txid;
+
+		/*char nw_chid[25];
+		// %4x:%4x:%8x
+		std::snprintf(nw_chid, 25, "%x:%x:%x", ch.ssid, tx.tsid, tx.dvbns);
+		
+		this->chid = ch.chid = nw_chid;*/
 	}
 
 	if (this->state.edit)

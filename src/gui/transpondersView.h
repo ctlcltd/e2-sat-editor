@@ -77,7 +77,7 @@ class transpondersView : public viewAbstract
 		void reset();
 		void listItemCopy(bool cut = false);
 		void listItemPaste();
-		void listItemDelete();
+		void listItemDelete(bool cut = false);
 		void updateIndex();
 
 		__state currentState() { return this->state; }

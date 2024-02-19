@@ -493,7 +493,7 @@ void transpondersView::listItemCopy(bool cut)
 	clipboard->setText(content.join("\n"));
 
 	if (cut)
-		listItemDelete();
+		listItemDelete(cut);
 
 	tabSetFlag(gui::TabListPaste, true);
 }
@@ -543,7 +543,7 @@ void transpondersView::listItemPaste()
 	this->data->setChanged(true);
 }
 
-void transpondersView::listItemDelete()
+void transpondersView::listItemDelete(bool cut)
 {
 	debug("listItemDelete");
 
@@ -552,9 +552,12 @@ void transpondersView::listItemDelete()
 	if (selected.empty())
 		return;
 
-	bool remove = tabRemoveQuestion(tr("Confirm deletetion", "message"), tr("Do you want to delete items?", "message"));
-	if (! remove)
-		return;
+	if (! cut)
+	{
+		bool remove = tabRemoveQuestion(tr("Confirm deletetion", "message"), tr("Do you want to delete items?", "message"));
+		if (! remove)
+			return;
+	}
 
 	list->header()->setSectionsClickable(false);
 	list->setDragEnabled(false);
