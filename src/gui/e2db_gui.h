@@ -30,6 +30,7 @@ class e2db : public ::e2se_e2db::e2db
 	Q_DECLARE_TR_FUNCTIONS(e2db)
 
 	public:
+		//TODO rename
 		struct entry
 		{
 			unordered_map<string, QStringList> transponders;

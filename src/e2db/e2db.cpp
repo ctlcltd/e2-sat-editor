@@ -514,89 +514,96 @@ void e2db::edit_transponder(string txid, transponder& tx)
 				it->second = tx.txid;
 		}
 
-		if (0)
+		changes.clear();
+
+		for (auto & x : db.services)
 		{
-			unordered_map<string, string> i_tmp;
+			service& ch = x.second;
 
-			for (auto & x : db.services)
+			if (ch.txid == txid)
 			{
-				service& ch = x.second;
+				string chid = x.first;
+				char nw_chid[25];
+				// %4x:%4x:%8x
+				std::snprintf(nw_chid, 25, "%x:%x:%x", ch.ssid, tx.tsid, tx.dvbns);
 
-				if (ch.txid == txid)
+				changes.emplace(ch.chid, nw_chid);
+
+				ch.chid = nw_chid;
+				ch.txid = tx.txid;
+				ch.tsid = tx.tsid;
+				ch.onid = tx.onid;
+				ch.dvbns = tx.dvbns;
+			}
+		}
+
+		for (auto & x : userbouquets)
+		{
+			for (auto & q : x.second.channels)
+			{
+				channel_reference& chref = q.second;
+
+				if (changes.count(chref.chid) && ! chref.marker)
 				{
-					string chid = x.first;
-					char nw_chid[25];
-					// %4x:%4x:%8x
-					std::snprintf(nw_chid, 25, "%x:%x:%x", ch.ssid, tx.tsid, tx.dvbns);
+					string chid = chref.chid;
+					string nw_chid = changes[chref.chid];
 
-					i_tmp.emplace(ch.chid, nw_chid);
+					chref.chid = nw_chid;
 
-					ch.chid = nw_chid;
-					ch.txid = tx.txid;
+					{
+						chref.ref.tsid = tx.tsid;
+						chref.ref.onid = tx.onid;
+						chref.ref.dvbns = tx.dvbns;
+					}
 				}
 			}
+		}
+
+		vector<string> i_names;
+
+		for (auto & x : index)
+		{
+			string iname = x.first;
+
+			if (iname == "txs")
+				continue;
+			else if (iname == "mks")
+				continue;
+			else if (iname.find("tns:") != string::npos)
+				continue;
+			else
+				i_names.emplace_back(iname);
+		}
+
+		for (string & iname : i_names)
+		{
+			for (auto & x : index[iname])
+			{
+				if (changes.count(x.second))
+				{
+					string chid = x.second;
+					string nw_chid = changes[x.second];
+
+					x.second = nw_chid;
+				}
+			}
+		}
+
+		for (auto & i : changes)
+		{
+			service ch = db.services[i.first];
+
+			db.services.erase(i.first);
+			db.services.emplace(i.second, ch);
 
 			for (auto & x : userbouquets)
 			{
-				for (auto & q : x.second.channels)
+				if (x.second.channels.count(i.first))
 				{
-					channel_reference& chref = q.second;
+					channel_reference chref = x.second.channels[i.first];
 
-					if (i_tmp.count(chref.chid) && ! chref.marker)
-					{
-						string chid = chref.chid;
-						string nw_chid = i_tmp[chref.chid];
-
-						chref.chid = nw_chid;
-					}
-				}
-			}
-
-			vector<string> i_names;
-
-			for (auto & x : index)
-			{
-				string iname = x.first;
-
-				if (iname == "txs")
-					continue;
-				else if (iname == "mks")
-					continue;
-				else if (iname.find("tns:") != string::npos)
-					continue;
-				else
-					i_names.emplace_back(iname);
-			}
-
-			for (string & iname : i_names)
-			{
-				for (auto & x : index[iname])
-				{
-					if (i_tmp.count(x.second))
-					{
-						string chid = x.second;
-						string nw_chid = i_tmp[x.second];
-
-						x.second = nw_chid;
-					}
-				}
-			}
-
-			for (auto & i : i_tmp)
-			{
-				service ch = db.services[i.first];
-				db.services.erase(i.first);
-				db.services.emplace(i.second, ch);
-
-				for (auto & x : userbouquets)
-				{
-					if (x.second.channels.count(i.first))
-					{
-						channel_reference chref = x.second.channels[i.first];
-
-						x.second.channels.erase(i.first);
-						x.second.channels.emplace(i.second, chref);
-					}
+					x.second.channels.erase(i.first);
+					x.second.channels.emplace(i.second, chref);
 				}
 			}
 		}

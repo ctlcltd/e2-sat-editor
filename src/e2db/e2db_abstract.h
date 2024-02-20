@@ -467,6 +467,8 @@ struct e2db_abstract : protected e2se::log_factory
 		unordered_map<string, vector<pair<int, string>>> index;
 		// collisions <chid string, vector<pair<chid string, increment int>>>
 		unordered_map<string, vector<pair<string, int>>> collisions;
+		// changes <chid string, string>
+		unordered_map<string, string> changes;
 
 		virtual ~e2db_abstract() = default;
 		static string editor_string(int html = 0);

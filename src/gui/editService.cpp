@@ -812,11 +812,11 @@ void editService::store()
 		ch.onid = tx.onid;
 		this->txid = ch.txid;
 
-		/*char nw_chid[25];
+		char nw_chid[25];
 		// %4x:%4x:%8x
 		std::snprintf(nw_chid, 25, "%x:%x:%x", ch.ssid, tx.tsid, tx.dvbns);
-		
-		this->chid = ch.chid = nw_chid;*/
+
+		this->chid = ch.chid = nw_chid;
 	}
 
 	if (this->state.edit)

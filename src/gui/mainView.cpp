@@ -1151,9 +1151,11 @@ void mainView::visualReindexList()
 
 void mainView::visualReloadList()
 {
-	debug("visualReloadList");
-
 	auto* dbih = this->data->dbih;
+
+	bool force = dbih->changes.size();
+
+	debug("visualReloadList", "force", force);
 
 	bool ub_locked = false;
 
@@ -1177,15 +1179,19 @@ void mainView::visualReloadList()
 	{
 		QTreeWidgetItem* item = list->topLevelItem(i);
 		string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
+		string nw_chid = chid;
 		bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 
-		if (marker || ! dbih->entries.services.count(chid))
+		if (force)
+			nw_chid = dbih->changes[chid];
+
+		if (marker || ! dbih->entries.services.count(nw_chid))
 		{
 			i++;
 			continue;
 		}
 
-		QStringList entry = dbih->entries.services[chid];
+		QStringList entry = dbih->entries.services[nw_chid];
 		bool locked = entry[1].size() || ub_locked;
 		entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
 		entry.prepend(item->text(ITEM_ROW_ROLE::x));
@@ -1194,7 +1200,14 @@ void mainView::visualReloadList()
 		item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
 		item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 		item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
+		if (force)
+			item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
 		i++;
+	}
+
+	if (force)
+	{
+		dbih->changes.clear();
 	}
 }
 
@@ -2638,7 +2651,7 @@ void mainView::putListItems(vector<QString> items)
 				chref.ref = ref;
 				chref.index = -1;
 				idx = "";
-				
+
 				entry = dbih->entryMarker(chref);
 				entry.prepend(x);
 
@@ -2668,7 +2681,7 @@ void mainView::putListItems(vector<QString> items)
 				e2db::transponder tx;
 				e2db::fec fec;
 				locked = (qs[3] == "0" ? false : true) || ub_locked;
-				
+
 				ch.ssid = ref.ssid;
 				ch.tsid = tx.tsid = ref.tsid;
 				ch.dvbns = tx.dvbns = ref.dvbns;
@@ -2705,25 +2718,25 @@ void mainView::putListItems(vector<QString> items)
 				{
 					tx.fec = fec.inner_fec;
 				}
-				
+
 				char txid[25];
 				// %4x:%8x
 				std::snprintf(txid, 25, "%x:%x", tx.tsid, tx.dvbns);
 				tx.txid = ch.txid = txid;
-				
+
 				char chid[25];
 				std::snprintf(chid, 25, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
 				ch.chid = chid;
-				
+
 				chref.chid = ch.chid;
 				chref.ref = ref;
 				chref.index = idx.toInt();
-				
+
 				if (! dbih->db.transponders.count(tx.txid))
 					dbih->addTransponder(tx);
 				if (! dbih->db.services.count(ch.chid))
 					dbih->addService(ch);
-				
+
 				entry = dbih->entries.services[chid];
 				entry.prepend(idx);
 				entry.prepend(x);
