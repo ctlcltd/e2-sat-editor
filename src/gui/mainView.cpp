@@ -662,13 +662,6 @@ void mainView::reset()
 	resetStatusBar();
 }
 
-void mainView::didChange()
-{
-	debug("didChange()");
-
-	visualReloadList();
-}
-
 void mainView::populate(QTreeWidget* tw)
 {
 	string curr;
@@ -1628,6 +1621,8 @@ void mainView::addUserbouquet()
 	updateTreeIndex();
 
 	this->data->setChanged(true);
+
+	tabPropagateChanges();
 }
 
 void mainView::editUserbouquet()
@@ -1668,6 +1663,8 @@ void mainView::editUserbouquet()
 	updateTreeIndex();
 
 	this->data->setChanged(true);
+
+	tabPropagateChanges();
 }
 
 void mainView::addChannel()
@@ -1798,6 +1795,8 @@ void mainView::addService()
 	updateStatusBar();
 
 	this->data->setChanged(true);
+
+	tabPropagateChanges();
 }
 
 void mainView::editService()
@@ -1884,6 +1883,8 @@ void mainView::editService()
 		visualReloadList();
 
 	this->data->setChanged(true);
+
+	tabPropagateChanges();
 }
 
 void mainView::addMarker()
@@ -2062,6 +2063,8 @@ void mainView::treeItemDelete()
 	updateStatusBar();
 
 	this->data->setChanged(true);
+
+	tabPropagateChanges();
 }
 
 void mainView::setServiceParentalLock()
@@ -2528,6 +2531,8 @@ void mainView::listItemDelete(bool cut)
 	updateStatusBar();
 
 	this->data->setChanged(true);
+
+	tabPropagateChanges();
 }
 
 void mainView::putListItems(vector<QString> items)
@@ -2584,8 +2589,6 @@ void mainView::putListItems(vector<QString> items)
 			qs = q.split('\t');
 			refid = qs[2].toStdString();
 			value = qs[1].toStdString();
-
-			qDebug() << "qs " << qs;
 
 			if (qs[6] == "MARKER")
 				reftype = REF_TYPE::marker;
@@ -2801,6 +2804,8 @@ void mainView::putListItems(vector<QString> items)
 	list->header()->setSectionsClickable(true);
 	list->setDragEnabled(true);
 	list->setAcceptDrops(true);
+
+	tabPropagateChanges();
 }
 
 void mainView::showTreeEditContextMenu(QPoint& pos)
@@ -2948,6 +2953,8 @@ void mainView::treeDropFromTree(QTreeWidgetItem* current)
 	updateTreeIndex();
 
 	tree->setCurrentItem(items.first());
+
+	tabPropagateChanges();
 }
 
 void mainView::treeDropFromList(QTreeWidgetItem* current)
@@ -2984,6 +2991,8 @@ void mainView::treeDropFromList(QTreeWidgetItem* current)
 	}
 
 	updateListReferences(current, items);
+
+	tabPropagateChanges();
 }
 
 void mainView::updateStatusBar(bool current)
@@ -3447,12 +3456,46 @@ void mainView::unsetPendingUpdateListIndex()
 	this->state.chx_pending = false;
 }
 
+void mainView::didChange()
+{
+	debug("didChange");
+
+	visualReloadList();
+}
+
+void mainView::update()
+{
+	debug("update");
+
+	if (this->state.tab_pending)
+	{
+		auto* dbih = this->data->dbih;
+
+		for (auto & q : cache)
+			q.second.clear();
+		cache.clear();
+
+		dbih->cache(true);
+
+		visualReloadList();
+
+		this->state.tab_pending = false;
+	}
+}
+
 void mainView::updateIndex()
 {
 	updateTreeIndex();
 	this->state.chx_pending = true;
 	updateListIndex();
 	this->state.chx_pending = false;
+}
+
+void mainView::updateFromTab()
+{
+	debug("updateFromTab");
+
+	this->state.tab_pending = true;
 }
 
 }

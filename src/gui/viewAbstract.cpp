@@ -634,6 +634,12 @@ void viewAbstract::tabPrintFile(bool all)
 		tid->printFile(all);
 }
 
+void viewAbstract::tabPropagateChanges()
+{
+	if (tid != nullptr)
+		tid->propagateChanges();
+}
+
 QToolBar* viewAbstract::toolBar()
 {
 	QToolBar* toolbar = new QToolBar;

@@ -35,6 +35,8 @@ class transpondersView : public viewAbstract
 			pair<int, Qt::SortOrder> sort;
 			// pending update list index
 			bool txx_pending = false;
+			// pending update from tab
+			bool tab_pending = false;
 		};
 
 		struct __action
@@ -78,7 +80,9 @@ class transpondersView : public viewAbstract
 		void listItemCopy(bool cut = false);
 		void listItemPaste();
 		void listItemDelete(bool cut = false);
+		void update();
 		void updateIndex();
+		void updateFromTab();
 
 		__state currentState() { return this->state; }
 

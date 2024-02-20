@@ -46,6 +46,8 @@ class channelBookView : public viewAbstract
 			int sy = -1;
 			// list_tree sort
 			pair<int, Qt::SortOrder> sort;
+			// pending update from tab
+			bool tab_pending = false;
 		};
 
 		enum views {
@@ -80,6 +82,8 @@ class channelBookView : public viewAbstract
 		void listItemPaste() {}
 		void listItemDelete(bool cut = false) {}
 		vector<QString> getSelected();
+		void update();
+		void updateFromTab();
 
 		QListWidget* side = nullptr;
 

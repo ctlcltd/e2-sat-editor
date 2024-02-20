@@ -164,31 +164,43 @@ gui::TAB_VIEW tab::getTabView()
 	return this->ttv;
 }
 
-void tab::tabSwitched()
+void tab::tabSwitch()
 {
-	debug("tabSwitched");
+	debug("tabSwitch");
 
 	retrieveFlags();
 	view->updateStatusBar();
 	view->updateStatusBar(true);
+
+	view->update();
 }
 
-void tab::tabChangeName(string path)
+void tab::updateTabName(string path)
 {
-	debug("tabChangeName");
+	debug("updateTabName");
 
 	string filename;
 
 	if (! path.empty())
 		filename = std::filesystem::path(path).filename().u8string();
 
-	gid->tabChangeName(ttid, filename);
+	gid->changeTabName(ttid, filename);
 
 	for (auto & child : childs)
 	{
 		int ttid = child->getTabId();
-		gid->tabChangeName(ttid, filename);
+		gid->changeTabName(ttid, filename);
 	}
+}
+
+void tab::updateIndex()
+{
+	debug("updateIndex");
+
+	if (this->child)
+		parent->updateIndex();
+
+	view->updateIndex();
 }
 
 void tab::setFlag(gui::GUI_CXE bit, bool flag)
@@ -429,7 +441,7 @@ void tab::layout()
 	if (QSettings().value("application/debug", DEBUG).toBool())
 	{
 		toolBarAction(bottom_toolbar, "§ Load seeds", [=]() { this->loadSeeds(); });
-		toolBarAction(bottom_toolbar, "§ Reset", [=]() { this->newFile(); this->tabChangeName(); });
+		toolBarAction(bottom_toolbar, "§ Reset", [=]() { this->newFile(); this->updateTabName(); });
 	}
 	toolBarSpacer(bottom_toolbar);
 #ifndef E2SE_DEMO
@@ -452,6 +464,23 @@ void tab::layout()
 	widget->setLayout(frm);
 
 	toolBarStyleSheet();
+}
+
+void tab::propagateChanges()
+{
+	debug("propagateChanges");
+
+	if (this->child)
+	{
+		parent->propagateChanges();
+	}
+	else
+	{
+		view->updateFromTab();
+
+		for (auto & child : childs)
+			child->view->updateFromTab();
+	}
 }
 
 void tab::settingsChanged()
@@ -592,11 +621,11 @@ bool tab::readFile(string path)
 
 	if (readen)
 	{
-		tabChangeName(path);
+		updateTabName(path);
 	}
 	else
 	{
-		tabChangeName();
+		updateTabName();
 
 		error("readFile", tr("File Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(path.data()).toStdString());
 
@@ -703,7 +732,7 @@ void tab::saveFile(bool saveas)
 	if (written)
 	{
 		if (saveas)
-			tabChangeName(path);
+			updateTabName(path);
 
 		if (statusBarIsVisible())
 			statusBarMessage(tr("Saved to %1", "message").arg(path.data()));
@@ -2401,17 +2430,6 @@ void tab::linkToWebsite(int page)
 void tab::linkToOnlineHelp(int page)
 {
 	gid->linkToOnlineHelp(page);
-}
-
-void tab::updateIndex()
-{
-	debug("updateIndex");
-
-	if (this->child)
-	{
-		parent->updateIndex();
-	}
-	view->updateIndex();
 }
 
 //TODO TEST potential SEGFAULT

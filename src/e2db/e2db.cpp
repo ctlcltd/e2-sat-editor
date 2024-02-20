@@ -595,8 +595,11 @@ void e2db::edit_transponder(string txid, transponder& tx)
 
 			db.services.erase(i.first);
 			db.services.emplace(i.second, ch);
+		}
 
-			for (auto & x : userbouquets)
+		for (auto & x : userbouquets)
+		{
+			for (auto & i : changes)
 			{
 				if (x.second.channels.count(i.first))
 				{

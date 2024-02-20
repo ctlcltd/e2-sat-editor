@@ -417,6 +417,8 @@ void transpondersView::addTransponder()
 	updateStatusBar();
 
 	this->data->setChanged(true);
+
+	tabPropagateChanges();
 }
 
 void transpondersView::editTransponder()
@@ -462,6 +464,8 @@ void transpondersView::editTransponder()
 	updateListIndex();
 
 	this->data->setChanged(true);
+
+	tabPropagateChanges();
 }
 
 void transpondersView::listItemCopy(bool cut)
@@ -584,6 +588,8 @@ void transpondersView::listItemDelete(bool cut)
 	updateStatusBar();
 
 	this->data->setChanged(true);
+
+	tabPropagateChanges();
 }
 
 //TODO handle duplicates
@@ -715,6 +721,8 @@ void transpondersView::putListItems(vector<QString> items)
 	list->header()->setSectionsClickable(true);
 	list->setDragEnabled(true);
 	list->setAcceptDrops(true);
+
+	tabPropagateChanges();
 }
 
 void transpondersView::updateStatusBar(bool current)
@@ -847,9 +855,36 @@ void transpondersView::updateListIndex()
 	this->state.txx_pending = false;
 }
 
+void transpondersView::update()
+{
+	debug("update");
+
+	if (this->state.tab_pending)
+	{
+		int column = list->sortColumn();
+		Qt::SortOrder order = list->header()->sortIndicatorOrder();
+
+		list->reset();
+
+		populate();
+
+		list->header()->setSortIndicator(column, order);
+		sortByColumn(column);
+
+		this->state.tab_pending = false;
+	}
+}
+
 void transpondersView::updateIndex()
 {
 	updateListIndex();
+}
+
+void transpondersView::updateFromTab()
+{
+	debug("updateFromTab");
+
+	this->state.tab_pending = true;
 }
 
 }

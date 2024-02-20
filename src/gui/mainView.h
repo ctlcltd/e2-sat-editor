@@ -57,6 +57,8 @@ class mainView : public viewAbstract
 			pair<int, Qt::SortOrder> sort;
 			// pending update list index
 			bool chx_pending = false;
+			// pending update from tab
+			bool tab_pending = false;
 		};
 
 		struct __action
@@ -124,14 +126,16 @@ class mainView : public viewAbstract
 		~mainView();
 		void load();
 		void reset();
-		void didChange();
 		void treeItemDelete();
 		void listReferenceToggle();
 		void listItemCopy(bool cut = false);
 		void listItemPaste();
 		void listItemDelete(bool cut = false);
 		void clipboardDataChanged();
+		void didChange();
+		void update();
 		void updateIndex();
+		void updateFromTab();
 
 		QTreeWidget* side = nullptr;
 

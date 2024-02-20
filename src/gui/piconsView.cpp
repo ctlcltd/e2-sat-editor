@@ -1025,6 +1025,32 @@ void piconsView::updateFlags()
 	tabUpdateFlags();
 }
 
+void piconsView::didChange()
+{
+	debug("didChange");
+
+	populate();
+}
+
+void piconsView::update()
+{
+	debug("update");
+
+	if (this->state.tab_pending)
+	{
+		populate();
+
+		this->state.tab_pending = false;
+	}
+}
+
+void piconsView::updateFromTab()
+{
+	debug("updateFromTab");
+
+	this->state.tab_pending = true;
+}
+
 QString piconsView::piconPathname(string chname)
 {
 	QString qstr = QString::fromStdString(chname).toLower();

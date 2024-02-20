@@ -65,11 +65,15 @@ class tab : protected e2se::log_factory
 		string getTabName();
 		gui::TAB_VIEW getTabView();
 		string getFilename();
+		void load();
+		void reset();
+		void propagateChanges();
 		void settingsChanged();
 		void themeChanged();
 		void clipboardDataChanged();
-		void tabSwitched();
-		void tabChangeName(string path = "");
+		void tabSwitch();
+		void updateTabName(string path = "");
+		void updateIndex();
 		void setFlag(gui::GUI_CXE bit, bool flag);
 		bool getFlag(gui::GUI_CXE bit);
 		void setFlags(int preset);
@@ -85,8 +89,6 @@ class tab : protected e2se::log_factory
 		void viewTunersets(tab* parent, int ytype);
 		void viewPicons(tab* parent);
 		void viewChannelBook(tab* parent);
-		void load();
-		void reset();
 		void actionCall(int bit);
 		void newFile();
 		void openFile();
@@ -100,7 +102,6 @@ class tab : protected e2se::log_factory
 		void linkToRepository(int page = 0);
 		void linkToWebsite(int page = 0);
 		void linkToOnlineHelp(int page = 0);
-		void updateIndex();
 		QTimer* statusBarMessage(QString message);
 		void statusBarMessage(QTimer* timer);
 		bool saveQuestion(QString title, QString message);

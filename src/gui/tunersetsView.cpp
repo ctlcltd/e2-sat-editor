@@ -728,6 +728,8 @@ void tunersetsView::addPosition()
 	updateStatusBar();
 
 	this->data->setChanged(true);
+
+	tabPropagateChanges();
 }
 
 void tunersetsView::editPosition()
@@ -774,6 +776,8 @@ void tunersetsView::editPosition()
 	item->setData(0, Qt::UserRole, idx);
 
 	this->data->setChanged(true);
+
+	tabPropagateChanges();
 }
 
 void tunersetsView::addTransponder()
@@ -842,6 +846,8 @@ void tunersetsView::addTransponder()
 	updateStatusBar();
 
 	this->data->setChanged(true);
+
+	tabPropagateChanges();
 }
 
 void tunersetsView::editTransponder()
@@ -895,6 +901,8 @@ void tunersetsView::editTransponder()
 	setPendingUpdateListIndex();
 
 	this->data->setChanged(true);
+
+	tabPropagateChanges();
 }
 
 void tunersetsView::treeItemDelete()
@@ -933,6 +941,8 @@ void tunersetsView::treeItemDelete()
 	updateStatusBar();
 
 	this->data->setChanged(true);
+
+	tabPropagateChanges();
 }
 
 void tunersetsView::listItemCopy(bool cut)
@@ -1078,6 +1088,8 @@ void tunersetsView::listItemDelete(bool cut)
 	updateStatusBar();
 
 	this->data->setChanged(true);
+
+	tabPropagateChanges();
 }
 
 //TODO handle duplicates
@@ -1220,6 +1232,8 @@ void tunersetsView::putListItems(vector<QString> items)
 	list->header()->setSectionsClickable(true);
 	list->setDragEnabled(true);
 	list->setAcceptDrops(true);
+
+	tabPropagateChanges();
 }
 
 void tunersetsView::updateStatusBar(bool current)
@@ -1452,12 +1466,39 @@ void tunersetsView::unsetPendingUpdateListIndex()
 	this->state.tvx_pending = false;
 }
 
+void tunersetsView::update()
+{
+	debug("update");
+
+	if (this->state.tab_pending)
+	{
+		int column = list->sortColumn();
+		Qt::SortOrder order = list->header()->sortIndicatorOrder();
+
+		list->reset();
+
+		populate();
+
+		list->header()->setSortIndicator(column, order);
+		sortByColumn(column);
+
+		this->state.tab_pending = false;
+	}
+}
+
 void tunersetsView::updateIndex()
 {
 	updateTreeIndex();
 	this->state.tvx_pending = true;
 	updateListIndex();
 	this->state.tvx_pending = false;
+}
+
+void tunersetsView::updateFromTab()
+{
+	debug("updateFromTab");
+
+	this->state.tab_pending = true;
 }
 
 }

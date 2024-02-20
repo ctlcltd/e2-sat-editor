@@ -270,7 +270,7 @@ class gui : protected e2se::log_factory
 		vector<string> importFileDialog(gui::GUI_DPORTS gde);
 		string exportFileDialog(GUI_DPORTS gde, string path, int& bit);
 		string exportFileDialog(GUI_DPORTS gde, string path);
-		void tabChangeName(int ttid, string path = "");
+		void changeTabName(int ttid, string path = "");
 		bool statusBarIsVisible();
 		bool statusBarIsHidden();
 		void statusBarShow();
@@ -320,10 +320,10 @@ class gui : protected e2se::log_factory
 		void updateSettings();
 		void resetSettings();
 		void editAction(GUI_CXE bit);
-		void tabViewSwitch(TAB_VIEW ttv);
-		void tabViewSwitch(TAB_VIEW ttv, int arg);
 		void tabChanged(int index);
 		void tabMoved(int from, int to);
+		void tabViewChanged(TAB_VIEW ttv);
+		void tabViewChanged(TAB_VIEW ttv, int arg);
 		void tabAction(TAB_ATS action);
 		void windowChanged();
 		int getTabId(int index);

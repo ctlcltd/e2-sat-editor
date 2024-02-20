@@ -700,34 +700,6 @@ void gui::resetSettings()
 	initSettings();
 }
 
-void gui::tabViewSwitch(TAB_VIEW ttv)
-{
-	tabViewSwitch(ttv, 0);
-}
-
-void gui::tabViewSwitch(TAB_VIEW ttv, int arg)
-{
-	debug("tabViewSwitch", "ttv", ttv);
-
-	switch (ttv)
-	{
-		case TAB_VIEW::transponders:
-			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Transponder"));
-			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Bouquet"));
-			gmenu[GUI_CXE::TabTreeFindNext]->setText(tr("Find N&ext Bouquet"));
-		break;
-		case TAB_VIEW::tunersets:
-			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Transponder"));
-			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Position"));
-			gmenu[GUI_CXE::TabTreeFindNext]->setText(tr("Find N&ext Position"));
-		break;
-		default:
-			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Channel"));
-			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Bouquet"));
-			gmenu[GUI_CXE::TabTreeFindNext]->setText(tr("Find N&ext Bouquet"));
-	}
-}
-
 int gui::newTab(string path)
 {
 	tab* ttab = new tab(this, mwid);
@@ -1006,9 +978,9 @@ void gui::tabChanged(int index)
 
 		tab* ttab = ttabs[ttid];
 		ttmenu[ttid]->setChecked(true);
-		ttab->tabSwitched();
+		ttab->tabSwitch();
 		TAB_VIEW ttv = ttab->getTabView();
-		tabViewSwitch(ttv);
+		tabViewChanged(ttv);
 	}
 }
 
@@ -1029,13 +1001,13 @@ void gui::tabMoved(int from, int to)
 	}
 }
 
-void gui::tabChangeName(int ttid, string path)
+void gui::changeTabName(int ttid, string path)
 {
-	debug("tabChangeName", "ttid", ttid);
+	debug("changeTabName", "ttid", ttid);
 
 	if (! ttabs.count(ttid))
 	{
-		return error("tabChangeName", tr("Error", "error").toStdString(), tr("Missing tab reference \"%1\".", "error").arg(ttid).toStdString());
+		return error("changeTabName", tr("Error", "error").toStdString(), tr("Missing tab reference \"%1\".", "error").arg(ttid).toStdString());
 	}
 
 	tab* ttab = ttabs[ttid];
@@ -1057,7 +1029,7 @@ void gui::tabChangeName(int ttid, string path)
 					{
 						int ttid = tab.second->getTabId();
 						count = twid->indexOf(tab.second->widget);
-						tabChangeName(ttid, path);
+						changeTabName(ttid, path);
 						break;
 					}
 				}
@@ -1073,7 +1045,7 @@ void gui::tabChangeName(int ttid, string path)
 		ttname = QString::fromStdString(path);
 	}
 
-	// debug("tabChangeName", "index", index);
+	// debug("changeTabName", "index", index);
 
 	switch (v)
 	{
@@ -1095,6 +1067,34 @@ void gui::tabChangeName(int ttid, string path)
 	twid->setTabToolTip(index, ttname);
 	ttmenu[ttid]->setText(ttname);
 	ttab->setTabName(ttname.toStdString());
+}
+
+void gui::tabViewChanged(TAB_VIEW ttv)
+{
+	tabViewChanged(ttv, 0);
+}
+
+void gui::tabViewChanged(TAB_VIEW ttv, int arg)
+{
+	debug("tabViewChanged", "ttv", ttv);
+
+	switch (ttv)
+	{
+		case TAB_VIEW::transponders:
+			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Transponder"));
+			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Bouquet"));
+			gmenu[GUI_CXE::TabTreeFindNext]->setText(tr("Find N&ext Bouquet"));
+		break;
+		case TAB_VIEW::tunersets:
+			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Transponder"));
+			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Position"));
+			gmenu[GUI_CXE::TabTreeFindNext]->setText(tr("Find N&ext Position"));
+		break;
+		default:
+			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Channel"));
+			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Bouquet"));
+			gmenu[GUI_CXE::TabTreeFindNext]->setText(tr("Find N&ext Bouquet"));
+	}
 }
 
 string gui::openFileDialog()

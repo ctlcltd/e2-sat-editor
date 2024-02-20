@@ -739,4 +739,36 @@ void channelBookView::updateFlags()
 	tabUpdateFlags();
 }
 
+//TODO tree item selection position
+void channelBookView::update()
+{
+	debug("update");
+
+	if (this->state.tab_pending)
+	{
+		int vv = side->currentRow();
+
+		int column = list->sortColumn();
+		Qt::SortOrder order = list->header()->sortIndicatorOrder();
+
+		tree->clear();
+		tree->reset();
+		list->reset();
+
+		stacker(vv);
+
+		list->header()->setSortIndicator(column, order);
+		sortByColumn(column);
+
+		this->state.tab_pending = false;
+	}
+}
+
+void channelBookView::updateFromTab()
+{
+	debug("updateFromTab");
+
+	this->state.tab_pending = true;
+}
+
 }

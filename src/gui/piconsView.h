@@ -29,8 +29,12 @@ class piconsView : public viewAbstract
 
 		struct __state
 		{
+			// picons directory
 			QString picons_dir;
+			// current picon
 			string curr_picon;
+			// pending update from tab
+			bool tab_pending = false;
 		};
 
 		struct __action
@@ -64,6 +68,9 @@ class piconsView : public viewAbstract
 		void listItemDelete(bool cut = false);
 		void listFindPerform(const QString& value, LIST_FIND flag);
 		void listFindClear(bool hidden = true);
+		void didChange();
+		void update();
+		void updateFromTab();
 
 		QListWidget* list = nullptr;
 

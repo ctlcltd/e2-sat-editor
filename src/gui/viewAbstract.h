@@ -109,7 +109,9 @@ class viewAbstract : protected e2se::log_factory
 		{
 			tabResetStatusBar();
 		}
+		virtual void update() {}
 		virtual void updateIndex() {}
+		virtual void updateFromTab() {}
 
 		QWidget* widget = nullptr;
 		QTreeWidget* list = nullptr;
@@ -159,6 +161,7 @@ class viewAbstract : protected e2se::log_factory
 		void tabImportFile();
 		void tabExportFile();
 		void tabPrintFile(bool all);
+		void tabPropagateChanges();
 
 		static QToolBar* toolBar();
 		static QAction* toolBarAction(QToolBar* toolbar, QString text, std::function<void()> trigger);
