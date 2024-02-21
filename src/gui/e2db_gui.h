@@ -75,7 +75,9 @@ class e2db : public ::e2se_e2db::e2db
 		bool write(string path);
 		void importFile(vector<string> paths);
 		void exportFile(int flags, vector<string> paths);
-		void importBlob(unordered_map<string, e2db_file> files, bool threading = false);
+		void importBlob(unordered_map<string, e2db_file> files);
+		bool haveErrors();
+		vector<string> getErrors();
 		QStringList entryTransponder(transponder tx);
 		QStringList entryTransponder(transponder tx, bool extended);
 		QStringList entryService(service ch);
@@ -86,14 +88,13 @@ class e2db : public ::e2se_e2db::e2db
 		static QString fixUnicodeChars(string str);
 
 	protected:
+		vector<string> errors;
+
 		e2db* newptr() override { return new e2se_gui::e2db; }
 		void setup();
 		void primer();
-
 		string msg(string str, string param) override;
-
 		void error(string msg, string optk, string optv) override;
-		bool threading = false;
 };
 }
 #endif /* e2db_gui_h */

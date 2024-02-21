@@ -3456,6 +3456,7 @@ void mainView::unsetPendingUpdateListIndex()
 	this->state.chx_pending = false;
 }
 
+//TODO rename updateFromSettings, preference parental
 void mainView::didChange()
 {
 	debug("didChange");

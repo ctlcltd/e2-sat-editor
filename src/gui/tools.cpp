@@ -218,21 +218,28 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 		tid->statusBarMessage(tr("Importing from %1 …", "message").arg(fname.data()));
 	}
 
+	bool read = false;
+
 	theme::setWaitCursor();
 
 	try
 	{
 		dbih->import_csv_file(fci, opts, paths);
+
+		read = true;
 	}
-	// handled by e2se_gui::e2db::error
 	catch (...)
 	{
-		theme::unsetWaitCursor();
-
-		return;
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(tr("File Error", "error"), tr("Error opening files.", "error")); }, Qt::QueuedConnection);
 	}
 
 	theme::unsetWaitCursor();
+
+	if (this->data->haveErrors())
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::importNotice); }, Qt::QueuedConnection);
+
+	if (! read)
+		return;
 
 	tid->reset();
 
@@ -290,21 +297,28 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 
 	auto* dbih = this->data->dbih;
 
+	bool write = false;
+
 	theme::setWaitCursor();
 
 	try
 	{
 		dbih->export_csv_file(fco, opts, path);
+
+		write = true;
 	}
-	// handled by e2se_gui::e2db::error
 	catch (...)
 	{
-		theme::unsetWaitCursor();
-
-		return;
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(tr("File Error", "error"), tr("Error writing files.", "error")); }, Qt::QueuedConnection);
 	}
 
 	theme::unsetWaitCursor();
+
+	if (this->data->haveErrors())
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::exportNotice); }, Qt::QueuedConnection);
+
+	if (! write)
+		return;
 
 	if (tid->statusBarIsVisible())
 		tid->statusBarMessage(tr("Exported to %1", "message").arg(path.data()));
@@ -360,21 +374,28 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 
 	auto* dbih = this->data->dbih;
 
+	bool write = false;
+
 	theme::setWaitCursor();
 
 	try
 	{
 		dbih->export_html_file(fco, opts, path);
+
+		write = true;
 	}
-	// handled by e2se_gui::e2db::error
 	catch (...)
 	{
-		theme::unsetWaitCursor();
-
-		return;
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(tr("File Error", "error"), tr("Error writing files.", "error")); }, Qt::QueuedConnection);
 	}
 
 	theme::unsetWaitCursor();
+
+	if (this->data->haveErrors())
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::exportNotice); }, Qt::QueuedConnection);
+
+	if (! write)
+		return;
 
 	if (tid->statusBarIsVisible())
 		tid->statusBarMessage(tr("Exported to %1", "message").arg(path.data()));

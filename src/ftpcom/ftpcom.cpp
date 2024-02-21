@@ -462,6 +462,8 @@ void ftpcom::fetch_paths()
 {
 	debug("fetch_paths");
 
+	ftdb.clear();
+
 	unordered_set<string> base = {baset, baseb, bases};
 	vector<string> list;
 

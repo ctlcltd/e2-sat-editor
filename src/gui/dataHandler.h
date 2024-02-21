@@ -10,8 +10,9 @@
  */
 
 #include <string>
+#include <vector>
 
-using std::string;
+using std::string, std::vector;
 
 #ifndef dataHandler_h
 #define dataHandler_h
@@ -30,6 +31,8 @@ class dataHandler : protected e2se::log_factory
 		bool readFile(string path);
 		bool readBlob(string path, unordered_map<string, e2db::e2db_file> files);
 		bool writeFile(string path);
+		bool haveErrors();
+		vector<string> getErrors();
 		void setChanged(bool changed);
 		bool hasChanged();
 		void setNewfile(bool newfile);

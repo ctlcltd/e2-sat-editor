@@ -38,7 +38,8 @@
           <li>Connection presets with most common Set-Top-Box settings</li>
           <li>Connection profile import and export</li>
           <li>FTP improvements</li>
-          <li>Bugfix</li>
+          <li>Heavy bugfix</li>
+          <li>Introducing stream type support (only parse and save)</li>
         </ul>
       </description>
     </release>

@@ -414,11 +414,8 @@ bool e2db::prepare(string filename)
 	try
 	{
 		if (! this->read(filename))
-		{
 			return false;
-		}
 	}
-	// handled by e2se_gui::e2db::error
 	catch (...)
 	{
 		return false;
@@ -436,18 +433,12 @@ bool e2db::write(string path)
 
 	try
 	{
-		if (! this->::e2se_e2db::e2db::write(path))
-		{
-			return false;
-		}
+		return this->::e2se_e2db::e2db::write(path);
 	}
-	// handled by e2se_gui::e2db::error
 	catch (...)
 	{
 		return false;
 	}
-
-	return true;
 }
 
 void e2db::importFile(vector<string> paths)
@@ -462,10 +453,9 @@ void e2db::importFile(vector<string> paths)
 
 		import_file(paths);
 	}
-	// handled by e2se_gui::e2db::error
 	catch (...)
 	{
-		return;
+		return false;
 	}
 
 	cache(merge);
@@ -483,13 +473,12 @@ void e2db::exportFile(int bit, vector<string> paths)
 		else
 			export_file(paths);
 	}
-	// handled by e2se_gui::e2db::error
 	catch (...)
 	{
 	}
 }
 
-void e2db::importBlob(unordered_map<string, e2db_file> files, bool threading)
+void e2db::importBlob(unordered_map<string, e2db_file> files)
 {
 	debug("importBlob");
 
@@ -497,25 +486,31 @@ void e2db::importBlob(unordered_map<string, e2db_file> files, bool threading)
 
 	try
 	{
-		this->threading = threading;
-
 		merge = this->get_input().size() != 0 ? true : false;
 
 		import_blob(files);
-
-		this->threading = ! threading;
 	}
-	// handled by e2se_gui::e2db::error
 	catch (...)
 	{
-		this->threading = ! threading;
-
 		// note: forward exceptions
 		throw;
 	}
 
 	cache(merge);
 	fixBouquets();
+}
+
+bool e2db::haveErrors()
+{
+	return this->errors.size() ? true : false;
+}
+
+vector<string> e2db::getErrors()
+{
+	vector<string> _errors = this->errors;
+	// this->errors.clear();
+
+	return _errors;
 }
 
 QStringList e2db::entryTransponder(transponder tx)
@@ -781,29 +776,7 @@ void e2db::error(string fn, string optk, string optv)
 {
 	this->::e2se_e2db::e2db::error(fn, tr(optk.data(), "error").toStdString(), tr(optv.data(), "error").toStdString());
 
-	if (this->threading)
-	{
-		throw std::runtime_error(optk + '\t' + optv + '\t' + fn);
-	}
-	else
-	{
-		QString qoptk = QString(optk.data());
-		QString qoptv = QString(optv.data());
-
-		QString title = tr(qoptk.toStdString().data(), "error");
-		QString message = tr(qoptv.toStdString().data(), "error");
-
-		title = title.toHtmlEscaped();
-		message = message.replace("<", "&lt;").replace(">", "&gt;");
-
-#ifndef Q_OS_MAC
-		QString text = message;
-#else
-		QString text = QString("%1\n\n%2").arg(title).arg(message);
-#endif
-
-		QMessageBox::critical(nullptr, title, text);
-	}
+	errors.emplace_back(tr(optk.data(), "error").toStdString() + '\t' + tr(optv.data(), "error").toStdString() + '\t' + fn);
 }
 
 }

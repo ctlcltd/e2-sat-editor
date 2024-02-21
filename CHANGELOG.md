@@ -12,8 +12,8 @@ All notable changes to this project will be documented in this file.
 - Connection presets with most common Set-Top-Box settings
 - Connection profile import and export
 - FTP improvements
-- Initial streams? support (only parse and save)
-- Bugfix
+- Heavy bugfix
+- Introducing stream type support (only parse and save)
 
 
 ## [v1.1.1]

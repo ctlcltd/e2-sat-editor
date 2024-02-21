@@ -595,7 +595,7 @@ bool tab::readFile(string path)
 
 #ifndef Q_OS_WASM
 	theme::setWaitCursor();
-	bool readen = this->data->readFile(path);
+	bool read = this->data->readFile(path);
 	theme::unsetWaitCursor();
 #else
 	unordered_map<string, e2db::e2db_file> files;
@@ -616,12 +616,15 @@ bool tab::readFile(string path)
 		files.emplace(file.filename, file);
 	}
 
-	bool readen = this->data->readBlob(path, files);
+	bool read = this->data->readBlob(path, files);
 #endif
 
-	if (readen)
+	if (read)
 	{
 		updateTabName(path);
+
+		if (this->data->haveErrors())
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(this->data->getErrors(), MSG_CODE::readNotice); }, Qt::QueuedConnection);
 	}
 	else
 	{
@@ -629,7 +632,10 @@ bool tab::readFile(string path)
 
 		error("readFile", tr("File Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(path.data()).toStdString());
 
-		errorMessage(tr("File Error", "error"), tr("Error opening files.", "error"));
+		if (this->data->haveErrors())
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(this->data->getErrors(), MSG_CODE::readNotice); }, Qt::QueuedConnection);
+		else
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(tr("File Error", "error"), tr("Error opening files.", "error")); }, Qt::QueuedConnection);
 
 		return false;
 	}
@@ -726,10 +732,10 @@ void tab::saveFile(bool saveas)
 	debug("saveFile", "path", path);
 
 	theme::setWaitCursor();
-	bool written = this->data->writeFile(path);
+	bool write = this->data->writeFile(path);
 	theme::unsetWaitCursor();
 
-	if (written)
+	if (write)
 	{
 		if (saveas)
 			updateTabName(path);
@@ -737,13 +743,16 @@ void tab::saveFile(bool saveas)
 		if (statusBarIsVisible())
 			statusBarMessage(tr("Saved to %1", "message").arg(path.data()));
 		else
-			infoMessage(tr("Saved!", "message"));
+			QMetaObject::invokeMethod(this->cwid, [=]() { infoMessage(tr("Saved!", "message")); }, Qt::QueuedConnection);
 	}
 	else
 	{
 		error("saveFile", tr("File Error", "error").toStdString(), tr("Error writing file \"%1\".", "error").arg(path.data()).toStdString());
 
-		errorMessage(tr("File Error", "error"), tr("Error writing files.", "error"));
+		if (this->data->haveErrors())
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(this->data->getErrors(), MSG_CODE::writeNotice); }, Qt::QueuedConnection);
+		else
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(tr("File Error", "error"), tr("Error writing files.", "error")); }, Qt::QueuedConnection);
 	}
 }
 
@@ -793,6 +802,9 @@ void tab::importFile()
 	theme::setWaitCursor();
 	dbih->importFile(paths);
 	theme::unsetWaitCursor();
+
+	if (this->data->haveErrors())
+		QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(this->data->getErrors(), MSG_CODE::importNotice); }, Qt::QueuedConnection);
 
 	view->reset();
 	view->load();
@@ -1030,6 +1042,9 @@ void tab::exportFile()
 	theme::setWaitCursor();
 	dbih->exportFile(bit, paths);
 	theme::unsetWaitCursor();
+
+	if (this->data->haveErrors())
+		QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(this->data->getErrors(), MSG_CODE::exportNotice); }, Qt::QueuedConnection);
 
 	if (statusBarIsVisible())
 	{
@@ -1891,7 +1906,7 @@ void tab::ftpUpload()
 				}
 				catch (std::runtime_error& err)
 				{
-					this->ftp_errors.emplace(fname, err.what());
+					this->ftp_errors.emplace_back(pair (fname, err.what()));
 
 					this->ftp_files.erase(filename);
 				}
@@ -1908,7 +1923,7 @@ void tab::ftpUpload()
 		thread->connect(thread, &QThread::finished, [=]() {
 			if (! this->ftp_errors.empty())
 			{
-				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(this->ftp_errors); }, Qt::QueuedConnection);
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(this->ftp_errors, MSG_CODE::ftpNotice); }, Qt::QueuedConnection);
 			}
 
 			if (this->ftp_files.empty())
@@ -2014,7 +2029,7 @@ void tab::ftpDownload()
 				}
 				catch (std::runtime_error& err)
 				{
-					this->ftp_errors.emplace(fname, err.what());
+					this->ftp_errors.emplace_back(pair (fname, err.what()));
 				}
 				catch (...)
 				{
@@ -2029,7 +2044,7 @@ void tab::ftpDownload()
 		thread->connect(thread, &QThread::finished, [=]() {
 			if (! this->ftp_errors.empty())
 			{
-				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(this->ftp_errors); }, Qt::QueuedConnection);
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(this->ftp_errors, MSG_CODE::ftpNotice); }, Qt::QueuedConnection);
 			}
 
 			if (this->ftp_files.empty())
@@ -2063,35 +2078,21 @@ void tab::ftpDownload()
 
 			try
 			{
-				dbih->importBlob(this->files, true);
-			}
-			catch(std::runtime_error& err)
-			{
-				this->files.clear();
-
-				QMetaObject::invokeMethod(this->cwid, [=]() {
-					//TODO TEST potential SEGFAULT
-					// note: consecutive call SEGFAULT
-					// this->newFile();
-
-					this->e2dbError(err.what());
-				}, Qt::QueuedConnection);
-
-				return;
+				dbih->importBlob(this->files);
 			}
 			catch (...)
 			{
 				this->files.clear();
 
-				QMetaObject::invokeMethod(this->cwid, [=]() {
-					//TODO TEST potential SEGFAULT
-					// note: consecutive call SEGFAULT
-					// this->newFile();
-
-					this->e2dbError();
-				}, Qt::QueuedConnection);
+				//TODO TEST potential SEGFAULT
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(); }, Qt::QueuedConnection);
 
 				return;
+			}
+
+			if (this->data->haveErrors())
+			{
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(this->data->getErrors(), MSG_CODE::parseNotice); }, Qt::QueuedConnection);
 			}
 
 			QMetaObject::invokeMethod(this->cwid, [=]() {
@@ -2132,7 +2133,7 @@ void tab::ftpReloadStb()
 		}
 		catch (std::runtime_error& err)
 		{
-			this->ftp_errors.emplace("Webif", err.what());
+			this->ftp_errors.emplace_back(pair ("Webif", err.what()));
 		}
 		catch (...)
 		{
@@ -2145,7 +2146,7 @@ void tab::ftpReloadStb()
 		}
 		catch (std::runtime_error& err)
 		{
-			this->ftp_errors.emplace("Telnet", err.what());
+			this->ftp_errors.emplace_back(pair ("Telnet", err.what()));
 		}
 		catch (...)
 		{
@@ -2279,7 +2280,7 @@ void tab::ftpStbReloadSuccessNotify()
 		infoMessage(tr("STB reload done.", "message"));
 }
 
-void tab::ftpStbReloadErrorNotify(unordered_map<string, string> errors)
+void tab::ftpStbReloadErrorNotify(vector<pair<string, string>> errors)
 {
 	string hostname;
 
@@ -2296,7 +2297,7 @@ void tab::ftpStbReloadErrorNotify(unordered_map<string, string> errors)
 	if (errors.empty())
 		errorMessage(tr("STB Reload Error", "error"), tr("Errors occurred during STB reload operations.", "error"));
 	else
-		ftpcomError(errors, true);
+		ftpcomError(errors, MSG_CODE::stbReloadNotice);
 }
 
 void tab::ftpcomError()
@@ -2306,83 +2307,12 @@ void tab::ftpcomError()
 
 void tab::ftpcomError(string error)
 {
-	stringstream ss (error);
-
-	string optk, optv, fn;
-	std::getline(ss, optk, '\t');
-	std::getline(ss, optv, '\t');
-	std::getline(ss, fn, '\t');
-
-	QString qoptk = QString(optk.data());
-	QString qoptv = QString(optv.data());
-
-	QString title = tr(qoptk.toStdString().data(), "error");
-	QString message = tr(qoptv.toStdString().data(), "error");
-
-	title = title.toHtmlEscaped();
-	message = message.replace("<", "&lt;").replace(">", "&gt;");
-
-#ifndef Q_OS_MAC
-	QString text = message;
-#else
-	QString text = QString("%1\n\n%2").arg(title).arg(message);
-#endif
-
-	QMessageBox::critical(this->cwid, title, text);
+	errorMessage(error);
 }
 
-void tab::ftpcomError(unordered_map<string, string> errors, bool reload)
+void tab::ftpcomError(vector<pair<string, string>> errors, MSG_CODE code)
 {
-	QStringList errlist;
-
-	for (auto & x : errors)
-	{
-		string filename = x.first;
-		stringstream ss (x.second);
-
-		string optk, optv, fn;
-		std::getline(ss, optk, '\t');
-		std::getline(ss, optv, '\t');
-		std::getline(ss, fn, '\t');
-
-		QString error = QString(QApplication::layoutDirection() == Qt::RightToLeft ? "(%4) %3 :%2 \"%1\"" : "\"%1\" %2: %3 (%4)").arg(filename.data()).arg(optk.data()).arg(optv.data()).arg(fn.data());
-
-		errlist.append(error);
-	}
-
-	QString title, message;
-	QString error_detailed = errlist.join("\n");
-
-	if (! reload)
-	{
-		title = tr("FTP Notice", "error");
-		message = QString("%1\n\n%2")
-			.arg(tr("Successfull transfer.", "message"))
-			.arg(tr("Errors occurred during FTP operations.", "error"));
-	}
-	else
-	{
-		title = tr("STB Reload Notice", "error");
-		message = QString("%1\n\n%2")
-			.arg(tr("STB reload done.", "message"))
-			.arg(tr("Errors occurred during STB reload operations.", "error"));
-	}
-
-	title = title.toHtmlEscaped();
-	message = message.replace("<", "&lt;").replace(">", "&gt;");
-	error_detailed = error_detailed.replace("<", "&lt;").replace(">", "&gt;");
-
-	QMessageBox msg = QMessageBox(this->cwid);
-
-	msg.setIcon(QMessageBox::Warning);
-	msg.setTextFormat(Qt::PlainText);
-	msg.setText(title);
-	msg.setInformativeText(message);
-	msg.setDetailedText(error_detailed);
-	// QRect pos = msg.geometry();
-	// pos.moveCenter(QPoint(this->cwid->width() / 2, this->cwid->height() / 2));
-	// msg.setGeometry(pos);
-	msg.exec();
+	noticeMessage(errors, code);
 }
 
 void tab::e2dbError()
@@ -2392,29 +2322,28 @@ void tab::e2dbError()
 
 void tab::e2dbError(string error)
 {
-	stringstream ss (error);
+	errorMessage(error);
+}
 
-	string optk, optv, fn;
-	std::getline(ss, optk, '\t');
-	std::getline(ss, optv, '\t');
-	std::getline(ss, fn, '\t');
+void tab::e2dbError(QString title, QString message)
+{
+	errorMessage(title, message);
+}
 
-	QString qoptk = QString(optk.data());
-	QString qoptv = QString(optv.data());
+//TODO improve logger with filenames
+void tab::e2dbError(vector<string> errors, MSG_CODE code)
+{
+	vector<pair<string, string>> _errors;
+	int errcount = 0;
 
-	QString title = e2db::tr(qoptk.toStdString().data(), "error");
-	QString message = e2db::tr(qoptv.toStdString().data(), "error");
+	for (auto & error : errors)
+	{
+		string errnum = "i=" + to_string(errcount);
+		_errors.emplace_back(pair (errnum, error));
+		errcount++;
+	}
 
-	title = title.toHtmlEscaped();
-	message = message.replace("<", "&lt;").replace(">", "&gt;");
-
-#ifndef Q_OS_MAC
-	QString text = message;
-#else
-	QString text = QString("%1\n\n%2").arg(title).arg(message);
-#endif
-
-	QMessageBox::critical(this->cwid, title, text);
+	noticeMessage(_errors, code);
 }
 
 void tab::linkToRepository(int page)
@@ -2443,22 +2372,16 @@ QTimer* tab::statusBarMessage(QString message)
 	QTimer* timer = new QTimer(widget);
 	timer->setSingleShot(true);
 	timer->setInterval(STATUSBAR_MESSAGE_TIMEOUT);
-	timer->callOnTimeout([=]() { this->resetStatusBar(true); delete timer; });
+	timer->callOnTimeout([=]() { this->resetStatusBar(true); timer->stop(); });
 	timer->start();
 
 	return timer;
 }
 
+//TODO TEST potential SEGFAULT
 void tab::statusBarMessage(QTimer* timer)
 {
-	if (timer == nullptr)
-	{
-		QTimer* timer = new QTimer(widget);
-		timer->setSingleShot(true);
-		timer->setInterval(STATUSBAR_MESSAGE_DELAY);
-		timer->callOnTimeout([=]() { this->resetStatusBar(true); delete timer; });
-	}
-	else
+	if (timer != nullptr)
 	{
 		timer->stop();
 		timer->setInterval(STATUSBAR_MESSAGE_DELAY);
@@ -2559,6 +2482,94 @@ void tab::errorMessage(QString title, QString message)
 #endif
 
 	QMessageBox::critical(this->cwid, title, text);
+}
+
+void tab::errorMessage(string error)
+{
+	stringstream ss (error);
+
+	string optk, optv, fn;
+	std::getline(ss, optk, '\t');
+	std::getline(ss, optv, '\t');
+	std::getline(ss, fn, '\t');
+
+	QString title = QString(optk.data());
+	QString message = QString(optv.data());
+
+	title = title.toHtmlEscaped();
+	message = message.replace("<", "&lt;").replace(">", "&gt;");
+
+#ifndef Q_OS_MAC
+	QString text = message;
+#else
+	QString text = QString("%1\n\n%2").arg(title).arg(message);
+#endif
+
+	QMessageBox::critical(this->cwid, title, text);
+}
+
+void tab::noticeMessage(vector<pair<string, string>> errors, MSG_CODE code)
+{
+	QStringList errlist;
+
+	for (auto & x : errors)
+	{
+		string filename = x.first;
+		stringstream ss (x.second);
+
+		string optk, optv, fn;
+		std::getline(ss, optk, '\t');
+		std::getline(ss, optv, '\t');
+		std::getline(ss, fn, '\t');
+
+		QString error = QString(QApplication::layoutDirection() == Qt::RightToLeft ? "(%4) [%3] %2 :%1" : "%1: %2 [%3] (%4)").arg(optk.data()).arg(optv.data()).arg(fn.data()).arg(filename.data());
+
+		errlist.append(error);
+	}
+
+	QString title, message;
+	QString error_detailed = errlist.join("\n");
+
+	if (code == MSG_CODE::ftpNotice)
+	{
+		title = tr("FTP Notice", "error");
+		message = QString("%1\n\n%2")
+			.arg(tr("Successfull transfer.", "message"))
+			.arg(tr("Errors occurred during FTP operations.", "error"));
+	}
+	else if (code == MSG_CODE::stbReloadNotice)
+	{
+		title = tr("STB Reload Notice", "error");
+		message = QString("%1\n\n%2")
+			.arg(tr("STB reload done.", "message"))
+			.arg(tr("Errors occurred during STB reload operations.", "error"));
+	}
+	else if (code == MSG_CODE::parseNotice || code == MSG_CODE::readNotice || code == MSG_CODE::importNotice)
+	{
+		title = e2db::tr("Parser Error", "error");
+		message = tr("Errors occurred during parsing operations.", "error");
+	}
+	else if (code == MSG_CODE::writeNotice || code == MSG_CODE::exportNotice)
+	{
+		title = e2db::tr("Maker Error", "error");
+		message = tr("Error writing files.", "error");
+	}
+
+	title = title.toHtmlEscaped();
+	message = message.replace("<", "&lt;").replace(">", "&gt;");
+	error_detailed = error_detailed.replace("<", "&lt;").replace(">", "&gt;");
+
+	QMessageBox msg = QMessageBox(this->cwid);
+
+	msg.setIcon(QMessageBox::Warning);
+	msg.setTextFormat(Qt::PlainText);
+	msg.setText(title);
+	msg.setInformativeText(message);
+	msg.setDetailedText(error_detailed);
+	// QRect pos = msg.geometry();
+	// pos.moveCenter(QPoint(this->cwid->width() / 2, this->cwid->height() / 2));
+	// msg.setGeometry(pos);
+	msg.exec();
 }
 
 void tab::demoMessage()

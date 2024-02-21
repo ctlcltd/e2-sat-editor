@@ -89,9 +89,9 @@ string ftpcom::msg(string str)
 
 void ftpcom::error(string fn, string optk, string optv)
 {
-	this->::e2se_ftpcom::ftpcom::error(fn, tr(optk.data(), "error").toStdString(), tr(optv.data()).toStdString());
+	this->::e2se_ftpcom::ftpcom::error(fn, tr(optk.data(), "error").toStdString(), tr(optv.data(), "error").toStdString());
 
-	throw std::runtime_error(optk + '\t' + optv + '\t' + fn);
+	throw std::runtime_error(tr(optk.data(), "error").toStdString() + '\t' + tr(optv.data(), "error").toStdString() + '\t' + fn);
 }
 
 }

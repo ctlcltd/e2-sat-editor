@@ -53,6 +53,16 @@ class tab : protected e2se::log_factory
 			tools_html
 		};
 
+		enum MSG_CODE {
+			ftpNotice,
+			stbReloadNotice,
+			parseNotice,
+			readNotice,
+			writeNotice,
+			importNotice,
+			exportNotice
+		};
+
 		tab(gui* gid, QWidget* cwid);
 		virtual ~tab();
 		bool isChild();
@@ -99,6 +109,13 @@ class tab : protected e2se::log_factory
 		void printFile(bool all);
 		void infoFile();
 		void settingsDialog();
+		void ftpcomError();
+		void ftpcomError(string error);
+		void ftpcomError(vector<pair<string, string>> errors, MSG_CODE code);
+		void e2dbError();
+		void e2dbError(string error);
+		void e2dbError(QString title, QString message);
+		void e2dbError(vector<string> errors, MSG_CODE code);
 		void linkToRepository(int page = 0);
 		void linkToWebsite(int page = 0);
 		void linkToOnlineHelp(int page = 0);
@@ -109,6 +126,8 @@ class tab : protected e2se::log_factory
 		void infoMessage(QString message);
 		void infoMessage(QString title, QString message);
 		void errorMessage(QString title, QString message);
+		void errorMessage(string error);
+		void noticeMessage(vector<pair<string, string>> errors, MSG_CODE code);
 		void demoMessage();
 
 		QWidget* widget = nullptr;
@@ -138,16 +157,11 @@ class tab : protected e2se::log_factory
 		void ftpStbUploadNotify(int files_count);
 		void ftpStbUploadNotify(string filename);
 		void ftpStbReloadSuccessNotify();
-		void ftpStbReloadErrorNotify(unordered_map<string, string> errors);
+		void ftpStbReloadErrorNotify(vector<pair<string, string>> errors);
 		void ftpStbConnectSuccessNotify();
 		void ftpStbConnectErrorNotify();
 		void ftpStbDisconnectSuccessNotify();
 		void ftpStbDisconnectErrorNotify();
-		void ftpcomError();
-		void ftpcomError(string error);
-		void ftpcomError(unordered_map<string, string> errors, bool reload = false);
-		void e2dbError();
-		void e2dbError(string error);
 		void loadSeeds();
 
 		static QToolBar* toolBar(int type);
@@ -171,7 +185,7 @@ class tab : protected e2se::log_factory
 		QComboBox* ftp_combo;
 
 		unordered_map<string, e2se_ftpcom::ftpcom::ftpcom_file> ftp_files;
-		unordered_map<string, string> ftp_errors;
+		vector<pair<string, string>> ftp_errors;
 		int stb_reload = 0;
 		unordered_map<string, e2db::e2db_file> files;
 

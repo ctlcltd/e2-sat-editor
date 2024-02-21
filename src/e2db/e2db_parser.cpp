@@ -979,7 +979,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)
 		case YTYPE::atsc:
 		break;
 		default:
-		return error("parse_tunersets_xml", "Parser Error", "These settings are not supported.");
+			return error("parse_tunersets_xml", "Parser Error", "These settings are not supported.");
 	}
 
 	tunersets tv;

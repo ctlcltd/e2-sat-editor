@@ -81,7 +81,6 @@ bool dataHandler::readBlob(string path, unordered_map<string, e2db::e2db_file> f
 		if (! this->path.empty())
 			this->path = path;
 	}
-	// handled by e2se_gui::e2db::error
 	catch (...)
 	{
 		return false;
@@ -105,6 +104,22 @@ bool dataHandler::writeFile(string path)
 	}
 
 	return false;
+}
+
+bool dataHandler::haveErrors()
+{
+	if (this->dbih != nullptr)
+		return this->dbih->haveErrors();
+
+	return false;
+}
+
+vector<string> dataHandler::getErrors()
+{
+	if (this->dbih != nullptr)
+		return this->dbih->getErrors();
+
+	return {};
 }
 
 void dataHandler::setChanged(bool changed)
