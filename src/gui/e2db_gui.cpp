@@ -407,7 +407,7 @@ void e2db::unsetUserbouquetParentalLock(string bname)
 	this->::e2se_e2db::e2db::unset_userbouquet_parentallock(bname);
 }
 
-bool e2db::prepare(string filename)
+bool e2db::prepare(string filename) noexcept
 {
 	debug("prepare");
 
@@ -427,7 +427,7 @@ bool e2db::prepare(string filename)
 	return true;
 }
 
-bool e2db::write(string path)
+bool e2db::write(string path) noexcept
 {
 	debug("write");
 
@@ -441,53 +441,43 @@ bool e2db::write(string path)
 	}
 }
 
-void e2db::importFile(vector<string> paths)
+void e2db::importFile(vector<string> paths) noexcept
 {
 	debug("importFile");
 
-	bool merge = false;
+	bool merge = this->get_input().size() != 0 ? true : false;
 
 	try
 	{
-		merge = this->get_input().size() != 0 ? true : false;
-
 		import_file(paths);
 	}
 	catch (...)
 	{
-		return false;
+		return;
 	}
 
 	cache(merge);
 	// fixBouquets();
 }
 
-void e2db::exportFile(int bit, vector<string> paths)
+void e2db::exportFile(int bit, vector<string> paths) noexcept
 {
 	debug("exportFile");
 
-	try
-	{
-		if (bit != -1)
-			export_file(FPORTS (bit), paths);
-		else
-			export_file(paths);
-	}
-	catch (...)
-	{
-	}
+	if (bit != -1)
+		export_file(FPORTS (bit), paths);
+	else
+		export_file(paths);
 }
 
 void e2db::importBlob(unordered_map<string, e2db_file> files)
 {
 	debug("importBlob");
 
-	bool merge = false;
+	bool merge = this->get_input().size() != 0 ? true : false;
 
 	try
 	{
-		merge = this->get_input().size() != 0 ? true : false;
-
 		import_blob(files);
 	}
 	catch (...)
@@ -507,8 +497,8 @@ bool e2db::haveErrors()
 
 vector<string> e2db::getErrors()
 {
-	vector<string> _errors = this->errors;
-	// this->errors.clear();
+	vector<string> _errors = vector (this->errors);
+	this->errors.clear();
 
 	return _errors;
 }
