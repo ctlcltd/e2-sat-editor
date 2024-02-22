@@ -1,5 +1,5 @@
 #!/bin/bash
-# Testing appimage
+# Testing appimage e2-sat-editor
 # 
 
 ## Ubuntu 22.04 LTS

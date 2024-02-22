@@ -39,6 +39,8 @@ map<string, string> connectionPresets::call(connectionPresets::PRESET preset)
 		case wtplay: return preset_wtplay();
 		case enigma_1: return preset_enigma_1();
 	}
+
+	return {};
 }
 
 map<string, string> connectionPresets::preset_enigma_24()

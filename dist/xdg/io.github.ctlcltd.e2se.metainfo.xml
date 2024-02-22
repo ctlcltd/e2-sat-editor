@@ -29,7 +29,6 @@
   <content_rating type="oars-1.1" />
   <provides>
     <binary>e2-sat-editor</binary>
-    <binary>e2se-cli</binary>
   </provides>
   <releases>
     <release version="1.2.0" date="2024-02-22">
