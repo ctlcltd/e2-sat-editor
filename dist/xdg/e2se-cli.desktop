@@ -4,6 +4,7 @@ Name=e2se-cli
 Comment=e2 SAT Editor command-line interface
 TryExec=e2se-cli
 Exec=e2se-cli
+Icon=e2se-cli
 Terminal=true
 NoDisplay=true
 Categories=AudioVideo;Video;TV;
