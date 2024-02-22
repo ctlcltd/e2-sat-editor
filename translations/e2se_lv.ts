@@ -3122,6 +3122,11 @@ VAI LIETOŠANA VAI CITI DARĪJUMI AR PROGRAMMATŪRU.</translation>
         <comment>error</comment>
         <translation>Kļūda atverot failus.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>Kļūda rakstot failus.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

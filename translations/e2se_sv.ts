@@ -3113,6 +3113,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>error</comment>
         <translation>Det gick inte att öppna filer.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>Det gick inte att skriva filer.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

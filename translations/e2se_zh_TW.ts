@@ -3114,6 +3114,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>error</comment>
         <translation>打開文件時出錯。</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>寫入文件時出錯。</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

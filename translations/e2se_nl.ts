@@ -3121,6 +3121,11 @@ HANDELINGEN IN DE SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Fout bij openen van bestanden.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>Fout bij het schrijven van bestanden.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

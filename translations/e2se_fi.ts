@@ -3120,6 +3120,11 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
         <comment>error</comment>
         <translation>Virhe avattaessa tiedostoja.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>Virhe tiedostojen kirjoittamisessa.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

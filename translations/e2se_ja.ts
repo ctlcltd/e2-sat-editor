@@ -3118,6 +3118,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>error</comment>
         <translation>ファイルを開くときにエラーが発生しました。</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>ファイルの書き込みエラー。</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

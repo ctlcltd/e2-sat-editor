@@ -3123,6 +3123,11 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Chyba pri otváraní súborov.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>Chyba pri zapisovaní súborov.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

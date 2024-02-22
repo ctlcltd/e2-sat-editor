@@ -3120,6 +3120,11 @@ O CON ALTRE OPERAZIONI DEL SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Errore di apertura file.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>Errore di scrittura su file.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

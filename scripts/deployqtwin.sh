@@ -131,7 +131,16 @@ path_target () {
 relname () {
 	local path="$1"
 
-	path="${path%%$_DEST_DIR*}"
+	local _path="$path"
+	local filename=$(basename "$path")
+	path="${path##$_DEST_DIR}"
+
+	if [[ "$path" == "$filename" ]]; then
+		local dirname=$(dirname "$_path")
+		dirname=$(basename "$dirname")
+
+		path="${dirname}/${filename}"
+	fi
 
 	echo "$path"
 }

@@ -3120,6 +3120,11 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
         <comment>error</comment>
         <translation>S&apos;ha produït un error en obrir els fitxers.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>S&apos;ha produït un error en escriure fitxers.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

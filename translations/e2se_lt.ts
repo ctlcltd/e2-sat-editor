@@ -3122,6 +3122,11 @@ NAUDOJIMO AR SU KITAIS SU JAIS PROGRAMINĖ ĮRANGA.</translation>
         <comment>error</comment>
         <translation>Klaida atidarant failus.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>Klaida rašant failus.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

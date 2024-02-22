@@ -3121,6 +3121,11 @@ OU O USO OU OUTROS TRATOS DO SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Erro ao abrir os ficheiros.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>Erro ao escribir ficheiros.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

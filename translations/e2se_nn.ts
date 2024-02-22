@@ -3120,6 +3120,11 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
         <comment>error</comment>
         <translation>Feil ved åpning av filer.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>Feil ved skriving av filer.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

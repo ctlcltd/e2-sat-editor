@@ -3125,6 +3125,11 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
         <comment>error</comment>
         <translation>Pogreška pri otvaranju datoteka.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>Greška pri pisanju datoteka.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

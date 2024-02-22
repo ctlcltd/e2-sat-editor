@@ -3119,6 +3119,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>error</comment>
         <translation>שגיאה בפתיחת קבצים.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>שגיאה בכתיבת קבצים.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

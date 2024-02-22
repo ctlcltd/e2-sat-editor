@@ -3103,6 +3103,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>message</comment>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

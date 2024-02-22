@@ -3120,6 +3120,11 @@ O SOFTWARE OU O USO OU OUTROS NEGÓCIOS NO PROGRAMAS.</translation>
         <comment>error</comment>
         <translation>Erro ao abrir arquivos.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>Erro ao gravar arquivos.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

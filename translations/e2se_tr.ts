@@ -3110,6 +3110,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>error</comment>
         <translation>Dosyalar açılırken hata oluştu.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>Dosyalar yazılırken hata oluştu.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

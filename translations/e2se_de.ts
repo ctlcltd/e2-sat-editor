@@ -3121,6 +3121,11 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Fehler beim Öffnen der Dateien.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>Fehler beim Schreiben der Dateien.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

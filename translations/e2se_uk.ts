@@ -3125,6 +3125,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>error</comment>
         <translation>Помилка відкриття файлів.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>Помилка запису файлів.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

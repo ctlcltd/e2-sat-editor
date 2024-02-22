@@ -6,8 +6,8 @@ All notable changes to this project will be documented in this file.
 ## [v1.2.0]
 
 **Version**: 1.2  
-**Release Date**: *unreleased*  
-**Full Changelog**: [v1.1.1...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.1.1...HEAD)
+**Release Date**: 2024-02-22  
+**Full Changelog**: [v1.1.1...v1.2.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.1.1...v1.2.0)
 
 - Connection presets with most common Set-Top-Box settings
 - Connection profile import and export

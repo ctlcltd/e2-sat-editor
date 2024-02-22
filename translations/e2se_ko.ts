@@ -3115,6 +3115,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>error</comment>
         <translation>파일을 여는 중 오류가 발생했습니다.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>파일을 쓰는 중 오류가 발생했습니다.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

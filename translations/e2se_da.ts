@@ -3119,6 +3119,11 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Fejl ved åbning af filer.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>Fejl ved skrivning af filer.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

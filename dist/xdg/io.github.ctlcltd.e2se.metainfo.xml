@@ -32,7 +32,7 @@
     <binary>e2se-cli</binary>
   </provides>
   <releases>
-    <release version="1.2.0" date="1970-01-01">
+    <release version="1.2.0" date="2024-02-22">
       <description>
         <ul>
           <li>Connection presets with most common Set-Top-Box settings</li>

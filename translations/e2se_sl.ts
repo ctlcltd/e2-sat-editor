@@ -3126,6 +3126,11 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
         <comment>error</comment>
         <translation>Napaka pri odpiranju datotek.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>Napaka pri pisanju datotek.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

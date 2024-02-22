@@ -3127,6 +3127,11 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
         <comment>error</comment>
         <translation>Thachair mearachd le fosgladh fhaidhlichean.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>Thachair mearachd a&apos; sgrìobhadh fhaidhlichean.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

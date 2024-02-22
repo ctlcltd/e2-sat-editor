@@ -3122,6 +3122,11 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Při otevírání souborů došlo k chybě.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>Chyba při zápisu souborů.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

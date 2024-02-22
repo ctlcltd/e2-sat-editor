@@ -3118,6 +3118,11 @@ VAGY A SZOFTVER FELHASZNÁLÁSA VAGY EGYÉB KERESKEDELME.</translation>
         <comment>error</comment>
         <translation>Hiba a fájlok megnyitásakor.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>Hiba a fájlok írása közben.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

@@ -3124,6 +3124,11 @@ LUB INNYCH DZIAŁALNOŚCI W OPROGRAMOWANIE.</translation>
         <comment>error</comment>
         <translation>Błąd podczas otwierania plików.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>Błąd podczas zapisywania plików.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>

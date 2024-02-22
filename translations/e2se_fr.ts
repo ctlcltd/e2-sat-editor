@@ -3122,6 +3122,11 @@ OU D&apos;AUTRES OPÉRATIONS DANS LE LOGICIEL.</translation>
         <comment>error</comment>
         <translation>Erreur lors de l&apos;ouverture des fichiers.</translation>
     </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
+        <translation>Erreur lors de l&apos;écriture des fichiers.</translation>
+    </message>
 </context>
 <context>
     <name>transpondersView</name>
