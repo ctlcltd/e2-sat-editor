@@ -314,7 +314,7 @@ struct e2db_abstract : protected e2se::log_factory
 		struct channel_reference
 		{
 			string chid;
-			int etype;
+			int etype = 0;
 			bool marker = false;
 			bool stream = false;
 			int atype;
