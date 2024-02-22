@@ -73,6 +73,7 @@ jobs:
         rm "AppDir/Program Files (x86)/e2-sat-editor/bin/platforms/qdirect2d.dll"
         # package
         mkdir -p ../artifact/{cli,user-manual}
+        #TODO convert LF to CRLF
         cp ../dist/common/Readme.txt.in ../artifact/Readme.txt
         cp COPYING ../artifact/License.txt
         mv "AppDir/Program Files (x86)/e2-sat-editor/bin/"*.dll ../artifact/
@@ -81,14 +82,6 @@ jobs:
         mv "AppDir/Program Files (x86)/e2-sat-editor/bin/e2se-cli.exe" ../artifact/cli/
         cp ../artifact/{libgcc_s_seh-1,libstdc++-6,libwinpthread-1}.dll ../artifact/cli/
         mv "${{github.workspace}}/user-manual" ../artifact/
-
-    # - name: Test
-    #   working-directory: ${{github.workspace}}/e2-sat-editor/artifact
-    #   continue-on-error: true
-    #   timeout-minutes: 1
-    #   shell: pwsh
-    #   run: |
-    #     $env:DEBUG=1; $env:QT_QPA_PLATFORM=minimal; .\e2-sat-editor.exe
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4

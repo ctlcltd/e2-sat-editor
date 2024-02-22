@@ -61,6 +61,8 @@ jobs:
         rm -R "$QMDIR"/qt_help_*.qm
         # run deploy script
         bash ../scripts/deployqtmacx.sh AppDir/usr/local/e2\ SAT\ Editor.app
+        # post actions
+        chmod +x AppDir/usr/local/e2\ SAT\ Editor.app/e2\ SAT\ Editor
         # package
         mkdir -p ../artifact/{cli,user-manual}
         cp ../dist/common/Readme.txt.in ../artifact/Readme.txt
@@ -68,14 +70,6 @@ jobs:
         mv AppDir/usr/local/e2\ SAT\ Editor.app ../artifact/
         mv AppDir/usr/local/e2se-cli ../artifact/cli/
         mv "${{github.workspace}}/user-manual" ../artifact/
-
-    # - name: Test
-    #   working-directory: ${{github.workspace}}/e2-sat-editor/artifact
-    #   continue-on-error: true
-    #   timeout-minutes: 1
-    #   run: |
-    #     sudo mv /usr/local/Cellar /usr/local/Cellar.bak 
-    #     DEBUG=1 QT_QPA_PLATFORM=minimal ./e2\ SAT\ Editor.app/Contents/MacOS/e2\ SAT\ Editor
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4

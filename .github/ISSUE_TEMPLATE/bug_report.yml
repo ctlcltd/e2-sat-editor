@@ -43,8 +43,9 @@ body:
       label: Software version
       description: What version of our software are you running?
       options:
+        - 1.2
         - 1.1.1
-        - 1.1.0
+        - 1.1
         - 1.0
         - 0.9
         - 0.8

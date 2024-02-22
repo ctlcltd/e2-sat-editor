@@ -28,8 +28,8 @@ modules:
       - type: git
         url: https://github.com/ctlcltd/e2-sat-editor.git
         # branch: main
-        tag: v1.1.1
-        commit: 2fc9ffc20324259394518e2bdde973d2c30c1b2b
+        tag: v1.2.0
+        commit: cf5518668691a04f841daf99812dd2301148f979
     # modules:
     #   - name: libcurl4
     #     buildsystem: cmake-ninja

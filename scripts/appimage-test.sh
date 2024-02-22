@@ -100,7 +100,7 @@
 
 cd src
 rm -R build
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -G Ninja -B build
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DWITHOUT_CLI=ON -G Ninja -B build
 ninja -C build
 DESTDIR=../AppDir ninja -C build install
 
@@ -117,10 +117,10 @@ cp /usr/local/translations/qtbase_*.qm AppDir/usr/share/qt/translations
 rm -R AppDir/usr/share/qt/translations/qt_help_*.qm
 
 
-rm AppDir/usr/share/applications/e2se-cli.desktop
 mv AppDir/usr/share/applications/e2-sat-editor.desktop AppDir/usr/share/applications/io.github.ctlcltd.e2se.desktop
 mv AppDir/usr/share/metainfo/io.github.ctlcltd.e2se.metainfo.xml AppDir/usr/share/metainfo/io.github.ctlcltd.e2se.appdata.xml
 mkdir -p AppDir/usr/share/doc/e2-sat-editor
+mv AppDir/usr/share/e2-sat-editor/Readme.txt.in AppDir/usr/share/doc/e2-sat-editor/readme
 mv AppDir/usr/share/e2-sat-editor/COPYING AppDir/usr/share/doc/e2-sat-editor/copyright
 
 export QMAKE=qmake6
