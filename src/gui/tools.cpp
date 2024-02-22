@@ -119,7 +119,7 @@ void tools::inspector()
 	timer->start(1000);
 }
 
-//TODO html escape cli (next)
+//TODO TEST escape html
 QString tools::inspectContent(string str, int filter)
 {
 	QString text = QString::fromStdString(str);
@@ -243,7 +243,7 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 
 	tid->reset();
 
-	dbih->cache(merge);
+	dbih->clearStorage(merge);
 	dbih->fixBouquets();
 
 	tid->load();

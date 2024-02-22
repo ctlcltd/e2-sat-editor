@@ -29,6 +29,8 @@ using std::map, std::unordered_map;
 
 namespace e2se_gui
 {
+class dialChannelBook;
+
 class mainView : public viewAbstract
 {
 	Q_DECLARE_TR_FUNCTIONS(mainView)
@@ -59,6 +61,8 @@ class mainView : public viewAbstract
 			bool chx_pending = false;
 			// pending update from tab
 			bool tab_pending = false;
+			// parental lock invert value [QSettings]
+			bool q_parentalLockInvert = false;
 		};
 
 		struct __action
@@ -200,6 +204,7 @@ class mainView : public viewAbstract
 		TreeDragDropEventHandler* list_evth;
 		TreeItemChangedEventObserver* list_evto;
 		QWidget* list_reference;
+		dialChannelBook* dialchbook = nullptr;
 		string filename;
 
 		__state state;

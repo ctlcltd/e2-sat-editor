@@ -128,15 +128,47 @@ void e2db::didChange()
 	setup();
 }
 
-void e2db::cache(bool clear)
+void e2db::initStorage()
 {
-	debug("cache");
+	debug("initStorage");
 
-	if (clear)
+	for (auto & tx : db.transponders)
+	{
+		entries.transponders[tx.first] = entryTransponder(tx.second);
+	}
+	for (auto & ch : db.services)
+	{
+		entries.services[ch.first] = entryService(ch.second);
+	}
+}
+
+void e2db::clearStorage()
+{
+	debug("clearStorage");
+
+	entries.transponders.clear();
+	entries.services.clear();
+
+	for (auto & tx : db.transponders)
+	{
+		entries.transponders[tx.first] = entryTransponder(tx.second);
+	}
+	for (auto & ch : db.services)
+	{
+		entries.services[ch.first] = entryService(ch.second);
+	}
+}
+
+void e2db::clearStorage(bool merge)
+{
+	debug("clearStorage", "merge", merge);
+
+	if (merge)
 	{
 		entries.transponders.clear();
 		entries.services.clear();
 	}
+
 	for (auto & tx : db.transponders)
 	{
 		entries.transponders[tx.first] = entryTransponder(tx.second);
@@ -421,7 +453,7 @@ bool e2db::prepare(string filename) noexcept
 		return false;
 	}
 
-	cache();
+	initStorage();
 	fixBouquets();
 
 	return true;
@@ -456,7 +488,7 @@ void e2db::importFile(vector<string> paths) noexcept
 		return;
 	}
 
-	cache(merge);
+	clearStorage(merge);
 	// fixBouquets();
 }
 
@@ -486,7 +518,7 @@ void e2db::importBlob(unordered_map<string, e2db_file> files)
 		throw;
 	}
 
-	cache(merge);
+	clearStorage(merge);
 	fixBouquets();
 }
 

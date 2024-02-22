@@ -35,6 +35,8 @@ class piconsView : public viewAbstract
 			string curr_picon;
 			// pending update from tab
 			bool tab_pending = false;
+			// picons use chname { refid = 0, chname = 1 } [QSettings]
+			bool q_piconsUseChname = false;
 		};
 
 		struct __action

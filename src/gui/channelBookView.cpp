@@ -264,6 +264,12 @@ void channelBookView::reset()
 {
 	debug("reset");
 
+	this->state.curr = "";
+	this->state.vx = -1;
+	this->state.sy = -1;
+	this->state.sort = pair (-1, Qt::AscendingOrder);
+	this->state.tab_pending = false;
+
 	tree->reset();
 	tree->clear();
 

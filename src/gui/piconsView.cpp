@@ -257,6 +257,11 @@ void piconsView::reset()
 {
 	debug("reset");
 
+	this->state.picons_dir = "";
+	this->state.curr_picon = "";
+	this->state.tab_pending = false;
+	this->state.q_piconsUseChname = QSettings().value("preference/piconsUseChname").toBool();
+
 	tree->clear();
 
 	list->reset();
@@ -637,7 +642,7 @@ QMenu* piconsView::listPrefsCornerMenu()
 				settings.sync();
 				action->setChecked(checked);
 
-				this->listChangedPiconsPath();
+				this->didChange();
 			});
 			menu->addAction(action);
 		}
@@ -653,7 +658,7 @@ QMenu* piconsView::listPrefsCornerMenu()
 				settings.sync();
 				action->setChecked(checked);
 
-				this->listChangedPiconsPath();
+				this->didChange();
 			});
 			menu->addAction(action);
 		}
@@ -1029,7 +1034,12 @@ void piconsView::didChange()
 {
 	debug("didChange");
 
-	populate();
+	if (this->state.q_piconsUseChname != QSettings().value("preference/piconsUseChname", false).toBool())
+	{
+		this->state.q_piconsUseChname = QSettings().value("preference/piconsUseChname", false).toBool();
+
+		populate();
+	}
 }
 
 void piconsView::update()

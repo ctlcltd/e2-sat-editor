@@ -98,7 +98,24 @@ void dialChannelBook::sender()
 {
 	debug("sender");
 
-	callEventCallback(cbv->getSelected());
+	if (this->cbv != nullptr)
+		callEventCallback(this->cbv->getSelected());
+}
+
+void dialChannelBook::load()
+{
+	debug("load");
+
+	if (this->cbv != nullptr)
+		this->cbv->load();
+}
+
+void dialChannelBook::reset()
+{
+	debug("reset");
+
+	if (this->cbv != nullptr)
+		this->cbv->reset();
 }
 
 void dialChannelBook::destroy()

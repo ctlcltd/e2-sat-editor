@@ -64,6 +64,9 @@ mainView::~mainView()
 {
 	debug("~mainView");
 
+	if (this->dialchbook != nullptr)
+		this->dialchbook->destroy();
+
 	delete this->widget;
 	delete this->theme;
 	delete this->log;
@@ -614,6 +617,9 @@ void mainView::load()
 
 	updateFlags();
 	updateStatusBar();
+
+	if (this->dialchbook != nullptr)
+		this->dialchbook->load();
 }
 
 void mainView::reset()
@@ -630,6 +636,9 @@ void mainView::reset()
 	this->state.si = 0;
 	this->state.curr = "";
 	this->state.sort = pair (-1, Qt::AscendingOrder);
+	this->state.chx_pending = false;
+	this->state.tab_pending = false;
+	this->state.q_parentalLockInvert = QSettings().value("preference/parentalLockInvert", false).toBool();
 
 	tree->reset();
 	tree->setDragEnabled(false);
@@ -660,6 +669,9 @@ void mainView::reset()
 	updateReferenceBox();
 
 	resetStatusBar();
+
+	if (this->dialchbook != nullptr)
+		this->dialchbook->reset();
 }
 
 void mainView::populate(QTreeWidget* tw)
@@ -1697,9 +1709,10 @@ void mainView::addChannel()
 		}
 	}
 
-	e2se_gui::dialChannelBook* book = new e2se_gui::dialChannelBook(this->data, stype);
-	book->setEventCallback([=](vector<QString> items) { this->putListItems(items); });
-	book->display(cwid);
+	this->dialchbook = new e2se_gui::dialChannelBook(this->data, stype);
+	//TODO improve gui <-> dialChannelBook <-> tab(s)
+	dialchbook->setEventCallback([=](vector<QString> items) { this->putListItems(items); });
+	dialchbook->display(cwid);
 }
 
 void mainView::addService()
@@ -1727,7 +1740,7 @@ void mainView::addService()
 	cache.clear();
 
 	if (reload)
-		dbih->cache(true);
+		dbih->clearStorage();
 
 	list->header()->setSectionsClickable(false);
 	list->setDragEnabled(false);
@@ -1844,7 +1857,7 @@ void mainView::editService()
 	cache.clear();
 
 	if (reload)
-		dbih->cache(true);
+		dbih->clearStorage();
 
 	if (dbih->db.services.count(nw_chid))
 		debug("editService", "new chid", nw_chid);
@@ -2187,7 +2200,7 @@ void mainView::setUserbouquetParentalLock()
 
 	visualReloadList();
 
-	dbih->cache(true);
+	dbih->clearStorage();
 
 	this->data->setChanged(true);
 }
@@ -2218,7 +2231,7 @@ void mainView::unsetUserbouquetParentalLock()
 
 	visualReloadList();
 
-	dbih->cache(true);
+	dbih->clearStorage();
 
 	this->data->setChanged(true);
 }
@@ -3456,12 +3469,16 @@ void mainView::unsetPendingUpdateListIndex()
 	this->state.chx_pending = false;
 }
 
-//TODO rename updateFromSettings, preference parental
 void mainView::didChange()
 {
 	debug("didChange");
 
-	visualReloadList();
+	if (this->state.q_parentalLockInvert != QSettings().value("preference/parentalLockInvert", false).toBool())
+	{
+		this->state.q_parentalLockInvert = QSettings().value("preference/parentalLockInvert", false).toBool();
+
+		visualReloadList();
+	}
 }
 
 void mainView::update()
@@ -3476,7 +3493,7 @@ void mainView::update()
 			q.second.clear();
 		cache.clear();
 
-		dbih->cache(true);
+		dbih->clearStorage();
 
 		visualReloadList();
 
