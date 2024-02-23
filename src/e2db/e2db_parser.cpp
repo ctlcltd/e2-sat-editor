@@ -403,10 +403,19 @@ void e2db_parser::parse_e2db_lamedb(istream& ilamedb)
 {
 	debug("parse_e2db_lamedb");
 
-	string hlamedb;
-	std::getline(ilamedb, hlamedb);
-	char vlamedb = (hlamedb.substr(hlamedb.length() - 2, hlamedb.length() - 1))[0];
-	int ver = isdigit(vlamedb) ? int (vlamedb) - 48 : 0;
+	int ver = -1;
+
+	try
+	{
+		string hlamedb;
+		std::getline(ilamedb, hlamedb);
+		char vlamedb = (hlamedb.substr(hlamedb.length() - 2, hlamedb.length() - 1))[0];
+
+		ver = isdigit(vlamedb) ? int (vlamedb) - 48 : 0;
+	}
+	catch (...)
+	{
+	}
 
 	debug("parse_e2db_lamedb", "version", ver);
 
@@ -421,7 +430,7 @@ void e2db_parser::parse_e2db_lamedb(istream& ilamedb)
 			parse_e2db_lamedb5(ilamedb);
 		break;
 		default:
-		return error("parse_e2db_lamedb", "Parser Error", "Unknown Lamedb services file format.");
+			return error("parse_e2db_lamedb", "Parser Error", "Unknown Lamedb services file format.");
 	}
 }
 
@@ -437,12 +446,16 @@ void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 	int tidx = 0;
 	int sidx = 0;
 	string line;
+	int ln = 1;
 	transponder tx;
 	service ch;
 
 	while (std::getline(ilamedb, line))
 	{
+		ln++;
+
 		char type = line[0];
+
 		if (type == 't')
 			step = 1;
 		else if (type == 's')
@@ -474,10 +487,10 @@ void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 			if (params.size() >= 2)
 				parse_lamedb_transponder_feparms(params.substr(2), params[0], tx);
 
-			if (tx.tsid != 0 || tx.onid != 0)
+			if (tx.tsid != 0 || tx.onid != 0 || tx.dvbns != 0)
 				add_transponder(tidx, tx);
 			else
-				error("parse_e2db_lamedb5", "Parser Error", msg("Error reference (%s)", tx.txid));
+				error("parse_e2db_lamedb5", "Parser Error", msg("Error reference (%s)", "lamedb5" + ':' + to_string(ln)));
 		}
 		// service
 		else
@@ -511,7 +524,7 @@ void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 			if (ch.ssid != 0 || ch.stype != 0)
 				add_service(sidx, ch);
 			else
-				error("parse_e2db_lamedb5", "Parser Error", msg("Error reference (%s)", ch.chid));
+				error("parse_e2db_lamedb5", "Parser Error", msg("Error reference (%s)", "lamedb5" + ':' + to_string(ln)));
 		}
 	}
 }
@@ -532,11 +545,14 @@ void e2db_parser::parse_e2db_lamedbx(istream& ilamedb, int ver)
 	int tidx = 0;
 	int sidx = 0;
 	string line;
+	int ln = 1;
 	transponder tx;
 	service ch;
 
 	while (std::getline(ilamedb, line))
 	{
+		ln++;
+
 		if (! step && line == "transponders")
 		{
 			step = 1;
@@ -577,10 +593,10 @@ void e2db_parser::parse_e2db_lamedbx(istream& ilamedb, int ver)
 			}
 			else if (s == 2)
 			{
-				if (tx.tsid != 0 || tx.onid != 0)
+				if (tx.tsid != 0 || tx.onid != 0 || tx.dvbns != 0)
 					add_transponder(tidx, tx);
 				else
-					error("parse_e2db_lamedbx", "Parser Error", msg("Error reference (%s)", tx.txid));
+					error("parse_e2db_lamedbx", "Parser Error", msg("transponder (%s)", string ("lamedb") + ':' + to_string(ln)));
 
 				s = 0;
 			}
@@ -614,7 +630,7 @@ void e2db_parser::parse_e2db_lamedbx(istream& ilamedb, int ver)
 				if (ch.ssid != 0 || ch.stype != 0)
 					add_service(sidx, ch);
 				else
-					error("parse_e2db_lamedbx", "Parser Error", msg("Error reference (%s)", ch.chid));
+					error("parse_e2db_lamedbx", "Parser Error", msg("service (%s)", string ("lamedb") + ':' + to_string(ln)));
 
 				s = 0;
 			}
@@ -766,12 +782,15 @@ void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string filename, bool ep
 
 	bool add = ! bouquets.count(filename);
 	string line;
+	int ln = 0;
 
 	bouquet& bs = bouquets[filename];
 	userbouquet ub;
 
 	while (std::getline(ibouquet, line))
 	{
+		ln++;
+
 		if (line.size() >= 9 && line.find("#SERVICE") != string::npos)
 		{
 			ub = userbouquet ();
@@ -786,7 +805,7 @@ void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string filename, bool ep
 			if (! ub.bname.empty())
 				add_userbouquet(int (index["ubs"].size()), ub);
 			else
-				error("parse_e2db_bouquet", "Parser Error", msg("Error reference (%s)", filename + ':' + ub.bname));
+				error("parse_e2db_bouquet", "Parser Error", msg("userbouquet (%s)", ub.bname + ':' + to_string(ln)));
 		}
 		else if (line.size() >= 6 && line.find("#NAME") != string::npos)
 		{
@@ -815,9 +834,10 @@ void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string filename, bool ep
 				if (bs.bname.empty())
 					add_bouquet(bs.btype, bs);
 				else
-					error("parse_e2db_bouquet", "Parser Error", msg("Error reference (%s)", bs.bname));
+					error("parse_e2db_bouquet", "Parser Error", msg("bouquet (%s)", bs.bname + ':' + to_string(ln)));
 			}
 		}
+		ln++;
 	}
 }
 
@@ -829,6 +849,7 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string filename)
 	int idx = 0;
 	int y = 0;
 	string line;
+	int ln = -1;
 
 	userbouquet& ub = userbouquets[filename];
 	channel_reference chref;
@@ -836,6 +857,8 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string filename)
 
 	while (std::getline(iuserbouquet, line))
 	{
+		ln++;
+
 		if (! step && line.size() >= 6 && line.find("#NAME") != string::npos)
 		{
 			ub.name = line.substr(6);
@@ -878,7 +901,7 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string filename)
 			if (chref.etype != 0)
 				add_channel_reference(idx, ub, chref, ref);
 			else
-				error("parse_e2db_userbouquet", "Parser Error", msg("Error reference (%s)", filename + ':' + chref.chid));
+				error("parse_e2db_userbouquet", "Parser Error", msg("reference (%s)", filename + ':' + to_string(ln)));
 		}
 	}
 }
@@ -932,10 +955,10 @@ void e2db_parser::parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& iloc
 void e2db_parser::parse_userbouquet_reference(string str, userbouquet& ub)
 {
 	char refid[33];
-	char fname[33];
+	char fname[65];
 	char order[33];
 
-	std::sscanf(str.c_str(), "%32s BOUQUET %32s ORDER BY %32s", refid, fname, order);
+	std::sscanf(str.c_str(), "%32s BOUQUET %64s ORDER BY %32s", refid, fname, order);
 
 	if (std::strlen(fname) >= 4)
 	{
@@ -960,45 +983,16 @@ void e2db_parser::parse_userbouquet_epl_reference(string str, userbouquet& ub)
 
 void e2db_parser::parse_channel_reference(string str, channel_reference& chref, service_reference& ref)
 {
-	int etype, atype, anum, ssid, tsid, onid, dvbns;
-	char xdata[513];
-	etype = 0, atype = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0;
+	int etype, atype, anum, ssid, tsid, onid, dvbns, x7, x8, x9;
+	char xdata;
+	etype = 0, atype = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0, x7 = 0, x8 = 0, x9 = 0;
 
-	std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X%s", &etype, &atype, &anum, &ssid, &tsid, &onid, &dvbns, xdata);
+	std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X:%d:%d:%d:%c", &etype, &atype, &anum, &ssid, &tsid, &onid, &dvbns, &x7, &x8, &x9, &xdata);
 
 	ref.ssid = ssid;
 	ref.tsid = tsid;
 	ref.onid = onid;
 	ref.dvbns = dvbns;
-
-	if (std::strlen(xdata) > 1)
-	{
-		int x7, x8, x9;
-		char adata[385];
-		x7 = 0, x8 = 0, x9 = 0;
-
-		std::sscanf(xdata, ":%d:%d:%d%s", &x7, &x8, &x9, adata);
-
-		chref.x7 = x7;
-		chref.x8 = x8;
-		chref.x9 = x9;
-
-		if (std::strlen(adata) > 1)
-		{
-			string edata = adata;
-			size_t pos = edata.rfind(':');
-
-			if (pos != string::npos)
-			{
-				chref.uri = edata.substr(0, pos);
-				chref.uri = chref.uri.size() > 1 ? chref.uri.substr(1) : "";
-				chref.uri = chref.uri.size() != 1 ? chref.uri : "";
-				chref.value = edata.substr(pos);
-				chref.value = chref.value.size() > 1 ? chref.value.substr(1) : "";
-				chref.stream = ! chref.uri.empty();
-			}
-		}
-	}
 
 	switch (etype)
 	{
@@ -1029,6 +1023,50 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 		// service
 		default:
 			chref.marker = false;
+	}
+
+	if (std::strlen(&xdata))
+	{
+		size_t pos = str.rfind(':');
+
+		if (pos != string::npos)
+		{
+			string s10, s11;
+
+			s11 = str.substr(pos + 1);
+			pos = str.rfind(':', pos - 1);
+
+			if (pos != string::npos)
+			{
+				s10 = str.substr(pos + 1);
+				pos = s10.rfind(':');
+
+				if (pos != string::npos)
+					s10 = s10.substr(0, pos);
+				if (s10.size() == 1)
+					s10 = "";
+			}
+
+			if (! s11.empty() && ! s10.empty())
+			{
+				conv_uri_value(s10);
+				conv_uri_value(s11);
+
+				chref.uri = s10;
+				chref.value = s11;
+			}
+			else if (! s11.empty())
+			{
+				conv_uri_value(s11);
+
+				if (chref.marker)
+					chref.value = s11;
+				else
+					chref.uri = s11;
+			}
+
+			chref.stream = ! chref.uri.empty();
+		}
 	}
 
 	chref.etype = etype;
@@ -2054,6 +2092,24 @@ void e2db_parser::parse_xml_attribute(string line, string token, string& key, st
 			val = val.substr(0, n);
 
 		std::transform(val.begin(), val.end(), val.begin(), [](unsigned char c) { return c ? c : ' '; });
+	}
+}
+
+void e2db_parser::conv_uri_value(string& val)
+{
+	if (val.find("%3a") != string::npos)
+	{
+		size_t pos = val.find("%3a");
+
+		while (pos != string::npos)
+		{
+			val = val.substr(0, pos) + ':' + val.substr(pos + 3);
+
+			if (pos != val.size())
+				pos = val.find("%3a");
+			else
+				pos = string::npos;
+		}
 	}
 }
 

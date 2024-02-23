@@ -60,7 +60,9 @@ class e2db_parser : virtual public e2db_abstract
 		void parse_xml_comment(string line, comment& s, int ln);
 		void parse_xml_tag(string line, string& tag, bool& closed);
 		void parse_xml_attribute(string line, string token, string& key, string& val);
+		void conv_uri_value(string& val);
 		void conv_xml_value(string& val);
+		void conv_entities_value(unordered_map<string, char>& entities, string& val);
 };
 }
 #endif /* e2db_parser_h */

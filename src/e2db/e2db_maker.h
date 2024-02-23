@@ -74,6 +74,7 @@ class e2db_maker : virtual public e2db_abstract
 		inline static const string LAMEDBX_FORMATS[13] = {"", "transponders\n", "services\n", "end\n", "", "", "\n\t", " ", "\n/\n", "", "\n", "", "\n"};
 
 		bool push_file(string path);
+		string conv_uri_value(string str);
 		string conv_xml_value(string str);
 };
 }

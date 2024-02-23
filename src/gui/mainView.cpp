@@ -430,6 +430,7 @@ void mainView::searchLayout()
 }
 
 //TODO TEST viewAbstract::themeChange()
+//TODO copyable viewport, platform::osLabel link
 void mainView::referenceBoxLayout()
 {
 	this->list_reference = new QWidget;
@@ -500,6 +501,8 @@ void mainView::referenceBoxLayout()
 	QGridLayout* ref_box = new QGridLayout;
 	QLabel* ref0lr = new QLabel(tr("Reference ID", "reference-box"));
 	QLabel* ref0tr = new QLabel("< >");
+	ref0tr->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	platform::osLabel(ref0tr);
 	ref0lr->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref0tr->setAlignment(ref0tr->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	ref_fields[LIST_REF::ReferenceID] = ref0tr;
@@ -508,6 +511,8 @@ void mainView::referenceBoxLayout()
 
 	QLabel* ref1ls = new QLabel(tr("Service ID", "reference-box"));
 	QLabel* ref1ts = new QLabel("< >");
+	ref1ts->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	platform::osLabel(ref1ts);
 	ref1ls->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref1ts->setAlignment(ref1ts->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	ref_fields[LIST_REF::ServiceID] = ref1ts;
@@ -516,6 +521,8 @@ void mainView::referenceBoxLayout()
 
 	QLabel* ref2lt = new QLabel(tr("Transponder", "reference-box"));
 	QLabel* ref2tt = new QLabel("< >");
+	ref2tt->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	platform::osLabel(ref2tt);
 	ref2lt->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref2tt->setAlignment(ref2tt->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	ref_fields[LIST_REF::Transponder] = ref2tt;
@@ -525,6 +532,8 @@ void mainView::referenceBoxLayout()
 
 	QLabel* ref3lu = new QLabel(tr("Userbouquets", "reference-box"));
 	QLabel* ref3tu = new QLabel("< >");
+	ref3tu->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	platform::osLabel(ref3tu);
 	ref3lu->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref3tu->setAlignment(ref3tu->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	ref_fields[LIST_REF::Userbouquets] = ref3tu;
@@ -533,6 +542,8 @@ void mainView::referenceBoxLayout()
 
 	QLabel* ref4lb = new QLabel(tr("Bouquets", "reference-box"));
 	QLabel* ref4tb = new QLabel("< >");
+	ref4tb->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	platform::osLabel(ref4tb);
 	ref4lb->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref4tb->setAlignment(ref4tb->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	ref_fields[LIST_REF::Bouquets] = ref4tb;
@@ -541,6 +552,9 @@ void mainView::referenceBoxLayout()
 
 	QLabel* ref5ln = new QLabel(tr("Tuner", "reference-box"));
 	QLabel* ref5tn = new QLabel("< >");
+	ref5tn->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard | Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
+	ref5tn->setOpenExternalLinks(false);
+	// platform::osLabel(ref5tn);
 	ref5ln->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref5tn->setAlignment(ref5tn->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	ref_fields[LIST_REF::Tuner] = ref5tn;
@@ -3182,16 +3196,31 @@ void mainView::updateReferenceBox()
 		{
 			ssid = QString::number(chref.ref.ssid);
 
-			string sys;
-			string uri = chref.uri;
+			QString psys;
+			QString uri = QString::fromStdString(chref.uri);
+
+			QUrl url = QUrl (uri);
+			QString puri = QString(uri);
+
+			int chunk = 76;
+			int a = chunk + 1;
+			for (qsizetype i = 0; i <= puri.size(); i++)
+			{
+				if (! --a)
+				{
+					puri.insert(i, "<br>");
+					a = chunk + 1;
+				}
+			}
+			puri = QString("<a href=\"%1\">%2</a>").arg(url.toString()).arg(puri);
 
 			switch (chref.etype)
 			{
-				case e2db::ETYPE::ecast: sys = "[broadcast]"; break;
-				case e2db::ETYPE::efile: sys = "[file]"; break;
-				case e2db::ETYPE::ecustom: sys = "[custom]"; break;
-				case e2db::ETYPE::eservice: sys = "[eservice]"; break;
-				case e2db::ETYPE::eytube: sys = "[youtube]"; break;
+				case e2db::ETYPE::ecast: psys = "[broadcast]"; break;
+				case e2db::ETYPE::efile: psys = "[file]"; break;
+				case e2db::ETYPE::ecustom: psys = "[custom]"; break;
+				case e2db::ETYPE::eservice: psys = "[eservice]"; break;
+				case e2db::ETYPE::eytube: psys = "[youtube]"; break;
 			}
 
 			char txid[25];
@@ -3215,7 +3244,7 @@ void mainView::updateReferenceBox()
 				txp = "< >";
 			}
 
-			tns = "<p style=\"line-height: 125%\">" + QString::fromStdString(sys + "<br>" + uri) + "</p>";
+			tns = "<p style=\"line-height: 125%\">" + psys + "</p><p>" + puri + "</p>";
 		}
 		else
 		{
@@ -3496,6 +3525,9 @@ void mainView::update()
 		dbih->clearStorage();
 
 		visualReloadList();
+
+		if (this->state.refbox)
+			updateReferenceBox();
 
 		this->state.tab_pending = false;
 	}

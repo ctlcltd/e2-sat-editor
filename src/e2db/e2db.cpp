@@ -1047,7 +1047,7 @@ void e2db::remove_userbouquet(string bname)
 		{
 			channel_reference chref = ub.channels[x.second];
 
-			if (! chref.marker && bs.services.count(chref.chid) == 0)
+			if (! chref.marker && ! chref.stream && bs.services.count(chref.chid) == 0)
 			{
 				idx += 1;
 				bs.services.emplace(chref.chid);

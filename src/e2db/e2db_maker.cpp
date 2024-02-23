@@ -535,6 +535,7 @@ void e2db_maker::make_bouquet_epl(string bname, e2db_file& file)
 	file.size = file.data.size();
 }
 
+//TODO TEST
 void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 {
 	debug("make_userbouquet", "bname", bname);
@@ -600,8 +601,12 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 				ss << chref.x8 << ':';
 				ss << chref.x9 << ':';
 				ss << dec;
-				ss << chref.uri << ':';
-				ss << chref.value << endl;
+				ss << conv_uri_value(chref.uri) << ':';
+
+				if (! chref.value.empty())
+				{
+					ss << conv_uri_value(chref.value) << endl;
+				}
 				ss << "#DESCRIPTION " << chref.value;
 			}
 			else
@@ -1255,6 +1260,26 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 	file.mime = "text/xml";
 	file.data = str;
 	file.size = file.data.size();
+}
+
+string e2db_maker::conv_uri_value(string str)
+{
+	if (str.find(':') != string::npos)
+	{
+		size_t n = 0;
+
+		while (n != str.size())
+		{
+			if (str[n] == ':')
+			{
+				str = str.substr(0, n) + "%3a" + str.substr(n + 1);
+				n += 2;
+			}
+			n++;
+		}
+	}
+
+	return str;
 }
 
 string e2db_maker::conv_xml_value(string str)

@@ -1201,7 +1201,7 @@ void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_refe
 
 	if (chref.marker)
 		// %4d:%2x:%d
-		std::snprintf(chid, 25, "1:%d:%x:%d", chref.atype, chref.anum, ub.index);
+		std::snprintf(chid, 25, "1:%d:%x:%d", chref.atype, chref.anum != 0 ? chref.anum : db.imarkers + 1, ub.index);
 	else if (chref.stream)
 		// %4d:%4x:%d
 		std::snprintf(chid, 25, "2:%d:%x:%d", chref.atype, db.istreams + 1, ub.index);
@@ -1228,7 +1228,7 @@ void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_refe
 	{
 		index["mks"].emplace_back(pair (ub.index, chref.chid));
 	}
-	else if (bs.services.count(chref.chid) == 0)
+	else if (! chref.stream && bs.services.count(chref.chid) == 0)
 	{
 		int idx = int (index[ub.pname].size());
 		idx += 1;
