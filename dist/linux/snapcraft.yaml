@@ -23,9 +23,11 @@ parts:
     build-packages:
       - build-essential
       - qt6-base-dev
-      - libxkbcommon-dev
       - libgl1-mesa-dev
       - libglvnd-dev
+      - libxcb-xkb-dev
+      - libxkbcommon-x11-dev
+      - libvulkan-dev
       - curl
       - libcurl4-openssl-dev
     stage-packages:
@@ -56,7 +58,7 @@ apps:
       - removable-media
       - network
       - cups
-    extensions: [gnome]
+    extensions: [kde-neon]
   # e2se-cli:
   #   command: usr/bin/e2se-cli
   #   desktop: usr/share/applications/e2se-cli.desktop

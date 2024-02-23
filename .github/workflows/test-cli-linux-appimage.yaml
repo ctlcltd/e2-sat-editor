@@ -1,0 +1,70 @@
+name: test-cli-linux-appimage
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-22.04
+
+    env:
+      BUILD_TYPE: Release
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: ctlcltd/e2-sat-editor
+        path: e2-sat-editor
+
+    - name: Setup Aptitude
+      run: |
+        sudo apt-get install cmake ninja-build
+
+    - name: Download tools
+      run: |
+        sudo apt-get install fuse wget
+        wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+        wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+        chmod +x linuxdeploy-x86_64.AppImage
+        chmod +x appimagetool-x86_64.AppImage
+        mv linuxdeploy-x86_64.AppImage /usr/local/bin/linuxdeploy
+        mv appimagetool-x86_64.AppImage /usr/local/bin/appimagetool
+
+    - name: Configure CMake
+      working-directory: ${{github.workspace}}/e2-sat-editor/src/cli
+      run: |
+        cmake \
+        -G Ninja \
+        -B build \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+
+    - name: Build
+      working-directory: ${{github.workspace}}/e2-sat-editor/src/cli
+      run: cmake --build build --config ${{ env.BUILD_TYPE }}
+
+    - name: Deploy
+      working-directory: ${{github.workspace}}/e2-sat-editor/src/cli
+      continue-on-error: true
+      run: |
+        DESTDIR=../AppDir ninja -C build install
+        # pre actions
+        mkdir -p AppDir/usr/share/{applications,metainfo}
+        cp ../../dist/xdg/e2se-cli.desktop AppDir/usr/share/applications/io.github.ctlcltd.e2se-cli.desktop
+        cp ../../dist/xdg/io.github.ctlcltd.e2se-cli.metainfo.xml AppDir/usr/share/metainfo/io.github.ctlcltd.e2se-cli.appdata.xml
+        mkdir -p AppDir/usr/share/icons/hicolor/64x64/apps
+        cp ../../dist/xdg/icons/64x64/e2-sat-editor.png AppDir/usr/share/icons/hicolor/64x64/apps/e2se-cli.png
+        mkdir -p AppDir/usr/share/doc/e2se-cli
+        cp ../../dist/common/Readme.txt.in AppDir/usr/share/doc/e2se-cli/readme
+        cp ../COPYING AppDir/usr/share/doc/e2se-cli/copyright
+        # run linuxdeploy
+        linuxdeploy --appdir AppDir --output appimage
+        # package
+        mv e2se-cli-x86_64.AppImage ../../artifact
+        chmod +x ../../artifact
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        path: ${{github.workspace}}/e2-sat-editor/artifact
