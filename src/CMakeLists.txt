@@ -49,6 +49,7 @@ set(SOURCES
 	gui/dialChannelBook.cpp
 	gui/e2db_gui.cpp
 	gui/editBouquet.cpp
+	gui/editFavourite.cpp
 	gui/editMarker.cpp
 	gui/editService.cpp
 	gui/editTransponder.cpp

@@ -412,10 +412,12 @@ void tab::layout()
 	this->ftp_combo = new QComboBox;
 	ftpComboItems();
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-	ftp_combo->connect(ftp_combo, &QComboBox::currentIndexChanged, [=](int index) { this->ftpComboChanged(index); });
+	ftp_combo->connect(ftp_combo, &QComboBox::currentIndexChanged, [=](int index) {
 #else
-	ftp_combo->connect(ftp_combo, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) { this->ftpComboChanged(index); });
+	ftp_combo->connect(ftp_combo, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) {
 #endif
+		this->ftpComboChanged(index);
+	});
 	platform::osComboBox(ftp_combo);
 
 	tbars[gui::FileOpen] = toolBarAction(top_toolbar, tr("&Open", "toolbar"), theme->dynamicIcon("file-open"), [=]() { this->openFile(); }, QKeySequence::Open);

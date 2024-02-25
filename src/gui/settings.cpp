@@ -1802,7 +1802,7 @@ void settings::cancel()
 	debug("cancel");
 
 	// delay too fast
-	QTimer::singleShot(150, [=]() {
+	QTimer::singleShot(100, [=]() {
 		dial->close();
 	});
 }

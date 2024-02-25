@@ -35,6 +35,7 @@
 
 #include "editService.h"
 #include "editTransponder.h"
+#include "editFavourite.h"
 
 using std::stringstream, std::to_string, std::sort;
 
@@ -85,6 +86,7 @@ void editService::layout(QWidget* cwid)
 
 	QWidget* dtch = new QWidget;
 	QWidget* dttx = new QWidget;
+	QWidget* dtfav = new QWidget;
 	this->dtpage = new QGridLayout;
 
 	serviceLayout();
@@ -97,9 +99,12 @@ void editService::layout(QWidget* cwid)
 
 	dtwid->addTab(dtch, tr("Service", "dialog"));
 	dtwid->addTab(dttx, tr("Transponder", "dialog"));
+	dtwid->addTab(dtfav, tr("Favourite", "dialog"));
 
 	dtform->addWidget(dtwid, 0, 0);
 }
+
+//TODO custom toolbarLayout
 
 void editService::serviceLayout()
 {
@@ -156,7 +161,7 @@ void editService::serviceLayout()
 
 	dtf0sb->connect(dtf0sb, &QPushButton::pressed, [=]() {
 		// delay too fast
-		QTimer::singleShot(150, [=]() {
+		QTimer::singleShot(100, [=]() {
 			if (dtf0sc->isHidden())
 			{
 				dtf0st->hide();
@@ -181,21 +186,9 @@ void editService::serviceLayout()
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 	dtf0sc->connect(dtf0sc, &QComboBox::currentIndexChanged, [=](int index) {
-		if (index == -1 && ! dtf0sb->isChecked())
-		{
-			dtf0sc->hide();
-			dtf0st->show();
-			dtf0st->setFocus();
-			dtf0sb->setChecked(true);
-		}
-		else
-		{
-			dtf0sb->setChecked(false);
-			dtf0st->setText(dtf0sc->currentData().toString());
-		}
-	});
 #else
 	dtf0sc->connect(dtf0sc, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) {
+#endif
 		if (index == -1 && ! dtf0sb->isChecked())
 		{
 			dtf0sc->hide();
@@ -209,7 +202,6 @@ void editService::serviceLayout()
 			dtf0st->setText(dtf0sc->currentData().toString());
 		}
 	});
-#endif
 
 	dtb10->addWidget(dtf0sc);
 	dtb10->addWidget(dtf0st);
@@ -245,10 +237,12 @@ void editService::transponderLayout()
 	dtf1tn->setValidator(new QIntValidator);
 	dtf1tn->setEditable(true);
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-	dtf1tn->connect(dtf1tn, &QComboBox::currentIndexChanged, [=](int index) { this->tunerComboChanged(index); });
+	dtf1tn->connect(dtf1tn, &QComboBox::currentIndexChanged, [=](int index) {
 #else
-	dtf1tn->connect(dtf1tn, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) { this->tunerComboChanged(index); });
+	dtf1tn->connect(dtf1tn, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) {
 #endif
+		this->tunerComboChanged(index);
+	});
 	platform::osComboBox(dtf1tn);
 
 	auto* dbih = this->data->dbih;
@@ -259,10 +253,12 @@ void editService::transponderLayout()
 	dtf1tx->setMinimumWidth(180);
 	dtf1tx->setEditable(true);
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-	dtf1tx->connect(dtf1tx, &QComboBox::currentIndexChanged, [=](int index) { this->transponderComboChanged(index); });
+	dtf1tx->connect(dtf1tx, &QComboBox::currentIndexChanged, [=](int index) {
 #else
-	dtf1tx->connect(dtf1tx, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) { this->transponderComboChanged(index); });
+	dtf1tx->connect(dtf1tx, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) {
 #endif
+		this->transponderComboChanged(index);
+	});
 	for (auto & q : txp_index)
 	{
 		QString name;

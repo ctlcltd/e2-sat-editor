@@ -333,6 +333,7 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 	page.body += "<th>" + tr("SSID") + "</th>";
 	page.body += "<th>" + tr("TSID") + "</th>";
 	page.body += "<th>" + tr("ONID") + "</th>";
+	page.body += "<th>" + tr("DVBNS") + "</th>";
 	page.body += "<th>" + tr("Type") + "</th>";
 	page.body += "<th>" + tr("CAS") + "</th>";
 	page.body += "<th>" + tr("Provider") + "</th>";
@@ -356,7 +357,8 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 		{
 			e2db::service ch = dbih->db.services[chid];
 			e2db::transponder tx;
-			if (ch.tsid != 0)
+
+			if (! ch.txid.empty() && dbih->db.transponders.count(ch.txid))
 				tx = dbih->db.transponders[ch.txid];
 
 			QString idx = QString::number(x.first);
@@ -373,7 +375,7 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 			else
 			{
 				e2db::channel_reference chref;
-				if (dbih->userbouquets.count(bname))
+				if (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(chid))
 					chref = dbih->userbouquets[bname].channels[chid];
 				string crefid = dbih->get_reference_id(chref);
 				refid = QString::fromStdString(crefid);
@@ -381,6 +383,7 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 			QString ssid = QString::number(ch.ssid);
 			QString tsid = QString::number(ch.tsid);
 			QString onid = QString::number(ch.onid);
+			QString dvbns = QString::fromStdString(dbih->value_transponder_dvbns(ch.dvbns));
 			QString stype = QString::fromStdString(dbih->value_service_type(ch.stype));
 			QString scas;
 			if (ch.data.count(e2db::SDATA::C))
@@ -419,7 +422,8 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 			page.body += "<td>" + ssid + "</td>";
 			page.body += "<td>" + tsid + "</td>";
 			page.body += "<td>" + onid + "</td>";
-			page.body += "<td>" + stype + "</td>";
+			page.body += "<td>" + dvbns + "</td>";
+			page.body += "<td class=\"stype\">" + stype + "</td>";
 			page.body += "<td class=\"scas\">" + scas + "</td>";
 			page.body += "<td class=\"pname\">" + pname + "</td>";
 			page.body += "<td>" + freq + "</td>";
@@ -434,32 +438,59 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 		else
 		{
 			e2db::channel_reference chref;
-			if (dbih->userbouquets.count(bname))
+			if (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(chid))
 				chref = dbih->userbouquets[bname].channels[chid];
 
-			if (! chref.marker)
+			if (! chref.marker && ! chref.stream)
 				continue;
 
+			QString cssname;
+			QString idx;
 			QString refid = QString::fromStdString(dbih->get_reference_id(chref));
 			QString value = QString::fromStdString(chref.value);
-			QString atype = "MARKER";
+			QString ssid = QString::number(chref.ref.ssid);
+			QString tsid = QString::number(chref.ref.tsid);
+			QString onid = QString::number(chref.ref.onid);
+			QString dvbns = QString::fromStdString(dbih->value_transponder_dvbns(chref.ref.dvbns));
+			QString stype;
+			if (chref.marker)
+			{
+				cssname = "marker";
+				stype = "MARKER";
+			}
+			else if (chref.stream)
+			{
+				cssname = "stream";
+				idx = QString::number(x.first);
+				stype = "STREAM";
+			}
+			QString sys;
+			if (chref.marker)
+				sys = QString::fromStdString(dbih->value_favourite_flag_type(chref));
+			else if (chref.stream)
+				sys = QString::fromStdString(dbih->value_favourite_type(chref));
+			QString tname;
+			if (chref.stream)
+				tname = QString::fromStdString(chref.uri);
 
-			page.body += "<tr class=\"marker\">";
-			page.body += "<td class=\"trid\"></td>";
+			page.body += "<tr class=\"" + cssname + "\">";
+			page.body += "<td class=\"trid\">" + idx + "</td>";
 			page.body += "<td class=\"name\">" + value + "</td>";
 			// page.body += "<td class=\"refid\">" + refid + "</td>";
-			page.body += "<td></td>";
-			page.body += "<td></td>";
-			page.body += "<td class=\"atype\">" + atype + "</td>";
-			page.body += "<td></td>";
-			page.body += "<td></td>";
-			page.body += "<td></td>";
-			page.body += "<td></td>";
-			page.body += "<td></td>";
+			page.body += "<td>" + ssid + "</td>";
+			page.body += "<td>" + tsid + "</td>";
+			page.body += "<td>" + onid + "</td>";
+			page.body += "<td>" + dvbns + "</td>";
+			page.body += "<td class=\"stype\">" + stype + "</td>";
 			page.body += "<td></td>";
 			page.body += "<td></td>";
 			page.body += "<td></td>";
 			page.body += "<td></td>";
+			page.body += "<td></td>";
+			page.body += "<td></td>";
+			page.body += "<td>" + sys + "</td>";
+			page.body += "<td></td>";
+			page.body += "<td>" + tname + "</td>";
 			page.body += "</tr>";
 		}
 	}

@@ -661,7 +661,7 @@ QStringList e2db::entryService(service ch)
 	return entry;
 }
 
-QStringList e2db::entryChannel(channel_reference chref)
+QStringList e2db::entryFavourite(channel_reference chref)
 {
 	QString chid = QString::fromStdString(chref.chid);
 	QString value = QString::fromStdString(chref.value);
@@ -677,6 +677,7 @@ QStringList e2db::entryChannel(channel_reference chref)
 		case e2db::ETYPE::ecustom: sys = "[custom]"; break;
 		case e2db::ETYPE::eservice: sys = "[eservice]"; break;
 		case e2db::ETYPE::eytube: sys = "[youtube]"; break;
+		default: e2db::ETYPE_EXT_LABEL.count(chref.etype) ? QString::fromStdString(e2db::ETYPE_EXT_LABEL.at(chref.etype)) : QString::number(chref.etype);
 	}
 
 	return QStringList ({value, NULL, chid, NULL, ssid, tsid, "STREAM", NULL, NULL, sys, NULL, uri});
@@ -686,8 +687,16 @@ QStringList e2db::entryMarker(channel_reference chref)
 {
 	QString chid = QString::fromStdString(chref.chid);
 	QString value = QString::fromStdString(chref.value);
+	QString sys;
 
-	return QStringList ({NULL, value, NULL, chid, NULL, NULL, NULL, "MARKER", NULL});
+	switch (chref.atype)
+	{
+		case e2db::ATYPE::marker_hidden_512: sys = "[hidden]"; break;
+		case e2db::ATYPE::marker_hidden_832: sys = "[hidden]"; break;
+		case e2db::ATYPE::marker_numbered: sys = "[numbered]"; break;
+	}
+
+	return QStringList ({NULL, value, NULL, chid, NULL, NULL, NULL, "MARKER", NULL, NULL, sys});
 }
 
 QStringList e2db::entryTunersetsTable(tunersets_table tn)

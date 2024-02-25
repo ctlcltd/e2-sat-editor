@@ -130,10 +130,12 @@ void viewAbstract::searchLayout()
 	lsr_box->setSpacing(0);
 	this->lsr_search.filter = new QComboBox;
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-	this->lsr_search.filter->connect(this->lsr_search.filter, &QComboBox::currentIndexChanged, [=]() { this->listFindReset(); });
+	this->lsr_search.filter->connect(this->lsr_search.filter, &QComboBox::currentIndexChanged, [=]() {
 #else
-	this->lsr_search.filter->connect(this->lsr_search.filter, QOverload<int>::of(&QComboBox::currentIndexChanged), [=]() { this->listFindReset(); });
+	this->lsr_search.filter->connect(this->lsr_search.filter, QOverload<int>::of(&QComboBox::currentIndexChanged), [=]() {
 #endif
+		this->listFindReset();
+	});
 	platform::osComboBox(this->lsr_search.filter);
 
 	this->lsr_search.input = new QLineEdit;

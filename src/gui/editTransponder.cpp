@@ -101,10 +101,12 @@ void editTransponder::layout(QWidget* cwid)
 		dtf0yx->addItem(types.at(i), i);
 	}
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-	dtf0yx->connect(dtf0yx, &QComboBox::currentIndexChanged, [=](int index) { this->typeComboChanged(index); });
+	dtf0yx->connect(dtf0yx, &QComboBox::currentIndexChanged, [=](int index) {
 #else
-	dtf0yx->connect(dtf0yx, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) { this->typeComboChanged(index); });
+	dtf0yx->connect(dtf0yx, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) {
 #endif
+		this->typeComboChanged(index);
+	});
 	if (! this->state.edit)
 	{
 		typeComboChanged(0);

@@ -100,10 +100,12 @@ void tools::inspector()
 	dtft->addItem("Info");
 	dtft->addItem("Error");
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-	dtft->connect(dtft, &QComboBox::currentIndexChanged, [=](int index) { this->inspectUpdate(dcnt, index); });
+	dtft->connect(dtft, &QComboBox::currentIndexChanged, [=](int index) {
 #else
-	dtft->connect(dtft, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) { this->inspectUpdate(dcnt, index); });
+	dtft->connect(dtft, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) {
 #endif
+		this->inspectUpdate(dcnt, index);
+	});
 	platform::osComboBox(dtft);
 
 	inspectUpdate(dcnt);

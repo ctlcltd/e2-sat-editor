@@ -161,14 +161,14 @@ void e2db_abstract::value_channel_reference(string str, channel_reference& chref
 	switch (atype)
 	{
 		// marker
-		case STYPE::regular_marker:
-		case STYPE::numbered_marker:
-		case STYPE::hidden_marker_1:
-		case STYPE::hidden_marker_2:
+		case ATYPE::marker_regular:
+		case ATYPE::marker_numbered:
+		case ATYPE::marker_hidden_512:
+		case ATYPE::marker_hidden_832:
 			chref.marker = true;
 		break;
 		// group
-		case STYPE::group:
+		case ATYPE::group:
 		return;
 		// service
 		default:
@@ -284,8 +284,6 @@ int e2db_abstract::value_service_type(string str)
 		return STYPE::tv;
 	else if (str == "Radio")
 		return STYPE::radio;
-	else if (str == "MARKER")
-		return STYPE::marker;
 	else if (str == "HD")
 		return 25;
 	else if (str == "H.264")
@@ -294,6 +292,8 @@ int e2db_abstract::value_service_type(string str)
 		return 31;
 	else if (str == "UHD")
 		return 17;
+	else if (str == "MARKER")
+		return -1;
 	else if (str == "STREAM")
 		return -1;
 	else
@@ -324,6 +324,68 @@ int e2db_abstract::value_service_super_type(int stype)
 	if (STYPE_EXT_TYPE.count(stype))
 		return STYPE_EXT_TYPE.at(stype);
 	return 0;
+}
+
+int e2db_abstract::value_favourite_type(string str)
+{
+	if (str == "[broadcast]")
+		return ETYPE::ecast;
+	else if (str == "[file]")
+		return ETYPE::efile;
+	else if (str == "[custom]")
+		return ETYPE::ecustom;
+	else if (str == "[eservice]")
+		return ETYPE::eservice;
+	else if (str == "[youtube]")
+		return ETYPE::eytube;
+	else
+		return ETYPE::ecast;
+}
+
+string e2db_abstract::value_favourite_type(channel_reference chref)
+{
+	return value_favourite_type(chref.etype);
+}
+
+string e2db_abstract::value_favourite_type(int etype)
+{
+	if (ETYPE_EXT_LABEL.count(etype))
+		return ETYPE_EXT_LABEL.at(etype);
+	return ETYPE_EXT_LABEL.at(ETYPE::ecast);
+}
+
+int e2db_abstract::value_favourite_flag_type(string str)
+{
+	if (str == "[null]")
+		return ATYPE::aaaa;
+	else if (str == "[marker]")
+		return ATYPE::marker;
+	else if (str == "[marker hidden]")
+		return ATYPE::marker_hidden;
+	else if (str == "[marker numbered]")
+		return ATYPE::marker_numbered;
+	else if (str == "[group]")
+		return ATYPE::group;
+	else if (str == "[marker hidden 512]")
+		return ATYPE::marker_hidden_512;
+	else if (str == "[marker hidden 832]")
+		return ATYPE::marker_hidden_832;
+	else if (str == "[marker numbered 320]")
+		return ATYPE::marker_numbered;
+	else
+		return ATYPE::aaaa;
+}
+
+string e2db_abstract::value_favourite_flag_type(channel_reference chref)
+{
+	return value_favourite_flag_type(chref.atype);
+}
+
+string e2db_abstract::value_favourite_flag_type(int atype)
+{
+	if (ATYPE_EXT_LABEL.count(atype))
+		return ATYPE_EXT_LABEL.at(atype);
+	return ATYPE_EXT_LABEL.at(ATYPE::aaaa);
 }
 
 vector<string> e2db_abstract::value_channel_provider(string str)

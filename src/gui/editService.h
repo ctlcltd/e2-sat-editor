@@ -26,6 +26,7 @@ using std::string, std::pair, std::vector, std::map;
 namespace e2se_gui
 {
 class editTransponder;
+class editFavourite;
 
 class editService : public dialAbstract
 {
@@ -36,8 +37,12 @@ class editService : public dialAbstract
 		{
 			// edit { edit: true, add: false }
 			bool edit = false;
+			// service edit
+			bool service = false;
 			// transponder edit
 			bool transponder = false;
+			// favourite edit
+			bool favourite = false;
 			// service data C (CAID) raw string
 			string raw_C;
 			// service data raw string
@@ -74,6 +79,7 @@ class editService : public dialAbstract
 		QComboBox* dtf1tn;
 		QComboBox* dtf1tx;
 		editTransponder* edittx;
+		editFavourite* editfav;
 		map<string, vector<pair<int, string>>> txp_index;
 
 		__state state;

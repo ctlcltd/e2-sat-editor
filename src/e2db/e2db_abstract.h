@@ -105,7 +105,21 @@ struct e2db_abstract : protected e2se::log_factory
 			atsc
 		};
 
-		// entry type
+		// service type
+		enum STYPE {
+			data = 0,
+			tv = 1,
+			radio = 2
+			// marker = 64,
+			// group = 128,
+			// hidden_marker_1 = 512,
+			// hidden_marker_2 = 832,
+			// numbered_marker = 320,
+			// hidden_marker = STYPE::hidden_marker_1,
+			// regular_marker = STYPE::marker
+		};
+
+		// fav entry type
 		enum ETYPE {
 			ecast = 1,
 			efile = 2,
@@ -114,18 +128,16 @@ struct e2db_abstract : protected e2se::log_factory
 			eytube = 8139
 		};
 
-		// service type
-		enum STYPE {
-			data = 0,
-			tv = 1,
-			radio = 2,
+		// fav entry flag type
+		enum ATYPE {
+			aaaa = 0,
 			marker = 64,
 			group = 128,
-			hidden_marker_1 = 512,
-			hidden_marker_2 = 832,
-			numbered_marker = 320,
-			hidden_marker = STYPE::hidden_marker_1,
-			regular_marker = STYPE::marker
+			marker_numbered = 320,
+			marker_hidden_512 = 512,
+			marker_hidden_832 = 832,
+			marker_hidden = ATYPE::marker_hidden_512,
+			marker_regular = ATYPE::marker
 		};
 
 		// parental lock
@@ -159,6 +171,44 @@ struct e2db_abstract : protected e2se::log_factory
 			{22, "H.264"},
 			{25, "HD"},
 			{31, "H.265"}
+		};
+
+		// entry type extended - type
+		inline static const unordered_map<int, int> ETYPE_EXT_TYPE = {
+			{ETYPE::ecast, ETYPE::ecast},
+			{ETYPE::efile, ETYPE::efile},
+			{ETYPE::ecustom, ETYPE::ecustom},
+			{ETYPE::eservice, ETYPE::eservice},
+			{ETYPE::eytube, ETYPE::eytube}
+		};
+
+		// entry type extended - label
+		inline static const unordered_map<int, string> ETYPE_EXT_LABEL = {
+			{ETYPE::ecast, "[broadcast]"},
+			{ETYPE::efile, "[file]"},
+			{ETYPE::ecustom, "[custom]"},
+			{ETYPE::eservice, "[eservice]"},
+			{ETYPE::eytube, "[youtube]"}
+		};
+
+		// entry flag type extended - type
+		inline static const unordered_map<int, int> ATYPE_EXT_TYPE = {
+			{ATYPE::aaaa, ATYPE::aaaa},
+			{ATYPE::marker, ATYPE::marker},
+			{ATYPE::marker_hidden_512, ATYPE::marker_hidden_512},
+			{ATYPE::marker_hidden_832, ATYPE::marker_hidden_832},
+			{ATYPE::marker_numbered, ATYPE::marker_numbered},
+			{ATYPE::group, ATYPE::group}
+		};
+
+		// entry flag type extended - label
+		inline static const unordered_map<int, string> ATYPE_EXT_LABEL = {
+			{ATYPE::aaaa, "[null]"},
+			{ATYPE::marker, "[marker]"},
+			{ATYPE::marker_hidden_512, "[marker hidden]"},
+			{ATYPE::marker_hidden_832, "[marker hidden]"},
+			{ATYPE::marker_numbered, "[marker numbered]"},
+			{ATYPE::group, "[group]"}
 		};
 
 		// service data
@@ -484,6 +534,12 @@ struct e2db_abstract : protected e2se::log_factory
 		static string value_service_type(int stype);
 		static int value_service_super_type(service ch);
 		static int value_service_super_type(int stype);
+		static int value_favourite_type(string str);
+		static string value_favourite_type(channel_reference chref);
+		static string value_favourite_type(int etype);
+		static int value_favourite_flag_type(string str);
+		static string value_favourite_flag_type(channel_reference chref);
+		static string value_favourite_flag_type(int atype);
 		static vector<string> value_channel_provider(string str);
 		static string value_channel_provider(service ch);
 		static string value_channel_provider(map<char, vector<string>> data);

@@ -454,6 +454,9 @@ void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 	{
 		ln++;
 
+		if (line.empty())
+			continue;
+
 		char type = line[0];
 
 		if (type == 't')
@@ -490,7 +493,7 @@ void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 			if (tx.tsid != 0 || tx.onid != 0 || tx.dvbns != 0)
 				add_transponder(tidx, tx);
 			else
-				error("parse_e2db_lamedb5", "Parser Error", msg("Error reference (%s)", "lamedb5" + ':' + to_string(ln)));
+				error("parse_e2db_lamedb5", "Parser Error", msg("transponder (%s)", string ("lamedb5") + ':' + to_string(ln)));
 		}
 		// service
 		else
@@ -524,7 +527,7 @@ void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 			if (ch.ssid != 0 || ch.stype != 0)
 				add_service(sidx, ch);
 			else
-				error("parse_e2db_lamedb5", "Parser Error", msg("Error reference (%s)", "lamedb5" + ':' + to_string(ln)));
+				error("parse_e2db_lamedb5", "Parser Error", msg("service (%s)", string ("lamedb5") + ':' + to_string(ln)));
 		}
 	}
 }
@@ -845,7 +848,7 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string filename)
 {
 	debug("parse_e2db_userbouquet", "filename", filename);
 
-	int step = 0;
+	bool step = false;
 	int idx = 0;
 	int y = 0;
 	string line;
@@ -927,7 +930,7 @@ void e2db_parser::parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& iloc
 		parse_channel_reference(line, chref, ref);
 
 		char chid[25];
-
+		// %4x:%4x:%8x
 		std::snprintf(chid, 25, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
 
 		if (db.services.count(chid))
@@ -960,7 +963,7 @@ void e2db_parser::parse_userbouquet_reference(string str, userbouquet& ub)
 
 	std::sscanf(str.c_str(), "%32s BOUQUET %64s ORDER BY %32s", refid, fname, order);
 
-	if (std::strlen(fname) >= 4)
+	if (std::strlen(fname) >= 5)
 	{
 		ub.bname = string (fname);
 		ub.bname = ub.bname.substr(1, ub.bname.size() - 2);
@@ -1010,14 +1013,14 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 	switch (atype)
 	{
 		// marker
-		case STYPE::regular_marker:
-		case STYPE::numbered_marker:
-		case STYPE::hidden_marker_1:
-		case STYPE::hidden_marker_2:
+		case ATYPE::marker_regular:
+		case ATYPE::marker_numbered:
+		case ATYPE::marker_hidden_512:
+		case ATYPE::marker_hidden_832:
 			chref.marker = true;
 		break;
 		// group
-		case STYPE::group:
+		case ATYPE::group:
 			error("parse_channel_reference", "Parser Error", "Not supported yet.");
 		break;
 		// service

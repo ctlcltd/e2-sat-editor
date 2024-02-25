@@ -1074,7 +1074,7 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 	{
 		if (! chref.atype)
 		{
-			chref.atype = STYPE::marker;
+			chref.atype = ATYPE::marker;
 		}
 		if (! chref.anum)
 		{
@@ -1165,7 +1165,7 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 					it->second = chref.chid;
 			}
 		}
-		else
+		else if (! chref.stream)
 		{
 			for (auto it = index[ub.pname].begin(); it != index[ub.pname].end(); it++)
 			{

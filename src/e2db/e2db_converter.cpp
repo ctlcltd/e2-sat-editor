@@ -930,7 +930,7 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 				ch.onid = tx.onid = std::atoi(val.data());
 			// dvbns
 			else if (i == 6)
-				ch.dvbns = std::atoi(val.data());
+				ch.dvbns = value_transponder_dvbns(val);
 			// stype
 			else if (i == 7)
 				ch.stype = value_service_type(val);
@@ -951,17 +951,31 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 				ch.data[SDATA::p] = value_channel_provider(val);
 			// ytype
 			// sys
+			// atype
 			else if (i == 12)
 			{
 				tx.ytype = value_transponder_type(val);
 				tx.sys = value_transponder_system(val);
+
+				if (! val.empty() && val[0] == '[')
+					chref.etype = value_favourite_flag_type(val);
 			}
 			// pos
 			else if (i == 13)
 				tx.pos = value_transponder_position(val);
 			// tuner name
 			else if (i == 14)
-				continue;
+			{
+				if (chref.etype != 0 && ! val.empty() && val.find("//") != string::npos)
+				{
+					chref.stream = true;
+					chref.uri = val;
+				}
+				else
+				{
+					continue;
+				}
+			}
 			// freq
 			else if (i == 15)
 				tx.freq = std::atoi(val.data());
@@ -989,7 +1003,17 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 
 			char chid[25];
 			// %4d:%2x:%d
-			std::snprintf(chid, 25, "%d:%x:%d", chref.atype, chref.anum, 0);
+			std::snprintf(chid, 25, "1:%d:%x:%d", chref.atype, chref.anum != 0 ? chref.anum : dst->db.imarkers + 1, 0);
+			chref.chid = chid;
+		}
+		else if (chref.stream)
+		{
+			// chref.value
+			chref.value = ch.chname;
+
+			char chid[25];
+			// %4d:%2x:%d
+			std::snprintf(chid, 25, "2:%d:%x:%d", chref.atype, dst->db.istreams + 1, 0);
 			chref.chid = chid;
 		}
 		else
@@ -1048,6 +1072,7 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 			std::snprintf(chid, 25, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
 			ch.chid = chref.chid = chid;
 			ch.txid = txid;
+			chref.ref = ref;
 
 			if (! dst->db.transponders.count(tx.txid))
 			{
@@ -1074,6 +1099,13 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 			}
 			if (! userbouquets[ub.bname].channels.count(chref.chid))
 			{
+				if (chref.marker)
+					dst->db.imarkers++;
+				else if (chref.stream)
+					dst->db.istreams++;
+				else
+					dst->db.iservices++;
+
 				// chref idx
 				chref.index = (int (userbouquets[ub.bname].channels.size()) + 1);
 
@@ -1150,7 +1182,7 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 				{
 					channel_reference& chref = ub.channels[x.second];
 
-					if (! chref.marker && dst->bouquets[ub.pname].services.count(chref.chid) == 0)
+					if (! chref.marker && ! chref.stream && dst->bouquets[ub.pname].services.count(chref.chid) == 0)
 					{
 						idx += 1;
 						dst->bouquets[ub.pname].services.emplace(chref.chid);
@@ -1207,7 +1239,7 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 				ch.onid = tx.onid = std::atoi(val.data());
 			// dvbns
 			else if (i == 6)
-				ch.dvbns = std::atoi(val.data());
+				ch.dvbns = value_transponder_dvbns(val);
 			// stype
 			else if (i == 7)
 				ch.stype = value_service_type(val);
@@ -1233,17 +1265,32 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 				ch.srcid = std::atoi(val.data());
 			// ytype
 			// sys
+			// etype
 			else if (i == 13)
 			{
 				tx.ytype = value_transponder_type(val);
 				tx.sys = value_transponder_system(val);
+
+				if (! val.empty() && val[0] == '[')
+					chref.etype = value_favourite_flag_type(val);
 			}
 			// pos
 			else if (i == 14)
 				tx.pos = value_transponder_position(val);
 			// tuner name
+			// uri
 			else if (i == 15)
-				continue;
+			{
+				if (chref.etype != 0 && ! val.empty() && val.find("//") != string::npos)
+				{
+					chref.stream = true;
+					chref.uri = val;
+				}
+				else
+				{
+					continue;
+				}
+			}
 			// freq
 			else if (i == 16)
 				tx.freq = std::atoi(val.data());
@@ -1313,7 +1360,17 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 
 			char chid[25];
 			// %4d:%2x:%d
-			std::snprintf(chid, 25, "%d:%x:%d", chref.atype, chref.anum, 0);
+			std::snprintf(chid, 25, "1:%d:%x:%d", chref.atype, chref.anum != 0 ? chref.anum : dst->db.imarkers + 1, 0);
+			chref.chid = chid;
+		}
+		else if (chref.stream)
+		{
+			// chref.value
+			chref.value = ch.chname;
+
+			char chid[25];
+			// %4d:%2x:%d
+			std::snprintf(chid, 25, "2:%d:%x:%d", chref.atype, dst->db.istreams + 1, 0);
 			chref.chid = chid;
 		}
 		else
@@ -1355,6 +1412,7 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 			std::snprintf(chid, 25, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
 			ch.chid = chref.chid = chid;
 			ch.txid = txid;
+			chref.ref = ref;
 
 			if (! dst->db.transponders.count(tx.txid))
 			{
@@ -1381,6 +1439,13 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 			}
 			if (! userbouquets[ub.bname].channels.count(chref.chid))
 			{
+				if (chref.marker)
+					dst->db.imarkers++;
+				else if (chref.stream)
+					dst->db.istreams++;
+				else
+					dst->db.iservices++;
+
 				// chref idx
 				chref.index = (int (userbouquets[ub.bname].channels.size()) + 1);
 
@@ -1456,7 +1521,7 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 				{
 					channel_reference& chref = ub.channels[x.second];
 
-					if (! chref.marker && dst->bouquets[ub.pname].services.count(chref.chid) == 0)
+					if (! chref.marker && ! chref.stream && dst->bouquets[ub.pname].services.count(chref.chid) == 0)
 					{
 						idx += 1;
 						dst->bouquets[ub.pname].services.emplace(chref.chid);
@@ -1793,7 +1858,10 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 		if (db.services.count(x.second))
 		{
 			service ch = db.services[chid];
-			transponder tx = db.transponders[ch.txid];
+			transponder tx;
+
+			if (! ch.txid.empty() && db.transponders.count(ch.txid))
+				tx = db.transponders[ch.txid];
 
 			int idx = x.first;
 			string chname = ch.chname;
@@ -1808,14 +1876,14 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			else
 			{
 				channel_reference chref;
-				if (userbouquets.count(bname))
+				if (userbouquets.count(bname) && userbouquets[bname].channels.count(chid))
 					chref = userbouquets[bname].channels[chid];
 				refid = get_reference_id(chref);
 			}
 			int ssid = ch.ssid;
 			int tsid = ch.tsid;
 			int onid = ch.onid;
-			int dvbns = ch.dvbns;
+			string dvbns = value_transponder_dvbns(ch.dvbns);
 			string stype = value_service_type(ch);
 			int snum = ch.snum;
 			string scas;
@@ -1870,14 +1938,14 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			ss << tsid << CSV_SEPARATOR;
 			ss << onid << CSV_SEPARATOR;
 			ss << dvbns << CSV_SEPARATOR;
-			ss << stype << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << stype << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << snum << CSV_SEPARATOR;
-			ss << scas << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << scas << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << scaid << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << pname << CSV_ESCAPE << CSV_SEPARATOR;
-			ss << sys << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << sys << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << pos << CSV_SEPARATOR;
-			ss << tname << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << tname << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << freq << CSV_SEPARATOR;
 			ss << pol << CSV_SEPARATOR;
 			ss << sr << CSV_SEPARATOR;
@@ -1886,31 +1954,47 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 		else
 		{
 			channel_reference chref;
-			if (userbouquets.count(bname))
+			if (userbouquets.count(bname) && userbouquets[bname].channels.count(chid))
 				chref = userbouquets[bname].channels[chid];
 
-			if (! chref.marker)
+			if (! chref.marker && ! chref.stream)
 				continue;
 
 			string refid = get_reference_id(chref);
+			int ssid = chref.ref.ssid;
+			int tsid = chref.ref.tsid;
+			int onid = chref.ref.onid;
+			string dvbns = value_transponder_dvbns(chref.ref.dvbns);
 			string value = chref.value;
-			string atype = "MARKER";
+			string stype;
+			if (chref.marker)
+				stype = "MARKER";
+			else if (chref.stream)
+				stype = "STREAM";
+			string sys;
+			if (chref.marker)
+				sys = value_favourite_flag_type(chref);
+			else if (chref.stream)
+				sys = value_favourite_type(chref);
+			string tname;
+			if (chref.stream)
+				tname = chref.uri;
 
 			ss << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << value << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << refid << CSV_SEPARATOR;
-			ss << CSV_SEPARATOR;
-			ss << CSV_SEPARATOR;
-			ss << CSV_SEPARATOR;
-			ss << CSV_SEPARATOR;
-			ss << atype << CSV_SEPARATOR;
-			ss << CSV_SEPARATOR;
+			ss << ssid << CSV_SEPARATOR;
+			ss << tsid << CSV_SEPARATOR;
+			ss << onid << CSV_SEPARATOR;
+			ss << dvbns << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << stype << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << sys << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
-			ss << CSV_SEPARATOR;
-			ss << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << tname << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << "";
@@ -1996,7 +2080,10 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 		if (db.services.count(x.second))
 		{
 			service ch = db.services[chid];
-			transponder tx = db.transponders[ch.txid];
+			transponder tx;
+
+			if (! ch.txid.empty() && db.transponders.count(ch.txid))
+				tx = db.transponders[ch.txid];
 
 			int idx = x.first;
 			string chname = ch.chname;
@@ -2011,14 +2098,14 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			else
 			{
 				channel_reference chref;
-				if (userbouquets.count(bname))
+				if (userbouquets.count(bname) && userbouquets[bname].channels.count(chid))
 					chref = userbouquets[bname].channels[chid];
 				refid = get_reference_id(chref);
 			}
 			int ssid = ch.ssid;
 			int tsid = ch.tsid;
-			int dvbns = ch.dvbns;
 			int onid = ch.onid;
+			string dvbns = value_transponder_dvbns(ch.dvbns);
 			string stype = value_service_type(ch);
 			int snum = ch.snum;
 			string scas;
@@ -2103,15 +2190,15 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			ss << tsid << CSV_SEPARATOR;
 			ss << onid << CSV_SEPARATOR;
 			ss << dvbns << CSV_SEPARATOR;
-			ss << stype << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << stype << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << snum << CSV_SEPARATOR;
-			ss << scas <<CSV_SEPARATOR;
+			ss << CSV_ESCAPE << scas << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << scaid << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << pname << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << srcid << CSV_SEPARATOR;
-			ss << sys << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << sys << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << pos << CSV_SEPARATOR;
-			ss << tname << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << tname << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << freq << CSV_SEPARATOR;
 			ss << pol << CSV_SEPARATOR;
 			ss << sr << CSV_SEPARATOR;
@@ -2134,32 +2221,48 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 		else
 		{
 			channel_reference chref;
-			if (userbouquets.count(bname))
+			if (userbouquets.count(bname) && userbouquets[bname].channels.count(chid))
 				chref = userbouquets[bname].channels[chid];
 
-			if (! chref.marker)
+			if (! chref.marker && ! chref.stream)
 				continue;
 
 			string refid = get_reference_id(chref);
+			int ssid = chref.ref.ssid;
+			int tsid = chref.ref.tsid;
+			int onid = chref.ref.onid;
+			string dvbns = value_transponder_dvbns(chref.ref.dvbns);
 			string value = chref.value;
-			string atype = "MARKER";
+			string stype;
+			if (chref.marker)
+				stype = "MARKER";
+			else if (chref.stream)
+				stype = "STREAM";
+			string sys;
+			if (chref.marker)
+				sys = value_favourite_flag_type(chref);
+			else if (chref.stream)
+				sys = value_favourite_type(chref);
+			string tname;
+			if (chref.stream)
+				tname = chref.uri;
 
 			ss << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << value << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << refid << CSV_SEPARATOR;
-			ss << CSV_SEPARATOR;
-			ss << CSV_SEPARATOR;
-			ss << CSV_SEPARATOR;
-			ss << CSV_SEPARATOR;
-			ss << atype << CSV_SEPARATOR;
-			ss << CSV_SEPARATOR;
+			ss << ssid << CSV_SEPARATOR;
+			ss << tsid << CSV_SEPARATOR;
+			ss << onid << CSV_SEPARATOR;
+			ss << dvbns << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << stype << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << CSV_ESCAPE << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << sys << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
-			ss << CSV_SEPARATOR;
-			ss << CSV_SEPARATOR;
+			ss << CSV_ESCAPE << tname << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
@@ -2510,6 +2613,8 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 	page.body += "<th>Reference ID</th>\n";
 	page.body += "<th>SSID</th>\n";
 	page.body += "<th>TSID</th>\n";
+	page.body += "<th>ONID</th>\n";
+	page.body += "<th>DVBNS</th>\n";
 	page.body += "<th>Type</th>\n";
 	page.body += "<th>CAS</th>\n";
 	page.body += "<th>Provider</th>\n";
@@ -2532,7 +2637,10 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 		if (db.services.count(x.second))
 		{
 			service ch = db.services[chid];
-			transponder tx = db.transponders[ch.txid];
+			transponder tx;
+
+			if (! ch.txid.empty() && db.transponders.count(ch.txid))
+				tx = db.transponders[ch.txid];
 
 			string idx = to_string(x.first);
 			string chname = ch.chname;
@@ -2547,12 +2655,14 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 			else
 			{
 				channel_reference chref;
-				if (userbouquets.count(bname))
+				if (userbouquets.count(bname) && userbouquets[bname].channels.count(chid))
 					chref = userbouquets[bname].channels[chid];
 				refid = get_reference_id(chref);
 			}
 			string ssid = to_string(ch.ssid);
 			string tsid = to_string(ch.tsid);
+			string onid = to_string(ch.onid);
+			string dvbns = value_transponder_dvbns(ch.dvbns);
 			string stype = value_service_type(ch);
 			string scas;
 			if (ch.data.count(SDATA::C))
@@ -2595,6 +2705,8 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 			page.body += "<td class=\"refid\"><span>" + refid + "</span></td>";
 			page.body += "<td>" + ssid + "</td>";
 			page.body += "<td>" + tsid + "</td>";
+			page.body += "<td>" + onid + "</td>";
+			page.body += "<td>" + dvbns + "</td>";
 			page.body += "<td>" + stype + "</td>";
 			page.body += "<td class=\"scas\">" + scas + "</td>";
 			page.body += "<td class=\"pname\">" + pname + "</td>";
@@ -2610,32 +2722,59 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 		else
 		{
 			channel_reference chref;
-			if (userbouquets.count(bname))
+			if (userbouquets.count(bname) && userbouquets[bname].channels.count(chid))
 				chref = userbouquets[bname].channels[chid];
 
-			if (! chref.marker)
+			if (! chref.marker && ! chref.stream)
 				continue;
 
+			string cssname;
+			string idx;
 			string refid = get_reference_id(chref);
 			string value = chref.value;
-			string atype = "MARKER";
+			string ssid = to_string(chref.ref.ssid);
+			string tsid = to_string(chref.ref.tsid);
+			string onid = to_string(chref.ref.onid);
+			string dvbns = value_transponder_dvbns(chref.ref.dvbns);
+			string stype;
+			if (chref.marker)
+			{
+				cssname = "marker";
+				stype = "MARKER";
+			}
+			else if (chref.stream)
+			{
+				cssname = "stream";
+				idx = to_string(x.first);
+				stype = "STREAM";
+			}
+			string sys;
+			if (chref.marker)
+				sys = value_favourite_flag_type(chref);
+			else if (chref.stream)
+				sys = value_favourite_type(chref);
+			string tname;
+			if (chref.stream)
+				tname = chref.uri;
 
-			page.body += "<tr class=\"marker\">";
-			page.body += "<td class=\"trid\"></td>";
+			page.body += "<tr class=\"" + cssname + "\">";
+			page.body += "<td class=\"trid\">" + idx + "</td>";
 			page.body += "<td class=\"name\">" + value + "</td>";
 			page.body += "<td class=\"refid\">" + refid + "</td>";
-			page.body += "<td></td>";
-			page.body += "<td></td>";
-			page.body += "<td class=\"atype\">" + atype + "</td>";
-			page.body += "<td></td>";
-			page.body += "<td></td>";
-			page.body += "<td></td>";
-			page.body += "<td></td>";
-			page.body += "<td></td>";
+			page.body += "<td>" + ssid + "</td>";
+			page.body += "<td>" + tsid + "</td>";
+			page.body += "<td>" + onid + "</td>";
+			page.body += "<td>" + dvbns + "</td>";
+			page.body += "<td class=\"atype\">" + stype + "</td>";
 			page.body += "<td></td>";
 			page.body += "<td></td>";
 			page.body += "<td></td>";
 			page.body += "<td></td>";
+			page.body += "<td></td>";
+			page.body += "<td></td>";
+			page.body += "<td>" + sys + "</td>";
+			page.body += "<td></td>";
+			page.body += "<td>" + tname + "</td>";
 			page.body += "</tr>\n";
 		}
 	}

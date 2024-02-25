@@ -174,6 +174,8 @@ class mainView : public viewAbstract
 		void addChannel();
 		void addService();
 		void editService();
+		void addFavourite();
+		void editFavourite();
 		void addMarker();
 		void editMarker();
 		void setServiceParentalLock();
