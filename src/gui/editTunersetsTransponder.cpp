@@ -709,6 +709,8 @@ void editTunersetsTransponder::store()
 		this->trid = dbih->editTunersetsTransponder(trid, tntxp, tns);
 	else
 		this->trid = dbih->addTunersetsTransponder(tntxp, tns);
+
+	this->changes = true;
 }
 
 void editTunersetsTransponder::retrieve()

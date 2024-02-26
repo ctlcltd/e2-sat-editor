@@ -171,6 +171,8 @@ void editTunersets::store()
 		s.text = commhead;
 		dbih->comments[iname].emplace_back(s);
 	}
+
+	this->changes = true;
 }
 
 void editTunersets::retrieve()

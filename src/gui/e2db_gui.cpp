@@ -657,7 +657,10 @@ QStringList e2db::entryService(service ch)
 	}
 
 	QStringList entry = QStringList ({chname, locked, chid, txid, ssid, tsid, stype, scas, pname});
-	entry.append(entries.transponders[ch.txid]);
+
+	if (entries.transponders.count(ch.txid))
+		entry.append(entries.transponders[ch.txid]);
+
 	return entry;
 }
 
@@ -678,6 +681,73 @@ QStringList e2db::entryFavourite(channel_reference chref)
 		case e2db::ETYPE::eservice: sys = "[eservice]"; break;
 		case e2db::ETYPE::eytube: sys = "[youtube]"; break;
 		default: e2db::ETYPE_EXT_LABEL.count(chref.etype) ? QString::fromStdString(e2db::ETYPE_EXT_LABEL.at(chref.etype)) : QString::number(chref.etype);
+	}
+
+	//TODO opt in settings
+	if (1 && chref.stream)
+	{
+		string ref_txid;
+		string ref_chid;
+		int dvbns = chref.ref.dvbns;
+
+		for (auto & x : db.transponders)
+		{
+			transponder& tx = x.second;
+
+			//TODO TEST (dvbns or onid reverse to pos)
+			if (tx.tsid == chref.ref.tsid && (tx.dvbns == chref.ref.dvbns || tx.onid == chref.ref.onid))
+			{
+				ref_txid = tx.txid;
+				dvbns = tx.dvbns;
+				break;
+			}
+		}
+
+		if (dvbns == chref.ref.dvbns)
+		{
+			ref_chid = chref.chid;
+		}
+		else
+		{
+			char chid[25];
+
+			// %4x:%4x:%8x
+			std::snprintf(chid, 25, "%x:%x:%x", chref.ref.ssid, chref.ref.tsid, dvbns);
+
+			ref_chid = chid;
+		}
+
+		if (entries.services.count(ref_chid))
+		{
+			QStringList entry = QStringList (entries.services[ref_chid]);
+			entry[0] = value;
+			entry[1] = NULL;
+			entry[2] = chid;
+			entry[4] = ssid;
+			entry[5] = tsid;
+			entry[6] = "STREAM";
+			entry[9] = sys;
+			entry[11] = uri;
+			return entry;
+		}
+		else if (entries.transponders.count(ref_txid))
+		{
+			QString txid = QString::fromStdString(ref_txid);
+			QStringList entry = QStringList (9);
+			entry[0] = value;
+			entry[1] = NULL;
+			entry[2] = chid;
+			entry[3] = txid;
+			entry[4] = ssid;
+			entry[5] = tsid;
+			entry[6] = "STREAM";
+			entry[7] = NULL;
+			entry[8] = NULL;
+			entry.append(entries.transponders[ref_txid]);
+			entry[9] = sys;
+			entry[11] = uri;
+			return entry;
+		}
 	}
 
 	return QStringList ({value, NULL, chid, NULL, ssid, tsid, "STREAM", NULL, NULL, sys, NULL, uri});

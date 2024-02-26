@@ -10,6 +10,8 @@
  */
 
 #include <QtGlobal>
+#include <QGuiApplication>
+#include <QWindow>
 #include <QSettings>
 #include <QTimer>
 #include <QList>
@@ -66,7 +68,10 @@ mainView::~mainView()
 	debug("~mainView");
 
 	if (this->dialchbook != nullptr)
+	{
 		this->dialchbook->destroy();
+		delete this->dialchbook;
+	}
 
 	delete this->widget;
 	delete this->theme;
@@ -1528,11 +1533,10 @@ void mainView::addBouquet()
 {
 	debug("addBouquet");
 
-	string bname;
 	e2se_gui::editBouquet* add = new e2se_gui::editBouquet(this->data);
 	add->display(cwid);
-	bname = add->getAddId();
-	add->destroy();
+	string bname = add->getAddId();
+	if (add->destroy()) return;
 
 	auto* dbih = this->data->dbih;
 
@@ -1580,7 +1584,6 @@ void mainView::editBouquet()
 	QTreeWidgetItem* item = selected.first();
 	QString qbs = item->data(0, Qt::UserRole).toString();
 	string bname = qbs.toStdString();
-	string nw_bname;
 
 	auto* dbih = this->data->dbih;
 
@@ -1592,8 +1595,8 @@ void mainView::editBouquet()
 	e2se_gui::editBouquet* edit = new e2se_gui::editBouquet(this->data);
 	edit->setEditId(bname);
 	edit->display(cwid);
-	nw_bname = edit->getEditId();
-	edit->destroy();
+	string nw_bname = edit->getEditId();
+	if (edit->destroy()) return;
 
 	if (dbih->bouquets.count(nw_bname))
 		debug("ediBouquet", "new bname", nw_bname);
@@ -1612,11 +1615,10 @@ void mainView::addUserbouquet()
 {
 	debug("addUserbouquet");
 
-	string bname;
 	e2se_gui::editUserbouquet* add = new e2se_gui::editUserbouquet(this->data, this->state.ti);
 	add->display(cwid);
-	bname = add->getAddId();
-	add->destroy();
+	string bname = add->getAddId();
+	if (add->destroy()) return;
 
 	auto* dbih = this->data->dbih;
 
@@ -1667,7 +1669,6 @@ void mainView::editUserbouquet()
 	QTreeWidgetItem* item = selected.first();
 	QString qub = item->data(0, Qt::UserRole).toString();
 	string bname = qub.toStdString();
-	string nw_bname;
 
 	auto* dbih = this->data->dbih;
 
@@ -1679,8 +1680,8 @@ void mainView::editUserbouquet()
 	e2se_gui::editUserbouquet* edit = new e2se_gui::editUserbouquet(this->data, this->state.ti);
 	edit->setEditId(bname);
 	edit->display(cwid);
-	nw_bname = edit->getEditId();
-	edit->destroy();
+	string nw_bname = edit->getEditId();
+	if (edit->destroy()) return;
 
 	if (dbih->userbouquets.count(nw_bname))
 		debug("editUserbouquet", "new bname", nw_bname);
@@ -1697,9 +1698,40 @@ void mainView::editUserbouquet()
 	tabPropagateChanges();
 }
 
+//TODO improve stype on curr change
+//TODO improve gui <-> dialChannelBook <-> tab(s)
 void mainView::addChannel()
 {
 	debug("addChannel");
+
+	if (this->dialchbook != nullptr)
+	{
+		bool found = false;
+
+		for (auto & q : QGuiApplication::allWindows())
+		{
+			if (q->isWindowType() && q->objectName() == "dialchbookWindow")
+			{
+				debug("addChannel", "raise", 1);
+
+				q->requestActivate();
+				q->raise();
+
+				found = true;
+				break;
+			}
+		}
+
+		if (found)
+		{
+			return;
+		}
+		else
+		{
+			delete this->dialchbook;
+			this->dialchbook = nullptr;
+		}
+	}
 
 	int stype = -1;
 	QTreeWidgetItem* selected = tree->currentItem();
@@ -1728,7 +1760,6 @@ void mainView::addChannel()
 	}
 
 	this->dialchbook = new e2se_gui::dialChannelBook(this->data, stype);
-	//TODO improve gui <-> dialChannelBook <-> tab(s)
 	dialchbook->setEventCallback([=](vector<QString> items) { this->putListItems(items); });
 	dialchbook->display(cwid);
 }
@@ -1737,16 +1768,26 @@ void mainView::addService()
 {
 	debug("addService");
 
-	string chid;
 	int reftype = REF_TYPE::service;
-	bool reload = false;
-	e2se_gui::editService* add = new e2se_gui::editService(this->data);
-	add->display(cwid);
-	chid = add->getAddId();
-	reload = ! (add->getTransponderId()).empty();
-	add->destroy();
+	string bname;
 
 	auto* dbih = this->data->dbih;
+
+	// userbouquet
+	if (this->state.ti == -1)
+	{
+		bname = this->state.curr;
+
+		if (! dbih->userbouquets.count(bname))
+			return;
+	}
+
+	e2se_gui::editService* add = new e2se_gui::editService(this->data);
+	add->setAddId(bname);
+	add->display(cwid);
+	string chid = add->getAddId();
+	bool reload = add->getReload();
+	if (add->destroy()) return;
 
 	if (dbih->db.services.count(chid))
 		debug("addService", "chid", chid);
@@ -1841,8 +1882,7 @@ void mainView::editService()
 
 	QTreeWidgetItem* item = selected.first();
 	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
-	string nw_chid;
-	bool reload = false;
+	string bname;
 	int reftype = REF_TYPE::service;
 	bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 	bool stream = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::stream;
@@ -1854,12 +1894,21 @@ void mainView::editService()
 	else
 		return error("editService", tr("Error", "error").toStdString(), tr("Service \"%1\" not exists or is a channel reference.", "error").arg(chid.data()).toStdString());
 
+	// userbouquet
+	if (this->state.ti == -1)
+	{
+		bname = this->state.curr;
+
+		if (! (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(chid)))
+			return error("addService", tr("Error", "error").toStdString(), tr("Missing channel reference key \"%1\".", "error").arg(chid.data()).toStdString());
+	}
+
 	e2se_gui::editService* edit = new e2se_gui::editService(this->data);
-	edit->setEditId(chid);
+	edit->setEditId(chid, bname, stream);
 	edit->display(cwid);
-	nw_chid = edit->getEditId();
-	reload = ! (edit->getTransponderId()).empty();
-	edit->destroy();
+	string nw_chid = edit->getEditId();
+	bool reload = edit->getReload();
+	if (edit->destroy()) return;
 
 	for (auto & q : cache)
 		q.second.clear();
@@ -1913,14 +1962,14 @@ void mainView::addFavourite()
 {
 	debug("addFavourite");
 
-	string chid;
 	string bname = this->state.curr;
 	int reftype = REF_TYPE::service;
+
 	e2se_gui::editFavourite* add = new e2se_gui::editFavourite(this->data);
 	add->setAddId(bname);
 	add->display(cwid);
-	chid = add->getAddId();
-	add->destroy();
+	string chid = add->getAddId();
+	if (add->destroy()) return;
 
 	auto* dbih = this->data->dbih;
 
@@ -2010,7 +2059,6 @@ void mainView::editFavourite()
 
 	QTreeWidgetItem* item = selected.first();
 	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
-	string nw_chid;
 	string bname = this->state.curr;
 	int reftype = REF_TYPE::service;
 
@@ -2024,8 +2072,8 @@ void mainView::editFavourite()
 	e2se_gui::editFavourite* edit = new e2se_gui::editFavourite(this->data);
 	edit->setEditId(chid, bname);
 	edit->display(cwid);
-	nw_chid = edit->getEditId();
-	edit->destroy();
+	string nw_chid = edit->getEditId();
+	if (edit->destroy()) return;
 
 	if (! dbih->userbouquets[bname].channels.count(nw_chid))
 		return error("editFavourite", tr("Error", "error").toStdString(), tr("Missing channel reference key \"%1\".", "error").arg(nw_chid.data()).toStdString());
@@ -2074,13 +2122,13 @@ void mainView::addMarker()
 {
 	debug("addMarker");
 
-	string chid;
 	string bname = this->state.curr;
+
 	e2se_gui::editMarker* add = new e2se_gui::editMarker(this->data);
 	add->setAddId(bname);
 	add->display(cwid);
-	chid = add->getAddId();
-	add->destroy();
+	string chid = add->getAddId();
+	if (add->destroy()) return;
 
 	auto* dbih = this->data->dbih;
 
@@ -2164,7 +2212,6 @@ void mainView::editMarker()
 
 	QTreeWidgetItem* item = selected.first();
 	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
-	string nw_chid;
 	string bname = this->state.curr;
 	bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 
@@ -2183,8 +2230,8 @@ void mainView::editMarker()
 	e2se_gui::editMarker* edit = new e2se_gui::editMarker(this->data);
 	edit->setEditId(chid, bname);
 	edit->display(cwid);
-	nw_chid = edit->getEditId();
-	edit->destroy();
+	string nw_chid = edit->getEditId();
+	if (edit->destroy()) return;
 
 	if (! dbih->userbouquets[bname].channels.count(nw_chid))
 		return error("editMarker", tr("Error", "error").toStdString(), tr("Missing channel reference key \"%1\".", "error").arg(nw_chid.data()).toStdString());
@@ -2230,6 +2277,7 @@ void mainView::treeItemDelete()
 		string bname = qub.toStdString();
 		e2db::userbouquet uboq = dbih->userbouquets[bname];
 		string pname = uboq.pname;
+
 		dbih->removeUserbouquet(bname);
 
 		cache[bname].clear();
@@ -2688,9 +2736,7 @@ void mainView::listItemDelete(bool cut)
 		else
 		{
 			if (! found_duplicates && dbih->db.services.count(chid))
-			{
 				dbih->removeService(chid);
-			}
 
 			for (auto & q : cache)
 				q.second.clear();
@@ -3383,17 +3429,39 @@ void mainView::updateReferenceBox()
 				case e2db::ETYPE::eytube: psys = "[youtube]"; break;
 			}
 
-			char txid[25];
+			string ref_txid;
 
 			if (chref.ref.tsid != 0)
 			{
-				// %4x:%8x
-				std::snprintf(txid, 25, "%x:%x", chref.ref.tsid, chref.ref.dvbns);
+				//TODO opt in settings
+				if (1)
+				{
+					for (auto & x : dbih->db.transponders)
+					{
+						e2db::transponder& tx = x.second;
+
+						//TODO TEST (dvbns or onid reverse to pos)
+						if (tx.tsid == chref.ref.tsid && (tx.dvbns == chref.ref.dvbns || tx.onid == chref.ref.onid))
+						{
+							ref_txid = tx.txid;
+							break;
+						}
+					}
+				}
+				else
+				{
+					char txid[25];
+
+					// %4x:%8x
+					std::snprintf(txid, 25, "%x:%x", chref.ref.tsid, chref.ref.dvbns);
+
+					ref_txid = txid;
+				}
 			}
 
-			if (dbih->db.transponders.count(txid))
+			if (dbih->db.transponders.count(ref_txid))
 			{
-				e2db::transponder tx = dbih->db.transponders[txid];
+				e2db::transponder tx = dbih->db.transponders[ref_txid];
 
 				// i18n rtl combo (LRM)
 				string ptxp = dbih->value_transponder_combo(tx);

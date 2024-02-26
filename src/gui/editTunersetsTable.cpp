@@ -325,6 +325,8 @@ void editTunersetsTable::store()
 		this->tnid = dbih->editTunersetsTable(tnid, tns, tvs);
 	else
 		this->tnid = dbih->addTunersetsTable(tns, tvs);
+
+	this->changes = true;
 }
 
 void editTunersetsTable::retrieve()

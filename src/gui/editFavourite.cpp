@@ -72,9 +72,9 @@ void editFavourite::show(bool retr)
 		retrieve();
 }
 
-void editFavourite::change()
+void editFavourite::reset()
 {
-	debug("change");
+	debug("reset");
 
 	if (dtform == nullptr)
 		return;
@@ -540,6 +540,8 @@ void editFavourite::store()
 		this->chid = dbih->editChannelReference(chid, chref, bname);
 	else
 		this->chid = dbih->addChannelReference(chref, bname);
+
+	this->changes = true;
 }
 
 void editFavourite::retrieve()

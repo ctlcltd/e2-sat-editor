@@ -110,13 +110,6 @@ struct e2db_abstract : protected e2se::log_factory
 			data = 0,
 			tv = 1,
 			radio = 2
-			// marker = 64,
-			// group = 128,
-			// hidden_marker_1 = 512,
-			// hidden_marker_2 = 832,
-			// numbered_marker = 320,
-			// hidden_marker = STYPE::hidden_marker_1,
-			// regular_marker = STYPE::marker
 		};
 
 		// fav entry type
@@ -554,8 +547,7 @@ struct e2db_abstract : protected e2se::log_factory
 		static string value_transponder_onid(int onid);
 		static int value_transponder_dvbns(string str);
 		static int value_transponder_dvbns(transponder tx);
-		static int value_transponder_dvbns(int pos, int onid, int freq, int pol);
-		static int value_transponder_dvbns(int pos, int onid);
+		static int value_transponder_dvbns(YTYPE ytype, int tsid, int onid, int pos, int freq);
 		static string value_transponder_dvbns(int dvbns);
 		static int value_transponder_polarization(string str);
 		static string value_transponder_polarization(int pol);

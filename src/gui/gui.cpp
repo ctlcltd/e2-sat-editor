@@ -54,6 +54,9 @@ gui::gui(int argc, char* argv[])
 
 	this->log = new logger("gui", "gui");
 
+	debug("gui", "0x07e8", 0x07e8);
+	debug("gui", "0x7e8", 0x7e8);
+
 	this->mroot = new QApplication(argc, argv);
 	std::setlocale(LC_NUMERIC, "C");
 

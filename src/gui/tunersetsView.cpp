@@ -667,7 +667,7 @@ void tunersetsView::editSettings()
 	e2se_gui::editTunersets* edit = new e2se_gui::editTunersets(this->data, tvid);
 	edit->setEditId(tvid);
 	edit->display(cwid);
-	edit->getEditId();
+	// this->state.yx = edit->getEditId();
 	edit->destroy();
 
 	this->data->setChanged(true);
@@ -678,7 +678,6 @@ void tunersetsView::addPosition()
 	debug("addPosition");
 
 	int tvid = this->state.yx;
-	string tnid;
 
 	auto* dbih = this->data->dbih;
 
@@ -688,7 +687,7 @@ void tunersetsView::addPosition()
 	e2se_gui::editTunersetsTable* add = new e2se_gui::editTunersetsTable(this->data, tvid);
 	add->setAddId(tvid);
 	add->display(cwid);
-	tnid = add->getAddId();
+	string tnid = add->getAddId();
 	add->destroy();
 
 	if (dbih->tuners[tvid].tables.count(tnid))
@@ -747,7 +746,6 @@ void tunersetsView::editPosition()
 	QTreeWidgetItem* item = selected.first();
 	int tvid = this->state.yx;
 	string tnid = item->data(0, Qt::UserRole).toString().toStdString();
-	string nw_tnid;
 
 	auto* dbih = this->data->dbih;
 
@@ -762,7 +760,7 @@ void tunersetsView::editPosition()
 	e2se_gui::editTunersetsTable* edit = new e2se_gui::editTunersetsTable(this->data, tvid);
 	edit->setEditId(tnid, tvid);
 	edit->display(cwid);
-	nw_tnid = edit->getEditId();
+	string nw_tnid = edit->getEditId();
 	edit->destroy();
 
 	if (dbih->tuners[tvid].tables.count(nw_tnid))
@@ -798,11 +796,10 @@ void tunersetsView::addTransponder()
 	if (! dbih->tuners[tvid].tables.count(tnid))
 		return error("addTransponder", tr("Error", "error").toStdString(), tr("Missing tuner settings table key \"%1\".", "error").arg(tnid.data()).toStdString());
 
-	string trid;
 	e2se_gui::editTunersetsTransponder* add = new e2se_gui::editTunersetsTransponder(this->data, tvid);
 	add->setAddId(tnid, tvid);
 	add->display(cwid);
-	trid = add->getAddId();
+	string trid = add->getAddId();
 	add->destroy();
 
 	if (dbih->tuners[tvid].tables[tnid].transponders.count(trid))
@@ -865,7 +862,6 @@ void tunersetsView::editTransponder()
 	QTreeWidgetItem* item = selected.first();
 	int tvid = this->state.yx;
 	string trid = item->data(ITEM_DATA_ROLE::trid, Qt::UserRole).toString().toStdString();
-	string nw_trid;
 	string tnid = this->state.curr;
 
 	auto* dbih = this->data->dbih;
@@ -884,7 +880,7 @@ void tunersetsView::editTransponder()
 	e2se_gui::editTunersetsTransponder* edit = new e2se_gui::editTunersetsTransponder(this->data, tvid);
 	edit->setEditId(trid, tnid, tvid);
 	edit->display(cwid);
-	nw_trid = edit->getEditId();
+	string nw_trid = edit->getEditId();
 	edit->destroy();
 
 	if (dbih->tuners[tvid].tables[tnid].transponders.count(nw_trid))

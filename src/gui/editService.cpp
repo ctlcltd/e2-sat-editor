@@ -63,7 +63,12 @@ void editService::display(QWidget* cwid)
 	layout(cwid);
 
 	if (this->state.edit)
+	{
 		retrieve();
+
+		if (isStream())
+			dtwid->setCurrentIndex(2);
+	}
 
 	dial->exec();
 }
@@ -82,10 +87,13 @@ void editService::layout(QWidget* cwid)
 	this->dtwid = new QTabWidget;
 	dtwid->connect(dtwid, &QTabWidget::currentChanged, [=](int index) { this->tabChanged(index); });
 
-	this->edittx = new editTransponder(this->data);
+	this->edittxp = new editTransponder(this->data);
 
-	QWidget* dtch = new QWidget;
-	QWidget* dttx = new QWidget;
+	if (isFavourite())
+		this->editfav = new editFavourite(this->data);
+
+	QWidget* dtchn = new QWidget;
+	QWidget* dttxp = new QWidget;
 	QWidget* dtfav = new QWidget;
 	this->dtpage = new QGridLayout;
 
@@ -95,11 +103,13 @@ void editService::layout(QWidget* cwid)
 
 	dtpage->addItem(new QSpacerItem(0, 0), 1, 0);
 
-	dtch->setLayout(dtpage);
+	dtchn->setLayout(dtpage);
 
-	dtwid->addTab(dtch, tr("Service", "dialog"));
-	dtwid->addTab(dttx, tr("Transponder", "dialog"));
-	dtwid->addTab(dtfav, tr("Favourite", "dialog"));
+	dtwid->addTab(dtchn, tr("Service", "dialog"));
+	dtwid->addTab(dttxp, tr("Transponder", "dialog"));
+
+	if (isFavourite())
+		dtwid->addTab(dtfav, tr("Favourite", "dialog"));
 
 	dtform->addWidget(dtwid, 0, 0);
 }
@@ -603,46 +613,80 @@ void editService::transponderComboChanged(int index)
 	QString qtxid = dtf1tx->currentData().toString();
 	string txid = qtxid.toStdString();
 
-	edittx->setEditId(txid);
-	edittx->change();
+	edittxp->setEditId(txid);
+	edittxp->reset();
 }
 
 void editService::tabChanged(int index)
 {
 	debug("tabChanged", "index", index);
 
-	if (index != 1 || this->state.transponder)
+	// tab: service = 0
+	if (index == 0)
 	{
-		edittx->show();
 		return;
 	}
-
-	bool retr = false;
-
-	if (dtf1tx->currentData().isNull())
+	// tab: transponder = 1
+	else if (index == 1)
 	{
-		edittx->setAddId();
+		edittxp->show();
+
+		bool retr = false;
+
+		if (dtf1tx->currentData().isNull())
+		{
+			edittxp->setAddId();
+		}
+		else
+		{
+			QString qtxid = dtf1tx->currentData().toString();
+			string txid = qtxid.toStdString();
+
+			if (! this->state.transponder || this->txid != txid)
+				retr = true;
+
+			edittxp->setEditId(txid);
+		}
+
+		edittxp->layout(this->dial);
+		edittxp->show(retr);
+
+		QGridLayout* layout = new QGridLayout;
+		layout->setContentsMargins(0, 0, 0, 0);
+		layout->addWidget(edittxp->widget);
+		dtwid->widget(1)->setLayout(layout);
+
+		this->state.transponder = true;
 	}
-	else
+	// tab: favourite = 2
+	else if (index == 2)
 	{
-		QString qtxid = dtf1tx->currentData().toString();
-		string txid = qtxid.toStdString();
+		editfav->show();
 
-		if (! this->state.transponder || this->txid != txid)
-			retr = true;
+		bool retr = false;
 
-		edittx->setEditId(txid);
+		if (this->state.edit)
+		{
+			if (! this->state.favourite)
+				retr = true;
+
+			editfav->setEditId(chid, bname);
+		}
+		else
+		{
+			editfav->setAddId(bname);
+		}
+
+		editfav->layout(this->dial);
+		editfav->show(retr);
+
+		QGridLayout* layout = new QGridLayout;
+		layout->setContentsMargins(0, 0, 0, 0);
+		layout->addWidget(editfav->widget);
+		dtwid->widget(2)->setLayout(layout);
+
+		this->state.favourite = true;
 	}
-
-	edittx->layout(this->dial);
-	edittx->show(retr);
-
-	QGridLayout* layout = new QGridLayout;
-	layout->setContentsMargins(0, 0, 0, 0);
-	layout->addWidget(edittx->widget);
-	dtwid->widget(1)->setLayout(layout);
-
-	this->state.transponder = true;
 }
 
 void editService::newTransponder()
@@ -650,8 +694,8 @@ void editService::newTransponder()
 	debug("newTransponder");
 
 	dtf1tx->setCurrentIndex(-1);
-	edittx->setAddId();
-	edittx->change();
+	edittxp->setAddId();
+	edittxp->reset();
 
 	dtwid->setCurrentIndex(1);
 }
@@ -663,22 +707,48 @@ void editService::store()
 	auto* dbih = this->data->dbih;
 
 	e2db::service ch;
-	string nw_txid;
+	e2db::channel_reference chref;
+
+	if (isFavourite() && dbih->userbouquets.count(bname))
+	{
+		e2db::userbouquet& ub = dbih->userbouquets[bname];
+
+		if (this->state.edit)
+		{
+			if (! ub.channels.count(ref_chid))
+				return error("store", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" not exists.", "error").arg(ref_chid.data()).toStdString());
+
+			chref = ub.channels[ref_chid];
+		}
+	}
 
 	if (this->state.edit)
 	{
-		if (! dbih->db.services.count(chid))
-			return error("store", tr("Error", "error").toStdString(), tr("Service \"%1\" not exists.", "error").arg(chid.data()).toStdString());
+		if (! dbih->db.services.count(ref_chid))
+			return error("store", tr("Error", "error").toStdString(), tr("Service \"%1\" not exists.", "error").arg(ref_chid.data()).toStdString());
 
-		ch = dbih->db.services[chid];
+		ch = dbih->db.services[ref_chid];
 	}
+
+	string nw_txid;
+	string nw_chid;
+
 	if (this->state.transponder)
 	{
-		edittx->store();
+		edittxp->store();
 
-		string txid = edittx->getAddId();
+		string txid = edittxp->getEditId();
 		if (! txid.empty())
 			nw_txid = txid;
+	}
+
+	if (this->state.favourite)
+	{
+		editfav->store();
+
+		string chid = edittxp->getEditId();
+		if (! chid.empty())
+			nw_chid = chid;
 	}
 
 	for (auto & item : fields)
@@ -800,7 +870,7 @@ void editService::store()
 	{
 		ch.txid = nw_txid;
 	}
-	if (ch.txid != this->txid)
+	if (ch.txid != ref_txid)
 	{
 		e2db::transponder tx = dbih->db.transponders[ch.txid];
 		ch.tsid = tx.tsid;
@@ -812,13 +882,23 @@ void editService::store()
 		// %4x:%4x:%8x
 		std::snprintf(nw_chid, 25, "%x:%x:%x", ch.ssid, tx.tsid, tx.dvbns);
 
-		this->chid = ch.chid = nw_chid;
+		this->ref_chid = ch.chid = nw_chid;
 	}
 
 	if (this->state.edit)
-		this->chid = dbih->editService(chid, ch);
+		this->chid = dbih->editService(ref_chid, ch);
 	else
 		this->chid = dbih->addService(ch);
+
+	if (isFavourite())
+	{
+		if (this->state.edit)
+			this->chid = dbih->editChannelReference(chid, chref, bname);
+		else
+			this->chid = dbih->addChannelReference(chref, bname);
+	}
+
+	this->changes = true;
 }
 
 void editService::retrieve()
@@ -827,14 +907,76 @@ void editService::retrieve()
 
 	auto* dbih = this->data->dbih;
 
-	if (! dbih->db.services.count(chid))
-		return error("retrieve", tr("Error", "error").toStdString(), tr("Service \"%1\" not exists.", "error").arg(chid.data()).toStdString());
+	this->ref_chid = string (this->chid);
+	this->ref_txid = string ();
 
-	e2db::service ch = dbih->db.services[chid];
+	e2db::channel_reference chref;
+
+	if (isFavourite() && dbih->userbouquets.count(bname))
+	{
+		e2db::userbouquet ub = dbih->userbouquets[bname];
+
+		if (! ub.channels.count(ref_chid))
+			return error("retrieve", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" not exists.", "error").arg(ref_chid.data()).toStdString());
+
+		chref = ub.channels[ref_chid];
+
+		//TODO opt in settings
+		if (1 && chref.stream)
+		{
+			int dvbns = chref.ref.dvbns;
+
+			for (auto & x : dbih->db.transponders)
+			{
+				e2db::transponder& tx = x.second;
+
+				//TODO TEST (dvbns or onid reverse to pos)
+				if (tx.tsid == chref.ref.tsid && (tx.dvbns == chref.ref.dvbns || tx.onid == chref.ref.onid))
+				{
+					ref_txid = tx.txid;
+					dvbns = tx.dvbns;
+					break;
+				}
+			}
+
+			if (dvbns == chref.ref.dvbns)
+			{
+				ref_chid = chref.chid;
+			}
+			else
+			{
+				char chid[25];
+
+				// %4x:%4x:%8x
+				std::snprintf(chid, 25, "%x:%x:%x", chref.ref.ssid, chref.ref.tsid, dvbns);
+
+				ref_chid = chid;
+			}
+
+			if (! dbih->db.services.count(ref_chid))
+				ref_chid = "";
+			else if (! dbih->db.transponders.count(ref_txid))
+				ref_txid = "";
+		}
+	}
+
+	if (! dbih->db.services.count(ref_chid))
+		return error("retrieve", tr("Error", "error").toStdString(), tr("Service \"%1\" not exists.", "error").arg(ref_chid.data()).toStdString());
+
+	e2db::service ch = dbih->db.services[ref_chid];
 	e2db::transponder tx;
-	if (ch.tsid != 0)
+
+	if (ref_txid.empty() && ch.tsid != 0)
+	{
+		ref_txid = string (ch.txid);
 		tx = dbih->db.transponders[ch.txid];
-	this->txid = ch.txid;
+	}
+	else
+	{
+		tx = dbih->db.transponders[ref_txid];
+	}
+
+	this->txid = ref_txid;
 
 	for (auto & item : fields)
 	{
@@ -1031,11 +1173,29 @@ void editService::setEditId(string chid)
 	this->chid = chid;
 }
 
+void editService::setEditId(string chid, string bname, bool stream)
+{
+	debug("setEditId");
+
+	this->state.edit = true;
+	this->chid = chid;
+	this->bname = bname;
+	this->state.is_stream = stream;
+}
+
 string editService::getEditId()
 {
 	debug("getEditId");
 
 	return this->chid;
+}
+
+void editService::setAddId(string bname)
+{
+	debug("setAddId");
+
+	this->bname = bname;
+	this->state.is_fav = ! bname.empty();
 }
 
 string editService::getAddId()
@@ -1049,19 +1209,42 @@ string editService::getTransponderId()
 {
 	debug("getTransponderId");
 
-	if (this->state.transponder)
-		return this->txid;
-	return "";
+	return this->txid;
 }
 
-void editService::destroy()
+bool editService::isFavourite()
+{
+	return this->state.is_fav;
+}
+
+bool editService::isStream()
+{
+	return this->state.is_stream;
+}
+
+bool editService::getReload()
+{
+	return this->state.transponder && ! this->txid.empty();
+}
+
+bool editService::destroy()
 {
 	debug("destroy");
 
-	delete this->edittx;
-	delete this->dial;
-	delete this->theme;
+	if (this->edittxp != nullptr)
+		delete this->edittxp;
+	if (this->editfav != nullptr)
+		delete this->editfav;
+	if (this->dial != nullptr)
+		delete this->dial;
+	if (this->theme != nullptr)
+		delete this->theme;
+
+	bool _changes = this->changes;
+
 	delete this;
+
+	return ! changes;
 }
 
 }

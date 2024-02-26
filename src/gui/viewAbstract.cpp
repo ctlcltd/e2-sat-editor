@@ -334,6 +334,7 @@ void viewAbstract::treeFindPerform(const QString& value)
 		tabSetFlag(gui::TabTreeFindNext, false);
 }
 
+//TODO FIX reset on change populate
 void viewAbstract::listFindPerform(LIST_FIND flag)
 {
 	if (this->lsr_search.input->text().isEmpty())

@@ -552,7 +552,6 @@ string e2db_abstract::value_transponder_onid(int onid)
 	return conid;
 }
 
-//TODO TEST
 int e2db_abstract::value_transponder_dvbns(string str)
 {
 	try
@@ -568,19 +567,48 @@ int e2db_abstract::value_transponder_dvbns(string str)
 
 int e2db_abstract::value_transponder_dvbns(transponder tx)
 {
-	return value_transponder_dvbns(tx.pos, tx.onid, tx.freq, tx.pol);
+	YTYPE ytype = static_cast<YTYPE>(tx.ytype);
+	return value_transponder_dvbns(ytype, tx.tsid, tx.onid, tx.pos, tx.freq);
 }
 
-//TODO calculate dvbns namespace
-int e2db_abstract::value_transponder_dvbns(int pos, int onid, int freq, int pol)
+//TODO TEST
+int e2db_abstract::value_transponder_dvbns(YTYPE ytype, int tsid, int onid, int pos, int freq)
 {
-	return value_transponder_dvbns(pos, onid);
+	if (ytype == YTYPE::terrestrial)
+		return 0xeeee0000;
+	else if (ytype == YTYPE::cable)
+		return 0xffff0000;
+
+	int posns = pos;
+	int freqns = 0;
+
+	if (posns > 1800)
+		posns -= 3600;
+	posns = posns << 16;
+
+	bool valid = false;
+
+	if (onid == 0x0000 || onid == 0xffff || onid == 0x1111)
+		valid = false;
+	else if (onid == 0x0001)
+		valid = (tsid > 0x0001);
+	else if (onid == 0x00b1)
+		valid = (tsid > 0x00b0 || tsid < 0x00b0);
+	else if (onid == 0x0002)
+		valid = (tsid > 0x07e8 || tsid < 0x07e8);
+	else
+		valid = true;
+
+	if (! valid)
+		freqns = freq << 16 >> 16;
+
+	return posns ?: freqns;
 }
 
-int e2db_abstract::value_transponder_dvbns(int pos, int onid)
+/*int e2db_abstract::value_transponder_dvbns(int pos, int onid)
 {
 	return pos << 16;
-}
+}*/
 
 string e2db_abstract::value_transponder_dvbns(int dvbns)
 {

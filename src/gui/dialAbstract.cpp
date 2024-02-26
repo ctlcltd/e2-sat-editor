@@ -183,13 +183,20 @@ void dialAbstract::save()
 	});
 }
 
-void dialAbstract::destroy()
+bool dialAbstract::destroy()
 {
 	debug("destroy");
 
-	delete this->dial;
-	delete this->theme;
+	if (this->dial != nullptr)
+		delete this->dial;
+	if (this->theme != nullptr)
+		delete this->theme;
+
+	bool _changes = this->changes;
+
 	delete this;
+
+	return ! changes;
 }
 
 QToolBar* dialAbstract::toolBar()

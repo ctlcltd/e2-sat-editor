@@ -215,6 +215,8 @@ void editMarker::store()
 		this->chid = dbih->editChannelReference(chid, chref, bname);
 	else
 		this->chid = dbih->addChannelReference(chref, bname);
+
+	this->changes = true;
 }
 
 void editMarker::retrieve()
@@ -229,16 +231,13 @@ void editMarker::retrieve()
 	e2db::userbouquet ub = dbih->userbouquets[bname];
 	e2db::channel_reference chref;
 
-	if (this->state.edit)
-	{
-		if (! ub.channels.count(chid))
-			return error("retrieve", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" not exists.", "error").arg(chid.data()).toStdString());
+	if (! ub.channels.count(chid))
+		return error("retrieve", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" not exists.", "error").arg(chid.data()).toStdString());
 
-		chref = ub.channels[chid];
+	chref = ub.channels[chid];
 
-		if (! chref.marker)
-			return error("retrieve", tr("Error", "error").toStdString(), tr("Channel reference mismatch \"%1\".", "error").arg(chid.data()).toStdString());
-	}
+	if (! chref.marker)
+		return error("retrieve", tr("Error", "error").toStdString(), tr("Channel reference mismatch \"%1\".", "error").arg(chid.data()).toStdString());
 
 	for (auto & item : fields)
 	{

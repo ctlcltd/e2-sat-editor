@@ -54,6 +54,7 @@ void dialChannelBook::layout(QWidget* cwid)
 {
 	this->dialAbstract::layout(cwid);
 
+	dial->setObjectName("dialchbook");
 	dial->setWindowFlag(Qt::WindowStaysOnTopHint);
 	dial->setAttribute(Qt::WA_MacAlwaysShowToolWindow);
 
@@ -118,14 +119,24 @@ void dialChannelBook::reset()
 		this->cbv->reset();
 }
 
-void dialChannelBook::destroy()
+bool dialChannelBook::destroy()
 {
 	debug("destroy");
 
-	delete this->cbv;
-	delete this->dial;
-	delete this->theme;
-	delete this;
+	if (this->cbv != nullptr)
+	{
+		delete this->cbv;
+		this->cbv = nullptr;
+	}
+
+	if (this->dial != nullptr)
+		delete this->dial;
+	if (this->theme != nullptr)
+		delete this->theme;
+
+	// delete this;
+
+	return true;
 }
 
 }

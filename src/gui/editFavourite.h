@@ -38,7 +38,7 @@ class editFavourite : public dialAbstract
 		~editFavourite();
 		void display(QWidget* cwid);
 		void show(bool retr = false);
-		void change();
+		void reset();
 		void layout(QWidget* cwid);
 		void store();
 		void setEditId(string chid, string bname);

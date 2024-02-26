@@ -1747,6 +1747,7 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 	service_reference ref;
 	channel_reference chref;
 	int pos = -1;
+	int freq = -1;
 	bool locked = false;
 
 	vector<pair<userbouquet, vector<string>>> ubouquets;
@@ -1805,6 +1806,7 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 				ref = service_reference ();
 				chref = channel_reference ();
 				pos = -1;
+				freq = -1;
 				locked = false;
 			}
 		}
@@ -1847,7 +1849,8 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 					ref.onid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "s")
 					pos = std::atoi(val.data());
-				// else if (key == "frq")
+				else if (key == "frq")
+					freq = std::atoi(val.data());
 				else if (key == "l")
 					locked = std::atoi(val.data());
 			}
@@ -1886,7 +1889,11 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 		}
 		else if (add && step == 2)
 		{
-			if (! ref.onid)
+			if (pos != -1 && pos != 0 && ref.onid != 0 && freq != 0)
+			{
+				ref.dvbns = value_transponder_dvbns(YTYPE::satellite, ref.tsid, ref.onid, pos, freq);
+			}
+			else
 			{
 				for (auto & x : db.transponders)
 				{
@@ -1898,10 +1905,6 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 						break;
 					}
 				}
-			}
-			else
-			{
-				ref.dvbns = value_transponder_dvbns(pos, ref.onid);
 			}
 
 			char chid[25];

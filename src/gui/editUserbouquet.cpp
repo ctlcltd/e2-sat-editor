@@ -163,6 +163,8 @@ void editUserbouquet::store()
 		this->bname = dbih->editUserbouquet(ub);
 	else
 		this->bname = dbih->addUserbouquet(ub);
+
+	this->changes = true;
 }
 
 void editUserbouquet::retrieve()

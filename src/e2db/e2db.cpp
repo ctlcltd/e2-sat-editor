@@ -2017,7 +2017,7 @@ void e2db::merge(e2db_abstract* dst)
 		{
 			channel_reference& chref = ub.channels[x.second];
 
-			if (! chref.marker)
+			if (! chref.marker && ! chref.stream)
 			{
 				if (merge)
 				{

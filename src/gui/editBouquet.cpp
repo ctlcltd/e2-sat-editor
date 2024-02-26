@@ -162,6 +162,8 @@ void editBouquet::store()
 		this->bname = dbih->editBouquet(bs);
 	else
 		this->bname = dbih->addBouquet(bs);
+
+	this->changes = true;
 }
 
 void editBouquet::retrieve()

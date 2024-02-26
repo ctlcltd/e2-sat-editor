@@ -367,11 +367,10 @@ void transpondersView::addTransponder()
 
 	auto* dbih = this->data->dbih;
 
-	string txid;
 	e2se_gui::editTransponder* add = new e2se_gui::editTransponder(this->data);
 	add->display(cwid);
-	txid = add->getAddId();
-	add->destroy();
+	string txid = add->getAddId();
+	if (add->destroy()) return;
 
 	if (dbih->db.transponders.count(txid))
 		debug("addTransponder", "txid", txid);
@@ -432,7 +431,6 @@ void transpondersView::editTransponder()
 
 	QTreeWidgetItem* item = selected.first();
 	string txid = item->data(ITEM_DATA_ROLE::txid, Qt::UserRole).toString().toStdString();
-	string nw_txid;
 
 	auto* dbih = this->data->dbih;
 
@@ -444,8 +442,8 @@ void transpondersView::editTransponder()
 	e2se_gui::editTransponder* edit = new e2se_gui::editTransponder(this->data);
 	edit->setEditId(txid);
 	edit->display(cwid);
-	nw_txid = edit->getEditId();
-	edit->destroy();
+	string nw_txid = edit->getEditId();
+	if (edit->destroy()) return;
 
 	if (dbih->db.transponders.count(nw_txid))
 		debug("editTransponder", "new txid", nw_txid);

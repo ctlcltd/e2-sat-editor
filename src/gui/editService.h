@@ -43,6 +43,10 @@ class editService : public dialAbstract
 			bool transponder = false;
 			// favourite edit
 			bool favourite = false;
+			// is fav
+			bool is_fav = false;
+			// is stream
+			bool is_stream = false;
 			// service data C (CAID) raw string
 			string raw_C;
 			// service data raw string
@@ -52,11 +56,16 @@ class editService : public dialAbstract
 		editService(dataHandler* data);
 		~editService();
 		void display(QWidget* cwid);
-		void destroy();
+		bool destroy();
 		void setEditId(string chid);
+		void setEditId(string chid, string bname, bool stream = false);
 		string getEditId();
+		void setAddId(string bname);
 		string getAddId();
 		string getTransponderId();
+		bool isFavourite();
+		bool isStream();
+		bool getReload();
 
 	protected:
 		void layout(QWidget* cwid);
@@ -78,8 +87,8 @@ class editService : public dialAbstract
 		QGridLayout* dtpage;
 		QComboBox* dtf1tn;
 		QComboBox* dtf1tx;
-		editTransponder* edittx;
-		editFavourite* editfav;
+		editTransponder* edittxp = nullptr;
+		editFavourite* editfav = nullptr;
 		map<string, vector<pair<int, string>>> txp_index;
 
 		__state state;
@@ -88,6 +97,9 @@ class editService : public dialAbstract
 	private:
 		string chid;
 		string txid;
+		string bname;
+		string ref_txid;
+		string ref_chid;
 };
 }
 #endif /* editService_h */

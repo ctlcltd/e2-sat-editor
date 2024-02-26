@@ -62,9 +62,9 @@ void editTransponder::show(bool retr)
 		retrieve();
 }
 
-void editTransponder::change()
+void editTransponder::reset()
 {
-	debug("change");
+	debug("reset");
 
 	if (dtform == nullptr)
 		return;

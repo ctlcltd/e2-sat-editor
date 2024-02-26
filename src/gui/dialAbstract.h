@@ -45,7 +45,7 @@ class dialAbstract : protected e2se::log_factory
 
 		virtual ~dialAbstract() = default;
 		virtual void display(QWidget* cwid) = 0;
-		virtual void destroy();
+		virtual bool destroy();
 		void themeChanged();
 
 		QWidget* widget;
@@ -73,7 +73,7 @@ class dialAbstract : protected e2se::log_factory
 		void toolBarStyleSheet();
 
 		QDialog* dial = nullptr;
-		e2se_gui::theme* theme;
+		e2se_gui::theme* theme = nullptr;
 		dataHandler* data = nullptr;
 		QToolBar* dtbar;
 		QToolButton* dttoggler;
@@ -82,6 +82,7 @@ class dialAbstract : protected e2se::log_factory
 		QMargins frameMargins = QMargins (10, 12, 10, 12);
 		bool frameFixed = true;
 		vector<QWidget*> fields;
+		bool changes = false;
 
 		__state state;
 		__action action;
