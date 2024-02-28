@@ -22,7 +22,6 @@ using std::vector, std::string;
 
 namespace e2se_gui
 {
-//TODO
 class editFavourite : public dialAbstract
 {
 	Q_DECLARE_TR_FUNCTIONS(editFavourite)

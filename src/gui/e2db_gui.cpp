@@ -71,6 +71,11 @@ void e2db::setup()
 	e2db::MAKER_TUNERSETS = settings.value("engine/makerTunerset", true).toBool();
 	e2db::PARSER_PARENTALLOCK_LIST = settings.value("engine/parserParentalLock", true).toBool();
 	e2db::MAKER_PARENTALLOCK_LIST = settings.value("engine/makerParentalLock", true).toBool();
+	e2db::USERBOUQUET_FILENAME_SUFFIX = settings.value("engine/userbouquetFilenameSuffix", "dbe").toString().toStdString();
+
+	e2db::MARKER_GLOBAL_INDEX = settings.value("engine/markerGlobalIndex", false).toBool();
+	e2db::FAVOURITE_MATCH_SERVICE = settings.value("engine/favouriteMatchService", true).toBool();
+	e2db::MERGE_SORT_ID = settings.value("engine/mergeSortId", false).toBool();
 
 	int profile_sel = settings.value("profile/selected", 0).toInt();
 	settings.beginReadArray("profile");
@@ -683,8 +688,7 @@ QStringList e2db::entryFavourite(channel_reference chref)
 		default: e2db::ETYPE_EXT_LABEL.count(chref.etype) ? QString::fromStdString(e2db::ETYPE_EXT_LABEL.at(chref.etype)) : QString::number(chref.etype);
 	}
 
-	//TODO opt in settings
-	if (1 && chref.stream)
+	if (FAVOURITE_MATCH_SERVICE && chref.stream)
 	{
 		string ref_txid;
 		string ref_chid;

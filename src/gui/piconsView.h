@@ -35,7 +35,7 @@ class piconsView : public viewAbstract
 			string curr_picon;
 			// pending update from tab
 			bool tab_pending = false;
-			// picons use chname { refid = 0, chname = 1 } [QSettings]
+			// preference : picons use chname { refid = 0, chname = 1 } [QSettings] initial value
 			bool q_piconsUseChname = false;
 		};
 
@@ -69,7 +69,7 @@ class piconsView : public viewAbstract
 		void listItemPaste();
 		void listItemDelete(bool cut = false);
 		void listFindPerform(const QString& value, LIST_FIND flag);
-		void listFindClear(bool hidden = true);
+		void listFindClearSelection(bool hidden = true);
 		void didChange();
 		void update();
 		void updateFromTab();

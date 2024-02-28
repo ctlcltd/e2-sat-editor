@@ -2332,7 +2332,6 @@ void tab::e2dbError(QString title, QString message)
 	errorMessage(title, message);
 }
 
-//TODO improve logger with filenames
 void tab::e2dbError(vector<string> errors, MSG_CODE code)
 {
 	vector<pair<string, string>> _errors;

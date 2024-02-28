@@ -302,16 +302,20 @@ void tunersetsView::layout()
 	QToolBar* tree_ats = toolBar();
 	QToolBar* list_ats = toolBar();
 
-	this->action.tree_newtn = toolBarAction(tree_ats, tr("New Position", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addPosition(); });
+	this->action.tree_newtn = toolBarAction(tree_ats, tr("Position", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addPosition(); });
 	toolBarSpacer(tree_ats);
 	this->action.tree_search = toolBarButton(tree_ats, tr("Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->treeSearchToggle(); });
+
+	this->action.tree_newtn->setToolTip(tr("New Position", "toolbar"));
 
 	this->action.tree_search->setDisabled(true);
 	this->action.tree_search->actions().first()->setDisabled(true);
 
-	this->action.list_newtr = toolBarAction(list_ats, tr("New Transponder", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addTransponder(); });
+	this->action.list_newtr = toolBarAction(list_ats, tr("Transponder", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addTransponder(); });
 	toolBarSpacer(list_ats);
 	this->action.list_search = toolBarButton(list_ats, tr("Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->listSearchToggle(); });
+
+	this->action.list_newtr->setToolTip(tr("New Transponder", "toolbar"));
 
 	this->action.list_newtr->setDisabled(true);
 	this->action.list_search->setDisabled(true);
@@ -460,8 +464,7 @@ void tunersetsView::reset()
 	list->header()->setSectionsClickable(false);
 	list->header()->setSortIndicator(0, Qt::AscendingOrder);
 
-	this->lsr_find.curr = -1;
-	this->lsr_find.match.clear();
+	listFindClear();
 
 	this->action.list_newtr->setDisabled(true);
 
@@ -554,6 +557,8 @@ void tunersetsView::treeItemChanged(QTreeWidgetItem* current)
 	updateListIndex();
 
 	populate();
+
+	listFindClear();
 
 	updateFlags();
 	updateStatusBar(true);
@@ -688,7 +693,7 @@ void tunersetsView::addPosition()
 	add->setAddId(tvid);
 	add->display(cwid);
 	string tnid = add->getAddId();
-	add->destroy();
+	if (add->destroy()) return;
 
 	if (dbih->tuners[tvid].tables.count(tnid))
 		debug("addPosition", "tnid", tnid);
@@ -800,7 +805,7 @@ void tunersetsView::addTransponder()
 	add->setAddId(tnid, tvid);
 	add->display(cwid);
 	string trid = add->getAddId();
-	add->destroy();
+	if (add->destroy()) return;
 
 	if (dbih->tuners[tvid].tables[tnid].transponders.count(trid))
 		debug("addTransponder", "trid", trid);
@@ -1480,6 +1485,8 @@ void tunersetsView::update()
 
 		list->header()->setSortIndicator(column, order);
 		sortByColumn(column);
+
+		listFindClear();
 
 		this->state.tab_pending = false;
 	}

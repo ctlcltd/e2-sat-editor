@@ -23,7 +23,7 @@ class e2db_maker : virtual public e2db_abstract
 		inline static bool MAKER_TUNERSETS = true;
 		inline static bool MAKER_PARENTALLOCK_LIST = true;
 
-		inline static string MAKER_SPATH = "/var/tuxbox/config/enigma";
+		inline static string MAKER_SPATH = "/etc/enigma2";
 		inline static string MAKER_TPATH = MAKER_SPATH;
 		inline static string MAKER_BPATH = MAKER_SPATH;
 
@@ -76,6 +76,8 @@ class e2db_maker : virtual public e2db_abstract
 		bool push_file(string path);
 		string conv_uri_value(string str);
 		string conv_xml_value(string str);
+
+		int marker_count = 0;
 };
 }
 #endif /* e2db_maker_h */

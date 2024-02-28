@@ -12,17 +12,18 @@ To discuss the Roadmap, use [Discussions](https://github.com/ctlcltd/e2-sat-edit
 ## Enhancements
 
 Less ambitious features:
-- import and export connection profiles
+- [x] import and export connection profiles
+- [x] add type stream (favourite) support
 - mirror transponders, from Lamedb transponder to XML transponder and vice-versa
 - improve management of duplicate channels
 - add options to merge on import
-- calculate *dvbns* namespace in `e2db`
+- [x] calculate *dvbns* namespace in `e2db`
 - assign channel number such as LCN (Logical Channel Number), custom number is partially supported
 - provide custom data for each reference
 - picon image transformation, resize, apply image masks
 
 Improvements:
-- [automated build](https://github.com/ctlcltd/e2-sat-editor/discussions/17)
+- [x] [automated build](https://github.com/ctlcltd/e2-sat-editor/discussions/17)
 - less memory usage
 - file handling
 

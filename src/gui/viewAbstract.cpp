@@ -292,7 +292,7 @@ void viewAbstract::listSearchHide()
 
 	list_search->hide();
 	if (! this->lsr_find.highlight)
-		listFindClear();
+		listFindClearSelection();
 	widget->setFocus();
 }
 
@@ -334,7 +334,6 @@ void viewAbstract::treeFindPerform(const QString& value)
 		tabSetFlag(gui::TabTreeFindNext, false);
 }
 
-//TODO FIX reset on change populate
 void viewAbstract::listFindPerform(LIST_FIND flag)
 {
 	if (this->lsr_search.input->text().isEmpty())
@@ -371,7 +370,7 @@ void viewAbstract::listFindPerform(const QString& value, LIST_FIND flag)
 		{
 			text = value;
 
-			listFindClear();
+			listFindClearSelection();
 		}
 		else
 		{
@@ -404,7 +403,7 @@ void viewAbstract::listFindPerform(const QString& value, LIST_FIND flag)
 		match = list->model()->match(start, Qt::DisplayRole, text, limit, Qt::MatchFlag::MatchContains);
 
 		if (this->lsr_find.flag == LIST_FIND::all)
-			listFindClear();
+			listFindClearSelection();
 
 		this->lsr_find.curr = -1;
 	}
@@ -442,7 +441,7 @@ void viewAbstract::listFindPerform(const QString& value, LIST_FIND flag)
 		}
 		else if (type == LIST_FIND::all)
 		{
-			listFindClear(false);
+			listFindClearSelection(false);
 
 			while (i != j)
 			{
@@ -496,7 +495,7 @@ void viewAbstract::listFindHighlightToggle()
 	this->lsr_find.highlight = ! highlight;
 }
 
-void viewAbstract::listFindClear(bool hidden)
+void viewAbstract::listFindClearSelection(bool hidden)
 {
 	list->clearSelection();
 
@@ -513,15 +512,21 @@ void viewAbstract::listFindClear(bool hidden)
 
 void viewAbstract::listFindReset()
 {
-	listFindClear();
+	listFindClearSelection();
 
 	this->lsr_find.flag = LIST_FIND::fast;
 	this->lsr_find.filter = 0;
 	this->lsr_find.highlight = true;
-	this->lsr_find.curr = -1;
 	this->lsr_find.input = "";
-	this->lsr_find.match.clear();
 	this->lsr_find.timer.invalidate();
+
+	listFindClear();
+}
+
+void viewAbstract::listFindClear()
+{
+	this->lsr_find.curr = -1;
+	this->lsr_find.match.clear();
 }
 
 void viewAbstract::tabSetFlag(gui::GUI_CXE bit, bool flag)

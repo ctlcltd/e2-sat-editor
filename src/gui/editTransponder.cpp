@@ -128,7 +128,7 @@ void editTransponder::layout(QWidget* cwid)
 	dtf0ns->setProperty("field", "dvbns");
 	fields.emplace_back(dtf0ns);
 	dtf0ns->setMaximumWidth(80);
-	dtf0ns->setInputMask(">HHHHHHHHH");
+	dtf0ns->setInputMask(">HHHHHHHH");
 	dtf0ns->setMaxLength(9);
 	platform::osLineEdit(dtf0ns);
 	dtf0->addRow(tr("DVBNS"), dtf0ns);

@@ -124,8 +124,7 @@ void channelBookView::layout()
 
 	tree->setStyleSheet("QTreeWidget { border-style: none } QTreeWidget::item { padding: 2px 0 }");
 	list->setStyleSheet("QTreeWidget { border-style: none } QTreeWidget::item { padding: 2px 0 }");
-	//TODO FIX ui
-	tabv->setStyleSheet("QTabBar { width: 100% } QTabBar::tab { min-width: 48px; max-height: 22px }");
+	tabv->setStyleSheet("QTabBar { width: 100% } QTabBar::tab { min-width: 48px; max-height: 0 }");
 
 #ifdef Q_OS_MAC
 	if (theme::isDefault())
@@ -184,7 +183,7 @@ void channelBookView::layout()
 	tabv->setHidden(true);
 	tabv->setDocumentMode(true);
 	tabv->setUsesScrollButtons(true);
-	tabv->setExpanding(false);
+	tabv->setExpanding(true);
 	tabv->setDrawBase(true);
 	tabv->setShape(QTabBar::RoundedWest);
 
@@ -193,6 +192,7 @@ void channelBookView::layout()
 	for (int i = 0; i < 27; i++)
 	{
 		tabv->addTab("");
+		//tabv->addTab(QString::fromStdString(chars[i]));
 		tabv->setTabButton(i, QTabBar::LeftSide, new QLabel(QString::fromStdString(chars[i])));
 		tabv->setTabData(i, QString::fromStdString(chars[i]));
 	}
@@ -279,8 +279,7 @@ void channelBookView::reset()
 	list->header()->setSectionsClickable(false);
 	list->header()->setSortIndicator(0, Qt::AscendingOrder);
 
-	this->lsr_find.curr = -1;
-	this->lsr_find.match.clear();
+	listFindClear();
 
 	resetStatusBar();
 }
@@ -315,11 +314,11 @@ void channelBookView::populate()
 		QString index = tabv->tabData(selected).toString();
 		curr = index.toStdString();
 
-#ifdef Q_OS_WIN
-		for (int i = 0; i < tabv->count(); i++)
-			tabv->tabButton(i, QTabBar::LeftSide)->setStyleSheet("color: palette(text)");
-		tabv->tabButton(selected, QTabBar::LeftSide)->setStyleSheet("color: palette(highlighted-text)");
-#endif
+// #ifdef Q_OS_WIN
+// 		for (int i = 0; i < tabv->count(); i++)
+// 			tabv->tabButton(i, QTabBar::LeftSide)->setStyleSheet("color: palette(text)");
+// 		tabv->tabButton(selected, QTabBar::LeftSide)->setStyleSheet("color: palette(highlighted-text)");
+// #endif
 	}
 
 	this->state.curr = curr;
@@ -765,6 +764,8 @@ void channelBookView::update()
 
 		list->header()->setSortIndicator(column, order);
 		sortByColumn(column);
+
+		listFindClear();
 
 		this->state.tab_pending = false;
 	}

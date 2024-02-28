@@ -61,8 +61,12 @@ class mainView : public viewAbstract
 			bool chx_pending = false;
 			// pending update from tab
 			bool tab_pending = false;
-			// parental lock invert value [QSettings]
+			// preference : parental lock [QSettings] initial value
 			bool q_parentalLockInvert = false;
+			// engine : marker global index [QSettings] initial value
+			bool q_markerGlobalIndex = false;
+			// engine : favourite match service [QSettings] initial value
+			bool q_favouriteMatchService = true;
 		};
 
 		struct __action
@@ -71,6 +75,7 @@ class mainView : public viewAbstract
 			QPushButton* lcrn_prefs;
 			QAction* tree_newbq;
 			QAction* list_addch;
+			QAction* list_addfh;
 			QAction* list_addmk;
 			QAction* list_newch;
 			QAction* tools_close_edit;

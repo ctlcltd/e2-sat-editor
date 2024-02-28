@@ -1290,14 +1290,39 @@ void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_refe
 	char chid[25];
 
 	if (chref.marker)
-		// %4d:%2x:%d
-		std::snprintf(chid, 25, "1:%d:%x:%d", chref.atype, chref.anum != 0 ? chref.anum : db.imarkers + 1, ub.index);
+	{
+		if (MARKER_GLOBAL_INDEX)
+		{
+			// %4d:%2x:%d
+			std::snprintf(chid, 25, "1:%d:%x:%d", chref.atype, db.imarkers + 1, ub.index);
+		}
+		else
+		{
+			bool valid = chref.anum != 0;
+			char ref_chid[25];
+
+			// %4d:%2x:%d
+			std::snprintf(ref_chid, 25, "1:%d:%x:%d", chref.atype, valid ? chref.anum : db.imarkers + 1, ub.index);
+
+			valid = ! ub.channels.count(ref_chid);
+
+			if (valid)
+				std::memcpy(chid, ref_chid, 25);
+			else
+				// %4d:%2x:%d
+				std::snprintf(chid, 25, "1:%d:%x:%d", chref.atype, db.imarkers + 1, ub.index);
+		}
+	}
 	else if (chref.stream)
+	{
 		// %4d:%4x:%d
 		std::snprintf(chid, 25, "2:%d:%x:%d", chref.atype, db.istreams + 1, ub.index);
+	}
 	else
+	{
 		// %4x:%4x:%8x
 		std::snprintf(chid, 25, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
+	}
 
 	chref.chid = chid;
 	chref.index = idx;

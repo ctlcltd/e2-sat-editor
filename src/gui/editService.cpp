@@ -921,8 +921,7 @@ void editService::retrieve()
 
 		chref = ub.channels[ref_chid];
 
-		//TODO opt in settings
-		if (1 && chref.stream)
+		if (dbih->FAVOURITE_MATCH_SERVICE && chref.stream)
 		{
 			int dvbns = chref.ref.dvbns;
 
@@ -1180,6 +1179,7 @@ void editService::setEditId(string chid, string bname, bool stream)
 	this->state.edit = true;
 	this->chid = chid;
 	this->bname = bname;
+	this->state.is_fav = ! bname.empty();
 	this->state.is_stream = stream;
 }
 
@@ -1244,7 +1244,7 @@ bool editService::destroy()
 
 	delete this;
 
-	return ! changes;
+	return ! _changes;
 }
 
 }

@@ -115,7 +115,7 @@ void editMarker::layout(QWidget* cwid)
 
 	dtf0ab->connect(dtf0ab, &QPushButton::pressed, [=]() {
 		// delay too fast
-		QTimer::singleShot(110, [=]() {
+		QTimer::singleShot(100, [=]() {
 			if (dtf0ac->isHidden())
 			{
 				dtf0af->hide();

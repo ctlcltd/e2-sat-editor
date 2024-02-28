@@ -317,15 +317,18 @@ void mainView::layout()
 	QToolBar* tree_ats = toolBar();
 	QToolBar* list_ats = toolBar();
 
-	this->action.tree_newbq = toolBarAction(tree_ats, tr("New Bouquet", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addUserbouquet(); });
+	this->action.tree_newbq = toolBarAction(tree_ats, tr("Bouquet", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addUserbouquet(); });
 	toolBarSpacer(tree_ats);
 	this->action.tree_search = toolBarButton(tree_ats, tr("Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->treeSearchToggle(); });
 
+	this->action.tree_newbq->setToolTip(tr("New Bouquet", "toolbar"));
+
 	this->action.tree_search->setDisabled(true);
 
-	this->action.list_addch = toolBarAction(list_ats, tr("Add Channel", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addChannel(); });
-	this->action.list_addmk = toolBarAction(list_ats, tr("Add Marker", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addMarker(); });
-	this->action.list_newch = toolBarAction(list_ats, tr("New Service", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addService(); });
+	this->action.list_addch = toolBarAction(list_ats, tr("Channel", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addChannel(); });
+	this->action.list_addfh = toolBarAction(list_ats, tr("Stream", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addFavourite(); });
+	this->action.list_addmk = toolBarAction(list_ats, tr("Marker", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addMarker(); });
+	this->action.list_newch = toolBarAction(list_ats, tr("Service", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addService(); });
 
 	this->action.list_ref = toolBarButton(list_ats, tr("Reference", "toolbar"), [=]() { this->listReferenceToggle(); });
 	toolBarSeparator(list_ats);
@@ -334,9 +337,15 @@ void mainView::layout()
 	toolBarSpacer(list_ats);
 	this->action.list_search = toolBarButton(list_ats, tr("&Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->listSearchToggle(); });
 
+	this->action.list_addch->setToolTip(tr("Add Channel", "toolbar"));
+	this->action.list_addfh->setToolTip(tr("Add Stream", "toolbar"));
+	this->action.list_addmk->setToolTip(tr("Add Marker", "toolbar"));
+	this->action.list_newch->setToolTip(tr("New Service", "toolbar"));
+
 	this->action.list_dnd->setCheckable(true);
 	this->action.list_ref->setCheckable(true);
 
+	this->action.list_addfh->setDisabled(true);
 	this->action.list_addmk->setDisabled(true);
 	this->action.list_newch->setDisabled(true);
 	this->action.list_dnd->setDisabled(true);
@@ -659,6 +668,8 @@ void mainView::reset()
 	this->state.chx_pending = false;
 	this->state.tab_pending = false;
 	this->state.q_parentalLockInvert = QSettings().value("preference/parentalLockInvert", false).toBool();
+	this->state.q_markerGlobalIndex = QSettings().value("engine/markerGlobalIndex", false).toBool();
+	this->state.q_favouriteMatchService = QSettings().value("engine/favouriteMatchService", true).toBool();
 
 	tree->reset();
 	tree->setDragEnabled(false);
@@ -677,10 +688,10 @@ void mainView::reset()
 		q.second.clear();
 	cache.clear();
 
-	this->lsr_find.curr = -1;
-	this->lsr_find.match.clear();
+	listFindClear();
 
 	this->action.list_addch->setDisabled(true);
+	this->action.list_addfh->setDisabled(true);
 	this->action.list_addmk->setDisabled(true);
 	this->action.list_newch->setEnabled(true);
 	this->action.list_dnd->setDisabled(true);
@@ -768,6 +779,7 @@ void mainView::populate(QTreeWidget* tw)
 			QString chid = QString::fromStdString(chi.second);
 			QString uri;
 			QStringList entry;
+			bool ref_error = false;
 
 			if (dbih->db.services.count(chi.second))
 			{
@@ -777,11 +789,9 @@ void mainView::populate(QTreeWidget* tw)
 				entry.prepend(idx);
 				entry.prepend(x);
 			}
-			else
+			else if (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(chi.second))
 			{
-				e2db::channel_reference chref;
-				if (dbih->userbouquets.count(bname))
-					chref = dbih->userbouquets[bname].channels[chi.second];
+				e2db::channel_reference chref = dbih->userbouquets[bname].channels[chi.second];
 
 				if (chref.marker)
 				{
@@ -803,9 +813,18 @@ void mainView::populate(QTreeWidget* tw)
 				}
 				else
 				{
-					entry = QStringList({x, NULL, NULL, NULL, chid, NULL, NULL, NULL, "ERROR", NULL});
-					error("populate", tr("Error", "error").toStdString(), tr("Channel reference mismatch \"%1\".", "error").arg(chi.second.data()).toStdString());
+					ref_error = true;
 				}
+			}
+			else
+			{
+				ref_error = true;
+			}
+
+			if (ref_error)
+			{
+				entry = QStringList({x, NULL, NULL, NULL, chid, NULL, NULL, NULL, "ERROR", NULL});
+				error("populate", tr("Error", "error").toStdString(), tr("Channel reference mismatch \"%1\".", "error").arg(chid).toStdString());
 			}
 
 			QTreeWidgetItem* item = new QTreeWidgetItem(entry);
@@ -884,6 +903,7 @@ void mainView::servicesItemChanged(QTreeWidgetItem* current)
 		this->state.si = si;
 
 		this->action.list_addch->setDisabled(true);
+		this->action.list_addfh->setDisabled(true);
 		this->action.list_addmk->setDisabled(true);
 		this->action.list_newch->setEnabled(true);
 
@@ -930,6 +950,8 @@ void mainView::servicesItemChanged(QTreeWidgetItem* current)
 
 	populate(side);
 
+	this->lsr_find.timer.invalidate();
+
 	updateFlags();
 	updateStatusBar(true);
 }
@@ -949,6 +971,7 @@ void mainView::treeItemChanged(QTreeWidgetItem* current)
 		if (ti != -1)
 		{
 			this->action.list_addch->setDisabled(true);
+			this->action.list_addfh->setDisabled(true);
 			this->action.list_addmk->setDisabled(true);
 			this->action.list_newch->setEnabled(true);
 
@@ -965,6 +988,7 @@ void mainView::treeItemChanged(QTreeWidgetItem* current)
 		else
 		{
 			this->action.list_addch->setEnabled(true);
+			this->action.list_addfh->setEnabled(true);
 			this->action.list_addmk->setEnabled(true);
 			this->action.list_newch->setDisabled(true);
 
@@ -1001,6 +1025,8 @@ void mainView::treeItemChanged(QTreeWidgetItem* current)
 	updateListIndex();
 
 	populate(tree);
+
+	listFindClear();
 
 	updateFlags();
 	updateStatusBar(true);
@@ -1179,18 +1205,21 @@ void mainView::visualReindexList()
 
 void mainView::visualReloadList()
 {
+	debug("visualReloadList");
+
 	auto* dbih = this->data->dbih;
 
-	bool force = dbih->changes.size();
+	bool chs_changed = dbih->changes.size();
 
-	debug("visualReloadList", "force", force);
+	if (chs_changed)
+		debug("visualReloadList", "chs changed", true);
 
+	string bname = this->state.curr;
 	bool ub_locked = false;
 
 	// userbouquet
 	if (this->state.ti == -1)
 	{
-		string bname = this->state.curr;
 		if (dbih->userbouquets.count(bname))
 		{
 			e2db::userbouquet uboq = dbih->userbouquets[bname];
@@ -1209,31 +1238,84 @@ void mainView::visualReloadList()
 		string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 		string nw_chid = chid;
 		bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
+		bool stream = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::stream;
+		bool ref_error = false;
 
-		if (force)
+		if (chs_changed)
 			nw_chid = dbih->changes[chid];
 
-		if (marker || ! dbih->entries.services.count(nw_chid))
+		if (dbih->entries.services.count(nw_chid))
 		{
-			i++;
-			continue;
+			QStringList entry = dbih->entries.services[nw_chid];
+			bool locked = entry[1].size() || ub_locked;
+			entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
+			entry.prepend(item->text(ITEM_ROW_ROLE::x));
+			for (int i = 0; i < entry.count(); i++)
+				item->setText(i, entry[i]);
+			item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
+			item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
+			item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
+			if (chs_changed)
+				item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
+		}
+		// userbouquet
+		else if (this->state.ti == -1)
+		{
+			if (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(nw_chid))
+			{
+				e2db::channel_reference chref = dbih->userbouquets[bname].channels[nw_chid];
+
+				if (marker)
+				{
+					QStringList entry = dbih->entryMarker(chref);
+					entry.prepend(item->text(ITEM_ROW_ROLE::x));
+					for (int i = 0; i < entry.count(); i++)
+						item->setText(i, entry[i]);
+					item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
+				}
+				else if (stream)
+				{
+					QStringList entry = dbih->entryFavourite(chref);
+					bool locked = entry[1].size() || ub_locked;
+					entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
+					entry.prepend(item->text(ITEM_ROW_ROLE::x));
+					for (int i = 0; i < entry.count(); i++)
+						item->setText(i, entry[i]);
+					item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
+					item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
+					item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
+					item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
+					item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
+				}
+				else
+				{
+					ref_error = true;
+				}
+			}
+			else
+			{
+				ref_error = true;
+			}
+		}
+		else
+		{
+			ref_error = true;
 		}
 
-		QStringList entry = dbih->entries.services[nw_chid];
-		bool locked = entry[1].size() || ub_locked;
-		entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
-		entry.prepend(item->text(ITEM_ROW_ROLE::x));
-		for (int i = 0; i < entry.count(); i++)
-			item->setText(i, entry[i]);
-		item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
-		item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
-		item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
-		if (force)
-			item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
+		if (ref_error)
+		{
+			QString chid = QString::fromStdString(nw_chid);
+			QString x = item->text(ITEM_ROW_ROLE::x);
+			QStringList entry = QStringList({x, NULL, NULL, NULL, chid, NULL, NULL, NULL, "ERROR", NULL});
+			for (int i = 0; i < entry.count(); i++)
+				item->setText(i, entry[i]);
+			error("visualReloadList", tr("Error", "error").toStdString(), tr("Channel reference mismatch \"%1\".", "error").arg(chid).toStdString());
+		}
+
 		i++;
 	}
 
-	if (force)
+	if (chs_changed)
 	{
 		dbih->changes.clear();
 	}
@@ -1570,6 +1652,8 @@ void mainView::addBouquet()
 	updateTreeIndex();
 
 	this->data->setChanged(true);
+
+	tabPropagateChanges();
 }
 
 void mainView::editBouquet()
@@ -1609,6 +1693,8 @@ void mainView::editBouquet()
 	updateTreeIndex();
 
 	this->data->setChanged(true);
+
+	tabPropagateChanges();
 }
 
 void mainView::addUserbouquet()
@@ -1889,7 +1975,7 @@ void mainView::editService()
 
 	auto* dbih = this->data->dbih;
 
-	if (! marker || (stream && dbih->db.services.count(chid)))
+	if (! marker && (stream || dbih->db.services.count(chid)))
 		debug("editService", "chid", chid);
 	else
 		return error("editService", tr("Error", "error").toStdString(), tr("Service \"%1\" not exists or is a channel reference.", "error").arg(chid.data()).toStdString());
@@ -2115,6 +2201,9 @@ void mainView::editFavourite()
 	item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 	item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
 
+	if (this->state.refbox)
+		updateReferenceBox();
+
 	this->data->setChanged(true);
 }
 
@@ -2250,6 +2339,9 @@ void mainView::editMarker()
 	for (int i = 0; i < entry.count(); i++)
 		item->setText(i, entry[i]);
 	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
+
+	if (this->state.refbox)
+		updateReferenceBox();
 
 	this->data->setChanged(true);
 }
@@ -3433,8 +3525,7 @@ void mainView::updateReferenceBox()
 
 			if (chref.ref.tsid != 0)
 			{
-				//TODO opt in settings
-				if (1)
+				if (dbih->FAVOURITE_MATCH_SERVICE)
 				{
 					for (auto & x : dbih->db.transponders)
 					{
@@ -3730,11 +3821,30 @@ void mainView::didChange()
 {
 	debug("didChange");
 
+	bool reload = false;
+
 	if (this->state.q_parentalLockInvert != QSettings().value("preference/parentalLockInvert", false).toBool())
 	{
 		this->state.q_parentalLockInvert = QSettings().value("preference/parentalLockInvert", false).toBool();
+		reload = true;
+	}
+	if (this->state.q_markerGlobalIndex != QSettings().value("engine/markerGlobalIndex", false).toBool())
+	{
+		this->state.q_markerGlobalIndex = QSettings().value("engine/markerGlobalIndex", false).toBool();
+		reload = true;
+	}
+	if (this->state.q_favouriteMatchService != QSettings().value("engine/favouriteMatchService", true).toBool())
+	{
+		this->state.q_favouriteMatchService = QSettings().value("engine/favouriteMatchService", true).toBool();
+		reload = true;
+	}
 
+	if (reload)
+	{
 		visualReloadList();
+
+		if (this->state.refbox)
+			updateReferenceBox();
 	}
 }
 
@@ -3753,6 +3863,8 @@ void mainView::update()
 		dbih->clearStorage();
 
 		visualReloadList();
+
+		listFindClear();
 
 		if (this->state.refbox)
 			updateReferenceBox();

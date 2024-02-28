@@ -197,7 +197,7 @@ void settings::connectionsLayout()
 	dttbar->actions().last()->connect(dttbar->actions().last(), &QAction::triggered, [=]() {
 		QMenu* menu = this->profileMenu();
 		QWidget* widget = dttbar->widgetForAction(dttbar->actions().last());
-		QPoint pos = widget->pos();
+		QPoint pos = widget->mapFrom(dttbar, widget->pos());
 		// menu->popup(widget->mapToGlobal(pos)));
 		platform::osMenuPopup(menu, widget, pos);
 
@@ -703,6 +703,28 @@ void settings::engineLayout()
 	platform::osComboBox(dtf0td);
 	dtf0->addRow(tr("Default format"), dtf0td);
 
+	QGroupBox* dtl1 = new QGroupBox(tr("Preferences"));
+	QFormLayout* dtf1 = new QFormLayout;
+	dtf1->setSpacing(20);
+	dtf1->setFormAlignment(Qt::AlignLeading);
+	dtf1->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+
+	QCheckBox* dtf1mi = new QCheckBox(tr("Use a global marker index (will change ID for markers)"));
+	dtf1mi->setProperty("field", "markerGlobalIndex");
+	prefs[PREF_SECTIONS::Engine].emplace_back(dtf1mi);
+	dtf1->addRow(dtf1mi);
+
+	QCheckBox* dtf1mx = new QCheckBox(tr("Sort by ID when merging lists (slower merge)"));
+	dtf1mx->setProperty("field", "mergeSortId");
+	prefs[PREF_SECTIONS::Engine].emplace_back(dtf1mx);
+	dtf1->addRow(dtf1mx);
+
+	QCheckBox* dtf1cf = new QCheckBox(tr("Match favourite reference with services"));
+	dtf1cf->setProperty("field", "favouriteMatchService");
+	dtf1cf->setChecked(true);
+	prefs[PREF_SECTIONS::Engine].emplace_back(dtf1cf);
+	dtf1->addRow(dtf1cf);
+
 	QGroupBox* dtl2 = new QGroupBox(tr("Tools"));
 	QHBoxLayout* dtb2 = new QHBoxLayout;
 
@@ -720,6 +742,7 @@ void settings::engineLayout()
 	prefs[PREF_SECTIONS::Engine].emplace_back(dtf2th);
 	dtf20->addRow(dtf2th);
 
+	//TODO FIX ui delimiter line feed not visible
 	QLineEdit* dtf2cd = new QLineEdit("\\n");
 	dtf2cd->setProperty("field", "toolsCsvDelimiter");
 	prefs[PREF_SECTIONS::Engine].emplace_back(dtf2cd);
@@ -775,10 +798,13 @@ void settings::engineLayout()
 	dtb2->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Preferred));
 
 	dtl0->setLayout(dtf0);
+	dtl1->setLayout(dtf1);
 	dtl2->setLayout(dtb2);
 
 	dtform->addItem(new QSpacerItem(0, 0));
 	dtform->addWidget(dtl0);
+	dtform->addItem(new QSpacerItem(0, 5));
+	dtform->addWidget(dtl1);
 	dtform->addItem(new QSpacerItem(0, 5));
 	dtform->addWidget(dtl2);
 	dtform->addItem(new QSpacerItem(0, 0));

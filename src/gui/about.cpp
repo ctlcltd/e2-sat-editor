@@ -10,6 +10,7 @@
  */
 
 #include <QtGlobal>
+#include <QGuiApplication>
 #include <QTimer>
 #include <QGridLayout>
 #include <QHBoxLayout>
@@ -38,7 +39,6 @@ about::~about()
 	delete this->log;
 }
 
-//TODO improve i18n rtl
 void about::layout()
 {
 	debug("layout");
@@ -111,6 +111,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."));
 
 	dhbox->addWidget(aicon);
 	dhbox->addLayout(dvbox);
+
+	if (dial->layoutDirection() == Qt::RightToLeft)
+		dhbox->setDirection(QHBoxLayout::RightToLeft);
 
 	dfrm->addLayout(dhbox, 0, 0);
 	dfrm->setSizeConstraint(QGridLayout::SetFixedSize);

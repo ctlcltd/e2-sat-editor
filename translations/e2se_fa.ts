@@ -391,6 +391,88 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
 </context>
 <context>
+    <name>editFavourite</name>
+    <message>
+        <source>Edit Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reference</source>
+        <comment>dialog</comment>
+        <translation>ارجاع</translation>
+    </message>
+    <message>
+        <source>Favourite type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>custom</source>
+        <translation>سفارشی شده</translation>
+    </message>
+    <message>
+        <source>Entry flag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service type</source>
+        <translation>نوع خدمات</translation>
+    </message>
+    <message>
+        <source>Service ID</source>
+        <translation>Service ID</translation>
+    </message>
+    <message>
+        <source>Transport ID</source>
+        <translation>Transport ID</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>ONID</source>
+        <translation>ONID</translation>
+    </message>
+    <message>
+        <source>Stream</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>custom channel name, leave empty to auto-fill with service reference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <comment>error</comment>
+        <translation>خطا</translation>
+    </message>
+    <message>
+        <source>Userbouquet &quot;%1&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>کاربر-کانال-گروه &quot;%1&quot; وجود ندارد.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>مرجع کانال &quot;%1&quot; وجود ندارد.</translation>
+    </message>
+</context>
+<context>
     <name>editMarker</name>
     <message>
         <source>Edit Marker</source>
@@ -430,6 +512,14 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>Channel reference mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
         <translation>عدم تطابق مرجع کانال &quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <source>Marker flag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>custom</source>
+        <translation>سفارشی شده</translation>
     </message>
 </context>
 <context>
@@ -635,6 +725,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>Service &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>سرویس &quot;%1&quot; وجود ندارد.</translation>
+    </message>
+    <message>
+        <source>Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>مرجع کانال &quot;%1&quot; وجود ندارد.</translation>
     </message>
 </context>
 <context>
@@ -2007,6 +2107,41 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>context-menu</comment>
         <translation>&amp;چسباندن</translation>
     </message>
+    <message>
+        <source>Edit Favourite</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bouquet</source>
+        <comment>toolbar</comment>
+        <translation>کانال-گروه</translation>
+    </message>
+    <message>
+        <source>Channel</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stream</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <comment>toolbar</comment>
+        <translation>نشانگر</translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <comment>toolbar</comment>
+        <translation>سرویس</translation>
+    </message>
+    <message>
+        <source>Add Stream</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>piconsView</name>
@@ -2324,6 +2459,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Hier</source>
         <translation>Hier</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
     </message>
 </context>
 <context>
@@ -2685,6 +2824,22 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>Preset Error</source>
         <comment>error</comment>
         <translation>خطای از پیش تعیین شده</translation>
+    </message>
+    <message>
+        <source>Preferences</source>
+        <translation type="unfinished">اولویت ها</translation>
+    </message>
+    <message>
+        <source>Use a global marker index (will change ID for markers)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort by ID when merging lists (slower merge)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Match favourite reference with services</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3266,6 +3421,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>context-menu</comment>
         <translation>&amp;حذف</translation>
     </message>
+    <message>
+        <source>Transponder</source>
+        <comment>toolbar</comment>
+        <translation>ترانسپوندر</translation>
+    </message>
 </context>
 <context>
     <name>tunersetsView</name>
@@ -3473,6 +3633,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>&amp;Paste</source>
         <comment>context-menu</comment>
         <translation>&amp;چسباندن</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <comment>toolbar</comment>
+        <translation>موقعیت</translation>
+    </message>
+    <message>
+        <source>Transponder</source>
+        <comment>toolbar</comment>
+        <translation>ترانسپوندر</translation>
     </message>
 </context>
 <context>

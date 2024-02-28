@@ -85,8 +85,9 @@ class viewAbstract : protected e2se::log_factory
 		virtual void listFindPerform(LIST_FIND flag);
 		virtual void listFindPerform(const QString& value, LIST_FIND flag);
 		virtual void listFindHighlightToggle();
-		virtual void listFindClear(bool hidden = true);
+		virtual void listFindClearSelection(bool hidden = true);
 		virtual void listFindReset();
+		virtual void listFindClear();
 		virtual void updateFlags()
 		{
 			tabUpdateFlags();

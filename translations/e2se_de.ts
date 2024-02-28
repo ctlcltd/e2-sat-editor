@@ -392,6 +392,88 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
     </message>
 </context>
 <context>
+    <name>editFavourite</name>
+    <message>
+        <source>Edit Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reference</source>
+        <comment>dialog</comment>
+        <translation>Reference</translation>
+    </message>
+    <message>
+        <source>Favourite type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>custom</source>
+        <translation>anpassung</translation>
+    </message>
+    <message>
+        <source>Entry flag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service type</source>
+        <translation>Servicetyp</translation>
+    </message>
+    <message>
+        <source>Service ID</source>
+        <translation>Service ID</translation>
+    </message>
+    <message>
+        <source>Transport ID</source>
+        <translation>Transport ID</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>ONID</source>
+        <translation>ONID</translation>
+    </message>
+    <message>
+        <source>Stream</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>custom channel name, leave empty to auto-fill with service reference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <comment>error</comment>
+        <translation>Fehler</translation>
+    </message>
+    <message>
+        <source>Userbouquet &quot;%1&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Der Userbouquet „%1“ existiert nicht.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Kanalreferenz „%1“ existiert nicht.</translation>
+    </message>
+</context>
+<context>
     <name>editMarker</name>
     <message>
         <source>Edit Marker</source>
@@ -431,6 +513,14 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
         <source>Channel reference mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
         <translation>Kanalreferenz stimmt nicht überein „%1“.</translation>
+    </message>
+    <message>
+        <source>Marker flag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>custom</source>
+        <translation>anpassung</translation>
     </message>
 </context>
 <context>
@@ -636,6 +726,16 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
         <source>Service &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Service „%1“ existiert nicht.</translation>
+    </message>
+    <message>
+        <source>Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Kanalreferenz „%1“ existiert nicht.</translation>
     </message>
 </context>
 <context>
@@ -2008,6 +2108,41 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
         <comment>context-menu</comment>
         <translation>Einf&amp;ügen</translation>
     </message>
+    <message>
+        <source>Edit Favourite</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bouquet</source>
+        <comment>toolbar</comment>
+        <translation>Bouquet</translation>
+    </message>
+    <message>
+        <source>Channel</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stream</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <comment>toolbar</comment>
+        <translation>Marker</translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <comment>toolbar</comment>
+        <translation>Service</translation>
+    </message>
+    <message>
+        <source>Add Stream</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>piconsView</name>
@@ -2325,6 +2460,10 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
     <message>
         <source>Hier</source>
         <translation>Hier</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
     </message>
 </context>
 <context>
@@ -2687,6 +2826,22 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
         <source>Preset Error</source>
         <comment>error</comment>
         <translation>Preset Fehler</translation>
+    </message>
+    <message>
+        <source>Preferences</source>
+        <translation type="unfinished">Präferenzen</translation>
+    </message>
+    <message>
+        <source>Use a global marker index (will change ID for markers)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort by ID when merging lists (slower merge)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Match favourite reference with services</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3270,6 +3425,11 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
         <comment>context-menu</comment>
         <translation>&amp;Löschen</translation>
     </message>
+    <message>
+        <source>Transponder</source>
+        <comment>toolbar</comment>
+        <translation>Transponder</translation>
+    </message>
 </context>
 <context>
     <name>tunersetsView</name>
@@ -3477,6 +3637,16 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
         <source>&amp;Paste</source>
         <comment>context-menu</comment>
         <translation>Einf&amp;ügen</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <comment>toolbar</comment>
+        <translation>Position</translation>
+    </message>
+    <message>
+        <source>Transponder</source>
+        <comment>toolbar</comment>
+        <translation>Transponder</translation>
     </message>
 </context>
 <context>

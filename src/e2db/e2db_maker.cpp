@@ -583,10 +583,15 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 			if (chref.marker)
 			{
 				ss << hex;
-				ss << uppercase << chref.anum << ':';
+				if (MARKER_GLOBAL_INDEX)
+					ss << uppercase << chref.anum << ':';
+				else
+					ss << uppercase << marker_count + 1 << ':';
 				ss << dec;
 				ss << "0:0:0:0:0:0:0:0:" << endl;
 				ss << "#DESCRIPTION " << chref.value;
+
+				marker_count++;
 			}
 			else if (chref.stream)
 			{
@@ -1222,7 +1227,7 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 			}
 			else
 			{
-				if (! chref.marker)
+				if (! chref.marker && ! chref.stream)
 				{
 					error("make_bouquets_xml", "Maker Error", msg("Missing channel reference \"%s\".", x.second));
 				}

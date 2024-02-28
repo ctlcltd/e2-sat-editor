@@ -1736,6 +1736,7 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 	debug("parse_zapit_bouquets_apix_xml", "charset", charset);
 
 	string dname = ver > 1 ? "ubouquets.xml" : "bouquets.xml";
+	string ub_fname_suffix = USERBOUQUET_FILENAME_SUFFIX;
 
 	datasets dat;
 	dat.dname = dname;
@@ -1957,7 +1958,7 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 			ktype = "radio";
 
 		stringstream ub_bname;
-		ub_bname << "userbouquet.dbe" << setfill('0') << setw(2) << ub.index << '.' << ktype;
+		ub_bname << "userbouquet." << ub_fname_suffix << setfill('0') << setw(2) << ub.index << '.' << ktype;
 
 		ub.bname = ub_bname.str();
 		ub.pname = bs.bname;

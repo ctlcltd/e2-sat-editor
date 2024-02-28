@@ -393,6 +393,88 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
     </message>
 </context>
 <context>
+    <name>editFavourite</name>
+    <message>
+        <source>Edit Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reference</source>
+        <comment>dialog</comment>
+        <translation>Reference</translation>
+    </message>
+    <message>
+        <source>Favourite type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>custom</source>
+        <translation>prilagođeno</translation>
+    </message>
+    <message>
+        <source>Entry flag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service type</source>
+        <translation>Vrsta usluge</translation>
+    </message>
+    <message>
+        <source>Service ID</source>
+        <translation>Service ID</translation>
+    </message>
+    <message>
+        <source>Transport ID</source>
+        <translation>Transport ID</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>ONID</source>
+        <translation>ONID</translation>
+    </message>
+    <message>
+        <source>Stream</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>custom channel name, leave empty to auto-fill with service reference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <comment>error</comment>
+        <translation>Greška</translation>
+    </message>
+    <message>
+        <source>Userbouquet &quot;%1&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Userbouquet &quot;%1&quot; ne postoji.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Referenca kanala &quot;%1&quot; ne postoji.</translation>
+    </message>
+</context>
+<context>
     <name>editMarker</name>
     <message>
         <source>Edit Marker</source>
@@ -432,6 +514,14 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
         <source>Channel reference mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
         <translation>Nepodudaranje reference kanala &quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <source>Marker flag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>custom</source>
+        <translation>prilagođeno</translation>
     </message>
 </context>
 <context>
@@ -637,6 +727,16 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
         <source>Service &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Usluga &quot;%1&quot; ne postoji.</translation>
+    </message>
+    <message>
+        <source>Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Referenca kanala &quot;%1&quot; ne postoji.</translation>
     </message>
 </context>
 <context>
@@ -2009,6 +2109,41 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
         <comment>context-menu</comment>
         <translation>&amp;Zalijepi</translation>
     </message>
+    <message>
+        <source>Edit Favourite</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bouquet</source>
+        <comment>toolbar</comment>
+        <translation>Bouquet</translation>
+    </message>
+    <message>
+        <source>Channel</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stream</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <comment>toolbar</comment>
+        <translation>Marker</translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <comment>toolbar</comment>
+        <translation>Servis</translation>
+    </message>
+    <message>
+        <source>Add Stream</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>piconsView</name>
@@ -2326,6 +2461,10 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
     <message>
         <source>Hier</source>
         <translation>Hijer</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
     </message>
 </context>
 <context>
@@ -2689,6 +2828,22 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
         <source>Preset Error</source>
         <comment>error</comment>
         <translation>Preset Greška</translation>
+    </message>
+    <message>
+        <source>Preferences</source>
+        <translation type="unfinished">Postavke</translation>
+    </message>
+    <message>
+        <source>Use a global marker index (will change ID for markers)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort by ID when merging lists (slower merge)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Match favourite reference with services</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3274,6 +3429,11 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
         <comment>context-menu</comment>
         <translation>&amp;Ukloni</translation>
     </message>
+    <message>
+        <source>Transponder</source>
+        <comment>toolbar</comment>
+        <translation>Transponder</translation>
+    </message>
 </context>
 <context>
     <name>tunersetsView</name>
@@ -3481,6 +3641,16 @@ ILI DRUGIM POSLOVIMA U SOFTVER.</translation>
         <source>&amp;Paste</source>
         <comment>context-menu</comment>
         <translation>&amp;Zalijepi</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <comment>toolbar</comment>
+        <translation>Položaj</translation>
+    </message>
+    <message>
+        <source>Transponder</source>
+        <comment>toolbar</comment>
+        <translation>Transponder</translation>
     </message>
 </context>
 <context>

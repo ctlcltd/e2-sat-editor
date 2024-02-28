@@ -196,7 +196,7 @@ bool dialAbstract::destroy()
 
 	delete this;
 
-	return ! changes;
+	return ! _changes;
 }
 
 QToolBar* dialAbstract::toolBar()

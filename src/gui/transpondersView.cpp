@@ -179,9 +179,11 @@ void transpondersView::layout()
 
 	QToolBar* list_ats = toolBar();
 
-	this->action.list_newtx = toolBarAction(list_ats, tr("New Transponder", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addTransponder(); });
+	this->action.list_newtx = toolBarAction(list_ats, tr("Transponder", "toolbar"), theme->dynamicIcon("add"), [=]() { this->addTransponder(); });
 	toolBarSpacer(list_ats);
 	this->action.list_search = toolBarButton(list_ats, tr("Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->listSearchToggle(); });
+
+	this->action.list_newtx->setToolTip(tr("New Transponder", "toolbar"));
 
 	this->action.list_search->setDisabled(true);
 	this->action.list_search->actions().first()->setDisabled(true);
@@ -244,8 +246,7 @@ void transpondersView::reset()
 	list->header()->setSectionsClickable(false);
 	list->header()->setSortIndicator(0, Qt::AscendingOrder);
 
-	this->lsr_find.curr = -1;
-	this->lsr_find.match.clear();
+	listFindClear();
 
 	resetStatusBar();
 }
@@ -868,6 +869,8 @@ void transpondersView::update()
 
 		list->header()->setSortIndicator(column, order);
 		sortByColumn(column);
+
+		listFindClear();
 
 		this->state.tab_pending = false;
 	}

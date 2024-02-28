@@ -880,6 +880,8 @@ void e2db::add_userbouquet(userbouquet& ub)
 
 	bouquet bs = bouquets[ub.pname];
 
+	string ub_fname_suffix = USERBOUQUET_FILENAME_SUFFIX;
+
 	string ktype;
 	if (bs.btype == STYPE::tv)
 		ktype = "tv";
@@ -954,7 +956,7 @@ void e2db::add_userbouquet(userbouquet& ub)
 	if (ub.bname.empty())
 	{
 		stringstream ub_bname;
-		ub_bname << "userbouquet.dbe" << setfill('0') << setw(2) << ub.index << '.' << ktype;
+		ub_bname << "userbouquet." << ub_fname_suffix << setfill('0') << setw(2) << ub.index << '.' << ktype;
 
 		ub.bname = ub_bname.str();
 	}
@@ -1127,7 +1129,7 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 
 	if (chref.chid == chid)
 	{
-		if (! chref.marker && ! db.services.count(chref.chid))
+		if (! chref.marker && ! chref.stream && ! db.services.count(chref.chid))
 			return error("edit_channel_reference", "Error", msg("Service \"%s\" not exists.", chref.chid));
 
 		ub.channels[chref.chid] = chref;
@@ -1855,7 +1857,7 @@ void e2db::merge(e2db_abstract* dst)
 		}
 	}
 
-	if (0) // order by tsid|ssid	elapsed time: 84290
+	if (MERGE_SORT_ID) // order by tsid|ssid	elapsed time: 84290
 	{
 		unordered_map<string, int> txs;
 		vector<pair<int, string>> chis;
@@ -1963,6 +1965,7 @@ void e2db::merge(e2db_abstract* dst)
 		ub_idx = int (this->bouquets[pname].userbouquets.size());
 
 		bool merge = false;
+		string ub_fname_suffix = USERBOUQUET_FILENAME_SUFFIX;
 
 		if (ubs_names.count(qw)) // merge
 		{
@@ -1991,7 +1994,7 @@ void e2db::merge(e2db_abstract* dst)
 			ub_idx += 1;
 
 			stringstream ub_bname;
-			ub_bname << "userbouquet.dbe" << setfill('0') << setw(2) << ub_idx << '.' << ktype;
+			ub_bname << "userbouquet." << ub_fname_suffix << setfill('0') << setw(2) << ub_idx << '.' << ktype;
 
 			ub.bname = bname = ub_bname.str();
 			ub.index = ub_idx;

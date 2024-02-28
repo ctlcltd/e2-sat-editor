@@ -148,7 +148,7 @@ void editFavourite::referenceLayout()
 
 	dtf0fb->connect(dtf0fb, &QPushButton::pressed, [=]() {
 		// delay too fast
-		QTimer::singleShot(110, [=]() {
+		QTimer::singleShot(100, [=]() {
 			if (dtf0fc->isHidden())
 			{
 				dtf0ft->hide();
@@ -232,7 +232,7 @@ void editFavourite::referenceLayout()
 
 	dtf0ab->connect(dtf0ab, &QPushButton::pressed, [=]() {
 		// delay too fast
-		QTimer::singleShot(110, [=]() {
+		QTimer::singleShot(100, [=]() {
 			if (dtf0ac->isHidden())
 			{
 				dtf0af->hide();
@@ -397,7 +397,7 @@ void editFavourite::referenceLayout()
 	dtf2ns->setProperty("field", "dvbns");
 	fields.emplace_back(dtf2ns);
 	dtf2ns->setMaximumWidth(80);
-	dtf2ns->setInputMask(">HHHHHHHHH");
+	dtf2ns->setInputMask(">HHHHHHHH");
 	dtf2ns->setMaxLength(9);
 	platform::osLineEdit(dtf2ns);
 	dtf2->addRow(tr("DVBNS"), dtf2ns);
@@ -492,11 +492,20 @@ void editFavourite::store()
 		string val;
 
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
-			val = field->text().toStdString();
+		{
+			if (key == "dvbns")
+				val = to_string(dbih->value_transponder_dvbns(field->text().toStdString()));
+			else
+				val = field->text().toStdString();
+		}
 		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
+		{
 			val = field->currentData().toString().toStdString();
+		}
 		else if (QTextEdit* field = qobject_cast<QTextEdit*>(item))
+		{
 			val = field->toPlainText().toStdString();
+		}
 
 		if (key == "etype")
 			chref.etype = val.empty() ? 1 : std::stoi(val);
@@ -521,6 +530,7 @@ void editFavourite::store()
 	if (chref.chid != this->chid)
 	{
 		char nw_chid[25];
+
 		if (chref.marker)
 			// %4d:%2x:%d
 			std::snprintf(nw_chid, 25, "1:%d:%x:%d", chref.atype, chref.anum != 0 ? chref.anum : dbih->db.imarkers + 1, ub.index);
@@ -607,7 +617,10 @@ void editFavourite::retrieve(string chid)
 
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
 		{
-			field->setText(QString::fromStdString(val));
+			if (key == "dvbns")
+				field->setText(QString::fromStdString(dbih->value_transponder_dvbns(std::stoi(val))));
+			else
+				field->setText(QString::fromStdString(val));
 		}
 		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
 		{

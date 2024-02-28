@@ -21,6 +21,10 @@ namespace e2se_e2db
 class e2db : public e2db_parser, public e2db_maker, public e2db_converter
 {
 	public:
+
+		inline static bool MERGE_SORT_ID = false;
+		inline static bool FAVOURITE_MATCH_SERVICE = false;
+
 		e2db();
 		virtual ~e2db() = default;
 		void import_file(vector<string> paths);

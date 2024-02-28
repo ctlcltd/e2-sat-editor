@@ -269,8 +269,7 @@ void piconsView::reset()
 	list->setAcceptDrops(false);
 	list->clear();
 
-	this->lsr_find.curr = -1;
-	this->lsr_find.match.clear();
+	listFindClear();
 
 	resetStatusBar();
 }
@@ -446,7 +445,7 @@ void piconsView::listFindPerform(const QString& value, LIST_FIND flag)
 		{
 			text = value;
 
-			listFindClear();
+			listFindClearSelection();
 		}
 		else
 		{
@@ -470,7 +469,7 @@ void piconsView::listFindPerform(const QString& value, LIST_FIND flag)
 		match = tree->model()->match(start, Qt::UserRole, text, limit, Qt::MatchFlag::MatchContains);
 
 		if (this->lsr_find.flag == LIST_FIND::all)
-			listFindClear();
+			listFindClearSelection();
 
 		this->lsr_find.curr = -1;
 	}
@@ -501,7 +500,7 @@ void piconsView::listFindPerform(const QString& value, LIST_FIND flag)
 		}
 		else if (type == LIST_FIND::all)
 		{
-			listFindClear(false);
+			listFindClearSelection(false);
 
 			while (i != j)
 			{
@@ -548,7 +547,7 @@ void piconsView::listFindPerform(const QString& value, LIST_FIND flag)
 	this->lsr_find.match = match;
 }
 
-void piconsView::listFindClear(bool hidden)
+void piconsView::listFindClearSelection(bool hidden)
 {
 	list->clearSelection();
 
@@ -1049,6 +1048,8 @@ void piconsView::update()
 	if (this->state.tab_pending)
 	{
 		populate();
+
+		listFindClear();
 
 		this->state.tab_pending = false;
 	}

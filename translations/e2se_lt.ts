@@ -390,6 +390,88 @@ NAUDOJIMO AR SU KITAIS SU JAIS PROGRAMINĖ ĮRANGA.</translation>
     </message>
 </context>
 <context>
+    <name>editFavourite</name>
+    <message>
+        <source>Edit Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reference</source>
+        <comment>dialog</comment>
+        <translation>Reference</translation>
+    </message>
+    <message>
+        <source>Favourite type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>custom</source>
+        <translation>pritaikyti</translation>
+    </message>
+    <message>
+        <source>Entry flag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service type</source>
+        <translation>Paslaugos tipas</translation>
+    </message>
+    <message>
+        <source>Service ID</source>
+        <translation>Service ID</translation>
+    </message>
+    <message>
+        <source>Transport ID</source>
+        <translation>Transport ID</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>ONID</source>
+        <translation>ONID</translation>
+    </message>
+    <message>
+        <source>Stream</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>custom channel name, leave empty to auto-fill with service reference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <comment>error</comment>
+        <translation>Klaida</translation>
+    </message>
+    <message>
+        <source>Userbouquet &quot;%1&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Userbouquet „%1“ neegzistuoja.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Kanalo nuoroda „%1“ neegzistuoja.</translation>
+    </message>
+</context>
+<context>
     <name>editMarker</name>
     <message>
         <source>Edit Marker</source>
@@ -429,6 +511,14 @@ NAUDOJIMO AR SU KITAIS SU JAIS PROGRAMINĖ ĮRANGA.</translation>
         <source>Channel reference mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
         <translation>Kanalo nuorodos neatitikimas „%1“.</translation>
+    </message>
+    <message>
+        <source>Marker flag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>custom</source>
+        <translation>pritaikyti</translation>
     </message>
 </context>
 <context>
@@ -634,6 +724,16 @@ NAUDOJIMO AR SU KITAIS SU JAIS PROGRAMINĖ ĮRANGA.</translation>
         <source>Service &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Paslauga „%1“ neegzistuoja.</translation>
+    </message>
+    <message>
+        <source>Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Kanalo nuoroda „%1“ neegzistuoja.</translation>
     </message>
 </context>
 <context>
@@ -2006,6 +2106,41 @@ NAUDOJIMO AR SU KITAIS SU JAIS PROGRAMINĖ ĮRANGA.</translation>
         <comment>context-menu</comment>
         <translation>Į&amp;dėti</translation>
     </message>
+    <message>
+        <source>Edit Favourite</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bouquet</source>
+        <comment>toolbar</comment>
+        <translation>Bouquet</translation>
+    </message>
+    <message>
+        <source>Channel</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stream</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <comment>toolbar</comment>
+        <translation>Marker</translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <comment>toolbar</comment>
+        <translation>Paslaugą</translation>
+    </message>
+    <message>
+        <source>Add Stream</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>piconsView</name>
@@ -2323,6 +2458,10 @@ NAUDOJIMO AR SU KITAIS SU JAIS PROGRAMINĖ ĮRANGA.</translation>
     <message>
         <source>Hier</source>
         <translation>Hier</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
     </message>
 </context>
 <context>
@@ -2686,6 +2825,22 @@ NAUDOJIMO AR SU KITAIS SU JAIS PROGRAMINĖ ĮRANGA.</translation>
         <source>Preset Error</source>
         <comment>error</comment>
         <translation>Preset Klaida</translation>
+    </message>
+    <message>
+        <source>Preferences</source>
+        <translation type="unfinished">Parinktys</translation>
+    </message>
+    <message>
+        <source>Use a global marker index (will change ID for markers)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort by ID when merging lists (slower merge)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Match favourite reference with services</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3271,6 +3426,11 @@ NAUDOJIMO AR SU KITAIS SU JAIS PROGRAMINĖ ĮRANGA.</translation>
         <comment>context-menu</comment>
         <translation>Pa&amp;šalinti</translation>
     </message>
+    <message>
+        <source>Transponder</source>
+        <comment>toolbar</comment>
+        <translation>Atsakiklis</translation>
+    </message>
 </context>
 <context>
     <name>tunersetsView</name>
@@ -3478,6 +3638,16 @@ NAUDOJIMO AR SU KITAIS SU JAIS PROGRAMINĖ ĮRANGA.</translation>
         <source>&amp;Paste</source>
         <comment>context-menu</comment>
         <translation>Į&amp;dėti</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <comment>toolbar</comment>
+        <translation>Padėtis</translation>
+    </message>
+    <message>
+        <source>Transponder</source>
+        <comment>toolbar</comment>
+        <translation>Atsakiklis</translation>
     </message>
 </context>
 <context>

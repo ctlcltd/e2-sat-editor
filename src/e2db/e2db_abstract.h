@@ -31,6 +31,9 @@ struct e2db_abstract : protected e2se::log_factory
 
 		inline static bool OVERWRITE_FILE = false;
 
+		inline static bool MARKER_GLOBAL_INDEX = false;
+		inline static string USERBOUQUET_FILENAME_SUFFIX = "dbe";
+
 		inline static const string SAT_POL[4] = {"H", "V", "L", "R"};
 		inline static const string SAT_MOD[6] = {"Auto", "QPSK", "8PSK", "QAM16", "16APSK", "32APSK"};
 		inline static const string SAT_INV[3] = {"Off", "On", "Auto"};
