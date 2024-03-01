@@ -37,7 +37,7 @@ class mainView : public viewAbstract
 
 	public:
 
-		static const int TSV_TABS = 15;
+		static const int TSV_TABS = 16;
 
 		struct __state
 		{

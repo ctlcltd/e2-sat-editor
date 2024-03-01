@@ -965,7 +965,7 @@ void editService::retrieve()
 	e2db::service ch = dbih->db.services[ref_chid];
 	e2db::transponder tx;
 
-	if (ref_txid.empty() && ch.tsid != 0)
+	if (ref_txid.empty() && (ch.tsid != 0 || ch.onid != 0 || ch.dvbns != 0))
 	{
 		ref_txid = string (ch.txid);
 		tx = dbih->db.transponders[ch.txid];

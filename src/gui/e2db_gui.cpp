@@ -99,14 +99,13 @@ void e2db::primer()
 {
 	debug("primer");
 
+	index["chs"]; // touch index["chs"]
+	index["txs"]; // touch index["txs"]
+
 	// set parental lock type
 	int parental_invert = QSettings().value("preference/parentalLockInvert", false).toInt();
 	e2db::PARENTALLOCK ltype = static_cast<e2db::PARENTALLOCK>(parental_invert);
 	db.parental = ltype;
-
-	// empty services list - touch index["chs"]
-	if (! index.count("chs"))
-		index["chs"];
 
 	// create bouquets
 	e2db::bouquet bs;
@@ -117,6 +116,7 @@ void e2db::primer()
 	bs.btype = e2db::STYPE::tv;
 	bs.nname = "TV";
 	this->::e2se_e2db::e2db::add_bouquet(bs);
+	index["bouquets.tv"]; // touch index["bouquets.tv"]
 
 	bs = e2db::bouquet();
 	bs.bname = "bouquets.radio";
@@ -124,6 +124,7 @@ void e2db::primer()
 	bs.btype = e2db::STYPE::radio;
 	bs.nname = "Radio";
 	this->::e2se_e2db::e2db::add_bouquet(bs);
+	index["bouquets.radio"]; // touch index["bouquets.radio"]
 }
 
 void e2db::didChange()
@@ -276,6 +277,7 @@ string e2db::addBouquet(bouquet& bs)
 	debug("addBouquet");
 
 	this->::e2se_e2db::e2db::add_bouquet(bs);
+	index[bs.bname]; // touch index[bs.bname]
 	return bs.bname;
 }
 
@@ -299,6 +301,7 @@ string e2db::addUserbouquet(userbouquet& ub)
 	debug("addUserbouquet");
 
 	this->::e2se_e2db::e2db::add_userbouquet(ub);
+	index[ub.bname]; // touch index[ub.bname]
 	return ub.bname;
 }
 
@@ -497,14 +500,23 @@ void e2db::importFile(vector<string> paths) noexcept
 	// fixBouquets();
 }
 
-void e2db::exportFile(int bit, vector<string> paths) noexcept
+void e2db::exportFile(int bit, vector<string> paths, string filename) noexcept
 {
 	debug("exportFile");
 
+	qDebug() << filename;
+
 	if (bit != -1)
-		export_file(FPORTS (bit), paths);
+	{
+		if (paths.size() == 1)
+			export_file(FPORTS (bit), paths[0], filename);
+		else
+			export_file(FPORTS (bit), paths);
+	}
 	else
+	{
 		export_file(paths);
+	}
 }
 
 void e2db::importBlob(unordered_map<string, e2db_file> files)

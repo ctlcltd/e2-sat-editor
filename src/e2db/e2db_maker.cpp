@@ -231,9 +231,9 @@ void e2db_maker::make_e2db_bouquets()
 {
 	debug("make_e2db_bouquets");
 
-	for (auto & x : bouquets)
+	for (auto & x : index["bss"])
 	{
-		bouquet bs = x.second;
+		bouquet bs = bouquets[x.second];
 
 		string filename = bs.rname.empty() ? bs.bname : bs.rname;
 		string bname = bs.bname;
@@ -267,13 +267,18 @@ void e2db_maker::make_e2db_userbouquets()
 {
 	debug("make_e2db_userbouquets");
 
-	for (auto & x : userbouquets)
+	for (auto & x : index["ubs"])
 	{
-		string filename = x.first;
+		userbouquet ub = userbouquets[x.second];
+
+		string filename = ub.rname.empty() ? ub.bname : ub.rname;
+		string bname = ub.bname;
 
 		e2db_file file;
 
-		make_userbouquet(filename, file);
+		this->marker_count = 0;
+
+		make_userbouquet(bname, file);
 
 		this->e2db_out[filename] = file;
 	}
@@ -535,6 +540,33 @@ void e2db_maker::make_bouquet_epl(string bname, e2db_file& file)
 	file.size = file.data.size();
 }
 
+void e2db_maker::make_userbouquet(string bname, e2db_file& file, bool exact_marker_index)
+{
+	if (exact_marker_index)
+	{
+		this->marker_count = 0;
+
+		for (auto & x : index["ubs"])
+		{
+			userbouquet ub = userbouquets[x.second];
+			string _bname = ub.bname;
+
+			for (auto & x : index[_bname])
+			{
+				channel_reference chref = userbouquets[bname].channels[x.second];
+
+				if (chref.marker)
+					this->marker_count++;
+			}
+
+			if (_bname == bname)
+				break;
+		}
+	}
+
+	make_userbouquet(bname, file);
+}
+
 //TODO TEST
 void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 {
@@ -545,11 +577,14 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 	string filename = ub.rname.empty() ? ub.bname : ub.rname;
 
 	stringstream ss;
+	int ln = 0;
 
 	ss << "#NAME " << ub.name << endl;
 
 	for (auto & x : index[bname])
 	{
+		ln++;
+
 		channel_reference chref = userbouquets[bname].channels[x.second];
 
 		ss << dec;
@@ -574,6 +609,9 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 
 			if (! chref.marker && ! chref.value.empty())
 			{
+				if (chref.inlineval)
+					ss << conv_uri_value(chref.value);
+
 				ss << endl;
 				ss << "#DESCRIPTION " << chref.value;
 			}
@@ -584,14 +622,25 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 			{
 				ss << hex;
 				if (MARKER_GLOBAL_INDEX)
-					ss << uppercase << chref.anum << ':';
+					ss << uppercase << this->marker_count + 1 << ':';
 				else
-					ss << uppercase << marker_count + 1 << ':';
+					ss << uppercase << chref.anum << ':';
 				ss << dec;
-				ss << "0:0:0:0:0:0:0:0:" << endl;
-				ss << "#DESCRIPTION " << chref.value;
+				ss << "0:0:0:0:0:0:0:";
 
-				marker_count++;
+				if (! chref.value.empty())
+				{
+					if (chref.inlineval)
+					{
+						ss << ':';
+						ss << conv_uri_value(chref.value);
+					}
+
+					ss << endl;
+					ss << "#DESCRIPTION " << chref.value;
+				}
+
+				this->marker_count++;
 			}
 			else if (chref.stream)
 			{
@@ -605,18 +654,26 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 				ss << chref.x7 << ':';
 				ss << chref.x8 << ':';
 				ss << chref.x9 << ':';
-				ss << dec;
-				ss << conv_uri_value(chref.uri) << ':';
 
+				if (! chref.uri.empty())
+				{
+					ss << conv_uri_value(chref.uri);
+				}
 				if (! chref.value.empty())
 				{
-					ss << conv_uri_value(chref.value) << endl;
+					if (chref.inlineval)
+					{
+						ss << ':';
+						ss << conv_uri_value(chref.value);
+					}
+
+					ss << endl;
+					ss << "#DESCRIPTION " << chref.value;
 				}
-				ss << "#DESCRIPTION " << chref.value;
 			}
 			else
 			{
-				error("make_userbouquet", "Maker Error", msg("Missing channel reference \"%s\".", x.second));
+				error("make_userbouquet", "Maker Error", msg("reference (%s)", bname + ':' + x.second + ':' + to_string(ln)));
 			}
 		}
 
@@ -1157,6 +1214,7 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 	datasets dat = datas[dname];
 
 	stringstream ss;
+	int ln = 2;
 
 	string iname = dname;
 	unordered_map<int, string> tags;
@@ -1183,6 +1241,8 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 
 	for (auto & w : ubindex)
 	{
+		ln++;
+
 		userbouquet ub = userbouquets[w];
 
 		ss << "\t" << '<' << tags[1];
@@ -1197,6 +1257,8 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 
 			if (db.services.count(x.second))
 			{
+				ln++;
+
 				service ch = db.services[x.second];
 				transponder tx = db.transponders[ch.txid];
 
@@ -1229,7 +1291,7 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 			{
 				if (! chref.marker && ! chref.stream)
 				{
-					error("make_bouquets_xml", "Maker Error", msg("Missing channel reference \"%s\".", x.second));
+					error("make_bouquets_xml", "Maker Error", msg("reference (%s)", filename + ':' + x.second + ':' + to_string(ln)));
 				}
 			}
 		}

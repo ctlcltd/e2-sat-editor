@@ -407,10 +407,15 @@ string e2db_abstract::value_channel_provider(map<char, vector<string>> data)
 	return "";
 }
 
-vector<string> e2db_abstract::value_channel_caid(string str)
+vector<string> e2db_abstract::value_channel_caid(string str, string separator)
 {
+	if (str.empty())
+		return {};
+	else if (str.find("$") != string::npos)
+		str = str.substr(str.find("$"));
+
 	vector<string> caid;
-	char* token = std::strtok(str.data(), "|");
+	char* token = std::strtok(str.data(), separator.c_str());
 	while (token != 0)
 	{
 		string val = string (token);
@@ -440,19 +445,22 @@ vector<string> e2db_abstract::value_channel_caid(string str)
 		else
 			caid.emplace_back(val.substr(1));
 
-		token = std::strtok(NULL, "|");
+		token = std::strtok(NULL, separator.c_str());
 	}
 	return caid;
 }
 
-vector<string> e2db_abstract::value_channel_cached(string str)
+vector<string> e2db_abstract::value_channel_cached(string str, string separator)
 {
+	if (str.empty())
+		return {};
+
 	vector<string> cached;
-	char* token = std::strtok(str.data(), "|");
+	char* token = std::strtok(str.data(), separator.c_str());
 	while (token != 0)
 	{
 		cached.emplace_back(token);
-		token = std::strtok(NULL, "|");
+		token = std::strtok(NULL, separator.c_str());
 	}
 	return cached;
 }
@@ -1293,30 +1301,42 @@ void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_refe
 	{
 		if (MARKER_GLOBAL_INDEX)
 		{
-			// %4d:%2x:%d
-			std::snprintf(chid, 25, "1:%d:%x:%d", chref.atype, db.imarkers + 1, ub.index);
+			chref.inum = db.imarkers + 1;
+
+			// %4d:%4d:%2x:%d
+			std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub.index);
 		}
 		else
 		{
 			bool valid = chref.anum != 0;
 			char ref_chid[25];
 
-			// %4d:%2x:%d
-			std::snprintf(ref_chid, 25, "1:%d:%x:%d", chref.atype, valid ? chref.anum : db.imarkers + 1, ub.index);
+			chref.inum = valid ? chref.anum : db.imarkers + 1;
+
+			// %4d:%4d:%2x:%d
+			std::snprintf(ref_chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub.index);
 
 			valid = ! ub.channels.count(ref_chid);
 
 			if (valid)
+			{
 				std::memcpy(chid, ref_chid, 25);
+			}
 			else
-				// %4d:%2x:%d
-				std::snprintf(chid, 25, "1:%d:%x:%d", chref.atype, db.imarkers + 1, ub.index);
+			{
+				chref.inum = db.imarkers + 1;
+
+				// %4d:%4d:%2x:%d
+				std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub.index);
+			}
 		}
 	}
 	else if (chref.stream)
 	{
-		// %4d:%4x:%d
-		std::snprintf(chid, 25, "2:%d:%x:%d", chref.atype, db.istreams + 1, ub.index);
+		chref.inum = db.istreams + 1;
+
+		// %4d:%4d:%4x:%d
+		std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub.index);
 	}
 	else
 	{

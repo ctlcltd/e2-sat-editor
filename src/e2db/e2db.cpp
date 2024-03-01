@@ -34,6 +34,9 @@ e2db::e2db()
 	std::setlocale(LC_NUMERIC, "C");
 
 	this->log = new e2se::logger("e2db", "e2db");
+
+	index["chs"]; // touch index["chs"]
+	index["txs"]; // touch index["txs"]
 }
 
 void e2db::import_file(vector<string> paths)
@@ -142,7 +145,7 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 
 	try
 	{
-		string filename = std::filesystem::path(path).filename().u8string();
+		string fname = std::filesystem::path(path).filename().u8string();
 
 		stringstream ifile;
 		ifile.write(&file.data[0], file.size);
@@ -172,57 +175,57 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 			case FPORTS::all_services_xml__3:
 			case FPORTS::all_services_xml__2:
 			case FPORTS::all_services_xml__1:
-				dst->parse_zapit_services_xml(ifile, filename);
+				dst->parse_zapit_services_xml(ifile, fname);
 			break;
 			case FPORTS::single_tunersets:
 			case FPORTS::all_tunersets:
-				if (filename == "satellites.xml")
+				if (fname == "satellites.xml")
 					dst->parse_tunersets_xml(YTYPE::satellite, ifile);
-				else if (filename == "terrestrial.xml")
+				else if (fname == "terrestrial.xml")
 					dst->parse_tunersets_xml(YTYPE::terrestrial, ifile);
-				else if (filename == "cables.xml")
+				else if (fname == "cables.xml")
 					dst->parse_tunersets_xml(YTYPE::cable, ifile);
-				else if (filename == "atsc.xml")
+				else if (fname == "atsc.xml")
 					dst->parse_tunersets_xml(YTYPE::atsc, ifile);
 			break;
 			case FPORTS::single_bouquet:
 			case FPORTS::all_bouquets:
-				dst->parse_e2db_bouquet(ifile, filename);
+				dst->parse_e2db_bouquet(ifile, fname);
 			break;
 			case FPORTS::single_bouquet_epl:
 			case FPORTS::all_bouquets_epl:
-				dst->parse_e2db_bouquet(ifile, filename, true);
+				dst->parse_e2db_bouquet(ifile, fname, true);
 			break;
 			case FPORTS::single_userbouquet:
 			case FPORTS::all_userbouquets:
-				dst->parse_e2db_userbouquet(ifile, filename);
+				dst->parse_e2db_userbouquet(ifile, fname);
 			break;
 			case FPORTS::single_bouquet_all:
 			case FPORTS::single_bouquet_all_epl:
-				if (file_type_detect(filename) == FPORTS::single_bouquet)
-					dst->parse_e2db_bouquet(ifile, filename);
-				else if (file_type_detect(filename) == FPORTS::single_bouquet_epl)
-					dst->parse_e2db_bouquet(ifile, filename, true);
+				if (file_type_detect(fname) == FPORTS::single_bouquet)
+					dst->parse_e2db_bouquet(ifile, fname);
+				else if (file_type_detect(fname) == FPORTS::single_bouquet_epl)
+					dst->parse_e2db_bouquet(ifile, fname, true);
 				else
-					dst->parse_e2db_userbouquet(ifile, filename);
+					dst->parse_e2db_userbouquet(ifile, fname);
 			break;
 			case FPORTS::all_bouquets_xml:
-				if (filename == "bouquets.xml")
-					dst->parse_zapit_bouquets_apix_xml(ifile, filename, 1);
+				if (fname == "bouquets.xml")
+					dst->parse_zapit_bouquets_apix_xml(ifile, fname, 1);
 				else
-					dst->parse_zapit_bouquets_apix_xml(ifile, filename, (ZAPIT_VER != -1 ? ZAPIT_VER : 4));
+					dst->parse_zapit_bouquets_apix_xml(ifile, fname, (ZAPIT_VER != -1 ? ZAPIT_VER : 4));
 			break;
 			case FPORTS::all_bouquets_xml__4:
-				dst->parse_zapit_bouquets_apix_xml(ifile, filename, 4);
+				dst->parse_zapit_bouquets_apix_xml(ifile, fname, 4);
 			break;
 			case FPORTS::all_bouquets_xml__3:
-				dst->parse_zapit_bouquets_apix_xml(ifile, filename, 3);
+				dst->parse_zapit_bouquets_apix_xml(ifile, fname, 3);
 			break;
 			case FPORTS::all_bouquets_xml__2:
-				dst->parse_zapit_bouquets_apix_xml(ifile, filename, 2);
+				dst->parse_zapit_bouquets_apix_xml(ifile, fname, 2);
 			break;
 			case FPORTS::all_bouquets_xml__1:
-				dst->parse_zapit_bouquets_apix_xml(ifile, filename, 1);
+				dst->parse_zapit_bouquets_apix_xml(ifile, fname, 1);
 			break;
 			case FPORTS::single_parentallock_blacklist:
 				dst->parse_e2db_parentallock_list(PARENTALLOCK::blacklist, ifile);
@@ -278,7 +281,7 @@ void e2db::export_file(FPORTS fpo, vector<string> paths)
 	}
 }
 
-void e2db::export_file(FPORTS fpo, string path)
+void e2db::export_file(FPORTS fpo, string path, string filename)
 {
 	debug("export_file", "file path", "singular");
 	debug("export_file", "file output", fpo);
@@ -286,9 +289,14 @@ void e2db::export_file(FPORTS fpo, string path)
 	try
 	{
 		e2db_file file;
-		string filename = std::filesystem::path(path).filename().u8string();
 
-		string fname = LAMEDB_VER == 5 ? "lamedb5" : (LAMEDB_VER < 4 ? "services" : "lamedb");
+		string fname = std::filesystem::path(path).filename().u8string();
+		string chs_fname = LAMEDB_VER == 5 ? "lamedb5" : (LAMEDB_VER < 4 ? "services" : "lamedb");
+
+		if (filename.empty())
+			filename = fname;
+		else
+			filename = std::filesystem::path(filename).filename().u8string();
 
 		switch (fpo)
 		{
@@ -296,7 +304,7 @@ void e2db::export_file(FPORTS fpo, string path)
 				write(path);
 			return;
 			case FPORTS::all_services:
-				make_lamedb(fname, file, LAMEDB_VER);
+				make_lamedb(chs_fname, file, LAMEDB_VER);
 			break;
 			case FPORTS::all_services__2_4:
 				make_lamedb("lamedb", file, 4);
@@ -311,75 +319,75 @@ void e2db::export_file(FPORTS fpo, string path)
 				make_lamedb("services", file, 2);
 			break;
 			case FPORTS::all_services_xml:
-				make_services_xml(filename, file, (ZAPIT_VER != -1 ? ZAPIT_VER : 4));
+				make_services_xml(fname, file, (ZAPIT_VER != -1 ? ZAPIT_VER : 4));
 			break;
 			case FPORTS::all_services_xml__4:
-				make_services_xml(filename, file, 4);
+				make_services_xml(fname, file, 4);
 			break;
 			case FPORTS::all_services_xml__3:
-				make_services_xml(filename, file, 3);
+				make_services_xml(fname, file, 3);
 			break;
 			case FPORTS::all_services_xml__2:
-				make_services_xml(filename, file, 2);
+				make_services_xml(fname, file, 2);
 			break;
 			case FPORTS::all_services_xml__1:
-				make_services_xml(filename, file, 1);
+				make_services_xml(fname, file, 1);
 			break;
 			case FPORTS::single_tunersets:
 			case FPORTS::all_tunersets:
-				if (filename == "satellites.xml")
-					make_tunersets_xml(filename, YTYPE::satellite, file);
-				else if (filename == "terrestrial.xml")
-					make_tunersets_xml(filename, YTYPE::terrestrial, file);
-				else if (filename == "cables.xml")
-					make_tunersets_xml(filename, YTYPE::cable, file);
-				else if (filename == "atsc.xml")
-					make_tunersets_xml(filename, YTYPE::atsc, file);
+				if (fname == "satellites.xml")
+					make_tunersets_xml(fname, YTYPE::satellite, file);
+				else if (fname == "terrestrial.xml")
+					make_tunersets_xml(fname, YTYPE::terrestrial, file);
+				else if (fname == "cables.xml")
+					make_tunersets_xml(fname, YTYPE::cable, file);
+				else if (fname == "atsc.xml")
+					make_tunersets_xml(fname, YTYPE::atsc, file);
 			break;
 			case FPORTS::single_bouquet:
 			case FPORTS::all_bouquets:
-				make_bouquet(filename, file);
+				make_bouquet(fname, file);
 			break;
 			case FPORTS::single_bouquet_epl:
 			case FPORTS::all_bouquets_epl:
-				make_bouquet_epl(filename, file);
+				make_bouquet_epl(fname, file);
 			break;
 			case FPORTS::single_userbouquet:
 			case FPORTS::all_userbouquets:
-				make_userbouquet(filename, file);
+				make_userbouquet(fname, file, MARKER_GLOBAL_INDEX);
 			break;
 			case FPORTS::single_bouquet_all:
 			case FPORTS::single_bouquet_all_epl:
-				if (file_type_detect(filename) == FPORTS::single_bouquet)
-					make_bouquet(filename, file);
-				else if (file_type_detect(filename) == FPORTS::single_bouquet_epl)
-					make_bouquet_epl(filename, file);
+				if (file_type_detect(fname) == FPORTS::single_bouquet)
+					make_bouquet(fname, file);
+				else if (file_type_detect(fname) == FPORTS::single_bouquet_epl)
+					make_bouquet_epl(fname, file);
 				else
-					make_userbouquet(filename, file);
+					make_userbouquet(fname, file, MARKER_GLOBAL_INDEX);
 			break;
 			case FPORTS::all_bouquets_xml:
-				make_bouquets_xml(filename, file, (ZAPIT_VER != -1 ? ZAPIT_VER : 4));
+				make_bouquets_xml(fname, file, (ZAPIT_VER != -1 ? ZAPIT_VER : 4));
 			break;
 			case FPORTS::all_bouquets_xml__4:
-				make_bouquets_xml(filename, file, 4);
+				make_bouquets_xml(fname, file, 4);
 			break;
 			case FPORTS::all_bouquets_xml__3:
-				make_bouquets_xml(filename, file, 3);
+				make_bouquets_xml(fname, file, 3);
 			break;
 			case FPORTS::all_bouquets_xml__2:
-				make_bouquets_xml(filename, file, 2);
+				make_bouquets_xml(fname, file, 2);
 			break;
 			case FPORTS::all_bouquets_xml__1:
-				make_bouquets_xml(filename, file, 1);
+				make_bouquets_xml(fname, file, 1);
 			break;
 			case FPORTS::single_parentallock_blacklist:
-				make_parentallock_list(filename, PARENTALLOCK::blacklist, file);
+				make_parentallock_list(fname, PARENTALLOCK::blacklist, file);
 			break;
 			case FPORTS::single_parentallock_whitelist:
-				make_parentallock_list(filename, PARENTALLOCK::whitelist, file);
+				make_parentallock_list(fname, PARENTALLOCK::whitelist, file);
 			break;
 			case FPORTS::single_parentallock_locked:
-				make_parentallock_list(filename, PARENTALLOCK::locked, file);
+				make_parentallock_list(fname, PARENTALLOCK::locked, file);
 			break;
 			default:
 				return error("export_file", "Error", "Unknown export option.");
@@ -394,7 +402,7 @@ void e2db::export_file(FPORTS fpo, string path)
 			if (basedir.size() && basedir[basedir.size() - 1] != '/')
 				basedir.append("/");
 
-			fpath = basedir + file.filename;
+			fpath = basedir + filename;
 		}
 
 		if (! OVERWRITE_FILE && std::filesystem::exists(fpath))
@@ -1074,16 +1082,6 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 
 	if (chref.marker)
 	{
-		if (! chref.atype)
-		{
-			chref.atype = ATYPE::marker;
-		}
-		if (! chref.anum)
-		{
-			int marker_count = db.imarkers;
-			marker_count++;
-			chref.anum = marker_count;
-		}
 		if (! chref.index)
 		{
 			int ub_idx = ub.index;
@@ -1124,6 +1122,20 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 		return error("edit_channel_reference", "Error", msg("Userbouquet \"%s\" not exists.", bname));
 
 	userbouquet& ub = userbouquets[bname];
+
+	char nw_chid[25];
+
+	if (chref.marker)
+		// %4d:%4d:%2x:%d
+		std::snprintf(nw_chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub.index);
+	else if (chref.stream)
+		// %4d:%4d:%4x:%d
+		std::snprintf(nw_chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub.index);
+	else
+		// %4x:%4x:%8x
+		std::snprintf(nw_chid, 25, "%x:%x:%x", chref.ref.ssid, chref.ref.tsid, chref.ref.dvbns);
+
+	chref.chid = nw_chid;
 
 	debug("edit_channel_reference", "new chid", chref.chid);
 

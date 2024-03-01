@@ -32,7 +32,7 @@ class e2db : public e2db_parser, public e2db_maker, public e2db_converter
 		void import_file(FPORTS fpi, e2db* dst, e2db_file file, string path);
 		void export_file(vector<string> paths);
 		void export_file(FPORTS fpo, vector<string> paths);
-		void export_file(FPORTS fpo, string path);
+		void export_file(FPORTS fpo, string path, string filename = "");
 		void import_blob(unordered_map<string, e2db_file> files);
 		void add_transponder(transponder& tx);
 		void edit_transponder(string txid, transponder& tx);

@@ -852,7 +852,7 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string filename)
 	int idx = 0;
 	int y = 0;
 	string line;
-	int ln = -1;
+	int ln = 0;
 
 	userbouquet& ub = userbouquets[filename];
 	channel_reference chref;
@@ -1057,15 +1057,21 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 
 				chref.uri = s10;
 				chref.value = s11;
+				chref.inlineval = true;
 			}
 			else if (! s11.empty())
 			{
 				conv_uri_value(s11);
 
 				if (chref.marker)
+				{
 					chref.value = s11;
+					chref.inlineval = true;
+				}
 				else
+				{
 					chref.uri = s11;
+				}
 			}
 
 			chref.stream = ! chref.uri.empty();

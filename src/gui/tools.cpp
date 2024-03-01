@@ -212,7 +212,7 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 	if (tid->statusBarIsVisible())
 	{
 		string fname;
-		if (paths.size() > 0)
+		if (paths.size() > 1)
 			fname = std::filesystem::path(paths[0]).parent_path().u8string();
 		else
 			fname = paths[0];
@@ -323,9 +323,19 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 		return;
 
 	if (tid->statusBarIsVisible())
-		tid->statusBarMessage(tr("Exported to %1", "message").arg(path.data()));
+	{
+		string filename;
+		if (opts.fc != e2db::FCONVS::convert_current)
+			filename = std::filesystem::path(path).parent_path().u8string();
+		else
+			filename = path;
+
+		tid->statusBarMessage(tr("Exported to %1", "message").arg(filename.data()));
+	}
 	else
+	{
 		tid->infoMessage(tr("Saved!", "message"));
+	}
 }
 
 void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
@@ -400,9 +410,19 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 		return;
 
 	if (tid->statusBarIsVisible())
+	{
+		string filename;
+		if (opts.fc != e2db::FCONVS::convert_current)
+			filename = std::filesystem::path(path).parent_path().u8string();
+		else
+			filename = path;
+
 		tid->statusBarMessage(tr("Exported to %1", "message").arg(path.data()));
+	}
 	else
+	{
 		tid->infoMessage(tr("Saved!", "message"));
+	}
 }
 
 void tools::destroy()

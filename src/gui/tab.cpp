@@ -792,13 +792,13 @@ void tab::importFile()
 
 	if (statusBarIsVisible())
 	{
-		string fname;
-		if (paths.size() > 0)
-			fname = std::filesystem::path(paths[0]).parent_path().u8string();
+		string filename;
+		if (paths.size() > 1)
+			filename = std::filesystem::path(paths[0]).parent_path().u8string();
 		else
-			fname = paths[0];
+			filename = paths[0];
 
-		statusBarMessage(tr("Importing from %1 …", "message").arg(fname.data()));
+		statusBarMessage(tr("Importing from %1 …", "message").arg(filename.data()));
 	}
 
 	theme::setWaitCursor();
@@ -827,7 +827,7 @@ void tab::exportFile()
 	gui::TAB_VIEW current = getTabView();
 	gui::GUI_DPORTS gde = gui::GUI_DPORTS::AllFiles;
 	vector<string> paths;
-	string filename;
+	string fname;
 	int bit = -1;
 	int dbtype = dbih->get_e2db_services_type();
 
@@ -842,20 +842,20 @@ void tab::exportFile()
 		switch (state.yx)
 		{
 			case e2db::YTYPE::satellite:
-				filename = "satellites.xml";
+				fname = "satellites.xml";
 			break;
 			case e2db::YTYPE::terrestrial:
-				filename = "terrestrial.xml";
+				fname = "terrestrial.xml";
 			break;
 			case e2db::YTYPE::cable:
-				filename = "cables.xml";
+				fname = "cables.xml";
 			break;
 			case e2db::YTYPE::atsc:
-				filename = "atsc.xml";
+				fname = "atsc.xml";
 			break;
 		}
 
-		paths.push_back(filename);
+		paths.push_back(fname);
 	}
 	// transponders view
 	else if (current == gui::TAB_VIEW::transponders)
@@ -866,15 +866,15 @@ void tab::exportFile()
 			int ver = dbih->get_zapit_version();
 
 			bit = e2db::FPORTS::all_services;
-			filename = ver > 4 ? "lamedb5" : "lamedb";
+			fname = ver > 4 ? "lamedb5" : "lamedb";
 		}
 		else
 		{
 			bit = e2db::FPORTS::all_services_xml;
-			filename = "services.xml";
+			fname = "services.xml";
 		}
 
-		paths.push_back(filename);
+		paths.push_back(fname);
 	}
 	// main view
 	else if (current == gui::TAB_VIEW::main)
@@ -891,15 +891,15 @@ void tab::exportFile()
 				int ver = dbih->get_zapit_version();
 
 				bit = e2db::FPORTS::all_services;
-				filename = ver > 4 ? "lamedb5" : "lamedb";
+				fname = ver > 4 ? "lamedb5" : "lamedb";
 			}
 			else
 			{
 				bit = e2db::FPORTS::all_services_xml;
-				filename = "services.xml";
+				fname = "services.xml";
 			}
 
-			paths.push_back(filename);
+			paths.push_back(fname);
 		}
 		// bouquets
 		else if (state.tc == 1)
@@ -920,7 +920,7 @@ void tab::exportFile()
 			}
 			if (paths.size() == 1)
 			{
-				filename = paths[0];
+				fname = paths[0];
 			}
 			// bouquet | userbouquets
 			if (ti != -1 || dbtype == 1)
@@ -935,9 +935,9 @@ void tab::exportFile()
 					else
 						bit = e2db::FPORTS::single_bouquet_all_epl;
 
-					if (dbih->bouquets.count(filename))
+					if (dbih->bouquets.count(fname))
 					{
-						for (string & fname : dbih->bouquets[filename].userbouquets)
+						for (string & fname : dbih->bouquets[fname].userbouquets)
 							paths.push_back(fname);
 					}
 				}
@@ -946,9 +946,9 @@ void tab::exportFile()
 					int ver = dbih->get_zapit_version();
 
 					bit = e2db::FPORTS::all_bouquets_xml;
-					filename = ver != 1 ? "ubouquets.xml" : "bouquets.xml";
+					fname = ver != 1 ? "ubouquets.xml" : "bouquets.xml";
 
-					paths.push_back(filename);
+					paths.push_back(fname);
 				}
 			}
 			// userbouquet
@@ -982,13 +982,13 @@ void tab::exportFile()
 		updateIndex();
 	}
 
-	string path = gid->exportFileDialog(gde, filename, bit);
+	string path = gid->exportFileDialog(gde, fname, bit);
 
 	if (path.empty())
 	{
 		return;
 	}
-	if (paths.size() > 0)
+	if (paths.size() > 1)
 	{
 		int dirsize = 0;
 
@@ -1042,7 +1042,7 @@ void tab::exportFile()
 	}
 
 	theme::setWaitCursor();
-	dbih->exportFile(bit, paths);
+	dbih->exportFile(bit, paths, path);
 	theme::unsetWaitCursor();
 
 	if (this->data->haveErrors())
@@ -1050,13 +1050,13 @@ void tab::exportFile()
 
 	if (statusBarIsVisible())
 	{
-		string fname;
-		if (paths.size() > 0)
-			fname = std::filesystem::path(paths[0]).parent_path().u8string();
+		string filename;
+		if (paths.size() > 1)
+			filename = std::filesystem::path(path).parent_path().u8string();
 		else
-			fname = paths[0];
+			filename = path;
 
-		statusBarMessage(tr("Exported to %1", "message").arg(QString::fromStdString(fname)));
+		statusBarMessage(tr("Exported to %1", "message").arg(QString::fromStdString(filename)));
 	}
 	else
 	{

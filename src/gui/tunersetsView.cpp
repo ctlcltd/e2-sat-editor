@@ -537,6 +537,7 @@ void tunersetsView::populate()
 	list->header()->setSortIndicator(1, Qt::AscendingOrder);
 }
 
+//TODO tree item position
 void tunersetsView::treeItemChanged(QTreeWidgetItem* current)
 {
 	debug("treeItemChanged");
@@ -605,11 +606,11 @@ void tunersetsView::listItemSelectionChanged()
 
 	if (selected.count() == 1)
 	{
-		tabSetFlag(gui::TabListEditService, true);
+		tabSetFlag(gui::TabListEditTransponder, true);
 	}
 	else
 	{
-		tabSetFlag(gui::TabListEditService, false);
+		tabSetFlag(gui::TabListEditTransponder, false);
 	}
 
 	if (QGuiApplication::clipboard()->text().isEmpty())

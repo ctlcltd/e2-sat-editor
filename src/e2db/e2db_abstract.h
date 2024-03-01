@@ -367,10 +367,12 @@ struct e2db_abstract : protected e2se::log_factory
 			int anum;
 			string uri;
 			string value;
+			bool inlineval = false;
 			service_reference ref;
 			int x7 = 0;
 			int x8 = 0;
 			int x9 = 0;
+			int inum = -1;
 			int index = -1;
 		};
 
@@ -539,8 +541,8 @@ struct e2db_abstract : protected e2se::log_factory
 		static vector<string> value_channel_provider(string str);
 		static string value_channel_provider(service ch);
 		static string value_channel_provider(map<char, vector<string>> data);
-		static vector<string> value_channel_caid(string str);
-		static vector<string> value_channel_cached(string str);
+		static vector<string> value_channel_caid(string str, string separator = "|");
+		static vector<string> value_channel_cached(string str, string separator = "|");
 		static int value_transponder_type(char ty);
 		static int value_transponder_type(string str);
 		static char value_transponder_type(int yx);

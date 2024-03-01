@@ -192,7 +192,7 @@ void channelBookView::layout()
 	for (int i = 0; i < 27; i++)
 	{
 		tabv->addTab("");
-		//tabv->addTab(QString::fromStdString(chars[i]));
+		// tabv->addTab(QString::fromStdString(chars[i]));
 		tabv->setTabButton(i, QTabBar::LeftSide, new QLabel(QString::fromStdString(chars[i])));
 		tabv->setTabData(i, QString::fromStdString(chars[i]));
 	}
@@ -348,7 +348,7 @@ void channelBookView::populate()
 
 			QStringList entry = dbih->entries.services[chi.second];
 			QString txp;
-			if (ch.tsid != 0)
+			if (ch.tsid != 0 || ch.onid != 0 || ch.dvbns != 0)
 			{
 				e2db::transponder tx = dbih->db.transponders[ch.txid];
 				txp = QString::fromStdString(dbih->value_transponder_combo(tx));

@@ -75,7 +75,7 @@ class e2db : public ::e2se_e2db::e2db
 		bool prepare(string path) noexcept;
 		bool write(string path) noexcept;
 		void importFile(vector<string> paths) noexcept;
-		void exportFile(int flags, vector<string> paths) noexcept;
+		void exportFile(int flags, vector<string> paths, string filename) noexcept;
 		void importBlob(unordered_map<string, e2db_file> files);
 		bool haveErrors();
 		vector<string> getErrors();

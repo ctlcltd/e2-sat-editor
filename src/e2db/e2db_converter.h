@@ -22,6 +22,7 @@ namespace e2se_e2db
 {
 class e2db;
 
+//TODO current tunersets
 class e2db_converter : virtual public e2db_abstract
 {
 	public:
@@ -39,7 +40,7 @@ class e2db_converter : virtual public e2db_abstract
 			convert_services = 0x10,
 			convert_bouquets = 0x20,
 			convert_userbouquets = 0x40,
-			convert_tunersets = 0x80 //TODO pass current
+			convert_tunersets = 0x80
 		};
 
 		enum DOC_VIEW {

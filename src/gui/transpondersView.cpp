@@ -326,11 +326,11 @@ void transpondersView::listItemSelectionChanged()
 
 	if (selected.count() == 1)
 	{
-		tabSetFlag(gui::TabListEditService, true);
+		tabSetFlag(gui::TabListEditTransponder, true);
 	}
 	else
 	{
-		tabSetFlag(gui::TabListEditService, false);
+		tabSetFlag(gui::TabListEditTransponder, false);
 	}
 
 	if (QGuiApplication::clipboard()->text().isEmpty())

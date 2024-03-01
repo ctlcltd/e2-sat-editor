@@ -1002,8 +1002,39 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 			chref.value = ch.chname;
 
 			char chid[25];
-			// %4d:%2x:%d
-			std::snprintf(chid, 25, "1:%d:%x:%d", chref.atype, chref.anum != 0 ? chref.anum : dst->db.imarkers + 1, 0);
+
+			if (MARKER_GLOBAL_INDEX)
+			{
+				chref.inum = dst->db.imarkers + 1;
+
+				// %4d:%4d:%2x:%d
+				std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub.index);
+			}
+			else
+			{
+				bool valid = chref.anum != 0;
+				char ref_chid[25];
+
+				chref.inum = valid ? chref.anum : dst->db.imarkers + 1;
+
+				// %4d:%4d:%2x:%d
+				std::snprintf(ref_chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub.index);
+
+				valid = ! ub.channels.count(ref_chid);
+
+				if (valid)
+				{
+					std::memcpy(chid, ref_chid, 25);
+				}
+				else
+				{
+					chref.inum = dst->db.imarkers + 1;
+
+					// %4d:%4d:%2x:%d
+					std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub.index);
+				}
+			}
+
 			chref.chid = chid;
 		}
 		else if (chref.stream)
@@ -1011,9 +1042,12 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 			// chref.value
 			chref.value = ch.chname;
 
+			chref.inum = dst->db.istreams + 1;
+
 			char chid[25];
-			// %4d:%2x:%d
-			std::snprintf(chid, 25, "2:%d:%x:%d", chref.atype, dst->db.istreams + 1, 0);
+			// %4d:%4d:%2x:%d
+			std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, 0);
+
 			chref.chid = chid;
 		}
 		else
@@ -1039,8 +1073,6 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 			// snum has priority over chref.anum
 			if (! ch.snum)
 				ch.snum = chref.anum;
-			if (ch.data.count(SDATA::C) && ch.data[SDATA::C].empty())
-				ch.data.erase(SDATA::C);
 
 			// fec condensed
 			if (tx.ytype == YTYPE::satellite)
@@ -1057,8 +1089,6 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 				tx.fec = fec.inner_fec;
 			}
 
-			if (ch.data.count(SDATA::c) && ch.data[SDATA::c].empty())
-				ch.data.erase(SDATA::c);
 			if (ch.data.count(SDATA::C) && ch.data[SDATA::C].empty())
 				ch.data.erase(SDATA::C);
 
@@ -1359,8 +1389,39 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 			chref.value = ch.chname;
 
 			char chid[25];
-			// %4d:%2x:%d
-			std::snprintf(chid, 25, "1:%d:%x:%d", chref.atype, chref.anum != 0 ? chref.anum : dst->db.imarkers + 1, 0);
+
+			if (MARKER_GLOBAL_INDEX)
+			{
+				chref.inum = dst->db.imarkers + 1;
+
+				// %4d:%4d:%2x:%d
+				std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub.index);
+			}
+			else
+			{
+				bool valid = chref.anum != 0;
+				char ref_chid[25];
+
+				chref.inum = valid ? chref.anum : dst->db.imarkers + 1;
+
+				// %4d:%4d:%2x:%d
+				std::snprintf(ref_chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub.index);
+
+				valid = ! ub.channels.count(ref_chid);
+
+				if (valid)
+				{
+					std::memcpy(chid, ref_chid, 25);
+				}
+				else
+				{
+					chref.inum = dst->db.imarkers + 1;
+
+					// %4d:%4d:%2x:%d
+					std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub.index);
+				}
+			}
+
 			chref.chid = chid;
 		}
 		else if (chref.stream)
@@ -1368,9 +1429,12 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 			// chref.value
 			chref.value = ch.chname;
 
+			chref.inum = dst->db.istreams + 1;
+
 			char chid[25];
-			// %4d:%2x:%d
-			std::snprintf(chid, 25, "2:%d:%x:%d", chref.atype, dst->db.istreams + 1, 0);
+			// %4d:%4d:%2x:%d
+			std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, 0);
+
 			chref.chid = chid;
 		}
 		else

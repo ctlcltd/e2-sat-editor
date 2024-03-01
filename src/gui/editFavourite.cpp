@@ -527,23 +527,6 @@ void editFavourite::store()
 			chref.value = val;
 	}
 
-	if (chref.chid != this->chid)
-	{
-		char nw_chid[25];
-
-		if (chref.marker)
-			// %4d:%2x:%d
-			std::snprintf(nw_chid, 25, "1:%d:%x:%d", chref.atype, chref.anum != 0 ? chref.anum : dbih->db.imarkers + 1, ub.index);
-		else if (chref.stream)
-			// %4d:%4x:%d
-			std::snprintf(nw_chid, 25, "2:%d:%x:%d", chref.atype, dbih->db.istreams + 1, ub.index);
-		else
-			// %4x:%4x:%8x
-			std::snprintf(nw_chid, 25, "%x:%x:%x", chref.ref.ssid, chref.ref.tsid, chref.ref.dvbns);
-
-		chref.chid = nw_chid;
-	}
-
 	//TODO chref.ref <--> ch changes
 
 	if (this->state.edit)
