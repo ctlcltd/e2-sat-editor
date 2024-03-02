@@ -236,13 +236,13 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 			break;
 			case FCONVS::convert_bouquets:
 				if (opts.fc == FCONVS::convert_current)
-					push_csv_bouquets(files, opts.bname);
+					push_csv_bouquets(files, opts.bname, filename);
 				else
 					push_csv_bouquets(files);
 			break;
 			case FCONVS::convert_userbouquets:
 				if (opts.fc == FCONVS::convert_current)
-					push_csv_userbouquets(files, opts.bname);
+					push_csv_userbouquets(files, opts.bname, filename);
 				else
 					push_csv_userbouquets(files);
 			break;
@@ -341,13 +341,13 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 			break;
 			case FCONVS::convert_bouquets:
 				if (opts.fc == FCONVS::convert_current)
-					push_html_bouquets(files, opts.bname);
+					push_html_bouquets(files, opts.bname, filename);
 				else
 					push_html_bouquets(files);
 			break;
 			case FCONVS::convert_userbouquets:
 				if (opts.fc == FCONVS::convert_current)
-					push_html_userbouquets(files, opts.bname);
+					push_html_userbouquets(files, opts.bname, filename);
 				else
 					push_html_userbouquets(files);
 			break;
@@ -409,6 +409,238 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
 
 	info("export_html_file", "elapsed time", to_string(elapsed) + " μs");
+}
+
+void e2db_converter::import_m3u_file(FCONVS fci, fcopts opts, vector<string> paths)
+{
+	debug("import_m3u_file", "file path", "multiple");
+	debug("import_m3u_file", "file input", fci);
+
+	try
+	{
+		bool merge = this->get_input().size() != 0 ? true : false;
+		auto* dst = merge ? newptr() : this;
+
+		try
+		{
+			for (string & path : paths)
+			{
+				import_m3u_file(fci, opts, dst, path);
+			}
+			if (merge)
+			{
+				this->merge(dst);
+				delete dst;
+			}
+		}
+		catch (...)
+		{
+			if (merge) delete dst;
+			throw;
+		}
+	}
+	catch (const std::invalid_argument& err)
+	{
+		exception("import_m3u_file", "Error", msg(MSG::except_invalid_argument, err.what()));
+	}
+	catch (const std::out_of_range& err)
+	{
+		exception("import_m3u_file", "Error", msg(MSG::except_out_of_range, err.what()));
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		exception("import_m3u_file", "Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (...)
+	{
+		exception("import_m3u_file", "Error", msg(MSG::except_uncaught));
+	}
+}
+
+void e2db_converter::import_m3u_file(FCONVS fci, fcopts opts, string path)
+{
+	debug("import_m3u_file", "file path", "singular");
+	debug("import_m3u_file", "file input", fci);
+
+	try
+	{
+		bool merge = this->get_input().size() != 0 ? true : false;
+		auto* dst = merge ? newptr() : this;
+
+		try
+		{
+			import_m3u_file(fci, opts, dst, path);
+
+			if (merge)
+			{
+				this->merge(dst);
+				delete dst;
+			}
+		}
+		catch (...)
+		{
+			if (merge) delete dst;
+			throw;
+		}
+	}
+	catch (const std::invalid_argument& err)
+	{
+		exception("import_m3u_file", "Error", msg(MSG::except_invalid_argument, err.what()));
+	}
+	catch (const std::out_of_range& err)
+	{
+		exception("import_m3u_file", "Error", msg(MSG::except_out_of_range, err.what()));
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		exception("import_m3u_file", "Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (...)
+	{
+		exception("import_m3u_file", "Error", msg(MSG::except_uncaught));
+	}
+}
+
+void e2db_converter::import_m3u_file(FCONVS fci, fcopts opts, e2db_abstract* dst, string path)
+{
+	debug("import_m3u_file", "file path", "singular");
+	debug("import_m3u_file", "file input", fci);
+
+	auto t_start = std::chrono::high_resolution_clock::now();
+
+	try
+	{
+		if (! std::filesystem::exists(path))
+		{
+			return error("import_m3u_file", "File Error", msg("File \"%s\" not exists.", path));
+		}
+		if (! std::filesystem::is_regular_file(path))
+		{
+			return error("import_m3u_file", "File Error", msg("File \"%s\" is not a valid file.", path));
+		}
+		if
+		(
+			(std::filesystem::status(path).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none &&
+			(std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
+		)
+		{
+			return error("import_m3u_file", "File Error", msg("File \"%s\" is not readable.", path));
+		}
+
+		ifstream ifile (path);
+		try
+		{
+
+
+
+			ifile.close();
+		}
+		catch (...)
+		{
+			ifile.close();
+			throw;
+		}
+		ifile.close();
+	}
+	catch (const std::invalid_argument& err)
+	{
+		exception("import_m3u_file", "Error", msg(MSG::except_invalid_argument, err.what()));
+	}
+	catch (const std::out_of_range& err)
+	{
+		exception("import_m3u_file", "Error", msg(MSG::except_out_of_range, err.what()));
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		exception("import_m3u_file", "Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (...)
+	{
+		exception("import_m3u_file", "Error", msg(MSG::except_uncaught));
+	}
+
+	auto t_end = std::chrono::high_resolution_clock::now();
+	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
+
+	info("import_m3u_file", "elapsed time", to_string(elapsed) + " μs");
+}
+
+void e2db_converter::export_m3u_file(FCONVS fco, fcopts opts, vector<string> ubouquets, string path)
+{
+	debug("export_m3u_file", "file path", "singular");
+	debug("export_m3u_file", "file output", fco);
+
+	auto t_start = std::chrono::high_resolution_clock::now();
+
+	try
+	{
+		std::filesystem::path fp = std::filesystem::path(path);
+		string basedir = fp.parent_path().u8string();
+		if (basedir.size() && basedir[basedir.size() - 1] != '/')
+			basedir.append("/");
+		string filename = fp.filename().u8string();
+
+		opts.filename = filename;
+
+		vector<e2db_file> files;
+
+		if (opts.fc == FCONVS::convert_all)
+		{
+			push_m3u_list(files, ubouquets, (opts.flags & M3U_FLAGS::m3u_singular));
+		}
+		else
+		{
+			push_m3u_list(files, opts.bname);
+		}
+
+		bool once = !! files.size();
+		for (auto & file : files)
+		{
+			string fpath;
+			if (once)
+				fpath = basedir + file.filename;
+			else
+				fpath = basedir + opts.filename;
+
+			if (! OVERWRITE_FILE && std::filesystem::exists(fpath))
+			{
+				return error("export_m3u_file", "File Error", msg("File \"%s\" already exists.", fpath));
+			}
+			if
+			(
+				(std::filesystem::status(fpath).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::none &&
+				(std::filesystem::status(fpath).permissions() & std::filesystem::perms::group_write) == std::filesystem::perms::none
+			)
+			{
+				return error("export_m3u_file", "File Error", msg("File \"%s\" is not writable.", fpath));
+			}
+
+			ofstream out (fpath);
+			out << file.data;
+			out.close();
+		}
+	}
+	catch (const std::invalid_argument& err)
+	{
+		exception("export_m3u_file", "Error", msg(MSG::except_invalid_argument, err.what()));
+	}
+	catch (const std::out_of_range& err)
+	{
+		exception("export_m3u_file", "Error", msg(MSG::except_out_of_range, err.what()));
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		exception("export_m3u_file", "Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (...)
+	{
+		exception("export_m3u_file", "Error", msg(MSG::except_uncaught));
+	}
+
+	auto t_end = std::chrono::high_resolution_clock::now();
+	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
+
+	info("export_m3u_file", "elapsed time", to_string(elapsed) + " μs");
 }
 
 void e2db_converter::pull_csv_services(istream& ifile, e2db_abstract* dst)
@@ -520,17 +752,18 @@ void e2db_converter::push_csv_bouquets(vector<e2db_file>& files)
 
 	for (auto & x : index["bss"])
 	{
-		string bname = x.second;
-		bouquet bs = bouquets[bname];
-		push_csv_bouquets(files, bname);
+		bouquet bs = bouquets[x.second];
+		string bname = bs.bname;
+		string filename = bs.rname.empty() ? bs.bname : bs.rname;
+		push_csv_bouquets(files, bname, filename);
 	}
 }
 
-void e2db_converter::push_csv_bouquets(vector<e2db_file>& files, string bname)
+void e2db_converter::push_csv_bouquets(vector<e2db_file>& files, string bname, string filename)
 {
 	debug("push_csv_bouquets", "bname", bname);
 
-	string filename = filename_format(bname, "csv");
+	filename = filename_format(filename, "csv");
 
 	string csv;
 	csv_bouquet_list(csv, bname);
@@ -547,17 +780,18 @@ void e2db_converter::push_csv_userbouquets(vector<e2db_file>& files)
 
 	for (auto & x : index["ubs"])
 	{
-		string bname = x.second;
-		userbouquet ub = userbouquets[bname];
-		push_csv_userbouquets(files, bname);
+		userbouquet ub = userbouquets[x.second];
+		string bname = ub.bname;
+		string filename = ub.rname.empty() ? ub.bname : ub.rname;
+		push_csv_userbouquets(files, bname, filename);
 	}
 }
 
-void e2db_converter::push_csv_userbouquets(vector<e2db_file>& files, string bname)
+void e2db_converter::push_csv_userbouquets(vector<e2db_file>& files, string bname, string filename)
 {
 	debug("push_csv_userbouquet", "bname", bname);
 
-	string filename = filename_format(bname, "csv");
+	filename = filename_format(filename, "csv");
 
 	string csv;
 	if (CONVERTER_EXTENDED_FIELDS)
@@ -611,6 +845,66 @@ void e2db_converter::push_csv_tunersets(vector<e2db_file>& files, int ytype)
 	e2db_file file;
 	file.filename = filename;
 	csv_document(file, csv);
+	files.emplace_back(file);
+}
+
+
+void e2db_converter::push_m3u_list(vector<e2db_file>& files, vector<string> ubouquets, bool singular)
+{
+	debug("push_m3u_list");
+
+	if (singular)
+	{
+		e2db_file file;
+		file.filename = "userbouquets.m3u8";
+
+		string body;
+
+		for (string & bname : ubouquets)
+		{
+			userbouquet ub = userbouquets[bname];
+			bname = ub.bname;
+
+			m3u_channel_list(body, bname);
+		}
+
+		m3u_document(file, body);
+		files.emplace_back(file);
+	}
+	else
+	{
+		for (string & bname : ubouquets)
+		{
+			userbouquet ub = userbouquets[bname];
+			bname = ub.bname;
+			string filename = ub.rname.empty() ? ub.bname : ub.rname;
+			filename = filename_format(filename, "m3u8");
+
+			string body;
+			m3u_channel_list(body, bname);
+
+			e2db_file file;
+			file.filename = filename;
+			m3u_document(file, body);
+			files.emplace_back(file);
+		}
+	}
+}
+
+void e2db_converter::push_m3u_list(vector<e2db_file>& files, string bname)
+{
+	debug("push_m3u_list", "bname", bname);
+
+	userbouquet ub = userbouquets[bname];
+	string filename = ub.rname.empty() ? ub.bname : ub.rname;
+	filename = filename_format(filename, "m3u8");
+
+	string body;
+	m3u_channel_list(body, bname);
+
+	e2db_file file;
+	file.filename = filename;
+	m3u_document(file, body);
 	files.emplace_back(file);
 }
 
@@ -720,17 +1014,18 @@ void e2db_converter::push_html_bouquets(vector<e2db_file>& files)
 
 	for (auto & x : index["bss"])
 	{
-		string bname = x.second;
-		bouquet bs = bouquets[bname];
-		push_html_bouquets(files, bname);
+		bouquet bs = bouquets[x.second];
+		string bname = bs.bname;
+		string filename = bs.rname.empty() ? bs.bname : bs.rname;
+		push_html_bouquets(files, bname, filename);
 	}
 }
 
-void e2db_converter::push_html_bouquets(vector<e2db_file>& files, string bname)
+void e2db_converter::push_html_bouquets(vector<e2db_file>& files, string bname, string filename)
 {
 	debug("push_html_bouquets", "bname", bname);
 
-	string filename = filename_format(bname, "html");
+	filename = filename_format(filename, "html");
 
 	html_page page;
 	page_header(page, bname, DOC_VIEW::view_bouquets);
@@ -750,17 +1045,18 @@ void e2db_converter::push_html_userbouquets(vector<e2db_file>& files)
 
 	for (auto & x : index["ubs"])
 	{
-		string bname = x.second;
-		userbouquet ub = userbouquets[bname];
-		push_html_userbouquets(files, bname);
+		userbouquet ub = userbouquets[x.second];
+		string bname = ub.bname;
+		string filename = ub.rname.empty() ? ub.bname : ub.rname;
+		push_html_userbouquets(files, bname, filename);
 	}
 }
 
-void e2db_converter::push_html_userbouquets(vector<e2db_file>& files, string bname)
+void e2db_converter::push_html_userbouquets(vector<e2db_file>& files, string bname, string filename)
 {
 	debug("push_html_userbouquet", "bname", bname);
 
-	string filename = filename_format(bname, "html");
+	filename = filename_format(filename, "html");
 
 	html_page page;
 	page_header(page, bname, DOC_VIEW::view_userbouquets);
@@ -883,6 +1179,12 @@ void e2db_converter::parse_csv(istream& ifile, vector<vector<string>>& sxv)
 		}
 		sxv.emplace_back(values);
 	}
+}
+
+//TODO
+void e2db_converter::parse_m3u(istream& ifile, vector<userbouquet>& ubv)
+{
+	debug("parse_m3u");
 }
 
 void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_abstract* dst, DOC_VIEW view)
@@ -2559,6 +2861,50 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 	csv = ss.str();
 }
 
+void e2db_converter::m3u_channel_list(string& body, string bname)
+{
+	if (index.count(bname))
+		debug("m3u_channel_list", "bname", bname);
+	else
+		error("m3u_channel_list", "Error", msg("Missing index key \"%s\".", bname));
+
+	stringstream ss;
+
+	for (auto & x : index[bname])
+	{
+		string chid = x.second;
+
+		if (userbouquets.count(bname) && userbouquets[bname].channels.count(chid))
+		{
+			userbouquet ub = userbouquets[bname];
+			channel_reference chref = ub.channels[chid];
+
+			if (chref.stream)
+			{
+				int idx = x.first;
+				string refid = get_reference_id(chref);
+
+				ss << "#EXTINF:-1";
+				ss << ' ' << "tvg-id" << '=' << '"' << refid << '"';
+				if (! chref.value.empty())
+					ss << ' ' << "tvg-name" << '=' << '"' << chref.value << '"';
+				ss << ' ' << "tvg-chno" << '=' << '"' << idx << '"';
+				ss << ' ' << "group-title" << '=' << '"' << ub.name << '"';
+				ss << ',';
+				if (! chref.value.empty())
+					ss << chref.value;
+				else
+					ss << idx;
+				ss << M3U_DELIMITER;
+				ss << chref.uri;
+				ss << M3U_DELIMITER;
+			}
+		}
+	}
+
+	body = ss.str();
+}
+
 void e2db_converter::page_header(html_page& page, string filename, DOC_VIEW view)
 {
 	string name;
@@ -3112,6 +3458,20 @@ void e2db_converter::csv_document(e2db_file& file, string csv)
 
 	file.mime = "text/plain";
 	file.data = csv;
+	file.size = file.data.size();
+}
+
+void e2db_converter::m3u_document(e2db_file& file, string body)
+{
+	debug("m3u_document");
+
+	string m3u;
+	m3u.append("#EXTM3U");
+	m3u.append(M3U_DELIMITER);
+	m3u.append(body);
+
+	file.mime = "text/plain";
+	file.data = m3u;
 	file.size = file.data.size();
 }
 

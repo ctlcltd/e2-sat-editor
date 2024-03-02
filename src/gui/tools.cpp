@@ -31,6 +31,7 @@
 #include "theme.h"
 #include "tab.h"
 #include "gui.h"
+#include "convertM3u.h"
 
 using namespace e2se;
 
@@ -418,6 +419,182 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 			filename = path;
 
 		tid->statusBarMessage(tr("Exported to %1", "message").arg(path.data()));
+	}
+	else
+	{
+		tid->infoMessage(tr("Saved!", "message"));
+	}
+}
+
+void tools::importFileM3U(e2db::FCONVS fci, e2db::fcopts opts)
+{
+	debug("importFileM3U");
+
+	vector<string> paths;
+
+	paths = gid->importFileDialog(gui::GUI_DPORTS::M3U);
+
+	if (paths.empty())
+		return;
+
+	convertM3u* dialog = new convertM3u(this->data);
+	dialog->setImport(opts);
+	dialog->display(cwid);
+	if (dialog->destroy()) return;
+
+	auto* dbih = this->data->dbih;
+	bool merge = dbih->get_input().size() != 0 ? true : false;
+
+	if (tid->statusBarIsVisible())
+	{
+		string fname;
+		if (paths.size() > 1)
+			fname = std::filesystem::path(paths[0]).parent_path().u8string();
+		else
+			fname = paths[0];
+
+		tid->statusBarMessage(tr("Importing from %1 …", "message").arg(fname.data()));
+	}
+
+	bool read = false;
+
+	theme::setWaitCursor();
+
+	try
+	{
+		dbih->import_m3u_file(fci, opts, paths);
+
+		read = true;
+	}
+	catch (...)
+	{
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(tr("File Error", "error"), tr("Error opening files.", "error")); }, Qt::QueuedConnection);
+	}
+
+	theme::unsetWaitCursor();
+
+	if (this->data->haveErrors())
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::importNotice); }, Qt::QueuedConnection);
+
+	if (! read)
+		return;
+
+	tid->reset();
+
+	dbih->clearStorage(merge);
+	dbih->fixBouquets();
+
+	tid->load();
+}
+
+void tools::exportFileM3U(e2db::FCONVS fco, e2db::fcopts opts)
+{
+	debug("exportFileM3U");
+
+	auto* dbih = this->data->dbih;
+
+	vector<string> ubouquets;
+
+	for (auto & x : dbih->index["ubs"])
+	{
+		for (auto & q : dbih->userbouquets[x.second].channels)
+		{
+			if (q.second.stream)
+			{
+				e2db::userbouquet uboq = dbih->userbouquets[x.second];
+				string bname = uboq.bname;
+				ubouquets.emplace_back(bname);
+				break;
+			}
+		}
+	}
+
+	if (ubouquets.size() == 0)
+	{
+		tid->infoMessage(tr("Nothing to export", "message"), tr("Nothing to export", "message"));
+
+		return;
+	}
+
+	convertM3u* dialog = new convertM3u(this->data);
+	dialog->setExport(opts, ubouquets);
+	dialog->display(cwid);
+	if (dialog->destroy()) return;
+
+	string path = gid->exportFileDialog(gui::GUI_DPORTS::M3U, opts.filename);
+
+	if (path.empty())
+	{
+		return;
+	}
+	if (opts.fc != e2db::FCONVS::convert_current)
+	{
+		int dirsize = 0;
+
+		try
+		{
+			string basedir;
+			if (std::filesystem::is_directory(path))
+				basedir = path;
+			else
+				basedir = std::filesystem::path(path).parent_path().u8string();
+
+			std::filesystem::directory_iterator dirlist (basedir);
+
+			for (const auto & entry : dirlist)
+			{
+				if (std::filesystem::is_regular_file(entry))
+					dirsize++;
+			}
+		}
+		catch (const std::filesystem::filesystem_error& err)
+		{
+			error("exportFileM3U", tr("File Error", "error").toStdString(), e2se::logger::msg(e2se::logger::MSG::except_filesystem, err.what()));
+
+			tid->errorMessage(tr("File Error", "error"), tr("Error opening files.", "error"));
+
+			return;
+		}
+		if (dirsize != 0)
+		{
+			bool overwrite = tid->saveQuestion(tr("The destination contains files that will be overwritten.", "message"), tr("Do you want to overwrite them?", "message"));
+			if (! overwrite)
+				return;
+		}
+	}
+
+	bool write = false;
+
+	theme::setWaitCursor();
+
+	try
+	{
+		dbih->export_m3u_file(fco, opts, ubouquets, path);
+
+		write = true;
+	}
+	catch (...)
+	{
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(tr("File Error", "error"), tr("Error writing files.", "error")); }, Qt::QueuedConnection);
+	}
+
+	theme::unsetWaitCursor();
+
+	if (this->data->haveErrors())
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::exportNotice); }, Qt::QueuedConnection);
+
+	if (! write)
+		return;
+
+	if (tid->statusBarIsVisible())
+	{
+		string filename;
+		if (opts.fc != e2db::FCONVS::convert_current)
+			filename = std::filesystem::path(path).parent_path().u8string();
+		else
+			filename = path;
+
+		tid->statusBarMessage(tr("Exported to %1", "message").arg(filename.data()));
 	}
 	else
 	{

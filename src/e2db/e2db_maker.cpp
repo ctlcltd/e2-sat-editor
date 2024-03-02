@@ -612,6 +612,8 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 				if (chref.inlineval)
 					ss << conv_uri_value(chref.value);
 
+				ln++;
+
 				ss << endl;
 				ss << "#DESCRIPTION " << chref.value;
 			}
@@ -635,6 +637,8 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 						ss << ':';
 						ss << conv_uri_value(chref.value);
 					}
+
+					ln++;
 
 					ss << endl;
 					ss << "#DESCRIPTION " << chref.value;
@@ -666,6 +670,8 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 						ss << ':';
 						ss << conv_uri_value(chref.value);
 					}
+
+					ln++;
 
 					ss << endl;
 					ss << "#DESCRIPTION " << chref.value;

@@ -50,7 +50,8 @@ class tab : protected e2se::log_factory
 
 		enum TOOLS_FILE {
 			tools_csv,
-			tools_html
+			tools_html,
+			tools_m3u
 		};
 
 		enum MSG_CODE {

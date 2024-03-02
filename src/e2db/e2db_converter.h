@@ -32,6 +32,7 @@ class e2db_converter : virtual public e2db_abstract
 		inline static char CSV_DELIMITER = '\n';
 		inline static char CSV_SEPARATOR = ',';
 		inline static char CSV_ESCAPE = '"';
+		inline static string M3U_DELIMITER = "\r\n";
 
 		enum FCONVS {
 			convert_current = 0x0,
@@ -51,6 +52,15 @@ class e2db_converter : virtual public e2db_abstract
 			view_tunersets = 3
 		};
 
+		enum M3U_FLAGS {
+			m3u_singular = 0x10,
+			m3u_chrefid = 0x1,
+			m3u_chnum = 0x2,
+			m3u_chgroup = 0x4,
+			m3u_chlogos = 0x8,
+			m3u_default = 0xf
+		};
+
 		struct fcopts
 		{
 			FCONVS fc;
@@ -58,6 +68,7 @@ class e2db_converter : virtual public e2db_abstract
 			string bname;
 			int stype;
 			int ytype;
+			int flags;
 		};
 
 		struct html_page
@@ -75,6 +86,10 @@ class e2db_converter : virtual public e2db_abstract
 		void import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst, string path);
 		void export_csv_file(FCONVS fco, fcopts opts, string path);
 		void export_html_file(FCONVS fco, fcopts opts, string path);
+		void import_m3u_file(FCONVS fci, fcopts opts, vector<string> paths);
+		void import_m3u_file(FCONVS fci, fcopts opts, string path);
+		void import_m3u_file(FCONVS fci, fcopts opts, e2db_abstract* dst, string path);
+		void export_m3u_file(FCONVS fco, fcopts opts, vector<string> ubouquets, string path);
 		void pull_csv_services(istream& ifile, e2db_abstract* dst);
 		void pull_csv_bouquets(istream& ifile, e2db_abstract* dst);
 		void pull_csv_userbouquets(istream& ifile, e2db_abstract* dst);
@@ -83,25 +98,28 @@ class e2db_converter : virtual public e2db_abstract
 		void push_csv_services(vector<e2db_file>& files);
 		void push_csv_services(vector<e2db_file>& files, int stype);
 		void push_csv_bouquets(vector<e2db_file>& files);
-		void push_csv_bouquets(vector<e2db_file>& files, string bname);
+		void push_csv_bouquets(vector<e2db_file>& files, string bname, string filename);
 		void push_csv_userbouquets(vector<e2db_file>& files);
-		void push_csv_userbouquets(vector<e2db_file>& files, string bname);
+		void push_csv_userbouquets(vector<e2db_file>& files, string bname, string filename);
 		void push_csv_tunersets(vector<e2db_file>& files);
 		void push_csv_tunersets(vector<e2db_file>& files, int ytype);
+		void push_m3u_list(vector<e2db_file>& files, vector<string> ubouquets, bool singular);
+		void push_m3u_list(vector<e2db_file>& files, string bname);
 		void push_html_all(vector<e2db_file>& files);
 		void push_html_index(vector<e2db_file>& files);
 		void push_html_services(vector<e2db_file>& files);
 		void push_html_services(vector<e2db_file>& files, int stype);
 		void push_html_bouquets(vector<e2db_file>& files);
-		void push_html_bouquets(vector<e2db_file>& files, string bname);
+		void push_html_bouquets(vector<e2db_file>& files, string bname, string filename);
 		void push_html_userbouquets(vector<e2db_file>& files);
-		void push_html_userbouquets(vector<e2db_file>& files, string bname);
+		void push_html_userbouquets(vector<e2db_file>& files, string bname, string filename);
 		void push_html_tunersets(vector<e2db_file>& files);
 		void push_html_tunersets(vector<e2db_file>& files, int ytype);
 
 	protected:
 		virtual e2db_converter* newptr() { return new e2db_converter; }
 		void parse_csv(istream& ifile, vector<vector<string>>& sxv);
+		void parse_m3u(istream& ifile, vector<userbouquet>& ubv);
 		void convert_csv_channel_list(vector<vector<string>> sxv, e2db_abstract* dst, DOC_VIEW view);
 		void convert_csv_channel_list_extended(vector<vector<string>> sxv, e2db_abstract* dst, DOC_VIEW view);
 		void convert_csv_bouquet_list(vector<vector<string>> sxv, e2db_abstract* dst);
@@ -110,14 +128,16 @@ class e2db_converter : virtual public e2db_abstract
 		void csv_channel_list_extended(string& csv, string bname, DOC_VIEW view);
 		void csv_bouquet_list(string& csv, string bname);
 		void csv_tunersets_list(string& csv, int ytype);
+		void m3u_channel_list(string& body, string bname);
 		void page_header(html_page& page, string filename, DOC_VIEW view);
 		void page_footer(html_page& page, string filename, DOC_VIEW view);
 		void page_body_index_list(html_page& page, vector<string> paths);
 		void page_body_channel_list(html_page& page, string bname, DOC_VIEW view);
 		void page_body_bouquet_list(html_page& page, string bname);
 		void page_body_tunersets_list(html_page& page, int ytype);
-		void html_document(e2db_file& file, html_page page);
 		void csv_document(e2db_file& file, string csv);
+		void m3u_document(e2db_file& file, string body);
+		void html_document(e2db_file& file, html_page page);
 		string filename_format(string fname, string fext);
 		string doc_html_head(html_page page);
 		string doc_html_foot(html_page page);

@@ -104,6 +104,9 @@ class gui : protected e2se::log_factory
 			ToolsExportCSV_bouquets = 110,
 			ToolsExportCSV_userbouquets = 111,
 			ToolsExportCSV_tunersets = 112,
+			ToolsImportM3U = 113,
+			ToolsExportM3U_current = 114,
+			ToolsExportM3U_all = 115,
 			ToolsExportHTML_current = 116,
 			ToolsExportHTML_all = 117,
 			ToolsExportHTML_index = 118,
@@ -146,6 +149,9 @@ class gui : protected e2se::log_factory
 			GUI_CXE::ToolsExportCSV_bouquets,
 			GUI_CXE::ToolsExportCSV_userbouquets,
 			GUI_CXE::ToolsExportCSV_tunersets,
+			GUI_CXE::ToolsImportM3U,
+			GUI_CXE::ToolsExportM3U_current,
+			GUI_CXE::ToolsExportM3U_all,
 			GUI_CXE::ToolsExportHTML_current,
 			GUI_CXE::ToolsExportHTML_all,
 			GUI_CXE::ToolsExportHTML_index,
@@ -193,6 +199,9 @@ class gui : protected e2se::log_factory
 			ExportCSV_bouquets = GUI_CXE::ToolsExportCSV_bouquets,
 			ExportCSV_userbouquets = GUI_CXE::ToolsExportCSV_userbouquets,
 			ExportCSV_tunersets = GUI_CXE::ToolsExportCSV_tunersets,
+			ImportM3U = GUI_CXE::ToolsImportM3U,
+			ExportM3U_current = GUI_CXE::ToolsExportM3U_current,
+			ExportM3U_all = GUI_CXE::ToolsExportM3U_all,
 			ExportHTML_current = GUI_CXE::ToolsExportHTML_current,
 			ExportHTML_all = GUI_CXE::ToolsExportHTML_all,
 			ExportHTML_index = GUI_CXE::ToolsExportHTML_index,
@@ -219,6 +228,7 @@ class gui : protected e2se::log_factory
 			Tunersets = 0x8,
 			CSV = 0x10,
 			HTML = 0x20,
+			M3U = 0x80,
 			ConnectionProfile = 0x100
 		};
 

@@ -43,6 +43,8 @@ class tools : protected e2se::log_factory
 		void importFileCSV(e2db::FCONVS fci, e2db::fcopts opts);
 		void exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts);
 		void exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts);
+		void importFileM3U(e2db::FCONVS fci, e2db::fcopts opts);
+		void exportFileM3U(e2db::FCONVS fco, e2db::fcopts opts);
 		void destroy();
 
 	protected:

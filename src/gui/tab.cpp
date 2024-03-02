@@ -1374,6 +1374,9 @@ void tab::toolsImportFromFile(TOOLS_FILE ftype, e2db::FCONVS fci)
 		case TOOLS_FILE::tools_csv:
 			this->tools->importFileCSV(fci, opts);
 		break;
+		case TOOLS_FILE::tools_m3u:
+			this->tools->importFileM3U(fci, opts);
+		break;
 		case TOOLS_FILE::tools_html:
 		return;
 	}
@@ -1394,7 +1397,14 @@ void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 	opts.fc = fco;
 	string filename;
 
-	if (fco == e2db::FCONVS::convert_current)
+	if (ftype == TOOLS_FILE::tools_m3u)
+	{
+		if (fco == e2db::FCONVS::convert_current)
+		{
+			//TODO
+		}
+	}
+	else if (fco == e2db::FCONVS::convert_current)
 	{
 		// tunersets view
 		if (current == gui::TAB_VIEW::tunersets)
@@ -1529,6 +1539,10 @@ void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 			opts.filename += ".csv";
 			this->tools->exportFileCSV(fco, opts);
 		break;
+		case TOOLS_FILE::tools_m3u:
+			opts.filename += ".m3u8";
+			this->tools->exportFileM3U(fco, opts);
+		break;
 		case TOOLS_FILE::tools_html:
 			opts.filename += ".html";
 			this->tools->exportFileHTML(fco, opts);
@@ -1628,6 +1642,15 @@ void tab::actionCall(int bit)
 		break;
 		case gui::TAB_ATS::ExportCSV_tunersets:
 			toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_tunersets);
+		break;
+		case gui::TAB_ATS::ImportM3U:
+			toolsImportFromFile(TOOLS_FILE::tools_m3u, e2db::FCONVS::convert_all);
+		break;
+		case gui::TAB_ATS::ExportM3U_current:
+			toolsExportToFile(TOOLS_FILE::tools_m3u, e2db::FCONVS::convert_current);
+		break;
+		case gui::TAB_ATS::ExportM3U_all:
+			toolsExportToFile(TOOLS_FILE::tools_m3u, e2db::FCONVS::convert_all);
 		break;
 		case gui::TAB_ATS::ExportHTML_current:
 			toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_current);
