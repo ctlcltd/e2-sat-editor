@@ -208,7 +208,6 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 		return;
 
 	auto* dbih = this->data->dbih;
-	bool merge = dbih->get_input().size() != 0 ? true : false;
 
 	if (tid->statusBarIsVisible())
 	{
@@ -246,7 +245,7 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 
 	tid->reset();
 
-	dbih->clearStorage(merge);
+	dbih->clearStorage();
 	dbih->fixBouquets();
 
 	tid->load();
@@ -443,7 +442,6 @@ void tools::importFileM3U(e2db::FCONVS fci, e2db::fcopts opts)
 	if (dialog->destroy()) return;
 
 	auto* dbih = this->data->dbih;
-	bool merge = dbih->get_input().size() != 0 ? true : false;
 
 	if (tid->statusBarIsVisible())
 	{
@@ -481,7 +479,7 @@ void tools::importFileM3U(e2db::FCONVS fci, e2db::fcopts opts)
 
 	tid->reset();
 
-	dbih->clearStorage(merge);
+	dbih->clearStorage();
 	dbih->fixBouquets();
 
 	tid->load();

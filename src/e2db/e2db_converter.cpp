@@ -16,7 +16,6 @@
 #include <clocale>
 #include <algorithm>
 #include <chrono>
-#include <unordered_set>
 #include <sstream>
 #include <fstream>
 #include <filesystem>
@@ -24,7 +23,7 @@
 
 #include "e2db_converter.h"
 
-using std::ifstream, std::ofstream, std::stringstream, std::hex, std::dec, std::to_string, std::unordered_set;
+using std::ifstream, std::ofstream, std::stringstream, std::hex, std::dec, std::to_string, std::setfill, std::setw;
 
 namespace e2se_e2db
 {
@@ -43,8 +42,7 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, vector<string> pat
 
 	try
 	{
-		bool merge = this->get_input().size() != 0 ? true : false;
-		auto* dst = merge ? newptr() : this;
+		auto* dst = newptr();
 
 		try
 		{
@@ -52,15 +50,14 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, vector<string> pat
 			{
 				import_csv_file(fci, opts, dst, path);
 			}
-			if (merge)
-			{
-				this->merge(dst);
-				delete dst;
-			}
+
+			this->merge(dst);
+			delete dst;
 		}
 		catch (...)
 		{
-			if (merge) delete dst;
+			delete dst;
+
 			throw;
 		}
 	}
@@ -89,22 +86,19 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, string path)
 
 	try
 	{
-		bool merge = this->get_input().size() != 0 ? true : false;
-		auto* dst = merge ? newptr() : this;
+		auto* dst = newptr();
 
 		try
 		{
 			import_csv_file(fci, opts, dst, path);
 
-			if (merge)
-			{
-				this->merge(dst);
-				delete dst;
-			}
+			this->merge(dst);
+			delete dst;
 		}
 		catch (...)
 		{
-			if (merge) delete dst;
+			delete dst;
+
 			throw;
 		}
 	}
@@ -153,6 +147,7 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 		}
 
 		ifstream ifile (path);
+
 		try
 		{
 			switch (fci)
@@ -177,8 +172,10 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 		catch (...)
 		{
 			ifile.close();
+
 			throw;
 		}
+
 		ifile.close();
 	}
 	catch (const std::invalid_argument& err)
@@ -418,8 +415,7 @@ void e2db_converter::import_m3u_file(FCONVS fci, fcopts opts, vector<string> pat
 
 	try
 	{
-		bool merge = this->get_input().size() != 0 ? true : false;
-		auto* dst = merge ? newptr() : this;
+		auto* dst = newptr();
 
 		try
 		{
@@ -427,15 +423,14 @@ void e2db_converter::import_m3u_file(FCONVS fci, fcopts opts, vector<string> pat
 			{
 				import_m3u_file(fci, opts, dst, path);
 			}
-			if (merge)
-			{
-				this->merge(dst);
-				delete dst;
-			}
+
+			this->merge(dst);
+			delete dst;
 		}
 		catch (...)
 		{
-			if (merge) delete dst;
+			delete dst;
+
 			throw;
 		}
 	}
@@ -464,22 +459,19 @@ void e2db_converter::import_m3u_file(FCONVS fci, fcopts opts, string path)
 
 	try
 	{
-		bool merge = this->get_input().size() != 0 ? true : false;
-		auto* dst = merge ? newptr() : this;
+		auto* dst = newptr();
 
 		try
 		{
 			import_m3u_file(fci, opts, dst, path);
 
-			if (merge)
-			{
-				this->merge(dst);
-				delete dst;
-			}
+			this->merge(dst);
+			delete dst;
 		}
 		catch (...)
 		{
-			if (merge) delete dst;
+			delete dst;
+
 			throw;
 		}
 	}
@@ -528,18 +520,20 @@ void e2db_converter::import_m3u_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 		}
 
 		ifstream ifile (path);
+
 		try
 		{
-
-
+			pull_m3u_list(ifile, dst, opts);
 
 			ifile.close();
 		}
 		catch (...)
 		{
 			ifile.close();
+
 			throw;
 		}
+
 		ifile.close();
 	}
 	catch (const std::invalid_argument& err)
@@ -585,13 +579,9 @@ void e2db_converter::export_m3u_file(FCONVS fco, fcopts opts, vector<string> ubo
 		vector<e2db_file> files;
 
 		if (opts.fc == FCONVS::convert_all)
-		{
-			push_m3u_list(files, ubouquets, (opts.flags & M3U_FLAGS::m3u_singular));
-		}
+			push_m3u_list(files, ubouquets, opts);
 		else
-		{
-			push_m3u_list(files, opts.bname);
-		}
+			push_m3u_list(files, opts.bname, opts);
 
 		bool once = !! files.size();
 		for (auto & file : files)
@@ -848,12 +838,174 @@ void e2db_converter::push_csv_tunersets(vector<e2db_file>& files, int ytype)
 	files.emplace_back(file);
 }
 
+void e2db_converter::pull_m3u_list(istream& ifile, e2db_abstract* dst, fcopts opts)
+{
+	debug("pull_m3u_list");
 
-void e2db_converter::push_m3u_list(vector<e2db_file>& files, vector<string> ubouquets, bool singular)
+	unordered_map<string, vector<m3u_entry>> cxm;
+	parse_m3u(ifile, cxm);
+
+	struct btype_count
+	{
+		int tv = 0;
+		int radio = 0;
+	};
+
+	unordered_map<string, userbouquet> ubouquets;
+	unordered_map<string, vector<pair<int, string>>> i_ubs;
+	unordered_map<string, btype_count> btype_counter;
+
+	int idx = 0;
+	int ub_idx = 0;
+	string iname = "__m3u__";
+
+	for (auto & x : cxm)
+	{
+		if (! (opts.flags & M3U_FLAGS::m3u_singular))
+			iname = x.first;
+
+		for (auto & entry : x.second)
+		{
+			channel_reference& chref = entry.chref;
+			service_reference& ref = entry.chref.ref;
+
+			if (ref.dvbns == 0)
+				ref.dvbns = idx + 1;
+
+			chref.stream = true;
+			chref.inum = db.istreams + 1;
+
+			if (! ubouquets.count(iname))
+			{
+				ub_idx += 1;
+				ubouquets[iname].index = ub_idx;
+			}
+
+			char chid[25];
+			// %4d:%4d:%4x:%d
+			std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub_idx);
+
+			chref.chid = chid;
+
+			if (entry.ch_num)
+				chref.index = entry.ch_num;
+			else
+				chref.index = idx + 1;
+
+			if (! ubouquets[iname].channels.count(chref.chid))
+			{
+				dst->db.istreams++;
+
+				ubouquets[iname].channels.emplace(chref.chid, chref);
+				i_ubs[iname].emplace_back(pair (chref.index, chref.chid));
+
+				int btype = STYPE_EXT_TYPE.count(chref.anum) ? STYPE_EXT_TYPE.at(chref.anum) : 0;
+
+				if (btype == 2)
+					btype_counter[iname].radio++;
+				else
+					btype_counter[iname].tv++;
+
+				idx++;
+			}
+		}
+	}
+	cxm.clear();
+
+	string ub_fname_suffix = USERBOUQUET_FILENAME_SUFFIX;
+
+	for (auto & x : ubouquets)
+	{
+		string iname = x.first;
+		userbouquet& ub = x.second;
+
+		// btype autodetect
+		int btype;
+		if (btype_counter[iname].tv > btype_counter[iname].radio)
+			btype = STYPE::tv;
+		else
+			btype = STYPE::radio;
+
+		string ktype;
+		if (btype == STYPE::tv)
+			ktype = "tv";
+		else if (btype == STYPE::radio)
+			ktype = "radio";
+
+		stringstream ub_bname;
+		ub_bname << "userbouquet." << ub_fname_suffix << setfill('0') << setw(2) << ub.index << '.' << ktype;
+
+		ub.bname = ub_bname.str();
+
+		if (iname == "__m3u__")
+			ub.name = "m3u import " + to_string(ub.index);
+		else
+			ub.name = iname;
+
+		if (dst->index.count("bss"))
+		{
+			bouquet bs;
+			for (auto & x : dst->bouquets)
+			{
+				if (x.second.btype == btype)
+				{
+					bs = x.second;
+					break;
+				}
+			}
+			// userbouquet pname
+			ub.pname = bs.bname;
+		}
+		else
+		{
+			bouquet bs;
+			if (btype == STYPE::tv)
+			{
+				bs.bname = "bouquets.tv";
+				bs.name = "User - bouquet (TV)";
+				bs.nname = STYPE_EXT_LABEL.at(STYPE::tv);
+			}
+			else if (btype == STYPE::radio)
+			{
+				bs.bname = "bouquets.radio";
+				bs.name = "User - bouquet (Radio)";
+				bs.nname = STYPE_EXT_LABEL.at(STYPE::radio);
+			}
+			// bouquet idx
+			bs.index = int (dst->index["bss"].size());
+			// userbouquet pname
+			ub.pname = bs.bname;
+
+			dst->bouquets.emplace(bs.bname, bs);
+			dst->index["bss"].emplace_back(pair (bs.index, bs.bname));
+		}
+
+		dst->userbouquets.emplace(ub.bname, ub);
+		dst->index[ub.bname] = i_ubs[iname];
+		dst->index["ubs"].emplace_back(pair (ub.index, ub.bname));
+		dst->bouquets[ub.pname].userbouquets.emplace_back(ub.bname);
+
+		int idx = int (dst->index[ub.pname].size());
+		for (auto & x : dst->index[ub.bname])
+		{
+			channel_reference& chref = ub.channels[x.second];
+
+			if (dst->bouquets[ub.pname].services.count(chref.chid) == 0)
+			{
+				idx += 1;
+				dst->bouquets[ub.pname].services.emplace(chref.chid);
+				dst->index[ub.pname].emplace_back(pair (idx, chref.chid));
+			}
+		}
+	}
+	ubouquets.clear();
+}
+
+void e2db_converter::push_m3u_list(vector<e2db_file>& files, vector<string> ubouquets, fcopts opts)
 {
 	debug("push_m3u_list");
 
-	if (singular)
+	if (opts.flags & M3U_FLAGS::m3u_singular)
 	{
 		e2db_file file;
 		file.filename = "userbouquets.m3u8";
@@ -891,7 +1043,7 @@ void e2db_converter::push_m3u_list(vector<e2db_file>& files, vector<string> ubou
 	}
 }
 
-void e2db_converter::push_m3u_list(vector<e2db_file>& files, string bname)
+void e2db_converter::push_m3u_list(vector<e2db_file>& files, string bname, fcopts opts)
 {
 	debug("push_m3u_list", "bname", bname);
 
@@ -1181,13 +1333,99 @@ void e2db_converter::parse_csv(istream& ifile, vector<vector<string>>& sxv)
 	}
 }
 
-//TODO
-void e2db_converter::parse_m3u(istream& ifile, vector<userbouquet>& ubv)
+void e2db_converter::parse_m3u(istream& ifile, unordered_map<string, vector<m3u_entry>>& cxm)
 {
 	debug("parse_m3u");
+
+	bool valid = false;
+	int step = 0;
+	string line;
+
+	m3u_entry entry;
+	int i = 0;
+	string ub_name;
+
+	while (std::getline(ifile, line))
+	{
+		if (line.empty())
+			continue;
+		else if (line.find("#EXTINF") != string::npos)
+			step = 1;
+		else if (line.find("//") != string::npos)
+			step = 2;
+		else if (line.find("#EXTM3U") != string::npos)
+			valid = true;
+
+		if (step == 1)
+		{
+			size_t pos = line.find(':');
+			size_t len = line.find(',');
+			string extinf;
+
+			if (len != string::npos)
+			{
+				extinf = line.substr(pos, len);
+				entry.chref.value = line.substr(len + 1);
+			}
+			else
+			{
+				extinf = line.substr(pos);
+			}
+
+			if (extinf.empty())
+			{
+				step = 0;
+
+				continue;
+			}
+
+			char* token = std::strtok(extinf.data(), " ");
+			while (token != 0)
+			{
+				string key, val;
+				value_markup_attribute(token, key, val);
+				token = std::strtok(NULL, " ");
+
+				if (key.empty() || val.empty())
+					continue;
+
+				if (key == "tvg-id")
+					value_channel_reference(extinf, entry.chref, entry.chref.ref);
+				else if (key == "tvg-name")
+					entry.chref.value = val;
+				else if (key == "tvg-chno")
+					entry.ch_num = std::atoi(val.data());
+				else if (key == "tvg-logo")
+					entry.ch_logo = val;
+				else if (key == "group-title")
+					ub_name = val;
+			}
+		}
+		else if (step == 2)
+		{
+			entry.chref.uri = line;
+
+			if (ub_name.empty())
+				ub_name = "__m3u__";
+
+			entry.ub_name = ub_name;
+
+			cxm[ub_name].emplace_back(entry);
+
+			entry = m3u_entry ();
+			ub_name = "__m3u__";
+
+			i++;
+		}
+
+		step = 0;
+	}
+
+	if (! valid && i == 0)
+		error("parse_m3u", "Error", "Unknown file format.");
 }
 
-void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_abstract* dst, DOC_VIEW view)
+void e2db_converter::convert_csv_channel_list(vector<vector<string>>& sxv, e2db_abstract* dst, DOC_VIEW view)
 {
 	debug("convert_csv_channel_list");
 
@@ -1527,7 +1765,7 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>> sxv, e2db_a
 	}
 }
 
-void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sxv, e2db_abstract* dst, DOC_VIEW view)
+void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>>& sxv, e2db_abstract* dst, DOC_VIEW view)
 {
 	debug("convert_csv_channel_list_extended");
 
@@ -1900,7 +2138,7 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>> sx
 	}
 }
 
-void e2db_converter::convert_csv_bouquet_list(vector<vector<string>> sxv, e2db_abstract* dst)
+void e2db_converter::convert_csv_bouquet_list(vector<vector<string>>& sxv, e2db_abstract* dst)
 {
 	debug("convert_csv_bouquet_list");
 
@@ -1977,7 +2215,7 @@ void e2db_converter::convert_csv_bouquet_list(vector<vector<string>> sxv, e2db_a
 	}
 }
 
-void e2db_converter::convert_csv_tunersets_list(vector<vector<string>> sxv, e2db_abstract* dst)
+void e2db_converter::convert_csv_tunersets_list(vector<vector<string>>& sxv, e2db_abstract* dst)
 {
 	debug("convert_csv_tunersets_list");
 

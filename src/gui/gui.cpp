@@ -338,10 +338,12 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::ToolsExportCSV_bouquets] = menuBarAction(mexportcsv, tr("Export Bouquets", "menu"), [=]() { this->tabAction(TAB_ATS::ExportCSV_bouquets); });
 	gmenu[GUI_CXE::ToolsExportCSV_userbouquets] = menuBarAction(mexportcsv, tr("Export Userbouquets", "menu"), [=]() { this->tabAction(TAB_ATS::ExportCSV_userbouquets); });
 	gmenu[GUI_CXE::ToolsExportCSV_tunersets] = menuBarAction(mexportcsv, tr("Export Tuner settings", "menu"), [=]() { this->tabAction(TAB_ATS::ExportCSV_tunersets); });
+	menuBarSeparator(mtools);
 	gmenu[GUI_CXE::ToolsImportM3U] = menuBarAction(mtools, tr("Import from M3U", "menu"), [=]() { this->tabAction(TAB_ATS::ImportM3U); });
 	QMenu* mexportm3u = menuBarMenu(mtools, tr("Export to M3U", "menu"));
 	gmenu[GUI_CXE::ToolsExportM3U_current] = menuBarAction(mexportm3u, tr("Export current", "menu"), [=]() { this->tabAction(TAB_ATS::ExportM3U_current); });
 	gmenu[GUI_CXE::ToolsExportM3U_all] = menuBarAction(mexportm3u, tr("Export All", "menu"), [=]() { this->tabAction(TAB_ATS::ExportM3U_all); });
+	menuBarSeparator(mtools);
 	QMenu* mexporthtml = menuBarMenu(mtools, tr("Export to HTML", "menu"));
 	gmenu[GUI_CXE::ToolsExportHTML_current] = menuBarAction(mexporthtml, tr("Export current", "menu"), [=]() { this->tabAction(TAB_ATS::ExportHTML_current); });
 	gmenu[GUI_CXE::ToolsExportHTML_all] = menuBarAction(mexporthtml, tr("Export All", "menu"), [=]() { this->tabAction(TAB_ATS::ExportHTML_all); });

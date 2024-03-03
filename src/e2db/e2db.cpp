@@ -143,6 +143,8 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 	debug("import_file", "file path", "singular");
 	debug("import_file", "file input", fpi);
 
+	auto t_start = std::chrono::high_resolution_clock::now();
+
 	try
 	{
 		string fname = std::filesystem::path(path).filename().u8string();
@@ -256,6 +258,11 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 	{
 		exception("import_file", "Error", msg(MSG::except_uncaught));
 	}
+
+	auto t_end = std::chrono::high_resolution_clock::now();
+	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
+
+	info("import_file", "elapsed time", to_string(elapsed) + " μs");
 }
 
 void e2db::export_file(vector<string> paths)
@@ -285,6 +292,8 @@ void e2db::export_file(FPORTS fpo, string path, string filename)
 {
 	debug("export_file", "file path", "singular");
 	debug("export_file", "file output", fpo);
+
+	auto t_start = std::chrono::high_resolution_clock::now();
 
 	try
 	{
@@ -438,10 +447,19 @@ void e2db::export_file(FPORTS fpo, string path, string filename)
 	{
 		exception("export_file", "Error", msg(MSG::except_uncaught));
 	}
+
+	auto t_end = std::chrono::high_resolution_clock::now();
+	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
+
+	info("export_file", "elapsed time", to_string(elapsed) + " μs");
 }
 
 void e2db::import_blob(unordered_map<string, e2db_file> files)
 {
+	debug("import_blob", "size", int (files.size()));
+
+	auto t_start = std::chrono::high_resolution_clock::now();
+
 	try
 	{
 		bool merge = this->get_input().size() != 0 ? true : false;
@@ -460,6 +478,7 @@ void e2db::import_blob(unordered_map<string, e2db_file> files)
 			catch (...)
 			{
 				delete dst;
+
 				throw;
 			}
 		}
@@ -484,6 +503,11 @@ void e2db::import_blob(unordered_map<string, e2db_file> files)
 	{
 		exception("import_blob", "Error", msg(MSG::except_uncaught));
 	}
+
+	auto t_end = std::chrono::high_resolution_clock::now();
+	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
+
+	info("import_blob", "elapsed time", to_string(elapsed) + " μs");
 }
 
 void e2db::add_transponder(transponder& tx)

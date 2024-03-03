@@ -289,12 +289,7 @@ void convertM3u::store()
 {
 	debug("store");
 
-	int flags;
-
-	if (this->state.dialog == dial_import)
-		flags = e2db::M3U_FLAGS::m3u_default;
-	else if (this->state.dialog == dial_export)
-		flags = 0;
+	int flags = 0;
 
 	for (auto & item : fields)
 	{
@@ -310,8 +305,8 @@ void convertM3u::store()
 		{
 			if (key == "singularTrue" && val.toBool())
 				flags &= e2db::M3U_FLAGS::m3u_singular;
-			else if (key == "discardId" && ! val.toBool())
-				flags |= e2db::M3U_FLAGS::m3u_chrefid;
+			else if (key == "discardId" && val.toBool())
+				flags &= e2db::M3U_FLAGS::m3u_chrefid;
 			else if (key == "downloadChLogos" && val.toBool())
 				flags &= e2db::M3U_FLAGS::m3u_chlogos;
 			else if (key == "chLogosBrowsePath")

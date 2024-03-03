@@ -1198,6 +1198,37 @@ string e2db_abstract::value_bouquet_type(int btype)
 	}
 }
 
+void e2db_abstract::value_markup_attribute(string token, string& key, string& val)
+{
+	size_t pos;
+	size_t n = token.find('=');
+
+	if (n != string::npos)
+	{
+		key = token.substr(0, n);
+		val = token.substr(n + 1);
+	}
+	else
+	{
+		key = token;
+	}
+
+	pos = val.find('"');
+	n = string::npos;
+
+	if (pos != string::npos)
+	{
+		n = val.rfind('"');
+	}
+
+	if (n != string::npos && pos != n)
+	{
+		val = val.substr(0, n);
+		if (pos != string::npos)
+			val = val.substr(pos + 1);
+	}
+}
+
 string e2db_abstract::get_reference_id(string chid)
 {
 	// debug("get_reference_id", "chid", chid);

@@ -442,7 +442,7 @@ void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 	if (this->e2db.size() == 0)
 		db.version = 0x1225;
 
-	bool step;
+	bool step = 0;
 	int tidx = 0;
 	int sidx = 0;
 	string line;
@@ -848,7 +848,7 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string filename)
 {
 	debug("parse_e2db_userbouquet", "filename", filename);
 
-	bool step = false;
+	bool step = 0;
 	int idx = 0;
 	int y = 0;
 	string line;
@@ -865,7 +865,7 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string filename)
 		if (! step && line.size() >= 6 && line.find("#NAME") != string::npos)
 		{
 			ub.name = line.substr(6);
-			step = true;
+			step = 1;
 			continue;
 		}
 		else if (step && line.size() >= 13 && line.find("#DESCRIPTION") != string::npos)
