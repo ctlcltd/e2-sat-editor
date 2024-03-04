@@ -86,10 +86,10 @@ void e2db::setup()
 	settings.endArray();
 
 	e2db::CSV_HEADER = settings.value("engine/toolsCsvHeader", true).toBool();
-	string csv_dlm = settings.value("engine/toolsCsvDelimiter", "\n").toString().toStdString();
-	string csv_sep = settings.value("engine/toolsCsvSeparator", ",").toString().toStdString();
-	string csv_esp = settings.value("engine/toolsCsvEscape", "\"").toString().toStdString();
-	e2db::CSV_DELIMITER = csv_dlm.find("\n") != string::npos ? '\n' : (csv_dlm.size() == 1 ? csv_dlm[0] : '\n');
+	string csv_dlm = doubleToSingleEscaped(settings.value("engine/toolsCsvDelimiter", "\\n").toString()).toStdString();
+	string csv_sep = doubleToSingleEscaped(settings.value("engine/toolsCsvSeparator", ",").toString()).toStdString();
+	string csv_esp = doubleToSingleEscaped(settings.value("engine/toolsCsvEscape", "\"").toString()).toStdString();
+	e2db::CSV_DELIMITER = csv_dlm.size() != 0 && csv_dlm.size() <= 2 ? csv_dlm : "\n";
 	e2db::CSV_SEPARATOR = csv_sep.size() == 1 ? csv_sep[0] : ',';
 	e2db::CSV_ESCAPE = csv_esp.size() == 1 ? csv_esp[0] : '"';
 	e2db::CONVERTER_EXTENDED_FIELDS = settings.value("engine/toolsFieldsExtended", false).toBool();
@@ -877,6 +877,11 @@ QString e2db::fixUnicodeChars(string str)
 		return QString::fromStdString(str).remove(QRegularExpression("[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{S}\\s]+"));
 	else
 		return QString::fromStdString(str);
+}
+
+QString e2db::doubleToSingleEscaped(QString text)
+{
+	return text.replace("\\n", "\n").replace("\\r", "\r").replace("\\t", "\t").replace("\\s", " ");
 }
 
 string e2db::msg(string str, string param)

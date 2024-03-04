@@ -464,7 +464,7 @@ void settings::preferencesLayout()
 
 	QGroupBox* dtl0 = new QGroupBox(tr("General"));
 	QFormLayout* dtf0 = new QFormLayout;
-	dtf0->setSpacing(20);
+	dtf0->setSpacing(15);
 	dtf0->setFormAlignment(Qt::AlignLeading);
 	dtf0->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
@@ -563,11 +563,12 @@ void settings::preferencesLayout()
 	dtf3->addRow(dtf3sc);
 
 	QFormLayout* dtf31 = new QFormLayout;
-	dtf31->setSpacing(20);
+	dtf31->setSpacing(10);
 	dtf31->setFormAlignment(Qt::AlignLeading);
 	dtf31->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
 	QLabel* dth31 = new QLabel(tr("Channel operations"));
+	dth31->setStyleSheet("min-height: 20px");
 	dth31->setAlignment(dth31->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	dtf31->addRow(dth31);
 
@@ -602,11 +603,12 @@ void settings::preferencesLayout()
 	dtf4->addRow(dtf4bp);
 
 	QFormLayout* dtf41 = new QFormLayout;
-	dtf41->setSpacing(20);
+	dtf41->setSpacing(10);
 	dtf41->setFormAlignment(Qt::AlignLeading);
 	dtf41->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
 	QLabel* dth41 = new QLabel(tr("Filename format"));
+	dth41->setStyleSheet("min-height: 20px");
 	dth41->setAlignment(dth41->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	dtf41->addRow(dth41);
 
@@ -705,7 +707,7 @@ void settings::engineLayout()
 
 	QGroupBox* dtl1 = new QGroupBox(tr("Preferences"));
 	QFormLayout* dtf1 = new QFormLayout;
-	dtf1->setSpacing(20);
+	dtf1->setSpacing(15);
 	dtf1->setFormAlignment(Qt::AlignLeading);
 	dtf1->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
@@ -729,50 +731,57 @@ void settings::engineLayout()
 	QHBoxLayout* dtb2 = new QHBoxLayout;
 
 	QFormLayout* dtf20 = new QFormLayout;
-	dtf20->setSpacing(20);
+	dtf20->setSpacing(10);
 	dtf20->setFormAlignment(Qt::AlignLeading);
 	dtf20->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
 	QLabel* dth20 = new QLabel(tr("CSV Import/Export"));
+	dth20->setStyleSheet("min-height: 20px");
 	dth20->setAlignment(dth20->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	dtf20->addRow(dth20);
 
 	QCheckBox* dtf2th = new QCheckBox(tr("Allow header columns in CSV"));
-	dtf2th->setProperty("field", "toolsCsvHeader"); //
+	dtf2th->setProperty("field", "toolsCsvHeader");
 	prefs[PREF_SECTIONS::Engine].emplace_back(dtf2th);
 	dtf20->addRow(dtf2th);
+	dtf20->addItem(new QSpacerItem(0, 10));
 
-	//TODO FIX ui delimiter line feed not visible
-	QLineEdit* dtf2cd = new QLineEdit("\\n");
+	QLineEdit* dtf2cd = new QLineEdit("\n");
 	dtf2cd->setProperty("field", "toolsCsvDelimiter");
 	prefs[PREF_SECTIONS::Engine].emplace_back(dtf2cd);
-	dtf2cd->setMaxLength(2);
+	//TODO CRLF
+	// dtf2cd->setMaxLength(6);
+	dtf2cd->setMaxLength(3);
 	dtf2cd->setMaximumWidth(50);
+	dtf2cd->connect(dtf2cd, &QLineEdit::textChanged, [=](const QString& text) { this->textDoubleEscaped(dtf2cd, text); });
 	platform::osLineEdit(dtf2cd);
 	dtf20->addRow(tr("CSV delimiter character"), dtf2cd);
 
 	QLineEdit* dtf2cs = new QLineEdit(",");
 	dtf2cs->setProperty("field", "toolsCsvSeparator");
 	prefs[PREF_SECTIONS::Engine].emplace_back(dtf2cs);
-	dtf2cs->setMaxLength(1);
+	dtf2cs->setMaxLength(3);
 	dtf2cs->setMaximumWidth(50);
+	dtf2cs->connect(dtf2cs, &QLineEdit::textChanged, [=](const QString& text) { this->textDoubleEscaped(dtf2cs, text); });
 	platform::osLineEdit(dtf2cs);
 	dtf20->addRow(tr("CSV separator character"), dtf2cs);
 
-	QLineEdit* dtf2ce = new QLineEdit(",");
+	QLineEdit* dtf2ce = new QLineEdit("\"");
 	dtf2ce->setProperty("field", "toolsCsvEscape");
 	prefs[PREF_SECTIONS::Engine].emplace_back(dtf2ce);
 	dtf2ce->setMaxLength(1);
 	dtf2ce->setMaximumWidth(50);
+	dtf2ce->connect(dtf2ce, &QLineEdit::textChanged, [=](const QString& text) { this->textRemoveEscaped(dtf2ce, text); });
 	platform::osLineEdit(dtf2ce);
 	dtf20->addRow(tr("CSV escape character"), dtf2ce);
 
 	QFormLayout* dtf21 = new QFormLayout;
-	dtf21->setSpacing(20);
+	dtf21->setSpacing(10);
 	dtf21->setFormAlignment(Qt::AlignLeading);
 	dtf21->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
 	QLabel* dth21 = new QLabel(tr("Fields Import/Export"));
+	dth21->setStyleSheet("min-height: 20px");
 	dth21->setAlignment(dth21->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	dtf21->addRow(dth21);
 
@@ -803,7 +812,7 @@ void settings::engineLayout()
 
 	dtform->addItem(new QSpacerItem(0, 0));
 	dtform->addWidget(dtl0);
-	dtform->addItem(new QSpacerItem(0, 5));
+	dtform->addItem(new QSpacerItem(0, 0));
 	dtform->addWidget(dtl1);
 	dtform->addItem(new QSpacerItem(0, 5));
 	dtform->addWidget(dtl2);
@@ -1946,6 +1955,18 @@ QAction* settings::contextMenuSeparator(QMenu* menu)
 	action->setSeparator(true);
 	menu->addAction(action);
 	return action;
+}
+
+void settings::textDoubleEscaped(QLineEdit* input, const QString& text)
+{
+	if (text.contains(QRegularExpression("[\n|\r|\t| ]")))
+		input->setText(QString(text).replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t").replace(" ", "\\s"));
+}
+
+void settings::textRemoveEscaped(QLineEdit* input, const QString& text)
+{
+	if (text.contains(QRegularExpression("[\n|\r|\t| ]")))
+		input->setText(QString(text).remove(QRegularExpression("[\n|\r|\t| ]")));
 }
 
 }

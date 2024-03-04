@@ -2008,6 +2008,37 @@ void e2db::merge(e2db_abstract* dst)
 			merge = true;
 			bname = ubs_names[qw];
 
+			unordered_map<string, channel_reference> channels;
+			vector<pair<int, string>> i_ub;
+			int idx = int (dst->index[iname].size() - 1);
+
+			for (auto & x : dst->index[iname])
+			{
+				channel_reference& chref = ub.channels[x.second];
+				idx += 1;
+
+				if (chref.marker || chref.stream)
+				{
+					char chid[25];
+					// %4d:%4d:%2x:%d
+					std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, idx, ub.index);
+
+					chref.chid = chid;
+					chref.inum = idx;
+
+					i_ub.emplace_back(pair (idx, chref.chid));
+				}
+				else
+				{
+					i_ub.emplace_back(pair (idx, x.second));
+				}
+
+				channels.emplace(chref.chid, chref);
+			}
+
+			ub.channels.swap(channels);
+			dst->index[iname].swap(i_ub);
+
 			this->userbouquets[bname].channels.merge(ub.channels);
 			ub = this->userbouquets[bname];
 
@@ -2075,36 +2106,61 @@ void e2db::merge(e2db_abstract* dst)
 		}
 	}
 
-	int i = 0;
+	this->db.imarkers = 0;
+	this->db.istreams = 0;
+
 	for (auto & x : index["ubs"])
 	{
 		userbouquet& ub = this->userbouquets[x.second];
 		string bname = ub.bname;
 		unordered_map<string, channel_reference> channels;
+		vector<pair<int, string>> i_ub;
+
+		int idx = 0;
 
 		for (auto & x : index[bname])
 		{
 			channel_reference& chref = ub.channels[x.second];
+			idx += 1;
 
-			if (chref.marker)
+			if (chref.marker || chref.stream)
 			{
 				char chid[25];
-				// %4d:%2x:%d
-				std::snprintf(chid, 25, "%d:%x:%d", chref.atype, i, ub.index);
+
+				if (chref.marker)
+				{
+					chref.inum = this->db.imarkers + 1;
+
+					// %4d:%4d:%2x:%d
+					std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub.index);
+
+					index["mks"].emplace_back(pair (ub.index, chid));
+
+					this->db.imarkers++;
+				}
+				else if (chref.stream)
+				{
+					chref.inum = this->db.istreams + 1;
+
+					// %4d:%4d:%2x:%d
+					std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub.index);
+
+					this->db.istreams++;
+				}
 
 				chref.chid = chid;
-				chref.anum = i;
-
-				x.second = chref.chid;
-
-				index["mks"].emplace_back(pair (ub.index, chid));
-				i++;
+				i_ub.emplace_back(pair (idx, chid));
+			}
+			else
+			{
+				i_ub.emplace_back(pair (idx, x.second));
 			}
 
 			channels.emplace(chref.chid, chref);
 		}
 
 		ub.channels.swap(channels);
+		index[bname].swap(i_ub);
 	}
 
 	this->index.swap(index);

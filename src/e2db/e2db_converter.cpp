@@ -872,8 +872,21 @@ void e2db_converter::pull_m3u_list(istream& ifile, e2db_abstract* dst, fcopts op
 			if (ref.dvbns == 0)
 				ref.dvbns = idx + 1;
 
+			switch (chref.etype)
+			{
+				// service or stream
+				case ETYPE::ecast:
+				// stream
+				case ETYPE::ecustom:
+				case ETYPE::eservice:
+				case ETYPE::eytube:
+				break;
+				default:
+					chref.etype = ETYPE::ecustom;
+			}
+
 			chref.stream = true;
-			chref.inum = db.istreams + 1;
+			chref.inum = dst->db.istreams + 1;
 
 			if (! ubouquets.count(iname))
 			{
@@ -887,7 +900,7 @@ void e2db_converter::pull_m3u_list(istream& ifile, e2db_abstract* dst, fcopts op
 
 			chref.chid = chid;
 
-			if (entry.ch_num)
+			if (entry.ch_num != 0)
 				chref.index = entry.ch_num;
 			else
 				chref.index = idx + 1;
@@ -1268,11 +1281,12 @@ void e2db_converter::push_html_tunersets(vector<e2db_file>& files, int ytype)
 	files.emplace_back(file);
 }
 
+//TODO CRLF istream::read
 void e2db_converter::parse_csv(istream& ifile, vector<vector<string>>& sxv)
 {
 	debug("parse_csv");
 
-	const char dlm = CSV_DELIMITER;
+	const char dlm = CSV_DELIMITER[0];
 	const char sep = CSV_SEPARATOR;
 	const char esp = CSV_ESCAPE;
 
@@ -1280,6 +1294,12 @@ void e2db_converter::parse_csv(istream& ifile, vector<vector<string>>& sxv)
 
 	while (std::getline(ifile, line, dlm))
 	{
+		//TODO FIX CRLF
+		if (line.find('\r') != string::npos || line.find('\n') != string::npos)
+		{
+			line.erase(std::remove_if(line.begin(), line.end(), [](unsigned char c) { return c == '\r' || c == '\n'; }), line.end());
+		}
+
 		vector<string> values;
 		stringstream ss (line);
 		string str;
@@ -1333,9 +1353,12 @@ void e2db_converter::parse_csv(istream& ifile, vector<vector<string>>& sxv)
 	}
 }
 
+//TODO CRLF istream::read
 void e2db_converter::parse_m3u(istream& ifile, unordered_map<string, vector<m3u_entry>>& cxm)
 {
 	debug("parse_m3u");
+
+	const char dlm = M3U_DELIMITER[0];
 
 	bool valid = false;
 	int step = 0;
@@ -1345,7 +1368,7 @@ void e2db_converter::parse_m3u(istream& ifile, unordered_map<string, vector<m3u_
 	int i = 0;
 	string ub_name;
 
-	while (std::getline(ifile, line))
+	while (std::getline(ifile, line, dlm))
 	{
 		if (line.empty())
 			continue;
@@ -1403,6 +1426,12 @@ void e2db_converter::parse_m3u(istream& ifile, unordered_map<string, vector<m3u_
 		}
 		else if (step == 2)
 		{
+			//TODO FIX CRLF
+			if (line.find('\r') != string::npos || line.find('\n') != string::npos)
+			{
+				line.erase(std::remove_if(line.begin(), line.end(), [](unsigned char c) { return c == '\r' || c == '\n'; }), line.end());
+			}
+
 			entry.chref.uri = line;
 
 			if (ub_name.empty())

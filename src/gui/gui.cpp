@@ -14,6 +14,7 @@
 #include <filesystem>
 
 #include <QtGlobal>
+#include <QRegularExpression>
 #include <QSettings>
 #include <QTranslator>
 #include <QLibraryInfo>
@@ -624,7 +625,7 @@ void gui::initSettings()
 	settings.setValue("favouriteMatchService", true);
 	settings.setValue("mergeSortId", false);
 	settings.setValue("toolsCsvHeader", true);
-	settings.setValue("toolsCsvDelimiter", "\n");
+	settings.setValue("toolsCsvDelimiter", "\\n");
 	settings.setValue("toolsCsvSeparator", ",");
 	settings.setValue("toolsCsvEscape", "\"");
 	settings.setValue("toolsFieldsDefault", true);
@@ -682,6 +683,25 @@ void gui::updateSettings()
 			settings.setValue("engine/markerGlobalIndex", false);
 			settings.setValue("engine/favouriteMatchService", true);
 			settings.setValue("engine/mergeSortId", false);
+
+			if (settings.value("toolsCsvDelimiter").toString().contains(QRegularExpression("[\n|\r|\t| ]")))
+			{
+				QString text = settings.value("toolsCsvDelimiter").toString();
+				text = text.replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t").replace(" ", "\\s");
+				settings.setValue("toolsCsvDelimiter", text);
+			}
+			if (settings.value("toolsCsvSeparator").toString().contains(QRegularExpression("[\n|\r|\t| ]")))
+			{
+				QString text = settings.value("toolsCsvSeparator").toString();
+				text = text.replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t").replace(" ", "\\s");
+				settings.setValue("toolsCsvSeparator", text);
+			}
+			if (settings.value("toolsCsvEscape").toString().contains(QRegularExpression("[\n|\r|\t| ]")))
+			{
+				QString text = settings.value("toolsCsvEscape").toString();
+				text = text.remove(QRegularExpression("[\n|\r|\t| ]"));
+				settings.setValue("toolsCsvEscape", text);
+			}
 		}
 		if (version < 1.0)
 		{

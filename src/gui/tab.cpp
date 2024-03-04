@@ -29,6 +29,8 @@
 #include <QFormLayout>
 #include <QSplitter>
 #include <QGroupBox>
+#include <QTreeWidget>
+#include <QHeaderView>
 #include <QMenu>
 #include <QScrollArea>
 #include <QClipboard>
@@ -1184,6 +1186,9 @@ void tab::infoFile()
 
 	QTreeWidget* dtw2ft = new QTreeWidget;
 	dtw2ft->setHeaderLabels({tr("Filename"), tr("Size"), tr("Origin")});
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+	dtw2ft->header()->setDefaultSectionSize(0);
+#endif
 	dtw2ft->setColumnWidth(0, 200);
 	dtw2ft->setColumnWidth(1, 100);
 #ifdef Q_OS_WIN

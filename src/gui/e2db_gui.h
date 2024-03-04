@@ -86,7 +86,9 @@ class e2db : public ::e2se_e2db::e2db
 		QStringList entryMarker(channel_reference chref);
 		QStringList entryTunersetsTable(tunersets_table tn);
 		QStringList entryTunersetsTransponder(tunersets_transponder tntxp, tunersets_table tn);
+
 		static QString fixUnicodeChars(string str);
+		static QString doubleToSingleEscaped(QString text);
 
 	protected:
 		vector<string> errors;

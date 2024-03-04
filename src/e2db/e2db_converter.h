@@ -29,10 +29,13 @@ class e2db_converter : virtual public e2db_abstract
 
 		inline static bool CONVERTER_EXTENDED_FIELDS = false;
 		inline static bool CSV_HEADER = true;
-		inline static char CSV_DELIMITER = '\n';
+		inline static string CSV_DELIMITER = "\n";
 		inline static char CSV_SEPARATOR = ',';
 		inline static char CSV_ESCAPE = '"';
-		inline static string M3U_DELIMITER = "\r\n";
+
+		//TODO CRLF
+		// inline static string M3U_DELIMITER = "\r\n";
+		inline static string M3U_DELIMITER = "\n";
 
 		enum FCONVS {
 			convert_current = 0x0,
@@ -76,7 +79,7 @@ class e2db_converter : virtual public e2db_abstract
 			channel_reference chref;
 			string ub_name;
 			string ch_logo;
-			int ch_num;
+			int ch_num = 0;
 		};
 
 		struct html_page

@@ -9,6 +9,7 @@
  * @license GNU GPLv3 License
  */
 
+#include <QtGlobal>
 #include <QTimer>
 #include <QSettings>
 #include <QHBoxLayout>
@@ -22,6 +23,7 @@
 #include <QPushButton>
 #include <QFileDialog>
 #include <QTreeWidget>
+#include <QHeaderView>
 #ifdef Q_OS_WIN
 #include <QStyleFactory>
 #include <QScrollBar>
@@ -77,19 +79,39 @@ void convertM3u::layout(QWidget* cwid)
 	}
 }
 
+//TODO icons
+void convertM3u::toolbarLayout()
+{
+	debug("toolbarLayout");
+
+	this->dtbar = toolBar();
+	toolBarStyleSheet();
+
+	this->action.cancel = toolBarAction(dtbar, tr("Cancel", "dialog"), [=]() { this->cancel(); });
+	dtbar->widgetForAction(this->action.cancel)->setStyleSheet("font-size: 14px");
+
+	toolBarSpacer(dtbar);
+	if (this->state.dialog == dial_import)
+		this->action.save = toolBarAction(dtbar, tr("Import", "dialog"), theme->dynamicIcon("import"), [=]() { this->save(); });
+	else if (this->state.dialog == dial_export)
+		this->action.save = toolBarAction(dtbar, tr("Export", "dialog"), theme->dynamicIcon("export"), [=]() { this->save(); });
+}
+
 void convertM3u::importLayout()
 {
 	debug("importLayout");
 
 	QFormLayout* dtf0 = new QFormLayout;
+	dtf0->setSpacing(10);
 	dtf0->setRowWrapPolicy(QFormLayout::WrapAllRows);
 
 	QFormLayout* dtf10 = new QFormLayout;
-	dtf10->setSpacing(20);
+	dtf10->setSpacing(10);
 	dtf10->setFormAlignment(Qt::AlignLeading);
 	dtf10->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
 	QLabel* dth10 = new QLabel(tr("Channel group options"));
+	dth10->setStyleSheet("min-height: 20px");
 	dth10->setAlignment(dth10->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	dtf10->addRow(dth10);
 
@@ -110,9 +132,10 @@ void convertM3u::importLayout()
 	dtf10->addRow(dtf1s1);
 
 	dtf0->addRow(dtf10);
+	dtf0->addItem(new QSpacerItem(0, 0));
 
 	QFormLayout* dtf20 = new QFormLayout;
-	dtf20->setSpacing(20);
+	dtf20->setSpacing(15);
 	dtf20->setFormAlignment(Qt::AlignLeading);
 	dtf20->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
@@ -122,9 +145,10 @@ void convertM3u::importLayout()
 	dtf20->addRow(dtf2dr);
 
 	dtf0->addRow(dtf20);
+	dtf0->addItem(new QSpacerItem(0, 0));
 
 	QFormLayout* dtf30 = new QFormLayout;
-	dtf30->setSpacing(20);
+	dtf30->setSpacing(12);
 	dtf30->setFormAlignment(Qt::AlignLeading);
 	dtf30->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
@@ -140,6 +164,7 @@ void convertM3u::importLayout()
 	dtf3lf->setContentsMargins(0, 0, 0, 0);
 
 	QHBoxLayout* dtf3lh = new QHBoxLayout;
+	dtf3lh->setAlignment(dtf3lw->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 
 	QLineEdit* dtf3lp = new QLineEdit;
 	dtf3lp->setProperty("field", "chLogosBrowsePath");
@@ -150,7 +175,7 @@ void convertM3u::importLayout()
 	QPushButton* dtf3lb = new QPushButton;
 	dtf3lb->setText(tr("&Browse…", "toolbar"));
 	dtf3lb->connect(dtf3lb, &QPushButton::pressed, [=]() {
-		QString curr_dir = QSettings().value("application/m3uImportChLogosBrowsePath").toString();
+		QString curr_dir = QSettings().value("application/m3uChLogosBrowsePath").toString();
 		QString dir = this->browseFileDialog(curr_dir);
 		dtf3lp->setText(dir);
 	});
@@ -172,6 +197,7 @@ void convertM3u::exportLayout()
 	debug("exportLayout");
 
 	QFormLayout* dtf0 = new QFormLayout;
+	dtf0->setSpacing(10);
 	dtf0->setRowWrapPolicy(QFormLayout::WrapAllRows);
 
 	if (this->ubouquets.size() > 1)
@@ -179,47 +205,66 @@ void convertM3u::exportLayout()
 		auto* dbih = this->data->dbih;
 
 		QGroupBox* dtl1 = new QGroupBox(tr("Select Userbouquets"));
+		dtl1->setStyleSheet("QGroupBox { spacing: 0; padding: 0; padding-top: 25px; border: 0; } QGroupBox::title { margin: 0 }");
 		QVBoxLayout* dtb1 = new QVBoxLayout;
+		dtb1->setContentsMargins(0, 0, 0, 0);
 
-		QTreeWidget* dtw1ut = new QTreeWidget;
-		dtw1ut->setHeaderLabels({tr("Name"), tr("Filename")});
-		dtw1ut->setColumnWidth(0, 200);
-		dtw1ut->setColumnWidth(1, 150);
+		this->ubt = new QTreeWidget;
+		ubt->setIndentation(0);
+		ubt->connect(ubt, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) {
+			if (current != nullptr)
+			{
+				current->setCheckState(0, current->checkState(0) == Qt::Checked ? Qt::Unchecked : Qt::Checked);
+			}
+		});
+
+		ubt->setHeaderLabels({NULL, tr("Name"), tr("Filename")});
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+		ubt->header()->setDefaultSectionSize(0);
+#endif
+		ubt->setColumnWidth(0, 33);
+		ubt->setColumnWidth(1, 200);
+		ubt->setColumnWidth(2, 150);
 #ifdef Q_OS_WIN
 		if (theme::absLuma() || ! theme::isDefault())
 		{
 			QStyle* style = QStyleFactory::create("fusion");
-			dtw1ut->verticalScrollBar()->setStyle(style);
-			dtw1ut->horizontalScrollBar()->setStyle(style);
+			ubt->verticalScrollBar()->setStyle(style);
+			ubt->horizontalScrollBar()->setStyle(style);
 		}
 #endif
 
-		QList<QTreeWidgetItem*> ftree;
-		for (string & bname : this->ubouquets)
+		QList<QTreeWidgetItem*> btree;
+		for (string & iname : this->ubouquets)
 		{
-			e2db::userbouquet uboq = dbih->userbouquets[bname];
+			e2db::userbouquet uboq = dbih->userbouquets[iname];
 			QString name = QString::fromStdString(uboq.name);
 			QString filename = QString::fromStdString(uboq.rname.empty() ? uboq.bname : uboq.rname);
+			QString bname = QString::fromStdString(uboq.bname);
 
 			QTreeWidgetItem* item = new QTreeWidgetItem;
-			item->setText(0, name);
-			item->setText(1, filename);
-			ftree.append(item);
+			item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemNeverHasChildren);
+			item->setText(1, name);
+			item->setText(2, filename);
+			item->setData(0, Qt::UserRole, bname);
+			item->setCheckState(0, Qt::Unchecked);
+			btree.append(item);
 		}
-		dtw1ut->addTopLevelItems(ftree);
+		ubt->addTopLevelItems(btree);
 
-		dtb1->addWidget(dtw1ut);
+		dtb1->addWidget(ubt);
 
 		dtl1->setLayout(dtb1);
 		dtf0->addRow(dtl1);
 	}
 
 	QFormLayout* dtf10 = new QFormLayout;
-	dtf10->setSpacing(20);
+	dtf10->setSpacing(10);
 	dtf10->setFormAlignment(Qt::AlignLeading);
 	dtf10->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
 	QLabel* dth10 = new QLabel(tr("Channel group options"));
+	dth10->setStyleSheet("min-height: 20px");
 	dth10->setAlignment(dth10->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	dtf10->addRow(dth10);
 
@@ -240,9 +285,10 @@ void convertM3u::exportLayout()
 	dtf10->addRow(dtf1s1);
 
 	dtf0->addRow(dtf10);
+	dtf0->addItem(new QSpacerItem(0, 0));
 
 	QFormLayout* dtf20 = new QFormLayout;
-	dtf20->setSpacing(20);
+	dtf20->setSpacing(15);
 	dtf20->setFormAlignment(Qt::AlignLeading);
 	dtf20->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
@@ -265,9 +311,10 @@ void convertM3u::exportLayout()
 	dtf20->addRow(dtf2cg);
 
 	dtf0->addRow(dtf20);
+	dtf0->addItem(new QSpacerItem(0, 0));
 
 	QFormLayout* dtf30 = new QFormLayout;
-	dtf30->setSpacing(20);
+	dtf30->setSpacing(15);
 	dtf30->setFormAlignment(Qt::AlignLeading);
 	dtf30->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
@@ -279,8 +326,11 @@ void convertM3u::exportLayout()
 	QLineEdit* dtf3lu = new QLineEdit;
 	dtf3lu->setProperty("field", "chLogosBaseURL");
 	fields.emplace_back(dtf3lu);
+	dtf3lu->setMinimumWidth(200);
 	platform::osLineEdit(dtf3lu);
 	dtf30->addRow(tr("Channel logos base URL"), dtf3lu);
+
+	dtf0->addRow(dtf30);
 
 	dtform->addLayout(dtf0, 0, 0);
 }
@@ -304,28 +354,28 @@ void convertM3u::store()
 		if (this->state.dialog == dial_import)
 		{
 			if (key == "singularTrue" && val.toBool())
-				flags &= e2db::M3U_FLAGS::m3u_singular;
+				flags |= e2db::M3U_FLAGS::m3u_singular;
 			else if (key == "discardId" && val.toBool())
-				flags &= e2db::M3U_FLAGS::m3u_chrefid;
+				flags |= e2db::M3U_FLAGS::m3u_chrefid;
 			else if (key == "downloadChLogos" && val.toBool())
-				flags &= e2db::M3U_FLAGS::m3u_chlogos;
+				flags |= e2db::M3U_FLAGS::m3u_chlogos;
 			else if (key == "chLogosBrowsePath")
-				QSettings().setValue("application/m3uImportChLogosBrowsePath", val.toString());
+				QSettings().setValue("application/m3uChLogosBrowsePath", val.toString());
 		}
 		else if (this->state.dialog == dial_export)
 		{
 			if (key == "singularTrue" && val.toBool())
-				flags &= e2db::M3U_FLAGS::m3u_singular;
+				flags |= e2db::M3U_FLAGS::m3u_singular;
 			else if (key == "chReferenceId" && val.toBool())
-				flags &= e2db::M3U_FLAGS::m3u_chrefid;
+				flags |= e2db::M3U_FLAGS::m3u_chrefid;
 			else if (key == "chNumber" && val.toBool())
-				flags &= e2db::M3U_FLAGS::m3u_chnum;
+				flags |= e2db::M3U_FLAGS::m3u_chnum;
 			else if (key == "chGroupName" && val.toBool())
-				flags &= e2db::M3U_FLAGS::m3u_chgroup;
+				flags |= e2db::M3U_FLAGS::m3u_chgroup;
 			else if (key == "chLogosPlaceholder" && val.toBool())
-				flags &= e2db::M3U_FLAGS::m3u_chlogos;
+				flags |= e2db::M3U_FLAGS::m3u_chlogos;
 			else if (key == "chLogosBaseURL")
-				QSettings().setValue("application/m3uExportChLogosBaseURL", val.toString());
+				QSettings().setValue("application/m3uChLogosBaseURL", val.toString());
 		}
 	}
 
@@ -336,12 +386,35 @@ void convertM3u::store()
 
 	this->opts.flags = flags;
 
+	if (this->state.dialog == dial_export)
+	{
+		vector<string> ubouquets;
+
+		int i = 0;
+		int j = ubt->topLevelItemCount();
+
+		while (i != j)
+		{
+			QTreeWidgetItem* item = ubt->topLevelItem(i);
+
+			if (item->checkState(0) == Qt::Checked)
+				ubouquets.emplace_back(item->data(0, Qt::UserRole).toString().toStdString());
+
+			i++;
+		}
+
+		this->ubouquets.swap(ubouquets);
+	}
+
 	this->changes = true;
 }
 
 void convertM3u::retrieve()
 {
 	debug("retrieve");
+
+	QSettings().remove("application/m3uImportChLogosBrowsePath");
+	QSettings().remove("application/m3uExportChLogosBaseURL");
 
 	int flags;
 
@@ -366,7 +439,7 @@ void convertM3u::retrieve()
 			else if (key == "downloadChLogos")
 				val = (flags & e2db::M3U_FLAGS::m3u_chlogos);
 			else if (key == "chLogosBrowsePath")
-				val = QSettings().value("application/m3uImportChLogosBrowsePath");
+				val = QSettings().value("application/m3uChLogosBrowsePath");
 		}
 		else if (this->state.dialog == dial_export)
 		{
@@ -383,7 +456,7 @@ void convertM3u::retrieve()
 			else if (key == "chLogosPlaceholder")
 				val = (flags & e2db::M3U_FLAGS::m3u_chlogos);
 			else if (key == "chLogosBaseURL")
-				val = QSettings().value("application/m3uExportChLogosBaseURL");
+				val = QSettings().value("application/m3uChLogosBaseURL");
 		}
 
 		if (QCheckBox* field = qobject_cast<QCheckBox*>(item))

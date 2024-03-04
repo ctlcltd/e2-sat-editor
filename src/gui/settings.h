@@ -104,6 +104,8 @@ class settings : protected e2se::log_factory
 		static QAction* contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger, QKeySequence shortcut);
 		static QAction* contextMenuAction(QMenu* menu, QString text, std::function<void()> trigger, bool enabled, QKeySequence shortcut);
 		static QAction* contextMenuSeparator(QMenu* menu);
+		static void textDoubleEscaped(QLineEdit* input, const QString& text);
+		static void textRemoveEscaped(QLineEdit* input, const QString& text);
 
 	private:
 		gui* gid;

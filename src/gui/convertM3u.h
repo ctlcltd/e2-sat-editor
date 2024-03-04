@@ -32,6 +32,13 @@ class convertM3u : public dialAbstract
 			DIAL dialog;
 		};
 
+		struct __action
+		{
+			QAction* cancel;
+			//TODO rename
+			QAction* save;
+		};
+
 		convertM3u(dataHandler* data);
 		~convertM3u();
 		void display(QWidget* cwid);
@@ -40,18 +47,21 @@ class convertM3u : public dialAbstract
 
 	protected:
 		void layout(QWidget* cwid);
+		void toolbarLayout();
 		void importLayout();
 		void exportLayout();
 		void store();
 		void retrieve();
 
 		__state state;
+		__action action;
 
 	private:
 		static QString browseFileDialog(QString path);
 
 		e2db::fcopts opts;
 		vector<string> ubouquets;
+		QTreeWidget* ubt;
 };
 }
 #endif /* convertM3u_h */
