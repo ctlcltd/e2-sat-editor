@@ -272,8 +272,8 @@ class gui : protected e2se::log_factory
 		int exited();
 		void settingsChanged();
 		int newTab(string path = "");
-		int openTab(TAB_VIEW view);
-		int openTab(TAB_VIEW view, int arg);
+		int openTab(TAB_VIEW ttv);
+		int openTab(TAB_VIEW ttv, int arg);
 		void closeTab(int index = -1);
 		void closeAllTabs();
 		string openFileDialog();
@@ -303,6 +303,8 @@ class gui : protected e2se::log_factory
 		void linkToRepository(int page = 0);
 		void linkToWebsite(int page = 0);
 		void linkToOnlineHelp(int page = 0);
+		void checkUpdate();
+		virtual void autoCheckUpdate();
 		bool getFlag(GUI_CXE bit);
 		void setFlag(GUI_CXE bit, bool flag);
 		bitset<256> getFlags();
@@ -315,6 +317,7 @@ class gui : protected e2se::log_factory
 		void updateMenu();
 		QLocale getLocale();
 		void errorMessage(QString title, QString message);
+		void demoMessage();
 
 		static QString getFileFormatName(int ver);
 

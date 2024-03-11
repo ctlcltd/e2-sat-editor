@@ -2603,11 +2603,7 @@ void tab::noticeMessage(vector<pair<string, string>> errors, MSG_CODE code)
 
 void tab::demoMessage()
 {
-	QString text = tr("DEMO MODE", "message");
-
-	text = text.replace("<", "&lt;").replace(">", "&gt;");
-
-	QMessageBox::information(this->cwid, NULL, text);
+	gid->demoMessage();
 }
 
 void tab::loadSeeds()

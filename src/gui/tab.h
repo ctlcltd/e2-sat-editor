@@ -45,8 +45,8 @@ class tab : protected e2se::log_factory
 
 	public:
 
-		const int STATUSBAR_MESSAGE_DELAY = 1500;
-		const int STATUSBAR_MESSAGE_TIMEOUT = 5000;
+		static const int STATUSBAR_MESSAGE_DELAY = 1500;
+		static const int STATUSBAR_MESSAGE_TIMEOUT = 5000;
 
 		enum TOOLS_FILE {
 			tools_csv,

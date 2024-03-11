@@ -37,7 +37,8 @@ jobs:
         cmake \
         -G Ninja \
         -B build \
-        -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+        -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} \
+        -DRELEASE_MEDIUM=github
 
     - name: Build
       working-directory: ${{github.workspace}}/e2-sat-editor/src

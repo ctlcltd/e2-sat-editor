@@ -33,6 +33,7 @@ set(SOURCES
 	gui/about.cpp
 	gui/channelBookView.cpp
 	gui/connectionPresets.cpp
+	gui/convertM3u.cpp
 	gui/dataHandler.cpp
 	gui/dialAbstract.cpp
 	gui/dialChannelBook.cpp

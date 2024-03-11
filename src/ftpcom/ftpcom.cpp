@@ -549,6 +549,7 @@ size_t ftpcom::data_tn_shell_func(char* cso, size_t size, size_t nmemb, void* ps
 	return data_upload_func(cso, size, nmemb, vars->ps);
 }
 
+//TODO TEST
 size_t ftpcom::get_content_length_func(void* csi, size_t size, size_t nmemb, void* pso)
 {
 	size_t relsize = size * nmemb;

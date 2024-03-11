@@ -25,6 +25,9 @@
 // demo mode
 //#define E2SE_DEMO
 
+// release medium
+//#define RELEASE_MEDIUM ""
+
 
 #ifndef NOAUTODISCOVER
 
@@ -56,5 +59,27 @@
 
 #endif
 
+
+#ifndef NOCHECKUPDATE
+
+#ifndef E2SE_DEMO
+#define E2SE_CHECKUPDATE
+#endif
+
+#ifdef RELEASE_MEDIUM
+#if RELEASE_MEDIUM == "aur"
+#define E2SE_MEDIUM 6
+#elif RELEASE_MEDIUM == "flathub"
+#define E2SE_MEDIUM 3
+#elif RELEASE_MEDIUM == "github"
+#define E2SE_MEDIUM 1
+#elif RELEASE_MEDIUM == "snap"
+#define E2SE_MEDIUM 2
+#endif
+#else
+#define E2SE_MEDIUM 0
+#endif
+
+#endif
 
 #endif /* e2se_defs_h */

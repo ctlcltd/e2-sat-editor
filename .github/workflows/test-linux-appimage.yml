@@ -45,6 +45,7 @@ jobs:
         -B build \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} \
+        -DRELEASE_MEDIUM=github \
         -DWITHOUT_CLI=ON
 
     - name: Build

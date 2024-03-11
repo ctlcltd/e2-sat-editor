@@ -26,7 +26,8 @@ build() {
 
 	cmake -G Ninja -B build\
 		-DCMAKE_BUILD_TYPE=Release\
-		-DCMAKE_INSTALL_PREFIX=/usr
+		-DCMAKE_INSTALL_PREFIX=/usr\
+		-DRELEASE_MEDIUM=aur
 	ninja -C build
 }
 

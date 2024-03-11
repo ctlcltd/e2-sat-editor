@@ -667,7 +667,7 @@ void mainView::reset()
 	this->state.sort = pair (-1, Qt::AscendingOrder);
 	this->state.chx_pending = false;
 	this->state.tab_pending = false;
-	this->state.q_parentalLockInvert = QSettings().value("preference/parentalLockInvert", false).toBool();
+	this->state.q_parentalLockInvert = QSettings().value("engine/parentalLockInvert", false).toBool();
 	this->state.q_markerGlobalIndex = QSettings().value("engine/markerGlobalIndex", false).toBool();
 	this->state.q_favouriteMatchService = QSettings().value("engine/favouriteMatchService", true).toBool();
 
@@ -764,7 +764,7 @@ void mainView::populate(QTreeWidget* tw)
 			ub_locked = uboq.locked;
 		}
 
-		QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
+		QString parentalicon = QSettings().value("engine/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
 
 		int i = 0;
 		size_t pad_width = std::to_string(int (dbih->index[bname].size())).size() + 1;
@@ -1238,7 +1238,7 @@ void mainView::visualReloadList()
 		}
 	}
 
-	QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
+	QString parentalicon = QSettings().value("engine/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
 
 	int i = 0;
 	int j = list->topLevelItemCount();
@@ -1921,7 +1921,7 @@ void mainView::addService()
 		}
 	}
 
-	QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
+	QString parentalicon = QSettings().value("engine/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
 
 	size_t pad_width = std::to_string(int (dbih->index["chs"].size())).size() + 1;
 	QString x = QString::number(i++).rightJustified(pad_width, '0');
@@ -2032,7 +2032,7 @@ void mainView::editService()
 		}
 	}
 
-	QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
+	QString parentalicon = QSettings().value("engine/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
 
 	QStringList entry = dbih->entries.services[nw_chid];
 	bool locked = entry[1].size() || ub_locked;
@@ -2102,7 +2102,7 @@ void mainView::addFavourite()
 	else if (chref.marker)
 		reftype = REF_TYPE::marker;
 
-	QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
+	QString parentalicon = QSettings().value("engine/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
 
 	size_t pad_width = std::to_string(int (dbih->index["chs"].size())).size() + 1;
 	QString x = QString::number(i++).rightJustified(pad_width, '0');
@@ -2197,7 +2197,7 @@ void mainView::editFavourite()
 	else if (chref.marker)
 		reftype = REF_TYPE::marker;
 
-	QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
+	QString parentalicon = QSettings().value("engine/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
 
 	QStringList entry = dbih->entryFavourite(chref);
 	bool locked = entry[1].size() || ub_locked;
@@ -2427,7 +2427,7 @@ void mainView::setServiceParentalLock()
 
 	dbih->setServiceParentalLock(chid);
 
-	QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
+	QString parentalicon = QSettings().value("engine/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
 
 	QStringList entry = dbih->entries.services[chid];
 	entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
@@ -2627,7 +2627,6 @@ void mainView::listItemCopy(bool cut)
 	for (auto & item : selected)
 	{
 		QString qchid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString();
-		bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 		bool stream = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::stream;
 		bool locked = item->data(ITEM_DATA_ROLE::locked, Qt::UserRole).toBool();
 		string chid = qchid.toStdString();
@@ -2966,7 +2965,7 @@ void mainView::putListItems(vector<QString> items)
 	marker_count = dbih->db.imarkers;
 	stream_count = dbih->db.istreams;
 
-	QString parentalicon = QSettings().value("preference/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
+	QString parentalicon = QSettings().value("engine/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
 
 	for (QString & q : items)
 	{
@@ -3910,9 +3909,9 @@ void mainView::didChange()
 
 	bool reload = false;
 
-	if (this->state.q_parentalLockInvert != QSettings().value("preference/parentalLockInvert", false).toBool())
+	if (this->state.q_parentalLockInvert != QSettings().value("engine/parentalLockInvert", false).toBool())
 	{
-		this->state.q_parentalLockInvert = QSettings().value("preference/parentalLockInvert", false).toBool();
+		this->state.q_parentalLockInvert = QSettings().value("engine/parentalLockInvert", false).toBool();
 		reload = true;
 	}
 	if (this->state.q_markerGlobalIndex != QSettings().value("engine/markerGlobalIndex", false).toBool())

@@ -39,6 +39,7 @@ jobs:
         -G Ninja \
         -B build \
         -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} \
+        -DRELEASE_MEDIUM=github \
         -DWITH_QT5=ON
 
     - name: Build

@@ -413,15 +413,12 @@ void convertM3u::retrieve()
 {
 	debug("retrieve");
 
-	QSettings().remove("application/m3uImportChLogosBrowsePath");
-	QSettings().remove("application/m3uExportChLogosBaseURL");
-
 	int flags;
 
 	if (this->state.dialog == dial_import)
-		flags = QSettings().value("application/m3uImportFlags", e2db::M3U_FLAGS::m3u_default).toInt();
+		flags = QSettings().value("application/m3uImportFlags", 0).toInt();
 	else if (this->state.dialog == dial_export)
-		flags = QSettings().value("application/m3uExportFlags", 0).toInt();
+		flags = QSettings().value("application/m3uExportFlags", e2db::M3U_FLAGS::m3u_default).toInt();
 
 	for (auto & item : fields)
 	{

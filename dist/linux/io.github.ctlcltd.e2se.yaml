@@ -22,6 +22,7 @@ modules:
     buildsystem: cmake-ninja
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
+      - -DRELEASE_MEDIUM=flathub
       - -DWITHOUT_CLI=ON
     subdir: src
     sources:

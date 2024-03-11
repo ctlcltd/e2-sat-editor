@@ -103,7 +103,7 @@ void e2db::primer()
 	index["txs"]; // touch index["txs"]
 
 	// set parental lock type
-	int parental_invert = QSettings().value("preference/parentalLockInvert", false).toInt();
+	int parental_invert = QSettings().value("engine/parentalLockInvert", false).toInt();
 	e2db::PARENTALLOCK ltype = static_cast<e2db::PARENTALLOCK>(parental_invert);
 	db.parental = ltype;
 

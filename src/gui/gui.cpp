@@ -14,6 +14,7 @@
 #include <filesystem>
 
 #include <QtGlobal>
+#include <QTimer>
 #include <QRegularExpression>
 #include <QSettings>
 #include <QTranslator>
@@ -33,6 +34,14 @@
 
 #include "../e2se_defs.h"
 #include "platforms/platform.h"
+
+#ifndef Q_OS_WASM
+#include <QThread>
+#endif
+
+#ifdef E2SE_CHECKUPDATE
+#include "checkUpdate.h"
+#endif
 
 #include "toolkit/ThemeChangeEventObserver.h"
 #include "toolkit/TabBarProxyStyle.h"
@@ -197,6 +206,11 @@ gui::gui(int argc, char* argv[])
 	// screenshot
 	// mwid->setGeometry(280, 120, 1024, 720);
 
+#ifdef E2SE_CHECKUPDATE
+	if (QSettings().value("preference/autoCheckUpdate", false).toBool())
+		autoCheckUpdate();
+#endif
+
 	mroot->exec();
 }
 
@@ -268,6 +282,7 @@ void gui::menuBarLayout()
 	menuBarAction(mfile, tr("Preferences…", "menu"), [=]() { this->settingsDialog(); }, QKeySequence::Preferences)->setMenuRole(QAction::PreferencesRole);
 	//: Platform: About [$BUNDLE_NAME] item in macOS Application Menu
 	menuBarAction(mfile, tr("About", "menu"), [=]() { this->aboutDialog(); })->setMenuRole(QAction::AboutRole);
+	menuBarAction(mfile, tr("Check for updates…", "menu"), [=]() { this->checkUpdate(); })->setMenuRole(QAction::AboutQtRole);
 #endif
 	menuBarAction(mfile, tr("Settings", "menu"), [=]() { this->settingsDialog(); }, QKeySequence::Preferences);
 	menuBarSeparator(mfile);
@@ -387,7 +402,7 @@ void gui::menuBarLayout()
 	menuBarAction(mhelp, tr("Go to e2SE repository…", "menu"), [=]() { this->linkToRepository(0); });
 	menuBarAction(mhelp, tr("Donate", "menu"), [=]() { this->linkToWebsite(1); });
 	menuBarSeparator(mhelp);
-	menuBarAction(mhelp, tr("Check for updates…", "menu"), [=]() { this->linkToRepository(1); });
+	menuBarAction(mhelp, tr("Check for updates…", "menu"), [=]() { this->checkUpdate(); });
 	menuBarAction(mhelp, tr("&About e2 SAT Editor", "menu"), [=]() { this->aboutDialog(); })->setMenuRole(QAction::NoRole);
 
 	this->menu = menu;
@@ -600,8 +615,8 @@ void gui::initSettings()
 	settings.setValue("application/piconsBrowsePath", "");
 
 	settings.beginGroup("preference");
+	settings.setValue("autoCheckUpdate", false);
 	settings.setValue("askConfirmation", false);
-	settings.setValue("parentalLockInvert", false);
 	settings.setValue("language", "");
 	settings.setValue("theme", "");
 	settings.setValue("osExperiment", true);
@@ -624,6 +639,7 @@ void gui::initSettings()
 	settings.setValue("markerGlobalIndex", false);
 	settings.setValue("favouriteMatchService", true);
 	settings.setValue("mergeSortId", false);
+	settings.setValue("parentalLockInvert", false);
 	settings.setValue("toolsCsvHeader", true);
 	settings.setValue("toolsCsvDelimiter", "\\n");
 	settings.setValue("toolsCsvSeparator", ",");
@@ -679,10 +695,13 @@ void gui::updateSettings()
 
 		if (version < 1.3)
 		{
+			settings.setValue("preference/autoCheckUpdate", false);
 			settings.setValue("engine/userbouquetFilenameSuffix", "dbe");
 			settings.setValue("engine/markerGlobalIndex", false);
 			settings.setValue("engine/favouriteMatchService", true);
 			settings.setValue("engine/mergeSortId", false);
+			settings.setValue("engine/parentalLockInvert", settings.value("preference/parentalLockInvert", false).toBool());
+			settings.remove("preference/parentalLockInvert");
 
 			if (settings.value("toolsCsvDelimiter").toString().contains(QRegularExpression("[\n|\r|\t| ]")))
 			{
@@ -726,7 +745,6 @@ void gui::updateSettings()
 			settings.setValue("preference/piconsUseRefid", true);
 			settings.setValue("preference/piconsUseChname", false);
 		}
-
 	}
 }
 
@@ -795,12 +813,12 @@ int gui::newTab(string path)
 	return index;
 }
 
-int gui::openTab(TAB_VIEW view)
+int gui::openTab(TAB_VIEW ttv)
 {
-	return openTab(view, 0);
+	return openTab(ttv, 0);
 }
 
-int gui::openTab(TAB_VIEW view, int arg)
+int gui::openTab(TAB_VIEW ttv, int arg)
 {
 	tab* current = getCurrentTabHandler();
 	tab* parent = current;
@@ -841,7 +859,7 @@ int gui::openTab(TAB_VIEW view, int arg)
 	QIcon tticon;
 	QString ttname = QString::fromStdString(parent->getTabName());
 
-	switch (view)
+	switch (ttv)
 	{
 		case TAB_VIEW::main:
 			error("openTab", tr("Error", "error").toStdString(), tr("Missing parent tab for tab reference \"%1\".", "error").arg(ttid).toStdString());
@@ -1052,7 +1070,7 @@ void gui::changeTabName(int ttid, string path)
 	tab* ttab = ttabs[ttid];
 	int index = twid->indexOf(ttab->widget);
 	int count = index;
-	int v = ttab->getTabView();
+	int ttv = ttab->getTabView();
 
 	QString ttname = tr("Untitled", "tab");
 
@@ -1086,7 +1104,7 @@ void gui::changeTabName(int ttid, string path)
 
 	// debug("changeTabName", "index", index);
 
-	switch (v)
+	switch (ttv)
 	{
 		case TAB_VIEW::transponders:
 			ttname = QString("%1 - %2").arg(ttname).arg(tr("Edit Transponders", "tab"));
@@ -1779,6 +1797,66 @@ void gui::linkToOnlineHelp(int page)
 	QDesktopServices::openUrl(QUrl(url));
 }
 
+void gui::checkUpdate()
+{
+	debug("checkUpdate");
+
+#ifndef E2SE_CHECKUPDATE
+	return this->linkToRepository(1);
+#endif
+
+	if (statusBarIsVisible())
+	{
+		QString message = tr("Checking for updates…", "message");
+
+		gui::status msg;
+		msg.info = true;
+		msg.message = message.toStdString();
+		setStatusBar(msg);
+
+		QTimer* timer = new QTimer(this->mwid);
+		timer->setSingleShot(true);
+		timer->setInterval(tab::STATUSBAR_MESSAGE_TIMEOUT);
+		timer->callOnTimeout([=]() { this->resetStatusBar(true); timer->stop(); });
+		timer->start();
+	}
+
+#ifdef E2SE_CHECKUPDATE
+	QThread* thread = QThread::create([=]() {
+		auto* dialog = new e2se_gui::checkUpdate(this->mwid);
+		dialog->check();
+		dialog->destroy();
+	});
+	thread->start();
+	thread->quit();
+#endif
+}
+
+#ifdef E2SE_CHECKUPDATE
+void gui::autoCheckUpdate()
+{
+	debug("autoCheckUpdate", "deferred", "10 s");
+
+	QTimer* timer = new QTimer(this->mwid);
+	timer->setSingleShot(true);
+	timer->setInterval(1e4);
+	timer->callOnTimeout([=]() {
+		debug("autoCheckUpdate", "timer", 1);
+
+		QThread* thread = QThread::create([=]() {
+			auto* dialog = new e2se_gui::checkUpdate(this->mwid);
+			dialog->autoCheck();
+			dialog->destroy();
+		});
+		thread->start();
+		thread->quit();
+
+		timer->stop();
+	});
+	timer->start();
+}
+#endif
+
 int gui::getTabId(int index)
 {
 	int ttid = twid->tabBar()->tabData(index).toInt();
@@ -1993,6 +2071,15 @@ void gui::errorMessage(QString title, QString message)
 #endif
 
 	QMessageBox::critical(this->mwid, title, text);
+}
+
+void gui::demoMessage()
+{
+	QString message = tr("DEMO MODE", "message");
+
+	message = message.replace("<", "&lt;").replace(">", "&gt;");
+
+	QMessageBox::information(this->mwid, NULL, message);
 }
 
 QString gui::getFileFormatName(int ver)

@@ -8,6 +8,10 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+option(NOAUTODISCOVER "turn off auto-discover build directives")
+option(NOUPDATECHECKER "turn off update checker")
+
+option(RELEASE_MEDIUM "set the release medium")
 option(WITH_QT5 "build requiring Qt5")
 option(WITHOUT_CLI "make the bundle without e2se-cli")
 
@@ -75,6 +79,10 @@ set(SOURCES
 	main.cpp
 	../res/resources.qrc
 )
+
+if(NOT NOCHECKUPDATE)
+	list(APPEND SOURCES gui/checkUpdate.cpp)
+endif()
 
 if(APPLE)
 	list(APPEND SOURCES gui/platforms/platform_macx.mm)

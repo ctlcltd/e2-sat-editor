@@ -468,15 +468,15 @@ void settings::preferencesLayout()
 	dtf0->setFormAlignment(Qt::AlignLeading);
 	dtf0->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
+	QCheckBox* dtf0up = new QCheckBox(tr("Check for updates on launch"));
+	dtf0up->setProperty("field", "autoCheckUpdate");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf0up);
+	dtf0->addRow(dtf0up);
+
 	QCheckBox* dtf0ac = new QCheckBox(tr("Show confirmation messages when deleting"));
 	dtf0ac->setProperty("field", "askConfirmation");
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf0ac);
 	dtf0->addRow(dtf0ac);
-
-	QCheckBox* dtf0li = new QCheckBox(tr("Parental lock whitelist (exclusion instead inclusion list)"));
-	dtf0li->setProperty("field", "parentalLockInvert");
-	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf0li);
-	dtf0->addRow(dtf0li);
 
 	QGroupBox* dtl1 = new QGroupBox(tr("Language"));
 	QFormLayout* dtf1 = new QFormLayout;
@@ -704,6 +704,11 @@ void settings::engineLayout()
 
 	platform::osComboBox(dtf0td);
 	dtf0->addRow(tr("Default format"), dtf0td);
+
+	QCheckBox* dtf1li = new QCheckBox(tr("Parental lock whitelist (exclusion instead inclusion list)"));
+	dtf1li->setProperty("field", "parentalLockInvert");
+	prefs[PREF_SECTIONS::Engine].emplace_back(dtf1li);
+	dtf0->addRow(dtf1li);
 
 	QGroupBox* dtl1 = new QGroupBox(tr("Preferences"));
 	QFormLayout* dtf1 = new QFormLayout;
