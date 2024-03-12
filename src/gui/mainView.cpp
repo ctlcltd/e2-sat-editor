@@ -445,7 +445,7 @@ void mainView::searchLayout()
 }
 
 //TODO TEST viewAbstract::themeChange()
-//TODO copyable viewport, platform::osLabel link
+//TODO copyable viewport text
 void mainView::referenceBoxLayout()
 {
 	this->list_reference = new QWidget;
@@ -569,7 +569,7 @@ void mainView::referenceBoxLayout()
 	QLabel* ref5tn = new QLabel("< >");
 	ref5tn->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard | Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
 	ref5tn->setOpenExternalLinks(false);
-	// platform::osLabel(ref5tn);
+	platform::osLabel(ref5tn);
 	ref5ln->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref5tn->setAlignment(ref5tn->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	ref_fields[LIST_REF::Tuner] = ref5tn;
