@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(e2-sat-editor VERSION 1.2.0 LANGUAGES CXX)
+project(e2-sat-editor VERSION 1.3.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -147,7 +147,7 @@ if(UNIX AND NOT APPLE)
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/256x256/apps)
 	install(FILES "../dist/xdg/icons/128x128/e2-sat-editor.png"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/128x128/apps)
-	install(FILES "../dist/xdg/icons/128x128/e2-sat-editor.png"
+	install(FILES "../dist/xdg/icons/64x64/e2-sat-editor.png"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/apps)
 
 	install(DIRECTORY "../dist/translations"
