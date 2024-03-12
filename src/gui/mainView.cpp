@@ -1626,10 +1626,10 @@ void mainView::addBouquet()
 {
 	debug("addBouquet");
 
-	e2se_gui::editBouquet* add = new e2se_gui::editBouquet(this->data);
-	add->display(cwid);
-	string bname = add->getAddId();
-	if (add->destroy()) return;
+	e2se_gui::editBouquet* dialog = new e2se_gui::editBouquet(this->data);
+	dialog->display(cwid);
+	string bname = dialog->getEditId();
+	if (dialog->destroy()) return;
 
 	auto* dbih = this->data->dbih;
 
@@ -1687,11 +1687,11 @@ void mainView::editBouquet()
 	else
 		return error("editBouquet", tr("Error", "error").toStdString(), tr("Bouquet \"%1\" not exists.", "error").arg(bname.data()).toStdString());
 
-	e2se_gui::editBouquet* edit = new e2se_gui::editBouquet(this->data);
-	edit->setEditId(bname);
-	edit->display(cwid);
-	string nw_bname = edit->getEditId();
-	if (edit->destroy()) return;
+	e2se_gui::editBouquet* dialog = new e2se_gui::editBouquet(this->data);
+	dialog->setEditId(bname);
+	dialog->display(cwid);
+	string nw_bname = dialog->getEditId();
+	if (dialog->destroy()) return;
 
 	if (dbih->bouquets.count(nw_bname))
 		debug("ediBouquet", "new bname", nw_bname);
@@ -1712,10 +1712,10 @@ void mainView::addUserbouquet()
 {
 	debug("addUserbouquet");
 
-	e2se_gui::editUserbouquet* add = new e2se_gui::editUserbouquet(this->data, this->state.ti);
-	add->display(cwid);
-	string bname = add->getAddId();
-	if (add->destroy()) return;
+	e2se_gui::editUserbouquet* dialog = new e2se_gui::editUserbouquet(this->data, this->state.ti);
+	dialog->display(cwid);
+	string bname = dialog->getEditId();
+	if (dialog->destroy()) return;
 
 	auto* dbih = this->data->dbih;
 
@@ -1774,11 +1774,11 @@ void mainView::editUserbouquet()
 	else
 		return error("editUserbouquet", tr("Error", "error").toStdString(), tr("Userbouquet \"%1\" not exists.", "error").arg(bname.data()).toStdString());
 
-	e2se_gui::editUserbouquet* edit = new e2se_gui::editUserbouquet(this->data, this->state.ti);
-	edit->setEditId(bname);
-	edit->display(cwid);
-	string nw_bname = edit->getEditId();
-	if (edit->destroy()) return;
+	e2se_gui::editUserbouquet* dialog = new e2se_gui::editUserbouquet(this->data, this->state.ti);
+	dialog->setEditId(bname);
+	dialog->display(cwid);
+	string nw_bname = dialog->getEditId();
+	if (dialog->destroy()) return;
 
 	if (dbih->userbouquets.count(nw_bname))
 		debug("editUserbouquet", "new bname", nw_bname);
@@ -1879,12 +1879,12 @@ void mainView::addService()
 			return;
 	}
 
-	e2se_gui::editService* add = new e2se_gui::editService(this->data);
-	add->setAddId(bname);
-	add->display(cwid);
-	string chid = add->getAddId();
-	bool reload = add->getReload();
-	if (add->destroy()) return;
+	e2se_gui::editService* dialog = new e2se_gui::editService(this->data);
+	dialog->setAddId(bname);
+	dialog->display(cwid);
+	string chid = dialog->getEditId();
+	bool reload = dialog->getReload();
+	if (dialog->destroy()) return;
 
 	if (dbih->db.services.count(chid))
 		debug("addService", "chid", chid);
@@ -2000,12 +2000,12 @@ void mainView::editService()
 			return error("addService", tr("Error", "error").toStdString(), tr("Missing channel reference key \"%1\".", "error").arg(chid.data()).toStdString());
 	}
 
-	e2se_gui::editService* edit = new e2se_gui::editService(this->data);
-	edit->setEditId(chid, bname, stream);
-	edit->display(cwid);
-	string nw_chid = edit->getEditId();
-	bool reload = edit->getReload();
-	if (edit->destroy()) return;
+	e2se_gui::editService* dialog = new e2se_gui::editService(this->data);
+	dialog->setEditId(chid, bname, stream);
+	dialog->display(cwid);
+	string nw_chid = dialog->getEditId();
+	bool reload = dialog->getReload();
+	if (dialog->destroy()) return;
 
 	for (auto & q : cache)
 		q.second.clear();
@@ -2062,11 +2062,11 @@ void mainView::addFavourite()
 	string bname = this->state.curr;
 	int reftype = REF_TYPE::service;
 
-	e2se_gui::editFavourite* add = new e2se_gui::editFavourite(this->data);
-	add->setAddId(bname);
-	add->display(cwid);
-	string chid = add->getAddId();
-	if (add->destroy()) return;
+	e2se_gui::editFavourite* dialog = new e2se_gui::editFavourite(this->data);
+	dialog->setAddId(bname);
+	dialog->display(cwid);
+	string chid = dialog->getEditId();
+	if (dialog->destroy()) return;
 
 	auto* dbih = this->data->dbih;
 
@@ -2166,11 +2166,11 @@ void mainView::editFavourite()
 
 	e2db::channel_reference chref = dbih->userbouquets[bname].channels[chid];
 
-	e2se_gui::editFavourite* edit = new e2se_gui::editFavourite(this->data);
-	edit->setEditId(chid, bname);
-	edit->display(cwid);
-	string nw_chid = edit->getEditId();
-	if (edit->destroy()) return;
+	e2se_gui::editFavourite* dialog = new e2se_gui::editFavourite(this->data);
+	dialog->setEditId(chid, bname);
+	dialog->display(cwid);
+	string nw_chid = dialog->getEditId();
+	if (dialog->destroy()) return;
 
 	if (! dbih->userbouquets[bname].channels.count(nw_chid))
 		return error("editFavourite", tr("Error", "error").toStdString(), tr("Missing channel reference key \"%1\".", "error").arg(nw_chid.data()).toStdString());
@@ -2224,11 +2224,11 @@ void mainView::addMarker()
 
 	string bname = this->state.curr;
 
-	e2se_gui::editMarker* add = new e2se_gui::editMarker(this->data);
-	add->setAddId(bname);
-	add->display(cwid);
-	string chid = add->getAddId();
-	if (add->destroy()) return;
+	e2se_gui::editMarker* dialog = new e2se_gui::editMarker(this->data);
+	dialog->setAddId(bname);
+	dialog->display(cwid);
+	string chid = dialog->getEditId();
+	if (dialog->destroy()) return;
 
 	auto* dbih = this->data->dbih;
 
@@ -2327,11 +2327,11 @@ void mainView::editMarker()
 	else
 		return error("editMarker", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" is not a valid marker.", "error").arg(chid.data()).toStdString());
 
-	e2se_gui::editMarker* edit = new e2se_gui::editMarker(this->data);
-	edit->setEditId(chid, bname);
-	edit->display(cwid);
-	string nw_chid = edit->getEditId();
-	if (edit->destroy()) return;
+	e2se_gui::editMarker* dialog = new e2se_gui::editMarker(this->data);
+	dialog->setEditId(chid, bname);
+	dialog->display(cwid);
+	string nw_chid = dialog->getEditId();
+	if (dialog->destroy()) return;
 
 	if (! dbih->userbouquets[bname].channels.count(nw_chid))
 		return error("editMarker", tr("Error", "error").toStdString(), tr("Missing channel reference key \"%1\".", "error").arg(nw_chid.data()).toStdString());

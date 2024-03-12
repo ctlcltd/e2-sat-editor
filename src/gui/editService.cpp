@@ -1198,13 +1198,6 @@ void editService::setAddId(string bname)
 	this->state.is_fav = ! bname.empty();
 }
 
-string editService::getAddId()
-{
-	debug("getAddId");
-
-	return this->chid;
-}
-
 string editService::getTransponderId()
 {
 	debug("getTransponderId");

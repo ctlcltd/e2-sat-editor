@@ -61,7 +61,6 @@ class editService : public dialAbstract
 		void setEditId(string chid, string bname, bool stream = false);
 		string getEditId();
 		void setAddId(string bname);
-		string getAddId();
 		string getTransponderId();
 		bool isFavourite();
 		bool isStream();

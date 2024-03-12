@@ -50,7 +50,7 @@ checkUpdate::checkUpdate(QWidget* cwid)
 #elif E2SE_MEDIUM == 1
 	this->medium = MEDIUM::github;
 #elif E2SE_MEDIUM == 2
-	this->medium = MEDIUM::snap;
+	this->medium = MEDIUM::snapstore;
 #endif
 #endif
 }
@@ -73,9 +73,10 @@ void checkUpdate::check()
 	this->state.checked = true;
 	this->state.current_url = current_url;
 
-	QSettings().setValue("application/lastCheckUpdate", QDateTime::currentDateTime());
-
 	fetch();
+
+	if (this->state.connected || this->state.fetched)
+		QSettings().setValue("application/lastCheckUpdate", QDateTime::currentDateTime());
 
 	if (this->state.fetched)
 	{
@@ -154,10 +155,7 @@ void checkUpdate::show()
 		return;
 	}
 
-	if (! this->state.connected)
-	{
-		this->state.dialog = DIAL::dial_connerror;
-	}
+	this->state.dialog = DIAL::dial_connerror;
 
 	if (this->state.fetched)
 	{
@@ -166,7 +164,7 @@ void checkUpdate::show()
 		else
 			this->state.dialog = DIAL::dial_haveupdate;
 	}
-	else
+	else if (this->state.connected)
 	{
 		this->state.dialog = DIAL::dial_fetcherror;
 	}
@@ -191,24 +189,52 @@ void checkUpdate::prompt()
 	else if (this->state.dialog == dial_haveupdate)
 	{
 		QString version = QString::fromStdString(this->state.version);
-		QString latest_url = QString::fromStdString(this->state.latest_url);
-		QUrl url = QUrl (latest_url);
 
 		title = tr("Update Available!", "message");
-		message = tr("e2 SAT Editor %1 is available to download.", "message").arg(version);
-		message = message.replace("<", "&lt;").replace(">", "&gt;");
 
-		if (url.isValid())
+		if (this->medium == MEDIUM::unknown)
 		{
-			QString purl = QString("<p style=\"margin-top: 5px\"><a href=\"%1\">%2</a></p>").arg(url.toString()).arg(url.toString());
-			message.append(purl);
+			message = tr("e2 SAT Editor %1 is available to download.", "message").arg(version);
+			message = message.replace("<", "&lt;").replace(">", "&gt;");
+		}
+		else if (this->medium == MEDIUM::snapstore)
+		{
+			message = tr("e2 SAT Editor %1 is available to update.", "message").arg(version);
+			message.append(QString("\n%1").arg(tr("Please run Snap update to get the latest version.", "message")));
+			message = message.replace("<", "&lt;").replace(">", "&gt;");
+		}
+		else if (this->medium == MEDIUM::flathub)
+		{
+			message = tr("e2 SAT Editor %1 is available to update.", "message").arg(version);
+			message.append(QString("\n%1").arg(tr("Please run Flatpak update to get the latest version.", "message")));
+			message = message.replace("<", "&lt;").replace(">", "&gt;");
+		}
+		else if (this->medium == MEDIUM::aur)
+		{
+			message = tr("e2 SAT Editor %1 is available to update.", "message").arg(version);
+			message.append(QString("\n%1").arg(tr("Please fetch the AUR repository and build the latest version.", "message")));
+			message = message.replace("<", "&lt;").replace(">", "&gt;");
+		}
+		else
+		{
+			message = tr("e2 SAT Editor %1 is available to download.", "message").arg(version);
+			message = message.replace("<", "&lt;").replace(">", "&gt;");
+
+			QString latest_url = QString::fromStdString(this->state.latest_url);
+			QUrl url = QUrl (latest_url);
+
+			if (url.isValid())
+			{
+				QString purl = QString("<p style=\"margin-top: 5px\"><a href=\"%1\">%2</a></p>").arg(url.toString()).arg(url.toString());
+				message.append(purl);
+			}
 		}
 	}
 	else if (this->state.dialog == dial_connerror)
 	{
 		title = tr("Connection Error", "message");
 		message = tr("There was an error during connection.\nPlease check network settings and try again.", "message");
-		icon = QMessageBox::Warning;
+		icon = QMessageBox::Critical;
 	}
 	else if (this->state.dialog == dial_fetcherror)
 	{
@@ -250,6 +276,9 @@ void checkUpdate::fetch()
 
 	CURL* cph = curl_easy_init();
 
+	if (! cph)
+		return;
+
 	CURLU* rph = curl_url();
 	curl_url_set(rph, CURLUPART_SCHEME, "https", 0);
 	curl_url_set(rph, CURLUPART_URL, "https://github.com/ctlcltd/e2-sat-editor/releases/latest", 0);
@@ -260,15 +289,21 @@ void checkUpdate::fetch()
 	curl_easy_setopt(cph, CURLOPT_PROTOCOLS_STR, "https");
 #endif
 
+	struct curl_slist* list = NULL;
+	list = curl_slist_append(list, "DNT: 1");
+
 	curl_easy_setopt(cph, CURLOPT_CONNECT_ONLY, true);
 	curl_easy_setopt(cph, CURLOPT_HTTPGET, true);
 	curl_easy_setopt(cph, CURLOPT_FOLLOWLOCATION, false);
+	curl_easy_setopt(cph, CURLOPT_HTTPHEADER, list);
 	curl_easy_setopt(cph, CURLOPT_CURLU, rph);
 	curl_easy_setopt(cph, CURLOPT_CONNECTTIMEOUT, 0);
 	if (checkUpdate::VERBOSE)
 		curl_easy_setopt(cph, CURLOPT_VERBOSE, true);
 
 	CURLcode res = curl_easy_perform(cph);
+
+	curl_slist_free_all(list);
 
 	if (res != CURLE_OK)
 	{
@@ -288,6 +323,9 @@ void checkUpdate::fetch()
 
 		CURL* cph = curl_easy_init();
 
+		if (! cph)
+			return;
+
 		stringstream data;
 
 #if LIBCURL_VERSION_NUM < 0x075500
@@ -296,8 +334,12 @@ void checkUpdate::fetch()
 		curl_easy_setopt(cph, CURLOPT_PROTOCOLS_STR, "https");
 #endif
 
+		struct curl_slist* list = NULL;
+		list = curl_slist_append(list, "DNT: 1");
+
 		curl_easy_setopt(cph, CURLOPT_HTTPGET, true);
 		curl_easy_setopt(cph, CURLOPT_FOLLOWLOCATION, false);
+		curl_easy_setopt(cph, CURLOPT_HTTPHEADER, list);
 		curl_easy_setopt(cph, CURLOPT_CURLU, rph);
 		curl_easy_setopt(cph, CURLOPT_HEADERFUNCTION, data_write_func);
 		curl_easy_setopt(cph, CURLOPT_HEADERDATA, &data);
@@ -308,6 +350,8 @@ void checkUpdate::fetch()
 			curl_easy_setopt(cph, CURLOPT_VERBOSE, true);
 
 		CURLcode res = curl_easy_perform(cph);
+
+		curl_slist_free_all(list);
 
 		if (res != CURLE_OK)
 		{

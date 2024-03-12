@@ -845,173 +845,7 @@ void e2db_converter::pull_m3u_list(istream& ifile, e2db_abstract* dst, fcopts op
 	unordered_map<string, vector<m3u_entry>> cxm;
 	parse_m3u(ifile, cxm);
 
-	struct btype_count
-	{
-		int tv = 0;
-		int radio = 0;
-	};
-
-	unordered_map<string, userbouquet> ubouquets;
-	unordered_map<string, vector<pair<int, string>>> i_ubs;
-	unordered_map<string, btype_count> btype_counter;
-
-	int idx = 0;
-	int ub_idx = 0;
-	string iname = "__m3u__";
-
-	for (auto & x : cxm)
-	{
-		if (! (opts.flags & M3U_FLAGS::m3u_singular))
-			iname = x.first;
-
-		for (auto & entry : x.second)
-		{
-			channel_reference& chref = entry.chref;
-			service_reference& ref = entry.chref.ref;
-
-			if (ref.dvbns == 0)
-				ref.dvbns = idx + 1;
-
-			switch (chref.etype)
-			{
-				// service or stream
-				case ETYPE::ecast:
-				// stream
-				case ETYPE::ecustom:
-				case ETYPE::eservice:
-				case ETYPE::eytube:
-				break;
-				default:
-					chref.etype = ETYPE::ecustom;
-			}
-
-			chref.stream = true;
-			chref.inum = dst->db.istreams + 1;
-
-			if (! ubouquets.count(iname))
-			{
-				ub_idx += 1;
-				ubouquets[iname].index = ub_idx;
-			}
-
-			char chid[25];
-			// %4d:%4d:%4x:%d
-			std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub_idx);
-
-			chref.chid = chid;
-
-			if (entry.ch_num != 0)
-				chref.index = entry.ch_num;
-			else
-				chref.index = idx + 1;
-
-			if (! ubouquets[iname].channels.count(chref.chid))
-			{
-				dst->db.istreams++;
-
-				ubouquets[iname].channels.emplace(chref.chid, chref);
-				i_ubs[iname].emplace_back(pair (chref.index, chref.chid));
-
-				int btype = STYPE_EXT_TYPE.count(chref.anum) ? STYPE_EXT_TYPE.at(chref.anum) : 0;
-
-				if (btype == 2)
-					btype_counter[iname].radio++;
-				else
-					btype_counter[iname].tv++;
-
-				idx++;
-			}
-		}
-	}
-	cxm.clear();
-
-	string ub_fname_suffix = USERBOUQUET_FILENAME_SUFFIX;
-
-	for (auto & x : ubouquets)
-	{
-		string iname = x.first;
-		userbouquet& ub = x.second;
-
-		// btype autodetect
-		int btype;
-		if (btype_counter[iname].tv > btype_counter[iname].radio)
-			btype = STYPE::tv;
-		else
-			btype = STYPE::radio;
-
-		string ktype;
-		if (btype == STYPE::tv)
-			ktype = "tv";
-		else if (btype == STYPE::radio)
-			ktype = "radio";
-
-		stringstream ub_bname;
-		ub_bname << "userbouquet." << ub_fname_suffix << setfill('0') << setw(2) << ub.index << '.' << ktype;
-
-		ub.bname = ub_bname.str();
-
-		if (iname == "__m3u__")
-			ub.name = "m3u import " + to_string(ub.index);
-		else
-			ub.name = iname;
-
-		if (dst->index.count("bss"))
-		{
-			bouquet bs;
-			for (auto & x : dst->bouquets)
-			{
-				if (x.second.btype == btype)
-				{
-					bs = x.second;
-					break;
-				}
-			}
-			// userbouquet pname
-			ub.pname = bs.bname;
-		}
-		else
-		{
-			bouquet bs;
-			if (btype == STYPE::tv)
-			{
-				bs.bname = "bouquets.tv";
-				bs.name = "User - bouquet (TV)";
-				bs.nname = STYPE_EXT_LABEL.at(STYPE::tv);
-			}
-			else if (btype == STYPE::radio)
-			{
-				bs.bname = "bouquets.radio";
-				bs.name = "User - bouquet (Radio)";
-				bs.nname = STYPE_EXT_LABEL.at(STYPE::radio);
-			}
-			// bouquet idx
-			bs.index = int (dst->index["bss"].size());
-			// userbouquet pname
-			ub.pname = bs.bname;
-
-			dst->bouquets.emplace(bs.bname, bs);
-			dst->index["bss"].emplace_back(pair (bs.index, bs.bname));
-		}
-
-		dst->userbouquets.emplace(ub.bname, ub);
-		dst->index[ub.bname] = i_ubs[iname];
-		dst->index["ubs"].emplace_back(pair (ub.index, ub.bname));
-		dst->bouquets[ub.pname].userbouquets.emplace_back(ub.bname);
-
-		int idx = int (dst->index[ub.pname].size());
-		for (auto & x : dst->index[ub.bname])
-		{
-			channel_reference& chref = ub.channels[x.second];
-
-			if (dst->bouquets[ub.pname].services.count(chref.chid) == 0)
-			{
-				idx += 1;
-				dst->bouquets[ub.pname].services.emplace(chref.chid);
-				dst->index[ub.pname].emplace_back(pair (idx, chref.chid));
-			}
-		}
-	}
-	ubouquets.clear();
+	convert_m3u_channel_list(cxm, dst, opts);
 }
 
 void e2db_converter::push_m3u_list(vector<e2db_file>& files, vector<string> ubouquets, fcopts opts)
@@ -1030,7 +864,7 @@ void e2db_converter::push_m3u_list(vector<e2db_file>& files, vector<string> ubou
 			userbouquet ub = userbouquets[bname];
 			bname = ub.bname;
 
-			m3u_channel_list(body, bname);
+			m3u_channel_list(body, bname, opts);
 		}
 
 		m3u_document(file, body);
@@ -1046,7 +880,7 @@ void e2db_converter::push_m3u_list(vector<e2db_file>& files, vector<string> ubou
 			filename = filename_format(filename, "m3u8");
 
 			string body;
-			m3u_channel_list(body, bname);
+			m3u_channel_list(body, bname, opts);
 
 			e2db_file file;
 			file.filename = filename;
@@ -1065,7 +899,7 @@ void e2db_converter::push_m3u_list(vector<e2db_file>& files, string bname, fcopt
 	filename = filename_format(filename, "m3u8");
 
 	string body;
-	m3u_channel_list(body, bname);
+	m3u_channel_list(body, bname, opts);
 
 	e2db_file file;
 	file.filename = filename;
@@ -3128,7 +2962,193 @@ void e2db_converter::csv_tunersets_list(string& csv, int ytype)
 	csv = ss.str();
 }
 
-void e2db_converter::m3u_channel_list(string& body, string bname)
+void e2db_converter::convert_m3u_channel_list(unordered_map<string, vector<m3u_entry>>& cxm, e2db_abstract* dst, fcopts opts)
+{
+	debug("convert_m3u_channel_list");
+
+	struct btype_count
+	{
+		int tv = 0;
+		int radio = 0;
+	};
+
+	unordered_map<string, userbouquet> ubouquets;
+	unordered_map<string, vector<pair<int, string>>> i_ubs;
+	unordered_map<string, btype_count> btype_counter;
+
+	int idx = 0;
+	int ub_idx = 0;
+	string iname = "__m3u__";
+
+	for (auto & x : cxm)
+	{
+		if ((opts.flags & M3U_FLAGS::m3u_chgroup) && ! (opts.flags & M3U_FLAGS::m3u_singular))
+			iname = x.first;
+
+		for (auto & entry : x.second)
+		{
+			channel_reference& chref = entry.chref;
+			service_reference& ref = entry.chref.ref;
+
+			if (! (opts.flags & M3U_FLAGS::m3u_chrefid))
+			{
+				chref.etype = 0;
+				chref.atype = 0;
+				chref.anum = 0;
+				chref.x7 = 0;
+				chref.x8 = 0;
+				chref.x9 = 0;
+				chref.ref = service_reference ();
+			}
+
+			if (ref.dvbns == 0)
+				ref.dvbns = idx + 1;
+
+			switch (chref.etype)
+			{
+				// service or stream
+				case ETYPE::ecast:
+				// stream
+				case ETYPE::ecustom:
+				case ETYPE::eservice:
+				case ETYPE::eytube:
+				break;
+				default:
+					chref.etype = ETYPE::ecustom;
+			}
+
+			chref.stream = true;
+			chref.inum = dst->db.istreams + 1;
+
+			if (! ubouquets.count(iname))
+			{
+				ub_idx += 1;
+				ubouquets[iname].index = ub_idx;
+			}
+
+			char chid[25];
+			// %4d:%4d:%4x:%d
+			std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub_idx);
+
+			chref.chid = chid;
+
+			if ((opts.flags & M3U_FLAGS::m3u_chnum) && entry.ch_num != 0)
+				chref.index = entry.ch_num;
+			else
+				chref.index = idx + 1;
+
+			if (! ubouquets[iname].channels.count(chref.chid))
+			{
+				dst->db.istreams++;
+
+				ubouquets[iname].channels.emplace(chref.chid, chref);
+				i_ubs[iname].emplace_back(pair (chref.index, chref.chid));
+
+				int btype = STYPE_EXT_TYPE.count(chref.anum) ? STYPE_EXT_TYPE.at(chref.anum) : 0;
+
+				if (btype == 2)
+					btype_counter[iname].radio++;
+				else
+					btype_counter[iname].tv++;
+
+				idx++;
+			}
+		}
+	}
+
+	cxm.clear();
+
+	string ub_fname_suffix = USERBOUQUET_FILENAME_SUFFIX;
+
+	for (auto & x : ubouquets)
+	{
+		string iname = x.first;
+		userbouquet& ub = x.second;
+
+		// btype autodetect
+		int btype;
+		if (btype_counter[iname].tv > btype_counter[iname].radio)
+			btype = STYPE::tv;
+		else
+			btype = STYPE::radio;
+
+		string ktype;
+		if (btype == STYPE::tv)
+			ktype = "tv";
+		else if (btype == STYPE::radio)
+			ktype = "radio";
+
+		stringstream ub_bname;
+		ub_bname << "userbouquet." << ub_fname_suffix << setfill('0') << setw(2) << ub.index << '.' << ktype;
+
+		ub.bname = ub_bname.str();
+
+		if (iname == "__m3u__")
+			ub.name = "m3u import " + to_string(ub.index);
+		else
+			ub.name = iname;
+
+		if (dst->index.count("bss"))
+		{
+			bouquet bs;
+			for (auto & x : dst->bouquets)
+			{
+				if (x.second.btype == btype)
+				{
+					bs = x.second;
+					break;
+				}
+			}
+			// userbouquet pname
+			ub.pname = bs.bname;
+		}
+		else
+		{
+			bouquet bs;
+			if (btype == STYPE::tv)
+			{
+				bs.bname = "bouquets.tv";
+				bs.name = "User - bouquet (TV)";
+				bs.nname = STYPE_EXT_LABEL.at(STYPE::tv);
+			}
+			else if (btype == STYPE::radio)
+			{
+				bs.bname = "bouquets.radio";
+				bs.name = "User - bouquet (Radio)";
+				bs.nname = STYPE_EXT_LABEL.at(STYPE::radio);
+			}
+			// bouquet idx
+			bs.index = int (dst->index["bss"].size());
+			// userbouquet pname
+			ub.pname = bs.bname;
+
+			dst->bouquets.emplace(bs.bname, bs);
+			dst->index["bss"].emplace_back(pair (bs.index, bs.bname));
+		}
+
+		dst->userbouquets.emplace(ub.bname, ub);
+		dst->index[ub.bname] = i_ubs[iname];
+		dst->index["ubs"].emplace_back(pair (ub.index, ub.bname));
+		dst->bouquets[ub.pname].userbouquets.emplace_back(ub.bname);
+
+		int idx = int (dst->index[ub.pname].size());
+		for (auto & x : dst->index[ub.bname])
+		{
+			channel_reference& chref = ub.channels[x.second];
+
+			if (dst->bouquets[ub.pname].services.count(chref.chid) == 0)
+			{
+				idx += 1;
+				dst->bouquets[ub.pname].services.emplace(chref.chid);
+				dst->index[ub.pname].emplace_back(pair (idx, chref.chid));
+			}
+		}
+	}
+
+	ubouquets.clear();
+}
+
+void e2db_converter::m3u_channel_list(string& body, string bname, fcopts opts)
 {
 	if (index.count(bname))
 		debug("m3u_channel_list", "bname", bname);
@@ -3150,13 +3170,32 @@ void e2db_converter::m3u_channel_list(string& body, string bname)
 			{
 				int idx = x.first;
 				string refid = get_reference_id(chref);
+				string logourl;
+
+				if (opts.flags & M3U_FLAGS::m3u_chlogos)
+				{
+					if (! opts.logosbase.empty())
+						logourl = opts.logosbase + '/';
+
+					if (chref.value.empty())
+						logourl.append("untitled");
+					else
+						logourl.append(conv_picon_pathname(chref.value));
+
+					logourl.append(".png");
+				}
 
 				ss << "#EXTINF:-1";
-				ss << ' ' << "tvg-id" << '=' << '"' << refid << '"';
+				if (opts.flags & M3U_FLAGS::m3u_chrefid)
+					ss << ' ' << "tvg-id" << '=' << '"' << refid << '"';
 				if (! chref.value.empty())
 					ss << ' ' << "tvg-name" << '=' << '"' << chref.value << '"';
-				ss << ' ' << "tvg-chno" << '=' << '"' << idx << '"';
-				ss << ' ' << "group-title" << '=' << '"' << ub.name << '"';
+				if (opts.flags & M3U_FLAGS::m3u_chlogos)
+					ss << ' ' << "tvg-logo" << '=' << '"' << logourl << '"';
+				if (opts.flags & M3U_FLAGS::m3u_chnum)
+					ss << ' ' << "tvg-chno" << '=' << '"' << idx << '"';
+				if (opts.flags & M3U_FLAGS::m3u_chgroup)
+					ss << ' ' << "group-title" << '=' << '"' << ub.name << '"';
 				ss << ',';
 				if (! chref.value.empty())
 					ss << chref.value;
@@ -3759,6 +3798,41 @@ void e2db_converter::html_document(e2db_file& file, html_page page)
 	file.mime = "text/html";
 	file.data = html;
 	file.size = file.data.size();
+}
+
+string e2db_converter::conv_picon_pathname(string str)
+{
+	unordered_map<string, string> ents = {
+		{"æ", "ae"},
+		{"Æ", "ae"},
+		{"œ", "oe"},
+		{"Œ", "oe"},
+		{"+", "plus"}
+	};
+
+	for (auto & x : ents)
+	{
+		if (str.find(x.first) != string::npos)
+		{
+			size_t pos = str.find(x.first);
+
+			while (pos != string::npos)
+			{
+				str = str.substr(0, pos) + x.second + str.substr(pos + x.first.size());
+
+				if (pos != str.size())
+					pos = str.find(x.first);
+				else
+					pos = string::npos;
+			}
+		}
+	}
+
+	std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::tolower(c); });
+
+	str.erase(std::remove_if(str.begin(), str.end(), [](unsigned char c){ return ! ((c >= 97 && c <= 122) || (c >= 48 && c <= 57)); }), str.end());
+
+	return str;
 }
 
 }

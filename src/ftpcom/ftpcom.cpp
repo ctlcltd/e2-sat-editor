@@ -80,6 +80,7 @@ bool ftpcom::handle()
 {
 	if (! cph)
 		this->cph = curl_easy_init();
+
 	if (! cph)
 		return false;
 
@@ -128,9 +129,7 @@ bool ftpcom::connect()
 	debug("connect");
 
 	if (! handle())
-	{
 		return false;
-	}
 
 	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_discard_func);
 	CURLcode res = perform(cph);
@@ -142,9 +141,7 @@ bool ftpcom::disconnect()
 	debug("disconnect");
 
 	if (! cph)
-	{
 		return false;
-	}
 
 	cleanup(cph);
 
@@ -208,9 +205,7 @@ vector<string> ftpcom::list_dir_nlst(string basedir)
 	debug("list_dir_nlst");
 
 	if (! handle())
-	{
 		throw std::runtime_error("101");
-	}
 
 	stringstream data;
 
@@ -261,9 +256,7 @@ vector<string> ftpcom::list_dir_mlsd(string basedir)
 	debug("list_dir_mlsd");
 
 	if (! handle())
-	{
 		throw std::runtime_error("101");
-	}
 
 	stringstream data;
 
@@ -618,6 +611,7 @@ bool ftpcom::cmd_ifreload()
 
 	if (! csh)
 		this->csh = curl_easy_init();
+
 	if (! csh)
 		return false;
 
@@ -698,6 +692,7 @@ bool ftpcom::cmd_tnreload()
 
 	if (! csh)
 		this->csh = curl_easy_init();
+
 	if (! csh)
 		return false;
 

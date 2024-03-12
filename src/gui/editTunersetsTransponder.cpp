@@ -856,11 +856,4 @@ void editTunersetsTransponder::setAddId(string tnid, int tvid)
 	this->tnid = tnid;
 }
 
-string editTunersetsTransponder::getAddId()
-{
-	debug("getAddId");
-
-	return this->trid;
-}
-
 }

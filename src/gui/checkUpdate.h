@@ -30,9 +30,9 @@ class checkUpdate : protected e2se::log_factory
 		inline static int HTTP_TIMEOUT = 30;
 
 		enum MEDIUM {
-			stock = 0,
+			unknown = 0,
 			github = 1,
-			snap = 2,
+			snapstore = 2,
 			flathub = 3,
 			aur = 6
 		};
@@ -66,7 +66,7 @@ class checkUpdate : protected e2se::log_factory
 		void prompt();
 		virtual void fetch();
 
-		MEDIUM medium = MEDIUM::stock;
+		MEDIUM medium = MEDIUM::unknown;
 		bool autocheck = false;
 
 		__state state;

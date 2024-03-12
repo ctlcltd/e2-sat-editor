@@ -217,11 +217,4 @@ string editUserbouquet::getEditId()
 	return this->bname;
 }
 
-string editUserbouquet::getAddId()
-{
-	debug("getAddId");
-
-	return this->bname;
-}
-
 }

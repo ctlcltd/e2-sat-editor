@@ -246,11 +246,4 @@ int editTunersets::getEditId()
 	return this->tvid;
 }
 
-int editTunersets::getAddId()
-{
-	debug("getAddId");
-
-	return this->tvid;
-}
-
 }

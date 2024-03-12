@@ -40,7 +40,6 @@ class editTunersetsTable : public dialAbstract
 		void setEditId(string tnid, int tvid);
 		string getEditId();
 		void setAddId(int tvid);
-		string getAddId();
 
 	protected:
 		void layout(QWidget* cwid);

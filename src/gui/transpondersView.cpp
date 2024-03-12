@@ -368,10 +368,10 @@ void transpondersView::addTransponder()
 
 	auto* dbih = this->data->dbih;
 
-	e2se_gui::editTransponder* add = new e2se_gui::editTransponder(this->data);
-	add->display(cwid);
-	string txid = add->getAddId();
-	if (add->destroy()) return;
+	e2se_gui::editTransponder* dialog = new e2se_gui::editTransponder(this->data);
+	dialog->display(cwid);
+	string txid = dialog->getEditId();
+	if (dialog->destroy()) return;
 
 	if (dbih->db.transponders.count(txid))
 		debug("addTransponder", "txid", txid);
@@ -440,11 +440,11 @@ void transpondersView::editTransponder()
 	else
 		return error("editTransponder", tr("Error", "error").toStdString(), tr("Transponder \"%1\" not exists.", "error").arg(txid.data()).toStdString());
 
-	e2se_gui::editTransponder* edit = new e2se_gui::editTransponder(this->data);
-	edit->setEditId(txid);
-	edit->display(cwid);
-	string nw_txid = edit->getEditId();
-	if (edit->destroy()) return;
+	e2se_gui::editTransponder* dialog = new e2se_gui::editTransponder(this->data);
+	dialog->setEditId(txid);
+	dialog->display(cwid);
+	string nw_txid = dialog->getEditId();
+	if (dialog->destroy()) return;
 
 	if (dbih->db.transponders.count(nw_txid))
 		debug("editTransponder", "new txid", nw_txid);

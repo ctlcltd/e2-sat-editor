@@ -72,6 +72,7 @@ class e2db_converter : virtual public e2db_abstract
 			int stype;
 			int ytype;
 			int flags;
+			string logosbase;
 		};
 
 		struct m3u_entry
@@ -140,8 +141,8 @@ class e2db_converter : virtual public e2db_abstract
 		void csv_channel_list_extended(string& csv, string bname, DOC_VIEW view);
 		void csv_bouquet_list(string& csv, string bname);
 		void csv_tunersets_list(string& csv, int ytype);
-		void convert_m3u_channel_list(vector<userbouquet>& ubv, e2db_abstract* dst);
-		void m3u_channel_list(string& body, string bname);
+		void convert_m3u_channel_list(unordered_map<string, vector<m3u_entry>>& cxm, e2db_abstract* dst, fcopts opts);
+		void m3u_channel_list(string& body, string bname, fcopts opts);
 		void page_header(html_page& page, string filename, DOC_VIEW view);
 		void page_footer(html_page& page, string filename, DOC_VIEW view);
 		void page_body_index_list(html_page& page, vector<string> paths);
@@ -154,6 +155,7 @@ class e2db_converter : virtual public e2db_abstract
 		string filename_format(string fname, string fext);
 		string doc_html_head(html_page page);
 		string doc_html_foot(html_page page);
+		string conv_picon_pathname(string str);
 };
 }
 #endif /* e2db_converter_h */

@@ -218,11 +218,4 @@ string editBouquet::getEditId()
 	return this->bname;
 }
 
-string editBouquet::getAddId()
-{
-	debug("getAddId");
-
-	return this->bname;
-}
-
 }

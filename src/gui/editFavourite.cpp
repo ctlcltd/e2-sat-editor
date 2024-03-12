@@ -640,11 +640,4 @@ void editFavourite::setAddId(string bname)
 	this->bname = bname;
 }
 
-string editFavourite::getAddId()
-{
-	debug("getAddId");
-
-	return this->chid;
-}
-
 }

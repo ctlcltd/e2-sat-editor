@@ -1404,10 +1404,29 @@ void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 
 	if (ftype == TOOLS_FILE::tools_m3u)
 	{
-		if (fco == e2db::FCONVS::convert_current)
+		filename = "untitled";
+
+		opts.fc = e2db::FCONVS::convert_all;
+
+		// main view
+		if (current == gui::TAB_VIEW::main)
 		{
-			//TODO
+			mainView* view = reinterpret_cast<mainView*>(this->view);
+			auto state = view->currentState();
+
+			// userbouquets
+			if (state.ti == -1)
+			{
+				string bname = state.curr;
+				opts.bname = bname;
+				opts.fc = e2db::FCONVS::convert_current;
+
+				filename = bname;
+				std::transform(filename.begin(), filename.end(), filename.begin(), [](unsigned char c) { return c == '.' ? '-' : c; });
+			}
 		}
+
+		opts.filename = filename;
 	}
 	else if (fco == e2db::FCONVS::convert_current)
 	{
@@ -1508,6 +1527,7 @@ void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 				}
 			}
 		}
+
 		opts.filename = filename;
 	}
 	else
@@ -1535,6 +1555,7 @@ void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 			default:
 			return;
 		}
+
 		opts.filename = filename;
 	}
 
@@ -1651,11 +1672,8 @@ void tab::actionCall(int bit)
 		case gui::TAB_ATS::ImportM3U:
 			toolsImportFromFile(TOOLS_FILE::tools_m3u, e2db::FCONVS::convert_all);
 		break;
-		case gui::TAB_ATS::ExportM3U_current:
+		case gui::TAB_ATS::ExportM3U:
 			toolsExportToFile(TOOLS_FILE::tools_m3u, e2db::FCONVS::convert_current);
-		break;
-		case gui::TAB_ATS::ExportM3U_all:
-			toolsExportToFile(TOOLS_FILE::tools_m3u, e2db::FCONVS::convert_all);
 		break;
 		case gui::TAB_ATS::ExportHTML_current:
 			toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_current);

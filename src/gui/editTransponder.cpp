@@ -961,11 +961,4 @@ void editTransponder::setAddId()
 	this->state.edit = false;
 }
 
-string editTransponder::getAddId()
-{
-	debug("getAddId");
-
-	return this->txid;
-}
-
 }

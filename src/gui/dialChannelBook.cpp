@@ -90,14 +90,14 @@ void dialChannelBook::toolbarLayout()
 	toolBarSpacer(dtbar);
 	this->action.cancel = toolBarAction(dtbar, tr("Cancel", "dialog"), [=]() { this->cancel(); });
 	toolBarSeparator(dtbar);
-	this->action.add = toolBarAction(dtbar, tr("Add", "dialog"), theme->dynamicIcon("add"), [=]() { this->sender(); });
+	this->action.submit = toolBarAction(dtbar, tr("Add", "dialog"), theme->dynamicIcon("add"), [=]() { this->submit(); });
 
-	dtbar->widgetForAction(this->action.add)->setFocus();
+	dtbar->widgetForAction(this->action.submit)->setFocus();
 }
 
-void dialChannelBook::sender()
+void dialChannelBook::submit()
 {
-	debug("sender");
+	debug("submit");
 
 	if (this->cbv != nullptr)
 		callEventCallback(this->cbv->getSelected());

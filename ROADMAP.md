@@ -16,11 +16,12 @@ Less ambitious features:
 - [x] add type stream (favourite) support
 - mirror transponders, from Lamedb transponder to XML transponder and vice-versa
 - improve management of duplicate channels
-- add options to merge on import
+- add merge options on import
 - [x] calculate *dvbns* namespace in `e2db`
 - assign channel number such as LCN (Logical Channel Number), custom number is partially supported
 - provide custom data for each reference
 - picon image transformation, resize, apply image masks
+- improve m3u import and export
 
 Improvements:
 - [x] [automated build](https://github.com/ctlcltd/e2-sat-editor/discussions/17)

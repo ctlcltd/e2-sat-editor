@@ -32,18 +32,12 @@ class convertM3u : public dialAbstract
 			DIAL dialog;
 		};
 
-		struct __action
-		{
-			QAction* cancel;
-			//TODO rename
-			QAction* save;
-		};
-
 		convertM3u(dataHandler* data);
 		~convertM3u();
 		void display(QWidget* cwid);
 		void setImport(e2db::fcopts& opts);
 		void setExport(e2db::fcopts& opts, vector<string>& ubouquets);
+		e2db::fcopts getConverterOptions();
 
 	protected:
 		void layout(QWidget* cwid);

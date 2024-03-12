@@ -73,7 +73,7 @@
 #define E2SE_MEDIUM 3
 #elif RELEASE_MEDIUM == "github"
 #define E2SE_MEDIUM 1
-#elif RELEASE_MEDIUM == "snap"
+#elif RELEASE_MEDIUM == "snapstore"
 #define E2SE_MEDIUM 2
 #endif
 #else

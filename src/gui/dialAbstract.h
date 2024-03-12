@@ -40,7 +40,7 @@ class dialAbstract : protected e2se::log_factory
 		struct __action
 		{
 			QAction* cancel;
-			QAction* save;
+			QAction* submit;
 		};
 
 		virtual ~dialAbstract() = default;
@@ -57,7 +57,7 @@ class dialAbstract : protected e2se::log_factory
 		virtual void store() = 0;
 		virtual void retrieve() = 0;
 		void cancel();
-		void save();
+		void submit();
 		void expand();
 		void collapse();
 		void toggle();

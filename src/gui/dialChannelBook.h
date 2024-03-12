@@ -32,7 +32,7 @@ class dialChannelBook : public dialAbstract
 		struct __action
 		{
 			QAction* cancel;
-			QAction* add;
+			QAction* submit;
 			QCheckBox* filter;
 		};
 
@@ -52,7 +52,7 @@ class dialChannelBook : public dialAbstract
 		void toolbarLayout();
 		void store() {}
 		void retrieve() {}
-		void sender();
+		void submit();
 		void callEventCallback(vector<QString> items)
 		{
 			if (this->eventCallback != nullptr)

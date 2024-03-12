@@ -37,7 +37,6 @@ class editBouquet : public dialAbstract
 		void display(QWidget* cwid);
 		void setEditId(string bname);
 		string getEditId();
-		string getAddId();
 
 	protected:
 		void layout(QWidget* cwid);

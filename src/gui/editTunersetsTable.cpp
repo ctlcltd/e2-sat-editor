@@ -428,11 +428,4 @@ void editTunersetsTable::setAddId(int tvid)
 	this->tvid = tvid;
 }
 
-string editTunersetsTable::getAddId()
-{
-	debug("getAddId");
-
-	return this->tnid;
-}
-
 }

@@ -47,7 +47,6 @@ class editTransponder : public dialAbstract
 		void setEditId(string txid);
 		string getEditId();
 		void setAddId();
-		string getAddId();
 
 	protected:
 		void leadSatLayout();

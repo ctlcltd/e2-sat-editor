@@ -284,11 +284,4 @@ void editMarker::setAddId(string bname)
 	this->bname = bname;
 }
 
-string editMarker::getAddId()
-{
-	debug("getAddId");
-
-	return this->chid;
-}
-
 }

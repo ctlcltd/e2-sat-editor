@@ -40,7 +40,6 @@ class editTunersetsTransponder : public dialAbstract
 		void setEditId(string trid, string tnid, int tvid);
 		string getEditId();
 		void setAddId(string tnid, int tvid);
-		string getAddId();
 
 	protected:
 		void layout(QWidget* cwid);

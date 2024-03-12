@@ -92,9 +92,9 @@ void convertM3u::toolbarLayout()
 
 	toolBarSpacer(dtbar);
 	if (this->state.dialog == dial_import)
-		this->action.save = toolBarAction(dtbar, tr("Import", "dialog"), theme->dynamicIcon("import"), [=]() { this->save(); });
+		this->action.submit = toolBarAction(dtbar, tr("Import", "dialog"), theme->dynamicIcon("import"), [=]() { this->submit(); });
 	else if (this->state.dialog == dial_export)
-		this->action.save = toolBarAction(dtbar, tr("Export", "dialog"), theme->dynamicIcon("export"), [=]() { this->save(); });
+		this->action.submit = toolBarAction(dtbar, tr("Export", "dialog"), theme->dynamicIcon("export"), [=]() { this->submit(); });
 }
 
 void convertM3u::importLayout()
@@ -145,7 +145,13 @@ void convertM3u::importLayout()
 	dtf20->addRow(dtf2dr);
 
 	dtf0->addRow(dtf20);
-	dtf0->addItem(new QSpacerItem(0, 0));
+
+	//TODO download channel logos
+	// this is a hot thing, these m3u are known to contain unsafe data.
+	// a solution could be after import dialog, filter for trusted hosts,
+	// tree view, multiple selection, opening and viewing URLs on the browser
+
+	/*dtf0->addItem(new QSpacerItem(0, 0));
 
 	QFormLayout* dtf30 = new QFormLayout;
 	dtf30->setSpacing(12);
@@ -187,7 +193,7 @@ void convertM3u::importLayout()
 	dtf3lw->setLayout(dtf3lf);
 	dtf30->addWidget(dtf3lw);
 
-	dtf0->addRow(dtf30);
+	dtf0->addRow(dtf30);*/
 
 	dtform->addLayout(dtf0, 0, 0);
 }
@@ -211,11 +217,9 @@ void convertM3u::exportLayout()
 
 		this->ubt = new QTreeWidget;
 		ubt->setIndentation(0);
-		ubt->connect(ubt, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) {
-			if (current != nullptr)
-			{
+		ubt->connect(ubt, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current, QTreeWidgetItem* previous) {
+			if (previous != nullptr && current != nullptr)
 				current->setCheckState(0, current->checkState(0) == Qt::Checked ? Qt::Unchecked : Qt::Checked);
-			}
 		});
 
 		ubt->setHeaderLabels({NULL, tr("Name"), tr("Filename")});
@@ -247,7 +251,12 @@ void convertM3u::exportLayout()
 			item->setText(1, name);
 			item->setText(2, filename);
 			item->setData(0, Qt::UserRole, bname);
-			item->setCheckState(0, Qt::Unchecked);
+
+			if (this->opts.fc == e2db::FCONVS::convert_current && this->opts.bname == uboq.bname)
+				item->setCheckState(0, Qt::Checked);
+			else
+				item->setCheckState(0, Qt::Unchecked);
+
 			btree.append(item);
 		}
 		ubt->addTopLevelItems(btree);
@@ -311,6 +320,13 @@ void convertM3u::exportLayout()
 	dtf20->addRow(dtf2cg);
 
 	dtf0->addRow(dtf20);
+
+	//TODO export channel logos
+	// it is hardly feasible to upload logos to any hosts,
+	// but you can prepare URLs to be uploaded later.
+	// a solution could be an additional before export dialog,
+	// tree view, pre-filled host and editable URLs
+
 	dtf0->addItem(new QSpacerItem(0, 0));
 
 	QFormLayout* dtf30 = new QFormLayout;
@@ -339,7 +355,12 @@ void convertM3u::store()
 {
 	debug("store");
 
-	int flags = 0;
+	int flags;
+
+	if (this->state.dialog == dial_import)
+		flags = e2db::M3U_FLAGS::m3u_default;
+	else if (this->state.dialog == dial_export)
+		flags = 0;
 
 	for (auto & item : fields)
 	{
@@ -356,11 +377,11 @@ void convertM3u::store()
 			if (key == "singularTrue" && val.toBool())
 				flags |= e2db::M3U_FLAGS::m3u_singular;
 			else if (key == "discardId" && val.toBool())
-				flags |= e2db::M3U_FLAGS::m3u_chrefid;
-			else if (key == "downloadChLogos" && val.toBool())
+				flags &= e2db::M3U_FLAGS::m3u_chrefid;
+			/*else if (key == "downloadChLogos" && val.toBool())
 				flags |= e2db::M3U_FLAGS::m3u_chlogos;
 			else if (key == "chLogosBrowsePath")
-				QSettings().setValue("application/m3uChLogosBrowsePath", val.toString());
+				QSettings().setValue("application/m3uChLogosBrowsePath", val.toString());*/
 		}
 		else if (this->state.dialog == dial_export)
 		{
@@ -388,6 +409,9 @@ void convertM3u::store()
 
 	if (this->state.dialog == dial_export)
 	{
+		if (this->opts.flags & e2db::M3U_FLAGS::m3u_chlogos)
+			this->opts.logosbase = QSettings().value("application/m3uChLogosBaseURL").toString().toStdString();
+
 		vector<string> ubouquets;
 
 		int i = 0;
@@ -416,7 +440,7 @@ void convertM3u::retrieve()
 	int flags;
 
 	if (this->state.dialog == dial_import)
-		flags = QSettings().value("application/m3uImportFlags", 0).toInt();
+		flags = QSettings().value("application/m3uImportFlags", e2db::M3U_FLAGS::m3u_default).toInt();
 	else if (this->state.dialog == dial_export)
 		flags = QSettings().value("application/m3uExportFlags", e2db::M3U_FLAGS::m3u_default).toInt();
 
@@ -432,11 +456,11 @@ void convertM3u::retrieve()
 			else if (key == "singularFalse")
 				val = ! (flags & e2db::M3U_FLAGS::m3u_singular);
 			else if (key == "discardId")
-				val = (flags & e2db::M3U_FLAGS::m3u_chrefid);
-			else if (key == "downloadChLogos")
+				val = ! (flags & e2db::M3U_FLAGS::m3u_chrefid);
+			/*else if (key == "downloadChLogos")
 				val = (flags & e2db::M3U_FLAGS::m3u_chlogos);
 			else if (key == "chLogosBrowsePath")
-				val = QSettings().value("application/m3uChLogosBrowsePath");
+				val = QSettings().value("application/m3uChLogosBrowsePath");*/
 		}
 		else if (this->state.dialog == dial_export)
 		{
@@ -478,6 +502,13 @@ void convertM3u::setExport(e2db::fcopts& opts, vector<string>& ubouquets)
 	this->state.dialog = DIAL::dial_export;
 	this->opts = opts;
 	this->ubouquets = ubouquets;
+}
+
+e2db::fcopts convertM3u::getConverterOptions()
+{
+	debug("getConverterOptions");
+
+	return this->opts;
 }
 
 QString convertM3u::browseFileDialog(QString path)

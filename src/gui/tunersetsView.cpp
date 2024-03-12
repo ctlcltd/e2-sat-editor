@@ -670,11 +670,11 @@ void tunersetsView::editSettings()
 	else
 		addSettings();
 
-	e2se_gui::editTunersets* edit = new e2se_gui::editTunersets(this->data, tvid);
-	edit->setEditId(tvid);
-	edit->display(cwid);
-	// this->state.yx = edit->getEditId();
-	edit->destroy();
+	e2se_gui::editTunersets* dialog = new e2se_gui::editTunersets(this->data, tvid);
+	dialog->setEditId(tvid);
+	dialog->display(cwid);
+	// this->state.yx = dialog->getEditId();
+	dialog->destroy();
 
 	this->data->setChanged(true);
 }
@@ -690,11 +690,11 @@ void tunersetsView::addPosition()
 	if (! dbih->tuners.count(tvid))
 		addSettings();
 
-	e2se_gui::editTunersetsTable* add = new e2se_gui::editTunersetsTable(this->data, tvid);
-	add->setAddId(tvid);
-	add->display(cwid);
-	string tnid = add->getAddId();
-	if (add->destroy()) return;
+	e2se_gui::editTunersetsTable* dialog = new e2se_gui::editTunersetsTable(this->data, tvid);
+	dialog->setAddId(tvid);
+	dialog->display(cwid);
+	string tnid = dialog->getEditId();
+	if (dialog->destroy()) return;
 
 	if (dbih->tuners[tvid].tables.count(tnid))
 		debug("addPosition", "tnid", tnid);
@@ -763,11 +763,11 @@ void tunersetsView::editPosition()
 	else
 		return error("editPosition", tr("Error", "error").toStdString(), tr("Tuner settings table \"%1\" not exists.", "error").arg(tnid.data()).toStdString());
 
-	e2se_gui::editTunersetsTable* edit = new e2se_gui::editTunersetsTable(this->data, tvid);
-	edit->setEditId(tnid, tvid);
-	edit->display(cwid);
-	string nw_tnid = edit->getEditId();
-	edit->destroy();
+	e2se_gui::editTunersetsTable* dialog = new e2se_gui::editTunersetsTable(this->data, tvid);
+	dialog->setEditId(tnid, tvid);
+	dialog->display(cwid);
+	string nw_tnid = dialog->getEditId();
+	dialog->destroy();
 
 	if (dbih->tuners[tvid].tables.count(nw_tnid))
 		debug("editPosition", "new tnid", nw_tnid);
@@ -802,11 +802,11 @@ void tunersetsView::addTransponder()
 	if (! dbih->tuners[tvid].tables.count(tnid))
 		return error("addTransponder", tr("Error", "error").toStdString(), tr("Missing tuner settings table key \"%1\".", "error").arg(tnid.data()).toStdString());
 
-	e2se_gui::editTunersetsTransponder* add = new e2se_gui::editTunersetsTransponder(this->data, tvid);
-	add->setAddId(tnid, tvid);
-	add->display(cwid);
-	string trid = add->getAddId();
-	if (add->destroy()) return;
+	e2se_gui::editTunersetsTransponder* dialog = new e2se_gui::editTunersetsTransponder(this->data, tvid);
+	dialog->setAddId(tnid, tvid);
+	dialog->display(cwid);
+	string trid = dialog->getEditId();
+	if (dialog->destroy()) return;
 
 	if (dbih->tuners[tvid].tables[tnid].transponders.count(trid))
 		debug("addTransponder", "trid", trid);
@@ -883,11 +883,11 @@ void tunersetsView::editTransponder()
 	else
 		return error("editTransponder", tr("Error", "error").toStdString(), tr("Tuner settings transponder \"%1\" not exists.", "error").arg(trid.data()).toStdString());
 
-	e2se_gui::editTunersetsTransponder* edit = new e2se_gui::editTunersetsTransponder(this->data, tvid);
-	edit->setEditId(trid, tnid, tvid);
-	edit->display(cwid);
-	string nw_trid = edit->getEditId();
-	edit->destroy();
+	e2se_gui::editTunersetsTransponder* dialog = new e2se_gui::editTunersetsTransponder(this->data, tvid);
+	dialog->setEditId(trid, tnid, tvid);
+	dialog->display(cwid);
+	string nw_trid = dialog->getEditId();
+	dialog->destroy();
 
 	if (dbih->tuners[tvid].tables[tnid].transponders.count(nw_trid))
 		debug("editTransponder", "new trid", nw_trid);
