@@ -592,7 +592,7 @@ struct e2db_abstract : protected e2se::log_factory
 		static string value_transponder_tmx_mode(int tmx);
 		static int value_bouquet_type(string str);
 		static string value_bouquet_type(int btype);
-		static void value_markup_attribute(string token, string& key, string& val);
+		static void value_markup_attribute(string line, string token, string& key, string& val);
 		string get_reference_id(string chid);
 		string get_reference_id(channel_reference chref);
 		string get_tuner_name(transponder tx);

@@ -11,16 +11,18 @@
 	<file>icons/crypted.png</file>
 	<file>icons/edit-tunersets.png</file>
 	<file>icons/edit.png</file>
+	<file>icons/export.png</file>
 	<file>icons/file-export.png</file>
+	<file>icons/file-import.png</file>
 	<file>icons/file-info.png</file>
 	<file>icons/file-open.png</file>
+	<file>icons/file-save.png</file>
 	<file>icons/hide.png</file>
-	<file>icons/file-import.png</file>
+	<file>icons/import.png</file>
 	<file>icons/list-prefs-menu.png</file>
 	<file>icons/picon.png</file>
 	<file>icons/picons-view.png</file>
 	<file>icons/remove.png</file>
-	<file>icons/save.png</file>
 	<file>icons/search.png</file>
 	<file>icons/service-blacklist.png</file>
 	<file>icons/service-whitelist.png</file>

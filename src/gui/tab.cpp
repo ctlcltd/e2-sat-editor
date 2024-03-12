@@ -423,10 +423,10 @@ void tab::layout()
 	platform::osComboBox(ftp_combo);
 
 	tbars[gui::FileOpen] = toolBarAction(top_toolbar, tr("&Open", "toolbar"), theme->dynamicIcon("file-open"), [=]() { this->openFile(); }, QKeySequence::Open);
-	tbars[gui::FileSave] = toolBarAction(top_toolbar, tr("&Save", "toolbar"), theme->dynamicIcon("save"), [=]() { this->saveFile(false); }, QKeySequence::Save);
+	tbars[gui::FileSave] = toolBarAction(top_toolbar, tr("&Save", "toolbar"), theme->dynamicIcon("file-save"), [=]() { this->saveFile(false); }, QKeySequence::Save);
 	toolBarSeparator(top_toolbar);
-	tbars[gui::FileImport] = toolBarAction(top_toolbar, tr("Import", "toolbar"), theme->dynamicIcon("import"), [=]() { this->importFile(); });
-	tbars[gui::FileExport] = toolBarAction(top_toolbar, tr("Export", "toolbar"), theme->dynamicIcon("export"), [=]() { this->exportFile(); });
+	tbars[gui::FileImport] = toolBarAction(top_toolbar, tr("Import", "toolbar"), theme->dynamicIcon("file-import"), [=]() { this->importFile(); });
+	tbars[gui::FileExport] = toolBarAction(top_toolbar, tr("Export", "toolbar"), theme->dynamicIcon("file-export"), [=]() { this->exportFile(); });
 	toolBarSeparator(top_toolbar);
 	toolBarAction(top_toolbar, tr("Settings", "toolbar"), theme->dynamicIcon("settings"), [=]() { this->settingsDialog(); });
 	toolBarSpacer(top_toolbar);

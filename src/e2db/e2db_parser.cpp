@@ -955,13 +955,18 @@ void e2db_parser::parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& iloc
 		db.parental = PARENTALLOCK::blacklist;
 }
 
+//TODO TEST
 void e2db_parser::parse_userbouquet_reference(string str, userbouquet& ub)
 {
-	char refid[33];
-	char fname[65];
-	char order[33];
+	size_t len = str.size() > 43 && str.size() <= 301 ? str.size() - 43 : 1;
 
-	std::sscanf(str.c_str(), "%32s BOUQUET %64s ORDER BY %32s", refid, fname, order);
+	char refid[21];
+	char fname[(len + 1)];
+	char order[22];
+
+	string format = "%20sFROM BOUQUET %" + to_string(len) + "s ORDER BY %21s";
+
+	std::sscanf(str.c_str(), format.c_str(), refid, fname, order);
 
 	if (std::strlen(fname) >= 5)
 	{

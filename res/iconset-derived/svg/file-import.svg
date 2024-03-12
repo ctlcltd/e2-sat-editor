@@ -2,7 +2,7 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="100%" height="100%" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
     <g transform="matrix(1,0,0,1,-768,-3040)">
-        <g id="import" transform="matrix(1,0,0,1,-168,0)">
+        <g id="file-import" transform="matrix(1,0,0,1,-168,0)">
             <rect x="936" y="3040" width="128" height="128" style="fill:none;"/>
             <g transform="matrix(0.929825,0,0,0.920635,60.1754,246.349)">
                 <path d="M1036.35,3095L1045.48,3095C1051.84,3095 1057,3100.16 1057,3106.52L1057,3155.48C1057,3161.84 1051.84,3167 1045.48,3167L954.52,3167C948.162,3167 943,3161.84 943,3155.48L943,3106.52C943,3100.16 948.162,3095 954.52,3095L975.802,3095L1000,3118.71C1001.52,3120.2 1004.65,3121.03 1006.77,3121C1008.9,3120.97 1011.96,3120.1 1013.44,3118.57L1036.35,3095ZM1043,3041.42C1023.77,3038.07 989.676,3055.03 994.689,3084.35L978,3084.35L1007.18,3113L1034.97,3084.35L1019.48,3084.35C1014.28,3058.11 1036.52,3046.2 1043,3041.42Z"/>

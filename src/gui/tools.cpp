@@ -510,8 +510,7 @@ void tools::exportFileM3U(e2db::FCONVS fco, e2db::fcopts opts)
 
 	if (ubouquets.size() == 0)
 	{
-		//TODO message
-		tid->infoMessage(tr("Nothing to export", "message"), tr("Nothing to export", "message"));
+		tid->infoMessage(tr("Nothing to export", "message"), tr("There are not stream type references in userbouquets to export.", "message"));
 
 		return;
 	}
@@ -535,19 +534,11 @@ void tools::exportFileM3U(e2db::FCONVS fco, e2db::fcopts opts)
 		}
 	}
 
-	debug("exportFileM3U", "opts.bname before", opts.bname);
-	debug("exportFileM3U", "opts.logosbase before", opts.logosbase);
-	debug("exportFileM3U", "opts.flags before", opts.flags);
-
 	convertM3u* dialog = new convertM3u(this->data);
 	dialog->setExport(opts, ubouquets);
 	dialog->display(cwid);
 	opts = dialog->getConverterOptions();
 	if (dialog->destroy()) return;
-
-	debug("exportFileM3U", "opts.bname after", opts.bname);
-	debug("exportFileM3U", "opts.logosbase before", opts.logosbase);
-	debug("exportFileM3U", "opts.flags after", opts.flags);
 
 	string path = gid->exportFileDialog(gui::GUI_DPORTS::M3U, opts.filename);
 

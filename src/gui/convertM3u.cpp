@@ -79,7 +79,6 @@ void convertM3u::layout(QWidget* cwid)
 	}
 }
 
-//TODO icons
 void convertM3u::toolbarLayout()
 {
 	debug("toolbarLayout");
@@ -91,6 +90,7 @@ void convertM3u::toolbarLayout()
 	dtbar->widgetForAction(this->action.cancel)->setStyleSheet("font-size: 14px");
 
 	toolBarSpacer(dtbar);
+
 	if (this->state.dialog == dial_import)
 		this->action.submit = toolBarAction(dtbar, tr("Import", "dialog"), theme->dynamicIcon("import"), [=]() { this->submit(); });
 	else if (this->state.dialog == dial_export)

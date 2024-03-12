@@ -1128,6 +1128,9 @@ void e2db_converter::parse_csv(istream& ifile, vector<vector<string>>& sxv)
 
 	while (std::getline(ifile, line, dlm))
 	{
+		if (line.empty())
+			continue;
+
 		//TODO FIX CRLF
 		if (line.find('\r') != string::npos || line.find('\n') != string::npos)
 		{
@@ -1213,6 +1216,12 @@ void e2db_converter::parse_m3u(istream& ifile, unordered_map<string, vector<m3u_
 		else if (line.find("#EXTM3U") != string::npos)
 			valid = true;
 
+		//TODO FIX CRLF
+		if (line.find('\r') != string::npos || line.find('\n') != string::npos)
+		{
+			line.erase(std::remove_if(line.begin(), line.end(), [](unsigned char c) { return c == '\r' || c == '\n'; }), line.end());
+		}
+
 		if (step == 1)
 		{
 			size_t pos = line.find(':');
@@ -1240,14 +1249,14 @@ void e2db_converter::parse_m3u(istream& ifile, unordered_map<string, vector<m3u_
 			while (token != 0)
 			{
 				string key, val;
-				value_markup_attribute(token, key, val);
+				value_markup_attribute(extinf, token, key, val);
 				token = std::strtok(NULL, " ");
 
 				if (key.empty() || val.empty())
 					continue;
 
 				if (key == "tvg-id")
-					value_channel_reference(extinf, entry.chref, entry.chref.ref);
+					value_channel_reference(val, entry.chref, entry.chref.ref);
 				else if (key == "tvg-name")
 					entry.chref.value = val;
 				else if (key == "tvg-chno")
@@ -1260,12 +1269,6 @@ void e2db_converter::parse_m3u(istream& ifile, unordered_map<string, vector<m3u_
 		}
 		else if (step == 2)
 		{
-			//TODO FIX CRLF
-			if (line.find('\r') != string::npos || line.find('\n') != string::npos)
-			{
-				line.erase(std::remove_if(line.begin(), line.end(), [](unsigned char c) { return c == '\r' || c == '\n'; }), line.end());
-			}
-
 			entry.chref.uri = line;
 
 			if (ub_name.empty())

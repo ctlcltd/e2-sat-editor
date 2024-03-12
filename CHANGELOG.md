@@ -9,8 +9,9 @@ All notable changes to this project will be documented in this file.
 **Release Date**: *unreleased*  
 **Full Changelog**: [v1.2.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.2.0...HEAD)
 
-- Type stream support
+- Type stream reference support
 - Calculate \[dvbns\] namespace
+- Automatic and manual checking for updates
 - Bugfix
 
 

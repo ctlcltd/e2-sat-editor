@@ -1198,7 +1198,7 @@ string e2db_abstract::value_bouquet_type(int btype)
 	}
 }
 
-void e2db_abstract::value_markup_attribute(string token, string& key, string& val)
+void e2db_abstract::value_markup_attribute(string line, string token, string& key, string& val)
 {
 	size_t pos;
 	size_t n = token.find('=');
@@ -1226,6 +1226,19 @@ void e2db_abstract::value_markup_attribute(string token, string& key, string& va
 		val = val.substr(0, n);
 		if (pos != string::npos)
 			val = val.substr(pos + 1);
+	}
+	else
+	{
+		val = line.substr(line.find(key) + key.length());
+		pos = val.find('"');
+		if (pos != string::npos)
+			val = val.substr(pos + 1);
+
+		n = val.find('"');
+		if (n != string::npos)
+			val = val.substr(0, n);
+
+		std::transform(val.begin(), val.end(), val.begin(), [](unsigned char c) { return c ? c : ' '; });
 	}
 }
 
