@@ -128,6 +128,154 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
 </context>
 <context>
+    <name>checkUpdate</name>
+    <message>
+        <source>e2 SAT Editor %1 is the latest version available.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor 版本 %1 是可用的最新版本。</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to download.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor 版本 %1 可供下載。</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to update.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor 版本 %1 可供更新。</translation>
+    </message>
+    <message>
+        <source>Please run Snap update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>請執行 Snap 更新以獲得最新版本。</translation>
+    </message>
+    <message>
+        <source>Please run Flatpak update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>請執行 Flatpak 更新以取得最 新版本。</translation>
+    </message>
+    <message>
+        <source>Please fetch the AUR repository and build the latest version.</source>
+        <comment>message</comment>
+        <translation>請啟動 AUR 儲存庫更新，然後編譯最新版本。</translation>
+    </message>
+    <message>
+        <source>Connection Error</source>
+        <comment>message</comment>
+        <translation>連線錯誤</translation>
+    </message>
+    <message>
+        <source>There was an error during connection.
+Please check network settings and try again.</source>
+        <comment>message</comment>
+        <translation>連線期間發生錯誤。
+請檢查網路設定並重試。</translation>
+    </message>
+    <message>
+        <source>Service Not Available</source>
+        <comment>message</comment>
+        <translation>服務不可用</translation>
+    </message>
+    <message>
+        <source>Service seems to be unavailable right now.
+Please wait few minutes and try again.</source>
+        <comment>message</comment>
+        <translation>服務目前似乎不可用。
+請等待幾分鐘，然後再試一次。</translation>
+    </message>
+    <message>
+        <source>Software is Up-To-Date</source>
+        <comment>message</comment>
+        <translation>軟體是最新的</translation>
+    </message>
+    <message>
+        <source>New Update Available</source>
+        <comment>message</comment>
+        <translation>有新的更新可用</translation>
+    </message>
+</context>
+<context>
+    <name>convertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>導入 M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>導出 M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>取消(C)</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>進口</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>出口</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>通道組選項</translation>
+    </message>
+    <message>
+        <source>Import each group name in Userbouquets</source>
+        <translation>匯入使用者通道群組中的每個群組名稱</translation>
+    </message>
+    <message>
+        <source>Import all entries in one Userbouquet</source>
+        <translation>匯入一個使用者通道群組中的所有條目</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>如果設定則丟棄參考 ID</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>選擇用戶通道群組</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>名稱</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>文件名</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>設定通道參考 ID</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>設定通道號</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>設定通道組名稱</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>設定頻道徽標 URL 佔位符</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>頻道標誌基本 URL</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>選擇頻道徽標資料夾</translation>
+    </message>
+</context>
+<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -392,12 +540,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>編輯收藏夾</translation>
     </message>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>新寵</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -406,7 +554,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Favourite type</source>
-        <translation type="unfinished"></translation>
+        <translation>喜歡的類型</translation>
     </message>
     <message>
         <source>custom</source>
@@ -414,7 +562,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Entry flag</source>
-        <translation type="unfinished"></translation>
+        <translation>入口位標誌</translation>
     </message>
     <message>
         <source>Service type</source>
@@ -439,19 +587,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Stream</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>溪流</translation>
     </message>
     <message>
         <source>Channel URL</source>
-        <translation type="unfinished"></translation>
+        <translation>頻道網址</translation>
     </message>
     <message>
         <source>Channel name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>custom channel name, leave empty to auto-fill with service reference</source>
-        <translation type="unfinished"></translation>
+        <translation>頻道名稱</translation>
     </message>
     <message>
         <source>Error</source>
@@ -512,7 +656,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Marker flag</source>
-        <translation type="unfinished"></translation>
+        <translation>標記位標誌</translation>
     </message>
     <message>
         <source>custom</source>
@@ -726,7 +870,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>最喜歡的</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
@@ -1742,6 +1886,31 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>error</comment>
         <translation>打開文件時出錯。</translation>
     </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>從 M3U 導入</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>匯出到M3U</translation>
+    </message>
+    <message>
+        <source>M3U File</source>
+        <comment>file-dialog</comment>
+        <translation>M3U 文件</translation>
+    </message>
+    <message>
+        <source>Checking for updates…</source>
+        <comment>message</comment>
+        <translation>正在檢查更新…</translation>
+    </message>
+    <message>
+        <source>DEMO MODE</source>
+        <comment>message</comment>
+        <translation>演示模式</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2107,7 +2276,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Favourite</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>編輯收藏夾</translation>
     </message>
     <message>
         <source>Bouquet</source>
@@ -2117,12 +2286,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Channel</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>頻道</translation>
     </message>
     <message>
         <source>Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>溪流</translation>
     </message>
     <message>
         <source>Marker</source>
@@ -2137,7 +2306,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Add Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>新增串流</translation>
     </message>
 </context>
 <context>
@@ -2824,19 +2993,23 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished">偏好</translation>
+        <translation>偏好</translation>
     </message>
     <message>
         <source>Use a global marker index (will change ID for markers)</source>
-        <translation type="unfinished"></translation>
+        <translation>使用全域標記索引（將更改標記的 ID）</translation>
     </message>
     <message>
         <source>Sort by ID when merging lists (slower merge)</source>
-        <translation type="unfinished"></translation>
+        <translation>合併清單時按 ID 排序（合併速度較慢）</translation>
     </message>
     <message>
         <source>Match favourite reference with services</source>
-        <translation type="unfinished"></translation>
+        <translation>將參考收藏夾與現有服務相匹配</translation>
+    </message>
+    <message>
+        <source>Check for updates on launch</source>
+        <translation>檢查軟體啟動時的更新</translation>
     </message>
 </context>
 <context>
@@ -3086,11 +3259,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation type="vanished">無法重新加載 STB！</translation>
     </message>
     <message>
-        <source>DEMO MODE</source>
-        <comment>message</comment>
-        <translation>演示模式</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -3273,6 +3441,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>Error writing files.</source>
         <comment>error</comment>
         <translation>寫入文件時出錯。</translation>
+    </message>
+    <message>
+        <source>Nothing to export</source>
+        <comment>message</comment>
+        <translation>沒有什麼可導出的</translation>
+    </message>
+    <message>
+        <source>There are not stream type references in userbouquets to export.</source>
+        <comment>message</comment>
+        <translation>使用者通道群組中沒有要匯出的串流類型引用。</translation>
     </message>
 </context>
 <context>

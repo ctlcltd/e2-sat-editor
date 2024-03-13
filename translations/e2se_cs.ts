@@ -130,6 +130,154 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
     </message>
 </context>
 <context>
+    <name>checkUpdate</name>
+    <message>
+        <source>e2 SAT Editor %1 is the latest version available.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 je nejnovější dostupná verze.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to download.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 je k dispozici ke stažení.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to update.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 je k dispozici pro aktualizaci.</translation>
+    </message>
+    <message>
+        <source>Please run Snap update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>Chcete-li získat nejnovější verzi, spusťte aktualizaci Snap.</translation>
+    </message>
+    <message>
+        <source>Please run Flatpak update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>Chcete-li získat nejnovější verzi, spusťte aktualizaci Flatpak.</translation>
+    </message>
+    <message>
+        <source>Please fetch the AUR repository and build the latest version.</source>
+        <comment>message</comment>
+        <translation>Spusťte prosím aktualizaci úložiště AUR a zkompilujte nejnovější verzi.</translation>
+    </message>
+    <message>
+        <source>Connection Error</source>
+        <comment>message</comment>
+        <translation>Chyba Připojení</translation>
+    </message>
+    <message>
+        <source>There was an error during connection.
+Please check network settings and try again.</source>
+        <comment>message</comment>
+        <translation>Během připojení došlo k chybě.
+Zkontrolujte nastavení sítě a zkuste to znovu.</translation>
+    </message>
+    <message>
+        <source>Service Not Available</source>
+        <comment>message</comment>
+        <translation>Služba není dostupná</translation>
+    </message>
+    <message>
+        <source>Service seems to be unavailable right now.
+Please wait few minutes and try again.</source>
+        <comment>message</comment>
+        <translation>Zdá se, že služba je právě teď nedostupná.
+Počkejte prosím několik minut a zkuste to znovu.</translation>
+    </message>
+    <message>
+        <source>Software is Up-To-Date</source>
+        <comment>message</comment>
+        <translation>Software je aktuální</translation>
+    </message>
+    <message>
+        <source>New Update Available</source>
+        <comment>message</comment>
+        <translation>K dispozici nová aktualizace</translation>
+    </message>
+</context>
+<context>
+    <name>convertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>Import M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>Export M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>Zrušit</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>Import</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>Export</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>Možnosti skupiny kanálů</translation>
+    </message>
+    <message>
+        <source>Import each group name in Userbouquets</source>
+        <translation>Importujte každý název skupiny do userbouquets</translation>
+    </message>
+    <message>
+        <source>Import all entries in one Userbouquet</source>
+        <translation>Importovat vše v jednom userbouquet</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>Zrušte Reference ID, pokud je nastaveno</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>Vyberte Userbouquets</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Název</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Název souboru</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>Nastavit kanál Reference ID</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>Nastavte číslo kanálu</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>Nastavte název skupiny kanálů</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>Nastavit zástupný symbol adresy URL loga kanálu</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>Základní adresa URL loga kanálu</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>Vyberte složku s logy kanálů</translation>
+    </message>
+</context>
+<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -394,12 +542,12 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Upravit Oblíbené</translation>
     </message>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nový Oblíbený</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -408,7 +556,7 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
     </message>
     <message>
         <source>Favourite type</source>
-        <translation type="unfinished"></translation>
+        <translation>Oblíbený typ</translation>
     </message>
     <message>
         <source>custom</source>
@@ -416,7 +564,7 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
     </message>
     <message>
         <source>Entry flag</source>
-        <translation type="unfinished"></translation>
+        <translation>Entry flag</translation>
     </message>
     <message>
         <source>Service type</source>
@@ -441,19 +589,15 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
     <message>
         <source>Stream</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stream</translation>
     </message>
     <message>
         <source>Channel URL</source>
-        <translation type="unfinished"></translation>
+        <translation>URL kanálu</translation>
     </message>
     <message>
         <source>Channel name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>custom channel name, leave empty to auto-fill with service reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Název kanálu</translation>
     </message>
     <message>
         <source>Error</source>
@@ -514,7 +658,7 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
     </message>
     <message>
         <source>Marker flag</source>
-        <translation type="unfinished"></translation>
+        <translation>Marker flag</translation>
     </message>
     <message>
         <source>custom</source>
@@ -728,7 +872,7 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
     <message>
         <source>Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Oblíbený</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
@@ -1744,6 +1888,31 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Při otevírání souborů došlo k chybě.</translation>
     </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>Import z M3U</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>Export do M3U</translation>
+    </message>
+    <message>
+        <source>M3U File</source>
+        <comment>file-dialog</comment>
+        <translation>Soubor M3U</translation>
+    </message>
+    <message>
+        <source>Checking for updates…</source>
+        <comment>message</comment>
+        <translation>Kontrola aktualizací…</translation>
+    </message>
+    <message>
+        <source>DEMO MODE</source>
+        <comment>message</comment>
+        <translation>DEMO REŽIM</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2109,7 +2278,7 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Upravit Oblíbené</translation>
     </message>
     <message>
         <source>Bouquet</source>
@@ -2119,12 +2288,12 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
     <message>
         <source>Channel</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kanál</translation>
     </message>
     <message>
         <source>Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stream</translation>
     </message>
     <message>
         <source>Marker</source>
@@ -2139,7 +2308,7 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
     <message>
         <source>Add Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Přidat Stream</translation>
     </message>
 </context>
 <context>
@@ -2828,19 +2997,23 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished">Předvolby</translation>
+        <translation>Předvolby</translation>
     </message>
     <message>
         <source>Use a global marker index (will change ID for markers)</source>
-        <translation type="unfinished"></translation>
+        <translation>Použijte globální index marker (změní ID pro markers)</translation>
     </message>
     <message>
         <source>Sort by ID when merging lists (slower merge)</source>
-        <translation type="unfinished"></translation>
+        <translation>Řadit podle ID při slučování seznamů (pomalejší slučování)</translation>
     </message>
     <message>
         <source>Match favourite reference with services</source>
-        <translation type="unfinished"></translation>
+        <translation>Spojte oblíbené reference se stávajícími službami</translation>
+    </message>
+    <message>
+        <source>Check for updates on launch</source>
+        <translation>Při spuštění zkontrolujte aktualizace</translation>
     </message>
 </context>
 <context>
@@ -3094,11 +3267,6 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
         <translation type="vanished">Nelze znovu načíst STB!</translation>
     </message>
     <message>
-        <source>DEMO MODE</source>
-        <comment>message</comment>
-        <translation>DEMO REŽIM</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -3281,6 +3449,16 @@ POUŽÍVÁNÍ NEBO V SOUVISLOSTI S NÍM SOFTWARE.</translation>
         <source>Error writing files.</source>
         <comment>error</comment>
         <translation>Chyba při zápisu souborů.</translation>
+    </message>
+    <message>
+        <source>Nothing to export</source>
+        <comment>message</comment>
+        <translation>Nic k exportu</translation>
+    </message>
+    <message>
+        <source>There are not stream type references in userbouquets to export.</source>
+        <comment>message</comment>
+        <translation>V userbouquets nejsou k exportu žádné odkazy na typ stream.</translation>
     </message>
 </context>
 <context>

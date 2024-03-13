@@ -131,6 +131,154 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     </message>
 </context>
 <context>
+    <name>checkUpdate</name>
+    <message>
+        <source>e2 SAT Editor %1 is the latest version available.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 je zadnja razpoložljiva različica.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to download.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 je na voljo za prenos.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to update.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 je na voljo za posodobitev.</translation>
+    </message>
+    <message>
+        <source>Please run Snap update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>Zaženite posodobitev Snap, da dobite najnovejšo različico.</translation>
+    </message>
+    <message>
+        <source>Please run Flatpak update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>Zaženite posodobitev Flatpak, da dobite najnovejšo različico.</translation>
+    </message>
+    <message>
+        <source>Please fetch the AUR repository and build the latest version.</source>
+        <comment>message</comment>
+        <translation>Zaženite posodobitev repozitorija AUR in prevedite najnovejšo različico.</translation>
+    </message>
+    <message>
+        <source>Connection Error</source>
+        <comment>message</comment>
+        <translation>Napaka v povezavi</translation>
+    </message>
+    <message>
+        <source>There was an error during connection.
+Please check network settings and try again.</source>
+        <comment>message</comment>
+        <translation>Med povezavo je prišlo do napake.
+Prosimo, preverite omrežne nastavitve in poskusite znova.</translation>
+    </message>
+    <message>
+        <source>Service Not Available</source>
+        <comment>message</comment>
+        <translation>Storitev ni na voljo</translation>
+    </message>
+    <message>
+        <source>Service seems to be unavailable right now.
+Please wait few minutes and try again.</source>
+        <comment>message</comment>
+        <translation>Zdi se, da storitev trenutno ni na voljo.
+Počakajte nekaj minut in poskusite znova.</translation>
+    </message>
+    <message>
+        <source>Software is Up-To-Date</source>
+        <comment>message</comment>
+        <translation>Programska oprema je posodobljena</translation>
+    </message>
+    <message>
+        <source>New Update Available</source>
+        <comment>message</comment>
+        <translation>Na voljo nova posodobitev</translation>
+    </message>
+</context>
+<context>
+    <name>convertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>Uvoz M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>Izvoz M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>Prekliči</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>Uvozi</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>Izvozi</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>Možnosti skupine kanalov</translation>
+    </message>
+    <message>
+        <source>Import each group name in Userbouquets</source>
+        <translation>Uvozite vsako ime skupine v userbouquets</translation>
+    </message>
+    <message>
+        <source>Import all entries in one Userbouquet</source>
+        <translation>Uvozi vse v enem userbouquet</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>Zavrzite Reference ID, če je nastavljen</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>Izberite userbouquets</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Ime</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Ime datoteke</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>Nastavi kanal Reference ID</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>Nastavite številko kanala</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>Nastavite ime skupine kanalov</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>Nastavitev nadomestnega mesta URL logo kanala</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>Osnovni URL logo kanala</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>Izberite mapo z logo kanala</translation>
+    </message>
+</context>
+<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -395,12 +543,12 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Uredi priljubljeno</translation>
     </message>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nova Priljubljena</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -409,7 +557,7 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     </message>
     <message>
         <source>Favourite type</source>
-        <translation type="unfinished"></translation>
+        <translation>Priljubljena vrsta</translation>
     </message>
     <message>
         <source>custom</source>
@@ -417,7 +565,7 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     </message>
     <message>
         <source>Entry flag</source>
-        <translation type="unfinished"></translation>
+        <translation>Entry flag</translation>
     </message>
     <message>
         <source>Service type</source>
@@ -442,19 +590,15 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     <message>
         <source>Stream</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stream</translation>
     </message>
     <message>
         <source>Channel URL</source>
-        <translation type="unfinished"></translation>
+        <translation>URL kanala</translation>
     </message>
     <message>
         <source>Channel name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>custom channel name, leave empty to auto-fill with service reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Ime kanala</translation>
     </message>
     <message>
         <source>Error</source>
@@ -515,7 +659,7 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     </message>
     <message>
         <source>Marker flag</source>
-        <translation type="unfinished"></translation>
+        <translation>Marker flag</translation>
     </message>
     <message>
         <source>custom</source>
@@ -729,7 +873,7 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     <message>
         <source>Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Najljubša</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
@@ -1745,6 +1889,31 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
         <comment>error</comment>
         <translation>Napaka pri odpiranju datotek.</translation>
     </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>Uvoz iz M3U</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>Izvoz v M3U</translation>
+    </message>
+    <message>
+        <source>M3U File</source>
+        <comment>file-dialog</comment>
+        <translation>Datoteka M3U</translation>
+    </message>
+    <message>
+        <source>Checking for updates…</source>
+        <comment>message</comment>
+        <translation>Preverjanje posodobitev…</translation>
+    </message>
+    <message>
+        <source>DEMO MODE</source>
+        <comment>message</comment>
+        <translation>DEMO NAČIN</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2110,7 +2279,7 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Uredi priljubljeno</translation>
     </message>
     <message>
         <source>Bouquet</source>
@@ -2120,12 +2289,12 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     <message>
         <source>Channel</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kanal</translation>
     </message>
     <message>
         <source>Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stream</translation>
     </message>
     <message>
         <source>Marker</source>
@@ -2140,7 +2309,7 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     <message>
         <source>Add Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Dodaj Stream</translation>
     </message>
 </context>
 <context>
@@ -2830,19 +2999,23 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished">Nastavitve</translation>
+        <translation>Nastavitve</translation>
     </message>
     <message>
         <source>Use a global marker index (will change ID for markers)</source>
-        <translation type="unfinished"></translation>
+        <translation>Uporabite globalni indeks marker (spremenil bo ID za markers)</translation>
     </message>
     <message>
         <source>Sort by ID when merging lists (slower merge)</source>
-        <translation type="unfinished"></translation>
+        <translation>Razvrsti po ID-ju pri spajanju seznamov (počasnejše spajanje)</translation>
     </message>
     <message>
         <source>Match favourite reference with services</source>
-        <translation type="unfinished"></translation>
+        <translation>Povežite priljubljene reference z obstoječimi storitvami</translation>
+    </message>
+    <message>
+        <source>Check for updates on launch</source>
+        <translation>Preverite posodobitve ob zagonu</translation>
     </message>
 </context>
 <context>
@@ -3098,11 +3271,6 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
         <translation type="vanished">STB ni mogoče znova naložiti!</translation>
     </message>
     <message>
-        <source>DEMO MODE</source>
-        <comment>message</comment>
-        <translation>DEMO NAČIN</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -3285,6 +3453,16 @@ OPREMO ALI UPORABO ALI DRUGIMI POSLI V PROGRAMSKA OPREMA.</translation>
         <source>Error writing files.</source>
         <comment>error</comment>
         <translation>Napaka pri pisanju datotek.</translation>
+    </message>
+    <message>
+        <source>Nothing to export</source>
+        <comment>message</comment>
+        <translation>Nič za izvoz</translation>
+    </message>
+    <message>
+        <source>There are not stream type references in userbouquets to export.</source>
+        <comment>message</comment>
+        <translation>V userbouquets ni referenc tipa stream za izvoz.</translation>
     </message>
 </context>
 <context>

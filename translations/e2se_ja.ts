@@ -132,6 +132,154 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
 </context>
 <context>
+    <name>checkUpdate</name>
+    <message>
+        <source>e2 SAT Editor %1 is the latest version available.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor バージョン %1 は、利用可能な最新バージョンです。</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to download.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor バージョン %1 をダウンロードできます。</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to update.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor バージョン %1 は更新できます。</translation>
+    </message>
+    <message>
+        <source>Please run Snap update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>最新バージョンを入手するには、Snap アップデートを実行してください。</translation>
+    </message>
+    <message>
+        <source>Please run Flatpak update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>最新バージョンを入手するには、Flatpak アップデートを実行してください。</translation>
+    </message>
+    <message>
+        <source>Please fetch the AUR repository and build the latest version.</source>
+        <comment>message</comment>
+        <translation>AUR リポジトリの更新を起動して、最新バージョンをコンパイルしてください。</translation>
+    </message>
+    <message>
+        <source>Connection Error</source>
+        <comment>message</comment>
+        <translation>接続エラー</translation>
+    </message>
+    <message>
+        <source>There was an error during connection.
+Please check network settings and try again.</source>
+        <comment>message</comment>
+        <translation>接続中にエラーが発生しました。
+ネットワーク設定を確認して、もう一度試してください。</translation>
+    </message>
+    <message>
+        <source>Service Not Available</source>
+        <comment>message</comment>
+        <translation>サービスは利用できません</translation>
+    </message>
+    <message>
+        <source>Service seems to be unavailable right now.
+Please wait few minutes and try again.</source>
+        <comment>message</comment>
+        <translation>現在サービスが利用できないようです。
+数分待ってからもう一度お試しください。</translation>
+    </message>
+    <message>
+        <source>Software is Up-To-Date</source>
+        <comment>message</comment>
+        <translation>ソフトウェアは最新です</translation>
+    </message>
+    <message>
+        <source>New Update Available</source>
+        <comment>message</comment>
+        <translation>新しいアップデートが利用可能</translation>
+    </message>
+</context>
+<context>
+    <name>convertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>M3U のインポート</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>M3U のエクスポート</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>キャンセル(C)</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>輸入</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>輸出</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>チャンネルグループのオプション</translation>
+    </message>
+    <message>
+        <source>Import each group name in Userbouquets</source>
+        <translation>ユーザーブーケ に各グループ名をインポートします</translation>
+    </message>
+    <message>
+        <source>Import all entries in one Userbouquet</source>
+        <translation>1 つのユーザー チャネル グループ内のすべてのエントリをインポートする</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>参照ID が設定されている場合は破棄します</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>ユーザーチャネルグループの選択</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>名前</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>ファイル名</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>チャンネル参照IDの設定</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>チャンネル番号を設定する</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>チャンネルグループ名の設定</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>チャンネルロゴの URL プレースホルダーを設定する</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>チャンネルロゴのベース URL</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>チャンネルロゴフォルダを選択</translation>
+    </message>
+</context>
+<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -396,12 +544,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>お気に入りの編集</translation>
     </message>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>新しいお気に入り</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -410,7 +558,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Favourite type</source>
-        <translation type="unfinished"></translation>
+        <translation>好きなタイプ</translation>
     </message>
     <message>
         <source>custom</source>
@@ -418,7 +566,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Entry flag</source>
-        <translation type="unfinished"></translation>
+        <translation>エントリビットフラグ</translation>
     </message>
     <message>
         <source>Service type</source>
@@ -443,19 +591,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Stream</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>ストリーム</translation>
     </message>
     <message>
         <source>Channel URL</source>
-        <translation type="unfinished"></translation>
+        <translation>チャンネルURL</translation>
     </message>
     <message>
         <source>Channel name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>custom channel name, leave empty to auto-fill with service reference</source>
-        <translation type="unfinished"></translation>
+        <translation>チャンネル名</translation>
     </message>
     <message>
         <source>Error</source>
@@ -516,7 +660,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Marker flag</source>
-        <translation type="unfinished"></translation>
+        <translation>マーカービットフラグ</translation>
     </message>
     <message>
         <source>custom</source>
@@ -730,7 +874,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>お気に入り</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
@@ -1746,6 +1890,31 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>error</comment>
         <translation>ファイルを開くときにエラーが発生しました。</translation>
     </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>M3U からインポート</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>M3U にエクスポート</translation>
+    </message>
+    <message>
+        <source>M3U File</source>
+        <comment>file-dialog</comment>
+        <translation>M3U ファイル</translation>
+    </message>
+    <message>
+        <source>Checking for updates…</source>
+        <comment>message</comment>
+        <translation>アップデートをチェック中…</translation>
+    </message>
+    <message>
+        <source>DEMO MODE</source>
+        <comment>message</comment>
+        <translation>デモモード</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2111,7 +2280,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Favourite</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>お気に入りの編集</translation>
     </message>
     <message>
         <source>Bouquet</source>
@@ -2121,12 +2290,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Channel</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャネル</translation>
     </message>
     <message>
         <source>Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>ストリーム</translation>
     </message>
     <message>
         <source>Marker</source>
@@ -2141,7 +2310,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Add Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>ストリームの追加</translation>
     </message>
 </context>
 <context>
@@ -2828,19 +2997,23 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished">環境設定</translation>
+        <translation>環境設定</translation>
     </message>
     <message>
         <source>Use a global marker index (will change ID for markers)</source>
-        <translation type="unfinished"></translation>
+        <translation>グローバル マーカー インデックスを使用します (マーカーの ID が変更されます)</translation>
     </message>
     <message>
         <source>Sort by ID when merging lists (slower merge)</source>
-        <translation type="unfinished"></translation>
+        <translation>リストを結合するときに ID で並べ替えます (結合が遅くなります)</translation>
     </message>
     <message>
         <source>Match favourite reference with services</source>
-        <translation type="unfinished"></translation>
+        <translation>参照のお気に入りを既存のサービスと一致させる</translation>
+    </message>
+    <message>
+        <source>Check for updates on launch</source>
+        <translation>ソフトウェアの起動時にアップデートを確認する</translation>
     </message>
 </context>
 <context>
@@ -3090,11 +3263,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation type="vanished">STBをリロードできません!</translation>
     </message>
     <message>
-        <source>DEMO MODE</source>
-        <comment>message</comment>
-        <translation>デモモード</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -3277,6 +3445,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>Error writing files.</source>
         <comment>error</comment>
         <translation>ファイルの書き込みエラー。</translation>
+    </message>
+    <message>
+        <source>Nothing to export</source>
+        <comment>message</comment>
+        <translation>エクスポートするものがありません</translation>
+    </message>
+    <message>
+        <source>There are not stream type references in userbouquets to export.</source>
+        <comment>message</comment>
+        <translation>ユーザーブーケ にはエクスポートするストリーム タイプ参照がありません。</translation>
     </message>
 </context>
 <context>

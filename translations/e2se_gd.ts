@@ -132,6 +132,154 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     </message>
 </context>
 <context>
+    <name>checkUpdate</name>
+    <message>
+        <source>e2 SAT Editor %1 is the latest version available.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 an tionndadh as ùire a tha ri làimh.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to download.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 ri luchdachadh a-nuas.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to update.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 ri fhaighinn airson ùrachadh.</translation>
+    </message>
+    <message>
+        <source>Please run Snap update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>Feuch an ruith thu ùrachadh Snap gus an tionndadh as ùire fhaighinn.</translation>
+    </message>
+    <message>
+        <source>Please run Flatpak update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>Feuch an ruith thu ùrachadh Flatpak gus an dreach as ùire fhaighinn.</translation>
+    </message>
+    <message>
+        <source>Please fetch the AUR repository and build the latest version.</source>
+        <comment>message</comment>
+        <translation>Feuch an cuir thu air bhog ùrachadh stòr-dàta AUR agus cuir ri chèile an dreach as ùire.</translation>
+    </message>
+    <message>
+        <source>Connection Error</source>
+        <comment>message</comment>
+        <translation>Mearachd ceangail</translation>
+    </message>
+    <message>
+        <source>There was an error during connection.
+Please check network settings and try again.</source>
+        <comment>message</comment>
+        <translation>Bha mearachd ann rè a&apos; cheangail.
+Thoir sùil air roghainnean an lìonraidh is feuch ris a-rithist.</translation>
+    </message>
+    <message>
+        <source>Service Not Available</source>
+        <comment>message</comment>
+        <translation>Seirbheis nach eil ri fhaighinn</translation>
+    </message>
+    <message>
+        <source>Service seems to be unavailable right now.
+Please wait few minutes and try again.</source>
+        <comment>message</comment>
+        <translation>Tha coltas nach eil an t-seirbheis ri fhaighinn an-dràsta fhèin.
+Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
+    </message>
+    <message>
+        <source>Software is Up-To-Date</source>
+        <comment>message</comment>
+        <translation>Tha am bathar-bog as ùire</translation>
+    </message>
+    <message>
+        <source>New Update Available</source>
+        <comment>message</comment>
+        <translation>Ùrachadh ùr ri fhaighinn</translation>
+    </message>
+</context>
+<context>
+    <name>convertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>Cuir a-steach M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>Às-mhalairt M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>Sguir dheth</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>Cuir a-steach</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>Às-mhalairt</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>Roghainnean buidheann seanail</translation>
+    </message>
+    <message>
+        <source>Import each group name in Userbouquets</source>
+        <translation>Cuir a-steach ainm gach buidheann ann an userbouquets</translation>
+    </message>
+    <message>
+        <source>Import all entries in one Userbouquet</source>
+        <translation>Cuir a-steach a h-uile ann an aon userbouquet</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>Cuir às do Reference ID ma tha thu air a shuidheachadh</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>Tagh Userbouquets</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Ainm</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Ainm faidhle</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>Suidhich an t-sianal Reference ID</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>Suidhich àireamh sianal</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>Suidhich ainm buidheann seanail</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>Suidhich suaicheantasan seanail URL neach-àite</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>URL bunaiteach suaicheantasan seanail</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>Tagh pasgan suaicheantasan seanail</translation>
+    </message>
+</context>
+<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -396,12 +544,12 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich as fheàrr leat</translation>
     </message>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ùr as fheàrr leat</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -410,7 +558,7 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     </message>
     <message>
         <source>Favourite type</source>
-        <translation type="unfinished"></translation>
+        <translation>An seòrsa as fheàrr leat</translation>
     </message>
     <message>
         <source>custom</source>
@@ -418,7 +566,7 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     </message>
     <message>
         <source>Entry flag</source>
-        <translation type="unfinished"></translation>
+        <translation>Entry flag</translation>
     </message>
     <message>
         <source>Service type</source>
@@ -443,19 +591,15 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     <message>
         <source>Stream</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stream</translation>
     </message>
     <message>
         <source>Channel URL</source>
-        <translation type="unfinished"></translation>
+        <translation>URL sianal</translation>
     </message>
     <message>
         <source>Channel name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>custom channel name, leave empty to auto-fill with service reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Ainm seanail</translation>
     </message>
     <message>
         <source>Error</source>
@@ -516,7 +660,7 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     </message>
     <message>
         <source>Marker flag</source>
-        <translation type="unfinished"></translation>
+        <translation>Marker flag</translation>
     </message>
     <message>
         <source>custom</source>
@@ -730,7 +874,7 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     <message>
         <source>Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>As fheàrr leotha</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
@@ -1746,6 +1890,31 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
         <comment>error</comment>
         <translation>Thachair mearachd le fosgladh fhaidhlichean.</translation>
     </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>Cuir a-steach bho M3U</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>Às-mhalairt gu M3U</translation>
+    </message>
+    <message>
+        <source>M3U File</source>
+        <comment>file-dialog</comment>
+        <translation>Faidhle M3U</translation>
+    </message>
+    <message>
+        <source>Checking for updates…</source>
+        <comment>message</comment>
+        <translation>A’ sgrùdadh ùrachaidhean…</translation>
+    </message>
+    <message>
+        <source>DEMO MODE</source>
+        <comment>message</comment>
+        <translation>MODE DEMO</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2111,7 +2280,7 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich as fheàrr leat</translation>
     </message>
     <message>
         <source>Bouquet</source>
@@ -2121,12 +2290,12 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     <message>
         <source>Channel</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Seanail</translation>
     </message>
     <message>
         <source>Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stream</translation>
     </message>
     <message>
         <source>Marker</source>
@@ -2141,7 +2310,7 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     <message>
         <source>Add Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cuir stream ris</translation>
     </message>
 </context>
 <context>
@@ -2831,19 +3000,23 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished">Roghainnean</translation>
+        <translation>Roghainnean</translation>
     </message>
     <message>
         <source>Use a global marker index (will change ID for markers)</source>
-        <translation type="unfinished"></translation>
+        <translation>Cleachd clàr-amais marker cruinne (atharraichidh e ID airson markers)</translation>
     </message>
     <message>
         <source>Sort by ID when merging lists (slower merge)</source>
-        <translation type="unfinished"></translation>
+        <translation>Deasaich a rèir ID nuair a thèid liostaichean a chur còmhla (aonachadh nas slaodaiche)</translation>
     </message>
     <message>
         <source>Match favourite reference with services</source>
-        <translation type="unfinished"></translation>
+        <translation>Dèan maids eadar favorites iomraidh leis na seirbheisean a th’ ann mar-thà</translation>
+    </message>
+    <message>
+        <source>Check for updates on launch</source>
+        <translation>Thoir sùil airson ùrachaidhean nuair a thèid an cur air bhog</translation>
     </message>
 </context>
 <context>
@@ -3099,11 +3272,6 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
         <translation type="vanished">Cha ghabh STB ath-luchdachadh!</translation>
     </message>
     <message>
-        <source>DEMO MODE</source>
-        <comment>message</comment>
-        <translation>MODE DEMO</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -3286,6 +3454,16 @@ CLEACHDADH NO DEALBHADAIREAN EILE ANN AM BOGAR.</translation>
         <source>Error writing files.</source>
         <comment>error</comment>
         <translation>Thachair mearachd a&apos; sgrìobhadh fhaidhlichean.</translation>
+    </message>
+    <message>
+        <source>Nothing to export</source>
+        <comment>message</comment>
+        <translation>Chan eil dad ri às-mhalairt</translation>
+    </message>
+    <message>
+        <source>There are not stream type references in userbouquets to export.</source>
+        <comment>message</comment>
+        <translation>Chan eil iomraidhean seòrsa stream ann an userbouquets airson às-mhalairt.</translation>
     </message>
 </context>
 <context>

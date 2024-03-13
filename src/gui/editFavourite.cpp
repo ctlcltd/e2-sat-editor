@@ -427,7 +427,6 @@ void editFavourite::streamLayout()
 	QGroupBox* dtl1 = new QGroupBox(tr("Stream", "dialog"));
 	QFormLayout* dtf0 = new QFormLayout;
 	dtf0->setRowWrapPolicy(QFormLayout::WrapAllRows);
-	dtl1->setStyleSheet("#dial_field_description { margin-right: 1px; margin-left: 1px }");
 
 	QTextEdit* dtf0rr = new QTextEdit;
 	dtf0rr->setProperty("field", "uri");
@@ -447,19 +446,13 @@ void editFavourite::streamLayout()
 	dtf0->addRow(tr("Channel URL"), dtf0rr);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
-	QVBoxLayout* dtb11 = new QVBoxLayout;
-	dtf0->addRow(tr("Channel name"), dtb11);
-	//TODO test
-	QLabel* dtd11 = new QLabel(QString("<small>%1</small>").arg(tr("custom channel name, leave empty to auto-fill with service reference")));
-	dtd11->setObjectName("dial_field_description");
 	QLineEdit* dtf0rv = new QLineEdit;
 	dtf0rv->setProperty("field", "value");
 	fields.emplace_back(dtf0rv);
 	dtf0rv->setMinimumWidth(240);
 	dtf0rv->setMaxLength(255);
 	platform::osLineEdit(dtf0rv);
-	dtb11->addWidget(dtf0rv);
-	dtb11->addWidget(dtd11);
+	dtf0->addRow(tr("Channel name"), dtf0rv);
 	dtf0->addItem(new QSpacerItem(0, 0));
 
 	dtl1->setLayout(dtf0);

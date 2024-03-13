@@ -131,6 +131,154 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
     </message>
 </context>
 <context>
+    <name>checkUpdate</name>
+    <message>
+        <source>e2 SAT Editor %1 is the latest version available.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 és l&apos;última versió disponible.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to download.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 està disponible per descarregar.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to update.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 està disponible per actualitzar.</translation>
+    </message>
+    <message>
+        <source>Please run Snap update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>Si us plau, executeu l&apos;actualització Snap per obtenir la darrera versió.</translation>
+    </message>
+    <message>
+        <source>Please run Flatpak update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>Si us plau, executeu l&apos;actualització Flatpak per obtenir la darrera versió.</translation>
+    </message>
+    <message>
+        <source>Please fetch the AUR repository and build the latest version.</source>
+        <comment>message</comment>
+        <translation>Si us plau, inicieu l&apos;actualització del dipòsit AUR i compileu la darrera versió.</translation>
+    </message>
+    <message>
+        <source>Connection Error</source>
+        <comment>message</comment>
+        <translation>Error de connexió</translation>
+    </message>
+    <message>
+        <source>There was an error during connection.
+Please check network settings and try again.</source>
+        <comment>message</comment>
+        <translation>S&apos;ha produït un error durant la connexió.
+Comproveu la configuració de la xarxa i torneu ho a provar.</translation>
+    </message>
+    <message>
+        <source>Service Not Available</source>
+        <comment>message</comment>
+        <translation>Servei no disponible</translation>
+    </message>
+    <message>
+        <source>Service seems to be unavailable right now.
+Please wait few minutes and try again.</source>
+        <comment>message</comment>
+        <translation>Sembla que el servei no està disponible en aquest moment.
+Espereu uns minuts i torneu ho a provar.</translation>
+    </message>
+    <message>
+        <source>Software is Up-To-Date</source>
+        <comment>message</comment>
+        <translation>El programari està actualitzat</translation>
+    </message>
+    <message>
+        <source>New Update Available</source>
+        <comment>message</comment>
+        <translation>Nova actualització disponible</translation>
+    </message>
+</context>
+<context>
+    <name>convertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>Importa M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>Exporta M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>Cancel·la</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>Importar</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>Exporta</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>Opcions grup canals</translation>
+    </message>
+    <message>
+        <source>Import each group name in Userbouquets</source>
+        <translation>Importa el nom de cada grup a userbouquets</translation>
+    </message>
+    <message>
+        <source>Import all entries in one Userbouquet</source>
+        <translation>Importa tot en un userbouquet</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>Descarta Reference ID si està establert</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>Seleccioneu Userbouquets</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nom</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Nom fixter</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>Estableix canal &quot;ID de referència&quot;</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>Estableix número de canal</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>Estableix nom grup de canals</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>Estableix marcador de posició de l&apos;URL dels logo canal</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>URL base dels logo canal</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>Seleccioneu la carpeta dels logo canal</translation>
+    </message>
+</context>
+<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -395,12 +543,12 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Edita Preferit</translation>
     </message>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nou Preferit</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -409,7 +557,7 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
     </message>
     <message>
         <source>Favourite type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipus preferit</translation>
     </message>
     <message>
         <source>custom</source>
@@ -417,7 +565,7 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
     </message>
     <message>
         <source>Entry flag</source>
-        <translation type="unfinished"></translation>
+        <translation>Entry flag</translation>
     </message>
     <message>
         <source>Service type</source>
@@ -442,19 +590,15 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
     <message>
         <source>Stream</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stream</translation>
     </message>
     <message>
         <source>Channel URL</source>
-        <translation type="unfinished"></translation>
+        <translation>URL canal</translation>
     </message>
     <message>
         <source>Channel name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>custom channel name, leave empty to auto-fill with service reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom canal</translation>
     </message>
     <message>
         <source>Error</source>
@@ -515,7 +659,7 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
     </message>
     <message>
         <source>Marker flag</source>
-        <translation type="unfinished"></translation>
+        <translation>Marker flag</translation>
     </message>
     <message>
         <source>custom</source>
@@ -729,7 +873,7 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
     <message>
         <source>Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Favorit</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
@@ -1745,6 +1889,31 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
         <comment>error</comment>
         <translation>S&apos;ha produït un error en obrir els fitxers.</translation>
     </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>Importa de M3U</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>Exporta a M3U</translation>
+    </message>
+    <message>
+        <source>M3U File</source>
+        <comment>file-dialog</comment>
+        <translation>Fitxer M3U</translation>
+    </message>
+    <message>
+        <source>Checking for updates…</source>
+        <comment>message</comment>
+        <translation>S&apos;estan comprovant les actualitzacions…</translation>
+    </message>
+    <message>
+        <source>DEMO MODE</source>
+        <comment>message</comment>
+        <translation>MODE DEMO</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2110,7 +2279,7 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Edita Preferit</translation>
     </message>
     <message>
         <source>Bouquet</source>
@@ -2120,12 +2289,12 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
     <message>
         <source>Channel</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Canal</translation>
     </message>
     <message>
         <source>Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stream</translation>
     </message>
     <message>
         <source>Marker</source>
@@ -2140,7 +2309,7 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
     <message>
         <source>Add Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Afegeix Stream</translation>
     </message>
 </context>
 <context>
@@ -2828,19 +2997,23 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished">Preferències</translation>
+        <translation>Preferències</translation>
     </message>
     <message>
         <source>Use a global marker index (will change ID for markers)</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilitzeu un índex de marker global (canvia ID markers)</translation>
     </message>
     <message>
         <source>Sort by ID when merging lists (slower merge)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordena per ID en combinar llistes (fusió més lenta)</translation>
     </message>
     <message>
         <source>Match favourite reference with services</source>
-        <translation type="unfinished"></translation>
+        <translation>Relaciona els preferits de referència amb els serveis existents</translation>
+    </message>
+    <message>
+        <source>Check for updates on launch</source>
+        <translation>Comproveu si hi ha actualitzacions al llançament</translation>
     </message>
 </context>
 <context>
@@ -3092,11 +3265,6 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
         <translation type="vanished">No es pot tornar a carregar STB!</translation>
     </message>
     <message>
-        <source>DEMO MODE</source>
-        <comment>message</comment>
-        <translation>MODE DEMO</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -3279,6 +3447,16 @@ AMB EL PROGRAMARI, O L&apos;ÚS O ALTRES TRATATS EN EL PROGRAMARI.</translation>
         <source>Error writing files.</source>
         <comment>error</comment>
         <translation>S&apos;ha produït un error en escriure fitxers.</translation>
+    </message>
+    <message>
+        <source>Nothing to export</source>
+        <comment>message</comment>
+        <translation>Res a exportar</translation>
+    </message>
+    <message>
+        <source>There are not stream type references in userbouquets to export.</source>
+        <comment>message</comment>
+        <translation>No hi ha referències de tipus stream a userbouquets per exportar.</translation>
     </message>
 </context>
 <context>

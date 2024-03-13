@@ -131,6 +131,154 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
     </message>
 </context>
 <context>
+    <name>checkUpdate</name>
+    <message>
+        <source>e2 SAT Editor %1 is the latest version available.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 er den nyeste versjonen som er tilgjengelig.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to download.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 er tilgjengelig for nedlasting.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to update.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 er tilgjengelig for oppdatering.</translation>
+    </message>
+    <message>
+        <source>Please run Snap update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>Vennligst kjør Snap oppdateringen for å få den nyeste versjonen.</translation>
+    </message>
+    <message>
+        <source>Please run Flatpak update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>Vennligst kjør Flatpak oppdateringen for å få den nyeste versjonen.</translation>
+    </message>
+    <message>
+        <source>Please fetch the AUR repository and build the latest version.</source>
+        <comment>message</comment>
+        <translation>Start AUR-repository oppdateringen og kompiler den nyeste versjonen.</translation>
+    </message>
+    <message>
+        <source>Connection Error</source>
+        <comment>message</comment>
+        <translation>Tilkoblings Feil</translation>
+    </message>
+    <message>
+        <source>There was an error during connection.
+Please check network settings and try again.</source>
+        <comment>message</comment>
+        <translation>Det oppsto en feil under tilkoblingen.
+Kontroller nettverksinnstillingene og prøv igjen.</translation>
+    </message>
+    <message>
+        <source>Service Not Available</source>
+        <comment>message</comment>
+        <translation>Tjenesten er ikke tilgjengelig</translation>
+    </message>
+    <message>
+        <source>Service seems to be unavailable right now.
+Please wait few minutes and try again.</source>
+        <comment>message</comment>
+        <translation>Tjenesten ser ut til å være utilgjengelig akkurat nå.
+Vent noen minutter og prøv igjen.</translation>
+    </message>
+    <message>
+        <source>Software is Up-To-Date</source>
+        <comment>message</comment>
+        <translation>Programvaren er oppdatert</translation>
+    </message>
+    <message>
+        <source>New Update Available</source>
+        <comment>message</comment>
+        <translation>Ny oppdatering tilgjengelig</translation>
+    </message>
+</context>
+<context>
+    <name>convertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>Importer M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>Eksporter M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>Avbryt</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>Import</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>Eksport</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>Kanalgruppe alternativer</translation>
+    </message>
+    <message>
+        <source>Import each group name in Userbouquets</source>
+        <translation>Importer hvert gruppenavn i userbouquets</translation>
+    </message>
+    <message>
+        <source>Import all entries in one Userbouquet</source>
+        <translation>Importer alt i én userbouquet</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>Kast Reference ID hvis angitt</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>Velg userbouquets</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Namn</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Filnavn</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>Angi kanalen Reference ID</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>Still inn kanal nummer</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>Angi kanalgruppe navn</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>Angi nettadresse plassholder for kanal logoer</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>Base URL for kanal logoer</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>Velg mappen med kanal logoer</translation>
+    </message>
+</context>
+<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -395,12 +543,12 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Rediger Favoritt</translation>
     </message>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ny Favoritt</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -409,7 +557,7 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
     </message>
     <message>
         <source>Favourite type</source>
-        <translation type="unfinished"></translation>
+        <translation>Favoritt type</translation>
     </message>
     <message>
         <source>custom</source>
@@ -417,7 +565,7 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
     </message>
     <message>
         <source>Entry flag</source>
-        <translation type="unfinished"></translation>
+        <translation>Entry flag</translation>
     </message>
     <message>
         <source>Service type</source>
@@ -442,19 +590,15 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
     <message>
         <source>Stream</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stream</translation>
     </message>
     <message>
         <source>Channel URL</source>
-        <translation type="unfinished"></translation>
+        <translation>Kanal URL</translation>
     </message>
     <message>
         <source>Channel name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>custom channel name, leave empty to auto-fill with service reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Kanal navn</translation>
     </message>
     <message>
         <source>Error</source>
@@ -515,7 +659,7 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
     </message>
     <message>
         <source>Marker flag</source>
-        <translation type="unfinished"></translation>
+        <translation>Marker flag</translation>
     </message>
     <message>
         <source>custom</source>
@@ -729,7 +873,7 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
     <message>
         <source>Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Favoritt</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
@@ -1745,6 +1889,31 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
         <comment>error</comment>
         <translation>Feil ved åpning av filer.</translation>
     </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>Importer fra M3U</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>Eksporter til M3U</translation>
+    </message>
+    <message>
+        <source>M3U File</source>
+        <comment>file-dialog</comment>
+        <translation>M3U-fil</translation>
+    </message>
+    <message>
+        <source>Checking for updates…</source>
+        <comment>message</comment>
+        <translation>Sjekker oppdateringer…</translation>
+    </message>
+    <message>
+        <source>DEMO MODE</source>
+        <comment>message</comment>
+        <translation>DEMO MODUS</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2110,7 +2279,7 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Rediger Favoritt</translation>
     </message>
     <message>
         <source>Bouquet</source>
@@ -2120,12 +2289,12 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
     <message>
         <source>Channel</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kanal</translation>
     </message>
     <message>
         <source>Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stream</translation>
     </message>
     <message>
         <source>Marker</source>
@@ -2140,7 +2309,7 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
     <message>
         <source>Add Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Legg til Stream</translation>
     </message>
 </context>
 <context>
@@ -2828,19 +2997,23 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished">Preferanser</translation>
+        <translation>Preferanser</translation>
     </message>
     <message>
         <source>Use a global marker index (will change ID for markers)</source>
-        <translation type="unfinished"></translation>
+        <translation>Bruk en global marker-indeks (vil endre ID for markers)</translation>
     </message>
     <message>
         <source>Sort by ID when merging lists (slower merge)</source>
-        <translation type="unfinished"></translation>
+        <translation>Sorter etter ID ved sammenslåing av lister (langsommere sammenslåing)</translation>
     </message>
     <message>
         <source>Match favourite reference with services</source>
-        <translation type="unfinished"></translation>
+        <translation>Match referanse favoritter med eksisterende tjenester</translation>
+    </message>
+    <message>
+        <source>Check for updates on launch</source>
+        <translation>Se etter oppdateringer ved lansering</translation>
     </message>
 </context>
 <context>
@@ -3092,11 +3265,6 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
         <translation type="vanished">Kan ikke laste STB på nytt!</translation>
     </message>
     <message>
-        <source>DEMO MODE</source>
-        <comment>message</comment>
-        <translation>DEMO MODUS</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -3279,6 +3447,16 @@ PROGRAMVAREN, ELLER BRUK ELLER ANDRE HANDLINGER I PROGRAMVAREN.</translation>
         <source>Error writing files.</source>
         <comment>error</comment>
         <translation>Feil ved skriving av filer.</translation>
+    </message>
+    <message>
+        <source>Nothing to export</source>
+        <comment>message</comment>
+        <translation>Ingenting å eksportere</translation>
+    </message>
+    <message>
+        <source>There are not stream type references in userbouquets to export.</source>
+        <comment>message</comment>
+        <translation>Det er ikke stream-typereferanser i userbouquets å eksportere.</translation>
     </message>
 </context>
 <context>

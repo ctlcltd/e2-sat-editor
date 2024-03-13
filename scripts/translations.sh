@@ -94,7 +94,7 @@ lang_merge () {
 	mkdir -p workflow/ts-merge
 
 	for lang in "ar" "bg" "ca" "cs" "da" "de" "en" "es" "fa" "fi" "fr" "gd" "gl" "he" "hr" "hu" "it" "ja" "ko" "lt" "lv" "nl" "nn" "pl" "pt_BR" "pt_PT" "ru" "sk" "sl" "sv" "tr" "uk" "zh_CN" "zh_TW"; do
-		printf "%s: %s > %s > %s\n" "merging" "translations/e2se_$lang.ts" "workflow/ts-input/$lang.ts" "workflow/ts-merge/$lang.ts"
+		printf "%s: %s > %s > %s\n" "merging" "translations/e2se_$lang.ts" "workflow/ts-input/$lang.ts" "workflow/ts-merge/e2se_$lang.ts"
 		$LCONVERT -i translations/e2se_$lang.ts -i workflow/ts-input/$lang.ts -o workflow/ts-merge/e2se_$lang.ts
 	done
 }

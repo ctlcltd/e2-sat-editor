@@ -131,6 +131,154 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
 </context>
 <context>
+    <name>checkUpdate</name>
+    <message>
+        <source>e2 SAT Editor %1 is the latest version available.</source>
+        <comment>message</comment>
+        <translation>إصدار e2 SAT Editor %1 هو أحدث إصدار متوفر.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to download.</source>
+        <comment>message</comment>
+        <translation>إصدار e2 SAT Editor %1 متاح للتنزيل.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to update.</source>
+        <comment>message</comment>
+        <translation>إصدار e2 SAT Editor %1 متاح للتحديث.</translation>
+    </message>
+    <message>
+        <source>Please run Snap update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>يرجى تشغيل تحديث Snap للحصول على أحدث إصدار.</translation>
+    </message>
+    <message>
+        <source>Please run Flatpak update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>يرجى تشغيل تحديث Flatpak للحصول على أحدث إصدار.</translation>
+    </message>
+    <message>
+        <source>Please fetch the AUR repository and build the latest version.</source>
+        <comment>message</comment>
+        <translation>يرجى تشغيل تحديث مستودع AUR ثم تجميع الإصدار الأحدث.</translation>
+    </message>
+    <message>
+        <source>Connection Error</source>
+        <comment>message</comment>
+        <translation>خطأ في الإتصال</translation>
+    </message>
+    <message>
+        <source>There was an error during connection.
+Please check network settings and try again.</source>
+        <comment>message</comment>
+        <translation>حدث خطأ أثناء الاتصال.
+الرجاء التحقق من إعدادات الشبكة والمحاولة مرة أخرى.</translation>
+    </message>
+    <message>
+        <source>Service Not Available</source>
+        <comment>message</comment>
+        <translation>الخدمة غير متوفرة</translation>
+    </message>
+    <message>
+        <source>Service seems to be unavailable right now.
+Please wait few minutes and try again.</source>
+        <comment>message</comment>
+        <translation>يبدو أن الخدمة غير متوفرة الآن.
+الرجاء الانتظار بضع دقائق ثم المحاولة مرة أخرى.</translation>
+    </message>
+    <message>
+        <source>Software is Up-To-Date</source>
+        <comment>message</comment>
+        <translation>البرنامج محدث</translation>
+    </message>
+    <message>
+        <source>New Update Available</source>
+        <comment>message</comment>
+        <translation>تحديث جديد متاح</translation>
+    </message>
+</context>
+<context>
+    <name>convertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>استيراد M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>تصدير M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>ألغِ</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>يستورد</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>يصدّر</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>خيارات مجموعة القنوات</translation>
+    </message>
+    <message>
+        <source>Import each group name in Userbouquets</source>
+        <translation>قم باستيراد اسم كل مجموعة في مجموعات قنوات المستخدم</translation>
+    </message>
+    <message>
+        <source>Import all entries in one Userbouquet</source>
+        <translation>استيراد كافة الإدخالات في مجموعة قنوات مستخدم واحدة</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>تجاهل المعرف المرجعي إذا تم تعيينه</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>حدد مجموعات قنوات المستخدم</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>الاسم</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>اسم الملف</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>تعيين معرف مرجع القناة</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>ضبط رقم القناة</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>تعيين اسم مجموعة القنوات</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>قم بتعيين العنصر النائب لعنوان URL لشعارات القناة</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>عنوان URL الأساسي لشعارات القناة</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>حدد مجلد شعارات القناة</translation>
+    </message>
+</context>
+<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -395,12 +543,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>تحرير المفضلة</translation>
     </message>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>المفضلة الجديدة</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -409,7 +557,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Favourite type</source>
-        <translation type="unfinished"></translation>
+        <translation>النوع المفضل</translation>
     </message>
     <message>
         <source>custom</source>
@@ -417,7 +565,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Entry flag</source>
-        <translation type="unfinished"></translation>
+        <translation>علامة بت الإدخال</translation>
     </message>
     <message>
         <source>Service type</source>
@@ -442,19 +590,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Stream</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>تدفق</translation>
     </message>
     <message>
         <source>Channel URL</source>
-        <translation type="unfinished"></translation>
+        <translation>عنوان URL للقناة</translation>
     </message>
     <message>
         <source>Channel name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>custom channel name, leave empty to auto-fill with service reference</source>
-        <translation type="unfinished"></translation>
+        <translation>اسم القناة</translation>
     </message>
     <message>
         <source>Error</source>
@@ -515,7 +659,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Marker flag</source>
-        <translation type="unfinished"></translation>
+        <translation>علامة بت العلامة</translation>
     </message>
     <message>
         <source>custom</source>
@@ -729,7 +873,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>مفضل</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
@@ -1745,6 +1889,31 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>error</comment>
         <translation>خطأ في فتح الملفات.</translation>
     </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>الاستيراد من M3U</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>تصدير إلى M3U</translation>
+    </message>
+    <message>
+        <source>M3U File</source>
+        <comment>file-dialog</comment>
+        <translation>ملف M3U</translation>
+    </message>
+    <message>
+        <source>Checking for updates…</source>
+        <comment>message</comment>
+        <translation>جارٍ التحقق من التحديثات...</translation>
+    </message>
+    <message>
+        <source>DEMO MODE</source>
+        <comment>message</comment>
+        <translation>الوضع التجريبي</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2110,7 +2279,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Favourite</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>تحرير المفضلة</translation>
     </message>
     <message>
         <source>Bouquet</source>
@@ -2120,12 +2289,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Channel</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>قناة</translation>
     </message>
     <message>
         <source>Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>تدفق</translation>
     </message>
     <message>
         <source>Marker</source>
@@ -2140,7 +2309,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Add Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>أضف دفق</translation>
     </message>
 </context>
 <context>
@@ -2832,19 +3001,23 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished">التفضيلات</translation>
+        <translation>التفضيلات</translation>
     </message>
     <message>
         <source>Use a global marker index (will change ID for markers)</source>
-        <translation type="unfinished"></translation>
+        <translation>استخدم فهرس العلامات العالمي (سيغير معرف العلامات)</translation>
     </message>
     <message>
         <source>Sort by ID when merging lists (slower merge)</source>
-        <translation type="unfinished"></translation>
+        <translation>الترتيب حسب المعرف عند دمج القوائم (دمج أبطأ)</translation>
     </message>
     <message>
         <source>Match favourite reference with services</source>
-        <translation type="unfinished"></translation>
+        <translation>مطابقة المراجع المفضلة مع الخدمات الموجودة</translation>
+    </message>
+    <message>
+        <source>Check for updates on launch</source>
+        <translation>التحقق من وجود تحديثات عند تشغيل البرنامج</translation>
     </message>
 </context>
 <context>
@@ -3104,11 +3277,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation type="vanished">لا يمكن إعادة تحميل STB!</translation>
     </message>
     <message>
-        <source>DEMO MODE</source>
-        <comment>message</comment>
-        <translation>الوضع التجريبي</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -3291,6 +3459,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>Error writing files.</source>
         <comment>error</comment>
         <translation>خطأ في كتابة الملفات.</translation>
+    </message>
+    <message>
+        <source>Nothing to export</source>
+        <comment>message</comment>
+        <translation>لا شيء للتصدير</translation>
+    </message>
+    <message>
+        <source>There are not stream type references in userbouquets to export.</source>
+        <comment>message</comment>
+        <translation>لا توجد مراجع لنوع الدفق في مجموعات قنوات المستخدم للتصدير.</translation>
     </message>
 </context>
 <context>

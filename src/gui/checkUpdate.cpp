@@ -183,14 +183,14 @@ void checkUpdate::prompt()
 	{
 		QString version = QString::fromStdString(this->state.version);
 
-		title = tr("You are Up-To-Date!", "message");
+		title = tr("Software is Up-To-Date", "message");
 		message = tr("e2 SAT Editor %1 is the latest version available.", "message").arg(version);
 	}
 	else if (this->state.dialog == dial_haveupdate)
 	{
 		QString version = QString::fromStdString(this->state.version);
 
-		title = tr("Update Available!", "message");
+		title = tr("New Update Available", "message");
 
 		if (this->medium == MEDIUM::unknown)
 		{

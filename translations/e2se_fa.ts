@@ -131,6 +131,154 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
 </context>
 <context>
+    <name>checkUpdate</name>
+    <message>
+        <source>e2 SAT Editor %1 is the latest version available.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor نسخه %1 آخرین نسخه موجود است.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to download.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor نسخه %1 برای دانلود موجود است.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to update.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor نسخه %1 برای به روز رسانی در دسترس است.</translation>
+    </message>
+    <message>
+        <source>Please run Snap update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>لطفاً به روزرسانی Snap را برای دریافت آخرین نسخه اجرا کنید.</translation>
+    </message>
+    <message>
+        <source>Please run Flatpak update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>لطفا به روز رسانی Flatpak را برای دریافت آخرین نسخه اجرا کنید.</translation>
+    </message>
+    <message>
+        <source>Please fetch the AUR repository and build the latest version.</source>
+        <comment>message</comment>
+        <translation>لطفاً به روزرسانی مخزن AUR را راه اندازی کنید سپس آخرین نسخه را کامپایل کنید.</translation>
+    </message>
+    <message>
+        <source>Connection Error</source>
+        <comment>message</comment>
+        <translation>خطای اتصال</translation>
+    </message>
+    <message>
+        <source>There was an error during connection.
+Please check network settings and try again.</source>
+        <comment>message</comment>
+        <translation>در حین اتصال خطایی روی داد.
+لطفاً تنظیمات شبکه را بررسی کرده و دوباره امتحان کنید.</translation>
+    </message>
+    <message>
+        <source>Service Not Available</source>
+        <comment>message</comment>
+        <translation>سرویس در دسترس نیست</translation>
+    </message>
+    <message>
+        <source>Service seems to be unavailable right now.
+Please wait few minutes and try again.</source>
+        <comment>message</comment>
+        <translation>به نظر می رسد سرویس در حال حاضر در دسترس نیست.
+لطفاً چند دقیقه صبر کنید و دوباره امتحان کنید.</translation>
+    </message>
+    <message>
+        <source>Software is Up-To-Date</source>
+        <comment>message</comment>
+        <translation>نرم افزار به روز است</translation>
+    </message>
+    <message>
+        <source>New Update Available</source>
+        <comment>message</comment>
+        <translation>بروز رسانی جدیدی در دسترس قرار گرفته است</translation>
+    </message>
+</context>
+<context>
+    <name>convertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>M3U را وارد کنید</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>صادرات M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>انصراف</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>وارد كردن</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>صادرات</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>گزینه های گروه کانال</translation>
+    </message>
+    <message>
+        <source>Import each group name in Userbouquets</source>
+        <translation>نام هر گروه را در دسته های کاربری وارد کنید</translation>
+    </message>
+    <message>
+        <source>Import all entries in one Userbouquet</source>
+        <translation>همه ورودی ها را در یک کانال کاربر وارد کنید</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>در صورت تنظیم، شناسه مرجع را رد کنید</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>دسته های کاربری را انتخاب کنید</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>نام</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>نام فایل</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>شناسه مرجع کانال را تنظیم کنید</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>تنظیم شماره کانال</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>نام گروه کانال را تنظیم کنید</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>مکان نمای نشانی وب آرم کانال را تنظیم کنید</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>نشانی وب پایه آرم کانال</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>پوشه آرم کانال را انتخاب کنید</translation>
+    </message>
+</context>
+<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -395,12 +543,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>ویرایش مورد علاقه</translation>
     </message>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>مورد علاقه جدید</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -409,7 +557,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Favourite type</source>
-        <translation type="unfinished"></translation>
+        <translation>نوع مورد علاقه</translation>
     </message>
     <message>
         <source>custom</source>
@@ -417,7 +565,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Entry flag</source>
-        <translation type="unfinished"></translation>
+        <translation>پرچم بیت ورودی</translation>
     </message>
     <message>
         <source>Service type</source>
@@ -442,19 +590,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Stream</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>جریان</translation>
     </message>
     <message>
         <source>Channel URL</source>
-        <translation type="unfinished"></translation>
+        <translation>آدرس کانال</translation>
     </message>
     <message>
         <source>Channel name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>custom channel name, leave empty to auto-fill with service reference</source>
-        <translation type="unfinished"></translation>
+        <translation>نام کانال</translation>
     </message>
     <message>
         <source>Error</source>
@@ -515,7 +659,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Marker flag</source>
-        <translation type="unfinished"></translation>
+        <translation>نشانگر بیت پرچم</translation>
     </message>
     <message>
         <source>custom</source>
@@ -729,7 +873,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>مورد علاقه</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
@@ -1745,6 +1889,31 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>error</comment>
         <translation>خطا در باز کردن فایل ها</translation>
     </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>واردات از M3U</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>صادرات به M3U</translation>
+    </message>
+    <message>
+        <source>M3U File</source>
+        <comment>file-dialog</comment>
+        <translation>فایل M3U</translation>
+    </message>
+    <message>
+        <source>Checking for updates…</source>
+        <comment>message</comment>
+        <translation>در حال بررسی به روزرسانی ها…</translation>
+    </message>
+    <message>
+        <source>DEMO MODE</source>
+        <comment>message</comment>
+        <translation>حالت دمو</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2110,7 +2279,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Favourite</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>ویرایش مورد علاقه</translation>
     </message>
     <message>
         <source>Bouquet</source>
@@ -2120,12 +2289,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Channel</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>کانال</translation>
     </message>
     <message>
         <source>Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>جریان</translation>
     </message>
     <message>
         <source>Marker</source>
@@ -2140,7 +2309,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Add Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>اضافه کردن جریان</translation>
     </message>
 </context>
 <context>
@@ -2827,19 +2996,23 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished">اولویت ها</translation>
+        <translation>اولویت ها</translation>
     </message>
     <message>
         <source>Use a global marker index (will change ID for markers)</source>
-        <translation type="unfinished"></translation>
+        <translation>از یک نمایه نشانگر جهانی استفاده کنید (شناسه نشانگرها را تغییر خواهد داد)</translation>
     </message>
     <message>
         <source>Sort by ID when merging lists (slower merge)</source>
-        <translation type="unfinished"></translation>
+        <translation>مرتب سازی بر اساس شناسه هنگام ادغام لیست ها (ادغام کندتر)</translation>
     </message>
     <message>
         <source>Match favourite reference with services</source>
-        <translation type="unfinished"></translation>
+        <translation>موارد دلخواه مرجع را با خدمات موجود مطابقت دهید</translation>
+    </message>
+    <message>
+        <source>Check for updates on launch</source>
+        <translation>به روز رسانی در راه اندازی نرم افزار را بررسی کنید</translation>
     </message>
 </context>
 <context>
@@ -3089,11 +3262,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation type="vanished">نمی توان ست تاپ باکس را دوباره بارگیری کرد!</translation>
     </message>
     <message>
-        <source>DEMO MODE</source>
-        <comment>message</comment>
-        <translation>حالت دمو</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -3276,6 +3444,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>Error writing files.</source>
         <comment>error</comment>
         <translation>خطا در نوشتن فایل ها</translation>
+    </message>
+    <message>
+        <source>Nothing to export</source>
+        <comment>message</comment>
+        <translation>چیزی برای صادرات نیست</translation>
+    </message>
+    <message>
+        <source>There are not stream type references in userbouquets to export.</source>
+        <comment>message</comment>
+        <translation>مرجع نوع جریان در دسته های کاربری برای صادرات وجود ندارد.</translation>
     </message>
 </context>
 <context>

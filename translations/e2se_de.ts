@@ -132,6 +132,154 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
     </message>
 </context>
 <context>
+    <name>checkUpdate</name>
+    <message>
+        <source>e2 SAT Editor %1 is the latest version available.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 ist die neueste verfügbare Version.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to download.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 steht zum Download bereit.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to update.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 kann aktualisiert werden.</translation>
+    </message>
+    <message>
+        <source>Please run Snap update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>Bitte führen Sie das Snap update aus, um die neueste Version zu erhalten.</translation>
+    </message>
+    <message>
+        <source>Please run Flatpak update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>Bitte führen Sie das Flatpak update aus, um die neueste Version zu erhalten.</translation>
+    </message>
+    <message>
+        <source>Please fetch the AUR repository and build the latest version.</source>
+        <comment>message</comment>
+        <translation>Bitte starten Sie das AUR repository update und kompilieren Sie die neueste Version.</translation>
+    </message>
+    <message>
+        <source>Connection Error</source>
+        <comment>message</comment>
+        <translation>Verbindungs Fehler</translation>
+    </message>
+    <message>
+        <source>There was an error during connection.
+Please check network settings and try again.</source>
+        <comment>message</comment>
+        <translation>Beim Herstellen der Verbindung ist ein Fehler aufgetreten.
+Bitte überprüfen Sie die Netzwerkeinstellungen und versuchen Sie es erneut.</translation>
+    </message>
+    <message>
+        <source>Service Not Available</source>
+        <comment>message</comment>
+        <translation>Dienst nicht verfügbar</translation>
+    </message>
+    <message>
+        <source>Service seems to be unavailable right now.
+Please wait few minutes and try again.</source>
+        <comment>message</comment>
+        <translation>Der Dienst scheint derzeit nicht verfügbar zu sein.
+Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
+    </message>
+    <message>
+        <source>Software is Up-To-Date</source>
+        <comment>message</comment>
+        <translation>Die Software ist auf dem neuesten Stand</translation>
+    </message>
+    <message>
+        <source>New Update Available</source>
+        <comment>message</comment>
+        <translation>Neues Update verfügbar</translation>
+    </message>
+</context>
+<context>
+    <name>convertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>M3U importieren</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>M3U exportieren</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>Abbrechen</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>Importieren</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>Exporte</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>Kanalgruppen optionen</translation>
+    </message>
+    <message>
+        <source>Import each group name in Userbouquets</source>
+        <translation>Importieren Sie jeden Gruppennamen in Userbouquets</translation>
+    </message>
+    <message>
+        <source>Import all entries in one Userbouquet</source>
+        <translation>Alles in einem Userbouquet importieren</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>Verwerfen Sie Reference ID falls festgelegt</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>Wählen Sie Userbouquets</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Name</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Dateinamen</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>Kanal Reference ID einstellen</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>Kanal nummer einstellen</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>Legen Sie den Namen der Kanal gruppe fest</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>Legen Sie den URL-Platzhalter für Kanal logos fest</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>Basis-URL der Kanal logos</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>Wählen Sie den Ordner mit den Kanal logos aus</translation>
+    </message>
+</context>
+<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -396,12 +544,12 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Favorit bearbeiten</translation>
     </message>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Neuer Favorit</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -410,7 +558,7 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
     </message>
     <message>
         <source>Favourite type</source>
-        <translation type="unfinished"></translation>
+        <translation>Lieblings typ</translation>
     </message>
     <message>
         <source>custom</source>
@@ -418,7 +566,7 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
     </message>
     <message>
         <source>Entry flag</source>
-        <translation type="unfinished"></translation>
+        <translation>Entry flag</translation>
     </message>
     <message>
         <source>Service type</source>
@@ -443,19 +591,15 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
     <message>
         <source>Stream</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stream</translation>
     </message>
     <message>
         <source>Channel URL</source>
-        <translation type="unfinished"></translation>
+        <translation>Kanal URL</translation>
     </message>
     <message>
         <source>Channel name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>custom channel name, leave empty to auto-fill with service reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Kanal name</translation>
     </message>
     <message>
         <source>Error</source>
@@ -516,7 +660,7 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
     </message>
     <message>
         <source>Marker flag</source>
-        <translation type="unfinished"></translation>
+        <translation>Marker flag</translation>
     </message>
     <message>
         <source>custom</source>
@@ -730,7 +874,7 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
     <message>
         <source>Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Favorit</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
@@ -1746,6 +1890,31 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Fehler beim Öffnen der Dateien.</translation>
     </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>Import aus M3U</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>Export nach M3U</translation>
+    </message>
+    <message>
+        <source>M3U File</source>
+        <comment>file-dialog</comment>
+        <translation>M3U Datei</translation>
+    </message>
+    <message>
+        <source>Checking for updates…</source>
+        <comment>message</comment>
+        <translation>Updates werden überprüft…</translation>
+    </message>
+    <message>
+        <source>DEMO MODE</source>
+        <comment>message</comment>
+        <translation>DEMO MODUS</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2111,7 +2280,7 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Favorit bearbeiten</translation>
     </message>
     <message>
         <source>Bouquet</source>
@@ -2121,12 +2290,12 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
     <message>
         <source>Channel</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kanal</translation>
     </message>
     <message>
         <source>Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stream</translation>
     </message>
     <message>
         <source>Marker</source>
@@ -2141,7 +2310,7 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
     <message>
         <source>Add Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stream hinzufügen</translation>
     </message>
 </context>
 <context>
@@ -2829,19 +2998,23 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished">Präferenzen</translation>
+        <translation>Präferenzen</translation>
     </message>
     <message>
         <source>Use a global marker index (will change ID for markers)</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwenden Sie einen globalen marker Index (ändert die ID für marker).</translation>
     </message>
     <message>
         <source>Sort by ID when merging lists (slower merge)</source>
-        <translation type="unfinished"></translation>
+        <translation>Beim Zusammenführen von Listen nach ID sortieren (langsameres Zusammenführen)</translation>
     </message>
     <message>
         <source>Match favourite reference with services</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordnen Sie Referenzfavoriten vorhandenen Diensten zu</translation>
+    </message>
+    <message>
+        <source>Check for updates on launch</source>
+        <translation>Suchen Sie beim Start nach Updates</translation>
     </message>
 </context>
 <context>
@@ -3093,11 +3266,6 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
         <translation type="vanished">STB kann nicht neu geladen werden!</translation>
     </message>
     <message>
-        <source>DEMO MODE</source>
-        <comment>message</comment>
-        <translation>DEMO MODUS</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -3280,6 +3448,16 @@ ODER ANDEREN HANDELN IN DER SOFTWARE ERGEBEN SOFTWARE.</translation>
         <source>Error writing files.</source>
         <comment>error</comment>
         <translation>Fehler beim Schreiben der Dateien.</translation>
+    </message>
+    <message>
+        <source>Nothing to export</source>
+        <comment>message</comment>
+        <translation>Nichts zum Exportieren</translation>
+    </message>
+    <message>
+        <source>There are not stream type references in userbouquets to export.</source>
+        <comment>message</comment>
+        <translation>Es gibt keine Referenzen vom Typ Stream in userbouquets, die exportiert werden können.</translation>
     </message>
 </context>
 <context>

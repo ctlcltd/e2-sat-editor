@@ -129,6 +129,154 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
 </context>
 <context>
+    <name>checkUpdate</name>
+    <message>
+        <source>e2 SAT Editor %1 is the latest version available.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor 버전 %1 은(는) 사용 가능한 최신 버전입니다.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to download.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor 버전 %1 을(를) 다운로드할 수 있습니다.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to update.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor 버전 %1 을(를) 업데이트할 수 있습니다.</translation>
+    </message>
+    <message>
+        <source>Please run Snap update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>최신 버전을 받으려면 Snap 업데이트를 실행하세요.</translation>
+    </message>
+    <message>
+        <source>Please run Flatpak update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>최신 버전을 받으려면 Flatpak 업데이트를 실행하세요.</translation>
+    </message>
+    <message>
+        <source>Please fetch the AUR repository and build the latest version.</source>
+        <comment>message</comment>
+        <translation>AUR 저장소 업데이트를 시작한 다음 최신 버전을 컴파일하십시오.</translation>
+    </message>
+    <message>
+        <source>Connection Error</source>
+        <comment>message</comment>
+        <translation>연결 오류</translation>
+    </message>
+    <message>
+        <source>There was an error during connection.
+Please check network settings and try again.</source>
+        <comment>message</comment>
+        <translation>연결하는 동안 오류가 발생했습니다.
+네트워크 설정을 확인하고 다시 시도하십시오.</translation>
+    </message>
+    <message>
+        <source>Service Not Available</source>
+        <comment>message</comment>
+        <translation>서비스를 이용할 수 없음</translation>
+    </message>
+    <message>
+        <source>Service seems to be unavailable right now.
+Please wait few minutes and try again.</source>
+        <comment>message</comment>
+        <translation>지금은 서비스를 사용할 수 없는 것 같습니다.
+몇 분 정도 기다렸다가 다시 시도하십시오.</translation>
+    </message>
+    <message>
+        <source>Software is Up-To-Date</source>
+        <comment>message</comment>
+        <translation>소프트웨어가 최신 상태입니다.</translation>
+    </message>
+    <message>
+        <source>New Update Available</source>
+        <comment>message</comment>
+        <translation>새로운 업데이트 가능</translation>
+    </message>
+</context>
+<context>
+    <name>convertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>M3U 가져오기</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>M3U 내보내기</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>취소(C)</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>수입</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>내보내다</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>채널 그룹 옵션</translation>
+    </message>
+    <message>
+        <source>Import each group name in Userbouquets</source>
+        <translation>사용자-채널-그룹에서 각 그룹 이름 가져오기</translation>
+    </message>
+    <message>
+        <source>Import all entries in one Userbouquet</source>
+        <translation>하나의 사용자-채널-그룹에 있는 모든 항목 가져오기</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>참조 ID가 설정된 경우 폐기</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>사용자-채널-그룹 선택</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>이름</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>파일 이름</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>채널 참조 ID 설정</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>채널 번호 설정</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>채널 그룹 이름 설정</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>채널 로고 URL 자리 표시자 설정</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>채널 로고 기본 URL</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>채널 로고 폴더 선택</translation>
+    </message>
+</context>
+<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -393,12 +541,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>즐겨찾기 편집</translation>
     </message>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>새로운 즐겨찾기</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -407,7 +555,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Favourite type</source>
-        <translation type="unfinished"></translation>
+        <translation>좋아하는 유형</translation>
     </message>
     <message>
         <source>custom</source>
@@ -415,7 +563,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Entry flag</source>
-        <translation type="unfinished"></translation>
+        <translation>항목 비트 플래그</translation>
     </message>
     <message>
         <source>Service type</source>
@@ -440,19 +588,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Stream</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>개울</translation>
     </message>
     <message>
         <source>Channel URL</source>
-        <translation type="unfinished"></translation>
+        <translation>채널 URL</translation>
     </message>
     <message>
         <source>Channel name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>custom channel name, leave empty to auto-fill with service reference</source>
-        <translation type="unfinished"></translation>
+        <translation>채널 이름</translation>
     </message>
     <message>
         <source>Error</source>
@@ -513,7 +657,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Marker flag</source>
-        <translation type="unfinished"></translation>
+        <translation>마커 비트 플래그</translation>
     </message>
     <message>
         <source>custom</source>
@@ -727,7 +871,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>가장 좋아하는</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
@@ -1743,6 +1887,31 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>error</comment>
         <translation>파일을 여는 중 오류가 발생했습니다.</translation>
     </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>M3U 에서 가져오기</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>M3U 로 내보내기</translation>
+    </message>
+    <message>
+        <source>M3U File</source>
+        <comment>file-dialog</comment>
+        <translation>M3U 파일</translation>
+    </message>
+    <message>
+        <source>Checking for updates…</source>
+        <comment>message</comment>
+        <translation>업데이트 확인 중…</translation>
+    </message>
+    <message>
+        <source>DEMO MODE</source>
+        <comment>message</comment>
+        <translation>데모 모드</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2108,7 +2277,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Favourite</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>즐겨찾기 편집</translation>
     </message>
     <message>
         <source>Bouquet</source>
@@ -2118,12 +2287,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Channel</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>채널</translation>
     </message>
     <message>
         <source>Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>개울</translation>
     </message>
     <message>
         <source>Marker</source>
@@ -2138,7 +2307,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Add Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>스트림 추가</translation>
     </message>
 </context>
 <context>
@@ -2825,19 +2994,23 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished">기본 설정</translation>
+        <translation>기본 설정</translation>
     </message>
     <message>
         <source>Use a global marker index (will change ID for markers)</source>
-        <translation type="unfinished"></translation>
+        <translation>글로벌 마커 인덱스 사용(마커의 ID가 변경됨)</translation>
     </message>
     <message>
         <source>Sort by ID when merging lists (slower merge)</source>
-        <translation type="unfinished"></translation>
+        <translation>목록 병합 시 ID별로 정렬(병합 속도가 느림)</translation>
     </message>
     <message>
         <source>Match favourite reference with services</source>
-        <translation type="unfinished"></translation>
+        <translation>참조 즐겨찾기를 기존 서비스와 일치시킵니다.</translation>
+    </message>
+    <message>
+        <source>Check for updates on launch</source>
+        <translation>소프트웨어 출시에 대한 업데이트 확인</translation>
     </message>
 </context>
 <context>
@@ -3087,11 +3260,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation type="vanished">셋톱박스를 다시 로드할 수 없습니다!</translation>
     </message>
     <message>
-        <source>DEMO MODE</source>
-        <comment>message</comment>
-        <translation>데모 모드</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -3274,6 +3442,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>Error writing files.</source>
         <comment>error</comment>
         <translation>파일을 쓰는 중 오류가 발생했습니다.</translation>
+    </message>
+    <message>
+        <source>Nothing to export</source>
+        <comment>message</comment>
+        <translation>내보낼 항목 없음</translation>
+    </message>
+    <message>
+        <source>There are not stream type references in userbouquets to export.</source>
+        <comment>message</comment>
+        <translation>내보낼 사용자-채널-그룹에 스트림 유형 참조가 없습니다.</translation>
     </message>
 </context>
 <context>

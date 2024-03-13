@@ -131,6 +131,154 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     </message>
 </context>
 <context>
+    <name>checkUpdate</name>
+    <message>
+        <source>e2 SAT Editor %1 is the latest version available.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 je najnovšia dostupná verzia.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to download.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 je k dispozícii na stiahnutie.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to update.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 je k dispozícii na aktualizáciu.</translation>
+    </message>
+    <message>
+        <source>Please run Snap update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>Ak chcete získať najnovšiu verziu, spustite aktualizáciu Snap.</translation>
+    </message>
+    <message>
+        <source>Please run Flatpak update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>Ak chcete získať najnovšiu verziu, spustite aktualizáciu Flatpak.</translation>
+    </message>
+    <message>
+        <source>Please fetch the AUR repository and build the latest version.</source>
+        <comment>message</comment>
+        <translation>Spustite aktualizáciu úložiska AUR a skompilujte najnovšiu verziu.</translation>
+    </message>
+    <message>
+        <source>Connection Error</source>
+        <comment>message</comment>
+        <translation>Chyba Spojenia</translation>
+    </message>
+    <message>
+        <source>There was an error during connection.
+Please check network settings and try again.</source>
+        <comment>message</comment>
+        <translation>Počas pripojenia sa vyskytla chyba.
+Skontrolujte nastavenia siete a skúste to znova.</translation>
+    </message>
+    <message>
+        <source>Service Not Available</source>
+        <comment>message</comment>
+        <translation>Služba nie je k dispozícii</translation>
+    </message>
+    <message>
+        <source>Service seems to be unavailable right now.
+Please wait few minutes and try again.</source>
+        <comment>message</comment>
+        <translation>Zdá sa, že služba je momentálne nedostupná.
+Počkajte niekoľko minút a skúste to znova.</translation>
+    </message>
+    <message>
+        <source>Software is Up-To-Date</source>
+        <comment>message</comment>
+        <translation>Softvér je aktuálny</translation>
+    </message>
+    <message>
+        <source>New Update Available</source>
+        <comment>message</comment>
+        <translation>K dispozícii je nová aktualizácia</translation>
+    </message>
+</context>
+<context>
+    <name>convertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>Importovať M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>Export M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>Zrušiť</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>Import</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>Export</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>Možnosti skupiny kanálov</translation>
+    </message>
+    <message>
+        <source>Import each group name in Userbouquets</source>
+        <translation>Importujte každý názov skupiny do userbouquets</translation>
+    </message>
+    <message>
+        <source>Import all entries in one Userbouquet</source>
+        <translation>Importovať všetko v jednej userbouquet</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>Zrušte Reference ID, ak je nastavené</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>Vyberte Userbouquets</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Názov</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Názov súboru</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>Nastaviť kanál Reference ID</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>Nastavte číslo kanála</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>Nastavte názov skupiny kanálov</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>Nastaviť zástupný symbol adresy URL loga kanála</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>Základná adresa URL loga kanála</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>Vyberte priečinok s logami kanálov</translation>
+    </message>
+</context>
+<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -395,12 +543,12 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Upraviť Obľúbené</translation>
     </message>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nový Obľúbený</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -409,7 +557,7 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     </message>
     <message>
         <source>Favourite type</source>
-        <translation type="unfinished"></translation>
+        <translation>Obľúbený typ</translation>
     </message>
     <message>
         <source>custom</source>
@@ -417,7 +565,7 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     </message>
     <message>
         <source>Entry flag</source>
-        <translation type="unfinished"></translation>
+        <translation>Entry flag</translation>
     </message>
     <message>
         <source>Service type</source>
@@ -442,19 +590,15 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     <message>
         <source>Stream</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stream</translation>
     </message>
     <message>
         <source>Channel URL</source>
-        <translation type="unfinished"></translation>
+        <translation>URL kanála</translation>
     </message>
     <message>
         <source>Channel name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>custom channel name, leave empty to auto-fill with service reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Názov kanála</translation>
     </message>
     <message>
         <source>Error</source>
@@ -515,7 +659,7 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     </message>
     <message>
         <source>Marker flag</source>
-        <translation type="unfinished"></translation>
+        <translation>Marker flag</translation>
     </message>
     <message>
         <source>custom</source>
@@ -729,7 +873,7 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     <message>
         <source>Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Obľúbené</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
@@ -1745,6 +1889,31 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Chyba pri otváraní súborov.</translation>
     </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>Import z M3U</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>Export do M3U</translation>
+    </message>
+    <message>
+        <source>M3U File</source>
+        <comment>file-dialog</comment>
+        <translation>Súbor M3U</translation>
+    </message>
+    <message>
+        <source>Checking for updates…</source>
+        <comment>message</comment>
+        <translation>Kontrolujú sa aktualizácie…</translation>
+    </message>
+    <message>
+        <source>DEMO MODE</source>
+        <comment>message</comment>
+        <translation>DEMO REŽIM</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2110,7 +2279,7 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Upraviť Obľúbené</translation>
     </message>
     <message>
         <source>Bouquet</source>
@@ -2120,12 +2289,12 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     <message>
         <source>Channel</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kanál</translation>
     </message>
     <message>
         <source>Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stream</translation>
     </message>
     <message>
         <source>Marker</source>
@@ -2140,7 +2309,7 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     <message>
         <source>Add Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pridať Stream</translation>
     </message>
 </context>
 <context>
@@ -2829,19 +2998,23 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished">Predvoľby</translation>
+        <translation>Predvoľby</translation>
     </message>
     <message>
         <source>Use a global marker index (will change ID for markers)</source>
-        <translation type="unfinished"></translation>
+        <translation>Použite globálny index marker (zmení ID pre markers)</translation>
     </message>
     <message>
         <source>Sort by ID when merging lists (slower merge)</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoradiť podľa ID pri zlučovaní zoznamov (pomalšie zlučovanie)</translation>
     </message>
     <message>
         <source>Match favourite reference with services</source>
-        <translation type="unfinished"></translation>
+        <translation>Priraďte obľúbené referenčné položky k existujúcim službám</translation>
+    </message>
+    <message>
+        <source>Check for updates on launch</source>
+        <translation>Pri spustení skontrolujte aktualizácie</translation>
     </message>
 </context>
 <context>
@@ -3095,11 +3268,6 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
         <translation type="vanished">Nedá sa načítať STB!</translation>
     </message>
     <message>
-        <source>DEMO MODE</source>
-        <comment>message</comment>
-        <translation>DEMO REŽIM</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -3282,6 +3450,16 @@ V SÚVISLOSTI S TÝMTO DEWALOM SOFTWARE.</translation>
         <source>Error writing files.</source>
         <comment>error</comment>
         <translation>Chyba pri zapisovaní súborov.</translation>
+    </message>
+    <message>
+        <source>Nothing to export</source>
+        <comment>message</comment>
+        <translation>Nič na export</translation>
+    </message>
+    <message>
+        <source>There are not stream type references in userbouquets to export.</source>
+        <comment>message</comment>
+        <translation>V userbouquets nie sú odkazy na typ stream na export.</translation>
     </message>
 </context>
 <context>

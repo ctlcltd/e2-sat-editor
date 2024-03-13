@@ -132,6 +132,154 @@ HANDELINGEN IN DE SOFTWARE.</translation>
     </message>
 </context>
 <context>
+    <name>checkUpdate</name>
+    <message>
+        <source>e2 SAT Editor %1 is the latest version available.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 is de nieuwste beschikbare versie.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to download.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 kan worden gedownload.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to update.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 is beschikbaar voor update.</translation>
+    </message>
+    <message>
+        <source>Please run Snap update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>Voer de Snap update uit om de nieuwste versie te krijgen.</translation>
+    </message>
+    <message>
+        <source>Please run Flatpak update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>Voer de Flatpak update uit om de nieuwste versie te krijgen.</translation>
+    </message>
+    <message>
+        <source>Please fetch the AUR repository and build the latest version.</source>
+        <comment>message</comment>
+        <translation>Start de AUR repository update en compileer de nieuwste versie.</translation>
+    </message>
+    <message>
+        <source>Connection Error</source>
+        <comment>message</comment>
+        <translation>Verbindings Fout</translation>
+    </message>
+    <message>
+        <source>There was an error during connection.
+Please check network settings and try again.</source>
+        <comment>message</comment>
+        <translation>Er is een fout opgetreden tijdens de verbinding.
+Controleer de netwerkinstellingen en probeer het opnieuw.</translation>
+    </message>
+    <message>
+        <source>Service Not Available</source>
+        <comment>message</comment>
+        <translation>Service niet beschikbaar</translation>
+    </message>
+    <message>
+        <source>Service seems to be unavailable right now.
+Please wait few minutes and try again.</source>
+        <comment>message</comment>
+        <translation>Het lijkt erop dat de service momenteel niet beschikbaar is.
+Wacht een paar minuten en probeer het opnieuw.</translation>
+    </message>
+    <message>
+        <source>Software is Up-To-Date</source>
+        <comment>message</comment>
+        <translation>Software is Up-To-Date</translation>
+    </message>
+    <message>
+        <source>New Update Available</source>
+        <comment>message</comment>
+        <translation>Nieuwe update beschikbaar</translation>
+    </message>
+</context>
+<context>
+    <name>convertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>M3U importeren</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>M3U exporteren</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>Annuleren</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>Import</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>Export</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>Kanaalgroep opties</translation>
+    </message>
+    <message>
+        <source>Import each group name in Userbouquets</source>
+        <translation>Importeer elke groepsnaam in userbouquets</translation>
+    </message>
+    <message>
+        <source>Import all entries in one Userbouquet</source>
+        <translation>Importeer alles in één userbouquet</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>Gooi Reference ID weg, indien ingesteld</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>Selecteer Userbouquets</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Naam</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Bestandsnaam</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>Kanaal Reference ID instellen</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>Kanaal nummer instellen</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>Kanaalgroep naam instellen</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>Stel de tijdelijke aanduiding voor de URL van kanaal logo&apos;s in</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>Basis-URL van kanaa llogo&apos;s</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>Selecteer de map met kanaal logo&apos;s</translation>
+    </message>
+</context>
+<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -396,12 +544,12 @@ HANDELINGEN IN DE SOFTWARE.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Favoriet bewerken</translation>
     </message>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nieuwe Favoriet</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -410,7 +558,7 @@ HANDELINGEN IN DE SOFTWARE.</translation>
     </message>
     <message>
         <source>Favourite type</source>
-        <translation type="unfinished"></translation>
+        <translation>Favoriete soort</translation>
     </message>
     <message>
         <source>custom</source>
@@ -418,7 +566,7 @@ HANDELINGEN IN DE SOFTWARE.</translation>
     </message>
     <message>
         <source>Entry flag</source>
-        <translation type="unfinished"></translation>
+        <translation>Entry flag</translation>
     </message>
     <message>
         <source>Service type</source>
@@ -443,19 +591,15 @@ HANDELINGEN IN DE SOFTWARE.</translation>
     <message>
         <source>Stream</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stream</translation>
     </message>
     <message>
         <source>Channel URL</source>
-        <translation type="unfinished"></translation>
+        <translation>Kanaal URL</translation>
     </message>
     <message>
         <source>Channel name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>custom channel name, leave empty to auto-fill with service reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Kanaal naam</translation>
     </message>
     <message>
         <source>Error</source>
@@ -516,7 +660,7 @@ HANDELINGEN IN DE SOFTWARE.</translation>
     </message>
     <message>
         <source>Marker flag</source>
-        <translation type="unfinished"></translation>
+        <translation>Marker flag</translation>
     </message>
     <message>
         <source>custom</source>
@@ -730,7 +874,7 @@ HANDELINGEN IN DE SOFTWARE.</translation>
     <message>
         <source>Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Favoriet</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
@@ -1746,6 +1890,31 @@ HANDELINGEN IN DE SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Fout bij openen van bestanden.</translation>
     </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>Importeren vanuit M3U</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>Exporteren naar M3U</translation>
+    </message>
+    <message>
+        <source>M3U File</source>
+        <comment>file-dialog</comment>
+        <translation>M3U-bestand</translation>
+    </message>
+    <message>
+        <source>Checking for updates…</source>
+        <comment>message</comment>
+        <translation>Updates controleren…</translation>
+    </message>
+    <message>
+        <source>DEMO MODE</source>
+        <comment>message</comment>
+        <translation>DEMONSTRATIE MODUS</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2111,7 +2280,7 @@ HANDELINGEN IN DE SOFTWARE.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Favoriet bewerken</translation>
     </message>
     <message>
         <source>Bouquet</source>
@@ -2121,12 +2290,12 @@ HANDELINGEN IN DE SOFTWARE.</translation>
     <message>
         <source>Channel</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kanaal</translation>
     </message>
     <message>
         <source>Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stream</translation>
     </message>
     <message>
         <source>Marker</source>
@@ -2141,7 +2310,7 @@ HANDELINGEN IN DE SOFTWARE.</translation>
     <message>
         <source>Add Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Voeg Stream toe</translation>
     </message>
 </context>
 <context>
@@ -2829,19 +2998,23 @@ HANDELINGEN IN DE SOFTWARE.</translation>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished">Voorkeuren</translation>
+        <translation>Voorkeuren</translation>
     </message>
     <message>
         <source>Use a global marker index (will change ID for markers)</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruik een globale marker-index (zal de ID voor markers wijzigen)</translation>
     </message>
     <message>
         <source>Sort by ID when merging lists (slower merge)</source>
-        <translation type="unfinished"></translation>
+        <translation>Sorteren op ID bij het samenvoegen van lijsten (langzamer samenvoegen)</translation>
     </message>
     <message>
         <source>Match favourite reference with services</source>
-        <translation type="unfinished"></translation>
+        <translation>Match referentie favorieten met bestaande diensten</translation>
+    </message>
+    <message>
+        <source>Check for updates on launch</source>
+        <translation>Controleer op updates bij de lancering</translation>
     </message>
 </context>
 <context>
@@ -3093,11 +3266,6 @@ HANDELINGEN IN DE SOFTWARE.</translation>
         <translation type="vanished">Kan STB niet herladen!</translation>
     </message>
     <message>
-        <source>DEMO MODE</source>
-        <comment>message</comment>
-        <translation>DEMONSTRATIE MODUS</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -3280,6 +3448,16 @@ HANDELINGEN IN DE SOFTWARE.</translation>
         <source>Error writing files.</source>
         <comment>error</comment>
         <translation>Fout bij het schrijven van bestanden.</translation>
+    </message>
+    <message>
+        <source>Nothing to export</source>
+        <comment>message</comment>
+        <translation>Niets om te exporteren</translation>
+    </message>
+    <message>
+        <source>There are not stream type references in userbouquets to export.</source>
+        <comment>message</comment>
+        <translation>Er zijn geen verwijzingen naar het type stream in userbouquets om te exporteren.</translation>
     </message>
 </context>
 <context>

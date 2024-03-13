@@ -130,6 +130,154 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
 </context>
 <context>
+    <name>checkUpdate</name>
+    <message>
+        <source>e2 SAT Editor %1 is the latest version available.</source>
+        <comment>message</comment>
+        <translation>גרסת e2 SAT Editor %1 היא הגרסה העדכנית ביותר הזמינה.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to download.</source>
+        <comment>message</comment>
+        <translation>גרסת e2 SAT Editor %1 זמינה להורדה.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to update.</source>
+        <comment>message</comment>
+        <translation>גרסת e2 SAT Editor %1 זמינה לעדכון.</translation>
+    </message>
+    <message>
+        <source>Please run Snap update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>אנא הפעל את עדכון Snap כדי לקבל את הגרסה העדכנית ביותר.</translation>
+    </message>
+    <message>
+        <source>Please run Flatpak update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>אנא הפעל את עדכון Flatpak כדי לקבל את הגרסה העדכנית ביותר.</translation>
+    </message>
+    <message>
+        <source>Please fetch the AUR repository and build the latest version.</source>
+        <comment>message</comment>
+        <translation>אנא הפעל את עדכון מאגר AUR ולאחר מכן הרכיב את הגרסה האחרונה.</translation>
+    </message>
+    <message>
+        <source>Connection Error</source>
+        <comment>message</comment>
+        <translation>בעיית חיבור</translation>
+    </message>
+    <message>
+        <source>There was an error during connection.
+Please check network settings and try again.</source>
+        <comment>message</comment>
+        <translation>אירעה שגיאה במהלך החיבור.
+אנא בדוק את הגדרות הרשת ונסה שוב.</translation>
+    </message>
+    <message>
+        <source>Service Not Available</source>
+        <comment>message</comment>
+        <translation>השירות אינו זמין</translation>
+    </message>
+    <message>
+        <source>Service seems to be unavailable right now.
+Please wait few minutes and try again.</source>
+        <comment>message</comment>
+        <translation>נראה שהשירות אינו זמין כעת.
+אנא המתן מספר דקות ונסה שוב.</translation>
+    </message>
+    <message>
+        <source>Software is Up-To-Date</source>
+        <comment>message</comment>
+        <translation>התוכנה מעודכנת</translation>
+    </message>
+    <message>
+        <source>New Update Available</source>
+        <comment>message</comment>
+        <translation>עדכון חדש זמין</translation>
+    </message>
+</context>
+<context>
+    <name>convertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>ייבוא M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>ייצוא M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>ביטול</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>יְבוּא</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>יְצוּא</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>אפשרויות קבוצת ערוצים</translation>
+    </message>
+    <message>
+        <source>Import each group name in Userbouquets</source>
+        <translation>ייבא כל שם קבוצה ב זרי משתמש</translation>
+    </message>
+    <message>
+        <source>Import all entries in one Userbouquet</source>
+        <translation>ייבא את כל הערכים בקבוצת משתמש אחת</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>בטל את מזהה הפניה אם מוגדר</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>בחר משתמש-ערוץ-קבוצות</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>&amp;שמור</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>שם קובץ</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>הגדר את מזהה הפניה לערוץ</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>הגדר מספר ערוץ</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>הגדר את שם קבוצת הערוצים</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>הגדר מציין מיקום של כתובת אתר של לוגו ערוץ</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>כתובת האתר הבסיסית של לוגו ערוץ</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>בחר תיקיית לוגו ערוץ</translation>
+    </message>
+</context>
+<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -394,12 +542,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>ערוך מועדף</translation>
     </message>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>מועדף חדש</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -408,7 +556,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Favourite type</source>
-        <translation type="unfinished"></translation>
+        <translation>סוג אהוב</translation>
     </message>
     <message>
         <source>custom</source>
@@ -416,7 +564,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Entry flag</source>
-        <translation type="unfinished"></translation>
+        <translation>כניסה ביט-דגל</translation>
     </message>
     <message>
         <source>Service type</source>
@@ -441,19 +589,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Stream</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>זרם</translation>
     </message>
     <message>
         <source>Channel URL</source>
-        <translation type="unfinished"></translation>
+        <translation>כתובת האתר של הערוץ</translation>
     </message>
     <message>
         <source>Channel name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>custom channel name, leave empty to auto-fill with service reference</source>
-        <translation type="unfinished"></translation>
+        <translation>שם הערוץ</translation>
     </message>
     <message>
         <source>Error</source>
@@ -514,7 +658,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Marker flag</source>
-        <translation type="unfinished"></translation>
+        <translation>מרקר ביט-דגל</translation>
     </message>
     <message>
         <source>custom</source>
@@ -728,7 +872,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>אהוב</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
@@ -1744,6 +1888,31 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <comment>error</comment>
         <translation>שגיאה בפתיחת קבצים.</translation>
     </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>ייבוא מ M3U</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>ייצוא ל M3U</translation>
+    </message>
+    <message>
+        <source>M3U File</source>
+        <comment>file-dialog</comment>
+        <translation>קובץ M3U</translation>
+    </message>
+    <message>
+        <source>Checking for updates…</source>
+        <comment>message</comment>
+        <translation>בודק עדכונים…</translation>
+    </message>
+    <message>
+        <source>DEMO MODE</source>
+        <comment>message</comment>
+        <translation>במצב הדגמה</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2109,7 +2278,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Edit Favourite</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>ערוך מועדף</translation>
     </message>
     <message>
         <source>Bouquet</source>
@@ -2119,12 +2288,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Channel</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>עָרוּץ</translation>
     </message>
     <message>
         <source>Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>זרם</translation>
     </message>
     <message>
         <source>Marker</source>
@@ -2139,7 +2308,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     <message>
         <source>Add Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>הוסף זרם</translation>
     </message>
 </context>
 <context>
@@ -2827,19 +2996,23 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished">העדפות</translation>
+        <translation>העדפות</translation>
     </message>
     <message>
         <source>Use a global marker index (will change ID for markers)</source>
-        <translation type="unfinished"></translation>
+        <translation>השתמש באינדקס סמן גלובלי (ישנה מזהה עבור סמנים)</translation>
     </message>
     <message>
         <source>Sort by ID when merging lists (slower merge)</source>
-        <translation type="unfinished"></translation>
+        <translation>מיין לפי מזהה בעת מיזוג רשימות (מיזוג איטי יותר)</translation>
     </message>
     <message>
         <source>Match favourite reference with services</source>
-        <translation type="unfinished"></translation>
+        <translation>התאם את המועדפים של הפניות עם השירותים הקיימים</translation>
+    </message>
+    <message>
+        <source>Check for updates on launch</source>
+        <translation>בדוק אם קיימים עדכונים בעת השקת התוכנה</translation>
     </message>
 </context>
 <context>
@@ -3091,11 +3264,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <translation type="vanished">לא ניתן לטעון מחדש את ה-STB!</translation>
     </message>
     <message>
-        <source>DEMO MODE</source>
-        <comment>message</comment>
-        <translation>במצב הדגמה</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -3278,6 +3446,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
         <source>Error writing files.</source>
         <comment>error</comment>
         <translation>שגיאה בכתיבת קבצים.</translation>
+    </message>
+    <message>
+        <source>Nothing to export</source>
+        <comment>message</comment>
+        <translation>אין מה לייצא</translation>
+    </message>
+    <message>
+        <source>There are not stream type references in userbouquets to export.</source>
+        <comment>message</comment>
+        <translation>אין הפניות לסוג זרם ב זרי משתמש לייצא.</translation>
     </message>
 </context>
 <context>

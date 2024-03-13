@@ -130,6 +130,154 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
     </message>
 </context>
 <context>
+    <name>checkUpdate</name>
+    <message>
+        <source>e2 SAT Editor %1 is the latest version available.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 er den seneste tilgængelige version.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to download.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 er tilgængelig til download.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to update.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 er tilgængelig til opdatering.</translation>
+    </message>
+    <message>
+        <source>Please run Snap update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>Kør venligst Snap opdatering for at få den seneste version.</translation>
+    </message>
+    <message>
+        <source>Please run Flatpak update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>Kør venligst Flatpak opdateringen for at få den seneste version.</translation>
+    </message>
+    <message>
+        <source>Please fetch the AUR repository and build the latest version.</source>
+        <comment>message</comment>
+        <translation>Start venligst AUR lageropdatering og kompilér den seneste version.</translation>
+    </message>
+    <message>
+        <source>Connection Error</source>
+        <comment>message</comment>
+        <translation>Forbindelses Fejl</translation>
+    </message>
+    <message>
+        <source>There was an error during connection.
+Please check network settings and try again.</source>
+        <comment>message</comment>
+        <translation>Der opstod en fejl under forbindelsen.
+Kontroller netværksindstillingerne, og prøv igen.</translation>
+    </message>
+    <message>
+        <source>Service Not Available</source>
+        <comment>message</comment>
+        <translation>Service ikke tilgængelig</translation>
+    </message>
+    <message>
+        <source>Service seems to be unavailable right now.
+Please wait few minutes and try again.</source>
+        <comment>message</comment>
+        <translation>Tjenesten ser ud til at være utilgængelig lige nu.
+Vent et par minutter, og prøv igen.</translation>
+    </message>
+    <message>
+        <source>Software is Up-To-Date</source>
+        <comment>message</comment>
+        <translation>Software er Up-To-Date</translation>
+    </message>
+    <message>
+        <source>New Update Available</source>
+        <comment>message</comment>
+        <translation>Ny opdatering tilgængelig</translation>
+    </message>
+</context>
+<context>
+    <name>convertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>Importer M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>Eksporter M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>Annuller</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>Importere</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>Eksport</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>Valgmuligheder for kanalgruppe</translation>
+    </message>
+    <message>
+        <source>Import each group name in Userbouquets</source>
+        <translation>Importer hvert gruppenavn i userbouquets</translation>
+    </message>
+    <message>
+        <source>Import all entries in one Userbouquet</source>
+        <translation>Importer alt i én userbouquet</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>Kassér Reference ID, hvis indstillet</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>Vælg Userbouquets</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Navn</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Filnavn</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>Indstil kanal Reference ID</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>Indstil kana lnummer</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>Indstil kanalgruppe navn</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>Indstil kanal logoers URL pladsholder</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>Kanal logoernes basis-URL</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>Vælg mappen med kanal logoer</translation>
+    </message>
+</context>
+<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -394,12 +542,12 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Rediger Favorit</translation>
     </message>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ny Favorit</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -408,7 +556,7 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
     </message>
     <message>
         <source>Favourite type</source>
-        <translation type="unfinished"></translation>
+        <translation>Favorit type</translation>
     </message>
     <message>
         <source>custom</source>
@@ -416,7 +564,7 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
     </message>
     <message>
         <source>Entry flag</source>
-        <translation type="unfinished"></translation>
+        <translation>Entry flag</translation>
     </message>
     <message>
         <source>Service type</source>
@@ -441,19 +589,15 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
     <message>
         <source>Stream</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stream</translation>
     </message>
     <message>
         <source>Channel URL</source>
-        <translation type="unfinished"></translation>
+        <translation>Kanal URL</translation>
     </message>
     <message>
         <source>Channel name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>custom channel name, leave empty to auto-fill with service reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Kanal navn</translation>
     </message>
     <message>
         <source>Error</source>
@@ -514,7 +658,7 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
     </message>
     <message>
         <source>Marker flag</source>
-        <translation type="unfinished"></translation>
+        <translation>Marker flag</translation>
     </message>
     <message>
         <source>custom</source>
@@ -728,7 +872,7 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
     <message>
         <source>Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Favorit</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
@@ -1744,6 +1888,31 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
         <comment>error</comment>
         <translation>Fejl ved åbning af filer.</translation>
     </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>Importer fra M3U</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>Eksporter til M3U</translation>
+    </message>
+    <message>
+        <source>M3U File</source>
+        <comment>file-dialog</comment>
+        <translation>M3U fil</translation>
+    </message>
+    <message>
+        <source>Checking for updates…</source>
+        <comment>message</comment>
+        <translation>Tjekker opdateringer…</translation>
+    </message>
+    <message>
+        <source>DEMO MODE</source>
+        <comment>message</comment>
+        <translation>DEMO MODE</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2109,7 +2278,7 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Rediger Favorit</translation>
     </message>
     <message>
         <source>Bouquet</source>
@@ -2119,12 +2288,12 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
     <message>
         <source>Channel</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kanal</translation>
     </message>
     <message>
         <source>Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stream</translation>
     </message>
     <message>
         <source>Marker</source>
@@ -2139,7 +2308,7 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
     <message>
         <source>Add Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tilføj Stream</translation>
     </message>
 </context>
 <context>
@@ -2827,19 +2996,23 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished">Præferencer</translation>
+        <translation>Præferencer</translation>
     </message>
     <message>
         <source>Use a global marker index (will change ID for markers)</source>
-        <translation type="unfinished"></translation>
+        <translation>Brug et globalt marker indeks (vil ændre ID for markers)</translation>
     </message>
     <message>
         <source>Sort by ID when merging lists (slower merge)</source>
-        <translation type="unfinished"></translation>
+        <translation>Sorter efter ID ved sammenlægning af lister (langsommere fletning)</translation>
     </message>
     <message>
         <source>Match favourite reference with services</source>
-        <translation type="unfinished"></translation>
+        <translation>Match reference favoritter med eksisterende tjenester</translation>
+    </message>
+    <message>
+        <source>Check for updates on launch</source>
+        <translation>Se efter opdateringer ved lancering</translation>
     </message>
 </context>
 <context>
@@ -3091,11 +3264,6 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
         <translation type="vanished">Kan ikke genindlæse STB!</translation>
     </message>
     <message>
-        <source>DEMO MODE</source>
-        <comment>message</comment>
-        <translation>DEMO MODE</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -3278,6 +3446,16 @@ UD AF ELLER I FORBINDELSE MED DET ANDRE SOFTWARE.</translation>
         <source>Error writing files.</source>
         <comment>error</comment>
         <translation>Fejl ved skrivning af filer.</translation>
+    </message>
+    <message>
+        <source>Nothing to export</source>
+        <comment>message</comment>
+        <translation>Intet at eksportere</translation>
+    </message>
+    <message>
+        <source>There are not stream type references in userbouquets to export.</source>
+        <comment>message</comment>
+        <translation>Der er ikke stream type referencer i userbouquets til eksport.</translation>
     </message>
 </context>
 <context>

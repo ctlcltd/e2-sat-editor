@@ -131,6 +131,154 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
     </message>
 </context>
 <context>
+    <name>checkUpdate</name>
+    <message>
+        <source>e2 SAT Editor %1 is the latest version available.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 on uusin saatavilla oleva versio.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to download.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 on ladattavissa.</translation>
+    </message>
+    <message>
+        <source>e2 SAT Editor %1 is available to update.</source>
+        <comment>message</comment>
+        <translation>e2 SAT Editor %1 on päivitettävissä.</translation>
+    </message>
+    <message>
+        <source>Please run Snap update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>Suorita Snap päivitys saadaksesi uusimman version.</translation>
+    </message>
+    <message>
+        <source>Please run Flatpak update to get the latest version.</source>
+        <comment>message</comment>
+        <translation>Suorita Flatpak päivitys saadaksesi uusimman version.</translation>
+    </message>
+    <message>
+        <source>Please fetch the AUR repository and build the latest version.</source>
+        <comment>message</comment>
+        <translation>Käynnistä AUR tietovaraston päivitys ja käännä uusin versio.</translation>
+    </message>
+    <message>
+        <source>Connection Error</source>
+        <comment>message</comment>
+        <translation>Yhteys Virhe</translation>
+    </message>
+    <message>
+        <source>There was an error during connection.
+Please check network settings and try again.</source>
+        <comment>message</comment>
+        <translation>Yhteyden aikana tapahtui virhe.
+Tarkista verkkoasetukset ja yritä uudelleen.</translation>
+    </message>
+    <message>
+        <source>Service Not Available</source>
+        <comment>message</comment>
+        <translation>Palvelu ei ole saatavilla</translation>
+    </message>
+    <message>
+        <source>Service seems to be unavailable right now.
+Please wait few minutes and try again.</source>
+        <comment>message</comment>
+        <translation>Palvelu ei näytä olevan tällä hetkellä saatavilla.
+Odota muutama minuutti ja yritä uudelleen.</translation>
+    </message>
+    <message>
+        <source>Software is Up-To-Date</source>
+        <comment>message</comment>
+        <translation>Ohjelmisto on ajan tasalla</translation>
+    </message>
+    <message>
+        <source>New Update Available</source>
+        <comment>message</comment>
+        <translation>Uusi päivitys saatavilla</translation>
+    </message>
+</context>
+<context>
+    <name>convertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>Tuo M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>Vie M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>Peru</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>Tuonti</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>Viedä</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>Kanavaryhmän asetukset</translation>
+    </message>
+    <message>
+        <source>Import each group name in Userbouquets</source>
+        <translation>Tuo kunkin ryhmän nimi userbouquets</translation>
+    </message>
+    <message>
+        <source>Import all entries in one Userbouquet</source>
+        <translation>Tuo kaikki yhdessä userbouquet</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>Hylkää Reference ID, jos se on asetettu</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>Valitse Userbouquets</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nimi</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Tiedoston nimi</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>Aseta kanava Reference ID</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>Aseta kanavan numero</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>Aseta kanava ryhmän nimi</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>Aseta kanava logojen URL-paikanvaraaja</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>Kanava logojen perus-URL</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>Valitse kanavan logot kansio</translation>
+    </message>
+</context>
+<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -395,12 +543,12 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
     <message>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Muokkaa Suosikkia</translation>
     </message>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Uusi Suosikki</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -409,7 +557,7 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
     </message>
     <message>
         <source>Favourite type</source>
-        <translation type="unfinished"></translation>
+        <translation>Suosikki tyyppi</translation>
     </message>
     <message>
         <source>custom</source>
@@ -417,7 +565,7 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
     </message>
     <message>
         <source>Entry flag</source>
-        <translation type="unfinished"></translation>
+        <translation>Entry flag</translation>
     </message>
     <message>
         <source>Service type</source>
@@ -442,19 +590,15 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
     <message>
         <source>Stream</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stream</translation>
     </message>
     <message>
         <source>Channel URL</source>
-        <translation type="unfinished"></translation>
+        <translation>Kanavan URL osoite</translation>
     </message>
     <message>
         <source>Channel name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>custom channel name, leave empty to auto-fill with service reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Kanavan nimi</translation>
     </message>
     <message>
         <source>Error</source>
@@ -515,7 +659,7 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
     </message>
     <message>
         <source>Marker flag</source>
-        <translation type="unfinished"></translation>
+        <translation>Marker flag</translation>
     </message>
     <message>
         <source>custom</source>
@@ -729,7 +873,7 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
     <message>
         <source>Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Suosikki</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
@@ -1745,6 +1889,31 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
         <comment>error</comment>
         <translation>Virhe avattaessa tiedostoja.</translation>
     </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>Tuo M3U sta</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>Vie M3U hun</translation>
+    </message>
+    <message>
+        <source>M3U File</source>
+        <comment>file-dialog</comment>
+        <translation>M3U tiedosto</translation>
+    </message>
+    <message>
+        <source>Checking for updates…</source>
+        <comment>message</comment>
+        <translation>Tarkistetaan päivityksiä…</translation>
+    </message>
+    <message>
+        <source>DEMO MODE</source>
+        <comment>message</comment>
+        <translation>ESITTELY-TILA</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2110,7 +2279,7 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
     <message>
         <source>Edit Favourite</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Muokkaa Suosikkia</translation>
     </message>
     <message>
         <source>Bouquet</source>
@@ -2120,12 +2289,12 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
     <message>
         <source>Channel</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kanava</translation>
     </message>
     <message>
         <source>Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stream</translation>
     </message>
     <message>
         <source>Marker</source>
@@ -2140,7 +2309,7 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
     <message>
         <source>Add Stream</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Lisää Stream</translation>
     </message>
 </context>
 <context>
@@ -2828,19 +2997,23 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished">Asetukset</translation>
+        <translation>Asetukset</translation>
     </message>
     <message>
         <source>Use a global marker index (will change ID for markers)</source>
-        <translation type="unfinished"></translation>
+        <translation>Käytä yleistä marker indeksiä (muuttaa markers tunnusta)</translation>
     </message>
     <message>
         <source>Sort by ID when merging lists (slower merge)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lajittele tunnuksen mukaan luetteloita yhdistettäessä (hitaampi yhdistäminen)</translation>
     </message>
     <message>
         <source>Match favourite reference with services</source>
-        <translation type="unfinished"></translation>
+        <translation>Yhdistä viitesuosikit olemassa oleviin palveluihin</translation>
+    </message>
+    <message>
+        <source>Check for updates on launch</source>
+        <translation>Tarkista päivitykset käynnistyksen yhteydessä</translation>
     </message>
 </context>
 <context>
@@ -3092,11 +3265,6 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
         <translation type="vanished">STB:tä ei voi ladata uudelleen!</translation>
     </message>
     <message>
-        <source>DEMO MODE</source>
-        <comment>message</comment>
-        <translation>ESITTELY-TILA</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -3279,6 +3447,16 @@ TAI SIIHEN YHTEYDESSÄ, TAI OHJELMISTON KÄYTTÖ TAI MUUT KÄYTTÖASIAT.</transl
         <source>Error writing files.</source>
         <comment>error</comment>
         <translation>Virhe tiedostojen kirjoittamisessa.</translation>
+    </message>
+    <message>
+        <source>Nothing to export</source>
+        <comment>message</comment>
+        <translation>Ei mitään vietävää</translation>
+    </message>
+    <message>
+        <source>There are not stream type references in userbouquets to export.</source>
+        <comment>message</comment>
+        <translation>Vietävissä userbouquets ei ole stream tyyppisiä viittauksia.</translation>
     </message>
 </context>
 <context>
