@@ -218,6 +218,7 @@ void editService::serviceLayout()
 	dtb10->addWidget(dtf0sb);
 
 	QHBoxLayout* dtb11 = new QHBoxLayout;
+	dtb11->setSpacing(10);
 	dtf0->addRow(tr("Service ID"), dtb11);
 	QLineEdit* dtf0sx = new QLineEdit;
 	dtf0sx->setProperty("field", "ssid");

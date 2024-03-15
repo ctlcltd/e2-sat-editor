@@ -1381,7 +1381,7 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>>& sxv, e2db_
 				ch.onid = tx.onid = std::atoi(val.data());
 			// dvbns
 			else if (i == 6)
-				ch.dvbns = value_transponder_dvbns(val);
+				ch.dvbns = tx.dvbns = value_transponder_dvbns(val);
 			// stype
 			else if (i == 7)
 				ch.stype = value_service_type(val);
@@ -1408,8 +1408,14 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>>& sxv, e2db_
 				tx.ytype = value_transponder_type(val);
 				tx.sys = value_transponder_system(val);
 
+				// interpolated (marker: atype, favourite: etype)
 				if (! val.empty() && val[0] == '[')
-					chref.etype = value_favourite_flag_type(val);
+				{
+					if (chref.marker && ! chref.atype)
+						chref.atype = value_favourite_flag_type(val);
+					else if (! chref.etype)
+						chref.etype = value_favourite_flag_type(val);
+				}
 			}
 			// pos
 			else if (i == 13)
@@ -1503,25 +1509,25 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>>& sxv, e2db_
 		}
 		else
 		{
-			// x order has priority over ch.index
+			// x order priority ch.index
 			if (ch.index != int (x))
 				ch.index = (int (x) + 1);
-			// ssid has priority over ref.ssid
+			// ssid priority ref.ssid
 			if (! ch.ssid)
 				ch.ssid = ref.ssid;
-			// tsid has priority over ref.tsid
+			// tsid priority ref.tsid
 			if (! ch.tsid)
 				ch.tsid = tx.tsid = ref.tsid;
-			// onid has priority over ref.onid
+			// onid priority ref.onid
 			if (! ch.onid)
 				ch.onid = tx.onid = ref.onid;
-			// dvbns has priority over ref.dvbns
-			if (! ch.onid)
-				ch.onid = tx.onid = ref.onid;
-			// stype has priority over chref.atype
+			// dvbns priority ref.dvbns
+			if (! ch.dvbns)
+				ch.dvbns = tx.dvbns = ref.dvbns;
+			// stype priority chref.atype
 			if (! ch.stype)
 				ch.stype = chref.atype;
-			// snum has priority over chref.anum
+			// snum priority chref.anum
 			if (! ch.snum)
 				ch.snum = chref.anum;
 
@@ -1604,16 +1610,25 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>>& sxv, e2db_
 
 	if (view == DOC_VIEW::view_userbouquets)
 	{
-		// btype autodetect
-		int btype;
-		if (dst->index["chs:1"].size() > dst->index["chs:2"].size())
-			btype = STYPE::tv;
-		else
-			btype = STYPE::radio;
-
 		for (auto & x : userbouquets)
 		{
 			userbouquet& ub = x.second;
+
+			// btype autodetect
+			int btype = STYPE::data;
+
+			if (ub.bname.rfind(".tv") != string::npos)
+				btype = STYPE::tv;
+			else if (ub.bname.rfind(".radio") != string::npos)
+				btype = STYPE::radio;
+
+			if (! btype)
+			{
+				if (dst->index["chs"].size() != 0)
+					btype = dst->index["chs:1"].size() > dst->index["chs:2"].size() ? STYPE::tv : STYPE::radio;
+				else
+					btype = STYPE::tv;
+			}
 
 			if (dst->index.count("bss"))
 			{
@@ -1720,7 +1735,7 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>>& s
 				ch.onid = tx.onid = std::atoi(val.data());
 			// dvbns
 			else if (i == 6)
-				ch.dvbns = value_transponder_dvbns(val);
+				ch.dvbns = tx.dvbns = value_transponder_dvbns(val);
 			// stype
 			else if (i == 7)
 				ch.stype = value_service_type(val);
@@ -1752,8 +1767,14 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>>& s
 				tx.ytype = value_transponder_type(val);
 				tx.sys = value_transponder_system(val);
 
+				// interpolated (marker: atype, favourite: etype)
 				if (! val.empty() && val[0] == '[')
-					chref.etype = value_favourite_flag_type(val);
+				{
+					if (chref.marker && ! chref.atype)
+						chref.atype = value_favourite_flag_type(val);
+					else if (! chref.etype)
+						chref.etype = value_favourite_flag_type(val);
+				}
 			}
 			// pos
 			else if (i == 14)
@@ -1890,25 +1911,25 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>>& s
 		}
 		else
 		{
-			// x order has priority over ch.index
+			// x order priority ch.index
 			if (ch.index != int (x))
 				ch.index = (int (x) + 1);
-			// ssid has priority over ref.ssid
+			// ssid priority ref.ssid
 			if (! ch.ssid)
 				ch.ssid = ref.ssid;
-			// tsid has priority over ref.tsid
+			// tsid priority ref.tsid
 			if (! ch.tsid)
 				ch.tsid = tx.tsid = ref.tsid;
-			// onid has priority over ref.onid
+			// onid priority ref.onid
 			if (! ch.onid)
 				ch.onid = tx.onid = ref.onid;
-			// dvbns has priority over ref.dvbns
-			if (! ch.onid)
-				ch.onid = tx.onid = ref.onid;
-			// stype has priority over chref.atype
+			// dvbns priority ref.dvbns
+			if (! ch.dvbns)
+				ch.dvbns = tx.dvbns = ref.dvbns;
+			// stype priority chref.atype
 			if (! ch.stype)
 				ch.stype = chref.atype;
-			// snum has priority over chref.anum
+			// snum priority chref.anum
 			if (! ch.snum)
 				ch.snum = chref.anum;
 
@@ -1977,16 +1998,25 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>>& s
 
 	if (view == DOC_VIEW::view_userbouquets)
 	{
-		// btype autodetect
-		int btype;
-		if (dst->index["chs:1"].size() > dst->index["chs:2"].size())
-			btype = STYPE::tv;
-		else
-			btype = STYPE::radio;
-
 		for (auto & x : userbouquets)
 		{
 			userbouquet& ub = x.second;
+
+			// btype autodetect
+			int btype = STYPE::data;
+
+			if (ub.bname.rfind(".tv") != string::npos)
+				btype = STYPE::tv;
+			else if (ub.bname.rfind(".radio") != string::npos)
+				btype = STYPE::radio;
+
+			if (! btype)
+			{
+				if (dst->index["chs"].size() != 0)
+					btype = dst->index["chs:1"].size() > dst->index["chs:2"].size() ? STYPE::tv : STYPE::radio;
+				else
+					btype = STYPE::tv;
+			}
 
 			if (! dst->index.count("bss"))
 			{
@@ -2087,7 +2117,7 @@ void e2db_converter::convert_csv_bouquet_list(vector<vector<string>>& sxv, e2db_
 				bs.btype = value_bouquet_type(val);
 		}
 
-		// x order has priority over ub.index
+		// x order priority ub.index
 		if (ub.index != int (x))
 			ub.index = (int (x) + 1);
 		// bouquet bname
@@ -2281,14 +2311,21 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>>& sxv, e2d
 			dst->tuners.emplace(tv.ytype, tv);
 		}
 
-		int idx = index.count(iname) ? int (index[iname].size()) : 0;
+		int idx = 0;
+
 		for (auto & x : dst->tuners[tv.ytype].tables)
 		{
 			if (x.second.name == tn.name)
 			{
-				idx = tn.index;
+				idx = x.second.index;
 				break;
 			}
+		}
+
+		if (! idx)
+		{
+			idx = dst->index.count(iname) ? int (dst->index[iname].size()) : 0;
+			idx += 1;
 		}
 
 		// table idx

@@ -113,6 +113,7 @@ void editTransponder::layout(QWidget* cwid)
 	}
 
 	QHBoxLayout* dtb01 = new QHBoxLayout;
+	dtb01->setSpacing(10);
 	dtf0->addRow(tr("Transport ID"), dtb01);
 	dtf0->addItem(new QSpacerItem(0, 0));
 	QLineEdit* dtf0ts = new QLineEdit;

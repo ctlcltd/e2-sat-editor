@@ -366,6 +366,7 @@ void editFavourite::referenceLayout()
 	dtb12->addWidget(dtf1sb);
 
 	QHBoxLayout* dtb20 = new QHBoxLayout;
+	dtb20->setSpacing(10);
 	dtf1->addRow(tr("Service ID"), dtb20);
 	QLineEdit* dtf1sx = new QLineEdit;
 	dtf1sx->setProperty("field", "ssid");
@@ -381,6 +382,7 @@ void editFavourite::referenceLayout()
 	dtf2->setVerticalSpacing(5);
 
 	QHBoxLayout* dtb21 = new QHBoxLayout;
+	dtb21->setSpacing(10);
 	dtf2->addRow(tr("Transport ID"), dtb21);
 	dtf2->addItem(new QSpacerItem(0, 0));
 	QLineEdit* dtf2ts = new QLineEdit;

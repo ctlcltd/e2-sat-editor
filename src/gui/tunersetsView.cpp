@@ -445,7 +445,6 @@ void tunersetsView::reset()
 
 	unsetPendingUpdateListIndex();
 
-	this->state.yx = -1;
 	this->state.curr = "";
 	this->state.sort = pair (-1, Qt::AscendingOrder);
 	this->state.tvx_pending = false;

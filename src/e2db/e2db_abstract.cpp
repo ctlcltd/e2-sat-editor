@@ -27,11 +27,11 @@ namespace e2se_e2db
 string e2db_abstract::editor_string(int html)
 {
 	if (html == 2)
-		return "e2 SAT Editor 1.3.0";
+		return "e2 SAT Editor 1.3";
 	else if (html == 1)
-		return "e2 SAT Editor 1.3.0 <a href=\"https://github.com/ctlcltd/e2-sat-editor\">https://github.com/ctlcltd/e2-sat-editor</a>";
+		return "e2 SAT Editor 1.3 <a href=\"https://github.com/ctlcltd/e2-sat-editor\">https://github.com/ctlcltd/e2-sat-editor</a>";
 	else
-		return "e2 SAT Editor 1.3.0 <https://github.com/ctlcltd/e2-sat-editor>";
+		return "e2 SAT Editor 1.3 <https://github.com/ctlcltd/e2-sat-editor>";
 }
 
 string e2db_abstract::editor_timestamp()
@@ -554,8 +554,8 @@ string e2db_abstract::value_transponder_combo(tunersets_transponder tntxp, tuner
 
 string e2db_abstract::value_transponder_onid(int onid)
 {
-	char conid[7];
-	std::snprintf(conid, 7, "%X", onid);
+	char conid[8];
+	std::snprintf(conid, 8, "%X", onid);
 
 	return conid;
 }
@@ -620,8 +620,8 @@ int e2db_abstract::value_transponder_dvbns(YTYPE ytype, int tsid, int onid, int 
 
 string e2db_abstract::value_transponder_dvbns(int dvbns)
 {
-	char cdvbns[7];
-	std::snprintf(cdvbns, 7, "%6X", dvbns);
+	char cdvbns[8];
+	std::snprintf(cdvbns, 8, "%X", dvbns);
 
 	return cdvbns;
 }

@@ -496,6 +496,8 @@ void settings::preferencesLayout()
 	dtf1ln->addItem(languageName(Language::Czech), languageCode(Language::Czech));
 	dtf1ln->addItem(languageName(Language::Danish), languageCode(Language::Danish));
 	dtf1ln->addItem(languageName(Language::German), languageCode(Language::German));
+	dtf1ln->addItem(languageName(Language::English_UnitedKingdom), languageCode(Language::English_UnitedKingdom));
+	dtf1ln->addItem(languageName(Language::English_UnitedStates), languageCode(Language::English_UnitedStates));
 	dtf1ln->addItem(languageName(Language::Spanish), languageCode(Language::Spanish));
 	dtf1ln->addItem(languageName(Language::Persian), languageCode(Language::Persian));
 	dtf1ln->addItem(languageName(Language::Finnish), languageCode(Language::Finnish));

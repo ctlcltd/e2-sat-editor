@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="en_US">
+<TS version="2.1" language="en_EN">
 <context>
     <name>QCocoaMenu</name>
     <message>
@@ -126,17 +126,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
 <context>
     <name>checkUpdate</name>
     <message>
-        <source>Software is Up-To-Date</source>
-        <comment>message</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>e2 SAT Editor %1 is the latest version available.</source>
-        <comment>message</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New Update Available</source>
         <comment>message</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -184,6 +174,16 @@ Please check network settings and try again.</source>
     <message>
         <source>Service seems to be unavailable right now.
 Please wait few minutes and try again.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Software is Up-To-Date</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Update Available</source>
         <comment>message</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -629,14 +629,6 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Marker flag</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>custom</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Error</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
@@ -654,6 +646,14 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Channel reference mismatch &quot;%1&quot;.</source>
         <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Marker flag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>custom</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -676,11 +676,6 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Transponder</source>
-        <comment>dialog</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Favourite</source>
         <comment>dialog</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -862,12 +857,17 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Channel reference &quot;%1&quot; not exists.</source>
+        <source>Service &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Service &quot;%1&quot; not exists.</source>
+        <source>Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -1296,17 +1296,17 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Couldn&apos;t connect to STB FTP</source>
-        <comment>error</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Couldn&apos;t connect to STB Webif</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Couldn&apos;t connect to STB Telnet</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t connect to STB FTP</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -1386,11 +1386,6 @@ Please wait few minutes and try again.</source>
         <source>About</source>
         <comment>menu</comment>
         <extracomment>Platform: About [$BUNDLE_NAME] item in macOS Application Menu</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check for updates…</source>
-        <comment>menu</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1570,16 +1565,6 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Import from M3U</source>
-        <comment>menu</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export to M3U</source>
-        <comment>menu</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Export to HTML</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
@@ -1667,6 +1652,11 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Check for updates…</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&amp;About e2 SAT Editor</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
@@ -1674,6 +1664,30 @@ Please wait few minutes and try again.</source>
     <message>
         <source>New &amp;Tab</source>
         <comment>tab</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Find Transponder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Find &amp;Bouquet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Find N&amp;ext Bouquet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Find &amp;Position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Find N&amp;ext Position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Find Channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1727,30 +1741,6 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Find Transponder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Find &amp;Bouquet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Find N&amp;ext Bouquet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Find &amp;Position</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Find N&amp;ext Position</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Find Channel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Select data folder</source>
         <comment>file-dialog</comment>
         <translation type="unfinished"></translation>
@@ -1772,11 +1762,6 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>All Files</source>
-        <comment>file-dialog</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>M3U File</source>
         <comment>file-dialog</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -1854,11 +1839,6 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Checking for updates…</source>
-        <comment>message</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>File Error</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
@@ -1866,11 +1846,6 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DEMO MODE</source>
-        <comment>message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1903,6 +1878,31 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>M3U File</source>
+        <comment>file-dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Checking for updates…</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DEMO MODE</source>
+        <comment>message</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1991,7 +1991,7 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Bouquet</source>
+        <source>New Bouquet</source>
         <comment>toolbar</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -2001,27 +2001,17 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>New Bouquet</source>
+        <source>Add Channel</source>
         <comment>toolbar</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Channel</source>
+        <source>Add Marker</source>
         <comment>toolbar</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Stream</source>
-        <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Marker</source>
-        <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Service</source>
+        <source>New Service</source>
         <comment>toolbar</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -2038,26 +2028,6 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>&amp;Find…</source>
-        <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add Channel</source>
-        <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add Stream</source>
-        <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add Marker</source>
-        <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New Service</source>
         <comment>toolbar</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -2203,12 +2173,12 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Channel reference &quot;%1&quot; not exists.</source>
+        <source>Channel reference &quot;%1&quot; is not a valid marker.</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Channel reference &quot;%1&quot; is not a valid marker.</source>
+        <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -2263,11 +2233,6 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Edit Favourite</source>
-        <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Edit Marker</source>
         <comment>context-menu</comment>
         <translation type="unfinished"></translation>
@@ -2300,6 +2265,41 @@ Please wait few minutes and try again.</source>
     <message>
         <source>&amp;Paste</source>
         <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Favourite</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bouquet</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stream</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Stream</source>
+        <comment>toolbar</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2525,10 +2525,6 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>DVBNS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>CAS</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2622,6 +2618,10 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Hier</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2728,11 +2728,11 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Check for updates on launch</source>
+        <source>Show confirmation messages when deleting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show confirmation messages when deleting</source>
+        <source>Parental lock whitelist (exclusion instead inclusion list)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2853,26 +2853,6 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Parental lock whitelist (exclusion instead inclusion list)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Preferences</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use a global marker index (will change ID for markers)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sort by ID when merging lists (slower merge)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Match favourite reference with services</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Tools</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2977,9 +2957,9 @@ Please wait few minutes and try again.</source>
     </message>
     <message numerus="yes">
         <source>Export Profile(s)…</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Export Profile…</numerusform>
+            <numerusform>Export Profiles…</numerusform>
         </translation>
     </message>
     <message>
@@ -3004,6 +2984,26 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Preset Error</source>
         <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preferences</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use a global marker index (will change ID for markers)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort by ID when merging lists (slower merge)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Match favourite reference with services</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check for updates on launch</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3327,12 +3327,18 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>STB Reload Error</source>
+        <source>Cannot reload STB &quot;%1&quot;.</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cannot reload STB &quot;%1&quot;.</source>
+        <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
+        <comment>message</comment>
+        <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STB Reload Error</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -3347,18 +3353,8 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Errors occurred during parsing operations.</source>
-        <comment>error</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>FTP Notice</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Successfull transfer.</source>
-        <comment>message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3367,9 +3363,13 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
+        <source>Errors occurred during parsing operations.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Successfull transfer.</source>
         <comment>message</comment>
-        <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3415,11 +3415,6 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error writing files.</source>
-        <comment>error</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Exported to %1</source>
         <comment>message</comment>
         <translation type="unfinished"></translation>
@@ -3427,6 +3422,11 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Saved!</source>
         <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error writing files.</source>
+        <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3519,17 +3519,12 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Transponder</source>
+        <source>New Transponder</source>
         <comment>toolbar</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Find…</source>
-        <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New Transponder</source>
         <comment>toolbar</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -3586,6 +3581,11 @@ Please wait few minutes and try again.</source>
     <message>
         <source>&amp;Delete</source>
         <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transponder</source>
+        <comment>toolbar</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3707,22 +3707,12 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Position</source>
-        <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Find…</source>
-        <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>New Position</source>
         <comment>toolbar</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Transponder</source>
+        <source>Find…</source>
         <comment>toolbar</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -3804,6 +3794,16 @@ Please wait few minutes and try again.</source>
     <message>
         <source>&amp;Paste</source>
         <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transponder</source>
+        <comment>toolbar</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>

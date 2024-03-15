@@ -25,6 +25,8 @@ enum Language {
 	Czech = QLocale::Czech,
 	Danish = QLocale::Danish,
 	German = QLocale::German,
+	English_UnitedKingdom = int (1e3 + int (QLocale::English) - 1),
+	English_UnitedStates = int (1e3 + int (QLocale::English) + 1),
 	Spanish = QLocale::Spanish,
 	Persian = QLocale::Persian,
 	Finnish = QLocale::Finnish,
@@ -52,7 +54,7 @@ enum Language {
 	Turkish = QLocale::Turkish,
 	Ukrainian = QLocale::Ukrainian,
 	Chinese_China = QLocale::Chinese,
-	Chinese_Taiwan = int (1e3 + int (QLocale::Chinese) + 1),
+	Chinese_Taiwan = int (1e3 + int (QLocale::Chinese) - 1),
 	Chinese = QLocale::Chinese
 };
 
@@ -64,6 +66,8 @@ enum Lang {
 	l10n_cs = Language::Czech,
 	l10n_da = Language::Danish,
 	l10n_de = Language::German,
+	l10n_en_UK = Language::English_UnitedKingdom,
+	l10n_en_US = Language::English_UnitedStates,
 	l10n_es = Language::Spanish,
 	l10n_fa = Language::Persian,
 	l10n_fi = Language::Finnish,
@@ -111,6 +115,10 @@ QString languageName(Language language)
 {
 	switch (language)
 	{
+		case Language::English_UnitedKingdom:
+			return QLocale::languageToString(QLocale::English).append(" (%1)").arg(stateName(QLocale::UnitedKingdom));
+		case Language::English_UnitedStates:
+			return QLocale::languageToString(QLocale::English).append(" (%1)").arg(stateName(QLocale::UnitedStates));
 		case Language::Portuguese_Portugal:
 			return QLocale::languageToString(QLocale::Portuguese).append(" (%1)").arg(stateName(QLocale::Portugal));
 		case Language::Portuguese_Brazil:
@@ -135,6 +143,8 @@ QString languageCode(Language language)
 		case Language::Czech: return "cs";
 		case Language::Danish: return "da";
 		case Language::German: return "de";
+		case Language::English_UnitedKingdom: return "en_UK";
+		case Language::English_UnitedStates: return "en_US";
 		case Language::Spanish: return "es";
 		case Language::Persian: return "fa";
 		case Language::Finnish: return "fi";

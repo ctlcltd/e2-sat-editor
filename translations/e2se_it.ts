@@ -3156,7 +3156,7 @@ Attendere qualche minuto e riprovare.</translation>
     <message>
         <source>Exported to %1</source>
         <comment>message</comment>
-        <translation>Esportazione su %1</translation>
+        <translation>Esportato su %1</translation>
     </message>
     <message>
         <source>Printing …</source>
@@ -3411,7 +3411,7 @@ Attendere qualche minuto e riprovare.</translation>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
-        <translation>Importazione da …</translation>
+        <translation>Importazione da %1 …</translation>
     </message>
     <message>
         <source>The destination contains files that will be overwritten.</source>
@@ -3426,7 +3426,7 @@ Attendere qualche minuto e riprovare.</translation>
     <message>
         <source>Exported to %1</source>
         <comment>message</comment>
-        <translation>Esportazione su %1</translation>
+        <translation>Esportato su %1</translation>
     </message>
     <message>
         <source>Saved!</source>

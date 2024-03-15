@@ -1732,7 +1732,7 @@ void e2db_cli::shell_e2db_convert(ENTRY entry_type, int fopt, int ftype, string 
 		else if (ftype == 2)
 		{
 			//TODO pass m3u options
-			opts.flags = opt.bname.empty() ? 0xf: 0x1f;
+			opts.flags = opts.bname.empty() ? 0xf: 0x1f;
 
 			if (fopt == 0)
 				dbih->import_m3u_file(fcx, opts, path);
@@ -3152,12 +3152,12 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 			{
 				chref.marker = true;
 				chref.value = any_cast<string>(field(TYPE::mname));
-				chref.atype = any_cast<string>(field(TYPE::atype));
+				chref.atype = any_cast<int>(field(TYPE::atype));
 			}
 			else if (ref == 2) // stream
 			{
 				chref.stream = true;
-				chref.etype = any_cast<string>(field(TYPE::etype));
+				chref.etype = any_cast<int>(field(TYPE::etype));
 				chref.value = any_cast<string>(field(TYPE::chvalue));
 				chref.uri = any_cast<string>(field(TYPE::churi));
 			}
@@ -3886,10 +3886,10 @@ std::any e2db_cli::field(TYPE type, bool required)
 		case TYPE::sdata_C: label = "Service CAS"; description = "comma separated values in hex or <empty>, eg. C:0101,C:0202"; break;
 		case TYPE::sdata_f: label = "Service Flags"; description = "comma separated values in hex or <empty>, eg. f:0101,f:0202"; break;
 		case TYPE::mname: label = "Marker Name"; break;
-		case TYPE::chname: label = "Channel Name"; break;
+		case TYPE::chvalue: label = "Channel Name"; break;
 		case TYPE::churi: label = "Channel URI"; break;
-		case TYPE::etype: label = "Favourite Type"; description: "exact match: 1 = broadcast, 2 = file, 3 = 4097, 8139 = youtube, 8193 = eservice"; break;
-		case TYPE::atype: label = "Favourite Flag"; description: "exact match: 64 = marker, 512 = marker hidden, 832 = marker hidden, 320 = marker numbered, 128 = group"; break;
+		case TYPE::etype: label = "Favourite Type"; description = "exact match: 1 = broadcast, 2 = file, 3 = 4097, 8139 = youtube, 8193 = eservice"; break;
+		case TYPE::atype: label = "Favourite Flag"; description = "exact match: 64 = marker, 512 = marker hidden, 832 = marker hidden, 320 = marker numbered, 128 = group"; break;
 		case TYPE::freq: label = "Frequency"; description = "in Hertz, 6 digits"; break;
 		case TYPE::sr: label = "Symbol Rate"; description = "in digits"; break;
 		case TYPE::pol: label = "Polarization"; description = "exact match: H = horizontal, V = vertical, L = Left Circular, R = Right Circular"; break;
