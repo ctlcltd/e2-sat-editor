@@ -823,7 +823,10 @@ void mainView::populate(QTreeWidget* tw)
 
 			if (ref_error)
 			{
-				entry = QStringList({x, NULL, NULL, NULL, chid, NULL, NULL, NULL, "ERROR", NULL});
+				reftype = REF_TYPE::favourite;
+				idx = QString::number(chi.first);
+				entry = QStringList({x, idx, NULL, NULL, chid, NULL, NULL, NULL, "ERROR", NULL});
+
 				error("populate", tr("Error", "error").toStdString(), tr("Channel reference mismatch \"%1\".", "error").arg(chid).toStdString());
 			}
 
@@ -1091,6 +1094,7 @@ void mainView::listItemSelectionChanged()
 	if (selected.count() == 1)
 	{
 		QTreeWidgetItem* item = selected.first();
+		bool favourite = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::favourite;
 		bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 		bool stream = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::stream;
 
@@ -1098,26 +1102,26 @@ void mainView::listItemSelectionChanged()
 		{
 			tabSetFlag(gui::TabListEditService, false);
 			tabSetFlag(gui::TabListEditMarker, true);
-			tabSetFlag(gui::TabListEditStream, false);
+			tabSetFlag(gui::TabListEditFavourite, false);
 		}
-		else if (stream)
+		else if (stream || favourite)
 		{
 			tabSetFlag(gui::TabListEditService, true);
 			tabSetFlag(gui::TabListEditMarker, false);
-			tabSetFlag(gui::TabListEditStream, true);
+			tabSetFlag(gui::TabListEditFavourite, true);
 		}
 		else
 		{
 			tabSetFlag(gui::TabListEditService, true);
 			tabSetFlag(gui::TabListEditMarker, false);
-			tabSetFlag(gui::TabListEditStream, false);
+			tabSetFlag(gui::TabListEditFavourite, false);
 		}
 	}
 	else
 	{
 		tabSetFlag(gui::TabListEditService, false);
 		tabSetFlag(gui::TabListEditMarker, false);
-		tabSetFlag(gui::TabListEditStream, false);
+		tabSetFlag(gui::TabListEditFavourite, false);
 	}
 
 	// services tree || userbouquet
@@ -1145,12 +1149,13 @@ void mainView::listItemDoubleClicked()
 		return;
 
 	QTreeWidgetItem* item = selected.first();
+	bool favourite = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::favourite;
 	bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 	bool stream = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::stream;
 
 	if (marker)
 		editMarker();
-	else if (stream)
+	else if (stream || favourite)
 		editFavourite();
 	else
 		editService();
@@ -1229,7 +1234,7 @@ void mainView::visualReloadList()
 	bool ub_locked = false;
 
 	// userbouquet
-	if (this->state.ti == -1)
+	if (this->state.tc && this->state.ti == -1)
 	{
 		if (dbih->userbouquets.count(bname))
 		{
@@ -1270,7 +1275,7 @@ void mainView::visualReloadList()
 				item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
 		}
 		// userbouquet
-		else if (this->state.ti == -1)
+		else if (this->state.tc && this->state.ti == -1)
 		{
 			if (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(nw_chid))
 			{
@@ -1320,6 +1325,8 @@ void mainView::visualReloadList()
 			QStringList entry = QStringList({x, NULL, NULL, NULL, chid, NULL, NULL, NULL, "ERROR", NULL});
 			for (int i = 0; i < entry.count(); i++)
 				item->setText(i, entry[i]);
+			item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, REF_TYPE::favourite);
+
 			error("visualReloadList", tr("Error", "error").toStdString(), tr("Channel reference mismatch \"%1\".", "error").arg(chid).toStdString());
 		}
 
@@ -1871,7 +1878,7 @@ void mainView::addService()
 	auto* dbih = this->data->dbih;
 
 	// userbouquet
-	if (this->state.ti == -1)
+	if (this->state.tc && this->state.ti == -1)
 	{
 		bname = this->state.curr;
 
@@ -1911,7 +1918,7 @@ void mainView::addService()
 	bool ub_locked = false;
 
 	// userbouquet
-	if (this->state.ti == -1)
+	if (this->state.tc && this->state.ti == -1)
 	{
 		string bname = this->state.curr;
 		if (dbih->userbouquets.count(bname))
@@ -1981,18 +1988,19 @@ void mainView::editService()
 	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 	string bname;
 	int reftype = REF_TYPE::service;
+	bool favourite = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::favourite;
 	bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 	bool stream = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::stream;
 
 	auto* dbih = this->data->dbih;
 
-	if (! marker && (stream || dbih->db.services.count(chid)))
+	if (! marker && (stream || favourite || dbih->db.services.count(chid)))
 		debug("editService", "chid", chid);
 	else
 		return error("editService", tr("Error", "error").toStdString(), tr("Service \"%1\" not exists or is a channel reference.", "error").arg(chid.data()).toStdString());
 
 	// userbouquet
-	if (this->state.ti == -1)
+	if (this->state.tc && this->state.ti == -1)
 	{
 		bname = this->state.curr;
 
@@ -2014,7 +2022,7 @@ void mainView::editService()
 	if (reload)
 		dbih->clearStorage();
 
-	if (dbih->db.services.count(nw_chid))
+	if (stream || favourite || dbih->db.services.count(nw_chid))
 		debug("editService", "new chid", nw_chid);
 	else
 		return error("editService", tr("Error", "error").toStdString(), tr("Missing service key \"%1\".", "error").arg(nw_chid.data()).toStdString());
@@ -2022,7 +2030,7 @@ void mainView::editService()
 	bool ub_locked = false;
 
 	// userbouquet
-	if (this->state.ti == -1)
+	if (this->state.tc && this->state.ti == -1)
 	{
 		string bname = this->state.curr;
 		if (dbih->userbouquets.count(bname))
@@ -3262,6 +3270,7 @@ void mainView::showListEditContextMenu(QPoint& pos)
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
+	bool favourite = false;
 	bool service = false;
 	bool marker = false;
 	bool stream = false;
@@ -3270,7 +3279,7 @@ void mainView::showListEditContextMenu(QPoint& pos)
 	bool editable = false;
 
 	// userbouquet
-	if (this->state.ti == -1)
+	if (this->state.tc && this->state.ti == -1)
 	{
 		auto* dbih = this->data->dbih;
 
@@ -3285,6 +3294,7 @@ void mainView::showListEditContextMenu(QPoint& pos)
 	if (selected.count() == 1)
 	{
 		QTreeWidgetItem* item = selected.first();
+		favourite = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::favourite;
 		service = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::service;
 		marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 		stream = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::stream;
@@ -3294,8 +3304,8 @@ void mainView::showListEditContextMenu(QPoint& pos)
 
 	QMenu* list_edit = contextMenu();
 
-	if (stream)
-		contextMenuAction(list_edit, tr("Edit Favourite", "context-menu"), [=]() { this->editFavourite(); }, editable && tabGetFlag(gui::TabListEditStream));
+	if (stream || favourite)
+		contextMenuAction(list_edit, tr("Edit Favourite", "context-menu"), [=]() { this->editFavourite(); }, editable && tabGetFlag(gui::TabListEditFavourite));
 	if (marker)
 		contextMenuAction(list_edit, tr("Edit Marker", "context-menu"), [=]() { this->editMarker(); }, editable && tabGetFlag(gui::TabListEditMarker));
 	else
@@ -3473,7 +3483,6 @@ void mainView::updateStatusBar(bool current)
 	tabSetStatusBar(msg);
 }
 
-//TODO text selection
 void mainView::updateReferenceBox()
 {
 	debug("updateReferenceBox");

@@ -1065,9 +1065,10 @@ void piconsView::updateFromTab()
 QString piconsView::piconPathname(string chname)
 {
 	QString qstr = QString::fromStdString(chname).toLower();
+	qstr.replace("+", "plus");
+	qstr.replace("&", "and");
 	qstr.replace("æ", "ae");
 	qstr.replace("œ", "oe");
-	qstr.replace("+", "plus");
 	qstr = qstr.normalized(QString::NormalizationForm_KD);
 	qstr.remove(QRegularExpression("[^a-z0-9]"));
 

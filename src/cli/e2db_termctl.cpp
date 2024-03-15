@@ -568,7 +568,7 @@ std::pair<int, int> e2db_termctl::tty_get_screensize()
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
 	GetConsoleScreenBufferInfo(hStdout, &csbiInfo);
-	return std::pair (csbiInfo.dwSize.Y, csbiInfo.dwSize.X);
+	return std::pair (int (csbiInfo.dwSize.Y), int (csbiInfo.dwSize.X));
 #elif defined(PLATFORM_UX)
 	struct winsize w;
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);

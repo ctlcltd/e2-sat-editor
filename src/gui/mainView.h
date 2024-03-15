@@ -118,6 +118,7 @@ class mainView : public viewAbstract
 
 		enum REF_TYPE {
 			service,
+			favourite,
 			marker,
 			stream
 		};

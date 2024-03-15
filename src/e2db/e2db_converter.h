@@ -101,6 +101,7 @@ class e2db_converter : virtual public e2db_abstract
 		void import_m3u_file(FCONVS fci, fcopts opts, vector<string> paths);
 		void import_m3u_file(FCONVS fci, fcopts opts, string path);
 		void import_m3u_file(FCONVS fci, fcopts opts, e2db_abstract* dst, string path);
+		void export_m3u_file(FCONVS fco, fcopts opts, string path);
 		void export_m3u_file(FCONVS fco, fcopts opts, vector<string> ubouquets, string path);
 		void pull_csv_services(istream& ifile, e2db_abstract* dst);
 		void pull_csv_bouquets(istream& ifile, e2db_abstract* dst);

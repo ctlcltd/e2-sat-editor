@@ -73,7 +73,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</source>
     </message>
     <message>
         <source>Name</source>
-        <translation>&amp;שמור</translation>
+        <translation>שֵׁם</translation>
     </message>
     <message>
         <source>Type</source>
@@ -245,7 +245,7 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Name</source>
-        <translation>&amp;שמור</translation>
+        <translation>שֵׁם</translation>
     </message>
     <message>
         <source>Filename</source>
@@ -500,7 +500,7 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Name</source>
-        <translation>&amp;שמור</translation>
+        <translation>שֵׁם</translation>
     </message>
     <message>
         <source>full name</source>
@@ -1057,7 +1057,7 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Name</source>
-        <translation>&amp;שמור</translation>
+        <translation>שֵׁם</translation>
     </message>
     <message>
         <source>Position</source>
@@ -1236,7 +1236,7 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Name</source>
-        <translation>&amp;שמור</translation>
+        <translation>שֵׁם</translation>
     </message>
     <message>
         <source>Filename</source>
@@ -1934,7 +1934,7 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Name</source>
-        <translation>&amp;שמור</translation>
+        <translation>שֵׁם</translation>
     </message>
     <message>
         <source>Parental</source>
@@ -2339,7 +2339,7 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Name</source>
-        <translation>&amp;שמור</translation>
+        <translation>שֵׁם</translation>
     </message>
     <message>
         <source>Type</source>
@@ -2518,7 +2518,7 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Name</source>
-        <translation>&amp;שמור</translation>
+        <translation>שֵׁם</translation>
     </message>
     <message>
         <source>SSID</source>
@@ -3633,7 +3633,7 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Name</source>
-        <translation>&amp;שמור</translation>
+        <translation>שֵׁם</translation>
     </message>
     <message>
         <source>Position</source>

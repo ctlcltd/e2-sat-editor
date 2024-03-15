@@ -328,6 +328,8 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 			shell_entry_add(ENTRY::channel_reference, 1, bname);
 		else if (type == "marker")
 			shell_entry_add(ENTRY::channel_reference, 0, bname);
+		else if (type == "stream")
+			shell_entry_add(ENTRY::channel_reference, 2, bname);
 		else if (type.empty())
 			shell_usage(command);
 		else
@@ -356,6 +358,8 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 			shell_entry_edit(ENTRY::channel_reference, 1, bname, id);
 		else if (type == "marker")
 			shell_entry_edit(ENTRY::channel_reference, 0, bname, id);
+		else if (type == "stream")
+			shell_entry_edit(ENTRY::channel_reference, 2, bname, id);
 		else if (type.empty())
 			shell_usage(command);
 		else
@@ -693,7 +697,7 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		string opt0, opt1, opt2, opt3, opt4;
 		string type, path, bname;
 		int stype = -1, ytype = -1;
-		int fopt = -1, ftype = -1;
+		int fopt = -1, ftype = 0;
 		*is >> std::skipws >> opt0 >> opt1 >> opt2 >> opt3 >> opt4;
 
 		type = opt2;
@@ -703,9 +707,11 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		else if (opt1 == "to")
 			fopt = 1;
 		if (opt1 == "csv")
-			ftype = 0;
-		else if (opt1 == "html")
 			ftype = 1;
+		else if (opt1 == "m3u")
+			ftype = 2;
+		else if (opt1 == "html")
+			ftype = 3;
 
 		if (opt2 == "services" && ! opt3.empty())
 		{
@@ -800,6 +806,7 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 		cout.width(10), cout << ' ', cout << "tunersets-transponder" << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "channel  [chid] [bname]", cout << ' ' << "Add service reference to userbouquet." << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "marker  [bname]", cout << ' ' << "Add marker to userbouquet." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "stream  [bname]", cout << ' ' << "Add stream to userbouquet." << endl;
 		cout << endl;
 	}
 	else if (hint == COMMAND::edit)
@@ -827,6 +834,7 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 		cout.width(10), cout << ' ', cout << "tunersets-transponder  [trid]" << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "channel  [chid] [bname]", cout << ' ' << "Remove service reference from userbouquet." << endl;
 		cout.width(10), cout << ' ', cout.width(24), cout << left << "marker  [chid] [bname]", cout << ' ' << "Remove marker from userbouquet." << endl;
+		cout.width(10), cout << ' ', cout.width(24), cout << left << "stream  [chid] [bname]", cout << ' ' << "Remove stream from userbouquet." << endl;
 		cout << endl;
 	}
 	else if (hint == COMMAND::list)
@@ -1034,6 +1042,14 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 		cout.width(10), cout << ' ', cout.width(39), cout << left << "to csv userbouquet  [bname] [file]", cout << ' ' << "Convert an userbouquet to CSV userbouquet file." << endl;
 		cout.width(10), cout << ' ', cout.width(39), cout << left << "to csv tunersets  [file]", cout << ' ' << "Convert to CSV tuner settings file." << endl;
 		cout.width(10), cout << ' ', cout.width(39), cout << left << "to csv tunersets  [ytype] [file]", cout << ' ' << "Convert a tuner settings to CSV tuner settings file." << endl;
+		cout << endl;
+		cout << "  ", cout.width(7), cout << left << "convert", cout << ' ';
+		cout.width(39), cout << left << "from m3u  [file]", cout << ' ' << "Convert from M3U file." << endl;
+		cout << endl;
+		cout << "  ", cout.width(7), cout << left << "convert", cout << ' ';
+		cout.width(39), cout << left << "to m3u  [file]", cout << ' ' << "Convert entries to M3U file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "to m3u userbouquets  [file]", cout << ' ' << "Convert userbouquets to M3U file." << endl;
+		cout.width(10), cout << ' ', cout.width(39), cout << left << "to m3u userbouquet  [bname] [file]", cout << ' ' << "Convert an userbouquet to M3U file." << endl;
 		cout << endl;
 		cout << "  ", cout.width(7), cout << left << "convert", cout << ' ';
 		cout.width(39), cout << left << "to html  [file]", cout << ' ' << "Convert all the entries to HTML files." << endl;
@@ -1658,7 +1674,7 @@ void e2db_cli::shell_e2db_convert(ENTRY entry_type, int fopt, int ftype, string 
 	try
 	{
 		// from html raise
-		if (fopt == 0 && ftype == 1)
+		if (fopt == 0 && ftype == 3)
 			throw 1;
 
 		//TODO local overwrite
@@ -1706,14 +1722,24 @@ void e2db_cli::shell_e2db_convert(ENTRY entry_type, int fopt, int ftype, string 
 				throw 1;
 		}
 
-		if (ftype == 0)
+		if (ftype == 1)
 		{
 			if (fopt == 0)
 				dbih->import_csv_file(fcx, opts, path);
 			else if (fopt == 1)
 				dbih->export_csv_file(fcx, opts, path);
 		}
-		else if (ftype == 1)
+		else if (ftype == 2)
+		{
+			//TODO pass m3u options
+			opts.flags = opt.bname.empty() ? 0xf: 0x1f;
+
+			if (fopt == 0)
+				dbih->import_m3u_file(fcx, opts, path);
+			else if (fopt == 1)
+				dbih->export_m3u_file(fcx, opts, path);
+		}
+		else if (ftype == 3)
 		{
 			dbih->export_html_file(fcx, opts, path);
 		}
@@ -2245,6 +2271,7 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, bool paged, int limit, int pos
 	}
 }
 
+//TODO improve reference print
 void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end, string bname)
 {
 	try
@@ -2694,8 +2721,17 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end,
 					print_obj_begin(), print_obj_sep(-1);
 					print_obj_pair(TYPE::chid, chref.chid), print_obj_sep();
 					print_obj_pair(TYPE::mname, chref.value), print_obj_sep();
-					 //TODO
-					print_obj_pair(TYPE::stype, int (e2db::STYPE::marker)), print_obj_sep();
+					print_obj_pair(TYPE::etype, chref.etype), print_obj_sep();
+					print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
+					print_obj_end(), print_obj_dlm();
+				}
+				else if (chref.stream)
+				{
+					print_obj_begin(), print_obj_sep(-1);
+					print_obj_pair(TYPE::chid, chref.chid), print_obj_sep();
+					print_obj_pair(TYPE::chvalue, chref.value), print_obj_sep();
+					print_obj_pair(TYPE::atype, chref.atype), print_obj_sep();
+					print_obj_pair(TYPE::churi, chref.uri), print_obj_sep();
 					print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
 					print_obj_end(), print_obj_dlm();
 				}
@@ -2906,7 +2942,7 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 			}
 
 			bs.btype = any_cast<int>(field(TYPE::btype, true));
-			if (edit && 1)
+			if (edit)
 				bs.rname = any_cast<string>(field(TYPE::rname));
 			else
 				bs.bname = any_cast<string>(field(TYPE::bname, true));
@@ -2930,7 +2966,7 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 					throw std::runtime_error (msg("Userbouquet \"%s\" not exists.", id));
 			}
 
-			if (edit && 1)
+			if (edit)
 				ub.rname = any_cast<string>(field(TYPE::rname));
 			else
 				ub.bname = any_cast<string>(field(TYPE::bname, true));
@@ -3116,6 +3152,14 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 			{
 				chref.marker = true;
 				chref.value = any_cast<string>(field(TYPE::mname));
+				chref.atype = any_cast<string>(field(TYPE::atype));
+			}
+			else if (ref == 2) // stream
+			{
+				chref.stream = true;
+				chref.etype = any_cast<string>(field(TYPE::etype));
+				chref.value = any_cast<string>(field(TYPE::chvalue));
+				chref.uri = any_cast<string>(field(TYPE::churi));
 			}
 			else // service
 			{
@@ -3482,6 +3526,10 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::sdata_C: name = hrn ? "Service CAS" : "sdata_C"; value_type = VALUE::val_string; break;
 		case TYPE::sdata_f: name = hrn ? "Service Flags" : "sdata_f"; value_type = VALUE::val_string; break;
 		case TYPE::mname: name = hrn ? "Marker Name" : "mname"; value_type = VALUE::val_string; break;
+		case TYPE::chvalue: name = hrn ? "Channel Name" : "chvalue"; value_type = VALUE::val_string; break;
+		case TYPE::churi: name = hrn ? "Channel URI" : "churi"; value_type = VALUE::val_string; break;
+		case TYPE::etype: name = hrn ? "Favourite Type" : "etype"; value_type = VALUE::val_int; break;
+		case TYPE::atype: name = hrn ? "Favourite Flag" : "atype"; value_type = VALUE::val_int; break;
 		case TYPE::freq: name = hrn ? "Frequency" : "freq"; value_type = VALUE::val_int; break;
 		case TYPE::sr: name = hrn ? "Symbol Rate" : "sr"; value_type = VALUE::val_int; break;
 		case TYPE::pol: name = hrn ? "Polarization" : "pol"; value_type = hrv ? VALUE::val_string : VALUE::val_int; break;
@@ -3561,6 +3609,8 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::uncomtd:
 		case TYPE::feed:
 		case TYPE::itype:
+		case TYPE::etype:
+		case TYPE::atype:
 		case TYPE::flgs:
 			d = any_cast<int>(val);
 		break;
@@ -3576,6 +3626,8 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::trid:
 		case TYPE::chname:
 		case TYPE::mname:
+		case TYPE::chvalue:
+		case TYPE::churi:
 		case TYPE::charset:
 		case TYPE::tname:
 		case TYPE::country:
@@ -3834,6 +3886,10 @@ std::any e2db_cli::field(TYPE type, bool required)
 		case TYPE::sdata_C: label = "Service CAS"; description = "comma separated values in hex or <empty>, eg. C:0101,C:0202"; break;
 		case TYPE::sdata_f: label = "Service Flags"; description = "comma separated values in hex or <empty>, eg. f:0101,f:0202"; break;
 		case TYPE::mname: label = "Marker Name"; break;
+		case TYPE::chname: label = "Channel Name"; break;
+		case TYPE::churi: label = "Channel URI"; break;
+		case TYPE::etype: label = "Favourite Type"; description: "exact match: 1 = broadcast, 2 = file, 3 = 4097, 8139 = youtube, 8193 = eservice"; break;
+		case TYPE::atype: label = "Favourite Flag"; description: "exact match: 64 = marker, 512 = marker hidden, 832 = marker hidden, 320 = marker numbered, 128 = group"; break;
 		case TYPE::freq: label = "Frequency"; description = "in Hertz, 6 digits"; break;
 		case TYPE::sr: label = "Symbol Rate"; description = "in digits"; break;
 		case TYPE::pol: label = "Polarization"; description = "exact match: H = horizontal, V = vertical, L = Left Circular, R = Right Circular"; break;
@@ -3862,7 +3918,7 @@ std::any e2db_cli::field(TYPE type, bool required)
 		case TYPE::diseqc: label = "diseqc"; description = "in digits"; break;
 		case TYPE::uncomtd: label = "uncomtd"; description = "in digits"; break;
 		case TYPE::charset: label = "Charset"; description = "characters encoding: UTF-8, ISO-8859-1"; break;
-		case TYPE::tname: label = "Position Name"; description = "eg. Sputnik 0.0E"; break;
+		case TYPE::tname: label = "Position Name"; description = "eg. Telstar 0.0E"; break;
 		case TYPE::country: label = "Country"; description = "Country Code, 3 letters ISO-3166, eg. XYZ"; break;
 		case TYPE::feed: label = "Feed"; description = "[Y]es or [N]one"; break;
 		case TYPE::bname: label = "Bouquet Filename [bname]"; description = "eg. userbouquet.dbe01.tv, bouquet.radio"; break;

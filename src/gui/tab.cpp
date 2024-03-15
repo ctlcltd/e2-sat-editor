@@ -1906,6 +1906,8 @@ void tab::ftpUpload()
 
 		if (filename.find(".tv") != string::npos || filename.find(".radio") != string::npos)
 			basedir = baseb;
+		else if (filename == "bouquets.xml" || filename == "ubouquets.xml")
+			basedir = baseb;
 		else if (filename == "satellites.xml" || filename == "terrestrial.xml" || filename == "cables.xml" || filename == "atsc.xml")
 			basedir = baset;
 		//TODO upload services, other data ... (eg. picons)

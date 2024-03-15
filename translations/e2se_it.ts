@@ -543,12 +543,12 @@ Attendere qualche minuto e riprovare.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
-        <translation>Modifica Preferito</translation>
+        <translation>Modifica Favorito</translation>
     </message>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation>Nuovo Preferito</translation>
+        <translation>Nuovo Favorito</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -557,7 +557,7 @@ Attendere qualche minuto e riprovare.</translation>
     </message>
     <message>
         <source>Favourite type</source>
-        <translation>Tipo preferito</translation>
+        <translation>Tipo favorito</translation>
     </message>
     <message>
         <source>custom</source>
@@ -873,7 +873,7 @@ Attendere qualche minuto e riprovare.</translation>
     <message>
         <source>Favourite</source>
         <comment>dialog</comment>
-        <translation>Preferito</translation>
+        <translation>Favorito</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
@@ -2279,7 +2279,7 @@ Attendere qualche minuto e riprovare.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>context-menu</comment>
-        <translation>Modifica Preferito</translation>
+        <translation>Modifica Favorito</translation>
     </message>
     <message>
         <source>Bouquet</source>
@@ -3009,7 +3009,7 @@ Attendere qualche minuto e riprovare.</translation>
     </message>
     <message>
         <source>Match favourite reference with services</source>
-        <translation>Combina i riferimenti preferiti ai servizi esistenti</translation>
+        <translation>Combina i riferimenti favoriti ai servizi esistenti</translation>
     </message>
     <message>
         <source>Check for updates on launch</source>

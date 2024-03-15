@@ -543,12 +543,12 @@ Espereu uns minuts i torneu ho a provar.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
-        <translation>Edita Preferit</translation>
+        <translation>Edita Favorito</translation>
     </message>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation>Nou Preferit</translation>
+        <translation>Nou Favorito</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -557,7 +557,7 @@ Espereu uns minuts i torneu ho a provar.</translation>
     </message>
     <message>
         <source>Favourite type</source>
-        <translation>Tipus preferit</translation>
+        <translation>Tipus favorito</translation>
     </message>
     <message>
         <source>custom</source>
@@ -2279,7 +2279,7 @@ Espereu uns minuts i torneu ho a provar.</translation>
     <message>
         <source>Edit Favourite</source>
         <comment>context-menu</comment>
-        <translation>Edita Preferit</translation>
+        <translation>Edita Favorito</translation>
     </message>
     <message>
         <source>Bouquet</source>
@@ -3009,7 +3009,7 @@ Espereu uns minuts i torneu ho a provar.</translation>
     </message>
     <message>
         <source>Match favourite reference with services</source>
-        <translation>Relaciona els preferits de referència amb els serveis existents</translation>
+        <translation>Relaciona els favorits de referència amb els serveis existents</translation>
     </message>
     <message>
         <source>Check for updates on launch</source>

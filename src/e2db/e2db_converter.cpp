@@ -559,9 +559,54 @@ void e2db_converter::import_m3u_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 	info("import_m3u_file", "elapsed time", to_string(elapsed) + " μs");
 }
 
+void e2db_converter::export_m3u_file(FCONVS fco, fcopts opts, string path)
+{
+	debug("export_m3u_file", "file path", "multiple");
+	debug("export_m3u_file", "file output", fco);
+
+	vector<string> ubouquets;
+
+	if (opts.bname.empty() && userbouquets.count(opts.bname))
+	{
+		string bname = opts.bname;
+
+		for (auto & q : userbouquets[bname].channels)
+		{
+			if (q.second.stream)
+			{
+				userbouquet uboq = userbouquets[bname];
+				string bname = uboq.bname;
+				ubouquets.emplace_back(bname);
+				break;
+			}
+		}
+	}
+	else
+	{
+		for (auto & x : index["ubs"])
+		{
+			for (auto & q : userbouquets[x.second].channels)
+			{
+				if (q.second.stream)
+				{
+					userbouquet uboq = userbouquets[x.second];
+					string bname = uboq.bname;
+					ubouquets.emplace_back(bname);
+					break;
+				}
+			}
+		}
+	}
+
+	if (ubouquets.size() != 0)
+	{
+		export_m3u_file(fco, opts, ubouquets, path);
+	}
+}
+
 void e2db_converter::export_m3u_file(FCONVS fco, fcopts opts, vector<string> ubouquets, string path)
 {
-	debug("export_m3u_file", "file path", "singular");
+	debug("export_m3u_file", "file path", "multiple");
 	debug("export_m3u_file", "file output", fco);
 
 	auto t_start = std::chrono::high_resolution_clock::now();
@@ -2467,7 +2512,7 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			ss << CSV_ESCAPE << tname << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
 			ss << CSV_SEPARATOR;
-			ss << "";
+			ss << CSV_SEPARATOR;
 		}
 		if (view == DOC_VIEW::view_userbouquets)
 		{
@@ -3181,9 +3226,22 @@ void e2db_converter::m3u_channel_list(string& body, string bname, fcopts opts)
 						logourl = opts.logosbase + '/';
 
 					if (chref.value.empty())
+					{
 						logourl.append("untitled");
+					}
 					else
-						logourl.append(conv_picon_pathname(chref.value));
+					{
+						string filename = conv_picon_pathname(chref.value);
+
+						if (filename.empty())
+						{
+							filename = string (refid);
+
+							std::transform(filename.begin(), filename.end(), filename.begin(), [](unsigned char c) { return c == ':' ? '_' : c; });
+						}
+
+						logourl.append(filename);
+					}
 
 					logourl.append(".png");
 				}
@@ -3806,11 +3864,12 @@ void e2db_converter::html_document(e2db_file& file, html_page page)
 string e2db_converter::conv_picon_pathname(string str)
 {
 	unordered_map<string, string> ents = {
+		{"+", "plus"},
+		{"&", "and"},
 		{"æ", "ae"},
 		{"Æ", "ae"},
 		{"œ", "oe"},
-		{"Œ", "oe"},
-		{"+", "plus"}
+		{"Œ", "oe"}
 	};
 
 	for (auto & x : ents)

@@ -91,6 +91,7 @@ class e2db_cli
 			tname, country, feed, 
 			bname, pname, rname, qname, nname, btype, hidden, 
 			mname, dname, itype, 
+			chvalue, churi, etype, atype, 
 			flgs, oflgs
 		};
 
