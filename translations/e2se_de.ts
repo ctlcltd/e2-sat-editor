@@ -1915,6 +1915,16 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
         <comment>message</comment>
         <translation>DEMO MODUS</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">Die Datei wurde geändert</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Möchtest du deine Änderungen speichern?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2191,16 +2201,6 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Kanalreferenz „%1“ existiert nicht.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Löschung bestätigen</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Möchten Sie Elemente löschen?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3392,6 +3392,16 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
         <comment>error</comment>
         <translation>Bei parsing Vorgängen sind Fehler aufgetreten.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">Löschung bestätigen</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Möchten Sie Elemente löschen?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3413,16 +3423,6 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>Import aus %1 …</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>Das Ziel enthält Dateien, die überschrieben werden.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>Möchten Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3562,16 +3562,6 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Transponder „%1“ existiert nicht.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Löschung bestätigen</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Möchten Sie Elemente löschen?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3765,16 +3755,6 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Der Tuner-Einstellungstransponder „%1“ existiert nicht.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Löschung bestätigen</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Möchten Sie Elemente löschen?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

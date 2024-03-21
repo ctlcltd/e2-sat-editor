@@ -158,7 +158,7 @@ gui::gui(int argc, char* argv[])
 	QStringList args = clp.positionalArguments();
 	if (! args.isEmpty() && ! args.first().isEmpty())
 	{
-		this->ifp = args.first().toStdString();
+		this->ifpath = args.first().toStdString();
 	}
 
 	this->theme = new e2se_gui::theme(mroot);
@@ -908,7 +908,7 @@ int gui::openTab(TAB_VIEW ttv, int arg)
 	return index;
 }
 
-void gui::closeTab(int index)
+bool gui::closeTab(int index)
 {
 	// debug("closeTab", "index", index);
 
@@ -916,21 +916,36 @@ void gui::closeTab(int index)
 
 	if (! ttabs.count(ttid))
 	{
-		return error("closeTab", tr("Error", "error").toStdString(), tr("Missing tab reference \"%1\".", "error").arg(ttid).toStdString());
+		error("closeTab", tr("Error", "error").toStdString(), tr("Missing tab reference \"%1\".", "error").arg(ttid).toStdString());
+
+		return true;
 	}
 
-	tab* current = ttabs[ttid];
+	tab* ttab = ttabs[ttid];
 
 	debug("closeTab", "ttid", ttid);
+
+	if (ttab->hasChanged())
+	{
+		twid->setCurrentIndex(index);
+
+		int closing = closeQuestion();
+
+		if (closing == QMessageBox::Save)
+			ttab->saveFile(false);
+
+		if (closing == QMessageBox::Cancel)
+			return false;
+	}
 
 	mwind->removeAction(ttmenu[ttid]);
 	mwtabs->removeAction(ttmenu[ttid]);
 	twid->removeTab(index);
 	ttmenu.erase(ttid);
 
-	if (current != nullptr)
+	if (ttab != nullptr)
 	{
-		if (current->isChild())
+		if (ttab->isChild())
 		{
 			for (auto & x : ttabs)
 			{
@@ -940,22 +955,22 @@ void gui::closeTab(int index)
 				{
 					for (auto & child : tab->children())
 					{
-						if (child == current)
+						if (child == ttab)
 						{
-							tab->removeChild(current);
+							tab->removeChild(ttab);
 							break;
 						}
 					}
 				}
 			}
 		}
-		if (current->hasChildren())
+		if (ttab->hasChildren())
 		{
-			for (auto & child : current->children())
+			for (auto & child : ttab->children())
 			{
 				int index = twid->indexOf(child->widget);
 
-				current->removeChild(child);
+				ttab->removeChild(child);
 
 				closeTab(index);
 			}
@@ -966,33 +981,33 @@ void gui::closeTab(int index)
 
 	if (twid->count() == 0)
 		launcher();
+
+	return true;
 }
 
 void gui::closeAllTabs()
 {
 	debug("closeAllTabs");
 
-	for (auto & action : mwtabs->actions())
+	vector<QWidget*> i_wids;
+
+	for (auto & x : ttabs)
 	{
-		mwind->removeAction(action);
-		mwtabs->removeAction(action);
-	}
-	twid->clear();
+		tab* tab = x.second;
 
-	for (size_t i = 0; i < ttabs.size(); i++)
+		if (! tab->isChild())
+		{
+			i_wids.emplace_back(tab->widget);
+		}
+	}
+
+	for (auto & wid : i_wids)
 	{
-		int x = int (i);
-		debug("closeAllTabs", "index", x);
+		int index = twid->indexOf(wid);
 
-		//TODO TEST
-		delete ttabs[x];
-		ttabs.erase(x);
-		ttmenu.erase(x);
+		if (! closeTab(index))
+			return;
 	}
-	ttabs.clear();
-	ttmenu.clear();
-
-	launcher();
 }
 
 void gui::windowChanged()
@@ -1882,7 +1897,7 @@ void gui::launcher()
 
 	setFlags(GUI_CXE::init);
 
-	string path = this->ifp;
+	string path = this->ifpath;
 
 	if (! path.empty())
 	{
@@ -2056,6 +2071,31 @@ QLocale gui::getLocale()
 {
 	QString appLang = QSettings().value("preference/language").toString();
 	return appLang.isEmpty() ? QLocale::system() : QLocale(appLang);
+}
+
+int gui::closeQuestion()
+{
+	QString title = tr("The file has been modified", "message");
+	QString message = tr("Do you want to save your changes?", "message");
+
+	title = title.toHtmlEscaped();
+	message = message.replace("<", "&lt;").replace(">", "&gt;");
+
+	QMessageBox msg = QMessageBox(this->mwid);
+
+	msg.setWindowFlags(Qt::Sheet | Qt::MSWindowsFixedSizeDialogHint);
+#ifdef Q_OS_MAC
+	msg.setAttribute(Qt::WA_TranslucentBackground);
+#endif
+
+	msg.setIcon(QMessageBox::Question);
+	msg.setTextFormat(Qt::PlainText);
+	msg.setText(title);
+	msg.setInformativeText(message);
+	msg.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+	msg.setDefaultButton(QMessageBox::Save);
+
+	return msg.exec();
 }
 
 void gui::errorMessage(QString title, QString message)

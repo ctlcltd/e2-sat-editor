@@ -1915,6 +1915,16 @@ Poczekaj kilka minut i spróbuj ponownie.</translation>
         <comment>message</comment>
         <translation>WERSJA DEMO</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">Plik został zmodyfikowany</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Czy chcesz zachować zmiany?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2191,16 +2201,6 @@ Poczekaj kilka minut i spróbuj ponownie.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Odniesienie do kanału „%1” nie istnieje.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Potwierdź usunięcie</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Czy chcesz usunąć elementy?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3395,6 +3395,16 @@ Poczekaj kilka minut i spróbuj ponownie.</translation>
         <comment>error</comment>
         <translation>Wystąpiły błędy podczas operacji parsing.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">Potwierdź usunięcie</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Czy chcesz usunąć elementy?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3416,16 +3426,6 @@ Poczekaj kilka minut i spróbuj ponownie.</translation>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>Importowanie z %1 …</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>Miejsce docelowe zawiera pliki, które zostaną nadpisane.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>Czy chcesz je nadpisać?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3565,16 +3565,6 @@ Poczekaj kilka minut i spróbuj ponownie.</translation>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Transponder &quot;%1&quot; nie istnieje.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Potwierdź usunięcie</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Czy chcesz usunąć elementy?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3768,16 +3758,6 @@ Poczekaj kilka minut i spróbuj ponownie.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Transponder ustawień tunera „%1” nie istnieje.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Potwierdź usunięcie</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Czy chcesz usunąć elementy?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

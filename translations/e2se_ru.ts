@@ -1917,6 +1917,16 @@ Please wait few minutes and try again.</source>
         <comment>message</comment>
         <translation>ДЕМО РЕЖИМ</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">Файл был изменен</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Вы хотите сохранить изменения?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2193,16 +2203,6 @@ Please wait few minutes and try again.</source>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Ссылка на канал &quot;%1&quot; не существует.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Подтвердить удаление</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Вы хотите удалить элементы?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3397,6 +3397,16 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>Во время операций синтаксического анализа возникли ошибки.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">Подтвердить удаление</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Вы хотите удалить элементы?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3418,16 +3428,6 @@ Please wait few minutes and try again.</source>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>Импорт из %1 …</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>Место назначения содержит файлы, которые будут перезаписаны.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>Вы хотите перезаписать их?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3567,16 +3567,6 @@ Please wait few minutes and try again.</source>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Транспондер &quot;%1&quot; не существует.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Подтвердить удаление</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Вы хотите удалить элементы?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3770,16 +3760,6 @@ Please wait few minutes and try again.</source>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Транспондер настроек тюнера &quot;%1&quot; не существует.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Подтвердить удаление</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Вы хотите удалить элементы?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

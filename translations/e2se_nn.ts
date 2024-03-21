@@ -1914,6 +1914,16 @@ Vent noen minutter og prøv igjen.</translation>
         <comment>message</comment>
         <translation>DEMO MODUS</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">Filen er endret</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Vil du lagre endringene dine?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2190,16 +2200,6 @@ Vent noen minutter og prøv igjen.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Kanal referansen &quot;%1&quot; finnes ikke.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Bekreft sletting</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Vil du slette elementer?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3391,6 +3391,16 @@ Vent noen minutter og prøv igjen.</translation>
         <comment>error</comment>
         <translation>Det oppsto feil under parsing operasjoner.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">Bekreft sletting</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Vil du slette elementer?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3412,16 +3422,6 @@ Vent noen minutter og prøv igjen.</translation>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>Importerer fra %1 …</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>Destinasjonen inneholder filer som vil bli overskrevet.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>Vil du overskrive dem?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3561,16 +3561,6 @@ Vent noen minutter og prøv igjen.</translation>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Transponder &quot;%1&quot; eksisterer ikke.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Bekreft sletting</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Vil du slette elementer?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3764,16 +3754,6 @@ Vent noen minutter og prøv igjen.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Tuner innstillinger transponder &quot;%1&quot; eksisterer ikke.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Bekreft sletting</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Vil du slette elementer?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

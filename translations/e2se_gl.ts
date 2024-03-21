@@ -1915,6 +1915,16 @@ Agarde uns minutos e ténteo de novo.</translation>
         <comment>message</comment>
         <translation>MODO DEMO</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">O ficheiro foi modificado</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Queres gardar os teus cambios?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2191,16 +2201,6 @@ Agarde uns minutos e ténteo de novo.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>A referencia da canle &quot;%1&quot; non existe.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Confirmar a eliminación</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Queres eliminar elementos?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3392,6 +3392,16 @@ Agarde uns minutos e ténteo de novo.</translation>
         <comment>error</comment>
         <translation>Producíronse erros durante as operacións de parsing.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">Confirmar a eliminación</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Queres eliminar elementos?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3413,16 +3423,6 @@ Agarde uns minutos e ténteo de novo.</translation>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>Importando desde %1 ...</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>O destino contén ficheiros que se sobrescribirán.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>Queres sobreescribilos?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3562,16 +3562,6 @@ Agarde uns minutos e ténteo de novo.</translation>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>O transponder &quot;%1&quot; non existe.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Confirmar a eliminación</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Queres eliminar elementos?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3765,16 +3755,6 @@ Agarde uns minutos e ténteo de novo.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>O transponder de configuración do tuner &quot;%1&quot; non existe.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Confirmar a eliminación</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Queres eliminar elementos?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

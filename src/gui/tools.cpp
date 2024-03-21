@@ -292,8 +292,8 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 		}
 		if (dirsize != 0)
 		{
-			bool overwrite = tid->saveQuestion(tr("The destination contains files that will be overwritten.", "message"), tr("Do you want to overwrite them?", "message"));
-			if (! overwrite)
+			bool overwriting = tid->overwriteQuestion();
+			if (! overwriting)
 				return;
 		}
 	}
@@ -379,8 +379,8 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 		}
 		if (dirsize != 0)
 		{
-			bool overwrite = tid->saveQuestion(tr("The destination contains files that will be overwritten.", "message"), tr("Do you want to overwrite them?", "message"));
-			if (! overwrite)
+			bool overwriting = tid->overwriteQuestion();
+			if (! overwriting)
 				return;
 		}
 	}
@@ -577,8 +577,8 @@ void tools::exportFileM3U(e2db::FCONVS fco, e2db::fcopts opts)
 		}
 		if (dirsize != 0)
 		{
-			bool overwrite = tid->saveQuestion(tr("The destination contains files that will be overwritten.", "message"), tr("Do you want to overwrite them?", "message"));
-			if (! overwrite)
+			bool overwriting = tid->overwriteQuestion();
+			if (! overwriting)
 				return;
 		}
 	}

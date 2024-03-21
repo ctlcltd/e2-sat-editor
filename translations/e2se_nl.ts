@@ -1915,6 +1915,16 @@ Wacht een paar minuten en probeer het opnieuw.</translation>
         <comment>message</comment>
         <translation>DEMONSTRATIE MODUS</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">Het bestand is aangepast</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Wil je je wijzigingen opslaan?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2191,16 +2201,6 @@ Wacht een paar minuten en probeer het opnieuw.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Kanaal-referentie &quot;%1&quot; bestaat niet.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Bevestig de verwijdering</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Wilt u artikelen verwijderen?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3392,6 +3392,16 @@ Wacht een paar minuten en probeer het opnieuw.</translation>
         <comment>error</comment>
         <translation>Er zijn fouten opgetreden tijdens parsing bewerkingen.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">Bevestig de verwijdering</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Wilt u artikelen verwijderen?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3413,16 +3423,6 @@ Wacht een paar minuten en probeer het opnieuw.</translation>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>Importeren uit %1 …</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>De bestemming bevat bestanden die zullen worden overschreven.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>Wil je ze overschrijven?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3562,16 +3562,6 @@ Wacht een paar minuten en probeer het opnieuw.</translation>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Transponder &quot;%1&quot; bestaat niet.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Bevestig de verwijdering</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Wilt u artikelen verwijderen?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3765,16 +3755,6 @@ Wacht een paar minuten en probeer het opnieuw.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Tuner instellingen transponder &quot;%1&quot; bestaat niet.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Bevestig de verwijdering</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Wilt u artikelen verwijderen?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

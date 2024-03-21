@@ -1913,6 +1913,16 @@ Please wait few minutes and try again.</source>
         <comment>message</comment>
         <translation>במצב הדגמה</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">הקובץ השתנה</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">האם ברצונך לשמור את השינויים שלך?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2189,16 +2199,6 @@ Please wait few minutes and try again.</source>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>הפניה לערוץ &quot;%1&quot; אינה קיימת.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>אשר את המחיקה</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>האם אתה רוצה למחוק פריטים?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3390,6 +3390,16 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>אירעו שגיאות במהלך פעולות הניתוח.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">אשר את המחיקה</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">האם אתה רוצה למחוק פריטים?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3411,16 +3421,6 @@ Please wait few minutes and try again.</source>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>מייבא מ%1 …</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>היעד מכיל קבצים שיודפסו.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>האם אתה רוצה להחליף אותם?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3560,16 +3560,6 @@ Please wait few minutes and try again.</source>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>המשדר &quot;%1&quot; אינו קיים.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>אשר את המחיקה</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>האם אתה רוצה למחוק פריטים?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3763,16 +3753,6 @@ Please wait few minutes and try again.</source>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>משדר הגדרות הטיונר &quot;%1&quot; אינו קיים.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>אשר את המחיקה</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>האם אתה רוצה למחוק פריטים?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

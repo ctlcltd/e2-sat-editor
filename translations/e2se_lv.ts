@@ -1913,6 +1913,16 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <comment>message</comment>
         <translation>DEMO REŽĪMS</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">Fails ir modificēts</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Vai vēlaties saglabāt izmaiņas?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2189,16 +2199,6 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Kanāla atsauce &quot;%1&quot; nepastāv.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Apstipriniet dzēšanu</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Vai vēlaties dzēst vienumus?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3393,6 +3393,16 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <comment>error</comment>
         <translation>Parsing operāciju laikā radās kļūdas.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">Apstipriniet dzēšanu</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Vai vēlaties dzēst vienumus?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3414,16 +3424,6 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>Notiek importēšana no %1 …</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>Galamērķis satur failus kas tiks pārrakstīti.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>Vai vēlaties tos pārrakstīt?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3563,16 +3563,6 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Transponderis &quot;%1&quot; neeksistē.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Apstipriniet dzēšanu</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Vai vēlaties dzēst vienumus?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3766,16 +3756,6 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Tuner iestatījumu transponderis &quot;%1&quot; nepastāv.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Apstipriniet dzēšanu</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Vai vēlaties dzēst vienumus?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

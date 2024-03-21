@@ -1913,6 +1913,16 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <comment>message</comment>
         <translation>DEMO REŽIMAS</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">Failas buvo pakeistas</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Ar norite išsaugoti pakeitimus?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2189,16 +2199,6 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Kanalo nuoroda „%1“ neegzistuoja.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Patvirtinkite ištrynimą</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Ar norite ištrinti elementus?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3393,6 +3393,16 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <comment>error</comment>
         <translation>Parsing operacijų metu įvyko klaidų.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">Patvirtinkite ištrynimą</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Ar norite ištrinti elementus?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3414,16 +3424,6 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>Importuojama iš %1 …</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>Paskirties vietoje yra failai, kurie bus perrašyti.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>Ar norite juos perrašyti?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3563,16 +3563,6 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Atsakiklis „%1“ neegzistuoja.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Patvirtinkite ištrynimą</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Ar norite ištrinti elementus?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3766,16 +3756,6 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Tuner nustatymų atsakiklis „%1“ neegzistuoja.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Patvirtinkite ištrynimą</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Ar norite ištrinti elementus?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

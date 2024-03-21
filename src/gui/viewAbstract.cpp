@@ -574,6 +574,13 @@ void viewAbstract::tabUpdateToolBars()
 		tid->updateToolBars();
 }
 
+bool viewAbstract::tabRemoveQuestion()
+{
+	if (tid != nullptr)
+		return tid->removeQuestion();
+	return false;
+}
+
 bool viewAbstract::tabRemoveQuestion(QString title, QString text)
 {
 	if (tid != nullptr)

@@ -149,6 +149,7 @@ class viewAbstract : protected e2se::log_factory
 		void tabSetFlags(int preset);
 		void tabUpdateFlags();
 		void tabUpdateFlags(int preset);
+		bool tabRemoveQuestion();
 		bool tabRemoveQuestion(QString title, QString text);
 		void tabUpdateToolBars();
 		virtual bool tabStatusBarIsVisible();

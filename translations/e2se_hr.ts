@@ -1916,6 +1916,16 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <comment>message</comment>
         <translation>DEMO NAČIN</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">Datoteka je izmijenjena</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Želite li spremiti promjene?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2192,16 +2202,6 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Referenca kanala &quot;%1&quot; ne postoji.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Potvrdite brisanje</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Želite li izbrisati stavke?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3396,6 +3396,16 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <comment>error</comment>
         <translation>Došlo je do pogrešaka tijekom operacija parsinga.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">Potvrdite brisanje</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Želite li izbrisati stavke?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3417,16 +3427,6 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>Uvoz iz %1...</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>Odredište sadrži datoteke koje će biti prebrisane.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>Želite li ih prebrisati?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3566,16 +3566,6 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Transponder &quot;%1&quot; ne postoji.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Potvrdite brisanje</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Želite li izbrisati stavke?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3769,16 +3759,6 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Transponder postavki tunera &quot;%1&quot; ne postoji.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Potvrdite brisanje</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Želite li izbrisati stavke?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

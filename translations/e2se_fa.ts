@@ -1914,6 +1914,16 @@ Please wait few minutes and try again.</source>
         <comment>message</comment>
         <translation>حالت دمو</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">فایل اصلاح شده است</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">آیا می خواهید تغییرات خود را ذخیره کنید؟</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2190,16 +2200,6 @@ Please wait few minutes and try again.</source>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>مرجع کانال &quot;%1&quot; وجود ندارد.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>حذف را تایید کنید</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>آیا می خواهید موارد را حذف کنید؟</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3388,6 +3388,16 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>خطاهایی در طول عملیات تجزیه رخ داده است.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">حذف را تایید کنید</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">آیا می خواهید موارد را حذف کنید؟</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3409,16 +3419,6 @@ Please wait few minutes and try again.</source>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>وارد کردن از %1…</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>مقصد حاوی فایلهایی است که رونویسی میشوند.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>آیا می خواهید آنها را بازنویسی کنید؟</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3558,16 +3558,6 @@ Please wait few minutes and try again.</source>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>فرستنده &quot;%1&quot; وجود ندارد.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>حذف را تایید کنید</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>آیا می خواهید موارد را حذف کنید؟</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3761,16 +3751,6 @@ Please wait few minutes and try again.</source>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>فرستنده تنظیمات تیونر &quot;%1&quot; وجود ندارد.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>حذف را تایید کنید</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>آیا می خواهید موارد را حذف کنید؟</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

@@ -1913,6 +1913,16 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
         <comment>message</comment>
         <translation>DEMO REŽIM</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">Soubor byl změněn</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Chcete uložit změny?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2189,16 +2199,6 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Odkaz kanálu &quot;%1&quot; neexistuje.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Potvrdit vymazání</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Chcete smazat položky?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3393,6 +3393,16 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
         <comment>error</comment>
         <translation>Během parsing operací došlo k chybám.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">Potvrdit vymazání</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Chcete smazat položky?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3414,16 +3424,6 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>Import z %1 …</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>Cíl obsahuje soubory, které budou přepsány.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>Chcete je přepsat?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3563,16 +3563,6 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Transpondér &quot;%1&quot; neexistuje.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Potvrdit vymazání</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Chcete smazat položky?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3766,16 +3756,6 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Transpondér nastavení tuneru &quot;%1&quot; neexistuje.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Potvrdit vymazání</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Chcete smazat položky?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

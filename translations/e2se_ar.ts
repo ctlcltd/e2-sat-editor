@@ -1914,6 +1914,16 @@ Please wait few minutes and try again.</source>
         <comment>message</comment>
         <translation>الوضع التجريبي</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">تم تعديل الملف</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">هل تريد حفظ التغييرات؟</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2190,16 +2200,6 @@ Please wait few minutes and try again.</source>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>مرجع القناة &quot;%1&quot; غير موجود.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>تأكيد الحذف</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>هل تريد حذف العناصر؟</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3403,6 +3403,16 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>حدثت أخطاء أثناء عمليات التحليل.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">تأكيد الحذف</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">هل تريد حذف العناصر؟</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3424,16 +3434,6 @@ Please wait few minutes and try again.</source>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>جاري الاستيراد من %1 …</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>تحتوي الوجهة على ملفات سيتم استبدالها.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>هل تريد الكتابة عليها؟</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3573,16 +3573,6 @@ Please wait few minutes and try again.</source>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>المستجيب &quot;%1&quot; غير موجود.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>تأكيد الحذف</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>هل تريد حذف العناصر؟</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3776,16 +3766,6 @@ Please wait few minutes and try again.</source>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>مستجيب إعدادات الموالف &quot;%1&quot; غير موجود.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>تأكيد الحذف</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>هل تريد حذف العناصر؟</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

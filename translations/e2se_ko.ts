@@ -1912,6 +1912,16 @@ Please wait few minutes and try again.</source>
         <comment>message</comment>
         <translation>데모 모드</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">파일이 수정되었습니다</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">변경 사항을 저장하시겠습니까?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2188,16 +2198,6 @@ Please wait few minutes and try again.</source>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>채널 참조 &quot;%1&quot;이(가) 없습니다.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>삭제 확인</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>항목을 삭제하시겠습니까?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3386,6 +3386,16 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>구문 분석 작업 중에 오류가 발생했습니다.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">삭제 확인</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">항목을 삭제하시겠습니까?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3407,16 +3417,6 @@ Please wait few minutes and try again.</source>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>%1에서 가져오는 중 …</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>대상에 덮어쓸 파일이 포함되어 있습니다.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>덮어쓰시겠습니까?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3556,16 +3556,6 @@ Please wait few minutes and try again.</source>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>응답기 &quot;%1&quot;이(가) 없습니다.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>삭제 확인</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>항목을 삭제하시겠습니까?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3759,16 +3749,6 @@ Please wait few minutes and try again.</source>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>튜너 설정 응답기 &quot;%1&quot;이(가) 없습니다.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>삭제 확인</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>항목을 삭제하시겠습니까?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

@@ -1914,6 +1914,16 @@ Aguarde alguns minutos e tente novamente.</translation>
         <comment>message</comment>
         <translation>MODE DEMO</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">O arquivo foi modificado</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Você quer salvar suas mudanças?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2190,16 +2200,6 @@ Aguarde alguns minutos e tente novamente.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>A referência de canal &quot;%1&quot; não existe.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Confirmar exclusão</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Deseja excluir itens?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3391,6 +3391,16 @@ Aguarde alguns minutos e tente novamente.</translation>
         <comment>error</comment>
         <translation>Ocorreram erros durante as operações de parsing.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">Confirmar exclusão</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Deseja excluir itens?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3412,16 +3422,6 @@ Aguarde alguns minutos e tente novamente.</translation>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>Importando de %1 …</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>O destino contém arquivos que serão substituídos.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>Deseja substituí-los?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3561,16 +3561,6 @@ Aguarde alguns minutos e tente novamente.</translation>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Transponder &quot;%1&quot; não existe.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Confirmar exclusão</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Deseja excluir itens?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3764,16 +3754,6 @@ Aguarde alguns minutos e tente novamente.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>O transponder de configurações do tuner &quot;%1&quot; não existe.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Confirmar exclusão</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Deseja excluir itens?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

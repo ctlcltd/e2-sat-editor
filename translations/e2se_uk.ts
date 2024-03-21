@@ -1916,6 +1916,16 @@ Please wait few minutes and try again.</source>
         <comment>message</comment>
         <translation>ДЕМО РЕЖИМ</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">Файл було змінено</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Бажаєте зберегти зміни?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2192,16 +2202,6 @@ Please wait few minutes and try again.</source>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Посилання на канал &quot;%1&quot; не існує.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Підтвердити видалення</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Ви бажаєте видалити елементи?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3396,6 +3396,16 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>Під час синтаксичного аналізу виникли помилки.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">Підтвердити видалення</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Ви бажаєте видалити елементи?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3417,16 +3427,6 @@ Please wait few minutes and try again.</source>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>Імпортування з %1 …</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>Місце призначення містить файли, які буде перезаписано.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>Ви хочете перезаписати їх?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3566,16 +3566,6 @@ Please wait few minutes and try again.</source>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Транспондер &quot;%1&quot; не існує.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Підтвердити видалення</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Ви бажаєте видалити елементи?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3769,16 +3759,6 @@ Please wait few minutes and try again.</source>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Транспондер налаштувань тюнера &quot;%1&quot; не існує.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Підтвердити видалення</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Ви бажаєте видалити елементи?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

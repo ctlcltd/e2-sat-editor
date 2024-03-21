@@ -1915,6 +1915,16 @@ Kérjük, várjon néhány percet, és próbálja újra.</translation>
         <comment>message</comment>
         <translation>DEMO MÓD</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">A fájl módosult</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Szeretné menteni a változtatásokat?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2191,16 +2201,6 @@ Kérjük, várjon néhány percet, és próbálja újra.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>A &quot;%1&quot; csatornahivatkozás nem létezik.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Erősítse meg a törlést</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Törölni szeretné az elemeket?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3389,6 +3389,16 @@ Kérjük, várjon néhány percet, és próbálja újra.</translation>
         <comment>error</comment>
         <translation>A parsing műveletek során hibák történtek.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">Erősítse meg a törlést</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Törölni szeretné az elemeket?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3410,16 +3420,6 @@ Kérjük, várjon néhány percet, és próbálja újra.</translation>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>Importálás innen: %1 …</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>A cél olyan fájlokat tartalmaz, amelyek felülírásra kerülnek.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>Felül akarja írni őket?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3559,16 +3559,6 @@ Kérjük, várjon néhány percet, és próbálja újra.</translation>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>&quot;%1&quot; transzponder nem létezik.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Erősítse meg a törlést</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Törölni szeretné az elemeket?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3762,16 +3752,6 @@ Kérjük, várjon néhány percet, és próbálja újra.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>A tuner beállítások transzpondere &quot;%1&quot; nem létezik.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Erősítse meg a törlést</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Törölni szeretné az elemeket?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

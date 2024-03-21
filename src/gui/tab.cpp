@@ -177,6 +177,16 @@ void tab::tabSwitch()
 	view->update();
 }
 
+bool tab::hasChanged()
+{
+	debug("hasChanged");
+
+	if (this->data != nullptr)
+	{
+		return this->data->hasChanged();
+	}
+}
+
 void tab::updateTabName(string path)
 {
 	debug("updateTabName");
@@ -560,6 +570,17 @@ void tab::openFile()
 		return;
 	}
 
+	if (this->data->hasChanged())
+	{
+		int replacing = saveQuestion();
+
+		if (replacing == QMessageBox::Save)
+			saveFile(false);
+
+		if (replacing == QMessageBox::Cancel)
+			return;
+	}
+
 	readFile(path);
 #else
 	gid->blobs.clear();
@@ -713,17 +734,11 @@ void tab::saveFile(bool saveas)
 			}
 			if (dirsize != 0)
 			{
-				bool overwrite = saveQuestion(tr("The destination contains files that will be overwritten.", "message"), tr("Do you want to overwrite them?", "message"));
-				if (! overwrite)
+				bool overwriting = overwriteQuestion();
+				if (! overwriting)
 					return;
 			}
 		}
-	}
-	else if (this->data->hasChanged())
-	{
-		bool overwrite = saveQuestion(tr("The file has been modified", "message"), tr("Do you want to save your changes?", "message"));
-		if (! overwrite)
-			return;
 	}
 
 	if (path.empty())
@@ -741,6 +756,8 @@ void tab::saveFile(bool saveas)
 
 	if (write)
 	{
+		this->data->setChanged(false);
+
 		if (saveas)
 			updateTabName(path);
 
@@ -1020,8 +1037,8 @@ void tab::exportFile()
 		}
 		if (dirsize != 0)
 		{
-			bool overwrite = saveQuestion(tr("The destination contains files that will be overwritten.", "message"), tr("Do you want to overwrite them?", "message"));
-			if (! overwrite)
+			bool overwriting = overwriteQuestion();
+			if (! overwriting)
 				return;
 		}
 	}
@@ -2452,7 +2469,39 @@ void tab::statusBarMessage(QTimer* timer)
 	}
 }
 
-bool tab::saveQuestion(QString title, QString message)
+int tab::saveQuestion()
+{
+	return saveQuestion(tr("The file has been modified", "message"), tr("Do you want to save your changes?", "message"));
+}
+
+int tab::saveQuestion(QString title, QString message)
+{
+	title = title.toHtmlEscaped();
+	message = message.replace("<", "&lt;").replace(">", "&gt;");
+
+	QMessageBox msg = QMessageBox(this->cwid);
+
+	msg.setWindowFlags(Qt::Sheet | Qt::MSWindowsFixedSizeDialogHint);
+#ifdef Q_OS_MAC
+	msg.setAttribute(Qt::WA_TranslucentBackground);
+#endif
+
+	msg.setIcon(QMessageBox::Question);
+	msg.setTextFormat(Qt::PlainText);
+	msg.setText(title);
+	msg.setInformativeText(message);
+	msg.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+	msg.setDefaultButton(QMessageBox::Save);
+
+	return msg.exec();
+}
+
+bool tab::overwriteQuestion()
+{
+	return overwriteQuestion(tr("The destination contains files that will be overwritten.", "message"), tr("Do you want to overwrite them?", "message"));
+}
+
+bool tab::overwriteQuestion(QString title, QString message)
 {
 	title = title.toHtmlEscaped();
 	message = message.replace("<", "&lt;").replace(">", "&gt;");
@@ -2472,6 +2521,11 @@ bool tab::saveQuestion(QString title, QString message)
 	msg.setDefaultButton(QMessageBox::Save);
 
 	return (msg.exec() == QMessageBox::Save);
+}
+
+bool tab::removeQuestion()
+{
+	return removeQuestion(tr("Confirm deletetion", "message"), tr("Do you want to delete items?", "message"));
 }
 
 bool tab::removeQuestion(QString title, QString message)

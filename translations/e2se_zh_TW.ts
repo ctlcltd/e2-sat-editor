@@ -1911,6 +1911,16 @@ Please wait few minutes and try again.</source>
         <comment>message</comment>
         <translation>演示模式</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">文件已被修改</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">您想保存更改嗎？</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2187,16 +2197,6 @@ Please wait few minutes and try again.</source>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>通道引用 &quot;%1&quot; 不存在。</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>確認刪除</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>您想刪除項目嗎？</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3385,6 +3385,16 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>解析操作期間發生錯誤。</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">確認刪除</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">您想刪除項目嗎？</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3406,16 +3416,6 @@ Please wait few minutes and try again.</source>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>正在從 %1 導入 ...</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>目標包含將被覆蓋的文件。</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>您想覆蓋它們嗎？</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3555,16 +3555,6 @@ Please wait few minutes and try again.</source>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>應答器 &quot;%1&quot; 不存在。</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>確認刪除</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>您想刪除項目嗎？</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3758,16 +3748,6 @@ Please wait few minutes and try again.</source>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>調諧器設置應答器 &quot;%1&quot; 不存在。</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>確認刪除</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>您想刪除項目嗎？</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

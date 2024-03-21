@@ -1914,6 +1914,16 @@ Attendere qualche minuto e riprovare.</translation>
         <comment>message</comment>
         <translation>MODALITÀ DEMO</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">Il file è stato modificato</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Vuoi salvare le modifiche?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2190,16 +2200,6 @@ Attendere qualche minuto e riprovare.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Riferimento canale &quot;%1&quot; non esistente.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Conferma eliminazione</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Vuoi eliminare questi elementi?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3391,6 +3391,16 @@ Attendere qualche minuto e riprovare.</translation>
         <comment>error</comment>
         <translation>Si sono verificati degli errori durante le operazioni di parsing.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">Conferma eliminazione</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Vuoi eliminare questi elementi?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3412,16 +3422,6 @@ Attendere qualche minuto e riprovare.</translation>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>Importazione da %1 …</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>La destinazione contenente i file verrà sovrascritta.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>Vuoi sovrascrivere i file?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3561,16 +3561,6 @@ Attendere qualche minuto e riprovare.</translation>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Transponder &quot;%1&quot; non esistente.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Conferma eliminazione</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Vuoi eliminare questi elementi?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3764,16 +3754,6 @@ Attendere qualche minuto e riprovare.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Tuner settings transponder &quot;%1&quot; non esistente.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Conferma eliminazione</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Vuoi eliminare questi elementi?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

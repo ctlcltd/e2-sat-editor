@@ -1905,6 +1905,16 @@ Please wait few minutes and try again.</source>
         <comment>message</comment>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2180,16 +2190,6 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3372,6 +3372,16 @@ Please wait few minutes and try again.</source>
         <comment>message</comment>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3402,16 +3412,6 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Error opening files.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3541,16 +3541,6 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3744,16 +3734,6 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>

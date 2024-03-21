@@ -83,6 +83,7 @@ class tab : protected e2se::log_factory
 		void themeChanged();
 		void clipboardDataChanged();
 		void tabSwitch();
+		bool hasChanged();
 		void updateTabName(string path = "");
 		void updateIndex();
 		void setFlag(gui::GUI_CXE bit, bool flag);
@@ -122,7 +123,11 @@ class tab : protected e2se::log_factory
 		void linkToOnlineHelp(int page = 0);
 		QTimer* statusBarMessage(QString message);
 		void statusBarMessage(QTimer* timer);
-		bool saveQuestion(QString title, QString message);
+		int saveQuestion();
+		int saveQuestion(QString title, QString message);
+		bool overwriteQuestion();
+		bool overwriteQuestion(QString title, QString message);
+		bool removeQuestion();
 		bool removeQuestion(QString title, QString message);
 		void infoMessage(QString message);
 		void infoMessage(QString title, QString message);

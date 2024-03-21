@@ -2376,8 +2376,8 @@ void mainView::treeItemDelete()
 		return;
 	}
 
-	bool remove = tabRemoveQuestion(tr("Confirm deletetion", "message"), tr("Do you want to delete items?", "message"));
-	if (! remove)
+	bool removing = tabRemoveQuestion();
+	if (! removing)
 		return;
 
 	auto* dbih = this->data->dbih;
@@ -2844,8 +2844,8 @@ void mainView::listItemDelete(bool cut)
 
 	if (! cut)
 	{
-		bool remove = tabRemoveQuestion(tr("Confirm deletetion", "message"), tr("Do you want to delete items?", "message"));
-		if (! remove)
+		bool removing = tabRemoveQuestion();
+		if (! removing)
 			return;
 	}
 

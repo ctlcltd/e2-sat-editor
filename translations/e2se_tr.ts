@@ -1907,6 +1907,16 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <comment>message</comment>
         <translation>DEMO MODU</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">Dosya değiştirildi</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Değişikliklerinizi kaydetmek istiyor musunuz?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2183,16 +2193,6 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>&quot;%1&quot; kanal referansı mevcut değil.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Silme işlemini onayla</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Öğeleri silmek istiyor musunuz?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3381,6 +3381,16 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <comment>error</comment>
         <translation>Parsing işlemleri sırasında hatalar oluştu.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">Silme işlemini onayla</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Öğeleri silmek istiyor musunuz?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3402,16 +3412,6 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>%1 den içe aktarılıyor …</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>Hedef, üzerine yazılacak dosyalar içeriyor.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>Bunların üzerine yazmak istiyor musunuz?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3551,16 +3551,6 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>&quot;%1&quot; transponderi mevcut değil.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Silme işlemini onayla</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Öğeleri silmek istiyor musunuz?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3754,16 +3744,6 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Tuner ayarları transponderi &quot;%1&quot; mevcut değil.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Silme işlemini onayla</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Öğeleri silmek istiyor musunuz?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

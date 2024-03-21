@@ -1915,6 +1915,16 @@ Please wait few minutes and try again.</source>
         <comment>message</comment>
         <translation>ДЕМО РЕЖИМ</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">Файлът е променен</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Искате ли да запазите промените си?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2191,16 +2201,6 @@ Please wait few minutes and try again.</source>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Референцията на канала „%1“ не съществува.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Потвърдете изтриването</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Искате ли да изтриете елементи?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3392,6 +3392,16 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>Възникнаха грешки по време на операциите за анализ.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">Потвърдете изтриването</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Искате ли да изтриете елементи?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3413,16 +3423,6 @@ Please wait few minutes and try again.</source>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>Импортиране от %1 ...</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>Дестинацията съдържа файлове, които ще бъдат презаписани.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>Искате ли да ги презапишете?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3562,16 +3562,6 @@ Please wait few minutes and try again.</source>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Транспондер „%1“ не съществува.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Потвърдете изтриването</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Искате ли да изтриете елементи?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3765,16 +3755,6 @@ Please wait few minutes and try again.</source>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Транспондерът за настройки на тунера „%1“ не съществува.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Потвърдете изтриването</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Искате ли да изтриете елементи?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

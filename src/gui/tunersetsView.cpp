@@ -920,8 +920,8 @@ void tunersetsView::treeItemDelete()
 		return;
 	}
 
-	bool remove = tabRemoveQuestion(tr("Confirm deletetion", "message"), tr("Do you want to delete items?", "message"));
-	if (! remove)
+	bool removing = tabRemoveQuestion();
+	if (! removing)
 		return;
 
 	int tvid = this->state.yx;
@@ -1057,8 +1057,8 @@ void tunersetsView::listItemDelete(bool cut)
 
 	if (! cut)
 	{
-		bool remove = tabRemoveQuestion(tr("Confirm deletetion", "message"), tr("Do you want to delete items?", "message"));
-		if (! remove)
+		bool removing = tabRemoveQuestion();
+		if (! removing)
 			return;
 	}
 

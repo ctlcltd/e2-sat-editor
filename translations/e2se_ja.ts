@@ -1915,6 +1915,16 @@ Please wait few minutes and try again.</source>
         <comment>message</comment>
         <translation>デモモード</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">ファイルが変更されました</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">変更を保存しますか?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2191,16 +2201,6 @@ Please wait few minutes and try again.</source>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>チャネル参照 &quot;%1&quot; は存在しません。</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>削除の確認</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>項目を削除しますか?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3389,6 +3389,16 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>解析操作中にエラーが発生しました。</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">削除の確認</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">項目を削除しますか?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3410,16 +3420,6 @@ Please wait few minutes and try again.</source>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>%1 からインポート中 …</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>宛先には上書きされるファイルが含まれています。</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>上書きしますか?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3559,16 +3559,6 @@ Please wait few minutes and try again.</source>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>トランスポンダ &quot;%1&quot; は存在しません。</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>削除の確認</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>項目を削除しますか?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3762,16 +3752,6 @@ Please wait few minutes and try again.</source>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>チューナー設定トランスポンダー &quot;%1&quot; が存在しません。</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>削除の確認</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>項目を削除しますか?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

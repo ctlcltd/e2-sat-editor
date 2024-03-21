@@ -1914,6 +1914,16 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <comment>message</comment>
         <translation>ESITTELY-TILA</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">Tiedostoa on muokattu</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Haluatko tallentaa tekemäsi muutokset?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2190,16 +2200,6 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Kanavaviite &quot;%1&quot; ei ole olemassa.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Vahvista poistaminen</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Haluatko poistaa kohteita?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3391,6 +3391,16 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <comment>error</comment>
         <translation>Parsing toimintojen aikana tapahtui virheitä.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">Vahvista poistaminen</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Haluatko poistaa kohteita?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3412,16 +3422,6 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>Tuodaan kohteesta %1…</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>Kohde sisältää tiedostoja, jotka korvataan.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>Haluatko korvata ne?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3561,16 +3561,6 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Transponderia &quot;%1&quot; ei ole olemassa.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Vahvista poistaminen</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Haluatko poistaa kohteita?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3764,16 +3754,6 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Tuner-asetusten transponderia &quot;%1&quot; ei ole olemassa.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Vahvista poistaminen</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Haluatko poistaa kohteita?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

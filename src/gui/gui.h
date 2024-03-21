@@ -271,7 +271,7 @@ class gui : protected e2se::log_factory
 		int newTab(string path = "");
 		int openTab(TAB_VIEW ttv);
 		int openTab(TAB_VIEW ttv, int arg);
-		void closeTab(int index = -1);
+		bool closeTab(int index = -1);
 		void closeAllTabs();
 		string openFileDialog();
 		string saveFileDialog(string path);
@@ -313,6 +313,7 @@ class gui : protected e2se::log_factory
 		void setTabEditActionFlag(GUI_CXE bit, bool flag);
 		void updateMenu();
 		QLocale getLocale();
+		int closeQuestion();
 		void errorMessage(QString title, QString message);
 		void demoMessage();
 
@@ -370,7 +371,7 @@ class gui : protected e2se::log_factory
 		QMenuBar* menu;
 		QMenu* mwind;
 		QActionGroup* mwtabs;
-		string ifp;
+		string ifpath;
 		unordered_map<int, QAction*> gmenu;
 		unordered_map<int, QAction*> ttmenu;
 		unordered_map<int, tab*> ttabs;

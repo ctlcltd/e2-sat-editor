@@ -1915,6 +1915,16 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <comment>message</comment>
         <translation>MODE DEMO</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">Chaidh am faidhle atharrachadh</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">A bheil thu airson na h-atharraichean agad a shàbhaladh?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2191,16 +2201,6 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Chan eil iomradh seanail &quot;%1&quot; ann.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Dearbhaich an sguabadh às</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>A bheil thu airson nithean a sguabadh às?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3398,6 +3398,16 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <comment>error</comment>
         <translation>Thachair mearachdan ri linn gnìomhachd parsing.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">Dearbhaich an sguabadh às</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">A bheil thu airson nithean a sguabadh às?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3419,16 +3429,6 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>Ag ion-phortachadh o %1 …</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>Anns a &apos;cheann-uidhe tha faidhlichean a thèid ath-sgrìobhadh.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>A bheil thu airson sgrìobhadh thairis orra?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3568,16 +3568,6 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Chan eil transponder &quot;%1&quot; ann.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Dearbhaich an sguabadh às</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>A bheil thu airson nithean a sguabadh às?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3771,16 +3761,6 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Chan eil an neach-freagairt &quot;%1&quot; ann an roghainnean tuner.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Dearbhaich an sguabadh às</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>A bheil thu airson nithean a sguabadh às?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

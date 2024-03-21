@@ -1914,6 +1914,16 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <comment>message</comment>
         <translation>DEMO NAČIN</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">Datoteka je bila spremenjena</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Ali želite shraniti spremembe?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2190,16 +2200,6 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Referenca kanala &quot;%1&quot; ne obstaja.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Potrdite izbris</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Ali želite izbrisati elemente?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3397,6 +3397,16 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <comment>error</comment>
         <translation>Med operacijami parsing je prišlo do napak.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">Potrdite izbris</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Ali želite izbrisati elemente?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3418,16 +3428,6 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>Uvažanje iz %1 …</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>Cilj vsebuje datoteke, ki bodo prepisane.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>Ali jih želite prepisati?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3567,16 +3567,6 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Transponder &quot;%1&quot; ne obstaja.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Potrdite izbris</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Ali želite izbrisati elemente?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3770,16 +3760,6 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Transponder nastavitev tunera &quot;%1&quot; ne obstaja.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Potrdite izbris</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Ali želite izbrisati elemente?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>

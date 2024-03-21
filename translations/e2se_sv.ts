@@ -1907,6 +1907,16 @@ Vänta några minuter och försök igen.</translation>
         <comment>message</comment>
         <translation>DEMOLÄGE</translation>
     </message>
+    <message>
+        <source>The file has been modified</source>
+        <comment>message</comment>
+        <translation type="unfinished">Filen har ändrats</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Vill du spara dina ändringar?</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2183,16 +2193,6 @@ Vänta några minuter och försök igen.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Kanalreferens &quot;%1&quot; finns inte.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Bekräfta borttagning</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Vill du ta bort objekt?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3384,6 +3384,16 @@ Vänta några minuter och försök igen.</translation>
         <comment>error</comment>
         <translation>Fel uppstod under parsing operationer.</translation>
     </message>
+    <message>
+        <source>Confirm deletetion</source>
+        <comment>message</comment>
+        <translation type="unfinished">Bekräfta borttagning</translation>
+    </message>
+    <message>
+        <source>Do you want to delete items?</source>
+        <comment>message</comment>
+        <translation type="unfinished">Vill du ta bort objekt?</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3405,16 +3415,6 @@ Vänta några minuter och försök igen.</translation>
         <source>Importing from %1 …</source>
         <comment>message</comment>
         <translation>Importerar från %1 …</translation>
-    </message>
-    <message>
-        <source>The destination contains files that will be overwritten.</source>
-        <comment>message</comment>
-        <translation>Destinationen innehåller filer som kommer att skrivas över.</translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite them?</source>
-        <comment>message</comment>
-        <translation>Vill du skriva över dem?</translation>
     </message>
     <message>
         <source>Exported to %1</source>
@@ -3554,16 +3554,6 @@ Vänta några minuter och försök igen.</translation>
         <source>Transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Transponder &quot;%1&quot; finns inte.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Bekräfta borttagning</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Vill du ta bort objekt?</translation>
     </message>
     <message>
         <source>Not a valid data format.</source>
@@ -3757,16 +3747,6 @@ Vänta några minuter och försök igen.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Tunerinställningar transponder &quot;%1&quot; finns inte.</translation>
-    </message>
-    <message>
-        <source>Confirm deletetion</source>
-        <comment>message</comment>
-        <translation>Bekräfta borttagning</translation>
-    </message>
-    <message>
-        <source>Do you want to delete items?</source>
-        <comment>message</comment>
-        <translation>Vill du ta bort objekt?</translation>
     </message>
     <message>
         <source>Tuner settings transponder type mismatch.</source>
