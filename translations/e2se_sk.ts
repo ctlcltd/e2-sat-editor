@@ -1917,12 +1917,12 @@ Počkajte niekoľko minút a skúste to znova.</translation>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">Súbor bol upravený</translation>
+        <translation>Súbor bol upravený</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">Chcete uložiť zmeny?</translation>
+        <translation>Chcete uložiť zmeny?</translation>
     </message>
 </context>
 <context>
@@ -3397,12 +3397,12 @@ Počkajte niekoľko minút a skúste to znova.</translation>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">Potvrďte vymazanie</translation>
+        <translation>Potvrďte vymazanie</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">Chcete odstrániť položky?</translation>
+        <translation>Chcete odstrániť položky?</translation>
     </message>
 </context>
 <context>

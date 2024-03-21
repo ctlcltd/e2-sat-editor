@@ -1916,12 +1916,12 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">Soubor byl změněn</translation>
+        <translation>Soubor byl změněn</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">Chcete uložit změny?</translation>
+        <translation>Chcete uložit změny?</translation>
     </message>
 </context>
 <context>
@@ -3396,12 +3396,12 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">Potvrdit vymazání</translation>
+        <translation>Potvrdit vymazání</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">Chcete smazat položky?</translation>
+        <translation>Chcete smazat položky?</translation>
     </message>
 </context>
 <context>

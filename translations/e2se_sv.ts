@@ -1910,12 +1910,12 @@ Vänta några minuter och försök igen.</translation>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">Filen har ändrats</translation>
+        <translation>Filen har ändrats</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">Vill du spara dina ändringar?</translation>
+        <translation>Vill du spara dina ändringar?</translation>
     </message>
 </context>
 <context>
@@ -3387,12 +3387,12 @@ Vänta några minuter och försök igen.</translation>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">Bekräfta borttagning</translation>
+        <translation>Bekräfta borttagning</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">Vill du ta bort objekt?</translation>
+        <translation>Vill du ta bort objekt?</translation>
     </message>
 </context>
 <context>

@@ -1917,12 +1917,12 @@ Espereu uns minuts i torneu ho a provar.</translation>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">El fitxer ha estat modificat</translation>
+        <translation>El fitxer ha estat modificat</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">Voleu desar els vostres canvis?</translation>
+        <translation>Voleu desar els vostres canvis?</translation>
     </message>
 </context>
 <context>
@@ -3394,12 +3394,12 @@ Espereu uns minuts i torneu ho a provar.</translation>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">Confirmeu eliminació</translation>
+        <translation>Confirmeu eliminació</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">Voleu suprimir elements?</translation>
+        <translation>Voleu suprimir elements?</translation>
     </message>
 </context>
 <context>

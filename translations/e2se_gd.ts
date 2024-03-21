@@ -1918,12 +1918,12 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">Chaidh am faidhle atharrachadh</translation>
+        <translation>Chaidh am faidhle atharrachadh</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">A bheil thu airson na h-atharraichean agad a shàbhaladh?</translation>
+        <translation>A bheil thu airson na h-atharraichean agad a shàbhaladh?</translation>
     </message>
 </context>
 <context>
@@ -3401,12 +3401,12 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">Dearbhaich an sguabadh às</translation>
+        <translation>Dearbhaich an sguabadh às</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">A bheil thu airson nithean a sguabadh às?</translation>
+        <translation>A bheil thu airson nithean a sguabadh às?</translation>
     </message>
 </context>
 <context>

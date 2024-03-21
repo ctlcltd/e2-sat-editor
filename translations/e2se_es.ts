@@ -1917,12 +1917,12 @@ Espera unos minutos y vuelve a intentarlo.</translation>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">El archivo ha sido modificado.</translation>
+        <translation>El archivo ha sido modificado.</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">¿Quieres guardar tus cambios?</translation>
+        <translation>¿Quieres guardar tus cambios?</translation>
     </message>
 </context>
 <context>
@@ -3394,12 +3394,12 @@ Espera unos minutos y vuelve a intentarlo.</translation>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">Confirmar eliminación</translation>
+        <translation>Confirmar eliminación</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">¿Quieres eliminar elementos?</translation>
+        <translation>¿Quieres eliminar elementos?</translation>
     </message>
 </context>
 <context>

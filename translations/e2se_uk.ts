@@ -1919,12 +1919,12 @@ Please wait few minutes and try again.</source>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">Файл було змінено</translation>
+        <translation>Файл було змінено</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">Бажаєте зберегти зміни?</translation>
+        <translation>Бажаєте зберегти зміни?</translation>
     </message>
 </context>
 <context>
@@ -3399,12 +3399,12 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">Підтвердити видалення</translation>
+        <translation>Підтвердити видалення</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">Ви бажаєте видалити елементи?</translation>
+        <translation>Ви бажаєте видалити елементи?</translation>
     </message>
 </context>
 <context>

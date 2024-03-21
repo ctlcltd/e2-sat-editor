@@ -1916,12 +1916,12 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">Failas buvo pakeistas</translation>
+        <translation>Failas buvo pakeistas</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">Ar norite išsaugoti pakeitimus?</translation>
+        <translation>Ar norite išsaugoti pakeitimus?</translation>
     </message>
 </context>
 <context>
@@ -3396,12 +3396,12 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">Patvirtinkite ištrynimą</translation>
+        <translation>Patvirtinkite ištrynimą</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">Ar norite ištrinti elementus?</translation>
+        <translation>Ar norite ištrinti elementus?</translation>
     </message>
 </context>
 <context>

@@ -1918,12 +1918,12 @@ Kérjük, várjon néhány percet, és próbálja újra.</translation>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">A fájl módosult</translation>
+        <translation>A fájl módosult</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">Szeretné menteni a változtatásokat?</translation>
+        <translation>Szeretné menteni a változtatásokat?</translation>
     </message>
 </context>
 <context>
@@ -3392,12 +3392,12 @@ Kérjük, várjon néhány percet, és próbálja újra.</translation>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">Erősítse meg a törlést</translation>
+        <translation>Erősítse meg a törlést</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">Törölni szeretné az elemeket?</translation>
+        <translation>Törölni szeretné az elemeket?</translation>
     </message>
 </context>
 <context>

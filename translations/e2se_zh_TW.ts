@@ -1914,12 +1914,12 @@ Please wait few minutes and try again.</source>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">文件已被修改</translation>
+        <translation>文件已被修改</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">您想保存更改嗎？</translation>
+        <translation>您想保存更改嗎？</translation>
     </message>
 </context>
 <context>
@@ -3388,12 +3388,12 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">確認刪除</translation>
+        <translation>確認刪除</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">您想刪除項目嗎？</translation>
+        <translation>您想刪除項目嗎？</translation>
     </message>
 </context>
 <context>

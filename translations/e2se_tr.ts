@@ -1910,12 +1910,12 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">Dosya değiştirildi</translation>
+        <translation>Dosya değiştirildi</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">Değişikliklerinizi kaydetmek istiyor musunuz?</translation>
+        <translation>Değişikliklerinizi kaydetmek istiyor musunuz?</translation>
     </message>
 </context>
 <context>
@@ -3384,12 +3384,12 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">Silme işlemini onayla</translation>
+        <translation>Silme işlemini onayla</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">Öğeleri silmek istiyor musunuz?</translation>
+        <translation>Öğeleri silmek istiyor musunuz?</translation>
     </message>
 </context>
 <context>

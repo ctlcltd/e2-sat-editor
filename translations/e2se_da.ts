@@ -1916,12 +1916,12 @@ Vent et par minutter, og prøv igen.</translation>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">Filen er blevet ændret</translation>
+        <translation>Filen er blevet ændret</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">Vil du gemme dine ændringer?</translation>
+        <translation>Vil du gemme dine ændringer?</translation>
     </message>
 </context>
 <context>
@@ -3393,12 +3393,12 @@ Vent et par minutter, og prøv igen.</translation>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">Bekræft sletning</translation>
+        <translation>Bekræft sletning</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">Vil du slette elementer?</translation>
+        <translation>Vil du slette elementer?</translation>
     </message>
 </context>
 <context>

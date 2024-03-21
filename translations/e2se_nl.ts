@@ -1918,12 +1918,12 @@ Wacht een paar minuten en probeer het opnieuw.</translation>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">Het bestand is aangepast</translation>
+        <translation>Het bestand is aangepast</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">Wil je je wijzigingen opslaan?</translation>
+        <translation>Wil je je wijzigingen opslaan?</translation>
     </message>
 </context>
 <context>
@@ -3395,12 +3395,12 @@ Wacht een paar minuten en probeer het opnieuw.</translation>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">Bevestig de verwijdering</translation>
+        <translation>Bevestig de verwijdering</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">Wilt u artikelen verwijderen?</translation>
+        <translation>Wilt u artikelen verwijderen?</translation>
     </message>
 </context>
 <context>

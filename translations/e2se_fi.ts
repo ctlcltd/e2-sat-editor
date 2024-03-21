@@ -1917,12 +1917,12 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">Tiedostoa on muokattu</translation>
+        <translation>Tiedostoa on muokattu</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">Haluatko tallentaa tekemäsi muutokset?</translation>
+        <translation>Haluatko tallentaa tekemäsi muutokset?</translation>
     </message>
 </context>
 <context>
@@ -3394,12 +3394,12 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">Vahvista poistaminen</translation>
+        <translation>Vahvista poistaminen</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">Haluatko poistaa kohteita?</translation>
+        <translation>Haluatko poistaa kohteita?</translation>
     </message>
 </context>
 <context>

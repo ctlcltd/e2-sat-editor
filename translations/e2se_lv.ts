@@ -1916,12 +1916,12 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">Fails ir modificēts</translation>
+        <translation>Fails ir modificēts</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">Vai vēlaties saglabāt izmaiņas?</translation>
+        <translation>Vai vēlaties saglabāt izmaiņas?</translation>
     </message>
 </context>
 <context>
@@ -3396,12 +3396,12 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">Apstipriniet dzēšanu</translation>
+        <translation>Apstipriniet dzēšanu</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">Vai vēlaties dzēst vienumus?</translation>
+        <translation>Vai vēlaties dzēst vienumus?</translation>
     </message>
 </context>
 <context>

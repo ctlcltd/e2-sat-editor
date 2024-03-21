@@ -1919,12 +1919,12 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">Datoteka je izmijenjena</translation>
+        <translation>Datoteka je izmijenjena</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">Želite li spremiti promjene?</translation>
+        <translation>Želite li spremiti promjene?</translation>
     </message>
 </context>
 <context>
@@ -3399,12 +3399,12 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">Potvrdite brisanje</translation>
+        <translation>Potvrdite brisanje</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">Želite li izbrisati stavke?</translation>
+        <translation>Želite li izbrisati stavke?</translation>
     </message>
 </context>
 <context>

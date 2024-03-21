@@ -1918,12 +1918,12 @@ Please wait few minutes and try again.</source>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">ファイルが変更されました</translation>
+        <translation>ファイルが変更されました</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">変更を保存しますか?</translation>
+        <translation>変更を保存しますか?</translation>
     </message>
 </context>
 <context>
@@ -3392,12 +3392,12 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">削除の確認</translation>
+        <translation>削除の確認</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">項目を削除しますか?</translation>
+        <translation>項目を削除しますか?</translation>
     </message>
 </context>
 <context>

@@ -1920,12 +1920,12 @@ Please wait few minutes and try again.</source>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">Файл был изменен</translation>
+        <translation>Файл был изменен</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">Вы хотите сохранить изменения?</translation>
+        <translation>Вы хотите сохранить изменения?</translation>
     </message>
 </context>
 <context>
@@ -3400,12 +3400,12 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">Подтвердить удаление</translation>
+        <translation>Подтвердить удаление</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">Вы хотите удалить элементы?</translation>
+        <translation>Вы хотите удалить элементы?</translation>
     </message>
 </context>
 <context>

@@ -1917,12 +1917,12 @@ Please wait few minutes and try again.</source>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">فایل اصلاح شده است</translation>
+        <translation>فایل اصلاح شده است</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">آیا می خواهید تغییرات خود را ذخیره کنید؟</translation>
+        <translation>آیا می خواهید تغییرات خود را ذخیره کنید؟</translation>
     </message>
 </context>
 <context>
@@ -3391,12 +3391,12 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">حذف را تایید کنید</translation>
+        <translation>حذف را تایید کنید</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">آیا می خواهید موارد را حذف کنید؟</translation>
+        <translation>آیا می خواهید موارد را حذف کنید؟</translation>
     </message>
 </context>
 <context>

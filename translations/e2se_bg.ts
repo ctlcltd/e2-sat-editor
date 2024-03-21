@@ -1918,12 +1918,12 @@ Please wait few minutes and try again.</source>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">Файлът е променен</translation>
+        <translation>Файлът е променен</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">Искате ли да запазите промените си?</translation>
+        <translation>Искате ли да запазите промените си?</translation>
     </message>
 </context>
 <context>
@@ -3395,12 +3395,12 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">Потвърдете изтриването</translation>
+        <translation>Потвърдете изтриването</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">Искате ли да изтриете елементи?</translation>
+        <translation>Искате ли да изтриете елементи?</translation>
     </message>
 </context>
 <context>

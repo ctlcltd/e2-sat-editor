@@ -1916,12 +1916,12 @@ Please wait few minutes and try again.</source>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">הקובץ השתנה</translation>
+        <translation>הקובץ השתנה</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">האם ברצונך לשמור את השינויים שלך?</translation>
+        <translation>האם ברצונך לשמור את השינויים שלך?</translation>
     </message>
 </context>
 <context>
@@ -3393,12 +3393,12 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">אשר את המחיקה</translation>
+        <translation>אשר את המחיקה</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">האם אתה רוצה למחוק פריטים?</translation>
+        <translation>האם אתה רוצה למחוק פריטים?</translation>
     </message>
 </context>
 <context>

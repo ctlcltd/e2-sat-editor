@@ -1915,12 +1915,12 @@ Please wait few minutes and try again.</source>
     <message>
         <source>The file has been modified</source>
         <comment>message</comment>
-        <translation type="unfinished">파일이 수정되었습니다</translation>
+        <translation>파일이 수정되었습니다</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
         <comment>message</comment>
-        <translation type="unfinished">변경 사항을 저장하시겠습니까?</translation>
+        <translation>변경 사항을 저장하시겠습니까?</translation>
     </message>
 </context>
 <context>
@@ -3389,12 +3389,12 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Confirm deletetion</source>
         <comment>message</comment>
-        <translation type="unfinished">삭제 확인</translation>
+        <translation>삭제 확인</translation>
     </message>
     <message>
         <source>Do you want to delete items?</source>
         <comment>message</comment>
-        <translation type="unfinished">항목을 삭제하시겠습니까?</translation>
+        <translation>항목을 삭제하시겠습니까?</translation>
     </message>
 </context>
 <context>
