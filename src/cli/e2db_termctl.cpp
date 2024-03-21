@@ -568,7 +568,7 @@ std::pair<int, int> e2db_termctl::tty_get_screensize()
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
 	GetConsoleScreenBufferInfo(hStdout, &csbiInfo);
-	return std::pair (int (csbiInfo.dwSize.Y), int (csbiInfo.dwSize.X));
+	return std::pair (csbiInfo.dwSize.Y, csbiInfo.dwSize.X);
 #elif defined(PLATFORM_UX)
 	struct winsize w;
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
@@ -596,7 +596,7 @@ void e2db_termctl::tty_goforward()
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
 	GetConsoleScreenBufferInfo(hStdout, &csbiInfo);
-	COORD coordPos = {csbiInfo.dwCursorPosition.X + 1, csbiInfo.dwCursorPosition.Y};
+	COORD coordPos = {short (csbiInfo.dwCursorPosition.X + 1), csbiInfo.dwCursorPosition.Y};
 	SetConsoleCursorPosition(hStdout, coordPos);
 #else
 	std::printf("\033[1C");
@@ -609,7 +609,7 @@ void e2db_termctl::tty_gobackward()
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
 	GetConsoleScreenBufferInfo(hStdout, &csbiInfo);
-	COORD coordPos = {csbiInfo.dwCursorPosition.X - 1, csbiInfo.dwCursorPosition.Y};
+	COORD coordPos = {short (csbiInfo.dwCursorPosition.X - 1), csbiInfo.dwCursorPosition.Y};
 	SetConsoleCursorPosition(hStdout, coordPos);
 #else
 	std::printf("\033[1D");

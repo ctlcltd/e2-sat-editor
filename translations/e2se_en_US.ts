@@ -864,7 +864,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Favourite</source>
         <comment>dialog</comment>
-        <translation>Favorite type</translation>
+        <translation>Favorite</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>

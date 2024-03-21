@@ -47,6 +47,7 @@ void about::layout()
 
 	this->dial = new QDialog;
 	dial->setWindowTitle(tr("About e2 SAT Editor"));
+
 	theme->fix(dial);
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)

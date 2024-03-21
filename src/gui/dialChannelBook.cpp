@@ -130,9 +130,15 @@ bool dialChannelBook::destroy()
 	}
 
 	if (this->dial != nullptr)
+	{
 		delete this->dial;
+		this->dial = nullptr;
+	}
 	if (this->theme != nullptr)
+	{
 		delete this->theme;
+		this->theme = nullptr;
+	}
 
 	// delete this;
 

@@ -166,6 +166,7 @@ gui::gui(int argc, char* argv[])
 
 	this->mwid = new QWidget;
 	mwid->setWindowTitle("e2 SAT Editor");
+
 	theme->fix(mwid);
 
 	// additional fix application wide

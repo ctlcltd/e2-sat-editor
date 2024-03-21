@@ -31,6 +31,7 @@ void dialAbstract::layout(QWidget* cwid)
 
 	this->dial = new QDialog(cwid);
 	dial->setWindowTitle(tr("Edit", "dialog"));
+
 	theme->fix(dial);
 
 	ThemeChangeEventObserver* gce = new ThemeChangeEventObserver;

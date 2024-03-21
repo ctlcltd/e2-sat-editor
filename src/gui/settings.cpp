@@ -96,6 +96,7 @@ void settings::layout(QWidget* cwid)
 
 	this->dial = new QDialog(cwid);
 	dial->setWindowTitle(tr("Settings", "dialog"));
+
 	theme->fix(dial);
 
 	dial->setStyleSheet("QGroupBox { spacing: 0; padding: 0; padding-top: 20px; border: 0; font-weight: bold } QGroupBox::title { margin: 0 10px }");

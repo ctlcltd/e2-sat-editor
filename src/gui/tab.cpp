@@ -1083,6 +1083,7 @@ void tab::infoFile()
 	dial->setObjectName("fileinfo");
 	dial->setWindowTitle(tr("File Information", "dialog"));
 	dial->setMinimumSize(450, 520);
+
 	theme->fix(dial);
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
@@ -1100,8 +1101,8 @@ void tab::infoFile()
 	dtf0->setFormAlignment(Qt::AlignLeading);
 	dtf0->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
-	string fpath = this->data->getPath();
-	string fname = std::filesystem::path(fpath).filename().u8string();
+	string filepath = this->data->getPath();
+	string filename = std::filesystem::path(filepath).filename().u8string();
 
 	int srcver = dbih->db.version;
 	int dstver = 0;
@@ -1120,18 +1121,30 @@ void tab::infoFile()
 
 	auto flist = dbih->get_input();
 
-	QUrl qfpath = QUrl::fromLocalFile(QString::fromStdString(fpath));
+	QString fpath = QString::fromStdString(filepath);
+	QString fname = QString::fromStdString(filename);
+	QUrl furl = QUrl::fromLocalFile(fpath);
 
 	QLabel* dtf0fn = new QLabel;
-	dtf0fn->setText(QString::fromStdString(fname));
+	if (fname.size() > 54)
+	{
+		dtf0fn->setToolTip(fname);
+		dtf0fn->setMaximumWidth(330);
+	}
+	dtf0fn->setText(fname);
 	dtf0fn->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
 	platform::osLabel(dtf0fn);
 	dtf0->addRow(QString(QApplication::layoutDirection() == Qt::RightToLeft ? ":%1" : "%1:").arg(tr("File name")), dtf0fn);
 
 	QLabel* dtf0fp = new QLabel;
-	if (qfpath.isLocalFile())
+	if (furl.isLocalFile())
 	{
-		dtf0fp->setText(QString("<a href=\"%1\">%2</a>").arg(qfpath.toString()).arg(QString::fromStdString(fpath)));
+		if (fpath.size() > 54)
+		{
+			dtf0fp->setToolTip(fpath);
+			dtf0fp->setMaximumWidth(330);
+		}
+		dtf0fp->setText(QString("<a href=\"%1\">%2</a>").arg(furl.toString()).arg(fpath));
 #ifndef E2SE_DEMO
 		dtf0fp->setOpenExternalLinks(true);
 #endif
@@ -1241,6 +1254,7 @@ void tab::infoFile()
 
 	dfrm->setContentsMargins(0, 0, 0, 0);
 	dfrm->addLayout(dtform, 0, 0);
+
 	dial->setLayout(dfrm);
 	dial->exec();
 }
