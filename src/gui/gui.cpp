@@ -193,16 +193,7 @@ gui::gui(int argc, char* argv[])
 
 	layout();
 
-	if (QSettings().value("geometry").isNull())
-	{
-		mwid->resize(960, 670);
-		mwid->showMaximized();
-	}
-	else
-	{
-		mwid->restoreGeometry(QSettings().value("geometry").toByteArray());
-		mwid->show();
-	}
+	mainWindowShowAndGainFocus();
 
 	// screenshot
 	// mwid->setGeometry(280, 120, 1024, 720);
@@ -228,6 +219,47 @@ gui::~gui()
 int gui::exited()
 {
 	return 0;
+}
+
+// maybe a regression in Qt 6.6.x main window lowered [macOS]
+// no way: lower, raise, activateWindow, requestActivateWindow
+// temporary workaround
+void gui::mainWindowShowAndGainFocus()
+{
+#ifdef Q_OS_MAC
+	if (QSettings().value("geometry").isNull())
+	{
+		mwid->resize(960, 670);
+#if QT_VERSION <= QT_VERSION_CHECK(6, 5, 1)
+		mwid->showMaximized();
+#endif
+	}
+	else
+	{
+		mwid->restoreGeometry(QSettings().value("geometry").toByteArray());
+#if QT_VERSION <= QT_VERSION_CHECK(6, 5, 1)
+		mwid->show();
+#endif
+	}
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 1)
+	mroot->connect(mroot, &QApplication::applicationStateChanged, [=](Qt::ApplicationState state) {
+		if (state == Qt::ApplicationActive)
+			mwid->show();
+	});
+#endif
+#else
+	if (QSettings().value("geometry").isNull())
+	{
+		mwid->resize(960, 670);
+		mwid->showMaximized();
+	}
+	else
+	{
+		mwid->restoreGeometry(QSettings().value("geometry").toByteArray());
+		mwid->show();
+	}
+#endif
 }
 
 void gui::layout()
