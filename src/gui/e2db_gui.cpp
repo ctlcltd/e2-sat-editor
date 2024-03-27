@@ -504,8 +504,6 @@ void e2db::exportFile(int bit, vector<string> paths, string filename) noexcept
 {
 	debug("exportFile");
 
-	qDebug() << filename;
-
 	if (bit != -1)
 	{
 		if (paths.size() == 1)
