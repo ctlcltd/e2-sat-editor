@@ -29,7 +29,11 @@ jobs:
         brew remove --ignore-dependencies --force $(brew list)
         brew cleanup
         brew update
-        brew install cmake ninja qt6 curl
+        brew install cmake
+        brew install ninja
+        brew install pkg-config
+        brew install curl
+        brew install qt6
 
     - name: Configure CMake
       working-directory: ${{github.workspace}}/e2-sat-editor/src
