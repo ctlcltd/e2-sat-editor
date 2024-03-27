@@ -24,7 +24,10 @@ jobs:
         path: e2-sat-editor
 
     - name: Setup Homebrew
+      continue-on-error: true
       run: |
+        brew remove --ignore-dependencies --force $(brew list)
+        brew cleanup
         brew update
         brew install cmake ninja qt6 curl
 
