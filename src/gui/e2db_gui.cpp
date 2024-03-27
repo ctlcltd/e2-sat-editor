@@ -735,7 +735,7 @@ QStringList e2db::entryFavourite(channel_reference chref)
 		{
 			QStringList entry = QStringList (entries.services[ref_chid]);
 			entry[0] = value;
-			entry[1] = ""; //Qt 5
+			entry[1] = ""; //Qt5
 			entry[2] = chid;
 			entry[4] = ssid;
 			entry[5] = tsid;
@@ -749,14 +749,14 @@ QStringList e2db::entryFavourite(channel_reference chref)
 			QString txid = QString::fromStdString(ref_txid);
 			QStringList entry = QStringList (9);
 			entry[0] = value;
-			entry[1] = ""; //Qt 5
+			entry[1] = ""; //Qt5
 			entry[2] = chid;
 			entry[3] = txid;
 			entry[4] = ssid;
 			entry[5] = tsid;
 			entry[6] = "STREAM";
-			entry[7] = ""; //Qt 5
-			entry[8] = ""; //Qt 5
+			entry[7] = ""; //Qt5
+			entry[8] = ""; //Qt5
 			entry.append(entries.transponders[ref_txid]);
 			entry[9] = sys;
 			entry[11] = uri;
