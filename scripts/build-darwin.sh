@@ -135,6 +135,8 @@ release () {
 
 	bash ../scripts/deployqtmacx.sh "build/e2 SAT Editor.app" --verbose
 
+	chmod +x "build/e2 SAT Editor.app/Contents/MacOS/e2 SAT Editor"
+
 	printf "%s\n\n" "copying e2se files ..."
 
 	cp ../dist/common/Readme.txt.in build/Readme.txt
