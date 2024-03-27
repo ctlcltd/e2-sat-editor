@@ -243,10 +243,9 @@ void gui::mainWindowShowAndGainFocus()
 	}
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 5, 1)
-	mroot->connect(mroot, &QApplication::applicationStateChanged, [=](Qt::ApplicationState state) {
-		if (state == Qt::ApplicationActive)
-			mwid->show();
-	});
+	mroot->connect(mroot, &QApplication::applicationStateChanged, [=]() { this->mainWindowDelayedShow(); });
+
+	QTimer::singleShot(6e3, [=]() { this->mainWindowDelayedShow(); });
 #endif
 #else
 	if (QSettings().value("geometry").isNull())
@@ -260,6 +259,19 @@ void gui::mainWindowShowAndGainFocus()
 		mwid->show();
 	}
 #endif
+}
+
+void gui::mainWindowDelayedShow()
+{
+	if (! mroot->property("_started_macx").toBool())
+	{
+		if (QSettings().value("geometry").isNull())
+			mwid->showMaximized();
+		else
+			mwid->show();
+
+		mroot->setProperty("_started_macx", true);
+	}
 }
 
 void gui::layout()

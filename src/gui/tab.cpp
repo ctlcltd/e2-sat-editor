@@ -185,6 +185,8 @@ bool tab::hasChanged()
 	{
 		return this->data->hasChanged();
 	}
+
+	return false;
 }
 
 void tab::updateTabName(string path)
