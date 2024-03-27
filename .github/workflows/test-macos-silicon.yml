@@ -24,7 +24,9 @@ jobs:
         path: e2-sat-editor
 
     - name: Setup Homebrew
-      run: brew install cmake ninja qt6 curl
+      run: |
+        brew update
+        brew install cmake ninja qt6 curl
 
     - name: Configure CMake
       working-directory: ${{github.workspace}}/e2-sat-editor/src
