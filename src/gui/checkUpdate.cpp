@@ -295,7 +295,9 @@ void checkUpdate::fetch()
 	struct curl_slist* list = NULL;
 	list = curl_slist_append(list, "DNT: 1");
 
-	curl_easy_setopt(cph, CURLOPT_CAINFO, cabundle_path().c_str());
+	if (this->medium == MEDIUM::github || this->medium == MEDIUM::unknown)
+		curl_easy_setopt(cph, CURLOPT_CAINFO, cabundle_path().c_str());
+
 	curl_easy_setopt(cph, CURLOPT_CONNECT_ONLY, true);
 	curl_easy_setopt(cph, CURLOPT_HTTPGET, true);
 	curl_easy_setopt(cph, CURLOPT_FOLLOWLOCATION, false);
@@ -341,7 +343,9 @@ void checkUpdate::fetch()
 		struct curl_slist* list = NULL;
 		list = curl_slist_append(list, "DNT: 1");
 
-		curl_easy_setopt(cph, CURLOPT_CAINFO, cabundle_path().c_str());
+		if (this->medium == MEDIUM::github || this->medium == MEDIUM::unknown)
+			curl_easy_setopt(cph, CURLOPT_CAINFO, cabundle_path().c_str());
+
 		curl_easy_setopt(cph, CURLOPT_HTTPGET, true);
 		curl_easy_setopt(cph, CURLOPT_FOLLOWLOCATION, false);
 		curl_easy_setopt(cph, CURLOPT_HTTPHEADER, list);

@@ -24,7 +24,6 @@ modules:
       - -DCMAKE_BUILD_TYPE=Release
       - -DRELEASE_MEDIUM=flathub
       - -DWITHOUT_CLI=ON
-      - -DDOWNLOAD_CURL_CABUNDLE=ON
     subdir: src
     sources:
       - type: git
