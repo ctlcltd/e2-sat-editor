@@ -122,6 +122,12 @@ vector<string> dataHandler::getErrors()
 	return {};
 }
 
+void dataHandler::clearErrors()
+{
+	if (this->dbih != nullptr)
+		return this->dbih->clearErrors();
+}
+
 void dataHandler::setChanged(bool changed)
 {
 	this->changed = changed;

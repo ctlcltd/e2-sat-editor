@@ -31,7 +31,7 @@
     <binary>e2-sat-editor</binary>
   </provides>
   <releases>
-    <release version="1.3.0" date="2024-03-28">
+    <release version="1.3.0" date="2024-03-29">
       <description>
         <ul>
           <li>Type stream reference support</li>

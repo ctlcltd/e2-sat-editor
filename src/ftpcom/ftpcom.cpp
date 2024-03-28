@@ -605,6 +605,7 @@ void ftpcom::put_files(unordered_map<string, ftpcom_file> files, std::function<v
 	}
 }
 
+//TODO FIX too much time to timeout
 bool ftpcom::cmd_ifreload()
 {
 	debug("cmd_ifreload");
@@ -680,12 +681,14 @@ bool ftpcom::cmd_ifreload()
 
 	// debug("cmd_ifreload", "data", data.str());
 
+	//TODO FIX SEGFAULT with a strange routine (connect > disconnect > upload > disconnect > upload)
 	reset(csh, rsh);
 	data.clear();
 
 	return cmd;
 }
 
+//TODO FIX too much time to timeout
 bool ftpcom::cmd_tnreload()
 {
 	debug("cmd_tnreload");

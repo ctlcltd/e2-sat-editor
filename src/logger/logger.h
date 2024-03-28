@@ -10,11 +10,12 @@
  */
 
 #include <string>
+#include <vector>
 #include <sstream>
 #include <iostream>
 #include <stdexcept>
 
-using std::string;
+using std::string, std::vector;
 
 #ifndef logger_h
 #define logger_h
@@ -34,6 +35,7 @@ class logger
 		struct data
 		{
 			string log;
+			vector<string> trace;
 			bool debug = false;
 			bool cli = false;
 		};

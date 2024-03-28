@@ -620,6 +620,8 @@ bool tab::readFile(string path)
 	if (statusBarIsVisible())
 		timer = statusBarMessage(tr("Reading from %1 …", "message").arg(path.data()));
 
+	this->data->clearErrors();
+
 #ifndef Q_OS_WASM
 	theme::setWaitCursor();
 	bool read = this->data->readFile(path);
@@ -688,6 +690,8 @@ void tab::saveFile(bool saveas)
 #ifdef E2SE_DEMO
 	return this->demoMessage();
 #endif
+
+	this->data->clearErrors();
 
 	string path = this->data->getPath();
 	string nw_path;
@@ -789,6 +793,8 @@ void tab::importFile()
 
 	auto* dbih = this->data->dbih;
 
+	this->data->clearErrors();
+
 	gui::TAB_VIEW current = getTabView();
 	gui::GUI_DPORTS gde = gui::GUI_DPORTS::AllFiles;
 	vector<string> paths;
@@ -844,6 +850,8 @@ void tab::exportFile()
 #endif
 
 	auto* dbih = this->data->dbih;
+
+	this->data->clearErrors();
 
 	gui::TAB_VIEW current = getTabView();
 	gui::GUI_DPORTS gde = gui::GUI_DPORTS::AllFiles;
@@ -2071,6 +2079,8 @@ void tab::ftpDownload()
 	auto* ftih = this->ftph->ftih;
 	auto* dbih = this->data->dbih;
 
+	this->data->clearErrors();
+
 	this->files.clear();
 	this->ftp_files.clear();
 	this->ftp_errors.clear();
@@ -2174,9 +2184,7 @@ void tab::ftpDownload()
 			}
 
 			if (this->data->haveErrors())
-			{
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(this->data->getErrors(), MSG_CODE::parseNotice); }, Qt::QueuedConnection);
-			}
 
 			QMetaObject::invokeMethod(this->cwid, [=]() {
 				view->reset();

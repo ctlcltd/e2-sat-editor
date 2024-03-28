@@ -25,6 +25,6 @@ class htsh(SimpleHTTPRequestHandler):
 File not found.\n\
 </BODY></HTML>\n')
 
-httpd = TCPServer(("127.0.0.1", 80), htsh)
-print("Virtual WebIf started at port 80")
+httpd = TCPServer(("127.0.0.1", 8080), htsh)
+print("Virtual WebIf started at port 8080")
 httpd.serve_forever()

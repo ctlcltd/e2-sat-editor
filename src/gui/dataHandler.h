@@ -33,6 +33,7 @@ class dataHandler : protected e2se::log_factory
 		bool writeFile(string path);
 		bool haveErrors();
 		vector<string> getErrors();
+		void clearErrors();
 		void setChanged(bool changed);
 		bool hasChanged();
 		void setNewfile(bool newfile);

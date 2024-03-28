@@ -539,15 +539,17 @@ void e2db::importBlob(unordered_map<string, e2db_file> files)
 
 bool e2db::haveErrors()
 {
-	return this->errors.size() ? true : false;
+	return e2se::logger::OBJECT->trace.size() ? true : false;
 }
 
 vector<string> e2db::getErrors()
 {
-	vector<string> _errors = vector (this->errors);
-	this->errors.clear();
+	return e2se::logger::OBJECT->trace;
+}
 
-	return _errors;
+void e2db::clearErrors()
+{
+	e2se::logger::OBJECT->trace.clear();
 }
 
 QStringList e2db::entryTransponder(transponder tx)
@@ -888,7 +890,12 @@ void e2db::error(string fn, string optk, string optv)
 {
 	this->::e2se_e2db::e2db::error(fn, tr(optk.data(), "error").toStdString(), tr(optv.data(), "error").toStdString());
 
-	errors.emplace_back(tr(optk.data(), "error").toStdString() + '\t' + tr(optv.data(), "error").toStdString() + '\t' + fn);
+	trace(tr(optk.data(), "error").toStdString() + '\t' + tr(optv.data(), "error").toStdString() + '\t' + fn);
+}
+
+void e2db::trace(string error)
+{
+	e2se::logger::OBJECT->trace.emplace_back(error);
 }
 
 }

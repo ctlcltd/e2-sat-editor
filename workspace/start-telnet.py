@@ -3,38 +3,22 @@
 
 import asyncio
 import telnetlib3
+
 CR, LF, NUL = "\r\n\x00"
 
-@asyncio.coroutine
-def test_shell(reader, writer):
-	username = None
-	password = None
+async def test_shell(reader, writer):
+	attempts = 3
 
-	writer.write("STB login: ")
-	username_reader = readline(reader, writer)
-	username_reader.send(None)
-	while username is None:
-		inp = yield from reader.read(1)
-		if not inp:
-			return
-		username = username_reader.send(inp)
-	writer.write(CR + LF)
+	while True:
+		auth = await login(reader, writer)
 
-	if username != "root":
-		writer.write("Password: ")
-		password_reader = readline(reader, writer, True)
-		password_reader.send(None)
-		while password is None:
-			inp = yield from reader.read(1)
-			if not inp:
-				return
-			password = password_reader.send(inp)
-		writer.write(CR + LF)
+		if auth is True:
+			break
+		else:
+			attempts -= 1
 
-		if password != "test":
-			writer.write("Login incorrect" + CR + LF)
+		if attempts == 0:
 			writer.close()
-			return
 
 	writer.write("done!" + CR + LF)
 	linereader = readline(reader, writer)
@@ -47,7 +31,7 @@ def test_shell(reader, writer):
 		writer.write("[root@STB /]# ")
 		command = None
 		while command is None:
-			inp = yield from reader.read(1)
+			inp = await reader.read(1)
 			if not inp:
 				return
 			command = linereader.send(inp)
@@ -62,7 +46,40 @@ def test_shell(reader, writer):
 			writer.write("-sh: " + command + ": not found")
 	writer.close()
 
-@asyncio.coroutine
+async def login(reader, writer):
+	username = None
+	password = None
+
+	writer.write("STB login: ")
+	username_reader = readline(reader, writer)
+	username_reader.send(None)
+	while username is None:
+		inp = await reader.read(1)
+		if not inp:
+			return
+		username = username_reader.send(inp)
+	writer.write(CR + LF)
+
+	if username == "root":
+		writer.write("Password: ")
+		password_reader = readline(reader, writer, True)
+		password_reader.send(None)
+		while password is None:
+			inp = await reader.read(1)
+			if not inp:
+				return
+			password = password_reader.send(inp)
+		writer.write(CR + LF)
+
+		if password == "root":
+			return True
+		else:
+			writer.write("Login incorrect" + CR + LF)
+			return False
+	else:
+		writer.write("Login incorrect" + CR + LF)
+		return False
+
 def readline(reader, writer, hide_input=False):
 	command, inp, last_inp = '', '', ''
 	inp = yield None
@@ -90,8 +107,9 @@ def readline(reader, writer, hide_input=False):
 			last_inp = inp
 			inp = yield None
 
-loop = asyncio.get_event_loop()
-tn = telnetlib3.create_server(port=23, shell=test_shell)
-server = loop.run_until_complete(tn)
-print("Virtual Telnet started at port 23")
-loop.run_until_complete(server.wait_closed())
+async def main():
+	server = await telnetlib3.create_server(port=23, shell=test_shell)
+	print("Virtual Telnet started at port 23")
+	await server.wait_closed()
+
+asyncio.run(main())

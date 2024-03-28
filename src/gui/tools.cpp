@@ -210,6 +210,8 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 
 	auto* dbih = this->data->dbih;
 
+	this->data->clearErrors();
+
 	if (tid->statusBarIsVisible())
 	{
 		string fname;
@@ -300,6 +302,8 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 
 	auto* dbih = this->data->dbih;
 
+	this->data->clearErrors();
+
 	bool write = false;
 
 	theme::setWaitCursor();
@@ -387,6 +391,8 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 
 	auto* dbih = this->data->dbih;
 
+	this->data->clearErrors();
+
 	bool write = false;
 
 	theme::setWaitCursor();
@@ -445,6 +451,8 @@ void tools::importFileM3U(e2db::FCONVS fci, e2db::fcopts opts)
 
 	auto* dbih = this->data->dbih;
 
+	this->data->clearErrors();
+
 	if (tid->statusBarIsVisible())
 	{
 		string fname;
@@ -492,6 +500,8 @@ void tools::exportFileM3U(e2db::FCONVS fco, e2db::fcopts opts)
 	debug("exportFileM3U");
 
 	auto* dbih = this->data->dbih;
+
+	this->data->clearErrors();
 
 	vector<string> ubouquets;
 

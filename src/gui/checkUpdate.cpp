@@ -262,7 +262,8 @@ void checkUpdate::prompt(DIAL dialog, MEDIUM medium, QString version, QUrl url)
 	if (dialog != dial_haveupdate)
 		message = message.replace("<", "&lt;").replace(">", "&gt;");
 
-	QMessageBox msg = QMessageBox(this->cwid);
+	// note: cwid in other thread
+	QMessageBox msg = QMessageBox(nullptr);
 
 	msg.setIcon(icon);
 	msg.setTextFormat(Qt::PlainText);
