@@ -9,6 +9,8 @@
  * @license GNU GPLv3 License
  */
 
+#include <string>
+
 #ifndef checkUpdate_h
 #define checkUpdate_h
 #include <QApplication>
@@ -74,6 +76,7 @@ class checkUpdate : protected e2se::log_factory
 	private:
 		static size_t data_write_func(void* csi, size_t size, size_t nmemb, void* pso);
 		static size_t data_discard_func(void* csi, size_t size, size_t nmemb, void* pso);
+		static string cabundle_path();
 
 		QWidget* cwid;
 };

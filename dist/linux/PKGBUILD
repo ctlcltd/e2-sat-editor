@@ -27,7 +27,8 @@ build() {
 	cmake -G Ninja -B build\
 		-DCMAKE_BUILD_TYPE=Release\
 		-DCMAKE_INSTALL_PREFIX=/usr\
-		-DRELEASE_MEDIUM=aur
+		-DRELEASE_MEDIUM=aur\
+		-DDOWNLOAD_CURL_CABUNDLE=ON
 	ninja -C build
 }
 
@@ -38,7 +39,7 @@ package() {
 	DESTDIR="$pkgdir" ninja -C build install
 
 	install -Dm644 "$srcdir/$pkgname-$pkgver/src/COPYING" "$pkgdir/usr/share/licenses/$pkgname/COPYING"
-	install -Dm644 "$srcdir/$pkgname-$pkgver/README.md" "$pkgdir/usr/share/doc/$pkgname/README.md"
+	install -Dm644 "$srcdir/$pkgname-$pkgver/dist/commom/Readme.txt.in" "$pkgdir/usr/share/doc/$pkgname/Readme.txt"
 	# install -Dm644 "$srcdir/$pkgname/src/COPYING" "$pkgdir/usr/share/licenses/$pkgname/COPYING"
-	# install -Dm644 "$srcdir/$pkgname/README.md" "$pkgdir/usr/share/doc/$pkgname/README.md"
+	# install -Dm644 "$srcdir/$pkgname/dist/commom/Readme.txt.in" "$pkgdir/usr/share/doc/$pkgname/Readme.txt"
 }

@@ -14,6 +14,7 @@ option(NOUPDATECHECKER "turn off update checker")
 option(RELEASE_MEDIUM "set the release medium")
 option(WITH_QT5 "build requiring Qt5")
 option(WITHOUT_CLI "make the bundle without e2se-cli")
+option(DOWNLOAD_CURL_CABUNDLE "download cabundle from curl website")
 
 if(WITH_QT5)
 	set(USE_QT_NAMES Qt5)
@@ -109,6 +110,20 @@ if(NOT WITHOUT_CLI)
 	add_subdirectory(cli)
 endif()
 
+if(DOWNLOAD_CURL_CABUNDLE)
+	file(DOWNLOAD https://curl.se/ca/cacert-2024-03-11.pem
+		curl-cacert.pem
+		EXPECTED_HASH SHA256=1794c1d4f7055b7d02c2170337b61b48a2ef6c90d77e95444fd2596f4cac609f
+	)
+
+	if(APPLE)
+		set(curl_cabundle_macos curl-cacert.pem)
+		set_source_files_properties(${curl_cabundle_macos} PROPERTIES
+		MACOSX_PACKAGE_LOCATION "Resources")
+		list(APPEND SOURCES ${curl_cabundle_macos})
+	endif()
+endif()
+
 add_executable(e2-sat-editor WIN32 MACOSX_BUNDLE ${SOURCES})
 
 target_link_libraries(e2-sat-editor PUBLIC
@@ -158,5 +173,17 @@ if(UNIX AND NOT APPLE)
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor)
 	install(FILES "COPYING"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor)
+endif()
+
+if(DOWNLOAD_CURL_CABUNDLE)
+	if(UNIX AND NOT APPLE)
+		install(FILES curl-cacert.pem
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor)
+	endif()
+
+	if(WIN32)
+		file(COPY curl-cacert.pem
+			DESTINATION ${CMAKE_BINARY_DIR})
+	endif()
 endif()
 

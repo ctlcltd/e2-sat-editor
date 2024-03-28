@@ -21,6 +21,7 @@ parts:
       - -DCMAKE_INSTALL_PREFIX=/usr
       - -DRELEASE_MEDIUM=snap
       - -DWITHOUT_CLI=ON
+      - -DDOWNLOAD_CURL_CABUNDLE=ON
     build-packages:
       - build-essential
       - qt6-base-dev

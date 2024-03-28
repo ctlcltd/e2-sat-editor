@@ -140,6 +140,8 @@ void checkUpdate::autoCheck()
 
 	if (this->state.fetched && this->state.current_url != this->state.latest_url)
 	{
+		this->state.dialog = DIAL::dial_haveupdate;
+
 		QMetaObject::invokeMethod(this->cwid, [=]() { this->prompt(); });
 	}
 }
@@ -174,7 +176,8 @@ void checkUpdate::show()
 
 void checkUpdate::prompt()
 {
-	debug("prompt");
+	// note: SEGFAULT with QMetaObject::invokeMethod
+	// debug("prompt");
 
 	QMessageBox::Icon icon = QMessageBox::NoIcon;
 	QString title, message;
@@ -292,6 +295,7 @@ void checkUpdate::fetch()
 	struct curl_slist* list = NULL;
 	list = curl_slist_append(list, "DNT: 1");
 
+	curl_easy_setopt(cph, CURLOPT_CAINFO, cabundle_path().c_str());
 	curl_easy_setopt(cph, CURLOPT_CONNECT_ONLY, true);
 	curl_easy_setopt(cph, CURLOPT_HTTPGET, true);
 	curl_easy_setopt(cph, CURLOPT_FOLLOWLOCATION, false);
@@ -337,6 +341,7 @@ void checkUpdate::fetch()
 		struct curl_slist* list = NULL;
 		list = curl_slist_append(list, "DNT: 1");
 
+		curl_easy_setopt(cph, CURLOPT_CAINFO, cabundle_path().c_str());
 		curl_easy_setopt(cph, CURLOPT_HTTPGET, true);
 		curl_easy_setopt(cph, CURLOPT_FOLLOWLOCATION, false);
 		curl_easy_setopt(cph, CURLOPT_HTTPHEADER, list);
@@ -422,6 +427,38 @@ size_t checkUpdate::data_discard_func(void* csi, size_t size, size_t nmemb, void
 	(void) csi;
 	(void) pso;
 	return size * nmemb;
+}
+
+string checkUpdate::cabundle_path()
+{
+#if E2SE_BUILD == E2SE_TARGET_DEBUG
+	QString path = QApplication::applicationDirPath();
+	if (path.contains("/src"))
+		path.truncate(path.indexOf("/src"));
+	path.append("/workflow/curl-cacert.pem");
+	return path.toStdString();
+#else
+	QString path = QApplication::applicationDirPath();
+#ifndef Q_OS_MAC
+	if (path.contains("/bin"))
+	{
+		path.truncate(path.indexOf("/bin"));
+		path.append("/share/e2-sat-editor/curl-cacert.pem");
+	}
+	else
+	{
+		path.append("/curl-cacert.pem");
+	}
+	return path.toStdString();
+#else
+	if (path.contains("/Contents/MacOS"))
+	{
+		path.truncate(path.indexOf("/Contents/MacOS"));
+		path.append("/Contents/Resources/curl-cacert.pem");
+	}
+	return path.toStdString();
+#endif
+#endif
 }
 #endif
 
