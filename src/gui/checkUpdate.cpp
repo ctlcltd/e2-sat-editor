@@ -18,7 +18,9 @@
 #include <QDateTime>
 #include <QUrl>
 
-#if !defined Q_OS_WASM && !defined E2SE_DEMO
+#include "../e2se_defs.h"
+
+#ifdef E2SE_CHECKUPDATE
 #define ALLOW_UPDATE_CHECK
 
 #include <curl/curl.h>
@@ -142,7 +144,15 @@ void checkUpdate::autoCheck()
 	{
 		this->state.dialog = DIAL::dial_haveupdate;
 
-		QMetaObject::invokeMethod(this->cwid, [=]() { this->prompt(); });
+		QString version;
+		QUrl url;
+
+		if (! this->state.version.empty())
+			version = QString::fromStdString(this->state.version);
+		if (! this->state.latest_url.empty())
+			url = QUrl (QString::fromStdString(this->state.latest_url));
+
+		QMetaObject::invokeMethod(this->cwid, [=]() { this->prompt(this->state.dialog, this->medium, version, url); });
 	}
 }
 
@@ -171,10 +181,18 @@ void checkUpdate::show()
 		this->state.dialog = DIAL::dial_fetcherror;
 	}
 
-	QMetaObject::invokeMethod(this->cwid, [=]() { this->prompt(); });
+	QString version;
+	QUrl url;
+
+	if (! this->state.version.empty())
+		version = QString::fromStdString(this->state.version);
+	if (! this->state.latest_url.empty())
+		url = QUrl (QString::fromStdString(this->state.latest_url));
+
+	QMetaObject::invokeMethod(this->cwid, [=]() { this->prompt(this->state.dialog, this->medium, version, url); });
 }
 
-void checkUpdate::prompt()
+void checkUpdate::prompt(DIAL dialog, MEDIUM medium, QString version, QUrl url)
 {
 	// note: SEGFAULT with QMetaObject::invokeMethod
 	// debug("prompt");
@@ -182,37 +200,33 @@ void checkUpdate::prompt()
 	QMessageBox::Icon icon = QMessageBox::NoIcon;
 	QString title, message;
 
-	if (this->state.dialog == dial_noupdate)
+	if (dialog == dial_noupdate)
 	{
-		QString version = QString::fromStdString(this->state.version);
-
 		title = tr("Software is Up-To-Date", "message");
 		message = tr("e2 SAT Editor %1 is the latest version available.", "message").arg(version);
 	}
-	else if (this->state.dialog == dial_haveupdate)
+	else if (dialog == dial_haveupdate)
 	{
-		QString version = QString::fromStdString(this->state.version);
-
 		title = tr("New Update Available", "message");
 
-		if (this->medium == MEDIUM::unknown)
+		if (medium == MEDIUM::unknown)
 		{
 			message = tr("e2 SAT Editor %1 is available to download.", "message").arg(version);
 			message = message.replace("<", "&lt;").replace(">", "&gt;");
 		}
-		else if (this->medium == MEDIUM::snapstore)
+		else if (medium == MEDIUM::snapstore)
 		{
 			message = tr("e2 SAT Editor %1 is available to update.", "message").arg(version);
 			message.append(QString("\n%1").arg(tr("Please run Snap update to get the latest version.", "message")));
 			message = message.replace("<", "&lt;").replace(">", "&gt;");
 		}
-		else if (this->medium == MEDIUM::flathub)
+		else if (medium == MEDIUM::flathub)
 		{
 			message = tr("e2 SAT Editor %1 is available to update.", "message").arg(version);
 			message.append(QString("\n%1").arg(tr("Please run Flatpak update to get the latest version.", "message")));
 			message = message.replace("<", "&lt;").replace(">", "&gt;");
 		}
-		else if (this->medium == MEDIUM::aur)
+		else if (medium == MEDIUM::aur)
 		{
 			message = tr("e2 SAT Editor %1 is available to update.", "message").arg(version);
 			message.append(QString("\n%1").arg(tr("Please fetch the AUR repository and build the latest version.", "message")));
@@ -223,9 +237,6 @@ void checkUpdate::prompt()
 			message = tr("e2 SAT Editor %1 is available to download.", "message").arg(version);
 			message = message.replace("<", "&lt;").replace(">", "&gt;");
 
-			QString latest_url = QString::fromStdString(this->state.latest_url);
-			QUrl url = QUrl (latest_url);
-
 			if (url.isValid())
 			{
 				QString purl = QString("<p style=\"margin-top: 5px\"><a href=\"%1\">%2</a></p>").arg(url.toString()).arg(url.toString());
@@ -233,13 +244,13 @@ void checkUpdate::prompt()
 			}
 		}
 	}
-	else if (this->state.dialog == dial_connerror)
+	else if (dialog == dial_connerror)
 	{
 		title = tr("Connection Error", "message");
 		message = tr("There was an error during connection.\nPlease check network settings and try again.", "message");
 		icon = QMessageBox::Critical;
 	}
-	else if (this->state.dialog == dial_fetcherror)
+	else if (dialog == dial_fetcherror)
 	{
 		title = tr("Service Not Available", "message");
 		message = tr("Service seems to be unavailable right now.\nPlease wait few minutes and try again.", "message");
@@ -248,7 +259,7 @@ void checkUpdate::prompt()
 
 	title = title.toHtmlEscaped();
 
-	if (this->state.dialog != dial_haveupdate)
+	if (dialog != dial_haveupdate)
 		message = message.replace("<", "&lt;").replace(">", "&gt;");
 
 	QMessageBox msg = QMessageBox(this->cwid);
@@ -451,7 +462,7 @@ string checkUpdate::cabundle_path()
 	}
 	else
 	{
-		path.append("/curl-cacert.pem");
+		path.append("/ca-certificates/curl-cacert.pem");
 	}
 	return path.toStdString();
 #else

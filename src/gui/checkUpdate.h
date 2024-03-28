@@ -65,7 +65,7 @@ class checkUpdate : protected e2se::log_factory
 
 	protected:
 		void show();
-		void prompt();
+		void prompt(DIAL dialog, MEDIUM medium, QString version, QUrl url);
 		virtual void fetch();
 
 		MEDIUM medium = MEDIUM::unknown;

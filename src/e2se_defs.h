@@ -67,13 +67,13 @@
 #endif
 
 #ifdef RELEASE_MEDIUM
-#if RELEASE_MEDIUM == "aur"
+#if defined(RELEASE_MEDIUM_AUR)
 #define E2SE_MEDIUM 6
-#elif RELEASE_MEDIUM == "flathub"
+#elif defined(RELEASE_MEDIUM_FLATHUB)
 #define E2SE_MEDIUM 3
-#elif RELEASE_MEDIUM == "github"
+#elif defined(RELEASE_MEDIUM_GITHUB)
 #define E2SE_MEDIUM 1
-#elif RELEASE_MEDIUM == "snapstore"
+#elif defined(RELEASE_MEDIUM_SNAPSTORE)
 #define E2SE_MEDIUM 2
 #endif
 #else
