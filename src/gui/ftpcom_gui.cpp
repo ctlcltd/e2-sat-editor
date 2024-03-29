@@ -47,7 +47,8 @@ void ftpcom::setup()
 	settings.beginReadArray("ftpcom");
 	ftpcom::VERBOSE = settings.value("debug", false).toBool();
 	ftpcom::FTP_CONNECT_TIMEOUT = settings.value("ftpConnectTimeout", 10).toInt();
-	ftpcom::HTTP_TIMEOUT = settings.value("httpTimeout", 60).toInt();
+	ftpcom::HTTP_TIMEOUT = settings.value("httpTimeout", 15).toInt();
+	ftpcom::TELNET_TIMEOUT = settings.value("telnetTimeout", 15).toInt();
 	ftpcom::MAX_RESUME_ATTEMPTS = settings.value("maxResumeAttempts", 5).toInt();
 	settings.endArray();
 
@@ -56,8 +57,9 @@ void ftpcom::setup()
 	settings.setArrayIndex(profile_sel);
 	ftpcom::ftp_params params;
 	params.host = settings.value("ipAddress").toString().toStdString();
-	params.ftport = settings.value("ftpPort").toInt();
-	params.htport = settings.value("httpPort").toInt();
+	params.ftport = settings.value("ftpPort", 21).toInt();
+	params.htport = settings.value("httpPort", 80).toInt();
+	params.tnport = settings.value("telnetPort", 23).toInt();
 	params.user = settings.value("username").toString().toStdString();
 	QByteArray ba (settings.value("password").toString().toUtf8());
 	params.pass = QByteArray::fromBase64(ba).toStdString();

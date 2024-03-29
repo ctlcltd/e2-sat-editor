@@ -53,10 +53,13 @@ void ftpcom::setParameters(ftp_params params)
 		error("setParameters", "FTP Error", msg("Missing \"%s\" parameter.", "FTP port"));
 	if (! params.htport)
 		error("setParameters", "FTP Error", msg("Missing \"%s\" parameter.", "HTTP port"));
+	if (! params.tnport)
+		error("setParameters", "FTP Error", msg("Missing \"%s\" parameter.", "Telnet port"));
 
 	this->host = params.host;
 	this->ftport = params.ftport;
 	this->htport = params.htport;
+	this->tnport = params.tnport;
 	this->user = params.user;
 	this->pass = params.pass;
 	this->actv = params.actv;
@@ -102,6 +105,7 @@ bool ftpcom::handle()
 		curl_easy_setopt(cph, CURLOPT_FTPPORT, "-");
 
 	curl_easy_setopt(cph, CURLOPT_CONNECTTIMEOUT, ftpcom::FTP_CONNECT_TIMEOUT);
+
 	if (ftpcom::VERBOSE)
 		curl_easy_setopt(cph, CURLOPT_VERBOSE, true);
 
@@ -516,15 +520,25 @@ size_t ftpcom::data_discard_func(void* csi, size_t size, size_t nmemb, void* pso
 size_t ftpcom::data_tn_shell_func(char* cso, size_t size, size_t nmemb, void* psi)
 {
 	tnvars* vars = reinterpret_cast<tnvars*>(psi);
+	int step = vars->step;
 	string os ((const char*) cso, size * nmemb);
 	string data;
 
-	if (os.find("login:") != string::npos)
+	if (step == 0 && os.find("login:") != string::npos)
+	{
 		data = vars->user;
-	else if (os.find("Password:") != string::npos)
+		vars->step = 1;
+	}
+	else if (step == 1 && os.find("Password:") != string::npos)
+	{
 		data = vars->pass;
-	else if (os.find("done!") != string::npos)
+		vars->step = 2;
+	}
+	else if (step == 2 && (os.find("#") != string::npos || os.find(">") != string::npos || os.find("~") != string::npos || os.find("done!") != string::npos))
+	{
 		vars->send = true;
+		vars->step = 3;
+	}
 
 	if (vars->send)
 	{
@@ -605,10 +619,13 @@ void ftpcom::put_files(unordered_map<string, ftpcom_file> files, std::function<v
 	}
 }
 
-//TODO FIX too much time to timeout
+//TODO FIX SEGFAULT with a strange routine (connect > disconnect > upload > disconnect > upload)
 bool ftpcom::cmd_ifreload()
 {
 	debug("cmd_ifreload");
+
+	if (ifreload == "-")
+		return true;
 
 	if (! csh)
 		this->csh = curl_easy_init();
@@ -640,7 +657,7 @@ bool ftpcom::cmd_ifreload()
 	// url = NULL;
 
 #if LIBCURL_VERSION_NUM < 0x075500
-	curl_easy_setopt(cph, CURLOPT_PROTOCOLS, CURLPROTO_HTTP);
+	curl_easy_setopt(csh, CURLOPT_PROTOCOLS, CURLPROTO_HTTP);
 #else
 	curl_easy_setopt(csh, CURLOPT_PROTOCOLS_STR, "http");
 #endif
@@ -648,10 +665,16 @@ bool ftpcom::cmd_ifreload()
 	curl_easy_setopt(csh, CURLOPT_HTTPGET, true);
 	curl_easy_setopt(csh, CURLOPT_FOLLOWLOCATION, true);
 	curl_easy_setopt(csh, CURLOPT_CURLU, rsh);
+
+	// note: CURLU port value overridden by DNS cache port value
+	curl_easy_setopt(csh, CURLOPT_PORT, htport);
+
 	curl_easy_setopt(csh, CURLOPT_WRITEFUNCTION, data_write_func);
 	curl_easy_setopt(csh, CURLOPT_WRITEDATA, &data);
 
+	curl_easy_setopt(csh, CURLOPT_CONNECTTIMEOUT, ftpcom::FTP_CONNECT_TIMEOUT);
 	curl_easy_setopt(csh, CURLOPT_TIMEOUT, ftpcom::HTTP_TIMEOUT); // 0 = default no timeout
+
 	if (ftpcom::VERBOSE)
 		curl_easy_setopt(csh, CURLOPT_VERBOSE, true);
 
@@ -681,25 +704,26 @@ bool ftpcom::cmd_ifreload()
 
 	// debug("cmd_ifreload", "data", data.str());
 
-	//TODO FIX SEGFAULT with a strange routine (connect > disconnect > upload > disconnect > upload)
 	reset(csh, rsh);
 	data.clear();
 
 	return cmd;
 }
 
-//TODO FIX too much time to timeout
 bool ftpcom::cmd_tnreload()
 {
 	debug("cmd_tnreload");
 
-	if (! csh)
-		this->csh = curl_easy_init();
+	if (tnreload == "-")
+		return true;
 
-	if (! csh)
+	if (! cth)
+		this->cth = curl_easy_init();
+
+	if (! cth)
 		return false;
 
-	this->rsh = curl_url();
+	this->rth = curl_url();
 	tnvars data;
 	data.ps = new soi;
 	data.ps->size = 0;
@@ -708,28 +732,31 @@ bool ftpcom::cmd_tnreload()
 	data.send = false;
 	data.cmd = tnreload.empty() ? "init 3" : tnreload;
 
-	curl_url_set(rsh, CURLUPART_SCHEME, "telnet", 0);
-	curl_url_set(rsh, CURLUPART_HOST, host.c_str(), 0);
+	curl_url_set(rth, CURLUPART_SCHEME, "telnet", 0);
+	curl_url_set(rth, CURLUPART_HOST, host.c_str(), 0);
 
 #if LIBCURL_VERSION_NUM < 0x075500
-	curl_easy_setopt(cph, CURLOPT_PROTOCOLS, CURLPROTO_TELNET);
+	curl_easy_setopt(cth, CURLOPT_PROTOCOLS, CURLPROTO_TELNET);
 #else
-	curl_easy_setopt(csh, CURLOPT_PROTOCOLS_STR, "telnet");
+	curl_easy_setopt(cth, CURLOPT_PROTOCOLS_STR, "telnet");
 #endif
 
-	curl_easy_setopt(csh, CURLOPT_CURLU, rsh);
-	curl_easy_setopt(csh, CURLOPT_PORT, 23);
-	curl_easy_setopt(csh, CURLOPT_READFUNCTION, data_tn_shell_func);
-	curl_easy_setopt(csh, CURLOPT_READDATA, &data);
-	curl_easy_setopt(csh, CURLOPT_WRITEFUNCTION, data_discard_func);
-	curl_easy_setopt(csh, CURLOPT_FAILONERROR, true);
+	curl_easy_setopt(cth, CURLOPT_CURLU, rth);
+	curl_easy_setopt(cth, CURLOPT_PORT, tnport);
+	curl_easy_setopt(cth, CURLOPT_READFUNCTION, data_tn_shell_func);
+	curl_easy_setopt(cth, CURLOPT_READDATA, &data);
+	curl_easy_setopt(cth, CURLOPT_WRITEFUNCTION, data_discard_func);
+
+	curl_easy_setopt(cth, CURLOPT_FAILONERROR, true);
+	curl_easy_setopt(cth, CURLOPT_CONNECTTIMEOUT, ftpcom::FTP_CONNECT_TIMEOUT);
+	curl_easy_setopt(cth, CURLOPT_TIMEOUT, ftpcom::TELNET_TIMEOUT); // 0 = default no timeout
 
 	if (ftpcom::VERBOSE)
-		curl_easy_setopt(csh, CURLOPT_VERBOSE, true);
+		curl_easy_setopt(cth, CURLOPT_VERBOSE, true);
 
 	// debug("cmd_tnreload", "stdout", "start");
 
-	CURLcode res = perform(csh);
+	CURLcode res = perform(cth);
 
 	if (res != CURLE_OK)
 	{
@@ -742,14 +769,14 @@ bool ftpcom::cmd_tnreload()
 
 		error("cmd_tnreload", "Telnet Reload Error", message);
 
-		reset(csh, rsh);
+		reset(cth, rth);
 
 		return false;
 	}
 
 	// debug("cmd_tnreload", "stdout", "end");
 
-	reset(csh, rsh);
+	reset(cth, rth);
 
 	return true;
 }

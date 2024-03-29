@@ -32,7 +32,8 @@ class ftpcom : protected e2se::log_factory
 
 		inline static bool VERBOSE = false;
 		inline static int FTP_CONNECT_TIMEOUT = 10;
-		inline static int HTTP_TIMEOUT = 60;
+		inline static int HTTP_TIMEOUT = 15;
+		inline static int TELNET_TIMEOUT = 15;
 		inline static int MAX_RESUME_ATTEMPTS = 5;
 
 		struct ftp_params
@@ -40,6 +41,7 @@ class ftpcom : protected e2se::log_factory
 			string host;
 			int ftport;
 			int htport;
+			int tnport;
 			bool actv = false;
 			string user;
 			string pass;
@@ -94,6 +96,7 @@ class ftpcom : protected e2se::log_factory
 		struct tnvars
 		{
 			soi* ps;
+			int step = 0;
 			string user;
 			string pass;
 			bool send = false;
@@ -120,6 +123,7 @@ class ftpcom : protected e2se::log_factory
 		string host;
 		int ftport;
 		int htport;
+		int tnport;
 		string user;
 		string pass;
 		string baset;
@@ -130,8 +134,10 @@ class ftpcom : protected e2se::log_factory
 		bool mlsd = true;
 		CURL* cph = nullptr;
 		CURL* csh = nullptr;
+		CURL* cth = nullptr;
 		CURLU* rph = nullptr;
 		CURLU* rsh = nullptr;
+		CURLU* rth = nullptr;
 };
 }
 #endif /* ftpcom_h */

@@ -1615,6 +1615,7 @@ void settings::store()
 			}
 		}
 	}
+	sets->setValue("telnetPort", 23);
 	sets->endArray();
 	sets->setValue("profile/size", size);
 

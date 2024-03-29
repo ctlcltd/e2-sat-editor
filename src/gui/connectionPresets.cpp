@@ -108,7 +108,7 @@ map<string, string> connectionPresets::preset_dddragon()
 		{"pathServices", spath},
 		{"pathBouquets", spath},
 		{"pathPicons", ""},
-		{"customWebifReloadUrl", ""},
+		{"customWebifReloadUrl", "-"},
 		{"customTelnetReloadCmd", ""}
 	};
 }
@@ -122,7 +122,7 @@ map<string, string> connectionPresets::preset_wtplay()
 		{"pathServices", spath},
 		{"pathBouquets", spath},
 		{"pathPicons", ""},
-		{"customWebifReloadUrl", ""},
+		{"customWebifReloadUrl", "-"},
 		{"customTelnetReloadCmd", "killall com.amlogic.tvservice && killall com.amlogic.DTVPlayer"}
 	};
 }

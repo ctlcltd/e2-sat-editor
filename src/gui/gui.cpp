@@ -698,6 +698,7 @@ void gui::initSettings()
 	settings.setValue("ftpPort", 21);
 	settings.setValue("ftpActive", false);
 	settings.setValue("httpPort", 80);
+	settings.setValue("telnetPort", 23);
 	settings.setValue("username", "root");
 	settings.setValue("password", "");
 	settings.setValue("pathTransponders", "/etc/tuxbox");
@@ -712,7 +713,8 @@ void gui::initSettings()
 	settings.beginWriteArray("ftpcom");
 	settings.setValue("debug", false);
 	settings.setValue("ftpConnectTimeout", 10);
-	settings.setValue("httpTimeout", 60);
+	settings.setValue("httpTimeout", 15);
+	settings.setValue("telnetTimeout", 15);
 	settings.setValue("maxResumeAttempts", 5);
 	settings.endArray();
 }
@@ -746,24 +748,37 @@ void gui::updateSettings()
 			settings.setValue("engine/parentalLockInvert", settings.value("preference/parentalLockInvert", false).toBool());
 			settings.remove("preference/parentalLockInvert");
 
-			if (settings.value("toolsCsvDelimiter").toString().contains(QRegularExpression("[\n|\r|\t| ]")))
+			if (settings.value("engine/toolsCsvDelimiter").toString().contains(QRegularExpression("[\n|\r|\t| ]")))
 			{
-				QString text = settings.value("toolsCsvDelimiter").toString();
+				QString text = settings.value("engine/toolsCsvDelimiter").toString();
 				text = text.replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t").replace(" ", "\\s");
-				settings.setValue("toolsCsvDelimiter", text);
+				settings.setValue("engine/toolsCsvDelimiter", text);
 			}
-			if (settings.value("toolsCsvSeparator").toString().contains(QRegularExpression("[\n|\r|\t| ]")))
+			if (settings.value("engine/toolsCsvSeparator").toString().contains(QRegularExpression("[\n|\r|\t| ]")))
 			{
-				QString text = settings.value("toolsCsvSeparator").toString();
+				QString text = settings.value("engine/toolsCsvSeparator").toString();
 				text = text.replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t").replace(" ", "\\s");
-				settings.setValue("toolsCsvSeparator", text);
+				settings.setValue("engine/toolsCsvSeparator", text);
 			}
-			if (settings.value("toolsCsvEscape").toString().contains(QRegularExpression("[\n|\r|\t| ]")))
+			if (settings.value("engine/toolsCsvEscape").toString().contains(QRegularExpression("[\n|\r|\t| ]")))
 			{
-				QString text = settings.value("toolsCsvEscape").toString();
+				QString text = settings.value("engine/toolsCsvEscape").toString();
 				text = text.remove(QRegularExpression("[\n|\r|\t| ]"));
-				settings.setValue("toolsCsvEscape", text);
+				settings.setValue("engine/toolsCsvEscape", text);
 			}
+
+			if (settings.value("ftpcom/httpTimeout").toInt() == 60)
+			{
+				settings.setValue("ftpcom/httpTimeout", 15);
+			}
+
+			int size = settings.beginReadArray("profile");
+			for (int i = 0; i < size; i++)
+			{
+				settings.setArrayIndex(i);
+				settings.setValue("telnetPort", 23);
+			}
+			settings.endArray();
 		}
 		if (version < 1.0)
 		{
@@ -969,7 +984,7 @@ bool gui::closeTab(int index)
 
 	debug("closeTab", "ttid", ttid);
 
-	if (ttab->hasChanged())
+	if (! ttab->isChild() && ttab->hasChanged())
 	{
 		twid->setCurrentIndex(index);
 

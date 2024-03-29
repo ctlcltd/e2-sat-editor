@@ -8,7 +8,7 @@ from time import sleep
 class htsh(SimpleHTTPRequestHandler):
 	def do_GET(self):
 		if self.path.startswith("/web/servicelistreload"):
-			sleep(20)
+			sleep(5)
 			self.send_response(200)
 			self.send_header("Content-Type", "text/xml")
 			self.end_headers()

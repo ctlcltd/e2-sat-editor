@@ -692,6 +692,7 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 	file.size = file.data.size();
 }
 
+//TODO FIX out of range
 void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 {
 	debug("make_tunersets_xml", "ytype", ytype);

@@ -71,7 +71,7 @@ async def login(reader, writer):
 			password = password_reader.send(inp)
 		writer.write(CR + LF)
 
-		if password == "root":
+		if password == "password":
 			return True
 		else:
 			writer.write("Login incorrect" + CR + LF)
