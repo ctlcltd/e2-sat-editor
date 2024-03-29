@@ -2247,7 +2247,7 @@ void tab::ftpReloadStb()
 		QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadingNotify(); }, Qt::QueuedConnection);
 	});
 	thread->connect(thread, &QThread::finished, [=]() {
-		//TODO FIX not readable glitch [Linux]
+		//TODO FIX status message not readable glitch [Linux]
 		if (this->stb_reload)
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadSuccessNotify(); }, Qt::QueuedConnection);
 
