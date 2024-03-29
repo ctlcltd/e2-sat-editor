@@ -79,6 +79,7 @@ jobs:
         cat COPYING | sed 's/$'"/`echo \\\r`/" > ../artifact/License.txt
         mv "AppDir/Program Files (x86)/e2-sat-editor/bin/"*.dll ../artifact/
         mv "AppDir/Program Files (x86)/e2-sat-editor/bin/"{platforms,styles,translations} ../artifact/
+        mv "AppDir/Program Files (x86)/e2-sat-editor/bin/ca-certificates" ../artifact/
         mv "AppDir/Program Files (x86)/e2-sat-editor/bin/e2-sat-editor.exe" ../artifact/
         mv "AppDir/Program Files (x86)/e2-sat-editor/bin/e2se-cli.exe" ../artifact/cli/
         cp ../artifact/{libgcc_s_seh-1,libstdc++-6,libwinpthread-1}.dll ../artifact/cli/
