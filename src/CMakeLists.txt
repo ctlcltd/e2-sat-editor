@@ -200,8 +200,8 @@ if(DOWNLOAD_CURL_CABUNDLE)
 	endif()
 
 	if(WIN32)
-		file(COPY curl-cacert.pem
-			DESTINATION ${CMAKE_BINARY_DIR}/ca-certificates)
+		install(FILES curl-cacert.pem
+			DESTINATION bin/ca-certificates)
 	endif()
 endif()
 
