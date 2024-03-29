@@ -2247,6 +2247,7 @@ void tab::ftpReloadStb()
 		QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadingNotify(); }, Qt::QueuedConnection);
 	});
 	thread->connect(thread, &QThread::finished, [=]() {
+		//TODO FIX not readable glitch [Linux]
 		if (this->stb_reload)
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadSuccessNotify(); }, Qt::QueuedConnection);
 
@@ -2567,15 +2568,12 @@ void tab::infoMessage(QString title)
 {
 	title = title.toHtmlEscaped();
 
-	QMessageBox msg = QMessageBox(this->cwid);
-
-	// msg.setWindowFlags(Qt::Popup);
+	// note: rand SEGFAULT with cwid in thread [Linux]
+	QMessageBox msg = QMessageBox(nullptr);
 
 	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
-	// QRect pos = msg.geometry();
-	// pos.moveCenter(QPoint(this->cwid->width() / 2, this->cwid->height() / 2));
-	// msg.setGeometry(pos);
+
 	msg.exec();
 }
 
@@ -2584,16 +2582,13 @@ void tab::infoMessage(QString title, QString message)
 	title = title.toHtmlEscaped();
 	message = message.replace("<", "&lt;").replace(">", "&gt;");
 
-	QMessageBox msg = QMessageBox(this->cwid);
-
-	// msg.setWindowFlags(Qt::Popup);
+	// note: rand SEGFAULT with cwid in thread [Linux]
+	QMessageBox msg = QMessageBox(nullptr);
 
 	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
 	msg.setInformativeText(message);
-	// QRect pos = msg.geometry();
-	// pos.moveCenter(QPoint(this->cwid->width() / 2, this->cwid->height() / 2));
-	// msg.setGeometry(pos);
+
 	msg.exec();
 }
 
@@ -2608,7 +2603,8 @@ void tab::errorMessage(QString title, QString message)
 	QString text = QString("%1\n\n%2").arg(title).arg(message);
 #endif
 
-	QMessageBox::critical(this->cwid, title, text);
+	// note: rand SEGFAULT with cwid in thread [Linux]
+	QMessageBox::critical(nullptr, title, text);
 }
 
 void tab::errorMessage(string error)
@@ -2632,7 +2628,8 @@ void tab::errorMessage(string error)
 	QString text = QString("%1\n\n%2").arg(title).arg(message);
 #endif
 
-	QMessageBox::critical(this->cwid, title, text);
+	// note: rand SEGFAULT with cwid in thread [Linux]
+	QMessageBox::critical(nullptr, title, text);
 }
 
 void tab::noticeMessage(vector<pair<string, string>> errors, MSG_CODE code)
@@ -2686,16 +2683,15 @@ void tab::noticeMessage(vector<pair<string, string>> errors, MSG_CODE code)
 	message = message.replace("<", "&lt;").replace(">", "&gt;");
 	error_detailed = error_detailed.replace("<", "&lt;").replace(">", "&gt;");
 
-	QMessageBox msg = QMessageBox(this->cwid);
+	// note: rand SEGFAULT with cwid in thread [Linux]
+	QMessageBox msg = QMessageBox(nullptr);
 
 	msg.setIcon(QMessageBox::Warning);
 	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
 	msg.setInformativeText(message);
 	msg.setDetailedText(error_detailed);
-	// QRect pos = msg.geometry();
-	// pos.moveCenter(QPoint(this->cwid->width() / 2, this->cwid->height() / 2));
-	// msg.setGeometry(pos);
+
 	msg.exec();
 }
 

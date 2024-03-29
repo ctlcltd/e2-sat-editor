@@ -189,6 +189,7 @@ void checkUpdate::show()
 	if (! this->state.latest_url.empty())
 		url = QUrl (QString::fromStdString(this->state.latest_url));
 
+	// note: this->state broken strings with QMetaObject::invokeMethod
 	QMetaObject::invokeMethod(this->cwid, [=]() { this->prompt(this->state.dialog, this->medium, version, url); });
 }
 
@@ -262,7 +263,7 @@ void checkUpdate::prompt(DIAL dialog, MEDIUM medium, QString version, QUrl url)
 	if (dialog != dial_haveupdate)
 		message = message.replace("<", "&lt;").replace(">", "&gt;");
 
-	// note: cwid in other thread
+	// note: rand SEGFAULT with cwid in thread [Linux]
 	QMessageBox msg = QMessageBox(nullptr);
 
 	msg.setIcon(icon);

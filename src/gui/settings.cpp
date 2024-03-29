@@ -1866,13 +1866,9 @@ void settings::infoMessage(QString title)
 
 	QMessageBox msg = QMessageBox(this->dial);
 
-	// msg.setWindowFlags(Qt::Popup);
-
 	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
-	// QRect pos = msg.geometry();
-	// pos.moveCenter(QPoint(this->dial->width() / 2, this->dial->height() / 2));
-	// msg.setGeometry(pos);
+
 	msg.exec();
 }
 
@@ -1883,14 +1879,10 @@ void settings::infoMessage(QString title, QString message)
 
 	QMessageBox msg = QMessageBox(this->dial);
 
-	// msg.setWindowFlags(Qt::Popup);
-
 	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
 	msg.setInformativeText(message);
-	// QRect pos = msg.geometry();
-	// pos.moveCenter(QPoint(this->dial->width() / 2, this->dial->height() / 2));
-	// msg.setGeometry(pos);
+
 	msg.exec();
 }
 
