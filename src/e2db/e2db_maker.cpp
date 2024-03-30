@@ -852,25 +852,31 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 
 	//TODO FIX out of range substr (ie. merge without services file)
 
-	if (comments.count(iname))
+	try
 	{
-		int i = 0;
-		size_t pos = 0;
-		for (auto & s : comments[iname])
+		if (comments.count(iname))
 		{
-			string line;
-			while (s.ln != i)
+			int i = 0;
+			size_t pos = 0;
+			for (auto & s : comments[iname])
 			{
-				std::getline(ss, line, '>');
-				pos += line.size() + 1;
-				i++;
+				string line;
+				while (s.ln != i)
+				{
+					std::getline(ss, line, '>');
+					pos += line.size() + 1;
+					i++;
+				}
+				line = "<!--" + s.text + "-->";
+				if (s.type) // multiline
+					line = '\n' + line;
+				str = str.substr(0, pos) + line + str.substr(pos);
+				pos += line.size();
 			}
-			line = "<!--" + s.text + "-->";
-			if (s.type) // multiline
-				line = '\n' + line;
-			str = str.substr(0, pos) + line + str.substr(pos);
-			pos += line.size();
 		}
+	}
+	catch (...)
+	{
 	}
 
 	file.filename = filename;

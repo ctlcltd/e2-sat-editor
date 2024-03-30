@@ -28,6 +28,7 @@ jobs:
       uses: msys2/setup-msys2@v2
       with:
         msystem: MINGW32
+        update: true
         pacboy: >-
           cc:i cmake:i ninja:i qt5-base:i qt5-translations:i curl:i
 

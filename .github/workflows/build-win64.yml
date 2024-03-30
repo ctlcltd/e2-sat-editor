@@ -27,6 +27,8 @@ jobs:
     - name: Setup MSYS2
       uses: msys2/setup-msys2@v2
       with:
+        msystem: MINGW64
+        update: true
         pacboy: >-
           cc:x cmake:x ninja:x qt6-base:x qt6-translations:x curl:x
 

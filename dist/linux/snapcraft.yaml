@@ -19,7 +19,7 @@ parts:
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=Release
       - -DCMAKE_INSTALL_PREFIX=/usr
-      - -DRELEASE_MEDIUM=snap
+      - -DRELEASE_MEDIUM=snapstore
       - -DWITHOUT_CLI=ON
     build-packages:
       - build-essential
