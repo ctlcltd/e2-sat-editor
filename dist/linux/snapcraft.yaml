@@ -12,7 +12,6 @@ parts:
     plugin: cmake
     source-type: git
     source: https://github.com/ctlcltd/e2-sat-editor.git
-    # source-branch: main
     source-commit: d34208e27bcf4b4704d04f7293702ebe67b9233e
     source-subdir: src
     cmake-generator: Ninja
@@ -60,16 +59,5 @@ apps:
       - network
       - cups
     extensions: [kde-neon]
-  # e2se-cli:
-  #   command: usr/bin/e2se-cli
-  #   desktop: usr/share/applications/e2se-cli.desktop
-  #   plugs:
-  #     - desktop
-  #     - desktop-legacy
-  #     - wayland
-  #     - x11
-  #     - home
-  #     - removable-media
-  #     - network
 environment:
   QT_PLUGIN_PATH: "$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins"

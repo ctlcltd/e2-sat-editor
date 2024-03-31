@@ -16,13 +16,8 @@ conflicts=('e2-sat-editor')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/ctlcltd/e2-sat-editor/archive/v$pkgver.tar.gz")
 sha256sums=('9faa8513d7ba7193bd8617eb26dc92ee6f4612cc59053b5d2826d621202aa720')
 
-# makedepends=('git' 'cmake' 'ninja')
-# source=("git+https://github.com/ctlcltd/e2-sat-editor.git")
-# sha512sums=('SKIP')
-
 build() {
 	cd "$srcdir/$pkgname-$pkgver/src"
-	# cd "$srcdir/$pkgname/src"
 
 	cmake -G Ninja -B build\
 		-DCMAKE_BUILD_TYPE=Release\
@@ -33,12 +28,10 @@ build() {
 
 package() {
 	cd "$srcdir/$pkgname-$pkgver/src"
-	# cd "$srcdir/$pkgname/src"
 
 	DESTDIR="$pkgdir" ninja -C build install
 
-	install -Dm644 "$srcdir/$pkgname-$pkgver/src/COPYING" "$pkgdir/usr/share/licenses/$pkgname/COPYING"
-	install -Dm644 "$srcdir/$pkgname-$pkgver/dist/commom/Readme.txt.in" "$pkgdir/usr/share/doc/$pkgname/Readme.txt"
-	# install -Dm644 "$srcdir/$pkgname/src/COPYING" "$pkgdir/usr/share/licenses/$pkgname/COPYING"
-	# install -Dm644 "$srcdir/$pkgname/dist/commom/Readme.txt.in" "$pkgdir/usr/share/doc/$pkgname/Readme.txt"
+	install -Dm644 "$pkgdir/usr/share/$pkgname/COPYING" "$pkgdir/usr/share/licenses/$pkgname/copyright"
+	install -Dm644 "$pkgdir/usr/share/$pkgname/Readme.txt.in" "$pkgdir/usr/share/doc/$pkgname/readme"
+	mv "$pkgdir/usr/share/$pkgname/Readme.txt.in" "$pkgdir/usr/share/$pkgname/Readme.txt"
 }
