@@ -92,7 +92,7 @@
 
 cd src
 rm -R build
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DWITHOUT_CLI=ON -G Ninja -B build
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DWITHOUT_CLI=ON -DDOWNLOAD_CURL_CABUNDLE=ON -G Ninja -B build
 ninja -C build
 DESTDIR=../AppDir ninja -C build install
 

@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 
 **Version**: 1.3  
 **Release Date**: 2024-03-30  
-**Full Changelog**: [v1.2.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.2.0...HEAD)
+**Full Changelog**: [v1.2.0...v1.3.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.2.0...v1.3.0)
 
 - Type stream reference support
 - Calculate \[dvbns\] namespace
