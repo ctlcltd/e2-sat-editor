@@ -339,6 +339,7 @@ void settings::connectionsLayout()
 	platform::osLineEdit(dtf1lu);
 	dtf1->addRow(tr("Username"), dtf1lu);
 
+	//TODO FIX password deleted ui [Linux] [Qt6]
 	QLineEdit* dtf1lp = new QLineEdit();
 	QAction* dtf1lpr = dtf1lp->addAction(theme::icon("show"), QLineEdit::TrailingPosition);
 	dtf1lpr->connect(dtf1lpr, &QAction::triggered, [=]() {

@@ -114,6 +114,7 @@ class ftpcom : protected e2se::log_factory
 		static size_t data_discard_func(void* csi, size_t size, size_t nmemb, void* pso);
 		static size_t data_tn_shell_func(char* cso, size_t size, size_t nmemb, void* psi);
 		static size_t get_content_length_func(void* csi, size_t size, size_t nmemb, void* pso);
+		static void fix_crlf(string& line);
 
 		virtual string msg(string str, string param) { return e2se::logger::msg(str, param); }
 		virtual string msg(string str) { return e2se::logger::msg(str); }

@@ -18,6 +18,14 @@
 #include <sstream>
 #include <stdexcept>
 
+#if defined(unix) || defined(__unix__) || defined(__unix) || defined(linux) || defined(__linux__) || defined(__APPLE__)
+#define PLATFORM_UX
+#endif
+
+#if defined(WIN32) || defined(_WIN32)
+#define PLATFORM_WIN
+#endif
+
 #include "ftpcom.h"
 
 using std::string, std::stringstream, std::min, std::endl, std::to_string;
@@ -238,6 +246,10 @@ vector<string> ftpcom::list_dir_nlst(string basedir)
 
 	while (std::getline(data, line))
 	{
+#ifdef PLATFORM_WIN
+		fix_crlf(line);
+#endif
+
 		if (line.empty())
 			continue;
 
@@ -289,6 +301,10 @@ vector<string> ftpcom::list_dir_mlsd(string basedir)
 
 	while (std::getline(data, line))
 	{
+#ifdef PLATFORM_WIN
+		fix_crlf(line);
+#endif
+
 		if (line.empty())
 			continue;
 
@@ -345,7 +361,6 @@ string ftpcom::file_mime_detect(string path)
 	return "application/octet-stream";
 }
 
-//TODO download auto-resume
 void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 {
 	debug("download_data");
@@ -370,7 +385,6 @@ void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 	curl_easy_setopt(cph, CURLOPT_WRITEDATA, &data);
 	res = perform(cph);
 
-	//TODO mlsd=false discard dir error ?
 	if (res != CURLE_OK)
 	{
 		error("download_data", "FTP Error", msg(curl_easy_strerror(res))); // var error string
@@ -383,6 +397,23 @@ void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 	reset(cph, rph);
 
 	string mime = file_mime_detect(path);
+
+#ifdef PLATFORM_WIN
+	if (mime.find("text/") != string::npos)
+	{
+		string text;
+		string line;
+
+		while (std::getline(data.data, line))
+		{
+			fix_crlf(line);
+			text.append(line);
+		}
+
+		data.data = text;
+		data.size = text.size();
+	}
+#endif
 
 	file.path = path;
 	file.filename = filename;
@@ -565,6 +596,12 @@ size_t ftpcom::get_content_length_func(void* csi, size_t size, size_t nmemb, voi
 	if ((pos = data.find("Content-Length:")) != string::npos)
 		*((size_t*) pso) = std::stoi(data.substr(pos, data.length() - 1));
 	return relsize;
+}
+
+void ftpcom::fix_line(string& line)
+{
+	if (line.size() != 0 && line[line.size() - 1] == '\r')
+		line = line.substr(0, line.size() - 1);
 }
 
 unordered_map<string, ftpcom::ftpcom_file> ftpcom::get_files(std::function<void(const string filename)> func)

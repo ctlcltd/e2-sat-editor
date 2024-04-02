@@ -263,7 +263,7 @@ void checkUpdate::prompt(DIAL dialog, MEDIUM medium, QString version, QUrl url)
 	if (dialog != dial_haveupdate)
 		message = message.replace("<", "&lt;").replace(">", "&gt;");
 
-	// note: rand SEGFAULT with cwid in thread [Linux]
+	// note: rand SEGFAULT with cwid in thread
 	QMessageBox msg = QMessageBox(nullptr);
 
 	msg.setIcon(icon);

@@ -409,8 +409,12 @@ void e2db_parser::parse_e2db_lamedb(istream& ilamedb)
 	{
 		string hlamedb;
 		std::getline(ilamedb, hlamedb);
-		char vlamedb = (hlamedb.substr(hlamedb.length() - 2, hlamedb.length() - 1))[0];
 
+#ifdef PLATFORM_WIN
+		fix_crlf(hlamedb);
+#endif
+
+		char vlamedb = (hlamedb.substr(hlamedb.length() - 2, hlamedb.length() - 1))[0];
 		ver = isdigit(vlamedb) ? int (vlamedb) - 48 : 0;
 	}
 	catch (...)
@@ -453,6 +457,10 @@ void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 	while (std::getline(ilamedb, line))
 	{
 		ln++;
+
+#ifdef PLATFORM_WIN
+		fix_crlf(line);
+#endif
 
 		if (line.empty())
 			continue;
@@ -555,6 +563,10 @@ void e2db_parser::parse_e2db_lamedbx(istream& ilamedb, int ver)
 	while (std::getline(ilamedb, line))
 	{
 		ln++;
+
+#ifdef PLATFORM_WIN
+		fix_crlf(line);
+#endif
 
 		if (! step && line == "transponders")
 		{
@@ -794,6 +806,10 @@ void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string filename, bool ep
 	{
 		ln++;
 
+#ifdef PLATFORM_WIN
+		fix_crlf(line);
+#endif
+
 		if (line.size() >= 9 && line.find("#SERVICE") != string::npos)
 		{
 			ub = userbouquet ();
@@ -862,6 +878,10 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string filename)
 	{
 		ln++;
 
+#ifdef PLATFORM_WIN
+		fix_crlf(line);
+#endif
+
 		if (! step && line.size() >= 6 && line.find("#NAME") != string::npos)
 		{
 			ub.name = line.substr(6);
@@ -925,6 +945,10 @@ void e2db_parser::parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& iloc
 
 	while (std::getline(ilocked, line))
 	{
+#ifdef PLATFORM_WIN
+		fix_crlf(line);
+#endif
+
 		ref = service_reference ();
 
 		parse_channel_reference(line, chref, ref);

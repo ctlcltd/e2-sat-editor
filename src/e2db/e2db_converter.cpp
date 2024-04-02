@@ -1160,7 +1160,6 @@ void e2db_converter::push_html_tunersets(vector<e2db_file>& files, int ytype)
 	files.emplace_back(file);
 }
 
-//TODO CRLF istream::read
 void e2db_converter::parse_csv(istream& ifile, vector<vector<string>>& sxv)
 {
 	debug("parse_csv");
@@ -1173,14 +1172,12 @@ void e2db_converter::parse_csv(istream& ifile, vector<vector<string>>& sxv)
 
 	while (std::getline(ifile, line, dlm))
 	{
+#ifdef PLATFORM_WIN
+		fix_crlf(line);
+#endif
+
 		if (line.empty())
 			continue;
-
-		//TODO FIX CRLF
-		if (line.find('\r') != string::npos || line.find('\n') != string::npos)
-		{
-			line.erase(std::remove_if(line.begin(), line.end(), [](unsigned char c) { return c == '\r' || c == '\n'; }), line.end());
-		}
 
 		vector<string> values;
 		stringstream ss (line);
@@ -1235,7 +1232,6 @@ void e2db_converter::parse_csv(istream& ifile, vector<vector<string>>& sxv)
 	}
 }
 
-//TODO CRLF istream::read
 void e2db_converter::parse_m3u(istream& ifile, unordered_map<string, vector<m3u_entry>>& cxm)
 {
 	debug("parse_m3u");
@@ -1252,6 +1248,10 @@ void e2db_converter::parse_m3u(istream& ifile, unordered_map<string, vector<m3u_
 
 	while (std::getline(ifile, line, dlm))
 	{
+#ifdef PLATFORM_WIN
+		fix_crlf(line);
+#endif
+
 		if (line.empty())
 			continue;
 		else if (line.find("#EXTINF") != string::npos)
@@ -1260,12 +1260,6 @@ void e2db_converter::parse_m3u(istream& ifile, unordered_map<string, vector<m3u_
 			step = 2;
 		else if (line.find("#EXTM3U") != string::npos)
 			valid = true;
-
-		//TODO FIX CRLF
-		if (line.find('\r') != string::npos || line.find('\n') != string::npos)
-		{
-			line.erase(std::remove_if(line.begin(), line.end(), [](unsigned char c) { return c == '\r' || c == '\n'; }), line.end());
-		}
 
 		if (step == 1)
 		{
@@ -3233,6 +3227,7 @@ void e2db_converter::convert_m3u_channel_list(unordered_map<string, vector<m3u_e
 	ubouquets.clear();
 }
 
+//TODO CRLF
 void e2db_converter::m3u_channel_list(string& body, string bname, fcopts opts)
 {
 	if (index.count(bname))

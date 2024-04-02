@@ -17,6 +17,14 @@
 #include <iostream>
 #include <stdexcept>
 
+#if defined(unix) || defined(__unix__) || defined(__unix) || defined(linux) || defined(__linux__) || defined(__APPLE__)
+#define PLATFORM_UX
+#endif
+
+#if defined(WIN32) || defined(_WIN32)
+#define PLATFORM_WIN
+#endif
+
 #include "e2db_abstract.h"
 
 using std::string, std::pair, std::hex, std::dec, std::to_string, std::cout, std::endl;
@@ -1462,6 +1470,12 @@ void e2db_abstract::set_parentallock(string chid, string bname)
 		userbouquets[bname].locked = true;
 	else if (! chid.empty() && db.services.count(chid))
 		db.services[chid].locked = true;
+}
+
+void e2db_abstract::fix_crlf(string& line)
+{
+	if (line.size() != 0 && line[line.size() - 1] == '\r')
+		line = line.substr(0, line.size() - 1);
 }
 
 int e2db_abstract::get_e2db_services_type()

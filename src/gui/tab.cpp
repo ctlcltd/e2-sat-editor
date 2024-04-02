@@ -2452,7 +2452,6 @@ void tab::linkToOnlineHelp(int page)
 	gid->linkToOnlineHelp(page);
 }
 
-//TODO TEST potential SEGFAULT
 QTimer* tab::statusBarMessage(QString message)
 {
 	gui::status msg;
@@ -2460,7 +2459,8 @@ QTimer* tab::statusBarMessage(QString message)
 	msg.message = message.toStdString();
 	setStatusBar(msg);
 
-	QTimer* timer = new QTimer(widget);
+	// note: rand SEGFAULT with widget in thread
+	QTimer* timer = new QTimer(nullptr);
 	timer->setSingleShot(true);
 	timer->setInterval(STATUSBAR_MESSAGE_TIMEOUT);
 	timer->callOnTimeout([=]() { this->resetStatusBar(true); timer->stop(); });
@@ -2469,7 +2469,6 @@ QTimer* tab::statusBarMessage(QString message)
 	return timer;
 }
 
-//TODO TEST potential SEGFAULT
 void tab::statusBarMessage(QTimer* timer)
 {
 	if (timer != nullptr)
@@ -2568,7 +2567,7 @@ void tab::infoMessage(QString title)
 {
 	title = title.toHtmlEscaped();
 
-	// note: rand SEGFAULT with cwid in thread [Linux]
+	// note: rand SEGFAULT with cwid in thread
 	QMessageBox msg = QMessageBox(nullptr);
 
 	msg.setTextFormat(Qt::PlainText);
@@ -2582,7 +2581,7 @@ void tab::infoMessage(QString title, QString message)
 	title = title.toHtmlEscaped();
 	message = message.replace("<", "&lt;").replace(">", "&gt;");
 
-	// note: rand SEGFAULT with cwid in thread [Linux]
+	// note: rand SEGFAULT with cwid in thread
 	QMessageBox msg = QMessageBox(nullptr);
 
 	msg.setTextFormat(Qt::PlainText);
@@ -2603,7 +2602,7 @@ void tab::errorMessage(QString title, QString message)
 	QString text = QString("%1\n\n%2").arg(title).arg(message);
 #endif
 
-	// note: rand SEGFAULT with cwid in thread [Linux]
+	// note: rand SEGFAULT with cwid in thread
 	QMessageBox::critical(nullptr, title, text);
 }
 
@@ -2628,7 +2627,7 @@ void tab::errorMessage(string error)
 	QString text = QString("%1\n\n%2").arg(title).arg(message);
 #endif
 
-	// note: rand SEGFAULT with cwid in thread [Linux]
+	// note: rand SEGFAULT with cwid in thread
 	QMessageBox::critical(nullptr, title, text);
 }
 
@@ -2683,7 +2682,7 @@ void tab::noticeMessage(vector<pair<string, string>> errors, MSG_CODE code)
 	message = message.replace("<", "&lt;").replace(">", "&gt;");
 	error_detailed = error_detailed.replace("<", "&lt;").replace(">", "&gt;");
 
-	// note: rand SEGFAULT with cwid in thread [Linux]
+	// note: rand SEGFAULT with cwid in thread
 	QMessageBox msg = QMessageBox(nullptr);
 
 	msg.setIcon(QMessageBox::Warning);

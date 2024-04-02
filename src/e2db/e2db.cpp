@@ -1841,6 +1841,13 @@ void e2db::merge(e2db_abstract* dst)
 			this->tuners_pos.emplace(x.second.pos, x.second.tnid);
 	}
 
+	this->datas.clear();
+	this->comments.clear();
+	this->changes.clear();
+
+	dst->datas.clear();
+	dst->comments.clear();
+
 	vector<string> i_names;
 
 	for (auto & x : dst->index)

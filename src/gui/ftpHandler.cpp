@@ -25,10 +25,20 @@ ftpHandler::~ftpHandler()
 {
 	debug("~ftpHandler");
 
-	if (this->ftih != nullptr)
-		this->ftih->disconnect();
+	try
+	{
+		if (this->ftih != nullptr)
+			this->ftih->disconnect();
 
-	delete this->ftih;
+		delete this->ftih;
+	}
+	catch (...)
+	{
+		// note: forward exceptions
+		throw;
+	}
+
+	
 	delete this->log;
 }
 
@@ -41,10 +51,18 @@ bool ftpHandler::closeConnection()
 {
 	bool ret = false;
 
-	if (this->ftih != nullptr)
-		ret = this->ftih->disconnect();
+	try
+	{
+		if (this->ftih != nullptr)
+			ret = this->ftih->disconnect();
 
-	delete this->ftih;
+		delete this->ftih;
+	}
+	catch (...)
+	{
+		// note: forward exceptions
+		throw;
+	}
 
 	this->ftih = nullptr;
 	this->connected = false;
@@ -56,10 +74,19 @@ bool ftpHandler::handleConnection()
 {
 	bool ret = false;
 
-	if (this->ftih == nullptr)
-		this->ftih = new ftpcom;
+	try
+	{
+		if (this->ftih == nullptr)
+			this->ftih = new ftpcom;
 
-	ret = this->ftih->connect();
+		ret = this->ftih->connect();
+	}
+	catch (...)
+	{
+		// note: forward exceptions
+		throw;
+	}
+
 	this->connected = ret;
 
 	return ret;
@@ -79,10 +106,18 @@ void ftpHandler::settingsChanged()
 {
 	debug("settingsChanged");
 
-	if (this->ftih != nullptr)
-		this->ftih->disconnect();
+	try
+	{
+		if (this->ftih != nullptr)
+			this->ftih->disconnect();
 
-	delete this->ftih;
+		delete this->ftih;
+	}
+	catch (...)
+	{
+		// note: forward exceptions
+		throw;
+	}
 
 	this->ftih = nullptr;
 	this->connected = false;
@@ -90,8 +125,16 @@ void ftpHandler::settingsChanged()
 
 string ftpHandler::getServerHostname()
 {
-	if (this->ftih != nullptr)
-		return this->ftih->get_server_hostname();
+	try
+	{
+		if (this->ftih != nullptr)
+			return this->ftih->get_server_hostname();
+	}
+	catch (...)
+	{
+		// note: forward exceptions
+		throw;
+	}
 
 	return "";
 }

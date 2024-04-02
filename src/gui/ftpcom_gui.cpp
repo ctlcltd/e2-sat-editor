@@ -61,8 +61,12 @@ void ftpcom::setup()
 	params.htport = settings.value("httpPort", 80).toInt();
 	params.tnport = settings.value("telnetPort", 23).toInt();
 	params.user = settings.value("username").toString().toStdString();
+
+	QString pass;
 	QByteArray ba (settings.value("password").toString().toUtf8());
-	params.pass = QByteArray::fromBase64(ba).toStdString();
+	pass = QByteArray::fromBase64(ba, QByteArray::AbortOnBase64DecodingErrors);
+	params.pass = pass.toStdString();
+
 	params.tpath = settings.value("pathTransponders").toString().toStdString();
 	params.spath = settings.value("pathServices").toString().toStdString();
 	params.bpath = settings.value("pathBouquets").toString().toStdString();
@@ -70,6 +74,7 @@ void ftpcom::setup()
 	params.tnreload = settings.value("customTelnetReloadCmd").toString().toStdString();
 	settings.endArray();
 
+	//TODO FIX SEGFAULT [Qt5] [Windows]
 	setParameters(params);
 }
 
