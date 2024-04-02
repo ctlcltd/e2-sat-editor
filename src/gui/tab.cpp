@@ -15,6 +15,8 @@
 #include <algorithm>
 #include <filesystem>
 #include <sstream>
+
+// note: std::runtime_error behaviour
 #include <stdexcept>
 
 #include <QtGlobal>

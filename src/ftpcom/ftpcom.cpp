@@ -16,6 +16,8 @@
 #include <string>
 #include <filesystem>
 #include <sstream>
+
+// note: std::runtime_error behaviour
 #include <stdexcept>
 
 #if defined(unix) || defined(__unix__) || defined(__unix) || defined(linux) || defined(__linux__) || defined(__APPLE__)
@@ -53,7 +55,7 @@ void ftpcom::setParameters(ftp_params params)
 
 	if (params.user.empty())
 		error("setParameters", "FTP Error", msg("Missing \"%s\" parameter.", "username"));
-	if (params.pass.empty())
+	if (params.pwrd.empty())
 		error("setParameters", "FTP Error", msg("Missing \"%s\" parameter.", "password"));
 	if (params.host.empty())
 		error("setParameters", "FTP Error", msg("Missing \"%s\" parameter.", "IP address"));
@@ -69,7 +71,7 @@ void ftpcom::setParameters(ftp_params params)
 	this->htport = params.htport;
 	this->tnport = params.tnport;
 	this->user = params.user;
-	this->pass = params.pass;
+	this->pwrd = params.pwrd;
 	this->actv = params.actv;
 
 	if (params.tpath.empty())
@@ -107,7 +109,7 @@ bool ftpcom::handle()
 
 	curl_easy_setopt(cph, CURLOPT_CURLU, rph);
 	curl_easy_setopt(cph, CURLOPT_USERNAME, user.c_str());
-	curl_easy_setopt(cph, CURLOPT_PASSWORD, pass.c_str());
+	curl_easy_setopt(cph, CURLOPT_PASSWORD, pwrd.c_str());
 	curl_easy_setopt(cph, CURLOPT_PORT, ftport);
 	if (actv)
 		curl_easy_setopt(cph, CURLOPT_FTPPORT, "-");
@@ -401,13 +403,17 @@ void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 #ifdef PLATFORM_WIN
 	if (mime.find("text/") != string::npos)
 	{
+		stringstream ss;
+		ss.write(&data.data[0], data.size);
+
 		string text;
 		string line;
 
-		while (std::getline(data.data, line))
+		while (std::getline(ss, line))
 		{
 			fix_crlf(line);
 			text.append(line);
+			text.append("\n");
 		}
 
 		data.data = text;
@@ -562,7 +568,7 @@ size_t ftpcom::data_tn_shell_func(char* cso, size_t size, size_t nmemb, void* ps
 	}
 	else if (step == 1 && os.find("Password:") != string::npos)
 	{
-		data = vars->pass;
+		data = vars->pwrd;
 		vars->step = 2;
 	}
 	else if (step == 2 && (os.find("#") != string::npos || os.find(">") != string::npos || os.find("~") != string::npos || os.find("done!") != string::npos))
@@ -598,7 +604,7 @@ size_t ftpcom::get_content_length_func(void* csi, size_t size, size_t nmemb, voi
 	return relsize;
 }
 
-void ftpcom::fix_line(string& line)
+void ftpcom::fix_crlf(string& line)
 {
 	if (line.size() != 0 && line[line.size() - 1] == '\r')
 		line = line.substr(0, line.size() - 1);
@@ -765,7 +771,7 @@ bool ftpcom::cmd_tnreload()
 	data.ps = new soi;
 	data.ps->size = 0;
 	data.user = user;
-	data.pass = pass;
+	data.pwrd = pwrd;
 	data.send = false;
 	data.cmd = tnreload.empty() ? "init 3" : tnreload;
 

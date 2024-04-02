@@ -13,6 +13,8 @@
 #include <vector>
 #include <sstream>
 #include <iostream>
+
+// note: std::runtime_error behaviour
 #include <stdexcept>
 
 using std::string, std::vector;

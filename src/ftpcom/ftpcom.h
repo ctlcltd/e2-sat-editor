@@ -44,7 +44,7 @@ class ftpcom : protected e2se::log_factory
 			int tnport;
 			bool actv = false;
 			string user;
-			string pass;
+			string pwrd;
 			string tpath;
 			string spath;
 			string bpath;
@@ -98,7 +98,7 @@ class ftpcom : protected e2se::log_factory
 			soi* ps;
 			int step = 0;
 			string user;
-			string pass;
+			string pwrd;
 			bool send = false;
 			string cmd;
 		};
@@ -126,7 +126,7 @@ class ftpcom : protected e2se::log_factory
 		int htport;
 		int tnport;
 		string user;
-		string pass;
+		string pwrd;
 		string baset;
 		string bases;
 		string baseb;

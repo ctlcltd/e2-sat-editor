@@ -18,6 +18,8 @@
 #include <fstream>
 #include <iomanip>
 #include <filesystem>
+
+// note: std::runtime_error behaviour
 #include <stdexcept>
 
 #include "e2db_termctl.h"

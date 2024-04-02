@@ -10,6 +10,8 @@
  */
 
 #include <cstdio>
+
+// note: std::runtime_error behaviour
 #include <stdexcept>
 
 #include <QSettings>
@@ -62,10 +64,10 @@ void ftpcom::setup()
 	params.tnport = settings.value("telnetPort", 23).toInt();
 	params.user = settings.value("username").toString().toStdString();
 
-	QString pass;
+	QString pwrd;
 	QByteArray ba (settings.value("password").toString().toUtf8());
-	pass = QByteArray::fromBase64(ba, QByteArray::AbortOnBase64DecodingErrors);
-	params.pass = pass.toStdString();
+	pwrd = QByteArray::fromBase64(ba, QByteArray::AbortOnBase64DecodingErrors);
+	params.pwrd = pwrd.toStdString();
 
 	params.tpath = settings.value("pathTransponders").toString().toStdString();
 	params.spath = settings.value("pathServices").toString().toStdString();
@@ -74,7 +76,6 @@ void ftpcom::setup()
 	params.tnreload = settings.value("customTelnetReloadCmd").toString().toStdString();
 	settings.endArray();
 
-	//TODO FIX SEGFAULT [Qt5] [Windows]
 	setParameters(params);
 }
 

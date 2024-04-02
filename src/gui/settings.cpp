@@ -10,6 +10,8 @@
  */
 
 #include <cstring>
+
+// note: std::runtime_error behaviour
 #include <stdexcept>
 
 #include <Qt>
@@ -1034,6 +1036,10 @@ void settings::importProfile()
 {
 	debug("importProfile");
 
+#ifdef E2SE_DEMO
+	return gid->demoMessage();
+#endif
+
 	vector<string> paths;
 
 	paths = gid->importFileDialog(gui::GUI_DPORTS::ConnectionProfile);
@@ -1222,6 +1228,16 @@ void settings::importProfile()
 
 				current = item;
 			}
+			else
+			{
+				theme::unsetWaitCursor();
+
+				error("importProfile", tr("Error", "error").toStdString(), tr("Malformed or unknown XML file format.", "error").toStdString());
+
+				errorMessage(tr("Error", "error"), tr("Malformed or unknown XML file format.", "error"));
+
+				return;
+			}
 		}
 		catch (...)
 		{
@@ -1245,6 +1261,10 @@ void settings::importProfile()
 void settings::exportProfile()
 {
 	debug("exportProfile");
+
+#ifdef E2SE_DEMO
+	return gid->demoMessage();
+#endif
 
 	QList<QListWidgetItem*> items = rplist->selectedItems();
 
@@ -1865,7 +1885,7 @@ void settings::infoMessage(QString title)
 {
 	title = title.toHtmlEscaped();
 
-	QMessageBox msg = QMessageBox(this->dial);
+	QMessageBox msg = QMessageBox(nullptr);
 
 	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
@@ -1878,7 +1898,7 @@ void settings::infoMessage(QString title, QString message)
 	title = title.toHtmlEscaped();
 	message = message.replace("<", "&lt;").replace(">", "&gt;");
 
-	QMessageBox msg = QMessageBox(this->dial);
+	QMessageBox msg = QMessageBox(nullptr);
 
 	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
@@ -1898,7 +1918,7 @@ void settings::errorMessage(QString title, QString message)
 	QString text = QString("%1\n\n%2").arg(title).arg(message);
 #endif
 
-	QMessageBox::critical(this->dial, title, text);
+	QMessageBox::critical(nullptr, title, text);
 }
 
 QMenu* settings::contextMenu()
