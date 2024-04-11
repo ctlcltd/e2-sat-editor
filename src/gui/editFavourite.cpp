@@ -93,7 +93,7 @@ void editFavourite::layout(QWidget* cwid)
 {
 	this->dialAbstract::layout(cwid);
 
-	QString dtitle = this->state.edit ? tr("Edit Favourite", "dialog") : tr("New Favourite", "dialog");
+	QString dtitle = this->state.edit ? tr("Edit Favourite", "dialog") : tr("Add Favourite", "dialog");
 	dial->setWindowTitle(dtitle);
 
 	referenceLayout();
@@ -524,6 +524,11 @@ void editFavourite::store()
 	}
 
 	//TODO chref.ref <--> ch changes
+
+	if (chref.etype != 0 && ! chref.uri.empty() && chref.uri.find("//") != string::npos)
+		chref.stream = true;
+	else if (chref.atype != 0 && chref.atype != e2db::ATYPE::group)
+		chref.marker = true;
 
 	if (this->state.edit)
 		this->chid = dbih->editChannelReference(chid, chref, bname);
