@@ -122,6 +122,7 @@ void editFavourite::referenceLayout()
 	dtf0ft->setVisible(false);
 	fields.emplace_back(dtf0ft);
 	dtf0ft->setMinimumWidth(50);
+	dtf0ft->setMaxLength(9);
 	dtf0ft->setValidator(new QIntValidator);
 
 	QComboBox* dtf0fc = new QComboBox;
@@ -190,6 +191,7 @@ void editFavourite::referenceLayout()
 			dtf0ft->setText(dtf0fc->currentData().toString());
 		}
 	});
+	dtf0ft->setText(dtf0fc->currentData().toString());
 
 	dtb10->addWidget(dtf0fc);
 	dtb10->addWidget(dtf0ft);
@@ -206,6 +208,7 @@ void editFavourite::referenceLayout()
 	dtf0af->setVisible(false);
 	fields.emplace_back(dtf0af);
 	dtf0af->setMinimumWidth(50);
+	dtf0af->setMaxLength(9);
 	dtf0af->setValidator(new QIntValidator);
 
 	QComboBox* dtf0ac = new QComboBox;
@@ -274,6 +277,7 @@ void editFavourite::referenceLayout()
 			dtf0af->setText(dtf0ac->currentData().toString());
 		}
 	});
+	dtf0af->setText(dtf0ac->currentData().toString());
 
 	dtb11->addWidget(dtf0ac);
 	dtb11->addWidget(dtf0af);
@@ -293,6 +297,7 @@ void editFavourite::referenceLayout()
 	dtf1st->setVisible(false);
 	fields.emplace_back(dtf1st);
 	dtf1st->setMinimumWidth(50);
+	dtf1st->setMaxLength(9);
 	dtf1st->setValidator(new QIntValidator);
 
 	QComboBox* dtf1sc = new QComboBox;
@@ -361,6 +366,7 @@ void editFavourite::referenceLayout()
 			dtf1st->setText(dtf1sc->currentData().toString());
 		}
 	});
+	dtf1st->setText(dtf1sc->currentData().toString());
 
 	dtb12->addWidget(dtf1sc);
 	dtb12->addWidget(dtf1st);

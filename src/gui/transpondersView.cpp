@@ -130,7 +130,7 @@ void transpondersView::layout()
 	list_style->setIndentation(8, true);
 	list_style->setFirstColumnIndent(1);
 
-	QTreeWidgetItem* list_thead = new QTreeWidgetItem({NULL, "TXID", tr("Combo"), tr("System"), tr("Position"), tr("Transport ID"), tr("DVBNS"), tr("ONID"), tr("Frequency"), tr("Polarization"), tr("Symbol Rate"), tr("FEC"), tr("Modulation"), tr("Bandwidth"), tr("Pilot"), tr("Roll offset"), tr("Inversion"), tr("Tmx Mode"), tr("Guard"), tr("Hierarchy")});
+	QTreeWidgetItem* list_thead = new QTreeWidgetItem({NULL, "TXID", tr("Combo"), tr("System"), tr("Position"), tr("Transport ID"), tr("DVBNS"), tr("ONID"), tr("Frequency"), tr("Polarization"), tr("Symbol Rate"), tr("FEC"), tr("Modulation"), tr("Bandwidth"), tr("Roll offset"), tr("Pilot"), tr("Inversion"), tr("Tmx Mode"), tr("Guard"), tr("Hierarchy")});
 	list->setHeaderItem(list_thead);
 #if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
 	list->header()->setDefaultSectionSize(0);
@@ -155,8 +155,8 @@ void transpondersView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::fec, 65);		// FEC
 	list->setColumnWidth(ITEM_ROW_ROLE::mod, 75);		// Modulation | Constellation
 	list->setColumnWidth(ITEM_ROW_ROLE::band, 85);		// Bandwidth
-	list->setColumnWidth(ITEM_ROW_ROLE::pil, 75);		// Pilot
 	list->setColumnWidth(ITEM_ROW_ROLE::rol, 70);		// Roll offset
+	list->setColumnWidth(ITEM_ROW_ROLE::pil, 75);		// Pilot
 	list->setColumnWidth(ITEM_ROW_ROLE::inv, 75);		// Inversion
 	list->setColumnWidth(ITEM_ROW_ROLE::tmx, 65);		// Tmx Mode
 	list->setColumnWidth(ITEM_ROW_ROLE::guard, 70);		// Guard
@@ -640,8 +640,8 @@ void transpondersView::putListItems(vector<QString> items)
 					tx.fec = fec.inner_fec;
 					tx.mod = dbih->value_transponder_modulation(qs[10].toStdString(), e2db::YTYPE::satellite);
 					tx.inv = dbih->value_transponder_inversion(qs[14].toStdString(), e2db::YTYPE::satellite);
-					tx.rol = dbih->value_transponder_rollof(qs[13].toStdString());
-					tx.pil = dbih->value_transponder_pilot(qs[12].toStdString());
+					tx.rol = dbih->value_transponder_rollof(qs[12].toStdString());
+					tx.pil = dbih->value_transponder_pilot(qs[13].toStdString());
 				break;
 				case e2db::YTYPE::terrestrial:
 					tx.tmod = dbih->value_transponder_modulation(qs[10].toStdString(), e2db::YTYPE::terrestrial);

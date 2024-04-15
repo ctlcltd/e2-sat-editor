@@ -118,51 +118,50 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 		{
 			case YTYPE::satellite: // DVB-S
 				ss << int (tx.freq * 1e3);
-				ss << ':' << int (tx.sr * 1e3);
-				ss << ':' << tx.pol;
-				ss << ':' << tx.fec;
-				ss << ':' << tx.pos;
-				ss << ':' << tx.inv;
-				ss << ':' << tx.flgs;
-				if (tx.sys != -1)
-					ss << ':' << tx.sys;
-				if (tx.mod != -1)
-					ss << ':' << tx.mod;
-				if (tx.rol != -1)
-					ss << ':' << tx.rol;
-				if (tx.pil != -1)
-					ss << ':' << tx.pil;
+				ss << ':' << (tx.sr != -1 ? int (tx.sr * 1e3) : 0);
+				ss << ':' << (tx.pol != -1 ? tx.pol : 0);
+				ss << ':' << (tx.fec != -1 ? tx.fec : 0);
+				ss << ':' << (tx.pos != -1 ? tx.pos : 0);
+				ss << ':' << (tx.inv != -1 ? tx.inv : 0);
+				ss << ':' << (tx.flgs != -1 ? tx.flgs : 0);
+
+				if (tx.sys != -1 || tx.mod != -1 || tx.rol != -1 || tx.pil != -1)
+				{
+					ss << ':' << (tx.sys != -1 ? tx.sys : 0);
+					ss << ':' << (tx.mod != -1 ? tx.mod : 0);
+					ss << ':' << (tx.rol != -1 ? tx.mod : 0);
+					ss << ':' << (tx.pil != -1 ? tx.pil : 0);
+				}
 			break;
 			case YTYPE::terrestrial: // DVB-T
 				ss << int (tx.freq * 1e3);
-				ss << ':' << tx.band;
-				ss << ':' << tx.hpfec;
-				ss << ':' << tx.lpfec;
-				ss << ':' << tx.tmod;
-				ss << ':' << tx.tmx;
-				ss << ':' << tx.guard;
-				ss << ':' << tx.hier;
-				ss << ':' << tx.inv;
-				if (! tx.oflgs.empty())
-					ss << tx.oflgs;
+				ss << ':' << (tx.band != -1 ? tx.band : 0);
+				ss << ':' << (tx.hpfec != -1 ? tx.hpfec : 0);
+				ss << ':' << (tx.lpfec != -1 ? tx.lpfec : 0);
+				ss << ':' << (tx.tmod != -1 ? tx.tmod : 0);
+				ss << ':' << (tx.tmx != -1 ? tx.tmx : 0);
+				ss << ':' << (tx.guard != -1 ? tx.guard : 0);
+				ss << ':' << (tx.hier != -1 ? tx.hier : 0);
+				ss << ':' << (tx.inv != -1 ? tx.inv : 0);
+				ss << ':' << 0;
+				ss << ':' << (tx.sys != -1 ? tx.sys : 0);
+				ss << ':' << 0;
 			break;
 			case YTYPE::cable: // DVB-C
 				ss << int (tx.freq * 1e3);
-				ss << ':' << int (tx.sr * 1e3);
-				ss << ':' << tx.inv;
-				ss << ':' << tx.cmod;
-				ss << ':' << tx.cfec;
-				if (! tx.oflgs.empty())
-					ss << tx.oflgs;
+				ss << ':' << (tx.sr != -1 ? int (tx.sr * 1e3) : 0);
+				ss << ':' << (tx.inv != -1 ? tx.inv : 0);
+				ss << ':' << (tx.cmod != -1 ? tx.cmod : 0);
+				ss << ':' << (tx.cfec != -1 ? tx.cfec : 0);
+				ss << ':' << (tx.flgs != -1 ? tx.flgs : 0);
+				ss << ':' << (tx.sys != -1 ? tx.sys : 0);
 			break;
 			case YTYPE::atsc: // ATSC
 				ss << int (tx.freq * 1e3);
-				ss << ':' << tx.inv;
-				ss << ':' << tx.amod;
-				ss << ':' << tx.flgs;
-				ss << ':' << tx.sys;
-				if (! tx.oflgs.empty())
-					ss << tx.oflgs;
+				ss << ':' << (tx.inv != -1 ? tx.inv : 0);
+				ss << ':' << (tx.amod != -1 ? tx.amod : 0);
+				ss << ':' << (tx.flgs != -1 ? tx.flgs : 0);
+				ss << ':' << (tx.sys != -1 ? tx.sys : 0);
 			break;
 			default:
 			return error("make_lamedb", "Maker Error", "Unknown transponder type.");

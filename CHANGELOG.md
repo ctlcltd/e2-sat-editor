@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Fix FTP issues \[Windows\]
 - Fix reading files with end of line CRLF \[Windows\]
 - Fix add favourite, stream type
+- Fix edit transponder
 - Fix merge, clear XML comments
 - Prevent crashes
 

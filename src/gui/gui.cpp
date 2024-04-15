@@ -1069,6 +1069,7 @@ void gui::closeAllTabs()
 	}
 }
 
+//TODO TEST multiple tabs
 void gui::windowChanged()
 {
 	// debug("windowChanged");

@@ -86,6 +86,7 @@ void editMarker::layout(QWidget* cwid)
 	dtf0af->setVisible(false);
 	fields.emplace_back(dtf0af);
 	dtf0af->setMinimumWidth(50);
+	dtf0af->setMaxLength(9);
 	dtf0af->setValidator(new QIntValidator);
 
 	QComboBox* dtf0ac = new QComboBox;
@@ -156,6 +157,7 @@ void editMarker::layout(QWidget* cwid)
 			dtf0af->setText(dtf0ac->currentData().toString());
 		}
 	});
+	dtf0af->setText(dtf0ac->currentData().toString());
 
 	dtb11->addWidget(dtf0ac);
 	dtb11->addWidget(dtf0af);
@@ -190,6 +192,7 @@ void editMarker::store()
 	else
 	{
 		chref.marker = true;
+		chref.etype = 1;
 		chref.atype = 0;
 		chref.anum = 0;
 		chref.index = 0;

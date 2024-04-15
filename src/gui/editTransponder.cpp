@@ -357,7 +357,7 @@ void editTransponder::leadTerrestrialLayout()
 		dtf0tl->addItem(QString::fromStdString(w), i);
 	}
 
-	QComboBox* dtf0ty = new QComboBox;
+	/*QComboBox* dtf0ty = new QComboBox;
 	dtf0ty->setProperty("field", "t_sys");
 	fields.emplace_back(dtf0ty);
 	dtf0ty->setMaximumWidth(100);
@@ -370,7 +370,7 @@ void editTransponder::leadTerrestrialLayout()
 	{
 		string w = e2db::TER_SYS[i];
 		dtf0ty->addItem(QString::fromStdString(w), i);
-	}
+	}*/
 
 	dtl0->setLayout(dtf0);
 	dtform->addWidget(dtl0, 0, 1);
@@ -804,6 +804,8 @@ void editTransponder::store()
 		this->txid = dbih->editTransponder(txid, tx);
 	else
 		this->txid = dbih->addTransponder(tx);
+
+	this->changes = true;
 }
 
 void editTransponder::retrieve()

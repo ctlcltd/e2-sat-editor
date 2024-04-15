@@ -562,8 +562,8 @@ string e2db_abstract::value_transponder_combo(tunersets_transponder tntxp, tuner
 
 string e2db_abstract::value_transponder_onid(int onid)
 {
-	char conid[8];
-	std::snprintf(conid, 8, "%X", onid);
+	char conid[9];
+	std::snprintf(conid, 9, "%X", onid);
 
 	return conid;
 }
@@ -572,7 +572,7 @@ int e2db_abstract::value_transponder_dvbns(string str)
 {
 	try
 	{
-		return std::stoi(str, nullptr, 16);
+		return int (std::stoul(str, nullptr, 16));
 	}
 	// catch (const std::invalid_argument& err)
 	catch (...)
@@ -628,8 +628,8 @@ int e2db_abstract::value_transponder_dvbns(YTYPE ytype, int tsid, int onid, int 
 
 string e2db_abstract::value_transponder_dvbns(int dvbns)
 {
-	char cdvbns[8];
-	std::snprintf(cdvbns, 8, "%X", dvbns);
+	char cdvbns[9];
+	std::snprintf(cdvbns, 9, "%X", dvbns);
 
 	return cdvbns;
 }

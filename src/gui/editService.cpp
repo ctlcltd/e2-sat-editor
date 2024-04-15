@@ -144,6 +144,7 @@ void editService::serviceLayout()
 	dtf0st->setVisible(false);
 	fields.emplace_back(dtf0st);
 	dtf0st->setMinimumWidth(50);
+	dtf0st->setMaxLength(9);
 	dtf0st->setValidator(new QIntValidator);
 
 	QComboBox* dtf0sc = new QComboBox;
@@ -212,6 +213,7 @@ void editService::serviceLayout()
 			dtf0st->setText(dtf0sc->currentData().toString());
 		}
 	});
+	dtf0st->setText(dtf0sc->currentData().toString());
 
 	dtb10->addWidget(dtf0sc);
 	dtb10->addWidget(dtf0st);
