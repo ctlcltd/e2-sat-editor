@@ -334,7 +334,7 @@ struct e2db_abstract : protected e2se::log_factory
 			int cfec = -1; // DVB-C
 			int pos = -1; // DVB-S
 			int inv = -1;
-			int flgs = -1; // DVB-S
+			int flags = -1;
 			int sys = -1;
 			int mod = -1; // DVB-S
 			int tmod = -1; // DVB-T
@@ -346,7 +346,11 @@ struct e2db_abstract : protected e2se::log_factory
 			int tmx = -1; // DVB-T
 			int guard = -1; // DVB-T
 			int hier = -1; // DVB-T
-			string oflgs; // ?
+			int plpid = -1; // DVB-T
+			int plsn = -1; // DVB-S
+			int plsmode = -1; // DVB-S
+			int plscode = -1; // DVB-S
+			int isid = -1; // DVB-S
 			int index = -1;
 		};
 
@@ -437,11 +441,14 @@ struct e2db_abstract : protected e2se::log_factory
 			int tmx = -1; // DVB-T
 			int guard = -1; // DVB-T
 			int hier = -1; // DVB-T
+			int plpid = -1; // DVB-T
+			int plsn = -1; // DVB-S
+			int plscode = -1; // DVB-S
+			int plsmode = -1; // DVB-S
 			int isid = -1; // DVB-S
 			int mts = -1; // DVB-S
-			int plsmode = -1; // DVB-S
-			int plscode = -1; // DVB-S
-			int plsn = -1; // DVB-S
+			int t2mi_plpid = -1; // DVB-S
+			int t2mi_pid = -1; // DVB-S
 			int index = -1;
 		};
 
@@ -450,7 +457,7 @@ struct e2db_abstract : protected e2se::log_factory
 			string tnid;
 			int ytype = 0;
 			string name;
-			int flgs = -1;
+			int flags = -1;
 			int pos = -1; // DVB-S
 			string country;
 			int feed = -1;

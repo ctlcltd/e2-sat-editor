@@ -92,7 +92,7 @@ class e2db_cli
 			bname, pname, rname, qname, nname, btype, hidden, 
 			mname, dname, itype, 
 			chvalue, churi, etype, atype, 
-			flgs, oflgs
+			flags, oflgs
 		};
 
 		enum VALUE {

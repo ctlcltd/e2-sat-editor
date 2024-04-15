@@ -1630,8 +1630,12 @@ void e2db_abstract::debugger()
 		cout << "tmx: " << tx.tmx << endl;
 		cout << "guard: " << tx.guard << endl;
 		cout << "hier: " << tx.hier << endl;
-		cout << "flgs: " << tx.flgs << endl;
-		cout << "oflgs: " << tx.oflgs << endl;
+		cout << "plpid: " << tx.plpid << endl;
+		cout << "plsn: " << tx.plsn << endl;
+		cout << "plscode: " << tx.plscode << endl;
+		cout << "isid: " << tx.isid << endl;
+		cout << "plsmode: " << tx.plsmode << endl;
+		cout << "flags: " << tx.flags << endl;
 		cout << "idx: " << tx.index << endl;
 		cout << endl;
 	}
@@ -1736,7 +1740,7 @@ void e2db_abstract::debugger()
 			cout << "pos: " << tn.pos << endl;
 			cout << "country: " << tn.country << endl;
 			cout << "feed: " << tn.feed << endl;
-			cout << "flags: " << tn.flgs << endl;
+			cout << "flags: " << tn.flags << endl;
 			cout << "transponders: " << endl << "[" << endl;
 			for (auto & x : tn.transponders)
 			{
@@ -1768,6 +1772,7 @@ void e2db_abstract::debugger()
 				cout << "isid: " << tntxp.isid << endl;
 				cout << "plsmode: " << tntxp.plsmode << endl;
 				cout << "plscode: " << tntxp.plscode << endl;
+				cout << "plsn: " << tntxp.plsn << endl;
 				cout << "idx: " << tntxp.index << endl;
 				cout << endl;
 			}

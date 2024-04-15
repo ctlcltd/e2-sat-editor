@@ -226,7 +226,7 @@ void editService::serviceLayout()
 	dtf0sx->setProperty("field", "ssid");
 	fields.emplace_back(dtf0sx);
 	dtf0sx->setMaximumWidth(60);
-	dtf0sx->setValidator(new QIntValidator(0, 999999999));
+	dtf0sx->setValidator(new QIntValidator(0, 99999999));
 	platform::osLineEdit(dtf0sx);
 	dtb11->addWidget(dtf0sx);
 	dtb11->addWidget(new QLabel("[SID]"));
@@ -565,7 +565,7 @@ void editService::paramsLayout()
 	dtf2sn->setProperty("field", "snum");
 	fields.emplace_back(dtf2sn);
 	dtf2sn->setMaximumWidth(60);
-	dtf2sn->setValidator(new QIntValidator(0, 999999999));
+	dtf2sn->setValidator(new QIntValidator(0, 99999999));
 	platform::osLineEdit(dtf2sn);
 	dtf2e->addRow(tr("Service Number"), dtf2sn);
 
@@ -573,7 +573,7 @@ void editService::paramsLayout()
 	dtf2sr->setProperty("field", "srcid");
 	fields.emplace_back(dtf2sr);
 	dtf2sr->setMaximumWidth(60);
-	dtf2sr->setValidator(new QIntValidator(0, 999999999));
+	dtf2sr->setValidator(new QIntValidator(0, 99999999));
 	platform::osLineEdit(dtf2sr);
 	dtf2e->addRow(tr("Src ID"), dtf2sr);
 

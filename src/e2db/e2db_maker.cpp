@@ -116,14 +116,14 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 
 		switch (tx.ytype)
 		{
-			case YTYPE::satellite: // DVB-S
+			case YTYPE::satellite: // DVB-S / DVB-S2
 				ss << int (tx.freq * 1e3);
 				ss << ':' << (tx.sr != -1 ? int (tx.sr * 1e3) : 0);
 				ss << ':' << (tx.pol != -1 ? tx.pol : 0);
 				ss << ':' << (tx.fec != -1 ? tx.fec : 0);
 				ss << ':' << (tx.pos != -1 ? tx.pos : 0);
 				ss << ':' << (tx.inv != -1 ? tx.inv : 0);
-				ss << ':' << (tx.flgs != -1 ? tx.flgs : 0);
+				ss << ':' << (tx.flags != -1 ? tx.flags : 0);
 
 				if (tx.sys != -1 || tx.mod != -1 || tx.rol != -1 || tx.pil != -1)
 				{
@@ -131,9 +131,20 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 					ss << ':' << (tx.mod != -1 ? tx.mod : 0);
 					ss << ':' << (tx.rol != -1 ? tx.mod : 0);
 					ss << ':' << (tx.pil != -1 ? tx.pil : 0);
+
+					if (ver == 5)
+					{
+						if (tx.plsn != -1 || tx.isid != -1 || tx.plscode != -1 || tx.plsmode != -1)
+						{
+							ss << ':' << (tx.plsn != -1 ? tx.plsn : 0);
+							ss << ':' << (tx.isid != -1 ? tx.isid : 0);
+							ss << ':' << (tx.plscode != -1 ? tx.plscode : 0);
+							ss << ':' << (tx.plsmode != -1 ? tx.plsmode : 0);
+						}
+					}
 				}
 			break;
-			case YTYPE::terrestrial: // DVB-T
+			case YTYPE::terrestrial: // DVB-T / DVB-T2
 				ss << int (tx.freq * 1e3);
 				ss << ':' << (tx.band != -1 ? tx.band : 0);
 				ss << ':' << (tx.hpfec != -1 ? tx.hpfec : 0);
@@ -143,9 +154,9 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 				ss << ':' << (tx.guard != -1 ? tx.guard : 0);
 				ss << ':' << (tx.hier != -1 ? tx.hier : 0);
 				ss << ':' << (tx.inv != -1 ? tx.inv : 0);
-				ss << ':' << 0;
+				ss << ':' << (tx.flags != -1 ? tx.flags : 0);
 				ss << ':' << (tx.sys != -1 ? tx.sys : 0);
-				ss << ':' << 0;
+				ss << ':' << (tx.plpid != -1 ? tx.plpid : 0);
 			break;
 			case YTYPE::cable: // DVB-C
 				ss << int (tx.freq * 1e3);
@@ -153,14 +164,14 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 				ss << ':' << (tx.inv != -1 ? tx.inv : 0);
 				ss << ':' << (tx.cmod != -1 ? tx.cmod : 0);
 				ss << ':' << (tx.cfec != -1 ? tx.cfec : 0);
-				ss << ':' << (tx.flgs != -1 ? tx.flgs : 0);
+				ss << ':' << (tx.flags != -1 ? tx.flags : 0);
 				ss << ':' << (tx.sys != -1 ? tx.sys : 0);
 			break;
-			case YTYPE::atsc: // ATSC
+			case YTYPE::atsc: // ATSC / DVB-C ANNEX B
 				ss << int (tx.freq * 1e3);
 				ss << ':' << (tx.inv != -1 ? tx.inv : 0);
 				ss << ':' << (tx.amod != -1 ? tx.amod : 0);
-				ss << ':' << (tx.flgs != -1 ? tx.flgs : 0);
+				ss << ':' << (tx.flags != -1 ? tx.flags : 0);
 				ss << ':' << (tx.sys != -1 ? tx.sys : 0);
 			break;
 			default:
@@ -751,8 +762,8 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 			ss << ' ' << "name=\"" << conv_xml_value(tn.name) << "\"";
 		if (tn.feed != -1)
 			ss << ' ' << "satfeed=\"" << (tn.feed ? "true" : "false") << "\"";
-		if (tn.flgs != -1)
-			ss << ' ' << "flags=\"" << tn.flgs << "\"";
+		if (tn.flags != -1)
+			ss << ' ' << "flags=\"" << tn.flags << "\"";
 		if (tn.pos != -1)
 			ss << ' ' << "position=\"" << tn.pos << "\"";
 		if (! tn.country.empty())
@@ -796,6 +807,10 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 						ss << ' ' << "pls_code=\"" << tntxp.plscode << "\"";
 					if (tntxp.plsn != -1)
 						ss << ' ' << "plsn=\"" << tntxp.plsn << "\"";
+					if (tntxp.t2mi_plpid != -1)
+						ss << ' ' << "t2mi_plp_id=\"" << tntxp.t2mi_plpid << "\"";
+					if (tntxp.t2mi_pid != -1)
+						ss << ' ' << "t2mi_pid=\"" << tntxp.t2mi_pid << "\"";
 				break;
 				case YTYPE::terrestrial:
 					if (tntxp.freq != -1)
@@ -818,6 +833,8 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 						ss << ' ' << "guard_interval=\"" << tntxp.guard << "\"";
 					if (tntxp.hier != -1)
 						ss << ' ' << "hierarchy_information=\"" << tntxp.hier << "\"";
+					if (tntxp.plpid != -1)
+						ss << ' ' << "plp_id=\"" << tntxp.plpid << "\"";
 				break;
 				case YTYPE::cable:
 					if (tntxp.freq != -1)

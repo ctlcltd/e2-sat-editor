@@ -252,13 +252,9 @@ void e2db_parser::parse_e2db()
 
 	// ctlcltd/e2se-seeds/enigma_db
 	// commit: 67b6442	elapsed time: 65520
-	// commit: d47fec7	elapsed time: 498870
-	// commit: d1f53fe	elapsed time: 56112
-	// commit: d9a9322	elapsed time: 67343
-	// commit: 9364c8f	elapsed time: 19122
 	// commit: 6559e93	elapsed time: 19939
-	// commit: f1cb80f	elapsed time: 18829
 	// commit: a7022d8	elapsed time: 18506
+	// commit: 6cbd126  elapsed time: 27465
 
 	auto t_end = std::chrono::high_resolution_clock::now();
 	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
@@ -496,7 +492,7 @@ void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 			parse_lamedb_transponder_params(str, tx);
 
 			if (params.size() >= 2)
-				parse_lamedb_transponder_feparms(params.substr(2), params[0], tx);
+				parse_lamedb_transponder_feparams(params.substr(2), params[0], tx);
 
 			if (tx.tsid != 0 || tx.onid != 0 || tx.dvbns != 0)
 				add_transponder(tidx, tx);
@@ -602,7 +598,7 @@ void e2db_parser::parse_e2db_lamedbx(istream& ilamedb, int ver)
 			else if (s == 1)
 			{
 				if (line.size() >= 3)
-					parse_lamedb_transponder_feparms(line.substr(3), line.substr(1, 2)[0], tx);
+					parse_lamedb_transponder_feparams(line.substr(3), line.substr(1, 2)[0], tx);
 
 				s++;
 			}
@@ -665,19 +661,19 @@ void e2db_parser::parse_lamedb_transponder_params(string str, transponder& tx)
 	tx.onid = onid;
 }
 
-void e2db_parser::parse_lamedb_transponder_feparms(string str, char ty, transponder& tx)
+void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transponder& tx)
 {
-	int freq, sr, pol, fec, pos, inv, flgs, sys, mod, rol, pil;
-	int band, hpfec, lpfec, tmod, tmx, guard, hier;
+	int freq, sr, pol, fec, pos, inv, flags, sys, mod, rol, pil;
+	int band, hpfec, lpfec, tmod, tmx, guard, hier, plpid;
 	int cmod, cfec;
 	int amod;
-	char oflgs[33] = "";
-	sys = -1, mod = -1, rol = -1, pil = -1;
+	char feopts[37] = "";
+	flags = -1, sys = -1, mod = -1, rol = -1, pil = -1, plpid = -1;
 
 	switch (ty)
 	{
 		case 's': // DVB-S / DVB-S2
-			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%4d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &sr, &pol, &fec, &pos, &inv, &flgs, &sys, &mod, &rol, &pil, oflgs);
+			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%4d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &sr, &pol, &fec, &pos, &inv, &flags, &sys, &mod, &rol, &pil, feopts);
 
 			tx.ytype = YTYPE::satellite;
 			tx.freq = int (freq / 1e3);
@@ -686,15 +682,30 @@ void e2db_parser::parse_lamedb_transponder_feparms(string str, char ty, transpon
 			tx.fec = fec;
 			tx.pos = pos;
 			tx.inv = inv;
-			tx.flgs = flgs;
+			tx.flags = flags;
 			tx.sys = sys;
 			tx.mod = mod;
 			tx.rol = rol;
 			tx.pil = pil;
-			tx.oflgs = string (oflgs);
+
+			if (LAMEDB_VER == 5)
+			{
+				if (std::strlen(feopts) != 0)
+				{
+					int plsn, isid, plscode, plsmode;
+					plsn = -1, isid = -1, plscode = -1, plsmode = -1;
+
+					std::sscanf(feopts, ",%d:%d:%d:%d", &plsn, &isid, &plscode, &plsmode);
+
+					tx.plsn = plsn;
+					tx.isid = isid;
+					tx.plscode = plscode;
+					tx.plsmode = plsmode;
+				}
+			}
 		break;
 		case 't': // DVB-T / DVB-T2
-			std::sscanf(str.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &band, &hpfec, &lpfec, &tmod, &tmx, &guard, &hier, &inv, oflgs);
+			std::sscanf(str.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d", &freq, &band, &hpfec, &lpfec, &tmod, &tmx, &guard, &hier, &inv, &flags, &sys, &plpid);
 
 			tx.ytype = YTYPE::terrestrial;
 			tx.freq = int (freq / 1e3);
@@ -706,10 +717,12 @@ void e2db_parser::parse_lamedb_transponder_feparms(string str, char ty, transpon
 			tx.guard = guard;
 			tx.hier = hier;
 			tx.inv = inv;
-			tx.oflgs = string (oflgs);
+			tx.flags = flags;
+			tx.sys = sys;
+			tx.plpid = plpid;
 		break;
 		case 'c': // DVB-C
-			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%1d%s", &freq, &sr, &inv, &cmod, &cfec, oflgs);
+			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%1d:%1d:%1d", &freq, &sr, &inv, &cmod, &cfec, &flags, &sys);
 
 			tx.ytype = YTYPE::cable;
 			tx.freq = int (freq / 1e3);
@@ -717,21 +730,21 @@ void e2db_parser::parse_lamedb_transponder_feparms(string str, char ty, transpon
 			tx.inv = inv;
 			tx.cmod = cmod;
 			tx.cfec = cfec;
-			tx.oflgs = string (oflgs);
+			tx.flags = flags;
+			tx.sys = sys;
 		break;
 		case 'a': // ATSC / DVB-C ANNEX B
-			std::sscanf(str.c_str(), "%8d:%1d:%1d:%1d:%1d%s", &freq, &inv, &amod, &flgs, &sys, oflgs);
+			std::sscanf(str.c_str(), "%8d:%1d:%1d:%1d:%1d", &freq, &inv, &amod, &flags, &sys);
 
 			tx.ytype = YTYPE::atsc;
 			tx.freq = int (freq / 1e3);
 			tx.inv = inv;
 			tx.amod = amod;
-			tx.flgs = flgs;
+			tx.flags = flags;
 			tx.sys = sys;
-			tx.oflgs = string (oflgs);
 		break;
 		default:
-			return error("parse_lamedb_transponder_feparms", "Parser Error", "Unknown transponder type.");
+			return error("parse_lamedb_transponder_feparams", "Parser Error", "Unknown transponder type.");
 	}
 }
 
@@ -1235,7 +1248,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)
 						tn.name = val;
 					}
 					else if (key == "flags")
-						tn.flgs = std::atoi(val.data());
+						tn.flags = std::atoi(val.data());
 					else if (key == "position")
 						tn.pos = std::atoi(val.data());
 					else if (key == "frequency")
@@ -1266,6 +1279,10 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)
 						tntxp.plscode = std::atoi(val.data());
 					else if (key == "plsn")
 						tntxp.plsn = std::atoi(val.data());
+					else if (key == "t2mi_plp_id")
+						tntxp.t2mi_plpid = std::atoi(val.data());
+					else if (key == "t2mi_pid")
+						tntxp.t2mi_pid = std::atoi(val.data());
 				break;
 				case YTYPE::terrestrial:
 					if (key == "name")
@@ -1274,7 +1291,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)
 						tn.name = val;
 					}
 					else if (key == "flags")
-						tn.flgs = std::atoi(val.data());
+						tn.flags = std::atoi(val.data());
 					else if (key == "countrycode")
 						tn.country = val;
 					else if (key == "centre_frequency")
@@ -1297,6 +1314,8 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)
 						tntxp.guard = std::atoi(val.data());
 					else if (key == "hierarchy_information")
 						tntxp.hier = std::atoi(val.data());
+					else if (key == "plp_id")
+						tntxp.plpid = std::atoi(val.data());
 				break;
 				case YTYPE::cable:
 					if (key == "name")
@@ -1305,7 +1324,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)
 						tn.name = val;
 					}
 					else if (key == "flags")
-						tn.flgs = std::atoi(val.data());
+						tn.flags = std::atoi(val.data());
 					else if (key == "countrycode")
 						tn.country = val;
 					else if (key == "satfeed")
@@ -1328,7 +1347,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)
 						tn.name = val;
 					}
 					else if (key == "flags")
-						tn.flgs = std::atoi(val.data());
+						tn.flags = std::atoi(val.data());
 					else if (key == "frequency")
 						tntxp.freq = int (std::atoi(val.data()) / 1e3);
 					else if (key == "inversion")

@@ -51,6 +51,7 @@ class editTunersetsTransponder : public dialAbstract
 		void sideTerrestrialLayout();
 		void sideCableLayout();
 		void thirdSatLayout();
+		void thirdTerrestrialLayout();
 		void store();
 		void retrieve();
 

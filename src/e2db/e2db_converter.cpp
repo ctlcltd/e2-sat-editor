@@ -1829,15 +1829,18 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>>& s
 			// hier
 			else if (i == 29)
 				tx.hier = value_transponder_hier(val);
-			// flgs
+			// flags
 			else if (i == 30)
-				tx.flgs = std::atoi(val.data());
+				tx.flags = std::atoi(val.data());
 			// txp index
 			else if (i == 31)
 				tx.index = std::atoi(val.data());
-			// txp flgs
+			//TODO
+			// txp other flags
 			else if (i == 32)
-				tx.oflgs = val;
+			{
+				// tx.oflgs = val;
+			}
 			// cached
 			else if (i == 33)
 				ch.data[SDATA::c] = value_channel_cached(val);
@@ -2714,9 +2717,11 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 					inv = tx.inv;
 				break;
 			}
-			int flgs = tx.flgs;
-			int txid = tx.index;
-			string txflgs = tx.oflgs;
+			int flags = tx.flags;
+			int txidx = tx.index;
+			//TODO
+			//string txflgs = tx.oflgs;
+			string txfeopts;
 
 			string cached;
 			if (ch.data.count(SDATA::c))
@@ -2759,9 +2764,9 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			ss << pil << CSV_SEPARATOR;
 			ss << guard << CSV_SEPARATOR;
 			ss << hier << CSV_SEPARATOR;
-			ss << flgs << CSV_SEPARATOR;
-			ss << txid << CSV_SEPARATOR;
-			ss << txflgs << CSV_SEPARATOR;
+			ss << flags << CSV_SEPARATOR;
+			ss << txidx << CSV_SEPARATOR;
+			ss << txfeopts << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << cached << CSV_ESCAPE;
 		}
 		else

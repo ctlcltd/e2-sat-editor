@@ -2333,8 +2333,9 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end,
 				print_obj_pair(TYPE::pil, tx.pil), print_obj_sep();
 				print_obj_pair(TYPE::guard, tx.guard), print_obj_sep();
 				print_obj_pair(TYPE::hier, tx.hier), print_obj_sep();
-				print_obj_pair(TYPE::flgs, tx.flgs), print_obj_sep();
-				print_obj_pair(TYPE::oflgs, tx.oflgs), print_obj_sep();
+				print_obj_pair(TYPE::flags, tx.flags), print_obj_sep();
+				//TODO
+				// print_obj_pair(TYPE::oflgs, tx.oflgs), print_obj_sep();
 				print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
 				print_obj_end(), print_obj_dlm();
 			}
@@ -2578,7 +2579,7 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end,
 				print_obj_pair(TYPE::pos, tn.pos), print_obj_sep();
 				print_obj_pair(TYPE::country, tn.country), print_obj_sep();
 				print_obj_pair(TYPE::feed, tn.feed), print_obj_sep();
-				print_obj_pair(TYPE::flgs, tn.flgs), print_obj_sep();
+				print_obj_pair(TYPE::flags, tn.flags), print_obj_sep();
 				print_obj_pair(TYPE::tndata, NULL);
 				print_obj_begin(1), print_obj_sep(-1);
 				size_t i = 0;
@@ -2854,7 +2855,7 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 				tx.inv = any_cast<int>(field(TYPE::inv));
 				tx.rol = any_cast<int>(field(TYPE::rol));
 				tx.pil = any_cast<int>(field(TYPE::pil));
-				tx.flgs = any_cast<int>(field(TYPE::flgs));
+				tx.flags = any_cast<int>(field(TYPE::flags));
 			}
 			else if (tx.ytype == e2db::YTYPE::terrestrial)
 			{
@@ -3054,7 +3055,7 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 				tn.feed = any_cast<int>(field(TYPE::feed));
 			}
 
-			tn.flgs = any_cast<int>(field(TYPE::flgs));
+			tn.flags = any_cast<int>(field(TYPE::flags));
 
 			if (edit)
 				dbih->edit_tunersets_table(id, tn, tv);
@@ -3577,8 +3578,9 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::hidden: name = hrn ? "Hidden" : "hidden"; value_type = VALUE::val_bool; break;
 		case TYPE::dname: name = hrn ? "dname" : "dname"; value_type = VALUE::val_string; break;
 		case TYPE::itype: name = hrn ? "itype" : "itype"; value_type = VALUE::val_int; break;
-		case TYPE::flgs: name = hrn ? "Flags" : "flgs"; value_type = VALUE::val_int; break;
-		case TYPE::oflgs: name = hrn ? "Other Flags" : "oflgs"; value_type = VALUE::val_string; break;
+		case TYPE::flags: name = hrn ? "Flags" : "flags"; value_type = VALUE::val_int; break;
+		//TODO
+		// case TYPE::oflgs: name = hrn ? "Other Flags" : "oflgs"; value_type = VALUE::val_string; break;
 		case TYPE::chdata: name = hrn ? "Service data" : "chdata"; value_type = VALUE::val_obj; break;
 		case TYPE::txdata: name = hrn ? "Transponder data" : "txdata"; value_type = VALUE::val_obj; break;
 		case TYPE::bsdata: name = hrn ? "Userbouquets" : "userbouquets"; value_type = VALUE::val_obj; break;
@@ -3613,7 +3615,7 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::itype:
 		case TYPE::etype:
 		case TYPE::atype:
-		case TYPE::flgs:
+		case TYPE::flags:
 			d = any_cast<int>(val);
 		break;
 		case TYPE::locked:
@@ -3639,7 +3641,8 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::qname:
 		case TYPE::nname:
 		case TYPE::dname:
-		case TYPE::oflgs:
+		//TODO
+		// case TYPE::oflgs:
 			str = any_cast<string>(val);
 		break;
 		case TYPE::dbtype:
@@ -3932,8 +3935,9 @@ std::any e2db_cli::field(TYPE type, bool required)
 		case TYPE::hidden: label = "Hidden"; description = "[Y]es or [N]one"; break;
 		case TYPE::dname: label = "dname"; break;
 		case TYPE::itype: label = "itype"; break;
-		case TYPE::flgs: label = "Flags"; description = "in digits"; break;
-		case TYPE::oflgs: label = "Other Flags"; break;
+		case TYPE::flags: label = "Flags"; description = "in digits"; break;
+		//TODO
+		// case TYPE::oflgs: label = "Other Flags"; break;
 		case TYPE::chdata: label = "Add Service data?"; description = "[Y]es or [N]one"; break;
 		case TYPE::txdata: label = "Add Transponder data?"; description = "[Y]es or [N]one"; break;
 		default: return -1;
@@ -3981,7 +3985,7 @@ std::any e2db_cli::field(TYPE type, bool required)
 				case TYPE::plsn:
 				case TYPE::diseqc:
 				case TYPE::uncomtd:
-				case TYPE::flgs:
+				case TYPE::flags:
 					d = std::atoi(str.data());
 					if (! d && required)
 						continue;

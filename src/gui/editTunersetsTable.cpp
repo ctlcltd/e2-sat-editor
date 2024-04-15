@@ -107,7 +107,7 @@ void editTunersetsTable::tableSatLayout()
 	dtf0->addItem(new QSpacerItem(0, 0));
 
 	QLineEdit* dtf0ss = new QLineEdit;
-	dtf0ss->setProperty("field", "flgs");
+	dtf0ss->setProperty("field", "flsgs");
 	fields.emplace_back(dtf0ss);
 	dtf0ss->setMaximumWidth(100);
 	dtf0ss->setValidator(new QIntValidator(0, 65535));
@@ -151,7 +151,7 @@ void editTunersetsTable::tableTerrestrialLayout()
 	dtf0->addItem(new QSpacerItem(0, 0));
 
 	QLineEdit* dtf0ts = new QLineEdit;
-	dtf0ts->setProperty("field", "flgs");
+	dtf0ts->setProperty("field", "flags");
 	fields.emplace_back(dtf0ts);
 	dtf0ts->setMaximumWidth(100);
 	dtf0ts->setValidator(new QIntValidator(0, 65535));
@@ -194,7 +194,7 @@ void editTunersetsTable::tableCableLayout()
 	dtf0->addItem(new QSpacerItem(0, 0));
 
 	QLineEdit* dtf0cs = new QLineEdit;
-	dtf0cs->setProperty("field", "flgs");
+	dtf0cs->setProperty("field", "flags");
 	fields.emplace_back(dtf0cs);
 	dtf0cs->setMaximumWidth(100);
 	dtf0cs->setValidator(new QIntValidator(0, 65535));
@@ -231,7 +231,7 @@ void editTunersetsTable::tableAtscLayout()
 	dtf0->addItem(new QSpacerItem(0, 0));
 
 	QLineEdit* dtf0as = new QLineEdit;
-	dtf0as->setProperty("field", "flgs");
+	dtf0as->setProperty("field", "flags");
 	fields.emplace_back(dtf0as);
 	dtf0as->setMaximumWidth(100);
 	dtf0as->setValidator(new QIntValidator(0, 65535));
@@ -287,8 +287,8 @@ void editTunersetsTable::store()
 		{
 			if (key == "name")
 				tns.name = val;
-			else if (key == "flgs")
-				tns.flgs = val.empty() ? -1 : std::stoi(val);
+			else if (key == "flags")
+				tns.flags = val.empty() ? -1 : std::stoi(val);
 			else if (key == "pos")
 				tns.pos = val.empty() ? -1 : dbih->value_transponder_position(val);
 		}
@@ -296,8 +296,8 @@ void editTunersetsTable::store()
 		{
 			if (key == "name")
 				tns.name = val;
-			else if (key == "flgs")
-				tns.flgs = val.empty() ? -1 : std::stoi(val);
+			else if (key == "flags")
+				tns.flags = val.empty() ? -1 : std::stoi(val);
 			else if (key == "country")
 				tns.country = val;
 		}
@@ -305,8 +305,8 @@ void editTunersetsTable::store()
 		{
 			if (key == "name")
 				tns.name = val;
-			else if (key == "flgs")
-				tns.flgs = val.empty() ? -1 : std::stoi(val);
+			else if (key == "flags")
+				tns.flags = val.empty() ? -1 : std::stoi(val);
 			else if (key == "country")
 				tns.country = val;
 			else if (key == "feed")
@@ -316,8 +316,8 @@ void editTunersetsTable::store()
 		{
 			if (key == "name")
 				tns.name = val;
-			else if (key == "flgs")
-				tns.flgs = val.empty() ? -1 : std::stoi(val);
+			else if (key == "flags")
+				tns.flags = val.empty() ? -1 : std::stoi(val);
 		}
 	}
 
@@ -356,8 +356,8 @@ void editTunersetsTable::retrieve()
 		{
 			if (key == "name")
 				val = tns.name;
-			else if (key == "flgs")
-				val = tns.flgs != -1 ? to_string(tns.flgs) : "";
+			else if (key == "flags")
+				val = tns.flags != -1 ? to_string(tns.flags) : "";
 			else if (key == "pos")
 				val = dbih->value_transponder_position(tns.pos);
 		}
@@ -365,8 +365,8 @@ void editTunersetsTable::retrieve()
 		{
 			if (key == "name")
 				val = tns.name;
-			else if (key == "flgs")
-				val = tns.flgs != -1 ? to_string(tns.flgs) : "";
+			else if (key == "flags")
+				val = tns.flags != -1 ? to_string(tns.flags) : "";
 			else if (key == "country")
 				val = tns.country;
 		}
@@ -374,8 +374,8 @@ void editTunersetsTable::retrieve()
 		{
 			if (key == "name")
 				val = tns.name;
-			else if (key == "flgs")
-				val = to_string(tns.flgs);
+			else if (key == "flags")
+				val = tns.flags != -1 ? to_string(tns.flags) : "";
 			else if (key == "country")
 				val = tns.country;
 			else if (key == "feed")
@@ -385,8 +385,8 @@ void editTunersetsTable::retrieve()
 		{
 			if (key == "name")
 				val = tns.name;
-			else if (key == "flgs")
-				val = tns.flgs != -1 ? to_string(tns.flgs) : "";
+			else if (key == "flags")
+				val = tns.flags != -1 ? to_string(tns.flags) : "";
 		}
 
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))

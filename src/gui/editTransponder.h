@@ -56,6 +56,10 @@ class editTransponder : public dialAbstract
 		void sideSatLayout();
 		void sideTerrestrialLayout();
 		void sideCableLayout();
+		void thirdSatLayout();
+		void thirdTerrestrialLayout();
+		void thirdCableLayout();
+		void thirdAtscLayout();
 		void typeComboChanged(int index);
 		void retrieve();
 		void retrieve(string txid);

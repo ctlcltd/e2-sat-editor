@@ -165,7 +165,7 @@ void editTransponder::layoutChange(int vx)
 {
 	debug("layoutChange");
 
-	for (int i = 1; i < 3; i++)
+	for (int i = 1; i < 4; i++)
 	{
 		QLayoutItem* item;
 		item = dtform->itemAtPosition(0, i);
@@ -187,17 +187,21 @@ void editTransponder::layoutChange(int vx)
 		case e2db::YTYPE::satellite:
 			leadSatLayout();
 			sideSatLayout();
+			thirdSatLayout();
 		break;
 		case e2db::YTYPE::terrestrial:
 			leadTerrestrialLayout();
 			sideTerrestrialLayout();
+			thirdTerrestrialLayout();
 		break;
 		case e2db::YTYPE::cable:
 			leadCableLayout();
 			sideCableLayout();
+			thirdCableLayout();
 		break;
 		case e2db::YTYPE::atsc:
 			leadAtscLayout();
+			thirdAtscLayout();
 		break;
 	}
 }
@@ -214,7 +218,7 @@ void editTransponder::leadSatLayout()
 	dtf0sf->setProperty("field", "s_freq");
 	fields.emplace_back(dtf0sf);
 	dtf0sf->setMinimumWidth(100);
-	dtf0sf->setValidator(new QIntValidator(0, 99999999));
+	dtf0sf->setValidator(new QIntValidator(0, 999999));
 	dtf0sf->setMaxLength(6);
 	platform::osLineEdit(dtf0sf);
 	dtf0->addRow(tr("Frequency"), dtf0sf);
@@ -291,7 +295,7 @@ void editTransponder::leadTerrestrialLayout()
 	dtf0tf->setProperty("field", "t_freq");
 	fields.emplace_back(dtf0tf);
 	dtf0tf->setMinimumWidth(100);
-	dtf0tf->setValidator(new QIntValidator(0, 999999999));
+	dtf0tf->setValidator(new QIntValidator(0, 999999));
 	dtf0tf->setMaxLength(6);
 	platform::osLineEdit(dtf0tf);
 	dtf0->addRow(tr("Frequency"), dtf0tf);
@@ -357,7 +361,7 @@ void editTransponder::leadTerrestrialLayout()
 		dtf0tl->addItem(QString::fromStdString(w), i);
 	}
 
-	/*QComboBox* dtf0ty = new QComboBox;
+	QComboBox* dtf0ty = new QComboBox;
 	dtf0ty->setProperty("field", "t_sys");
 	fields.emplace_back(dtf0ty);
 	dtf0ty->setMaximumWidth(100);
@@ -370,7 +374,7 @@ void editTransponder::leadTerrestrialLayout()
 	{
 		string w = e2db::TER_SYS[i];
 		dtf0ty->addItem(QString::fromStdString(w), i);
-	}*/
+	}
 
 	dtl0->setLayout(dtf0);
 	dtform->addWidget(dtl0, 0, 1);
@@ -388,7 +392,7 @@ void editTransponder::leadCableLayout()
 	dtf0cf->setProperty("field", "c_freq");
 	fields.emplace_back(dtf0cf);
 	dtf0cf->setMinimumWidth(100);
-	dtf0cf->setValidator(new QIntValidator(0, 999999999));
+	dtf0cf->setValidator(new QIntValidator(0, 999999));
 	dtf0cf->setMaxLength(6);
 	platform::osLineEdit(dtf0cf);
 	dtf0->addRow(tr("Frequency"), dtf0cf);
@@ -413,7 +417,7 @@ void editTransponder::leadCableLayout()
 	dtf0cs->setProperty("field", "c_sr");
 	fields.emplace_back(dtf0cs);
 	dtf0cs->setMinimumWidth(100);
-	dtf0cs->setValidator(new QIntValidator(0, 65535));
+	dtf0cs->setValidator(new QIntValidator(-1, 65535));
 	dtf0cs->setMaxLength(6);
 	platform::osLineEdit(dtf0cs);
 	dtf0->addRow(tr("Symbol Rate"), dtf0cs);
@@ -450,7 +454,7 @@ void editTransponder::leadAtscLayout()
 	dtf0af->setProperty("field", "a_freq");
 	fields.emplace_back(dtf0af);
 	dtf0af->setMinimumWidth(100);
-	dtf0af->setValidator(new QIntValidator(0, 999999999));
+	dtf0af->setValidator(new QIntValidator(0, 999999));
 	dtf0af->setMaxLength(6);
 	platform::osLineEdit(dtf0af);
 	dtf0->addRow(tr("Frequency"), dtf0af);
@@ -661,6 +665,154 @@ void editTransponder::sideCableLayout()
 	dtform->addWidget(dtl1, 0, 2);
 }
 
+void editTransponder::thirdSatLayout()
+{
+	debug("thirdSatLayout");
+
+	QGroupBox* dtl2 = new QGroupBox;
+	QFormLayout* dtf2 = new QFormLayout;
+	dtf2->setRowWrapPolicy(QFormLayout::WrapAllRows);
+
+	QLineEdit* dtf2sf = new QLineEdit;
+	dtf2sf->setProperty("field", "s_flags");
+	fields.emplace_back(dtf2sf);
+	dtf2sf->setMaximumWidth(50);
+	dtf2sf->setValidator(new QIntValidator(0, 99999999));
+	dtf2sf->setMaxLength(8);
+	platform::osLineEdit(dtf2sf);
+	dtf2->addRow(tr("flags"), dtf2sf);
+	dtf2->addItem(new QSpacerItem(0, 0));
+
+	QLineEdit* dtf2sn = new QLineEdit;
+	dtf2sn->setProperty("field", "s_plsn");
+	fields.emplace_back(dtf2sn);
+	dtf2sn->setMaximumWidth(50);
+	dtf2sn->setValidator(new QIntValidator(0, 99999999));
+	dtf2sn->setMaxLength(8);
+	platform::osLineEdit(dtf2sn);
+	dtf2->addRow(tr("pls / mis id"), dtf2sn);
+	dtf2->addItem(new QSpacerItem(0, 0));
+
+	QLineEdit* dtf2sc = new QLineEdit;
+	dtf2sc->setProperty("field", "s_plscode");
+	fields.emplace_back(dtf2sc);
+	dtf2sc->setMaximumWidth(50);
+	dtf2sc->setValidator(new QIntValidator(0, 99999999));
+	dtf2sc->setMaxLength(8);
+	platform::osLineEdit(dtf2sc);
+	dtf2->addRow(tr("pls code"), dtf2sc);
+	dtf2->addItem(new QSpacerItem(0, 0));
+
+	QLineEdit* dtf2sd = new QLineEdit;
+	dtf2sd->setProperty("field", "s_plsmode");
+	fields.emplace_back(dtf2sd);
+	dtf2sd->setMaximumWidth(50);
+	dtf2sd->setValidator(new QIntValidator(0, 99999999));
+	dtf2sd->setMaxLength(8);
+	platform::osLineEdit(dtf2sd);
+	dtf2->addRow(tr("pls mode"), dtf2sd);
+	dtf2->addItem(new QSpacerItem(0, 0));
+
+	QLineEdit* dtf2ss = new QLineEdit;
+	dtf2ss->setProperty("field", "s_isid");
+	fields.emplace_back(dtf2ss);
+	dtf2ss->setMaximumWidth(50);
+	dtf2ss->setValidator(new QIntValidator(0, 99999999));
+	dtf2ss->setMaxLength(8);
+	platform::osLineEdit(dtf2ss);
+	dtf2->addRow(tr("is id"), dtf2ss);
+	dtf2->addItem(new QSpacerItem(0, 0));
+
+	dtl2->setLayout(dtf2);
+	dtform->addWidget(dtl2, 0, 3);
+}
+
+void editTransponder::thirdTerrestrialLayout()
+{
+	debug("thirdTerrestrialLayout");
+
+	QGroupBox* dtl2 = new QGroupBox;
+	QFormLayout* dtf2 = new QFormLayout;
+	dtf2->setRowWrapPolicy(QFormLayout::WrapAllRows);
+
+	QLineEdit* dtf2tf = new QLineEdit;
+	dtf2tf->setProperty("field", "t_flags");
+	fields.emplace_back(dtf2tf);
+	dtf2tf->setMaximumWidth(50);
+	dtf2tf->setValidator(new QIntValidator(0, 99999999));
+	dtf2tf->setMaxLength(8);
+	platform::osLineEdit(dtf2tf);
+	dtf2->addRow(tr("flags"), dtf2tf);
+	dtf2->addItem(new QSpacerItem(0, 0));
+
+	QLineEdit* dtf2tp = new QLineEdit;
+	dtf2tp->setProperty("field", "t_plpid");
+	fields.emplace_back(dtf2tp);
+	dtf2tp->setMaximumWidth(50);
+	dtf2tp->setValidator(new QIntValidator(0, 99999999));
+	dtf2tp->setMaxLength(8);
+	platform::osLineEdit(dtf2tp);
+	dtf2->addRow(tr("plp id"), dtf2tp);
+	dtf2->addItem(new QSpacerItem(0, 0));
+
+	dtl2->setLayout(dtf2);
+	dtform->addWidget(dtl2, 0, 3);
+}
+
+void editTransponder::thirdCableLayout()
+{
+	debug("thirdCableLayout");
+
+	QGroupBox* dtl2 = new QGroupBox;
+	QFormLayout* dtf2 = new QFormLayout;
+	dtf2->setRowWrapPolicy(QFormLayout::WrapAllRows);
+
+	QLineEdit* dtf2cf = new QLineEdit;
+	dtf2cf->setProperty("field", "c_flags");
+	fields.emplace_back(dtf2cf);
+	dtf2cf->setMaximumWidth(50);
+	dtf2cf->setValidator(new QIntValidator(0, 99999999));
+	dtf2cf->setMaxLength(8);
+	platform::osLineEdit(dtf2cf);
+	dtf2->addRow(tr("flags"), dtf2cf);
+	dtf2->addItem(new QSpacerItem(0, 0));
+
+	QLineEdit* dtf2cs = new QLineEdit;
+	dtf2cs->setProperty("field", "c_sys");
+	fields.emplace_back(dtf2cs);
+	dtf2cs->setMaximumWidth(50);
+	dtf2cs->setValidator(new QIntValidator(0, 9));
+	dtf2cs->setMaxLength(1);
+	platform::osLineEdit(dtf2cs);
+	dtf2->addRow(tr("system"), dtf2cs);
+	dtf2->addItem(new QSpacerItem(0, 0));
+
+	dtl2->setLayout(dtf2);
+	dtform->addWidget(dtl2, 0, 3);
+}
+
+void editTransponder::thirdAtscLayout()
+{
+	debug("thirdAtscLayout");
+
+	QGroupBox* dtl2 = new QGroupBox;
+	QFormLayout* dtf2 = new QFormLayout;
+	dtf2->setRowWrapPolicy(QFormLayout::WrapAllRows);
+
+	QLineEdit* dtf2af = new QLineEdit;
+	dtf2af->setProperty("field", "a_flags");
+	fields.emplace_back(dtf2af);
+	dtf2af->setMaximumWidth(50);
+	dtf2af->setValidator(new QIntValidator(0, 99999999));
+	dtf2af->setMaxLength(8);
+	platform::osLineEdit(dtf2af);
+	dtf2->addRow(tr("flags"), dtf2af);
+	dtf2->addItem(new QSpacerItem(0, 0));
+
+	dtl2->setLayout(dtf2);
+	dtform->addWidget(dtl2, 0, 2);
+}
+
 void editTransponder::typeComboChanged(int index)
 {
 	debug("typeComboChanged", "index", index);
@@ -742,8 +894,16 @@ void editTransponder::store()
 				tx.rol = val;
 			else if (key == "s_pil")
 				tx.pil = val;
-			else if (key == "s_flgs")
-				tx.flgs = val;
+			else if (key == "s_flags")
+				tx.flags = val;
+			else if (key == "s_plsn")
+				tx.plsn = val;
+			else if (key == "s_plsmode")
+				tx.plsmode = val;
+			else if (key == "s_plscode")
+				tx.plscode = val;
+			else if (key == "s_isid")
+				tx.isid = val;
 		}
 		else if (this->state.yx == e2db::YTYPE::terrestrial)
 		{
@@ -755,8 +915,6 @@ void editTransponder::store()
 				tx.tmod = val;
 			else if (key == "t_band")
 				tx.band = val;
-			else if (key == "t_sys")
-				tx.sys = val;
 			else if (key == "t_tmod")
 				tx.tmod = val;
 			else if (key == "t_tmx")
@@ -771,6 +929,12 @@ void editTransponder::store()
 				tx.guard = val;
 			else if (key == "t_hier")
 				tx.hier = val;
+			else if (key == "t_flags")
+				tx.flags = val;
+			else if (key == "t_sys")
+				tx.sys = val;
+			else if (key == "t_plpid")
+				tx.plpid = val;
 		}
 		else if (this->state.yx == e2db::YTYPE::cable)
 		{
@@ -786,6 +950,10 @@ void editTransponder::store()
 				tx.inv = val;
 			else if (key == "c_cmod")
 				tx.cmod = val;
+			else if (key == "c_flags")
+				tx.flags = val;
+			else if (key == "c_sys")
+				tx.sys = val;
 		}
 		else if (this->state.yx == e2db::YTYPE::atsc)
 		{
@@ -795,6 +963,8 @@ void editTransponder::store()
 				tx.freq = val;
 			else if (key == "a_amod")
 				tx.amod = val;
+			else if (key == "a_flags")
+				tx.flags = val;
 			else if (key == "a_sys")
 				tx.sys = val;
 		}
@@ -874,8 +1044,16 @@ void editTransponder::retrieve(string txid)
 				val = tx.rol;
 			else if (key == "s_pil")
 				val = tx.pil;
-			else if (key == "s_flgs")
-				val = tx.flgs;
+			else if (key == "s_flags")
+				val = tx.flags;
+			else if (key == "s_plsn")
+				val = tx.plsn;
+			else if (key == "s_plsmode")
+				val = tx.plsmode;
+			else if (key == "s_plscode")
+				val = tx.plscode;
+			else if (key == "s_isid")
+				val = tx.isid;
 		}
 		else if (this->state.yx == e2db::YTYPE::terrestrial)
 		{
@@ -885,8 +1063,6 @@ void editTransponder::retrieve(string txid)
 				val = tx.tmod;
 			else if (key == "t_band")
 				val = tx.band;
-			else if (key == "t_sys")
-				val = tx.sys;
 			else if (key == "t_tmod")
 				val = tx.tmod;
 			else if (key == "t_tmx")
@@ -901,6 +1077,12 @@ void editTransponder::retrieve(string txid)
 				val = tx.guard;
 			else if (key == "t_hier")
 				val = tx.hier;
+			else if (key == "t_flags")
+				val = tx.flags;
+			else if (key == "t_sys")
+				val = tx.sys;
+			else if (key == "t_plpid")
+				val = tx.plpid;
 		}
 		else if (this->state.yx == e2db::YTYPE::cable)
 		{
@@ -914,6 +1096,10 @@ void editTransponder::retrieve(string txid)
 				val = tx.inv;
 			else if (key == "c_cmod")
 				val = tx.cmod;
+			else if (key == "c_flags")
+				val = tx.flags;
+			else if (key == "c_sys")
+				val = tx.sys;
 		}
 		else if (this->state.yx == e2db::YTYPE::atsc)
 		{
@@ -921,6 +1107,8 @@ void editTransponder::retrieve(string txid)
 				val = tx.freq;
 			else if (key == "a_amod")
 				val = tx.amod;
+			else if (key == "a_flags")
+				val = tx.flags;
 			else if (key == "a_sys")
 				val = tx.sys;
 		}

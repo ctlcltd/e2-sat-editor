@@ -3,9 +3,9 @@
 All notable changes to this project will be documented in this file.
 
 
-## [v1.3.4]
+## [v1.4]
 
-**Version**: 1.3.4  
+**Version**: 1.4  
 **Release Date**: *unreleased*  
 **Full Changelog**: [v1.3.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.3.0...HEAD)
 
@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Fix add favourite, stream type
 - Fix edit transponder
 - Fix merge, clear XML comments
+- Revised transponder feparams
 - Prevent crashes
 
 

@@ -379,7 +379,7 @@ void editFavourite::referenceLayout()
 	dtf1sx->setProperty("field", "ssid");
 	fields.emplace_back(dtf1sx);
 	dtf1sx->setMaximumWidth(60);
-	dtf1sx->setValidator(new QIntValidator(0, 999999999));
+	dtf1sx->setValidator(new QIntValidator(0, 99999999));
 	platform::osLineEdit(dtf1sx);
 	dtb20->addWidget(dtf1sx);
 	dtb20->addWidget(new QLabel("[SID]"));
