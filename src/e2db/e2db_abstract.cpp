@@ -760,7 +760,7 @@ void e2db_abstract::value_transponder_fec(string str, int yx, fec& fec)
 		{
 			string hp_fec, lp_fec;
 			hp_fec = str.substr(0, pos);
-			lp_fec = str.substr(pos);
+			lp_fec = str.substr(pos + 1);
 			fec.hp_fec = value_transponder_fec(hp_fec, YTYPE::terrestrial);
 			fec.lp_fec = value_transponder_fec(lp_fec, YTYPE::terrestrial);
 		}

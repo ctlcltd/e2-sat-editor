@@ -586,7 +586,7 @@ QStringList e2db::entryTransponder(transponder tx)
 QStringList e2db::entryTransponder(transponder tx, bool extended)
 {
 	QStringList entry;
-	
+
 	if (entries.transponders.count(tx.txid))
 		entry = entries.transponders[tx.txid];
 	else

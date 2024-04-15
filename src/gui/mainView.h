@@ -88,11 +88,13 @@ class mainView : public viewAbstract
 		};
 
 		enum ITEM_DATA_ROLE {
+			refid,
 			idx,
-			reftype,
-			chid,
+			numbered,
 			locked,
-			uri
+			chid,
+			reftype = 8,
+			uri = 13
 		};
 
 		enum ITEM_ROW_ROLE {

@@ -254,7 +254,8 @@ void e2db_parser::parse_e2db()
 	// commit: 67b6442	elapsed time: 65520
 	// commit: 6559e93	elapsed time: 19939
 	// commit: a7022d8	elapsed time: 18506
-	// commit: 6cbd126  elapsed time: 27465
+	// commit: 6cbd126	elapsed time: 27465
+	// commit: eea25b0	elapsed time: 20839
 
 	auto t_end = std::chrono::high_resolution_clock::now();
 	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
@@ -924,7 +925,7 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string filename)
 
 			parse_channel_reference(line.substr(9), chref, ref);
 
-			if (chref.marker)
+			if (chref.marker && chref.atype != ATYPE::marker_numbered)
 			{
 				idx = 0;
 			}

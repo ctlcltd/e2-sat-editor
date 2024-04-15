@@ -772,11 +772,13 @@ void mainView::populate(QTreeWidget* tw)
 		for (auto & chi : dbih->index[bname])
 		{
 			int reftype = REF_TYPE::service;
+			bool numbered = true;
 			bool marker = false;
 			bool locked = false;
 			QString x = QString::number(i++).rightJustified(pad_width, '0');
 			QString idx;
 			QString chid = QString::fromStdString(chi.second);
+			QString refid;
 			QString uri;
 			QStringList entry;
 			bool ref_error = false;
@@ -798,7 +800,14 @@ void mainView::populate(QTreeWidget* tw)
 					reftype = REF_TYPE::marker;
 					marker = true;
 					entry = dbih->entryMarker(chref);
-					idx = entry[1];
+
+					if (chref.atype == e2db::ATYPE::marker_numbered)
+						entry[0] = QString::number(chi.first);
+					else
+						numbered = false;
+
+					idx = entry[0];
+
 					entry.prepend(x);
 				}
 				else if (chref.stream)
@@ -807,6 +816,7 @@ void mainView::populate(QTreeWidget* tw)
 					entry = dbih->entryFavourite(chref);
 					idx = QString::number(chi.first);
 					locked = entry[1].size() || ub_locked;
+					refid = QString::fromStdString(dbih->get_reference_id(chref));
 					uri = entry[11];
 					entry.prepend(idx);
 					entry.prepend(x);
@@ -833,9 +843,11 @@ void mainView::populate(QTreeWidget* tw)
 			QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 			item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 			item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
-			item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
+			item->setData(ITEM_DATA_ROLE::numbered, Qt::UserRole, numbered);
 			item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, chid);
 			item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
+			item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
+			item->setData(ITEM_DATA_ROLE::refid, Qt::UserRole, refid);
 			item->setData(ITEM_DATA_ROLE::uri, Qt::UserRole, uri);
 			if (locked)
 			{
@@ -1196,8 +1208,8 @@ void mainView::visualReindexList()
 		while (j--)
 		{
 			QTreeWidgetItem* item = list->topLevelItem(i);
-			bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
-			if (marker)
+			bool numbered = item->data(ITEM_DATA_ROLE::numbered, Qt::UserRole).toBool();
+			if (numbered)
 				y++;
 			i++;
 		}
@@ -1207,13 +1219,13 @@ void mainView::visualReindexList()
 	while (reverse ? j-- : i != j)
 	{
 		QTreeWidgetItem* item = list->topLevelItem(i);
-		bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
+		bool numbered = item->data(ITEM_DATA_ROLE::numbered, Qt::UserRole).toBool();
 		idx = reverse ? j : i;
 		item->setText(ITEM_ROW_ROLE::x, QString::number(idx++).rightJustified(pad_width, '0'));
-		if (! marker)
+		if (numbered)
 			item->setText(ITEM_ROW_ROLE::chnum, QString::number(idx - y));
 		i++;
-		y = marker ? reverse ? y - 1 : y + 1 : y;
+		y = ! numbered ? reverse ? y - 1 : y + 1 : y;
 	}
 
 	this->state.vlx_pending = false;
@@ -1941,9 +1953,10 @@ void mainView::addService()
 	QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 	item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
-	item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
+	item->setData(ITEM_DATA_ROLE::numbered, Qt::UserRole, true);
 	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
 	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
+	item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
 	item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
 	item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 	item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
@@ -2048,9 +2061,10 @@ void mainView::editService()
 	entry.prepend(item->text(ITEM_ROW_ROLE::x));
 	for (int i = 0; i < entry.count(); i++)
 		item->setText(i, entry[i]);
-	item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
+	item->setData(ITEM_DATA_ROLE::numbered, Qt::UserRole, true);
 	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
 	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
+	item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
 	item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
 	item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 	item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
@@ -2092,6 +2106,7 @@ void mainView::addFavourite()
 	i = current != nullptr ? parent->indexOfChild(current) : list->topLevelItemCount();
 	y = i + 1;
 
+	bool numbered = true;
 	bool ub_locked = false;
 
 	// userbouquet
@@ -2106,15 +2121,21 @@ void mainView::addFavourite()
 	}
 
 	if (chref.stream)
+	{
 		reftype = REF_TYPE::stream;
+	}
 	else if (chref.marker)
+	{
 		reftype = REF_TYPE::marker;
+		numbered = chref.atype == e2db::ATYPE::marker_numbered;
+	}
 
 	QString parentalicon = QSettings().value("engine/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
 
 	size_t pad_width = std::to_string(int (dbih->index["chs"].size())).size() + 1;
 	QString x = QString::number(i++).rightJustified(pad_width, '0');
 	QString idx = QString::number(i);
+	QString refid = QString::fromStdString(dbih->get_reference_id(chref));
 	QStringList entry = dbih->entryFavourite(chref);
 	bool locked = entry[1].size() || ub_locked;
 	entry.prepend(idx);
@@ -2123,8 +2144,10 @@ void mainView::addFavourite()
 	QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 	item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
-	item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
+	item->setData(ITEM_DATA_ROLE::numbered, Qt::UserRole, numbered);
 	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
+	item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
+	item->setData(ITEM_DATA_ROLE::refid, Qt::UserRole, refid);
 	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
 	item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
 	item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
@@ -2165,6 +2188,8 @@ void mainView::editFavourite()
 	QTreeWidgetItem* item = selected.first();
 	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 	string bname = this->state.curr;
+	bool numbered = item->data(ITEM_DATA_ROLE::numbered, Qt::UserRole).toBool();
+	bool reindex = false;
 	int reftype = REF_TYPE::service;
 
 	auto* dbih = this->data->dbih;
@@ -2184,6 +2209,7 @@ void mainView::editFavourite()
 		return error("editFavourite", tr("Error", "error").toStdString(), tr("Missing channel reference key \"%1\".", "error").arg(nw_chid.data()).toStdString());
 
 	chref = dbih->userbouquets[bname].channels[nw_chid];
+	reindex = (numbered != (chref.atype == e2db::ATYPE::marker_numbered));
 
 	cache[bname].clear();
 
@@ -2201,24 +2227,43 @@ void mainView::editFavourite()
 	}
 
 	if (chref.stream)
+	{
 		reftype = REF_TYPE::stream;
+	}
 	else if (chref.marker)
+	{
 		reftype = REF_TYPE::marker;
+		numbered = chref.atype == e2db::ATYPE::marker_numbered;
+	}
 
 	QString parentalicon = QSettings().value("engine/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
 
+	QString refid = QString::fromStdString(dbih->get_reference_id(chref));
 	QStringList entry = dbih->entryFavourite(chref);
 	bool locked = entry[1].size() || ub_locked;
 	entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
 	entry.prepend(item->text(ITEM_ROW_ROLE::x));
 	for (int i = 0; i < entry.count(); i++)
 		item->setText(i, entry[i]);
-	item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
+	item->setData(ITEM_DATA_ROLE::numbered, Qt::UserRole, numbered);
 	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
+	item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
+	item->setData(ITEM_DATA_ROLE::refid, Qt::UserRole, refid);
 	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
 	item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
 	item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 	item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
+
+	if (reindex)
+	{
+		// sorting default
+		if (this->state.dnd)
+			visualReindexList();
+		else
+			this->state.vlx_pending = true;
+
+		setPendingUpdateListIndex();
+	}
 
 	if (this->state.refbox)
 		updateReferenceBox();
@@ -2262,6 +2307,7 @@ void mainView::addMarker()
 	i = current != nullptr ? parent->indexOfChild(current) : list->topLevelItemCount();
 	y = i + 1;
 
+	bool numbered = chref.atype == e2db::ATYPE::marker_numbered;
 	bool marker = true;
 	size_t pad_width = std::to_string(int (dbih->index[bname].size())).size() + 1;
 	QString x = QString::number(i++).rightJustified(pad_width, '0');
@@ -2272,9 +2318,10 @@ void mainView::addMarker()
 	QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 	item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
-	item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, REF_TYPE::marker);
+	item->setData(ITEM_DATA_ROLE::numbered, Qt::UserRole, numbered);
 	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
 	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, false);
+	item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, REF_TYPE::marker);
 	if (marker)
 	{
 		item->setFont(ITEM_ROW_ROLE::chname, QFont(theme::fontFamily(), theme::calcFontSize(-1), QFont::Weight::Bold));
@@ -2321,7 +2368,9 @@ void mainView::editMarker()
 	QTreeWidgetItem* item = selected.first();
 	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 	string bname = this->state.curr;
+	bool numbered = item->data(ITEM_DATA_ROLE::numbered, Qt::UserRole).toBool();
 	bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
+	bool reindex = false;
 
 	auto* dbih = this->data->dbih;
 
@@ -2350,6 +2399,8 @@ void mainView::editMarker()
 		return error("editMarker", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" is not a valid marker.", "error").arg(nw_chid.data()).toStdString());
 
 	chref = dbih->userbouquets[bname].channels[nw_chid];
+	reindex = (numbered != (chref.atype == e2db::ATYPE::marker_numbered));
+	numbered = chref.atype == e2db::ATYPE::marker_numbered;
 
 	cache[bname].clear();
 
@@ -2357,7 +2408,19 @@ void mainView::editMarker()
 	entry.prepend(item->text(ITEM_ROW_ROLE::x));
 	for (int i = 0; i < entry.count(); i++)
 		item->setText(i, entry[i]);
+	item->setData(ITEM_DATA_ROLE::numbered, Qt::UserRole, numbered);
 	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
+
+	if (reindex)
+	{
+		// sorting default
+		if (this->state.dnd)
+			visualReindexList();
+		else
+			this->state.vlx_pending = true;
+
+		setPendingUpdateListIndex();
+	}
 
 	if (this->state.refbox)
 		updateReferenceBox();
@@ -2726,6 +2789,10 @@ void mainView::listItemCopy(bool cut)
 			// uri
 			else if (i == ITEM_ROW_ROLE::chtname && stream)
 				qstr = item->data(ITEM_DATA_ROLE::uri, Qt::UserRole).toString();
+			// fec
+			else if (i == ITEM_ROW_ROLE::chfec)
+				qstr.remove(" ").squeeze();
+
 			data.append(qstr);
 		}
 
@@ -2982,6 +3049,7 @@ void mainView::putListItems(vector<QString> items)
 		QString idx = QString::number(i);
 		QString uri;
 
+		bool numbered = true;
 		int reftype = REF_TYPE::service;
 		string refid;
 		string value;
@@ -3063,10 +3131,21 @@ void mainView::putListItems(vector<QString> items)
 				chref.anum = marker_count + 1;
 				chref.value = value;
 				chref.ref = ref;
-				chref.index = -1;
-				idx = "";
 
 				entry = dbih->entryMarker(chref);
+
+				if (chref.atype == e2db::ATYPE::marker_numbered)
+				{
+					chref.index = idx.toInt();
+					entry[0] = idx;
+				}
+				else
+				{
+					chref.index = -1;
+					numbered = false;
+					idx = "";
+				}
+
 				entry.prepend(x);
 
 				marker_count++;
@@ -3119,19 +3198,32 @@ void mainView::putListItems(vector<QString> items)
 				tx.freq = qs[13].toInt();
 				tx.pol = dbih->value_transponder_polarization(qs[14].toStdString());
 				tx.sr = qs[15].toInt();
+
 				dbih->value_transponder_fec(qs[16].toStdString(), tx.ytype, fec);
+
+				//TODO improve feparams reference
 				if (tx.ytype == e2db::YTYPE::satellite)
 				{
 					tx.fec = fec.inner_fec;
+					tx.mod = 0;
 				}
 				else if (tx.ytype == e2db::YTYPE::terrestrial)
 				{
 					tx.hpfec = fec.hp_fec;
 					tx.lpfec = fec.lp_fec;
+					tx.tmod = 3;
+					tx.band = 3;
+					tx.sr = -1;
 				}
 				else if (tx.ytype == e2db::YTYPE::cable)
 				{
 					tx.fec = fec.inner_fec;
+					tx.cmod = 0;
+				}
+				else if (tx.ytype == e2db::YTYPE::atsc)
+				{
+					tx.amod = 0;
+					tx.sr = -1;
 				}
 
 				if (ch.data.count(e2db::SDATA::C) && ch.data[e2db::SDATA::C].empty())
@@ -3170,9 +3262,10 @@ void mainView::putListItems(vector<QString> items)
 		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
-		item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
+		item->setData(ITEM_DATA_ROLE::numbered, Qt::UserRole, numbered);
 		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chref.chid));
 		item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
+		item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
 		item->setData(ITEM_DATA_ROLE::uri, Qt::UserRole, uri);
 		if (locked)
 		{
@@ -3815,8 +3908,8 @@ void mainView::updateListIndex()
 	while (i != count)
 	{
 		QTreeWidgetItem* item = list->topLevelItem(i);
+		bool numbered = item->data(mainView::ITEM_DATA_ROLE::numbered, Qt::UserRole).toBool();
 		string chid = item->data(mainView::ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
-		bool marker = item->data(mainView::ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 		if (! marker)
 		{
 			y++;
@@ -3834,7 +3927,7 @@ void mainView::updateListIndex()
 		{
 			e2db::channel_reference& chref = x.second;
 
-			if (! chref.marker)
+			if (! (chref.marker && chref.atype != e2db::ATYPE::marker_numbered))
 			{
 				idx += 1;
 				chref.index = idx;
@@ -3863,29 +3956,67 @@ void mainView::updateListReferences(QTreeWidgetItem* current, QList<QTreeWidgetI
 
 	for (auto & item : items)
 	{
-		string chid = item->data(mainView::ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
+		string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 
 		if (! dbih->userbouquets[bname].channels.count(chid))
 		{
 			e2db::channel_reference chref;
 
-			int idx = item->data(mainView::ITEM_DATA_ROLE::idx, Qt::UserRole).toInt();
-			bool marker = item->data(mainView::ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
+			int idx = item->data(ITEM_DATA_ROLE::idx, Qt::UserRole).toInt();
+			bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
+			bool stream = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::stream;
 
 			chref.marker = marker;
+			chref.stream = stream;
 
 			if (marker)
 			{
-				string value = item->text(mainView::ITEM_ROW_ROLE::chname).toStdString();
+				string value = item->text(ITEM_ROW_ROLE::chname).toStdString();
+				int etype = 0;
 				int atype = 0;
+				int inum = dbih->db.imarkers + 1;
 				int anum = 0;
-				int ub_idx = -1;
 
-				std::sscanf(chid.c_str(), "%d:%x:%d", &atype, &anum, &ub_idx);
+				std::sscanf(chid.c_str(), "%d:%d:%x", &etype, &atype, &anum);
 
+				chref.etype = etype;
 				chref.atype = atype;
+				chref.inum = inum;
 				chref.anum = anum;
 				chref.value = value;
+				chref.index = idx;
+			}
+			else if (stream)
+			{
+				e2db::service_reference ref;
+
+				string refid = item->data(ITEM_DATA_ROLE::refid, Qt::UserRole).toString().toStdString();
+				string value = item->text(ITEM_ROW_ROLE::chname).toStdString();
+				string uri = item->data(ITEM_DATA_ROLE::uri, Qt::UserRole).toString().toStdString();
+				int etype = 0;
+				int atype = 0;
+				int inum = dbih->db.istreams + 1;
+				int anum = 0;
+				int ssid = 0;
+				int tsid = 0;
+				int onid = 0;
+				int dvbns = 0;
+
+				std::sscanf(refid.c_str(), "%d:%d:%X:%X:%X:%X:%X", &etype, &atype, &anum, &ssid, &tsid, &onid, &dvbns);
+
+				ref.ssid = ssid;
+				ref.tsid = tsid;
+				ref.onid = onid;
+				ref.dvbns = dvbns;
+
+				chref.etype = etype;
+				chref.atype = atype;
+				chref.inum = inum;
+				chref.anum = anum;
+				chref.value = value;
+				chref.uri = uri;
+				chref.ref = ref;
+				chref.index = idx;
 			}
 			else
 			{
@@ -3896,8 +4027,8 @@ void mainView::updateListReferences(QTreeWidgetItem* current, QList<QTreeWidgetI
 			dbih->addChannelReference(chref, bname);
 
 			QString chid = QString::fromStdString(chref.chid);
-			item->setData(mainView::ITEM_DATA_ROLE::chid, Qt::UserRole, chid);
-			item->setText(mainView::ITEM_ROW_ROLE::debug_chid, chid);
+			item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, chid);
+			item->setText(ITEM_ROW_ROLE::debug_chid, chid);
 		}
 	}
 }

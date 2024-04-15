@@ -488,6 +488,11 @@ void transpondersView::listItemCopy(bool cut)
 		for (int i = ITEM_ROW_ROLE::combo; i < list->columnCount(); i++)
 		{
 			QString qstr = item->data(i, Qt::DisplayRole).toString();
+
+			// fec
+			if (i == ITEM_ROW_ROLE::fec)
+				qstr.remove(" ").squeeze();
+
 			data.append(qstr);
 		}
 
