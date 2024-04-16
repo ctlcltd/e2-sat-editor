@@ -547,7 +547,7 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation>Nový Oblíbený</translation>
+        <translation type="vanished">Nový Oblíbený</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -613,6 +613,11 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Odkaz kanálu &quot;%1&quot; neexistuje.</translation>
+    </message>
+    <message>
+        <source>Add Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1016,6 +1021,34 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
         <comment>error</comment>
         <translation>Transpondér &quot;%1&quot; neexistuje.</translation>
     </message>
+    <message>
+        <source>flags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls / mis id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>plp id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>system</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>editTunersets</name>
@@ -1178,7 +1211,7 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
     </message>
     <message>
         <source>isid</source>
-        <translation>isid</translation>
+        <translation type="vanished">isid</translation>
     </message>
     <message>
         <source>mts</source>
@@ -1186,15 +1219,15 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
     </message>
     <message>
         <source>plsmode</source>
-        <translation>plsmode</translation>
+        <translation type="vanished">plsmode</translation>
     </message>
     <message>
         <source>plscode</source>
-        <translation>plscode</translation>
+        <translation type="vanished">plscode</translation>
     </message>
     <message>
         <source>plsn</source>
-        <translation>plsn</translation>
+        <translation type="vanished">plsn</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1215,6 +1248,26 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Transpondér nastavení tuneru &quot;%1&quot; neexistuje.</translation>
+    </message>
+    <message>
+        <source>pls</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>plp id</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2208,7 +2261,7 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
     <message>
         <source>Channel reference mismatch.</source>
         <comment>error</comment>
-        <translation>Neshoda reference kanálu.</translation>
+        <translation type="vanished">Neshoda reference kanálu.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
@@ -3014,6 +3067,11 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
     <message>
         <source>Check for updates on launch</source>
         <translation>Při spuštění zkontrolujte aktualizace</translation>
+    </message>
+    <message>
+        <source>Malformed or unknown XML file format.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Poškozený nebo neznámý formát souboru XML.</translation>
     </message>
 </context>
 <context>

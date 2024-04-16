@@ -548,7 +548,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation>المفضلة الجديدة</translation>
+        <translation type="vanished">المفضلة الجديدة</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -614,6 +614,11 @@ Please wait few minutes and try again.</source>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>مرجع القناة &quot;%1&quot; غير موجود.</translation>
+    </message>
+    <message>
+        <source>Add Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1017,6 +1022,34 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>المستجيب &quot;%1&quot; غير موجود.</translation>
     </message>
+    <message>
+        <source>flags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls / mis id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>plp id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>system</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>editTunersets</name>
@@ -1179,7 +1212,7 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>isid</source>
-        <translation>isid</translation>
+        <translation type="vanished">isid</translation>
     </message>
     <message>
         <source>mts</source>
@@ -1187,15 +1220,15 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>plsmode</source>
-        <translation>plsmode</translation>
+        <translation type="vanished">plsmode</translation>
     </message>
     <message>
         <source>plscode</source>
-        <translation>plscode</translation>
+        <translation type="vanished">plscode</translation>
     </message>
     <message>
         <source>plsn</source>
-        <translation>plsn</translation>
+        <translation type="vanished">plsn</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1216,6 +1249,26 @@ Please wait few minutes and try again.</source>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>مستجيب إعدادات الموالف &quot;%1&quot; غير موجود.</translation>
+    </message>
+    <message>
+        <source>pls</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>plp id</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2209,7 +2262,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Channel reference mismatch.</source>
         <comment>error</comment>
-        <translation>عدم تطابق مرجع القناة.</translation>
+        <translation type="vanished">عدم تطابق مرجع القناة.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
@@ -3018,6 +3071,11 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Check for updates on launch</source>
         <translation>التحقق من وجود تحديثات عند تشغيل البرنامج</translation>
+    </message>
+    <message>
+        <source>Malformed or unknown XML file format.</source>
+        <comment>error</comment>
+        <translation type="unfinished">تنسيق ملف XML مشوه أو غير معروف.</translation>
     </message>
 </context>
 <context>

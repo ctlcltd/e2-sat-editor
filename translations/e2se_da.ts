@@ -547,7 +547,7 @@ Vent et par minutter, og prøv igen.</translation>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation>Ny Favorit</translation>
+        <translation type="vanished">Ny Favorit</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -613,6 +613,11 @@ Vent et par minutter, og prøv igen.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation></translation>
+    </message>
+    <message>
+        <source>Add Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1016,6 +1021,34 @@ Vent et par minutter, og prøv igen.</translation>
         <comment>error</comment>
         <translation>Transponder &quot;%1&quot; findes ikke.</translation>
     </message>
+    <message>
+        <source>flags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls / mis id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>plp id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>system</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>editTunersets</name>
@@ -1178,7 +1211,7 @@ Vent et par minutter, og prøv igen.</translation>
     </message>
     <message>
         <source>isid</source>
-        <translation>isid</translation>
+        <translation type="vanished">isid</translation>
     </message>
     <message>
         <source>mts</source>
@@ -1186,15 +1219,15 @@ Vent et par minutter, og prøv igen.</translation>
     </message>
     <message>
         <source>plsmode</source>
-        <translation>plsmode</translation>
+        <translation type="vanished">plsmode</translation>
     </message>
     <message>
         <source>plscode</source>
-        <translation>plscode</translation>
+        <translation type="vanished">plscode</translation>
     </message>
     <message>
         <source>plsn</source>
-        <translation>plsn</translation>
+        <translation type="vanished">plsn</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1215,6 +1248,26 @@ Vent et par minutter, og prøv igen.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Tunerindstillingstransponder &quot;%1&quot; findes ikke.</translation>
+    </message>
+    <message>
+        <source>pls</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>plp id</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2208,7 +2261,7 @@ Vent et par minutter, og prøv igen.</translation>
     <message>
         <source>Channel reference mismatch.</source>
         <comment>error</comment>
-        <translation>Kanalreferencen stemmer ikke overens.</translation>
+        <translation type="vanished">Kanalreferencen stemmer ikke overens.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
@@ -3013,6 +3066,11 @@ Vent et par minutter, og prøv igen.</translation>
     <message>
         <source>Check for updates on launch</source>
         <translation>Se efter opdateringer ved lancering</translation>
+    </message>
+    <message>
+        <source>Malformed or unknown XML file format.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Forkert eller ukendt XML-filformat.</translation>
     </message>
 </context>
 <context>

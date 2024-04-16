@@ -546,7 +546,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation>새로운 즐겨찾기</translation>
+        <translation type="vanished">새로운 즐겨찾기</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -612,6 +612,11 @@ Please wait few minutes and try again.</source>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>채널 참조 &quot;%1&quot;이(가) 없습니다.</translation>
+    </message>
+    <message>
+        <source>Add Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1015,6 +1020,34 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>응답기 &quot;%1&quot;이(가) 없습니다.</translation>
     </message>
+    <message>
+        <source>flags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls / mis id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>plp id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>system</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>editTunersets</name>
@@ -1177,7 +1210,7 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>isid</source>
-        <translation>isid</translation>
+        <translation type="vanished">isid</translation>
     </message>
     <message>
         <source>mts</source>
@@ -1185,15 +1218,15 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>plsmode</source>
-        <translation>plsmode</translation>
+        <translation type="vanished">plsmode</translation>
     </message>
     <message>
         <source>plscode</source>
-        <translation>plscode</translation>
+        <translation type="vanished">plscode</translation>
     </message>
     <message>
         <source>plsn</source>
-        <translation>plsn</translation>
+        <translation type="vanished">plsn</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1214,6 +1247,26 @@ Please wait few minutes and try again.</source>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>튜너 설정 응답기 &quot;%1&quot;이(가) 없습니다.</translation>
+    </message>
+    <message>
+        <source>pls</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>plp id</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2207,7 +2260,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Channel reference mismatch.</source>
         <comment>error</comment>
-        <translation>채널 참조 불일치.</translation>
+        <translation type="vanished">채널 참조 불일치.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
@@ -3011,6 +3064,11 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Check for updates on launch</source>
         <translation>소프트웨어 출시에 대한 업데이트 확인</translation>
+    </message>
+    <message>
+        <source>Malformed or unknown XML file format.</source>
+        <comment>error</comment>
+        <translation type="unfinished">형식이 잘못되었거나 알 수 없는 XML 파일 형식입니다.</translation>
     </message>
 </context>
 <context>

@@ -549,7 +549,7 @@ Wacht een paar minuten en probeer het opnieuw.</translation>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation>Nieuwe Favoriet</translation>
+        <translation type="vanished">Nieuwe Favoriet</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -615,6 +615,11 @@ Wacht een paar minuten en probeer het opnieuw.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Kanaal-referentie &quot;%1&quot; bestaat niet.</translation>
+    </message>
+    <message>
+        <source>Add Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1018,6 +1023,34 @@ Wacht een paar minuten en probeer het opnieuw.</translation>
         <comment>error</comment>
         <translation>Transponder &quot;%1&quot; bestaat niet.</translation>
     </message>
+    <message>
+        <source>flags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls / mis id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>plp id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>system</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>editTunersets</name>
@@ -1180,7 +1213,7 @@ Wacht een paar minuten en probeer het opnieuw.</translation>
     </message>
     <message>
         <source>isid</source>
-        <translation>isid</translation>
+        <translation type="vanished">isid</translation>
     </message>
     <message>
         <source>mts</source>
@@ -1188,15 +1221,15 @@ Wacht een paar minuten en probeer het opnieuw.</translation>
     </message>
     <message>
         <source>plsmode</source>
-        <translation>plsmode</translation>
+        <translation type="vanished">plsmode</translation>
     </message>
     <message>
         <source>plscode</source>
-        <translation>plscode</translation>
+        <translation type="vanished">plscode</translation>
     </message>
     <message>
         <source>plsn</source>
-        <translation>plsn</translation>
+        <translation type="vanished">plsn</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1217,6 +1250,26 @@ Wacht een paar minuten en probeer het opnieuw.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Tuner instellingen transponder &quot;%1&quot; bestaat niet.</translation>
+    </message>
+    <message>
+        <source>pls</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>plp id</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2210,7 +2263,7 @@ Wacht een paar minuten en probeer het opnieuw.</translation>
     <message>
         <source>Channel reference mismatch.</source>
         <comment>error</comment>
-        <translation>Kanaal-referentie komt niet overeen.</translation>
+        <translation type="vanished">Kanaal-referentie komt niet overeen.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
@@ -3015,6 +3068,11 @@ Wacht een paar minuten en probeer het opnieuw.</translation>
     <message>
         <source>Check for updates on launch</source>
         <translation>Controleer op updates bij de lancering</translation>
+    </message>
+    <message>
+        <source>Malformed or unknown XML file format.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Verkeerd opgemaakt of onbekend XML bestandsformaat.</translation>
     </message>
 </context>
 <context>

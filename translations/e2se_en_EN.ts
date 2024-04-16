@@ -537,11 +537,6 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>New Favourite</source>
-        <comment>dialog</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Reference</source>
         <comment>dialog</comment>
         <translation type="unfinished"></translation>
@@ -604,6 +599,11 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Favourite</source>
+        <comment>dialog</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1008,6 +1008,34 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>flags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls / mis id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>plp id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>system</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>editTunersets</name>
@@ -1169,23 +1197,7 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>isid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>mts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>plsmode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>plscode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>plsn</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1206,6 +1218,26 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>plp id</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2198,11 +2230,6 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Channel reference mismatch.</source>
-        <comment>error</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Edit Bouquet</source>
         <comment>context-menu</comment>
         <translation type="unfinished"></translation>
@@ -3004,6 +3031,11 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Check for updates on launch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Malformed or unknown XML file format.</source>
+        <comment>error</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>

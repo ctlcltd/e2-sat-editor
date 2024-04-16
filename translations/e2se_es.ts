@@ -548,7 +548,7 @@ Espera unos minutos y vuelve a intentarlo.</translation>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation>Nuevo Favorito</translation>
+        <translation type="vanished">Nuevo Favorito</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -614,6 +614,11 @@ Espera unos minutos y vuelve a intentarlo.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>La referencia de canal &quot;%1&quot; no existe.</translation>
+    </message>
+    <message>
+        <source>Add Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1017,6 +1022,34 @@ Espera unos minutos y vuelve a intentarlo.</translation>
         <comment>error</comment>
         <translation>El transponder &quot;%1&quot; no existe.</translation>
     </message>
+    <message>
+        <source>flags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls / mis id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>plp id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>system</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>editTunersets</name>
@@ -1179,7 +1212,7 @@ Espera unos minutos y vuelve a intentarlo.</translation>
     </message>
     <message>
         <source>isid</source>
-        <translation>isid</translation>
+        <translation type="vanished">isid</translation>
     </message>
     <message>
         <source>mts</source>
@@ -1187,15 +1220,15 @@ Espera unos minutos y vuelve a intentarlo.</translation>
     </message>
     <message>
         <source>plsmode</source>
-        <translation>plsmode</translation>
+        <translation type="vanished">plsmode</translation>
     </message>
     <message>
         <source>plscode</source>
-        <translation>plscode</translation>
+        <translation type="vanished">plscode</translation>
     </message>
     <message>
         <source>plsn</source>
-        <translation>plsn</translation>
+        <translation type="vanished">plsn</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1216,6 +1249,26 @@ Espera unos minutos y vuelve a intentarlo.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>El transpondedor de configuración del tuner &quot;%1&quot; no existe.</translation>
+    </message>
+    <message>
+        <source>pls</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>plp id</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2209,7 +2262,7 @@ Espera unos minutos y vuelve a intentarlo.</translation>
     <message>
         <source>Channel reference mismatch.</source>
         <comment>error</comment>
-        <translation>Discrepancia de referencia de canal.</translation>
+        <translation type="vanished">Discrepancia de referencia de canal.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
@@ -3014,6 +3067,11 @@ Espera unos minutos y vuelve a intentarlo.</translation>
     <message>
         <source>Check for updates on launch</source>
         <translation>Buscar actualizaciones en el lanzamiento</translation>
+    </message>
+    <message>
+        <source>Malformed or unknown XML file format.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Formato de archivo XML mal formado o desconocido.</translation>
     </message>
 </context>
 <context>

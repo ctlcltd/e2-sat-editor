@@ -549,7 +549,7 @@ Agarde uns minutos e ténteo de novo.</translation>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation>Novo Favorito</translation>
+        <translation type="vanished">Novo Favorito</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -615,6 +615,11 @@ Agarde uns minutos e ténteo de novo.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>A referencia da canle &quot;%1&quot; non existe.</translation>
+    </message>
+    <message>
+        <source>Add Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1018,6 +1023,34 @@ Agarde uns minutos e ténteo de novo.</translation>
         <comment>error</comment>
         <translation>O transponder &quot;%1&quot; non existe.</translation>
     </message>
+    <message>
+        <source>flags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls / mis id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>plp id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>system</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>editTunersets</name>
@@ -1180,7 +1213,7 @@ Agarde uns minutos e ténteo de novo.</translation>
     </message>
     <message>
         <source>isid</source>
-        <translation>isid</translation>
+        <translation type="vanished">isid</translation>
     </message>
     <message>
         <source>mts</source>
@@ -1188,15 +1221,15 @@ Agarde uns minutos e ténteo de novo.</translation>
     </message>
     <message>
         <source>plsmode</source>
-        <translation>plsmode</translation>
+        <translation type="vanished">plsmode</translation>
     </message>
     <message>
         <source>plscode</source>
-        <translation>plscode</translation>
+        <translation type="vanished">plscode</translation>
     </message>
     <message>
         <source>plsn</source>
-        <translation>plsn</translation>
+        <translation type="vanished">plsn</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1217,6 +1250,26 @@ Agarde uns minutos e ténteo de novo.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>O transponder de configuración do tuner &quot;%1&quot; non existe.</translation>
+    </message>
+    <message>
+        <source>pls</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>plp id</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2210,7 +2263,7 @@ Agarde uns minutos e ténteo de novo.</translation>
     <message>
         <source>Channel reference mismatch.</source>
         <comment>error</comment>
-        <translation>Non coincidencia de referencia de canle.</translation>
+        <translation type="vanished">Non coincidencia de referencia de canle.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
@@ -3015,6 +3068,11 @@ Agarde uns minutos e ténteo de novo.</translation>
     <message>
         <source>Check for updates on launch</source>
         <translation>Busca actualizacións no lanzamento</translation>
+    </message>
+    <message>
+        <source>Malformed or unknown XML file format.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Formato de ficheiro XML incorrecto ou descoñecido.</translation>
     </message>
 </context>
 <context>

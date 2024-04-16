@@ -548,7 +548,7 @@ Počakajte nekaj minut in poskusite znova.</translation>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation>Nova Priljubljena</translation>
+        <translation type="vanished">Nova Priljubljena</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -614,6 +614,11 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Referenca kanala &quot;%1&quot; ne obstaja.</translation>
+    </message>
+    <message>
+        <source>Add Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1017,6 +1022,34 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <comment>error</comment>
         <translation>Transponder &quot;%1&quot; ne obstaja.</translation>
     </message>
+    <message>
+        <source>flags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls / mis id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>plp id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>system</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>editTunersets</name>
@@ -1179,7 +1212,7 @@ Počakajte nekaj minut in poskusite znova.</translation>
     </message>
     <message>
         <source>isid</source>
-        <translation>isid</translation>
+        <translation type="vanished">isid</translation>
     </message>
     <message>
         <source>mts</source>
@@ -1187,15 +1220,15 @@ Počakajte nekaj minut in poskusite znova.</translation>
     </message>
     <message>
         <source>plsmode</source>
-        <translation>plsmode</translation>
+        <translation type="vanished">plsmode</translation>
     </message>
     <message>
         <source>plscode</source>
-        <translation>plscode</translation>
+        <translation type="vanished">plscode</translation>
     </message>
     <message>
         <source>plsn</source>
-        <translation>plsn</translation>
+        <translation type="vanished">plsn</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1216,6 +1249,26 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Transponder nastavitev tunera &quot;%1&quot; ne obstaja.</translation>
+    </message>
+    <message>
+        <source>pls</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>plp id</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2209,7 +2262,7 @@ Počakajte nekaj minut in poskusite znova.</translation>
     <message>
         <source>Channel reference mismatch.</source>
         <comment>error</comment>
-        <translation>Neujemanje reference kanala.</translation>
+        <translation type="vanished">Neujemanje reference kanala.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
@@ -3016,6 +3069,11 @@ Počakajte nekaj minut in poskusite znova.</translation>
     <message>
         <source>Check for updates on launch</source>
         <translation>Preverite posodobitve ob zagonu</translation>
+    </message>
+    <message>
+        <source>Malformed or unknown XML file format.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Napačen ali neznan format datoteke XML.</translation>
     </message>
 </context>
 <context>

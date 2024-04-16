@@ -547,7 +547,7 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
     <message>
         <source>New Favourite</source>
         <comment>dialog</comment>
-        <translation>Naujas Mėgstamiausias</translation>
+        <translation type="vanished">Naujas Mėgstamiausias</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -613,6 +613,11 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Kanalo nuoroda „%1“ neegzistuoja.</translation>
+    </message>
+    <message>
+        <source>Add Favourite</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1016,6 +1021,34 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <comment>error</comment>
         <translation>Atsakiklis „%1“ neegzistuoja.</translation>
     </message>
+    <message>
+        <source>flags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls / mis id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>plp id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>system</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>editTunersets</name>
@@ -1178,7 +1211,7 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
     </message>
     <message>
         <source>isid</source>
-        <translation>isid</translation>
+        <translation type="vanished">isid</translation>
     </message>
     <message>
         <source>mts</source>
@@ -1186,15 +1219,15 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
     </message>
     <message>
         <source>plsmode</source>
-        <translation>plsmode</translation>
+        <translation type="vanished">plsmode</translation>
     </message>
     <message>
         <source>plscode</source>
-        <translation>plscode</translation>
+        <translation type="vanished">plscode</translation>
     </message>
     <message>
         <source>plsn</source>
-        <translation>plsn</translation>
+        <translation type="vanished">plsn</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1215,6 +1248,26 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <source>Tuner settings transponder &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Tuner nustatymų atsakiklis „%1“ neegzistuoja.</translation>
+    </message>
+    <message>
+        <source>pls</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pls mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>plp id</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2208,7 +2261,7 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
     <message>
         <source>Channel reference mismatch.</source>
         <comment>error</comment>
-        <translation>Kanalo nuorodos neatitikimas.</translation>
+        <translation type="vanished">Kanalo nuorodos neatitikimas.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
@@ -3014,6 +3067,11 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
     <message>
         <source>Check for updates on launch</source>
         <translation>Paleidimo metu patikrinkite, ar nėra naujinimų</translation>
+    </message>
+    <message>
+        <source>Malformed or unknown XML file format.</source>
+        <comment>error</comment>
+        <translation type="unfinished">Netinkamai suformuotas arba nežinomas XML failo formatas.</translation>
     </message>
 </context>
 <context>
