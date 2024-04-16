@@ -84,7 +84,7 @@
 
 # cd
 # git clone https://github.com/ctlcltd/e2-sat-editor.git
-# git checkout v1.3.0
+# git checkout v1.4.0
 # cd e2-sat-editor
 
 ./scripts/translations.sh -m
@@ -131,7 +131,7 @@ chmod +x e2_SAT_Editor-x86_64.AppImage
 
 appimagetool squashfs-root --sign --sign-key $MY_SIGN_KEY
 
-mv e2_SAT_Editor-x86_64.AppImage e2-sat-editor-1.3.0-x86_64.AppImage
+mv e2_SAT_Editor-x86_64.AppImage e2-sat-editor-1.4.0-x86_64.AppImage
 
-# ./e2-sat-editor-1.3.0-x86_64.AppImage --appimage-signature
+# ./e2-sat-editor-1.4.0-x86_64.AppImage --appimage-signature
 
