@@ -692,6 +692,7 @@ QStringList e2db::entryFavourite(channel_reference chref)
 	QString value = QString::fromStdString(chref.value);
 	QString ssid = QString::number(chref.ref.ssid);
 	QString tsid = QString::number(chref.ref.tsid);
+	QString chtype;
 	QString sys;
 	QString uri = QString::fromStdString(chref.uri);
 
@@ -704,6 +705,15 @@ QStringList e2db::entryFavourite(channel_reference chref)
 		case e2db::ETYPE::eytube: sys = "[youtube]"; break;
 		default: e2db::ETYPE_EXT_LABEL.count(chref.etype) ? QString::fromStdString(e2db::ETYPE_EXT_LABEL.at(chref.etype)) : QString::number(chref.etype);
 	}
+
+	if (chref.stream)
+		chtype = "STREAM";
+	else if (chref.marker)
+		chtype = "MARKER";
+	else if (entries.services.count(chref.chid))
+		chtype = entries.services[chref.chid][6];
+	else
+		chtype = "ERROR";
 
 	if (FAVOURITE_MATCH_SERVICE && chref.stream)
 	{
@@ -763,7 +773,7 @@ QStringList e2db::entryFavourite(channel_reference chref)
 		}
 	}
 
-	return QStringList ({value, NULL, chid, NULL, ssid, tsid, "STREAM", NULL, NULL, sys, NULL, uri});
+	return QStringList ({value, NULL, chid, NULL, ssid, tsid, chtype, NULL, NULL, sys, NULL, uri});
 }
 
 QStringList e2db::entryMarker(channel_reference chref)

@@ -673,7 +673,7 @@ void tunersetsView::editSettings()
 	dialog->setEditId(tvid);
 	dialog->display(cwid);
 	// this->state.yx = dialog->getEditId();
-	dialog->destroy();
+	if (dialog->destroy()) return;
 
 	this->data->setChanged(true);
 }
@@ -766,7 +766,7 @@ void tunersetsView::editPosition()
 	dialog->setEditId(tnid, tvid);
 	dialog->display(cwid);
 	string nw_tnid = dialog->getEditId();
-	dialog->destroy();
+	if (dialog->destroy()) return;
 
 	if (dbih->tuners[tvid].tables.count(nw_tnid))
 		debug("editPosition", "new tnid", nw_tnid);
@@ -886,7 +886,7 @@ void tunersetsView::editTransponder()
 	dialog->setEditId(trid, tnid, tvid);
 	dialog->display(cwid);
 	string nw_trid = dialog->getEditId();
-	dialog->destroy();
+	if (dialog->destroy()) return;
 
 	if (dbih->tuners[tvid].tables[tnid].transponders.count(nw_trid))
 		debug("editTransponder", "new trid", nw_trid);
@@ -1212,7 +1212,7 @@ void tunersetsView::putListItems(vector<QString> items)
 		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
-		item->setData(ITEM_DATA_ROLE::trid, Qt::UserRole, QString::fromStdString(trid));
+		item->setData(ITEM_DATA_ROLE::trid, Qt::UserRole, QString::fromStdString(tntxp.trid));
 		clist.append(item);
 
 		dbih->addTunersetsTransponder(tntxp, tns);

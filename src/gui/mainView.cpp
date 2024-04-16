@@ -824,19 +824,24 @@ void mainView::populate(QTreeWidget* tw)
 				else
 				{
 					ref_error = true;
+					reftype = REF_TYPE::favourite;
+					idx = QString::number(chi.first);
+					refid = QString::fromStdString(dbih->get_reference_id(chref));
+					entry = dbih->entryFavourite(chref);
+					entry.prepend(idx);
+					entry.prepend(x);
 				}
 			}
 			else
 			{
 				ref_error = true;
+				reftype = REF_TYPE::favourite;
+				idx = QString::number(chi.first);
+				entry = QStringList({x, idx, NULL, NULL, chid, NULL, NULL, NULL, "ERROR", NULL});
 			}
 
 			if (ref_error)
 			{
-				reftype = REF_TYPE::favourite;
-				idx = QString::number(chi.first);
-				entry = QStringList({x, idx, NULL, NULL, chid, NULL, NULL, NULL, "ERROR", NULL});
-
 				error("populate", tr("Error", "error").toStdString(), tr("Channel reference mismatch \"%1\".", "error").arg(chid).toStdString());
 			}
 
@@ -1318,26 +1323,44 @@ void mainView::visualReloadList()
 				else
 				{
 					ref_error = true;
+					QStringList entry = dbih->entryFavourite(chref);
+					bool locked = entry[1].size() || ub_locked;
+					entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
+					entry.prepend(item->text(ITEM_ROW_ROLE::x));
+					for (int i = 0; i < entry.count(); i++)
+						item->setText(i, entry[i]);
+					item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
+					item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
+					item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
+					item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
+					item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
 				}
 			}
 			else
 			{
 				ref_error = true;
+				QString chid = QString::fromStdString(nw_chid);
+				QString x = item->text(ITEM_ROW_ROLE::x);
+				QStringList entry = QStringList({x, NULL, NULL, NULL, chid, NULL, NULL, NULL, "ERROR", NULL});
+				for (int i = 0; i < entry.count(); i++)
+					item->setText(i, entry[i]);
+				item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, REF_TYPE::favourite);
 			}
 		}
 		else
 		{
 			ref_error = true;
-		}
-
-		if (ref_error)
-		{
 			QString chid = QString::fromStdString(nw_chid);
 			QString x = item->text(ITEM_ROW_ROLE::x);
 			QStringList entry = QStringList({x, NULL, NULL, NULL, chid, NULL, NULL, NULL, "ERROR", NULL});
 			for (int i = 0; i < entry.count(); i++)
 				item->setText(i, entry[i]);
 			item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, REF_TYPE::favourite);
+		}
+
+		if (ref_error)
+		{
+			QString chid = QString::fromStdString(nw_chid);
 
 			error("visualReloadList", tr("Error", "error").toStdString(), tr("Channel reference mismatch \"%1\".", "error").arg(chid).toStdString());
 		}
@@ -2082,7 +2105,7 @@ void mainView::addFavourite()
 	debug("addFavourite");
 
 	string bname = this->state.curr;
-	int reftype = REF_TYPE::service;
+	int reftype = REF_TYPE::favourite;
 
 	e2se_gui::editFavourite* dialog = new e2se_gui::editFavourite(this->data);
 	dialog->setAddId(bname);
@@ -2190,7 +2213,7 @@ void mainView::editFavourite()
 	string bname = this->state.curr;
 	bool numbered = item->data(ITEM_DATA_ROLE::numbered, Qt::UserRole).toBool();
 	bool reindex = false;
-	int reftype = REF_TYPE::service;
+	int reftype = REF_TYPE::favourite;
 
 	auto* dbih = this->data->dbih;
 
@@ -3254,7 +3277,7 @@ void mainView::putListItems(vector<QString> items)
 		}
 		else
 		{
-			error("putListItems", tr("Error", "error").toStdString(), tr("Channel reference mismatch.", "error").toStdString());
+			error("putListItems", tr("Error", "error").toStdString(), tr("Not a valid data format.", "error").toStdString());
 
 			continue;
 		}
@@ -3965,6 +3988,7 @@ void mainView::updateListReferences(QTreeWidgetItem* current, QList<QTreeWidgetI
 			int idx = item->data(ITEM_DATA_ROLE::idx, Qt::UserRole).toInt();
 			bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 			bool stream = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::stream;
+			bool favourite = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::favourite;
 
 			chref.marker = marker;
 			chref.stream = stream;
@@ -4012,6 +4036,37 @@ void mainView::updateListReferences(QTreeWidgetItem* current, QList<QTreeWidgetI
 				chref.etype = etype;
 				chref.atype = atype;
 				chref.inum = inum;
+				chref.anum = anum;
+				chref.value = value;
+				chref.uri = uri;
+				chref.ref = ref;
+				chref.index = idx;
+			}
+			else if (favourite)
+			{
+				e2db::service_reference ref;
+
+				string refid = item->data(ITEM_DATA_ROLE::refid, Qt::UserRole).toString().toStdString();
+				string value = item->text(ITEM_ROW_ROLE::chname).toStdString();
+				string uri = item->data(ITEM_DATA_ROLE::uri, Qt::UserRole).toString().toStdString();
+				int etype = 0;
+				int atype = 0;
+				int anum = 0;
+				int ssid = 0;
+				int tsid = 0;
+				int onid = 0;
+				int dvbns = 0;
+
+				std::sscanf(refid.c_str(), "%d:%d:%X:%X:%X:%X:%X", &etype, &atype, &anum, &ssid, &tsid, &onid, &dvbns);
+
+				ref.ssid = ssid;
+				ref.tsid = tsid;
+				ref.onid = onid;
+				ref.dvbns = dvbns;
+
+				chref.etype = etype;
+				chref.atype = atype;
+				chref.inum = -1;
 				chref.anum = anum;
 				chref.value = value;
 				chref.uri = uri;
