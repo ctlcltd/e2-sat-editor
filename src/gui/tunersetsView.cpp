@@ -157,14 +157,29 @@ void tunersetsView::layout()
 	}
 
 	TreeProxyStyle* tree_style = new TreeProxyStyle;
-	tree->setStyle(tree_style);
 	TreeProxyStyle* list_style = new TreeProxyStyle;
+
+#ifdef Q_OS_WIN
+	if (! theme::isOverridden() && theme::isFluetteWin())
+	{
+		QStyle* style = QStyleFactory::create("fusion");
+		tree_style->setBaseStyle(style);
+		list_style->setBaseStyle(style);
+	}
+#endif
+
+	tree->setStyle(tree_style);
 	list->setStyle(list_style);
 
 #ifdef Q_OS_WIN
-	if (theme::absLuma() || ! theme::isDefault())
-	{
-		QStyle* style = QStyleFactory::create("fusion");
+	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
+		QStyle* style;
+
+		if (theme::isFluetteWin())
+			style = QStyleFactory::create("windows11");
+		else
+			style = QStyleFactory::create("fusion");
+
 		tree->verticalScrollBar()->setStyle(style);
 		tree->horizontalScrollBar()->setStyle(style);
 		tree->header()->setStyle(style);

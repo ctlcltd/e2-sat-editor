@@ -13,6 +13,7 @@
 
 #include <QApplication>
 #include <QGuiApplication>
+#include <QOperatingSystemVersion>
 #include <QSettings>
 #include <QStyle>
 #include <QStyleFactory>
@@ -37,7 +38,7 @@ theme::theme()
 theme::theme(QApplication* mroot)
 {
 #ifdef Q_OS_WIN
-	styleWin();
+	stylePseudoWin();
 #endif
 #ifdef Q_OS_WASM
 	QFont font = mroot->font();
@@ -70,6 +71,11 @@ bool theme::absLuma()
 bool theme::isDefault()
 {
 	return theme::preference().isEmpty();
+}
+
+bool theme::isOverridden()
+{
+	return ! qgetenv("QT_STYLE_OVERRIDE").isEmpty();
 }
 
 bool theme::isLightMode()
@@ -274,8 +280,49 @@ void theme::styleDark()
 	QApplication::setPalette(palette);
 }
 
-// custom windows
-void theme::styleWin()
+#ifdef Q_OS_WIN
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+bool theme::isFluetteWin()
+{
+	return (QOperatingSystemVersion::current().majorVersion() == QOperatingSystemVersion::Windows11.majorVersion());
+}
+#else
+bool theme::isFluetteWin()
+{
+	return false;
+}
+#endif
+
+bool theme::isMetroeWin()
+{
+	return (QOperatingSystemVersion::current().majorVersion() == QOperatingSystemVersion::Windows10.majorVersion());
+}
+
+void theme::stylePseudoWin()
+{
+	if (! theme::isOverridden())
+	{
+		// pseudo fluent win == 11
+		if (theme::isFluetteWin())
+			theme::stylePseudoWinModern();
+		// pseudo metro  win == 10
+		else if (theme::isMetroeWin())
+			theme::stylePseudoWinEarly();
+	}
+}
+
+void theme::stylePseudoWinModern()
+{
+	// dark mode: fusion
+	if (theme::absLuma())
+	{
+		QStyle* style = QStyleFactory::create("fusion");
+		QApplication::setStyle(style);
+	}
+}
+
+void theme::stylePseudoWinEarly()
 {
 	QStyle* style = QStyleFactory::create("windows");
 	QApplication::setStyle(style);
@@ -376,42 +423,53 @@ void theme::styleWin()
 	}
 }
 
-QString theme::win_fusion_DarkStyleSheet_tlw()
+QString theme::qss_early_win_PseudoMetroDark_tlw()
 {
 	return "QMenuBar { background: palette(base) } QMenuBar:active { background: palette(shadow) } QMenu { border: 1px solid palette(light) } QPushButton, QToolButton, QLineEdit, QComboBox, QCheckBox, QRadioButton { border-radius: 0 } QPushButton, QComboBox { padding: 1px } QToolBar QPushButton, QDialog QPushButton { padding: 2px 3ex } QToolBar QComboBox, QDialog QComboBox { padding: 2px 4px } QToolButton { padding: 5px 0 } QLineEdit { padding: 1px } QHeaderView:section { padding: 4px 5px 6px } #dial_toggler { padding: 0 } QPushButton { background: transparent; border: 2px solid palette(midlight) } QPushButton:hover { background: palette(button) } QPushButton:pressed { border-color: palette(button-text) } QToolButton { background: transparent; border: 1px solid transparent } QToolButton:hover { background: palette(mid) } QToolButton:pressed { background: palette(midlight); border-color: palette(button-text) } QLineEdit, QComboBox { background: transparent; border: 1px solid palette(midlight) } QLineEdit:hover, QComboBox:hover, QComboBox:focus { border-color: palette(light) } QLineEdit:focus { border-color: palette(button-text) } QPushButton, QCheckBox, QRadioButton { outline: none } QCheckBox:focus:!pressed:!hover, QRadioButton:focus:!pressed:!hover { outline: 1px solid palette(button-text) } QCheckBox:focus:pressed { outline: none } QPushButton:focus:!pressed:!hover:!open { border-color: palette(light) } QToolBox:tab { background: palette(base); border: 2px solid palette(midlight) } QToolBox QWidget { background: palette(base) } QTabWidget, QTabBar { background: palette(window) } QTreeWidget, QHeaderView:section { background: palette(window) } QTabWidget:pane QSplitter { background: palette(mid) } #tree_search QPushButton, #list_search QPushButton { border-color: transparent } #tree_search QPushButton:pressed, #list_search QPushButton:pressed { background: palette(light) } ";
 }
-QString theme::win_fusion_DarkStyleSheet_root()
+QString theme::qss_early_win_PseudoMetroDark_root()
 {
 	return "QMenu { border: 1px solid palette(light) }";
 }
 
 // before QApplication
-void theme::fix()
+void theme::early_win_flavor_fix()
 {
-// QApplication style override
-#ifdef Q_OS_WIN
-	QSettings personalize = QSettings ("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", QSettings::NativeFormat);
-	if (personalize.contains("AppsUseLightTheme") && ! personalize.value("AppsUseLightTheme").toBool())
-		qputenv("QT_STYLE_OVERRIDE", "fusion");
-#endif
+	if (! theme::isOverridden() && theme::isMetroeWin())
+	{
+		// QApplication style override
+		//
+		QSettings personalize = QSettings ("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", QSettings::NativeFormat);
+		if (personalize.contains("AppsUseLightTheme") && ! personalize.value("AppsUseLightTheme").toBool())
+			qputenv("QT_STYLE_OVERRIDE", "fusion");
+	}
 }
 
 // after top level widget
-void theme::fix(QWidget* tlw)
+void theme::early_win_flavor_fix(QWidget* tlw)
 {
-#ifdef Q_OS_WIN
-	if (theme::isDefault() && theme::absLuma())
-		tlw->setStyleSheet(win_fusion_DarkStyleSheet_tlw());
-#endif
+	if (! theme::isOverridden() && theme::isMetroeWin())
+	{
+		if (theme::isDefault() && theme::absLuma())
+			tlw->setStyleSheet(theme::qss_early_win_PseudoMetroDark_tlw());
+	}
 }
 
 // after QApplication
-void theme::fix(QApplication* mroot)
+void theme::early_win_flavor_fix(QApplication* mroot)
 {
-#ifdef Q_OS_WIN
-	if (theme::isDefault() && theme::absLuma())
-		mroot->setStyleSheet(win_fusion_DarkStyleSheet_root());
-#endif
+	// additional fix application wide
+	// 
+	// keep QApplication stylesheet available
+	// when passed from command line argument
+	// -stylesheet file.qss
+	if (! theme::isOverridden() && theme::isMetroeWin() && mroot->styleSheet().isEmpty())
+	{
+		if (theme::isDefault() && theme::absLuma())
+			mroot->setStyleSheet(theme::qss_early_win_PseudoMetroDark_root());
+	}
 }
+
+#endif
 
 }

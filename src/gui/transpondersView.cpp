@@ -83,12 +83,27 @@ void transpondersView::layout()
 	this->list = new QTreeWidget;
 
 	TreeProxyStyle* list_style = new TreeProxyStyle;
+
+#ifdef Q_OS_WIN
+	if (! theme::isOverridden() && theme::isFluetteWin())
+	{
+		QStyle* style = QStyleFactory::create("fusion");
+		list_style->setBaseStyle(style);
+	}
+#endif
+
 	list->setStyle(list_style);
 
 #ifdef Q_OS_WIN
-	if (theme::absLuma() || ! theme::isDefault())
+	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
 	{
-		QStyle* style = QStyleFactory::create("fusion");
+		QStyle* style;
+
+		if (theme::isFluetteWin())
+			style = QStyleFactory::create("windows11");
+		else
+			style = QStyleFactory::create("fusion");
+
 		list->verticalScrollBar()->setStyle(style);
 		list->horizontalScrollBar()->setStyle(style);
 		list->header()->setStyle(style);

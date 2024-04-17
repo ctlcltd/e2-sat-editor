@@ -444,9 +444,15 @@ void editFavourite::streamLayout()
 	dtf0rr->setMinimumWidth(280);
 	dtf0rr->setMaximumHeight(30);
 #ifdef Q_OS_WIN
-	if (theme::absLuma() || ! theme::isDefault())
+	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
 	{
-		QStyle* style = QStyleFactory::create("fusion");
+		QStyle* style;
+
+		if (theme::isFluetteWin())
+			style = QStyleFactory::create("windows11");
+		else
+			style = QStyleFactory::create("fusion");
+
 		dtf0rr->verticalScrollBar()->setStyle(style);
 		dtf0rr->horizontalScrollBar()->setStyle(style);
 	}

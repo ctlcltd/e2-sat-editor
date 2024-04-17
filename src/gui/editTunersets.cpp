@@ -72,9 +72,15 @@ void editTunersets::layout(QWidget* cwid)
 	dtf0ch->setMinimumWidth(240);
 	dtf0ch->setMaximumHeight(100);
 #ifdef Q_OS_WIN
-	if (theme::absLuma() || ! theme::isDefault())
+	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
 	{
-		QStyle* style = QStyleFactory::create("fusion");
+		QStyle* style;
+
+		if (theme::isFluetteWin())
+			style = QStyleFactory::create("windows11");
+		else
+			style = QStyleFactory::create("fusion");
+
 		dtf0ch->verticalScrollBar()->setStyle(style);
 		dtf0ch->horizontalScrollBar()->setStyle(style);
 	}

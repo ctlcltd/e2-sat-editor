@@ -230,9 +230,15 @@ void convertM3u::exportLayout()
 		ubt->setColumnWidth(1, 200);
 		ubt->setColumnWidth(2, 150);
 #ifdef Q_OS_WIN
-		if (theme::absLuma() || ! theme::isDefault())
+		if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
 		{
-			QStyle* style = QStyleFactory::create("fusion");
+			QStyle* style;
+
+			if (theme::isFluetteWin())
+				style = QStyleFactory::create("windows11");
+			else
+				style = QStyleFactory::create("fusion");
+
 			ubt->verticalScrollBar()->setStyle(style);
 			ubt->horizontalScrollBar()->setStyle(style);
 		}

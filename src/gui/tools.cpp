@@ -67,7 +67,9 @@ void tools::inspector()
 	dial->setWindowTitle(tr("Log Inspector", "dialog"));
 	dial->setMinimumSize(450, 520);
 
-	theme->fix(dial);
+#ifdef Q_OS_WIN
+	theme->early_win_flavor_fix(dial);
+#endif
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
 	dial->connect(dial, &QDialog::finished, [=]() { QTimer::singleShot(0, [=]() { this->inspectReset(); delete dial; }); });
@@ -84,9 +86,15 @@ void tools::inspector()
 	dcnt->document()->setDefaultStyleSheet("* { margin: 0; padding: 0 } i { font-style: normal } pre { font-size: 11px; text-align: " + textAlign + " }");
 	dcnt->setHtml("</div>");
 #ifdef Q_OS_WIN
-	if (theme::absLuma() || ! theme::isDefault())
+	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
 	{
-		QStyle* style = QStyleFactory::create("fusion");
+		QStyle* style;
+
+		if (theme::isFluetteWin())
+			style = QStyleFactory::create("windows11");
+		else
+			style = QStyleFactory::create("fusion");
+
 		dcnt->verticalScrollBar()->setStyle(style);
 		dcnt->horizontalScrollBar()->setStyle(style);
 	}

@@ -99,7 +99,9 @@ void settings::layout(QWidget* cwid)
 	this->dial = new QDialog(cwid);
 	dial->setWindowTitle(tr("Settings", "dialog"));
 
-	theme->fix(dial);
+#ifdef Q_OS_WIN
+	theme->early_win_flavor_fix(dial);
+#endif
 
 	dial->setStyleSheet("QGroupBox { spacing: 0; padding: 0; padding-top: 20px; border: 0; font-weight: bold } QGroupBox::title { margin: 0 10px }");
 
@@ -160,9 +162,15 @@ void settings::connectionsLayout()
 	rplist->setEditTriggers(QListWidget::EditKeyPressed | QListWidget::DoubleClicked);
 
 #ifdef Q_OS_WIN
-	if (theme::absLuma() || ! theme::isDefault())
+	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
 	{
-		QStyle* style = QStyleFactory::create("fusion");
+		QStyle* style;
+
+		if (theme::isFluetteWin())
+			style = QStyleFactory::create("windows11");
+		else
+			style = QStyleFactory::create("fusion");
+
 		rplist->verticalScrollBar()->setStyle(style);
 		rplist->horizontalScrollBar()->setStyle(style);
 	}
@@ -281,9 +289,15 @@ void settings::connectionsLayout()
 	QScrollArea* dtarea = new QScrollArea;
 
 #ifdef Q_OS_WIN
-	if (theme::absLuma() || ! theme::isDefault())
+	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
 	{
-		QStyle* style = QStyleFactory::create("fusion");
+		QStyle* style;
+
+		if (theme::isFluetteWin())
+			style = QStyleFactory::create("windows11");
+		else
+			style = QStyleFactory::create("fusion");
+
 		dtarea->verticalScrollBar()->setStyle(style);
 		dtarea->horizontalScrollBar()->setStyle(style);
 	}
@@ -451,9 +465,15 @@ void settings::preferencesLayout()
 	QScrollArea* dtarea = new QScrollArea;
 
 #ifdef Q_OS_WIN
-	if (theme::absLuma() || ! theme::isDefault())
+	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
 	{
-		QStyle* style = QStyleFactory::create("fusion");
+		QStyle* style;
+
+		if (theme::isFluetteWin())
+			style = QStyleFactory::create("windows11");
+		else
+			style = QStyleFactory::create("fusion");
+
 		dtarea->verticalScrollBar()->setStyle(style);
 		dtarea->horizontalScrollBar()->setStyle(style);
 	}
@@ -673,9 +693,15 @@ void settings::engineLayout()
 	QScrollArea* dtarea = new QScrollArea;
 
 #ifdef Q_OS_WIN
-	if (theme::absLuma() || ! theme::isDefault())
+	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
 	{
-		QStyle* style = QStyleFactory::create("fusion");
+		QStyle* style;
+
+		if (theme::isFluetteWin())
+			style = QStyleFactory::create("windows11");
+		else
+			style = QStyleFactory::create("fusion");
+
 		dtarea->verticalScrollBar()->setStyle(style);
 		dtarea->horizontalScrollBar()->setStyle(style);
 	}
@@ -852,9 +878,15 @@ void settings::advancedLayout()
 	adtbl->horizontalHeader()->setSectionsClickable(false);
 	adtbl->verticalHeader()->setVisible(false);
 #ifdef Q_OS_WIN
-	if (theme::absLuma() || ! theme::isDefault())
+	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
 	{
-		QStyle* style = QStyleFactory::create("fusion");
+		QStyle* style;
+
+		if (theme::isFluetteWin())
+			style = QStyleFactory::create("windows11");
+		else
+			style = QStyleFactory::create("fusion");
+
 		adtbl->verticalScrollBar()->setStyle(style);
 		adtbl->horizontalScrollBar()->setStyle(style);
 		adtbl->horizontalHeader()->setStyle(style);

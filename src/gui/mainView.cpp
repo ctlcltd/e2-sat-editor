@@ -137,16 +137,33 @@ void mainView::layout()
 	this->list = new QTreeWidget;
 
 	TreeProxyStyle* side_style = new TreeProxyStyle;
-	side->setStyle(side_style);
-	TreeProxyStyle* tree_style = new TreeProxyStyle;
-	tree->setStyle(tree_style);
+	TreeProxyStyle* tree_style = new TreeProxyStyle;	
 	TreeProxyStyle* list_style = new TreeProxyStyle;
+
+#ifdef Q_OS_WIN
+	if (! theme::isOverridden() && theme::isFluetteWin())
+	{
+		QStyle* style = QStyleFactory::create("fusion");
+		side_style->setBaseStyle(style);
+		tree_style->setBaseStyle(style);
+		list_style->setBaseStyle(style);
+	}
+#endif
+
+	side->setStyle(side_style);
+	tree->setStyle(tree_style);
 	list->setStyle(list_style);
 
 #ifdef Q_OS_WIN
-	if (theme::absLuma() || ! theme::isDefault())
+	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
 	{
-		QStyle* style = QStyleFactory::create("fusion");
+		QStyle* style;
+
+		if (theme::isFluetteWin())
+			style = QStyleFactory::create("windows11");
+		else
+			style = QStyleFactory::create("fusion");
+
 		side->verticalScrollBar()->setStyle(style);
 		side->horizontalScrollBar()->setStyle(style);
 		tree->verticalScrollBar()->setStyle(style);
@@ -505,9 +522,15 @@ void mainView::referenceBoxLayout()
 	ref_wrap->setObjectName("list_reference_wrap");
 
 #ifdef Q_OS_WIN
-	if (theme::absLuma() || ! theme::isDefault())
+	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
 	{
-		QStyle* style = QStyleFactory::create("fusion");
+		QStyle* style;
+
+		if (theme::isFluetteWin())
+			style = QStyleFactory::create("windows11");
+		else
+			style = QStyleFactory::create("fusion");
+
 		ref_area->verticalScrollBar()->setStyle(style);
 		ref_area->horizontalScrollBar()->setStyle(style);
 	}

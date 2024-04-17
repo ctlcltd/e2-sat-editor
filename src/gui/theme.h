@@ -44,6 +44,8 @@ class theme
 		static QString preference();
 		// absolute lightness { false: light, true: dark }
 		static bool absLuma();
+		// is overridden by command line argument
+		static bool isOverridden();
 		// is default | system native theme
 		static bool isDefault();
 		// absolute lightness shorthand for dark
@@ -70,24 +72,31 @@ class theme
 		QIcon dynamicIcon(QString icon, QObject* object, ICON_STYLE style = icon_default);
 		// theme changed
 		void changed();
-		// style defaulted
-		static void styleDefault();
 		// style Fusion modified variant light
 		static void styleLight();
 		// style Fusion modified variant dark
 		static void styleDark();
-		// style win modified  light: vista  dark: fusion
-		static void styleWin();
+
+#ifdef Q_OS_WIN
+		static bool isFluetteWin();
+		static bool isMetroeWin();
+
+		// style pseudo windows
+		static void stylePseudoWin();
+		static void stylePseudoWinModern();
+		static void stylePseudoWinEarly();
+
 		// stylesheet win fusion dark mode  top level widget
-		static QString win_fusion_DarkStyleSheet_tlw();
+		static QString qss_early_win_PseudoMetroDark_tlw();
 		// stylesheet win fusion dark mode  QApplication
-		static QString win_fusion_DarkStyleSheet_root();
+		static QString qss_early_win_PseudoMetroDark_root();
 		// fix theme  before QApplication
-		static void fix();
+		static void early_win_flavor_fix();
 		// fix theme  after top level widget
-		static void fix(QWidget* tlw);
+		static void early_win_flavor_fix(QWidget* tlw);
 		// fix theme  after QApplication
-		static void fix(QApplication* mroot);
+		static void early_win_flavor_fix(QApplication* mroot);
+#endif
 
 	private:
 		vector<QWidget*> styled;

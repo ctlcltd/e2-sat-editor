@@ -31,6 +31,9 @@
 #include <QUrl>
 #include <QDesktopServices>
 #include <QMouseEvent>
+#ifdef Q_OS_WIN
+#include <QStyleFactory>
+#endif
 
 #include "../e2se_defs.h"
 #include "platforms/platform.h"
@@ -167,18 +170,9 @@ gui::gui(int argc, char* argv[])
 	this->mwid = new QWidget;
 	mwid->setWindowTitle("e2 SAT Editor");
 
-	theme->fix(mwid);
-
-	// additional fix application wide
-	// 
-	// keep QApplication stylesheet available
-	// when passed from command line argument
-	// -stylesheet file.qss
 #ifdef Q_OS_WIN
-	if (mroot->styleSheet().isEmpty())
-	{
-		theme->fix(mroot);
-	}
+	theme->early_win_flavor_fix(mwid);
+	theme->early_win_flavor_fix(mroot);
 #endif
 
 	ThemeChangeEventObserver* gce = new ThemeChangeEventObserver;
@@ -194,9 +188,6 @@ gui::gui(int argc, char* argv[])
 	layout();
 
 	mainWindowShowAndGainFocus();
-
-	// screenshot
-	// mwid->setGeometry(280, 120, 1024, 720);
 
 #ifdef E2SE_CHECKUPDATE
 	if (QSettings().value("preference/autoCheckUpdate", false).toBool())
@@ -298,10 +289,18 @@ void gui::menuBarLayout()
 {
 	debug("menuBarLayout");
 
-	QMenuBar* menu = menuBar(mfrm);
+	QMenuBar* menubar = menuBar(mfrm);
+
+#ifdef Q_OS_WIN
+	if (! theme::isOverridden() && theme::isFluetteWin())
+	{
+		QStyle* style = QStyleFactory::create("windows11");
+		menubar->setStyle(style);
+	}
+#endif
 
 	//: Platform: File menu
-	QMenu* mfile = menuBarMenu(menu, tr("&File", "menu"));
+	QMenu* mfile = menuBarMenu(menubar, tr("&File", "menu"));
 	gmenu[GUI_CXE::FileNew] = menuBarAction(mfile, tr("&New", "menu"), [=]() { this->newTab(); }, QKeySequence::New);
 	gmenu[GUI_CXE::FileOpen] = menuBarAction(mfile, tr("&Open", "menu"), [=]() { this->fileOpen(); }, QKeySequence::Open);
 	menuBarSeparator(mfile);
@@ -346,7 +345,7 @@ void gui::menuBarLayout()
 #endif
 
 	//: Platform: Edit menu
-	QMenu* medit = menuBarMenu(menu, tr("&Edit", "menu"));
+	QMenu* medit = menuBarMenu(menubar, tr("&Edit", "menu"));
 	gmenu[GUI_CXE::EditUndo] = menuBarAction(medit, tr("&Undo", "menu"), [=]() { this->editAction(GUI_CXE::EditUndo); }, QKeySequence::Undo);
 	gmenu[GUI_CXE::EditRedo] = menuBarAction(medit, tr("&Redo", "menu"), [=]() { this->editAction(GUI_CXE::EditRedo); }, QKeySequence::Redo);
 	menuBarSeparator(medit);
@@ -361,7 +360,7 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::EditSelectAll] = menuBarAction(medit, tr("Select &All", "menu"), [=]() { this->editAction(GUI_CXE::EditSelectAll); }, QKeySequence::SelectAll);
 
 	//: Platform: Find menu
-	QMenu* mfind = menuBarMenu(menu, tr("&Find", "menu"));
+	QMenu* mfind = menuBarMenu(menubar, tr("&Find", "menu"));
 	//: Encoding: preserve 3-dots ellipsis symbol
 	gmenu[GUI_CXE::TabListFind] = menuBarAction(mfind, tr("&Find Channel…", "menu"), [=]() { this->tabAction(TAB_ATS::ListFind); }, QKeySequence::Find);
 	gmenu[GUI_CXE::TabListFindNext] = menuBarAction(mfind, tr("Find &Next", "menu"), [=]() { this->tabAction(TAB_ATS::ListFindNext); }, QKeySequence::FindNext);
@@ -372,7 +371,7 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::TabTreeFind] = menuBarAction(mfind, tr("Find &Bouquet…", "menu"), [=]() { this->tabAction(TAB_ATS::TreeFind); }, Qt::CTRL | Qt::ALT | Qt::Key_F);
 	gmenu[GUI_CXE::TabTreeFindNext] = menuBarAction(mfind, tr("Find N&ext Bouquet", "menu"), [=]() { this->tabAction(TAB_ATS::TreeFindNext); }, Qt::CTRL | Qt::ALT | Qt::Key_E);
 
-	QMenu* mtools = menuBarMenu(menu, tr("&Tools", "menu"));
+	QMenu* mtools = menuBarMenu(menubar, tr("&Tools", "menu"));
 	gmenu[GUI_CXE::Transponders] = menuBarAction(mtools, tr("Edit Transponders", "menu"), [=]() { this->tabAction(TAB_ATS::EditTransponders); });
 	menuBarSeparator(mtools);
 	//: Note: %1 is xml filename
@@ -420,7 +419,7 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::ToolsInspector] = menuBarAction(mtools, tr("Log Inspector", "menu"), [=]() { this->tabAction(TAB_ATS::Inspector); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
 
 	//: Platform: Window menu
-	QMenu* mwind = menuBarMenu(menu, tr("&Window", "menu"));
+	QMenu* mwind = menuBarMenu(menubar, tr("&Window", "menu"));
 #ifndef Q_OS_WASM
 	gmenu[GUI_CXE::WindowMinimize] = menuBarAction(mwind, tr("&Minimize", "menu"), [=]() { this->windowMinimize(); }, Qt::CTRL | Qt::Key_M);
 	menuBarSeparator(mwind);
@@ -432,7 +431,7 @@ void gui::menuBarLayout()
 	QActionGroup* mwtabs = menuBarActionGroup(mwind, true);
 
 	//: Platform: Help menu
-	QMenu* mhelp = menuBarMenu(menu, tr("&Help", "menu"));
+	QMenu* mhelp = menuBarMenu(menubar, tr("&Help", "menu"));
 	menuBarAction(mhelp, tr("Quick start", "menu"), [=]() { this->linkToOnlineHelp(1); });
 	menuBarAction(mhelp, tr("Online help", "menu"), [=]() { this->linkToOnlineHelp(0); });
 	menuBarAction(mhelp, tr("Troubleshooting", "menu"), [=]() { this->linkToOnlineHelp(2); });
@@ -2203,6 +2202,13 @@ QMenuBar* gui::menuBar(QLayout* layout)
 	QMenuBar* menu = new QMenuBar;
 	menu->setNativeMenuBar(true);
 	layout->setMenuBar(menu);
+#ifdef Q_OS_WIN
+	if (! theme::isOverridden() && theme::isFluetteWin())
+	{
+		QStyle* style = QStyleFactory::create("windows11");
+		menu->setStyle(style);
+	}
+#endif
 	return menu;
 }
 
@@ -2211,6 +2217,13 @@ QMenu* gui::menuBarMenu(QMenuBar* menubar, QString title)
 	QMenu* menu = new QMenu(menubar);
 	menu->setTitle(title);
 	menubar->addMenu(menu);
+#ifdef Q_OS_WIN
+	if (! theme::isOverridden() && theme::isFluetteWin())
+	{
+		QStyle* style = QStyleFactory::create("windows11");
+		menu->setStyle(style);
+	}
+#endif
 	return menu;
 }
 
@@ -2219,6 +2232,13 @@ QMenu* gui::menuBarMenu(QMenu* menu, QString title)
 	QMenu* submenu = new QMenu(menu);
 	submenu->setTitle(title);
 	menu->addMenu(submenu);
+#ifdef Q_OS_WIN
+	if (! theme::isOverridden() && theme::isFluetteWin())
+	{
+		QStyle* style = QStyleFactory::create("windows11");
+		menu->setStyle(style);
+	}
+#endif
 	return submenu;
 }
 

@@ -102,18 +102,34 @@ void channelBookView::layout()
 	this->list = new QTreeWidget;
 	this->tabv = new QTabBar;
 
-	//TODO vertical expanding [Windows]
+	//TODO TEST vertical expanding [Windows]
 	tabv->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored);
 
 	TreeProxyStyle* tree_style = new TreeProxyStyle;
-	tree->setStyle(tree_style);
 	TreeProxyStyle* list_style = new TreeProxyStyle;
+
+#ifdef Q_OS_WIN
+	if (! theme::isOverridden() && theme::isFluetteWin())
+	{
+		QStyle* style = QStyleFactory::create("fusion");
+		tree_style->setBaseStyle(style);
+		list_style->setBaseStyle(style);
+	}
+#endif
+
+	tree->setStyle(tree_style);
 	list->setStyle(list_style);
 
 #ifdef Q_OS_WIN
-	if (theme::absLuma() || ! theme::isDefault())
+	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
 	{
-		QStyle* style = QStyleFactory::create("fusion");
+		QStyle* style;
+
+		if (theme::isFluetteWin())
+			style = QStyleFactory::create("windows11");
+		else
+			style = QStyleFactory::create("fusion");
+
 		tree->verticalScrollBar()->setStyle(style);
 		tree->horizontalScrollBar()->setStyle(style);
 		list->verticalScrollBar()->setStyle(style);
@@ -125,8 +141,11 @@ void channelBookView::layout()
 	tree->setStyleSheet("QTreeWidget { border-style: none } QTreeWidget::item { padding: 2px 0 }");
 	list->setStyleSheet("QTreeWidget { border-style: none } QTreeWidget::item { padding: 2px 0 }");
 
-	//TODO FIX height ui [Windows]
+#ifndef Q_OS_WIN
 	tabv->setStyleSheet("QTabBar { width: 100% } QTabBar::tab { min-width: 48px; max-height: 0 }");
+#else
+	tabv->setStyleSheet("QTabBar { width: 100% } QTabBar::tab { min-width: 48px; max-height: 12px }");
+#endif
 
 #ifdef Q_OS_MAC
 	if (theme::isDefault())

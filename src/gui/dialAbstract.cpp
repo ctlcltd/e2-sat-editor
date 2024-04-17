@@ -32,7 +32,9 @@ void dialAbstract::layout(QWidget* cwid)
 	this->dial = new QDialog(cwid);
 	dial->setWindowTitle(tr("Edit", "dialog"));
 
-	theme->fix(dial);
+#ifdef Q_OS_WIN
+	theme->early_win_flavor_fix(dial);
+#endif
 
 	ThemeChangeEventObserver* gce = new ThemeChangeEventObserver;
 	gce->setEventCallback([=]() { this->themeChanged(); });

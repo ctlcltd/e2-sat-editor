@@ -93,9 +93,15 @@ void piconsView::layout()
 	this->list = new QListWidget;
 
 #ifdef Q_OS_WIN
-	if (theme::absLuma() || ! theme::isDefault())
+	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
 	{
-		QStyle* style = QStyleFactory::create("fusion");
+		QStyle* style;
+
+		if (theme::isFluetteWin())
+			style = QStyleFactory::create("windows11");
+		else
+			style = QStyleFactory::create("fusion");
+
 		list->verticalScrollBar()->setStyle(style);
 		list->horizontalScrollBar()->setStyle(style);
 	}

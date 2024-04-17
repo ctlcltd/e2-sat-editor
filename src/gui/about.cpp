@@ -48,7 +48,9 @@ void about::layout()
 	this->dial = new QDialog;
 	dial->setWindowTitle(tr("About e2 SAT Editor"));
 
-	theme->fix(dial);
+#ifdef Q_OS_WIN
+	theme->early_win_flavor_fix(dial);
+#endif
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
 	dial->connect(dial, &QDialog::finished, [=]() { QTimer::singleShot(0, [=]() { this->destroy(); }); });

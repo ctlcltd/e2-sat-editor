@@ -1113,7 +1113,9 @@ void tab::infoFile()
 	dial->setWindowTitle(tr("File Information", "dialog"));
 	dial->setMinimumSize(450, 520);
 
-	theme->fix(dial);
+#ifdef Q_OS_WIN
+	theme->early_win_flavor_fix(dial);
+#endif
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
 	dial->connect(dial, &QDialog::finished, [=]() { QTimer::singleShot(0, [=]() { delete dial; }); });
@@ -1234,9 +1236,15 @@ void tab::infoFile()
 	dtw2ft->setColumnWidth(0, 200);
 	dtw2ft->setColumnWidth(1, 100);
 #ifdef Q_OS_WIN
-	if (theme::absLuma() || ! theme::isDefault())
+	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
 	{
-		QStyle* style = QStyleFactory::create("fusion");
+		QStyle* style;
+
+		if (theme::isFluetteWin())
+			style = QStyleFactory::create("windows11");
+		else
+			style = QStyleFactory::create("fusion");
+
 		dtw2ft->verticalScrollBar()->setStyle(style);
 		dtw2ft->horizontalScrollBar()->setStyle(style);
 	}
