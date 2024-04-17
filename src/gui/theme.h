@@ -22,9 +22,13 @@ using std::pair, std::vector, std::unordered_map;
 
 namespace e2se_gui
 {
+//TODO
 class theme
 {
 	public:
+
+		inline static bool QT_STYLE_OVERRIDDEN = false;
+
 		enum STYLE {
 			light,
 			dark

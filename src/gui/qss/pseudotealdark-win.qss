@@ -1,4 +1,4 @@
-/* e2-sat-editor.exe -style windows -stylesheet win-style-dark.qss */
+/* -style windows -stylesheet pseudotealdark-win.qss */
 
 QFrame { border: 0; }
 QMenuBar { background: transparent; }

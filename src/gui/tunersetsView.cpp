@@ -173,6 +173,7 @@ void tunersetsView::layout()
 
 #ifdef Q_OS_WIN
 	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
+	{
 		QStyle* style;
 
 		if (theme::isFluetteWin())

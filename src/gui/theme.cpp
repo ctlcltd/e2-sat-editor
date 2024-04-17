@@ -11,6 +11,7 @@
 
 #include <string>
 
+#include <QtGlobal>
 #include <QApplication>
 #include <QGuiApplication>
 #include <QOperatingSystemVersion>
@@ -33,6 +34,7 @@ namespace e2se_gui
 
 theme::theme()
 {
+	// theme::QT_STYLE_OVERRIDDEN = ! qgetenv("QT_STYLE_OVERRIDE").isEmpty();
 }
 
 theme::theme(QApplication* mroot)
@@ -75,7 +77,8 @@ bool theme::isDefault()
 
 bool theme::isOverridden()
 {
-	return ! qgetenv("QT_STYLE_OVERRIDE").isEmpty();
+	// return theme::QT_STYLE_OVERRIDDEN;
+	return false;
 }
 
 bool theme::isLightMode()
@@ -285,7 +288,8 @@ void theme::styleDark()
 #if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
 bool theme::isFluetteWin()
 {
-	return (QOperatingSystemVersion::current().majorVersion() == QOperatingSystemVersion::Windows11.majorVersion());
+	// return (QOperatingSystemVersion::current().majorVersion() == QOperatingSystemVersion::Windows11.majorVersion());
+	return true;
 }
 #else
 bool theme::isFluetteWin()
@@ -296,7 +300,8 @@ bool theme::isFluetteWin()
 
 bool theme::isMetroeWin()
 {
-	return (QOperatingSystemVersion::current().majorVersion() == QOperatingSystemVersion::Windows10.majorVersion());
+	// return (QOperatingSystemVersion::current().majorVersion() == QOperatingSystemVersion::Windows10.majorVersion());
+	return false;
 }
 
 void theme::stylePseudoWin()

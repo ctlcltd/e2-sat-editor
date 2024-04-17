@@ -291,14 +291,6 @@ void gui::menuBarLayout()
 
 	QMenuBar* menubar = menuBar(mfrm);
 
-#ifdef Q_OS_WIN
-	if (! theme::isOverridden() && theme::isFluetteWin())
-	{
-		QStyle* style = QStyleFactory::create("windows11");
-		menubar->setStyle(style);
-	}
-#endif
-
 	//: Platform: File menu
 	QMenu* mfile = menuBarMenu(menubar, tr("&File", "menu"));
 	gmenu[GUI_CXE::FileNew] = menuBarAction(mfile, tr("&New", "menu"), [=]() { this->newTab(); }, QKeySequence::New);
@@ -2199,31 +2191,32 @@ QString gui::getFileFormatName(int ver)
 
 QMenuBar* gui::menuBar(QLayout* layout)
 {
-	QMenuBar* menu = new QMenuBar;
-	menu->setNativeMenuBar(true);
-	layout->setMenuBar(menu);
+	QMenuBar* menubar = new QMenuBar;
+	menubar->setNativeMenuBar(true);
 #ifdef Q_OS_WIN
 	if (! theme::isOverridden() && theme::isFluetteWin())
 	{
 		QStyle* style = QStyleFactory::create("windows11");
-		menu->setStyle(style);
+		menubar->setStyle(style);
 	}
 #endif
-	return menu;
+	layout->setMenuBar(menubar);
+	return menubar;
 }
 
 QMenu* gui::menuBarMenu(QMenuBar* menubar, QString title)
 {
 	QMenu* menu = new QMenu(menubar);
 	menu->setTitle(title);
-	menubar->addMenu(menu);
-#ifdef Q_OS_WIN
+//TODO TEST SEGFAULT
+/*#ifdef Q_OS_WIN
 	if (! theme::isOverridden() && theme::isFluetteWin())
 	{
 		QStyle* style = QStyleFactory::create("windows11");
 		menu->setStyle(style);
 	}
-#endif
+#endif*/
+	menubar->addMenu(menu);
 	return menu;
 }
 
@@ -2231,14 +2224,15 @@ QMenu* gui::menuBarMenu(QMenu* menu, QString title)
 {
 	QMenu* submenu = new QMenu(menu);
 	submenu->setTitle(title);
-	menu->addMenu(submenu);
-#ifdef Q_OS_WIN
+//TODO TEST SEGFAULT
+/*#ifdef Q_OS_WIN
 	if (! theme::isOverridden() && theme::isFluetteWin())
 	{
 		QStyle* style = QStyleFactory::create("windows11");
-		menu->setStyle(style);
+		submenu->setStyle(style);
 	}
-#endif
+#endif*/
+	menu->addMenu(submenu);
 	return submenu;
 }
 

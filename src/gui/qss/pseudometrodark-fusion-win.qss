@@ -1,4 +1,4 @@
-/* e2-sat-editor.exe -style fusion -stylesheet win-fusion-dark.qss */
+/* -style fusion -stylesheet pseudometrodark-fusion-win.qss */
 
 QMenuBar { background: palette(base); }
 QMenuBar:active { background: palette(shadow); }
