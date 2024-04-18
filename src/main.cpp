@@ -24,6 +24,7 @@ int main(int argc, char* argv[])
 #endif
 
 	const char* envp = std::getenv("DEBUG");
+	//TODO TEST [Windows]
 	if (envp)
 	{
 		DEBUG = true;

@@ -166,7 +166,7 @@ void settings::connectionsLayout()
 	{
 		QStyle* style;
 
-		if (theme::isFluetteWin())
+		if (theme::isFluentWin())
 			style = QStyleFactory::create("windows11");
 		else
 			style = QStyleFactory::create("fusion");
@@ -293,7 +293,7 @@ void settings::connectionsLayout()
 	{
 		QStyle* style;
 
-		if (theme::isFluetteWin())
+		if (theme::isFluentWin())
 			style = QStyleFactory::create("windows11");
 		else
 			style = QStyleFactory::create("fusion");
@@ -469,7 +469,7 @@ void settings::preferencesLayout()
 	{
 		QStyle* style;
 
-		if (theme::isFluetteWin())
+		if (theme::isFluentWin())
 			style = QStyleFactory::create("windows11");
 		else
 			style = QStyleFactory::create("fusion");
@@ -697,7 +697,7 @@ void settings::engineLayout()
 	{
 		QStyle* style;
 
-		if (theme::isFluetteWin())
+		if (theme::isFluentWin())
 			style = QStyleFactory::create("windows11");
 		else
 			style = QStyleFactory::create("fusion");
@@ -882,7 +882,7 @@ void settings::advancedLayout()
 	{
 		QStyle* style;
 
-		if (theme::isFluetteWin())
+		if (theme::isFluentWin())
 			style = QStyleFactory::create("windows11");
 		else
 			style = QStyleFactory::create("fusion");

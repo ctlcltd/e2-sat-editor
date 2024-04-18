@@ -27,7 +27,7 @@ class theme
 {
 	public:
 
-		inline static bool QT_STYLE_OVERRIDDEN = false;
+		inline static bool QSTYLE_OVERRIDDEN = false;
 
 		enum STYLE {
 			light,
@@ -42,6 +42,8 @@ class theme
 		theme();
 		theme(QApplication* mroot);
 		~theme() = default;
+		// check style override
+		static void checkStyleOverride(int argc, char* argv[]);
 		// initialize style
 		static void initStyle();
 		// preference/theme setting { empty, "light", "dark" }
@@ -82,8 +84,8 @@ class theme
 		static void styleDark();
 
 #ifdef Q_OS_WIN
-		static bool isFluetteWin();
-		static bool isMetroeWin();
+		static bool isFluentWin();
+		static bool isMetroWin();
 
 		// style pseudo windows
 		static void stylePseudoWin();

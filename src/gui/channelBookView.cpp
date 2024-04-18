@@ -109,7 +109,7 @@ void channelBookView::layout()
 	TreeProxyStyle* list_style = new TreeProxyStyle;
 
 #ifdef Q_OS_WIN
-	if (! theme::isOverridden() && theme::isFluetteWin())
+	if (! theme::isOverridden() && theme::isFluentWin())
 	{
 		QStyle* style = QStyleFactory::create("fusion");
 		tree_style->setBaseStyle(style);
@@ -125,7 +125,7 @@ void channelBookView::layout()
 	{
 		QStyle* style;
 
-		if (theme::isFluetteWin())
+		if (theme::isFluentWin())
 			style = QStyleFactory::create("windows11");
 		else
 			style = QStyleFactory::create("fusion");

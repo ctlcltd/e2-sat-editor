@@ -199,6 +199,9 @@ release_early () {
 
 strip () {
 	printf "%s\n\n" "strip."
+
+	src
+
 	printf "%s\n\n" "binary strip ..."
 
 	$CCSTRIP --strip-unneeded build/e2-sat-editor.exe

@@ -67,6 +67,8 @@ gui::gui(int argc, char* argv[])
 
 	this->log = new logger("gui", "gui");
 
+	theme::checkStyleOverride(argc, argv);
+
 	this->mroot = new QApplication(argc, argv);
 	std::setlocale(LC_NUMERIC, "C");
 
@@ -2194,7 +2196,7 @@ QMenuBar* gui::menuBar(QLayout* layout)
 	QMenuBar* menubar = new QMenuBar;
 	menubar->setNativeMenuBar(true);
 #ifdef Q_OS_WIN
-	if (! theme::isOverridden() && theme::isFluetteWin())
+	if (! theme::isOverridden() && theme::isFluentWin())
 	{
 		QStyle* style = QStyleFactory::create("windows11");
 		menubar->setStyle(style);
@@ -2210,7 +2212,7 @@ QMenu* gui::menuBarMenu(QMenuBar* menubar, QString title)
 	menu->setTitle(title);
 //TODO TEST SEGFAULT
 /*#ifdef Q_OS_WIN
-	if (! theme::isOverridden() && theme::isFluetteWin())
+	if (! theme::isOverridden() && theme::isFluentWin())
 	{
 		QStyle* style = QStyleFactory::create("windows11");
 		menu->setStyle(style);
@@ -2226,7 +2228,7 @@ QMenu* gui::menuBarMenu(QMenu* menu, QString title)
 	submenu->setTitle(title);
 //TODO TEST SEGFAULT
 /*#ifdef Q_OS_WIN
-	if (! theme::isOverridden() && theme::isFluetteWin())
+	if (! theme::isOverridden() && theme::isFluentWin())
 	{
 		QStyle* style = QStyleFactory::create("windows11");
 		submenu->setStyle(style);

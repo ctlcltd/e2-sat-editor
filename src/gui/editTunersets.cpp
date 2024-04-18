@@ -76,7 +76,7 @@ void editTunersets::layout(QWidget* cwid)
 	{
 		QStyle* style;
 
-		if (theme::isFluetteWin())
+		if (theme::isFluentWin())
 			style = QStyleFactory::create("windows11");
 		else
 			style = QStyleFactory::create("fusion");

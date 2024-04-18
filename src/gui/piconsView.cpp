@@ -97,7 +97,7 @@ void piconsView::layout()
 	{
 		QStyle* style;
 
-		if (theme::isFluetteWin())
+		if (theme::isFluentWin())
 			style = QStyleFactory::create("windows11");
 		else
 			style = QStyleFactory::create("fusion");

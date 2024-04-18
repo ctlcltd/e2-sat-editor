@@ -141,9 +141,9 @@ void mainView::layout()
 	TreeProxyStyle* list_style = new TreeProxyStyle;
 
 #ifdef Q_OS_WIN
-	if (! theme::isOverridden() && theme::isFluetteWin())
+	if (! theme::isOverridden() && theme::isFluentWin())
 	{
-		QStyle* style = QStyleFactory::create("fusion");
+		QStyle* style = QStyleFactory::create("windowsvista");
 		side_style->setBaseStyle(style);
 		tree_style->setBaseStyle(style);
 		list_style->setBaseStyle(style);
@@ -159,7 +159,7 @@ void mainView::layout()
 	{
 		QStyle* style;
 
-		if (theme::isFluetteWin())
+		if (theme::isFluentWin())
 			style = QStyleFactory::create("windows11");
 		else
 			style = QStyleFactory::create("fusion");
@@ -526,7 +526,7 @@ void mainView::referenceBoxLayout()
 	{
 		QStyle* style;
 
-		if (theme::isFluetteWin())
+		if (theme::isFluentWin())
 			style = QStyleFactory::create("windows11");
 		else
 			style = QStyleFactory::create("fusion");

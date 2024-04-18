@@ -34,7 +34,7 @@ namespace e2se_gui
 
 theme::theme()
 {
-	// theme::QT_STYLE_OVERRIDDEN = ! qgetenv("QT_STYLE_OVERRIDE").isEmpty();
+	qDebug() << "theme::QSTYLE_OVERRIDDEN " << theme::QSTYLE_OVERRIDDEN;
 }
 
 theme::theme(QApplication* mroot)
@@ -47,6 +47,22 @@ theme::theme(QApplication* mroot)
 	font.setPointSize(font.pointSize() - 2);
 	mroot->setFont(font);
 #endif
+}
+
+void theme::checkStyleOverride(int argc, char* argv[])
+{
+	theme::QSTYLE_OVERRIDDEN = ! qgetenv("QT_STYLE_OVERRIDE").isEmpty();
+
+	for (int i = 0; i < argc; i++)
+	{
+		std::string arg = argv[i];
+
+		if (arg == "-style" || arg == "-style=")
+		{
+			theme::QSTYLE_OVERRIDDEN = true;
+			break;
+		}
+	}
 }
 
 void theme::initStyle()
@@ -77,8 +93,9 @@ bool theme::isDefault()
 
 bool theme::isOverridden()
 {
-	// return theme::QT_STYLE_OVERRIDDEN;
-	return false;
+	qDebug() << "theme::QSTYLE_OVERRIDDEN " << theme::QSTYLE_OVERRIDDEN;
+
+	return theme::QSTYLE_OVERRIDDEN;
 }
 
 bool theme::isLightMode()
@@ -286,22 +303,20 @@ void theme::styleDark()
 #ifdef Q_OS_WIN
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
-bool theme::isFluetteWin()
+bool theme::isFluentWin()
 {
-	// return (QOperatingSystemVersion::current().majorVersion() == QOperatingSystemVersion::Windows11.majorVersion());
-	return true;
+	return (QOperatingSystemVersion::current() >= QOperatingSystemVersion::Windows11);
 }
 #else
-bool theme::isFluetteWin()
+bool theme::isFluentWin()
 {
 	return false;
 }
 #endif
 
-bool theme::isMetroeWin()
+bool theme::isMetroWin()
 {
-	// return (QOperatingSystemVersion::current().majorVersion() == QOperatingSystemVersion::Windows10.majorVersion());
-	return false;
+	return (QOperatingSystemVersion::current() >= QOperatingSystemVersion::Windows10 && QOperatingSystemVersion::current().microVersion() < 22e3);
 }
 
 void theme::stylePseudoWin()
@@ -309,10 +324,10 @@ void theme::stylePseudoWin()
 	if (! theme::isOverridden())
 	{
 		// pseudo fluent win == 11
-		if (theme::isFluetteWin())
+		if (theme::isFluentWin())
 			theme::stylePseudoWinModern();
 		// pseudo metro  win == 10
-		else if (theme::isMetroeWin())
+		else if (theme::isMetroWin())
 			theme::stylePseudoWinEarly();
 	}
 }
@@ -440,7 +455,7 @@ QString theme::qss_early_win_PseudoMetroDark_root()
 // before QApplication
 void theme::early_win_flavor_fix()
 {
-	if (! theme::isOverridden() && theme::isMetroeWin())
+	if (! theme::isOverridden() && theme::isMetroWin())
 	{
 		// QApplication style override
 		//
@@ -453,7 +468,7 @@ void theme::early_win_flavor_fix()
 // after top level widget
 void theme::early_win_flavor_fix(QWidget* tlw)
 {
-	if (! theme::isOverridden() && theme::isMetroeWin())
+	if (! theme::isOverridden() && theme::isMetroWin())
 	{
 		if (theme::isDefault() && theme::absLuma())
 			tlw->setStyleSheet(theme::qss_early_win_PseudoMetroDark_tlw());
@@ -468,7 +483,7 @@ void theme::early_win_flavor_fix(QApplication* mroot)
 	// keep QApplication stylesheet available
 	// when passed from command line argument
 	// -stylesheet file.qss
-	if (! theme::isOverridden() && theme::isMetroeWin() && mroot->styleSheet().isEmpty())
+	if (! theme::isOverridden() && theme::isMetroWin() && mroot->styleSheet().isEmpty())
 	{
 		if (theme::isDefault() && theme::absLuma())
 			mroot->setStyleSheet(theme::qss_early_win_PseudoMetroDark_root());
