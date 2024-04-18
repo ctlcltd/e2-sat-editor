@@ -22,7 +22,6 @@ using std::pair, std::vector, std::unordered_map;
 
 namespace e2se_gui
 {
-//TODO
 class theme
 {
 	public:

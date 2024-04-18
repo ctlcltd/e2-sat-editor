@@ -261,7 +261,31 @@ void channelBookView::sideLayout()
 	this->side = new QListWidget;
 
 	ListProxyStyle* side_style = new ListProxyStyle;
+
+#ifdef Q_OS_WIN
+	if (! theme::isOverridden() && theme::isFluentWin())
+	{
+		QStyle* style = QStyleFactory::create("fusion");
+		side_style->setBaseStyle(style);
+	}
+#endif
+
 	side->setStyle(side_style);
+
+#ifdef Q_OS_WIN
+	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
+	{
+		QStyle* style;
+
+		if (theme::isFluentWin())
+			style = QStyleFactory::create("windows11");
+		else
+			style = QStyleFactory::create("fusion");
+
+		side->verticalScrollBar()->setStyle(style);
+		side->horizontalScrollBar()->setStyle(style);
+	}
+#endif
 
 	side->setStyleSheet("QListWidget { background: transparent; font-size: 15px; border-style: none } QListView::item { padding: 10px 0 }");
 

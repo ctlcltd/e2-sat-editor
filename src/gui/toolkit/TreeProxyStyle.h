@@ -11,10 +11,11 @@
 
 #ifndef TreeProxyStyle_h
 #define TreeProxyStyle_h
+#include <QtGlobal>
 #include <QProxyStyle>
 #include <QPainter>
 
-#include <QtGlobal>
+#include "../theme.h"
 
 namespace e2se_gui
 {
@@ -40,8 +41,6 @@ class TreeProxyStyle : public QProxyStyle
 		}
 		void drawPrimitive(PrimitiveElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const override
 		{
-			// qDebug() << "drawPrimitive" << ':' << ' ' << element;
-
 			// QAbstractItemView::initViewItemOption
 			if (element == QStyle::PE_FrameFocusRect) // 3
 				return;
@@ -64,8 +63,6 @@ class TreeProxyStyle : public QProxyStyle
 		}
 		void drawControl(ControlElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const override
 		{
-			// qDebug() << "drawControl" << ':' << ' ' << element;
-
 			// drawRow [QTreeView]
 			if (element == QStyle::CE_ItemViewItem) // 45
 				return drawControlItemViewItem(option, painter, widget);
@@ -89,6 +86,13 @@ class TreeProxyStyle : public QProxyStyle
 
 			int dx = 0;
 
+#ifdef Q_OS_WIN
+			if (! theme::isOverridden() && theme::isFluentWin())
+			{
+				dx = -1;
+			}
+#endif
+
 			if (! this->firstColumnIndented)
 			{
 				int gap = 1;
@@ -105,8 +109,6 @@ class TreeProxyStyle : public QProxyStyle
 				}
 				else if (opt.direction == Qt::RightToLeft)
 				{
-					// opt.rect.setX(widget->width() - opt.rect.height() + opt.rect.height() / 2);
-					// opt.rect.setX(option->rect.right() * 2 - opt.rect.height() + opt.rect.height() / 2);
 					opt.rect.setX(option->rect.right() * 2 - opt.rect.height());
 					opt.rect.adjust(0, 0, dx + 2 + 2, 0);
 				}
@@ -121,6 +123,13 @@ class TreeProxyStyle : public QProxyStyle
 			QModelIndex index = opt.index;
 
 			int dx = this->firstColumnIndented ? (index.column() == this->firstColumn ? this->indent : 0) : this->indent;
+
+#ifdef Q_OS_WIN
+			if (! theme::isOverridden() && theme::isFluentWin())
+			{
+				dx = this->indent;
+			}
+#endif
 
 			if (! this->firstColumnIndented)
 			{

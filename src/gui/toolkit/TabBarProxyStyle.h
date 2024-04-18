@@ -21,8 +21,6 @@ class TabBarProxyStyle : public QProxyStyle
 	public:
 		void drawPrimitive(PrimitiveElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const override
 		{
-			// qDebug() << "drawPrimitive" << ':' << ' ' << element;
-
 			if (element == QStyle::PE_FrameFocusRect) // 3
 				return;
 
@@ -30,8 +28,6 @@ class TabBarProxyStyle : public QProxyStyle
 		}
 		void drawControl(ControlElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget = nullptr) const override
 		{
-			// qDebug() << "drawControl" << ':' << ' ' << element;
-
 			QProxyStyle::drawControl(element, option, painter, widget);
 		}
 		int styleHint(StyleHint hint, const QStyleOption* option = 0, const QWidget* widget = 0, QStyleHintReturn* returnData = 0) const override

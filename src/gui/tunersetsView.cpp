@@ -162,7 +162,7 @@ void tunersetsView::layout()
 #ifdef Q_OS_WIN
 	if (! theme::isOverridden() && theme::isFluentWin())
 	{
-		QStyle* style = QStyleFactory::create("windowsvista");
+		QStyle* style = QStyleFactory::create("fusion");
 		tree_style->setBaseStyle(style);
 		list_style->setBaseStyle(style);
 	}

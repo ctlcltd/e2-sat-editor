@@ -86,12 +86,7 @@ void mainView::layout()
 
 	QGridLayout* frm = new QGridLayout(widget);
 
-	//WONTFIX vertical scrollbar 1px gap [Linux] [FreeBSD] [Windows]
 	QSplitter* swid = new QSplitter;
-#ifdef Q_OS_MAC
-	swid->setStyleSheet("QSplitter::handle {}");
-#endif
-
 	QWidget* afrm = new QWidget;
 	QWidget* bfrm = new QWidget;
 
@@ -143,7 +138,7 @@ void mainView::layout()
 #ifdef Q_OS_WIN
 	if (! theme::isOverridden() && theme::isFluentWin())
 	{
-		QStyle* style = QStyleFactory::create("windowsvista");
+		QStyle* style = QStyleFactory::create("fusion");
 		side_style->setBaseStyle(style);
 		tree_style->setBaseStyle(style);
 		list_style->setBaseStyle(style);

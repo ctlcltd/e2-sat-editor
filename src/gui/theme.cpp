@@ -34,7 +34,6 @@ namespace e2se_gui
 
 theme::theme()
 {
-	qDebug() << "theme::QSTYLE_OVERRIDDEN " << theme::QSTYLE_OVERRIDDEN;
 }
 
 theme::theme(QApplication* mroot)
@@ -93,8 +92,6 @@ bool theme::isDefault()
 
 bool theme::isOverridden()
 {
-	qDebug() << "theme::QSTYLE_OVERRIDDEN " << theme::QSTYLE_OVERRIDDEN;
-
 	return theme::QSTYLE_OVERRIDDEN;
 }
 

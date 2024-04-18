@@ -2210,14 +2210,6 @@ QMenu* gui::menuBarMenu(QMenuBar* menubar, QString title)
 {
 	QMenu* menu = new QMenu(menubar);
 	menu->setTitle(title);
-//TODO TEST SEGFAULT
-/*#ifdef Q_OS_WIN
-	if (! theme::isOverridden() && theme::isFluentWin())
-	{
-		QStyle* style = QStyleFactory::create("windows11");
-		menu->setStyle(style);
-	}
-#endif*/
 	menubar->addMenu(menu);
 	return menu;
 }
@@ -2226,14 +2218,6 @@ QMenu* gui::menuBarMenu(QMenu* menu, QString title)
 {
 	QMenu* submenu = new QMenu(menu);
 	submenu->setTitle(title);
-//TODO TEST SEGFAULT
-/*#ifdef Q_OS_WIN
-	if (! theme::isOverridden() && theme::isFluentWin())
-	{
-		QStyle* style = QStyleFactory::create("windows11");
-		submenu->setStyle(style);
-	}
-#endif*/
 	menu->addMenu(submenu);
 	return submenu;
 }
