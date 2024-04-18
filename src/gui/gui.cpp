@@ -441,7 +441,6 @@ void gui::menuBarLayout()
 	menuBarAction(mhelp, tr("Check for updates…", "menu"), [=]() { this->checkUpdate(); });
 	menuBarAction(mhelp, tr("&About e2 SAT Editor", "menu"), [=]() { this->aboutDialog(); })->setMenuRole(QAction::NoRole);
 
-	this->menu = menu;
 	this->mwind = mwind;
 	this->mwtabs = mwtabs;
 }

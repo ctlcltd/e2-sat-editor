@@ -72,7 +72,7 @@ void editTunersets::layout(QWidget* cwid)
 	dtf0ch->setMinimumWidth(240);
 	dtf0ch->setMaximumHeight(100);
 #ifdef Q_OS_WIN
-	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
+	if (! theme::isOverridden() && (theme::isFluentWin() || theme::absLuma() || ! theme::isDefault()))
 	{
 		QStyle* style;
 

@@ -86,7 +86,7 @@ void tools::inspector()
 	dcnt->document()->setDefaultStyleSheet("* { margin: 0; padding: 0 } i { font-style: normal } pre { font-size: 11px; text-align: " + textAlign + " }");
 	dcnt->setHtml("</div>");
 #ifdef Q_OS_WIN
-	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
+	if (! theme::isOverridden() && (theme::isFluentWin() || theme::absLuma() || ! theme::isDefault()))
 	{
 		QStyle* style;
 

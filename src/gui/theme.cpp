@@ -331,11 +331,40 @@ void theme::stylePseudoWin()
 
 void theme::stylePseudoWinModern()
 {
-	// dark mode: fusion
-	if (theme::absLuma())
+	QStyle* style = QStyleFactory::create("windows11");
+	QApplication::setStyle(style);
+
+	QColor highlightColor;
+	QSettings accentColor = QSettings ("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Accent", QSettings::NativeFormat);
+	if (accentColor.contains("AccentColorMenu")) {
+		int color = accentColor.value("AccentColorMenu").toInt();
+		int r = color & 0xff;
+		int g = (color >> 8) & 0xff;
+		int b = (color >> 16) & 0xff;
+		highlightColor.setRgb(r, g, b);
+	}
+
+	// temp fusion with adjustments
+	QStyle* style = QStyleFactory::create("fusion");
+	QApplication::setStyle(style);
+
+	// fix light mode
+	if (! theme::absLuma())
 	{
-		QStyle* style = QStyleFactory::create("fusion");
-		QApplication::setStyle(style);
+		if (highlightColor.isValid())
+		{
+			QPalette p = QGuiApplication::palette();
+
+			QColor highlightedTextColor = highlightColor.toHsl().lightness() > 128 ? Qt::black : Qt::white;
+			p.setColor(QPalette::Active, QPalette::Highlight, highlightColor);
+			highlightColor.setAlphaF(highlightColor.alphaF() - 51);
+			p.setColor(QPalette::Inactive, QPalette::Highlight, highlightColor);
+			highlightColor.setAlphaF(highlightColor.alphaF() - 76);
+			p.setBrush(QPalette::Disabled, QPalette::Highlight, highlightColor);
+			p.setColor(QPalette::HighlightedText, highlightedTextColor);
+
+			QApplication::setPalette(p);
+		}
 	}
 }
 

@@ -162,7 +162,7 @@ void settings::connectionsLayout()
 	rplist->setEditTriggers(QListWidget::EditKeyPressed | QListWidget::DoubleClicked);
 
 #ifdef Q_OS_WIN
-	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
+	if (! theme::isOverridden() && (theme::isFluentWin() || theme::absLuma() || ! theme::isDefault()))
 	{
 		QStyle* style;
 
@@ -289,7 +289,7 @@ void settings::connectionsLayout()
 	QScrollArea* dtarea = new QScrollArea;
 
 #ifdef Q_OS_WIN
-	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
+	if (! theme::isOverridden() && (theme::isFluentWin() || theme::absLuma() || ! theme::isDefault()))
 	{
 		QStyle* style;
 
@@ -473,7 +473,7 @@ void settings::preferencesLayout()
 	QScrollArea* dtarea = new QScrollArea;
 
 #ifdef Q_OS_WIN
-	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
+	if (! theme::isOverridden() && (theme::isFluentWin() || theme::absLuma() || ! theme::isDefault()))
 	{
 		QStyle* style;
 
@@ -701,7 +701,7 @@ void settings::engineLayout()
 	QScrollArea* dtarea = new QScrollArea;
 
 #ifdef Q_OS_WIN
-	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
+	if (! theme::isOverridden() && (theme::isFluentWin() || theme::absLuma() || ! theme::isDefault()))
 	{
 		QStyle* style;
 
@@ -886,7 +886,7 @@ void settings::advancedLayout()
 	adtbl->horizontalHeader()->setSectionsClickable(false);
 	adtbl->verticalHeader()->setVisible(false);
 #ifdef Q_OS_WIN
-	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
+	if (! theme::isOverridden() && (theme::isFluentWin() || theme::absLuma() || ! theme::isDefault()))
 	{
 		QStyle* style;
 

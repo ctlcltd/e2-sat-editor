@@ -121,7 +121,7 @@ void channelBookView::layout()
 	list->setStyle(list_style);
 
 #ifdef Q_OS_WIN
-	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
+	if (! theme::isOverridden() && (theme::isFluentWin() || theme::absLuma() || ! theme::isDefault()))
 	{
 		QStyle* style;
 
@@ -273,7 +273,7 @@ void channelBookView::sideLayout()
 	side->setStyle(side_style);
 
 #ifdef Q_OS_WIN
-	if (! theme::isOverridden() && (theme::absLuma() || ! theme::isDefault()))
+	if (! theme::isOverridden() && (theme::isFluentWin() || theme::absLuma() || ! theme::isDefault()))
 	{
 		QStyle* style;
 

@@ -370,7 +370,6 @@ class gui : protected e2se::log_factory
 		QLabel* sbwidr;
 		QPushButton* sbwidi;
 		QTabWidget* twid;
-		QMenuBar* menu;
 		QMenu* mwind;
 		QActionGroup* mwtabs;
 		string ifpath;
