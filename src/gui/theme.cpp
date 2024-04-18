@@ -345,8 +345,10 @@ void theme::stylePseudoWinModern()
 	}
 
 	// temp fusion with adjustments
-	QStyle* style = QStyleFactory::create("fusion");
-	QApplication::setStyle(style);
+	{
+		QStyle* style = QStyleFactory::create("fusion");
+		QApplication::setStyle(style);
+	}
 
 	// fix light mode
 	if (! theme::absLuma())
