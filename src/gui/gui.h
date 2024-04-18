@@ -270,7 +270,7 @@ class gui : protected e2se::log_factory
 		void mainWindowShowAndGainFocus();
 		void mainWindowDelayedShow();
 		void settingsChanged();
-		int newTab(string path = "");
+		int newTab(string path = "", bool launch = false);
 		int openTab(TAB_VIEW ttv);
 		int openTab(TAB_VIEW ttv, int arg);
 		bool closeTab(int index = -1);

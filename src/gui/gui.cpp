@@ -808,7 +808,7 @@ void gui::resetSettings()
 	initSettings();
 }
 
-int gui::newTab(string path)
+int gui::newTab(string path, bool launch)
 {
 	tab* ttab = new tab(this, mwid);
 	int ttid = ttab->getTabId();
@@ -833,21 +833,30 @@ int gui::newTab(string path)
 
 	if (read)
 	{
-		if (! ttab->readFile(path))
+		if (ttab->readFile(path))
+		{
+			string filename = std::filesystem::path(path).filename().u8string();
+			ttname = QString::fromStdString(filename);
+		}
+		else
 		{
 			error("newTab", tr("Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(path.data()).toStdString());
 
-			twid->removeTab(index);
-			delete ttmenu[ttid];
-			delete ttabs[ttid];
-			ttmenu.erase(ttid);
-			ttabs.erase(ttid);
+			if (launch)
+			{
+				ttname.append(QString::fromStdString(count ? " " + to_string(count) : ""));
+			}
+			else
+			{
+				twid->removeTab(index);
+				delete ttmenu[ttid];
+				delete ttabs[ttid];
+				ttmenu.erase(ttid);
+				ttabs.erase(ttid);
 
-			return -1;
+				return -1;
+			}
 		}
-
-		string filename = std::filesystem::path(path).filename().u8string();
-		ttname = QString::fromStdString(filename);
 	}
 	else
 	{
@@ -1944,6 +1953,7 @@ tab* gui::getCurrentTabHandler()
 	return ttid != -1 ? ttabs[ttid] : nullptr;
 }
 
+//TODO lowered window when opening bad file [macOS]
 void gui::launcher()
 {
 	debug("launcher");
@@ -1960,7 +1970,7 @@ void gui::launcher()
 			! ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none)
 		)
 		{
-			newTab(path);
+			newTab(path, true);
 		}
 		else
 		{
