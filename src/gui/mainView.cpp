@@ -132,7 +132,7 @@ void mainView::layout()
 	this->list = new QTreeWidget;
 
 	TreeProxyStyle* side_style = new TreeProxyStyle;
-	TreeProxyStyle* tree_style = new TreeProxyStyle;	
+	TreeProxyStyle* tree_style = new TreeProxyStyle;
 	TreeProxyStyle* list_style = new TreeProxyStyle;
 
 #ifdef Q_OS_WIN
@@ -3951,11 +3951,11 @@ void mainView::updateListIndex()
 		QTreeWidgetItem* item = list->topLevelItem(i);
 		bool numbered = item->data(mainView::ITEM_DATA_ROLE::numbered, Qt::UserRole).toBool();
 		string chid = item->data(mainView::ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
-		if (! marker)
+		if (numbered)
 		{
 			y++;
 		}
-		idx = marker ? 0 : y;
+		idx = numbered ? y : 0;
 		dbih->index[bname].emplace_back(pair (idx, chid));
 		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
 		i++;

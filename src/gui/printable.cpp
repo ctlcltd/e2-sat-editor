@@ -319,6 +319,7 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 		debug("pageBodyChannelList", "bname", bname);
 	else
 		error("pageBodyChannelList", tr("Error", "error").toStdString(), tr("Missing index key \"%1\".", "error").arg(bname.data()).toStdString());
+
 	debug("pageBodyChannelList", "view", view);
 
 	QString cssname = view == DOC_VIEW::view_bouquets ? "userbouquet" : "services";
@@ -329,7 +330,7 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 	page.body += "<tr>";
 	page.body += "<th>" + tr("Index") + "</th>";
 	page.body += "<th>" + tr("Name") + "</th>";
-	// page.body += "<th>" + tr("Reference ID") + "</th>";
+	page.body += "<th>" + tr("Reference ID") + "</th>";
 	page.body += "<th>" + tr("SSID") + "</th>";
 	page.body += "<th>" + tr("TSID") + "</th>";
 	page.body += "<th>" + tr("ONID") + "</th>";
@@ -418,7 +419,7 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 			page.body += "<tr>";
 			page.body += "<td class=\"trid\">" + idx + "</td>";
 			page.body += "<td class=\"chname\">" + chname + "</td>";
-			// page.body += "<td class=\"refid\"><span>" + refid + "</span></td>";
+			page.body += "<td class=\"refid\"><span>" + refid + "</span></td>";
 			page.body += "<td>" + ssid + "</td>";
 			page.body += "<td>" + tsid + "</td>";
 			page.body += "<td>" + onid + "</td>";
@@ -457,6 +458,10 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 			{
 				cssname = "marker";
 				stype = "MARKER";
+				ssid = tsid = onid = dvbns = "";
+
+				if (chref.atype == e2db::ATYPE::marker_numbered)
+					idx = QString::number(x.first);
 			}
 			else if (chref.stream)
 			{
@@ -476,12 +481,12 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 			page.body += "<tr class=\"" + cssname + "\">";
 			page.body += "<td class=\"trid\">" + idx + "</td>";
 			page.body += "<td class=\"name\">" + value + "</td>";
-			// page.body += "<td class=\"refid\">" + refid + "</td>";
+			page.body += "<td class=\"refid\">" + refid + "</td>";
 			page.body += "<td>" + ssid + "</td>";
 			page.body += "<td>" + tsid + "</td>";
 			page.body += "<td>" + onid + "</td>";
 			page.body += "<td>" + dvbns + "</td>";
-			page.body += "<td class=\"stype\">" + stype + "</td>";
+			page.body += "<td class=\"atype\">" + stype + "</td>";
 			page.body += "<td></td>";
 			page.body += "<td></td>";
 			page.body += "<td></td>";
@@ -729,10 +734,10 @@ void printable::print()
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 30, 0)
 	// compiler warning 5.3.0 [Qt5]
-	printer->setPageSize(QPageSize::A4);
+	printer->setPageSize(QPageSize::A3);
 #else
 	// compiler deprecation warning 5.15 [Qt5]
-	printer->setPageSize(QPagedPaintDevice::PageSize::A4);
+	printer->setPageSize(QPagedPaintDevice::PageSize::A3);
 #endif
 	printer->setPageOrientation(QPageLayout::Landscape);
 
@@ -779,9 +784,9 @@ div.footer { margin: 3em 1em; line-height: 1.5 }\
 table { margin: 2em 0; border-collapse: collapse }\
 td, th { padding: .4em .5em }\
 table, td, th { border: 1px solid }\
-th, td.chname, td.name, td.pname, td.refid { white-space: nowrap }\
-tr.marker td, td.refid { font-weight: bold }\
-tr.marker td, span.cas { font-size: 9px }\
+th, td.chname, td.name, td.refid, td.stype, td.atype, td.pname { white-space: nowrap }\
+td.refid, tr.marker td.name, tr.marker td.atype { font-weight: bold }\
+span.cas, tr.marker td.name { font-size: 9px }\
 td.trid { padding: .4em .8em .4em 1.4em }\
 td.refid { font-size: 8px }\
 span.cas { margin: 0 .3em 0 0 } \

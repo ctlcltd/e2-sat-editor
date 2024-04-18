@@ -2509,6 +2509,7 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			if (! chref.marker && ! chref.stream)
 				continue;
 
+			string idx;
 			string refid = get_reference_id(chref);
 			int ssid = chref.ref.ssid;
 			int tsid = chref.ref.tsid;
@@ -2517,9 +2518,17 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			string value = chref.value;
 			string stype;
 			if (chref.marker)
+			{
 				stype = "MARKER";
+
+				if (chref.atype == ATYPE::marker_numbered)
+					idx = to_string(x.first);
+			}
 			else if (chref.stream)
+			{
 				stype = "STREAM";
+				idx = to_string(x.first);
+			}
 			string sys;
 			if (chref.marker)
 				sys = value_favourite_flag_type(chref);
@@ -2529,7 +2538,7 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			if (chref.stream)
 				tname = chref.uri;
 
-			ss << CSV_SEPARATOR;
+			ss << idx << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << value << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << refid << CSV_SEPARATOR;
 			ss << ssid << CSV_SEPARATOR;
@@ -2778,6 +2787,7 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			if (! chref.marker && ! chref.stream)
 				continue;
 
+			string idx;
 			string refid = get_reference_id(chref);
 			int ssid = chref.ref.ssid;
 			int tsid = chref.ref.tsid;
@@ -2786,9 +2796,17 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			string value = chref.value;
 			string stype;
 			if (chref.marker)
+			{
 				stype = "MARKER";
+
+				if (chref.atype == ATYPE::marker_numbered)
+					idx = to_string(x.first);
+			}
 			else if (chref.stream)
+			{
 				stype = "STREAM";
+				idx = to_string(x.first);
+			}
 			string sys;
 			if (chref.marker)
 				sys = value_favourite_flag_type(chref);
@@ -2798,7 +2816,7 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			if (chref.stream)
 				tname = chref.uri;
 
-			ss << CSV_SEPARATOR;
+			ss << idx << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << value << CSV_ESCAPE << CSV_SEPARATOR;
 			ss << refid << CSV_SEPARATOR;
 			ss << ssid << CSV_SEPARATOR;
@@ -3555,6 +3573,10 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 			{
 				cssname = "marker";
 				stype = "MARKER";
+				ssid = tsid = onid = dvbns = "";
+
+				if (chref.atype == ATYPE::marker_numbered)
+					idx = to_string(x.first);
 			}
 			else if (chref.stream)
 			{
@@ -3838,15 +3860,19 @@ body { margin: .5rem 1rem; font: normal 14px/1.5 sans-serif }\n\
 h4 { text-transform: uppercase }\n\
 div { margin: 3em 0 5em }\n\
 div.footer { margin: 3em 1em }\n\
+nav { margin: 2em 0; padding: 1em 0; border-top: 1px solid; border-color: ButtonBorder }\n\
 table { margin: 2em 0; border-collapse: collapse }\n\
 td, th { padding: .4em .5em }\n\
-table, td, th { border: 1px solid }\n\
-th, td.chname, td.name, td.pname, td.refid { white-space: nowrap }\n\
-tr.marker td, td.refid { font-weight: bold }\n\
-tr.marker td, span.cas { font-size: small }\n\
+th { position: sticky; top: -1px; background-color: Canvas }\n\
+table, td, th { border: 1px solid; border-color: ButtonBorder }\n\
+th, td.chname, td.name, td.refid, td.stype, td.atype, td.pname { white-space: nowrap }\n\
+td.refid, tr.marker td.name, tr.marker td.atype { font-weight: bold }\n\
+span.cas, tr.marker td.name { font-size: small }\n\
 td.trid { padding-inline-start: .8em; padding-inline-end: 1.4em }\n\
 td.refid { font-size: smaller }\n\
 span.cas { margin-inline-start: .3em }\n\
+@media (prefers-color-scheme: light) { html { color-scheme: light } }\n\
+@media (prefers-color-scheme: dark) { html { color-scheme: dark } }\n\
 </style>\n\
 </head>\n";
 }
