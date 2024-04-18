@@ -355,13 +355,17 @@ void settings::connectionsLayout()
 	platform::osLineEdit(dtf1lu);
 	dtf1->addRow(tr("Username"), dtf1lu);
 
-	//TODO FIX password deleted ui [Linux] [Qt6]
+	// Qt bug password deleted ui [Linux] [Qt6]
 	QLineEdit* dtf1lp = new QLineEdit();
 	QAction* dtf1lpr = dtf1lp->addAction(theme::icon("show"), QLineEdit::TrailingPosition);
 	dtf1lpr->connect(dtf1lpr, &QAction::triggered, [=]() {
 		if (dtf1lp->echoMode() == QLineEdit::Normal)
 		{
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC) || defined(Q_OS_WASM)
 			dtf1lp->setEchoMode(QLineEdit::PasswordEchoOnEdit);
+#else
+			dtf1lp->setEchoMode(QLineEdit::Password);
+#endif
 			dtf1lpr->setIcon(theme::icon("show"));
 		}
 		else
@@ -371,7 +375,11 @@ void settings::connectionsLayout()
 		}
 	});
 	dtf1lp->setProperty("field", "password");
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC) || defined(Q_OS_WASM)
 	dtf1lp->setEchoMode(QLineEdit::PasswordEchoOnEdit);
+#else
+
+#endif
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf1lp);
 	dtf1lp->setMinimumWidth(120);
 	platform::osLineEdit(dtf1lp);

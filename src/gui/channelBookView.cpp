@@ -144,7 +144,7 @@ void channelBookView::layout()
 #ifndef Q_OS_WIN
 	tabv->setStyleSheet("QTabBar { width: 100% } QTabBar::tab { min-width: 48px; max-height: 0 }");
 #else
-	tabv->setStyleSheet("QTabBar { width: 100% } QTabBar::tab { min-width: 48px; max-height: 12px }");
+	tabv->setStyleSheet("QTabBar { width: 100% } QTabBar::tab { min-width: 48px; max-height: 16px }");
 #endif
 
 #ifdef Q_OS_MAC
