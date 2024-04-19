@@ -1106,6 +1106,10 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 
 	if (chref.marker)
 	{
+		if (! chref.anum)
+		{
+			chref.anum = db.imarkers + 1;
+		}
 		if (! chref.index)
 		{
 			int ub_idx = ub.index;

@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Fix add favourite, stream type
 - Fix edit transponder
 - Fix merge, clear XML comments
+- Fix reference ID and marker number
 - Revised transponder feparams
 - Prevent crashes
 

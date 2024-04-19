@@ -368,7 +368,7 @@ struct e2db_abstract : protected e2se::log_factory
 			bool marker = false;
 			bool stream = false;
 			int atype = 0;
-			int anum = 0;
+			int anum = 0; // service: stype, marker: num || 0, stream: stype || 0
 			string uri;
 			string value;
 			bool inlineval = false;

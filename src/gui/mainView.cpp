@@ -4093,6 +4093,11 @@ void mainView::updateListReferences(QTreeWidgetItem* current, QList<QTreeWidgetI
 			}
 			else
 			{
+				if (dbih->userbouquets["chs"].channels.count(chid))
+					chref = dbih->userbouquets["chs"].channels[chid];
+				else
+					chref.etype = 1;
+
 				chref.chid = chid;
 				chref.index = idx;
 			}

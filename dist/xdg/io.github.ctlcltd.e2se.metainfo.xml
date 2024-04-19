@@ -37,6 +37,7 @@
           <li>Fix add favourite, stream type</li>
           <li>Fix edit transponder</li>
           <li>Fix merge, clear XML comments</li>
+          <li>Fix reference ID and marker number</li>
           <li>Revised transponder feparams</li>
           <li>Prevent crashes</li>
         </ul>

@@ -200,35 +200,35 @@ void e2db_abstract::value_channel_reference(string str, channel_reference& chref
 string e2db_abstract::value_reference_id(service ch)
 {
 	int etype = 1;
-	int stype = ch.stype != -1 ? ch.stype : 0;
-	int snum = ch.snum != -1 ? ch.snum : 0;
+	int atype = 0;
+	int stype = ch.stype;
 	int ssid = ch.ssid;
 	int tsid = ch.tsid;
 	int onid = ch.onid;
 	int dvbns = ch.dvbns;
 
-	char refid[44];
-	// %1d:%4d:%4X:%4X:%4X:%4X:%6X:0:0:0:
-	std::snprintf(refid, 44, "%d:%d:%X:%X:%X:%X:%X:0:0:0", etype, stype, snum, ssid, tsid, onid, dvbns);
+	char refid[50];
+	// %1d:%4d:%4X:%4X:%4X:%4X:%X:%d:%d:%d:
+	std::snprintf(refid, 44, "%d:%d:%X:%X:%X:%X:%X:0:0:0", etype, atype, stype, ssid, tsid, onid, dvbns);
 
 	return refid;
 }
 
 string e2db_abstract::value_reference_id(channel_reference chref)
 {
-	int etype = chref.etype != -1 ? chref.etype : 1;
-	int atype = chref.atype != -1 ? chref.atype : 0;
-	int anum = chref.anum != -1 ? chref.anum : 0;
-	int ssid = chref.ref.ssid != -1 ? chref.ref.ssid : 0;
-	int tsid = chref.ref.tsid != -1 ? chref.ref.tsid : 0;
-	int onid =  chref.ref.onid != -1 ? chref.ref.onid : 0;
-	int dvbns = chref.ref.dvbns != -1 ? chref.ref.dvbns : 0;
-	int x7 = chref.x7 != -1 ? chref.x7 : 0;
-	int x8 = chref.x8 != -1 ? chref.x8 : 0;
-	int x9 = chref.x9 != -1 ? chref.x9 : 0;
+	int etype = chref.etype;
+	int atype = chref.atype;
+	int anum = chref.anum;
+	int ssid = chref.ref.ssid;
+	int tsid = chref.ref.tsid;
+	int onid =  chref.ref.onid;
+	int dvbns = chref.ref.dvbns;
+	int x7 = chref.x7;
+	int x8 = chref.x8;
+	int x9 = chref.x9;
 
-	char refid[44];
-	// %1d:%4d:%4X:%4X:%4X:%4X:%6X:%d:%d:%d:
+	char refid[50];
+	// %1d:%4d:%4X:%4X:%4X:%4X:%X:%d:%d:%d:
 	std::snprintf(refid, 44, "%d:%d:%X:%X:%X:%X:%X:%d:%d:%d", etype, atype, anum, ssid, tsid, onid, dvbns, x7, x8, x9);
 
 	return refid;
@@ -249,37 +249,38 @@ string e2db_abstract::value_reference_id(channel_reference chref, service ch)
 
 	if (chref.marker)
 	{
-		atype = chref.atype != -1 ? chref.atype : 0;
-		anum = chref.anum != -1 ? chref.anum : 0;
+		etype = chref.etype;
+		atype = chref.atype;
+		anum = chref.anum;
 	}
 	else if (chref.stream)
 	{
-		etype = chref.etype != -1 ? chref.etype : 1;
-		atype = chref.atype != -1 ? chref.atype : 0;
-		anum = chref.anum != -1 ? chref.anum : 0;
-		ssid = chref.ref.ssid != -1 ? chref.ref.ssid : 0;
-		tsid = chref.ref.tsid != -1 ? chref.ref.tsid : 0;
-		onid =  chref.ref.onid != -1 ? chref.ref.onid : 0;
-		dvbns = chref.ref.dvbns != -1 ? chref.ref.dvbns : 0;
+		etype = chref.etype;
+		atype = chref.atype;
+		anum = chref.anum;
+		ssid = chref.ref.ssid;
+		tsid = chref.ref.tsid;
+		onid =  chref.ref.onid;
+		dvbns = chref.ref.dvbns;
 	}
 	else
 	{
-		etype = 1;
-		atype = ch.stype != -1 ? ch.stype : 0;
-		anum = ch.snum != -1 ? ch.snum : 0;
+		etype = chref.etype;
+		atype = chref.atype;
+		anum = ch.stype;
 		ssid = ch.ssid;
 		tsid = ch.tsid;
 		onid = ch.onid;
 		dvbns = ch.dvbns;
 	}
 
-	x7 = chref.x7 != -1 ? chref.x7 : 0;
-	x8 = chref.x8 != -1 ? chref.x8 : 0;
-	x9 = chref.x9 != -1 ? chref.x9 : 0;
+	x7 = chref.x7;
+	x8 = chref.x8;
+	x9 = chref.x9;
 
-	char refid[44];
-	// %1d:%4d:%4X:%4X:%4X:%4X:%6X:%d:%d:%d:
-	std::snprintf(refid, 44, "%d:%d:%X:%X:%X:%X:%X:%d:%d:%d", etype, atype, anum, ssid, tsid, onid, dvbns, x7, x8, x9);
+	char refid[50];
+	// %1d:%4d:%4X:%4X:%4X:%4X:%X:%d:%d:%d:
+	std::snprintf(refid, 50, "%d:%d:%X:%X:%X:%X:%X:%d:%d:%d", etype, atype, anum, ssid, tsid, onid, dvbns, x7, x8, x9);
 
 	return refid;
 }
