@@ -26,7 +26,7 @@ using std::vector, std::map;
 #include <QTableWidget>
 #include <QPushButton>
 
-#include "toolkit/WidgetWithBackdrop.h"
+#include "toolkit/WidgetBackdrop.h"
 #include "theme.h"
 #include "gui.h"
 #include "connectionPresets.h"
@@ -113,7 +113,7 @@ class settings : protected e2se::log_factory
 		e2se_gui::theme* theme;
 		QSettings* sets;
 		QTabWidget* dtwid;
-		WidgetWithBackdrop* rppage;
+		WidgetBackdrop* rppage;
 		QListWidget* rplist;
 		QWidget* adntc;
 		QTableWidget* adtbl;

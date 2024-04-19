@@ -273,7 +273,7 @@ void tab::setStatusBar(gui::status msg)
 	gid->setStatusBar(msg);
 }
 
-// note: tab::statusBarMessage this (gui*) is 0x0 with deleted tab* QTimer [Qt5]
+// note: tab::statusBarMessage this (gui*) is 0x0 with deleted tab* QTimer
 void tab::resetStatusBar(bool message)
 {
 	if (gid != nullptr)
@@ -667,6 +667,9 @@ bool tab::readFile(string path)
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(this->data->getErrors(), MSG_CODE::readNotice); }, Qt::QueuedConnection);
 		else
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(tr("File Error", "error"), tr("Error opening files.", "error")); }, Qt::QueuedConnection);
+
+		if (statusBarIsVisible())
+			statusBarMessage(timer);
 
 		return false;
 	}
@@ -2462,6 +2465,7 @@ void tab::linkToOnlineHelp(int page)
 	gid->linkToOnlineHelp(page);
 }
 
+// note: tab::statusBarMessage this (gui*) is 0x0 with deleted tab* QTimer
 QTimer* tab::statusBarMessage(QString message)
 {
 	gui::status msg;
@@ -2470,7 +2474,7 @@ QTimer* tab::statusBarMessage(QString message)
 	setStatusBar(msg);
 
 	// note: rand SEGFAULT with widget in thread
-	QTimer* timer = new QTimer(nullptr);
+	QTimer* timer = new QTimer(this->widget);
 	timer->setSingleShot(true);
 	timer->setInterval(STATUSBAR_MESSAGE_TIMEOUT);
 	timer->callOnTimeout([=]() { this->resetStatusBar(true); timer->stop(); });

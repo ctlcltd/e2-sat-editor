@@ -343,6 +343,7 @@ class gui : protected e2se::log_factory
 		int getTabId(int index);
 		int getCurrentTabId();
 		tab* getCurrentTabHandler();
+		void openFileTab(string path, bool launch);
 		void launcher();
 
 		static QMenuBar* menuBar(QLayout* layout);

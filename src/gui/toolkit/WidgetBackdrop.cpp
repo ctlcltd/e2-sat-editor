@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/gui/toolkit/WidgetWithBackdrop.cpp
+ * e2-sat-editor/src/gui/toolkit/WidgetBackdrop.cpp
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -9,12 +9,12 @@
  * @license GNU GPLv3 License
  */
 
-#include "WidgetWithBackdrop.h"
+#include "WidgetBackdrop.h"
 
 namespace e2se_gui
 {
 
-WidgetWithBackdrop::WidgetWithBackdrop(QWidget* parent) : QWidget(parent)
+WidgetBackdrop::WidgetBackdrop(QWidget* parent) : QWidget(parent)
 {
 }
 

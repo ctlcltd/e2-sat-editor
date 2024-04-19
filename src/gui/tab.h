@@ -199,7 +199,7 @@ class tab : protected e2se::log_factory
 		bitset<256> gxe;
 
 	private:
-		gui* gid;
+		gui* gid = nullptr;
 		QWidget* cwid;
 		tab* parent = nullptr;
 		bool child = false;

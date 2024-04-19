@@ -23,13 +23,13 @@ set(SOURCES
 	gui/toolkit/ListIconDragDropEventHandler.cpp
 	gui/toolkit/ListProxyStyle.h
 	gui/toolkit/TabBarProxyStyle.h
-	gui/toolkit/ThemeChangeEventObserver.h
 	gui/toolkit/TreeDragDropEventHandler.cpp
 	gui/toolkit/TreeDropIndicatorEventPainter.cpp
 	gui/toolkit/TreeEventHandler.cpp
 	gui/toolkit/TreeItemChangedEventObserver.cpp
 	gui/toolkit/TreeProxyStyle.h
-	gui/toolkit/WidgetWithBackdrop.cpp
+	gui/toolkit/WidgetBackdrop.cpp
+	gui/toolkit/WidgetEventHandler.cpp
 	gui/about.cpp
 	gui/channelBookView.cpp
 	gui/connectionPresets.cpp

@@ -49,7 +49,7 @@
 
 #include "platforms/platform.h"
 
-#include "toolkit/ThemeChangeEventObserver.h"
+#include "toolkit/WidgetEventHandler.h"
 #include "settings.h"
 #include "theme.h"
 #include "l10n.h"
@@ -105,9 +105,12 @@ void settings::layout(QWidget* cwid)
 
 	dial->setStyleSheet("QGroupBox { spacing: 0; padding: 0; padding-top: 20px; border: 0; font-weight: bold } QGroupBox::title { margin: 0 10px }");
 
-	ThemeChangeEventObserver* gce = new ThemeChangeEventObserver;
-	gce->setEventCallback([=]() { this->themeChanged(); });
-	dial->installEventFilter(gce);
+	WidgetEventHandler* dial_evth = new WidgetEventHandler;
+	dial_evth->setEventCallback([=](WidgetEventHandler::CALLEVENT ce, const QString) {
+		if (ce == WidgetEventHandler::CALLEVENT::themeChanged)
+			this->themeChanged();
+	});
+	dial->installEventFilter(dial_evth);
 
 	platform::osWindowBlend(dial);
 
@@ -151,7 +154,7 @@ void settings::layout(QWidget* cwid)
 
 void settings::connectionsLayout()
 {
-	this->rppage = new WidgetWithBackdrop;
+	this->rppage = new WidgetBackdrop;
 	QHBoxLayout* dtcnt = new QHBoxLayout(rppage);
 
 	QVBoxLayout* dtvbox = new QVBoxLayout;
@@ -181,7 +184,7 @@ void settings::connectionsLayout()
 	rplist->connect(rplist, &QListWidget::currentItemChanged, [=](QListWidgetItem* current, QListWidgetItem* previous) { this->currentProfileChanged(current, previous); });
 	rplist->connect(rplist, &QListWidget::currentTextChanged, [=](QString text) { this->profileNameChanged(text); });
 	rplist->connect(rplist, &QListWidget::viewportEntered, [=]() { this->renameProfile(false); });
-	rppage->connect(rppage, &WidgetWithBackdrop::backdrop, [=]() { this->renameProfile(false); });
+	rppage->connect(rppage, &WidgetBackdrop::backdropEntered, [=]() { this->renameProfile(false); });
 	platform::osPersistentEditor(rplist);
 	rplist->setContextMenuPolicy(Qt::CustomContextMenu);
 	rplist->connect(rplist, &QListWidget::customContextMenuRequested, [=](QPoint pos) { this->showProfileEditContextMenu(pos); });

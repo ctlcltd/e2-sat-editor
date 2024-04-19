@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/gui/toolkit/WidgetWithBackdrop.h
+ * e2-sat-editor/src/gui/toolkit/WidgetBackdrop.h
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -9,29 +9,29 @@
  * @license GNU GPLv3 License
  */
 
-#ifndef WidgetWithBackdrop_h
-#define WidgetWithBackdrop_h
+#ifndef WidgetBackdrop_h
+#define WidgetBackdrop_h
 #include <QWidget>
 
 namespace e2se_gui
 {
-class WidgetWithBackdrop : public QWidget
+class WidgetBackdrop : public QWidget
 {
 	Q_OBJECT
 
 	public:
-		explicit WidgetWithBackdrop(QWidget* parent = nullptr);
+		explicit WidgetBackdrop(QWidget* parent = nullptr);
 
 	signals:
-		void backdrop();
+		void backdropEntered();
 
 	protected:
 		void mousePressEvent(QMouseEvent* event)
 		{
-			emit backdrop();
+			emit backdropEntered();
 
 			return QWidget::mousePressEvent(event);
 		}
 };
 }
-#endif /* WidgetWithBackdrop_h */
+#endif /* WidgetBackdrop_h */

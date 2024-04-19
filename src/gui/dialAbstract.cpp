@@ -16,7 +16,7 @@
 
 #include "platforms/platform.h"
 
-#include "toolkit/ThemeChangeEventObserver.h"
+#include "toolkit/WidgetEventHandler.h"
 #include "dialAbstract.h"
 #include "theme.h"
 
@@ -36,9 +36,12 @@ void dialAbstract::layout(QWidget* cwid)
 	theme->early_win_flavor_fix(dial);
 #endif
 
-	ThemeChangeEventObserver* gce = new ThemeChangeEventObserver;
-	gce->setEventCallback([=]() { this->themeChanged(); });
-	dial->installEventFilter(gce);
+	WidgetEventHandler* dial_evth = new WidgetEventHandler;
+	dial_evth->setEventCallback([=](WidgetEventHandler::CALLEVENT ce, const QString) {
+		if (ce == WidgetEventHandler::CALLEVENT::themeChanged)
+			this->themeChanged();
+	});
+	dial->installEventFilter(dial_evth);
 
 	platform::osWindowBlend(dial);
 

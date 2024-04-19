@@ -46,7 +46,7 @@
 #include "checkUpdate.h"
 #endif
 
-#include "toolkit/ThemeChangeEventObserver.h"
+#include "toolkit/WidgetEventHandler.h"
 #include "toolkit/TabBarProxyStyle.h"
 #include "gui.h"
 #include "theme.h"
@@ -177,9 +177,15 @@ gui::gui(int argc, char* argv[])
 	theme->early_win_flavor_fix(mroot);
 #endif
 
-	ThemeChangeEventObserver* gce = new ThemeChangeEventObserver;
-	gce->setEventCallback([=]() { this->themeChanged(); });
-	mwid->installEventFilter(gce);
+	WidgetEventHandler* mwid_evth = new WidgetEventHandler;
+	mwid_evth->setEventCallback([=](WidgetEventHandler::CALLEVENT ce, const QString path) {
+		if (ce == WidgetEventHandler::CALLEVENT::themeChanged)
+			this->themeChanged();
+		else if (ce == WidgetEventHandler::CALLEVENT::fileDropped)
+			this->openFileTab(path.toStdString(), false);
+	});
+	mwid->setAcceptDrops(true);
+	mwid->installEventFilter(mwid_evth);
 
 	QClipboard* clipboard = mroot->clipboard();
 	//TODO TEST potential SEGFAULT
@@ -834,8 +840,19 @@ int gui::newTab(string path, bool launch)
 	{
 		if (ttab->readFile(path))
 		{
-			string filename = std::filesystem::path(path).filename().u8string();
+			std::filesystem::path fpath = std::filesystem::path(path);
+
+			string filename;
+			if (fpath.has_filename())
+				filename = fpath.filename().u8string();
+			else
+				filename = fpath.parent_path().filename().u8string();
+
 			ttname = QString::fromStdString(filename);
+
+			qDebug() << "path " << path;
+			qDebug() << "filename " << filename;
+			qDebug() << "ttname " << ttname;
 		}
 		else
 		{
@@ -1953,6 +1970,35 @@ tab* gui::getCurrentTabHandler()
 }
 
 //TODO lowered window when opening bad file [macOS]
+void gui::openFileTab(string path, bool launch)
+{
+	debug("openFileTab", "path", path);
+	debug("openFileTab", "launch", launch);
+
+	if (path.empty())
+		return;
+
+	if (
+		std::filesystem::exists(path) &&
+		! ((std::filesystem::status(path).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none) &&
+		! ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none)
+	)
+	{
+		newTab(path, launch);
+	}
+	else
+	{
+		if (launch)
+			newTab();
+
+		error("launcher", tr("Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(path.data()).toStdString());
+
+		errorMessage(tr("File Error", "error"), tr("Error opening files.", "error"));
+	}
+
+	tabChanged(0);
+}
+
 void gui::launcher()
 {
 	debug("launcher");
@@ -1962,28 +2008,9 @@ void gui::launcher()
 	string path = this->ifpath;
 
 	if (! path.empty())
-	{
-		if (
-			std::filesystem::exists(path) &&
-			! ((std::filesystem::status(path).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none) &&
-			! ((std::filesystem::status(path).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none)
-		)
-		{
-			newTab(path, true);
-		}
-		else
-		{
-			error("launcher", tr("Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(path.data()).toStdString());
-
-			errorMessage(tr("File Error", "error"), tr("Error opening files.", "error"));
-
-			newTab();
-		}
-	}
+		openFileTab(path, true);
 	else
-	{
 		newTab();
-	}
 
 	tabChanged(0);
 }
