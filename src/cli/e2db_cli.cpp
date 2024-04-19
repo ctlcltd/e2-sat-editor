@@ -1078,7 +1078,7 @@ void e2db_cli::shell_file_read(string path)
 	try
 	{
 		if (dbih->read(path))
-			cout << "Info: " << msg("File readen: %s", path) << endl;
+			cout << "Info: " << msg("File read: %s", path) << endl;
 	}
 	catch (const std::invalid_argument& err)
 	{
@@ -1164,9 +1164,9 @@ void e2db_cli::shell_e2db_parse(ENTRY entry_type, string path, int ver, bool dir
 
 			try
 			{
-				bool readen = dst->read(path);
+				bool read = dst->read(path);
 
-				if (! readen)
+				if (! read)
 				{
 					if (merge) delete dst;
 					throw std::runtime_error (msg("Error reading file."));
@@ -1406,12 +1406,12 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 				dbih->set_zapit_version(ver);
 			}
 
-			bool written = dbih->write(path);
+			bool write = dbih->write(path);
 
 			dbih->set_lamedb_version(lamedb_ver);
 			dbih->set_zapit_version(zapit_ver);
 
-			if (! written)
+			if (! write)
 				throw std::runtime_error (msg("Error writing file."));
 		}
 		else if (entry_type == ENTRY::lamedb_services)
@@ -2334,8 +2334,12 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end,
 				print_obj_pair(TYPE::guard, tx.guard), print_obj_sep();
 				print_obj_pair(TYPE::hier, tx.hier), print_obj_sep();
 				print_obj_pair(TYPE::flags, tx.flags), print_obj_sep();
-				//TODO
-				// print_obj_pair(TYPE::oflgs, tx.oflgs), print_obj_sep();
+				print_obj_pair(TYPE::plpid, tx.plpid), print_obj_sep();
+				print_obj_pair(TYPE::plsn, tx.plsn), print_obj_sep();
+				print_obj_pair(TYPE::plscode, tx.plscode), print_obj_sep();
+				print_obj_pair(TYPE::plsmode, tx.plsmode), print_obj_sep();
+				print_obj_pair(TYPE::isid, tx.isid), print_obj_sep();
+				print_obj_pair(TYPE::mts, tx.isid), print_obj_sep();
 				print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
 				print_obj_end(), print_obj_dlm();
 			}
@@ -2682,9 +2686,11 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end,
 				print_obj_pair(TYPE::pil, tntxp.pil), print_obj_sep();
 				print_obj_pair(TYPE::guard, tntxp.guard), print_obj_sep();
 				print_obj_pair(TYPE::hier, tntxp.hier), print_obj_sep();
-				print_obj_pair(TYPE::isid, tntxp.isid), print_obj_sep();
-				print_obj_pair(TYPE::plsmode, tntxp.plsmode), print_obj_sep();
+				print_obj_pair(TYPE::plpid, tntxp.plpid), print_obj_sep();
+				print_obj_pair(TYPE::plsn, tntxp.plsn), print_obj_sep();
 				print_obj_pair(TYPE::plscode, tntxp.plscode), print_obj_sep();
+				print_obj_pair(TYPE::plsmode, tntxp.plsmode), print_obj_sep();
+				print_obj_pair(TYPE::isid, tntxp.isid), print_obj_sep();
 				print_obj_pair(TYPE::idx, tntxp.index), print_obj_sep(1);
 				print_obj_end(), print_obj_dlm();
 			}
@@ -2856,6 +2862,14 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 				tx.rol = any_cast<int>(field(TYPE::rol));
 				tx.pil = any_cast<int>(field(TYPE::pil));
 				tx.flags = any_cast<int>(field(TYPE::flags));
+
+				if (any_cast<int>(field(TYPE::txdata)))
+				{
+					tx.plsn = any_cast<int>(field(TYPE::plsn));
+					tx.plscode = any_cast<int>(field(TYPE::plscode));
+					tx.plsmode = any_cast<int>(field(TYPE::plsmode));
+					tx.isid = any_cast<int>(field(TYPE::isid));
+				}
 			}
 			else if (tx.ytype == e2db::YTYPE::terrestrial)
 			{
@@ -2867,6 +2881,13 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 				tx.inv = any_cast<int>(field(TYPE::tinv));
 				tx.guard = any_cast<int>(field(TYPE::guard));
 				tx.hier = any_cast<int>(field(TYPE::hier));
+				tx.sys = any_cast<int>(field(TYPE::sys));
+				tx.flags = any_cast<int>(field(TYPE::flags));
+
+				if (any_cast<int>(field(TYPE::txdata)))
+				{
+					tx.plpid = any_cast<int>(field(TYPE::plpid));
+				}
 			}
 			else if (tx.ytype == e2db::YTYPE::cable)
 			{
@@ -2874,11 +2895,16 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 				tx.sr = any_cast<int>(field(TYPE::sr));
 				tx.cfec = any_cast<int>(field(TYPE::cfec));
 				tx.inv = any_cast<int>(field(TYPE::cinv));
+				tx.sys = any_cast<int>(field(TYPE::sys));
+				tx.flags = any_cast<int>(field(TYPE::flags));
 			}
 			else if (tx.ytype == e2db::YTYPE::atsc)
 			{
 				tx.amod = any_cast<int>(field(TYPE::amod));
+				tx.sys = any_cast<int>(field(TYPE::sys));
+				tx.flags = any_cast<int>(field(TYPE::flags));
 			}
+
 			tx.dvbns = dbih->value_transponder_dvbns(tx);
 
 			if (edit)
@@ -3109,11 +3135,11 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 
 				if (any_cast<int>(field(TYPE::txdata)))
 				{
+					tntxp.plsn = any_cast<int>(field(TYPE::plsn));
+					tntxp.plscode = any_cast<int>(field(TYPE::plscode));
+					tntxp.plsmode = any_cast<int>(field(TYPE::plsmode));
 					tntxp.isid = any_cast<int>(field(TYPE::isid));
 					tntxp.mts = any_cast<int>(field(TYPE::mts));
-					tntxp.plsmode = any_cast<int>(field(TYPE::plsmode));
-					tntxp.plscode = any_cast<int>(field(TYPE::plscode));
-					tntxp.plsn = any_cast<int>(field(TYPE::plsn));
 				}
 			}
 			else if (tn.ytype == e2db::YTYPE::terrestrial)
@@ -3126,6 +3152,11 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 				tntxp.inv = any_cast<int>(field(TYPE::tinv));
 				tntxp.guard = any_cast<int>(field(TYPE::guard));
 				tntxp.hier = any_cast<int>(field(TYPE::hier));
+
+				if (any_cast<int>(field(TYPE::txdata)))
+				{
+					tntxp.plpid = any_cast<int>(field(TYPE::plpid));
+				}
 			}
 			else if (tn.ytype == e2db::YTYPE::cable)
 			{
@@ -3557,11 +3588,11 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::tmx: name = hrn ? "Transmission Mode" : "tmx"; value_type = hrv ? VALUE::val_string : VALUE::val_int; break;
 		case TYPE::guard: name = hrn ? "Guard Interval" : "guard"; value_type = hrv ? VALUE::val_string : VALUE::val_int; break;
 		case TYPE::hier: name = hrn ? "Hierarchy" : "hier"; value_type = hrv ? VALUE::val_string : VALUE::val_int; break;
-		case TYPE::isid: name = hrn ? "isid" : "isid"; value_type = VALUE::val_int; break;
-		case TYPE::mts: name = hrn ? "mts" : "mts"; value_type = VALUE::val_int; break;
+		case TYPE::plsn: name = hrn ? "plsn | mis id" : "plsn"; value_type = VALUE::val_int; break;
 		case TYPE::plsmode: name = hrn ? "plsmode" : "plsmode"; value_type = VALUE::val_int; break;
 		case TYPE::plscode: name = hrn ? "plscode" : "plscode"; value_type = VALUE::val_int; break;
-		case TYPE::plsn: name = hrn ? "plsn" : "plsn"; value_type = VALUE::val_int; break;
+		case TYPE::isid: name = hrn ? "is id" : "isid"; value_type = VALUE::val_int; break;
+		case TYPE::mts: name = hrn ? "mts" : "mts"; value_type = VALUE::val_int; break;
 		case TYPE::pos: name = hrn ? "Position" : "pos"; value_type = hrv ? VALUE::val_string : VALUE::val_int; break;
 		case TYPE::diseqc: name = hrn ? "diseqc" : "diseqc"; value_type = VALUE::val_int; break;
 		case TYPE::uncomtd: name = hrn ? "uncomtd" : "uncomtd"; value_type = VALUE::val_int; break;
@@ -3579,10 +3610,8 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::dname: name = hrn ? "dname" : "dname"; value_type = VALUE::val_string; break;
 		case TYPE::itype: name = hrn ? "itype" : "itype"; value_type = VALUE::val_int; break;
 		case TYPE::flags: name = hrn ? "Flags" : "flags"; value_type = VALUE::val_int; break;
-		//TODO
-		// case TYPE::oflgs: name = hrn ? "Other Flags" : "oflgs"; value_type = VALUE::val_string; break;
-		case TYPE::chdata: name = hrn ? "Service data" : "chdata"; value_type = VALUE::val_obj; break;
-		case TYPE::txdata: name = hrn ? "Transponder data" : "txdata"; value_type = VALUE::val_obj; break;
+		case TYPE::chdata: name = hrn ? "Service flags" : "chdata"; value_type = VALUE::val_obj; break;
+		case TYPE::txdata: name = hrn ? "Transponder flags" : "txdata"; value_type = VALUE::val_obj; break;
 		case TYPE::bsdata: name = hrn ? "Userbouquets" : "userbouquets"; value_type = VALUE::val_obj; break;
 		case TYPE::ubdata: name = hrn ? "Channels" : "channels"; value_type = VALUE::val_obj; break;
 		case TYPE::tvdata: name = hrn ? "Tables" : "tables"; value_type = VALUE::val_obj; break;
@@ -3604,11 +3633,12 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::srcid:
 		case TYPE::freq:
 		case TYPE::sr:
+		case TYPE::plpid:
+		case TYPE::plsn:
+		case TYPE::plscode:
+		case TYPE::plsmode:
 		case TYPE::isid:
 		case TYPE::mts:
-		case TYPE::plsmode:
-		case TYPE::plscode:
-		case TYPE::plsn:
 		case TYPE::diseqc:
 		case TYPE::uncomtd:
 		case TYPE::feed:
@@ -3641,8 +3671,6 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::qname:
 		case TYPE::nname:
 		case TYPE::dname:
-		//TODO
-		// case TYPE::oflgs:
 			str = any_cast<string>(val);
 		break;
 		case TYPE::dbtype:
@@ -3914,11 +3942,12 @@ std::any e2db_cli::field(TYPE type, bool required)
 		case TYPE::tmx: label = "Transmission Mode"; description = "exact match: <empty>, Auto, 2k, 8k, 4k, 1k, 16k, 32k"; break;
 		case TYPE::guard: label = "Guard Interval"; description = "exact match: <empty>, Auto, 1/32, 1/16, 1/8, 1/4, 1/128, 19/128, 19/256"; break;
 		case TYPE::hier: label = "Hierarchy"; description = "exact match: <empty>, 0, 1, 2, 4"; break;
-		case TYPE::isid: label = "isid"; description = "in digits"; break;
-		case TYPE::mts: label = "mts"; description = "in digits"; break;
-		case TYPE::plsmode: label = "plsmode"; description = "in digits"; break;
+		case TYPE::plpid: label = "plp id"; description = "in digits"; break;
+		case TYPE::isid: label = "is id"; description = "in digits"; break;
+		case TYPE::plsn: label = "plsn | mis id"; description = "in digits"; break;
 		case TYPE::plscode: label = "plscode"; description = "in digits"; break;
-		case TYPE::plsn: label = "plsn"; description = "in digits"; break;
+		case TYPE::plsmode: label = "plsmode"; description = "in digits"; break;
+		case TYPE::mts: label = "mts"; description = "in digits"; break;
 		case TYPE::pos: label = "Position"; description = "in degree, eg. 0.0E, 0.0W"; break;
 		case TYPE::diseqc: label = "diseqc"; description = "in digits"; break;
 		case TYPE::uncomtd: label = "uncomtd"; description = "in digits"; break;
@@ -3936,10 +3965,8 @@ std::any e2db_cli::field(TYPE type, bool required)
 		case TYPE::dname: label = "dname"; break;
 		case TYPE::itype: label = "itype"; break;
 		case TYPE::flags: label = "Flags"; description = "in digits"; break;
-		//TODO
-		// case TYPE::oflgs: label = "Other Flags"; break;
-		case TYPE::chdata: label = "Add Service data?"; description = "[Y]es or [N]one"; break;
-		case TYPE::txdata: label = "Add Transponder data?"; description = "[Y]es or [N]one"; break;
+		case TYPE::chdata: label = "Add optional Service flags?"; description = "[Y]es or [N]one"; break;
+		case TYPE::txdata: label = "Add optional Transponder flags?"; description = "[Y]es or [N]one"; break;
 		default: return -1;
 	}
 
@@ -3978,11 +4005,12 @@ std::any e2db_cli::field(TYPE type, bool required)
 				case TYPE::srcid:
 				case TYPE::freq:
 				case TYPE::sr:
+				case TYPE::plpid:
+				case TYPE::plsn:
+				case TYPE::plscode:
+				case TYPE::plsmode:
 				case TYPE::isid:
 				case TYPE::mts:
-				case TYPE::plsmode:
-				case TYPE::plscode:
-				case TYPE::plsn:
 				case TYPE::diseqc:
 				case TYPE::uncomtd:
 				case TYPE::flags:

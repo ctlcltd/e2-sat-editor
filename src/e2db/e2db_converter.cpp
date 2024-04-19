@@ -1835,12 +1835,9 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>>& s
 			// txp index
 			else if (i == 31)
 				tx.index = std::atoi(val.data());
-			//TODO
-			// txp other flags
+			// txp optional flags
 			else if (i == 32)
-			{
-				// tx.oflgs = val;
-			}
+				value_transponder_feopts(val, tx);
 			// cached
 			else if (i == 33)
 				ch.data[SDATA::c] = value_channel_cached(val);
@@ -2618,7 +2615,7 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 		ss << CSV_ESCAPE << "Pilot" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Guard Interval" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Hierarchy" << CSV_ESCAPE << CSV_SEPARATOR;
-		ss << CSV_ESCAPE << "SAT Flags" << CSV_ESCAPE << CSV_SEPARATOR;
+		ss << CSV_ESCAPE << "Flags" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Txp Index" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Txp Flags" << CSV_ESCAPE << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << "Service Cached" << CSV_ESCAPE;
@@ -2728,9 +2725,7 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			}
 			int flags = tx.flags;
 			int txidx = tx.index;
-			//TODO
-			//string txflgs = tx.oflgs;
-			string txfeopts;
+			string txfeopts = value_transponder_feopts(tx);
 
 			string cached;
 			if (ch.data.count(SDATA::c))

@@ -838,7 +838,7 @@ void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string filename, bool ep
 			if (! ub.bname.empty())
 				add_userbouquet(int (index["ubs"].size()), ub);
 			else
-				error("parse_e2db_bouquet", "Parser Error", msg("userbouquet (%s)", ub.bname + ':' + to_string(ln)));
+				error("parse_e2db_bouquet", "Parser Error", msg("userbouquet (%s)", filename + ':' + to_string(ln)));
 		}
 		else if (line.size() >= 6 && line.find("#NAME") != string::npos)
 		{
@@ -864,10 +864,10 @@ void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string filename, bool ep
 
 			if (add)
 			{
-				if (bs.bname.empty())
+				if (! bs.bname.empty())
 					add_bouquet(bs.btype, bs);
 				else
-					error("parse_e2db_bouquet", "Parser Error", msg("bouquet (%s)", bs.bname + ':' + to_string(ln)));
+					error("parse_e2db_bouquet", "Parser Error", msg("bouquet (%s)", filename + ':' + to_string(ln)));
 			}
 		}
 		ln++;

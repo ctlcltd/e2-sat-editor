@@ -209,7 +209,7 @@ string e2db_abstract::value_reference_id(service ch)
 
 	char refid[50];
 	// %1d:%4d:%4X:%4X:%4X:%4X:%X:%d:%d:%d:
-	std::snprintf(refid, 44, "%d:%d:%X:%X:%X:%X:%X:0:0:0", etype, atype, stype, ssid, tsid, onid, dvbns);
+	std::snprintf(refid, 50, "%d:%d:%X:%X:%X:%X:%X:0:0:0", etype, atype, stype, ssid, tsid, onid, dvbns);
 
 	return refid;
 }
@@ -229,7 +229,7 @@ string e2db_abstract::value_reference_id(channel_reference chref)
 
 	char refid[50];
 	// %1d:%4d:%4X:%4X:%4X:%4X:%X:%d:%d:%d:
-	std::snprintf(refid, 44, "%d:%d:%X:%X:%X:%X:%X:%d:%d:%d", etype, atype, anum, ssid, tsid, onid, dvbns, x7, x8, x9);
+	std::snprintf(refid, 50, "%d:%d:%X:%X:%X:%X:%X:%d:%d:%d", etype, atype, anum, ssid, tsid, onid, dvbns, x7, x8, x9);
 
 	return refid;
 }
@@ -1186,6 +1186,61 @@ string e2db_abstract::value_transponder_tmx_mode(int tmx)
 	return "";
 }
 
+void e2db_abstract::value_transponder_feopts(string str, transponder& tx)
+{
+	YTYPE ytype = static_cast<YTYPE>(tx.ytype);
+
+	if (ytype == YTYPE::satellite)
+	{
+		int plsn, isid, plscode, plsmode;
+		plsn = -1, isid = -1, plscode = -1, plsmode = -1;
+
+		std::sscanf(str.c_str(), "%d:%d:%d:%d", &plsn, &isid, &plscode, &plsmode);
+
+		tx.plsn = plsn;
+		tx.isid = isid;
+		tx.plscode = plscode;
+		tx.plsmode = plsmode;
+	}
+	else if (ytype == YTYPE::terrestrial)
+	{
+		int plpid;
+		plpid = -1;
+
+		std::sscanf(str.c_str(), "%d:", &plpid);
+
+		tx.plpid = plpid;
+	}
+}
+
+string e2db_abstract::value_transponder_feopts(transponder tx)
+{
+	YTYPE ytype = static_cast<YTYPE>(tx.ytype);
+
+	if (ytype == YTYPE::satellite)
+	{
+		int plsn = tx.plsn != -1 ? tx.plsn : 0;
+		int isid = tx.isid != -1 ? tx.isid : 0;
+		int plscode = tx.plscode != -1 ? tx.plscode : 0;
+		int plsmode = tx.plsmode != -1 ? tx.plsmode : 0;
+
+		char feopts[37];
+		std::snprintf(feopts, 37, "%d:%d:%d:%d", plsn, isid, plscode, plsmode);
+
+		return feopts;
+	}
+	else if (ytype == YTYPE::terrestrial)
+	{
+		int plpid = tx.plpid != -1 ? tx.plpid : 0;
+
+		char feopts[37];
+		std::snprintf(feopts, 37, "%d:0:0:0", plpid);
+
+		return feopts;
+	}
+	return "";
+}
+
 int e2db_abstract::value_bouquet_type(string str)
 {
 	if (str.empty())
@@ -1634,8 +1689,8 @@ void e2db_abstract::debugger()
 		cout << "plpid: " << tx.plpid << endl;
 		cout << "plsn: " << tx.plsn << endl;
 		cout << "plscode: " << tx.plscode << endl;
-		cout << "isid: " << tx.isid << endl;
 		cout << "plsmode: " << tx.plsmode << endl;
+		cout << "isid: " << tx.isid << endl;
 		cout << "flags: " << tx.flags << endl;
 		cout << "idx: " << tx.index << endl;
 		cout << endl;
@@ -1770,10 +1825,12 @@ void e2db_abstract::debugger()
 				cout << "pil: " << tntxp.pil << endl;
 				cout << "guard: " << tntxp.guard << endl;
 				cout << "hier: " << tntxp.hier << endl;
-				cout << "isid: " << tntxp.isid << endl;
-				cout << "plsmode: " << tntxp.plsmode << endl;
-				cout << "plscode: " << tntxp.plscode << endl;
+				cout << "plpid: " << tntxp.plpid << endl;
 				cout << "plsn: " << tntxp.plsn << endl;
+				cout << "plscode: " << tntxp.plscode << endl;
+				cout << "plsmode: " << tntxp.plsmode << endl;
+				cout << "isid: " << tntxp.isid << endl;
+				cout << "mts: " << tntxp.mts << endl;
 				cout << "idx: " << tntxp.index << endl;
 				cout << endl;
 			}
