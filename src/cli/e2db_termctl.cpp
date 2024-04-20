@@ -57,15 +57,18 @@ e2db_termctl::e2db_termctl()
 	this->history = new std::iostream(history_buf);
 
 #if E2SE_BUILD == E2SE_TARGET_DEBUG
-	*history << "read directory-not-exists" << std::endl;
-	*history << "edit userbouquet id" << std::endl;
-	*history << "add tunersets id" << std::endl;
-	*history << "edit tunersets_transponder id" << std::endl;
-	*history << "add transponder" << std::endl;
-	*history << "edit service id" << std::endl;
-	*history << "list transponders" << std::endl;
 	*history << "list channels userbouquet.dbe01.tv" << std::endl;
-	*history << "read e2se-seeds/enigma_db" << std::endl;
+	*history << "list services" << std::endl;
+	*history << "read ../../../e2se-seeds/enigma_db" << std::endl;
+	// *history << "read directory-not-exists" << std::endl;
+	// *history << "edit userbouquet id" << std::endl;
+	// *history << "add tunersets id" << std::endl;
+	// *history << "edit tunersets_transponder id" << std::endl;
+	// *history << "add transponder" << std::endl;
+	// *history << "edit service id" << std::endl;
+	// *history << "list transponders" << std::endl;
+	// *history << "list channels userbouquet.dbe01.tv" << std::endl;
+	// *history << "read e2se-seeds/enigma_db" << std::endl;
 #endif
 
 	this->last = this->history->tellg();

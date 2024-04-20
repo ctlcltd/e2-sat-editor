@@ -140,6 +140,8 @@ void e2db_cli::cmd_shell()
 			shell_command_convert(is);
 		else if (cmd == "debug")
 			shell_command_debug(is);
+		else if (cmd == "preferences")
+			shell_command_preferences(is);
 		else if (! cmd.empty())
 			shell_error(cmd);
 
@@ -248,6 +250,8 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 			shell_usage(COMMAND::convert);
 		else if (hint == "debug")
 			shell_usage(COMMAND::debug);
+		else if (hint == "preferences")
+			shell_usage(COMMAND::preferences);
 		else
 		{
 			cerr << "Type Error: " << msg("Unknown usage type: %s", hint) << endl;
@@ -759,6 +763,27 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 	{
 		shell_debug();
 	}
+	else if (command == COMMAND::preferences)
+	{
+		string type, opt0;
+		*is >> std::skipws >> type >> opt0;
+		OBJIO format = OBJIO::tabular;
+
+		if (! opt0.empty())
+		{
+			if (opt0 == "tabular")
+				format = OBJIO::tabular;
+			else if (opt0 == "byline")
+				format = OBJIO::byline;
+			else if (opt0 == "json")
+				format = OBJIO::json;
+		}
+
+		if (type == "output")
+			shell_preference_output(format);
+		else
+			cerr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;	
+	}
 	else
 	{
 		cerr << "Error: " << msg("Unknown command") << endl;
@@ -779,6 +804,7 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 		shell_usage(COMMAND::fwrite, false);
 		shell_usage(COMMAND::print, false);
 		shell_usage(COMMAND::debug, false);
+		shell_usage(COMMAND::preferences, false);
 
 		// cout << "  ", cout.width(7), cout << left << "history", cout << ' ';
 		// cout.width(24), cout << left << "file", cout << ' ' << "Save history to file, instead of memory." << endl;
@@ -795,6 +821,7 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 		cout.width(10), cout << ' ', cout << "parse" << endl;
 		cout.width(10), cout << ' ', cout << "make" << endl;
 		cout.width(10), cout << ' ', cout << "convert" << endl;
+		cout.width(10), cout << ' ', cout << "preferences" << endl;
 	}
 	else if (hint == COMMAND::add)
 	{
@@ -1070,6 +1097,18 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 	{
 		cout << "  ", cout.width(32), cout << left << "debug", cout << ' ' << "Display debug info." << endl;
 		cout << endl;
+	}
+	else if (hint == COMMAND::preferences)
+	{
+		cout << "  ", cout.width(32), cout << left << "preferences", cout << ' ' << "CLI preferences." << endl;
+		cout << endl;
+
+		if (specs)
+		{
+			cout << "  ", cout.width(7), cout << left << "preferences", cout << ' ';
+			cout.width(39), cout << left << "output  [format]", cout << ' ' << "Output format (tabular, byline, json)" << endl;
+			cout << endl;
+		}
 	}
 }
 
@@ -2273,7 +2312,7 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, bool paged, int limit, int pos
 	}
 }
 
-//TODO improve reference print
+//TODO improve
 void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end, string bname)
 {
 	try
@@ -2364,6 +2403,8 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end,
 			for (; it != last; it++)
 			{
 				e2db::service ch = dbih->db.services[it->second];
+
+				string refid = dbih->get_reference_id(ch.chid);
 				vector<string> vxnul;
 
 				print_obj_begin(), print_obj_sep(-1);
@@ -2378,7 +2419,6 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end,
 				print_obj_pair(TYPE::snum, ch.snum), print_obj_sep();
 				print_obj_pair(TYPE::srcid, ch.srcid), print_obj_sep();
 
-				//TODO
 				print_obj_pair(TYPE::chdata, NULL);
 				print_obj_begin(1), print_obj_sep(-1);
 				print_obj_pair(TYPE::sdata_p, ch.data.count(e2db::SDATA::p) ? ch.data[e2db::SDATA::p] : vxnul), print_obj_sep();
@@ -2388,6 +2428,7 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end,
 				print_obj_end(1), print_obj_sep();
 
 				print_obj_pair(TYPE::locked, ch.locked), print_obj_sep();
+				print_obj_pair(TYPE::refid, refid), print_obj_sep();
 				print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
 				print_obj_end(), print_obj_dlm();
 			}
@@ -2727,26 +2768,39 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end,
 
 				if (chref.marker)
 				{
+					string refid = dbih->get_reference_id(chref);
+
 					print_obj_begin(), print_obj_sep(-1);
 					print_obj_pair(TYPE::chid, chref.chid), print_obj_sep();
 					print_obj_pair(TYPE::mname, chref.value), print_obj_sep();
 					print_obj_pair(TYPE::etype, chref.etype), print_obj_sep();
+					print_obj_pair(TYPE::atype, chref.atype), print_obj_sep();
+					print_obj_pair(TYPE::mnum, chref.anum), print_obj_sep();
+					print_obj_pair(TYPE::refid, refid), print_obj_sep();
 					print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
 					print_obj_end(), print_obj_dlm();
 				}
 				else if (chref.stream)
 				{
+					string refid = dbih->get_reference_id(chref);
+
 					print_obj_begin(), print_obj_sep(-1);
 					print_obj_pair(TYPE::chid, chref.chid), print_obj_sep();
 					print_obj_pair(TYPE::chvalue, chref.value), print_obj_sep();
-					print_obj_pair(TYPE::atype, chref.atype), print_obj_sep();
+					print_obj_pair(TYPE::etype, chref.etype), print_obj_sep();
+					print_obj_pair(TYPE::ssid, chref.ref.ssid), print_obj_sep();
+					print_obj_pair(TYPE::tsid, chref.ref.tsid), print_obj_sep();
+					print_obj_pair(TYPE::stype, chref.anum), print_obj_sep();
 					print_obj_pair(TYPE::churi, chref.uri), print_obj_sep();
+					print_obj_pair(TYPE::refid, refid), print_obj_sep();
 					print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
 					print_obj_end(), print_obj_dlm();
 				}
 				else if (dbih->db.services.count(chref.chid))
 				{
 					e2db::service ch = dbih->db.services[chref.chid];
+
+					string refid = dbih->get_reference_id(ch.chid);
 					vector<string> vxnul;
 
 					print_obj_begin(), print_obj_sep(-1);
@@ -2757,7 +2811,6 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end,
 					print_obj_pair(TYPE::tsid, ch.tsid), print_obj_sep();
 					print_obj_pair(TYPE::stype, ch.stype), print_obj_sep();
 
-					//TODO
 					print_obj_pair(TYPE::chdata, NULL);
 					print_obj_begin(1), print_obj_sep(-1);
 					print_obj_pair(TYPE::sdata_p, ch.data.count(e2db::SDATA::p) ? ch.data[e2db::SDATA::p] : vxnul), print_obj_sep();
@@ -2766,6 +2819,7 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end,
 					print_obj_pair(TYPE::sdata_f, ch.data.count(e2db::SDATA::f) ? ch.data[e2db::SDATA::f] : vxnul), print_obj_sep(1);
 					print_obj_end(1), print_obj_sep();
 
+					print_obj_pair(TYPE::refid, refid), print_obj_sep();
 					print_obj_pair(TYPE::locked, ch.locked), print_obj_sep();
 					print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
 					print_obj_end(), print_obj_dlm();
@@ -2785,7 +2839,6 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end,
 	{
 		cerr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
 	}
-	//TODO better message
 	catch (const std::bad_any_cast& err)
 	{
 		cerr << "Error: " << msg(MSG::except_bad_any_cast, err.what()) << endl;
@@ -2820,6 +2873,7 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, int ref, string bname, string 
 	shell_entry_edit(entry_type, true, id, ref, bname);
 }
 
+//TODO improve
 void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref, string bname)
 {
 	using std::any_cast;
@@ -2881,7 +2935,6 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 				tx.inv = any_cast<int>(field(TYPE::tinv));
 				tx.guard = any_cast<int>(field(TYPE::guard));
 				tx.hier = any_cast<int>(field(TYPE::hier));
-				tx.sys = any_cast<int>(field(TYPE::sys));
 				tx.flags = any_cast<int>(field(TYPE::flags));
 
 				if (any_cast<int>(field(TYPE::txdata)))
@@ -2895,13 +2948,11 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 				tx.sr = any_cast<int>(field(TYPE::sr));
 				tx.cfec = any_cast<int>(field(TYPE::cfec));
 				tx.inv = any_cast<int>(field(TYPE::cinv));
-				tx.sys = any_cast<int>(field(TYPE::sys));
 				tx.flags = any_cast<int>(field(TYPE::flags));
 			}
 			else if (tx.ytype == e2db::YTYPE::atsc)
 			{
 				tx.amod = any_cast<int>(field(TYPE::amod));
-				tx.sys = any_cast<int>(field(TYPE::sys));
 				tx.flags = any_cast<int>(field(TYPE::flags));
 			}
 
@@ -3185,8 +3236,14 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 			if (ref == 0) // marker
 			{
 				chref.marker = true;
+				chref.etype = 1;
 				chref.value = any_cast<string>(field(TYPE::mname));
 				chref.atype = any_cast<int>(field(TYPE::atype));
+
+				if (any_cast<int>(field(TYPE::ffdata)))
+				{
+					chref.anum = any_cast<int>(field(TYPE::mnum));
+				}
 			}
 			else if (ref == 2) // stream
 			{
@@ -3194,6 +3251,9 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 				chref.etype = any_cast<int>(field(TYPE::etype));
 				chref.value = any_cast<string>(field(TYPE::chvalue));
 				chref.uri = any_cast<string>(field(TYPE::churi));
+
+				if (chref.etype == 0)
+					chref.etype = 1;
 			}
 			else // service
 			{
@@ -3201,6 +3261,7 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 					throw std::runtime_error (msg("Service \"%s\" not exists.", id));
 
 				chref.chid = id;
+				chref.etype = 1;
 			}
 
 			if (edit)
@@ -3436,6 +3497,29 @@ void e2db_cli::shell_debug()
 	cout << log->str();
 }
 
+void e2db_cli::shell_preference_output(OBJIO format)
+{
+	if (format == OBJIO::tabular)
+	{
+		__objio.out = OBJIO::tabular;
+		__objio.hrn = true;
+	}
+	else if (format == OBJIO::byline)
+	{
+		__objio.out = OBJIO::byline;
+		__objio.hrn = false;
+	}
+	else if (format == OBJIO::json)
+	{
+		__objio.out = OBJIO::json;
+		__objio.hrn = false;
+	}
+	else
+	{
+		cerr << "Error: " << msg("Wrong parameter format.") << endl;
+	}
+}
+
 void e2db_cli::print_obj_begin(int depth)
 {
 	if (__objio.out == OBJIO::tabular)
@@ -3540,7 +3624,7 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::idx: name = hrn ? "Index" : "idx"; value_type = VALUE::val_int; break;
 		case TYPE::chid: name = hrn ? "CHID" : "chid"; value_type = VALUE::val_string; break;
 		case TYPE::txid: name = hrn ? "TXID" : "txid"; value_type = VALUE::val_string; break;
-		case TYPE::refid: name = hrn ? "REFID" : "refid"; value_type = VALUE::val_string; break;
+		case TYPE::refid: name = hrn ? "Reference" : "refid"; value_type = VALUE::val_string; break;
 		case TYPE::tvid: name = hrn ? "TVID" : "tvid"; value_type = VALUE::val_int; break;
 		case TYPE::tnid: name = hrn ? "TNID" : "tnid"; value_type = VALUE::val_string; break;
 		case TYPE::trid: name = hrn ? "TRID" : "trid"; value_type = VALUE::val_string; break;
@@ -3560,6 +3644,7 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::sdata_C: name = hrn ? "Service CAS" : "sdata_C"; value_type = VALUE::val_string; break;
 		case TYPE::sdata_f: name = hrn ? "Service Flags" : "sdata_f"; value_type = VALUE::val_string; break;
 		case TYPE::mname: name = hrn ? "Marker Name" : "mname"; value_type = VALUE::val_string; break;
+		case TYPE::mnum: name = hrn ? "Marker Number" : "mnum"; value_type = VALUE::val_int; break;
 		case TYPE::chvalue: name = hrn ? "Channel Name" : "chvalue"; value_type = VALUE::val_string; break;
 		case TYPE::churi: name = hrn ? "Channel URI" : "churi"; value_type = VALUE::val_string; break;
 		case TYPE::etype: name = hrn ? "Favourite Type" : "etype"; value_type = VALUE::val_int; break;
@@ -3612,6 +3697,7 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::flags: name = hrn ? "Flags" : "flags"; value_type = VALUE::val_int; break;
 		case TYPE::chdata: name = hrn ? "Service flags" : "chdata"; value_type = VALUE::val_obj; break;
 		case TYPE::txdata: name = hrn ? "Transponder flags" : "txdata"; value_type = VALUE::val_obj; break;
+		case TYPE::ffdata: name = hrn ? "Favourite flags" : "txdata"; value_type = VALUE::val_obj; break;
 		case TYPE::bsdata: name = hrn ? "Userbouquets" : "userbouquets"; value_type = VALUE::val_obj; break;
 		case TYPE::ubdata: name = hrn ? "Channels" : "channels"; value_type = VALUE::val_obj; break;
 		case TYPE::tvdata: name = hrn ? "Tables" : "tables"; value_type = VALUE::val_obj; break;
@@ -3645,6 +3731,7 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::itype:
 		case TYPE::etype:
 		case TYPE::atype:
+		case TYPE::mnum:
 		case TYPE::flags:
 			d = any_cast<int>(val);
 		break;
@@ -3816,19 +3903,75 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 				str = dbih->value_bouquet_type(d);
 		break;
 
-		//TODO flags
-
  		case TYPE::sdata_p:
- 			// str = any_cast<string>(val);
+ 			{
+ 				vector<string> vx = any_cast<vector<string>>(val);
+
+ 				if (! vx.empty())
+ 				{
+ 					str = vx[0];
+ 				}
+ 			}
 		break;
  		case TYPE::sdata_c:
- 			// str = any_cast<string>(val);
+ 			{
+ 				vector<string> vx = any_cast<vector<string>>(val);
+
+ 				if (! vx.empty())
+ 				{
+		 			string cached;
+
+					for (size_t i = 0; i < vx.size(); i++)
+					{
+						cached.append(vx[i]);
+						if (i != vx.size() - 1)
+							cached.append("|");
+					}
+
+					str = cached;
+				}
+ 			}
 		break;
  		case TYPE::sdata_C:
- 			// str = any_cast<string>(val);
+ 			{
+ 				vector<string> vx = any_cast<vector<string>>(val);
+
+ 				if (! vx.empty())
+ 				{
+	 				string scas = "$";
+	 				string scaid;
+					vector<string> cas;
+
+					for (string & w : vx)
+					{
+						string caidpx = w.substr(0, 2);
+						if (e2db::SDATA_CAS.count(caidpx))
+							cas.emplace_back(e2db::SDATA_CAS.at(caidpx) + ':' + w);
+						else
+							cas.emplace_back(w);
+					}
+					for (size_t i = 0; i < cas.size(); i++)
+					{
+						scaid.append(cas[i]);
+						if (i != cas.size() - 1)
+							scaid.append("|");
+					}
+
+					str.append(scas);
+					str.append(" ");
+					str.append(scaid);
+				}
+ 			}
 		break;
  		case TYPE::sdata_f:
- 			// str = any_cast<string>(val);
+ 			{
+ 				vector<string> vx = any_cast<vector<string>>(val);
+
+ 				if (! vx.empty())
+ 				{
+ 					str = vx[0];
+ 				}
+ 			}
 		break;
 
 		default:
@@ -3919,6 +4062,7 @@ std::any e2db_cli::field(TYPE type, bool required)
 		case TYPE::sdata_C: label = "Service CAS"; description = "comma separated values in hex or <empty>, eg. C:0101,C:0202"; break;
 		case TYPE::sdata_f: label = "Service Flags"; description = "comma separated values in hex or <empty>, eg. f:0101,f:0202"; break;
 		case TYPE::mname: label = "Marker Name"; break;
+		case TYPE::mnum: label = "Marker Number"; description = "in digits"; break;
 		case TYPE::chvalue: label = "Channel Name"; break;
 		case TYPE::churi: label = "Channel URI"; break;
 		case TYPE::etype: label = "Favourite Type"; description = "exact match: 1 = broadcast, 2 = file, 3 = 4097, 8139 = youtube, 8193 = eservice"; break;
@@ -3967,6 +4111,7 @@ std::any e2db_cli::field(TYPE type, bool required)
 		case TYPE::flags: label = "Flags"; description = "in digits"; break;
 		case TYPE::chdata: label = "Add optional Service flags?"; description = "[Y]es or [N]one"; break;
 		case TYPE::txdata: label = "Add optional Transponder flags?"; description = "[Y]es or [N]one"; break;
+		case TYPE::ffdata: label = "Add optional Favourite flags?"; description = "[Y]es or [N]one"; break;
 		default: return -1;
 	}
 
@@ -4013,6 +4158,9 @@ std::any e2db_cli::field(TYPE type, bool required)
 				case TYPE::mts:
 				case TYPE::diseqc:
 				case TYPE::uncomtd:
+				case TYPE::etype:
+				case TYPE::atype:
+				case TYPE::mnum:
 				case TYPE::flags:
 					d = std::atoi(str.data());
 					if (! d && required)
@@ -4040,6 +4188,7 @@ std::any e2db_cli::field(TYPE type, bool required)
 				break;
 				case TYPE::chdata:
 				case TYPE::txdata:
+				case TYPE::ffdata:
 				case TYPE::locked:
 				case TYPE::feed:
 				case TYPE::hidden:

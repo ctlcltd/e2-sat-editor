@@ -37,7 +37,6 @@ using namespace e2se;
 namespace e2se_gui
 {
 
-//TODO FIX add favourite
 editFavourite::editFavourite(dataHandler* data)
 {
 	this->log = new logger("gui", "editFavourite");

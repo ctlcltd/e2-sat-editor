@@ -54,7 +54,8 @@ class e2db_cli
 			parse,
 			make,
 			convert,
-			debug
+			debug,
+			preferences
 		};
 
 		enum ENTRY {
@@ -85,13 +86,13 @@ class e2db_cli
 			ssid, dvbns, tsid, onid, stype, snum, srcid, locked, chname, 
 			sdata_p, sdata_c, sdata_C, sdata_f, 
 			freq, sr, pol, fec, hpfec, lpfec, cfec, inv, tinv, cinv, sys, tsys, csys, asys, mod, tmod, cmod, amod, rol, pil, band, tmx, guard, hier, plpid, 
-			chdata, txdata, bsdata, ubdata, tvdata, tndata, flags, 
+			chdata, txdata, ffdata, bsdata, ubdata, tvdata, tndata, flags, 
 			plsn, plsmode, plscode, isid, mts, 
 			pos, diseqc, uncomtd, charset, 
 			tname, country, feed, 
 			bname, pname, rname, qname, nname, btype, hidden, 
 			mname, dname, itype, 
-			chvalue, churi, etype, atype, 
+			chvalue, churi, etype, atype, mnum, 
 		};
 
 		enum VALUE {
@@ -154,6 +155,7 @@ class e2db_cli
 		void shell_command_convert(istream* is) { shell_resolver(COMMAND::convert, is); }
 		void shell_command_merge(istream* is) { shell_resolver(COMMAND::merge, is); }
 		void shell_command_debug(istream* is) { shell_resolver(COMMAND::debug, is); }
+		void shell_command_preferences(istream* is) { shell_resolver(COMMAND::preferences, is); }
 
 		void shell_resolver(COMMAND command, istream* is);
 		void shell_usage(COMMAND hint, bool specs = true);
@@ -180,6 +182,7 @@ class e2db_cli
 		void shell_entry_parentallock(ENTRY entry_type, string id, bool flag);
 		void shell_print(int opt);
 		void shell_debug();
+		void shell_preference_output(OBJIO format);
 
 		void print_obj_begin(int depth = 0);
 		void print_obj_end(int depth = 0);
