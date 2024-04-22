@@ -133,12 +133,13 @@ void editUserbouquet::store()
 	auto* dbih = this->data->dbih;
 
 	e2db::userbouquet ub;
+
 	if (this->state.edit)
 	{
-		if (! dbih->userbouquets.count(bname))
+		if (dbih->userbouquets.count(bname))
+			ub = dbih->userbouquets[bname];
+		else
 			return error("store", tr("Error", "error").toStdString(), tr("Userbouquet \"%1\" not exists.", "error").arg(bname.data()).toStdString());
-
-		ub = dbih->userbouquets[bname];
 	}
 
 	for (auto & item : fields)

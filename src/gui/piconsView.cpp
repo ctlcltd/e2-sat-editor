@@ -141,6 +141,7 @@ void piconsView::layout()
 #endif
 	this->action.acrn_prefs->setIcon(theme->dynamicIcon("list-prefs-menu", this->action.acrn_prefs));
 	this->action.acrn_prefs->setWhatsThis(tr("Picons Preferences", "corner"));
+	this->action.acrn_prefs->setToolTip(tr("Picons Preferences", "corner"));
 	this->action.acrn_prefs->connect(this->action.acrn_prefs, &QPushButton::pressed, [=]() {
 		QMenu* menu = this->listPrefsCornerMenu();
 		// menu->popup(this->action.acrn_prefs->mapToGlobal(this->action.acrn_prefs->pos()));

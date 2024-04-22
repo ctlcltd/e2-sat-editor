@@ -630,10 +630,10 @@ void editTunersetsTransponder::store()
 
 	if (this->state.edit)
 	{
-		if (! tns.transponders.count(trid))
+		if (tns.transponders.count(trid))
+			tntxp = tns.transponders[trid];
+		else
 			return error("store", tr("Error", "error").toStdString(), tr("Tuner settings transponder \"%1\" not exists.", "error").arg(trid.data()).toStdString());
-
-		tntxp = tns.transponders[trid];
 	}
 
 	for (auto & item : fields)

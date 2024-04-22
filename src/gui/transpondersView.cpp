@@ -198,6 +198,7 @@ void transpondersView::layout()
 	toolBarSpacer(list_ats);
 	this->action.list_search = toolBarButton(list_ats, tr("Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->listSearchToggle(); });
 
+	this->action.list_newtx->setWhatsThis(tr("New Transponder", "toolbar"));
 	this->action.list_newtx->setToolTip(tr("New Transponder", "toolbar"));
 
 	this->action.list_search->setDisabled(true);

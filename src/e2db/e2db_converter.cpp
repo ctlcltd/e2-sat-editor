@@ -3862,9 +3862,9 @@ th { position: sticky; top: -1px; background-color: Canvas }\n\
 table, td, th { border: 1px solid; border-color: ButtonBorder }\n\
 th, td.chname, td.name, td.refid, td.stype, td.atype, td.pname { white-space: nowrap }\n\
 td.refid, tr.marker td.name, tr.marker td.atype { font-weight: bold }\n\
-span.cas, tr.marker td.name { font-size: small }\n\
-td.trid { padding-inline-start: .8em; padding-inline-end: 1.4em }\n\
+span.cas, tr.marker td.name, tr.marker td.atype { font-size: small }\n\
 td.refid { font-size: smaller }\n\
+td.trid { padding-inline-start: .8em; padding-inline-end: 1.4em }\n\
 span.cas { margin-inline-start: .3em }\n\
 @media (prefers-color-scheme: light) { html { color-scheme: light } }\n\
 @media (prefers-color-scheme: dark) { html { color-scheme: dark } }\n\

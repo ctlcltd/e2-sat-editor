@@ -234,10 +234,10 @@ void editMarker::retrieve()
 	e2db::userbouquet ub = dbih->userbouquets[bname];
 	e2db::channel_reference chref;
 
-	if (! ub.channels.count(chid))
+	if (ub.channels.count(chid))
+		chref = ub.channels[chid];
+	else
 		return error("retrieve", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" not exists.", "error").arg(chid.data()).toStdString());
-
-	chref = ub.channels[chid];
 
 	if (! chref.marker)
 		return error("retrieve", tr("Error", "error").toStdString(), tr("Channel reference mismatch \"%1\".", "error").arg(chid.data()).toStdString());

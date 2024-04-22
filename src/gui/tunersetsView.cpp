@@ -305,6 +305,7 @@ void tunersetsView::layout()
 #endif
 	this->action.tcrn_edit->setIcon(theme->dynamicIcon("edit-tunersets", this->action.tcrn_edit));
 	this->action.tcrn_edit->setWhatsThis(tr("Edit Settings", "corner"));
+	this->action.tcrn_edit->setToolTip(tr("Edit Settings", "corner"));
 	this->action.tcrn_edit->connect(this->action.tcrn_edit, &QPushButton::pressed, [=]() {
 		QMouseEvent mouseRelease(QEvent::MouseButtonRelease, this->action.tcrn_edit->pos(), this->action.tcrn_edit->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
 		QCoreApplication::sendEvent(this->action.tcrn_edit, &mouseRelease);
@@ -322,6 +323,7 @@ void tunersetsView::layout()
 	toolBarSpacer(tree_ats);
 	this->action.tree_search = toolBarButton(tree_ats, tr("Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->treeSearchToggle(); });
 
+	this->action.tree_newtn->setWhatsThis(tr("New Position", "toolbar"));
 	this->action.tree_newtn->setToolTip(tr("New Position", "toolbar"));
 
 	this->action.tree_search->setDisabled(true);
@@ -331,6 +333,7 @@ void tunersetsView::layout()
 	toolBarSpacer(list_ats);
 	this->action.list_search = toolBarButton(list_ats, tr("Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->listSearchToggle(); });
 
+	this->action.list_newtr->setWhatsThis(tr("New Transponder", "toolbar"));
 	this->action.list_newtr->setToolTip(tr("New Transponder", "toolbar"));
 
 	this->action.list_newtr->setDisabled(true);

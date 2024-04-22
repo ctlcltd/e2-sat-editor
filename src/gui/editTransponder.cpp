@@ -838,10 +838,10 @@ void editTransponder::store()
 
 	if (this->state.edit)
 	{
-		if (! dbih->db.transponders.count(txid))
+		if (dbih->db.transponders.count(txid))
+			tx = dbih->db.transponders[txid];
+		else
 			return error("store", tr("Error", "error").toStdString(), tr("Transponder \"%1\" not exists.", "error").arg(txid.data()).toStdString());
-
-		tx = dbih->db.transponders[txid];
 	}
 
 	for (auto & item : fields)

@@ -1233,6 +1233,7 @@ void tab::infoFile()
 
 	QTreeWidget* dtw2ft = new QTreeWidget;
 	dtw2ft->setHeaderLabels({tr("Filename"), tr("Size"), tr("Origin")});
+	dtw2ft->setSortingEnabled(true);
 #if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
 	dtw2ft->header()->setDefaultSectionSize(0);
 #endif

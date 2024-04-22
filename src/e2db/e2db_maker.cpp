@@ -277,6 +277,8 @@ void e2db_maker::make_e2db_userbouquets()
 {
 	debug("make_e2db_userbouquets");
 
+	this->marker_count = 0;
+
 	for (auto & x : index["ubs"])
 	{
 		userbouquet ub = userbouquets[x.second];
@@ -285,8 +287,6 @@ void e2db_maker::make_e2db_userbouquets()
 		string bname = ub.bname;
 
 		e2db_file file;
-
-		this->marker_count = 0;
 
 		make_userbouquet(bname, file);
 
@@ -556,6 +556,12 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file, bool exact_mark
 	{
 		this->marker_count = 0;
 
+		vector<string> i_names;
+
+		{
+			
+		}
+
 		for (auto & x : index["ubs"])
 		{
 			userbouquet ub = userbouquets[x.second];
@@ -577,7 +583,6 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file, bool exact_mark
 	make_userbouquet(bname, file);
 }
 
-//TODO TEST
 void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 {
 	debug("make_userbouquet", "bname", bname);

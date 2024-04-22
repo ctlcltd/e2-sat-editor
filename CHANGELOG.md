@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 - Fix merge, clear XML comments
 - Fix reference ID and marker number
 - Revised transponder feparams
+- Win11 initial support \[Windows\]
 - Prevent crashes
 
 
@@ -83,7 +84,7 @@ All notable changes to this project will be documented in this file.
 
 - Translations, 33 languages (same as qt-base): Arabic, Bulgarian, Catalan, Czech, Danish, German, Spanish, Persian, Finnish, French, Gaelic, Galician, Hebrew, Croatian, Hungarian, Italian, Japanese, Korean, Lithuanian, Latvian, Dutch, Norwegian Nynorsk, Polish, Portuguese (Brazil), Portuguese (Portugal), Russian, Slovak, Slovenian, Swedish, Turkish, Ukrainian, Chinese (China), Chinese (Taiwan)
 - Bugfix
-- Win10 dark mode
+- Win10 dark mode \[Windows\]
 
 
 ## [v0.8.0]
@@ -108,7 +109,7 @@ All notable changes to this project will be documented in this file.
 - Improvements: tree views, log inspector, logger, icon resources
 - Testing and fixing for platforms
 - Added initial CLI
-- Added WASM support Qt for WebAssembly
+- Added WASM support Qt for WebAssembly \[Wasm\]
 
 
 ## [v0.6.0-pre]
@@ -156,6 +157,7 @@ All notable changes to this project will be documented in this file.
 **Full Changelog**: [v0.3.0-pre](https://github.com/ctlcltd/e2-sat-editor/commits/v0.3.0-pre)
 
 - Fix: Qt6 and Qt5 compatibility
-- Revised layout and Qt stylesheet, macx improvements
+- Revised layout and Qt stylesheet
+- Macx style improvements \[macOS\]
 - First pre-release
 

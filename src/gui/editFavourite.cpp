@@ -487,10 +487,10 @@ void editFavourite::store()
 
 	if (this->state.edit)
 	{
-		if (! ub.channels.count(chid))
+		if (ub.channels.count(chid))
+			chref = ub.channels[chid];
+		else
 			return error("store", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" not exists.", "error").arg(chid.data()).toStdString());
-
-		chref = ub.channels[chid];
 	}
 
 	for (auto & item : fields)
@@ -533,8 +533,6 @@ void editFavourite::store()
 		else if (key == "value")
 			chref.value = val;
 	}
-
-	//TODO chref.ref <--> ch changes
 
 	if (chref.etype != 0 && ! chref.uri.empty() && chref.uri.find("//") != string::npos)
 		chref.stream = true;
@@ -580,10 +578,13 @@ void editFavourite::retrieve(string chid)
 
 	if (this->state.edit)
 	{
-		if (! ub.channels.count(chid))
+		if (ub.channels.count(chid))
+			chref = ub.channels[chid];
+		else
 			return error("retrieve", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" not exists.", "error").arg(chid.data()).toStdString());
 
-		chref = ub.channels[chid];
+		debug("retrieve", "chref.chid", chref.chid);
+		debug("retrieve", "ref.ssid", chref.ref.ssid);
 	}
 
 	for (auto & item : fields)

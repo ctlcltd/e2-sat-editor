@@ -1411,7 +1411,7 @@ void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_refe
 		{
 			chref.inum = db.imarkers + 1;
 
-			// %4d:%4d:%2x:%d
+			// %4d:%4d:%8x:%d
 			std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub.index);
 		}
 		else
@@ -1421,7 +1421,7 @@ void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_refe
 
 			chref.inum = valid ? chref.anum : db.imarkers + 1;
 
-			// %4d:%4d:%2x:%d
+			// %4d:%4d:%8x:%d
 			std::snprintf(ref_chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub.index);
 
 			valid = ! ub.channels.count(ref_chid);
@@ -1434,7 +1434,7 @@ void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_refe
 			{
 				chref.inum = db.imarkers + 1;
 
-				// %4d:%4d:%2x:%d
+				// %4d:%4d:%8x:%d
 				std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub.index);
 			}
 		}
@@ -1443,7 +1443,7 @@ void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_refe
 	{
 		chref.inum = db.istreams + 1;
 
-		// %4d:%4d:%4x:%d
+		// %4d:%4d:%8x:%d
 		std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub.index);
 	}
 	else

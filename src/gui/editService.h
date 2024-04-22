@@ -81,6 +81,7 @@ class editService : public dialAbstract
 		vector<string> computePIDs(e2db::service ch, e2db::SDATA_PIDS x, string val);
 		string getFlagValue(e2db::service ch, e2db::SDATA_FLAGS x);
 		vector<string> computeFlags(e2db::service ch, e2db::SDATA_FLAGS x, string val);
+		bool checkCollision(e2db::service ch);
 
 		QTabWidget* dtwid;
 		QGridLayout* dtpage;

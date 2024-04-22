@@ -114,10 +114,10 @@ void editTunersets::store()
 
 	if (this->state.edit)
 	{
-		if (! dbih->tuners.count(tvid))
+		if (dbih->tuners.count(tvid))
+			tvs = dbih->tuners[tvid];
+		else
 			return error("store", tr("Error", "error").toStdString(), tr("Tuner settings \"%1\" not exists.", "error").arg(tvid).toStdString());
-
-		tvs = dbih->tuners[tvid];
 	}
 	else
 	{

@@ -22,7 +22,7 @@
 
 #include "e2db_parser.h"
 
-using std::ifstream, std::stringstream, std::hex, std::dec, std::setfill, std::setw, std::to_string;
+using std::ifstream, std::stringstream, std::hex, std::dec, std::setfill, std::setw, std::to_string, std::reverse;
 
 namespace e2se_e2db
 {
@@ -157,6 +157,8 @@ void e2db_parser::parse_e2db()
 	}
 	else
 	{
+		vector<pair<string, bool>> i_bouquets;
+
 		for (auto & x : this->e2db)
 		{
 			if (x.first.find("bouquets.") != string::npos)
@@ -166,22 +168,32 @@ void e2db_parser::parse_e2db()
 				if (fext != "tv" && fext != "radio" && fext != "epl")
 					continue;
 
-				ifstream ibouquet (this->e2db[x.first].path);
-				try
-				{
-					parse_e2db_bouquet(ibouquet, x.first, fext == "epl");
-				}
-				catch (...)
-				{
-					ibouquet.close();
-					throw;
-				}
-				ibouquet.close();
+				i_bouquets.emplace_back(pair (x.first, fext == "epl"));
 			}
 		}
-		for (auto & x : bouquets)
+
+		reverse(i_bouquets.begin(), i_bouquets.end());
+
+		for (auto & x : i_bouquets)
 		{
-			for (string & fname : x.second.userbouquets)
+			string fname = x.first;
+			bool epl = x.second;
+
+			ifstream ibouquet (this->e2db[fname].path);
+			try
+			{
+				parse_e2db_bouquet(ibouquet, fname, epl);
+			}
+			catch (...)
+			{
+				ibouquet.close();
+				throw;
+			}
+			ibouquet.close();
+
+			bouquet& bs = bouquets[fname];
+
+			for (string & fname : bs.userbouquets)
 			{
 				ifstream iuserbouquet (this->e2db[fname].path);
 				try
@@ -337,6 +349,8 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 	}
 	else
 	{
+		vector<pair<string, bool>> i_bouquets;
+
 		for (auto & x : this->e2db)
 		{
 			if (x.first.find("bouquets.") != string::npos)
@@ -346,18 +360,28 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 				if (fext != "tv" && fext != "radio" && fext != "epl")
 					continue;
 
-				stringstream ibouquet;
-				ibouquet.write(&files[x.second.filename].data[0], files[x.second.filename].size);
-				parse_e2db_bouquet(ibouquet, x.first, fext == "epl");
+				i_bouquets.emplace_back(pair (x.first, fext == "epl"));
 			}
 		}
-		for (auto & x : bouquets)
+
+		reverse(i_bouquets.begin(), i_bouquets.end());
+
+		for (auto & x : i_bouquets)
 		{
-			for (string & filename : x.second.userbouquets)
+			string fname = x.first;
+			bool epl = x.second;
+
+			stringstream ibouquet;
+			ibouquet.write(&files[this->e2db[fname].filename].data[0], files[this->e2db[fname].filename].size);
+			parse_e2db_bouquet(ibouquet, fname, epl);
+
+			bouquet& bs = bouquets[fname];
+
+			for (string & fname : bs.userbouquets)
 			{
 				stringstream iuserbouquet;
-				iuserbouquet.write(&files[this->e2db[filename].filename].data[0], files[this->e2db[filename].filename].size);
-				parse_e2db_userbouquet(iuserbouquet, filename);
+				iuserbouquet.write(&files[this->e2db[fname].filename].data[0], files[this->e2db[fname].filename].size);
+				parse_e2db_userbouquet(iuserbouquet, fname);
 			}
 		}
 
@@ -878,11 +902,28 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string filename)
 {
 	debug("parse_e2db_userbouquet", "filename", filename);
 
+	bool add = ! userbouquets.count(filename);
 	bool step = 0;
 	int idx = 0;
 	int y = 0;
 	string line;
 	int ln = 0;
+
+	if (add)
+	{
+		userbouquet ub;
+		ub.bname = filename;
+
+		if (filename.rfind(".tv") != string::npos)
+			ub.pname = "bouquets.tv";
+		else if (filename.rfind(".radio") != string::npos)
+			ub.pname = "bouquets.radio";
+
+		if (! ub.bname.empty())
+			add_userbouquet(int (index["ubs"].size()), ub);
+		else
+			error("parse_e2db_userbouquet", "Parser Error", msg("userbouquet (%s)", filename + ':' + to_string(ln)));
+	}
 
 	userbouquet& ub = userbouquets[filename];
 	channel_reference chref;

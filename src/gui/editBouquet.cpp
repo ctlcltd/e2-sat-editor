@@ -130,12 +130,13 @@ void editBouquet::store()
 	auto* dbih = this->data->dbih;
 
 	e2db::bouquet bs;
+
 	if (this->state.edit)
 	{
-		if (! dbih->bouquets.count(bname))
+		if (dbih->bouquets.count(bname))
+			bs = dbih->bouquets[bname];
+		else
 			return error("store", tr("Error", "error").toStdString(), tr("Bouquet \"%1\" not exists.", "error").arg(bname.data()).toStdString());
-
-		bs = dbih->bouquets[bname];
 	}
 
 	for (auto & item : fields)

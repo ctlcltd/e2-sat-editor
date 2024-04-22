@@ -581,6 +581,7 @@ void gui::statusBarLayout()
 	sbwidi->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored);
 
 	sbwidi->setFlat(true);
+	sbwidi->setWhatsThis(tr("File Information", "status-bar"));
 	sbwidi->setIcon(theme->dynamicIcon("file-info", sbwidi));
 	sbwidi->connect(sbwidi, &QPushButton::pressed, [=]() {
 		this->fileInfo();

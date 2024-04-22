@@ -26,6 +26,7 @@
 #include <QLineEdit>
 #include <QCheckBox>
 #include <QPushButton>
+#include <QMessageBox>
 #ifdef Q_OS_WIN
 #include <QStyleFactory>
 #include <QScrollBar>
@@ -718,23 +719,23 @@ void editService::store()
 
 		if (this->state.edit)
 		{
-			if (! ub.channels.count(ref_chid))
+			if (ub.channels.count(ref_chid))
+				chref = ub.channels[ref_chid];
+			else
 				return error("store", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" not exists.", "error").arg(ref_chid.data()).toStdString());
-
-			chref = ub.channels[ref_chid];
 		}
 	}
 
 	if (this->state.edit)
 	{
-		if (! dbih->db.services.count(ref_chid))
+		if (dbih->db.services.count(ref_chid))
+			ch = dbih->db.services[ref_chid];
+		else
 			return error("store", tr("Error", "error").toStdString(), tr("Service \"%1\" not exists.", "error").arg(ref_chid.data()).toStdString());
-
-		ch = dbih->db.services[ref_chid];
 	}
 
-	string nw_txid;
-	string nw_chid;
+	string changed_txid;
+	string changed_chid;
 
 	if (this->state.transponder)
 	{
@@ -742,16 +743,16 @@ void editService::store()
 
 		string txid = edittxp->getEditId();
 		if (! txid.empty())
-			nw_txid = txid;
+			changed_txid = txid;
 	}
 
 	if (this->state.favourite)
 	{
 		editfav->store();
 
-		string chid = edittxp->getEditId();
+		string chid = editfav->getEditId();
 		if (! chid.empty())
-			nw_chid = chid;
+			changed_chid = chid;
 	}
 
 	for (auto & item : fields)
@@ -869,11 +870,11 @@ void editService::store()
 		ch.data.erase(e2db::SDATA::f);
 	}
 
-	if (! nw_txid.empty())
+	if (! changed_txid.empty())
 	{
-		ch.txid = nw_txid;
+		ch.txid = changed_txid;
 	}
-	if (ch.txid != ref_txid)
+	if (ch.txid != this->ref_txid)
 	{
 		e2db::transponder tx = dbih->db.transponders[ch.txid];
 		ch.tsid = tx.tsid;
@@ -888,17 +889,50 @@ void editService::store()
 		this->ref_chid = ch.chid = nw_chid;
 	}
 
-	if (this->state.edit)
-		this->chid = dbih->editService(ref_chid, ch);
-	else
-		this->chid = dbih->addService(ch);
+	if (this->state.favourite)
+	{
+		if (! changed_chid.empty() && changed_chid != this->ref_chid)
+		{
+			chref = dbih->userbouquets[bname].channels[chref.chid];
 
-	if (isFavourite())
+			this->ref_chid = changed_chid;
+		}
+	}
+
+	if (this->state.edit)
+	{
+		if (checkCollision(ch))
+			return;
+	}
+
+	if (this->state.favourite)
+	{
+		this->chid = ref_chid;
+	}
+	else
 	{
 		if (this->state.edit)
-			this->chid = dbih->editChannelReference(chid, chref, bname);
+			this->chid = dbih->editService(ref_chid, ch);
 		else
-			this->chid = dbih->addChannelReference(chref, bname);
+			this->chid = dbih->addService(ch);
+
+		// note: collision
+		if (this->ref_chid != this->chid)
+		{
+			chref = dbih->userbouquets[bname].channels[chid];
+
+			this->ref_chid = this->chid;
+		}
+
+		chref.ref.ssid = ch.ssid;
+		chref.ref.tsid = ch.tsid;
+		chref.ref.onid = ch.onid;
+		chref.ref.dvbns = ch.dvbns;
+
+		if (this->state.edit)
+			dbih->editChannelReference(ref_chid, chref, bname);
+		else
+			dbih->addChannelReference(chref, bname);
 	}
 
 	this->changes = true;
@@ -1165,6 +1199,77 @@ vector<string> editService::computeFlags(e2db::service ch, e2db::SDATA_FLAGS x, 
 		data.emplace_back(cflags);
 
 	return data;
+}
+					
+bool editService::checkCollision(e2db::service ch)
+{
+	auto* dbih = this->data->dbih;
+
+	char nw_chid[25];
+	// %4x:%4x:%8x
+	std::snprintf(nw_chid, 25, "%x:%x:%x", ch.ssid, ch.tsid, ch.dvbns);
+
+	bool collision = (this->ref_chid != nw_chid && dbih->db.services.count(nw_chid));
+
+	debug("checkCollision", "ref chid", this->ref_chid);
+	debug("checkCollision", "new chid", nw_chid);
+	debug("checkCollision", "collision", collision);
+
+	if (collision)
+	{
+		QString text;
+
+		{
+			e2db::service ch = dbih->db.services[ref_chid];
+			QString chname = QString::fromStdString(ch.chname);
+			QString ssid = QString::number(ch.ssid);
+			QString tsid = QString::number(ch.tsid);
+			QString dvbns = QString::number(ch.dvbns, 16);
+			QString onid = QString::number(ch.onid);
+
+			QString str = tr("Current: \"%1\" (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)", "message").arg(chname).arg(ssid).arg(tsid).arg(onid).arg(dvbns);
+			text.append(str);
+		}
+		text.append("\n");
+		{
+			e2db::service ch = dbih->db.services[nw_chid];
+			QString chname = QString::fromStdString(ch.chname);
+			QString ssid = QString::number(ch.ssid);
+			QString tsid = QString::number(ch.tsid);
+			QString dvbns = QString::number(ch.dvbns, 16);
+			QString onid = QString::number(ch.onid);
+
+			QString str = tr("Collision: \"%1\" (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)", "message").arg(chname).arg(ssid).arg(tsid).arg(onid).arg(dvbns);
+			text.append(str);
+		}
+
+		QString title = tr("Service collision warning", "message");
+		QString message = QString("%1\n\n%2\n\n%3")
+			.arg(tr("The service collides with an existing service.", "message"))
+			.arg(text)
+			.arg(tr("This may produce unexpected results.", "message"));
+
+		title = title.toHtmlEscaped();
+		message = message.replace("<", "&lt;").replace(">", "&gt;");
+
+		QMessageBox msg = QMessageBox(nullptr);
+
+		msg.setWindowFlags(Qt::Sheet | Qt::MSWindowsFixedSizeDialogHint);
+#ifdef Q_OS_MAC
+		msg.setAttribute(Qt::WA_TranslucentBackground);
+#endif
+
+		msg.setIcon(QMessageBox::Question);
+		msg.setTextFormat(Qt::PlainText);
+		msg.setText(title);
+		msg.setInformativeText(message);
+		msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Discard);
+		msg.setDefaultButton(QMessageBox::Ok);
+
+		return (msg.exec() == QMessageBox::Discard);
+	}
+
+	return false;
 }
 
 void editService::setEditId(string chid)

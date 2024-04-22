@@ -296,6 +296,7 @@ void mainView::layout()
 #endif
 	this->action.scrn_sets->setIcon(theme->dynamicIcon("services-sets-menu", this->action.scrn_sets));
 	this->action.scrn_sets->setWhatsThis(tr("Settings Convert", "corner"));
+	this->action.scrn_sets->setToolTip(tr("Settings Convert", "corner"));
 	this->action.scrn_sets->connect(this->action.scrn_sets, &QPushButton::pressed, [=]() {
 		QMenu* menu = this->servicesSetsCornerMenu();
 		// menu->popup(this->action.scrn_sets->mapToGlobal(this->action.scrn_sets->pos()));
@@ -311,6 +312,7 @@ void mainView::layout()
 #endif
 	this->action.lcrn_prefs->setIcon(theme->dynamicIcon("list-prefs-menu", this->action.lcrn_prefs));
 	this->action.lcrn_prefs->setWhatsThis(tr("Drag&&Drop Preferences", "corner"));
+	this->action.lcrn_prefs->setToolTip(tr("Drag&&Drop Preferences", "corner").replace("&&", "&"));
 	this->action.lcrn_prefs->connect(this->action.lcrn_prefs, &QPushButton::pressed, [=]() {
 		QMenu* menu = this->listPrefsCornerMenu();
 		// menu->popup(this->action.lcrn_prefs->mapToGlobal(this->action.lcrn_prefs->pos()));
@@ -333,6 +335,7 @@ void mainView::layout()
 	toolBarSpacer(tree_ats);
 	this->action.tree_search = toolBarButton(tree_ats, tr("Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->treeSearchToggle(); });
 
+	this->action.tree_newbq->setWhatsThis(tr("New Bouquet", "toolbar"));
 	this->action.tree_newbq->setToolTip(tr("New Bouquet", "toolbar"));
 
 	this->action.tree_search->setDisabled(true);
@@ -349,9 +352,13 @@ void mainView::layout()
 	toolBarSpacer(list_ats);
 	this->action.list_search = toolBarButton(list_ats, tr("&Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->listSearchToggle(); });
 
+	this->action.list_addch->setWhatsThis(tr("Add Channel", "toolbar"));
 	this->action.list_addch->setToolTip(tr("Add Channel", "toolbar"));
+	this->action.list_addfh->setWhatsThis(tr("Add Stream", "toolbar"));
 	this->action.list_addfh->setToolTip(tr("Add Stream", "toolbar"));
+	this->action.list_addmk->setWhatsThis(tr("Add Marker", "toolbar"));
 	this->action.list_addmk->setToolTip(tr("Add Marker", "toolbar"));
+	this->action.list_newch->setWhatsThis(tr("New Service", "toolbar"));
 	this->action.list_newch->setToolTip(tr("New Service", "toolbar"));
 
 	this->action.list_dnd->setCheckable(true);
@@ -1292,7 +1299,7 @@ void mainView::visualReloadList()
 		bool stream = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::stream;
 		bool ref_error = false;
 
-		if (chs_changed)
+		if (chs_changed && dbih->changes.count(chid))
 			nw_chid = dbih->changes[chid];
 
 		if (dbih->entries.services.count(nw_chid))
@@ -1925,8 +1932,11 @@ void mainView::addService()
 {
 	debug("addService");
 
-	int reftype = REF_TYPE::service;
+	bool is_fav = false;
+	bool stream = false;
+	bool favourite = false;
 	string bname;
+	int reftype = REF_TYPE::service;
 
 	auto* dbih = this->data->dbih;
 
@@ -1935,7 +1945,9 @@ void mainView::addService()
 	{
 		bname = this->state.curr;
 
-		if (! dbih->userbouquets.count(bname))
+		if (dbih->userbouquets.count(bname))
+			is_fav = true;
+		else
 			return;
 	}
 
@@ -1946,10 +1958,33 @@ void mainView::addService()
 	bool reload = dialog->getReload();
 	if (dialog->destroy()) return;
 
+	e2db::channel_reference chref;
+
 	if (dbih->db.services.count(chid))
+	{
 		debug("addService", "chid", chid);
+	}
 	else
-		return error("addService", tr("Error", "error").toStdString(), tr("Missing service key \"%1\".", "error").arg(chid.data()).toStdString());
+	{
+		if (is_fav && dbih->userbouquets[bname].channels.count(chid))
+		{
+			chref = dbih->userbouquets[bname].channels[chid];
+
+			stream = chref.stream;
+			favourite = ! stream;
+
+			if (chref.stream)
+				reftype = REF_TYPE::stream;
+			else if (chref.marker)
+				reftype = REF_TYPE::marker;
+			else
+				reftype = REF_TYPE::favourite;
+		}
+		else
+		{
+			return error("addService", tr("Error", "error").toStdString(), tr("Missing service key \"%1\".", "error").arg(chid.data()).toStdString());
+		}
+	}
 
 	for (auto & q : cache)
 		q.second.clear();
@@ -1986,21 +2021,47 @@ void mainView::addService()
 	size_t pad_width = std::to_string(int (dbih->index["chs"].size())).size() + 1;
 	QString x = QString::number(i++).rightJustified(pad_width, '0');
 	QString idx = QString::number(i);
-	QStringList entry = dbih->entries.services[chid];
-	bool locked = entry[1].size() || ub_locked;
-	entry.prepend(idx);
-	entry.prepend(x);
 
-	QTreeWidgetItem* item = new QTreeWidgetItem(entry);
-	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
-	item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
-	item->setData(ITEM_DATA_ROLE::numbered, Qt::UserRole, true);
-	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
-	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
-	item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
-	item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
-	item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
-	item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
+	QTreeWidgetItem* item;
+
+	if (favourite || stream)
+	{
+		QString refid = QString::fromStdString(dbih->get_reference_id(chref));
+		QStringList entry = dbih->entryFavourite(chref);
+		bool locked = entry[1].size() || ub_locked;
+		entry.prepend(idx);
+		entry.prepend(x);
+
+		item = new QTreeWidgetItem(entry);
+		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
+		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
+		item->setData(ITEM_DATA_ROLE::numbered, Qt::UserRole, true);
+		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
+		item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
+		item->setData(ITEM_DATA_ROLE::refid, Qt::UserRole, refid);
+		item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
+		item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
+		item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
+		item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
+	}
+	else
+	{
+		QStringList entry = dbih->entries.services[chid];
+		bool locked = entry[1].size() || ub_locked;
+		entry.prepend(idx);
+		entry.prepend(x);
+
+		item = new QTreeWidgetItem(entry);
+		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
+		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
+		item->setData(ITEM_DATA_ROLE::numbered, Qt::UserRole, true);
+		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
+		item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
+		item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
+		item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
+		item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
+		item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
+	}
 
 	if (current == nullptr)
 		list->addTopLevelItem(item);
@@ -2040,11 +2101,13 @@ void mainView::editService()
 
 	QTreeWidgetItem* item = selected.first();
 	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
-	string bname;
+
+	bool is_fav = false;
 	int reftype = REF_TYPE::service;
 	bool favourite = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::favourite;
 	bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 	bool stream = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::stream;
+	string bname;
 
 	auto* dbih = this->data->dbih;
 
@@ -2058,8 +2121,10 @@ void mainView::editService()
 	{
 		bname = this->state.curr;
 
-		if (! (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(chid)))
-			return error("addService", tr("Error", "error").toStdString(), tr("Missing channel reference key \"%1\".", "error").arg(chid.data()).toStdString());
+		if (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(chid))
+			is_fav = true;
+		else
+			return error("editService", tr("Error", "error").toStdString(), tr("Missing channel reference key \"%1\".", "error").arg(chid.data()).toStdString());
 	}
 
 	e2se_gui::editService* dialog = new e2se_gui::editService(this->data);
@@ -2076,10 +2141,33 @@ void mainView::editService()
 	if (reload)
 		dbih->clearStorage();
 
-	if (stream || favourite || dbih->db.services.count(nw_chid))
+	e2db::channel_reference chref;
+
+	if (dbih->db.services.count(nw_chid))
+	{
 		debug("editService", "new chid", nw_chid);
+	}
 	else
-		return error("editService", tr("Error", "error").toStdString(), tr("Missing service key \"%1\".", "error").arg(nw_chid.data()).toStdString());
+	{
+		if (is_fav && dbih->userbouquets[bname].channels.count(nw_chid))
+		{
+			chref = dbih->userbouquets[bname].channels[nw_chid];
+
+			stream = chref.stream;
+			favourite = ! stream;
+
+			if (chref.stream)
+				reftype = REF_TYPE::stream;
+			else if (chref.marker)
+				reftype = REF_TYPE::marker;
+			else
+				reftype = REF_TYPE::favourite;
+		}
+		else
+		{
+			return error("editService", tr("Error", "error").toStdString(), tr("Missing service key \"%1\".", "error").arg(nw_chid.data()).toStdString());
+		}
+	}
 
 	bool ub_locked = false;
 
@@ -2096,24 +2184,48 @@ void mainView::editService()
 
 	QString parentalicon = QSettings().value("engine/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
 
-	QStringList entry = dbih->entries.services[nw_chid];
-	bool locked = entry[1].size() || ub_locked;
-	entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
-	entry.prepend(item->text(ITEM_ROW_ROLE::x));
-	for (int i = 0; i < entry.count(); i++)
-		item->setText(i, entry[i]);
-	item->setData(ITEM_DATA_ROLE::numbered, Qt::UserRole, true);
-	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
-	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
-	item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
-	item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
-	item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
-	item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
+	if (favourite || stream)
+	{
+		QString refid = QString::fromStdString(dbih->get_reference_id(chref));
+		QStringList entry = dbih->entryFavourite(chref);
+		bool locked = entry[1].size() || ub_locked;
+		entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
+		entry.prepend(item->text(ITEM_ROW_ROLE::x));
+		for (int i = 0; i < entry.count(); i++)
+			item->setText(i, entry[i]);
+		item->setData(ITEM_DATA_ROLE::numbered, Qt::UserRole, true);
+		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
+		item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
+		item->setData(ITEM_DATA_ROLE::refid, Qt::UserRole, refid);
+		item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
+		item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
+		item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
+		item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
+	}
+	else
+	{
+		QStringList entry = dbih->entries.services[nw_chid];
+		bool locked = entry[1].size() || ub_locked;
+		entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
+		entry.prepend(item->text(ITEM_ROW_ROLE::x));
+		for (int i = 0; i < entry.count(); i++)
+			item->setText(i, entry[i]);
+		item->setData(ITEM_DATA_ROLE::numbered, Qt::UserRole, true);
+		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
+		item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
+		item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
+		item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
+		item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
+		item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
+	}
 
 	if (reload)
 		visualReloadList();
 
 	this->data->setChanged(true);
+
+	if (this->state.refbox)
+		updateReferenceBox();
 
 	tabPropagateChanges();
 }
@@ -2235,10 +2347,12 @@ void mainView::editFavourite()
 
 	auto* dbih = this->data->dbih;
 
-	if (! (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(chid)))
-		return error("editFavourite", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" not exists.", "error").arg(chid.data()).toStdString());
+	e2db::channel_reference chref;
 
-	e2db::channel_reference chref = dbih->userbouquets[bname].channels[chid];
+	if (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(chid))
+		chref = dbih->userbouquets[bname].channels[chid];
+	else
+		return error("editFavourite", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" not exists.", "error").arg(chid.data()).toStdString());
 
 	e2se_gui::editFavourite* dialog = new e2se_gui::editFavourite(this->data);
 	dialog->setEditId(chid, bname);
@@ -2326,10 +2440,12 @@ void mainView::addMarker()
 
 	auto* dbih = this->data->dbih;
 
-	if (! (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(chid)))
-		return error("addMarker", tr("Error", "error").toStdString(), tr("Missing channel reference key \"%1\".", "error").arg(chid.data()).toStdString());
+	e2db::channel_reference chref;
 
-	e2db::channel_reference chref = dbih->userbouquets[bname].channels[chid];
+	if (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(chid))
+		chref = dbih->userbouquets[bname].channels[chid];
+	else
+		return error("addMarker", tr("Error", "error").toStdString(), tr("Missing channel reference key \"%1\".", "error").arg(chid.data()).toStdString());
 
 	if (chref.marker)
 		debug("addMarker", "chid", chid);
@@ -2409,16 +2525,19 @@ void mainView::editMarker()
 	QTreeWidgetItem* item = selected.first();
 	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 	string bname = this->state.curr;
+
 	bool numbered = item->data(ITEM_DATA_ROLE::numbered, Qt::UserRole).toBool();
 	bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 	bool reindex = false;
 
 	auto* dbih = this->data->dbih;
 
-	if (! (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(chid)))
-		return error("editMarker", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" not exists.", "error").arg(chid.data()).toStdString());
+	e2db::channel_reference chref;
 
-	e2db::channel_reference chref = dbih->userbouquets[bname].channels[chid];
+	if (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(chid))
+		chref = dbih->userbouquets[bname].channels[chid];
+	else
+		return error("editMarker", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" not exists.", "error").arg(chid.data()).toStdString());
 
 	if (marker && chref.marker)
 		debug("editMarker", "chid", chid);

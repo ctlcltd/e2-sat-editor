@@ -261,10 +261,10 @@ void editTunersetsTable::store()
 
 	if (this->state.edit)
 	{
-		if (! tvs.tables.count(tnid))
+		if (tvs.tables.count(tnid))
+			tns = tvs.tables[tnid];
+		else
 			return error("store", tr("Error", "error").toStdString(), tr("Tuner settings table \"%1\" not exists.", "error").arg(tnid.data()).toStdString());
-
-		tns = tvs.tables[tnid];
 	}
 	else
 	{
