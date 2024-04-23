@@ -539,6 +539,10 @@ void editFavourite::store()
 	else if (chref.atype != 0 && chref.atype != e2db::ATYPE::group)
 		chref.marker = true;
 
+	//TODO service and collisions chid: x:x:x:X
+	if (this->state.edit)
+		chref.chid = "";
+
 	if (this->state.edit)
 		this->chid = dbih->editChannelReference(chid, chref, bname);
 	else
@@ -582,9 +586,6 @@ void editFavourite::retrieve(string chid)
 			chref = ub.channels[chid];
 		else
 			return error("retrieve", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" not exists.", "error").arg(chid.data()).toStdString());
-
-		debug("retrieve", "chref.chid", chref.chid);
-		debug("retrieve", "ref.ssid", chref.ref.ssid);
 	}
 
 	for (auto & item : fields)

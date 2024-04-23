@@ -17,6 +17,7 @@
 
 #include <QtGlobal>
 #include <QTimer>
+#include <QMessageBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QFormLayout>
@@ -26,7 +27,6 @@
 #include <QLineEdit>
 #include <QCheckBox>
 #include <QPushButton>
-#include <QMessageBox>
 #ifdef Q_OS_WIN
 #include <QStyleFactory>
 #include <QScrollBar>
@@ -886,16 +886,22 @@ void editService::store()
 		// %4x:%4x:%8x
 		std::snprintf(nw_chid, 25, "%x:%x:%x", ch.ssid, tx.tsid, tx.dvbns);
 
-		this->ref_chid = ch.chid = nw_chid;
+		// note: transponder id from combobox
+		if (changed_txid.empty())
+			ch.chid = nw_chid;
+		// note: transponder params from tab, all chid changed
+		else
+			this->ref_chid = ch.chid = nw_chid;
 	}
 
 	if (this->state.favourite)
 	{
 		if (! changed_chid.empty() && changed_chid != this->ref_chid)
 		{
-			chref = dbih->userbouquets[bname].channels[chref.chid];
+			if (dbih->userbouquets[bname].channels.count(changed_chid))
+				chref = dbih->userbouquets[bname].channels[changed_chid];
 
-			this->ref_chid = changed_chid;
+			this->chid = changed_chid;
 		}
 	}
 
@@ -905,11 +911,7 @@ void editService::store()
 			return;
 	}
 
-	if (this->state.favourite)
-	{
-		this->chid = ref_chid;
-	}
-	else
+	if (! this->state.favourite)
 	{
 		if (this->state.edit)
 			this->chid = dbih->editService(ref_chid, ch);
@@ -919,7 +921,8 @@ void editService::store()
 		// note: collision
 		if (this->ref_chid != this->chid)
 		{
-			chref = dbih->userbouquets[bname].channels[chid];
+			if (dbih->userbouquets[bname].channels.count(chid))
+				chref = dbih->userbouquets[bname].channels[chid];
 
 			this->ref_chid = this->chid;
 		}
@@ -1200,7 +1203,7 @@ vector<string> editService::computeFlags(e2db::service ch, e2db::SDATA_FLAGS x, 
 
 	return data;
 }
-					
+
 bool editService::checkCollision(e2db::service ch)
 {
 	auto* dbih = this->data->dbih;

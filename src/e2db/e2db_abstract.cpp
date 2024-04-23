@@ -522,20 +522,27 @@ char e2db_abstract::value_transponder_type(YTYPE ytype)
 string e2db_abstract::value_transponder_combo(transponder tx)
 {
 	string ptxp;
-	switch (tx.ytype)
+	if (tx.ytype == YTYPE::satellite)
 	{
-		case YTYPE::satellite:
-			ptxp = to_string(tx.freq) + '/' + SAT_POL[tx.pol] + '/' + to_string(tx.sr);
-		break;
-		case YTYPE::terrestrial:
-			ptxp = to_string(tx.freq) + '/' + TER_MOD[tx.tmod] + '/' + TER_BAND[tx.band];
-		break;
-		case YTYPE::cable:
-			ptxp = to_string(tx.freq) + '/' + CAB_MOD[tx.cmod] + '/' + to_string(tx.sr);
-		break;
-		case YTYPE::atsc:
-			ptxp = to_string(tx.freq);
-		break;
+		int pol = tx.pol != -1 ? tx.pol : 0;
+		int sr = tx.sr != -1 ? tx.sr : 0;
+		ptxp = to_string(tx.freq) + '/' + SAT_POL[pol] + '/' + to_string(sr);
+	}
+	else if (tx.ytype == YTYPE::terrestrial)
+	{
+		int tmod = tx.tmod != -1 ? tx.tmod : 3;
+		int band = tx.band != -1 ? tx.band : 3;
+		ptxp = to_string(tx.freq) + '/' + TER_MOD[tmod] + '/' + TER_BAND[band];
+	}
+	else if (tx.ytype == YTYPE::cable)
+	{
+		int cmod = tx.cmod != -1 ? tx.cmod : 0;
+		int sr = tx.sr != -1 ? tx.sr : 0;
+		ptxp = to_string(tx.freq) + '/' + CAB_MOD[cmod] + '/' + to_string(sr);
+	}
+	else if (tx.ytype == YTYPE::atsc)
+	{
+		ptxp = to_string(tx.freq);
 	}
 	return ptxp;
 }
@@ -543,20 +550,27 @@ string e2db_abstract::value_transponder_combo(transponder tx)
 string e2db_abstract::value_transponder_combo(tunersets_transponder tntxp, tunersets_table tn)
 {
 	string ptxp;
-	switch (tn.ytype)
+	if (tn.ytype == YTYPE::satellite)
 	{
-		case YTYPE::satellite:
-			ptxp = to_string(tntxp.freq) + '/' + SAT_POL[tntxp.pol] + '/' + to_string(tntxp.sr);
-		break;
-		case YTYPE::terrestrial:
-			ptxp = to_string(tntxp.freq) + '/' + TER_MOD[tntxp.tmod] + '/' + TER_BAND[tntxp.band];
-		break;
-		case YTYPE::cable:
-			ptxp = to_string(tntxp.freq) + '/' + CAB_MOD[tntxp.cmod] + '/' + to_string(tntxp.sr);
-		break;
-		case YTYPE::atsc:
-			ptxp = to_string(tntxp.freq);
-		break;
+		int pol = tntxp.pol != -1 ? tntxp.pol : 0;
+		int sr = tntxp.sr != -1 ? tntxp.sr : 0;
+		ptxp = to_string(tntxp.freq) + '/' + SAT_POL[pol] + '/' + to_string(sr);
+	}
+	else if (tn.ytype == YTYPE::terrestrial)
+	{
+		int tmod = tntxp.tmod != -1 ? tntxp.tmod : 3;
+		int band = tntxp.band != -1 ? tntxp.band : 3;
+		ptxp = to_string(tntxp.freq) + '/' + TER_MOD[tmod] + '/' + TER_BAND[band];
+	}
+	else if (tn.ytype == YTYPE::cable)
+	{
+		int cmod = tntxp.cmod != -1 ? tntxp.cmod : 0;
+		int sr = tntxp.sr != -1 ? tntxp.sr : 0;
+		ptxp = to_string(tntxp.freq) + '/' + CAB_MOD[cmod] + '/' + to_string(sr);
+	}
+	else if (tn.ytype == YTYPE::atsc)
+	{
+		ptxp = to_string(tntxp.freq);
 	}
 	return ptxp;
 }

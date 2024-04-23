@@ -146,13 +146,13 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 			break;
 			case YTYPE::terrestrial: // DVB-T / DVB-T2
 				ss << int (tx.freq * 1e3);
-				ss << ':' << (tx.band != -1 ? tx.band : 0);
-				ss << ':' << (tx.hpfec != -1 ? tx.hpfec : 0);
-				ss << ':' << (tx.lpfec != -1 ? tx.lpfec : 0);
-				ss << ':' << (tx.tmod != -1 ? tx.tmod : 0);
-				ss << ':' << (tx.tmx != -1 ? tx.tmx : 0);
-				ss << ':' << (tx.guard != -1 ? tx.guard : 0);
-				ss << ':' << (tx.hier != -1 ? tx.hier : 0);
+				ss << ':' << (tx.band != -1 ? tx.band : 3);
+				ss << ':' << (tx.hpfec != -1 ? tx.hpfec : 5);
+				ss << ':' << (tx.lpfec != -1 ? tx.lpfec : 5);
+				ss << ':' << (tx.tmod != -1 ? tx.tmod : 3);
+				ss << ':' << (tx.tmx != -1 ? tx.tmx : 2);
+				ss << ':' << (tx.guard != -1 ? tx.guard : 4);
+				ss << ':' << (tx.hier != -1 ? tx.hier : 4);
 				ss << ':' << (tx.inv != -1 ? tx.inv : 0);
 				ss << ':' << (tx.flags != -1 ? tx.flags : 0);
 				ss << ':' << (tx.sys != -1 ? tx.sys : 0);
@@ -555,12 +555,6 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file, bool exact_mark
 	if (exact_marker_index)
 	{
 		this->marker_count = 0;
-
-		vector<string> i_names;
-
-		{
-			
-		}
 
 		for (auto & x : index["ubs"])
 		{

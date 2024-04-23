@@ -853,6 +853,8 @@ void mainView::populate(QTreeWidget* tw)
 					idx = QString::number(chi.first);
 					refid = QString::fromStdString(dbih->get_reference_id(chref));
 					entry = dbih->entryFavourite(chref);
+					locked = entry[1].size() || ub_locked;
+					uri = entry[11];
 					entry.prepend(idx);
 					entry.prepend(x);
 				}
@@ -2029,6 +2031,7 @@ void mainView::addService()
 		QString refid = QString::fromStdString(dbih->get_reference_id(chref));
 		QStringList entry = dbih->entryFavourite(chref);
 		bool locked = entry[1].size() || ub_locked;
+		QString uri = entry[11];
 		entry.prepend(idx);
 		entry.prepend(x);
 
@@ -2037,9 +2040,10 @@ void mainView::addService()
 		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
 		item->setData(ITEM_DATA_ROLE::numbered, Qt::UserRole, true);
 		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
+		item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
 		item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
 		item->setData(ITEM_DATA_ROLE::refid, Qt::UserRole, refid);
-		item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
+		item->setData(ITEM_DATA_ROLE::uri, Qt::UserRole, uri);
 		item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
 		item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 		item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
@@ -2189,15 +2193,17 @@ void mainView::editService()
 		QString refid = QString::fromStdString(dbih->get_reference_id(chref));
 		QStringList entry = dbih->entryFavourite(chref);
 		bool locked = entry[1].size() || ub_locked;
+		QString uri = entry[11];
 		entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
 		entry.prepend(item->text(ITEM_ROW_ROLE::x));
 		for (int i = 0; i < entry.count(); i++)
 			item->setText(i, entry[i]);
 		item->setData(ITEM_DATA_ROLE::numbered, Qt::UserRole, true);
 		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
+		item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
 		item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
 		item->setData(ITEM_DATA_ROLE::refid, Qt::UserRole, refid);
-		item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
+		item->setData(ITEM_DATA_ROLE::uri, Qt::UserRole, uri);
 		item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
 		item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 		item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
@@ -2291,6 +2297,7 @@ void mainView::addFavourite()
 	QString refid = QString::fromStdString(dbih->get_reference_id(chref));
 	QStringList entry = dbih->entryFavourite(chref);
 	bool locked = entry[1].size() || ub_locked;
+	QString uri = entry[11];
 	entry.prepend(idx);
 	entry.prepend(x);
 
@@ -2299,9 +2306,10 @@ void mainView::addFavourite()
 	item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
 	item->setData(ITEM_DATA_ROLE::numbered, Qt::UserRole, numbered);
 	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
+	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
 	item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
 	item->setData(ITEM_DATA_ROLE::refid, Qt::UserRole, refid);
-	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
+	item->setData(ITEM_DATA_ROLE::uri, Qt::UserRole, uri);
 	item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
 	item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 	item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
@@ -2396,15 +2404,17 @@ void mainView::editFavourite()
 	QString refid = QString::fromStdString(dbih->get_reference_id(chref));
 	QStringList entry = dbih->entryFavourite(chref);
 	bool locked = entry[1].size() || ub_locked;
+	QString uri = entry[11];
 	entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
 	entry.prepend(item->text(ITEM_ROW_ROLE::x));
 	for (int i = 0; i < entry.count(); i++)
 		item->setText(i, entry[i]);
 	item->setData(ITEM_DATA_ROLE::numbered, Qt::UserRole, numbered);
 	item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
+	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
 	item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
 	item->setData(ITEM_DATA_ROLE::refid, Qt::UserRole, refid);
-	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
+	item->setData(ITEM_DATA_ROLE::uri, Qt::UserRole, uri);
 	item->setIcon(ITEM_ROW_ROLE::chlock, locked ? theme::icon(parentalicon) : QIcon());
 	item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 	item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
@@ -2665,8 +2675,8 @@ void mainView::setServiceParentalLock()
 	entry.prepend(item->text(ITEM_ROW_ROLE::x));
 	for (int i = 0; i < entry.count(); i++)
 		item->setText(i, entry[i]);
-	item->setIcon(ITEM_ROW_ROLE::chlock, theme::icon(parentalicon));
 	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, true);
+	item->setIcon(ITEM_ROW_ROLE::chlock, theme::icon(parentalicon));
 
 	this->data->setChanged(true);
 }
@@ -2702,8 +2712,8 @@ void mainView::unsetServiceParentalLock()
 	entry.prepend(item->text(ITEM_ROW_ROLE::x));
 	for (int i = 0; i < entry.count(); i++)
 		item->setText(i, entry[i]);
-	item->setIcon(ITEM_ROW_ROLE::chlock, QIcon());
 	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, false);
+	item->setIcon(ITEM_ROW_ROLE::chlock, QIcon());
 
 	this->data->setChanged(true);
 }
@@ -2881,10 +2891,10 @@ void mainView::listItemCopy(bool cut)
 			// chcas
 			else if (i == ITEM_ROW_ROLE::chcas)
 			{
-				qstr = "\t";
-
 				if (! qstr.isEmpty())
 				{
+					qstr = "\t";
+
 					string ref_chid = chid;
 
 					// bouquets tree
@@ -2944,6 +2954,10 @@ void mainView::listItemCopy(bool cut)
 
 						qstr.prepend("$").append(scaid.join(", "));
 					}
+				}
+				else
+				{
+					qstr = "\t";
 				}
 			}
 			// uri
@@ -3207,7 +3221,9 @@ void mainView::putListItems(vector<QString> items)
 		size_t pad_width = std::to_string(int (dbih->index[bname].size())).size() + 1;
 		QString x = QString::number(i++).rightJustified(pad_width, '0');
 		QString idx = QString::number(i);
-		QString uri;
+		QString ch_chid;
+		QString ch_refid;
+		QString ch_uri;
 
 		bool numbered = true;
 		int reftype = REF_TYPE::service;
@@ -3227,7 +3243,7 @@ void mainView::putListItems(vector<QString> items)
 
 			if (qs[6] == "MARKER")
 				reftype = REF_TYPE::marker;
-			else if (qs[6] == "STREAM" && ! qs[11].isEmpty())
+			else if (qs[6] == "STREAM" && ! qs[12].isEmpty())
 				reftype = REF_TYPE::stream;
 		}
 		else if (q.count(':') == 9) // refid
@@ -3251,14 +3267,14 @@ void mainView::putListItems(vector<QString> items)
 		{
 			chref.inum = marker_count + 1;
 
-			// %4d:%4d:%2x:%d
+			// %4d:%4d:%8x:%d
 			std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub_idx);
 		}
 		else if (reftype == REF_TYPE::stream)
 		{
 			chref.inum = stream_count + 1;
 
-			// %4d:%4d:%2x:%d
+			// %4d:%4d:%8x:%d
 			std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub_idx);
 		}
 		else
@@ -3285,12 +3301,13 @@ void mainView::putListItems(vector<QString> items)
 		{
 			if (reftype == REF_TYPE::marker)
 			{
-				reftype = REF_TYPE::marker;
 				chref.marker = true;
 				chref.chid = chid;
 				chref.anum = marker_count + 1;
 				chref.value = value;
 				chref.ref = ref;
+
+				reftype = REF_TYPE::marker;
 
 				entry = dbih->entryMarker(chref);
 
@@ -3312,15 +3329,18 @@ void mainView::putListItems(vector<QString> items)
 			}
 			else if (reftype == REF_TYPE::stream)
 			{
-				reftype = REF_TYPE::stream;
-				locked = (qs[3] == "0" ? false : true) || ub_locked;
-				uri = qs[12];
 				chref.stream = true;
 				chref.chid = chid;
 				chref.value = value;
-				chref.uri = uri.toStdString();
+				chref.uri = qs[12].toStdString();
 				chref.ref = ref;
 				chref.index = idx.toInt();
+
+				reftype = REF_TYPE::stream;
+				locked = (qs[3] == "0" ? false : true) || ub_locked;
+				ch_chid = QString::fromStdString(chid);
+				ch_refid = QString::fromStdString(dbih->get_reference_id(chref));
+				ch_uri = qs[12];
 
 				entry = dbih->entryFavourite(chref);
 				entry.prepend(idx);
@@ -3333,6 +3353,7 @@ void mainView::putListItems(vector<QString> items)
 				e2db::service ch;
 				e2db::transponder tx;
 				e2db::fec fec;
+
 				locked = (qs[3] == "0" ? false : true) || ub_locked;
 
 				ch.ssid = ref.ssid;
@@ -3407,6 +3428,8 @@ void mainView::putListItems(vector<QString> items)
 				if (! dbih->db.services.count(ch.chid))
 					dbih->addService(ch);
 
+				ch_chid = QString::fromStdString(chid);
+
 				entry = dbih->entries.services[chid];
 				entry.prepend(idx);
 				entry.prepend(x);
@@ -3423,10 +3446,11 @@ void mainView::putListItems(vector<QString> items)
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
 		item->setData(ITEM_DATA_ROLE::numbered, Qt::UserRole, numbered);
-		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chref.chid));
 		item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, locked);
 		item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
-		item->setData(ITEM_DATA_ROLE::uri, Qt::UserRole, uri);
+		item->setData(ITEM_DATA_ROLE::refid, Qt::UserRole, ch_refid);
+		item->setData(ITEM_DATA_ROLE::uri, Qt::UserRole, ch_uri);
+
 		if (locked)
 		{
 			item->setIcon(ITEM_ROW_ROLE::chlock, theme::icon(parentalicon));
@@ -3441,11 +3465,18 @@ void mainView::putListItems(vector<QString> items)
 		{
 			item->setIcon(ITEM_ROW_ROLE::chcas, theme::icon("crypted"));
 		}
-		clist.append(item);
 
 		// bouquets tree
 		if (this->state.tc)
-			dbih->addChannelReference(chref, bname);
+		{
+			string nw_chid = dbih->addChannelReference(chref, bname);
+
+			ch_chid = QString::fromStdString(nw_chid);
+		}
+
+		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, ch_chid);
+
+		clist.append(item);
 	}
 
 	if (! clist.empty())

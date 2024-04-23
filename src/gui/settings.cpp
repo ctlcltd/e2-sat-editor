@@ -655,13 +655,13 @@ void settings::preferencesLayout()
 	QCheckBox* dtf4ri = new QCheckBox(tr("Use reference ID"));
 	dtf4ri->setProperty("field", "piconsUseRefid");
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf4ri);
-	dtf4ri->setChecked(true);
 	dtg4->addButton(dtf4ri);
 	dtf41->addRow(dtf4ri);
 
 	QCheckBox* dtf4sn = new QCheckBox(tr("Use service name"));
 	dtf4sn->setProperty("field", "piconsUseChname");
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf4sn);
+	dtf4sn->setChecked(true);
 	dtg4->addButton(dtf4sn);
 	dtf41->addRow(dtf4sn);
 

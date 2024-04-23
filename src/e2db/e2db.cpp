@@ -1118,10 +1118,6 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 	}
 	else if (chref.stream)
 	{
-		if (chref.inum == -1)
-		{
-			chref.inum = db.istreams + 1;
-		}
 		if (chref.index == -1)
 		{
 			int ub_idx = ub.index;
@@ -1159,9 +1155,9 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 
 	if (chref.marker)
 	{
-		if (! chref.anum)
+		if (chref.inum == -1)
 		{
-			chref.anum = db.imarkers + 1;
+			chref.inum = db.istreams + 1;
 		}
 		if (chref.index == -1)
 		{
@@ -1195,7 +1191,9 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 	{
 		// %4x:%4x:%8x
 		std::snprintf(nw_chid, 25, "%x:%x:%x", chref.ref.ssid, chref.ref.tsid, chref.ref.dvbns);
-	}	
+
+		chref.chid = nw_chid;
+	}
 
 	debug("edit_channel_reference", "new chid", chref.chid);
 
@@ -1217,22 +1215,14 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 
 			service ch = db.services[chref.chid];
 
-			debug("edit_channel_reference", "ref.ssid", ref.ssid);
-			debug("edit_channel_reference", "ch.ssid", ch.ssid);
-
 			ref.ssid = ch.ssid;
 			ref.tsid = ch.tsid;
 			ref.onid = ch.onid;
 			ref.dvbns = ch.dvbns;
-
-			debug("edit_channel_reference", "ref.ssid", ref.ssid);
-			debug("edit_channel_reference", "chref.ref.ssid", chref.ref.ssid);
 		}
 
 		ub.channels.erase(chid);
 		ub.channels.emplace(chref.chid, chref);
-
-		debug("edit_channel_reference", "chref.ref.ssid", chref.ref.ssid);
 
 		for (auto it = index[bname].begin(); it != index[bname].end(); it++)
 		{

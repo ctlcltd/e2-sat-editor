@@ -782,7 +782,7 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		if (type == "output")
 			shell_preference_output(format);
 		else
-			cerr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;	
+			cerr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
 	}
 	else
 	{

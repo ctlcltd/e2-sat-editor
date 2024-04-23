@@ -666,8 +666,8 @@ void gui::initSettings()
 	settings.setValue("treeDropCopy", true);
 	settings.setValue("treeDropMove", false);
 	settings.setValue("piconsBackup", true);
-	settings.setValue("piconsUseRefid", true);
-	settings.setValue("piconsUseChname", false);
+	settings.setValue("piconsUseRefid", false);
+	settings.setValue("piconsUseChname", true);
 	settings.endGroup();
 
 	settings.beginGroup("engine");
@@ -799,8 +799,8 @@ void gui::updateSettings()
 
 			settings.setValue("application/piconsBrowsePath", "");
 			settings.setValue("preference/piconsBackup", true);
-			settings.setValue("preference/piconsUseRefid", true);
-			settings.setValue("preference/piconsUseChname", false);
+			settings.setValue("preference/piconsUseRefid", false);
+			settings.setValue("preference/piconsUseChname", true);
 		}
 	}
 }
