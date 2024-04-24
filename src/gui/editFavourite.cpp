@@ -435,6 +435,7 @@ void editFavourite::streamLayout()
 	QGroupBox* dtl1 = new QGroupBox(tr("Stream", "dialog"));
 	QFormLayout* dtf0 = new QFormLayout;
 	dtf0->setRowWrapPolicy(QFormLayout::WrapAllRows);
+	dtl1->setStyleSheet("#dial_field_description { margin-right: 1px; margin-left: 1px }");
 
 	QTextEdit* dtf0rr = new QTextEdit;
 	dtf0rr->setProperty("field", "uri");
@@ -468,6 +469,10 @@ void editFavourite::streamLayout()
 	platform::osLineEdit(dtf0rv);
 	dtf0->addRow(tr("Channel name"), dtf0rv);
 	dtf0->addItem(new QSpacerItem(0, 0));
+
+	QLabel* dtd10 = new QLabel(QString("<small>%1</small>").arg(tr("a valid URL is required for stream type")));
+	dtd10->setObjectName("dial_field_description");
+	dtf0->addRow(dtd10);
 
 	dtl1->setLayout(dtf0);
 	dtform->addWidget(dtl1, 1, 0);
@@ -534,14 +539,18 @@ void editFavourite::store()
 			chref.value = val;
 	}
 
+	chref.stream = false;
+	chref.marker = false;
+
 	if (chref.etype != 0 && ! chref.uri.empty() && chref.uri.find("//") != string::npos)
 		chref.stream = true;
 	else if (chref.atype != 0 && chref.atype != e2db::ATYPE::group)
 		chref.marker = true;
-
-	//TODO service and collisions chid: x:x:x:X
-	if (this->state.edit)
+	else
 		chref.chid = "";
+	//TODO FIX db.services[chref.chid] exists and collision x:x:x:X
+	// else if (dbih->db.services.count(chref.chid))
+		// chref.chid = "";
 
 	if (this->state.edit)
 		this->chid = dbih->editChannelReference(chid, chref, bname);

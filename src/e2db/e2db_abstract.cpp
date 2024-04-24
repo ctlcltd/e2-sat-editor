@@ -184,9 +184,9 @@ void e2db_abstract::value_channel_reference(string str, channel_reference& chref
 	}
 
 	ref.ssid = ssid;
-	ref.dvbns = dvbns;
 	ref.tsid = tsid;
 	ref.onid = onid;
+	ref.dvbns = dvbns;
 
 	chref.etype = etype;
 	chref.atype = atype;

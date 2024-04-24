@@ -655,7 +655,7 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 
 				this->marker_count++;
 			}
-			else if (chref.stream)
+			else
 			{
 				ss << hex;
 				ss << uppercase << chref.anum << ':';
@@ -685,10 +685,11 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 					ss << endl;
 					ss << "#DESCRIPTION " << chref.value;
 				}
-			}
-			else
-			{
-				error("make_userbouquet", "Maker Error", msg("reference (%s)", bname + ':' + x.second + ':' + to_string(ln)));
+
+				if (! chref.stream)
+				{
+					error("make_userbouquet", "Maker Error", msg("reference (%s)", bname + ':' + x.second + ':' + to_string(ln)));
+				}
 			}
 		}
 

@@ -927,11 +927,6 @@ void editService::store()
 			this->ref_chid = this->chid;
 		}
 
-		chref.ref.ssid = ch.ssid;
-		chref.ref.tsid = ch.tsid;
-		chref.ref.onid = ch.onid;
-		chref.ref.dvbns = ch.dvbns;
-
 		if (this->state.edit)
 			dbih->editChannelReference(ref_chid, chref, bname);
 		else
@@ -1222,6 +1217,7 @@ bool editService::checkCollision(e2db::service ch)
 	{
 		QString text;
 
+		if (dbih->db.services.count(ref_chid))
 		{
 			e2db::service ch = dbih->db.services[ref_chid];
 			QString chname = QString::fromStdString(ch.chname);
@@ -1232,8 +1228,10 @@ bool editService::checkCollision(e2db::service ch)
 
 			QString str = tr("Current: \"%1\" (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)", "message").arg(chname).arg(ssid).arg(tsid).arg(onid).arg(dvbns);
 			text.append(str);
+
+			text.append("\n");
 		}
-		text.append("\n");
+		if (dbih->db.services.count(nw_chid))
 		{
 			e2db::service ch = dbih->db.services[nw_chid];
 			QString chname = QString::fromStdString(ch.chname);

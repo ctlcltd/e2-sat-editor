@@ -296,9 +296,9 @@ struct e2db_abstract : protected e2se::log_factory
 		{
 			string chid;
 			int ssid = 0;
-			int dvbns = 0;
 			int tsid = 0;
 			int onid = 0;
+			int dvbns = 0;
 			int stype = 0;
 			int snum = 0;
 			int srcid = 0;
@@ -313,17 +313,17 @@ struct e2db_abstract : protected e2se::log_factory
 		struct service_reference
 		{
 			int ssid = 0;
-			int dvbns = 0;
 			int tsid = 0;
 			int onid = 0;
+			int dvbns = 0;
 		};
 
 		struct transponder
 		{
 			string txid;
-			int dvbns = 0;
 			int tsid = 0;
 			int onid = 0;
+			int dvbns = 0;
 			int ytype = 0;
 			int freq = 0;
 			int sr = -1;

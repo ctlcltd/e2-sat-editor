@@ -2228,10 +2228,10 @@ void mainView::editService()
 	if (reload)
 		visualReloadList();
 
-	this->data->setChanged(true);
-
 	if (this->state.refbox)
 		updateReferenceBox();
+
+	this->data->setChanged(true);
 
 	tabPropagateChanges();
 }
@@ -2653,11 +2653,11 @@ void mainView::setServiceParentalLock()
 
 	QTreeWidgetItem* item = selected.first();
 	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
-	bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
+	bool service = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::service;
 
 	auto* dbih = this->data->dbih;
 
-	if (! marker && dbih->db.services.count(chid))
+	if (service && dbih->db.services.count(chid))
 		debug("setServiceParentalLock", "chid", chid);
 	else
 		return error("setServiceParentalLock", tr("Error", "error").toStdString(), tr("Service \"%1\" not exists or is a channel reference.", "error").arg(chid.data()).toStdString());
@@ -2692,7 +2692,7 @@ void mainView::unsetServiceParentalLock()
 
 	QTreeWidgetItem* item = selected.first();
 	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
-	bool service = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
+	bool service = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::service;
 
 	auto* dbih = this->data->dbih;
 

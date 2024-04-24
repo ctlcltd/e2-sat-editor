@@ -1124,16 +1124,14 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 			chref.index = ub_idx;
 		}
 	}
-	else
+	else if (db.services.count(chref.chid))
 	{
-		if (! db.services.count(chref.chid))
-			return error("add_channel_reference", "Error", msg("Service \"%s\" not exists.", chref.chid));
-
 		service ch = db.services[chref.chid];
 
 		ref.ssid = ch.ssid;
-		ref.dvbns = ch.dvbns;
 		ref.tsid = ch.tsid;
+		ref.onid = ch.onid;
+		ref.dvbns = ch.dvbns;
 	}
 
 	if (chref.index == -1 && ! chref.marker && ! chref.stream)
@@ -1199,20 +1197,14 @@ void e2db::edit_channel_reference(string chid, channel_reference& chref, string 
 
 	if (chref.chid == chid)
 	{
-		if (! chref.marker && ! chref.stream && ! db.services.count(chref.chid))
-			return error("edit_channel_reference", "Error", msg("Service \"%s\" not exists.", chref.chid));
-
 		ub.channels[chref.chid] = chref;
 	}
 	else
 	{
 		service_reference& ref = chref.ref;
 
-		if (! chref.marker && ! chref.stream)
+		if (! chref.marker && ! chref.stream && db.services.count(chref.chid))
 		{
-			if (! db.services.count(chref.chid))
-				return error("edit_channel_reference", "Error", msg("Service \"%s\" not exists.", chref.chid));
-
 			service ch = db.services[chref.chid];
 
 			ref.ssid = ch.ssid;
