@@ -77,8 +77,8 @@ jobs:
         chmod +x AppDir/usr/local/e2se-cli
         # package
         mkdir -p ../artifact/{cli,user-manual}
-        cp ../dist/common/Readme.txt.in ../artifact/Readme.txt
-        cp COPYING ../artifact/License.txt
+        mv AppDir/usr/local/Readme.txt ../artifact/
+        mv AppDir/usr/local/License.txt ../artifact/
         mv AppDir/usr/local/e2\ SAT\ Editor.app ../artifact/
         mv AppDir/usr/local/e2se-cli ../artifact/cli/
         mv "${{github.workspace}}/user-manual" ../artifact/

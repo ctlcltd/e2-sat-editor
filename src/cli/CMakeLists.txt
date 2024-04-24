@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.20)
 
 project(e2se-cli VERSION 1.4.0 LANGUAGES CXX)
 
@@ -26,3 +26,21 @@ else()
 	install(TARGETS e2se-cli)
 endif()
 
+if(UNIX AND NOT APPLE)
+	include(GNUInstallDirs)
+
+	install(FILES "Readme.txt"
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2se-cli/readme)
+	install(FILES "License.txt"
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2se-cli/copyright)
+elseif(APPLE)
+	install(FILES "Readme.txt"
+			DESTINATION .)
+	install(FILES "License.txt"
+			DESTINATION .)
+else()
+	install(FILES "Readme.txt"
+			DESTINATION bin)
+	install(FILES "License.txt"
+			DESTINATION bin)
+endif()

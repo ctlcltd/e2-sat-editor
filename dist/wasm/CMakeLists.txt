@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.20)
 
 project(e2-sat-editor VERSION 1.4.0 LANGUAGES CXX)
 

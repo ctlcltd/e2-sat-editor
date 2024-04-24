@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.20)
 
 project(e2-sat-editor VERSION 1.4.0 LANGUAGES CXX)
 
@@ -130,12 +130,12 @@ endif()
 
 if(DOWNLOAD_CURL_CABUNDLE)
 	file(DOWNLOAD https://curl.se/ca/cacert-2024-03-11.pem
-		curl-cacert.pem
+		"curl-cacert.pem"
 		EXPECTED_HASH SHA256=1794c1d4f7055b7d02c2170337b61b48a2ef6c90d77e95444fd2596f4cac609f
 	)
 
 	if(APPLE)
-		set(curl_cabundle_macos curl-cacert.pem)
+		set(curl_cabundle_macos "curl-cacert.pem")
 		set_source_files_properties(${curl_cabundle_macos} PROPERTIES
 		MACOSX_PACKAGE_LOCATION "Resources")
 		list(APPEND SOURCES ${curl_cabundle_macos})
@@ -162,6 +162,25 @@ else()
 	install(TARGETS e2-sat-editor)
 endif()
 
+set(NEWLINE LF)
+set(REPOSITORY_RES
+	"https://github.com/ctlcltd/e2-sat-editor/raw/main/res")
+
+if(WIN32)
+	set(NEWLINE CRLF)
+	set(SCREENSHOT_LIGHT "${REPOSITORY_RES}/screenshot-wlw.webp")
+	set(SCREENSHOT_DARK "${REPOSITORY_RES}/screenshot-wdw.webp")
+elseif(APPLE)
+	set(SCREENSHOT_LIGHT "${REPOSITORY_RES}/screenshot-mlm.webp")
+	set(SCREENSHOT_DARK "${REPOSITORY_RES}/screenshot-mdm.webp")
+else()
+	set(SCREENSHOT_LIGHT "${REPOSITORY_RES}/screenshot-flf.webp")
+	set(SCREENSHOT_DARK "${REPOSITORY_RES}/screenshot-fdf.webp")
+endif()
+
+configure_file("Readme.txt.in" "Readme.txt" @ONLY NEWLINE_STYLE ${NEWLINE})
+configure_file("COPYING" "License.txt" @ONLY NEWLINE_STYLE ${NEWLINE})
+
 if(UNIX AND NOT APPLE)
 	include(GNUInstallDirs)
 
@@ -187,20 +206,28 @@ if(UNIX AND NOT APPLE)
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor
 			FILES_MATCHING PATTERN "*.qm")
 
-	install(FILES "../dist/common/Readme.txt.in"
-			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor)
-	install(FILES "COPYING"
-			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor)
+	install(FILES "Readme.txt"
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor/readme)
+	install(FILES "License.txt"
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor/copyright)
+elseif(APPLE)
+	install(FILES "Readme.txt"
+			DESTINATION .)
+	install(FILES "License.txt"
+			DESTINATION .)
+else()
+	install(FILES "Readme.txt"
+			DESTINATION bin)
+	install(FILES "License.txt"
+			DESTINATION bin)
 endif()
 
 if(DOWNLOAD_CURL_CABUNDLE)
 	if(UNIX AND NOT APPLE)
-		install(FILES curl-cacert.pem
+		install(FILES "curl-cacert.pem"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor)
-	endif()
-
-	if(WIN32)
-		install(FILES curl-cacert.pem
+	elseif(NOT APPLE)
+		install(FILES "curl-cacert.pem"
 			DESTINATION bin/ca-certificates)
 	endif()
 endif()

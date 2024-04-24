@@ -2,7 +2,7 @@
 
 e2 SAT Editor is a satellite channel lists editor, for Enigma2, Neutrino, dreambox lists.
 
-Cross-platform (Windows, macOS, Linux, Unix-like BSD) and free to use.
+Cross-platform (Windows, macOS, Linux, Unix-like BSD) and free.
 
 <img src="https://github.com/ctlcltd/e2-sat-editor/raw/main/res/e2-sat-editor.svg" width="192" height="192" alt="e2 SAT Editor (icon)" title="Icon">
 
@@ -14,7 +14,9 @@ And it supports also Neutrino xml (api v1, v2, v3, v4).
 
 &nbsp;
 
-🆕 **Releases available to download from [Releases](https://github.com/ctlcltd/e2-sat-editor/releases)** 📡
+📡 **Download new releases from [Releases](https://github.com/ctlcltd/e2-sat-editor/releases)**  
+
+&nbsp;
 
 ## Screenshot
 
@@ -28,49 +30,33 @@ And it supports also Neutrino xml (api v1, v2, v3, v4).
 [![e2 SAT Editor (screenshot sample)](https://github.com/ctlcltd/e2-sat-editor/raw/main/res/screenshot-flf.webp "Sample of the software running with (Qt) Fusion appearance")](https://github.com/ctlcltd/e2-sat-editor/blob/main/res/screenshot-flf.webp?raw=true)
 
 
-## Try the demo
+💡 **Try now online DEMO: https://github.com/ctlcltd/e2se-wasm-demo**
 
-Experiment online **DEMO**: https://github.com/ctlcltd/e2se-wasm-demo
+> [!NOTE]
+> Demo has limitations imposed by remote use, you cannot open and save files other than the demo ones included.
 
-The demo was built with *Qt for WebAssembly*.
-
-&nbsp;
 
 ## Get involved
 
-Your contribution to this project are amazing.
-
 You can open [issues](https://github.com/ctlcltd/e2-sat-editor/issues) to report bug, request features and send [Pull Request](https://github.com/ctlcltd/e2-sat-editor/pulls)
 
-Please read the [contribution guidelines](https://github.com/ctlcltd/e2-sat-editor/blob/main/CONTRIBUTING.md)
+[Contribution guidelines](https://github.com/ctlcltd/e2-sat-editor/blob/main/CONTRIBUTING.md)
 
 
 ## Roadmap
 
 The Roadmap contains ± ambitious points.
 
-A list of points from the Roadmap:
-- Enhancements
-- Scripting support
-- Extensions support
-  - Add-on: JavaScript built-in
-  - Add-on: Standard streams
-- Smart Userbouquet
-- Multiple files: Enigma2 directory format
-  - Flatpak sandbox (save multiple files)
-  - WebAssembly (save and open multiple files)
-- Multi-windowed GUI
-
-Please read the full [Roadmap](https://github.com/ctlcltd/e2-sat-editor/blob/main/ROADMAP.md)
+Read the full [Roadmap](https://github.com/ctlcltd/e2-sat-editor/blob/main/ROADMAP.md)
 
 
 ## Translation
 
-The software is available in 33 languages: Arabic, Bulgarian, Catalan, Czech, Danish, German, Spanish, Persian, Finnish, French, Gaelic, Galician, Hebrew, Croatian, Hungarian, Italian, Japanese, Korean, Lithuanian, Latvian, Dutch, Norwegian Nynorsk, Polish, Portuguese (Brazil), Portuguese (Portugal), Russian, Slovak, Slovenian, Swedish, Turkish, Ukrainian, Chinese (China), Chinese (Taiwan)
+The software is available in 33 languages: Arabic, Bulgarian, Catalan, Czech, Danish, German, Spanish, Persian, Finnish, French, Gaelic, Galician, Hebrew, Croatian, Hungarian, Italian, Japanese, Korean, Lithuanian, Latvian, Dutch, Norwegian Nynorsk, Polish, Portuguese (Brazil), Portuguese (Portugal), Russian, Slovak, Slovenian, Swedish, Turkish, Ukrainian, Chinese (China), Chinese (Taiwan).
 
-To contribute there is **Translations** app *\[beta\]* on the website: https://e2sateditor.com/translate/
+New languages can be added.
 
-Same languages as *Qt*, new languages could be added using the website app.
+Contribute to translations on the website: https://e2sateditor.com/translate/
 
 
 ## Development
@@ -96,20 +82,18 @@ git clone https://github.com/ctlcltd/e2-sat-editor.git
 - `qt6-base` \| `qt5-base`
 - `libcurl4`
 
-&nbsp;
 
 ## Contents
 
 |Folder|Description|
 |-|-|
-|**dist**|Specific target files, required during build|
-|**res**|Resource files, used in this software|
-|**scripts**|Utility bash scripts, used to build|
-|**src**|The main source of this software|
-|**translations**|Translation source files for gui (Qt)|
-|**workspace**|Utility python scripts, used for emulation: ftp, telnet, webif|
+|**dist**|Target files for platforms|
+|**res**|Resource files and screenshots|
+|**scripts**|Utils bash scripts|
+|**src**|The source of this software|
+|**translations**|Translation source files|
+|**workspace**|Utils python scripts, emulation: ftp, telnet, webif|
 
-&nbsp;
 
 ## License
 
