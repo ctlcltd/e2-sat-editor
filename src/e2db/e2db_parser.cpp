@@ -22,7 +22,7 @@
 
 #include "e2db_parser.h"
 
-using std::ifstream, std::stringstream, std::hex, std::dec, std::setfill, std::setw, std::to_string, std::reverse;
+using std::ifstream, std::stringstream, std::hex, std::dec, std::setfill, std::setw, std::to_string, std::sort;
 
 namespace e2se_e2db
 {
@@ -172,7 +172,10 @@ void e2db_parser::parse_e2db()
 			}
 		}
 
-		reverse(i_bouquets.begin(), i_bouquets.end());
+		// note: reverse sort tv, radio
+		sort(i_bouquets.begin(), i_bouquets.end(), [](const auto a, const auto b) {
+			return a.first > b.first;
+		});
 
 		for (auto & x : i_bouquets)
 		{
@@ -364,7 +367,10 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 			}
 		}
 
-		reverse(i_bouquets.begin(), i_bouquets.end());
+		// note: reverse sort tv, radio
+		sort(i_bouquets.begin(), i_bouquets.end(), [](const auto a, const auto b) {
+			return a.first > b.first;
+		});
 
 		for (auto & x : i_bouquets)
 		{

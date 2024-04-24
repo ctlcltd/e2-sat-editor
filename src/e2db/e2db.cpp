@@ -2143,6 +2143,8 @@ void e2db::merge(e2db_abstract* dst)
 	this->db.imarkers = 0;
 	this->db.istreams = 0;
 
+	//TODO improve reverse sort tv, radio
+
 	for (auto & x : index["ubs"])
 	{
 		userbouquet& ub = this->userbouquets[x.second];
