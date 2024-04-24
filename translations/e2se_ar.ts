@@ -620,6 +620,10 @@ Please wait few minutes and try again.</source>
         <comment>dialog</comment>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>a valid URL is required for stream type</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>editMarker</name>
@@ -884,6 +888,31 @@ Please wait few minutes and try again.</source>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>مرجع القناة &quot;%1&quot; غير موجود.</translation>
+    </message>
+    <message>
+        <source>Current: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Collision: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service collision warning</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The service collides with an existing service.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This may produce unexpected results.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1977,6 +2006,11 @@ Please wait few minutes and try again.</source>
         <comment>message</comment>
         <translation>هل تريد حفظ التغييرات؟</translation>
     </message>
+    <message>
+        <source>File Information</source>
+        <comment>status-bar</comment>
+        <translation type="unfinished">معلومات الملف</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2080,7 +2114,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Drag&amp;&amp;Drop</source>
         <comment>toolbar</comment>
-        <extracomment>Encoding: note double ampersand</extracomment>
+        <extracomment>Encoding: note double ampersand, not an accelerator</extracomment>
         <translation>السحب والإفلات</translation>
     </message>
     <message>
@@ -2096,6 +2130,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Drag&amp;&amp;Drop Preferences</source>
         <comment>corner</comment>
+        <extracomment>Encoding: note double ampersand, not an accelerator</extracomment>
         <translation>قم بسحب وإفلات التفضيلات</translation>
     </message>
     <message>
@@ -2685,6 +2720,10 @@ Please wait few minutes and try again.</source>
     <message>
         <source>DVBNS</source>
         <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>Reference ID</source>
+        <translation type="unfinished">الرقم المرجعي</translation>
     </message>
 </context>
 <context>

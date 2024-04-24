@@ -618,6 +618,10 @@ Please wait few minutes and try again.</source>
         <comment>dialog</comment>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>a valid URL is required for stream type</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>editMarker</name>
@@ -882,6 +886,31 @@ Please wait few minutes and try again.</source>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>채널 참조 &quot;%1&quot;이(가) 없습니다.</translation>
+    </message>
+    <message>
+        <source>Current: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Collision: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service collision warning</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The service collides with an existing service.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This may produce unexpected results.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1975,6 +2004,11 @@ Please wait few minutes and try again.</source>
         <comment>message</comment>
         <translation>변경 사항을 저장하시겠습니까?</translation>
     </message>
+    <message>
+        <source>File Information</source>
+        <comment>status-bar</comment>
+        <translation type="unfinished">파일 정보</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2078,7 +2112,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Drag&amp;&amp;Drop</source>
         <comment>toolbar</comment>
-        <extracomment>Encoding: note double ampersand</extracomment>
+        <extracomment>Encoding: note double ampersand, not an accelerator</extracomment>
         <translation>드래그 앤 드롭</translation>
     </message>
     <message>
@@ -2094,6 +2128,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Drag&amp;&amp;Drop Preferences</source>
         <comment>corner</comment>
+        <extracomment>Encoding: note double ampersand, not an accelerator</extracomment>
         <translation>드래그 앤 드롭 기본 설정</translation>
     </message>
     <message>
@@ -2683,6 +2718,10 @@ Please wait few minutes and try again.</source>
     <message>
         <source>DVBNS</source>
         <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>Reference ID</source>
+        <translation type="unfinished">참조 ID</translation>
     </message>
 </context>
 <context>

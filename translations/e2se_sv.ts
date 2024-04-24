@@ -613,6 +613,10 @@ Vänta några minuter och försök igen.</translation>
         <comment>dialog</comment>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>a valid URL is required for stream type</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>editMarker</name>
@@ -877,6 +881,31 @@ Vänta några minuter och försök igen.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Kanalreferens &quot;%1&quot; finns inte.</translation>
+    </message>
+    <message>
+        <source>Current: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Collision: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service collision warning</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The service collides with an existing service.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This may produce unexpected results.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1970,6 +1999,11 @@ Vänta några minuter och försök igen.</translation>
         <comment>message</comment>
         <translation>Vill du spara dina ändringar?</translation>
     </message>
+    <message>
+        <source>File Information</source>
+        <comment>status-bar</comment>
+        <translation type="unfinished">Fil information</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2073,7 +2107,7 @@ Vänta några minuter och försök igen.</translation>
     <message>
         <source>Drag&amp;&amp;Drop</source>
         <comment>toolbar</comment>
-        <extracomment>Encoding: note double ampersand</extracomment>
+        <extracomment>Encoding: note double ampersand, not an accelerator</extracomment>
         <translation>Drag&amp;&amp;Drop</translation>
     </message>
     <message>
@@ -2089,6 +2123,7 @@ Vänta några minuter och försök igen.</translation>
     <message>
         <source>Drag&amp;&amp;Drop Preferences</source>
         <comment>corner</comment>
+        <extracomment>Encoding: note double ampersand, not an accelerator</extracomment>
         <translation>Inställningar Drag&amp;&amp;Drop</translation>
     </message>
     <message>
@@ -2678,6 +2713,10 @@ Vänta några minuter och försök igen.</translation>
     <message>
         <source>DVBNS</source>
         <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>Reference ID</source>
+        <translation type="unfinished">Reference ID</translation>
     </message>
 </context>
 <context>

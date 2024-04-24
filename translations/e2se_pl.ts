@@ -621,6 +621,10 @@ Poczekaj kilka minut i spróbuj ponownie.</translation>
         <comment>dialog</comment>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>a valid URL is required for stream type</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>editMarker</name>
@@ -885,6 +889,31 @@ Poczekaj kilka minut i spróbuj ponownie.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Odniesienie do kanału „%1” nie istnieje.</translation>
+    </message>
+    <message>
+        <source>Current: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Collision: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service collision warning</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The service collides with an existing service.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This may produce unexpected results.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1978,6 +2007,11 @@ Poczekaj kilka minut i spróbuj ponownie.</translation>
         <comment>message</comment>
         <translation>Czy chcesz zachować zmiany?</translation>
     </message>
+    <message>
+        <source>File Information</source>
+        <comment>status-bar</comment>
+        <translation type="unfinished">Informacje o pliku</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2081,7 +2115,7 @@ Poczekaj kilka minut i spróbuj ponownie.</translation>
     <message>
         <source>Drag&amp;&amp;Drop</source>
         <comment>toolbar</comment>
-        <extracomment>Encoding: note double ampersand</extracomment>
+        <extracomment>Encoding: note double ampersand, not an accelerator</extracomment>
         <translation>Drag&amp;&amp;Drop</translation>
     </message>
     <message>
@@ -2097,6 +2131,7 @@ Poczekaj kilka minut i spróbuj ponownie.</translation>
     <message>
         <source>Drag&amp;&amp;Drop Preferences</source>
         <comment>corner</comment>
+        <extracomment>Encoding: note double ampersand, not an accelerator</extracomment>
         <translation>Preferencje Drag&amp;&amp;Drop</translation>
     </message>
     <message>
@@ -2686,6 +2721,10 @@ Poczekaj kilka minut i spróbuj ponownie.</translation>
     <message>
         <source>DVBNS</source>
         <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>Reference ID</source>
+        <translation type="unfinished">Reference ID</translation>
     </message>
 </context>
 <context>

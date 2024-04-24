@@ -619,6 +619,10 @@ Vent et par minutter, og prøv igen.</translation>
         <comment>dialog</comment>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>a valid URL is required for stream type</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>editMarker</name>
@@ -883,6 +887,31 @@ Vent et par minutter, og prøv igen.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation></translation>
+    </message>
+    <message>
+        <source>Current: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Collision: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service collision warning</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The service collides with an existing service.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This may produce unexpected results.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1976,6 +2005,11 @@ Vent et par minutter, og prøv igen.</translation>
         <comment>message</comment>
         <translation>Vil du gemme dine ændringer?</translation>
     </message>
+    <message>
+        <source>File Information</source>
+        <comment>status-bar</comment>
+        <translation type="unfinished">Fil oplysninger</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2079,7 +2113,7 @@ Vent et par minutter, og prøv igen.</translation>
     <message>
         <source>Drag&amp;&amp;Drop</source>
         <comment>toolbar</comment>
-        <extracomment>Encoding: note double ampersand</extracomment>
+        <extracomment>Encoding: note double ampersand, not an accelerator</extracomment>
         <translation>Drag&amp;&amp;Drop</translation>
     </message>
     <message>
@@ -2095,6 +2129,7 @@ Vent et par minutter, og prøv igen.</translation>
     <message>
         <source>Drag&amp;&amp;Drop Preferences</source>
         <comment>corner</comment>
+        <extracomment>Encoding: note double ampersand, not an accelerator</extracomment>
         <translation>Drag&amp;&amp;Drop Præferencer</translation>
     </message>
     <message>
@@ -2684,6 +2719,10 @@ Vent et par minutter, og prøv igen.</translation>
     <message>
         <source>DVBNS</source>
         <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>Reference ID</source>
+        <translation type="unfinished">Reference ID</translation>
     </message>
 </context>
 <context>

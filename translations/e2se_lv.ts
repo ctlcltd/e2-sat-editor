@@ -619,6 +619,10 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <comment>dialog</comment>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>a valid URL is required for stream type</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>editMarker</name>
@@ -883,6 +887,31 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Kanāla atsauce &quot;%1&quot; nepastāv.</translation>
+    </message>
+    <message>
+        <source>Current: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Collision: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service collision warning</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The service collides with an existing service.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This may produce unexpected results.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1976,6 +2005,11 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <comment>message</comment>
         <translation>Vai vēlaties saglabāt izmaiņas?</translation>
     </message>
+    <message>
+        <source>File Information</source>
+        <comment>status-bar</comment>
+        <translation type="unfinished">Faila informācija</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2079,7 +2113,7 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
     <message>
         <source>Drag&amp;&amp;Drop</source>
         <comment>toolbar</comment>
-        <extracomment>Encoding: note double ampersand</extracomment>
+        <extracomment>Encoding: note double ampersand, not an accelerator</extracomment>
         <translation>Drag&amp;&amp;Drop</translation>
     </message>
     <message>
@@ -2095,6 +2129,7 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
     <message>
         <source>Drag&amp;&amp;Drop Preferences</source>
         <comment>corner</comment>
+        <extracomment>Encoding: note double ampersand, not an accelerator</extracomment>
         <translation>Drag&amp;&amp;Drop preferences</translation>
     </message>
     <message>
@@ -2684,6 +2719,10 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
     <message>
         <source>DVBNS</source>
         <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>Reference ID</source>
+        <translation type="unfinished">Reference ID</translation>
     </message>
 </context>
 <context>

@@ -311,6 +311,7 @@ void mainView::layout()
 	this->action.lcrn_prefs->setFlat(true);
 #endif
 	this->action.lcrn_prefs->setIcon(theme->dynamicIcon("list-prefs-menu", this->action.lcrn_prefs));
+	//: Encoding: note double ampersand, not an accelerator
 	this->action.lcrn_prefs->setWhatsThis(tr("Drag&&Drop Preferences", "corner"));
 	this->action.lcrn_prefs->setToolTip(tr("Drag&&Drop Preferences", "corner").replace("&&", "&"));
 	this->action.lcrn_prefs->connect(this->action.lcrn_prefs, &QPushButton::pressed, [=]() {
@@ -347,7 +348,7 @@ void mainView::layout()
 
 	this->action.list_ref = toolBarButton(list_ats, tr("Reference", "toolbar"), [=]() { this->listReferenceToggle(); });
 	toolBarSeparator(list_ats);
-	//: Encoding: note double ampersand
+	//: Encoding: note double ampersand, not an accelerator
 	this->action.list_dnd = toolBarButton(list_ats, tr("Drag&&Drop", "toolbar"), [=]() { this->reharmDnD(); });
 	toolBarSpacer(list_ats);
 	this->action.list_search = toolBarButton(list_ats, tr("&Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->listSearchToggle(); });

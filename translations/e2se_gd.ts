@@ -621,6 +621,10 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <comment>dialog</comment>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>a valid URL is required for stream type</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>editMarker</name>
@@ -885,6 +889,31 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Chan eil iomradh seanail &quot;%1&quot; ann.</translation>
+    </message>
+    <message>
+        <source>Current: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Collision: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service collision warning</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The service collides with an existing service.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This may produce unexpected results.</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1978,6 +2007,11 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <comment>message</comment>
         <translation>A bheil thu airson na h-atharraichean agad a shàbhaladh?</translation>
     </message>
+    <message>
+        <source>File Information</source>
+        <comment>status-bar</comment>
+        <translation type="unfinished">Fiosrachadh Faidhle</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2081,7 +2115,7 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     <message>
         <source>Drag&amp;&amp;Drop</source>
         <comment>toolbar</comment>
-        <extracomment>Encoding: note double ampersand</extracomment>
+        <extracomment>Encoding: note double ampersand, not an accelerator</extracomment>
         <translation>Drag&amp;&amp;Drop</translation>
     </message>
     <message>
@@ -2097,6 +2131,7 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     <message>
         <source>Drag&amp;&amp;Drop Preferences</source>
         <comment>corner</comment>
+        <extracomment>Encoding: note double ampersand, not an accelerator</extracomment>
         <translation>Roghainnean Drag&amp;&amp;Drop</translation>
     </message>
     <message>
@@ -2686,6 +2721,10 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     <message>
         <source>DVBNS</source>
         <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>Reference ID</source>
+        <translation type="unfinished">Reference ID</translation>
     </message>
 </context>
 <context>
