@@ -156,11 +156,6 @@ release () {
 
 	local tip="Use official win x86_64 release from curl. Rename libcurl-x64.dll to libcurl-4.dll"
 	printf "%s\n%s\n\n" "Note: libcurl-4.dll (brotli) could be broken." "$tip"
-
-	printf "%s\n\n" "copying e2se files ..."
-
-	cp ../dist/common/Readme.txt.in build/Readme.txt
-	cp COPYING build/License.txt
 }
 
 release_early () {
@@ -190,11 +185,6 @@ release_early () {
 	printf "%s\n\n" "post actions ..."
 
 	rm "build/platforms/qdirect2d.dll"
-
-	printf "%s\n\n" "copying e2se files ..."
-
-	cp ../dist/common/Readme.txt.in build/Readme.txt
-	cp COPYING build/License.txt
 }
 
 strip () {

@@ -178,7 +178,7 @@ else()
 	set(SCREENSHOT_DARK "${REPOSITORY_RES}/screenshot-fdf.webp")
 endif()
 
-configure_file("Readme.txt.in" "Readme.txt" @ONLY NEWLINE_STYLE ${NEWLINE})
+configure_file("../dist/common/Readme.txt.in" "Readme.txt" @ONLY NEWLINE_STYLE ${NEWLINE})
 configure_file("COPYING" "License.txt" @ONLY NEWLINE_STYLE ${NEWLINE})
 
 if(UNIX AND NOT APPLE)
@@ -207,9 +207,9 @@ if(UNIX AND NOT APPLE)
 			FILES_MATCHING PATTERN "*.qm")
 
 	install(FILES "Readme.txt"
-			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor/readme)
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor)
 	install(FILES "License.txt"
-			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor/copyright)
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor)
 elseif(APPLE)
 	install(FILES "Readme.txt"
 			DESTINATION .)

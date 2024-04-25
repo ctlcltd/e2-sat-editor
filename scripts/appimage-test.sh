@@ -57,9 +57,9 @@
 
 # apt-get remove curl
 # apt-get install libssl-dev
-# wget https://curl.se/download/curl-8.6.0.tar.xz
-# tar -xf curl-8.6.0.tar.xz
-# cd curl-8.6.0
+# wget https://curl.se/download/curl-8.7.1.tar.xz
+# tar -xf curl-8.7.1.tar.xz
+# cd curl-8.7.1
 # ./configure --prefix=/usr/local --with-openssl --without-libpsl --enable-versioned-symbols
 # make -j 2
 # make install
@@ -112,8 +112,8 @@ rm -R AppDir/usr/share/qt/translations/qt_help_*.qm
 mv AppDir/usr/share/applications/e2-sat-editor.desktop AppDir/usr/share/applications/io.github.ctlcltd.e2se.desktop
 mv AppDir/usr/share/metainfo/io.github.ctlcltd.e2se.metainfo.xml AppDir/usr/share/metainfo/io.github.ctlcltd.e2se.appdata.xml
 mkdir -p AppDir/usr/share/doc/e2-sat-editor
-mv AppDir/usr/share/e2-sat-editor/Readme.txt.in AppDir/usr/share/doc/e2-sat-editor/readme
-mv AppDir/usr/share/e2-sat-editor/COPYING AppDir/usr/share/doc/e2-sat-editor/copyright
+mv AppDir/usr/share/e2-sat-editor/Readme.txt AppDir/usr/share/doc/e2-sat-editor/README
+mv AppDir/usr/share/e2-sat-editor/License.txt AppDir/usr/share/doc/e2-sat-editor/LICENSE
 
 export QMAKE=qmake6
 linuxdeploy --appdir AppDir --plugin qt --output appimage

@@ -31,7 +31,6 @@ package() {
 
 	DESTDIR="$pkgdir" ninja -C build install
 
-	install -Dm644 "$pkgdir/usr/share/$pkgname/COPYING" "$pkgdir/usr/share/licenses/$pkgname/copyright"
-	install -Dm644 "$pkgdir/usr/share/$pkgname/Readme.txt.in" "$pkgdir/usr/share/doc/$pkgname/readme"
-	mv "$pkgdir/usr/share/$pkgname/Readme.txt.in" "$pkgdir/usr/share/$pkgname/Readme.txt"
+	install -Dm644 "$pkgdir/usr/share/$pkgname/License.txt" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+	install -Dm644 "$pkgdir/usr/share/$pkgname/Readme.txt" "$pkgdir/usr/share/doc/$pkgname/README"
 }

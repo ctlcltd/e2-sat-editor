@@ -26,13 +26,32 @@ else()
 	install(TARGETS e2se-cli)
 endif()
 
+set(NEWLINE LF)
+set(REPOSITORY_RES
+	"https://github.com/ctlcltd/e2-sat-editor/raw/main/res")
+
+if(WIN32)
+	set(NEWLINE CRLF)
+	set(SCREENSHOT_LIGHT "${REPOSITORY_RES}/screenshot-wlw.webp")
+	set(SCREENSHOT_DARK "${REPOSITORY_RES}/screenshot-wdw.webp")
+elseif(APPLE)
+	set(SCREENSHOT_LIGHT "${REPOSITORY_RES}/screenshot-mlm.webp")
+	set(SCREENSHOT_DARK "${REPOSITORY_RES}/screenshot-mdm.webp")
+else()
+	set(SCREENSHOT_LIGHT "${REPOSITORY_RES}/screenshot-flf.webp")
+	set(SCREENSHOT_DARK "${REPOSITORY_RES}/screenshot-fdf.webp")
+endif()
+
+configure_file("../../dist/common/Readme.txt.in" "Readme.txt" @ONLY NEWLINE_STYLE ${NEWLINE})
+configure_file("../COPYING" "License.txt" @ONLY NEWLINE_STYLE ${NEWLINE})
+
 if(UNIX AND NOT APPLE)
 	include(GNUInstallDirs)
 
 	install(FILES "Readme.txt"
-			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2se-cli/readme)
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2se-cli)
 	install(FILES "License.txt"
-			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2se-cli/copyright)
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2se-cli)
 elseif(APPLE)
 	install(FILES "Readme.txt"
 			DESTINATION .)
