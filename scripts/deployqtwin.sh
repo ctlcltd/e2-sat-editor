@@ -425,6 +425,7 @@ deploy_module () {
 			"libharfbuzz-0"
 			"libiconv-2"
 			"libintl-8"
+			"libjpeg-8"
 			"libpcre2-8-0"
 			"libpng16-16"
 		)
