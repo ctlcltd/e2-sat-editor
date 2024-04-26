@@ -7,7 +7,7 @@
   <project_license>GPL-3.0-or-later</project_license>
   <description>
     <p>e2 SAT Editor is a satellite channel lists editor with tabbed nav, for Enigma2, Neutrino, dreambox lists.</p>
-    <p>With this software you can upload, download and edit channel lists of your Enigma or Neutrino decoder, merge channel lists, convert lists, export and import channels with spreadsheets, edit services, flags, transponders, markers and picons, channel logos.</p>
+    <p>With this software you can upload, download and edit channel lists of your Enigma or Neutrino decoder, merge channel lists, convert lists, export and import channels with spreadsheets, edit services, favourites, transponders, service flags, markers and picons, channel logos.</p>
     <p>It supports Enigma2, Lamedb 4 and Lamedb 5 channel lists (2.4, 2.5, 2.3, 2.2), Enigma1, Neutrino Zapit XML channel lists (api v1, v2, v3, v4).</p>
   </description>
   <categories>
@@ -31,7 +31,7 @@
     <binary>e2-sat-editor</binary>
   </provides>
   <releases>
-    <release version="1.4" date="1970-01-01">
+    <release version="1.4" date="2024-04-26">
       <description>
         <ul>
           <li>Fix add favourite, stream type</li>
