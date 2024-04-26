@@ -850,10 +850,6 @@ int gui::newTab(string path, bool launch)
 				filename = fpath.parent_path().filename().u8string();
 
 			ttname = QString::fromStdString(filename);
-
-			qDebug() << "path " << path;
-			qDebug() << "filename " << filename;
-			qDebug() << "ttname " << ttname;
 		}
 		else
 		{
