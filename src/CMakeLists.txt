@@ -206,19 +206,19 @@ if(UNIX AND NOT APPLE)
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor
 			FILES_MATCHING PATTERN "*.qm")
 
-	install(FILES "Readme.txt"
+	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/Readme.txt"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor)
-	install(FILES "License.txt"
+	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/License.txt"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor)
 elseif(APPLE)
-	install(FILES "Readme.txt"
+	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/Readme.txt"
 			DESTINATION .)
-	install(FILES "License.txt"
+	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/License.txt"
 			DESTINATION .)
 else()
-	install(FILES "Readme.txt"
+	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/Readme.txt"
 			DESTINATION bin)
-	install(FILES "License.txt"
+	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/License.txt"
 			DESTINATION bin)
 endif()
 

@@ -48,18 +48,18 @@ configure_file("../COPYING" "License.txt" @ONLY NEWLINE_STYLE ${NEWLINE})
 if(UNIX AND NOT APPLE)
 	include(GNUInstallDirs)
 
-	install(FILES "Readme.txt"
+	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/Readme.txt"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2se-cli)
-	install(FILES "License.txt"
+	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/License.txt"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2se-cli)
 elseif(APPLE)
-	install(FILES "Readme.txt"
+	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/Readme.txt"
 			DESTINATION .)
-	install(FILES "License.txt"
+	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/License.txt"
 			DESTINATION .)
 else()
-	install(FILES "Readme.txt"
+	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/Readme.txt"
 			DESTINATION bin)
-	install(FILES "License.txt"
+	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/License.txt"
 			DESTINATION bin)
 endif()
