@@ -26,7 +26,7 @@ Less ambitious features:
 Improvements:
 - [x] [automated build](https://github.com/ctlcltd/e2-sat-editor/discussions/17)
 - less memory usage
-- file handling
+- better file handling
 
 
 ## Scripting support
@@ -112,19 +112,16 @@ Need to test again the software to open and save with Flatpak sandbox and restri
 > Note: *Qt* internally uses *GTK+* API to a limited extent to open and write files and directories.
 
 > [!NOTE]
-> Note: *Ubuntu 22.04 LTS* (EOSS: April 2027, EOL: April 2032), contains `xdg-desktop-portal` version 1.14.3, from 2022; *Ubuntu 20.04 LTS* (ESM, EOSS: April 2025, EOL: April 2030), contains `xdg-desktop-portal` version 1.6.0, from 2019; *Ubuntu 18.04 LTS* (ESM, EOSS: June 2023, EOL: April 2028), still mentioned on Flathub, contains `xdg-desktop-portal` version 1.0.3, from 2019.
+> Note: *Ubuntu 24.04 LTS* (2024, EOSS: June 2029, EOL: April 2034), contains `xdg-desktop-portal` version 1.18.3; *Ubuntu 22.04.4 LTS* (2024, EOSS: June 2027, EOL: April 2032), contains `xdg-desktop-portal` version 1.14.4; *Ubuntu 20.04.6 LTS* (2023, ESM, EOSS: April 2025, EOL: April 2030), contains `xdg-desktop-portal` version 1.6.0; *Ubuntu 18.04.6 LTS* (2021, ESM, EOSS: June 2023, EOL: April 2028), contains `xdg-desktop-portal` version 1.0.3.
 
 
 ### 2) WebAssembly (save and open multiple files)
 
-At present the online **demo** has limitations. *Qt for WebAssembly* is used.
+Demo was built with *Qt for WebAssembly*.
 
-On *Qt for WASM* is not possible to open and save multiple files from file dialog. Multiple files is the nature of the Enigma2 directory format. *Qt for WASM* has support to open and save directory, but is currently not implemented in the public API, maybe unstable.
+At present the online **demo** has limitations imposed by remote use.
 
-> [!NOTE]
-> Note: Qt Wasm versions upper then 6.4.3 seems to have issues with `QDialog`, showing accessibility warns instead of window content.
-
-Need to test again the software for compatibility with Qt version upper than 6.4.3.
+On *Qt WASM* is not possible to open and save multiple files from file dialog. Multiple files is the nature of the Enigma2 directory format. *Qt WASM* has support to open and save directory, but is currently not implemented in the public API, maybe unstable.
 
 Evaluate whether the **demo** with almost full functionality can be useful or not for spreading the software.
 

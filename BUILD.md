@@ -125,9 +125,6 @@ In order to cross-compile, the following packages are required:
 
 Follow the instructions from the Qt Documentation website to obtain or build Qt Wasm in your host.
 
-> [!NOTE]
-> Qt Wasm versions upper then 6.4.3 seems to have issues with `QDialog`, showing accessibility warns instead of window content.
-
 Clone the repository, then from the source directory, execute commands:
 ```
 export EMSDK=/path/to/emsdk

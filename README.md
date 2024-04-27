@@ -16,6 +16,11 @@ And it supports also Neutrino xml (api v1, v2, v3, v4).
 
 📡 **Download new releases from [Releases](https://github.com/ctlcltd/e2-sat-editor/releases)**  
 
+💡 **Try now online DEMO: https://github.com/ctlcltd/e2se-wasm-demo**  
+
+> [!NOTE]
+> Demo has limitations imposed by remote use, you cannot open and save files other than the demo ones included.
+
 &nbsp;
 
 ## Screenshot
@@ -29,11 +34,6 @@ And it supports also Neutrino xml (api v1, v2, v3, v4).
 *Sample of the software running with (Qt) Fusion appearance*
 [![e2 SAT Editor (screenshot sample)](https://github.com/ctlcltd/e2-sat-editor/raw/main/res/screenshot-flf.webp "Sample of the software running with (Qt) Fusion appearance")](https://github.com/ctlcltd/e2-sat-editor/blob/main/res/screenshot-flf.webp?raw=true)
 
-
-💡 **Try now online DEMO: https://github.com/ctlcltd/e2se-wasm-demo**
-
-> [!NOTE]
-> Demo has limitations imposed by remote use, you cannot open and save files other than the demo ones included.
 
 
 ## Get involved
