@@ -1,58 +1,62 @@
 # Contribution guidelines
 
-Your contribution is very useful for this project, but some rules are needed to keep it well.
+Your contribution could be very useful to this project.
 
-Info on how to do Pull Request are available on the page: [Creating a pull request](https://docs.github.com/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) from the GitHub help.
+Info on how to do Pull Request are available on the page: [Creating a pull request](https://docs.github.com/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) from GitHub Docs.
 
-When the code you submit via Pull Request does not follow these contribution guidelines, your PR will be rejected and you will be required to follow these guidelines, or your PR will be accepted and then the submitted code will be modified to follow these.
+When the code you submit via Pull Request does not follow these contribution guidelines, your PR could be rejected or accepted. Submitted code will be modified to follow these guidelines.
 
 &nbsp;
 
-## Before contributing
+## Guidelines
 
 There are a few things you need to know in order to contribute in the right way.
 
 This project is free software. Each contribution must comply with the licensing conditions. All informations on where to find the license terms in the [README.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/README.md).
 
-- Any improvements to the already written code are appreciated. Things to do and improve are marked in the code with **//TODO**, **//TODO FIX**, **//TODO improve**.
+- Any improvements to the already written code are appreciated.
 
-- You can follow the "unwritten rules", look at the already written code. For example, consecutive conditional statements must have brackets, within the statement unbracketed conditional statements are allowed, in a single line, but only if they are consecutive.
+- Things to do and improve are marked in the code with **//TODO**, **//TODO FIX**, **//TODO improve**.
 
-- Cross-compatibility for these platforms: Linux, macOS, Unix-like BSD, Windows; and these compilers: **gnu-g++**, **macos-clang**, **mingw**.
+- Things to be tested are marked in the code with **//TODO TEST**.
 
-- Use only **standard C++** functions with well-defined behaviors, and maintain some compatibility with C++11. This is to maintain some backwards compatibility with other devices. Using C++17 is allowed, but do not abuse it. Keep in mind the cross-platform compatibility.
+- Keep in mind cross-platform compatibility: Windows, macOS, Linux, Unix-like BSD, Qt for WebAssembly.
 
-- The only dependencies are **Qt** and **libcurl4**. Do not use dependencies when not strictly necessary, use only standard C++ functions. For example, libboost will not become a dependency of this software.
+- Keep in mind compilers compatibility: **GNU GCC**, **Clang**, **MinGW-w64**.
 
-- Do not consider Qt strictly necessary but a useful thing, to not strictly bind to Qt and to make porting easier. Do not extend *gui* classes from classes derived from *QObject* and *QWidget*.
+- Keep in mind CPU architecture compatibility: amd64 aarch64 arm64 64-bit, i686 arm32 32-bit.
 
-- The C++ code in this project is written with indentation and **4-width tab**. For output to other formats within the software, look at the already written code.
+- Keep in mind backward compatibility with Qt 5 and compatibility with Qt for WebAssembly (Emscripten), for Demo mode.
 
-- Do not introduce in the code: unwanted behaviors, useless complexity, undefined behavior, return values or behaviors of functions that are different between platforms, memory leaks, conflicts, malfunctions.
+- Use **standard C++** functions with well-defined behaviors, maintain some backward compatibility.
 
-- Use the principle of intuitiveness, it is not necessary to comment on every single thing if its behavior is easily understood.
+- Dependencies are **Qt** and **libcurl4**. Do not use other dependencies when not strictly necessary.
 
-- You can reuse "unwritten conventions" as much as possible, look at already written code. Use the same names that are already used for properties, function names, class names, attribute names. This depends on the context. Even the same case style used for the names. The use of product names or registered trademarks for property names, functions, classes, attributes, is strongly discouraged.
+- Do not extend classes from *QObject* or *QWidget* when not strictly necessary.
 
-- Remember to keep core components isolated from *gui*. These components have their counterpart for *gui* integration. For example, *e2se::e2db* and *e2se::ftpccom* have their counterparts *e2se_gui::e2db* and *e2se_gui::ftpcom* inside *gui*. These components will be usable as dependencies and also from the command line, they will not use the toolkit. Qt should absolutely not be used within core components.
+- You can reuse "unwritten conventions" as much as possible, look at already written code. Use the same conventions that are already in use for property names, function names, class names.
 
-- Do not force things. For example, it is a stretch to create a foundation class for everything when each derived class will have different behavior. Another example, *e2se_gui::printable* generates HTML 4.0 Strict for printing with Qt functions, HTML and CSS support is limited. However *e2se_e2db::e2db_converter* does not use Qt, it generates more current, generic and non-printable HTML and CSS.
+- Remember to keep key components isolated from *gui*. These components have their counterpart for *gui*. For example, *e2se::e2db* and *e2se::ftpccom* have their counterparts *e2se_gui::e2db* and *e2se_gui::ftpcom* inside *gui*. These components will be usable as dependency and also from the command line, they will not depends on the GUI toolkit.
 
-- Do not create new files, new classes, new folders, when it is not strictly necessary. Keep the pre-existing folder structure intact.
+- Do not use product names or registered trademarks for property names, function names, class names. This is strongly discouraged.
 
-- It may seem superfluous. Submitted code must be your own, you must not steal code from other projects or snippets. And keep in mind intuitiveness, strenghtness, performance.
+- Do not create new files, new directories, new classes, when it is not necessary.
 
-Your contributions to this project will be signed, your GitHub username will be added to the contributors list, in the *e2 SAT Editor team*. If you prefer otherwise, let us know at the time of the Pull Request or at a later time.
+- Do not introduce in the code: undefined behaviors, useless complexity, return values or behaviors that differs on compilers and platforms.
+
+- Submitted code must be your own, please do not steal code from other projects or take code snippets.
+
+- Keep in mind intuitiveness, strenghtness, performance.
+
+If you want be added to the contributors list, in the *e2 SAT Editor team* list, let us know at the time of the Pull Request or at a later time from comments.
 
 
 ### Roadmap
 
-For a roadmap refer to the TODO list in the [README.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/README.md). We can discuss in [Discussions](https://github.com/ctlcltd/e2-sat-editor/discussions).
+For the roadmap, please refer to [ROADMAP.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/ROADMAP.md) and topics on [Discussions](https://github.com/ctlcltd/e2-sat-editor/discussions).
 
 
 ### Code of Conduct
 
-For the code of conduct, you can refer to the [Code of Conduct](https://docs.github.com/site-policy/github-terms/github-community-code-of-conduct) of the GitHub community.
-
-Use common sense.
+For the code of conduct, you can refer to the [Code of Conduct](https://docs.github.com/site-policy/github-terms/github-community-code-of-conduct) from the GitHub community.
 
