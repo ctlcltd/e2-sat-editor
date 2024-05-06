@@ -303,7 +303,7 @@ class gui : protected e2se::log_factory
 		void linkToWebsite(int page = 0);
 		void linkToOnlineHelp(int page = 0);
 		void checkUpdate();
-		virtual void autoCheckUpdate() {}
+		void autoCheckUpdate();
 		bool getFlag(GUI_CXE bit);
 		void setFlag(GUI_CXE bit, bool flag);
 		bitset<256> getFlags();

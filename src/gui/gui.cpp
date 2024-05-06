@@ -1944,6 +1944,10 @@ void gui::autoCheckUpdate()
 	});
 	timer->start();
 }
+#else
+void gui::autoCheckUpdate()
+{
+}
 #endif
 
 int gui::getTabId(int index)

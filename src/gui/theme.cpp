@@ -41,6 +41,9 @@ theme::theme(QApplication* mroot)
 #ifdef Q_OS_WIN
 	stylePseudoWin();
 #endif
+#ifdef Q_OS_MAC
+	mroot->setAttribute(Qt::AA_DontShowIconsInMenus);
+#endif
 #ifdef Q_OS_WASM
 	QFont font = mroot->font();
 	font.setPointSize(font.pointSize() - 2);

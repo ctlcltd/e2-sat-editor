@@ -16,6 +16,7 @@
 #include <QStyleOption>
 #include <QTimer>
 #include <QGridLayout>
+#include <QAbstractItemView>
 #include <QUrl>
 
 #include "platform_macx.h"
@@ -241,6 +242,27 @@ void _platform_macx::_osMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 	NSPoint nsPos = NSMakePoint(globalPos.x(), globalPos.y());
 	nsPos = [view convertPoint:nsPos toView:nil];
 
+	//workaround: context menu is interfering with Drag and Drop
+	struct dnd
+	{
+		bool dragEnabled = false;
+		QAbstractItemView::DragDropMode dragDropMode = QAbstractItemView::NoDragDrop;
+		bool showDropIndicator = false;
+		bool acceptDrops = false;
+	} _dnd;
+
+	if (QAbstractItemView* wid = qobject_cast<QAbstractItemView*>(widget))
+	{
+		_dnd.dragEnabled = wid->dragEnabled();
+		_dnd.dragDropMode = wid->dragDropMode();
+		_dnd.showDropIndicator = wid->showDropIndicator();
+		_dnd.acceptDrops = wid->acceptDrops();
+		wid->setDragEnabled(false);
+		wid->setDragDropMode(QAbstractItemView::NoDragDrop);
+		wid->setDropIndicatorShown(false);
+		wid->setAcceptDrops(false);
+	}
+
 	// signal emit
 	menu->aboutToShow();
 
@@ -286,6 +308,17 @@ void _platform_macx::_osMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 
 	// signal emit
 	menu->aboutToHide();
+
+	//workaround: context menu is interfering with Drag and Drop
+	if (QAbstractItemView* wid = qobject_cast<QAbstractItemView*>(widget))
+	{
+		QTimer::singleShot(0, [=]() {
+			wid->setDragEnabled(_dnd.dragEnabled);
+			wid->setDragDropMode(_dnd.dragDropMode);
+			wid->setDropIndicatorShown(_dnd.showDropIndicator);
+			wid->setAcceptDrops(_dnd.acceptDrops);
+		});
+	}
 }
 
 QLineEdit* _platform_macx::_osLineEdit(QLineEdit* input, bool destroy)
