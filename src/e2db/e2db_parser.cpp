@@ -704,7 +704,7 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 	switch (ty)
 	{
 		case 's': // DVB-S / DVB-S2
-			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%4d:%1d:%1d:%1d:%1d:%1d:%1d%s", &freq, &sr, &pol, &fec, &pos, &inv, &flags, &sys, &mod, &rol, &pil, feopts);
+			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%5d:%1d:%1d:%1d:%1d:%1d:%1d%36s", &freq, &sr, &pol, &fec, &pos, &inv, &flags, &sys, &mod, &rol, &pil, feopts);
 
 			tx.ytype = YTYPE::satellite;
 			tx.freq = int (freq / 1e3);

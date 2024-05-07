@@ -691,12 +691,24 @@ string e2db_abstract::value_transponder_position(tunersets_table tn)
 	return "";
 }
 
-string e2db_abstract::value_transponder_position(int num)
+string e2db_abstract::value_transponder_position(int pos)
 {
+	char cposor = 'E';
+
+	if (pos > 1800)
+	{
+		cposor = 'W';
+		pos = 3600 - pos;
+	}
+	else if (pos < 0)
+	{
+		cposor = 'W';
+	}
+
 	char cposdeg[6];
 	// %3d.%1d%C
-	std::snprintf(cposdeg, 6, "%.1f", float (std::abs(num)) / 10);
-	return (string (cposdeg) + (num > 0 ? 'E' : 'W'));
+	std::snprintf(cposdeg, 6, "%.1f", float (std::abs(pos)) / 10);
+	return (string (cposdeg) + cposor);
 }
 
 int e2db_abstract::value_transponder_position(string str)
@@ -713,10 +725,10 @@ int e2db_abstract::value_transponder_position(string str)
 		// catch (const std::invalid_argument& err)
 		catch (...)
 		{
-			return -1;
+			return 0;
 		}
 	}
-	return -1;
+	return 0;
 }
 
 int e2db_abstract::value_transponder_system(string str)

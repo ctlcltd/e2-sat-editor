@@ -332,7 +332,7 @@ struct e2db_abstract : protected e2se::log_factory
 			int hpfec = -1; // DVB-T
 			int lpfec = -1; // DVB-T
 			int cfec = -1; // DVB-C
-			int pos = -1; // DVB-S
+			int pos = 0; // DVB-S
 			int inv = -1;
 			int flags = -1;
 			int sys = -1;
@@ -567,7 +567,7 @@ struct e2db_abstract : protected e2se::log_factory
 		static int value_transponder_position(string str);
 		static string value_transponder_position(transponder tx);
 		static string value_transponder_position(tunersets_table tn);
-		static string value_transponder_position(int num);
+		static string value_transponder_position(int pos);
 		static int value_transponder_system(string str);
 		static string value_transponder_system(transponder tx);
 		static string value_transponder_system(int sys, int yx);
