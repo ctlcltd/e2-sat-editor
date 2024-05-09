@@ -103,17 +103,17 @@ DESTDIR=../AppDir ninja -C build install
 # rm -R AppDir/usr/share/qt6/translations/qt_help_*.qm
 
 
-mkdir -p AppDir/usr/share/qt/translations
-cp /usr/local/share/qt6/translations/qt_*.qm AppDir/usr/share/qt/translations
-cp /usr/local/share/qt6/translations/qtbase_*.qm AppDir/usr/share/qt/translations
-rm -R AppDir/usr/share/qt/translations/qt_help_*.qm
+# mkdir -p AppDir/usr/share/qt/translations
+# cp /usr/local/share/qt6/translations/qt_*.qm AppDir/usr/share/qt/translations
+# cp /usr/local/share/qt6/translations/qtbase_*.qm AppDir/usr/share/qt/translations
+# rm -R AppDir/usr/share/qt/translations/qt_help_*.qm
 
 
 mv AppDir/usr/share/applications/e2-sat-editor.desktop AppDir/usr/share/applications/io.github.ctlcltd.e2se.desktop
 mv AppDir/usr/share/metainfo/io.github.ctlcltd.e2se.metainfo.xml AppDir/usr/share/metainfo/io.github.ctlcltd.e2se.appdata.xml
 mkdir -p AppDir/usr/share/doc/e2-sat-editor
-mv AppDir/usr/share/e2-sat-editor/Readme.txt AppDir/usr/share/doc/e2-sat-editor/README
-mv AppDir/usr/share/e2-sat-editor/License.txt AppDir/usr/share/doc/e2-sat-editor/LICENSE
+mv AppDir/usr/share/e2-sat-editor/Readme.txt AppDir/usr/share/doc/e2-sat-editor/readme
+mv AppDir/usr/share/e2-sat-editor/License.txt AppDir/usr/share/doc/e2-sat-editor/copyright
 
 export QMAKE=qmake6
 linuxdeploy --appdir AppDir --plugin qt --output appimage

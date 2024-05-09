@@ -19,12 +19,11 @@ jobs:
 
     - name: Setup Aptitude
       run: |
-        sudo apt-get install curl libcurl4-openssl-dev
-        sudo apt-get install qt6-base-dev qt6-translations-l10n
-        sudo apt-get install libgl1-mesa-dev libglvnd-dev libxcb-xkb-dev libxkbcommon-x11-dev libvulkan-dev
         sudo apt-get install cmake ninja-build
+        sudo apt-get install libgl1-mesa-dev libglvnd-dev libxcb-xkb-dev libxkbcommon-x11-dev libvulkan-dev
+        sudo apt-get install curl libcurl4-openssl-dev
 
-    - name: Download tools
+    - name: Download deploy tools
       run: |
         sudo apt-get install fuse wget
         wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
@@ -36,6 +35,17 @@ jobs:
         mv linuxdeploy-x86_64.AppImage /usr/local/bin/linuxdeploy
         mv linuxdeploy-plugin-qt-x86_64.AppImage /usr/local/bin/linuxdeploy-plugin-qt
         mv appimagetool-x86_64.AppImage /usr/local/bin/appimagetool
+
+    - name: Setup Miniconda
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        miniforge-version: latest
+        auto-update-conda: true
+
+    - name: Install conda-forge packages
+      run: |
+        conda install conda-forge::qt6-main
+        conda install conda-forge::curl
 
     - name: Configure CMake
       working-directory: ${{github.workspace}}/e2-sat-editor/src
@@ -49,33 +59,39 @@ jobs:
         -DWITHOUT_CLI=ON \
         -DDOWNLOAD_CURL_CABUNDLE=ON
 
+    - name: Force fresh libcurl4 dependency
+      working-directory: ${{github.workspace}}/e2-sat-editor/src
+      run: |
+        sudo apt-get remove curl
+        cmake \
+        -B build \
+        -DCURL_LIBRARY=/home/runner/miniconda3/envs/test/lib \
+        -DCURL_INCLUDE_DIR=/home/runner/miniconda3/envs/test/include
+
     - name: Build
       working-directory: ${{github.workspace}}/e2-sat-editor/src
       run: cmake --build build --config ${{ env.BUILD_TYPE }}
 
-    - name: Deploy
+    - name: Deploy artifact
       working-directory: ${{github.workspace}}/e2-sat-editor/src
       continue-on-error: true
       run: |
         DESTDIR=../AppDir ninja -C build install
         # pre actions
-        mkdir -p AppDir/usr/share/qt/translations
-        cp /usr/share/qt6/translations/qt_*.qm AppDir/usr/share/qt/translations
-        cp /usr/share/qt6/translations/qtbase_*.qm AppDir/usr/share/qt/translations
-        rm -R AppDir/usr/share/qt/translations/qt_help_*.qm
         mv AppDir/usr/share/applications/e2-sat-editor.desktop AppDir/usr/share/applications/io.github.ctlcltd.e2se.desktop
         mv AppDir/usr/share/metainfo/io.github.ctlcltd.e2se.metainfo.xml AppDir/usr/share/metainfo/io.github.ctlcltd.e2se.appdata.xml
         mkdir -p AppDir/usr/share/doc/e2-sat-editor
-        mv AppDir/usr/share/e2-sat-editor/Readme.txt AppDir/usr/share/doc/e2-sat-editor/README
-        mv AppDir/usr/share/e2-sat-editor/License.txt AppDir/usr/share/doc/e2-sat-editor/LICENSE
+        mv AppDir/usr/share/e2-sat-editor/Readme.txt AppDir/usr/share/doc/e2-sat-editor/readme
+        mv AppDir/usr/share/e2-sat-editor/License.txt AppDir/usr/share/doc/e2-sat-editor/copyright
         # run linuxdeploy
+        export LD_LIBRARY_PATH=/home/runner/miniconda3/envs/test/lib:/home/runner/miniconda3/lib:/usr/local/lib:/usr/lib
         export QMAKE=qmake6
         linuxdeploy --appdir AppDir --plugin qt --output appimage
+        export LD_LIBRARY_PATH=
         # package
         mv e2_SAT_Editor-x86_64.AppImage ../artifact
-        chmod +x ../artifact
 
-    - name: Upload Artifact
+    - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         path: ${{github.workspace}}/e2-sat-editor/artifact

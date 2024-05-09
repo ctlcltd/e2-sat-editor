@@ -44,8 +44,8 @@ mkdir -p AppDir/usr/share/applications
 cp ../../dist/xdg/e2se-cli.desktop AppDir/usr/share/applications/io.github.ctlcltd.e2se-cli.desktop
 cp ../../dist/xdg/io.github.ctlcltd.e2se-cli.metainfo.xml AppDir/usr/share/metainfo/io.github.ctlcltd.e2se-cli.appdata.xml
 mkdir -p AppDir/usr/share/doc/e2se-cli
-mv AppDir/usr/share/e2se-cli/Readme.txt AppDir/usr/share/doc/e2se-cli/README
-mv AppDir/usr/share/e2se-cli/License.txt AppDir/usr/share/doc/e2se-cli/LICENSE
+mv AppDir/usr/share/e2se-cli/Readme.txt AppDir/usr/share/doc/e2se-cli/readme
+mv AppDir/usr/share/e2se-cli/License.txt AppDir/usr/share/doc/e2se-cli/copyright
 
 linuxdeploy --appdir AppDir --output appimage
 

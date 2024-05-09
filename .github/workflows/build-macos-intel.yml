@@ -57,7 +57,7 @@ jobs:
         path: user-manual
         run-id: ${{ needs.user-manual.outputs.run-id }}
 
-    - name: Deploy
+    - name: Deploy artifact
       working-directory: ${{github.workspace}}/e2-sat-editor/src
       continue-on-error: true
       run: |
@@ -83,7 +83,10 @@ jobs:
         mv AppDir/usr/local/e2se-cli ../artifact/cli/
         mv "${{github.workspace}}/user-manual" ../artifact/
 
-    - name: Upload Artifact
+    - name: Tar artifact
+      run: tar -cvf artifact.tar ${{github.workspace}}/e2-sat-editor/artifact
+
+    - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        path: ${{github.workspace}}/e2-sat-editor/artifact
+        path: artifact.tar
