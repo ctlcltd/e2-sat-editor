@@ -161,6 +161,7 @@ class mainView : public viewAbstract
 		void treeSwitched(QTreeWidget* tw, QTreeWidgetItem* item);
 		void servicesItemChanged(QTreeWidgetItem* current);
 		void treeItemChanged(QTreeWidgetItem* current);
+		void treeItemSelectionChanged();
 		void treeItemDoubleClicked();
 		void listItemChanged();
 		void listItemSelectionChanged();
@@ -195,6 +196,7 @@ class mainView : public viewAbstract
 		void putListItems(vector<QString> items);
 		void showTreeEditContextMenu(QPoint& pos);
 		void showListEditContextMenu(QPoint& pos);
+		void actionCall(int bit);
 		void treeAfterDrop(QTreeWidget* tw, QTreeWidgetItem* current);
 		void listAfterDrop(QTreeWidget* tw);
 		void treeDropFromTree(QTreeWidgetItem* current);

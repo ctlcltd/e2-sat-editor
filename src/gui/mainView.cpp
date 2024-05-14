@@ -383,6 +383,7 @@ void mainView::layout()
 	tree->viewport()->installEventFilter(tree_evth);
 	tree->connect(tree, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { this->treeSwitched(tree, item); });
 	tree->connect(tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->treeItemChanged(current); });
+	tree->connect(tree, &QTreeWidget::itemSelectionChanged, [=]() { this->treeItemSelectionChanged(); });
 	tree->connect(tree, &QTreeWidget::itemDoubleClicked, [=]() { this->treeItemDoubleClicked(); });
 	list->installEventFilter(list_evto);
 	list->viewport()->installEventFilter(list_evth);
@@ -983,6 +984,11 @@ void mainView::servicesItemChanged(QTreeWidgetItem* current)
 			}
 		}
 
+		tabSetFlag(gui::TabTreeEditBouquet, false);
+		tabSetFlag(gui::TabListEditService, false);
+		tabSetFlag(gui::TabListEditMarker, false);
+		tabSetFlag(gui::TabListEditFavourite, false);
+
 		tabSetFlag(gui::TabListDelete, false);
 
 		if (QGuiApplication::clipboard()->text().isEmpty())
@@ -1081,6 +1087,30 @@ void mainView::treeItemChanged(QTreeWidgetItem* current)
 	updateStatusBar(true);
 }
 
+void mainView::treeItemSelectionChanged()
+{
+	// debug("treeItemSelectionChanged");
+
+	QList<QTreeWidgetItem*> selected = tree->selectedItems();
+
+	if (selected.count() == 1)
+	{
+		tabSetFlag(gui::TabTreeEditBouquet, true);
+		tabSetFlag(gui::TabTreeDelete, true);
+	}
+	else
+	{
+		tabSetFlag(gui::TabTreeEditBouquet, false);
+		tabSetFlag(gui::TabTreeDelete, false);
+	}
+
+	tabSetFlag(gui::TabListEditService, false);
+	tabSetFlag(gui::TabListEditMarker, false);
+	tabSetFlag(gui::TabListEditFavourite, false);
+
+	tabUpdateFlags();
+}
+
 void mainView::treeItemDoubleClicked()
 {
 	debug("treeItemDoubleClicked");
@@ -1168,6 +1198,8 @@ void mainView::listItemSelectionChanged()
 		tabSetFlag(gui::TabListEditMarker, false);
 		tabSetFlag(gui::TabListEditFavourite, false);
 	}
+
+	tabSetFlag(gui::TabTreeEditBouquet, false);
 
 	// services tree || userbouquet
 	if (! this->state.tc || this->state.ti == -1)
@@ -1771,6 +1803,8 @@ void mainView::editBouquet()
 	e2db::bouquet gboq = dbih->bouquets[nw_bname];
 	item->setText(0, gboq.nname.empty() ? e2db::fixUnicodeChars(gboq.name) : QString::fromStdString(gboq.nname));
 
+	treeItemSelectionChanged();
+
 	updateTreeIndex();
 
 	this->data->setChanged(true);
@@ -1857,6 +1891,8 @@ void mainView::editUserbouquet()
 
 	e2db::userbouquet uboq = dbih->userbouquets[nw_bname];
 	item->setText(0, e2db::fixUnicodeChars(uboq.name));
+
+	treeItemSelectionChanged();
 
 	updateTreeIndex();
 
@@ -2229,8 +2265,7 @@ void mainView::editService()
 	if (reload)
 		visualReloadList();
 
-	if (this->state.refbox)
-		updateReferenceBox();
+	listItemSelectionChanged();
 
 	this->data->setChanged(true);
 
@@ -2431,8 +2466,7 @@ void mainView::editFavourite()
 		setPendingUpdateListIndex();
 	}
 
-	if (this->state.refbox)
-		updateReferenceBox();
+	listItemSelectionChanged();
 
 	this->data->setChanged(true);
 }
@@ -2593,8 +2627,7 @@ void mainView::editMarker()
 		setPendingUpdateListIndex();
 	}
 
-	if (this->state.refbox)
-		updateReferenceBox();
+	listItemSelectionChanged();
 
 	this->data->setChanged(true);
 }
@@ -2679,6 +2712,8 @@ void mainView::setServiceParentalLock()
 	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, true);
 	item->setIcon(ITEM_ROW_ROLE::chlock, theme::icon(parentalicon));
 
+	listItemSelectionChanged();
+
 	this->data->setChanged(true);
 }
 
@@ -2715,6 +2750,8 @@ void mainView::unsetServiceParentalLock()
 		item->setText(i, entry[i]);
 	item->setData(ITEM_DATA_ROLE::locked, Qt::UserRole, false);
 	item->setIcon(ITEM_ROW_ROLE::chlock, QIcon());
+
+	listItemSelectionChanged();
 
 	this->data->setChanged(true);
 }
@@ -2765,6 +2802,8 @@ void mainView::setUserbouquetParentalLock()
 
 	dbih->clearStorage();
 
+	listItemSelectionChanged();
+
 	this->data->setChanged(true);
 }
 
@@ -2795,6 +2834,8 @@ void mainView::unsetUserbouquetParentalLock()
 	visualReloadList();
 
 	dbih->clearStorage();
+
+	listItemSelectionChanged();
 
 	this->data->setChanged(true);
 }
@@ -2829,6 +2870,8 @@ void mainView::toggleUserbouquetParentalLock()
 	cache[bname].clear();
 
 	visualReloadList();
+
+	listItemSelectionChanged();
 
 	this->data->setChanged(true);
 }
@@ -3510,7 +3553,7 @@ void mainView::putListItems(vector<QString> items)
 
 void mainView::showTreeEditContextMenu(QPoint& pos)
 {
-	debug("showTreeEditContextMenu");
+	// debug("showTreeEditContextMenu");
 
 	QList<QTreeWidgetItem*> selected = tree->selectedItems();
 
@@ -3522,7 +3565,7 @@ void mainView::showTreeEditContextMenu(QPoint& pos)
 	// bouquet: tv | radio
 	if (this->state.ti != -1)
 	{
-		contextMenuAction(tree_edit, tr("Edit Bouquet", "context-menu"), [=]() { this->editBouquet(); }, tabGetFlag(gui::TabTreeEdit));
+		contextMenuAction(tree_edit, tr("Edit Bouquet", "context-menu"), [=]() { this->editBouquet(); }, tabGetFlag(gui::TabTreeEditBouquet));
 	}
 	// userbouquet
 	else
@@ -3537,7 +3580,7 @@ void mainView::showTreeEditContextMenu(QPoint& pos)
 			ub_locked = uboq.locked;
 		}
 
-		contextMenuAction(tree_edit, tr("Edit Userbouquet", "context-menu"), [=]() { this->editUserbouquet(); }, tabGetFlag(gui::TabTreeEdit));
+		contextMenuAction(tree_edit, tr("Edit Userbouquet", "context-menu"), [=]() { this->editUserbouquet(); }, tabGetFlag(gui::TabTreeEditBouquet));
 		contextMenuSeparator(tree_edit);
 		contextMenuAction(tree_edit, ! ub_locked ? tr("Set Parental lock", "context-menu") : tr("Unset Parental lock", "context-menu"), [=]() { this->toggleUserbouquetParentalLock(); });
 		contextMenuSeparator(tree_edit);
@@ -3551,7 +3594,7 @@ void mainView::showTreeEditContextMenu(QPoint& pos)
 
 void mainView::showListEditContextMenu(QPoint& pos)
 {
-	debug("showListEditContextMenu");
+	// debug("showListEditContextMenu");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
@@ -3610,6 +3653,36 @@ void mainView::showListEditContextMenu(QPoint& pos)
 	contextMenuAction(list_edit, tr("&Delete", "context-menu"), [=]() { this->listItemDelete(); }, tabGetFlag(gui::TabListDelete), QKeySequence::Delete);
 
 	platform::osMenuPopup(list_edit, list, pos);
+}
+
+void mainView::actionCall(int bit)
+{
+	// debug("actionCall", "bit", bit);
+
+	switch (bit)
+	{
+		case gui::TAB_ATS::TreeEditBouquet:
+			// bouquet: tv | radio
+			if (this->state.ti != -1)
+			{
+				editBouquet();
+			}
+			// userbouquet
+			else
+			{
+				editUserbouquet();
+			}
+		break;
+		case gui::TAB_ATS::ListEditService:
+			editService();
+		break;
+		case gui::TAB_ATS::ListEditFavourite:
+			editFavourite();
+		break;
+		case gui::TAB_ATS::ListEditMarker:
+			editMarker();
+		break;
+	}
 }
 
 void mainView::treeAfterDrop(QTreeWidget* tw, QTreeWidgetItem* current)
@@ -3965,16 +4038,12 @@ void mainView::updateFlags()
 
 	if (tree->topLevelItemCount())
 	{
-		tabSetFlag(gui::TabTreeEdit, true);
-		tabSetFlag(gui::TabTreeDelete, true);
 		tabSetFlag(gui::TabTreeFind, true);
 		this->action.tree_search->setEnabled(true);
 		this->action.tree_search->actions().first()->setEnabled(true);
 	}
 	else
 	{
-		tabSetFlag(gui::TabTreeEdit, false);
-		tabSetFlag(gui::TabTreeDelete, false);
 		tabSetFlag(gui::TabTreeFind, false);
 		this->action.tree_search->setDisabled(true);
 		this->action.tree_search->actions().first()->setDisabled(true);

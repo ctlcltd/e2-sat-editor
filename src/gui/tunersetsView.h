@@ -131,6 +131,7 @@ class tunersetsView : public viewAbstract
 		void searchLayout();
 		void populate();
 		void treeItemChanged(QTreeWidgetItem* current);
+		void treeItemSelectionChanged();
 		void treeItemDoubleClicked();
 		void listItemChanged();
 		void listItemSelectionChanged();
@@ -145,6 +146,7 @@ class tunersetsView : public viewAbstract
 		void putListItems(vector<QString> items);
 		void showTreeEditContextMenu(QPoint& pos);
 		void showListEditContextMenu(QPoint& pos);
+		void actionCall(int bit);
 		void updateFlags();
 		void updateStatusBar(bool current = false);
 		void updateTreeIndex();

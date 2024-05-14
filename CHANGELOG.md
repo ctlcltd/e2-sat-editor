@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 
 
-## [v1.4]
+## [v1.5.0]
+
+**Version**: 1.5  
+**Release Date**: *unreleased*  
+**Full Changelog**: [v1.4.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.4.0...HEAD)
+
+- Improved Edit menu and context menu
+- Fix orbital position with West values
+- Fix context menu interfering with Drag and Drop \[macOS\]
+
+
+## [v1.4.0]
 
 **Version**: 1.4  
 **Release Date**: 2024-04-26  
@@ -52,7 +63,7 @@ All notable changes to this project will be documented in this file.
 **Release Date**: 2024-01-20  
 **Full Changelog**: [v1.1.0...v.1.1.1](https://github.com/ctlcltd/e2-sat-editor/compare/v1.1.0...v.1.1.1)
 
-- Fix: FTP issue, file listing and directory
+- Fix FTP issue, file listing and directory
 
 
 ## [v1.1.0]
@@ -96,8 +107,8 @@ All notable changes to this project will be documented in this file.
 - Bugfix, stability, Qt compatibility
 - Added Picons editor
 - Threaded FTP
-- Fix: file operations, edit service fields, XML encoding
-- Improve CLI
+- Fix file operations, edit service fields, XML encoding
+- Improved CLI
 
 
 ## [v0.7.0]
@@ -118,10 +129,10 @@ All notable changes to this project will be documented in this file.
 **Release Date**: 2023-04-07  
 **Full Changelog**: [v0.5.0-pre...v0.6.0-pre](https://github.com/ctlcltd/e2-sat-editor/compare/v0.5.0-pre...v0.6.0-pre)
 
-- Fix: clipboard releated issues
-- Improve Drag and Drop and copy/paste operations
-- Improve merge
-- Improve RTL support
+- Fix clipboard releated issues
+- Improved Drag and Drop and copy/paste operations
+- Improved merge
+- Improved RTL support
 - Revised source code and translation support
 
 
@@ -132,11 +143,11 @@ All notable changes to this project will be documented in this file.
 **Full Changelog**: [v0.4.0-pre...v0.5.0-pre](https://github.com/ctlcltd/e2-sat-editor/compare/v0.4.0-pre...v0.5.0-pre)
 
 - Added support for Neutrino Zapit XML channel lists
-- Fix: XML parser bug under MinGW
+- Fix XML parser bug under MinGW
 - Revised file operations
-- Improve Drag and Drop
+- Improved Drag and Drop
 - Parser performance improvements
-- Fix: Qt5 compatibility issues
+- Fix Qt5 compatibility issues
 
 ## [v0.4.0-pre]
 
@@ -147,8 +158,8 @@ All notable changes to this project will be documented in this file.
 - Editor edit views refactoring
 - Added support for Lamedb 2.3 2.2 channel lists
 - Parental lock feature
-- Fix: sprintf deprecation, integer width, leak analysis
-- Fix: dependency update libcurl-4 releated issues
+- Fix sprintf deprecation, integer width, leak analysis
+- Fix dependency update libcurl-4 releated issues
 
 ## [v0.3.0-pre]
 
@@ -156,7 +167,7 @@ All notable changes to this project will be documented in this file.
 **Release date**: 2023-01-24  
 **Full Changelog**: [v0.3.0-pre](https://github.com/ctlcltd/e2-sat-editor/commits/v0.3.0-pre)
 
-- Fix: Qt6 and Qt5 compatibility
+- Fix Qt6 and Qt5 compatibility
 - Revised layout and Qt stylesheet
 - Macx style improvements \[macOS\]
 - First pre-release

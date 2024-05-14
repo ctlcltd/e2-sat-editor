@@ -358,6 +358,16 @@ void gui::menuBarLayout()
 #endif
 	menuBarSeparator(medit);
 	gmenu[GUI_CXE::EditSelectAll] = menuBarAction(medit, tr("Select &All", "menu"), [=]() { this->editAction(GUI_CXE::EditSelectAll); }, QKeySequence::SelectAll);
+	menuBarSeparator(medit);
+	gmenu[GUI_CXE::TabTreeEditBouquet] = menuBarAction(medit, tr("Edit Bouquet", "menu"), [=]() { this->tabAction(TAB_ATS::TreeEditBouquet); });
+	gmenu[GUI_CXE::TabTreeEditPosition] = menuBarAction(medit, tr("Edit Position", "menu"), [=]() { this->tabAction(TAB_ATS::TreeEditPosition); });
+	gmenu[GUI_CXE::TabDialEditSettings] = menuBarAction(medit, tr("Edit Settings", "menu"), [=]() { this->tabAction(TAB_ATS::DialEditSettings); });
+	menuBarSeparator(medit);
+	gmenu[GUI_CXE::TabListEditTransponder] = menuBarAction(medit, tr("Edit Transponder", "menu"), [=]() { this->tabAction(TAB_ATS::ListEditTransponder); });
+	gmenu[GUI_CXE::TabListEditService] = menuBarAction(medit, tr("Edit Service", "menu"), [=]() { this->tabAction(TAB_ATS::ListEditService); });
+	gmenu[GUI_CXE::TabListEditFavourite] = menuBarAction(medit, tr("Edit Favourite", "menu"), [=]() { this->tabAction(TAB_ATS::ListEditFavourite); });
+	gmenu[GUI_CXE::TabListEditMarker] = menuBarAction(medit, tr("Edit Marker", "menu"), [=]() { this->tabAction(TAB_ATS::ListEditMarker); });
+	gmenu[GUI_CXE::TabListEditPicon] = menuBarAction(medit, tr("Change picon", "menu"), [=]() { this->tabAction(TAB_ATS::ListEditPicon); });
 
 	//: Platform: Find menu
 	QMenu* mfind = menuBarMenu(menubar, tr("&Find", "menu"));
@@ -1224,22 +1234,50 @@ void gui::tabViewChanged(TAB_VIEW ttv, int arg)
 {
 	debug("tabViewChanged", "ttv", ttv);
 
+	gmenu[GUI_CXE::TabTreeEditBouquet]->setVisible(false);
+	gmenu[GUI_CXE::TabTreeEditPosition]->setVisible(false);
+	gmenu[GUI_CXE::TabDialEditSettings]->setVisible(false);
+	gmenu[GUI_CXE::TabListEditTransponder]->setVisible(false);
+	gmenu[GUI_CXE::TabListEditService]->setVisible(false);
+	gmenu[GUI_CXE::TabListEditFavourite]->setVisible(false);
+	gmenu[GUI_CXE::TabListEditMarker]->setVisible(false);
+	gmenu[GUI_CXE::TabListEditPicon]->setVisible(false);
+
 	switch (ttv)
 	{
-		case TAB_VIEW::transponders:
-			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Transponder"));
+		case TAB_VIEW::main:
 			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Bouquet"));
 			gmenu[GUI_CXE::TabTreeFindNext]->setText(tr("Find N&ext Bouquet"));
+			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Channel"));
+			gmenu[GUI_CXE::TabTreeEditBouquet]->setVisible(true);
+			gmenu[GUI_CXE::TabListEditService]->setVisible(true);
+			gmenu[GUI_CXE::TabListEditFavourite]->setVisible(true);
+			gmenu[GUI_CXE::TabListEditMarker]->setVisible(true);
+		break;
+		case TAB_VIEW::transponders:
+			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Bouquet"));
+			gmenu[GUI_CXE::TabTreeFindNext]->setText(tr("Find N&ext Bouquet"));
+			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Transponder"));
+			gmenu[GUI_CXE::TabListEditTransponder]->setVisible(true);
 		break;
 		case TAB_VIEW::tunersets:
-			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Transponder"));
 			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Position"));
 			gmenu[GUI_CXE::TabTreeFindNext]->setText(tr("Find N&ext Position"));
+			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Transponder"));
+			gmenu[GUI_CXE::TabTreeEditPosition]->setVisible(true);
+			gmenu[GUI_CXE::TabDialEditSettings]->setVisible(true);
+			gmenu[GUI_CXE::TabListEditTransponder]->setVisible(true);
 		break;
-		default:
-			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Channel"));
+		case TAB_VIEW::picons:
 			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Bouquet"));
 			gmenu[GUI_CXE::TabTreeFindNext]->setText(tr("Find N&ext Bouquet"));
+			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Channel"));
+			gmenu[GUI_CXE::TabListEditPicon]->setVisible(true);
+		break;
+		default:
+			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Bouquet"));
+			gmenu[GUI_CXE::TabTreeFindNext]->setText(tr("Find N&ext Bouquet"));
+			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Channel"));
 	}
 }
 

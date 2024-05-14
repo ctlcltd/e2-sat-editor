@@ -416,6 +416,7 @@ void piconsView::listItemSelectionChanged()
 		tabSetFlag(gui::TabListPaste, true);
 
 	updateStatusBar(selected.count() == 1);
+
 	tabUpdateFlags();
 }
 
@@ -951,7 +952,7 @@ void piconsView::updateStatusBar(bool current)
 
 void piconsView::showListEditContextMenu(QPoint& pos)
 {
-	debug("showListEditContextMenu");
+	// debug("showListEditContextMenu");
 
 	QList<QListWidgetItem*> selected = list->selectedItems();
 
@@ -978,6 +979,18 @@ void piconsView::showListEditContextMenu(QPoint& pos)
 	platform::osMenuPopup(list_edit, list, pos);
 }
 
+void piconsView::actionCall(int bit)
+{
+	// debug("actionCall", "bit", bit);
+
+	switch (bit)
+	{
+		case gui::TAB_ATS::ListEditPicon:
+			editPicon();
+		break;
+	}
+}
+
 void piconsView::updateFlags()
 {
 	debug("updateFlags");
@@ -985,10 +998,6 @@ void piconsView::updateFlags()
 	tabSetFlag(gui::FileImport, false);
 	tabSetFlag(gui::FileExport, false);
 	tabUpdateToolBars();
-
-	tabSetFlag(gui::TabTreeEdit, false);
-	tabSetFlag(gui::TabTreeDelete, false);
-	tabSetFlag(gui::TabTreeFind, false);
 
 	if (list->count())
 	{

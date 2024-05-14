@@ -92,6 +92,7 @@ class piconsView : public viewAbstract
 		void changePicon(QListWidgetItem* item, QString path);
 		/*void changePicon(QListWidgetItem* item, QByteArray data);*/
 		void showListEditContextMenu(QPoint& pos);
+		void actionCall(int bit);
 		void updateFlags();
 		void updateStatusBar(bool current = false);
 

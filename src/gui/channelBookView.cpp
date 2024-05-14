@@ -726,7 +726,7 @@ vector<QString> channelBookView::getSelected()
 
 void channelBookView::showListEditContextMenu(QPoint& pos)
 {
-	debug("showListEditContextMenu");
+	// debug("showListEditContextMenu");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 

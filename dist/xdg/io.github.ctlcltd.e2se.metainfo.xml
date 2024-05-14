@@ -31,7 +31,7 @@
     <binary>e2-sat-editor</binary>
   </provides>
   <releases>
-    <release version="1.4" date="2024-04-26">
+    <release version="1.4.0" date="2024-04-26">
       <description>
         <ul>
           <li>Fix add favourite, stream type</li>
@@ -68,7 +68,7 @@
     <release version="1.1.1" date="2024-01-20">
       <description>
         <ul>
-          <li>Fix: FTP issue, file listing and directory</li>
+          <li>Fix FTP issue, file listing and directory</li>
         </ul>
       </description>
     </release>
@@ -89,32 +89,9 @@
         </ul>
       </description>
     </release>
-    <release version="0.9.0" date="2023-09-26">
-      <description>
-        <ul>
-          <li>Translations: Arabic, Bulgarian, Catalan, Czech, Danish, German, Spanish, Persian, Finnish, French, Gaelic, Galician, Hebrew, Croatian, Hungarian, Italian, Japanese, Korean, Lithuanian, Latvian, Dutch, Norwegian Nynorsk, Polish, Portuguese (Brazil), Portuguese (Portugal), Russian, Slovak, Slovenian, Swedish, Turkish, Ukrainian, Chinese (China), Chinese (Taiwan)</li>
-          <li>Bugfix</li>
-        </ul>
-      </description>
-    </release>
-    <release version="0.8.0" date="2023-06-13">
-      <description>
-        <ul>
-          <li>New Picons editor</li>
-          <li>Bugfix and stability</li>
-          <li>Improvements to FTP</li>
-          <li>Fix: file operations, edit service fields, XML encoding</li>
-        </ul>
-      </description>
-    </release>
-    <release version="0.7.0" date="2023-05-21">
-      <description>
-        <ul>
-          <li>Improvements: tree views, log inspector, icon resources</li>
-          <li>Testing and fixing for platforms</li>
-        </ul>
-      </description>
-    </release>
+    <release version="0.9.0" date="2023-09-26" />
+    <release version="0.8.0" date="2023-06-13" />
+    <release version="0.7.0" date="2023-05-21" />
     <release version="0.6.0-pre" type="development" date="2023-04-07" />
     <release version="0.5.0-pre" type="development" date="2023-03-18" />
     <release version="0.4.0-pre" type="development" date="2023-02-25" />

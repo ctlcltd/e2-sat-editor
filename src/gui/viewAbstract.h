@@ -66,6 +66,7 @@ class viewAbstract : protected e2se::log_factory
 		virtual void didChange() {}
 		virtual void themeChanged();
 		virtual void clipboardDataChanged();
+		virtual void actionCall(int bit) = 0;
 		virtual void treeItemDelete();
 		virtual void listItemCut();
 		virtual void listItemCopy(bool cut = false) = 0;

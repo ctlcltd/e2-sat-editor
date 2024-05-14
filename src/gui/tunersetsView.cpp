@@ -347,6 +347,7 @@ void tunersetsView::layout()
 	tree->installEventFilter(tree_evto);
 	tree->viewport()->installEventFilter(tree_evth);
 	tree->connect(tree, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->treeItemChanged(current); });
+	tree->connect(tree, &QTreeWidget::itemSelectionChanged, [=]() { this->treeItemSelectionChanged(); });
 	tree->connect(tree, &QTreeWidget::itemDoubleClicked, [=]() { this->treeItemDoubleClicked(); });
 	list->installEventFilter(list_evto);
 	list->viewport()->installEventFilter(list_evth);
@@ -583,6 +584,28 @@ void tunersetsView::treeItemChanged(QTreeWidgetItem* current)
 	updateStatusBar(true);
 }
 
+void tunersetsView::treeItemSelectionChanged()
+{
+	// debug("treeItemSelectionChanged");
+
+	QList<QTreeWidgetItem*> selected = tree->selectedItems();
+
+	if (selected.count() == 1)
+	{
+		tabSetFlag(gui::TabTreeEditPosition, true);
+		tabSetFlag(gui::TabTreeDelete, true);
+	}
+	else
+	{
+		tabSetFlag(gui::TabTreeEditPosition, false);
+		tabSetFlag(gui::TabTreeDelete, false);
+	}
+
+	tabSetFlag(gui::TabListEditTransponder, false);
+
+	tabUpdateFlags();
+}
+
 void tunersetsView::treeItemDoubleClicked()
 {
 	debug("treeItemDoubleClicked");
@@ -630,6 +653,8 @@ void tunersetsView::listItemSelectionChanged()
 	{
 		tabSetFlag(gui::TabListEditTransponder, false);
 	}
+
+	tabSetFlag(gui::TabTreeEditPosition, false);
 
 	if (QGuiApplication::clipboard()->text().isEmpty())
 		tabSetFlag(gui::TabListPaste, false);
@@ -800,6 +825,8 @@ void tunersetsView::editPosition()
 		item->setText(i, entry[i]);
 	item->setData(0, Qt::UserRole, idx);
 
+	treeItemSelectionChanged();
+
 	this->data->setChanged(true);
 
 	tabPropagateChanges();
@@ -920,6 +947,8 @@ void tunersetsView::editTransponder()
 	for (int i = 0; i < entry.count(); i++)
 		item->setText(i, entry[i]);
 	item->setData(ITEM_DATA_ROLE::trid, Qt::UserRole, QString::fromStdString(nw_trid));
+
+	listItemSelectionChanged();
 
 	setPendingUpdateListIndex();
 
@@ -1301,7 +1330,7 @@ void tunersetsView::updateStatusBar(bool current)
 
 void tunersetsView::showTreeEditContextMenu(QPoint& pos)
 {
-	debug("showTreeEditContextMenu");
+	// debug("showTreeEditContextMenu");
 
 	QList<QTreeWidgetItem*> selected = tree->selectedItems();
 
@@ -1310,18 +1339,16 @@ void tunersetsView::showTreeEditContextMenu(QPoint& pos)
 
 	QMenu* tree_edit = contextMenu();
 
-	contextMenuAction(tree_edit, tr("Edit Position", "context-menu"), [=]() { this->editPosition(); }, tabGetFlag(gui::TabTreeEdit));
+	contextMenuAction(tree_edit, tr("Edit Position", "context-menu"), [=]() { this->editPosition(); }, tabGetFlag(gui::TabTreeEditPosition));
 	contextMenuSeparator(tree_edit);
 	contextMenuAction(tree_edit, tr("&Delete", "context-menu"), [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
-	// contextMenuSeparator(tree_edit);
-	// contextMenuAction(tree_edit, tr("Edit Settings", "context-menu"), [=]() { this->editSettings(); });
 
 	platform::osMenuPopup(tree_edit, tree, pos);
 }
 
 void tunersetsView::showListEditContextMenu(QPoint& pos)
 {
-	debug("showListEditContextMenu");
+	// debug("showListEditContextMenu");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
@@ -1345,22 +1372,38 @@ void tunersetsView::showListEditContextMenu(QPoint& pos)
 	platform::osMenuPopup(list_edit, list, pos);
 }
 
+void tunersetsView::actionCall(int bit)
+{
+	// debug("actionCall", "bit", bit);
+
+	switch (bit)
+	{
+		case gui::TAB_ATS::DialEditSettings:
+			editSettings();
+		break;
+		case gui::TAB_ATS::TreeEditPosition:
+			editPosition();
+		break;
+		case gui::TAB_ATS::ListEditTransponder:
+			editTransponder();
+		break;
+	}
+}
+
 void tunersetsView::updateFlags()
 {
 	debug("updateFlags");
 
+	tabSetFlag(gui::TabDialEditSettings, true);
+
 	if (tree->topLevelItemCount())
 	{
-		tabSetFlag(gui::TabTreeEdit, true);
-		tabSetFlag(gui::TabTreeDelete, true);
 		tabSetFlag(gui::TabTreeFind, true);
 		this->action.tree_search->setEnabled(true);
 		this->action.tree_search->actions().first()->setEnabled(true);
 	}
 	else
 	{
-		tabSetFlag(gui::TabTreeEdit, false);
-		tabSetFlag(gui::TabTreeDelete, false);
 		tabSetFlag(gui::TabTreeFind, false);
 		this->action.tree_search->setDisabled(true);
 		this->action.tree_search->actions().first()->setEnabled(true);
@@ -1368,7 +1411,6 @@ void tunersetsView::updateFlags()
 
 	if (list->topLevelItemCount())
 	{
-		tabSetFlag(gui::TabListEditTransponder, true);
 		tabSetFlag(gui::TabListSelectAll, true);
 		tabSetFlag(gui::TabListFind, true);
 		this->action.list_search->setEnabled(true);
@@ -1376,7 +1418,6 @@ void tunersetsView::updateFlags()
 	}
 	else
 	{
-		tabSetFlag(gui::TabListEditTransponder, false);
 		tabSetFlag(gui::TabListSelectAll, false);
 		tabSetFlag(gui::TabListFind, false);
 		this->action.list_search->setDisabled(true);

@@ -476,6 +476,8 @@ void transpondersView::editTransponder()
 		item->setText(i, entry[i]);
 	item->setData(ITEM_DATA_ROLE::txid, Qt::UserRole, QString::fromStdString(nw_txid));
 
+	listItemSelectionChanged();
+
 	updateListIndex();
 
 	this->data->setChanged(true);
@@ -761,7 +763,7 @@ void transpondersView::updateStatusBar(bool current)
 
 void transpondersView::showListEditContextMenu(QPoint& pos)
 {
-	debug("showListEditContextMenu");
+	// debug("showListEditContextMenu");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
@@ -785,17 +787,24 @@ void transpondersView::showListEditContextMenu(QPoint& pos)
 	platform::osMenuPopup(list_edit, list, pos);
 }
 
+void transpondersView::actionCall(int bit)
+{
+	// debug("actionCall", "bit", bit);
+
+	switch (bit)
+	{
+		case gui::TAB_ATS::ListEditTransponder:
+			editTransponder();
+		break;
+	}
+}
+
 void transpondersView::updateFlags()
 {
 	debug("updateFlags");
 
-	tabSetFlag(gui::TabTreeEdit, false);
-	tabSetFlag(gui::TabTreeDelete, false);
-	tabSetFlag(gui::TabTreeFind, false);
-
 	if (list->topLevelItemCount())
 	{
-		tabSetFlag(gui::TabListEditTransponder, true);
 		tabSetFlag(gui::TabListSelectAll, true);
 		tabSetFlag(gui::TabListFind, true);
 		this->action.list_search->setEnabled(true);
@@ -803,7 +812,6 @@ void transpondersView::updateFlags()
 	}
 	else
 	{
-		tabSetFlag(gui::TabListEditTransponder, false);
 		tabSetFlag(gui::TabListSelectAll, false);
 		tabSetFlag(gui::TabListFind, false);
 		this->action.list_search->setDisabled(true);

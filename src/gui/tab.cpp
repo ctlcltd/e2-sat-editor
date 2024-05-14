@@ -1653,6 +1653,17 @@ void tab::actionCall(int bit)
 			view->listItemSelectAll();
 		break;
 
+		case gui::TAB_ATS::TreeEditBouquet:
+		case gui::TAB_ATS::TreeEditPosition:
+		case gui::TAB_ATS::DialEditSettings:
+		case gui::TAB_ATS::ListEditTransponder:
+		case gui::TAB_ATS::ListEditService:
+		case gui::TAB_ATS::ListEditFavourite:
+		case gui::TAB_ATS::ListEditMarker:
+		case gui::TAB_ATS::ListEditPicon:
+			view->actionCall(bit);
+		break;
+
 		case gui::TAB_ATS::TreeFind:
 			view->treeSearchShow();
 		break;

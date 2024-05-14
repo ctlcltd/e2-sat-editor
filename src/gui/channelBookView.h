@@ -97,6 +97,7 @@ class channelBookView : public viewAbstract
 		void sideRowChanged(int index);
 		void listItemSelectionChanged();
 		void showListEditContextMenu(QPoint& pos);
+		void actionCall(int bit) {}
 		void updateFlags();
 
 		QTabBar* tabv;
