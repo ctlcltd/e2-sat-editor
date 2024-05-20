@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 ## [v1.5.0]
 
 **Version**: 1.5  
-**Release Date**: *unreleased*  
+**Release Date**: 2024-05-20  
 **Full Changelog**: [v1.4.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.4.0...HEAD)
 
 - Improved Edit menu and context menu

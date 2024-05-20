@@ -31,6 +31,15 @@
     <binary>e2-sat-editor</binary>
   </provides>
   <releases>
+    <release version="1.5.0" date="2024-05-20">
+      <description>
+        <ul>
+          <li>Improved Edit menu and context menu</li>
+          <li>Fix orbital position with West values</li>
+          <li>Added new favourite types, ie. 5001 gstplayer, 5002 exteplayer3</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.4.0" date="2024-04-26">
       <description>
         <ul>
