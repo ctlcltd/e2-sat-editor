@@ -153,18 +153,22 @@ void e2db_abstract::value_channel_reference(string str, channel_reference& chref
 
 	std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X:%d:%d:%d", &etype, &atype, &anum, &ssid, &tsid, &onid, &dvbns, &x7, &x8, &x9);
 
-	switch (etype)
+	/*switch (etype)
 	{
 		// service or stream
 		case ETYPE::ecast:
 		// stream
-		case ETYPE::ecustom:
+		case ETYPE::evod:
+		case ETYPE::eraw:
+		case ETYPE::egstplayer:
+		case ETYPE::eexteplayer3:
 		case ETYPE::eservice:
-		case ETYPE::eytube:
+		case ETYPE::eyoutube:
+		case ETYPE::eservice2:
 		break;
 		default:
 			return;
-	}
+	}*/
 
 	switch (atype)
 	{
@@ -177,7 +181,7 @@ void e2db_abstract::value_channel_reference(string str, channel_reference& chref
 		break;
 		// group
 		case ATYPE::group:
-		return;
+		return; // note: not supported yet
 		// service
 		default:
 			chref.marker = false;
@@ -341,12 +345,20 @@ int e2db_abstract::value_favourite_type(string str)
 		return ETYPE::ecast;
 	else if (str == "[file]")
 		return ETYPE::efile;
-	else if (str == "[custom]")
-		return ETYPE::ecustom;
+	else if (str == "[vod]")
+		return ETYPE::evod;
+	else if (str == "[raw]")
+		return ETYPE::eraw;
+	else if (str == "[gstplayer]")
+		return ETYPE::egstplayer;
+	else if (str == "[exteplayer3]")
+		return ETYPE::eexteplayer3;
 	else if (str == "[eservice]")
 		return ETYPE::eservice;
 	else if (str == "[youtube]")
-		return ETYPE::eytube;
+		return ETYPE::eyoutube;
+	else if (str == "[eservice dreamos]")
+		return ETYPE::eservice2;
 	else
 		return ETYPE::ecast;
 }

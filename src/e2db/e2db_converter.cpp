@@ -3106,12 +3106,16 @@ void e2db_converter::convert_m3u_channel_list(unordered_map<string, vector<m3u_e
 				// service or stream
 				case ETYPE::ecast:
 				// stream
-				case ETYPE::ecustom:
+				case ETYPE::evod:
+				case ETYPE::eraw:
+				case ETYPE::egstplayer:
+				case ETYPE::eexteplayer3:
 				case ETYPE::eservice:
-				case ETYPE::eytube:
+				case ETYPE::eyoutube:
+				case ETYPE::eservice2:
 				break;
 				default:
-					chref.etype = ETYPE::ecustom;
+					chref.etype = ETYPE::evod;
 			}
 
 			chref.stream = true;

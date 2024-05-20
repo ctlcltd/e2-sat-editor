@@ -700,10 +700,14 @@ QStringList e2db::entryFavourite(channel_reference chref)
 	{
 		case e2db::ETYPE::ecast: sys = "[broadcast]"; break;
 		case e2db::ETYPE::efile: sys = "[file]"; break;
-		case e2db::ETYPE::ecustom: sys = "[custom]"; break;
+		case e2db::ETYPE::evod: sys = "[vod]"; break;
+		case e2db::ETYPE::eraw: sys = "[raw]"; break;
+		case e2db::ETYPE::egstplayer: sys = "[gstplayer]"; break;
+		case e2db::ETYPE::eexteplayer3: sys = "[exteplayer3]"; break;
 		case e2db::ETYPE::eservice: sys = "[eservice]"; break;
-		case e2db::ETYPE::eytube: sys = "[youtube]"; break;
-		default: e2db::ETYPE_EXT_LABEL.count(chref.etype) ? QString::fromStdString(e2db::ETYPE_EXT_LABEL.at(chref.etype)) : QString::number(chref.etype);
+		case e2db::ETYPE::eyoutube: sys = "[youtube]"; break;
+		case e2db::ETYPE::eservice2: sys = "[eservice dreamos]"; break;
+		default: sys = e2db::ETYPE_EXT_LABEL.count(chref.etype) ? QString::fromStdString(e2db::ETYPE_EXT_LABEL.at(chref.etype)) : QString::number(chref.etype);
 	}
 
 	if (chref.stream)

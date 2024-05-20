@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 
 - Improved Edit menu and context menu
 - Fix orbital position with West values
+- Added new favourite types, ie. 5001 gstplayer, 5002 exteplayer3
 - Fix context menu interfering with Drag and Drop \[macOS\]
 
 

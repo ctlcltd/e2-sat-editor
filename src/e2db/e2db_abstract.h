@@ -118,10 +118,14 @@ struct e2db_abstract : protected e2se::log_factory
 		// fav entry type
 		enum ETYPE {
 			ecast = 1,
-			efile = 2,
-			ecustom = 4097,
+			efile = 2, // file enigma 1
+			evod = 4097, // default player
+			eraw = 4114, // raw service
+			egstplayer = 5001,
+			eexteplayer3 = 5002,
 			eservice = 8193,
-			eytube = 8139
+			eyoutube = 8139,
+			eservice2 = 8739 // eservice dreamos
 		};
 
 		// fav entry flag type
@@ -173,18 +177,24 @@ struct e2db_abstract : protected e2se::log_factory
 		inline static const unordered_map<int, int> ETYPE_EXT_TYPE = {
 			{ETYPE::ecast, ETYPE::ecast},
 			{ETYPE::efile, ETYPE::efile},
-			{ETYPE::ecustom, ETYPE::ecustom},
+			{ETYPE::evod, ETYPE::evod},
+			{ETYPE::egstplayer, ETYPE::egstplayer},
+			{ETYPE::eexteplayer3, ETYPE::eexteplayer3},
 			{ETYPE::eservice, ETYPE::eservice},
-			{ETYPE::eytube, ETYPE::eytube}
+			{ETYPE::eyoutube, ETYPE::eyoutube}
 		};
 
 		// entry type extended - label
 		inline static const unordered_map<int, string> ETYPE_EXT_LABEL = {
 			{ETYPE::ecast, "[broadcast]"},
 			{ETYPE::efile, "[file]"},
-			{ETYPE::ecustom, "[custom]"},
+			{ETYPE::evod, "[vod]"},
+			{ETYPE::eraw, "[raw]"},
+			{ETYPE::egstplayer, "[gstreamer]"},
+			{ETYPE::eexteplayer3, "[exteplayer3]"},
 			{ETYPE::eservice, "[eservice]"},
-			{ETYPE::eytube, "[youtube]"}
+			{ETYPE::eyoutube, "[youtube]"},
+			{ETYPE::eservice2, "[eservice dreamos]"}
 		};
 
 		// entry flag type extended - type

@@ -3969,9 +3969,14 @@ void mainView::updateReferenceBox()
 			{
 				case e2db::ETYPE::ecast: psys = "[broadcast]"; break;
 				case e2db::ETYPE::efile: psys = "[file]"; break;
-				case e2db::ETYPE::ecustom: psys = "[custom]"; break;
+				case e2db::ETYPE::evod: psys = "[vod]"; break;
+				case e2db::ETYPE::eraw: psys = "[raw]"; break;
+				case e2db::ETYPE::egstplayer: psys = "[gstplayer]"; break;
+				case e2db::ETYPE::eexteplayer3: psys = "[exteplayer3]"; break;
 				case e2db::ETYPE::eservice: psys = "[eservice]"; break;
-				case e2db::ETYPE::eytube: psys = "[youtube]"; break;
+				case e2db::ETYPE::eyoutube: psys = "[youtube]"; break;
+				case e2db::ETYPE::eservice2: psys = "[eservice dreamos]"; break;
+				default: psys = e2db::ETYPE_EXT_LABEL.count(chref.etype) ? QString::fromStdString(e2db::ETYPE_EXT_LABEL.at(chref.etype)) : QString::number(chref.etype);
 			}
 
 			string ref_txid;

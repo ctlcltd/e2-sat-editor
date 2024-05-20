@@ -1087,18 +1087,22 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 	ref.onid = onid;
 	ref.dvbns = dvbns;
 
-	switch (etype)
+	/*switch (etype)
 	{
 		// service or stream
 		case ETYPE::ecast:
 		// stream
-		case ETYPE::ecustom:
+		case ETYPE::evod:
+		case ETYPE::eraw:
+		case ETYPE::egstplayer:
+		case ETYPE::exteplayer3:
 		case ETYPE::eservice:
-		case ETYPE::eytube:
+		case ETYPE::eyoutube:
+		case ETYPE::eservice2:
 		break;
 		default:
-			error("parse_channel_reference", "Parser Error", "Not supported yet.");
-	}
+			error("parse_channel_reference", "Parser Error", msg("Not supported yet (%s)", filename + ':' + to_string(ln)));
+	}*/
 
 	switch (atype)
 	{
