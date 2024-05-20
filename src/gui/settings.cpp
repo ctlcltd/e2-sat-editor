@@ -1517,8 +1517,6 @@ QMenu* settings::profileMenu()
 			case connectionPresets::neutrino: text = "Neutrino"; break;
 			case connectionPresets::enigma_23: text = "Enigma 2.3 / 2.4"; break;
 			case connectionPresets::gx_24: text = "GX NationalChip Octagon 2.4"; break;
-			case connectionPresets::dddragon: text = "Triple Dragon"; break;
-			case connectionPresets::wtplay: text = "WeTek Play"; break;
 			case connectionPresets::enigma_1: text = "Enigma 1"; break;
 		}
 

@@ -28,8 +28,6 @@ class connectionPresets
 			neutrino,
 			enigma_23,
 			gx_24,
-			dddragon,
-			wtplay,
 			enigma_1
 		};
 
@@ -40,8 +38,6 @@ class connectionPresets
 		static map<string, string> preset_neutrino();
 		static map<string, string> preset_enigma_23();
 		static map<string, string> preset_gx_24();
-		static map<string, string> preset_dddragon();
-		static map<string, string> preset_wtplay();
 		static map<string, string> preset_enigma_1();
 };
 }
