@@ -2012,6 +2012,46 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <comment>status-bar</comment>
         <translation type="unfinished">Fiosrachadh Faidhle</translation>
     </message>
+    <message>
+        <source>Edit Bouquet</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Deasaich Bouquet</translation>
+    </message>
+    <message>
+        <source>Edit Position</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Deasaich Suidheachadh</translation>
+    </message>
+    <message>
+        <source>Edit Settings</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Deasaich roghainnean</translation>
+    </message>
+    <message>
+        <source>Edit Transponder</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Deasaich Transponder</translation>
+    </message>
+    <message>
+        <source>Edit Service</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Deasaich Seirbheis</translation>
+    </message>
+    <message>
+        <source>Edit Favourite</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Deasaich as fheàrr leat</translation>
+    </message>
+    <message>
+        <source>Edit Marker</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Deasaich Marker</translation>
+    </message>
+    <message>
+        <source>Change picon</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Atharraich am picon</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>

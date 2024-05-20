@@ -2010,6 +2010,46 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <comment>status-bar</comment>
         <translation type="unfinished">Faila informācija</translation>
     </message>
+    <message>
+        <source>Edit Bouquet</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Rediģēt Bouquet</translation>
+    </message>
+    <message>
+        <source>Edit Position</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Rediģēt Pozīciju</translation>
+    </message>
+    <message>
+        <source>Edit Settings</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Rediģēt Iestatījumus</translation>
+    </message>
+    <message>
+        <source>Edit Transponder</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Rediģēt Transponderi</translation>
+    </message>
+    <message>
+        <source>Edit Service</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Rediģēt Pakalpojumu</translation>
+    </message>
+    <message>
+        <source>Edit Favourite</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Rediģēt Favorīt</translation>
+    </message>
+    <message>
+        <source>Edit Marker</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Rediģēt Marker</translation>
+    </message>
+    <message>
+        <source>Change picon</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Mainīt picon</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>

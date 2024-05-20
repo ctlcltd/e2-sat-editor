@@ -2013,6 +2013,46 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <comment>status-bar</comment>
         <translation type="unfinished">Informacije o datoteci</translation>
     </message>
+    <message>
+        <source>Edit Bouquet</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Uredi Bouquet</translation>
+    </message>
+    <message>
+        <source>Edit Position</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Uredi Poziciju</translation>
+    </message>
+    <message>
+        <source>Edit Settings</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Uredi Postavke</translation>
+    </message>
+    <message>
+        <source>Edit Transponder</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Uredi Transponder</translation>
+    </message>
+    <message>
+        <source>Edit Service</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Uredi Uslugu</translation>
+    </message>
+    <message>
+        <source>Edit Favourite</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Uredi Favorite</translation>
+    </message>
+    <message>
+        <source>Edit Marker</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Uredi Marker</translation>
+    </message>
+    <message>
+        <source>Change picon</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Promjena picon</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>

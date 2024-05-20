@@ -2010,6 +2010,46 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <comment>status-bar</comment>
         <translation type="unfinished">Failo informacija</translation>
     </message>
+    <message>
+        <source>Edit Bouquet</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Redaguoti Bouquet</translation>
+    </message>
+    <message>
+        <source>Edit Position</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Redaguoti Poziciją</translation>
+    </message>
+    <message>
+        <source>Edit Settings</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Redaguoti Nustatymus</translation>
+    </message>
+    <message>
+        <source>Edit Transponder</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Redaguoti Atsakiklį</translation>
+    </message>
+    <message>
+        <source>Edit Service</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Redaguoti Paslaugą</translation>
+    </message>
+    <message>
+        <source>Edit Favourite</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Redaguoti Mėgstamiausią</translation>
+    </message>
+    <message>
+        <source>Edit Marker</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Redaguoti Marker</translation>
+    </message>
+    <message>
+        <source>Change picon</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Keisti picon</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>

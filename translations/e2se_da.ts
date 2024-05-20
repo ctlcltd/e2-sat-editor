@@ -2010,6 +2010,46 @@ Vent et par minutter, og prøv igen.</translation>
         <comment>status-bar</comment>
         <translation type="unfinished">Fil oplysninger</translation>
     </message>
+    <message>
+        <source>Edit Bouquet</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Rediger Bouquet</translation>
+    </message>
+    <message>
+        <source>Edit Position</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Rediger Position</translation>
+    </message>
+    <message>
+        <source>Edit Settings</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Rediger Indstillinger</translation>
+    </message>
+    <message>
+        <source>Edit Transponder</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Rediger Transponder</translation>
+    </message>
+    <message>
+        <source>Edit Service</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Rediger Tjeneste</translation>
+    </message>
+    <message>
+        <source>Edit Favourite</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Rediger Favorit</translation>
+    </message>
+    <message>
+        <source>Edit Marker</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Rediger Marker</translation>
+    </message>
+    <message>
+        <source>Change picon</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Skift picon</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
