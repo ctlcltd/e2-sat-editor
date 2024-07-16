@@ -75,6 +75,7 @@ gui::gui(int argc, char* argv[])
 	mroot->setOrganizationName("e2 SAT Editor Team");
 	mroot->setOrganizationDomain("io.github.ctlcltd");
 	mroot->setApplicationName("e2se");
+	mroot->setApplicationDisplayName("e2 SAT Editor");
 	mroot->setApplicationVersion("1.5");
 
 	mroot->connect(mroot, &QApplication::focusChanged, [=]() { this->windowChanged(); });
