@@ -726,6 +726,7 @@ void gui::initSettings()
 	settings.setValue("httpTimeout", 15);
 	settings.setValue("telnetTimeout", 15);
 	settings.setValue("maxResumeAttempts", 5);
+	settings.setValue("filenameCheck", true);
 	settings.endArray();
 }
 
@@ -748,6 +749,10 @@ void gui::updateSettings()
 		settings.setValue("application/version", mroot->applicationVersion());
 		settings.setValue("settings/version", 1);
 
+		if (version < 1.6)
+		{
+			settings.setValue("ftpcom/filenameCheck", true);
+		}
 		if (version < 1.3)
 		{
 			settings.setValue("preference/autoCheckUpdate", false);

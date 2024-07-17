@@ -2337,7 +2337,7 @@ bool e2db_parser::list_file(string path)
 		}
 
 		FPORTS fpi = file_type_detect(fpath);
-		string mime = file_mime_detect(fpi, fpath);
+		string mime = file_mime_value(fpi, fpath);
 		std::uintmax_t fsize = std::filesystem::file_size(fpath);
 
 		e2db_file file;

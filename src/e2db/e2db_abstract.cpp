@@ -98,7 +98,7 @@ e2db_abstract::FPORTS e2db_abstract::file_type_detect(string path)
 	return FPORTS::unknown;
 }
 
-string e2db_abstract::file_mime_detect(FPORTS fpi, string path)
+string e2db_abstract::file_mime_value(FPORTS fpi, string path)
 {
 	switch (fpi)
 	{

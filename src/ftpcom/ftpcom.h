@@ -35,6 +35,7 @@ class ftpcom : protected e2se::log_factory
 		inline static int HTTP_TIMEOUT = 15;
 		inline static int TELNET_TIMEOUT = 15;
 		inline static int MAX_RESUME_ATTEMPTS = 5;
+		inline static bool FILENAME_CHECK = true;
 
 		struct ftp_params
 		{
@@ -69,7 +70,8 @@ class ftpcom : protected e2se::log_factory
 		bool disconnect();
 		string get_server_hostname();
 		vector<string> list_dir(string basedir);
-		string file_mime_detect(string path);
+		bool file_valid_check(string path);
+		string file_mime_value(string path);
 		void download_data(string basedir, string filename, ftpcom_file& file);
 		void upload_data(string basedir, string filename, ftpcom_file file);
 		void fetch_paths();

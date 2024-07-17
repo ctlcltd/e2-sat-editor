@@ -256,11 +256,16 @@ vector<string> ftpcom::list_dir_nlst(string basedir)
 			continue;
 
 		string filename = line;
+		string path = basedir + filename;
+
+		debug("list_dir_nlst", "file", path);
 
 		if (filename[0] == '.') // hidden file
 			continue;
+		else if (ftpcom::FILENAME_CHECK && ! file_valid_check(filename))
+			continue;
 
-		list.emplace_back(basedir + filename);
+		list.emplace_back(path);
 	}
 
 	reset(cph, rph);
@@ -319,11 +324,16 @@ vector<string> ftpcom::list_dir_mlsd(string basedir)
 			throw std::runtime_error("102");
 
 		string filename = line.substr(pos + 2);
+		string path = basedir + filename;
+
+		debug("list_dir_mlsd", "file", path);
 
 		if (filename[0] == '.') // hidden file
 			continue;
+		else if (ftpcom::FILENAME_CHECK && ! file_valid_check(filename))
+			continue;
 
-		list.emplace_back(basedir + filename);
+		list.emplace_back(path);
 	}
 
 	reset(cph, rph);
@@ -332,9 +342,43 @@ vector<string> ftpcom::list_dir_mlsd(string basedir)
 	return list;
 }
 
-string ftpcom::file_mime_detect(string path)
+bool ftpcom::file_valid_check(string path)
 {
 	string filename = std::filesystem::path(path).filename().u8string();
+	string fext = std::filesystem::path(path).extension().u8string();
+
+	if (filename == "lamedb")
+		return true;
+	else if (filename == "lamedb5")
+		return true;
+	else if (filename == "services")
+		return true;
+	else if (fext == "tv" || fext == "radio" || fext == "epl")
+	{
+		if (filename.find("bouquets.") != string::npos)
+			return true;
+		else if (filename.find("userbouquet.") != string::npos)
+			return true;
+		else if (filename.find("userbouquets.") != string::npos)
+			return true;
+	}
+	else if (filename == "blacklist")
+		return true;
+	else if (filename == "whitelist")
+		return true;
+	else if (filename == "services.locked")
+		return true;
+	else if (filename == "settings")
+		return true;
+	else if (fext == "xml")
+		return true;
+	return false;
+}
+
+string ftpcom::file_mime_value(string path)
+{
+	string filename = std::filesystem::path(path).filename().u8string();
+	string fext = std::filesystem::path(path).extension().u8string();
 
 	if (filename == "lamedb")
 		return "text/plain";
@@ -342,24 +386,25 @@ string ftpcom::file_mime_detect(string path)
 		return "text/plain";
 	else if (filename == "services")
 		return "text/plain";
-	else if (filename.find("bouquets.") != string::npos)
-		return "text/plain";
-	else if (filename.find("userbouquet.") != string::npos)
-		return "text/plain";
-	else if (filename.find("userbouquets.") != string::npos)
-		return "text/plain";
+	else if (fext == "tv" || fext == "radio" || fext == "epl")
+	{
+		if (filename.find("bouquets.") != string::npos)
+			return "text/plain";
+		else if (filename.find("userbouquet.") != string::npos)
+			return "text/plain";
+		else if (filename.find("userbouquets.") != string::npos)
+			return "text/plain";
+	}
 	else if (filename == "blacklist")
 		return "text/plain";
 	else if (filename == "whitelist")
 		return "text/plain";
 	else if (filename == "services.locked")
 		return "text/plain";
-	else if (path.rfind(".xml") != string::npos)
+	else if (filename == "settings")
+		return "text/plain";
+	else if (fext == "xml")
 		return "text/xml";
-	else if (path.rfind(".csv") != string::npos)
-		return "text/csv";
-	else if (path.rfind(".html") != string::npos)
-		return "text/html";
 	return "application/octet-stream";
 }
 
@@ -398,7 +443,7 @@ void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 
 	reset(cph, rph);
 
-	string mime = file_mime_detect(path);
+	string mime = file_mime_value(path);
 
 #ifdef PLATFORM_WIN
 	if (mime.find("text/") != string::npos)
