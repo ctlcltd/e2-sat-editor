@@ -9,6 +9,7 @@
  * @license GNU GPLv3 License
  */
 
+#include <cstring>
 #include <algorithm>
 
 #include <QtGlobal>

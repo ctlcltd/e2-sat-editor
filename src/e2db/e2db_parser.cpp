@@ -271,6 +271,8 @@ void e2db_parser::parse_e2db()
 	// commit: a7022d8	elapsed time: 18506
 	// commit: 6cbd126	elapsed time: 27465
 	// commit: eea25b0	elapsed time: 20839
+	// commit: 180b033	elapsed time: 20163
+	// commit: HEAD		elapsed time: 19238
 
 	auto t_end = std::chrono::high_resolution_clock::now();
 	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
@@ -1040,18 +1042,26 @@ void e2db_parser::parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& iloc
 		db.parental = PARENTALLOCK::blacklist;
 }
 
-//TODO TEST
 void e2db_parser::parse_userbouquet_reference(string str, userbouquet& ub)
 {
-	size_t len = str.size() > 43 && str.size() <= 301 ? str.size() - 43 : 1;
+	size_t pos = str.find(" BOUQUET ");
 
-	char refid[21];
+	if (pos == string::npos)
+	{
+		error("parse_userbouquet_reference", "Parser Error", "Not supported yet.");
+
+		return;
+	}
+
+	string qs = str.substr(pos);
+	size_t len = qs.size() > 10 && qs.size() <= 301 ? qs.size() - 10 : 1;
+
 	char fname[(len + 1)];
 	char order[22];
 
-	string format = "%20sFROM BOUQUET %" + to_string(len) + "s ORDER BY %21s";
+	string format = " BOUQUET %" + to_string(len) + "s ORDER BY %21s";
 
-	std::sscanf(str.c_str(), format.c_str(), refid, fname, order);
+	std::sscanf(qs.c_str(), format.c_str(), fname, order);
 
 	if (std::strlen(fname) >= 5)
 	{
@@ -1059,6 +1069,14 @@ void e2db_parser::parse_userbouquet_reference(string str, userbouquet& ub)
 		ub.bname = ub.bname.substr(1, ub.bname.size() - 2);
 	}
 	ub.order = order;
+	ub.sref = str.substr(0, pos - 4);
+
+	int utype = 0;
+	int btype = 0;
+
+	std::sscanf(ub.sref.c_str(), "1:%d:%d", &utype, &btype);
+
+	ub.utype = utype;
 }
 
 void e2db_parser::parse_userbouquet_epl_reference(string str, userbouquet& ub)

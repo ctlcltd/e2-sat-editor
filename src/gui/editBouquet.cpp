@@ -22,6 +22,8 @@
 
 #include "editBouquet.h"
 
+using std::to_string;
+
 using namespace e2se;
 
 namespace e2se_gui
@@ -184,7 +186,7 @@ void editBouquet::retrieve()
 		string val;
 
 		if (key == "btype")
-			val = bs.btype;
+			val = to_string(bs.btype);
 		else if (key == "rname")
 			val = bs.rname.empty() ? bs.bname : bs.rname;
 		else if (key == "name")

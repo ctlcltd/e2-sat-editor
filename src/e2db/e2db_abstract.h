@@ -137,7 +137,9 @@ struct e2db_abstract : protected e2se::log_factory
 			marker_hidden_512 = 512,
 			marker_hidden_832 = 832,
 			marker_hidden = ATYPE::marker_hidden_512,
-			marker_regular = ATYPE::marker
+			marker_regular = ATYPE::marker,
+			bouquet_regular = 7,
+			bouquet_hidden_519 = 519
 		};
 
 		// parental lock
@@ -215,6 +217,18 @@ struct e2db_abstract : protected e2se::log_factory
 			{ATYPE::marker_hidden_832, "[marker hidden]"},
 			{ATYPE::marker_numbered, "[marker numbered]"},
 			{ATYPE::group, "[group]"}
+		};
+
+		// bouquet entry flag type extended - type
+		inline static const unordered_map<int, int> UTYPE_EXT_TYPE = {
+			{ATYPE::bouquet_regular, ATYPE::bouquet_regular},
+			{ATYPE::bouquet_hidden_519, ATYPE::bouquet_hidden_519}
+		};
+
+		// bouquet entry flag type extended - label
+		inline static const unordered_map<int, string> UTYPE_EXT_LABEL = {
+			{ATYPE::bouquet_regular, "[bouquet]"},
+			{ATYPE::bouquet_hidden_519, "[bouquet hidden]"}
 		};
 
 		// service data
@@ -410,10 +424,12 @@ struct e2db_abstract : protected e2se::log_factory
 			string rname;
 			string name;
 			string pname;
+			int utype = 7;
 			// channels <chid string, channel_reference struct>
 			unordered_map<string, channel_reference> channels;
 			bool locked = false;
 			bool hidden = false;
+			string sref;
 			string order;
 			int index = -1;
 		};

@@ -9,16 +9,25 @@
  * @license GNU GPLv3 License
  */
 
+#include <cstring>
+#include <algorithm>
+
+#include <QtGlobal>
+#include <QTimer>
 #include <QFormLayout>
+#include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QGroupBox>
 #include <QLabel>
 #include <QLineEdit>
 #include <QComboBox>
+#include <QPushButton>
 
 #include "platforms/platform.h"
 
 #include "editUserbouquet.h"
+
+using std::to_string, std::sort;
 
 using namespace e2se;
 
@@ -118,12 +127,105 @@ void editUserbouquet::layout(QWidget* cwid)
 		dtl1->setHidden(true);
 	}
 
+	QGroupBox* dtl2 = new QGroupBox(tr("Parameters", "dialog"));
+	QFormLayout* dtf2 = new QFormLayout;
+	dtf2->setRowWrapPolicy(QFormLayout::WrapAllRows);
+
+	QWidget* dtw20 = new QWidget;
+	dtw20->setMinimumHeight(50);
+	QHBoxLayout* dtb20 = new QHBoxLayout(dtw20);
+	dtb20->setContentsMargins(0, 0, 0, 0);
+	dtf2->addRow(tr("Entry flag"), dtw20);
+
+	QLineEdit* dtf2uf = new QLineEdit;
+	dtf2uf->setProperty("field", "utype");
+	dtf2uf->setVisible(false);
+	fields.emplace_back(dtf2uf);
+	dtf2uf->setMinimumWidth(50);
+	dtf2uf->setMaxLength(9);
+	dtf2uf->setValidator(new QIntValidator);
+
+	QComboBox* dtf2uc = new QComboBox;
+	dtf2uc->setMaximumWidth(110);
+	dtf2uc->setValidator(new QIntValidator);
+	platform::osComboBox(dtf2uc);
+
+	vector<int> utypes;
+	for (auto & x : e2db::UTYPE_EXT_TYPE)
+	{
+		utypes.emplace_back(x.first);
+	}
+	sort(utypes.begin(), utypes.end());
+	for (auto & q : utypes)
+	{
+		string pad = q > 9 ? "  " : "  ";
+		dtf2uc->addItem(QString::fromStdString(to_string(q) + pad + e2db::UTYPE_EXT_LABEL.at(q)), q);
+	}
+
+	QPushButton* dtf2ub = new QPushButton;
+	dtf2ub->setDefault(false);
+	dtf2ub->setCheckable(true);
+	dtf2ub->setText(tr("custom"));
+	dtf2ub->setChecked(false);
+
+	dtf2ub->connect(dtf2ub, &QPushButton::pressed, [=]() {
+		// delay too fast
+		QTimer::singleShot(100, [=]() {
+			if (dtf2uc->isHidden())
+			{
+				dtf2uf->hide();
+				dtf2uc->show();
+				dtf2ub->setChecked(true);
+				dtf2uc->setFocus();
+			}
+			else
+			{
+				dtf2uc->hide();
+				dtf2uf->show();
+				dtf2ub->setChecked(false);
+				dtf2uf->setFocus();
+			}
+		});
+	});
+
+	dtf2uf->connect(dtf2uf, &QLineEdit::textChanged, [=](QString text) {
+		int index = dtf2uc->findData(text, Qt::UserRole);
+		dtf2uc->setCurrentIndex(index);
+	});
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	dtf2uc->connect(dtf2uc, &QComboBox::currentIndexChanged, [=](int index) {
+#else
+	dtf2uc->connect(dtf2uc, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) {
+#endif
+		if (index == -1 && ! dtf2ub->isChecked())
+		{
+			dtf2uc->hide();
+			dtf2uf->show();
+			dtf2uf->setFocus();
+			dtf2ub->setChecked(true);
+		}
+		else
+		{
+			dtf2ub->setChecked(false);
+			dtf2uf->setText(dtf2uc->currentData().toString());
+		}
+	});
+	dtf2uf->setText(dtf2uc->currentData().toString());
+
+	dtb20->addWidget(dtf2uc);
+	dtb20->addWidget(dtf2uf);
+	dtb20->addWidget(dtf2ub);
+
 	dtl0->setLayout(dtf0);
 	dtl1->setLayout(dtf1);
+	dtl2->setLayout(dtf2);
 
 	dtform->addWidget(dtl0, 0, 0);
 	dtform->addItem(new QSpacerItem(0, 18), 1, 0);
-	dtform->addWidget(dtl1, 2, 0);
+	dtform->addWidget(dtl2, 2, 0);
+	dtform->addItem(new QSpacerItem(0, 18), 3, 0);
+	dtform->addWidget(dtl1, 4, 0);
 }
 
 void editUserbouquet::store()
@@ -152,7 +254,9 @@ void editUserbouquet::store()
 		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
 			val = field->currentData().toString().toStdString();
 
-		if (key == "rname")
+		if (key == "utype")
+			ub.utype = val.empty() ? e2db::ATYPE::bouquet_regular : std::stoi(val);
+		else if (key == "rname")
 			ub.rname = val != ub.bname ? val : "";
 		else if (key == "name")
 			ub.name = val;
@@ -184,7 +288,9 @@ void editUserbouquet::retrieve()
 		string key = item->property("field").toString().toStdString();
 		string val;
 
-		if (key == "rname")
+		if (key == "utype")
+			val = to_string(ub.utype);
+		else if (key == "rname")
 			val = ub.rname.empty() ? ub.bname : ub.rname;
 		else if (key == "name")
 			val = ub.name;
