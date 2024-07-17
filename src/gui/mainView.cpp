@@ -661,6 +661,8 @@ void mainView::load()
 		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
 		bitem->setData(0, Qt::UserRole, qub);
 		bitem->setText(0, e2db::fixUnicodeChars(uboq.name));
+		if (uboq.utype == e2db::ATYPE::bouquet_hidden_519)
+			bitem->setText(0, bitem->text(0).prepend("• "));
 		tree->addTopLevelItem(bitem);
 	}
 
@@ -670,7 +672,6 @@ void mainView::load()
 	side->setCurrentItem(side->topLevelItem(0));
 
 	populate(side);
-
 	updateFlags();
 	updateStatusBar();
 
@@ -1891,6 +1892,8 @@ void mainView::editUserbouquet()
 
 	e2db::userbouquet uboq = dbih->userbouquets[nw_bname];
 	item->setText(0, e2db::fixUnicodeChars(uboq.name));
+	if (uboq.utype == e2db::ATYPE::bouquet_hidden_519)
+		item->setText(0, item->text(0).prepend("• "));
 
 	treeItemSelectionChanged();
 
