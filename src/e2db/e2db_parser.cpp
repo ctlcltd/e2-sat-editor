@@ -272,7 +272,7 @@ void e2db_parser::parse_e2db()
 	// commit: 6cbd126	elapsed time: 27465
 	// commit: eea25b0	elapsed time: 20839
 	// commit: 180b033	elapsed time: 20163
-	// commit: HEAD		elapsed time: 19238
+	// commit: 3e5808a	elapsed time: 19238
 
 	auto t_end = std::chrono::high_resolution_clock::now();
 	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();

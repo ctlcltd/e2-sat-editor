@@ -475,7 +475,7 @@ void e2db_maker::make_bouquet(string bname, e2db_file& file)
 		userbouquet ub = userbouquets[w];
 
 		ss << "#SERVICE ";
-		ss << "1:7:" << bs.btype << ":0:0:0:0:0:0:0:";
+		ss << "1:" << ub.utype << ":" << bs.btype << ":0:0:0:0:0:0:0:";
 		ss << "FROM BOUQUET ";
 		ss << "\"" << ub.bname << "\" ";
 		ss << "ORDER BY ";
