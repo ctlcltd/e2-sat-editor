@@ -475,7 +475,33 @@ void e2db_maker::make_bouquet(string bname, e2db_file& file)
 		userbouquet ub = userbouquets[w];
 
 		ss << "#SERVICE ";
-		ss << "1:" << ub.utype << ":" << bs.btype << ":0:0:0:0:0:0:0:";
+		if (ub.sref.empty())
+		{
+ 			ss << 1 << ':';
+ 			ss << ub.utype << ':';
+ 			ss << bs.btype << ':';
+ 			ss << "0:0:0:0:0:0:0:";
+		}
+		else
+		{
+			int x0, x1, x2, x3, x4, x5, x6, x7, x8, x9;
+			x0 = 0, x1 = 0, x2 = 0, x3 = 0, x4 = 0, x5 = 0, x6 = 0, x7 = 0, x8 = 0, x9 = 0;
+
+			std::sscanf(ub.sref.c_str(), "%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:", &x0, &x1, &x2, &x3, &x4, &x5, &x6, &x7, &x8, &x9);
+
+			x1 = ub.utype;
+
+			ss << x0 << ':';
+			ss << x1 << ':';
+			ss << x2 << ':';
+			ss << x3 << ':';
+			ss << x4 << ':';
+			ss << x5 << ':';
+			ss << x6 << ':';
+			ss << x7 << ':';
+			ss << x8 << ':';
+			ss << x9 << ':';
+		}
 		ss << "FROM BOUQUET ";
 		ss << "\"" << ub.bname << "\" ";
 		ss << "ORDER BY ";
@@ -538,9 +564,13 @@ void e2db_maker::make_bouquet_epl(string bname, e2db_file& file)
 		}
 
 		ss << "#SERVICE: ";
-		ss << "4097:7:0:" << name << ":0:0:0:0:0:0:";
+		ss << 4097 << ':';
+		ss << 7 << ':';
+		ss << 0 << ':';
+		ss << name << ':';
+		ss << "0:0:0:0:0:0:";
 		ss << path << endl;
-		ss << "#TYPE 16385" << endl;
+		ss << "#TYPE " << 16385 << endl;
 		ss << path << endl;
 	}
 
