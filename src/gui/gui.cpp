@@ -1586,7 +1586,7 @@ void gui::statusBarToggle()
 
 void gui::setStatusBar(status msg)
 {
-	debug("setStatusBar");
+	// debug("setStatusBar");
 
 	QString separator = "   ";
 	QStringList content;
@@ -1677,7 +1677,7 @@ void gui::setStatusBar(status msg)
 
 void gui::resetStatusBar(bool message)
 {
-	debug("resetStatusBar");
+	// debug("resetStatusBar");
 
 	if (message)
 	{

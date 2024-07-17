@@ -672,6 +672,7 @@ void mainView::load()
 	side->setCurrentItem(side->topLevelItem(0));
 
 	populate(side);
+
 	updateFlags();
 	updateStatusBar();
 
