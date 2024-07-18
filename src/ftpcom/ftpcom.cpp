@@ -346,6 +346,7 @@ bool ftpcom::file_valid_check(string path)
 {
 	string filename = std::filesystem::path(path).filename().u8string();
 	string fext = std::filesystem::path(path).extension().u8string();
+	fext = fext.size() != 0 ? fext.substr(1) : fext;
 
 	if (filename == "lamedb")
 		return true;
@@ -379,6 +380,7 @@ string ftpcom::file_mime_value(string path)
 {
 	string filename = std::filesystem::path(path).filename().u8string();
 	string fext = std::filesystem::path(path).extension().u8string();
+	fext = fext.size() != 0 ? fext.substr(1) : fext;
 
 	if (filename == "lamedb")
 		return "text/plain";
@@ -410,8 +412,6 @@ string ftpcom::file_mime_value(string path)
 
 void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 {
-	debug("download_data");
-
 	if (! handle())
 		return error("download_data", "FTP Error", "Failed to resume FTP connection.");
 
