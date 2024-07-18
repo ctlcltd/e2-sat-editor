@@ -1251,6 +1251,7 @@ void tab::infoFile()
 
 		dtw2ft->verticalScrollBar()->setStyle(style);
 		dtw2ft->horizontalScrollBar()->setStyle(style);
+		dtw2ft->header()->setStyle(style);
 	}
 #endif
 

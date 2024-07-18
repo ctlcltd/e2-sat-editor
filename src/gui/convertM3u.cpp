@@ -241,6 +241,7 @@ void convertM3u::exportLayout()
 
 			ubt->verticalScrollBar()->setStyle(style);
 			ubt->horizontalScrollBar()->setStyle(style);
+			ubt->header()->setStyle(style);
 		}
 #endif
 

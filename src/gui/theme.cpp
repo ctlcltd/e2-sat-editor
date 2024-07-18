@@ -353,8 +353,9 @@ void theme::stylePseudoWinModern()
 		QApplication::setStyle(style);
 	}
 
+	//TODO TEST
 	// fix light mode
-	if (! theme::absLuma())
+	/*if (! theme::absLuma())
 	{
 		if (highlightColor.isValid())
 		{
@@ -362,15 +363,15 @@ void theme::stylePseudoWinModern()
 
 			QColor highlightedTextColor = highlightColor.toHsl().lightness() > 128 ? Qt::black : Qt::white;
 			p.setColor(QPalette::Active, QPalette::Highlight, highlightColor);
-			highlightColor.setAlphaF(highlightColor.alphaF() - 51);
+			highlightColor.setAlpha(highlightColor.alpha() - 51);
 			p.setColor(QPalette::Inactive, QPalette::Highlight, highlightColor);
-			highlightColor.setAlphaF(highlightColor.alphaF() - 76);
+			highlightColor.setAlpha(highlightColor.alpha() - 76);
 			p.setBrush(QPalette::Disabled, QPalette::Highlight, highlightColor);
 			p.setColor(QPalette::HighlightedText, highlightedTextColor);
 
 			QApplication::setPalette(p);
 		}
-	}
+	}*/
 }
 
 void theme::stylePseudoWinEarly()
@@ -415,9 +416,9 @@ void theme::stylePseudoWinEarly()
 		{
 			QColor highlightedTextColor = highlightColor.toHsl().lightness() > 128 ? Qt::black : Qt::white;
 			p2.setColor(QPalette::Active, QPalette::Highlight, highlightColor);
-			highlightColor.setAlphaF(highlightColor.alphaF() - 51);
+			highlightColor.setAlpha(highlightColor.alpha() - 51);
 			p2.setColor(QPalette::Inactive, QPalette::Highlight, highlightColor);
-			highlightColor.setAlphaF(highlightColor.alphaF() - 76);
+			highlightColor.setAlpha(highlightColor.alpha() - 76);
 			p2.setBrush(QPalette::Disabled, QPalette::Highlight, highlightColor);
 			p2.setColor(QPalette::HighlightedText, highlightedTextColor);
 		}
@@ -463,9 +464,9 @@ void theme::stylePseudoWinEarly()
 
 			QColor highlightedTextColor = highlightColor.toHsl().lightness() > 128 ? Qt::black : Qt::white;
 			p.setColor(QPalette::Active, QPalette::Highlight, highlightColor);
-			highlightColor.setAlphaF(highlightColor.alphaF() - 51);
+			highlightColor.setAlpha(highlightColor.alpha() - 51);
 			p.setColor(QPalette::Inactive, QPalette::Highlight, highlightColor);
-			highlightColor.setAlphaF(highlightColor.alphaF() - 76);
+			highlightColor.setAlpha(highlightColor.alpha() - 76);
 			p.setBrush(QPalette::Disabled, QPalette::Highlight, highlightColor);
 			p.setColor(QPalette::HighlightedText, highlightedTextColor);
 
