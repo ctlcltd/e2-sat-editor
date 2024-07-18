@@ -749,7 +749,7 @@ void transpondersView::putListItems(vector<QString> items)
 
 void transpondersView::updateStatusBar(bool current)
 {
-	debug("updateStatusBar");
+	// debug("updateStatusBar");
 
 	gui::status msg;
 	msg.update = current;
@@ -801,7 +801,7 @@ void transpondersView::actionCall(int bit)
 
 void transpondersView::updateFlags()
 {
-	debug("updateFlags");
+	// debug("updateFlags");
 
 	if (list->topLevelItemCount())
 	{

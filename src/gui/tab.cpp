@@ -1772,7 +1772,7 @@ void tab::actionCall(int bit)
 
 void tab::ftpComboItems()
 {
-	debug("ftpComboItems");
+	// debug("ftpComboItems");
 
 	if  (ftp_combo->count())
 	{

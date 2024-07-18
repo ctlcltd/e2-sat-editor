@@ -1109,14 +1109,14 @@ void gui::windowChanged()
 	// main window busy
 	if (mroot->activeWindow() || mroot->activeModalWidget() || mroot->activePopupWidget())
 	{
-		debug("windowChanged", "mwind", "busy");
+		// debug("windowChanged", "mwind", "busy");
 		this->gxe = this->gex;
 		updateMenu();
 	}
 	// main window idle
 	else
 	{
-		debug("windowChanged", "mwind", "idle");
+		// debug("windowChanged", "mwind", "idle");
 		this->gex = this->gxe;
 		setFlags(GUI_CXE::idle);
 	}
@@ -2185,7 +2185,7 @@ void gui::setTabEditActionFlag(GUI_CXE bit, bool flag)
 
 void gui::updateMenu()
 {
-	debug("updateMenu");
+	// debug("updateMenu");
 
 	for (auto & x : gmenu)
 	{

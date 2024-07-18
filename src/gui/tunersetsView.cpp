@@ -1290,7 +1290,7 @@ void tunersetsView::putListItems(vector<QString> items)
 
 void tunersetsView::updateStatusBar(bool current)
 {
-	debug("updateStatusBar");
+	// debug("updateStatusBar");
 
 	int tvid = this->state.yx;
 
@@ -1392,7 +1392,7 @@ void tunersetsView::actionCall(int bit)
 
 void tunersetsView::updateFlags()
 {
-	debug("updateFlags");
+	// debug("updateFlags");
 
 	tabSetFlag(gui::TabDialEditSettings, true);
 

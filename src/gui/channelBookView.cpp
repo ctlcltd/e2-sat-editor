@@ -745,7 +745,7 @@ void channelBookView::updateFlags()
 	if (tid == nullptr)
 		return;
 
-	debug("updateFlags");
+	// debug("updateFlags");
 
 	tabSetFlag(gui::FileImport, false);
 	tabSetFlag(gui::FileExport, false);

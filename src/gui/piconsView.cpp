@@ -939,7 +939,7 @@ void piconsView::listItemDelete(bool cut)
 
 void piconsView::updateStatusBar(bool current)
 {
-	debug("updateStatusBar");
+	// debug("updateStatusBar");
 
 	gui::status msg;
 	msg.update = current;
@@ -993,7 +993,7 @@ void piconsView::actionCall(int bit)
 
 void piconsView::updateFlags()
 {
-	debug("updateFlags");
+	// debug("updateFlags");
 
 	tabSetFlag(gui::FileImport, false);
 	tabSetFlag(gui::FileExport, false);

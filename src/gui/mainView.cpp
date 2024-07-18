@@ -3780,7 +3780,7 @@ void mainView::treeDropFromList(QTreeWidgetItem* current)
 
 void mainView::updateStatusBar(bool current)
 {
-	debug("updateStatusBar");
+	// debug("updateStatusBar");
 
 	gui::status msg;
 	msg.update = current;
@@ -3847,7 +3847,7 @@ void mainView::updateStatusBar(bool current)
 
 void mainView::updateReferenceBox()
 {
-	debug("updateReferenceBox");
+	// debug("updateReferenceBox");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
@@ -4043,7 +4043,7 @@ void mainView::updateReferenceBox()
 
 void mainView::updateFlags()
 {
-	debug("updateFlags");
+	// debug("updateFlags");
 
 	if (tree->topLevelItemCount())
 	{
