@@ -19,8 +19,10 @@ _FORCE_OVERWRITE=false
 _DEPLOY_PLUGINS=true
 # private string _SYSTEM
 _SYSTEM="MINGW64"
-# private integer _QT_VERSION
-_QT_VERSION=6
+# private integer _QT_VER
+_QT_VER=6
+# private string _QT_VERSION
+_QT_VERSION="6.7.2"
 # private array _MODULES
 _MODULES=("Core" "Gui" "Widgets")
 # private array _PLUGINS
@@ -42,6 +44,8 @@ _DEST_DIR=""
 
 # private integer __QTVER
 __QTVER=""
+# private string __QTVERSION
+__QTVERSION=""
 
 
 usage () {
@@ -57,7 +61,7 @@ usage () {
 	printf "%s\n"   "-o --dest-path            Set a destination path instead of binary directory"
 	printf "%s\n"   "-np --no-deploy-plugins   Disallow plugins deploy"
 	printf "%s\n"   "-system                   Set build system architecture [MINGW64]"
-	printf "%s\n"   "-qt-version               Set Qt version [6]"
+	printf "%s\n"   "-qt-version               Set Qt version [6.x.x]"
 	printf "%s\n"   "-modules                  Modules to deploy (Core,Gui,Widgets)"
 	printf "%s\n"   "-plugins                  Plugins to deploy (platforms,styles)"
 	printf "%s\n"   "-libraries                Append libraries to deploy ()"
@@ -158,20 +162,21 @@ qt_version () {
 		echo "$__QTVER"
 	fi
 
-	local qt_version=6
+	local qt_ver = "$_QT_VER"
+	local qt_version="$_QT_VERSION"
 
-	if [[ "$_QT_VERSION" != "6" ]]; then
-		if [[ "$_QT_VERSION" == "5" ]]; then
-			qt_version=5
-		else
-			local tip="Allowed values: 6 5"
-			error "$(printf "Error Qt version unknown: %s\n  %s\n" "$_QT_VERSION" "$tip")"
+	if [[ "${_QT_VERSION:0:2}" == "6." || "${_QT_VERSION:0:2}" == "5." ]]; then
+		qt_ver="${_QT_VERSION:0:1}"
+		qt_version="${_QT_VERSION:0:1}.${_QT_VERSION:1:1}.${_QT_VERSION:2:1}"
+	else
+		local tip="Allowed values: 6.x.x 5.x.x"
+		error "$(printf "Error Qt version unknown: %s\n  %s\n" "$_QT_VERSION" "$tip")"
 
-			return 1
-		fi
+		return 1
 	fi
 
-	__QTVER="$qt_version"
+	__QTVER="$qt_ver"
+	__QTVERSION="$qt_version"
 }
 
 lib_path () {
@@ -402,7 +407,14 @@ deploy_module () {
 			deps+=("libc++" "libunwind")
 		fi
 		if [[ $(is_msys) ]]; then
-			deps+=("libdouble-conversion" "libicuin74" "libicuuc74" "libicudt74")
+			deps+=("libdouble-conversion")
+			if [[ "${__QTVERSION:0:1}" -eq 6 && "${__QTVERSION:1:1}" -ge 7 && "${__QTVERSION:2:1}" -ge 2 ]]; then
+				deps+=("libicuin75" "libicuuc75" "libicudt75")
+			elif [[ "${__QTVERSION:0:1}" -eq 5 && "${__QTVERSION:1:1}" -ge 15 && "${__QTVERSION:2:1}" -ge 14 ]]; then
+				deps+=("libicuin75" "libicuuc75" "libicudt75")
+			else
+				deps+=("libicuin74" "libicuuc74" "libicudt74")
+			fi
 			if [[ "$__QTVER" == 6 ]]; then
 				deps+=("libb2-1")
 			fi
