@@ -362,7 +362,7 @@ void convertM3u::store()
 {
 	debug("store");
 
-	int flags;
+	int flags = 0;
 
 	if (this->state.dialog == dial_import)
 		flags = e2db::M3U_FLAGS::m3u_default;
@@ -444,7 +444,7 @@ void convertM3u::retrieve()
 {
 	debug("retrieve");
 
-	int flags;
+	int flags = 0;
 
 	if (this->state.dialog == dial_import)
 		flags = QSettings().value("application/m3uImportFlags", e2db::M3U_FLAGS::m3u_default).toInt();

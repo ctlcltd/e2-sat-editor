@@ -95,7 +95,6 @@ void editService::layout(QWidget* cwid)
 
 	QWidget* dtchn = new QWidget;
 	QWidget* dttxp = new QWidget;
-	QWidget* dtfav = new QWidget;
 	this->dtpage = new QGridLayout;
 
 	serviceLayout();
@@ -110,7 +109,10 @@ void editService::layout(QWidget* cwid)
 	dtwid->addTab(dttxp, tr("Transponder", "dialog"));
 
 	if (isFavourite())
+	{
+		QWidget* dtfav = new QWidget;
 		dtwid->addTab(dtfav, tr("Favourite", "dialog"));
+	}
 
 	dtform->addWidget(dtwid, 0, 0);
 }
