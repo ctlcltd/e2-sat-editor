@@ -1138,19 +1138,20 @@ void tab::infoFile()
 	string filepath = this->data->getPath();
 	string filename = std::filesystem::path(filepath).filename().u8string();
 
-	int srcver = dbih->db.version;
+	int srctype = dbih->get_e2db_services_type();
+	int srcver = dbih->get_e2db_services_version();
 	int dstver = 0;
 	int lamedb_ver = dbih->get_lamedb_version();
 	int zapit_ver = dbih->get_zapit_version();
 
-	if (lamedb_ver != -1)
+	if (srctype == 0 && lamedb_ver != -1)
 		dstver = 0x1220 + lamedb_ver;
-	else if (zapit_ver != -1)
+	else if (srctype == 1 && zapit_ver != -1)
 		dstver = 0x1010 + zapit_ver;
 
 	QString fformat = gid->getFileFormatName(srcver);
 	QString fconvert = "–";
-	if (srcver != dstver)
+	if (dstver != 0 && srcver != dstver)
 		fconvert = gid->getFileFormatName(dstver);
 
 	auto flist = dbih->get_input();

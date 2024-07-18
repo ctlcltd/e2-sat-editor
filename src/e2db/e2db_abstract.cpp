@@ -1574,7 +1574,7 @@ void e2db_abstract::fix_crlf(string& line)
 
 int e2db_abstract::get_e2db_services_type()
 {
-	debug("get_e2db_services_type");
+	debug("get_e2db_services_type", "type", db.type);
 
 	return db.type;
 }
@@ -1584,6 +1584,20 @@ void e2db_abstract::set_e2db_services_type(int type)
 	debug("set_e2db_services_type");
 
 	db.type = !! type;
+}
+
+int e2db_abstract::get_e2db_services_version()
+{
+	debug("get_e2db_services_version", "version", db.version);
+
+	return db.version;
+}
+
+void e2db_abstract::set_e2db_services_version(int version)
+{
+	debug("set_e2db_services_version");
+
+	db.version = version;
 }
 
 int e2db_abstract::get_lamedb_version()
@@ -1597,6 +1611,7 @@ void e2db_abstract::set_lamedb_version(int ver)
 {
 	debug("set_lamedb_version", "version", ver);
 
+	ZAPIT_VER = -1;
 	LAMEDB_VER = ver;
 }
 
@@ -1611,6 +1626,7 @@ void e2db_abstract::set_zapit_version(int ver)
 {
 	debug("set_zapit_version", "version", ZAPIT_VER);
 
+	LAMEDB_VER = -1;
 	ZAPIT_VER = ver;
 }
 

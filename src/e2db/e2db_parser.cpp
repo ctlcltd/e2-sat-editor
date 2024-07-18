@@ -471,9 +471,11 @@ void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 {
 	debug("parse_e2db_lamedb5", "version", 5);
 
-	LAMEDB_VER = 5;
-	if (this->e2db.size() == 0)
+	if (! db.dstat)
 		db.version = 0x1225;
+
+	ZAPIT_VER = -1;
+	LAMEDB_VER = 5;
 
 	bool step = 0;
 	int tidx = 0;
@@ -576,9 +578,11 @@ void e2db_parser::parse_e2db_lamedbx(istream& ilamedb, int ver)
 	if (ver > 4)
 		return error("parse_e2db_lamedbx", "Parser Error", "Unknown Lamedb services file format.");
 
-	LAMEDB_VER = ver;
-	if (this->e2db.size() == 0)
+	if (! db.dstat)
 		db.version = 0x1220 + ver;
+
+	ZAPIT_VER = -1;
+	LAMEDB_VER = ver;
 
 	int step = 0;
 	int s = 0;
@@ -1511,9 +1515,11 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 	if (ver < 1 || ver > 4)
 		return error("parse_zapit_services_apix_xml", "Parser Error", "Unknown Zapit services file format.");
 
-	ZAPIT_VER = ver;
-	if (this->e2db.size() == 0)
+	if (! db.dstat)
 		db.version = 0x1010 + ver;
+
+	LAMEDB_VER = -1;
+	ZAPIT_VER = ver;
 
 	string charset = "UTF-8";
 	bool valid = parse_xml_head(iservicesxml, charset);
@@ -2369,6 +2375,8 @@ bool e2db_parser::read(string path)
 			parse_e2db();
 		else
 			return false;
+
+		db.dstat = DSTAT::d_read;
 
 		return true;
 	}

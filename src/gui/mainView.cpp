@@ -1555,29 +1555,42 @@ QMenu* mainView::servicesSetsCornerMenu()
 	auto actions = menu->actions().first()->menu()->actions();
 #endif
 
+	int srctype = dbih->get_e2db_services_type();
+	int srcver = dbih->get_e2db_services_version();
 	int lamedb_ver = dbih->get_lamedb_version();
 	int zapit_ver = dbih->get_zapit_version();
 
 	for (auto & act : actions)
 		act->setChecked(false);
 
-	if (lamedb_ver == 4)
-		actions.at(0)->setChecked(true);
-	else if (lamedb_ver == 5)
-		actions.at(1)->setChecked(true);
-	else if (lamedb_ver == 3)
-		actions.at(2)->setChecked(true);
-	else if (lamedb_ver == 2)
-		actions.at(3)->setChecked(true);
+	if (srctype == 0)
+	{
+		if (lamedb_ver == -1)
+			lamedb_ver = srcver - 0x1220;
 
-	if (zapit_ver == 4)
-		actions.at(4)->setChecked(true);
-	else if (zapit_ver == 3)
-		actions.at(5)->setChecked(true);
-	else if (zapit_ver == 2)
-		actions.at(6)->setChecked(true);
-	else if (zapit_ver == 1)
-		actions.at(7)->setChecked(true);
+		if (lamedb_ver == 4)
+			actions.at(0)->setChecked(true);
+		else if (lamedb_ver == 5)
+			actions.at(1)->setChecked(true);
+		else if (lamedb_ver == 3)
+			actions.at(2)->setChecked(true);
+		else if (lamedb_ver == 2)
+			actions.at(3)->setChecked(true);
+	}
+	else if (srctype == 1)
+	{
+		if (zapit_ver == -1)
+			zapit_ver = srcver - 0x1010;
+
+		if (zapit_ver == 4)
+			actions.at(4)->setChecked(true);
+		else if (zapit_ver == 3)
+			actions.at(5)->setChecked(true);
+		else if (zapit_ver == 2)
+			actions.at(6)->setChecked(true);
+		else if (zapit_ver == 1)
+			actions.at(7)->setChecked(true);
+	}
 
 	return menu;
 }
@@ -3822,18 +3835,19 @@ void mainView::updateStatusBar(bool current)
 	}
 	else
 	{
+		int srctype = dbih->db.type;
 		int srcver = dbih->db.version;
 		int dstver = 0;
 		int lamedb_ver = dbih->get_lamedb_version();
 		int zapit_ver = dbih->get_zapit_version();
 
-		if (lamedb_ver != -1)
+		if (srctype == 0 && lamedb_ver != -1)
 			dstver = 0x1220 + lamedb_ver;
-		else if (zapit_ver != -1)
+		else if (srctype == 1 && zapit_ver != -1)
 			dstver = 0x1010 + zapit_ver;
 
 		msg.version = srcver;
-		if (srcver != dstver)
+		if (dstver != 0 && srcver != dstver)
 			msg.convert = dstver;
 
 		msg.counters[gui::COUNTER::n_data] = int (dbih->index["chs:0"].size());

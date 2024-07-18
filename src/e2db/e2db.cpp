@@ -481,10 +481,15 @@ void e2db::import_blob(unordered_map<string, e2db_file> files)
 
 				throw;
 			}
+
+			if (! db.dstat)
+				db.dstat = DSTAT::d_read;
 		}
 		else
 		{
 			parse_e2db(files);
+
+			db.dstat = DSTAT::d_read;
 		}
 	}
 	catch (const std::invalid_argument& err)

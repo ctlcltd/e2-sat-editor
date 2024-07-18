@@ -41,7 +41,7 @@ void e2db_maker::make_e2db()
 	auto t_start = std::chrono::high_resolution_clock::now();
 
 	if (LAMEDB_VER == -1 && ZAPIT_VER != -1)
-		LAMEDB_VER = 4;
+		LAMEDB_VER = db.version - 0x1220;
 
 	make_e2db_lamedb();
 	make_e2db_bouquets();
@@ -203,7 +203,9 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 		ss << formats[MAKER_FORMAT::b_service_param_escape] << ch.chname << formats[MAKER_FORMAT::b_service_param_escape];
 		ss << formats[MAKER_FORMAT::b_service_params_separator];
 
-		//TODO TEST potential SEGFAULT
+		if (ch.data.empty())
+			ch.data = {{'p', {""}}};
+
 		auto z = std::prev(ch.data.cend());
 		for (auto & q : ch.data)
 		{
@@ -338,7 +340,7 @@ void e2db_maker::make_zapit()
 	auto t_start = std::chrono::high_resolution_clock::now();
 
 	if (ZAPIT_VER == -1 && LAMEDB_VER != -1)
-		ZAPIT_VER = 4;
+		ZAPIT_VER = db.version - 0x1010;
 
 	make_zapit_services();
 	make_zapit_bouquets();
@@ -1597,6 +1599,25 @@ bool e2db_maker::write(string path)
 			make_e2db();
 		else if (db.type == 1)
 			make_zapit();
+
+		if (db.type == 0)
+		{
+			int lamedb_ver = LAMEDB_VER;
+
+			ZAPIT_VER = -1;
+			LAMEDB_VER = lamedb_ver;
+			db.version = 0x1220 + lamedb_ver;
+		}
+		else if (db.type == 1)
+		{
+			int zapit_ver = ZAPIT_VER;
+
+			LAMEDB_VER = -1;
+			ZAPIT_VER = zapit_ver;
+			db.version = 0x1010 + zapit_ver;
+		}
+
+		db.dstat = DSTAT::d_written;
 
 		if (push_file(path))
 			return true;

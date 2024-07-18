@@ -100,6 +100,13 @@ struct e2db_abstract : protected e2se::log_factory
 			fileblob  // blob
 		};
 
+		// status
+		enum DSTAT {
+			d_zero,
+			d_read,
+			d_written
+		};
+
 		// tuner settings type
 		enum YTYPE {
 			satellite,
@@ -522,6 +529,7 @@ struct e2db_abstract : protected e2se::log_factory
 			int iservices = 0;
 			int imarkers = 0;
 			int istreams = 0;
+			DSTAT dstat = DSTAT::d_zero;
 		};
 
 		struct comment
@@ -633,6 +641,8 @@ struct e2db_abstract : protected e2se::log_factory
 		string get_tuner_name(transponder tx);
 		int get_e2db_services_type();
 		void set_e2db_services_type(int type);
+		int get_e2db_services_version();
+		void set_e2db_services_version(int version);
 		int get_lamedb_version();
 		void set_lamedb_version(int ver);
 		int get_zapit_version();
