@@ -73,6 +73,7 @@ jobs:
         # run deploy script
         bash ../scripts/deployqtmacx.sh AppDir/usr/local/e2\ SAT\ Editor.app
         # post actions
+        chmod 644 AppDir/usr/local/e2\ SAT\ Editor.app/Contents/Frameworks/*.dylib
         chmod +x AppDir/usr/local/e2\ SAT\ Editor.app/Contents/MacOS/e2\ SAT\ Editor
         chmod +x AppDir/usr/local/e2se-cli
         # package
@@ -84,9 +85,10 @@ jobs:
         mv "${{github.workspace}}/user-manual" ../artifact/
 
     - name: Tar artifact
-      run: tar -cvf artifact.tar ${{github.workspace}}/e2-sat-editor/artifact
+      working-directory: ${{github.workspace}}/e2-sat-editor
+      run: tar -cvf artifact.tar artifact
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        path: artifact.tar
+        path: ${{github.workspace}}/e2-sat-editor/artifact.tar

@@ -584,7 +584,8 @@ copy_dependency () {
 				local pwd="$PWD"
 				cd "$dstpath"
 				ln -s "Versions/A/$filename" "$filename"
-				ln -s "Versions/A" "Versions/Current"
+				cd "$dstpath/Versions"
+				ln -s "A" "Current"
 				cd "$pwd"
 			elif [[ "$_FORCE_OVERWRITE" == true ]]; then
 				cp -Rf "$srcpath" "$dstpath"
