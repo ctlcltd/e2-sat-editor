@@ -3,11 +3,24 @@
 All notable changes to this project will be documented in this file.
 
 
+## [v1.6.0]
+
+**Version**: 1.6  
+**Release Date**: *unreleased*  
+**Full Changelog**: [v1.5.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.5.0...HEAD)
+
+- Fix crash with empty service parameters on save
+- Fix parental lock on write
+- Fix a buffer overflow when parsing userbouquet service flag
+- Added support for 519 bouquet hidden
+- Fix soft errors when listing with FTP command NLST
+
+
 ## [v1.5.0]
 
 **Version**: 1.5  
 **Release Date**: 2024-05-20  
-**Full Changelog**: [v1.4.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.4.0...HEAD)
+**Full Changelog**: [v1.4.0...v1.5.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.4.0...v1.5.0)
 
 - Improved Edit menu and context menu
 - Fix orbital position with West values
