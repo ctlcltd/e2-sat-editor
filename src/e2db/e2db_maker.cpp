@@ -566,13 +566,9 @@ void e2db_maker::make_bouquet_epl(string bname, e2db_file& file)
 		}
 
 		ss << "#SERVICE: ";
-		ss << 4097 << ':';
-		ss << 7 << ':';
-		ss << 0 << ':';
-		ss << name << ':';
-		ss << "0:0:0:0:0:0:";
+		ss << "4097:7:0:" << name << ":0:0:0:0:0:0:";
 		ss << path << endl;
-		ss << "#TYPE " << 16385 << endl;
+		ss << "#TYPE 16385" << endl;
 		ss << path << endl;
 	}
 
@@ -1437,6 +1433,7 @@ string e2db_maker::conv_xml_value(string str)
 	return str;
 }
 
+//TODO improve parental by userbouquet and compatibility
 void e2db_maker::make_parentallock_list(string filename, PARENTALLOCK ltype, e2db_file& file)
 {
 	debug("make_parentallock_list", "ltype", ltype);
@@ -1486,14 +1483,43 @@ void e2db_maker::make_parentallock_list(string filename, PARENTALLOCK ltype, e2d
 					{
 						service ch = db.services[x.second];
 
-						ss << "1:0:1:";
+						ss << chref.etype << ':';
+						ss << chref.atype << ':';
 						ss << hex;
+						ss << uppercase << ch.stype << ':';
 						ss << uppercase << ch.ssid << ':';
 						ss << uppercase << ch.tsid << ':';
 						ss << uppercase << ch.onid << ':';
 						ss << uppercase << ch.dvbns << ':';
 						ss << "0:0:0:";
 						ss << dec;
+						ss << endl;
+					}
+					else if (chref.stream)
+					{
+						ss << chref.etype << ':';
+						ss << chref.atype << ':';
+						ss << hex;
+						ss << uppercase << chref.anum << ':';
+						ss << uppercase << chref.ref.ssid << ':';
+						ss << uppercase << chref.ref.tsid << ':';
+						ss << uppercase << chref.ref.onid << ':';
+						ss << uppercase << chref.ref.dvbns << ':';
+						ss << dec;
+						ss << chref.x7 << ':';
+						ss << chref.x8 << ':';
+						ss << chref.x9 << ':';
+
+						if (! chref.uri.empty())
+						{
+							ss << conv_uri_value(chref.uri);
+						}
+						if (! chref.value.empty())
+						{
+							ss << ':';
+							ss << conv_uri_value(chref.value);
+						}
+
 						ss << endl;
 					}
 				}
@@ -1508,14 +1534,15 @@ void e2db_maker::make_parentallock_list(string filename, PARENTALLOCK ltype, e2d
 
 		if (locked)
 		{
-			ss << "1:0:1:";
+			ss << "1:0:";
 			ss << hex;
+			ss << uppercase << ch.stype << ':';
 			ss << uppercase << ch.ssid << ':';
 			ss << uppercase << ch.tsid << ':';
 			ss << uppercase << ch.onid << ':';
 			ss << uppercase << ch.dvbns << ':';
-			ss << "0:0:0:";
 			ss << dec;
+			ss << "0:0:0:";
 			ss << endl;
 		}
 	}

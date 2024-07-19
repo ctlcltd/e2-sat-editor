@@ -996,6 +996,7 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string filename)
 	}
 }
 
+//TODO improve parental by channel reference, by userbouquet and compatibility
 void e2db_parser::parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& ilocked)
 {
 	debug("parse_e2db_parentallock_list", "ltype", ltype);
@@ -1024,6 +1025,32 @@ void e2db_parser::parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& iloc
 		// %4x:%4x:%8x
 		std::snprintf(chid, 25, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
 
+		if (ref.ssid == 0 && ref.tsid == 0 && ref.dvbns == 0)
+		{
+			size_t pos = line.find(" BOUQUET ");
+
+			if (pos != string::npos)
+			{
+				string qs = line.substr(pos);
+				size_t len = qs.size() > 10 && qs.size() <= 301 ? qs.size() - 10 : 1;
+
+				char fname[(len + 1)];
+
+				string format = " BOUQUET %" + to_string(len) + "s ";
+
+				std::sscanf(qs.c_str(), format.c_str(), fname);
+
+				if (std::strlen(fname) >= 5)
+				{
+					string bname = string (fname);
+					bname = bname.substr(1, bname.size() - 2);
+
+					if (! bname.empty() && index.count(bname))
+						set_parentallock("", bname);
+				}
+			}
+		}
+
 		if (db.services.count(chid))
 		{
 			set_parentallock(chid);
@@ -1046,6 +1073,7 @@ void e2db_parser::parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& iloc
 		db.parental = PARENTALLOCK::blacklist;
 }
 
+//TODO userbouquet_reference and compatibility
 void e2db_parser::parse_userbouquet_reference(string str, userbouquet& ub)
 {
 	size_t pos = str.find(" BOUQUET ");
