@@ -353,9 +353,8 @@ void theme::stylePseudoWinModern()
 		QApplication::setStyle(style);
 	}
 
-	//TODO TEST
 	// fix light mode
-	/*if (! theme::absLuma())
+	if (! theme::absLuma())
 	{
 		if (highlightColor.isValid())
 		{
@@ -371,7 +370,7 @@ void theme::stylePseudoWinModern()
 
 			QApplication::setPalette(p);
 		}
-	}*/
+	}
 }
 
 void theme::stylePseudoWinEarly()
