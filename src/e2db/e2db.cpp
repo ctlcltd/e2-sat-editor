@@ -1839,6 +1839,7 @@ map<string, vector<pair<int, string>>> e2db::get_az_index()
 	return _index;
 }
 
+//TODO improve options
 void e2db::merge(e2db_abstract* dst)
 {
 	debug("merge");
@@ -2061,7 +2062,7 @@ void e2db::merge(e2db_abstract* dst)
 			merge = true;
 			bname = ubs_names[qw];
 
-			unordered_map<string, channel_reference> channels;
+			/*unordered_map<string, channel_reference> channels;
 			vector<pair<int, string>> i_ub;
 			int idx = int (dst->index[iname].size() - 1);
 
@@ -2086,11 +2087,13 @@ void e2db::merge(e2db_abstract* dst)
 					i_ub.emplace_back(pair (idx, x.second));
 				}
 
+				i_ub.emplace_back(pair (idx, x.second));
+
 				channels.emplace(chref.chid, chref);
 			}
 
 			ub.channels.swap(channels);
-			dst->index[iname].swap(i_ub);
+			dst->index[iname].swap(i_ub);*/
 
 			this->userbouquets[bname].channels.merge(ub.channels);
 			ub = this->userbouquets[bname];
@@ -2171,12 +2174,12 @@ void e2db::merge(e2db_abstract* dst)
 		unordered_map<string, channel_reference> channels;
 		vector<pair<int, string>> i_ub;
 
+		int i = 0;
 		int idx = 0;
 
 		for (auto & x : index[bname])
 		{
 			channel_reference& chref = ub.channels[x.second];
-			idx += 1;
 
 			if (chref.marker || chref.stream)
 			{
@@ -2185,9 +2188,15 @@ void e2db::merge(e2db_abstract* dst)
 				if (chref.marker)
 				{
 					chref.inum = this->db.imarkers + 1;
+					chref.anum = chref.inum;
 
 					// %4d:%4d:%2x:%d
 					std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub.index);
+
+					if (chref.atype == e2db::ATYPE::marker_numbered)
+						idx = i += 1;
+					else
+						idx = 0;
 
 					index["mks"].emplace_back(pair (ub.index, chid));
 
@@ -2200,6 +2209,8 @@ void e2db::merge(e2db_abstract* dst)
 					// %4d:%4d:%2x:%d
 					std::snprintf(chid, 25, "%d:%d:%x:%d", chref.etype, chref.atype, chref.inum, ub.index);
 
+					idx = i += 1;
+
 					this->db.istreams++;
 				}
 
@@ -2208,6 +2219,8 @@ void e2db::merge(e2db_abstract* dst)
 			}
 			else
 			{
+				idx = i += 1;
+
 				i_ub.emplace_back(pair (idx, x.second));
 			}
 

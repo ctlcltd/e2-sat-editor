@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 - Fix soft errors when listing with FTP command NLST
 - Added cross-platform support for CRLF end line on read
 - Fix end line from CRLF to LF on write \[Windows\]
+- Improved merge
 
 
 ## [v1.5.0]
