@@ -37,6 +37,8 @@ class ftpcom : protected e2se::log_factory
 		inline static int MAX_RESUME_ATTEMPTS = 5;
 		inline static bool FILENAME_CHECK = true;
 
+		inline static bool FIX_CRLF = false;
+
 		struct ftp_params
 		{
 			string host;

@@ -27,6 +27,8 @@ class e2db_maker : virtual public e2db_abstract
 		inline static string MAKER_TPATH = MAKER_SPATH;
 		inline static string MAKER_BPATH = MAKER_SPATH;
 
+		inline static bool MAKER_FIX_CRLF = true;
+
 		e2db_maker();
 		virtual ~e2db_maker() = default;
 		void make_e2db();

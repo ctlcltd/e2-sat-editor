@@ -275,7 +275,11 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 				return error("export_csv_file", "File Error", msg("File \"%s\" is not writable.", fpath));
 			}
 
-			ofstream out (fpath);
+			std::ios_base::openmode fmode = std::ios_base::out;
+
+			if (CONVERTER_OUT_CSV_FIX_CRLF && check_crlf()) fmode |= std::ios_base::binary;
+
+			ofstream out (fpath, fmode);
 			out << file.data;
 			out.close();
 		}
@@ -380,7 +384,11 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 				return error("export_html_file", "File Error", msg("File \"%s\" is not writable.", fpath));
 			}
 
-			ofstream out (fpath);
+			std::ios_base::openmode fmode = std::ios_base::out;
+
+			if (CONVERTER_OUT_HTML_FIX_CRLF && check_crlf()) fmode |= std::ios_base::binary;
+
+			ofstream out (fpath, fmode);
 			out << file.data;
 			out.close();
 		}
@@ -650,7 +658,18 @@ void e2db_converter::export_m3u_file(FCONVS fco, fcopts opts, vector<string> ubo
 				return error("export_m3u_file", "File Error", msg("File \"%s\" is not writable.", fpath));
 			}
 
-			ofstream out (fpath);
+			std::ios_base::openmode fmode = std::ios_base::out;
+
+			if (CONVERTER_OUT_M3U_FIX_CRLF && check_crlf()) fmode |= std::ios_base::binary;
+
+			if (CONVERTER_OUT_M3U_FORCE_CRLF)
+			{
+				fmode = std::ios_base::out | std::ios_base::binary;
+
+				transform_crlf(file);
+			}
+
+			ofstream out (fpath, fmode);
 			out << file.data;
 			out.close();
 		}
@@ -1164,6 +1183,8 @@ void e2db_converter::parse_csv(istream& ifile, vector<vector<string>>& sxv)
 {
 	debug("parse_csv");
 
+	bool ctx = false;
+
 	const char dlm = CSV_DELIMITER[0];
 	const char sep = CSV_SEPARATOR;
 	const char esp = CSV_ESCAPE;
@@ -1172,9 +1193,7 @@ void e2db_converter::parse_csv(istream& ifile, vector<vector<string>>& sxv)
 
 	while (std::getline(ifile, line, dlm))
 	{
-#ifdef PLATFORM_WIN
-		fix_crlf(line);
-#endif
+		if (CONVERTER_IN_FIX_CRLF && check_crlf(ctx, line)) fix_crlf(line);
 
 		if (line.empty())
 			continue;
@@ -1236,7 +1255,7 @@ void e2db_converter::parse_m3u(istream& ifile, unordered_map<string, vector<m3u_
 {
 	debug("parse_m3u");
 
-	const char dlm = M3U_DELIMITER[0];
+	bool ctx = false;
 
 	bool valid = false;
 	int step = 0;
@@ -1246,11 +1265,9 @@ void e2db_converter::parse_m3u(istream& ifile, unordered_map<string, vector<m3u_
 	int i = 0;
 	string ub_name;
 
-	while (std::getline(ifile, line, dlm))
+	while (std::getline(ifile, line))
 	{
-#ifdef PLATFORM_WIN
-		fix_crlf(line);
-#endif
+		if (CONVERTER_IN_FIX_CRLF && check_crlf(ctx, line)) fix_crlf(line);
 
 		if (line.empty())
 			continue;
@@ -3316,9 +3333,9 @@ void e2db_converter::m3u_channel_list(string& body, string bname, fcopts opts)
 					ss << chref.value;
 				else
 					ss << idx;
-				ss << M3U_DELIMITER;
+				ss << '\n';
 				ss << chref.uri;
-				ss << M3U_DELIMITER;
+				ss << '\n';
 			}
 		}
 	}
@@ -3896,7 +3913,7 @@ void e2db_converter::m3u_document(e2db_file& file, string body)
 
 	string m3u;
 	m3u.append("#EXTM3U");
-	m3u.append(M3U_DELIMITER);
+	m3u.append("\n");
 	m3u.append(body);
 
 	file.mime = "text/plain";

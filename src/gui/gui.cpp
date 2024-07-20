@@ -699,6 +699,13 @@ void gui::initSettings()
 	settings.setValue("toolsCsvEscape", "\"");
 	settings.setValue("toolsFieldsDefault", true);
 	settings.setValue("toolsFieldsExtended", false);
+	settings.setValue("parserFixCrlf", true);
+	settings.setValue("makerFixCrlf", true);
+	settings.setValue("toolsInFixCrlf", true);
+	settings.setValue("toolsOutCsvFixCrlf", false);
+	settings.setValue("toolsOutM3uFixCrlf", false);
+	settings.setValue("toolsOutHtmlFixCrlf", true);
+	settings.setValue("fixCrlf", true);
 	settings.endGroup();
 
 	settings.beginWriteArray("profile");
@@ -727,6 +734,7 @@ void gui::initSettings()
 	settings.setValue("telnetTimeout", 15);
 	settings.setValue("maxResumeAttempts", 5);
 	settings.setValue("filenameCheck", true);
+	settings.setValue("fixCrlf", false);
 	settings.endArray();
 }
 

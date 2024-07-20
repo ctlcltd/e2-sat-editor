@@ -33,9 +33,12 @@ class e2db_converter : virtual public e2db_abstract
 		inline static char CSV_SEPARATOR = ',';
 		inline static char CSV_ESCAPE = '"';
 
-		//TODO CRLF
-		// inline static string M3U_DELIMITER = "\r\n";
-		inline static string M3U_DELIMITER = "\n";
+		inline static bool CONVERTER_IN_FIX_CRLF = true;
+		inline static bool CONVERTER_OUT_CSV_FIX_CRLF = false;
+		inline static bool CONVERTER_OUT_M3U_FIX_CRLF = false;
+		inline static bool CONVERTER_OUT_HTML_FIX_CRLF = true;
+
+		inline static bool CONVERTER_OUT_M3U_FORCE_CRLF = false;
 
 		enum FCONVS {
 			convert_current = 0x0,

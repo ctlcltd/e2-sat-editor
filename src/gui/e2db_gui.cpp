@@ -93,6 +93,14 @@ void e2db::setup()
 	e2db::CSV_SEPARATOR = csv_sep.size() == 1 ? csv_sep[0] : ',';
 	e2db::CSV_ESCAPE = csv_esp.size() == 1 ? csv_esp[0] : '"';
 	e2db::CONVERTER_EXTENDED_FIELDS = settings.value("engine/toolsFieldsExtended", false).toBool();
+
+	e2db::FIX_CRLF = settings.value("engine/fixCrlf", true).toBool();
+	e2db::PARSER_FIX_CRLF = e2db::FIX_CRLF || settings.value("engine/parserFixCrlf", true).toBool();
+	e2db::MAKER_FIX_CRLF = e2db::FIX_CRLF || settings.value("engine/makerFixCrlf", true).toBool();
+	e2db::CONVERTER_IN_FIX_CRLF = e2db::FIX_CRLF || settings.value("engine/converterInFixCrlf", true).toBool();
+	e2db::CONVERTER_OUT_CSV_FIX_CRLF = e2db::FIX_CRLF || settings.value("engine/converterOutCsvFixCrlf", false).toBool();
+	e2db::CONVERTER_OUT_M3U_FIX_CRLF = e2db::FIX_CRLF || settings.value("engine/converterOutM3uFixCrlf", false).toBool();
+	e2db::CONVERTER_OUT_HTML_FIX_CRLF = e2db::FIX_CRLF || settings.value("engine/converterOutHtmlFixCrlf", true).toBool();
 }
 
 void e2db::primer()

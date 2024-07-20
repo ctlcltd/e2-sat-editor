@@ -14,6 +14,8 @@ All notable changes to this project will be documented in this file.
 - Fix a buffer overflow when parsing userbouquet service flag
 - Added support for 519 bouquet hidden
 - Fix soft errors when listing with FTP command NLST
+- Added cross-platform support for CRLF end line on read
+- Fix end line from CRLF to LF on write \[Windows\]
 
 
 ## [v1.5.0]

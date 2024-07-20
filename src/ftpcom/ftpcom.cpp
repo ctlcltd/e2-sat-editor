@@ -445,26 +445,27 @@ void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 
 	string mime = file_mime_value(path);
 
-#ifdef PLATFORM_WIN
-	if (mime.find("text/") != string::npos)
+	if (FIX_CRLF)
 	{
-		stringstream ss;
-		ss.write(&data.data[0], data.size);
-
-		string text;
-		string line;
-
-		while (std::getline(ss, line))
+		if (mime.find("text/") != string::npos)
 		{
-			fix_crlf(line);
-			text.append(line);
-			text.append("\n");
-		}
+			stringstream ss;
+			ss.write(&data.data[0], data.size);
 
-		data.data = text;
-		data.size = text.size();
+			string text;
+			string line;
+
+			while (std::getline(ss, line))
+			{
+				fix_crlf(line);
+				text.append(line);
+				text.append("\n");
+			}
+
+			data.data = text;
+			data.size = text.size();
+		}
 	}
-#endif
 
 	file.path = path;
 	file.filename = filename;

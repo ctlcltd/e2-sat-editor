@@ -15,6 +15,7 @@
 #include <filesystem>
 #include <algorithm>
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
 
 #if defined(unix) || defined(__unix__) || defined(__unix) || defined(linux) || defined(__linux__) || defined(__APPLE__)
@@ -27,7 +28,7 @@
 
 #include "e2db_abstract.h"
 
-using std::string, std::pair, std::hex, std::dec, std::to_string, std::cout, std::endl;
+using std::string, std::pair, std::stringstream, std::hex, std::dec, std::to_string, std::cout, std::endl;
 
 namespace e2se_e2db
 {
@@ -1564,6 +1565,57 @@ void e2db_abstract::set_parentallock(string chid, string bname)
 		userbouquets[bname].locked = true;
 	else if (! chid.empty() && db.services.count(chid))
 		db.services[chid].locked = true;
+}
+
+void e2db_abstract::transform_crlf(e2db_file& file)
+{
+	if (file.mime.find("text/") == string::npos)
+		return;
+
+	stringstream ss;
+	ss.write(&file.data[0], file.data.size());
+
+	string text;
+	string line;
+
+	while (std::getline(ss, line))
+	{
+		text.append(line);
+		text.append("\r\n");
+	}
+
+	file.data = text;
+	file.size = text.size();
+}
+
+bool e2db_abstract::check_crlf()
+{
+#ifdef PLATFORM_WIN
+	return true;
+#else
+	return false;
+#endif
+}
+
+bool e2db_abstract::check_crlf(bool& ctx, string& line)
+{
+#ifdef PLATFORM_WIN
+	if (blobctx_crlf)
+		return true;
+	else
+		return false;
+#else
+	if (ctx)
+		return currctx_crlf;
+	else if (line.size() != 0 && line[line.size() - 1] == '\r')
+		currctx_crlf = true;
+	else
+		currctx_crlf = false;
+
+	ctx = true;
+
+	return currctx_crlf;
+#endif
 }
 
 void e2db_abstract::fix_crlf(string& line)

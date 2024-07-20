@@ -34,6 +34,7 @@ struct e2db_abstract : protected e2se::log_factory
 		inline static bool MARKER_GLOBAL_INDEX = false;
 		inline static string USERBOUQUET_FILENAME_SUFFIX = "dbe";
 
+
 		inline static const string SAT_POL[4] = {"H", "V", "L", "R"};
 		inline static const string SAT_MOD[6] = {"Auto", "QPSK", "8PSK", "QAM16", "16APSK", "32APSK"};
 		inline static const string SAT_INV[3] = {"Off", "On", "Auto"};
@@ -677,6 +678,9 @@ struct e2db_abstract : protected e2se::log_factory
 		void add_tunersets_table(int idx, tunersets_table& tn, tunersets& tv);
 		void add_tunersets_transponder(int idx, tunersets_transponder& tntxp, tunersets_table& tn);
 		void set_parentallock(string chid, string bname = "");
+		void transform_crlf(e2db_file& file);
+		bool check_crlf();
+		bool check_crlf(bool& ctx, string& line);
 		static void fix_crlf(string& line);
 
 		using MSG = e2se::logger::MSG;
@@ -690,6 +694,9 @@ struct e2db_abstract : protected e2se::log_factory
 		unordered_map<string, e2db_file> e2db_out;
 		string filepath;
 		string services_filename;
+
+		bool blobctx_crlf = false;
+		bool currctx_crlf = false;
 };
 }
 #endif /* e2db_abstract_h */

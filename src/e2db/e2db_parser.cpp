@@ -273,6 +273,7 @@ void e2db_parser::parse_e2db()
 	// commit: eea25b0	elapsed time: 20839
 	// commit: 180b033	elapsed time: 20163
 	// commit: 3e5808a	elapsed time: 19238
+	// commit: HEAD     elapsed time: 19549
 
 	auto t_end = std::chrono::high_resolution_clock::now();
 	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
@@ -432,6 +433,8 @@ void e2db_parser::parse_e2db_lamedb(istream& ilamedb)
 {
 	debug("parse_e2db_lamedb");
 
+	bool ctx = false;
+
 	int ver = -1;
 
 	try
@@ -439,9 +442,7 @@ void e2db_parser::parse_e2db_lamedb(istream& ilamedb)
 		string hlamedb;
 		std::getline(ilamedb, hlamedb);
 
-#ifdef PLATFORM_WIN
-		fix_crlf(hlamedb);
-#endif
+		if (PARSER_FIX_CRLF && check_crlf(ctx, hlamedb)) fix_crlf(hlamedb);
 
 		char vlamedb = (hlamedb.substr(hlamedb.length() - 2, hlamedb.length() - 1))[0];
 		ver = isdigit(vlamedb) ? int (vlamedb) - 48 : 0;
@@ -471,6 +472,8 @@ void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 {
 	debug("parse_e2db_lamedb5", "version", 5);
 
+	bool ctx = false;
+
 	if (! db.dstat)
 		db.version = 0x1225;
 
@@ -489,9 +492,7 @@ void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 	{
 		ln++;
 
-#ifdef PLATFORM_WIN
-		fix_crlf(line);
-#endif
+		if (PARSER_FIX_CRLF && check_crlf(ctx, line)) fix_crlf(line);
 
 		if (line.empty())
 			continue;
@@ -575,6 +576,8 @@ void e2db_parser::parse_e2db_lamedbx(istream& ilamedb, int ver)
 {
 	debug("parse_e2db_lamedbx", "version", ver);
 
+	bool ctx = false;
+
 	if (ver > 4)
 		return error("parse_e2db_lamedbx", "Parser Error", "Unknown Lamedb services file format.");
 
@@ -597,9 +600,7 @@ void e2db_parser::parse_e2db_lamedbx(istream& ilamedb, int ver)
 	{
 		ln++;
 
-#ifdef PLATFORM_WIN
-		fix_crlf(line);
-#endif
+		if (PARSER_FIX_CRLF && check_crlf(ctx, line)) fix_crlf(line);
 
 		if (! step && line == "transponders")
 		{
@@ -845,6 +846,8 @@ void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string filename, bool ep
 {
 	debug("parse_e2db_bouquet", "filename", filename);
 
+	bool ctx = false;
+
 	bool add = ! bouquets.count(filename);
 	string line;
 	int ln = 0;
@@ -856,9 +859,7 @@ void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string filename, bool ep
 	{
 		ln++;
 
-#ifdef PLATFORM_WIN
-		fix_crlf(line);
-#endif
+		if (PARSER_FIX_CRLF && check_crlf(ctx, line)) fix_crlf(line);
 
 		if (line.size() >= 9 && line.find("#SERVICE") != string::npos)
 		{
@@ -914,6 +915,8 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string filename)
 {
 	debug("parse_e2db_userbouquet", "filename", filename);
 
+	bool ctx = false;
+
 	bool add = ! userbouquets.count(filename);
 	bool step = 0;
 	int idx = 0;
@@ -945,9 +948,7 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string filename)
 	{
 		ln++;
 
-#ifdef PLATFORM_WIN
-		fix_crlf(line);
-#endif
+		if (PARSER_FIX_CRLF && check_crlf(ctx, line)) fix_crlf(line);
 
 		if (! step && line.size() >= 6 && line.find("#NAME") != string::npos)
 		{
@@ -1001,6 +1002,8 @@ void e2db_parser::parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& iloc
 {
 	debug("parse_e2db_parentallock_list", "ltype", ltype);
 
+	bool ctx = false;
+
 	string line;
 
 	channel_reference chref;
@@ -1013,9 +1016,7 @@ void e2db_parser::parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& iloc
 
 	while (std::getline(ilocked, line))
 	{
-#ifdef PLATFORM_WIN
-		fix_crlf(line);
-#endif
+		if (PARSER_FIX_CRLF && check_crlf(ctx, line)) fix_crlf(line);
 
 		ref = service_reference ();
 

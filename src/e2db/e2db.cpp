@@ -35,6 +35,16 @@ e2db::e2db()
 
 	this->log = new e2se::logger("e2db", "e2db");
 
+	if (! FIX_CRLF)
+	{
+		PARSER_FIX_CRLF = false;
+		MAKER_FIX_CRLF = false;
+		CONVERTER_IN_FIX_CRLF = false;
+		CONVERTER_OUT_CSV_FIX_CRLF = false;
+		CONVERTER_OUT_M3U_FIX_CRLF = false;
+		CONVERTER_OUT_HTML_FIX_CRLF = false;
+	}
+
 	index["chs"]; // touch index["chs"]
 	index["txs"]; // touch index["txs"]
 }
@@ -460,6 +470,8 @@ void e2db::import_blob(unordered_map<string, e2db_file> files)
 
 	auto t_start = std::chrono::high_resolution_clock::now();
 
+	blobctx_crlf = true;
+
 	try
 	{
 		bool merge = this->get_input().size() != 0 ? true : false;
@@ -508,6 +520,8 @@ void e2db::import_blob(unordered_map<string, e2db_file> files)
 	{
 		exception("import_blob", "Error", msg(MSG::except_uncaught));
 	}
+
+	blobctx_crlf = false;
 
 	auto t_end = std::chrono::high_resolution_clock::now();
 	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();

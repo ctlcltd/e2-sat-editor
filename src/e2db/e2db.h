@@ -25,6 +25,8 @@ class e2db : public e2db_parser, public e2db_maker, public e2db_converter
 		inline static bool MERGE_SORT_ID = false;
 		inline static bool FAVOURITE_MATCH_SERVICE = false;
 
+		inline static bool FIX_CRLF = true;
+
 		e2db();
 		virtual ~e2db() = default;
 		void import_file(vector<string> paths);

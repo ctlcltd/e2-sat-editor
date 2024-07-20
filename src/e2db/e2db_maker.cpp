@@ -567,8 +567,8 @@ void e2db_maker::make_bouquet_epl(string bname, e2db_file& file)
 
 		ss << "#SERVICE: ";
 		ss << "4097:7:0:" << name << ":0:0:0:0:0:0:";
-		ss << path << endl;
-		ss << "#TYPE 16385" << endl;
+		ss << path << '\n';
+		ss << "#TYPE 16385" << '\n';
 		ss << path << endl;
 	}
 
@@ -651,7 +651,7 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 
 				ln++;
 
-				ss << endl;
+				ss << '\n';
 				ss << "#DESCRIPTION " << chref.value;
 			}
 		}
@@ -677,7 +677,7 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 
 					ln++;
 
-					ss << endl;
+					ss << '\n';
 					ss << "#DESCRIPTION " << chref.value;
 				}
 
@@ -710,7 +710,7 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 
 					ln++;
 
-					ss << endl;
+					ss << '\n';
 					ss << "#DESCRIPTION " << chref.value;
 				}
 
@@ -1604,7 +1604,11 @@ bool e2db_maker::push_file(string path)
 			return false;
 		}
 
-		ofstream out (fpath);
+		std::ios_base::openmode fm = std::ios_base::out;
+
+		if (MAKER_FIX_CRLF && check_crlf()) fm |= std::ios_base::binary;
+
+		ofstream out (fpath, fm);
 		out << o.second.data;
 		out.close();
 

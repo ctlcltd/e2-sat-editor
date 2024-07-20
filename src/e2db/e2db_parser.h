@@ -28,6 +28,8 @@ class e2db_parser : virtual public e2db_abstract
 		inline static bool PARSER_TUNERSETS = true;
 		inline static bool PARSER_PARENTALLOCK_LIST = true;
 
+		inline static bool PARSER_FIX_CRLF = true;
+
 		e2db_parser();
 		virtual ~e2db_parser() = default;
 		void parse_e2db();

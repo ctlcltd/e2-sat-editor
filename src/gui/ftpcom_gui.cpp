@@ -53,6 +53,7 @@ void ftpcom::setup()
 	ftpcom::TELNET_TIMEOUT = settings.value("telnetTimeout", 15).toInt();
 	ftpcom::MAX_RESUME_ATTEMPTS = settings.value("maxResumeAttempts", 5).toInt();
 	ftpcom::FILENAME_CHECK = settings.value("filenameCheck", true).toBool();
+	ftpcom::FIX_CRLF = settings.value("fixCrlf", false).toBool();
 	settings.endArray();
 
 	int profile_sel = settings.value("profile/selected", 0).toInt();
