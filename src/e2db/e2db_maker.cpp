@@ -1604,11 +1604,11 @@ bool e2db_maker::push_file(string path)
 			return false;
 		}
 
-		std::ios_base::openmode fm = std::ios_base::out;
+		std::ios_base::openmode fmode = std::ios_base::out;
 
-		if (MAKER_FIX_CRLF && check_crlf()) fm |= std::ios_base::binary;
+		if (MAKER_FIX_CRLF && check_crlf()) fmode |= std::ios_base::binary;
 
-		ofstream out (fpath, fm);
+		ofstream out (fpath, fmode);
 		out << o.second.data;
 		out.close();
 

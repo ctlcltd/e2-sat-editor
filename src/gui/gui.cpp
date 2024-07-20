@@ -759,7 +759,15 @@ void gui::updateSettings()
 
 		if (version < 1.6)
 		{
+			settings.setValue("engine/parserFixCrlf", true);
+			settings.setValue("engine/makerFixCrlf", true);
+			settings.setValue("engine/toolsInFixCrlf", true);
+			settings.setValue("engine/toolsOutCsvFixCrlf", false);
+			settings.setValue("engine/toolsOutM3uFixCrlf", false);
+			settings.setValue("engine/toolsOutHtmlFixCrlf", true);
+			settings.setValue("engine/fixCrlf", true);
 			settings.setValue("ftpcom/filenameCheck", true);
+			settings.setValue("ftpcom/fixCrlf", false);
 		}
 		if (version < 1.3)
 		{
