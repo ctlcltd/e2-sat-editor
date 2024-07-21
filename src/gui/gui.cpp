@@ -2056,8 +2056,6 @@ void gui::openFileTab(string path, bool launch)
 
 		errorMessage(tr("File Error", "error"), tr("Error opening files.", "error"));
 	}
-
-	tabChanged(0);
 }
 
 void gui::launcher()
