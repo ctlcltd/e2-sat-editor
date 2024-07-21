@@ -2039,6 +2039,8 @@ void tab::ftpUpload()
 			}
 		});
 		thread->connect(thread, &QThread::finished, [=]() {
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->resetStatusBar(true); }, Qt::QueuedConnection);
+
 			if (! this->ftp_errors.empty())
 			{
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(this->ftp_errors, MSG_CODE::ftpNotice); }, Qt::QueuedConnection);
@@ -2162,6 +2164,8 @@ void tab::ftpDownload()
 			}
 		});
 		thread->connect(thread, &QThread::finished, [=]() {
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->resetStatusBar(true); }, Qt::QueuedConnection);
+
 			if (! this->ftp_errors.empty())
 			{
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(this->ftp_errors, MSG_CODE::ftpNotice); }, Qt::QueuedConnection);
@@ -2376,7 +2380,7 @@ void tab::ftpStbUploadNotify(int files_count)
 void tab::ftpStbUploadNotify(string filename)
 {
 	if (statusBarIsVisible())
-		statusBarMessage(tr("Uploading file: %1", "message").arg(filename.data()));
+		statusBarQuickMessage(tr("Uploading file: %1", "message").arg(filename.data()));
 }
 
 void tab::ftpStbDownloadNotify(int files_count)
@@ -2388,7 +2392,7 @@ void tab::ftpStbDownloadNotify(int files_count)
 void tab::ftpStbDownloadNotify(string filename)
 {
 	if (statusBarIsVisible())
-		statusBarMessage(tr("Downloading file: %1", "message").arg(filename.data()));
+		statusBarQuickMessage(tr("Downloading file: %1", "message").arg(filename.data()));
 }
 
 void tab::ftpStbReloadSuccessNotify()
@@ -2505,6 +2509,14 @@ void tab::statusBarMessage(QTimer* timer)
 		timer->setInterval(STATUSBAR_MESSAGE_DELAY);
 		timer->start();
 	}
+}
+
+void tab::statusBarQuickMessage(QString message)
+{
+	gui::status msg;
+	msg.info = true;
+	msg.message = message.toStdString();
+	setStatusBar(msg);
 }
 
 int tab::saveQuestion()

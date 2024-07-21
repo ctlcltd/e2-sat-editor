@@ -708,7 +708,7 @@ void ftpcom::put_files(unordered_map<string, ftpcom_file> files, std::function<v
 	}
 }
 
-//TODO FIX rand SEGFAULT with a strange routine (connect > disconnect > upload > disconnect > upload)
+//TODO TEST rand SEGFAULT with a strange routine (connect > disconnect > upload > disconnect > upload)
 bool ftpcom::cmd_ifreload()
 {
 	debug("cmd_ifreload");

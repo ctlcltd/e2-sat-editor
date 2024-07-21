@@ -123,6 +123,7 @@ class tab : protected e2se::log_factory
 		void linkToOnlineHelp(int page = 0);
 		QTimer* statusBarMessage(QString message);
 		void statusBarMessage(QTimer* timer);
+		void statusBarQuickMessage(QString message);
 		int saveQuestion();
 		int saveQuestion(QString title, QString message);
 		bool overwriteQuestion();
