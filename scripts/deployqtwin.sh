@@ -165,7 +165,7 @@ qt_version () {
 	local qt_ver="$_QT_VER"
 	local qt_version="$_QT_VERSION"
 
-	if [[ "${_QT_VERSION%%.*}" -ge 5 && "$_QT_VERSION" =~ [0-9]\.[0-9]\.[0-9] ]]; then
+	if [[ "${_QT_VERSION%%.*}" -ge 5 && "$_QT_VERSION" =~ [0-9]\.[0-9]+\.[0-9]+ ]]; then
 		qt_ver="${_QT_VERSION%%.*}"
 		qt_version="$_QT_VERSION"
 	else
