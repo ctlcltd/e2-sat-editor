@@ -226,7 +226,7 @@ void theme::styleLight()
 	palette.setColor(QPalette::Light, QColor(239, 239, 239).lighter(150));
 	palette.setColor(QPalette::Midlight, QColor(239, 239, 239).darker(130).lighter(110));
 	palette.setColor(QPalette::Dark, QColor(239, 239, 239).darker(150));
-	palette.setColor(QPalette::Mid, QColor(249, 249, 249)); // QColor(239, 239, 239).darker(150)
+	palette.setColor(QPalette::Mid, QColor(249, 249, 249));
 	palette.setColor(QPalette::Text, Qt::black);
 	palette.setColor(QPalette::BrightText, Qt::white);
 	palette.setColor(QPalette::ButtonText, Qt::black);
@@ -265,15 +265,15 @@ void theme::styleDark()
 	QPalette palette = style->standardPalette();
 
 	palette.setColor(QPalette::WindowText, Qt::white);
-	palette.setColor(QPalette::Button, QColor(74, 73, 71).darker(175)); // QColor(66, 66, 69)
+	palette.setColor(QPalette::Button, QColor(74, 73, 71).darker(175));
 	palette.setColor(QPalette::Light, QColor(151, 151, 151));
 	palette.setColor(QPalette::Midlight, QColor(94, 92, 91));
-	palette.setColor(QPalette::Dark, QColor(61, 61, 61)); // QColor(48, 47, 46)
-	palette.setColor(QPalette::Mid, QColor(94, 92, 91).darker(400)); // QColor(74, 73, 71)
+	palette.setColor(QPalette::Dark, QColor(61, 61, 61));
+	palette.setColor(QPalette::Mid, QColor(94, 92, 91).darker(400));
 	palette.setColor(QPalette::Text, Qt::white);
 	palette.setColor(QPalette::BrightText, Qt::black);
 	palette.setColor(QPalette::ButtonText, Qt::white);
-	palette.setColor(QPalette::Base, QColor(48, 47, 46).darker(250)); // QColor(61, 61, 61)
+	palette.setColor(QPalette::Base, QColor(48, 47, 46).darker(250));
 	palette.setColor(QPalette::Window, QColor(34, 32, 32));
 	palette.setColor(QPalette::Shadow, QColor(231, 228, 224));
 	palette.setColor(QPalette::Active, QPalette::Highlight, QColor(18, 96, 138));
@@ -347,6 +347,8 @@ void theme::stylePseudoWinModern()
 		highlightColor.setRgb(r, g, b);
 	}
 
+	QPalette p1 = QGuiApplication::palette();
+
 	// temp fusion with adjustments
 	{
 		QStyle* style = QStyleFactory::create("fusion");
@@ -358,18 +360,38 @@ void theme::stylePseudoWinModern()
 	{
 		if (highlightColor.isValid())
 		{
-			QPalette p = QGuiApplication::palette();
+			QPalette p2 = QGuiApplication::palette();
 
 			QColor highlightedTextColor = highlightColor.toHsl().lightness() > 128 ? Qt::black : Qt::white;
-			p.setColor(QPalette::Active, QPalette::Highlight, highlightColor);
-			/*highlightColor.setAlpha(highlightColor.alpha() - 51);
-			p.setColor(QPalette::Inactive, QPalette::Highlight, highlightColor);
-			highlightColor.setAlpha(highlightColor.alpha() - 76);
-			p.setBrush(QPalette::Disabled, QPalette::Highlight, highlightColor);*/
-			p.setColor(QPalette::HighlightedText, highlightedTextColor);
 
-			QApplication::setPalette(p);
+			p1.setCurrentColorGroup(QPalette::Active);
+			p2.setColor(QPalette::Active, QPalette::Highlight, highlightColor);
+			p2.setColor(QPalette::Active, QPalette::HighlightedText, highlightedTextColor);
+			p1.setCurrentColorGroup(QPalette::Disabled);
+			p2.setColor(QPalette::Disabled, QPalette::Highlight, p1.highlight().color());
+			p2.setColor(QPalette::Disabled, QPalette::HighlightedText, p1.highlightedText().color());
+			p1.setCurrentColorGroup(QPalette::Inactive);
+			p2.setColor(QPalette::Inactive, QPalette::Highlight, p1.highlight().color());
+			p2.setColor(QPalette::Inactive, QPalette::HighlightedText, p1.highlightedText().color());
+			p1.setCurrentColorGroup(QPalette::Normal);
+
+			QApplication::setPalette(p2);
 		}
+	}
+	// fix dark mode
+	else
+	{
+		QPalette p2 = QGuiApplication::palette();
+
+		p1.setCurrentColorGroup(QPalette::Disabled);
+		p2.setColor(QPalette::Disabled, QPalette::Highlight, p1.highlight().color());
+		p2.setColor(QPalette::Disabled, QPalette::HighlightedText, p1.highlightedText().color());
+		p1.setCurrentColorGroup(QPalette::Inactive);
+		p2.setColor(QPalette::Inactive, QPalette::Highlight, p1.highlight().color());
+		p2.setColor(QPalette::Inactive, QPalette::HighlightedText, p1.highlightedText().color());
+		p1.setCurrentColorGroup(QPalette::Normal);
+
+		QApplication::setPalette(p2);
 	}
 }
 
@@ -414,24 +436,29 @@ void theme::stylePseudoWinEarly()
 		if (highlightColor.isValid())
 		{
 			QColor highlightedTextColor = highlightColor.toHsl().lightness() > 128 ? Qt::black : Qt::white;
+
+			p1.setCurrentColorGroup(QPalette::Active);
 			p2.setColor(QPalette::Active, QPalette::Highlight, highlightColor);
-			highlightColor.setAlpha(highlightColor.alpha() - 51);
-			p2.setColor(QPalette::Inactive, QPalette::Highlight, highlightColor);
-			highlightColor.setAlpha(highlightColor.alpha() - 76);
-			p2.setBrush(QPalette::Disabled, QPalette::Highlight, highlightColor);
-			p2.setColor(QPalette::HighlightedText, highlightedTextColor);
+			p2.setColor(QPalette::Active, QPalette::HighlightedText, highlightedTextColor);
+			p1.setCurrentColorGroup(QPalette::Disabled);
+			p2.setColor(QPalette::Disabled, QPalette::Highlight, p1.highlight().color());
+			p2.setColor(QPalette::Disabled, QPalette::HighlightedText, p1.highlightedText().color());
+			p1.setCurrentColorGroup(QPalette::Inactive);
+			p2.setColor(QPalette::Inactive, QPalette::Highlight, p1.highlight().color());
+			p2.setColor(QPalette::Inactive, QPalette::HighlightedText, p1.highlightedText().color());
+			p1.setCurrentColorGroup(QPalette::Normal);
 		}
 		else
 		{
 			p1.setCurrentColorGroup(QPalette::Active);
 			p2.setColor(QPalette::Active, QPalette::Highlight, p1.highlight().color());
-			p1.setCurrentColorGroup(QPalette::Inactive);
-			p2.setColor(QPalette::Inactive, QPalette::Highlight, p1.highlight().color());
-			p1.setCurrentColorGroup(QPalette::Normal);
-			p2.setColor(QPalette::HighlightedText, p1.highlightedText().color()); // accent
+			p2.setColor(QPalette::Active, QPalette::HighlightedText, p1.highlightedText().color());
 			p1.setCurrentColorGroup(QPalette::Disabled);
-			p2.setBrush(QPalette::Disabled, QPalette::Highlight, p1.highlight().color());
+			p2.setBrush(QPalette::Disabled, QPalette::Highlight, p1.button().color());
 			p2.setColor(QPalette::Disabled, QPalette::HighlightedText, p1.highlightedText().color());
+			p1.setCurrentColorGroup(QPalette::Inactive);
+			p2.setColor(QPalette::Inactive, QPalette::Highlight, p1.button().color());
+			p2.setColor(QPalette::Inactive, QPalette::HighlightedText, p1.highlightedText().color());
 			p1.setCurrentColorGroup(QPalette::Normal);
 		}
 
@@ -459,17 +486,14 @@ void theme::stylePseudoWinEarly()
 
 		if (highlightColor.isValid())
 		{
-			QPalette p = QGuiApplication::palette();
+			QPalette p2 = QGuiApplication::palette();
 
 			QColor highlightedTextColor = highlightColor.toHsl().lightness() > 128 ? Qt::black : Qt::white;
-			p.setColor(QPalette::Active, QPalette::Highlight, highlightColor);
-			highlightColor.setAlpha(highlightColor.alpha() - 51);
-			p.setColor(QPalette::Inactive, QPalette::Highlight, highlightColor);
-			highlightColor.setAlpha(highlightColor.alpha() - 76);
-			p.setBrush(QPalette::Disabled, QPalette::Highlight, highlightColor);
-			p.setColor(QPalette::HighlightedText, highlightedTextColor);
 
-			QApplication::setPalette(p);
+			p2.setColor(QPalette::Active, QPalette::Highlight, highlightColor);
+			p2.setColor(QPalette::Active, QPalette::HighlightedText, highlightedTextColor);
+
+			QApplication::setPalette(p2);
 		}
 	}
 }
