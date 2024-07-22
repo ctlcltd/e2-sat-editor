@@ -165,9 +165,9 @@ qt_version () {
 	local qt_ver="$_QT_VER"
 	local qt_version="$_QT_VERSION"
 
-	if [[ "${_QT_VERSION:0:2}" == "6." || "${_QT_VERSION:0:2}" == "5." ]]; then
-		qt_ver="${_QT_VERSION:0:1}"
-		qt_version="${_QT_VERSION:0:1}.${_QT_VERSION:2:1}.${_QT_VERSION:4:1}"
+	if [[ "${_QT_VERSION%%.*}" -ge 5 && "$_QT_VERSION" =~ [0-9]\.[0-9]\.[0-9] ]]; then
+		qt_ver="${_QT_VERSION%%.*}"
+		qt_version="$_QT_VERSION"
 	else
 		local tip="Allowed values: 6.x.x 5.x.x"
 		error "$(printf "Error Qt version unknown: %s\n  %s\n" "$_QT_VERSION" "$tip")"
@@ -407,15 +407,17 @@ deploy_module () {
 			deps+=("libc++" "libunwind")
 		fi
 		if [[ $(is_msys) ]]; then
+			local semmp="${__QTVERSION#*.}"
+
 			deps+=("libdouble-conversion")
-			if [[ "${__QTVERSION:0:1}" -eq 6 && "${__QTVERSION:2:1}" -ge 7 && "${__QTVERSION:4:1}" -ge 2 ]]; then
+			if [[ "${__QTVERSION%%.*}" -eq 6 && "${semmp%%.*}" -gt 7 || ("${semmp%%.*}" -eq 7 && "${semmp##*.}" -ge 2) ]]; then
 				deps+=("libicuin75" "libicuuc75" "libicudt75")
-			elif [[ "${__QTVERSION:0:1}" -eq 5 && "${__QTVERSION:2:1}" -ge 15 && "${__QTVERSION:4:1}" -ge 14 ]]; then
+			elif [[ "${__QTVERSION%%.*}" -eq 5 && "${semmp%%.*}" -gt 15 || ("${semmp%%.*}" -eq 15 && "${semmp##*.}" -ge 14) ]]; then
 				deps+=("libicuin75" "libicuuc75" "libicudt75")
 			else
 				deps+=("libicuin74" "libicuuc74" "libicudt74")
 			fi
-			if [[ "$__QTVER" == 6 ]]; then
+			if [[ "$__QTVER" -eq 6 ]]; then
 				deps+=("libb2-1")
 			fi
 		else
