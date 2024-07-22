@@ -288,6 +288,8 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 
 	auto t_start = std::chrono::high_resolution_clock::now();
 
+	blobctx_crlf = true;
+
 	for (auto & x : files)
 	{
 		string fpath = x.first;
@@ -422,6 +424,8 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 			}
 		}
 	}
+
+	blobctx_crlf = false;
 
 	auto t_end = std::chrono::high_resolution_clock::now();
 	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();

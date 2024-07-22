@@ -437,7 +437,11 @@ void e2db::export_file(FPORTS fpo, string path, string filename)
 			return error("export_file", "File Error", msg("File \"%s\" is not writable.", path));
 		}
 
-		ofstream out (fpath);
+		std::ios_base::openmode fmode = std::ios_base::out;
+
+		if (MAKER_FIX_CRLF && check_crlf()) fmode |= std::ios_base::binary;
+
+		ofstream out (fpath, fmode);
 		out << file.data;
 		out.close();
 	}
