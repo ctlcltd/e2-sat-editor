@@ -347,7 +347,12 @@ void theme::stylePseudoWinModern()
 		highlightColor.setRgb(r, g, b);
 	}
 
-	QPalette p1 = QGuiApplication::palette();
+	QPalette p1;
+
+	{
+		QStyle* style = QStyleFactory::create("windows");
+		p1 = style->standardPalette();
+	}
 
 	// temp fusion with adjustments
 	{
@@ -355,25 +360,24 @@ void theme::stylePseudoWinModern()
 		QApplication::setStyle(style);
 	}
 
+	QPalette p2 = QGuiApplication::palette();
+
 	// fix light mode
 	if (! theme::absLuma())
 	{
 		if (highlightColor.isValid())
 		{
-			QPalette p2 = QGuiApplication::palette();
-
 			QColor highlightedTextColor = highlightColor.toHsl().lightness() > 128 ? Qt::black : Qt::white;
 
 			p1.setCurrentColorGroup(QPalette::Active);
 			p2.setColor(QPalette::Active, QPalette::Highlight, highlightColor);
 			p2.setColor(QPalette::Active, QPalette::HighlightedText, highlightedTextColor);
 			p1.setCurrentColorGroup(QPalette::Disabled);
-			p2.setColor(QPalette::Disabled, QPalette::Highlight, p1.highlight().color());
+			p2.setBrush(QPalette::Disabled, QPalette::Highlight, p1.highlight().color());
 			p2.setColor(QPalette::Disabled, QPalette::HighlightedText, p1.highlightedText().color());
 			p1.setCurrentColorGroup(QPalette::Inactive);
 			p2.setColor(QPalette::Inactive, QPalette::Highlight, p1.highlight().color());
 			p2.setColor(QPalette::Inactive, QPalette::HighlightedText, p1.highlightedText().color());
-			p1.setCurrentColorGroup(QPalette::Normal);
 
 			QApplication::setPalette(p2);
 		}
@@ -381,15 +385,12 @@ void theme::stylePseudoWinModern()
 	// fix dark mode
 	else
 	{
-		QPalette p2 = QGuiApplication::palette();
-
 		p1.setCurrentColorGroup(QPalette::Disabled);
-		p2.setColor(QPalette::Disabled, QPalette::Highlight, p1.highlight().color());
+		p2.setBrush(QPalette::Disabled, QPalette::Highlight, p1.highlight().color());
 		p2.setColor(QPalette::Disabled, QPalette::HighlightedText, p1.highlightedText().color());
 		p1.setCurrentColorGroup(QPalette::Inactive);
 		p2.setColor(QPalette::Inactive, QPalette::Highlight, p1.highlight().color());
 		p2.setColor(QPalette::Inactive, QPalette::HighlightedText, p1.highlightedText().color());
-		p1.setCurrentColorGroup(QPalette::Normal);
 
 		QApplication::setPalette(p2);
 	}
@@ -410,6 +411,16 @@ void theme::stylePseudoWinEarly()
 		highlightColor.setRgb(r, g, b);
 	}
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+	QSettings personalize = QSettings ("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", QSettings::NativeFormat);
+	if (personalize.contains("AppsUseLightTheme") && ! personalize.value("AppsUseLightTheme").toBool())
+	{
+		QPalette p = QGuiApplication::palette();
+		p.setColor(QPalette::All, QPalette::Window, Qt::black);
+		QApplication::setPalette(p);
+	}
+#endif
+
 	// dark mode: fusion
 	if (theme::absLuma())
 	{
@@ -419,6 +430,7 @@ void theme::stylePseudoWinEarly()
 		QApplication::setStyle(style);
 
 		QPalette p2 = style->standardPalette();
+
 		p1.setCurrentColorGroup(QPalette::Normal);
 		p2.setColor(QPalette::WindowText, p1.windowText().color());
 		p2.setColor(QPalette::Button, p1.button().color());
@@ -441,12 +453,11 @@ void theme::stylePseudoWinEarly()
 			p2.setColor(QPalette::Active, QPalette::Highlight, highlightColor);
 			p2.setColor(QPalette::Active, QPalette::HighlightedText, highlightedTextColor);
 			p1.setCurrentColorGroup(QPalette::Disabled);
-			p2.setColor(QPalette::Disabled, QPalette::Highlight, p1.highlight().color());
+			p2.setBrush(QPalette::Disabled, QPalette::Highlight, p1.highlight().color());
 			p2.setColor(QPalette::Disabled, QPalette::HighlightedText, p1.highlightedText().color());
 			p1.setCurrentColorGroup(QPalette::Inactive);
 			p2.setColor(QPalette::Inactive, QPalette::Highlight, p1.highlight().color());
 			p2.setColor(QPalette::Inactive, QPalette::HighlightedText, p1.highlightedText().color());
-			p1.setCurrentColorGroup(QPalette::Normal);
 		}
 		else
 		{
@@ -454,14 +465,14 @@ void theme::stylePseudoWinEarly()
 			p2.setColor(QPalette::Active, QPalette::Highlight, p1.highlight().color());
 			p2.setColor(QPalette::Active, QPalette::HighlightedText, p1.highlightedText().color());
 			p1.setCurrentColorGroup(QPalette::Disabled);
-			p2.setBrush(QPalette::Disabled, QPalette::Highlight, p1.button().color());
+			p2.setBrush(QPalette::Disabled, QPalette::Highlight, p1.highlight().color());
 			p2.setColor(QPalette::Disabled, QPalette::HighlightedText, p1.highlightedText().color());
 			p1.setCurrentColorGroup(QPalette::Inactive);
-			p2.setColor(QPalette::Inactive, QPalette::Highlight, p1.button().color());
+			p2.setColor(QPalette::Inactive, QPalette::Highlight, p1.highlight().color());
 			p2.setColor(QPalette::Inactive, QPalette::HighlightedText, p1.highlightedText().color());
-			p1.setCurrentColorGroup(QPalette::Normal);
 		}
 
+		p1.setCurrentColorGroup(QPalette::Normal);
 		p2.setColor(QPalette::AlternateBase, p1.alternateBase().color());
 		p2.setColor(QPalette::NoRole, Qt::black);
 		p2.setColor(QPalette::ToolTipBase, p1.toolTipBase().color());
@@ -474,7 +485,6 @@ void theme::stylePseudoWinEarly()
 		p2.setColor(QPalette::Disabled, QPalette::ButtonText, p1.buttonText().color());
 		p2.setBrush(QPalette::Disabled, QPalette::Base, p1.base().color());
 		p2.setBrush(QPalette::Disabled, QPalette::Shadow, p1.shadow().color());
-		p1.setCurrentColorGroup(QPalette::Normal);
 
 		QApplication::setPalette(p2);
 	}
