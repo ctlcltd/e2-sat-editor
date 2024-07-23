@@ -347,12 +347,27 @@ void theme::stylePseudoWinModern()
 		highlightColor.setRgb(r, g, b);
 	}
 
+
+	//TEST
+
 	QPalette p1;
 
+	if (! qgetenv("TEST1").isEmpty())
 	{
 		QStyle* style = QStyleFactory::create("windows");
 		p1 = style->standardPalette();
 	}
+	else if (! qgetenv("TEST2").isEmpty())
+	{
+		p1 = style->standardPalette();
+	}
+	else
+	{
+		p1 = QGuiApplication::palette();
+	}
+
+	//TEST
+
 
 	// temp fusion with adjustments
 	{
@@ -375,8 +390,19 @@ void theme::stylePseudoWinModern()
 			p1.setCurrentColorGroup(QPalette::Disabled);
 			p2.setBrush(QPalette::Disabled, QPalette::Highlight, p1.highlight().color());
 			p2.setColor(QPalette::Disabled, QPalette::HighlightedText, p1.highlightedText().color());
+
+			//TEST
 			p1.setCurrentColorGroup(QPalette::Inactive);
-			p2.setColor(QPalette::Inactive, QPalette::Highlight, p1.highlight().color());
+			if (! qgetenv("TEST3").isEmpty())
+				p2.setColor(QPalette::Inactive, QPalette::Highlight, p1.button().color());
+			else if (! qgetenv("TEST4").isEmpty())
+				p2.setBrush(QPalette::Inactive, QPalette::Highlight, p1.button().color());
+			else if (! qgetenv("TEST5").isEmpty())
+				p2.setBrush(QPalette::Inactive, QPalette::Highlight, p1.highlight().color());
+			else
+				p2.setColor(QPalette::Inactive, QPalette::Highlight, p1.highlight().color());
+			//TEST
+
 			p2.setColor(QPalette::Inactive, QPalette::HighlightedText, p1.highlightedText().color());
 
 			QApplication::setPalette(p2);
@@ -388,8 +414,19 @@ void theme::stylePseudoWinModern()
 		p1.setCurrentColorGroup(QPalette::Disabled);
 		p2.setBrush(QPalette::Disabled, QPalette::Highlight, p1.highlight().color());
 		p2.setColor(QPalette::Disabled, QPalette::HighlightedText, p1.highlightedText().color());
+
+		//TEST
 		p1.setCurrentColorGroup(QPalette::Inactive);
-		p2.setColor(QPalette::Inactive, QPalette::Highlight, p1.highlight().color());
+		if (! qgetenv("TEST3").isEmpty())
+			p2.setColor(QPalette::Inactive, QPalette::Highlight, p1.button().color());
+		else if (! qgetenv("TEST4").isEmpty())
+			p2.setBrush(QPalette::Inactive, QPalette::Highlight, p1.button().color());
+		else if (! qgetenv("TEST5").isEmpty())
+			p2.setBrush(QPalette::Inactive, QPalette::Highlight, p1.highlight().color());
+		else
+			p2.setColor(QPalette::Inactive, QPalette::Highlight, p1.highlight().color());
+		//TEST
+
 		p2.setColor(QPalette::Inactive, QPalette::HighlightedText, p1.highlightedText().color());
 
 		QApplication::setPalette(p2);
@@ -411,7 +448,9 @@ void theme::stylePseudoWinEarly()
 		highlightColor.setRgb(r, g, b);
 	}
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+	//TODO improve win32 Qt5 not has fusion dark standard palette
+
+/*#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 	QSettings personalize = QSettings ("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", QSettings::NativeFormat);
 	if (personalize.contains("AppsUseLightTheme") && ! personalize.value("AppsUseLightTheme").toBool())
 	{
@@ -419,7 +458,7 @@ void theme::stylePseudoWinEarly()
 		p.setColor(QPalette::All, QPalette::Window, Qt::black);
 		QApplication::setPalette(p);
 	}
-#endif
+#endif*/
 
 	// dark mode: fusion
 	if (theme::absLuma())
