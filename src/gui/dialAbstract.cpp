@@ -33,7 +33,7 @@ void dialAbstract::layout(QWidget* cwid)
 	dial->setWindowTitle(tr("Edit", "dialog"));
 
 #ifdef Q_OS_WIN
-	theme->early_win_flavor_fix(dial);
+	theme->win_flavor_fix(dial);
 #endif
 
 	WidgetEventHandler* dial_evth = new WidgetEventHandler;

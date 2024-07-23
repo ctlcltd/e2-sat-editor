@@ -347,16 +347,7 @@ void theme::stylePseudoWinModern()
 		highlightColor.setRgb(r, g, b);
 	}
 
-	//TEST
-	QPalette p1;
-
-	if (! qgetenv("TEST1").isEmpty())
-		p1 = style->standardPalette();
-	else
-		p1 = QGuiApplication::palette();
-	//TEST
-
-	// QPalette p1 = QGuiApplication::palette();
+	QPalette p1 = QGuiApplication::palette();
 
 	// temp fusion with adjustments
 	{
@@ -393,7 +384,7 @@ void theme::stylePseudoWinModern()
 		p2.setBrush(QPalette::Disabled, QPalette::Highlight, p1.highlight().color());
 		p2.setColor(QPalette::Disabled, QPalette::HighlightedText, p1.highlightedText().color());
 		p1.setCurrentColorGroup(QPalette::Inactive);
-		p2.setColor(QPalette::Inactive, QPalette::Highlight, p1.mid().color().darker(307));
+		p2.setColor(QPalette::Inactive, QPalette::Highlight, p1.button().color());
 		p2.setColor(QPalette::Inactive, QPalette::HighlightedText, p1.highlightedText().color());
 
 		QApplication::setPalette(p2);
@@ -514,17 +505,22 @@ void theme::stylePseudoWinEarly()
 	}
 }
 
-QString theme::qss_early_win_PseudoMetroDark_tlw()
+QString theme::qss_fusion_PseudoMetroDark_tlw()
 {
 	return "QMenuBar { background: palette(base) } QMenuBar:active { background: palette(shadow) } QMenu { border: 1px solid palette(light) } QPushButton, QToolButton, QLineEdit, QComboBox, QCheckBox, QRadioButton { border-radius: 0 } QPushButton, QComboBox { padding: 1px } QToolBar QPushButton, QDialog QPushButton { padding: 2px 3ex } QToolBar QComboBox, QDialog QComboBox { padding: 2px 4px } QToolButton { padding: 5px 0 } QLineEdit { padding: 1px } QHeaderView:section { padding: 4px 5px 6px } #dial_toggler { padding: 0 } QPushButton { background: transparent; border: 2px solid palette(midlight) } QPushButton:hover { background: palette(button) } QPushButton:pressed { border-color: palette(button-text) } QToolButton { background: transparent; border: 1px solid transparent } QToolButton:hover { background: palette(mid) } QToolButton:pressed { background: palette(midlight); border-color: palette(button-text) } QLineEdit, QComboBox { background: transparent; border: 1px solid palette(midlight) } QLineEdit:hover, QComboBox:hover, QComboBox:focus { border-color: palette(light) } QLineEdit:focus { border-color: palette(button-text) } QPushButton, QCheckBox, QRadioButton { outline: none } QCheckBox:focus:!pressed:!hover, QRadioButton:focus:!pressed:!hover { outline: 1px solid palette(button-text) } QCheckBox:focus:pressed { outline: none } QPushButton:focus:!pressed:!hover:!open { border-color: palette(light) } QToolBox:tab { background: palette(base); border: 2px solid palette(midlight) } QToolBox QWidget { background: palette(base) } QTabWidget, QTabBar { background: palette(window) } QTreeWidget, QHeaderView:section { background: palette(window) } QTabWidget:pane QSplitter { background: palette(mid) } #tree_search QPushButton, #list_search QPushButton { border-color: transparent } #tree_search QPushButton:pressed, #list_search QPushButton:pressed { background: palette(light) } ";
 }
-QString theme::qss_early_win_PseudoMetroDark_root()
+QString theme::qss_fusion_PseudoMetroDark_root()
 {
 	return "QMenu { border: 1px solid palette(light) }";
 }
 
+QString theme::qss_fusion_PseudoFluentDark_tlw()
+{
+	return "QTabWidget { background: palette(base) } QTreeWidget, QHeaderView:section { background: palette(window) } QTabWidget:pane QSplitter { background: palette(mid) }";
+}
+
 // before QApplication
-void theme::early_win_flavor_fix()
+void theme::win_flavor_fix()
 {
 	if (! theme::isOverridden() && theme::isMetroWin())
 	{
@@ -537,17 +533,19 @@ void theme::early_win_flavor_fix()
 }
 
 // after top level widget
-void theme::early_win_flavor_fix(QWidget* tlw)
+void theme::win_flavor_fix(QWidget* tlw)
 {
-	if (! theme::isOverridden() && theme::isMetroWin())
+	if (! theme::isOverridden())
 	{
-		if (theme::isDefault() && theme::absLuma())
-			tlw->setStyleSheet(theme::qss_early_win_PseudoMetroDark_tlw());
+		if (theme::isMetroWin() && theme::isDefault() && theme::absLuma())
+			tlw->setStyleSheet(theme::qss_fusion_PseudoMetroDark_tlw());
+		else if (theme::isFluentWin() && theme::isDefault() && theme::absLuma())
+			tlw->setStyleSheet(theme::qss_fusion_PseudoFluentDark_tlw());
 	}
 }
 
 // after QApplication
-void theme::early_win_flavor_fix(QApplication* mroot)
+void theme::win_flavor_fix(QApplication* mroot)
 {
 	// additional fix application wide
 	// 
@@ -557,7 +555,7 @@ void theme::early_win_flavor_fix(QApplication* mroot)
 	if (! theme::isOverridden() && theme::isMetroWin() && mroot->styleSheet().isEmpty())
 	{
 		if (theme::isDefault() && theme::absLuma())
-			mroot->setStyleSheet(theme::qss_early_win_PseudoMetroDark_root());
+			mroot->setStyleSheet(theme::qss_fusion_PseudoMetroDark_root());
 	}
 }
 

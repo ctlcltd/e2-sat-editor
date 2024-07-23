@@ -174,8 +174,8 @@ gui::gui(int argc, char* argv[])
 	mwid->setWindowTitle("e2 SAT Editor");
 
 #ifdef Q_OS_WIN
-	theme->early_win_flavor_fix(mwid);
-	theme->early_win_flavor_fix(mroot);
+	theme->win_flavor_fix(mwid);
+	theme->win_flavor_fix(mroot);
 #endif
 
 	WidgetEventHandler* mwid_evth = new WidgetEventHandler;

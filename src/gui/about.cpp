@@ -49,7 +49,7 @@ void about::layout()
 	dial->setWindowTitle(tr("About e2 SAT Editor"));
 
 #ifdef Q_OS_WIN
-	theme->early_win_flavor_fix(dial);
+	theme->win_flavor_fix(dial);
 #endif
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)

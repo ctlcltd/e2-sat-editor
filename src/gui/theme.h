@@ -91,16 +91,20 @@ class theme
 		static void stylePseudoWinModern();
 		static void stylePseudoWinEarly();
 
-		// stylesheet win fusion dark mode  top level widget
-		static QString qss_early_win_PseudoMetroDark_tlw();
-		// stylesheet win fusion dark mode  QApplication
-		static QString qss_early_win_PseudoMetroDark_root();
+		// stylesheet fusion metro dark mode  top level widget
+		static QString qss_fusion_PseudoMetroDark_tlw();
+		// stylesheet fusion metro dark mode  QApplication
+		static QString qss_fusion_PseudoMetroDark_root();
+
+		// stylesheet fusion fluent dark mode  top level widget
+		static QString qss_fusion_PseudoFluentDark_tlw();
+
 		// fix theme  before QApplication
-		static void early_win_flavor_fix();
+		static void win_flavor_fix();
 		// fix theme  after top level widget
-		static void early_win_flavor_fix(QWidget* tlw);
+		static void win_flavor_fix(QWidget* tlw);
 		// fix theme  after QApplication
-		static void early_win_flavor_fix(QApplication* mroot);
+		static void win_flavor_fix(QApplication* mroot);
 #endif
 
 	private:

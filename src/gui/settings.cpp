@@ -100,7 +100,7 @@ void settings::layout(QWidget* cwid)
 	dial->setWindowTitle(tr("Settings", "dialog"));
 
 #ifdef Q_OS_WIN
-	theme->early_win_flavor_fix(dial);
+	theme->win_flavor_fix(dial);
 #endif
 
 	dial->setStyleSheet("QGroupBox { spacing: 0; padding: 0; padding-top: 20px; border: 0; font-weight: bold } QGroupBox::title { margin: 0 10px }");
