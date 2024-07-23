@@ -9,17 +9,19 @@
  * @license GNU GPLv3 License
  */
 
+#include <QtGlobal>
+#include <QTimer>
+#include <QHBoxLayout>
 #include <QFormLayout>
 #include <QGroupBox>
 #include <QLabel>
 #include <QLineEdit>
 #include <QComboBox>
+#include <QPushButton>
 
 #include "platforms/platform.h"
 
 #include "editTransponder.h"
-
-using std::to_string;
 
 using namespace e2se;
 
@@ -125,6 +127,13 @@ void editTransponder::layout(QWidget* cwid)
 	dtb01->addWidget(dtf0ts);
 	dtb01->addWidget(new QLabel("[TSID]"));
 
+	QWidget* dtw10 = new QWidget;
+	dtw10->setMinimumHeight(50);
+	QHBoxLayout* dtb10 = new QHBoxLayout(dtw10);
+	dtb10->setContentsMargins(0, 0, 0, 0);
+	dtf0->addRow(tr("DVBNS"), dtw10);
+	dtf0->addItem(new QSpacerItem(0, 0));
+
 	QLineEdit* dtf0ns = new QLineEdit;
 	dtf0ns->setProperty("field", "dvbns");
 	fields.emplace_back(dtf0ns);
@@ -132,8 +141,22 @@ void editTransponder::layout(QWidget* cwid)
 	dtf0ns->setInputMask(">HHHHHHHH");
 	dtf0ns->setMaxLength(9);
 	platform::osLineEdit(dtf0ns);
-	dtf0->addRow(tr("DVBNS"), dtf0ns);
-	dtf0->addItem(new QSpacerItem(0, 0));
+
+	QPushButton* dtf0nb = new QPushButton;
+	dtf0nb->setDefault(false);
+	dtf0nb->setText(tr("calc"));
+
+	dtf0nb->connect(dtf0nb, &QPushButton::pressed, [=]() {
+		// delay too fast
+		QTimer::singleShot(100, [=]() {
+			this->computeDvbns();
+
+			dtf0ns->setFocus();
+		});
+	});
+
+	dtb10->addWidget(dtf0ns);
+	dtb10->addWidget(dtf0nb);
 
 	QLineEdit* dtf0on = new QLineEdit;
 	dtf0on->setProperty("field", "onid");
@@ -826,6 +849,101 @@ void editTransponder::typeComboChanged(int index)
 
 	if (this->state.edit)
 		retrieve(txid);
+}
+
+void editTransponder::computeDvbns()
+{
+	debug("computeDvbns");
+
+	auto* dbih = this->data->dbih;
+
+	int yx, dvbns, tsid, onid, pos, freq;
+	yx = 0, dvbns = 0, tsid = 0, onid = 0, pos = 0, freq = 0;
+
+	for (auto & item : fields)
+	{
+		string key = item->property("field").toString().toStdString();
+		int val = -1;
+
+		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
+		{
+			if (key == "pos")
+				val = dbih->value_transponder_position(field->text().toStdString());
+			else if (key == "dvbns")
+				val = dbih->value_transponder_dvbns(field->text().toStdString());
+			else
+				val = field->text().isEmpty() ? -1 : field->text().toInt();
+		}
+		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
+		{
+			val = field->currentData().toInt();
+		}
+
+		if (key == "ytype")
+			yx = val;
+		else if (key == "tsid")
+			tsid = val;
+		else if (key == "dvbns")
+			dvbns = val;
+		else if (key == "onid")
+			onid = val;
+
+		if (this->state.yx == e2db::YTYPE::satellite)
+		{
+			if (key == "pos")
+				pos = val;
+			else if (key == "s_freq")
+				freq = val;
+		}
+		else if (this->state.yx == e2db::YTYPE::terrestrial)
+		{
+			if (key == "pos")
+				pos = 0;
+			else if (key == "t_freq")
+				freq = val;
+		}
+		else if (this->state.yx == e2db::YTYPE::cable)
+		{
+			if (key == "pos")
+				pos = 0;
+			else if (key == "c_freq")
+				freq = val;
+		}
+		else if (this->state.yx == e2db::YTYPE::atsc)
+		{
+			if (key == "pos")
+				pos = val;
+			else if (key == "a_freq")
+				freq = val;
+		}
+	}
+
+	e2db::YTYPE ytype = static_cast<e2db::YTYPE>(yx);
+	int n_dvbns = dbih->value_transponder_dvbns(ytype, tsid, onid, pos, freq);
+
+	debug("computeDvbns", "current dvbns", dbih->value_transponder_dvbns(dvbns));
+	debug("computeDvbns", "calc dvbns", dbih->value_transponder_dvbns(n_dvbns));
+
+	if (dvbns == n_dvbns)
+		return;
+
+	for (auto & item : fields)
+	{
+		string key = item->property("field").toString().toStdString();
+		int val = -1;
+
+		if (key == "dvbns")
+		{
+			val = n_dvbns;
+
+			if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
+			{
+				field->setText(QString::fromStdString(dbih->value_transponder_dvbns(val)));
+			}
+
+			break;
+		}
+	}
 }
 
 void editTransponder::store()

@@ -61,6 +61,7 @@ class editTransponder : public dialAbstract
 		void thirdCableLayout();
 		void thirdAtscLayout();
 		void typeComboChanged(int index);
+		void computeDvbns();
 		void retrieve();
 		void retrieve(string txid);
 
