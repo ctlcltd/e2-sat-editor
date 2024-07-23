@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 1.5.0
+ * @version 1.6.0
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -68,7 +68,7 @@ void checkUpdate::check()
 {
 	debug("check");
 
-	string relver = "v1.5.0";
+	string relver = "v1.6.0";
 	string current_url = "https://github.com/ctlcltd/e2-sat-editor/releases/tag/";
 	current_url.append(relver);
 
