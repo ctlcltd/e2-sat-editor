@@ -18,6 +18,8 @@ All notable changes to this project will be documented in this file.
 - Fix end line from CRLF to LF on write \[Windows\]
 - Added button to calculate DVBNS transponder
 - Improved merge
+- Fix tree highlight color theme bugs \[Windows\]
+- Updated translations
 
 
 ## [v1.5.0]
