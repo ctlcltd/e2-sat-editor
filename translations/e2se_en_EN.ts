@@ -220,14 +220,6 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Import each group name in Userbouquets</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import all entries in one Userbouquet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Discard Reference ID if set</source>
         <translation type="unfinished"></translation>
     </message>
@@ -266,6 +258,22 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Select channel logos folder</source>
         <comment>file-dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export each group in separate files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1047,22 +1055,26 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>pls code</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">pls code</translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">pls mode</translation>
     </message>
     <message>
         <source>is id</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">is id</translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">plp id</translation>
     </message>
     <message>
         <source>system</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>calc</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1251,23 +1263,23 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>pls</source>
-        <translation type="unfinished"></translation>
+        <translation>pls</translation>
     </message>
     <message>
         <source>pls code</source>
-        <translation type="unfinished"></translation>
+        <translation>pls code</translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation type="unfinished"></translation>
+        <translation>pls mode</translation>
     </message>
     <message>
         <source>is id</source>
-        <translation type="unfinished"></translation>
+        <translation>is id</translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation type="unfinished"></translation>
+        <translation>plp id</translation>
     </message>
 </context>
 <context>
@@ -1316,6 +1328,19 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Parameters</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Entry flag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>custom</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

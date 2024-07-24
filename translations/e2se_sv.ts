@@ -222,14 +222,6 @@ Vänta några minuter och försök igen.</translation>
         <translation>Kanalgrupps alternativ</translation>
     </message>
     <message>
-        <source>Import each group name in Userbouquets</source>
-        <translation>Importera varje gruppnamn i userbouquets</translation>
-    </message>
-    <message>
-        <source>Import all entries in one Userbouquet</source>
-        <translation>Importera allt i en userbouquet</translation>
-    </message>
-    <message>
         <source>Discard Reference ID if set</source>
         <translation>Släng Reference ID om det är inställt</translation>
     </message>
@@ -269,6 +261,22 @@ Vänta några minuter och försök igen.</translation>
         <source>Select channel logos folder</source>
         <comment>file-dialog</comment>
         <translation>Välj mappen för kanal logo</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>Importera i separata userbouquets</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>Importera allt i en userbouquet</translation>
+    </message>
+    <message>
+        <source>Export each group in separate files</source>
+        <translation>Exportera i separata filer</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>Exportera allt i en fil</translation>
     </message>
 </context>
 <context>
@@ -611,11 +619,11 @@ Vänta några minuter och försök igen.</translation>
     <message>
         <source>Add Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till Favorit</translation>
     </message>
     <message>
         <source>a valid URL is required for stream type</source>
-        <translation type="unfinished"></translation>
+        <translation>kräver en giltig URL för typen stream</translation>
     </message>
 </context>
 <context>
@@ -885,27 +893,27 @@ Vänta några minuter och försök igen.</translation>
     <message>
         <source>Current: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Aktuell: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</translation>
     </message>
     <message>
         <source>Collision: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kollision: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</translation>
     </message>
     <message>
         <source>Service collision warning</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tjänst i konflikt</translation>
     </message>
     <message>
         <source>The service collides with an existing service.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tjänsten krockar med en befintlig tjänst.</translation>
     </message>
     <message>
         <source>This may produce unexpected results.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Detta kan ge oväntade resultat.</translation>
     </message>
 </context>
 <context>
@@ -1046,31 +1054,35 @@ Vänta några minuter och försök igen.</translation>
     </message>
     <message>
         <source>flags</source>
-        <translation type="unfinished"></translation>
+        <translation>flags</translation>
     </message>
     <message>
         <source>pls / mis id</source>
-        <translation type="unfinished"></translation>
+        <translation>pls / mis id</translation>
     </message>
     <message>
         <source>pls code</source>
-        <translation type="unfinished"></translation>
+        <translation>pls code</translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation type="unfinished"></translation>
+        <translation>pls mode</translation>
     </message>
     <message>
         <source>is id</source>
-        <translation type="unfinished"></translation>
+        <translation>is id</translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation type="unfinished"></translation>
+        <translation>plp id</translation>
     </message>
     <message>
         <source>system</source>
-        <translation type="unfinished"></translation>
+        <translation>system</translation>
+    </message>
+    <message>
+        <source>calc</source>
+        <translation>beräkn</translation>
     </message>
 </context>
 <context>
@@ -1233,24 +1245,8 @@ Vänta några minuter och försök igen.</translation>
         <translation>Hierarki</translation>
     </message>
     <message>
-        <source>isid</source>
-        <translation type="vanished">isid</translation>
-    </message>
-    <message>
         <source>mts</source>
         <translation>mts</translation>
-    </message>
-    <message>
-        <source>plsmode</source>
-        <translation type="vanished">plsmode</translation>
-    </message>
-    <message>
-        <source>plscode</source>
-        <translation type="vanished">plscode</translation>
-    </message>
-    <message>
-        <source>plsn</source>
-        <translation type="vanished">plsn</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1274,23 +1270,23 @@ Vänta några minuter och försök igen.</translation>
     </message>
     <message>
         <source>pls</source>
-        <translation type="unfinished"></translation>
+        <translation>pls</translation>
     </message>
     <message>
         <source>pls code</source>
-        <translation type="unfinished"></translation>
+        <translation>pls code</translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation type="unfinished"></translation>
+        <translation>pls mode</translation>
     </message>
     <message>
         <source>is id</source>
-        <translation type="unfinished"></translation>
+        <translation>is id</translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation type="unfinished"></translation>
+        <translation>plp id</translation>
     </message>
 </context>
 <context>
@@ -1340,6 +1336,19 @@ Vänta några minuter och försök igen.</translation>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Userboquet &quot;%1&quot; finns inte.</translation>
+    </message>
+    <message>
+        <source>Parameters</source>
+        <comment>dialog</comment>
+        <translation>Parametrar</translation>
+    </message>
+    <message>
+        <source>Entry flag</source>
+        <translation>Entry flag</translation>
+    </message>
+    <message>
+        <source>custom</source>
+        <translation>anpassat</translation>
     </message>
 </context>
 <context>
@@ -1899,35 +1908,35 @@ Vänta några minuter och försök igen.</translation>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.4 [Enigma 2]</translation>
+        <translation>Lamedb 2.4 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.5 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.5 [Enigma 2]</translation>
+        <translation>Lamedb 2.5 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.3 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.3 [Enigma 1]</translation>
+        <translation>Lamedb 2.3 [Enigma 1]</translation>
     </message>
     <message>
         <source>Lamedb 2.2 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.2 [Enigma 1]</translation>
+        <translation>Lamedb 2.2 [Enigma 1]</translation>
     </message>
     <message>
         <source>Zapit api-v4 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v4 [Neutrino]</translation>
+        <translation>Zapit api-v4 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v3 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v3 [Neutrino]</translation>
+        <translation>Zapit api-v3 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v2 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v2 [Neutrino]</translation>
+        <translation>Zapit api-v2 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+        <translation>Zapit api-v1 [Neutrino]</translation>
     </message>
     <message>
         <source>Quick start</source>
@@ -2002,47 +2011,47 @@ Vänta några minuter och försök igen.</translation>
     <message>
         <source>File Information</source>
         <comment>status-bar</comment>
-        <translation type="unfinished">Fil information</translation>
+        <translation>Fil information</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished">Redigera Bouquet</translation>
+        <translation>Redigera Bouquet</translation>
     </message>
     <message>
         <source>Edit Position</source>
         <comment>menu</comment>
-        <translation type="unfinished">Redigera Position</translation>
+        <translation>Redigera Position</translation>
     </message>
     <message>
         <source>Edit Settings</source>
         <comment>menu</comment>
-        <translation type="unfinished">Ändra Inställningar</translation>
+        <translation>Ändra Inställningar</translation>
     </message>
     <message>
         <source>Edit Transponder</source>
         <comment>menu</comment>
-        <translation type="unfinished">Redigera Transponder</translation>
+        <translation>Redigera Transponder</translation>
     </message>
     <message>
         <source>Edit Service</source>
         <comment>menu</comment>
-        <translation type="unfinished">Redigera Tjänst</translation>
+        <translation>Redigera Tjänst</translation>
     </message>
     <message>
         <source>Edit Favourite</source>
         <comment>menu</comment>
-        <translation type="unfinished">Redigera Favorit</translation>
+        <translation>Redigera Favorit</translation>
     </message>
     <message>
         <source>Edit Marker</source>
         <comment>menu</comment>
-        <translation type="unfinished">Redigera Marker</translation>
+        <translation>Redigera Marker</translation>
     </message>
     <message>
         <source>Change picon</source>
         <comment>menu</comment>
-        <translation type="unfinished">Byt picon</translation>
+        <translation>Byt picon</translation>
     </message>
 </context>
 <context>
@@ -2756,7 +2765,7 @@ Vänta några minuter och försök igen.</translation>
     </message>
     <message>
         <source>Reference ID</source>
-        <translation type="unfinished">Reference ID</translation>
+        <translation>Reference ID</translation>
     </message>
 </context>
 <context>
@@ -3143,7 +3152,7 @@ Vänta några minuter och försök igen.</translation>
     <message>
         <source>Malformed or unknown XML file format.</source>
         <comment>error</comment>
-        <translation type="unfinished">Felformat eller okänt XML filformat.</translation>
+        <translation>Felformat eller okänt XML filformat.</translation>
     </message>
 </context>
 <context>

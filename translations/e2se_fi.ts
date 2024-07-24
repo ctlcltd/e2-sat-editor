@@ -229,14 +229,6 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <translation>Kanavaryhmän asetukset</translation>
     </message>
     <message>
-        <source>Import each group name in Userbouquets</source>
-        <translation>Tuo kunkin ryhmän nimi userbouquets</translation>
-    </message>
-    <message>
-        <source>Import all entries in one Userbouquet</source>
-        <translation>Tuo kaikki yhdessä userbouquet</translation>
-    </message>
-    <message>
         <source>Discard Reference ID if set</source>
         <translation>Hylkää Reference ID, jos se on asetettu</translation>
     </message>
@@ -276,6 +268,22 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <source>Select channel logos folder</source>
         <comment>file-dialog</comment>
         <translation>Valitse kanavan logot kansio</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>Tuo erillisissä userbouquets</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>Tuo kaikki yhteen userbouquet</translation>
+    </message>
+    <message>
+        <source>Export each group in separate files</source>
+        <translation>Vie erillisissä tiedostoissa</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>Vie kaikki yhteen tiedostoon</translation>
     </message>
 </context>
 <context>
@@ -613,16 +621,16 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation></translation>
+        <translation>Kanavaviite &quot;%1&quot; ei ole olemassa.</translation>
     </message>
     <message>
         <source>Add Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Lisää Suosikki</translation>
     </message>
     <message>
         <source>a valid URL is required for stream type</source>
-        <translation type="unfinished"></translation>
+        <translation>vaatii kelvollisen URL osoitteen stream tyypille</translation>
     </message>
 </context>
 <context>
@@ -659,7 +667,7 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation>Kanavaviitettä &quot;%1&quot; ei ole olemassa.</translation>
+        <translation>Kanavaviite &quot;%1&quot; ei ole olemassa.</translation>
     </message>
     <message>
         <source>Channel reference mismatch &quot;%1&quot;.</source>
@@ -887,32 +895,32 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation></translation>
+        <translation>Kanavaviite &quot;%1&quot; ei ole olemassa.</translation>
     </message>
     <message>
         <source>Current: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nykyinen: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</translation>
     </message>
     <message>
         <source>Collision: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Törmäys: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</translation>
     </message>
     <message>
         <source>Service collision warning</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Palvelu ristiriidassa</translation>
     </message>
     <message>
         <source>The service collides with an existing service.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Palvelu törmää olemassa olevaan palveluun.</translation>
     </message>
     <message>
         <source>This may produce unexpected results.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tämä voi tuottaa odottamattomia tuloksia.</translation>
     </message>
 </context>
 <context>
@@ -1053,31 +1061,35 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
     </message>
     <message>
         <source>flags</source>
-        <translation type="unfinished"></translation>
+        <translation>flags</translation>
     </message>
     <message>
         <source>pls / mis id</source>
-        <translation type="unfinished"></translation>
+        <translation>pls / mis id</translation>
     </message>
     <message>
         <source>pls code</source>
-        <translation type="unfinished"></translation>
+        <translation>pls code</translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation type="unfinished"></translation>
+        <translation>pls mode</translation>
     </message>
     <message>
         <source>is id</source>
-        <translation type="unfinished"></translation>
+        <translation>is id</translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation type="unfinished"></translation>
+        <translation>plp id</translation>
     </message>
     <message>
         <source>system</source>
-        <translation type="unfinished"></translation>
+        <translation>system</translation>
+    </message>
+    <message>
+        <source>calc</source>
+        <translation>lask</translation>
     </message>
 </context>
 <context>
@@ -1240,24 +1252,8 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <translation>Hierarkia</translation>
     </message>
     <message>
-        <source>isid</source>
-        <translation type="vanished">Roll Offset</translation>
-    </message>
-    <message>
         <source>mts</source>
-        <translation>Pilot</translation>
-    </message>
-    <message>
-        <source>plsmode</source>
-        <translation type="vanished">Roll Offset</translation>
-    </message>
-    <message>
-        <source>plscode</source>
-        <translation type="vanished">Pilot</translation>
-    </message>
-    <message>
-        <source>plsn</source>
-        <translation type="vanished">Roll Offset</translation>
+        <translation>mts</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1281,23 +1277,23 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
     </message>
     <message>
         <source>pls</source>
-        <translation type="unfinished"></translation>
+        <translation>pls</translation>
     </message>
     <message>
         <source>pls code</source>
-        <translation type="unfinished"></translation>
+        <translation>pls code</translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation type="unfinished"></translation>
+        <translation>pls mode</translation>
     </message>
     <message>
         <source>is id</source>
-        <translation type="unfinished"></translation>
+        <translation>is id</translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation type="unfinished"></translation>
+        <translation>plp id</translation>
     </message>
 </context>
 <context>
@@ -1347,6 +1343,19 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Userbouquet &quot;%1&quot; ei ole olemassa.</translation>
+    </message>
+    <message>
+        <source>Parameters</source>
+        <comment>dialog</comment>
+        <translation>Parametrit</translation>
+    </message>
+    <message>
+        <source>Entry flag</source>
+        <translation>Entry flag</translation>
+    </message>
+    <message>
+        <source>custom</source>
+        <translation>räätälöityjä</translation>
     </message>
 </context>
 <context>
@@ -1906,35 +1915,35 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.4 [Enigma 2]</translation>
+        <translation>Lamedb 2.4 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.5 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.5 [Enigma 2]</translation>
+        <translation>Lamedb 2.5 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.3 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.3 [Enigma 1]</translation>
+        <translation>Lamedb 2.3 [Enigma 1]</translation>
     </message>
     <message>
         <source>Lamedb 2.2 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.2 [Enigma 1]</translation>
+        <translation>Lamedb 2.2 [Enigma 1]</translation>
     </message>
     <message>
         <source>Zapit api-v4 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v4 [Neutrino]</translation>
+        <translation>Zapit api-v4 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v3 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v3 [Neutrino]</translation>
+        <translation>Zapit api-v3 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v2 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v2 [Neutrino]</translation>
+        <translation>Zapit api-v2 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+        <translation>Zapit api-v1 [Neutrino]</translation>
     </message>
     <message>
         <source>Quick start</source>
@@ -2009,47 +2018,47 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
     <message>
         <source>File Information</source>
         <comment>status-bar</comment>
-        <translation type="unfinished">Tiedoston tiedot</translation>
+        <translation>Tiedoston tiedot</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished">Muokkaa Bouquetia</translation>
+        <translation>Muokkaa Bouquetia</translation>
     </message>
     <message>
         <source>Edit Position</source>
         <comment>menu</comment>
-        <translation type="unfinished">Muokkaa sijaintia</translation>
+        <translation>Muokkaa sijaintia</translation>
     </message>
     <message>
         <source>Edit Settings</source>
         <comment>menu</comment>
-        <translation type="unfinished">Muokkaa asetuksia</translation>
+        <translation>Muokkaa asetuksia</translation>
     </message>
     <message>
         <source>Edit Transponder</source>
         <comment>menu</comment>
-        <translation type="unfinished">Muokkaa Transponderia</translation>
+        <translation>Muokkaa Transponderia</translation>
     </message>
     <message>
         <source>Edit Service</source>
         <comment>menu</comment>
-        <translation type="unfinished">Muokkaa Palvelua</translation>
+        <translation>Muokkaa Palvelua</translation>
     </message>
     <message>
         <source>Edit Favourite</source>
         <comment>menu</comment>
-        <translation type="unfinished">Muokkaa Suosikkia</translation>
+        <translation>Muokkaa Suosikkia</translation>
     </message>
     <message>
         <source>Edit Marker</source>
         <comment>menu</comment>
-        <translation type="unfinished">Muokkaa Marker</translation>
+        <translation>Muokkaa Marker</translation>
     </message>
     <message>
         <source>Change picon</source>
         <comment>menu</comment>
-        <translation type="unfinished">Vaihda picon</translation>
+        <translation>Vaihda picon</translation>
     </message>
 </context>
 <context>
@@ -2763,7 +2772,7 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
     </message>
     <message>
         <source>Reference ID</source>
-        <translation type="unfinished">Reference ID</translation>
+        <translation>Reference ID</translation>
     </message>
 </context>
 <context>
@@ -3150,7 +3159,7 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
     <message>
         <source>Malformed or unknown XML file format.</source>
         <comment>error</comment>
-        <translation type="unfinished">Väärin muotoiltu tai tuntematon XML-tiedostomuoto.</translation>
+        <translation>Väärin muotoiltu tai tuntematon XML-tiedostomuoto.</translation>
     </message>
 </context>
 <context>

@@ -118,14 +118,14 @@ void convertM3u::importLayout()
 	QButtonGroup* dtg1 = new QButtonGroup;
 	dtg1->setExclusive(true);
 
-	QCheckBox* dtf1s0 = new QCheckBox(tr("Import each group name in Userbouquets"));
+	QCheckBox* dtf1s0 = new QCheckBox(tr("Import each group in separate userbouquets"));
 	dtf1s0->setProperty("field", "singularFalse");
 	fields.emplace_back(dtf1s0);
 	dtf1s0->setChecked(true);
 	dtg1->addButton(dtf1s0);
 	dtf10->addRow(dtf1s0);
 
-	QCheckBox* dtf1s1 = new QCheckBox(tr("Import all entries in one Userbouquet"));
+	QCheckBox* dtf1s1 = new QCheckBox(tr("Import all entries in one userbouquet"));
 	dtf1s1->setProperty("field", "singularTrue");
 	fields.emplace_back(dtf1s1);
 	dtg1->addButton(dtf1s1);
@@ -287,14 +287,14 @@ void convertM3u::exportLayout()
 	QButtonGroup* dtg1 = new QButtonGroup;
 	dtg1->setExclusive(true);
 
-	QCheckBox* dtf1s0 = new QCheckBox(tr("Import each group name in Userbouquets"));
+	QCheckBox* dtf1s0 = new QCheckBox(tr("Export each group in separate files"));
 	dtf1s0->setProperty("field", "singularFalse");
 	fields.emplace_back(dtf1s0);
 	dtf1s0->setChecked(true);
 	dtg1->addButton(dtf1s0);
 	dtf10->addRow(dtf1s0);
 
-	QCheckBox* dtf1s1 = new QCheckBox(tr("Import all entries in one Userbouquet"));
+	QCheckBox* dtf1s1 = new QCheckBox(tr("Export all entries in one file"));
 	dtf1s1->setProperty("field", "singularTrue");
 	fields.emplace_back(dtf1s1);
 	dtg1->addButton(dtf1s1);

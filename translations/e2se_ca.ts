@@ -229,14 +229,6 @@ Espereu uns minuts i torneu ho a provar.</translation>
         <translation>Opcions grup canals</translation>
     </message>
     <message>
-        <source>Import each group name in Userbouquets</source>
-        <translation>Importa el nom de cada grup a userbouquets</translation>
-    </message>
-    <message>
-        <source>Import all entries in one Userbouquet</source>
-        <translation>Importa tot en un userbouquet</translation>
-    </message>
-    <message>
         <source>Discard Reference ID if set</source>
         <translation>Descarta Reference ID si està establert</translation>
     </message>
@@ -276,6 +268,22 @@ Espereu uns minuts i torneu ho a provar.</translation>
         <source>Select channel logos folder</source>
         <comment>file-dialog</comment>
         <translation>Seleccioneu la carpeta dels logo canal</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>Importar en userbouquets separats</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>Importa tot en un sol userbouquet</translation>
+    </message>
+    <message>
+        <source>Export each group in separate files</source>
+        <translation>Exporta en fitxers separats</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>Exporta tot en un sol fitxer</translation>
     </message>
 </context>
 <context>
@@ -618,11 +626,11 @@ Espereu uns minuts i torneu ho a provar.</translation>
     <message>
         <source>Add Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Afegeix Preferit</translation>
     </message>
     <message>
         <source>a valid URL is required for stream type</source>
-        <translation type="unfinished"></translation>
+        <translation>requereix un URL vàlid per al tipus stream</translation>
     </message>
 </context>
 <context>
@@ -892,27 +900,27 @@ Espereu uns minuts i torneu ho a provar.</translation>
     <message>
         <source>Current: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Actual: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</translation>
     </message>
     <message>
         <source>Collision: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Col·lisió: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</translation>
     </message>
     <message>
         <source>Service collision warning</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Col·lisió de servei</translation>
     </message>
     <message>
         <source>The service collides with an existing service.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>El servei xoca amb un servei existent.</translation>
     </message>
     <message>
         <source>This may produce unexpected results.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Això pot produir resultats inesperats.</translation>
     </message>
 </context>
 <context>
@@ -1053,31 +1061,35 @@ Espereu uns minuts i torneu ho a provar.</translation>
     </message>
     <message>
         <source>flags</source>
-        <translation type="unfinished"></translation>
+        <translation>flags</translation>
     </message>
     <message>
         <source>pls / mis id</source>
-        <translation type="unfinished"></translation>
+        <translation>pls / mis id</translation>
     </message>
     <message>
         <source>pls code</source>
-        <translation type="unfinished"></translation>
+        <translation>pls code</translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation type="unfinished"></translation>
+        <translation>pls mode</translation>
     </message>
     <message>
         <source>is id</source>
-        <translation type="unfinished"></translation>
+        <translation>is id</translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation type="unfinished"></translation>
+        <translation>plp id</translation>
     </message>
     <message>
         <source>system</source>
-        <translation type="unfinished"></translation>
+        <translation>system</translation>
+    </message>
+    <message>
+        <source>calc</source>
+        <translation>comptar</translation>
     </message>
 </context>
 <context>
@@ -1240,24 +1252,8 @@ Espereu uns minuts i torneu ho a provar.</translation>
         <translation>Jerarquia</translation>
     </message>
     <message>
-        <source>isid</source>
-        <translation type="vanished">isid</translation>
-    </message>
-    <message>
         <source>mts</source>
         <translation>mts</translation>
-    </message>
-    <message>
-        <source>plsmode</source>
-        <translation type="vanished">plsmode</translation>
-    </message>
-    <message>
-        <source>plscode</source>
-        <translation type="vanished">plscode</translation>
-    </message>
-    <message>
-        <source>plsn</source>
-        <translation type="vanished">plsn</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1281,23 +1277,23 @@ Espereu uns minuts i torneu ho a provar.</translation>
     </message>
     <message>
         <source>pls</source>
-        <translation type="unfinished"></translation>
+        <translation>pls</translation>
     </message>
     <message>
         <source>pls code</source>
-        <translation type="unfinished"></translation>
+        <translation>pls code</translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation type="unfinished"></translation>
+        <translation>pls mode</translation>
     </message>
     <message>
         <source>is id</source>
-        <translation type="unfinished"></translation>
+        <translation>is id</translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation type="unfinished"></translation>
+        <translation>plp id</translation>
     </message>
 </context>
 <context>
@@ -1347,6 +1343,19 @@ Espereu uns minuts i torneu ho a provar.</translation>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>El userbouquet &quot;%1&quot; no existeix.</translation>
+    </message>
+    <message>
+        <source>Parameters</source>
+        <comment>dialog</comment>
+        <translation>Paràmetres</translation>
+    </message>
+    <message>
+        <source>Entry flag</source>
+        <translation>Entry flag</translation>
+    </message>
+    <message>
+        <source>custom</source>
+        <translation>personalitzat</translation>
     </message>
 </context>
 <context>
@@ -1906,35 +1915,35 @@ Espereu uns minuts i torneu ho a provar.</translation>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.4 [Enigma 2]</translation>
+        <translation>Lamedb 2.4 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.5 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.5 [Enigma 2]</translation>
+        <translation>Lamedb 2.5 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.3 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.3 [Enigma 1]</translation>
+        <translation>Lamedb 2.3 [Enigma 1]</translation>
     </message>
     <message>
         <source>Lamedb 2.2 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.2 [Enigma 1]</translation>
+        <translation>Lamedb 2.2 [Enigma 1]</translation>
     </message>
     <message>
         <source>Zapit api-v4 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v4 [Neutrino]</translation>
+        <translation>Zapit api-v4 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v3 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v3 [Neutrino]</translation>
+        <translation>Zapit api-v3 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v2 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v2 [Neutrino]</translation>
+        <translation>Zapit api-v2 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+        <translation>Zapit api-v1 [Neutrino]</translation>
     </message>
     <message>
         <source>Quick start</source>
@@ -2009,47 +2018,47 @@ Espereu uns minuts i torneu ho a provar.</translation>
     <message>
         <source>File Information</source>
         <comment>status-bar</comment>
-        <translation type="unfinished">Informació fitxer</translation>
+        <translation>Informació fitxer</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished">Edita Bouquet</translation>
+        <translation>Edita Bouquet</translation>
     </message>
     <message>
         <source>Edit Position</source>
         <comment>menu</comment>
-        <translation type="unfinished">Edita Posició</translation>
+        <translation>Edita Posició</translation>
     </message>
     <message>
         <source>Edit Settings</source>
         <comment>menu</comment>
-        <translation type="unfinished">Edita Configuració</translation>
+        <translation>Edita Configuració</translation>
     </message>
     <message>
         <source>Edit Transponder</source>
         <comment>menu</comment>
-        <translation type="unfinished">Edita Transponder</translation>
+        <translation>Edita Transponder</translation>
     </message>
     <message>
         <source>Edit Service</source>
         <comment>menu</comment>
-        <translation type="unfinished">Edita Servei</translation>
+        <translation>Edita Servei</translation>
     </message>
     <message>
         <source>Edit Favourite</source>
         <comment>menu</comment>
-        <translation type="unfinished">Edita Preferit</translation>
+        <translation>Edita Preferit</translation>
     </message>
     <message>
         <source>Edit Marker</source>
         <comment>menu</comment>
-        <translation type="unfinished">Edita Marker</translation>
+        <translation>Edita Marker</translation>
     </message>
     <message>
         <source>Change picon</source>
         <comment>menu</comment>
-        <translation type="unfinished">Canvia picon</translation>
+        <translation>Canvia picon</translation>
     </message>
 </context>
 <context>
@@ -2763,7 +2772,7 @@ Espereu uns minuts i torneu ho a provar.</translation>
     </message>
     <message>
         <source>Reference ID</source>
-        <translation type="unfinished">Reference ID</translation>
+        <translation>Reference ID</translation>
     </message>
 </context>
 <context>
@@ -3150,7 +3159,7 @@ Espereu uns minuts i torneu ho a provar.</translation>
     <message>
         <source>Malformed or unknown XML file format.</source>
         <comment>error</comment>
-        <translation type="unfinished">Format de fitxer XML mal format o desconegut.</translation>
+        <translation>Format de fitxer XML mal format o desconegut.</translation>
     </message>
 </context>
 <context>

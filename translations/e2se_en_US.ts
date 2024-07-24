@@ -220,14 +220,6 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Import each group name in Userbouquets</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import all entries in one Userbouquet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Discard Reference ID if set</source>
         <translation type="unfinished"></translation>
     </message>
@@ -266,6 +258,22 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Select channel logos folder</source>
         <comment>file-dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export each group in separate files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -537,11 +545,6 @@ Please wait few minutes and try again.</source>
         <translation>Edit Favorite</translation>
     </message>
     <message>
-        <source>New Favourite</source>
-        <comment>dialog</comment>
-        <translation type="vanished">New Favorite</translation>
-    </message>
-    <message>
         <source>Reference</source>
         <comment>dialog</comment>
         <translation type="unfinished"></translation>
@@ -609,7 +612,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Add Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Add Favorite</translation>
     </message>
     <message>
         <source>a valid URL is required for stream type</source>
@@ -1070,6 +1073,10 @@ Please wait few minutes and try again.</source>
         <source>system</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>calc</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>editTunersets</name>
@@ -1321,6 +1328,19 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Parameters</source>
+        <comment>dialog</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Entry flag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>custom</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2014,7 +2034,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Edit Favourite</source>
         <comment>menu</comment>
-        <translation type="unfinished">Edit Favorite</translation>
+        <translation>Edit Favorite</translation>
     </message>
     <message>
         <source>Edit Marker</source>

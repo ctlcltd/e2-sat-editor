@@ -227,14 +227,6 @@ Please wait few minutes and try again.</source>
         <translation>채널 그룹 옵션</translation>
     </message>
     <message>
-        <source>Import each group name in Userbouquets</source>
-        <translation>사용자-채널-그룹에서 각 그룹 이름 가져오기</translation>
-    </message>
-    <message>
-        <source>Import all entries in one Userbouquet</source>
-        <translation>하나의 사용자-채널-그룹에 있는 모든 항목 가져오기</translation>
-    </message>
-    <message>
         <source>Discard Reference ID if set</source>
         <translation>참조 ID가 설정된 경우 폐기</translation>
     </message>
@@ -274,6 +266,22 @@ Please wait few minutes and try again.</source>
         <source>Select channel logos folder</source>
         <comment>file-dialog</comment>
         <translation>채널 로고 폴더 선택</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>각 그룹을 별도의 사용자 채널 그룹으로 가져옵니다.</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>하나의 사용자 채널 그룹에 있는 모든 항목을 가져옵니다.</translation>
+    </message>
+    <message>
+        <source>Export each group in separate files</source>
+        <translation>각 그룹을 별도의 파일에 내보냅니다.</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>모든 항목을 하나의 파일에 내보내기</translation>
     </message>
 </context>
 <context>
@@ -616,11 +624,11 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Add Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>즐겨찾기 추가</translation>
     </message>
     <message>
         <source>a valid URL is required for stream type</source>
-        <translation type="unfinished"></translation>
+        <translation>스트림 유형에 유효한 URL이 필요합니다</translation>
     </message>
 </context>
 <context>
@@ -890,27 +898,27 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Current: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>현재: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</translation>
     </message>
     <message>
         <source>Collision: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>충돌: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</translation>
     </message>
     <message>
         <source>Service collision warning</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>서비스 충돌 경고</translation>
     </message>
     <message>
         <source>The service collides with an existing service.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>서비스가 기존 서비스와 충돌합니다.</translation>
     </message>
     <message>
         <source>This may produce unexpected results.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>예상치 못한 결과가 발생할 수도 있습니다.</translation>
     </message>
 </context>
 <context>
@@ -1051,31 +1059,35 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>flags</source>
-        <translation type="unfinished"></translation>
+        <translation>flags</translation>
     </message>
     <message>
         <source>pls / mis id</source>
-        <translation type="unfinished"></translation>
+        <translation>pls / mis id</translation>
     </message>
     <message>
         <source>pls code</source>
-        <translation type="unfinished"></translation>
+        <translation>pls code</translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation type="unfinished"></translation>
+        <translation>pls mode</translation>
     </message>
     <message>
         <source>is id</source>
-        <translation type="unfinished"></translation>
+        <translation>is id</translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation type="unfinished"></translation>
+        <translation>plp id</translation>
     </message>
     <message>
         <source>system</source>
-        <translation type="unfinished"></translation>
+        <translation>system</translation>
+    </message>
+    <message>
+        <source>calc</source>
+        <translation>계산</translation>
     </message>
 </context>
 <context>
@@ -1238,24 +1250,8 @@ Please wait few minutes and try again.</source>
         <translation>계층</translation>
     </message>
     <message>
-        <source>isid</source>
-        <translation type="vanished">isid</translation>
-    </message>
-    <message>
         <source>mts</source>
         <translation>mts</translation>
-    </message>
-    <message>
-        <source>plsmode</source>
-        <translation type="vanished">plsmode</translation>
-    </message>
-    <message>
-        <source>plscode</source>
-        <translation type="vanished">plscode</translation>
-    </message>
-    <message>
-        <source>plsn</source>
-        <translation type="vanished">plsn</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1279,23 +1275,23 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>pls</source>
-        <translation type="unfinished"></translation>
+        <translation>pls</translation>
     </message>
     <message>
         <source>pls code</source>
-        <translation type="unfinished"></translation>
+        <translation>pls code</translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation type="unfinished"></translation>
+        <translation>pls mode</translation>
     </message>
     <message>
         <source>is id</source>
-        <translation type="unfinished"></translation>
+        <translation>is id</translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation type="unfinished"></translation>
+        <translation>plp id</translation>
     </message>
 </context>
 <context>
@@ -1345,6 +1341,19 @@ Please wait few minutes and try again.</source>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>사용자 채널 그룹 &quot;%1&quot;이(가) 없습니다.</translation>
+    </message>
+    <message>
+        <source>Parameters</source>
+        <comment>dialog</comment>
+        <translation>매개변수</translation>
+    </message>
+    <message>
+        <source>Entry flag</source>
+        <translation>항목 비트 플래그</translation>
+    </message>
+    <message>
+        <source>custom</source>
+        <translation>맞춤형</translation>
     </message>
 </context>
 <context>
@@ -1904,35 +1913,35 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.4 [Enigma 2]</translation>
+        <translation>Lamedb 2.4 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.5 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.5 [Enigma 2]</translation>
+        <translation>Lamedb 2.5 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.3 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.3 [Enigma 1]</translation>
+        <translation>Lamedb 2.3 [Enigma 1]</translation>
     </message>
     <message>
         <source>Lamedb 2.2 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.2 [Enigma 1]</translation>
+        <translation>Lamedb 2.2 [Enigma 1]</translation>
     </message>
     <message>
         <source>Zapit api-v4 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v4 [Neutrino]</translation>
+        <translation>Zapit api-v4 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v3 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v3 [Neutrino]</translation>
+        <translation>Zapit api-v3 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v2 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v2 [Neutrino]</translation>
+        <translation>Zapit api-v2 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+        <translation>Zapit api-v1 [Neutrino]</translation>
     </message>
     <message>
         <source>Quick start</source>
@@ -2007,47 +2016,47 @@ Please wait few minutes and try again.</source>
     <message>
         <source>File Information</source>
         <comment>status-bar</comment>
-        <translation type="unfinished">파일 정보</translation>
+        <translation>파일 정보</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished">채널 그룹 편집</translation>
+        <translation>채널 그룹 편집</translation>
     </message>
     <message>
         <source>Edit Position</source>
         <comment>menu</comment>
-        <translation type="unfinished">응답기 위치 편집</translation>
+        <translation>응답기 위치 편집</translation>
     </message>
     <message>
         <source>Edit Settings</source>
         <comment>menu</comment>
-        <translation type="unfinished">설정 수정</translation>
+        <translation>설정 수정</translation>
     </message>
     <message>
         <source>Edit Transponder</source>
         <comment>menu</comment>
-        <translation type="unfinished">응답기 편집</translation>
+        <translation>응답기 편집</translation>
     </message>
     <message>
         <source>Edit Service</source>
         <comment>menu</comment>
-        <translation type="unfinished">서비스 편집</translation>
+        <translation>서비스 편집</translation>
     </message>
     <message>
         <source>Edit Favourite</source>
         <comment>menu</comment>
-        <translation type="unfinished">즐겨찾기 편집</translation>
+        <translation>즐겨찾기 편집</translation>
     </message>
     <message>
         <source>Edit Marker</source>
         <comment>menu</comment>
-        <translation type="unfinished">마커 편집</translation>
+        <translation>마커 편집</translation>
     </message>
     <message>
         <source>Change picon</source>
         <comment>menu</comment>
-        <translation type="unfinished">picon 변경</translation>
+        <translation>picon 변경</translation>
     </message>
 </context>
 <context>
@@ -2761,7 +2770,7 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Reference ID</source>
-        <translation type="unfinished">참조 ID</translation>
+        <translation>참조 ID</translation>
     </message>
 </context>
 <context>
@@ -3147,7 +3156,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Malformed or unknown XML file format.</source>
         <comment>error</comment>
-        <translation type="unfinished">형식이 잘못되었거나 알 수 없는 XML 파일 형식입니다.</translation>
+        <translation>형식이 잘못되었거나 알 수 없는 XML 파일 형식입니다.</translation>
     </message>
 </context>
 <context>

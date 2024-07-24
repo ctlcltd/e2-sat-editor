@@ -231,14 +231,6 @@ Please wait few minutes and try again.</source>
         <translation>Параметри групи каналів</translation>
     </message>
     <message>
-        <source>Import each group name in Userbouquets</source>
-        <translation>Імпортуйте кожну назву групи в групу каналів користувачів</translation>
-    </message>
-    <message>
-        <source>Import all entries in one Userbouquet</source>
-        <translation>Імпортуйте всі записи в одну групу каналів користувачів</translation>
-    </message>
-    <message>
         <source>Discard Reference ID if set</source>
         <translation>Скасувати ідентифікатор посилання, якщо встановлено</translation>
     </message>
@@ -278,6 +270,22 @@ Please wait few minutes and try again.</source>
         <source>Select channel logos folder</source>
         <comment>file-dialog</comment>
         <translation>Виберіть папку з логотипами каналів</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>Імпортуйте кожну групу в окремі групи каналів користувачів</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>Імпортуйте всі записи в одну групу каналів користувачів</translation>
+    </message>
+    <message>
+        <source>Export each group in separate files</source>
+        <translation>Експортуйте кожну групу в окремі файли</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>Експортуйте всі записи в один файл</translation>
     </message>
 </context>
 <context>
@@ -620,11 +628,11 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Add Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Додати в обране</translation>
     </message>
     <message>
         <source>a valid URL is required for stream type</source>
-        <translation type="unfinished"></translation>
+        <translation>необхідна дійсна URL адреса для типу потоку</translation>
     </message>
 </context>
 <context>
@@ -894,27 +902,27 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Current: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Поточний: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</translation>
     </message>
     <message>
         <source>Collision: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Колізія: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</translation>
     </message>
     <message>
         <source>Service collision warning</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Попередження про конфлікт служби</translation>
     </message>
     <message>
         <source>The service collides with an existing service.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Служба конфліктує з існуючою службою.</translation>
     </message>
     <message>
         <source>This may produce unexpected results.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Це може призвести до неочікуваних результатів.</translation>
     </message>
 </context>
 <context>
@@ -1055,31 +1063,35 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>flags</source>
-        <translation type="unfinished"></translation>
+        <translation>flags</translation>
     </message>
     <message>
         <source>pls / mis id</source>
-        <translation type="unfinished"></translation>
+        <translation>pls / mis id</translation>
     </message>
     <message>
         <source>pls code</source>
-        <translation type="unfinished"></translation>
+        <translation>pls code</translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation type="unfinished"></translation>
+        <translation>pls mode</translation>
     </message>
     <message>
         <source>is id</source>
-        <translation type="unfinished"></translation>
+        <translation>is id</translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation type="unfinished"></translation>
+        <translation>plp id</translation>
     </message>
     <message>
         <source>system</source>
-        <translation type="unfinished"></translation>
+        <translation>system</translation>
+    </message>
+    <message>
+        <source>calc</source>
+        <translation>розрах</translation>
     </message>
 </context>
 <context>
@@ -1242,24 +1254,8 @@ Please wait few minutes and try again.</source>
         <translation>Ієрархія</translation>
     </message>
     <message>
-        <source>isid</source>
-        <translation type="vanished">isid</translation>
-    </message>
-    <message>
         <source>mts</source>
         <translation>mts</translation>
-    </message>
-    <message>
-        <source>plsmode</source>
-        <translation type="vanished">plsmode</translation>
-    </message>
-    <message>
-        <source>plscode</source>
-        <translation type="vanished">plscode</translation>
-    </message>
-    <message>
-        <source>plsn</source>
-        <translation type="vanished">plsn</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1283,23 +1279,23 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>pls</source>
-        <translation type="unfinished"></translation>
+        <translation>pls</translation>
     </message>
     <message>
         <source>pls code</source>
-        <translation type="unfinished"></translation>
+        <translation>pls code</translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation type="unfinished"></translation>
+        <translation>pls mode</translation>
     </message>
     <message>
         <source>is id</source>
-        <translation type="unfinished"></translation>
+        <translation>is id</translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation type="unfinished"></translation>
+        <translation>plp id</translation>
     </message>
 </context>
 <context>
@@ -1349,6 +1345,19 @@ Please wait few minutes and try again.</source>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Група каналів користувачів &quot;%1&quot; не існує.</translation>
+    </message>
+    <message>
+        <source>Parameters</source>
+        <comment>dialog</comment>
+        <translation>Параметри</translation>
+    </message>
+    <message>
+        <source>Entry flag</source>
+        <translation>Вхідний бітовий прапор</translation>
+    </message>
+    <message>
+        <source>custom</source>
+        <translation>звичай</translation>
     </message>
 </context>
 <context>
@@ -1908,35 +1917,35 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.4 [Enigma 2]</translation>
+        <translation>Lamedb 2.4 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.5 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.5 [Enigma 2]</translation>
+        <translation>Lamedb 2.5 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.3 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.3 [Enigma 1]</translation>
+        <translation>Lamedb 2.3 [Enigma 1]</translation>
     </message>
     <message>
         <source>Lamedb 2.2 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.2 [Enigma 1]</translation>
+        <translation>Lamedb 2.2 [Enigma 1]</translation>
     </message>
     <message>
         <source>Zapit api-v4 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v4 [Neutrino]</translation>
+        <translation>Zapit api-v4 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v3 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v3 [Neutrino]</translation>
+        <translation>Zapit api-v3 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v2 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v2 [Neutrino]</translation>
+        <translation>Zapit api-v2 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+        <translation>Zapit api-v1 [Neutrino]</translation>
     </message>
     <message>
         <source>Quick start</source>
@@ -2011,47 +2020,47 @@ Please wait few minutes and try again.</source>
     <message>
         <source>File Information</source>
         <comment>status-bar</comment>
-        <translation type="unfinished">Інформація файл</translation>
+        <translation>Інформація файл</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished">Редагувати групу каналів</translation>
+        <translation>Редагувати групу каналів</translation>
     </message>
     <message>
         <source>Edit Position</source>
         <comment>menu</comment>
-        <translation type="unfinished">Редагувати положення</translation>
+        <translation>Редагувати положення</translation>
     </message>
     <message>
         <source>Edit Settings</source>
         <comment>menu</comment>
-        <translation type="unfinished">Редагувати налаштування</translation>
+        <translation>Редагувати налаштування</translation>
     </message>
     <message>
         <source>Edit Transponder</source>
         <comment>menu</comment>
-        <translation type="unfinished">Редагувати транспондер</translation>
+        <translation>Редагувати транспондер</translation>
     </message>
     <message>
         <source>Edit Service</source>
         <comment>menu</comment>
-        <translation type="unfinished">Редагувати службу</translation>
+        <translation>Редагувати службу</translation>
     </message>
     <message>
         <source>Edit Favourite</source>
         <comment>menu</comment>
-        <translation type="unfinished">Редагувати вибране</translation>
+        <translation>Редагувати вибране</translation>
     </message>
     <message>
         <source>Edit Marker</source>
         <comment>menu</comment>
-        <translation type="unfinished">Редагувати маркер</translation>
+        <translation>Редагувати маркер</translation>
     </message>
     <message>
         <source>Change picon</source>
         <comment>menu</comment>
-        <translation type="unfinished">Змінити picon</translation>
+        <translation>Змінити picon</translation>
     </message>
 </context>
 <context>
@@ -2765,7 +2774,7 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Reference ID</source>
-        <translation type="unfinished">Reference ID</translation>
+        <translation>Reference ID</translation>
     </message>
 </context>
 <context>
@@ -3153,7 +3162,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Malformed or unknown XML file format.</source>
         <comment>error</comment>
-        <translation type="unfinished">Неправильний або невідомий формат файлу XML.</translation>
+        <translation>Неправильний або невідомий формат файлу XML.</translation>
     </message>
 </context>
 <context>

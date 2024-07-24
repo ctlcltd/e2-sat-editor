@@ -226,14 +226,6 @@ Please wait few minutes and try again.</source>
         <translation>通道組選項</translation>
     </message>
     <message>
-        <source>Import each group name in Userbouquets</source>
-        <translation>匯入使用者通道群組中的每個群組名稱</translation>
-    </message>
-    <message>
-        <source>Import all entries in one Userbouquet</source>
-        <translation>匯入一個使用者通道群組中的所有條目</translation>
-    </message>
-    <message>
         <source>Discard Reference ID if set</source>
         <translation>如果設定則丟棄參考 ID</translation>
     </message>
@@ -273,6 +265,22 @@ Please wait few minutes and try again.</source>
         <source>Select channel logos folder</source>
         <comment>file-dialog</comment>
         <translation>選擇頻道徽標資料夾</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>將每個群組匯入單獨的使用者通道群組</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>匯入一個使用者通道群組中的所有條目</translation>
+    </message>
+    <message>
+        <source>Export each group in separate files</source>
+        <translation>將每個群組匯出到單獨的文件中</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>匯出一個文件中的所有條目</translation>
     </message>
 </context>
 <context>
@@ -615,11 +623,11 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Add Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>新增收藏夾</translation>
     </message>
     <message>
         <source>a valid URL is required for stream type</source>
-        <translation type="unfinished"></translation>
+        <translation>流類型需要有效的 URL</translation>
     </message>
 </context>
 <context>
@@ -889,27 +897,27 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Current: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>目前：&quot;%1&quot;（SID：%2 TSID：%3 ONID：%4 DVBNS：%5）</translation>
     </message>
     <message>
         <source>Collision: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>衝突：&quot;%1&quot;（SID：%2 TSID：%3 ONID：%4 DVBNS：%5）</translation>
     </message>
     <message>
         <source>Service collision warning</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>服務衝突警告</translation>
     </message>
     <message>
         <source>The service collides with an existing service.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>該服務與現有服務發生衝突。</translation>
     </message>
     <message>
         <source>This may produce unexpected results.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>這可能會產生意想不到的結果。</translation>
     </message>
 </context>
 <context>
@@ -1050,31 +1058,35 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>flags</source>
-        <translation type="unfinished"></translation>
+        <translation>flags</translation>
     </message>
     <message>
         <source>pls / mis id</source>
-        <translation type="unfinished"></translation>
+        <translation>pls / mis id</translation>
     </message>
     <message>
         <source>pls code</source>
-        <translation type="unfinished"></translation>
+        <translation>pls code</translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation type="unfinished"></translation>
+        <translation>pls mode</translation>
     </message>
     <message>
         <source>is id</source>
-        <translation type="unfinished"></translation>
+        <translation>is id</translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation type="unfinished"></translation>
+        <translation>plp id</translation>
     </message>
     <message>
         <source>system</source>
-        <translation type="unfinished"></translation>
+        <translation>system</translation>
+    </message>
+    <message>
+        <source>calc</source>
+        <translation>計算</translation>
     </message>
 </context>
 <context>
@@ -1237,24 +1249,8 @@ Please wait few minutes and try again.</source>
         <translation>等級制度</translation>
     </message>
     <message>
-        <source>isid</source>
-        <translation type="vanished">isid</translation>
-    </message>
-    <message>
         <source>mts</source>
         <translation>mts</translation>
-    </message>
-    <message>
-        <source>plsmode</source>
-        <translation type="vanished">plsmode</translation>
-    </message>
-    <message>
-        <source>plscode</source>
-        <translation type="vanished">plscode</translation>
-    </message>
-    <message>
-        <source>plsn</source>
-        <translation type="vanished">plsn</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1278,23 +1274,23 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>pls</source>
-        <translation type="unfinished"></translation>
+        <translation>pls</translation>
     </message>
     <message>
         <source>pls code</source>
-        <translation type="unfinished"></translation>
+        <translation>pls code</translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation type="unfinished"></translation>
+        <translation>pls mode</translation>
     </message>
     <message>
         <source>is id</source>
-        <translation type="unfinished"></translation>
+        <translation>is id</translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation type="unfinished"></translation>
+        <translation>plp id</translation>
     </message>
 </context>
 <context>
@@ -1344,6 +1340,19 @@ Please wait few minutes and try again.</source>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>用戶通道組 &quot;%1&quot; 不存在。</translation>
+    </message>
+    <message>
+        <source>Parameters</source>
+        <comment>dialog</comment>
+        <translation>參數</translation>
+    </message>
+    <message>
+        <source>Entry flag</source>
+        <translation>入口位標誌</translation>
+    </message>
+    <message>
+        <source>custom</source>
+        <translation>定制</translation>
     </message>
 </context>
 <context>
@@ -1903,35 +1912,35 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.4 [Enigma 2]</translation>
+        <translation>Lamedb 2.4 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.5 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.5 [Enigma 2]</translation>
+        <translation>Lamedb 2.5 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.3 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.3 [Enigma 1]</translation>
+        <translation>Lamedb 2.3 [Enigma 1]</translation>
     </message>
     <message>
         <source>Lamedb 2.2 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.2 [Enigma 1]</translation>
+        <translation>Lamedb 2.2 [Enigma 1]</translation>
     </message>
     <message>
         <source>Zapit api-v4 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v4 [Neutrino]</translation>
+        <translation>Zapit api-v4 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v3 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v3 [Neutrino]</translation>
+        <translation>Zapit api-v3 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v2 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v2 [Neutrino]</translation>
+        <translation>Zapit api-v2 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+        <translation>Zapit api-v1 [Neutrino]</translation>
     </message>
     <message>
         <source>Quick start</source>
@@ -2006,47 +2015,47 @@ Please wait few minutes and try again.</source>
     <message>
         <source>File Information</source>
         <comment>status-bar</comment>
-        <translation type="unfinished">文件訊息</translation>
+        <translation>文件訊息</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished">編輯頻道組</translation>
+        <translation>編輯頻道組</translation>
     </message>
     <message>
         <source>Edit Position</source>
         <comment>menu</comment>
-        <translation type="unfinished">編輯位置</translation>
+        <translation>編輯位置</translation>
     </message>
     <message>
         <source>Edit Settings</source>
         <comment>menu</comment>
-        <translation type="unfinished">編輯設置</translation>
+        <translation>編輯設置</translation>
     </message>
     <message>
         <source>Edit Transponder</source>
         <comment>menu</comment>
-        <translation type="unfinished">編輯應答器</translation>
+        <translation>編輯應答器</translation>
     </message>
     <message>
         <source>Edit Service</source>
         <comment>menu</comment>
-        <translation type="unfinished">編輯服務</translation>
+        <translation>編輯服務</translation>
     </message>
     <message>
         <source>Edit Favourite</source>
         <comment>menu</comment>
-        <translation type="unfinished">編輯收藏夾</translation>
+        <translation>編輯收藏夾</translation>
     </message>
     <message>
         <source>Edit Marker</source>
         <comment>menu</comment>
-        <translation type="unfinished">編輯標記</translation>
+        <translation>編輯標記</translation>
     </message>
     <message>
         <source>Change picon</source>
         <comment>menu</comment>
-        <translation type="unfinished">更改 picon</translation>
+        <translation>更改 picon</translation>
     </message>
 </context>
 <context>
@@ -2760,7 +2769,7 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Reference ID</source>
-        <translation type="unfinished">參考編號</translation>
+        <translation>參考編號</translation>
     </message>
 </context>
 <context>
@@ -3146,7 +3155,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Malformed or unknown XML file format.</source>
         <comment>error</comment>
-        <translation type="unfinished">XML 文件格式錯誤或未知。</translation>
+        <translation>XML 文件格式錯誤或未知。</translation>
     </message>
 </context>
 <context>

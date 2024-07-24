@@ -222,14 +222,6 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <translation>Kanal grubu seçenekleri</translation>
     </message>
     <message>
-        <source>Import each group name in Userbouquets</source>
-        <translation>Her grup adını userbouquets ne aktarın</translation>
-    </message>
-    <message>
-        <source>Import all entries in one Userbouquet</source>
-        <translation>Hepsi bir arada userbouquet içe aktar</translation>
-    </message>
-    <message>
         <source>Discard Reference ID if set</source>
         <translation>Ayarlandıysa Reference ID atın</translation>
     </message>
@@ -269,6 +261,22 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <source>Select channel logos folder</source>
         <comment>file-dialog</comment>
         <translation>Kanal logoları klasörünü seçin</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>Ayrı userbouquets aktar</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>Tümünü tek userbouquet dışa aktar</translation>
+    </message>
+    <message>
+        <source>Export each group in separate files</source>
+        <translation>Ayrı dosyalara aktar</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>Tümünü tek dosyada dışa aktar</translation>
     </message>
 </context>
 <context>
@@ -611,11 +619,11 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
     <message>
         <source>Add Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Favoriyi Ekle</translation>
     </message>
     <message>
         <source>a valid URL is required for stream type</source>
-        <translation type="unfinished"></translation>
+        <translation>stream türü için geçerli URL gerektirir</translation>
     </message>
 </context>
 <context>
@@ -885,27 +893,27 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
     <message>
         <source>Current: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mevcut: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</translation>
     </message>
     <message>
         <source>Collision: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Çarpışma: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</translation>
     </message>
     <message>
         <source>Service collision warning</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Çatışmada hizmet</translation>
     </message>
     <message>
         <source>The service collides with an existing service.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Hizmet mevcut bir hizmetle çakışıyor.</translation>
     </message>
     <message>
         <source>This may produce unexpected results.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bu durum beklenmedik sonuçlar doğurabilir.</translation>
     </message>
 </context>
 <context>
@@ -1046,31 +1054,35 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
     </message>
     <message>
         <source>flags</source>
-        <translation type="unfinished"></translation>
+        <translation>flags</translation>
     </message>
     <message>
         <source>pls / mis id</source>
-        <translation type="unfinished"></translation>
+        <translation>pls / mis id</translation>
     </message>
     <message>
         <source>pls code</source>
-        <translation type="unfinished"></translation>
+        <translation>pls code</translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation type="unfinished"></translation>
+        <translation>pls mode</translation>
     </message>
     <message>
         <source>is id</source>
-        <translation type="unfinished"></translation>
+        <translation>is id</translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation type="unfinished"></translation>
+        <translation>plp id</translation>
     </message>
     <message>
         <source>system</source>
-        <translation type="unfinished"></translation>
+        <translation>system</translation>
+    </message>
+    <message>
+        <source>calc</source>
+        <translation>hesap</translation>
     </message>
 </context>
 <context>
@@ -1233,24 +1245,8 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <translation>Hierarchy</translation>
     </message>
     <message>
-        <source>isid</source>
-        <translation type="vanished">isid</translation>
-    </message>
-    <message>
         <source>mts</source>
         <translation>mts</translation>
-    </message>
-    <message>
-        <source>plsmode</source>
-        <translation type="vanished">plsmode</translation>
-    </message>
-    <message>
-        <source>plscode</source>
-        <translation type="vanished">plscode</translation>
-    </message>
-    <message>
-        <source>plsn</source>
-        <translation type="vanished">plsn</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1274,23 +1270,23 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
     </message>
     <message>
         <source>pls</source>
-        <translation type="unfinished"></translation>
+        <translation>pls</translation>
     </message>
     <message>
         <source>pls code</source>
-        <translation type="unfinished"></translation>
+        <translation>pls code</translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation type="unfinished"></translation>
+        <translation>pls mode</translation>
     </message>
     <message>
         <source>is id</source>
-        <translation type="unfinished"></translation>
+        <translation>is id</translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation type="unfinished"></translation>
+        <translation>plp id</translation>
     </message>
 </context>
 <context>
@@ -1340,6 +1336,19 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>&quot;%1&quot; userbouquet mevcut değil.</translation>
+    </message>
+    <message>
+        <source>Parameters</source>
+        <comment>dialog</comment>
+        <translation>Parametreler</translation>
+    </message>
+    <message>
+        <source>Entry flag</source>
+        <translation>Entry flag</translation>
+    </message>
+    <message>
+        <source>custom</source>
+        <translation>özel</translation>
     </message>
 </context>
 <context>
@@ -1899,35 +1908,35 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.4 [Enigma 2]</translation>
+        <translation>Lamedb 2.4 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.5 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.5 [Enigma 2]</translation>
+        <translation>Lamedb 2.5 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.3 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.3 [Enigma 1]</translation>
+        <translation>Lamedb 2.3 [Enigma 1]</translation>
     </message>
     <message>
         <source>Lamedb 2.2 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.2 [Enigma 1]</translation>
+        <translation>Lamedb 2.2 [Enigma 1]</translation>
     </message>
     <message>
         <source>Zapit api-v4 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v4 [Neutrino]</translation>
+        <translation>Zapit api-v4 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v3 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v3 [Neutrino]</translation>
+        <translation>Zapit api-v3 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v2 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v2 [Neutrino]</translation>
+        <translation>Zapit api-v2 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+        <translation>Zapit api-v1 [Neutrino]</translation>
     </message>
     <message>
         <source>Quick start</source>
@@ -2002,47 +2011,47 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
     <message>
         <source>File Information</source>
         <comment>status-bar</comment>
-        <translation type="unfinished">Dosya bilgisi</translation>
+        <translation>Dosya bilgisi</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished">Bouquet Düzenle</translation>
+        <translation>Bouquet Düzenle</translation>
     </message>
     <message>
         <source>Edit Position</source>
         <comment>menu</comment>
-        <translation type="unfinished">Pozisyonu Düzenle</translation>
+        <translation>Pozisyonu Düzenle</translation>
     </message>
     <message>
         <source>Edit Settings</source>
         <comment>menu</comment>
-        <translation type="unfinished">Ayarları Düzenle</translation>
+        <translation>Ayarları Düzenle</translation>
     </message>
     <message>
         <source>Edit Transponder</source>
         <comment>menu</comment>
-        <translation type="unfinished">Transponder Düzenle</translation>
+        <translation>Transponder Düzenle</translation>
     </message>
     <message>
         <source>Edit Service</source>
         <comment>menu</comment>
-        <translation type="unfinished">Hizmeti Düzenle</translation>
+        <translation>Hizmeti Düzenle</translation>
     </message>
     <message>
         <source>Edit Favourite</source>
         <comment>menu</comment>
-        <translation type="unfinished">Favoriyi Düzenle</translation>
+        <translation>Favoriyi Düzenle</translation>
     </message>
     <message>
         <source>Edit Marker</source>
         <comment>menu</comment>
-        <translation type="unfinished">Marker Düzenle</translation>
+        <translation>Marker Düzenle</translation>
     </message>
     <message>
         <source>Change picon</source>
         <comment>menu</comment>
-        <translation type="unfinished">Picon değiştir</translation>
+        <translation>Picon değiştir</translation>
     </message>
 </context>
 <context>
@@ -2756,7 +2765,7 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
     </message>
     <message>
         <source>Reference ID</source>
-        <translation type="unfinished">Reference ID</translation>
+        <translation>Reference ID</translation>
     </message>
 </context>
 <context>
@@ -3142,7 +3151,7 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
     <message>
         <source>Malformed or unknown XML file format.</source>
         <comment>error</comment>
-        <translation type="unfinished">Hatalı biçimlendirilmiş veya bilinmeyen XML dosya biçimi.</translation>
+        <translation>Hatalı biçimlendirilmiş veya bilinmeyen XML dosya biçimi.</translation>
     </message>
 </context>
 <context>

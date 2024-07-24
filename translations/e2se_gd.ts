@@ -230,14 +230,6 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <translation>Roghainnean buidheann seanail</translation>
     </message>
     <message>
-        <source>Import each group name in Userbouquets</source>
-        <translation>Cuir a-steach ainm gach buidheann ann an userbouquets</translation>
-    </message>
-    <message>
-        <source>Import all entries in one Userbouquet</source>
-        <translation>Cuir a-steach a h-uile ann an aon userbouquet</translation>
-    </message>
-    <message>
         <source>Discard Reference ID if set</source>
         <translation>Cuir às do Reference ID ma tha thu air a shuidheachadh</translation>
     </message>
@@ -277,6 +269,22 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <source>Select channel logos folder</source>
         <comment>file-dialog</comment>
         <translation>Tagh pasgan suaicheantasan seanail</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>Cuir a-steach ann an userbouquets fa leth</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>Cuir a-steach a h-uile càil ann an aon userbouquet</translation>
+    </message>
+    <message>
+        <source>Export each group in separate files</source>
+        <translation>Às-mhalairt ann am faidhlichean fa leth</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>Às-mhalairt uile ann an aon fhaidhle</translation>
     </message>
 </context>
 <context>
@@ -619,11 +627,11 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     <message>
         <source>Add Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cruthaich as fheàrr leat</translation>
     </message>
     <message>
         <source>a valid URL is required for stream type</source>
-        <translation type="unfinished"></translation>
+        <translation>feumaidh URL dligheach airson an seòrsa stream</translation>
     </message>
 </context>
 <context>
@@ -893,27 +901,27 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     <message>
         <source>Current: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>An-dràsta: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</translation>
     </message>
     <message>
         <source>Collision: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tubaist: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</translation>
     </message>
     <message>
         <source>Service collision warning</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Seirbheis ann an còmhstri</translation>
     </message>
     <message>
         <source>The service collides with an existing service.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tha an t-seirbheis a&apos; bualadh air seirbheis a th&apos; ann mar-thà.</translation>
     </message>
     <message>
         <source>This may produce unexpected results.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Faodaidh seo toraidhean ris nach robh dùil a thoirt gu buil.</translation>
     </message>
 </context>
 <context>
@@ -1054,31 +1062,35 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     </message>
     <message>
         <source>flags</source>
-        <translation type="unfinished"></translation>
+        <translation>flags</translation>
     </message>
     <message>
         <source>pls / mis id</source>
-        <translation type="unfinished"></translation>
+        <translation>pls / mis id</translation>
     </message>
     <message>
         <source>pls code</source>
-        <translation type="unfinished"></translation>
+        <translation>pls code</translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation type="unfinished"></translation>
+        <translation>pls mode</translation>
     </message>
     <message>
         <source>is id</source>
-        <translation type="unfinished"></translation>
+        <translation>is id</translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation type="unfinished"></translation>
+        <translation>plp id</translation>
     </message>
     <message>
         <source>system</source>
-        <translation type="unfinished"></translation>
+        <translation>system</translation>
+    </message>
+    <message>
+        <source>calc</source>
+        <translation>cunnt</translation>
     </message>
 </context>
 <context>
@@ -1241,24 +1253,8 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <translation>Rangachd</translation>
     </message>
     <message>
-        <source>isid</source>
-        <translation type="vanished">isid</translation>
-    </message>
-    <message>
         <source>mts</source>
         <translation>mts</translation>
-    </message>
-    <message>
-        <source>plsmode</source>
-        <translation type="vanished">plsmode</translation>
-    </message>
-    <message>
-        <source>plscode</source>
-        <translation type="vanished">plscode</translation>
-    </message>
-    <message>
-        <source>plsn</source>
-        <translation type="vanished">plsn</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1282,23 +1278,23 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     </message>
     <message>
         <source>pls</source>
-        <translation type="unfinished"></translation>
+        <translation>pls</translation>
     </message>
     <message>
         <source>pls code</source>
-        <translation type="unfinished"></translation>
+        <translation>pls code</translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation type="unfinished"></translation>
+        <translation>pls mode</translation>
     </message>
     <message>
         <source>is id</source>
-        <translation type="unfinished"></translation>
+        <translation>is id</translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation type="unfinished"></translation>
+        <translation>plp id</translation>
     </message>
 </context>
 <context>
@@ -1348,6 +1344,19 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>Chan eil userbouquet &quot;%1&quot; ann.</translation>
+    </message>
+    <message>
+        <source>Parameters</source>
+        <comment>dialog</comment>
+        <translation>Paramadairean</translation>
+    </message>
+    <message>
+        <source>Entry flag</source>
+        <translation>Entry flag</translation>
+    </message>
+    <message>
+        <source>custom</source>
+        <translation>gnàthaichte</translation>
     </message>
 </context>
 <context>
@@ -1907,35 +1916,35 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.4 [Enigma 2]</translation>
+        <translation>Lamedb 2.4 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.5 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.5 [Enigma 2]</translation>
+        <translation>Lamedb 2.5 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.3 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.3 [Enigma 1]</translation>
+        <translation>Lamedb 2.3 [Enigma 1]</translation>
     </message>
     <message>
         <source>Lamedb 2.2 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.2 [Enigma 1]</translation>
+        <translation>Lamedb 2.2 [Enigma 1]</translation>
     </message>
     <message>
         <source>Zapit api-v4 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v4 [Neutrino]</translation>
+        <translation>Zapit api-v4 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v3 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v3 [Neutrino]</translation>
+        <translation>Zapit api-v3 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v2 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v2 [Neutrino]</translation>
+        <translation>Zapit api-v2 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+        <translation>Zapit api-v1 [Neutrino]</translation>
     </message>
     <message>
         <source>Quick start</source>
@@ -2010,47 +2019,47 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     <message>
         <source>File Information</source>
         <comment>status-bar</comment>
-        <translation type="unfinished">Fiosrachadh Faidhle</translation>
+        <translation>Fiosrachadh Faidhle</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished">Deasaich Bouquet</translation>
+        <translation>Deasaich Bouquet</translation>
     </message>
     <message>
         <source>Edit Position</source>
         <comment>menu</comment>
-        <translation type="unfinished">Deasaich Suidheachadh</translation>
+        <translation>Deasaich Suidheachadh</translation>
     </message>
     <message>
         <source>Edit Settings</source>
         <comment>menu</comment>
-        <translation type="unfinished">Deasaich roghainnean</translation>
+        <translation>Deasaich roghainnean</translation>
     </message>
     <message>
         <source>Edit Transponder</source>
         <comment>menu</comment>
-        <translation type="unfinished">Deasaich Transponder</translation>
+        <translation>Deasaich Transponder</translation>
     </message>
     <message>
         <source>Edit Service</source>
         <comment>menu</comment>
-        <translation type="unfinished">Deasaich Seirbheis</translation>
+        <translation>Deasaich Seirbheis</translation>
     </message>
     <message>
         <source>Edit Favourite</source>
         <comment>menu</comment>
-        <translation type="unfinished">Deasaich as fheàrr leat</translation>
+        <translation>Deasaich as fheàrr leat</translation>
     </message>
     <message>
         <source>Edit Marker</source>
         <comment>menu</comment>
-        <translation type="unfinished">Deasaich Marker</translation>
+        <translation>Deasaich Marker</translation>
     </message>
     <message>
         <source>Change picon</source>
         <comment>menu</comment>
-        <translation type="unfinished">Atharraich am picon</translation>
+        <translation>Atharraich am picon</translation>
     </message>
 </context>
 <context>
@@ -2764,7 +2773,7 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     </message>
     <message>
         <source>Reference ID</source>
-        <translation type="unfinished">Reference ID</translation>
+        <translation>Reference ID</translation>
     </message>
 </context>
 <context>
@@ -3153,7 +3162,7 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     <message>
         <source>Malformed or unknown XML file format.</source>
         <comment>error</comment>
-        <translation type="unfinished">Fòrmat faidhle XML mì-chruthaichte no neo-aithnichte.</translation>
+        <translation>Fòrmat faidhle XML mì-chruthaichte no neo-aithnichte.</translation>
     </message>
 </context>
 <context>

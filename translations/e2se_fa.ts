@@ -229,14 +229,6 @@ Please wait few minutes and try again.</source>
         <translation>گزینه های گروه کانال</translation>
     </message>
     <message>
-        <source>Import each group name in Userbouquets</source>
-        <translation>نام هر گروه را در دسته های کاربری وارد کنید</translation>
-    </message>
-    <message>
-        <source>Import all entries in one Userbouquet</source>
-        <translation>همه ورودی ها را در یک کانال کاربر وارد کنید</translation>
-    </message>
-    <message>
         <source>Discard Reference ID if set</source>
         <translation>در صورت تنظیم، شناسه مرجع را رد کنید</translation>
     </message>
@@ -276,6 +268,22 @@ Please wait few minutes and try again.</source>
         <source>Select channel logos folder</source>
         <comment>file-dialog</comment>
         <translation>پوشه آرم کانال را انتخاب کنید</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>هر گروه را در گروه کانال کاربر جداگانه وارد کنید</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>همه ورودی‌ها را در یک گروه کانال کاربر وارد کنید</translation>
+    </message>
+    <message>
+        <source>Export each group in separate files</source>
+        <translation>هر گروه را در فایل های جداگانه صادر کنید</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>همه ورودی ها را در یک فایل صادر کنید</translation>
     </message>
 </context>
 <context>
@@ -618,11 +626,11 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Add Favourite</source>
         <comment>dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>موارد دلخواه را اضافه کنید</translation>
     </message>
     <message>
         <source>a valid URL is required for stream type</source>
-        <translation type="unfinished"></translation>
+        <translation>URL معتبر برای نوع جریان مورد نیاز است</translation>
     </message>
 </context>
 <context>
@@ -892,27 +900,27 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Current: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>فعلی: &quot;% 1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</translation>
     </message>
     <message>
         <source>Collision: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>برخورد: &quot;% 1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</translation>
     </message>
     <message>
         <source>Service collision warning</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>هشدار تداخل سرویس</translation>
     </message>
     <message>
         <source>The service collides with an existing service.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>این سرویس با یک سرویس موجود برخورد می کند.</translation>
     </message>
     <message>
         <source>This may produce unexpected results.</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>این ممکن است نتایج غیر منتظره ای ایجاد کند.</translation>
     </message>
 </context>
 <context>
@@ -1053,31 +1061,35 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>flags</source>
-        <translation type="unfinished"></translation>
+        <translation>flags</translation>
     </message>
     <message>
         <source>pls / mis id</source>
-        <translation type="unfinished"></translation>
+        <translation>pls / mis id</translation>
     </message>
     <message>
         <source>pls code</source>
-        <translation type="unfinished"></translation>
+        <translation>pls code</translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation type="unfinished"></translation>
+        <translation>pls mode</translation>
     </message>
     <message>
         <source>is id</source>
-        <translation type="unfinished"></translation>
+        <translation>is id</translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation type="unfinished"></translation>
+        <translation>plp id</translation>
     </message>
     <message>
         <source>system</source>
-        <translation type="unfinished"></translation>
+        <translation>system</translation>
+    </message>
+    <message>
+        <source>calc</source>
+        <translation>محاسبه</translation>
     </message>
 </context>
 <context>
@@ -1240,24 +1252,8 @@ Please wait few minutes and try again.</source>
         <translation>سلسله مراتب</translation>
     </message>
     <message>
-        <source>isid</source>
-        <translation type="vanished">isid</translation>
-    </message>
-    <message>
         <source>mts</source>
         <translation>mts</translation>
-    </message>
-    <message>
-        <source>plsmode</source>
-        <translation type="vanished">plsmode</translation>
-    </message>
-    <message>
-        <source>plscode</source>
-        <translation type="vanished">plscode</translation>
-    </message>
-    <message>
-        <source>plsn</source>
-        <translation type="vanished">plsn</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1281,23 +1277,23 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>pls</source>
-        <translation type="unfinished"></translation>
+        <translation>pls</translation>
     </message>
     <message>
         <source>pls code</source>
-        <translation type="unfinished"></translation>
+        <translation>pls code</translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation type="unfinished"></translation>
+        <translation>pls mode</translation>
     </message>
     <message>
         <source>is id</source>
-        <translation type="unfinished"></translation>
+        <translation>is id</translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation type="unfinished"></translation>
+        <translation>plp id</translation>
     </message>
 </context>
 <context>
@@ -1347,6 +1343,19 @@ Please wait few minutes and try again.</source>
         <source>Userbouquet &quot;%1&quot; not exists.</source>
         <comment>error</comment>
         <translation>کاربر-کانال-گروه &quot;%1&quot; وجود ندارد.</translation>
+    </message>
+    <message>
+        <source>Parameters</source>
+        <comment>dialog</comment>
+        <translation>مولفه های</translation>
+    </message>
+    <message>
+        <source>Entry flag</source>
+        <translation>پرچم بیت ورودی</translation>
+    </message>
+    <message>
+        <source>custom</source>
+        <translation>سفارشی شده</translation>
     </message>
 </context>
 <context>
@@ -1906,35 +1915,35 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Lamedb 2.4 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.4 [Enigma 2]</translation>
+        <translation>Lamedb 2.4 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.5 [Enigma 2]</source>
-        <translation type="unfinished">Lamedb 2.5 [Enigma 2]</translation>
+        <translation>Lamedb 2.5 [Enigma 2]</translation>
     </message>
     <message>
         <source>Lamedb 2.3 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.3 [Enigma 1]</translation>
+        <translation>Lamedb 2.3 [Enigma 1]</translation>
     </message>
     <message>
         <source>Lamedb 2.2 [Enigma 1]</source>
-        <translation type="unfinished">Lamedb 2.2 [Enigma 1]</translation>
+        <translation>Lamedb 2.2 [Enigma 1]</translation>
     </message>
     <message>
         <source>Zapit api-v4 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v4 [Neutrino]</translation>
+        <translation>Zapit api-v4 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v3 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v3 [Neutrino]</translation>
+        <translation>Zapit api-v3 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v2 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v2 [Neutrino]</translation>
+        <translation>Zapit api-v2 [Neutrino]</translation>
     </message>
     <message>
         <source>Zapit api-v1 [Neutrino]</source>
-        <translation type="unfinished">Zapit api-v1 [Neutrino]</translation>
+        <translation>Zapit api-v1 [Neutrino]</translation>
     </message>
     <message>
         <source>Quick start</source>
@@ -2009,47 +2018,47 @@ Please wait few minutes and try again.</source>
     <message>
         <source>File Information</source>
         <comment>status-bar</comment>
-        <translation type="unfinished">اطلاعات فایل</translation>
+        <translation>اطلاعات فایل</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
         <comment>menu</comment>
-        <translation type="unfinished">ویرایش کانال-گروه</translation>
+        <translation>ویرایش کانال-گروه</translation>
     </message>
     <message>
         <source>Edit Position</source>
         <comment>menu</comment>
-        <translation type="unfinished">ویرایش موقعیت ترانسپوندر</translation>
+        <translation>ویرایش موقعیت ترانسپوندر</translation>
     </message>
     <message>
         <source>Edit Settings</source>
         <comment>menu</comment>
-        <translation type="unfinished">ویرایش تنظیمات</translation>
+        <translation>ویرایش تنظیمات</translation>
     </message>
     <message>
         <source>Edit Transponder</source>
         <comment>menu</comment>
-        <translation type="unfinished">ترانسپوندر را ویرایش کنید</translation>
+        <translation>ترانسپوندر را ویرایش کنید</translation>
     </message>
     <message>
         <source>Edit Service</source>
         <comment>menu</comment>
-        <translation type="unfinished">سرویس ویرایش</translation>
+        <translation>سرویس ویرایش</translation>
     </message>
     <message>
         <source>Edit Favourite</source>
         <comment>menu</comment>
-        <translation type="unfinished">ویرایش مورد علاقه</translation>
+        <translation>ویرایش مورد علاقه</translation>
     </message>
     <message>
         <source>Edit Marker</source>
         <comment>menu</comment>
-        <translation type="unfinished">ویرایش نشانگر</translation>
+        <translation>ویرایش نشانگر</translation>
     </message>
     <message>
         <source>Change picon</source>
         <comment>menu</comment>
-        <translation type="unfinished">picon را تغییر دهید</translation>
+        <translation>picon را تغییر دهید</translation>
     </message>
 </context>
 <context>
@@ -2763,7 +2772,7 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Reference ID</source>
-        <translation type="unfinished">شناسه مرجع</translation>
+        <translation>شناسه مرجع</translation>
     </message>
 </context>
 <context>
@@ -3149,7 +3158,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Malformed or unknown XML file format.</source>
         <comment>error</comment>
-        <translation type="unfinished">فرمت فایل XML نادرست یا ناشناخته.</translation>
+        <translation>فرمت فایل XML نادرست یا ناشناخته.</translation>
     </message>
 </context>
 <context>
