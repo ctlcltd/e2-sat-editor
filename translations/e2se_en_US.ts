@@ -3434,9 +3434,9 @@ Please wait few minutes and try again.</source>
     <message numerus="yes">
         <source>Uploaded %n files</source>
         <comment>message</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Uploaded %n file</numerusform>
+            <numerusform>Uploaded %n files</numerusform>
         </translation>
     </message>
     <message>
@@ -3447,9 +3447,9 @@ Please wait few minutes and try again.</source>
     <message numerus="yes">
         <source>Downloaded %n files</source>
         <comment>message</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Downloaded %n file</numerusform>
+            <numerusform>Downloaded %n files</numerusform>
         </translation>
     </message>
     <message>

@@ -1055,19 +1055,19 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>pls code</source>
-        <translation type="unfinished">pls code</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation type="unfinished">pls mode</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>is id</source>
-        <translation type="unfinished">is id</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation type="unfinished">plp id</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>system</source>
@@ -1263,23 +1263,23 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>pls</source>
-        <translation>pls</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>pls code</source>
-        <translation>pls code</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>pls mode</source>
-        <translation>pls mode</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>is id</source>
-        <translation>is id</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>plp id</source>
-        <translation>plp id</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3434,9 +3434,9 @@ Please wait few minutes and try again.</source>
     <message numerus="yes">
         <source>Uploaded %n files</source>
         <comment>message</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Uploaded %n file</numerusform>
+            <numerusform>Uploaded %n files</numerusform>
         </translation>
     </message>
     <message>
@@ -3447,9 +3447,9 @@ Please wait few minutes and try again.</source>
     <message numerus="yes">
         <source>Downloaded %n files</source>
         <comment>message</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Downloaded %n file</numerusform>
+            <numerusform>Downloaded %n files</numerusform>
         </translation>
     </message>
     <message>
