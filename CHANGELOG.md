@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 ## [v1.6.0]
 
 **Version**: 1.6  
-**Release Date**: *unreleased*  
+**Release Date**: 2024-07-25  
 **Full Changelog**: [v1.5.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.5.0...HEAD)
 
 - Fix crash with empty service parameters on save
