@@ -827,11 +827,7 @@ void tab::importFile()
 	if (bit == 0x0001)
 	{
 		for (string & path : paths)
-		{
 			path = std::filesystem::path(path).parent_path().u8string();
-		}
-
-		qDebug() << paths;
 	}
 
 	if (statusBarIsVisible())

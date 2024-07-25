@@ -489,6 +489,7 @@ bool e2db::write(string path) noexcept
 	}
 }
 
+//TODO TEST import, merge, input size, fixBouquets
 void e2db::importFile(vector<string> paths) noexcept
 {
 	debug("importFile");
@@ -505,7 +506,7 @@ void e2db::importFile(vector<string> paths) noexcept
 	}
 
 	clearStorage(merge);
-	// fixBouquets();
+	fixBouquets();
 }
 
 void e2db::exportFile(int bit, vector<string> paths, string filename) noexcept
