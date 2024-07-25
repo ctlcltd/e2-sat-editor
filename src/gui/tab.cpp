@@ -803,6 +803,7 @@ void tab::importFile()
 	gui::TAB_VIEW current = getTabView();
 	gui::GUI_DPORTS gde = gui::GUI_DPORTS::AllFiles;
 	vector<string> paths;
+	int bit = -1;
 
 	// other views
 	if (current == gui::TAB_VIEW::picons || current == gui::TAB_VIEW::channelBook)
@@ -817,10 +818,21 @@ void tab::importFile()
 		return;
 	}
 
-	paths = gid->importFileDialog(gde);
+	paths = gid->importFileDialog(gde, bit);
 
 	if (paths.empty())
 		return;
+
+	// directories
+	if (bit == 0x0001)
+	{
+		for (string & path : paths)
+		{
+			path = std::filesystem::path(path).parent_path().u8string();
+		}
+
+		qDebug() << paths;
+	}
 
 	if (statusBarIsVisible())
 	{

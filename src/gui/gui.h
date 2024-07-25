@@ -288,6 +288,7 @@ class gui : protected e2se::log_factory
 		void closeAllTabs();
 		string openFileDialog();
 		string saveFileDialog(string path);
+		vector<string> importFileDialog(gui::GUI_DPORTS gde, int& bit);
 		vector<string> importFileDialog(gui::GUI_DPORTS gde);
 		string exportFileDialog(GUI_DPORTS gde, string path, int& bit);
 		string exportFileDialog(GUI_DPORTS gde, string path);

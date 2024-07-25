@@ -1352,7 +1352,7 @@ string gui::saveFileDialog(string path)
 	return nw_path;
 }
 
-vector<string> gui::importFileDialog(GUI_DPORTS gde)
+vector<string> gui::importFileDialog(GUI_DPORTS gde, int& bit)
 {
 	debug("importFileDialog");
 
@@ -1400,29 +1400,30 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 			opts.append(QString("%1 (*)").arg(tr("All Files", "file-dialog")));
 		break;
 		default:
-			//TODO TEST
+			//TODO improve
 			// fmode = QFileDialog::AnyFile;
-			// opts.append("Enigma2 folder (*)");
-			// opts.append("Neutrino folder (*)");
 			opts.append("Lamedb 2.4 (lamedb)");
 			opts.append("Lamedb 2.5 (lamedb5)");
 			opts.append("Lamedb 2.3 (services)");
 			opts.append("Lamedb 2.2 (services)");
+			opts.append("Enigma2 folder (*)");
+			opts.append("Userbouquet (userbouquet.*)");
 			opts.append("Bouquet (bouquets.*)");
 			opts.append("Bouquet epl (*.epl)");
-			opts.append("Userbouquet (userbouquet.*)");
-			opts.append("Tuner settings (*.xml)");
-			opts.append("Neutrino Services (services.xml)");
-			opts.append("Neutrino Bouquets (ubouquets.xml)");
-			opts.append("Neutrino api-1 Bouquets (bouquets.xml)");
 			opts.append("Parental lock blacklist (blacklist)");
 			opts.append("Parental lock whitelist (whitelist)");
 			opts.append("Parental lock services (services.locked)");
+			opts.append("Tuner settings (*.xml)");
+			opts.append("Neutrino Services (services.xml)");
+			opts.append("Neutrino folder (*)");
+			opts.append("Neutrino Bouquets (ubouquets.xml)");
+			opts.append("Neutrino api-1 Bouquets (bouquets.xml)");
 			opts.append(QString("%1 (*)").arg(tr("All Files", "file-dialog")));
 	}
 
 	vector<string> paths;
 
+	QString selected;
 	QFileDialog fdial = QFileDialog(mwid, caption);
 	fdial.setAcceptMode(QFileDialog::AcceptOpen);
 	fdial.setFileMode(fmode);
@@ -1430,6 +1431,48 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 	fdial.setLabelText(QFileDialog::Accept, tr("Import", "file-dialog"));
 	if (fdial.exec() == QDialog::Accepted)
 	{
+		selected = fdial.selectedNameFilter();
+
+		// straight copy of e2db_abstract::FPORTS
+		if (selected == "Enigma2 folder (*)")
+			bit = 0x0001;
+		else if (selected == "Neutrino folder (*)")
+			bit = 0x0001;
+		else if (selected == "Lamedb 2.4 (lamedb)")
+			bit = 0x1224;
+		else if (selected == "Lamedb 2.5 (lamedb5)")
+			bit = 0x1225;
+		else if (selected == "Lamedb 2.3 (services)")
+			bit = 0x1223;
+		else if (selected == "Lamedb 2.2 (services)")
+			bit = 0x1222;
+		else if (selected == "Neutrino default (services.xml)")
+			bit = 0x1010;
+		else if (selected == "Neutrino api-4 (services.xml)")
+			bit = 0x1014;
+		else if (selected == "Neutrino api-3 (services.xml)")
+			bit = 0x1013;
+		else if (selected == "Neutrino api-2 (services.xml)")
+			bit = 0x1012;
+		else if (selected == "Neutrino api-1 (services.xml)")
+			bit = 0x1011;
+		else if (selected == "Bouquet epl (*.epl)")
+			bit = 0x0020;
+		else if (selected == "Neutrino api-4 Bouquets (ubouquets.xml)")
+			bit = 0x4014;
+		else if (selected == "Neutrino api-3 Bouquets (ubouquets.xml)")
+			bit = 0x4013;
+		else if (selected == "Neutrino api-2 Bouquets (ubouquets.xml)")
+			bit = 0x4012;
+		else if (selected == "Neutrino api-1 Bouquets (bouquets.xml)")
+			bit = 0x4011;
+		else if (selected == "Parental lock blacklist (blacklist)")
+			bit = 0xfa;
+		else if (selected == "Parental lock whitelist (whitelist)")
+			bit = 0xfe;
+		else if (selected == "Parental lock services (services.locked)")
+			bit = 0xff;
+
 		for (QUrl & url : fdial.selectedUrls())
 		{
 			if (url.isLocalFile() || url.isEmpty())
@@ -1438,6 +1481,12 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 		}
 	}
 	return paths;
+}
+
+vector<string> gui::importFileDialog(GUI_DPORTS gde)
+{
+	int bit = 0;
+	return importFileDialog(gde, bit);
 }
 
 string gui::exportFileDialog(GUI_DPORTS gde, string path, int& bit)
