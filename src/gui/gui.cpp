@@ -1400,9 +1400,10 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde)
 			opts.append(QString("%1 (*)").arg(tr("All Files", "file-dialog")));
 		break;
 		default:
-			fmode = QFileDialog::AnyFile;
-			opts.append("Enigma2 folder (*)");
-			opts.append("Neutrino folder (*)");
+			//TODO TEST
+			// fmode = QFileDialog::AnyFile;
+			// opts.append("Enigma2 folder (*)");
+			// opts.append("Neutrino folder (*)");
 			opts.append("Lamedb 2.4 (lamedb)");
 			opts.append("Lamedb 2.5 (lamedb5)");
 			opts.append("Lamedb 2.3 (services)");
