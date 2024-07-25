@@ -275,7 +275,7 @@ Please wait few minutes and try again.</source>
         <translation>导入一个用户频道组中的所有条目</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>将每个组导出到单独的文件中</translation>
     </message>
     <message>

@@ -279,7 +279,7 @@ Please wait few minutes and try again.</source>
         <translation>Импортирайте всички записи в една група потребителски канали</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>Експортирайте всяка група в отделни файлове</translation>
     </message>
     <message>

@@ -276,7 +276,7 @@ Please wait few minutes and try again.</source>
         <translation>하나의 사용자 채널 그룹에 있는 모든 항목을 가져옵니다.</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>각 그룹을 별도의 파일에 내보냅니다.</translation>
     </message>
     <message>

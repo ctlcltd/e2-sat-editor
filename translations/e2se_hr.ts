@@ -280,7 +280,7 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <translation>Uvezi sve u jednu userbouquet</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>Izvoz u zasebne datoteke</translation>
     </message>
     <message>

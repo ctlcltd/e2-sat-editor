@@ -271,7 +271,7 @@ Vänta några minuter och försök igen.</translation>
         <translation>Importera allt i en userbouquet</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>Exportera i separata filer</translation>
     </message>
     <message>

@@ -271,7 +271,7 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <translation>Tümünü tek userbouquet dışa aktar</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>Ayrı dosyalara aktar</translation>
     </message>
     <message>

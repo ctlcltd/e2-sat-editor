@@ -278,7 +278,7 @@ Espereu uns minuts i torneu ho a provar.</translation>
         <translation>Importa tot en un sol userbouquet</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>Exporta en fitxers separats</translation>
     </message>
     <message>

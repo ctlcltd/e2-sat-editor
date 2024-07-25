@@ -277,7 +277,7 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <translation>Importuoti viską į vieną userbouquet</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>Eksportuoti į atskirus failus</translation>
     </message>
     <message>

@@ -278,7 +278,7 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <translation>Uvozi vse v eni userbouquet</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>Izvoz v ločenih datotekah</translation>
     </message>
     <message>

@@ -277,7 +277,7 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <translation>Importēt visu vienā userbouquet</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>Eksportēt atsevišķos failos</translation>
     </message>
     <message>

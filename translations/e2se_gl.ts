@@ -279,7 +279,7 @@ Agarde uns minutos e ténteo de novo.</translation>
         <translation>Importar todo nun único userbouquet</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>Exportar en ficheiros separados</translation>
     </message>
     <message>

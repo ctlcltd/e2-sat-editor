@@ -278,7 +278,7 @@ Please wait few minutes and try again.</source>
         <translation>استيراد كافة الإدخالات في مجموعة قنوات مستخدم واحدة</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>تصدير كل مجموعة في ملفات منفصلة</translation>
     </message>
     <message>

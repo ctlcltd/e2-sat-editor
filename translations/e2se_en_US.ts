@@ -269,7 +269,7 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

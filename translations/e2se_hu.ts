@@ -279,7 +279,7 @@ Kérjük, várjon néhány percet, és próbálja újra.</translation>
         <translation>Az összes importálása egyetlen userbouquet</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>Exportálás külön fájlokban</translation>
     </message>
     <message>

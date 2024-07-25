@@ -278,7 +278,7 @@ Počkajte niekoľko minút a skúste to znova.</translation>
         <translation>Importovať všetko do jedného userbouquet</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>Exportujte do samostatných súborov</translation>
     </message>
     <message>

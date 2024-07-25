@@ -278,7 +278,7 @@ Attendere qualche minuto e riprovare.</translation>
         <translation>Importa tutto in un singolo userbouquet</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>Esporta in file separati</translation>
     </message>
     <message>

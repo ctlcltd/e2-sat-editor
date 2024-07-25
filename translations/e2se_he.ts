@@ -277,7 +277,7 @@ Please wait few minutes and try again.</source>
         <translation>ייבא את כל הערכים בקבוצת ערוץ משתמש אחת</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>ייצא כל קבוצה בקבצים נפרדים</translation>
     </message>
     <message>

@@ -287,7 +287,7 @@ void convertM3u::exportLayout()
 	QButtonGroup* dtg1 = new QButtonGroup;
 	dtg1->setExclusive(true);
 
-	QCheckBox* dtf1s0 = new QCheckBox(tr("Export each group in separate files"));
+	QCheckBox* dtf1s0 = new QCheckBox(tr("Export each bouquet in separate files"));
 	dtf1s0->setProperty("field", "singularFalse");
 	fields.emplace_back(dtf1s0);
 	dtf1s0->setChecked(true);

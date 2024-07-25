@@ -275,7 +275,7 @@ Please wait few minutes and try again.</source>
         <translation>匯入一個使用者通道群組中的所有條目</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>將每個群組匯出到單獨的文件中</translation>
     </message>
     <message>

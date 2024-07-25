@@ -279,7 +279,7 @@ Please wait few minutes and try again.</source>
         <translation>すべてのエントリを 1 つのユーザー チャネル グループにインポートする</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>各グループを別々のファイルにエクスポートする</translation>
     </message>
     <message>

@@ -277,7 +277,7 @@ Vent et par minutter, og prøv igen.</translation>
         <translation>Importer alt i en enkelt userbouquet</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>Eksporter i separate filer</translation>
     </message>
     <message>

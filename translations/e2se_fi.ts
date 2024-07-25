@@ -278,7 +278,7 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <translation>Tuo kaikki yhteen userbouquet</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>Vie erillisissä tiedostoissa</translation>
     </message>
     <message>

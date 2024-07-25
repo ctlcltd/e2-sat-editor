@@ -278,7 +278,7 @@ Please wait few minutes and try again.</source>
         <translation>همه ورودی‌ها را در یک گروه کانال کاربر وارد کنید</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>هر گروه را در فایل های جداگانه صادر کنید</translation>
     </message>
     <message>

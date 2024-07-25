@@ -279,7 +279,7 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <translation>Cuir a-steach a h-uile càil ann an aon userbouquet</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>Às-mhalairt ann am faidhlichean fa leth</translation>
     </message>
     <message>

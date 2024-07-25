@@ -280,7 +280,7 @@ Veuillez patienter quelques minutes et réessayer.</translation>
         <translation>Importer tout dans un seul userbouquet</translation>
     </message>
     <message>
-        <source>Export each group in separate files</source>
+        <source>Export each bouquet in separate files</source>
         <translation>Exporter dans fichiers séparés</translation>
     </message>
     <message>
