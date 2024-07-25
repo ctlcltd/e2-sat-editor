@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 
 **Version**: 1.6  
 **Release Date**: 2024-07-25  
-**Full Changelog**: [v1.5.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.5.0...HEAD)
+**Full Changelog**: [v1.5.0...v1.6.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.5.0...v.1.6.0)
 
 - Fix crash with empty service parameters on save
 - Fix parental lock on write
