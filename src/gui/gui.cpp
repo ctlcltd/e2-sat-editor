@@ -705,7 +705,11 @@ void gui::initSettings()
 	settings.setValue("toolsOutCsvFixCrlf", false);
 	settings.setValue("toolsOutM3uFixCrlf", false);
 	settings.setValue("toolsOutHtmlFixCrlf", true);
+#ifdef E2SE_DEMO
+	settings.setValue("fixCrlf", false);
+#else
 	settings.setValue("fixCrlf", true);
+#endif
 	settings.endGroup();
 
 	settings.beginWriteArray("profile");
