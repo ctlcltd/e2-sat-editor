@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="generator" content="e2 SAT Editor 0.8">
-<title>userbouquet.dbe03.tv - Tests | e2-sat-editor</title>
+<meta name="generator" content="e2 SAT Editor 1.6">
+<title>userbouquet.dbe03.tv - Tests</title>
 <meta name="description" content="Channels List, Bouquet type: TV, Source file: userbouquet.dbe03.tv">
 <link rel="contents" href="enigma_db.html">
 <style>
@@ -19,9 +19,9 @@ th { position: sticky; top: -1px; background-color: Canvas }
 table, td, th { border: 1px solid; border-color: ButtonBorder }
 th, td.chname, td.name, td.refid, td.stype, td.atype, td.pname { white-space: nowrap }
 td.refid, tr.marker td.name, tr.marker td.atype { font-weight: bold }
-span.cas, tr.marker td.name { font-size: small }
-td.trid { padding-inline-start: .8em; padding-inline-end: 1.4em }
+span.cas, tr.marker td.name, tr.marker td.atype { font-size: small }
 td.refid { font-size: smaller }
+td.trid { padding-inline-start: .8em; padding-inline-end: 1.4em }
 span.cas { margin-inline-start: .3em }
 @media (prefers-color-scheme: light) { html { color-scheme: light } }
 @media (prefers-color-scheme: dark) { html { color-scheme: dark } }
@@ -63,8 +63,8 @@ span.cas { margin-inline-start: .3em }
 <tr class="marker"><td class="trid"></td><td class="name"></td><td class="refid">1:512:0:0:0:0:0:0:0:0</td><td></td><td></td><td></td><td></td><td class="atype">MARKER</td><td></td><td></td><td></td><td></td><td></td><td></td><td>[marker hidden]</td><td></td><td></td></tr>
 <tr class="marker"><td class="trid"></td><td class="name"></td><td class="refid">1:512:0:0:0:0:0:0:0:0</td><td></td><td></td><td></td><td></td><td class="atype">MARKER</td><td></td><td></td><td></td><td></td><td></td><td></td><td>[marker hidden]</td><td></td><td></td></tr>
 <tr class="marker"><td class="trid"></td><td class="name">service list 12</td><td class="refid">1:64:12:0:0:0:0:0:0:0</td><td></td><td></td><td></td><td></td><td class="atype">MARKER</td><td></td><td></td><td></td><td></td><td></td><td></td><td>[marker]</td><td></td><td></td></tr>
-<tr><td class="trid">1</td><td class="chname">Eutelsat Data 1</td><td class="refid"><span>1:0:0:4267:2F44:13E:820000:0:0:0</span></td><td>16999</td><td>12100</td><td>318</td><td>820000</td><td>Data</td><td class="scas"></td><td class="pname">MIT-xperts GmbH</td><td>10930</td><td>H</td><td>30000</td><td>2/3</td><td>DVB-S2</td><td>13.0E</td><td>Hot Bird</td></tr>
-<tr><td class="trid">2</td><td class="chname">Eutelsat Data 1</td><td class="refid"><span>1:0:0:69A:2454:13E:820000:0:0:0</span></td><td>1690</td><td>9300</td><td>318</td><td>820000</td><td>Data</td><td class="scas"></td><td class="pname">MIT-xperts GmbH</td><td>12576</td><td>H</td><td>27500</td><td>3/4</td><td>DVB-S2</td><td>13.0E</td><td>Hot Bird</td></tr>
+<tr><td class="trid">1</td><td class="chname">Eutelsat Data 1</td><td class="refid"><span>1:0:0:4267:2F44:13E:820000:0:0:0</span></td><td>16999</td><td>12100</td><td>318</td><td>820000</td><td>Data</td><td class="scas"></td><td class="pname">Eutelsat</td><td>10930</td><td>H</td><td>30000</td><td>2/3</td><td>DVB-S2</td><td>13.0E</td><td>Hot Bird</td></tr>
+<tr><td class="trid">2</td><td class="chname">Eutelsat Data 1</td><td class="refid"><span>1:0:0:69A:2454:13E:820000:0:0:0</span></td><td>1690</td><td>9300</td><td>318</td><td>820000</td><td>Data</td><td class="scas"></td><td class="pname">Eutelsat</td><td>12576</td><td>H</td><td>27500</td><td>3/4</td><td>DVB-S2</td><td>13.0E</td><td>Hot Bird</td></tr>
 <tr class="marker"><td class="trid"></td><td class="name"></td><td class="refid">1:512:0:0:0:0:0:0:0:0</td><td></td><td></td><td></td><td></td><td class="atype">MARKER</td><td></td><td></td><td></td><td></td><td></td><td></td><td>[marker hidden]</td><td></td><td></td></tr>
 <tr class="marker"><td class="trid"></td><td class="name"></td><td class="refid">1:832:0:0:0:0:0:0:0:0</td><td></td><td></td><td></td><td></td><td class="atype">MARKER</td><td></td><td></td><td></td><td></td><td></td><td></td><td>[marker hidden]</td><td></td><td></td></tr>
 <tr class="marker"><td class="trid"></td><td class="name"></td><td class="refid">1:512:0:0:0:0:0:0:0:0</td><td></td><td></td><td></td><td></td><td class="atype">MARKER</td><td></td><td></td><td></td><td></td><td></td><td></td><td>[marker hidden]</td><td></td><td></td></tr>
@@ -74,24 +74,18 @@ span.cas { margin-inline-start: .3em }
 <tr><td class="trid">4</td><td class="chname">Test GC 2</td><td class="refid"><span>1:0:1:338D:1388:13E:820000:0:0:0</span></td><td>13197</td><td>5000</td><td>318</td><td>820000</td><td>TV</td><td class="scas"></td><td class="pname">GLOBECAST</td><td>11727</td><td>V</td><td>29900</td><td>3/4</td><td>DVB-S2</td><td>13.0E</td><td>Hot Bird</td></tr>
 <tr><td class="trid">5</td><td class="chname">Test GC 3</td><td class="refid"><span>1:0:1:338E:1388:13E:820000:0:0:0</span></td><td>13198</td><td>5000</td><td>318</td><td>820000</td><td>TV</td><td class="scas"></td><td class="pname">GLOBECAST</td><td>11727</td><td>V</td><td>29900</td><td>3/4</td><td>DVB-S2</td><td>13.0E</td><td>Hot Bird</td></tr>
 <tr><td class="trid">6</td><td class="chname">Test GC 4</td><td class="refid"><span>1:0:1:338F:1388:13E:820000:0:0:0</span></td><td>13199</td><td>5000</td><td>318</td><td>820000</td><td>TV</td><td class="scas"></td><td class="pname">GLOBECAST</td><td>11727</td><td>V</td><td>29900</td><td>3/4</td><td>DVB-S2</td><td>13.0E</td><td>Hot Bird</td></tr>
+<tr class="marker"><td class="trid"></td><td class="name">service list 14</td><td class="refid">1:64:14:0:0:0:0:0:0:0</td><td></td><td></td><td></td><td></td><td class="atype">MARKER</td><td></td><td></td><td></td><td></td><td></td><td></td><td>[marker]</td><td></td><td></td></tr>
 <tr class="marker"><td class="trid">7</td><td class="name"></td><td class="refid">1:320:0:0:0:0:0:0:0:0</td><td></td><td></td><td></td><td></td><td class="atype">MARKER</td><td></td><td></td><td></td><td></td><td></td><td></td><td>[marker numbered]</td><td></td><td></td></tr>
 <tr class="marker"><td class="trid">8</td><td class="name"></td><td class="refid">1:320:0:0:0:0:0:0:0:0</td><td></td><td></td><td></td><td></td><td class="atype">MARKER</td><td></td><td></td><td></td><td></td><td></td><td></td><td>[marker numbered]</td><td></td><td></td></tr>
 <tr class="marker"><td class="trid">9</td><td class="name"></td><td class="refid">1:320:0:0:0:0:0:0:0:0</td><td></td><td></td><td></td><td></td><td class="atype">MARKER</td><td></td><td></td><td></td><td></td><td></td><td></td><td>[marker numbered]</td><td></td><td></td></tr>
 <tr class="marker"><td class="trid">10</td><td class="name"></td><td class="refid">1:320:0:0:0:0:0:0:0:0</td><td></td><td></td><td></td><td></td><td class="atype">MARKER</td><td></td><td></td><td></td><td></td><td></td><td></td><td>[marker numbered]</td><td></td><td></td></tr>
-<tr class="marker"><td class="trid"></td><td class="name">service list 14</td><td class="refid">1:64:14:0:0:0:0:0:0:0</td><td></td><td></td><td></td><td></td><td class="atype">MARKER</td><td></td><td></td><td></td><td></td><td></td><td></td><td>[marker]</td><td></td><td></td></tr>
-<tr><td class="trid">11</td><td class="chname">MBS - Test 1</td><td class="refid"><span>1:0:1:1F4B:319C:13E:820000:0:0:0</span></td><td>8011</td><td>12700</td><td>318</td><td>820000</td><td>TV</td><td class="scas"></td><td class="pname">MB Satellite</td><td>11054</td><td>H</td><td>27500</td><td>5/6</td><td>DVB-S</td><td>13.0E</td><td>Hot Bird</td></tr>
-<tr><td class="trid">12</td><td class="chname">MBS - Test 2</td><td class="refid"><span>1:0:1:1F61:319C:13E:820000:0:0:0</span></td><td>8033</td><td>12700</td><td>318</td><td>820000</td><td>TV</td><td class="scas"></td><td class="pname">MB Satellite</td><td>11054</td><td>H</td><td>27500</td><td>5/6</td><td>DVB-S</td><td>13.0E</td><td>Hot Bird</td></tr>
-<tr><td class="trid">13</td><td class="chname">MBS - Test 3</td><td class="refid"><span>1:0:1:1F62:319C:13E:820000:0:0:0</span></td><td>8034</td><td>12700</td><td>318</td><td>820000</td><td>TV</td><td class="scas"></td><td class="pname">MB Satellite</td><td>11054</td><td>H</td><td>27500</td><td>5/6</td><td>DVB-S</td><td>13.0E</td><td>Hot Bird</td></tr>
-<tr><td class="trid">14</td><td class="chname">MBS - Test 4</td><td class="refid"><span>1:0:1:1F63:319C:13E:820000:0:0:0</span></td><td>8035</td><td>12700</td><td>318</td><td>820000</td><td>TV</td><td class="scas"></td><td class="pname">MB Satellite</td><td>11054</td><td>H</td><td>27500</td><td>5/6</td><td>DVB-S</td><td>13.0E</td><td>Hot Bird</td></tr>
-<tr><td class="trid">15</td><td class="chname">MBS - Test 5</td><td class="refid"><span>1:0:1:1F64:319C:13E:820000:0:0:0</span></td><td>8036</td><td>12700</td><td>318</td><td>820000</td><td>TV</td><td class="scas"></td><td class="pname">MB Satellite</td><td>11054</td><td>H</td><td>27500</td><td>5/6</td><td>DVB-S</td><td>13.0E</td><td>Hot Bird</td></tr>
-<tr><td class="trid">16</td><td class="chname">MBS - Test 6</td><td class="refid"><span>1:0:1:1F65:319C:13E:820000:0:0:0</span></td><td>8037</td><td>12700</td><td>318</td><td>820000</td><td>TV</td><td class="scas"></td><td class="pname">MB Satellite</td><td>11054</td><td>H</td><td>27500</td><td>5/6</td><td>DVB-S</td><td>13.0E</td><td>Hot Bird</td></tr>
 </tbody>
 </table>
 </div>
 <div class="footer">
 Source File: <b><a href="https://github.com/ctlcltd/e2se-seeds/tree/main/enigma_db/userbouquet.dbe03.tv">userbouquet.dbe03.tv</a></b><br>
-Editor: <b>e2 SAT Editor 1.4 <a href="https://github.com/ctlcltd/e2-sat-editor">https://github.com/ctlcltd/e2-sat-editor</a></b><br>
-Datetime: <b>2024-04-16 14:54:32+0200</b><br>
+Editor: <b>e2 SAT Editor 1.6 <a href="https://github.com/ctlcltd/e2-sat-editor">https://github.com/ctlcltd/e2-sat-editor</a></b><br>
+Datetime: <b>2024-07-26 12:11:09+0200</b><br>
 Content Type: <b>seeds (source file)</b><br>
 License: <a href="https://github.com/ctlcltd/e2se-seeds/blob/main/LICENSE-MIT">MIT License</a><br>
 License: <a href="https://github.com/ctlcltd/e2se-seeds/blob/main/LICENSE-GPL-3.0-or-later">GNU GPLv3 License</a><br>
