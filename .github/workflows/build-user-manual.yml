@@ -1,4 +1,4 @@
-name: test-user-manual
+name: build-user-manual
 
 on:
   workflow_dispatch:

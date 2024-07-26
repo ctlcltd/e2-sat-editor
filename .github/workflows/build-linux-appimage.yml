@@ -1,4 +1,4 @@
-name: test-linux-appimage
+name: build-linux-appimage
 
 on:
   workflow_dispatch:
