@@ -218,48 +218,48 @@ void e2db_parser::parse_e2db()
 			{
 				if (this->e2db.count("services.locked"))
 				{
-					ifstream ilocked (this->e2db["services.locked"].path);
+					ifstream iparental (this->e2db["services.locked"].path);
 					try
 					{
-						parse_e2db_parentallock_list(PARENTALLOCK::locked, ilocked);
+						parse_e2db_parentallock_list(PARENTALLOCK::locked, iparental);
 					}
 					catch (...)
 					{
-						ilocked.close();
+						iparental.close();
 						throw;
 					}
-					ilocked.close();
+					iparental.close();
 				}
 			}
 			else
 			{
 				if (this->e2db.count("blacklist"))
 				{
-					ifstream ilocked (this->e2db["blacklist"].path);
+					ifstream iparental (this->e2db["blacklist"].path);
 					try
 					{
-						parse_e2db_parentallock_list(PARENTALLOCK::blacklist, ilocked);
+						parse_e2db_parentallock_list(PARENTALLOCK::blacklist, iparental);
 					}
 					catch (...)
 					{
-						ilocked.close();
+						iparental.close();
 						throw;
 					}
-					ilocked.close();
+					iparental.close();
 				}
 				if (this->e2db.count("whitelist"))
 				{
-					ifstream ilocked (this->e2db["whitelist"].path);
+					ifstream iparental (this->e2db["whitelist"].path);
 					try
 					{
-						parse_e2db_parentallock_list(PARENTALLOCK::whitelist, ilocked);
+						parse_e2db_parentallock_list(PARENTALLOCK::whitelist, iparental);
 					}
 					catch (...)
 					{
-						ilocked.close();
+						iparental.close();
 						throw;
 					}
-					ilocked.close();
+					iparental.close();
 				}
 			}
 		}
@@ -402,24 +402,24 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 			{
 				if (this->e2db.count("services.locked"))
 				{
-					stringstream ilocked;
-					ilocked.write(&files[this->e2db["services.locked"].filename].data[0], files[this->e2db["services.locked"].filename].size);
-					parse_e2db_parentallock_list(PARENTALLOCK::locked, ilocked);
+					stringstream iparental;
+					iparental.write(&files[this->e2db["services.locked"].filename].data[0], files[this->e2db["services.locked"].filename].size);
+					parse_e2db_parentallock_list(PARENTALLOCK::locked, iparental);
 				}
 			}
 			else
 			{
 				if (this->e2db.count("blacklist"))
 				{
-					stringstream ilocked;
-					ilocked.write(&files[this->e2db["blacklist"].filename].data[0], files[this->e2db["blacklist"].filename].size);
-					parse_e2db_parentallock_list(PARENTALLOCK::blacklist, ilocked);
+					stringstream iparental;
+					iparental.write(&files[this->e2db["blacklist"].filename].data[0], files[this->e2db["blacklist"].filename].size);
+					parse_e2db_parentallock_list(PARENTALLOCK::blacklist, iparental);
 				}
 				if (this->e2db.count("whitelist"))
 				{
-					stringstream ilocked;
-					ilocked.write(&files[this->e2db["whitelist"].filename].data[0], files[this->e2db["whitelist"].filename].size);
-					parse_e2db_parentallock_list(PARENTALLOCK::whitelist, ilocked);
+					stringstream iparental;
+					iparental.write(&files[this->e2db["whitelist"].filename].data[0], files[this->e2db["whitelist"].filename].size);
+					parse_e2db_parentallock_list(PARENTALLOCK::whitelist, iparental);
 				}
 			}
 		}
@@ -1002,7 +1002,7 @@ void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string filename)
 }
 
 //TODO improve parental by channel reference, by userbouquet and compatibility
-void e2db_parser::parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& ilocked)
+void e2db_parser::parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& iparental)
 {
 	debug("parse_e2db_parentallock_list", "ltype", ltype);
 
@@ -1014,11 +1014,11 @@ void e2db_parser::parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& iloc
 	service_reference ref;
 
 	if (ltype == PARENTALLOCK::locked)
-		std::getline(ilocked, line);
+		std::getline(iparental, line);
 
 	int count = 0;
 
-	while (std::getline(ilocked, line))
+	while (std::getline(iparental, line))
 	{
 		if (PARSER_FIX_CRLF && check_crlf(ctx, line)) fix_crlf(line);
 
@@ -1577,6 +1577,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 	unordered_map<string, int> depth;
 	depth["zapit"] = 0;
 	depth["sat"] = 1;
+	depth["terrestrial"] = 1;
 	if (ver > 1)
 	{
 		depth["TS"] = 2;
@@ -1664,17 +1665,23 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 				else if (key == "on")
 					tx.onid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "frq")
-					tx.freq = int (std::atoi(val.data()) / 1e3);
+				{
+					if (ver > 2 && tr.ytype == YTYPE::terrestrial)
+						tx.freq = int (std::atoi(val.data()) / 1e2);
+					else
+						tx.freq = int (std::atoi(val.data()) / 1e3);
+				}
 				else if (key == "inv")
 				{
 					int i = std::atoi(val.data());
-					tx.inv = (ver < 3 && i != 2 ? i : 0);
+					tx.inv = (i != 2 ? i : 0);
 				}
 				else if (key == "sr")
 					tx.sr = int (std::atoi(val.data()) / 1e3);
 				else if (key == "fec")
 				{
 					int i = std::atoi(val.data());
+
 					if (ver == 4)
 					{
 						if (i != 0 && i < 4)
@@ -1689,11 +1696,14 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 							tx.fec = 5;
 						else if (i == 8)
 							tx.fec = 6;
+						else if (i == 9)
+							tx.fec = 0;
 						else if (i == 10)
 							tx.fec = 7;
 						else if (i == 11)
 							tx.fec = 9;
 					}
+					//TODO
 					else if (ver == 3)
 					{
 						if (i < 4)
@@ -1702,6 +1712,8 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 							tx.fec = 4;
 						else if (i == 7)
 							tx.fec = 5;
+						else
+							tx.fec = 3; // 21
 					}
 					else if (ver == 2)
 					{
@@ -1711,10 +1723,41 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 				}
 				else if (key == "pol")
 					tx.pol = std::atoi(val.data());
+				else if (key == "band")
+					tx.band = std::atoi(val.data());
+				else if (key == "HP")
+					tx.hpfec = std::atoi(val.data());
+				else if (key == "LP")
+					tx.lpfec = std::atoi(val.data());
+				else if (key == "const")
+					tx.tmod = 3;
+				else if (key == "trans")
+					tx.tmx = std::atoi(val.data());
+				else if (key == "guard")
+					tx.guard = std::atoi(val.data());
+				else if (key == "hierarchy")
+					tx.hier = std::atoi(val.data());
 				else if (key == "mod")
-					tx.mod = std::atoi(val.data());
+				{
+					int i = std::atoi(val.data());
+
+					if (tr.ytype == YTYPE::terrestrial && tx.tmod == 3)
+						tx.tmod = i / 2; //TODO
+					else
+						tx.mod = i;
+				}
 				else if (key == "sys")
-					tx.sys = std::atoi(val.data());
+				{
+					int i = std::atoi(val.data());
+
+					tx.sys = i;
+
+					if (ver == 4 && tr.ytype == YTYPE::terrestrial)
+					{
+						if (i == 4)
+							tx.sys = 0;
+					}
+				}
 				else if (key == "i")
 					ch.ssid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "n")
@@ -1799,7 +1842,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 			}
 			else
 			{
-				if (step == 0 && key == "name")
+				if (step == 1 && key == "name")
 				{
 					conv_xml_value(val);
 					tr.name = val;
@@ -1851,7 +1894,16 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 			}
 		}
 
-		if (add && step == 1)
+		if (! add && step == 1)
+		{
+			if (ver > 2 && tag == "terrestrial")
+				tr.ytype = YTYPE::terrestrial;
+			else if (tr.pos == 0)
+				tr.ytype = YTYPE::terrestrial;
+			else
+				tr.ytype = YTYPE::satellite;
+		}
+		else if (add && step == 1)
 		{
 			aidx++;
 			tr.index = aidx;
@@ -1861,6 +1913,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 		else if (! add && step == 2)
 		{
 			bidx++;
+			tx.ytype = tr.ytype;
 			tx.pos = tr.pos;
 			tx.dvbns = value_transponder_dvbns(tx);
 			add_transponder(bidx, tx);

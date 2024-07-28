@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 
 
+## [v1.7.0]
+
+**Version**: 1.7  
+**Release Date**: *unreleased*  
+**Full Changelog**: [v1.6.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.6.0...HEAD)
+
+- Added Neutrino terrestrial services support
+
+
 ## [v1.6.0]
 
 **Version**: 1.6  

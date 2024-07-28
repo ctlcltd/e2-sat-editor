@@ -657,7 +657,7 @@ QStringList e2db::entryService(service ch)
 {
 	QString chname = fixUnicodeChars(ch.chname);
 	QString chid = QString::fromStdString(ch.chid);
-	QString locked = ch.locked ? " " : "";
+	QString parental = ch.parental ? " " : "";
 	QString txid = QString::fromStdString(ch.txid);
 	QString ssid = QString::number(ch.ssid);
 	QString tsid = QString::number(ch.tsid);
@@ -687,7 +687,7 @@ QStringList e2db::entryService(service ch)
 		pname.append(QChar(0x200e)); // LRM
 	}
 
-	QStringList entry = QStringList ({chname, locked, chid, txid, ssid, tsid, stype, scas, pname});
+	QStringList entry = QStringList ({chname, parental, chid, txid, ssid, tsid, stype, scas, pname});
 
 	if (entries.transponders.count(ch.txid))
 		entry.append(entries.transponders[ch.txid]);

@@ -91,7 +91,7 @@ class mainView : public viewAbstract
 			refid,
 			idx,
 			numbered,
-			locked,
+			parental,
 			chid,
 			reftype = 8,
 			uri = 13

@@ -1612,7 +1612,7 @@ void e2db::set_service_parentallock(string chid)
 		return error("set_service_parentallock", "Error", msg("Service \"%s\" not exists.", chid));
 
 	service& ch = db.services[chid];
-	ch.locked = true;
+	ch.parental = true;
 }
 
 void e2db::unset_service_parentallock(string chid)
@@ -1623,7 +1623,7 @@ void e2db::unset_service_parentallock(string chid)
 		return error("unset_service_parentallock", "Error", msg("Service \"%s\" not exists.", chid));
 
 	service& ch = db.services[chid];
-	ch.locked = false;
+	ch.parental = false;
 }
 
 void e2db::set_userbouquet_parentallock(string bname)
@@ -1634,7 +1634,7 @@ void e2db::set_userbouquet_parentallock(string bname)
 		return error("set_userbouquet_parentallock", "Error", msg("Userbouquet \"%s\" not exists.", bname));
 
 	userbouquet& ub = userbouquets[bname];
-	ub.locked = true;
+	ub.parental = true;
 }
 
 void e2db::unset_userbouquet_parentallock(string bname)
@@ -1645,7 +1645,7 @@ void e2db::unset_userbouquet_parentallock(string bname)
 		return error("unset_userbouquet_parentallock", "Error", msg("Userbouquet \"%s\" not exists.", bname));
 
 	userbouquet& ub = userbouquets[bname];
-	ub.locked = false;
+	ub.parental = false;
 }
 
 string e2db::get_filepath()

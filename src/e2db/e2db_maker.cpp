@@ -953,6 +953,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 		{
 			transponder tx = db.transponders[x.second];
 			table& tr = db.tables[tx.pos];
+			tr.ytype = tx.ytype;
 			tr.pos = tx.pos;
 
 			if (tuners_pos.count(tx.pos))
@@ -990,7 +991,6 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 	string iname = dname;
 	unordered_map<int, string> tags;
 	tags[0] = "zapit";
-	tags[1] = "sat";
 	if (ver > 1)
 	{
 		tags[2] = "TS";
@@ -1015,17 +1015,30 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 		int pos = std::stoi(x.second);
 		table tr = db.tables[pos];
 
+		if (ver > 3 && tr.ytype == YTYPE::terrestrial)
+			tags[1] = "terrestrial";
+		else
+			tags[1] = "sat";
+
 		ss << "\t" << '<' << tags[1];
 		ss << ' ' << "name=\"" << conv_xml_value(tr.name) << "\"";
 		if (ver > 2)
 		{
 			ss << ' ' << "position=\"" << (tr.pos != -1 ? tr.pos : 0) << "\"";
-			ss << ' ' << "diseqc=\"" << (tr.diseqc != -1 ? tr.diseqc : 0) << "\"";
-			ss << ' ' << "uncommited=\"" << (tr.uncomtd != -1 ? tr.uncomtd : 0) << "\"";
+
+			if (tr.ytype != YTYPE::terrestrial)
+			{
+				ss << ' ' << "diseqc=\"" << (tr.diseqc != -1 ? tr.diseqc : -1) << "\"";
+				ss << ' ' << "uncommited=\"" << (tr.uncomtd != -1 ? tr.uncomtd : -1) << "\"";
+			}
 		}
 		else
 		{
-			ss << ' ' << "diseqc=\"" << (tr.diseqc != -1 ? tr.diseqc : 0) << "\"";
+			if (tr.ytype != YTYPE::terrestrial)
+			{
+				ss << ' ' << "diseqc=\"" << (tr.diseqc != -1 ? tr.diseqc : 0) << "\"";
+			}
+
 			ss << ' ' << "position=\"" << (tr.pos != -1 ? tr.pos : 0) << "\"";
 		}
 		ss << '>' << endl;
@@ -1039,9 +1052,32 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 			{
 				ss << ' ' << "id=\"" << hex << setfill('0') << setw(4) << tx.tsid << dec << "\"";
 				ss << ' ' << "on=\"" << hex << setfill('0') << setw(4) << tx.onid << dec << "\"";
-				ss << ' ' << "frq=\"" << int (tx.freq * 1e3) << "\"";
-				ss << ' ' << "inv=\"" << (ver < 3 && tx.inv != 2 ? tx.inv : 0) << "\"";
-				ss << ' ' << "sr=\"" << int (tx.sr * 1e3) << "\"";
+				if (ver > 2 && tr.ytype == YTYPE::terrestrial)
+					ss << ' ' << "frq=\"" << int (tx.freq * 1e2) << "\"";
+				else
+					ss << ' ' << "frq=\"" << int (tx.freq * 1e3) << "\"";
+				ss << ' ' << "inv=\"" << (tx.inv != -1 && tx.inv != 0 ? tx.inv : 2) << "\"";
+				if (tr.ytype == YTYPE::terrestrial)
+				{
+					if (ver < 3)
+						ss << ' ' << "sr=\"0\"";
+				}
+				else
+				{
+					ss << ' ' << "sr=\"" << (tx.sr != -1 && tx.sr != 0 ? int (tx.sr * 1e3) : 0) << "\"";
+				}
+				if (ver > 2 && tr.ytype == YTYPE::terrestrial)
+				{
+					ss << ' ' << "band=\"" << (tx.band != -1 ? tx.band : 0) << "\"";
+					ss << ' ' << "HP=\"" << (tx.hpfec != -1 ? tx.hpfec : 5) << "\"";
+					ss << ' ' << "LP=\"" << (tx.lpfec != -1 ? tx.lpfec : 5) << "\"";
+					if (tx.tmod != -1)
+						ss << ' ' << "const=\"" << 1 << "\"";
+					ss << ' ' << "trans=\"" << (tx.tmx != -1 ? tx.tmx : 2) << "\"";
+					ss << ' ' << "guard=\"" << (tx.guard != -1 ? tx.guard : 4) << "\"";
+					ss << ' ' << "hierarchy=\"" << (tx.hier != -1 ? tx.hier : 4) << "\"";
+				}
+				else
 				{
 					int i = 0;
 					if (ver == 4)
@@ -1081,11 +1117,21 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 					}
 					ss << ' ' << "fec=\"" << i << "\"";
 				}
-				ss << ' ' << "pol=\"" << tx.pol << "\"";
+				if (tr.ytype != YTYPE::terrestrial)
+					ss << ' ' << "pol=\"" << tx.pol << "\"";
 				if (ver > 3)
 				{
-					ss << ' ' << "mod=\"" << (tx.mod != -1 ? tx.mod : 0) << "\"";
-					ss << ' ' << "sys=\"" << (tx.sys != -1 ? tx.sys : 0) << "\"";
+					//TODO
+					if (tr.ytype == YTYPE::terrestrial)
+					{
+						ss << ' ' << "mod=\"" << (tx.tmod != -1 ? tx.tmod * 2 : 6) << "\"";
+						ss << ' ' << "sys=\"" << 4 << "\"";
+					}
+					else
+					{
+						ss << ' ' << "mod=\"" << (tx.mod != -1 ? tx.mod : 0) << "\"";
+						ss << ' ' << "sys=\"" << (tx.sys != -1 ? tx.sys : 0) << "\"";
+					}
 				}
 			}
 			else
@@ -1094,7 +1140,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 				ss << ' ' << "onid=\"" << hex << setfill('0') << setw(4) << tx.onid << dec << "\"";
 				ss << ' ' << "frequency=\"" << int (tx.freq * 1e3) << "\"";
 				ss << ' ' << "inversion=\"" << (tx.inv != 2 ? tx.inv : 0) << "\"";
-				ss << ' ' << "symbol_rate=\"" << int (tx.sr * 1e3) << "\"";
+				ss << ' ' << "symbol_rate=\"" << (tx.sr != -1 && tx.sr != 0 ? int (tx.sr * 1e3) : 0) << "\"";
 				{
 					int i = 0;
 					if (tx.fec == 0)
@@ -1113,7 +1159,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 						i = 6;
 					ss << ' ' << "fec_inner=\"" << i << "\"";
 				}
-				ss << ' ' << "polarization=\"" << tx.pol << "\"";
+				ss << ' ' << "polarization=\"" << (tx.pol != -1 ? tx.pol : 0) << "\"";
 			}
 
 			ss << '>' << endl;
@@ -1132,58 +1178,64 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 					{
 						ss << ' ' << "i=\"" << hex << setfill('0') << setw(4) << ch.ssid << dec << "\"";
 						ss << ' ' << "n=\"" << conv_xml_value(ch.chname) << "\"";
+						if (tr.ytype != YTYPE::terrestrial)
 						{
-							int cval = 0;
-							string cpx = (SDATA_PIDS::vpid > 9 ? "" : "0") + to_string(SDATA_PIDS::vpid);
-							for (string & w : ch.data[SDATA::c])
-								if (w.substr(0, 2) == cpx)
-									cval = int (std::strtol(w.substr(2).data(), NULL, 16));
-							ss << ' ' << "v=\"" << hex << cval << dec << "\"";
-						}
-						{
-							int cval = 0;
-							string cpx = (SDATA_PIDS::mpegapid > 9 ? "" : "0") + to_string(SDATA_PIDS::mpegapid);
-							for (string & w : ch.data[SDATA::c])
-								if (w.substr(0, 2) == cpx)
-									cval = int (std::strtol(w.substr(2).data(), NULL, 16));
-							ss << ' ' << "a=\"" << hex << cval << dec << "\"";
-						}
-						{
-							int cval = 0;
-							string cpx = (SDATA_PIDS::pcrpid > 9 ? "" : "0") + to_string(SDATA_PIDS::pcrpid);
-							for (string & w : ch.data[SDATA::c])
-								if (w.substr(0, 2) == cpx)
-									cval = int (std::strtol(w.substr(2).data(), NULL, 16));
-							ss << ' ' << "p=\"" << hex << cval << dec << "\"";
-						}
-						{
-							int cval = 0;
-							string cpx = (SDATA_PIDS::pmt > 9 ? "" : "0") + to_string(SDATA_PIDS::pmt);
-							for (string & w : ch.data[SDATA::c])
-								if (w.substr(0, 2) == cpx)
-									cval = int (std::strtol(w.substr(2).data(), NULL, 16));
-							ss << ' ' << "pmt=\"" << hex << cval << dec << "\"";
-						}
-						{
-							int cval = 0;
-							string cpx = (SDATA_PIDS::tpid > 9 ? "" : "0") + to_string(SDATA_PIDS::tpid);
-							for (string & w : ch.data[SDATA::c])
-								if (w.substr(0, 2) == cpx)
-									cval = int (std::strtol(w.substr(2).data(), NULL, 16));
-							ss << ' ' << "tx=\"" << hex << cval << dec << "\"";
+							{
+								int cval = 0;
+								string cpx = (SDATA_PIDS::vpid > 9 ? "" : "0") + to_string(SDATA_PIDS::vpid);
+								for (string & w : ch.data[SDATA::c])
+									if (w.substr(0, 2) == cpx)
+										cval = int (std::strtol(w.substr(2).data(), NULL, 16));
+								ss << ' ' << "v=\"" << hex << cval << dec << "\"";
+							}
+							{
+								int cval = 0;
+								string cpx = (SDATA_PIDS::mpegapid > 9 ? "" : "0") + to_string(SDATA_PIDS::mpegapid);
+								for (string & w : ch.data[SDATA::c])
+									if (w.substr(0, 2) == cpx)
+										cval = int (std::strtol(w.substr(2).data(), NULL, 16));
+								ss << ' ' << "a=\"" << hex << cval << dec << "\"";
+							}
+							{
+								int cval = 0;
+								string cpx = (SDATA_PIDS::pcrpid > 9 ? "" : "0") + to_string(SDATA_PIDS::pcrpid);
+								for (string & w : ch.data[SDATA::c])
+									if (w.substr(0, 2) == cpx)
+										cval = int (std::strtol(w.substr(2).data(), NULL, 16));
+								ss << ' ' << "p=\"" << hex << cval << dec << "\"";
+							}
+							{
+								int cval = 0;
+								string cpx = (SDATA_PIDS::pmt > 9 ? "" : "0") + to_string(SDATA_PIDS::pmt);
+								for (string & w : ch.data[SDATA::c])
+									if (w.substr(0, 2) == cpx)
+										cval = int (std::strtol(w.substr(2).data(), NULL, 16));
+								ss << ' ' << "pmt=\"" << hex << cval << dec << "\"";
+							}
+							{
+								int cval = 0;
+								string cpx = (SDATA_PIDS::tpid > 9 ? "" : "0") + to_string(SDATA_PIDS::tpid);
+								for (string & w : ch.data[SDATA::c])
+									if (w.substr(0, 2) == cpx)
+										cval = int (std::strtol(w.substr(2).data(), NULL, 16));
+								ss << ' ' << "tx=\"" << hex << cval << dec << "\"";
+							}
 						}
 						ss << ' ' << "t=\"" << hex << ch.stype << dec << "\"";
 						if (ver > 2)
 						{
+							if (tr.ytype != YTYPE::terrestrial)
 							{
-								int cval = 0;
-								string cpx = (SDATA_PIDS::vtype > 9 ? "" : "0") + to_string(SDATA_PIDS::vtype);
-								for (string & w : ch.data[SDATA::c])
-									if (w.substr(0, 2) == cpx)
-										cval = int (std::strtol(w.substr(2).data(), NULL, 16));
-								ss << ' ' << "vt=\"" << hex << cval << dec << "\"";
+								{
+									int cval = 0;
+									string cpx = (SDATA_PIDS::vtype > 9 ? "" : "0") + to_string(SDATA_PIDS::vtype);
+									for (string & w : ch.data[SDATA::c])
+										if (w.substr(0, 2) == cpx)
+											cval = int (std::strtol(w.substr(2).data(), NULL, 16));
+									ss << ' ' << "vt=\"" << hex << cval << dec << "\"";
+								}
 							}
-							ss << ' ' << "s=\"" << (ch.data[SDATA::C].empty() ? 0 : 1) << "\"";
+							ss << ' ' << "s=\"" << (ch.data.count(SDATA::C) ? 1 : 0) << "\"";
 							ss << ' ' << "num=\"" << ch.snum << "\"";
 							//TODO zapit flags
 							ss << ' ' << "f=\"" << 0 << "\"";
@@ -1219,6 +1271,9 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 		size_t pos = 0;
 		for (auto & s : comments[iname])
 		{
+			if (s.text.find("Editor:") == 1 || s.text.find("Datetime:") == 1)
+				continue;
+
 			string line;
 			while (s.ln != i)
 			{
@@ -1233,14 +1288,12 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 			pos += line.size();
 		}
 	}
-	else
-	{
-		string editor = editor_string();
-		string timestamp = editor_timestamp();
 
-		str += "<!-- Editor: " + editor + " -->\n";
-		str += "<!-- Datetime: " + timestamp + " -->\n";
-	}
+	string editor = editor_string();
+	string timestamp = editor_timestamp();
+
+	str += "<!-- Editor: " + editor + " -->\n";
+	str += "<!-- Datetime: " + timestamp + " -->\n";
 
 	file.filename = filename;
 	file.mime = "text/xml";
@@ -1325,7 +1378,7 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 				{
 					ss << ' ' << "i=\"" << hex << ch.ssid << dec << "\"";
 					ss << ' ' << "n=\"" << conv_xml_value(ch.chname) << "\"";
-					ss << ' ' << "t=\"" << hex << setfill('0') << setw(4) << ch.tsid << dec << "\"";
+					ss << ' ' << "t=\"" << hex << ch.tsid << dec << "\"";
 					ss << ' ' << "on=\"" << hex << ch.onid << dec << "\"";
 					ss << ' ' << "s=\"" << tx.pos << "\"";
 					ss << ' ' << "frq=\"" << tx.freq << "\"";
@@ -1447,9 +1500,9 @@ void e2db_maker::make_parentallock_list(string filename, PARENTALLOCK ltype, e2d
 		for (auto & x : userbouquets)
 		{
 			userbouquet ub = x.second;
-			bool locked = db.parental == PARENTALLOCK::whitelist ? ! ub.locked : ub.locked;
+			bool parental = db.parental == PARENTALLOCK::whitelist ? ! ub.parental : ub.parental;
 
-			if (locked)
+			if (parental)
 			{
 				size_t pos = ub.bname.find('.');
 				size_t n = ub.bname.rfind('.');
@@ -1469,9 +1522,9 @@ void e2db_maker::make_parentallock_list(string filename, PARENTALLOCK ltype, e2d
 		for (auto & x : userbouquets)
 		{
 			userbouquet ub = x.second;
-			bool locked = db.parental == PARENTALLOCK::whitelist ? ! ub.locked : ub.locked;
+			bool parental = db.parental == PARENTALLOCK::whitelist ? ! ub.parental : ub.parental;
 
-			if (locked)
+			if (parental)
 			{
 				string bname = ub.bname;
 
@@ -1530,9 +1583,9 @@ void e2db_maker::make_parentallock_list(string filename, PARENTALLOCK ltype, e2d
 	for (auto & x : db.services)
 	{
 		service ch = x.second;
-		bool locked = db.parental == PARENTALLOCK::whitelist ? ! ch.locked : ch.locked;
+		bool parental = db.parental == PARENTALLOCK::whitelist ? ! ch.parental : ch.parental;
 
-		if (locked)
+		if (parental)
 		{
 			ss << "1:0:";
 			ss << hex;

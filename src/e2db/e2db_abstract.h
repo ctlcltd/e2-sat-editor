@@ -335,6 +335,7 @@ struct e2db_abstract : protected e2se::log_factory
 			int snum = 0;
 			int srcid = 0;
 			int index = -1;
+			bool parental = false;
 			bool locked = false;
 			string txid;
 			string chname;
@@ -435,8 +436,9 @@ struct e2db_abstract : protected e2se::log_factory
 			int utype = 7;
 			// channels <chid string, channel_reference struct>
 			unordered_map<string, channel_reference> channels;
-			bool locked = false;
+			bool parental = false;
 			bool hidden = false;
+			bool locked = false;
 			string sref;
 			string order;
 			int index = -1;
@@ -445,7 +447,8 @@ struct e2db_abstract : protected e2se::log_factory
 		struct table
 		{
 			string name;
-			int pos = -1;
+			int ytype = 0;
+			int pos = 0;
 			int diseqc = -1;
 			int uncomtd = -1;
 			// transponders <txid string>

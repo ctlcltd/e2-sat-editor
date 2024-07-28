@@ -83,14 +83,14 @@ class e2db_cli
 		enum TYPE {
 			dbtype, dbparental, idx, 
 			chid, txid, refid, tvid, tnid, trid, yname, ytype, 
-			ssid, dvbns, tsid, onid, stype, snum, srcid, locked, chname, 
+			ssid, dvbns, tsid, onid, stype, snum, srcid, parental, chname, 
 			sdata_p, sdata_c, sdata_C, sdata_f, 
 			freq, sr, pol, fec, hpfec, lpfec, cfec, inv, tinv, cinv, sys, tsys, csys, asys, mod, tmod, cmod, amod, rol, pil, band, tmx, guard, hier, plpid, 
 			chdata, txdata, ffdata, bsdata, ubdata, tvdata, tndata, flags, 
 			plsn, plsmode, plscode, isid, mts, 
 			pos, diseqc, uncomtd, charset, 
 			tname, country, feed, 
-			bname, pname, rname, qname, nname, btype, hidden, 
+			bname, pname, rname, qname, nname, btype, hidden, locked, 
 			mname, dname, itype, 
 			chvalue, churi, etype, atype, mnum, 
 		};

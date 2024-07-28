@@ -1562,9 +1562,9 @@ void e2db_abstract::add_tunersets_transponder(int idx, tunersets_transponder& tn
 void e2db_abstract::set_parentallock(string chid, string bname)
 {
 	if (! bname.empty() && userbouquets.count(bname))
-		userbouquets[bname].locked = true;
+		userbouquets[bname].parental = true;
 	else if (! chid.empty() && db.services.count(chid))
-		db.services[chid].locked = true;
+		db.services[chid].parental = true;
 }
 
 void e2db_abstract::transform_crlf(e2db_file& file)
@@ -1830,7 +1830,7 @@ void e2db_abstract::debugger()
 			cout << endl << "]";
 		}
 		cout << "]" << endl;
-		cout << "locked: " << ch.locked << endl;
+		cout << "parental: " << ch.parental << endl;
 		cout << "idx: " << ch.index << endl;
 		cout << endl;
 	}
@@ -1876,8 +1876,9 @@ void e2db_abstract::debugger()
 			cout << endl;
 		}
 		cout << "]" << endl;
-		cout << "locked: " << ub.locked << endl;
+		cout << "parental: " << ub.parental << endl;
 		cout << "hidden: " << ub.hidden << endl;
+		cout << "locked: " << ub.locked << endl;
 		cout << "idx: " << ub.index << endl;
 		cout << endl;
 	}

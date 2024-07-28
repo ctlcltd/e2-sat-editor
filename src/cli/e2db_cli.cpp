@@ -1336,45 +1336,45 @@ void e2db_cli::shell_e2db_parse(ENTRY entry_type, string path, int ver, bool dir
 		}
 		else if (entry_type == ENTRY::parentallock_locked)
 		{
-			ifstream ilocked (path);
+			ifstream iparental (path);
 			try
 			{
-				dbih->parse_e2db_parentallock_list(e2db::PARENTALLOCK::locked, ilocked);
+				dbih->parse_e2db_parentallock_list(e2db::PARENTALLOCK::locked, iparental);
 			}
 			catch (...)
 			{
-				ilocked.close();
+				iparental.close();
 				throw;
 			}
-			ilocked.close();
+			iparental.close();
 		}
 		else if (entry_type == ENTRY::parentallock_blacklist)
 		{
-			ifstream ilocked (path);
+			ifstream iparental (path);
 			try
 			{
-				dbih->parse_e2db_parentallock_list(e2db::PARENTALLOCK::blacklist, ilocked);
+				dbih->parse_e2db_parentallock_list(e2db::PARENTALLOCK::blacklist, iparental);
 			}
 			catch (...)
 			{
-				ilocked.close();
+				iparental.close();
 				throw;
 			}
-			ilocked.close();
+			iparental.close();
 		}
 		else if (entry_type == ENTRY::parentallock_whitelist)
 		{
-			ifstream ilocked (path);
+			ifstream iparental (path);
 			try
 			{
-				dbih->parse_e2db_parentallock_list(e2db::PARENTALLOCK::whitelist, ilocked);
+				dbih->parse_e2db_parentallock_list(e2db::PARENTALLOCK::whitelist, iparental);
 			}
 			catch (...)
 			{
-				ilocked.close();
+				iparental.close();
 				throw;
 			}
-			ilocked.close();
+			iparental.close();
 		}
 	}
 	catch (const std::invalid_argument& err)
@@ -2427,6 +2427,7 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end,
 				print_obj_pair(TYPE::sdata_f, ch.data.count(e2db::SDATA::f) ? ch.data[e2db::SDATA::f] : vxnul), print_obj_sep(1);
 				print_obj_end(1), print_obj_sep();
 
+				print_obj_pair(TYPE::parental, ch.parental), print_obj_sep();
 				print_obj_pair(TYPE::locked, ch.locked), print_obj_sep();
 				print_obj_pair(TYPE::refid, refid), print_obj_sep();
 				print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
@@ -2515,8 +2516,9 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end,
 					print_obj_end(2), print_obj_dlm(2, i == ub.channels.size());
 				}
 				print_obj_end(1), print_obj_sep();
-				print_obj_pair(TYPE::locked, ub.locked), print_obj_sep();
+				print_obj_pair(TYPE::parental, ub.parental), print_obj_sep();
 				print_obj_pair(TYPE::hidden, ub.hidden), print_obj_sep();
+				print_obj_pair(TYPE::locked, ub.locked), print_obj_sep();
 				print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
 				print_obj_end(), print_obj_dlm();
 			}
@@ -2820,6 +2822,7 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end,
 					print_obj_end(1), print_obj_sep();
 
 					print_obj_pair(TYPE::refid, refid), print_obj_sep();
+					print_obj_pair(TYPE::parental, ch.parental), print_obj_sep();
 					print_obj_pair(TYPE::locked, ch.locked), print_obj_sep();
 					print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
 					print_obj_end(), print_obj_dlm();
@@ -3637,7 +3640,7 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::stype: name = hrn ? "Service Type" : "stype"; value_type = hrv ? VALUE::val_string : VALUE::val_int; break;
 		case TYPE::snum: name = hrn ? "snum" : "snum"; value_type = VALUE::val_int; break;
 		case TYPE::srcid: name = hrn ? "srcid" : "srcid"; value_type = VALUE::val_int; break;
-		case TYPE::locked: name = hrn ? "Parental locked" : "locked"; value_type = VALUE::val_bool; break;
+		case TYPE::parental: name = hrn ? "Parental locked" : "locked"; value_type = VALUE::val_bool; break;
 		case TYPE::chname: name = hrn ? "Service Name" : "chname"; value_type = VALUE::val_string; break;
 		case TYPE::sdata_p: name = hrn ? "Provider Name" : "sdata_p"; value_type = VALUE::val_string; break;
 		case TYPE::sdata_c: name = hrn ? "Service Cache" : "sdata_c"; value_type = VALUE::val_string; break;
@@ -3692,6 +3695,7 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::nname: name = hrn ? "Bouquet Nice Name" : "nname"; value_type = VALUE::val_string; break;
 		case TYPE::btype: name = hrn ? "Bouquet Type" : "btype"; value_type = hrv ? VALUE::val_string : VALUE::val_int; break;
 		case TYPE::hidden: name = hrn ? "Hidden" : "hidden"; value_type = VALUE::val_bool; break;
+		case TYPE::locked: name = hrn ? "Locked" : "locked"; value_type = VALUE::val_bool; break;
 		case TYPE::dname: name = hrn ? "dname" : "dname"; value_type = VALUE::val_string; break;
 		case TYPE::itype: name = hrn ? "itype" : "itype"; value_type = VALUE::val_int; break;
 		case TYPE::flags: name = hrn ? "Flags" : "flags"; value_type = VALUE::val_int; break;
@@ -3735,8 +3739,9 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::flags:
 			d = any_cast<int>(val);
 		break;
-		case TYPE::locked:
+		case TYPE::parental:
 		case TYPE::hidden:
+		case TYPE::locked:
 			d = any_cast<bool>(val);
 			str = d ? "true" : "false";
 		break;
@@ -4055,7 +4060,7 @@ std::any e2db_cli::field(TYPE type, bool required)
 		case TYPE::stype: label = "Service Type"; description = "exact match: Data, TV, Radio, HD, H.264, H.265, UHD"; break;
 		case TYPE::snum: label = "snum"; description = "Service Number, in digits"; break;
 		case TYPE::srcid: label = "srcid"; description = "Source ID, in digits"; break;
-		case TYPE::locked: label = "Parental locked"; description = "[Y]es or [N]one"; break;
+		case TYPE::parental: label = "Parental locked"; description = "[Y]es or [N]one"; break;
 		case TYPE::chname: label = "Service Name"; break;
 		case TYPE::sdata_p: label = "Provider Name"; break;
 		case TYPE::sdata_c: label = "Service Cache"; description = "comma separated values in hex or <empty>, eg. c:0101,c:0202"; break;
@@ -4106,6 +4111,7 @@ std::any e2db_cli::field(TYPE type, bool required)
 		case TYPE::nname: label = "Bouquet Nice Name"; description = "eg. TV, Radio"; break;
 		case TYPE::btype: label = "Bouquet Type"; description = "TV, Radio"; break;
 		case TYPE::hidden: label = "Hidden"; description = "[Y]es or [N]one"; break;
+		case TYPE::locked: label = "Locked"; description = "[Y]es or [N]one"; break;
 		case TYPE::dname: label = "dname"; break;
 		case TYPE::itype: label = "itype"; break;
 		case TYPE::flags: label = "Flags"; description = "in digits"; break;
@@ -4189,9 +4195,10 @@ std::any e2db_cli::field(TYPE type, bool required)
 				case TYPE::chdata:
 				case TYPE::txdata:
 				case TYPE::ffdata:
-				case TYPE::locked:
+				case TYPE::parental:
 				case TYPE::feed:
 				case TYPE::hidden:
+				case TYPE::locked:
 					if (str == "Y" || str == "y")
 						d = 1;
 					else if (str == "N" || str == "n")
