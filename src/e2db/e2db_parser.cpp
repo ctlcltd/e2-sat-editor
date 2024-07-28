@@ -1081,39 +1081,65 @@ void e2db_parser::parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& ipar
 //TODO userbouquet_reference and compatibility
 void e2db_parser::parse_userbouquet_reference(string str, userbouquet& ub)
 {
+	bool step = false;
+
 	size_t pos = str.find(" BOUQUET ");
 
-	if (pos == string::npos)
+	if (pos != string::npos)
+	{
+		string qs = str.substr(pos);
+		size_t len = qs.size() > 10 && qs.size() <= 301 ? qs.size() - 10 : 1;
+
+		char fname[(len + 1)];
+		char order[22];
+
+		string format = " BOUQUET %" + to_string(len) + "s ORDER BY %21s";
+
+		std::sscanf(qs.c_str(), format.c_str(), fname, order);
+
+		if (std::strlen(fname) >= 5)
+		{
+			ub.bname = string (fname);
+			ub.bname = ub.bname.substr(1, ub.bname.size() - 2);
+		}
+		ub.order = order;
+		ub.sref = str.substr(0, pos - 4);
+
+		int utype = 0;
+		int btype = 0;
+
+		step = std::sscanf(ub.sref.c_str(), "1:%d:%d", &utype, &btype);
+
+		if (step)
+			ub.utype = utype;
+	}
+	else if (str.size() != 0 && str[0] == ' ')
+	{
+		int utype = 0;
+		int btype = 0;
+		char xdata;
+
+		step = std::sscanf(str.substr(1).c_str(), "1:%d:%d:0:0:0:0:0:0:0:%c", &utype, &btype, &xdata);
+
+		if (step && std::strlen(&xdata))
+		{
+			size_t pos = str.rfind(':');
+
+			ub.sref = str.substr(1, pos);
+
+			string fname = str.substr(pos + 1);
+
+			if (fname.size() >= 5)
+				ub.bname = fname;
+		}
+	}
+
+	if (! step)
 	{
 		error("parse_userbouquet_reference", "Parser Error", "Not supported yet.");
 
-		return;
+		ub.sref = str;
 	}
-
-	string qs = str.substr(pos);
-	size_t len = qs.size() > 10 && qs.size() <= 301 ? qs.size() - 10 : 1;
-
-	char fname[(len + 1)];
-	char order[22];
-
-	string format = " BOUQUET %" + to_string(len) + "s ORDER BY %21s";
-
-	std::sscanf(qs.c_str(), format.c_str(), fname, order);
-
-	if (std::strlen(fname) >= 5)
-	{
-		ub.bname = string (fname);
-		ub.bname = ub.bname.substr(1, ub.bname.size() - 2);
-	}
-	ub.order = order;
-	ub.sref = str.substr(0, pos - 4);
-
-	int utype = 0;
-	int btype = 0;
-
-	std::sscanf(ub.sref.c_str(), "1:%d:%d", &utype, &btype);
-
-	ub.utype = utype;
 }
 
 void e2db_parser::parse_userbouquet_epl_reference(string str, userbouquet& ub)
@@ -1168,7 +1194,7 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 		case ATYPE::marker_hidden_832:
 			chref.marker = true;
 		break;
-		// group
+		case ATYPE::alternatives:
 		case ATYPE::group:
 			error("parse_channel_reference", "Parser Error", "Not supported yet.");
 		break;

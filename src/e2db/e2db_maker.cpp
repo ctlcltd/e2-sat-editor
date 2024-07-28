@@ -59,8 +59,6 @@ void e2db_maker::make_e2db()
 
 void e2db_maker::make_e2db_lamedb()
 {
-	debug("make_e2db_lamedb");
-
 	switch (LAMEDB_VER)
 	{
 		case 2:
@@ -241,7 +239,12 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 
 void e2db_maker::make_e2db_bouquets()
 {
-	debug("make_e2db_bouquets");
+	make_e2db_bouquets(LAMEDB_VER);
+}
+
+void e2db_maker::make_e2db_bouquets(int ver)
+{
+	debug("make_e2db_bouquets", "version", ver);
 
 	for (auto & x : index["bss"])
 	{
@@ -252,10 +255,10 @@ void e2db_maker::make_e2db_bouquets()
 
 		e2db_file file;
 
-		if (LAMEDB_VER < 4 || filename.rfind(".epl") != string::npos)
-			make_bouquet_epl(bname, file);
+		if (ver < 4 || filename.rfind(".epl") != string::npos)
+			make_bouquet_epl(bname, file, ver);
 		else
-			make_bouquet(bname, file);
+			make_bouquet(bname, file, ver);
 
 		filename = file.filename;
 
@@ -263,7 +266,7 @@ void e2db_maker::make_e2db_bouquets()
 	}
 
 	//TODO bouquets file
-	if (LAMEDB_VER < 4)
+	if (ver < 4)
 	{
 		e2db_file empty;
 		empty.data = "eDVB bouquets /2/\nbouquets\nend\n";
@@ -277,7 +280,12 @@ void e2db_maker::make_e2db_bouquets()
 
 void e2db_maker::make_e2db_userbouquets()
 {
-	debug("make_e2db_userbouquets");
+	make_e2db_userbouquets(LAMEDB_VER);
+}
+
+void e2db_maker::make_e2db_userbouquets(int ver)
+{
+	debug("make_e2db_userbouquets", "version", ver);
 
 	this->marker_count = 0;
 
@@ -460,7 +468,7 @@ void e2db_maker::make_e2db_parentallock_list()
 	}
 }
 
-void e2db_maker::make_bouquet(string bname, e2db_file& file)
+void e2db_maker::make_bouquet(string bname, e2db_file& file, int ver)
 {
 	debug("make_bouquet", "bname", bname);
 
@@ -476,7 +484,10 @@ void e2db_maker::make_bouquet(string bname, e2db_file& file)
 	{
 		userbouquet ub = userbouquets[w];
 
-		ss << "#SERVICE ";
+		ss << "#SERVICE";
+		if (ver > 4)
+			ss << ':';
+		ss << ' ';
 		if (ub.sref.empty())
 		{
  			ss << 1 << ':';
@@ -484,33 +495,50 @@ void e2db_maker::make_bouquet(string bname, e2db_file& file)
  			ss << bs.btype << ':';
  			ss << "0:0:0:0:0:0:0:";
 		}
+		else if (! ub.bname.empty())
+		{
+			if (ver < 5 || ! ub.order.empty())
+			{
+				{
+					int x0, x1, x2, x3, x4, x5, x6, x7, x8, x9;
+					x0 = 0, x1 = 0, x2 = 0, x3 = 0, x4 = 0, x5 = 0, x6 = 0, x7 = 0, x8 = 0, x9 = 0;
+
+					std::sscanf(ub.sref.c_str(), "%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:", &x0, &x1, &x2, &x3, &x4, &x5, &x6, &x7, &x8, &x9);
+
+					x1 = ub.utype;
+
+					ss << x0 << ':';
+					ss << x1 << ':';
+					ss << x2 << ':';
+					ss << x3 << ':';
+					ss << x4 << ':';
+					ss << x5 << ':';
+					ss << x6 << ':';
+					ss << x7 << ':';
+					ss << x8 << ':';
+					ss << x9 << ':';
+				}
+				ss << "FROM BOUQUET ";
+				ss << "\"" << ub.bname << "\" ";
+				ss << "ORDER BY ";
+				if (ub.order.empty())
+					ss << "bouquet";
+				else
+					ss << ub.order;
+			}
+			else
+			{
+	 			ss << 1 << ':';
+	 			ss << ub.utype << ':';
+	 			ss << bs.btype << ':';
+	 			ss << "0:0:0:0:0:0:0:";
+	 			ss << ub.bname;
+			}
+		}
 		else
 		{
-			int x0, x1, x2, x3, x4, x5, x6, x7, x8, x9;
-			x0 = 0, x1 = 0, x2 = 0, x3 = 0, x4 = 0, x5 = 0, x6 = 0, x7 = 0, x8 = 0, x9 = 0;
-
-			std::sscanf(ub.sref.c_str(), "%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:", &x0, &x1, &x2, &x3, &x4, &x5, &x6, &x7, &x8, &x9);
-
-			x1 = ub.utype;
-
-			ss << x0 << ':';
-			ss << x1 << ':';
-			ss << x2 << ':';
-			ss << x3 << ':';
-			ss << x4 << ':';
-			ss << x5 << ':';
-			ss << x6 << ':';
-			ss << x7 << ':';
-			ss << x8 << ':';
-			ss << x9 << ':';
+			ss << ub.sref;
 		}
-		ss << "FROM BOUQUET ";
-		ss << "\"" << ub.bname << "\" ";
-		ss << "ORDER BY ";
-		if (ub.order.empty())
-			ss << "bouquet";
-		else
-			ss << ub.order;
 		ss << endl;
 	}
 
@@ -520,7 +548,7 @@ void e2db_maker::make_bouquet(string bname, e2db_file& file)
 	file.size = file.data.size();
 }
 
-void e2db_maker::make_bouquet_epl(string bname, e2db_file& file)
+void e2db_maker::make_bouquet_epl(string bname, e2db_file& file, int ver)
 {
 	debug("make_bouquet_epl", "bname", bname);
 

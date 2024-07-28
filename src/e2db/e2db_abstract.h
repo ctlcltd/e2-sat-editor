@@ -141,6 +141,7 @@ struct e2db_abstract : protected e2se::log_factory
 			aaaa = 0,
 			marker = 64,
 			group = 128,
+			alternatives = 134,
 			marker_numbered = 320,
 			marker_hidden_512 = 512,
 			marker_hidden_832 = 832,
@@ -224,7 +225,8 @@ struct e2db_abstract : protected e2se::log_factory
 			{ATYPE::marker_hidden_512, "[marker hidden]"},
 			{ATYPE::marker_hidden_832, "[marker hidden]"},
 			{ATYPE::marker_numbered, "[marker numbered]"},
-			{ATYPE::group, "[group]"}
+			{ATYPE::group, "[group]"},
+			{ATYPE::alternatives, "[alternative services]"}
 		};
 
 		// bouquet entry flag type extended - type
