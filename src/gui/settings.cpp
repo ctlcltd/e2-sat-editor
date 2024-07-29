@@ -346,6 +346,15 @@ void settings::connectionsLayout()
 	platform::osLineEdit(dtf0hp);
 	dtf0->addRow(tr("HTTP port"), dtf0hp);
 
+	QLineEdit* dtf0tp = new QLineEdit("23");
+	dtf0tp->setProperty("field", "telnetPort");
+	dtf0tp->setValidator(new QIntValidator(1, 65535));
+	dtf0tp->setMaxLength(5);
+	dtf0tp->setMaximumWidth(50);
+	prefs[PREF_SECTIONS::Connections].emplace_back(dtf0tp);
+	/*platform::osLineEdit(dtf0tp);
+	dtf0->addRow(tr("Telnet port"), dtf0tp);*/
+
 	QGroupBox* dtl1 = new QGroupBox(tr("Login"));
 	QFormLayout* dtf1 = new QFormLayout;
 	dtf1->setFormAlignment(Qt::AlignLeading);
@@ -945,34 +954,45 @@ void settings::themeChanged()
 	theme->changed();
 }
 
+map<QString, QVariant> settings::defaultProfile()
+{
+	return {
+		{"profileName", "Default"},
+		{"ipAddress", "192.168.0.2"},
+		{"ftpPort", 21},
+		{"ftpActive", false},
+		{"httpPort", 80},
+		{"telnetPort", 23},
+		{"username", "root"},
+		{"password", ""},
+		{"pathTransponders", "/etc/tuxbox"},
+		{"pathServices", "/etc/enigma2"},
+		{"pathBouquets", "/etc/enigma2"},
+		{"pathPicons", "/usr/share/enigma2/picon"},
+		{"customWebifReloadUrl", ""},
+		{"customTelnetReloadCmd", ""}
+	};
+}
+
 QListWidgetItem* settings::addProfile(int idx)
 {
 	if (idx == -1)
 	{
-		idx = int (tmpps.size());
+		idx = 1;
+		if (! tmpps.empty())
+		{
+			idx = tmpps.rbegin()->first;
+			idx++;
+		}
+		auto values = defaultProfile();
 
 		QString name = tr("Profile") + ' ' + QString::number(idx);
-
-		map<QString, QVariant> values = {
-			{"profileName", name},
-			{"ipAddress", "192.168.0.2"},
-			{"ftpPort", 21},
-			{"ftpActive", false},
-			{"httpPort", 80},
-			{"username", "root"},
-			{"password", ""},
-			{"pathTransponders", "/etc/tuxbox"},
-			{"pathServices", "/etc/enigma2"},
-			{"pathBouquets", "/etc/enigma2"},
-			{"pathPicons", "/usr/share/enigma2/picon"},
-			{"customWebifReloadUrl", ""},
-			{"customTelnetReloadCmd", ""}
-		};
+		values["profileName"] = name;
 
 		tmpps.emplace(idx, values);
 	}
 
-	debug("addProfile", "item", idx);
+	debug("addProfile", "idx", idx);
 
 	QString name = tmpps[idx]["profileName"].toString();
 
@@ -1001,16 +1021,8 @@ void settings::deleteProfile()
 	if (selected.empty() || rplist->count() == 0)
 		return;
 
-	// note: do not remove default profile
-	if (rplist->count() == 1)
-	{
-		return debug("deleteProfile", "inhibit", "default");
-	}
-
 	for (auto & item : selected)
-	{
 		this->deleteProfile(item);
-	}
 }
 
 void settings::deleteProfile(QListWidgetItem* item)
@@ -1020,15 +1032,28 @@ void settings::deleteProfile(QListWidgetItem* item)
 	debug("deleteProfile", "row", row);
 
 	int idx = item->data(Qt::UserRole).toInt();
+
 	tmpps[idx].clear();
+	tmpps.erase(idx);
 
 	this->state.dele = true;
 
 	renameProfile(false);
 
 	rplist->takeItem(row);
+
+	if (rplist->count() == 0)
+	{
+		idx = 1;
+		auto values = defaultProfile();
+
+		tmpps.emplace(idx, values);
+
+		addProfile(idx);
+	}
 }
 
+//TODO TEST
 void settings::renameProfile(bool enabled)
 {
 	debug("renameProfile", "enabled", enabled);
@@ -1202,6 +1227,8 @@ void settings::importProfile()
 						pref = "pathPicons";
 					else if (name == "HttpPort")
 						pref = "httpPort";
+					else if (name == "TelnetPort")
+						pref = "telnetPort";
 					else if (name == "CustomWebifReloadUrl")
 						pref = "customWebifReloadUrl";
 					else if (name == "CustomTelnetReloadCmd")
@@ -1234,6 +1261,7 @@ void settings::importProfile()
 								value = val;
 							}
 						}
+						//TODO bug ?
 						else if (name == "ftpActive")
 						{
 							value = (val == "MODE_ACTIVE");
@@ -1259,7 +1287,12 @@ void settings::importProfile()
 			}
 			else if (valid)
 			{
-				int idx = int (tmpps.size());
+				int idx = 1;
+				if (! tmpps.empty())
+				{
+					idx = tmpps.rbegin()->first;
+					idx++;
+				}
 
 				tmpps.emplace(idx, values);
 
@@ -1325,20 +1358,20 @@ void settings::exportProfile()
 
 	filename.append(".profile");
 
-	vector<int> rows;
+	vector<int> profiles;
 
 	if (items.empty())
 	{
 		for (auto & x : tmpps)
 		{
-			rows.emplace_back(x.first);
+			profiles.emplace_back(x.first);
 		}
 	}
 	else
 	{
 		for (auto & item : items)
 		{
-			rows.emplace_back(item->data(Qt::UserRole).toInt());
+			profiles.emplace_back(item->data(Qt::UserRole).toInt());
 		}
 	}
 
@@ -1380,6 +1413,7 @@ void settings::exportProfile()
 		"pathBouquets",
 		"pathPicons",
 		"httpPort",
+		"telnetPort",
 		"customWebifReloadUrl",
 		"customTelnetReloadCmd"
 	};
@@ -1393,9 +1427,9 @@ void settings::exportProfile()
 		xml.writeAttribute("version", QApplication::applicationVersion());
 		xml.writeStartElement("Servers");
 
-		for (int & idx : rows)
+		for (int & idx : profiles)
 		{
-			if (tmpps[idx].size())
+			if (tmpps[idx].size() != 0)
 			{
 				xml.writeStartElement("Server");
 
@@ -1651,35 +1685,35 @@ void settings::store()
 
 	updateProfile(rplist->currentItem());
 
-	int size = sets->value("profile/size").toInt();
+	int profile_sel = sets->value("profile/selected", 0).toInt();
+	int n_profile_sel = 1;
 
+	sets->remove("profile");
+
+	int i = 0;
 	sets->beginWriteArray("profile");
-	for (size_t i = 0; i < tmpps.size(); i++)
+	for (auto & x : tmpps)
 	{
-		int idx = int (i);
+		int idx = x.first;
 
-		sets->setArrayIndex(idx);
+		sets->setArrayIndex(i);
 
-		if (tmpps[idx].size())
+		if (tmpps[idx].size() != 0)
 		{
-			if (! sets->contains("profileName"))
-				size++;
+			if (! tmpps[idx].count("profileName"))
+				continue;
+
 			for (auto & field : tmpps[idx])
 				sets->setValue(field.first, field.second);
-		}
-		else
-		{
-			sets->remove("profileName");
-			for (auto & item : prefs[PREF_SECTIONS::Connections])
-			{
-				QString pref = item->property("field").toString();
-				sets->remove(pref);
-			}
+
+			if (profile_sel == idx)
+				n_profile_sel = sets->group().section('/', 1).toInt();
+
+			i++;
 		}
 	}
-	sets->setValue("telnetPort", 23);
 	sets->endArray();
-	sets->setValue("profile/size", size);
+	sets->setValue("profile/selected", n_profile_sel);
 
 	for (int i = 1; i < 3; i++)
 	{
@@ -1707,6 +1741,7 @@ void settings::store()
 	}
 }
 
+//TODO setFocus before save
 void settings::store(QTableWidget* adtbl)
 {
 	debug("store", "index", 3);
@@ -1734,9 +1769,24 @@ void settings::retrieve()
 
 	this->state.retr = true;
 
-	int selected = sets->value("profile/selected", 0).toInt();
+	int profile_sel = sets->value("profile/selected", 0).toInt();
+	int profile_i = -1;
 
+	int idx = 0;
 	int size = sets->beginReadArray("profile");
+	for (int i = 0; i < size; i++)
+	{
+		sets->setArrayIndex(i);
+		idx = sets->group().section('/', 1).toInt();
+		if (profile_sel == idx)
+		{
+			profile_i = i;
+			break;
+		}
+	}
+
+	int row = 0;
+	int selected = -1;
 	for (int i = 0; i < size; i++)
 	{
 		sets->setArrayIndex(i);
@@ -1744,17 +1794,21 @@ void settings::retrieve()
 		if (! sets->contains("profileName"))
 			continue;
 
-		int idx = i;
+		int idx = sets->group().section('/', 1).toInt();
+
 		tmpps[idx]["profileName"] = sets->value("profileName");
 		QListWidgetItem* item = addProfile(idx);
 		item->setText(sets->value("profileName").toString());
+
+		if (i == profile_i)
+			selected = row;
 
 		for (auto & item : prefs[PREF_SECTIONS::Connections])
 		{
 			QString pref = item->property("field").toString();
 			tmpps[idx][pref] = sets->value(pref);
 
-			if (i == selected)
+			if (i == profile_i)
 			{
 				if (sets->value(pref).isNull())
 				{
@@ -1778,6 +1832,8 @@ void settings::retrieve()
 				}
 			}
 		}
+
+		row++;
 	}
 	sets->endArray();
 

@@ -76,6 +76,7 @@ class settings : protected e2se::log_factory
 		void preferencesLayout();
 		void engineLayout();
 		void advancedLayout();
+		map<QString, QVariant> defaultProfile();
 		QListWidgetItem* addProfile(int i = -1);
 		void deleteProfile();
 		void deleteProfile(QListWidgetItem* item);

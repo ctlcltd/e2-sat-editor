@@ -77,9 +77,23 @@ void e2db::setup()
 	e2db::FAVOURITE_MATCH_SERVICE = settings.value("engine/favouriteMatchService", true).toBool();
 	e2db::MERGE_SORT_ID = settings.value("engine/mergeSortId", false).toBool();
 
-	int profile_sel = settings.value("profile/selected", 0).toInt();
-	settings.beginReadArray("profile");
-	settings.setArrayIndex(profile_sel);
+	int profile_sel = settings.value("profile/selected", 1).toInt();
+	int profile_i = -1;
+
+	int idx = 0;
+	int size = settings.beginReadArray("profile");
+	for (int i = 0; i < size; i++)
+	{
+		settings.setArrayIndex(i);
+		idx = settings.group().section('/', 1).toInt();
+		if (profile_sel == idx)
+		{
+			profile_i = 1;
+			break;
+		}
+	}
+
+	settings.setArrayIndex(profile_i);
 	e2db::MAKER_TPATH = settings.value("pathTransponders").toString().toStdString();
 	e2db::MAKER_SPATH = settings.value("pathServices").toString().toStdString();
 	e2db::MAKER_BPATH = settings.value("pathBouquets").toString().toStdString();

@@ -56,9 +56,23 @@ void ftpcom::setup()
 	ftpcom::FIX_CRLF = settings.value("fixCrlf", false).toBool();
 	settings.endArray();
 
-	int profile_sel = settings.value("profile/selected", 0).toInt();
-	settings.beginReadArray("profile");
-	settings.setArrayIndex(profile_sel);
+	int profile_sel = settings.value("profile/selected", 1).toInt();
+	int profile_i = -1;
+
+	int idx = 0;
+	int size = settings.beginReadArray("profile");
+	for (int i = 0; i < size; i++)
+	{
+		settings.setArrayIndex(i);
+		idx = settings.group().section('/', 1).toInt();
+		if (profile_sel == idx)
+		{
+			profile_i = i;
+			break;
+		}
+	}
+
+	settings.setArrayIndex(profile_i);
 	ftpcom::ftp_params params;
 	params.host = settings.value("ipAddress").toString().toStdString();
 	params.ftport = settings.value("ftpPort", 21).toInt();

@@ -729,7 +729,7 @@ void gui::initSettings()
 	settings.setValue("customWebifReloadUrl", "");
 	settings.setValue("customTelnetReloadCmd", ""); 
 	settings.endArray();
-	settings.setValue("profile/selected", 0);
+	settings.setValue("profile/selected", 1);
 
 	settings.beginWriteArray("ftpcom");
 	settings.setValue("debug", false);
@@ -761,6 +761,22 @@ void gui::updateSettings()
 		settings.setValue("application/version", mroot->applicationVersion());
 		settings.setValue("settings/version", 1);
 
+		if (version < 1.7)
+		{
+			int profile_sel = settings.value("profile/selected", 0).toInt();
+			int size = settings.beginReadArray("profile");
+			if (size != 0)
+			{
+				settings.setArrayIndex(profile_sel);
+				profile_sel = settings.group().section('/', 1).toInt();
+			}
+			else
+			{
+				profile_sel = 1;
+			}
+			settings.endArray();
+			settings.setValue("profile/selected", profile_sel);
+		}
 		if (version < 1.6)
 		{
 			settings.setValue("engine/parserFixCrlf", true);

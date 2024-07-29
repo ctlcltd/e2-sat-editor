@@ -1795,20 +1795,25 @@ void tab::ftpComboItems()
 
 	QSettings settings;
 
+	int idx = 0;
 	int size = settings.beginReadArray("profile");
 	for (int i = 0; i < size; i++)
 	{
 		settings.setArrayIndex(i);
 
-		if (! settings.contains("profileName"))
-			continue;
-
-		ftp_combo->addItem(settings.value("profileName").toString(), i);
+		if (settings.contains("profileName"))
+		{
+			idx = settings.group().section('/', 1).toInt();
+			ftp_combo->addItem(settings.value("profileName").toString(), idx);
+		}
 	}
 	settings.endArray();
 
-	int selected = settings.value("profile/selected", 0).toInt();
-	ftp_combo->setCurrentIndex(selected);
+	int profile_sel = settings.value("profile/selected", 1).toInt();
+	int index = ftp_combo->findData(profile_sel, Qt::UserRole);
+	ftp_combo->setCurrentIndex(index);
+
+	//TODO TEST
 }
 
 void tab::ftpComboChanged(int index)
@@ -1817,9 +1822,10 @@ void tab::ftpComboChanged(int index)
 
 	this->ftph->closeConnection();
 
-	QSettings().setValue("profile/selected", index);
-
 	ftp_combo->setCurrentIndex(index);
+
+	int profile_sel = ftp_combo->itemData(index, Qt::UserRole).toInt();
+	QSettings().setValue("profile/selected", profile_sel);
 }
 
 void tab::ftpConnect()
