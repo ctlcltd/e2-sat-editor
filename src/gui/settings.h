@@ -42,10 +42,6 @@ class settings : protected e2se::log_factory
 		{
 			// previous tab index
 			int prev;
-			// profile retrieving
-			bool retr = false;
-			// profile deleting
-			bool dele = false;
 		};
 
 		struct __action
@@ -77,7 +73,7 @@ class settings : protected e2se::log_factory
 		void engineLayout();
 		void advancedLayout();
 		map<QString, QVariant> defaultProfile();
-		QListWidgetItem* addProfile(int i = -1);
+		QListWidgetItem* addProfile();
 		void deleteProfile();
 		void deleteProfile(QListWidgetItem* item);
 		void renameProfile(bool enabled = true);
@@ -85,7 +81,7 @@ class settings : protected e2se::log_factory
 		void importProfile();
 		void exportProfile();
 		QMenu* profileMenu();
-		void profileNameChanged(QString text);
+		void profileNameChanged(QListWidgetItem* item);
 		void currentProfileChanged(QListWidgetItem* current, QListWidgetItem* previous);
 		void showProfileEditContextMenu(QPoint& pos);
 		void applyPreset(connectionPresets::PRESET preset);

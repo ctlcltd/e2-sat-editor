@@ -91,11 +91,13 @@ void e2db::import_file(FPORTS fpi, vector<string> paths)
 					return error("import_file", "File Error", msg("File \"%s\" is not readable.", path));
 				}
 
+				FPORTS _fpi = FPORTS::unknown;
+
 				if (fpi == FPORTS::unknown)
-					fpi = file_type_detect(path);
+					_fpi = file_type_detect(path);
 
 				string filename = std::filesystem::path(path).filename().u8string();
-				string mime = file_mime_value(fpi, path);
+				string mime = file_mime_value(_fpi, path);
 
 				e2db_file file;
 				file.origin = e2db::FORG::filesys;
@@ -114,7 +116,10 @@ void e2db::import_file(FPORTS fpi, vector<string> paths)
 				}
 				file.size = file.data.size();
 
-				import_file(fpi, dst, file, path);
+				// debug("import_file", "file path", file.path);
+				// debug("import_file", "file size", file.size);
+
+				import_file(_fpi, dst, file, path);
 			}
 
 			if (merge)
@@ -436,6 +441,9 @@ void e2db::export_file(FPORTS fpo, string path, string filename)
 		{
 			return error("export_file", "File Error", msg("File \"%s\" is not writable.", path));
 		}
+
+		// debug("export_file", "file path", fpath);
+		// debug("export_file", "file size", file.size);
 
 		std::ios_base::openmode fmode = std::ios_base::out;
 

@@ -654,18 +654,16 @@ void gui::initSettings()
 	settings.setValue("settings/reset", false);
 
 	settings.setValue("application/version", mroot->applicationVersion());
-#ifdef E2SE_DEMO
-	settings.setValue("application/debug", true);
-	settings.setValue("application/seeds", ":/e2se-seeds/enigma_db");
-#else
 	settings.setValue("application/debug", false);
-#endif
 #ifndef Q_OS_MAC
 	settings.setValue("application/fixUnicodeChars", false);
 #else
 	settings.setValue("application/fixUnicodeChars", true);
 #endif
 	settings.setValue("application/piconsBrowsePath", "");
+#ifdef E2SE_DEMO
+	settings.setValue("application/seeds", ":/e2se-seeds/enigma_db");
+#endif
 
 	settings.beginGroup("preference");
 	settings.setValue("autoCheckUpdate", false);
@@ -758,8 +756,10 @@ void gui::updateSettings()
 	}
 	else if (version != mroot->applicationVersion().toFloat())
 	{
-		settings.setValue("application/version", mroot->applicationVersion());
 		settings.setValue("settings/version", 1);
+
+		if (mroot->applicationVersion().toFloat() > version)
+			settings.setValue("application/version", mroot->applicationVersion());
 
 		if (version < 1.7)
 		{
@@ -767,8 +767,24 @@ void gui::updateSettings()
 			int size = settings.beginReadArray("profile");
 			if (size != 0)
 			{
-				settings.setArrayIndex(profile_sel);
-				profile_sel = settings.group().section('/', 1).toInt();
+				int row = 0;
+				for (int i = 0; i < size; i++)
+				{
+					settings.setArrayIndex(i);
+
+					if (! settings.contains("profileName"))
+						continue;
+
+					int idx = settings.group().section('/', 1).toInt();
+
+					if (row == profile_sel)
+					{
+						profile_sel = idx;
+						break;
+					}
+
+					row++;
+				}
 			}
 			else
 			{
@@ -1420,8 +1436,6 @@ vector<string> gui::importFileDialog(GUI_DPORTS gde, int& bit)
 			opts.append(QString("%1 (*)").arg(tr("All Files", "file-dialog")));
 		break;
 		default:
-			//TODO improve
-			// fmode = QFileDialog::AnyFile;
 			opts.append("Lamedb 2.4 (lamedb)");
 			opts.append("Lamedb 2.5 (lamedb5)");
 			opts.append("Lamedb 2.3 (services)");

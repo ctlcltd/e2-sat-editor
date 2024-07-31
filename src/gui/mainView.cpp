@@ -3468,6 +3468,7 @@ void mainView::putListItems(vector<QString> items)
 					tx.sr = -1;
 				}
 
+				//TODO FIX empty SDATA::C neutrino
 				if (ch.data.count(e2db::SDATA::C) && ch.data[e2db::SDATA::C].empty())
 					ch.data.erase(e2db::SDATA::C);
 

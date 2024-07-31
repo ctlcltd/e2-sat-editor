@@ -182,7 +182,7 @@ void settings::connectionsLayout()
 	rplist->setStyleSheet("QListView::item { height: 44px; font: 16px } QListView QLineEdit { border: 1px solid palette(alternate-base) }");
 
 	rplist->connect(rplist, &QListWidget::currentItemChanged, [=](QListWidgetItem* current, QListWidgetItem* previous) { this->currentProfileChanged(current, previous); });
-	rplist->connect(rplist, &QListWidget::currentTextChanged, [=](QString text) { this->profileNameChanged(text); });
+	rplist->connect(rplist, &QListWidget::itemChanged, [=](QListWidgetItem* item) { this->profileNameChanged(item); });
 	rplist->connect(rplist, &QListWidget::viewportEntered, [=]() { this->renameProfile(false); });
 	rppage->connect(rppage, &WidgetBackdrop::backdropEntered, [=]() { this->renameProfile(false); });
 	platform::osPersistentEditor(rplist);
@@ -806,8 +806,6 @@ void settings::engineLayout()
 	QLineEdit* dtf2cd = new QLineEdit("\n");
 	dtf2cd->setProperty("field", "toolsCsvDelimiter");
 	prefs[PREF_SECTIONS::Engine].emplace_back(dtf2cd);
-	//TODO CRLF
-	// dtf2cd->setMaxLength(6);
 	dtf2cd->setMaxLength(3);
 	dtf2cd->setMaximumWidth(50);
 	dtf2cd->connect(dtf2cd, &QLineEdit::textChanged, [=](const QString& text) { this->textDoubleEscaped(dtf2cd, text); });
@@ -974,41 +972,38 @@ map<QString, QVariant> settings::defaultProfile()
 	};
 }
 
-QListWidgetItem* settings::addProfile(int idx)
+QListWidgetItem* settings::addProfile()
 {
-	if (idx == -1)
+	debug("addProfile");
+
+	int idx = 1;
+
+	if (! tmpps.empty())
 	{
-		idx = 1;
-		if (! tmpps.empty())
-		{
-			idx = tmpps.rbegin()->first;
-			idx++;
-		}
-		auto values = defaultProfile();
-
-		QString name = tr("Profile") + ' ' + QString::number(idx);
-		values["profileName"] = name;
-
-		tmpps.emplace(idx, values);
+		idx = tmpps.rbegin()->first;
+		idx++;
 	}
 
-	debug("addProfile", "idx", idx);
+	auto values = defaultProfile();
 
-	QString name = tmpps[idx]["profileName"].toString();
+	QString name = tr("Profile") + ' ' + QString::number(idx);
+	values["profileName"] = name;
+
+	tmpps.emplace(idx, values);
+
+	debug("addProfile", "index", idx);
 
 	QListWidgetItem* item = new QListWidgetItem(name, rplist);
 	item->setData(Qt::UserRole, idx);
 	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
 
-	if (! this->state.retr)
-	{
-		renameProfile(false);
-		item->setSelected(true);
-		rplist->setCurrentItem(item);
+	renameProfile(false);
 
-		if (rplist->count() != 1)
-			renameProfile(true);
-	}
+	item->setSelected(true);
+	rplist->setCurrentItem(item);
+
+	renameProfile(true);
+
 	return item;
 }
 
@@ -1036,8 +1031,6 @@ void settings::deleteProfile(QListWidgetItem* item)
 	tmpps[idx].clear();
 	tmpps.erase(idx);
 
-	this->state.dele = true;
-
 	renameProfile(false);
 
 	rplist->takeItem(row);
@@ -1049,11 +1042,17 @@ void settings::deleteProfile(QListWidgetItem* item)
 
 		tmpps.emplace(idx, values);
 
-		addProfile(idx);
+		QString name = tmpps[idx]["profileName"].toString();
+
+		QListWidgetItem* item = new QListWidgetItem(name, rplist);
+		item->setData(Qt::UserRole, idx);
+		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
+
+		rplist->setCurrentRow(0);
+		rplist->reset();
 	}
 }
 
-//TODO TEST
 void settings::renameProfile(bool enabled)
 {
 	debug("renameProfile", "enabled", enabled);
@@ -1563,9 +1562,8 @@ QMenu* settings::profileMenu()
 	return menu;
 }
 
-void settings::profileNameChanged(QString text)
+void settings::profileNameChanged(QListWidgetItem* item)
 {
-	QListWidgetItem* item = rplist->currentItem();
 	int row = item != nullptr ? rplist->row(item) : -1;
 
 	debug("profileNameChanged", "row", row);
@@ -1575,25 +1573,24 @@ void settings::profileNameChanged(QString text)
 
 	int idx = item->data(Qt::UserRole).toInt();
 
-	if (QApplication::layoutDirection() == Qt::RightToLeft)
-	{
-		item->setText(item->text().append(QChar(0x200e))); // LRM
-	}
-
-	tmpps[idx]["profileName"] = text;
+	tmpps[idx]["profileName"] = item->text();
 }
 
 void settings::currentProfileChanged(QListWidgetItem* current, QListWidgetItem* previous)
 {
 	debug("currentProfileChanged");
 
-	if (previous != nullptr && ! this->state.dele)
-		updateProfile(previous);
+	//TODO TEST
+	if (previous != nullptr)
+	{
+		int idx = previous->data(Qt::UserRole).toInt();
+
+		if (tmpps.count(idx))
+			updateProfile(previous);
+	}
 
 	if (current != nullptr)
 		this->retrieve(current);
-
-	this->state.dele = false;
 }
 
 void settings::showProfileEditContextMenu(QPoint& pos)
@@ -1741,10 +1738,11 @@ void settings::store()
 	}
 }
 
-//TODO setFocus before save
 void settings::store(QTableWidget* adtbl)
 {
 	debug("store", "index", 3);
+
+	adtbl->setFocus(); // note: close persistent editor
 
 	for (int i = 0; i < adtbl->rowCount(); i++)
 	{
@@ -1766,8 +1764,6 @@ void settings::store(QTableWidget* adtbl)
 void settings::retrieve()
 {
 	debug("retrieve");
-
-	this->state.retr = true;
 
 	int profile_sel = sets->value("profile/selected", 0).toInt();
 	int profile_i = -1;
@@ -1797,8 +1793,12 @@ void settings::retrieve()
 		int idx = sets->group().section('/', 1).toInt();
 
 		tmpps[idx]["profileName"] = sets->value("profileName");
-		QListWidgetItem* item = addProfile(idx);
-		item->setText(sets->value("profileName").toString());
+
+		QString name = tmpps[idx]["profileName"].toString();
+
+		QListWidgetItem* item = new QListWidgetItem(name, rplist);
+		item->setData(Qt::UserRole, idx);
+		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
 
 		if (i == profile_i)
 			selected = row;
@@ -1838,8 +1838,6 @@ void settings::retrieve()
 	sets->endArray();
 
 	rplist->setCurrentRow(selected);
-
-	this->state.retr = false;
 
 	for (int i = 1; i < 3; i++)
 	{

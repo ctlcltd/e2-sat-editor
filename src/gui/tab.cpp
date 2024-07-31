@@ -451,12 +451,12 @@ void tab::layout()
 	toolBarAction(top_toolbar, tr("Upload", "toolbar"), [=]() { this->ftpUpload(); });
 	toolBarAction(top_toolbar, tr("Download", "toolbar"), [=]() { this->ftpDownload(); });
 
-	bool DEBUG = false;
-#if E2SE_BUILD == E2SE_TARGET_DEBUG
-	DEBUG = true;
+	bool DEMO = false;
+#ifdef E2SE_DEMO
+	DEMO = true;
 #endif
 	toolBarSeparator(bottom_toolbar);
-	if (QSettings().value("application/debug", DEBUG).toBool())
+	if (QSettings().value("application/debug", false).toBool() || DEMO)
 	{
 		toolBarAction(bottom_toolbar, "§ Load seeds", [=]() { this->loadSeeds(); });
 		toolBarAction(bottom_toolbar, "§ Reset", [=]() { this->newFile(); this->updateTabName(); });
@@ -641,8 +641,8 @@ bool tab::readFile(string path)
 		file.data = q.data;
 		file.size = q.size;
 
-		debug("readFile", "file.filename", q.filename);
-		debug("readFile", "file.size", to_string(q.size));
+		debug("readFile", "file path", q.path);
+		debug("readFile", "file size", to_string(q.size));
 
 		files.emplace(file.filename, file);
 	}
@@ -1811,9 +1811,8 @@ void tab::ftpComboItems()
 
 	int profile_sel = settings.value("profile/selected", 1).toInt();
 	int index = ftp_combo->findData(profile_sel, Qt::UserRole);
-	ftp_combo->setCurrentIndex(index);
 
-	//TODO TEST
+	ftp_combo->setCurrentIndex(index);
 }
 
 void tab::ftpComboChanged(int index)
