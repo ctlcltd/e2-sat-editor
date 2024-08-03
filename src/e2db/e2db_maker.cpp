@@ -298,7 +298,7 @@ void e2db_maker::make_e2db_userbouquets(int ver)
 
 		e2db_file file;
 
-		make_userbouquet(bname, file);
+		make_userbouquet(bname, file, ver);
 
 		this->e2db_out[filename] = file;
 	}
@@ -606,7 +606,7 @@ void e2db_maker::make_bouquet_epl(string bname, e2db_file& file, int ver)
 	file.size = file.data.size();
 }
 
-void e2db_maker::make_userbouquet(string bname, e2db_file& file, bool exact_marker_index)
+void e2db_maker::make_userbouquet(string bname, e2db_file& file, bool exact_marker_index, int ver)
 {
 	if (exact_marker_index)
 	{
@@ -630,10 +630,10 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file, bool exact_mark
 		}
 	}
 
-	make_userbouquet(bname, file);
+	make_userbouquet(bname, file, ver);
 }
 
-void e2db_maker::make_userbouquet(string bname, e2db_file& file)
+void e2db_maker::make_userbouquet(string bname, e2db_file& file, int ver)
 {
 	debug("make_userbouquet", "bname", bname);
 
@@ -653,7 +653,10 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 		channel_reference chref = userbouquets[bname].channels[x.second];
 
 		ss << dec;
-		ss << "#SERVICE ";
+		ss << "#SERVICE";
+		if (ver < 3)
+			ss << ':';
+		ss << ' ';
 		ss << chref.etype << ':';
 		ss << chref.atype << ':';
 
@@ -680,7 +683,10 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 				ln++;
 
 				ss << '\n';
-				ss << "#DESCRIPTION " << chref.value;
+				ss << "#DESCRIPTION";
+				if (ver < 3)
+					ss << ':';
+				ss << ' ' << chref.value;
 			}
 		}
 		else
@@ -706,7 +712,10 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 					ln++;
 
 					ss << '\n';
-					ss << "#DESCRIPTION " << chref.value;
+					ss << "#DESCRIPTION";
+					if (ver < 3)
+						ss << ':';
+					ss << ' ' << chref.value;
 				}
 
 				this->marker_count++;
@@ -739,7 +748,10 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file)
 					ln++;
 
 					ss << '\n';
-					ss << "#DESCRIPTION " << chref.value;
+					ss << "#DESCRIPTION";
+					if (ver < 3)
+						ss << ':';
+					ss << ' ' << chref.value;
 				}
 
 				if (! chref.stream)

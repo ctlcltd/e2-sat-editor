@@ -328,7 +328,7 @@ void e2db::export_file(FPORTS fpo, string path, string filename)
 				write(path);
 			return;
 			case FPORTS::all_services:
-				make_lamedb(chs_fname, file, LAMEDB_VER);
+				make_lamedb(chs_fname, file, (LAMEDB_VER != -1 ? LAMEDB_VER : 4));
 			break;
 			case FPORTS::all_services__2_4:
 				make_lamedb("lamedb", file, 4);
@@ -370,24 +370,24 @@ void e2db::export_file(FPORTS fpo, string path, string filename)
 			break;
 			case FPORTS::single_bouquet:
 			case FPORTS::all_bouquets:
-				make_bouquet(fname, file);
+				make_bouquet(fname, file, (LAMEDB_VER != -1 ? LAMEDB_VER : 4));
 			break;
 			case FPORTS::single_bouquet_epl:
 			case FPORTS::all_bouquets_epl:
-				make_bouquet_epl(fname, file);
+				make_bouquet_epl(fname, file, (LAMEDB_VER != -1 ? LAMEDB_VER : 4));
 			break;
 			case FPORTS::single_userbouquet:
 			case FPORTS::all_userbouquets:
-				make_userbouquet(fname, file, MARKER_GLOBAL_INDEX);
+				make_userbouquet(fname, file, MARKER_GLOBAL_INDEX, (LAMEDB_VER != -1 ? LAMEDB_VER : 4));
 			break;
 			case FPORTS::single_bouquet_all:
 			case FPORTS::single_bouquet_all_epl:
 				if (file_type_detect(fname) == FPORTS::single_bouquet)
-					make_bouquet(fname, file);
+					make_bouquet(fname, file, (LAMEDB_VER != -1 ? LAMEDB_VER : 4));
 				else if (file_type_detect(fname) == FPORTS::single_bouquet_epl)
-					make_bouquet_epl(fname, file);
+					make_bouquet_epl(fname, file, (LAMEDB_VER != -1 ? LAMEDB_VER : 4));
 				else
-					make_userbouquet(fname, file, MARKER_GLOBAL_INDEX);
+					make_userbouquet(fname, file, MARKER_GLOBAL_INDEX, (LAMEDB_VER != -1 ? LAMEDB_VER : 4));
 			break;
 			case FPORTS::all_bouquets_xml:
 				make_bouquets_xml(fname, file, (ZAPIT_VER != -1 ? ZAPIT_VER : 4));

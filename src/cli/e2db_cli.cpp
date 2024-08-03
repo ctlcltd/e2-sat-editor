@@ -666,9 +666,9 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		}
 
 		if (type == "enigma")
-			shell_e2db_make(ENTRY::lamedb, path, -1, true);
+			shell_e2db_make(ENTRY::lamedb, path, ver, true);
 		else if (type == "neutrino")
-			shell_e2db_make(ENTRY::zapit, path, -1, true);
+			shell_e2db_make(ENTRY::zapit, path, ver, true);
 		else if (type == "lamedb")
 			shell_e2db_make(ENTRY::lamedb_services, path, ver);
 		else if (type == "bouquet")
@@ -676,9 +676,9 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		else if (type == "bouquets")
 			shell_e2db_make(ENTRY::bouquet, path, ver, true);
 		else if (type == "userbouquet")
-			shell_e2db_make(ENTRY::userbouquet, path, -1, false, bname);
+			shell_e2db_make(ENTRY::userbouquet, path, ver, false, bname);
 		else if (type == "userbouquets")
-			shell_e2db_make(ENTRY::userbouquet, path, -1, true);
+			shell_e2db_make(ENTRY::userbouquet, path, ver, true);
 		else if (type == "zapit services")
 			shell_e2db_make(ENTRY::zapit_services, path, ver);
 		else if (type == "zapit bouquets")
@@ -1410,6 +1410,8 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 
 	try
 	{
+		ver = ver != -1 ? ver : 4;
+
 		//TODO local overwrite
 
 		bool overwrite = e2db::OVERWRITE_FILE;
@@ -1433,7 +1435,6 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 			int srctype = dbih->get_e2db_services_type();
 			int lamedb_ver = dbih->get_lamedb_version();
 			int zapit_ver = dbih->get_zapit_version();
-			ver = ver != -1 ? ver : 4;
 
 			if (entry_type == ENTRY::lamedb)
 			{
@@ -1467,7 +1468,6 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 		}
 		else if (entry_type == ENTRY::bouquet)
 		{
-			ver = ver != -1 ? ver : 4;
 			vector<string> bouquets;
 
 			if (dir)
@@ -1491,9 +1491,9 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 				string fext = filename.substr(filename.rfind('.') + 1);
 
 				if (fext == "epl" || ver < 4)
-					dbih->make_bouquet_epl(filename, file);
+					dbih->make_bouquet_epl(filename, file, ver);
 				else
-					dbih->make_bouquet(filename, file);
+					dbih->make_bouquet(filename, file, ver);
 
 				ofstream out (path);
 				out << file.data;
@@ -1522,7 +1522,7 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 			{
 				e2db::e2db_file file;
 
-				dbih->make_userbouquet(bname, file);
+				dbih->make_userbouquet(bname, file, ver);
 
 				ofstream out (path);
 				out << file.data;
@@ -1531,8 +1531,6 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 		}
 		else if (entry_type == ENTRY::zapit_services)
 		{
-			ver = ver != -1 ? ver : 4;
-
 			e2db::e2db_file file;
 
 			dbih->make_bouquets_xml(filename, file, ver);
@@ -1543,8 +1541,6 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 		}
 		else if (entry_type == ENTRY::zapit_bouquets)
 		{
-			ver = ver != -1 ? ver : 4;
-
 			e2db::e2db_file file;
 
 			dbih->make_bouquets_xml(filename, file, ver);
