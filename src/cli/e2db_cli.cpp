@@ -1430,23 +1430,25 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 
 		if (entry_type == ENTRY::lamedb || entry_type == ENTRY::zapit)
 		{
+			int srctype = dbih->get_e2db_services_type();
 			int lamedb_ver = dbih->get_lamedb_version();
 			int zapit_ver = dbih->get_zapit_version();
 			ver = ver != -1 ? ver : 4;
 
 			if (entry_type == ENTRY::lamedb)
 			{
+				dbih->set_e2db_services_type(0);
 				dbih->set_lamedb_version(ver);
-				dbih->set_zapit_version(-1);
 			}
 			else if (entry_type == ENTRY::zapit)
 			{
-				dbih->set_lamedb_version(-1);
+				dbih->set_e2db_services_type(1);
 				dbih->set_zapit_version(ver);
 			}
 
 			bool write = dbih->write(path);
 
+			dbih->set_e2db_services_type(srctype);
 			dbih->set_lamedb_version(lamedb_ver);
 			dbih->set_zapit_version(zapit_ver);
 

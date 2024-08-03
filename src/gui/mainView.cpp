@@ -1695,41 +1695,33 @@ void mainView::convert(int bit)
 		case e2db::FPORTS::all_services__2_4:
 			dbih->set_e2db_services_type(0);
 			dbih->set_lamedb_version(4);
-			dbih->set_zapit_version(-1);
 		break;
 		case e2db::FPORTS::all_services__2_5:
 			dbih->set_e2db_services_type(0);
 			dbih->set_lamedb_version(5);
-			dbih->set_zapit_version(-1);
 		break;
 		case e2db::FPORTS::all_services__2_3:
 			dbih->set_e2db_services_type(0);
 			dbih->set_lamedb_version(3);
-			dbih->set_zapit_version(-1);
 		break;
 		case e2db::FPORTS::all_services__2_2:
 			dbih->set_e2db_services_type(0);
 			dbih->set_lamedb_version(2);
-			dbih->set_zapit_version(-1);
 		break;
 		case e2db::FPORTS::all_services_xml__4:
 			dbih->set_e2db_services_type(1);
-			dbih->set_lamedb_version(-1);
 			dbih->set_zapit_version(4);
 		break;
 		case e2db::FPORTS::all_services_xml__3:
 			dbih->set_e2db_services_type(1);
-			dbih->set_lamedb_version(-1);
 			dbih->set_zapit_version(3);
 		break;
 		case e2db::FPORTS::all_services_xml__2:
 			dbih->set_e2db_services_type(1);
-			dbih->set_lamedb_version(-1);
 			dbih->set_zapit_version(2);
 		break;
 		case e2db::FPORTS::all_services_xml__1:
 			dbih->set_e2db_services_type(1);
-			dbih->set_lamedb_version(-1);
 			dbih->set_zapit_version(1);
 		break;
 		default:
