@@ -497,7 +497,7 @@ void e2db_maker::make_bouquet(string bname, e2db_file& file, int ver)
 		}
 		else if (! ub.bname.empty())
 		{
-			if (ver < 5 || ! ub.order.empty())
+			if (ver < 5 || (! ub.order.empty() && ub.order != "bouquet"))
 			{
 				{
 					int x0, x1, x2, x3, x4, x5, x6, x7, x8, x9;
