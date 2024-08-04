@@ -27,6 +27,7 @@ class ftpcom : public ::e2se_ftpcom::ftpcom
 
 	protected:
 		void setup();
+		bool checkProfileIntegrity(bool strict = false);
 
 		string msg(string str, string param) override;
 		string msg(string str) override;

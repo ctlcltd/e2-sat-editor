@@ -1809,7 +1809,7 @@ void tab::ftpComboItems()
 	}
 	settings.endArray();
 
-	int profile_sel = settings.value("profile/selected", 1).toInt();
+	int profile_sel = settings.value("profile/selected", -1).toInt();
 	int index = ftp_combo->findData(profile_sel, Qt::UserRole);
 
 	ftp_combo->setCurrentIndex(index);

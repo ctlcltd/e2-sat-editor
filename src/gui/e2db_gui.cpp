@@ -77,7 +77,7 @@ void e2db::setup()
 	e2db::FAVOURITE_MATCH_SERVICE = settings.value("engine/favouriteMatchService", true).toBool();
 	e2db::MERGE_SORT_ID = settings.value("engine/mergeSortId", false).toBool();
 
-	int profile_sel = settings.value("profile/selected", 1).toInt();
+	int profile_sel = settings.value("profile/selected", -1).toInt();
 	int profile_i = -1;
 
 	int idx = 0;
@@ -93,10 +93,13 @@ void e2db::setup()
 		}
 	}
 
-	settings.setArrayIndex(profile_i);
-	e2db::MAKER_TPATH = settings.value("pathTransponders").toString().toStdString();
-	e2db::MAKER_SPATH = settings.value("pathServices").toString().toStdString();
-	e2db::MAKER_BPATH = settings.value("pathBouquets").toString().toStdString();
+	if (profile_i != -1)
+	{
+		settings.setArrayIndex(profile_i);
+		e2db::MAKER_TPATH = settings.value("pathTransponders").toString().toStdString();
+		e2db::MAKER_SPATH = settings.value("pathServices").toString().toStdString();
+		e2db::MAKER_BPATH = settings.value("pathBouquets").toString().toStdString();
+	}
 	settings.endArray();
 
 	e2db::CSV_HEADER = settings.value("engine/toolsCsvHeader", true).toBool();

@@ -9,10 +9,10 @@
  * @license GNU GPLv3 License
  */
 
-QT_TRANSLATE_NOOP3("e2db", "Error", "error");
-QT_TRANSLATE_NOOP3("e2db", "File Error", "error");
 QT_TRANSLATE_NOOP3("e2db", "Parser Error", "error");
 QT_TRANSLATE_NOOP3("e2db", "Maker Error", "error");
+QT_TRANSLATE_NOOP3("e2db", "File Error", "error");
+QT_TRANSLATE_NOOP3("e2db", "Error", "error");
 QT_TRANSLATE_NOOP3("e2db", "File \"%s\" not exists.", "error");
 QT_TRANSLATE_NOOP3("e2db", "File \"%s\" already exists.", "error");
 QT_TRANSLATE_NOOP3("e2db", "File \"%s\" is not a valid file.", "error");
@@ -39,5 +39,7 @@ QT_TRANSLATE_NOOP3("e2db", "Service \"%s\" not exists.", "error");
 QT_TRANSLATE_NOOP3("e2db", "Userbouquet \"%s\" not exists.", "error");
 QT_TRANSLATE_NOOP3("e2db", "Channel reference \"%s\" not exists.", "error");
 QT_TRANSLATE_NOOP3("e2db", "Tunersets table \"%s\" not exists.", "error");
+QT_TRANSLATE_NOOP3("e2db", "Bouquet \"%s\" already exists.", "error");
+QT_TRANSLATE_NOOP3("e2db", "Userbouquet \"%s\" already exists.", "error");
 QT_TRANSLATE_NOOP3("e2db", "Abstract merge swap objects.", "error");
 QT_TRANSLATE_NOOP3("e2db", "Not supported yet.", "error");

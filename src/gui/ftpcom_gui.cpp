@@ -56,7 +56,12 @@ void ftpcom::setup()
 	ftpcom::FIX_CRLF = settings.value("fixCrlf", false).toBool();
 	settings.endArray();
 
-	int profile_sel = settings.value("profile/selected", 1).toInt();
+	if (! settings.value("profile/selected").isValid() || settings.value("profile/selected").isNull())
+	{
+		return error("setup", "FTP Error", "Please select a connection profile then connect.");
+	}
+
+	int profile_sel = settings.value("profile/selected", -1).toInt();
 	int profile_i = -1;
 
 	int idx = 0;
@@ -71,8 +76,21 @@ void ftpcom::setup()
 			break;
 		}
 	}
+	settings.endArray();
 
+	if (profile_i == -1)
+	{
+		return error("setup", "FTP Error", "Please select a connection profile then connect.");
+	}
+
+	if (! checkProfileIntegrity())
+	{
+		return error("setup", "FTP Error", "Check connection profile and settings integrity.\n\nPreference values are not valid.");
+	}
+
+	settings.beginReadArray("profile");
 	settings.setArrayIndex(profile_i);
+
 	ftpcom::ftp_params params;
 	params.host = settings.value("ipAddress").toString().toStdString();
 	params.ftport = settings.value("ftpPort", 21).toInt();
@@ -93,6 +111,83 @@ void ftpcom::setup()
 	settings.endArray();
 
 	setParameters(params);
+}
+
+bool ftpcom::checkProfileIntegrity(bool strict)
+{
+	debug("checkProfileIntegrity");
+
+	QSettings settings;
+
+	if (! settings.value("profile/selected").isValid() || settings.value("profile/selected").isNull())
+		return false;
+
+	int profile_sel = settings.value("profile/selected", -1).toInt();
+	int profile_i = -1;
+
+	int idx = 0;
+	int size = settings.beginReadArray("profile");
+	for (int i = 0; i < size; i++)
+	{
+		settings.setArrayIndex(i);
+		idx = settings.group().section('/', 1).toInt();
+		if (profile_sel == idx)
+		{
+			profile_i = i;
+			break;
+		}
+	}
+
+	if (profile_i == -1)
+		return false;
+
+	settings.setArrayIndex(profile_i);
+
+	idx = settings.group().section('/', 1).toInt();
+
+	if (idx != profile_sel)
+		return false;
+
+	if (strict)
+	{
+		// version 1.4
+
+		QStringList keys = {
+			"customTelnetReloadCmd",
+			"customWebifReloadUrl",
+			"ftpActive",
+			"ftpPort",
+			"httpPort",
+			"ipAddress",
+			"password",
+			"pathBouquets",
+			"pathPicons",
+			"pathServices",
+			"pathTransponders",
+			"profileName",
+			"telnetPort",
+			"username"
+		};
+
+		if (keys != settings.allKeys())
+			return false;
+	}
+	else
+	{
+		if (! settings.contains("profileName"))
+			return false;
+
+		if (settings.allKeys().size() < 6)
+			return false;
+	}
+
+	for (auto & key : settings.allKeys())
+	{
+		if (! settings.value(key).isValid())
+			return false;
+	}
+
+	return true;
 }
 
 string ftpcom::msg(string str, string param)
