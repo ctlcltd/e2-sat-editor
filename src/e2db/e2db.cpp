@@ -57,6 +57,7 @@ void e2db::import_file(vector<string> paths)
 	import_file(FPORTS::unknown, paths);
 }
 
+//TODO FIX merge import and input empty map
 void e2db::import_file(FPORTS fpi, vector<string> paths)
 {
 	debug("import_file", "file path", "multiple");
@@ -127,10 +128,15 @@ void e2db::import_file(FPORTS fpi, vector<string> paths)
 				this->merge(dst);
 				delete dst;
 			}
+
+			if (FIX_BOUQUETS) fix_bouquets(true);
 		}
 		catch (...)
 		{
 			if (merge) delete dst;
+
+			if (FIX_BOUQUETS) fix_bouquets(true);
+
 			throw;
 		}
 	}
@@ -476,6 +482,7 @@ void e2db::export_file(FPORTS fpo, string path, string filename)
 	info("export_file", "elapsed time", to_string(elapsed) + " μs");
 }
 
+//TODO FIX merge import and input empty map
 void e2db::import_blob(unordered_map<string, e2db_file> files)
 {
 	debug("import_blob", "size", int (files.size()));
@@ -487,6 +494,7 @@ void e2db::import_blob(unordered_map<string, e2db_file> files)
 	try
 	{
 		bool merge = this->get_input().size() != 0 ? true : false;
+		bool uniq_ubouquets = index["ubs"].size() != 0;
 
 		if (merge)
 		{
@@ -498,10 +506,14 @@ void e2db::import_blob(unordered_map<string, e2db_file> files)
 
 				this->merge(dst);
 				delete dst;
+
+				if (FIX_BOUQUETS) fix_bouquets(uniq_ubouquets);
 			}
 			catch (...)
 			{
 				delete dst;
+
+				if (FIX_BOUQUETS) fix_bouquets(uniq_ubouquets);
 
 				throw;
 			}
@@ -511,9 +523,20 @@ void e2db::import_blob(unordered_map<string, e2db_file> files)
 		}
 		else
 		{
-			parse_e2db(files);
+			try
+			{
+				parse_e2db(files);
 
-			db.dstat = DSTAT::d_read;
+				db.dstat = DSTAT::d_read;
+
+				if (FIX_BOUQUETS) fix_bouquets(uniq_ubouquets);
+			}
+			catch (...)
+			{
+				if (FIX_BOUQUETS) fix_bouquets(uniq_ubouquets);
+
+				throw;
+			}
 		}
 	}
 	catch (const std::invalid_argument& err)

@@ -2484,11 +2484,15 @@ bool e2db_parser::read(string path)
 	try
 	{
 		if (list_file(path))
+		{
 			parse_e2db();
-		else
-			return false;
 
-		db.dstat = DSTAT::d_read;
+			db.dstat = DSTAT::d_read;
+		}
+		else
+		{
+			return false;
+		}
 
 		return true;
 	}

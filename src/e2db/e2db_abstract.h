@@ -31,6 +31,7 @@ struct e2db_abstract : protected e2se::log_factory
 
 		inline static bool OVERWRITE_FILE = false;
 
+		inline static bool FIX_BOUQUETS = true;
 		inline static bool MARKER_GLOBAL_INDEX = false;
 		inline static string USERBOUQUET_FILENAME_SUFFIX = "dbe";
 
@@ -665,6 +666,7 @@ struct e2db_abstract : protected e2se::log_factory
 		pair<unordered_map<string, bouquet>, unordered_map<string, userbouquet>> get_bouquets();
 		virtual unordered_map<string, e2db_file> get_input() { return this->e2db; }
 		virtual unordered_map<string, e2db_file> get_output() { return this->e2db_out; }
+		virtual void fix_bouquets(bool uniq_ubouquets = false);
 		virtual void merge(e2db_abstract* dst);
 		virtual void debugger();
 

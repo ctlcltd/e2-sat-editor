@@ -257,7 +257,6 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 	tid->reset();
 
 	dbih->clearStorage();
-	dbih->fixBouquets();
 
 	tid->load();
 }
@@ -498,7 +497,6 @@ void tools::importFileM3U(e2db::FCONVS fci, e2db::fcopts opts)
 	tid->reset();
 
 	dbih->clearStorage();
-	dbih->fixBouquets();
 
 	tid->load();
 }

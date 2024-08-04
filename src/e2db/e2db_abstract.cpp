@@ -14,6 +14,7 @@
 #include <cstring>
 #include <filesystem>
 #include <algorithm>
+#include <unordered_set>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
@@ -28,7 +29,7 @@
 
 #include "e2db_abstract.h"
 
-using std::string, std::pair, std::stringstream, std::hex, std::dec, std::to_string, std::cout, std::endl;
+using std::string, std::pair, std::unordered_set, std::stringstream, std::hex, std::dec, std::to_string, std::cout, std::endl;
 
 namespace e2se_e2db
 {
@@ -1737,6 +1738,84 @@ pair<unordered_map<string, e2db_abstract::bouquet>, unordered_map<string, e2db_a
 	debug("get_bouquets");
 
 	return pair (this->bouquets, this->userbouquets);
+}
+
+void e2db_abstract::fix_bouquets(bool uniq_ubouquets)
+{
+	debug("fix_bouquets");
+
+	if (index["bss"].size() > 2)
+	{
+		vector<string> _del;
+
+		for (auto & x : bouquets)
+		{
+			bouquet bs = x.second;
+
+			if (bs.userbouquets.size() == 0)
+			{
+				string bname = bs.bname;
+
+				for (auto it = index["bss"].begin(); it != index["bss"].end(); it++)
+				{
+					if (it->second == bname)
+					{
+						index["bss"].erase(it);
+
+						_del.emplace_back(bname);
+					}
+				}
+			}
+		}
+		for (string & w : _del)
+		{
+			bouquets.erase(w);
+		}
+		_del.clear();
+	}
+
+	if (uniq_ubouquets)
+	{
+		for (auto & x : bouquets)
+		{
+			bouquet& bs = x.second;
+
+			unordered_set<string> _unique;
+			vector<string> ubouquets;
+
+			for (string & bname : bs.userbouquets)
+			{
+				if (! _unique.count(bname))
+				{
+					ubouquets.emplace_back(bname);
+					_unique.insert(bname);
+				}
+			}
+
+			bs.userbouquets.swap(ubouquets);
+		}
+
+		vector<pair<int, string>> i_ubouquets;
+		int ub_idx = -1;
+		unordered_set<string> _unique;
+
+		for (auto & x : index["ubs"])
+		{
+			userbouquet& ub = userbouquets[x.second];
+			string bname = ub.bname;
+
+			if (! _unique.count(bname))
+			{
+				ub_idx++;
+
+				ub.index = ub_idx;
+				i_ubouquets.emplace_back(pair (ub_idx, bname));
+				_unique.insert(bname);
+			}
+		}
+
+		index["ubs"].swap(i_ubouquets);
+	}
 }
 
 void e2db_abstract::merge(e2db_abstract* dst)

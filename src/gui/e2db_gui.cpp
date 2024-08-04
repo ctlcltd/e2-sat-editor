@@ -210,41 +210,6 @@ void e2db::clearStorage(bool merge)
 	}
 }
 
-void e2db::fixBouquets()
-{
-	debug("fixBouquets");
-
-	if (index["bss"].size() > 2)
-	{
-		vector<string> del;
-
-		for (auto & x : bouquets)
-		{
-			bouquet bs = x.second;
-
-			if (bs.userbouquets.size() == 0)
-			{
-				string bname = bs.bname;
-
-				for (auto it = index["bss"].begin(); it != index["bss"].end(); it++)
-				{
-					if (it->second == bname)
-					{
-						index["bss"].erase(it);
-
-						del.emplace_back(bname);
-					}
-				}
-			}
-		}
-		for (string & w : del)
-		{
-			bouquets.erase(w);
-		}
-		del.clear();
-	}
-}
-
 string e2db::addTransponder(transponder& tx)
 {
 	debug("addTransponder", "txid", tx.txid);
@@ -487,7 +452,6 @@ bool e2db::prepare(string filename) noexcept
 	}
 
 	initStorage();
-	fixBouquets();
 
 	return true;
 }
@@ -506,7 +470,7 @@ bool e2db::write(string path) noexcept
 	}
 }
 
-//TODO TEST import, merge, input size, fixBouquets
+//TODO FIX merge import and input empty map
 void e2db::importFile(vector<string> paths) noexcept
 {
 	debug("importFile");
@@ -523,7 +487,6 @@ void e2db::importFile(vector<string> paths) noexcept
 	}
 
 	clearStorage(merge);
-	fixBouquets();
 }
 
 void e2db::exportFile(int bit, vector<string> paths, string filename) noexcept
@@ -560,7 +523,6 @@ void e2db::importBlob(unordered_map<string, e2db_file> files)
 	}
 
 	clearStorage(merge);
-	fixBouquets();
 }
 
 bool e2db::haveErrors()

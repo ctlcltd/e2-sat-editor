@@ -1741,12 +1741,16 @@ bool e2db_maker::write(string path)
 			db.version = 0x1010 + zapit_ver;
 		}
 
-		db.dstat = DSTAT::d_written;
-
 		if (push_file(path))
+		{
+			db.dstat = DSTAT::d_written;
+
 			return true;
+		}
 		else
+		{
 			return false;
+		}
 	}
 	catch (const std::invalid_argument& err)
 	{

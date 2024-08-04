@@ -42,7 +42,6 @@ class e2db : public ::e2se_e2db::e2db
 		void initStorage();
 		void clearStorage();
 		void clearStorage(bool merge);
-		void fixBouquets();
 		string addTransponder(transponder& tx);
 		string editTransponder(string txid, transponder& tx);
 		void removeTransponder(string txid);
