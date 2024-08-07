@@ -26,6 +26,8 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map, std::bi
 #include <QWidget>
 #include <QGridLayout>
 #include <QToolBar>
+#include <QMenu>
+#include <QWidgetAction>
 #include <QList>
 
 #include "../logger/logger.h"
@@ -110,7 +112,10 @@ class tab : protected e2se::log_factory
 		void exportFile();
 		void printFile(bool all);
 		void infoFile();
+		void convertFormat(gui::GUI_CXE bit);
+		void convertFormat(int bit);
 		void settingsDialog();
+		QMenu* toolsMenu();
 		void ftpcomError();
 		void ftpcomError(string error);
 		void ftpcomError(vector<pair<string, string>> errors, MSG_CODE code);
@@ -182,6 +187,12 @@ class tab : protected e2se::log_factory
 		static QWidget* toolBarSpacer(QToolBar* toolbar);
 		void toolBarStyleSheet();
 
+		static QMenu* menuMenu(QMenu* menu, QString title);
+		static QAction* menuAction(QMenu* menu, QString text, std::function<void()> trigger);
+		static QAction* menuAction(QMenu* menu, QString text, std::function<void()> trigger, QKeySequence shortcut);
+		static QAction* menuTitle(QMenu* menu, QString title);
+		static QAction* menuSeparator(QMenu* menu);
+
 		e2se_gui::theme* theme;
 		// tab view
 		gui::TAB_VIEW ttv;
@@ -189,6 +200,7 @@ class tab : protected e2se::log_factory
 		QGridLayout* root;
 		QToolBar* top_toolbar;
 		QToolBar* bottom_toolbar;
+		QMenu* tools_menu = nullptr;
 		QComboBox* ftp_combo;
 
 		unordered_map<string, e2se_ftpcom::ftpcom::ftpcom_file> ftp_files;

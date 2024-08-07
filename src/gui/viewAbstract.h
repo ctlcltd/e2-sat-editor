@@ -89,10 +89,7 @@ class viewAbstract : protected e2se::log_factory
 		virtual void listFindClearSelection(bool hidden = true);
 		virtual void listFindReset();
 		virtual void listFindClear();
-		virtual void updateFlags()
-		{
-			tabUpdateFlags();
-		};
+		virtual void updateFlags();
 		virtual bool statusBarIsVisible()
 		{
 			return tabStatusBarIsVisible();

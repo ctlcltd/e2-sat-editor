@@ -747,6 +747,8 @@ void channelBookView::updateFlags()
 
 	// debug("updateFlags");
 
+	viewAbstract::updateFlags();
+
 	tabSetFlag(gui::FileImport, false);
 	tabSetFlag(gui::FileExport, false);
 	tabUpdateToolBars();
@@ -760,19 +762,6 @@ void channelBookView::updateFlags()
 	{
 		tabSetFlag(gui::TabListSelectAll, false);
 		// tabSetFlag(gui::TabListFind, false);
-	}
-
-	auto* dbih = this->data->dbih;
-
-	if (dbih->index.count("chs"))
-	{
-		tabSetFlag(gui::Picons, true);
-		tabSetFlag(gui::OpenChannelBook, true);
-	}
-	else
-	{
-		tabSetFlag(gui::Picons, false);
-		tabSetFlag(gui::OpenChannelBook, false);
 	}
 
 	tabSetFlag(gui::TabListFind, false);

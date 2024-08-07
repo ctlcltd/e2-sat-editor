@@ -537,6 +537,72 @@ void viewAbstract::listFindClear()
 	this->lsr_find.match.clear();
 }
 
+void viewAbstract::updateFlags()
+{
+	if (this->data == nullptr)
+	{
+		tabSetFlag(gui::FileConvert, false);
+		tabSetFlag(gui::Picons, false);
+		tabSetFlag(gui::OpenChannelBook, false);
+
+		return;
+	}
+
+	auto* dbih = this->data->dbih;
+
+	if (dbih->index.count("chs"))
+	{
+		tabSetFlag(gui::Picons, true);
+		tabSetFlag(gui::OpenChannelBook, true);
+	}
+	else
+	{
+		tabSetFlag(gui::Picons, false);
+		tabSetFlag(gui::OpenChannelBook, false);
+	}
+
+	int srctype = dbih->get_e2db_services_type();
+	int srcver = dbih->get_e2db_services_version();
+	int lamedb_ver = dbih->get_lamedb_version();
+	int zapit_ver = dbih->get_zapit_version();
+
+	gui::GUI_CXE dstbit;
+
+	if (srctype == 0)
+	{
+		if (lamedb_ver == -1)
+			lamedb_ver = srcver - 0x1220;
+
+		if (lamedb_ver == 4)
+			dstbit = gui::GUI_CXE::FileConvertLamedb24;
+		else if (lamedb_ver == 5)
+			dstbit = gui::GUI_CXE::FileConvertLamedb25;
+		else if (lamedb_ver == 3)
+			dstbit = gui::GUI_CXE::FileConvertLamedb23;
+		else if (lamedb_ver == 2)
+			dstbit = gui::GUI_CXE::FileConvertLamedb22;
+	}
+	else if (srctype == 1)
+	{
+		if (zapit_ver == -1)
+			zapit_ver = srcver - 0x1010;
+
+		if (zapit_ver == 4)
+			dstbit = gui::GUI_CXE::FileConvertZapit4;
+		else if (zapit_ver == 3)
+			dstbit = gui::GUI_CXE::FileConvertZapit3;
+		else if (zapit_ver == 2)
+			dstbit = gui::GUI_CXE::FileConvertZapit2;
+		else if (zapit_ver == 1)
+			dstbit = gui::GUI_CXE::FileConvertZapit1;
+	}
+
+	vector<int> bits = {72, 73, 74, 75, 76, 77, 78, 79};
+
+	for (int & bit : bits)
+		tabSetFlag(gui::GUI_CXE (bit), bit == dstbit);
+}
+
 void viewAbstract::tabSetFlag(gui::GUI_CXE bit, bool flag)
 {
 	if (tid != nullptr)

@@ -801,6 +801,8 @@ void transpondersView::actionCall(int bit)
 
 void transpondersView::updateFlags()
 {
+	viewAbstract::updateFlags();
+
 	// debug("updateFlags");
 
 	if (list->topLevelItemCount())
@@ -822,19 +824,6 @@ void transpondersView::updateFlags()
 		tabSetFlag(gui::TabListPaste, false);
 	else
 		tabSetFlag(gui::TabListPaste, true);
-
-	auto* dbih = this->data->dbih;
-
-	if (dbih->index.count("chs"))
-	{
-		tabSetFlag(gui::Picons, true);
-		tabSetFlag(gui::OpenChannelBook, true);
-	}
-	else
-	{
-		tabSetFlag(gui::Picons, false);
-		tabSetFlag(gui::OpenChannelBook, false);
-	}
 
 	tabSetFlag(gui::TabTreeFindNext, false);
 	tabSetFlag(gui::TabListFindNext, false);

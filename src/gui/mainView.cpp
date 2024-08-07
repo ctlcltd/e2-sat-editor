@@ -1538,7 +1538,7 @@ QMenu* mainView::servicesSetsCornerMenu()
 			QAction* action = new QAction;
 			action->setText(opt.second);
 			action->setCheckable(true);
-			action->connect(action, &QAction::triggered, [=]() { this->convert(opt.first); });
+			action->connect(action, &QAction::triggered, [=]() { this->convertFormat(opt.first); });
 			submenu->addAction(action);
 		}
 
@@ -1682,53 +1682,10 @@ QMenu* mainView::listPrefsCornerMenu()
 	return menu;
 }
 
-void mainView::convert(int bit)
+void mainView::convertFormat(int bit)
 {
-	debug("convert", "bit", bit);
-
-	auto* dbih = this->data->dbih;
-
-	e2db::FPORTS fpx = static_cast<e2db::FPORTS>(bit);
-
-	switch (fpx)
-	{
-		case e2db::FPORTS::all_services__2_4:
-			dbih->set_e2db_services_type(0);
-			dbih->set_lamedb_version(4);
-		break;
-		case e2db::FPORTS::all_services__2_5:
-			dbih->set_e2db_services_type(0);
-			dbih->set_lamedb_version(5);
-		break;
-		case e2db::FPORTS::all_services__2_3:
-			dbih->set_e2db_services_type(0);
-			dbih->set_lamedb_version(3);
-		break;
-		case e2db::FPORTS::all_services__2_2:
-			dbih->set_e2db_services_type(0);
-			dbih->set_lamedb_version(2);
-		break;
-		case e2db::FPORTS::all_services_xml__4:
-			dbih->set_e2db_services_type(1);
-			dbih->set_zapit_version(4);
-		break;
-		case e2db::FPORTS::all_services_xml__3:
-			dbih->set_e2db_services_type(1);
-			dbih->set_zapit_version(3);
-		break;
-		case e2db::FPORTS::all_services_xml__2:
-			dbih->set_e2db_services_type(1);
-			dbih->set_zapit_version(2);
-		break;
-		case e2db::FPORTS::all_services_xml__1:
-			dbih->set_e2db_services_type(1);
-			dbih->set_zapit_version(1);
-		break;
-		default:
-			return;
-	}
-
-	updateStatusBar();
+	if (tid != nullptr)
+		tid->convertFormat(bit);
 }
 
 void mainView::addBouquet()
@@ -4052,6 +4009,8 @@ void mainView::updateFlags()
 {
 	// debug("updateFlags");
 
+	viewAbstract::updateFlags();
+
 	if (tree->topLevelItemCount())
 	{
 		tabSetFlag(gui::TabTreeFind, true);
@@ -4078,19 +4037,6 @@ void mainView::updateFlags()
 		tabSetFlag(gui::TabListFind, false);
 		this->action.list_search->setDisabled(true);
 		this->action.list_search->actions().first()->setDisabled(true);
-	}
-
-	auto* dbih = this->data->dbih;
-
-	if (dbih->index.count("chs"))
-	{
-		tabSetFlag(gui::Picons, true);
-		tabSetFlag(gui::OpenChannelBook, true);
-	}
-	else
-	{
-		tabSetFlag(gui::Picons, false);
-		tabSetFlag(gui::OpenChannelBook, false);
 	}
 
 	tabSetFlag(gui::TabTreeFindNext, false);

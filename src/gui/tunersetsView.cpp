@@ -1392,6 +1392,8 @@ void tunersetsView::actionCall(int bit)
 
 void tunersetsView::updateFlags()
 {
+	viewAbstract::updateFlags();
+
 	// debug("updateFlags");
 
 	tabSetFlag(gui::TabDialEditSettings, true);
@@ -1422,19 +1424,6 @@ void tunersetsView::updateFlags()
 		tabSetFlag(gui::TabListFind, false);
 		this->action.list_search->setDisabled(true);
 		this->action.list_search->actions().first()->setEnabled(true);
-	}
-
-	auto* dbih = this->data->dbih;
-
-	if (dbih->index.count("chs"))
-	{
-		tabSetFlag(gui::Picons, true);
-		tabSetFlag(gui::OpenChannelBook, true);
-	}
-	else
-	{
-		tabSetFlag(gui::Picons, false);
-		tabSetFlag(gui::OpenChannelBook, false);
 	}
 
 	tabSetFlag(gui::TabTreeFindNext, false);

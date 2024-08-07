@@ -993,6 +993,8 @@ void piconsView::actionCall(int bit)
 
 void piconsView::updateFlags()
 {
+	viewAbstract::updateFlags();
+
 	// debug("updateFlags");
 
 	tabSetFlag(gui::FileImport, false);
@@ -1018,19 +1020,6 @@ void piconsView::updateFlags()
 		tabSetFlag(gui::TabListPaste, false);
 	else
 		tabSetFlag(gui::TabListPaste, true);
-
-	auto* dbih = this->data->dbih;
-
-	if (dbih->index.count("chs"))
-	{
-		tabSetFlag(gui::Picons, true);
-		tabSetFlag(gui::OpenChannelBook, true);
-	}
-	else
-	{
-		tabSetFlag(gui::Picons, false);
-		tabSetFlag(gui::OpenChannelBook, false);
-	}
 
 	tabSetFlag(gui::TabTreeFindNext, false);
 	tabSetFlag(gui::TabListFindNext, false);

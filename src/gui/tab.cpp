@@ -37,6 +37,7 @@
 #include <QScrollArea>
 #include <QClipboard>
 #include <QMimeData>
+#include <QMouseEvent>
 #ifdef Q_OS_WIN
 #include <QStyleFactory>
 #include <QScrollBar>
@@ -173,6 +174,8 @@ void tab::tabSwitch()
 	debug("tabSwitch");
 
 	retrieveFlags();
+
+	view->updateFlags();
 	view->updateStatusBar();
 	view->updateStatusBar(true);
 
@@ -455,6 +458,37 @@ void tab::layout()
 #ifdef E2SE_DEMO
 	DEMO = true;
 #endif
+
+	toolBarSeparator(bottom_toolbar);
+
+	QAction* btt_action = new QAction(bottom_toolbar);
+	btt_action->setText(tr("Tools", "toolbar"));
+	bottom_toolbar->addAction(btt_action);
+#ifndef Q_OS_MAC
+	QMenu* btt_menu = this->toolsMenu();
+	btt_menu->connect(btt_menu, &QMenu::aboutToShow, [=]() {
+		this->toolsMenu();
+	});
+#else
+	QMenu* btt_menu = new QMenu;
+	btt_menu->connect(btt_menu, &QMenu::aboutToShow, [=]() {
+		//TODO btt_menu hide
+
+		QMenu* menu = this->toolsMenu();
+
+		QWidget* wid = bottom_toolbar->widgetForAction(btt_action);
+		QPoint pos = wid->mapFrom(bottom_toolbar, wid->pos());
+		platform::osMenuPopup(menu, wid, pos);
+
+		QMouseEvent mouseRelease(QEvent::MouseButtonRelease, wid->pos(), wid->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
+		QCoreApplication::sendEvent(wid, &mouseRelease);
+	});
+#endif
+	QWidget* wid = bottom_toolbar->widgetForAction(btt_action);
+	if (QToolButton* btn = qobject_cast<QToolButton*>(wid))
+		btn->setPopupMode(QToolButton::InstantPopup);
+	btt_action->setMenu(btt_menu);
+
 	toolBarSeparator(bottom_toolbar);
 	if (QSettings().value("application/debug", false).toBool() || DEMO)
 	{
@@ -1106,6 +1140,99 @@ void tab::exportFile()
 	}
 }
 
+void tab::printFile(bool all)
+{
+	debug("printFile");
+
+#ifdef E2SE_DEMO
+	return this->demoMessage();
+#endif
+
+	gui::TAB_VIEW current = getTabView();
+	printable* printer = new printable(this->cwid, this->data);
+
+	// print all
+	if (all)
+	{
+		printer->documentAll();
+	}
+	// tunersets view
+	else if (current == gui::TAB_VIEW::tunersets)
+	{
+		tunersetsView* view = reinterpret_cast<tunersetsView*>(this->view);
+		auto state = view->currentState();
+
+		printer->documentTunersets(state.yx);
+	}
+	// main view
+	else if (current == gui::TAB_VIEW::main)
+	{
+		mainView* view = reinterpret_cast<mainView*>(this->view);
+		auto state = view->currentState();
+
+		// services
+		if (state.tc == 0)
+		{
+			int ti = view->side->indexOfTopLevelItem(view->side->currentItem());
+			int stype;
+			switch (ti)
+			{
+				// TV
+				case 1:
+					stype = e2db::STYPE::tv;
+				break;
+				// Radio
+				case 2:
+					stype = e2db::STYPE::radio;
+				break;
+				// Data
+				case 3:
+					stype = e2db::STYPE::data;
+				break;
+				// All Services
+				default:
+					stype = -1;
+			}
+			printer->documentServices(stype);
+		}
+		// bouquets
+		else if (state.tc == 1)
+		{
+			int ti = -1;
+			QList<QTreeWidgetItem*> selected = view->tree->selectedItems();
+
+			if (selected.empty())
+			{
+				delete printer;
+				return;
+			}
+			for (auto & item : selected)
+			{
+				ti = view->tree->indexOfTopLevelItem(item);
+				string bname = item->data(0, Qt::UserRole).toString().toStdString();
+
+				// bouquet | userbouquets
+				if (ti != -1)
+					printer->documentBouquet(bname);
+				// userbouquet
+				else
+					printer->documentUserbouquet(bname);
+			}
+		}
+	}
+	// channelBook view
+	else if (current == gui::TAB_VIEW::channelBook)
+	{
+		printer->documentAll();
+	}
+
+	printer->print();
+	delete printer;
+
+	if (statusBarIsVisible())
+		statusBarMessage(tr("Printing …", "message"));
+}
+
 void tab::infoFile()
 {
 	debug("infoFile");
@@ -1310,97 +1437,129 @@ void tab::infoFile()
 	dial->exec();
 }
 
-void tab::printFile(bool all)
+void tab::convertFormat(gui::GUI_CXE bit)
 {
-	debug("printFile");
+	int x = 0;
 
-#ifdef E2SE_DEMO
-	return this->demoMessage();
-#endif
-
-	gui::TAB_VIEW current = getTabView();
-	printable* printer = new printable(this->cwid, this->data);
-
-	// print all
-	if (all)
+	switch (bit)
 	{
-		printer->documentAll();
-	}
-	// tunersets view
-	else if (current == gui::TAB_VIEW::tunersets)
-	{
-		tunersetsView* view = reinterpret_cast<tunersetsView*>(this->view);
-		auto state = view->currentState();
-
-		printer->documentTunersets(state.yx);
-	}
-	// main view
-	else if (current == gui::TAB_VIEW::main)
-	{
-		mainView* view = reinterpret_cast<mainView*>(this->view);
-		auto state = view->currentState();
-
-		// services
-		if (state.tc == 0)
-		{
-			int ti = view->side->indexOfTopLevelItem(view->side->currentItem());
-			int stype;
-			switch (ti)
-			{
-				// TV
-				case 1:
-					stype = e2db::STYPE::tv;
-				break;
-				// Radio
-				case 2:
-					stype = e2db::STYPE::radio;
-				break;
-				// Data
-				case 3:
-					stype = e2db::STYPE::data;
-				break;
-				// All Services
-				default:
-					stype = -1;
-			}
-			printer->documentServices(stype);
-		}
-		// bouquets
-		else if (state.tc == 1)
-		{
-			int ti = -1;
-			QList<QTreeWidgetItem*> selected = view->tree->selectedItems();
-
-			if (selected.empty())
-			{
-				delete printer;
-				return;
-			}
-			for (auto & item : selected)
-			{
-				ti = view->tree->indexOfTopLevelItem(item);
-				string bname = item->data(0, Qt::UserRole).toString().toStdString();
-
-				// bouquet | userbouquets
-				if (ti != -1)
-					printer->documentBouquet(bname);
-				// userbouquet
-				else
-					printer->documentUserbouquet(bname);
-			}
-		}
-	}
-	// channelBook view
-	else if (current == gui::TAB_VIEW::channelBook)
-	{
-		printer->documentAll();
+		case gui::GUI_CXE::FileConvertLamedb24: x = e2db::FPORTS::all_services__2_4; break;
+		case gui::GUI_CXE::FileConvertLamedb25: x = e2db::FPORTS::all_services__2_5; break;
+		case gui::GUI_CXE::FileConvertLamedb23: x = e2db::FPORTS::all_services__2_3; break;
+		case gui::GUI_CXE::FileConvertLamedb22: x = e2db::FPORTS::all_services__2_2; break;
+		case gui::GUI_CXE::FileConvertZapit4: x = e2db::FPORTS::all_services_xml__4; break;
+		case gui::GUI_CXE::FileConvertZapit3: x = e2db::FPORTS::all_services_xml__3; break;
+		case gui::GUI_CXE::FileConvertZapit2: x = e2db::FPORTS::all_services_xml__2; break;
+		case gui::GUI_CXE::FileConvertZapit1: x = e2db::FPORTS::all_services_xml__1; break;
+		default: return;
 	}
 
-	printer->print();
-	delete printer;
+	convertFormat(x);
+}
 
-	if (statusBarIsVisible())
-		statusBarMessage(tr("Printing …", "message"));
+void tab::convertFormat(int bit)
+{
+	debug("convertFormat", "bit", bit);
+
+	auto* dbih = this->data->dbih;
+
+	e2db::FPORTS fpx = static_cast<e2db::FPORTS>(bit);
+	gui::GUI_CXE dstbit;
+
+	int srctype = dbih->get_e2db_services_type();
+	int srcver = dbih->get_e2db_services_version();
+	int lamedb_ver = dbih->get_lamedb_version();
+	int zapit_ver = dbih->get_zapit_version();
+
+	if (srctype == 0)
+	{
+		if (lamedb_ver == -1)
+			lamedb_ver = srcver - 0x1220;
+
+		debug("convertFormat", "from Lamedb version", lamedb_ver);
+	}
+	else if (srctype == 1)
+	{
+		if (zapit_ver == -1)
+			zapit_ver = srcver - 0x1010;
+
+		debug("convertFormat", "from Zapit version", zapit_ver);
+	}
+
+	switch (fpx)
+	{
+		case e2db::FPORTS::all_services__2_4:
+			dbih->set_e2db_services_type(0);
+			dbih->set_lamedb_version(4);
+			dstbit = gui::GUI_CXE::FileConvertLamedb24;
+		break;
+		case e2db::FPORTS::all_services__2_5:
+			dbih->set_e2db_services_type(0);
+			dbih->set_lamedb_version(5);
+			dstbit = gui::GUI_CXE::FileConvertLamedb25;
+		break;
+		case e2db::FPORTS::all_services__2_3:
+			dbih->set_e2db_services_type(0);
+			dbih->set_lamedb_version(3);
+			dstbit = gui::GUI_CXE::FileConvertLamedb23;
+		break;
+		case e2db::FPORTS::all_services__2_2:
+			dbih->set_e2db_services_type(0);
+			dbih->set_lamedb_version(2);
+			dstbit = gui::GUI_CXE::FileConvertLamedb22;
+		break;
+		case e2db::FPORTS::all_services_xml__4:
+			dbih->set_e2db_services_type(1);
+			dbih->set_zapit_version(4);
+			dstbit = gui::GUI_CXE::FileConvertZapit4;
+		break;
+		case e2db::FPORTS::all_services_xml__3:
+			dbih->set_e2db_services_type(1);
+			dbih->set_zapit_version(3);
+			dstbit = gui::GUI_CXE::FileConvertZapit3;
+		break;
+		case e2db::FPORTS::all_services_xml__2:
+			dbih->set_e2db_services_type(1);
+			dbih->set_zapit_version(2);
+			dstbit = gui::GUI_CXE::FileConvertZapit2;
+		break;
+		case e2db::FPORTS::all_services_xml__1:
+			dbih->set_e2db_services_type(1);
+			dbih->set_zapit_version(1);
+			dstbit = gui::GUI_CXE::FileConvertZapit1;
+		break;
+		default:
+			return;
+	}
+
+	int dsttype = dbih->get_e2db_services_type();
+	int dstver = bit;
+	lamedb_ver = dbih->get_lamedb_version();
+	zapit_ver = dbih->get_zapit_version();
+
+	if (dsttype == 0)
+	{
+		if (lamedb_ver == -1)
+			lamedb_ver = dstver - 0x1220;
+
+		debug("convertFormat", "to Lamedb version", lamedb_ver);
+	}
+	else if (dsttype == 1)
+	{
+		if (zapit_ver == -1)
+			zapit_ver = dstver - 0x1010;
+
+		debug("convertFormat", "to Zapit version", zapit_ver);
+	}
+
+	vector<int> bits = {72, 73, 74, 75, 76, 77, 78, 79};
+
+	for (int & bit : bits)
+		setFlag(gui::GUI_CXE (bit), bit == dstbit);
+
+	storeFlags();
+
+	view->updateStatusBar();
 }
 
 void tab::settingsDialog()
@@ -1408,6 +1567,50 @@ void tab::settingsDialog()
 	debug("settingsDialog");
 
 	gid->settingsDialog();
+}
+
+QMenu* tab::toolsMenu()
+{
+	if (this->tools_menu == nullptr)
+	{
+		QMenu* menu = this->tools_menu = new QMenu;
+
+		QMenu* importcsv = menuMenu(menu, tr("Import from CSV", "menu"));
+		menuAction(importcsv, tr("Import Services", "menu"), [=]() { this->toolsImportFromFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_services); });
+		menuAction(importcsv, tr("Import Bouquet", "menu"), [=]() { this->toolsImportFromFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_bouquets); });
+		menuAction(importcsv, tr("Import Userbouquet", "menu"), [=]() { this->toolsImportFromFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_userbouquets); });
+		menuAction(importcsv, tr("Import Tuner settings", "menu"), [=]() { this->toolsImportFromFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_tunersets); });
+		QMenu* exportcsv = menuMenu(menu, tr("Export to CSV", "menu"));
+		menuAction(exportcsv, tr("Export current", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_current); });
+		menuAction(exportcsv, tr("Export All", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_all); });
+		menuAction(exportcsv, tr("Export Services", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_services); });
+		menuAction(exportcsv, tr("Export Bouquets", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_bouquets); });
+		menuAction(exportcsv, tr("Export Userbouquets", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_userbouquets); });
+		menuAction(exportcsv, tr("Export Tuner settings", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_tunersets); });
+		menuSeparator(menu);
+		menuAction(menu, tr("Import from M3U", "menu"), [=]() { this->toolsImportFromFile(TOOLS_FILE::tools_m3u, e2db::FCONVS::convert_all); });
+		menuAction(menu, tr("Export to M3U", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_m3u, e2db::FCONVS::convert_current); });
+		menuSeparator(menu);
+		QMenu* exporthtml = menuMenu(menu, tr("Export to HTML", "menu"));
+		menuAction(exporthtml, tr("Export current", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_current); });
+		menuAction(exporthtml, tr("Export All", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_all); });
+		menuAction(exporthtml, tr("Export Index", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_index); });
+		menuAction(exporthtml, tr("Export Services", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_services); });
+		menuAction(exporthtml, tr("Export Bouquets", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_bouquets); });
+		menuAction(exporthtml, tr("Export Userbouquets", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_userbouquets); });
+		menuAction(exporthtml, tr("Export Tuner settings", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_tunersets); });
+		menuSeparator(menu);
+		menuAction(menu, tr("Log Inspector", "menu"), [=]() { this->toolsInspector(); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
+	}
+
+	QMenu* menu = this->tools_menu;
+
+	/*auto actions = menu->actions();
+
+	for (auto & act : actions)
+		act->setEnabled(false);*/
+
+	return menu;
 }
 
 void tab::toolsInspector()
@@ -1713,6 +1916,17 @@ void tab::actionCall(int bit)
 		break;
 		case gui::TAB_ATS::ShowChannelBook:
 			gid->openTab(gui::TAB_VIEW::channelBook);
+		break;
+
+		case gui::TAB_ATS::ConvertLamedb24:
+		case gui::TAB_ATS::ConvertLamedb25:
+		case gui::TAB_ATS::ConvertLamedb23:
+		case gui::TAB_ATS::ConvertLamedb22:
+		case gui::TAB_ATS::ConvertZapit4:
+		case gui::TAB_ATS::ConvertZapit3:
+		case gui::TAB_ATS::ConvertZapit2:
+		case gui::TAB_ATS::ConvertZapit1:
+			convertFormat(gui::GUI_CXE (bit));
 		break;
 
 		case gui::TAB_ATS::ImportCSV_services:
@@ -2944,6 +3158,55 @@ void tab::toolBarStyleSheet()
 
 	theme->dynamicStyleSheet(widget, "#tab_top_toolbar, #tab_bottom_toolbar { border-color: " + tbshade_hexArgb + " }", theme::dark);
 #endif
+}
+
+QMenu* tab::menuMenu(QMenu* menu, QString title)
+{
+	QMenu* submenu = new QMenu(menu);
+	submenu->setTitle(title);
+	menu->addMenu(submenu);
+	return submenu;
+}
+
+QAction* tab::menuAction(QMenu* menu, QString text, std::function<void()> trigger)
+{
+	QAction* action = new QAction(menu);
+	action->setText(text);
+	action->connect(action, &QAction::triggered, trigger);
+	menu->addAction(action);
+	return action;
+}
+
+QAction* tab::menuAction(QMenu* menu, QString text, std::function<void()> trigger, QKeySequence shortcut)
+{
+	QAction* action = new QAction(menu);
+	action->setText(text);
+	action->setShortcut(shortcut);
+	action->connect(action, &QAction::triggered, trigger);
+	menu->addAction(action);
+	return action;
+}
+
+QAction* tab::menuTitle(QMenu* menu, QString title)
+{
+	QWidgetAction* action = new QWidgetAction(nullptr);
+	QLabel* label = new QLabel(title);
+#ifndef Q_OS_MAC
+	label->setStyleSheet("QLabel { margin: 5px 10px }");
+#else
+	label->setStyleSheet("QLabel { margin: 5px 10px; font-weight: bold }");
+#endif
+	action->setDefaultWidget(label);
+	menu->addAction(action);
+	return action;
+}
+
+QAction* tab::menuSeparator(QMenu* menu)
+{
+	QAction* action = new QAction(menu);
+	action->setSeparator(true);
+	menu->addAction(action);
+	return action;
 }
 
 }

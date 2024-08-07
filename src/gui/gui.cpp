@@ -316,6 +316,16 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::CloseAllTabs] = menuBarAction(mfile, tr("Close All Tabs", "menu"), [=]() { this->closeAllTabs(); }, Qt::CTRL | Qt::ALT | Qt::Key_W);
 	menuBarSeparator(mfile);
 	gmenu[GUI_CXE::FileInfo] = menuBarAction(mfile, tr("File Information", "menu"), [=]() { this->fileInfo(); });
+	QMenu* mconvert = menuBarMenu(mfile, tr("Convert", "menu"));
+	gmenu[GUI_CXE::FileConvert] = mconvert->menuAction();
+	gmenu[GUI_CXE::FileConvertLamedb24] = menuBarCheckable(mconvert, tr("Lamedb 2.4 [Enigma 2]"), [=]() { this->tabAction(TAB_ATS::ConvertLamedb24); });
+	gmenu[GUI_CXE::FileConvertLamedb25] = menuBarCheckable(mconvert, tr("Lamedb 2.5 [Enigma 2]"), [=]() { this->tabAction(TAB_ATS::ConvertLamedb25); });
+	gmenu[GUI_CXE::FileConvertLamedb23] = menuBarCheckable(mconvert, tr("Lamedb 2.3 [Enigma 1]"), [=]() { this->tabAction(TAB_ATS::ConvertLamedb23); });
+	gmenu[GUI_CXE::FileConvertLamedb22] = menuBarCheckable(mconvert, tr("Lamedb 2.2 [Enigma 1]"), [=]() { this->tabAction(TAB_ATS::ConvertLamedb22); });
+	gmenu[GUI_CXE::FileConvertZapit4] = menuBarCheckable(mconvert, tr("Zapit api-v4 [Neutrino]"), [=]() { this->tabAction(TAB_ATS::ConvertZapit4); });
+	gmenu[GUI_CXE::FileConvertZapit3] = menuBarCheckable(mconvert, tr("Zapit api-v3 [Neutrino]"), [=]() { this->tabAction(TAB_ATS::ConvertZapit3); });
+	gmenu[GUI_CXE::FileConvertZapit2] = menuBarCheckable(mconvert, tr("Zapit api-v2 [Neutrino]"), [=]() { this->tabAction(TAB_ATS::ConvertZapit2); });
+	gmenu[GUI_CXE::FileConvertZapit1] = menuBarCheckable(mconvert, tr("Zapit api-v1 [Neutrino]"), [=]() { this->tabAction(TAB_ATS::ConvertZapit1); });
 	menuBarSeparator(mfile);
 	//: Encoding: preserve 3-dots ellipsis symbol
 	gmenu[GUI_CXE::FilePrint] = menuBarAction(mfile, tr("&Print…", "menu"), [=]() { this->filePrint(); }, QKeySequence::Print);
@@ -383,19 +393,6 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::TabTreeFindNext] = menuBarAction(mfind, tr("Find N&ext Bouquet", "menu"), [=]() { this->tabAction(TAB_ATS::TreeFindNext); }, Qt::CTRL | Qt::ALT | Qt::Key_E);
 
 	QMenu* mtools = menuBarMenu(menubar, tr("&Tools", "menu"));
-	gmenu[GUI_CXE::Transponders] = menuBarAction(mtools, tr("Edit Transponders", "menu"), [=]() { this->tabAction(TAB_ATS::EditTransponders); });
-	menuBarSeparator(mtools);
-	//: Note: %1 is xml filename
-	gmenu[GUI_CXE::TunersetsSat] = menuBarAction(mtools, tr("Edit %1", "menu").arg("satellites.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsSat); });
-	//: Note: %1 is xml filename
-	gmenu[GUI_CXE::TunersetsTerrestrial] = menuBarAction(mtools, tr("Edit %1", "menu").arg("terrestrial.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsTerrestrial); });
-	//: Note: %1 is xml filename
-	gmenu[GUI_CXE::TunersetsCable] = menuBarAction(mtools, tr("Edit %1", "menu").arg("cables.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsCable); });
-	//: Note: %1 is xml filename
-	gmenu[GUI_CXE::TunersetsAtsc] = menuBarAction(mtools, tr("Edit %1", "menu").arg("atsc.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsAtsc); });
-	menuBarSeparator(mtools);
-	gmenu[GUI_CXE::Picons] = menuBarAction(mtools, tr("Picons editor", "menu"), [=]() { this->tabAction(TAB_ATS::EditPicons); });
-	gmenu[GUI_CXE::OpenChannelBook] = menuBarAction(mtools, tr("Channel Book", "menu"), [=]() { this->tabAction(TAB_ATS::ShowChannelBook); });
 	menuBarSeparator(mtools);
 	QMenu* mimportcsv = menuBarMenu(mtools, tr("Import from CSV", "menu"));
 	gmenu[GUI_CXE::ToolsImportCSV_services] = menuBarAction(mimportcsv, tr("Import Services", "menu"), [=]() { this->tabAction(TAB_ATS::ImportCSV_services); });
@@ -421,13 +418,24 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::ToolsExportHTML_bouquets] = menuBarAction(mexporthtml, tr("Export Bouquets", "menu"), [=]() { this->tabAction(TAB_ATS::ExportHTML_bouquets); });
 	gmenu[GUI_CXE::ToolsExportHTML_userbouquets] = menuBarAction(mexporthtml, tr("Export Userbouquets", "menu"), [=]() { this->tabAction(TAB_ATS::ExportHTML_userbouquets); });
 	gmenu[GUI_CXE::ToolsExportHTML_tunersets] = menuBarAction(mexporthtml, tr("Export Tuner settings", "menu"), [=]() { this->tabAction(TAB_ATS::ExportHTML_tunersets); });
-	// menuBarSeparator(mtools);
-	// gmenu[GUI_CXE::ToolsServicesOrder] = menuBarAction(mtools, "Order Services A-Z", []() {});
-	// gmenu[GUI_CXE::ToolsBouquetsOrder] = menuBarAction(mtools, "Order Userbouquets A-Z", []() {});
-	// gmenu[GUI_CXE::ToolsServicesCache] = menuBarAction(mtools, "Remove cached data from Services", []() {});
-	// gmenu[GUI_CXE::ToolsBouquetsDelete] = menuBarAction(mtools, "Delete all Bouquets", []() {});
 	menuBarSeparator(mtools);
 	gmenu[GUI_CXE::ToolsInspector] = menuBarAction(mtools, tr("Log Inspector", "menu"), [=]() { this->tabAction(TAB_ATS::Inspector); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
+
+
+	QMenu* meditor = menuBarMenu(menubar, tr("Edit&or", "menu"));
+	gmenu[GUI_CXE::Transponders] = menuBarAction(meditor, tr("Edit Transponders", "menu"), [=]() { this->tabAction(TAB_ATS::EditTransponders); });
+	menuBarSeparator(meditor);
+	//: Note: %1 is xml filename
+	gmenu[GUI_CXE::TunersetsSat] = menuBarAction(meditor, tr("Edit %1", "menu").arg("satellites.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsSat); });
+	//: Note: %1 is xml filename
+	gmenu[GUI_CXE::TunersetsTerrestrial] = menuBarAction(meditor, tr("Edit %1", "menu").arg("terrestrial.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsTerrestrial); });
+	//: Note: %1 is xml filename
+	gmenu[GUI_CXE::TunersetsCable] = menuBarAction(meditor, tr("Edit %1", "menu").arg("cables.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsCable); });
+	//: Note: %1 is xml filename
+	gmenu[GUI_CXE::TunersetsAtsc] = menuBarAction(meditor, tr("Edit %1", "menu").arg("atsc.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsAtsc); });
+	menuBarSeparator(meditor);
+	gmenu[GUI_CXE::Picons] = menuBarAction(meditor, tr("Picons editor", "menu"), [=]() { this->tabAction(TAB_ATS::EditPicons); });
+	gmenu[GUI_CXE::OpenChannelBook] = menuBarAction(meditor, tr("Channel Book", "menu"), [=]() { this->tabAction(TAB_ATS::ShowChannelBook); });
 
 	//: Platform: Window menu
 	QMenu* mwind = menuBarMenu(menubar, tr("&Window", "menu"));
@@ -2179,7 +2187,12 @@ void gui::setFlag(GUI_CXE bit, bool flag)
 	QAction* action = gmenu.count(bit) ? gmenu[bit] : nullptr;
 
 	if (action != nullptr)
-		action->setEnabled(flag);
+	{
+		if (action->isCheckable())
+			action->setChecked(flag);
+		else
+			action->setEnabled(flag);
+	}
 }
 
 bitset<256> gui::getFlags()
@@ -2289,10 +2302,10 @@ void gui::updateMenu()
 	{
 		int bit = x.first;
 
-		if (this->gxe[bit])
-			x.second->setEnabled(true);
+		if (x.second->isCheckable())
+			x.second->setChecked(this->gxe[bit]);
 		else
-			x.second->setDisabled(true);
+			x.second->setEnabled(this->gxe[bit]);
 	}
 
 	// note: is out of range
@@ -2416,6 +2429,27 @@ QAction* gui::menuBarAction(QMenu* menu, QString text, std::function<void()> tri
 	action->setText(text);
 	action->setShortcut(shortcut);
 	action->connect(action, &QAction::triggered, trigger);
+	menu->addAction(action);
+	return action;
+}
+
+QAction* gui::menuBarCheckable(QMenu* menu, QString text, std::function<void()> trigger)
+{
+	QAction* action = new QAction(menu);
+	action->setText(text);
+	action->connect(action, &QAction::triggered, trigger);
+	action->setCheckable(true);
+	menu->addAction(action);
+	return action;
+}
+
+QAction* gui::menuBarCheckable(QMenu* menu, QString text, std::function<void()> trigger, QKeySequence shortcut)
+{
+	QAction* action = new QAction(menu);
+	action->setText(text);
+	action->setShortcut(shortcut);
+	action->connect(action, &QAction::triggered, trigger);
+	action->setCheckable(true);
 	menu->addAction(action);
 	return action;
 }

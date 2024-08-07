@@ -56,6 +56,15 @@ class gui : protected e2se::log_factory
 			FileImport = 18,
 			FileExport = 19,
 			FileInfo = 14,
+			FileConvert = 17,
+			FileConvertLamedb24 = 78,
+			FileConvertLamedb25 = 79,
+			FileConvertLamedb23 = 73,
+			FileConvertLamedb22 = 75,
+			FileConvertZapit4 = 77,
+			FileConvertZapit3 = 74,
+			FileConvertZapit2 = 76,
+			FileConvertZapit1 = 72,
 			FilePrint = 12,
 			FilePrintAll = 13,
 			EditUndo = 21,
@@ -91,12 +100,8 @@ class gui : protected e2se::log_factory
 			TunersetsTerrestrial = 62,
 			TunersetsCable = 63,
 			TunersetsAtsc = 64,
-			Picons = 69,
-			OpenChannelBook = 70,
-			ToolsServicesOrder = 88,
-			ToolsServicesCache = 83,
-			ToolsBouquetsOrder = 98,
-			ToolsBouquetsDelete = 92,
+			Picons = 65,
+			OpenChannelBook = 67,
 			ToolsImportCSV_services = 101,
 			ToolsImportCSV_bouquet = 102,
 			ToolsImportCSV_userbouquet = 103,
@@ -134,6 +139,8 @@ class gui : protected e2se::log_factory
 			GUI_CXE::FileImport,
 			GUI_CXE::FileExport,
 			GUI_CXE::FileInfo,
+			//TODO enabled QMenu to QAction in idle status
+			GUI_CXE::FileConvert,
 			GUI_CXE::FilePrint,
 			GUI_CXE::FilePrintAll,
 			GUI_CXE::Transponders,
@@ -170,6 +177,14 @@ class gui : protected e2se::log_factory
 
 		enum TAB_ATS {
 			Info = GUI_CXE::FileInfo,
+			ConvertLamedb24 = GUI_CXE::FileConvertLamedb24,
+			ConvertLamedb25 = GUI_CXE::FileConvertLamedb25,
+			ConvertLamedb23 = GUI_CXE::FileConvertLamedb23,
+			ConvertLamedb22 = GUI_CXE::FileConvertLamedb22,
+			ConvertZapit4 = GUI_CXE::FileConvertZapit4,
+			ConvertZapit3 = GUI_CXE::FileConvertZapit3,
+			ConvertZapit2 = GUI_CXE::FileConvertZapit2,
+			ConvertZapit1 = GUI_CXE::FileConvertZapit1,
 			Print = GUI_CXE::FilePrint,
 			PrintAll = GUI_CXE::FilePrintAll,
 			TreeEditBouquet = GUI_CXE::TabTreeEditBouquet,
@@ -363,6 +378,8 @@ class gui : protected e2se::log_factory
 		static QMenu* menuBarMenu(QMenu* menu, QString title);
 		static QAction* menuBarAction(QMenu* menu, QString text, std::function<void()> trigger);
 		static QAction* menuBarAction(QMenu* menu, QString text, std::function<void()> trigger, QKeySequence shortcut);
+		static QAction* menuBarCheckable(QMenu* menu, QString text, std::function<void()> trigger);
+		static QAction* menuBarCheckable(QMenu* menu, QString text, std::function<void()> trigger, QKeySequence shortcut);
 		static QAction* menuBarSeparator(QMenu* menu);
 		static QActionGroup* menuBarActionGroup(QMenu* menu, bool exclusive = true);
 
