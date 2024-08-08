@@ -38,6 +38,7 @@ class e2db_parser : virtual public e2db_abstract
 		void parse_e2db_lamedb5(istream& ilamedb);
 		void parse_e2db_lamedbx(istream& ilamedb, int ver);
 		void parse_e2db_bouquet(istream& ibouquet, string filename, bool epl = false);
+		void parse_e2db_bouquet(istream& ibouquet, string filename, bool exclusive, bool epl);
 		void parse_e2db_userbouquet(istream& iuserbouquet, string filename);
 		void parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& iparental);
 		void parse_userbouquet_reference(string str, userbouquet& ub);

@@ -213,11 +213,11 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 			break;
 			case FPORTS::single_bouquet:
 			case FPORTS::all_bouquets:
-				dst->parse_e2db_bouquet(ifile, fname);
+				dst->parse_e2db_bouquet(ifile, fname, true, false);
 			break;
 			case FPORTS::single_bouquet_epl:
 			case FPORTS::all_bouquets_epl:
-				dst->parse_e2db_bouquet(ifile, fname, true);
+				dst->parse_e2db_bouquet(ifile, fname, true, true);
 			break;
 			case FPORTS::single_userbouquet:
 			case FPORTS::all_userbouquets:
@@ -226,9 +226,9 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 			case FPORTS::single_bouquet_all:
 			case FPORTS::single_bouquet_all_epl:
 				if (file_type_detect(fname) == FPORTS::single_bouquet)
-					dst->parse_e2db_bouquet(ifile, fname);
+					dst->parse_e2db_bouquet(ifile, fname, true, false);
 				else if (file_type_detect(fname) == FPORTS::single_bouquet_epl)
-					dst->parse_e2db_bouquet(ifile, fname, true);
+					dst->parse_e2db_bouquet(ifile, fname, true, true);
 				else
 					dst->parse_e2db_userbouquet(ifile, fname);
 			break;
@@ -922,6 +922,7 @@ void e2db::remove_bouquet(string bname)
 	{
 		if (it->second == bname)
 		{
+			found = true;
 			pos = it;
 			break;
 		}

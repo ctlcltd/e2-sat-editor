@@ -1776,7 +1776,38 @@ void e2db_abstract::fix_bouquets(bool uniq_ubouquets)
 
 	if (uniq_ubouquets)
 	{
+		vector<pair<int, string>> i_ubouquets;
+		int ub_idx = -1;
+
 		for (auto & x : bouquets)
+		{
+			bouquet& bs = x.second;
+
+			unordered_set<string> _unique;
+			vector<string> ubouquets;
+
+			for (string & w : bs.userbouquets)
+			{
+				userbouquet& ub = userbouquets[w];
+				string bname = ub.bname;
+
+				if (! _unique.count(bname))
+				{
+					ub_idx++;
+					ub.index = ub_idx;
+
+					ubouquets.emplace_back(bname);
+					i_ubouquets.emplace_back(pair (ub_idx, bname));
+					_unique.insert(bname);
+				}
+			}
+
+			bs.userbouquets.swap(ubouquets);
+		}
+
+		index["ubs"].swap(i_ubouquets);
+
+		/*for (auto & x : bouquets)
 		{
 			bouquet& bs = x.second;
 
@@ -1814,7 +1845,7 @@ void e2db_abstract::fix_bouquets(bool uniq_ubouquets)
 			}
 		}
 
-		index["ubs"].swap(i_ubouquets);
+		index["ubs"].swap(i_ubouquets);*/
 	}
 }
 

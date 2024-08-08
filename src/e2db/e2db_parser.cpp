@@ -915,6 +915,31 @@ void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string filename, bool ep
 	}
 }
 
+void e2db_parser::parse_e2db_bouquet(istream& ibouquet, string filename, bool exclusive, bool epl)
+{
+	if (exclusive && bouquets.count(filename))
+	{
+		debug("parse_e2db_bouquet", "exclusive", true);
+
+		bouquet& bs = bouquets[filename];
+
+		if (bs.userbouquets.size() != 0)
+		{
+			vector<string> ubouquets = bs.userbouquets;
+
+			bs.userbouquets.clear();
+
+			parse_e2db_bouquet(ibouquet, filename, epl);
+
+			bs.userbouquets.insert(bs.userbouquets.end(), ubouquets.begin(), ubouquets.end());
+
+			return;
+		}
+	}
+
+	parse_e2db_bouquet(ibouquet, filename, epl);
+}
+
 void e2db_parser::parse_e2db_userbouquet(istream& iuserbouquet, string filename)
 {
 	debug("parse_e2db_userbouquet", "filename", filename);
