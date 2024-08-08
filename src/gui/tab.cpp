@@ -134,16 +134,18 @@ void tab::removeChild(tab* child)
 {
 	debug("removeChild");
 
+	bool found = false;
 	vector<tab*>::iterator pos;
 	for (auto it = childs.begin(); it != childs.end(); it++)
 	{
 		if (*it == child)
 		{
+			found = true;
 			pos = it;
 			break;
 		}
 	}
-	if (pos != childs.end())
+	if (found && pos != childs.end())
 	{
 		childs.erase(pos);
 	}

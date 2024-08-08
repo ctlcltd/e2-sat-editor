@@ -150,13 +150,15 @@ void editTunersets::store()
 
 	if (dbih->comments.count(iname))
 	{
+		bool found = false;
 		vector<e2db::comment>::iterator pos;
 		for (auto it = dbih->comments[iname].begin(); it != dbih->comments[iname].end(); it++)
 		{
+			found = true;
 			pos = it;
 			break;
 		}
-		if (pos != dbih->comments[iname].end())
+		if (found && pos != dbih->comments[iname].end())
 		{
 			if (commhead.empty())
 			{

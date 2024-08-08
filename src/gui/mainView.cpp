@@ -3079,7 +3079,6 @@ void mainView::listItemPaste()
 	}
 }
 
-//TODO TEST random crash with put items
 void mainView::listItemDelete(bool cut)
 {
 	debug("listItemDelete", "entered", ! (this->state.tc && this->state.ti != -1));

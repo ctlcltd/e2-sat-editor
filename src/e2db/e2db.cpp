@@ -705,16 +705,18 @@ void e2db::remove_transponder(string txid)
 
 	db.transponders.erase(txid);
 
+	bool found = false;
 	vector<pair<int, string>>::iterator pos;
 	for (auto it = index["txs"].begin(); it != index["txs"].end(); it++)
 	{
 		if (it->second == txid)
 		{
+			found = true;
 			pos = it;
 			break;
 		}
 	}
-	if (pos != index["txs"].end())
+	if (found && pos != index["txs"].end())
 	{
 		index["txs"].erase(pos);
 	}
@@ -810,24 +812,18 @@ void e2db::remove_service(string chid)
 
 	for (auto & x : index)
 	{
-		bool found = false;
 		vector<vector<pair<int, string>>::iterator> itx;
-
 		for (auto it = x.second.begin(); it != x.second.end(); it++)
 		{
 			if (it->second == chid)
 			{
-				found = true;
 				itx.push_back(it);
 				i_names.push_back(x.first);
 			}
 		}
-		if (found)
+		for (auto it = itx.begin(); it != itx.end(); it++)
 		{
-			for (auto pos = itx.begin(); pos != itx.end(); pos++)
-			{
-				x.second.erase(*pos);
-			}
+			x.second.erase(*it);
 		}
 	}
 	for (string & iname : i_names)
@@ -920,6 +916,7 @@ void e2db::remove_bouquet(string bname)
 	if (! bouquets.count(bname))
 		return error("remove_bouquet", "Error", msg("Bouquet \"%s\" not exists.", bname));
 
+	bool found = false;
 	vector<pair<int, string>>::iterator pos;
 	for (auto it = index["bss"].begin(); it != index["bss"].end(); it++)
 	{
@@ -929,7 +926,7 @@ void e2db::remove_bouquet(string bname)
 			break;
 		}
 	}
-	if (pos != index["bss"].end())
+	if (found && pos != index["bss"].end())
 	{
 		index["bss"].erase(pos);
 	}
@@ -946,9 +943,9 @@ void e2db::remove_bouquet(string bname)
 			i_names.push_back(ub.bname);
 		}
 	}
-	for (auto pos = itx.begin(); pos != itx.end(); pos++)
+	for (auto it = itx.begin(); it != itx.end(); it++)
 	{
-		index["ubs"].erase(*pos);
+		index["ubs"].erase(*it);
 	}
 	for (string & bname : i_names)
 	{
@@ -1093,31 +1090,35 @@ void e2db::remove_userbouquet(string bname)
 	bouquet& bs = bouquets[ub.pname];
 
 	{
+		bool found = false;
 		vector<pair<int, string>>::iterator pos;
 		for (auto it = index["ubs"].begin(); it != index["ubs"].end(); it++)
 		{
 			if (it->second == bname)
 			{
+				found = true;
 				pos = it;
 				break;
 			}
 		}
-		if (pos != index["ubs"].end())
+		if (found && pos != index["ubs"].end())
 		{
 			index["ubs"].erase(pos);
 		}
 	}
 
+	bool found = false;
 	vector<string>::iterator pos;
 	for (auto it = bs.userbouquets.begin(); it != bs.userbouquets.end(); it++)
 	{
 		if (*it == bname)
 		{
+			found = true;
 			pos = it;
 			break;
 		}
 	}
-	if (pos != bs.userbouquets.end())
+	if (found && pos != bs.userbouquets.end())
 	{
 		bs.userbouquets.erase(pos);
 	}
@@ -1319,32 +1320,36 @@ void e2db::remove_channel_reference(channel_reference chref, string bname)
 	if (! userbouquets[bname].channels.count(chid))
 		return error("remove_channel_reference", "Error", msg("Channel reference \"%s\" not exists.", chid));
 
+	bool found = false;
 	vector<pair<int, string>>::iterator pos;
 	for (auto it = index[bname].begin(); it != index[bname].end(); it++)
 	{
 		if (it->first == idx && it->second == chid)
 		{
+			found = true;
 			pos = it;
 			break;
 		}
 	}
-	if (pos != index[bname].end())
+	if (found && pos != index[bname].end())
 	{
 		index[bname].erase(pos);
 	}
 
 	if (chref.marker)
 	{
+		bool found = false;
 		vector<pair<int, string>>::iterator pos;
 		for (auto it = index["mks"].begin(); it != index["mks"].end(); it++)
 		{
 			if (it->second == chid)
 			{
+				found = true;
 				pos = it;
 				break;
 			}
 		}
-		if (pos != index["mks"].end())
+		if (found && pos != index["mks"].end())
 		{
 			index["mks"].erase(pos);
 		}
@@ -1358,43 +1363,39 @@ void e2db::remove_channel_reference(channel_reference chref, string bname)
 				count++;
 		}
 
-		if (count && count != 1)
+		if (count == 1)
 		{
+			bool found = false;
 			vector<pair<int, string>>::iterator pos;
 			for (auto it = index[ub.pname].begin(); it != index[ub.pname].end(); it++)
 			{
 				if (it->second == chid)
 				{
+					found = true;
 					pos = it;
 					break;
 				}
 			}
-			//TODO TEST EXC_BAD_ACCESS
-			try
+			if (found && pos != index[ub.pname].end())
 			{
-				if (pos != index[ub.pname].end())
-				{
-					index[ub.pname].erase(pos);
-				}
-			}
-			catch (...)
-			{
-				debug("remove_channel_reference", "fault", "parent index remove position");
+				index[ub.pname].erase(pos);
 			}
 		}
 	}
 
 	{
+		bool found = false;
 		unordered_map<string, channel_reference>::iterator pos;
 		for (auto it = userbouquets[bname].channels.begin(); it != userbouquets[bname].channels.end(); it++)
 		{
 			if (it->second.index == idx && it->second.chid == chid)
 			{
+				found = true;
 				pos = it;
 				break;
 			}
 		}
-		if (pos != userbouquets[bname].channels.end())
+		if (found && pos != userbouquets[bname].channels.end())
 		{
 			ub.channels.erase(pos);
 		}
@@ -1413,32 +1414,36 @@ void e2db::remove_channel_reference(string chid, string bname)
 	channel_reference chref = userbouquets[bname].channels[chid];
 	userbouquet& ub = userbouquets[bname];
 
+	bool found = false;
 	vector<pair<int, string>>::iterator pos;
 	for (auto it = index[bname].begin(); it != index[bname].end(); it++)
 	{
 		if (it->second == chid)
 		{
+			found = true;
 			pos = it;
 			break;
 		}
 	}
-	if (pos != index[bname].end())
+	if (found && pos != index[bname].end())
 	{
 		index[bname].erase(pos);
 	}
 
 	if (chref.marker)
 	{
+		bool found = false;
 		vector<pair<int, string>>::iterator pos;
 		for (auto it = index["mks"].begin(); it != index["mks"].end(); it++)
 		{
 			if (it->second == chid)
 			{
+				found = true;
 				pos = it;
 				break;
 			}
 		}
-		if (pos != index["mks"].end())
+		if (found && pos != index["mks"].end())
 		{
 			index["mks"].erase(pos);
 		}
@@ -1452,28 +1457,22 @@ void e2db::remove_channel_reference(string chid, string bname)
 				count++;
 		}
 
-		if (count && count != 1)
+		if (count == 1)
 		{
+			bool found = false;
 			vector<pair<int, string>>::iterator pos;
 			for (auto it = index[ub.pname].begin(); it != index[ub.pname].end(); it++)
 			{
 				if (it->second == chid)
 				{
+					found = true;
 					pos = it;
 					break;
 				}
 			}
-			//TODO TEST EXC_BAD_ACCESS
-			try
+			if (found && pos != index[ub.pname].end())
 			{
-				if (pos != index[ub.pname].end())
-				{
-					index[ub.pname].erase(pos);
-				}
-			}
-			catch (...)
-			{
-				debug("remove_channel_reference", "fault", "parent index remove position");
+				index[ub.pname].erase(pos);
 			}
 		}
 	}
@@ -1573,16 +1572,18 @@ void e2db::remove_tunersets_table(string tnid, tunersets tv)
 	char yname = value_transponder_type(tn.ytype);
 	iname += yname;
 
+	bool found = false;
 	vector<pair<int, string>>::iterator pos;
 	for (auto it = index[iname].begin(); it != index[iname].end(); it++)
 	{
 		if (it->second == tnid)
 		{
+			found = true;
 			pos = it;
 			break;
 		}
 	}
-	if (pos != index[iname].end())
+	if (found && pos != index[iname].end())
 	{
 		index[iname].erase(pos);
 	}
@@ -1699,16 +1700,18 @@ void e2db::remove_tunersets_transponder(string trid, tunersets_table tn)
 
 	tuners[tn.ytype].tables[tn.tnid].transponders.erase(trid);
 
+	bool found = false;
 	vector<pair<int, string>>::iterator pos;
 	for (auto it = index[tn.tnid].begin(); it != index[tn.tnid].end(); it++)
 	{
 		if (it->second == trid)
 		{
+			found = true;
 			pos = it;
 			break;
 		}
 	}
-	if (pos != index[tn.tnid].end())
+	if (found && pos != index[tn.tnid].end())
 	{
 		index[tn.tnid].erase(pos);
 	}
