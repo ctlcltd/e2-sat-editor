@@ -419,8 +419,41 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::ToolsExportHTML_userbouquets] = menuBarAction(mexporthtml, tr("Export Userbouquets", "menu"), [=]() { this->tabAction(TAB_ATS::ExportHTML_userbouquets); });
 	gmenu[GUI_CXE::ToolsExportHTML_tunersets] = menuBarAction(mexporthtml, tr("Export Tuner settings", "menu"), [=]() { this->tabAction(TAB_ATS::ExportHTML_tunersets); });
 	menuBarSeparator(mtools);
+	QMenu* mtclean = menuBarMenu(mtools, tr("Clean", "menu"));
+	gmenu[GUI_CXE::ToolsUtilsOrphaned_services] = menuBarAction(mtclean, tr("Remove orphaned services", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsOrphaned_services); });
+	gmenu[GUI_CXE::ToolsUtilsOrphaned_references] = menuBarAction(mtclean, tr("Remove orphaned references", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsOrphaned_references); });
+	gmenu[GUI_CXE::ToolsUtilsFixRemove] = menuBarAction(mtclean, tr("Fix (remove) reference with errors", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsFixRemove); });
+	QMenu* mtparams = menuBarMenu(mtools, tr("Params", "menu"));
+	gmenu[GUI_CXE::ToolsUtilsClearServicesCached] = menuBarAction(mtparams, tr("Remove service cached", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsClearServicesCached); });
+	gmenu[GUI_CXE::ToolsUtilsClearServicesCAID] = menuBarAction(mtparams, tr("Remove service CAID", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsClearServicesCAID); });
+	gmenu[GUI_CXE::ToolsUtilsClearServicesFlags] = menuBarAction(mtparams, tr("Remove service flags", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsClearServicesFlags); });
+	gmenu[GUI_CXE::ToolsUtilsClearServicesData] = menuBarAction(mtparams, tr("Remove all service data", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsClearServicesData); });
+	menuBarSeparator(mtparams);
+	gmenu[GUI_CXE::ToolsUtilsFixDVBNS] = menuBarAction(mtparams, tr("Recalculate DVBNS for services", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsFixDVBNS); });
+	QMenu* mtrmove = menuBarMenu(mtools, tr("Remove", "menu"));
+	gmenu[GUI_CXE::ToolsUtilsClearFavourites] = menuBarAction(mtrmove, tr("Remove unreferenced entries (favourites)", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsClearFavourites); });
+	gmenu[GUI_CXE::ToolsUtilsClearBouquetsUnused] = menuBarAction(mtrmove, tr("Remove from bouquets (unused services)", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsClearBouquetsUnused); });
+	menuBarSeparator(mtrmove);
+	gmenu[GUI_CXE::ToolsUtilsRemove_parentallock] = menuBarAction(mtrmove, tr("Remove parental lock lists", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsRemove_parentallock); });
+	gmenu[GUI_CXE::ToolsUtilsRemove_bouquets] = menuBarAction(mtrmove, tr("Remove all bouquets", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsRemove_bouquets); });
+	gmenu[GUI_CXE::ToolsUtilsRemove_userbouquets] = menuBarAction(mtrmove, tr("Remove all userbouquets", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsRemove_userbouquets); });
+	QMenu* mtdups = menuBarMenu(mtools, tr("Duplicates", "menu"));
+	gmenu[GUI_CXE::ToolsUtilsDuplicates_markers] = menuBarAction(mtdups, tr("Remove duplicate markers (names)", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsDuplicates_markers); });
+	gmenu[GUI_CXE::ToolsUtilsDuplicates_references] = menuBarAction(mtdups, tr("Remove duplicate references", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsDuplicates_references); });
+	gmenu[GUI_CXE::ToolsUtilsDuplicates_services] = menuBarAction(mtdups, tr("Remove duplicate services", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsDuplicates_services); });
+	gmenu[GUI_CXE::ToolsUtilsDuplicates_transponders] = menuBarAction(mtdups, tr("Remove duplicate transponders", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsDuplicates_transponders); });
+	gmenu[GUI_CXE::ToolsUtilsDuplicates_all] = menuBarAction(mtdups, tr("Remove all duplicates", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsDuplicates_all); });
+	QMenu* mttransform = menuBarMenu(mtools, tr("Transform", "menu"));
+	gmenu[GUI_CXE::ToolsUtilsTransform_tunersets] = menuBarAction(mttransform, tr("Transform transponders to XML settings", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsTransform_tunersets); });
+	gmenu[GUI_CXE::ToolsUtilsTransform_transponders] = menuBarAction(mttransform, tr("Transform XML settings to transponders", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsTransform_transponders); });
+	QMenu* tmsort = menuBarMenu(mtools, tr("Sort", "menu"));
+	gmenu[GUI_CXE::ToolsUtilsSort_services] = menuBarAction(tmsort, tr("Sort services…", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsSort_services); });
+	gmenu[GUI_CXE::ToolsUtilsSort_userbouquets] = menuBarAction(tmsort, tr("Sort userbouquets…", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsSort_userbouquets); });
+	gmenu[GUI_CXE::ToolsUtilsSort_references] = menuBarAction(tmsort, tr("Sort references…", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsSort_references); });
+	menuBarSeparator(mtools);
+	gmenu[GUI_CXE::ToolsAutofixMacro] = menuBarAction(mtools, tr("Autofix", "menu"), [=]() { this->tabAction(TAB_ATS::AutofixMacro); });
+	menuBarSeparator(mtools);
 	gmenu[GUI_CXE::ToolsInspector] = menuBarAction(mtools, tr("Log Inspector", "menu"), [=]() { this->tabAction(TAB_ATS::Inspector); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
-
 
 	QMenu* meditor = menuBarMenu(menubar, tr("Edit&or", "menu"));
 	gmenu[GUI_CXE::Transponders] = menuBarAction(meditor, tr("Edit Transponders", "menu"), [=]() { this->tabAction(TAB_ATS::EditTransponders); });
@@ -1906,7 +1939,7 @@ void gui::filePrintAll()
 
 void gui::editAction(GUI_CXE bit)
 {
-	debug("editAction", "bit", bit);
+	// debug("editAction", "bit", bit);
 
 	QWidget* w = QApplication::focusWidget();
 
@@ -1960,7 +1993,7 @@ void gui::editAction(GUI_CXE bit)
 
 void gui::tabAction(TAB_ATS bit)
 {
-	debug("tabAction", "bit", bit);
+	// debug("tabAction", "bit", bit);
 
 	tab* ttab = getCurrentTabHandler();
 	if (ttab != nullptr)

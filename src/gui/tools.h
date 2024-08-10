@@ -40,6 +40,9 @@ class tools : protected e2se::log_factory
 		tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data);
 		virtual ~tools();
 		void inspector();
+		void applyUtils(int bit);
+		void execMacro(vector<string> methods);
+		void macroAutofix();
 		void importFileCSV(e2db::FCONVS fci, e2db::fcopts opts);
 		void exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts);
 		void exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts);
@@ -51,6 +54,8 @@ class tools : protected e2se::log_factory
 		QString inspectContent(string str, int filter = 0);
 		void inspectUpdate(QTextEdit* view, int filter = 0);
 		void inspectReset();
+		void status(QString message);
+		void done();
 
 	private:
 		e2se_gui::theme* theme;

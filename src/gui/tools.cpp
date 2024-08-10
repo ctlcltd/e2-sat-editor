@@ -205,6 +205,239 @@ void tools::inspectReset()
 	this->inspect_curr = INSPECT_FILTER::AllLog;
 }
 
+void tools::status(QString message)
+{
+	if (tid->statusBarIsVisible())
+		tid->statusBarMessage(message);
+}
+
+void tools::done()
+{
+	if (tid->statusBarIsVisible())
+		tid->statusBarMessage(tr("Done", "message"));
+	else
+		tid->infoMessage(tr("Done!", "message"));
+}
+
+void tools::applyUtils(int bit)
+{
+	debug("applyUtils", "bit", bit);
+
+	auto* dbih = this->data->dbih;
+
+	this->data->clearErrors();
+
+	bool ran = false;
+
+	theme::setWaitCursor();
+
+	try
+	{
+		ran = true;
+
+		switch (bit)
+		{
+			case gui::TAB_ATS::UtilsOrphaned_services:
+				status(tr("Remove orphaned services", "menu"));
+				dbih->remove_orphaned_services();
+			break;
+			case gui::TAB_ATS::UtilsOrphaned_references:
+				status(tr("Remove orphaned references", "menu"));
+				dbih->remove_orphaned_references();
+			break;
+			case gui::TAB_ATS::UtilsFixRemove:
+				status(tr("Fix (remove) reference with errors", "menu"));
+				dbih->fix_remove_references();
+			break;
+			case gui::TAB_ATS::UtilsFixDVBNS:
+				ran = false;
+				tid->infoMessage(tr("TODO"));
+			break;
+			case gui::TAB_ATS::UtilsClearServicesCached:
+				status(tr("Remove service cached", "menu"));
+				dbih->clear_services_cached();
+			break;
+			case gui::TAB_ATS::UtilsClearServicesCAID:
+				status(tr("Remove service CAID", "menu"));
+				dbih->clear_services_caid();
+			break;
+			case gui::TAB_ATS::UtilsClearServicesFlags:
+				status(tr("Remove service flags", "menu"));
+				dbih->clear_services_flags();
+			break;
+			case gui::TAB_ATS::UtilsClearServicesData:
+				status(tr("Remove all service data", "menu"));
+				dbih->clear_services_data();
+			break;
+			case gui::TAB_ATS::UtilsClearFavourites:
+				status(tr("Remove unreferenced entries (favourites)", "menu"));
+				dbih->clear_favourites();
+			break;
+			case gui::TAB_ATS::UtilsClearBouquetsUnused:
+				status(tr("Remove from bouquets (unused services)", "menu"));
+				dbih->clear_bouquets_unused_services();
+			break;
+			case gui::TAB_ATS::UtilsRemove_parentallock:
+				status(tr("Remove parental lock lists", "menu"));
+				dbih->remove_parentallock_lists();
+			break;
+			case gui::TAB_ATS::UtilsRemove_bouquets:
+				status(tr("Remove all bouquets", "menu"));
+				dbih->remove_bouquets();
+			break;
+			case gui::TAB_ATS::UtilsRemove_userbouquets:
+				status(tr("Remove all userbouquets", "menu"));
+				dbih->remove_userbouquets();
+			break;
+			case gui::TAB_ATS::UtilsDuplicates_all:
+			case gui::TAB_ATS::UtilsDuplicates_transponders:
+			case gui::TAB_ATS::UtilsDuplicates_services:
+			case gui::TAB_ATS::UtilsDuplicates_references:
+			case gui::TAB_ATS::UtilsDuplicates_markers:
+			case gui::TAB_ATS::UtilsTransform_tunersets:
+			case gui::TAB_ATS::UtilsTransform_transponders:
+			case gui::TAB_ATS::UtilsSort_transponders:
+			case gui::TAB_ATS::UtilsSort_services:
+			case gui::TAB_ATS::UtilsSort_userbouquets:
+			case gui::TAB_ATS::UtilsSort_references:
+				ran = false;
+				tid->infoMessage(tr("TODO"));
+			break;
+			default: ran = false;
+		}
+	}
+	catch (...)
+	{
+		ran = false;
+
+		//TODO error handling
+	}
+
+	theme::unsetWaitCursor();
+
+	//TODO MSG_CODE
+	if (this->data->haveErrors())
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::importNotice); }, Qt::QueuedConnection);
+
+	if (ran)
+		done();
+	else
+		return;
+
+	tid->reset();
+
+	dbih->clearStorage();
+
+	tid->load();
+}
+
+void tools::execMacro(vector<string> methods)
+{
+	debug("execMacro");
+
+	auto* dbih = this->data->dbih;
+
+	this->data->clearErrors();
+
+	int curr = 0;
+	bool ran = false;
+
+	theme::setWaitCursor();
+
+	status(tr("Executing macro …", "message"));
+
+	try
+	{
+		for (string & method : methods)
+		{
+			if (method.empty())
+				ran = false;
+			else if (method == "remove_orphaned_services")
+				dbih->remove_orphaned_services();
+			else if (method == "remove_orphaned_references")
+				dbih->remove_orphaned_references();
+			else if (method == "fix_remove_references")
+				dbih->fix_remove_references();
+			else if (method == "clear_services_cached")
+				dbih->clear_services_cached();
+			else if (method == "clear_services_caid")
+				dbih->clear_services_caid();
+			else if (method == "clear_services_flags")
+				dbih->clear_services_flags();
+			else if (method == "clear_services_data")
+				dbih->clear_services_data();
+			else if (method == "clear_favourites")
+				dbih->clear_favourites();
+			else if (method == "clear_bouquets_unused_services")
+				dbih->clear_bouquets_unused_services();
+			else if (method == "remove_parentallock_lists")
+				dbih->remove_parentallock_lists();
+			else if (method == "remove_bouquets")
+				dbih->remove_bouquets();
+			else if (method == "remove_userbouquets")
+				dbih->remove_userbouquets();
+			else if
+			(
+				method == "fix_dvbns" ||
+				method == "remove_duplicates" ||
+				method == "remove_duplicates_transponders" ||
+				method == "remove_duplicates_services" ||
+				method == "remove_duplicates_references" ||
+				method == "remove_duplicates_markers" ||
+				method == "transform_tunersets_to_transponders" ||
+				method == "transform_transponders_to_tunersets" ||
+				method == "sort_transponders" ||
+				method == "sort_services" ||
+				method == "sort_userbouquets" ||
+				method == "sort_references"
+			)
+			{
+				debug("execMacro", "TODO", method);
+			}
+			else
+				ran = false;
+		}
+
+		ran = true;
+	}
+	catch (...)
+	{
+		ran = false;
+
+		//TODO error handling
+	}
+
+	theme::unsetWaitCursor();
+
+	//TODO MSG_CODE
+	if (this->data->haveErrors())
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::importNotice); }, Qt::QueuedConnection);
+
+	if (ran)
+		done();
+	else
+		return;
+
+	tid->reset();
+
+	dbih->clearStorage();
+
+	tid->load();
+}
+
+void tools::macroAutofix()
+{
+	debug("macroAutofix");
+
+	vector<string> methods = {
+		"remove_duplicates",
+		"fix_remove_references",
+		"fix_dvbns"
+	};
+
+	execMacro(methods);
+}
+
 void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 {
 	debug("importFileCSV");

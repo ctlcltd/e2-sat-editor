@@ -498,7 +498,9 @@ void tab::layout()
 		toolBarAction(bottom_toolbar, "§ Reset", [=]() { this->newFile(); this->updateTabName(); });
 	}
 	toolBarSpacer(bottom_toolbar);
+	toolBarAction(bottom_toolbar, tr("autofix", "toolbar"), [=]() { this->toolsAutofixMacro(); });
 #ifndef E2SE_DEMO
+	toolBarSeparator(bottom_toolbar);
 	toolBarAction(bottom_toolbar, tr("Donate", "toolbar"), [=]() { this->linkToWebsite(1); });
 #endif
 	toolBarSeparator(bottom_toolbar);
@@ -1577,30 +1579,68 @@ QMenu* tab::toolsMenu()
 	{
 		QMenu* menu = this->tools_menu = new QMenu;
 
-		QMenu* importcsv = menuMenu(menu, tr("Import from CSV", "menu"));
-		menuAction(importcsv, tr("Import Services", "menu"), [=]() { this->toolsImportFromFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_services); });
-		menuAction(importcsv, tr("Import Bouquet", "menu"), [=]() { this->toolsImportFromFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_bouquets); });
-		menuAction(importcsv, tr("Import Userbouquet", "menu"), [=]() { this->toolsImportFromFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_userbouquets); });
-		menuAction(importcsv, tr("Import Tuner settings", "menu"), [=]() { this->toolsImportFromFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_tunersets); });
-		QMenu* exportcsv = menuMenu(menu, tr("Export to CSV", "menu"));
-		menuAction(exportcsv, tr("Export current", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_current); });
-		menuAction(exportcsv, tr("Export All", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_all); });
-		menuAction(exportcsv, tr("Export Services", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_services); });
-		menuAction(exportcsv, tr("Export Bouquets", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_bouquets); });
-		menuAction(exportcsv, tr("Export Userbouquets", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_userbouquets); });
-		menuAction(exportcsv, tr("Export Tuner settings", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_tunersets); });
+		QMenu* tmclean = menuMenu(menu, tr("Clean", "menu"));
+		menuAction(tmclean, tr("Remove orphaned services", "menu"), [=]() {});
+		menuAction(tmclean, tr("Remove orphaned references", "menu"), [=]() {});
+		menuAction(tmclean, tr("Fix (remove) reference with errors", "menu"), [=]() {});
+		QMenu* tmparams = menuMenu(menu, tr("Params", "menu"));
+		menuAction(tmparams, tr("Remove service cached", "menu"), [=]() {});
+		menuAction(tmparams, tr("Remove service CAID", "menu"), [=]() {});
+		menuAction(tmparams, tr("Remove service flags", "menu"), [=]() {});
+		menuAction(tmparams, tr("Remove all service data", "menu"), [=]() {});
+		menuSeparator(tmparams);
+		menuAction(tmparams, tr("Recalculate DVBNS for services", "menu"), [=]() {});
+		QMenu* tmrmove = menuMenu(menu, tr("Remove", "menu"));
+		menuAction(tmrmove, tr("Remove unreferenced entries (favourites)", "menu"), [=]() {});
+		menuAction(tmrmove, tr("Remove from bouquets (unused services)", "menu"), [=]() {});
+		menuSeparator(tmrmove);
+		menuAction(tmrmove, tr("Remove parental lock lists", "menu"), [=]() {});
+		menuAction(tmrmove, tr("Remove all bouquets", "menu"), [=]() {});
+		menuAction(tmrmove, tr("Remove all userbouquets", "menu"), [=]() {});
+		QMenu* tmdups = menuMenu(menu, tr("Duplicates", "menu"));
+		menuAction(tmdups, tr("Remove duplicate markers (names)", "menu"), [=]() {});
+		menuAction(tmdups, tr("Remove duplicate references", "menu"), [=]() {});
+		menuAction(tmdups, tr("Remove duplicate services", "menu"), [=]() {});
+		menuAction(tmdups, tr("Remove duplicate transponders", "menu"), [=]() {});
+		menuAction(tmdups, tr("Remove all duplicates", "menu"), [=]() {});
+		QMenu* tmtsform = menuMenu(menu, tr("Transform", "menu"));
+		menuAction(tmtsform, tr("Transform transponders to XML settings", "menu"), [=]() {});
+		menuAction(tmtsform, tr("Transform XML settings to transponders", "menu"), [=]() {});
+		QMenu* tmsort = menuMenu(menu, tr("Sort", "menu"));
+		menuAction(tmsort, tr("Sort services…", "menu"), [=]() {});
+		menuAction(tmsort, tr("Sort userbouquets…", "menu"), [=]() {});
+		menuAction(tmsort, tr("Sort references…", "menu"), [=]() {});
 		menuSeparator(menu);
-		menuAction(menu, tr("Import from M3U", "menu"), [=]() { this->toolsImportFromFile(TOOLS_FILE::tools_m3u, e2db::FCONVS::convert_all); });
-		menuAction(menu, tr("Export to M3U", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_m3u, e2db::FCONVS::convert_current); });
+		menuAction(menu, tr("Autofix", "menu"), [=]() { this->toolsAutofixMacro(); });
 		menuSeparator(menu);
-		QMenu* exporthtml = menuMenu(menu, tr("Export to HTML", "menu"));
-		menuAction(exporthtml, tr("Export current", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_current); });
-		menuAction(exporthtml, tr("Export All", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_all); });
-		menuAction(exporthtml, tr("Export Index", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_index); });
-		menuAction(exporthtml, tr("Export Services", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_services); });
-		menuAction(exporthtml, tr("Export Bouquets", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_bouquets); });
-		menuAction(exporthtml, tr("Export Userbouquets", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_userbouquets); });
-		menuAction(exporthtml, tr("Export Tuner settings", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_tunersets); });
+		QMenu* tmimport = menuMenu(menu, tr("Import", "menu"));
+		menuAction(tmimport, tr("Import…", "menu"), [=]() { this->importFile(); });
+		menuSeparator(tmimport);
+		QMenu* tmimportcsv = menuMenu(tmimport, tr("Import from CSV", "menu"));
+		menuAction(tmimportcsv, tr("Import Services", "menu"), [=]() { this->toolsImportFromFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_services); });
+		menuAction(tmimportcsv, tr("Import Bouquet", "menu"), [=]() { this->toolsImportFromFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_bouquets); });
+		menuAction(tmimportcsv, tr("Import Userbouquet", "menu"), [=]() { this->toolsImportFromFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_userbouquets); });
+		menuAction(tmimportcsv, tr("Import Tuner settings", "menu"), [=]() { this->toolsImportFromFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_tunersets); });
+		menuAction(tmimport, tr("Import from M3U", "menu"), [=]() { this->toolsImportFromFile(TOOLS_FILE::tools_m3u, e2db::FCONVS::convert_all); });
+		QMenu* tmexport = menuMenu(menu, tr("Export", "menu"));
+		menuAction(tmexport, tr("Export…", "menu"), [=]() { this->exportFile(); });
+		menuSeparator(tmexport);
+		QMenu* tmexportcsv = menuMenu(tmexport, tr("Export to CSV", "menu"));
+		menuAction(tmexportcsv, tr("Export current", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_current); });
+		menuAction(tmexportcsv, tr("Export All", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_all); });
+		menuAction(tmexportcsv, tr("Export Services", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_services); });
+		menuAction(tmexportcsv, tr("Export Bouquets", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_bouquets); });
+		menuAction(tmexportcsv, tr("Export Userbouquets", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_userbouquets); });
+		menuAction(tmexportcsv, tr("Export Tuner settings", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_csv, e2db::FCONVS::convert_tunersets); });
+		menuAction(tmexport, tr("Export to M3U", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_m3u, e2db::FCONVS::convert_current); });
+		QMenu* tmexporthtml = menuMenu(tmexport, tr("Export to HTML", "menu"));
+		menuAction(tmexporthtml, tr("Export current", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_current); });
+		menuAction(tmexporthtml, tr("Export All", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_all); });
+		menuAction(tmexporthtml, tr("Export Index", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_index); });
+		menuAction(tmexporthtml, tr("Export Services", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_services); });
+		menuAction(tmexporthtml, tr("Export Bouquets", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_bouquets); });
+		menuAction(tmexporthtml, tr("Export Userbouquets", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_userbouquets); });
+		menuAction(tmexporthtml, tr("Export Tuner settings", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_tunersets); });
 		menuSeparator(menu);
 		menuAction(menu, tr("Log Inspector", "menu"), [=]() { this->toolsInspector(); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
 	}
@@ -1846,6 +1886,20 @@ void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 	}
 }
 
+void tab::toolsAutofixMacro()
+{
+	// debug("toolsAutofixMacro");
+
+	this->tools->macroAutofix();
+}
+
+void tab::toolsUtils(int bit)
+{
+	// debug("toolsUtils", "bit", bit);
+
+	this->tools->applyUtils(bit);
+}
+
 void tab::actionCall(int bit)
 {
 	debug("actionCall", "bit", bit);
@@ -1987,6 +2041,37 @@ void tab::actionCall(int bit)
 		break;
 		case gui::TAB_ATS::ExportHTML_tunersets:
 			toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_tunersets);
+		break;
+
+		case gui::TAB_ATS::AutofixMacro:
+			toolsAutofixMacro();
+		break;
+
+		case gui::TAB_ATS::UtilsOrphaned_services:
+		case gui::TAB_ATS::UtilsOrphaned_references:
+		case gui::TAB_ATS::UtilsFixRemove:
+		case gui::TAB_ATS::UtilsClearServicesCached:
+		case gui::TAB_ATS::UtilsClearServicesCAID:
+		case gui::TAB_ATS::UtilsClearServicesFlags:
+		case gui::TAB_ATS::UtilsClearServicesData:
+		case gui::TAB_ATS::UtilsFixDVBNS:
+		case gui::TAB_ATS::UtilsClearFavourites:
+		case gui::TAB_ATS::UtilsRemove_parentallock:
+		case gui::TAB_ATS::UtilsClearBouquetsUnused:
+		case gui::TAB_ATS::UtilsRemove_bouquets:
+		case gui::TAB_ATS::UtilsRemove_userbouquets:
+		case gui::TAB_ATS::UtilsDuplicates_markers:
+		case gui::TAB_ATS::UtilsDuplicates_references:
+		case gui::TAB_ATS::UtilsDuplicates_services:
+		case gui::TAB_ATS::UtilsDuplicates_transponders:
+		case gui::TAB_ATS::UtilsDuplicates_all:
+		case gui::TAB_ATS::UtilsTransform_tunersets:
+		case gui::TAB_ATS::UtilsTransform_transponders:
+		case gui::TAB_ATS::UtilsSort_transponders:
+		case gui::TAB_ATS::UtilsSort_services:
+		case gui::TAB_ATS::UtilsSort_userbouquets:
+		case gui::TAB_ATS::UtilsSort_references:
+			toolsUtils(bit);
 		break;
 
 		case gui::TAB_ATS::Inspector:

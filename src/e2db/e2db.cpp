@@ -808,7 +808,7 @@ void e2db::remove_service(string chid)
 
 	db.services.erase(chid);
 
-	vector<string> i_names;
+	unordered_set<string> i_names;
 
 	for (auto & x : index)
 	{
@@ -818,7 +818,7 @@ void e2db::remove_service(string chid)
 			if (it->second == chid)
 			{
 				itx.push_back(it);
-				i_names.push_back(x.first);
+				i_names.insert(x.first);
 			}
 		}
 		for (auto it = itx.begin(); it != itx.end(); it++)
@@ -826,7 +826,7 @@ void e2db::remove_service(string chid)
 			x.second.erase(*it);
 		}
 	}
-	for (string & iname : i_names)
+	for (const string & iname : i_names)
 	{
 		int idx = 0;
 		for (auto & x : index[iname])
@@ -932,7 +932,7 @@ void e2db::remove_bouquet(string bname)
 		index["bss"].erase(pos);
 	}
 
-	vector<string> i_names;
+	unordered_set<string> i_names;
 	vector<vector<pair<int, string>>::iterator> itx;
 	for (auto it = index["ubs"].begin(); it != index["ubs"].end(); it++)
 	{
@@ -941,14 +941,14 @@ void e2db::remove_bouquet(string bname)
 		if (ub.pname == bname)
 		{
 			itx.push_back(it);
-			i_names.push_back(ub.bname);
+			i_names.insert(ub.bname);
 		}
 	}
 	for (auto it = itx.begin(); it != itx.end(); it++)
 	{
 		index["ubs"].erase(*it);
 	}
-	for (string & bname : i_names)
+	for (const string & bname : i_names)
 	{
 		index.erase(bname);
 		userbouquets.erase(bname);

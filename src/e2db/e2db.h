@@ -13,12 +13,13 @@
 #include "e2db_parser.h"
 #include "e2db_maker.h"
 #include "e2db_converter.h"
+#include "e2db_utils.h"
 
 #ifndef e2db_h
 #define e2db_h
 namespace e2se_e2db
 {
-class e2db : public e2db_parser, public e2db_maker, public e2db_converter
+class e2db : public e2db_parser, public e2db_maker, public e2db_converter, public e2db_utils
 {
 	public:
 

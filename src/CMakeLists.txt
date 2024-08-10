@@ -47,6 +47,7 @@ find_package(CURL)
 set(SOURCES
 	logger/logger.cpp
 	e2db/e2db_abstract.cpp
+	e2db/e2db_utils.cpp
 	e2db/e2db_converter.cpp
 	e2db/e2db_maker.cpp
 	e2db/e2db_parser.cpp

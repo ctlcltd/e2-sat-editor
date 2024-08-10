@@ -152,6 +152,8 @@ class tab : protected e2se::log_factory
 		void toolsInspector();
 		void toolsImportFromFile(TOOLS_FILE ftype, e2db::FCONVS fci);
 		void toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco);
+		void toolsAutofixMacro();
+		void toolsUtils(int bit);
 		void ftpComboItems();
 		void ftpComboChanged(int index);
 		void ftpConnect();
