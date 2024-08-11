@@ -250,8 +250,8 @@ void tools::applyUtils(int bit)
 				dbih->fix_remove_references();
 			break;
 			case gui::TAB_ATS::UtilsFixDVBNS:
-				ran = false;
-				tid->infoMessage(tr("TODO"));
+				status(tr("Recalculate DVBNS for services", "menu"));
+				dbih->fix_dvbns();
 			break;
 			case gui::TAB_ATS::UtilsClearServicesCached:
 				status(tr("Remove service cached", "menu"));
@@ -278,32 +278,53 @@ void tools::applyUtils(int bit)
 				dbih->clear_bouquets_unused_services();
 			break;
 			case gui::TAB_ATS::UtilsRemove_parentallock:
-				status(tr("Remove parental lock lists", "menu"));
-				dbih->remove_parentallock_lists();
+				status(tr("Remove parental lock", "menu"));
+				dbih->remove_parentallock();
 			break;
 			case gui::TAB_ATS::UtilsRemove_bouquets:
 				status(tr("Remove all bouquets", "menu"));
-				dbih->remove_bouquets();
+				dbih->removeBouquets();
 			break;
 			case gui::TAB_ATS::UtilsRemove_userbouquets:
 				status(tr("Remove all userbouquets", "menu"));
-				dbih->remove_userbouquets();
+				dbih->removeUserbouquets();
 			break;
 			case gui::TAB_ATS::UtilsDuplicates_all:
+				status(tr("Remove all duplicates", "menu"));
+				dbih->remove_duplicates();
+			break;
 			case gui::TAB_ATS::UtilsDuplicates_transponders:
+				status(tr("Remove duplicate transponders", "menu"));
+				dbih->remove_duplicates_transponders();
+			break;
 			case gui::TAB_ATS::UtilsDuplicates_services:
+				status(tr("Remove duplicate services", "menu"));
+				dbih->remove_duplicates_services();
+			break;
 			case gui::TAB_ATS::UtilsDuplicates_references:
+				status(tr("Remove duplicate references", "menu"));
+				dbih->remove_duplicates_references();
+			break;
 			case gui::TAB_ATS::UtilsDuplicates_markers:
+				status(tr("Remove duplicate markers (names)", "menu"));
+				dbih->remove_duplicates_markers();
+			break;
 			case gui::TAB_ATS::UtilsTransform_tunersets:
+				status(tr("Transform transponders to XML settings", "menu"));
+				dbih->transform_tunersets_to_transponders();
+			break;
 			case gui::TAB_ATS::UtilsTransform_transponders:
+				status(tr("Transform XML settings to transponders", "menu"));
+				dbih->transform_transponders_to_tunersets();
+			break;
 			case gui::TAB_ATS::UtilsSort_transponders:
 			case gui::TAB_ATS::UtilsSort_services:
 			case gui::TAB_ATS::UtilsSort_userbouquets:
 			case gui::TAB_ATS::UtilsSort_references:
-				ran = false;
-				tid->infoMessage(tr("TODO"));
+				debug("applyUtils", "TODO", "tools sort dialogs");
 			break;
-			default: ran = false;
+			default:
+				ran = false;
 		}
 	}
 	catch (...)
@@ -358,6 +379,8 @@ void tools::execMacro(vector<string> methods)
 				dbih->remove_orphaned_references();
 			else if (method == "fix_remove_references")
 				dbih->fix_remove_references();
+			else if (method == "fix_dvbns")
+				dbih->fix_dvbns();
 			else if (method == "clear_services_cached")
 				dbih->clear_services_cached();
 			else if (method == "clear_services_caid")
@@ -370,30 +393,34 @@ void tools::execMacro(vector<string> methods)
 				dbih->clear_favourites();
 			else if (method == "clear_bouquets_unused_services")
 				dbih->clear_bouquets_unused_services();
-			else if (method == "remove_parentallock_lists")
-				dbih->remove_parentallock_lists();
+			else if (method == "remove_parentallock")
+				dbih->remove_parentallock();
 			else if (method == "remove_bouquets")
-				dbih->remove_bouquets();
+				dbih->removeBouquets();
 			else if (method == "remove_userbouquets")
-				dbih->remove_userbouquets();
-			else if
-			(
-				method == "fix_dvbns" ||
-				method == "remove_duplicates" ||
-				method == "remove_duplicates_transponders" ||
-				method == "remove_duplicates_services" ||
-				method == "remove_duplicates_references" ||
-				method == "remove_duplicates_markers" ||
-				method == "transform_tunersets_to_transponders" ||
-				method == "transform_transponders_to_tunersets" ||
-				method == "sort_transponders" ||
-				method == "sort_services" ||
-				method == "sort_userbouquets" ||
-				method == "sort_references"
-			)
-			{
-				debug("execMacro", "TODO", method);
-			}
+				dbih->removeUserbouquets();
+			else if (method == "remove_duplicates")
+				dbih->remove_duplicates();
+			else if (method == "remove_duplicates_transponders")
+				dbih->remove_duplicates_transponders();
+			else if (method == "remove_duplicates_services")
+				dbih->remove_duplicates_services();
+			else if (method == "remove_duplicates_references")
+				dbih->remove_duplicates_references();
+			else if (method == "remove_duplicates_markers")
+				dbih->remove_duplicates_markers();
+			else if (method == "transform_tunersets_to_transponders")
+				dbih->transform_tunersets_to_transponders();
+			else if (method == "transform_transponders_to_tunersets")
+				dbih->transform_transponders_to_tunersets();
+			else if (method == "sort_transponders")
+				dbih->sort_transponders();
+			else if (method == "sort_services")
+				dbih->sort_services();
+			else if (method == "sort_userbouquets")
+				dbih->sort_userbouquets();
+			else if (method == "sort_references")
+				dbih->sort_references();
 			else
 				ran = false;
 		}

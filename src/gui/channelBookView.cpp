@@ -399,6 +399,8 @@ void channelBookView::populate()
 				e2db::transponder tx = dbih->db.transponders[ch.txid];
 				txp = QString::fromStdString(dbih->value_transponder_combo(tx));
 
+				//TODO FIX transponder entries
+
 				entry.move(9, 10);
 				entry.insert(9, txp);
 			}
@@ -428,6 +430,9 @@ void channelBookView::populate()
 	// sorting default column 0|asc
 	if (this->state.vx)
 	{
+
+		//TODO FIX transponder entries
+
 		list->sortItems(0, Qt::AscendingOrder);
 		list->header()->setSortIndicator(1, Qt::AscendingOrder);
 	}

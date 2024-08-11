@@ -919,12 +919,12 @@ void editTransponder::computeDvbns()
 	}
 
 	e2db::YTYPE ytype = static_cast<e2db::YTYPE>(yx);
-	int n_dvbns = dbih->value_transponder_dvbns(ytype, tsid, onid, pos, freq);
+	int nw_dvbns = dbih->value_transponder_dvbns(ytype, tsid, onid, pos, freq);
 
 	debug("computeDvbns", "current dvbns", dbih->value_transponder_dvbns(dvbns));
-	debug("computeDvbns", "calc dvbns", dbih->value_transponder_dvbns(n_dvbns));
+	debug("computeDvbns", "calc dvbns", dbih->value_transponder_dvbns(nw_dvbns));
 
-	if (dvbns == n_dvbns)
+	if (dvbns == nw_dvbns)
 		return;
 
 	for (auto & item : fields)
@@ -934,7 +934,7 @@ void editTransponder::computeDvbns()
 
 		if (key == "dvbns")
 		{
-			val = n_dvbns;
+			val = nw_dvbns;
 
 			if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
 			{

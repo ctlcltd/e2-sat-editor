@@ -833,7 +833,7 @@ void e2db::remove_service(string chid)
 		{
 			channel_reference& chref = userbouquets[iname].channels[x.second];
 
-			if (! chref.marker)
+			if (! (chref.marker && chref.atype != ATYPE::marker_numbered))
 			{
 				idx += 1;
 				chref.index = idx;
@@ -1190,7 +1190,7 @@ void e2db::add_channel_reference(channel_reference& chref, string bname)
 		ref.dvbns = ch.dvbns;
 	}
 
-	if (chref.index == -1 && ! chref.marker && ! chref.stream)
+	if (chref.index == -1 && ! (chref.marker && chref.atype != ATYPE::marker_numbered) && ! chref.stream)
 		chref.index = int (index[bname].size()) + 1;
 
 	e2db_abstract::add_channel_reference(chref.index, ub, chref, ref);
@@ -2182,7 +2182,7 @@ void e2db::merge(e2db_abstract* dst)
 		{
 			channel_reference& chref = ub.channels[x.second];
 
-			if (! chref.marker && ! chref.stream)
+			if (! (chref.marker && chref.atype != ATYPE::marker_numbered) && ! chref.stream)
 			{
 				if (merge)
 				{
@@ -2190,7 +2190,7 @@ void e2db::merge(e2db_abstract* dst)
 					chref.index = idx;
 					x.first = chref.index;
 				}
-				if (this->bouquets[pname].services.count(chref.chid) == 0)
+				if (! chref.marker && this->bouquets[pname].services.count(chref.chid) == 0)
 				{
 					int idx = int (index[pname].size());
 					idx += 1;

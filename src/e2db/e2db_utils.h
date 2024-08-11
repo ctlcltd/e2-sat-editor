@@ -36,7 +36,9 @@ class e2db_utils : virtual public e2db_abstract
 		void clear_services_data();
 		void clear_favourites();
 		void clear_bouquets_unused_services();
-		void remove_parentallock_lists();
+		void remove_parentallock();
+		void remove_parentallock_services();
+		void remove_parentallock_userbouquets();
 		void remove_bouquets();
 		void remove_userbouquets();
 		void remove_duplicates();
@@ -53,6 +55,12 @@ class e2db_utils : virtual public e2db_abstract
 
 	protected:
 		virtual e2db_utils* newptr() { return new e2db_utils; }
+		void rebuild_index_transponders();
+		void rebuild_index_services();
+		void rebuild_index_services(unordered_set<string> i_channels);
+		void rebuild_index_userbouquet(string iname);
+		void rebuild_index_userbouquet(string iname, unordered_set<string> i_channels);
+		void rebuild_index_markers();
 };
 }
 #endif /* e2db_utils_h */

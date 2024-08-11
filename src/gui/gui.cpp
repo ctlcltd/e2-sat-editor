@@ -434,7 +434,7 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::ToolsUtilsClearFavourites] = menuBarAction(mtrmove, tr("Remove unreferenced entries (favourites)", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsClearFavourites); });
 	gmenu[GUI_CXE::ToolsUtilsClearBouquetsUnused] = menuBarAction(mtrmove, tr("Remove from bouquets (unused services)", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsClearBouquetsUnused); });
 	menuBarSeparator(mtrmove);
-	gmenu[GUI_CXE::ToolsUtilsRemove_parentallock] = menuBarAction(mtrmove, tr("Remove parental lock lists", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsRemove_parentallock); });
+	gmenu[GUI_CXE::ToolsUtilsRemove_parentallock] = menuBarAction(mtrmove, tr("Remove parental lock", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsRemove_parentallock); });
 	gmenu[GUI_CXE::ToolsUtilsRemove_bouquets] = menuBarAction(mtrmove, tr("Remove all bouquets", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsRemove_bouquets); });
 	gmenu[GUI_CXE::ToolsUtilsRemove_userbouquets] = menuBarAction(mtrmove, tr("Remove all userbouquets", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsRemove_userbouquets); });
 	QMenu* mtdups = menuBarMenu(mtools, tr("Duplicates", "menu"));
