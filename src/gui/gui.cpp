@@ -1179,9 +1179,7 @@ void gui::closeAllTabs()
 		tab* tab = x.second;
 
 		if (! tab->isChild())
-		{
 			i_wids.emplace_back(tab->widget);
-		}
 	}
 
 	for (auto & wid : i_wids)
@@ -1193,6 +1191,7 @@ void gui::closeAllTabs()
 	}
 }
 
+//TODO FIX switch window
 //TODO TEST multiple tabs
 void gui::windowChanged()
 {

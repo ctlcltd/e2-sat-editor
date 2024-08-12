@@ -1727,7 +1727,9 @@ map<string, vector<pair<int, string>>> e2db::get_channels_index()
 	for (auto & x : index["chs"])
 	{
 		service ch = db.services[x.second];
-		transponder tx = db.transponders[ch.txid];
+		transponder tx;
+		if (db.transponders.count(ch.txid))
+			tx = db.transponders[ch.txid];
 		_index[to_string(tx.pos)].emplace_back(x);
 		_index[ch.txid].emplace_back(x);
 	}

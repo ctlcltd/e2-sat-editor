@@ -33,7 +33,7 @@ void e2db_utils::remove_orphaned_services()
 	{
 		service& ch = x.second;
 
-		if (ch.txid.empty() || ch.tsid < 1 || ch.onid < 1)
+		if ((! ch.txid.empty() && ! db.transponders.count(ch.txid)) || ch.tsid < 1 || ch.onid < 1)
 			i_services.insert(ch.chid);
 	}
 
@@ -641,7 +641,7 @@ void e2db_utils::remove_duplicates_markers()
 {
 	debug("remove_duplicates_markers");
 
-	size_t count = 0;
+	bool step = false;
 
 	for (auto & x : userbouquets)
 	{
@@ -668,21 +668,377 @@ void e2db_utils::remove_duplicates_markers()
 
 		rebuild_index_userbouquet(bname, i_markers);
 
-		count = i_markers.size();
+		if (! step)
+			step = ! i_markers.empty();
 	}
 
-	if (count != 0)
+	if (step)
 		rebuild_index_markers();
 }
 
 void e2db_utils::transform_tunersets_to_transponders()
 {
 	debug("transform_tunersets_to_transponders");
+
+	struct tx_part
+	{
+		string txy;
+		transponder tx;
+	};
+
+	vector<tx_part> parts;
+
+	for (auto & x : tuners)
+	{
+		tunersets& tv = x.second;
+		int ytype = tv.ytype;
+
+		string iname = "tns:";
+		char yname = value_transponder_type(tv.ytype);
+		iname += yname;
+
+		if (! index.count(iname))
+		{
+			error("transform_tunersets_to_transponders", "Error", msg("Missing index key \"%s\".", iname));
+
+			continue;
+		}
+
+		for (auto & x : index[iname])
+		{
+			string tnid = x.second;
+			tunersets_table& tn = tv.tables[tnid];
+
+			if (! index.count(tnid))
+			{
+				error("transform_tunersets_to_transponders", "Error", msg("Missing index key \"%s\".", tnid));
+
+				continue;
+			}
+
+			for (auto & x : index[tnid])
+			{
+				int idx = x.first;
+				string trid = x.second;
+				tunersets_transponder& tntxp = tn.transponders[trid];
+
+				tx_part txpart;
+				transponder& tx = txpart.tx;
+
+				tx.ytype = ytype;
+				tx.freq = tntxp.freq;
+				tx.sr = tntxp.sr;
+				tx.pol = tntxp.pol;
+				tx.fec = tntxp.fec;
+				tx.hpfec = tntxp.hpfec;
+				tx.lpfec = tntxp.lpfec;
+				tx.cfec = tntxp.cfec;
+				tx.pos = tn.pos != -1 ? tn.pos : 0;
+				tx.inv = tntxp.inv;
+				tx.flags = tn.flags;
+				tx.sys = tntxp.sys;
+				tx.mod = tntxp.mod;
+				tx.tmod = tntxp.tmod;
+				tx.cmod = tntxp.cmod;
+				tx.amod = tntxp.amod;
+				tx.rol = tntxp.rol;
+				tx.pil = tntxp.pil;
+				tx.band = tntxp.band;
+				tx.tmx = tntxp.tmx;
+				tx.guard = tntxp.guard;
+				tx.hier = tntxp.hier;
+				tx.plpid = tntxp.plpid;
+				tx.plsn = tntxp.plsn;
+				tx.plsmode = tntxp.plsmode;
+				tx.plscode = tntxp.plscode;
+				tx.isid = tntxp.isid;
+				tx.index = idx;
+
+				char txy[37];
+				// %4x:%8x
+				std::snprintf(txy, 37, "%d:%d:%x:%x:%x", tx.ytype, tx.pos, tx.freq, tx.sr, tx.pol);
+
+				txpart.txy = txy;
+
+				parts.emplace_back(txpart);
+			}
+		}
+	}
+
+	unordered_map<string, string> _index;
+
+	for (auto & x : index["txs"])
+	{
+		transponder& tx = db.transponders[x.second];
+
+		char txy[37];
+		// %8d:%8d:%8x:%8x:%8x
+		std::snprintf(txy, 37, "%d:%d:%x:%x:%x", tx.ytype, tx.pos, tx.freq, tx.sr, tx.pol);
+
+		_index.emplace(pair (txy, tx.txid));
+	}
+
+	for (tx_part & txpart : parts)
+	{
+		string txy = txpart.txy;
+		transponder& tx = txpart.tx;
+
+		if (_index.count(txy))
+		{
+			string txid = _index[txy];
+			transponder& txp = db.transponders[txid];
+
+			tx.txid = txp.txid;
+			tx.tsid = txp.tsid;
+			tx.onid = txp.onid;
+			tx.dvbns = txp.dvbns;
+			tx.index = txp.index;
+
+			db.transponders[tx.txid] = tx;
+		}
+		else if (0)
+		{
+			int idx = tx.index;
+
+			tx.tsid = -idx;
+			tx.dvbns = value_transponder_dvbns(tx);
+
+			char txid[25];
+			// %4x:%8x
+			std::snprintf(txid, 25, "%x:%x", tx.tsid, tx.dvbns);
+			tx.txid = txid;
+
+			db.transponders.emplace(tx.txid, tx);
+			index["txs"].emplace_back(pair (idx, tx.txid));
+		}
+	}
 }
 
 void e2db_utils::transform_transponders_to_tunersets()
 {
 	debug("transform_transponders_to_tunersets");
+
+	struct tn_part
+	{
+		string txy;
+		int ytype;
+		int pos;
+		int flags;
+		tunersets_transponder tntxp;
+	};
+	struct tn_ref
+	{
+		int ytype;
+		string tnid;
+		string trid;
+	};
+
+	vector<tn_part> parts;
+
+	for (auto & x : index["txs"])
+	{
+		transponder& tx = db.transponders[x.second];
+
+		tn_part tnpart;
+
+		tnpart.ytype = tx.ytype;
+		tnpart.pos = tx.pos;
+		tnpart.flags = tx.flags;
+		tunersets_transponder& tntxp = tnpart.tntxp;
+
+		tntxp.freq = tx.freq;
+		tntxp.sr = tx.sr;
+		tntxp.pol = tx.pol;
+		tntxp.fec = tx.fec;
+		tntxp.hpfec = tx.hpfec;
+		tntxp.lpfec = tx.lpfec;
+		tntxp.cfec = tx.cfec;
+		tntxp.inv = tx.inv;
+		tntxp.sys = tx.sys;
+		tntxp.mod = tx.mod;
+		tntxp.tmod = tx.tmod;
+		tntxp.cmod = tx.cmod;
+		tntxp.amod = tx.amod;
+		tntxp.rol = tx.rol;
+		tntxp.pil = tx.pil;
+		tntxp.band = tx.band;
+		tntxp.tmx = tx.tmx;
+		tntxp.guard = tx.guard;
+		tntxp.hier = tx.hier;
+		tntxp.plpid = tx.plpid;
+		tntxp.plsn = tx.plsn;
+		tntxp.plsmode = tx.plsmode;
+		tntxp.plscode = tx.plscode;
+		tntxp.isid = tx.isid;
+
+		char txy[37];
+		// %4x:%8x
+		std::snprintf(txy, 37, "%d:%d:%x:%x:%x", tx.ytype, tx.pos, tx.freq, tx.sr, tx.pol);
+
+		tnpart.txy = txy; 
+
+		parts.emplace_back(tnpart);
+	}
+
+	unordered_map<string, tn_ref> _index;
+
+	for (auto & x : tuners)
+	{
+		tunersets& tv = x.second;
+		int ytype = tv.ytype;
+
+		string iname = "tns:";
+		char yname = value_transponder_type(tv.ytype);
+		iname += yname;
+
+		if (! index.count(iname))
+		{
+			error("transform_transponders_to_tunersets", "Error", msg("Missing index key \"%s\".", iname));
+
+			continue;
+		}
+
+		for (auto & x : index[iname])
+		{
+			string tnid = x.second;
+			tunersets_table& tn = tv.tables[tnid];
+
+			if (! index.count(tnid))
+			{
+				error("transform_transponders_to_tunersets", "Error", msg("Missing index key \"%s\".", tnid));
+
+				continue;
+			}
+
+			for (auto & x : index[tnid])
+			{
+				string trid = x.second;
+				tunersets_transponder& tntxp = tn.transponders[trid];
+
+				int pos = tn.pos != -1 ? tn.pos : 0;
+
+				tn_ref tnref;
+				tnref.ytype = ytype;
+				tnref.tnid = tnid;
+				tnref.trid = trid;
+
+				char txy[37];
+				// %4x:%8x
+				std::snprintf(txy, 37, "%d:%d:%x:%x:%x", tn.ytype, pos, tntxp.freq, tntxp.sr, tntxp.pol);
+
+				_index.emplace(pair (txy, tnref));
+			}
+		}
+	}
+
+	for (tn_part & tnpart : parts)
+	{
+		string txy = tnpart.txy;
+		tunersets_transponder& tntxp = tnpart.tntxp;
+
+		if (_index.count(txy))
+		{
+			debug("transform_transponders_to_tunersets", "found txy", txy);
+
+			tn_ref& tnref = _index[txy];
+			int ytype = tnref.ytype;
+			string tnid = tnref.tnid;
+			string trid = tnref.trid;
+			tunersets_transponder& txp = tuners[ytype].tables[tnid].transponders[trid];
+
+			tntxp.trid = txp.trid;
+			tntxp.mts = txp.mts;
+			tntxp.t2mi_plpid = txp.t2mi_plpid;
+			tntxp.t2mi_pid = txp.t2mi_pid;
+			tntxp.index = txp.index;
+
+			tuners[ytype].tables[tnid].transponders[trid] = tntxp;
+		}
+		else
+		{
+			debug("transform_transponders_to_tunersets", "add txy", txy);
+
+			int ytype = tnpart.ytype;
+			int pos = tnpart.pos;
+
+			tunersets tv;
+			tunersets_table tn;
+			tunersets_transponder& tntxp = tnpart.tntxp;
+
+			if (tuners.count(ytype))
+			{
+				tv = tuners[ytype];
+			}
+			else
+			{
+				tv.ytype = ytype;
+				tv.charset = "utf-8";
+
+				tuners.emplace(tv.ytype, tv);
+			}
+
+			bool found = false;
+
+			if (ytype == YTYPE::satellite && tuners_pos.count(pos))
+			{
+				string tnid = tuners_pos[pos];
+
+				if (tuners[0].tables.count(tnid))
+				{
+					found = true;
+					tn = tuners[0].tables[tnid];
+				}
+			}
+
+			if (! found)
+			{
+				string iname = "tns:";
+				char yname = value_transponder_type(tn.ytype);
+				iname += yname;
+
+				int idx = int (index[iname].size());
+				idx++;
+
+				char tnid[25];
+				std::snprintf(tnid, 25, "%c:%04x", yname, idx);
+				tn.tnid = tnid;
+
+				tn.ytype = ytype;
+				tn.pos = pos;
+				tn.name = value_transponder_position(tn);
+				tn.flags = tnpart.flags;
+				tn.index = idx;
+
+				index[iname].emplace_back(pair (idx, tn.tnid));
+
+				if (tn.ytype == YTYPE::satellite)
+					tuners_pos.emplace(tn.pos, tn.tnid);
+			}
+
+			char yname = value_transponder_type(tn.ytype);
+
+			int idx = int (index[tn.tnid].size());
+			idx++;
+
+			char trid[25];
+			std::snprintf(trid, 25, "%c:%04x:%04x", yname, tntxp.freq, tntxp.sr);
+			tntxp.trid = trid;
+
+			tntxp.index = idx;
+
+			tn.transponders.emplace(tntxp.trid, tntxp);
+			index[tn.tnid].emplace_back(pair (idx, tntxp.trid));
+
+			tuners[ytype].tables[tn.tnid] = tn;
+
+			tn_ref tnref;
+			tnref.ytype = ytype;
+			tnref.tnid = tn.tnid;
+			tnref.trid = tntxp.trid;
+
+			_index.emplace(pair (txy, tnref));
+		}
+	}
 }
 
 void e2db_utils::sort_transponders()
@@ -757,7 +1113,6 @@ void e2db_utils::rebuild_index_services()
 		for (auto & x : index[iname])
 		{
 			string chid = x.second;
-			service& ch = db.services[chid];
 			chis.emplace_back(pair (idx, chid));
 		}
 

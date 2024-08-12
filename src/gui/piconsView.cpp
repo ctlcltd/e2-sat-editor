@@ -360,9 +360,6 @@ void piconsView::populate()
 		s_item->setData(ITEM_DATA_ROLE::chcas, Qt::UserRole, entry[ITEM_DATA_ROLE::chcas]);
 		s_item->setData(ITEM_DATA_ROLE::chpname, Qt::UserRole, entry[ITEM_DATA_ROLE::chpname]);
 		s_item->setData(ITEM_DATA_ROLE::filename, Qt::UserRole, entry[ITEM_DATA_ROLE::filename]);
-
-		//TODO FIX transponder entries
-
 		s_item->setData(ITEM_DATA_ROLE::txtname, Qt::UserRole, entry[ITEM_DATA_ROLE::txtname]);
 		s_item->setData(ITEM_DATA_ROLE::txpos, Qt::UserRole, entry[ITEM_DATA_ROLE::txpos]);
 		s_item->setData(ITEM_DATA_ROLE::txsys, Qt::UserRole, entry[ITEM_DATA_ROLE::txsys]);

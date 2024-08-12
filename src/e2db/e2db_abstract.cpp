@@ -1441,6 +1441,7 @@ void e2db_abstract::add_userbouquet(int idx, userbouquet& ub)
 	index["ubs"].emplace_back(pair (idx, ub.bname));
 }
 
+//TODO TEST buffer size with custom etype atype and inum
 void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_reference& chref, service_reference& ref)
 {
 	char chid[25];
@@ -1806,46 +1807,6 @@ void e2db_abstract::fix_bouquets(bool uniq_ubouquets)
 		}
 
 		index["ubs"].swap(i_ubouquets);
-
-		/*for (auto & x : bouquets)
-		{
-			bouquet& bs = x.second;
-
-			unordered_set<string> _unique;
-			vector<string> ubouquets;
-
-			for (string & bname : bs.userbouquets)
-			{
-				if (! _unique.count(bname))
-				{
-					ubouquets.emplace_back(bname);
-					_unique.insert(bname);
-				}
-			}
-
-			bs.userbouquets.swap(ubouquets);
-		}
-
-		vector<pair<int, string>> i_ubouquets;
-		int ub_idx = -1;
-		unordered_set<string> _unique;
-
-		for (auto & x : index["ubs"])
-		{
-			userbouquet& ub = userbouquets[x.second];
-			string bname = ub.bname;
-
-			if (! _unique.count(bname))
-			{
-				ub_idx++;
-
-				ub.index = ub_idx;
-				i_ubouquets.emplace_back(pair (ub_idx, bname));
-				_unique.insert(bname);
-			}
-		}
-
-		index["ubs"].swap(i_ubouquets);*/
 	}
 }
 

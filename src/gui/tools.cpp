@@ -311,11 +311,11 @@ void tools::applyUtils(int bit)
 			break;
 			case gui::TAB_ATS::UtilsTransform_tunersets:
 				status(tr("Transform transponders to XML settings", "menu"));
-				dbih->transform_tunersets_to_transponders();
+				dbih->transform_transponders_to_tunersets();
 			break;
 			case gui::TAB_ATS::UtilsTransform_transponders:
 				status(tr("Transform XML settings to transponders", "menu"));
-				dbih->transform_transponders_to_tunersets();
+				dbih->transform_tunersets_to_transponders();
 			break;
 			case gui::TAB_ATS::UtilsSort_transponders:
 			case gui::TAB_ATS::UtilsSort_services:

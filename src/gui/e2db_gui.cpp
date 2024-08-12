@@ -688,6 +688,8 @@ QStringList e2db::entryService(service ch)
 
 	if (entries.transponders.count(ch.txid))
 		entry.append(entries.transponders[ch.txid]);
+	else
+		entry.resize(16); //TODO TEST Qt5 compat
 
 	return entry;
 }
@@ -757,6 +759,8 @@ QStringList e2db::entryFavourite(channel_reference chref)
 
 			ref_chid = chid;
 		}
+
+		//TODO TEST entry size 9 or 16
 
 		if (entries.services.count(ref_chid))
 		{

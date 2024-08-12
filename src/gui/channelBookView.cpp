@@ -359,12 +359,6 @@ void channelBookView::populate()
 		int selected = tabv->currentIndex();
 		QString index = tabv->tabData(selected).toString();
 		curr = index.toStdString();
-
-// #ifdef Q_OS_WIN
-// 		for (int i = 0; i < tabv->count(); i++)
-// 			tabv->tabButton(i, QTabBar::LeftSide)->setStyleSheet("color: palette(text)");
-// 		tabv->tabButton(selected, QTabBar::LeftSide)->setStyleSheet("color: palette(highlighted-text)");
-// #endif
 	}
 
 	this->state.curr = curr;
@@ -396,14 +390,14 @@ void channelBookView::populate()
 			QString txp;
 			if (ch.tsid != 0 || ch.onid != 0 || ch.dvbns != 0)
 			{
-				e2db::transponder tx = dbih->db.transponders[ch.txid];
-				txp = QString::fromStdString(dbih->value_transponder_combo(tx));
-
-				//TODO FIX transponder entries
-
-				entry.move(9, 10);
-				entry.insert(9, txp);
+				if (dbih->db.transponders.count(ch.txid))
+				{
+					e2db::transponder tx = dbih->db.transponders[ch.txid];
+					txp = QString::fromStdString(dbih->value_transponder_combo(tx));
+				}
 			}
+			entry.move(9, 10);
+			entry.insert(9, txp);
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 			entry.remove(7);
 			entry.remove(1, 5);
@@ -430,9 +424,6 @@ void channelBookView::populate()
 	// sorting default column 0|asc
 	if (this->state.vx)
 	{
-
-		//TODO FIX transponder entries
-
 		list->sortItems(0, Qt::AscendingOrder);
 		list->header()->setSortIndicator(1, Qt::AscendingOrder);
 	}
