@@ -219,7 +219,7 @@ void tools::done()
 		tid->infoMessage(tr("Done!", "message"));
 }
 
-void tools::applyUtils(int bit)
+void tools::applyUtils(int bit, e2db::fcopts opts)
 {
 	debug("applyUtils", "bit", bit);
 
@@ -227,6 +227,7 @@ void tools::applyUtils(int bit)
 
 	this->data->clearErrors();
 
+	bool ndial = true;
 	bool ran = false;
 
 	theme::setWaitCursor();
@@ -318,14 +319,30 @@ void tools::applyUtils(int bit)
 				dbih->transform_tunersets_to_transponders();
 			break;
 			case gui::TAB_ATS::UtilsSort_transponders:
+				ndial = true;
+				dbih->sort_transponders();
+			break;
 			case gui::TAB_ATS::UtilsSort_services:
+				ndial = true;
+				dbih->sort_services();
+			break;
 			case gui::TAB_ATS::UtilsSort_userbouquets:
+				ndial = true;
+				dbih->sort_userbouquets();
+			break;
 			case gui::TAB_ATS::UtilsSort_references:
-				debug("applyUtils", "TODO", "tools sort dialogs");
+				ndial = true;
+				if (opts.fc == e2db::FCONVS::convert_current)
+					dbih->sort_references(opts.bname);
+				else
+					dbih->sort_references(false);
 			break;
 			default:
 				ran = false;
 		}
+
+		if (ndial)
+			debug("applyUtils", "TODO", "tools sort dialogs");
 	}
 	catch (...)
 	{
@@ -420,7 +437,7 @@ void tools::execMacro(vector<string> methods)
 			else if (method == "sort_userbouquets")
 				dbih->sort_userbouquets();
 			else if (method == "sort_references")
-				dbih->sort_references();
+				dbih->sort_references(false);
 			else
 				ran = false;
 		}

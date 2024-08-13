@@ -604,6 +604,8 @@ void e2db_utils::remove_duplicates_services()
 
 			for (const string & kchid : i_services)
 				ub.channels.erase(kchid);
+
+			rebuild_index_userbouquet(iname, i_services);
 		}
 
 		for (auto & x : bouquets)
@@ -613,6 +615,8 @@ void e2db_utils::remove_duplicates_services()
 			for (const string & kchid : i_services)
 				bs.services.erase(kchid);
 		}
+
+		rebuild_index_services(i_services);
 	}
 
 	for (auto & x : index)
@@ -755,7 +759,7 @@ void e2db_utils::transform_tunersets_to_transponders()
 				tx.index = idx;
 
 				char txy[37];
-				// %4x:%8x
+				// %d:%4d:%8x:%8x:%8x
 				std::snprintf(txy, 37, "%d:%d:%x:%x:%x", tx.ytype, tx.pos, tx.freq, tx.sr, tx.pol);
 
 				txpart.txy = txy;
@@ -772,7 +776,7 @@ void e2db_utils::transform_tunersets_to_transponders()
 		transponder& tx = db.transponders[x.second];
 
 		char txy[37];
-		// %8d:%8d:%8x:%8x:%8x
+		// %d:%4d:%8x:%8x:%8x
 		std::snprintf(txy, 37, "%d:%d:%x:%x:%x", tx.ytype, tx.pos, tx.freq, tx.sr, tx.pol);
 
 		_index.emplace(pair (txy, tx.txid));
@@ -872,7 +876,7 @@ void e2db_utils::transform_transponders_to_tunersets()
 		tntxp.isid = tx.isid;
 
 		char txy[37];
-		// %4x:%8x
+		// %d:%4d:%8x:%8x:%8x
 		std::snprintf(txy, 37, "%d:%d:%x:%x:%x", tx.ytype, tx.pos, tx.freq, tx.sr, tx.pol);
 
 		tnpart.txy = txy; 
@@ -923,7 +927,7 @@ void e2db_utils::transform_transponders_to_tunersets()
 				tnref.trid = trid;
 
 				char txy[37];
-				// %4x:%8x
+				// %d:%4d:%8x:%8x:%8x
 				std::snprintf(txy, 37, "%d:%d:%x:%x:%x", tn.ytype, pos, tntxp.freq, tntxp.sr, tntxp.pol);
 
 				_index.emplace(pair (txy, tnref));
@@ -938,8 +942,6 @@ void e2db_utils::transform_transponders_to_tunersets()
 
 		if (_index.count(txy))
 		{
-			debug("transform_transponders_to_tunersets", "found txy", txy);
-
 			tn_ref& tnref = _index[txy];
 			int ytype = tnref.ytype;
 			string tnid = tnref.tnid;
@@ -956,8 +958,6 @@ void e2db_utils::transform_transponders_to_tunersets()
 		}
 		else
 		{
-			debug("transform_transponders_to_tunersets", "add txy", txy);
-
 			int ytype = tnpart.ytype;
 			int pos = tnpart.pos;
 
@@ -1041,24 +1041,86 @@ void e2db_utils::transform_transponders_to_tunersets()
 	}
 }
 
-void e2db_utils::sort_transponders()
+void e2db_utils::sort_transponders(string prop, SORT_ORDER order)
 {
-	debug("sort_transponders");
+	debug("sort_transponders", "prop", prop);
+	debug("sort_transponders", "order", value_sort_order(order));
+
+	sort_items(SORT_ITEM::item_transponder, prop, order, "txs", index["txs"]);
 }
 
-void e2db_utils::sort_services()
+void e2db_utils::sort_transponders(vector<pair<int, string>> xis, int start, int end, string prop, SORT_ORDER order)
 {
-	debug("sort_services");
+	debug("sort_transponders", "prop", prop);
+	debug("sort_transponders", "order", value_sort_order(order));
+
+	sort_items(SORT_ITEM::item_transponder, prop, order, "txs", xis, start, end);
 }
 
-void e2db_utils::sort_userbouquets()
+void e2db_utils::sort_services(string prop, SORT_ORDER order)
 {
-	debug("sort_userbouquets");
+	debug("sort_services", "prop", prop);
+	debug("sort_services", "order", value_sort_order(order));
+
+	sort_items(SORT_ITEM::item_service, prop, order, "chs", index["chs"]);
 }
 
-void e2db_utils::sort_references()
+void e2db_utils::sort_services(vector<pair<int, string>> xis, int start, int end, string prop, SORT_ORDER order)
 {
-	debug("sort_references");
+	debug("sort_services", "prop", prop);
+	debug("sort_services", "order", value_sort_order(order));
+
+	sort_items(SORT_ITEM::item_service, prop, order, "chs", xis, start, end);
+}
+
+void e2db_utils::sort_userbouquets(string prop, SORT_ORDER order)
+{
+	debug("sort_userbouquets", "prop", prop);
+	debug("sort_userbouquets", "order", value_sort_order(order));
+
+	sort_items(SORT_ITEM::item_userbouquet, prop, order, "ubs", index["ubs"]);
+}
+
+void e2db_utils::sort_userbouquets(vector<pair<int, string>> xis, int start, int end, string prop, SORT_ORDER order)
+{
+	debug("sort_userbouquets", "prop", prop);
+	debug("sort_userbouquets", "order", value_sort_order(order));
+
+	sort_items(SORT_ITEM::item_userbouquet, prop, order, "ubs", xis, start, end);
+}
+
+void e2db_utils::sort_references(bool c, string prop, SORT_ORDER order)
+{
+	for (auto & x : index["ubs"])
+		sort_references(x.second, prop, order);
+}
+
+void e2db_utils::sort_references(string bname, string prop, SORT_ORDER order)
+{
+	debug("sort_references", "bname", bname);
+	debug("sort_references", "prop", prop);
+	debug("sort_references", "order", value_sort_order(order));
+
+	if (! userbouquets.count(bname))
+		return error("sort_references", "Error",  msg("Userbouquet \"%s\" not exists.", bname));
+	if (! index.count(bname))
+		return error("sort_references", "Error", msg("Missing index key \"%s\".", bname));
+
+	sort_items(SORT_ITEM::item_reference, prop, order, bname, index[bname]);
+}
+
+void e2db_utils::sort_references(string bname, vector<pair<int, string>> xis, int start, int end, string prop, SORT_ORDER order)
+{
+	debug("sort_references", "bname", bname);
+	debug("sort_references", "prop", prop);
+	debug("sort_references", "order", value_sort_order(order));
+
+	if (! userbouquets.count(bname))
+		return error("sort_references", "Error", msg("Userbouquet \"%s\" not exists.", bname));
+	if (! index.count(bname))
+		return error("sort_references", "Error", msg("Missing index key \"%s\".", bname));
+
+	sort_items(SORT_ITEM::item_reference, prop, order, bname, xis, start, end);
 }
 
 void e2db_utils::rebuild_index_transponders()
@@ -1230,6 +1292,146 @@ void e2db_utils::rebuild_index_markers()
 	}
 
 	index["mks"].swap(mkis);
+}
+
+e2db_utils::sort_data e2db_utils::get_data(SORT_ITEM model, string prop, string iname, vector<pair<int, string>> xis)
+{
+	sort_data s;
+
+	if (model == SORT_ITEM::item_userbouquet)
+	{
+		for (auto & x : xis)
+		{
+			userbouquet& ub = userbouquets[x.second];
+
+			if (prop == "index") s.push(&ub.index);
+			else if (prop == "bname") s.push(&ub.bname);
+			else if (prop == "rname") s.push(&ub.rname);
+			else if (prop == "name") s.push(&ub.name);
+			else if (prop == "pname") s.push(&ub.pname);
+			else if (prop == "utype") s.push(&ub.utype);
+			else if (prop == "parental") s.push(&ub.parental);
+		}
+	}
+	else if (model == SORT_ITEM::item_reference)
+	{
+		if (userbouquets.count(iname))
+		{
+			userbouquet& ub = userbouquets[iname];
+
+			for (auto & x : xis)
+			{
+				channel_reference& chref = ub.channels[x.second];
+
+				if (prop == "index") s.push(&chref.index);
+				else if (prop == "marker") s.push(&chref.marker);
+				else if (prop == "stream") s.push(&chref.stream);
+				else if (prop == "etype") s.push(&chref.etype);
+				else if (prop == "atype") s.push(&chref.atype);
+				else if (prop == "anum") s.push(&chref.anum);
+				else if (prop == "inum") s.push(&chref.inum);
+				else if (prop == "uri") s.push(&chref.uri);
+				else if (prop == "value") s.push(&chref.value);
+				else if (prop == "ssid") s.push(&chref.ref.ssid);
+				else if (prop == "tsid") s.push(&chref.ref.tsid);
+				else if (prop == "onid") s.push(&chref.ref.onid);
+				else if (prop == "dvbns") s.push(&chref.ref.dvbns);
+				else if (prop == "chname")
+				{
+					if (! chref.marker && db.services.count(chref.chid))
+					{
+						service& ch = db.services[chref.chid];
+
+						s.push(&ch.chname);
+					}
+					else
+					{
+						s.push(&chref.value);
+					}
+				}
+			}
+		}
+	}
+	else if (model == SORT_ITEM::item_service)
+	{
+		for (auto & x : xis)
+		{
+			service& ch = db.services[x.second];
+
+			if (prop == "index") s.push(&ch.index);
+			else if (prop == "ssid") s.push(&ch.ssid);
+			else if (prop == "tsid") s.push(&ch.tsid);
+			else if (prop == "onid") s.push(&ch.onid);
+			else if (prop == "dvbns") s.push(&ch.dvbns);
+			else if (prop == "stype") s.push(&ch.stype);
+			else if (prop == "snum") s.push(&ch.snum);
+			else if (prop == "srcid") s.push(&ch.srcid);
+			else if (prop == "parental") s.push(&ch.parental);
+			else if (prop == "chname") s.push(&ch.chname);
+			else if (prop == "provider") s.push(&ch.data[SDATA::p][0]);
+			//TODO prop: data
+		}
+	}
+	else if (model == SORT_ITEM::item_transponder)
+	{
+		for (auto & x : xis)
+		{
+			transponder& tx = db.transponders[x.second];
+
+			if (prop == "index") s.push(&tx.index);
+			else if (prop == "tsid") s.push(&tx.tsid);
+			else if (prop == "onid") s.push(&tx.onid);
+			else if (prop == "dvbns") s.push(&tx.dvbns);
+			else if (prop == "ytype") s.push(&tx.ytype);
+			else if (prop == "freq") s.push(&tx.freq);
+			else if (prop == "sr") s.push(&tx.sr);
+			else if (prop == "pol") s.push(&tx.pol);
+			else if (prop == "pos") s.push(&tx.pos);
+			else if (prop == "sys") s.push(&tx.sys);
+			//TODO type: combo
+		}
+	}
+
+	return s;
+}
+
+void e2db_utils::sort_items(SORT_ITEM model, string prop, SORT_ORDER order, string iname, vector<pair<int, string>> xis, int start, int end)
+{
+	sort_data s = get_data(model, prop, iname, xis);
+
+	if (end == 0)
+		end = int (s.data.size());
+
+	vector<pair<sort_data::value*, int>> sorting (s.data.size());
+
+	for (int i = start; i < end; ++i)
+	{
+		sorting[i].first = s.data[i];
+		sorting[i].second = i;
+	}
+
+	const auto compare = (order == sort_asc ? &e2db_utils::valueLessThan : &e2db_utils::valueGreaterThan);
+	std::stable_sort(sorting.begin(), sorting.end(), compare);
+
+	vector<pair<int, string>> _index (index[iname].size());
+
+	if (index[iname].size() != s.data.size())
+		_index = index[iname];
+
+	for (int i = start; i < end; ++i)
+	{
+		_index[i].first = i + 1;
+		_index[i].second = index[iname][sorting[i].second].second;
+	}
+
+	index[iname].swap(_index);
+}
+
+string e2db_utils::value_sort_order(SORT_ORDER order)
+{
+	if (order == SORT_ORDER::sort_asc) return "asc";
+	else if (order == SORT_ORDER::sort_desc) return "desc";
+	return "";
 }
 
 }

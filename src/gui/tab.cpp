@@ -1647,6 +1647,8 @@ QMenu* tab::toolsMenu()
 
 	QMenu* menu = this->tools_menu;
 
+	//TODO
+
 	/*auto actions = menu->actions();
 
 	for (auto & act : actions)
@@ -1893,11 +1895,62 @@ void tab::toolsAutofixMacro()
 	this->tools->macroAutofix();
 }
 
+//TODO
 void tab::toolsUtils(int bit)
 {
 	// debug("toolsUtils", "bit", bit);
 
-	this->tools->applyUtils(bit);
+	gui::TAB_VIEW current = getTabView();
+	e2db::fcopts opts;
+	opts.fc = e2db::FCONVS::convert_all;
+
+	// main view
+	if (current == gui::TAB_VIEW::main)
+	{
+		mainView* view = reinterpret_cast<mainView*>(this->view);
+		auto state = view->currentState();
+
+		// bouquets
+		if (state.tc == 0)
+		{
+			if (bit == gui::TAB_ATS::UtilsSort_references)
+				bit = gui::TAB_ATS::UtilsSort_services;
+		}
+		else if (state.tc == 1)
+		{
+			int ti = -1;
+			QList<QTreeWidgetItem*> selected = view->tree->selectedItems();
+
+			for (auto & item : selected)
+			{
+				ti = view->tree->indexOfTopLevelItem(item);
+				string bname = item->data(0, Qt::UserRole).toString().toStdString();
+
+				// bouquet | userbouquets
+				if (ti != -1)
+				{
+				}
+				// userbouquet
+				else
+				{
+					opts.bname = bname;
+					opts.fc = e2db::FCONVS::convert_current;
+				}
+			}
+		}
+	}
+	// transponders view
+	else if (current == gui::TAB_VIEW::transponders)
+	{
+		if (bit == gui::TAB_ATS::UtilsSort_references)
+			bit = gui::TAB_ATS::UtilsSort_transponders;
+	}
+	else
+	{
+		return;
+	}
+
+	this->tools->applyUtils(bit, opts);
 }
 
 void tab::actionCall(int bit)

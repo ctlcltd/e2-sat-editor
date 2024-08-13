@@ -1441,7 +1441,7 @@ void e2db_abstract::add_userbouquet(int idx, userbouquet& ub)
 	index["ubs"].emplace_back(pair (idx, ub.bname));
 }
 
-//TODO TEST buffer size with custom etype atype and inum
+//TODO TEST buffer size with custom etype, atype and inum
 void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_reference& chref, service_reference& ref)
 {
 	char chid[25];

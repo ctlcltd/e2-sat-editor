@@ -23,6 +23,61 @@ class e2db_utils : virtual public e2db_abstract
 {
 	public:
 
+		enum SORT_ITEM {
+			item_transponder,
+			item_service,
+			item_userbouquet,
+			item_reference
+		};
+
+		enum SORT_ORDER {
+			sort_asc,
+			sort_desc
+		};
+
+		struct sort_data
+		{
+			enum TYPE {
+				integer,
+				string,
+				boolean
+			};
+
+			struct value
+			{
+				value(void* ptr, sort_data::TYPE type)
+				{
+					this->type = type;
+					this->ptr = ptr;
+				}
+				sort_data::TYPE type;
+				void* ptr;
+				int val_integer() { return (*(int*) ptr); }
+				bool val_boolean() { return (*(bool*) ptr); }
+				std::string val_string() { return (*(std::string*) ptr); }
+			};
+
+			vector<sort_data::value*> data;
+			void insert(void* ptr, sort_data::TYPE type)
+			{
+				data.emplace_back(new sort_data::value(ptr, type));
+			}
+			void push(int* ptr) { insert(ptr, sort_data::integer); }
+			void push(bool* ptr) { insert(ptr, sort_data::boolean); }
+			void push(std::string* ptr) { insert(ptr, sort_data::string); }
+		};
+
+		/*struct sort_data
+		{
+			bool type; // 0 = integer, 1 = string
+			vector<void*> data;
+			void push(void* ptr, bool type)
+			{
+				type = type;
+				data.emplace_back(ptr);
+			}
+		};*/
+
 		e2db_utils();
 		virtual ~e2db_utils() = default;
 
@@ -48,10 +103,15 @@ class e2db_utils : virtual public e2db_abstract
 		void remove_duplicates_markers();
 		void transform_tunersets_to_transponders();
 		void transform_transponders_to_tunersets();
-		void sort_transponders();
-		void sort_services();
-		void sort_userbouquets();
-		void sort_references();
+		void sort_transponders(string prop = "tsid", SORT_ORDER order = SORT_ORDER::sort_asc);
+		void sort_transponders(vector<pair<int, string>> xis, int start, int end, string prop = "tsid", SORT_ORDER order = SORT_ORDER::sort_asc);
+		void sort_services(string prop = "ssid", SORT_ORDER order = SORT_ORDER::sort_asc);
+		void sort_services(vector<pair<int, string>> xis, int start, int end, string prop = "ssid", SORT_ORDER order = SORT_ORDER::sort_asc);
+		void sort_userbouquets(string prop = "bname", SORT_ORDER order = SORT_ORDER::sort_asc);
+		void sort_userbouquets(vector<pair<int, string>> xis, int start, int end, string prop = "bname", SORT_ORDER order = SORT_ORDER::sort_asc);
+		void sort_references(bool c, string prop = "chname", SORT_ORDER order = SORT_ORDER::sort_asc);
+		void sort_references(string bname, string prop = "chname", SORT_ORDER order = SORT_ORDER::sort_asc);
+		void sort_references(string bname, vector<pair<int, string>> xis, int start, int end, string prop = "chname", SORT_ORDER order = SORT_ORDER::sort_asc);
 
 	protected:
 		virtual e2db_utils* newptr() { return new e2db_utils; }
@@ -61,6 +121,31 @@ class e2db_utils : virtual public e2db_abstract
 		void rebuild_index_userbouquet(string iname);
 		void rebuild_index_userbouquet(string iname, unordered_set<string> i_channels);
 		void rebuild_index_markers();
+		sort_data get_data(SORT_ITEM model, string prop, string iname, vector<pair<int, string>>);
+		void sort_items(SORT_ITEM model, string prop, SORT_ORDER order, string iname, vector<pair<int, string>> xis, int start = 0, int end = 0);
+		static string value_sort_order(SORT_ORDER order);
+
+	private:
+		static bool valueLessThan(const pair<sort_data::value*, int>& left, const pair<sort_data::value*, int>& right)
+		{
+			switch (left.first->type)
+			{
+				case sort_data::integer: return left.first->val_integer() < right.first->val_integer();
+				case sort_data::string: return left.first->val_string() < right.first->val_string();
+				case sort_data::boolean: return left.first->val_boolean() < right.first->val_boolean();
+				default: return false;
+			}
+		}
+		static bool valueGreaterThan(const pair<sort_data::value*, int>& left, const pair<sort_data::value*, int>& right)
+		{
+			switch (right.first->type)
+			{
+				case sort_data::integer: return right.first->val_integer() < left.first->val_integer();
+				case sort_data::string: return right.first->val_string() < left.first->val_string();
+				case sort_data::boolean: return right.first->val_boolean() < left.first->val_boolean();
+				default: return false;
+			}
+		}
 };
 }
 #endif /* e2db_utils_h */
