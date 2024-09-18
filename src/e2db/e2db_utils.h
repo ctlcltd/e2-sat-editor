@@ -67,17 +67,6 @@ class e2db_utils : virtual public e2db_abstract
 			void push(std::string* ptr) { insert(ptr, sort_data::string); }
 		};
 
-		/*struct sort_data
-		{
-			bool type; // 0 = integer, 1 = string
-			vector<void*> data;
-			void push(void* ptr, bool type)
-			{
-				type = type;
-				data.emplace_back(ptr);
-			}
-		};*/
-
 		e2db_utils();
 		virtual ~e2db_utils() = default;
 
@@ -117,9 +106,9 @@ class e2db_utils : virtual public e2db_abstract
 		virtual e2db_utils* newptr() { return new e2db_utils; }
 		void rebuild_index_transponders();
 		void rebuild_index_services();
-		void rebuild_index_services(unordered_set<string> i_channels);
+		void rebuild_index_services(unordered_set<string> i_services); // insert
 		void rebuild_index_userbouquet(string iname);
-		void rebuild_index_userbouquet(string iname, unordered_set<string> i_channels);
+		void rebuild_index_userbouquet(string iname, unordered_set<string> i_channels); // remove
 		void rebuild_index_markers();
 		sort_data get_data(SORT_ITEM model, string prop, string iname, vector<pair<int, string>>);
 		void sort_items(SORT_ITEM model, string prop, SORT_ORDER order, string iname, vector<pair<int, string>> xis, int start = 0, int end = 0);

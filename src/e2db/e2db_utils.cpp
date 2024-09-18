@@ -559,6 +559,7 @@ void e2db_utils::remove_duplicates_transponders()
 	rebuild_index_transponders();
 }
 
+//TODO FIX
 void e2db_utils::remove_duplicates_services()
 {
 	debug("remove_duplicates_services");
@@ -604,8 +605,6 @@ void e2db_utils::remove_duplicates_services()
 
 			for (const string & kchid : i_services)
 				ub.channels.erase(kchid);
-
-			rebuild_index_userbouquet(iname, i_services);
 		}
 
 		for (auto & x : bouquets)
@@ -615,8 +614,6 @@ void e2db_utils::remove_duplicates_services()
 			for (const string & kchid : i_services)
 				bs.services.erase(kchid);
 		}
-
-		rebuild_index_services(i_services);
 	}
 
 	for (auto & x : index)
@@ -1182,9 +1179,9 @@ void e2db_utils::rebuild_index_services()
 	}
 }
 
-void e2db_utils::rebuild_index_services(unordered_set<string> i_channels)
+void e2db_utils::rebuild_index_services(unordered_set<string> i_services)
 {
-	if (i_channels.empty())
+	if (i_services.empty())
 		return;
 
 	unordered_set<string> i_names = {"chs", "chs:1", "chs:2", "chs:0"};
@@ -1198,7 +1195,7 @@ void e2db_utils::rebuild_index_services(unordered_set<string> i_channels)
 			int idx = x.first;
 			string chid = x.second;
 
-			if (i_channels.count(chid))
+			if (i_services.count(chid))
 				chis.emplace_back(pair (idx, chid));
 		}
 
