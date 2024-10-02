@@ -23,6 +23,7 @@ e2db_utils::e2db_utils()
 	this->log = new e2se::logger("e2db", "e2db_utils");
 }
 
+//TODO FIX wrong chnum index
 void e2db_utils::remove_orphaned_services()
 {
 	debug("remove_orphaned_services");
@@ -559,7 +560,6 @@ void e2db_utils::remove_duplicates_transponders()
 	rebuild_index_transponders();
 }
 
-//TODO FIX
 void e2db_utils::remove_duplicates_services()
 {
 	debug("remove_duplicates_services");

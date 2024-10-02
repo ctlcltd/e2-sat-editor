@@ -119,6 +119,14 @@ void dialChannelBook::reset()
 		this->cbv->reset();
 }
 
+void dialChannelBook::reload()
+{
+	debug("reload");
+
+	if (this->cbv != nullptr)
+		this->cbv->reload();
+}
+
 bool dialChannelBook::destroy()
 {
 	debug("destroy");

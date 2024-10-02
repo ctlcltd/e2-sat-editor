@@ -32,6 +32,8 @@ class tunersetsView : public viewAbstract
 
 		struct __state
 		{
+			// reloading
+			bool reload = false;
 			// tunersets tvid type
 			int yx;
 			// current tnid
@@ -116,6 +118,7 @@ class tunersetsView : public viewAbstract
 		~tunersetsView();
 		void load();
 		void reset();
+		void reload();
 		void treeItemDelete();
 		void listItemCopy(bool cut = false);
 		void listItemPaste();
@@ -129,6 +132,7 @@ class tunersetsView : public viewAbstract
 	protected:
 		void layout();
 		void searchLayout();
+		void unpack();
 		void populate();
 		void treeItemChanged(QTreeWidgetItem* current);
 		void treeItemSelectionChanged();

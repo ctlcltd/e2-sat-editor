@@ -63,6 +63,7 @@ class viewAbstract : protected e2se::log_factory
 		virtual ~viewAbstract() = default;
 		virtual void load() = 0;
 		virtual void reset() = 0;
+		virtual void reload() = 0;
 		virtual void didChange() {}
 		virtual void themeChanged();
 		virtual void clipboardDataChanged();

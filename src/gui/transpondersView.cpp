@@ -267,6 +267,19 @@ void transpondersView::reset()
 	resetStatusBar();
 }
 
+void transpondersView::reload()
+{
+	debug("reload");
+
+	list->setDragEnabled(false);
+	list->setAcceptDrops(false);
+	list->clear();
+
+	listFindClear();
+
+	populate();
+}
+
 void transpondersView::populate()
 {
 	auto* dbih = this->data->dbih;

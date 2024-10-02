@@ -415,6 +415,16 @@ void tab::reset()
 		child->view->reset();
 }
 
+void tab::reload()
+{
+	debug("reload");
+
+	view->reload();
+
+	for (auto & child : childs)
+		child->view->reload();
+}
+
 void tab::layout()
 {
 	debug("layout");
@@ -1595,8 +1605,8 @@ QMenu* tab::toolsMenu()
 		menuAction(tmrmove, tr("Remove from bouquets (unused services)", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsClearBouquetsUnused); });
 		menuSeparator(tmrmove);
 		menuAction(tmrmove, tr("Remove parental lock", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsRemove_parentallock); });
-		menuAction(tmrmove, tr("Remove all bouquets", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsClearBouquetsUnused); });
-		menuAction(tmrmove, tr("Remove all userbouquets", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsRemove_bouquets); });
+		menuAction(tmrmove, tr("Remove all bouquets", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsRemove_bouquets); });
+		menuAction(tmrmove, tr("Remove all userbouquets", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsRemove_userbouquets); });
 		QMenu* tmdups = menuMenu(menu, tr("Duplicates", "menu"));
 		menuAction(tmdups, tr("Remove duplicate markers (names)", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsDuplicates_markers); });
 		menuAction(tmdups, tr("Remove duplicate references", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsDuplicates_references); });
@@ -1901,8 +1911,7 @@ void tab::toolsUtils(int bit)
 	// debug("toolsUtils", "bit", bit);
 
 	gui::TAB_VIEW current = getTabView();
-	e2db::fcopts opts;
-	opts.fc = e2db::FCONVS::convert_all;
+	e2db::uoopts opts;
 
 	// main view
 	if (current == gui::TAB_VIEW::main)
@@ -1933,8 +1942,7 @@ void tab::toolsUtils(int bit)
 				// userbouquet
 				else
 				{
-					opts.bname = bname;
-					opts.fc = e2db::FCONVS::convert_current;
+					opts.iname = bname;
 				}
 			}
 		}

@@ -429,25 +429,7 @@ void tunersetsView::load()
 
 	tabUpdateFlags(gui::init);
 
-	int tvid = this->state.yx;
-
-	auto* dbih = this->data->dbih;
-
-	string iname = "tns:";
-	char yname = dbih->value_transponder_type(tvid);
-	iname += yname;
-
-	for (auto & x : dbih->index[iname])
-	{
-		e2db::tunersets_table tns = dbih->tuners[tvid].tables[x.second];
-		QString idx = QString::fromStdString(tns.tnid);
-		QStringList entry = dbih->entryTunersetsTable(tns);
-
-		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
-		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
-		item->setData(0, Qt::UserRole, idx);
-		tree->addTopLevelItem(item);
-	}
+	unpack();
 
 	tree->setDragEnabled(true);
 	tree->setAcceptDrops(true);
@@ -465,6 +447,7 @@ void tunersetsView::reset()
 
 	unsetPendingUpdateListIndex();
 
+	this->state.reload = false;
 	this->state.curr = "";
 	this->state.sort = pair (-1, Qt::AscendingOrder);
 	this->state.tvx_pending = false;
@@ -488,6 +471,88 @@ void tunersetsView::reset()
 	this->action.list_newtr->setDisabled(true);
 
 	resetStatusBar();
+}
+
+void tunersetsView::reload()
+{
+	debug("reload");
+
+	this->state.reload = true;
+
+	unsetPendingUpdateListIndex();
+
+	tree->setDragEnabled(false);
+	tree->setAcceptDrops(false);
+	tree->clear();
+
+	list->setDragEnabled(false);
+	list->setAcceptDrops(false);
+	list->clear();
+
+	listFindClear();
+
+	unpack();
+
+	tree->setDragEnabled(true);
+	tree->setAcceptDrops(true);
+
+	if (! this->state.curr.empty())
+	{
+		QTreeWidgetItem* current = nullptr;
+		int i = 0;
+		int count = tree->topLevelItemCount();
+
+		while (i != count)
+		{
+			QTreeWidgetItem* item = tree->topLevelItem(i);
+			QString idx = item->data(0, Qt::UserRole).toString();
+			string tnid = idx.toStdString();
+
+			if (tnid == this->state.curr)
+			{
+				current = item;
+
+				break;
+			}
+			i++;
+		}
+
+		if (current != nullptr)
+			tree->setCurrentItem(current);
+		else
+			populate();
+	}
+	else
+	{
+		populate();
+	}
+
+	this->state.reload = false;
+}
+
+void tunersetsView::unpack()
+{
+	auto* dbih = this->data->dbih;
+
+	int tvid = this->state.yx;
+
+	string iname = "tns:";
+	char yname = dbih->value_transponder_type(tvid);
+	iname += yname;
+
+	debug("unpack", "tables", int (dbih->index[iname].size()));
+
+	for (auto & x : dbih->index[iname])
+	{
+		e2db::tunersets_table tns = dbih->tuners[tvid].tables[x.second];
+		QString idx = QString::fromStdString(tns.tnid);
+		QStringList entry = dbih->entryTunersetsTable(tns);
+
+		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
+		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
+		item->setData(0, Qt::UserRole, idx);
+		tree->addTopLevelItem(item);
+	}
 }
 
 void tunersetsView::populate()
@@ -564,7 +629,9 @@ void tunersetsView::treeItemChanged(QTreeWidgetItem* current)
 	if (current != NULL)
 	{
 		list->clearSelection();
-		list->scrollToTop();
+
+		if (! this->state.reload)
+			list->scrollToTop();
 
 		this->action.list_newtr->setEnabled(true);
 

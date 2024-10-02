@@ -628,43 +628,7 @@ void mainView::load()
 
 	tabUpdateFlags(gui::init);
 
-	auto* dbih = this->data->dbih;
-
-	unordered_map<string, QTreeWidgetItem*> bgroups;
-
-	for (auto & x : dbih->index["bss"])
-	{
-		debug("load", "bouquet", x.second);
-
-		e2db::bouquet gboq = dbih->bouquets[x.second];
-		QString qbs = QString::fromStdString(x.second);
-		QString name = gboq.nname.empty() ? e2db::fixUnicodeChars(gboq.name) : QString::fromStdString(gboq.nname);
-
-		QTreeWidgetItem* bitem = new QTreeWidgetItem();
-		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-		bitem->setData(0, Qt::UserRole, qbs);
-		bitem->setText(0, name);
-		tree->addTopLevelItem(bitem);
-		tree->expandItem(bitem);
-
-		for (string & ubname : gboq.userbouquets)
-			bgroups[ubname] = bitem;
-	}
-	for (auto & x : dbih->index["ubs"])
-	{
-		debug("load", "userbouquet", x.second);
-
-		e2db::userbouquet uboq = dbih->userbouquets[x.second];
-		QString qub = QString::fromStdString(x.second);
-		QTreeWidgetItem* pgroup = bgroups[x.second];
-		QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
-		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
-		bitem->setData(0, Qt::UserRole, qub);
-		bitem->setText(0, e2db::fixUnicodeChars(uboq.name));
-		if (uboq.utype == e2db::ATYPE::bouquet_hidden_519)
-			bitem->setText(0, bitem->text(0).prepend("• "));
-		tree->addTopLevelItem(bitem);
-	}
+	unpack();
 
 	tree->setDragEnabled(true);
 	tree->setAcceptDrops(true);
@@ -687,6 +651,7 @@ void mainView::reset()
 	unsetPendingUpdateListIndex();
 
 	this->state.dnd = true;
+	this->state.reload = false;
 	this->state.vlx_pending = false;
 	this->state.refbox = list_reference->isVisible();
 	this->state.tc = 0;
@@ -732,6 +697,123 @@ void mainView::reset()
 
 	if (this->dialchbook != nullptr)
 		this->dialchbook->reset();
+}
+
+void mainView::reload()
+{
+	debug("reload");
+
+	this->state.reload = true;
+
+	unsetPendingUpdateListIndex();
+
+	tree->setDragEnabled(false);
+	tree->setAcceptDrops(false);
+	tree->clear();
+
+	list->setDragEnabled(false);
+	list->setAcceptDrops(false);
+	list->clear();
+
+	for (auto & q : cache)
+		q.second.clear();
+	cache.clear();
+
+	listFindClear();
+
+	unpack();
+
+	tree->setDragEnabled(true);
+	tree->setAcceptDrops(true);
+
+	if (! this->state.curr.empty())
+	{
+		QTreeWidgetItem* current = nullptr;
+		int i = 0, y = 0;
+		int count = tree->topLevelItemCount();
+
+		while (i != count)
+		{
+			QTreeWidgetItem* parent = tree->topLevelItem(i);
+			y = 0;
+
+			if (parent->childCount())
+			{
+				int childs = parent->childCount();
+				while (y != childs)
+				{
+					QTreeWidgetItem* item = parent->child(y);
+					QString qub = item->data(0, Qt::UserRole).toString();
+					string bname = qub.toStdString();
+
+					if (bname == this->state.curr)
+					{
+						current = item;
+
+						break;
+						break;
+					}
+
+					y++;
+				}
+			}
+			i++;
+		}
+
+		if (current != nullptr)
+			tree->setCurrentItem(current);
+		else
+			populate(side);
+	}
+	else
+	{
+		populate(side);
+	}
+
+	if (this->dialchbook != nullptr)
+		this->dialchbook->reload();
+
+	this->state.reload = false;
+}
+
+void mainView::unpack()
+{
+	auto* dbih = this->data->dbih;
+
+	debug("unpack", "bouquets", int (dbih->index["bss"].size()));
+	debug("unpack", "userbouquets", int (dbih->index["ubs"].size()));
+
+	unordered_map<string, QTreeWidgetItem*> bgroups;
+
+	for (auto & x : dbih->index["bss"])
+	{
+		e2db::bouquet gboq = dbih->bouquets[x.second];
+		QString qbs = QString::fromStdString(x.second);
+		QString name = gboq.nname.empty() ? e2db::fixUnicodeChars(gboq.name) : QString::fromStdString(gboq.nname);
+
+		QTreeWidgetItem* bitem = new QTreeWidgetItem();
+		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+		bitem->setData(0, Qt::UserRole, qbs);
+		bitem->setText(0, name);
+		tree->addTopLevelItem(bitem);
+		tree->expandItem(bitem);
+
+		for (string & ubname : gboq.userbouquets)
+			bgroups[ubname] = bitem;
+	}
+	for (auto & x : dbih->index["ubs"])
+	{
+		e2db::userbouquet uboq = dbih->userbouquets[x.second];
+		QString qub = QString::fromStdString(x.second);
+		QTreeWidgetItem* pgroup = bgroups[x.second];
+		QTreeWidgetItem* bitem = new QTreeWidgetItem(pgroup);
+		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
+		bitem->setData(0, Qt::UserRole, qub);
+		bitem->setText(0, e2db::fixUnicodeChars(uboq.name));
+		if (uboq.utype == e2db::ATYPE::bouquet_hidden_519)
+			bitem->setText(0, bitem->text(0).prepend("• "));
+		tree->addTopLevelItem(bitem);
+	}
 }
 
 void mainView::populate(QTreeWidget* tw)
@@ -999,7 +1081,9 @@ void mainView::servicesItemChanged(QTreeWidgetItem* current)
 			tabSetFlag(gui::TabListPaste, true);
 
 		list->clearSelection();
-		list->scrollToTop();
+
+		if (! this->state.reload)
+			list->scrollToTop();
 	}
 
 	updateListIndex();
@@ -1063,7 +1147,9 @@ void mainView::treeItemChanged(QTreeWidgetItem* current)
 		}
 
 		list->clearSelection();
-		list->scrollToTop();
+
+		if (! this->state.reload)
+			list->scrollToTop();
 	}
 
 	// services tree || userbouquet

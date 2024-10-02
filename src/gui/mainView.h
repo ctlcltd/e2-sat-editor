@@ -43,6 +43,8 @@ class mainView : public viewAbstract
 		{
 			// list drag-and-drop toggle
 			bool dnd = false;
+			// reloading
+			bool reload = false;
 			// list visual refresh pending
 			bool vlx_pending = false;
 			// reference box shown
@@ -138,6 +140,7 @@ class mainView : public viewAbstract
 		~mainView();
 		void load();
 		void reset();
+		void reload();
 		void treeItemDelete();
 		void listReferenceToggle();
 		void listItemCopy(bool cut = false);
@@ -157,6 +160,7 @@ class mainView : public viewAbstract
 		void layout();
 		void searchLayout();
 		void referenceBoxLayout();
+		void unpack();
 		void populate(QTreeWidget* tw);
 		void treeSwitched(QTreeWidget* tw, QTreeWidgetItem* item);
 		void servicesItemChanged(QTreeWidgetItem* current);

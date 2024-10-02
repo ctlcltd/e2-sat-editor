@@ -329,6 +329,19 @@ void channelBookView::reset()
 	resetStatusBar();
 }
 
+void channelBookView::reload()
+{
+	debug("reload");
+
+	tree->clear();
+
+	list->clear();
+
+	listFindClear();
+
+	populate();
+}
+
 void channelBookView::populate()
 {
 	string curr = "";

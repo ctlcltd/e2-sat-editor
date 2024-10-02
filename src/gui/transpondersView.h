@@ -77,6 +77,7 @@ class transpondersView : public viewAbstract
 		~transpondersView();
 		void load();
 		void reset();
+		void reload();
 		void listItemCopy(bool cut = false);
 		void listItemPaste();
 		void listItemDelete(bool cut = false);

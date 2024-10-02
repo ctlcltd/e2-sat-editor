@@ -80,6 +80,7 @@ class tab : protected e2se::log_factory
 		string getFilename();
 		void load();
 		void reset();
+		void reload();
 		void propagateChanges();
 		void settingsChanged();
 		void themeChanged();

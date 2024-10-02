@@ -76,6 +76,7 @@ class channelBookView : public viewAbstract
 		~channelBookView();
 		void load();
 		void reset();
+		void reload();
 		void filterChanged(bool enabled);
 		void listItemCut() {}
 		void listItemCopy(bool cut = false);

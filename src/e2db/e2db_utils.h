@@ -67,6 +67,15 @@ class e2db_utils : virtual public e2db_abstract
 			void push(std::string* ptr) { insert(ptr, sort_data::string); }
 		};
 
+		struct uoopts {
+			string prop;
+			SORT_ORDER order;
+			string iname;
+			vector<pair<int, string>> xis;
+			int start;
+			int end;
+		};
+
 		e2db_utils();
 		virtual ~e2db_utils() = default;
 

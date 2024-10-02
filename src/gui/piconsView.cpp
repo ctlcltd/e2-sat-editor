@@ -281,6 +281,21 @@ void piconsView::reset()
 	resetStatusBar();
 }
 
+void piconsView::reload()
+{
+	debug("reload");
+
+	tree->clear();
+
+	list->setDragEnabled(false);
+	list->setAcceptDrops(false);
+	list->clear();
+
+	listFindClear();
+
+	populate();
+}
+
 void piconsView::populate()
 {
 	auto* dbih = this->data->dbih;

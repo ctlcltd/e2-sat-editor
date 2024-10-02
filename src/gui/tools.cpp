@@ -219,7 +219,7 @@ void tools::done()
 		tid->infoMessage(tr("Done!", "message"));
 }
 
-void tools::applyUtils(int bit, e2db::fcopts opts)
+void tools::applyUtils(int bit, e2db::uoopts opts)
 {
 	debug("applyUtils", "bit", bit);
 
@@ -227,7 +227,7 @@ void tools::applyUtils(int bit, e2db::fcopts opts)
 
 	this->data->clearErrors();
 
-	bool ndial = true;
+	bool ndial = false;
 	bool ran = false;
 
 	theme::setWaitCursor();
@@ -332,8 +332,8 @@ void tools::applyUtils(int bit, e2db::fcopts opts)
 			break;
 			case gui::TAB_ATS::UtilsSort_references:
 				ndial = true;
-				if (opts.fc == e2db::FCONVS::convert_current)
-					dbih->sort_references(opts.bname);
+				if (! opts.iname.empty())
+					dbih->sort_references(opts.iname);
 				else
 					dbih->sort_references(false);
 			break;
@@ -362,14 +362,12 @@ void tools::applyUtils(int bit, e2db::fcopts opts)
 	else
 		return;
 
-	tid->reset();
-
 	dbih->clearStorage();
 
-	tid->load();
+	tid->reload();
 }
 
-void tools::execMacro(vector<string> methods)
+void tools::execMacro(vector<string> pattern)
 {
 	debug("execMacro");
 
@@ -377,7 +375,6 @@ void tools::execMacro(vector<string> methods)
 
 	this->data->clearErrors();
 
-	int curr = 0;
 	bool ran = false;
 
 	theme::setWaitCursor();
@@ -386,57 +383,57 @@ void tools::execMacro(vector<string> methods)
 
 	try
 	{
-		for (string & method : methods)
+		for (string & fn : pattern)
 		{
-			if (method.empty())
+			if (fn.empty())
 				ran = false;
-			else if (method == "remove_orphaned_services")
+			else if (fn == "remove_orphaned_services")
 				dbih->remove_orphaned_services();
-			else if (method == "remove_orphaned_references")
+			else if (fn == "remove_orphaned_references")
 				dbih->remove_orphaned_references();
-			else if (method == "fix_remove_references")
+			else if (fn == "fix_remove_references")
 				dbih->fix_remove_references();
-			else if (method == "fix_dvbns")
+			else if (fn == "fix_dvbns")
 				dbih->fix_dvbns();
-			else if (method == "clear_services_cached")
+			else if (fn == "clear_services_cached")
 				dbih->clear_services_cached();
-			else if (method == "clear_services_caid")
+			else if (fn == "clear_services_caid")
 				dbih->clear_services_caid();
-			else if (method == "clear_services_flags")
+			else if (fn == "clear_services_flags")
 				dbih->clear_services_flags();
-			else if (method == "clear_services_data")
+			else if (fn == "clear_services_data")
 				dbih->clear_services_data();
-			else if (method == "clear_favourites")
+			else if (fn == "clear_favourites")
 				dbih->clear_favourites();
-			else if (method == "clear_bouquets_unused_services")
+			else if (fn == "clear_bouquets_unused_services")
 				dbih->clear_bouquets_unused_services();
-			else if (method == "remove_parentallock")
+			else if (fn == "remove_parentallock")
 				dbih->remove_parentallock();
-			else if (method == "remove_bouquets")
+			else if (fn == "remove_bouquets")
 				dbih->removeBouquets();
-			else if (method == "remove_userbouquets")
+			else if (fn == "remove_userbouquets")
 				dbih->removeUserbouquets();
-			else if (method == "remove_duplicates")
+			else if (fn == "remove_duplicates")
 				dbih->remove_duplicates();
-			else if (method == "remove_duplicates_transponders")
+			else if (fn == "remove_duplicates_transponders")
 				dbih->remove_duplicates_transponders();
-			else if (method == "remove_duplicates_services")
+			else if (fn == "remove_duplicates_services")
 				dbih->remove_duplicates_services();
-			else if (method == "remove_duplicates_references")
+			else if (fn == "remove_duplicates_references")
 				dbih->remove_duplicates_references();
-			else if (method == "remove_duplicates_markers")
+			else if (fn == "remove_duplicates_markers")
 				dbih->remove_duplicates_markers();
-			else if (method == "transform_tunersets_to_transponders")
+			else if (fn == "transform_tunersets_to_transponders")
 				dbih->transform_tunersets_to_transponders();
-			else if (method == "transform_transponders_to_tunersets")
+			else if (fn == "transform_transponders_to_tunersets")
 				dbih->transform_transponders_to_tunersets();
-			else if (method == "sort_transponders")
+			else if (fn == "sort_transponders")
 				dbih->sort_transponders();
-			else if (method == "sort_services")
+			else if (fn == "sort_services")
 				dbih->sort_services();
-			else if (method == "sort_userbouquets")
+			else if (fn == "sort_userbouquets")
 				dbih->sort_userbouquets();
-			else if (method == "sort_references")
+			else if (fn == "sort_references")
 				dbih->sort_references(false);
 			else
 				ran = false;
@@ -462,24 +459,22 @@ void tools::execMacro(vector<string> methods)
 	else
 		return;
 
-	tid->reset();
-
 	dbih->clearStorage();
 
-	tid->load();
+	tid->reload();
 }
 
 void tools::macroAutofix()
 {
 	debug("macroAutofix");
 
-	vector<string> methods = {
+	vector<string> pattern = {
 		"remove_duplicates",
 		"fix_remove_references",
 		"fix_dvbns"
 	};
 
-	execMacro(methods);
+	execMacro(pattern);
 }
 
 void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
@@ -531,11 +526,9 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 	if (! read)
 		return;
 
-	tid->reset();
-
 	dbih->clearStorage();
 
-	tid->load();
+	tid->reload();
 }
 
 void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
@@ -771,11 +764,9 @@ void tools::importFileM3U(e2db::FCONVS fci, e2db::fcopts opts)
 	if (! read)
 		return;
 
-	tid->reset();
-
 	dbih->clearStorage();
 
-	tid->load();
+	tid->reload();
 }
 
 void tools::exportFileM3U(e2db::FCONVS fco, e2db::fcopts opts)
