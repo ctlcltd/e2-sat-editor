@@ -133,23 +133,29 @@ void e2db::primer()
 	db.parental = ltype;
 
 	// create bouquets
+	bool bss_epl = e2db::LAMEDB_VER < 4;
 	e2db::bouquet bs;
+	string iname;
 
 	bs = e2db::bouquet();
-	bs.bname = "bouquets.tv";
+	iname = ! bss_epl ? "bouquets.tv" : "userbouquets.tv.epl";
+	bs.bname = iname;
 	bs.name = "User - bouquet (TV)";
 	bs.btype = e2db::STYPE::tv;
 	bs.nname = "TV";
-	this->::e2se_e2db::e2db::add_bouquet(bs);
-	index["bouquets.tv"]; // touch index["bouquets.tv"]
+	bs.index = int (index["bss"].size()) + 1;
+	this->::e2se_e2db::e2db_abstract::add_bouquet(bs.index, bs);
+	index[iname]; // touch index["bouquets.tv"]
 
 	bs = e2db::bouquet();
-	bs.bname = "bouquets.radio";
+	iname = ! bss_epl ? "bouquets.radio" : "userbouquets.radio.epl";
+	bs.bname = iname;
 	bs.name = "User - bouquet (Radio)";
 	bs.btype = e2db::STYPE::radio;
 	bs.nname = "Radio";
-	this->::e2se_e2db::e2db::add_bouquet(bs);
-	index["bouquets.radio"]; // touch index["bouquets.radio"]
+	bs.index = int (index["bss"].size()) + 1;
+	this->::e2se_e2db::e2db_abstract::add_bouquet(bs.index, bs);
+	index[iname]; // touch index["bouquets.radio"]
 }
 
 void e2db::didChange()
@@ -437,22 +443,6 @@ void e2db::unsetUserbouquetParentalLock(string bname)
 	// debug("unsetUserbouquetParentalLock", "bname", bname);
 
 	this->::e2se_e2db::e2db::unset_userbouquet_parentallock(bname);
-}
-
-//TODO fix bouquets
-void e2db::removeBouquets()
-{
-	// debug("removeBouquets");
-
-	this->::e2se_e2db::e2db_utils::remove_bouquets();
-	this->primer();
-}
-
-void e2db::removeUserbouquets()
-{
-	// debug("removeUserbouquets");
-
-	this->::e2se_e2db::e2db_utils::remove_userbouquets();
 }
 
 bool e2db::prepare(string filename) noexcept

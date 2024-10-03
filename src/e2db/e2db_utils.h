@@ -83,6 +83,7 @@ class e2db_utils : virtual public e2db_abstract
 		void remove_orphaned_references();
 		void fix_remove_references();
 		void fix_dvbns();
+		void fix_bouquets(bool uniq_ubouquets = false);
 		void clear_services_cached();
 		void clear_services_caid();
 		void clear_services_flags();

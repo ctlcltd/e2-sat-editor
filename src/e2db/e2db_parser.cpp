@@ -177,6 +177,8 @@ void e2db_parser::parse_e2db()
 			return a.first > b.first;
 		});
 
+		bool bss_epl = false;
+
 		for (auto & x : i_bouquets)
 		{
 			string fname = x.first;
@@ -210,7 +212,12 @@ void e2db_parser::parse_e2db()
 				}
 				iuserbouquet.close();
 			}
+
+			if (! bss_epl && epl)
+				bss_epl = true;
 		}
+
+		if (FIX_BOUQUETS && bss_epl) fix_bouquets(false);
 
 		if (PARSER_PARENTALLOCK_LIST)
 		{
@@ -377,6 +384,8 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 			return a.first > b.first;
 		});
 
+		bool bss_epl = false;
+
 		for (auto & x : i_bouquets)
 		{
 			string fname = x.first;
@@ -394,7 +403,12 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 				iuserbouquet.write(&files[this->e2db[fname].filename].data[0], files[this->e2db[fname].filename].size);
 				parse_e2db_userbouquet(iuserbouquet, fname);
 			}
+
+			if (! bss_epl && epl)
+				bss_epl = true;
 		}
+
+		if (FIX_BOUQUETS && bss_epl) fix_bouquets(false);
 
 		if (PARSER_PARENTALLOCK_LIST)
 		{

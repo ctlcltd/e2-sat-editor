@@ -9,7 +9,11 @@ All notable changes to this project will be documented in this file.
 **Release Date**: *unreleased*  
 **Full Changelog**: [v1.6.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.6.0...HEAD)
 
-- Added Neutrino terrestrial services support
+- New utils: autofix, remove duplicates, fix/remove parameters and flags, sort
+- Fix import multiple files
+- Fix convert menu and switcher
+- Added Neutrino terrestrial services
+- Bugfix
 
 
 ## [v1.6.0]

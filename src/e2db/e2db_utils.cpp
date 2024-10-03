@@ -23,7 +23,6 @@ e2db_utils::e2db_utils()
 	this->log = new e2se::logger("e2db", "e2db_utils");
 }
 
-//TODO FIX wrong chnum index
 void e2db_utils::remove_orphaned_services()
 {
 	debug("remove_orphaned_services");
@@ -204,6 +203,11 @@ void e2db_utils::fix_remove_references()
 				bs.services.erase(chid);
 		}
 	}
+}
+
+void e2db_utils::fix_bouquets(bool uniq_ubouquets)
+{
+	this->::e2se_e2db::e2db_abstract::fix_bouquets(uniq_ubouquets);
 }
 
 void e2db_utils::fix_dvbns()
@@ -1169,8 +1173,10 @@ void e2db_utils::rebuild_index_services()
 	{
 		vector<pair<int, string>> chis;
 
+		int idx = 0;
 		for (auto & x : index[iname])
 		{
+			idx = x.first;
 			string chid = x.second;
 			chis.emplace_back(pair (idx, chid));
 		}
@@ -1190,9 +1196,10 @@ void e2db_utils::rebuild_index_services(unordered_set<string> i_services)
 	{
 		vector<pair<int, string>> chis;
 
+		int idx = 0;
 		for (auto & x : index[iname])
 		{
-			int idx = x.first;
+			idx = x.first;
 			string chid = x.second;
 
 			if (i_services.count(chid))

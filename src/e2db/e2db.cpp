@@ -2083,12 +2083,12 @@ void e2db::merge(e2db_abstract* dst)
 		if (bs.btype == STYPE::tv)
 		{
 			ktype = "tv";
-			pname = bss_epl ? "userbouquets.tv.epl" : "bouquets.tv";
+			pname = ! bss_epl ? "bouquets.tv" : "userbouquets.tv.epl";
 		}
 		else if (bs.btype == STYPE::radio)
 		{
 			ktype = "radio";
-			pname = bss_epl ? "userbouquets.radio.epl" : "bouquets.radio";
+			pname = ! bss_epl ? "bouquets.radio" : "userbouquets.radio.epl";
 		}
 
 		qw = ub.name + '$' + ktype;

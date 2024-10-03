@@ -254,6 +254,14 @@ void tools::applyUtils(int bit, e2db::uoopts opts)
 				status(tr("Recalculate DVBNS for services", "menu"));
 				dbih->fix_dvbns();
 			break;
+			case gui::TAB_ATS::UtilsFixBouquets:
+				status(tr("Fix bouquets", "menu"));
+				dbih->fix_bouquets(false);
+			break;
+			case gui::TAB_ATS::UtilsFixBouquetsUniq:
+				status(tr("Fix bouquets unique userbouquets", "menu"));
+				dbih->fix_bouquets(true);
+			break;
 			case gui::TAB_ATS::UtilsClearServicesCached:
 				status(tr("Remove service cached", "menu"));
 				dbih->clear_services_cached();
@@ -284,11 +292,11 @@ void tools::applyUtils(int bit, e2db::uoopts opts)
 			break;
 			case gui::TAB_ATS::UtilsRemove_bouquets:
 				status(tr("Remove all bouquets", "menu"));
-				dbih->removeBouquets();
+				dbih->remove_bouquets();
 			break;
 			case gui::TAB_ATS::UtilsRemove_userbouquets:
 				status(tr("Remove all userbouquets", "menu"));
-				dbih->removeUserbouquets();
+				dbih->remove_userbouquets();
 			break;
 			case gui::TAB_ATS::UtilsDuplicates_all:
 				status(tr("Remove all duplicates", "menu"));
@@ -393,6 +401,10 @@ void tools::execMacro(vector<string> pattern)
 				dbih->remove_orphaned_references();
 			else if (fn == "fix_remove_references")
 				dbih->fix_remove_references();
+			else if (fn == "fix_bouquets")
+				dbih->fix_bouquets(false);
+			else if (fn == "fix_bouquets_uniq")
+				dbih->fix_bouquets(true);
 			else if (fn == "fix_dvbns")
 				dbih->fix_dvbns();
 			else if (fn == "clear_services_cached")
@@ -410,9 +422,9 @@ void tools::execMacro(vector<string> pattern)
 			else if (fn == "remove_parentallock")
 				dbih->remove_parentallock();
 			else if (fn == "remove_bouquets")
-				dbih->removeBouquets();
+				dbih->remove_bouquets();
 			else if (fn == "remove_userbouquets")
-				dbih->removeUserbouquets();
+				dbih->remove_userbouquets();
 			else if (fn == "remove_duplicates")
 				dbih->remove_duplicates();
 			else if (fn == "remove_duplicates_transponders")
@@ -471,7 +483,8 @@ void tools::macroAutofix()
 	vector<string> pattern = {
 		"remove_duplicates",
 		"fix_remove_references",
-		"fix_dvbns"
+		"fix_dvbns",
+		"fix_bouquets"
 	};
 
 	execMacro(pattern);

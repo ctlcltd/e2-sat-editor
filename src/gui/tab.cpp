@@ -1592,6 +1592,8 @@ QMenu* tab::toolsMenu()
 		QMenu* tmclean = menuMenu(menu, tr("Clean", "menu"));
 		menuAction(tmclean, tr("Remove orphaned services", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsOrphaned_services); });
 		menuAction(tmclean, tr("Remove orphaned references", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsOrphaned_references); });
+		menuAction(tmclean, tr("Fix bouquets", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsFixBouquets); });
+		menuAction(tmclean, tr("Fix bouquets unique userbouquets", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsFixBouquetsUniq); });
 		menuAction(tmclean, tr("Fix (remove) reference with errors", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsFixRemove); });
 		QMenu* tmparams = menuMenu(menu, tr("Params", "menu"));
 		menuAction(tmparams, tr("Remove service cached", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsClearServicesCached); });
@@ -1618,6 +1620,7 @@ QMenu* tab::toolsMenu()
 		menuAction(tmtsform, tr("Transform XML settings to transponders", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsTransform_transponders); });
 		QMenu* tmsort = menuMenu(menu, tr("Sort", "menu"));
 		menuAction(tmsort, tr("Sort services…", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsSort_services); });
+		menuAction(tmsort, tr("Sort transponders…", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsSort_transponders); });
 		menuAction(tmsort, tr("Sort userbouquets…", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsSort_userbouquets); });
 		menuAction(tmsort, tr("Sort references…", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsSort_references); });
 		menuSeparator(menu);

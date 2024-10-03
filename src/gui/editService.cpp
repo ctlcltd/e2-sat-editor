@@ -605,10 +605,13 @@ void editService::tunerComboChanged(int index)
 
 	for (auto & x : txp_index[pos])
 	{
-		e2db::transponder tx = dbih->db.transponders[x.second];
-		QString txid = QString::fromStdString(x.second);
-		QString combo = QString::fromStdString(dbih->value_transponder_combo(tx));
-		dtf1tx->addItem(combo, txid);
+		if (dbih->db.transponders.count(x.second))
+		{
+			e2db::transponder tx = dbih->db.transponders[x.second];
+			QString txid = QString::fromStdString(x.second);
+			QString combo = QString::fromStdString(dbih->value_transponder_combo(tx));
+			dtf1tx->addItem(combo, txid);
+		}
 	}
 }
 
@@ -878,7 +881,11 @@ void editService::store()
 	}
 	if (ch.txid != this->ref_txid)
 	{
-		e2db::transponder tx = dbih->db.transponders[ch.txid];
+		e2db::transponder tx;
+
+		if (dbih->db.transponders.count(ch.txid))
+			tx = dbih->db.transponders[ch.txid];
+
 		ch.tsid = tx.tsid;
 		ch.dvbns = tx.dvbns;
 		ch.onid = tx.onid;
@@ -1002,12 +1009,12 @@ void editService::retrieve()
 	e2db::service ch = dbih->db.services[ref_chid];
 	e2db::transponder tx;
 
-	if (ref_txid.empty() && (ch.tsid != 0 || ch.onid != 0 || ch.dvbns != 0))
+	if (ref_txid.empty() && (ch.tsid != 0 || ch.onid != 0 || ch.dvbns != 0) && dbih->db.transponders.count(ch.txid))
 	{
 		ref_txid = string (ch.txid);
 		tx = dbih->db.transponders[ch.txid];
 	}
-	else
+	else if (dbih->db.transponders.count(ref_txid))
 	{
 		tx = dbih->db.transponders[ref_txid];
 	}

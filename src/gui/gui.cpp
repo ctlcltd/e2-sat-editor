@@ -422,6 +422,8 @@ void gui::menuBarLayout()
 	QMenu* mtclean = menuBarMenu(mtools, tr("Clean", "menu"));
 	gmenu[GUI_CXE::ToolsUtilsOrphaned_services] = menuBarAction(mtclean, tr("Remove orphaned services", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsOrphaned_services); });
 	gmenu[GUI_CXE::ToolsUtilsOrphaned_references] = menuBarAction(mtclean, tr("Remove orphaned references", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsOrphaned_references); });
+	gmenu[GUI_CXE::ToolsUtilsFixBouquets] = menuBarAction(mtclean, tr("Fix bouquets", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsFixBouquets); });
+	gmenu[GUI_CXE::ToolsUtilsFixBouquetsUniq] = menuBarAction(mtclean, tr("Fix bouquets unique userbouquets", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsFixBouquetsUniq); });
 	gmenu[GUI_CXE::ToolsUtilsFixRemove] = menuBarAction(mtclean, tr("Fix (remove) reference with errors", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsFixRemove); });
 	QMenu* mtparams = menuBarMenu(mtools, tr("Params", "menu"));
 	gmenu[GUI_CXE::ToolsUtilsClearServicesCached] = menuBarAction(mtparams, tr("Remove service cached", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsClearServicesCached); });
@@ -448,6 +450,7 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::ToolsUtilsTransform_transponders] = menuBarAction(mttransform, tr("Transform XML settings to transponders", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsTransform_transponders); });
 	QMenu* tmsort = menuBarMenu(mtools, tr("Sort", "menu"));
 	gmenu[GUI_CXE::ToolsUtilsSort_services] = menuBarAction(tmsort, tr("Sort services…", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsSort_services); });
+	gmenu[GUI_CXE::ToolsUtilsSort_transponders] = menuBarAction(tmsort, tr("Sort transponders…", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsSort_transponders); });
 	gmenu[GUI_CXE::ToolsUtilsSort_userbouquets] = menuBarAction(tmsort, tr("Sort userbouquets…", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsSort_userbouquets); });
 	gmenu[GUI_CXE::ToolsUtilsSort_references] = menuBarAction(tmsort, tr("Sort references…", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsSort_references); });
 	menuBarSeparator(mtools);

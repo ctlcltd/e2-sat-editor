@@ -1745,9 +1745,11 @@ void e2db_abstract::fix_bouquets(bool uniq_ubouquets)
 {
 	debug("fix_bouquets");
 
+	bool reparenting = false;
+
 	if (index["bss"].size() > 2)
 	{
-		vector<string> _del;
+		vector<string> _remove;
 
 		for (auto & x : bouquets)
 		{
@@ -1763,16 +1765,100 @@ void e2db_abstract::fix_bouquets(bool uniq_ubouquets)
 					{
 						index["bss"].erase(it);
 
-						_del.emplace_back(bname);
+						_remove.emplace_back(bname);
 					}
 				}
 			}
 		}
-		for (string & w : _del)
+		for (string & w : _remove)
 		{
 			bouquets.erase(w);
 		}
-		_del.clear();
+		_remove.clear();
+	}
+	else if (index["bss"].empty())
+	{
+		if (bouquets.empty())
+		{
+			bool bss_epl = false;
+
+			for (auto & x : userbouquets)
+			{
+				userbouquet& ub = x.second;
+				string pname = ub.pname;
+				string fext = pname.substr(pname.rfind('.') + 1);
+
+				if (fext == "epl")
+				{
+					bss_epl = true;
+					break;
+				}
+			}
+
+			bouquet bs;
+			string iname;
+
+			bs = bouquet();
+			iname = ! bss_epl ? "bouquets.tv" : "userbouquets.tv.epl";
+			bs.bname = iname;
+			bs.name = "User - bouquet (TV)";
+			bs.btype = STYPE::tv;
+			bs.nname = "TV";
+			bs.index = int (index["bss"].size()) + 1;
+			add_bouquet(bs.index, bs);
+			index[iname]; // touch index["bouquets.tv"]
+
+			bs = bouquet();
+			iname = ! bss_epl ? "bouquets.radio" : "userbouquets.radio.epl";
+			bs.bname = iname;
+			bs.name = "User - bouquet (Radio)";
+			bs.btype = STYPE::radio;
+			bs.nname = "Radio";
+			bs.index = int (index["bss"].size()) + 1;
+			add_bouquet(bs.index, bs);
+			index[iname]; // touch index["bouquets.radio"]
+
+			reparenting = true;
+		}
+		else
+		{
+			for (auto & x : bouquets)
+			{
+				bouquet& bs = x.second;
+
+				if (bs.userbouquets.size() == 0 && ! reparenting)
+					reparenting = true;
+
+				index["bss"].emplace_back(pair (bs.index, bs.bname));
+			}
+		}
+	}
+
+	if (reparenting && ! index["ubs"].empty())
+	{
+		unordered_map<string, vector<string>> ubouquets;
+
+		for (auto & x : index["ubs"])
+		{
+			string bname = x.second;
+
+			if (userbouquets.count(bname))
+			{
+				userbouquet& ub = userbouquets[bname];
+				ubouquets[ub.pname].emplace_back(ub.bname);
+			}
+		}
+
+		for (auto & x : ubouquets)
+		{
+			string pname = x.first;
+
+			if (bouquets.count(pname))
+			{
+				bouquet& bs = bouquets[pname];
+				bs.userbouquets.swap(x.second);
+			}
+		}
 	}
 
 	if (uniq_ubouquets)
@@ -1806,7 +1892,8 @@ void e2db_abstract::fix_bouquets(bool uniq_ubouquets)
 			bs.userbouquets.swap(ubouquets);
 		}
 
-		index["ubs"].swap(i_ubouquets);
+		if (! i_ubouquets.empty())
+			index["ubs"].swap(i_ubouquets);
 	}
 }
 

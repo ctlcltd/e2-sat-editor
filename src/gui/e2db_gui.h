@@ -71,8 +71,6 @@ class e2db : public ::e2se_e2db::e2db
 		void unsetServiceParentalLock(string chid);
 		void setUserbouquetParentalLock(string bname);
 		void unsetUserbouquetParentalLock(string bname);
-		void removeBouquets();
-		void removeUserbouquets();
 		bool prepare(string path) noexcept;
 		bool write(string path) noexcept;
 		void importFile(vector<string> paths) noexcept;
