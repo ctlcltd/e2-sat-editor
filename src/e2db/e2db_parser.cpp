@@ -729,7 +729,7 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 			char feopts;
 			mod = -1, rol = -1, pil = -1;
 
-			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%5d:%1d:%d:%1d:%1d:%1d:%1d%36s", &freq, &sr, &pol, &fec, &pos, &inv, &flags, &sys, &mod, &rol, &pil, &feopts);
+			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%5d:%1d:%d:%1d:%1d:%1d:%1d%c", &freq, &sr, &pol, &fec, &pos, &inv, &flags, &sys, &mod, &rol, &pil, &feopts);
 
 			tx.ytype = YTYPE::satellite;
 			tx.freq = int (freq / 1e3);
@@ -802,12 +802,10 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 
 void e2db_parser::parse_lamedb_transponder_feopts_sat(string str, transponder& tx, int feopts)
 {
-	int isid, plscode, plsmode;
-	int t2mi_plpid, t2mi_pid;
-	isid = -1, plscode = -1, plsmode = -1;
-	t2mi_plpid = -1, t2mi_pid = -1;
+	int isid, plscode, plsmode, t2mi_plpid, t2mi_pid;
+	isid = -1, plscode = -1, plsmode = -1, t2mi_plpid = -1, t2mi_pid = -1;
 
-	if (feopts == 58) // semicolon
+	if (feopts == 58) // colon
 	{
 		int y = 10;
 		size_t pos = 0;
@@ -854,7 +852,7 @@ void e2db_parser::parse_lamedb_transponder_feopts_sat(string str, transponder& t
 			pos = 0;
 		}
 
-		pos = str.find('T2MI', pos);
+		pos = str.find("T2MI:", pos);
 
 		if (pos != string::npos)
 		{

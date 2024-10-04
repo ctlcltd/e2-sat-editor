@@ -529,7 +529,7 @@ void editTunersetsTransponder::thirdSatLayout()
 
 	QGroupBox* dtl2 = new QGroupBox;
 	QFormLayout* dtf2 = new QFormLayout;
-	dtf2->setRowWrapPolicy(QFormLayout::WrapAllRows);
+	dtf2->setRowWrapPolicy(QFormLayout::DontWrapRows);
 
 	QLineEdit* dtf2sn = new QLineEdit;
 	dtf2sn->setProperty("field", "s_plsn");
@@ -581,6 +581,26 @@ void editTunersetsTransponder::thirdSatLayout()
 	dtf2->addRow(tr("mts"), dtf2st);
 	dtf2->addItem(new QSpacerItem(0, 0));
 
+	QLineEdit* dtf2tp = new QLineEdit;
+	dtf2tp->setProperty("field", "s_t2mi_plpid");
+	fields.emplace_back(dtf2tp);
+	dtf2tp->setMaximumWidth(50);
+	dtf2tp->setValidator(new QIntValidator(0, 99999999));
+	dtf2tp->setMaxLength(8);
+	platform::osLineEdit(dtf2tp);
+	dtf2->addRow(tr("t2mi plpid"), dtf2tp);
+	dtf2->addItem(new QSpacerItem(0, 0));
+
+	QLineEdit* dtf2ti = new QLineEdit;
+	dtf2ti->setProperty("field", "s_t2mi_pid");
+	fields.emplace_back(dtf2ti);
+	dtf2ti->setMaximumWidth(50);
+	dtf2ti->setValidator(new QIntValidator(0, 99999999));
+	dtf2ti->setMaxLength(8);
+	platform::osLineEdit(dtf2ti);
+	dtf2->addRow(tr("t2mi pid"), dtf2ti);
+	dtf2->addItem(new QSpacerItem(0, 0));
+
 	dtl2->setLayout(dtf2);
 	dtform->addWidget(dtl2, 0, 2);
 }
@@ -591,7 +611,7 @@ void editTunersetsTransponder::thirdTerrestrialLayout()
 
 	QGroupBox* dtl2 = new QGroupBox;
 	QFormLayout* dtf2 = new QFormLayout;
-	dtf2->setRowWrapPolicy(QFormLayout::WrapAllRows);
+	dtf2->setRowWrapPolicy(QFormLayout::DontWrapRows);
 
 	QLineEdit* dtf2tp = new QLineEdit;
 	dtf2tp->setProperty("field", "t_plpid");
@@ -666,17 +686,20 @@ void editTunersetsTransponder::store()
 				tntxp.rol = val;
 			else if (key == "s_pil")
 				tntxp.pil = val;
-
-			else if (key == "s_plsmode")
-				tntxp.plsmode = val;
-			else if (key == "s_plscode")
-				tntxp.plscode = val;
-			else if (key == "s_isid")
-				tntxp.isid = val;
 			else if (key == "s_plsn")
 				tntxp.plsn = val;
+			else if (key == "s_plscode")
+				tntxp.plscode = val;
+			else if (key == "s_plsmode")
+				tntxp.plsmode = val;
+			else if (key == "s_isid")
+				tntxp.isid = val;
 			else if (key == "s_mts")
 				tntxp.mts = val;
+			else if (key == "s_t2mi_plpid")
+				tntxp.t2mi_plpid = val;
+			else if (key == "s_t2mi_pid")
+				tntxp.t2mi_pid = val;
 		}
 		else if (this->state.yx == e2db::YTYPE::terrestrial)
 		{
@@ -798,6 +821,10 @@ void editTunersetsTransponder::retrieve()
 				val = tntxp.isid;
 			else if (key == "s_mts")
 				val = tntxp.mts;
+			else if (key == "s_t2mi_plpid")
+				val = tntxp.t2mi_plpid;
+			else if (key == "s_t2mi_pid")
+				val = tntxp.t2mi_pid;
 		}
 		else if (this->state.yx == e2db::YTYPE::terrestrial)
 		{

@@ -1268,19 +1268,19 @@ string e2db_abstract::value_transponder_feopts(transponder tx)
 		int t2mi_plpid = tx.t2mi_plpid != -1 ? tx.t2mi_plpid : 0;
 		int t2mi_pid = tx.t2mi_pid != -1 ? tx.t2mi_pid : 0;
 
-		char str[50];
-		std::snprintf(str, 50, "%d:%d:%d:%d:%d", isid, plscode, plsmode, t2mi_plpid, t2mi_pid);
+		char ctxfeopts[50];
+		std::snprintf(ctxfeopts, 50, "%d:%d:%d:%d:%d", isid, plscode, plsmode, t2mi_plpid, t2mi_pid);
 
-		return str;
+		return ctxfeopts;
 	}
 	else if (ytype == YTYPE::terrestrial)
 	{
 		int plpid = tx.plpid != -1 ? tx.plpid : 0;
 
-		char str[25];
-		std::snprintf(str, 25, "%d:0:0:0", plpid);
+		char ctxfeopts[25];
+		std::snprintf(ctxfeopts, 25, "%d:0:0:0", plpid);
 
-		return str;
+		return ctxfeopts;
 	}
 	return "";
 }
@@ -1958,12 +1958,12 @@ void e2db_abstract::debugger()
 		cout << "plpid: " << tx.plpid << endl;
 		cout << "mispls: " << tx.mispls << endl;
 		cout << "t2mi: " << tx.t2mi << endl;
-	    cout << "isid: " << tx.isid << endl;
-	    cout << "plscode: " << tx.plscode << endl;
-	    cout << "plsmode: " << tx.plsmode << endl;
-	    cout << "t2mi_plpid: " << tx.t2mi_plpid << endl;
-	    cout << "t2mi_pid: " << tx.t2mi_pid << endl;
-	    cout << "optsverb: " << tx.optsverb << endl;
+		cout << "isid: " << tx.isid << endl;
+		cout << "plscode: " << tx.plscode << endl;
+		cout << "plsmode: " << tx.plsmode << endl;
+		cout << "t2mi_plpid: " << tx.t2mi_plpid << endl;
+		cout << "t2mi_pid: " << tx.t2mi_pid << endl;
+		cout << "optsverb: " << tx.optsverb << endl;
 		cout << "idx: " << tx.index << endl;
 		cout << endl;
 	}

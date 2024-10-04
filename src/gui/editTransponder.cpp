@@ -694,7 +694,7 @@ void editTransponder::thirdSatLayout()
 
 	QGroupBox* dtl2 = new QGroupBox;
 	QFormLayout* dtf2 = new QFormLayout;
-	dtf2->setRowWrapPolicy(QFormLayout::WrapAllRows);
+	dtf2->setRowWrapPolicy(QFormLayout::DontWrapRows);
 
 	QLineEdit* dtf2sf = new QLineEdit;
 	dtf2sf->setProperty("field", "s_flags");
@@ -766,7 +766,7 @@ void editTransponder::thirdTerrestrialLayout()
 
 	QGroupBox* dtl2 = new QGroupBox;
 	QFormLayout* dtf2 = new QFormLayout;
-	dtf2->setRowWrapPolicy(QFormLayout::WrapAllRows);
+	dtf2->setRowWrapPolicy(QFormLayout::DontWrapRows);
 
 	QLineEdit* dtf2tf = new QLineEdit;
 	dtf2tf->setProperty("field", "t_flags");
@@ -798,7 +798,7 @@ void editTransponder::thirdCableLayout()
 
 	QGroupBox* dtl2 = new QGroupBox;
 	QFormLayout* dtf2 = new QFormLayout;
-	dtf2->setRowWrapPolicy(QFormLayout::WrapAllRows);
+	dtf2->setRowWrapPolicy(QFormLayout::DontWrapRows);
 
 	QLineEdit* dtf2cf = new QLineEdit;
 	dtf2cf->setProperty("field", "c_flags");
@@ -830,7 +830,7 @@ void editTransponder::thirdAtscLayout()
 
 	QGroupBox* dtl2 = new QGroupBox;
 	QFormLayout* dtf2 = new QFormLayout;
-	dtf2->setRowWrapPolicy(QFormLayout::WrapAllRows);
+	dtf2->setRowWrapPolicy(QFormLayout::DontWrapRows);
 
 	QLineEdit* dtf2af = new QLineEdit;
 	dtf2af->setProperty("field", "a_flags");
