@@ -383,10 +383,14 @@ struct e2db_abstract : protected e2se::log_factory
 			int guard = -1; // DVB-T
 			int hier = -1; // DVB-T
 			int plpid = -1; // DVB-T
-			int plsn = -1; // DVB-S
-			int plsmode = -1; // DVB-S
-			int plscode = -1; // DVB-S
+			bool optsverb = false;
+			bool mispls = false; // DVB-S
+			bool t2mi = false; // DVB-S
 			int isid = -1; // DVB-S
+			int plscode = -1; // DVB-S
+			int plsmode = -1; // DVB-S
+			int t2mi_plpid = -1; // DVB-S
+			int t2mi_pid = -1; // DVB-S
 			int index = -1;
 		};
 

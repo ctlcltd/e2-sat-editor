@@ -753,10 +753,13 @@ void e2db_utils::transform_tunersets_to_transponders()
 				tx.guard = tntxp.guard;
 				tx.hier = tntxp.hier;
 				tx.plpid = tntxp.plpid;
-				tx.plsn = tntxp.plsn;
-				tx.plsmode = tntxp.plsmode;
-				tx.plscode = tntxp.plscode;
+				tx.mispls = tntxp.plscode != -1 || tntxp.plsmode != -1 || tntxp.isid != -1;
+				tx.t2mi = tntxp.t2mi_plpid != -1 || tntxp.t2mi_pid != -1;
 				tx.isid = tntxp.isid;
+				tx.plscode = tntxp.plscode;
+				tx.plsmode = tntxp.plsmode;
+				tx.t2mi_plpid = tntxp.t2mi_plpid;
+				tx.t2mi_pid = tntxp.t2mi_pid;
 				tx.index = idx;
 
 				char txy[37];
@@ -871,10 +874,11 @@ void e2db_utils::transform_transponders_to_tunersets()
 		tntxp.guard = tx.guard;
 		tntxp.hier = tx.hier;
 		tntxp.plpid = tx.plpid;
-		tntxp.plsn = tx.plsn;
-		tntxp.plsmode = tx.plsmode;
 		tntxp.plscode = tx.plscode;
+		tntxp.plsmode = tx.plsmode;
 		tntxp.isid = tx.isid;
+		tntxp.t2mi_plpid = tx.t2mi_plpid;
+		tntxp.t2mi_pid = tx.t2mi_pid;
 
 		char txy[37];
 		// %d:%4d:%8x:%8x:%8x

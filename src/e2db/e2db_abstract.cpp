@@ -1232,15 +1232,18 @@ void e2db_abstract::value_transponder_feopts(string str, transponder& tx)
 
 	if (ytype == YTYPE::satellite)
 	{
-		int plsn, isid, plscode, plsmode;
-		plsn = -1, isid = -1, plscode = -1, plsmode = -1;
+		int isid, plscode, plsmode, t2mi_plpid, t2mi_pid;
+		isid = -1, plscode = -1, plsmode = -1, t2mi_plpid = -1, t2mi_pid = -1;
 
-		std::sscanf(str.c_str(), "%d:%d:%d:%d", &plsn, &isid, &plscode, &plsmode);
+		int nr = std::sscanf(str.c_str(), "%d:%d:%d:%d:%d", &isid, &plscode, &plsmode, &t2mi_plpid, &t2mi_pid);
 
-		tx.plsn = plsn;
+		tx.mispls = nr != -1;
+		tx.t2mi = nr > 3;
 		tx.isid = isid;
 		tx.plscode = plscode;
 		tx.plsmode = plsmode;
+		tx.t2mi_plpid = t2mi_plpid;
+		tx.t2mi_pid = t2mi_pid;
 	}
 	else if (ytype == YTYPE::terrestrial)
 	{
@@ -1259,24 +1262,25 @@ string e2db_abstract::value_transponder_feopts(transponder tx)
 
 	if (ytype == YTYPE::satellite)
 	{
-		int plsn = tx.plsn != -1 ? tx.plsn : 0;
 		int isid = tx.isid != -1 ? tx.isid : 0;
 		int plscode = tx.plscode != -1 ? tx.plscode : 0;
 		int plsmode = tx.plsmode != -1 ? tx.plsmode : 0;
+		int t2mi_plpid = tx.t2mi_plpid != -1 ? tx.t2mi_plpid : 0;
+		int t2mi_pid = tx.t2mi_pid != -1 ? tx.t2mi_pid : 0;
 
-		char feopts[37];
-		std::snprintf(feopts, 37, "%d:%d:%d:%d", plsn, isid, plscode, plsmode);
+		char str[50];
+		std::snprintf(str, 50, "%d:%d:%d:%d:%d", isid, plscode, plsmode, t2mi_plpid, t2mi_pid);
 
-		return feopts;
+		return str;
 	}
 	else if (ytype == YTYPE::terrestrial)
 	{
 		int plpid = tx.plpid != -1 ? tx.plpid : 0;
 
-		char feopts[37];
-		std::snprintf(feopts, 37, "%d:0:0:0", plpid);
+		char str[25];
+		std::snprintf(str, 25, "%d:0:0:0", plpid);
 
-		return feopts;
+		return str;
 	}
 	return "";
 }
@@ -1950,12 +1954,16 @@ void e2db_abstract::debugger()
 		cout << "tmx: " << tx.tmx << endl;
 		cout << "guard: " << tx.guard << endl;
 		cout << "hier: " << tx.hier << endl;
-		cout << "plpid: " << tx.plpid << endl;
-		cout << "plsn: " << tx.plsn << endl;
-		cout << "plscode: " << tx.plscode << endl;
-		cout << "plsmode: " << tx.plsmode << endl;
-		cout << "isid: " << tx.isid << endl;
 		cout << "flags: " << tx.flags << endl;
+		cout << "plpid: " << tx.plpid << endl;
+		cout << "mispls: " << tx.mispls << endl;
+		cout << "t2mi: " << tx.t2mi << endl;
+	    cout << "isid: " << tx.isid << endl;
+	    cout << "plscode: " << tx.plscode << endl;
+	    cout << "plsmode: " << tx.plsmode << endl;
+	    cout << "t2mi_plpid: " << tx.t2mi_plpid << endl;
+	    cout << "t2mi_pid: " << tx.t2mi_pid << endl;
+	    cout << "optsverb: " << tx.optsverb << endl;
 		cout << "idx: " << tx.index << endl;
 		cout << endl;
 	}

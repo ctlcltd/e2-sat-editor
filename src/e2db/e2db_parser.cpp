@@ -719,17 +719,17 @@ void e2db_parser::parse_lamedb_transponder_params(string str, transponder& tx)
 
 void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transponder& tx)
 {
-	int freq, sr, pol, fec, pos, inv, flags, sys, mod, rol, pil;
-	int band, hpfec, lpfec, tmod, tmx, guard, hier, plpid;
-	int cmod, cfec;
-	int amod;
-	char feopts[37] = "";
-	flags = -1, sys = -1, mod = -1, rol = -1, pil = -1, plpid = -1;
+	int freq, sr, flags, sys;
+	flags = -1, sys = -1;
 
 	switch (ty)
 	{
 		case 's': // DVB-S / DVB-S2
-			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%5d:%1d:%1d:%1d:%1d:%1d:%1d%36s", &freq, &sr, &pol, &fec, &pos, &inv, &flags, &sys, &mod, &rol, &pil, feopts);
+			int pol, fec, pos, inv, mod, rol, pil;
+			char feopts;
+			mod = -1, rol = -1, pil = -1;
+
+			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%5d:%1d:%d:%1d:%1d:%1d:%1d%36s", &freq, &sr, &pol, &fec, &pos, &inv, &flags, &sys, &mod, &rol, &pil, &feopts);
 
 			tx.ytype = YTYPE::satellite;
 			tx.freq = int (freq / 1e3);
@@ -744,24 +744,14 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 			tx.rol = rol;
 			tx.pil = pil;
 
-			if (LAMEDB_VER == 5)
-			{
-				if (std::strlen(feopts) != 0)
-				{
-					int plsn, isid, plscode, plsmode;
-					plsn = -1, isid = -1, plscode = -1, plsmode = -1;
-
-					std::sscanf(feopts, ",%d:%d:%d:%d", &plsn, &isid, &plscode, &plsmode);
-
-					tx.plsn = plsn;
-					tx.isid = isid;
-					tx.plscode = plscode;
-					tx.plsmode = plsmode;
-				}
-			}
+			if (feopts != 0)
+				parse_lamedb_transponder_feopts_sat(str, tx, feopts);
 		break;
 		case 't': // DVB-T / DVB-T2
-			std::sscanf(str.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d", &freq, &band, &hpfec, &lpfec, &tmod, &tmx, &guard, &hier, &inv, &flags, &sys, &plpid);
+			int band, hpfec, lpfec, tmod, tmx, guard, hier, plpid;
+			plpid = -1;
+
+			std::sscanf(str.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%d:%1d:%d", &freq, &band, &hpfec, &lpfec, &tmod, &tmx, &guard, &hier, &inv, &flags, &sys, &plpid);
 
 			tx.ytype = YTYPE::terrestrial;
 			tx.freq = int (freq / 1e3);
@@ -778,7 +768,10 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 			tx.plpid = plpid;
 		break;
 		case 'c': // DVB-C
-			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%1d:%1d:%1d", &freq, &sr, &inv, &cmod, &cfec, &flags, &sys);
+			int cmod, cfec;
+			cmod = -1;
+
+			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%1d:%d:%1d", &freq, &sr, &inv, &cmod, &cfec, &flags, &sys);
 
 			tx.ytype = YTYPE::cable;
 			tx.freq = int (freq / 1e3);
@@ -790,7 +783,10 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 			tx.sys = sys;
 		break;
 		case 'a': // ATSC / DVB-C ANNEX B
-			std::sscanf(str.c_str(), "%8d:%1d:%1d:%1d:%1d", &freq, &inv, &amod, &flags, &sys);
+			int amod;
+			amod = -1;
+
+			std::sscanf(str.c_str(), "%8d:%1d:%1d:%d:%1d", &freq, &inv, &amod, &flags, &sys);
 
 			tx.ytype = YTYPE::atsc;
 			tx.freq = int (freq / 1e3);
@@ -801,6 +797,74 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 		break;
 		default:
 			return error("parse_lamedb_transponder_feparams", "Parser Error", "Unknown transponder type.");
+	}
+}
+
+void e2db_parser::parse_lamedb_transponder_feopts_sat(string str, transponder& tx, int feopts)
+{
+	int isid, plscode, plsmode;
+	int t2mi_plpid, t2mi_pid;
+	isid = -1, plscode = -1, plsmode = -1;
+	t2mi_plpid = -1, t2mi_pid = -1;
+
+	if (feopts == 58) // semicolon
+	{
+		int y = 10;
+		size_t pos = 0;
+
+		while (pos != str.size())
+		{
+			if (str[pos] == 58 && ! y--)
+				break;
+
+			pos++;
+		}
+
+		if (pos != 0)
+		{
+			int nr = std::sscanf(str.substr(pos).c_str(), ":%d:%d:%d:%d:%d", &isid, &plscode, &plsmode, &t2mi_plpid, &t2mi_pid);
+
+			tx.mispls = nr != -1;
+			tx.t2mi = nr > 3;
+			tx.isid = isid;
+			tx.plscode = plscode;
+			tx.plsmode = plsmode;
+			tx.t2mi_plpid = t2mi_plpid;
+			tx.t2mi_pid = t2mi_pid;
+		}
+	}
+	else if (LAMEDB_VER == 5 && feopts == 44) // comma
+	{
+		size_t pos = 0;
+
+		pos = str.find("MIS/PLS:", pos);
+
+		if (pos != string::npos)
+		{
+			int nr = std::sscanf(str.substr(pos).c_str(), "MIS/PLS:%d:%d:%d", &isid, &plscode, &plsmode);
+
+			tx.optsverb = true;
+			tx.mispls = nr != -1;
+			tx.isid = isid;
+			tx.plscode = plscode;
+			tx.plsmode = plsmode;
+		}
+		else
+		{
+			pos = 0;
+		}
+
+		pos = str.find('T2MI', pos);
+
+		if (pos != string::npos)
+		{
+			int nr = std::sscanf(str.substr(pos).c_str(), "T2MI:%d:%d", &t2mi_plpid, &t2mi_pid);
+
+			tx.optsverb = true;
+			tx.t2mi = nr != -1;
+			tx.t2mi_plpid = t2mi_plpid;
+			tx.t2mi_pid = t2mi_pid;
+		}
 	}
 }
 

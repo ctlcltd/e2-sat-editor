@@ -666,14 +666,15 @@ void editTunersetsTransponder::store()
 				tntxp.rol = val;
 			else if (key == "s_pil")
 				tntxp.pil = val;
-			else if (key == "s_plsn")
-				tntxp.plsn = val;
+
 			else if (key == "s_plsmode")
 				tntxp.plsmode = val;
 			else if (key == "s_plscode")
 				tntxp.plscode = val;
 			else if (key == "s_isid")
 				tntxp.isid = val;
+			else if (key == "s_plsn")
+				tntxp.plsn = val;
 			else if (key == "s_mts")
 				tntxp.mts = val;
 		}

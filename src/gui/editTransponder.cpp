@@ -706,14 +706,14 @@ void editTransponder::thirdSatLayout()
 	dtf2->addRow(tr("flags"), dtf2sf);
 	dtf2->addItem(new QSpacerItem(0, 0));
 
-	QLineEdit* dtf2sn = new QLineEdit;
-	dtf2sn->setProperty("field", "s_plsn");
-	fields.emplace_back(dtf2sn);
-	dtf2sn->setMaximumWidth(50);
-	dtf2sn->setValidator(new QIntValidator(0, 99999999));
-	dtf2sn->setMaxLength(8);
-	platform::osLineEdit(dtf2sn);
-	dtf2->addRow(tr("pls / mis id"), dtf2sn);
+	QLineEdit* dtf2ss = new QLineEdit;
+	dtf2ss->setProperty("field", "s_isid");
+	fields.emplace_back(dtf2ss);
+	dtf2ss->setMaximumWidth(50);
+	dtf2ss->setValidator(new QIntValidator(0, 99999999));
+	dtf2ss->setMaxLength(8);
+	platform::osLineEdit(dtf2ss);
+	dtf2->addRow(tr("is id"), dtf2ss);
 	dtf2->addItem(new QSpacerItem(0, 0));
 
 	QLineEdit* dtf2sc = new QLineEdit;
@@ -736,14 +736,24 @@ void editTransponder::thirdSatLayout()
 	dtf2->addRow(tr("pls mode"), dtf2sd);
 	dtf2->addItem(new QSpacerItem(0, 0));
 
-	QLineEdit* dtf2ss = new QLineEdit;
-	dtf2ss->setProperty("field", "s_isid");
-	fields.emplace_back(dtf2ss);
-	dtf2ss->setMaximumWidth(50);
-	dtf2ss->setValidator(new QIntValidator(0, 99999999));
-	dtf2ss->setMaxLength(8);
-	platform::osLineEdit(dtf2ss);
-	dtf2->addRow(tr("is id"), dtf2ss);
+	QLineEdit* dtf2tp = new QLineEdit;
+	dtf2tp->setProperty("field", "s_t2mi_plpid");
+	fields.emplace_back(dtf2tp);
+	dtf2tp->setMaximumWidth(50);
+	dtf2tp->setValidator(new QIntValidator(0, 99999999));
+	dtf2tp->setMaxLength(8);
+	platform::osLineEdit(dtf2tp);
+	dtf2->addRow(tr("t2mi plpid"), dtf2tp);
+	dtf2->addItem(new QSpacerItem(0, 0));
+
+	QLineEdit* dtf2ti = new QLineEdit;
+	dtf2ti->setProperty("field", "s_t2mi_pid");
+	fields.emplace_back(dtf2ti);
+	dtf2ti->setMaximumWidth(50);
+	dtf2ti->setValidator(new QIntValidator(0, 99999999));
+	dtf2ti->setMaxLength(8);
+	platform::osLineEdit(dtf2ti);
+	dtf2->addRow(tr("t2mi pid"), dtf2ti);
 	dtf2->addItem(new QSpacerItem(0, 0));
 
 	dtl2->setLayout(dtf2);
@@ -1014,14 +1024,19 @@ void editTransponder::store()
 				tx.pil = val;
 			else if (key == "s_flags")
 				tx.flags = val;
-			else if (key == "s_plsn")
-				tx.plsn = val;
-			else if (key == "s_plsmode")
-				tx.plsmode = val;
-			else if (key == "s_plscode")
-				tx.plscode = val;
 			else if (key == "s_isid")
 				tx.isid = val;
+			else if (key == "s_plscode")
+				tx.plscode = val;
+			else if (key == "s_plsmode")
+				tx.plsmode = val;
+			else if (key == "s_t2mi_plpid")
+				tx.t2mi_plpid = val;
+			else if (key == "s_t2mi_pid")
+				tx.t2mi_pid = val;
+
+			tx.mispls = tx.mispls ?: tx.isid != -1 || tx.plscode != -1 || tx.plsmode != -1;
+			tx.t2mi = tx.t2mi ?: tx.t2mi_plpid != -1 || tx.t2mi_pid != -1;
 		}
 		else if (this->state.yx == e2db::YTYPE::terrestrial)
 		{
@@ -1164,14 +1179,16 @@ void editTransponder::retrieve(string txid)
 				val = tx.pil;
 			else if (key == "s_flags")
 				val = tx.flags;
-			else if (key == "s_plsn")
-				val = tx.plsn;
-			else if (key == "s_plsmode")
-				val = tx.plsmode;
-			else if (key == "s_plscode")
-				val = tx.plscode;
 			else if (key == "s_isid")
 				val = tx.isid;
+			else if (key == "s_plscode")
+				val = tx.plscode;
+			else if (key == "s_plsmode")
+				val = tx.plsmode;
+			else if (key == "s_t2mi_plpid")
+				val = tx.t2mi_plpid;
+			else if (key == "s_t2mi_pid")
+				val = tx.t2mi_pid;
 		}
 		else if (this->state.yx == e2db::YTYPE::terrestrial)
 		{

@@ -130,14 +130,31 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 					ss << ':' << (tx.rol != -1 ? tx.mod : 0);
 					ss << ':' << (tx.pil != -1 ? tx.pil : 0);
 
-					if (ver == 5)
+					if (tx.mispls || tx.t2mi)
 					{
-						if (tx.plsn != -1 || tx.isid != -1 || tx.plscode != -1 || tx.plsmode != -1)
+						if (ver == 5 && tx.optsverb)
 						{
-							ss << ':' << (tx.plsn != -1 ? tx.plsn : 0);
+							if (tx.mispls)
+							{
+								ss << ',' << "MIS/PLS:";
+								ss << ':' << (tx.isid != -1 ? tx.isid : 0);
+								ss << ':' << (tx.plscode != -1 ? tx.plscode : 0);
+								ss << ':' << (tx.plsmode != -1 ? tx.plsmode : 0);
+							}
+							if (tx.t2mi)
+							{
+								ss << ',' << "T2MI:";
+								ss << ':' << (tx.t2mi_plpid != -1 ? tx.t2mi_plpid : 0);
+								ss << ':' << (tx.t2mi_pid != -1 ? tx.t2mi_pid : 0);
+							}
+						}
+						else
+						{
 							ss << ':' << (tx.isid != -1 ? tx.isid : 0);
 							ss << ':' << (tx.plscode != -1 ? tx.plscode : 0);
 							ss << ':' << (tx.plsmode != -1 ? tx.plsmode : 0);
+							ss << ':' << (tx.t2mi_plpid != -1 ? tx.t2mi_plpid : 0);
+							ss << ':' << (tx.t2mi_pid != -1 ? tx.t2mi_pid : 0);
 						}
 					}
 				}
@@ -154,7 +171,11 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 				ss << ':' << (tx.inv != -1 ? tx.inv : 0);
 				ss << ':' << (tx.flags != -1 ? tx.flags : 0);
 				ss << ':' << (tx.sys != -1 ? tx.sys : 0);
-				ss << ':' << (tx.plpid != -1 ? tx.plpid : 0);
+
+				if (tx.plpid != -1)
+				{
+					ss << ':' << (tx.plpid != -1 ? tx.plpid : 0);
+				}
 			break;
 			case YTYPE::cable: // DVB-C
 				ss << int (tx.freq * 1e3);
@@ -472,6 +493,8 @@ void e2db_maker::make_bouquet(string bname, e2db_file& file, int ver)
 {
 	debug("make_bouquet", "bname", bname);
 
+	bool compat = ver == 5 && ! MAKER_COMPAT_LAMEDB5;
+
 	bouquet bs = bouquets[bname];
 
 	string filename = bs.rname.empty() ? bs.bname : bs.rname;
@@ -497,7 +520,7 @@ void e2db_maker::make_bouquet(string bname, e2db_file& file, int ver)
 		}
 		else if (! ub.bname.empty())
 		{
-			if (ver < 5 || (! ub.order.empty() && ub.order != "bouquet"))
+			if (ver < 5 || compat || (! ub.order.empty() && ub.order != "bouquet"))
 			{
 				{
 					int x0, x1, x2, x3, x4, x5, x6, x7, x8, x9;

@@ -2372,11 +2372,11 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end,
 				print_obj_pair(TYPE::hier, tx.hier), print_obj_sep();
 				print_obj_pair(TYPE::flags, tx.flags), print_obj_sep();
 				print_obj_pair(TYPE::plpid, tx.plpid), print_obj_sep();
-				print_obj_pair(TYPE::plsn, tx.plsn), print_obj_sep();
+				print_obj_pair(TYPE::isid, tx.isid), print_obj_sep();
 				print_obj_pair(TYPE::plscode, tx.plscode), print_obj_sep();
 				print_obj_pair(TYPE::plsmode, tx.plsmode), print_obj_sep();
-				print_obj_pair(TYPE::isid, tx.isid), print_obj_sep();
-				print_obj_pair(TYPE::mts, tx.isid), print_obj_sep();
+				print_obj_pair(TYPE::t2mi_plpid, tx.t2mi_plpid), print_obj_sep();
+				print_obj_pair(TYPE::t2mi_pid, tx.t2mi_pid), print_obj_sep();
 				print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
 				print_obj_end(), print_obj_dlm();
 			}
@@ -2920,10 +2920,14 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 
 				if (any_cast<int>(field(TYPE::txdata)))
 				{
-					tx.plsn = any_cast<int>(field(TYPE::plsn));
+					tx.isid = any_cast<int>(field(TYPE::isid));
 					tx.plscode = any_cast<int>(field(TYPE::plscode));
 					tx.plsmode = any_cast<int>(field(TYPE::plsmode));
-					tx.isid = any_cast<int>(field(TYPE::isid));
+					tx.t2mi_plpid = any_cast<int>(field(TYPE::t2mi_plpid));
+					tx.t2mi_pid = any_cast<int>(field(TYPE::t2mi_pid));
+
+					tx.mispls = tx.mispls ?: tx.isid != -1 || tx.plscode != -1 || tx.plsmode != -1;
+					tx.t2mi = tx.t2mi ?: tx.t2mi_plpid != -1 || tx.t2mi_pid != -1;
 				}
 			}
 			else if (tx.ytype == e2db::YTYPE::terrestrial)
@@ -3679,6 +3683,8 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::plscode: name = hrn ? "plscode" : "plscode"; value_type = VALUE::val_int; break;
 		case TYPE::isid: name = hrn ? "is id" : "isid"; value_type = VALUE::val_int; break;
 		case TYPE::mts: name = hrn ? "mts" : "mts"; value_type = VALUE::val_int; break;
+		case TYPE::t2mi_plpid: name = hrn ? "t2mi plpid" : "t2mi_plpid"; value_type = VALUE::val_int; break;
+		case TYPE::t2mi_pid: name = hrn ? "t2mi pid" : "t2mt_pid"; value_type = VALUE::val_int; break;
 		case TYPE::pos: name = hrn ? "Position" : "pos"; value_type = hrv ? VALUE::val_string : VALUE::val_int; break;
 		case TYPE::diseqc: name = hrn ? "diseqc" : "diseqc"; value_type = VALUE::val_int; break;
 		case TYPE::uncomtd: name = hrn ? "uncomtd" : "uncomtd"; value_type = VALUE::val_int; break;
@@ -3722,11 +3728,13 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::freq:
 		case TYPE::sr:
 		case TYPE::plpid:
-		case TYPE::plsn:
+		case TYPE::isid:
 		case TYPE::plscode:
 		case TYPE::plsmode:
-		case TYPE::isid:
+		case TYPE::t2mi_plpid:
+		case TYPE::t2mi_pid:
 		case TYPE::mts:
+		case TYPE::plsn:
 		case TYPE::diseqc:
 		case TYPE::uncomtd:
 		case TYPE::feed:
@@ -4091,10 +4099,12 @@ std::any e2db_cli::field(TYPE type, bool required)
 		case TYPE::hier: label = "Hierarchy"; description = "exact match: <empty>, 0, 1, 2, 4"; break;
 		case TYPE::plpid: label = "plp id"; description = "in digits"; break;
 		case TYPE::isid: label = "is id"; description = "in digits"; break;
-		case TYPE::plsn: label = "plsn | mis id"; description = "in digits"; break;
 		case TYPE::plscode: label = "plscode"; description = "in digits"; break;
 		case TYPE::plsmode: label = "plsmode"; description = "in digits"; break;
+		case TYPE::t2mi_plpid: label = "t2mi plpid"; description = "in digits"; break;
+		case TYPE::t2mi_pid: label = "t2mi pid"; description = "in digits"; break;
 		case TYPE::mts: label = "mts"; description = "in digits"; break;
+		case TYPE::plsn: label = "plsn | mis id"; description = "in digits"; break;
 		case TYPE::pos: label = "Position"; description = "in degree, eg. 0.0E, 0.0W"; break;
 		case TYPE::diseqc: label = "diseqc"; description = "in digits"; break;
 		case TYPE::uncomtd: label = "uncomtd"; description = "in digits"; break;
@@ -4155,11 +4165,13 @@ std::any e2db_cli::field(TYPE type, bool required)
 				case TYPE::freq:
 				case TYPE::sr:
 				case TYPE::plpid:
-				case TYPE::plsn:
+				case TYPE::isid:
 				case TYPE::plscode:
 				case TYPE::plsmode:
-				case TYPE::isid:
+				case TYPE::t2mi_plpid:
+				case TYPE::t2mi_pid:
 				case TYPE::mts:
+				case TYPE::plsn:
 				case TYPE::diseqc:
 				case TYPE::uncomtd:
 				case TYPE::etype:

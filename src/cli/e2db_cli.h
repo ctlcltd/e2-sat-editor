@@ -87,7 +87,7 @@ class e2db_cli
 			sdata_p, sdata_c, sdata_C, sdata_f, 
 			freq, sr, pol, fec, hpfec, lpfec, cfec, inv, tinv, cinv, sys, tsys, csys, asys, mod, tmod, cmod, amod, rol, pil, band, tmx, guard, hier, plpid, 
 			chdata, txdata, ffdata, bsdata, ubdata, tvdata, tndata, flags, 
-			plsn, plsmode, plscode, isid, mts, 
+			isid, plscode, plsmode, t2mi_plpid, t2mi_pid, mts, plsn, 
 			pos, diseqc, uncomtd, charset, 
 			tname, country, feed, 
 			bname, pname, rname, qname, nname, btype, hidden, locked, 
