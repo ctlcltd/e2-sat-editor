@@ -1909,7 +1909,7 @@ void tab::toolsAutofixMacro()
 }
 
 //TODO
-void tab::toolsUtils(int bit)
+void tab::toolsUtils(int bit, bool selecting)
 {
 	// debug("toolsUtils", "bit", bit);
 
@@ -1922,12 +1922,13 @@ void tab::toolsUtils(int bit)
 		mainView* view = reinterpret_cast<mainView*>(this->view);
 		auto state = view->currentState();
 
-		// bouquets
+		// services
 		if (state.tc == 0)
 		{
 			if (bit == gui::TAB_ATS::UtilsSort_references)
 				bit = gui::TAB_ATS::UtilsSort_services;
 		}
+		// bouquets
 		else if (state.tc == 1)
 		{
 			int ti = -1;
@@ -1938,15 +1939,22 @@ void tab::toolsUtils(int bit)
 				ti = view->tree->indexOfTopLevelItem(item);
 				string bname = item->data(0, Qt::UserRole).toString().toStdString();
 
-				// bouquet | userbouquets
-				if (ti != -1)
-				{
-				}
 				// userbouquet
-				else
+				if (ti == -1)
 				{
 					opts.iname = bname;
 				}
+			}
+		}
+
+		if (selecting && bit != gui::TAB_ATS::UtilsSort_userbouquets)
+		{
+			QList<QTreeWidgetItem*> selected = view->list->selectedItems();
+
+			for (auto & x : selected)
+			{
+				int i = view->list->indexOfTopLevelItem(x);
+				opts.selection.emplace_back(i);
 			}
 		}
 	}

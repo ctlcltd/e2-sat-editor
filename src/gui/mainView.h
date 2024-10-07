@@ -179,7 +179,6 @@ class mainView : public viewAbstract
 		void reharmDnD();
 		QMenu* servicesSetsCornerMenu();
 		QMenu* listPrefsCornerMenu();
-		void convertFormat(int bit);
 		void addBouquet();
 		void editBouquet();
 		void addUserbouquet();

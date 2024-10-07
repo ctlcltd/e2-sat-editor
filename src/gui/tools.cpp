@@ -219,7 +219,7 @@ void tools::done()
 		tid->infoMessage(tr("Done!", "message"));
 }
 
-void tools::applyUtils(int bit, e2db::uoopts opts)
+void tools::applyUtils(int bit, e2db::uoopts& opts)
 {
 	debug("applyUtils", "bit", bit);
 
@@ -328,22 +328,19 @@ void tools::applyUtils(int bit, e2db::uoopts opts)
 			break;
 			case gui::TAB_ATS::UtilsSort_transponders:
 				ndial = true;
-				dbih->sort_transponders();
+				dbih->sort_transponders(opts);
 			break;
 			case gui::TAB_ATS::UtilsSort_services:
 				ndial = true;
-				dbih->sort_services();
+				dbih->sort_services(opts);
 			break;
 			case gui::TAB_ATS::UtilsSort_userbouquets:
 				ndial = true;
-				dbih->sort_userbouquets();
+				dbih->sort_userbouquets(opts);
 			break;
 			case gui::TAB_ATS::UtilsSort_references:
 				ndial = true;
-				if (! opts.iname.empty())
-					dbih->sort_references(opts.iname);
-				else
-					dbih->sort_references(false);
+				dbih->sort_references(opts);
 			break;
 			default:
 				ran = false;
@@ -380,6 +377,8 @@ void tools::execMacro(vector<string> pattern)
 	debug("execMacro");
 
 	auto* dbih = this->data->dbih;
+
+	e2db::uoopts opts;
 
 	this->data->clearErrors();
 
@@ -440,13 +439,13 @@ void tools::execMacro(vector<string> pattern)
 			else if (fn == "transform_transponders_to_tunersets")
 				dbih->transform_transponders_to_tunersets();
 			else if (fn == "sort_transponders")
-				dbih->sort_transponders();
+				dbih->sort_transponders(opts);
 			else if (fn == "sort_services")
-				dbih->sort_services();
+				dbih->sort_services(opts);
 			else if (fn == "sort_userbouquets")
-				dbih->sort_userbouquets();
+				dbih->sort_userbouquets(opts);
 			else if (fn == "sort_references")
-				dbih->sort_references(false);
+				dbih->sort_references(opts);
 			else
 				ran = false;
 		}

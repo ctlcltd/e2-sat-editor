@@ -40,7 +40,7 @@ class tools : protected e2se::log_factory
 		tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data);
 		virtual ~tools();
 		void inspector();
-		void applyUtils(int bit, e2db::uoopts opts);
+		void applyUtils(int bit, e2db::uoopts& opts);
 		void execMacro(vector<string> pattern);
 		void macroAutofix();
 		void importFileCSV(e2db::FCONVS fci, e2db::fcopts opts);

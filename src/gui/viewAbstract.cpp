@@ -723,6 +723,18 @@ void viewAbstract::tabPrintFile(bool all)
 		tid->printFile(all);
 }
 
+void viewAbstract::tabConvertFormat(int bit)
+{
+	if (tid != nullptr)
+		tid->convertFormat(bit);
+}
+
+void viewAbstract::tabToolsUtils(int bit, bool selecting)
+{
+	if (tid != nullptr)
+		tid->toolsUtils(bit, selecting);
+}
+
 void viewAbstract::tabPropagateChanges()
 {
 	if (tid != nullptr)

@@ -1624,7 +1624,7 @@ QMenu* mainView::servicesSetsCornerMenu()
 			QAction* action = new QAction;
 			action->setText(opt.second);
 			action->setCheckable(true);
-			action->connect(action, &QAction::triggered, [=]() { this->convertFormat(opt.first); });
+			action->connect(action, &QAction::triggered, [=]() { this->tabConvertFormat(opt.first); });
 			submenu->addAction(action);
 		}
 
@@ -1766,12 +1766,6 @@ QMenu* mainView::listPrefsCornerMenu()
 	actions.at(5)->setChecked(settings.value("preference/treeDropMove", false).toBool());
 
 	return menu;
-}
-
-void mainView::convertFormat(int bit)
-{
-	if (tid != nullptr)
-		tid->convertFormat(bit);
 }
 
 void mainView::addBouquet()
@@ -3618,6 +3612,7 @@ void mainView::showTreeEditContextMenu(QPoint& pos)
 	if (this->state.ti != -1)
 	{
 		contextMenuAction(tree_edit, tr("Edit Bouquet", "context-menu"), [=]() { this->editBouquet(); }, tabGetFlag(gui::TabTreeEditBouquet));
+		contextMenuSeparator(tree_edit);
 	}
 	// userbouquet
 	else
@@ -3637,8 +3632,9 @@ void mainView::showTreeEditContextMenu(QPoint& pos)
 		contextMenuAction(tree_edit, ! ub_parental ? tr("Set Parental lock", "context-menu") : tr("Unset Parental lock", "context-menu"), [=]() { this->toggleUserbouquetParentalLock(); });
 		contextMenuSeparator(tree_edit);
 		contextMenuAction(tree_edit, tr("&Delete", "context-menu"), [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
+		contextMenuSeparator(tree_edit);
+		contextMenuAction(tree_edit, tr("Sort…", "context-menu"), [=]() { this->tabToolsUtils(gui::TAB_ATS::UtilsSort_references, false); });
 	}
-	contextMenuSeparator(tree_edit);
 	contextMenuAction(tree_edit, tr("Export", "context-menu"), [=]() { this->tabExportFile(); });
 
 	platform::osMenuPopup(tree_edit, tree, pos);
@@ -3657,9 +3653,15 @@ void mainView::showListEditContextMenu(QPoint& pos)
 	bool parental = false;
 	bool ub_parental = false;
 	bool editable = false;
+	int bit = gui::TAB_ATS::UtilsSort_references;
 
+	// services
+	if (! this->state.tc)
+	{
+		bit = gui::TAB_ATS::UtilsSort_services;
+	}
 	// userbouquet
-	if (this->state.tc && this->state.ti == -1)
+	else if (this->state.tc && this->state.ti == -1)
 	{
 		auto* dbih = this->data->dbih;
 
@@ -3697,6 +3699,8 @@ void mainView::showListEditContextMenu(QPoint& pos)
 		contextMenuAction(list_edit, tr("Parental lock", "context-menu"), [=]() {}, false);
 	else
 		contextMenuAction(list_edit, ! parental ? tr("Set Parental lock", "context-menu") : tr("Unset Parental lock", "context-menu"), [=]() { this->toggleServiceParentalLock(); }, editable && service);
+	contextMenuSeparator(list_edit);
+	contextMenuAction(list_edit, tr("Sort…", "context-menu"), [=]() { this->tabToolsUtils(bit, true); });
 	contextMenuSeparator(list_edit);
 	contextMenuAction(list_edit, tr("Cu&t", "context-menu"), [=]() { this->listItemCut(); }, tabGetFlag(gui::TabListCut), QKeySequence::Cut);
 	contextMenuAction(list_edit, tr("&Copy", "context-menu"), [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);

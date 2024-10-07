@@ -162,6 +162,8 @@ class viewAbstract : protected e2se::log_factory
 		void tabImportFile();
 		void tabExportFile();
 		void tabPrintFile(bool all);
+		void tabConvertFormat(int bit);
+		void tabToolsUtils(int bit, bool selecting = false);
 		void tabPropagateChanges();
 
 		static QToolBar* toolBar();

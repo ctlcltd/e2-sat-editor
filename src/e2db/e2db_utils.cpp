@@ -1046,86 +1046,64 @@ void e2db_utils::transform_transponders_to_tunersets()
 	}
 }
 
-void e2db_utils::sort_transponders(string prop, SORT_ORDER order)
+void e2db_utils::sort_transponders(uoopts& opts)
 {
-	debug("sort_transponders", "prop", prop);
-	debug("sort_transponders", "order", value_sort_order(order));
+	opts.iname = "txs";
+	if (opts.prop.empty()) opts.prop = "tsid";
 
-	sort_items(SORT_ITEM::item_transponder, prop, order, "txs", index["txs"]);
+	debug("sort_transponders", "prop", opts.prop);
+	debug("sort_transponders", "order", value_sort_order(opts.order));
+
+	sort_items(SORT_ITEM::item_transponder, opts);
 }
 
-void e2db_utils::sort_transponders(vector<pair<int, string>> xis, int start, int end, string prop, SORT_ORDER order)
+void e2db_utils::sort_services(uoopts& opts)
 {
-	debug("sort_transponders", "prop", prop);
-	debug("sort_transponders", "order", value_sort_order(order));
+	opts.iname = "chs";
+	if (opts.prop.empty()) opts.prop = "ssid";
 
-	sort_items(SORT_ITEM::item_transponder, prop, order, "txs", xis, start, end);
+	debug("sort_services", "prop", opts.prop);
+	debug("sort_services", "order", value_sort_order(opts.order));
+
+	sort_items(SORT_ITEM::item_service, opts);
 }
 
-void e2db_utils::sort_services(string prop, SORT_ORDER order)
+void e2db_utils::sort_userbouquets(uoopts& opts)
 {
-	debug("sort_services", "prop", prop);
-	debug("sort_services", "order", value_sort_order(order));
+	opts.iname = "ubs";
+	if (opts.prop.empty()) opts.prop = "bname";
 
-	sort_items(SORT_ITEM::item_service, prop, order, "chs", index["chs"]);
+	debug("sort_userbouquets", "prop", opts.prop);
+	debug("sort_userbouquets", "order", value_sort_order(opts.order));
+
+	sort_items(SORT_ITEM::item_userbouquet, opts);
 }
 
-void e2db_utils::sort_services(vector<pair<int, string>> xis, int start, int end, string prop, SORT_ORDER order)
+void e2db_utils::sort_references(uoopts& opts)
 {
-	debug("sort_services", "prop", prop);
-	debug("sort_services", "order", value_sort_order(order));
+	if (opts.prop.empty()) opts.prop = "chname";
 
-	sort_items(SORT_ITEM::item_service, prop, order, "chs", xis, start, end);
-}
+	if (opts.iname.empty())
+	{
+		debug("sort_references", "prop", opts.prop);
+		debug("sort_references", "order", value_sort_order(opts.order));
 
-void e2db_utils::sort_userbouquets(string prop, SORT_ORDER order)
-{
-	debug("sort_userbouquets", "prop", prop);
-	debug("sort_userbouquets", "order", value_sort_order(order));
+		for (auto & x : index["ubs"])
+			sort_items(SORT_ITEM::item_reference, opts);
+	}
+	else
+	{
+		debug("sort_references", "bname", opts.iname);
+		debug("sort_references", "prop", opts.prop);
+		debug("sort_references", "order", value_sort_order(opts.order));
 
-	sort_items(SORT_ITEM::item_userbouquet, prop, order, "ubs", index["ubs"]);
-}
+		if (! userbouquets.count(opts.iname))
+			return error("sort_references", "Error", msg("Userbouquet \"%s\" not exists.", opts.iname));
+		if (! index.count(opts.iname))
+			return error("sort_references", "Error", msg("Missing index key \"%s\".", opts.iname));
 
-void e2db_utils::sort_userbouquets(vector<pair<int, string>> xis, int start, int end, string prop, SORT_ORDER order)
-{
-	debug("sort_userbouquets", "prop", prop);
-	debug("sort_userbouquets", "order", value_sort_order(order));
-
-	sort_items(SORT_ITEM::item_userbouquet, prop, order, "ubs", xis, start, end);
-}
-
-void e2db_utils::sort_references(bool c, string prop, SORT_ORDER order)
-{
-	for (auto & x : index["ubs"])
-		sort_references(x.second, prop, order);
-}
-
-void e2db_utils::sort_references(string bname, string prop, SORT_ORDER order)
-{
-	debug("sort_references", "bname", bname);
-	debug("sort_references", "prop", prop);
-	debug("sort_references", "order", value_sort_order(order));
-
-	if (! userbouquets.count(bname))
-		return error("sort_references", "Error",  msg("Userbouquet \"%s\" not exists.", bname));
-	if (! index.count(bname))
-		return error("sort_references", "Error", msg("Missing index key \"%s\".", bname));
-
-	sort_items(SORT_ITEM::item_reference, prop, order, bname, index[bname]);
-}
-
-void e2db_utils::sort_references(string bname, vector<pair<int, string>> xis, int start, int end, string prop, SORT_ORDER order)
-{
-	debug("sort_references", "bname", bname);
-	debug("sort_references", "prop", prop);
-	debug("sort_references", "order", value_sort_order(order));
-
-	if (! userbouquets.count(bname))
-		return error("sort_references", "Error", msg("Userbouquet \"%s\" not exists.", bname));
-	if (! index.count(bname))
-		return error("sort_references", "Error", msg("Missing index key \"%s\".", bname));
-
-	sort_items(SORT_ITEM::item_reference, prop, order, bname, xis, start, end);
+		sort_items(SORT_ITEM::item_reference, opts);
+	}
 }
 
 void e2db_utils::rebuild_index_transponders()
@@ -1302,9 +1280,16 @@ void e2db_utils::rebuild_index_markers()
 	index["mks"].swap(mkis);
 }
 
-e2db_utils::sort_data e2db_utils::get_data(SORT_ITEM model, string prop, string iname, vector<pair<int, string>> xis)
+e2db_utils::sort_data e2db_utils::get_data(SORT_ITEM model, string iname, vector<pair<int, string>> xis, string prop)
 {
 	sort_data s;
+
+	if (! index.count(iname))
+	{
+		error("get_data", "Error", msg("Missing index key \"%s\".", iname));
+
+		return s;
+	}
 
 	if (model == SORT_ITEM::item_userbouquet)
 	{
@@ -1403,36 +1388,76 @@ e2db_utils::sort_data e2db_utils::get_data(SORT_ITEM model, string prop, string 
 	return s;
 }
 
-void e2db_utils::sort_items(SORT_ITEM model, string prop, SORT_ORDER order, string iname, vector<pair<int, string>> xis, int start, int end)
+void e2db_utils::sort_items(SORT_ITEM model, uoopts& opts)
 {
-	sort_data s = get_data(model, prop, iname, xis);
+	if (! index.count(opts.iname))
+		return error("sort_items", "Error", msg("Missing index key \"%s\".", opts.iname));
 
-	if (end == 0)
-		end = int (s.data.size());
+	string& iname = opts.iname;
+	vector<int>& selection = opts.selection;
+	string& prop = opts.prop;
+	SORT_ORDER& order = opts.order;
 
-	vector<pair<sort_data::value*, int>> sorting (s.data.size());
+	int len = int (selection.empty() ? index[iname].size() : selection.size());
+	vector<pair<int, string>> xis;
 
-	for (int i = start; i < end; ++i)
+	if (selection.empty())
+	{
+		xis = index[iname];
+	}
+	else
+	{
+		for (auto it = selection.begin(); it != selection.end(); it++)
+		{
+			int j = *it;
+			xis.emplace_back(index[iname][j]);
+		}
+	}
+
+	vector<int> origin (len);
+	vector<pair<sort_data::value*, int>> sorting (len);
+
+	sort_data s = get_data(model, iname, xis, prop);
+
+	for (int i = 0; i < len; ++i)
 	{
 		sorting[i].first = s.data[i];
-		sorting[i].second = i;
+
+		if (selection.empty())
+		{
+			sorting[i].second = i;
+			origin[i] = i;
+		}
+		else
+		{
+			sorting[i].second = selection[i];
+			origin[i] = selection[i];
+		}
 	}
 
 	const auto compare = (order == sort_asc ? &e2db_utils::valueLessThan : &e2db_utils::valueGreaterThan);
 	std::stable_sort(sorting.begin(), sorting.end(), compare);
 
-	vector<pair<int, string>> _index (index[iname].size());
+	vector<pair<int, string>>& i_a = index[iname];
+	vector<pair<int, string>> i_b = index[iname];
 
-	if (index[iname].size() != s.data.size())
-		_index = index[iname];
-
-	for (int i = start; i < end; ++i)
+	int i = 0;
+	int a, b;
+	for (auto it = origin.begin(); it != origin.end(); it++)
 	{
-		_index[i].first = i + 1;
-		_index[i].second = index[iname][sorting[i].second].second;
+		a = *it;
+		b = sorting[i++].second;
+		i_b[a].first = i_a[b].first;
+		i_b[a].second = i_a[b].second;
 	}
 
-	index[iname].swap(_index);
+	int idx = 1;
+	for (auto it = i_b.begin(); it != i_b.end(); it++)
+	{
+		it->first = it->first ? idx++ : 0;
+	}
+
+	i_a.swap(i_b);
 }
 
 string e2db_utils::value_sort_order(SORT_ORDER order)

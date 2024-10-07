@@ -67,13 +67,12 @@ class e2db_utils : virtual public e2db_abstract
 			void push(std::string* ptr) { insert(ptr, sort_data::string); }
 		};
 
-		struct uoopts {
-			string prop;
-			SORT_ORDER order;
+		struct uoopts
+		{
 			string iname;
-			vector<pair<int, string>> xis;
-			int start;
-			int end;
+			vector<int> selection;
+			string prop;
+			SORT_ORDER order = sort_asc;
 		};
 
 		e2db_utils();
@@ -102,15 +101,10 @@ class e2db_utils : virtual public e2db_abstract
 		void remove_duplicates_markers();
 		void transform_tunersets_to_transponders();
 		void transform_transponders_to_tunersets();
-		void sort_transponders(string prop = "tsid", SORT_ORDER order = SORT_ORDER::sort_asc);
-		void sort_transponders(vector<pair<int, string>> xis, int start, int end, string prop = "tsid", SORT_ORDER order = SORT_ORDER::sort_asc);
-		void sort_services(string prop = "ssid", SORT_ORDER order = SORT_ORDER::sort_asc);
-		void sort_services(vector<pair<int, string>> xis, int start, int end, string prop = "ssid", SORT_ORDER order = SORT_ORDER::sort_asc);
-		void sort_userbouquets(string prop = "bname", SORT_ORDER order = SORT_ORDER::sort_asc);
-		void sort_userbouquets(vector<pair<int, string>> xis, int start, int end, string prop = "bname", SORT_ORDER order = SORT_ORDER::sort_asc);
-		void sort_references(bool c, string prop = "chname", SORT_ORDER order = SORT_ORDER::sort_asc);
-		void sort_references(string bname, string prop = "chname", SORT_ORDER order = SORT_ORDER::sort_asc);
-		void sort_references(string bname, vector<pair<int, string>> xis, int start, int end, string prop = "chname", SORT_ORDER order = SORT_ORDER::sort_asc);
+		void sort_transponders(uoopts& opts);
+		void sort_services(uoopts& opts);
+		void sort_userbouquets(uoopts& opts);
+		void sort_references(uoopts& opts);
 
 	protected:
 		virtual e2db_utils* newptr() { return new e2db_utils; }
@@ -120,8 +114,8 @@ class e2db_utils : virtual public e2db_abstract
 		void rebuild_index_userbouquet(string iname);
 		void rebuild_index_userbouquet(string iname, unordered_set<string> i_channels); // remove
 		void rebuild_index_markers();
-		sort_data get_data(SORT_ITEM model, string prop, string iname, vector<pair<int, string>>);
-		void sort_items(SORT_ITEM model, string prop, SORT_ORDER order, string iname, vector<pair<int, string>> xis, int start = 0, int end = 0);
+		sort_data get_data(SORT_ITEM model, string iname, vector<pair<int, string>> xis, string prop);
+		void sort_items(SORT_ITEM model, uoopts& opts);
 		static string value_sort_order(SORT_ORDER order);
 
 	private:
