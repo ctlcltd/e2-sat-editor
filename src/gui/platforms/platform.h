@@ -35,6 +35,10 @@ class _platform
 		{
 			return widget;
 		}
+		static void osMenu(QMenu* menu, QWidget* widget, QPoint pos)
+		{
+			menu->exec(widget->mapToGlobal(pos));
+		}
 		static void osMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 		{
 			menu->popup(widget->mapToGlobal(pos));

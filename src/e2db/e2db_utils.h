@@ -70,6 +70,7 @@ class e2db_utils : virtual public e2db_abstract
 		struct uoopts
 		{
 			string iname;
+			bool selecting = false;
 			vector<int> selection;
 			string prop;
 			SORT_ORDER order = sort_asc;

@@ -1401,6 +1401,7 @@ void e2db_utils::sort_items(SORT_ITEM model, uoopts& opts)
 		return error("sort_items", "Error", msg("Missing index key \"%s\".", opts.iname));
 
 	string& iname = opts.iname;
+	bool& selecting = opts.selecting;
 	vector<int>& selection = opts.selection;
 	string& prop = opts.prop;
 	SORT_ORDER& order = opts.order;
@@ -1408,7 +1409,7 @@ void e2db_utils::sort_items(SORT_ITEM model, uoopts& opts)
 	int len = int (selection.empty() ? index[iname].size() : selection.size());
 	vector<pair<int, string>> xis;
 
-	if (selection.empty())
+	if (! selecting)
 	{
 		xis = index[iname];
 	}
@@ -1430,7 +1431,7 @@ void e2db_utils::sort_items(SORT_ITEM model, uoopts& opts)
 	{
 		sorting[i].first = s.data[i];
 
-		if (selection.empty())
+		if (! selecting)
 		{
 			sorting[i].second = i;
 			origin[i] = i;

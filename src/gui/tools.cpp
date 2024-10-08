@@ -225,7 +225,7 @@ void tools::done()
 		tid->infoMessage(tr("Done!", "message"));
 }
 
-void tools::applyUtils(int bit, e2db::uoopts& opts)
+void tools::applyUtils(int bit, e2db::uoopts& opts, bool contextual)
 {
 	debug("applyUtils", "bit", bit);
 
@@ -332,20 +332,20 @@ void tools::applyUtils(int bit, e2db::uoopts& opts)
 				dbih->transform_tunersets_to_transponders();
 			break;
 			case gui::TAB_ATS::UtilsSort_transponders:
-				showSortMenu(SORT_ITEM::item_transponder, opts);
-				dbih->sort_transponders(opts);
+				ran = showSortMenu(SORT_ITEM::item_transponder, contextual, opts);
+				if (ran) dbih->sort_transponders(opts);
 			break;
 			case gui::TAB_ATS::UtilsSort_services:
-				showSortMenu(SORT_ITEM::item_service, opts);
-				dbih->sort_services(opts);
+				ran = showSortMenu(SORT_ITEM::item_service, contextual, opts);
+				if (ran) dbih->sort_services(opts);
 			break;
 			case gui::TAB_ATS::UtilsSort_userbouquets:
-				showSortMenu(SORT_ITEM::item_userbouquet, opts);
-				dbih->sort_userbouquets(opts);
+				ran = showSortMenu(SORT_ITEM::item_userbouquet, contextual, opts);
+				if (ran) dbih->sort_userbouquets(opts);
 			break;
 			case gui::TAB_ATS::UtilsSort_references:
-				showSortMenu(SORT_ITEM::item_reference, opts);
-				dbih->sort_references(opts);
+				showSortMenu(SORT_ITEM::item_reference, contextual, opts);
+				if (ran) dbih->sort_references(opts);
 			break;
 			default:
 				ran = false;
@@ -489,33 +489,30 @@ void tools::macroAutofix()
 	execMacro(pattern);
 }
 
-void tools::showSortMenu(SORT_ITEM model, e2db::uoopts& opts)
+bool tools::showSortMenu(SORT_ITEM model, bool contextual, e2db::uoopts& opts)
 {
 	debug("showSortMenu");
 
+	if (contextual && setupSortOptions(opts))
+		return true;
+
 	QWidget* wid = tid->lastPopupFocusWidget();
 	QPoint pos = tid->lastPopupFocusPos();
-	QMenu* menu = sortPopupMenu(model);
+	QMenu* menu = sortMenu(model, contextual);
 
-	platform::osMenuPopup(menu, wid, pos);
-
-	QMouseEvent mouseRelease(QEvent::MouseButtonRelease, pos, wid->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
-	QCoreApplication::sendEvent(wid, &mouseRelease);
+	menu->setFocus();
+	menu->exec(wid->mapToGlobal(pos));
 
 	//TODO FIX
-	wid->setFocus(Qt::ActiveWindowFocusReason);
+	/*platform::osMenu(menu, wid, pos);
 
-	//TODO
-	if (this->sort_curr != nullptr)
-	{
-		opts.prop = this->sort_curr->property("prop").toString().toStdString();
-		opts.order = static_cast<e2db::SORT_ORDER>(this->sort_curr->property("order").toInt());
-		if (! this->sort_curr->property("selection").toBool())
-			opts.selection.clear();
-	}
+	QMouseEvent mouseRelease(QEvent::MouseButtonRelease, pos, wid->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
+	QCoreApplication::sendEvent(wid, &mouseRelease);*/
+
+	return setupSortOptions(opts);
 }
 
-QMenu* tools::sortPopupMenu(SORT_ITEM model)
+QMenu* tools::sortMenu(SORT_ITEM model, bool contextual)
 {
 	QMenu* menu = new QMenu;
 	vector<QWidget*> fields;
@@ -554,7 +551,7 @@ QMenu* tools::sortPopupMenu(SORT_ITEM model)
 			fields.emplace_back(select);
 			for (auto & x : this->sortComboBoxProps(model))
 				select->addItem(x.first, x.second);
-			platform::osComboBox(select);
+			/*platform::osComboBox(select);*/
 			form->addRow("by", select);
 		}
 		{
@@ -563,62 +560,63 @@ QMenu* tools::sortPopupMenu(SORT_ITEM model)
 			fields.emplace_back(select);
 			select->addItem(tr("ascending"), e2db::SORT_ORDER::sort_asc);
 			select->addItem(tr("descending"), e2db::SORT_ORDER::sort_desc);
-			platform::osComboBox(select);
+			/*platform::osComboBox(select);*/
 			form->addRow("order", select);
 		}
 
 		action->setDefaultWidget(wrap);
 		menu->addAction(action);
 	}
-	if (1)
-	{
-		menu->addSeparator();
-		{
-			QWidgetAction* action = new QWidgetAction(nullptr);
-			QWidget* wrap = new QWidget;
-			QFormLayout* form = new QFormLayout(wrap);
-			form->setContentsMargins(15, 8, 15, 8);
-			form->setFormAlignment(Qt::AlignLeading);
-			form->setVerticalSpacing(12);
-
-			{
-				QCheckBox* checker = new QCheckBox;
-				checker->setProperty("field", "recall");
-				fields.emplace_back(checker);
-				checker->setText(tr("Recall this set when sort from context menu"));
-				form->addRow(checker);
-			}
-			{
-				form->addItem(form->spacerItem());
-
-				QCheckBox* checker = new QCheckBox;
-				checker->setProperty("field", "selection");
-				fields.emplace_back(checker);
-				checker->setText(tr("Apply to list selection"));
-				form->addRow(checker);
-			}
-
-			action->setDefaultWidget(wrap);
-			menu->addAction(action);
-		}
-	}
+	menu->addSeparator();
 	{
 		QWidgetAction* action = new QWidgetAction(nullptr);
 		QWidget* wrap = new QWidget;
 		QFormLayout* form = new QFormLayout(wrap);
-		form->setContentsMargins(15, 10, 15, 10);
-		form->setFormAlignment(Qt::AlignTrailing);
-		form->setRowWrapPolicy(QFormLayout::DontWrapRows);
+		form->setContentsMargins(15, 8, 15, 8);
+		form->setFormAlignment(Qt::AlignLeading);
+		form->setVerticalSpacing(12);
+
+		{
+			QCheckBox* checker = new QCheckBox;
+			checker->setProperty("field", "recall");
+			fields.emplace_back(checker);
+			checker->setText(tr("Recall this set when sort from context menu"));
+			form->addRow(checker);
+		}
+		if (! contextual)
+		{
+			form->addItem(form->spacerItem());
+
+			QCheckBox* checker = new QCheckBox;
+			checker->setProperty("field", "selection");
+			fields.emplace_back(checker);
+			checker->setText(tr("Apply to list selection"));
+			form->addRow(checker);
+		}
+
+		action->setDefaultWidget(wrap);
+		menu->addAction(action);
+	}
+	{
+		QWidgetAction* action = new QWidgetAction(nullptr);
+		QWidget* wrap = new QWidget;
+		QHBoxLayout* hbox = new QHBoxLayout(wrap);
+		hbox->setContentsMargins(15, 10, 15, 10);
+		hbox->setAlignment(Qt::AlignTrailing);
 
 		QPushButton* button = new QPushButton;
+		//TODO FIX
 		button->setDefault(true);
 		button->setText(tr("Apply Sort"));
 		button->connect(button, &QPushButton::pressed, [=]() {
 			this->handleSortOptions(fields);
 
-			//TODO FIX delete menu and aboutToHide platform_macx
+			// delay too fast
+			QTimer::singleShot(50, [=]() {
+				delete menu;
+			});
 		});
-		form->addRow(button);
+		hbox->addWidget(button);
 
 		action->setDefaultWidget(wrap);
 		menu->addAction(action);
@@ -631,7 +629,7 @@ void tools::handleSortOptions(vector<QWidget*> fields)
 {
 	debug("handleSortOptions");
 
-	this->sort_curr = new QObject;
+	this->sort_curr = new sort_options;
 
 	for (auto & item : fields)
 	{
@@ -644,14 +642,33 @@ void tools::handleSortOptions(vector<QWidget*> fields)
 			val = field->isChecked();
 
 		if (key == "by")
-			this->sort_curr->setProperty("prop", val);
+			this->sort_curr->prop = val.toString();
 		else if (key == "order")
-			this->sort_curr->setProperty("order", val);
+			this->sort_curr->order = val.toInt();
 		else if (key == "selection")
-			this->sort_curr->setProperty("selection", val);
+			this->sort_curr->selecting = val.toBool();
 		else if (key == "recall")
-			this->sort_curr->setProperty("recall", val);
+			this->sort_curr->recall = val.toBool();
 	}
+}
+
+bool tools::setupSortOptions(e2db::uoopts& opts)
+{
+	if (this->sort_curr == nullptr)
+		return false;
+
+	//TODO per SORT_ITEM
+	// if (this->sort_curr->recall)
+		// return true;
+
+	opts.prop = this->sort_curr->prop.toStdString();
+	opts.order = static_cast<e2db::SORT_ORDER>(this->sort_curr->order);
+	opts.selecting = this->sort_curr->selecting;
+
+	delete this->sort_curr;
+	this->sort_curr = nullptr;
+
+	return true;
 }
 
 void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)

@@ -85,6 +85,13 @@ class _platform_macx
 		{
 			return widget;
 		}
+		static void osMenu(QMenu* menu, QWidget* widget, QPoint pos)
+		{
+			if (osExperiment())
+				_osMenuPopup(menu, widget, pos);
+			else
+				menu->exec(widget->mapToGlobal(pos));
+		}
 		static void osMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 		{
 			if (osExperiment())

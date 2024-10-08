@@ -263,9 +263,6 @@ void _platform_macx::_osMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 		wid->setAcceptDrops(false);
 	}
 
-	// signal emit
-	menu->aboutToShow();
-
 	NSEvent* nsEventMenuShow = [NSEvent
 		mouseEventWithType:NSEventTypeRightMouseDown
 		location:nsPos
@@ -305,9 +302,6 @@ void _platform_macx::_osMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 		pressure:1.0
 	];
 	[view mouseUp:nsEventMouseRelease];
-
-	// signal emit
-	menu->aboutToHide();
 
 	//workaround: context menu is interfering with Drag and Drop
 	if (QAbstractItemView* wid = qobject_cast<QAbstractItemView*>(widget))

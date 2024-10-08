@@ -729,10 +729,10 @@ void viewAbstract::tabConvertFormat(int bit)
 		tid->convertFormat(bit);
 }
 
-void viewAbstract::tabToolsUtils(int bit, bool selecting)
+void viewAbstract::tabToolsUtils(int bit, bool selecting, bool contextual)
 {
 	if (tid != nullptr)
-		tid->toolsUtils(bit, selecting);
+		tid->toolsUtils(bit, selecting, contextual);
 }
 
 void viewAbstract::tabLastPopupFocusWidget(QWidget* wid, QPoint pos)
@@ -745,12 +745,16 @@ QWidget* viewAbstract::tabLastPopupFocusWidget()
 {
 	if (tid != nullptr)
 		return tid->lastPopupFocusWidget();
+
+	return nullptr;
 }
 
 QPoint viewAbstract::tabLastPopupFocusPos()
 {
 	if (tid != nullptr)
 		return tid->lastPopupFocusPos();
+
+	return QPoint();
 }
 
 void viewAbstract::tabPropagateChanges()

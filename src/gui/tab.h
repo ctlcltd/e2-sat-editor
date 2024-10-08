@@ -121,7 +121,7 @@ class tab : protected e2se::log_factory
 		void toolsImportFromFile(TOOLS_FILE ftype, e2db::FCONVS fci);
 		void toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco);
 		void toolsAutofixMacro();
-		void toolsUtils(int bit, bool selecting = false);
+		void toolsUtils(int bit, bool selecting = false, bool contextual = false);
 		void settingsDialog();
 		void lastPopupFocusWidget(QWidget* wid, QPoint pos);
 		QWidget* lastPopupFocusWidget();

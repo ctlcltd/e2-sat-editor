@@ -743,9 +743,8 @@ void tab::saveFile(bool saveas)
 	string nw_path;
 
 	if (this->data->hasChanged())
-	{
 		updateIndex();
-	}
+
 	if (saveas || this->data->isNewfile())
 	{
 		nw_path = gid->saveFileDialog(path);
@@ -1061,9 +1060,7 @@ void tab::exportFile()
 	}
 
 	if (this->data->hasChanged())
-	{
 		updateIndex();
-	}
 
 	string path = gid->exportFileDialog(gde, fname, bit);
 
@@ -1669,13 +1666,6 @@ QMenu* tab::toolsMenu()
 
 	QMenu* menu = this->tools_menu;
 
-	//TODO
-
-	/*auto actions = menu->actions();
-
-	for (auto & act : actions)
-		act->setEnabled(false);*/
-
 	return menu;
 }
 
@@ -1893,6 +1883,9 @@ void tab::toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco)
 		opts.filename = filename;
 	}
 
+	if (this->data->hasChanged())
+		updateIndex();
+
 	switch (ftype)
 	{
 		case TOOLS_FILE::tools_csv:
@@ -1914,16 +1907,19 @@ void tab::toolsAutofixMacro()
 {
 	// debug("toolsAutofixMacro");
 
+	if (this->data->hasChanged())
+		updateIndex();
+
 	this->tools->macroAutofix();
 }
 
-//TODO
-void tab::toolsUtils(int bit, bool selecting)
+void tab::toolsUtils(int bit, bool selecting, bool contextual)
 {
 	// debug("toolsUtils", "bit", bit);
 
 	gui::TAB_VIEW current = getTabView();
 	e2db::uoopts opts;
+	bool tree_switch = false;
 
 	// main view
 	if (current == gui::TAB_VIEW::main)
@@ -1940,19 +1936,26 @@ void tab::toolsUtils(int bit, bool selecting)
 		// bouquets
 		else if (state.tc == 1)
 		{
-			int ti = -1;
-			QList<QTreeWidgetItem*> selected = view->tree->selectedItems();
-
-			for (auto & item : selected)
+			if (bit == gui::TAB_ATS::UtilsSort_references)
 			{
-				ti = view->tree->indexOfTopLevelItem(item);
-				string bname = item->data(0, Qt::UserRole).toString().toStdString();
+				int ti = -1;
+				QList<QTreeWidgetItem*> selected = view->tree->selectedItems();
 
-				// userbouquet
-				if (ti == -1)
+				for (auto & item : selected)
 				{
-					opts.iname = bname;
+					ti = view->tree->indexOfTopLevelItem(item);
+					string bname = item->data(0, Qt::UserRole).toString().toStdString();
+
+					// userbouquet
+					if (ti == -1)
+					{
+						opts.iname = bname;
+					}
 				}
+			}
+			else if (bit == gui::TAB_ATS::UtilsSort_services)
+			{
+				tree_switch = true;
 			}
 		}
 
@@ -1965,20 +1968,47 @@ void tab::toolsUtils(int bit, bool selecting)
 				int i = view->list->indexOfTopLevelItem(x);
 				opts.selection.emplace_back(i);
 			}
+			opts.selecting = ! opts.selection.empty();
 		}
 	}
 	// transponders view
 	else if (current == gui::TAB_VIEW::transponders)
 	{
+		transpondersView* view = reinterpret_cast<transpondersView*>(this->view);
+
 		if (bit == gui::TAB_ATS::UtilsSort_references)
 			bit = gui::TAB_ATS::UtilsSort_transponders;
+
+		if (selecting && bit != gui::TAB_ATS::UtilsSort_userbouquets)
+		{
+			QList<QTreeWidgetItem*> selected = view->list->selectedItems();
+
+			for (auto & x : selected)
+			{
+				int i = view->list->indexOfTopLevelItem(x);
+				opts.selection.emplace_back(i);
+			}
+			opts.selecting = ! opts.selection.empty();
+		}
 	}
 	else
 	{
 		return;
 	}
 
-	this->tools->applyUtils(bit, opts);
+	if (this->data->hasChanged())
+		updateIndex();
+
+	this->tools->applyUtils(bit, opts, contextual);
+
+	if (bit == gui::TAB_ATS::UtilsSort_services && tree_switch)
+	{
+		mainView* view = reinterpret_cast<mainView*>(this->view);
+
+		view->side->setFocus();
+		view->side->setCurrentItem(nullptr); // should reset QTreeView::currentIndex
+		view->side->setCurrentItem(view->side->topLevelItem(0));
+	}
 }
 
 void tab::actionCall(int bit)

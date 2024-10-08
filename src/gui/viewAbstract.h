@@ -163,7 +163,7 @@ class viewAbstract : protected e2se::log_factory
 		void tabExportFile();
 		void tabPrintFile(bool all);
 		void tabConvertFormat(int bit);
-		void tabToolsUtils(int bit, bool selecting = false);
+		void tabToolsUtils(int bit, bool selecting, bool contextual = false);
 		void tabLastPopupFocusWidget(QWidget* wid, QPoint pos);
 		QWidget* tabLastPopupFocusWidget();
 		QPoint tabLastPopupFocusPos();

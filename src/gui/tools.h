@@ -50,15 +50,18 @@ class tools : protected e2se::log_factory
 			item_reference
 		};
 
-		struct 
+		struct sort_options
 		{
-
+			QString prop;
+			int order;
+			bool selecting;
+			bool recall;
 		};
 
 		tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data);
 		virtual ~tools();
 		void inspector();
-		void applyUtils(int bit, e2db::uoopts& opts);
+		void applyUtils(int bit, e2db::uoopts& opts, bool contextual = false);
 		void execMacro(vector<string> pattern);
 		void macroAutofix();
 		void importFileCSV(e2db::FCONVS fci, e2db::fcopts opts);
@@ -74,9 +77,10 @@ class tools : protected e2se::log_factory
 		void inspectReset();
 		void status(QString message);
 		void done();
-		void showSortMenu(SORT_ITEM model, e2db::uoopts& opts);
-		QMenu* sortPopupMenu(SORT_ITEM model);
+		bool showSortMenu(SORT_ITEM model, bool contextual, e2db::uoopts& opts);
+		QMenu* sortMenu(SORT_ITEM model, bool contextual);
 		void handleSortOptions(vector<QWidget*> fields);
+		bool setupSortOptions(e2db::uoopts& opts);
 
 		static vector<QPair<QString, QString>> sortComboBoxProps(SORT_ITEM model);
 
@@ -88,7 +92,7 @@ class tools : protected e2se::log_factory
 		dataHandler* data = nullptr;
 		size_t inspect_pos = 0;
 		INSPECT_FILTER inspect_curr;
-		QObject* sort_curr = nullptr;
+		sort_options* sort_curr = nullptr;
 };
 }
 #endif /* tools_h */
