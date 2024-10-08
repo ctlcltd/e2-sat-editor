@@ -31,7 +31,7 @@
 #include "theme.h"
 #include "tab.h"
 #include "gui.h"
-#include "convertM3u.h"
+#include "dialConvertM3u.h"
 
 using namespace e2se;
 
@@ -732,7 +732,7 @@ void tools::importFileM3U(e2db::FCONVS fci, e2db::fcopts opts)
 	if (paths.empty())
 		return;
 
-	convertM3u* dialog = new convertM3u(this->data);
+	dialConvertM3u* dialog = new dialConvertM3u(this->data);
 	dialog->setImport(opts);
 	dialog->display(cwid);
 	opts = dialog->getConverterOptions();
@@ -831,7 +831,7 @@ void tools::exportFileM3U(e2db::FCONVS fco, e2db::fcopts opts)
 		}
 	}
 
-	convertM3u* dialog = new convertM3u(this->data);
+	dialConvertM3u* dialog = new dialConvertM3u(this->data);
 	dialog->setExport(opts, ubouquets);
 	dialog->display(cwid);
 	opts = dialog->getConverterOptions();

@@ -378,8 +378,7 @@ class gui : protected e2se::log_factory
 		void mainWindowDelayedShow();
 		void settingsChanged();
 		int newTab(string path = "", bool launch = false);
-		int openTab(TAB_VIEW ttv);
-		int openTab(TAB_VIEW ttv, int arg);
+		int openTab(TAB_VIEW ttv, int arg = 0, bool rievoke = true);
 		bool closeTab(int index = -1);
 		void closeAllTabs();
 		string openFileDialog();

@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/gui/convertM3u.cpp
+ * e2-sat-editor/src/gui/dialConvertM3u.cpp
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -31,28 +31,28 @@
 
 #include "platforms/platform.h"
 
-#include "convertM3u.h"
+#include "dialConvertM3u.h"
 
 using namespace e2se;
 
 namespace e2se_gui
 {
 
-convertM3u::convertM3u(dataHandler* data)
+dialConvertM3u::dialConvertM3u(dataHandler* data)
 {
-	this->log = new logger("gui", "convertM3u");
+	this->log = new logger("gui", "dialConvertM3u");
 
 	this->data = data;
 }
 
-convertM3u::~convertM3u()
+dialConvertM3u::~dialConvertM3u()
 {
-	debug("~convertM3u");
+	debug("~dialConvertM3u");
 
 	delete this->log;
 }
 
-void convertM3u::display(QWidget* cwid)
+void dialConvertM3u::display(QWidget* cwid)
 {
 	layout(cwid);
 
@@ -61,7 +61,7 @@ void convertM3u::display(QWidget* cwid)
 	dial->exec();
 }
 
-void convertM3u::layout(QWidget* cwid)
+void dialConvertM3u::layout(QWidget* cwid)
 {
 	this->dialAbstract::layout(cwid);
 
@@ -79,7 +79,7 @@ void convertM3u::layout(QWidget* cwid)
 	}
 }
 
-void convertM3u::toolbarLayout()
+void dialConvertM3u::toolbarLayout()
 {
 	debug("toolbarLayout");
 
@@ -97,7 +97,7 @@ void convertM3u::toolbarLayout()
 		this->action.submit = toolBarAction(dtbar, tr("Export", "dialog"), theme->dynamicIcon("export"), [=]() { this->submit(); });
 }
 
-void convertM3u::importLayout()
+void dialConvertM3u::importLayout()
 {
 	debug("importLayout");
 
@@ -198,7 +198,7 @@ void convertM3u::importLayout()
 	dtform->addLayout(dtf0, 0, 0);
 }
 
-void convertM3u::exportLayout()
+void dialConvertM3u::exportLayout()
 {
 	debug("exportLayout");
 
@@ -358,7 +358,7 @@ void convertM3u::exportLayout()
 	dtform->addLayout(dtf0, 0, 0);
 }
 
-void convertM3u::store()
+void dialConvertM3u::store()
 {
 	debug("store");
 
@@ -440,7 +440,7 @@ void convertM3u::store()
 	this->changes = true;
 }
 
-void convertM3u::retrieve()
+void dialConvertM3u::retrieve()
 {
 	debug("retrieve");
 
@@ -494,7 +494,7 @@ void convertM3u::retrieve()
 	}
 }
 
-void convertM3u::setImport(e2db::fcopts& opts)
+void dialConvertM3u::setImport(e2db::fcopts& opts)
 {
 	debug("setImport");
 
@@ -502,7 +502,7 @@ void convertM3u::setImport(e2db::fcopts& opts)
 	this->opts = opts;
 }
 
-void convertM3u::setExport(e2db::fcopts& opts, vector<string>& ubouquets)
+void dialConvertM3u::setExport(e2db::fcopts& opts, vector<string>& ubouquets)
 {
 	debug("setExport");
 
@@ -511,14 +511,14 @@ void convertM3u::setExport(e2db::fcopts& opts, vector<string>& ubouquets)
 	this->ubouquets = ubouquets;
 }
 
-e2db::fcopts convertM3u::getConverterOptions()
+e2db::fcopts dialConvertM3u::getConverterOptions()
 {
 	debug("getConverterOptions");
 
 	return this->opts;
 }
 
-QString convertM3u::browseFileDialog(QString path)
+QString dialConvertM3u::browseFileDialog(QString path)
 {
 #ifndef E2SE_DEMO
 	return QFileDialog::getExistingDirectory(nullptr, tr("Select channel logos folder", "file-dialog"), path);

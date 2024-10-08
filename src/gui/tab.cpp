@@ -171,6 +171,11 @@ gui::TAB_VIEW tab::getTabView()
 	return this->ttv;
 }
 
+int tab::getTabArgument()
+{
+	return this->tty;
+}
+
 void tab::tabSwitch()
 {
 	debug("tabSwitch");
@@ -341,6 +346,7 @@ void tab::viewTunersets(tab* parent, int ytype)
 	this->view = new tunersetsView(this, this->cwid, this->data, ytype);
 
 	this->ttv = gui::TAB_VIEW::tunersets;
+	this->tty = ytype;
 
 	layout();
 
@@ -475,17 +481,7 @@ void tab::layout()
 
 	QAction* btt_action = new QAction(bottom_toolbar);
 	btt_action->setText(tr("Tools", "toolbar"));
-	bottom_toolbar->addAction(btt_action);
-#ifndef Q_OS_MAC
-	QMenu* btt_menu = this->toolsMenu();
-	btt_menu->connect(btt_menu, &QMenu::aboutToShow, [=]() {
-		this->toolsMenu();
-	});
-#else
-	QMenu* btt_menu = new QMenu;
-	btt_menu->connect(btt_menu, &QMenu::aboutToShow, [=]() {
-		//TODO btt_menu hide
-
+	btt_action->connect(btt_action, &QAction::triggered, [=]() {
 		QMenu* menu = this->toolsMenu();
 
 		QWidget* wid = bottom_toolbar->widgetForAction(btt_action);
@@ -495,11 +491,7 @@ void tab::layout()
 		QMouseEvent mouseRelease(QEvent::MouseButtonRelease, wid->pos(), wid->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
 		QCoreApplication::sendEvent(wid, &mouseRelease);
 	});
-#endif
-	QWidget* wid = bottom_toolbar->widgetForAction(btt_action);
-	if (QToolButton* btn = qobject_cast<QToolButton*>(wid))
-		btn->setPopupMode(QToolButton::InstantPopup);
-	btt_action->setMenu(btt_menu);
+	bottom_toolbar->addAction(btt_action);
 
 	toolBarSeparator(bottom_toolbar);
 	if (QSettings().value("application/debug", false).toBool() || DEMO)
@@ -1676,7 +1668,7 @@ void tab::toolsInspector()
 	{
 		if (q->isWindowType() && q->objectName() == "inspectorWindow")
 		{
-			debug("toolsInspector", "raise", 1);
+			debug("toolsInspector", "hit", 1);
 
 			q->requestActivate();
 			return q->raise();

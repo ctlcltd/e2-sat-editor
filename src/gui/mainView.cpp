@@ -1961,7 +1961,7 @@ void mainView::addChannel()
 		{
 			if (q->isWindowType() && q->objectName() == "dialchbookWindow")
 			{
-				debug("addChannel", "raise", 1);
+				debug("addChannel", "hit", 1);
 
 				q->requestActivate();
 				q->raise();

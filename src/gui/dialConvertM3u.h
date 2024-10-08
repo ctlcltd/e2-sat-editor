@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/gui/convertM3u.h
+ * e2-sat-editor/src/gui/dialConvertM3u.h
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -9,17 +9,17 @@
  * @license GNU GPLv3 License
  */
 
-#ifndef convertM3u_h
-#define convertM3u_h
+#ifndef dialConvertM3u_h
+#define dialConvertM3u_h
 #include <QWidget>
 
 #include "dialAbstract.h"
 
 namespace e2se_gui
 {
-class convertM3u : public dialAbstract
+class dialConvertM3u : public dialAbstract
 {
-	Q_DECLARE_TR_FUNCTIONS(convertM3u)
+	Q_DECLARE_TR_FUNCTIONS(dialConvertM3u)
 
 	public:
 		enum DIAL {
@@ -32,8 +32,8 @@ class convertM3u : public dialAbstract
 			DIAL dialog;
 		};
 
-		convertM3u(dataHandler* data);
-		~convertM3u();
+		dialConvertM3u(dataHandler* data);
+		~dialConvertM3u();
 		void display(QWidget* cwid);
 		void setImport(e2db::fcopts& opts);
 		void setExport(e2db::fcopts& opts, vector<string>& ubouquets);
@@ -58,4 +58,4 @@ class convertM3u : public dialAbstract
 		QTreeWidget* ubt;
 };
 }
-#endif /* convertM3u_h */
+#endif /* dialConvertM3u_h */

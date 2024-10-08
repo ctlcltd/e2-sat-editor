@@ -998,12 +998,7 @@ int gui::newTab(string path, bool launch)
 	return index;
 }
 
-int gui::openTab(TAB_VIEW ttv)
-{
-	return openTab(ttv, 0);
-}
-
-int gui::openTab(TAB_VIEW ttv, int arg)
+int gui::openTab(TAB_VIEW ttv, int arg, bool rievoke)
 {
 	tab* current = getCurrentTabHandler();
 	tab* parent = current;
@@ -1030,6 +1025,25 @@ int gui::openTab(TAB_VIEW ttv, int arg)
 						break;
 					}
 				}
+			}
+		}
+	}
+
+	if (rievoke && parent->hasChildren())
+	{
+		for (auto & child : parent->children())
+		{
+			if (child->getTabView() == ttv && child->getTabArgument() == arg)
+			{
+				int ttid = child->getTabId();
+				int index = twid->indexOf(child->widget);
+
+				debug("openTab", "hit", 1);
+				debug("openTab", "ttid", ttid);
+
+				twid->setCurrentWidget(child->widget);
+
+				return index;
 			}
 		}
 	}

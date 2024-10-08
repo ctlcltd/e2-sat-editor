@@ -77,6 +77,7 @@ class tab : protected e2se::log_factory
 		void setTabName(string ttname);
 		string getTabName();
 		gui::TAB_VIEW getTabView();
+		int getTabArgument();
 		string getFilename();
 		void load();
 		void reset();
@@ -197,8 +198,9 @@ class tab : protected e2se::log_factory
 		static QAction* menuSeparator(QMenu* menu);
 
 		e2se_gui::theme* theme;
-		// tab view
-		gui::TAB_VIEW ttv;
+
+		gui::TAB_VIEW ttv; // tab view
+		int tty = 0; // tab argument
 		viewAbstract* view;
 		QGridLayout* root;
 		QToolBar* top_toolbar;
