@@ -745,6 +745,7 @@ void channelBookView::showListEditContextMenu(QPoint& pos)
 
 	contextMenuAction(list_edit, tr("&Copy", "context-menu"), [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
 
+	tabLastPopupFocusWidget(list, pos);
 	platform::osMenuPopup(list_edit, list, pos);
 }
 

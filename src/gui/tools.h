@@ -9,11 +9,17 @@
  * @license GNU GPLv3 License
  */
 
+#include <string>
+#include <vector>
+
+using std::string, std::vector;
+
 #ifndef tools_h
 #define tools_h
 #include <QApplication>
 #include <QWidget>
 #include <QTextEdit>
+#include <QMenu>
 
 #include "../logger/logger.h"
 #include "theme.h"
@@ -37,6 +43,18 @@ class tools : protected e2se::log_factory
 			Error
 		};
 
+		enum SORT_ITEM {
+			item_transponder,
+			item_service,
+			item_userbouquet,
+			item_reference
+		};
+
+		struct 
+		{
+
+		};
+
 		tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data);
 		virtual ~tools();
 		void inspector();
@@ -56,6 +74,11 @@ class tools : protected e2se::log_factory
 		void inspectReset();
 		void status(QString message);
 		void done();
+		void showSortMenu(SORT_ITEM model, e2db::uoopts& opts);
+		QMenu* sortPopupMenu(SORT_ITEM model);
+		void handleSortOptions(vector<QWidget*> fields);
+
+		static vector<QPair<QString, QString>> sortComboBoxProps(SORT_ITEM model);
 
 	private:
 		e2se_gui::theme* theme;
@@ -65,6 +88,7 @@ class tools : protected e2se::log_factory
 		dataHandler* data = nullptr;
 		size_t inspect_pos = 0;
 		INSPECT_FILTER inspect_curr;
+		QObject* sort_curr = nullptr;
 };
 }
 #endif /* tools_h */

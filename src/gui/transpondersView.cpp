@@ -797,6 +797,7 @@ void transpondersView::showListEditContextMenu(QPoint& pos)
 	contextMenuSeparator(list_edit);
 	contextMenuAction(list_edit, tr("&Delete", "context-menu"), [=]() { this->listItemDelete(); }, tabGetFlag(gui::TabListDelete), QKeySequence::Delete);
 
+	tabLastPopupFocusWidget(list, pos);
 	platform::osMenuPopup(list_edit, list, pos);
 }
 

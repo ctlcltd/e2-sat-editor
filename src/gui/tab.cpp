@@ -486,6 +486,7 @@ void tab::layout()
 
 		QWidget* wid = bottom_toolbar->widgetForAction(btt_action);
 		QPoint pos = wid->mapFrom(bottom_toolbar, wid->pos());
+		this->lastPopupFocusWidget(wid, pos);
 		platform::osMenuPopup(menu, wid, pos);
 
 		QMouseEvent mouseRelease(QEvent::MouseButtonRelease, wid->pos(), wid->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
@@ -1573,6 +1574,22 @@ void tab::settingsDialog()
 	debug("settingsDialog");
 
 	gid->settingsDialog();
+}
+
+void tab::lastPopupFocusWidget(QWidget* wid, QPoint pos)
+{
+	this->popup_wid = wid;
+	this->popup_pos = pos;
+}
+
+QWidget* tab::lastPopupFocusWidget()
+{
+	return this->popup_wid;
+}
+
+QPoint tab::lastPopupFocusPos()
+{
+	return this->popup_pos;
 }
 
 QMenu* tab::toolsMenu()
@@ -3094,6 +3111,11 @@ void tab::noticeMessage(vector<pair<string, string>> errors, MSG_CODE code)
 	{
 		title = e2db::tr("Maker Error", "error");
 		message = tr("Error writing files.", "error");
+	}
+	else if (code == MSG_CODE::utilsNotice)
+	{
+		title = tr("Utils Error", "error");
+		message = tr("Error executing utils.", "error");
 	}
 
 	title = title.toHtmlEscaped();

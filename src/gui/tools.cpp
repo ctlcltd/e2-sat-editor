@@ -16,8 +16,14 @@
 #include <QRegularExpression>
 #include <QDialog>
 #include <QGridLayout>
+#include <QFormLayout>
 #include <QLineEdit>
 #include <QComboBox>
+#include <QCheckBox>
+#include <QLabel>
+#include <QMenu>
+#include <QWidgetAction>
+#include <QMouseEvent>
 #ifdef Q_OS_WIN
 #include <QStyleFactory>
 #include <QScrollBar>
@@ -227,7 +233,6 @@ void tools::applyUtils(int bit, e2db::uoopts& opts)
 
 	this->data->clearErrors();
 
-	bool ndial = false;
 	bool ran = false;
 
 	theme::setWaitCursor();
@@ -327,40 +332,36 @@ void tools::applyUtils(int bit, e2db::uoopts& opts)
 				dbih->transform_tunersets_to_transponders();
 			break;
 			case gui::TAB_ATS::UtilsSort_transponders:
-				ndial = true;
+				showSortMenu(SORT_ITEM::item_transponder, opts);
 				dbih->sort_transponders(opts);
 			break;
 			case gui::TAB_ATS::UtilsSort_services:
-				ndial = true;
+				showSortMenu(SORT_ITEM::item_service, opts);
 				dbih->sort_services(opts);
 			break;
 			case gui::TAB_ATS::UtilsSort_userbouquets:
-				ndial = true;
+				showSortMenu(SORT_ITEM::item_userbouquet, opts);
 				dbih->sort_userbouquets(opts);
 			break;
 			case gui::TAB_ATS::UtilsSort_references:
-				ndial = true;
+				showSortMenu(SORT_ITEM::item_reference, opts);
 				dbih->sort_references(opts);
 			break;
 			default:
 				ran = false;
 		}
-
-		if (ndial)
-			debug("applyUtils", "TODO", "tools sort dialogs");
 	}
 	catch (...)
 	{
 		ran = false;
 
-		//TODO error handling
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(tr("Utils Error", "error"), tr("Error executing utils.", "error")); }, Qt::QueuedConnection);
 	}
 
 	theme::unsetWaitCursor();
 
-	//TODO MSG_CODE
 	if (this->data->haveErrors())
-		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::importNotice); }, Qt::QueuedConnection);
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::utilsNotice); }, Qt::QueuedConnection);
 
 	if (ran)
 		done();
@@ -456,14 +457,13 @@ void tools::execMacro(vector<string> pattern)
 	{
 		ran = false;
 
-		//TODO error handling
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(tr("Utils Error", "error"), tr("Error executing macro.", "error")); }, Qt::QueuedConnection);
 	}
 
 	theme::unsetWaitCursor();
 
-	//TODO MSG_CODE
 	if (this->data->haveErrors())
-		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::importNotice); }, Qt::QueuedConnection);
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::utilsNotice); }, Qt::QueuedConnection);
 
 	if (ran)
 		done();
@@ -487,6 +487,171 @@ void tools::macroAutofix()
 	};
 
 	execMacro(pattern);
+}
+
+void tools::showSortMenu(SORT_ITEM model, e2db::uoopts& opts)
+{
+	debug("showSortMenu");
+
+	QWidget* wid = tid->lastPopupFocusWidget();
+	QPoint pos = tid->lastPopupFocusPos();
+	QMenu* menu = sortPopupMenu(model);
+
+	platform::osMenuPopup(menu, wid, pos);
+
+	QMouseEvent mouseRelease(QEvent::MouseButtonRelease, pos, wid->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
+	QCoreApplication::sendEvent(wid, &mouseRelease);
+
+	//TODO FIX
+	wid->setFocus(Qt::ActiveWindowFocusReason);
+
+	//TODO
+	if (this->sort_curr != nullptr)
+	{
+		opts.prop = this->sort_curr->property("prop").toString().toStdString();
+		opts.order = static_cast<e2db::SORT_ORDER>(this->sort_curr->property("order").toInt());
+		if (! this->sort_curr->property("selection").toBool())
+			opts.selection.clear();
+	}
+}
+
+QMenu* tools::sortPopupMenu(SORT_ITEM model)
+{
+	QMenu* menu = new QMenu;
+	vector<QWidget*> fields;
+	QString title;
+
+	switch (model)
+	{
+		case SORT_ITEM::item_transponder: title = tr("Sort transponders"); break;
+		case SORT_ITEM::item_service: title = tr("Sort services"); break;
+		case SORT_ITEM::item_userbouquet: title = tr("Sort userbouquets"); break;
+		case SORT_ITEM::item_reference: title = tr("Sort references"); break;
+	}
+
+	{
+		QWidgetAction* action = new QWidgetAction(nullptr);
+		QLabel* label = new QLabel(title);
+#ifndef Q_OS_MAC
+		label->setStyleSheet("QLabel { margin: 5px 10px }");
+#else
+		label->setStyleSheet("QLabel { margin: 5px 10px; font-weight: bold }");
+#endif
+		action->setDefaultWidget(label);
+		menu->addAction(action);
+	}
+	{
+		QWidgetAction* action = new QWidgetAction(nullptr);
+		QWidget* wrap = new QWidget;
+		QFormLayout* form = new QFormLayout(wrap);
+		form->setContentsMargins(15, 3, 15, 10);
+		form->setFormAlignment(Qt::AlignLeading);
+		form->setRowWrapPolicy(QFormLayout::DontWrapRows);
+
+		{
+			QComboBox* select = new QComboBox;
+			select->setProperty("field", "by");
+			fields.emplace_back(select);
+			for (auto & x : this->sortComboBoxProps(model))
+				select->addItem(x.first, x.second);
+			platform::osComboBox(select);
+			form->addRow("by", select);
+		}
+		{
+			QComboBox* select = new QComboBox;
+			select->setProperty("field", "order");
+			fields.emplace_back(select);
+			select->addItem(tr("ascending"), e2db::SORT_ORDER::sort_asc);
+			select->addItem(tr("descending"), e2db::SORT_ORDER::sort_desc);
+			platform::osComboBox(select);
+			form->addRow("order", select);
+		}
+
+		action->setDefaultWidget(wrap);
+		menu->addAction(action);
+	}
+	if (1)
+	{
+		menu->addSeparator();
+		{
+			QWidgetAction* action = new QWidgetAction(nullptr);
+			QWidget* wrap = new QWidget;
+			QFormLayout* form = new QFormLayout(wrap);
+			form->setContentsMargins(15, 8, 15, 8);
+			form->setFormAlignment(Qt::AlignLeading);
+			form->setVerticalSpacing(12);
+
+			{
+				QCheckBox* checker = new QCheckBox;
+				checker->setProperty("field", "recall");
+				fields.emplace_back(checker);
+				checker->setText(tr("Recall this set when sort from context menu"));
+				form->addRow(checker);
+			}
+			{
+				form->addItem(form->spacerItem());
+
+				QCheckBox* checker = new QCheckBox;
+				checker->setProperty("field", "selection");
+				fields.emplace_back(checker);
+				checker->setText(tr("Apply to list selection"));
+				form->addRow(checker);
+			}
+
+			action->setDefaultWidget(wrap);
+			menu->addAction(action);
+		}
+	}
+	{
+		QWidgetAction* action = new QWidgetAction(nullptr);
+		QWidget* wrap = new QWidget;
+		QFormLayout* form = new QFormLayout(wrap);
+		form->setContentsMargins(15, 10, 15, 10);
+		form->setFormAlignment(Qt::AlignTrailing);
+		form->setRowWrapPolicy(QFormLayout::DontWrapRows);
+
+		QPushButton* button = new QPushButton;
+		button->setDefault(true);
+		button->setText(tr("Apply Sort"));
+		button->connect(button, &QPushButton::pressed, [=]() {
+			this->handleSortOptions(fields);
+
+			//TODO FIX delete menu and aboutToHide platform_macx
+		});
+		form->addRow(button);
+
+		action->setDefaultWidget(wrap);
+		menu->addAction(action);
+	}
+
+	return menu;
+}
+
+void tools::handleSortOptions(vector<QWidget*> fields)
+{
+	debug("handleSortOptions");
+
+	this->sort_curr = new QObject;
+
+	for (auto & item : fields)
+	{
+		QString key = item->property("field").toString();
+		QVariant val;
+
+		if (QComboBox* field = qobject_cast<QComboBox*>(item))
+			val = field->currentData();
+		else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
+			val = field->isChecked();
+
+		if (key == "by")
+			this->sort_curr->setProperty("prop", val);
+		else if (key == "order")
+			this->sort_curr->setProperty("order", val);
+		else if (key == "selection")
+			this->sort_curr->setProperty("selection", val);
+		else if (key == "recall")
+			this->sort_curr->setProperty("recall", val);
+	}
 }
 
 void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
@@ -917,6 +1082,69 @@ void tools::exportFileM3U(e2db::FCONVS fco, e2db::fcopts opts)
 		tid->infoMessage(tr("Saved!", "message"));
 	}
 }
+
+vector<QPair<QString, QString>> tools::sortComboBoxProps(SORT_ITEM model)
+{
+	if (model == SORT_ITEM::item_userbouquet)
+	{
+		return {
+			{tr("Filename"), "ubname"},
+			{tr("Bouquet Name"), "name"},
+			{tr("Parent Filename"), "pname"},
+			{tr("Bouquet Type"), "utype"},
+			{tr("Parental Lock"), "parental"},
+			{tr("Index"), "index"}
+		};
+	}
+	else if (model == SORT_ITEM::item_reference)
+	{
+		return {
+			{tr("Channel Name"), "chname"},
+			{tr("SSID"), "ssid"},
+			{tr("TSID"), "tsid"},
+			{tr("ONID"), "onid"},
+			{tr("DVBNS"), "dvbns"},
+			{tr("URI"), "uri"},
+			{tr("FAV Name"), "value"},
+			{tr("FAV Index"), "inum"},
+			{tr("Index"), "index"}
+		};
+	}
+	else if (model == SORT_ITEM::item_service)
+	{
+		return {
+			{tr("Channel Name"), "chname"},
+			{tr("Provider Name"), "stype"},
+			{tr("SSID"), "ssid"},
+			{tr("TSID"), "tsid"},
+			{tr("ONID"), "onid"},
+			{tr("DVBNS"), "dvbns"},
+			{tr("Service Type"), "stype"},
+			{tr("Service Number"), "stype"},
+			{tr("Src ID"), "stype"},
+			{tr("Parental Lock"), "parental"},
+			{tr("Index"), "index"}
+		};
+	}
+	else if (model == SORT_ITEM::item_transponder)
+	{
+		return {
+			{tr("TSID"), "tsid"},
+			{tr("ONID"), "onid"},
+			{tr("DVBNS"), "dvbns"},
+			{tr("Transponder Type"), "ytype"},
+			{tr("Position"), "pos"},
+			{tr("Frequency"), "freq"},
+			{tr("SR"), "sr"},
+			{tr("Polarization"), "pol"},
+			{tr("System"), "sys"},
+			{tr("Index"), "index"}
+		};
+	}
+
+	return {};
+}
+
 
 void tools::destroy()
 {

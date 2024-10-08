@@ -299,6 +299,8 @@ void mainView::layout()
 	this->action.scrn_sets->setToolTip(tr("Settings Convert", "corner"));
 	this->action.scrn_sets->connect(this->action.scrn_sets, &QPushButton::pressed, [=]() {
 		QMenu* menu = this->servicesSetsCornerMenu();
+
+		this->tabLastPopupFocusWidget(this->action.scrn_sets, this->action.scrn_sets->pos());
 		// menu->popup(this->action.scrn_sets->mapToGlobal(this->action.scrn_sets->pos()));
 		platform::osMenuPopup(menu, this->action.scrn_sets, this->action.scrn_sets->pos());
 
@@ -316,6 +318,8 @@ void mainView::layout()
 	this->action.lcrn_prefs->setToolTip(tr("Drag&&Drop Preferences", "corner").replace("&&", "&"));
 	this->action.lcrn_prefs->connect(this->action.lcrn_prefs, &QPushButton::pressed, [=]() {
 		QMenu* menu = this->listPrefsCornerMenu();
+
+		this->tabLastPopupFocusWidget(this->action.lcrn_prefs, this->action.lcrn_prefs->pos());
 		// menu->popup(this->action.lcrn_prefs->mapToGlobal(this->action.lcrn_prefs->pos()));
 		platform::osMenuPopup(menu, this->action.lcrn_prefs, this->action.lcrn_prefs->pos());
 
@@ -1702,8 +1706,7 @@ QMenu* mainView::listPrefsCornerMenu()
 			QAction* action = new QAction;
 			action->setText(tr("Switch to bouquet after drop"));
 			action->setCheckable(true);
-			action->connect(action, &QAction::triggered, [=](bool checked)
-			{
+			action->connect(action, &QAction::triggered, [=](bool checked) {
 				QSettings settings;
 				settings.setValue("preference/treeCurrentAfterDrop", checked);
 				settings.sync();
@@ -1727,8 +1730,7 @@ QMenu* mainView::listPrefsCornerMenu()
 			QAction* action = new QAction;
 			action->setText(tr("Copy channels (preserving)"));
 			action->setCheckable(true);
-			action->connect(action, &QAction::triggered, [=](bool checked)
-			{
+			action->connect(action, &QAction::triggered, [=](bool checked) {
 				QSettings settings;
 				settings.setValue("preference/treeDropCopy", checked);
 				settings.setValue("preference/treeDropMove", ! checked);
@@ -1741,8 +1743,7 @@ QMenu* mainView::listPrefsCornerMenu()
 			QAction* action = new QAction;
 			action->setText(tr("Move channels (deleting)"));
 			action->setCheckable(true);
-			action->connect(action, &QAction::triggered, [=](bool checked)
-			{
+			action->connect(action, &QAction::triggered, [=](bool checked) {
 				QSettings settings;
 				settings.setValue("preference/treeDropCopy", ! checked);
 				settings.setValue("preference/treeDropMove", checked);
@@ -3637,6 +3638,7 @@ void mainView::showTreeEditContextMenu(QPoint& pos)
 	}
 	contextMenuAction(tree_edit, tr("Export", "context-menu"), [=]() { this->tabExportFile(); });
 
+	tabLastPopupFocusWidget(tree, pos);
 	platform::osMenuPopup(tree_edit, tree, pos);
 }
 
@@ -3708,6 +3710,7 @@ void mainView::showListEditContextMenu(QPoint& pos)
 	contextMenuSeparator(list_edit);
 	contextMenuAction(list_edit, tr("&Delete", "context-menu"), [=]() { this->listItemDelete(); }, tabGetFlag(gui::TabListDelete), QKeySequence::Delete);
 
+	tabLastPopupFocusWidget(list, pos);
 	platform::osMenuPopup(list_edit, list, pos);
 }
 

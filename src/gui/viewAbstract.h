@@ -164,6 +164,9 @@ class viewAbstract : protected e2se::log_factory
 		void tabPrintFile(bool all);
 		void tabConvertFormat(int bit);
 		void tabToolsUtils(int bit, bool selecting = false);
+		void tabLastPopupFocusWidget(QWidget* wid, QPoint pos);
+		QWidget* tabLastPopupFocusWidget();
+		QPoint tabLastPopupFocusPos();
 		void tabPropagateChanges();
 
 		static QToolBar* toolBar();

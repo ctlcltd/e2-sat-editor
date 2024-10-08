@@ -1410,6 +1410,7 @@ void tunersetsView::showTreeEditContextMenu(QPoint& pos)
 	contextMenuSeparator(tree_edit);
 	contextMenuAction(tree_edit, tr("&Delete", "context-menu"), [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
 
+	tabLastPopupFocusWidget(tree, pos);
 	platform::osMenuPopup(tree_edit, tree, pos);
 }
 
@@ -1436,6 +1437,7 @@ void tunersetsView::showListEditContextMenu(QPoint& pos)
 	contextMenuSeparator(list_edit);
 	contextMenuAction(list_edit, tr("&Delete", "context-menu"), [=]() { this->listItemDelete(); }, tabGetFlag(gui::TabListDelete), QKeySequence::Delete);
 
+	tabLastPopupFocusWidget(list, pos);
 	platform::osMenuPopup(list_edit, list, pos);
 }
 

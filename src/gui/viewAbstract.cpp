@@ -735,6 +735,24 @@ void viewAbstract::tabToolsUtils(int bit, bool selecting)
 		tid->toolsUtils(bit, selecting);
 }
 
+void viewAbstract::tabLastPopupFocusWidget(QWidget* wid, QPoint pos)
+{
+	if (tid != nullptr)
+		tid->lastPopupFocusWidget(wid, pos);
+}
+
+QWidget* viewAbstract::tabLastPopupFocusWidget()
+{
+	if (tid != nullptr)
+		return tid->lastPopupFocusWidget();
+}
+
+QPoint viewAbstract::tabLastPopupFocusPos()
+{
+	if (tid != nullptr)
+		return tid->lastPopupFocusPos();
+}
+
 void viewAbstract::tabPropagateChanges()
 {
 	if (tid != nullptr)

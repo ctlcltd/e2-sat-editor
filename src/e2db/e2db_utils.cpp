@@ -1297,13 +1297,20 @@ e2db_utils::sort_data e2db_utils::get_data(SORT_ITEM model, string iname, vector
 		{
 			userbouquet& ub = userbouquets[x.second];
 
-			if (prop == "index") s.push(&ub.index);
-			else if (prop == "bname") s.push(&ub.bname);
-			else if (prop == "rname") s.push(&ub.rname);
+			if (prop == "ubname")
+			{
+				if (ub.rname.empty())
+					s.push(&ub.bname);
+				else
+					s.push(&ub.rname);
+			}
 			else if (prop == "name") s.push(&ub.name);
 			else if (prop == "pname") s.push(&ub.pname);
+			else if (prop == "bname") s.push(&ub.bname);
+			else if (prop == "rname") s.push(&ub.rname);
 			else if (prop == "utype") s.push(&ub.utype);
 			else if (prop == "parental") s.push(&ub.parental);
+			else if (prop == "index") s.push(&ub.index);
 		}
 	}
 	else if (model == SORT_ITEM::item_reference)
@@ -1316,20 +1323,7 @@ e2db_utils::sort_data e2db_utils::get_data(SORT_ITEM model, string iname, vector
 			{
 				channel_reference& chref = ub.channels[x.second];
 
-				if (prop == "index") s.push(&chref.index);
-				else if (prop == "marker") s.push(&chref.marker);
-				else if (prop == "stream") s.push(&chref.stream);
-				else if (prop == "etype") s.push(&chref.etype);
-				else if (prop == "atype") s.push(&chref.atype);
-				else if (prop == "anum") s.push(&chref.anum);
-				else if (prop == "inum") s.push(&chref.inum);
-				else if (prop == "uri") s.push(&chref.uri);
-				else if (prop == "value") s.push(&chref.value);
-				else if (prop == "ssid") s.push(&chref.ref.ssid);
-				else if (prop == "tsid") s.push(&chref.ref.tsid);
-				else if (prop == "onid") s.push(&chref.ref.onid);
-				else if (prop == "dvbns") s.push(&chref.ref.dvbns);
-				else if (prop == "chname")
+				if (prop == "chname")
 				{
 					if (! chref.marker && db.services.count(chref.chid))
 					{
@@ -1342,6 +1336,19 @@ e2db_utils::sort_data e2db_utils::get_data(SORT_ITEM model, string iname, vector
 						s.push(&chref.value);
 					}
 				}
+				else if (prop == "ssid") s.push(&chref.ref.ssid);
+				else if (prop == "tsid") s.push(&chref.ref.tsid);
+				else if (prop == "onid") s.push(&chref.ref.onid);
+				else if (prop == "dvbns") s.push(&chref.ref.dvbns);
+				else if (prop == "uri") s.push(&chref.uri);
+				else if (prop == "value") s.push(&chref.value);
+				else if (prop == "inum") s.push(&chref.inum);
+				else if (prop == "anum") s.push(&chref.anum);
+				else if (prop == "etype") s.push(&chref.etype);
+				else if (prop == "atype") s.push(&chref.atype);
+				else if (prop == "marker") s.push(&chref.marker);
+				else if (prop == "stream") s.push(&chref.stream);
+				else if (prop == "index") s.push(&chref.index);
 			}
 		}
 	}
@@ -1351,17 +1358,17 @@ e2db_utils::sort_data e2db_utils::get_data(SORT_ITEM model, string iname, vector
 		{
 			service& ch = db.services[x.second];
 
-			if (prop == "index") s.push(&ch.index);
-			else if (prop == "ssid") s.push(&ch.ssid);
+			if (prop == "ssid") s.push(&ch.ssid);
 			else if (prop == "tsid") s.push(&ch.tsid);
 			else if (prop == "onid") s.push(&ch.onid);
 			else if (prop == "dvbns") s.push(&ch.dvbns);
+			else if (prop == "chname") s.push(&ch.chname);
+			else if (prop == "provider") s.push(&ch.data[SDATA::p][0]);
 			else if (prop == "stype") s.push(&ch.stype);
 			else if (prop == "snum") s.push(&ch.snum);
 			else if (prop == "srcid") s.push(&ch.srcid);
 			else if (prop == "parental") s.push(&ch.parental);
-			else if (prop == "chname") s.push(&ch.chname);
-			else if (prop == "provider") s.push(&ch.data[SDATA::p][0]);
+			else if (prop == "index") s.push(&ch.index);
 			//TODO prop: data
 		}
 	}
@@ -1371,16 +1378,16 @@ e2db_utils::sort_data e2db_utils::get_data(SORT_ITEM model, string iname, vector
 		{
 			transponder& tx = db.transponders[x.second];
 
-			if (prop == "index") s.push(&tx.index);
-			else if (prop == "tsid") s.push(&tx.tsid);
+			if (prop == "tsid") s.push(&tx.tsid);
 			else if (prop == "onid") s.push(&tx.onid);
 			else if (prop == "dvbns") s.push(&tx.dvbns);
 			else if (prop == "ytype") s.push(&tx.ytype);
+			else if (prop == "pos") s.push(&tx.pos);
 			else if (prop == "freq") s.push(&tx.freq);
 			else if (prop == "sr") s.push(&tx.sr);
 			else if (prop == "pol") s.push(&tx.pol);
-			else if (prop == "pos") s.push(&tx.pos);
 			else if (prop == "sys") s.push(&tx.sys);
+			else if (prop == "index") s.push(&tx.index);
 			//TODO type: combo
 		}
 	}

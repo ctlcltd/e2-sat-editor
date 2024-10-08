@@ -144,6 +144,8 @@ void piconsView::layout()
 	this->action.acrn_prefs->setToolTip(tr("Picons Preferences", "corner"));
 	this->action.acrn_prefs->connect(this->action.acrn_prefs, &QPushButton::pressed, [=]() {
 		QMenu* menu = this->listPrefsCornerMenu();
+
+		this->tabLastPopupFocusWidget(this->action.acrn_prefs, this->action.acrn_prefs->pos());
 		// menu->popup(this->action.acrn_prefs->mapToGlobal(this->action.acrn_prefs->pos()));
 		platform::osMenuPopup(menu, this->action.acrn_prefs, this->action.acrn_prefs->pos());
 
@@ -631,8 +633,7 @@ QMenu* piconsView::listPrefsCornerMenu()
 			QAction* action = new QAction;
 			action->setText(tr("Backup picon when replaced"));
 			action->setCheckable(true);
-			action->connect(action, &QAction::triggered, [=](bool checked)
-			{
+			action->connect(action, &QAction::triggered, [=](bool checked) {
 				QSettings settings;
 				settings.setValue("preference/piconsBackup", checked);
 				settings.sync();
@@ -656,8 +657,7 @@ QMenu* piconsView::listPrefsCornerMenu()
 			QAction* action = new QAction;
 			action->setText(tr("Use reference ID"));
 			action->setCheckable(true);
-			action->connect(action, &QAction::triggered, [=](bool checked)
-			{
+			action->connect(action, &QAction::triggered, [=](bool checked) {
 				QSettings settings;
 				settings.setValue("preference/piconsUseRefid", checked);
 				settings.setValue("preference/piconsUseChname", ! checked);
@@ -672,8 +672,7 @@ QMenu* piconsView::listPrefsCornerMenu()
 			QAction* action = new QAction;
 			action->setText(tr("Use service name"));
 			action->setCheckable(true);
-			action->connect(action, &QAction::triggered, [=](bool checked)
-			{
+			action->connect(action, &QAction::triggered, [=](bool checked) {
 				QSettings settings;
 				settings.setValue("preference/piconsUseRefid", ! checked);
 				settings.setValue("preference/piconsUseChname", checked);
@@ -991,6 +990,7 @@ void piconsView::showListEditContextMenu(QPoint& pos)
 	contextMenuSeparator(list_edit);
 	contextMenuAction(list_edit, tr("&Delete", "context-menu"), [=]() { this->listItemDelete(); }, tabGetFlag(gui::TabListDelete), QKeySequence::Delete);
 
+	tabLastPopupFocusWidget(list, pos);
 	platform::osMenuPopup(list_edit, list, pos);
 }
 

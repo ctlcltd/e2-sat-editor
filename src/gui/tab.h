@@ -63,7 +63,8 @@ class tab : protected e2se::log_factory
 			readNotice,
 			writeNotice,
 			importNotice,
-			exportNotice
+			exportNotice,
+			utilsNotice
 		};
 
 		tab(gui* gid, QWidget* cwid);
@@ -122,6 +123,9 @@ class tab : protected e2se::log_factory
 		void toolsAutofixMacro();
 		void toolsUtils(int bit, bool selecting = false);
 		void settingsDialog();
+		void lastPopupFocusWidget(QWidget* wid, QPoint pos);
+		QWidget* lastPopupFocusWidget();
+		QPoint lastPopupFocusPos();
 		QMenu* toolsMenu();
 		void ftpcomError();
 		void ftpcomError(string error);
@@ -205,8 +209,10 @@ class tab : protected e2se::log_factory
 		QGridLayout* root;
 		QToolBar* top_toolbar;
 		QToolBar* bottom_toolbar;
-		QMenu* tools_menu = nullptr;
 		QComboBox* ftp_combo;
+		QMenu* tools_menu = nullptr;
+		QWidget* popup_wid = nullptr;
+		QPoint popup_pos;
 
 		unordered_map<string, e2se_ftpcom::ftpcom::ftpcom_file> ftp_files;
 		vector<pair<string, string>> ftp_errors;
