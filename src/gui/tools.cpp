@@ -1124,6 +1124,7 @@ vector<QPair<QString, QString>> tools::sortComboBoxProps(SORT_ITEM model)
 			{tr("URI"), "uri"},
 			{tr("FAV Name"), "value"},
 			{tr("FAV Index"), "inum"},
+			{tr("Transponder order"), "txr"},
 			{tr("Index"), "index"}
 		};
 	}
@@ -1140,6 +1141,7 @@ vector<QPair<QString, QString>> tools::sortComboBoxProps(SORT_ITEM model)
 			{tr("Service Number"), "snum"},
 			{tr("Src ID"), "srcid"},
 			{tr("Parental Lock"), "parental"},
+			{tr("Transponder order"), "txr"},
 			{tr("Index"), "index"}
 		};
 	}

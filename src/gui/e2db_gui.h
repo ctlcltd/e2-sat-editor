@@ -109,7 +109,7 @@ class e2db : public ::e2se_e2db::e2db
 			switch (left.first->type)
 			{
 				case sort_data::integer: return left.first->val_integer() < right.first->val_integer();
-				case sort_data::string: return (QString::fromStdString(left.first->val_string()).localeAwareCompare(QString::fromStdString(right.first->val_string())) < 0);
+				case sort_data::string: return QString::fromStdString(left.first->val_string()).localeAwareCompare(QString::fromStdString(right.first->val_string())) < 0;
 				case sort_data::boolean: return left.first->val_boolean() < right.first->val_boolean();
 				default: return false;
 			}
@@ -119,7 +119,7 @@ class e2db : public ::e2se_e2db::e2db
 			switch (right.first->type)
 			{
 				case sort_data::integer: return right.first->val_integer() < left.first->val_integer();
-				case sort_data::string: return ! (QString::fromStdString(left.first->val_string()).localeAwareCompare(QString::fromStdString(right.first->val_string())) < 0);
+				case sort_data::string: return QString::fromStdString(right.first->val_string()).localeAwareCompare(QString::fromStdString(left.first->val_string())) < 0;
 				case sort_data::boolean: return right.first->val_boolean() < left.first->val_boolean();
 				default: return false;
 			}

@@ -13,6 +13,8 @@
 
 #include "e2db_utils.h"
 
+using std::to_string;
+
 namespace e2se_e2db
 {
 
@@ -1349,6 +1351,32 @@ e2db_utils::sort_data e2db_utils::get_data(SORT_ITEM model, string iname, vector
 				else if (prop == "marker") s.push(&chref.marker);
 				else if (prop == "stream") s.push(&chref.stream);
 				else if (prop == "index") s.push(&chref.index);
+				else if (prop == "txr")
+				{
+					string id;
+
+					if (db.services.count(chref.chid))
+					{
+						service& ch = db.services[chref.chid];
+						string txid = ch.txid;
+
+						if (db.transponders.count(txid))
+						{
+							transponder& tx = db.transponders[txid];
+							id = to_string(tx.index) + ':' + to_string(ch.ssid);
+						}
+						else
+						{
+							id = "i:" + to_string(ch.tsid) + ':' + to_string(ch.ssid);
+						}
+					}
+					else
+					{
+						id = "i:" + to_string(chref.inum);
+					}
+
+					s.store(id);
+				}
 			}
 		}
 	}
@@ -1370,6 +1398,23 @@ e2db_utils::sort_data e2db_utils::get_data(SORT_ITEM model, string iname, vector
 			else if (prop == "parental") s.push(&ch.parental);
 			else if (prop == "index") s.push(&ch.index);
 			//TODO prop: data
+			else if (prop == "txr")
+			{
+				string id;
+				string txid = ch.txid;
+
+				if (db.transponders.count(txid))
+				{
+					transponder& tx = db.transponders[txid];
+					id = to_string(tx.index) + ':' + to_string(ch.ssid);
+				}
+				else
+				{
+					id = "i:" + to_string(ch.tsid) + ':' + to_string(ch.ssid);
+				}
+
+				s.store(id);
+			}
 		}
 	}
 	else if (model == SORT_ITEM::item_transponder)

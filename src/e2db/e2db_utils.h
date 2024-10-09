@@ -9,6 +9,8 @@
  * @license GNU GPLv3 License
  */
 
+#include <iostream>
+
 #include "../logger/logger.h"
 #include "e2db_abstract.h"
 
@@ -56,7 +58,15 @@ class e2db_utils : virtual public e2db_abstract
 				std::string val_string() { return (*(std::string*) ptr); }
 			};
 
+			struct ustring
+			{
+				ustring(std::string str) { this->u = str; }
+				std::string& str() { return this->u; }
+				std::string u;
+			};
+
 			vector<sort_data::value*> data;
+			vector<sort_data::ustring*> stg;
 			void insert(void* ptr, sort_data::TYPE type)
 			{
 				data.emplace_back(new sort_data::value(ptr, type));
@@ -64,6 +74,14 @@ class e2db_utils : virtual public e2db_abstract
 			void push(int* ptr) { insert(ptr, sort_data::integer); }
 			void push(bool* ptr) { insert(ptr, sort_data::boolean); }
 			void push(std::string* ptr) { insert(ptr, sort_data::string); }
+			void store(int d) { store(std::to_string(d)); }
+			void store(bool d) { store(std::to_string(d)); }
+			void store(std::string str)
+			{
+				sort_data::ustring* ptr = new sort_data::ustring(str);
+				stg.emplace_back(ptr);
+				insert(ptr, sort_data::string);
+			}
 		};
 
 		struct uoopts
