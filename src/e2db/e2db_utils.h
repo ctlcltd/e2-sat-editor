@@ -18,7 +18,6 @@ namespace e2se_e2db
 {
 class e2db;
 
-//TODO
 class e2db_utils : virtual public e2db_abstract
 {
 	public:
@@ -119,7 +118,12 @@ class e2db_utils : virtual public e2db_abstract
 		void sort_items(SORT_ITEM model, uoopts& opts);
 		static string value_sort_order(SORT_ORDER order);
 
-	private:
+		virtual void sort_compare(vector<pair<sort_data::value*, int>>& sorting, SORT_ORDER& order)
+		{
+			const auto compare = (order == sort_asc ? &e2db_utils::valueLessThan : &e2db_utils::valueGreaterThan);
+			std::stable_sort(sorting.begin(), sorting.end(), compare);
+		}
+
 		static bool valueLessThan(const pair<sort_data::value*, int>& left, const pair<sort_data::value*, int>& right)
 		{
 			switch (left.first->type)

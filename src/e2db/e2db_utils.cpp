@@ -1363,7 +1363,7 @@ e2db_utils::sort_data e2db_utils::get_data(SORT_ITEM model, string iname, vector
 			else if (prop == "onid") s.push(&ch.onid);
 			else if (prop == "dvbns") s.push(&ch.dvbns);
 			else if (prop == "chname") s.push(&ch.chname);
-			else if (prop == "provider") s.push(&ch.data[SDATA::p][0]);
+			else if (prop == "sdata_p") s.push(&ch.data[SDATA::p][0]);
 			else if (prop == "stype") s.push(&ch.stype);
 			else if (prop == "snum") s.push(&ch.snum);
 			else if (prop == "srcid") s.push(&ch.srcid);
@@ -1443,8 +1443,7 @@ void e2db_utils::sort_items(SORT_ITEM model, uoopts& opts)
 		}
 	}
 
-	const auto compare = (order == sort_asc ? &e2db_utils::valueLessThan : &e2db_utils::valueGreaterThan);
-	std::stable_sort(sorting.begin(), sorting.end(), compare);
+	sort_compare(sorting, order);
 
 	vector<pair<int, string>>& i_a = index[iname];
 	vector<pair<int, string>> i_b = index[iname];

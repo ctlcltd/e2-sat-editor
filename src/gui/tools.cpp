@@ -1131,14 +1131,14 @@ vector<QPair<QString, QString>> tools::sortComboBoxProps(SORT_ITEM model)
 	{
 		return {
 			{tr("Channel Name"), "chname"},
-			{tr("Provider Name"), "stype"},
+			{tr("Provider Name"), "sdata_p"},
 			{tr("SSID"), "ssid"},
 			{tr("TSID"), "tsid"},
 			{tr("ONID"), "onid"},
 			{tr("DVBNS"), "dvbns"},
 			{tr("Service Type"), "stype"},
-			{tr("Service Number"), "stype"},
-			{tr("Src ID"), "stype"},
+			{tr("Service Number"), "snum"},
+			{tr("Src ID"), "srcid"},
 			{tr("Parental Lock"), "parental"},
 			{tr("Index"), "index"}
 		};

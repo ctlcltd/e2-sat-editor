@@ -97,6 +97,33 @@ class e2db : public ::e2se_e2db::e2db
 		string msg(string str, string param) override;
 		void error(string msg, string optk, string optv) override;
 		void trace(string error);
+
+		void sort_compare(vector<pair<sort_data::value*, int>>& sorting, SORT_ORDER& order) override
+		{
+			const auto compare = (order == sort_asc ? &e2db::valueLessThan : &e2db::valueGreaterThan);
+			std::stable_sort(sorting.begin(), sorting.end(), compare);
+		}
+
+		static bool valueLessThan(const pair<sort_data::value*, int>& left, const pair<sort_data::value*, int>& right)
+		{
+			switch (left.first->type)
+			{
+				case sort_data::integer: return left.first->val_integer() < right.first->val_integer();
+				case sort_data::string: return (QString::fromStdString(left.first->val_string()).localeAwareCompare(QString::fromStdString(right.first->val_string())) < 0);
+				case sort_data::boolean: return left.first->val_boolean() < right.first->val_boolean();
+				default: return false;
+			}
+		}
+		static bool valueGreaterThan(const pair<sort_data::value*, int>& left, const pair<sort_data::value*, int>& right)
+		{
+			switch (right.first->type)
+			{
+				case sort_data::integer: return right.first->val_integer() < left.first->val_integer();
+				case sort_data::string: return ! (QString::fromStdString(left.first->val_string()).localeAwareCompare(QString::fromStdString(right.first->val_string())) < 0);
+				case sort_data::boolean: return right.first->val_boolean() < left.first->val_boolean();
+				default: return false;
+			}
+		}
 };
 }
 #endif /* e2db_gui_h */
