@@ -1964,8 +1964,8 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 				}
 				else if (key == "num")
 					ch.snum = std::atoi(val.data());
-				//TODO zapit flags
-				// else if (key == "f")
+				else if (key == "f")
+					ch.flags = std::atoi(val.data());
 			}
 			else
 			{

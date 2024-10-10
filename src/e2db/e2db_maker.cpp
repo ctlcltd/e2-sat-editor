@@ -1300,8 +1300,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 							}
 							ss << ' ' << "s=\"" << (ch.data.count(SDATA::C) ? 1 : 0) << "\"";
 							ss << ' ' << "num=\"" << ch.snum << "\"";
-							//TODO zapit flags
-							ss << ' ' << "f=\"" << 0 << "\"";
+							ss << ' ' << "f=\"" << ch.flags << "\"";
 						}
 					}
 					else

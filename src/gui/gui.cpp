@@ -1208,8 +1208,8 @@ void gui::closeAllTabs()
 	}
 }
 
-//TODO FIX switch window
-//TODO TEST multiple tabs
+//TODO FIX switch window and rand idle
+//TODO TEST multiple tabs rand idle
 void gui::windowChanged()
 {
 	// debug("windowChanged");

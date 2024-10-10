@@ -621,7 +621,6 @@ void tunersetsView::populate()
 	list->header()->setSortIndicator(1, Qt::AscendingOrder);
 }
 
-//TODO tree item position
 void tunersetsView::treeItemChanged(QTreeWidgetItem* current)
 {
 	debug("treeItemChanged");
@@ -646,12 +645,13 @@ void tunersetsView::treeItemChanged(QTreeWidgetItem* current)
 	populate();
 
 	listFindClear();
+	treeItemSelectionChanged(false);
 
 	updateFlags();
 	updateStatusBar(true);
 }
 
-void tunersetsView::treeItemSelectionChanged()
+void tunersetsView::treeItemSelectionChanged(bool update)
 {
 	// debug("treeItemSelectionChanged");
 
@@ -670,7 +670,8 @@ void tunersetsView::treeItemSelectionChanged()
 
 	tabSetFlag(gui::TabListEditTransponder, false);
 
-	tabUpdateFlags();
+	if (update)
+		tabUpdateFlags();
 }
 
 void tunersetsView::treeItemDoubleClicked()

@@ -470,7 +470,7 @@ void mainView::searchLayout()
 }
 
 //TODO TEST viewAbstract::themeChange()
-//TODO copyable viewport text
+//TODO improve copyable viewport text
 void mainView::referenceBoxLayout()
 {
 	this->list_reference = new QWidget;
@@ -1100,7 +1100,6 @@ void mainView::servicesItemChanged(QTreeWidgetItem* current)
 	updateStatusBar(true);
 }
 
-//TODO tree item position
 void mainView::treeItemChanged(QTreeWidgetItem* current)
 {
 	debug("treeItemChanged");
@@ -1174,12 +1173,13 @@ void mainView::treeItemChanged(QTreeWidgetItem* current)
 	populate(tree);
 
 	listFindClear();
+	treeItemSelectionChanged(false);
 
 	updateFlags();
 	updateStatusBar(true);
 }
 
-void mainView::treeItemSelectionChanged()
+void mainView::treeItemSelectionChanged(bool update)
 {
 	// debug("treeItemSelectionChanged");
 
@@ -1200,7 +1200,8 @@ void mainView::treeItemSelectionChanged()
 	tabSetFlag(gui::TabListEditMarker, false);
 	tabSetFlag(gui::TabListEditFavourite, false);
 
-	tabUpdateFlags();
+	if (update)
+		tabUpdateFlags();
 }
 
 void mainView::treeItemDoubleClicked()
@@ -3497,7 +3498,7 @@ void mainView::putListItems(vector<QString> items)
 					tx.sr = -1;
 				}
 
-				//TODO FIX empty SDATA::C neutrino
+				//TODO TEST empty SDATA::C neutrino
 				if (ch.data.count(e2db::SDATA::C) && ch.data[e2db::SDATA::C].empty())
 					ch.data.erase(e2db::SDATA::C);
 

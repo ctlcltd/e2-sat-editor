@@ -344,6 +344,7 @@ struct e2db_abstract : protected e2se::log_factory
 			string chname;
 			// data <field char, vector<value string>>
 			map<char, vector<string>> data;
+			int flags = 0; // neutrino 
 		};
 
 		struct service_reference

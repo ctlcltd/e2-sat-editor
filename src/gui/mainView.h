@@ -165,7 +165,7 @@ class mainView : public viewAbstract
 		void treeSwitched(QTreeWidget* tw, QTreeWidgetItem* item);
 		void servicesItemChanged(QTreeWidgetItem* current);
 		void treeItemChanged(QTreeWidgetItem* current);
-		void treeItemSelectionChanged();
+		void treeItemSelectionChanged(bool update = true);
 		void treeItemDoubleClicked();
 		void listItemChanged();
 		void listItemSelectionChanged();

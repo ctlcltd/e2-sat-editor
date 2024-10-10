@@ -3266,7 +3266,7 @@ void e2db_converter::convert_m3u_channel_list(unordered_map<string, vector<m3u_e
 	ubouquets.clear();
 }
 
-//TODO CRLF
+//TODO improve CRLF
 void e2db_converter::m3u_channel_list(string& body, string bname, fcopts opts)
 {
 	if (index.count(bname))

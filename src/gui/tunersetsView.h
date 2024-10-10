@@ -135,7 +135,7 @@ class tunersetsView : public viewAbstract
 		void unpack();
 		void populate();
 		void treeItemChanged(QTreeWidgetItem* current);
-		void treeItemSelectionChanged();
+		void treeItemSelectionChanged(bool update = true);
 		void treeItemDoubleClicked();
 		void listItemChanged();
 		void listItemSelectionChanged();
