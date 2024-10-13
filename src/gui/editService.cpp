@@ -870,10 +870,13 @@ void editService::store()
 				ch.data[e2db::SDATA::f] = computeFlags(ch, e2db::SDATA_FLAGS::fnew, val);
 		}
 	}
+
+	if (ch.data.count(e2db::SDATA::c) && ch.data[e2db::SDATA::f].empty())
+		ch.data.erase(e2db::SDATA::c);
+	if (ch.data.count(e2db::SDATA::C) && ch.data[e2db::SDATA::C].empty())
+		ch.data.erase(e2db::SDATA::C);
 	if (ch.data.count(e2db::SDATA::f) && ch.data[e2db::SDATA::f].empty())
-	{
 		ch.data.erase(e2db::SDATA::f);
-	}
 
 	if (! changed_txid.empty())
 	{

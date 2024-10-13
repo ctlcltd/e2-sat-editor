@@ -412,6 +412,7 @@ struct e2db_abstract : protected e2se::log_factory
 			int anum = 0; // service: stype, marker: num || 0, stream: stype || 0
 			string uri;
 			string value;
+			bool valverb = true;
 			bool inlineval = false;
 			service_reference ref;
 			int x7 = 0;

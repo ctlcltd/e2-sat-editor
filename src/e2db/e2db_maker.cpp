@@ -121,40 +121,44 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 				ss << ':' << (tx.fec != -1 ? tx.fec : 0);
 				ss << ':' << (tx.pos != -1 ? tx.pos : 0);
 				ss << ':' << (tx.inv != -1 ? tx.inv : 0);
-				ss << ':' << (tx.flags != -1 ? tx.flags : 0);
 
-				if (tx.sys != -1 || tx.mod != -1 || tx.rol != -1 || tx.pil != -1)
+				if (ver >= 4)
 				{
-					ss << ':' << (tx.sys != -1 ? tx.sys : 0);
-					ss << ':' << (tx.mod != -1 ? tx.mod : 0);
-					ss << ':' << (tx.rol != -1 ? tx.mod : 0);
-					ss << ':' << (tx.pil != -1 ? tx.pil : 0);
+					ss << ':' << (tx.flags != -1 ? tx.flags : 0);
 
-					if (tx.mispls || tx.t2mi)
+					if (tx.sys != -1 || tx.mod != -1 || tx.rol != -1 || tx.pil != -1)
 					{
-						if (ver == 5 && tx.optsverb)
+						ss << ':' << (tx.sys != -1 ? tx.sys : 0);
+						ss << ':' << (tx.mod != -1 ? tx.mod : 0);
+						ss << ':' << (tx.rol != -1 ? tx.mod : 0);
+						ss << ':' << (tx.pil != -1 ? tx.pil : 0);
+
+						if (tx.mispls || tx.t2mi)
 						{
-							if (tx.mispls)
+							if (ver == 5 && tx.optsverb)
 							{
-								ss << ',' << "MIS/PLS:";
+								if (tx.mispls)
+								{
+									ss << ',' << "MIS/PLS:";
+									ss << ':' << (tx.isid != -1 ? tx.isid : 0);
+									ss << ':' << (tx.plscode != -1 ? tx.plscode : 0);
+									ss << ':' << (tx.plsmode != -1 ? tx.plsmode : 0);
+								}
+								if (tx.t2mi)
+								{
+									ss << ',' << "T2MI:";
+									ss << ':' << (tx.t2mi_plpid != -1 ? tx.t2mi_plpid : 0);
+									ss << ':' << (tx.t2mi_pid != -1 ? tx.t2mi_pid : 0);
+								}
+							}
+							else
+							{
 								ss << ':' << (tx.isid != -1 ? tx.isid : 0);
 								ss << ':' << (tx.plscode != -1 ? tx.plscode : 0);
 								ss << ':' << (tx.plsmode != -1 ? tx.plsmode : 0);
-							}
-							if (tx.t2mi)
-							{
-								ss << ',' << "T2MI:";
 								ss << ':' << (tx.t2mi_plpid != -1 ? tx.t2mi_plpid : 0);
 								ss << ':' << (tx.t2mi_pid != -1 ? tx.t2mi_pid : 0);
 							}
-						}
-						else
-						{
-							ss << ':' << (tx.isid != -1 ? tx.isid : 0);
-							ss << ':' << (tx.plscode != -1 ? tx.plscode : 0);
-							ss << ':' << (tx.plsmode != -1 ? tx.plsmode : 0);
-							ss << ':' << (tx.t2mi_plpid != -1 ? tx.t2mi_plpid : 0);
-							ss << ':' << (tx.t2mi_pid != -1 ? tx.t2mi_pid : 0);
 						}
 					}
 				}
@@ -170,10 +174,10 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 				ss << ':' << (tx.hier != -1 ? tx.hier : 4);
 				ss << ':' << (tx.inv != -1 ? tx.inv : 0);
 				ss << ':' << (tx.flags != -1 ? tx.flags : 0);
-				ss << ':' << (tx.sys != -1 ? tx.sys : 0);
 
-				if (tx.plpid != -1)
+				if (ver >= 4)
 				{
+					ss << ':' << (tx.sys != -1 ? tx.sys : 0);
 					ss << ':' << (tx.plpid != -1 ? tx.plpid : 0);
 				}
 			break;
@@ -184,14 +188,18 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 				ss << ':' << (tx.cmod != -1 ? tx.cmod : 0);
 				ss << ':' << (tx.cfec != -1 ? tx.cfec : 0);
 				ss << ':' << (tx.flags != -1 ? tx.flags : 0);
-				ss << ':' << (tx.sys != -1 ? tx.sys : 0);
+
+				if (ver >= 4)
+					ss << ':' << (tx.sys != -1 ? tx.sys : 0);
 			break;
 			case YTYPE::atsc: // ATSC / DVB-C ANNEX B
 				ss << int (tx.freq * 1e3);
 				ss << ':' << (tx.inv != -1 ? tx.inv : 0);
 				ss << ':' << (tx.amod != -1 ? tx.amod : 0);
 				ss << ':' << (tx.flags != -1 ? tx.flags : 0);
-				ss << ':' << (tx.sys != -1 ? tx.sys : 0);
+
+				if (ver >= 4)
+					ss << ':' << (tx.sys != -1 ? tx.sys : 0);
 			break;
 			default:
 			return error("make_lamedb", "Maker Error", "Unknown transponder type.");
@@ -232,11 +240,12 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 			switch (q.first)
 			{
 				case SDATA::p: d = 'p'; break;
-				case SDATA::c: d = 'c'; break;
-				case SDATA::C: d = 'C'; break;
-				case SDATA::f: d = 'f'; break;
-				default: d = q.first;
+				case SDATA::c: d = 'c'; if (ch.data[SDATA::c].empty()) continue; break;
+				case SDATA::C: d = 'C'; if (ch.data[SDATA::C].empty()) continue; break;
+				case SDATA::f: d = 'f'; if (ch.data[SDATA::f].empty()) continue; break;
+				default: continue;
 			}
+
 			for (size_t i = 0; i < q.second.size(); i++)
 			{
 				ss << d << ':' << q.second[i];
@@ -701,15 +710,19 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file, int ver)
 			if (! chref.marker && ! chref.value.empty())
 			{
 				if (chref.inlineval)
+				{
 					ss << conv_uri_value(chref.value);
+				}
+				if (chref.valverb)
+				{
+					ln++;
 
-				ln++;
-
-				ss << '\n';
-				ss << "#DESCRIPTION";
-				if (ver < 3)
-					ss << ':';
-				ss << ' ' << chref.value;
+					ss << '\n';
+					ss << "#DESCRIPTION";
+					if (ver < 3)
+						ss << ':';
+					ss << ' ' << chref.value;
+				}
 			}
 		}
 		else
@@ -731,14 +744,16 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file, int ver)
 						ss << ':';
 						ss << conv_uri_value(chref.value);
 					}
+					if (chref.valverb)
+					{
+						ln++;
 
-					ln++;
-
-					ss << '\n';
-					ss << "#DESCRIPTION";
-					if (ver < 3)
-						ss << ':';
-					ss << ' ' << chref.value;
+						ss << '\n';
+						ss << "#DESCRIPTION";
+						if (ver < 3)
+							ss << ':';
+						ss << ' ' << chref.value;
+					}
 				}
 
 				this->marker_count++;
@@ -767,14 +782,16 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file, int ver)
 						ss << ':';
 						ss << conv_uri_value(chref.value);
 					}
+					if (chref.valverb)
+					{
+						ln++;
 
-					ln++;
-
-					ss << '\n';
-					ss << "#DESCRIPTION";
-					if (ver < 3)
-						ss << ':';
-					ss << ' ' << chref.value;
+						ss << '\n';
+						ss << "#DESCRIPTION";
+						if (ver < 3)
+							ss << ':';
+						ss << ' ' << chref.value;
+					}
 				}
 
 				if (! chref.stream)
