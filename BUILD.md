@@ -40,7 +40,7 @@ To build with shared libraries, the following:
 `mingw-w64-cmake`, `mingw-w64-qt6-base`
 
 > [!TIP]
-> I used custom *Arch Linux* repositories: `Martchus/PKGBUILDs` from **@Martchus**
+> I used *Arch Linux* unofficial user repository: `ownstuff` from **@Martchus**
 
 With *MSYS2*, the following:  
 `cc`, `cmake`, `ninja`, `qt6-base`, `qt6-translations`, `curl`

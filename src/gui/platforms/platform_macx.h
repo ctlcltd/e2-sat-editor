@@ -134,6 +134,15 @@ class _platform_macx
 			else
 				return widget;
 		}
+		// note: platform minimal causes crash at startup even with osExperiment=false
+		// due to cocoa plug-in needs, as workaround use fusion style
+		static bool osExperiment()
+		{
+			if (QGuiApplication::platformName() != "cocoa")
+				return false;
+			else
+				return QSettings().value("preference/osExperiment", true).toBool();
+		}
 
 	protected:
 		static QWidget* _osWindowBlend(QWidget* widget);
@@ -144,14 +153,6 @@ class _platform_macx
 		static QTextEdit* _osTextEdit(QTextEdit* input, bool destroy);
 		static QLabel* _osLabel(QLabel* label, bool destroy);
 		static QWidget* _osPersistentEditor(QWidget* widget);
-		// note: platform minimal causes crash at startup even with osExperiment=false
-		// due to cocoa plug-in needs, as workaround use fusion style
-		static bool osExperiment()
-		{
-			if (QGuiApplication::platformName() != "cocoa")
-				return false;
-			else
-				return QSettings().value("preference/osExperiment", true).toBool();
-		}
+
 };
 #endif /* _platform_macx_h */

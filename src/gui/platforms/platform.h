@@ -63,6 +63,10 @@ class _platform
 		{
 			return widget;
 		}
+		static bool osExperiment()
+		{
+			return QSettings().value("preference/osExperiment", true).toBool();
+		}
 
 	protected:
 		static QWidget* _osWindowBlend(QWidget* widget)
@@ -76,10 +80,6 @@ class _platform
 		static QWidget* _osWidgetOpaque(QWidget* widget)
 		{
 			return widget;
-		}
-		static bool osExperiment()
-		{
-			return QSettings().value("preference/osExperiment", true).toBool();
 		}
 };
 

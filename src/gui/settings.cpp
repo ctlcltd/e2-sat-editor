@@ -19,6 +19,7 @@
 #include <QApplication>
 #include <QRegularExpression>
 #include <QByteArray>
+#include <QWindow>
 #include <QMessageBox>
 #include <QScrollArea>
 #include <QGridLayout>
@@ -210,13 +211,20 @@ void settings::connectionsLayout()
 	dttbar->addAction(theme::icon("tool-menu"), tr("Menu"));
 	dttbar->actions().last()->connect(dttbar->actions().last(), &QAction::triggered, [=]() {
 		QMenu* menu = this->profileMenu();
-		QWidget* widget = dttbar->widgetForAction(dttbar->actions().last());
-		QPoint pos = widget->mapFrom(dttbar, widget->pos());
-		// menu->popup(widget->mapToGlobal(pos)));
-		platform::osMenuPopup(menu, widget, pos);
 
-		QMouseEvent mouseRelease(QEvent::MouseButtonRelease, pos, widget->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
-		QCoreApplication::sendEvent(widget, &mouseRelease);
+		QWidget* wid = dttbar->widgetForAction(dttbar->actions().last());
+		QPoint pos = wid->mapFrom(dttbar, wid->pos());
+		// menu->popup(wid->mapToGlobal(pos)));
+		platform::osMenuPopup(menu, wid, pos);
+
+#ifdef Q_OS_MAC
+		if (platform::osExperiment())
+		{
+			// note: trick to re-gain window focus
+			wid->topLevelWidget()->parentWidget()->windowHandle()->requestActivate();
+			wid->topLevelWidget()->windowHandle()->requestActivate();
+		}
+#endif
 	});
 
 	QColor tbshade;
