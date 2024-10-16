@@ -707,8 +707,7 @@ void e2db_parser::parse_e2db_lamedbx(istream& ilamedb, int ver)
 
 void e2db_parser::parse_lamedb_transponder_params(string str, transponder& tx)
 {
-	int dvbns, tsid, onid;
-	dvbns = 0, tsid = 0, onid = 0;
+	int dvbns = 0, tsid = 0, onid = 0;
 
 	std::sscanf(str.c_str(), "%08x:%04x:%04x", &dvbns, &tsid, &onid);
 
@@ -719,15 +718,15 @@ void e2db_parser::parse_lamedb_transponder_params(string str, transponder& tx)
 
 void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transponder& tx, int ver)
 {
-	int freq, sr, flags, sys;
-	flags = -1, sys = -1;
+	int freq = 0, sr = -1, flags = -1, sys = -1;
 
 	switch (ty)
 	{
 		case 's': // DVB-S / DVB-S2
 			int pol, fec, pos, inv, mod, rol, pil;
-			char feopts;
+			pol = -1, fec = -1, pos = 0, inv = -1,
 			mod = -1, rol = -1, pil = -1;
+			char feopts;
 			feopts = 0;
 
 			if (ver == 3)
@@ -737,7 +736,7 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 
 			tx.ytype = YTYPE::satellite;
 			tx.freq = int (freq / 1e3);
-			tx.sr = int (sr / 1e3);
+			tx.sr = sr != -1 ? int (sr / 1e3) : -1;
 			tx.pol = pol;
 			tx.fec = fec;
 			tx.pos = pos;
@@ -753,6 +752,7 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 		break;
 		case 't': // DVB-T / DVB-T2
 			int band, hpfec, lpfec, tmod, tmx, guard, hier, plpid;
+			band = -1, hpfec = -1, lpfec = -1, tmod = -1, tmx = -1, guard = -1, hier = -1,
 			plpid = -1;
 
 			std::sscanf(str.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%d:%1d:%d", &freq, &band, &hpfec, &lpfec, &tmod, &tmx, &guard, &hier, &inv, &flags, &sys, &plpid);
@@ -773,13 +773,13 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 		break;
 		case 'c': // DVB-C
 			int cmod, cfec;
-			cmod = -1;
+			cmod = -1, cfec = -1;
 
 			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%1d:%d:%1d", &freq, &sr, &inv, &cmod, &cfec, &flags, &sys);
 
 			tx.ytype = YTYPE::cable;
 			tx.freq = int (freq / 1e3);
-			tx.sr = int (sr / 1e3);
+			tx.sr = sr != -1 ? int (sr / 1e3) : 0;
 			tx.inv = inv;
 			tx.cmod = cmod;
 			tx.cfec = cfec;
@@ -806,8 +806,7 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 
 void e2db_parser::parse_lamedb_transponder_feopts_sat(string str, transponder& tx, int feopts)
 {
-	int isid, plscode, plsmode, t2mi_plpid, t2mi_pid;
-	isid = -1, plscode = -1, plsmode = -1, t2mi_plpid = -1, t2mi_pid = -1;
+	int isid = -1, plscode = -1, plsmode = -1, t2mi_plpid = -1, t2mi_pid = -1;
 
 	if (feopts == 58) // colon
 	{
@@ -872,13 +871,14 @@ void e2db_parser::parse_lamedb_transponder_feopts_sat(string str, transponder& t
 
 void e2db_parser::parse_lamedb_service_params(string str, service& ch)
 {
-	int ssid, dvbns, tsid, onid, stype, snum;
-	ssid = 0, dvbns = 0, tsid = 0, onid = 0, stype = 0, snum = 0;
+	int ssid = 0, dvbns = 0, tsid = 0, onid = 0, stype = 0, snum = 0;
 
 	if (LAMEDB_VER == 5)
 	{
 		int srcid = 0;
+
 		std::sscanf(str.c_str(), "%04x:%08x:%04x:%04x:%3d:%4d:%d", &ssid, &dvbns, &tsid, &onid, &stype, &snum, &srcid);
+
 		ch.srcid = srcid;
 	}
 	else
@@ -1210,8 +1210,7 @@ void e2db_parser::parse_userbouquet_reference(string str, userbouquet& ub)
 		ub.order = order;
 		ub.sref = str.substr(0, pos - 4);
 
-		int utype = 0;
-		int btype = 0;
+		int utype = 0, btype = 0;
 
 		step = std::sscanf(ub.sref.c_str(), "1:%d:%d", &utype, &btype);
 
@@ -1220,13 +1219,13 @@ void e2db_parser::parse_userbouquet_reference(string str, userbouquet& ub)
 	}
 	else if (str.size() != 0 && str[0] == ' ')
 	{
-		int utype = 0;
-		int btype = 0;
+		int utype = 0, btype = 0;
 		char xdata;
+		xdata = 0;
 
 		step = std::sscanf(str.substr(1).c_str(), "1:%d:%d:0:0:0:0:0:0:0:%c", &utype, &btype, &xdata);
 
-		if (step && std::strlen(&xdata))
+		if (step && xdata != 0)
 		{
 			size_t pos = str.rfind(':');
 
@@ -1262,9 +1261,9 @@ void e2db_parser::parse_userbouquet_epl_reference(string str, userbouquet& ub)
 
 void e2db_parser::parse_channel_reference(string str, channel_reference& chref, service_reference& ref)
 {
-	int etype, atype, anum, ssid, tsid, onid, dvbns, x7, x8, x9;
+	int etype = 0, atype = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0,
+		x7 = 0, x8 = 0, x9 = 0;
 	char xdata;
-	etype = 0, atype = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0, x7 = 0, x8 = 0, x9 = 0;
 
 	std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X:%d:%d:%d:%c", &etype, &atype, &anum, &ssid, &tsid, &onid, &dvbns, &x7, &x8, &x9, &xdata);
 
@@ -2022,7 +2021,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 		else if (add && step == 1)
 		{
 			aidx++;
-			
+
 			char zyid[25];
 			// %1x:%8x
 			std::snprintf(zyid, 25, "%x:%x", zy.ytype, zy.pos);

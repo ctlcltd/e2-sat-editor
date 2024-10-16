@@ -150,27 +150,10 @@ string e2db_abstract::file_mime_value(FPORTS fpi, string path)
 
 void e2db_abstract::value_channel_reference(string str, channel_reference& chref, service_reference& ref)
 {
-	int etype, atype, anum, ssid, tsid, onid, dvbns, x7, x8, x9;
-	etype = 0, atype = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0;
+	int etype = 0, atype = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0,
+		x7 = 0, x8 = 0, x9 = 0;
 
 	std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X:%d:%d:%d", &etype, &atype, &anum, &ssid, &tsid, &onid, &dvbns, &x7, &x8, &x9);
-
-	/*switch (etype)
-	{
-		// service or stream
-		case ETYPE::ecast:
-		// stream
-		case ETYPE::evod:
-		case ETYPE::eraw:
-		case ETYPE::egstplayer:
-		case ETYPE::eexteplayer3:
-		case ETYPE::eservice:
-		case ETYPE::eyoutube:
-		case ETYPE::eservice2:
-		break;
-		default:
-			return;
-	}*/
 
 	switch (atype)
 	{
@@ -1232,8 +1215,7 @@ void e2db_abstract::value_transponder_feopts(string str, transponder& tx)
 
 	if (ytype == YTYPE::satellite)
 	{
-		int isid, plscode, plsmode, t2mi_plpid, t2mi_pid;
-		isid = -1, plscode = -1, plsmode = -1, t2mi_plpid = -1, t2mi_pid = -1;
+		int isid = -1, plscode = -1, plsmode = -1, t2mi_plpid = -1, t2mi_pid = -1;
 
 		int nr = std::sscanf(str.c_str(), "%d:%d:%d:%d:%d", &isid, &plscode, &plsmode, &t2mi_plpid, &t2mi_pid);
 
@@ -1247,8 +1229,7 @@ void e2db_abstract::value_transponder_feopts(string str, transponder& tx)
 	}
 	else if (ytype == YTYPE::terrestrial)
 	{
-		int plpid;
-		plpid = -1;
+		int plpid = -1;
 
 		std::sscanf(str.c_str(), "%d:", &plpid);
 

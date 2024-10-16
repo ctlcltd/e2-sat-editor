@@ -538,8 +538,7 @@ void e2db_maker::make_bouquet(string bname, e2db_file& file, int ver)
 			if (ver < 5 || compat || (! ub.order.empty() && ub.order != "bouquet"))
 			{
 				{
-					int x0, x1, x2, x3, x4, x5, x6, x7, x8, x9;
-					x0 = 0, x1 = 0, x2 = 0, x3 = 0, x4 = 0, x5 = 0, x6 = 0, x7 = 0, x8 = 0, x9 = 0;
+					int x0 = 0, x1 = 0, x2 = 0, x3 = 0, x4 = 0, x5 = 0, x6 = 0, x7 = 0, x8 = 0, x9 = 0;
 
 					std::sscanf(ub.sref.c_str(), "%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:", &x0, &x1, &x2, &x3, &x4, &x5, &x6, &x7, &x8, &x9);
 
