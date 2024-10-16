@@ -62,11 +62,11 @@ void e2db_maker::make_e2db_lamedb()
 	switch (LAMEDB_VER)
 	{
 		case 2:
-		case 3:
-			make_e2db_lamedb("services", LAMEDB_VER);
+			make_e2db_lamedb("services", 2);
 		break;
+		case 3:
 		case 4:
-			make_e2db_lamedb("lamedb", 4);
+			make_e2db_lamedb("lamedb", LAMEDB_VER);
 		break;
 		case 5:
 			make_e2db_lamedb("lamedb5", 5);
@@ -122,20 +122,22 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 				ss << ':' << (tx.pos != -1 ? tx.pos : 0);
 				ss << ':' << (tx.inv != -1 ? tx.inv : 0);
 
-				if (ver >= 4)
-				{
+				if (ver > 3)
 					ss << ':' << (tx.flags != -1 ? tx.flags : 0);
 
-					if (tx.sys != -1 || tx.mod != -1 || tx.rol != -1 || tx.pil != -1)
+				if (ver >= 3)
+				{
+					ss << ':' << (tx.sys != -1 ? tx.sys : 0);
+					ss << ':' << (tx.mod != -1 ? tx.mod : 0);
+					ss << ':' << (tx.rol != -1 ? tx.mod : 0);
+
+					if (ver > 3)
 					{
-						ss << ':' << (tx.sys != -1 ? tx.sys : 0);
-						ss << ':' << (tx.mod != -1 ? tx.mod : 0);
-						ss << ':' << (tx.rol != -1 ? tx.mod : 0);
 						ss << ':' << (tx.pil != -1 ? tx.pil : 0);
 
-						if (tx.mispls || tx.t2mi)
+						if (ver == 5 && (tx.mispls || tx.t2mi))
 						{
-							if (ver == 5 && tx.optsverb)
+							if (tx.optsverb)
 							{
 								if (tx.mispls)
 								{
@@ -173,10 +175,10 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 				ss << ':' << (tx.guard != -1 ? tx.guard : 4);
 				ss << ':' << (tx.hier != -1 ? tx.hier : 4);
 				ss << ':' << (tx.inv != -1 ? tx.inv : 0);
-				ss << ':' << (tx.flags != -1 ? tx.flags : 0);
 
-				if (ver >= 4)
+				if (ver > 3)
 				{
+					ss << ':' << (tx.flags != -1 ? tx.flags : 0);
 					ss << ':' << (tx.sys != -1 ? tx.sys : 0);
 					ss << ':' << (tx.plpid != -1 ? tx.plpid : 0);
 				}
@@ -187,19 +189,23 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 				ss << ':' << (tx.inv != -1 ? tx.inv : 0);
 				ss << ':' << (tx.cmod != -1 ? tx.cmod : 0);
 				ss << ':' << (tx.cfec != -1 ? tx.cfec : 0);
-				ss << ':' << (tx.flags != -1 ? tx.flags : 0);
 
-				if (ver >= 4)
+				if (ver > 3)
+				{
+					ss << ':' << (tx.flags != -1 ? tx.flags : 0);
 					ss << ':' << (tx.sys != -1 ? tx.sys : 0);
+				}
 			break;
 			case YTYPE::atsc: // ATSC / DVB-C ANNEX B
 				ss << int (tx.freq * 1e3);
 				ss << ':' << (tx.inv != -1 ? tx.inv : 0);
 				ss << ':' << (tx.amod != -1 ? tx.amod : 0);
-				ss << ':' << (tx.flags != -1 ? tx.flags : 0);
 
-				if (ver >= 4)
+				if (ver > 3)
+				{
+					ss << ':' << (tx.flags != -1 ? tx.flags : 0);
 					ss << ':' << (tx.sys != -1 ? tx.sys : 0);
+				}
 			break;
 			default:
 			return error("make_lamedb", "Maker Error", "Unknown transponder type.");
@@ -285,7 +291,7 @@ void e2db_maker::make_e2db_bouquets(int ver)
 
 		e2db_file file;
 
-		if (ver < 4 || filename.rfind(".epl") != string::npos)
+		if (ver < 3 || filename.rfind(".epl") != string::npos)
 			make_bouquet_epl(bname, file, ver);
 		else
 			make_bouquet(bname, file, ver);
@@ -296,7 +302,7 @@ void e2db_maker::make_e2db_bouquets(int ver)
 	}
 
 	//TODO bouquets file
-	if (ver < 4)
+	if (ver < 3)
 	{
 		e2db_file empty;
 		empty.data = "eDVB bouquets /2/\nbouquets\nend\n";
@@ -469,7 +475,7 @@ void e2db_maker::make_e2db_parentallock_list()
 {
 	debug("make_e2db_parentallock_list");
 
-	if (LAMEDB_VER < 4)
+	if (LAMEDB_VER < 3)
 	{
 		e2db_file file;
 
@@ -517,7 +523,7 @@ void e2db_maker::make_bouquet(string bname, e2db_file& file, int ver)
 		userbouquet ub = userbouquets[w];
 
 		ss << "#SERVICE";
-		if (ver > 4)
+		if (ver > 4 && ! compat)
 			ss << ':';
 		ss << ' ';
 		if (ub.sref.empty())
@@ -1027,42 +1033,95 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 
 		zxdata.emplace(zx.fname, zx);
 	}
-	if (zyloc.size() == 0)
+
+	vector<string> zyi;
+	unordered_map<string, zapit_table> x_tables;
+
+	for (auto & x : index["txs"])
 	{
-		for (auto & x : index["txs"])
+		transponder tx = db.transponders[x.second];
+
+		char zyid[25];
+		// %1x:%8x
+		std::snprintf(zyid, 25, "%x:%x", tx.ytype, tx.pos);
+
+		zapit_table& zy = zytables[zyid];
+		zy.zyid = zyid;
+		zy.ytype = tx.ytype;
+		zy.pos = tx.pos;
+
+		if (tx.ytype == YTYPE::satellite && tnloc.count(tx.pos))
 		{
-			transponder tx = db.transponders[x.second];
-			zapit_table& zy = zyloc[tx.pos];
-			zy.ytype = tx.ytype;
-			zy.pos = tx.pos;
+			string tnid = tnloc.at(tx.pos);
+			tunersets_table tn = tuners[0].tables[tnid];
+			zy.name = tn.name;
+		}
+		else if (tx.ytype == YTYPE::terrestrial)
+			zy.name = "Terrestrial";
+		else if (tx.ytype == YTYPE::cable)
+			zy.name = "Cable";
+		else if (tx.ytype == YTYPE::atsc)
+			zy.name = "ATSC";
+		else
+			zy.name = tx.pos == -1 ? "NaN" : value_transponder_position(tx.pos);
 
-			if (tnloc.count(tx.pos))
+		zy.transponders.emplace_back(tx.txid);
+		x_tables[zy.zyid] = zy;
+	}
+
+	{
+		unordered_set<string> _unique;
+		map<int, string> tmp_i0;
+		map<int, string> tmp_i1;
+		map<int, string> tmp_i2;
+
+		int i = 0;
+		for (auto & x : x_tables)
+		{
+			string zyid = x.first;
+			zapit_table& zy = x_tables[zyid];
+			int ytype = zy.ytype;
+			int pos = zy.pos;
+			int idx = zy.index;
+
+			if (! _unique.count(zyid))
 			{
-				string tnid = tnloc.at(tx.pos);
-				tunersets_table tn = tuners[0].tables[tnid];
-				zy.name = tn.name;
-			}
-			else
-			{
-				zy.name = tx.pos == -1 ? "NaN" : value_transponder_position(tx.pos);
-			}
+				if (idx == -1)
+				{
+					if (ytype == YTYPE::satellite)
+						tmp_i0.emplace(pos, zyid);
+					else
+						tmp_i2.emplace(i++, zyid);
+				}
+				else
+				{
+					if (ytype == YTYPE::satellite)
+						tmp_i1.emplace(i++, zyid);
+					else
+						tmp_i2.emplace(i++, zyid);
+				}
 
-			zy.transponders.emplace_back(tx.txid);
-
-			zyloc[tx.pos] = zy;
+				_unique.emplace(zyid);
+			}
 		}
 
+		for (auto & x : tmp_i0)
+			zyi.emplace_back(x.second);
+		for (auto & x : tmp_i1)
+			zyi.emplace_back(x.second);
+		for (auto & x : tmp_i2)
+			zyi.emplace_back(x.second);
+	}
+	{
 		int idx = 0;
-		for (auto & x : zyloc)
+		for (string & zyid : zyi)
 		{
-			idx++;
-			zapit_table& zy = x.second;
-			zy.index = idx;
-
-			zyloc[zy.pos] = zy;
-			index["trs"].emplace_back(pair (zy.index, to_string(zy.pos)));
+			zapit_table& zy = x_tables[zyid];
+			zy.index = idx++;
 		}
 	}
+
+	zytables.swap(x_tables);
 
 	zapit_data zx = zxdata[fname];
 
@@ -1082,7 +1141,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 		tags[3] = "channel";
 	}
 
-	unordered_map<string, int> txs;
+	unordered_set<string> x_transponders;
 
 	ss << "<?xml version=\"1.0\" encoding=\"" << zx.charset << "\"?>" << endl;
 	ss << '<' << tags[0];
@@ -1090,12 +1149,11 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 		ss << ' ' << "api=\"" << ver << "\"";
 	ss << '>' << endl;
 
-	for (auto & x : index["trs"])
+	for (string & zyid : zyi)
 	{
-		int pos = std::stoi(x.second);
-		zapit_table zy = zyloc[pos];
+		zapit_table zy = zytables[zyid];
 
-		if (ver > 3 && zy.ytype == YTYPE::terrestrial)
+		if (ver > 2 && zy.ytype == YTYPE::terrestrial)
 			tags[1] = "terrestrial";
 		else
 			tags[1] = "sat";
@@ -1106,7 +1164,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 		{
 			ss << ' ' << "position=\"" << (zy.pos != -1 ? zy.pos : 0) << "\"";
 
-			if (zy.ytype != YTYPE::terrestrial)
+			if (zy.ytype == YTYPE::satellite)
 			{
 				ss << ' ' << "diseqc=\"" << (zy.diseqc != -1 ? zy.diseqc : -1) << "\"";
 				ss << ' ' << "uncommited=\"" << (zy.uncomtd != -1 ? zy.uncomtd : -1) << "\"";
@@ -1114,11 +1172,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 		}
 		else
 		{
-			if (zy.ytype != YTYPE::terrestrial)
-			{
-				ss << ' ' << "diseqc=\"" << (zy.diseqc != -1 ? zy.diseqc : 0) << "\"";
-			}
-
+			ss << ' ' << "diseqc=\"" << (zy.diseqc != -1 ? zy.diseqc : 0) << "\"";
 			ss << ' ' << "position=\"" << (zy.pos != -1 ? zy.pos : 0) << "\"";
 		}
 		ss << '>' << endl;
@@ -1162,7 +1216,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 					int i = 0;
 					if (ver == 4)
 					{
-						if (tx.fec == 0)
+						if (tx.fec <= 0)
 							i = 9;
 						else if (tx.fec < 4)
 							i = tx.fec;
@@ -1183,22 +1237,28 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 					}
 					else if (ver == 3)
 					{
-						if (tx.fec < 4)
+						if (tx.fec <= 0)
+							i = 0;
+						else if (tx.fec < 4)
 							i = tx.fec;
-						else if (i == 4)
+						else if (tx.fec == 4)
 							i = 5;
-						else if (i == 5)
+						else if (tx.fec == 5)
 							i = 7;
 					}
 					else if (ver == 2)
 					{
-						if (i < 6)
+						if (tx.fec <= 0)
+							i = 0;
+						else if (tx.fec < 6)
 							i = tx.fec;
 					}
 					ss << ' ' << "fec=\"" << i << "\"";
 				}
-				if (zy.ytype != YTYPE::terrestrial)
-					ss << ' ' << "pol=\"" << tx.pol << "\"";
+				if (zy.ytype == YTYPE::satellite)
+					ss << ' ' << "pol=\"" << (tx.pol != -1 ? tx.pol : 0) << "\"";
+				else if (ver == 2)
+					ss << ' ' << "pol=\"" << 0 << "\"";
 				if (ver > 3)
 				{
 					//TODO
@@ -1223,7 +1283,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 				ss << ' ' << "symbol_rate=\"" << (tx.sr != -1 && tx.sr != 0 ? int (tx.sr * 1e3) : 0) << "\"";
 				{
 					int i = 0;
-					if (tx.fec == 0)
+					if (tx.fec <= 0)
 						i = 9;
 					else if (tx.fec < 4)
 						i = tx.fec;
@@ -1244,7 +1304,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 
 			ss << '>' << endl;
 
-			if (! txs[tx.txid])
+			if (! x_transponders.count(tx.txid))
 			{
 				for (auto & x : index["chs"])
 				{
@@ -1333,12 +1393,12 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 
 			ss << "\t\t" << '<' << '/' << tags[2] << '>' << endl;
 
-			txs[tx.txid]++;
+			x_transponders.emplace(tx.txid);
 		}
 
 		ss << "\t" << '<' << '/' << tags[1] << '>' << endl;
 
-		txs.clear();
+		x_transponders.clear();
 	}
 	ss << '<' << '/' << tags[0] << '>' << endl;
 

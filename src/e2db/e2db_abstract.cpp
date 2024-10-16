@@ -1914,7 +1914,7 @@ void e2db_abstract::merge(e2db_abstract* dst)
 	this->tuners = dst->tuners;
 	this->tnloc = dst->tnloc;
 	this->zxdata = dst->zxdata;
-	this->zyloc = dst->zyloc;
+	this->zytables = dst->zytables;
 	this->comments = dst->comments;
 	this->index = dst->index;
 	this->collisions = dst->collisions;

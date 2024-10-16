@@ -517,8 +517,9 @@ struct e2db_abstract : protected e2se::log_factory
 
 		struct zapit_table
 		{
-			int pos = 0;
+			string zyid;
 			int ytype = 0;
+			int pos = 0;
 			string name;
 			int diseqc = -1;
 			int uncomtd = -1;
@@ -561,8 +562,8 @@ struct e2db_abstract : protected e2se::log_factory
 		map<int, string> tnloc;
 		// zxdata <fname string, zapit_data struct>
 		unordered_map<string, zapit_data> zxdata;
-		// zyloc <pos int, zapit_table struct>
-		unordered_map<int, zapit_table> zyloc;
+		// zytables <string zyid, zapit_table struct>
+		unordered_map<string, zapit_table> zytables;
 		// comments <iname string, vector<comment struct>>
 		unordered_map<string, vector<comment>> comments;
 		// index <iname string, vector<pair<src-idx||count int, chid string>>>

@@ -55,7 +55,7 @@ class e2db_parser : virtual public e2db_abstract
 
 	protected:
 		void parse_lamedb_transponder_params(string str, transponder& tx);
-		void parse_lamedb_transponder_feparams(string str, char ty, transponder& tx);
+		void parse_lamedb_transponder_feparams(string str, char ty, transponder& tx, int ver);
 		void parse_lamedb_transponder_feopts_sat(string str, transponder& tx, int feopts);
 		void parse_lamedb_service_params(string str, service& ch);
 		void parse_lamedb_service_data(string str, service& ch);

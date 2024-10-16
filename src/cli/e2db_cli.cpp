@@ -1490,7 +1490,7 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 
 				string fext = filename.substr(filename.rfind('.') + 1);
 
-				if (fext == "epl" || ver < 4)
+				if (fext == "epl" || ver < 3)
 					dbih->make_bouquet_epl(filename, file, ver);
 				else
 					dbih->make_bouquet(filename, file, ver);
@@ -1644,7 +1644,7 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 		{
 			e2db::e2db_file file;
 
-			if (ver < 4)
+			if (ver < 3)
 			{
 				filename = "services.locked";
 
@@ -1842,11 +1842,11 @@ void e2db_cli::shell_e2db_merge(ENTRY entry_type, string path, int ver, bool dir
 					fpi = e2db::FPORTS::all_services;
 			break;
 			case ENTRY::bouquet:
-				if (dir && ver < 4)
+				if (dir && ver < 3)
 					fpi = e2db::FPORTS::all_bouquets_epl;
 				else if (dir)
 					fpi = e2db::FPORTS::all_bouquets;
-				else if (ver < 4)
+				else if (ver < 3)
 					fpi = e2db::FPORTS::single_bouquet_epl;
 				else
 					fpi = e2db::FPORTS::single_bouquet;
@@ -2000,7 +2000,7 @@ void e2db_cli::shell_e2db_import(ENTRY entry_type, vector<string> paths, int ver
 					fpi = e2db::FPORTS::all_services;
 			break;
 			case ENTRY::bouquet:
-				if (ver < 4)
+				if (ver < 3)
 					fpi = e2db::FPORTS::all_bouquets_epl;
 				else
 					fpi = e2db::FPORTS::all_bouquets;
@@ -2134,11 +2134,11 @@ void e2db_cli::shell_e2db_export(ENTRY entry_type, vector<string> paths, int ver
 					fpo = e2db::FPORTS::all_services;
 			break;
 			case ENTRY::bouquet:
-				if (dir && ver < 4)
+				if (dir && ver < 3)
 					fpo = e2db::FPORTS::all_bouquets_epl;
 				else if (dir)
 					fpo = e2db::FPORTS::all_bouquets;
-				else if (ver < 4)
+				else if (ver < 3)
 					fpo = e2db::FPORTS::single_bouquet_epl;
 				else
 					fpo = e2db::FPORTS::single_bouquet;

@@ -321,7 +321,7 @@ void e2db::export_file(FPORTS fpo, string path, string filename)
 		e2db_file file;
 
 		string fname = std::filesystem::path(path).filename().u8string();
-		string chs_fname = LAMEDB_VER == 5 ? "lamedb5" : (LAMEDB_VER < 4 ? "services" : "lamedb");
+		string chs_fname = LAMEDB_VER == 5 ? "lamedb5" : (LAMEDB_VER < 3 ? "services" : "lamedb");
 
 		if (filename.empty())
 			filename = fname;
@@ -343,7 +343,7 @@ void e2db::export_file(FPORTS fpo, string path, string filename)
 				make_lamedb("lamedb5", file, 5);
 			break;
 			case FPORTS::all_services__2_3:
-				make_lamedb("services", file, 3);
+				make_lamedb("lamedb", file, 3);
 			break;
 			case FPORTS::all_services__2_2:
 				make_lamedb("services", file, 2);
@@ -1930,12 +1930,12 @@ void e2db::merge(e2db_abstract* dst)
 	}
 
 	this->zxdata.clear();
-	this->zyloc.clear();
+	this->zytables.clear();
 	this->comments.clear();
 	this->changes.clear();
 
 	dst->zxdata.clear();
-	dst->zyloc.clear();
+	dst->zytables.clear();
 	dst->comments.clear();
 
 	vector<string> i_names;

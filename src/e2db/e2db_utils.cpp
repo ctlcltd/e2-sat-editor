@@ -1451,7 +1451,7 @@ void e2db_utils::sort_items(SORT_ITEM model, uoopts& opts)
 	string& prop = opts.prop;
 	SORT_ORDER& order = opts.order;
 
-	int len = int (selection.empty() ? index[iname].size() : selection.size());
+	int len = int (! selecting ? index[iname].size() : selection.size());
 	vector<pair<int, string>> xis;
 
 	if (! selecting)

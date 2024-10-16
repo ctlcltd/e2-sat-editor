@@ -221,7 +221,7 @@ void e2db_parser::parse_e2db()
 
 		if (PARSER_PARENTALLOCK_LIST)
 		{
-			if (LAMEDB_VER < 4)
+			if (LAMEDB_VER < 3)
 			{
 				if (this->e2db.count("services.locked"))
 				{
@@ -412,7 +412,7 @@ void e2db_parser::parse_e2db(unordered_map<string, e2db_file> files)
 
 		if (PARSER_PARENTALLOCK_LIST)
 		{
-			if (LAMEDB_VER < 4)
+			if (LAMEDB_VER < 3)
 			{
 				if (this->e2db.count("services.locked"))
 				{
@@ -546,7 +546,7 @@ void e2db_parser::parse_e2db_lamedb5(istream& ilamedb)
 			parse_lamedb_transponder_params(str, tx);
 
 			if (params.size() >= 2)
-				parse_lamedb_transponder_feparams(params.substr(2), params[0], tx);
+				parse_lamedb_transponder_feparams(params.substr(2), params[0], tx, 5);
 
 			if (tx.tsid != 0 || tx.onid != 0 || tx.dvbns != 0)
 				add_transponder(tidx, tx);
@@ -654,7 +654,7 @@ void e2db_parser::parse_e2db_lamedbx(istream& ilamedb, int ver)
 			else if (s == 1)
 			{
 				if (line.size() >= 3)
-					parse_lamedb_transponder_feparams(line.substr(3), line.substr(1, 2)[0], tx);
+					parse_lamedb_transponder_feparams(line.substr(3), line.substr(1, 2)[0], tx, ver);
 
 				s++;
 			}
@@ -717,7 +717,7 @@ void e2db_parser::parse_lamedb_transponder_params(string str, transponder& tx)
 	tx.onid = onid;
 }
 
-void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transponder& tx)
+void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transponder& tx, int ver)
 {
 	int freq, sr, flags, sys;
 	flags = -1, sys = -1;
@@ -728,8 +728,12 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 			int pol, fec, pos, inv, mod, rol, pil;
 			char feopts;
 			mod = -1, rol = -1, pil = -1;
+			feopts = 0;
 
-			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%5d:%1d:%d:%1d:%1d:%1d:%1d%c", &freq, &sr, &pol, &fec, &pos, &inv, &flags, &sys, &mod, &rol, &pil, &feopts);
+			if (ver == 3)
+				std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%5d:%1d:%1d:%1d:%1d", &freq, &sr, &pol, &fec, &pos, &inv, &sys, &mod, &rol);
+			else
+				std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%5d:%1d:%d:%1d:%1d:%1d:%1d%c", &freq, &sr, &pol, &fec, &pos, &inv, &flags, &sys, &mod, &rol, &pil, &feopts);
 
 			tx.ytype = YTYPE::satellite;
 			tx.freq = int (freq / 1e3);
@@ -2018,9 +2022,14 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 		else if (add && step == 1)
 		{
 			aidx++;
+			
+			char zyid[25];
+			// %1x:%8x
+			std::snprintf(zyid, 25, "%x:%x", zy.ytype, zy.pos);
+
+			zy.zyid = zyid;
 			zy.index = aidx;
-			zyloc.emplace(zy.pos, zy);
-			index["trs"].emplace_back(pair (zy.index, to_string(zy.pos)));
+			zytables.emplace(zy.zyid, zy);
 		}
 		else if (! add && step == 2)
 		{
@@ -2071,7 +2080,6 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 	zx.itype = 1;
 	zx.charset = charset;
 
-	zapit_table zy;
 	userbouquet ub;
 	service_reference ref;
 	channel_reference chref;
