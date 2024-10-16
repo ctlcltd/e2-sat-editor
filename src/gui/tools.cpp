@@ -14,6 +14,7 @@
 #include <QtGlobal>
 #include <QTimer>
 #include <QRegularExpression>
+#include <QWindow>
 #include <QDialog>
 #include <QGridLayout>
 #include <QFormLayout>
@@ -500,14 +501,27 @@ bool tools::showSortMenu(SORT_ITEM model, bool contextual, e2db::uoopts& opts)
 	QPoint pos = tid->lastPopupFocusPos();
 	QMenu* menu = sortMenu(model, contextual);
 
-	menu->setFocus();
-	menu->exec(wid->mapToGlobal(pos));
+	// note: menu loose focus
+	if (! platform::osExperiment())
+		menu->setFocus();
 
-	//TODO FIX
-	/*platform::osMenu(menu, wid, pos);
+	// menu->exec(wid->mapToGlobal(pos));
+	platform::osMenu(menu, wid, pos);
 
-	QMouseEvent mouseRelease(QEvent::MouseButtonRelease, pos, wid->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
-	QCoreApplication::sendEvent(wid, &mouseRelease);*/
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 1)
+#ifdef Q_OS_MAC
+	if (platform::osExperiment())
+	{
+		// note: trick to re-gain window focus
+		QWindow* window = new QWindow(wid->topLevelWidget()->windowHandle());
+		window->setFlags(Qt::Drawer);
+		window->show();
+		window->requestActivate();
+		window->close();
+		wid->topLevelWidget()->windowHandle()->requestActivate();
+	}
+#endif
+#endif
 
 	return setupSortOptions(opts);
 }
@@ -551,6 +565,9 @@ QMenu* tools::sortMenu(SORT_ITEM model, bool contextual)
 			fields.emplace_back(select);
 			for (auto & x : this->sortComboBoxProps(model))
 				select->addItem(x.first, x.second);
+			//TODO FIX
+			// QComboBox popup mouse release interfers with QMenu viewport events
+			// QWidgetAction QComboBox native popup not enabled
 			/*platform::osComboBox(select);*/
 			form->addRow("by", select);
 		}
@@ -560,6 +577,9 @@ QMenu* tools::sortMenu(SORT_ITEM model, bool contextual)
 			fields.emplace_back(select);
 			select->addItem(tr("ascending"), e2db::SORT_ORDER::sort_asc);
 			select->addItem(tr("descending"), e2db::SORT_ORDER::sort_desc);
+			//TODO FIX
+			// QComboBox popup mouse release interfers with QMenu viewport events
+			// QWidgetAction QComboBox native popup not enabled
 			/*platform::osComboBox(select);*/
 			form->addRow("order", select);
 		}

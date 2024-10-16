@@ -217,6 +217,7 @@ void settings::connectionsLayout()
 		// menu->popup(wid->mapToGlobal(pos)));
 		platform::osMenuPopup(menu, wid, pos);
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 1)
 #ifdef Q_OS_MAC
 		if (platform::osExperiment())
 		{
@@ -224,6 +225,7 @@ void settings::connectionsLayout()
 			wid->topLevelWidget()->parentWidget()->windowHandle()->requestActivate();
 			wid->topLevelWidget()->windowHandle()->requestActivate();
 		}
+#endif
 #endif
 	});
 

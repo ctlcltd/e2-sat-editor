@@ -488,9 +488,6 @@ void tab::layout()
 		QPoint pos = wid->mapFrom(bottom_toolbar, wid->pos());
 		this->lastPopupFocusWidget(wid, pos);
 		platform::osMenuPopup(menu, wid, pos);
-
-		/*QMouseEvent mouseRelease(QEvent::MouseButtonRelease, wid->pos(), wid->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
-		QCoreApplication::sendEvent(wid, &mouseRelease);*/
 	});
 	bottom_toolbar->addAction(btt_action);
 
