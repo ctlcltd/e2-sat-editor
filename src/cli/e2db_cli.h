@@ -91,7 +91,7 @@ class e2db_cli
 			pos, diseqc, uncomtd, charset, 
 			tname, country, feed, 
 			bname, pname, rname, qname, nname, btype, hidden, locked, 
-			mname, dname, itype, 
+			mname, fname, itype, 
 			chvalue, churi, etype, atype, mnum, 
 		};
 

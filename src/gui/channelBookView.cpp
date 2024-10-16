@@ -511,9 +511,9 @@ void channelBookView::stacker(int vv)
 		if (vv == views::Positions)
 		{
 			int pos = std::stoi(w);
-			if (dbih->tuners_pos.count(pos))
+			if (dbih->tnloc.count(pos))
 			{
-				string tnid = dbih->tuners_pos.at(pos);
+				string tnid = dbih->tnloc.at(pos);
 				e2db::tunersets_table tn = dbih->tuners[0].tables[tnid];
 				name = QString::fromStdString(tn.name);
 			}

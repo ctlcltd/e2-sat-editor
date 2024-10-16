@@ -3700,8 +3700,8 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::btype: name = hrn ? "Bouquet Type" : "btype"; value_type = hrv ? VALUE::val_string : VALUE::val_int; break;
 		case TYPE::hidden: name = hrn ? "Hidden" : "hidden"; value_type = VALUE::val_bool; break;
 		case TYPE::locked: name = hrn ? "Locked" : "locked"; value_type = VALUE::val_bool; break;
-		case TYPE::dname: name = hrn ? "dname" : "dname"; value_type = VALUE::val_string; break;
-		case TYPE::itype: name = hrn ? "itype" : "itype"; value_type = VALUE::val_int; break;
+		case TYPE::fname: name = hrn ? "Filename" : "fname"; value_type = VALUE::val_string; break;
+		case TYPE::itype: name = hrn ? "Zapit Data Type" : "itype"; value_type = VALUE::val_int; break;
 		case TYPE::flags: name = hrn ? "Flags" : "flags"; value_type = VALUE::val_int; break;
 		case TYPE::chdata: name = hrn ? "Service flags" : "chdata"; value_type = VALUE::val_obj; break;
 		case TYPE::txdata: name = hrn ? "Transponder flags" : "txdata"; value_type = VALUE::val_obj; break;
@@ -3768,7 +3768,7 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::rname:
 		case TYPE::qname:
 		case TYPE::nname:
-		case TYPE::dname:
+		case TYPE::fname:
 			str = any_cast<string>(val);
 		break;
 		case TYPE::dbtype:
@@ -4120,8 +4120,8 @@ std::any e2db_cli::field(TYPE type, bool required)
 		case TYPE::btype: label = "Bouquet Type"; description = "TV, Radio"; break;
 		case TYPE::hidden: label = "Hidden"; description = "[Y]es or [N]one"; break;
 		case TYPE::locked: label = "Locked"; description = "[Y]es or [N]one"; break;
-		case TYPE::dname: label = "dname"; break;
-		case TYPE::itype: label = "itype"; break;
+		case TYPE::fname: label = "Filename"; break;
+		case TYPE::itype: label = "Zapit Data Type"; description = "exact match: 0 = services, 1 = bouquets"; break;
 		case TYPE::flags: label = "Flags"; description = "in digits"; break;
 		case TYPE::chdata: label = "Add optional Service flags?"; description = "[Y]es or [N]one"; break;
 		case TYPE::txdata: label = "Add optional Transponder flags?"; description = "[Y]es or [N]one"; break;

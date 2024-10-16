@@ -453,18 +453,6 @@ struct e2db_abstract : protected e2se::log_factory
 			int index = -1;
 		};
 
-		struct table
-		{
-			string name;
-			int ytype = 0;
-			int pos = 0;
-			int diseqc = -1;
-			int uncomtd = -1;
-			// transponders <txid string>
-			vector<string> transponders;
-			int index = -1;
-		};
-
 		struct tunersets_transponder
 		{
 			string trid;
@@ -520,19 +508,29 @@ struct e2db_abstract : protected e2se::log_factory
 			unordered_map<string, tunersets_table> tables;
 		};
 
-		struct datasets
+		struct zapit_data
 		{
-			string dname;
+			string fname;
 			int itype; // 0: services, 1: bouquets
 			string charset;
+		};
+
+		struct zapit_table
+		{
+			int pos = 0;
+			int ytype = 0;
+			string name;
+			int diseqc = -1;
+			int uncomtd = -1;
+			// transponders <txid string>
+			vector<string> transponders;
+			int index = -1;
 		};
 
 		struct datadb
 		{
 			int type = 0; // 0: lamedb, 1: zapit
 			int version = 0x1224;
-			// tables <pos int, table struct>
-			unordered_map<int, table> tables;
 			// transponders <txid string, transponder struct>
 			unordered_map<string, transponder> transponders;
 			// services <chid string, service struct>
@@ -559,10 +557,12 @@ struct e2db_abstract : protected e2se::log_factory
 		unordered_map<string, userbouquet> userbouquets;
 		// tunersets <tvid int, tunersets struct>
 		unordered_map<int, tunersets> tuners;
-		// tunersets_pos <pos int, tnid string>
-		map<int, string> tuners_pos;
-		// datasets <dname string, datasets struct>
-		unordered_map<string, datasets> datas;
+		// tnloc <pos int, tnid string>
+		map<int, string> tnloc;
+		// zxdata <fname string, zapit_data struct>
+		unordered_map<string, zapit_data> zxdata;
+		// zyloc <pos int, zapit_table struct>
+		unordered_map<int, zapit_table> zyloc;
 		// comments <iname string, vector<comment struct>>
 		unordered_map<string, vector<comment>> comments;
 		// index <iname string, vector<pair<src-idx||count int, chid string>>>

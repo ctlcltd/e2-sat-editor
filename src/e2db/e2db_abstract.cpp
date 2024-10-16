@@ -1377,9 +1377,9 @@ string e2db_abstract::get_tuner_name(transponder tx)
 	string txpname;
 	if (tx.ytype == YTYPE::satellite)
 	{
-		if (tuners_pos.count(tx.pos))
+		if (tnloc.count(tx.pos))
 		{
-			string tnid = tuners_pos.at(tx.pos);
+			string tnid = tnloc.at(tx.pos);
 			tunersets_table tns = tuners[0].tables[tnid];
 			txpname = tns.name;
 		}
@@ -1550,7 +1550,7 @@ void e2db_abstract::add_tunersets_table(int idx, tunersets_table& tn, tunersets&
 	tv.tables.emplace(tn.tnid, tn);
 	index[iname].emplace_back(pair (idx, tn.tnid));
 	if (tn.ytype == YTYPE::satellite)
-		tuners_pos.emplace(tn.pos, tn.tnid);
+		tnloc.emplace(tn.pos, tn.tnid);
 }
 
 void e2db_abstract::add_tunersets_transponder(int idx, tunersets_transponder& tntxp, tunersets_table& tn)
@@ -1912,8 +1912,9 @@ void e2db_abstract::merge(e2db_abstract* dst)
 	this->bouquets = dst->bouquets;
 	this->userbouquets = dst->userbouquets;
 	this->tuners = dst->tuners;
-	this->tuners_pos = dst->tuners_pos;
-	this->datas = dst->datas;
+	this->tnloc = dst->tnloc;
+	this->zxdata = dst->zxdata;
+	this->zyloc = dst->zyloc;
 	this->comments = dst->comments;
 	this->index = dst->index;
 	this->collisions = dst->collisions;

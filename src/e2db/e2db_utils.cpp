@@ -986,9 +986,9 @@ void e2db_utils::transform_transponders_to_tunersets()
 
 			bool found = false;
 
-			if (ytype == YTYPE::satellite && tuners_pos.count(pos))
+			if (ytype == YTYPE::satellite && tnloc.count(pos))
 			{
-				string tnid = tuners_pos[pos];
+				string tnid = tnloc[pos];
 
 				if (tuners[0].tables.count(tnid))
 				{
@@ -1019,7 +1019,7 @@ void e2db_utils::transform_transponders_to_tunersets()
 				index[iname].emplace_back(pair (idx, tn.tnid));
 
 				if (tn.ytype == YTYPE::satellite)
-					tuners_pos.emplace(tn.pos, tn.tnid);
+					tnloc.emplace(tn.pos, tn.tnid);
 			}
 
 			char yname = value_transponder_type(tn.ytype);

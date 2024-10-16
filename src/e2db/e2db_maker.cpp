@@ -1013,62 +1013,62 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 {
 	debug("make_services_xml", "filename", filename);
 
-	string dname;
+	string fname;
 
-	if (datas.count("services.xml"))
-		dname = "services.xml";
+	if (zxdata.count("services.xml"))
+		fname = "services.xml";
 
-	if (dname.empty())
+	if (fname.empty())
 	{
-		datasets dat;
-		dat.dname = dname = "services.xml";
-		dat.itype = 0;
-		dat.charset = "UTF-8";
+		zapit_data zx;
+		zx.fname = fname = "services.xml";
+		zx.itype = 0;
+		zx.charset = "UTF-8";
 
-		datas.emplace(dat.dname, dat);
+		zxdata.emplace(zx.fname, zx);
 	}
-	if (db.tables.size() == 0)
+	if (zyloc.size() == 0)
 	{
 		for (auto & x : index["txs"])
 		{
 			transponder tx = db.transponders[x.second];
-			table& tr = db.tables[tx.pos];
-			tr.ytype = tx.ytype;
-			tr.pos = tx.pos;
+			zapit_table& zy = zyloc[tx.pos];
+			zy.ytype = tx.ytype;
+			zy.pos = tx.pos;
 
-			if (tuners_pos.count(tx.pos))
+			if (tnloc.count(tx.pos))
 			{
-				string tnid = tuners_pos.at(tx.pos);
+				string tnid = tnloc.at(tx.pos);
 				tunersets_table tn = tuners[0].tables[tnid];
-				tr.name = tn.name;
+				zy.name = tn.name;
 			}
 			else
 			{
-				tr.name = tx.pos == -1 ? "NaN" : value_transponder_position(tx.pos);
+				zy.name = tx.pos == -1 ? "NaN" : value_transponder_position(tx.pos);
 			}
 
-			tr.transponders.emplace_back(tx.txid);
+			zy.transponders.emplace_back(tx.txid);
 
-			db.tables[tx.pos] = tr;
+			zyloc[tx.pos] = zy;
 		}
 
 		int idx = 0;
-		for (auto & x : db.tables)
+		for (auto & x : zyloc)
 		{
 			idx++;
-			table& tr = x.second;
-			tr.index = idx;
+			zapit_table& zy = x.second;
+			zy.index = idx;
 
-			db.tables[tr.pos] = tr;
-			index["trs"].emplace_back(pair (tr.index, to_string(tr.pos)));
+			zyloc[zy.pos] = zy;
+			index["trs"].emplace_back(pair (zy.index, to_string(zy.pos)));
 		}
 	}
 
-	datasets dat = datas[dname];
+	zapit_data zx = zxdata[fname];
 
 	stringstream ss;
 
-	string iname = dname;
+	string iname = fname;
 	unordered_map<int, string> tags;
 	tags[0] = "zapit";
 	if (ver > 1)
@@ -1084,7 +1084,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 
 	unordered_map<string, int> txs;
 
-	ss << "<?xml version=\"1.0\" encoding=\"" << dat.charset << "\"?>" << endl;
+	ss << "<?xml version=\"1.0\" encoding=\"" << zx.charset << "\"?>" << endl;
 	ss << '<' << tags[0];
 	if (ver > 1)
 		ss << ' ' << "api=\"" << ver << "\"";
@@ -1093,37 +1093,37 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 	for (auto & x : index["trs"])
 	{
 		int pos = std::stoi(x.second);
-		table tr = db.tables[pos];
+		zapit_table zy = zyloc[pos];
 
-		if (ver > 3 && tr.ytype == YTYPE::terrestrial)
+		if (ver > 3 && zy.ytype == YTYPE::terrestrial)
 			tags[1] = "terrestrial";
 		else
 			tags[1] = "sat";
 
 		ss << "\t" << '<' << tags[1];
-		ss << ' ' << "name=\"" << conv_xml_value(tr.name) << "\"";
+		ss << ' ' << "name=\"" << conv_xml_value(zy.name) << "\"";
 		if (ver > 2)
 		{
-			ss << ' ' << "position=\"" << (tr.pos != -1 ? tr.pos : 0) << "\"";
+			ss << ' ' << "position=\"" << (zy.pos != -1 ? zy.pos : 0) << "\"";
 
-			if (tr.ytype != YTYPE::terrestrial)
+			if (zy.ytype != YTYPE::terrestrial)
 			{
-				ss << ' ' << "diseqc=\"" << (tr.diseqc != -1 ? tr.diseqc : -1) << "\"";
-				ss << ' ' << "uncommited=\"" << (tr.uncomtd != -1 ? tr.uncomtd : -1) << "\"";
+				ss << ' ' << "diseqc=\"" << (zy.diseqc != -1 ? zy.diseqc : -1) << "\"";
+				ss << ' ' << "uncommited=\"" << (zy.uncomtd != -1 ? zy.uncomtd : -1) << "\"";
 			}
 		}
 		else
 		{
-			if (tr.ytype != YTYPE::terrestrial)
+			if (zy.ytype != YTYPE::terrestrial)
 			{
-				ss << ' ' << "diseqc=\"" << (tr.diseqc != -1 ? tr.diseqc : 0) << "\"";
+				ss << ' ' << "diseqc=\"" << (zy.diseqc != -1 ? zy.diseqc : 0) << "\"";
 			}
 
-			ss << ' ' << "position=\"" << (tr.pos != -1 ? tr.pos : 0) << "\"";
+			ss << ' ' << "position=\"" << (zy.pos != -1 ? zy.pos : 0) << "\"";
 		}
 		ss << '>' << endl;
 
-		for (auto & w : tr.transponders)
+		for (auto & w : zy.transponders)
 		{
 			transponder tx = db.transponders[w];
 
@@ -1132,12 +1132,12 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 			{
 				ss << ' ' << "id=\"" << hex << setfill('0') << setw(4) << tx.tsid << dec << "\"";
 				ss << ' ' << "on=\"" << hex << setfill('0') << setw(4) << tx.onid << dec << "\"";
-				if (ver > 2 && tr.ytype == YTYPE::terrestrial)
+				if (ver > 2 && zy.ytype == YTYPE::terrestrial)
 					ss << ' ' << "frq=\"" << int (tx.freq * 1e2) << "\"";
 				else
 					ss << ' ' << "frq=\"" << int (tx.freq * 1e3) << "\"";
 				ss << ' ' << "inv=\"" << (tx.inv != -1 && tx.inv != 0 ? tx.inv : 2) << "\"";
-				if (tr.ytype == YTYPE::terrestrial)
+				if (zy.ytype == YTYPE::terrestrial)
 				{
 					if (ver < 3)
 						ss << ' ' << "sr=\"0\"";
@@ -1146,7 +1146,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 				{
 					ss << ' ' << "sr=\"" << (tx.sr != -1 && tx.sr != 0 ? int (tx.sr * 1e3) : 0) << "\"";
 				}
-				if (ver > 2 && tr.ytype == YTYPE::terrestrial)
+				if (ver > 2 && zy.ytype == YTYPE::terrestrial)
 				{
 					ss << ' ' << "band=\"" << (tx.band != -1 ? tx.band : 0) << "\"";
 					ss << ' ' << "HP=\"" << (tx.hpfec != -1 ? tx.hpfec : 5) << "\"";
@@ -1197,12 +1197,12 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 					}
 					ss << ' ' << "fec=\"" << i << "\"";
 				}
-				if (tr.ytype != YTYPE::terrestrial)
+				if (zy.ytype != YTYPE::terrestrial)
 					ss << ' ' << "pol=\"" << tx.pol << "\"";
 				if (ver > 3)
 				{
 					//TODO
-					if (tr.ytype == YTYPE::terrestrial)
+					if (zy.ytype == YTYPE::terrestrial)
 					{
 						ss << ' ' << "mod=\"" << (tx.tmod != -1 ? tx.tmod * 2 : 6) << "\"";
 						ss << ' ' << "sys=\"" << 4 << "\"";
@@ -1258,7 +1258,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 					{
 						ss << ' ' << "i=\"" << hex << setfill('0') << setw(4) << ch.ssid << dec << "\"";
 						ss << ' ' << "n=\"" << conv_xml_value(ch.chname) << "\"";
-						if (tr.ytype != YTYPE::terrestrial)
+						if (zy.ytype != YTYPE::terrestrial)
 						{
 							{
 								int cval = 0;
@@ -1304,7 +1304,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 						ss << ' ' << "t=\"" << hex << ch.stype << dec << "\"";
 						if (ver > 2)
 						{
-							if (tr.ytype != YTYPE::terrestrial)
+							if (zy.ytype != YTYPE::terrestrial)
 							{
 								{
 									int cval = 0;
@@ -1384,29 +1384,29 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 {
 	debug("make_bouquets_xml", "filename", filename);
 
-	string dname;
+	string fname;
 
-	if (datas.count("ubouquets.xml"))
-		dname = "ubouquets.xml";
-	else if (datas.count("ubouquets.xml"))
-		dname = "bouquets.xml";
+	if (zxdata.count("ubouquets.xml"))
+		fname = "ubouquets.xml";
+	else if (zxdata.count("ubouquets.xml"))
+		fname = "bouquets.xml";
 
-	if (dname.empty())
+	if (fname.empty())
 	{
-		datasets dat;
-		dat.dname = dname = ver > 1 ? "ubouquets.xml" : "bouquets.xml";
-		dat.itype = 1;
-		dat.charset = "UTF-8";
+		zapit_data zx;
+		zx.fname = fname = ver > 1 ? "ubouquets.xml" : "bouquets.xml";
+		zx.itype = 1;
+		zx.charset = "UTF-8";
 
-		datas.emplace(dat.dname, dat);
+		zxdata.emplace(zx.fname, zx);
 	}
 
-	datasets dat = datas[dname];
+	zapit_data zx = zxdata[fname];
 
 	stringstream ss;
 	int ln = 2;
 
-	string iname = dname;
+	string iname = fname;
 	unordered_map<int, string> tags;
 	tags[0] = "zapit";
 	tags[1] = "Bouquet";
@@ -1419,7 +1419,7 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 		tags[2] = "channel";
 	}
 
-	ss << "<?xml version=\"1.0\" encoding=\"" << dat.charset << "\"?>" << endl;
+	ss << "<?xml version=\"1.0\" encoding=\"" << zx.charset << "\"?>" << endl;
 	ss << '<' << tags[0] << '>' << endl;
 
 	vector<string> ubindex;

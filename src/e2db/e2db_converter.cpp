@@ -2356,7 +2356,7 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>>& sxv, e2d
 		{
 			dst->tuners[tv.ytype].tables.emplace(tn.tnid, tn);
 			if (tn.ytype == YTYPE::satellite)
-				dst->tuners_pos.emplace(tn.pos, tn.tnid);
+				dst->tnloc.emplace(tn.pos, tn.tnid);
 			dst->index[iname].emplace_back(pair (tn.index, tn.tnid));
 		}
 		if (! dst->tuners[tv.ytype].tables[tn.tnid].transponders.count(tntxp.trid))

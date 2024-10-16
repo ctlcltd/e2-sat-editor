@@ -1674,18 +1674,18 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 
 	debug("parse_zapit_services_apix_xml", "charset", charset);
 
-	string dname = "services.xml";
+	string fname = "services.xml";
 
-	datasets dat;
-	dat.dname = dname;
-	dat.itype = 0;
-	dat.charset = charset;
+	zapit_data zx;
+	zx.fname = fname;
+	zx.itype = 0;
+	zx.charset = charset;
 
-	table tr;
+	zapit_table zy;
 	transponder tx;
 	service ch;
 
-	string iname = dname;
+	string iname = fname;
 	unordered_map<string, int> depth;
 	depth["zapit"] = 0;
 	depth["sat"] = 1;
@@ -1733,7 +1733,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 
 			if (! add && step == 1)
 			{
-				tr = table ();
+				zy = zapit_table ();
 			}
 			else if (step == 2)
 			{
@@ -1764,21 +1764,21 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 				if (key == "name")
 				{
 					conv_xml_value(val);
-					tr.name = val;
+					zy.name = val;
 				}
 				else if (key == "position")
-					tr.pos = std::atoi(val.data());
+					zy.pos = std::atoi(val.data());
 				else if (key == "diseqc")
-					tr.diseqc = std::atoi(val.data());
+					zy.diseqc = std::atoi(val.data());
 				else if (key == "uncommitted")
-					tr.uncomtd = std::atoi(val.data());
+					zy.uncomtd = std::atoi(val.data());
 				else if (key == "id")
 					tx.tsid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "on")
 					tx.onid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "frq")
 				{
-					if (ver > 2 && tr.ytype == YTYPE::terrestrial)
+					if (ver > 2 && zy.ytype == YTYPE::terrestrial)
 						tx.freq = int (std::atoi(val.data()) / 1e2);
 					else
 						tx.freq = int (std::atoi(val.data()) / 1e3);
@@ -1853,7 +1853,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 				{
 					int i = std::atoi(val.data());
 
-					if (tr.ytype == YTYPE::terrestrial && tx.tmod == 3)
+					if (zy.ytype == YTYPE::terrestrial && tx.tmod == 3)
 						tx.tmod = i / 2; //TODO
 					else
 						tx.mod = i;
@@ -1864,7 +1864,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 
 					tx.sys = i;
 
-					if (ver == 4 && tr.ytype == YTYPE::terrestrial)
+					if (ver == 4 && zy.ytype == YTYPE::terrestrial)
 					{
 						if (i == 4)
 							tx.sys = 0;
@@ -1957,12 +1957,12 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 				if (step == 1 && key == "name")
 				{
 					conv_xml_value(val);
-					tr.name = val;
+					zy.name = val;
 				}
 				else if (key == "diseqc")
-					tr.diseqc = std::atoi(val.data());
+					zy.diseqc = std::atoi(val.data());
 				else if (key == "position")
-					tr.pos = std::atoi(val.data());
+					zy.pos = std::atoi(val.data());
 				else if (key == "id")
 					tx.tsid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "onid")
@@ -2009,28 +2009,28 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 		if (! add && step == 1)
 		{
 			if (ver > 2 && tag == "terrestrial")
-				tr.ytype = YTYPE::terrestrial;
-			else if (tr.pos == 0)
-				tr.ytype = YTYPE::terrestrial;
+				zy.ytype = YTYPE::terrestrial;
+			else if (zy.pos == 0)
+				zy.ytype = YTYPE::terrestrial;
 			else
-				tr.ytype = YTYPE::satellite;
+				zy.ytype = YTYPE::satellite;
 		}
 		else if (add && step == 1)
 		{
 			aidx++;
-			tr.index = aidx;
-			db.tables.emplace(tr.pos, tr);
-			index["trs"].emplace_back(pair (tr.index, to_string(tr.pos)));
+			zy.index = aidx;
+			zyloc.emplace(zy.pos, zy);
+			index["trs"].emplace_back(pair (zy.index, to_string(zy.pos)));
 		}
 		else if (! add && step == 2)
 		{
 			bidx++;
-			tx.ytype = tr.ytype;
-			tx.pos = tr.pos;
+			tx.ytype = zy.ytype;
+			tx.pos = zy.pos;
 			tx.dvbns = value_transponder_dvbns(tx);
 			add_transponder(bidx, tx);
 
-			tr.transponders.emplace_back(tx.txid);
+			zy.transponders.emplace_back(tx.txid);
 		}
 		else if (add && step == 3)
 		{
@@ -2042,7 +2042,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 		}
 	}
 
-	datas.emplace(dat.dname, dat);
+	zxdata.emplace(zx.fname, zx);
 }
 
 void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string filename, int ver)
@@ -2063,15 +2063,15 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 
 	debug("parse_zapit_bouquets_apix_xml", "charset", charset);
 
-	string dname = ver > 1 ? "ubouquets.xml" : "bouquets.xml";
+	string fname = ver > 1 ? "ubouquets.xml" : "bouquets.xml";
 	string ub_fname_suffix = USERBOUQUET_FILENAME_SUFFIX;
 
-	datasets dat;
-	dat.dname = dname;
-	dat.itype = 1;
-	dat.charset = charset;
+	zapit_data zx;
+	zx.fname = fname;
+	zx.itype = 1;
+	zx.charset = charset;
 
-	table tr;
+	zapit_table zy;
 	userbouquet ub;
 	service_reference ref;
 	channel_reference chref;
@@ -2082,7 +2082,7 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 	vector<pair<userbouquet, vector<string>>> ubouquets;
 	vector<string> chindex;
 
-	string iname = dname;
+	string iname = fname;
 	unordered_map<string, int> depth;
 	depth["zapit"] = 0;
 	depth["Bouquet"] = 1;
@@ -2314,7 +2314,7 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 		count.clear();
 	}
 
-	datas.emplace(dat.dname, dat);
+	zxdata.emplace(zx.fname, zx);
 }
 
 bool e2db_parser::parse_xml_head(istream& ixml, string& charset)

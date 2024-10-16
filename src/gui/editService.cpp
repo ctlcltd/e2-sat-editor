@@ -279,9 +279,9 @@ void editService::transponderLayout()
 	{
 		QString name;
 		int pos = std::stoi(q.first);
-		if (dbih->tuners_pos.count(pos))
+		if (dbih->tnloc.count(pos))
 		{
-			string tnid = dbih->tuners_pos.at(pos);
+			string tnid = dbih->tnloc.at(pos);
 			e2db::tunersets_table tns = dbih->tuners[0].tables[tnid];
 			name = QString::fromStdString(tns.name);
 		}

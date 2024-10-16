@@ -1554,8 +1554,8 @@ void e2db::edit_tunersets_table(string tnid, tunersets_table& tn, tunersets tv)
 
 		if (tn.ytype == YTYPE::satellite)
 		{
-			tuners_pos.erase(tn.pos);
-			tuners_pos.emplace(tn.pos, tn.tnid);
+			tnloc.erase(tn.pos);
+			tnloc.emplace(tn.pos, tn.tnid);
 		}
 	}
 }
@@ -1591,7 +1591,7 @@ void e2db::remove_tunersets_table(string tnid, tunersets tv)
 
 	if (tn.ytype == YTYPE::satellite)
 	{
-		tuners_pos.erase(tn.pos);
+		tnloc.erase(tn.pos);
 	}
 
 	tuners[tv.ytype].tables.erase(tnid);
@@ -1921,19 +1921,21 @@ void e2db::merge(e2db_abstract* dst)
 	}
 
 	this->tuners.merge(dst->tuners);
-	this->tuners_pos.clear();
+	this->tnloc.clear();
 
 	if (this->tuners.count(YTYPE::satellite))
 	{
 		for (auto & x : tuners[YTYPE::satellite].tables)
-			this->tuners_pos.emplace(x.second.pos, x.second.tnid);
+			this->tnloc.emplace(x.second.pos, x.second.tnid);
 	}
 
-	this->datas.clear();
+	this->zxdata.clear();
+	this->zyloc.clear();
 	this->comments.clear();
 	this->changes.clear();
 
-	dst->datas.clear();
+	dst->zxdata.clear();
+	dst->zyloc.clear();
 	dst->comments.clear();
 
 	vector<string> i_names;
