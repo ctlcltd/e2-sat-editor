@@ -315,7 +315,6 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::CloseTab] = menuBarAction(mfile, tr("Close Tab", "menu"), [=]() { this->closeTab(); }, QKeySequence::Close);
 	gmenu[GUI_CXE::CloseAllTabs] = menuBarAction(mfile, tr("Close All Tabs", "menu"), [=]() { this->closeAllTabs(); }, Qt::CTRL | Qt::ALT | Qt::Key_W);
 	menuBarSeparator(mfile);
-	gmenu[GUI_CXE::FileInfo] = menuBarAction(mfile, tr("File Information", "menu"), [=]() { this->fileInfo(); });
 	QMenu* mconvert = menuBarMenu(mfile, tr("Convert", "menu"));
 	gmenu[GUI_CXE::FileConvert] = mconvert->menuAction();
 	gmenu[GUI_CXE::FileConvertLamedb24] = menuBarCheckable(mconvert, tr("Lamedb 2.4 [Enigma 2]"), [=]() { this->tabAction(TAB_ATS::ConvertLamedb24); });
@@ -326,6 +325,7 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::FileConvertZapit3] = menuBarCheckable(mconvert, tr("Zapit api-v3 [Neutrino]"), [=]() { this->tabAction(TAB_ATS::ConvertZapit3); });
 	gmenu[GUI_CXE::FileConvertZapit2] = menuBarCheckable(mconvert, tr("Zapit api-v2 [Neutrino]"), [=]() { this->tabAction(TAB_ATS::ConvertZapit2); });
 	gmenu[GUI_CXE::FileConvertZapit1] = menuBarCheckable(mconvert, tr("Zapit api-v1 [Neutrino]"), [=]() { this->tabAction(TAB_ATS::ConvertZapit1); });
+	gmenu[GUI_CXE::FileInfo] = menuBarAction(mfile, tr("File Information", "menu"), [=]() { this->fileInfo(); });
 	menuBarSeparator(mfile);
 	//: Encoding: preserve 3-dots ellipsis symbol
 	gmenu[GUI_CXE::FilePrint] = menuBarAction(mfile, tr("&Print…", "menu"), [=]() { this->filePrint(); }, QKeySequence::Print);
@@ -449,10 +449,10 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::ToolsUtilsTransform_tunersets] = menuBarAction(mttransform, tr("Transform transponders to XML settings", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsTransform_tunersets); });
 	gmenu[GUI_CXE::ToolsUtilsTransform_transponders] = menuBarAction(mttransform, tr("Transform XML settings to transponders", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsTransform_transponders); });
 	QMenu* tmsort = menuBarMenu(mtools, tr("Sort", "menu"));
+	gmenu[GUI_CXE::ToolsUtilsSort_references] = menuBarAction(tmsort, tr("Sort references…", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsSort_references); });
 	gmenu[GUI_CXE::ToolsUtilsSort_services] = menuBarAction(tmsort, tr("Sort services…", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsSort_services); });
 	gmenu[GUI_CXE::ToolsUtilsSort_transponders] = menuBarAction(tmsort, tr("Sort transponders…", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsSort_transponders); });
 	gmenu[GUI_CXE::ToolsUtilsSort_userbouquets] = menuBarAction(tmsort, tr("Sort userbouquets…", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsSort_userbouquets); });
-	gmenu[GUI_CXE::ToolsUtilsSort_references] = menuBarAction(tmsort, tr("Sort references…", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsSort_references); });
 	menuBarSeparator(mtools);
 	gmenu[GUI_CXE::ToolsAutofixMacro] = menuBarAction(mtools, tr("Autofix", "menu"), [=]() { this->tabAction(TAB_ATS::AutofixMacro); });
 	menuBarSeparator(mtools);

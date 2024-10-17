@@ -1622,10 +1622,10 @@ QMenu* tab::toolsMenu()
 		menuAction(tmtsform, tr("Transform transponders to XML settings", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsTransform_tunersets); });
 		menuAction(tmtsform, tr("Transform XML settings to transponders", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsTransform_transponders); });
 		QMenu* tmsort = menuMenu(menu, tr("Sort", "menu"));
+		menuAction(tmsort, tr("Sort references…", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsSort_references); });
 		menuAction(tmsort, tr("Sort services…", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsSort_services); });
 		menuAction(tmsort, tr("Sort transponders…", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsSort_transponders); });
 		menuAction(tmsort, tr("Sort userbouquets…", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsSort_userbouquets); });
-		menuAction(tmsort, tr("Sort references…", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsSort_references); });
 		menuSeparator(menu);
 		menuAction(menu, tr("Autofix", "menu"), [=]() { this->toolsAutofixMacro(); });
 		menuSeparator(menu);
@@ -1658,7 +1658,7 @@ QMenu* tab::toolsMenu()
 		menuAction(tmexporthtml, tr("Export Userbouquets", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_userbouquets); });
 		menuAction(tmexporthtml, tr("Export Tuner settings", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_tunersets); });
 		menuSeparator(menu);
-		menuAction(menu, tr("Log Inspector", "menu"), [=]() { this->toolsInspector(); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
+		menuAction(menu, tr("Log Inspect", "menu"), [=]() { this->toolsInspector(); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
 	}
 
 	QMenu* menu = this->tools_menu;

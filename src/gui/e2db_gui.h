@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <algorithm>
 
 using std::string, std::pair, std::vector, std::unordered_map;
 

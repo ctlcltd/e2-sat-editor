@@ -10,6 +10,7 @@
  */
 
 #include <iostream>
+#include <algorithm>
 
 #include "../logger/logger.h"
 #include "e2db_abstract.h"

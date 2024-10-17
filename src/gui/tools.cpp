@@ -600,7 +600,7 @@ QMenu* tools::sortMenu(SORT_ITEM model, bool contextual)
 			QCheckBox* checker = new QCheckBox;
 			checker->setProperty("field", "recall");
 			fields.emplace_back(checker);
-			checker->setText(tr("Recall this set when sort from context menu"));
+			checker->setText(tr("Recall this set when Sort from context menu"));
 			form->addRow(checker);
 		}
 		if (! contextual)
