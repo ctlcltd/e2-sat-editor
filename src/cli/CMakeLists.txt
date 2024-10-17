@@ -12,6 +12,7 @@ set(SOURCES
 	../e2db/e2db_converter.cpp
 	../e2db/e2db_maker.cpp
 	../e2db/e2db_parser.cpp
+	../e2db/e2db_utils.cpp
 	../e2db/e2db.cpp
 	e2db_termctl.cpp
 	e2db_cli.cpp

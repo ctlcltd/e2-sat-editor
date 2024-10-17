@@ -14,10 +14,10 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets PrintSupport)
 set(SOURCES
 	logger/logger.cpp
 	e2db/e2db_abstract.cpp
-	e2db/e2db_utils.cpp
 	e2db/e2db_converter.cpp
 	e2db/e2db_maker.cpp
 	e2db/e2db_parser.cpp
+	e2db/e2db_utils.cpp
 	e2db/e2db.cpp
 	gui/platforms/platform.h
 	gui/toolkit/InputControlEditEventObserver.cpp

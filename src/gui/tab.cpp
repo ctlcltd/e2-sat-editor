@@ -1658,7 +1658,7 @@ QMenu* tab::toolsMenu()
 		menuAction(tmexporthtml, tr("Export Userbouquets", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_userbouquets); });
 		menuAction(tmexporthtml, tr("Export Tuner settings", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_tunersets); });
 		menuSeparator(menu);
-		menuAction(menu, tr("Log Inspect", "menu"), [=]() { this->toolsInspector(); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
+		menuAction(menu, tr("Log Inspector", "menu"), [=]() { this->toolsInspector(); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
 	}
 
 	QMenu* menu = this->tools_menu;
