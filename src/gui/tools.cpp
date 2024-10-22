@@ -214,16 +214,25 @@ void tools::inspectReset()
 
 void tools::status(QString message)
 {
+	theme::setWaitCursor();
+
 	if (tid->statusBarIsVisible())
 		tid->statusBarMessage(message);
 }
 
-void tools::done()
+bool tools::done(bool exec)
 {
+	theme::unsetWaitCursor();
+
+	if (! exec)
+		return false;
+
 	if (tid->statusBarIsVisible())
 		tid->statusBarMessage(tr("Done", "message"));
 	else
 		tid->infoMessage(tr("Done!", "message"));
+
+	return true;
 }
 
 void tools::applyUtils(int bit, e2db::uoopts& opts, bool contextual)
@@ -234,13 +243,11 @@ void tools::applyUtils(int bit, e2db::uoopts& opts, bool contextual)
 
 	this->data->clearErrors();
 
-	bool ran = false;
-
-	theme::setWaitCursor();
+	bool exec = false;
 
 	try
 	{
-		ran = true;
+		exec = true;
 
 		switch (bit)
 		{
@@ -333,40 +340,52 @@ void tools::applyUtils(int bit, e2db::uoopts& opts, bool contextual)
 				dbih->transform_tunersets_to_transponders();
 			break;
 			case gui::TAB_ATS::UtilsSort_transponders:
-				ran = showSortMenu(SORT_ITEM::item_transponder, contextual, opts);
-				if (ran) dbih->sort_transponders(opts);
+				exec = handleSortContext(SORT_ITEM::item_transponder, contextual, opts);
+				if (exec)
+				{
+					status(tr("Sort transponders…", "menu"));
+					dbih->sort_transponders(opts);
+				}
 			break;
 			case gui::TAB_ATS::UtilsSort_services:
-				ran = showSortMenu(SORT_ITEM::item_service, contextual, opts);
-				if (ran) dbih->sort_services(opts);
+				exec = handleSortContext(SORT_ITEM::item_service, contextual, opts);
+				if (exec)
+				{
+					status(tr("Sort services…", "menu"));
+					dbih->sort_services(opts);
+				}
 			break;
 			case gui::TAB_ATS::UtilsSort_userbouquets:
-				ran = showSortMenu(SORT_ITEM::item_userbouquet, contextual, opts);
-				if (ran) dbih->sort_userbouquets(opts);
+				exec = handleSortContext(SORT_ITEM::item_userbouquet, contextual, opts);
+				if (exec)
+				{
+					status(tr("Sort userbouquets…", "menu"));
+					dbih->sort_userbouquets(opts);
+				}
 			break;
 			case gui::TAB_ATS::UtilsSort_references:
-				showSortMenu(SORT_ITEM::item_reference, contextual, opts);
-				if (ran) dbih->sort_references(opts);
+				exec = handleSortContext(SORT_ITEM::item_reference, contextual, opts);
+				if (exec)
+				{
+					status(tr("Sort references…", "menu"));
+					dbih->sort_references(opts);
+				}
 			break;
 			default:
-				ran = false;
+				exec = false;
 		}
 	}
 	catch (...)
 	{
-		ran = false;
+		exec = false;
 
 		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(tr("Utils Error", "error"), tr("Error executing utils.", "error")); }, Qt::QueuedConnection);
 	}
 
-	theme::unsetWaitCursor();
-
 	if (this->data->haveErrors())
 		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::utilsNotice); }, Qt::QueuedConnection);
 
-	if (ran)
-		done();
-	else
+	if (! done(exec))
 		return;
 
 	dbih->clearStorage();
@@ -384,9 +403,7 @@ void tools::execMacro(vector<string> pattern)
 
 	this->data->clearErrors();
 
-	bool ran = false;
-
-	theme::setWaitCursor();
+	bool exec = false;
 
 	status(tr("Executing macro …", "message"));
 
@@ -395,7 +412,7 @@ void tools::execMacro(vector<string> pattern)
 		for (string & fn : pattern)
 		{
 			if (fn.empty())
-				ran = false;
+				exec = false;
 			else if (fn == "remove_orphaned_services")
 				dbih->remove_orphaned_services();
 			else if (fn == "remove_orphaned_references")
@@ -449,26 +466,22 @@ void tools::execMacro(vector<string> pattern)
 			else if (fn == "sort_references")
 				dbih->sort_references(opts);
 			else
-				ran = false;
+				exec = false;
 		}
 
-		ran = true;
+		exec = true;
 	}
 	catch (...)
 	{
-		ran = false;
+		exec = false;
 
 		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(tr("Utils Error", "error"), tr("Error executing macro.", "error")); }, Qt::QueuedConnection);
 	}
 
-	theme::unsetWaitCursor();
-
 	if (this->data->haveErrors())
 		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::utilsNotice); }, Qt::QueuedConnection);
 
-	if (ran)
-		done();
-	else
+	if (! done(exec))
 		return;
 
 	dbih->clearStorage();
@@ -490,11 +503,39 @@ void tools::macroAutofix()
 	execMacro(pattern);
 }
 
-bool tools::showSortMenu(SORT_ITEM model, bool contextual, e2db::uoopts& opts)
+bool tools::sortContext(SORT_ITEM model, e2db::uoopts& opts)
 {
-	debug("showSortMenu");
+	if (this->sort_stg.count(model))
+	{
+		sort_context* ctx = this->sort_stg[model];
 
-	if (contextual && setupSortOptions(opts))
+		if (ctx->recall)
+			this->sort_ctx = ctx;
+	}
+
+	if (this->sort_ctx == nullptr)
+		return false;
+
+	opts.prop = this->sort_ctx->prop.toStdString();
+	opts.order = static_cast<e2db::SORT_ORDER>(this->sort_ctx->order);
+	opts.selecting = this->sort_ctx->selecting;
+	opts.exec = true;
+
+	if (this->sort_ctx->recall)
+		return true;
+
+	delete this->sort_stg[model];
+	this->sort_stg[model] = this->sort_ctx;
+	this->sort_ctx = nullptr;
+
+	return true;
+}
+
+bool tools::handleSortContext(SORT_ITEM model, bool contextual, e2db::uoopts& opts)
+{
+	debug("handleSortContext");
+
+	if (contextual && sortContext(model, opts))
 		return true;
 
 	QWidget* wid = tid->lastPopupFocusWidget();
@@ -523,7 +564,7 @@ bool tools::showSortMenu(SORT_ITEM model, bool contextual, e2db::uoopts& opts)
 #endif
 #endif
 
-	return setupSortOptions(opts);
+	return sortContext(model, opts);
 }
 
 QMenu* tools::sortMenu(SORT_ITEM model, bool contextual)
@@ -561,7 +602,7 @@ QMenu* tools::sortMenu(SORT_ITEM model, bool contextual)
 
 		{
 			QComboBox* select = new QComboBox;
-			select->setProperty("field", "by");
+			select->setProperty("field", "prop");
 			fields.emplace_back(select);
 			for (auto & x : this->sortComboBoxProps(model))
 				select->addItem(x.first, x.second);
@@ -596,6 +637,7 @@ QMenu* tools::sortMenu(SORT_ITEM model, bool contextual)
 		form->setFormAlignment(Qt::AlignLeading);
 		form->setVerticalSpacing(12);
 
+		if (! contextual)
 		{
 			QCheckBox* checker = new QCheckBox;
 			checker->setProperty("field", "recall");
@@ -603,11 +645,11 @@ QMenu* tools::sortMenu(SORT_ITEM model, bool contextual)
 			checker->setText(tr("Recall this set when Sort from context menu"));
 			form->addRow(checker);
 		}
-		if (! contextual)
 		{
 			form->addItem(form->spacerItem());
 
 			QCheckBox* checker = new QCheckBox;
+			checker->setChecked(contextual);
 			checker->setProperty("field", "selection");
 			fields.emplace_back(checker);
 			checker->setText(tr("Apply to list selection"));
@@ -629,7 +671,7 @@ QMenu* tools::sortMenu(SORT_ITEM model, bool contextual)
 		button->setDefault(true);
 		button->setText(tr("Apply Sort"));
 		button->connect(button, &QPushButton::pressed, [=]() {
-			this->handleSortOptions(fields);
+			this->menuSortCallback(fields);
 
 			// delay too fast
 			QTimer::singleShot(50, [=]() {
@@ -645,11 +687,11 @@ QMenu* tools::sortMenu(SORT_ITEM model, bool contextual)
 	return menu;
 }
 
-void tools::handleSortOptions(vector<QWidget*> fields)
+void tools::menuSortCallback(vector<QWidget*> fields)
 {
-	debug("handleSortOptions");
+	debug("menuSortCallback");
 
-	this->sort_curr = new sort_options;
+	this->sort_ctx = new sort_context;
 
 	for (auto & item : fields)
 	{
@@ -661,34 +703,15 @@ void tools::handleSortOptions(vector<QWidget*> fields)
 		else if (QCheckBox* field = qobject_cast<QCheckBox*>(item))
 			val = field->isChecked();
 
-		if (key == "by")
-			this->sort_curr->prop = val.toString();
+		if (key == "prop")
+			this->sort_ctx->prop = val.toString();
 		else if (key == "order")
-			this->sort_curr->order = val.toInt();
+			this->sort_ctx->order = val.toInt();
 		else if (key == "selection")
-			this->sort_curr->selecting = val.toBool();
+			this->sort_ctx->selecting = val.toBool();
 		else if (key == "recall")
-			this->sort_curr->recall = val.toBool();
+			this->sort_ctx->recall = val.toBool();
 	}
-}
-
-bool tools::setupSortOptions(e2db::uoopts& opts)
-{
-	if (this->sort_curr == nullptr)
-		return false;
-
-	//TODO per SORT_ITEM
-	// if (this->sort_curr->recall)
-		// return true;
-
-	opts.prop = this->sort_curr->prop.toStdString();
-	opts.order = static_cast<e2db::SORT_ORDER>(this->sort_curr->order);
-	opts.selecting = this->sort_curr->selecting;
-
-	delete this->sort_curr;
-	this->sort_curr = nullptr;
-
-	return true;
 }
 
 void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
@@ -737,7 +760,7 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 	if (this->data->haveErrors())
 		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::importNotice); }, Qt::QueuedConnection);
 
-	if (! read)
+	if (! done(read))
 		return;
 
 	dbih->clearStorage();
@@ -815,7 +838,7 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 	if (this->data->haveErrors())
 		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::exportNotice); }, Qt::QueuedConnection);
 
-	if (! write)
+	if (! done(write))
 		return;
 
 	if (tid->statusBarIsVisible())
@@ -904,7 +927,7 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 	if (this->data->haveErrors())
 		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::exportNotice); }, Qt::QueuedConnection);
 
-	if (! write)
+	if (! done(write))
 		return;
 
 	if (tid->statusBarIsVisible())
@@ -975,7 +998,7 @@ void tools::importFileM3U(e2db::FCONVS fci, e2db::fcopts opts)
 	if (this->data->haveErrors())
 		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::importNotice); }, Qt::QueuedConnection);
 
-	if (! read)
+	if (! done(read))
 		return;
 
 	dbih->clearStorage();
@@ -1101,7 +1124,7 @@ void tools::exportFileM3U(e2db::FCONVS fco, e2db::fcopts opts)
 	if (this->data->haveErrors())
 		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::exportNotice); }, Qt::QueuedConnection);
 
-	if (! write)
+	if (! done(write))
 		return;
 
 	if (tid->statusBarIsVisible())

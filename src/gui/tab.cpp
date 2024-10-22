@@ -1998,7 +1998,7 @@ void tab::toolsUtils(int bit, bool selecting, bool contextual)
 
 	this->tools->applyUtils(bit, opts, contextual);
 
-	if (bit == gui::TAB_ATS::UtilsSort_services && tree_switch)
+	if (bit == gui::TAB_ATS::UtilsSort_services && opts.exec && tree_switch)
 	{
 		mainView* view = reinterpret_cast<mainView*>(this->view);
 

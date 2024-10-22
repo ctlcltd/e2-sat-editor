@@ -11,8 +11,9 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
-using std::string, std::vector;
+using std::string, std::vector, std::map;
 
 #ifndef tools_h
 #define tools_h
@@ -43,19 +44,14 @@ class tools : protected e2se::log_factory
 			Error
 		};
 
-		enum SORT_ITEM {
-			item_transponder,
-			item_service,
-			item_userbouquet,
-			item_reference
-		};
+		using SORT_ITEM = e2db::SORT_ITEM;
 
-		struct sort_options
+		struct sort_context
 		{
 			QString prop;
 			int order;
-			bool selecting;
-			bool recall;
+			bool selecting = false;
+			bool recall = false;
 		};
 
 		tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data);
@@ -76,11 +72,11 @@ class tools : protected e2se::log_factory
 		void inspectUpdate(QTextEdit* view, int filter = 0);
 		void inspectReset();
 		void status(QString message);
-		void done();
-		bool showSortMenu(SORT_ITEM model, bool contextual, e2db::uoopts& opts);
+		bool done(bool exec);
+		bool sortContext(SORT_ITEM model, e2db::uoopts& opts);
+		bool handleSortContext(SORT_ITEM model, bool contextual, e2db::uoopts& opts);
 		QMenu* sortMenu(SORT_ITEM model, bool contextual);
-		void handleSortOptions(vector<QWidget*> fields);
-		bool setupSortOptions(e2db::uoopts& opts);
+		void menuSortCallback(vector<QWidget*> fields);
 
 		static vector<QPair<QString, QString>> sortComboBoxProps(SORT_ITEM model);
 
@@ -92,7 +88,8 @@ class tools : protected e2se::log_factory
 		dataHandler* data = nullptr;
 		size_t inspect_pos = 0;
 		INSPECT_FILTER inspect_curr;
-		sort_options* sort_curr = nullptr;
+		sort_context* sort_ctx = nullptr;
+		map<SORT_ITEM, sort_context*> sort_stg;
 };
 }
 #endif /* tools_h */

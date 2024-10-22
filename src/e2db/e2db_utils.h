@@ -92,6 +92,7 @@ class e2db_utils : virtual public e2db_abstract
 			vector<int> selection;
 			string prop;
 			SORT_ORDER order = sort_asc;
+			bool exec = false;
 		};
 
 		e2db_utils();
