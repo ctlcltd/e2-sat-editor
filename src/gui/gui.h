@@ -149,8 +149,7 @@ class gui : protected e2se::log_factory
 			ToolsExportHTML_userbouquets = 161,
 			ToolsExportHTML_tunersets = 162,
 			ToolsInspector = 0xfe,
-			init = 0, // preset
-			idle = -1 // preset
+			init = 0 // preset
 		};
 
 		inline static const vector<int> GUI_CXE__init = {
@@ -463,10 +462,8 @@ class gui : protected e2se::log_factory
 		static QAction* menuBarSeparator(QMenu* menu);
 		static QActionGroup* menuBarActionGroup(QMenu* menu, bool exclusive = true);
 
-		// gui current bit flags
+		// gui menu bit flags
 		bitset<256> gxe;
-		// gui previous bit flags
-		bitset<256> gex;
 
 	private:
 		QApplication* mroot;
@@ -482,6 +479,7 @@ class gui : protected e2se::log_factory
 		QTabWidget* twid;
 		QMenu* mwind;
 		QActionGroup* mwtabs;
+		bool wstatus = 1; // 0 = idle, 1 = busy
 		string ifpath;
 		unordered_map<int, QAction*> gmenu;
 		unordered_map<int, QAction*> ttmenu;

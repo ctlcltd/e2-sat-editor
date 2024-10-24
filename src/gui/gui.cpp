@@ -1217,22 +1217,13 @@ void gui::windowChanged()
 #ifndef Q_OS_WASM
 	// main window busy
 	if (mroot->activeWindow() || mroot->activeModalWidget() || mroot->activePopupWidget())
-	{
-		// debug("windowChanged", "mwind", "busy");
-		this->gxe = this->gex;
-		updateMenu();
-	}
+		this->wstatus = 1;
 	// main window idle
 	else
-	{
-		// debug("windowChanged", "mwind", "idle");
-		this->gex = this->gxe;
-		setFlags(GUI_CXE::idle);
-	}
-#else
-	this->gxe = this->gex;
-	updateMenu();
+		this->wstatus = 0;
 #endif
+
+	updateMenu();
 
 	QSettings().setValue("geometry", mwid->saveGeometry());
 }
@@ -2231,8 +2222,6 @@ void gui::setFlag(GUI_CXE bit, bool flag)
 	this->gxe.set(position_t (bit), flag);
 	setTabEditActionFlag(bit, flag);
 
-	this->gex = this->gxe;
-
 	QAction* action = gmenu.count(bit) ? gmenu[bit] : nullptr;
 
 	if (action != nullptr)
@@ -2298,11 +2287,6 @@ void gui::setFlags(int preset)
 
 	if (preset == 0)
 		setFlags(GUI_CXE__init);
-	else if (preset == -1)
-		setFlags(GUI_CXE__idle);
-
-	// note: is out of range
-	// debug("setFlags", "flags", getFlags().to_ullong());
 }
 
 int gui::getTabEditActionFlag(GUI_CXE bit)
@@ -2347,18 +2331,42 @@ void gui::updateMenu()
 {
 	// debug("updateMenu");
 
+	bitset<256> gxe;
+
+	// main window busy
+	if (this->wstatus == 1)
+	{
+		gxe = this->gxe;
+	}
+	// main window idle
+	else
+	{
+		typedef size_t position_t;
+
+		for (const int & bit : GUI_CXE__idle)
+		{
+			gxe.set(position_t (bit), true);
+
+			int act = getTabEditActionFlag(GUI_CXE (bit));
+
+			if (act != 0)
+				gxe.set(position_t (act), true);
+
+		}
+	}
+
 	for (auto & x : gmenu)
 	{
 		int bit = x.first;
 
 		if (x.second->isCheckable())
-			x.second->setChecked(this->gxe[bit]);
+			x.second->setChecked(gxe[bit]);
 		else
-			x.second->setEnabled(this->gxe[bit]);
+			x.second->setEnabled(gxe[bit]);
 	}
 
 	// note: is out of range
-	// debug("updateMenu", "flags", getActionFlags().to_ullong());
+	// debug("updateMenu", "flags", gxe.to_ullong());
 }
 
 QLocale gui::getLocale()
