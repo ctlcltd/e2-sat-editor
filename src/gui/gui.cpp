@@ -221,28 +221,30 @@ int gui::exited()
 	return 0;
 }
 
-// maybe a regression in Qt 6.6.x main window lowered [macOS]
-// no way: lower, raise, activateWindow, requestActivateWindow
-// temporary workaround
+// note: workaround
+// main window is deactivated on launch [macOS]
+// a regression in Qt 6.7.x and 6.6.x
+// no way to raise the main window without change the focused window
+// delay main window show on applicationStateChange and with failsafe timer
 void gui::mainWindowShowAndGainFocus()
 {
 #ifdef Q_OS_MAC
 	if (QSettings().value("geometry").isNull())
 	{
 		mwid->resize(960, 670);
-#if QT_VERSION <= QT_VERSION_CHECK(6, 5, 1)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0) || QT_VERSION <= QT_VERSION_CHECK(6, 5, 1)
 		mwid->showMaximized();
 #endif
 	}
 	else
 	{
 		mwid->restoreGeometry(QSettings().value("geometry").toByteArray());
-#if QT_VERSION <= QT_VERSION_CHECK(6, 5, 1)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0) || QT_VERSION <= QT_VERSION_CHECK(6, 5, 1)
 		mwid->show();
 #endif
 	}
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 1)
+#if QT_VERSION < QT_VERSION_CHECK(6, 8, 0) || QT_VERSION > QT_VERSION_CHECK(6, 5, 1)
 	mroot->connect(mroot, &QApplication::applicationStateChanged, [=]() { this->mainWindowDelayedShow(); });
 
 	QTimer::singleShot(6e3, [=]() { this->mainWindowDelayedShow(); });
