@@ -296,6 +296,9 @@ void piconsView::reload()
 	listFindClear();
 
 	populate();
+
+	updateFlags();
+	updateStatusBar();
 }
 
 void piconsView::populate()

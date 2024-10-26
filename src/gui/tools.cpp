@@ -538,9 +538,10 @@ bool tools::handleSortContext(SORT_ITEM model, bool contextual, e2db::uoopts& op
 	if (contextual && sortContext(model, opts))
 		return true;
 
+	bool selecting = opts.selecting;
 	QWidget* wid = tid->lastPopupFocusWidget();
 	QPoint pos = tid->lastPopupFocusPos();
-	QMenu* menu = sortMenu(model, contextual);
+	QMenu* menu = sortMenu(model, selecting, contextual);
 
 	// note: menu loose focus
 	if (! platform::osExperiment())
@@ -567,7 +568,7 @@ bool tools::handleSortContext(SORT_ITEM model, bool contextual, e2db::uoopts& op
 	return sortContext(model, opts);
 }
 
-QMenu* tools::sortMenu(SORT_ITEM model, bool contextual)
+QMenu* tools::sortMenu(SORT_ITEM model, bool selecting, bool contextual)
 {
 	QMenu* menu = new QMenu;
 	vector<QWidget*> fields;
@@ -645,11 +646,12 @@ QMenu* tools::sortMenu(SORT_ITEM model, bool contextual)
 			checker->setText(tr("Recall this set when Sort from context menu"));
 			form->addRow(checker);
 		}
+		if (model != SORT_ITEM::item_userbouquet)
 		{
 			form->addItem(form->spacerItem());
 
 			QCheckBox* checker = new QCheckBox;
-			checker->setChecked(contextual);
+			checker->setChecked(selecting);
 			checker->setProperty("field", "selection");
 			fields.emplace_back(checker);
 			checker->setText(tr("Apply to list selection"));

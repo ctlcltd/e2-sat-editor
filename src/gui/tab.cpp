@@ -1956,7 +1956,7 @@ void tab::toolsUtils(int bit, bool selecting, bool contextual)
 			}
 		}
 
-		if (selecting && bit != gui::TAB_ATS::UtilsSort_userbouquets)
+		if (bit != gui::TAB_ATS::UtilsSort_userbouquets)
 		{
 			QList<QTreeWidgetItem*> selected = view->list->selectedItems();
 
@@ -1965,7 +1965,7 @@ void tab::toolsUtils(int bit, bool selecting, bool contextual)
 				int i = view->list->indexOfTopLevelItem(x);
 				opts.selection.emplace_back(i);
 			}
-			opts.selecting = ! opts.selection.empty();
+			opts.selecting = (selecting || ! contextual) && opts.selection.size() > 1;
 		}
 	}
 	// transponders view
@@ -1976,7 +1976,7 @@ void tab::toolsUtils(int bit, bool selecting, bool contextual)
 		if (bit == gui::TAB_ATS::UtilsSort_references)
 			bit = gui::TAB_ATS::UtilsSort_transponders;
 
-		if (selecting && bit != gui::TAB_ATS::UtilsSort_userbouquets)
+		if (bit != gui::TAB_ATS::UtilsSort_userbouquets)
 		{
 			QList<QTreeWidgetItem*> selected = view->list->selectedItems();
 
@@ -1985,7 +1985,7 @@ void tab::toolsUtils(int bit, bool selecting, bool contextual)
 				int i = view->list->indexOfTopLevelItem(x);
 				opts.selection.emplace_back(i);
 			}
-			opts.selecting = ! opts.selection.empty();
+			opts.selecting = (selecting || ! contextual) && opts.selection.size() > 1;
 		}
 	}
 	else

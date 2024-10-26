@@ -527,6 +527,9 @@ void tunersetsView::reload()
 		populate();
 	}
 
+	updateFlags();
+	updateStatusBar();
+
 	this->state.reload = false;
 }
 

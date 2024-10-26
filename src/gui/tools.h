@@ -75,7 +75,7 @@ class tools : protected e2se::log_factory
 		bool done(bool exec);
 		bool sortContext(SORT_ITEM model, e2db::uoopts& opts);
 		bool handleSortContext(SORT_ITEM model, bool contextual, e2db::uoopts& opts);
-		QMenu* sortMenu(SORT_ITEM model, bool contextual);
+		QMenu* sortMenu(SORT_ITEM model, bool selecting, bool contextual);
 		void menuSortCallback(vector<QWidget*> fields);
 
 		static vector<QPair<QString, QString>> sortComboBoxProps(SORT_ITEM model);

@@ -278,6 +278,9 @@ void transpondersView::reload()
 	listFindClear();
 
 	populate();
+
+	updateFlags();
+	updateStatusBar();
 }
 
 void transpondersView::populate()
@@ -791,7 +794,7 @@ void transpondersView::showListEditContextMenu(QPoint& pos)
 
 	contextMenuAction(list_edit, tr("Edit Transponder", "context-menu"), [=]() { this->editTransponder(); }, editable && tabGetFlag(gui::TabListEditTransponder));
 	contextMenuSeparator(list_edit);
-	contextMenuAction(list_edit, tr("Sort…", "context-menu"), [=]() { this->tabToolsUtils(gui::TAB_ATS::UtilsSort_transponders, true, true); });
+	contextMenuAction(list_edit, tr("Sort…", "context-menu"), [=]() { this->tabToolsUtils(gui::TAB_ATS::UtilsSort_transponders, true); });
 	contextMenuSeparator(list_edit);
 	contextMenuAction(list_edit, tr("Cu&t", "context-menu"), [=]() { this->listItemCut(); }, tabGetFlag(gui::TabListCut), QKeySequence::Cut);
 	contextMenuAction(list_edit, tr("&Copy", "context-menu"), [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);

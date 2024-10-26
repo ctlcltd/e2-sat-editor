@@ -575,12 +575,15 @@ void e2db_utils::remove_duplicates_services()
 
 	for (auto & x : collisions)
 	{
-		string kchid = x.first;
-		i_services.insert(kchid);
+		for (auto & x : x.second)
+		{
+			string chid = x.first;
+			i_services.insert(chid);
+		}
 	}
 
-	for (const string & kchid : i_services)
-		db.services.erase(kchid);
+	for (const string & chid : i_services)
+		db.services.erase(chid);
 
 	collisions.clear();
 
@@ -609,16 +612,16 @@ void e2db_utils::remove_duplicates_services()
 
 			userbouquet& ub = userbouquets[iname];
 
-			for (const string & kchid : i_services)
-				ub.channels.erase(kchid);
+			for (const string & chid : i_services)
+				ub.channels.erase(chid);
 		}
 
 		for (auto & x : bouquets)
 		{
 			bouquet& bs = x.second;
 
-			for (const string & kchid : i_services)
-				bs.services.erase(kchid);
+			for (const string & chid : i_services)
+				bs.services.erase(chid);
 		}
 	}
 
@@ -1118,9 +1121,11 @@ void e2db_utils::rebuild_index_transponders()
 	{
 		string txid = x.second;
 
-		if (! _unique.count(txid))
+		if (db.transponders.count(txid) && ! _unique.count(txid))
 		{
+			transponder& tx = db.transponders[txid];
 			idx += 1;
+			tx.index = idx;
 			txis.emplace_back(pair (idx, txid));
 			_unique.insert(txid);
 		}
@@ -1139,7 +1144,7 @@ void e2db_utils::rebuild_index_services()
 	{
 		string chid = x.second;
 
-		if (! _unique.count(chid))
+		if (db.services.count(chid) && ! _unique.count(chid))
 		{
 			service& ch = db.services[chid];
 			idx += 1;
@@ -1162,7 +1167,9 @@ void e2db_utils::rebuild_index_services()
 		{
 			idx = x.first;
 			string chid = x.second;
-			chis.emplace_back(pair (idx, chid));
+
+			if (db.services.count(chid))
+				chis.emplace_back(pair (idx, chid));
 		}
 
 		index[iname].swap(chis);

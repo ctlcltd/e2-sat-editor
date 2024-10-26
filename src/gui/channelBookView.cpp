@@ -339,7 +339,11 @@ void channelBookView::reload()
 
 	listFindClear();
 
+	resetStatusBar();
+
 	populate();
+
+	updateFlags();
 }
 
 void channelBookView::populate()

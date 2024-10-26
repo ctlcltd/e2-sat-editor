@@ -777,6 +777,9 @@ void mainView::reload()
 	if (this->dialchbook != nullptr)
 		this->dialchbook->reload();
 
+	updateFlags();
+	updateStatusBar();
+
 	this->state.reload = false;
 }
 
@@ -3633,7 +3636,7 @@ void mainView::showTreeEditContextMenu(QPoint& pos)
 		contextMenuSeparator(tree_edit);
 		contextMenuAction(tree_edit, ! ub_parental ? tr("Set Parental lock", "context-menu") : tr("Unset Parental lock", "context-menu"), [=]() { this->toggleUserbouquetParentalLock(); });
 		contextMenuSeparator(tree_edit);
-		contextMenuAction(tree_edit, tr("Sort…", "context-menu"), [=]() { this->tabToolsUtils(gui::TAB_ATS::UtilsSort_references, false, true); });
+		contextMenuAction(tree_edit, tr("Sort…", "context-menu"), [=]() { this->tabToolsUtils(gui::TAB_ATS::UtilsSort_references, false); });
 		contextMenuSeparator(tree_edit);
 		contextMenuAction(tree_edit, tr("&Delete", "context-menu"), [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
 	}
@@ -3703,7 +3706,7 @@ void mainView::showListEditContextMenu(QPoint& pos)
 	else
 		contextMenuAction(list_edit, ! parental ? tr("Set Parental lock", "context-menu") : tr("Unset Parental lock", "context-menu"), [=]() { this->toggleServiceParentalLock(); }, editable && service);
 	contextMenuSeparator(list_edit);
-	contextMenuAction(list_edit, tr("Sort…", "context-menu"), [=]() { this->tabToolsUtils(bit, true, true); });
+	contextMenuAction(list_edit, tr("Sort…", "context-menu"), [=]() { this->tabToolsUtils(bit, true); });
 	contextMenuSeparator(list_edit);
 	contextMenuAction(list_edit, tr("Cu&t", "context-menu"), [=]() { this->listItemCut(); }, tabGetFlag(gui::TabListCut), QKeySequence::Cut);
 	contextMenuAction(list_edit, tr("&Copy", "context-menu"), [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
