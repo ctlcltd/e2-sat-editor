@@ -123,21 +123,29 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 				ss << ':' << (tx.inv != -1 ? tx.inv : 0);
 
 				if (ver > 3)
+				{
 					ss << ':' << (tx.flags != -1 ? tx.flags : 0);
+				}
 
 				if (ver >= 3)
 				{
-					ss << ':' << (tx.sys != -1 ? tx.sys : 0);
-					ss << ':' << (tx.mod != -1 ? tx.mod : 0);
-					ss << ':' << (tx.rol != -1 ? tx.mod : 0);
+					if (tx.sys != -1 || tx.mod != -1 || tx.rol != -1 || (ver > 3 && (tx.mispls || tx.t2mi)))
+					{
+						ss << ':' << (tx.sys != -1 ? tx.sys : 0);
+						ss << ':' << (tx.mod != -1 ? tx.mod : 0);
+						ss << ':' << (tx.rol != -1 ? tx.mod : 0);
+					}
 
 					if (ver > 3)
 					{
-						ss << ':' << (tx.pil != -1 ? tx.pil : 0);
-
-						if (ver == 5 && (tx.mispls || tx.t2mi))
+						if (tx.pil != -1 || (tx.mispls || tx.t2mi))
 						{
-							if (tx.optsverb)
+							ss << ':' << (tx.pil != -1 ? tx.pil : 0);
+						}
+
+						if (tx.mispls || tx.t2mi)
+						{
+							if (ver == 5 && tx.optsverb)
 							{
 								if (tx.mispls)
 								{

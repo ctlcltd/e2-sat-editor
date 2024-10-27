@@ -1914,8 +1914,8 @@ void e2db_abstract::debugger()
 		cout << "ytype: " << tx.ytype << endl;
 		cout << "pos: " << tx.pos << endl;
 		cout << "tsid: " << tx.tsid << endl;
-		cout << hex;
 		cout << "onid: " << tx.onid << endl;
+		cout << hex;
 		cout << "dvbns: " << tx.dvbns << endl;
 		cout << dec;
 		cout << "sys: " << tx.sys << endl;
@@ -1962,8 +1962,8 @@ void e2db_abstract::debugger()
 		cout << "chname: " << ch.chname << endl;
 		cout << "ssid: " << ch.ssid << endl;
 		cout << "tsid: " << ch.tsid << endl;
-		cout << hex;
 		cout << "onid: " << ch.onid << endl;
+		cout << hex;
 		cout << "dvbns: " << ch.dvbns << endl;
 		cout << dec;
 		cout << "onid: " << ch.onid << endl;

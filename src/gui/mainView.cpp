@@ -3153,14 +3153,11 @@ void mainView::listItemPaste()
 				cache[pname].clear();
 			}
 		}
-		// services tree
-		else
-		{
-			cache["chs"].clear();
-			cache["chs:0"].clear();
-			cache["chs:1"].clear();
-			cache["chs:2"].clear();
-		}
+
+		cache["chs"].clear();
+		cache["chs:0"].clear();
+		cache["chs:1"].clear();
+		cache["chs:2"].clear();
 	}
 }
 
