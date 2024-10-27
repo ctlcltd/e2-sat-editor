@@ -777,7 +777,7 @@ QStringList e2db::entryFavourite(channel_reference chref)
 		}
 	}
 
-	return QStringList ({value, NULL, chid, NULL, ssid, tsid, chtype, NULL, NULL, sys, NULL, uri});
+	return QStringList ({value, NULL, chid, NULL, ssid, tsid, chtype, NULL, NULL, sys, NULL, uri, NULL, NULL, NULL, NULL});
 }
 
 QStringList e2db::entryMarker(channel_reference chref)
