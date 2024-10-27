@@ -2,13 +2,13 @@
 <component type="desktop-application">
   <id>io.github.ctlcltd.e2se</id>
   <name>e2 SAT Editor</name>
-  <summary>Satellite channel lists editor: Enigma2, Neutrino, dreambox</summary>
+  <summary>Satellite channel lists editor for Enigma2, Neutrino, dreambox</summary>
   <metadata_license>MIT</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <description>
-    <p>e2 SAT Editor is a satellite channel lists editor with tabbed nav, for Enigma2, Neutrino, dreambox lists.</p>
-    <p>With this software you can upload, download and edit channel lists of your Enigma or Neutrino decoder, merge channel lists, convert lists, export and import channels with spreadsheets, edit services, favourites, transponders, service flags, markers and picons, channel logos.</p>
-    <p>It supports Enigma2, Lamedb 4 and Lamedb 5 channel lists (2.4, 2.5, 2.3, 2.2), Enigma1, Neutrino Zapit XML channel lists (api v1, v2, v3, v4).</p>
+    <p>e2 SAT Editor is a satellite channel lists editor with tab navigation for Set Top Box: Enigma2, Neutrino, dreambox lists.</p>
+    <p>With this software you can upload, download and edit channel lists of your Enigma or Neutrino, merge channel lists, convert lists, export and import channels with spreadsheets, edit services, favourites, transponders, service flags, markers and picons, channel logos.</p>
+    <p>It supports Enigma2, Lamedb 2.4 and Lamedb 2.5 channel lists, Enigma1 (2.3 and 2.2), Neutrino Zapit XML channel lists (api v1, v2, v3, v4).</p>
   </description>
   <categories>
     <category>AudioVideo</category>
@@ -31,6 +31,19 @@
     <binary>e2-sat-editor</binary>
   </provides>
   <releases>
+    <release version="1.7.0" date="1970-01-01">
+      <description>
+        <ul>
+          <li>New utils: autofix, remove duplicates, fix/remove parameters and flags, sort</li>
+          <li>Improved lists compatibility Lamedb 2.x</li>
+          <li>Fix import multiple files</li>
+          <li>Fix convert menu and switcher</li>
+          <li>Fix connection profiles bug</li>
+          <li>Added Neutrino terrestrial services</li>
+          <li>Bugfix</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.6.0" date="2024-07-25">
       <description>
         <ul>
@@ -78,41 +91,20 @@
         </ul>
       </description>
     </release>
-    <release version="1.2.0" date="2024-02-22">
+    <release version="1.2.0" date="2024-02-22" />
       <description>
         <ul>
           <li>Connection presets with most common Set-Top-Box settings</li>
           <li>Connection profile import and export</li>
           <li>FTP improvements</li>
-          <li>Heavy bugfix</li>
+          <li>Bugfix</li>
           <li>Introducing stream type support (only parse and save)</li>
         </ul>
       </description>
     </release>
-    <release version="1.1.1" date="2024-01-20">
-      <description>
-        <ul>
-          <li>Fix FTP issue, file listing and directory</li>
-        </ul>
-      </description>
-    </release>
-    <release version="1.1.0" date="2024-01-15">
-      <description>
-        <ul>
-          <li>Important fixes: remove channel reference, remove service, Drag and Drop logic, tree column widths</li>
-          <li>Prevent crash and strange behaviour</li>
-        </ul>
-      </description>
-    </release>
-    <release version="1.0.0" date="2024-01-04">
-      <description>
-        <ul>
-          <li>File Information dialog</li>
-          <li>Online Help</li>
-          <li>Bugfix</li>
-        </ul>
-      </description>
-    </release>
+    <release version="1.1.1" date="2024-01-20" />
+    <release version="1.1.0" date="2024-01-15" />
+    <release version="1.0.0" date="2024-01-04" />
     <release version="0.9.0" date="2023-09-26" />
     <release version="0.8.0" date="2023-06-13" />
     <release version="0.7.0" date="2023-05-21" />

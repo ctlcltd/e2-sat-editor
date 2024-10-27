@@ -2,11 +2,11 @@
 <component type="desktop-application">
   <id>io.github.ctlcltd.e2se-cli</id>
   <name>e2 SAT Editor CLI</name>
-  <summary>Satellite channel lists editor: Enigma2, Neutrino, dreambox</summary>
+  <summary>e2 SAT Editor command-line interface [e2se-cli]</summary>
   <metadata_license>MIT</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <description>
-    <p>e2 SAT Editor is a satellite channel lists editor with tabbed nav, for Enigma2, Neutrino, dreambox lists.</p>
+    <p>e2 SAT Editor is a satellite channel lists editor with tab navigation, for Set Top Box: Enigma2, Neutrino, dreambox lists.</p>
     <p>e2 SAT Editor command-line interface.</p>
   </description>
   <categories>

@@ -10,8 +10,10 @@ All notable changes to this project will be documented in this file.
 **Full Changelog**: [v1.6.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.6.0...HEAD)
 
 - New utils: autofix, remove duplicates, fix/remove parameters and flags, sort
+- Improved lists compatibility Lamedb 2.x
 - Fix import multiple files
 - Fix convert menu and switcher
+- Fix connection profiles bug
 - Added Neutrino terrestrial services
 - Bugfix
 
@@ -86,7 +88,7 @@ All notable changes to this project will be documented in this file.
 - Connection presets with most common Set-Top-Box settings
 - Connection profile import and export
 - FTP improvements
-- Heavy bugfix
+- Bugfix
 - Introducing stream type support (only parse and save)
 
 
