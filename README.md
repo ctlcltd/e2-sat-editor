@@ -69,19 +69,13 @@ You might need Curl installed with headers, details here: https://curl.se/downlo
 > [!NOTE]
 > Depending on your OS environment, you should install some dependencies (devel)
 
-> [!TIP]
-> Instructions on how to build in [BUILD.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/BUILD.md) file
-
 Clone the repository:
 ```
 git clone https://github.com/ctlcltd/e2-sat-editor.git
 ```
 
-**Requirements:**
-- build tools (`qmake` `cmake` `ninja`)
-- C++17 (`gcc` `clang`)
-- `qt6-base` \| `qt5-base`
-- `libcurl4`
+> [!TIP]
+> Instructions on how to build in [BUILD.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/BUILD.md) file
 
 
 ## Contents
