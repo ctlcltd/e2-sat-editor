@@ -65,6 +65,8 @@ icons_ux () {
 	cp res/e2-sat-editor/icon-64.png dist/xdg/icons/64x64/e2-sat-editor.png
 	cp res/e2-sat-editor/icon-48.png dist/xdg/icons/48x48/e2-sat-editor.png
 	cp res/e2-sat-editor/icon-32.png dist/xdg/icons/32x32/e2-sat-editor.png
+	cp res/e2-sat-editor/icon-cli.svg dist/xdg/icons/scalable/e2se-cli.svg
+	cp res/e2-sat-editor/icon-cli-64.png dist/xdg/icons/64x64/e2se-cli.png
 }
 
 complete () {

@@ -49,6 +49,15 @@ configure_file("../COPYING" "License.txt" @ONLY NEWLINE_STYLE ${NEWLINE})
 if(UNIX AND NOT APPLE)
 	include(GNUInstallDirs)
 
+	install(FILES "../dist/xdg/e2se-cli.desktop"
+		DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+	install(FILES "../dist/xdg/io.github.ctlcltd.e2se-cli.metainfo.xml"
+		DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
+	install(FILES "../dist/xdg/icons/scalable/e2se-cli.svg"
+		DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
+	install(FILES "../dist/xdg/icons/64x64/e2se-cli.png"
+		DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/apps)
+
 	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/Readme.txt"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2se-cli)
 	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/License.txt"

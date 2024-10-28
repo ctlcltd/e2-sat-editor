@@ -187,10 +187,6 @@ if(UNIX AND NOT APPLE)
 
 	install(FILES "../dist/xdg/e2-sat-editor.desktop"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
-	if(NOT WITHOUT_CLI)
-		install(FILES "../dist/xdg/e2se-cli.desktop"
-			DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
-	endif()
 	install(FILES "../dist/xdg/io.github.ctlcltd.e2se.metainfo.xml"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
 
