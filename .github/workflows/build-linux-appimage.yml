@@ -26,6 +26,7 @@ jobs:
         sudo apt-get install cmake ninja-build
         sudo apt-get install libgl1-mesa-dev libglvnd-dev libxcb-xkb-dev libxkbcommon-x11-dev libvulkan-dev
         sudo apt-get install curl libcurl4-openssl-dev
+        sudo apt-get install libcups2-dev
 
     - name: Download deploy tools
       run: |

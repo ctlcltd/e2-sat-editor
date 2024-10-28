@@ -81,6 +81,7 @@
 
 # apt-get install build-essential git
 # apt-get install libgl1-mesa-dev libglvnd-dev libxcb-xkb-dev libxkbcommon-x11-dev libvulkan-dev
+# apt-get install libcups2-dev
 
 # cd
 # git clone https://github.com/ctlcltd/e2-sat-editor.git

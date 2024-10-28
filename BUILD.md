@@ -21,6 +21,9 @@ Libraries required as dependencies:
 - `qt6-translations` \| `qt5-translations`
 - `libcurl4` `libcurl-dev`
 
+Additional requirements for *Qt6PrintSupport* in Linux hosts:
+- `cups-dev`
+
 Additional requirements for *WebAssembly*:
 - *Qt for WebAssembly* to cross-compile
 - `emscripten`
@@ -97,6 +100,7 @@ On *Ubuntu*, the following:
 `curl`, `libcurl4-openssl-dev`  
 `qt6-base-dev`, `qt6-translations-l10n`  
 `libgl1-mesa-dev`, `libglvnd-dev`, `libxcb-xkb-dev`, `libxkbcommon-x11-dev`, `libvulkan-dev`
+`libcups2-dev`
 
 And at your choice:  
 `cmake` or `qmake`
