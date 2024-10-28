@@ -15,20 +15,14 @@ _VERBOSE=false
 _SIMULATE=false
 # private boolean _FORCE_OVERWRITE
 _FORCE_OVERWRITE=false
-# private boolean _DEPLOY_PLUGINS
-_DEPLOY_PLUGINS=true
+# private string _INPUT_FILE
+_INPUT_FILE=""
+# private string _DEST_DIR
+_DEST_DIR=""
+# private string _ENVIRONMENT
+_ENVIRONMENT="MSYS"
 # private string _SYSTEM
 _SYSTEM="MINGW64"
-# private integer _QT_VER
-_QT_VER=6
-# private string _QT_VERSION
-_QT_VERSION="6.7.2"
-# private array _MODULES
-_MODULES=("Core" "Gui" "Widgets")
-# private array _PLUGINS
-_PLUGINS=("platforms" "styles")
-# private array _APPEND_LIBS
-_APPEND_LIBS=()
 # private string _LIB_PATH
 _LIB_PATH=""
 # private string _QT_PATH
@@ -37,10 +31,18 @@ _QT_PATH=""
 _FRAMEWORK_PATH=""
 # private string _PLUGINS_PATH
 _PLUGINS_PATH=""
-# private string _INPUT_FILE
-_INPUT_FILE=""
-# private string _DEST_DIR
-_DEST_DIR=""
+# private integer _QT_VER
+_QT_VER=6
+# private string _QT_VERSION
+_QT_VERSION="6.8.0"
+# private array _MODULES
+_MODULES=("Core" "Gui" "Widgets")
+# private array _PLUGINS
+_PLUGINS=("platforms" "styles")
+# private array _APPEND_LIBS
+_APPEND_LIBS=()
+# private boolean _DEPLOY_PLUGINS
+_DEPLOY_PLUGINS=true
 
 # private integer __QTVER
 __QTVER=""
@@ -60,12 +62,13 @@ usage () {
 	printf "%s\n"   "-f --force                Force overwrite of files"
 	printf "%s\n"   "-o --dest-path            Set a destination path instead of binary directory"
 	printf "%s\n"   "-np --no-deploy-plugins   Disallow plugins deploy"
-	printf "%s\n"   "-system                   Set build system architecture [MINGW64]"
-	printf "%s\n"   "-qt-version               Set Qt version [6.x.x]"
 	printf "%s\n"   "-modules                  Modules to deploy (Core,Gui,Widgets)"
 	printf "%s\n"   "-plugins                  Plugins to deploy (platforms,styles)"
 	printf "%s\n"   "-libraries                Append libraries to deploy ()"
-	printf "%s\n"   "-lib-path                 Set build system lib path"
+	printf "%s\n"   "-environment              Set system environment [MSYS]"
+	printf "%s\n"   "-system                   Set system architecture [MINGW64]"
+	printf "%s\n"   "-qt-version               Set Qt version [6.x.x]"
+	printf "%s\n"   "-lib-path                 Set system environment lib path"
 	printf "%s\n"   "-qt-path                  Set Qt path"
 	printf "%s\n"   "-framework-path           Set Qt framework path"
 	printf "%s\n"   "-plugins-path             Set Qt plugins path"
@@ -74,10 +77,6 @@ usage () {
 
 error () {
 	local msg="$1"
-
-	# if [[ "$_VERBOSE" == true ]]; then
-	# 	echo "$msg"
-	# fi
 
 	echo "$msg" >&2
 }
@@ -186,7 +185,7 @@ lib_path () {
 
 	local lib_path
 
-	if [[ $(is_msys) ]]; then
+	if [[ "$_ENVIRONMENT" == "MSYS" && $(is_msys) ]]; then
 		if [[ "$_SYSTEM" == "MINGW64" ]]; then
 			lib_path="/mingw64"
 		elif [[ "$_SYSTEM" == "MINGW32" ]]; then
@@ -201,9 +200,9 @@ lib_path () {
 			lib_path="/clangarm64"
 		fi
 	else
-		if [[ "$_SYSTEM" == "MINGW64" ]]; then
+		if [[ "$_SYSTEM" == "MINGW64" && -e "/usr/x86_64-w64-mingw32" ]]; then
 			lib_path="/usr/x86_64-w64-mingw32"
-		elif [[ "$_SYSTEM" == "MINGW32" ]]; then
+		elif [[ "$_SYSTEM" == "MINGW32" && -e "/usr/i686-w64-mingw32" ]]; then
 			lib_path="/usr/i686-w64-mingw32"
 		fi
 	fi
@@ -230,6 +229,13 @@ qt_path () {
 	fi
 
 	local qt_path=$(lib_path)
+
+	if [[ -z "$qt_path" ]]; then
+		local tip="You should provide Qt path through -qt-path argument."
+		error "$(printf "Error Qt path unknown\n  %s\n" "$tip")"
+
+		return 1
+	fi
 
 	if [[ ! -e "$qt_path" ]]; then
 		error "$(printf "Error Qt path not found: %s\n" "$qt_path")"
@@ -265,7 +271,7 @@ plugins_path () {
 	local qt_path=$(qt_path)
 	local plugins_path
 
-	if [[ $(is_msys) ]]; then
+	if [[ "$_ENVIRONMENT" == "MSYS" && $(is_msys) ]]; then
 		plugins_path="${qt_path}/share/qt${__QTVER}/plugins"
 	else
 		plugins_path="${qt_path}/lib/qt${__QTVER}/plugins"
@@ -406,7 +412,7 @@ deploy_module () {
 		elif [[ "$_SYSTEM" == "CLANG64" || "$_SYSTEM" == "CLANG32" || "$_SYSTEM" == "CLANGARM64" ]]; then
 			deps+=("libc++" "libunwind")
 		fi
-		if [[ $(is_msys) ]]; then
+		if [[ "$_ENVIRONMENT" == "MSYS" && $(is_msys) ]]; then
 			local semmp="${__QTVERSION#*.}"
 
 			deps+=("libdouble-conversion")
@@ -443,7 +449,7 @@ deploy_module () {
 			"libpcre2-8-0"
 			"libpng16-16"
 		)
-		if [[ $(is_msys) ]]; then
+		if [[ "$_ENVIRONMENT" == "MSYS" && $(is_msys) ]]; then
 			deps+=("libmd4c")
 		fi
 		# requires: Core
@@ -705,8 +711,9 @@ for SRG in "$@"; do
 			shift
 			shift
 			;;
-		-np|--no-deploy-plugins)
-			_DEPLOY_PLUGINS=false
+		-environment*)
+			_ENVIRONMENT="$2"
+			shift
 			shift
 			;;
 		-system*)
@@ -752,6 +759,10 @@ for SRG in "$@"; do
 		-plugins-path*)
 			_PLUGINS_PATH="$2"
 			shift
+			shift
+			;;
+		-np|--no-deploy-plugins)
+			_DEPLOY_PLUGINS=false
 			shift
 			;;
 		-h|--help)

@@ -2,8 +2,8 @@
 # Testing appimage e2-sat-editor
 # 
 
-## Ubuntu 22.04 LTS
-## https://releases.ubuntu.com/jammy/ubuntu-22.04.4-live-server-amd64.iso
+## Ubuntu 22.04.5 LTS
+## https://releases.ubuntu.com/jammy/ubuntu-22.04.5-live-server-amd64.iso
 ## 
 ##
 
@@ -30,9 +30,9 @@
 # apt-get install libzstd-dev zlib1g-dev libmtdev-dev
 # apt-get install llvm clang clang-tools libclang-dev
 # df -h
-# wget https://master.qt.io/archive/qt/6.7/6.7.0/single/qt-everywhere-src-6.7.0.tar.xz
-# tar -xf qt-everywhere-src-6.7.0.tar.xz
-# cd qt-everywhere-src-6.7.0
+# wget https://master.qt.io/archive/qt/6.8/6.8.0/single/qt-everywhere-src-6.8.0.tar.xz
+# tar -xf qt-everywhere-src-6.8.0.tar.xz
+# cd qt-everywhere-src-6.8.0
 # cmake -DCMAKE_BUILD_TYPE=None -DCMAKE_INSTALL_PREFIX=/usr/local -DINSTALL_BINDIR=lib/qt6/bin -DINSTALL_PUBLICBINDIR=usr/bin -DINSTALL_LIBEXECDIR=lib/qt6 -DINSTALL_DOCDIR=share/doc/qt6 -DINSTALL_ARCHDATADIR=lib/qt6 -DINSTALL_DATADIR=share/qt6 -DINSTALL_INCLUDEDIR=include/qt6 -DINSTALL_MKSPECSDIR=lib/qt6/mkspecs -DINSTALL_EXAMPLESDIR=share/doc/qt6/examples -G Ninja . -DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=ON -DCMAKE_FIND_USE_PACKAGE_REGISTRY=OFF -DCMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY=ON -DCMAKE_SKIP_INSTALL_ALL_DEPENDENCY=ON -DCMAKE_VERBOSE_MAKEFILE=ON -DBUILD_EXAMPLES=OFF -DFEATURE_mimetype_database=OFF -DFEATURE_dbus_linked=ON -DFEATURE_accessibility=ON -DFEATURE_doubleconversion=ON -DFEATURE_glib=ON -DFEATURE_icu=ON -DFEATURE_pcre2=ON -DFEATURE_system_pcre2=ON -DFEATURE_zlib=ON -DFEATURE_ssl=ON -DFEATURE_libproxy=ON -DFEATURE_system_proxies=ON -DFEATURE_cups=ON -DFEATURE_fontconfig=ON -DFEATURE_freetype=ON -DFEATURE_harfbuzz=ON -DFEATURE_xcb=ON -DFEATURE_system_xcb_xinput=ON -DFEATURE_gtk=ON -DFEATURE_directfb=OFF -DFEATURE_sql_odbc=ON -DFEATURE_sql_mysql=ON -DFEATURE_sql_psql=ON -DFEATURE_sql_sqlite=ON -DFEATURE_system_sqlite=ON -DFEATURE_jpeg=ON -DFEATURE_system_jpeg=ON -DFEATURE_png=ON -DFEATURE_system_png=ON -DFEATURE_system_libb2=ON -DFEATURE_rpath=OFF -DFEATURE_relocatable=OFF -DFEATURE_sql_ibase=ON -DFEATURE_sctp=ON
 # cat config.summary | less
 # cmake --build . --parallel -t qtbase -t qtimageformats -t qtsvg -t qttools -t qtwayland
@@ -57,9 +57,9 @@
 
 # apt-get remove curl
 # apt-get install libssl-dev
-# wget https://curl.se/download/curl-8.7.1.tar.xz
-# tar -xf curl-8.7.1.tar.xz
-# cd curl-8.7.1
+# wget https://curl.se/download/curl-8.10.1.tar.xz
+# tar -xf curl-8.10.1.tar.xz
+# cd curl-8.10.1
 # ./configure --prefix=/usr/local --with-openssl --without-libpsl --enable-versioned-symbols
 # make -j 2
 # make install
@@ -84,7 +84,7 @@
 
 # cd
 # git clone https://github.com/ctlcltd/e2-sat-editor.git
-# git checkout v1.5.0
+# git checkout v1.6.0
 # cd e2-sat-editor
 
 ./scripts/translations.sh -m
@@ -131,7 +131,7 @@ chmod +x e2_SAT_Editor-x86_64.AppImage
 
 appimagetool squashfs-root --sign --sign-key $MY_SIGN_KEY
 
-mv e2_SAT_Editor-x86_64.AppImage e2-sat-editor-1.5.0-x86_64.AppImage
+mv e2_SAT_Editor-x86_64.AppImage e2-sat-editor-1.6.0-x86_64.AppImage
 
-# ./e2-sat-editor-1.5.0-x86_64.AppImage --appimage-signature
+# ./e2-sat-editor-1.6.0-x86_64.AppImage --appimage-signature
 

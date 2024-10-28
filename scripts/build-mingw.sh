@@ -147,7 +147,7 @@ release () {
 
 	bash ../scripts/deployqtwin.sh "build/e2-sat-editor.exe" \
 		--verbose \
-		-qt-version 6.7.1 \
+		-qt-version 6.8.0 \
 		-modules Core,Gui,Widgets,PrintSupport \
 		-libraries libcurl-4.dll,libcrypto-3-x64.dll,libidn2-0.dll,libnghttp2-14.dll,libnghttp3-9.dll,libpsl-5.dll,libssh2.dll,libssl-3-x64.dll,libunistring-5.dll
 
@@ -178,7 +178,7 @@ release_early () {
 	bash ../scripts/deployqtwin.sh "build/e2-sat-editor.exe" \
 		--verbose \
 		-system MINGW32 \
-		-qt-version 5.15.14 \
+		-qt-version 5.15.15 \
 		-modules Core,Gui,Widgets,PrintSupport \
 		-plugins platforms,styles,printsupport \
 		-libraries libcurl-4.dll,libcrypto-3.dll,libidn2-0.dll,libnghttp2-14.dll,libnghttp3-9.dll,libpsl-5.dll,libssh2.dll,libssl-3.dll,libunistring-5.dll
