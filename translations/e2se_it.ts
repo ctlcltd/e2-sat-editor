@@ -198,95 +198,6 @@ Attendere qualche minuto e riprovare.</translation>
     </message>
 </context>
 <context>
-    <name>convertM3u</name>
-    <message>
-        <source>Import M3U</source>
-        <comment>dialog</comment>
-        <translation>Importa M3U</translation>
-    </message>
-    <message>
-        <source>Export M3U</source>
-        <comment>dialog</comment>
-        <translation>Esporta M3U</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <comment>dialog</comment>
-        <translation>Annulla</translation>
-    </message>
-    <message>
-        <source>Import</source>
-        <comment>dialog</comment>
-        <translation>Importa</translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <comment>dialog</comment>
-        <translation>Esporta</translation>
-    </message>
-    <message>
-        <source>Channel group options</source>
-        <translation>Opzioni gruppo canali</translation>
-    </message>
-    <message>
-        <source>Discard Reference ID if set</source>
-        <translation>Elimina Reference ID se impostato</translation>
-    </message>
-    <message>
-        <source>Select Userbouquets</source>
-        <translation>Seleziona Userbouquets</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation>Nome</translation>
-    </message>
-    <message>
-        <source>Filename</source>
-        <translation>Nome file</translation>
-    </message>
-    <message>
-        <source>Set channel Reference ID</source>
-        <translation>Imposta Reference ID del canale</translation>
-    </message>
-    <message>
-        <source>Set channel number</source>
-        <translation>Imposta numero di canale</translation>
-    </message>
-    <message>
-        <source>Set channel group name</source>
-        <translation>Imposta nome gruppo di canali</translation>
-    </message>
-    <message>
-        <source>Set channel logos URL placeholder</source>
-        <translation>Imposta segnaposto URL per loghi canali</translation>
-    </message>
-    <message>
-        <source>Channel logos base URL</source>
-        <translation>URL base per loghi canali</translation>
-    </message>
-    <message>
-        <source>Select channel logos folder</source>
-        <comment>file-dialog</comment>
-        <translation>Seleziona la cartella per loghi canali</translation>
-    </message>
-    <message>
-        <source>Import each group in separate userbouquets</source>
-        <translation>Importa in userbouquets separati</translation>
-    </message>
-    <message>
-        <source>Import all entries in one userbouquet</source>
-        <translation>Importa tutto in un singolo userbouquet</translation>
-    </message>
-    <message>
-        <source>Export each bouquet in separate files</source>
-        <translation>Esporta in file separati</translation>
-    </message>
-    <message>
-        <source>Export all entries in one file</source>
-        <translation>Esporta tutto in un singolo file</translation>
-    </message>
-</context>
-<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -335,6 +246,95 @@ Attendere qualche minuto e riprovare.</translation>
         <source>Add</source>
         <comment>dialog</comment>
         <translation>Aggiungi</translation>
+    </message>
+</context>
+<context>
+    <name>dialConvertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>Importa M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>Esporta M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>Annulla</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>Importa</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>Esporta</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>Opzioni gruppo canali</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>Importa in userbouquets separati</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>Importa tutto in un singolo userbouquet</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>Elimina Reference ID se impostato</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>Seleziona Userbouquets</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nome</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Nome file</translation>
+    </message>
+    <message>
+        <source>Export each bouquet in separate files</source>
+        <translation>Esporta in file separati</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>Esporta tutto in un singolo file</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>Imposta Reference ID del canale</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>Imposta numero di canale</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>Imposta nome gruppo di canali</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>Imposta segnaposto URL per loghi canali</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>URL base per loghi canali</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>Seleziona la cartella per loghi canali</translation>
     </message>
 </context>
 <context>
@@ -488,6 +488,16 @@ Attendere qualche minuto e riprovare.</translation>
         <source>Not supported yet.</source>
         <comment>error</comment>
         <translation>Non supportato.</translation>
+    </message>
+    <message>
+        <source>Bouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Il bouquet &quot;%s&quot; è pre-esistente.</translation>
+    </message>
+    <message>
+        <source>Userbouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Il userbouquet &quot;%s&quot; è pre-esistente.</translation>
     </message>
 </context>
 <context>
@@ -1064,10 +1074,6 @@ Attendere qualche minuto e riprovare.</translation>
         <translation>flags</translation>
     </message>
     <message>
-        <source>pls / mis id</source>
-        <translation>pls / mis id</translation>
-    </message>
-    <message>
         <source>pls code</source>
         <translation>pls code</translation>
     </message>
@@ -1090,6 +1096,14 @@ Attendere qualche minuto e riprovare.</translation>
     <message>
         <source>calc</source>
         <translation>calc</translation>
+    </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
     </message>
 </context>
 <context>
@@ -1295,6 +1309,14 @@ Attendere qualche minuto e riprovare.</translation>
         <source>plp id</source>
         <translation>plp id</translation>
     </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
+    </message>
 </context>
 <context>
     <name>editUserbouquet</name>
@@ -1393,6 +1415,7 @@ Attendere qualche minuto e riprovare.</translation>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
+        <extracomment>curl_easy_strerror error string</extracomment>
         <translation>Impossibile connettersi al server</translation>
     </message>
     <message>
@@ -1409,6 +1432,27 @@ Attendere qualche minuto e riprovare.</translation>
         <source>Couldn&apos;t connect to STB FTP</source>
         <comment>error</comment>
         <translation>Impossibile connettersi a STB FTP</translation>
+    </message>
+    <message>
+        <source>Please select a connection profile then connect.</source>
+        <comment>error</comment>
+        <translation>Selezionare un profilo di connessione e riconnettere.</translation>
+    </message>
+    <message>
+        <source>Webif Reload Error</source>
+        <comment>error</comment>
+        <translation>Errore ricaricamento Webif</translation>
+    </message>
+    <message>
+        <source>Telnet Reload Error</source>
+        <comment>error</comment>
+        <translation>Errore ricaricamento Telnet</translation>
+    </message>
+    <message>
+        <source>Check connection profile and settings integrity.%1Preference values are not valid.</source>
+        <comment>error</comment>
+        <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
+        <translation>Controllare l&apos;integrità del profilo di connessione e delle impostazioni.%1I valori delle preferenze non sono validi.</translation>
     </message>
 </context>
 <context>
@@ -2060,6 +2104,181 @@ Attendere qualche minuto e riprovare.</translation>
         <comment>menu</comment>
         <translation>Sostituisci picon</translation>
     </message>
+    <message>
+        <source>Convert</source>
+        <comment>menu</comment>
+        <translation>Conversione</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Pulizia</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Rimuovi servizi orfani</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Rimuovi references orfane</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Correggi bouquets</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Correggi bouquets, userbouquets unici</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Correggi (rimuovi) references errate</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Parametri</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Rimuovi cached servizio</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Rimuovi CAID servizio</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Rimuovi flags servizio</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Rimuovi tutti i dati servizio</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Ricalcola DVBNS per i servizi</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Rimuovi</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Rimuovi elementi non referenziati (preferiti)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>Rimuovi (servizi non utilizzati) dai bouquets </translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Rimuovi blocco parentale</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Rimuovi tutti i bouquets</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Rimuovi tutti i userbouquets</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Duplicati</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Rimuovi markers duplicati (nomi)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Rimuovi references duplicate</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Rimuovi servizi duplicati</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Rimuovi transponders duplicati</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Rimuovi tutti i duplicati</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Trasforma</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Trasforma transponders in settings XML</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>Trasforma settings XML in transponders</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Ordina</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Ordina references…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Ordina servizi…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Ordina transponders…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Ordina userbouquets…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>Edit&amp;or</source>
+        <comment>menu</comment>
+        <translation>Edit&amp;or</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2447,6 +2666,11 @@ Attendere qualche minuto e riprovare.</translation>
         <source>Add Stream</source>
         <comment>toolbar</comment>
         <translation>Aggiungi Stream</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Ordina…</translation>
     </message>
 </context>
 <context>
@@ -3547,6 +3771,296 @@ Attendere qualche minuto e riprovare.</translation>
         <comment>message</comment>
         <translation>Vuoi eliminare questi elementi?</translation>
     </message>
+    <message>
+        <source>Tools</source>
+        <comment>toolbar</comment>
+        <translation>Strumenti</translation>
+    </message>
+    <message>
+        <source>autofix</source>
+        <comment>toolbar</comment>
+        <translation>autofix</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Pulizia</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Rimuovi servizi orfani</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Rimuovi references orfane</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Correggi bouquets</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Correggi bouquets, userbouquets unici</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Correggi (rimuovi) references errate</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Parametri</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Rimuovi cached servizio</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Rimuovi CAID servizio</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Rimuovi flags servizio</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Rimuovi tutti i dati servizio</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Ricalcola DVBNS per i servizi</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Rimuovi</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Rimuovi elementi non referenziati (preferiti)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>Rimuovi (servizi non utilizzati) dai bouquets </translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Rimuovi blocco parentale</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Rimuovi tutti i bouquets</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Rimuovi tutti i userbouquets</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Duplicati</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Rimuovi markers duplicati (nomi)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Rimuovi references duplicate</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Rimuovi servizi duplicati</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Rimuovi transponders duplicati</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Rimuovi tutti i duplicati</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Trasforma</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Trasforma transponders in settings XML</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>Trasforma settings XML in transponders</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Ordina</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Ordina references…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Ordina servizi…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Ordina transponders…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Ordina userbouquets…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>menu</comment>
+        <translation>Importa</translation>
+    </message>
+    <message>
+        <source>Import…</source>
+        <comment>menu</comment>
+        <translation>Importa…</translation>
+    </message>
+    <message>
+        <source>Import from CSV</source>
+        <comment>menu</comment>
+        <translation>Importa da CSV</translation>
+    </message>
+    <message>
+        <source>Import Services</source>
+        <comment>menu</comment>
+        <translation>Importa servizi</translation>
+    </message>
+    <message>
+        <source>Import Bouquet</source>
+        <comment>menu</comment>
+        <translation>Importa bouquet</translation>
+    </message>
+    <message>
+        <source>Import Userbouquet</source>
+        <comment>menu</comment>
+        <translation>Importa userbouquet</translation>
+    </message>
+    <message>
+        <source>Import Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Importa tuner settings</translation>
+    </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>Importa da M3U</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>menu</comment>
+        <translation>Esporta</translation>
+    </message>
+    <message>
+        <source>Export…</source>
+        <comment>menu</comment>
+        <translation>Esporta…</translation>
+    </message>
+    <message>
+        <source>Export to CSV</source>
+        <comment>menu</comment>
+        <translation>Esporta in CSV</translation>
+    </message>
+    <message>
+        <source>Export current</source>
+        <comment>menu</comment>
+        <translation>Esporta corrente</translation>
+    </message>
+    <message>
+        <source>Export All</source>
+        <comment>menu</comment>
+        <translation>Esporta tutto</translation>
+    </message>
+    <message>
+        <source>Export Services</source>
+        <comment>menu</comment>
+        <translation>Esporta servizi</translation>
+    </message>
+    <message>
+        <source>Export Bouquets</source>
+        <comment>menu</comment>
+        <translation>Esporta bouquets</translation>
+    </message>
+    <message>
+        <source>Export Userbouquets</source>
+        <comment>menu</comment>
+        <translation>Esporta userbouquets</translation>
+    </message>
+    <message>
+        <source>Export Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Esporta tuner settings</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>Esporta in M3U</translation>
+    </message>
+    <message>
+        <source>Export to HTML</source>
+        <comment>menu</comment>
+        <translation>Esporta in HTML</translation>
+    </message>
+    <message>
+        <source>Export Index</source>
+        <comment>menu</comment>
+        <translation>Esporta indice</translation>
+    </message>
+    <message>
+        <source>Log Inspector</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Errore Utils</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Errore durante l&apos;esecuzione di utils.</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3603,6 +4117,307 @@ Attendere qualche minuto e riprovare.</translation>
         <source>There are not stream type references in userbouquets to export.</source>
         <comment>message</comment>
         <translation>Non ci sono riferimenti di tipo stream negli userbouquets da esportare.</translation>
+    </message>
+    <message>
+        <source>Done</source>
+        <comment>message</comment>
+        <translation>Eseguito</translation>
+    </message>
+    <message>
+        <source>Done!</source>
+        <comment>message</comment>
+        <translation>Eseguito!</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services …</source>
+        <comment>message</comment>
+        <translation>Rimuovi servizi orfani …</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references …</source>
+        <comment>message</comment>
+        <translation>Rimuovi references orfane …</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors …</source>
+        <comment>message</comment>
+        <translation>Correggi bouquets …</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services …</source>
+        <comment>message</comment>
+        <translation>Correggi bouquets, userbouquets unici …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets …</source>
+        <comment>message</comment>
+        <translation>Correggi (rimuovi) references errate …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets …</source>
+        <comment>message</comment>
+        <translation>Rimuovi cached servizio …</translation>
+    </message>
+    <message>
+        <source>Remove service cached …</source>
+        <comment>message</comment>
+        <translation>Rimuovi CAID servizio …</translation>
+    </message>
+    <message>
+        <source>Remove service CAID …</source>
+        <comment>message</comment>
+        <translation>Rimuovi flags servizio …</translation>
+    </message>
+    <message>
+        <source>Remove service flags …</source>
+        <comment>message</comment>
+        <translation>Rimuovi tutti i dati servizio …</translation>
+    </message>
+    <message>
+        <source>Remove all service data …</source>
+        <comment>message</comment>
+        <translation>Ricalcola DVBNS per i servizi …</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites) …</source>
+        <comment>message</comment>
+        <translation>Rimuovi elementi non referenziati (preferiti) …</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services) …</source>
+        <comment>message</comment>
+        <translation>Rimuovi (servizi non utilizzati) dai bouquets  …</translation>
+    </message>
+    <message>
+        <source>Remove parental lock …</source>
+        <comment>message</comment>
+        <translation>Rimuovi blocco parentale …</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets …</source>
+        <comment>message</comment>
+        <translation>Rimuovi tutti i bouquets …</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets …</source>
+        <comment>message</comment>
+        <translation>Rimuovi tutti i userbouquets …</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates …</source>
+        <comment>message</comment>
+        <translation>Rimuovi markers duplicati (nomi) …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders …</source>
+        <comment>message</comment>
+        <translation>Rimuovi references duplicate …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services …</source>
+        <comment>message</comment>
+        <translation>Rimuovi servizi duplicati …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references …</source>
+        <comment>message</comment>
+        <translation>Rimuovi transponders duplicati …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names) …</source>
+        <comment>message</comment>
+        <translation>Rimuovi tutti i duplicati …</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings …</source>
+        <comment>message</comment>
+        <translation>Trasforma transponders in settings XML …</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders …</source>
+        <comment>message</comment>
+        <translation>Trasforma settings XML in transponders …</translation>
+    </message>
+    <message>
+        <source>Sort transponders …</source>
+        <comment>message</comment>
+        <translation>Ordina transponders …</translation>
+    </message>
+    <message>
+        <source>Sort services …</source>
+        <comment>message</comment>
+        <translation>Ordina servizi …</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets …</source>
+        <comment>message</comment>
+        <translation>Ordina userbouquets …</translation>
+    </message>
+    <message>
+        <source>Sort references …</source>
+        <comment>message</comment>
+        <translation>Ordina references …</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Errore Utils</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Errore durante l&apos;esecuzione di utils.</translation>
+    </message>
+    <message>
+        <source>Executing macro …</source>
+        <comment>message</comment>
+        <translation>Esecuzione della macro …</translation>
+    </message>
+    <message>
+        <source>Error executing macro.</source>
+        <comment>error</comment>
+        <translation>Errore durante l&apos;esecuzione della macro.</translation>
+    </message>
+    <message>
+        <source>Sort transponders</source>
+        <comment>dialog</comment>
+        <translation>Ordina transponders</translation>
+    </message>
+    <message>
+        <source>Sort services</source>
+        <comment>dialog</comment>
+        <translation>Ordina servizi</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets</source>
+        <comment>dialog</comment>
+        <translation>Ordina userbouquets</translation>
+    </message>
+    <message>
+        <source>Sort references</source>
+        <comment>dialog</comment>
+        <translation>Ordina references</translation>
+    </message>
+    <message>
+        <source>ascending</source>
+        <translation>crescente</translation>
+    </message>
+    <message>
+        <source>descending</source>
+        <translation>decrescente</translation>
+    </message>
+    <message>
+        <source>Recall this set when Sort from context menu</source>
+        <translation>Richiama questo set da Ordina nel menu contestuale</translation>
+    </message>
+    <message>
+        <source>Apply to list selection</source>
+        <translation>Applica ai selezionati nella lista</translation>
+    </message>
+    <message>
+        <source>Apply Sort</source>
+        <comment>dialog</comment>
+        <translation>Ordina</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Nome file</translation>
+    </message>
+    <message>
+        <source>Bouquet Name</source>
+        <translation>Nome bouquet</translation>
+    </message>
+    <message>
+        <source>Parent Filename</source>
+        <translation>Nome file genitore</translation>
+    </message>
+    <message>
+        <source>Bouquet Type</source>
+        <translation>Tipo bouquet</translation>
+    </message>
+    <message>
+        <source>Parental Lock</source>
+        <translation>Blocco parentale</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation>Indice</translation>
+    </message>
+    <message>
+        <source>Channel Name</source>
+        <translation>Nome canale</translation>
+    </message>
+    <message>
+        <source>SSID</source>
+        <translation>SSID</translation>
+    </message>
+    <message>
+        <source>TSID</source>
+        <translation>TSID</translation>
+    </message>
+    <message>
+        <source>ONID</source>
+        <translation>ONID</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation>URI</translation>
+    </message>
+    <message>
+        <source>FAV Name</source>
+        <translation>Nome FAV</translation>
+    </message>
+    <message>
+        <source>FAV Index</source>
+        <translation>Indice FAV</translation>
+    </message>
+    <message>
+        <source>Transponder order</source>
+        <translation>Ordine trasponders</translation>
+    </message>
+    <message>
+        <source>Provider Name</source>
+        <translation>Nome provider</translation>
+    </message>
+    <message>
+        <source>Service Type</source>
+        <translation>Tipo servizio</translation>
+    </message>
+    <message>
+        <source>Service Number</source>
+        <translation>Numero servizio</translation>
+    </message>
+    <message>
+        <source>Src ID</source>
+        <translation>Src ID</translation>
+    </message>
+    <message>
+        <source>Transponder Type</source>
+        <translation>Tipo transponder</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation>Posizione</translation>
+    </message>
+    <message>
+        <source>Frequency</source>
+        <translation>Frequenza</translation>
+    </message>
+    <message>
+        <source>SR</source>
+        <translation>SR</translation>
+    </message>
+    <message>
+        <source>Polarization</source>
+        <translation>Polarizzazione</translation>
+    </message>
+    <message>
+        <source>System</source>
+        <translation>System</translation>
     </message>
 </context>
 <context>
@@ -3742,6 +4557,11 @@ Attendere qualche minuto e riprovare.</translation>
         <source>Transponder</source>
         <comment>toolbar</comment>
         <translation>Transponder</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Ordina…</translation>
     </message>
 </context>
 <context>

@@ -191,95 +191,6 @@ Vänta några minuter och försök igen.</translation>
     </message>
 </context>
 <context>
-    <name>convertM3u</name>
-    <message>
-        <source>Import M3U</source>
-        <comment>dialog</comment>
-        <translation>Importera M3U</translation>
-    </message>
-    <message>
-        <source>Export M3U</source>
-        <comment>dialog</comment>
-        <translation>Exportera M3U</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <comment>dialog</comment>
-        <translation>Avbryt</translation>
-    </message>
-    <message>
-        <source>Import</source>
-        <comment>dialog</comment>
-        <translation>Import</translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <comment>dialog</comment>
-        <translation>Export</translation>
-    </message>
-    <message>
-        <source>Channel group options</source>
-        <translation>Kanalgrupps alternativ</translation>
-    </message>
-    <message>
-        <source>Discard Reference ID if set</source>
-        <translation>Släng Reference ID om det är inställt</translation>
-    </message>
-    <message>
-        <source>Select Userbouquets</source>
-        <translation>Välj userbouquets</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation>Namn</translation>
-    </message>
-    <message>
-        <source>Filename</source>
-        <translation>Filnamn</translation>
-    </message>
-    <message>
-        <source>Set channel Reference ID</source>
-        <translation>Ställ in kanalen Reference ID</translation>
-    </message>
-    <message>
-        <source>Set channel number</source>
-        <translation>Ställ in kanal nummer</translation>
-    </message>
-    <message>
-        <source>Set channel group name</source>
-        <translation>Ställ in namnet på kanalgruppen</translation>
-    </message>
-    <message>
-        <source>Set channel logos URL placeholder</source>
-        <translation>Ställ in kanallogotypers URL platshållare</translation>
-    </message>
-    <message>
-        <source>Channel logos base URL</source>
-        <translation>Kanal logo bas-adress</translation>
-    </message>
-    <message>
-        <source>Select channel logos folder</source>
-        <comment>file-dialog</comment>
-        <translation>Välj mappen för kanal logo</translation>
-    </message>
-    <message>
-        <source>Import each group in separate userbouquets</source>
-        <translation>Importera i separata userbouquets</translation>
-    </message>
-    <message>
-        <source>Import all entries in one userbouquet</source>
-        <translation>Importera allt i en userbouquet</translation>
-    </message>
-    <message>
-        <source>Export each bouquet in separate files</source>
-        <translation>Exportera i separata filer</translation>
-    </message>
-    <message>
-        <source>Export all entries in one file</source>
-        <translation>Exportera allt i en fil</translation>
-    </message>
-</context>
-<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -328,6 +239,95 @@ Vänta några minuter och försök igen.</translation>
         <source>Add</source>
         <comment>dialog</comment>
         <translation>Lägg till</translation>
+    </message>
+</context>
+<context>
+    <name>dialConvertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>Importera M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>Exportera M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>Avbryt</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>Import</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>Export</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>Kanalgrupps alternativ</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>Importera i separata userbouquets</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>Importera allt i en userbouquet</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>Släng Reference ID om det är inställt</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>Välj userbouquets</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Namn</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Filnamn</translation>
+    </message>
+    <message>
+        <source>Export each bouquet in separate files</source>
+        <translation>Exportera i separata filer</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>Exportera allt i en fil</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>Ställ in kanalen Reference ID</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>Ställ in kanal nummer</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>Ställ in namnet på kanalgruppen</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>Ställ in kanallogotypers URL platshållare</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>Kanal logo bas-adress</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>Välj mappen för kanal logo</translation>
     </message>
 </context>
 <context>
@@ -481,6 +481,16 @@ Vänta några minuter och försök igen.</translation>
         <source>Not supported yet.</source>
         <comment>error</comment>
         <translation>Stöds inte ännu.</translation>
+    </message>
+    <message>
+        <source>Bouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Bouquet &quot;%s&quot; finns redan.</translation>
+    </message>
+    <message>
+        <source>Userbouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Userbouquet &quot;%s&quot; finns redan.</translation>
     </message>
 </context>
 <context>
@@ -1057,10 +1067,6 @@ Vänta några minuter och försök igen.</translation>
         <translation>flags</translation>
     </message>
     <message>
-        <source>pls / mis id</source>
-        <translation>pls / mis id</translation>
-    </message>
-    <message>
         <source>pls code</source>
         <translation>pls code</translation>
     </message>
@@ -1083,6 +1089,14 @@ Vänta några minuter och försök igen.</translation>
     <message>
         <source>calc</source>
         <translation>beräkn</translation>
+    </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
     </message>
 </context>
 <context>
@@ -1288,6 +1302,14 @@ Vänta några minuter och försök igen.</translation>
         <source>plp id</source>
         <translation>plp id</translation>
     </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
+    </message>
 </context>
 <context>
     <name>editUserbouquet</name>
@@ -1386,6 +1408,7 @@ Vänta några minuter och försök igen.</translation>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
+        <extracomment>curl_easy_strerror error string</extracomment>
         <translation>Det gick inte att ansluta till servern</translation>
     </message>
     <message>
@@ -1402,6 +1425,27 @@ Vänta några minuter och försök igen.</translation>
         <source>Couldn&apos;t connect to STB FTP</source>
         <comment>error</comment>
         <translation>Det gick inte att ansluta till STB FTP</translation>
+    </message>
+    <message>
+        <source>Please select a connection profile then connect.</source>
+        <comment>error</comment>
+        <translation>Välj en anslutnings profil och anslut sedan.</translation>
+    </message>
+    <message>
+        <source>Webif Reload Error</source>
+        <comment>error</comment>
+        <translation>Webif ladda om Fel</translation>
+    </message>
+    <message>
+        <source>Telnet Reload Error</source>
+        <comment>error</comment>
+        <translation>Telnet ladda om Fel</translation>
+    </message>
+    <message>
+        <source>Check connection profile and settings integrity.%1Preference values are not valid.</source>
+        <comment>error</comment>
+        <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
+        <translation>Kontrollera anslutnings profilen och inställningarnas integritet.%1Inställnings värden är ogiltiga.</translation>
     </message>
 </context>
 <context>
@@ -2053,6 +2097,181 @@ Vänta några minuter och försök igen.</translation>
         <comment>menu</comment>
         <translation>Byt picon</translation>
     </message>
+    <message>
+        <source>Convert</source>
+        <comment>menu</comment>
+        <translation>Konvertera</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Rengöring</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Ta bort föräldralösa tjänster</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Ta bort föräldralösa referenser</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Fixa bouquets</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Fixa bouquets, unika userbouquets</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Fixa (ta bort) referens med fel</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Params</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Ta bort tjänst cachad</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Ta bort tjänst CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Ta bort tjänst flags</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Ta bort all tjänst data</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Beräkna om DVBNS för tjänster</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Avlägsna</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Ta bort objekt utan referens (favoriter)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>Ta bort (oanvända tjänster) från bouquets</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Ta bort föräldralåset</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Ta bort alla bouquets</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Ta bort alla userbouquets</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Dubletter</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Ta bort dubbletter av markers (namn)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Ta bort dubbletter av referenser</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Ta bort dubbletter av tjänster</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Ta bort dubbletter av transpondrar</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Ta bort alla dubbletter</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Förvandla</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Förvandla transpondrar till XML settings</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>Förvandla XML settings till transpondrar</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Sortera</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Sortera referenser…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Sortera tjänster…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Sortera transpondrar…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Sortera userbouquets…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>Edit&amp;or</source>
+        <comment>menu</comment>
+        <translation>Edit&amp;or</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2440,6 +2659,11 @@ Vänta några minuter och försök igen.</translation>
         <source>Add Stream</source>
         <comment>toolbar</comment>
         <translation>Lägg till Stream</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Sortera…</translation>
     </message>
 </context>
 <context>
@@ -3540,6 +3764,296 @@ Vänta några minuter och försök igen.</translation>
         <comment>message</comment>
         <translation>Vill du ta bort objekt?</translation>
     </message>
+    <message>
+        <source>Tools</source>
+        <comment>toolbar</comment>
+        <translation>Verktyg</translation>
+    </message>
+    <message>
+        <source>autofix</source>
+        <comment>toolbar</comment>
+        <translation>autofix</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Rengöring</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Ta bort föräldralösa tjänster</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Ta bort föräldralösa referenser</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Fixa bouquets</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Fixa bouquets, unika userbouquets</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Fixa (ta bort) referens med fel</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Params</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Ta bort tjänst cachad</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Ta bort tjänst CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Ta bort tjänst flags</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Ta bort all tjänst data</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Beräkna om DVBNS för tjänster</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Avlägsna</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Ta bort objekt utan referens (favoriter)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>Ta bort (oanvända tjänster) från bouquets</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Ta bort föräldralåset</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Ta bort alla bouquets</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Ta bort alla userbouquets</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Dubletter</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Ta bort dubbletter av markers (namn)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Ta bort dubbletter av referenser</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Ta bort dubbletter av tjänster</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Ta bort dubbletter av transpondrar</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Ta bort alla dubbletter</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Förvandla</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Förvandla transpondrar till XML settings</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>Förvandla XML settings till transpondrar</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Sortera</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Sortera referenser…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Sortera tjänster…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Sortera transpondrar…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Sortera userbouquets…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>menu</comment>
+        <translation>Import</translation>
+    </message>
+    <message>
+        <source>Import…</source>
+        <comment>menu</comment>
+        <translation>Import…</translation>
+    </message>
+    <message>
+        <source>Import from CSV</source>
+        <comment>menu</comment>
+        <translation>Importera från CSV</translation>
+    </message>
+    <message>
+        <source>Import Services</source>
+        <comment>menu</comment>
+        <translation>Importera tjänster</translation>
+    </message>
+    <message>
+        <source>Import Bouquet</source>
+        <comment>menu</comment>
+        <translation>Importera bouquet</translation>
+    </message>
+    <message>
+        <source>Import Userbouquet</source>
+        <comment>menu</comment>
+        <translation>Importera userbouquet</translation>
+    </message>
+    <message>
+        <source>Import Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Importera tunerinställningar</translation>
+    </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>Importera från M3U</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>menu</comment>
+        <translation>Export</translation>
+    </message>
+    <message>
+        <source>Export…</source>
+        <comment>menu</comment>
+        <translation>Export…</translation>
+    </message>
+    <message>
+        <source>Export to CSV</source>
+        <comment>menu</comment>
+        <translation>Exportera till CSV</translation>
+    </message>
+    <message>
+        <source>Export current</source>
+        <comment>menu</comment>
+        <translation>Exportera ström</translation>
+    </message>
+    <message>
+        <source>Export All</source>
+        <comment>menu</comment>
+        <translation>Exportera alla</translation>
+    </message>
+    <message>
+        <source>Export Services</source>
+        <comment>menu</comment>
+        <translation>Exportera tjänster</translation>
+    </message>
+    <message>
+        <source>Export Bouquets</source>
+        <comment>menu</comment>
+        <translation>Exportera bouquets</translation>
+    </message>
+    <message>
+        <source>Export Userbouquets</source>
+        <comment>menu</comment>
+        <translation>Exportera userbouquets</translation>
+    </message>
+    <message>
+        <source>Export Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Exportera tunerinställningar</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>Exportera till M3U</translation>
+    </message>
+    <message>
+        <source>Export to HTML</source>
+        <comment>menu</comment>
+        <translation>Exportera till HTML</translation>
+    </message>
+    <message>
+        <source>Export Index</source>
+        <comment>menu</comment>
+        <translation>Exportera index</translation>
+    </message>
+    <message>
+        <source>Log Inspector</source>
+        <comment>menu</comment>
+        <translation>Log Inspektör</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Verktygs Fel</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Fel vid exekvering av verktyg.</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3596,6 +4110,307 @@ Vänta några minuter och försök igen.</translation>
         <source>There are not stream type references in userbouquets to export.</source>
         <comment>message</comment>
         <translation>Det finns inga referenser av typen stream i userbouquets att exportera.</translation>
+    </message>
+    <message>
+        <source>Done</source>
+        <comment>message</comment>
+        <translation>Avrättad</translation>
+    </message>
+    <message>
+        <source>Done!</source>
+        <comment>message</comment>
+        <translation>Avrättad!</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services …</source>
+        <comment>message</comment>
+        <translation>Ta bort föräldralösa tjänster …</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references …</source>
+        <comment>message</comment>
+        <translation>Ta bort föräldralösa referenser …</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors …</source>
+        <comment>message</comment>
+        <translation>Fixa bouquets …</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services …</source>
+        <comment>message</comment>
+        <translation>Fixa bouquets, unika userbouquets …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets …</source>
+        <comment>message</comment>
+        <translation>Fixa (ta bort) referens med fel …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets …</source>
+        <comment>message</comment>
+        <translation>Ta bort tjänst cachad …</translation>
+    </message>
+    <message>
+        <source>Remove service cached …</source>
+        <comment>message</comment>
+        <translation>Ta bort tjänst CAID …</translation>
+    </message>
+    <message>
+        <source>Remove service CAID …</source>
+        <comment>message</comment>
+        <translation>Ta bort tjänst flags …</translation>
+    </message>
+    <message>
+        <source>Remove service flags …</source>
+        <comment>message</comment>
+        <translation>Ta bort all tjänst data …</translation>
+    </message>
+    <message>
+        <source>Remove all service data …</source>
+        <comment>message</comment>
+        <translation>Beräkna om DVBNS för tjänster …</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites) …</source>
+        <comment>message</comment>
+        <translation>Ta bort objekt utan referens (favoriter) …</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services) …</source>
+        <comment>message</comment>
+        <translation>Ta bort (oanvända tjänster) från bouquets …</translation>
+    </message>
+    <message>
+        <source>Remove parental lock …</source>
+        <comment>message</comment>
+        <translation>Ta bort föräldralåset …</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets …</source>
+        <comment>message</comment>
+        <translation>Ta bort alla bouquets …</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets …</source>
+        <comment>message</comment>
+        <translation>Ta bort alla userbouquets …</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates …</source>
+        <comment>message</comment>
+        <translation>Ta bort dubbletter av markers (namn) …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders …</source>
+        <comment>message</comment>
+        <translation>Ta bort dubbletter av referenser …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services …</source>
+        <comment>message</comment>
+        <translation>Ta bort dubbletter av tjänster …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references …</source>
+        <comment>message</comment>
+        <translation>Ta bort dubbletter av transpondrar …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names) …</source>
+        <comment>message</comment>
+        <translation>Ta bort alla dubbletter …</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings …</source>
+        <comment>message</comment>
+        <translation>Förvandla transpondrar till XML settings …</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders …</source>
+        <comment>message</comment>
+        <translation>Förvandla XML settings till transpondrar …</translation>
+    </message>
+    <message>
+        <source>Sort transponders …</source>
+        <comment>message</comment>
+        <translation>Sortera transpondrar …</translation>
+    </message>
+    <message>
+        <source>Sort services …</source>
+        <comment>message</comment>
+        <translation>Sortera tjänster …</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets …</source>
+        <comment>message</comment>
+        <translation>Sortera userbouquets …</translation>
+    </message>
+    <message>
+        <source>Sort references …</source>
+        <comment>message</comment>
+        <translation>Sortera referenser …</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Verktygs Fel</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Fel vid exekvering av verktyg.</translation>
+    </message>
+    <message>
+        <source>Executing macro …</source>
+        <comment>message</comment>
+        <translation>Kör makro …</translation>
+    </message>
+    <message>
+        <source>Error executing macro.</source>
+        <comment>error</comment>
+        <translation>Fel vid exekvering av makro.</translation>
+    </message>
+    <message>
+        <source>Sort transponders</source>
+        <comment>dialog</comment>
+        <translation>Sortera transpondrar</translation>
+    </message>
+    <message>
+        <source>Sort services</source>
+        <comment>dialog</comment>
+        <translation>Sortera tjänster</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets</source>
+        <comment>dialog</comment>
+        <translation>Sortera userbouquets</translation>
+    </message>
+    <message>
+        <source>Sort references</source>
+        <comment>dialog</comment>
+        <translation>Sortera referenser</translation>
+    </message>
+    <message>
+        <source>ascending</source>
+        <translation>stigande</translation>
+    </message>
+    <message>
+        <source>descending</source>
+        <translation>fallande</translation>
+    </message>
+    <message>
+        <source>Recall this set when Sort from context menu</source>
+        <translation>Återkalla denna uppsättning när Sortera från snabbmenyn</translation>
+    </message>
+    <message>
+        <source>Apply to list selection</source>
+        <translation>Tillämpa på valda i listan</translation>
+    </message>
+    <message>
+        <source>Apply Sort</source>
+        <comment>dialog</comment>
+        <translation>Sortera</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Filnamn</translation>
+    </message>
+    <message>
+        <source>Bouquet Name</source>
+        <translation>Bouquet namn</translation>
+    </message>
+    <message>
+        <source>Parent Filename</source>
+        <translation>Föräldra filnamn</translation>
+    </message>
+    <message>
+        <source>Bouquet Type</source>
+        <translation>Typ bouquet</translation>
+    </message>
+    <message>
+        <source>Parental Lock</source>
+        <translation>Föräldralås</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation>Index</translation>
+    </message>
+    <message>
+        <source>Channel Name</source>
+        <translation>Kanal namn</translation>
+    </message>
+    <message>
+        <source>SSID</source>
+        <translation>SSID</translation>
+    </message>
+    <message>
+        <source>TSID</source>
+        <translation>TSID</translation>
+    </message>
+    <message>
+        <source>ONID</source>
+        <translation>ONID</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation>URI</translation>
+    </message>
+    <message>
+        <source>FAV Name</source>
+        <translation>FAV namn</translation>
+    </message>
+    <message>
+        <source>FAV Index</source>
+        <translation>FAV index</translation>
+    </message>
+    <message>
+        <source>Transponder order</source>
+        <translation>Beställning transpondrar</translation>
+    </message>
+    <message>
+        <source>Provider Name</source>
+        <translation>Provider namn</translation>
+    </message>
+    <message>
+        <source>Service Type</source>
+        <translation>Tjänst typ</translation>
+    </message>
+    <message>
+        <source>Service Number</source>
+        <translation>Service nummer</translation>
+    </message>
+    <message>
+        <source>Src ID</source>
+        <translation>Src ID</translation>
+    </message>
+    <message>
+        <source>Transponder Type</source>
+        <translation>Transponder typ</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation>Position</translation>
+    </message>
+    <message>
+        <source>Frequency</source>
+        <translation>Frekvens</translation>
+    </message>
+    <message>
+        <source>SR</source>
+        <translation>SR</translation>
+    </message>
+    <message>
+        <source>Polarization</source>
+        <translation>Polarisering</translation>
+    </message>
+    <message>
+        <source>System</source>
+        <translation>System</translation>
     </message>
 </context>
 <context>
@@ -3735,6 +4550,11 @@ Vänta några minuter och försök igen.</translation>
         <source>Transponder</source>
         <comment>toolbar</comment>
         <translation>Transponder</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Sortera…</translation>
     </message>
 </context>
 <context>

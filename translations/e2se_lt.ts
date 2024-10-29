@@ -197,95 +197,6 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
     </message>
 </context>
 <context>
-    <name>convertM3u</name>
-    <message>
-        <source>Import M3U</source>
-        <comment>dialog</comment>
-        <translation>Importuoti M3U</translation>
-    </message>
-    <message>
-        <source>Export M3U</source>
-        <comment>dialog</comment>
-        <translation>Eksportuoti M3U</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <comment>dialog</comment>
-        <translation>Atsisakyti</translation>
-    </message>
-    <message>
-        <source>Import</source>
-        <comment>dialog</comment>
-        <translation>Importuoti</translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <comment>dialog</comment>
-        <translation>Eksportuoti</translation>
-    </message>
-    <message>
-        <source>Channel group options</source>
-        <translation>Kanalų grupės parinktys</translation>
-    </message>
-    <message>
-        <source>Discard Reference ID if set</source>
-        <translation>Jei nustatyta, atmeskite Reference ID.</translation>
-    </message>
-    <message>
-        <source>Select Userbouquets</source>
-        <translation>Pasirinkite userbouquets</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation>Vardas</translation>
-    </message>
-    <message>
-        <source>Filename</source>
-        <translation>Failo pavadinimas</translation>
-    </message>
-    <message>
-        <source>Set channel Reference ID</source>
-        <translation>Nustatyti kanalą Reference ID</translation>
-    </message>
-    <message>
-        <source>Set channel number</source>
-        <translation>Nustatykite kanalo numerį</translation>
-    </message>
-    <message>
-        <source>Set channel group name</source>
-        <translation>Nustatykite kanalų grupės pavadinimą</translation>
-    </message>
-    <message>
-        <source>Set channel logos URL placeholder</source>
-        <translation>Nustatyti kanalo logotipų URL rezervuotąją vietą</translation>
-    </message>
-    <message>
-        <source>Channel logos base URL</source>
-        <translation>Kanalo logotipų bazinis URL</translation>
-    </message>
-    <message>
-        <source>Select channel logos folder</source>
-        <comment>file-dialog</comment>
-        <translation>Pasirinkite kanalo logotipų aplanką</translation>
-    </message>
-    <message>
-        <source>Import each group in separate userbouquets</source>
-        <translation>Importuoti į atskiras userbouquets</translation>
-    </message>
-    <message>
-        <source>Import all entries in one userbouquet</source>
-        <translation>Importuoti viską į vieną userbouquet</translation>
-    </message>
-    <message>
-        <source>Export each bouquet in separate files</source>
-        <translation>Eksportuoti į atskirus failus</translation>
-    </message>
-    <message>
-        <source>Export all entries in one file</source>
-        <translation>Eksportuoti viską į vieną failą</translation>
-    </message>
-</context>
-<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -334,6 +245,95 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <source>Add</source>
         <comment>dialog</comment>
         <translation>Papildyti</translation>
+    </message>
+</context>
+<context>
+    <name>dialConvertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>Importuoti M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>Eksportuoti M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>Atsisakyti</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>Importuoti</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>Eksportuoti</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>Kanalų grupės parinktys</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>Importuoti į atskiras userbouquets</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>Importuoti viską į vieną userbouquet</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>Jei nustatyta, atmeskite Reference ID.</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>Pasirinkite userbouquets</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Vardas</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Failo pavadinimas</translation>
+    </message>
+    <message>
+        <source>Export each bouquet in separate files</source>
+        <translation>Eksportuoti į atskirus failus</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>Eksportuoti viską į vieną failą</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>Nustatyti kanalą Reference ID</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>Nustatykite kanalo numerį</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>Nustatykite kanalų grupės pavadinimą</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>Nustatyti kanalo logotipų URL rezervuotąją vietą</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>Kanalo logotipų bazinis URL</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>Pasirinkite kanalo logotipų aplanką</translation>
     </message>
 </context>
 <context>
@@ -487,6 +487,16 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <source>Not supported yet.</source>
         <comment>error</comment>
         <translation>Dar nepalaikoma.</translation>
+    </message>
+    <message>
+        <source>Bouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Bouquet „%s“ jau yra.</translation>
+    </message>
+    <message>
+        <source>Userbouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Userbouquet „%s“ jau yra.</translation>
     </message>
 </context>
 <context>
@@ -1063,10 +1073,6 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <translation>flags</translation>
     </message>
     <message>
-        <source>pls / mis id</source>
-        <translation>pls / mis id</translation>
-    </message>
-    <message>
         <source>pls code</source>
         <translation>pls code</translation>
     </message>
@@ -1089,6 +1095,14 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
     <message>
         <source>calc</source>
         <translation>skaičiuok</translation>
+    </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
     </message>
 </context>
 <context>
@@ -1294,6 +1308,14 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <source>plp id</source>
         <translation>plp id</translation>
     </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
+    </message>
 </context>
 <context>
     <name>editUserbouquet</name>
@@ -1392,6 +1414,7 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
+        <extracomment>curl_easy_strerror error string</extracomment>
         <translation>Nepavyko prisijungti prie serverio</translation>
     </message>
     <message>
@@ -1408,6 +1431,27 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <source>Couldn&apos;t connect to STB FTP</source>
         <comment>error</comment>
         <translation>Nepavyko prisijungti prie STB FTP</translation>
+    </message>
+    <message>
+        <source>Please select a connection profile then connect.</source>
+        <comment>error</comment>
+        <translation>Pasirinkite ryšio profilį, tada prisijunkite.</translation>
+    </message>
+    <message>
+        <source>Webif Reload Error</source>
+        <comment>error</comment>
+        <translation>Webif perkrovimo Klaida</translation>
+    </message>
+    <message>
+        <source>Telnet Reload Error</source>
+        <comment>error</comment>
+        <translation>Telnet perkrovimo Klaida</translation>
+    </message>
+    <message>
+        <source>Check connection profile and settings integrity.%1Preference values are not valid.</source>
+        <comment>error</comment>
+        <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
+        <translation>Patikrinkite ryšio profilį ir nustatymų vientisumą.%1Nuostatos reikšmės negalioja.</translation>
     </message>
 </context>
 <context>
@@ -2059,6 +2103,181 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <comment>menu</comment>
         <translation>Keisti picon</translation>
     </message>
+    <message>
+        <source>Convert</source>
+        <comment>menu</comment>
+        <translation>Paversti</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Valymas</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Pašalinti našlaičių paslaugas</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Pašalinkite našlaičių nuorodas</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Pataisyti bouquets</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Pataisykite bouquets, unikalias userbouquets</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Pataisykite (pašalinkite) nuorodą su klaidomis</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Paramos</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Pašalinkite paslaugų talpyklą</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Pašalinkite paslaugų CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Pašalinkite paslaugų flags</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Pašalinkite visus aptarnavimo duomenis</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Perskaičiuoti DVBNS už paslaugas</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Pašalinti</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Pašalinti nenurodytus elementus (mėgstamiausius)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>Pašalinti (nenaudojamas paslaugas) iš bouquets</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Pašalinti tėvų užraktą</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Pašalinti visas bouquets</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Pašalinti visas userbouquets</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Pasikartoja</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Pašalinkite pasikartojančius markers (pavadinimus)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Pašalinkite pasikartojančias nuorodas</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Pašalinkite pasikartojančias paslaugas</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Pašalinkite pasikartojančius atsakiklius</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Pašalinkite visus pasikartojančius</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Pakeisti</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Transponderių pakeitimas į XML nustatymus</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>Pakeiskite XML nustatymus į atsakiklius</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Rūšiuoti</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Rūšiuoti nuorodas…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Rūšiuoti paslaugas…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Rūšiuoti atsakiklius…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Rūšiuoti userbouquets…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>Edit&amp;or</source>
+        <comment>menu</comment>
+        <translation>Redakt&amp;orius</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2446,6 +2665,11 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <source>Add Stream</source>
         <comment>toolbar</comment>
         <translation>Pridėti Stream</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Rūšiuoti…</translation>
     </message>
 </context>
 <context>
@@ -3549,6 +3773,296 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <comment>message</comment>
         <translation>Ar norite ištrinti elementus?</translation>
     </message>
+    <message>
+        <source>Tools</source>
+        <comment>toolbar</comment>
+        <translation>Įrankiai</translation>
+    </message>
+    <message>
+        <source>autofix</source>
+        <comment>toolbar</comment>
+        <translation>autofix</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Valymas</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Pašalinti našlaičių paslaugas</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Pašalinkite našlaičių nuorodas</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Pataisyti bouquets</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Pataisykite bouquets, unikalias userbouquets</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Pataisykite (pašalinkite) nuorodą su klaidomis</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Paramos</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Pašalinkite paslaugų talpyklą</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Pašalinkite paslaugų CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Pašalinkite paslaugų flags</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Pašalinkite visus aptarnavimo duomenis</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Perskaičiuoti DVBNS už paslaugas</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Pašalinti</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Pašalinti nenurodytus elementus (mėgstamiausius)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>Pašalinti (nenaudojamas paslaugas) iš bouquets</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Pašalinti tėvų užraktą</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Pašalinti visas bouquets</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Pašalinti visas userbouquets</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Pasikartoja</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Pašalinkite pasikartojančius markers (pavadinimus)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Pašalinkite pasikartojančias nuorodas</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Pašalinkite pasikartojančias paslaugas</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Pašalinkite pasikartojančius atsakiklius</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Pašalinkite visus pasikartojančius</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Pakeisti</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Transponderių pakeitimas į XML nustatymus</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>Pakeiskite XML nustatymus į atsakiklius</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Rūšiuoti</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Rūšiuoti nuorodas…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Rūšiuoti paslaugas…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Rūšiuoti atsakiklius…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Rūšiuoti userbouquets…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>menu</comment>
+        <translation>Importuoti</translation>
+    </message>
+    <message>
+        <source>Import…</source>
+        <comment>menu</comment>
+        <translation>Importuoti…</translation>
+    </message>
+    <message>
+        <source>Import from CSV</source>
+        <comment>menu</comment>
+        <translation>Importuoti iš CSV</translation>
+    </message>
+    <message>
+        <source>Import Services</source>
+        <comment>menu</comment>
+        <translation>Importo paslaugos</translation>
+    </message>
+    <message>
+        <source>Import Bouquet</source>
+        <comment>menu</comment>
+        <translation>Importo bouquet</translation>
+    </message>
+    <message>
+        <source>Import Userbouquet</source>
+        <comment>menu</comment>
+        <translation>Importo userbouquet</translation>
+    </message>
+    <message>
+        <source>Import Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Importo tuner nustatymus</translation>
+    </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>Importuoti iš M3U</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>menu</comment>
+        <translation>Eksportuoti</translation>
+    </message>
+    <message>
+        <source>Export…</source>
+        <comment>menu</comment>
+        <translation>Eksportuoti…</translation>
+    </message>
+    <message>
+        <source>Export to CSV</source>
+        <comment>menu</comment>
+        <translation>Eksportuoti į CSV</translation>
+    </message>
+    <message>
+        <source>Export current</source>
+        <comment>menu</comment>
+        <translation>Eksporto srovę</translation>
+    </message>
+    <message>
+        <source>Export All</source>
+        <comment>menu</comment>
+        <translation>Eksporto viską</translation>
+    </message>
+    <message>
+        <source>Export Services</source>
+        <comment>menu</comment>
+        <translation>Eksporto paslaugos</translation>
+    </message>
+    <message>
+        <source>Export Bouquets</source>
+        <comment>menu</comment>
+        <translation>Eksporto bouquets</translation>
+    </message>
+    <message>
+        <source>Export Userbouquets</source>
+        <comment>menu</comment>
+        <translation>Eksporto userbouquets</translation>
+    </message>
+    <message>
+        <source>Export Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Eksporto tuner nustatymus</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>Eksportuoti į M3U</translation>
+    </message>
+    <message>
+        <source>Export to HTML</source>
+        <comment>menu</comment>
+        <translation>Eksportuoti į HTML</translation>
+    </message>
+    <message>
+        <source>Export Index</source>
+        <comment>menu</comment>
+        <translation>Eksporto indeksas</translation>
+    </message>
+    <message>
+        <source>Log Inspector</source>
+        <comment>menu</comment>
+        <translation>Rąstų Inspekt</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Komunalinių paslaugų Klaida</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Klaida vykdant komunalines paslaugas.</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3605,6 +4119,307 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <source>There are not stream type references in userbouquets to export.</source>
         <comment>message</comment>
         <translation>Eksportuotinų userbouquets nėra stream tipo nuorodų.</translation>
+    </message>
+    <message>
+        <source>Done</source>
+        <comment>message</comment>
+        <translation>Vykdoma</translation>
+    </message>
+    <message>
+        <source>Done!</source>
+        <comment>message</comment>
+        <translation>Vykdyta!</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services …</source>
+        <comment>message</comment>
+        <translation>Pašalinti našlaičių paslaugas …</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references …</source>
+        <comment>message</comment>
+        <translation>Pašalinkite našlaičių nuorodas …</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors …</source>
+        <comment>message</comment>
+        <translation>Pataisyti bouquets …</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services …</source>
+        <comment>message</comment>
+        <translation>Pataisykite bouquets, unikalias userbouquets …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets …</source>
+        <comment>message</comment>
+        <translation>Pataisykite (pašalinkite) nuorodą su klaidomis …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets …</source>
+        <comment>message</comment>
+        <translation>Pašalinkite paslaugų talpyklą …</translation>
+    </message>
+    <message>
+        <source>Remove service cached …</source>
+        <comment>message</comment>
+        <translation>Pašalinkite paslaugų CAID …</translation>
+    </message>
+    <message>
+        <source>Remove service CAID …</source>
+        <comment>message</comment>
+        <translation>Pašalinkite paslaugų flags …</translation>
+    </message>
+    <message>
+        <source>Remove service flags …</source>
+        <comment>message</comment>
+        <translation>Pašalinkite visus aptarnavimo duomenis …</translation>
+    </message>
+    <message>
+        <source>Remove all service data …</source>
+        <comment>message</comment>
+        <translation>Perskaičiuoti DVBNS už paslaugas …</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites) …</source>
+        <comment>message</comment>
+        <translation>Pašalinti nenurodytus elementus (mėgstamiausius) …</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services) …</source>
+        <comment>message</comment>
+        <translation>Pašalinti (nenaudojamas paslaugas) iš bouquets …</translation>
+    </message>
+    <message>
+        <source>Remove parental lock …</source>
+        <comment>message</comment>
+        <translation>Pašalinti tėvų užraktą …</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets …</source>
+        <comment>message</comment>
+        <translation>Pašalinti visas bouquets …</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets …</source>
+        <comment>message</comment>
+        <translation>Pašalinti visas userbouquets …</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates …</source>
+        <comment>message</comment>
+        <translation>Pašalinkite pasikartojančius markers (pavadinimus) …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders …</source>
+        <comment>message</comment>
+        <translation>Pašalinkite pasikartojančias nuorodas …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services …</source>
+        <comment>message</comment>
+        <translation>Pašalinkite pasikartojančias paslaugas …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references …</source>
+        <comment>message</comment>
+        <translation>Pašalinkite pasikartojančius atsakiklius …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names) …</source>
+        <comment>message</comment>
+        <translation>Pašalinkite visus pasikartojančius …</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings …</source>
+        <comment>message</comment>
+        <translation>Transponderių pakeitimas į XML nustatymus …</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders …</source>
+        <comment>message</comment>
+        <translation>Pakeiskite XML nustatymus į atsakiklius …</translation>
+    </message>
+    <message>
+        <source>Sort transponders …</source>
+        <comment>message</comment>
+        <translation>Rūšiuoti atsakiklius …</translation>
+    </message>
+    <message>
+        <source>Sort services …</source>
+        <comment>message</comment>
+        <translation>Rūšiuoti paslaugas …</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets …</source>
+        <comment>message</comment>
+        <translation>Rūšiuoti userbouquets …</translation>
+    </message>
+    <message>
+        <source>Sort references …</source>
+        <comment>message</comment>
+        <translation>Rūšiuoti nuorodas …</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Komunalinių paslaugų Klaida</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Klaida vykdant komunalines paslaugas.</translation>
+    </message>
+    <message>
+        <source>Executing macro …</source>
+        <comment>message</comment>
+        <translation>Vykdoma makrokomanda …</translation>
+    </message>
+    <message>
+        <source>Error executing macro.</source>
+        <comment>error</comment>
+        <translation>Klaida vykdant makrokomandą.</translation>
+    </message>
+    <message>
+        <source>Sort transponders</source>
+        <comment>dialog</comment>
+        <translation>Rūšiuoti atsakiklius</translation>
+    </message>
+    <message>
+        <source>Sort services</source>
+        <comment>dialog</comment>
+        <translation>Rūšiuoti paslaugas</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets</source>
+        <comment>dialog</comment>
+        <translation>Rūšiuoti userbouquets</translation>
+    </message>
+    <message>
+        <source>Sort references</source>
+        <comment>dialog</comment>
+        <translation>Rūšiuoti nuorodas</translation>
+    </message>
+    <message>
+        <source>ascending</source>
+        <translation>kylantis</translation>
+    </message>
+    <message>
+        <source>descending</source>
+        <translation>nusileidžiantis</translation>
+    </message>
+    <message>
+        <source>Recall this set when Sort from context menu</source>
+        <translation>Prisiminkite šį rinkinį, kai Rūšiuoti iš kontekstinio meniu</translation>
+    </message>
+    <message>
+        <source>Apply to list selection</source>
+        <translation>Taikyti pasirinktam sąraše</translation>
+    </message>
+    <message>
+        <source>Apply Sort</source>
+        <comment>dialog</comment>
+        <translation>Rūšiuoti</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Failo pavadinimas</translation>
+    </message>
+    <message>
+        <source>Bouquet Name</source>
+        <translation>Bouquet pavadinimas</translation>
+    </message>
+    <message>
+        <source>Parent Filename</source>
+        <translation>Tėvas failo pavadinimas</translation>
+    </message>
+    <message>
+        <source>Bouquet Type</source>
+        <translation>Bouquet tipas</translation>
+    </message>
+    <message>
+        <source>Parental Lock</source>
+        <translation>Tėvų užraktas</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation>Indeksas</translation>
+    </message>
+    <message>
+        <source>Channel Name</source>
+        <translation>Kanalo pavadinimas</translation>
+    </message>
+    <message>
+        <source>SSID</source>
+        <translation>SSID</translation>
+    </message>
+    <message>
+        <source>TSID</source>
+        <translation>TSID</translation>
+    </message>
+    <message>
+        <source>ONID</source>
+        <translation>ONID</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation>URI</translation>
+    </message>
+    <message>
+        <source>FAV Name</source>
+        <translation>FAV pavadinimas</translation>
+    </message>
+    <message>
+        <source>FAV Index</source>
+        <translation>FAV indeksas</translation>
+    </message>
+    <message>
+        <source>Transponder order</source>
+        <translation>Atsakiklių užsakymas</translation>
+    </message>
+    <message>
+        <source>Provider Name</source>
+        <translation>Teikėjo pavadinimas</translation>
+    </message>
+    <message>
+        <source>Service Type</source>
+        <translation>Paslaugos tipas</translation>
+    </message>
+    <message>
+        <source>Service Number</source>
+        <translation>Paslaugos numeris</translation>
+    </message>
+    <message>
+        <source>Src ID</source>
+        <translation>Src ID</translation>
+    </message>
+    <message>
+        <source>Transponder Type</source>
+        <translation>Atsakiklio tipas</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation>Padėtis</translation>
+    </message>
+    <message>
+        <source>Frequency</source>
+        <translation>Dažnis</translation>
+    </message>
+    <message>
+        <source>SR</source>
+        <translation>SR</translation>
+    </message>
+    <message>
+        <source>Polarization</source>
+        <translation>Poliarizacija</translation>
+    </message>
+    <message>
+        <source>System</source>
+        <translation>Sistema</translation>
     </message>
 </context>
 <context>
@@ -3744,6 +4559,11 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <source>Transponder</source>
         <comment>toolbar</comment>
         <translation>Atsakiklis</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Rūšiuoti…</translation>
     </message>
 </context>
 <context>

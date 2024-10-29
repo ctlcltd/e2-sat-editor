@@ -199,95 +199,6 @@ Please wait few minutes and try again.</source>
     </message>
 </context>
 <context>
-    <name>convertM3u</name>
-    <message>
-        <source>Import M3U</source>
-        <comment>dialog</comment>
-        <translation>M3U のインポート</translation>
-    </message>
-    <message>
-        <source>Export M3U</source>
-        <comment>dialog</comment>
-        <translation>M3U のエクスポート</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <comment>dialog</comment>
-        <translation>キャンセル(C)</translation>
-    </message>
-    <message>
-        <source>Import</source>
-        <comment>dialog</comment>
-        <translation>輸入</translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <comment>dialog</comment>
-        <translation>輸出</translation>
-    </message>
-    <message>
-        <source>Channel group options</source>
-        <translation>チャンネルグループのオプション</translation>
-    </message>
-    <message>
-        <source>Discard Reference ID if set</source>
-        <translation>参照ID が設定されている場合は破棄します</translation>
-    </message>
-    <message>
-        <source>Select Userbouquets</source>
-        <translation>ユーザーチャネルグループの選択</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation>名前</translation>
-    </message>
-    <message>
-        <source>Filename</source>
-        <translation>ファイル名</translation>
-    </message>
-    <message>
-        <source>Set channel Reference ID</source>
-        <translation>チャンネル参照IDの設定</translation>
-    </message>
-    <message>
-        <source>Set channel number</source>
-        <translation>チャンネル番号を設定する</translation>
-    </message>
-    <message>
-        <source>Set channel group name</source>
-        <translation>チャンネルグループ名の設定</translation>
-    </message>
-    <message>
-        <source>Set channel logos URL placeholder</source>
-        <translation>チャンネルロゴの URL プレースホルダーを設定する</translation>
-    </message>
-    <message>
-        <source>Channel logos base URL</source>
-        <translation>チャンネルロゴのベース URL</translation>
-    </message>
-    <message>
-        <source>Select channel logos folder</source>
-        <comment>file-dialog</comment>
-        <translation>チャンネルロゴフォルダを選択</translation>
-    </message>
-    <message>
-        <source>Import each group in separate userbouquets</source>
-        <translation>各グループを個別のユーザー・チャンネル・グループにインポートする</translation>
-    </message>
-    <message>
-        <source>Import all entries in one userbouquet</source>
-        <translation>すべてのエントリを 1 つのユーザー チャネル グループにインポートする</translation>
-    </message>
-    <message>
-        <source>Export each bouquet in separate files</source>
-        <translation>各グループを別々のファイルにエクスポートする</translation>
-    </message>
-    <message>
-        <source>Export all entries in one file</source>
-        <translation>すべてのエントリを1つのファイルにエクスポートする</translation>
-    </message>
-</context>
-<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -336,6 +247,95 @@ Please wait few minutes and try again.</source>
         <source>Add</source>
         <comment>dialog</comment>
         <translation>追加</translation>
+    </message>
+</context>
+<context>
+    <name>dialConvertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>M3U のインポート</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>M3U のエクスポート</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>キャンセル(C)</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>輸入</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>輸出</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>チャンネルグループのオプション</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>各グループを個別のユーザー・チャンネル・グループにインポートする</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>すべてのエントリを 1 つのユーザー チャネル グループにインポートする</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>参照ID が設定されている場合は破棄します</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>ユーザーチャネルグループの選択</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>名前</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>ファイル名</translation>
+    </message>
+    <message>
+        <source>Export each bouquet in separate files</source>
+        <translation>各グループを別々のファイルにエクスポートする</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>すべてのエントリを1つのファイルにエクスポートする</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>チャンネル参照IDの設定</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>チャンネル番号を設定する</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>チャンネルグループ名の設定</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>チャンネルロゴの URL プレースホルダーを設定する</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>チャンネルロゴのベース URL</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>チャンネルロゴフォルダを選択</translation>
     </message>
 </context>
 <context>
@@ -489,6 +489,16 @@ Please wait few minutes and try again.</source>
         <source>Not supported yet.</source>
         <comment>error</comment>
         <translation>まだサポートされていません。</translation>
+    </message>
+    <message>
+        <source>Bouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>チャネル グループ &quot;%s&quot; は既に存在します。</translation>
+    </message>
+    <message>
+        <source>Userbouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>ユーザー チャネル グループ &quot;%s&quot; は既に存在します。</translation>
     </message>
 </context>
 <context>
@@ -1065,10 +1075,6 @@ Please wait few minutes and try again.</source>
         <translation>flags</translation>
     </message>
     <message>
-        <source>pls / mis id</source>
-        <translation>pls / mis id</translation>
-    </message>
-    <message>
         <source>pls code</source>
         <translation>pls code</translation>
     </message>
@@ -1091,6 +1097,14 @@ Please wait few minutes and try again.</source>
     <message>
         <source>calc</source>
         <translation>計算</translation>
+    </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
     </message>
 </context>
 <context>
@@ -1296,6 +1310,14 @@ Please wait few minutes and try again.</source>
         <source>plp id</source>
         <translation>plp id</translation>
     </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
+    </message>
 </context>
 <context>
     <name>editUserbouquet</name>
@@ -1394,6 +1416,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
+        <extracomment>curl_easy_strerror error string</extracomment>
         <translation>サーバーに接続できませんでした</translation>
     </message>
     <message>
@@ -1410,6 +1433,27 @@ Please wait few minutes and try again.</source>
         <source>Couldn&apos;t connect to STB FTP</source>
         <comment>error</comment>
         <translation>STB FTP に接続できませんでした</translation>
+    </message>
+    <message>
+        <source>Please select a connection profile then connect.</source>
+        <comment>error</comment>
+        <translation>接続プロファイルを選択して接続してください。</translation>
+    </message>
+    <message>
+        <source>Webif Reload Error</source>
+        <comment>error</comment>
+        <translation>Webif リロード エラー</translation>
+    </message>
+    <message>
+        <source>Telnet Reload Error</source>
+        <comment>error</comment>
+        <translation>Telnet リロード エラー</translation>
+    </message>
+    <message>
+        <source>Check connection profile and settings integrity.%1Preference values are not valid.</source>
+        <comment>error</comment>
+        <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
+        <translation>接続プロファイルと設定の整合性を確認してください。%1 設定値が無効です。</translation>
     </message>
 </context>
 <context>
@@ -2061,6 +2105,181 @@ Please wait few minutes and try again.</source>
         <comment>menu</comment>
         <translation>piconを変更する</translation>
     </message>
+    <message>
+        <source>Convert</source>
+        <comment>menu</comment>
+        <translation>変換</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>クリーン</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>孤立したサービスを削除する</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>孤立した参照を削除する</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>チャネルグループを修正</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>チャネル グループの固有のユーザー チャネル グループを修正</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>エラーのある参照を修正（削除）する</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>パラメータ</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>サービスキャッシュを削除する</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>サービスCAIDを削除</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>サービスフラグを削除する</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>すべてのサービスデータを削除する</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>サービスのDVBNSを再計算する</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>削除</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>参照されていないアイテム（お気に入り）を削除する</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>チャンネルグループから削除（未使用のサービス）</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>ペアレンタルロックを解除</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>すべてのチャンネルグループを削除</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>すべてのユーザー チャネル グループを削除する</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>重複</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>重複したマーカー（名前）を削除する</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>重複した参照を削除する</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>重複したサービスを削除する</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>重複したトランスポンダーを削除する</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>重複をすべて削除</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>変身</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>トランスポンダーをXML設定に変換する</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>XML設定をトランスポンダーに変換する</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>選別</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>参照を並べ替える…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>サービスを並べ替える…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>トランスポンダーを分類します…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>ユーザー チャンネル グループを並べ替える…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>自動修正</translation>
+    </message>
+    <message>
+        <source>Edit&amp;or</source>
+        <comment>menu</comment>
+        <translation>エディタ</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2448,6 +2667,11 @@ Please wait few minutes and try again.</source>
         <source>Add Stream</source>
         <comment>toolbar</comment>
         <translation>ストリームの追加</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>選別…</translation>
     </message>
 </context>
 <context>
@@ -3545,6 +3769,296 @@ Please wait few minutes and try again.</source>
         <comment>message</comment>
         <translation>項目を削除しますか?</translation>
     </message>
+    <message>
+        <source>Tools</source>
+        <comment>toolbar</comment>
+        <translation>ツール</translation>
+    </message>
+    <message>
+        <source>autofix</source>
+        <comment>toolbar</comment>
+        <translation>自動修正</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>クリーン</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>孤立したサービスを削除する</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>孤立した参照を削除する</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>チャネルグループを修正</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>チャネル グループの固有のユーザー チャネル グループを修正</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>エラーのある参照を修正（削除）する</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>パラメータ</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>サービスキャッシュを削除する</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>サービスCAIDを削除</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>サービスフラグを削除する</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>すべてのサービスデータを削除する</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>サービスのDVBNSを再計算する</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>削除</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>参照されていないアイテム（お気に入り）を削除する</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>チャンネルグループから削除（未使用のサービス）</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>ペアレンタルロックを解除</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>すべてのチャンネルグループを削除</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>すべてのユーザー チャネル グループを削除する</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>重複</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>重複したマーカー（名前）を削除する</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>重複した参照を削除する</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>重複したサービスを削除する</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>重複したトランスポンダーを削除する</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>重複をすべて削除</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>変身</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>トランスポンダーをXML設定に変換する</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>XML設定をトランスポンダーに変換する</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>選別</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>参照を並べ替える…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>サービスを並べ替える…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>トランスポンダーを分類します…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>ユーザー チャンネル グループを並べ替える…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>自動修正</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>menu</comment>
+        <translation>輸入</translation>
+    </message>
+    <message>
+        <source>Import…</source>
+        <comment>menu</comment>
+        <translation>輸入…</translation>
+    </message>
+    <message>
+        <source>Import from CSV</source>
+        <comment>menu</comment>
+        <translation>CSVからインポート</translation>
+    </message>
+    <message>
+        <source>Import Services</source>
+        <comment>menu</comment>
+        <translation>インポートチャネル/サービス</translation>
+    </message>
+    <message>
+        <source>Import Bouquet</source>
+        <comment>menu</comment>
+        <translation>チャネルグループのインポート</translation>
+    </message>
+    <message>
+        <source>Import Userbouquet</source>
+        <comment>menu</comment>
+        <translation>ユーザー チャネル グループのインポート</translation>
+    </message>
+    <message>
+        <source>Import Tuner settings</source>
+        <comment>menu</comment>
+        <translation>チューナー設定のインポート</translation>
+    </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>M3U からインポート</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>menu</comment>
+        <translation>輸出</translation>
+    </message>
+    <message>
+        <source>Export…</source>
+        <comment>menu</comment>
+        <translation>輸出…</translation>
+    </message>
+    <message>
+        <source>Export to CSV</source>
+        <comment>menu</comment>
+        <translation>CSVにエクスポート</translation>
+    </message>
+    <message>
+        <source>Export current</source>
+        <comment>menu</comment>
+        <translation>輸出電流</translation>
+    </message>
+    <message>
+        <source>Export All</source>
+        <comment>menu</comment>
+        <translation>すべてエクスポート</translation>
+    </message>
+    <message>
+        <source>Export Services</source>
+        <comment>menu</comment>
+        <translation>輸出チャネル/サービス</translation>
+    </message>
+    <message>
+        <source>Export Bouquets</source>
+        <comment>menu</comment>
+        <translation>エクスポートチャネルグループ</translation>
+    </message>
+    <message>
+        <source>Export Userbouquets</source>
+        <comment>menu</comment>
+        <translation>ユーザー チャネル グループのエクスポート</translation>
+    </message>
+    <message>
+        <source>Export Tuner settings</source>
+        <comment>menu</comment>
+        <translation>チューナー設定のエクスポート</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>M3U にエクスポート</translation>
+    </message>
+    <message>
+        <source>Export to HTML</source>
+        <comment>menu</comment>
+        <translation>HTMLにエクスポート</translation>
+    </message>
+    <message>
+        <source>Export Index</source>
+        <comment>menu</comment>
+        <translation>輸出指数</translation>
+    </message>
+    <message>
+        <source>Log Inspector</source>
+        <comment>menu</comment>
+        <translation>ログインスペクター</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>ユーティリティ エラー</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>ユーティリティの実行中にエラーが発生しました。</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3601,6 +4115,307 @@ Please wait few minutes and try again.</source>
         <source>There are not stream type references in userbouquets to export.</source>
         <comment>message</comment>
         <translation>ユーザーブーケ にはエクスポートするストリーム タイプ参照がありません。</translation>
+    </message>
+    <message>
+        <source>Done</source>
+        <comment>message</comment>
+        <translation>終わり</translation>
+    </message>
+    <message>
+        <source>Done!</source>
+        <comment>message</comment>
+        <translation>終わり！</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services …</source>
+        <comment>message</comment>
+        <translation>孤立したサービスを削除する …</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references …</source>
+        <comment>message</comment>
+        <translation>孤立した参照を削除する …</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors …</source>
+        <comment>message</comment>
+        <translation>チャネルグループを修正 …</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services …</source>
+        <comment>message</comment>
+        <translation>チャネル グループの固有のユーザー チャネル グループを修正 …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets …</source>
+        <comment>message</comment>
+        <translation>エラーのある参照を修正（削除）する …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets …</source>
+        <comment>message</comment>
+        <translation>サービスキャッシュを削除する …</translation>
+    </message>
+    <message>
+        <source>Remove service cached …</source>
+        <comment>message</comment>
+        <translation>サービスCAIDを削除 …</translation>
+    </message>
+    <message>
+        <source>Remove service CAID …</source>
+        <comment>message</comment>
+        <translation>サービスフラグを削除する …</translation>
+    </message>
+    <message>
+        <source>Remove service flags …</source>
+        <comment>message</comment>
+        <translation>すべてのサービスデータを削除する …</translation>
+    </message>
+    <message>
+        <source>Remove all service data …</source>
+        <comment>message</comment>
+        <translation>サービスのDVBNSを再計算する …</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites) …</source>
+        <comment>message</comment>
+        <translation>参照されていないアイテム（お気に入り）を削除する …</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services) …</source>
+        <comment>message</comment>
+        <translation>チャンネルグループから削除（未使用のサービス） …</translation>
+    </message>
+    <message>
+        <source>Remove parental lock …</source>
+        <comment>message</comment>
+        <translation>ペアレンタルロックを解除 …</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets …</source>
+        <comment>message</comment>
+        <translation>すべてのチャンネルグループを削除 …</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets …</source>
+        <comment>message</comment>
+        <translation>すべてのユーザー チャネル グループを削除する …</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates …</source>
+        <comment>message</comment>
+        <translation>重複したマーカー（名前）を削除する …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders …</source>
+        <comment>message</comment>
+        <translation>重複した参照を削除する …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services …</source>
+        <comment>message</comment>
+        <translation>重複したサービスを削除する …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references …</source>
+        <comment>message</comment>
+        <translation>重複したトランスポンダーを削除する …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names) …</source>
+        <comment>message</comment>
+        <translation>重複をすべて削除 …</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings …</source>
+        <comment>message</comment>
+        <translation>トランスポンダーをXML設定に変換する …</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders …</source>
+        <comment>message</comment>
+        <translation>XML設定をトランスポンダーに変換する …</translation>
+    </message>
+    <message>
+        <source>Sort transponders …</source>
+        <comment>message</comment>
+        <translation>トランスポンダーを分類します …</translation>
+    </message>
+    <message>
+        <source>Sort services …</source>
+        <comment>message</comment>
+        <translation>サービスを並べ替える …</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets …</source>
+        <comment>message</comment>
+        <translation>ユーザー チャンネル グループを並べ替える …</translation>
+    </message>
+    <message>
+        <source>Sort references …</source>
+        <comment>message</comment>
+        <translation>参照を並べ替える …</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>ユーティリティ エラー</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>ユーティリティの実行中にエラーが発生しました。</translation>
+    </message>
+    <message>
+        <source>Executing macro …</source>
+        <comment>message</comment>
+        <translation>マクロを実行しています …</translation>
+    </message>
+    <message>
+        <source>Error executing macro.</source>
+        <comment>error</comment>
+        <translation>マクロの実行中にエラーが発生しました。</translation>
+    </message>
+    <message>
+        <source>Sort transponders</source>
+        <comment>dialog</comment>
+        <translation>トランスポンダーを分類します</translation>
+    </message>
+    <message>
+        <source>Sort services</source>
+        <comment>dialog</comment>
+        <translation>サービスを並べ替える</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets</source>
+        <comment>dialog</comment>
+        <translation>ユーザー チャンネル グループを並べ替える</translation>
+    </message>
+    <message>
+        <source>Sort references</source>
+        <comment>dialog</comment>
+        <translation>参照を並べ替える</translation>
+    </message>
+    <message>
+        <source>ascending</source>
+        <translation>上昇</translation>
+    </message>
+    <message>
+        <source>descending</source>
+        <translation>下降</translation>
+    </message>
+    <message>
+        <source>Recall this set when Sort from context menu</source>
+        <translation>コンテキストメニューから並べ替えるときにこのセットを呼び出します</translation>
+    </message>
+    <message>
+        <source>Apply to list selection</source>
+        <translation>リストで選択したものに適用</translation>
+    </message>
+    <message>
+        <source>Apply Sort</source>
+        <comment>dialog</comment>
+        <translation>並べ替えを適用</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>ファイル名</translation>
+    </message>
+    <message>
+        <source>Bouquet Name</source>
+        <translation>チャンネルグループ名</translation>
+    </message>
+    <message>
+        <source>Parent Filename</source>
+        <translation>親ファイル名</translation>
+    </message>
+    <message>
+        <source>Bouquet Type</source>
+        <translation>チャネルグループタイプ</translation>
+    </message>
+    <message>
+        <source>Parental Lock</source>
+        <translation>ペアレンタルロック</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation>索引</translation>
+    </message>
+    <message>
+        <source>Channel Name</source>
+        <translation>チャンネル名</translation>
+    </message>
+    <message>
+        <source>SSID</source>
+        <translation>SSID</translation>
+    </message>
+    <message>
+        <source>TSID</source>
+        <translation>TSID</translation>
+    </message>
+    <message>
+        <source>ONID</source>
+        <translation>ONID</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation>URI</translation>
+    </message>
+    <message>
+        <source>FAV Name</source>
+        <translation>好きな名前</translation>
+    </message>
+    <message>
+        <source>FAV Index</source>
+        <translation>お気に入りインデックス</translation>
+    </message>
+    <message>
+        <source>Transponder order</source>
+        <translation>トランスポンダーの注文</translation>
+    </message>
+    <message>
+        <source>Provider Name</source>
+        <translation>プロバイダー名</translation>
+    </message>
+    <message>
+        <source>Service Type</source>
+        <translation>サービスタイプ</translation>
+    </message>
+    <message>
+        <source>Service Number</source>
+        <translation>Service Number</translation>
+    </message>
+    <message>
+        <source>Src ID</source>
+        <translation>Src ID</translation>
+    </message>
+    <message>
+        <source>Transponder Type</source>
+        <translation>トランスポンダータイプ</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation>の位置</translation>
+    </message>
+    <message>
+        <source>Frequency</source>
+        <translation>周波数</translation>
+    </message>
+    <message>
+        <source>SR</source>
+        <translation>SR</translation>
+    </message>
+    <message>
+        <source>Polarization</source>
+        <translation>分極</translation>
+    </message>
+    <message>
+        <source>System</source>
+        <translation>システム</translation>
     </message>
 </context>
 <context>
@@ -3740,6 +4555,11 @@ Please wait few minutes and try again.</source>
         <source>Transponder</source>
         <comment>toolbar</comment>
         <translation>トランスポンダ</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>選別…</translation>
     </message>
 </context>
 <context>

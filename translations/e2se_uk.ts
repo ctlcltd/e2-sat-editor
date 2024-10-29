@@ -200,95 +200,6 @@ Please wait few minutes and try again.</source>
     </message>
 </context>
 <context>
-    <name>convertM3u</name>
-    <message>
-        <source>Import M3U</source>
-        <comment>dialog</comment>
-        <translation>Імпорт M3U</translation>
-    </message>
-    <message>
-        <source>Export M3U</source>
-        <comment>dialog</comment>
-        <translation>Експорт M3U</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <comment>dialog</comment>
-        <translation>Скасувати</translation>
-    </message>
-    <message>
-        <source>Import</source>
-        <comment>dialog</comment>
-        <translation>Імпорт</translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <comment>dialog</comment>
-        <translation>Експорт</translation>
-    </message>
-    <message>
-        <source>Channel group options</source>
-        <translation>Параметри групи каналів</translation>
-    </message>
-    <message>
-        <source>Discard Reference ID if set</source>
-        <translation>Скасувати ідентифікатор посилання, якщо встановлено</translation>
-    </message>
-    <message>
-        <source>Select Userbouquets</source>
-        <translation>Виберіть групу каналів користувачів</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation>Назва</translation>
-    </message>
-    <message>
-        <source>Filename</source>
-        <translation>Назва файлу</translation>
-    </message>
-    <message>
-        <source>Set channel Reference ID</source>
-        <translation>Установити контрольний ідентифікатор каналу</translation>
-    </message>
-    <message>
-        <source>Set channel number</source>
-        <translation>Встановити номер каналу</translation>
-    </message>
-    <message>
-        <source>Set channel group name</source>
-        <translation>Установити назву групи каналів</translation>
-    </message>
-    <message>
-        <source>Set channel logos URL placeholder</source>
-        <translation>Встановити заповнювач URL-адреси логотипів каналів</translation>
-    </message>
-    <message>
-        <source>Channel logos base URL</source>
-        <translation>Основна URL-адреса логотипів каналів</translation>
-    </message>
-    <message>
-        <source>Select channel logos folder</source>
-        <comment>file-dialog</comment>
-        <translation>Виберіть папку з логотипами каналів</translation>
-    </message>
-    <message>
-        <source>Import each group in separate userbouquets</source>
-        <translation>Імпортуйте кожну групу в окремі групи каналів користувачів</translation>
-    </message>
-    <message>
-        <source>Import all entries in one userbouquet</source>
-        <translation>Імпортуйте всі записи в одну групу каналів користувачів</translation>
-    </message>
-    <message>
-        <source>Export each bouquet in separate files</source>
-        <translation>Експортуйте кожну групу в окремі файли</translation>
-    </message>
-    <message>
-        <source>Export all entries in one file</source>
-        <translation>Експортуйте всі записи в один файл</translation>
-    </message>
-</context>
-<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -337,6 +248,95 @@ Please wait few minutes and try again.</source>
         <source>Add</source>
         <comment>dialog</comment>
         <translation>додати</translation>
+    </message>
+</context>
+<context>
+    <name>dialConvertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>Імпорт M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>Експорт M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>Скасувати</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>Імпорт</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>Експорт</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>Параметри групи каналів</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>Імпортуйте кожну групу в окремі групи каналів користувачів</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>Імпортуйте всі записи в одну групу каналів користувачів</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>Скасувати ідентифікатор посилання, якщо встановлено</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>Виберіть групу каналів користувачів</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Назва</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Назва файлу</translation>
+    </message>
+    <message>
+        <source>Export each bouquet in separate files</source>
+        <translation>Експортуйте кожну групу в окремі файли</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>Експортуйте всі записи в один файл</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>Установити контрольний ідентифікатор каналу</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>Встановити номер каналу</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>Установити назву групи каналів</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>Встановити заповнювач URL-адреси логотипів каналів</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>Основна URL-адреса логотипів каналів</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>Виберіть папку з логотипами каналів</translation>
     </message>
 </context>
 <context>
@@ -490,6 +490,16 @@ Please wait few minutes and try again.</source>
         <source>Not supported yet.</source>
         <comment>error</comment>
         <translation>Ще не підтримується.</translation>
+    </message>
+    <message>
+        <source>Bouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Група каналів &quot;%s&quot; уже існує.</translation>
+    </message>
+    <message>
+        <source>Userbouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Група каналів користувачів &quot;%s&quot; уже існує.</translation>
     </message>
 </context>
 <context>
@@ -1066,10 +1076,6 @@ Please wait few minutes and try again.</source>
         <translation>flags</translation>
     </message>
     <message>
-        <source>pls / mis id</source>
-        <translation>pls / mis id</translation>
-    </message>
-    <message>
         <source>pls code</source>
         <translation>pls code</translation>
     </message>
@@ -1092,6 +1098,14 @@ Please wait few minutes and try again.</source>
     <message>
         <source>calc</source>
         <translation>розрах</translation>
+    </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
     </message>
 </context>
 <context>
@@ -1297,6 +1311,14 @@ Please wait few minutes and try again.</source>
         <source>plp id</source>
         <translation>plp id</translation>
     </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
+    </message>
 </context>
 <context>
     <name>editUserbouquet</name>
@@ -1395,6 +1417,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
+        <extracomment>curl_easy_strerror error string</extracomment>
         <translation>Не вдалося підключитися до сервера</translation>
     </message>
     <message>
@@ -1411,6 +1434,27 @@ Please wait few minutes and try again.</source>
         <source>Couldn&apos;t connect to STB FTP</source>
         <comment>error</comment>
         <translation>Не вдалося підключитися до STB FTP</translation>
+    </message>
+    <message>
+        <source>Please select a connection profile then connect.</source>
+        <comment>error</comment>
+        <translation>Виберіть профіль підключення, а потім підключіться.</translation>
+    </message>
+    <message>
+        <source>Webif Reload Error</source>
+        <comment>error</comment>
+        <translation>Помилка перезавантаження Webif</translation>
+    </message>
+    <message>
+        <source>Telnet Reload Error</source>
+        <comment>error</comment>
+        <translation>Помилка перезавантаження Telnet</translation>
+    </message>
+    <message>
+        <source>Check connection profile and settings integrity.%1Preference values are not valid.</source>
+        <comment>error</comment>
+        <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
+        <translation>Перевірте профіль підключення та цілісність налаштувань.%1Значення параметрів недійсні.</translation>
     </message>
 </context>
 <context>
@@ -2062,6 +2106,181 @@ Please wait few minutes and try again.</source>
         <comment>menu</comment>
         <translation>Змінити picon</translation>
     </message>
+    <message>
+        <source>Convert</source>
+        <comment>menu</comment>
+        <translation>Конвертувати</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Чистий</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Видаліть загублені служби</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Видалити втратили посилання</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Виправити групи каналів</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Виправте унікальні групи каналів користувачів</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Виправити (видалити) посилання з помилками</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Параметри</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Видалити сервісний кеш</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Видаліть сервіс-CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Видаліть службові позначки</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Видалити всі службові дані</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Перерахувати DVBNS для послуг</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Видалити</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Видалити елементи, на які не посилаються (вибране)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>Видалити з груп каналів (служби, що не використовуються)</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Зняти батьківський контроль</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Видалити всі групи каналів</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Видаліть усі групи каналів користувачів</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Дублікати</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Видалити повторювані маркери (імена)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Видаліть повторювані посилання</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Видаліть дублікати служб</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Видаліть повторювані транспондери</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Видалити всі дублікати</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Трансформувати</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Перетворення транспондерів у налаштування XML</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>Перетворення налаштувань XML на транспондери</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Сортувати</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Сортувати посилання…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Сортувати послуги…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Сортувати транспондери…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Сортувати групи каналів користувачів…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Автофікс</translation>
+    </message>
+    <message>
+        <source>Edit&amp;or</source>
+        <comment>menu</comment>
+        <translation>Редакт&amp;ор</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2449,6 +2668,11 @@ Please wait few minutes and try again.</source>
         <source>Add Stream</source>
         <comment>toolbar</comment>
         <translation>Додати потік</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Сортувати…</translation>
     </message>
 </context>
 <context>
@@ -3552,6 +3776,296 @@ Please wait few minutes and try again.</source>
         <comment>message</comment>
         <translation>Ви бажаєте видалити елементи?</translation>
     </message>
+    <message>
+        <source>Tools</source>
+        <comment>toolbar</comment>
+        <translation>Інструменти</translation>
+    </message>
+    <message>
+        <source>autofix</source>
+        <comment>toolbar</comment>
+        <translation>автофікс</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Чистий</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Видаліть загублені служби</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Видалити втратили посилання</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Виправити групи каналів</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Виправте унікальні групи каналів користувачів</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Виправити (видалити) посилання з помилками</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Параметри</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Видалити сервісний кеш</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Видаліть сервіс-CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Видаліть службові позначки</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Видалити всі службові дані</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Перерахувати DVBNS для послуг</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Видалити</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Видалити елементи, на які не посилаються (вибране)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>Видалити з груп каналів (служби, що не використовуються)</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Зняти батьківський контроль</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Видалити всі групи каналів</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Видаліть усі групи каналів користувачів</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Дублікати</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Видалити повторювані маркери (імена)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Видаліть повторювані посилання</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Видаліть дублікати служб</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Видаліть повторювані транспондери</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Видалити всі дублікати</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Трансформувати</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Перетворення транспондерів у налаштування XML</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>Перетворення налаштувань XML на транспондери</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Сортувати</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Сортувати посилання…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Сортувати послуги…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Сортувати транспондери…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Сортувати групи каналів користувачів…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Автофікс</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>menu</comment>
+        <translation>Імпорт</translation>
+    </message>
+    <message>
+        <source>Import…</source>
+        <comment>menu</comment>
+        <translation>Імпорт…</translation>
+    </message>
+    <message>
+        <source>Import from CSV</source>
+        <comment>menu</comment>
+        <translation>Імпортувати з CSV</translation>
+    </message>
+    <message>
+        <source>Import Services</source>
+        <comment>menu</comment>
+        <translation>Імпорт служби</translation>
+    </message>
+    <message>
+        <source>Import Bouquet</source>
+        <comment>menu</comment>
+        <translation>Імпортувати групу каналів</translation>
+    </message>
+    <message>
+        <source>Import Userbouquet</source>
+        <comment>menu</comment>
+        <translation>Імпортувати групу каналів користувача</translation>
+    </message>
+    <message>
+        <source>Import Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Імпорт налаштувань тюнера</translation>
+    </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>Імпорт з M3U</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>menu</comment>
+        <translation>Експорт</translation>
+    </message>
+    <message>
+        <source>Export…</source>
+        <comment>menu</comment>
+        <translation>Експорт…</translation>
+    </message>
+    <message>
+        <source>Export to CSV</source>
+        <comment>menu</comment>
+        <translation>Експорт у CSV</translation>
+    </message>
+    <message>
+        <source>Export current</source>
+        <comment>menu</comment>
+        <translation>Експорт поточного</translation>
+    </message>
+    <message>
+        <source>Export All</source>
+        <comment>menu</comment>
+        <translation>Експортувати все</translation>
+    </message>
+    <message>
+        <source>Export Services</source>
+        <comment>menu</comment>
+        <translation>Експорт служби</translation>
+    </message>
+    <message>
+        <source>Export Bouquets</source>
+        <comment>menu</comment>
+        <translation>Експортувати групу каналів</translation>
+    </message>
+    <message>
+        <source>Export Userbouquets</source>
+        <comment>menu</comment>
+        <translation>Експортувати групу каналів користувача</translation>
+    </message>
+    <message>
+        <source>Export Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Експорт налаштувань тюнера</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>Експорт до M3U</translation>
+    </message>
+    <message>
+        <source>Export to HTML</source>
+        <comment>menu</comment>
+        <translation>Експортувати в HTML</translation>
+    </message>
+    <message>
+        <source>Export Index</source>
+        <comment>menu</comment>
+        <translation>Індекс експорту</translation>
+    </message>
+    <message>
+        <source>Log Inspector</source>
+        <comment>menu</comment>
+        <translation>Інспектор журналу</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Помилка утиліти</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Помилка виконання утиліт.</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3608,6 +4122,307 @@ Please wait few minutes and try again.</source>
         <source>There are not stream type references in userbouquets to export.</source>
         <comment>message</comment>
         <translation>У групах каналів користувачів немає посилань на тип потоку для експорту.</translation>
+    </message>
+    <message>
+        <source>Done</source>
+        <comment>message</comment>
+        <translation>Готово</translation>
+    </message>
+    <message>
+        <source>Done!</source>
+        <comment>message</comment>
+        <translation>Готово!</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services …</source>
+        <comment>message</comment>
+        <translation>Видаліть загублені служби …</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references …</source>
+        <comment>message</comment>
+        <translation>Видалити втратили посилання …</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors …</source>
+        <comment>message</comment>
+        <translation>Виправити групи каналів …</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services …</source>
+        <comment>message</comment>
+        <translation>Виправте унікальні групи каналів користувачів …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets …</source>
+        <comment>message</comment>
+        <translation>Виправити (видалити) посилання з помилками …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets …</source>
+        <comment>message</comment>
+        <translation>Видалити сервісний кеш …</translation>
+    </message>
+    <message>
+        <source>Remove service cached …</source>
+        <comment>message</comment>
+        <translation>Видаліть сервіс-CAID …</translation>
+    </message>
+    <message>
+        <source>Remove service CAID …</source>
+        <comment>message</comment>
+        <translation>Видаліть службові позначки …</translation>
+    </message>
+    <message>
+        <source>Remove service flags …</source>
+        <comment>message</comment>
+        <translation>Видалити всі службові дані …</translation>
+    </message>
+    <message>
+        <source>Remove all service data …</source>
+        <comment>message</comment>
+        <translation>Перерахувати DVBNS для послуг …</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites) …</source>
+        <comment>message</comment>
+        <translation>Видалити елементи, на які не посилаються (вибране) …</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services) …</source>
+        <comment>message</comment>
+        <translation>Видалити з груп каналів (служби, що не використовуються) …</translation>
+    </message>
+    <message>
+        <source>Remove parental lock …</source>
+        <comment>message</comment>
+        <translation>Зняти батьківський контроль …</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets …</source>
+        <comment>message</comment>
+        <translation>Видалити всі групи каналів …</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets …</source>
+        <comment>message</comment>
+        <translation>Видаліть усі групи каналів користувачів …</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates …</source>
+        <comment>message</comment>
+        <translation>Видалити повторювані маркери (імена) …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders …</source>
+        <comment>message</comment>
+        <translation>Видаліть повторювані посилання …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services …</source>
+        <comment>message</comment>
+        <translation>Видаліть дублікати служб …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references …</source>
+        <comment>message</comment>
+        <translation>Видаліть повторювані транспондери …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names) …</source>
+        <comment>message</comment>
+        <translation>Видалити всі дублікати …</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings …</source>
+        <comment>message</comment>
+        <translation>Перетворення транспондерів у налаштування XML …</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders …</source>
+        <comment>message</comment>
+        <translation>Перетворення налаштувань XML на транспондери …</translation>
+    </message>
+    <message>
+        <source>Sort transponders …</source>
+        <comment>message</comment>
+        <translation>Сортувати транспондери …</translation>
+    </message>
+    <message>
+        <source>Sort services …</source>
+        <comment>message</comment>
+        <translation>Сортувати послуги …</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets …</source>
+        <comment>message</comment>
+        <translation>Сортувати групи каналів користувачів …</translation>
+    </message>
+    <message>
+        <source>Sort references …</source>
+        <comment>message</comment>
+        <translation>Сортувати посилання …</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Помилка утиліти</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Помилка виконання утиліт.</translation>
+    </message>
+    <message>
+        <source>Executing macro …</source>
+        <comment>message</comment>
+        <translation>Виконання макросу …</translation>
+    </message>
+    <message>
+        <source>Error executing macro.</source>
+        <comment>error</comment>
+        <translation>Помилка виконання макросу.</translation>
+    </message>
+    <message>
+        <source>Sort transponders</source>
+        <comment>dialog</comment>
+        <translation>Сортувати транспондери</translation>
+    </message>
+    <message>
+        <source>Sort services</source>
+        <comment>dialog</comment>
+        <translation>Сортувати послуги</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets</source>
+        <comment>dialog</comment>
+        <translation>Сортувати групи каналів користувачів</translation>
+    </message>
+    <message>
+        <source>Sort references</source>
+        <comment>dialog</comment>
+        <translation>Сортувати посилання</translation>
+    </message>
+    <message>
+        <source>ascending</source>
+        <translation>висхідний</translation>
+    </message>
+    <message>
+        <source>descending</source>
+        <translation>спадання</translation>
+    </message>
+    <message>
+        <source>Recall this set when Sort from context menu</source>
+        <translation>Викликати цей набір під час сортування з контекстного меню</translation>
+    </message>
+    <message>
+        <source>Apply to list selection</source>
+        <translation>Застосувати до вибраних у списку</translation>
+    </message>
+    <message>
+        <source>Apply Sort</source>
+        <comment>dialog</comment>
+        <translation>Застосувати сортування</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Назва файлу</translation>
+    </message>
+    <message>
+        <source>Bouquet Name</source>
+        <translation>Назва групи каналів</translation>
+    </message>
+    <message>
+        <source>Parent Filename</source>
+        <translation>Назва батьківського файлу</translation>
+    </message>
+    <message>
+        <source>Bouquet Type</source>
+        <translation>Тип групи каналів</translation>
+    </message>
+    <message>
+        <source>Parental Lock</source>
+        <translation>Батьківський контроль</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation>Індекс</translation>
+    </message>
+    <message>
+        <source>Channel Name</source>
+        <translation>Назва каналу</translation>
+    </message>
+    <message>
+        <source>SSID</source>
+        <translation>SSID</translation>
+    </message>
+    <message>
+        <source>TSID</source>
+        <translation>TSID</translation>
+    </message>
+    <message>
+        <source>ONID</source>
+        <translation>ONID</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation>URI</translation>
+    </message>
+    <message>
+        <source>FAV Name</source>
+        <translation>Улюблене ім&apos;я</translation>
+    </message>
+    <message>
+        <source>FAV Index</source>
+        <translation>Улюблений індекс</translation>
+    </message>
+    <message>
+        <source>Transponder order</source>
+        <translation>Замовлення транспондерів</translation>
+    </message>
+    <message>
+        <source>Provider Name</source>
+        <translation>Назва постачальника</translation>
+    </message>
+    <message>
+        <source>Service Type</source>
+        <translation>Тип послуги</translation>
+    </message>
+    <message>
+        <source>Service Number</source>
+        <translation>Service Number</translation>
+    </message>
+    <message>
+        <source>Src ID</source>
+        <translation>Src ID</translation>
+    </message>
+    <message>
+        <source>Transponder Type</source>
+        <translation>Тип транспондера</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation>Позиція</translation>
+    </message>
+    <message>
+        <source>Frequency</source>
+        <translation>Частота</translation>
+    </message>
+    <message>
+        <source>SR</source>
+        <translation>SR</translation>
+    </message>
+    <message>
+        <source>Polarization</source>
+        <translation>Поляризація</translation>
+    </message>
+    <message>
+        <source>System</source>
+        <translation>Система</translation>
     </message>
 </context>
 <context>
@@ -3747,6 +4562,11 @@ Please wait few minutes and try again.</source>
         <source>Transponder</source>
         <comment>toolbar</comment>
         <translation>Транспондер</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Сортувати…</translation>
     </message>
 </context>
 <context>

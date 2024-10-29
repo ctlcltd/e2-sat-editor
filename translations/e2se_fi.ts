@@ -198,95 +198,6 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
     </message>
 </context>
 <context>
-    <name>convertM3u</name>
-    <message>
-        <source>Import M3U</source>
-        <comment>dialog</comment>
-        <translation>Tuo M3U</translation>
-    </message>
-    <message>
-        <source>Export M3U</source>
-        <comment>dialog</comment>
-        <translation>Vie M3U</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <comment>dialog</comment>
-        <translation>Peru</translation>
-    </message>
-    <message>
-        <source>Import</source>
-        <comment>dialog</comment>
-        <translation>Tuonti</translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <comment>dialog</comment>
-        <translation>Viedä</translation>
-    </message>
-    <message>
-        <source>Channel group options</source>
-        <translation>Kanavaryhmän asetukset</translation>
-    </message>
-    <message>
-        <source>Discard Reference ID if set</source>
-        <translation>Hylkää Reference ID, jos se on asetettu</translation>
-    </message>
-    <message>
-        <source>Select Userbouquets</source>
-        <translation>Valitse Userbouquets</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation>Nimi</translation>
-    </message>
-    <message>
-        <source>Filename</source>
-        <translation>Tiedoston nimi</translation>
-    </message>
-    <message>
-        <source>Set channel Reference ID</source>
-        <translation>Aseta kanava Reference ID</translation>
-    </message>
-    <message>
-        <source>Set channel number</source>
-        <translation>Aseta kanavan numero</translation>
-    </message>
-    <message>
-        <source>Set channel group name</source>
-        <translation>Aseta kanava ryhmän nimi</translation>
-    </message>
-    <message>
-        <source>Set channel logos URL placeholder</source>
-        <translation>Aseta kanava logojen URL-paikanvaraaja</translation>
-    </message>
-    <message>
-        <source>Channel logos base URL</source>
-        <translation>Kanava logojen perus-URL</translation>
-    </message>
-    <message>
-        <source>Select channel logos folder</source>
-        <comment>file-dialog</comment>
-        <translation>Valitse kanavan logot kansio</translation>
-    </message>
-    <message>
-        <source>Import each group in separate userbouquets</source>
-        <translation>Tuo erillisissä userbouquets</translation>
-    </message>
-    <message>
-        <source>Import all entries in one userbouquet</source>
-        <translation>Tuo kaikki yhteen userbouquet</translation>
-    </message>
-    <message>
-        <source>Export each bouquet in separate files</source>
-        <translation>Vie erillisissä tiedostoissa</translation>
-    </message>
-    <message>
-        <source>Export all entries in one file</source>
-        <translation>Vie kaikki yhteen tiedostoon</translation>
-    </message>
-</context>
-<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -335,6 +246,95 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <source>Add</source>
         <comment>dialog</comment>
         <translation>Lisätä</translation>
+    </message>
+</context>
+<context>
+    <name>dialConvertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>Tuo M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>Vie M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>Peru</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>Tuonti</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>Viedä</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>Kanavaryhmän asetukset</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>Tuo erillisissä userbouquets</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>Tuo kaikki yhteen userbouquet</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>Hylkää Reference ID, jos se on asetettu</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>Valitse Userbouquets</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nimi</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Tiedoston nimi</translation>
+    </message>
+    <message>
+        <source>Export each bouquet in separate files</source>
+        <translation>Vie erillisissä tiedostoissa</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>Vie kaikki yhteen tiedostoon</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>Aseta kanava Reference ID</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>Aseta kanavan numero</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>Aseta kanava ryhmän nimi</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>Aseta kanava logojen URL-paikanvaraaja</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>Kanava logojen perus-URL</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>Valitse kanavan logot kansio</translation>
     </message>
 </context>
 <context>
@@ -488,6 +488,16 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <source>Not supported yet.</source>
         <comment>error</comment>
         <translation>Ei vielä tuettu.</translation>
+    </message>
+    <message>
+        <source>Bouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Bouquet &quot;%s&quot; on jo olemassa.</translation>
+    </message>
+    <message>
+        <source>Userbouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Userbouquet &quot;%s&quot; on jo olemassa.</translation>
     </message>
 </context>
 <context>
@@ -1064,10 +1074,6 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <translation>flags</translation>
     </message>
     <message>
-        <source>pls / mis id</source>
-        <translation>pls / mis id</translation>
-    </message>
-    <message>
         <source>pls code</source>
         <translation>pls code</translation>
     </message>
@@ -1090,6 +1096,14 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
     <message>
         <source>calc</source>
         <translation>lask</translation>
+    </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
     </message>
 </context>
 <context>
@@ -1295,6 +1309,14 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <source>plp id</source>
         <translation>plp id</translation>
     </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
+    </message>
 </context>
 <context>
     <name>editUserbouquet</name>
@@ -1393,6 +1415,7 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
+        <extracomment>curl_easy_strerror error string</extracomment>
         <translation>Palvelimeen ei voitu muodostaa yhteyttä</translation>
     </message>
     <message>
@@ -1409,6 +1432,27 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <source>Couldn&apos;t connect to STB FTP</source>
         <comment>error</comment>
         <translation>Yhteyden muodostaminen STB FTP:hen ei onnistunut</translation>
+    </message>
+    <message>
+        <source>Please select a connection profile then connect.</source>
+        <comment>error</comment>
+        <translation>Valitse yhteysprofiili ja muodosta yhteys.</translation>
+    </message>
+    <message>
+        <source>Webif Reload Error</source>
+        <comment>error</comment>
+        <translation>Webif uudelleenlataus Virhe</translation>
+    </message>
+    <message>
+        <source>Telnet Reload Error</source>
+        <comment>error</comment>
+        <translation>Telnet uudelleenlataus Virhe</translation>
+    </message>
+    <message>
+        <source>Check connection profile and settings integrity.%1Preference values are not valid.</source>
+        <comment>error</comment>
+        <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
+        <translation>Tarkista yhteysprofiilin ja asetusten eheys.%1Asetusarvot eivät kelpaa.</translation>
     </message>
 </context>
 <context>
@@ -2060,6 +2104,181 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <comment>menu</comment>
         <translation>Vaihda picon</translation>
     </message>
+    <message>
+        <source>Convert</source>
+        <comment>menu</comment>
+        <translation>Muuntaa</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Puhdistus</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Poista orvot palvelut</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Poista orvot viittaukset</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Korjaa bouquets</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Korjaa bouquets, ainutlaatuisia userbouquets</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Korjaa (poista) virheitä sisältävä viite</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Parametrit</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Poista palvelu cached</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Poista palvelu CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Poista palvelu flags</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Poista kaikki huoltotiedot</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Laske DVBNS uudelleen palveluille</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Poista</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Poista viittaamattomat kohteet (suosikit)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>Poista (käyttämättömät palvelut) bouquets</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Poista lapsilukko</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Poista kaikki bouquet</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Poista kaikki userbouquet</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Kopiot</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Poista päällekkäiset markers (nimet)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Poista päällekkäiset viittaukset</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Poista päällekkäiset palvelut</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Poista päällekkäiset transponderit</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Poista kaikki kaksoiskappaleet</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Muunna</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Muunna transponderit XML asetuksiin</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>Muunna XML asetukset transpondereiksi</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Lajittele</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Lajittele viitteet…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Lajittele palvelut…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Lajittele transponderit…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Lajittele userbouquets…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>Edit&amp;or</source>
+        <comment>menu</comment>
+        <translation>Edit&amp;ori</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2447,6 +2666,11 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <source>Add Stream</source>
         <comment>toolbar</comment>
         <translation>Lisää Stream</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Lajittele…</translation>
     </message>
 </context>
 <context>
@@ -3547,6 +3771,296 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <comment>message</comment>
         <translation>Haluatko poistaa kohteita?</translation>
     </message>
+    <message>
+        <source>Tools</source>
+        <comment>toolbar</comment>
+        <translation>Työkalut</translation>
+    </message>
+    <message>
+        <source>autofix</source>
+        <comment>toolbar</comment>
+        <translation>autofix</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Puhdistus</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Poista orvot palvelut</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Poista orvot viittaukset</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Korjaa bouquets</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Korjaa bouquets, ainutlaatuisia userbouquets</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Korjaa (poista) virheitä sisältävä viite</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Parametrit</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Poista palvelu cached</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Poista palvelu CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Poista palvelu flags</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Poista kaikki huoltotiedot</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Laske DVBNS uudelleen palveluille</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Poista</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Poista viittaamattomat kohteet (suosikit)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>Poista (käyttämättömät palvelut) bouquets</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Poista lapsilukko</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Poista kaikki bouquet</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Poista kaikki userbouquet</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Kopiot</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Poista päällekkäiset markers (nimet)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Poista päällekkäiset viittaukset</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Poista päällekkäiset palvelut</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Poista päällekkäiset transponderit</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Poista kaikki kaksoiskappaleet</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Muunna</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Muunna transponderit XML asetuksiin</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>Muunna XML asetukset transpondereiksi</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Lajittele</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Lajittele viitteet…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Lajittele palvelut…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Lajittele transponderit…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Lajittele userbouquets…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>menu</comment>
+        <translation>Tuonti</translation>
+    </message>
+    <message>
+        <source>Import…</source>
+        <comment>menu</comment>
+        <translation>Tuonti…</translation>
+    </message>
+    <message>
+        <source>Import from CSV</source>
+        <comment>menu</comment>
+        <translation>Tuo CSV:stä</translation>
+    </message>
+    <message>
+        <source>Import Services</source>
+        <comment>menu</comment>
+        <translation>Tuo palvelut</translation>
+    </message>
+    <message>
+        <source>Import Bouquet</source>
+        <comment>menu</comment>
+        <translation>Tuo bouquet</translation>
+    </message>
+    <message>
+        <source>Import Userbouquet</source>
+        <comment>menu</comment>
+        <translation>Tuo userbouquet</translation>
+    </message>
+    <message>
+        <source>Import Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Tuo tuner-asetukset</translation>
+    </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>Tuo M3U sta</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>menu</comment>
+        <translation>Viedä</translation>
+    </message>
+    <message>
+        <source>Export…</source>
+        <comment>menu</comment>
+        <translation>Viedä…</translation>
+    </message>
+    <message>
+        <source>Export to CSV</source>
+        <comment>menu</comment>
+        <translation>Vie CSV-muotoon</translation>
+    </message>
+    <message>
+        <source>Export current</source>
+        <comment>menu</comment>
+        <translation>Vie virta</translation>
+    </message>
+    <message>
+        <source>Export All</source>
+        <comment>menu</comment>
+        <translation>Vie kaikki</translation>
+    </message>
+    <message>
+        <source>Export Services</source>
+        <comment>menu</comment>
+        <translation>Vie palvelut</translation>
+    </message>
+    <message>
+        <source>Export Bouquets</source>
+        <comment>menu</comment>
+        <translation>Vie bouquets</translation>
+    </message>
+    <message>
+        <source>Export Userbouquets</source>
+        <comment>menu</comment>
+        <translation>Vie userbouquet</translation>
+    </message>
+    <message>
+        <source>Export Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Vie tuner-asetukset</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>Vie M3U hun</translation>
+    </message>
+    <message>
+        <source>Export to HTML</source>
+        <comment>menu</comment>
+        <translation>Vie HTML-muotoon</translation>
+    </message>
+    <message>
+        <source>Export Index</source>
+        <comment>menu</comment>
+        <translation>Vie indeksi</translation>
+    </message>
+    <message>
+        <source>Log Inspector</source>
+        <comment>menu</comment>
+        <translation>Tukkien tarkastaja</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Apuohjelmien Virhe</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Virhe suoritettaessa apuohjelmia.</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3603,6 +4117,307 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <source>There are not stream type references in userbouquets to export.</source>
         <comment>message</comment>
         <translation>Vietävissä userbouquets ei ole stream tyyppisiä viittauksia.</translation>
+    </message>
+    <message>
+        <source>Done</source>
+        <comment>message</comment>
+        <translation>Toteutettu</translation>
+    </message>
+    <message>
+        <source>Done!</source>
+        <comment>message</comment>
+        <translation>teloitettu!</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services …</source>
+        <comment>message</comment>
+        <translation>Poista orvot palvelut …</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references …</source>
+        <comment>message</comment>
+        <translation>Poista orvot viittaukset …</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors …</source>
+        <comment>message</comment>
+        <translation>Korjaa bouquets …</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services …</source>
+        <comment>message</comment>
+        <translation>Korjaa bouquets, ainutlaatuisia userbouquets …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets …</source>
+        <comment>message</comment>
+        <translation>Korjaa (poista) virheitä sisältävä viite …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets …</source>
+        <comment>message</comment>
+        <translation>Poista palvelu cached …</translation>
+    </message>
+    <message>
+        <source>Remove service cached …</source>
+        <comment>message</comment>
+        <translation>Poista palvelu CAID …</translation>
+    </message>
+    <message>
+        <source>Remove service CAID …</source>
+        <comment>message</comment>
+        <translation>Poista palvelu flags …</translation>
+    </message>
+    <message>
+        <source>Remove service flags …</source>
+        <comment>message</comment>
+        <translation>Poista kaikki huoltotiedot …</translation>
+    </message>
+    <message>
+        <source>Remove all service data …</source>
+        <comment>message</comment>
+        <translation>Laske DVBNS uudelleen palveluille …</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites) …</source>
+        <comment>message</comment>
+        <translation>Poista viittaamattomat kohteet (suosikit) …</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services) …</source>
+        <comment>message</comment>
+        <translation>Poista (käyttämättömät palvelut) bouquets …</translation>
+    </message>
+    <message>
+        <source>Remove parental lock …</source>
+        <comment>message</comment>
+        <translation>Poista lapsilukko …</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets …</source>
+        <comment>message</comment>
+        <translation>Poista kaikki bouquet …</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets …</source>
+        <comment>message</comment>
+        <translation>Poista kaikki userbouquet …</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates …</source>
+        <comment>message</comment>
+        <translation>Poista päällekkäiset markers (nimet) …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders …</source>
+        <comment>message</comment>
+        <translation>Poista päällekkäiset viittaukset …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services …</source>
+        <comment>message</comment>
+        <translation>Poista päällekkäiset palvelut …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references …</source>
+        <comment>message</comment>
+        <translation>Poista päällekkäiset transponderit …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names) …</source>
+        <comment>message</comment>
+        <translation>Poista kaikki kaksoiskappaleet …</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings …</source>
+        <comment>message</comment>
+        <translation>Muunna transponderit XML asetuksiin …</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders …</source>
+        <comment>message</comment>
+        <translation>Muunna XML asetukset transpondereiksi …</translation>
+    </message>
+    <message>
+        <source>Sort transponders …</source>
+        <comment>message</comment>
+        <translation>Lajittele transponderit …</translation>
+    </message>
+    <message>
+        <source>Sort services …</source>
+        <comment>message</comment>
+        <translation>Lajittele palvelut …</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets …</source>
+        <comment>message</comment>
+        <translation>Lajittele userbouquets …</translation>
+    </message>
+    <message>
+        <source>Sort references …</source>
+        <comment>message</comment>
+        <translation>Lajittele viitteet …</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Apuohjelmien Virhe</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Virhe suoritettaessa apuohjelmia.</translation>
+    </message>
+    <message>
+        <source>Executing macro …</source>
+        <comment>message</comment>
+        <translation>Suoritetaan makroa …</translation>
+    </message>
+    <message>
+        <source>Error executing macro.</source>
+        <comment>error</comment>
+        <translation>Virhe suoritettaessa makroa.</translation>
+    </message>
+    <message>
+        <source>Sort transponders</source>
+        <comment>dialog</comment>
+        <translation>Lajittele transponderit</translation>
+    </message>
+    <message>
+        <source>Sort services</source>
+        <comment>dialog</comment>
+        <translation>Lajittele palvelut</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets</source>
+        <comment>dialog</comment>
+        <translation>Lajittele userbouquets</translation>
+    </message>
+    <message>
+        <source>Sort references</source>
+        <comment>dialog</comment>
+        <translation>Lajittele viitteet</translation>
+    </message>
+    <message>
+        <source>ascending</source>
+        <translation>nouseva</translation>
+    </message>
+    <message>
+        <source>descending</source>
+        <translation>laskeva</translation>
+    </message>
+    <message>
+        <source>Recall this set when Sort from context menu</source>
+        <translation>Muista tämä joukko, kun Lajittele kontekstivalikosta</translation>
+    </message>
+    <message>
+        <source>Apply to list selection</source>
+        <translation>Käytä luettelossa valittuihin</translation>
+    </message>
+    <message>
+        <source>Apply Sort</source>
+        <comment>dialog</comment>
+        <translation>Lajittele</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Tiedoston nimi</translation>
+    </message>
+    <message>
+        <source>Bouquet Name</source>
+        <translation>Bouquet nimi</translation>
+    </message>
+    <message>
+        <source>Parent Filename</source>
+        <translation>Päätiedoston nimi</translation>
+    </message>
+    <message>
+        <source>Bouquet Type</source>
+        <translation>Bouquet tyyppi</translation>
+    </message>
+    <message>
+        <source>Parental Lock</source>
+        <translation>Lapsilukko</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation>Indeksi</translation>
+    </message>
+    <message>
+        <source>Channel Name</source>
+        <translation>Kanavan nimi</translation>
+    </message>
+    <message>
+        <source>SSID</source>
+        <translation>SSID</translation>
+    </message>
+    <message>
+        <source>TSID</source>
+        <translation>TSID</translation>
+    </message>
+    <message>
+        <source>ONID</source>
+        <translation>ONID</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation>URI</translation>
+    </message>
+    <message>
+        <source>FAV Name</source>
+        <translation>FAV nimi</translation>
+    </message>
+    <message>
+        <source>FAV Index</source>
+        <translation>FAV indeksi</translation>
+    </message>
+    <message>
+        <source>Transponder order</source>
+        <translation>Transpondereiden tilaus</translation>
+    </message>
+    <message>
+        <source>Provider Name</source>
+        <translation>Palveluntarjoajan nimi</translation>
+    </message>
+    <message>
+        <source>Service Type</source>
+        <translation>Palvelun tyyppi</translation>
+    </message>
+    <message>
+        <source>Service Number</source>
+        <translation>Palvelunumero</translation>
+    </message>
+    <message>
+        <source>Src ID</source>
+        <translation>Src ID</translation>
+    </message>
+    <message>
+        <source>Transponder Type</source>
+        <translation>Transponderin tyyppi</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation>Asema</translation>
+    </message>
+    <message>
+        <source>Frequency</source>
+        <translation>Taajuus</translation>
+    </message>
+    <message>
+        <source>SR</source>
+        <translation>SR</translation>
+    </message>
+    <message>
+        <source>Polarization</source>
+        <translation>Polarisaatio</translation>
+    </message>
+    <message>
+        <source>System</source>
+        <translation>Järjestelmä</translation>
     </message>
 </context>
 <context>
@@ -3742,6 +4557,11 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <source>Transponder</source>
         <comment>toolbar</comment>
         <translation>Transponderi</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Lajittele…</translation>
     </message>
 </context>
 <context>

@@ -198,95 +198,6 @@ Počkajte niekoľko minút a skúste to znova.</translation>
     </message>
 </context>
 <context>
-    <name>convertM3u</name>
-    <message>
-        <source>Import M3U</source>
-        <comment>dialog</comment>
-        <translation>Importovať M3U</translation>
-    </message>
-    <message>
-        <source>Export M3U</source>
-        <comment>dialog</comment>
-        <translation>Export M3U</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <comment>dialog</comment>
-        <translation>Zrušiť</translation>
-    </message>
-    <message>
-        <source>Import</source>
-        <comment>dialog</comment>
-        <translation>Import</translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <comment>dialog</comment>
-        <translation>Export</translation>
-    </message>
-    <message>
-        <source>Channel group options</source>
-        <translation>Možnosti skupiny kanálov</translation>
-    </message>
-    <message>
-        <source>Discard Reference ID if set</source>
-        <translation>Zrušte Reference ID, ak je nastavené</translation>
-    </message>
-    <message>
-        <source>Select Userbouquets</source>
-        <translation>Vyberte Userbouquets</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation>Názov</translation>
-    </message>
-    <message>
-        <source>Filename</source>
-        <translation>Názov súboru</translation>
-    </message>
-    <message>
-        <source>Set channel Reference ID</source>
-        <translation>Nastaviť kanál Reference ID</translation>
-    </message>
-    <message>
-        <source>Set channel number</source>
-        <translation>Nastavte číslo kanála</translation>
-    </message>
-    <message>
-        <source>Set channel group name</source>
-        <translation>Nastavte názov skupiny kanálov</translation>
-    </message>
-    <message>
-        <source>Set channel logos URL placeholder</source>
-        <translation>Nastaviť zástupný symbol adresy URL loga kanála</translation>
-    </message>
-    <message>
-        <source>Channel logos base URL</source>
-        <translation>Základná adresa URL loga kanála</translation>
-    </message>
-    <message>
-        <source>Select channel logos folder</source>
-        <comment>file-dialog</comment>
-        <translation>Vyberte priečinok s logami kanálov</translation>
-    </message>
-    <message>
-        <source>Import each group in separate userbouquets</source>
-        <translation>Importovať v samostatných userbouquets</translation>
-    </message>
-    <message>
-        <source>Import all entries in one userbouquet</source>
-        <translation>Importovať všetko do jedného userbouquet</translation>
-    </message>
-    <message>
-        <source>Export each bouquet in separate files</source>
-        <translation>Exportujte do samostatných súborov</translation>
-    </message>
-    <message>
-        <source>Export all entries in one file</source>
-        <translation>Exportovať všetko do jedného súboru</translation>
-    </message>
-</context>
-<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -335,6 +246,95 @@ Počkajte niekoľko minút a skúste to znova.</translation>
         <source>Add</source>
         <comment>dialog</comment>
         <translation>Pridať</translation>
+    </message>
+</context>
+<context>
+    <name>dialConvertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>Importovať M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>Export M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>Zrušiť</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>Import</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>Export</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>Možnosti skupiny kanálov</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>Importovať v samostatných userbouquets</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>Importovať všetko do jedného userbouquet</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>Zrušte Reference ID, ak je nastavené</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>Vyberte Userbouquets</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Názov</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Názov súboru</translation>
+    </message>
+    <message>
+        <source>Export each bouquet in separate files</source>
+        <translation>Exportujte do samostatných súborov</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>Exportovať všetko do jedného súboru</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>Nastaviť kanál Reference ID</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>Nastavte číslo kanála</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>Nastavte názov skupiny kanálov</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>Nastaviť zástupný symbol adresy URL loga kanála</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>Základná adresa URL loga kanála</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>Vyberte priečinok s logami kanálov</translation>
     </message>
 </context>
 <context>
@@ -488,6 +488,16 @@ Počkajte niekoľko minút a skúste to znova.</translation>
         <source>Not supported yet.</source>
         <comment>error</comment>
         <translation>Zatiaľ nepodporované.</translation>
+    </message>
+    <message>
+        <source>Bouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Bouquet &quot;%s&quot; už existuje.</translation>
+    </message>
+    <message>
+        <source>Userbouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Userbouquet &quot;%s&quot; už existuje.</translation>
     </message>
 </context>
 <context>
@@ -1064,10 +1074,6 @@ Počkajte niekoľko minút a skúste to znova.</translation>
         <translation>flags</translation>
     </message>
     <message>
-        <source>pls / mis id</source>
-        <translation>pls / mis id</translation>
-    </message>
-    <message>
         <source>pls code</source>
         <translation>pls code</translation>
     </message>
@@ -1090,6 +1096,14 @@ Počkajte niekoľko minút a skúste to znova.</translation>
     <message>
         <source>calc</source>
         <translation>počítať</translation>
+    </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
     </message>
 </context>
 <context>
@@ -1295,6 +1309,14 @@ Počkajte niekoľko minút a skúste to znova.</translation>
         <source>plp id</source>
         <translation>plp id</translation>
     </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
+    </message>
 </context>
 <context>
     <name>editUserbouquet</name>
@@ -1393,6 +1415,7 @@ Počkajte niekoľko minút a skúste to znova.</translation>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
+        <extracomment>curl_easy_strerror error string</extracomment>
         <translation>Nepodarilo sa pripojiť k serveru</translation>
     </message>
     <message>
@@ -1409,6 +1432,27 @@ Počkajte niekoľko minút a skúste to znova.</translation>
         <source>Couldn&apos;t connect to STB FTP</source>
         <comment>error</comment>
         <translation>Nepodarilo sa pripojiť k STB FTP</translation>
+    </message>
+    <message>
+        <source>Please select a connection profile then connect.</source>
+        <comment>error</comment>
+        <translation>Vyberte profil pripojenia a potom sa pripojte.</translation>
+    </message>
+    <message>
+        <source>Webif Reload Error</source>
+        <comment>error</comment>
+        <translation>Chyba Znovu načítať Webif</translation>
+    </message>
+    <message>
+        <source>Telnet Reload Error</source>
+        <comment>error</comment>
+        <translation>Chyba Znovu načítať Telnet</translation>
+    </message>
+    <message>
+        <source>Check connection profile and settings integrity.%1Preference values are not valid.</source>
+        <comment>error</comment>
+        <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
+        <translation>Skontrolujte integritu profilu pripojenia a nastavení.%1Hodnoty preferencií nie sú platné.</translation>
     </message>
 </context>
 <context>
@@ -2060,6 +2104,181 @@ Počkajte niekoľko minút a skúste to znova.</translation>
         <comment>menu</comment>
         <translation>Zmeniť picon</translation>
     </message>
+    <message>
+        <source>Convert</source>
+        <comment>menu</comment>
+        <translation>Konvertovať</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Upratovanie</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Odstráňte osirotené služby</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Odstráňte osirotené referencie</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Opravte bouquets</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Opravte bouquets, jedinečné userbouquets</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Opravte (odstráňte) referenciu s chybami</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Params</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Odstráňte službu cached</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Odstráňte službu CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Odstráňte službu vlajky</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Odstráňte všetky údaje služby</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Prepočítajte DVBNS pre služby</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Odstrániť</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Odstráňte nereferencované položky (obľúbené)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>Odstráňte (nepoužité služby) z bouquets</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Odstráňte rodičovský zámok</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Odstráňte všetky bouquets</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Odstrániť všetky userbouquets</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Duplikáty</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Odstráňte duplicitné markers (mená)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Odstráňte duplicitné referencie</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Odstráňte duplicitné služby</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Odstráňte duplicitné transpondéry</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Odstráňte všetky duplikáty</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Transformovať</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Transformujte transpondéry na nastavenia XML</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>Transformujte nastavenia XML na transpondéry</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Zoradiť </translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Zoradiť referencie…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Zoradiť služby…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Zoradiť transpondéry…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Zoradiť userbouquets…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>Edit&amp;or</source>
+        <comment>menu</comment>
+        <translation>Edit&amp;or</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2447,6 +2666,11 @@ Počkajte niekoľko minút a skúste to znova.</translation>
         <source>Add Stream</source>
         <comment>toolbar</comment>
         <translation>Pridať Stream</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Zoradiť…</translation>
     </message>
 </context>
 <context>
@@ -3550,6 +3774,296 @@ Počkajte niekoľko minút a skúste to znova.</translation>
         <comment>message</comment>
         <translation>Chcete odstrániť položky?</translation>
     </message>
+    <message>
+        <source>Tools</source>
+        <comment>toolbar</comment>
+        <translation>Nástroje</translation>
+    </message>
+    <message>
+        <source>autofix</source>
+        <comment>toolbar</comment>
+        <translation>autofix</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Upratovanie</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Odstráňte osirotené služby</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Odstráňte osirotené referencie</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Opravte bouquets</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Opravte bouquets, jedinečné userbouquets</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Opravte (odstráňte) referenciu s chybami</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Params</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Odstráňte službu cached</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Odstráňte službu CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Odstráňte službu vlajky</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Odstráňte všetky údaje služby</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Prepočítajte DVBNS pre služby</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Odstrániť</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Odstráňte nereferencované položky (obľúbené)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>Odstráňte (nepoužité služby) z bouquets</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Odstráňte rodičovský zámok</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Odstráňte všetky bouquets</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Odstrániť všetky userbouquets</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Duplikáty</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Odstráňte duplicitné markers (mená)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Odstráňte duplicitné referencie</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Odstráňte duplicitné služby</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Odstráňte duplicitné transpondéry</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Odstráňte všetky duplikáty</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Transformovať</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Transformujte transpondéry na nastavenia XML</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>Transformujte nastavenia XML na transpondéry</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Zoradiť </translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Zoradiť referencie…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Zoradiť služby…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Zoradiť transpondéry…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Zoradiť userbouquets…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>menu</comment>
+        <translation>Import</translation>
+    </message>
+    <message>
+        <source>Import…</source>
+        <comment>menu</comment>
+        <translation>Import…</translation>
+    </message>
+    <message>
+        <source>Import from CSV</source>
+        <comment>menu</comment>
+        <translation>Importovať z CSV</translation>
+    </message>
+    <message>
+        <source>Import Services</source>
+        <comment>menu</comment>
+        <translation>Importovať služby</translation>
+    </message>
+    <message>
+        <source>Import Bouquet</source>
+        <comment>menu</comment>
+        <translation>Importovať bouquet</translation>
+    </message>
+    <message>
+        <source>Import Userbouquet</source>
+        <comment>menu</comment>
+        <translation>Importovať userbouquet</translation>
+    </message>
+    <message>
+        <source>Import Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Importovať nastavenia tunera</translation>
+    </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>Import z M3U</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>menu</comment>
+        <translation>Export</translation>
+    </message>
+    <message>
+        <source>Export…</source>
+        <comment>menu</comment>
+        <translation>Export…</translation>
+    </message>
+    <message>
+        <source>Export to CSV</source>
+        <comment>menu</comment>
+        <translation>Exportovať do CSV</translation>
+    </message>
+    <message>
+        <source>Export current</source>
+        <comment>menu</comment>
+        <translation>Exportovať prúd</translation>
+    </message>
+    <message>
+        <source>Export All</source>
+        <comment>menu</comment>
+        <translation>Exportovať všetko</translation>
+    </message>
+    <message>
+        <source>Export Services</source>
+        <comment>menu</comment>
+        <translation>Exportovať služby</translation>
+    </message>
+    <message>
+        <source>Export Bouquets</source>
+        <comment>menu</comment>
+        <translation>Exportovať bouquets</translation>
+    </message>
+    <message>
+        <source>Export Userbouquets</source>
+        <comment>menu</comment>
+        <translation>Exportovať userbouquets</translation>
+    </message>
+    <message>
+        <source>Export Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Exportovať nastavenia tunera</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>Export do M3U</translation>
+    </message>
+    <message>
+        <source>Export to HTML</source>
+        <comment>menu</comment>
+        <translation>Exportovať do HTML</translation>
+    </message>
+    <message>
+        <source>Export Index</source>
+        <comment>menu</comment>
+        <translation>Exportovať index</translation>
+    </message>
+    <message>
+        <source>Log Inspector</source>
+        <comment>menu</comment>
+        <translation>Inšpektor Log</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Chyba Utilít</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Chyba pri vykonávaní utilít.</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3606,6 +4120,307 @@ Počkajte niekoľko minút a skúste to znova.</translation>
         <source>There are not stream type references in userbouquets to export.</source>
         <comment>message</comment>
         <translation>V userbouquets nie sú odkazy na typ stream na export.</translation>
+    </message>
+    <message>
+        <source>Done</source>
+        <comment>message</comment>
+        <translation>Popravený</translation>
+    </message>
+    <message>
+        <source>Done!</source>
+        <comment>message</comment>
+        <translation>Popravený!</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services …</source>
+        <comment>message</comment>
+        <translation>Odstráňte osirotené služby …</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references …</source>
+        <comment>message</comment>
+        <translation>Odstráňte osirotené referencie …</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors …</source>
+        <comment>message</comment>
+        <translation>Opravte bouquets …</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services …</source>
+        <comment>message</comment>
+        <translation>Opravte bouquets, jedinečné userbouquets …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets …</source>
+        <comment>message</comment>
+        <translation>Opravte (odstráňte) referenciu s chybami …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets …</source>
+        <comment>message</comment>
+        <translation>Odstráňte službu cached …</translation>
+    </message>
+    <message>
+        <source>Remove service cached …</source>
+        <comment>message</comment>
+        <translation>Odstráňte službu CAID …</translation>
+    </message>
+    <message>
+        <source>Remove service CAID …</source>
+        <comment>message</comment>
+        <translation>Odstráňte službu vlajky …</translation>
+    </message>
+    <message>
+        <source>Remove service flags …</source>
+        <comment>message</comment>
+        <translation>Odstráňte všetky údaje služby …</translation>
+    </message>
+    <message>
+        <source>Remove all service data …</source>
+        <comment>message</comment>
+        <translation>Prepočítajte DVBNS pre služby …</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites) …</source>
+        <comment>message</comment>
+        <translation>Odstráňte nereferencované položky (obľúbené) …</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services) …</source>
+        <comment>message</comment>
+        <translation>Odstráňte (nepoužité služby) z bouquets …</translation>
+    </message>
+    <message>
+        <source>Remove parental lock …</source>
+        <comment>message</comment>
+        <translation>Odstráňte rodičovský zámok …</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets …</source>
+        <comment>message</comment>
+        <translation>Odstráňte všetky bouquets …</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets …</source>
+        <comment>message</comment>
+        <translation>Odstrániť všetky userbouquets …</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates …</source>
+        <comment>message</comment>
+        <translation>Odstráňte duplicitné markers (mená) …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders …</source>
+        <comment>message</comment>
+        <translation>Odstráňte duplicitné referencie …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services …</source>
+        <comment>message</comment>
+        <translation>Odstráňte duplicitné služby …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references …</source>
+        <comment>message</comment>
+        <translation>Odstráňte duplicitné transpondéry …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names) …</source>
+        <comment>message</comment>
+        <translation>Odstráňte všetky duplikáty …</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings …</source>
+        <comment>message</comment>
+        <translation>Transformujte transpondéry na nastavenia XML …</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders …</source>
+        <comment>message</comment>
+        <translation>Transformujte nastavenia XML na transpondéry …</translation>
+    </message>
+    <message>
+        <source>Sort transponders …</source>
+        <comment>message</comment>
+        <translation>Zoradiť transpondéry …</translation>
+    </message>
+    <message>
+        <source>Sort services …</source>
+        <comment>message</comment>
+        <translation>Zoradiť služby …</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets …</source>
+        <comment>message</comment>
+        <translation>Zoradiť userbouquets …</translation>
+    </message>
+    <message>
+        <source>Sort references …</source>
+        <comment>message</comment>
+        <translation>Zoradiť referencie …</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Chyba Utilít</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Chyba pri vykonávaní utilít.</translation>
+    </message>
+    <message>
+        <source>Executing macro …</source>
+        <comment>message</comment>
+        <translation>Prebieha spustenie makra …</translation>
+    </message>
+    <message>
+        <source>Error executing macro.</source>
+        <comment>error</comment>
+        <translation>Chyba pri vykonávaní makra.</translation>
+    </message>
+    <message>
+        <source>Sort transponders</source>
+        <comment>dialog</comment>
+        <translation>Zoradiť transpondéry</translation>
+    </message>
+    <message>
+        <source>Sort services</source>
+        <comment>dialog</comment>
+        <translation>Zoradiť služby</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets</source>
+        <comment>dialog</comment>
+        <translation>Zoradiť userbouquets</translation>
+    </message>
+    <message>
+        <source>Sort references</source>
+        <comment>dialog</comment>
+        <translation>Zoradiť referencie</translation>
+    </message>
+    <message>
+        <source>ascending</source>
+        <translation>vzostupne</translation>
+    </message>
+    <message>
+        <source>descending</source>
+        <translation>zostupne</translation>
+    </message>
+    <message>
+        <source>Recall this set when Sort from context menu</source>
+        <translation>Vyvolajte túto množinu pri Zoradiť z kontextovej ponuky</translation>
+    </message>
+    <message>
+        <source>Apply to list selection</source>
+        <translation>Použiť na vybraté v zozname</translation>
+    </message>
+    <message>
+        <source>Apply Sort</source>
+        <comment>dialog</comment>
+        <translation>Zoradiť </translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Názov súboru</translation>
+    </message>
+    <message>
+        <source>Bouquet Name</source>
+        <translation>Názov bouquet</translation>
+    </message>
+    <message>
+        <source>Parent Filename</source>
+        <translation>Názov otec súboru</translation>
+    </message>
+    <message>
+        <source>Bouquet Type</source>
+        <translation>Typ bouquet</translation>
+    </message>
+    <message>
+        <source>Parental Lock</source>
+        <translation>Rodičovský zámok</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation>Index</translation>
+    </message>
+    <message>
+        <source>Channel Name</source>
+        <translation>Názov kanála</translation>
+    </message>
+    <message>
+        <source>SSID</source>
+        <translation>SSID</translation>
+    </message>
+    <message>
+        <source>TSID</source>
+        <translation>TSID</translation>
+    </message>
+    <message>
+        <source>ONID</source>
+        <translation>ONID</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation>URI</translation>
+    </message>
+    <message>
+        <source>FAV Name</source>
+        <translation>Názov FAV</translation>
+    </message>
+    <message>
+        <source>FAV Index</source>
+        <translation>Index FAV</translation>
+    </message>
+    <message>
+        <source>Transponder order</source>
+        <translation>Poradie transpondérov</translation>
+    </message>
+    <message>
+        <source>Provider Name</source>
+        <translation>Názov provider</translation>
+    </message>
+    <message>
+        <source>Service Type</source>
+        <translation>Typ služby</translation>
+    </message>
+    <message>
+        <source>Service Number</source>
+        <translation>Číslo služby</translation>
+    </message>
+    <message>
+        <source>Src ID</source>
+        <translation>Src ID</translation>
+    </message>
+    <message>
+        <source>Transponder Type</source>
+        <translation>Typ transpondéra</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation>Pozícia</translation>
+    </message>
+    <message>
+        <source>Frequency</source>
+        <translation>Frekvencia</translation>
+    </message>
+    <message>
+        <source>SR</source>
+        <translation>SR</translation>
+    </message>
+    <message>
+        <source>Polarization</source>
+        <translation>Polarizácia</translation>
+    </message>
+    <message>
+        <source>System</source>
+        <translation>Systém</translation>
     </message>
 </context>
 <context>
@@ -3745,6 +4560,11 @@ Počkajte niekoľko minút a skúste to znova.</translation>
         <source>Transponder</source>
         <comment>toolbar</comment>
         <translation>Transpondér</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Zoradiť…</translation>
     </message>
 </context>
 <context>

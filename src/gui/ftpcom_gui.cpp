@@ -85,7 +85,7 @@ void ftpcom::setup()
 
 	if (! checkProfileIntegrity())
 	{
-		return error("setup", "FTP Error", "Check connection profile and settings integrity.\n\nPreference values are not valid.");
+		return error("setup", "FTP Error", QString("Check connection profile and settings integrity.%1Preference values are not valid.").arg("\n\n").toStdString());
 	}
 
 	settings.beginReadArray("profile");

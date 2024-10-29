@@ -252,98 +252,98 @@ void tools::applyUtils(int bit, e2db::uoopts& opts, bool contextual)
 		switch (bit)
 		{
 			case gui::TAB_ATS::UtilsOrphaned_services:
-				status(tr("Remove orphaned services", "menu"));
+				status(tr("Remove orphaned services …", "message"));
 				dbih->remove_orphaned_services();
 			break;
 			case gui::TAB_ATS::UtilsOrphaned_references:
-				status(tr("Remove orphaned references", "menu"));
+				status(tr("Remove orphaned references …", "message"));
 				dbih->remove_orphaned_references();
 			break;
 			case gui::TAB_ATS::UtilsFixRemove:
-				status(tr("Fix (remove) reference with errors", "menu"));
+				status(tr("Fix (remove) reference with errors …", "message"));
 				dbih->fix_remove_references();
 			break;
 			case gui::TAB_ATS::UtilsFixDVBNS:
-				status(tr("Recalculate DVBNS for services", "menu"));
+				status(tr("Recalculate DVBNS for services …", "message"));
 				dbih->fix_dvbns();
 			break;
 			case gui::TAB_ATS::UtilsFixBouquets:
-				status(tr("Fix bouquets", "menu"));
+				status(tr("Fix bouquets …", "message"));
 				dbih->fix_bouquets(false);
 			break;
 			case gui::TAB_ATS::UtilsFixBouquetsUniq:
-				status(tr("Fix bouquets unique userbouquets", "menu"));
+				status(tr("Fix bouquets unique userbouquets …", "message"));
 				dbih->fix_bouquets(true);
 			break;
 			case gui::TAB_ATS::UtilsClearServicesCached:
-				status(tr("Remove service cached", "menu"));
+				status(tr("Remove service cached …", "message"));
 				dbih->clear_services_cached();
 			break;
 			case gui::TAB_ATS::UtilsClearServicesCAID:
-				status(tr("Remove service CAID", "menu"));
+				status(tr("Remove service CAID …", "message"));
 				dbih->clear_services_caid();
 			break;
 			case gui::TAB_ATS::UtilsClearServicesFlags:
-				status(tr("Remove service flags", "menu"));
+				status(tr("Remove service flags …", "message"));
 				dbih->clear_services_flags();
 			break;
 			case gui::TAB_ATS::UtilsClearServicesData:
-				status(tr("Remove all service data", "menu"));
+				status(tr("Remove all service data …", "message"));
 				dbih->clear_services_data();
 			break;
 			case gui::TAB_ATS::UtilsClearFavourites:
-				status(tr("Remove unreferenced entries (favourites)", "menu"));
+				status(tr("Remove unreferenced entries (favourites) …", "message"));
 				dbih->clear_favourites();
 			break;
 			case gui::TAB_ATS::UtilsClearBouquetsUnused:
-				status(tr("Remove from bouquets (unused services)", "menu"));
+				status(tr("Remove from bouquets (unused services) …", "message"));
 				dbih->clear_bouquets_unused_services();
 			break;
 			case gui::TAB_ATS::UtilsRemove_parentallock:
-				status(tr("Remove parental lock", "menu"));
+				status(tr("Remove parental lock …", "message"));
 				dbih->remove_parentallock();
 			break;
 			case gui::TAB_ATS::UtilsRemove_bouquets:
-				status(tr("Remove all bouquets", "menu"));
+				status(tr("Remove all bouquets …", "message"));
 				dbih->remove_bouquets();
 			break;
 			case gui::TAB_ATS::UtilsRemove_userbouquets:
-				status(tr("Remove all userbouquets", "menu"));
+				status(tr("Remove all userbouquets …", "message"));
 				dbih->remove_userbouquets();
 			break;
 			case gui::TAB_ATS::UtilsDuplicates_all:
-				status(tr("Remove all duplicates", "menu"));
+				status(tr("Remove all duplicates …", "message"));
 				dbih->remove_duplicates();
 			break;
 			case gui::TAB_ATS::UtilsDuplicates_transponders:
-				status(tr("Remove duplicate transponders", "menu"));
+				status(tr("Remove duplicate transponders …", "message"));
 				dbih->remove_duplicates_transponders();
 			break;
 			case gui::TAB_ATS::UtilsDuplicates_services:
-				status(tr("Remove duplicate services", "menu"));
+				status(tr("Remove duplicate services …", "message"));
 				dbih->remove_duplicates_services();
 			break;
 			case gui::TAB_ATS::UtilsDuplicates_references:
-				status(tr("Remove duplicate references", "menu"));
+				status(tr("Remove duplicate references …", "message"));
 				dbih->remove_duplicates_references();
 			break;
 			case gui::TAB_ATS::UtilsDuplicates_markers:
-				status(tr("Remove duplicate markers (names)", "menu"));
+				status(tr("Remove duplicate markers (names) …", "message"));
 				dbih->remove_duplicates_markers();
 			break;
 			case gui::TAB_ATS::UtilsTransform_tunersets:
-				status(tr("Transform transponders to XML settings", "menu"));
+				status(tr("Transform transponders to XML settings …", "message"));
 				dbih->transform_transponders_to_tunersets();
 			break;
 			case gui::TAB_ATS::UtilsTransform_transponders:
-				status(tr("Transform XML settings to transponders", "menu"));
+				status(tr("Transform XML settings to transponders …", "message"));
 				dbih->transform_tunersets_to_transponders();
 			break;
 			case gui::TAB_ATS::UtilsSort_transponders:
 				exec = handleSortContext(SORT_ITEM::item_transponder, contextual, opts);
 				if (exec)
 				{
-					status(tr("Sort transponders…", "menu"));
+					status(tr("Sort transponders …", "message"));
 					dbih->sort_transponders(opts);
 				}
 			break;
@@ -351,7 +351,7 @@ void tools::applyUtils(int bit, e2db::uoopts& opts, bool contextual)
 				exec = handleSortContext(SORT_ITEM::item_service, contextual, opts);
 				if (exec)
 				{
-					status(tr("Sort services…", "menu"));
+					status(tr("Sort services …", "message"));
 					dbih->sort_services(opts);
 				}
 			break;
@@ -359,7 +359,7 @@ void tools::applyUtils(int bit, e2db::uoopts& opts, bool contextual)
 				exec = handleSortContext(SORT_ITEM::item_userbouquet, contextual, opts);
 				if (exec)
 				{
-					status(tr("Sort userbouquets…", "menu"));
+					status(tr("Sort userbouquets …", "message"));
 					dbih->sort_userbouquets(opts);
 				}
 			break;
@@ -367,7 +367,7 @@ void tools::applyUtils(int bit, e2db::uoopts& opts, bool contextual)
 				exec = handleSortContext(SORT_ITEM::item_reference, contextual, opts);
 				if (exec)
 				{
-					status(tr("Sort references…", "menu"));
+					status(tr("Sort references …", "message"));
 					dbih->sort_references(opts);
 				}
 			break;
@@ -576,10 +576,10 @@ QMenu* tools::sortMenu(SORT_ITEM model, bool selecting, bool contextual)
 
 	switch (model)
 	{
-		case SORT_ITEM::item_transponder: title = tr("Sort transponders"); break;
-		case SORT_ITEM::item_service: title = tr("Sort services"); break;
-		case SORT_ITEM::item_userbouquet: title = tr("Sort userbouquets"); break;
-		case SORT_ITEM::item_reference: title = tr("Sort references"); break;
+		case SORT_ITEM::item_transponder: title = tr("Sort transponders", "dialog"); break;
+		case SORT_ITEM::item_service: title = tr("Sort services", "dialog"); break;
+		case SORT_ITEM::item_userbouquet: title = tr("Sort userbouquets", "dialog"); break;
+		case SORT_ITEM::item_reference: title = tr("Sort references", "dialog"); break;
 	}
 
 	{
@@ -671,7 +671,7 @@ QMenu* tools::sortMenu(SORT_ITEM model, bool selecting, bool contextual)
 		QPushButton* button = new QPushButton;
 		//TODO FIX
 		button->setDefault(true);
-		button->setText(tr("Apply Sort"));
+		button->setText(tr("Apply Sort", "dialog"));
 		button->connect(button, &QPushButton::pressed, [=]() {
 			this->menuSortCallback(fields);
 

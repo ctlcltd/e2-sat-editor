@@ -201,95 +201,6 @@ Please wait few minutes and try again.</source>
     </message>
 </context>
 <context>
-    <name>convertM3u</name>
-    <message>
-        <source>Import M3U</source>
-        <comment>dialog</comment>
-        <translation>Импортировать M3U</translation>
-    </message>
-    <message>
-        <source>Export M3U</source>
-        <comment>dialog</comment>
-        <translation>Экспорт M3U</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <comment>dialog</comment>
-        <translation>Отмена</translation>
-    </message>
-    <message>
-        <source>Import</source>
-        <comment>dialog</comment>
-        <translation>Импортировать</translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <comment>dialog</comment>
-        <translation>Экспорт</translation>
-    </message>
-    <message>
-        <source>Channel group options</source>
-        <translation>Параметры группы каналов</translation>
-    </message>
-    <message>
-        <source>Discard Reference ID if set</source>
-        <translation>Отменить идентификатор ссылки, если он установлен</translation>
-    </message>
-    <message>
-        <source>Select Userbouquets</source>
-        <translation>Выберите группы пользовательских каналов</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation>Имя</translation>
-    </message>
-    <message>
-        <source>Filename</source>
-        <translation>Имя файла</translation>
-    </message>
-    <message>
-        <source>Set channel Reference ID</source>
-        <translation>Установить эталонный идентификатор канала</translation>
-    </message>
-    <message>
-        <source>Set channel number</source>
-        <translation>Установить номер канала</translation>
-    </message>
-    <message>
-        <source>Set channel group name</source>
-        <translation>Установить имя группы каналов</translation>
-    </message>
-    <message>
-        <source>Set channel logos URL placeholder</source>
-        <translation>Установить заполнитель URL-адреса логотипов каналов</translation>
-    </message>
-    <message>
-        <source>Channel logos base URL</source>
-        <translation>Базовый URL логотипов каналов</translation>
-    </message>
-    <message>
-        <source>Select channel logos folder</source>
-        <comment>file-dialog</comment>
-        <translation>Выберите папку с логотипами каналов</translation>
-    </message>
-    <message>
-        <source>Import each group in separate userbouquets</source>
-        <translation>Импортировать каждую группу в отдельные группы пользователей-каналов</translation>
-    </message>
-    <message>
-        <source>Import all entries in one userbouquet</source>
-        <translation>Импорт всех записей в одну группу пользователей-каналов</translation>
-    </message>
-    <message>
-        <source>Export each bouquet in separate files</source>
-        <translation>Экспортировать каждую группу в отдельные файлы</translation>
-    </message>
-    <message>
-        <source>Export all entries in one file</source>
-        <translation>Экспортировать все записи в один файл</translation>
-    </message>
-</context>
-<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -338,6 +249,95 @@ Please wait few minutes and try again.</source>
         <source>Add</source>
         <comment>dialog</comment>
         <translation>Добавлять</translation>
+    </message>
+</context>
+<context>
+    <name>dialConvertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>Импортировать M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>Экспорт M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>Импортировать</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>Экспорт</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>Параметры группы каналов</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>Импортировать каждую группу в отдельные группы пользователей-каналов</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>Импорт всех записей в одну группу пользователей-каналов</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>Отменить идентификатор ссылки, если он установлен</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>Выберите группы пользовательских каналов</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Имя</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Имя файла</translation>
+    </message>
+    <message>
+        <source>Export each bouquet in separate files</source>
+        <translation>Экспортировать каждую группу в отдельные файлы</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>Экспортировать все записи в один файл</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>Установить эталонный идентификатор канала</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>Установить номер канала</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>Установить имя группы каналов</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>Установить заполнитель URL-адреса логотипов каналов</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>Базовый URL логотипов каналов</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>Выберите папку с логотипами каналов</translation>
     </message>
 </context>
 <context>
@@ -491,6 +491,16 @@ Please wait few minutes and try again.</source>
         <source>Not supported yet.</source>
         <comment>error</comment>
         <translation>Пока не поддерживается.</translation>
+    </message>
+    <message>
+        <source>Bouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Группа каналов &quot;%s&quot; уже существует.</translation>
+    </message>
+    <message>
+        <source>Userbouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Группа каналов пользователей &quot;%s&quot; уже существует.</translation>
     </message>
 </context>
 <context>
@@ -1067,10 +1077,6 @@ Please wait few minutes and try again.</source>
         <translation>flags</translation>
     </message>
     <message>
-        <source>pls / mis id</source>
-        <translation>pls / mis id</translation>
-    </message>
-    <message>
         <source>pls code</source>
         <translation>pls code</translation>
     </message>
@@ -1093,6 +1099,14 @@ Please wait few minutes and try again.</source>
     <message>
         <source>calc</source>
         <translation>расчет</translation>
+    </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
     </message>
 </context>
 <context>
@@ -1298,6 +1312,14 @@ Please wait few minutes and try again.</source>
         <source>plp id</source>
         <translation>plp id</translation>
     </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
+    </message>
 </context>
 <context>
     <name>editUserbouquet</name>
@@ -1396,6 +1418,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
+        <extracomment>curl_easy_strerror error string</extracomment>
         <translation>Не удалось подключиться к серверу</translation>
     </message>
     <message>
@@ -1412,6 +1435,27 @@ Please wait few minutes and try again.</source>
         <source>Couldn&apos;t connect to STB FTP</source>
         <comment>error</comment>
         <translation>Не удалось подключиться к STB FTP</translation>
+    </message>
+    <message>
+        <source>Please select a connection profile then connect.</source>
+        <comment>error</comment>
+        <translation>Выберите профиль подключения, затем подключитесь.</translation>
+    </message>
+    <message>
+        <source>Webif Reload Error</source>
+        <comment>error</comment>
+        <translation>Ошибка перезагрузки Webif</translation>
+    </message>
+    <message>
+        <source>Telnet Reload Error</source>
+        <comment>error</comment>
+        <translation>Ошибка перезагрузки Telnet</translation>
+    </message>
+    <message>
+        <source>Check connection profile and settings integrity.%1Preference values are not valid.</source>
+        <comment>error</comment>
+        <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
+        <translation>Проверьте профиль подключения и целостность настроек.%1Недопустимые значения предпочтений.</translation>
     </message>
 </context>
 <context>
@@ -2063,6 +2107,181 @@ Please wait few minutes and try again.</source>
         <comment>menu</comment>
         <translation>Изменить picon</translation>
     </message>
+    <message>
+        <source>Convert</source>
+        <comment>menu</comment>
+        <translation>Конвертировать</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Чистый</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Удалить неиспользуемые службы</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Удалить бесхозные ссылки</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Исправление групп каналов</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Исправление уникальных групп каналов пользователей</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Исправить (удалить) ссылку с ошибками</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Параметры</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Удалить кэшированный сервис</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Удалить сервис-CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Удалить сервисные флаги</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Удалить все данные службы</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Пересчитать DVBNS для услуг</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Удалить</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Удалить неиспользуемые элементы (избранное)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>Удалить из групп каналов (неиспользуемые услуги)</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Удалить родительский замок</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Удалить все группы каналов</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Удалить все группы каналов пользователей</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Дубликаты</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Удалить дубликаты маркеров (имен)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Удалить дубликаты ссылок</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Удалить дублирующие услуги</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Удалить дубликаты транспондеров</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Удалить все дубликаты</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Трансформировать</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Преобразовать транспондеры в настройки XML</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>Преобразовать настройки XML в транспондеры</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Сортировать</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Сортировать ссылки…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Сортировать услуги…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Сортировать транспондеры…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Сортировать группы пользователей-каналов…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Автофикс</translation>
+    </message>
+    <message>
+        <source>Edit&amp;or</source>
+        <comment>menu</comment>
+        <translation>Редакт&amp;ор</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2450,6 +2669,11 @@ Please wait few minutes and try again.</source>
         <source>Add Stream</source>
         <comment>toolbar</comment>
         <translation>Добавить поток</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Сортировать…</translation>
     </message>
 </context>
 <context>
@@ -3553,6 +3777,296 @@ Please wait few minutes and try again.</source>
         <comment>message</comment>
         <translation>Вы хотите удалить элементы?</translation>
     </message>
+    <message>
+        <source>Tools</source>
+        <comment>toolbar</comment>
+        <translation>Инструменты</translation>
+    </message>
+    <message>
+        <source>autofix</source>
+        <comment>toolbar</comment>
+        <translation>автофикс</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Чистый</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Удалить неиспользуемые службы</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Удалить бесхозные ссылки</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Исправление групп каналов</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Исправление уникальных групп каналов пользователей</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Исправить (удалить) ссылку с ошибками</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Параметры</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Удалить кэшированный сервис</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Удалить сервис-CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Удалить сервисные флаги</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Удалить все данные службы</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Пересчитать DVBNS для услуг</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Удалить</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Удалить неиспользуемые элементы (избранное)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>Удалить из групп каналов (неиспользуемые услуги)</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Удалить родительский замок</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Удалить все группы каналов</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Удалить все группы каналов пользователей</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Дубликаты</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Удалить дубликаты маркеров (имен)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Удалить дубликаты ссылок</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Удалить дублирующие услуги</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Удалить дубликаты транспондеров</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Удалить все дубликаты</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Трансформировать</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Преобразовать транспондеры в настройки XML</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>Преобразовать настройки XML в транспондеры</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Сортировать</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Сортировать ссылки…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Сортировать услуги…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Сортировать транспондеры…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Сортировать группы пользователей-каналов…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Автофикс</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>menu</comment>
+        <translation>Импортировать</translation>
+    </message>
+    <message>
+        <source>Import…</source>
+        <comment>menu</comment>
+        <translation>Импортировать…</translation>
+    </message>
+    <message>
+        <source>Import from CSV</source>
+        <comment>menu</comment>
+        <translation>Импорт из CSV</translation>
+    </message>
+    <message>
+        <source>Import Services</source>
+        <comment>menu</comment>
+        <translation>Импорт службы</translation>
+    </message>
+    <message>
+        <source>Import Bouquet</source>
+        <comment>menu</comment>
+        <translation>Импорт группы каналов</translation>
+    </message>
+    <message>
+        <source>Import Userbouquet</source>
+        <comment>menu</comment>
+        <translation>Импорт группы пользовательских каналов</translation>
+    </message>
+    <message>
+        <source>Import Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Импорт настроек тюнера</translation>
+    </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>Импорт из M3U</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>menu</comment>
+        <translation>Экспорт</translation>
+    </message>
+    <message>
+        <source>Export…</source>
+        <comment>menu</comment>
+        <translation>Экспорт…</translation>
+    </message>
+    <message>
+        <source>Export to CSV</source>
+        <comment>menu</comment>
+        <translation>Экспорт в CSV</translation>
+    </message>
+    <message>
+        <source>Export current</source>
+        <comment>menu</comment>
+        <translation>Экспорт текущего</translation>
+    </message>
+    <message>
+        <source>Export All</source>
+        <comment>menu</comment>
+        <translation>Экспортировать все</translation>
+    </message>
+    <message>
+        <source>Export Services</source>
+        <comment>menu</comment>
+        <translation>Экспорт службы</translation>
+    </message>
+    <message>
+        <source>Export Bouquets</source>
+        <comment>menu</comment>
+        <translation>Экспорт группы каналов</translation>
+    </message>
+    <message>
+        <source>Export Userbouquets</source>
+        <comment>menu</comment>
+        <translation>Экспорт группы пользовательских каналов</translation>
+    </message>
+    <message>
+        <source>Export Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Экспорт настроек тюнера</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>Экспорт в M3U</translation>
+    </message>
+    <message>
+        <source>Export to HTML</source>
+        <comment>menu</comment>
+        <translation>Экспорт в HTML</translation>
+    </message>
+    <message>
+        <source>Export Index</source>
+        <comment>menu</comment>
+        <translation>Индекс экспорта</translation>
+    </message>
+    <message>
+        <source>Log Inspector</source>
+        <comment>menu</comment>
+        <translation>Инспектор журналов</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Ошибка утилит</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Ошибка выполнения утилит.</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3609,6 +4123,307 @@ Please wait few minutes and try again.</source>
         <source>There are not stream type references in userbouquets to export.</source>
         <comment>message</comment>
         <translation>В группах пользовательских каналов нет ссылок на типы потоков для экспорта.</translation>
+    </message>
+    <message>
+        <source>Done</source>
+        <comment>message</comment>
+        <translation>Сделанный</translation>
+    </message>
+    <message>
+        <source>Done!</source>
+        <comment>message</comment>
+        <translation>Сделанный!</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services …</source>
+        <comment>message</comment>
+        <translation>Удалить неиспользуемые службы …</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references …</source>
+        <comment>message</comment>
+        <translation>Удалить бесхозные ссылки …</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors …</source>
+        <comment>message</comment>
+        <translation>Исправление групп каналов …</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services …</source>
+        <comment>message</comment>
+        <translation>Исправление уникальных групп каналов пользователей …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets …</source>
+        <comment>message</comment>
+        <translation>Исправить (удалить) ссылку с ошибками …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets …</source>
+        <comment>message</comment>
+        <translation>Удалить кэшированный сервис …</translation>
+    </message>
+    <message>
+        <source>Remove service cached …</source>
+        <comment>message</comment>
+        <translation>Удалить сервис-CAID …</translation>
+    </message>
+    <message>
+        <source>Remove service CAID …</source>
+        <comment>message</comment>
+        <translation>Удалить сервисные флаги …</translation>
+    </message>
+    <message>
+        <source>Remove service flags …</source>
+        <comment>message</comment>
+        <translation>Удалить все данные службы …</translation>
+    </message>
+    <message>
+        <source>Remove all service data …</source>
+        <comment>message</comment>
+        <translation>Пересчитать DVBNS для услуг …</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites) …</source>
+        <comment>message</comment>
+        <translation>Удалить неиспользуемые элементы (избранное) …</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services) …</source>
+        <comment>message</comment>
+        <translation>Удалить из групп каналов (неиспользуемые услуги) …</translation>
+    </message>
+    <message>
+        <source>Remove parental lock …</source>
+        <comment>message</comment>
+        <translation>Удалить родительский замок …</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets …</source>
+        <comment>message</comment>
+        <translation>Удалить все группы каналов …</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets …</source>
+        <comment>message</comment>
+        <translation>Удалить все группы каналов пользователей …</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates …</source>
+        <comment>message</comment>
+        <translation>Удалить дубликаты маркеров (имен) …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders …</source>
+        <comment>message</comment>
+        <translation>Удалить дубликаты ссылок …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services …</source>
+        <comment>message</comment>
+        <translation>Удалить дублирующие услуги …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references …</source>
+        <comment>message</comment>
+        <translation>Удалить дубликаты транспондеров …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names) …</source>
+        <comment>message</comment>
+        <translation>Удалить все дубликаты …</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings …</source>
+        <comment>message</comment>
+        <translation>Преобразовать транспондеры в настройки XML …</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders …</source>
+        <comment>message</comment>
+        <translation>Преобразовать настройки XML в транспондеры …</translation>
+    </message>
+    <message>
+        <source>Sort transponders …</source>
+        <comment>message</comment>
+        <translation>Сортировать транспондеры …</translation>
+    </message>
+    <message>
+        <source>Sort services …</source>
+        <comment>message</comment>
+        <translation>Сортировать услуги …</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets …</source>
+        <comment>message</comment>
+        <translation>Сортировать группы пользователей-каналов …</translation>
+    </message>
+    <message>
+        <source>Sort references …</source>
+        <comment>message</comment>
+        <translation>Сортировать ссылки …</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Ошибка утилит</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Ошибка выполнения утилит.</translation>
+    </message>
+    <message>
+        <source>Executing macro …</source>
+        <comment>message</comment>
+        <translation>Выполнение макроса …</translation>
+    </message>
+    <message>
+        <source>Error executing macro.</source>
+        <comment>error</comment>
+        <translation>Ошибка выполнения макроса.</translation>
+    </message>
+    <message>
+        <source>Sort transponders</source>
+        <comment>dialog</comment>
+        <translation>Сортировать транспондеры</translation>
+    </message>
+    <message>
+        <source>Sort services</source>
+        <comment>dialog</comment>
+        <translation>Сортировать услуги</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets</source>
+        <comment>dialog</comment>
+        <translation>Сортировать группы пользователей-каналов</translation>
+    </message>
+    <message>
+        <source>Sort references</source>
+        <comment>dialog</comment>
+        <translation>Сортировать ссылки</translation>
+    </message>
+    <message>
+        <source>ascending</source>
+        <translation>восходящий</translation>
+    </message>
+    <message>
+        <source>descending</source>
+        <translation>нисходящий</translation>
+    </message>
+    <message>
+        <source>Recall this set when Sort from context menu</source>
+        <translation>Вызовите этот набор при сортировке из контекстного меню</translation>
+    </message>
+    <message>
+        <source>Apply to list selection</source>
+        <translation>Применить к выбранному в списке</translation>
+    </message>
+    <message>
+        <source>Apply Sort</source>
+        <comment>dialog</comment>
+        <translation>Применить сортировку</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Имя файла</translation>
+    </message>
+    <message>
+        <source>Bouquet Name</source>
+        <translation>Имя группы каналов</translation>
+    </message>
+    <message>
+        <source>Parent Filename</source>
+        <translation>Имя родительского файла</translation>
+    </message>
+    <message>
+        <source>Bouquet Type</source>
+        <translation>Тип группы каналов</translation>
+    </message>
+    <message>
+        <source>Parental Lock</source>
+        <translation>Родительский контроль</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation>Индекс</translation>
+    </message>
+    <message>
+        <source>Channel Name</source>
+        <translation>Название канала</translation>
+    </message>
+    <message>
+        <source>SSID</source>
+        <translation>SSID</translation>
+    </message>
+    <message>
+        <source>TSID</source>
+        <translation>TSID</translation>
+    </message>
+    <message>
+        <source>ONID</source>
+        <translation>ONID</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation>URI</translation>
+    </message>
+    <message>
+        <source>FAV Name</source>
+        <translation>Любимое имя</translation>
+    </message>
+    <message>
+        <source>FAV Index</source>
+        <translation>Индекс избранного</translation>
+    </message>
+    <message>
+        <source>Transponder order</source>
+        <translation>Заказ транспондеров</translation>
+    </message>
+    <message>
+        <source>Provider Name</source>
+        <translation>Имя поставщика</translation>
+    </message>
+    <message>
+        <source>Service Type</source>
+        <translation>Тип услуги</translation>
+    </message>
+    <message>
+        <source>Service Number</source>
+        <translation>Service Number</translation>
+    </message>
+    <message>
+        <source>Src ID</source>
+        <translation>Src ID</translation>
+    </message>
+    <message>
+        <source>Transponder Type</source>
+        <translation>Тип транспондера</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation>Позиция</translation>
+    </message>
+    <message>
+        <source>Frequency</source>
+        <translation>Частота</translation>
+    </message>
+    <message>
+        <source>SR</source>
+        <translation>SR</translation>
+    </message>
+    <message>
+        <source>Polarization</source>
+        <translation>Поляризация</translation>
+    </message>
+    <message>
+        <source>System</source>
+        <translation>Система</translation>
     </message>
 </context>
 <context>
@@ -3748,6 +4563,11 @@ Please wait few minutes and try again.</source>
         <source>Transponder</source>
         <comment>toolbar</comment>
         <translation>Транспондер</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Сортировать…</translation>
     </message>
 </context>
 <context>

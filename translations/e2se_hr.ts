@@ -200,95 +200,6 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
     </message>
 </context>
 <context>
-    <name>convertM3u</name>
-    <message>
-        <source>Import M3U</source>
-        <comment>dialog</comment>
-        <translation>Uvezi M3U</translation>
-    </message>
-    <message>
-        <source>Export M3U</source>
-        <comment>dialog</comment>
-        <translation>Izvoz M3U</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <comment>dialog</comment>
-        <translation>Odustani</translation>
-    </message>
-    <message>
-        <source>Import</source>
-        <comment>dialog</comment>
-        <translation>Uvoz</translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <comment>dialog</comment>
-        <translation>Izvoz</translation>
-    </message>
-    <message>
-        <source>Channel group options</source>
-        <translation>Opcije grupe kanala</translation>
-    </message>
-    <message>
-        <source>Discard Reference ID if set</source>
-        <translation>Odbaci Reference ID ako je postavljen</translation>
-    </message>
-    <message>
-        <source>Select Userbouquets</source>
-        <translation>Odaberite Userbouquets</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation>Ime</translation>
-    </message>
-    <message>
-        <source>Filename</source>
-        <translation>Naziv datoteke</translation>
-    </message>
-    <message>
-        <source>Set channel Reference ID</source>
-        <translation>Postavite kanal Reference ID</translation>
-    </message>
-    <message>
-        <source>Set channel number</source>
-        <translation>Postavite broj kanala</translation>
-    </message>
-    <message>
-        <source>Set channel group name</source>
-        <translation>Postavite naziv grupe kanala</translation>
-    </message>
-    <message>
-        <source>Set channel logos URL placeholder</source>
-        <translation>Postavite rezervirano mjesto za URL logo kanala</translation>
-    </message>
-    <message>
-        <source>Channel logos base URL</source>
-        <translation>Osnovni URL logo kanala</translation>
-    </message>
-    <message>
-        <source>Select channel logos folder</source>
-        <comment>file-dialog</comment>
-        <translation>Odaberite mapu s logo kanala</translation>
-    </message>
-    <message>
-        <source>Import each group in separate userbouquets</source>
-        <translation>Uvoz u zasebnim userbouquets</translation>
-    </message>
-    <message>
-        <source>Import all entries in one userbouquet</source>
-        <translation>Uvezi sve u jednu userbouquet</translation>
-    </message>
-    <message>
-        <source>Export each bouquet in separate files</source>
-        <translation>Izvoz u zasebne datoteke</translation>
-    </message>
-    <message>
-        <source>Export all entries in one file</source>
-        <translation>Izvezite sve u jednu datoteku</translation>
-    </message>
-</context>
-<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -337,6 +248,95 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <source>Add</source>
         <comment>dialog</comment>
         <translation>Dodati</translation>
+    </message>
+</context>
+<context>
+    <name>dialConvertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>Uvezi M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>Izvoz M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>Odustani</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>Uvoz</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>Izvoz</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>Opcije grupe kanala</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>Uvoz u zasebnim userbouquets</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>Uvezi sve u jednu userbouquet</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>Odbaci Reference ID ako je postavljen</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>Odaberite Userbouquets</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Ime</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Naziv datoteke</translation>
+    </message>
+    <message>
+        <source>Export each bouquet in separate files</source>
+        <translation>Izvoz u zasebne datoteke</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>Izvezite sve u jednu datoteku</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>Postavite kanal Reference ID</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>Postavite broj kanala</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>Postavite naziv grupe kanala</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>Postavite rezervirano mjesto za URL logo kanala</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>Osnovni URL logo kanala</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>Odaberite mapu s logo kanala</translation>
     </message>
 </context>
 <context>
@@ -490,6 +490,16 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <source>Not supported yet.</source>
         <comment>error</comment>
         <translation>Još nije podržano.</translation>
+    </message>
+    <message>
+        <source>Bouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Bouquet &quot;%s&quot; već postoji.</translation>
+    </message>
+    <message>
+        <source>Userbouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Userbouquet &quot;%s&quot; već postoji.</translation>
     </message>
 </context>
 <context>
@@ -1066,10 +1076,6 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <translation>flags</translation>
     </message>
     <message>
-        <source>pls / mis id</source>
-        <translation>pls / mis id</translation>
-    </message>
-    <message>
         <source>pls code</source>
         <translation>pls code</translation>
     </message>
@@ -1092,6 +1098,14 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
     <message>
         <source>calc</source>
         <translation>kalk</translation>
+    </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
     </message>
 </context>
 <context>
@@ -1297,6 +1311,14 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <source>plp id</source>
         <translation>plp id</translation>
     </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
+    </message>
 </context>
 <context>
     <name>editUserbouquet</name>
@@ -1395,6 +1417,7 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
+        <extracomment>curl_easy_strerror error string</extracomment>
         <translation>Nije moguće spojiti se na poslužitelj</translation>
     </message>
     <message>
@@ -1411,6 +1434,27 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <source>Couldn&apos;t connect to STB FTP</source>
         <comment>error</comment>
         <translation>Nije moguće spojiti se na STB FTP</translation>
+    </message>
+    <message>
+        <source>Please select a connection profile then connect.</source>
+        <comment>error</comment>
+        <translation>Odaberite profil povezivanja, a zatim se povežite.</translation>
+    </message>
+    <message>
+        <source>Webif Reload Error</source>
+        <comment>error</comment>
+        <translation>Greška ponovno učitaj Webif</translation>
+    </message>
+    <message>
+        <source>Telnet Reload Error</source>
+        <comment>error</comment>
+        <translation>Greška ponovno učitaj Telnet</translation>
+    </message>
+    <message>
+        <source>Check connection profile and settings integrity.%1Preference values are not valid.</source>
+        <comment>error</comment>
+        <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
+        <translation>Provjerite profil veze i integritet postavki.%1Preferencijske vrijednosti nisu važeće.</translation>
     </message>
 </context>
 <context>
@@ -2062,6 +2106,181 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <comment>menu</comment>
         <translation>Promjena picon</translation>
     </message>
+    <message>
+        <source>Convert</source>
+        <comment>menu</comment>
+        <translation>Pretvoriti</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Čišćenje</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Uklonite usluge siroče</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Uklonite napuštene reference</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Popravi bouquets</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Popravite bouquets, jedinstvene userbouquets</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Popravi (ukloni) referencu s pogreškama</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Parametri</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Uklonite uslugu cached</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Uklonite uslugu CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Uklonite uslugu flags</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Uklonite sve podatke usluge</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Ponovno izračunajte DVBNS za usluge</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Ukloni</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Ukloni nereferencirane stavke (omiljene)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>Ukloni (neiskorištene usluge) iz bouquets</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Ukloni roditeljsko zaključavanje</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Ukloni sve bouquets</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Ukloni sve userbouquets</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Duplikati</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Uklonite duple markers (imena)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Uklonite duple reference</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Uklonite duple usluge</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Uklonite duple transpondere</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Uklonite sve duplikate</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Pretvori</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Pretvorite transpondere u XML postavke</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>Pretvorite XML postavke u transpondere</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Poredaj</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Poredaj reference…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Poredaj usluge…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Poredaj transpondere…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Poredaj userbouquets…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>Edit&amp;or</source>
+        <comment>menu</comment>
+        <translation>Uređivač</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2449,6 +2668,11 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <source>Add Stream</source>
         <comment>toolbar</comment>
         <translation>Dodaj Stream</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Poredaj…</translation>
     </message>
 </context>
 <context>
@@ -3552,6 +3776,296 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <comment>message</comment>
         <translation>Želite li izbrisati stavke?</translation>
     </message>
+    <message>
+        <source>Tools</source>
+        <comment>toolbar</comment>
+        <translation>Alati</translation>
+    </message>
+    <message>
+        <source>autofix</source>
+        <comment>toolbar</comment>
+        <translation>autofix</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Čišćenje</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Uklonite usluge siroče</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Uklonite napuštene reference</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Popravi bouquets</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Popravite bouquets, jedinstvene userbouquets</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Popravi (ukloni) referencu s pogreškama</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Parametri</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Uklonite uslugu cached</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Uklonite uslugu CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Uklonite uslugu flags</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Uklonite sve podatke usluge</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Ponovno izračunajte DVBNS za usluge</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Ukloni</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Ukloni nereferencirane stavke (omiljene)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>Ukloni (neiskorištene usluge) iz bouquets</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Ukloni roditeljsko zaključavanje</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Ukloni sve bouquets</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Ukloni sve userbouquets</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Duplikati</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Uklonite duple markers (imena)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Uklonite duple reference</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Uklonite duple usluge</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Uklonite duple transpondere</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Uklonite sve duplikate</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Pretvori</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Pretvorite transpondere u XML postavke</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>Pretvorite XML postavke u transpondere</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Poredaj</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Poredaj reference…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Poredaj usluge…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Poredaj transpondere…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Poredaj userbouquets…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>menu</comment>
+        <translation>Uvoz</translation>
+    </message>
+    <message>
+        <source>Import…</source>
+        <comment>menu</comment>
+        <translation>Uvoz…</translation>
+    </message>
+    <message>
+        <source>Import from CSV</source>
+        <comment>menu</comment>
+        <translation>Uvoz iz CSV-a</translation>
+    </message>
+    <message>
+        <source>Import Services</source>
+        <comment>menu</comment>
+        <translation>Uvoz usluge</translation>
+    </message>
+    <message>
+        <source>Import Bouquet</source>
+        <comment>menu</comment>
+        <translation>Uvoz bouquet</translation>
+    </message>
+    <message>
+        <source>Import Userbouquet</source>
+        <comment>menu</comment>
+        <translation>Uvoz userbouquet</translation>
+    </message>
+    <message>
+        <source>Import Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Uvoz postavki tunera</translation>
+    </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>Uvoz iz M3U</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>menu</comment>
+        <translation>Izvoz</translation>
+    </message>
+    <message>
+        <source>Export…</source>
+        <comment>menu</comment>
+        <translation>Izvoz…</translation>
+    </message>
+    <message>
+        <source>Export to CSV</source>
+        <comment>menu</comment>
+        <translation>Izvoz u CSV</translation>
+    </message>
+    <message>
+        <source>Export current</source>
+        <comment>menu</comment>
+        <translation>Izvoz struje</translation>
+    </message>
+    <message>
+        <source>Export All</source>
+        <comment>menu</comment>
+        <translation>Izvoz sve</translation>
+    </message>
+    <message>
+        <source>Export Services</source>
+        <comment>menu</comment>
+        <translation>Izvoz usluge</translation>
+    </message>
+    <message>
+        <source>Export Bouquets</source>
+        <comment>menu</comment>
+        <translation>Izvoz bouquets</translation>
+    </message>
+    <message>
+        <source>Export Userbouquets</source>
+        <comment>menu</comment>
+        <translation>Izvoz korisničkih bouquet</translation>
+    </message>
+    <message>
+        <source>Export Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Izvoz postavki tunera</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>Izvoz u M3U</translation>
+    </message>
+    <message>
+        <source>Export to HTML</source>
+        <comment>menu</comment>
+        <translation>Izvoz u HTML</translation>
+    </message>
+    <message>
+        <source>Export Index</source>
+        <comment>menu</comment>
+        <translation>Izvoz indeks</translation>
+    </message>
+    <message>
+        <source>Log Inspector</source>
+        <comment>menu</comment>
+        <translation>Log Inspector</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Greška Utils</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Pogreška pri izvršavanju utils.</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3608,6 +4122,307 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <source>There are not stream type references in userbouquets to export.</source>
         <comment>message</comment>
         <translation>Ne postoje reference tipa stream u userbouquets za izvoz.</translation>
+    </message>
+    <message>
+        <source>Done</source>
+        <comment>message</comment>
+        <translation>Izvršeno</translation>
+    </message>
+    <message>
+        <source>Done!</source>
+        <comment>message</comment>
+        <translation>Smaknuto!</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services …</source>
+        <comment>message</comment>
+        <translation>Uklonite usluge siroče …</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references …</source>
+        <comment>message</comment>
+        <translation>Uklonite napuštene reference …</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors …</source>
+        <comment>message</comment>
+        <translation>Popravi bouquets …</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services …</source>
+        <comment>message</comment>
+        <translation>Popravite bouquets, jedinstvene userbouquets …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets …</source>
+        <comment>message</comment>
+        <translation>Popravi (ukloni) referencu s pogreškama …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets …</source>
+        <comment>message</comment>
+        <translation>Uklonite uslugu cached …</translation>
+    </message>
+    <message>
+        <source>Remove service cached …</source>
+        <comment>message</comment>
+        <translation>Uklonite uslugu CAID …</translation>
+    </message>
+    <message>
+        <source>Remove service CAID …</source>
+        <comment>message</comment>
+        <translation>Uklonite uslugu flags …</translation>
+    </message>
+    <message>
+        <source>Remove service flags …</source>
+        <comment>message</comment>
+        <translation>Uklonite sve podatke usluge …</translation>
+    </message>
+    <message>
+        <source>Remove all service data …</source>
+        <comment>message</comment>
+        <translation>Ponovno izračunajte DVBNS za usluge …</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites) …</source>
+        <comment>message</comment>
+        <translation>Ukloni nereferencirane stavke (omiljene) …</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services) …</source>
+        <comment>message</comment>
+        <translation>Ukloni (neiskorištene usluge) iz bouquets …</translation>
+    </message>
+    <message>
+        <source>Remove parental lock …</source>
+        <comment>message</comment>
+        <translation>Ukloni roditeljsko zaključavanje …</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets …</source>
+        <comment>message</comment>
+        <translation>Ukloni sve bouquets …</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets …</source>
+        <comment>message</comment>
+        <translation>Ukloni sve userbouquets …</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates …</source>
+        <comment>message</comment>
+        <translation>Uklonite duple markers (imena) …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders …</source>
+        <comment>message</comment>
+        <translation>Uklonite duple reference …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services …</source>
+        <comment>message</comment>
+        <translation>Uklonite duple usluge …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references …</source>
+        <comment>message</comment>
+        <translation>Uklonite duple transpondere …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names) …</source>
+        <comment>message</comment>
+        <translation>Uklonite sve duplikate …</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings …</source>
+        <comment>message</comment>
+        <translation>Pretvorite transpondere u XML postavke …</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders …</source>
+        <comment>message</comment>
+        <translation>Pretvorite XML postavke u transpondere …</translation>
+    </message>
+    <message>
+        <source>Sort transponders …</source>
+        <comment>message</comment>
+        <translation>Poredaj transpondere …</translation>
+    </message>
+    <message>
+        <source>Sort services …</source>
+        <comment>message</comment>
+        <translation>Poredaj usluge …</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets …</source>
+        <comment>message</comment>
+        <translation>Poredaj userbouquets …</translation>
+    </message>
+    <message>
+        <source>Sort references …</source>
+        <comment>message</comment>
+        <translation>Poredaj reference …</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Greška Utils</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Pogreška pri izvršavanju utils.</translation>
+    </message>
+    <message>
+        <source>Executing macro …</source>
+        <comment>message</comment>
+        <translation>Izvršavanje makronaredbe …</translation>
+    </message>
+    <message>
+        <source>Error executing macro.</source>
+        <comment>error</comment>
+        <translation>Pogreška pri izvršavanju makronaredbe.</translation>
+    </message>
+    <message>
+        <source>Sort transponders</source>
+        <comment>dialog</comment>
+        <translation>Poredaj transpondere</translation>
+    </message>
+    <message>
+        <source>Sort services</source>
+        <comment>dialog</comment>
+        <translation>Poredaj usluge</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets</source>
+        <comment>dialog</comment>
+        <translation>Poredaj userbouquets</translation>
+    </message>
+    <message>
+        <source>Sort references</source>
+        <comment>dialog</comment>
+        <translation>Poredaj reference</translation>
+    </message>
+    <message>
+        <source>ascending</source>
+        <translation>uzlazno</translation>
+    </message>
+    <message>
+        <source>descending</source>
+        <translation>silazni</translation>
+    </message>
+    <message>
+        <source>Recall this set when Sort from context menu</source>
+        <translation>Pozovite ovaj skup kada Poredaj iz kontekstnog izbornika</translation>
+    </message>
+    <message>
+        <source>Apply to list selection</source>
+        <translation>Primijeni na odabrano na popisu</translation>
+    </message>
+    <message>
+        <source>Apply Sort</source>
+        <comment>dialog</comment>
+        <translation>Poredaj</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Naziv datoteke</translation>
+    </message>
+    <message>
+        <source>Bouquet Name</source>
+        <translation>Ime bouquet</translation>
+    </message>
+    <message>
+        <source>Parent Filename</source>
+        <translation>Roditelj naziv datoteke</translation>
+    </message>
+    <message>
+        <source>Bouquet Type</source>
+        <translation>Tip bouquet</translation>
+    </message>
+    <message>
+        <source>Parental Lock</source>
+        <translation>Roditeljska blokada</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation>Indeks</translation>
+    </message>
+    <message>
+        <source>Channel Name</source>
+        <translation>Naziv kanala</translation>
+    </message>
+    <message>
+        <source>SSID</source>
+        <translation>SSID</translation>
+    </message>
+    <message>
+        <source>TSID</source>
+        <translation>TSID</translation>
+    </message>
+    <message>
+        <source>ONID</source>
+        <translation>ONID</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation>URI</translation>
+    </message>
+    <message>
+        <source>FAV Name</source>
+        <translation>Naziv FAV</translation>
+    </message>
+    <message>
+        <source>FAV Index</source>
+        <translation>Indeks FAV</translation>
+    </message>
+    <message>
+        <source>Transponder order</source>
+        <translation>Narudžba transpondera</translation>
+    </message>
+    <message>
+        <source>Provider Name</source>
+        <translation>Naziv davatelja usluga</translation>
+    </message>
+    <message>
+        <source>Service Type</source>
+        <translation>Vrsta usluge</translation>
+    </message>
+    <message>
+        <source>Service Number</source>
+        <translation>Servisni broj</translation>
+    </message>
+    <message>
+        <source>Src ID</source>
+        <translation>Src ID</translation>
+    </message>
+    <message>
+        <source>Transponder Type</source>
+        <translation>Vrsta transpondera</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation>Položaj</translation>
+    </message>
+    <message>
+        <source>Frequency</source>
+        <translation>Frekvencija</translation>
+    </message>
+    <message>
+        <source>SR</source>
+        <translation>SR</translation>
+    </message>
+    <message>
+        <source>Polarization</source>
+        <translation>Polarizacija</translation>
+    </message>
+    <message>
+        <source>System</source>
+        <translation>Sustav</translation>
     </message>
 </context>
 <context>
@@ -3747,6 +4562,11 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <source>Transponder</source>
         <comment>toolbar</comment>
         <translation>Transponder</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Poredaj…</translation>
     </message>
 </context>
 <context>

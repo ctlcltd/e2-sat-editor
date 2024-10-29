@@ -197,95 +197,6 @@ Please wait few minutes and try again.</source>
     </message>
 </context>
 <context>
-    <name>convertM3u</name>
-    <message>
-        <source>Import M3U</source>
-        <comment>dialog</comment>
-        <translation>ייבוא M3U</translation>
-    </message>
-    <message>
-        <source>Export M3U</source>
-        <comment>dialog</comment>
-        <translation>ייצוא M3U</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <comment>dialog</comment>
-        <translation>ביטול</translation>
-    </message>
-    <message>
-        <source>Import</source>
-        <comment>dialog</comment>
-        <translation>יְבוּא</translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <comment>dialog</comment>
-        <translation>יְצוּא</translation>
-    </message>
-    <message>
-        <source>Channel group options</source>
-        <translation>אפשרויות קבוצת ערוצים</translation>
-    </message>
-    <message>
-        <source>Discard Reference ID if set</source>
-        <translation>בטל את מזהה הפניה אם מוגדר</translation>
-    </message>
-    <message>
-        <source>Select Userbouquets</source>
-        <translation>בחר משתמש-ערוץ-קבוצות</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation>שֵׁם</translation>
-    </message>
-    <message>
-        <source>Filename</source>
-        <translation>שם קובץ</translation>
-    </message>
-    <message>
-        <source>Set channel Reference ID</source>
-        <translation>הגדר את מזהה הפניה לערוץ</translation>
-    </message>
-    <message>
-        <source>Set channel number</source>
-        <translation>הגדר מספר ערוץ</translation>
-    </message>
-    <message>
-        <source>Set channel group name</source>
-        <translation>הגדר את שם קבוצת הערוצים</translation>
-    </message>
-    <message>
-        <source>Set channel logos URL placeholder</source>
-        <translation>הגדר מציין מיקום של כתובת אתר של לוגו ערוץ</translation>
-    </message>
-    <message>
-        <source>Channel logos base URL</source>
-        <translation>כתובת האתר הבסיסית של לוגו ערוץ</translation>
-    </message>
-    <message>
-        <source>Select channel logos folder</source>
-        <comment>file-dialog</comment>
-        <translation>בחר תיקיית לוגו ערוץ</translation>
-    </message>
-    <message>
-        <source>Import each group in separate userbouquets</source>
-        <translation>ייבא כל קבוצה בקבוצת ערוץ משתמש נפרדת</translation>
-    </message>
-    <message>
-        <source>Import all entries in one userbouquet</source>
-        <translation>ייבא את כל הערכים בקבוצת ערוץ משתמש אחת</translation>
-    </message>
-    <message>
-        <source>Export each bouquet in separate files</source>
-        <translation>ייצא כל קבוצה בקבצים נפרדים</translation>
-    </message>
-    <message>
-        <source>Export all entries in one file</source>
-        <translation>ייצא את כל הערכים בקובץ אחד</translation>
-    </message>
-</context>
-<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -334,6 +245,95 @@ Please wait few minutes and try again.</source>
         <source>Add</source>
         <comment>dialog</comment>
         <translation>לְהוֹסִיף</translation>
+    </message>
+</context>
+<context>
+    <name>dialConvertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>ייבוא M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>ייצוא M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>ביטול</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>יְבוּא</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>יְצוּא</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>אפשרויות קבוצת ערוצים</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>ייבא כל קבוצה בקבוצת ערוץ משתמש נפרדת</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>ייבא את כל הערכים בקבוצת ערוץ משתמש אחת</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>בטל את מזהה הפניה אם מוגדר</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>בחר משתמש-ערוץ-קבוצות</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>שֵׁם</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>שם קובץ</translation>
+    </message>
+    <message>
+        <source>Export each bouquet in separate files</source>
+        <translation>ייצא כל קבוצה בקבצים נפרדים</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>ייצא את כל הערכים בקובץ אחד</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>הגדר את מזהה הפניה לערוץ</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>הגדר מספר ערוץ</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>הגדר את שם קבוצת הערוצים</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>הגדר מציין מיקום של כתובת אתר של לוגו ערוץ</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>כתובת האתר הבסיסית של לוגו ערוץ</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>בחר תיקיית לוגו ערוץ</translation>
     </message>
 </context>
 <context>
@@ -487,6 +487,16 @@ Please wait few minutes and try again.</source>
         <source>Not supported yet.</source>
         <comment>error</comment>
         <translation>עדיין לא נתמך.</translation>
+    </message>
+    <message>
+        <source>Bouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>קבוצת הערוצים &quot;%s&quot; כבר קיימת.</translation>
+    </message>
+    <message>
+        <source>Userbouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>קבוצת ערוץ משתמש &quot;%s&quot; כבר קיימת.</translation>
     </message>
 </context>
 <context>
@@ -1063,10 +1073,6 @@ Please wait few minutes and try again.</source>
         <translation>flags</translation>
     </message>
     <message>
-        <source>pls / mis id</source>
-        <translation>pls / mis id</translation>
-    </message>
-    <message>
         <source>pls code</source>
         <translation>pls code</translation>
     </message>
@@ -1089,6 +1095,14 @@ Please wait few minutes and try again.</source>
     <message>
         <source>calc</source>
         <translation>לחשב</translation>
+    </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
     </message>
 </context>
 <context>
@@ -1294,6 +1308,14 @@ Please wait few minutes and try again.</source>
         <source>plp id</source>
         <translation>plp id</translation>
     </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
+    </message>
 </context>
 <context>
     <name>editUserbouquet</name>
@@ -1392,6 +1414,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
+        <extracomment>curl_easy_strerror error string</extracomment>
         <translation>לא ניתן להתחבר לשרת</translation>
     </message>
     <message>
@@ -1408,6 +1431,27 @@ Please wait few minutes and try again.</source>
         <source>Couldn&apos;t connect to STB FTP</source>
         <comment>error</comment>
         <translation>לא ניתן להתחבר ל STB FTP</translation>
+    </message>
+    <message>
+        <source>Please select a connection profile then connect.</source>
+        <comment>error</comment>
+        <translation>אנא בחר פרופיל חיבור ואז התחבר.</translation>
+    </message>
+    <message>
+        <source>Webif Reload Error</source>
+        <comment>error</comment>
+        <translation>שגיאת טעינה מחדש של Webif</translation>
+    </message>
+    <message>
+        <source>Telnet Reload Error</source>
+        <comment>error</comment>
+        <translation>שגיאת טעינה מחדש של Telnet</translation>
+    </message>
+    <message>
+        <source>Check connection profile and settings integrity.%1Preference values are not valid.</source>
+        <comment>error</comment>
+        <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
+        <translation>בדוק את פרופיל החיבור ואת תקינות ההגדרות.%1ערכי ההעדפות אינם חוקיים.</translation>
     </message>
 </context>
 <context>
@@ -2059,6 +2103,181 @@ Please wait few minutes and try again.</source>
         <comment>menu</comment>
         <translation>שנה picon</translation>
     </message>
+    <message>
+        <source>Convert</source>
+        <comment>menu</comment>
+        <translation>להמיר</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>לְנַקוֹת</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>הסר שירותים יתומים</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>הסר הפניות יתומות</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>תקן קבוצות ערוצים</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>תקן ערוץ-קבוצות משתמש-ערוץ-קבוצות ייחודיות</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>תקן (הסר) הפניה עם שגיאות</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>פרמס</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>הסר שירות במטמון</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>הסר שירות-CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>הסר דגלי שירות</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>הסר את כל נתוני השירות</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>חישוב מחדש של DVBNS עבור שירותים</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>הסר</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>הסר פריטים ללא הפניה (מועדפים)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>הסר מקבוצות ערוצים (שירותים שאינם בשימוש)</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>הסר את נעילת הורים</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>הסר את כל קבוצות הערוצים</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>הסר את כל קבוצות ערוץ המשתמשים</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>כפילויות</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>הסר סמנים כפולים (שמות)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>הסר הפניות כפולות</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>הסר שירותים כפולים</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>הסר משיבים כפולים</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>הסר את כל הכפילויות</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>לְשַׁנוֹת</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>הפיכת משדרים להגדרות XML</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>הפיכת הגדרות XML לטרנספונדרים</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>סוּג</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>מיין הפניות…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>מיון שירותים…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>מיין משיבים…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>מיין קבוצות משתמשים-ערוץ…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>תיקון אוטומטי</translation>
+    </message>
+    <message>
+        <source>Edit&amp;or</source>
+        <comment>menu</comment>
+        <translation>עורך</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2446,6 +2665,11 @@ Please wait few minutes and try again.</source>
         <source>Add Stream</source>
         <comment>toolbar</comment>
         <translation>הוסף זרם</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>סוּג…</translation>
     </message>
 </context>
 <context>
@@ -3546,6 +3770,296 @@ Please wait few minutes and try again.</source>
         <comment>message</comment>
         <translation>האם אתה רוצה למחוק פריטים?</translation>
     </message>
+    <message>
+        <source>Tools</source>
+        <comment>toolbar</comment>
+        <translation>כלים</translation>
+    </message>
+    <message>
+        <source>autofix</source>
+        <comment>toolbar</comment>
+        <translation>תיקון אוטומטי</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>לְנַקוֹת</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>הסר שירותים יתומים</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>הסר הפניות יתומות</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>תקן קבוצות ערוצים</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>תקן ערוץ-קבוצות משתמש-ערוץ-קבוצות ייחודיות</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>תקן (הסר) הפניה עם שגיאות</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>פרמס</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>הסר שירות במטמון</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>הסר שירות-CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>הסר דגלי שירות</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>הסר את כל נתוני השירות</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>חישוב מחדש של DVBNS עבור שירותים</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>הסר</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>הסר פריטים ללא הפניה (מועדפים)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>הסר מקבוצות ערוצים (שירותים שאינם בשימוש)</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>הסר את נעילת הורים</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>הסר את כל קבוצות הערוצים</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>הסר את כל קבוצות ערוץ המשתמשים</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>כפילויות</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>הסר סמנים כפולים (שמות)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>הסר הפניות כפולות</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>הסר שירותים כפולים</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>הסר משיבים כפולים</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>הסר את כל הכפילויות</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>לְשַׁנוֹת</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>הפיכת משדרים להגדרות XML</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>הפיכת הגדרות XML לטרנספונדרים</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>סוּג</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>מיין הפניות…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>מיון שירותים…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>מיין משיבים…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>מיין קבוצות משתמשים-ערוץ…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>תיקון אוטומטי</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>menu</comment>
+        <translation>יְבוּא</translation>
+    </message>
+    <message>
+        <source>Import…</source>
+        <comment>menu</comment>
+        <translation>יְבוּא…</translation>
+    </message>
+    <message>
+        <source>Import from CSV</source>
+        <comment>menu</comment>
+        <translation>ייבוא מ-CSV</translation>
+    </message>
+    <message>
+        <source>Import Services</source>
+        <comment>menu</comment>
+        <translation>ייבוא ערוץ/שירותים</translation>
+    </message>
+    <message>
+        <source>Import Bouquet</source>
+        <comment>menu</comment>
+        <translation>ייבוא ערוץ-קבוצת</translation>
+    </message>
+    <message>
+        <source>Import Userbouquet</source>
+        <comment>menu</comment>
+        <translation>ייבוא משתמש-ערוץ-קבוצה</translation>
+    </message>
+    <message>
+        <source>Import Tuner settings</source>
+        <comment>menu</comment>
+        <translation>ייבוא הגדרות טיונר</translation>
+    </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>ייבוא מ M3U</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>menu</comment>
+        <translation>יְצוּא</translation>
+    </message>
+    <message>
+        <source>Export…</source>
+        <comment>menu</comment>
+        <translation>יְצוּא…</translation>
+    </message>
+    <message>
+        <source>Export to CSV</source>
+        <comment>menu</comment>
+        <translation>ייצוא ל-CSV</translation>
+    </message>
+    <message>
+        <source>Export current</source>
+        <comment>menu</comment>
+        <translation>ייצא זרם</translation>
+    </message>
+    <message>
+        <source>Export All</source>
+        <comment>menu</comment>
+        <translation>ייצא הכל</translation>
+    </message>
+    <message>
+        <source>Export Services</source>
+        <comment>menu</comment>
+        <translation>ערוץ/שירותים ייצוא</translation>
+    </message>
+    <message>
+        <source>Export Bouquets</source>
+        <comment>menu</comment>
+        <translation>ייצוא ערוץ-קבוצה</translation>
+    </message>
+    <message>
+        <source>Export Userbouquets</source>
+        <comment>menu</comment>
+        <translation>ייצוא משתמש-ערוץ-קבוצה</translation>
+    </message>
+    <message>
+        <source>Export Tuner settings</source>
+        <comment>menu</comment>
+        <translation>ייצוא הגדרות טיונר</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>ייצוא ל M3U</translation>
+    </message>
+    <message>
+        <source>Export to HTML</source>
+        <comment>menu</comment>
+        <translation>ייצוא ל-HTML</translation>
+    </message>
+    <message>
+        <source>Export Index</source>
+        <comment>menu</comment>
+        <translation>אינדקס ייצוא</translation>
+    </message>
+    <message>
+        <source>Log Inspector</source>
+        <comment>menu</comment>
+        <translation>מפקח יומן</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>שגיאת כלי עזר.</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>שגיאה בהפעלת כלי עזר.</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3602,6 +4116,307 @@ Please wait few minutes and try again.</source>
         <source>There are not stream type references in userbouquets to export.</source>
         <comment>message</comment>
         <translation>אין הפניות לסוג זרם ב זרי משתמש לייצא.</translation>
+    </message>
+    <message>
+        <source>Done</source>
+        <comment>message</comment>
+        <translation>נַעֲשָׂה</translation>
+    </message>
+    <message>
+        <source>Done!</source>
+        <comment>message</comment>
+        <translation>נַעֲשָׂה!</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services …</source>
+        <comment>message</comment>
+        <translation>הסר שירותים יתומים …</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references …</source>
+        <comment>message</comment>
+        <translation>הסר הפניות יתומות …</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors …</source>
+        <comment>message</comment>
+        <translation>תקן קבוצות ערוצים …</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services …</source>
+        <comment>message</comment>
+        <translation>תקן ערוץ-קבוצות משתמש-ערוץ-קבוצות ייחודיות …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets …</source>
+        <comment>message</comment>
+        <translation>תקן (הסר) הפניה עם שגיאות …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets …</source>
+        <comment>message</comment>
+        <translation>הסר שירות במטמון …</translation>
+    </message>
+    <message>
+        <source>Remove service cached …</source>
+        <comment>message</comment>
+        <translation>הסר שירות-CAID …</translation>
+    </message>
+    <message>
+        <source>Remove service CAID …</source>
+        <comment>message</comment>
+        <translation>הסר דגלי שירות …</translation>
+    </message>
+    <message>
+        <source>Remove service flags …</source>
+        <comment>message</comment>
+        <translation>הסר את כל נתוני השירות …</translation>
+    </message>
+    <message>
+        <source>Remove all service data …</source>
+        <comment>message</comment>
+        <translation>חישוב מחדש של DVBNS עבור שירותים …</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites) …</source>
+        <comment>message</comment>
+        <translation>הסר פריטים ללא הפניה (מועדפים) …</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services) …</source>
+        <comment>message</comment>
+        <translation>הסר מקבוצות ערוצים (שירותים שאינם בשימוש) …</translation>
+    </message>
+    <message>
+        <source>Remove parental lock …</source>
+        <comment>message</comment>
+        <translation>הסר את נעילת הורים …</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets …</source>
+        <comment>message</comment>
+        <translation>הסר את כל קבוצות הערוצים …</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets …</source>
+        <comment>message</comment>
+        <translation>הסר את כל קבוצות ערוץ המשתמשים …</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates …</source>
+        <comment>message</comment>
+        <translation>הסר סמנים כפולים (שמות) …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders …</source>
+        <comment>message</comment>
+        <translation>הסר הפניות כפולות …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services …</source>
+        <comment>message</comment>
+        <translation>הסר שירותים כפולים …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references …</source>
+        <comment>message</comment>
+        <translation>הסר משיבים כפולים …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names) …</source>
+        <comment>message</comment>
+        <translation>הסר את כל הכפילויות …</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings …</source>
+        <comment>message</comment>
+        <translation>הפיכת משדרים להגדרות XML …</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders …</source>
+        <comment>message</comment>
+        <translation>הפיכת הגדרות XML לטרנספונדרים …</translation>
+    </message>
+    <message>
+        <source>Sort transponders …</source>
+        <comment>message</comment>
+        <translation>מיין משיבים …</translation>
+    </message>
+    <message>
+        <source>Sort services …</source>
+        <comment>message</comment>
+        <translation>מיון שירותים …</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets …</source>
+        <comment>message</comment>
+        <translation>מיין קבוצות משתמשים-ערוץ …</translation>
+    </message>
+    <message>
+        <source>Sort references …</source>
+        <comment>message</comment>
+        <translation>מיין הפניות …</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>שגיאת כלי עזר.</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>שגיאה בהפעלת כלי עזר.</translation>
+    </message>
+    <message>
+        <source>Executing macro …</source>
+        <comment>message</comment>
+        <translation>מפעיל מאקרו …</translation>
+    </message>
+    <message>
+        <source>Error executing macro.</source>
+        <comment>error</comment>
+        <translation>שגיאה בביצוע מאקרו.</translation>
+    </message>
+    <message>
+        <source>Sort transponders</source>
+        <comment>dialog</comment>
+        <translation>מיין משיבים</translation>
+    </message>
+    <message>
+        <source>Sort services</source>
+        <comment>dialog</comment>
+        <translation>מיון שירותים</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets</source>
+        <comment>dialog</comment>
+        <translation>מיין קבוצות משתמשים-ערוץ</translation>
+    </message>
+    <message>
+        <source>Sort references</source>
+        <comment>dialog</comment>
+        <translation>מיין הפניות</translation>
+    </message>
+    <message>
+        <source>ascending</source>
+        <translation>עוֹלֶה</translation>
+    </message>
+    <message>
+        <source>descending</source>
+        <translation>יורד</translation>
+    </message>
+    <message>
+        <source>Recall this set when Sort from context menu</source>
+        <translation>זכור קבוצה זו כאשר מיון מתפריט ההקשר</translation>
+    </message>
+    <message>
+        <source>Apply to list selection</source>
+        <translation>החל על שנבחרו ברשימה</translation>
+    </message>
+    <message>
+        <source>Apply Sort</source>
+        <comment>dialog</comment>
+        <translation>החל מיון</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>שם קובץ</translation>
+    </message>
+    <message>
+        <source>Bouquet Name</source>
+        <translation>שם קבוצת הערוץ</translation>
+    </message>
+    <message>
+        <source>Parent Filename</source>
+        <translation>שם קובץ אב</translation>
+    </message>
+    <message>
+        <source>Bouquet Type</source>
+        <translation>סוג קבוצת ערוץ</translation>
+    </message>
+    <message>
+        <source>Parental Lock</source>
+        <translation>נעילת הורים</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation>אינדקס</translation>
+    </message>
+    <message>
+        <source>Channel Name</source>
+        <translation>שם הערוץ</translation>
+    </message>
+    <message>
+        <source>SSID</source>
+        <translation>SSID</translation>
+    </message>
+    <message>
+        <source>TSID</source>
+        <translation>TSID</translation>
+    </message>
+    <message>
+        <source>ONID</source>
+        <translation>ONID</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation>URI</translation>
+    </message>
+    <message>
+        <source>FAV Name</source>
+        <translation>שם אהוב</translation>
+    </message>
+    <message>
+        <source>FAV Index</source>
+        <translation>אינדקס מועדף</translation>
+    </message>
+    <message>
+        <source>Transponder order</source>
+        <translation>סדר משדרים</translation>
+    </message>
+    <message>
+        <source>Provider Name</source>
+        <translation>שם הספק</translation>
+    </message>
+    <message>
+        <source>Service Type</source>
+        <translation>סוג שירות</translation>
+    </message>
+    <message>
+        <source>Service Number</source>
+        <translation>Service Number</translation>
+    </message>
+    <message>
+        <source>Src ID</source>
+        <translation>Src ID</translation>
+    </message>
+    <message>
+        <source>Transponder Type</source>
+        <translation>סוג משדר</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation>מיקום</translation>
+    </message>
+    <message>
+        <source>Frequency</source>
+        <translation>תדירות</translation>
+    </message>
+    <message>
+        <source>SR</source>
+        <translation>SR</translation>
+    </message>
+    <message>
+        <source>Polarization</source>
+        <translation>קיטוב</translation>
+    </message>
+    <message>
+        <source>System</source>
+        <translation>מערכת</translation>
     </message>
 </context>
 <context>
@@ -3741,6 +4556,11 @@ Please wait few minutes and try again.</source>
         <source>Transponder</source>
         <comment>toolbar</comment>
         <translation>משדר</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>סוּג…</translation>
     </message>
 </context>
 <context>

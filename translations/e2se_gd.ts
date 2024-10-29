@@ -199,95 +199,6 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     </message>
 </context>
 <context>
-    <name>convertM3u</name>
-    <message>
-        <source>Import M3U</source>
-        <comment>dialog</comment>
-        <translation>Cuir a-steach M3U</translation>
-    </message>
-    <message>
-        <source>Export M3U</source>
-        <comment>dialog</comment>
-        <translation>Às-mhalairt M3U</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <comment>dialog</comment>
-        <translation>Sguir dheth</translation>
-    </message>
-    <message>
-        <source>Import</source>
-        <comment>dialog</comment>
-        <translation>Cuir a-steach</translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <comment>dialog</comment>
-        <translation>Às-mhalairt</translation>
-    </message>
-    <message>
-        <source>Channel group options</source>
-        <translation>Roghainnean buidheann seanail</translation>
-    </message>
-    <message>
-        <source>Discard Reference ID if set</source>
-        <translation>Cuir às do Reference ID ma tha thu air a shuidheachadh</translation>
-    </message>
-    <message>
-        <source>Select Userbouquets</source>
-        <translation>Tagh Userbouquets</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation>Ainm</translation>
-    </message>
-    <message>
-        <source>Filename</source>
-        <translation>Ainm faidhle</translation>
-    </message>
-    <message>
-        <source>Set channel Reference ID</source>
-        <translation>Suidhich an t-sianal Reference ID</translation>
-    </message>
-    <message>
-        <source>Set channel number</source>
-        <translation>Suidhich àireamh sianal</translation>
-    </message>
-    <message>
-        <source>Set channel group name</source>
-        <translation>Suidhich ainm buidheann seanail</translation>
-    </message>
-    <message>
-        <source>Set channel logos URL placeholder</source>
-        <translation>Suidhich suaicheantasan seanail URL neach-àite</translation>
-    </message>
-    <message>
-        <source>Channel logos base URL</source>
-        <translation>URL bunaiteach suaicheantasan seanail</translation>
-    </message>
-    <message>
-        <source>Select channel logos folder</source>
-        <comment>file-dialog</comment>
-        <translation>Tagh pasgan suaicheantasan seanail</translation>
-    </message>
-    <message>
-        <source>Import each group in separate userbouquets</source>
-        <translation>Cuir a-steach ann an userbouquets fa leth</translation>
-    </message>
-    <message>
-        <source>Import all entries in one userbouquet</source>
-        <translation>Cuir a-steach a h-uile càil ann an aon userbouquet</translation>
-    </message>
-    <message>
-        <source>Export each bouquet in separate files</source>
-        <translation>Às-mhalairt ann am faidhlichean fa leth</translation>
-    </message>
-    <message>
-        <source>Export all entries in one file</source>
-        <translation>Às-mhalairt uile ann an aon fhaidhle</translation>
-    </message>
-</context>
-<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -336,6 +247,95 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <source>Add</source>
         <comment>dialog</comment>
         <translation>Cuir ris</translation>
+    </message>
+</context>
+<context>
+    <name>dialConvertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>Cuir a-steach M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>Às-mhalairt M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>Sguir dheth</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>Cuir a-steach</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>Às-mhalairt</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>Roghainnean buidheann seanail</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>Cuir a-steach ann an userbouquets fa leth</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>Cuir a-steach a h-uile càil ann an aon userbouquet</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>Cuir às do Reference ID ma tha thu air a shuidheachadh</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>Tagh Userbouquets</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Ainm</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Ainm faidhle</translation>
+    </message>
+    <message>
+        <source>Export each bouquet in separate files</source>
+        <translation>Às-mhalairt ann am faidhlichean fa leth</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>Às-mhalairt uile ann an aon fhaidhle</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>Suidhich an t-sianal Reference ID</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>Suidhich àireamh sianal</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>Suidhich ainm buidheann seanail</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>Suidhich suaicheantasan seanail URL neach-àite</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>URL bunaiteach suaicheantasan seanail</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>Tagh pasgan suaicheantasan seanail</translation>
     </message>
 </context>
 <context>
@@ -489,6 +489,16 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <source>Not supported yet.</source>
         <comment>error</comment>
         <translation>Chan eil taic ann fhathast.</translation>
+    </message>
+    <message>
+        <source>Bouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Tha Bouquet &quot;%s&quot; ann mu thràth.</translation>
+    </message>
+    <message>
+        <source>Userbouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Tha Userbouquet &quot;%s&quot; ann mu thràth.</translation>
     </message>
 </context>
 <context>
@@ -1065,10 +1075,6 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <translation>flags</translation>
     </message>
     <message>
-        <source>pls / mis id</source>
-        <translation>pls / mis id</translation>
-    </message>
-    <message>
         <source>pls code</source>
         <translation>pls code</translation>
     </message>
@@ -1091,6 +1097,14 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     <message>
         <source>calc</source>
         <translation>cunnt</translation>
+    </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
     </message>
 </context>
 <context>
@@ -1296,6 +1310,14 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <source>plp id</source>
         <translation>plp id</translation>
     </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
+    </message>
 </context>
 <context>
     <name>editUserbouquet</name>
@@ -1394,6 +1416,7 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
+        <extracomment>curl_easy_strerror error string</extracomment>
         <translation>Cha b&apos; urrainn dhuinn ceangal ris an fhrithealaiche</translation>
     </message>
     <message>
@@ -1410,6 +1433,27 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <source>Couldn&apos;t connect to STB FTP</source>
         <comment>error</comment>
         <translation>Cha b&apos; urrainn dhuinn ceangal a dhèanamh ri STB FTP</translation>
+    </message>
+    <message>
+        <source>Please select a connection profile then connect.</source>
+        <comment>error</comment>
+        <translation>Feuch an tagh thu pròifil ceangail agus an uairsin ceangail.</translation>
+    </message>
+    <message>
+        <source>Webif Reload Error</source>
+        <comment>error</comment>
+        <translation>Mearachd Webif ath-luchdaich</translation>
+    </message>
+    <message>
+        <source>Telnet Reload Error</source>
+        <comment>error</comment>
+        <translation>Mearachd Telnet ath-luchdaich</translation>
+    </message>
+    <message>
+        <source>Check connection profile and settings integrity.%1Preference values are not valid.</source>
+        <comment>error</comment>
+        <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
+        <translation>Thoir sùil air pròifil a&apos; cheangail agus ionracas nan roghainnean.%1Chan eil luachan nan roghainnean dligheach.</translation>
     </message>
 </context>
 <context>
@@ -2061,6 +2105,181 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <comment>menu</comment>
         <translation>Atharraich am picon</translation>
     </message>
+    <message>
+        <source>Convert</source>
+        <comment>menu</comment>
+        <translation>Tionndadh</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Glanadh</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh seirbheisean dìlleachdan</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh iomraidhean dìlleachdan</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Ceartaich bouquets</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Ceartaich bouquets, userbouquets gun samhail</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Ceartaich (cuir air falbh) iomradh le mearachdan</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Paramaichean</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh seirbheis cached</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh seirbheis CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh seirbheis flags</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh a h-uile dàta seirbheis</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Ath-àireamhachadh DVBNS airson seirbheisean</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh nithean gun iomradh (feartan as fheàrr leat)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh (seirbheisean gun chleachdadh) bho bouquets</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh glas phàrantan</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh a h-uile bouquets</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh a h-uile userbouquets</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Dùblachadh</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh markers dùblaichte (ainmean)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh iomraidhean dùblaichte</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh seirbheisean dùblaichte</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh transponders dùblaichte</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh a h-uile dùblachadh</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Atharraich</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Atharraich transponders gu XML settings</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>Atharraich XML settings gu transponders</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Deasaich</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Deasaich iomraidhean…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Deasaich seirbheisean…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Deasaich transponders…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Deasaich userbouquets…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Fèin-fix</translation>
+    </message>
+    <message>
+        <source>Edit&amp;or</source>
+        <comment>menu</comment>
+        <translation>Deasaiche</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2448,6 +2667,11 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <source>Add Stream</source>
         <comment>toolbar</comment>
         <translation>Cuir stream ris</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Deasaich…</translation>
     </message>
 </context>
 <context>
@@ -3554,6 +3778,296 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <comment>message</comment>
         <translation>A bheil thu airson nithean a sguabadh às?</translation>
     </message>
+    <message>
+        <source>Tools</source>
+        <comment>toolbar</comment>
+        <translation>Innealan</translation>
+    </message>
+    <message>
+        <source>autofix</source>
+        <comment>toolbar</comment>
+        <translation>fèin-fix</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Glanadh</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh seirbheisean dìlleachdan</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh iomraidhean dìlleachdan</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Ceartaich bouquets</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Ceartaich bouquets, userbouquets gun samhail</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Ceartaich (cuir air falbh) iomradh le mearachdan</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Paramaichean</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh seirbheis cached</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh seirbheis CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh seirbheis flags</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh a h-uile dàta seirbheis</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Ath-àireamhachadh DVBNS airson seirbheisean</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh nithean gun iomradh (feartan as fheàrr leat)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh (seirbheisean gun chleachdadh) bho bouquets</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh glas phàrantan</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh a h-uile bouquets</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh a h-uile userbouquets</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Dùblachadh</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh markers dùblaichte (ainmean)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh iomraidhean dùblaichte</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh seirbheisean dùblaichte</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh transponders dùblaichte</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Thoir air falbh a h-uile dùblachadh</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Atharraich</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Atharraich transponders gu XML settings</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>Atharraich XML settings gu transponders</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Deasaich</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Deasaich iomraidhean…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Deasaich seirbheisean…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Deasaich transponders…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Deasaich userbouquets…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Fèin-fix</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>menu</comment>
+        <translation>Cuir a-steach</translation>
+    </message>
+    <message>
+        <source>Import…</source>
+        <comment>menu</comment>
+        <translation>Cuir a-steach…</translation>
+    </message>
+    <message>
+        <source>Import from CSV</source>
+        <comment>menu</comment>
+        <translation>Cuir a-steach bho CSV</translation>
+    </message>
+    <message>
+        <source>Import Services</source>
+        <comment>menu</comment>
+        <translation>Cuir a-steach seirbheisean</translation>
+    </message>
+    <message>
+        <source>Import Bouquet</source>
+        <comment>menu</comment>
+        <translation>Cuir a-steach bouquet</translation>
+    </message>
+    <message>
+        <source>Import Userbouquet</source>
+        <comment>menu</comment>
+        <translation>Cuir a-steach userbouquet</translation>
+    </message>
+    <message>
+        <source>Import Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Cuir a-steach roghainnean tuner</translation>
+    </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>Cuir a-steach bho M3U</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>menu</comment>
+        <translation>Às-mhalairt</translation>
+    </message>
+    <message>
+        <source>Export…</source>
+        <comment>menu</comment>
+        <translation>Às-mhalairt…</translation>
+    </message>
+    <message>
+        <source>Export to CSV</source>
+        <comment>menu</comment>
+        <translation>Às-mhalairt gu CSV</translation>
+    </message>
+    <message>
+        <source>Export current</source>
+        <comment>menu</comment>
+        <translation>Às-mhalairt sruth</translation>
+    </message>
+    <message>
+        <source>Export All</source>
+        <comment>menu</comment>
+        <translation>Às-mhalairt a h-uile</translation>
+    </message>
+    <message>
+        <source>Export Services</source>
+        <comment>menu</comment>
+        <translation>Às-mhalairt seirbheisean</translation>
+    </message>
+    <message>
+        <source>Export Bouquets</source>
+        <comment>menu</comment>
+        <translation>Às-mhalairt bouquets</translation>
+    </message>
+    <message>
+        <source>Export Userbouquets</source>
+        <comment>menu</comment>
+        <translation>Às-mhalairt userbouquets</translation>
+    </message>
+    <message>
+        <source>Export Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Às-mhalairt tuner roghainnean</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>Às-mhalairt gu M3U</translation>
+    </message>
+    <message>
+        <source>Export to HTML</source>
+        <comment>menu</comment>
+        <translation>Às-mhalairt gu HTML</translation>
+    </message>
+    <message>
+        <source>Export Index</source>
+        <comment>menu</comment>
+        <translation>Às-mhalairt clàr-innse</translation>
+    </message>
+    <message>
+        <source>Log Inspector</source>
+        <comment>menu</comment>
+        <translation>Neach-sgrùdaidh Log</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Mearachd Goireasan</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Thachair mearachd le cur an gnìomh goireasan.</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3610,6 +4124,307 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <source>There are not stream type references in userbouquets to export.</source>
         <comment>message</comment>
         <translation>Chan eil iomraidhean seòrsa stream ann an userbouquets airson às-mhalairt.</translation>
+    </message>
+    <message>
+        <source>Done</source>
+        <comment>message</comment>
+        <translation>Air a chur gu bàs</translation>
+    </message>
+    <message>
+        <source>Done!</source>
+        <comment>message</comment>
+        <translation>Air a chur gu bàs!</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services …</source>
+        <comment>message</comment>
+        <translation>Thoir air falbh seirbheisean dìlleachdan …</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references …</source>
+        <comment>message</comment>
+        <translation>Thoir air falbh iomraidhean dìlleachdan …</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors …</source>
+        <comment>message</comment>
+        <translation>Ceartaich bouquets …</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services …</source>
+        <comment>message</comment>
+        <translation>Ceartaich bouquets, userbouquets gun samhail …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets …</source>
+        <comment>message</comment>
+        <translation>Ceartaich (cuir air falbh) iomradh le mearachdan …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets …</source>
+        <comment>message</comment>
+        <translation>Thoir air falbh seirbheis cached …</translation>
+    </message>
+    <message>
+        <source>Remove service cached …</source>
+        <comment>message</comment>
+        <translation>Thoir air falbh seirbheis CAID …</translation>
+    </message>
+    <message>
+        <source>Remove service CAID …</source>
+        <comment>message</comment>
+        <translation>Thoir air falbh seirbheis flags …</translation>
+    </message>
+    <message>
+        <source>Remove service flags …</source>
+        <comment>message</comment>
+        <translation>Thoir air falbh a h-uile dàta seirbheis …</translation>
+    </message>
+    <message>
+        <source>Remove all service data …</source>
+        <comment>message</comment>
+        <translation>Ath-àireamhachadh DVBNS airson seirbheisean …</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites) …</source>
+        <comment>message</comment>
+        <translation>Thoir air falbh nithean gun iomradh (feartan as fheàrr leat) …</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services) …</source>
+        <comment>message</comment>
+        <translation>Thoir air falbh (seirbheisean gun chleachdadh) bho bouquets …</translation>
+    </message>
+    <message>
+        <source>Remove parental lock …</source>
+        <comment>message</comment>
+        <translation>Thoir air falbh glas phàrantan …</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets …</source>
+        <comment>message</comment>
+        <translation>Thoir air falbh a h-uile bouquets …</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets …</source>
+        <comment>message</comment>
+        <translation>Thoir air falbh a h-uile userbouquets …</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates …</source>
+        <comment>message</comment>
+        <translation>Thoir air falbh markers dùblaichte (ainmean) …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders …</source>
+        <comment>message</comment>
+        <translation>Thoir air falbh iomraidhean dùblaichte …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services …</source>
+        <comment>message</comment>
+        <translation>Thoir air falbh seirbheisean dùblaichte …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references …</source>
+        <comment>message</comment>
+        <translation>Thoir air falbh transponders dùblaichte …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names) …</source>
+        <comment>message</comment>
+        <translation>Thoir air falbh a h-uile dùblachadh …</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings …</source>
+        <comment>message</comment>
+        <translation>Atharraich transponders gu XML settings …</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders …</source>
+        <comment>message</comment>
+        <translation>Atharraich XML settings gu transponders …</translation>
+    </message>
+    <message>
+        <source>Sort transponders …</source>
+        <comment>message</comment>
+        <translation>Deasaich transponders …</translation>
+    </message>
+    <message>
+        <source>Sort services …</source>
+        <comment>message</comment>
+        <translation>Deasaich seirbheisean …</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets …</source>
+        <comment>message</comment>
+        <translation>Deasaich userbouquets …</translation>
+    </message>
+    <message>
+        <source>Sort references …</source>
+        <comment>message</comment>
+        <translation>Deasaich iomraidhean …</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Mearachd Goireasan</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Thachair mearachd le cur an gnìomh goireasan.</translation>
+    </message>
+    <message>
+        <source>Executing macro …</source>
+        <comment>message</comment>
+        <translation>A&apos; cur an gnìomh macro …</translation>
+    </message>
+    <message>
+        <source>Error executing macro.</source>
+        <comment>error</comment>
+        <translation>Thachair mearachd le cur an gnìomh macro.</translation>
+    </message>
+    <message>
+        <source>Sort transponders</source>
+        <comment>dialog</comment>
+        <translation>Deasaich transponders</translation>
+    </message>
+    <message>
+        <source>Sort services</source>
+        <comment>dialog</comment>
+        <translation>Deasaich seirbheisean</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets</source>
+        <comment>dialog</comment>
+        <translation>Deasaich userbouquets</translation>
+    </message>
+    <message>
+        <source>Sort references</source>
+        <comment>dialog</comment>
+        <translation>Deasaich iomraidhean</translation>
+    </message>
+    <message>
+        <source>ascending</source>
+        <translation>A&apos; dìreadh</translation>
+    </message>
+    <message>
+        <source>descending</source>
+        <translation>A&apos; teàrnadh</translation>
+    </message>
+    <message>
+        <source>Recall this set when Sort from context menu</source>
+        <translation>Cuimhnich an seata seo nuair a Deasaich bhon chlàr-taice co-theacsa</translation>
+    </message>
+    <message>
+        <source>Apply to list selection</source>
+        <translation>Cuir a-steach gu liosta taghte</translation>
+    </message>
+    <message>
+        <source>Apply Sort</source>
+        <comment>dialog</comment>
+        <translation>Deasaich</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Ainm faidhle</translation>
+    </message>
+    <message>
+        <source>Bouquet Name</source>
+        <translation>Ainm bouquet</translation>
+    </message>
+    <message>
+        <source>Parent Filename</source>
+        <translation>Ainm faidhle pàrant</translation>
+    </message>
+    <message>
+        <source>Bouquet Type</source>
+        <translation>Seòrsa bouquet</translation>
+    </message>
+    <message>
+        <source>Parental Lock</source>
+        <translation>Glasadh phàrant</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation>Clàr-innse</translation>
+    </message>
+    <message>
+        <source>Channel Name</source>
+        <translation>Ainm seanail</translation>
+    </message>
+    <message>
+        <source>SSID</source>
+        <translation>SSID</translation>
+    </message>
+    <message>
+        <source>TSID</source>
+        <translation>TSID</translation>
+    </message>
+    <message>
+        <source>ONID</source>
+        <translation>ONID</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation>URI</translation>
+    </message>
+    <message>
+        <source>FAV Name</source>
+        <translation>Ainm FAV</translation>
+    </message>
+    <message>
+        <source>FAV Index</source>
+        <translation>Clàr-innse FAV</translation>
+    </message>
+    <message>
+        <source>Transponder order</source>
+        <translation>Òrdugh transponders</translation>
+    </message>
+    <message>
+        <source>Provider Name</source>
+        <translation>Ainm solaraiche</translation>
+    </message>
+    <message>
+        <source>Service Type</source>
+        <translation>Seòrsa seirbheis</translation>
+    </message>
+    <message>
+        <source>Service Number</source>
+        <translation>Àireamh seirbheis</translation>
+    </message>
+    <message>
+        <source>Src ID</source>
+        <translation>Src ID</translation>
+    </message>
+    <message>
+        <source>Transponder Type</source>
+        <translation>Seòrsa transponder</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation>Dreuchd</translation>
+    </message>
+    <message>
+        <source>Frequency</source>
+        <translation>Tricead</translation>
+    </message>
+    <message>
+        <source>SR</source>
+        <translation>SR</translation>
+    </message>
+    <message>
+        <source>Polarization</source>
+        <translation>Polarachadh</translation>
+    </message>
+    <message>
+        <source>System</source>
+        <translation>Siostam</translation>
     </message>
 </context>
 <context>
@@ -3749,6 +4564,11 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <source>Transponder</source>
         <comment>toolbar</comment>
         <translation>Transponder</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Deasaich…</translation>
     </message>
 </context>
 <context>

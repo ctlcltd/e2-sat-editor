@@ -198,95 +198,6 @@ Please wait few minutes and try again.</source>
     </message>
 </context>
 <context>
-    <name>convertM3u</name>
-    <message>
-        <source>Import M3U</source>
-        <comment>dialog</comment>
-        <translation>استيراد M3U</translation>
-    </message>
-    <message>
-        <source>Export M3U</source>
-        <comment>dialog</comment>
-        <translation>تصدير M3U</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <comment>dialog</comment>
-        <translation>ألغِ</translation>
-    </message>
-    <message>
-        <source>Import</source>
-        <comment>dialog</comment>
-        <translation>يستورد</translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <comment>dialog</comment>
-        <translation>يصدّر</translation>
-    </message>
-    <message>
-        <source>Channel group options</source>
-        <translation>خيارات مجموعة القنوات</translation>
-    </message>
-    <message>
-        <source>Discard Reference ID if set</source>
-        <translation>تجاهل المعرف المرجعي إذا تم تعيينه</translation>
-    </message>
-    <message>
-        <source>Select Userbouquets</source>
-        <translation>حدد مجموعات قنوات المستخدم</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation>الاسم</translation>
-    </message>
-    <message>
-        <source>Filename</source>
-        <translation>اسم الملف</translation>
-    </message>
-    <message>
-        <source>Set channel Reference ID</source>
-        <translation>تعيين معرف مرجع القناة</translation>
-    </message>
-    <message>
-        <source>Set channel number</source>
-        <translation>ضبط رقم القناة</translation>
-    </message>
-    <message>
-        <source>Set channel group name</source>
-        <translation>تعيين اسم مجموعة القنوات</translation>
-    </message>
-    <message>
-        <source>Set channel logos URL placeholder</source>
-        <translation>قم بتعيين العنصر النائب لعنوان URL لشعارات القناة</translation>
-    </message>
-    <message>
-        <source>Channel logos base URL</source>
-        <translation>عنوان URL الأساسي لشعارات القناة</translation>
-    </message>
-    <message>
-        <source>Select channel logos folder</source>
-        <comment>file-dialog</comment>
-        <translation>حدد مجلد شعارات القناة</translation>
-    </message>
-    <message>
-        <source>Import each group in separate userbouquets</source>
-        <translation>قم باستيراد كل مجموعة في مجموعات قنوات مستخدم منفصلة</translation>
-    </message>
-    <message>
-        <source>Import all entries in one userbouquet</source>
-        <translation>استيراد كافة الإدخالات في مجموعة قنوات مستخدم واحدة</translation>
-    </message>
-    <message>
-        <source>Export each bouquet in separate files</source>
-        <translation>تصدير كل مجموعة في ملفات منفصلة</translation>
-    </message>
-    <message>
-        <source>Export all entries in one file</source>
-        <translation>تصدير كافة الإدخالات في ملف واحد</translation>
-    </message>
-</context>
-<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -335,6 +246,95 @@ Please wait few minutes and try again.</source>
         <source>Add</source>
         <comment>dialog</comment>
         <translation>يضيف</translation>
+    </message>
+</context>
+<context>
+    <name>dialConvertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>استيراد M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>تصدير M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>ألغِ</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>يستورد</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>يصدّر</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>خيارات مجموعة القنوات</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>قم باستيراد كل مجموعة في مجموعات قنوات مستخدم منفصلة</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>استيراد كافة الإدخالات في مجموعة قنوات مستخدم واحدة</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>تجاهل المعرف المرجعي إذا تم تعيينه</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>حدد مجموعات قنوات المستخدم</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>الاسم</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>اسم الملف</translation>
+    </message>
+    <message>
+        <source>Export each bouquet in separate files</source>
+        <translation>تصدير كل مجموعة في ملفات منفصلة</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>تصدير كافة الإدخالات في ملف واحد</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>تعيين معرف مرجع القناة</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>ضبط رقم القناة</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>تعيين اسم مجموعة القنوات</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>قم بتعيين العنصر النائب لعنوان URL لشعارات القناة</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>عنوان URL الأساسي لشعارات القناة</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>حدد مجلد شعارات القناة</translation>
     </message>
 </context>
 <context>
@@ -488,6 +488,16 @@ Please wait few minutes and try again.</source>
         <source>Not supported yet.</source>
         <comment>error</comment>
         <translation>غير معتمدة حتى الآن.</translation>
+    </message>
+    <message>
+        <source>Bouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>مجموعة القنوات &quot;%s&quot; موجودة بالفعل.</translation>
+    </message>
+    <message>
+        <source>Userbouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>مجموعة قنوات المستخدم &quot;%s&quot; موجودة بالفعل.</translation>
     </message>
 </context>
 <context>
@@ -1064,10 +1074,6 @@ Please wait few minutes and try again.</source>
         <translation>flags</translation>
     </message>
     <message>
-        <source>pls / mis id</source>
-        <translation>pls / mis id</translation>
-    </message>
-    <message>
         <source>pls code</source>
         <translation>pls code</translation>
     </message>
@@ -1090,6 +1096,14 @@ Please wait few minutes and try again.</source>
     <message>
         <source>calc</source>
         <translation>احسب</translation>
+    </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
     </message>
 </context>
 <context>
@@ -1295,6 +1309,14 @@ Please wait few minutes and try again.</source>
         <source>plp id</source>
         <translation>plp id</translation>
     </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
+    </message>
 </context>
 <context>
     <name>editUserbouquet</name>
@@ -1393,6 +1415,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
+        <extracomment>curl_easy_strerror error string</extracomment>
         <translation>تعذر الاتصال بالخادم</translation>
     </message>
     <message>
@@ -1409,6 +1432,27 @@ Please wait few minutes and try again.</source>
         <source>Couldn&apos;t connect to STB FTP</source>
         <comment>error</comment>
         <translation>تعذر الاتصال بـ STB FTP</translation>
+    </message>
+    <message>
+        <source>Please select a connection profile then connect.</source>
+        <comment>error</comment>
+        <translation>الرجاء تحديد ملف تعريف الاتصال ثم الاتصال.</translation>
+    </message>
+    <message>
+        <source>Webif Reload Error</source>
+        <comment>error</comment>
+        <translation>خطأ في تحميل Webif</translation>
+    </message>
+    <message>
+        <source>Telnet Reload Error</source>
+        <comment>error</comment>
+        <translation>خطأ إعادة تحميل Telnet</translation>
+    </message>
+    <message>
+        <source>Check connection profile and settings integrity.%1Preference values are not valid.</source>
+        <comment>error</comment>
+        <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
+        <translation>تحقق من سلامة ملف تعريف الاتصال والإعدادات.%1قيم التفضيل غير صالحة.</translation>
     </message>
 </context>
 <context>
@@ -2060,6 +2104,181 @@ Please wait few minutes and try again.</source>
         <comment>menu</comment>
         <translation>تغيير picon</translation>
     </message>
+    <message>
+        <source>Convert</source>
+        <comment>menu</comment>
+        <translation>يتحول</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>ينظف</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>إزالة الخدمات اليتيمة</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>إزالة المراجع اليتيمة</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>إصلاح مجموعات القنوات</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>إصلاح مجموعات القنوات الفريدة للمستخدمين</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>إصلاح (إزالة) المرجع الذي يحتوي على أخطاء</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>المعلمات</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>إزالة الخدمة المخزنة مؤقتًا</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>إزالة خدمة CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>إزالة علامات الخدمة</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>إزالة كافة بيانات الخدمة</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>إعادة حساب DVBNS للخدمات</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>أزل</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>إزالة العناصر غير المشار إليها (المفضلة)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>إزالة من مجموعات القنوات (الخدمات غير المستخدمة)</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>إزالة قفل الوالدين</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>إزالة كافة مجموعات القنوات</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>إزالة كافة مجموعات قنوات المستخدم</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>مكررات</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>إزالة العلامات المكررة (الأسماء)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>إزالة المراجع المكررة</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>إزالة الخدمات المكررة</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>إزالة أجهزة الإرسال والاستقبال المكررة</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>إزالة جميع التكرارات</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>تحويل</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>تحويل أجهزة الإرسال والاستقبال إلى إعدادات XML</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>تحويل إعدادات XML إلى أجهزة إرسال واستقبال</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>نوع</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>فرز المراجع…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>فرز الخدمات…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>فرز أجهزة الإرسال والإستقبال…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>فرز المستخدمين والقنوات والمجموعات…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>إصلاح تلقائي</translation>
+    </message>
+    <message>
+        <source>Edit&amp;or</source>
+        <comment>menu</comment>
+        <translation>محرر</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2447,6 +2666,11 @@ Please wait few minutes and try again.</source>
         <source>Add Stream</source>
         <comment>toolbar</comment>
         <translation>أضف دفق</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>نوع…</translation>
     </message>
 </context>
 <context>
@@ -3559,6 +3783,296 @@ Please wait few minutes and try again.</source>
         <comment>message</comment>
         <translation>هل تريد حذف العناصر؟</translation>
     </message>
+    <message>
+        <source>Tools</source>
+        <comment>toolbar</comment>
+        <translation>الأدوات</translation>
+    </message>
+    <message>
+        <source>autofix</source>
+        <comment>toolbar</comment>
+        <translation>إصلاح تلقائي</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>ينظف</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>إزالة الخدمات اليتيمة</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>إزالة المراجع اليتيمة</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>إصلاح مجموعات القنوات</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>إصلاح مجموعات القنوات الفريدة للمستخدمين</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>إصلاح (إزالة) المرجع الذي يحتوي على أخطاء</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>المعلمات</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>إزالة الخدمة المخزنة مؤقتًا</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>إزالة خدمة CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>إزالة علامات الخدمة</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>إزالة كافة بيانات الخدمة</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>إعادة حساب DVBNS للخدمات</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>أزل</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>إزالة العناصر غير المشار إليها (المفضلة)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>إزالة من مجموعات القنوات (الخدمات غير المستخدمة)</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>إزالة قفل الوالدين</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>إزالة كافة مجموعات القنوات</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>إزالة كافة مجموعات قنوات المستخدم</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>مكررات</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>إزالة العلامات المكررة (الأسماء)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>إزالة المراجع المكررة</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>إزالة الخدمات المكررة</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>إزالة أجهزة الإرسال والاستقبال المكررة</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>إزالة جميع التكرارات</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>تحويل</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>تحويل أجهزة الإرسال والاستقبال إلى إعدادات XML</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>تحويل إعدادات XML إلى أجهزة إرسال واستقبال</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>نوع</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>فرز المراجع…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>فرز الخدمات…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>فرز أجهزة الإرسال والإستقبال…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>فرز المستخدمين والقنوات والمجموعات…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>إصلاح تلقائي</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>menu</comment>
+        <translation>يستورد</translation>
+    </message>
+    <message>
+        <source>Import…</source>
+        <comment>menu</comment>
+        <translation>يستورد…</translation>
+    </message>
+    <message>
+        <source>Import from CSV</source>
+        <comment>menu</comment>
+        <translation>استيراد من CSV</translation>
+    </message>
+    <message>
+        <source>Import Services</source>
+        <comment>menu</comment>
+        <translation>استيراد خدمات القنوات</translation>
+    </message>
+    <message>
+        <source>Import Bouquet</source>
+        <comment>menu</comment>
+        <translation>استيراد مجموعة القنوات</translation>
+    </message>
+    <message>
+        <source>Import Userbouquet</source>
+        <comment>menu</comment>
+        <translation>استيراد مجموعة قنوات المستخدم</translation>
+    </message>
+    <message>
+        <source>Import Tuner settings</source>
+        <comment>menu</comment>
+        <translation>استيراد إعدادات موالف</translation>
+    </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>الاستيراد من M3U</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>menu</comment>
+        <translation>يصدّر</translation>
+    </message>
+    <message>
+        <source>Export…</source>
+        <comment>menu</comment>
+        <translation>يصدّر…</translation>
+    </message>
+    <message>
+        <source>Export to CSV</source>
+        <comment>menu</comment>
+        <translation>تصدير إلى CSV</translation>
+    </message>
+    <message>
+        <source>Export current</source>
+        <comment>menu</comment>
+        <translation>تصدير الحالي</translation>
+    </message>
+    <message>
+        <source>Export All</source>
+        <comment>menu</comment>
+        <translation>تصدير الكل</translation>
+    </message>
+    <message>
+        <source>Export Services</source>
+        <comment>menu</comment>
+        <translation>استيراد خدمات القنوات</translation>
+    </message>
+    <message>
+        <source>Export Bouquets</source>
+        <comment>menu</comment>
+        <translation>تصدير مجموعة القنوات</translation>
+    </message>
+    <message>
+        <source>Export Userbouquets</source>
+        <comment>menu</comment>
+        <translation>تصدير مجموعة قنوات المستخدم</translation>
+    </message>
+    <message>
+        <source>Export Tuner settings</source>
+        <comment>menu</comment>
+        <translation>تصدير إعدادات الموالف</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>تصدير إلى M3U</translation>
+    </message>
+    <message>
+        <source>Export to HTML</source>
+        <comment>menu</comment>
+        <translation>تصدير إلى HTML</translation>
+    </message>
+    <message>
+        <source>Export Index</source>
+        <comment>menu</comment>
+        <translation>فهرس التصدير</translation>
+    </message>
+    <message>
+        <source>Log Inspector</source>
+        <comment>menu</comment>
+        <translation>مفتش السجل</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>خطأ في المرافق</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>خطأ في تنفيذ الأدوات المساعدة.</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3615,6 +4129,307 @@ Please wait few minutes and try again.</source>
         <source>There are not stream type references in userbouquets to export.</source>
         <comment>message</comment>
         <translation>لا توجد مراجع لنوع الدفق في مجموعات قنوات المستخدم للتصدير.</translation>
+    </message>
+    <message>
+        <source>Done</source>
+        <comment>message</comment>
+        <translation>منتهي</translation>
+    </message>
+    <message>
+        <source>Done!</source>
+        <comment>message</comment>
+        <translation>منتهي!</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services …</source>
+        <comment>message</comment>
+        <translation>إزالة الخدمات اليتيمة …</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references …</source>
+        <comment>message</comment>
+        <translation>إزالة المراجع اليتيمة …</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors …</source>
+        <comment>message</comment>
+        <translation>إصلاح مجموعات القنوات …</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services …</source>
+        <comment>message</comment>
+        <translation>إصلاح مجموعات القنوات الفريدة للمستخدمين …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets …</source>
+        <comment>message</comment>
+        <translation>إصلاح (إزالة) المرجع الذي يحتوي على أخطاء …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets …</source>
+        <comment>message</comment>
+        <translation>إزالة الخدمة المخزنة مؤقتًا …</translation>
+    </message>
+    <message>
+        <source>Remove service cached …</source>
+        <comment>message</comment>
+        <translation>إزالة خدمة CAID …</translation>
+    </message>
+    <message>
+        <source>Remove service CAID …</source>
+        <comment>message</comment>
+        <translation>إزالة علامات الخدمة …</translation>
+    </message>
+    <message>
+        <source>Remove service flags …</source>
+        <comment>message</comment>
+        <translation>إزالة كافة بيانات الخدمة …</translation>
+    </message>
+    <message>
+        <source>Remove all service data …</source>
+        <comment>message</comment>
+        <translation>إعادة حساب DVBNS للخدمات …</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites) …</source>
+        <comment>message</comment>
+        <translation>إزالة العناصر غير المشار إليها (المفضلة) …</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services) …</source>
+        <comment>message</comment>
+        <translation>إزالة من مجموعات القنوات (الخدمات غير المستخدمة) …</translation>
+    </message>
+    <message>
+        <source>Remove parental lock …</source>
+        <comment>message</comment>
+        <translation>إزالة قفل الوالدين …</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets …</source>
+        <comment>message</comment>
+        <translation>إزالة كافة مجموعات القنوات …</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets …</source>
+        <comment>message</comment>
+        <translation>إزالة كافة مجموعات قنوات المستخدم …</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates …</source>
+        <comment>message</comment>
+        <translation>إزالة العلامات المكررة (الأسماء) …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders …</source>
+        <comment>message</comment>
+        <translation>إزالة المراجع المكررة …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services …</source>
+        <comment>message</comment>
+        <translation>إزالة الخدمات المكررة …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references …</source>
+        <comment>message</comment>
+        <translation>إزالة أجهزة الإرسال والاستقبال المكررة …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names) …</source>
+        <comment>message</comment>
+        <translation>إزالة جميع التكرارات …</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings …</source>
+        <comment>message</comment>
+        <translation>تحويل أجهزة الإرسال والاستقبال إلى إعدادات XML …</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders …</source>
+        <comment>message</comment>
+        <translation>تحويل إعدادات XML إلى أجهزة إرسال واستقبال …</translation>
+    </message>
+    <message>
+        <source>Sort transponders …</source>
+        <comment>message</comment>
+        <translation>فرز أجهزة الإرسال والإستقبال …</translation>
+    </message>
+    <message>
+        <source>Sort services …</source>
+        <comment>message</comment>
+        <translation>فرز الخدمات …</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets …</source>
+        <comment>message</comment>
+        <translation>فرز المستخدمين والقنوات والمجموعات …</translation>
+    </message>
+    <message>
+        <source>Sort references …</source>
+        <comment>message</comment>
+        <translation>فرز المراجع …</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>خطأ في المرافق</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>خطأ في تنفيذ الأدوات المساعدة.</translation>
+    </message>
+    <message>
+        <source>Executing macro …</source>
+        <comment>message</comment>
+        <translation>تنفيذ الماكرو  …</translation>
+    </message>
+    <message>
+        <source>Error executing macro.</source>
+        <comment>error</comment>
+        <translation>خطأ في تنفيذ الماكرو.</translation>
+    </message>
+    <message>
+        <source>Sort transponders</source>
+        <comment>dialog</comment>
+        <translation>فرز أجهزة الإرسال والإستقبال</translation>
+    </message>
+    <message>
+        <source>Sort services</source>
+        <comment>dialog</comment>
+        <translation>فرز الخدمات</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets</source>
+        <comment>dialog</comment>
+        <translation>فرز المستخدمين والقنوات والمجموعات</translation>
+    </message>
+    <message>
+        <source>Sort references</source>
+        <comment>dialog</comment>
+        <translation>فرز المراجع</translation>
+    </message>
+    <message>
+        <source>ascending</source>
+        <translation>تصاعدي</translation>
+    </message>
+    <message>
+        <source>descending</source>
+        <translation>تنازلي</translation>
+    </message>
+    <message>
+        <source>Recall this set when Sort from context menu</source>
+        <translation>تذكر هذه المجموعة عند الفرز من قائمة السياق</translation>
+    </message>
+    <message>
+        <source>Apply to list selection</source>
+        <translation>تطبيق على العناصر المحددة في القائمة</translation>
+    </message>
+    <message>
+        <source>Apply Sort</source>
+        <comment>dialog</comment>
+        <translation>تطبيق الفرز</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>اسم الملف</translation>
+    </message>
+    <message>
+        <source>Bouquet Name</source>
+        <translation>اسم مجموعة القنوات</translation>
+    </message>
+    <message>
+        <source>Parent Filename</source>
+        <translation>اسم الملف الرئيسي</translation>
+    </message>
+    <message>
+        <source>Bouquet Type</source>
+        <translation>نوع مجموعة القنوات</translation>
+    </message>
+    <message>
+        <source>Parental Lock</source>
+        <translation>قفل الوالدين</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation>فِهرِس</translation>
+    </message>
+    <message>
+        <source>Channel Name</source>
+        <translation>اسم القناة</translation>
+    </message>
+    <message>
+        <source>SSID</source>
+        <translation>SSID</translation>
+    </message>
+    <message>
+        <source>TSID</source>
+        <translation>TSID</translation>
+    </message>
+    <message>
+        <source>ONID</source>
+        <translation>ONID</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation>URI</translation>
+    </message>
+    <message>
+        <source>FAV Name</source>
+        <translation>الاسم المفضل</translation>
+    </message>
+    <message>
+        <source>FAV Index</source>
+        <translation>الفهرس المفضل</translation>
+    </message>
+    <message>
+        <source>Transponder order</source>
+        <translation>طلب أجهزة الإرسال والاستقبال</translation>
+    </message>
+    <message>
+        <source>Provider Name</source>
+        <translation>اسم المزود</translation>
+    </message>
+    <message>
+        <source>Service Type</source>
+        <translation>نوع الخدمة</translation>
+    </message>
+    <message>
+        <source>Service Number</source>
+        <translation>Service Number</translation>
+    </message>
+    <message>
+        <source>Src ID</source>
+        <translation>Src ID</translation>
+    </message>
+    <message>
+        <source>Transponder Type</source>
+        <translation>نوع جهاز الإرسال والاستقبال</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation>موقف</translation>
+    </message>
+    <message>
+        <source>Frequency</source>
+        <translation>تكرار</translation>
+    </message>
+    <message>
+        <source>SR</source>
+        <translation>SR</translation>
+    </message>
+    <message>
+        <source>Polarization</source>
+        <translation>الاستقطاب</translation>
+    </message>
+    <message>
+        <source>System</source>
+        <translation>نظام</translation>
     </message>
 </context>
 <context>
@@ -3754,6 +4569,11 @@ Please wait few minutes and try again.</source>
         <source>Transponder</source>
         <comment>toolbar</comment>
         <translation>مرسل مستجيب</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>نوع…</translation>
     </message>
 </context>
 <context>

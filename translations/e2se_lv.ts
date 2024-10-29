@@ -197,95 +197,6 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
     </message>
 </context>
 <context>
-    <name>convertM3u</name>
-    <message>
-        <source>Import M3U</source>
-        <comment>dialog</comment>
-        <translation>Importēt M3U</translation>
-    </message>
-    <message>
-        <source>Export M3U</source>
-        <comment>dialog</comment>
-        <translation>Eksportēt M3U</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <comment>dialog</comment>
-        <translation>Atcelt</translation>
-    </message>
-    <message>
-        <source>Import</source>
-        <comment>dialog</comment>
-        <translation>Importēt</translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <comment>dialog</comment>
-        <translation>Eksportēt</translation>
-    </message>
-    <message>
-        <source>Channel group options</source>
-        <translation>Kanālu grupas opcijas</translation>
-    </message>
-    <message>
-        <source>Discard Reference ID if set</source>
-        <translation>Atmest Reference ID, ja tas ir iestatīts</translation>
-    </message>
-    <message>
-        <source>Select Userbouquets</source>
-        <translation>Izvēlieties Userbouquets</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation>Nosaukums</translation>
-    </message>
-    <message>
-        <source>Filename</source>
-        <translation>Faila nosaukums</translation>
-    </message>
-    <message>
-        <source>Set channel Reference ID</source>
-        <translation>Iestatīt kanālu Reference ID</translation>
-    </message>
-    <message>
-        <source>Set channel number</source>
-        <translation>Iestatiet kanāla numuru</translation>
-    </message>
-    <message>
-        <source>Set channel group name</source>
-        <translation>Iestatiet kanālu grupas nosaukumu</translation>
-    </message>
-    <message>
-        <source>Set channel logos URL placeholder</source>
-        <translation>Iestatiet kanālu logotipu URL vietturi</translation>
-    </message>
-    <message>
-        <source>Channel logos base URL</source>
-        <translation>Kanālu logotipu bāzes URL</translation>
-    </message>
-    <message>
-        <source>Select channel logos folder</source>
-        <comment>file-dialog</comment>
-        <translation>Atlasiet kanālu logotipu mapi</translation>
-    </message>
-    <message>
-        <source>Import each group in separate userbouquets</source>
-        <translation>Importēt atsevišķos userbouquets</translation>
-    </message>
-    <message>
-        <source>Import all entries in one userbouquet</source>
-        <translation>Importēt visu vienā userbouquet</translation>
-    </message>
-    <message>
-        <source>Export each bouquet in separate files</source>
-        <translation>Eksportēt atsevišķos failos</translation>
-    </message>
-    <message>
-        <source>Export all entries in one file</source>
-        <translation>Eksportēt visu vienā failā</translation>
-    </message>
-</context>
-<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -334,6 +245,95 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <source>Add</source>
         <comment>dialog</comment>
         <translation>Pievienot</translation>
+    </message>
+</context>
+<context>
+    <name>dialConvertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>Importēt M3U</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>Eksportēt M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>Atcelt</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>Importēt</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>Eksportēt</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>Kanālu grupas opcijas</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>Importēt atsevišķos userbouquets</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>Importēt visu vienā userbouquet</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>Atmest Reference ID, ja tas ir iestatīts</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>Izvēlieties Userbouquets</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nosaukums</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Faila nosaukums</translation>
+    </message>
+    <message>
+        <source>Export each bouquet in separate files</source>
+        <translation>Eksportēt atsevišķos failos</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>Eksportēt visu vienā failā</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>Iestatīt kanālu Reference ID</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>Iestatiet kanāla numuru</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>Iestatiet kanālu grupas nosaukumu</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>Iestatiet kanālu logotipu URL vietturi</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>Kanālu logotipu bāzes URL</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>Atlasiet kanālu logotipu mapi</translation>
     </message>
 </context>
 <context>
@@ -487,6 +487,16 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <source>Not supported yet.</source>
         <comment>error</comment>
         <translation>Vēl nav atbalstīts.</translation>
+    </message>
+    <message>
+        <source>Bouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Bouquet &quot;%s&quot; jau pastāv.</translation>
+    </message>
+    <message>
+        <source>Userbouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Userbouquet &quot;%s&quot; jau pastāv.</translation>
     </message>
 </context>
 <context>
@@ -1063,10 +1073,6 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <translation>flags</translation>
     </message>
     <message>
-        <source>pls / mis id</source>
-        <translation>pls / mis id</translation>
-    </message>
-    <message>
         <source>pls code</source>
         <translation>pls code</translation>
     </message>
@@ -1089,6 +1095,14 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
     <message>
         <source>calc</source>
         <translation>aprēķins</translation>
+    </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
     </message>
 </context>
 <context>
@@ -1294,6 +1308,14 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <source>plp id</source>
         <translation>plp id</translation>
     </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
+    </message>
 </context>
 <context>
     <name>editUserbouquet</name>
@@ -1392,6 +1414,7 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
+        <extracomment>curl_easy_strerror error string</extracomment>
         <translation>Nevarēja izveidot savienojumu ar serveri</translation>
     </message>
     <message>
@@ -1408,6 +1431,27 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <source>Couldn&apos;t connect to STB FTP</source>
         <comment>error</comment>
         <translation>Nevarēja izveidot savienojumu ar STB FTP</translation>
+    </message>
+    <message>
+        <source>Please select a connection profile then connect.</source>
+        <comment>error</comment>
+        <translation>Lūdzu, atlasiet savienojuma profilu un pēc tam izveidojiet savienojumu.</translation>
+    </message>
+    <message>
+        <source>Webif Reload Error</source>
+        <comment>error</comment>
+        <translation>Webif pārlādēšanas Kļūda</translation>
+    </message>
+    <message>
+        <source>Telnet Reload Error</source>
+        <comment>error</comment>
+        <translation>Telnet pārlādēšanas Kļūda</translation>
+    </message>
+    <message>
+        <source>Check connection profile and settings integrity.%1Preference values are not valid.</source>
+        <comment>error</comment>
+        <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
+        <translation>Pārbaudiet savienojuma profilu un iestatījumu integritāti.%1Preferences vērtības nav derīgas.</translation>
     </message>
 </context>
 <context>
@@ -2059,6 +2103,181 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <comment>menu</comment>
         <translation>Mainīt picon</translation>
     </message>
+    <message>
+        <source>Convert</source>
+        <comment>menu</comment>
+        <translation>Konvertēt</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Tīrīšana</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Noņemiet bāreņu pakalpojumus</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Noņemiet bāreņu atsauces</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Labot bouquets</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Labot bouquets, unikālus userbouquets</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Labot (noņemiet) atsauci ar kļūdām</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Params</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Noņemiet pakalpojumu kešatmiņu</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Noņemiet pakalpojuma CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Noņemiet pakalpojumu flags</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Noņemiet visus pakalpojumu datus</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Pārrēķināt DVBNS pakalpojumiem</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Izņemt</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Noņemiet neatsaucamos vienumus (izlases)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>Noņemiet (neizmantotos pakalpojumus) no bouquets</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Noņemiet vecāku bloķēšanu</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Noņemiet visus bouquets</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Noņemiet visus userbouquets</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Dublikāti</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Noņemiet dublētās markers (nosaukumus)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Noņemiet dublētās atsauces</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Noņemiet dublētos pakalpojumus</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Noņemiet dublētos transponderus</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Noņemiet visus dublikātus</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Pārveidot</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Transponderu pārveidošana uz XML iestatījumiem</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>Pārveidojiet XML iestatījumus uz transponderiem</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Kārtot</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Kārtot atsauces…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Kārtot pakalpojumus…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Kārtot transponderus…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Kārtot userbouquets…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>Edit&amp;or</source>
+        <comment>menu</comment>
+        <translation>Redakt&amp;ors</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2446,6 +2665,11 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <source>Add Stream</source>
         <comment>toolbar</comment>
         <translation>Pievienot Stream</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Kārtot…</translation>
     </message>
 </context>
 <context>
@@ -3549,6 +3773,296 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <comment>message</comment>
         <translation>Vai vēlaties dzēst vienumus?</translation>
     </message>
+    <message>
+        <source>Tools</source>
+        <comment>toolbar</comment>
+        <translation>Rīki</translation>
+    </message>
+    <message>
+        <source>autofix</source>
+        <comment>toolbar</comment>
+        <translation>autofix</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Tīrīšana</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Noņemiet bāreņu pakalpojumus</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Noņemiet bāreņu atsauces</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Labot bouquets</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Labot bouquets, unikālus userbouquets</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Labot (noņemiet) atsauci ar kļūdām</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Params</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Noņemiet pakalpojumu kešatmiņu</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Noņemiet pakalpojuma CAID</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Noņemiet pakalpojumu flags</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Noņemiet visus pakalpojumu datus</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Pārrēķināt DVBNS pakalpojumiem</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Izņemt</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Noņemiet neatsaucamos vienumus (izlases)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>Noņemiet (neizmantotos pakalpojumus) no bouquets</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Noņemiet vecāku bloķēšanu</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Noņemiet visus bouquets</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Noņemiet visus userbouquets</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Dublikāti</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Noņemiet dublētās markers (nosaukumus)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Noņemiet dublētās atsauces</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Noņemiet dublētos pakalpojumus</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Noņemiet dublētos transponderus</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Noņemiet visus dublikātus</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Pārveidot</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Transponderu pārveidošana uz XML iestatījumiem</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>Pārveidojiet XML iestatījumus uz transponderiem</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Kārtot</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Kārtot atsauces…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Kārtot pakalpojumus…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Kārtot transponderus…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Kārtot userbouquets…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>menu</comment>
+        <translation>Importēt</translation>
+    </message>
+    <message>
+        <source>Import…</source>
+        <comment>menu</comment>
+        <translation>Importēt…</translation>
+    </message>
+    <message>
+        <source>Import from CSV</source>
+        <comment>menu</comment>
+        <translation>Importēt no CSV</translation>
+    </message>
+    <message>
+        <source>Import Services</source>
+        <comment>menu</comment>
+        <translation>Importa pakalpojumi</translation>
+    </message>
+    <message>
+        <source>Import Bouquet</source>
+        <comment>menu</comment>
+        <translation>Importa bouquet</translation>
+    </message>
+    <message>
+        <source>Import Userbouquet</source>
+        <comment>menu</comment>
+        <translation>Importa userbouquet</translation>
+    </message>
+    <message>
+        <source>Import Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Importējiet tuner iestatījumus</translation>
+    </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>Importēt no M3U</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>menu</comment>
+        <translation>Eksportēt</translation>
+    </message>
+    <message>
+        <source>Export…</source>
+        <comment>menu</comment>
+        <translation>Eksportēt…</translation>
+    </message>
+    <message>
+        <source>Export to CSV</source>
+        <comment>menu</comment>
+        <translation>Eksportēt uz CSV</translation>
+    </message>
+    <message>
+        <source>Export current</source>
+        <comment>menu</comment>
+        <translation>Eksporta strāvu</translation>
+    </message>
+    <message>
+        <source>Export All</source>
+        <comment>menu</comment>
+        <translation>Eksporta visu</translation>
+    </message>
+    <message>
+        <source>Export Services</source>
+        <comment>menu</comment>
+        <translation>Eksporta pakalpojumi</translation>
+    </message>
+    <message>
+        <source>Export Bouquets</source>
+        <comment>menu</comment>
+        <translation>Eksporta bouquets</translation>
+    </message>
+    <message>
+        <source>Export Userbouquets</source>
+        <comment>menu</comment>
+        <translation>Eksporta userbouquet</translation>
+    </message>
+    <message>
+        <source>Export Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Eksporta tuner iestatījumus</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>Eksportēt uz M3U</translation>
+    </message>
+    <message>
+        <source>Export to HTML</source>
+        <comment>menu</comment>
+        <translation>Eksportēt uz HTML</translation>
+    </message>
+    <message>
+        <source>Export Index</source>
+        <comment>menu</comment>
+        <translation>Eksporta indekss</translation>
+    </message>
+    <message>
+        <source>Log Inspector</source>
+        <comment>menu</comment>
+        <translation>Baļķu Inspekt</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Utils Kļūda</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Kļūda izpildot utils.</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3605,6 +4119,307 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <source>There are not stream type references in userbouquets to export.</source>
         <comment>message</comment>
         <translation>Eksportējamo userbouquets nav stream tipa atsauču.</translation>
+    </message>
+    <message>
+        <source>Done</source>
+        <comment>message</comment>
+        <translation>Izpildīts</translation>
+    </message>
+    <message>
+        <source>Done!</source>
+        <comment>message</comment>
+        <translation>Izpildīts!</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services …</source>
+        <comment>message</comment>
+        <translation>Noņemiet bāreņu pakalpojumus …</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references …</source>
+        <comment>message</comment>
+        <translation>Noņemiet bāreņu atsauces …</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors …</source>
+        <comment>message</comment>
+        <translation>Labot bouquets …</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services …</source>
+        <comment>message</comment>
+        <translation>Labot bouquets, unikālus userbouquets …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets …</source>
+        <comment>message</comment>
+        <translation>Labot (noņemiet) atsauci ar kļūdām …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets …</source>
+        <comment>message</comment>
+        <translation>Noņemiet pakalpojumu kešatmiņu …</translation>
+    </message>
+    <message>
+        <source>Remove service cached …</source>
+        <comment>message</comment>
+        <translation>Noņemiet pakalpojuma CAID …</translation>
+    </message>
+    <message>
+        <source>Remove service CAID …</source>
+        <comment>message</comment>
+        <translation>Noņemiet pakalpojumu flags …</translation>
+    </message>
+    <message>
+        <source>Remove service flags …</source>
+        <comment>message</comment>
+        <translation>Noņemiet visus pakalpojumu datus …</translation>
+    </message>
+    <message>
+        <source>Remove all service data …</source>
+        <comment>message</comment>
+        <translation>Pārrēķināt DVBNS pakalpojumiem …</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites) …</source>
+        <comment>message</comment>
+        <translation>Noņemiet neatsaucamos vienumus (izlases) …</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services) …</source>
+        <comment>message</comment>
+        <translation>Noņemiet (neizmantotos pakalpojumus) no bouquets …</translation>
+    </message>
+    <message>
+        <source>Remove parental lock …</source>
+        <comment>message</comment>
+        <translation>Noņemiet vecāku bloķēšanu …</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets …</source>
+        <comment>message</comment>
+        <translation>Noņemiet visus bouquets …</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets …</source>
+        <comment>message</comment>
+        <translation>Noņemiet visus userbouquets …</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates …</source>
+        <comment>message</comment>
+        <translation>Noņemiet dublētās markers (nosaukumus) …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders …</source>
+        <comment>message</comment>
+        <translation>Noņemiet dublētās atsauces …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services …</source>
+        <comment>message</comment>
+        <translation>Noņemiet dublētos pakalpojumus …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references …</source>
+        <comment>message</comment>
+        <translation>Noņemiet dublētos transponderus …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names) …</source>
+        <comment>message</comment>
+        <translation>Noņemiet visus dublikātus …</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings …</source>
+        <comment>message</comment>
+        <translation>Transponderu pārveidošana uz XML iestatījumiem …</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders …</source>
+        <comment>message</comment>
+        <translation>Pārveidojiet XML iestatījumus uz transponderiem …</translation>
+    </message>
+    <message>
+        <source>Sort transponders …</source>
+        <comment>message</comment>
+        <translation>Kārtot transponderus …</translation>
+    </message>
+    <message>
+        <source>Sort services …</source>
+        <comment>message</comment>
+        <translation>Kārtot pakalpojumus …</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets …</source>
+        <comment>message</comment>
+        <translation>Kārtot userbouquets …</translation>
+    </message>
+    <message>
+        <source>Sort references …</source>
+        <comment>message</comment>
+        <translation>Kārtot atsauces …</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Utils Kļūda</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Kļūda izpildot utils.</translation>
+    </message>
+    <message>
+        <source>Executing macro …</source>
+        <comment>message</comment>
+        <translation>Notiek makro izpilde …</translation>
+    </message>
+    <message>
+        <source>Error executing macro.</source>
+        <comment>error</comment>
+        <translation>Kļūda izpildot makro.</translation>
+    </message>
+    <message>
+        <source>Sort transponders</source>
+        <comment>dialog</comment>
+        <translation>Kārtot transponderus</translation>
+    </message>
+    <message>
+        <source>Sort services</source>
+        <comment>dialog</comment>
+        <translation>Kārtot pakalpojumus</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets</source>
+        <comment>dialog</comment>
+        <translation>Kārtot userbouquets</translation>
+    </message>
+    <message>
+        <source>Sort references</source>
+        <comment>dialog</comment>
+        <translation>Kārtot atsauces</translation>
+    </message>
+    <message>
+        <source>ascending</source>
+        <translation>augšupejoša</translation>
+    </message>
+    <message>
+        <source>descending</source>
+        <translation>lejupejoša</translation>
+    </message>
+    <message>
+        <source>Recall this set when Sort from context menu</source>
+        <translation>Atsaukt šo kopu, kad Kārtot no konteksta izvēlnes</translation>
+    </message>
+    <message>
+        <source>Apply to list selection</source>
+        <translation>Lietot sarakstā atlasītajiem</translation>
+    </message>
+    <message>
+        <source>Apply Sort</source>
+        <comment>dialog</comment>
+        <translation>Kārtot</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Faila nosaukums</translation>
+    </message>
+    <message>
+        <source>Bouquet Name</source>
+        <translation>Bouquet nosaukums</translation>
+    </message>
+    <message>
+        <source>Parent Filename</source>
+        <translation>Vecāka faila nosaukums</translation>
+    </message>
+    <message>
+        <source>Bouquet Type</source>
+        <translation>Bouquet veids</translation>
+    </message>
+    <message>
+        <source>Parental Lock</source>
+        <translation>Vecāku bloķēšana</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation>Rādītājs</translation>
+    </message>
+    <message>
+        <source>Channel Name</source>
+        <translation>Kanāla nosaukums</translation>
+    </message>
+    <message>
+        <source>SSID</source>
+        <translation>SSID</translation>
+    </message>
+    <message>
+        <source>TSID</source>
+        <translation>TSID</translation>
+    </message>
+    <message>
+        <source>ONID</source>
+        <translation>ONID</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation>URI</translation>
+    </message>
+    <message>
+        <source>FAV Name</source>
+        <translation>FAV nosaukums</translation>
+    </message>
+    <message>
+        <source>FAV Index</source>
+        <translation>FAV indekss</translation>
+    </message>
+    <message>
+        <source>Transponder order</source>
+        <translation>Transponderu pasūtījums</translation>
+    </message>
+    <message>
+        <source>Provider Name</source>
+        <translation>Nodrošinātāja nosaukums</translation>
+    </message>
+    <message>
+        <source>Service Type</source>
+        <translation>Pakalpojuma veids</translation>
+    </message>
+    <message>
+        <source>Service Number</source>
+        <translation>Pakalpojuma numurs</translation>
+    </message>
+    <message>
+        <source>Src ID</source>
+        <translation>Src ID</translation>
+    </message>
+    <message>
+        <source>Transponder Type</source>
+        <translation>Transpondera tips</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation>Pozīcija</translation>
+    </message>
+    <message>
+        <source>Frequency</source>
+        <translation>Frekvence</translation>
+    </message>
+    <message>
+        <source>SR</source>
+        <translation>SR</translation>
+    </message>
+    <message>
+        <source>Polarization</source>
+        <translation>Polarizācija</translation>
+    </message>
+    <message>
+        <source>System</source>
+        <translation>Sistēma</translation>
     </message>
 </context>
 <context>
@@ -3744,6 +4559,11 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <source>Transponder</source>
         <comment>toolbar</comment>
         <translation>Transponderis</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Kārtot…</translation>
     </message>
 </context>
 <context>

@@ -198,95 +198,6 @@ Please wait few minutes and try again.</source>
     </message>
 </context>
 <context>
-    <name>convertM3u</name>
-    <message>
-        <source>Import M3U</source>
-        <comment>dialog</comment>
-        <translation>M3U را وارد کنید</translation>
-    </message>
-    <message>
-        <source>Export M3U</source>
-        <comment>dialog</comment>
-        <translation>صادرات M3U</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <comment>dialog</comment>
-        <translation>انصراف</translation>
-    </message>
-    <message>
-        <source>Import</source>
-        <comment>dialog</comment>
-        <translation>وارد كردن</translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <comment>dialog</comment>
-        <translation>صادرات</translation>
-    </message>
-    <message>
-        <source>Channel group options</source>
-        <translation>گزینه های گروه کانال</translation>
-    </message>
-    <message>
-        <source>Discard Reference ID if set</source>
-        <translation>در صورت تنظیم، شناسه مرجع را رد کنید</translation>
-    </message>
-    <message>
-        <source>Select Userbouquets</source>
-        <translation>دسته های کاربری را انتخاب کنید</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation>نام</translation>
-    </message>
-    <message>
-        <source>Filename</source>
-        <translation>نام فایل</translation>
-    </message>
-    <message>
-        <source>Set channel Reference ID</source>
-        <translation>شناسه مرجع کانال را تنظیم کنید</translation>
-    </message>
-    <message>
-        <source>Set channel number</source>
-        <translation>تنظیم شماره کانال</translation>
-    </message>
-    <message>
-        <source>Set channel group name</source>
-        <translation>نام گروه کانال را تنظیم کنید</translation>
-    </message>
-    <message>
-        <source>Set channel logos URL placeholder</source>
-        <translation>مکان نمای نشانی وب آرم کانال را تنظیم کنید</translation>
-    </message>
-    <message>
-        <source>Channel logos base URL</source>
-        <translation>نشانی وب پایه آرم کانال</translation>
-    </message>
-    <message>
-        <source>Select channel logos folder</source>
-        <comment>file-dialog</comment>
-        <translation>پوشه آرم کانال را انتخاب کنید</translation>
-    </message>
-    <message>
-        <source>Import each group in separate userbouquets</source>
-        <translation>هر گروه را در گروه کانال کاربر جداگانه وارد کنید</translation>
-    </message>
-    <message>
-        <source>Import all entries in one userbouquet</source>
-        <translation>همه ورودی‌ها را در یک گروه کانال کاربر وارد کنید</translation>
-    </message>
-    <message>
-        <source>Export each bouquet in separate files</source>
-        <translation>هر گروه را در فایل های جداگانه صادر کنید</translation>
-    </message>
-    <message>
-        <source>Export all entries in one file</source>
-        <translation>همه ورودی ها را در یک فایل صادر کنید</translation>
-    </message>
-</context>
-<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -335,6 +246,95 @@ Please wait few minutes and try again.</source>
         <source>Add</source>
         <comment>dialog</comment>
         <translation>اضافه کردن</translation>
+    </message>
+</context>
+<context>
+    <name>dialConvertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>M3U را وارد کنید</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>صادرات M3U</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>انصراف</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>وارد كردن</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>صادرات</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>گزینه های گروه کانال</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>هر گروه را در گروه کانال کاربر جداگانه وارد کنید</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>همه ورودی‌ها را در یک گروه کانال کاربر وارد کنید</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>در صورت تنظیم، شناسه مرجع را رد کنید</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>دسته های کاربری را انتخاب کنید</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>نام</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>نام فایل</translation>
+    </message>
+    <message>
+        <source>Export each bouquet in separate files</source>
+        <translation>هر گروه را در فایل های جداگانه صادر کنید</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>همه ورودی ها را در یک فایل صادر کنید</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>شناسه مرجع کانال را تنظیم کنید</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>تنظیم شماره کانال</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>نام گروه کانال را تنظیم کنید</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>مکان نمای نشانی وب آرم کانال را تنظیم کنید</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>نشانی وب پایه آرم کانال</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>پوشه آرم کانال را انتخاب کنید</translation>
     </message>
 </context>
 <context>
@@ -488,6 +488,16 @@ Please wait few minutes and try again.</source>
         <source>Not supported yet.</source>
         <comment>error</comment>
         <translation>هنوز پشتیبانی نمی شود.</translation>
+    </message>
+    <message>
+        <source>Bouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>گروه کانال &quot;%s&quot; از قبل وجود دارد.</translation>
+    </message>
+    <message>
+        <source>Userbouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>کانال کاربر گروه &quot;%s&quot; از قبل وجود دارد.</translation>
     </message>
 </context>
 <context>
@@ -1064,10 +1074,6 @@ Please wait few minutes and try again.</source>
         <translation>flags</translation>
     </message>
     <message>
-        <source>pls / mis id</source>
-        <translation>pls / mis id</translation>
-    </message>
-    <message>
         <source>pls code</source>
         <translation>pls code</translation>
     </message>
@@ -1090,6 +1096,14 @@ Please wait few minutes and try again.</source>
     <message>
         <source>calc</source>
         <translation>محاسبه</translation>
+    </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
     </message>
 </context>
 <context>
@@ -1295,6 +1309,14 @@ Please wait few minutes and try again.</source>
         <source>plp id</source>
         <translation>plp id</translation>
     </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
+    </message>
 </context>
 <context>
     <name>editUserbouquet</name>
@@ -1393,6 +1415,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
+        <extracomment>curl_easy_strerror error string</extracomment>
         <translation>نمی توان به سرور متصل شد</translation>
     </message>
     <message>
@@ -1409,6 +1432,27 @@ Please wait few minutes and try again.</source>
         <source>Couldn&apos;t connect to STB FTP</source>
         <comment>error</comment>
         <translation>به STB FTP متصل نشد</translation>
+    </message>
+    <message>
+        <source>Please select a connection profile then connect.</source>
+        <comment>error</comment>
+        <translation>لطفاً یک نمایه اتصال انتخاب کنید سپس وصل شوید.</translation>
+    </message>
+    <message>
+        <source>Webif Reload Error</source>
+        <comment>error</comment>
+        <translation>خطای بارگذاری مجدد Webif</translation>
+    </message>
+    <message>
+        <source>Telnet Reload Error</source>
+        <comment>error</comment>
+        <translation>خطای بارگذاری مجدد Telnet</translation>
+    </message>
+    <message>
+        <source>Check connection profile and settings integrity.%1Preference values are not valid.</source>
+        <comment>error</comment>
+        <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
+        <translation>نمایه اتصال و یکپارچگی تنظیمات را بررسی کنید.% 1مقادیر برگزیده معتبر نیستند.</translation>
     </message>
 </context>
 <context>
@@ -2060,6 +2104,181 @@ Please wait few minutes and try again.</source>
         <comment>menu</comment>
         <translation>picon را تغییر دهید</translation>
     </message>
+    <message>
+        <source>Convert</source>
+        <comment>menu</comment>
+        <translation>تبدیل</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>تمیز</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>خدمات یتیم را حذف کنید</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>مراجع یتیم را حذف کنید</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>رفع کانال-گروه</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>رفع کانال-گروه های منحصر به فرد کاربر-کانال-گروه</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>رفع (حذف) مرجع با خطا</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>پارامترها</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>حذف سرویس کش</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>سرویس CAID را حذف کنید</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>پرچم های سرویس را بردارید</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>تمام داده های سرویس را حذف کنید</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>محاسبه مجدد DVBNS برای خدمات</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>حذف</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>حذف موارد ارجاع نشده (موارد دلخواه)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>حذف از گروه های کانال (سرویس های استفاده نشده)</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>قفل والدین را بردارید</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>همه گروه های کانال را حذف کنید</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>حذف همه کانال های کاربری-گروه ها</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>موارد تکراری</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>حذف نشانگرهای تکراری (نام)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>مراجع تکراری را حذف کنید</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>سرویس های تکراری را حذف کنید</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>فرستنده های تکراری را حذف کنید</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>تمام موارد تکراری را حذف کنید</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>تبدیل کنید</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>ترانسپوندرها را به تنظیمات XML تبدیل کنید</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>تنظیمات XML را به فرستنده تبدیل کنید</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>مرتب کردن</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>مرتب سازی مراجع…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>مرتب سازی خدمات…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>مرتب سازی فرستنده…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>مرتب سازی کاربر-کانال-گروه…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>تعمیر خودکار</translation>
+    </message>
+    <message>
+        <source>Edit&amp;or</source>
+        <comment>menu</comment>
+        <translation>ویرایشگر</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2447,6 +2666,11 @@ Please wait few minutes and try again.</source>
         <source>Add Stream</source>
         <comment>toolbar</comment>
         <translation>اضافه کردن جریان</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>مرتب سازی…</translation>
     </message>
 </context>
 <context>
@@ -3544,6 +3768,296 @@ Please wait few minutes and try again.</source>
         <comment>message</comment>
         <translation>آیا می خواهید موارد را حذف کنید؟</translation>
     </message>
+    <message>
+        <source>Tools</source>
+        <comment>toolbar</comment>
+        <translation>ابزار</translation>
+    </message>
+    <message>
+        <source>autofix</source>
+        <comment>toolbar</comment>
+        <translation>تعمیر خودکار</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>تمیز</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>خدمات یتیم را حذف کنید</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>مراجع یتیم را حذف کنید</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>رفع کانال-گروه</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>رفع کانال-گروه های منحصر به فرد کاربر-کانال-گروه</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>رفع (حذف) مرجع با خطا</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>پارامترها</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>حذف سرویس کش</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>سرویس CAID را حذف کنید</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>پرچم های سرویس را بردارید</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>تمام داده های سرویس را حذف کنید</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>محاسبه مجدد DVBNS برای خدمات</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>حذف</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>حذف موارد ارجاع نشده (موارد دلخواه)</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>حذف از گروه های کانال (سرویس های استفاده نشده)</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>قفل والدین را بردارید</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>همه گروه های کانال را حذف کنید</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>حذف همه کانال های کاربری-گروه ها</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>موارد تکراری</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>حذف نشانگرهای تکراری (نام)</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>مراجع تکراری را حذف کنید</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>سرویس های تکراری را حذف کنید</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>فرستنده های تکراری را حذف کنید</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>تمام موارد تکراری را حذف کنید</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>تبدیل کنید</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>ترانسپوندرها را به تنظیمات XML تبدیل کنید</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>تنظیمات XML را به فرستنده تبدیل کنید</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>مرتب کردن</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>مرتب سازی مراجع…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>مرتب سازی خدمات…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>مرتب سازی فرستنده…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>مرتب سازی کاربر-کانال-گروه…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>تعمیر خودکار</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>menu</comment>
+        <translation>وارد كردن</translation>
+    </message>
+    <message>
+        <source>Import…</source>
+        <comment>menu</comment>
+        <translation>وارد كردن…</translation>
+    </message>
+    <message>
+        <source>Import from CSV</source>
+        <comment>menu</comment>
+        <translation>وارد کردن از CSV</translation>
+    </message>
+    <message>
+        <source>Import Services</source>
+        <comment>menu</comment>
+        <translation>واردات کانال خدمات</translation>
+    </message>
+    <message>
+        <source>Import Bouquet</source>
+        <comment>menu</comment>
+        <translation>واردات کانال-گروه</translation>
+    </message>
+    <message>
+        <source>Import Userbouquet</source>
+        <comment>menu</comment>
+        <translation>وارد کردن کاربر-کانال-گروه</translation>
+    </message>
+    <message>
+        <source>Import Tuner settings</source>
+        <comment>menu</comment>
+        <translation>تنظیمات تیونر را وارد کنید</translation>
+    </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>واردات از M3U</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>menu</comment>
+        <translation>صادرات</translation>
+    </message>
+    <message>
+        <source>Export…</source>
+        <comment>menu</comment>
+        <translation>صادرات…</translation>
+    </message>
+    <message>
+        <source>Export to CSV</source>
+        <comment>menu</comment>
+        <translation>صادرات به CSV</translation>
+    </message>
+    <message>
+        <source>Export current</source>
+        <comment>menu</comment>
+        <translation>جریان را صادر کنید</translation>
+    </message>
+    <message>
+        <source>Export All</source>
+        <comment>menu</comment>
+        <translation>صادرات همه</translation>
+    </message>
+    <message>
+        <source>Export Services</source>
+        <comment>menu</comment>
+        <translation>صادرات کانال خدمات</translation>
+    </message>
+    <message>
+        <source>Export Bouquets</source>
+        <comment>menu</comment>
+        <translation>صادرات کانال-گروه</translation>
+    </message>
+    <message>
+        <source>Export Userbouquets</source>
+        <comment>menu</comment>
+        <translation>صادرات کاربر-کانال-گروه</translation>
+    </message>
+    <message>
+        <source>Export Tuner settings</source>
+        <comment>menu</comment>
+        <translation>تنظیمات تیونر را صادر کنید</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>صادرات به M3U</translation>
+    </message>
+    <message>
+        <source>Export to HTML</source>
+        <comment>menu</comment>
+        <translation>صادرات به HTML</translation>
+    </message>
+    <message>
+        <source>Export Index</source>
+        <comment>menu</comment>
+        <translation>شاخص صادرات</translation>
+    </message>
+    <message>
+        <source>Log Inspector</source>
+        <comment>menu</comment>
+        <translation>بازرس ورود به سیستم</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>خطا در تاسیسات</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>خطا در اجرای برنامه های کاربردی.</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3600,6 +4114,307 @@ Please wait few minutes and try again.</source>
         <source>There are not stream type references in userbouquets to export.</source>
         <comment>message</comment>
         <translation>مرجع نوع جریان در دسته های کاربری برای صادرات وجود ندارد.</translation>
+    </message>
+    <message>
+        <source>Done</source>
+        <comment>message</comment>
+        <translation>انجام شد</translation>
+    </message>
+    <message>
+        <source>Done!</source>
+        <comment>message</comment>
+        <translation>انجام شد!</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services …</source>
+        <comment>message</comment>
+        <translation>خدمات یتیم را حذف کنید …</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references …</source>
+        <comment>message</comment>
+        <translation>مراجع یتیم را حذف کنید …</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors …</source>
+        <comment>message</comment>
+        <translation>رفع کانال-گروه …</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services …</source>
+        <comment>message</comment>
+        <translation>رفع کانال-گروه های منحصر به فرد کاربر-کانال-گروه …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets …</source>
+        <comment>message</comment>
+        <translation>رفع (حذف) مرجع با خطا …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets …</source>
+        <comment>message</comment>
+        <translation>حذف سرویس کش …</translation>
+    </message>
+    <message>
+        <source>Remove service cached …</source>
+        <comment>message</comment>
+        <translation>سرویس CAID را حذف کنید …</translation>
+    </message>
+    <message>
+        <source>Remove service CAID …</source>
+        <comment>message</comment>
+        <translation>پرچم های سرویس را بردارید …</translation>
+    </message>
+    <message>
+        <source>Remove service flags …</source>
+        <comment>message</comment>
+        <translation>تمام داده های سرویس را حذف کنید …</translation>
+    </message>
+    <message>
+        <source>Remove all service data …</source>
+        <comment>message</comment>
+        <translation>محاسبه مجدد DVBNS برای خدمات …</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites) …</source>
+        <comment>message</comment>
+        <translation>حذف موارد ارجاع نشده (موارد دلخواه) …</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services) …</source>
+        <comment>message</comment>
+        <translation>حذف از گروه های کانال (سرویس های استفاده نشده) …</translation>
+    </message>
+    <message>
+        <source>Remove parental lock …</source>
+        <comment>message</comment>
+        <translation>قفل والدین را بردارید …</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets …</source>
+        <comment>message</comment>
+        <translation>همه گروه های کانال را حذف کنید …</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets …</source>
+        <comment>message</comment>
+        <translation>حذف همه کانال های کاربری-گروه ها …</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates …</source>
+        <comment>message</comment>
+        <translation>حذف نشانگرهای تکراری (نام) …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders …</source>
+        <comment>message</comment>
+        <translation>مراجع تکراری را حذف کنید …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services …</source>
+        <comment>message</comment>
+        <translation>سرویس های تکراری را حذف کنید …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references …</source>
+        <comment>message</comment>
+        <translation>فرستنده های تکراری را حذف کنید …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names) …</source>
+        <comment>message</comment>
+        <translation>تمام موارد تکراری را حذف کنید …</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings …</source>
+        <comment>message</comment>
+        <translation>ترانسپوندرها را به تنظیمات XML تبدیل کنید …</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders …</source>
+        <comment>message</comment>
+        <translation>تنظیمات XML را به فرستنده تبدیل کنید …</translation>
+    </message>
+    <message>
+        <source>Sort transponders …</source>
+        <comment>message</comment>
+        <translation>مرتب سازی فرستنده …</translation>
+    </message>
+    <message>
+        <source>Sort services …</source>
+        <comment>message</comment>
+        <translation>مرتب سازی خدمات …</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets …</source>
+        <comment>message</comment>
+        <translation>مرتب سازی کاربر-کانال-گروه …</translation>
+    </message>
+    <message>
+        <source>Sort references …</source>
+        <comment>message</comment>
+        <translation>مرتب سازی مراجع …</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>خطا در تاسیسات</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>خطا در اجرای برنامه های کاربردی.</translation>
+    </message>
+    <message>
+        <source>Executing macro …</source>
+        <comment>message</comment>
+        <translation>اجرای ماکرو …</translation>
+    </message>
+    <message>
+        <source>Error executing macro.</source>
+        <comment>error</comment>
+        <translation>خطا در اجرای ماکرو.</translation>
+    </message>
+    <message>
+        <source>Sort transponders</source>
+        <comment>dialog</comment>
+        <translation>مرتب سازی فرستنده</translation>
+    </message>
+    <message>
+        <source>Sort services</source>
+        <comment>dialog</comment>
+        <translation>مرتب سازی خدمات</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets</source>
+        <comment>dialog</comment>
+        <translation>مرتب سازی کاربر-کانال-گروه</translation>
+    </message>
+    <message>
+        <source>Sort references</source>
+        <comment>dialog</comment>
+        <translation>مرتب سازی مراجع</translation>
+    </message>
+    <message>
+        <source>ascending</source>
+        <translation>صعودی</translation>
+    </message>
+    <message>
+        <source>descending</source>
+        <translation>نزولی</translation>
+    </message>
+    <message>
+        <source>Recall this set when Sort from context menu</source>
+        <translation>این مجموعه را هنگام مرتب سازی از منوی زمینه به یاد بیاورید</translation>
+    </message>
+    <message>
+        <source>Apply to list selection</source>
+        <translation>برای انتخاب شده در لیست اعمال شود</translation>
+    </message>
+    <message>
+        <source>Apply Sort</source>
+        <comment>dialog</comment>
+        <translation>مرتب سازی را اعمال کنید</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>نام فایل</translation>
+    </message>
+    <message>
+        <source>Bouquet Name</source>
+        <translation>کانال-نام گروه</translation>
+    </message>
+    <message>
+        <source>Parent Filename</source>
+        <translation>نام فایل والد</translation>
+    </message>
+    <message>
+        <source>Bouquet Type</source>
+        <translation>نوع کانال-گروه</translation>
+    </message>
+    <message>
+        <source>Parental Lock</source>
+        <translation>قفل والدین</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation>فهرست مطالب</translation>
+    </message>
+    <message>
+        <source>Channel Name</source>
+        <translation>نام کانال</translation>
+    </message>
+    <message>
+        <source>SSID</source>
+        <translation>SSID</translation>
+    </message>
+    <message>
+        <source>TSID</source>
+        <translation>TSID</translation>
+    </message>
+    <message>
+        <source>ONID</source>
+        <translation>ONID</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation>URI</translation>
+    </message>
+    <message>
+        <source>FAV Name</source>
+        <translation>نام مورد علاقه</translation>
+    </message>
+    <message>
+        <source>FAV Index</source>
+        <translation>فهرست مورد علاقه</translation>
+    </message>
+    <message>
+        <source>Transponder order</source>
+        <translation>سفارش ترانسپوندرها</translation>
+    </message>
+    <message>
+        <source>Provider Name</source>
+        <translation>نام ارائه دهنده</translation>
+    </message>
+    <message>
+        <source>Service Type</source>
+        <translation>نوع خدمات</translation>
+    </message>
+    <message>
+        <source>Service Number</source>
+        <translation>Service Number</translation>
+    </message>
+    <message>
+        <source>Src ID</source>
+        <translation>Src ID</translation>
+    </message>
+    <message>
+        <source>Transponder Type</source>
+        <translation>نوع ترانسپوندر</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation>موقعیت</translation>
+    </message>
+    <message>
+        <source>Frequency</source>
+        <translation>فرکانس</translation>
+    </message>
+    <message>
+        <source>SR</source>
+        <translation>SR</translation>
+    </message>
+    <message>
+        <source>Polarization</source>
+        <translation>قطبی شدن</translation>
+    </message>
+    <message>
+        <source>System</source>
+        <translation>سیستم</translation>
     </message>
 </context>
 <context>
@@ -3739,6 +4554,11 @@ Please wait few minutes and try again.</source>
         <source>Transponder</source>
         <comment>toolbar</comment>
         <translation>ترانسپوندر</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>مرتب سازی…</translation>
     </message>
 </context>
 <context>

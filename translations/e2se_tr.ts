@@ -191,95 +191,6 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
     </message>
 </context>
 <context>
-    <name>convertM3u</name>
-    <message>
-        <source>Import M3U</source>
-        <comment>dialog</comment>
-        <translation>M3U&apos;yu içe aktar</translation>
-    </message>
-    <message>
-        <source>Export M3U</source>
-        <comment>dialog</comment>
-        <translation>M3U&apos;yu dışa aktar</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <comment>dialog</comment>
-        <translation>İptal</translation>
-    </message>
-    <message>
-        <source>Import</source>
-        <comment>dialog</comment>
-        <translation>Aktar</translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <comment>dialog</comment>
-        <translation>İhracat</translation>
-    </message>
-    <message>
-        <source>Channel group options</source>
-        <translation>Kanal grubu seçenekleri</translation>
-    </message>
-    <message>
-        <source>Discard Reference ID if set</source>
-        <translation>Ayarlandıysa Reference ID atın</translation>
-    </message>
-    <message>
-        <source>Select Userbouquets</source>
-        <translation>Userbouquets ni seçin</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation>Ad</translation>
-    </message>
-    <message>
-        <source>Filename</source>
-        <translation>Dosya adı</translation>
-    </message>
-    <message>
-        <source>Set channel Reference ID</source>
-        <translation>Reference ID kanalını ayarla</translation>
-    </message>
-    <message>
-        <source>Set channel number</source>
-        <translation>Kanal numarasını ayarla</translation>
-    </message>
-    <message>
-        <source>Set channel group name</source>
-        <translation>Kanal grubu adını ayarlayın</translation>
-    </message>
-    <message>
-        <source>Set channel logos URL placeholder</source>
-        <translation>Kanal logoları URL yer tutucusunu ayarlayın</translation>
-    </message>
-    <message>
-        <source>Channel logos base URL</source>
-        <translation>Kanal logoları temel URL&apos;si</translation>
-    </message>
-    <message>
-        <source>Select channel logos folder</source>
-        <comment>file-dialog</comment>
-        <translation>Kanal logoları klasörünü seçin</translation>
-    </message>
-    <message>
-        <source>Import each group in separate userbouquets</source>
-        <translation>Ayrı userbouquets aktar</translation>
-    </message>
-    <message>
-        <source>Import all entries in one userbouquet</source>
-        <translation>Tümünü tek userbouquet dışa aktar</translation>
-    </message>
-    <message>
-        <source>Export each bouquet in separate files</source>
-        <translation>Ayrı dosyalara aktar</translation>
-    </message>
-    <message>
-        <source>Export all entries in one file</source>
-        <translation>Tümünü tek dosyada dışa aktar</translation>
-    </message>
-</context>
-<context>
     <name>dialAbstract</name>
     <message>
         <source>Edit</source>
@@ -328,6 +239,95 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <source>Add</source>
         <comment>dialog</comment>
         <translation>Eklemek</translation>
+    </message>
+</context>
+<context>
+    <name>dialConvertM3u</name>
+    <message>
+        <source>Import M3U</source>
+        <comment>dialog</comment>
+        <translation>M3U&apos;yu içe aktar</translation>
+    </message>
+    <message>
+        <source>Export M3U</source>
+        <comment>dialog</comment>
+        <translation>M3U&apos;yu dışa aktar</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation>İptal</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>dialog</comment>
+        <translation>Aktar</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>dialog</comment>
+        <translation>İhracat</translation>
+    </message>
+    <message>
+        <source>Channel group options</source>
+        <translation>Kanal grubu seçenekleri</translation>
+    </message>
+    <message>
+        <source>Import each group in separate userbouquets</source>
+        <translation>Ayrı userbouquets aktar</translation>
+    </message>
+    <message>
+        <source>Import all entries in one userbouquet</source>
+        <translation>Tümünü tek userbouquet dışa aktar</translation>
+    </message>
+    <message>
+        <source>Discard Reference ID if set</source>
+        <translation>Ayarlandıysa Reference ID atın</translation>
+    </message>
+    <message>
+        <source>Select Userbouquets</source>
+        <translation>Userbouquets ni seçin</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Ad</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Dosya adı</translation>
+    </message>
+    <message>
+        <source>Export each bouquet in separate files</source>
+        <translation>Ayrı dosyalara aktar</translation>
+    </message>
+    <message>
+        <source>Export all entries in one file</source>
+        <translation>Tümünü tek dosyada dışa aktar</translation>
+    </message>
+    <message>
+        <source>Set channel Reference ID</source>
+        <translation>Reference ID kanalını ayarla</translation>
+    </message>
+    <message>
+        <source>Set channel number</source>
+        <translation>Kanal numarasını ayarla</translation>
+    </message>
+    <message>
+        <source>Set channel group name</source>
+        <translation>Kanal grubu adını ayarlayın</translation>
+    </message>
+    <message>
+        <source>Set channel logos URL placeholder</source>
+        <translation>Kanal logoları URL yer tutucusunu ayarlayın</translation>
+    </message>
+    <message>
+        <source>Channel logos base URL</source>
+        <translation>Kanal logoları temel URL&apos;si</translation>
+    </message>
+    <message>
+        <source>Select channel logos folder</source>
+        <comment>file-dialog</comment>
+        <translation>Kanal logoları klasörünü seçin</translation>
     </message>
 </context>
 <context>
@@ -481,6 +481,16 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <source>Not supported yet.</source>
         <comment>error</comment>
         <translation>Henüz desteklenmiyor.</translation>
+    </message>
+    <message>
+        <source>Bouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Bouquet &quot;%s&quot; zaten mevcut.</translation>
+    </message>
+    <message>
+        <source>Userbouquet &quot;%s&quot; already exists.</source>
+        <comment>error</comment>
+        <translation>Userbouquets &quot;%s&quot; zaten mevcut.</translation>
     </message>
 </context>
 <context>
@@ -1057,10 +1067,6 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <translation>flags</translation>
     </message>
     <message>
-        <source>pls / mis id</source>
-        <translation>pls / mis id</translation>
-    </message>
-    <message>
         <source>pls code</source>
         <translation>pls code</translation>
     </message>
@@ -1083,6 +1089,14 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
     <message>
         <source>calc</source>
         <translation>hesap</translation>
+    </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
     </message>
 </context>
 <context>
@@ -1288,6 +1302,14 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <source>plp id</source>
         <translation>plp id</translation>
     </message>
+    <message>
+        <source>t2mi plpid</source>
+        <translation>t2mi plpid</translation>
+    </message>
+    <message>
+        <source>t2mi pid</source>
+        <translation>t2mi pid</translation>
+    </message>
 </context>
 <context>
     <name>editUserbouquet</name>
@@ -1386,6 +1408,7 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
     <message>
         <source>Couldn&apos;t connect to server</source>
         <comment>error</comment>
+        <extracomment>curl_easy_strerror error string</extracomment>
         <translation>Sunucuya bağlanılamadı</translation>
     </message>
     <message>
@@ -1402,6 +1425,27 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <source>Couldn&apos;t connect to STB FTP</source>
         <comment>error</comment>
         <translation>STB FTP&apos;ye bağlanılamadı</translation>
+    </message>
+    <message>
+        <source>Please select a connection profile then connect.</source>
+        <comment>error</comment>
+        <translation>Lütfen bir bağlantı profili seçin ve ardından bağlanın.</translation>
+    </message>
+    <message>
+        <source>Webif Reload Error</source>
+        <comment>error</comment>
+        <translation>Webif Yeniden Yükleme Hatası</translation>
+    </message>
+    <message>
+        <source>Telnet Reload Error</source>
+        <comment>error</comment>
+        <translation>Telnet Yeniden Yükleme Hatası</translation>
+    </message>
+    <message>
+        <source>Check connection profile and settings integrity.%1Preference values are not valid.</source>
+        <comment>error</comment>
+        <extracomment>HTML formattation: text%1text treat them as spaces</extracomment>
+        <translation>Bağlantı profili ve ayar bütünlüğünü kontrol edin.%1Tercih değerleri geçerli değil.</translation>
     </message>
 </context>
 <context>
@@ -2053,6 +2097,181 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <comment>menu</comment>
         <translation>Picon değiştir</translation>
     </message>
+    <message>
+        <source>Convert</source>
+        <comment>menu</comment>
+        <translation>Dönüştürmek</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Temizlik</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Yetim hizmetleri kaldırın</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Yetim referansları kaldırın</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Bouquets düzeltin</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Bouquets ve benzersiz userbouquets düzeltin</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Hatalı referansı düzelt (kaldır)</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Parametreler</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Hizmet-cached kaldırın</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Hizmet-CAID kaldırın</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Hizmet-flags kaldırın</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Tüm hizmet verilerini kaldırın</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Hizmetler için DVBNS&apos;yi yeniden hesapla</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Kaldır</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Başvurulmayan öğeleri (favorileri) kaldırın</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>(Kullanılmayan hizmetleri) bouquets kaldırın</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Ebeveyn kilidini kaldır</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Tüm bouquets kaldır</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Tüm userbouquets kaldır</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Yinelenenler</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Yinelenen markers (isimleri) kaldırın</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Yinelenen referansları kaldırın</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Yinelenen hizmetleri kaldırın</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Çift transponderleri kaldırın</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Tüm kopyaları kaldır</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Dönüştür</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Transponderleri XML ayarlarına dönüştürün</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>XML ayarlarını transponderlere dönüştürün</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Sırala</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Referansları sırala…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Hizmetleri sırala…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Transponderleri sırala…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Userbouquets sırala…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Oto-düzelt</translation>
+    </message>
+    <message>
+        <source>Edit&amp;or</source>
+        <comment>menu</comment>
+        <translation>Editör</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2440,6 +2659,11 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <source>Add Stream</source>
         <comment>toolbar</comment>
         <translation>Stream Ekle</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Sırala…</translation>
     </message>
 </context>
 <context>
@@ -3537,6 +3761,296 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <comment>message</comment>
         <translation>Öğeleri silmek istiyor musunuz?</translation>
     </message>
+    <message>
+        <source>Tools</source>
+        <comment>toolbar</comment>
+        <translation>Araçlar</translation>
+    </message>
+    <message>
+        <source>autofix</source>
+        <comment>toolbar</comment>
+        <translation>oto-düzelt</translation>
+    </message>
+    <message>
+        <source>Clean</source>
+        <comment>menu</comment>
+        <translation>Temizlik</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services</source>
+        <comment>menu</comment>
+        <translation>Yetim hizmetleri kaldırın</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references</source>
+        <comment>menu</comment>
+        <translation>Yetim referansları kaldırın</translation>
+    </message>
+    <message>
+        <source>Fix bouquets</source>
+        <comment>menu</comment>
+        <translation>Bouquets düzeltin</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets</source>
+        <comment>menu</comment>
+        <translation>Bouquets ve benzersiz userbouquets düzeltin</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors</source>
+        <comment>menu</comment>
+        <translation>Hatalı referansı düzelt (kaldır)</translation>
+    </message>
+    <message>
+        <source>Params</source>
+        <comment>menu</comment>
+        <translation>Parametreler</translation>
+    </message>
+    <message>
+        <source>Remove service cached</source>
+        <comment>menu</comment>
+        <translation>Hizmet-cached kaldırın</translation>
+    </message>
+    <message>
+        <source>Remove service CAID</source>
+        <comment>menu</comment>
+        <translation>Hizmet-CAID kaldırın</translation>
+    </message>
+    <message>
+        <source>Remove service flags</source>
+        <comment>menu</comment>
+        <translation>Hizmet-flags kaldırın</translation>
+    </message>
+    <message>
+        <source>Remove all service data</source>
+        <comment>menu</comment>
+        <translation>Tüm hizmet verilerini kaldırın</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services</source>
+        <comment>menu</comment>
+        <translation>Hizmetler için DVBNS&apos;yi yeniden hesapla</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <comment>menu</comment>
+        <translation>Kaldır</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites)</source>
+        <comment>menu</comment>
+        <translation>Başvurulmayan öğeleri (favorileri) kaldırın</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services)</source>
+        <comment>menu</comment>
+        <translation>(Kullanılmayan hizmetleri) bouquets kaldırın</translation>
+    </message>
+    <message>
+        <source>Remove parental lock</source>
+        <comment>menu</comment>
+        <translation>Ebeveyn kilidini kaldır</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets</source>
+        <comment>menu</comment>
+        <translation>Tüm bouquets kaldır</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets</source>
+        <comment>menu</comment>
+        <translation>Tüm userbouquets kaldır</translation>
+    </message>
+    <message>
+        <source>Duplicates</source>
+        <comment>menu</comment>
+        <translation>Yinelenenler</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names)</source>
+        <comment>menu</comment>
+        <translation>Yinelenen markers (isimleri) kaldırın</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references</source>
+        <comment>menu</comment>
+        <translation>Yinelenen referansları kaldırın</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services</source>
+        <comment>menu</comment>
+        <translation>Yinelenen hizmetleri kaldırın</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders</source>
+        <comment>menu</comment>
+        <translation>Çift transponderleri kaldırın</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates</source>
+        <comment>menu</comment>
+        <translation>Tüm kopyaları kaldır</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <comment>menu</comment>
+        <translation>Dönüştür</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings</source>
+        <comment>menu</comment>
+        <translation>Transponderleri XML ayarlarına dönüştürün</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders</source>
+        <comment>menu</comment>
+        <translation>XML ayarlarını transponderlere dönüştürün</translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation>Sırala</translation>
+    </message>
+    <message>
+        <source>Sort references…</source>
+        <comment>menu</comment>
+        <translation>Referansları sırala…</translation>
+    </message>
+    <message>
+        <source>Sort services…</source>
+        <comment>menu</comment>
+        <translation>Hizmetleri sırala…</translation>
+    </message>
+    <message>
+        <source>Sort transponders…</source>
+        <comment>menu</comment>
+        <translation>Transponderleri sırala…</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets…</source>
+        <comment>menu</comment>
+        <translation>Userbouquets sırala…</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>menu</comment>
+        <translation>Oto-düzelt</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <comment>menu</comment>
+        <translation>Aktar</translation>
+    </message>
+    <message>
+        <source>Import…</source>
+        <comment>menu</comment>
+        <translation>Aktar…</translation>
+    </message>
+    <message>
+        <source>Import from CSV</source>
+        <comment>menu</comment>
+        <translation>CSV&apos;den Aktar</translation>
+    </message>
+    <message>
+        <source>Import Services</source>
+        <comment>menu</comment>
+        <translation>Hizmetleri Aktar</translation>
+    </message>
+    <message>
+        <source>Import Bouquet</source>
+        <comment>menu</comment>
+        <translation>Bouquet Aktar</translation>
+    </message>
+    <message>
+        <source>Import Userbouquet</source>
+        <comment>menu</comment>
+        <translation>Userbouquet Aktar</translation>
+    </message>
+    <message>
+        <source>Import Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Tuner ayarları Aktar</translation>
+    </message>
+    <message>
+        <source>Import from M3U</source>
+        <comment>menu</comment>
+        <translation>M3U&apos;dan Aktar</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <comment>menu</comment>
+        <translation>İhracat</translation>
+    </message>
+    <message>
+        <source>Export…</source>
+        <comment>menu</comment>
+        <translation>İhracat…</translation>
+    </message>
+    <message>
+        <source>Export to CSV</source>
+        <comment>menu</comment>
+        <translation>CSV&apos;ye İhracat</translation>
+    </message>
+    <message>
+        <source>Export current</source>
+        <comment>menu</comment>
+        <translation>Akımı İhracat</translation>
+    </message>
+    <message>
+        <source>Export All</source>
+        <comment>menu</comment>
+        <translation>Tümünü İhracat</translation>
+    </message>
+    <message>
+        <source>Export Services</source>
+        <comment>menu</comment>
+        <translation>Hizmetleri İhracat</translation>
+    </message>
+    <message>
+        <source>Export Bouquets</source>
+        <comment>menu</comment>
+        <translation>Bouquets İhracat</translation>
+    </message>
+    <message>
+        <source>Export Userbouquets</source>
+        <comment>menu</comment>
+        <translation>Userbouquets İhracat</translation>
+    </message>
+    <message>
+        <source>Export Tuner settings</source>
+        <comment>menu</comment>
+        <translation>Tuner ayarları İhracat</translation>
+    </message>
+    <message>
+        <source>Export to M3U</source>
+        <comment>menu</comment>
+        <translation>M3U&apos;ya İhracat</translation>
+    </message>
+    <message>
+        <source>Export to HTML</source>
+        <comment>menu</comment>
+        <translation>HTML&apos;ye İhracat</translation>
+    </message>
+    <message>
+        <source>Export Index</source>
+        <comment>menu</comment>
+        <translation>Endeksi İhracat</translation>
+    </message>
+    <message>
+        <source>Log Inspector</source>
+        <comment>menu</comment>
+        <translation>Log Inspector</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Utils Hatası</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Utils yürütülürken hata oluştu.</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -3593,6 +4107,307 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <source>There are not stream type references in userbouquets to export.</source>
         <comment>message</comment>
         <translation>Dışa aktarılacak userbouquets nde stream türü referanslar yok.</translation>
+    </message>
+    <message>
+        <source>Done</source>
+        <comment>message</comment>
+        <translation>Uygulanmış</translation>
+    </message>
+    <message>
+        <source>Done!</source>
+        <comment>message</comment>
+        <translation>Uygulanmış!</translation>
+    </message>
+    <message>
+        <source>Remove orphaned services …</source>
+        <comment>message</comment>
+        <translation>Yetim hizmetleri kaldırın …</translation>
+    </message>
+    <message>
+        <source>Remove orphaned references …</source>
+        <comment>message</comment>
+        <translation>Yetim referansları kaldırın …</translation>
+    </message>
+    <message>
+        <source>Fix (remove) reference with errors …</source>
+        <comment>message</comment>
+        <translation>Bouquets düzeltin …</translation>
+    </message>
+    <message>
+        <source>Recalculate DVBNS for services …</source>
+        <comment>message</comment>
+        <translation>Bouquets ve benzersiz userbouquets düzeltin …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets …</source>
+        <comment>message</comment>
+        <translation>Hatalı referansı düzelt (kaldır) …</translation>
+    </message>
+    <message>
+        <source>Fix bouquets unique userbouquets …</source>
+        <comment>message</comment>
+        <translation>Hizmet-cached kaldırın …</translation>
+    </message>
+    <message>
+        <source>Remove service cached …</source>
+        <comment>message</comment>
+        <translation>Hizmet-CAID kaldırın …</translation>
+    </message>
+    <message>
+        <source>Remove service CAID …</source>
+        <comment>message</comment>
+        <translation>Hizmet-flags kaldırın …</translation>
+    </message>
+    <message>
+        <source>Remove service flags …</source>
+        <comment>message</comment>
+        <translation>Tüm hizmet verilerini kaldırın …</translation>
+    </message>
+    <message>
+        <source>Remove all service data …</source>
+        <comment>message</comment>
+        <translation>Hizmetler için DVBNS&apos;yi yeniden hesapla …</translation>
+    </message>
+    <message>
+        <source>Remove unreferenced entries (favourites) …</source>
+        <comment>message</comment>
+        <translation>Başvurulmayan öğeleri (favorileri) kaldırın …</translation>
+    </message>
+    <message>
+        <source>Remove from bouquets (unused services) …</source>
+        <comment>message</comment>
+        <translation>(Kullanılmayan hizmetleri) bouquets kaldırın …</translation>
+    </message>
+    <message>
+        <source>Remove parental lock …</source>
+        <comment>message</comment>
+        <translation>Ebeveyn kilidini kaldır …</translation>
+    </message>
+    <message>
+        <source>Remove all bouquets …</source>
+        <comment>message</comment>
+        <translation>Tüm bouquets kaldır …</translation>
+    </message>
+    <message>
+        <source>Remove all userbouquets …</source>
+        <comment>message</comment>
+        <translation>Tüm userbouquets kaldır …</translation>
+    </message>
+    <message>
+        <source>Remove all duplicates …</source>
+        <comment>message</comment>
+        <translation>Yinelenen markers (isimleri) kaldırın …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate transponders …</source>
+        <comment>message</comment>
+        <translation>Yinelenen referansları kaldırın …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate services …</source>
+        <comment>message</comment>
+        <translation>Yinelenen hizmetleri kaldırın …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate references …</source>
+        <comment>message</comment>
+        <translation>Çift transponderleri kaldırın …</translation>
+    </message>
+    <message>
+        <source>Remove duplicate markers (names) …</source>
+        <comment>message</comment>
+        <translation>Tüm kopyaları kaldır …</translation>
+    </message>
+    <message>
+        <source>Transform transponders to XML settings …</source>
+        <comment>message</comment>
+        <translation>Transponderleri XML ayarlarına dönüştürün …</translation>
+    </message>
+    <message>
+        <source>Transform XML settings to transponders …</source>
+        <comment>message</comment>
+        <translation>XML ayarlarını transponderlere dönüştürün …</translation>
+    </message>
+    <message>
+        <source>Sort transponders …</source>
+        <comment>message</comment>
+        <translation>Transponderleri sırala …</translation>
+    </message>
+    <message>
+        <source>Sort services …</source>
+        <comment>message</comment>
+        <translation>Hizmetleri sırala …</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets …</source>
+        <comment>message</comment>
+        <translation>Userbouquets sırala …</translation>
+    </message>
+    <message>
+        <source>Sort references …</source>
+        <comment>message</comment>
+        <translation>Referansları sırala …</translation>
+    </message>
+    <message>
+        <source>Utils Error</source>
+        <comment>error</comment>
+        <translation>Utils Hatası</translation>
+    </message>
+    <message>
+        <source>Error executing utils.</source>
+        <comment>error</comment>
+        <translation>Utils yürütülürken hata oluştu.</translation>
+    </message>
+    <message>
+        <source>Executing macro …</source>
+        <comment>message</comment>
+        <translation>Makro çalıştırılıyor …</translation>
+    </message>
+    <message>
+        <source>Error executing macro.</source>
+        <comment>error</comment>
+        <translation>Makro yürütülürken hata oluştu.</translation>
+    </message>
+    <message>
+        <source>Sort transponders</source>
+        <comment>dialog</comment>
+        <translation>Transponderleri sırala</translation>
+    </message>
+    <message>
+        <source>Sort services</source>
+        <comment>dialog</comment>
+        <translation>Hizmetleri sırala</translation>
+    </message>
+    <message>
+        <source>Sort userbouquets</source>
+        <comment>dialog</comment>
+        <translation>Userbouquets sırala</translation>
+    </message>
+    <message>
+        <source>Sort references</source>
+        <comment>dialog</comment>
+        <translation>Referansları sırala</translation>
+    </message>
+    <message>
+        <source>ascending</source>
+        <translation>yükselen</translation>
+    </message>
+    <message>
+        <source>descending</source>
+        <translation>alçalan</translation>
+    </message>
+    <message>
+        <source>Recall this set when Sort from context menu</source>
+        <translation>Bağlam menüsünden Sıralama yapıldığında bu kümeyi geri çağır</translation>
+    </message>
+    <message>
+        <source>Apply to list selection</source>
+        <translation>Listede seçili olanlara uygula</translation>
+    </message>
+    <message>
+        <source>Apply Sort</source>
+        <comment>dialog</comment>
+        <translation>Sırala</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation>Dosya adı</translation>
+    </message>
+    <message>
+        <source>Bouquet Name</source>
+        <translation>Bouquet Adı</translation>
+    </message>
+    <message>
+        <source>Parent Filename</source>
+        <translation>Ebeveyn Dosya Adı</translation>
+    </message>
+    <message>
+        <source>Bouquet Type</source>
+        <translation>Bouquet Tipi</translation>
+    </message>
+    <message>
+        <source>Parental Lock</source>
+        <translation>Ebeveyn Kilidi</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation>Dizin</translation>
+    </message>
+    <message>
+        <source>Channel Name</source>
+        <translation>Kanal Adı</translation>
+    </message>
+    <message>
+        <source>SSID</source>
+        <translation>SSID</translation>
+    </message>
+    <message>
+        <source>TSID</source>
+        <translation>TSID</translation>
+    </message>
+    <message>
+        <source>ONID</source>
+        <translation>ONID</translation>
+    </message>
+    <message>
+        <source>DVBNS</source>
+        <translation>DVBNS</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation>URI</translation>
+    </message>
+    <message>
+        <source>FAV Name</source>
+        <translation>FAV Adı</translation>
+    </message>
+    <message>
+        <source>FAV Index</source>
+        <translation>FAV Endeksi</translation>
+    </message>
+    <message>
+        <source>Transponder order</source>
+        <translation>Transponder siparişi</translation>
+    </message>
+    <message>
+        <source>Provider Name</source>
+        <translation>Sağlayıcı Adı</translation>
+    </message>
+    <message>
+        <source>Service Type</source>
+        <translation>Hizmet Türü</translation>
+    </message>
+    <message>
+        <source>Service Number</source>
+        <translation>Service Number</translation>
+    </message>
+    <message>
+        <source>Src ID</source>
+        <translation>Src ID</translation>
+    </message>
+    <message>
+        <source>Transponder Type</source>
+        <translation>Transponder Tipi</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation>Pozisyon</translation>
+    </message>
+    <message>
+        <source>Frequency</source>
+        <translation>Frekans</translation>
+    </message>
+    <message>
+        <source>SR</source>
+        <translation>SR</translation>
+    </message>
+    <message>
+        <source>Polarization</source>
+        <translation>Polarizasyon</translation>
+    </message>
+    <message>
+        <source>System</source>
+        <translation>Sistem</translation>
     </message>
 </context>
 <context>
@@ -3732,6 +4547,11 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <source>Transponder</source>
         <comment>toolbar</comment>
         <translation>Transponder</translation>
+    </message>
+    <message>
+        <source>Sort…</source>
+        <comment>context-menu</comment>
+        <translation>Sırala…</translation>
     </message>
 </context>
 <context>
