@@ -555,12 +555,13 @@ bool tools::handleSortContext(SORT_ITEM model, bool contextual, e2db::uoopts& op
 	if (platform::osExperiment())
 	{
 		// note: trick to re-gain window focus
-		QWindow* window = new QWindow(wid->topLevelWidget()->windowHandle());
-		window->setFlags(Qt::Drawer);
-		window->show();
-		window->requestActivate();
-		window->close();
+		QWindow* wnd = new QWindow(wid->topLevelWidget()->windowHandle());
+		wnd->setFlags(Qt::Drawer);
+		wnd->show();
+		wnd->requestActivate();
+		wnd->close();
 		wid->topLevelWidget()->windowHandle()->requestActivate();
+		wnd->destroy();
 	}
 #endif
 #endif

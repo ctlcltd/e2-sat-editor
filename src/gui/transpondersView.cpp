@@ -242,10 +242,17 @@ void transpondersView::load()
 
 	tabUpdateFlags(gui::init);
 
-	populate();
+	if (this->widget->isVisible())
+	{
+		populate();
 
-	updateFlags();
-	updateStatusBar();
+		updateFlags();
+		updateStatusBar();
+	}
+	else
+	{
+		this->state.tab_pending = true;
+	}
 }
 
 void transpondersView::reset()
@@ -277,10 +284,17 @@ void transpondersView::reload()
 
 	listFindClear();
 
-	populate();
+	if (this->widget->isVisible())
+	{
+		populate();
 
-	updateFlags();
-	updateStatusBar();
+		updateFlags();
+		updateStatusBar();
+	}
+	else
+	{
+		this->state.tab_pending = true;
+	}
 }
 
 void transpondersView::populate()
@@ -897,6 +911,8 @@ void transpondersView::update()
 
 	if (this->state.tab_pending)
 	{
+		listFindClear();
+
 		int column = list->sortColumn();
 		Qt::SortOrder order = list->header()->sortIndicatorOrder();
 
@@ -904,10 +920,11 @@ void transpondersView::update()
 
 		populate();
 
-		list->header()->setSortIndicator(column, order);
-		sortByColumn(column);
-
-		listFindClear();
+		if (column != 0)
+		{
+			list->header()->setSortIndicator(column, order);
+			sortByColumn(column);
+		}
 
 		this->state.tab_pending = false;
 	}

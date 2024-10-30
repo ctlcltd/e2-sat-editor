@@ -256,10 +256,17 @@ void piconsView::load()
 
 	tabUpdateFlags(gui::init);
 
-	populate();
+	if (this->widget->isVisible())
+	{
+		populate();
 
-	updateFlags();
-	updateStatusBar();
+		updateFlags();
+		updateStatusBar();
+	}
+	else
+	{
+		this->state.tab_pending = true;
+	}
 }
 
 void piconsView::reset()
@@ -295,10 +302,17 @@ void piconsView::reload()
 
 	listFindClear();
 
-	populate();
+	if (this->widget->isVisible())
+	{
+		populate();
 
-	updateFlags();
-	updateStatusBar();
+		updateFlags();
+		updateStatusBar();
+	}
+	else
+	{
+		this->state.tab_pending = true;
+	}
 }
 
 void piconsView::populate()
@@ -1070,9 +1084,9 @@ void piconsView::update()
 
 	if (this->state.tab_pending)
 	{
-		populate();
-
 		listFindClear();
+
+		populate();
 
 		this->state.tab_pending = false;
 	}

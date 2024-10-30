@@ -154,8 +154,6 @@ bool dialChannelBook::destroy()
 		this->theme = nullptr;
 	}
 
-	// delete this;
-
 	return true;
 }
 

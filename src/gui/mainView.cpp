@@ -4441,9 +4441,9 @@ void mainView::update()
 
 		dbih->clearStorage();
 
-		visualReloadList();
-
 		listFindClear();
+
+		visualReloadList();
 
 		if (this->state.refbox)
 			updateReferenceBox();

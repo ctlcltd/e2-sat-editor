@@ -429,16 +429,23 @@ void tunersetsView::load()
 
 	tabUpdateFlags(gui::init);
 
-	unpack();
+	if (this->widget->isVisible())
+	{
+		unpack();
 
-	tree->setDragEnabled(true);
-	tree->setAcceptDrops(true);
+		tree->setDragEnabled(true);
+		tree->setAcceptDrops(true);
 
-	list->setDragEnabled(true);
-	list->setAcceptDrops(true);
+		list->setDragEnabled(true);
+		list->setAcceptDrops(true);
 
-	updateFlags();
-	updateStatusBar();
+		updateFlags();
+		updateStatusBar();
+	}
+	else
+	{
+		this->state.tab_pending = true;
+	}
 }
 
 void tunersetsView::reset()
@@ -491,44 +498,49 @@ void tunersetsView::reload()
 
 	listFindClear();
 
-	unpack();
-
-	tree->setDragEnabled(true);
-	tree->setAcceptDrops(true);
-
-	if (! this->state.curr.empty())
+	if (this->widget->isVisible())
 	{
-		QTreeWidgetItem* current = nullptr;
-		int i = 0;
-		int count = tree->topLevelItemCount();
+		unpack();
 
-		while (i != count)
+		tree->setDragEnabled(true);
+		tree->setAcceptDrops(true);
+
+		if (! this->state.curr.empty())
 		{
-			QTreeWidgetItem* item = tree->topLevelItem(i);
-			QString idx = item->data(0, Qt::UserRole).toString();
-			string tnid = idx.toStdString();
+			QTreeWidgetItem* current = nullptr;
+			int i = 0;
+			int count = tree->topLevelItemCount();
 
-			if (tnid == this->state.curr)
+			while (i != count)
 			{
-				current = item;
+				QTreeWidgetItem* item = tree->topLevelItem(i);
+				QString idx = item->data(0, Qt::UserRole).toString();
+				string tnid = idx.toStdString();
 
-				break;
+				if (tnid == this->state.curr)
+				{
+					current = item;
+
+					break;
+				}
+				i++;
 			}
-			i++;
+
+			if (current != nullptr)
+				tree->setCurrentItem(current);
+		}
+		else
+		{
+			tree->setCurrentItem(nullptr);
 		}
 
-		if (current != nullptr)
-			tree->setCurrentItem(current);
-		else
-			populate();
+		updateFlags();
+		updateStatusBar();
 	}
 	else
 	{
-		populate();
+		this->state.tab_pending = true;
 	}
-
-	updateFlags();
-	updateStatusBar();
 
 	this->state.reload = false;
 }
@@ -1598,17 +1610,51 @@ void tunersetsView::update()
 
 	if (this->state.tab_pending)
 	{
+		listFindClear();
+
+		tree->reset();
+
+		unpack();
+
 		int column = list->sortColumn();
 		Qt::SortOrder order = list->header()->sortIndicatorOrder();
 
 		list->reset();
 
-		populate();
+		if (! this->state.curr.empty())
+		{
+			QTreeWidgetItem* current = nullptr;
+			int i = 0;
+			int count = tree->topLevelItemCount();
 
-		list->header()->setSortIndicator(column, order);
-		sortByColumn(column);
+			while (i != count)
+			{
+				QTreeWidgetItem* item = tree->topLevelItem(i);
+				QString idx = item->data(0, Qt::UserRole).toString();
+				string tnid = idx.toStdString();
 
-		listFindClear();
+				if (tnid == this->state.curr)
+				{
+					current = item;
+
+					break;
+				}
+				i++;
+			}
+
+			if (current != nullptr)
+				tree->setCurrentItem(current);
+		}
+		else
+		{
+			tree->setCurrentItem(nullptr);
+		}
+
+		if (column != 0)
+		{
+			list->header()->setSortIndicator(column, order);
+			sortByColumn(column);
+		}
 
 		this->state.tab_pending = false;
 	}

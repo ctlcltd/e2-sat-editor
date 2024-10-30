@@ -302,7 +302,7 @@ void channelBookView::load()
 
 	tabUpdateFlags(gui::init);
 
-	sideRowChanged(0);
+	side->setCurrentRow(0);
 }
 
 void channelBookView::reset()
@@ -315,6 +315,7 @@ void channelBookView::reset()
 	this->state.sort = pair (-1, Qt::AscendingOrder);
 	this->state.tab_pending = false;
 
+	side->reset();
 	tree->reset();
 	tree->clear();
 
@@ -333,17 +334,21 @@ void channelBookView::reload()
 {
 	debug("reload");
 
+	side->reset();
 	tree->clear();
-
 	list->clear();
 
 	listFindClear();
 
 	resetStatusBar();
 
-	populate();
+	side->setCurrentRow(0);
 
-	updateFlags();
+	if (tid != nullptr)
+	{
+		if (! this->widget->isVisible())
+			this->state.tab_pending = true;
+	}
 }
 
 void channelBookView::populate()
@@ -630,9 +635,25 @@ void channelBookView::sideRowChanged(int index)
 			this->state.vx = 1;
 	}
 
-	stacker(index);
+	if (tid != nullptr)
+	{
+		if (this->widget->isVisible())
+		{
+			stacker(index);
 
-	updateFlags();
+			updateFlags();
+		}
+		else
+		{
+			this->state.tab_pending = true;
+		}
+	}
+	else
+	{
+		stacker(index);
+
+		updateFlags();
+	}
 }
 
 void channelBookView::filterChanged(bool enabled)
@@ -799,6 +820,8 @@ void channelBookView::update()
 
 	if (this->state.tab_pending)
 	{
+		listFindClear();
+
 		int vv = side->currentRow();
 
 		int column = list->sortColumn();
@@ -810,10 +833,11 @@ void channelBookView::update()
 
 		stacker(vv);
 
-		list->header()->setSortIndicator(column, order);
-		sortByColumn(column);
-
-		listFindClear();
+		if (column != 0)
+		{
+			list->header()->setSortIndicator(column, order);
+			sortByColumn(column);
+		}
 
 		this->state.tab_pending = false;
 	}
