@@ -2353,9 +2353,28 @@ void tab::ftpUpload()
 		return;
 
 	QSettings settings;
-	int profile_sel = settings.value("profile/selected", 0).toInt();
+	int profile_sel = settings.value("profile/selected", -1).toInt();
+	int profile_i = -1;
+
+	int idx = 0;
+	int size = settings.beginReadArray("profile");
+	for (int i = 0; i < size; i++)
+	{
+		settings.setArrayIndex(i);
+		idx = settings.group().section('/', 1).toInt();
+		if (profile_sel == idx)
+		{
+			profile_i = i;
+			break;
+		}
+	}
+	settings.endArray();
+
+	if (profile_i == -1)
+		return;
+
 	settings.beginReadArray("profile");
-	settings.setArrayIndex(profile_sel);
+	settings.setArrayIndex(profile_i);
 	string baset = settings.value("pathTransponders").toString().toStdString();
 	string bases = settings.value("pathServices").toString().toStdString();
 	string baseb = settings.value("pathBouquets").toString().toStdString();

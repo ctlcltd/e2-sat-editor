@@ -1264,6 +1264,7 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 	int etype = 0, atype = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0,
 		x7 = 0, x8 = 0, x9 = 0;
 	char xdata;
+	xdata = 0;
 
 	std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X:%d:%d:%d:%c", &etype, &atype, &anum, &ssid, &tsid, &onid, &dvbns, &x7, &x8, &x9, &xdata);
 
@@ -1290,7 +1291,8 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 			chref.marker = false;
 	}
 
-	if (std::strlen(&xdata))
+	//TODO FIX [:]uri[:]value [:]uri [:][:]value
+	if (xdata != 0)
 	{
 		size_t pos = str.rfind(':');
 
@@ -1332,7 +1334,7 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 					chref.valverb = false;
 					chref.inlineval = true;
 				}
-				else
+				else if (s11.size() > 1)
 				{
 					chref.uri = s11;
 				}
