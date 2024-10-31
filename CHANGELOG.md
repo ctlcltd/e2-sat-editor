@@ -6,8 +6,8 @@ All notable changes to this project will be documented in this file.
 ## [v1.7.0]
 
 **Version**: 1.7  
-**Release Date**: *unreleased*  
-**Full Changelog**: [v1.6.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.6.0...HEAD)
+**Release Date**: 2024-10-31  
+**Full Changelog**: [v1.6.0...v1.7.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.6.0...v1.7.0)
 
 - New utils: autofix, remove duplicates, fix/remove parameters and flags, sort
 - Improved lists compatibility Lamedb 2.x
@@ -22,7 +22,7 @@ All notable changes to this project will be documented in this file.
 
 **Version**: 1.6  
 **Release Date**: 2024-07-25  
-**Full Changelog**: [v1.5.0...v1.6.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.5.0...v.1.6.0)
+**Full Changelog**: [v1.5.0...v1.6.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.5.0...v1.6.0)
 
 - Fix crash with empty service parameters on save
 - Fix parental lock on write
@@ -96,7 +96,7 @@ All notable changes to this project will be documented in this file.
 
 **Version**: 1.1.1 
 **Release Date**: 2024-01-20  
-**Full Changelog**: [v1.1.0...v.1.1.1](https://github.com/ctlcltd/e2-sat-editor/compare/v1.1.0...v.1.1.1)
+**Full Changelog**: [v1.1.0...v1.1.1](https://github.com/ctlcltd/e2-sat-editor/compare/v1.1.0...v1.1.1)
 
 - Fix FTP issue, file listing and directory
 
