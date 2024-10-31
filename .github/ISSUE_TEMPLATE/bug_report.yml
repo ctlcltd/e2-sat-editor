@@ -43,6 +43,7 @@ body:
       label: Software version
       description: What version of our software are you running?
       options:
+        - 1.7
         - 1.6
         - 1.5
         - 1.4
@@ -79,15 +80,17 @@ body:
         - I don't know
         - Linux Gnome
         - Linux KDE
+        - Linux Xfce
         - Linux other DE
         - BSD-like
         - Windows 11
         - Windows 10
         - Windows 8.1
+        - Windows 7
+        - macOS Sequoia
         - macOS Sonoma
         - macOS Ventura
         - macOS Monterey
-        - macOS Big Sur
         - other (please specify)
     validations:
       required: true
