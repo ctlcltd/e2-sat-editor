@@ -528,7 +528,7 @@ void gui::tabStackerLayout()
 #ifndef Q_OS_WIN
 	twid->setStyleSheet("#tabwidget::tab-bar { left: 0; border-style: solid } #tabwidget::pane { border: 0; border-radius: 0 } #tabwidget_tabbar::tab { min-width: 12ex; max-width: 25ex; height: 44px; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button) } #tabwidget_tabbar::tab:selected { color: palette(highlighted-text); background: palette(highlight); border-color: transparent }");
 #else
-	twid->setStyleSheet("#tabwidget::tab-bar { left: 0; border-style: solid } #tabwidget::pane { border: 0; border-radius: 0 } #tabwidget_tabbar::tab { min-width: 102px; max-width: 140px; height: 22px; padding-top: 11px; padding-bottom: 11px; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button) } #tabwidget_tabbar::tab:selected { color: palette(highlighted-text); background: palette(highlight); border-color: transparent }");
+	twid->setStyleSheet("#tabwidget::tab-bar { left: 0; border-style: solid } #tabwidget::pane { border: 0; border-radius: 0 } #tabwidget_tabbar::tab { min-width: 102px; max-width: 176px; height: 22px; padding-top: 11px; padding-bottom: 11px; padding-left: 8px; padding-right: 8px; font-size: 13px; border-style: solid; border-width: 0 1px; color:palette(button-text); background: palette(button) } #tabwidget_tabbar::tab:selected { color: palette(highlighted-text); background: palette(highlight); border-color: transparent }");
 #endif
 
 	QColor twtbshade;
