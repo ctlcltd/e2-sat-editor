@@ -934,7 +934,11 @@ void settings::advancedLayout()
 
 	QPushButton* dtntcb = new QPushButton;
 	dtntcb->setText(tr("OK, I understood this."));
-	dtntcb->connect(dtntcb, &QPushButton::pressed, [=]() { adntc->setHidden(true); adtbl->setVisible(true); retrieve(adtbl); });
+	dtntcb->connect(dtntcb, &QPushButton::pressed, [=]() {
+		adntc->setHidden(true);
+		adtbl->setVisible(true);
+		retrieve(adtbl);
+	});
 
 	dtnthb->addWidget(dtntsp);
 	dtnthb->addWidget(dtntcb);
@@ -1790,6 +1794,9 @@ void settings::retrieve()
 			break;
 		}
 	}
+
+	if (profile_i == -1)
+		profile_i = 0;
 
 	int row = 0;
 	int selected = -1;

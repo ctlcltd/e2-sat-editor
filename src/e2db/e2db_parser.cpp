@@ -1291,7 +1291,6 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 			chref.marker = false;
 	}
 
-	//TODO FIX [:]uri[:]value [:]uri [:][:]value
 	if (xdata != 0)
 	{
 		size_t pos = str.rfind(':');
@@ -1310,7 +1309,7 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 
 				if (pos != string::npos)
 					s10 = s10.substr(0, pos);
-				if (s10.size() == 1)
+				if (s10.size() == 1) // zero
 					s10 = "";
 			}
 
@@ -1319,7 +1318,16 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 				conv_uri_value(s10);
 				conv_uri_value(s11);
 
-				chref.uri = s10;
+				if (s10.size() > 1 && s10.find("%3a") != string::npos)
+				{
+					chref.uri = s10;
+					chref.stream = true;
+				}
+				else
+				{
+					chref.stream = ! chref.marker && ! s11.empty();
+				}
+
 				chref.value = s11;
 				chref.valverb = false;
 				chref.inlineval = true;
@@ -1328,19 +1336,19 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 			{
 				conv_uri_value(s11);
 
-				if (chref.marker)
+				if (s11.size() > 1 && s11.find("%3a") != string::npos)
+				{
+					chref.uri = s11;
+					chref.stream = true;
+				}
+				else
 				{
 					chref.value = s11;
 					chref.valverb = false;
 					chref.inlineval = true;
-				}
-				else if (s11.size() > 1)
-				{
-					chref.uri = s11;
+					chref.stream = ! chref.marker && ! s11.empty();
 				}
 			}
-
-			chref.stream = ! chref.uri.empty();
 		}
 	}
 
