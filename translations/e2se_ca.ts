@@ -1731,7 +1731,7 @@ Espereu uns minuts i torneu ho a provar.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>Inspector registre</translation>
+        <translation>Inspecció Log</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -4049,7 +4049,7 @@ Espereu uns minuts i torneu ho a provar.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>Inspector registre</translation>
+        <translation>Inspecció Log</translation>
     </message>
     <message>
         <source>Utils Error</source>
@@ -4067,7 +4067,7 @@ Espereu uns minuts i torneu ho a provar.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>dialog</comment>
-        <translation>Inspector registre</translation>
+        <translation>Inspecció Log</translation>
     </message>
     <message>
         <source>Filter</source>

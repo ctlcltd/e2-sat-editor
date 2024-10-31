@@ -1730,7 +1730,7 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>Rąstų Inspekt</translation>
+        <translation>Log Inspekt</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -4051,7 +4051,7 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>Rąstų Inspekt</translation>
+        <translation>Log Inspekt</translation>
     </message>
     <message>
         <source>Utils Error</source>
@@ -4069,7 +4069,7 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>dialog</comment>
-        <translation>Rąstų Inspekt</translation>
+        <translation>Log Inspekt</translation>
     </message>
     <message>
         <source>Filter</source>

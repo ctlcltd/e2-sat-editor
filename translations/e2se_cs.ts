@@ -1730,7 +1730,7 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>Inspektor protokolu</translation>
+        <translation>Inspekce Log</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -4051,7 +4051,7 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>Inspektor protokolu</translation>
+        <translation>Inspekce Log</translation>
     </message>
     <message>
         <source>Utils Error</source>
@@ -4069,7 +4069,7 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>dialog</comment>
-        <translation>Inspektor protokolu</translation>
+        <translation>Inspekce Log</translation>
     </message>
     <message>
         <source>Filter</source>

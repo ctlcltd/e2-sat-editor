@@ -1732,7 +1732,7 @@ Poczekaj kilka minut i spróbuj ponownie.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>Log Inspektor</translation>
+        <translation>Kontrola Logów</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -4053,7 +4053,7 @@ Poczekaj kilka minut i spróbuj ponownie.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>Log Inspektor</translation>
+        <translation>Kontrola Logów</translation>
     </message>
     <message>
         <source>Utils Error</source>
@@ -4071,7 +4071,7 @@ Poczekaj kilka minut i spróbuj ponownie.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>dialog</comment>
-        <translation>Log Inspektor</translation>
+        <translation>Kontrola Logów</translation>
     </message>
     <message>
         <source>Filter</source>

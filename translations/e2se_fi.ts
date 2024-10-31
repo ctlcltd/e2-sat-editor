@@ -1731,7 +1731,7 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>Tukkien tarkastaja</translation>
+        <translation>Tukkin Log</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -4049,7 +4049,7 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>Tukkien tarkastaja</translation>
+        <translation>Tukkin Log</translation>
     </message>
     <message>
         <source>Utils Error</source>
@@ -4067,7 +4067,7 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>dialog</comment>
-        <translation>Tukkien tarkastaja</translation>
+        <translation>Tukkin Log</translation>
     </message>
     <message>
         <source>Filter</source>

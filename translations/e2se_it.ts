@@ -1736,7 +1736,7 @@ Attendere qualche minuto e riprovare.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>Log Inspector</translation>
+        <translation>Ispeziona Log</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -4049,7 +4049,7 @@ Attendere qualche minuto e riprovare.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ispeziona Log</translation>
     </message>
     <message>
         <source>Utils Error</source>
@@ -4067,7 +4067,7 @@ Attendere qualche minuto e riprovare.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>dialog</comment>
-        <translation>Inspector log</translation>
+        <translation>Ispeziona Log</translation>
     </message>
     <message>
         <source>Filter</source>

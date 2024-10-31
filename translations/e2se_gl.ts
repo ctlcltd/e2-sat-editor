@@ -1732,7 +1732,7 @@ Agarde uns minutos e ténteo de novo.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>Inspector rexistro</translation>
+        <translation>Inspección Log</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -4050,7 +4050,7 @@ Agarde uns minutos e ténteo de novo.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>Inspector rexistro</translation>
+        <translation>Inspección Log</translation>
     </message>
     <message>
         <source>Utils Error</source>
@@ -4068,7 +4068,7 @@ Agarde uns minutos e ténteo de novo.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>dialog</comment>
-        <translation>Inspector rexistro</translation>
+        <translation>Inspección Log</translation>
     </message>
     <message>
         <source>Filter</source>

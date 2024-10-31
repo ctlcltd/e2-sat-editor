@@ -1730,7 +1730,7 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>Baļķu Inspekt</translation>
+        <translation>Log Inspekt</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -4051,7 +4051,7 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>Baļķu Inspekt</translation>
+        <translation>Log Inspekt</translation>
     </message>
     <message>
         <source>Utils Error</source>
@@ -4069,7 +4069,7 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>dialog</comment>
-        <translation>Baļķu Inspekt</translation>
+        <translation>Log Inspekt</translation>
     </message>
     <message>
         <source>Filter</source>

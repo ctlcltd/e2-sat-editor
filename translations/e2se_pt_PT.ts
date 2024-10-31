@@ -1731,7 +1731,7 @@ Aguarde alguns minutos e tente novamente.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>Inspetor registro</translation>
+        <translation>Inspeção Log</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -4049,7 +4049,7 @@ Aguarde alguns minutos e tente novamente.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>Inspetor registro</translation>
+        <translation>Inspeção Log</translation>
     </message>
     <message>
         <source>Utils Error</source>
@@ -4067,7 +4067,7 @@ Aguarde alguns minutos e tente novamente.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>dialog</comment>
-        <translation>Inspetor registro</translation>
+        <translation>Inspeção Log</translation>
     </message>
     <message>
         <source>Filter</source>

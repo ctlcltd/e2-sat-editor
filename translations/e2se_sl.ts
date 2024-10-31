@@ -1731,7 +1731,7 @@ Počakajte nekaj minut in poskusite znova.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>Log Inspector</translation>
+        <translation>Inšpekcija Log</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -4055,7 +4055,7 @@ Počakajte nekaj minut in poskusite znova.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>Log Inspector</translation>
+        <translation>Inšpekcija Log</translation>
     </message>
     <message>
         <source>Utils Error</source>
@@ -4073,7 +4073,7 @@ Počakajte nekaj minut in poskusite znova.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>dialog</comment>
-        <translation>Log Inspector</translation>
+        <translation>Inšpekcija Log</translation>
     </message>
     <message>
         <source>Filter</source>

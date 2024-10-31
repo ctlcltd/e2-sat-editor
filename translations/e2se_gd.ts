@@ -1732,7 +1732,7 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>Neach-sgrùdaidh Log</translation>
+        <translation>Sgrùdadh Log</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -4056,7 +4056,7 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>Neach-sgrùdaidh Log</translation>
+        <translation>Sgrùdadh Log</translation>
     </message>
     <message>
         <source>Utils Error</source>
@@ -4074,7 +4074,7 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     <message>
         <source>Log Inspector</source>
         <comment>dialog</comment>
-        <translation>Neach-sgrùdaidh Log</translation>
+        <translation>Sgrùdadh Log</translation>
     </message>
     <message>
         <source>Filter</source>

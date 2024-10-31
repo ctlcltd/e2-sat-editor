@@ -1732,7 +1732,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>ログインスペクター</translation>
+        <translation>ログを検査する</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -4047,7 +4047,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
-        <translation>ログインスペクター</translation>
+        <translation>ログを検査する</translation>
     </message>
     <message>
         <source>Utils Error</source>
@@ -4065,7 +4065,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Log Inspector</source>
         <comment>dialog</comment>
-        <translation>ログインスペクター</translation>
+        <translation>ログを検査する</translation>
     </message>
     <message>
         <source>Filter</source>
