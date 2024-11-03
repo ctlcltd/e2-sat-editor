@@ -2,6 +2,10 @@
 # Testing flatpak
 # 
 
+# git clone https://github.com/ctlcltd/e2-sat-editor.git
+# git checkout v1.7.0
+# cd e2-sat-editor
+
 # cd dist/xdg
 # flatpak run org.freedesktop.appstream-glib validate io.github.ctlcltd.e2se.metainfo.xml
 # desktop-file-validate e2-sat-editor.desktop

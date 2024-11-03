@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 
 
+## [v1.8.0]
+
+**Version**: 1.8  
+**Release Date**: *not released*  
+**Full Changelog**: [v1.7.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.7.0...HEAD)
+
+
+
+
 ## [v1.7.0]
 
 **Version**: 1.7  
@@ -72,7 +81,7 @@ All notable changes to this project will be documented in this file.
 **Release Date**: 2024-03-30  
 **Full Changelog**: [v1.2.0...v1.3.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.2.0...v1.3.0)
 
-- Type stream reference support
+- Stream type reference support
 - Calculate \[dvbns\] namespace
 - M3U import and export
 - Automatic and manual checking for updates

@@ -30,7 +30,7 @@
 
 # cd
 # git clone https://github.com/ctlcltd/e2-sat-editor.git
-# git checkout v1.6.0
+# git checkout v1.7.0
 # cd e2-sat-editor
 
 cd src/cli
@@ -62,7 +62,7 @@ chmod +x e2se-cli-x86_64.AppImage
 
 appimagetool squashfs-root --sign --sign-key $MY_SIGN_KEY
 
-mv e2se-cli-x86_64.AppImage e2se-cli-1.6.0-x86_64.AppImage
+mv e2se-cli-x86_64.AppImage e2se-cli-1.7.0-x86_64.AppImage
 
-# ./e2se-cli-1.6.0-x86_64.AppImage --appimage-signature
+# ./e2se-cli-1.7.0-x86_64.AppImage --appimage-signature
 
